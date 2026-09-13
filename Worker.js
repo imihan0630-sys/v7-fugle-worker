@@ -12,11 +12,14 @@
 // Cron expression: 0-24 5 * * MON-FRI // 台灣 13:00-13:24 每分鐘
 // Cron expression: * 9 * * MON-FRI     // 台灣 17:00-17:59 每分鐘建立歷史日K快取＋逐日法人快照
 // Cron expression: 10 10 * * MON-FRI  // 台灣 18:10 盤後掃描
-const VERSION = "7.5.3-phase4.5-slack-test-fix";
+const VERSION = "7.5.5-final-3plus3-200k-capital";
 const TEST_MODE_DEFAULT = true;
 const KV_KEY = "STOCK_CONFIG_V7";
 const LEGACY_KV_KEY = "STOCK_CONFIG_V6";
 const MAX_STOCKS = 6;
+const MAX_STOCKS_PER_POOL = 3; // 千金股最多3檔、非千金股最多3檔；名額不得跨池挪用
+const DEFAULT_TOTAL_CAPITAL = 200000; // 韓哥固定預設資金
+const MAX_SINGLE_POSITION_RATIO = 0.35; // 單一標的最多使用總資金35%
 const SIGNAL_STATE_PREFIX = "V7_SIGNAL_STATE:";
 const LAST_MONITOR_KEY = "V7_LAST_MONITOR_RUN";
 const SIGNAL_STATE_TTL_SECONDS = 7 * 24 * 60 * 60;
@@ -1322,6 +1325,20 @@ async function saveStockConfig(
 // KV 優先
 // ======================================================
 
+function enforceIndependentPoolQuota(stocks) {
+  const source = Array.isArray(stocks) ? stocks : [];
+  const referencePrice = stock => {
+    for (const value of [stock?.buyHigh, stock?.buyLow, stock?.breakout, stock?.stop, stock?.profitCheck, stock?.averageCost]) {
+      const n = toNumber(value);
+      if (n !== null && n > 0) return n;
+    }
+    return 0;
+  };
+  const general = source.filter(stock => referencePrice(stock) < THOUSAND_STOCK_PRICE).slice(0, MAX_STOCKS_PER_POOL);
+  const thousand = source.filter(stock => referencePrice(stock) >= THOUSAND_STOCK_PRICE).slice(0, MAX_STOCKS_PER_POOL);
+  return [...general, ...thousand].sort((a, b) => (toNumber(a?.sourceRank) || 999) - (toNumber(b?.sourceRank) || 999));
+}
+
 async function loadStockConfig(env) {
   if (env.STOCKS_KV) {
     let text = await retryTransient("讀取 STOCK_CONFIG_V7", () => env.STOCKS_KV.get(KV_KEY), 3);
@@ -1346,9 +1363,9 @@ async function loadStockConfig(env) {
           updatedAt:
             parsed.updatedAt || null,
           stocks:
-            validateStocks(
+            enforceIndependentPoolQuota(validateStocks(
               parsed.stocks
-            )
+            ))
         };
       }
 
@@ -1358,7 +1375,7 @@ async function loadStockConfig(env) {
           source: "KV",
           updatedAt: null,
           stocks:
-            validateStocks(parsed)
+            enforceIndependentPoolQuota(validateStocks(parsed))
         };
       }
     }
@@ -1373,11 +1390,11 @@ async function loadStockConfig(env) {
         "Runtime variable",
       updatedAt: null,
       stocks:
-        validateStocks(
+        enforceIndependentPoolQuota(validateStocks(
           JSON.parse(
             env.STOCK_CONFIG
           )
-        )
+        ))
     };
   }
 
@@ -3097,7 +3114,7 @@ async function runAfterMarketScan(env, scheduledTime = Date.now(), options = {})
   const marketState = updateMarketState(previous, rows, enrichment, marketDate);
   const scan = selectTomorrowCandidates(marketState, rows, env, marketDate);
   const stocks = validateStocks(scan.candidates);
-  const totalCapital = positiveNumber(env.V7_TOTAL_CAPITAL) || 300000;
+  const totalCapital = positiveNumber(env.V7_TOTAL_CAPITAL) || DEFAULT_TOTAL_CAPITAL;
 
   let saved = /** @type {any} */ ({ ok: false, dryRun });
   let bridge = /** @type {any} */ ({ sent: false, skipped: true, reason: dryRun ? "dry-run" : "not-run" });
@@ -3156,9 +3173,18 @@ async function runAfterMarketScan(env, scheduledTime = Date.now(), options = {})
     generatedAt: taiwanTime(),
     requestedDate,
     scanDate: marketDate,
-    status: stocks.length ? `今日選出 ${stocks.length} 檔；千金股專池 ${scan.thousandStockPool?.selectedCount || 0} 檔` : `今日 0 檔，維持現金；千金股專池 ${scan.thousandStockPool?.selectedCount || 0} 檔`,
+    status: stocks.length ? `今日選出 ${stocks.length} 檔；非千金股 ${scan.diagnostics?.finalPoolMerge?.finalGeneralSelected || 0}/3、千金股 ${scan.diagnostics?.finalPoolMerge?.finalThousandSelected || 0}/3；空缺不跨池補位` : `今日 0 檔，維持現金；非千金股 0/3、千金股 0/3`,
     market: { twse: twseRows.length, tpex: tpexRows.length, ordinaryStocks: rows.length },
     selectedCount: stocks.length,
+    totalCapital,
+    capitalPlan: {
+      totalCapital,
+      plannedInvestment: stocks.reduce((sum, stock) => sum + (toNumber(stock.totalAllocation) || 0), 0),
+      remainingCash: Math.max(0, totalCapital - stocks.reduce((sum, stock) => sum + (toNumber(stock.totalAllocation) || 0), 0)),
+      firstTrancheTotal: stocks.reduce((sum, stock) => sum + (toNumber(stock.firstAmount) || 0), 0),
+      secondTrancheTotal: stocks.reduce((sum, stock) => sum + (toNumber(stock.secondAmount) || 0), 0),
+      rule: "總資金預設20萬；依priorityScore動態分配；第一筆60%/第二筆40%；3檔以上最多動用約85%；單股最多35%；未用資金保留現金"
+    },
     stocks,
     thousandStockPool: scan.thousandStockPool || null,
     diagnostics: {
@@ -3215,6 +3241,12 @@ function buildPublicRecommendations(latest) {
     scanDate: latest?.scanDate || null,
     status: latest?.status || (stocks.length ? `今日選出 ${stocks.length} 檔` : "今日0檔，不硬塞"),
     selectedCount: stocks.length,
+    totalCapital: toNumber(latest?.totalCapital) || DEFAULT_TOTAL_CAPITAL,
+    capitalPlan: latest?.capitalPlan || {
+      totalCapital: DEFAULT_TOTAL_CAPITAL,
+      plannedInvestment: stocks.reduce((sum, stock) => sum + (toNumber(stock?.totalAllocation) || 0), 0),
+      remainingCash: Math.max(0, DEFAULT_TOTAL_CAPITAL - stocks.reduce((sum, stock) => sum + (toNumber(stock?.totalAllocation) || 0), 0))
+    },
     stocks: stocks.map(stock => ({
       symbol: String(stock?.symbol || stock?.code || ""),
       name: stock?.name || "",
@@ -3227,6 +3259,13 @@ function buildPublicRecommendations(latest) {
       profitCheck: toNumber(stock?.profitCheck),
       rewardRisk: toNumber(stock?.rewardRisk),
       priorityScore: toNumber(stock?.priorityScore),
+      allocationRatio: toNumber(stock?.allocationRatio),
+      totalAllocation: toNumber(stock?.totalAllocation),
+      firstAmount: toNumber(stock?.firstAmount),
+      secondAmount: toNumber(stock?.secondAmount),
+      firstShares: toNumber(stock?.firstShares),
+      secondShares: toNumber(stock?.secondShares),
+      totalShares: toNumber(stock?.totalShares),
       selectedReason: stock?.selectedReason || null
     })),
     thousandStockPool: thousand ? {
@@ -3690,7 +3729,7 @@ function selectTomorrowCandidates(marketState, todayRows, env, scanDate) {
       A: "拉回承接：多頭結構仍在＋拉回至技術支撐＋量縮/不放量殺低＋未破壞結構；隔日等15分K止跌轉強",
       B: "突破後承接：有效突破平台/前高＋量價確認＋收近高；隔日不追第一段，等回測突破位守住再由15分K確認"
     },
-    note: "V7正式策略定義：A=拉回承接，B=突破後承接。18:10同時執行全市場池與千金股專池；千金股收盤價>=1000元會獨立再分析與排序，但不保證名額、不硬塞，最後合併去重後最多6檔。"
+    note: "V7正式策略定義：A=拉回承接，B=突破後承接。18:10分成非千金股池與千金股池獨立篩選；每池最多3檔，未達標名額留空且不得跨池挪用，合計最多6檔。"
   };
   const scored = [];
   const basePoolDiagnostics = [];
@@ -3729,7 +3768,7 @@ function selectTomorrowCandidates(marketState, todayRows, env, scanDate) {
   // 千金股專池：收盤價 >= 1,000 元，獨立再分析一次。
   // 使用相同 A/B、RR、風控與B級以上規則；只把RS基準改成千金股自身平均，
   // 讓「高價股彼此之間的相對強弱」可獨立排序。
-  // 不保證名額、不強塞進最終6檔。
+  // 每池最多3檔；不保證名額、不硬塞，空缺不得讓另一池補位。
   // ====================================================
   const thousandMarketRows = todayRows.filter(row => (toNumber(row.close) || 0) >= THOUSAND_STOCK_PRICE);
   const thousandFeatureRowsRaw = featureRows.filter(row => (toNumber(row.close) || 0) >= THOUSAND_STOCK_PRICE);
@@ -3754,15 +3793,14 @@ function selectTomorrowCandidates(marketState, todayRows, env, scanDate) {
     thousandScored.push(result);
   }
   thousandScored.sort(rankFn);
-  const thousandTop = thousandScored.slice(0, MAX_STOCKS);
+  const thousandTop = thousandScored.slice(0, MAX_STOCKS_PER_POOL);
 
-  // 最終監控名單由「一般股池Top6＋千金股專池Top6」合併去重後重排，仍最多6檔。
-  // 千金股沒有保留席次；品質不夠就可以0檔。
-  const generalTop = scored.filter(item => (toNumber(item.close) || 0) < THOUSAND_STOCK_PRICE).slice(0, MAX_STOCKS);
-  const thousandGlobalTop = scored.filter(item => (toNumber(item.close) || 0) >= THOUSAND_STOCK_PRICE).slice(0, MAX_STOCKS);
-  const mergedMap = new Map();
-  for (const item of [...generalTop, ...thousandGlobalTop]) mergedMap.set(item.symbol, item);
-  const selected = Array.from(mergedMap.values()).sort(rankFn).slice(0, MAX_STOCKS);
+  // 7.5.4：兩個選股池各自保留最多3席，名額完全獨立。
+  // 千金股不足3檔時空缺保留；非千金股不得補位。反之亦同。
+  const generalTop = scored
+    .filter(item => (toNumber(item.close) || 0) < THOUSAND_STOCK_PRICE)
+    .slice(0, MAX_STOCKS_PER_POOL);
+  const selected = [...generalTop, ...thousandTop].sort(rankFn);
   const finalSymbols = new Set(selected.map(item => item.symbol));
 
   diagnostics.thousandStockPool = {
@@ -3778,16 +3816,22 @@ function selectTomorrowCandidates(marketState, todayRows, env, scanDate) {
     marketReturn20: round(thousandReturn20 || 0, 2),
     selectedCount: thousandTop.length,
     shortlist: thousandTop.map((item, index) => buildIndependentPoolPreview(item, index + 1, finalSymbols)),
-    policy: "千金股每天獨立分析；A=拉回承接、B=突破後承接；B級以下不列；0~6檔、不硬塞；最後與一般股池合併去重競爭最終6席。"
+    policy: "千金股每天獨立分析；A=拉回承接、B=突破後承接；B級以下不列；0~3檔、不硬塞；千金股保留最多3席，空缺不得由非千金股補位。"
   };
   diagnostics.finalPoolMerge = {
+    policy: "3+3獨立名額，不跨池補位",
+    generalQuota: MAX_STOCKS_PER_POOL,
+    thousandQuota: MAX_STOCKS_PER_POOL,
     generalCandidates: generalTop.length,
-    thousandCandidates: thousandGlobalTop.length,
+    thousandCandidates: thousandTop.length,
     finalSelected: selected.length,
-    finalThousandSelected: selected.filter(item => (toNumber(item.close) || 0) >= THOUSAND_STOCK_PRICE).length
+    finalGeneralSelected: generalTop.length,
+    finalThousandSelected: thousandTop.length,
+    unusedGeneralSlots: MAX_STOCKS_PER_POOL - generalTop.length,
+    unusedThousandSlots: MAX_STOCKS_PER_POOL - thousandTop.length
   };
 
-  const totalCapital = positiveNumber(env.V7_TOTAL_CAPITAL) || 300000;
+  const totalCapital = positiveNumber(env.V7_TOTAL_CAPITAL) || DEFAULT_TOTAL_CAPITAL;
   return {
     candidates: allocateAndBuildPlans(selected, totalCapital, scanDate),
     diagnostics,
@@ -4254,10 +4298,13 @@ function scorePositive(value, maxScore) {
 }
 
 function allocateAndBuildPlans(selected, totalCapital, scanDate) {
-  const scoreTotal = selected.reduce((sum, item) => sum + item.priorityScore, 0) || 1;
-  const deployRatio = Math.min(0.9, selected.length * 0.25);
+  // 資金配置不因「最多6檔」而硬用滿。入選越少，保留現金越多；3檔以上預設最多動用85%。
+  // 各股依 V7 priorityScore（已含策略品質、RR、產業、法人、基本面、RS）做權重，單股最多35%。
+  const scoreTotal = selected.reduce((sum, item) => sum + Math.max(1, toNumber(item.priorityScore) || 0), 0) || 1;
+  const deployRatio = selected.length <= 0 ? 0 : selected.length === 1 ? 0.35 : selected.length === 2 ? 0.60 : 0.85;
   return selected.map((item, index) => {
-    const ratio = Math.min(0.25, deployRatio * item.priorityScore / scoreTotal);
+    const rawRatio = deployRatio * Math.max(1, toNumber(item.priorityScore) || 0) / scoreTotal;
+    const ratio = Math.min(MAX_SINGLE_POSITION_RATIO, rawRatio);
     const totalAllocation = Math.floor(totalCapital * ratio / 1000) * 1000;
     const firstAmount = Math.round(totalAllocation * 0.6);
     const secondAmount = totalAllocation - firstAmount;
