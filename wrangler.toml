@@ -1,0 +1,6 @@
+name = "fugle-test"
+main = "Worker.js"
+compatibility_date = "2026-09-01"
+
+# Production bindings, vars, secrets and Cron already exist in Cloudflare.
+# The GitHub Actions workflow below updates Worker code only.
