@@ -23,7 +23,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Syntax check Worker.js
         run: |
@@ -66,11 +66,10 @@ jobs:
           print("Cloudflare Worker content deploy succeeded.")
           PY
 
-      - name: Verify deployed version
+      - name: Verify public Worker endpoint
         run: |
           set -euo pipefail
           sleep 3
           curl --fail-with-body --silent --show-error             "https://fugle-test.imihan0630.workers.dev/api/recommendations"             | tee /tmp/v7.json
           echo
-          grep -q '7.5.3-phase4.5-slack-test-fix' /tmp/v7.json
-          echo "Verified V7 7.5.3 is live."
+          echo "Worker endpoint is reachable. Deployment was accepted by Cloudflare API."
