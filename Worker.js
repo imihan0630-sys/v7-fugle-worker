@@ -4425,18 +4425,20 @@ function deriveQuarterlyFinancials(periods,year,quarter) {
   const subtractQuarter=(symbol,y,q)=>{
     const cumulative=byPeriod.get(`${y}Q${q}`)?.[symbol],before=q===1 ? {revenueYTD:0,grossYTD:0,operatingYTD:0,epsYTD:0} : byPeriod.get(`${y}Q${q-1}`)?.[symbol];
     if(!cumulative || !before) return null;
-    const result={};for(const key of ['revenue','gross','operating','eps']) result[key]=cumulative[key+'YTD']-before[key+'YTD'];
+    const result={};for(const key of ['revenue','gross','operating']) result[key]=cumulative[key+'YTD']-before[key+'YTD'];
     return result.revenue>0 ? {...result,grossMargin:result.gross/result.revenue*100,operatingMargin:result.operating/result.revenue*100} : null;
   };
   const growth=(now,before)=>Number.isFinite(now) && Number.isFinite(before) && before>0 ? (now/before-1)*100 : null;
   for(const symbol of Object.keys(current)) {
     const latest=subtractQuarter(symbol,year,quarter),previous=subtractQuarter(symbol,quarter===1?year-1:year,quarter===1?4:quarter-1),lastYear=subtractQuarter(symbol,year-1,quarter);
     if(!latest || !previous || !lastYear) continue;
-    stocks[symbol]={financialYear:String(year-1911),financialQuarter:String(quarter),quarterRevenue:latest.revenue,quarterEPS:round(latest.eps,2),
-      revenueQuarterYoY:growth(latest.revenue,lastYear.revenue),revenueQoQ:growth(latest.revenue,previous.revenue),epsYoY:growth(latest.eps,lastYear.eps),epsQoQ:growth(latest.eps,previous.eps),
+    stocks[symbol]={financialYear:String(year-1911),financialQuarter:String(quarter),quarterRevenue:latest.revenue,quarterEPS:quarter===1 ? current[symbol].epsYTD : null,
+      eps:current[symbol].epsYTD,reportedCumulativeEPS:current[symbol].epsYTD,epsYoY:null,epsQoQ:null,epsComparisonsReady:false,
+      epsBasis:"MOPS截至同季累計公告EPS；不能累計相減當成真實單季EPS，未核對單季及面額調整成長率不計分",
+      revenueQuarterYoY:growth(latest.revenue,lastYear.revenue),revenueQoQ:growth(latest.revenue,previous.revenue),
       grossMargin:latest.grossMargin,operatingMargin:latest.operatingMargin,grossMarginYoY:latest.grossMargin-lastYear.grossMargin,operatingMarginYoY:latest.operatingMargin-lastYear.operatingMargin,
       grossMarginQoQ:latest.grossMargin-previous.grossMargin,operatingMarginQoQ:latest.operatingMargin-previous.operatingMargin,
-      financialBasis:"營收及利益為MOPS累計仟元差額轉單季；EPS差額為估算，股本／面額異動時不可直接比較；負或0基期不算成長率"};
+      financialBasis:"營收及利益為MOPS累計仟元差額轉單季；EPS為實際公告累計值，不推估單季；負或0基期不算成長率"};
   }
   return stocks;
 }
@@ -4544,7 +4546,7 @@ function selectTomorrowCandidates(marketState, todayRows, env, scanDate) {
     exclusions: {},
     marketReturn20: marketReturn20===null ? null : round(marketReturn20,2),
     relativeStrengthBenchmark: "TWSE正式加權指數，相同日期基期；族群為排除自身的同產業普通股等權報酬，非交易所產業指數",
-    requirements30: {complete:false, incompleteRules:[18,19,26,28,29], record:"REQUIREMENTS_30.md",pendingAcceptance:"完整payload外部寫入、盤中收棒／推播手機收到及並發仍需實測"},
+    requirements30: {complete:false, incompleteRules:[11,17,18,19,26,27,28,29], record:"REQUIREMENTS_30.md",pendingAcceptance:"可核對單季及面額調整EPS、完整payload外部寫入、盤中真實訊號／手機實收；並發鎖已測，網路回覆不明與崩潰不保證絕對只送一次"},
     nearMisses: [],
     industryRadar: sectorStats,
     channelPolicy: {
