@@ -13,7 +13,7 @@
 // Cron expression: 0-24 5 * * MON-FRI // 台灣 13:00-13:24 每分鐘
 // Cron expression: * 9 * * MON-FRI     // 台灣 17:00-17:59 每分鐘建立歷史日K快取＋逐日法人快照
 // Cron expression: 10 10 * * MON-FRI  // 台灣 18:10 盤後掃描
-const VERSION = "7.5.24-durable-push-reservation";
+const VERSION = "7.5.25-reported-previous-quarter-eps";
 const TEST_MODE_DEFAULT = true;
 const KV_KEY = "STOCK_CONFIG_V7";
 const LEGACY_KV_KEY = "STOCK_CONFIG_V6";
@@ -3696,8 +3696,10 @@ async function runAfterMarketScanCore(env, scheduledTime = Date.now(), options =
   const storedBudget = await env.STOCKS_KV.get(KV_KEY, "json");
   const totalCapital = positiveNumber(storedBudget?.totalCapital) || positiveNumber(env.V7_TOTAL_CAPITAL) || DEFAULT_TOTAL_CAPITAL;
   const scan = selectTomorrowCandidates(marketState, rows, { ...env, V7_TOTAL_CAPITAL: totalCapital, V7_OFFICIAL_INDEX:indexData }, marketDate);
-  const epsMissing=(scan.diagnostics.epsReviewUniverse || []).filter(item=>!quarterEps?.stocks?.[item.symbol]?.quarterEpsVerified || quarterEps.year!==financialData.year || quarterEps.quarter!==financialData.quarter).map(item=>item.symbol);
+  const epsMissing=(scan.diagnostics.epsReviewUniverse || []).filter(item=>(!quarterEps?.stocks?.[item.symbol]?.quarterEpsVerified || (financialData.quarter>1 && !quarterEps?.stocks?.[item.symbol]?.previousQuarterEpsVerified)) || quarterEps.year!==financialData.year || quarterEps.quarter!==financialData.quarter).map(item=>item.symbol);
   scan.diagnostics.quarterEpsReview={provisional:epsReviewOnly,year:financialData.year,quarter:financialData.quarter,reviewedCount:quarterEps?.count || 0,missingSymbols:epsMissing,
+    previousQuarterReviewedCount:Object.values(quarterEps?.stocks || {}).filter(stock=>stock.previousQuarterEpsVerified).length,
+    futureQuarterRequired:false,
     ready:!epsReviewOnly && epsMissing.length===0,scope:"通過既有精篩之候選逐檔複核；不是1882檔全市場均已取得單季EPS",qoqBasis:"未獨立核對跨季面額／股數調整，不用未調整QoQ加分"};
   if(!dryRun && epsMissing.length) throw new Error(`DATA_INCOMPLETE：候選缺當季實際EPS複核(${epsMissing.join(',')})，保留既有計畫`);
   if (!scan.diagnostics.with60Days) throw new Error("DATA_INCOMPLETE：沒有可用60日日K，不能把資料缺失回報為今日0檔");
@@ -4336,6 +4338,20 @@ function validateOfficialQualityData(body,date) {
     for(const report of body.reports) {
       if(report.sourceUrl!=="https://mopsov.twse.com.tw/mops/web/ajax_t164sb04" || !/^[1-9][0-9]{3}$/.test(report.symbol) || stocks[report.symbol]) throw new Error("單季EPS官方來源或候選代號重複／無效");
       stocks[report.symbol]=parseMopsQuarterEpsHtml(report.html,report.symbol,body.year,body.quarter);
+      const stock=stocks[report.symbol];
+      stock.previousQuarterEPS=null;
+      stock.previousQuarterEpsVerified=false;
+      stock.epsQoQReady=false;
+      stock.epsQoQMissingReason=body.quarter===1 ? "前季為Q4，直接單季來源尚未驗證；不是未來季度缺資料" : "尚未核對前一季直接公告EPS";
+      if(report.previousQuarterHtml!==undefined) {
+        if(body.quarter===1) throw new Error("Q1前季Q4尚無已驗證單季來源，不猜測年度差額");
+        const prior=parseMopsQuarterEpsHtml(report.previousQuarterHtml,report.symbol,body.year,body.quarter-1);
+        stock.previousQuarterEPS=prior.quarterEPS;
+        stock.previousQuarterEpsYear=body.year;
+        stock.previousQuarterEpsQuarter=body.quarter-1;
+        stock.previousQuarterEpsVerified=true;
+        stock.epsQoQMissingReason="當季及前季單季EPS已核對；跨報表股数／面額及重編可比性未核對，不算QoQ或加分";
+      }
     }
     return {asOfDate:date,year:body.year,quarter:body.quarter,count:Object.keys(stocks).length,stocks,scope:"通過初步精篩候選的官方單季EPS逐檔核對；不是全市場EPS覆蓋"};
   }
@@ -4465,7 +4481,13 @@ function parseMopsQuarterEpsHtml(html,symbol,year,quarter) {
     if(epsRows.length!==1 || epsRows[0].length!==1+2*(headings.length-1) || marketNumber(epsRows[0][3])===null || found) throw new Error("單季EPS數值欄位或報表不唯一，不猜測表格");
     const current=marketNumber(epsRows[0][1]),lastYear=marketNumber(epsRows[0][3]);
     found={eps:current,quarterEPS:current,reportedPriorYearQuarterEPS:lastYear,quarterEpsVerified:true,epsYoY:lastYear>0 ? (current/lastYear-1)*100 : null,
-      epsQoQ:null,epsComparisonsReady:lastYear>0,epsBasis:"MOPS合併綜合損益表直接公告單季EPS；YoY使用同份當期報表比較欄，非累計差額；負或0基期不算成長率；跨季調整未核對故QoQ為NULL",
+      epsQoQ:null,epsComparisonsReady:true,epsYoYPercentageReady:lastYear>0,
+      epsYoYChangeAmount:current-lastYear,
+      epsTurnedProfitable:lastYear<=0 && current>0 ? 1 : 0,
+      epsLossNarrowed:lastYear<0 && current<=0 && current>lastYear ? 1 : 0,
+      epsLossWidened:lastYear<0 && current<lastYear ? 1 : 0,
+      epsYoYMissingReason:lastYear>0 ? null : "同期EPS為負或0；比較數字已取得，但不產生誤導的成長百分比",
+      epsBasis:"MOPS合併綜合損益表直接公告單季EPS；YoY使用同份當期報表比較欄，非累計差額；負或0基期不算成長率；跨季調整未核對故QoQ為NULL",
       quarterEpsSource:"https://mopsov.twse.com.tw/mops/web/ajax_t164sb04",quarterEpsYear:year,quarterEpsQuarter:quarter};
   }
   if(!found) throw new Error("沒有已核對的真正單季EPS及同季比較欄位");

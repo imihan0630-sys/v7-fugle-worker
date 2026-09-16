@@ -56,6 +56,22 @@ const quarterHelpers=await import('data:text/javascript;base64,'+Buffer.from(sou
   assert.throws(()=>quarterHelpers.parseMopsQuarterEpsHtml(report(),'2330',2026,4),/輸入/);
   const body={kind:'QUARTER_EPS',year:2026,quarter:2,reports:[{symbol:'2330',sourceUrl:'https://mopsov.twse.com.tw/mops/web/ajax_t164sb04',html:report()}]};
   assert.equal(quarterHelpers.validateOfficialQualityData(body,'2026-09-16').count,1);
+  const previous=report('22.08','13.95').replace('SSEASON=2','SSEASON=1').replace('115年第2季','115年第1季').replace('114年第2季','114年第1季');
+  const paired={...body,reports:[{...body.reports[0],previousQuarterHtml:previous}]};
+  const stock=quarterHelpers.validateOfficialQualityData(paired,'2026-09-16').stocks['2330'];
+  assert.equal(stock.previousQuarterEPS,22.08);assert.equal(stock.previousQuarterEpsVerified,true);
+  assert.equal(stock.epsQoQ,null);assert.equal(stock.epsQoQReady,false,'Do not score an unverified adjusted comparison');
+  assert.throws(()=>quarterHelpers.validateOfficialQualityData({...paired,reports:[{...paired.reports[0],previousQuarterHtml:report()}]},'2026-09-16'),/季別/);
+  assert.throws(()=>quarterHelpers.validateOfficialQualityData({...paired,reports:[{...paired.reports[0],previousQuarterHtml:previous.replace('CO_ID=2330','CO_ID=6706')}]},'2026-09-16'),/公司/);
+  const turnaround=quarterHelpers.parseMopsQuarterEpsHtml(report('2.18','-0.79'),'2330',2026,2);
+  assert.equal(turnaround.epsTurnedProfitable,1);assert.equal(turnaround.epsYoY,null);assert.equal(turnaround.epsComparisonsReady,true);
+  assert.equal(turnaround.epsYoYPercentageReady,false);
+  const narrower=quarterHelpers.parseMopsQuarterEpsHtml(report('-1.89','-3.20'),'2330',2026,2);
+  assert.equal(narrower.epsLossNarrowed,1);assert.equal(narrower.epsLossWidened,0);
+  assert.equal(quarterHelpers.parseMopsQuarterEpsHtml(report('-4','-3.20'),'2330',2026,2).epsLossWidened,1);
+  assert.equal(quarterHelpers.parseMopsQuarterEpsHtml(report('2','0'),'2330',2026,2).epsYoY,null);
+  assert.throws(()=>quarterHelpers.validateOfficialQualityData(paired,'2026-03-31'),/期間/,'Future quarters are invalid inputs, not current data requirements');
+
   assert.throws(()=>quarterHelpers.validateOfficialQualityData({...body,reports:[...body.reports,...body.reports]},'2026-09-16'),/重複/);
   assert.throws(()=>quarterHelpers.validateOfficialQualityData({...body,reports:[{...body.reports[0],sourceUrl:'https://example.com'}]},'2026-09-16'),/來源/);
 }
