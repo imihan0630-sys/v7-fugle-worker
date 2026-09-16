@@ -37,6 +37,11 @@ async function sync(date) {
 }
 const current=await sync(marketDate);
 for(const missingDate of current.streak.missingDates || []) await sync(missingDate);
+const statusResponse=await admin('/api/institution-status');
+assert.equal(statusResponse.ok,true);
+const status=await statusResponse.json();
+assert.equal(status.marketDate,marketDate);assert.equal(status.ready,true,'Current three trading dates must all be complete');
+console.log(JSON.stringify({currentInstitutionReadback:status}));
 const after=await config();
 assert.deepEqual(after,before,'Institution synchronization must not change targets, capital or plans');
 console.log(JSON.stringify({institutionDataOnly:true,marketDate,currentDateVerified:true,backfilledDates:current.streak.missingDates || [],configurationUnchanged:true,noSelection:true,noExternalPlanWrite:true,noPush:true}));
