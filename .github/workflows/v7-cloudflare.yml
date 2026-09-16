@@ -104,6 +104,11 @@ jobs:
           V7_DEPLOY_BASELINE_PATH: /tmp/v7-predeploy.json
         run: node tests/verify_deployment.mjs
 
+      - name: Cache verified official market data (this repair only)
+        if: contains(github.event.head_commit.message, '[v7-live-acceptance]')
+        env:
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+        run: node tests/prepare_market_cache.mjs
       - name: Live after-market scan and import acceptance (this repair only)
         if: contains(github.event.head_commit.message, '[v7-live-acceptance]')
         env:

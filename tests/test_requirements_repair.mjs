@@ -99,6 +99,22 @@ assert.equal(datedTwseRows[0].closeDate,'2026-09-16');
 assert.equal(datedTwseRows[0].changePercent,-2/102*100);
 globalThis.fetch=async()=>new Response(JSON.stringify({...twseTable,date:'20260915'}));
 await assert.rejects(api.fetchClosingRowsWithFallback({},'TWSE','2026-09-16'),/日期2026-09-15/);
+const cachedEnv={STOCKS_KV:new MemoryKV(),ADMIN_TOKEN:'mock-admin'};
+const cacheDate=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Taipei',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+const cacheUrl=`https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?date=${encodeURIComponent(cacheDate.replaceAll('-','/'))}&id=&response=json`;
+const cachePayload={market:'TPEx',marketDate:cacheDate,sourceUrl:cacheUrl,payload:{...table,date:cacheDate.replaceAll('-','')}};
+const cacheRequest=(body,token='mock-admin')=>new Request('https://example.invalid/api/market-data',{method:'POST',headers:{'x-admin-token':token,'content-type':'application/json'},body:JSON.stringify(body)});
+assert.equal((await api.default.fetch(cacheRequest(cachePayload,'wrong'),cachedEnv)).status,401);
+assert.equal((await api.default.fetch(cacheRequest({...cachePayload,sourceUrl:'https://example.invalid'}),cachedEnv)).status,400);
+const cachedResult=await api.default.fetch(cacheRequest(cachePayload),cachedEnv);
+assert.equal(cachedResult.status,200);
+assert.equal((await cachedResult.json()).verified,true);
+globalThis.fetch=async()=>new Response('',{status:302});
+const fromCache=await api.fetchClosingRowsWithFallback(cachedEnv,'TPEx',cacheDate);
+assert.equal(fromCache.source,'OFFICIAL_DATED_ACTIONS_CACHE');
+assert.equal(fromCache.length,450);
+await assert.rejects(api.fetchClosingRowsWithFallback(cachedEnv,'TPEx','2020-01-01'));
+assert.equal(await cachedEnv.STOCKS_KV.get(api.KV_KEY),null,'Market cache must not overwrite targets');
 globalThis.fetch = originalFetch;
 const qualified = {symbol:'1234',name:'合格測試',close:101,historyDays:65,marketCapYi:200,changePercent:1,
   avgVolume20Lots:5000,atrPercent:2,ma5:99,ma10:98,ma20:97,ma60:95,prevMa20:96,bullishStack:true,
