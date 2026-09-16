@@ -27,3 +27,8 @@ jobs:
           cp Worker.js /tmp/v7-worker.mjs
           node --check /tmp/v7-worker.mjs
           node tests/test_requirements_repair.mjs
+      - name: Read-only production authorization preflight
+        if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+        env:
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+        run: node tests/production_preflight.mjs
