@@ -21,3 +21,7 @@ jobs:
         env:
           V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
         run: node tests/prepare_market_cache.mjs
+      - name: Sync official institutions and missing recent trading days (no plan changes)
+        env:
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+        run: node tests/sync_institution_data.mjs
