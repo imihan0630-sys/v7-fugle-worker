@@ -5,6 +5,7 @@ const sources=[
   ['taiexPrevious','https://www.twse.com.tw/exchangeReport/FMTQIK?response=json&date=20260801'],
   ['twseEpsCsv','https://mopsfin.twse.com.tw/opendata/t187ap14_L.csv'],
   ['tpexEpsCsv','https://mopsfin.twse.com.tw/opendata/t187ap14_O.csv'],
+  ['tdccCsv','https://opendata.tdcc.com.tw/getOD.ashx?id=1-5'],
   ['twseValuation','https://openapi.twse.com.tw/v1/exchangeReport/BWIBBU_ALL'],
   ['tpexSchema','https://www.tpex.org.tw/openapi/swagger.json'],
   ['mopsHistoricalPage','https://mopsov.twse.com.tw/mops/web/t163sb04'],
