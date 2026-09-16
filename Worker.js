@@ -3187,6 +3187,25 @@ function summarizeOfficialPayload(name, payload, twseSymbol, tpexSymbol) {
   };
 }
 
+function parseOfficialCsv(input) {
+  const text = String(input).replace(/^\uFEFF/, "");
+  const records = []; let row = [], cell = "", quoted = false;
+  for (let i=0;i<text.length;i++) {
+    const ch=text[i];
+    if (ch==='"') {
+      if (quoted && text[i+1]==='"') {cell+='"';i++;} else quoted=!quoted;
+    } else if (!quoted && ch===',') {row.push(cell);cell="";}
+    else if (!quoted && ch==='\n') {row.push(cell.replace(/\r$/, ""));if(row.some(x=>x!==""))records.push(row);row=[];cell="";}
+    else cell+=ch;
+  }
+  if (quoted) throw new Error("官方CSV引號不完整");
+  if (cell || row.length) {row.push(cell.replace(/\r$/, ""));records.push(row);}
+  const fields=records.shift() || [];
+  if (fields.length<4 || !fields.includes("公司代號") || new Set(fields).size!==fields.length) throw new Error("官方CSV欄位不符，不接受HTML或未知格式");
+  if (records.some(item=>item.length!==fields.length)) throw new Error("官方CSV列欄數不一致");
+  return records.map(item=>Object.fromEntries(fields.map((key,i)=>[key,item[i]])));
+}
+
 function officialRowSymbol(row) {
   if (!row || typeof row !== "object") return "";
   const direct = pick(row, [
@@ -3753,7 +3772,7 @@ async function fetchOfficialEnrichment(env, scanDate) {
       try {
         const payload = await fetchJsonWithRetry(
           url,
-          { headers: { accept: "application/json,text/plain,*/*", "user-agent": "Mozilla/5.0 V7-Official-Live" } },
+          { redirect:"manual", headers: { accept: "application/json,text/plain,*/*", "user-agent": "Mozilla/5.0 V7-Official-Live" } },
           `官方來源 ${name}`,
           2
         );
@@ -3769,6 +3788,19 @@ async function fetchOfficialEnrichment(env, scanDate) {
         if (name === "tpexInstitution" && rows.some(row => normalizeMarketDate(row.Date || row.date) !== scanDate)) throw new Error("上櫃法人資料不是指定交易日");
         return [name, { ok: true, rows }];
       } catch (err) {
+        const dataset = {twseProfile:"t187ap03_L",tpexProfile:"t187ap03_O",twseRevenue:"t187ap05_L",tpexRevenue:"t187ap05_O",twseEps:"t187ap14_L",tpexEps:"t187ap14_O",twseProfit:"t187ap17_L",tpexProfit:"t187ap17_O"}[name];
+        if (dataset) {
+          try {
+            const response = await fetchWithDeadline(`https://mopsfin.twse.com.tw/opendata/${dataset}.csv`, {redirect:"manual"});
+            if (!response.ok) throw new Error(`官方CSV HTTP ${response.status}`);
+            const rows = parseOfficialCsv(await response.text());
+            const count = rows.filter(row => officialRowSymbol(row)).length;
+            if (count < 500) throw new Error(`官方CSV有效公司不足(${count})`);
+            const exportDate = normalizeMarketDate(rows[0]?.["出表日期"]);
+            if (!exportDate || exportDate > scanDate || exportDate < shiftDateString(scanDate,-7)) throw new Error("官方CSV出表日期缺失、未來或過舊");
+            return [name,{ok:true,rows,fallback:"MOPS_OFFICIAL_CSV",exportDate,originalError:String(err).slice(0,300)}];
+          } catch (_) {}
+        }
         return [name, { ok: false, rows: [], error: String(err) }];
       }
     }));
@@ -3779,7 +3811,7 @@ async function fetchOfficialEnrichment(env, scanDate) {
 
   // 7.4.2：TWSE T86 偶爾會回 307/安全頁。若 D1 已有該交易日完整法人快照，
   // 直接用 D1 官方快照補回，避免把上市法人當成 0。
-  if (source.twseInstitution?.ok !== true && env?.V7_DB) {
+  if ((source.twseInstitution?.ok !== true || source.tpexInstitution?.ok !== true) && env?.V7_DB) {
     try {
       const snapshotRows = await readInstitutionSnapshotRows(env, scanDate, 10);
       const exact = snapshotRows.find(row => String(row.market_date || "") === String(scanDate));
@@ -3793,12 +3825,20 @@ async function fetchOfficialEnrichment(env, scanDate) {
           "自營商買賣超股數": toNumber(item?.dealerNet) || 0,
           "三大法人買賣超股數": toNumber(item?.institutionTotalNet) || 0
         }));
-        source.twseInstitution = {
+        if (source.twseInstitution?.ok !== true) source.twseInstitution = {
           ok: true,
           rows,
           date: String(scanDate),
           fallback: "D1_OFFICIAL_SNAPSHOT",
           originalError: source.twseInstitution?.error || null
+        };
+        if (source.tpexInstitution?.ok !== true) source.tpexInstitution = {
+          ok:true,date:scanDate,fallback:"D1_OFFICIAL_SNAPSHOT",originalError:source.tpexInstitution?.error || null,
+          rows:Object.entries(snapshot).map(([symbol,item])=>({Code:symbol,Date:scanDate,
+            "ForeignInvestorsInclude MainlandAreaInvestors-Difference":toNumber(item?.foreignNet),
+            "ForeignDealers-Difference":0,
+            "SecuritiesInvestmentTrustCompanies-Difference":toNumber(item?.trustNet),
+            "Dealers-Difference":toNumber(item?.dealerNet),TotalDifference:toNumber(item?.institutionTotalNet)}))
         };
       }
     } catch (_) {}
@@ -3838,7 +3878,7 @@ async function fetchOfficialEnrichment(env, scanDate) {
     const sharesOutstanding = marketNumber(
       isTwse
         ? pick(twse, ["已發行普通股數或TDR原股發行股數", "已發行普通股數"])
-        : pick(tpex, ["IssueShares"])
+        : pick(tpex, ["IssueShares", "已發行普通股數或TDR原股發行股數", "已發行普通股數"])
     );
 
     const foreignMain = isTwse
@@ -3850,7 +3890,7 @@ async function fetchOfficialEnrichment(env, scanDate) {
     const foreignDealer = isTwse
       ? marketNumber(pick(instTwse, ["外資自營商買賣超股數"]))
       : marketNumber(pick(instTpex, ["ForeignDealers-Difference"]));
-    const foreignNet = (foreignMain ?? 0) + (foreignDealer ?? 0);
+    const foreignNet = foreignMain !== null || foreignDealer !== null ? (foreignMain ?? 0) + (foreignDealer ?? 0) : null;
     const trustNet = isTwse
       ? marketNumber(pick(instTwse, ["投信買賣超股數"]))
       : marketNumber(pick(instTpex, ["SecuritiesInvestmentTrustCompanies-Difference"]));
@@ -3863,13 +3903,13 @@ async function fetchOfficialEnrichment(env, scanDate) {
 
     const industry = String(
       pick(rev, ["產業別"]) || pick(epsRow, ["產業別"]) || pick(twse, ["產業別"]) ||
-      pick(tpex, ["SecuritiesIndustryCode"]) || "未分類"
+      pick(tpex, ["SecuritiesIndustryCode", "產業別"]) || "未分類"
     ).trim();
 
     const companyName = String(
       isTwse
         ? (pick(twse, ["公司簡稱", "公司名稱"]) || symbol)
-        : (pick(tpex, ["CompanyAbbreviation", "CompanyName", "SecuritiesCompanyName"]) || symbol)
+        : (pick(tpex, ["CompanyAbbreviation", "CompanyName", "SecuritiesCompanyName", "公司簡稱", "公司名稱"]) || symbol)
     ).trim();
 
     stocks[symbol] = {
@@ -3877,7 +3917,7 @@ async function fetchOfficialEnrichment(env, scanDate) {
       name: companyName,
       market: isTwse ? "TWSE" : "TPEx",
       industry,
-      industryCode: String(pick(twse, ["產業別"]) || pick(tpex, ["SecuritiesIndustryCode"]) || "").trim(),
+      industryCode: String(pick(twse, ["產業別"]) || pick(tpex, ["SecuritiesIndustryCode", "產業別"]) || "").trim(),
       sharesOutstanding,
       revenueMonth: marketNumber(pick(rev, ["營業收入-當月營收"])),
       revenueMoM: marketNumber(pick(rev, ["營業收入-上月比較增減(%)"])),
@@ -3893,7 +3933,7 @@ async function fetchOfficialEnrichment(env, scanDate) {
       foreignNet,
       trustNet,
       dealerNet,
-      institutionTotalNet: institutionTotalNet ?? (foreignNet + (trustNet ?? 0) + (dealerNet ?? 0)),
+      institutionTotalNet: institutionTotalNet ?? ([foreignNet,trustNet,dealerNet].some(value=>value!==null) ? (foreignNet ?? 0) + (trustNet ?? 0) + (dealerNet ?? 0) : null),
       institutionsAligned: foreignNet > 0 && (trustNet ?? 0) > 0 && (dealerNet ?? 0) > 0,
       institutionAnyBuy: foreignNet > 0 || (trustNet ?? 0) > 0 || (dealerNet ?? 0) > 0
     };
