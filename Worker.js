@@ -7,12 +7,13 @@
  * Phase 4.3：A＝拉回承接、B＝突破後承接；18:10自動選0～6檔並寫入隔日監控計畫。
  * 免費版 Fugle 60次/分鐘安全架構：盤中每分鐘只抓 Quote；10/15分K僅在收棒後更新。
  * 即時狀態寫入 Cloudflare D1 primary；監控網頁只讀 D1，不再直接呼叫 Fugle。
+ * 7.5.6：盤中訊號狀態修正：未持倉不發停損賣出、同交易日同階段訊號只推一次、系統測試訊息不再顯示空白欄位。
  */
 // Cron expression: * 1-4 * * MON-FRI   // 台灣 09:00-12:59 每分鐘
 // Cron expression: 0-24 5 * * MON-FRI // 台灣 13:00-13:24 每分鐘
 // Cron expression: * 9 * * MON-FRI     // 台灣 17:00-17:59 每分鐘建立歷史日K快取＋逐日法人快照
 // Cron expression: 10 10 * * MON-FRI  // 台灣 18:10 盤後掃描
-const VERSION = "7.5.5-final-3plus3-200k-capital";
+const VERSION = "7.5.11-requirements-repair-draft";
 const TEST_MODE_DEFAULT = true;
 const KV_KEY = "STOCK_CONFIG_V7";
 const LEGACY_KV_KEY = "STOCK_CONFIG_V6";
@@ -43,6 +44,31 @@ const INSTITUTION_SNAPSHOT_LOOKBACK_WEEKDAYS = 5;
 const INSTITUTION_STREAK_MAX_DAYS = 3;
 const INSTITUTION_SNAPSHOT_MIN_STOCKS = 1500; // 防止只抓到單一市場卻被誤判為完整交易日
 let D1_SCHEMA_READY = false;
+// TWSE 115年正式開休市表；「開始/最後交易日」不是休市日。
+const MARKET_CALENDARS = new Map([[2026, new Set([
+  "2026-01-01", "2026-02-12", "2026-02-13", "2026-02-15", "2026-02-16", "2026-02-17",
+  "2026-02-18", "2026-02-19", "2026-02-20", "2026-02-27", "2026-02-28",
+  "2026-04-03", "2026-04-04", "2026-04-05", "2026-04-06", "2026-05-01", "2026-06-19",
+  "2026-09-25", "2026-09-28", "2026-10-09", "2026-10-10", "2026-10-25", "2026-10-26", "2026-12-25"
+])]]);
+
+async function loadTradingCalendar(env, year) {
+  if (MARKET_CALENDARS.has(year)) return;
+  const key = `V7_TRADING_CALENDAR:${year}`;
+  const cached = await env.STOCKS_KV?.get(key, "json");
+  if (cached?.year === year && Array.isArray(cached.holidays)) { MARKET_CALENDARS.set(year, new Set(cached.holidays)); return; }
+  const payload = await fetchJsonWithRetry(`https://www.twse.com.tw/rwd/zh/holidaySchedule/holidaySchedule?response=json&queryYear=${year}`, {redirect:"manual"}, "TWSE交易日曆", 2);
+  if (Number(payload.queryYear) !== year || !Array.isArray(payload.data) || !payload.data.length) throw new Error(`${year}年官方交易日曆尚不可用，不能猜測交易日`);
+  const holidays = payload.data.filter(row => !String(row[1]).includes("交易日")).map(row => row[0]);
+  MARKET_CALENDARS.set(year, new Set(holidays));
+  await env.STOCKS_KV?.put(key, JSON.stringify({year, holidays}), {expirationTtl:366 * 86400});
+}
+
+function isTradingDate(dateString) {
+  const year = Number(dateString.slice(0, 4));
+  if (!MARKET_CALENDARS.has(year)) throw new Error(`${year}年交易日曆尚未載入`);
+  return ![0, 6].includes(new Date(dateString + "T12:00:00Z").getUTCDay()) && !MARKET_CALENDARS.get(year).has(dateString);
+}
 
 function sleepMs(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
@@ -88,6 +114,26 @@ async function fetchJsonWithRetry(url, options, label, attempts = 3) {
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
+    if (url.pathname === "/api/version") return json({ version: VERSION, testMode: isTestMode(env),
+      bindings: { kv: !!env.STOCKS_KV, d1: !!env.V7_DB },
+      readiness: { quote: !!env.FUGLE_API_KEY, phonePush: !!env.PUSH_WEBHOOK_URL, threeMin: !!env.THREEMIN_API_URL,
+        threeMinReadback: !!env.THREEMIN_VERIFY_URL }, monitorUrl: url.origin }, 200, true);
+
+    // 第21條：只重算未建倉交易計畫；不執行下單、不更動實際持股。
+    if (url.pathname === "/api/capital") {
+      if (!isAuthorized(request, env)) return json({ error: "ADMIN_TOKEN 錯誤" }, 401, true);
+      if (request.method !== "POST") return json({ error: "Method not allowed" }, 405, true);
+      try {
+        const body = await request.json();
+        const stored = await env.STOCKS_KV.get(KV_KEY, "json");
+        if (!stored || !Array.isArray(stored.stocks)) throw new Error("請先匯入有效交易計畫");
+        const capital = positiveNumber(body.totalCapital);
+        const recalculated = recalculatePlanCapital(validateStocks(stored.stocks), capital);
+        if (body.preview === true) return json({ ok: true, preview: true, ...recalculated }, 200, true);
+        const saved = await saveStockConfig(env, recalculated.stocks, "Capital Recalculation", capital);
+        return json({ ...saved, remainingCash: recalculated.remainingCash, monitorUrl: url.origin }, 200, true);
+      } catch (err) { return json({ error: String(err) }, 400, true); }
+    }
 
     // ==================================================
     // 今日標的一鍵匯入頁
@@ -229,6 +275,7 @@ const stocks =
 
       const payload = {
         type: "SYSTEM_TEST",
+        title: "V7 Slack 推播鏈路測試",
         symbol: "V7",
         name: "Slack推播鏈路",
         message: "V7 Worker → Slack 實際推播測試成功",
@@ -541,7 +588,8 @@ const stocks =
       if (!latest) {
         return json({ ok: false, version: VERSION, status: "尚無盤後推薦結果" }, 404, true);
       }
-      return json(buildPublicRecommendations(latest), 200, true);
+      const attempt = env.STOCKS_KV ? await env.STOCKS_KV.get("V7_LAST_SCAN_ATTEMPT", "json") : null;
+      return json(buildPublicRecommendations(latest, attempt), 200, true);
     }
 
     // ==================================================
@@ -1288,7 +1336,8 @@ function snapshotAgeSeconds(snapshot) {
 async function saveStockConfig(
   env,
   stocks,
-  source
+  source,
+  totalCapital = null
 ) {
   if (!env.STOCKS_KV) {
     throw new Error(
@@ -1296,11 +1345,18 @@ async function saveStockConfig(
     );
   }
 
+  if (totalCapital === null) {
+    const previousConfig = await env.STOCKS_KV.get(KV_KEY, "json");
+    totalCapital = positiveNumber(previousConfig?.totalCapital);
+  }
+  const constrained = enforceIndependentPoolQuota(stocks);
+  if (constrained.length !== stocks.length) throw new Error("每池最多3檔，禁止跨池補位；請先修正匯入名單");
   const payload = {
     version: 7,
     updatedAt:
       new Date().toISOString(),
     source,
+    ...(totalCapital !== null ? { totalCapital } : {}),
     stocks
   };
 
@@ -1308,15 +1364,44 @@ async function saveStockConfig(
     KV_KEY,
     JSON.stringify(payload)
   );
+  const readback = await env.STOCKS_KV.get(KV_KEY, "json");
+  const verified = readback?.updatedAt === payload.updatedAt && JSON.stringify(readback?.stocks) === JSON.stringify(stocks);
 
   return {
     ok: true,
+    verified,
+    verificationNote: verified ? "KV讀回相符" : "寫入已接受，KV讀回尚未相符；不可當作端到端驗收成功",
     count: stocks.length,
     source: "KV",
     updatedAt:
       payload.updatedAt,
     stocks
   };
+}
+
+function recalculatePlanCapital(stocks, totalCapital) {
+  if (!Number.isFinite(totalCapital) || totalCapital <= 0) throw new Error("總資金必須大於0");
+  let totalWeight = 0;
+  const next = stocks.map(stock => {
+    if (stock.positionStage !== "NONE") throw new Error(`${stock.name}已有持倉：不可用預算重算覆寫持倉股數`);
+    const weight = toNumber(stock.allocationRatio);
+    if (weight === null || weight < 0 || weight > 100) throw new Error(`${stock.name}缺少有效配置比例，不能猜測權重`);
+    totalWeight += weight;
+    const price = positiveNumber(stock.buyHigh) || positiveNumber(stock.breakout);
+    if (!price) throw new Error(`${stock.name}缺少計畫價格，不能計算股數`);
+    const oldTotal = toNumber(stock.totalAllocation);
+    const firstRatio = oldTotal > 0 && toNumber(stock.firstAmount) !== null ? stock.firstAmount / oldTotal : 0.6;
+    if (firstRatio < 0 || firstRatio > 1) throw new Error(`${stock.name}第一筆比例異常`);
+    const totalAllocation = Math.floor(totalCapital * weight / 100);
+    const firstAmount = Math.floor(totalAllocation * firstRatio);
+    const secondAmount = totalAllocation - firstAmount;
+    const firstShares = sharesFor(firstAmount, price);
+    const secondShares = sharesFor(secondAmount, price);
+    return { ...stock, totalAllocation, firstAmount, secondAmount, firstShares, secondShares,
+      totalShares: firstShares + secondShares };
+  });
+  if (totalWeight > 100 + 1e-8) throw new Error("配置比例總和超過100%，拒絕儲存");
+  return { totalCapital, remainingCash: totalCapital - next.reduce((sum, stock) => sum + stock.totalAllocation, 0), stocks: next };
 }
 
 
@@ -1328,6 +1413,8 @@ async function saveStockConfig(
 function enforceIndependentPoolQuota(stocks) {
   const source = Array.isArray(stocks) ? stocks : [];
   const referencePrice = stock => {
+    const formal = positiveNumber(stock?.formalClose);
+    if (formal !== null) return formal;
     for (const value of [stock?.buyHigh, stock?.buyLow, stock?.breakout, stock?.stop, stock?.profitCheck, stock?.averageCost]) {
       const n = toNumber(value);
       if (n !== null && n > 0) return n;
@@ -1362,6 +1449,7 @@ async function loadStockConfig(env) {
           source: migratedFrom ? "KV（V6相容讀取）" : "KV",
           updatedAt:
             parsed.updatedAt || null,
+          totalCapital: positiveNumber(parsed.totalCapital) || positiveNumber(env.V7_TOTAL_CAPITAL) || DEFAULT_TOTAL_CAPITAL,
           stocks:
             enforceIndependentPoolQuota(validateStocks(
               parsed.stocks
@@ -1491,6 +1579,7 @@ function normalizeStock(
   const firstAmount = toNumber(item.firstAmount ?? item["第一筆金額"]);
   const secondAmount = toNumber(item.secondAmount ?? item["第二筆金額"]);
   const referencePrice = toNumber(item.planPrice ?? item.currentPrice ?? buyHigh ?? breakout);
+  const formalClose = toNumber(item.formalClose ?? item.close);
   const resolvedFirstAmount = firstAmount ?? (totalAllocation !== null ? Math.round(totalAllocation * 0.6) : null);
   const resolvedSecondAmount = secondAmount ?? (
     totalAllocation !== null && resolvedFirstAmount !== null
@@ -1500,11 +1589,14 @@ function normalizeStock(
   const resolvedFirstShares = toNumber(item.firstShares ?? item["第一筆股數"]) ?? sharesFor(resolvedFirstAmount, referencePrice);
   const resolvedSecondShares = toNumber(item.secondShares ?? item["第二筆股數"]) ?? sharesFor(resolvedSecondAmount, referencePrice);
 
-  if (referencePrice !== null && referencePrice < 10) {
+  if ((formalClose ?? referencePrice) !== null && (formalClose ?? referencePrice) < 10) {
     throw new Error(`${item.name || item["名稱"] || symbol}：正式價格低於10元，V7禁止納入`);
   }
 
   const stock = {
+    formalClose,
+    closeDate: normalizeMarketDate(item.closeDate || item.scanDate),
+    planDate: normalizeMarketDate(item.planDate),
     enabled: true,
 
     symbol,
@@ -2307,9 +2399,9 @@ function evaluateStop(
     emergencyVolume
   ) {
     return {
-      level: "risk",
+      level: "watch",
       text:
-        "盤中跌破停損0.8%以上且放量，緊急停損"
+        "10分K輔助警示：盤中跌破停損0.8%以上且放量；等待15分K正式確認"
     };
   }
 
@@ -2500,6 +2592,19 @@ function evaluateOperationSignals(result) {
   const hasPosition = p.positionStage !== "NONE";
 
   if (result.stop?.level === "risk") {
+    // 尚未建立部位時，跌破停損價代表「今日買進計畫失效」，不能叫使用者賣出不存在的持股。
+    if (!hasPosition) {
+      signals.push(operationSignal(
+        "PLAN_INVALIDATED",
+        "取消進場",
+        "尚未建立部位；買進計畫失效，取消今日進場",
+        result.stop.text,
+        null,
+        null
+      ));
+      return signals;
+    }
+
     signals.push(operationSignal(
       "STOP_LOSS",
       "停損",
@@ -2531,6 +2636,7 @@ function evaluateOperationSignals(result) {
   // B策略：10分K只做提前預警；15分K仍是正式買進/加碼確認。
   // EARLY_ALERT_10M 與 BUY/ADD 使用不同 signal type，因此各自只推一次。
   if (
+    !hasPosition &&
     result.finalDecision?.level === "watch" &&
     result.momentum10?.level === "buy"
   ) {
@@ -2571,16 +2677,16 @@ function evaluateOperationSignals(result) {
     p.reduceAt !== null &&
     result.currentPrice !== null &&
     result.currentPrice >= p.reduceAt &&
-    latest10?.bearish &&
-    latest10.volumeRatio !== null &&
-    latest10.volumeRatio >= 1.3;
+    latest15?.bearish &&
+    latest15.volumeRatio !== null &&
+    latest15.volumeRatio >= 1.3;
 
   if (reduceConfirmed) {
     signals.push(operationSignal(
       "REDUCE",
       "減碼",
-      "進入獲利區後10分K放量轉弱，執行計畫減碼",
-      `10分K下跌量比 ${fmt(latest10.volumeRatio)}`,
+      "進入獲利區後15分K放量轉弱正式確認，執行計畫減碼",
+      `15分K下跌量比 ${fmt(latest15.volumeRatio)}；10分K僅作輔助`,
       p.totalAllocation !== null ? Math.round(p.totalAllocation / 2) : null,
       p.totalShares !== null ? Math.max(1, Math.floor(p.totalShares / 2)) : null
     ));
@@ -2669,6 +2775,8 @@ async function analyzeStockSmart(stock, env, previousResult, need10, need15, for
 }
 
 async function runBackgroundMonitor(env, scheduledTime = Date.now(), allowOutsideWindow = false) {
+  await loadTradingCalendar(env, Number(taiwanDate(scheduledTime).slice(0, 4)));
+  if (!isTradingDate(taiwanDate(scheduledTime))) return {skipped:true, status:"休市日不產生交易訊號", fugleCalls:0};
   if (!env.STOCKS_KV) throw new Error("找不到 STOCKS_KV Binding");
   if (!env.FUGLE_API_KEY) throw new Error("找不到 FUGLE_API_KEY");
 
@@ -2706,7 +2814,7 @@ async function runBackgroundMonitor(env, scheduledTime = Date.now(), allowOutsid
 
   const notifications = [];
   for (const result of results) {
-    notifications.push(...await processSignalState(result, env));
+    notifications.push(...await processSignalState(result, env, taiwanDate(scheduledTime)));
   }
 
   const quoteCalls = loaded.stocks.length;
@@ -2738,12 +2846,16 @@ async function runBackgroundMonitor(env, scheduledTime = Date.now(), allowOutsid
   return kvSummary;
 }
 
-async function processSignalState(result, env) {
+async function processSignalState(result, env, tradeDate = taiwanDate()) {
   if (!result.ok) return [];
 
   const key = SIGNAL_STATE_PREFIX + result.symbol;
-  const previous = await env.STOCKS_KV.get(key, "json") || { active: [] };
+  const rawPrevious = await env.STOCKS_KV.get(key, "json") || {};
+  const sameTradeDate = rawPrevious.tradeDate === tradeDate;
+  const modeMatches = rawPrevious.testMode === undefined || rawPrevious.testMode === isTestMode(env);
+  const previous = sameTradeDate && modeMatches ? rawPrevious : { active: [], fired: [], tradeDate };
   const previousActive = new Set(Array.isArray(previous.active) ? previous.active : []);
+  const previousFired = new Set(Array.isArray(previous.fired) ? previous.fired : []);
   const activeSignals = evaluateOperationSignals(result);
   const activeTypes = activeSignals.map(signal => signal.type);
   const activeTypeSet = new Set(activeTypes);
@@ -2751,11 +2863,26 @@ async function processSignalState(result, env) {
   const storedActive = new Set(
     [...previousActive].filter(type => activeTypeSet.has(type))
   );
+  const stageNow = String(result.plan?.positionStage || "NONE");
+  const fired = new Set([...previousFired].filter(key => {
+    const separator = key.indexOf(":");
+    return key.slice(0, separator) === stageNow && activeTypeSet.has(key.slice(separator + 1));
+  }));
+  const stage = String(result.plan?.positionStage || "NONE");
+  const episodes = { ...(previous.episodes || {}) };
 
   for (const signal of activeSignals) {
-    if (previousActive.has(signal.type)) continue;
+    // 同一持續成立的訊號只通知一次；解除後移除鎖定，再成立可再次通知。
+    const firedKey = `${stage}:${signal.type}`;
+    if (fired.has(firedKey)) {
+      storedActive.add(signal.type);
+      continue;
+    }
 
-    const payload = buildPushPayload(result, signal);
+    const payload = buildPushPayload(result, signal, tradeDate);
+    // 同一成立期間及失敗重試共用ID；解除後的新一輪使用新ID，避免接收端去重擋掉。
+    const episode = (Number(episodes[firedKey]) || 0) + 1;
+    payload.signalId += `:episode-${episode}`;
     if (!shouldPhonePushSignal(signal.type)) {
       delivered.push({
         ...payload,
@@ -2765,20 +2892,46 @@ async function processSignalState(result, env) {
         suppressionReason: "此訊號類型未列入V7手機推播"
       });
       storedActive.add(signal.type);
+      fired.add(firedKey);
+      episodes[firedKey] = episode;
       continue;
     }
 
     const outcome = await sendPush(payload, env);
     delivered.push({ ...payload, ...outcome });
-    if (outcome.sent) storedActive.add(signal.type);
+    if (outcome.sent) {
+      storedActive.add(signal.type);
+      fired.add(firedKey);
+      episodes[firedKey] = episode;
+    }
   }
 
-  const nextActive = [...storedActive].sort();
-  const oldActive = [...previousActive].sort();
-  if (JSON.stringify(nextActive) !== JSON.stringify(oldActive) || previous.updatedAt === undefined) {
+  const nextState = {
+    tradeDate,
+    testMode: isTestMode(env),
+    active: [...storedActive].sort(),
+    fired: [...fired].sort(),
+    positionStage: stage,
+    episodes,
+    updatedAt: new Date().toISOString()
+  };
+  const oldComparable = {
+    tradeDate: previous.tradeDate || tradeDate,
+    active: [...previousActive].sort(),
+    fired: [...previousFired].sort(),
+    positionStage: previous.positionStage || null
+  };
+  const newComparable = {
+    tradeDate: nextState.tradeDate,
+    active: nextState.active,
+    fired: nextState.fired,
+    positionStage: nextState.positionStage
+  };
+
+  if (JSON.stringify(newComparable) !== JSON.stringify(oldComparable) || previous.updatedAt === undefined) {
     await env.STOCKS_KV.put(
       key,
-      JSON.stringify({ active: nextActive, updatedAt: new Date().toISOString() }),
+      JSON.stringify(nextState),
       { expirationTtl: SIGNAL_STATE_TTL_SECONDS }
     );
   }
@@ -2786,20 +2939,23 @@ async function processSignalState(result, env) {
   return delivered;
 }
 
-function buildPushPayload(result, signal) {
+function buildPushPayload(result, signal, tradeDate = taiwanDate()) {
   const p = result.plan;
   return {
     version: VERSION,
-    signalId: `${result.symbol}:${signal.type}`,
+    signalId: `${tradeDate}:${result.symbol}:${result.plan?.positionStage || "NONE"}:${signal.type}`,
     signalType: signal.type,
     signalLabel: signal.label,
+    tradeDate,
+    positionStage: result.plan?.positionStage || "NONE",
     title: `V7 ${signal.label}｜${result.name} ${result.symbol}`,
     instruction: signal.instruction,
     stock: { symbol: result.symbol, name: result.name },
     currentPrice: result.currentPrice,
     reason: signal.reason,
     suggestedAmount: signal.amount,
-    suggestedShares: signal.shares,
+    suggestedShares: ["BUY", "ADD"].includes(signal.type) && positiveNumber(result.currentPrice) && toNumber(signal.amount) !== null
+      ? sharesFor(signal.amount, result.currentPrice) : signal.shares,
     stop: p.stop,
     profitCheck: p.profitCheck,
     time: taiwanTime()
@@ -2807,6 +2963,23 @@ function buildPushPayload(result, signal) {
 }
 
 function formatSlackSignalMessage(payload) {
+  if (payload?.signalType === "DAILY_SELECTION") {
+    return [
+      `📋 *${payload.title}*`, payload.instruction,
+      ...(payload.stocks || []).map(stock =>
+        `${stock.rank}. ${stock.name} ${stock.symbol}｜${stock.mode}\n第一筆 ${fmt(stock.firstAmount)}元／${stock.firstShares}股：${stock.firstCondition}\n第二筆 ${fmt(stock.secondAmount)}元／${stock.secondShares}股：${stock.secondCondition}\n停損 ${fmt(stock.stop)}｜停利檢查 ${fmt(stock.profitCheck)}\n入選原因：${stock.reason}`),
+      `監控：${payload.monitorUrl}`, `時間：${payload.time}`
+    ].join("\n\n");
+  }
+  // 系統／鏈路測試不是交易訊號，直接顯示測試內容，避免出現「現價:-／動作:-／原因:-」空白通知。
+  if (payload?.type === "SYSTEM_TEST" || (payload?.message && !payload?.signalType)) {
+    return [
+      `${payload?.type === "SYSTEM_ALERT" ? "⚠️" : "🧪"} *${payload?.title || "V7 系統測試"}*`,
+      String(payload?.message || "V7 系統測試訊息"),
+      `時間：${payload?.time || payload?.generatedAt || taiwanTime()}`
+    ].filter(Boolean).join("\n");
+  }
+
   const stock = payload?.stock || {};
   const amount = payload?.suggestedAmount !== null && payload?.suggestedAmount !== undefined
     ? `\n建議金額：${Number(payload.suggestedAmount).toLocaleString("zh-TW")} 元`
@@ -2830,6 +3003,7 @@ function formatSlackSignalMessage(payload) {
 function shouldPhonePushSignal(type) {
   return [
     "EARLY_ALERT_10M",
+    "PLAN_INVALIDATED",
     "BUY",
     "ADD",
     "REDUCE",
@@ -3030,21 +3204,45 @@ function isAfterMarketSchedule(controller) {
 }
 
 async function runAfterMarketScan(env, scheduledTime = Date.now(), options = {}) {
+  const requestedDate = taiwanDate(scheduledTime);
+  try {
+    const summary = await runAfterMarketScanCore(env, scheduledTime, options);
+    if (!options.dryRun) await env.STOCKS_KV.put("V7_LAST_SCAN_ATTEMPT", JSON.stringify({
+      status: "SUCCESS", requestedDate, scanDate: summary.scanDate, selectedCount: summary.selectedCount,
+      generatedAt: summary.generatedAt, threeMin: summary.threeMin, dailyReport: summary.dailyReport
+    }), { expirationTtl: 14 * 86400 });
+    return summary;
+  } catch (err) {
+    if (!options.dryRun && env.STOCKS_KV) {
+      const previous = await env.STOCKS_KV.get("V7_LAST_SCAN_ATTEMPT", "json");
+      const alert = previous?.requestedDate === requestedDate && previous?.failureAlert?.sent === true
+        ? previous.failureAlert : await sendPush({ type: "SYSTEM_ALERT", title: "V7盤後分析失敗，尚未產生新標的",
+          message: `${String(err).slice(0, 500)}\n這不是今日0檔；舊結果不可當作最新推薦。\n監控：https://fugle-test.imihan0630.workers.dev/`, time: taiwanTime() }, env);
+      await env.STOCKS_KV.put("V7_LAST_SCAN_ATTEMPT", JSON.stringify({status:"FAILED", requestedDate,
+        generatedAt:taiwanTime(), error:String(err).slice(0, 1500), failureAlert:alert}), { expirationTtl:14 * 86400 });
+    }
+    throw err;
+  }
+}
+
+async function runAfterMarketScanCore(env, scheduledTime = Date.now(), options = {}) {
   if (!env.STOCKS_KV) throw new Error("找不到 STOCKS_KV Binding");
 
   const dryRun = options?.dryRun === true;
   const requestedDate = taiwanDate(scheduledTime);
+  await loadTradingCalendar(env, Number(requestedDate.slice(0, 4)));
+  if (requestedDate.slice(5) >= "12-31") await loadTradingCalendar(env, Number(requestedDate.slice(0, 4)) + 1);
   const requestedMarketDate = mostRecentWeekday(requestedDate);
 
   // 7.4.4：市場官方端點若暫時 52x（尤其 TPEx 526），不得讓整個盤後掃描直接失敗。
   // 先嘗試官方盤後 API；任何一邊失敗後，再用已完成的 D1/Fugle 日K底庫＋官方 profile 重建同交易日盤後列。
   const marketFetchResults = await Promise.allSettled([
-    fetchMarketRows(env.TWSE_DAILY_URL || TWSE_DAILY_URL, "TWSE"),
-    fetchMarketRows(env.TPEX_DAILY_URL || TPEX_DAILY_URL, "TPEx")
+    fetchClosingRowsWithFallback(env, "TWSE", requestedMarketDate),
+    fetchClosingRowsWithFallback(env, "TPEx", requestedMarketDate)
   ]);
 
   const enrichment = await fetchEnrichment(env, requestedMarketDate);
-  const marketDate = enrichment.meta?.asOfDate || requestedMarketDate;
+  const marketDate = requestedMarketDate;
   const cachedHistory = await readHistoryCache(env, HISTORY_CACHE_TARGET + 400);
   const previous = await retryTransient(
     "讀取 V7_MARKET_STATE",
@@ -3055,7 +3253,7 @@ async function runAfterMarketScan(env, scheduledTime = Date.now(), options = {})
   const marketSourceMeta = {};
   const resolveMarketRows = (result, market) => {
     if (result.status === "fulfilled") {
-      marketSourceMeta[market] = { source: "OFFICIAL_API", fallback: false, count: result.value.length, error: null };
+      marketSourceMeta[market] = { source: result.value.source || "OFFICIAL_API", marketDate, fallback: false, count: result.value.length, error: null };
       return result.value;
     }
 
@@ -3112,9 +3310,17 @@ async function runAfterMarketScan(env, scheduledTime = Date.now(), options = {})
   const warmup = { history: {}, fetched: 0, failed: 0 };
 
   const marketState = updateMarketState(previous, rows, enrichment, marketDate);
-  const scan = selectTomorrowCandidates(marketState, rows, env, marketDate);
+  const storedBudget = await env.STOCKS_KV.get(KV_KEY, "json");
+  const totalCapital = positiveNumber(storedBudget?.totalCapital) || positiveNumber(env.V7_TOTAL_CAPITAL) || DEFAULT_TOTAL_CAPITAL;
+  const scan = selectTomorrowCandidates(marketState, rows, { ...env, V7_TOTAL_CAPITAL: totalCapital }, marketDate);
+  if (!scan.diagnostics.with60Days) throw new Error("DATA_INCOMPLETE：沒有可用60日日K，不能把資料缺失回報為今日0檔");
+  for (const market of ["TWSE", "TPEx"]) {
+    const marketStocks = rows.filter(row => row.market === market);
+    if (!marketStocks.some(row => positiveNumber(row.marketCapYi)) || !marketStocks.some(row => financialDataCount(row) >= 3)) {
+      throw new Error(`DATA_INCOMPLETE：${market}市值/基本面整批缺失，不能當作正常全市場選股`);
+    }
+  }
   const stocks = validateStocks(scan.candidates);
-  const totalCapital = positiveNumber(env.V7_TOTAL_CAPITAL) || DEFAULT_TOTAL_CAPITAL;
 
   let saved = /** @type {any} */ ({ ok: false, dryRun });
   let bridge = /** @type {any} */ ({ sent: false, skipped: true, reason: dryRun ? "dry-run" : "not-run" });
@@ -3125,7 +3331,7 @@ async function runAfterMarketScan(env, scheduledTime = Date.now(), options = {})
     // KV 只保存當日精簡市場狀態；隔日 60日歷史一律由 D1 v7_history_cache 讀回。
     const compactState = compactMarketStateForKv(marketState);
     await env.STOCKS_KV.put(MARKET_STATE_KEY, JSON.stringify(compactState));
-    saved = await saveStockConfig(env, stocks, "Phase 4.3 A/B Strategy Rebase After-market Scan");
+    saved = await saveStockConfig(env, stocks, "Phase 4.3 A/B Strategy Rebase After-market Scan", totalCapital);
     bridge = await sendTo3Min({
       planDate: nextTradingDate(marketDate),
       totalCapital,
@@ -3148,13 +3354,12 @@ async function runAfterMarketScan(env, scheduledTime = Date.now(), options = {})
         priorityScore: stock.priorityScore
       }))
     }, env);
-    report = {
-      sent: false,
-      simulated: isTestMode(env),
-      skipped: true,
-      phonePushSuppressed: true,
-      reason: "盤後每日結果已寫入系統與3Min；盤後推薦由ChatGPT回報，盤中操作訊號另走手機推播"
-    };
+    const reportKey = `V7_DAILY_REPORT:${marketDate}`;
+    const previousReport = await env.STOCKS_KV.get(reportKey, "json");
+    const dailyPayload = buildDailySelectionPayload(marketDate, stocks, scan.diagnostics);
+    report = previousReport?.sent === true && Boolean(previousReport.simulated) === isTestMode(env) ? { ...previousReport, deduplicated: true }
+      : await sendPush(dailyPayload, env);
+    if (report.sent) await env.STOCKS_KV.put(reportKey, JSON.stringify(report), { expirationTtl: 14 * 86400 });
   }
 
   const historySeedState = await readHistorySeedState(env);
@@ -3213,7 +3418,7 @@ async function runAfterMarketScan(env, scheduledTime = Date.now(), options = {})
       warmupFailed: warmup.failed,
       historySeedSymbols: Object.keys(enrichment.history || {}).length
     },
-    config: { saved: saved.ok === true, dryRun, updatedAt: saved.updatedAt || null },
+    config: { saved: saved.ok === true, verified: saved.verified === true, dryRun, updatedAt: saved.updatedAt || null },
     threeMin: bridge,
     dailyReport: report
   };
@@ -3226,7 +3431,7 @@ async function runAfterMarketScan(env, scheduledTime = Date.now(), options = {})
   return summary;
 }
 
-function buildPublicRecommendations(latest) {
+function buildPublicRecommendations(latest, attempt = null) {
   const stocks = Array.isArray(latest?.stocks) ? latest.stocks : [];
   const thousand = latest?.thousandStockPool || null;
   const modeLabel = stock =>
@@ -3235,11 +3440,16 @@ function buildPublicRecommendations(latest) {
     stock?.mode || stock?.channel || null;
 
   return {
-    ok: true,
+    ok: attempt?.status !== "FAILED" && !!latest,
+    attempt: attempt ? { status: attempt.status, requestedDate: attempt.requestedDate, generatedAt: attempt.generatedAt } : null,
+    isCurrent: latest?.scanDate === mostRecentWeekday(taiwanDate()) && attempt?.status !== "FAILED",
+    resultType: attempt?.status === "FAILED" ? "SCAN_FAILED" : !latest ? "NOT_SCANNED" : latest.scanDate !== mostRecentWeekday(taiwanDate()) ? "HISTORICAL" : "CURRENT",
     version: latest?.version || VERSION,
     generatedAt: latest?.generatedAt || null,
     scanDate: latest?.scanDate || null,
-    status: latest?.status || (stocks.length ? `今日選出 ${stocks.length} 檔` : "今日0檔，不硬塞"),
+    status: attempt?.status === "FAILED" ? "盤後分析失敗；以下僅為上次成功結果，不是最新推薦"
+      : !latest ? "尚無成功盤後分析紀錄" : latest.scanDate !== mostRecentWeekday(taiwanDate()) ? "歷史盤後結果，不是今日推薦"
+      : latest.status || (stocks.length ? `今日選出 ${stocks.length} 檔` : "今日0檔，不硬塞"),
     selectedCount: stocks.length,
     totalCapital: toNumber(latest?.totalCapital) || DEFAULT_TOTAL_CAPITAL,
     capitalPlan: latest?.capitalPlan || {
@@ -3290,16 +3500,46 @@ function featureRowsCoverageComplete(diagnostics, rows) {
   return Number(diagnostics?.with60Days || 0) >= target;
 }
 
-async function fetchMarketRows(url, market) {
+async function fetchClosingRowsWithFallback(env, market, expectedDate) {
+  const primary = market === "TWSE" ? env.TWSE_DAILY_URL || TWSE_DAILY_URL : env.TPEX_DAILY_URL || TPEX_DAILY_URL;
+  try { return await fetchMarketRows(primary, market, expectedDate); }
+  catch (err) {
+    if (market !== "TPEx") throw err;
+    const dated = `https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?date=${encodeURIComponent(expectedDate.replaceAll("-", "/"))}&id=&response=json`;
+    const rows = await fetchMarketRows(dated, market, expectedDate);
+    rows.source = "TPEX_OFFICIAL_DATED_API";
+    return rows;
+  }
+}
+
+function normalizeMarketDate(value) {
+  const digits = String(value || "").replace(/\D/g, "");
+  if (digits.length === 7) return `${Number(digits.slice(0, 3)) + 1911}-${digits.slice(3, 5)}-${digits.slice(5, 7)}`;
+  if (digits.length === 8) return `${digits.slice(0, 4)}-${digits.slice(4, 6)}-${digits.slice(6, 8)}`;
+  return null;
+}
+
+async function fetchMarketRows(url, market, expectedDate = null) {
   const payload = await fetchJsonWithRetry(
     url,
-    { headers: { accept: "application/json", "user-agent": "Mozilla/5.0 V7-Market-Scan" } },
+    { redirect: "manual", headers: { accept: "application/json", "user-agent": "Mozilla/5.0 V7-Market-Scan" } },
     `${market}盤後資料`,
     4
   );
-  const source = Array.isArray(payload) ? payload : payload?.data;
+  const table = payload?.tables?.find(item => Array.isArray(item.fields) && Array.isArray(item.data) && item.fields.includes("代號"));
+  const source = Array.isArray(payload) ? payload : table
+    ? table.data.map(values => Object.fromEntries(table.fields.map((field, index) => [field, values[index]]))) : payload?.data;
   if (!Array.isArray(source)) throw new Error(`${market}盤後資料格式不是陣列`);
-  return source.map(row => normalizeMarketRow(row, market)).filter(Boolean);
+  const payloadDate = normalizeMarketDate(payload?.date || table?.date);
+  const rows = source.map(row => {
+    const date = normalizeMarketDate(row.Date || row.date) || payloadDate;
+    if (expectedDate && date !== expectedDate) throw new Error(`${market}盤後資料日期${date || "缺失"}，預期${expectedDate}`);
+    const normalized = normalizeMarketRow(row, market);
+    return normalized ? { ...normalized, closeDate: date } : null;
+  }).filter(Boolean);
+  const minimum = market === "TWSE" ? 600 : 450;
+  if (rows.length < minimum) throw new Error(`${market}正式盤後資料不足：${rows.length}/${minimum}`);
+  return rows;
 }
 
 function buildMarketRowsFromHistoryCache(market, marketDate, cachedHistory, enrichment, previous) {
@@ -3371,7 +3611,7 @@ function normalizeMarketRow(row, market) {
   const high = marketNumber(pick(row, ["HighestPrice", "High", "最高價", "最高"]));
   const low = marketNumber(pick(row, ["LowestPrice", "Low", "最低價", "最低"]));
   const volumeShares = marketNumber(pick(row, ["TradeVolume", "TradingShares", "成交股數", "成交量"])) || 0;
-  const tradeValue = marketNumber(pick(row, ["TradeValue", "TransactionAmount", "成交金額"])) || 0;
+  const tradeValue = marketNumber(pick(row, ["TradeValue", "TransactionAmount", "成交金額", "成交金額(元)"])) || 0;
   const change = marketNumber(pick(row, ["Change", "ChangeAmount", "漲跌價差", "漲跌"]));
   const previousClose = change !== null ? close - change : null;
   const changePercent = previousClose && previousClose > 0 ? change / previousClose * 100 : null;
@@ -3476,10 +3716,13 @@ async function fetchOfficialEnrichment(env, scanDate) {
         if (name === "twseInstitution") {
           const fields = Array.isArray(payload?.fields) ? payload.fields : [];
           const data = Array.isArray(payload?.data) ? payload.data : [];
+          if (!fields.length || !data.length || normalizeTwseDate(payload?.date) !== scanDate) throw new Error("上市法人資料缺失或非指定交易日");
           const rows = data.map(item => Object.fromEntries(fields.map((field, j) => [field, item[j]])));
           return [name, { ok: true, rows, date: normalizeTwseDate(payload?.date || dateYmd) }];
         }
         const rows = Array.isArray(payload) ? payload : (Array.isArray(payload?.data) ? payload.data : []);
+        if (!rows.length) throw new Error("官方來源沒有有效資料列");
+        if (name === "tpexInstitution" && rows.some(row => normalizeMarketDate(row.Date || row.date) !== scanDate)) throw new Error("上櫃法人資料不是指定交易日");
         return [name, { ok: true, rows }];
       } catch (err) {
         return [name, { ok: false, rows: [], error: String(err) }];
@@ -3594,7 +3837,7 @@ async function fetchOfficialEnrichment(env, scanDate) {
       sharesOutstanding,
       revenueMonth: marketNumber(pick(rev, ["營業收入-當月營收"])),
       revenueMoM: marketNumber(pick(rev, ["營業收入-上月比較增減(%)"])),
-      revenueQoQ: marketNumber(pick(rev, ["營業收入-上月比較增減(%)"])),
+      revenueQoQ: null, // 月增率不是季增率；沒有季度營收時不得冒充QoQ。
       revenueYoY: marketNumber(pick(rev, ["營業收入-去年同月增減(%)"])),
       revenueYTDYoY: marketNumber(pick(rev, ["累計營業收入-前期比較增減(%)"])),
       grossMargin: marketNumber(pick(profit, ["毛利率(%)(營業毛利)/(營業收入)", "毛利率"])),
@@ -3671,9 +3914,9 @@ function updateMarketState(previous, rows, enrichment, scanDate) {
     const seeded = Array.isArray(enrichment.history?.[row.symbol]) ? enrichment.history[row.symbol] : [];
     const oldHistory = Array.isArray(old.history) ? old.history : [];
     let history = seeded.length > oldHistory.length ? seeded : oldHistory;
-    history = history.filter(item => item.date !== scanDate);
+    history = history.filter(item => String(item.date || "") < scanDate).sort((a, b) => String(a.date).localeCompare(String(b.date)));
     history.push({
-      date: scanDate, close: row.close, high: row.high, low: row.low,
+      date: scanDate, open: row.open, close: row.close, high: row.high, low: row.low,
       volumeShares: row.volumeShares, tradeValue: row.tradeValue,
       foreignNet: toNumber(row.foreignNet), trustNet: toNumber(row.trustNet), dealerNet: toNumber(row.dealerNet),
       institutionTotalNet: toNumber(row.institutionTotalNet), revenueYoY: toNumber(row.revenueYoY),
@@ -3714,7 +3957,7 @@ function selectTomorrowCandidates(marketState, todayRows, env, scanDate) {
 
   const marketReturn20 = average(featureRows.map(row => row.ret20).filter(Number.isFinite));
   featureRows = featureRows.map(row => ({ ...row, marketReturn20 }));
-  const sectorStats = buildTodaySectorStats(todayRows);
+  const sectorStats = buildTodaySectorStats(todayRows, featureRows);
   const diagnostics = {
     scanned: todayRows.length,
     with60Days: featureRows.filter(row => row.historyDays >= 60).length,
@@ -3725,6 +3968,7 @@ function selectTomorrowCandidates(marketState, todayRows, env, scanDate) {
     exclusions: {},
     marketReturn20: round(marketReturn20 || 0, 2),
     nearMisses: [],
+    industryRadar: sectorStats,
     channelPolicy: {
       A: "拉回承接：多頭結構仍在＋拉回至技術支撐＋量縮/不放量殺低＋未破壞結構；隔日等15分K止跌轉強",
       B: "突破後承接：有效突破平台/前高＋量價確認＋收近高；隔日不追第一段，等回測突破位守住再由15分K確認"
@@ -3754,8 +3998,8 @@ function selectTomorrowCandidates(marketState, todayRows, env, scanDate) {
   }
 
   const rankFn = (a, b) =>
-    b.setupQuality - a.setupQuality || b.priorityScore - a.priorityScore ||
-    b.rewardPerRisk - a.rewardPerRisk || b.sectorFlow - a.sectorFlow || b.relativeStrength - a.relativeStrength;
+    b.rewardPerRisk - a.rewardPerRisk || b.priorityScore - a.priorityScore ||
+    b.setupQuality - a.setupQuality || b.sectorFlow - a.sectorFlow || b.relativeStrength - a.relativeStrength;
 
   scored.sort(rankFn);
 
@@ -3937,7 +4181,8 @@ function buildMarketFeatures(stock) {
   };
 }
 
-function buildTodaySectorStats(rows) {
+function buildTodaySectorStats(rows, features = []) {
+  const featureMap = new Map(features.map(item => [item.symbol, item]));
   const groups = {};
   for (const row of rows) {
     const key = row.industry || "未分類";
@@ -3947,7 +4192,20 @@ function buildTodaySectorStats(rows) {
     const amount = items.reduce((sum, row) => sum + (row.tradeValue || 0), 0);
     const breadth = items.length ? items.filter(row => (row.changePercent || 0) > 0).length / items.length * 100 : 0;
     const avgChange = average(items.map(row => row.changePercent).filter(Number.isFinite));
-    return { industry, score: 0, amount, breadth, avgChange };
+    const ready = items.map(item => ({ item, feature: featureMap.get(item.symbol) })).filter(pair => pair.feature?.historyDays >= 20);
+    const avgAmount20 = ready.reduce((sum, pair) => sum + (pair.feature.avgAmount20 || 0), 0);
+    const avgVolume20 = ready.reduce((sum, pair) => sum + (pair.feature.avgVolume20Lots || 0) * 1000, 0);
+    const coveredAmount = ready.reduce((sum, pair) => sum + (pair.item.tradeValue || 0), 0);
+    const coveredVolume = ready.reduce((sum, pair) => sum + (pair.item.volumeShares || 0), 0);
+    return { industry, score: 0, amount, breadth, avgChange,
+      historicalCoverage: ready.length, stockCount: items.length,
+      amountVs20DayAverage: avgAmount20 > 0 ? coveredAmount / avgAmount20 : null,
+      volumeVs20DayAverage: avgVolume20 > 0 ? coveredVolume / avgVolume20 : null,
+      institutionalNetValueEstimate: items.some(row => toNumber(row.institutionTotalNet) !== null)
+        ? items.reduce((sum, row) => sum + (toNumber(row.institutionTotalNet) || 0) * row.close, 0) : null,
+      flowDefinition: "成交金額/廣度/量能為資金活躍度；法人淨買超乘收盤價僅為估算，不是真實全市場資金淨流入",
+      leaders: [...items].sort((a, b) => (b.changePercent || 0) - (a.changePercent || 0)).slice(0, 3)
+        .map(row => ({ symbol: row.symbol, name: row.name, changePercent: row.changePercent, tradeValue: row.tradeValue })) };
   });
   const maxAmount = Math.max(1, ...raw.map(item => item.amount));
   const output = {};
@@ -4195,6 +4453,7 @@ function scoreCandidate(f, sector) {
   const inst = institutionalScore(f);
   const fundamental = fundamentalScore(f);
   const fundamentalCount = financialDataCount(f);
+  if (fundamentalCount < 3) return reject("基本面資料不足，不能以中立分數假裝通過", true);
   if (fundamentalCount >= 3 && fundamental < 25) return reject("基本面品質明顯不足", true);
   if ((f.atrPercent || 0) < 1.0 || (f.atrPercent || 0) > 10) return reject("波動品質不合格", true);
 
@@ -4223,7 +4482,7 @@ function scoreCandidate(f, sector) {
   if (rr < MIN_REWARD_RISK) return reject("預期RR低於2比1", true, false);
 
   const rs = (f.ret20 || 0) - (toNumber(f.marketReturn20) || 0);
-  const fundamentalForRank = fundamentalCount >= 3 ? fundamental : 50;
+  const fundamentalForRank = fundamental;
   const setupQuality = channel === "A"
     ? clamp(70 - Math.abs((setup.metrics.pullbackPct || 8) - 7) * 3 - (setup.metrics.supportDistancePct || 0) * 3 + (f.volumeTodayVsPrev5 <= 0.9 ? 12 : 4), 0, 100)
     : clamp(55 + Math.min(25, (f.volumeTodayVsPrev5 || 0) * 8) + (f.dailyClosePosition || 0) * 20 - (f.dailyUpperShadowRatio || 0) * 25, 0, 100);
@@ -4237,7 +4496,6 @@ function scoreCandidate(f, sector) {
     `策略品質${round(setupQuality, 1)}分`, `產業資金${round(sector.score, 1)}分(排序用)`,
     `RS${round(rs, 1)}`, `法人${round(inst, 1)}分`, `RR ${round(rr, 2)}`
   ];
-  if (fundamentalCount < 3) reasons.push("基本面欄位不足：不作硬性否決，僅降為中性排序");
   if (liquidityException) reasons.push(liquidityException);
 
   const signalLevel = setupQuality >= SIGNAL_GRADE_A_MIN ? "A" : (setupQuality >= SIGNAL_GRADE_B_MIN ? "B" : "C");
@@ -4317,6 +4575,7 @@ function allocateAndBuildPlans(selected, totalCapital, scanDate) {
     const maxChase = isA ? null : round(buyHigh, 2);
     return {
       code: item.symbol, name: item.name, rank: index + 1,
+      formalClose: item.close, closeDate: scanDate, planDate: nextTradingDate(scanDate),
       mode: isA ? "PULLBACK" : "MOMENTUM",
       channel: item.channel, signalLevel: item.signalLevel || "B",
       priorityScore: item.priorityScore, rewardRisk: item.rewardRisk,
@@ -4653,7 +4912,7 @@ function mostRecentWeekday(dateString) {
   while (true) {
     const [y, m, d] = current.split("-").map(Number);
     const dow = new Date(Date.UTC(y, m - 1, d, 12)).getUTCDay();
-    if (dow !== 0 && dow !== 6) return current;
+    if (dow !== 0 && dow !== 6 && isTradingDate(current)) return current;
     current = shiftDateString(current, -1);
   }
 }
@@ -4681,10 +4940,13 @@ function buildDailySelectionPayload(scanDate, stocks, diagnostics) {
     title: stocks.length ? `V7盤後選出 ${stocks.length} 檔` : "V7盤後：今日 0 檔，維持現金",
     instruction: stocks.length ? "依排名與15分K條件執行，不預先追價" : "今日無符合完整硬條件標的，維持現金",
     time: taiwanTime(),
+    monitorUrl: "https://fugle-test.imihan0630.workers.dev/",
     diagnostics,
     stocks: stocks.map(stock => ({
       rank: stock.sourceRank, symbol: stock.symbol, name: stock.name,
       mode: stock.mode, firstAmount: stock.firstAmount, secondAmount: stock.secondAmount,
+      firstShares: stock.firstShares, secondShares: stock.secondShares,
+      firstCondition: stock.firstCondition, secondCondition: stock.secondCondition,
       stop: stock.stop, profitCheck: stock.profitCheck, reason: stock.selectedReason
     }))
   };
@@ -4724,7 +4986,7 @@ function nextTradingDate(dateString) {
   const [y, m, d] = String(dateString).split("-").map(Number);
   const date = new Date(Date.UTC(y, m - 1, d, 12));
   do { date.setUTCDate(date.getUTCDate() + 1); }
-  while ([0, 6].includes(date.getUTCDay()));
+  while (!isTradingDate(date.toISOString().slice(0, 10)));
   return date.toISOString().slice(0, 10);
 }
 
@@ -5790,6 +6052,11 @@ ADMIN_TOKEN
 <label>
 今日標的匯入碼
 </label>
+<label for="capital">總資金（元）：只調整未建倉計畫，不下單</label>
+<input id="capital" type="number" min="1" value="200000">
+<button class="secondary" onclick="changeCapital(true)">預覽資金重算</button>
+<button class="primary" onclick="changeCapital(false)">儲存總資金並重算</button>
+<p class="note">已有持倉或缺少配置比例時會拒絕重算，避免覆寫持倉股數。</p>
 
 <textarea
   id="payload"
@@ -5877,7 +6144,8 @@ function msg(
 
 async function callApi(
   method,
-  body
+  body,
+  path = "/api/config"
 ) {
   const t =
     token();
@@ -5909,7 +6177,7 @@ async function callApi(
 
   const res =
     await fetch(
-      "/api/config",
+      path,
       options
     );
 
@@ -5927,6 +6195,13 @@ async function callApi(
   return data;
 }
 
+
+async function changeCapital(preview) {
+  try {
+    const result = await callApi("POST", {totalCapital:Number(document.getElementById("capital").value), preview}, "/api/capital");
+    msg((preview ? "預覽，不會寫入：" : "資金重算已儲存：") + JSON.stringify(result, null, 2));
+  } catch (e) { msg(String(e), false); }
+}
 
 async function importNow() {
   try {
