@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
+process.on('uncaughtException',error=>{console.error('Quality synchronization failed: '+String(error.message).slice(0,900));process.exit(1);});
 const source=await readFile(process.env.V7_TEST_WORKER_PATH || new URL('../Worker.js',import.meta.url),'utf8');
 const helpers=await import('data:text/javascript;base64,'+Buffer.from(source+'\nexport {parseOfficialCsv,parseMopsIncomeHtml,validateOfficialQualityData};').toString('base64'));
 const origin='https://fugle-test.imihan0630.workers.dev';
@@ -35,6 +36,7 @@ if(months[0].payload.data?.at(-1)?.[0]?.replaceAll('/','')!==String(Number(marke
 await sync({kind:'INDEX',months});
 const tdccUrl='https://opendata.tdcc.com.tw/getOD.ashx?id=1-5';
 const tdcc=helpers.parseOfficialCsv(await (await publicSource(tdccUrl)).text());
+console.log(JSON.stringify({tdccAdjustmentSchema:tdcc.find(row=>row['持股分級']==='16' && /^[1-9][0-9]{3}$/.test(row['證券代號'])),tdccTotalSchema:tdcc.find(row=>row['持股分級']==='17' && /^[1-9][0-9]{3}$/.test(row['證券代號']))}));
 const fields=['資料日期','證券代號','持股分級','股數','占集保庫存數比例%'];
 await sync({kind:'TDCC',sourceUrl:tdccUrl,fields,rows:tdcc.filter(row=>/^[1-9][0-9]{3}$/.test(String(row['證券代號']))).map(row=>fields.map(field=>row[field]))});
 const twseUrl=`https://www.twse.com.tw/exchangeReport/BWIBBU_d?response=json&date=${marketDate.replaceAll('-','')}&selectType=ALL`;
