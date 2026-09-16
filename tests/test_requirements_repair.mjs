@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 const source = await readFile(process.env.V7_TEST_WORKER_PATH || new URL('./Worker_V7_7.5.11_REQUIREMENTS_REPAIR.mjs', import.meta.url), 'utf8');
-const api = await import('data:text/javascript;base64,' + Buffer.from(source + '\nexport { evaluateOperationSignals, evaluateStop, processSignalState, recalculatePlanCapital, saveStockConfig, KV_KEY, fetchMarketRows, fetchClosingRowsWithFallback, normalizeMarketDate, normalizeStock, enforceIndependentPoolQuota, buildPublicRecommendations, buildDailySelectionPayload, formatSlackSignalMessage, scoreCandidate, nextTradingDate, mostRecentWeekday, runAfterMarketScan, MARKET_STATE_KEY, allocateAndBuildPlans };').toString('base64'));
+const api = await import('data:text/javascript;base64,' + Buffer.from(source + '\nexport { evaluateOperationSignals, evaluateStop, processSignalState, recalculatePlanCapital, saveStockConfig, KV_KEY, fetchMarketRows, fetchClosingRowsWithFallback, normalizeMarketDate, normalizeStock, enforceIndependentPoolQuota, buildPublicRecommendations, buildDailySelectionPayload, formatSlackSignalMessage, scoreCandidate, nextTradingDate, mostRecentWeekday, runAfterMarketScan, MARKET_STATE_KEY, allocateAndBuildPlans, sendTo3Min, verifyThreeMinReadback };').toString('base64'));
 class MemoryKV {
   values = new Map();
   async get(key, type) { const raw = this.values.get(key); return raw === undefined ? null : type === 'json' ? JSON.parse(raw) : raw; }
@@ -117,6 +117,37 @@ globalThis.fetch = async () => new Response('unavailable',{status:400});
 await assert.rejects(api.runAfterMarketScan(fullEnv,Date.parse('2026-09-17T10:10:00Z')));
 assert.equal(await fullEnv.STOCKS_KV.get(api.KV_KEY),beforeFailure);
 assert.equal((await fullEnv.STOCKS_KV.get('V7_LAST_SCAN_ATTEMPT','json')).status,'FAILED');
+globalThis.fetch = originalFetch;
+// 第一筆通知的同一根15分K不得立即加碼；未知第一筆時間也不得猜測。
+const entryEnv = {STOCKS_KV:new MemoryKV(),TEST_MODE:'true'};
+const entry = result(); entry.frame15.latest.time = '2026-09-16T01:15:00Z';
+assert.equal((await api.processSignalState(entry,entryEnv,'2026-09-16'))[0].signalType,'BUY');
+entry.plan.positionStage='FIRST';
+assert.equal((await api.processSignalState(entry,entryEnv,'2026-09-16')).some(x=>x.signalType==='ADD'),false);
+entry.frame15.latest.time='2026-09-16T01:30:00Z';
+assert.equal((await api.processSignalState(entry,entryEnv,'2026-09-16')).some(x=>x.signalType==='ADD'),true);
+const unknownFirst = result(); unknownFirst.plan.positionStage='FIRST'; unknownFirst.frame15.latest.time='2026-09-16T02:00:00Z';
+assert.equal((await api.processSignalState(unknownFirst,{STOCKS_KV:new MemoryKV(),TEST_MODE:'true'},'2026-09-16')).some(x=>x.signalType==='ADD'),false);
+const firstStop = result(); firstStop.plan.positionStage='FIRST'; firstStop.stop={level:'risk',text:'15分K停損'};
+assert.equal(api.evaluateOperationSignals(firstStop)[0].shares,50);
+firstStop.plan.actualShares=40;
+assert.equal(api.evaluateOperationSignals(firstStop)[0].shares,40);
+const overChase = result(); overChase.plan.maxChase=119;
+assert.equal(api.evaluateOperationSignals(overChase).some(x=>x.type==='BUY'),false);
+// 僅測試假3Min；TEST_MODE不得觸發任何外部寫入。
+const bridgePlan={planDate:'2026-09-17',totalCapital:200000,stocks:[{symbol:'1234',name:'測試',stop:100,firstEntryCondition:'15分K正式確認'}]};
+assert.equal(api.verifyThreeMinReadback(bridgePlan,structuredClone(bridgePlan)),true);
+assert.equal(api.verifyThreeMinReadback(bridgePlan,{...bridgePlan,planDate:'2026-09-16'}),false);
+assert.equal(api.verifyThreeMinReadback(bridgePlan,{...bridgePlan,stocks:[{...bridgePlan.stocks[0],stop:99}]}),false);
+globalThis.fetch = async()=>{throw new Error('TEST_MODE must not fetch');};
+assert.equal((await api.sendTo3Min(bridgePlan,{TEST_MODE:'true',THREEMIN_API_URL:'https://test.invalid'})).simulated,true);
+assert.equal((await api.sendTo3Min(bridgePlan,{TEST_MODE:'false'})).verified,false);
+globalThis.fetch = async(_,options)=>new Response(JSON.stringify(options.method==='POST'?{ok:true}:bridgePlan));
+const bridgeEnv={TEST_MODE:'false',THREEMIN_API_URL:'https://test.invalid/write',THREEMIN_VERIFY_URL:'https://test.invalid/read'};
+assert.equal((await api.sendTo3Min(bridgePlan,bridgeEnv)).verified,true);
+assert.equal((await api.sendTo3Min(bridgePlan,{...bridgeEnv,THREEMIN_VERIFY_URL:''})).verified,false);
+globalThis.fetch = async()=>new Response(JSON.stringify({ok:false}));
+assert.equal((await api.sendTo3Min(bridgePlan,bridgeEnv)).sent,false);
 globalThis.fetch = originalFetch;
 if (process.argv.includes('--live-data')) {
   const rows = await api.fetchMarketRows('https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?date=2026%2F09%2F16&id=&response=json', 'TPEx', '2026-09-16');
