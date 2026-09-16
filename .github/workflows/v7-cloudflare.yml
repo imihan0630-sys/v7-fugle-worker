@@ -7,6 +7,7 @@ on:
     paths:
       - "Worker.js"
       - "tests/**"
+      - "!tests/inspect_official_quality_sources.mjs"
       - ".github/workflows/v7-cloudflare.yml"
 
 permissions:
@@ -126,3 +127,8 @@ jobs:
         env:
           V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
         run: node tests/sync_institution_data.mjs
+      - name: Verify full official quality data and readonly selection preview
+        if: contains(github.event.head_commit.message, '[v7-quality-acceptance]')
+        env:
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+        run: node tests/sync_official_quality.mjs --dry-run

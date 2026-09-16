@@ -25,3 +25,7 @@ jobs:
         env:
           V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
         run: node tests/sync_institution_data.mjs
+      - name: Sync official index, quarterly financials, valuation and TDCC (no plan changes)
+        env:
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+        run: node tests/sync_official_quality.mjs
