@@ -13,7 +13,7 @@
 // Cron expression: 0-24 5 * * MON-FRI // 台灣 13:00-13:24 每分鐘
 // Cron expression: * 9 * * MON-FRI     // 台灣 17:00-17:59 每分鐘建立歷史日K快取＋逐日法人快照
 // Cron expression: 10 10 * * MON-FRI  // 台灣 18:10 盤後掃描
-const VERSION = "7.5.19-after-market-recovery";
+const VERSION = "7.5.20-execution-data-validation";
 const TEST_MODE_DEFAULT = true;
 const KV_KEY = "STOCK_CONFIG_V7";
 const LEGACY_KV_KEY = "STOCK_CONFIG_V6";
@@ -2177,14 +2177,22 @@ function quotePrice(quote) {
 
 function analyzeFrame(
   raw,
-  tf
+  tf,
+  nowMs=Date.now()
 ) {
-  const bars = raw?.data || [];
-  const nowMs = Date.now();
+  if(!Array.isArray(raw?.data)) throw new Error("分K資料不是官方data陣列");
+  const seen=new Set();
+  const bars=raw.data.map(bar=>{
+    const start=Date.parse(bar.date);
+    if(!Number.isFinite(start) || seen.has(start)) throw new Error("分K時間無效或重複");seen.add(start);
+    const values=Object.fromEntries(['open','high','low','close','volume'].map(key=>[key,toNumber(bar[key])]));
+    if(['open','high','low','close'].some(key=>!(values[key]>0)) || values.volume===null || values.volume<0 || values.high<Math.max(values.open,values.close) || values.low>Math.min(values.open,values.close) || values.high<values.low) throw new Error("分K價量數值異常");
+    return {...bar,...values};
+  }).sort((a,b)=>Date.parse(a.date)-Date.parse(b.date));
   const completed = bars.filter(bar => {
     const start = Date.parse(bar.date);
     const end = start + tf * 60 * 1000;
-    return nowMs >= end;
+    return nowMs >= end && taiwanDate(start)===taiwanDate(nowMs);
   });
 
   if (!completed.length) {
@@ -2205,6 +2213,19 @@ function analyzeFrame(
     previous: completed.length >= 2 ? buildBar(completed, i - 1) : null,
     recent
   };
+}
+
+function executionDataStatus(quote,frame10,frame15,symbol,now=Date.now()) {
+  // Fugle official quote examples use Unix microsecond timestamps; do not mistake them for milliseconds.
+  const micros=Number(quote?.lastUpdated ?? quote?.closeTime),quoteTime=micros>=1e14 ? micros/1000 : NaN;
+  const quoteFresh=quote?.date===taiwanDate(now) && String(quote?.symbol)===String(symbol) && positiveNumber(quotePrice(quote))!==null &&
+    Number.isFinite(quoteTime) && quoteTime<=now+5000 && now-quoteTime<=LIVE_STALE_SECONDS*1000 && quote?.isTrial!==true && quote?.tradingHalt?.isHalted!==true;
+  const frameFresh=(frame,tf)=>{
+    const start=Date.parse(frame?.latest?.time),end=start+tf*60000;
+    return Number.isFinite(start) && taiwanDate(start)===taiwanDate(now) && end<=now && now-end<=tf*60000+LIVE_STALE_SECONDS*1000;
+  };
+  return {quoteFresh,formal15Fresh:quoteFresh && frameFresh(frame15,15),auxiliary10Fresh:quoteFresh && frameFresh(frame10,10),
+    quoteTimestampUnit:"Fugle Unix微秒",checkedAt:new Date(now).toISOString(),reason:quoteFresh ? "核對當日已收棒分K" : "行情日期、更新時間、試撮或暫停交易未通過；不發正式操作"};
 }
 
 function buildBar(
@@ -2945,11 +2966,13 @@ async function analyzeStockSmart(stock, env, previousResult, need10, need15, for
       : evaluateMomentum(frame15, stock, "15分K");
     const stop = evaluateStop(frame15, frame10, currentPrice, stock);
     const profit = evaluateProfit(currentPrice, stock);
-    const finalDecision = applyPlanValidity(stock, buildFinalDecision({ pullback, momentum10, momentum15, stop, profit }), quote);
+    const executionData=executionDataStatus(quote,frame10,frame15,stock.symbol);
+    const finalDecision = executionData.formal15Fresh ? applyPlanValidity(stock, buildFinalDecision({ pullback, momentum10, momentum15, stop, profit }), quote)
+      : {level:executionData.auxiliary10Fresh && momentum10.level==='buy' ? "watch" : "wait",text:executionData.quoteFresh ? "等待當日新鮮15分K正式收棒確認" : executionData.reason};
 
     return {
       ok: true, symbol: stock.symbol, name: stock.name, currentPrice, plan: stock,
-      frame10, frame15, pullback, momentum10, momentum15, stop, profit, finalDecision,
+      frame10, frame15, pullback, momentum10, momentum15, stop, profit, finalDecision,executionData,
       monitorStatus: buildMonitorStatus(finalDecision),
       quote: {
         closePrice: quote?.closePrice ?? null,
@@ -3095,6 +3118,7 @@ async function processSignalStateCore(result, env, tradeDate = taiwanDate(), aut
   const lastEntrySignalBarTime=entryTimes.length ? new Date(Math.max(...entryTimes.map(value=>Date.parse(value)))).toISOString() : null;
   const planDateMatches = !result.plan?.planDate || result.plan.planDate === tradeDate;
   const activeSignals = evaluateOperationSignals(result).filter(signal => {
+    if(result.executionData && !(signal.type==='EARLY_ALERT_10M' ? result.executionData.auxiliary10Fresh : result.executionData.formal15Fresh)) return false;
     if (["BUY", "ADD", "EARLY_ALERT_10M"].includes(signal.type) && (!planDateMatches || result.quote?.isTrial === true)) return false;
     return signal.type !== "ADD" || (Number.isFinite(Date.parse(result.plan?.firstEntryConfirmedAt)) && entryBarTime && lastEntrySignalBarTime && Date.parse(entryBarTime) > Date.parse(lastEntrySignalBarTime));
   });
@@ -4353,6 +4377,16 @@ function parseMopsIncomeHtml(html,year,quarter) {
   }
   if(Object.keys(stocks).length<500) throw new Error("MOPS一般產業財報覆蓋不足500家公司或欄位變更");
   return stocks;
+}
+
+function parseMopsMarketOptions(html) {
+  const controls=[...String(html).matchAll(/<select\b[^>]*name\s*=\s*(?:["']TYPEK["']|TYPEK(?=[\s>]))[^>]*>([\s\S]*?)<\/select>/gi)];
+  if(controls.length!==1) throw new Error("MOPS市場別表單參數不存在或不唯一，不猜測代碼");
+  const options=[...controls[0][1].matchAll(/<option\b[^>]*value\s*=\s*(?:["']([^"']+)["']|([^\s>]+))[^>]*>([\s\S]*?)<\/option>/gi)]
+    .map(match=>({value:match[1] || match[2],label:decodePublicHtml(match[3])}));
+  const listed=options.filter(option=>option.label==='上市'),otc=options.filter(option=>option.label==='上櫃');
+  if(listed.length!==1 || otc.length!==1 || listed[0].value===otc[0].value) throw new Error("MOPS上市／上櫃選項無法確定，不猜測市場");
+  return {TWSE:listed[0].value,TPEx:otc[0].value};
 }
 
 function deriveQuarterlyFinancials(periods,year,quarter) {
@@ -6090,6 +6124,8 @@ ${fmt(p.profitCheck)}
 
 持倉階段：${h(positionStageText(p.positionStage))}
 ｜持倉均價：${fmt(p.averageCost)}
+｜實際持股：${p.actualShares===null ? "尚未回填，不使用預計股數代替" : `${fmt(p.actualShares)}股`}
+｜第一筆成交：${h(p.firstEntryConfirmedAt || "尚未回填；買進通知不等於成交")}
 ｜減碼檢查價：${fmt(p.reduceAt)}
 ｜正式賣出價：${fmt(p.sellBelow)}
 
