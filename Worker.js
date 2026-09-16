@@ -210,7 +210,17 @@ export default {
     if(url.pathname==="/api/scan-preview") {
       if(!isAuthorized(request,env)) return json({error:"ADMIN_TOKEN 錯誤"},401,true);
       if(request.method!=="POST") return json({error:"Method not allowed"},405,true);
-      try {const body=await request.json();return json(await runAfterMarketScan(env,Date.now(),{dryRun:true,epsReviewOnly:body.epsReviewOnly===true}),200,true);}
+      try {
+        const body=await request.json();let scheduledTime=Date.now();
+        if(body.marketDate!==undefined) {
+          const date=normalizeMarketDate(body.marketDate);
+          if(!date || date>taiwanDate() || date<shiftDateString(taiwanDate(),-14)) throw new Error("只讀預覽日期無效、未來或過舊");
+          await loadTradingCalendar(env,Number(date.slice(0,4)));
+          if(!isTradingDate(date)) throw new Error("只讀預覽不是交易日");
+          scheduledTime=Date.parse(date+'T10:20:00Z');
+        }
+        return json(await runAfterMarketScan(env,scheduledTime,{dryRun:true,epsReviewOnly:body.epsReviewOnly===true}),200,true);
+      }
       catch(err){return json({ok:false,error:String(err),dryRun:true,noPlanChanges:true},500,true);}
     }
     if(url.pathname==="/api/signals/storage-test") {
