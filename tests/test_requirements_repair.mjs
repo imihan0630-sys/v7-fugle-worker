@@ -1,5 +1,28 @@
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
+// A delayed Cloudflare propagation must not be mistaken for a failed upload.
+{
+  const verification = await readFile(new URL('./verify_deployment.mjs', import.meta.url), 'utf8');
+  const originalFetch = globalThis.fetch;
+  const originalBaseline = process.env.V7_DEPLOY_BASELINE_PATH;
+  delete process.env.V7_DEPLOY_BASELINE_PATH;
+  let checks = 0;
+  globalThis.fetch = async (url, options) => {
+    assert.equal(options.cache, 'no-store');
+    assert.match(url, /deploymentCheck=/);
+    checks++;
+    return {ok:true, status:200, json:async () => ({version:checks <= 8 ? 'previous-runtime' : 'test-current', bindings:{kv:true,d1:true},readiness:{}})};
+  };
+  try {
+    const fixture = verification.replace("import {readFile} from 'node:fs/promises';", 'const readFile = async () => \'const VERSION = "test-current";\';')
+      .replace('setTimeout(resolve, 5000)', 'setTimeout(resolve, 0)');
+    await import('data:text/javascript;base64,' + Buffer.from(fixture).toString('base64'));
+    assert.equal(checks, 9, 'Verification must wait beyond six stale reads without uploading again');
+  } finally {
+    globalThis.fetch = originalFetch;
+    if (originalBaseline !== undefined) process.env.V7_DEPLOY_BASELINE_PATH = originalBaseline;
+  }
+}
 process.on('uncaughtException',error=>{console.error(String(error.message).slice(0,1800));process.exit(1);});
 const source = await readFile(process.env.V7_TEST_WORKER_PATH || new URL('./Worker_V7_7.5.11_REQUIREMENTS_REPAIR.mjs', import.meta.url), 'utf8');
 const api = await import('data:text/javascript;base64,' + Buffer.from(source + '\nexport { evaluateOperationSignals, evaluateStop, processSignalState, recalculatePlanCapital, saveStockConfig, KV_KEY, fetchMarketRows, fetchClosingRowsWithFallback, normalizeMarketDate, normalizeStock, enforceIndependentPoolQuota, buildPublicRecommendations, buildDailySelectionPayload, formatSlackSignalMessage, scoreCandidate, nextTradingDate, mostRecentWeekday, runAfterMarketScan, MARKET_STATE_KEY, allocateAndBuildPlans, sendTo3Min, verifyThreeMinReadback, parseOfficialCsv, fetchOfficialEnrichment, buildThreeMinPayload, waitingLivePage, LAST_SCAN_KEY, validateInstitutionData, institutionSourceUrls, readInstitutionStreakMap, writeInstitutionSnapshot };').toString('base64'));
