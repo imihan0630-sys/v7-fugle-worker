@@ -35,7 +35,7 @@ const months=await Promise.all(Array.from({length:3},async (_,offset)=>{
 if(months[0].payload.data?.at(-1)?.[0]?.replaceAll('/','')!==String(Number(marketDate.slice(0,4))-1911)+marketDate.slice(5).replaceAll('-','')) throw new Error('Official index is not current; stop without presenting missing data as successful zero picks');
 await sync({kind:'INDEX',months});
 const tdccUrl='https://opendata.tdcc.com.tw/getOD.ashx?id=1-5';
-const tdcc=helpers.parseOfficialCsv(await (await publicSource(tdccUrl)).text());
+const tdcc=helpers.parseOfficialCsv(await (await publicSource(tdccUrl)).text(),['資料日期','證券代號','持股分級','人數','股數','占集保庫存數比例%']);
 console.log(JSON.stringify({tdccAdjustmentSchema:tdcc.find(row=>row['持股分級']==='16' && /^[1-9][0-9]{3}$/.test(row['證券代號'])),tdccTotalSchema:tdcc.find(row=>row['持股分級']==='17' && /^[1-9][0-9]{3}$/.test(row['證券代號']))}));
 const fields=['資料日期','證券代號','持股分級','股數','占集保庫存數比例%'];
 await sync({kind:'TDCC',sourceUrl:tdccUrl,fields,rows:tdcc.filter(row=>/^[1-9][0-9]{3}$/.test(String(row['證券代號']))).map(row=>fields.map(field=>row[field]))});
@@ -70,6 +70,9 @@ await sync({kind:'FINANCIAL',year,quarter,periods});
 const afterResponse=await admin('/api/config');assert.equal(afterResponse.ok,true);assert.deepEqual(await afterResponse.json(),before,'Quality sync cannot change current plans or capital');
 const statusResponse=await admin('/api/quality-status');assert.equal(statusResponse.ok,true);console.log(JSON.stringify({officialQualityStatus:await statusResponse.json(),configurationUnchanged:true,noSelection:true,noThreeMinWrite:true,noPush:true}));
 if(process.argv.includes('--dry-run')) {
+  const storageTest=await admin('/api/signals/storage-test',{method:'POST',body:'{}'});
+  const storageResult=await storageTest.json();assert.equal(storageTest.ok,true);assert.equal(storageResult.verified,true);assert.equal(storageResult.noRealSignals,true);
+  console.log(JSON.stringify({liveSignalStorageVerified:storageResult}));
   const response=await admin('/api/scan-preview',{method:'POST',body:JSON.stringify({dryRun:true})});
   const result=await response.json();assert.equal(response.ok,true,`Readonly selection acceptance failed: ${String(result.error || response.status).slice(0,500)}`);
   assert.equal(result.dryRun,true);
