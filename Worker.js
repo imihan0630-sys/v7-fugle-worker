@@ -13,7 +13,7 @@
 // Cron expression: 0-24 5 * * MON-FRI // 台灣 13:00-13:24 每分鐘
 // Cron expression: * 9 * * MON-FRI     // 台灣 17:00-17:59 每分鐘建立歷史日K快取＋逐日法人快照
 // Cron expression: 10 10 * * MON-FRI  // 台灣 18:10 盤後掃描
-const VERSION = "7.5.16-complete-plan-payload";
+const VERSION = "7.5.17-official-quality-data";
 const TEST_MODE_DEFAULT = true;
 const KV_KEY = "STOCK_CONFIG_V7";
 const LEGACY_KV_KEY = "STOCK_CONFIG_V6";
@@ -155,6 +155,39 @@ export default {
       const marketDate=mostRecentWeekday(taiwanDate());
       const streak=await readInstitutionStreakMap(env,marketDate);
       return json({marketDate,ready:streak.ready,validDates:streak.validDates,missingDates:streak.missingDates,snapshotCounts:streak.snapshotCounts},200,true);
+    }
+
+    if(url.pathname==="/api/quality-data") {
+      if(!isAuthorized(request,env)) return json({error:"ADMIN_TOKEN 錯誤"},401,true);
+      if(request.method!=="POST") return json({error:"Method not allowed"},405,true);
+      try {
+        const body=await request.json();
+        const marketDate=normalizeMarketDate(body.marketDate);
+        if(!marketDate || marketDate>taiwanDate() || marketDate<shiftDateString(taiwanDate(),-14)) throw new Error("品質資料日期無效、未來或過舊");
+        await loadTradingCalendar(env,Number(marketDate.slice(0,4)));
+        if(!isTradingDate(marketDate)) throw new Error("品質資料不是交易日");
+        const validated=validateOfficialQualityData(body,marketDate);
+        await writeQualitySnapshot(env,body.kind,marketDate,validated);
+        const readback=await readQualitySnapshot(env,body.kind,marketDate);
+        if(JSON.stringify(readback)!==JSON.stringify(validated)) throw new Error("品質資料D1讀回不一致");
+        return json({ok:true,verified:true,kind:body.kind,marketDate,count:validated.count,asOfDate:validated.asOfDate,noPlanChanges:true},200,true);
+      }catch(err){return json({error:String(err)},400,true);}
+    }
+
+    if(url.pathname==="/api/quality-status") {
+      if(!isAuthorized(request,env)) return json({error:"ADMIN_TOKEN 錯誤"},401,true);
+      if(request.method!=="GET") return json({error:"Method not allowed"},405,true);
+      const marketDate=mostRecentWeekday(taiwanDate());
+      const index=await readQualitySnapshot(env,"INDEX",marketDate),tdcc=await readQualitySnapshot(env,"TDCC",marketDate);
+      const datasets={};for(const kind of ['FINANCIAL','VALUATION','ANNOUNCEMENTS']) {const data=await readQualitySnapshot(env,kind,marketDate);datasets[kind]={ready:!!data,count:data?.count || 0,asOfDate:data?.asOfDate || null};}
+      return json({marketDate,index:{ready:!!index,count:index?.count || 0,asOfDate:index?.asOfDate || null,return20:index?.return20 ?? null},
+        tdcc:{ready:!!tdcc,count:tdcc?.count || 0,asOfDate:tdcc?.asOfDate || null},datasets,noPlanChanges:true},200,true);
+    }
+    if(url.pathname==="/api/scan-preview") {
+      if(!isAuthorized(request,env)) return json({error:"ADMIN_TOKEN 錯誤"},401,true);
+      if(request.method!=="POST") return json({error:"Method not allowed"},405,true);
+      try {return json(await runAfterMarketScan(env,Date.now(),{dryRun:true}),200,true);}
+      catch(err){return json({ok:false,error:String(err),dryRun:true,noPlanChanges:true},500,true);}
     }
 
     if(url.pathname==="/api/institution-data") {
@@ -840,6 +873,12 @@ async function ensureD1Schema(env) {
       snapshot_json TEXT NOT NULL,
       stock_count INTEGER NOT NULL DEFAULT 0,
       updated_at TEXT NOT NULL
+    )
+  `).run();
+  await env.V7_DB.prepare(`
+    CREATE TABLE IF NOT EXISTS v7_quality_snapshots (
+      dataset_key TEXT NOT NULL,market_date TEXT NOT NULL,snapshot_json TEXT NOT NULL,updated_at TEXT NOT NULL,
+      PRIMARY KEY(dataset_key,market_date)
     )
   `).run();
   D1_SCHEMA_READY = true;
@@ -3466,6 +3505,13 @@ async function runAfterMarketScanCore(env, scheduledTime = Date.now(), options =
   }
 
   const rows = mergeEnrichment(rawRows, enrichment);
+  const indexData=await readQualitySnapshot(env,"INDEX",marketDate);
+  const tdccData=await readQualitySnapshot(env,"TDCC",marketDate);
+  const financialData=await readQualitySnapshot(env,"FINANCIAL",marketDate),valuationData=await readQualitySnapshot(env,"VALUATION",marketDate),announcements=await readQualitySnapshot(env,"ANNOUNCEMENTS",marketDate);
+  if(!indexData) throw new Error("DATA_INCOMPLETE：缺當日真實加權指數比較基期，不使用等權代理選股");
+  if(!tdccData) throw new Error("DATA_INCOMPLETE：缺最新集保持股分散資料，不能假裝已分析集中度");
+  if(!financialData || !valuationData || !announcements) throw new Error("DATA_INCOMPLETE：缺正式季度財報比較、估值或公告查核，不使用部分基本面選股");
+  for(const row of rows) Object.assign(row,tdccData.stocks?.[row.symbol] || {},financialData.stocks?.[row.symbol] || {},valuationData.stocks?.[row.symbol] || {},announcements.stocks?.[row.symbol] || {},{announcementsVerified:announcements.sourcesVerified===true});
   const loadedConfig = await loadStockConfig(env);
   const currentSymbols = new Set((loadedConfig.stocks || []).map(item => item.symbol));
 
@@ -3478,7 +3524,7 @@ async function runAfterMarketScanCore(env, scheduledTime = Date.now(), options =
   const marketState = updateMarketState(previous, rows, enrichment, marketDate);
   const storedBudget = await env.STOCKS_KV.get(KV_KEY, "json");
   const totalCapital = positiveNumber(storedBudget?.totalCapital) || positiveNumber(env.V7_TOTAL_CAPITAL) || DEFAULT_TOTAL_CAPITAL;
-  const scan = selectTomorrowCandidates(marketState, rows, { ...env, V7_TOTAL_CAPITAL: totalCapital }, marketDate);
+  const scan = selectTomorrowCandidates(marketState, rows, { ...env, V7_TOTAL_CAPITAL: totalCapital, V7_OFFICIAL_INDEX:indexData }, marketDate);
   if (!scan.diagnostics.with60Days) throw new Error("DATA_INCOMPLETE：沒有可用60日日K，不能把資料缺失回報為今日0檔");
   for (const market of ["TWSE", "TPEx"]) {
     const marketStocks = rows.filter(row => row.market === market);
@@ -4088,6 +4134,175 @@ function normalizeEnrichmentPayload(payload) {
   return { stocks, history: payload?.history || {}, available: list.length > 0 };
 }
 
+async function writeQualitySnapshot(env,kind,date,data) {
+  if(!env.V7_DB) throw new Error("品質資料需要既有V7_DB");
+  await ensureD1Schema(env);
+  await env.V7_DB.withSession("first-primary").prepare(`INSERT INTO v7_quality_snapshots(dataset_key,market_date,snapshot_json,updated_at)
+    VALUES(?1,?2,?3,?4) ON CONFLICT(dataset_key,market_date) DO UPDATE SET snapshot_json=excluded.snapshot_json,updated_at=excluded.updated_at`)
+    .bind(kind,date,JSON.stringify(data),new Date().toISOString()).run();
+}
+
+async function readQualitySnapshot(env,kind,date) {
+  if(!env?.V7_DB) return null;
+  await ensureD1Schema(env);
+  const row=await env.V7_DB.withSession("first-primary").prepare("SELECT snapshot_json FROM v7_quality_snapshots WHERE dataset_key=?1 AND market_date=?2").bind(kind,date).first();
+  return row?.snapshot_json ? JSON.parse(row.snapshot_json) : null;
+}
+
+function validateOfficialQualityData(body,date) {
+  if(body.kind==="INDEX") {
+    if(!Array.isArray(body.months) || body.months.length<2 || body.months.length>4) throw new Error("加權指數需要2至4個月官方資料");
+    const points=new Map();
+    for(const item of body.months) {
+      const month=normalizeMarketDate(item.payload?.date);
+      const url=`https://www.twse.com.tw/exchangeReport/FMTQIK?response=json&date=${String(month || '').replaceAll('-','')}`;
+      const fields=item.payload?.fields;
+      if(item.sourceUrl!==url || !month?.endsWith('-01') || String(item.payload.stat).toUpperCase()!=='OK' || !Array.isArray(fields) || !fields.includes('日期') || !fields.includes('發行量加權股價指數') || !Array.isArray(item.payload.data)) throw new Error("加權指數官方來源、日期或欄位不符");
+      for(const values of item.payload.data) {
+        const pointDate=normalizeMarketDate(values[fields.indexOf('日期')]);
+        const close=marketNumber(values[fields.indexOf('發行量加權股價指數')]);
+        if(!pointDate || pointDate.slice(0,7)!==month.slice(0,7) || pointDate>date || !(close>0) || points.has(pointDate)) throw new Error("加權指數日期重複、未來或數值異常");
+        points.set(pointDate,{date:pointDate,close});
+      }
+    }
+    const history=[...points.values()].sort((a,b)=>a.date.localeCompare(b.date));
+    if(history.length<21 || history.at(-1).date!==date) throw new Error("加權指數缺當日或20日比較基期");
+    const expected=recentWeekdays(date,21);
+    if(expected.some(day=>!points.has(day))) throw new Error("加權指數最近21個交易日缺資料");
+    return {asOfDate:date,count:history.length,history,return20:(history.at(-1).close/history.at(-21).close-1)*100,
+      dailyReturn:(history.at(-1).close/history.at(-2).close-1)*100,definition:"TWSE正式發行量加權股價指數；非等權代理"};
+  }
+  if(body.kind==="TDCC") {
+    if(body.sourceUrl!=="https://opendata.tdcc.com.tw/getOD.ashx?id=1-5" || !Array.isArray(body.rows)) throw new Error("集保資料不是指定官方來源");
+    if(body.rows.some(Array.isArray) && JSON.stringify(body.fields)!==JSON.stringify(['資料日期','證券代號','持股分級','股數','占集保庫存數比例%'])) throw new Error("集保壓縮欄位結構不符");
+    const groups=new Map();let asOfDate=null;
+    for(const values of body.rows) {
+      const row=Array.isArray(values) ? Object.fromEntries(body.fields.map((field,index)=>[field,values[index]])) : values;
+      const symbol=String(row['證券代號'] || '').trim();if(!/^[1-9][0-9]{3}$/.test(symbol)) continue;
+      const rowDate=normalizeMarketDate(row['資料日期']),grade=marketNumber(row['持股分級']),shares=marketNumber(row['股數']),ratio=marketNumber(row['占集保庫存數比例%']);
+      if(!rowDate || rowDate>date || rowDate<shiftDateString(date,-14) || !Number.isInteger(grade) || grade<1 || grade>17 || shares===null || (grade!==16 && !(shares>=0)) || ratio===null || (grade!==16 && ratio<0) || Math.abs(ratio)>100) throw new Error("集保日期、級距或數值無效");
+      if(asOfDate && asOfDate!==rowDate) throw new Error("集保週資料日期混用");asOfDate=rowDate;
+      const parts=groups.get(symbol) || new Map();if(parts.has(grade)) throw new Error("集保持股級距重複");parts.set(grade,{shares,ratio});groups.set(symbol,parts);
+    }
+    const stocks={};
+    for(const [symbol,parts] of groups) {
+      if(parts.size!==17 || Math.abs(parts.get(17).ratio-100)>.01 || !(parts.get(17).shares>0)) continue;
+      const ratio400=[12,13,14,15].reduce((sum,grade)=>sum+parts.get(grade).ratio,0);
+      const sumRatios=[...parts].filter(([grade])=>grade<=16).reduce((sum,[,part])=>sum+part.ratio,0);
+      if(Math.abs(sumRatios-100)>.2 || ratio400>100.01) throw new Error("集保級距比例加總異常");
+      stocks[symbol]={chipConcentration:round(ratio400,2),holdersOver1000LotsRatio:parts.get(15).ratio,chipAsOfDate:asOfDate,
+        chipDefinition:"集保400張以上持股占比；每週資料，不等於主力或法人身分"};
+    }
+    const count=Object.keys(stocks).length;if(count<1500) throw new Error("集保完整普通股覆蓋不足1500檔");
+    return {asOfDate,count,stocks};
+  }
+  if(body.kind==="FINANCIAL") {
+    if(!Array.isArray(body.periods) || body.periods.length<6 || body.periods.length>12 || !Number.isInteger(body.year) || !Number.isInteger(body.quarter) || body.quarter<1 || body.quarter>4) throw new Error("歷史財報期間無效");
+    const combined=new Map(),markets=new Map();
+    for(const period of body.periods) {
+      if(period.sourceUrl!=="https://mopsov.twse.com.tw/mops/web/ajax_t163sb04" || !['TWSE','TPEx'].includes(period.market) || !Number.isInteger(period.year) || !Number.isInteger(period.quarter) || period.quarter<1 || period.quarter>4 || period.year<body.year-1 || period.year>body.year || new Date(Date.UTC(period.year,period.quarter*3,0)).toISOString().slice(0,10)>date) throw new Error("歷史財報來源、年份或季別不符");
+      const key=`${period.year}Q${period.quarter}`,seen=markets.get(key) || new Set();if(seen.has(period.market)) throw new Error("財報市場期間重複");seen.add(period.market);markets.set(key,seen);
+      if(!period.stocks || Object.keys(period.stocks).length<500) throw new Error("財報單一市場公司不足500");
+      const stocks=combined.get(key) || {};
+      for(const [symbol,stock] of Object.entries(period.stocks)) {
+        if(!/^[1-9][0-9]{3}$/.test(symbol) || stock.year!==period.year || stock.quarter!==period.quarter || !(stock.revenueYTD>0) || ['revenueYTD','grossYTD','operatingYTD','epsYTD'].some(field=>!Number.isFinite(stock[field])) || stocks[symbol]) throw new Error("財報股票期間、數值或市場重複異常");
+        stocks[symbol]=stock;
+      }
+      combined.set(key,stocks);
+    }
+    if([...markets.values()].some(seen=>seen.size!==2)) throw new Error("財報每個期間都需要上市及上櫃");
+    const periods=[...combined].map(([key,stocks])=>{const [year,quarter]=key.split('Q').map(Number);return {year,quarter,stocks};});
+    const stocks=deriveQuarterlyFinancials(periods,body.year,body.quarter),count=Object.keys(stocks).length;
+    if(count<1500) throw new Error("三期單季財報比較覆蓋不足1500檔，不以缺資料假装通過");
+    return {asOfDate:date,count,year:body.year,quarter:body.quarter,stocks};
+  }
+  if(body.kind==="VALUATION") {
+    const stocks={},twse=body.twsePayload,tpex=body.tpexPayload;
+    if(body.twseUrl!==`https://www.twse.com.tw/exchangeReport/BWIBBU_d?response=json&date=${date.replaceAll('-','')}&selectType=ALL` || normalizeMarketDate(twse?.date)!==date || String(twse.stat).toUpperCase()!=='OK' || !Array.isArray(twse.fields) || ['證券代號','本益比','股價淨值比'].some(field=>!twse.fields.includes(field)) || !Array.isArray(twse.data)) throw new Error("上市估值來源或日期不符");
+    if(body.tpexUrl!=="https://www.tpex.org.tw/openapi/v1/tpex_mainboard_peratio_analysis" || !Array.isArray(tpex)) throw new Error("上櫃估值來源不符");
+    let twseCount=0,tpexCount=0;
+    for(const values of twse.data) {
+      const row=Object.fromEntries(twse.fields.map((field,index)=>[field,values[index]])),symbol=String(row['證券代號']).trim();if(!/^[1-9][0-9]{3}$/.test(symbol)) continue;
+      const pe=marketNumber(row['本益比']),pb=marketNumber(row['股價淨值比']);
+      if(stocks[symbol] || pb===null || pb<0 || (pe!==null && pe<0)) throw new Error("上市估值數值異常");
+      stocks[symbol]={priceEarningsRatio:pe,priceBookRatio:pb,valuationObserved:true,valuationDate:date,valuationSource:"TWSE正式日估值"};twseCount++;
+    }
+    for(const row of tpex) {
+      const symbol=String(row.SecuritiesCompanyCode || '').trim();if(!/^[1-9][0-9]{3}$/.test(symbol)) continue;
+      if(normalizeMarketDate(row.Date)!==date || !Object.hasOwn(row,'PriceEarningRatio') || !Object.hasOwn(row,'PriceBookRatio')) throw new Error("上櫃估值日期或欄位不符");
+      const pe=marketNumber(row.PriceEarningRatio),pb=marketNumber(row.PriceBookRatio);
+      if(stocks[symbol] || pb===null || pb<0 || (pe!==null && pe<0)) throw new Error("上櫃估值數值異常");
+      stocks[symbol]={priceEarningsRatio:pe,priceBookRatio:pb,valuationObserved:true,valuationDate:date,valuationSource:"TPEx正式日估值"};tpexCount++;
+    }
+    const count=Object.keys(stocks).length;if(twseCount<600 || tpexCount<450 || count<1500) throw new Error("兩市場估值覆蓋不足");
+    return {asOfDate:date,count,stocks};
+  }
+  if(body.kind==="ANNOUNCEMENTS") {
+    if(body.twseUrl!=="https://openapi.twse.com.tw/v1/opendata/t187ap04_L" || body.tpexUrl!=="https://www.tpex.org.tw/openapi/v1/mopsfin_t187ap04_O" || !Array.isArray(body.twsePayload) || !Array.isArray(body.tpexPayload)) throw new Error("公告來源不符");
+    const stocks={};let count=0;
+    for(const row of [...body.twsePayload,...body.tpexPayload]) {
+      const symbol=officialRowSymbol(row);if(!symbol) continue;
+      const announcementDate=normalizeMarketDate(row['發言日期']),title=String(row['主旨'] || '').trim();
+      if(!announcementDate || !title) throw new Error("公告日期或主旨缺失");
+      if(announcementDate>date || announcementDate<shiftDateString(date,-30)) continue;
+      (stocks[symbol] ||= {officialAnnouncements:[],announcementCoverage:"本次官方重大訊息清單，非全面新聞或全部歷史訂單"}).officialAnnouncements.push({date:announcementDate,title});count++;
+    }
+    return {asOfDate:date,count,stocks,sourcesVerified:true};
+  }
+  throw new Error("不支援或未驗證品質資料來源");
+}
+
+function decodePublicHtml(value) {
+  return String(value).replace(/<[^>]+>/g,' ').replace(/&#(\d+);/g,(_,number)=>String.fromCodePoint(Number(number)))
+    .replaceAll('&nbsp;',' ').replaceAll('&amp;','&').replaceAll('&lt;','<').replaceAll('&gt;','>').replaceAll('&quot;','"').replace(/\s+/g,' ').trim();
+}
+
+function parseMopsIncomeHtml(html,year,quarter) {
+  if(!html.includes('累計金額') || !html.includes('新台幣仟元')) throw new Error("MOPS財報不是已核對的累計仟元口徑");
+  const stocks={};
+  for(const table of html.matchAll(/<table\b[^>]*>([\s\S]*?)<\/table>/gi)) {
+    let fields=null;
+    for(const row of table[1].matchAll(/<tr\b[^>]*>([\s\S]*?)<\/tr>/gi)) {
+      const cells=[...row[1].matchAll(/<t[hd]\b[^>]*>([\s\S]*?)<\/t[hd]>/gi)].map(cell=>decodePublicHtml(cell[1]));
+      if(!cells.length) continue;
+      if(cells[0].replaceAll(' ','')==='公司代號') {fields=cells.map(cell=>cell.replaceAll(' ',''));continue;}
+      if(!fields || !/^[1-9][0-9]{3}$/.test(cells[0]) || fields.length!==cells.length) continue;
+      const item=Object.fromEntries(fields.map((field,index)=>[field,cells[index]]));
+      const revenue=marketNumber(item['營業收入']),eps=marketNumber(pick(item,['基本每股盈餘（元）','基本每股盈餘(元)']));
+      const gross=marketNumber(pick(item,['營業毛利（毛損）淨額','營業毛利(毛損)淨額','營業毛利（毛損）','營業毛利(毛損)']));
+      const operating=marketNumber(pick(item,['營業利益（損失）','營業利益(損失)','營業利益']));
+      // Banks/insurers with a different accounting taxonomy are unsupported, not converted to fake generic margins.
+      if(!(revenue>0) || eps===null || gross===null || operating===null) continue;
+      if(stocks[cells[0]]) throw new Error("同一財報期間公司重複，拒絕猜測表格");
+      stocks[cells[0]]={year,quarter,revenueYTD:revenue,grossYTD:gross,operatingYTD:operating,epsYTD:eps};
+    }
+  }
+  if(Object.keys(stocks).length<500) throw new Error("MOPS一般產業財報覆蓋不足500家公司或欄位變更");
+  return stocks;
+}
+
+function deriveQuarterlyFinancials(periods,year,quarter) {
+  const byPeriod=new Map(periods.map(period=>[`${period.year}Q${period.quarter}`,period.stocks]));
+  const current=byPeriod.get(`${year}Q${quarter}`) || {},stocks={};
+  const subtractQuarter=(symbol,y,q)=>{
+    const cumulative=byPeriod.get(`${y}Q${q}`)?.[symbol],before=q===1 ? {revenueYTD:0,grossYTD:0,operatingYTD:0,epsYTD:0} : byPeriod.get(`${y}Q${q-1}`)?.[symbol];
+    if(!cumulative || !before) return null;
+    const result={};for(const key of ['revenue','gross','operating','eps']) result[key]=cumulative[key+'YTD']-before[key+'YTD'];
+    return result.revenue>0 ? {...result,grossMargin:result.gross/result.revenue*100,operatingMargin:result.operating/result.revenue*100} : null;
+  };
+  const growth=(now,before)=>Number.isFinite(now) && Number.isFinite(before) && before>0 ? (now/before-1)*100 : null;
+  for(const symbol of Object.keys(current)) {
+    const latest=subtractQuarter(symbol,year,quarter),previous=subtractQuarter(symbol,quarter===1?year-1:year,quarter===1?4:quarter-1),lastYear=subtractQuarter(symbol,year-1,quarter);
+    if(!latest || !previous || !lastYear) continue;
+    stocks[symbol]={financialYear:String(year-1911),financialQuarter:String(quarter),quarterRevenue:latest.revenue,quarterEPS:round(latest.eps,2),
+      revenueQuarterYoY:growth(latest.revenue,lastYear.revenue),revenueQoQ:growth(latest.revenue,previous.revenue),epsYoY:growth(latest.eps,lastYear.eps),epsQoQ:growth(latest.eps,previous.eps),
+      grossMargin:latest.grossMargin,operatingMargin:latest.operatingMargin,grossMarginYoY:latest.grossMargin-lastYear.grossMargin,operatingMarginYoY:latest.operatingMargin-lastYear.operatingMargin,
+      grossMarginQoQ:latest.grossMargin-previous.grossMargin,operatingMarginQoQ:latest.operatingMargin-previous.operatingMargin,
+      financialBasis:"營收及利益為MOPS累計仟元差額轉單季；EPS差額為估算，股本／面額異動時不可直接比較；負或0基期不算成長率"};
+  }
+  return stocks;
+}
+
 function mergeEnrichment(rows, enrichment) {
   return rows.map(row => {
     const extra = enrichment.stocks[row.symbol] || {};
@@ -4161,9 +4376,26 @@ function selectTomorrowCandidates(marketState, todayRows, env, scanDate) {
     .map(buildMarketFeatures)
     .filter(Boolean);
 
-  const marketReturn20 = average(featureRows.map(row => row.ret20).filter(Number.isFinite));
-  featureRows = featureRows.map(row => ({ ...row, marketReturn20 }));
+  const index=env.V7_OFFICIAL_INDEX;
+  const marketReturn20=index?.asOfDate===scanDate ? toNumber(index.return20) : null;
+  const indexCloses=new Map((index?.history || []).map(point=>[point.date,point.close]));
+  featureRows = featureRows.map(row => {
+    const first=indexCloses.get(row.return20StartDate),last=indexCloses.get(scanDate);
+    return {...row,marketReturn20:first>0 && last>0 ? (last/first-1)*100 : null};
+  });
   const sectorStats = buildTodaySectorStats(todayRows, featureRows);
+  const sectorPe=new Map();
+  for(const row of featureRows) if(row.priceEarningsRatio>0) {const values=sectorPe.get(row.industry) || [];values.push(row.priceEarningsRatio);sectorPe.set(row.industry,values);}
+  const peerStats=new Map();
+  for(const row of featureRows) if(Number.isFinite(row.ret20)) {
+    const key=`${row.industry}:${row.return20StartDate}`,group=peerStats.get(key) || {sum:0,count:0};
+    group.sum+=row.ret20;group.count++;peerStats.set(key,group);
+  }
+  featureRows=featureRows.map(row=>{
+    const group=peerStats.get(`${row.industry}:${row.return20StartDate}`),count=(group?.count || 0)-(Number.isFinite(row.ret20)?1:0);
+    const pe=sectorPe.get(row.industry) || [];
+    return {...row,sectorReturn20:count>=2 ? (group.sum-row.ret20)/count : null,sectorPeerCount:count,sectorMedianPe:pe.length>=3 ? percentile([...pe].sort((a,b)=>a-b),50) : null};
+  });
   const diagnostics = {
     scanned: todayRows.length,
     with60Days: featureRows.filter(row => row.historyDays >= 60).length,
@@ -4172,9 +4404,9 @@ function selectTomorrowCandidates(marketState, todayRows, env, scanDate) {
     rrEligible: 0,
     channelCounts: { A: 0, B: 0 },
     exclusions: {},
-    marketReturn20: round(marketReturn20 || 0, 2),
-    relativeStrengthBenchmark: "全市場普通股20日報酬等權代理，非實際大盤指數；千金池為池內同儕代理",
-    requirements30: {complete:false, incompleteRules:[5,6,10,11,12,26,28,29], record:"REQUIREMENTS_30.md"},
+    marketReturn20: marketReturn20===null ? null : round(marketReturn20,2),
+    relativeStrengthBenchmark: "TWSE正式加權指數，相同日期基期；族群為排除自身的同產業普通股等權報酬，非交易所產業指數",
+    requirements30: {complete:false, incompleteRules:[18,19,26,28,29], record:"REQUIREMENTS_30.md",pendingAcceptance:"完整payload外部寫入、盤中收棒／推播手機收到及並發仍需實測"},
     nearMisses: [],
     industryRadar: sectorStats,
     channelPolicy: {
@@ -4225,7 +4457,7 @@ function selectTomorrowCandidates(marketState, todayRows, env, scanDate) {
   const thousandMarketRows = todayRows.filter(row => (toNumber(row.close) || 0) >= THOUSAND_STOCK_PRICE);
   const thousandFeatureRowsRaw = featureRows.filter(row => (toNumber(row.close) || 0) >= THOUSAND_STOCK_PRICE);
   const thousandReturn20 = average(thousandFeatureRowsRaw.map(row => row.ret20).filter(Number.isFinite));
-  const thousandFeatureRows = thousandFeatureRowsRaw.map(row => ({ ...row, marketReturn20: thousandReturn20 }));
+  const thousandFeatureRows = thousandFeatureRowsRaw;
   const thousandScored = [];
   const thousandExclusions = {};
   const thousandChannelCounts = { A: 0, B: 0 };
@@ -4265,7 +4497,8 @@ function selectTomorrowCandidates(marketState, todayRows, env, scanDate) {
     rrEligible: thousandRrEligible,
     channelCounts: thousandChannelCounts,
     exclusions: thousandExclusions,
-    marketReturn20: round(thousandReturn20 || 0, 2),
+    marketReturn20: marketReturn20===null ? null : round(marketReturn20,2),
+    peerPoolReturn20: round(thousandReturn20 || 0,2),
     selectedCount: thousandTop.length,
     shortlist: thousandTop.map((item, index) => buildIndependentPoolPreview(item, index + 1, finalSymbols)),
     policy: "千金股每天獨立分析；A=拉回承接、B=突破後承接；B級以下不列；0~3檔、不硬塞；千金股保留最多3席，空缺不得由非千金股補位。"
@@ -4371,7 +4604,7 @@ function buildMarketFeatures(stock) {
     volumeTodayVsPrev5: todayVolume / Math.max(1, prev5Volume),
     volumeContraction5to20: prev5Volume / Math.max(1, prev20Volume),
     volatility20: standardDeviation(closes.slice(-20).map((value, i, all) => i ? (value / all[i - 1] - 1) * 100 : 0)),
-    ret20, ret60,
+    ret20, ret60,return20StartDate:history.length>=21 ? history.at(-21).date : null,
     high20: Math.max(...highs.slice(-20)), low20: Math.min(...lows.slice(-20)),
     high60: Math.max(...highs.slice(-60)), low60: Math.min(...lows.slice(-60)),
     priorHigh20, priorLow20, priorHigh60, recentHigh10, recentLow5Prev,
@@ -4491,7 +4724,8 @@ function buildConditionDistribution(baseItems, sectorStats) {
     },
     rankingOnly: {
       sectorScoreIsHardGate: false,
-      sectorScorePurpose: "只作主流/資金排序加分，不再用固定58分封殺A/B",
+      sectorStrengthIsHardGate:true,
+      sectorScorePurpose: "分數排序，不使用固定58分；但廣度≥40%、產業平均漲跌≥-1%、成交額至少20日均額0.5倍為不偏弱門檻",
       topSectors
     },
     interpretationHint: "A/B是兩種進場型態：A拉回承接、B突破後承接；主流、法人、基本面、RS只做品質排序與風險過濾。"
@@ -4632,6 +4866,7 @@ function buildChannelDebug(f, sector) {
 function scoreCandidate(f, sector) {
   if (f.close < MIN_CLOSE_PRICE) return reject("股價低於10元", false);
   if (f.historyDays < 60) return reject("歷史資料未滿60日", false);
+  if(toNumber(f.marketReturn20)===null || toNumber(f.sectorReturn20)===null) return reject("缺真實大盤或同日期族群RS資料",false);
   if (f.marketCapYi === null) return reject("缺市值資料", false);
   if (f.marketCapYi < 10) return reject("市值低於10億", false);
   if (Math.abs(f.changePercent || 0) >= 9.8) return reject("單日走勢過度異常", false);
@@ -4651,6 +4886,11 @@ function scoreCandidate(f, sector) {
   if (f.marketCapYi < 100 && f.avgVolume20Lots < minLots * 1.2 && !liquidityException) {
     return reject("30至100億市值流動性要求未達", false);
   }
+  if(toNumber(f.chipConcentration)===null) return reject("缺集保持股集中度，不補假值",false);
+  if(!(f.quarterRevenue>0) || !f.financialBasis || toNumber(f.revenueQoQ)===null || toNumber(f.revenueQuarterYoY)===null || f.valuationObserved!==true || toNumber(f.priceBookRatio)===null || f.announcementsVerified!==true) return reject("季度財報、估值或公告資料不足，不能通過精篩",true);
+  if((f.officialAnnouncements || []).some(item=>/停止交易|重大損失|重整|退票|財報不實/.test(item.title))) return reject("官方公告有重大風險事件，暫不列可進場候選",true);
+  if(f.priceEarningsRatio>0 && f.sectorMedianPe>0 && f.priceEarningsRatio/f.sectorMedianPe>2.5 && !(f.revenueQuarterYoY>25 || f.epsYoY>25)) return reject("本益比明顯高於族群但成長未配合，估值風險過高",true);
+  if(!Number.isFinite(sector.avgChange) || !Number.isFinite(sector.breadth) || sector.breadth<40 || sector.avgChange<-1 || !(sector.amountVs20DayAverage>=.5)) return reject("產業廣度、漲幅或資金活躍度偏弱",true);
 
   const setup = strategySetupState(f);
   let channel = null;
@@ -4689,7 +4929,8 @@ function scoreCandidate(f, sector) {
   const rr = risk > 0 ? reward / risk : 0;
   if (rr < MIN_REWARD_RISK) return reject("預期RR低於2比1", true, false);
 
-  const rs = (f.ret20 || 0) - (toNumber(f.marketReturn20) || 0);
+  const rs = f.ret20-f.marketReturn20;
+  const sectorRs=f.ret20-f.sectorReturn20;
   const fundamentalForRank = fundamental;
   const setupQuality = channel === "A"
     ? clamp(70 - Math.abs((setup.metrics.pullbackPct || 8) - 7) * 3 - (setup.metrics.supportDistancePct || 0) * 3 + (f.volumeTodayVsPrev5 <= 0.9 ? 12 : 4), 0, 100)
@@ -4701,17 +4942,22 @@ function scoreCandidate(f, sector) {
   );
   const reasons = [
     channel === "A" ? "A拉回承接候選" : "B突破後承接候選",
-    `策略品質${round(setupQuality, 1)}分`, `產業資金${round(sector.score, 1)}分(排序用)`,
-    `RS${round(rs, 1)}`, `法人${round(inst, 1)}分`, `RR ${round(rr, 2)}`
+    `策略品質${round(setupQuality, 1)}分`, `產業資金${round(sector.score, 1)}分(已通過不偏弱門檻)`,
+    `大盤RS${round(rs, 1)}／族群RS${round(sectorRs,1)}`, `法人${round(inst, 1)}分`, `RR ${round(rr, 2)}`
   ];
   if (liquidityException) reasons.push(liquidityException);
+  if(f.marketCapYi<30) reasons.push(`10至30億市值例外：20日均量${Math.round(f.avgVolume20Lots)}張達加嚴門檻，法人${round(inst,1)}分；市值與流動性風險較高`);
+  reasons.push(`單季營收YoY ${round(f.revenueQuarterYoY,1)}%／QoQ ${round(f.revenueQoQ,1)}%；毛利率${round(f.grossMargin,1)}%／營益率${round(f.operatingMargin,1)}%`);
+  reasons.push(`PE ${f.priceEarningsRatio===null ? '未提供／無正TTM盈餘' : round(f.priceEarningsRatio,1)}／PB ${round(f.priceBookRatio,2)}；集保400張以上${round(f.chipConcentration,2)}%`);
+  const event=(f.officialAnnouncements || []).find(item=>/訂單|供貨|簽訂|投資|法說|產品|量產|認證|合併|買回/.test(item.title));
+  reasons.push(event ? `已公告事件(${event.date})：${event.title}；不視為必然利多` : f.revenueQuarterYoY>=20 ? "可驗證營收成長動能；未查得其他官方事件催化" : "本次官方清單未查得可驗證事件催化，不編造訂單理由");
 
   const signalLevel = setupQuality >= SIGNAL_GRADE_A_MIN ? "A" : (setupQuality >= SIGNAL_GRADE_B_MIN ? "B" : "C");
   if (signalLevel === "C") return reject("策略品質低於B級，不列入推薦", true, true);
 
   return {
     ok: true, basePassed: true, rrPassed: true, ...f, channel, signalLevel, rewardRisk: round(rr, 2), rewardPerRisk: rr,
-    priorityScore: round(priorityScore, 1), sectorFlow: round(sector.score, 1), relativeStrength: round(rs, 1),
+    priorityScore: round(priorityScore, 1), sectorFlow: round(sector.score, 1), relativeStrength: round(rs, 1),sectorRelativeStrength:round(sectorRs,1),
     entry, stop, target, planBuyLow, planBuyHigh, planBreakout: breakout, setupQuality,
     liquidityException, selectedReason: reasons.join("；")
   };
