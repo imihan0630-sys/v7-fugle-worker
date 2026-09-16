@@ -8,9 +8,15 @@ const getConfig=async()=>{
   return response.json();
 };
 const before=await getConfig();
-const verificationResponse=await fetch(origin+'/api/three-min/verify',{method:'POST',headers,signal:AbortSignal.timeout(40000)});
+const verificationResponse=await fetch(origin+'/api/three-min/verify',{method:'POST',headers,body:'{}',signal:AbortSignal.timeout(40000)});
 if([401,403].includes(verificationResponse.status)) throw new Error('管理員或3Min讀回授權失敗；停止，不替換憑證');
-const result=await verificationResponse.json();
+const responseText=await verificationResponse.text();
+if(!verificationResponse.ok || !responseText.trim().startsWith('{')) {
+  console.log(JSON.stringify({verificationHttpStatus:verificationResponse.status,contentType:verificationResponse.headers.get('content-type'),plainNotFound:responseText.trim()==='Not Found'}));
+  assert.deepEqual(await getConfig(),before,'Even a failed readback request must preserve targets');
+  throw new Error('讀回驗證入口HTTP未成功或非JSON；未重送選股或外部寫入');
+}
+const result=JSON.parse(responseText);
 console.log(JSON.stringify({existingThreeMinReadback:result,noNewScanOrExternalWrite:true}));
 assert.equal(verificationResponse.ok,true);
 assert.equal(result.noSelectionOrExternalWrite,true);
