@@ -6,6 +6,14 @@ const runtimeResponse=await fetch('https://fugle-test.imihan0630.workers.dev/api
 assert.equal(runtimeResponse.ok,true,'Cannot verify actual runtime version before backup');
 const runtime=await runtimeResponse.json();
 assert.equal(typeof runtime.version,'string');
+if(process.env.V7_ADMIN_TOKEN) {
+  const configResponse=await fetch('https://fugle-test.imihan0630.workers.dev/api/config',{headers:{'x-admin-token':process.env.V7_ADMIN_TOKEN},signal:AbortSignal.timeout(20000)});
+  assert.equal(configResponse.ok,true,'Normal admin authorization is required to verify actual targets before deployment');
+  const config=await configResponse.json();
+  baseline.plannedSymbols=config.stocks.map(stock=>stock.symbol).sort();
+  assert.equal(config.updatedAt,baseline.configUpdatedAt);
+  await writeFile('/tmp/v7-predeploy.json',JSON.stringify(baseline));
+}
 const api=`https://api.cloudflare.com/client/v4/accounts/${process.env.CF_ACCOUNT_ID}/workers/scripts/fugle-test`;
 const headers={authorization:`Bearer ${process.env.CF_API_TOKEN}`};
 const response=await fetch(api+'/content/v2',{headers,signal:AbortSignal.timeout(20000)});

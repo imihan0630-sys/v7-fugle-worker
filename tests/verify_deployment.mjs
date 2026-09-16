@@ -24,7 +24,9 @@ if (process.env.V7_DEPLOY_BASELINE_PATH) {
   assert.equal(response.ok, true);
   const after = await response.json();
   assert.equal(after.configUpdatedAt, baseline.configUpdatedAt, 'Code deployment must not overwrite stock configuration');
-  assert.deepEqual((after.results || []).map(x=>x.symbol).sort(), (baseline.results || []).map(x=>x.symbol).sort(), 'Monitoring targets must be preserved');
+  const actualTargets=(after.plannedStocks || after.stocks || []).map(x=>x.symbol).sort();
+  const priorTargets=baseline.plannedSymbols || (baseline.plannedStocks || baseline.stocks || []).map(x=>x.symbol).sort();
+  assert.deepEqual(actualTargets,priorTargets,'Actual planned monitoring targets must be preserved');
 }
 console.log('PASS: deployed runtime version, bindings, mode and existing monitoring configuration');
 console.log('Readiness flags:', JSON.stringify(runtime.readiness));

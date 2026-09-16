@@ -13,7 +13,7 @@
 // Cron expression: 0-24 5 * * MON-FRI // 台灣 13:00-13:24 每分鐘
 // Cron expression: * 9 * * MON-FRI     // 台灣 17:00-17:59 每分鐘建立歷史日K快取＋逐日法人快照
 // Cron expression: 10 10 * * MON-FRI  // 台灣 18:10 盤後掃描
-const VERSION = "7.5.13-official-market-cache";
+const VERSION = "7.5.14-three-min-readback";
 const TEST_MODE_DEFAULT = true;
 const KV_KEY = "STOCK_CONFIG_V7";
 const LEGACY_KV_KEY = "STOCK_CONFIG_V6";
@@ -123,6 +123,30 @@ export default {
       bindings: { kv: !!env.STOCKS_KV, d1: !!env.V7_DB },
       readiness: { quote: !!env.FUGLE_API_KEY, phonePush: !!env.PUSH_WEBHOOK_URL, threeMin: !!env.THREEMIN_API_URL,
         threeMinReadback: !!env.THREEMIN_VERIFY_URL }, requirements30Complete: false, monitorUrl: url.origin }, 200, true);
+
+    // 只讀既有3Min紀錄並保存驗收證據；不重選、不重送、不更動交易計畫。
+    if (url.pathname === "/api/three-min/verify") {
+      if (!isAuthorized(request, env)) return json({error:"ADMIN_TOKEN 錯誤"},401,true);
+      if (request.method !== "POST") return json({error:"Method not allowed"},405,true);
+      const latest = await env.STOCKS_KV.get(LAST_SCAN_KEY,"json");
+      if (!latest || latest.dryRun || latest.config?.saved !== true || latest.threeMin?.sent !== true || latest.threeMin?.simulated === true) {
+        return json({verified:false,error:"沒有已接受寫入的真實盤後計畫，不重送外部服務"},409,true);
+      }
+      await loadTradingCalendar(env,Number(latest.scanDate.slice(0,4)));
+      if(latest.scanDate.slice(5)==="12-31") await loadTradingCalendar(env,Number(latest.scanDate.slice(0,4))+1);
+      const expected=latest.threeMinPayload || buildThreeMinPayload(latest.scanDate,latest.totalCapital,latest.stocks);
+      const verification=await readThreeMinPlan(expected,env);
+      if(verification.authorizationFailed) return json({verified:false,authorizationFailed:true,error:"3Min讀回授權失敗，停止，不替換憑證",httpStatus:verification.httpStatus},403,true);
+      // 掃描若在讀回期間換版，不能把另一批的驗收寫入最新結果。
+      const current=await env.STOCKS_KV.get(LAST_SCAN_KEY,"json");
+      if(current?.generatedAt!==latest.generatedAt || current?.config?.updatedAt!==latest.config.updatedAt) return json({verified:false,error:"驗證期間計畫已更新，保留新計畫，不覆寫驗收紀錄"},409,true);
+      const audit={...verification,checkedAt:new Date().toISOString()};
+      const updated={...latest,threeMin:{...latest.threeMin,verified:verification.verified===true,readback:audit},
+        pipeline:{...latest.pipeline,threeMinVerified:verification.verified===true,complete:latest.pipeline?.configVerified===true && verification.verified===true && latest.pipeline?.dailyReportAccepted===true}};
+      await env.STOCKS_KV.put(LAST_SCAN_KEY,JSON.stringify(updated),{expirationTtl:14*86400});
+      return json({verified:verification.verified===true,scanDate:latest.scanDate,planDate:expected.planDate,selectedCount:expected.stocks.length,
+        verification:audit,pipeline:updated.pipeline,noSelectionOrExternalWrite:true,monitorUrl:url.origin},200,true);
+    }
 
     // 正常管理員授權的官方行情同步，不下單、不改標的或交易計畫。
     if (url.pathname === "/api/market-data") {
@@ -683,6 +707,7 @@ const stocks =
     // 0 檔
     // ==================================================
     if (!stocks.length) {
+      if(url.searchParams.get("format")==="json") return json({version:VERSION,testMode:isTestMode(env),source:loaded.source,configUpdatedAt:loaded.updatedAt,plannedStocks:[],stocks:[],status:"今日0檔，等待下一次盤後選股"},200,true);
       return html(emptyPage(loaded), 200, true);
     }
 
@@ -716,6 +741,7 @@ const stocks =
         configUpdatedAt: loaded.updatedAt,
         apiPolicy: "網頁不呼叫Fugle；背景每分鐘Quote；10/15分K只在收棒分鐘更新",
         cron: cronStatus || null,
+        plannedStocks: stocks.map(stock=>({symbol:stock.symbol,name:stock.name,planDate:stock.planDate,formalClose:stock.formalClose,closeDate:stock.closeDate})),
         stocks: results
       }, 200, true);
     }
@@ -3403,28 +3429,7 @@ async function runAfterMarketScanCore(env, scheduledTime = Date.now(), options =
     const compactState = compactMarketStateForKv(marketState);
     await env.STOCKS_KV.put(MARKET_STATE_KEY, JSON.stringify(compactState));
     saved = await saveStockConfig(env, stocks, "Phase 4.3 A/B Strategy Rebase After-market Scan", totalCapital);
-    bridge = await sendTo3Min({
-      planDate: nextTradingDate(marketDate),
-      totalCapital,
-      stocks: stocks.map(stock => ({
-        symbol: stock.symbol,
-        name: stock.name,
-        mode: stock.mode,
-        sourcePool: stock.channel,
-        buyLow: stock.buyLow,
-        buyHigh: stock.buyHigh,
-        breakout: stock.breakout,
-        maxChase: stock.maxChase,
-        stop: stock.stop,
-        profitCheck: stock.profitCheck,
-        capitalWeight: stock.allocationRatio,
-        firstTrancheWeight: stock.totalAllocation ? round(stock.firstAmount / stock.totalAllocation * 100, 1) : 0,
-        secondTrancheWeight: stock.totalAllocation ? round(stock.secondAmount / stock.totalAllocation * 100, 1) : 0,
-        firstEntryCondition: stock.firstCondition,
-        secondEntryCondition: stock.secondCondition,
-        priorityScore: stock.priorityScore
-      }))
-    }, env);
+    bridge = await sendTo3Min(buildThreeMinPayload(marketDate,totalCapital,stocks),env);
     const reportKey = `V7_DAILY_REPORT:${marketDate}`;
     const previousReport = await env.STOCKS_KV.get(reportKey, "json");
     const dailyPayload = buildDailySelectionPayload(marketDate, stocks, scan.diagnostics);
@@ -3491,6 +3496,7 @@ async function runAfterMarketScanCore(env, scheduledTime = Date.now(), options =
     },
     config: { saved: saved.ok === true, verified: saved.verified === true, dryRun, updatedAt: saved.updatedAt || null },
     threeMin: bridge,
+    threeMinPayload: buildThreeMinPayload(marketDate,totalCapital,stocks),
     dailyReport: report,
     pipeline: {
       scope: "資料選股、匯入與通知傳輸驗證；不代表30條全部已實作或手機已收到",
@@ -5049,6 +5055,45 @@ function mostRecentWeekday(dateString) {
   }
 }
 
+function buildThreeMinPayload(scanDate,totalCapital,stocks) {
+  return {planDate:nextTradingDate(scanDate),totalCapital,stocks:stocks.map(stock=>({
+    symbol:stock.symbol,name:stock.name,mode:stock.mode,sourcePool:stock.channel,
+    buyLow:stock.buyLow,buyHigh:stock.buyHigh,breakout:stock.breakout,maxChase:stock.maxChase,
+    stop:stock.stop,profitCheck:stock.profitCheck,capitalWeight:stock.allocationRatio,
+    firstTrancheWeight:stock.totalAllocation ? round(stock.firstAmount/stock.totalAllocation*100,1) : 0,
+    secondTrancheWeight:stock.totalAllocation ? round(stock.secondAmount/stock.totalAllocation*100,1) : 0,
+    firstEntryCondition:stock.firstCondition,secondEntryCondition:stock.secondCondition,priorityScore:stock.priorityScore
+  }))};
+}
+
+function threeMinRecords(actual) {
+  if(actual?.success===false || actual?.ok===false) return [];
+  if(Array.isArray(actual?.data)) return actual.data;
+  if(actual?.data && typeof actual.data==='object') return [actual.data];
+  return [actual];
+}
+
+function threeMinRecordPlan(record) {
+  return record?.payload || record?.data || record;
+}
+
+async function readThreeMinPlan(expected,env) {
+  if(isTestMode(env)) return {verified:false,simulated:true,reason:"TEST_MODE：不讀真實外部服務"};
+  if(!env.THREEMIN_VERIFY_URL) return {verified:false,reason:"未設定THREEMIN_VERIFY_URL"};
+  const headers={"content-type":"application/json"};
+  if(env.THREEMIN_API_TOKEN) headers.authorization=`Bearer ${env.THREEMIN_API_TOKEN}`;
+  try {
+    const response=await fetchWithDeadline(env.THREEMIN_VERIFY_URL,{method:"GET",headers,redirect:"manual"});
+    if(!response.ok) return {verified:false,httpStatus:response.status,authorizationFailed:[401,403].includes(response.status),reason:"既有3Min讀回HTTP未成功"};
+    const actual=await response.json();
+    const records=threeMinRecords(actual);
+    const matched=records.find(record=>verifyThreeMinPlan(expected,threeMinRecordPlan(record)));
+    return {verified:!!matched,httpStatus:response.status,recordId:matched?.id || null,
+      reason:matched ? "交易日、總資金、全部標的及已送出計畫欄位讀回一致" : "找不到一致交易計畫，可能尚未處理完成或回覆schema不同",
+      schema:{rootKeys:Object.keys(actual || {}),recordCount:records.length,recordKeys:Object.keys(records[0] || {}),planKeys:Object.keys(threeMinRecordPlan(records[0]) || {})}};
+  } catch {return {verified:false,reason:"3Min讀回逾時或回覆無法解析；不重送寫入"};}
+}
+
 async function sendTo3Min(payload, env) {
   if (isTestMode(env)) return { sent: true, simulated: true, verified: false, reason: "TEST_MODE：不呼叫外部3Min服務" };
   if (!env.THREEMIN_API_URL) return { sent: false, verified: false, skipped: true, reason: "未設定 THREEMIN_API_URL，已直接寫入V7 KV；第26條3Min串接未完成" };
@@ -5066,17 +5111,18 @@ async function sendTo3Min(payload, env) {
     }
     if (!env.THREEMIN_VERIFY_URL) return {sent:true, verified:false, httpStatus:response.status, verificationNote:"已接受寫入，但未設定既有服務的唯讀THREEMIN_VERIFY_URL，不能宣稱讀回驗證完成"};
     // 僅使用管理員設定的既有唯讀網址，不推測或建立外部API路徑。
-    const readback = await fetchWithDeadline(env.THREEMIN_VERIFY_URL, {method:"GET", headers, redirect:"manual"});
-    if (!readback.ok) return {sent:true, verified:false, httpStatus:response.status, verificationNote:`讀回HTTP ${readback.status}`};
-    const actual = await readback.json();
-    const verified = verifyThreeMinReadback(payload, actual);
-    return {sent:true, verified, httpStatus:response.status, verificationNote:verified ? "交易日、資金、全部標的及計畫欄位讀回一致" : "讀回資料與本次交易計畫不一致或服務schema不同"};
+    const readback=await readThreeMinPlan(payload,env);
+    return {sent:true,verified:readback.verified===true,httpStatus:response.status,verificationNote:readback.reason,readback};
   } catch (err) {
     return { sent: accepted, verified: false, error: "3Min傳輸或回覆解析失敗，未完成讀回驗證" };
   }
 }
 
 function verifyThreeMinReadback(expected, actual) {
+  return threeMinRecords(actual).some(record=>verifyThreeMinPlan(expected,threeMinRecordPlan(record)));
+}
+
+function verifyThreeMinPlan(expected, actual) {
   if (actual?.planDate !== expected.planDate || actual?.totalCapital !== expected.totalCapital || !Array.isArray(actual?.stocks) || actual.stocks.length !== expected.stocks.length) return false;
   const bySymbol = new Map(actual.stocks.map(stock => [stock.symbol, stock]));
   if (bySymbol.size !== expected.stocks.length) return false;
@@ -6485,7 +6531,7 @@ function waitingLivePage(loaded, liveState, hasD1Binding, cronStatus = null) {
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta http-equiv="refresh" content="15">
 <title>V7 即時監控初始化</title>
-<style>body{font-family:"Microsoft JhengHei",sans-serif;background:#f4f6f8;padding:30px}.box{max-width:900px;margin:70px auto;background:white;padding:30px;border-radius:14px;box-shadow:0 2px 10px rgba(0,0,0,.08)}.ok{font-weight:900;color:#1b5e20}.warn{font-weight:900;color:#9a6700}</style>
+<style>body{font-family:"Microsoft JhengHei",sans-serif;background:#f4f6f8;padding:30px}.box{max-width:900px;margin:30px auto;background:white;padding:30px;border-radius:14px;box-shadow:0 2px 10px rgba(0,0,0,.08)}.ok{font-weight:900;color:#333}.warn{font-weight:900;color:#9a6700}.plan{border:1px solid #ddd;border-radius:10px;padding:16px;margin-top:16px}dl{display:grid;grid-template-columns:minmax(130px,1fr) 2fr;gap:8px}dt,dd{margin:0}dd{overflow-wrap:anywhere}</style>
 </head><body><div class="box"><h1>V7 Phase 4.2 即時監控</h1>
 <p>已載入 <b>${loaded.stocks.length}</b> 檔監控標的，但尚未取得第一輪盤中 Live State。</p>
 <p class="${hasD1Binding ? "ok" : "warn"}">${hasD1Binding ? "D1 Binding 已存在。" : "尚未設定 V7_DB D1 Binding，目前只能暫用 KV fallback。"}</p>
@@ -6495,6 +6541,18 @@ function waitingLivePage(loaded, liveState, hasD1Binding, cronStatus = null) {
   : "尚無紀錄；第一次排程觸發後會自動顯示。"
 }</p>
 <p>設定來源：${h(loaded.source)}｜設定更新：${h(formatIso(loaded.updatedAt))}</p>
+<h2>已匯入交易計畫</h2><p class="warn">以下為計畫，不是即時行情或買進訊號。待下一交易日取得完整15分K，再作正式確認。</p>
+${loaded.stocks.map(stock=>`<section class="plan"><h3>${h(stock.name)} ${h(stock.symbol)}</h3><p>狀態：C 等待正式行情確認｜${stock.mode==="PULLBACK" ? "A 拉回布局" : "B 突破布局"}</p><dl>
+<dt>生效日／正式收盤</dt><dd>${h(stock.planDate || "未提供")}／${h(fmt(stock.formalClose))}（${h(stock.closeDate || "日期未提供")}）</dd>
+<dt>總投入／配置</dt><dd>${h(fmt(stock.totalAllocation))}元／${h(fmt(stock.allocationRatio))}%</dd>
+<dt>第一筆</dt><dd>${h(fmt(stock.firstAmount))}元／約${h(fmt(stock.firstShares))}股</dd>
+<dt>第二筆</dt><dd>${h(fmt(stock.secondAmount))}元／約${h(fmt(stock.secondShares))}股</dd>
+<dt>買區</dt><dd>${h(fmt(stock.buyLow))}～${h(fmt(stock.buyHigh))}</dd>
+<dt>突破價／最大追價</dt><dd>${h(fmt(stock.breakout))}／${h(fmt(stock.maxChase))}</dd>
+<dt>停損／停利檢查</dt><dd>${h(fmt(stock.stop))}／${h(fmt(stock.profitCheck))}</dd>
+<dt>第一筆條件</dt><dd>${h(stock.firstCondition || "待補齊，不宜進場")}</dd>
+<dt>第二筆條件</dt><dd>${h(stock.secondCondition || "待補齊，不宜加碼")}</dd>
+</dl></section>`).join("")}
 </div></body></html>`;
 }
 
