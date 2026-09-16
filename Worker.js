@@ -148,6 +148,15 @@ export default {
         verification:audit,pipeline:updated.pipeline,noSelectionOrExternalWrite:true,monitorUrl:url.origin},200,true);
     }
 
+    if(url.pathname==="/api/institution-status") {
+      if(!isAuthorized(request,env)) return json({error:"ADMIN_TOKEN 錯誤"},401,true);
+      if(request.method!=="GET") return json({error:"Method not allowed"},405,true);
+      await loadTradingCalendar(env,Number(taiwanDate().slice(0,4)));
+      const marketDate=mostRecentWeekday(taiwanDate());
+      const streak=await readInstitutionStreakMap(env,marketDate);
+      return json({marketDate,ready:streak.ready,validDates:streak.validDates,missingDates:streak.missingDates,snapshotCounts:streak.snapshotCounts},200,true);
+    }
+
     if(url.pathname==="/api/institution-data") {
       if(!isAuthorized(request,env)) return json({error:"ADMIN_TOKEN 錯誤"},401,true);
       if(request.method!=="POST") return json({error:"Method not allowed"},405,true);
