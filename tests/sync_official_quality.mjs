@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 process.on('uncaughtException',error=>{console.error('Quality synchronization failed: '+String(error.message).slice(0,900));process.exit(1);});
 const source=await readFile(process.env.V7_TEST_WORKER_PATH || new URL('../Worker.js',import.meta.url),'utf8');
-const helpers=await import('data:text/javascript;base64,'+Buffer.from(source+'\nexport {parseOfficialCsv,parseMopsIncomeHtml,validateOfficialQualityData};').toString('base64'));
+const helpers=await import('data:text/javascript;base64,'+Buffer.from(source+'\nexport {parseOfficialCsv,parseMopsIncomeHtml,parseMopsMarketOptions,validateOfficialQualityData};').toString('base64'));
 const origin='https://fugle-test.imihan0630.workers.dev';
 const marketDate=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Taipei',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
 assert.ok(process.env.V7_ADMIN_TOKEN,'Normal V7_ADMIN_TOKEN required');
@@ -57,6 +57,8 @@ const [announcementsTwse,announcementsTpex]=await Promise.all([announcementTwse,
 console.log(JSON.stringify({officialAnnouncementSchemas:{TWSE:{fields:Object.keys(announcementsTwse[0] || {}),date:announcementsTwse[0]?.['發言日期']},TPEx:{fields:Object.keys(announcementsTpex[0] || {}),date:announcementsTpex[0]?.['發言日期']}}}));
 await sync({kind:'ANNOUNCEMENTS',twseUrl:announcementTwse,tpexUrl:announcementTpex,twsePayload:announcementsTwse,tpexPayload:announcementsTpex});
 const epsRows=helpers.parseOfficialCsv(await (await publicSource('https://mopsfin.twse.com.tw/opendata/t187ap14_L.csv')).text());
+const marketOptions=helpers.parseMopsMarketOptions(await (await publicSource('https://mopsov.twse.com.tw/mops/web/t163sb04')).text());
+console.log(JSON.stringify({officialMopsMarketOptions:marketOptions}));
 const frequency=new Map();for(const row of epsRows){const key=`${Number(row['年度'])+1911}Q${Number(row['季別'])}`;frequency.set(key,(frequency.get(key) || 0)+1);}
 const [year,quarter]=[...frequency].sort((a,b)=>b[1]-a[1])[0][0].split('Q').map(Number);
 const periodKeys=new Set([`${year}Q${quarter}`,`${year-1}Q${quarter}`]);
@@ -70,7 +72,7 @@ for(let start=0;start<requests.length;start+=2) {
   const batch=await Promise.all(requests.slice(start,start+2).map(async ({key,market})=>{
     const [y,q]=key.split('Q').map(Number),sourceUrl='https://mopsov.twse.com.tw/mops/web/ajax_t163sb04';
     const response=await publicSource(sourceUrl,{method:'POST',headers:{'content-type':'application/x-www-form-urlencoded'},
-      body:new URLSearchParams({encodeURIComponent:'1',step:'1',firstin:'1',off:'1',TYPEK:market==='TWSE'?'s':'otc',year:String(y-1911),season:String(q).padStart(2,'0')})});
+      body:new URLSearchParams({encodeURIComponent:'1',step:'1',firstin:'1',off:'1',TYPEK:marketOptions[market],year:String(y-1911),season:String(q).padStart(2,'0')})});
     const html=await response.text();
     const incomeHeaders=[...html.matchAll(/<tr\b[^>]*>([\s\S]*?)<\/tr>/gi)].map(row=>[...row[1].matchAll(/<t[hd]\b[^>]*>([\s\S]*?)<\/t[hd]>/gi)].map(cell=>cell[1].replace(/<[^>]+>/g,'').replace(/\s+/g,''))).filter(row=>row[0]==='公司代號');
     console.log(JSON.stringify({officialIncomeHeaders:incomeHeaders,market,year:y,quarter:q}));
