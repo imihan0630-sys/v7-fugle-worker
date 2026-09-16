@@ -1,0 +1,21 @@
+name: V7 Official Quality Source Diagnostics
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - tests/inspect_official_quality_sources.mjs
+      - .github/workflows/v7-quality-diagnostics.yml
+permissions:
+  contents: read
+jobs:
+  inspect:
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[v7-quality-diagnostics]')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Inspect public official source schemas (no secrets or writes)
+        run: node tests/inspect_official_quality_sources.mjs
