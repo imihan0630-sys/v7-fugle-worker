@@ -6,13 +6,18 @@ const expectedVersion = worker.match(/const VERSION = "([^"]+)";/)?.[1];
 assert.ok(expectedVersion, 'Worker runtime version must be explicit');
 const origin = 'https://fugle-test.imihan0630.workers.dev';
 let runtime;
-for (let attempt = 0; attempt < 6; attempt++) {
+// Cloudflare accepted uploads can propagate beyond the original 15-second window.
+// Retry only read-only checks; never repeat the code upload here.
+for (let attempt = 0; attempt < 24; attempt++) {
   try {
-    const response = await fetch(origin + '/api/version', {signal:AbortSignal.timeout(10000)});
+    const response = await fetch(origin + '/api/version?deploymentCheck=' + attempt, {cache:'no-store', signal:AbortSignal.timeout(10000)});
+    assert.ok(response.status !== 401 && response.status !== 403, 'Deployment verification requires access; do not retry denied requests');
     if (response.ok) runtime = await response.json();
     if (runtime?.version === expectedVersion) break;
-  } catch {}
-  if (attempt < 5) await new Promise(resolve => setTimeout(resolve, 3000));
+  } catch (error) {
+    if (error instanceof assert.AssertionError) throw error;
+  }
+  if (attempt < 23) await new Promise(resolve => setTimeout(resolve, 5000));
 }
 assert.equal(runtime?.version, expectedVersion, 'Accepted upload is not proof of correct deployed version');
 assert.equal(runtime.bindings.kv, true, 'Existing KV binding must be retained');
