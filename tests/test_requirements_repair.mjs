@@ -1,5 +1,23 @@
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
+import {assessIntradayHealth,assessAfterMarketHealth} from './scheduled_health.mjs';
+{
+  const now=Date.parse('2026-09-16T01:16:30Z');
+  const live={tradeDate:'2026-09-16',testMode:false,generatedAtIso:new Date(now).toISOString(),monitoredCount:1,results:[{symbol:'1234',ok:true,plan:{planDate:'2026-09-16',positionStage:'NONE'},quote:{lastUpdated:now*1000,isTrial:false},executionData:{quoteFresh:true,formal15Fresh:true,auxiliary10Fresh:true,checkedAt:new Date(now).toISOString()},frame15:{latest:{time:'2026-09-16T01:00:00Z'}}}],notifications:[]};
+  assert.equal(assessIntradayHealth(live,'2026-09-16',now).formal15Ready,1);
+  assert.throws(()=>assessIntradayHealth({...live,tradeDate:'2026-09-15'},'2026-09-16',now),/not today/);
+  const forming=structuredClone(live);forming.results[0].frame15.latest.time='2026-09-16T01:15:00Z';
+  assert.throws(()=>assessIntradayHealth(forming,'2026-09-16',now),/forming/);
+  assert.throws(()=>assessIntradayHealth(live,'2026-09-16',now+240000),/stale/);
+  const baseNotification={stock:{symbol:'1234'},signalType:'SELL',signalId:'unique',suggestedShares:50,currentPrice:100,reason:'fixture',instruction:'fixture',time:'fixture',stop:95,profitCheck:120};
+  assert.throws(()=>assessIntradayHealth({...live,notifications:[baseNotification]},'2026-09-16',now),/Unknown actual shares/);
+  const actual=structuredClone(live);actual.results[0].plan.actualShares=50;actual.notifications=[baseNotification];assert.equal(assessIntradayHealth(actual,'2026-09-16',now).notificationCount,1);
+  assert.throws(()=>assessIntradayHealth({...actual,notifications:[baseNotification,baseNotification]},'2026-09-16',now),/Duplicate/);
+  const scan={scanDate:'2026-09-16',dryRun:false,config:{saved:true,verified:true},threeMin:{sent:true,simulated:false},threeMinPayload:{schemaVersion:'V7_PLAN_2'},dailyReport:{sent:true,simulated:false},diagnostics:{quarterEpsReview:{ready:true}},selectedCount:1,stocks:[{formalClose:1000}]};
+  assert.equal(assessAfterMarketHealth(scan,'2026-09-16').newFullPayloadAccepted,true);
+  assert.throws(()=>assessAfterMarketHealth({...scan,dryRun:true},'2026-09-16'),/Readonly preview/);
+  assert.throws(()=>assessAfterMarketHealth({...scan,stocks:Array.from({length:4},()=>({formalClose:1000})),selectedCount:4},'2026-09-16'),/quota/);
+}
 // A delayed Cloudflare propagation must not be mistaken for a failed upload.
 {
   const verification = await readFile(new URL('./verify_deployment.mjs', import.meta.url), 'utf8');

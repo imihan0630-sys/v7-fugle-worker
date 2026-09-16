@@ -21,7 +21,7 @@ if(prior.scanDate===date) {console.log(JSON.stringify({skipped:true,reason:'Toda
 const institution=await admin('/api/institution-status'),quality=await admin('/api/quality-status');
 assert.equal(institution.marketDate,date);assert.equal(institution.ready,true,'Latest institutional history incomplete');
 assert.equal(quality.marketDate,date);assert.equal(quality.index.ready,true);assert.equal(quality.tdcc.ready,true);
-for(const kind of ['FINANCIAL','VALUATION','ANNOUNCEMENTS']) assert.equal(quality.datasets[kind]?.ready,true,kind+' missing');
+for(const kind of ['FINANCIAL','VALUATION','ANNOUNCEMENTS','QUARTER_EPS']) assert.equal(quality.datasets[kind]?.ready,true,kind+' missing');
 // Only one POST. A timeout is ambiguous: never retry a business write blindly.
 try {
   const result=await admin('/api/scan',{method:'POST',body:JSON.stringify({onlyIfMissing:true})});

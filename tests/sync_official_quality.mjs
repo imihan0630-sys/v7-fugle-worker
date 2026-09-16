@@ -113,7 +113,7 @@ for(let start=0;start<universe.length;start+=2) {
 }
 await sync({kind:'QUARTER_EPS',year,quarter,reports});
 const afterResponse=await admin('/api/config');assert.equal(afterResponse.ok,true);assert.deepEqual(await afterResponse.json(),before,'Quality sync cannot change current plans or capital');
-const statusResponse=await admin('/api/quality-status');assert.equal(statusResponse.ok,true);console.log(JSON.stringify({officialQualityStatus:await statusResponse.json(),configurationUnchanged:true,noSelection:true,noThreeMinWrite:true,noPush:true}));
+const statusResponse=await admin('/api/quality-status?marketDate='+marketDate);assert.equal(statusResponse.ok,true);console.log(JSON.stringify({officialQualityStatus:await statusResponse.json(),configurationUnchanged:true,noSelection:true,noThreeMinWrite:true,noPush:true}));
 if(process.argv.includes('--dry-run')) {
   const storageTest=await admin('/api/signals/storage-test',{method:'POST',body:'{}'});
   const storageResult=await storageTest.json();assert.equal(storageTest.ok,true);assert.equal(storageResult.verified,true);assert.equal(storageResult.noRealSignals,true);
