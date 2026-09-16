@@ -7,18 +7,20 @@ class MemoryKV {
   async get(key, type) { const raw = this.values.get(key); return raw === undefined ? null : type === 'json' ? JSON.parse(raw) : raw; }
   async put(key, value) { this.values.set(key, value); }
 }
+const qualityApi=await import('data:text/javascript;base64,'+Buffer.from(source+'\nexport {validateOfficialQualityData,writeQualitySnapshot,readQualitySnapshot,recentWeekdays,selectTomorrowCandidates,parseMopsIncomeHtml,deriveQuarterlyFinancials};').toString('base64'));
 class MemoryD1 {
   snapshots=new Map();
+  quality=new Map();
   withSession(){return this;}
   prepare(sql){
     const db=this;
-    return {args:[],bind(...args){this.args=args;return this;},async first(){return null;},
+    return {args:[],bind(...args){this.args=args;return this;},async first(){return sql.includes('FROM v7_quality_snapshots') ? db.quality.get(this.args.slice(0,2).join(':')) || null : null;},
       async all(){return {results:sql.includes('FROM v7_institution_snapshots')?[...db.snapshots.values()].filter(row=>row.market_date<=this.args[0]).sort((a,b)=>b.market_date.localeCompare(a.market_date)).slice(0,this.args[1]):[]};},
       async run(){if(sql.includes('INSERT INTO v7_institution_snapshots')){
         const [market_date,snapshot_json,stock_count,updated_at,minimum]=this.args;
         const old=db.snapshots.get(market_date);
         if(!old || stock_count>=minimum || old.stock_count<minimum) db.snapshots.set(market_date,{market_date,snapshot_json,stock_count,updated_at});
-      }return {meta:{rows_written:1}};}};
+      }if(sql.includes('INSERT INTO v7_quality_snapshots')){db.quality.set(this.args.slice(0,2).join(':'),{snapshot_json:this.args[2]});}return {meta:{rows_written:1}};}};
   }
 }
 const result = () => ({
@@ -134,8 +136,9 @@ const qualified = {symbol:'1234',name:'合格測試',close:101,historyDays:65,ma
   avgVolume20Lots:5000,atrPercent:2,ma5:99,ma10:98,ma20:97,ma60:95,prevMa20:96,bullishStack:true,
   priorHigh20:100,priorHigh60:120,priorLow20:90,todayLow:100,recentHigh10:100,volumeTodayVsPrev5:2,
   dailyClosePosition:.9,dailyUpperShadowRatio:.05,ret20:10,marketReturn20:1,
-  eps:5,revenueYoY:50,grossMargin:50,operatingMargin:25,trustBuyDays:3,foreignBuyDays:3,institutionsAligned:true};
-const candidate = api.scoreCandidate(qualified,{score:90});
+  eps:5,revenueYoY:50,grossMargin:50,operatingMargin:25,trustBuyDays:3,foreignBuyDays:3,institutionsAligned:true,sectorReturn20:2,chipConcentration:50,
+  quarterRevenue:100000,financialBasis:'TEST_ONLY',revenueQoQ:10,revenueQuarterYoY:30,valuationObserved:true,priceBookRatio:3,priceEarningsRatio:20,announcementsVerified:true};
+const candidate = api.scoreCandidate(qualified,{score:90,breadth:60,avgChange:1,amountVs20DayAverage:1});
 assert.equal(candidate.ok,true);
 assert.equal(candidate.channel,'B');
 assert.ok(candidate.rewardRisk >= 2);
@@ -153,6 +156,17 @@ const fullEnv = {STOCKS_KV:new MemoryKV(),TEST_MODE:'true',V7_ENRICHMENT_JSON:JS
 const institutionStocks=Object.fromEntries(Array.from({length:1600},(_,i)=>[String(1000+i),{foreignNet:0,trustNet:0,dealerNet:0,institutionTotalNet:0}]));
 fullEnv.V7_DB=new MemoryD1();
 for(const date of ['2026-09-16','2026-09-15','2026-09-14']) await api.writeInstitutionSnapshot(fullEnv,date,institutionStocks);
+const indexHistory=qualityApi.recentWeekdays('2026-09-16',65).reverse().map((date,index)=>({date,close:100+index}));
+const monthPoints=new Map();
+for(const point of indexHistory){const month=point.date.slice(0,7)+'-01',items=monthPoints.get(month) || [];items.push([`${Number(point.date.slice(0,4))-1911}/${point.date.slice(5).replaceAll('-','/')}`,String(point.close)]);monthPoints.set(month,items);}
+const indexFixture={kind:'INDEX',months:[...monthPoints].map(([month,data])=>({sourceUrl:`https://www.twse.com.tw/exchangeReport/FMTQIK?response=json&date=${month.replaceAll('-','')}`,payload:{date:month.replaceAll('-',''),stat:'OK',fields:['日期','發行量加權股價指數'],data}}))};
+assert.ok(qualityApi.validateOfficialQualityData(indexFixture,'2026-09-16').return20>0);
+const badIndex=structuredClone(indexFixture);badIndex.months.at(-1).payload.data.pop();assert.throws(()=>qualityApi.validateOfficialQualityData(badIndex,'2026-09-16'));
+await qualityApi.writeQualitySnapshot(fullEnv,'INDEX','2026-09-16',{asOfDate:'2026-09-16',count:65,history:indexHistory,return20:1});
+await qualityApi.writeQualitySnapshot(fullEnv,'TDCC','2026-09-16',{asOfDate:'2026-09-11',count:1600,stocks:Object.fromEntries(Object.keys(institutionStocks).map(symbol=>[symbol,{chipConcentration:50}]))});
+await qualityApi.writeQualitySnapshot(fullEnv,'FINANCIAL','2026-09-16',{asOfDate:'2026-09-16',count:1600,stocks:Object.fromEntries(Object.keys(institutionStocks).map(symbol=>[symbol,{quarterRevenue:100000,financialBasis:'TEST_ONLY',revenueQoQ:0,revenueQuarterYoY:0}]))});
+await qualityApi.writeQualitySnapshot(fullEnv,'VALUATION','2026-09-16',{asOfDate:'2026-09-16',count:1600,stocks:Object.fromEntries(Object.keys(institutionStocks).map(symbol=>[symbol,{valuationObserved:true,priceBookRatio:3,priceEarningsRatio:20}]))});
+await qualityApi.writeQualitySnapshot(fullEnv,'ANNOUNCEMENTS','2026-09-16',{asOfDate:'2026-09-16',count:0,stocks:{},sourcesVerified:true});
 const twseRows = symbols.slice(0,600).map(Code=>({Date:'20260916',Code,Name:'測試',ClosingPrice:100,OpeningPrice:100,HighestPrice:101,LowestPrice:99,TradeVolume:5000000,TradeValue:500000000}));
 const tpexRows = symbols.slice(600).map(SecuritiesCompanyCode=>({Date:'1150916',SecuritiesCompanyCode,CompanyName:'測試',Close:100,Open:100,High:101,Low:99,TradingShares:5000000,TransactionAmount:500000000}));
 globalThis.fetch = async url => new Response(JSON.stringify(String(url).includes('STOCK_DAY_ALL')?twseRows:String(url).includes('daily_close_quotes')?tpexRows:[]));
@@ -271,6 +285,22 @@ const ingested=await api.default.fetch(ingestRequest('mock'),instEnv);
 assert.equal(ingested.status,200);assert.equal((await ingested.json()).noPlanChanges,true);
 assert.deepEqual(await instEnv.STOCKS_KV.get(api.KV_KEY,'json'),verifyConfig);
 globalThis.fetch=originalFetch;
+// 累計轉單季，負基期不算假成長率；解析只接受已核對的一般產業財報欄位。
+const financialPeriods=[{year:2026,quarter:1,stocks:{'1234':{revenueYTD:100,grossYTD:30,operatingYTD:20,epsYTD:1}}},
+  {year:2026,quarter:2,stocks:{'1234':{revenueYTD:250,grossYTD:90,operatingYTD:50,epsYTD:3}}},
+  {year:2025,quarter:1,stocks:{'1234':{revenueYTD:80,grossYTD:16,operatingYTD:8,epsYTD:1}}},
+  {year:2025,quarter:2,stocks:{'1234':{revenueYTD:180,grossYTD:41,operatingYTD:18,epsYTD:0}}}];
+const financial=qualityApi.deriveQuarterlyFinancials(financialPeriods,2026,2)['1234'];
+assert.equal(financial.quarterRevenue,150);assert.equal(financial.quarterEPS,2);assert.equal(financial.revenueQoQ,50);assert.equal(financial.revenueQuarterYoY,50);assert.equal(financial.epsYoY,null);assert.equal(financial.grossMargin,40);assert.equal(financial.grossMarginYoY,15);
+const incomeHtml='累計金額 新台幣仟元 <table><tr>'+['公司 代號','公司名稱','營業收入','營業毛利（毛損）淨額','營業利益（損失）','基本每股盈餘（元）'].map(field=>`<th>${field}</th>`).join('')+'</tr>'+Array.from({length:500},(_,index)=>`<tr><td>${5000+index}</td><td>測試</td><td>1,000</td><td>300</td><td>200</td><td>1.5</td></tr>`).join('')+'</table>';
+assert.equal(qualityApi.parseMopsIncomeHtml(incomeHtml,2026,2)['5000'].grossYTD,300);
+assert.throws(()=>qualityApi.parseMopsIncomeHtml(incomeHtml.replaceAll('累計金額','單季資料'),2026,2));
+const tdccFixture={kind:'TDCC',sourceUrl:'https://opendata.tdcc.com.tw/getOD.ashx?id=1-5',rows:Array.from({length:1500},(_,index)=>Array.from({length:17},(_,offset)=>({'資料日期':'20260911','證券代號':String(6000+index),'持股分級':String(offset+1),'股數':offset===16?'1500':offset===15?'0':'100','占集保庫存數比例%':offset===16?'100':offset===15?'0':'6.67'}))).flat()};
+assert.equal(qualityApi.validateOfficialQualityData(tdccFixture,'2026-09-16').stocks['6000'].chipConcentration,26.68);
+const duplicateTdcc=structuredClone(tdccFixture);duplicateTdcc.rows.push(duplicateTdcc.rows[0]);assert.throws(()=>qualityApi.validateOfficialQualityData(duplicateTdcc,'2026-09-16'));
+assert.equal(api.scoreCandidate({...qualified,marketReturn20:null},{score:90,breadth:60,avgChange:1,amountVs20DayAverage:1}).ok,false);
+assert.equal(api.scoreCandidate(qualified,{score:90,breadth:20,avgChange:1,amountVs20DayAverage:1}).ok,false);
+assert.equal(api.scoreCandidate({...qualified,valuationObserved:false},{score:90,breadth:60,avgChange:1,amountVs20DayAverage:1}).ok,false);
 const csv = '\uFEFF出表日期,公司代號,公司名稱,已發行普通股數或TDR原股發行股數\r\n"1150916","1234","測試,名稱""A""","1000000"\r\n';
 assert.equal(api.parseOfficialCsv(csv)[0]['公司名稱'],'測試,名稱"A"');
 assert.throws(()=>api.parseOfficialCsv('<html>not data</html>'));
