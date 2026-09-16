@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 const source = await readFile(process.env.V7_TEST_WORKER_PATH || new URL('./Worker_V7_7.5.11_REQUIREMENTS_REPAIR.mjs', import.meta.url), 'utf8');
-const api = await import('data:text/javascript;base64,' + Buffer.from(source + '\nexport { evaluateOperationSignals, evaluateStop, processSignalState, recalculatePlanCapital, saveStockConfig, KV_KEY, fetchMarketRows, fetchClosingRowsWithFallback, normalizeMarketDate, normalizeStock, enforceIndependentPoolQuota, buildPublicRecommendations, buildDailySelectionPayload, formatSlackSignalMessage, scoreCandidate, nextTradingDate, mostRecentWeekday, runAfterMarketScan, MARKET_STATE_KEY, allocateAndBuildPlans, sendTo3Min, verifyThreeMinReadback };').toString('base64'));
+const api = await import('data:text/javascript;base64,' + Buffer.from(source + '\nexport { evaluateOperationSignals, evaluateStop, processSignalState, recalculatePlanCapital, saveStockConfig, KV_KEY, fetchMarketRows, fetchClosingRowsWithFallback, normalizeMarketDate, normalizeStock, enforceIndependentPoolQuota, buildPublicRecommendations, buildDailySelectionPayload, formatSlackSignalMessage, scoreCandidate, nextTradingDate, mostRecentWeekday, runAfterMarketScan, MARKET_STATE_KEY, allocateAndBuildPlans, sendTo3Min, verifyThreeMinReadback, parseOfficialCsv, fetchOfficialEnrichment };').toString('base64'));
 class MemoryKV {
   values = new Map();
   async get(key, type) { const raw = this.values.get(key); return raw === undefined ? null : type === 'json' ? JSON.parse(raw) : raw; }
@@ -153,4 +153,16 @@ if (process.argv.includes('--live-data')) {
   const rows = await api.fetchMarketRows('https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?date=2026%2F09%2F16&id=&response=json', 'TPEx', '2026-09-16');
   console.log('LIVE official TPEx date-verified ordinary stocks:', rows.length);
 }
+const csv = '\uFEFF出表日期,公司代號,公司名稱,已發行普通股數或TDR原股發行股數\r\n"1150916","1234","測試,名稱""A""","1000000"\r\n';
+assert.equal(api.parseOfficialCsv(csv)[0]['公司名稱'],'測試,名稱"A"');
+assert.throws(()=>api.parseOfficialCsv('<html>not data</html>'));
+assert.throws(()=>api.parseOfficialCsv(csv+'"broken'));
+// 整批OpenAPI失敗仍可使用官方CSV；其中文普通股股數必須能計算市值。
+const profileCsv='出表日期,公司代號,公司名稱,已發行普通股數或TDR原股發行股數\n'+Array.from({length:500},(_,i)=>`1150916,${3000+i},公司${i},100000000`).join('\n');
+globalThis.fetch=async url=>new Response(String(url).endsWith('.csv')?(String(url).endsWith('_L.csv')?profileCsv.replaceAll(/3\d{3}/g,value=>String(Number(value)-2000)):profileCsv):'error',{status:String(url).endsWith('.csv')?200:302});
+const mirror=await api.fetchOfficialEnrichment({},'2026-09-16');
+assert.equal(mirror.meta.sources.tpexProfile.fallback,'MOPS_OFFICIAL_CSV');
+assert.equal(mirror.stocks['3000'].sharesOutstanding,100000000);
+assert.equal(mirror.stocks['3000'].market,'TPEx');
+globalThis.fetch=originalFetch;
 console.log('PASS: signal lifecycle, 15m confirmation, capital, date checks, independent pools and public status assertions. Mock tests do not send real notifications.');
