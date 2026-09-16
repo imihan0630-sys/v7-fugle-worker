@@ -1,11 +1,25 @@
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 const source = await readFile(process.env.V7_TEST_WORKER_PATH || new URL('./Worker_V7_7.5.11_REQUIREMENTS_REPAIR.mjs', import.meta.url), 'utf8');
-const api = await import('data:text/javascript;base64,' + Buffer.from(source + '\nexport { evaluateOperationSignals, evaluateStop, processSignalState, recalculatePlanCapital, saveStockConfig, KV_KEY, fetchMarketRows, fetchClosingRowsWithFallback, normalizeMarketDate, normalizeStock, enforceIndependentPoolQuota, buildPublicRecommendations, buildDailySelectionPayload, formatSlackSignalMessage, scoreCandidate, nextTradingDate, mostRecentWeekday, runAfterMarketScan, MARKET_STATE_KEY, allocateAndBuildPlans, sendTo3Min, verifyThreeMinReadback, parseOfficialCsv, fetchOfficialEnrichment, buildThreeMinPayload, waitingLivePage, LAST_SCAN_KEY };').toString('base64'));
+const api = await import('data:text/javascript;base64,' + Buffer.from(source + '\nexport { evaluateOperationSignals, evaluateStop, processSignalState, recalculatePlanCapital, saveStockConfig, KV_KEY, fetchMarketRows, fetchClosingRowsWithFallback, normalizeMarketDate, normalizeStock, enforceIndependentPoolQuota, buildPublicRecommendations, buildDailySelectionPayload, formatSlackSignalMessage, scoreCandidate, nextTradingDate, mostRecentWeekday, runAfterMarketScan, MARKET_STATE_KEY, allocateAndBuildPlans, sendTo3Min, verifyThreeMinReadback, parseOfficialCsv, fetchOfficialEnrichment, buildThreeMinPayload, waitingLivePage, LAST_SCAN_KEY, validateInstitutionData, institutionSourceUrls, readInstitutionStreakMap, writeInstitutionSnapshot };').toString('base64'));
 class MemoryKV {
   values = new Map();
   async get(key, type) { const raw = this.values.get(key); return raw === undefined ? null : type === 'json' ? JSON.parse(raw) : raw; }
   async put(key, value) { this.values.set(key, value); }
+}
+class MemoryD1 {
+  snapshots=new Map();
+  withSession(){return this;}
+  prepare(sql){
+    const db=this;
+    return {args:[],bind(...args){this.args=args;return this;},async first(){return null;},
+      async all(){return {results:sql.includes('FROM v7_institution_snapshots')?[...db.snapshots.values()].filter(row=>row.market_date<=this.args[0]).sort((a,b)=>b.market_date.localeCompare(a.market_date)).slice(0,this.args[1]):[]};},
+      async run(){if(sql.includes('INSERT INTO v7_institution_snapshots')){
+        const [market_date,snapshot_json,stock_count,updated_at,minimum]=this.args;
+        const old=db.snapshots.get(market_date);
+        if(!old || stock_count>=minimum || old.stock_count<minimum) db.snapshots.set(market_date,{market_date,snapshot_json,stock_count,updated_at});
+      }return {meta:{rows_written:1}};}};
+  }
 }
 const result = () => ({
   ok: true, symbol: 'TEST', name: '測試', currentPrice: 120,
@@ -136,6 +150,9 @@ const symbols = Array.from({length:1050}, (_, i) => String(1000+i));
 const history = Array.from({length:65}, (_, i) => ({date:new Date(Date.UTC(2026,5,1+i)).toISOString().slice(0,10),open:100,close:100,high:101,low:99,volumeShares:5000000,tradeValue:500000000}));
 const extra = symbols.map(symbol => ({symbol, market:Number(symbol)<1600?'TWSE':'TPEx',marketCapYi:200,industry:'測試產業',eps:5,revenueYoY:10,grossMargin:30}));
 const fullEnv = {STOCKS_KV:new MemoryKV(),TEST_MODE:'true',V7_ENRICHMENT_JSON:JSON.stringify({stocks:extra,history:Object.fromEntries(symbols.map(symbol=>[symbol,history]))})};
+const institutionStocks=Object.fromEntries(Array.from({length:1600},(_,i)=>[String(1000+i),{foreignNet:0,trustNet:0,dealerNet:0,institutionTotalNet:0}]));
+fullEnv.V7_DB=new MemoryD1();
+for(const date of ['2026-09-16','2026-09-15','2026-09-14']) await api.writeInstitutionSnapshot(fullEnv,date,institutionStocks);
 const twseRows = symbols.slice(0,600).map(Code=>({Date:'20260916',Code,Name:'測試',ClosingPrice:100,OpeningPrice:100,HighestPrice:101,LowestPrice:99,TradeVolume:5000000,TradeValue:500000000}));
 const tpexRows = symbols.slice(600).map(SecuritiesCompanyCode=>({Date:'1150916',SecuritiesCompanyCode,CompanyName:'測試',Close:100,Open:100,High:101,Low:99,TradingShares:5000000,TransactionAmount:500000000}));
 globalThis.fetch = async url => new Response(JSON.stringify(String(url).includes('STOCK_DAY_ALL')?twseRows:String(url).includes('daily_close_quotes')?tpexRows:[]));
@@ -211,6 +228,37 @@ if (process.argv.includes('--live-data')) {
   const rows = await api.fetchMarketRows('https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?date=2026%2F09%2F16&id=&response=json', 'TPEx', '2026-09-16');
   console.log('LIVE official TPEx date-verified ordinary stocks:', rows.length);
 }
+// 法人來源必須同日、完整、數值一致；缺少交易日不可接續連買。
+const institutionFixture=date=>{
+  const fields=['證券代號','外陸資買賣超股數(不含外資自營商)','外資自營商買賣超股數','投信買賣超股數','自營商買賣超股數','三大法人買賣超股數'];
+  const tpexFields=Array.from({length:24},(_,i)=>`欄${i}`);tpexFields[0]='代號';tpexFields[23]='三大法人買賣超股數合計';
+  return {marketDate:date,...api.institutionSourceUrls(date),twsePayload:{date:date.replaceAll('-',''),stat:'OK',fields,data:Array.from({length:800},(_,i)=>[String(1000+i),1,0,2,3,6])},
+    tpexPayload:{date:date.replaceAll('-',''),stat:'ok',tables:[{fields:tpexFields,data:Array.from({length:800},(_,i)=>{const row=Array(24).fill(0);row[0]=String(3000+i);row[10]=1;row[13]=2;row[22]=3;row[23]=6;return row;})}]}};
+};
+const fixture=institutionFixture('2026-09-16');
+const validated=api.validateInstitutionData(fixture,'2026-09-16');
+assert.equal(validated.counts.total,1600);
+for(const mutate of [body=>body.twsePayload.date='20260915',body=>body.twsePayload.data[0][1]='--',body=>body.tpexPayload.tables[0].data[0][23]=7,body=>body.twsePayload.data.push(body.twsePayload.data[0]),body=>body.tpexPayload.tables[0].fields.pop()]){
+  const bad=structuredClone(fixture);mutate(bad);assert.throws(()=>api.validateInstitutionData(bad,'2026-09-16'));
+}
+const instEnv={STOCKS_KV:new MemoryKV(),V7_DB:new MemoryD1(),ADMIN_TOKEN:'mock'};
+await instEnv.STOCKS_KV.put(api.KV_KEY,JSON.stringify(verifyConfig));
+for(const date of ['2026-09-16','2026-09-14','2026-09-11']) await api.writeInstitutionSnapshot(instEnv,date,validated.stocks);
+let streak=await api.readInstitutionStreakMap(instEnv,'2026-09-16');
+assert.equal(streak.ready,false);assert.deepEqual(streak.missingDates,['2026-09-15']);assert.equal(streak.stocks['1000'].foreignBuyDays,1);
+await api.writeInstitutionSnapshot(instEnv,'2026-09-15',validated.stocks);
+assert.equal((await api.readInstitutionStreakMap(instEnv,'2026-09-16')).stocks['1000'].foreignBuyDays,3);
+await api.writeInstitutionSnapshot(instEnv,'2026-09-16',{'1000':validated.stocks['1000']});
+assert.equal(instEnv.V7_DB.snapshots.get('2026-09-16').stock_count,1600,'Partial warmup cannot overwrite complete snapshot');
+assert.equal((await api.readInstitutionStreakMap(instEnv,'2026-09-17')).ready,false,'Old three snapshots do not prove today coverage');
+const ingestDate=api.mostRecentWeekday(new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Taipei',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date()));
+const ingestRequest=token=>new Request('https://example.invalid/api/institution-data',{method:'POST',headers:{'x-admin-token':token,'content-type':'application/json'},body:JSON.stringify(institutionFixture(ingestDate))});
+globalThis.fetch=async()=>new Response('[]');
+assert.equal((await api.default.fetch(ingestRequest('wrong'),instEnv)).status,401);
+const ingested=await api.default.fetch(ingestRequest('mock'),instEnv);
+assert.equal(ingested.status,200);assert.equal((await ingested.json()).noPlanChanges,true);
+assert.deepEqual(await instEnv.STOCKS_KV.get(api.KV_KEY,'json'),verifyConfig);
+globalThis.fetch=originalFetch;
 const csv = '\uFEFF出表日期,公司代號,公司名稱,已發行普通股數或TDR原股發行股數\r\n"1150916","1234","測試,名稱""A""","1000000"\r\n';
 assert.equal(api.parseOfficialCsv(csv)[0]['公司名稱'],'測試,名稱"A"');
 assert.throws(()=>api.parseOfficialCsv('<html>not data</html>'));
