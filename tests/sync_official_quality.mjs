@@ -45,6 +45,7 @@ const [twsePayload,tpexPayload]=await Promise.all([twseUrl,tpexUrl].map(async ur
 await sync({kind:'VALUATION',twseUrl,tpexUrl,twsePayload,tpexPayload});
 const announcementTwse='https://openapi.twse.com.tw/v1/opendata/t187ap04_L',announcementTpex='https://www.tpex.org.tw/openapi/v1/mopsfin_t187ap04_O';
 const [announcementsTwse,announcementsTpex]=await Promise.all([announcementTwse,announcementTpex].map(async url=>(await publicSource(url)).json()));
+console.log(JSON.stringify({officialAnnouncementSchemas:{TWSE:{fields:Object.keys(announcementsTwse[0] || {}),date:announcementsTwse[0]?.['發言日期']},TPEx:{fields:Object.keys(announcementsTpex[0] || {}),date:announcementsTpex[0]?.['發言日期']}}}));
 await sync({kind:'ANNOUNCEMENTS',twseUrl:announcementTwse,tpexUrl:announcementTpex,twsePayload:announcementsTwse,tpexPayload:announcementsTpex});
 const epsRows=helpers.parseOfficialCsv(await (await publicSource('https://mopsfin.twse.com.tw/opendata/t187ap14_L.csv')).text());
 const frequency=new Map();for(const row of epsRows){const key=`${Number(row['年度'])+1911}Q${Number(row['季別'])}`;frequency.set(key,(frequency.get(key) || 0)+1);}
@@ -61,7 +62,10 @@ for(let start=0;start<requests.length;start+=2) {
     const [y,q]=key.split('Q').map(Number),sourceUrl='https://mopsov.twse.com.tw/mops/web/ajax_t163sb04';
     const response=await publicSource(sourceUrl,{method:'POST',headers:{'content-type':'application/x-www-form-urlencoded'},
       body:new URLSearchParams({encodeURIComponent:'1',step:'1',firstin:'1',off:'1',TYPEK:market==='TWSE'?'s':'otc',year:String(y-1911),season:String(q).padStart(2,'0')})});
-    const stocks=helpers.parseMopsIncomeHtml(await response.text(),y,q);
+    const html=await response.text();
+    const incomeHeaders=[...html.matchAll(/<tr\b[^>]*>([\s\S]*?)<\/tr>/gi)].map(row=>[...row[1].matchAll(/<t[hd]\b[^>]*>([\s\S]*?)<\/t[hd]>/gi)].map(cell=>cell[1].replace(/<[^>]+>/g,'').replace(/\s+/g,''))).filter(row=>row[0]==='公司代號');
+    console.log(JSON.stringify({officialIncomeHeaders:incomeHeaders,market,year:y,quarter:q}));
+    const stocks=helpers.parseMopsIncomeHtml(html,y,q);
     console.log(JSON.stringify({officialFinancialPeriodParsed:true,market,year:y,quarter:q,count:Object.keys(stocks).length}));
     return {market,year:y,quarter:q,sourceUrl,stocks};
   }));periods.push(...batch);
