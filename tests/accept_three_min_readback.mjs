@@ -8,9 +8,26 @@ const getConfig=async()=>{
   return response.json();
 };
 const before=await getConfig();
-const verificationResponse=await fetch(origin+'/api/three-min/verify',{method:'POST',headers,signal:AbortSignal.timeout(40000)});
+// 先以GET核對新入口已生效：405代表路由存在且只接受POST；不讀外部3Min或寫入。
+let routeStatus;
+for(let attempt=0;attempt<6;attempt++) {
+  const probe=await fetch(origin+'/api/three-min/verify',{method:'GET',headers,signal:AbortSignal.timeout(10000)});
+  routeStatus=probe.status;
+  if([401,403].includes(routeStatus)) throw new Error('管理員授權未成功；停止，不替換憑證');
+  if(routeStatus===405) break;
+  if(attempt<5) await new Promise(resolve=>setTimeout(resolve,3000));
+}
+console.log(JSON.stringify({verificationRouteStatus:routeStatus}));
+assert.equal(routeStatus,405,'Readback route is not active yet; do not send a scan or import request');
+const verificationResponse=await fetch(origin+'/api/three-min/verify',{method:'POST',headers,body:'{}',signal:AbortSignal.timeout(40000)});
 if([401,403].includes(verificationResponse.status)) throw new Error('管理員或3Min讀回授權失敗；停止，不替換憑證');
-const result=await verificationResponse.json();
+const responseText=await verificationResponse.text();
+if(!verificationResponse.ok || !responseText.trim().startsWith('{')) {
+  console.log(JSON.stringify({verificationHttpStatus:verificationResponse.status,contentType:verificationResponse.headers.get('content-type'),plainNotFound:responseText.trim()==='Not Found'}));
+  assert.deepEqual(await getConfig(),before,'Even a failed readback request must preserve targets');
+  throw new Error('讀回驗證入口HTTP未成功或非JSON；未重送選股或外部寫入');
+}
+const result=JSON.parse(responseText);
 console.log(JSON.stringify({existingThreeMinReadback:result,noNewScanOrExternalWrite:true}));
 assert.equal(verificationResponse.ok,true);
 assert.equal(result.noSelectionOrExternalWrite,true);
