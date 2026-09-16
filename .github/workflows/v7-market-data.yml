@@ -3,6 +3,7 @@ on:
   schedule:
     - cron: '55 9 * * 1-5'
     - cron: '5 10 * * 1-5'
+    - cron: '20 10 * * 1-5'
   workflow_dispatch:
 permissions:
   contents: read
@@ -29,3 +30,7 @@ jobs:
         env:
           V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
         run: node tests/sync_official_quality.mjs
+      - name: Recover missing same-day analysis after complete data (skip prior success)
+        env:
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+        run: node tests/recover_after_market.mjs
