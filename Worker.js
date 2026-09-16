@@ -13,7 +13,7 @@
 // Cron expression: 0-24 5 * * MON-FRI // 台灣 13:00-13:24 每分鐘
 // Cron expression: * 9 * * MON-FRI     // 台灣 17:00-17:59 每分鐘建立歷史日K快取＋逐日法人快照
 // Cron expression: 10 10 * * MON-FRI  // 台灣 18:10 盤後掃描
-const VERSION = "7.5.23-scheduled-health-verification";
+const VERSION = "7.5.24-durable-push-reservation";
 const TEST_MODE_DEFAULT = true;
 const KV_KEY = "STOCK_CONFIG_V7";
 const LEGACY_KV_KEY = "STOCK_CONFIG_V6";
@@ -3162,21 +3162,36 @@ async function processSignalStateCore(result, env, tradeDate = taiwanDate(), aut
   });
   const activeTypes = activeSignals.map(signal => signal.type);
   const activeTypeSet = new Set(activeTypes);
+  // 缺行情不能判定訊號已解除，保留上一輪鎖定及未明傳輸紀錄。
+  const stillActive = type => activeTypeSet.has(type) || (result.executionData && !(type === "EARLY_ALERT_10M" ? result.executionData.auxiliary10Fresh : result.executionData.formal15Fresh));
   const delivered = [];
   const storedActive = new Set(
-    [...previousActive].filter(type => activeTypeSet.has(type))
+    [...previousActive].filter(type => stillActive(type))
   );
   const stageNow = String(result.plan?.positionStage || "NONE");
   const fired = new Set([...previousFired].filter(key => {
     const separator = key.indexOf(":");
-    return key.slice(0, separator) === stageNow && activeTypeSet.has(key.slice(separator + 1));
+    return key.slice(0, separator) === stageNow && stillActive(key.slice(separator + 1));
   }));
   const stage = String(result.plan?.positionStage || "NONE");
   const episodes = { ...(previous.episodes || {}) };
+  const pendingDeliveries = Object.fromEntries(Object.entries(previous.pendingDeliveries || {}).filter(([key]) => {
+    const separator=key.indexOf(":");
+    return key.slice(0,separator) === stage && stillActive(key.slice(separator+1));
+  }));
+  const persistCurrent = async () => {
+    const snapshot={tradeDate,testMode:isTestMode(env),active:[...storedActive].sort(),fired:[...fired].sort(),positionStage:stage,episodes,pendingDeliveries,lastEntrySignalBarTime,updatedAt:new Date().toISOString()};
+    if(saveState) await saveState(snapshot);
+    else await env.STOCKS_KV.put(key,JSON.stringify(snapshot),{expirationTtl:SIGNAL_STATE_TTL_SECONDS});
+  };
 
   for (const signal of activeSignals) {
     // 同一持續成立的訊號只通知一次；解除後移除鎖定，再成立可再次通知。
     const firedKey = `${stage}:${signal.type}`;
+    if (pendingDeliveries[firedKey]) {
+      // 上次可能已被接收端接受；沒有端到端冪等契約，禁止盲目重送。
+      continue;
+    }
     if (fired.has(firedKey)) {
       storedActive.add(signal.type);
       continue;
@@ -3200,8 +3215,19 @@ async function processSignalStateCore(result, env, tradeDate = taiwanDate(), aut
       continue;
     }
 
+    const reserve = !isTestMode(env) && Boolean(env.PUSH_WEBHOOK_URL);
+    if(reserve) {
+      if(!saveState) throw new Error("真實推播必須先取得D1權威儲存");
+      pendingDeliveries[firedKey]={signalId:payload.signalId,episode,status:"RESERVED",reservedAt:new Date().toISOString()};
+      episodes[firedKey]=episode;
+      await persistCurrent(); // 成功持久化才可呼叫接收端；崩潰後不能重送同一輪。
+    }
     const outcome = await sendPush(payload, env);
-    delivered.push({ ...payload, ...outcome });
+    if(reserve) {
+      if(outcome.sent) delete pendingDeliveries[firedKey];
+      else pendingDeliveries[firedKey]={...pendingDeliveries[firedKey],status:outcome.httpStatus ? "REJECTED_OR_UNKNOWN" : "UNKNOWN",httpStatus:outcome.httpStatus || null,checkedAt:new Date().toISOString()};
+    }
+    delivered.push({ ...payload, ...outcome, ...(reserve ? {deliveryState:outcome.sent ? "ACCEPTED" : pendingDeliveries[firedKey].status,automaticRetryBlocked:!outcome.sent} : {}) });
     if (outcome.sent) {
       storedActive.add(signal.type);
       fired.add(firedKey);
@@ -3216,12 +3242,14 @@ async function processSignalStateCore(result, env, tradeDate = taiwanDate(), aut
     fired: [...fired].sort(),
     positionStage: stage,
     episodes,
+    pendingDeliveries,
     lastEntrySignalBarTime: delivered.some(item => ["BUY", "ADD"].includes(item.signalType) && item.sent === true) && entryBarTime ? entryBarTime : lastEntrySignalBarTime,
     updatedAt: new Date().toISOString()
   };
   const oldComparable = {
     testMode: previous.testMode,
     episodes: previous.episodes || {},
+    pendingDeliveries: previous.pendingDeliveries || {},
     lastEntrySignalBarTime: previous.lastEntrySignalBarTime || null,
     tradeDate: previous.tradeDate || tradeDate,
     active: [...previousActive].sort(),
@@ -3231,6 +3259,7 @@ async function processSignalStateCore(result, env, tradeDate = taiwanDate(), aut
   const newComparable = {
     testMode: nextState.testMode,
     episodes: nextState.episodes,
+    pendingDeliveries: nextState.pendingDeliveries,
     lastEntrySignalBarTime: nextState.lastEntrySignalBarTime,
     tradeDate: nextState.tradeDate,
     active: nextState.active,
