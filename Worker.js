@@ -13,7 +13,7 @@
 // Cron expression: 0-24 5 * * MON-FRI // 台灣 13:00-13:24 每分鐘
 // Cron expression: * 9 * * MON-FRI     // 台灣 17:00-17:59 每分鐘建立歷史日K快取＋逐日法人快照
 // Cron expression: 10 10 * * MON-FRI  // 台灣 18:10 盤後掃描
-const VERSION = "7.5.12-dated-twse-repair";
+const VERSION = "7.5.13-official-market-cache";
 const TEST_MODE_DEFAULT = true;
 const KV_KEY = "STOCK_CONFIG_V7";
 const LEGACY_KV_KEY = "STOCK_CONFIG_V6";
@@ -123,6 +123,25 @@ export default {
       bindings: { kv: !!env.STOCKS_KV, d1: !!env.V7_DB },
       readiness: { quote: !!env.FUGLE_API_KEY, phonePush: !!env.PUSH_WEBHOOK_URL, threeMin: !!env.THREEMIN_API_URL,
         threeMinReadback: !!env.THREEMIN_VERIFY_URL }, requirements30Complete: false, monitorUrl: url.origin }, 200, true);
+
+    // 正常管理員授權的官方行情同步，不下單、不改標的或交易計畫。
+    if (url.pathname === "/api/market-data") {
+      if (!isAuthorized(request, env)) return json({error:"ADMIN_TOKEN 錯誤"},401,true);
+      if (request.method !== "POST") return json({error:"Method not allowed"},405,true);
+      try {
+        const body = await request.json();
+        const date = normalizeMarketDate(body.marketDate);
+        const market = body.market;
+        if (!["TWSE","TPEx"].includes(market) || !date || date !== taiwanDate()) throw new Error("只能同步台灣當日的官方市場資料");
+        if (body.sourceUrl !== officialClosingUrl(market,date)) throw new Error("來源不是指定日期的官方行情端點");
+        const rows = normalizeClosingPayload(body.payload,market,date);
+        const entry = {market,marketDate:date,sourceUrl:body.sourceUrl,collectedAt:new Date().toISOString(),rows};
+        await env.STOCKS_KV.put(`V7_OFFICIAL_CLOSING:${market}:${date}`,JSON.stringify(entry),{expirationTtl:7*86400});
+        const actual = await env.STOCKS_KV.get(`V7_OFFICIAL_CLOSING:${market}:${date}`,"json");
+        if (actual?.collectedAt !== entry.collectedAt || actual?.rows?.length !== rows.length) throw new Error("行情快取讀回不一致");
+        return json({ok:true,verified:true,market,marketDate:date,count:rows.length,monitorUrl:url.origin},200,true);
+      } catch(err) { return json({error:String(err)},400,true); }
+    }
 
     // 第21條：只重算未建倉交易計畫；不執行下單、不更動實際持股。
     if (url.pathname === "/api/capital") {
@@ -3567,13 +3586,28 @@ async function fetchClosingRowsWithFallback(env, market, expectedDate) {
   const primary = market === "TWSE" ? env.TWSE_DAILY_URL || TWSE_DAILY_URL : env.TPEX_DAILY_URL || TPEX_DAILY_URL;
   try { return await fetchMarketRows(primary, market, expectedDate); }
   catch (err) {
-    const dated = market === "TWSE"
-      ? `https://www.twse.com.tw/exchangeReport/MI_INDEX?response=json&date=${expectedDate.replaceAll("-", "")}&type=ALLBUT0999`
-      : `https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?date=${encodeURIComponent(expectedDate.replaceAll("-", "/"))}&id=&response=json`;
-    const rows = await fetchMarketRows(dated, market, expectedDate);
-    rows.source = market === "TWSE" ? "TWSE_OFFICIAL_DATED_API" : "TPEX_OFFICIAL_DATED_API";
-    return rows;
+    try {
+      const rows = await fetchMarketRows(officialClosingUrl(market,expectedDate), market, expectedDate);
+      rows.source = market === "TWSE" ? "TWSE_OFFICIAL_DATED_API" : "TPEX_OFFICIAL_DATED_API";
+      return rows;
+    } catch (datedError) {
+      const cached = env.STOCKS_KV ? await env.STOCKS_KV.get(`V7_OFFICIAL_CLOSING:${market}:${expectedDate}`,"json") : null;
+      const minimum = market === "TWSE" ? 600 : 450;
+      if (cached?.market === market && cached.marketDate === expectedDate && cached.sourceUrl === officialClosingUrl(market,expectedDate)
+          && Array.isArray(cached.rows) && cached.rows.length >= minimum && cached.rows.every(row=>row.market===market && row.closeDate===expectedDate && row.close>=MIN_CLOSE_PRICE)) {
+        const rows = cached.rows;
+        rows.source = "OFFICIAL_DATED_ACTIONS_CACHE";
+        return rows;
+      }
+      throw datedError;
+    }
   }
+}
+
+function officialClosingUrl(market,date) {
+  return market === "TWSE"
+    ? `https://www.twse.com.tw/exchangeReport/MI_INDEX?response=json&date=${date.replaceAll("-", "")}&type=ALLBUT0999`
+    : `https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?date=${encodeURIComponent(date.replaceAll("-", "/"))}&id=&response=json`;
 }
 
 function normalizeMarketDate(value) {
@@ -3590,6 +3624,10 @@ async function fetchMarketRows(url, market, expectedDate = null) {
     `${market}盤後資料`,
     4
   );
+  return normalizeClosingPayload(payload,market,expectedDate);
+}
+
+function normalizeClosingPayload(payload,market,expectedDate = null) {
   const table = payload?.tables?.find(item => Array.isArray(item.fields) && Array.isArray(item.data) && (item.fields.includes("代號") || item.fields.includes("證券代號")));
   const source = Array.isArray(payload) ? payload : table
     ? table.data.map(values => Object.fromEntries(table.fields.map((field, index) => [field, values[index]]))) : payload?.data;
@@ -3603,6 +3641,7 @@ async function fetchMarketRows(url, market, expectedDate = null) {
   }).filter(Boolean);
   const minimum = market === "TWSE" ? 600 : 450;
   if (rows.length < minimum) throw new Error(`${market}正式盤後資料不足：${rows.length}/${minimum}`);
+  if (new Set(rows.map(row=>row.symbol)).size !== rows.length) throw new Error(`${market}官方資料代號重複，拒絕快取或掃描`);
   return rows;
 }
 
