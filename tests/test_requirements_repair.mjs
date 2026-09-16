@@ -83,6 +83,22 @@ await assert.rejects(api.fetchMarketRows('https://example.invalid', 'TPEx', '202
 let calls = 0;
 globalThis.fetch = async () => ++calls === 1 ? new Response('', {status:302}) : new Response(JSON.stringify(table));
 assert.equal((await api.fetchClosingRowsWithFallback({}, 'TPEx', '2026-09-16')).source, 'TPEX_OFFICIAL_DATED_API');
+const twseTable = {date:'20260916',stat:'OK',tables:[{fields:['證券代號','證券名稱','成交股數','成交金額','開盤價','最高價','最低價','收盤價','漲跌(+/-)','漲跌價差'],
+  data:Array.from({length:600},(_,i)=>[String(1000+i),'上市測試','5000000','500000000',101,102,99,100,'<p style=color:green>-</p>',2])}]};
+calls=0;
+globalThis.fetch=async url=>{
+  calls++;
+  if(calls===1) return new Response(JSON.stringify([{Date:'20260915',Code:'2330',Name:'台積電',ClosingPrice:2380}]));
+  assert.match(String(url),/date=20260916/);
+  return new Response(JSON.stringify(twseTable));
+};
+const datedTwseRows=await api.fetchClosingRowsWithFallback({},'TWSE','2026-09-16');
+assert.equal(datedTwseRows.source,'TWSE_OFFICIAL_DATED_API');
+assert.equal(datedTwseRows.length,600);
+assert.equal(datedTwseRows[0].closeDate,'2026-09-16');
+assert.equal(datedTwseRows[0].changePercent,-2/102*100);
+globalThis.fetch=async()=>new Response(JSON.stringify({...twseTable,date:'20260915'}));
+await assert.rejects(api.fetchClosingRowsWithFallback({},'TWSE','2026-09-16'),/日期2026-09-15/);
 globalThis.fetch = originalFetch;
 const qualified = {symbol:'1234',name:'合格測試',close:101,historyDays:65,marketCapYi:200,changePercent:1,
   avgVolume20Lots:5000,atrPercent:2,ma5:99,ma10:98,ma20:97,ma60:95,prevMa20:96,bullishStack:true,
