@@ -37,3 +37,7 @@ Latest repairs7.5.21: read REQUIREMENTS_30.md latest-state section before its hi
 ## Delivery reservation repair: 7.5.24
 
 Signal sending now persists pendingDeliveries per episode before external POST under the existing D1 lease. Unknown responses, rejection, or a crash before ACK persistence suppress continuous-episode retries. Stale execution metadata does not release prior fired/pending signals. Genuine release permits a new episode. Missing webhook does not reserve. Mock ambiguity/crash/403/staleness/reactivation cases pass; no real phone acceptance claim. Conservative at-most-one send attempt can miss a notification when interrupted before POST; do not call this exactly-once or invent a receiver query/idempotency contract. Rules17/18/19/27 still need real end-to-end acceptance.
+
+## Rule11 continued: 7.5.25
+
+Official candidate EPS review now fetches the previous actual quarter for Q2/Q3 and validates company/year/quarter/duration independently server-side. Final selection requires both direct reported quarter values. Q1 prior Q4 remains unsupported, not a requirement for nonexistent future quarters. Negative/zero same-year comparison bases retain null YoY percentages and explicit separate turnaround/loss flags. Actual comparison readiness is separate from percentage readiness. Previous EPS availability does not prove split/restatement comparability: adjusted QoQ remains null, not used for scoring. Rule11 remains partially complete pending that evidence; preserve current plans/capital and use data-only deployment acceptance.
