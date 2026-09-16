@@ -8,7 +8,7 @@ class MemoryKV {
   async get(key, type) { const raw = this.values.get(key); return raw === undefined ? null : type === 'json' ? JSON.parse(raw) : raw; }
   async put(key, value) { this.values.set(key, value); }
 }
-const qualityApi=await import('data:text/javascript;base64,'+Buffer.from(source+'\nexport {validateOfficialQualityData,writeQualitySnapshot,readQualitySnapshot,recentWeekdays,selectTomorrowCandidates,parseMopsIncomeHtml,deriveQuarterlyFinancials};').toString('base64'));
+const qualityApi=await import('data:text/javascript;base64,'+Buffer.from(source+'\nexport {validateOfficialQualityData,writeQualitySnapshot,readQualitySnapshot,recentWeekdays,selectTomorrowCandidates,parseMopsIncomeHtml,parseMopsMarketOptions,deriveQuarterlyFinancials,analyzeFrame,executionDataStatus};').toString('base64'));
 class MemoryD1 {
   snapshots=new Map();
   quality=new Map();
@@ -42,6 +42,19 @@ const result = () => ({
   frame15: { latest: { close: 120, bearish: false, volumeRatio: 0.8 } },
 });
 const env = { STOCKS_KV: new MemoryKV(), TEST_MODE: 'true' };
+const freshnessNow=Date.parse('2026-09-16T01:31:00Z'),currentQuote={date:'2026-09-16',symbol:'TEST',closePrice:120,lastUpdated:(freshnessNow-1000)*1000};
+const frame15Fixture={latest:{time:'2026-09-16T01:15:00Z'}},frame10Fixture={latest:{time:'2026-09-16T01:20:00Z'}};
+assert.equal(qualityApi.executionDataStatus(currentQuote,frame10Fixture,frame15Fixture,'TEST',freshnessNow).formal15Fresh,true);
+assert.equal(qualityApi.executionDataStatus({...currentQuote,lastUpdated:freshnessNow-1000},frame10Fixture,frame15Fixture,'TEST',freshnessNow).quoteFresh,false,'Do not misread milliseconds as official microseconds');
+assert.equal(qualityApi.executionDataStatus({...currentQuote,isTrial:true},frame10Fixture,frame15Fixture,'TEST',freshnessNow).formal15Fresh,false);
+assert.equal(qualityApi.executionDataStatus(currentQuote,frame10Fixture,{latest:{time:'2026-09-15T01:15:00Z'}},'TEST',freshnessNow).formal15Fresh,false);
+assert.equal(qualityApi.executionDataStatus({...currentQuote,lastUpdated:(freshnessNow-120000)*1000},frame10Fixture,frame15Fixture,'TEST',freshnessNow).quoteFresh,false);
+const freshBar=time=>({date:time,open:120,high:121,low:119,close:120,volume:100});
+const validatedFrame=qualityApi.analyzeFrame({data:[freshBar('2026-09-16T01:30:00Z'),freshBar('2026-09-15T01:15:00Z'),freshBar('2026-09-16T01:15:00Z')]},15,freshnessNow);
+assert.equal(validatedFrame.completedBars,1,'Exclude forming and prior-day candles');
+assert.throws(()=>qualityApi.analyzeFrame({data:[freshBar('2026-09-16T01:15:00Z'),freshBar('2026-09-16T01:15:00Z')]},15,freshnessNow),/重複/);
+const staleSignal={...result(),executionData:{formal15Fresh:false,auxiliary10Fresh:false}};
+assert.equal((await api.processSignalState(staleSignal,{STOCKS_KV:new MemoryKV(),TEST_MODE:'true'},'2026-09-16')).length,0);
 const first = await api.processSignalState(result(), env, '2026-09-16');
 assert.equal(first.length, 1);
 assert.equal((await api.processSignalState(result(), env, '2026-09-16')).length, 0);
@@ -327,6 +340,8 @@ const financialPeriods=[{year:2026,quarter:1,stocks:{'1234':{revenueYTD:100,gros
 const financial=qualityApi.deriveQuarterlyFinancials(financialPeriods,2026,2)['1234'];
 assert.equal(financial.quarterRevenue,150);assert.equal(financial.quarterEPS,2);assert.equal(financial.revenueQoQ,50);assert.equal(financial.revenueQuarterYoY,50);assert.equal(financial.epsYoY,null);assert.equal(financial.grossMargin,40);assert.equal(financial.grossMarginYoY,15);
 const incomeHtml='累計金額 新台幣仟元 <table><tr>'+['公司 代號','公司名稱','營業收入','營業毛利（毛損）淨額','營業利益（損失）','基本每股盈餘（元）'].map(field=>`<th>${field}</th>`).join('')+'</tr>'+Array.from({length:500},(_,index)=>`<tr><td>${5000+index}</td><td>測試</td><td>1,000</td><td>300</td><td>200</td><td>1.5</td></tr>`).join('')+'</table>';
+assert.deepEqual(qualityApi.parseMopsMarketOptions('<select name="TYPEK"><option value="sii">上市</option><option value="otc">上櫃</option></select>'),{TWSE:'sii',TPEx:'otc'});
+assert.throws(()=>qualityApi.parseMopsMarketOptions('<select name="TYPEK"><option value="s">全部</option></select>'),/不猜測/);
 assert.equal(qualityApi.parseMopsIncomeHtml(incomeHtml,2026,2)['5000'].grossYTD,300);
 assert.throws(()=>qualityApi.parseMopsIncomeHtml(incomeHtml.replaceAll('累計金額','單季資料'),2026,2));
 const tdccFixture={kind:'TDCC',sourceUrl:'https://opendata.tdcc.com.tw/getOD.ashx?id=1-5',rows:Array.from({length:1500},(_,index)=>Array.from({length:17},(_,offset)=>({'資料日期':'20260911','證券代號':String(6000+index),'持股分級':String(offset+1),'股數':offset===16?'1500':offset===15?'0':'100','占集保庫存數比例%':offset===16?'100':offset===15?'0':'6.67'}))).flat()};
