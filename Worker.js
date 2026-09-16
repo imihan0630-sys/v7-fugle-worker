@@ -13,7 +13,7 @@
 // Cron expression: 0-24 5 * * MON-FRI // 台灣 13:00-13:24 每分鐘
 // Cron expression: * 9 * * MON-FRI     // 台灣 17:00-17:59 每分鐘建立歷史日K快取＋逐日法人快照
 // Cron expression: 10 10 * * MON-FRI  // 台灣 18:10 盤後掃描
-const VERSION = "7.5.14-three-min-readback";
+const VERSION = "7.5.15-current-institution-data";
 const TEST_MODE_DEFAULT = true;
 const KV_KEY = "STOCK_CONFIG_V7";
 const LEGACY_KV_KEY = "STOCK_CONFIG_V6";
@@ -146,6 +146,24 @@ export default {
       await env.STOCKS_KV.put(LAST_SCAN_KEY,JSON.stringify(updated),{expirationTtl:14*86400});
       return json({verified:verification.verified===true,scanDate:latest.scanDate,planDate:expected.planDate,selectedCount:expected.stocks.length,
         verification:audit,pipeline:updated.pipeline,noSelectionOrExternalWrite:true,monitorUrl:url.origin},200,true);
+    }
+
+    if(url.pathname==="/api/institution-data") {
+      if(!isAuthorized(request,env)) return json({error:"ADMIN_TOKEN 錯誤"},401,true);
+      if(request.method!=="POST") return json({error:"Method not allowed"},405,true);
+      try {
+        const body=await request.json();
+        const date=normalizeMarketDate(body.marketDate);
+        if(!date || new Date(date+'T00:00:00Z').toISOString().slice(0,10)!==date || date>taiwanDate() || date<shiftDateString(taiwanDate(),-14)) throw new Error("法人日期無效、未來或超過14天");
+        await loadTradingCalendar(env,Number(date.slice(0,4)));
+        if(!isTradingDate(date)) throw new Error("法人日期不是交易日");
+        const validated=validateInstitutionData(body,date);
+        await writeInstitutionSnapshot(env,date,validated.stocks);
+        const actual=(await readInstitutionSnapshotRows(env,date,1))[0];
+        if(actual?.market_date!==date || actual.stock_count!==Object.keys(validated.stocks).length || JSON.stringify(JSON.parse(actual.snapshot_json))!==JSON.stringify(validated.stocks)) throw new Error("法人資料D1讀回不一致");
+        const streak=await readInstitutionStreakMap(env,date);
+        return json({ok:true,verified:true,marketDate:date,counts:validated.counts,streak:{ready:streak.ready,validDates:streak.validDates,missingDates:streak.missingDates},noPlanChanges:true},200,true);
+      } catch(err) {return json({error:String(err)},400,true);}
     }
 
     // 正常管理員授權的官方行情同步，不下單、不改標的或交易計畫。
@@ -1065,7 +1083,7 @@ function recentWeekdays(endDate, count = INSTITUTION_SNAPSHOT_LOOKBACK_WEEKDAYS)
   while (dates.length < count) {
     const [y, m, d] = current.split("-").map(Number);
     const dow = new Date(Date.UTC(y, m - 1, d, 12)).getUTCDay();
-    if (dow !== 0 && dow !== 6) dates.push(current);
+    if (dow !== 0 && dow !== 6 && isTradingDate(current)) dates.push(current);
     current = shiftDateString(current, -1);
   }
   return dates;
@@ -1115,7 +1133,8 @@ async function writeInstitutionSnapshot(env, marketDate, stocks) {
       snapshot_json = excluded.snapshot_json,
       stock_count = excluded.stock_count,
       updated_at = excluded.updated_at
-  `).bind(String(marketDate), JSON.stringify(clean), Object.keys(clean).length, new Date().toISOString()).run();
+    WHERE excluded.stock_count >= ?5 OR v7_institution_snapshots.stock_count < ?5
+  `).bind(String(marketDate), JSON.stringify(clean), Object.keys(clean).length, new Date().toISOString(),INSTITUTION_SNAPSHOT_MIN_STOCKS).run();
   return { stored: true, stockCount: Object.keys(clean).length };
 }
 
@@ -1164,6 +1183,45 @@ function parseTpexInstitutionPayload(payload) {
   return stocks;
 }
 
+function institutionSourceUrls(date) {
+  return {twseUrl:`https://www.twse.com.tw/rwd/zh/fund/T86?response=json&date=${date.replaceAll('-','')}&selectType=ALL`,
+    tpexUrl:`https://www.tpex.org.tw/www/zh-tw/insti/dailyTrade?type=Daily&sect=EW&date=${encodeURIComponent(rocDateString(date))}&id=&response=json`};
+}
+
+function validateInstitutionData(body,date) {
+  const urls=institutionSourceUrls(date);
+  if(body.twseUrl!==urls.twseUrl || body.tpexUrl!==urls.tpexUrl) throw new Error("法人來源不是指定日期官方端點");
+  const twse=body.twsePayload,tpex=body.tpexPayload;
+  for(const payload of [twse,tpex]) if(normalizeMarketDate(payload?.date)!==date || String(payload?.stat || '').toUpperCase()!=='OK') throw new Error("官方法人資料日期不符或未成功");
+  const fields=twse.fields || [];
+  const seenTwse=new Set(),seenTpex=new Set();
+  const names=['證券代號','外陸資買賣超股數(不含外資自營商)','外資自營商買賣超股數','投信買賣超股數','自營商買賣超股數','三大法人買賣超股數'];
+  if(!Array.isArray(twse.data) || names.some(name=>!fields.includes(name))) throw new Error("上市法人欄位缺失");
+  for(const values of twse.data) {
+    const code=String(values[fields.indexOf('證券代號')] || '').trim();
+    if(!/^[1-9][0-9]{3}$/.test(code)) continue;
+    if(seenTwse.has(code)) throw new Error("上市法人代號重複");
+    seenTwse.add(code);
+    if(names.slice(1).some(name=>marketNumber(values[fields.indexOf(name)])===null)) throw new Error("上市法人數值缺失，不補0");
+  }
+  const table=tpex.tables?.[0];
+  if(!Array.isArray(table?.data) || table.fields?.length!==24 || table.fields[0]!=='代號' || table.fields[23]!=='三大法人買賣超股數合計') throw new Error("上櫃法人欄位結構變更，拒絕推測索引");
+  for(const values of table.data) {
+    const code=String(values[0] || '').replaceAll('=','').replaceAll('"','').trim();
+    if(!/^[1-9][0-9]{3}$/.test(code)) continue;
+    if(seenTpex.has(code)) throw new Error("上櫃法人代號重複");
+    seenTpex.add(code);
+    if([10,13,22,23].some(index=>marketNumber(values[index])===null)) throw new Error("上櫃法人數值缺失，不補0");
+  }
+  const twseStocks=parseTwseInstitutionPayload(twse),tpexStocks=parseTpexInstitutionPayload(tpex);
+  if(Object.keys(twseStocks).length<600 || Object.keys(tpexStocks).length<450) throw new Error("兩市場官方法人覆蓋不足");
+  if(Object.keys(twseStocks).some(code=>tpexStocks[code])) throw new Error("跨市場法人代號重複");
+  const stocks={...twseStocks,...tpexStocks};
+  if(Object.keys(stocks).length<INSTITUTION_SNAPSHOT_MIN_STOCKS) throw new Error("法人合併快照不足1500檔");
+  if(Object.values(stocks).some(stock=>stock.foreignNet+stock.trustNet+stock.dealerNet!==stock.institutionTotalNet)) throw new Error("法人總買賣超與三方加總不一致");
+  return {stocks,counts:{TWSE:Object.keys(twseStocks).length,TPEx:Object.keys(tpexStocks).length,total:Object.keys(stocks).length}};
+}
+
 async function fetchInstitutionSnapshotForDate(marketDate) {
   const ymd = String(marketDate).replaceAll("-", "");
   const twseUrl = `https://www.twse.com.tw/rwd/zh/fund/T86?response=json&date=${encodeURIComponent(ymd)}&selectType=ALL`;
@@ -1177,8 +1235,8 @@ async function fetchInstitutionSnapshotForDate(marketDate) {
       .catch(err => ({ ok: false, error: String(err) }))
   ]);
 
-  const twseStocks = twseResult.ok && "payload" in twseResult ? parseTwseInstitutionPayload(twseResult.payload) : {};
-  const tpexStocks = tpexResult.ok && "payload" in tpexResult ? parseTpexInstitutionPayload(tpexResult.payload) : {};
+  const twseStocks = twseResult.ok && "payload" in twseResult && normalizeMarketDate(twseResult.payload.date)===marketDate && String(twseResult.payload.stat || '').toUpperCase()==='OK' ? parseTwseInstitutionPayload(twseResult.payload) : {};
+  const tpexStocks = tpexResult.ok && "payload" in tpexResult && normalizeMarketDate(tpexResult.payload.date)===marketDate && String(tpexResult.payload.stat || '').toUpperCase()==='OK' ? parseTpexInstitutionPayload(tpexResult.payload) : {};
   return {
     marketDate,
     stocks: { ...twseStocks, ...tpexStocks },
@@ -1204,7 +1262,7 @@ async function seedInstitutionSnapshotStep(env, marketDate) {
   // 完整交易日已達標時，不再為更舊的 partial 日期重抓，避免一鍵暖機每輪多做無效官方 API 呼叫。
   const completeRowsNow = existing.filter(isCompleteInstitutionSnapshotRow);
   const validDatesNow = completeRowsNow.map(row => row.market_date).slice(0, INSTITUTION_STREAK_MAX_DAYS);
-  if (validDatesNow.length >= INSTITUTION_STREAK_MAX_DAYS) {
+  if (targetDates.slice(0,INSTITUTION_STREAK_MAX_DAYS).every(date=>isCompleteInstitutionSnapshotRow(existingByDate.get(date)))) {
     return {
       version: VERSION,
       skipped: true,
@@ -1271,7 +1329,10 @@ async function readInstitutionStreakMap(env, marketDate) {
       snapshots.push({ date: String(row.market_date || ""), stocks, stockCount: count });
     } catch (_) {}
   }
-  const valid = snapshots.slice(0, INSTITUTION_STREAK_MAX_DAYS);
+  const expectedDates=recentWeekdays(marketDate,INSTITUTION_STREAK_MAX_DAYS);
+  const byDate=new Map(snapshots.map(snapshot=>[snapshot.date,snapshot]));
+  const missingDates=expectedDates.filter(date=>!byDate.has(date));
+  const valid = expectedDates.map(date=>byDate.get(date)).filter(Boolean);
   const symbols = new Set();
   for (const snap of valid) for (const symbol of Object.keys(snap.stocks || {})) symbols.add(symbol);
   const zero = { foreignNet: 0, trustNet: 0, dealerNet: 0, institutionTotalNet: 0 };
@@ -1279,22 +1340,23 @@ async function readInstitutionStreakMap(env, marketDate) {
   for (const symbol of symbols) {
     // 完整交易日中若官方表沒有該股票，視為當日法人 0，不視為「缺一天」。
     // 這樣 historyDays 代表市場歷史覆蓋，連買則仍會被 0 正確中斷。
-    const sequence = valid.map(snap => snap.stocks?.[symbol] || zero);
+    const sequence = expectedDates.map(date=>byDate.has(date) ? byDate.get(date).stocks?.[symbol] || zero : undefined);
     output[symbol] = {
       foreignBuyDays: consecutivePositiveSnapshotDays(sequence, "foreignNet"),
       trustBuyDays: consecutivePositiveSnapshotDays(sequence, "trustNet"),
       dealerBuyDays: consecutivePositiveSnapshotDays(sequence, "dealerNet"),
-      institutionHistoryDays: valid.length
+      institutionHistoryDays: sequence.findIndex(item=>!item)>=0 ? sequence.findIndex(item=>!item) : sequence.length
     };
   }
   return {
     stocks: output,
     validDates: valid.map(item => item.date),
+    missingDates,
     snapshotCount: rows.length,
     completeSnapshotCount: snapshots.length,
     partialDates,
     snapshotCounts: rows.map(row => ({ date: row.market_date, stockCount: Number(row.stock_count || 0), complete: isCompleteInstitutionSnapshotRow(row) })),
-    ready: valid.length >= INSTITUTION_STREAK_MAX_DAYS
+    ready: missingDates.length===0
   };
 }
 
@@ -3387,6 +3449,7 @@ async function runAfterMarketScanCore(env, scheduledTime = Date.now(), options =
   // 因此 rows / marketState 永遠拿不到 foreignBuyDays / trustBuyDays / dealerBuyDays，
   // 診斷才會出現 institutionHistory ready=true 但個股 institutionHistoryDays=0。
   const institutionHistory = await readInstitutionStreakMap(env, marketDate);
+  if(!institutionHistory.ready) throw new Error(`DATA_INCOMPLETE：最近3個交易日法人快照缺失(${institutionHistory.missingDates.join(',')})，不能用跨缺日連買分數選股`);
   enrichment.stocks ||= {};
   for (const [symbol, streak] of Object.entries(institutionHistory.stocks || {})) {
     if (!enrichment.stocks[symbol]) enrichment.stocks[symbol] = { symbol };
@@ -3923,7 +3986,7 @@ async function fetchOfficialEnrichment(env, scanDate) {
     } else {
       const hasTwseOnly = maps.twseRevenue.has(symbol) || maps.twseProfit.has(symbol) || maps.twseEps.has(symbol);
       const hasTpexOnly = maps.tpexRevenue.has(symbol) || maps.tpexProfit.has(symbol) || maps.tpexEps.has(symbol);
-      isTwse = hasTwseOnly && !hasTpexOnly;
+      isTwse = hasTwseOnly && !hasTpexOnly ? true : hasTpexOnly && !hasTwseOnly ? false : null;
     }
     const sharesOutstanding = marketNumber(
       isTwse
@@ -3965,7 +4028,7 @@ async function fetchOfficialEnrichment(env, scanDate) {
     stocks[symbol] = {
       symbol,
       name: companyName,
-      market: isTwse ? "TWSE" : "TPEx",
+      market: isTwse===null ? null : isTwse ? "TWSE" : "TPEx",
       industry,
       industryCode: String(pick(twse, ["產業別"]) || pick(tpex, ["SecuritiesIndustryCode", "產業別"]) || "").trim(),
       sharesOutstanding,
