@@ -1,6 +1,7 @@
 // Public-source diagnostics only: no credentials, administrator writes, selection or pushes.
 const sources=[
   ['runtime','https://fugle-test.imihan0630.workers.dev/api/version'],
+  ['twseAnnouncements','https://openapi.twse.com.tw/v1/opendata/t187ap04_L'],
   ['taiexCurrent','https://www.twse.com.tw/exchangeReport/FMTQIK?response=json&date=20260901'],
   ['taiexPrevious','https://www.twse.com.tw/exchangeReport/FMTQIK?response=json&date=20260801'],
   ['twseEpsCsv','https://mopsfin.twse.com.tw/opendata/t187ap14_L.csv'],
@@ -55,6 +56,7 @@ for(let start=0;start<sources.length;start+=3) await Promise.all(sources.slice(s
           const html=await follow.text();
           const cells=[...html.matchAll(/<t[hd][^>]*>([\s\S]*?)<\/t[hd]>/gi)].map(match=>match[1].replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim());
           info[`query${year}Q${season}`]={status:follow.status,bytes:html.length,tableCount:(html.match(/<table\b/gi) || []).length,cells:cells.slice(0,100)};
+          info[`query${year}Q${season}`].incomeHeaders=[...html.matchAll(/<tr\b[^>]*>([\s\S]*?)<\/tr>/gi)].map(row=>[...row[1].matchAll(/<t[hd]\b[^>]*>([\s\S]*?)<\/t[hd]>/gi)].map(cell=>cell[1].replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim())).filter(row=>row[0]==='公司代號');
           if([401,403].includes(follow.status)) break;
         }
       }
