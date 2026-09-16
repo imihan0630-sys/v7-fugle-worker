@@ -13,7 +13,7 @@
 // Cron expression: 0-24 5 * * MON-FRI // 台灣 13:00-13:24 每分鐘
 // Cron expression: * 9 * * MON-FRI     // 台灣 17:00-17:59 每分鐘建立歷史日K快取＋逐日法人快照
 // Cron expression: 10 10 * * MON-FRI  // 台灣 18:10 盤後掃描
-const VERSION = "7.5.20-execution-data-validation";
+const VERSION = "7.5.21-optional-external-validation";
 const TEST_MODE_DEFAULT = true;
 const KV_KEY = "STOCK_CONFIG_V7";
 const LEGACY_KV_KEY = "STOCK_CONFIG_V6";
@@ -148,6 +148,29 @@ export default {
         verification:audit,pipeline:updated.pipeline,noSelectionOrExternalWrite:true,monitorUrl:url.origin},200,true);
     }
 
+    if(url.pathname==="/api/external-validation") {
+      if(!isAuthorized(request,env)) return json({error:"ADMIN_TOKEN 錯誤"},401,true);
+      if(!env.STOCKS_KV) return json({error:"Missing KV"},503,true);
+      if(request.method==='GET') {
+        await loadTradingCalendar(env,Number(taiwanDate().slice(0,4)));
+        const date=normalizeMarketDate(url.searchParams.get('marketDate')) || mostRecentWeekday(taiwanDate());
+        return json({marketDate:date,reference:await env.STOCKS_KV.get(`V7_EXTERNAL_VALIDATION:${date}`,"json"),noPlanChanges:true},200,true);
+      }
+      if(request.method!=='POST') return json({error:"Method not allowed"},405,true);
+      try {
+        const body=await request.json(),date=normalizeMarketDate(body.marketDate);
+        if(!date || date>taiwanDate() || date<shiftDateString(taiwanDate(),-14)) throw new Error("外部參考日期無效，不接受未來或過舊資料");
+        await loadTradingCalendar(env,Number(date.slice(0,4)));if(!isTradingDate(date)) throw new Error("外部參考不是交易日");
+        if(typeof body.source!=='string' || !body.source.trim() || body.source.length>80 || !Array.isArray(body.symbols) || body.symbols.length>200) throw new Error("外部來源或標的數無效");
+        const symbols=body.symbols.map(symbol=>String(symbol).trim());
+        if(symbols.some(symbol=>!/^[1-9][0-9]{3}$/.test(symbol)) || new Set(symbols).size!==symbols.length || (body.notes!==undefined && (typeof body.notes!=='string' || body.notes.length>1500))) throw new Error("外部標的重複、非普通股代碼或備註過長");
+        const reference={marketDate:date,source:body.source.trim(),symbols,notes:body.notes || '',provenance:"管理員提供之外部參考，未驗證App原始結果",use:"僅交叉驗證，不改核心分數、資格、交易計畫或跨池配額",updatedAt:new Date().toISOString()};
+        const key=`V7_EXTERNAL_VALIDATION:${date}`;await env.STOCKS_KV.put(key,JSON.stringify(reference),{expirationTtl:30*86400});
+        const readback=await env.STOCKS_KV.get(key,"json");if(JSON.stringify(readback)!==JSON.stringify(reference)) throw new Error("外部參考讀回不一致");
+        return json({ok:true,verified:true,count:symbols.length,marketDate:date,noPlanChanges:true,noPush:true,noThreeMinWrite:true},200,true);
+      }catch(error){return json({error:String(error)},400,true);}
+    }
+
     if(url.pathname==="/api/institution-status") {
       if(!isAuthorized(request,env)) return json({error:"ADMIN_TOKEN 錯誤"},401,true);
       if(request.method!=="GET") return json({error:"Method not allowed"},405,true);
@@ -177,6 +200,7 @@ export default {
     if(url.pathname==="/api/quality-status") {
       if(!isAuthorized(request,env)) return json({error:"ADMIN_TOKEN 錯誤"},401,true);
       if(request.method!=="GET") return json({error:"Method not allowed"},405,true);
+      await loadTradingCalendar(env,Number(taiwanDate().slice(0,4)));
       const marketDate=mostRecentWeekday(taiwanDate());
       const index=await readQualitySnapshot(env,"INDEX",marketDate),tdcc=await readQualitySnapshot(env,"TDCC",marketDate);
       const datasets={};for(const kind of ['FINANCIAL','VALUATION','ANNOUNCEMENTS']) {const data=await readQualitySnapshot(env,kind,marketDate);datasets[kind]={ready:!!data,count:data?.count || 0,asOfDate:data?.asOfDate || null};}
@@ -3501,12 +3525,13 @@ async function runAfterMarketScan(env, scheduledTime = Date.now(), options = {})
       if(!lease) return {skipped:true,reason:"AFTER_MARKET_RUNNING",requestedDate,noSelectionOrExternalWrite:true};
       if(options.onlyIfMissing) {
         await loadTradingCalendar(env,Number(requestedDate.slice(0,4)));
+        if(!isTradingDate(requestedDate)) return {skipped:true,reason:"NOT_TRADING_DAY",requestedDate,noSelectionOrExternalWrite:true};
         const marketDate=mostRecentWeekday(requestedDate),latest=await env.STOCKS_KV.get(LAST_SCAN_KEY,"json");
-        if(lease.snapshot?.status==="SUCCESS" || latest?.scanDate===marketDate) return {skipped:true,reason:"ALREADY_SCANNED",scanDate:marketDate,noSelectionOrExternalWrite:true};
+        if((lease.snapshot?.status==="SUCCESS" && Boolean(lease.snapshot.testMode)===isTestMode(env)) || (latest?.scanDate===marketDate && Boolean(latest.dailyReport?.simulated)===isTestMode(env))) return {skipped:true,reason:"ALREADY_SCANNED",scanDate:marketDate,noSelectionOrExternalWrite:true};
       }
     }
     const summary = await runAfterMarketScanCore(env, scheduledTime, options);
-    if(lease) await persistSignalStateLease(env,lockKey,lease.token,{status:"SUCCESS",scanDate:summary.scanDate,generatedAt:summary.generatedAt});
+    if(lease) await persistSignalStateLease(env,lockKey,lease.token,{status:"SUCCESS",scanDate:summary.scanDate,generatedAt:summary.generatedAt,testMode:isTestMode(env)});
     if (!options.dryRun) await env.STOCKS_KV.put("V7_LAST_SCAN_ATTEMPT", JSON.stringify({
       status: "SUCCESS", requestedDate, scanDate: summary.scanDate, selectedCount: summary.selectedCount,
       generatedAt: summary.generatedAt, threeMin: summary.threeMin, dailyReport: summary.dailyReport
@@ -3631,6 +3656,12 @@ async function runAfterMarketScanCore(env, scheduledTime = Date.now(), options =
     }
   }
   const stocks = validateStocks(scan.candidates);
+  const storedExternal=await env.STOCKS_KV.get(`V7_EXTERNAL_VALIDATION:${marketDate}`,"json");
+  const externalReference=storedExternal?.marketDate===marketDate && Array.isArray(storedExternal.symbols) && storedExternal.symbols.every(symbol=>/^[1-9][0-9]{3}$/.test(symbol)) ? storedExternal : null;
+  const selectedSymbols=new Set(stocks.map(stock=>stock.symbol));
+  scan.diagnostics.externalValidation=externalReference ? {provided:true,marketDate,source:externalReference.source,provenance:externalReference.provenance,
+    overlapSymbols:externalReference.symbols.filter(symbol=>selectedSymbols.has(symbol)),externalOnlySymbols:externalReference.symbols.filter(symbol=>!selectedSymbols.has(symbol)),
+    use:externalReference.use,coreRulesUnchanged:true} : {provided:false,optional:true,coreRulesUnchanged:true,reason:"未提供外部App參考，核心全市場選股仍獨立運行"};
   if (!dryRun && (loadedConfig.stocks || []).some(stock => stock.positionStage !== "NONE")) {
     throw new Error("OPEN_POSITION_PROTECTED：仍有持倉，不得用新選股覆蓋實際持股及原停損計畫；需先完成持倉對帳");
   }
@@ -3805,6 +3836,13 @@ function featureRowsCoverageComplete(diagnostics, rows) {
 }
 
 async function fetchClosingRowsWithFallback(env, market, expectedDate) {
+  const cached = env.STOCKS_KV ? await env.STOCKS_KV.get(`V7_OFFICIAL_CLOSING:${market}:${expectedDate}`,"json") : null;
+  const minimum=market==='TWSE' ? 600 : 450;
+  if(cached?.market===market && cached.marketDate===expectedDate && cached.sourceUrl===officialClosingUrl(market,expectedDate) &&
+    Array.isArray(cached.rows) && cached.rows.length>=minimum && new Set(cached.rows.map(row=>row.symbol)).size===cached.rows.length &&
+    cached.rows.every(row=>row.market===market && row.closeDate===expectedDate && /^[1-9][0-9]{3}$/.test(row.symbol) && Number.isFinite(row.close) && row.close>=MIN_CLOSE_PRICE)) {
+    const rows=cached.rows;rows.source="OFFICIAL_DATED_ACTIONS_CACHE";return rows;
+  }
   const primary = market === "TWSE" ? env.TWSE_DAILY_URL || TWSE_DAILY_URL : env.TPEX_DAILY_URL || TPEX_DAILY_URL;
   try { return await fetchMarketRows(primary, market, expectedDate); }
   catch (err) {
@@ -3813,14 +3851,6 @@ async function fetchClosingRowsWithFallback(env, market, expectedDate) {
       rows.source = market === "TWSE" ? "TWSE_OFFICIAL_DATED_API" : "TPEX_OFFICIAL_DATED_API";
       return rows;
     } catch (datedError) {
-      const cached = env.STOCKS_KV ? await env.STOCKS_KV.get(`V7_OFFICIAL_CLOSING:${market}:${expectedDate}`,"json") : null;
-      const minimum = market === "TWSE" ? 600 : 450;
-      if (cached?.market === market && cached.marketDate === expectedDate && cached.sourceUrl === officialClosingUrl(market,expectedDate)
-          && Array.isArray(cached.rows) && cached.rows.length >= minimum && cached.rows.every(row=>row.market===market && row.closeDate===expectedDate && row.close>=MIN_CLOSE_PRICE)) {
-        const rows = cached.rows;
-        rows.source = "OFFICIAL_DATED_ACTIONS_CACHE";
-        return rows;
-      }
       throw datedError;
     }
   }
@@ -4395,18 +4425,20 @@ function deriveQuarterlyFinancials(periods,year,quarter) {
   const subtractQuarter=(symbol,y,q)=>{
     const cumulative=byPeriod.get(`${y}Q${q}`)?.[symbol],before=q===1 ? {revenueYTD:0,grossYTD:0,operatingYTD:0,epsYTD:0} : byPeriod.get(`${y}Q${q-1}`)?.[symbol];
     if(!cumulative || !before) return null;
-    const result={};for(const key of ['revenue','gross','operating','eps']) result[key]=cumulative[key+'YTD']-before[key+'YTD'];
+    const result={};for(const key of ['revenue','gross','operating']) result[key]=cumulative[key+'YTD']-before[key+'YTD'];
     return result.revenue>0 ? {...result,grossMargin:result.gross/result.revenue*100,operatingMargin:result.operating/result.revenue*100} : null;
   };
   const growth=(now,before)=>Number.isFinite(now) && Number.isFinite(before) && before>0 ? (now/before-1)*100 : null;
   for(const symbol of Object.keys(current)) {
     const latest=subtractQuarter(symbol,year,quarter),previous=subtractQuarter(symbol,quarter===1?year-1:year,quarter===1?4:quarter-1),lastYear=subtractQuarter(symbol,year-1,quarter);
     if(!latest || !previous || !lastYear) continue;
-    stocks[symbol]={financialYear:String(year-1911),financialQuarter:String(quarter),quarterRevenue:latest.revenue,quarterEPS:round(latest.eps,2),
-      revenueQuarterYoY:growth(latest.revenue,lastYear.revenue),revenueQoQ:growth(latest.revenue,previous.revenue),epsYoY:growth(latest.eps,lastYear.eps),epsQoQ:growth(latest.eps,previous.eps),
+    stocks[symbol]={financialYear:String(year-1911),financialQuarter:String(quarter),quarterRevenue:latest.revenue,quarterEPS:quarter===1 ? current[symbol].epsYTD : null,
+      eps:current[symbol].epsYTD,reportedCumulativeEPS:current[symbol].epsYTD,epsYoY:null,epsQoQ:null,epsComparisonsReady:false,
+      epsBasis:"MOPS截至同季累計公告EPS；不能累計相減當成真實單季EPS，未核對單季及面額調整成長率不計分",
+      revenueQuarterYoY:growth(latest.revenue,lastYear.revenue),revenueQoQ:growth(latest.revenue,previous.revenue),
       grossMargin:latest.grossMargin,operatingMargin:latest.operatingMargin,grossMarginYoY:latest.grossMargin-lastYear.grossMargin,operatingMarginYoY:latest.operatingMargin-lastYear.operatingMargin,
       grossMarginQoQ:latest.grossMargin-previous.grossMargin,operatingMarginQoQ:latest.operatingMargin-previous.operatingMargin,
-      financialBasis:"營收及利益為MOPS累計仟元差額轉單季；EPS差額為估算，股本／面額異動時不可直接比較；負或0基期不算成長率"};
+      financialBasis:"營收及利益為MOPS累計仟元差額轉單季；EPS為實際公告累計值，不推估單季；負或0基期不算成長率"};
   }
   return stocks;
 }
@@ -4514,7 +4546,7 @@ function selectTomorrowCandidates(marketState, todayRows, env, scanDate) {
     exclusions: {},
     marketReturn20: marketReturn20===null ? null : round(marketReturn20,2),
     relativeStrengthBenchmark: "TWSE正式加權指數，相同日期基期；族群為排除自身的同產業普通股等權報酬，非交易所產業指數",
-    requirements30: {complete:false, incompleteRules:[18,19,26,28,29], record:"REQUIREMENTS_30.md",pendingAcceptance:"完整payload外部寫入、盤中收棒／推播手機收到及並發仍需實測"},
+    requirements30: {complete:false, incompleteRules:[11,17,18,19,26,27,28,29], record:"REQUIREMENTS_30.md",pendingAcceptance:"可核對單季及面額調整EPS、完整payload外部寫入、盤中真實訊號／手機實收；並發鎖已測，網路回覆不明與崩潰不保證絕對只送一次"},
     nearMisses: [],
     industryRadar: sectorStats,
     channelPolicy: {

@@ -156,6 +156,10 @@ assert.equal(cachedResult.status,200);
 assert.equal((await cachedResult.json()).verified,true);
 globalThis.fetch=async()=>new Response('',{status:302});
 const fromCache=await api.fetchClosingRowsWithFallback(cachedEnv,'TPEx',cacheDate);
+let cacheNetworkCalls=0;
+globalThis.fetch=async()=>{cacheNetworkCalls++;throw new Error('Verified current cache must be used before public network');};
+assert.equal((await api.fetchClosingRowsWithFallback(cachedEnv,'TPEx',cacheDate)).length,450);
+assert.equal(cacheNetworkCalls,0);
 assert.equal(fromCache.source,'OFFICIAL_DATED_ACTIONS_CACHE');
 assert.equal(fromCache.length,450);
 await assert.rejects(api.fetchClosingRowsWithFallback(cachedEnv,'TPEx','2020-01-01'));
@@ -203,11 +207,14 @@ const scan = await api.runAfterMarketScan(fullEnv, Date.parse('2026-09-16T10:10:
 assert.equal(scan.selectedCount, 0);
 assert.equal(scan.config.verified, true);
 assert.equal(scan.dailyReport.sent, true);
+assert.equal(scan.diagnostics.externalValidation.optional,true);
+assert.equal(scan.diagnostics.externalValidation.coreRulesUnchanged,true);
 assert.equal((await api.runAfterMarketScan(fullEnv, Date.parse('2026-09-16T10:10:00Z'))).dailyReport.deduplicated, true);
 const beforeRecovery=await fullEnv.STOCKS_KV.get(api.KV_KEY);
 const recoveryAttempts=await Promise.all(Array.from({length:12},()=>api.runAfterMarketScan(fullEnv,Date.parse('2026-09-16T10:20:00Z'),{onlyIfMissing:true})));
 assert.ok(recoveryAttempts.every(attempt=>attempt.skipped && attempt.noSelectionOrExternalWrite));
 assert.equal(await fullEnv.STOCKS_KV.get(api.KV_KEY),beforeRecovery);
+assert.equal((await api.runAfterMarketScan(fullEnv,Date.parse('2026-09-25T10:10:00Z'),{onlyIfMissing:true})).reason,'NOT_TRADING_DAY');
 const beforeFailure = await fullEnv.STOCKS_KV.get(api.KV_KEY);
 globalThis.fetch = async () => new Response('unavailable',{status:400});
 await assert.rejects(api.runAfterMarketScan(fullEnv,Date.parse('2026-09-17T10:10:00Z')));
@@ -272,6 +279,16 @@ assert.equal(api.verifyThreeMinReadback(bridgePlan,{success:true,data:[{id:'rec_
 assert.equal(api.verifyThreeMinReadback(bridgePlan,{success:false,data:[{payload:bridgePlan}]}),false);
 assert.equal(api.verifyThreeMinReadback(bridgePlan,{data:[{payload:{...bridgePlan,totalCapital:1}}]}),false);
 const verifyEnv={...bridgeEnv,ADMIN_TOKEN:'mock',STOCKS_KV:new MemoryKV()};
+const externalDate=api.mostRecentWeekday(new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Taipei',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date()));
+const externalRequest=(body,token='mock')=>new Request('https://example.invalid/api/external-validation',{method:'POST',headers:{'x-admin-token':token,'content-type':'application/json'},body:JSON.stringify(body)});
+await verifyEnv.STOCKS_KV.put(api.KV_KEY,'original-plan-proof');
+const externalPayload={marketDate:externalDate,source:'愛德恩（模擬參考）',symbols:['1234','5678'],notes:'TEST_ONLY',totalCapital:1};
+assert.equal((await api.default.fetch(externalRequest(externalPayload,'wrong'),verifyEnv)).status,401);
+const externalResponse=await api.default.fetch(externalRequest(externalPayload),verifyEnv);
+assert.equal(externalResponse.status,200);assert.equal((await externalResponse.json()).noPlanChanges,true);
+assert.equal(await verifyEnv.STOCKS_KV.get(api.KV_KEY),'original-plan-proof');
+assert.equal((await api.default.fetch(externalRequest({...externalPayload,symbols:['1234','1234']}),verifyEnv)).status,400);
+assert.equal((await api.default.fetch(externalRequest({...externalPayload,marketDate:'2099-01-01'}),verifyEnv)).status,400);
 const verifyConfig={updatedAt:'original',stocks:[{symbol:'original'}]};
 await verifyEnv.STOCKS_KV.put(api.KV_KEY,JSON.stringify(verifyConfig));
 await verifyEnv.STOCKS_KV.put(api.LAST_SCAN_KEY,JSON.stringify({scanDate:'2026-09-16',generatedAt:'original-scan',stocks:bridgePlan.stocks,totalCapital:bridgePlan.totalCapital,
@@ -338,7 +355,7 @@ const financialPeriods=[{year:2026,quarter:1,stocks:{'1234':{revenueYTD:100,gros
   {year:2025,quarter:1,stocks:{'1234':{revenueYTD:80,grossYTD:16,operatingYTD:8,epsYTD:1}}},
   {year:2025,quarter:2,stocks:{'1234':{revenueYTD:180,grossYTD:41,operatingYTD:18,epsYTD:0}}}];
 const financial=qualityApi.deriveQuarterlyFinancials(financialPeriods,2026,2)['1234'];
-assert.equal(financial.quarterRevenue,150);assert.equal(financial.quarterEPS,2);assert.equal(financial.revenueQoQ,50);assert.equal(financial.revenueQuarterYoY,50);assert.equal(financial.epsYoY,null);assert.equal(financial.grossMargin,40);assert.equal(financial.grossMarginYoY,15);
+assert.equal(financial.quarterRevenue,150);assert.equal(financial.quarterEPS,null,'Cumulative EPS differences are not valid single-quarter EPS');assert.equal(financial.reportedCumulativeEPS,3);assert.equal(financial.epsComparisonsReady,false);assert.equal(financial.epsQoQ,null);assert.equal(financial.revenueQoQ,50);assert.equal(financial.revenueQuarterYoY,50);assert.equal(financial.epsYoY,null);assert.equal(financial.grossMargin,40);assert.equal(financial.grossMarginYoY,15);
 const incomeHtml='累計金額 新台幣仟元 <table><tr>'+['公司 代號','公司名稱','營業收入','營業毛利（毛損）淨額','營業利益（損失）','基本每股盈餘（元）'].map(field=>`<th>${field}</th>`).join('')+'</tr>'+Array.from({length:500},(_,index)=>`<tr><td>${5000+index}</td><td>測試</td><td>1,000</td><td>300</td><td>200</td><td>1.5</td></tr>`).join('')+'</table>';
 assert.deepEqual(qualityApi.parseMopsMarketOptions('<select name="TYPEK"><option value="sii">上市</option><option value="otc">上櫃</option></select>'),{TWSE:'sii',TPEx:'otc'});
 assert.throws(()=>qualityApi.parseMopsMarketOptions('<select name="TYPEK"><option value="s">全部</option></select>'),/不猜測/);
