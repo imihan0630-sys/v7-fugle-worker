@@ -39,6 +39,19 @@
 
 ## 安全與驗證
 
+## 2026/09/16 真實部署與盤後驗收
+
+- 正式runtime：7.5.13-official-market-cache；TEST_MODE=false，KV／D1綁定保留；實際程式及四項Cron均先備份，未重設舊設定。
+- GitHub Actions：https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/35104762121 。部署、官方行情同步、真實掃描與V7設定讀回均成功。
+- 台灣21:53完成9/16盤後掃描：上市1023、上櫃850，共1873檔；3檔非千金股：6706惠特、3006晶豪科、6505台塑化；千金股0，未跨池補位。這是目前已實作邏輯的真實結果，不是全30條完整分析的宣告。
+- 設定saved=true、verified=true，updatedAt=2026-09-16T13:53:49.270Z；公開recommendations回報CURRENT、isCurrent=true。
+- 3Min寫入HTTP202，sent=true；THREEMIN_VERIFY_URL未設定，verified=false，pipeline.complete=false。
+- 每日推播HTTP200，sent=true、simulated=false；尚無手機端已收到的證據。
+- 上櫃公司基本／營收／EPS／獲利資料由官方MOPS CSV成功補回；上櫃當日法人來源仍302，沒有當日完整D1快照備援，須繼續改善。RS代理、季度比較／估值／催化劑、完整產業品質與外部驗證等仍如上表未完成。
+- 已查3Min官方API文件：https://3minapi.com/docs/integration 。POST與GET list使用同一既有data/{slug}端點；GET single須POST回覆的record ID。新verify URL需正常配置並核对实际回覆schema，不能拿V7本身讀回冒充3Min讀回。
+
+### 保留原有安全邊界
+
 - 只更換Worker程式，不重置KV、D1、Cron、Webhook或其他既有環境設定。
 - 新增GitHub Actions在台灣17:55、18:05同步官方當日行情作為備援；不改標的或下單，原Cloudflare18:10及其他Cron全數保留。GitHub排程可能延遲，不把設定成功冒充實際準時完成。
 - snapshots/Worker_V7_7.5.6_SIGNAL_STATE_FIX.js保存現行版本參考；回復需確認真正部署版本，不能盲用舊main。
