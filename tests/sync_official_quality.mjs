@@ -7,13 +7,22 @@ const origin='https://fugle-test.imihan0630.workers.dev';
 const marketDate=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Taipei',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
 assert.ok(process.env.V7_ADMIN_TOKEN,'Normal V7_ADMIN_TOKEN required');
 async function publicSource(url,options={}) {
-  const response=await fetch(url,{...options,redirect:'manual',signal:AbortSignal.timeout(45000)});
-  if([401,403].includes(response.status)) throw new Error('Official source disallows access; stop this synchronization without bypassing restrictions');
-  assert.equal(response.ok,true,`Official source HTTP ${response.status}`);return response;
+  for(let attempt=0;attempt<3;attempt++) {
+    try {
+      const response=await fetch(url,{...options,redirect:'manual',signal:AbortSignal.timeout(45000)});
+      if([401,403].includes(response.status)) throw new Error('Official source disallows access; stop this synchronization without bypassing restrictions');
+      if((response.status===429 || response.status>=500) && attempt<2) {await new Promise(resolve=>setTimeout(resolve,1000*(attempt+1)));continue;}
+      assert.equal(response.ok,true,`Official source HTTP ${response.status}`);return response;
+    }catch(error){if(attempt>=2 || !/fetch failed|timeout|ECONNRESET|ETIMEDOUT/i.test(String(error))) throw new Error(`Public source ${new URL(url).pathname}: ${error.message}`);await new Promise(resolve=>setTimeout(resolve,1000*(attempt+1)));}
+  }
 }
 async function admin(path,options={}) {
-  const response=await fetch(origin+path,{...options,headers:{'x-admin-token':process.env.V7_ADMIN_TOKEN,'content-type':'application/json'},signal:AbortSignal.timeout(45000)});
-  if([401,403].includes(response.status)) throw new Error('Administrator authorization failed; stop without replacing credentials');return response;
+  for(let attempt=0;attempt<3;attempt++) {
+    try {
+      const response=await fetch(origin+path,{...options,headers:{'x-admin-token':process.env.V7_ADMIN_TOKEN,'content-type':'application/json'},signal:AbortSignal.timeout(45000)});
+      if([401,403].includes(response.status)) throw new Error('Administrator authorization failed; stop without replacing credentials');return response;
+    }catch(error){if(options.method==='POST' || attempt>=2 || !/fetch failed|timeout|ECONNRESET|ETIMEDOUT/i.test(String(error))) throw new Error(`Administrator ${options.method || 'GET'} ${path}: ${error.message}`);await new Promise(resolve=>setTimeout(resolve,1000*(attempt+1)));}
+  }
 }
 const configResponse=await admin('/api/config');assert.equal(configResponse.ok,true);const before=await configResponse.json();
 for(let attempt=0;attempt<6;attempt++) {
