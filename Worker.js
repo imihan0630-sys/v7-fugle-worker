@@ -13,7 +13,7 @@
 // Cron expression: 0-24 5 * * MON-FRI // 台灣 13:00-13:24 每分鐘
 // Cron expression: * 9 * * MON-FRI     // 台灣 17:00-17:59 每分鐘建立歷史日K快取＋逐日法人快照
 // Cron expression: 10 10 * * MON-FRI  // 台灣 18:10 盤後掃描
-const VERSION = "7.5.15-current-institution-data";
+const VERSION = "7.5.16-complete-plan-payload";
 const TEST_MODE_DEFAULT = true;
 const KV_KEY = "STOCK_CONFIG_V7";
 const LEGACY_KV_KEY = "STOCK_CONFIG_V6";
@@ -134,7 +134,7 @@ export default {
       }
       await loadTradingCalendar(env,Number(latest.scanDate.slice(0,4)));
       if(latest.scanDate.slice(5)==="12-31") await loadTradingCalendar(env,Number(latest.scanDate.slice(0,4))+1);
-      const expected=latest.threeMinPayload || buildThreeMinPayload(latest.scanDate,latest.totalCapital,latest.stocks);
+      const expected=latest.threeMinPayload || buildThreeMinPayload(latest.scanDate,latest.totalCapital,latest.stocks,false);
       const verification=await readThreeMinPlan(expected,env);
       if(verification.authorizationFailed) return json({verified:false,authorizationFailed:true,error:"3Min讀回授權失敗，停止，不替換憑證",httpStatus:verification.httpStatus},403,true);
       // 掃描若在讀回期間換版，不能把另一批的驗收寫入最新結果。
@@ -4789,7 +4789,7 @@ function allocateAndBuildPlans(selected, totalCapital, scanDate) {
       priorityScore: item.priorityScore, rewardRisk: item.rewardRisk,
       sectorFlow: item.sectorFlow, relativeStrength: item.relativeStrength,
       allocationRatio: round(ratio * 100, 1), totalAllocation, firstAmount, secondAmount,
-      firstShares: sharesFor(firstAmount, item.entry), secondShares: sharesFor(secondAmount, item.entry),
+      firstShares: sharesFor(firstAmount, buyHigh), secondShares: sharesFor(secondAmount, buyHigh),
       buyLow, buyHigh, breakout, maxChase,
       stop: round(item.stop, 2), profitCheck: round(item.target, 2), reduceAt: round(item.target, 2),
       firstCondition: isA
@@ -5127,8 +5127,8 @@ function mostRecentWeekday(dateString) {
   }
 }
 
-function buildThreeMinPayload(scanDate,totalCapital,stocks) {
-  return {planDate:nextTradingDate(scanDate),totalCapital,stocks:stocks.map(stock=>({
+function buildThreeMinPayload(scanDate,totalCapital,stocks,extended=true) {
+  const payload={planDate:nextTradingDate(scanDate),totalCapital,stocks:stocks.map(stock=>({
     symbol:stock.symbol,name:stock.name,mode:stock.mode,sourcePool:stock.channel,
     buyLow:stock.buyLow,buyHigh:stock.buyHigh,breakout:stock.breakout,maxChase:stock.maxChase,
     stop:stock.stop,profitCheck:stock.profitCheck,capitalWeight:stock.allocationRatio,
@@ -5136,6 +5136,22 @@ function buildThreeMinPayload(scanDate,totalCapital,stocks) {
     secondTrancheWeight:stock.totalAllocation ? round(stock.secondAmount/stock.totalAllocation*100,1) : 0,
     firstEntryCondition:stock.firstCondition,secondEntryCondition:stock.secondCondition,priorityScore:stock.priorityScore
   }))};
+  if(extended) {
+    payload.schemaVersion="V7_PLAN_2";
+    payload.scanDate=scanDate;
+    payload.remainingCash=totalCapital-stocks.reduce((sum,stock)=>sum+(toNumber(stock.totalAllocation) || 0),0);
+    payload.stocks=payload.stocks.map((plan,index)=>{
+      const stock=stocks[index];
+      return {...plan,strategyChannel:stock.channel,sourcePool:toNumber(stock.formalClose)>=1000 ? "THOUSAND" : "NON_THOUSAND",
+        formalClose:stock.formalClose,closeDate:stock.closeDate,planDate:stock.planDate || payload.planDate,
+        totalAllocation:stock.totalAllocation,firstAmount:stock.firstAmount,secondAmount:stock.secondAmount,
+        firstShares:stock.firstShares,secondShares:stock.secondShares,totalShares:(toNumber(stock.firstShares) || 0)+(toNumber(stock.secondShares) || 0),
+        rewardRisk:stock.rewardRisk,sectorFlow:stock.sectorFlow,relativeStrength:stock.relativeStrength,signalLevel:stock.signalLevel,
+        selectedReason:stock.selectedReason,positionStage:stock.positionStage,referencePrice:positiveNumber(stock.buyHigh) || positiveNumber(stock.breakout),
+        shareCalculation:"各筆預算除以referencePrice向下取整；實際成交需另行確認"};
+    });
+  }
+  return payload;
 }
 
 function threeMinRecords(actual) {
