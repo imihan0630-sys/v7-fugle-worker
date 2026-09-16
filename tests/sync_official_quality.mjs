@@ -2,9 +2,14 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 process.on('uncaughtException',error=>{console.error('Quality synchronization failed: '+String(error.message).slice(0,900));process.exit(1);});
 const source=await readFile(process.env.V7_TEST_WORKER_PATH || new URL('../Worker.js',import.meta.url),'utf8');
-const helpers=await import('data:text/javascript;base64,'+Buffer.from(source+'\nexport {parseOfficialCsv,parseMopsIncomeHtml,parseMopsMarketOptions,parseMopsQuarterEpsHtml,validateOfficialQualityData};').toString('base64'));
+const helpers=await import('data:text/javascript;base64,'+Buffer.from(source+'\nexport {parseOfficialCsv,parseMopsIncomeHtml,parseMopsMarketOptions,parseMopsQuarterEpsHtml,validateOfficialQualityData,loadTradingCalendar,mostRecentWeekday};').toString('base64'));
 const origin='https://fugle-test.imihan0630.workers.dev';
-const marketDate=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Taipei',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+const now=new Date();
+const today=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Taipei',year:'numeric',month:'2-digit',day:'2-digit'}).format(now);
+await helpers.loadTradingCalendar({},Number(today.slice(0,4)));
+const hour=Number(new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Taipei',hour:'2-digit',hourCycle:'h23'}).format(now));
+const reference=hour<14 ? new Date(Date.parse(today+'T12:00:00Z')-86400000).toISOString().slice(0,10) : today;
+const marketDate=helpers.mostRecentWeekday(reference);
 assert.ok(process.env.V7_ADMIN_TOKEN,'Normal V7_ADMIN_TOKEN required');
 async function publicSource(url,options={}) {
   for(let attempt=0;attempt<3;attempt++) {
@@ -84,7 +89,7 @@ for(let start=0;start<requests.length;start+=2) {
 await sync({kind:'FINANCIAL',year,quarter,periods});
 // Review every preliminary qualifying candidate, before applying either pool quota.
 // This is a readonly source-selection preview; it never imports or pushes a plan.
-const reviewResponse=await admin('/api/scan-preview',{method:'POST',body:JSON.stringify({dryRun:true,epsReviewOnly:true})});
+const reviewResponse=await admin('/api/scan-preview',{method:'POST',body:JSON.stringify({dryRun:true,epsReviewOnly:true,marketDate})});
 const review=await reviewResponse.json();
 assert.equal(reviewResponse.ok,true,`EPS source review failed: ${String(review.error || reviewResponse.status).slice(0,500)}`);
 assert.equal(review.dryRun,true);assert.equal(review.diagnostics?.quarterEpsReview?.provisional,true);
@@ -113,7 +118,7 @@ if(process.argv.includes('--dry-run')) {
   const storageTest=await admin('/api/signals/storage-test',{method:'POST',body:'{}'});
   const storageResult=await storageTest.json();assert.equal(storageTest.ok,true);assert.equal(storageResult.verified,true);assert.equal(storageResult.noRealSignals,true);
   console.log(JSON.stringify({liveSignalStorageVerified:storageResult}));
-  const response=await admin('/api/scan-preview',{method:'POST',body:JSON.stringify({dryRun:true})});
+  const response=await admin('/api/scan-preview',{method:'POST',body:JSON.stringify({dryRun:true,marketDate})});
   const result=await response.json();assert.equal(response.ok,true,`Readonly selection acceptance failed: ${String(result.error || response.status).slice(0,500)}`);
   assert.equal(result.dryRun,true);
   const finalConfig=await admin('/api/config');assert.deepEqual(await finalConfig.json(),before,'Preview must preserve current plans');
