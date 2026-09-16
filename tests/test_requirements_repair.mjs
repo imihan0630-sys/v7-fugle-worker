@@ -185,6 +185,18 @@ const overChase = result(); overChase.plan.maxChase=119;
 assert.equal(api.evaluateOperationSignals(overChase).some(x=>x.type==='BUY'),false);
 // 僅測試假3Min；TEST_MODE不得觸發任何外部寫入。
 const bridgePlan={planDate:'2026-09-17',totalCapital:200000,stocks:[{symbol:'1234',name:'測試',stop:100,firstEntryCondition:'15分K正式確認'}]};
+const completePlan=api.normalizeStock(generated,0);
+const completePayload=api.buildThreeMinPayload('2026-09-16',200000,[completePlan]);
+assert.equal(completePayload.schemaVersion,'V7_PLAN_2');
+assert.equal(completePayload.stocks[0].strategyChannel,completePlan.channel);
+assert.equal(completePayload.stocks[0].sourcePool,completePlan.formalClose>=1000?'THOUSAND':'NON_THOUSAND');
+assert.equal(completePayload.stocks[0].formalClose,completePlan.formalClose);
+assert.equal(completePayload.stocks[0].totalAllocation,completePlan.totalAllocation);
+assert.equal(completePayload.stocks[0].totalShares,completePlan.firstShares+completePlan.secondShares);
+assert.equal(completePayload.remainingCash,200000-completePlan.totalAllocation);
+assert.equal(api.buildThreeMinPayload('2026-09-16',200000,[completePlan],false).schemaVersion,undefined,'Keep legacy readback contract');
+assert.equal(api.verifyThreeMinReadback(completePayload,{success:true,data:[{payload:structuredClone(completePayload)}]}),true);
+assert.equal(api.verifyThreeMinReadback(completePayload,{...completePayload,stocks:[{...completePayload.stocks[0],firstAmount:1}]}),false);
 assert.equal(api.verifyThreeMinReadback(bridgePlan,structuredClone(bridgePlan)),true);
 assert.equal(api.verifyThreeMinReadback(bridgePlan,{...bridgePlan,planDate:'2026-09-16'}),false);
 assert.equal(api.verifyThreeMinReadback(bridgePlan,{...bridgePlan,stocks:[{...bridgePlan.stocks[0],stop:99}]}),false);
