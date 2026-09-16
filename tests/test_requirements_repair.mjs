@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
+process.on('uncaughtException',error=>{console.error(String(error.message).slice(0,1800));process.exit(1);});
 const source = await readFile(process.env.V7_TEST_WORKER_PATH || new URL('./Worker_V7_7.5.11_REQUIREMENTS_REPAIR.mjs', import.meta.url), 'utf8');
 const api = await import('data:text/javascript;base64,' + Buffer.from(source + '\nexport { evaluateOperationSignals, evaluateStop, processSignalState, recalculatePlanCapital, saveStockConfig, KV_KEY, fetchMarketRows, fetchClosingRowsWithFallback, normalizeMarketDate, normalizeStock, enforceIndependentPoolQuota, buildPublicRecommendations, buildDailySelectionPayload, formatSlackSignalMessage, scoreCandidate, nextTradingDate, mostRecentWeekday, runAfterMarketScan, MARKET_STATE_KEY, allocateAndBuildPlans, sendTo3Min, verifyThreeMinReadback, parseOfficialCsv, fetchOfficialEnrichment, buildThreeMinPayload, waitingLivePage, LAST_SCAN_KEY, validateInstitutionData, institutionSourceUrls, readInstitutionStreakMap, writeInstitutionSnapshot };').toString('base64'));
 class MemoryKV {
@@ -11,16 +12,23 @@ const qualityApi=await import('data:text/javascript;base64,'+Buffer.from(source+
 class MemoryD1 {
   snapshots=new Map();
   quality=new Map();
+  delivery=new Map();
   withSession(){return this;}
   prepare(sql){
     const db=this;
-    return {args:[],bind(...args){this.args=args;return this;},async first(){return sql.includes('FROM v7_quality_snapshots') ? db.quality.get(this.args.slice(0,2).join(':')) || null : null;},
+    return {args:[],bind(...args){this.args=args;return this;},async first(){
+      if(sql.includes('FROM v7_signal_delivery_state')) {const row=db.delivery.get(this.args[0]);return row?.lease_token===this.args[1] ? row : null;}
+      return sql.includes('FROM v7_quality_snapshots') ? db.quality.get(this.args.slice(0,2).join(':')) || null : null;},
       async all(){return {results:sql.includes('FROM v7_institution_snapshots')?[...db.snapshots.values()].filter(row=>row.market_date<=this.args[0]).sort((a,b)=>b.market_date.localeCompare(a.market_date)).slice(0,this.args[1]):[]};},
       async run(){if(sql.includes('INSERT INTO v7_institution_snapshots')){
         const [market_date,snapshot_json,stock_count,updated_at,minimum]=this.args;
         const old=db.snapshots.get(market_date);
         if(!old || stock_count>=minimum || old.stock_count<minimum) db.snapshots.set(market_date,{market_date,snapshot_json,stock_count,updated_at});
-      }if(sql.includes('INSERT INTO v7_quality_snapshots')){db.quality.set(this.args.slice(0,2).join(':'),{snapshot_json:this.args[2]});}return {meta:{rows_written:1}};}};
+      }if(sql.includes('INSERT INTO v7_quality_snapshots')){db.quality.set(this.args.slice(0,2).join(':'),{snapshot_json:this.args[2]});}
+      if(sql.includes('INSERT INTO v7_signal_delivery_state')){const [key,token,until,updated,now]=this.args,old=db.delivery.get(key);if(!old || old.lease_until<now)db.delivery.set(key,{...old,lease_token:token,lease_until:until});}
+      if(sql.includes('UPDATE v7_signal_delivery_state SET snapshot_json')) {const [json,updated,key,token]=this.args,old=db.delivery.get(key);if(old?.lease_token===token) old.snapshot_json=json;else return {meta:{rows_written:0,changes:0}};}
+      if(sql.includes('UPDATE v7_signal_delivery_state SET lease_token=NULL')) {const [key,token]=this.args,old=db.delivery.get(key);if(old?.lease_token===token){old.lease_token=null;old.lease_until=0;}}
+      return {meta:{rows_written:1,changes:1}};}};
   }
 }
 const result = () => ({
@@ -51,10 +59,18 @@ assert.equal(api.evaluateOperationSignals(held).some(x => x.type === 'REDUCE'), 
 assert.equal(api.evaluateStop({ latest: { close: 101 } }, { latest: { bearish: true, volumeRatio: 2 } }, 98, { stop: 100 }).level, 'watch');
 assert.equal(api.evaluateStop({ latest: { close: 99 } }, { latest: null }, 99, { stop: 100 }).level, 'risk');
 // 無Webhook時必須保留重試機會，不能把失敗寫成已通知。
-const failedEnv = { STOCKS_KV: new MemoryKV(), TEST_MODE: 'false' };
+const failedEnv = { STOCKS_KV: new MemoryKV(), TEST_MODE: 'false',V7_DB:new MemoryD1() };
 assert.equal((await api.processSignalState(result(), failedEnv, '2026-09-16'))[0].sent, false);
 failedEnv.TEST_MODE = 'true';
 assert.equal((await api.processSignalState(result(), failedEnv, '2026-09-16'))[0].sent, true);
+const concurrentEnv={STOCKS_KV:new MemoryKV(),V7_DB:new MemoryD1(),TEST_MODE:'true'};
+const concurrent=await Promise.all(Array.from({length:80},()=>api.processSignalState(result(),concurrentEnv,'2026-09-16')));
+assert.equal(concurrent.flat().filter(signal=>signal.sent).length,1,'D1 lease allows one sender under parallel invocation');
+concurrentEnv.STOCKS_KV.values.clear();
+assert.equal((await api.processSignalState(result(),concurrentEnv,'2026-09-16')).length,0,'Stale or missing KV cannot duplicate authoritative D1 state');
+await api.processSignalState({...result(),finalDecision:{level:'wait'}},concurrentEnv,'2026-09-16');
+assert.equal((await api.processSignalState(result(),concurrentEnv,'2026-09-16')).filter(signal=>signal.sent).length,1,'Release followed by reactivation still notifies');
+await assert.rejects(api.processSignalState(result(),{STOCKS_KV:new MemoryKV(),TEST_MODE:'false'},'2026-09-16'),/D1/);
 const plan = { ...result().plan, name: '測試', allocationRatio: 25, buyHigh: 120 };
 const capital = api.recalculatePlanCapital([plan], 300000);
 assert.equal(capital.stocks[0].totalAllocation, 75000);
@@ -296,6 +312,9 @@ const incomeHtml='累計金額 新台幣仟元 <table><tr>'+['公司 代號','�
 assert.equal(qualityApi.parseMopsIncomeHtml(incomeHtml,2026,2)['5000'].grossYTD,300);
 assert.throws(()=>qualityApi.parseMopsIncomeHtml(incomeHtml.replaceAll('累計金額','單季資料'),2026,2));
 const tdccFixture={kind:'TDCC',sourceUrl:'https://opendata.tdcc.com.tw/getOD.ashx?id=1-5',rows:Array.from({length:1500},(_,index)=>Array.from({length:17},(_,offset)=>({'資料日期':'20260911','證券代號':String(6000+index),'持股分級':String(offset+1),'股數':offset===16?'1500':offset===15?'0':'100','占集保庫存數比例%':offset===16?'100':offset===15?'0':'6.67'}))).flat()};
+const tdccCsv='資料日期,證券代號,持股分級,人數,股數,占集保庫存數比例%\n20260911,6000,1,1,100,6.67\n';
+assert.equal(api.parseOfficialCsv(tdccCsv,['資料日期','證券代號','持股分級','人數','股數','占集保庫存數比例%'])[0]['證券代號'],'6000');
+assert.throws(()=>api.parseOfficialCsv(tdccCsv),'Default MOPS contract must remain strict');
 assert.equal(qualityApi.validateOfficialQualityData(tdccFixture,'2026-09-16').stocks['6000'].chipConcentration,26.68);
 const duplicateTdcc=structuredClone(tdccFixture);duplicateTdcc.rows.push(duplicateTdcc.rows[0]);assert.throws(()=>qualityApi.validateOfficialQualityData(duplicateTdcc,'2026-09-16'));
 assert.equal(api.scoreCandidate({...qualified,marketReturn20:null},{score:90,breadth:60,avgChange:1,amountVs20DayAverage:1}).ok,false);
