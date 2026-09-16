@@ -8,6 +8,17 @@ const getConfig=async()=>{
   return response.json();
 };
 const before=await getConfig();
+// 先以GET核對新入口已生效：405代表路由存在且只接受POST；不讀外部3Min或寫入。
+let routeStatus;
+for(let attempt=0;attempt<6;attempt++) {
+  const probe=await fetch(origin+'/api/three-min/verify',{method:'GET',headers,signal:AbortSignal.timeout(10000)});
+  routeStatus=probe.status;
+  if([401,403].includes(routeStatus)) throw new Error('管理員授權未成功；停止，不替換憑證');
+  if(routeStatus===405) break;
+  if(attempt<5) await new Promise(resolve=>setTimeout(resolve,3000));
+}
+console.log(JSON.stringify({verificationRouteStatus:routeStatus}));
+assert.equal(routeStatus,405,'Readback route is not active yet; do not send a scan or import request');
 const verificationResponse=await fetch(origin+'/api/three-min/verify',{method:'POST',headers,body:'{}',signal:AbortSignal.timeout(40000)});
 if([401,403].includes(verificationResponse.status)) throw new Error('管理員或3Min讀回授權失敗；停止，不替換憑證');
 const responseText=await verificationResponse.text();
