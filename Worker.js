@@ -13,7 +13,7 @@
 // Cron expression: 0-24 5 * * MON-FRI // 台灣 13:00-13:24 每分鐘
 // Cron expression: * 9 * * MON-FRI     // 台灣 17:00-17:59 每分鐘建立歷史日K快取＋逐日法人快照
 // Cron expression: 10 10 * * MON-FRI  // 台灣 18:10 盤後掃描
-const VERSION = "7.5.11-incremental-repair";
+const VERSION = "7.5.12-dated-twse-repair";
 const TEST_MODE_DEFAULT = true;
 const KV_KEY = "STOCK_CONFIG_V7";
 const LEGACY_KV_KEY = "STOCK_CONFIG_V6";
@@ -3567,10 +3567,11 @@ async function fetchClosingRowsWithFallback(env, market, expectedDate) {
   const primary = market === "TWSE" ? env.TWSE_DAILY_URL || TWSE_DAILY_URL : env.TPEX_DAILY_URL || TPEX_DAILY_URL;
   try { return await fetchMarketRows(primary, market, expectedDate); }
   catch (err) {
-    if (market !== "TPEx") throw err;
-    const dated = `https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?date=${encodeURIComponent(expectedDate.replaceAll("-", "/"))}&id=&response=json`;
+    const dated = market === "TWSE"
+      ? `https://www.twse.com.tw/exchangeReport/MI_INDEX?response=json&date=${expectedDate.replaceAll("-", "")}&type=ALLBUT0999`
+      : `https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?date=${encodeURIComponent(expectedDate.replaceAll("-", "/"))}&id=&response=json`;
     const rows = await fetchMarketRows(dated, market, expectedDate);
-    rows.source = "TPEX_OFFICIAL_DATED_API";
+    rows.source = market === "TWSE" ? "TWSE_OFFICIAL_DATED_API" : "TPEX_OFFICIAL_DATED_API";
     return rows;
   }
 }
@@ -3589,7 +3590,7 @@ async function fetchMarketRows(url, market, expectedDate = null) {
     `${market}盤後資料`,
     4
   );
-  const table = payload?.tables?.find(item => Array.isArray(item.fields) && Array.isArray(item.data) && item.fields.includes("代號"));
+  const table = payload?.tables?.find(item => Array.isArray(item.fields) && Array.isArray(item.data) && (item.fields.includes("代號") || item.fields.includes("證券代號")));
   const source = Array.isArray(payload) ? payload : table
     ? table.data.map(values => Object.fromEntries(table.fields.map((field, index) => [field, values[index]]))) : payload?.data;
   if (!Array.isArray(source)) throw new Error(`${market}盤後資料格式不是陣列`);
@@ -3663,8 +3664,8 @@ function buildMarketRowsFromHistoryCache(market, marketDate, cachedHistory, enri
 }
 
 function normalizeMarketRow(row, market) {
-  const symbol = String(pick(row, ["Code", "SecuritiesCompanyCode", "SecuritiesCompanyCode ", "股票代號", "代號"]) || "").trim();
-  const name = String(pick(row, ["Name", "CompanyName", "SecuritiesCompanyName", "股票名稱", "名稱"]) || symbol).trim();
+  const symbol = String(pick(row, ["Code", "SecuritiesCompanyCode", "SecuritiesCompanyCode ", "股票代號", "證券代號", "代號"]) || "").trim();
+  const name = String(pick(row, ["Name", "CompanyName", "SecuritiesCompanyName", "股票名稱", "證券名稱", "名稱"]) || symbol).trim();
   if (!/^[1-9][0-9]{3}$/.test(symbol)) return null;
   if (/(ETF|ETN|指數|權證|認購|認售|特別股|存託|-DR$)/i.test(name)) return null;
 
@@ -3675,7 +3676,11 @@ function normalizeMarketRow(row, market) {
   const low = marketNumber(pick(row, ["LowestPrice", "Low", "最低價", "最低"]));
   const volumeShares = marketNumber(pick(row, ["TradeVolume", "TradingShares", "成交股數", "成交量"])) || 0;
   const tradeValue = marketNumber(pick(row, ["TradeValue", "TransactionAmount", "成交金額", "成交金額(元)"])) || 0;
-  const change = marketNumber(pick(row, ["Change", "ChangeAmount", "漲跌價差", "漲跌"]));
+  let change = marketNumber(pick(row, ["Change", "ChangeAmount", "漲跌價差", "漲跌"]));
+  if (row["漲跌(+/-)"] !== undefined) {
+    const sign = String(row["漲跌(+/-)"]).replace(/<[^>]*>/g, "").trim();
+    change = sign === "X" ? null : change === null ? null : sign === "-" ? -Math.abs(change) : Math.abs(change);
+  }
   const previousClose = change !== null ? close - change : null;
   const changePercent = previousClose && previousClose > 0 ? change / previousClose * 100 : null;
 
