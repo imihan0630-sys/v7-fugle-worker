@@ -13,7 +13,7 @@
 // Cron expression: 0-24 5 * * MON-FRI // 台灣 13:00-13:24 每分鐘
 // Cron expression: * 9 * * MON-FRI     // 台灣 17:00-17:59 每分鐘建立歷史日K快取＋逐日法人快照
 // Cron expression: 10 10 * * MON-FRI  // 台灣 18:10 盤後掃描
-const VERSION = "7.5.11-requirements-repair-draft";
+const VERSION = "7.5.11-incremental-repair";
 const TEST_MODE_DEFAULT = true;
 const KV_KEY = "STOCK_CONFIG_V7";
 const LEGACY_KV_KEY = "STOCK_CONFIG_V6";
@@ -74,6 +74,11 @@ function sleepMs(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+function fetchWithDeadline(url, options = {}, milliseconds = 15000) {
+  // signal保留到回覆本文讀完；避免官方資料、Webhook或3Min一直等待。
+  return fetch(url, {...options, signal: options.signal || AbortSignal.timeout(milliseconds)});
+}
+
 function isTransientNetworkError(err) {
   const text = String(err || "");
   return /Network connection lost|fetch failed|connection reset|connection closed|ECONNRESET|ETIMEDOUT|timeout|temporarily unavailable|daemonDown|HTTP\s+(408|425|429|500|502|503|504|520|521|522|523|524|525|526|530)/i.test(text);
@@ -97,7 +102,7 @@ async function retryTransient(label, fn, attempts = 3) {
 
 async function fetchJsonWithRetry(url, options, label, attempts = 3) {
   return retryTransient(label, async () => {
-    const response = await fetch(url, options);
+    const response = await fetchWithDeadline(url, options);
     if (!response.ok) {
       const preview = await response.text().catch(() => "");
       throw new Error(`HTTP ${response.status}${preview ? `：${preview.slice(0, 160)}` : ""}`);
@@ -117,7 +122,7 @@ export default {
     if (url.pathname === "/api/version") return json({ version: VERSION, testMode: isTestMode(env),
       bindings: { kv: !!env.STOCKS_KV, d1: !!env.V7_DB },
       readiness: { quote: !!env.FUGLE_API_KEY, phonePush: !!env.PUSH_WEBHOOK_URL, threeMin: !!env.THREEMIN_API_URL,
-        threeMinReadback: !!env.THREEMIN_VERIFY_URL }, monitorUrl: url.origin }, 200, true);
+        threeMinReadback: !!env.THREEMIN_VERIFY_URL }, requirements30Complete: false, monitorUrl: url.origin }, 200, true);
 
     // 第21條：只重算未建倉交易計畫；不執行下單、不更動實際持股。
     if (url.pathname === "/api/capital") {
@@ -584,12 +589,11 @@ const stocks =
     // 不回傳 ADMIN_TOKEN、FUGLE_API_KEY、Webhook、完整 diagnostics 等內部資訊。
     if (url.pathname === "/api/recommendations") {
       if (request.method !== "GET") return json({ error: "只接受 GET" }, 405, true);
+      await loadTradingCalendar(env, Number(taiwanDate().slice(0, 4)));
+      if (taiwanDate().slice(5) <= "01-07") await loadTradingCalendar(env, Number(taiwanDate().slice(0, 4)) - 1);
       const latest = env.STOCKS_KV ? await env.STOCKS_KV.get(LAST_SCAN_KEY, "json") : null;
-      if (!latest) {
-        return json({ ok: false, version: VERSION, status: "尚無盤後推薦結果" }, 404, true);
-      }
       const attempt = env.STOCKS_KV ? await env.STOCKS_KV.get("V7_LAST_SCAN_ATTEMPT", "json") : null;
-      return json(buildPublicRecommendations(latest, attempt), 200, true);
+      return json(buildPublicRecommendations(latest, attempt), latest || attempt ? 200 : 404, true);
     }
 
     // ==================================================
@@ -1120,10 +1124,10 @@ async function fetchInstitutionSnapshotForDate(marketDate) {
   const twseUrl = `https://www.twse.com.tw/rwd/zh/fund/T86?response=json&date=${encodeURIComponent(ymd)}&selectType=ALL`;
   const tpexUrl = `https://www.tpex.org.tw/www/zh-tw/insti/dailyTrade?type=Daily&sect=EW&date=${encodeURIComponent(rocDateString(marketDate))}&id=&response=json`;
   const [twseResult, tpexResult] = await Promise.all([
-    fetch(twseUrl, { headers: { accept: "application/json,text/plain,*/*", "user-agent": "Mozilla/5.0 V7-Institution-History" } })
+    fetchWithDeadline(twseUrl, { headers: { accept: "application/json,text/plain,*/*", "user-agent": "Mozilla/5.0 V7-Institution-History" } })
       .then(async response => response.ok ? { ok: true, payload: await response.json() } : { ok: false, error: `HTTP ${response.status}` })
       .catch(err => ({ ok: false, error: String(err) })),
-    fetch(tpexUrl, { headers: { accept: "application/json,text/plain,*/*", "user-agent": "Mozilla/5.0 V7-Institution-History" } })
+    fetchWithDeadline(tpexUrl, { headers: { accept: "application/json,text/plain,*/*", "user-agent": "Mozilla/5.0 V7-Institution-History" } })
       .then(async response => response.ok ? { ok: true, payload: await response.json() } : { ok: false, error: `HTTP ${response.status}` })
       .catch(err => ({ ok: false, error: String(err) }))
   ]);
@@ -1597,6 +1601,8 @@ function normalizeStock(
     formalClose,
     closeDate: normalizeMarketDate(item.closeDate || item.scanDate),
     planDate: normalizeMarketDate(item.planDate),
+    actualShares: toNumber(item.actualShares),
+    firstEntryConfirmedAt: Number.isFinite(Date.parse(item.firstEntryConfirmedAt)) ? new Date(item.firstEntryConfirmedAt).toISOString() : null,
     enabled: true,
 
     symbol,
@@ -1872,7 +1878,7 @@ async function analyzeStock(
         stock
       );
 
-    const finalDecision =
+    const rawFinalDecision =
       buildFinalDecision({
         pullback,
         momentum10,
@@ -1880,6 +1886,7 @@ async function analyzeStock(
         stop,
         profit
       });
+    const finalDecision = applyPlanValidity(stock, rawFinalDecision);
 
     const monitorStatus = buildMonitorStatus(finalDecision);
 
@@ -1942,7 +1949,7 @@ async function fetchCandles(
     `?timeframe=${tf}&sort=asc`;
 
   const response =
-    await fetch(
+    await fetchWithDeadline(
       url,
       {
         headers: {
@@ -1968,7 +1975,7 @@ async function fetchCandles(
 
 async function fetchQuote(symbol, env) {
   const url = `https://api.fugle.tw/marketdata/v1.0/stock/intraday/quote/${symbol}`;
-  const response = await fetch(url, {
+  const response = await fetchWithDeadline(url, {
     headers: { "X-API-KEY": env.FUGLE_API_KEY }
   });
 
@@ -2535,6 +2542,14 @@ function buildFinalDecision({
   };
 }
 
+function applyPlanValidity(plan, decision, quote = null) {
+  if (plan.planDate && plan.planDate !== taiwanDate()) {
+    if (plan.positionStage === "NONE" || decision.level === "buy") return {level:"wait", text:`交易計畫日期${plan.planDate}並非今日：不建立新部位／加碼；已有持倉續按原風控監控`};
+  }
+  if (quote?.isTrial === true && decision.level === "buy") return {level:"watch", text:"試撮行情不產生正式買進或加碼指令"};
+  return decision;
+}
+
 // ======================================================
 // V7 卡片分級與動態排序
 // A：立即處理；B：接近條件；C：等待
@@ -2590,6 +2605,8 @@ function evaluateOperationSignals(result) {
   const latest10 = result.frame10?.latest;
   const latest15 = result.frame15?.latest;
   const hasPosition = p.positionStage !== "NONE";
+  const heldShares = positiveNumber(p.actualShares) || (p.positionStage === "FIRST" ? p.firstShares : p.totalShares);
+  const heldAmount = p.positionStage === "FIRST" ? p.firstAmount : p.totalAllocation;
 
   if (result.stop?.level === "risk") {
     // 尚未建立部位時，跌破停損價代表「今日買進計畫失效」，不能叫使用者賣出不存在的持股。
@@ -2610,8 +2627,8 @@ function evaluateOperationSignals(result) {
       "停損",
       "立即依計畫停損並正式賣出",
       result.stop.text,
-      p.totalAllocation,
-      p.totalShares
+      heldAmount,
+      heldShares
     ));
     return signals;
   }
@@ -2627,8 +2644,8 @@ function evaluateOperationSignals(result) {
       "正式賣出",
       "15分K確認跌破正式賣出價，執行賣出",
       `15分K收盤 ${fmt(latest15.close)} < 正式賣出價 ${fmt(p.sellBelow)}`,
-      p.totalAllocation,
-      p.totalShares
+      heldAmount,
+      heldShares
     ));
     return signals;
   }
@@ -2650,7 +2667,7 @@ function evaluateOperationSignals(result) {
     ));
   }
 
-  if (result.finalDecision?.level === "buy") {
+  if (result.finalDecision?.level === "buy" && (p.maxChase == null || result.currentPrice <= p.maxChase)) {
     if (p.positionStage === "NONE") {
       signals.push(operationSignal(
         "BUY",
@@ -2687,8 +2704,8 @@ function evaluateOperationSignals(result) {
       "減碼",
       "進入獲利區後15分K放量轉弱正式確認，執行計畫減碼",
       `15分K下跌量比 ${fmt(latest15.volumeRatio)}；10分K僅作輔助`,
-      p.totalAllocation !== null ? Math.round(p.totalAllocation / 2) : null,
-      p.totalShares !== null ? Math.max(1, Math.floor(p.totalShares / 2)) : null
+      heldAmount != null ? Math.round(heldAmount / 2) : null,
+      heldShares != null ? Math.floor(heldShares / 2) : null
     ));
   } else if (hasPosition && result.profit?.level === "profit") {
     signals.push(operationSignal(
@@ -2753,7 +2770,7 @@ async function analyzeStockSmart(stock, env, previousResult, need10, need15, for
       : evaluateMomentum(frame15, stock, "15分K");
     const stop = evaluateStop(frame15, frame10, currentPrice, stock);
     const profit = evaluateProfit(currentPrice, stock);
-    const finalDecision = buildFinalDecision({ pullback, momentum10, momentum15, stop, profit });
+    const finalDecision = applyPlanValidity(stock, buildFinalDecision({ pullback, momentum10, momentum15, stop, profit }), quote);
 
     return {
       ok: true, symbol: stock.symbol, name: stock.name, currentPrice, plan: stock,
@@ -2856,7 +2873,13 @@ async function processSignalState(result, env, tradeDate = taiwanDate()) {
   const previous = sameTradeDate && modeMatches ? rawPrevious : { active: [], fired: [], tradeDate };
   const previousActive = new Set(Array.isArray(previous.active) ? previous.active : []);
   const previousFired = new Set(Array.isArray(previous.fired) ? previous.fired : []);
-  const activeSignals = evaluateOperationSignals(result);
+  const entryBarTime = result.frame15?.latest?.time || null;
+  const lastEntrySignalBarTime = rawPrevious.lastEntrySignalBarTime || result.plan?.firstEntryConfirmedAt || null;
+  const planDateMatches = !result.plan?.planDate || result.plan.planDate === tradeDate;
+  const activeSignals = evaluateOperationSignals(result).filter(signal => {
+    if (["BUY", "ADD", "EARLY_ALERT_10M"].includes(signal.type) && (!planDateMatches || result.quote?.isTrial === true)) return false;
+    return signal.type !== "ADD" || (entryBarTime && lastEntrySignalBarTime && Date.parse(entryBarTime) > Date.parse(lastEntrySignalBarTime));
+  });
   const activeTypes = activeSignals.map(signal => signal.type);
   const activeTypeSet = new Set(activeTypes);
   const delivered = [];
@@ -2913,15 +2936,22 @@ async function processSignalState(result, env, tradeDate = taiwanDate()) {
     fired: [...fired].sort(),
     positionStage: stage,
     episodes,
+    lastEntrySignalBarTime: delivered.some(item => ["BUY", "ADD"].includes(item.signalType) && item.sent === true) && entryBarTime ? entryBarTime : lastEntrySignalBarTime,
     updatedAt: new Date().toISOString()
   };
   const oldComparable = {
+    testMode: previous.testMode,
+    episodes: previous.episodes || {},
+    lastEntrySignalBarTime: previous.lastEntrySignalBarTime || null,
     tradeDate: previous.tradeDate || tradeDate,
     active: [...previousActive].sort(),
     fired: [...previousFired].sort(),
     positionStage: previous.positionStage || null
   };
   const newComparable = {
+    testMode: nextState.testMode,
+    episodes: nextState.episodes,
+    lastEntrySignalBarTime: nextState.lastEntrySignalBarTime,
     tradeDate: nextState.tradeDate,
     active: nextState.active,
     fired: nextState.fired,
@@ -3031,7 +3061,7 @@ async function sendPushDirect(payload, env) {
     : payload;
 
   try {
-    const response = await fetch(webhookUrl, {
+    const response = await fetchWithDeadline(webhookUrl, {
       method: "POST",
       headers,
       body: JSON.stringify(body)
@@ -3094,7 +3124,7 @@ async function runOfficialDataTest(twseSymbol, tpexSymbol, dateYmd) {
 
   const settled = await Promise.all(entries.map(async ([name, url]) => {
     try {
-      const response = await fetch(url, {
+      const response = await fetchWithDeadline(url, {
         headers: {
           accept: "application/json,text/plain,*/*",
           "user-agent": "Mozilla/5.0 V7-Official-Data-Test"
@@ -3321,6 +3351,9 @@ async function runAfterMarketScanCore(env, scheduledTime = Date.now(), options =
     }
   }
   const stocks = validateStocks(scan.candidates);
+  if (!dryRun && (loadedConfig.stocks || []).some(stock => stock.positionStage !== "NONE")) {
+    throw new Error("OPEN_POSITION_PROTECTED：仍有持倉，不得用新選股覆蓋實際持股及原停損計畫；需先完成持倉對帳");
+  }
 
   let saved = /** @type {any} */ ({ ok: false, dryRun });
   let bridge = /** @type {any} */ ({ sent: false, skipped: true, reason: dryRun ? "dry-run" : "not-run" });
@@ -3420,7 +3453,17 @@ async function runAfterMarketScanCore(env, scheduledTime = Date.now(), options =
     },
     config: { saved: saved.ok === true, verified: saved.verified === true, dryRun, updatedAt: saved.updatedAt || null },
     threeMin: bridge,
-    dailyReport: report
+    dailyReport: report,
+    pipeline: {
+      scope: "資料選股、匯入與通知傳輸驗證；不代表30條全部已實作或手機已收到",
+      selectionCompleted: true,
+      configAccepted: saved.ok === true,
+      configVerified: saved.verified === true,
+      threeMinAccepted: bridge.sent === true && bridge.simulated !== true,
+      threeMinVerified: bridge.verified === true && bridge.simulated !== true,
+      dailyReportAccepted: report.sent === true && report.simulated !== true,
+      complete: !dryRun && saved.verified === true && bridge.verified === true && bridge.simulated !== true && report.sent === true && report.simulated !== true
+    }
   };
 
   if (!dryRun) {
@@ -3451,6 +3494,7 @@ function buildPublicRecommendations(latest, attempt = null) {
       : !latest ? "尚無成功盤後分析紀錄" : latest.scanDate !== mostRecentWeekday(taiwanDate()) ? "歷史盤後結果，不是今日推薦"
       : latest.status || (stocks.length ? `今日選出 ${stocks.length} 檔` : "今日0檔，不硬塞"),
     selectedCount: stocks.length,
+    pipeline: latest?.pipeline || { complete: false, reason: "舊版本未記錄全鏈路驗證，不能推定已完成" },
     totalCapital: toNumber(latest?.totalCapital) || DEFAULT_TOTAL_CAPITAL,
     capitalPlan: latest?.capitalPlan || {
       totalCapital: DEFAULT_TOTAL_CAPITAL,
@@ -3967,6 +4011,8 @@ function selectTomorrowCandidates(marketState, todayRows, env, scanDate) {
     channelCounts: { A: 0, B: 0 },
     exclusions: {},
     marketReturn20: round(marketReturn20 || 0, 2),
+    relativeStrengthBenchmark: "全市場普通股20日報酬等權代理，非實際大盤指數；千金池為池內同儕代理",
+    requirements30: {complete:false, incompleteRules:[5,6,10,11,12,26,28,29], record:"REQUIREMENTS_30.md"},
     nearMisses: [],
     industryRadar: sectorStats,
     channelPolicy: {
@@ -4675,6 +4721,8 @@ async function runHistorySeed(env, scheduledTime = Date.now(), limit = HISTORY_W
   }
 
   const requestedDate = taiwanDate(scheduledTime);
+  await loadTradingCalendar(env, Number(requestedDate.slice(0, 4)));
+  if (requestedDate.slice(5) <= "01-07") await loadTradingCalendar(env, Number(requestedDate.slice(0, 4)) - 1);
   const marketDate = mostRecentWeekday(requestedDate);
   const batchLimit = Math.max(1, Math.min(Number(limit) || HISTORY_WARMUP_LIMIT, HISTORY_WARMUP_LIMIT));
   const institutionSeed = await seedInstitutionSnapshotStep(env, marketDate);
@@ -4890,7 +4938,7 @@ async function fetchHistoricalDaily(symbol, from, to, env) {
   const url = `https://api.fugle.tw/marketdata/v1.0/stock/historical/candles/${symbol}` +
     `?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}` +
     `&timeframe=D&fields=open,high,low,close,volume,turnover,change&sort=asc`;
-  const response = await fetch(url, { headers: { "X-API-KEY": env.FUGLE_API_KEY } });
+  const response = await fetchWithDeadline(url, { headers: { "X-API-KEY": env.FUGLE_API_KEY } });
   if (!response.ok) throw new Error(`${symbol} 歷史日K API錯誤 ${response.status}: ${await response.text()}`);
   const payload = await response.json();
   const rows = Array.isArray(payload?.data) ? payload.data : [];
@@ -4918,17 +4966,40 @@ function mostRecentWeekday(dateString) {
 }
 
 async function sendTo3Min(payload, env) {
-  if (!env.THREEMIN_API_URL) return { sent: false, skipped: true, reason: "未設定 THREEMIN_API_URL，已直接寫入V7 KV" };
+  if (isTestMode(env)) return { sent: true, simulated: true, verified: false, reason: "TEST_MODE：不呼叫外部3Min服務" };
+  if (!env.THREEMIN_API_URL) return { sent: false, verified: false, skipped: true, reason: "未設定 THREEMIN_API_URL，已直接寫入V7 KV；第26條3Min串接未完成" };
   const headers = { "content-type": "application/json" };
   if (env.THREEMIN_API_TOKEN) headers.authorization = `Bearer ${env.THREEMIN_API_TOKEN}`;
+  let accepted = false;
   try {
-    const response = await fetch(env.THREEMIN_API_URL, { method: "POST", headers, body: JSON.stringify(payload) });
-    return response.ok
-      ? { sent: true, httpStatus: response.status }
-      : { sent: false, httpStatus: response.status, error: await response.text() };
+    const response = await fetchWithDeadline(env.THREEMIN_API_URL, { method: "POST", headers, body: JSON.stringify(payload), redirect: "manual" });
+    if (!response.ok) return {sent:false, verified:false, httpStatus:response.status, error:"3Min寫入HTTP失敗"};
+    accepted = true;
+    const receipt = await response.text();
+    if (receipt.trim().startsWith("{")) {
+      const parsed = JSON.parse(receipt);
+      if (parsed.ok === false || parsed.success === false) return {sent:false, verified:false, httpStatus:response.status, error:"3Min回報寫入未成功"};
+    }
+    if (!env.THREEMIN_VERIFY_URL) return {sent:true, verified:false, httpStatus:response.status, verificationNote:"已接受寫入，但未設定既有服務的唯讀THREEMIN_VERIFY_URL，不能宣稱讀回驗證完成"};
+    // 僅使用管理員設定的既有唯讀網址，不推測或建立外部API路徑。
+    const readback = await fetchWithDeadline(env.THREEMIN_VERIFY_URL, {method:"GET", headers, redirect:"manual"});
+    if (!readback.ok) return {sent:true, verified:false, httpStatus:response.status, verificationNote:`讀回HTTP ${readback.status}`};
+    const actual = await readback.json();
+    const verified = verifyThreeMinReadback(payload, actual);
+    return {sent:true, verified, httpStatus:response.status, verificationNote:verified ? "交易日、資金、全部標的及計畫欄位讀回一致" : "讀回資料與本次交易計畫不一致或服務schema不同"};
   } catch (err) {
-    return { sent: false, error: String(err) };
+    return { sent: accepted, verified: false, error: "3Min傳輸或回覆解析失敗，未完成讀回驗證" };
   }
+}
+
+function verifyThreeMinReadback(expected, actual) {
+  if (actual?.planDate !== expected.planDate || actual?.totalCapital !== expected.totalCapital || !Array.isArray(actual?.stocks) || actual.stocks.length !== expected.stocks.length) return false;
+  const bySymbol = new Map(actual.stocks.map(stock => [stock.symbol, stock]));
+  if (bySymbol.size !== expected.stocks.length) return false;
+  return expected.stocks.every(stock => {
+    const readback = bySymbol.get(stock.symbol);
+    return readback && Object.entries(stock).every(([key, value]) => JSON.stringify(readback[key]) === JSON.stringify(value));
+  });
 }
 
 function buildDailySelectionPayload(scanDate, stocks, diagnostics) {
@@ -4938,7 +5009,7 @@ function buildDailySelectionPayload(scanDate, stocks, diagnostics) {
     signalType: "DAILY_SELECTION",
     signalLabel: "盤後明日標的",
     title: stocks.length ? `V7盤後選出 ${stocks.length} 檔` : "V7盤後：今日 0 檔，維持現金",
-    instruction: stocks.length ? "依排名與15分K條件執行，不預先追價" : "今日無符合完整硬條件標的，維持現金",
+    instruction: stocks.length ? "依目前已實作篩選排名與15分K條件確認，不預先追價；完整30條尚未驗收完成" : "今日無符合目前已實作篩選條件標的，維持現金；完整30條尚未驗收完成",
     time: taiwanTime(),
     monitorUrl: "https://fugle-test.imihan0630.workers.dev/",
     diagnostics,
@@ -5624,6 +5695,8 @@ ${h(status.text)}
 // 開啟頁面即自動開始；上一輪完成後等待 10 秒才進下一輪。
 // ======================================================
 async function buildProductionReadiness(env) {
+  await loadTradingCalendar(env, Number(taiwanDate().slice(0, 4)));
+  if (taiwanDate().slice(5) <= "01-07") await loadTradingCalendar(env, Number(taiwanDate().slice(0, 4)) - 1);
   const marketDate = mostRecentWeekday(taiwanDate(Date.now()));
   const historyCount = await historyCacheCount(env);
   const seedState = await readHistorySeedState(env);
@@ -5640,12 +5713,13 @@ async function buildProductionReadiness(env) {
     FUGLE_API_KEY: Boolean(env.FUGLE_API_KEY),
     THREEMIN_API_URL: Boolean(env.THREEMIN_API_URL),
     THREEMIN_API_TOKEN: Boolean(env.THREEMIN_API_TOKEN),
+    THREEMIN_VERIFY_URL: Boolean(env.THREEMIN_VERIFY_URL),
     PUSH_WEBHOOK_URL: Boolean(env.PUSH_WEBHOOK_URL),
     historyReady,
     institution3DaysReady: completeInstitution.length >= 3
   };
   const coreReady = checks.STOCKS_KV && checks.V7_DB && checks.ADMIN_TOKEN && checks.FUGLE_API_KEY &&
-    checks.THREEMIN_API_URL && checks.THREEMIN_API_TOKEN &&
+    checks.THREEMIN_API_URL && checks.THREEMIN_API_TOKEN && checks.THREEMIN_VERIFY_URL && checks.PUSH_WEBHOOK_URL && !isTestMode(env) &&
     checks.historyReady && checks.institution3DaysReady;
   return {
     version: VERSION,
