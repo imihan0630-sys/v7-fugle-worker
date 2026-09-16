@@ -15,3 +15,11 @@ Read REQUIREMENTS_30.md in full before changes. It records the user's latest aut
 - Every monitoring import/update handoff includes https://fugle-test.imihan0630.workers.dev/ . Do not claim globally permanent chat memory; checked-in project instructions are the continuity basis when this repo is available.
 
 User authorizes continuing repairs without repeated OK confirmations. Stop for genuine authorization or protected-workflow blockers and state the exact required step without asking for secrets in chat.
+
+Latest repairs7.5.21: read REQUIREMENTS_30.md latest-state section before its historical table. Actual dated INDEX/TDCC/FINANCIAL/VALUATION/ANNOUNCEMENTS snapshots and latest3 institution dates gate selection; missing inputs must fail without replacing existing good plans. Only verified same-day closing cache may precede direct fetches. Currentdata source confidence is not proof of full30 completion.
+
+- IAS33 cumulative EPS subtraction is NOT genuine quarter EPS (weighted shares differ). Quarter EPS/growth remain null unless actual official duration and split/restatement comparability are verified; never reintroduce estimated growth to pass screening.
+- Production signal state uses D1 atomic lease and snapshot, not KV-only dedup. Isolation test keys may verify storage without pushes; never test on actual symbol keys. Delivery ambiguity/crash still prevents claims of cross-system exactly-once.
+- Fugle timestamps are documented Unix microseconds; actual formal candles must be same-day completed15m, quote age<=90sec, nontrial/nonhalt.10m auxiliary only. Notification is not a fill; require real firstEntryConfirmedAt and actualShares. Never replace missing actual shares with planned total shares.
+- Existing4 Cloudflare Cron remain; Actions17:55/18:05 prepare inputs and18:20 conditional recovery. A single normal /api/scan onlyIfMissing POST, daily D1 lock, trading-day gate; ambiguous writes are never blindly retried. Do not invoke recover_after_market.mjs from deployment acceptance.
+- This repair's deployment acceptance is official-data-only, isolated signal storage, readonly scan-preview, existing3Min GET and unsaved capital preview. Do not trigger actual re-selection,3Min POST,phone push,capital save or guessed holding mutations solely to make acceptance pass.
