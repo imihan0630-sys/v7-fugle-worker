@@ -1,0 +1,23 @@
+name: V7 Official Market Data Sync
+on:
+  schedule:
+    - cron: '55 9 * * 1-5'
+    - cron: '5 10 * * 1-5'
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: v7-official-market-sync
+  cancel-in-progress: false
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Sync today's official market data (no target changes or orders)
+        env:
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+        run: node tests/prepare_market_cache.mjs
