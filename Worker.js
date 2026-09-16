@@ -13,7 +13,7 @@
 // Cron expression: 0-24 5 * * MON-FRI // 台灣 13:00-13:24 每分鐘
 // Cron expression: * 9 * * MON-FRI     // 台灣 17:00-17:59 每分鐘建立歷史日K快取＋逐日法人快照
 // Cron expression: 10 10 * * MON-FRI  // 台灣 18:10 盤後掃描
-const VERSION = "7.5.18-signal-state-integrity";
+const VERSION = "7.5.19-after-market-recovery";
 const TEST_MODE_DEFAULT = true;
 const KV_KEY = "STOCK_CONFIG_V7";
 const LEGACY_KV_KEY = "STOCK_CONFIG_V6";
@@ -691,7 +691,8 @@ const stocks =
       if (!isPushAuthorized(request, env) && !isAuthorized(request, env)) return json({ error: "未授權" }, 401, true);
       if (request.method !== "POST") return json({ error: "只接受 POST" }, 405, true);
       try {
-        return json(await runAfterMarketScan(env, Date.now()), 200, true);
+        const body=await request.json().catch(()=>({}));
+        return json(await runAfterMarketScan(env, Date.now(),{onlyIfMissing:body.onlyIfMissing===true}), 200, true);
       } catch (err) {
         return json({ error: String(err) }, 500, true);
       }
@@ -1465,7 +1466,7 @@ async function runScheduledWithAudit(controller, env) {
     const result = isHistoryWarmup
       ? await runHistorySeed(env, scheduledTime, HISTORY_WARMUP_LIMIT)
       : (isAfterMarket
-        ? await runAfterMarketScan(env, scheduledTime)
+        ? await runAfterMarketScan(env, scheduledTime,{onlyIfMissing:true})
         : await runBackgroundMonitor(env, scheduledTime));
 
     const skipped = Boolean(result?.skipped);
@@ -2779,8 +2780,8 @@ function evaluateOperationSignals(result) {
   const latest10 = result.frame10?.latest;
   const latest15 = result.frame15?.latest;
   const hasPosition = p.positionStage !== "NONE";
-  const heldShares = positiveNumber(p.actualShares) || (p.positionStage === "FIRST" ? p.firstShares : p.totalShares);
-  const heldAmount = p.positionStage === "FIRST" ? p.firstAmount : p.totalAllocation;
+  const heldShares = Number.isInteger(p.actualShares) && p.actualShares>0 ? p.actualShares : null;
+  const heldAmount = heldShares!==null && positiveNumber(result.currentPrice) ? Math.round(heldShares*result.currentPrice) : null;
 
   if (result.stop?.level === "risk") {
     // 尚未建立部位時，跌破停損價代表「今日買進計畫失效」，不能叫使用者賣出不存在的持股。
@@ -3059,12 +3060,12 @@ async function processSignalState(result, env, tradeDate = taiwanDate()) {
   }
 }
 
-async function acquireSignalStateLease(env,key) {
+async function acquireSignalStateLease(env,key,duration=180000) {
   await ensureD1Schema(env);
   const token=crypto.randomUUID(),now=Date.now(),session=env.V7_DB.withSession("first-primary");
   await session.prepare(`INSERT INTO v7_signal_delivery_state(state_key,lease_token,lease_until,updated_at)
     VALUES(?1,?2,?3,?4) ON CONFLICT(state_key) DO UPDATE SET lease_token=excluded.lease_token,lease_until=excluded.lease_until,updated_at=excluded.updated_at
-    WHERE v7_signal_delivery_state.lease_until<?5`).bind(key,token,now+180000,new Date(now).toISOString(),now).run();
+    WHERE v7_signal_delivery_state.lease_until<?5`).bind(key,token,now+duration,new Date(now).toISOString(),now).run();
   const row=await session.prepare("SELECT snapshot_json FROM v7_signal_delivery_state WHERE state_key=?1 AND lease_token=?2").bind(key,token).first();
   return row ? {token,snapshot:row.snapshot_json ? JSON.parse(row.snapshot_json) : null} : null;
 }
@@ -3073,6 +3074,10 @@ async function persistSignalStateLease(env,key,token,state) {
   const outcome=await env.V7_DB.withSession("first-primary").prepare("UPDATE v7_signal_delivery_state SET snapshot_json=?1,updated_at=?2 WHERE state_key=?3 AND lease_token=?4")
     .bind(JSON.stringify(state),new Date().toISOString(),key,token).run();
   if(outcome?.meta?.changes===0 || outcome?.meta?.rows_written===0) throw new Error("訊號狀態鎖已變更，停止，不覆寫其他執行個體狀態");
+}
+
+async function releaseSignalLease(env,key,token) {
+  await env.V7_DB.withSession("first-primary").prepare("UPDATE v7_signal_delivery_state SET lease_token=NULL,lease_until=0 WHERE state_key=?1 AND lease_token=?2").bind(key,token).run();
 }
 
 async function processSignalStateCore(result, env, tradeDate = taiwanDate(), authoritativePrevious=null,saveState=null) {
@@ -3086,11 +3091,12 @@ async function processSignalStateCore(result, env, tradeDate = taiwanDate(), aut
   const previousActive = new Set(Array.isArray(previous.active) ? previous.active : []);
   const previousFired = new Set(Array.isArray(previous.fired) ? previous.fired : []);
   const entryBarTime = result.frame15?.latest?.time || null;
-  const lastEntrySignalBarTime = rawPrevious.lastEntrySignalBarTime || result.plan?.firstEntryConfirmedAt || null;
+  const entryTimes=[rawPrevious.lastEntrySignalBarTime,result.plan?.firstEntryConfirmedAt].filter(value=>Number.isFinite(Date.parse(value)));
+  const lastEntrySignalBarTime=entryTimes.length ? new Date(Math.max(...entryTimes.map(value=>Date.parse(value)))).toISOString() : null;
   const planDateMatches = !result.plan?.planDate || result.plan.planDate === tradeDate;
   const activeSignals = evaluateOperationSignals(result).filter(signal => {
     if (["BUY", "ADD", "EARLY_ALERT_10M"].includes(signal.type) && (!planDateMatches || result.quote?.isTrial === true)) return false;
-    return signal.type !== "ADD" || (entryBarTime && lastEntrySignalBarTime && Date.parse(entryBarTime) > Date.parse(lastEntrySignalBarTime));
+    return signal.type !== "ADD" || (Number.isFinite(Date.parse(result.plan?.firstEntryConfirmedAt)) && entryBarTime && lastEntrySignalBarTime && Date.parse(entryBarTime) > Date.parse(lastEntrySignalBarTime));
   });
   const activeTypes = activeSignals.map(signal => signal.type);
   const activeTypeSet = new Set(activeTypes);
@@ -3191,7 +3197,7 @@ function buildPushPayload(result, signal, tradeDate = taiwanDate()) {
     instruction: signal.instruction,
     stock: { symbol: result.symbol, name: result.name },
     currentPrice: result.currentPrice,
-    reason: signal.reason,
+    reason: signal.reason+(["STOP_LOSS","SELL","REDUCE"].includes(signal.type) && signal.shares===null ? "；實際持股股數尚未回填，請先核對券商持股，不以預計買進股數代替" : ""),
     suggestedAmount: signal.amount,
     suggestedShares: ["BUY", "ADD"].includes(signal.type) && positiveNumber(result.currentPrice) && toNumber(signal.amount) !== null
       ? sharesFor(signal.amount, result.currentPrice) : signal.shares,
@@ -3463,8 +3469,20 @@ function isAfterMarketSchedule(controller) {
 
 async function runAfterMarketScan(env, scheduledTime = Date.now(), options = {}) {
   const requestedDate = taiwanDate(scheduledTime);
+  const lockKey=`V7_AFTER_MARKET_LEASE:${requestedDate}`;let lease=null;
   try {
+    if(!options.dryRun) {
+      if(!env.V7_DB) throw new Error("盤後掃描缺D1原子鎖，停止，不冒險重複匯入");
+      lease=await acquireSignalStateLease(env,lockKey,600000);
+      if(!lease) return {skipped:true,reason:"AFTER_MARKET_RUNNING",requestedDate,noSelectionOrExternalWrite:true};
+      if(options.onlyIfMissing) {
+        await loadTradingCalendar(env,Number(requestedDate.slice(0,4)));
+        const marketDate=mostRecentWeekday(requestedDate),latest=await env.STOCKS_KV.get(LAST_SCAN_KEY,"json");
+        if(lease.snapshot?.status==="SUCCESS" || latest?.scanDate===marketDate) return {skipped:true,reason:"ALREADY_SCANNED",scanDate:marketDate,noSelectionOrExternalWrite:true};
+      }
+    }
     const summary = await runAfterMarketScanCore(env, scheduledTime, options);
+    if(lease) await persistSignalStateLease(env,lockKey,lease.token,{status:"SUCCESS",scanDate:summary.scanDate,generatedAt:summary.generatedAt});
     if (!options.dryRun) await env.STOCKS_KV.put("V7_LAST_SCAN_ATTEMPT", JSON.stringify({
       status: "SUCCESS", requestedDate, scanDate: summary.scanDate, selectedCount: summary.selectedCount,
       generatedAt: summary.generatedAt, threeMin: summary.threeMin, dailyReport: summary.dailyReport
@@ -3480,6 +3498,8 @@ async function runAfterMarketScan(env, scheduledTime = Date.now(), options = {})
         generatedAt:taiwanTime(), error:String(err).slice(0, 1500), failureAlert:alert}), { expirationTtl:14 * 86400 });
     }
     throw err;
+  } finally {
+    if(lease) await releaseSignalLease(env,lockKey,lease.token);
   }
 }
 
@@ -4296,7 +4316,7 @@ function validateOfficialQualityData(body,date) {
     const stocks={};let count=0;
     for(const row of [...body.twsePayload,...body.tpexPayload]) {
       const symbol=officialRowSymbol(row);if(!symbol) continue;
-      const announcementDate=normalizeMarketDate(row['發言日期']),title=String(row['主旨'] || '').trim();
+      const announcementDate=normalizeMarketDate(row['發言日期']),title=String(row['主旨'] ?? row['主旨 '] ?? '').trim();
       if(!announcementDate || !title) throw new Error("公告日期或主旨缺失");
       if(announcementDate>date || announcementDate<shiftDateString(date,-30)) continue;
       (stocks[symbol] ||= {officialAnnouncements:[],announcementCoverage:"本次官方重大訊息清單，非全面新聞或全部歷史訂單"}).officialAnnouncements.push({date:announcementDate,title});count++;
@@ -5499,7 +5519,11 @@ async function sendTo3Min(payload, env) {
     }
     if (!env.THREEMIN_VERIFY_URL) return {sent:true, verified:false, httpStatus:response.status, verificationNote:"已接受寫入，但未設定既有服務的唯讀THREEMIN_VERIFY_URL，不能宣稱讀回驗證完成"};
     // 僅使用管理員設定的既有唯讀網址，不推測或建立外部API路徑。
-    const readback=await readThreeMinPlan(payload,env);
+    let readback=await readThreeMinPlan(payload,env);
+    for(let attempt=1;attempt<3 && !readback.verified && !readback.authorizationFailed;attempt++) {
+      await sleepMs(1500*attempt);
+      readback=await readThreeMinPlan(payload,env);
+    }
     return {sent:true,verified:readback.verified===true,httpStatus:response.status,verificationNote:readback.reason,readback};
   } catch (err) {
     return { sent: accepted, verified: false, error: "3Min傳輸或回覆解析失敗，未完成讀回驗證" };
@@ -5512,6 +5536,7 @@ function verifyThreeMinReadback(expected, actual) {
 
 function verifyThreeMinPlan(expected, actual) {
   if (actual?.planDate !== expected.planDate || actual?.totalCapital !== expected.totalCapital || !Array.isArray(actual?.stocks) || actual.stocks.length !== expected.stocks.length) return false;
+  if(expected.schemaVersion && ['schemaVersion','scanDate','remainingCash'].some(key=>JSON.stringify(actual[key])!==JSON.stringify(expected[key]))) return false;
   const bySymbol = new Map(actual.stocks.map(stock => [stock.symbol, stock]));
   if (bySymbol.size !== expected.stocks.length) return false;
   return expected.stocks.every(stock => {
@@ -6441,6 +6466,8 @@ function adminPage() {
     "selectedReason": "產業資金、RS、法人與價量共振",
     "positionStage": "NONE",
     "averageCost": null,
+    "actualShares": null,
+    "firstEntryConfirmedAt": null,
     "reduceAt": 3900,
     "sellBelow": 3420,
     "pushEnabled": true
