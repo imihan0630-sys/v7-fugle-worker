@@ -35,7 +35,7 @@ const months=await Promise.all(Array.from({length:3},async (_,offset)=>{
 if(months[0].payload.data?.at(-1)?.[0]?.replaceAll('/','')!==String(Number(marketDate.slice(0,4))-1911)+marketDate.slice(5).replaceAll('-','')) throw new Error('Official index is not current; stop without presenting missing data as successful zero picks');
 await sync({kind:'INDEX',months});
 const tdccUrl='https://opendata.tdcc.com.tw/getOD.ashx?id=1-5';
-const tdcc=helpers.parseOfficialCsv(await (await publicSource(tdccUrl)).text(),['資料日期','證券代號','持股分級','人數','股數','占集保庫存數比例%']);
+const tdcc=helpers.parseOfficialCsv(await (await publicSource(tdccUrl)).text(),['資料日期','證券代號','持股分級','人數','股數','占集保庫存數比例%']).map(row=>({...row,'證券代號':String(row['證券代號']).trim()}));
 console.log(JSON.stringify({tdccAdjustmentSchema:tdcc.find(row=>row['持股分級']==='16' && /^[1-9][0-9]{3}$/.test(row['證券代號'])),tdccTotalSchema:tdcc.find(row=>row['持股分級']==='17' && /^[1-9][0-9]{3}$/.test(row['證券代號']))}));
 const fields=['資料日期','證券代號','持股分級','股數','占集保庫存數比例%'];
 await sync({kind:'TDCC',sourceUrl:tdccUrl,fields,rows:tdcc.filter(row=>/^[1-9][0-9]{3}$/.test(String(row['證券代號']))).map(row=>fields.map(field=>row[field]))});
