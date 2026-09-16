@@ -25,6 +25,22 @@ import { readFile } from 'node:fs/promises';
 }
 process.on('uncaughtException',error=>{console.error(String(error.message).slice(0,1800));process.exit(1);});
 const source = await readFile(process.env.V7_TEST_WORKER_PATH || new URL('./Worker_V7_7.5.11_REQUIREMENTS_REPAIR.mjs', import.meta.url), 'utf8');
+const quarterHelpers=await import('data:text/javascript;base64,'+Buffer.from(source+'\nexport {parseMopsQuarterEpsHtml,validateOfficialQualityData};').toString('base64'));
+{
+  const report=(current='27.25',prior='15.36',period='115年第2季')=>`合併綜合損益表 單位：新台幣仟元 <a href="/server-java/t164sb01?step=1&CO_ID=2330&SYEAR=2026&SSEASON=2&REPORT_ID=C">XBRL</a><table><tr><th>會計項目</th><th colspan="2">${period}</th><th colspan="2">114年第2季</th><th colspan="2">115年01月01日至115年06月30日</th><th colspan="2">114年01月01日至114年06月30日</th></tr><tr><td>基本每股盈餘</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>　基本每股盈餘</td><td>${current}</td><td></td><td>${prior}</td><td></td><td>49.33</td><td></td><td>29.31</td><td></td></tr></table>`;
+  const actual=quarterHelpers.parseMopsQuarterEpsHtml(report(),'2330',2026,2);
+  assert.equal(actual.quarterEPS,27.25);assert.equal(actual.reportedPriorYearQuarterEPS,15.36);assert.equal(actual.epsQoQ,null);
+  assert.ok(Math.abs(actual.epsYoY-(27.25/15.36-1)*100)<1e-10);
+  assert.equal(quarterHelpers.parseMopsQuarterEpsHtml(report('-1.89','-3.20'),'2330',2026,2).epsYoY,null,'Negative comparison base is not growth');
+  assert.throws(()=>quarterHelpers.parseMopsQuarterEpsHtml(report(),'6706',2026,2),/公司/);
+  assert.throws(()=>quarterHelpers.parseMopsQuarterEpsHtml(report('27.25','15.36','115年01月01日至115年06月30日'),'2330',2026,2),/真正單季/,'Cumulative period is not quarter EPS');
+  assert.throws(()=>quarterHelpers.parseMopsQuarterEpsHtml(report()+report(),'2330',2026,2),/不唯一/);
+  assert.throws(()=>quarterHelpers.parseMopsQuarterEpsHtml(report(),'2330',2026,4),/輸入/);
+  const body={kind:'QUARTER_EPS',year:2026,quarter:2,reports:[{symbol:'2330',sourceUrl:'https://mopsov.twse.com.tw/mops/web/ajax_t164sb04',html:report()}]};
+  assert.equal(quarterHelpers.validateOfficialQualityData(body,'2026-09-16').count,1);
+  assert.throws(()=>quarterHelpers.validateOfficialQualityData({...body,reports:[...body.reports,...body.reports]},'2026-09-16'),/重複/);
+  assert.throws(()=>quarterHelpers.validateOfficialQualityData({...body,reports:[{...body.reports[0],sourceUrl:'https://example.com'}]},'2026-09-16'),/來源/);
+}
 const api = await import('data:text/javascript;base64,' + Buffer.from(source + '\nexport { evaluateOperationSignals, evaluateStop, processSignalState, recalculatePlanCapital, saveStockConfig, KV_KEY, fetchMarketRows, fetchClosingRowsWithFallback, normalizeMarketDate, normalizeStock, enforceIndependentPoolQuota, buildPublicRecommendations, buildDailySelectionPayload, formatSlackSignalMessage, scoreCandidate, nextTradingDate, mostRecentWeekday, runAfterMarketScan, MARKET_STATE_KEY, allocateAndBuildPlans, sendTo3Min, verifyThreeMinReadback, parseOfficialCsv, fetchOfficialEnrichment, buildThreeMinPayload, waitingLivePage, LAST_SCAN_KEY, validateInstitutionData, institutionSourceUrls, readInstitutionStreakMap, writeInstitutionSnapshot };').toString('base64'));
 class MemoryKV {
   values = new Map();

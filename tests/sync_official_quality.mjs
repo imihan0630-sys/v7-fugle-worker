@@ -2,9 +2,14 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 process.on('uncaughtException',error=>{console.error('Quality synchronization failed: '+String(error.message).slice(0,900));process.exit(1);});
 const source=await readFile(process.env.V7_TEST_WORKER_PATH || new URL('../Worker.js',import.meta.url),'utf8');
-const helpers=await import('data:text/javascript;base64,'+Buffer.from(source+'\nexport {parseOfficialCsv,parseMopsIncomeHtml,parseMopsMarketOptions,validateOfficialQualityData};').toString('base64'));
+const helpers=await import('data:text/javascript;base64,'+Buffer.from(source+'\nexport {parseOfficialCsv,parseMopsIncomeHtml,parseMopsMarketOptions,parseMopsQuarterEpsHtml,validateOfficialQualityData,loadTradingCalendar,mostRecentWeekday};').toString('base64'));
 const origin='https://fugle-test.imihan0630.workers.dev';
-const marketDate=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Taipei',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+const now=new Date();
+const today=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Taipei',year:'numeric',month:'2-digit',day:'2-digit'}).format(now);
+await helpers.loadTradingCalendar({},Number(today.slice(0,4)));
+const hour=Number(new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Taipei',hour:'2-digit',hourCycle:'h23'}).format(now));
+const reference=hour<14 ? new Date(Date.parse(today+'T12:00:00Z')-86400000).toISOString().slice(0,10) : today;
+const marketDate=helpers.mostRecentWeekday(reference);
 assert.ok(process.env.V7_ADMIN_TOKEN,'Normal V7_ADMIN_TOKEN required');
 async function publicSource(url,options={}) {
   for(let attempt=0;attempt<3;attempt++) {
@@ -82,16 +87,42 @@ for(let start=0;start<requests.length;start+=2) {
   }));periods.push(...batch);
 }
 await sync({kind:'FINANCIAL',year,quarter,periods});
+// Review every preliminary qualifying candidate, before applying either pool quota.
+// This is a readonly source-selection preview; it never imports or pushes a plan.
+const reviewResponse=await admin('/api/scan-preview',{method:'POST',body:JSON.stringify({dryRun:true,epsReviewOnly:true,marketDate})});
+const review=await reviewResponse.json();
+assert.equal(reviewResponse.ok,true,`EPS source review failed: ${String(review.error || reviewResponse.status).slice(0,500)}`);
+assert.equal(review.dryRun,true);assert.equal(review.diagnostics?.quarterEpsReview?.provisional,true);
+const universe=review.diagnostics?.epsReviewUniverse;
+assert.ok(Array.isArray(universe) && universe.length<=200,'EPS review universe unavailable or exceeds verified request budget; do not silently truncate');
+const formHtml=await (await publicSource('https://mopsov.twse.com.tw/mops/web/t164sb04')).text();
+assert.match(formHtml,/<form\b[^>]*id=["']form1["'][^>]*action=["']\/mops\/web\/ajax_t164sb04["']/i,'Official single-company statement form action changed; do not guess another API');
+for(const name of ['co_id','year','season','TYPEK','isnew']) assert.ok(new RegExp(`name=["']${name}["']`).test(formHtml),`Official statement form missing ${name}`);
+const reports=[];
+for(let start=0;start<universe.length;start+=2) {
+  const batch=await Promise.all(universe.slice(start,start+2).map(async item=>{
+    assert.match(item.symbol,/^[1-9][0-9]{3}$/);
+    const sourceUrl='https://mopsov.twse.com.tw/mops/web/ajax_t164sb04';
+    const response=await publicSource(sourceUrl,{method:'POST',headers:{'content-type':'application/x-www-form-urlencoded'},
+      body:new URLSearchParams({encodeURIComponent:'1',step:'1',firstin:'1',off:'1',TYPEK:'all',isnew:'false',co_id:item.symbol,year:String(year-1911),season:String(quarter).padStart(2,'0')})});
+    const html=await response.text();
+    const verified=helpers.parseMopsQuarterEpsHtml(html,item.symbol,year,quarter);
+    console.log(JSON.stringify({reportedQuarterEpsReviewed:true,symbol:item.symbol,year,quarter,quarterEPS:verified.quarterEPS,priorYearQuarterEPS:verified.reportedPriorYearQuarterEPS,epsYoY:verified.epsYoY,epsQoQ:null}));
+    return {sourceUrl,symbol:item.symbol,html};
+  }));reports.push(...batch);
+}
+await sync({kind:'QUARTER_EPS',year,quarter,reports});
 const afterResponse=await admin('/api/config');assert.equal(afterResponse.ok,true);assert.deepEqual(await afterResponse.json(),before,'Quality sync cannot change current plans or capital');
 const statusResponse=await admin('/api/quality-status');assert.equal(statusResponse.ok,true);console.log(JSON.stringify({officialQualityStatus:await statusResponse.json(),configurationUnchanged:true,noSelection:true,noThreeMinWrite:true,noPush:true}));
 if(process.argv.includes('--dry-run')) {
   const storageTest=await admin('/api/signals/storage-test',{method:'POST',body:'{}'});
   const storageResult=await storageTest.json();assert.equal(storageTest.ok,true);assert.equal(storageResult.verified,true);assert.equal(storageResult.noRealSignals,true);
   console.log(JSON.stringify({liveSignalStorageVerified:storageResult}));
-  const response=await admin('/api/scan-preview',{method:'POST',body:JSON.stringify({dryRun:true})});
+  const response=await admin('/api/scan-preview',{method:'POST',body:JSON.stringify({dryRun:true,marketDate})});
   const result=await response.json();assert.equal(response.ok,true,`Readonly selection acceptance failed: ${String(result.error || response.status).slice(0,500)}`);
   assert.equal(result.dryRun,true);
   const finalConfig=await admin('/api/config');assert.deepEqual(await finalConfig.json(),before,'Preview must preserve current plans');
   console.log(JSON.stringify({qualityDryRunVerified:true,selectedCount:result.selectedCount,scanDate:result.scanDate,market:result.market,
-    benchmark:result.diagnostics?.relativeStrengthBenchmark,exclusions:result.diagnostics?.exclusions,requirements30:result.diagnostics?.requirements30,preservedPlans:true,noThreeMinWrite:true,noPush:true}));
+    benchmark:result.diagnostics?.relativeStrengthBenchmark,exclusions:result.diagnostics?.exclusions,quarterEpsReview:result.diagnostics?.quarterEpsReview,requirements30:result.diagnostics?.requirements30,preservedPlans:true,noThreeMinWrite:true,noPush:true}));
+  assert.equal(result.diagnostics?.quarterEpsReview?.ready,true,'Every final qualifying candidate must have actual quarter EPS review before acceptance');
 }

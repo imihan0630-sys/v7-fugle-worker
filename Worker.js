@@ -13,7 +13,7 @@
 // Cron expression: 0-24 5 * * MON-FRI // 台灣 13:00-13:24 每分鐘
 // Cron expression: * 9 * * MON-FRI     // 台灣 17:00-17:59 每分鐘建立歷史日K快取＋逐日法人快照
 // Cron expression: 10 10 * * MON-FRI  // 台灣 18:10 盤後掃描
-const VERSION = "7.5.21-optional-external-validation";
+const VERSION = "7.5.22-reported-quarter-eps-review";
 const TEST_MODE_DEFAULT = true;
 const KV_KEY = "STOCK_CONFIG_V7";
 const LEGACY_KV_KEY = "STOCK_CONFIG_V6";
@@ -203,14 +203,24 @@ export default {
       await loadTradingCalendar(env,Number(taiwanDate().slice(0,4)));
       const marketDate=mostRecentWeekday(taiwanDate());
       const index=await readQualitySnapshot(env,"INDEX",marketDate),tdcc=await readQualitySnapshot(env,"TDCC",marketDate);
-      const datasets={};for(const kind of ['FINANCIAL','VALUATION','ANNOUNCEMENTS']) {const data=await readQualitySnapshot(env,kind,marketDate);datasets[kind]={ready:!!data,count:data?.count || 0,asOfDate:data?.asOfDate || null};}
+      const datasets={};for(const kind of ['FINANCIAL','VALUATION','ANNOUNCEMENTS','QUARTER_EPS']) {const data=await readQualitySnapshot(env,kind,marketDate);datasets[kind]={ready:!!data,count:data?.count || 0,asOfDate:data?.asOfDate || null};}
       return json({marketDate,index:{ready:!!index,count:index?.count || 0,asOfDate:index?.asOfDate || null,return20:index?.return20 ?? null},
         tdcc:{ready:!!tdcc,count:tdcc?.count || 0,asOfDate:tdcc?.asOfDate || null},datasets,noPlanChanges:true},200,true);
     }
     if(url.pathname==="/api/scan-preview") {
       if(!isAuthorized(request,env)) return json({error:"ADMIN_TOKEN 錯誤"},401,true);
       if(request.method!=="POST") return json({error:"Method not allowed"},405,true);
-      try {return json(await runAfterMarketScan(env,Date.now(),{dryRun:true}),200,true);}
+      try {
+        const body=await request.json();let scheduledTime=Date.now();
+        if(body.marketDate!==undefined) {
+          const date=normalizeMarketDate(body.marketDate);
+          if(!date || date>taiwanDate() || date<shiftDateString(taiwanDate(),-14)) throw new Error("只讀預覽日期無效、未來或過舊");
+          await loadTradingCalendar(env,Number(date.slice(0,4)));
+          if(!isTradingDate(date)) throw new Error("只讀預覽不是交易日");
+          scheduledTime=Date.parse(date+'T10:20:00Z');
+        }
+        return json(await runAfterMarketScan(env,scheduledTime,{dryRun:true,epsReviewOnly:body.epsReviewOnly===true}),200,true);
+      }
       catch(err){return json({ok:false,error:String(err),dryRun:true,noPlanChanges:true},500,true);}
     }
     if(url.pathname==="/api/signals/storage-test") {
@@ -3556,6 +3566,7 @@ async function runAfterMarketScanCore(env, scheduledTime = Date.now(), options =
   if (!env.STOCKS_KV) throw new Error("找不到 STOCKS_KV Binding");
 
   const dryRun = options?.dryRun === true;
+  const epsReviewOnly=dryRun && options?.epsReviewOnly===true;
   const requestedDate = taiwanDate(scheduledTime);
   await loadTradingCalendar(env, Number(requestedDate.slice(0, 4)));
   if (requestedDate.slice(5) >= "12-31") await loadTradingCalendar(env, Number(requestedDate.slice(0, 4)) + 1);
@@ -3635,6 +3646,10 @@ async function runAfterMarketScanCore(env, scheduledTime = Date.now(), options =
   if(!tdccData) throw new Error("DATA_INCOMPLETE：缺最新集保持股分散資料，不能假裝已分析集中度");
   if(!financialData || !valuationData || !announcements) throw new Error("DATA_INCOMPLETE：缺正式季度財報比較、估值或公告查核，不使用部分基本面選股");
   for(const row of rows) Object.assign(row,tdccData.stocks?.[row.symbol] || {},financialData.stocks?.[row.symbol] || {},valuationData.stocks?.[row.symbol] || {},announcements.stocks?.[row.symbol] || {},{announcementsVerified:announcements.sourcesVerified===true});
+  const quarterEps=await readQualitySnapshot(env,"QUARTER_EPS",marketDate);
+  if(!epsReviewOnly && quarterEps && quarterEps.year===financialData.year && quarterEps.quarter===financialData.quarter) {
+    for(const row of rows) Object.assign(row,quarterEps.stocks?.[row.symbol] || {});
+  }
   const loadedConfig = await loadStockConfig(env);
   const currentSymbols = new Set((loadedConfig.stocks || []).map(item => item.symbol));
 
@@ -3648,6 +3663,10 @@ async function runAfterMarketScanCore(env, scheduledTime = Date.now(), options =
   const storedBudget = await env.STOCKS_KV.get(KV_KEY, "json");
   const totalCapital = positiveNumber(storedBudget?.totalCapital) || positiveNumber(env.V7_TOTAL_CAPITAL) || DEFAULT_TOTAL_CAPITAL;
   const scan = selectTomorrowCandidates(marketState, rows, { ...env, V7_TOTAL_CAPITAL: totalCapital, V7_OFFICIAL_INDEX:indexData }, marketDate);
+  const epsMissing=(scan.diagnostics.epsReviewUniverse || []).filter(item=>!quarterEps?.stocks?.[item.symbol]?.quarterEpsVerified || quarterEps.year!==financialData.year || quarterEps.quarter!==financialData.quarter).map(item=>item.symbol);
+  scan.diagnostics.quarterEpsReview={provisional:epsReviewOnly,year:financialData.year,quarter:financialData.quarter,reviewedCount:quarterEps?.count || 0,missingSymbols:epsMissing,
+    ready:!epsReviewOnly && epsMissing.length===0,scope:"通過既有精篩之候選逐檔複核；不是1882檔全市場均已取得單季EPS",qoqBasis:"未獨立核對跨季面額／股數調整，不用未調整QoQ加分"};
+  if(!dryRun && epsMissing.length) throw new Error(`DATA_INCOMPLETE：候選缺當季實際EPS複核(${epsMissing.join(',')})，保留既有計畫`);
   if (!scan.diagnostics.with60Days) throw new Error("DATA_INCOMPLETE：沒有可用60日日K，不能把資料缺失回報為今日0檔");
   for (const market of ["TWSE", "TPEx"]) {
     const marketStocks = rows.filter(row => row.market === market);
@@ -4278,6 +4297,15 @@ async function readQualitySnapshot(env,kind,date) {
 }
 
 function validateOfficialQualityData(body,date) {
+  if(body.kind==="QUARTER_EPS") {
+    if(!Number.isInteger(body.year) || !Number.isInteger(body.quarter) || body.quarter<1 || body.quarter>3 || new Date(Date.UTC(body.year,body.quarter*3,0)).toISOString().slice(0,10)>date || !Array.isArray(body.reports) || body.reports.length>200) throw new Error("單季EPS期間或複核數量無效；Q4沒有可驗證單季欄位，不以年度相減推算");
+    const stocks={};
+    for(const report of body.reports) {
+      if(report.sourceUrl!=="https://mopsov.twse.com.tw/mops/web/ajax_t164sb04" || !/^[1-9][0-9]{3}$/.test(report.symbol) || stocks[report.symbol]) throw new Error("單季EPS官方來源或候選代號重複／無效");
+      stocks[report.symbol]=parseMopsQuarterEpsHtml(report.html,report.symbol,body.year,body.quarter);
+    }
+    return {asOfDate:date,year:body.year,quarter:body.quarter,count:Object.keys(stocks).length,stocks,scope:"通過初步精篩候選的官方單季EPS逐檔核對；不是全市場EPS覆蓋"};
+  }
   if(body.kind==="INDEX") {
     if(!Array.isArray(body.months) || body.months.length<2 || body.months.length>4) throw new Error("加權指數需要2至4個月官方資料");
     const points=new Map();
@@ -4383,6 +4411,32 @@ function validateOfficialQualityData(body,date) {
 function decodePublicHtml(value) {
   return String(value).replace(/<[^>]+>/g,' ').replace(/&#(\d+);/g,(_,number)=>String.fromCodePoint(Number(number)))
     .replaceAll('&nbsp;',' ').replaceAll('&amp;','&').replaceAll('&lt;','<').replaceAll('&gt;','>').replaceAll('&quot;','"').replace(/\s+/g,' ').trim();
+}
+
+function parseMopsQuarterEpsHtml(html,symbol,year,quarter) {
+  if(typeof html!=="string" || html.length>300000 || !Number.isInteger(year) || ![1,2,3].includes(quarter) || !/^[1-9][0-9]{3}$/.test(symbol)) throw new Error("單季EPS報表輸入無效");
+  if(!html.includes(`CO_ID=${symbol}&SYEAR=${year}&SSEASON=${quarter}&REPORT_ID=C`) || !html.includes('合併綜合損益表') || !html.includes('新台幣仟元')) throw new Error("單季EPS公司、年度、季別或合併口徑不符");
+  const roc=year-1911;
+  const isPeriod=(label,y)=>{
+    const compact=label.replace(/\s+/g,'');
+    const m1=String((quarter-1)*3+1).padStart(2,'0'),m2=String(quarter*3).padStart(2,'0');
+    const last=new Date(Date.UTC(year,quarter*3,0)).getUTCDate();
+    return compact===`${y}年第${quarter}季` || compact===`${y}年${m1}月01日至${y}年${m2}月${last}日`;
+  };
+  let found=null;
+  for(const match of html.matchAll(/<table\b[^>]*>([\s\S]*?)<\/table>/gi)) {
+    const rows=[...match[1].matchAll(/<tr\b[^>]*>([\s\S]*?)<\/tr>/gi)].map(row=>[...row[1].matchAll(/<t[hd]\b[^>]*>([\s\S]*?)<\/t[hd]>/gi)].map(cell=>decodePublicHtml(cell[1])));
+    const headings=rows.find(row=>row[0]==='會計項目');
+    if(!headings || !isPeriod(headings[1],roc) || !isPeriod(headings[2],roc-1)) continue;
+    const epsRows=rows.filter(row=>row[0]?.replace(/\s+/g,'')==='基本每股盈餘' && marketNumber(row[1])!==null);
+    if(epsRows.length!==1 || epsRows[0].length!==1+2*(headings.length-1) || marketNumber(epsRows[0][3])===null || found) throw new Error("單季EPS數值欄位或報表不唯一，不猜測表格");
+    const current=marketNumber(epsRows[0][1]),lastYear=marketNumber(epsRows[0][3]);
+    found={eps:current,quarterEPS:current,reportedPriorYearQuarterEPS:lastYear,quarterEpsVerified:true,epsYoY:lastYear>0 ? (current/lastYear-1)*100 : null,
+      epsQoQ:null,epsComparisonsReady:lastYear>0,epsBasis:"MOPS合併綜合損益表直接公告單季EPS；YoY使用同份當期報表比較欄，非累計差額；負或0基期不算成長率；跨季調整未核對故QoQ為NULL",
+      quarterEpsSource:"https://mopsov.twse.com.tw/mops/web/ajax_t164sb04",quarterEpsYear:year,quarterEpsQuarter:quarter};
+  }
+  if(!found) throw new Error("沒有已核對的真正單季EPS及同季比較欄位");
+  return found;
 }
 
 function parseMopsIncomeHtml(html,year,quarter) {
@@ -4582,6 +4636,7 @@ function selectTomorrowCandidates(marketState, todayRows, env, scanDate) {
     b.setupQuality - a.setupQuality || b.sectorFlow - a.sectorFlow || b.relativeStrength - a.relativeStrength;
 
   scored.sort(rankFn);
+  diagnostics.epsReviewUniverse=scored.map(item=>({symbol:item.symbol,name:item.name}));
 
   diagnostics.nearMisses = diagnostics.nearMisses
     .sort((a, b) => a.missingCount - b.missingCount || b.nearScore - a.nearScore)
@@ -4590,8 +4645,7 @@ function selectTomorrowCandidates(marketState, todayRows, env, scanDate) {
 
   // ====================================================
   // 千金股專池：收盤價 >= 1,000 元，獨立再分析一次。
-  // 使用相同 A/B、RR、風控與B級以上規則；只把RS基準改成千金股自身平均，
-  // 讓「高價股彼此之間的相對強弱」可獨立排序。
+  // 使用相同 A/B、RR、風控與B級以上規則；RS仍是真實TAIEX與同日期產業同業。
   // 每池最多3檔；不保證名額、不硬塞，空缺不得讓另一池補位。
   // ====================================================
   const thousandMarketRows = todayRows.filter(row => (toNumber(row.close) || 0) >= THOUSAND_STOCK_PRICE);
