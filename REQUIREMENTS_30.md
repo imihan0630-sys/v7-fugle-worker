@@ -26,7 +26,7 @@
 |18|連續一次，解除後再成立可再次通知|processSignalState與episode ID；失敗重試測試|多isolate並發／KV一致性壓力測試|
 |19|通知直接給操作資訊|buildPushPayload；買加股數按當下金額換算；第一筆停損不賣全筆預計股數|實際成交股數與賣出回填；HTTP成功不等於手機送達|
 |20|交易計畫同步監控卡片|完整plan schema與既有卡片；盤後未有新Live State時先顯示真實匯入計畫，明示不是行情或買進訊號|瀏覽器視覺與資料一致性驗收|
-|21|總資金變更自動重算|管理頁預覽／儲存＋/api/capital；已持倉不覆寫|帶正常管理員授權的API與頁面驗收|
+|21|總資金變更自動重算|管理頁預覽／儲存＋/api/capital；已持倉不覆寫；9/16真實管理員授權的20萬→30萬預覽成功，正式計畫與資金未變|儲存操作及頁面視覺驗收；不以測試覆寫正式資金|
 |22|金額及零股股數|recalculatePlanCapital；floor股數及現金保留測試|真實價格及实际成交零股回填|
 |23|依動作、等級、優先、RR等排序|compareResults|真實訊號排序、無持倉不宜進場狀態排名|
 |24|A立即／B接近／C等待|buildMonitorStatus；與選股A／B分開|實際卡片狀態及持倉動作同步|
@@ -51,6 +51,15 @@
 - 已查3Min官方API文件：https://3minapi.com/docs/integration 。POST與GET list使用同一既有data/{slug}端點；GET single須POST回覆的record ID。新verify URL需正常配置並核对实际回覆schema，不能拿V7本身讀回冒充3Min讀回。
 
 ### 保留原有安全邊界
+
+### 2026/09/16 22:09 3Min讀回驗收
+
+- 正式runtime更新為7.5.14-three-min-readback。驗收流程：https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/35106559731 。
+- 3Min使用管理員已設定的既有THREEMIN_VERIFY_URL，GET HTTP200；實際schema為success/data/pagination，紀錄內payload承載計畫。
+- 已核對9/17 planDate、20萬totalCapital、全部3檔與已送出計畫欄位一致。pipeline.complete=true僅代表此批選股／KV／3Min儲存讀回／推播HTTP傳輸通過，不代表全30條精篩完整或手機收到。
+- 本次沒有重新選股、3MinPOST、手機推播或交易計畫變動。資金20萬→30萬只做preview，正式資金與全部標的不變。
+- 首頁已在未有新LiveState時顯示已匯入計畫，明示不是即時行情或買進訊號；程式與HTTP文字驗收通過，瀏覽器視覺QA仍未完成。
+- 初次驗收入口回覆NotFound，增加不寫入的GET路由生效核對後成功。未將初次非JSON回覆當成3Min授權問題或重送交易資料。
 
 - 只更換Worker程式，不重置KV、D1、Cron、Webhook或其他既有環境設定。
 - 新增GitHub Actions在台灣17:55、18:05同步官方當日行情作為備援；不改標的或下單，原Cloudflare18:10及其他Cron全數保留。GitHub排程可能延遲，不把設定成功冒充實際準時完成。
