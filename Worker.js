@@ -13,7 +13,7 @@
 // Cron expression: 0-24 5 * * MON-FRI // 台灣 13:00-13:24 每分鐘
 // Cron expression: * 9 * * MON-FRI     // 台灣 17:00-17:59 每分鐘建立歷史日K快取＋逐日法人快照
 // Cron expression: 10 10 * * MON-FRI  // 台灣 18:10 盤後掃描
-const VERSION = "7.5.22-reported-quarter-eps-review";
+const VERSION = "7.5.23-scheduled-health-verification";
 const TEST_MODE_DEFAULT = true;
 const KV_KEY = "STOCK_CONFIG_V7";
 const LEGACY_KV_KEY = "STOCK_CONFIG_V6";
@@ -201,7 +201,11 @@ export default {
       if(!isAuthorized(request,env)) return json({error:"ADMIN_TOKEN 錯誤"},401,true);
       if(request.method!=="GET") return json({error:"Method not allowed"},405,true);
       await loadTradingCalendar(env,Number(taiwanDate().slice(0,4)));
-      const marketDate=mostRecentWeekday(taiwanDate());
+      const requestedDate=url.searchParams.get('marketDate');
+      const marketDate=requestedDate===null ? mostRecentWeekday(taiwanDate()) : normalizeMarketDate(requestedDate);
+      if(!marketDate || marketDate>taiwanDate() || marketDate<shiftDateString(taiwanDate(),-14)) return json({error:"品質查核日期無效、未來或過舊"},400,true);
+      await loadTradingCalendar(env,Number(marketDate.slice(0,4)));
+      if(!isTradingDate(marketDate)) return json({error:"品質查核不是交易日"},400,true);
       const index=await readQualitySnapshot(env,"INDEX",marketDate),tdcc=await readQualitySnapshot(env,"TDCC",marketDate);
       const datasets={};for(const kind of ['FINANCIAL','VALUATION','ANNOUNCEMENTS','QUARTER_EPS']) {const data=await readQualitySnapshot(env,kind,marketDate);datasets[kind]={ready:!!data,count:data?.count || 0,asOfDate:data?.asOfDate || null};}
       return json({marketDate,index:{ready:!!index,count:index?.count || 0,asOfDate:index?.asOfDate || null,return20:index?.return20 ?? null},
