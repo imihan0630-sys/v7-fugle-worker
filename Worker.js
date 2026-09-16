@@ -13,7 +13,7 @@
 // Cron expression: 0-24 5 * * MON-FRI // 台灣 13:00-13:24 每分鐘
 // Cron expression: * 9 * * MON-FRI     // 台灣 17:00-17:59 每分鐘建立歷史日K快取＋逐日法人快照
 // Cron expression: 10 10 * * MON-FRI  // 台灣 18:10 盤後掃描
-const VERSION = "7.5.25-reported-previous-quarter-eps";
+const VERSION = "7.5.26-q1-statement-column-validation";
 const TEST_MODE_DEFAULT = true;
 const KV_KEY = "STOCK_CONFIG_V7";
 const LEGACY_KV_KEY = "STOCK_CONFIG_V6";
@@ -4476,10 +4476,16 @@ function parseMopsQuarterEpsHtml(html,symbol,year,quarter) {
   for(const match of html.matchAll(/<table\b[^>]*>([\s\S]*?)<\/table>/gi)) {
     const rows=[...match[1].matchAll(/<tr\b[^>]*>([\s\S]*?)<\/tr>/gi)].map(row=>[...row[1].matchAll(/<t[hd]\b[^>]*>([\s\S]*?)<\/t[hd]>/gi)].map(cell=>decodePublicHtml(cell[1])));
     const headings=rows.find(row=>row[0]==='會計項目');
-    if(!headings || !isPeriod(headings[1],roc) || !isPeriod(headings[2],roc-1)) continue;
+    if(!headings || !isPeriod(headings[1],roc)) continue;
+    // 官方Q1表依序為當年累計、當年單季、去年累計、去年單季；
+    // Q1累計与單季期間相同，必須核對兩組數字一致，不能把第二欄當去年。
+    const q1Repeated=quarter===1 && headings.length===5 && isPeriod(headings[2],roc) && isPeriod(headings[3],roc-1) && isPeriod(headings[4],roc-1);
+    if(!q1Repeated && !isPeriod(headings[2],roc-1)) continue;
+    const priorColumn=q1Repeated ? 5 : 3;
     const epsRows=rows.filter(row=>row[0]?.replace(/\s+/g,'')==='基本每股盈餘' && marketNumber(row[1])!==null);
-    if(epsRows.length!==1 || epsRows[0].length!==1+2*(headings.length-1) || marketNumber(epsRows[0][3])===null || found) throw new Error("單季EPS數值欄位或報表不唯一，不猜測表格");
-    const current=marketNumber(epsRows[0][1]),lastYear=marketNumber(epsRows[0][3]);
+    if(epsRows.length!==1 || epsRows[0].length!==1+2*(headings.length-1) || marketNumber(epsRows[0][priorColumn])===null || found) throw new Error("單季EPS數值欄位或報表不唯一，不猜測表格");
+    const current=marketNumber(epsRows[0][1]),lastYear=marketNumber(epsRows[0][priorColumn]);
+    if(q1Repeated && (current!==marketNumber(epsRows[0][3]) || lastYear!==marketNumber(epsRows[0][7]))) throw new Error("Q1累計與單季EPS應相同，欄位不一致不能猜測");
     found={eps:current,quarterEPS:current,reportedPriorYearQuarterEPS:lastYear,quarterEpsVerified:true,epsYoY:lastYear>0 ? (current/lastYear-1)*100 : null,
       epsQoQ:null,epsComparisonsReady:true,epsYoYPercentageReady:lastYear>0,
       epsYoYChangeAmount:current-lastYear,

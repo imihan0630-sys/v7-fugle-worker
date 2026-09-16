@@ -60,6 +60,11 @@ const quarterHelpers=await import('data:text/javascript;base64,'+Buffer.from(sou
   const paired={...body,reports:[{...body.reports[0],previousQuarterHtml:previous}]};
   const stock=quarterHelpers.validateOfficialQualityData(paired,'2026-09-16').stocks['2330'];
   assert.equal(stock.previousQuarterEPS,22.08);assert.equal(stock.previousQuarterEpsVerified,true);
+  const q1Actual=previous.replace('<th colspan="2">114年第1季</th>','<th colspan="2">115年第1季</th>').replace('<th colspan="2">115年01月01日至115年06月30日</th>','<th colspan="2">114年01月01日至114年03月31日</th>').replace('<th colspan="2">114年01月01日至114年06月30日</th>','<th colspan="2">114年第1季</th>').replace('<td>13.95</td>','<td>22.08</td>').replace('<td>49.33</td>','<td>13.95</td>').replace('<td>29.31</td>','<td>13.95</td>');
+  const q1=quarterHelpers.parseMopsQuarterEpsHtml(q1Actual,'2330',2026,1);
+  assert.equal(q1.quarterEPS,22.08);assert.equal(q1.reportedPriorYearQuarterEPS,13.95);
+  assert.throws(()=>quarterHelpers.parseMopsQuarterEpsHtml(q1Actual.replace('<td>22.08</td>','<td>99</td>'),'2330',2026,1),/欄位不一致/);
+
   assert.equal(stock.epsQoQ,null);assert.equal(stock.epsQoQReady,false,'Do not score an unverified adjusted comparison');
   assert.throws(()=>quarterHelpers.validateOfficialQualityData({...paired,reports:[{...paired.reports[0],previousQuarterHtml:report()}]},'2026-09-16'),/季別/);
   assert.throws(()=>quarterHelpers.validateOfficialQualityData({...paired,reports:[{...paired.reports[0],previousQuarterHtml:previous.replace('CO_ID=2330','CO_ID=6706')}]},'2026-09-16'),/公司/);
