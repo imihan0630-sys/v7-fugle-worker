@@ -355,7 +355,7 @@ const financialPeriods=[{year:2026,quarter:1,stocks:{'1234':{revenueYTD:100,gros
   {year:2025,quarter:1,stocks:{'1234':{revenueYTD:80,grossYTD:16,operatingYTD:8,epsYTD:1}}},
   {year:2025,quarter:2,stocks:{'1234':{revenueYTD:180,grossYTD:41,operatingYTD:18,epsYTD:0}}}];
 const financial=qualityApi.deriveQuarterlyFinancials(financialPeriods,2026,2)['1234'];
-assert.equal(financial.quarterRevenue,150);assert.equal(financial.quarterEPS,2);assert.equal(financial.revenueQoQ,50);assert.equal(financial.revenueQuarterYoY,50);assert.equal(financial.epsYoY,null);assert.equal(financial.grossMargin,40);assert.equal(financial.grossMarginYoY,15);
+assert.equal(financial.quarterRevenue,150);assert.equal(financial.quarterEPS,null,'Cumulative EPS differences are not valid single-quarter EPS');assert.equal(financial.reportedCumulativeEPS,3);assert.equal(financial.epsComparisonsReady,false);assert.equal(financial.epsQoQ,null);assert.equal(financial.revenueQoQ,50);assert.equal(financial.revenueQuarterYoY,50);assert.equal(financial.epsYoY,null);assert.equal(financial.grossMargin,40);assert.equal(financial.grossMarginYoY,15);
 const incomeHtml='累計金額 新台幣仟元 <table><tr>'+['公司 代號','公司名稱','營業收入','營業毛利（毛損）淨額','營業利益（損失）','基本每股盈餘（元）'].map(field=>`<th>${field}</th>`).join('')+'</tr>'+Array.from({length:500},(_,index)=>`<tr><td>${5000+index}</td><td>測試</td><td>1,000</td><td>300</td><td>200</td><td>1.5</td></tr>`).join('')+'</table>';
 assert.deepEqual(qualityApi.parseMopsMarketOptions('<select name="TYPEK"><option value="sii">上市</option><option value="otc">上櫃</option></select>'),{TWSE:'sii',TPEx:'otc'});
 assert.throws(()=>qualityApi.parseMopsMarketOptions('<select name="TYPEK"><option value="s">全部</option></select>'),/不猜測/);
