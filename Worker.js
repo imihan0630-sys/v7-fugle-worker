@@ -13,7 +13,7 @@
 // Cron expression: 0-24 5 * * MON-FRI // 台灣 13:00-13:24 每分鐘
 // Cron expression: * 9 * * MON-FRI     // 台灣 17:00-17:59 每分鐘建立歷史日K快取＋逐日法人快照
 // Cron expression: 10 10 * * MON-FRI  // 台灣 18:10 盤後掃描
-const VERSION = "7.5.17-official-quality-data";
+const VERSION = "7.5.18-signal-state-integrity";
 const TEST_MODE_DEFAULT = true;
 const KV_KEY = "STOCK_CONFIG_V7";
 const LEGACY_KV_KEY = "STOCK_CONFIG_V6";
@@ -188,6 +188,22 @@ export default {
       if(request.method!=="POST") return json({error:"Method not allowed"},405,true);
       try {return json(await runAfterMarketScan(env,Date.now(),{dryRun:true}),200,true);}
       catch(err){return json({ok:false,error:String(err),dryRun:true,noPlanChanges:true},500,true);}
+    }
+    if(url.pathname==="/api/signals/storage-test") {
+      if(!isAuthorized(request,env)) return json({error:"ADMIN_TOKEN 錯誤"},401,true);
+      if(request.method!=="POST") return json({error:"Method not allowed"},405,true);
+      const key="V7_LEASE_ACCEPTANCE:"+crypto.randomUUID();let owner=null,next=null;
+      try {
+        owner=await acquireSignalStateLease(env,key);if(!owner) throw new Error("測試鎖無法取得");
+        const contenders=await Promise.all(Array.from({length:4},()=>acquireSignalStateLease(env,key)));
+        if(contenders.some(Boolean)) throw new Error("D1原子鎖並發校驗失敗");
+        const proof={testOnly:true,proofNonce:crypto.randomUUID()};await persistSignalStateLease(env,key,owner.token,proof);
+        await env.V7_DB.withSession("first-primary").prepare("UPDATE v7_signal_delivery_state SET lease_token=NULL,lease_until=0 WHERE state_key=?1 AND lease_token=?2").bind(key,owner.token).run();
+        next=await acquireSignalStateLease(env,key);
+        if(!next || JSON.stringify(next.snapshot)!==JSON.stringify(proof)) throw new Error("D1狀態讀回或解除後重新取得鎖失敗");
+        return json({ok:true,verified:true,concurrentContendersBlocked:4,authoritativeReadback:true,reacquired:true,noRealSignals:true,noPush:true,noPlanChanges:true},200,true);
+      }catch(err){return json({error:String(err),noPush:true,noPlanChanges:true},500,true);}
+      finally{const lease=next || owner;if(lease) await env.V7_DB.withSession("first-primary").prepare("UPDATE v7_signal_delivery_state SET lease_token=NULL,lease_until=0 WHERE state_key=?1 AND lease_token=?2").bind(key,lease.token).run();}
     }
 
     if(url.pathname==="/api/institution-data") {
@@ -881,6 +897,9 @@ async function ensureD1Schema(env) {
       PRIMARY KEY(dataset_key,market_date)
     )
   `).run();
+  await env.V7_DB.prepare(`CREATE TABLE IF NOT EXISTS v7_signal_delivery_state (
+    state_key TEXT PRIMARY KEY,snapshot_json TEXT,lease_token TEXT,lease_until INTEGER NOT NULL DEFAULT 0,updated_at TEXT NOT NULL
+  )`).run();
   D1_SCHEMA_READY = true;
   return true;
 }
@@ -3019,10 +3038,48 @@ async function runBackgroundMonitor(env, scheduledTime = Date.now(), allowOutsid
 }
 
 async function processSignalState(result, env, tradeDate = taiwanDate()) {
+  if(!result.ok) return [];
+  const key=SIGNAL_STATE_PREFIX+result.symbol;
+  if(!env.V7_DB) {
+    if(!isTestMode(env)) throw new Error("SIGNAL_STATE_UNAVAILABLE：正式推播需要既有D1原子鎖，不退回可能重複的KV並發寫入");
+    return processSignalStateCore(result,env,tradeDate);
+  }
+  const lease=await acquireSignalStateLease(env,key);
+  if(!lease) return [];
+  try {
+    const previous=lease.snapshot || await env.STOCKS_KV.get(key,"json") || {};
+    if(!lease.snapshot) await persistSignalStateLease(env,key,lease.token,previous);
+    return await processSignalStateCore(result,env,tradeDate,previous,async next=>{
+      await persistSignalStateLease(env,key,lease.token,next);
+      try {await env.STOCKS_KV.put(key,JSON.stringify(next),{expirationTtl:SIGNAL_STATE_TTL_SECONDS});}
+      catch(_){console.warn("訊號D1狀態已保存，KV鏡像暫時失敗；不因此重送推播");}
+    });
+  } finally {
+    await env.V7_DB.withSession("first-primary").prepare("UPDATE v7_signal_delivery_state SET lease_token=NULL,lease_until=0 WHERE state_key=?1 AND lease_token=?2").bind(key,lease.token).run();
+  }
+}
+
+async function acquireSignalStateLease(env,key) {
+  await ensureD1Schema(env);
+  const token=crypto.randomUUID(),now=Date.now(),session=env.V7_DB.withSession("first-primary");
+  await session.prepare(`INSERT INTO v7_signal_delivery_state(state_key,lease_token,lease_until,updated_at)
+    VALUES(?1,?2,?3,?4) ON CONFLICT(state_key) DO UPDATE SET lease_token=excluded.lease_token,lease_until=excluded.lease_until,updated_at=excluded.updated_at
+    WHERE v7_signal_delivery_state.lease_until<?5`).bind(key,token,now+180000,new Date(now).toISOString(),now).run();
+  const row=await session.prepare("SELECT snapshot_json FROM v7_signal_delivery_state WHERE state_key=?1 AND lease_token=?2").bind(key,token).first();
+  return row ? {token,snapshot:row.snapshot_json ? JSON.parse(row.snapshot_json) : null} : null;
+}
+
+async function persistSignalStateLease(env,key,token,state) {
+  const outcome=await env.V7_DB.withSession("first-primary").prepare("UPDATE v7_signal_delivery_state SET snapshot_json=?1,updated_at=?2 WHERE state_key=?3 AND lease_token=?4")
+    .bind(JSON.stringify(state),new Date().toISOString(),key,token).run();
+  if(outcome?.meta?.changes===0 || outcome?.meta?.rows_written===0) throw new Error("訊號狀態鎖已變更，停止，不覆寫其他執行個體狀態");
+}
+
+async function processSignalStateCore(result, env, tradeDate = taiwanDate(), authoritativePrevious=null,saveState=null) {
   if (!result.ok) return [];
 
   const key = SIGNAL_STATE_PREFIX + result.symbol;
-  const rawPrevious = await env.STOCKS_KV.get(key, "json") || {};
+  const rawPrevious = authoritativePrevious || await env.STOCKS_KV.get(key, "json") || {};
   const sameTradeDate = rawPrevious.tradeDate === tradeDate;
   const modeMatches = rawPrevious.testMode === undefined || rawPrevious.testMode === isTestMode(env);
   const previous = sameTradeDate && modeMatches ? rawPrevious : { active: [], fired: [], tradeDate };
@@ -3114,11 +3171,8 @@ async function processSignalState(result, env, tradeDate = taiwanDate()) {
   };
 
   if (JSON.stringify(newComparable) !== JSON.stringify(oldComparable) || previous.updatedAt === undefined) {
-    await env.STOCKS_KV.put(
-      key,
-      JSON.stringify(nextState),
-      { expirationTtl: SIGNAL_STATE_TTL_SECONDS }
-    );
+    if(saveState) await saveState(nextState);
+    else await env.STOCKS_KV.put(key,JSON.stringify(nextState),{expirationTtl:SIGNAL_STATE_TTL_SECONDS});
   }
 
   return delivered;
@@ -3342,7 +3396,7 @@ function summarizeOfficialPayload(name, payload, twseSymbol, tpexSymbol) {
   };
 }
 
-function parseOfficialCsv(input) {
+function parseOfficialCsv(input,requiredFields=["公司代號"]) {
   const text = String(input).replace(/^\uFEFF/, "");
   const records = []; let row = [], cell = "", quoted = false;
   for (let i=0;i<text.length;i++) {
@@ -3356,7 +3410,7 @@ function parseOfficialCsv(input) {
   if (quoted) throw new Error("官方CSV引號不完整");
   if (cell || row.length) {row.push(cell.replace(/\r$/, ""));records.push(row);}
   const fields=records.shift() || [];
-  if (fields.length<4 || !fields.includes("公司代號") || new Set(fields).size!==fields.length) throw new Error("官方CSV欄位不符，不接受HTML或未知格式");
+  if (fields.length<4 || !Array.isArray(requiredFields) || !requiredFields.length || requiredFields.some(field=>!fields.includes(field)) || new Set(fields).size!==fields.length) throw new Error("官方CSV欄位不符，不接受HTML或未知格式");
   if (records.some(item=>item.length!==fields.length)) throw new Error("官方CSV列欄數不一致");
   return records.map(item=>Object.fromEntries(fields.map((key,i)=>[key,item[i]])));
 }
