@@ -19,7 +19,7 @@ async function publicSource(url,options={}) {
 async function admin(path,options={}) {
   for(let attempt=0;attempt<3;attempt++) {
     try {
-      const response=await fetch(origin+path,{...options,headers:{'x-admin-token':process.env.V7_ADMIN_TOKEN,'content-type':'application/json'},signal:AbortSignal.timeout(45000)});
+      const response=await fetch(origin+path,{...options,headers:{'x-admin-token':process.env.V7_ADMIN_TOKEN,'content-type':'application/json'},signal:AbortSignal.timeout(path==='/api/scan-preview'?180000:45000)});
       if([401,403].includes(response.status)) throw new Error('Administrator authorization failed; stop without replacing credentials');return response;
     }catch(error){if(options.method==='POST' || attempt>=2 || !/fetch failed|timeout|ECONNRESET|ETIMEDOUT/i.test(String(error))) throw new Error(`Administrator ${options.method || 'GET'} ${path}: ${error.message}`);await new Promise(resolve=>setTimeout(resolve,1000*(attempt+1)));}
   }
