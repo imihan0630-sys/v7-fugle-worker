@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 const source = await readFile(process.env.V7_TEST_WORKER_PATH || new URL('./Worker_V7_7.5.11_REQUIREMENTS_REPAIR.mjs', import.meta.url), 'utf8');
-const api = await import('data:text/javascript;base64,' + Buffer.from(source + '\nexport { evaluateOperationSignals, evaluateStop, processSignalState, recalculatePlanCapital, saveStockConfig, KV_KEY, fetchMarketRows, fetchClosingRowsWithFallback, normalizeMarketDate, normalizeStock, enforceIndependentPoolQuota, buildPublicRecommendations, buildDailySelectionPayload, formatSlackSignalMessage, scoreCandidate, nextTradingDate, mostRecentWeekday, runAfterMarketScan, MARKET_STATE_KEY, allocateAndBuildPlans, sendTo3Min, verifyThreeMinReadback, parseOfficialCsv, fetchOfficialEnrichment };').toString('base64'));
+const api = await import('data:text/javascript;base64,' + Buffer.from(source + '\nexport { evaluateOperationSignals, evaluateStop, processSignalState, recalculatePlanCapital, saveStockConfig, KV_KEY, fetchMarketRows, fetchClosingRowsWithFallback, normalizeMarketDate, normalizeStock, enforceIndependentPoolQuota, buildPublicRecommendations, buildDailySelectionPayload, formatSlackSignalMessage, scoreCandidate, nextTradingDate, mostRecentWeekday, runAfterMarketScan, MARKET_STATE_KEY, allocateAndBuildPlans, sendTo3Min, verifyThreeMinReadback, parseOfficialCsv, fetchOfficialEnrichment, buildThreeMinPayload, waitingLivePage, LAST_SCAN_KEY };').toString('base64'));
 class MemoryKV {
   values = new Map();
   async get(key, type) { const raw = this.values.get(key); return raw === undefined ? null : type === 'json' ? JSON.parse(raw) : raw; }
@@ -177,6 +177,32 @@ assert.equal((await api.sendTo3Min(bridgePlan,{TEST_MODE:'false'})).verified,fal
 globalThis.fetch = async(_,options)=>new Response(JSON.stringify(options.method==='POST'?{ok:true}:bridgePlan));
 const bridgeEnv={TEST_MODE:'false',THREEMIN_API_URL:'https://test.invalid/write',THREEMIN_VERIFY_URL:'https://test.invalid/read'};
 assert.equal((await api.sendTo3Min(bridgePlan,bridgeEnv)).verified,true);
+assert.equal(api.verifyThreeMinReadback(bridgePlan,{success:true,data:[{id:'rec_test',payload:bridgePlan}]}),true);
+assert.equal(api.verifyThreeMinReadback(bridgePlan,{success:true,data:[{id:'rec_test',data:bridgePlan}]}),true);
+assert.equal(api.verifyThreeMinReadback(bridgePlan,{success:false,data:[{payload:bridgePlan}]}),false);
+assert.equal(api.verifyThreeMinReadback(bridgePlan,{data:[{payload:{...bridgePlan,totalCapital:1}}]}),false);
+const verifyEnv={...bridgeEnv,ADMIN_TOKEN:'mock',STOCKS_KV:new MemoryKV()};
+const verifyConfig={updatedAt:'original',stocks:[{symbol:'original'}]};
+await verifyEnv.STOCKS_KV.put(api.KV_KEY,JSON.stringify(verifyConfig));
+await verifyEnv.STOCKS_KV.put(api.LAST_SCAN_KEY,JSON.stringify({scanDate:'2026-09-16',generatedAt:'original-scan',stocks:bridgePlan.stocks,totalCapital:bridgePlan.totalCapital,
+  config:{saved:true,verified:true,updatedAt:'original'},threeMin:{sent:true,simulated:false},threeMinPayload:bridgePlan,pipeline:{configVerified:true,dailyReportAccepted:true,complete:false}}));
+const verifyRequest=(token='mock')=>new Request('https://example.invalid/api/three-min/verify',{method:'POST',headers:{'x-admin-token':token}});
+assert.equal((await api.default.fetch(verifyRequest('wrong'),verifyEnv)).status,401);
+let reads=0;
+globalThis.fetch=async(url,options)=>{assert.equal(url,bridgeEnv.THREEMIN_VERIFY_URL);assert.equal(options.method,'GET');reads++;return new Response(JSON.stringify({success:true,data:[{id:'rec_test',payload:bridgePlan}]}));};
+const verifyResponse=await api.default.fetch(verifyRequest(),verifyEnv);
+assert.equal(verifyResponse.status,200);
+assert.equal((await verifyResponse.json()).verified,true);
+assert.equal(reads,1,'No repeated writes or scans');
+assert.deepEqual(await verifyEnv.STOCKS_KV.get(api.KV_KEY,'json'),verifyConfig);
+assert.equal((await verifyEnv.STOCKS_KV.get(api.LAST_SCAN_KEY,'json')).pipeline.complete,true);
+globalThis.fetch=async()=>new Response('',{status:403});
+assert.equal((await api.default.fetch(verifyRequest(),verifyEnv)).status,403,'External authorization failure must stop');
+const waitingPage=api.waitingLivePage({stocks:[api.normalizeStock(generated,0)],source:'KV',updatedAt:'2026-09-16T13:00:00Z'},null,true);
+assert.match(waitingPage,/合格測試/);
+assert.match(waitingPage,/不是即時行情或買進訊號/);
+assert.match(waitingPage,/第一筆條件/);
+globalThis.fetch = async(_,options)=>new Response(JSON.stringify(options.method==='POST'?{ok:true}:bridgePlan));
 assert.equal((await api.sendTo3Min(bridgePlan,{...bridgeEnv,THREEMIN_VERIFY_URL:''})).verified,false);
 globalThis.fetch = async()=>new Response(JSON.stringify({ok:false}));
 assert.equal((await api.sendTo3Min(bridgePlan,bridgeEnv)).sent,false);
