@@ -37,6 +37,11 @@ for(let start=0;start<sources.length;start+=3) await Promise.all(sources.slice(s
       const data=JSON.parse(raw);info.count=data.length;info.fields=Object.keys(data[0] || {});info.first=data.find(row=>row.Code==='6706') || data[0];
     } else if(response.ok && name.endsWith('Csv')){
       const lines=raw.split(/\r?\n/);info.header=lines[0];info.first=lines[1];info.count=lines.length;
+      if(name==='tdccCsv') {
+        info.samples=lines.filter(line=>/(?:,0*1101,|,0*6706,|,0*3006,)/.test(line)).slice(0,60);
+        info.symbolExamples=[...new Set(lines.slice(1).map(line=>line.split(',')[1]))].slice(200,215);
+        info.gradeCounts=Object.fromEntries([...new Set(lines.slice(1).map(line=>line.split(',')[2]))].map(grade=>[grade,lines.filter(line=>line.split(',')[2]===grade).length]));
+      }
     } else if(response.ok){
       info.scripts=[...raw.matchAll(/<script[^>]*src=["']([^"']+)["']/gi)].map(match=>match[1]);
       info.actions=[...raw.matchAll(/(?:action|href)=["']([^"']+(?:csv|t163sb04|opendata|OpenData)[^"']*)["']/gi)].slice(0,30).map(match=>match[1]);
