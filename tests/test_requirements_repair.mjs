@@ -98,6 +98,55 @@ const result = () => ({
   frame10: { latest: { bearish: true, volumeRatio: 2 } },
   frame15: { latest: { close: 120, bearish: false, volumeRatio: 0.8 } },
 });
+
+{
+  const realFetch=globalThis.fetch;
+  const makeEnv=()=>({STOCKS_KV:new MemoryKV(),V7_DB:new MemoryD1(),TEST_MODE:'false',PUSH_WEBHOOK_URL:'https://example.com/test-only-mock'});
+  const clear=result();clear.finalDecision.level='wait';
+  let calls=0;
+  globalThis.fetch=async()=>{calls++;throw new Error('mock network ambiguity after acceptance');};
+  try{
+    const ambiguous=makeEnv();
+    const attempt=await api.processSignalState(result(),ambiguous,'2026-09-16');
+    assert.equal(attempt[0].deliveryState,'UNKNOWN');assert.equal(attempt[0].automaticRetryBlocked,true);
+    assert.equal((await api.processSignalState(result(),ambiguous,'2026-09-16')).length,0);
+    const stale={...clear,executionData:{formal15Fresh:false,auxiliary10Fresh:false}};
+    await api.processSignalState(stale,ambiguous,'2026-09-16');
+    assert.equal((await api.processSignalState(result(),ambiguous,'2026-09-16')).length,0,'Stale data is not a release');
+    assert.equal(calls,1);
+    await api.processSignalState(clear,ambiguous,'2026-09-16');
+    const again=await api.processSignalState(result(),ambiguous,'2026-09-16');
+    assert.equal(calls,2);assert.notEqual(again[0].signalId,attempt[0].signalId);
+    globalThis.fetch=async()=>{calls++;return {ok:false,status:403,text:async()=> 'mock rejection'};};
+    const rejected=makeEnv();await api.processSignalState(result(),rejected,'2026-09-16');
+    assert.equal((await api.processSignalState(result(),rejected,'2026-09-16')).length,0,'403 must not loop');
+    assert.equal(calls,3);
+    globalThis.fetch=async()=>{calls++;return {ok:true,status:200};};
+    const crash=makeEnv();
+    const prepare=crash.V7_DB.prepare.bind(crash.V7_DB);
+    let crashOnce=true;
+    crash.V7_DB.prepare=sql=>{
+      const statement=prepare(sql),run=statement.run.bind(statement);
+      statement.run=async()=>{
+        if(crashOnce && sql.includes('SET snapshot_json')){
+          const snapshot=JSON.parse(statement.args[0]);
+          if(snapshot.fired?.includes('NONE:BUY')){
+            crashOnce=false;throw new Error('mock crash after webhook acceptance before ACK save');
+          }
+        }
+        return run();
+      };return statement;
+    };
+    await assert.rejects(()=>api.processSignalState(result(),crash,'2026-09-16'),/mock crash/);
+    assert.equal(calls,4);
+    assert.equal((await api.processSignalState(result(),crash,'2026-09-16')).length,0,'Persisted reservation survives missing final ACK');
+    await api.processSignalState(clear,crash,'2026-09-16');
+    const restored=await api.processSignalState(result(),crash,'2026-09-16');
+    assert.equal(restored[0].sent,true);assert.equal(calls,5);
+    assert.match(restored[0].signalId,/:episode-2$/);
+  }finally{globalThis.fetch=realFetch;}
+}
+
 const env = { STOCKS_KV: new MemoryKV(), TEST_MODE: 'true' };
 const freshnessNow=Date.parse('2026-09-16T01:31:00Z'),currentQuote={date:'2026-09-16',symbol:'TEST',closePrice:120,lastUpdated:(freshnessNow-1000)*1000};
 const frame15Fixture={latest:{time:'2026-09-16T01:15:00Z'}},frame10Fixture={latest:{time:'2026-09-16T01:20:00Z'}};
