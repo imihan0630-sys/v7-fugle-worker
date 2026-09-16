@@ -108,7 +108,15 @@ for(let start=0;start<universe.length;start+=2) {
     const html=await response.text();
     const verified=helpers.parseMopsQuarterEpsHtml(html,item.symbol,year,quarter);
     console.log(JSON.stringify({reportedQuarterEpsReviewed:true,symbol:item.symbol,year,quarter,quarterEPS:verified.quarterEPS,priorYearQuarterEPS:verified.reportedPriorYearQuarterEPS,epsYoY:verified.epsYoY,epsQoQ:null}));
-    return {sourceUrl,symbol:item.symbol,html};
+    let previousQuarterHtml;
+    if(quarter>1) {
+      const priorResponse=await publicSource(sourceUrl,{method:'POST',headers:{'content-type':'application/x-www-form-urlencoded'},
+        body:new URLSearchParams({encodeURIComponent:'1',step:'1',firstin:'1',off:'1',TYPEK:'all',isnew:'false',co_id:item.symbol,year:String(year-1911),season:String(quarter-1).padStart(2,'0')})});
+      previousQuarterHtml=await priorResponse.text();
+      const prior=helpers.parseMopsQuarterEpsHtml(previousQuarterHtml,item.symbol,year,quarter-1);
+      console.log(JSON.stringify({reportedPreviousQuarterEpsReviewed:true,symbol:item.symbol,year,quarter:quarter-1,quarterEPS:prior.quarterEPS,epsQoQ:null,adjustedComparisonVerified:false}));
+    }
+    return {sourceUrl,symbol:item.symbol,html,...(previousQuarterHtml!==undefined ? {previousQuarterHtml} : {})};
   }));reports.push(...batch);
 }
 await sync({kind:'QUARTER_EPS',year,quarter,reports});
