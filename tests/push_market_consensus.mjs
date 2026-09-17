@@ -17,12 +17,14 @@ const payload = {
   notes: input.notes || ''
 };
 
+const authHeaders = {
+  'x-admin-token': token,
+  'content-type': 'application/json'
+};
+
 const post = await fetch(`${base}/api/market-consensus`, {
   method: 'POST',
-  headers: {
-    'content-type': 'application/json',
-    authorization: `Bearer ${token}`
-  },
+  headers: authHeaders,
   body: JSON.stringify(payload)
 });
 const postText = await post.text();
@@ -31,7 +33,7 @@ const result = JSON.parse(postText);
 if (result.ok !== true || result.verified !== true) throw new Error(`Consensus write not verified: ${postText}`);
 
 const read = await fetch(`${base}/api/market-consensus?marketDate=${encodeURIComponent(input.marketDate)}`, {
-  headers: { authorization: `Bearer ${token}` }
+  headers: { 'x-admin-token': token }
 });
 const readText = await read.text();
 if (!read.ok) throw new Error(`GET /api/market-consensus HTTP ${read.status}: ${readText}`);
