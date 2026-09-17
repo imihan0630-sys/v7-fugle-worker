@@ -14,7 +14,7 @@ def replace_once(old: str, new: str, label: str) -> None:
 
 replace_once(
     'const VERSION = "7.5.26-q1-statement-column-validation";',
-    'const VERSION = "7.5.27-tpex-warmup-live-config-fix";',
+    'const VERSION = "7.5.28-stale-live-guard";',
     "version",
 )
 
@@ -70,7 +70,13 @@ replace_once(
           .filter(item => currentPlanBySymbol.has(String(item.symbol)))
           .map(item => ({ ...item, plan: currentPlanBySymbol.get(String(item.symbol)) || item.plan }))
       : [];''',
-'''    const liveResults = Array.isArray(liveState?.results)
+'''    // 7.5.28：舊交易日的 D1 快照絕不能顯示成今日可執行訊號。
+    // 只有 D1 tradeDate 等於台灣今天，才把 live result 當作有效即時卡片；
+    // 其餘設定改顯示 pending / expired，避免昨日的「立即處理」誤導今日操作。
+    const currentTradeDate = taiwanDate();
+    const liveTradeDate = String(liveState?.tradeDate || "");
+    const liveIsCurrent = liveTradeDate === currentTradeDate;
+    const liveResults = liveIsCurrent && Array.isArray(liveState?.results)
       ? liveState.results
           .filter(item => currentPlanBySymbol.has(String(item.symbol)))
           .map(item => ({ ...item, plan: currentPlanBySymbol.get(String(item.symbol)) || item.plan }))
@@ -78,16 +84,19 @@ replace_once(
     const liveSymbols = new Set(liveResults.map(item => String(item.symbol)));
     const pendingResults = stocks
       .filter(stock => !liveSymbols.has(String(stock.symbol)))
-      .map(stock => ({
-        ok: false,
-        symbol: stock.symbol,
-        name: stock.name,
-        plan: stock,
-        error: "已匯入監控設定，等待下一輪盤中即時資料更新"
-      }));
+      .map(stock => {
+        const planDate = String(stock?.planDate || "");
+        const expired = /^\\d{4}-\\d{2}-\\d{2}$/.test(planDate) && planDate < currentTradeDate;
+        const error = expired
+          ? `交易計畫日期 ${planDate} 已過期，不可依舊訊號執行`
+          : liveIsCurrent
+            ? "已匯入監控設定，等待下一輪盤中即時資料更新"
+            : `即時資料仍為 ${liveTradeDate || "舊交易日"}，等待 ${currentTradeDate} 新一輪盤中更新`;
+        return { ok: false, symbol: stock.symbol, name: stock.name, plan: stock, error };
+      });
     const results = [...liveResults, ...pendingResults];''',
-    "pending configured stocks",
+    "pending configured stocks with stale-day guard",
 )
 
 path.write_text(text, encoding="utf-8")
-print("Applied V7.5.27 guarded repair")
+print("Applied V7.5.28 guarded repair")
