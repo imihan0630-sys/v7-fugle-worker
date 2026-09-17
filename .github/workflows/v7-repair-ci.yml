@@ -25,7 +25,7 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Apply guarded V7.5.27 repair
+      - name: Apply guarded V7.5.28 repair
         run: python3 scripts/apply_v7_5_27.py
 
       - name: Syntax check Worker.js
@@ -39,4 +39,4 @@ jobs:
         run: node tests/test_requirements_repair.mjs
 
       - name: Verify expected version
-        run: grep -F 'const VERSION = "7.5.27-tpex-warmup-live-config-fix";' Worker.js
+        run: grep -F 'const VERSION = "7.5.28-stale-live-guard";' Worker.js
