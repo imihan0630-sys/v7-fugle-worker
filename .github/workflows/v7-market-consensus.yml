@@ -1,0 +1,38 @@
+name: V7 Market Consensus Feed
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "data/market-consensus.json"
+      - "tests/push_market_consensus.mjs"
+      - ".github/workflows/v7-market-consensus.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: v7-market-consensus-feed
+  cancel-in-progress: false
+
+jobs:
+  push-consensus:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Validate consensus JSON
+        run: |
+          node -e "const fs=require('fs');const x=JSON.parse(fs.readFileSync('data/market-consensus.json'));if(!x.marketDate||!Array.isArray(x.sources)||!x.sources.length)process.exit(1);console.log('Consensus JSON valid:',x.marketDate,x.sources.length,'sources')"
+
+      - name: Push and verify market consensus
+        env:
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+        run: node tests/push_market_consensus.mjs
