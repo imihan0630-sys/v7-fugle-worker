@@ -6,6 +6,7 @@ on:
     branches: [main]
     paths:
       - "Worker.js"
+      - "scripts/apply_v7_5_27.py"
       - "tests/**"
       - "!tests/inspect_official_quality_sources.mjs"
       - ".github/workflows/v7-cloudflare.yml"
@@ -32,6 +33,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
+
+      - name: Apply guarded V7.5.27 repair
+        run: python3 scripts/apply_v7_5_27.py
 
       - name: Syntax check Worker.js
         run: |
