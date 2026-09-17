@@ -1,0 +1,25 @@
+name: V7 Finalize Pool 2026-09-18
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "ops/finalize_pool_20260918.mjs"
+      - ".github/workflows/v7-finalize-pool-20260918.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  finalize:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Rebuild and verify V7 pool
+        env:
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+        run: node ops/finalize_pool_20260918.mjs
