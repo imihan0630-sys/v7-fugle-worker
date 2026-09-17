@@ -1,0 +1,36 @@
+{
+  "marketDate": "2026-09-18",
+  "sources": [
+    {
+      "source": "旺得富／民營金控投顧 2026-09-17",
+      "symbols": ["3017", "3324"],
+      "url": "https://wantrich.chinatimes.com/news/20260917900296-420101",
+      "basis": "奇鋐、雙鴻獲評買進；健策未給評等，因此不列健策"
+    },
+    {
+      "source": "經濟日報／亞系與澳系外資 2026-09-16",
+      "symbols": ["3017", "3653"],
+      "url": "https://money.udn.com/money/story/5607/9757396",
+      "basis": "亞系重申健策正向；澳系調升奇鋐目標價"
+    },
+    {
+      "source": "工商時報／外資券商評等整理 2026-09-17",
+      "symbols": ["3017", "3653"],
+      "url": "https://www.ctee.com.tw/news/20260917700921-430201",
+      "basis": "奇鋐與健策維持正向外資評等／目標價上修脈絡"
+    },
+    {
+      "source": "非凡新聞／摩根士丹利 2026-09-16",
+      "symbols": ["8358"],
+      "url": "https://news.ustv.com.tw/newsdetail/20260916A001023?newhot=hot&pagefrom=homehot",
+      "basis": "金居重申優於大盤、目標價730元"
+    }
+  ],
+  "notes": "2026-09-18盤前市場共識雷達第一批。只收明確買進、正向評等、優於大盤或目標價上修；單純熱門新聞、上漲、題材提及不計入。共識只對原V7已通過硬條件候選加分，不能救回不合格股。",
+  "expected": {
+    "3017": {"sourceCount": 3, "bonus": 4},
+    "3653": {"sourceCount": 2, "bonus": 2},
+    "3324": {"sourceCount": 1, "bonus": 0},
+    "8358": {"sourceCount": 1, "bonus": 0}
+  }
+}
