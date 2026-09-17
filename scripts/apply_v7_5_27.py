@@ -14,7 +14,7 @@ def replace_once(old: str, new: str, label: str) -> None:
 
 replace_once(
     'const VERSION = "7.5.26-q1-statement-column-validation";',
-    'const VERSION = "7.5.28-stale-live-guard";',
+    'const VERSION = "7.5.29-full-plan-pending-card";',
     "version",
 )
 
@@ -98,5 +98,95 @@ replace_once(
     "pending configured stocks with stale-day guard",
 )
 
+replace_once(
+'''function renderCard(r) {
+  if (!r.ok) {
+    return `
+<div class="card status-c">
+
+<div class="title">
+${h(r.name)}
+${h(r.symbol)}
+</div>
+
+<div class="error">
+${h(r.error)}
+</div>
+
+</div>
+`;
+  }
+
+  const p =
+    r.plan;''',
+'''function renderCard(r) {
+  if (!r.ok) {
+    // 7.5.29：pending / expired 只鎖即時判斷，不隱藏完整交易計畫。
+    const p = r.plan || {};
+    const expired = String(r.error || "").includes("已過期");
+    return `
+<div class="card status-c">
+
+<div class="title">
+${h(r.name)}
+${h(r.symbol)}
+</div>
+
+<div>
+<span class="badge">${expired ? "計畫已過期" : "等待今日即時資料"}</span>
+<span class="badge">通道 ${h(p.channel || "-")}</span>
+<span class="badge">訊號 ${h(p.signalLevel || "-")}</span>
+</div>
+
+<div class="mode">
+操作模式：${modeText(p.mode)}
+</div>
+
+<div class="plan">
+<b>交易計畫定位</b>
+<br>
+拉回：${fmt(p.buyLow)}～${fmt(p.buyHigh)}
+<br>
+突破：${fmt(p.breakout)}｜最大追價：${fmt(p.maxChase)}
+<br>
+停損：${fmt(p.stop)}｜第一停利：${fmt(p.profitCheck)}
+<hr>
+建議總投入：${fmt(p.totalAllocation)}｜配置比例：${fmt(p.allocationRatio)}${p.allocationRatio !== null && p.allocationRatio !== undefined ? "%" : ""}
+<br>
+第一筆：${fmt(p.firstAmount)} 元／約 ${fmt(p.firstShares)} 股
+｜第二筆：${fmt(p.secondAmount)} 元／約 ${fmt(p.secondShares)} 股
+<br>
+總部位：約 ${fmt(p.totalShares)} 股
+<br>
+第一筆條件：${h(p.firstCondition || "-")}
+<br>
+第二筆條件：${h(p.secondCondition || "-")}
+<br>
+優先分數：${fmt(p.priorityScore)}｜RR：${fmt(p.rewardRisk)}｜產業資金：${fmt(p.sectorFlow)}｜RS：${fmt(p.relativeStrength)}
+<br>
+入選理由：${h(p.selectedReason || "-")}
+<br>
+持倉階段：${h(positionStageText(p.positionStage))}
+｜持倉均價：${fmt(p.averageCost)}
+｜實際持股：${p.actualShares===null || p.actualShares===undefined ? "尚未回填" : `${fmt(p.actualShares)}股`}
+<br>
+減碼檢查價：${fmt(p.reduceAt)}｜正式賣出價：${fmt(p.sellBelow)}
+</div>
+
+<div class="warning">
+<b>即時判斷已鎖定：</b>${h(r.error || "等待今日資料")}
+<br>
+完整交易計畫僅供今日定位參考；在當日 Quote / 10分K / 15分K 更新前，不顯示 BUY、ADD 或其他即時執行判斷。
+</div>
+
+</div>
+`;
+  }
+
+  const p =
+    r.plan;''',
+    "full plan pending card",
+)
+
 path.write_text(text, encoding="utf-8")
-print("Applied V7.5.28 guarded repair")
+print("Applied V7.5.29 guarded repair")
