@@ -8,6 +8,7 @@ on:
       - "Worker.js"
       - "scripts/apply_v7_5_27.py"
       - "scripts/apply_v7_5_30.py"
+      - "scripts/apply_v7_5_31.py"
       - "tests/**"
       - "!tests/inspect_official_quality_sources.mjs"
       - ".github/workflows/v7-cloudflare.yml"
@@ -40,6 +41,9 @@ jobs:
 
       - name: Apply V7.5.30 market consensus radar
         run: python3 scripts/apply_v7_5_30.py
+
+      - name: Apply V7.5.31 push receipt clarity
+        run: python3 scripts/apply_v7_5_31.py
 
       - name: Syntax check Worker.js
         run: |
