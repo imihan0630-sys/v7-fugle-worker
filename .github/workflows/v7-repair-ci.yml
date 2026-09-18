@@ -7,6 +7,7 @@ on:
       - "Worker.js"
       - "scripts/apply_v7_5_27.py"
       - "scripts/apply_v7_5_30.py"
+      - "scripts/apply_v7_5_31.py"
       - "tests/**"
       - ".github/workflows/v7-cloudflare.yml"
       - ".github/workflows/v7-repair-ci.yml"
@@ -32,6 +33,9 @@ jobs:
       - name: Apply V7.5.30 market consensus radar
         run: python3 scripts/apply_v7_5_30.py
 
+      - name: Apply V7.5.31 push receipt clarity
+        run: python3 scripts/apply_v7_5_31.py
+
       - name: Syntax check Worker.js
         run: |
           cp Worker.js /tmp/Worker.mjs
@@ -43,4 +47,4 @@ jobs:
         run: node tests/test_requirements_repair.mjs
 
       - name: Verify expected version
-        run: grep -F 'const VERSION = "7.5.30-market-consensus-radar";' Worker.js
+        run: grep -F 'const VERSION = "7.5.31-push-receipt-clarity";' Worker.js
