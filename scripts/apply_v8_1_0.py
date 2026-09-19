@@ -11,6 +11,16 @@ def replace_once(old: str, new: str, label: str) -> None:
         raise SystemExit(f"{label}: expected exactly 1 match, found {count}")
     text = text.replace(old, new, 1)
 
+def replace_between(start_marker: str, end_marker: str, replacement: str, label: str) -> None:
+    global text
+    start=text.find(start_marker)
+    if start<0:
+        raise SystemExit(f"{label}: start marker not found")
+    end=text.find(end_marker,start)
+    if end<0:
+        raise SystemExit(f"{label}: end marker not found")
+    text=text[:start]+replacement+text[end:]
+
 
 replace_once(
     'const VERSION = "8.0.4-3min-current-plan-recovery";',
@@ -398,25 +408,43 @@ replace_once(
     "richer intraday push payload",
 )
 
-replace_once(
-'''  const profit = payload?.profitCheck !== null && payload?.profitCheck !== undefined ? `｜停利檢查：${payload.profitCheck}` : "";
-  return [''',
-'''  const profit = payload?.profitCheck !== null && payload?.profitCheck !== undefined ? `｜停利檢查：${payload.profitCheck}` : "";
+replace_between(
+    "function formatSlackSignalMessage(payload) {",
+    "function shouldPhonePushSignal(type) {",
+    '''function formatSlackSignalMessage(payload) {
+  if (payload?.signalType === "DAILY_SELECTION") {
+    const rows=(payload.stocks || []).map(stock =>
+      `${stock.rank}. ${stock.name} ${stock.symbol}｜${stock.strategy || stock.mode}｜訊號${stock.signalLevel || "-"}｜優先${fmt(stock.priorityScore)}｜RR ${fmt(stock.rewardRisk)}\n買區 ${fmt(stock.buyLow)}～${fmt(stock.buyHigh)}｜突破 ${fmt(stock.breakout)}｜最大追價 ${fmt(stock.maxChase)}\n第一筆 ${fmt(stock.firstAmount)}元／${stock.firstShares}股：${stock.firstCondition}\n第二筆 ${fmt(stock.secondAmount)}元／${stock.secondShares}股：${stock.secondCondition}\n停損 ${fmt(stock.stop)}｜停利檢查 ${fmt(stock.profitCheck)}\n入選原因：${stock.reason}`);
+    return [
+      `📋 *${payload.title}*`, payload.instruction,
+      ...(rows.length ? rows : ["本輪無符合標的；維持現金，不硬湊。"]),
+      `結果：${payload.resultType || "-"}｜共 ${payload.selectedCount ?? 0} 檔`,
+      `監控：${payload.monitorUrl}`, `時間：${payload.time}`
+    ].join("\n\n");
+  }
+  if (payload?.type === "SYSTEM_TEST" || (payload?.message && !payload?.signalType)) {
+    return [
+      `${payload?.type === "SYSTEM_ALERT" ? "⚠️" : "🧪"} *${payload?.title || "V7 系統測試"}*`,
+      String(payload?.message || "V7 系統測試訊息"),
+      `時間：${payload?.time || payload?.generatedAt || taiwanTime()}`
+    ].filter(Boolean).join("\n");
+  }
+
+  const stock = payload?.stock || {};
+  const amount = payload?.suggestedAmount !== null && payload?.suggestedAmount !== undefined
+    ? `\n建議金額：${Number(payload.suggestedAmount).toLocaleString("zh-TW")} 元`
+    : "";
+  const shares = payload?.suggestedShares !== null && payload?.suggestedShares !== undefined
+    ? `｜${payload.suggestedShares} 股`
+    : "";
+  const stop = payload?.stop !== null && payload?.stop !== undefined ? `\n停損：${payload.stop}` : "";
+  const profit = payload?.profitCheck !== null && payload?.profitCheck !== undefined ? `｜停利檢查：${payload.profitCheck}` : "";
   const plan = payload?.strategy ? `策略：${payload.strategy}｜訊號 ${payload.signalLevel || "-"}｜監控 ${payload.monitorGrade || "-"} ${payload.monitorText || ""}` : "";
   const score = payload?.priorityScore !== null && payload?.priorityScore !== undefined ? `優先分數：${payload.priorityScore}｜RR：${payload.rewardRisk ?? "-"}` : "";
   const position = payload?.actualPositionKnown ? `實際持股：${payload.actualShares} 股` : (["STOP_LOSS","SELL","REDUCE"].includes(payload?.signalType) ? "實際持股：尚未回填，禁止用預計股數代替" : "");
-  return [''',
-    "richer slack metadata",
-)
-
-replace_once(
-'''    `${stock.name || ""} ${stock.symbol || ""}｜現價：${payload?.currentPrice ?? "-"}`,
-    `動作：${payload?.instruction || payload?.signalLabel || "-"}`,
-    `原因：${payload?.reason || "-"}`,
-    `${amount}${shares}`.trim(),
-    `${stop}${profit}`.trim(),
-    `時間：${payload?.time || taiwanTime()}`''',
-'''    `${stock.name || ""} ${stock.symbol || ""}｜現價：${payload?.currentPrice ?? "-"}`,
+  return [
+    `🚦 *${payload?.title || "V7 盤中訊號"}*`,
+    `${stock.name || ""} ${stock.symbol || ""}｜現價：${payload?.currentPrice ?? "-"}`,
     plan,
     score,
     `動作：${payload?.instruction || payload?.signalLabel || "-"}`,
@@ -425,9 +453,14 @@ replace_once(
     `${amount}${shares}`.trim(),
     `${stop}${profit}`.trim(),
     `訊號ID：${payload?.signalId || "-"}`,
-    `時間：${payload?.time || taiwanTime()}`''',
-    "richer slack intraday lines",
+    `時間：${payload?.time || taiwanTime()}`
+  ].filter(Boolean).join("\n");
+}
+
+''',
+    "replace Slack formatter",
 )
+
 
 replace_once(
 '''async function sendPush(payload, env) {
@@ -457,28 +490,10 @@ async function sendTrackedPush(payload,env,meta={}) {
     "tracked push helper",
 )
 
-replace_once(
-'''function buildDailySelectionPayload(scanDate, stocks, diagnostics) {
-  return {
-    version: VERSION,
-    signalId: `DAILY_SELECTION:${scanDate}`,
-    signalType: "DAILY_SELECTION",
-    signalLabel: "盤後明日標的",
-    title: stocks.length ? `V7盤後選出 ${stocks.length} 檔` : "V7盤後：今日 0 檔，維持現金",
-    instruction: stocks.length ? "依目前已實作篩選排名與15分K條件確認，不預先追價；完整30條尚未驗收完成" : "今日無符合目前已實作篩選條件標的，維持現金；完整30條尚未驗收完成",
-    time: taiwanTime(),
-    monitorUrl: "https://fugle-test.imihan0630.workers.dev/",
-    diagnostics,
-    stocks: stocks.map(stock => ({
-      rank: stock.sourceRank, symbol: stock.symbol, name: stock.name,
-      mode: stock.mode, firstAmount: stock.firstAmount, secondAmount: stock.secondAmount,
-      firstShares: stock.firstShares, secondShares: stock.secondShares,
-      firstCondition: stock.firstCondition, secondCondition: stock.secondCondition,
-      stop: stock.stop, profitCheck: stock.profitCheck, reason: stock.selectedReason
-    }))
-  };
-}''',
-'''function buildDailySelectionPayload(scanDate, stocks, diagnostics) {
+replace_between(
+    "function buildDailySelectionPayload(scanDate, stocks, diagnostics) {",
+    "function pick(object, keys) {",
+    '''function buildDailySelectionPayload(scanDate, stocks, diagnostics) {
   return {
     version: VERSION,
     signalId: `DAILY_SELECTION:${scanDate}`,
@@ -506,9 +521,12 @@ replace_once(
       stop: stock.stop, profitCheck: stock.profitCheck, reason: stock.selectedReason
     }))
   };
-}''',
-    "daily report payload",
+}
+
+''',
+    "replace daily report payload builder",
 )
+
 
 replace_once(
 '''  if (payload?.signalType === "DAILY_SELECTION") {
