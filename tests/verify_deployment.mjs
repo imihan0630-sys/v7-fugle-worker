@@ -22,6 +22,27 @@ for (let attempt = 0; attempt < 24; attempt++) {
 assert.equal(runtime?.version, expectedVersion, 'Accepted upload is not proof of correct deployed version');
 assert.equal(runtime.bindings.kv, true, 'Existing KV binding must be retained');
 assert.equal(runtime.bindings.d1, true, 'Existing D1 binding must be retained');
+
+if (/^7\.5\.(?:3[3-9]|[4-9]\d|\d{3,})\b/.test(String(expectedVersion))) {
+  const watchApiResponse = await fetch(origin + '/api/watchlist?deploymentCheck=1', {
+    cache:'no-store',
+    headers:{'accept':'application/json','user-agent':'V7-GitHub-Deploy-Verify/1.0'},
+    signal:AbortSignal.timeout(10000)
+  });
+  assert.equal(watchApiResponse.ok, true, 'Dynamic watchlist API must be reachable after V7.5.33 deployment');
+  const watchApi = await watchApiResponse.json();
+  assert.equal(watchApi.maxStocks, 12, 'Dynamic watchlist capacity must remain 12');
+  assert.ok(Array.isArray(watchApi.stocks), 'Dynamic watchlist API must return a stocks array');
+
+  const watchPageResponse = await fetch(origin + '/watchlist?deploymentCheck=1', {
+    cache:'no-store',
+    headers:{'accept':'text/html','user-agent':'V7-GitHub-Deploy-Verify/1.0'},
+    signal:AbortSignal.timeout(10000)
+  });
+  assert.equal(watchPageResponse.ok, true, 'Dynamic watchlist page must be reachable after V7.5.33 deployment');
+  const watchPage = await watchPageResponse.text();
+  assert.match(watchPage, /V7 動態觀察池/, 'Dynamic watchlist page marker missing');
+}
 if (process.env.V7_DEPLOY_BASELINE_PATH) {
   const baseline = JSON.parse(await readFile(process.env.V7_DEPLOY_BASELINE_PATH,'utf8'));
   assert.equal(runtime.testMode, baseline.testMode, 'Deployment must not alter TEST_MODE');
@@ -33,6 +54,6 @@ if (process.env.V7_DEPLOY_BASELINE_PATH) {
   const priorTargets=baseline.plannedSymbols || (baseline.plannedStocks || baseline.stocks || []).map(x=>x.symbol).sort();
   assert.deepEqual(actualTargets,priorTargets,'Actual planned monitoring targets must be preserved');
 }
-console.log('PASS: deployed runtime version, bindings, mode and existing monitoring configuration');
+console.log('PASS: deployed runtime version, bindings, mode, watchlist routes and existing monitoring configuration');
 console.log('Readiness flags:', JSON.stringify(runtime.readiness));
 console.log('This read-only check does not verify a real after-market scan or phone delivery.');
