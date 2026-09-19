@@ -65,6 +65,7 @@ assert.equal(comparison.unionCount,4);
 
 const latest={
   version:"8.1.0-ops-hardening",scanDate:"2026-09-18",generatedAt:"2026/09/18 18:15:52",selectedCount:3,
+  stocks:[{symbol:"3105",name:"穩懋"},{symbol:"6133",name:"金橋"},{symbol:"2006",name:"東和鋼鐵"}],
   pipeline:{selectionCompleted:true,configVerified:true,threeMinAccepted:true,threeMinVerified:true,dailyReportAccepted:true,complete:true},
   threeMin:{httpStatus:202},dailyReport:{httpStatus:200},
   diagnostics:{requirements30:{complete:false,incompleteRules:[17,18,19,27,28,29]}}
