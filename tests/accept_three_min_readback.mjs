@@ -8,6 +8,37 @@ const getConfig=async()=>{
   return response.json();
 };
 const before=await getConfig();
+// 先讀取既有盤後紀錄的安全診斷欄位；只讀、不重送3Min、不重新選股。
+const scanStatusResponse=await fetch(origin+'/api/scan/status',{headers,signal:AbortSignal.timeout(20000)});
+if([401,403].includes(scanStatusResponse.status)) throw new Error('管理員授權未成功；停止，不替換憑證');
+assert.equal(scanStatusResponse.ok,true,'Cannot read existing after-market scan status');
+const existingScan=await scanStatusResponse.json();
+console.log(JSON.stringify({
+  existingScanDiagnostic:{
+    version:existingScan.version,
+    scanDate:existingScan.scanDate,
+    generatedAt:existingScan.generatedAt,
+    selectedCount:existingScan.selectedCount,
+    threeMin:{
+      sent:existingScan.threeMin?.sent ?? null,
+      simulated:existingScan.threeMin?.simulated ?? null,
+      verified:existingScan.threeMin?.verified ?? null,
+      skipped:existingScan.threeMin?.skipped ?? null,
+      httpStatus:existingScan.threeMin?.httpStatus ?? null,
+      error:existingScan.threeMin?.error ?? null,
+      reason:existingScan.threeMin?.reason ?? null,
+      verificationNote:existingScan.threeMin?.verificationNote ?? null
+    },
+    payload:{
+      schemaVersion:existingScan.threeMinPayload?.schemaVersion ?? null,
+      scanDate:existingScan.threeMinPayload?.scanDate ?? null,
+      planDate:existingScan.threeMinPayload?.planDate ?? null,
+      stockCount:Array.isArray(existingScan.threeMinPayload?.stocks)?existingScan.threeMinPayload.stocks.length:null
+    },
+    pipeline:existingScan.pipeline
+  },
+  noNewScan:true,noThreeMinPost:true,noPush:true
+}));
 // 先以GET核對新入口已生效：405代表路由存在且只接受POST；不讀外部3Min或寫入。
 let routeStatus;
 for(let attempt=0;attempt<6;attempt++) {
