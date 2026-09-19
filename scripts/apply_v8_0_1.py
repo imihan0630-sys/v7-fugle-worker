@@ -106,20 +106,20 @@ replace_between(
     'function deriveQuarterlyFinancials(periods,year,quarter) {',
     'function mergeEnrichment(rows, enrichment) {',
 '''function deriveQuarterlyFinancials(periods,year,quarter) {
-  const byPeriod=new Map(periods.map(period=>[\`${period.year}Q${period.quarter}\`,period.stocks]));
-  const current=byPeriod.get(\`${year}Q${quarter}\`) || {},stocks={};
+  const byPeriod=new Map(periods.map(period=>[`${period.year}Q${period.quarter}`,period.stocks]));
+  const current=byPeriod.get(`${year}Q${quarter}`) || {},stocks={};
   const subtractQuarter=(symbol,y,q)=>{
-    const cumulative=byPeriod.get(\`${y}Q${q}\`)?.[symbol],before=q===1 ? {revenueYTD:0,grossYTD:0,operatingYTD:0,epsYTD:0} : byPeriod.get(\`${y}Q${q-1}\`)?.[symbol];
+    const cumulative=byPeriod.get(`${y}Q${q}`)?.[symbol],before=q===1 ? {revenueYTD:0,grossYTD:0,operatingYTD:0,epsYTD:0} : byPeriod.get(`${y}Q${q-1}`)?.[symbol];
     if(!cumulative || !before) return null;
     const result={};for(const key of ['revenue','gross','operating']) result[key]=cumulative[key+'YTD']-before[key+'YTD'];
     return result.revenue>0 ? {...result,grossMargin:result.gross/result.revenue*100,operatingMargin:result.operating/result.revenue*100} : null;
   };
   const officialSingleEps=(symbol,y,q)=>{
-    const cumulative=byPeriod.get(\`${y}Q${q}\`)?.[symbol];
+    const cumulative=byPeriod.get(`${y}Q${q}`)?.[symbol];
     if(!cumulative || !Number.isFinite(cumulative.epsYTD)) return null;
     if(q===1) return {value:cumulative.epsYTD,method:"MOPS_DIRECT_Q1_CUMULATIVE_EQUALS_SINGLE",cumulativeEPS:cumulative.epsYTD,priorCumulativeEPS:0};
     if(q===4) {
-      const q3=byPeriod.get(\`${y}Q3\`)?.[symbol];
+      const q3=byPeriod.get(`${y}Q3`)?.[symbol];
       if(!q3 || !Number.isFinite(q3.epsYTD)) return null;
       return {value:round(cumulative.epsYTD-q3.epsYTD,2),method:"MOPSFIN_OFFICIAL_Q4_CUMULATIVE_MINUS_Q3",cumulativeEPS:cumulative.epsYTD,priorCumulativeEPS:q3.epsYTD};
     }
