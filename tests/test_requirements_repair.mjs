@@ -109,7 +109,7 @@ const quarterHelpers=await import('data:text/javascript;base64,'+Buffer.from(sou
   assert.equal(q1Validated.previousQuarterEPS,1.2);assert.equal(q1Validated.epsQoQReady,true);
   assert.throws(()=>quarterHelpers.validateOfficialQualityData(paired,'2026-03-31'),/期間/,'Future quarters are invalid inputs, not current data requirements');
 
-  assert.throws(()=>quarterHelpers.validateOfficialQualityData({...body,reports:[...body.reports,...body.reports]},'2026-09-16'),/重複/);
+  assert.throws(()=>quarterHelpers.validateOfficialQualityData({...paired,reports:[...paired.reports,...paired.reports]},'2026-09-16'),/重複/);
   assert.throws(()=>quarterHelpers.validateOfficialQualityData({...body,reports:[{...body.reports[0],sourceUrl:'https://example.com'}]},'2026-09-16'),/來源/);
 }
 const api = await import('data:text/javascript;base64,' + Buffer.from(source + '\nexport { evaluateOperationSignals, evaluateStop, processSignalState, recalculatePlanCapital, saveStockConfig, KV_KEY, fetchMarketRows, fetchClosingRowsWithFallback, normalizeMarketDate, normalizeStock, enforceIndependentPoolQuota, buildPublicRecommendations, buildDailySelectionPayload, formatSlackSignalMessage, scoreCandidate, nextTradingDate, mostRecentWeekday, runAfterMarketScan, MARKET_STATE_KEY, allocateAndBuildPlans, sendTo3Min, verifyThreeMinReadback, parseOfficialCsv, fetchOfficialEnrichment, buildThreeMinPayload, waitingLivePage, LAST_SCAN_KEY, validateInstitutionData, institutionSourceUrls, readInstitutionStreakMap, writeInstitutionSnapshot };').toString('base64'));
