@@ -18,6 +18,7 @@ on:
       - "scripts/apply_v8_1_1.py"
       - "scripts/apply_v8_1_2.py"
       - "scripts/apply_v8_1_3.py"
+      - "scripts/apply_v8_2_0.py"
       - "tests/**"
       - "!tests/inspect_official_quality_sources.mjs"
       - ".github/workflows/v7-cloudflare.yml"
@@ -81,16 +82,19 @@ jobs:
       - name: Apply V8.1.3 operations console and durable acceptance
         run: python3 scripts/apply_v8_1_3.py
 
+      - name: Apply V8.2.0 signed handset receipt confirmation
+        run: python3 scripts/apply_v8_2_0.py
+
       - name: Syntax check Worker.js
         run: |
           set -euo pipefail
           cp Worker.js /tmp/Worker.mjs
           node --check /tmp/Worker.mjs
 
-      - name: Validate V8.1.3 production contract
+      - name: Validate V8.2.0 production contract
         run: |
           set -euo pipefail
-          grep -F 'const VERSION = "8.1.3-ops-console-acceptance";' Worker.js
+          grep -F 'const VERSION = "8.2.0-push-receipt-confirmation";' Worker.js
           grep -F 'const WATCHLIST_MAX = 12;' Worker.js
           grep -F 'async function finishDataIncompleteScan(' Worker.js
           grep -F 'function buildReviewedWatchlist(' Worker.js
@@ -116,6 +120,7 @@ jobs:
           node tests/test_v8_1_1_acceptance_state.mjs
           node tests/test_v8_1_2_position_reconciliation.mjs
           node tests/test_v8_1_3_ops_console.mjs
+          node tests/test_v8_2_0_push_receipt.mjs
 
       - name: Snapshot existing public monitoring configuration
         run: |
