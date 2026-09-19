@@ -20,6 +20,7 @@ on:
       - "scripts/apply_v8_1_3.py"
       - "scripts/apply_v8_2_0.py"
       - "scripts/apply_v8_2_1.py"
+      - "scripts/apply_v8_3_0.py"
       - "tests/**"
       - "!tests/inspect_official_quality_sources.mjs"
       - ".github/workflows/v7-cloudflare.yml"
@@ -89,16 +90,19 @@ jobs:
       - name: Apply V8.2.1 evidence-driven acceptance
         run: python3 scripts/apply_v8_2_1.py
 
+      - name: Apply V8.3.0 D1 + Firestore migration bridge
+        run: python3 scripts/apply_v8_3_0.py
+
       - name: Syntax check Worker.js
         run: |
           set -euo pipefail
           cp Worker.js /tmp/Worker.mjs
           node --check /tmp/Worker.mjs
 
-      - name: Validate V8.2.1 production contract
+      - name: Validate V8.3.0 production contract
         run: |
           set -euo pipefail
-          grep -F 'const VERSION = "8.2.1-evidence-driven-acceptance";' Worker.js
+          grep -F 'const VERSION = "8.3.0-d1-firestore-bridge";' Worker.js
           grep -F 'const WATCHLIST_MAX = 12;' Worker.js
           grep -F 'async function finishDataIncompleteScan(' Worker.js
           grep -F 'function buildReviewedWatchlist(' Worker.js
@@ -126,6 +130,7 @@ jobs:
           node tests/test_v8_1_3_ops_console.mjs
           node tests/test_v8_2_0_push_receipt.mjs
           node tests/test_v8_2_1_evidence_acceptance.mjs
+          node tests/test_v8_3_0_storage_bridge.mjs
 
       - name: Snapshot existing public monitoring configuration
         run: |
@@ -222,6 +227,29 @@ jobs:
           V7_TEST_WORKER_PATH: ${{ github.workspace }}/Worker.js
           V7_DEPLOY_BASELINE_PATH: /tmp/v7-predeploy.json
         run: node tests/verify_deployment.mjs
+
+      - name: Seed D1 plan archive and report Firestore migration readiness
+        if: contains(github.event.head_commit.message, '[v8-firestore-migration]')
+        env:
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+        run: |
+          node - <<'NODE'
+          const origin="https://fugle-test.imihan0630.workers.dev";
+          const response=await fetch(origin+"/api/storage/migrate-current",{
+            method:"POST",
+            headers:{"x-admin-token":process.env.V7_ADMIN_TOKEN,"content-type":"application/json","accept":"application/json"},
+            body:"{}",
+            signal:AbortSignal.timeout(60000)
+          });
+          const data=await response.json();
+          console.log(JSON.stringify(data));
+          if(![200,428].includes(response.status)) throw new Error("Storage migration readiness HTTP "+response.status);
+          if(data?.d1?.verified!==true) throw new Error("D1 primary plan archive was not verified");
+          if(data.noPlanChanges!==true || data.noPush!==true || data.noThreeMinWrite!==true || data.noTrade!==true) {
+            throw new Error("Storage migration safety contract failed");
+          }
+          if(response.status===200 && data.migrationReady!==true) throw new Error("Firestore configured but migration did not verify");
+          NODE
 
       - name: Verify 3Min Production token authorization (read-only)
         if: contains(github.event.head_commit.message, '[v8-3min-auth-check]')
