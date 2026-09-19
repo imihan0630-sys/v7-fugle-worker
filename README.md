@@ -6,7 +6,7 @@ https://github.com/imihan0630-sys/v7-fugle-worker
 Cloudflare Worker:
 https://fugle-test.imihan0630.workers.dev
 
-Current production Worker version:\n`8.0.1-requirement11-q4-eps`
+Current production Worker version:\n`8.0.2-requirement26-acceptance`
 
 ## What this package does
 
