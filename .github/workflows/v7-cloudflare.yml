@@ -1,4 +1,4 @@
-name: V7 Cloudflare Deploy
+name: V8 Cloudflare Deploy
 
 on:
   workflow_dispatch:
@@ -10,6 +10,7 @@ on:
       - "scripts/apply_v7_5_30.py"
       - "scripts/apply_v7_5_31.py"
       - "scripts/apply_v7_5_33.py"
+      - "scripts/apply_v8_0_1.py"
       - "tests/**"
       - "!tests/inspect_official_quality_sources.mjs"
       - ".github/workflows/v7-cloudflare.yml"
@@ -49,21 +50,25 @@ jobs:
       - name: Apply V7.5.33 DATA_INCOMPLETE and dynamic watchlist
         run: python3 scripts/apply_v7_5_33.py
 
+      - name: Apply V8.0.1 requirement 11 financial completion
+        run: python3 scripts/apply_v8_0_1.py
+
       - name: Syntax check Worker.js
         run: |
           set -euo pipefail
           cp Worker.js /tmp/Worker.mjs
           node --check /tmp/Worker.mjs
 
-      - name: Validate V7.5.33 production contract
+      - name: Validate V8.0.1 production contract
         run: |
           set -euo pipefail
-          grep -F 'const VERSION = "7.5.33-dynamic-watchlist-12";' Worker.js
+          grep -F 'const VERSION = "8.0.1-requirement11-q4-eps";' Worker.js
           grep -F 'const WATCHLIST_MAX = 12;' Worker.js
           grep -F 'async function finishDataIncompleteScan(' Worker.js
           grep -F 'function buildReviewedWatchlist(' Worker.js
           grep -F 'url.pathname === "/watchlist"' Worker.js
           grep -F 'watchlistUrl: WATCHLIST_URL' Worker.js
+          grep -F 'MOPSFIN_OFFICIAL_Q4_CUMULATIVE_MINUS_Q3' Worker.js
 
       - name: Behavioral regression (no real pushes or writes)
         env:
@@ -173,7 +178,7 @@ jobs:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
         run: |
           set -euo pipefail
-          npm exec --yes wrangler@4 -- rollback --name "$SCRIPT_NAME" --message "Automatic rollback after failed V7 deployment verification: ${GITHUB_SHA}"
+          npm exec --yes wrangler@4 -- rollback --name "$SCRIPT_NAME" --message "Automatic rollback after failed V8 deployment verification: ${GITHUB_SHA}"
           EXPECTED_ROLLBACK=$(python3 - <<'PY'
           import json
           print(json.load(open("/tmp/v7-predeploy-backup/metadata.json",encoding="utf-8"))["version"])
