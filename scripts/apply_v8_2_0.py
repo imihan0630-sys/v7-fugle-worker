@@ -202,23 +202,16 @@ replace_once(
 )
 
 replace_once(
-'''      `監控：${payload.monitorUrl}`, `時間：${payload.time}`
-    ].join("\n\n");''',
+'''      `監控：${payload.monitorUrl}`,''',
 '''      `監控：${payload.monitorUrl}`,
-      ...(payload.receiptUrl ? [`收到確認：${payload.receiptUrl}`] : []),
-      `時間：${payload.time}`
-    ].join("\n\n");''',
+      ...(payload.receiptUrl ? [`收到確認：${payload.receiptUrl}`] : []),''',
     "daily receipt link"
 )
 
 replace_once(
+'''    `訊號ID：${payload?.signalId || "-"}`,''',
 '''    `訊號ID：${payload?.signalId || "-"}`,
-    `時間：${payload?.time || taiwanTime()}`
-  ].filter(Boolean).join("\n");''',
-'''    `訊號ID：${payload?.signalId || "-"}`,
-    payload?.receiptUrl ? `收到確認：${payload.receiptUrl}` : "",
-    `時間：${payload?.time || taiwanTime()}`
-  ].filter(Boolean).join("\n");''',
+    payload?.receiptUrl ? `收到確認：${payload.receiptUrl}` : "",''',
     "intraday receipt link"
 )
 
