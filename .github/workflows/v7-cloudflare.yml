@@ -212,6 +212,12 @@ jobs:
           V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
         run: node tests/accept_after_market.mjs
 
+      - name: Diagnose existing Rule 26 3Min state (read-only)
+        if: contains(github.event.head_commit.message, '[v8-rule26-diagnostics]')
+        env:
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+        run: node tests/diagnose_three_min.mjs
+
       - name: Verify existing 3Min records and capital preview (no re-selection)
         if: contains(github.event.head_commit.message, '[v7-readback-acceptance]')
         env:
