@@ -1,0 +1,80 @@
+name: V8 Encrypted Plan Mirror
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "25 10 * * 1-5"
+  push:
+    branches: [main]
+    paths:
+      - "scripts/apply_v8_4_0.py"
+      - "tests/github_plan_mirror.mjs"
+      - ".github/workflows/v8-plan-mirror.yml"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: v8-encrypted-plan-mirror
+  cancel-in-progress: false
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Offline encryption self-test
+        run: node tests/github_plan_mirror.mjs self-test
+
+      - name: Wait for V8.4 production runtime
+        if: github.event_name == 'push'
+        run: node tests/github_plan_mirror.mjs wait-runtime
+
+      - id: prepare
+        name: Prepare encrypted mirror
+        env:
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+        run: node tests/github_plan_mirror.mjs prepare
+
+      - name: Commit encrypted mirror only
+        if: steps.prepare.outputs.skip != 'true'
+        run: |
+          set -euo pipefail
+          git config user.name "v8-plan-mirror"
+          git config user.email "actions@users.noreply.github.com"
+          git add external-mirror/latest.enc.json external-mirror/history/
+          git diff --cached --quiet && { echo "No mirror changes"; exit 0; }
+          git commit -m "mirror: encrypted V8 plan ${{ steps.prepare.outputs.sha256 }}"
+          for attempt in 1 2 3; do
+            git pull --rebase origin main
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+            sleep $((attempt * 3))
+          done
+          echo "Mirror push failed after retries"
+          exit 1
+
+      - id: commit
+        name: Resolve mirror commit
+        if: steps.prepare.outputs.skip != 'true'
+        run: echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Verify external raw readback and accept
+        if: steps.prepare.outputs.skip != 'true'
+        env:
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+        run: node tests/github_plan_mirror.mjs verify "${{ steps.commit.outputs.sha }}"
+
+      - name: Already verified
+        if: steps.prepare.outputs.skip == 'true'
+        run: echo "Current plan already has a verified encrypted GitHub mirror; no write performed."

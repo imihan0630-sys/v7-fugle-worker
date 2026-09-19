@@ -140,7 +140,21 @@ async function main() {
     }
 
     let verifiedScan=scan,storageEvidence=null;
-    if(runtime.readiness?.planStorageMode==='D1_FIRESTORE') {
+    if(runtime.readiness?.planStorageMode==='D1_GITHUB_ENCRYPTED') {
+      storageEvidence=await fetch(origin+'/api/storage/status',{headers:{'accept':'application/json'},signal:AbortSignal.timeout(20000)}).then(async response=>{
+        assert.equal(response.ok,true,'Storage status read failed');return response.json();
+      });
+      assert.equal(storageEvidence.mode,'D1_GITHUB_ENCRYPTED');
+      assert.equal(storageEvidence.d1?.configured,true);
+      assert.equal(storageEvidence.d1?.latestArchived,true,'D1 primary plan archive missing');
+      assert.equal(storageEvidence.github?.encrypted,true,'GitHub mirror must remain encrypted');
+      assert.equal(storageEvidence.github?.verified,true,'GitHub encrypted external readback is not verified');
+      verifiedScan=await admin('/api/scan/status');
+      assert.equal(verifiedScan.planBridge?.provider,'D1_GITHUB_ENCRYPTED','Latest scan did not use GitHub encrypted mirror');
+      assert.equal(verifiedScan.planBridge?.github?.verified,true,'GitHub exact readback acceptance was not persisted');
+      assert.equal(verifiedScan.pipeline?.externalPlanVerified,true,'Generic external plan verification is incomplete');
+      assert.equal(verifiedScan.pipeline?.threeMinVerified,null,'3Min must be inactive after GitHub mirror cutover');
+    } else if(runtime.readiness?.planStorageMode==='D1_FIRESTORE') {
       storageEvidence=await fetch(origin+'/api/storage/status',{headers:{'accept':'application/json'},signal:AbortSignal.timeout(20000)}).then(async response=>{
         assert.equal(response.ok,true,'Storage status read failed');return response.json();
       });
@@ -150,7 +164,7 @@ async function main() {
       assert.equal(scan.planBridge?.provider,'D1_FIRESTORE','Latest scan did not use Firestore bridge');
       assert.equal(scan.planBridge?.firebase?.verified,true,'Firestore exact readback was not persisted');
     } else {
-      // Compatibility mode only: verify the existing 3Min record without creating a new plan.
+      // Historical compatibility only: verify the existing 3Min record without creating a new plan.
       const readback=await admin('/api/three-min/verify','POST');
       assert.equal(readback.verified,true,'Full legacy external payload readback differs');
       verifiedScan=await admin('/api/scan/status');
@@ -163,7 +177,8 @@ async function main() {
       actualAfterMarketHealth:proof,
       watchlistVerified:{count:watch.count,maxStocks:watch.maxStocks,noFormalOverlap:true,marketDate:watch.marketDate},
       externalReadbackVerified:true,externalPlanProvider:proof.bridgeProvider,requirement26Accepted:true,
-      storageEvidence:storageEvidence?{mode:storageEvidence.mode,d1Archived:storageEvidence.d1?.latestArchived,firebaseConfigured:storageEvidence.firebase?.configured}:null,
+      storageEvidence:storageEvidence?{mode:storageEvidence.mode,d1Archived:storageEvidence.d1?.latestArchived,
+        githubVerified:storageEvidence.github?.verified===true,firebaseConfigured:storageEvidence.firebase?.configured}:null,
       dailyReportOutboxAccepted:true,
       pushOutbox:{unresolved:outbox.unresolved,staleUnresolved:outbox.staleUnresolved},
       handsetReceipts:{total:receipts.total,dailySelection:receipts.dailySelection,intraday:receipts.intraday},

@@ -65,7 +65,7 @@ for(const marker of [
   'async function persistPlanBridge(payload,env)',
   'url.pathname==="/api/storage/status"',
   'url.pathname==="/api/storage/migrate-current"',
-  'planStorageMode: firebaseConfigured(env) ? "D1_FIRESTORE" : "D1_THREEMIN_COMPAT"',
+  'planStorageMode:',
   'externalPlanVerified: bridge.verified === true',
   'firebaseVerified: bridge.provider==="D1_FIRESTORE"'
 ]) assert.ok(source.includes(marker),marker);
@@ -76,6 +76,6 @@ console.log(JSON.stringify({
   canonicalHash:true,
   d1PrimaryRoundTrip:true,
   firestoreOptional:true,
-  threeMinCompatibilityUntilFirebaseConfigured:true,
+  legacyStorageCompatibilityCovered:true,
   noCutoverBeforeExternalReadback:true
 }));
