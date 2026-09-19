@@ -14,6 +14,7 @@ on:
       - "scripts/apply_v8_0_2.py"
       - "scripts/apply_v8_0_3.py"
       - "scripts/apply_v8_0_4.py"
+      - "scripts/apply_v8_1_0.py"
       - "tests/**"
       - "!tests/inspect_official_quality_sources.mjs"
       - ".github/workflows/v7-cloudflare.yml"
@@ -65,16 +66,19 @@ jobs:
       - name: Apply V8.0.4 guarded current-plan 3Min recovery
         run: python3 scripts/apply_v8_0_4.py
 
+      - name: Apply V8.1.0 operations hardening
+        run: python3 scripts/apply_v8_1_0.py
+
       - name: Syntax check Worker.js
         run: |
           set -euo pipefail
           cp Worker.js /tmp/Worker.mjs
           node --check /tmp/Worker.mjs
 
-      - name: Validate V8.0.4 production contract
+      - name: Validate V8.1.0 production contract
         run: |
           set -euo pipefail
-          grep -F 'const VERSION = "8.0.4-3min-current-plan-recovery";' Worker.js
+          grep -F 'const VERSION = "8.1.0-ops-hardening";' Worker.js
           grep -F 'const WATCHLIST_MAX = 12;' Worker.js
           grep -F 'async function finishDataIncompleteScan(' Worker.js
           grep -F 'function buildReviewedWatchlist(' Worker.js
@@ -84,6 +88,10 @@ jobs:
           grep -F 'requirement26Complete' Worker.js
           grep -F 'url.pathname === "/api/three-min/auth-check"' Worker.js
           grep -F 'url.pathname === "/api/three-min/recover-current"' Worker.js
+          grep -F 'CREATE TABLE IF NOT EXISTS v7_push_outbox' Worker.js
+          grep -F 'url.pathname==="/api/system-overview"' Worker.js
+          grep -F 'url.pathname==="/api/push-outbox"' Worker.js
+          grep -F 'url.pathname==="/api/external-validation/stats"' Worker.js
 
       - name: Behavioral regression (no real pushes or writes)
         env:
@@ -92,6 +100,7 @@ jobs:
           node tests/test_requirements_repair.mjs
           node tests/test_three_min_auth_check.mjs
           node tests/test_three_min_current_recovery.mjs
+          node tests/test_v8_1_ops_hardening.mjs
 
       - name: Snapshot existing public monitoring configuration
         run: |
@@ -257,6 +266,12 @@ jobs:
             noPush:true
           }));
           NODE
+
+      - name: V8.1.0 read-only operations acceptance
+        if: contains(github.event.head_commit.message, '[v8-ops-acceptance]')
+        env:
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+        run: node tests/accept_v8_1_ops.mjs
 
       - name: Auto rollback if deployment verification fails
         if: ${{ failure() && steps.deploy.outcome == 'success' && steps.verify.outcome == 'failure' }}
