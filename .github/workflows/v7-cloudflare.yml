@@ -12,6 +12,7 @@ on:
       - "scripts/apply_v7_5_33.py"
       - "scripts/apply_v8_0_1.py"
       - "scripts/apply_v8_0_2.py"
+      - "scripts/apply_v8_0_3.py"
       - "tests/**"
       - "!tests/inspect_official_quality_sources.mjs"
       - ".github/workflows/v7-cloudflare.yml"
@@ -57,16 +58,19 @@ jobs:
       - name: Apply V8.0.2 requirement 26 acceptance tracking
         run: python3 scripts/apply_v8_0_2.py
 
+      - name: Apply V8.0.3 read-only 3Min authorization diagnostic
+        run: python3 scripts/apply_v8_0_3.py
+
       - name: Syntax check Worker.js
         run: |
           set -euo pipefail
           cp Worker.js /tmp/Worker.mjs
           node --check /tmp/Worker.mjs
 
-      - name: Validate V8.0.2 production contract
+      - name: Validate V8.0.3 production contract
         run: |
           set -euo pipefail
-          grep -F 'const VERSION = "8.0.2-requirement26-acceptance";' Worker.js
+          grep -F 'const VERSION = "8.0.3-3min-auth-check";' Worker.js
           grep -F 'const WATCHLIST_MAX = 12;' Worker.js
           grep -F 'async function finishDataIncompleteScan(' Worker.js
           grep -F 'function buildReviewedWatchlist(' Worker.js
@@ -74,11 +78,14 @@ jobs:
           grep -F 'watchlistUrl: WATCHLIST_URL' Worker.js
           grep -F 'MOPSFIN_OFFICIAL_Q4_CUMULATIVE_MINUS_Q3' Worker.js
           grep -F 'requirement26Complete' Worker.js
+          grep -F 'url.pathname === "/api/three-min/auth-check"' Worker.js
 
       - name: Behavioral regression (no real pushes or writes)
         env:
           V7_TEST_WORKER_PATH: ${{ github.workspace }}/Worker.js
-        run: node tests/test_requirements_repair.mjs
+        run: |
+          node tests/test_requirements_repair.mjs
+          node tests/test_three_min_auth_check.mjs
 
       - name: Snapshot existing public monitoring configuration
         run: |
@@ -175,6 +182,31 @@ jobs:
           V7_TEST_WORKER_PATH: ${{ github.workspace }}/Worker.js
           V7_DEPLOY_BASELINE_PATH: /tmp/v7-predeploy.json
         run: node tests/verify_deployment.mjs
+
+      - name: Verify 3Min Production token authorization (read-only)
+        if: contains(github.event.head_commit.message, '[v8-3min-auth-check]')
+        env:
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+        run: |
+          node - <<'NODE'
+          const response = await fetch("https://fugle-test.imihan0630.workers.dev/api/three-min/auth-check", {
+            method: "GET",
+            headers: {
+              "x-admin-token": process.env.V7_ADMIN_TOKEN,
+              "accept": "application/json",
+              "user-agent": "V8-3Min-Auth-Acceptance/1.0"
+            },
+            signal: AbortSignal.timeout(20000)
+          });
+          const data = await response.json();
+          console.log(JSON.stringify(data));
+          if (!response.ok || data.authorized !== true || data.httpStatus < 200 || data.httpStatus >= 300) {
+            throw new Error("3Min Production token authorization failed");
+          }
+          if (data.noWrite !== true || data.noPlanChanges !== true || data.noPush !== true) {
+            throw new Error("3Min auth check safety contract failed");
+          }
+          NODE
 
       - name: Auto rollback if deployment verification fails
         if: ${{ failure() && steps.deploy.outcome == 'success' && steps.verify.outcome == 'failure' }}
