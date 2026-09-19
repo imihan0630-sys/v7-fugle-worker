@@ -17,7 +17,7 @@ assert.match(page,/不會改買區、停損、資金配置、3Min或推播/);
 
 const workerSource=await readFile(workerPath,"utf8");
 assert.match(workerSource,/const VERSION = "8\.1\.3-ops-console-acceptance";/);
-assert.match(workerSource,/report=\{\.\.\.reportOutcome,signalId:dailyPayload\.signalId/);
+assert.match(workerSource,/report=\{\.\.\.report,signalId:dailyPayload\.signalId/);
 assert.match(workerSource,/selectedCount:dailyPayload\.selectedCount,checkedAt:new Date\(\)\.toISOString\(\)/);
 
 const health=await readFile(new URL("./scheduled_health.mjs",import.meta.url),"utf8");
