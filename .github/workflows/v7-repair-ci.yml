@@ -11,6 +11,7 @@ on:
       - "scripts/apply_v7_5_33.py"
       - "scripts/apply_v8_0_1.py"
       - "scripts/apply_v8_0_2.py"
+      - "scripts/apply_v8_0_3.py"
       - "tests/**"
       - ".github/workflows/v7-cloudflare.yml"
       - ".github/workflows/v7-repair-ci.yml"
@@ -48,6 +49,9 @@ jobs:
       - name: Apply V8.0.2 requirement 26 acceptance tracking
         run: python3 scripts/apply_v8_0_2.py
 
+      - name: Apply V8.0.3 read-only 3Min authorization diagnostic
+        run: python3 scripts/apply_v8_0_3.py
+
       - name: Syntax check Worker.js
         run: |
           cp Worker.js /tmp/Worker.mjs
@@ -56,7 +60,11 @@ jobs:
       - name: Behavioral regression
         env:
           V7_TEST_WORKER_PATH: ${{ github.workspace }}/Worker.js
-        run: node tests/test_requirements_repair.mjs
+        run: |
+          node tests/test_requirements_repair.mjs
+          node tests/test_three_min_auth_check.mjs
 
       - name: Verify expected version
-        run: grep -F 'const VERSION = "8.0.2-requirement26-acceptance";' Worker.js
+        run: |
+          grep -F 'const VERSION = "8.0.3-3min-auth-check";' Worker.js
+          grep -F 'url.pathname === "/api/three-min/auth-check"' Worker.js
