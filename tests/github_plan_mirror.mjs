@@ -94,6 +94,18 @@ function appendOutput(values) {
 
 async function prepare() {
   const data=await exportCurrent();
+  try {
+    const response=await fetch(ORIGIN+"/api/storage/status?mirrorPrepare="+Date.now(),{signal:AbortSignal.timeout(20000)});
+    if(response.ok) {
+      const status=await response.json();
+      if(status?.mode==="D1_GITHUB_ENCRYPTED" && status?.github?.verified===true &&
+         status?.github?.scanDate===data.scanDate && status?.d1?.sha256===data.sha256) {
+        await appendOutput({skip:"true",scan_date:data.scanDate,sha256:data.sha256,latest_path:LATEST_PATH});
+        console.log(JSON.stringify({prepared:false,alreadyVerified:true,scanDate:data.scanDate,sha256:data.sha256,plaintextWritten:false}));
+        return;
+      }
+    }
+  } catch {}
   const envelope=encryptPayload(data.payloadJson,requireSecret());
   assert.equal(envelope.sha256,data.sha256);
   await mkdir("external-mirror/history",{recursive:true});
@@ -102,7 +114,7 @@ async function prepare() {
   await writeFile(LATEST_PATH,serialized,"utf8");
   try { await readFile(historyPath,"utf8"); }
   catch { await writeFile(historyPath,serialized,"utf8"); }
-  await appendOutput({scan_date:data.scanDate,sha256:data.sha256,latest_path:LATEST_PATH,history_path:historyPath});
+  await appendOutput({skip:"false",scan_date:data.scanDate,sha256:data.sha256,latest_path:LATEST_PATH,history_path:historyPath});
   console.log(JSON.stringify({prepared:true,scanDate:data.scanDate,sha256:data.sha256,plaintextWritten:false}));
 }
 
