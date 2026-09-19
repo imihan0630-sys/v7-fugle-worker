@@ -251,7 +251,7 @@
 
 ## Runtime
 - Cloudflare Worker：`fugle-test`
-- 正式版本：`7.5.33-dynamic-watchlist-12`
+- 正式版本：`8.0.1-requirement11-q4-eps`
 - TEST_MODE：false
 - KV / D1：正常綁定
 
@@ -277,6 +277,7 @@
   - + `apply_v7_5_30.py`
   - + `apply_v7_5_31.py`
   - + `apply_v7_5_33.py`
+  - + `apply_v8_0_1.py`
   形成正式部署檔。
 - 每次部署前備份正式 Worker / Cron。
 - 防止舊版覆蓋新版。
@@ -321,3 +322,18 @@
 - 本次沒有改 Worker 程式、選股架構、股池架構、API、Cron 或部署內容。
 - Cloudflare 現行 runtime 技術版本字串仍維持 `7.5.33-dynamic-watchlist-12`，僅專案世代稱呼改為 V8。
 - 後續新功能版本由 V8 往下編，例如 V8.1；BUG 修正則為 V8.1.1。
+
+
+## 2026-09-19｜V8.0.1 完成第11項財報驗收
+
+- 正式 runtime 升為 `8.0.1-requirement11-q4-eps`；本次不改 3+3 股池、不改 A/B 選股架構。
+- 證交所財務比較 E 點通公開規則確認：上市／上櫃 Q1～Q3 為公司申報單季；Q4 因無獨立單季申報，以 Q4 累計減 Q3 累計計算單季。
+- V8.0.1 因此新增 Q4 EPS 官方方法 `MOPSFIN_OFFICIAL_Q4_CUMULATIVE_MINUS_Q3`，Q1 的前季 Q4 也可正式核對。
+- EPS QoQ 僅在當季＋前季均完成官方單季驗證後計算；前季 <=0 不產生百分比，保留變動額／轉盈／虧損變化。
+- PR #44 經 V8 Repair CI 與 V8 Regression Tests 通過後合併。
+- 主線 commit：`2ed47d0f0cb87a7f58e8235fa92ce6a184dccc57`。
+- 正式部署 run：`35434312862` 成功。
+- 再執行官方資料品質 acceptance run：`35434378057` 成功；2026/09/18 資料讀回 INDEX57、TDCC2956、FINANCIAL1882、VALUATION1965、ANNOUNCEMENTS147、QUARTER_EPS6。
+- 唯讀精篩：TWSE1035＋TPEx844＝1879 普通股，selectedCount=3；quarterEpsReview.ready=true、missingSymbols=[]、previousQuarterReviewedCount=6。
+- 驗收期間未改正式計畫、未 3Min POST、未推手機。
+- 第11項自未完成清單移除；剩餘 incompleteRules = [17,18,19,26,27,28,29]，所以 requirements30Complete 仍為 false。
