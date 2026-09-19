@@ -6,7 +6,7 @@ const source=await readFile(workerPath,"utf8");
 const mirror=await readFile(new URL("./github_plan_mirror.mjs",import.meta.url),"utf8");
 const health=await readFile(new URL("./scheduled_health.mjs",import.meta.url),"utf8");
 
-assert.match(source,/const VERSION = "8\.4\.0-github-encrypted-mirror";/);
+assert.match(source,/const VERSION = "8\.4\.(?:0|[1-9]\d*)[^"]*";/);
 for(const marker of [
   'const GITHUB_MIRROR_PROVIDER="D1_GITHUB_ENCRYPTED";',
   'CREATE TABLE IF NOT EXISTS v8_external_mirror_acceptance',
@@ -35,7 +35,7 @@ for(const marker of [
 
 console.log(JSON.stringify({
   ok:true,
-  version:"8.4.0-github-encrypted-mirror",
+  version:"8.4.0-or-later",
   encryptedExternalMirror:true,
   d1Primary:true,
   threeMinInactive:true,

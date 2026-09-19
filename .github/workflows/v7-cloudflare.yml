@@ -23,6 +23,7 @@ on:
       - "scripts/apply_v8_3_0.py"
       - "scripts/apply_v8_3_1.py"
       - "scripts/apply_v8_4_0.py"
+      - "scripts/apply_v8_4_1.py"
       - "tests/**"
       - "!tests/inspect_official_quality_sources.mjs"
       - ".github/workflows/v7-cloudflare.yml"
@@ -101,16 +102,19 @@ jobs:
       - name: Apply V8.4.0 encrypted GitHub external mirror
         run: python3 scripts/apply_v8_4_0.py
 
+      - name: Apply V8.4.1 provider-neutral requirement evidence
+        run: python3 scripts/apply_v8_4_1.py
+
       - name: Syntax check Worker.js
         run: |
           set -euo pipefail
           cp Worker.js /tmp/Worker.mjs
           node --check /tmp/Worker.mjs
 
-      - name: Validate V8.4.0 production contract
+      - name: Validate V8.4.1 production contract
         run: |
           set -euo pipefail
-          grep -F 'const VERSION = "8.4.0-github-encrypted-mirror";' Worker.js
+          grep -F 'const VERSION = "8.4.1-provider-neutral-evidence";' Worker.js
           grep -F 'const WATCHLIST_MAX = 12;' Worker.js
           grep -F 'async function finishDataIncompleteScan(' Worker.js
           grep -F 'function buildReviewedWatchlist(' Worker.js
@@ -144,6 +148,7 @@ jobs:
           node tests/test_v8_3_0_storage_bridge.mjs
           node tests/test_v8_3_1_storage_health.mjs
           node tests/test_v8_4_0_github_mirror.mjs
+          node tests/test_v8_4_1_provider_neutral.mjs
           node tests/github_plan_mirror.mjs self-test
 
       - name: Snapshot existing public monitoring configuration
