@@ -43,7 +43,7 @@ import {assessIntradayHealth,assessAfterMarketHealth} from './scheduled_health.m
 }
 process.on('uncaughtException',error=>{console.error(String(error.message).slice(0,1800));process.exit(1);});
 const source = await readFile(process.env.V7_TEST_WORKER_PATH || new URL('./Worker_V7_7.5.11_REQUIREMENTS_REPAIR.mjs', import.meta.url), 'utf8');
-const quarterHelpers=await import('data:text/javascript;base64,'+Buffer.from(source+'\nexport {parseMopsQuarterEpsHtml,validateOfficialQualityData};').toString('base64'));
+const quarterHelpers=await import('data:text/javascript;base64,'+Buffer.from(source+'\nexport {parseMopsQuarterEpsHtml,validateOfficialQualityData,deriveQuarterlyFinancials};').toString('base64'));
 {
   const report=(current='27.25',prior='15.36',period='115年第2季')=>`合併綜合損益表 單位：新台幣仟元 <a href="/server-java/t164sb01?step=1&CO_ID=2330&SYEAR=2026&SSEASON=2&REPORT_ID=C">XBRL</a><table><tr><th>會計項目</th><th colspan="2">${period}</th><th colspan="2">114年第2季</th><th colspan="2">115年01月01日至115年06月30日</th><th colspan="2">114年01月01日至114年06月30日</th></tr><tr><td>基本每股盈餘</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr><td>　基本每股盈餘</td><td>${current}</td><td></td><td>${prior}</td><td></td><td>49.33</td><td></td><td>29.31</td><td></td></tr></table>`;
   const actual=quarterHelpers.parseMopsQuarterEpsHtml(report(),'2330',2026,2);
@@ -54,8 +54,9 @@ const quarterHelpers=await import('data:text/javascript;base64,'+Buffer.from(sou
   assert.throws(()=>quarterHelpers.parseMopsQuarterEpsHtml(report('27.25','15.36','115年01月01日至115年06月30日'),'2330',2026,2),/真正單季/,'Cumulative period is not quarter EPS');
   assert.throws(()=>quarterHelpers.parseMopsQuarterEpsHtml(report()+report(),'2330',2026,2),/不唯一/);
   assert.throws(()=>quarterHelpers.parseMopsQuarterEpsHtml(report(),'2330',2026,4),/輸入/);
-  const body={kind:'QUARTER_EPS',year:2026,quarter:2,reports:[{symbol:'2330',sourceUrl:'https://mopsov.twse.com.tw/mops/web/ajax_t164sb04',html:report()}]};
-  assert.equal(quarterHelpers.validateOfficialQualityData(body,'2026-09-16').count,1);
+  const q2Financial={year:2026,quarter:2,stocks:{'2330':{}}};
+  const body={kind:'QUARTER_EPS',year:2026,quarter:2,financialSnapshot:q2Financial,reports:[{symbol:'2330',sourceUrl:'https://mopsov.twse.com.tw/mops/web/ajax_t164sb04',html:report()}]};
+  assert.throws(()=>quarterHelpers.validateOfficialQualityData(body,'2026-09-16'),/前一季/,'Requirement 11 now requires a verified previous-quarter EPS before QoQ is accepted');
   const previous=report('22.08','13.95').replace('SSEASON=2','SSEASON=1').replace('115年第2季','115年第1季').replace('114年第2季','114年第1季');
   const paired={...body,reports:[{...body.reports[0],previousQuarterHtml:previous}]};
   const stock=quarterHelpers.validateOfficialQualityData(paired,'2026-09-16').stocks['2330'];
@@ -65,7 +66,7 @@ const quarterHelpers=await import('data:text/javascript;base64,'+Buffer.from(sou
   assert.equal(q1.quarterEPS,22.08);assert.equal(q1.reportedPriorYearQuarterEPS,13.95);
   assert.throws(()=>quarterHelpers.parseMopsQuarterEpsHtml(q1Actual.replace('<td>22.08</td>','<td>99</td>'),'2330',2026,1),/欄位不一致/);
 
-  assert.equal(stock.epsQoQ,null);assert.equal(stock.epsQoQReady,false,'Do not score an unverified adjusted comparison');
+  assert.equal(stock.epsQoQReady,true);assert.ok(Math.abs(stock.epsQoQ-(27.25/22.08-1)*100)<1e-10,'Verified direct single-quarter EPS should support QoQ');
   assert.throws(()=>quarterHelpers.validateOfficialQualityData({...paired,reports:[{...paired.reports[0],previousQuarterHtml:report()}]},'2026-09-16'),/季別/);
   assert.throws(()=>quarterHelpers.validateOfficialQualityData({...paired,reports:[{...paired.reports[0],previousQuarterHtml:previous.replace('CO_ID=2330','CO_ID=6706')}]},'2026-09-16'),/公司/);
   const turnaround=quarterHelpers.parseMopsQuarterEpsHtml(report('2.18','-0.79'),'2330',2026,2);
@@ -75,9 +76,40 @@ const quarterHelpers=await import('data:text/javascript;base64,'+Buffer.from(sou
   assert.equal(narrower.epsLossNarrowed,1);assert.equal(narrower.epsLossWidened,0);
   assert.equal(quarterHelpers.parseMopsQuarterEpsHtml(report('-4','-3.20'),'2330',2026,2).epsLossWidened,1);
   assert.equal(quarterHelpers.parseMopsQuarterEpsHtml(report('2','0'),'2330',2026,2).epsYoY,null);
+
+  // V8.0.1 Requirement 11: TWSE 財務比較E點通明示 Q4 單季 = Q4累計 - Q3累計。
+  const fin=(epsYTD,revenueYTD,grossYTD,operatingYTD)=>({epsYTD,revenueYTD,grossYTD,operatingYTD});
+  const periods=[
+    {year:2025,quarter:4,stocks:{'2412':fin(4.99,236114409,86969217,48547702)}},
+    {year:2025,quarter:3,stocks:{'2412':fin(3.79,170463142,64892333,37167934)}},
+    {year:2025,quarter:2,stocks:{'2412':fin(2.57,110000000,43000000,24500000)}},
+    {year:2024,quarter:4,stocks:{'2412':fin(4.80,220000000,82000000,45000000)}},
+    {year:2024,quarter:3,stocks:{'2412':fin(3.60,160000000,60000000,34000000)}}
+  ];
+  const q4Financial=quarterHelpers.deriveQuarterlyFinancials(periods,2025,4);
+  assert.equal(q4Financial['2412'].quarterEPS,1.2);
+  assert.equal(q4Financial['2412'].quarterEpsVerified,true);
+  assert.equal(q4Financial['2412'].quarterEpsMethod,'MOPSFIN_OFFICIAL_Q4_CUMULATIVE_MINUS_Q3');
+  const q3Html=report('1.22','1.25','114年第3季')
+    .replaceAll('SYEAR=2026','SYEAR=2025').replaceAll('SSEASON=2','SSEASON=3')
+    .replaceAll('115年第2季','114年第3季').replaceAll('114年第2季','113年第3季')
+    .replaceAll('115年01月01日至115年06月30日','114年01月01日至114年09月30日')
+    .replaceAll('114年01月01日至114年06月30日','113年01月01日至113年09月30日');
+  const q4Body={kind:'QUARTER_EPS',year:2025,quarter:4,financialSnapshot:{year:2025,quarter:4,stocks:q4Financial},
+    reports:[{symbol:'2412',sourceUrl:'https://mopsfin.twse.com.tw/terms',previousQuarterHtml:q3Html.replaceAll('CO_ID=2330','CO_ID=2412')}]};
+  const q4Stock=quarterHelpers.validateOfficialQualityData(q4Body,'2026-03-31').stocks['2412'];
+  assert.equal(q4Stock.quarterEPS,1.2);assert.equal(q4Stock.previousQuarterEPS,1.22);assert.equal(q4Stock.epsQoQReady,true);
+  assert.ok(Math.abs(q4Stock.epsQoQ-(1.2/1.22-1)*100)<1e-10);
+  assert.throws(()=>quarterHelpers.validateOfficialQualityData({...q4Body,reports:[{...q4Body.reports[0],sourceUrl:'https://example.com'}]},'2026-03-31'),/Q4/);
+
+  // Q1 的前一季需使用前一年度 Q4 官方公式結果，而不是把它當成未來資料。
+  const q1Financial={year:2026,quarter:1,stocks:{'2330':{previousQuarterEPS:1.2,previousQuarterEpsVerified:true,previousQuarterEpsMethod:'MOPSFIN_OFFICIAL_Q4_CUMULATIVE_MINUS_Q3'}}};
+  const q1Body={kind:'QUARTER_EPS',year:2026,quarter:1,financialSnapshot:q1Financial,reports:[{symbol:'2330',sourceUrl:'https://mopsov.twse.com.tw/mops/web/ajax_t164sb04',html:q1Actual}]};
+  const q1Validated=quarterHelpers.validateOfficialQualityData(q1Body,'2026-05-20').stocks['2330'];
+  assert.equal(q1Validated.previousQuarterEPS,1.2);assert.equal(q1Validated.epsQoQReady,true);
   assert.throws(()=>quarterHelpers.validateOfficialQualityData(paired,'2026-03-31'),/期間/,'Future quarters are invalid inputs, not current data requirements');
 
-  assert.throws(()=>quarterHelpers.validateOfficialQualityData({...body,reports:[...body.reports,...body.reports]},'2026-09-16'),/重複/);
+  assert.throws(()=>quarterHelpers.validateOfficialQualityData({...paired,reports:[...paired.reports,...paired.reports]},'2026-09-16'),/重複/);
   assert.throws(()=>quarterHelpers.validateOfficialQualityData({...body,reports:[{...body.reports[0],sourceUrl:'https://example.com'}]},'2026-09-16'),/來源/);
 }
 const api = await import('data:text/javascript;base64,' + Buffer.from(source + '\nexport { evaluateOperationSignals, evaluateStop, processSignalState, recalculatePlanCapital, saveStockConfig, KV_KEY, fetchMarketRows, fetchClosingRowsWithFallback, normalizeMarketDate, normalizeStock, enforceIndependentPoolQuota, buildPublicRecommendations, buildDailySelectionPayload, formatSlackSignalMessage, scoreCandidate, nextTradingDate, mostRecentWeekday, runAfterMarketScan, MARKET_STATE_KEY, allocateAndBuildPlans, sendTo3Min, verifyThreeMinReadback, parseOfficialCsv, fetchOfficialEnrichment, buildThreeMinPayload, waitingLivePage, LAST_SCAN_KEY, validateInstitutionData, institutionSourceUrls, readInstitutionStreakMap, writeInstitutionSnapshot };').toString('base64'));

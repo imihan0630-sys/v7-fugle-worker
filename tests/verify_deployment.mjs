@@ -23,7 +23,13 @@ assert.equal(runtime?.version, expectedVersion, 'Accepted upload is not proof of
 assert.equal(runtime.bindings.kv, true, 'Existing KV binding must be retained');
 assert.equal(runtime.bindings.d1, true, 'Existing D1 binding must be retained');
 
-if (/^7\.5\.(?:3[3-9]|[4-9]\d|\d{3,})\b/.test(String(expectedVersion))) {
+function versionAtLeast(value, minimum=[7,5,33]) {
+  const m=String(value).match(/^(\d+)\.(\d+)\.(\d+)/);
+  if(!m) return false;
+  const actual=m.slice(1,4).map(Number);
+  return actual[0]>minimum[0] || actual[0]===minimum[0] && (actual[1]>minimum[1] || actual[1]===minimum[1] && actual[2]>=minimum[2]);
+}
+if (versionAtLeast(expectedVersion)) {
   const watchApiResponse = await fetch(origin + '/api/watchlist?deploymentCheck=1', {
     cache:'no-store',
     headers:{'accept':'application/json','user-agent':'V7-GitHub-Deploy-Verify/1.0'},

@@ -100,7 +100,7 @@ async function main() {
     });
     assert.equal(watchResponse.ok,true,`Watchlist health HTTP ${watchResponse.status}`);
     const watch=await watchResponse.json();
-    assert.equal(watch.version,'7.5.33-dynamic-watchlist-12');
+    assert.equal(watch.version,'8.0.1-requirement11-q4-eps');
     assert.equal(watch.maxStocks,12);
     assert.ok(Array.isArray(watch.stocks));
     assert.equal(watch.count,watch.stocks.length);
