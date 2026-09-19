@@ -439,7 +439,7 @@ replace_once(
 replace_between(
     "function formatSlackSignalMessage(payload) {",
     "function shouldPhonePushSignal(type) {",
-    '''function formatSlackSignalMessage(payload) {
+    r'''function formatSlackSignalMessage(payload) {
   if (payload?.signalType === "DAILY_SELECTION") {
     const rows=(payload.stocks || []).map(stock =>
       `${stock.rank}. ${stock.name} ${stock.symbol}｜${stock.strategy || stock.mode}｜訊號${stock.signalLevel || "-"}｜優先${fmt(stock.priorityScore)}｜RR ${fmt(stock.rewardRisk)}\n買區 ${fmt(stock.buyLow)}～${fmt(stock.buyHigh)}｜突破 ${fmt(stock.breakout)}｜最大追價 ${fmt(stock.maxChase)}\n第一筆 ${fmt(stock.firstAmount)}元／${stock.firstShares}股：${stock.firstCondition}\n第二筆 ${fmt(stock.secondAmount)}元／${stock.secondShares}股：${stock.secondCondition}\n停損 ${fmt(stock.stop)}｜停利檢查 ${fmt(stock.profitCheck)}\n入選原因：${stock.reason}`);
