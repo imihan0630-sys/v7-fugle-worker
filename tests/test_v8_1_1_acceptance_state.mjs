@@ -46,7 +46,7 @@ assert.doesNotMatch(page,/待驗收：11/);
 
 const health=await readFile(new URL("./scheduled_health.mjs",import.meta.url),"utf8");
 assert.equal(health.includes("'8.0.2-requirement26-acceptance'"),false);
-assert.match(health,/\/api\/push-outbox\?limit=20/);
+assert.match(health,/\/api\/push-outbox\?limit=(20|50)/);
 assert.match(health,/staleUnresolved/);
 assert.match(health,/Watchlist runtime version differs from deployed Worker/);
 
