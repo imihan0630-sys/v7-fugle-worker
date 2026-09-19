@@ -10,6 +10,7 @@ on:
       - "scripts/apply_v7_5_31.py"
       - "scripts/apply_v7_5_33.py"
       - "scripts/apply_v8_0_1.py"
+      - "scripts/apply_v8_0_2.py"
       - "tests/**"
       - ".github/workflows/v7-cloudflare.yml"
       - ".github/workflows/v7-repair-ci.yml"
@@ -44,6 +45,9 @@ jobs:
       - name: Apply V8.0.1 requirement 11 financial completion
         run: python3 scripts/apply_v8_0_1.py
 
+      - name: Apply V8.0.2 requirement 26 acceptance tracking
+        run: python3 scripts/apply_v8_0_2.py
+
       - name: Syntax check Worker.js
         run: |
           cp Worker.js /tmp/Worker.mjs
@@ -55,4 +59,4 @@ jobs:
         run: node tests/test_requirements_repair.mjs
 
       - name: Verify expected version
-        run: grep -F 'const VERSION = "8.0.1-requirement11-q4-eps";' Worker.js
+        run: grep -F 'const VERSION = "8.0.2-requirement26-acceptance";' Worker.js
