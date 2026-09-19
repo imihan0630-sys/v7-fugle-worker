@@ -1,3 +1,21 @@
+# 第11項完成：V8.0.1（2026-09-19）
+
+> 本節為第11項目前最高優先級正式狀態，覆蓋下方 7.5.25 與更早的第11項歷史限制；舊段落保留作變更歷史，不代表目前仍未完成。
+
+- 正式 runtime：`8.0.1-requirement11-q4-eps`；股池架構與 A/B 選股架構未改，本次屬既有財報資料／程式邏輯修正。
+- Q1～Q3：候選仍使用 MOPS 合併綜合損益表直接公告的單季 EPS，逐檔核對公司、年度、季別、期間與同期比較欄。
+- Q4：依證交所「財務比較 E 點通」公開規則，以同一公司同年度 **Q4累計EPS－Q3累計EPS** 取得第四季單季 EPS；底層累計數字仍來自 MOPS 官方財報，方法標記為 `MOPSFIN_OFFICIAL_Q4_CUMULATIVE_MINUS_Q3`。
+- Q1 的前一季 Q4 亦使用上述官方方法，不再把「前季為 Q4」當成無法處理的缺口。
+- EPS QoQ 只有在當季與前季單季 EPS 都已驗證後才計算。前季 EPS <=0 時不產生誤導的百分比，改保留 EPS 變動額、轉盈、虧損縮小／擴大旗標。
+- 季度營收 YoY/QoQ、毛利率／營益率 YoY/QoQ、PE/PB 同日估值、官方重大訊息風險與催化劑查核均保留；缺資料仍不得補中立分。
+- 2026/09/18 正式資料唯讀驗收：INDEX 57、TDCC 2956、FINANCIAL 1882、VALUATION 1965、ANNOUNCEMENTS 147、QUARTER_EPS 6；`quarterEpsReview.ready=true`、`missingSymbols=[]`、`previousQuarterReviewedCount=6`。
+- 此次品質驗收保持正式計畫不變，沒有 3Min POST、沒有手機推播、沒有重新選股寫入。
+- GitHub Actions：V8 Regression Tests 成功 https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/35434378039 ；V8 Cloudflare Deploy + official quality acceptance 成功 https://github.com/imihan0630-sys/v7-fugle-worker/actions/runs/35434378057 。
+- 第11項自 `incompleteRules` 移除；目前未完全驗收集中在 **17、18、19、26、27、28、29**。因此 `requirements30Complete=false` 仍正確。
+- 限制說明：2026/09/19 當下最新已公布季度為 2026Q2，因此本次真實資料 acceptance 驗的是 Q2 路徑；Q4 路徑以證交所公開方法、2412 歷史官方數據交叉核對及 CI regression 完成，並非宣稱今日發生一個 Q4 盤後正式掃描。
+
+---
+
 # 第11項持續修復：7.5.25
 
 - 對已公布財報季度，初步合格候選在既有同季EPS之外，同步讀取並獨立核對前一季官方合併報表直接公告的單季EPS；Q2/Q3正式選股需完成此前季核對。沒有要求尚未發生的未來季度。
