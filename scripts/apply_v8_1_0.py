@@ -399,25 +399,24 @@ replace_once(
 )
 
 replace_once(
-'''  const stop = payload?.stop !== null && payload?.stop !== undefined ? `\n停損：${payload.stop}` : "";
-  const profit = payload?.profitCheck !== null && payload?.profitCheck !== undefined ? `｜停利檢查：${payload.profitCheck}` : "";
-  return [
-    `🚦 *${payload?.title || "V7 盤中訊號"}*`,
-    `${stock.name || ""} ${stock.symbol || ""}｜現價：${payload?.currentPrice ?? "-"}`,
+'''  const profit = payload?.profitCheck !== null && payload?.profitCheck !== undefined ? `｜停利檢查：${payload.profitCheck}` : "";
+  return [''',
+'''  const profit = payload?.profitCheck !== null && payload?.profitCheck !== undefined ? `｜停利檢查：${payload.profitCheck}` : "";
+  const plan = payload?.strategy ? `策略：${payload.strategy}｜訊號 ${payload.signalLevel || "-"}｜監控 ${payload.monitorGrade || "-"} ${payload.monitorText || ""}` : "";
+  const score = payload?.priorityScore !== null && payload?.priorityScore !== undefined ? `優先分數：${payload.priorityScore}｜RR：${payload.rewardRisk ?? "-"}` : "";
+  const position = payload?.actualPositionKnown ? `實際持股：${payload.actualShares} 股` : (["STOP_LOSS","SELL","REDUCE"].includes(payload?.signalType) ? "實際持股：尚未回填，禁止用預計股數代替" : "");
+  return [''',
+    "richer slack metadata",
+)
+
+replace_once(
+'''    `${stock.name || ""} ${stock.symbol || ""}｜現價：${payload?.currentPrice ?? "-"}`,
     `動作：${payload?.instruction || payload?.signalLabel || "-"}`,
     `原因：${payload?.reason || "-"}`,
     `${amount}${shares}`.trim(),
     `${stop}${profit}`.trim(),
-    `時間：${payload?.time || taiwanTime()}`
-  ].filter(Boolean).join("\n");''',
-'''  const stop = payload?.stop !== null && payload?.stop !== undefined ? `\n停損：${payload.stop}` : "";
-  const profit = payload?.profitCheck !== null && payload?.profitCheck !== undefined ? `｜停利檢查：${payload.profitCheck}` : "";
-  const plan = payload?.strategy ? `策略：${payload.strategy}｜訊號 ${payload.signalLevel || "-"}｜監控 ${payload.monitorGrade || "-"} ${payload.monitorText || ""}` : "";
-  const score = payload?.priorityScore !== null && payload?.priorityScore !== undefined ? `優先分數：${payload.priorityScore}｜RR：${payload.rewardRisk ?? "-"}` : "";
-  const position = payload?.actualPositionKnown ? `實際持股：${payload.actualShares} 股` : (["STOP_LOSS","SELL","REDUCE"].includes(payload?.signalType) ? "實際持股：尚未回填，禁止用預計股數代替" : "");
-  return [
-    `🚦 *${payload?.title || "V7 盤中訊號"}*`,
-    `${stock.name || ""} ${stock.symbol || ""}｜現價：${payload?.currentPrice ?? "-"}`,
+    `時間：${payload?.time || taiwanTime()}`''',
+'''    `${stock.name || ""} ${stock.symbol || ""}｜現價：${payload?.currentPrice ?? "-"}`,
     plan,
     score,
     `動作：${payload?.instruction || payload?.signalLabel || "-"}`,
@@ -426,9 +425,8 @@ replace_once(
     `${amount}${shares}`.trim(),
     `${stop}${profit}`.trim(),
     `訊號ID：${payload?.signalId || "-"}`,
-    `時間：${payload?.time || taiwanTime()}`
-  ].filter(Boolean).join("\n");''',
-    "richer slack intraday format",
+    `時間：${payload?.time || taiwanTime()}`''',
+    "richer slack intraday lines",
 )
 
 replace_once(
