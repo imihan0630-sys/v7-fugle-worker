@@ -9,6 +9,7 @@ on:
       - "scripts/apply_v7_5_27.py"
       - "scripts/apply_v7_5_30.py"
       - "scripts/apply_v7_5_31.py"
+      - "scripts/apply_v7_5_33.py"
       - "tests/**"
       - "!tests/inspect_official_quality_sources.mjs"
       - ".github/workflows/v7-cloudflare.yml"
@@ -45,11 +46,24 @@ jobs:
       - name: Apply V7.5.31 push receipt clarity
         run: python3 scripts/apply_v7_5_31.py
 
+      - name: Apply V7.5.33 DATA_INCOMPLETE and dynamic watchlist
+        run: python3 scripts/apply_v7_5_33.py
+
       - name: Syntax check Worker.js
         run: |
           set -euo pipefail
           cp Worker.js /tmp/Worker.mjs
           node --check /tmp/Worker.mjs
+
+      - name: Validate V7.5.33 production contract
+        run: |
+          set -euo pipefail
+          grep -F 'const VERSION = "7.5.33-dynamic-watchlist-12";' Worker.js
+          grep -F 'const WATCHLIST_MAX = 12;' Worker.js
+          grep -F 'async function finishDataIncompleteScan(' Worker.js
+          grep -F 'function buildReviewedWatchlist(' Worker.js
+          grep -F 'url.pathname === "/watchlist"' Worker.js
+          grep -F 'watchlistUrl: WATCHLIST_URL' Worker.js
 
       - name: Behavioral regression (no real pushes or writes)
         env:
@@ -59,9 +73,7 @@ jobs:
       - name: Snapshot existing public monitoring configuration
         run: |
           set -euo pipefail
-          curl --fail --silent --show-error --max-time 20 \
-            "https://fugle-test.imihan0630.workers.dev/?format=json" \
-            --output /tmp/v7-predeploy.json
+          curl --fail --silent --show-error --max-time 20             "https://fugle-test.imihan0630.workers.dev/?format=json"             --output /tmp/v7-predeploy.json
 
       - name: Check GitHub secrets
         env:
@@ -86,7 +98,37 @@ jobs:
           path: /tmp/v7-predeploy-backup/
           retention-days: 30
 
-      - name: Deploy Worker code only
+      - name: Guard against accidental version downgrade
+        run: |
+          set -euo pipefail
+          EXPECTED=$(python3 - <<'PY'
+          import re
+          text=open("Worker.js",encoding="utf-8").read()
+          m=re.search(r'const VERSION = "([^"]+)";',text)
+          if not m: raise SystemExit("Expected version missing")
+          print(m.group(1))
+          PY
+          )
+          CURRENT=$(python3 - <<'PY'
+          import json,urllib.request
+          with urllib.request.urlopen("https://fugle-test.imihan0630.workers.dev/api/version",timeout=20) as r:
+              print(json.load(r)["version"])
+          PY
+          )
+          python3 - "$CURRENT" "$EXPECTED" <<'PY'
+          import re,sys
+          cur,exp=sys.argv[1:3]
+          def n(v):
+              m=re.match(r'^(\d+)\.(\d+)\.(\d+)',v)
+              if not m: raise SystemExit(f"Cannot compare version: {v}")
+              return tuple(map(int,m.groups()))
+          if n(cur) > n(exp):
+              raise SystemExit(f"Refusing downgrade: runtime {cur} is newer than build {exp}")
+          print(f"Version guard OK: runtime={cur}, build={exp}")
+          PY
+
+      - id: deploy
+        name: Deploy Worker code only
         env:
           CF_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           CF_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -112,17 +154,43 @@ jobs:
           print("Cloudflare Worker content deploy succeeded.")
           PY
 
-      - name: Verify deployed version and preserved configuration
+      - id: verify
+        name: Verify deployed version and preserved configuration
         env:
           V7_TEST_WORKER_PATH: ${{ github.workspace }}/Worker.js
           V7_DEPLOY_BASELINE_PATH: /tmp/v7-predeploy.json
         run: node tests/verify_deployment.mjs
+
+      - name: Auto rollback if deployment verification fails
+        if: ${{ failure() && steps.deploy.outcome == 'success' && steps.verify.outcome == 'failure' }}
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          set -euo pipefail
+          npm exec --yes wrangler@4 -- rollback --name "$SCRIPT_NAME" --message "Automatic rollback after failed V7 deployment verification: ${GITHUB_SHA}"
+          EXPECTED_ROLLBACK=$(python3 - <<'PY'
+          import json
+          print(json.load(open("/tmp/v7-predeploy-backup/metadata.json",encoding="utf-8"))["version"])
+          PY
+          )
+          for attempt in $(seq 1 24); do
+            CURRENT=$(curl --fail --silent --show-error --max-time 10               "https://fugle-test.imihan0630.workers.dev/api/version?rollbackCheck=${attempt}"               | python3 -c 'import json,sys; print(json.load(sys.stdin)["version"])') || true
+            if [ "$CURRENT" = "$EXPECTED_ROLLBACK" ]; then
+              echo "Rollback verified: $CURRENT"
+              exit 0
+            fi
+            sleep 5
+          done
+          echo "Rollback command completed but restored runtime version was not verified."
+          exit 1
 
       - name: Cache verified official market data (this repair only)
         if: contains(github.event.head_commit.message, '[v7-live-acceptance]')
         env:
           V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
         run: node tests/prepare_market_cache.mjs
+
       - name: Live after-market scan and import acceptance (this repair only)
         if: contains(github.event.head_commit.message, '[v7-live-acceptance]')
         env:
@@ -134,11 +202,13 @@ jobs:
         env:
           V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
         run: node tests/accept_three_min_readback.mjs
+
       - name: Verify official institution data only (preserve existing plans)
         if: contains(github.event.head_commit.message, '[v7-institution-acceptance]')
         env:
           V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
         run: node tests/sync_institution_data.mjs
+
       - name: Verify full official quality data and readonly selection preview
         if: contains(github.event.head_commit.message, '[v7-quality-acceptance]')
         env:
