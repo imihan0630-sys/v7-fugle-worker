@@ -115,6 +115,11 @@ async function main() {
   } else {
     const scan=await admin('/api/scan/status');
     const proof=assessAfterMarketHealth(scan,date);
+    const journal=await admin('/api/journal/health?date='+encodeURIComponent(date));
+    assert.equal(journal.configured,true,'Trade journal D1 is not configured');
+    assert.equal(journal.ok,true,'Trade journal latest day is incomplete');
+    assert.equal(journal.selectedCount,scan.selectedCount,'Trade journal selected count differs from formal scan');
+    assert.equal(journal.planCount,scan.selectedCount,'Trade journal plan rows differ from formal scan');
     assert.equal(scan.dailyReport?.signalId,`DAILY_SELECTION:${date}`,'Daily report lacks durable signal identity');
     const dailyOutbox=(outbox.recent||[]).find(item=>String(item.signal_id)===String(scan.dailyReport.signalId));
     assert.ok(dailyOutbox,'Daily after-market report missing from durable outbox');
@@ -180,6 +185,7 @@ async function main() {
       storageEvidence:storageEvidence?{mode:storageEvidence.mode,d1Archived:storageEvidence.d1?.latestArchived,
         githubVerified:storageEvidence.github?.verified===true,firebaseConfigured:storageEvidence.firebase?.configured}:null,
       dailyReportOutboxAccepted:true,
+      tradeJournal:{verified:true,selectedCount:journal.selectedCount,planCount:journal.planCount,signalCount:journal.signalCount},
       pushOutbox:{unresolved:outbox.unresolved,staleUnresolved:outbox.staleUnresolved},
       handsetReceipts:{total:receipts.total,dailySelection:receipts.dailySelection,intraday:receipts.intraday},
       noNewSelection:true,noThreeMinPost:true,noPush:true
