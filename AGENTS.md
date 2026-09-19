@@ -1,6 +1,6 @@
 # V7 project continuity and safety
 
-Read `PROJECT_HISTORY.md` after `REQUIREMENTS_30.md` when recovering context from a new ChatGPT thread. It contains the chronological cross-chat project history; GitHub/runtime evidence overrides remembered chat state.\n\nRead REQUIREMENTS_30.md in full before changes. It records the user's latest authoritative specification and explicit incomplete acceptance items. Older Worker comments and prior versions are not the specification.
+Read `VERSIONING.md` before assigning any new version number. Version level is determined by architecture vs feature vs bug-fix scope, not by commit count.\n\nRead `PROJECT_HISTORY.md` after `REQUIREMENTS_30.md` when recovering context from a new ChatGPT thread. It contains the chronological cross-chat project history; GitHub/runtime evidence overrides remembered chat state.\n\nRead REQUIREMENTS_30.md in full before changes. It records the user's latest authoritative specification and explicit incomplete acceptance items. Older Worker comments and prior versions are not the specification.
 
 - Thousand-price pool: official close >=1000, at most3. Non-thousand: official close <1000, at most3. No cross-pool filling, no forced six. Official close <10 excludes; =10 may qualify.
 - Strategy A is pullback; B is breakout. Formal buy/add/reduce/sell/stop confirmation is15-minute;10-minute only auxiliary. Continuous signal once; released then reactivated can notify again with a new episode ID.
