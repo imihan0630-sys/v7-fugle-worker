@@ -3,7 +3,7 @@ name: V8 Encrypted Plan Mirror
 on:
   workflow_dispatch:
   schedule:
-    - cron: "25 10 * * 1-5"
+    - cron: "35 10 * * 1-5"
   push:
     branches: [main]
     paths:
