@@ -450,18 +450,26 @@ assert.equal((await api.default.fetch(externalRequest({...externalPayload,symbol
 assert.equal((await api.default.fetch(externalRequest({...externalPayload,marketDate:'2099-01-01'}),verifyEnv)).status,400);
 const verifyConfig={updatedAt:'original',stocks:[{symbol:'original'}]};
 await verifyEnv.STOCKS_KV.put(api.KV_KEY,JSON.stringify(verifyConfig));
-await verifyEnv.STOCKS_KV.put(api.LAST_SCAN_KEY,JSON.stringify({scanDate:'2026-09-16',generatedAt:'original-scan',stocks:bridgePlan.stocks,totalCapital:bridgePlan.totalCapital,
-  config:{saved:true,verified:true,updatedAt:'original'},threeMin:{sent:true,simulated:false},threeMinPayload:bridgePlan,pipeline:{configVerified:true,dailyReportAccepted:true,complete:false}}));
+await verifyEnv.STOCKS_KV.put(api.LAST_SCAN_KEY,JSON.stringify({scanDate:'2026-09-16',generatedAt:'original-scan',stocks:[completePlan],totalCapital:completePayload.totalCapital,
+  config:{saved:true,verified:true,updatedAt:'original'},threeMin:{sent:true,simulated:false},threeMinPayload:completePayload,
+  diagnostics:{requirements30:{complete:false,incompleteRules:[17,18,19,26,27,28,29]}},
+  pipeline:{configVerified:true,dailyReportAccepted:true,complete:false}}));
 const verifyRequest=(token='mock')=>new Request('https://example.invalid/api/three-min/verify',{method:'POST',headers:{'x-admin-token':token}});
 assert.equal((await api.default.fetch(verifyRequest('wrong'),verifyEnv)).status,401);
 let reads=0;
-globalThis.fetch=async(url,options)=>{assert.equal(url,bridgeEnv.THREEMIN_VERIFY_URL);assert.equal(options.method,'GET');reads++;return new Response(JSON.stringify({success:true,data:[{id:'rec_test',payload:bridgePlan}]}));};
+globalThis.fetch=async(url,options)=>{assert.equal(url,bridgeEnv.THREEMIN_VERIFY_URL);assert.equal(options.method,'GET');reads++;return new Response(JSON.stringify({success:true,data:[{id:'rec_test',payload:completePayload}]}));};
 const verifyResponse=await api.default.fetch(verifyRequest(),verifyEnv);
 assert.equal(verifyResponse.status,200);
 assert.equal((await verifyResponse.json()).verified,true);
 assert.equal(reads,1,'No repeated writes or scans');
 assert.deepEqual(await verifyEnv.STOCKS_KV.get(api.KV_KEY,'json'),verifyConfig);
-assert.equal((await verifyEnv.STOCKS_KV.get(api.LAST_SCAN_KEY,'json')).pipeline.complete,true);
+const verifiedScan=await verifyEnv.STOCKS_KV.get(api.LAST_SCAN_KEY,'json');
+assert.equal(verifiedScan.pipeline.complete,true);
+assert.equal(verifiedScan.diagnostics.requirements30.requirement26.complete,true);
+assert.equal(verifiedScan.diagnostics.requirements30.requirement26.schemaVersion,'V7_PLAN_2');
+assert.equal(verifiedScan.diagnostics.requirements30.requirement26.externalPostAccepted,true);
+assert.equal(verifiedScan.diagnostics.requirements30.requirement26.exactReadbackVerified,true);
+assert.equal(verifiedScan.diagnostics.requirements30.incompleteRules.includes(26),false,'Rule 26 is removed only after actual full payload exact readback');
 globalThis.fetch=async()=>new Response('',{status:403});
 assert.equal((await api.default.fetch(verifyRequest(),verifyEnv)).status,403,'External authorization failure must stop');
 const waitingPage=api.waitingLivePage({stocks:[api.normalizeStock(generated,0)],source:'KV',updatedAt:'2026-09-16T13:00:00Z'},null,true);
