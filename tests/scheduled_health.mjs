@@ -83,14 +83,19 @@ async function main() {
       }catch(error){if(method!=='GET' || attempt===2 || !/fetch failed|timeout|ECONNRESET/i.test(String(error))) throw error;}
     }
   }
-  const [before,cron]=await Promise.all([admin('/api/config'),admin('/api/cron/status')]);
+  const versionResponse=await fetch(origin+'/api/version',{headers:{'accept':'application/json'},signal:AbortSignal.timeout(20000)});
+  assert.equal(versionResponse.ok,true,'Cannot read public runtime version');
+  const runtime=await versionResponse.json();
+  const [before,cron,outbox]=await Promise.all([admin('/api/config'),admin('/api/cron/status'),admin('/api/push-outbox?limit=20')]);
+  assert.equal(outbox.configured,true,'Push outbox is not configured');
+  assert.equal(Number(outbox.staleUnresolved||0),0,'Push outbox has unresolved delivery older than 10 minutes');
   if(intraday) {
     const live=await admin('/api/live');
     const proof=assessIntradayHealth(live,date);
     assert.deepEqual(live.results.map(x=>x.symbol).sort(),before.stocks.map(x=>x.symbol).sort(),'Monitoring targets differ from configured plans');
     const latest=cron.recent?.find(x=>x.job_type==='INTRADAY_MONITOR' && x.status==='SUCCESS' && x.finished_at);
     assert.ok(latest && now-Date.parse(latest.finished_at)<=180000,'No recent successful monitoring Cron');
-    console.log(JSON.stringify({actualIntradayHealth:proof,cronVerified:true}));
+    console.log(JSON.stringify({actualIntradayHealth:proof,cronVerified:true,pushOutbox:{unresolved:outbox.unresolved,staleUnresolved:outbox.staleUnresolved}}));
   } else {
     const scan=await admin('/api/scan/status');
     const proof=assessAfterMarketHealth(scan,date);
@@ -102,7 +107,7 @@ async function main() {
     });
     assert.equal(watchResponse.ok,true,`Watchlist health HTTP ${watchResponse.status}`);
     const watch=await watchResponse.json();
-    assert.equal(watch.version,'8.0.2-requirement26-acceptance');
+    assert.equal(watch.version,runtime.version,'Watchlist runtime version differs from deployed Worker');
     assert.equal(watch.maxStocks,12);
     assert.ok(Array.isArray(watch.stocks));
     assert.equal(watch.count,watch.stocks.length);
@@ -126,7 +131,9 @@ async function main() {
     console.log(JSON.stringify({
       actualAfterMarketHealth:proof,
       watchlistVerified:{count:watch.count,maxStocks:watch.maxStocks,noFormalOverlap:true,marketDate:watch.marketDate},
-      externalReadbackVerified:true,requirement26Accepted:true,noNewSelection:true,noThreeMinPost:true,noPush:true
+      externalReadbackVerified:true,requirement26Accepted:true,
+      pushOutbox:{unresolved:outbox.unresolved,staleUnresolved:outbox.staleUnresolved},
+      noNewSelection:true,noThreeMinPost:true,noPush:true
     }));
   }
   const after=await admin('/api/config');assert.deepEqual(after,before,'Health verification must preserve all actual plans/capital/holdings');
