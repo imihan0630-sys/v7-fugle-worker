@@ -1,4 +1,4 @@
-name: V7 Repair CI
+name: V8 Repair CI
 
 on:
   pull_request:
@@ -8,6 +8,8 @@ on:
       - "scripts/apply_v7_5_27.py"
       - "scripts/apply_v7_5_30.py"
       - "scripts/apply_v7_5_31.py"
+      - "scripts/apply_v7_5_33.py"
+      - "scripts/apply_v8_0_1.py"
       - "tests/**"
       - ".github/workflows/v7-cloudflare.yml"
       - ".github/workflows/v7-repair-ci.yml"
@@ -36,6 +38,12 @@ jobs:
       - name: Apply V7.5.31 push receipt clarity
         run: python3 scripts/apply_v7_5_31.py
 
+      - name: Apply V7.5.33 DATA_INCOMPLETE and dynamic watchlist
+        run: python3 scripts/apply_v7_5_33.py
+
+      - name: Apply V8.0.1 requirement 11 financial completion
+        run: python3 scripts/apply_v8_0_1.py
+
       - name: Syntax check Worker.js
         run: |
           cp Worker.js /tmp/Worker.mjs
@@ -47,4 +55,4 @@ jobs:
         run: node tests/test_requirements_repair.mjs
 
       - name: Verify expected version
-        run: grep -F 'const VERSION = "7.5.31-push-receipt-clarity";' Worker.js
+        run: grep -F 'const VERSION = "8.0.1-requirement11-q4-eps";' Worker.js
