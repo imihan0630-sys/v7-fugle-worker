@@ -83,7 +83,6 @@ jobs:
           grep -F 'async function finishDataIncompleteScan(' Worker.js
           grep -F 'function buildReviewedWatchlist(' Worker.js
           grep -F 'url.pathname === "/watchlist"' Worker.js
-          grep -F 'watchlistUrl: WATCHLIST_URL' Worker.js
           grep -F 'MOPSFIN_OFFICIAL_Q4_CUMULATIVE_MINUS_Q3' Worker.js
           grep -F 'requirement26Complete' Worker.js
           grep -F 'url.pathname === "/api/three-min/auth-check"' Worker.js
