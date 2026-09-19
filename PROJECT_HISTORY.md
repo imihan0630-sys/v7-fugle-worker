@@ -251,7 +251,7 @@
 
 ## Runtime
 - Cloudflare Worker：`fugle-test`
-- 正式版本：`8.0.1-requirement11-q4-eps`
+- 正式版本：`8.0.2-requirement26-acceptance`
 - TEST_MODE：false
 - KV / D1：正常綁定
 
@@ -337,3 +337,17 @@
 - 唯讀精篩：TWSE1035＋TPEx844＝1879 普通股，selectedCount=3；quarterEpsReview.ready=true、missingSymbols=[]、previousQuarterReviewedCount=6。
 - 驗收期間未改正式計畫、未 3Min POST、未推手機。
 - 第11項自未完成清單移除；剩餘 incompleteRules = [17,18,19,26,27,28,29]，所以 requirements30Complete 仍為 false。
+
+
+## 2026-09-19｜V8.0.2 第26項 3Min 驗收修復
+
+- 正式 runtime：`8.0.2-requirement26-acceptance`。
+- PR #45 完成 evidence-driven Rule26：只有本交易日完整 `V7_PLAN_2` 真實 POST + 外部 exact readback 才移除第26項。
+- V8 Repair CI run 35434990403 與 V8 Regression run 35434990345 成功；main deploy run 35435019381 成功。
+- 另加入只讀診斷，deploy run 35435247629 成功，未重新選股、未 3Min POST、未推播。
+- 診斷 2026/09/18 盤後紀錄：3Min HTTP 401，`sent=false`、`verified=false`；完整 payload 本身已是 V7_PLAN_2、scanDate 2026/09/18、planDate 2026/09/21、3 檔。
+- 3Min 服務端確認舊端點「V7 今日標的與交易計畫推送」已於 2026/09/17 因 Free plan 7 日清理刪除，9/18 舊 URL 仍被呼叫而拒絕。
+- 新建並部署「V8 今日標的與交易計畫推送」，API URL：`https://api.3minapi.com/api/v1/data/cum6sm2952x3sz9gph52w`；production 測試 POST 202。
+- 建立 collaboration key「V8 Cloudflare Worker」（create + read）。明碼只在 3Min dashboard，不進聊天或 GitHub。
+- 目前 blocker：Cloudflare Worker 尚須把 3Min URL/verify URL/token 切到新端點。完成後由下一次正式新盤後掃描自動驗收第26項。
+- Free plan endpoint 仍有 7 日自動清理限制；若不升級方案或換 durable 外部儲存，日後仍會重現。
