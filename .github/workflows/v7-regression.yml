@@ -27,6 +27,7 @@ jobs:
           python3 scripts/apply_v7_5_31.py
           python3 scripts/apply_v7_5_33.py
           python3 scripts/apply_v8_0_1.py
+          python3 scripts/apply_v8_0_2.py
       - name: Syntax and offline behavior regression
         env:
           V7_TEST_WORKER_PATH: ${{ github.workspace }}/Worker.js
@@ -34,11 +35,12 @@ jobs:
           set -euo pipefail
           cp Worker.js /tmp/v7-worker.mjs
           node --check /tmp/v7-worker.mjs
-          grep -F 'const VERSION = "8.0.1-requirement11-q4-eps";' Worker.js
+          grep -F 'const VERSION = "8.0.2-requirement26-acceptance";' Worker.js
           grep -F 'const WATCHLIST_MAX = 12;' Worker.js
           grep -F 'async function finishDataIncompleteScan(' Worker.js
           grep -F 'function buildReviewedWatchlist(' Worker.js
           grep -F 'MOPSFIN_OFFICIAL_Q4_CUMULATIVE_MINUS_Q3' Worker.js
+          grep -F 'requirement26Complete' Worker.js
           node tests/test_requirements_repair.mjs
       - name: Read-only production authorization preflight
         if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
