@@ -16,6 +16,7 @@ on:
       - "scripts/apply_v8_0_4.py"
       - "scripts/apply_v8_1_0.py"
       - "scripts/apply_v8_1_1.py"
+      - "scripts/apply_v8_1_2.py"
       - "tests/**"
       - "!tests/inspect_official_quality_sources.mjs"
       - ".github/workflows/v7-cloudflare.yml"
@@ -73,16 +74,19 @@ jobs:
       - name: Apply V8.1.1 acceptance state and health normalization
         run: python3 scripts/apply_v8_1_1.py
 
+      - name: Apply V8.1.2 safe position reconciliation
+        run: python3 scripts/apply_v8_1_2.py
+
       - name: Syntax check Worker.js
         run: |
           set -euo pipefail
           cp Worker.js /tmp/Worker.mjs
           node --check /tmp/Worker.mjs
 
-      - name: Validate V8.1.1 production contract
+      - name: Validate V8.1.2 production contract
         run: |
           set -euo pipefail
-          grep -F 'const VERSION = "8.1.1-acceptance-state-health";' Worker.js
+          grep -F 'const VERSION = "8.1.2-position-reconciliation";' Worker.js
           grep -F 'const WATCHLIST_MAX = 12;' Worker.js
           grep -F 'async function finishDataIncompleteScan(' Worker.js
           grep -F 'function buildReviewedWatchlist(' Worker.js
@@ -95,6 +99,7 @@ jobs:
           grep -F 'url.pathname==="/api/system-overview"' Worker.js
           grep -F 'url.pathname==="/api/push-outbox"' Worker.js
           grep -F 'url.pathname==="/api/external-validation/stats"' Worker.js
+          grep -F 'url.pathname === "/api/positions"' Worker.js
 
       - name: Behavioral regression (no real pushes or writes)
         env:
@@ -105,6 +110,7 @@ jobs:
           node tests/test_three_min_current_recovery.mjs
           node tests/test_v8_1_ops_hardening.mjs
           node tests/test_v8_1_1_acceptance_state.mjs
+          node tests/test_v8_1_2_position_reconciliation.mjs
 
       - name: Snapshot existing public monitoring configuration
         run: |
