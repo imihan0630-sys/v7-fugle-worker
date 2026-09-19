@@ -40,6 +40,7 @@ async function sync(body) {
   const response=await admin('/api/quality-data',{method:'POST',body:JSON.stringify({...body,marketDate})});
   const result=await response.json();assert.equal(response.ok,true,`Quality ingestion rejected: ${String(result.error || response.status).slice(0,500)}`);
   assert.equal(result.verified,true);assert.equal(result.noPlanChanges,true);console.log(JSON.stringify({officialQualityCached:true,...result}));
+  return validated;
 }
 const months=await Promise.all(Array.from({length:3},async (_,offset)=>{
   const date=new Date(marketDate+'T12:00:00Z');date.setUTCDate(1);date.setUTCMonth(date.getUTCMonth()-offset);
@@ -86,7 +87,7 @@ for(let start=0;start<requests.length;start+=2) {
     return {market,year:y,quarter:q,sourceUrl,stocks};
   }));periods.push(...batch);
 }
-await sync({kind:'FINANCIAL',year,quarter,periods});
+const financialSnapshot=await sync({kind:'FINANCIAL',year,quarter,periods});
 // Review every preliminary qualifying candidate, before applying either pool quota.
 // This is a readonly source-selection preview; it never imports or pushes a plan.
 const reviewResponse=await admin('/api/scan-preview',{method:'POST',body:JSON.stringify({dryRun:true,epsReviewOnly:true,marketDate})});
@@ -102,24 +103,43 @@ const reports=[];
 for(let start=0;start<universe.length;start+=2) {
   const batch=await Promise.all(universe.slice(start,start+2).map(async item=>{
     assert.match(item.symbol,/^[1-9][0-9]{3}$/);
-    const sourceUrl='https://mopsov.twse.com.tw/mops/web/ajax_t164sb04';
-    const response=await publicSource(sourceUrl,{method:'POST',headers:{'content-type':'application/x-www-form-urlencoded'},
+    const directSourceUrl='https://mopsov.twse.com.tw/mops/web/ajax_t164sb04';
+    if(quarter===4) {
+      const q4=financialSnapshot.stocks?.[item.symbol];
+      assert.equal(q4?.quarterEpsVerified,true,`Q4 official derived EPS missing for ${item.symbol}`);
+      assert.equal(q4?.quarterEpsMethod,'MOPSFIN_OFFICIAL_Q4_CUMULATIVE_MINUS_Q3');
+      const priorResponse=await publicSource(directSourceUrl,{method:'POST',headers:{'content-type':'application/x-www-form-urlencoded'},
+        body:new URLSearchParams({encodeURIComponent:'1',step:'1',firstin:'1',off:'1',TYPEK:'all',isnew:'false',co_id:item.symbol,year:String(year-1911),season:'03'})});
+      const previousQuarterHtml=await priorResponse.text();
+      const prior=helpers.parseMopsQuarterEpsHtml(previousQuarterHtml,item.symbol,year,3);
+      console.log(JSON.stringify({reportedQuarterEpsReviewed:true,symbol:item.symbol,year,quarter:4,quarterEPS:q4.quarterEPS,
+        q4CumulativeEPS:q4.q4CumulativeEPS,q3CumulativeEPS:q4.q3CumulativeEPS,method:q4.quarterEpsMethod,
+        previousQuarterEPS:prior.quarterEPS,epsQoQ:q4.quarterEPS/prior.quarterEPS-1}));
+      return {sourceUrl:'https://mopsfin.twse.com.tw/terms',symbol:item.symbol,previousQuarterHtml};
+    }
+    const response=await publicSource(directSourceUrl,{method:'POST',headers:{'content-type':'application/x-www-form-urlencoded'},
       body:new URLSearchParams({encodeURIComponent:'1',step:'1',firstin:'1',off:'1',TYPEK:'all',isnew:'false',co_id:item.symbol,year:String(year-1911),season:String(quarter).padStart(2,'0')})});
     const html=await response.text();
     const verified=helpers.parseMopsQuarterEpsHtml(html,item.symbol,year,quarter);
-    console.log(JSON.stringify({reportedQuarterEpsReviewed:true,symbol:item.symbol,year,quarter,quarterEPS:verified.quarterEPS,priorYearQuarterEPS:verified.reportedPriorYearQuarterEPS,epsYoY:verified.epsYoY,epsQoQ:null}));
+    console.log(JSON.stringify({reportedQuarterEpsReviewed:true,symbol:item.symbol,year,quarter,quarterEPS:verified.quarterEPS,priorYearQuarterEPS:verified.reportedPriorYearQuarterEPS,epsYoY:verified.epsYoY}));
     let previousQuarterHtml;
     if(quarter>1) {
-      const priorResponse=await publicSource(sourceUrl,{method:'POST',headers:{'content-type':'application/x-www-form-urlencoded'},
+      const priorResponse=await publicSource(directSourceUrl,{method:'POST',headers:{'content-type':'application/x-www-form-urlencoded'},
         body:new URLSearchParams({encodeURIComponent:'1',step:'1',firstin:'1',off:'1',TYPEK:'all',isnew:'false',co_id:item.symbol,year:String(year-1911),season:String(quarter-1).padStart(2,'0')})});
       previousQuarterHtml=await priorResponse.text();
       const prior=helpers.parseMopsQuarterEpsHtml(previousQuarterHtml,item.symbol,year,quarter-1);
-      console.log(JSON.stringify({reportedPreviousQuarterEpsReviewed:true,symbol:item.symbol,year,quarter:quarter-1,quarterEPS:prior.quarterEPS,epsQoQ:null,adjustedComparisonVerified:false}));
+      console.log(JSON.stringify({reportedPreviousQuarterEpsReviewed:true,symbol:item.symbol,year,quarter:quarter-1,quarterEPS:prior.quarterEPS}));
+    } else {
+      const q4=financialSnapshot.stocks?.[item.symbol];
+      assert.equal(q4?.previousQuarterEpsVerified,true,`Q1 previous Q4 official derived EPS missing for ${item.symbol}`);
+      assert.equal(q4?.previousQuarterEpsMethod,'MOPSFIN_OFFICIAL_Q4_CUMULATIVE_MINUS_Q3');
+      console.log(JSON.stringify({reportedPreviousQuarterEpsReviewed:true,symbol:item.symbol,year:year-1,quarter:4,
+        quarterEPS:q4.previousQuarterEPS,method:q4.previousQuarterEpsMethod}));
     }
-    return {sourceUrl,symbol:item.symbol,html,...(previousQuarterHtml!==undefined ? {previousQuarterHtml} : {})};
+    return {sourceUrl:directSourceUrl,symbol:item.symbol,html,...(previousQuarterHtml!==undefined ? {previousQuarterHtml} : {})};
   }));reports.push(...batch);
 }
-await sync({kind:'QUARTER_EPS',year,quarter,reports});
+await sync({kind:'QUARTER_EPS',year,quarter,reports,financialSnapshot});
 const afterResponse=await admin('/api/config');assert.equal(afterResponse.ok,true);assert.deepEqual(await afterResponse.json(),before,'Quality sync cannot change current plans or capital');
 const statusResponse=await admin('/api/quality-status?marketDate='+marketDate);assert.equal(statusResponse.ok,true);console.log(JSON.stringify({officialQualityStatus:await statusResponse.json(),configurationUnchanged:true,noSelection:true,noThreeMinWrite:true,noPush:true}));
 if(process.argv.includes('--dry-run')) {
