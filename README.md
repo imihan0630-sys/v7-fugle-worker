@@ -1,4 +1,4 @@
-# V7 Fugle Worker Auto Deploy
+# V8 Fugle Worker Auto Deploy
 
 Repository:
 https://github.com/imihan0630-sys/v7-fugle-worker
@@ -6,7 +6,7 @@ https://github.com/imihan0630-sys/v7-fugle-worker
 Cloudflare Worker:
 https://fugle-test.imihan0630.workers.dev
 
-Current production Worker version:\n`7.5.33-dynamic-watchlist-12`
+Current production Worker version:\n`8.0.1-requirement11-q4-eps`
 
 ## What this package does
 
@@ -52,7 +52,7 @@ After the two GitHub secrets are configured, open:
 
 https://github.com/imihan0630-sys/v7-fugle-worker/actions
 
-Choose `V7 Cloudflare Deploy` and click `Run workflow`.
+Choose `V8 Cloudflare Deploy` and click `Run workflow`.
 
 ## Verification
 
@@ -60,14 +60,14 @@ After deployment, open:
 
 https://fugle-test.imihan0630.workers.dev/api/recommendations
 
-The response should show the current production version, presently:\n\n`7.5.33-dynamic-watchlist-12`
+The response should show the current production version, presently:\n\n`8.0.1-requirement11-q4-eps`
 
-Keep `TEST_MODE=true` until the real Worker → Slack delivery test succeeds.
+Production currently runs with `TEST_MODE=false`. Webhook HTTP acceptance is not proof of handset receipt; handset receipt remains a separate acceptance item.
 
 
 ## Project continuity
 
-For cross-chat / cross-device continuity, read these files before changing V7:
+For cross-chat / cross-device continuity, read these files before changing V8:
 
 1. `AGENTS.md` — safety and latest continuity rules
 2. `REQUIREMENTS_30.md` — authoritative specification and acceptance gaps
