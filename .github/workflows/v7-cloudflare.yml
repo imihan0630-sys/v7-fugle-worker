@@ -109,11 +109,16 @@ jobs:
           print(m.group(1))
           PY
           )
-          CURRENT=$(python3 - <<'PY'
-          import json,urllib.request
-          with urllib.request.urlopen("https://fugle-test.imihan0630.workers.dev/api/version",timeout=20) as r:
-              print(json.load(r)["version"])
-          PY
+          CURRENT=$(node - <<'NODE'
+          const response = await fetch("https://fugle-test.imihan0630.workers.dev/api/version?versionGuard=" + process.env.GITHUB_RUN_ID, {
+            headers: { "user-agent": "V7-GitHub-Deploy/1.0", "accept": "application/json" },
+            signal: AbortSignal.timeout(20000)
+          });
+          if (!response.ok) throw new Error(`Version guard HTTP ${response.status}`);
+          const data = await response.json();
+          if (!data?.version) throw new Error("Runtime version missing");
+          process.stdout.write(String(data.version));
+          NODE
           )
           python3 - "$CURRENT" "$EXPECTED" <<'PY'
           import re,sys
