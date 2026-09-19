@@ -155,7 +155,7 @@ async function waitRuntime() {
       const response=await fetch(ORIGIN+"/api/version?mirrorWait="+Date.now(),{signal:AbortSignal.timeout(15000)});
       if(response.ok) {
         const data=await response.json();
-        if(String(data.version||"").startsWith("8.4.0-")) {
+        if(/^8\.4\./.test(String(data.version||""))) {
           console.log(JSON.stringify({runtimeReady:true,version:data.version}));
           return;
         }
