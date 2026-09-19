@@ -57,8 +57,8 @@ function envFor(scan=latest) {
     THREEMIN_VERIFY_URL:"https://example.invalid/data",
     THREEMIN_API_TOKEN:"tm_live_test",
     STOCKS_KV:new KV({
-      [api.KV_KEY]:config,
-      [api.LAST_SCAN_KEY]:scan
+      ["STOCK_CONFIG_V7"]:config,
+      ["V7_LAST_AFTER_MARKET_SCAN"]:scan
     })
   };
 }
@@ -92,10 +92,10 @@ function request(token="admin-test",method="POST") {
   assert.equal(body.noPlanChanges,true);
   assert.equal(body.noPush,true);
   assert.deepEqual(methods,["GET","POST","GET"]);
-  const saved=await env.STOCKS_KV.get(api.LAST_SCAN_KEY,"json");
+  const saved=await env.STOCKS_KV.get("V7_LAST_AFTER_MARKET_SCAN","json");
   assert.equal(saved.diagnostics.requirements30.requirement26.complete,true);
   assert.equal(saved.diagnostics.requirements30.incompleteRules.includes(26),false);
-  assert.deepEqual((await env.STOCKS_KV.get(api.KV_KEY,"json")),config,"Monitoring config must remain unchanged");
+  assert.deepEqual((await env.STOCKS_KV.get("STOCK_CONFIG_V7","json")),config,"Monitoring config must remain unchanged");
 
   let postCount=0;
   globalThis.fetch=async (url,options={})=>{
