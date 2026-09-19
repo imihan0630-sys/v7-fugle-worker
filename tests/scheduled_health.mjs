@@ -86,7 +86,9 @@ async function main() {
   const versionResponse=await fetch(origin+'/api/version',{headers:{'accept':'application/json'},signal:AbortSignal.timeout(20000)});
   assert.equal(versionResponse.ok,true,'Cannot read public runtime version');
   const runtime=await versionResponse.json();
-  const [before,cron,outbox]=await Promise.all([admin('/api/config'),admin('/api/cron/status'),admin('/api/push-outbox?limit=50')]);
+  const [before,cron,outbox,receipts]=await Promise.all([
+    admin('/api/config'),admin('/api/cron/status'),admin('/api/push-outbox?limit=50'),admin('/api/push-receipts?limit=50')
+  ]);
   assert.equal(outbox.configured,true,'Push outbox is not configured');
   assert.equal(Number(outbox.staleUnresolved||0),0,'Push outbox has unresolved delivery older than 10 minutes');
   if(intraday) {
@@ -102,7 +104,10 @@ async function main() {
     }
     const latest=cron.recent?.find(x=>x.job_type==='INTRADAY_MONITOR' && x.status==='SUCCESS' && x.finished_at);
     assert.ok(latest && now-Date.parse(latest.finished_at)<=180000,'No recent successful monitoring Cron');
-    console.log(JSON.stringify({actualIntradayHealth:proof,cronVerified:true,pushOutbox:{unresolved:outbox.unresolved,staleUnresolved:outbox.staleUnresolved}}));
+    console.log(JSON.stringify({actualIntradayHealth:proof,cronVerified:true,
+      pushOutbox:{unresolved:outbox.unresolved,staleUnresolved:outbox.staleUnresolved},
+      handsetReceipts:{total:receipts.total,intraday:receipts.intraday,signalTypes:receipts.signalTypes}
+    }));
   } else {
     const scan=await admin('/api/scan/status');
     const proof=assessAfterMarketHealth(scan,date);
@@ -145,6 +150,7 @@ async function main() {
       externalReadbackVerified:true,requirement26Accepted:true,
       dailyReportOutboxAccepted:true,
       pushOutbox:{unresolved:outbox.unresolved,staleUnresolved:outbox.staleUnresolved},
+      handsetReceipts:{total:receipts.total,dailySelection:receipts.dailySelection,intraday:receipts.intraday},
       noNewSelection:true,noThreeMinPost:true,noPush:true
     }));
   }
