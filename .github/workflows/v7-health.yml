@@ -3,7 +3,7 @@ on:
   schedule:
     - cron: '20 1 * * 1-5'
     - cron: '10 5 * * 1-5'
-    - cron: '45 10 * * 1-5'
+    - cron: '55 10 * * 1-5'
   workflow_dispatch:
 permissions:
   contents: read
@@ -19,12 +19,12 @@ jobs:
         with:
           node-version: '22'
       - name: Verify actual intraday snapshots only (no pushes or trades)
-        if: github.event.schedule != '45 10 * * 1-5'
+        if: github.event.schedule != '55 10 * * 1-5'
         env:
           V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
         run: node tests/scheduled_health.mjs --intraday
-      - name: Verify actual completed full plan and configured3Min GET (no new import)
-        if: github.event.schedule == '45 10 * * 1-5' || github.event_name == 'workflow_dispatch'
+      - name: Verify actual completed full plan and active external mirror (no new import)
+        if: github.event.schedule == '55 10 * * 1-5' || github.event_name == 'workflow_dispatch'
         env:
           V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
         run: node tests/scheduled_health.mjs --after-market
