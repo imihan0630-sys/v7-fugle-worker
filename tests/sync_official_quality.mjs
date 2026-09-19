@@ -96,6 +96,11 @@ assert.equal(reviewResponse.ok,true,`EPS source review failed: ${String(review.e
 assert.equal(review.dryRun,true);assert.equal(review.diagnostics?.quarterEpsReview?.provisional,true);
 const universe=review.diagnostics?.epsReviewUniverse;
 assert.ok(Array.isArray(universe) && universe.length<=200,'EPS review universe unavailable or exceeds verified request budget; do not silently truncate');
+const q4TermsUrl='https://mopsfin.twse.com.tw/terms';
+const q4TermsHtml=await (await publicSource(q4TermsUrl)).text();
+const q4TermsText=q4TermsHtml.replace(/<[^>]+>/g,' ').replace(/\s+/g,' ');
+assert.match(q4TermsText,/第4季因未申報單季金額/,'TWSE Financial Comparison no longer documents why Q4 needs derivation');
+assert.match(q4TermsText,/第4季累計金額.{0,120}第3季累計金額/,'TWSE Financial Comparison Q4 cumulative-minus-Q3 methodology changed');
 const formHtml=await (await publicSource('https://mopsov.twse.com.tw/mops/web/t164sb04')).text();
 assert.match(formHtml,/<form\b[^>]*id=["']form1["'][^>]*action=["']\/mops\/web\/ajax_t164sb04["']/i,'Official single-company statement form action changed; do not guess another API');
 for(const name of ['co_id','year','season','TYPEK','isnew']) assert.ok(new RegExp(`name=["']${name}["']`).test(formHtml),`Official statement form missing ${name}`);
@@ -115,7 +120,7 @@ for(let start=0;start<universe.length;start+=2) {
       console.log(JSON.stringify({reportedQuarterEpsReviewed:true,symbol:item.symbol,year,quarter:4,quarterEPS:q4.quarterEPS,
         q4CumulativeEPS:q4.q4CumulativeEPS,q3CumulativeEPS:q4.q3CumulativeEPS,method:q4.quarterEpsMethod,
         previousQuarterEPS:prior.quarterEPS,epsQoQ:q4.quarterEPS/prior.quarterEPS-1}));
-      return {sourceUrl:'https://mopsfin.twse.com.tw/terms',symbol:item.symbol,previousQuarterHtml};
+      return {sourceUrl:q4TermsUrl,symbol:item.symbol,previousQuarterHtml};
     }
     const response=await publicSource(directSourceUrl,{method:'POST',headers:{'content-type':'application/x-www-form-urlencoded'},
       body:new URLSearchParams({encodeURIComponent:'1',step:'1',firstin:'1',off:'1',TYPEK:'all',isnew:'false',co_id:item.symbol,year:String(year-1911),season:String(quarter).padStart(2,'0')})});
