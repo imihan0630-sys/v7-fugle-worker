@@ -1,4 +1,4 @@
-# V7 project continuity and safety
+# V8 project continuity and safety
 
 Read `VERSIONING.md` before assigning any new version number. Version level is determined by architecture vs feature vs bug-fix scope, not by commit count.\n\nRead `PROJECT_HISTORY.md` after `REQUIREMENTS_30.md` when recovering context from a new ChatGPT thread. It contains the chronological cross-chat project history; GitHub/runtime evidence overrides remembered chat state.\n\nRead REQUIREMENTS_30.md in full before changes. It records the user's latest authoritative specification and explicit incomplete acceptance items. Older Worker comments and prior versions are not the specification.
 
@@ -41,3 +41,15 @@ Signal sending now persists pendingDeliveries per episode before external POST u
 ## Rule11 continued: 7.5.25
 
 Official candidate EPS review now fetches the previous actual quarter for Q2/Q3 and validates company/year/quarter/duration independently server-side. Final selection requires both direct reported quarter values. Q1 prior Q4 remains unsupported, not a requirement for nonexistent future quarters. Negative/zero same-year comparison bases retain null YoY percentages and explicit separate turnaround/loss flags. Actual comparison readiness is separate from percentage readiness. Previous EPS availability does not prove split/restatement comparability: adjusted QoQ remains null, not used for scoring. Rule11 remains partially complete pending that evidence; preserve current plans/capital and use data-only deployment acceptance.
+
+
+## Latest continuity: V8.0.1, 2026-09-19 Taipei
+
+- Project generation is V8. Current production runtime is `8.0.1-requirement11-q4-eps`.
+- Requirement 11 is complete and removed from `incompleteRules`. Remaining incomplete rules are 17,18,19,26,27,28,29.
+- Q1-Q3 candidate EPS uses verified direct MOPS single-quarter statements. Q4 uses the TWSE Financial Comparison E點通 documented method: same-company/year Q4 cumulative EPS minus Q3 cumulative EPS, with method marker `MOPSFIN_OFFICIAL_Q4_CUMULATIVE_MINUS_Q3`.
+- Q1 previous-quarter Q4 uses that same verified method. EPS QoQ is allowed only when current and previous single-quarter values are verified; negative/zero prior EPS does not produce a percentage.
+- The older 7.5.25 statement that Q4 is unsupported is historical and superseded by V8.0.1.
+- Production build chain now ends with `scripts/apply_v8_0_1.py` after the 7.5.33 patch.
+- Official quality acceptance run 35434378057 succeeded without changing formal plans, without 3Min POST, and without phone push.
+- Do not claim all 30 rules complete: `requirements30Complete=false` remains correct.
