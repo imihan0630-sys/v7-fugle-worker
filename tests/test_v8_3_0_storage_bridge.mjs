@@ -7,6 +7,8 @@ const mod=await import("data:text/javascript;base64,"+Buffer.from(
   source+"\nexport {canonicalPlanJson,sha256Hex,firebaseConfigured,writePlanArchiveD1,readPlanArchiveD1};"
 ).toString("base64")+"#"+Date.now());
 
+assert.match(source,/const VERSION = "8\.(?:3\.\d+|[4-9]\.\d+)[^"]*";/);
+
 class FakeStatement {
   constructor(db,sql){ this.db=db; this.sql=sql; this.args=[]; }
   bind(...args){ this.args=args; return this; }
@@ -58,7 +60,6 @@ assert.deepEqual(read.payload,payload);
 assert.equal(read.payload_sha256,write.sha256);
 
 for(const marker of [
-  'const VERSION = "8.3.0-d1-firestore-bridge";',
   'CREATE TABLE IF NOT EXISTS v8_plan_archive',
   'async function writePlanFirestore(payload,env)',
   'async function persistPlanBridge(payload,env)',

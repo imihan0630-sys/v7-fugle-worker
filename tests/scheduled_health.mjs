@@ -50,16 +50,20 @@ export function assessAfterMarketHealth(scan,date) {
   assert.equal(scan.scanDate,date,'No completed analysis for today');
   assert.equal(scan.dryRun,false,'Readonly preview cannot prove actual plan import');
   assert.equal(scan.config?.saved,true);assert.equal(scan.config?.verified,true);
-  assert.equal(scan.threeMin?.simulated,false);assert.equal(scan.threeMin?.sent,true);
-  assert.equal(scan.threeMinPayload?.schemaVersion,'V7_PLAN_2','New full payload has not been accepted');
-  assert.equal(scan.threeMinPayload?.scanDate,date,'3Min payload is not from today');
-  assert.equal(scan.threeMinPayload?.stocks?.length,scan.selectedCount,'3Min payload stock count differs from selected plan');
+  const bridge=scan.planBridge || scan.threeMin;
+  const payload=scan.planPayload || scan.threeMinPayload;
+  assert.equal(bridge?.simulated,false);assert.equal(bridge?.sent,true);
+  // assessAfterMarketHealth validates the completed write shape only; exact external readback is
+  // verified below against the active provider so legacy fixtures and live provider checks stay separate.
+  assert.equal(payload?.schemaVersion,'V7_PLAN_2','New full payload has not been accepted');
+  assert.equal(payload?.scanDate,date,'Plan payload is not from today');
+  assert.equal(payload?.stocks?.length,scan.selectedCount,'Plan payload stock count differs from selected plan');
   assert.equal(scan.dailyReport?.simulated,false);assert.equal(scan.dailyReport?.sent,true);
   assert.equal(scan.diagnostics?.quarterEpsReview?.ready,true,'Actual selected candidates lack EPS review');
   assert.equal(scan.selectedCount,scan.stocks?.length);
   for(const thousand of [true,false]) assert.ok(scan.stocks.filter(s=>(s.formalClose>=1000)===thousand).length<=3,'Cross-pool filling or quota breach');
   for(const stock of scan.stocks) assert.ok(stock.formalClose>=10,'Below10 stock entered monitoring');
-  return {date,selectedCount:scan.selectedCount,newFullPayloadAccepted:true,dailyReportHttpAccepted:true,handsetReceiptVerified:false};
+  return {date,selectedCount:scan.selectedCount,newFullPayloadAccepted:true,bridgeProvider:(scan.planBridge||scan.threeMin)?.provider||'D1_THREEMIN_COMPAT',dailyReportHttpAccepted:true,handsetReceiptVerified:false};
 }
 
 async function main() {
@@ -135,19 +139,31 @@ async function main() {
       assert.ok(Number(stock.watchScore)>=55,'Watchlist stock below retention score: '+stock.symbol);
     }
 
-    // Existing route only performs configured3Min GET and stores internal audit.
-    // It never POSTs a plan to3Min or triggers selection/phone push.
-    const readback=await admin('/api/three-min/verify','POST');
-    assert.equal(readback.verified,true,'Full external payload readback differs');
-    const verifiedScan=await admin('/api/scan/status');
-    assert.equal(verifiedScan.scanDate,date,'3Min readback acceptance attached to a stale scan');
-    assert.equal(verifiedScan.threeMin?.verified,true,'3Min exact readback was not persisted');
+    let verifiedScan=scan,storageEvidence=null;
+    if(runtime.readiness?.planStorageMode==='D1_FIRESTORE') {
+      storageEvidence=await fetch(origin+'/api/storage/status',{headers:{'accept':'application/json'},signal:AbortSignal.timeout(20000)}).then(async response=>{
+        assert.equal(response.ok,true,'Storage status read failed');return response.json();
+      });
+      assert.equal(storageEvidence.mode,'D1_FIRESTORE');
+      assert.equal(storageEvidence.d1?.configured,true);
+      assert.equal(storageEvidence.d1?.latestArchived,true,'D1 primary plan archive missing');
+      assert.equal(scan.planBridge?.provider,'D1_FIRESTORE','Latest scan did not use Firestore bridge');
+      assert.equal(scan.planBridge?.firebase?.verified,true,'Firestore exact readback was not persisted');
+    } else {
+      // Compatibility mode only: verify the existing 3Min record without creating a new plan.
+      const readback=await admin('/api/three-min/verify','POST');
+      assert.equal(readback.verified,true,'Full legacy external payload readback differs');
+      verifiedScan=await admin('/api/scan/status');
+      assert.equal(verifiedScan.threeMin?.verified,true,'Legacy 3Min exact readback was not persisted');
+    }
+    assert.equal(verifiedScan.scanDate,date,'External readback acceptance attached to a stale scan');
     assert.equal(verifiedScan.diagnostics?.requirements30?.requirement26?.complete,true,'Rule 26 was not marked complete after exact external readback');
     assert.equal(verifiedScan.diagnostics?.requirements30?.incompleteRules?.includes(26),false,'Rule 26 still appears incomplete after exact external readback');
     console.log(JSON.stringify({
       actualAfterMarketHealth:proof,
       watchlistVerified:{count:watch.count,maxStocks:watch.maxStocks,noFormalOverlap:true,marketDate:watch.marketDate},
-      externalReadbackVerified:true,requirement26Accepted:true,
+      externalReadbackVerified:true,externalPlanProvider:proof.bridgeProvider,requirement26Accepted:true,
+      storageEvidence:storageEvidence?{mode:storageEvidence.mode,d1Archived:storageEvidence.d1?.latestArchived,firebaseConfigured:storageEvidence.firebase?.configured}:null,
       dailyReportOutboxAccepted:true,
       pushOutbox:{unresolved:outbox.unresolved,staleUnresolved:outbox.staleUnresolved},
       handsetReceipts:{total:receipts.total,dailySelection:receipts.dailySelection,intraday:receipts.intraday},
