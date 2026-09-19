@@ -52,6 +52,8 @@ export function assessAfterMarketHealth(scan,date) {
   assert.equal(scan.config?.saved,true);assert.equal(scan.config?.verified,true);
   assert.equal(scan.threeMin?.simulated,false);assert.equal(scan.threeMin?.sent,true);
   assert.equal(scan.threeMinPayload?.schemaVersion,'V7_PLAN_2','New full payload has not been accepted');
+  assert.equal(scan.threeMinPayload?.scanDate,date,'3Min payload is not from today');
+  assert.equal(scan.threeMinPayload?.stocks?.length,scan.selectedCount,'3Min payload stock count differs from selected plan');
   assert.equal(scan.dailyReport?.simulated,false);assert.equal(scan.dailyReport?.sent,true);
   assert.equal(scan.diagnostics?.quarterEpsReview?.ready,true,'Actual selected candidates lack EPS review');
   assert.equal(scan.selectedCount,scan.stocks?.length);
@@ -100,7 +102,7 @@ async function main() {
     });
     assert.equal(watchResponse.ok,true,`Watchlist health HTTP ${watchResponse.status}`);
     const watch=await watchResponse.json();
-    assert.equal(watch.version,'8.0.1-requirement11-q4-eps');
+    assert.equal(watch.version,'8.0.2-requirement26-acceptance');
     assert.equal(watch.maxStocks,12);
     assert.ok(Array.isArray(watch.stocks));
     assert.equal(watch.count,watch.stocks.length);
@@ -116,10 +118,15 @@ async function main() {
     // It never POSTs a plan to3Min or triggers selection/phone push.
     const readback=await admin('/api/three-min/verify','POST');
     assert.equal(readback.verified,true,'Full external payload readback differs');
+    const verifiedScan=await admin('/api/scan/status');
+    assert.equal(verifiedScan.scanDate,date,'3Min readback acceptance attached to a stale scan');
+    assert.equal(verifiedScan.threeMin?.verified,true,'3Min exact readback was not persisted');
+    assert.equal(verifiedScan.diagnostics?.requirements30?.requirement26?.complete,true,'Rule 26 was not marked complete after exact external readback');
+    assert.equal(verifiedScan.diagnostics?.requirements30?.incompleteRules?.includes(26),false,'Rule 26 still appears incomplete after exact external readback');
     console.log(JSON.stringify({
       actualAfterMarketHealth:proof,
       watchlistVerified:{count:watch.count,maxStocks:watch.maxStocks,noFormalOverlap:true,marketDate:watch.marketDate},
-      externalReadbackVerified:true,noNewSelection:true,noThreeMinPost:true,noPush:true
+      externalReadbackVerified:true,requirement26Accepted:true,noNewSelection:true,noThreeMinPost:true,noPush:true
     }));
   }
   const after=await admin('/api/config');assert.deepEqual(after,before,'Health verification must preserve all actual plans/capital/holdings');
