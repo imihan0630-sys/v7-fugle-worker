@@ -13,6 +13,7 @@ on:
       - "scripts/apply_v8_0_1.py"
       - "scripts/apply_v8_0_2.py"
       - "scripts/apply_v8_0_3.py"
+      - "scripts/apply_v8_0_4.py"
       - "tests/**"
       - "!tests/inspect_official_quality_sources.mjs"
       - ".github/workflows/v7-cloudflare.yml"
@@ -61,16 +62,19 @@ jobs:
       - name: Apply V8.0.3 read-only 3Min authorization diagnostic
         run: python3 scripts/apply_v8_0_3.py
 
+      - name: Apply V8.0.4 guarded current-plan 3Min recovery
+        run: python3 scripts/apply_v8_0_4.py
+
       - name: Syntax check Worker.js
         run: |
           set -euo pipefail
           cp Worker.js /tmp/Worker.mjs
           node --check /tmp/Worker.mjs
 
-      - name: Validate V8.0.3 production contract
+      - name: Validate V8.0.4 production contract
         run: |
           set -euo pipefail
-          grep -F 'const VERSION = "8.0.3-3min-auth-check";' Worker.js
+          grep -F 'const VERSION = "8.0.4-3min-current-plan-recovery";' Worker.js
           grep -F 'const WATCHLIST_MAX = 12;' Worker.js
           grep -F 'async function finishDataIncompleteScan(' Worker.js
           grep -F 'function buildReviewedWatchlist(' Worker.js
@@ -79,6 +83,7 @@ jobs:
           grep -F 'MOPSFIN_OFFICIAL_Q4_CUMULATIVE_MINUS_Q3' Worker.js
           grep -F 'requirement26Complete' Worker.js
           grep -F 'url.pathname === "/api/three-min/auth-check"' Worker.js
+          grep -F 'url.pathname === "/api/three-min/recover-current"' Worker.js
 
       - name: Behavioral regression (no real pushes or writes)
         env:
@@ -86,6 +91,7 @@ jobs:
         run: |
           node tests/test_requirements_repair.mjs
           node tests/test_three_min_auth_check.mjs
+          node tests/test_three_min_current_recovery.mjs
 
       - name: Snapshot existing public monitoring configuration
         run: |
@@ -206,6 +212,50 @@ jobs:
           if (data.noWrite !== true || data.noPlanChanges !== true || data.noPush !== true) {
             throw new Error("3Min auth check safety contract failed");
           }
+          NODE
+
+      - name: Recover current 3Min plan after prior authorization failure
+        if: contains(github.event.head_commit.message, '[v8-3min-recover]')
+        env:
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+        run: |
+          node - <<'NODE'
+          const origin = "https://fugle-test.imihan0630.workers.dev";
+          const headers = {
+            "x-admin-token": process.env.V7_ADMIN_TOKEN,
+            "content-type": "application/json",
+            "accept": "application/json",
+            "user-agent": "V8-3Min-Recovery/1.0"
+          };
+          const response = await fetch(origin + "/api/three-min/recover-current", {
+            method: "POST", headers, body: "{}", signal: AbortSignal.timeout(60000)
+          });
+          const data = await response.json();
+          console.log(JSON.stringify(data));
+          if (!response.ok || data.recovered !== true || data.threeMinAccepted !== true ||
+              data.threeMinVerified !== true || data.requirement26Complete !== true) {
+            throw new Error("Current 3Min plan recovery was not verified");
+          }
+          if (data.noSelection !== true || data.noPlanChanges !== true || data.noPush !== true) {
+            throw new Error("3Min recovery safety contract failed");
+          }
+          const scanResponse = await fetch(origin + "/api/scan/status", {
+            method: "GET", headers, signal: AbortSignal.timeout(20000)
+          });
+          const scan = await scanResponse.json();
+          if (!scanResponse.ok || scan.threeMin?.verified !== true ||
+              scan.diagnostics?.requirements30?.requirement26?.complete !== true ||
+              scan.diagnostics?.requirements30?.incompleteRules?.includes(26)) {
+            throw new Error("Rule 26 persistence verification failed");
+          }
+          console.log(JSON.stringify({
+            scanDate:scan.scanDate,
+            rule26Complete:true,
+            threeMinVerified:true,
+            noSelection:true,
+            noPlanChanges:true,
+            noPush:true
+          }));
           NODE
 
       - name: Auto rollback if deployment verification fails

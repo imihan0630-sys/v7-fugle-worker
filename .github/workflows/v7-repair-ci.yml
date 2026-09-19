@@ -12,6 +12,7 @@ on:
       - "scripts/apply_v8_0_1.py"
       - "scripts/apply_v8_0_2.py"
       - "scripts/apply_v8_0_3.py"
+      - "scripts/apply_v8_0_4.py"
       - "tests/**"
       - ".github/workflows/v7-cloudflare.yml"
       - ".github/workflows/v7-repair-ci.yml"
@@ -52,6 +53,9 @@ jobs:
       - name: Apply V8.0.3 read-only 3Min authorization diagnostic
         run: python3 scripts/apply_v8_0_3.py
 
+      - name: Apply V8.0.4 guarded current-plan 3Min recovery
+        run: python3 scripts/apply_v8_0_4.py
+
       - name: Syntax check Worker.js
         run: |
           cp Worker.js /tmp/Worker.mjs
@@ -63,8 +67,10 @@ jobs:
         run: |
           node tests/test_requirements_repair.mjs
           node tests/test_three_min_auth_check.mjs
+          node tests/test_three_min_current_recovery.mjs
 
       - name: Verify expected version
         run: |
-          grep -F 'const VERSION = "8.0.3-3min-auth-check";' Worker.js
+          grep -F 'const VERSION = "8.0.4-3min-current-plan-recovery";' Worker.js
+          grep -F 'url.pathname === "/api/three-min/recover-current"' Worker.js
           grep -F 'url.pathname === "/api/three-min/auth-check"' Worker.js
