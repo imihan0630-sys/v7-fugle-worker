@@ -186,7 +186,7 @@ async function refreshEvidenceAcceptance(env,trigger="SYSTEM") {
   return {changed,ledger,evidence:deriveEvidenceAcceptance({...inputs,ledger})};
 }
 
-function requirementLabel(rule) {''',
+''',
     "evidence-driven receipt summary and helpers"
 )
 
@@ -316,7 +316,7 @@ r'''async function buildSystemOverview(env) {
   };
 }
 
-function renderSystemOverviewPage(overview) {''',
+''',
     "evidence-driven system overview"
 )
 
@@ -367,7 +367,7 @@ r'''function renderSystemOverviewPage(overview) {
   </div></body></html>`;
 }
 
-function buildExternalValidationComparison(marketDate,v7Symbols,reference) {''',
+''',
     "evidence-driven dashboard"
 )
 
