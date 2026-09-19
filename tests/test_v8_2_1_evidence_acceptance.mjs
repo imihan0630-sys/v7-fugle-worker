@@ -8,6 +8,8 @@ const mod=await import("data:text/javascript;base64,"+Buffer.from(
   source+"\nexport {deriveEvidenceAcceptance,CORE_OPERATION_RECEIPT_TYPES};"
 ).toString("base64")+"#"+Date.now());
 
+assert.match(source,/const VERSION = "8\.(?:2\.[1-9]|[3-9]\.\d+)[^"]*";/);
+
 const empty=mod.deriveEvidenceAcceptance({
   latest:{pipeline:{}},
   config:{stocks:[]},
@@ -67,7 +69,6 @@ assert.match(healthSource,/acceptanceReconciled:true/);
 assert.match(healthSource,/noPlanChanges:true,noPush:true,noThreeMinWrite:true,noTrade:true/);
 
 for(const marker of [
-  'const VERSION = "8.2.1-evidence-driven-acceptance";',
   'const EVIDENCE_ACCEPTANCE_KEY="V7_REQUIREMENT_ACCEPTANCE_V1";',
   'url.pathname==="/api/acceptance/reconcile"',
   'await refreshEvidenceAcceptance(env,"push-receipt")',
