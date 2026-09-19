@@ -167,6 +167,12 @@ replace_once(
 )
 
 replace_once(
+'''    const payload = buildPushPayload(result, signal, tradeDate);''',
+'''    let payload = buildPushPayload(result, signal, tradeDate);''',
+    "allow receipt URL attachment to intraday payload"
+)
+
+replace_once(
 '''    if (!shouldPhonePushSignal(signal.type)) {
       delivered.push({
         ...payload,
