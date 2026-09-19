@@ -53,3 +53,14 @@ Official candidate EPS review now fetches the previous actual quarter for Q2/Q3 
 - Production build chain now ends with `scripts/apply_v8_0_1.py` after the 7.5.33 patch.
 - Official quality acceptance run 35434378057 succeeded without changing formal plans, without 3Min POST, and without phone push.
 - Do not claim all 30 rules complete: `requirements30Complete=false` remains correct.
+
+
+## Latest continuity: V8.0.2, 2026-09-19 Taipei
+
+- Current production runtime is `8.0.2-requirement26-acceptance`.
+- Requirement 26 remains incomplete until a genuine new after-market `V7_PLAN_2` is POSTed to 3Min and the configured readback returns an exact match. V8.0.2 persists that proof and only then removes rule 26.
+- Historical 2026-09-18 scan had a valid full V7_PLAN_2 payload but 3Min write HTTP 401, so sent=false/verified=false. Do not reinterpret it as acceptance.
+- 3Min service-side account inspection showed the old endpoint was deleted on 2026-09-17 by Free-plan 7-day cleanup; an attempted 2026-09-18 call to the deleted URL was rejected.
+- New endpoint: V8 今日標的與交易計畫推送, id `01a0b909-9427-7fa9-810e-4c4383187ce9`, URL `https://api.3minapi.com/api/v1/data/cum6sm2952x3sz9gph52w`, deployed to production and independently accepted a production test POST (202).
+- Collaboration key `V8 Cloudflare Worker` exists with create+read. Never put its raw key in chat or GitHub. Current blocker is updating Cloudflare THREEMIN_API_URL, THREEMIN_VERIFY_URL and THREEMIN_API_TOKEN to the new endpoint/key through the normal protected settings path.
+- Free-plan endpoints are automatically deleted after 7 days. Do not call this a durable long-term repair unless the plan/storage design changes.
