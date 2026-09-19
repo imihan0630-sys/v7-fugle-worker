@@ -149,15 +149,21 @@ function deriveEvidenceAcceptance({latest,config,outbox,receipts,externalStats,p
   return evidence;
 }
 
+async function safeEvidenceKvJson(env,key) {
+  if(!env?.STOCKS_KV) return null;
+  try { return await env.STOCKS_KV.get(key,"json"); }
+  catch { return null; }
+}
+
 async function readEvidenceAcceptanceInputs(env) {
   const [latest,config,outbox,receipts,externalStats,positionAudit,ledger]=await Promise.all([
-    env.STOCKS_KV ? env.STOCKS_KV.get(LAST_SCAN_KEY,"json") : null,
-    env.STOCKS_KV ? env.STOCKS_KV.get(KV_KEY,"json") : null,
+    safeEvidenceKvJson(env,LAST_SCAN_KEY),
+    safeEvidenceKvJson(env,KV_KEY),
     readPushOutboxSummary(env,50),
     readPushReceiptSummary(env,100),
     readExternalValidationStats(env,30),
-    env.STOCKS_KV ? env.STOCKS_KV.get("V7_POSITION_RECONCILIATION","json") : null,
-    env.STOCKS_KV ? env.STOCKS_KV.get(EVIDENCE_ACCEPTANCE_KEY,"json") : null
+    safeEvidenceKvJson(env,"V7_POSITION_RECONCILIATION"),
+    safeEvidenceKvJson(env,EVIDENCE_ACCEPTANCE_KEY)
   ]);
   return {latest,config,outbox,receipts,externalStats,positionAudit,ledger};
 }
