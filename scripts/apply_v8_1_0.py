@@ -8,7 +8,13 @@ def replace_once(old: str, new: str, label: str) -> None:
     global text
     count = text.count(old)
     if count != 1:
-        if label == "daily slack format" and 'const rows=(payload.stocks || []).map(stock =>' in text and '結果：${payload.resultType || "-"}' in text:
+        if label == "daily slack format" and 'const rows=(payload.stocks || []).map(stock =>' in text:
+            return
+        if label == "tracked daily report":
+            needle="await sendPush(dailyPayload, env)"
+            if text.count(needle) != 1:
+                raise SystemExit(f"{label}: fallback send call expected 1 match, found {text.count(needle)}")
+            text=text.replace(needle,'await sendTrackedPush(dailyPayload, env,{note:"每日盤後結果／0檔回報"})',1)
             return
         raise SystemExit(f"{label}: expected exactly 1 match, found {count}")
     text = text.replace(old, new, 1)
@@ -109,6 +115,16 @@ replace_once(
     now,now,state==="ACCEPTED" ? now : null
   ).run();
   return {stored:true,signalId:payload.signalId,deliveryState:state};
+}
+
+async function readPushOutboxSignal(env,signalId) {
+  if(!env?.V7_DB || !signalId) return null;
+  await ensureD1Schema(env);
+  const session=env.V7_DB.withSession("first-primary");
+  return await session.prepare(`
+    SELECT signal_id,delivery_state,http_status,created_at,updated_at,accepted_at
+    FROM v7_push_outbox WHERE signal_id=?1
+  `).bind(String(signalId)).first();
 }
 
 async function readPushOutboxSummary(env,limit=20) {
@@ -491,6 +507,12 @@ replace_once(
 async function sendTrackedPush(payload,env,meta={}) {
   const track=!isTestMode(env) && Boolean(env.PUSH_WEBHOOK_URL) && Boolean(env.V7_DB);
   if(!track) return await sendPush(payload,env);
+  const existing=await readPushOutboxSignal(env,payload?.signalId);
+  if(existing) {
+    if(existing.delivery_state==="ACCEPTED") return {sent:true,simulated:false,httpStatus:existing.http_status || null,deliveryState:"ACCEPTED",deduplicated:true};
+    return {sent:false,simulated:false,httpStatus:existing.http_status || null,deliveryState:existing.delivery_state,deduplicated:true,automaticRetryBlocked:true,
+      error:"既有Outbox紀錄尚未安全結案；禁止自動重送"};
+  }
   await writePushOutbox(env,payload,"PENDING",{...meta,note:"等待單次Webhook送出"});
   await writePushOutbox(env,payload,"RESERVED",{...meta,note:"已保留唯一signalId"});
   const outcome=await sendPush(payload,env);
