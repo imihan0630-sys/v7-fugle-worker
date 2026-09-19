@@ -13,7 +13,7 @@ import {assessIntradayHealth,assessAfterMarketHealth} from './scheduled_health.m
   assert.throws(()=>assessIntradayHealth({...live,notifications:[baseNotification]},'2026-09-16',now),/Unknown actual shares/);
   const actual=structuredClone(live);actual.results[0].plan.actualShares=50;actual.notifications=[baseNotification];assert.equal(assessIntradayHealth(actual,'2026-09-16',now).notificationCount,1);
   assert.throws(()=>assessIntradayHealth({...actual,notifications:[baseNotification,baseNotification]},'2026-09-16',now),/Duplicate/);
-  const scan={scanDate:'2026-09-16',dryRun:false,config:{saved:true,verified:true},threeMin:{sent:true,simulated:false},threeMinPayload:{schemaVersion:'V7_PLAN_2'},dailyReport:{sent:true,simulated:false},diagnostics:{quarterEpsReview:{ready:true}},selectedCount:1,stocks:[{formalClose:1000}]};
+  const scan={scanDate:'2026-09-16',dryRun:false,config:{saved:true,verified:true},threeMin:{sent:true,simulated:false},threeMinPayload:{schemaVersion:'V7_PLAN_2',scanDate:'2026-09-16',stocks:[{symbol:'1234'}]},dailyReport:{sent:true,simulated:false},diagnostics:{quarterEpsReview:{ready:true}},selectedCount:1,stocks:[{formalClose:1000}]};
   assert.equal(assessAfterMarketHealth(scan,'2026-09-16').newFullPayloadAccepted,true);
   assert.throws(()=>assessAfterMarketHealth({...scan,dryRun:true},'2026-09-16'),/Readonly preview/);
   assert.throws(()=>assessAfterMarketHealth({...scan,stocks:Array.from({length:4},()=>({formalClose:1000})),selectedCount:4},'2026-09-16'),/quota/);
