@@ -1,3 +1,23 @@
+# 第26項修復中：V8.0.2（2026-09-19）
+
+> 本節為第26項目前最高優先級正式狀態。**第26項尚未宣告完成**；V8.0.2 的目的，是讓它只能在「真實完整 payload POST + 外部精確 readback」成立後自動完成，不能靠舊資料或測試冒充。
+
+- 正式 runtime：`8.0.2-requirement26-acceptance`；不改 3+3 股池、不改 A/B 選股架構。
+- V8.0.2 已加入 evidence-driven acceptance：只有本交易日非模擬 `V7_PLAN_2` 真實 POST 被 3Min 接受，且既有唯讀來源精確讀回相同 payload，才把第26項從 `incompleteRules` 移除。
+- scheduled health 也會重新讀取 `/api/scan/status`，確認 `requirement26.complete=true` 且第26項確實已移除；不只看 HTTP 成功。
+- 2026/09/18 歷史盤後掃描的安全唯讀診斷已確認：`threeMin.sent=false`、`threeMin.httpStatus=401`、`error="3Min寫入HTTP失敗"`，因此當天第26項不成立。
+- 3Min 帳戶檢查找到直接根因：原端點 **「V7 今日標的與交易計畫推送」** 已於 2026/09/17 因 Free plan 的 7 日自動清理被刪除；服務端同時記錄 2026/09/18 仍有舊 URL 呼叫，所以該資料被拒絕／遺失。
+- 2026/09/19 已建立並部署新端點 **「V8 今日標的與交易計畫推送」**：
+  - endpoint id: `01a0b909-9427-7fa9-810e-4c4383187ce9`
+  - API URL: `https://api.3minapi.com/api/v1/data/cum6sm2952x3sz9gph52w`
+  - production 測試 POST 已由 3Min API 接受（202）。
+  - 已建立專用 collaboration key **「V8 Cloudflare Worker」**，production 權限為 create + read。
+- **剩餘真正阻塞**：Cloudflare Worker 的 `THREEMIN_API_URL`、`THREEMIN_VERIFY_URL`、`THREEMIN_API_TOKEN` 必須切到新端點／新 production key。完整 key 只能在 3Min dashboard 顯示，連接器不回傳明碼；不得在聊天中貼出或繞過。
+- 目前 3Min 方案仍是 Free；Free endpoint 7 天後會再自動刪除。這是服務方案限制，不是 Worker BUG。若仍依賴 3Min 作長期正式鏈路，必須改用不會 7 日清理的方案或改變外部儲存設計。
+- 第26項因此仍保留在未完成清單。當新端點憑證完成切換後，下一次真正新盤後選股會自動執行完整 POST + readback，成功才正式劃掉第26項。
+
+---
+
 # 第11項完成：V8.0.1（2026-09-19）
 
 > 本節為第11項目前最高優先級正式狀態，覆蓋下方 7.5.25 與更早的第11項歷史限制；舊段落保留作變更歷史，不代表目前仍未完成。
