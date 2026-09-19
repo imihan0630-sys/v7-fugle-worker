@@ -1,7 +1,7 @@
 # V8 未完成工作與優化 Backlog
 
 > 專案世代名稱：V8  
-> 目前正式 runtime 技術字串：`8.0.1-requirement11-q4-eps`  
+> 目前正式 runtime 技術字串：`8.0.2-requirement26-acceptance`  
 > 本文件只整理工作優先順序，不修改 Worker、不重新部署。
 
 ## P0｜先完成正式驗收
@@ -22,9 +22,12 @@
 - 需有獨立手機端實收證據或接收端 receipt/ack 機制，才能完成規則 17/27 的正式驗收。
 
 ### 4. 新完整 3Min payload 正式寫入驗收
-- 下一次真正的新盤後選股，必須 POST 完整 V7_PLAN_2 / 現行計畫 schema。
-- 再用既有 readback 驗證全部欄位一致。
-- 不以重送舊計畫充數。
+- V8.0.2 已完成自動驗收邏輯：真實 V7_PLAN_2 POST + exact readback 才會把第26項自 incompleteRules 移除。
+- 9/18 未完成的根因已確認：舊 3Min endpoint 於 9/17 被 Free plan 7 日清理刪除，9/18 寫入收到 HTTP 401。
+- 9/19 已建立並部署新 endpoint，production API 本身已測試 202 成功。
+- **目前 blocker**：將 Cloudflare Worker 的 THREEMIN_API_URL / THREEMIN_VERIFY_URL / THREEMIN_API_TOKEN 切到新 endpoint / production key。
+- 切換後等待下一次真正新盤後選股，不能重送 9/18 舊計畫充數。
+- Free plan endpoint 仍會 7 日自動清理；長期需改用不會自動清理的方案或改變外部儲存設計。
 
 ## 已完成｜V8.0.1
 
