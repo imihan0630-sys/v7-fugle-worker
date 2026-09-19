@@ -16,7 +16,7 @@ import {assessIntradayHealth,assessAfterMarketHealth} from './scheduled_health.m
   const scan={scanDate:'2026-09-16',dryRun:false,config:{saved:true,verified:true},threeMin:{sent:true,simulated:false},threeMinPayload:{schemaVersion:'V7_PLAN_2',scanDate:'2026-09-16',stocks:[{symbol:'1234'}]},dailyReport:{sent:true,simulated:false},diagnostics:{quarterEpsReview:{ready:true}},selectedCount:1,stocks:[{formalClose:1000}]};
   assert.equal(assessAfterMarketHealth(scan,'2026-09-16').newFullPayloadAccepted,true);
   assert.throws(()=>assessAfterMarketHealth({...scan,dryRun:true},'2026-09-16'),/Readonly preview/);
-  assert.throws(()=>assessAfterMarketHealth({...scan,stocks:Array.from({length:4},()=>({formalClose:1000})),selectedCount:4},'2026-09-16'),/quota/);
+  assert.throws(()=>assessAfterMarketHealth({...scan,stocks:Array.from({length:4},()=>({formalClose:1000})),selectedCount:4,threeMinPayload:{...scan.threeMinPayload,stocks:Array.from({length:4},(_,i)=>({symbol:String(1000+i)}))}},'2026-09-16'),/quota/);
 }
 // A delayed Cloudflare propagation must not be mistaken for a failed upload.
 {
