@@ -254,40 +254,26 @@ replace_once(
 
 replace_once(
 '''    threeMin: bridge,
-    threeMinPayload: buildThreeMinPayload(marketDate,totalCapital,stocks),
-    dailyReport: report,
-    pipeline: {
-      scope: "資料選股、匯入與通知傳輸驗證；不代表30條全部已實作或手機已收到",
-      selectionCompleted: true,
-      configAccepted: saved.ok === true,
-      configVerified: saved.verified === true,
-      threeMinAccepted: bridge.sent === true && bridge.simulated !== true,
-      threeMinVerified: bridge.verified === true && bridge.simulated !== true,
-      dailyReportAccepted: report.sent === true && report.simulated !== true,
-      complete: !dryRun && saved.verified === true && bridge.verified === true && bridge.simulated !== true && report.sent === true && report.simulated !== true
-    }''',
+    threeMinPayload: buildThreeMinPayload(marketDate,totalCapital,stocks),''',
 '''    planBridge: bridge,
     planPayload: buildThreeMinPayload(marketDate,totalCapital,stocks),
     threeMin: bridge.legacyThreeMin===true ? bridge.threeMin : {sent:false,verified:false,simulated:false,skipped:true,reason:"已切換D1＋Firestore正式橋接"},
-    threeMinPayload: buildThreeMinPayload(marketDate,totalCapital,stocks),
-    dailyReport: report,
-    pipeline: {
-      scope: "資料選股、匯入與通知傳輸驗證；不代表30條全部已實作或手機已收到",
-      selectionCompleted: true,
-      configAccepted: saved.ok === true,
-      configVerified: saved.verified === true,
-      externalPlanProvider: bridge.provider || null,
+    threeMinPayload: buildThreeMinPayload(marketDate,totalCapital,stocks),''',
+    "generic plan bridge summary fields"
+)
+
+replace_once(
+'''      threeMinAccepted: bridge.sent === true && bridge.simulated !== true,
+      threeMinVerified: bridge.verified === true && bridge.simulated !== true,''',
+'''      externalPlanProvider: bridge.provider || null,
       externalPlanAccepted: bridge.sent === true && bridge.simulated !== true,
       externalPlanVerified: bridge.verified === true && bridge.simulated !== true,
       threeMinAccepted: bridge.legacyThreeMin===true ? bridge.sent === true && bridge.simulated !== true : null,
       threeMinVerified: bridge.legacyThreeMin===true ? bridge.verified === true && bridge.simulated !== true : null,
       firebaseAccepted: bridge.provider==="D1_FIRESTORE" ? bridge.firebase?.sent===true : null,
       firebaseVerified: bridge.provider==="D1_FIRESTORE" ? bridge.firebase?.verified===true : null,
-      d1PlanVerified: bridge.d1?.verified===true,
-      dailyReportAccepted: report.sent === true && report.simulated !== true,
-      complete: !dryRun && saved.verified === true && bridge.verified === true && bridge.simulated !== true && report.sent === true && report.simulated !== true
-    }''',
-    "generic plan bridge summary"
+      d1PlanVerified: bridge.d1?.verified===true,''',
+    "generic plan bridge pipeline fields"
 )
 
 replace_once(
