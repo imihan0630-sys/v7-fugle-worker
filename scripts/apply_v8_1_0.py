@@ -8,12 +8,24 @@ def replace_once(old: str, new: str, label: str) -> None:
     global text
     count = text.count(old)
     if count != 1:
+        if label == "daily slack format" and 'const rows=(payload.stocks || []).map(stock =>' in text and '結果：${payload.resultType || "-"}' in text:
+            return
         raise SystemExit(f"{label}: expected exactly 1 match, found {count}")
     text = text.replace(old, new, 1)
 
 def replace_between(start_marker: str, end_marker: str, replacement: str, label: str) -> None:
     global text
     start=text.find(start_marker)
+    if start<0 and label == "replace daily report payload builder":
+        token_index=text.find('signalType: "DAILY_SELECTION"')
+        if token_index<0:
+            raise SystemExit(f"{label}: DAILY_SELECTION token not found")
+        start=text.rfind("function ",0,token_index)
+        end=text.find("\nfunction ",token_index)
+        if start<0 or end<0:
+            raise SystemExit(f"{label}: containing function boundary not found")
+        text=text[:start]+replacement+text[end+1:]
+        return
     if start<0:
         raise SystemExit(f"{label}: start marker not found")
     end=text.find(end_marker,start)
