@@ -30,6 +30,7 @@ jobs:
           python3 scripts/apply_v8_0_2.py
           python3 scripts/apply_v8_0_3.py
           python3 scripts/apply_v8_0_4.py
+          python3 scripts/apply_v8_1_0.py
       - name: Syntax and offline behavior regression
         env:
           V7_TEST_WORKER_PATH: ${{ github.workspace }}/Worker.js
@@ -37,7 +38,7 @@ jobs:
           set -euo pipefail
           cp Worker.js /tmp/v7-worker.mjs
           node --check /tmp/v7-worker.mjs
-          grep -F 'const VERSION = "8.0.4-3min-current-plan-recovery";' Worker.js
+          grep -F 'const VERSION = "8.1.0-ops-hardening";' Worker.js
           grep -F 'const WATCHLIST_MAX = 12;' Worker.js
           grep -F 'async function finishDataIncompleteScan(' Worker.js
           grep -F 'function buildReviewedWatchlist(' Worker.js
@@ -45,9 +46,14 @@ jobs:
           grep -F 'requirement26Complete' Worker.js
           grep -F 'url.pathname === "/api/three-min/auth-check"' Worker.js
           grep -F 'url.pathname === "/api/three-min/recover-current"' Worker.js
+          grep -F 'CREATE TABLE IF NOT EXISTS v7_push_outbox' Worker.js
+          grep -F 'url.pathname==="/api/system-overview"' Worker.js
+          grep -F 'url.pathname==="/api/push-outbox"' Worker.js
+          grep -F 'url.pathname==="/api/external-validation/stats"' Worker.js
           node tests/test_requirements_repair.mjs
           node tests/test_three_min_auth_check.mjs
           node tests/test_three_min_current_recovery.mjs
+          node tests/test_v8_1_ops_hardening.mjs
       - name: Read-only production authorization preflight
         if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
         env:

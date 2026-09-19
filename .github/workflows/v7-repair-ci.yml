@@ -13,6 +13,7 @@ on:
       - "scripts/apply_v8_0_2.py"
       - "scripts/apply_v8_0_3.py"
       - "scripts/apply_v8_0_4.py"
+      - "scripts/apply_v8_1_0.py"
       - "tests/**"
       - ".github/workflows/v7-cloudflare.yml"
       - ".github/workflows/v7-repair-ci.yml"
@@ -56,6 +57,9 @@ jobs:
       - name: Apply V8.0.4 guarded current-plan 3Min recovery
         run: python3 scripts/apply_v8_0_4.py
 
+      - name: Apply V8.1.0 operations hardening
+        run: python3 scripts/apply_v8_1_0.py
+
       - name: Syntax check Worker.js
         run: |
           cp Worker.js /tmp/Worker.mjs
@@ -68,9 +72,13 @@ jobs:
           node tests/test_requirements_repair.mjs
           node tests/test_three_min_auth_check.mjs
           node tests/test_three_min_current_recovery.mjs
+          node tests/test_v8_1_ops_hardening.mjs
 
       - name: Verify expected version
         run: |
-          grep -F 'const VERSION = "8.0.4-3min-current-plan-recovery";' Worker.js
+          grep -F 'const VERSION = "8.1.0-ops-hardening";' Worker.js
+          grep -F 'url.pathname==="/api/system-overview"' Worker.js
+          grep -F 'url.pathname==="/api/push-outbox"' Worker.js
+          grep -F 'url.pathname==="/api/external-validation/stats"' Worker.js
           grep -F 'url.pathname === "/api/three-min/recover-current"' Worker.js
           grep -F 'url.pathname === "/api/three-min/auth-check"' Worker.js
