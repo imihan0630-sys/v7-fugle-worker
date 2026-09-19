@@ -16,9 +16,7 @@ replace_once(
     "runtime version"
 )
 
-route_anchor='''    // ==================================================
-    // 第21條：只重算未建倉交易計畫；不執行下單、不更動實際持股。
-    if (url.pathname === "/api/capital") {'''
+route_anchor='''    if (url.pathname === "/api/capital") {'''
 
 route='''    // V8.1.2：實際持股／成交回填。只允許更新既有標的的執行欄位，
     // 不改選股、買區、停損、資金配置、3Min或推播。
