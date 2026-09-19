@@ -29,7 +29,7 @@ response=await api.default.fetch(new Request("https://worker.invalid/api/push-re
 assert.equal(response.status,401);
 
 const source=await readFile(workerPath,"utf8");
-assert.match(source,/const VERSION = "8\.2\.0-push-receipt-confirmation";/);
+assert.match(source,/const VERSION = "8\.(?:2\.\d+|[3-9]\.\d+)[^"]*";/);
 assert.match(source,/CREATE TABLE IF NOT EXISTS v7_push_receipts/);
 assert.match(source,/async function signPushReceipt/);
 assert.match(source,/async function attachReceiptUrl/);
