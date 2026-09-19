@@ -16,20 +16,23 @@ replace_once(
     "runtime version"
 )
 
-replace_once(
-'''    const dailyPayload = buildDailySelectionPayload(marketDate, stocks, scan.diagnostics);
-    report = previousReport?.sent === true && Boolean(previousReport.simulated) === isTestMode(env) ? { ...previousReport, deduplicated: true }
-      : await sendTrackedPush(dailyPayload, env,{note:"每日盤後結果／0檔回報"});
-    await env.STOCKS_KV.put(reportKey, JSON.stringify({...report,signalId:dailyPayload.signalId,resultType:dailyPayload.resultType,
-      selectedCount:dailyPayload.selectedCount,checkedAt:new Date().toISOString()}), { expirationTtl: 30 * 86400 });''',
-'''    const dailyPayload = buildDailySelectionPayload(marketDate, stocks, scan.diagnostics);
-    const reportOutcome = previousReport?.sent === true && Boolean(previousReport.simulated) === isTestMode(env) ? { ...previousReport, deduplicated: true }
-      : await sendTrackedPush(dailyPayload, env,{note:"每日盤後結果／0檔回報"});
-    report={...reportOutcome,signalId:dailyPayload.signalId,resultType:dailyPayload.resultType,
-      selectedCount:dailyPayload.selectedCount,checkedAt:new Date().toISOString()};
-    await env.STOCKS_KV.put(reportKey, JSON.stringify(report), { expirationTtl: 30 * 86400 });''',
-    "persist daily report acceptance identity"
-)
+# V8.1.0 may have reached the tracked daily report through its compatibility fallback,
+# so patch the stable send/result lines instead of assuming one historical surrounding block.
+daily_send='''      : await sendTrackedPush(dailyPayload, env,{note:"每日盤後結果／0檔回報"});'''
+if text.count(daily_send)!=1:
+    raise SystemExit(f"daily tracked send: expected 1 match, found {text.count(daily_send)}")
+text=text.replace(daily_send,daily_send+'''\n    report={...report,signalId:dailyPayload.signalId,resultType:dailyPayload.resultType,\n      selectedCount:dailyPayload.selectedCount,checkedAt:new Date().toISOString()};''',1)
+
+old_store='''    if (report.sent) await env.STOCKS_KV.put(reportKey, JSON.stringify(report), { expirationTtl: 14 * 86400 });'''
+new_store='''    await env.STOCKS_KV.put(reportKey, JSON.stringify(report), { expirationTtl: 30 * 86400 });'''
+if text.count(old_store)==1:
+    text=text.replace(old_store,new_store,1)
+else:
+    old_store2='''    await env.STOCKS_KV.put(reportKey, JSON.stringify({...report,signalId:dailyPayload.signalId,resultType:dailyPayload.resultType,
+      selectedCount:dailyPayload.selectedCount,checkedAt:new Date().toISOString()}), { expirationTtl: 30 * 86400 });'''
+    if text.count(old_store2)!=1:
+        raise SystemExit(f"daily report store: expected compatible match, found old={text.count(old_store)} alt={text.count(old_store2)}")
+    text=text.replace(old_store2,new_store,1)
 
 ui_anchor='''<div class="panel">
 
