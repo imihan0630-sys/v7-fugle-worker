@@ -24,6 +24,7 @@ on:
       - "scripts/apply_v8_4_0.py"
       - "scripts/apply_v8_4_1.py"
       - "scripts/apply_v8_5_0.py"
+      - "scripts/apply_v8_5_1.py"
       - "tests/**"
       - ".github/workflows/v7-cloudflare.yml"
       - ".github/workflows/v7-repair-ci.yml"
@@ -100,6 +101,9 @@ jobs:
       - name: Apply V8.5.0 persistent trade journal
         run: python3 scripts/apply_v8_5_0.py
 
+      - name: Apply V8.5.1 journal UX fix
+        run: python3 scripts/apply_v8_5_1.py
+
       - name: Syntax check Worker.js
         run: |
           cp Worker.js /tmp/Worker.mjs
@@ -127,7 +131,7 @@ jobs:
 
       - name: Verify expected version
         run: |
-          grep -F 'const VERSION = "8.5.0-trade-journal";' Worker.js
+          grep -F 'const VERSION = "8.5.1-journal-ux";' Worker.js
           grep -F 'url.pathname==="/api/system-overview"' Worker.js
           grep -F 'url.pathname==="/api/push-outbox"' Worker.js
           grep -F 'url.pathname==="/api/external-validation/stats"' Worker.js
