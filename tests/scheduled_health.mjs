@@ -92,11 +92,35 @@ async function main() {
   } else {
     const scan=await admin('/api/scan/status');
     const proof=assessAfterMarketHealth(scan,date);
+
+    // V7.5.33：觀察池是獨立唯讀結果，最多12檔，且不得與正式池重疊。
+    const watchResponse=await fetch(origin+'/api/watchlist?health='+Date.now(),{
+      headers:{'user-agent':'V7-Scheduled-Health/1.0','accept':'application/json'},
+      signal:AbortSignal.timeout(30000)
+    });
+    assert.equal(watchResponse.ok,true,`Watchlist health HTTP ${watchResponse.status}`);
+    const watch=await watchResponse.json();
+    assert.equal(watch.version,'7.5.33-dynamic-watchlist-12');
+    assert.equal(watch.maxStocks,12);
+    assert.ok(Array.isArray(watch.stocks));
+    assert.equal(watch.count,watch.stocks.length);
+    assert.ok(watch.count>=0 && watch.count<=12,'Watchlist exceeds max 12');
+    assert.equal(watch.marketDate,date,'Watchlist was not reviewed for today');
+    const formalSymbols=new Set((scan.stocks||[]).map(x=>String(x.symbol)));
+    for(const stock of watch.stocks) {
+      assert.ok(!formalSymbols.has(String(stock.symbol)),'Watchlist must not duplicate formal pool: '+stock.symbol);
+      assert.ok(Number(stock.watchScore)>=55,'Watchlist stock below retention score: '+stock.symbol);
+    }
+
     // Existing route only performs configured3Min GET and stores internal audit.
     // It never POSTs a plan to3Min or triggers selection/phone push.
     const readback=await admin('/api/three-min/verify','POST');
     assert.equal(readback.verified,true,'Full external payload readback differs');
-    console.log(JSON.stringify({actualAfterMarketHealth:proof,externalReadbackVerified:true,noNewSelection:true,noThreeMinPost:true,noPush:true}));
+    console.log(JSON.stringify({
+      actualAfterMarketHealth:proof,
+      watchlistVerified:{count:watch.count,maxStocks:watch.maxStocks,noFormalOverlap:true,marketDate:watch.marketDate},
+      externalReadbackVerified:true,noNewSelection:true,noThreeMinPost:true,noPush:true
+    }));
   }
   const after=await admin('/api/config');assert.deepEqual(after,before,'Health verification must preserve all actual plans/capital/holdings');
 }
