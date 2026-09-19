@@ -60,6 +60,12 @@ for(const rule of [17,18,19,27,28]) {
 }
 assert.equal(persisted[29].complete,true,"aggregate rule 29 should complete once all evidence rules were permanently accepted and pipeline is healthy");
 
+
+const healthSource=await readFile(new URL("./scheduled_health.mjs",import.meta.url),"utf8");
+assert.match(healthSource,/\/api\/acceptance\/reconcile/);
+assert.match(healthSource,/acceptanceReconciled:true/);
+assert.match(healthSource,/noPlanChanges:true,noPush:true,noThreeMinWrite:true,noTrade:true/);
+
 for(const marker of [
   'const VERSION = "8.2.1-evidence-driven-acceptance";',
   'const EVIDENCE_ACCEPTANCE_KEY="V7_REQUIREMENT_ACCEPTANCE_V1";',
@@ -76,5 +82,6 @@ console.log(JSON.stringify({
   coreOperationReceipts:6,
   monotonicAcceptanceLedger:true,
   evidenceRules:[17,18,19,27,28,29],
-  noSyntheticAcceptance:true
+  noSyntheticAcceptance:true,
+  scheduledAutoReconcile:true
 }));
