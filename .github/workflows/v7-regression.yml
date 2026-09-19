@@ -30,6 +30,7 @@ jobs:
           python3 scripts/apply_v8_0_2.py
           python3 scripts/apply_v8_0_3.py
           python3 scripts/apply_v8_0_4.py
+          python3 scripts/apply_v8_0_5.py
           python3 scripts/apply_v8_1_0.py
       - name: Syntax and offline behavior regression
         env:
@@ -46,6 +47,7 @@ jobs:
           grep -F 'requirement26Complete' Worker.js
           grep -F 'url.pathname === "/api/three-min/auth-check"' Worker.js
           grep -F 'url.pathname === "/api/three-min/recover-current"' Worker.js
+          grep -F 'url.pathname === "/api/system-status"' Worker.js
           grep -F 'CREATE TABLE IF NOT EXISTS v7_push_outbox' Worker.js
           grep -F 'url.pathname==="/api/system-overview"' Worker.js
           grep -F 'url.pathname==="/api/push-outbox"' Worker.js
@@ -53,6 +55,7 @@ jobs:
           node tests/test_requirements_repair.mjs
           node tests/test_three_min_auth_check.mjs
           node tests/test_three_min_current_recovery.mjs
+          node tests/test_system_dashboard.mjs
           node tests/test_v8_1_ops_hardening.mjs
       - name: Read-only production authorization preflight
         if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
