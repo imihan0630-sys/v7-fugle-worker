@@ -19,6 +19,7 @@ on:
       - "scripts/apply_v8_1_3.py"
       - "scripts/apply_v8_2_0.py"
       - "scripts/apply_v8_2_1.py"
+      - "scripts/apply_v8_3_0.py"
       - "tests/**"
       - ".github/workflows/v7-cloudflare.yml"
       - ".github/workflows/v7-repair-ci.yml"
@@ -80,6 +81,9 @@ jobs:
       - name: Apply V8.2.1 evidence-driven acceptance
         run: python3 scripts/apply_v8_2_1.py
 
+      - name: Apply V8.3.0 D1 + Firestore migration bridge
+        run: python3 scripts/apply_v8_3_0.py
+
       - name: Syntax check Worker.js
         run: |
           cp Worker.js /tmp/Worker.mjs
@@ -98,10 +102,11 @@ jobs:
           node tests/test_v8_1_3_ops_console.mjs
           node tests/test_v8_2_0_push_receipt.mjs
           node tests/test_v8_2_1_evidence_acceptance.mjs
+          node tests/test_v8_3_0_storage_bridge.mjs
 
       - name: Verify expected version
         run: |
-          grep -F 'const VERSION = "8.2.1-evidence-driven-acceptance";' Worker.js
+          grep -F 'const VERSION = "8.3.0-d1-firestore-bridge";' Worker.js
           grep -F 'url.pathname==="/api/system-overview"' Worker.js
           grep -F 'url.pathname==="/api/push-outbox"' Worker.js
           grep -F 'url.pathname==="/api/external-validation/stats"' Worker.js
