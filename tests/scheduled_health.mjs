@@ -154,6 +154,17 @@ async function main() {
       noNewSelection:true,noThreeMinPost:true,noPush:true
     }));
   }
+  const acceptance=await admin('/api/acceptance/reconcile','POST');
+  assert.equal(acceptance.ok,true,'Acceptance evidence reconciliation failed');
+  assert.equal(acceptance.noPlanChanges,true);
+  assert.equal(acceptance.noPush,true);
+  assert.equal(acceptance.noThreeMinWrite,true);
+  assert.equal(acceptance.noTrade,true);
   const after=await admin('/api/config');assert.deepEqual(after,before,'Health verification must preserve all actual plans/capital/holdings');
+  console.log(JSON.stringify({acceptanceReconciled:true,changed:acceptance.changed,
+    acceptedRules:Object.entries(acceptance.ledger?.rules || {}).filter(([,value])=>value?.acceptedAt).map(([rule])=>Number(rule)).sort((a,b)=>a-b),
+    pendingEvidence:Object.fromEntries([17,18,19,27,28,29].filter(rule=>acceptance.evidence?.[rule]?.complete!==true).map(rule=>[rule,acceptance.evidence?.[rule]?.proof || null])),
+    noPlanChanges:true,noPush:true,noThreeMinWrite:true,noTrade:true
+  }));
 }
 if(process.argv[1] && import.meta.url===pathToFileURL(process.argv[1]).href) main().catch(error=>{console.error(String(error.message).slice(0,700));process.exitCode=1;});
