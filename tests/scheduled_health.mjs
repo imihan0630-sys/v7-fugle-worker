@@ -86,19 +86,30 @@ async function main() {
   const versionResponse=await fetch(origin+'/api/version',{headers:{'accept':'application/json'},signal:AbortSignal.timeout(20000)});
   assert.equal(versionResponse.ok,true,'Cannot read public runtime version');
   const runtime=await versionResponse.json();
-  const [before,cron,outbox]=await Promise.all([admin('/api/config'),admin('/api/cron/status'),admin('/api/push-outbox?limit=20')]);
+  const [before,cron,outbox]=await Promise.all([admin('/api/config'),admin('/api/cron/status'),admin('/api/push-outbox?limit=50')]);
   assert.equal(outbox.configured,true,'Push outbox is not configured');
   assert.equal(Number(outbox.staleUnresolved||0),0,'Push outbox has unresolved delivery older than 10 minutes');
   if(intraday) {
     const live=await admin('/api/live');
     const proof=assessIntradayHealth(live,date);
     assert.deepEqual(live.results.map(x=>x.symbol).sort(),before.stocks.map(x=>x.symbol).sort(),'Monitoring targets differ from configured plans');
+    const outboxById=new Map((outbox.recent||[]).map(item=>[String(item.signal_id),item]));
+    for(const notification of (live.notifications||[])) {
+      if(notification?.simulated===true || notification?.sent!==true) continue;
+      const row=outboxById.get(String(notification.signalId||''));
+      assert.ok(row,'Actual intraday notification missing from durable outbox: '+String(notification.signalId||''));
+      assert.equal(row.delivery_state,'ACCEPTED','Actual intraday notification outbox is not ACCEPTED');
+    }
     const latest=cron.recent?.find(x=>x.job_type==='INTRADAY_MONITOR' && x.status==='SUCCESS' && x.finished_at);
     assert.ok(latest && now-Date.parse(latest.finished_at)<=180000,'No recent successful monitoring Cron');
     console.log(JSON.stringify({actualIntradayHealth:proof,cronVerified:true,pushOutbox:{unresolved:outbox.unresolved,staleUnresolved:outbox.staleUnresolved}}));
   } else {
     const scan=await admin('/api/scan/status');
     const proof=assessAfterMarketHealth(scan,date);
+    assert.equal(scan.dailyReport?.signalId,`DAILY_SELECTION:${date}`,'Daily report lacks durable signal identity');
+    const dailyOutbox=(outbox.recent||[]).find(item=>String(item.signal_id)===String(scan.dailyReport.signalId));
+    assert.ok(dailyOutbox,'Daily after-market report missing from durable outbox');
+    assert.equal(dailyOutbox.delivery_state,'ACCEPTED','Daily after-market report was not accepted by webhook');
 
     // V7.5.33：觀察池是獨立唯讀結果，最多12檔，且不得與正式池重疊。
     const watchResponse=await fetch(origin+'/api/watchlist?health='+Date.now(),{
@@ -132,6 +143,7 @@ async function main() {
       actualAfterMarketHealth:proof,
       watchlistVerified:{count:watch.count,maxStocks:watch.maxStocks,noFormalOverlap:true,marketDate:watch.marketDate},
       externalReadbackVerified:true,requirement26Accepted:true,
+      dailyReportOutboxAccepted:true,
       pushOutbox:{unresolved:outbox.unresolved,staleUnresolved:outbox.staleUnresolved},
       noNewSelection:true,noThreeMinPost:true,noPush:true
     }));
