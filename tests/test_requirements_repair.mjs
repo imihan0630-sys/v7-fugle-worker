@@ -56,7 +56,7 @@ const quarterHelpers=await import('data:text/javascript;base64,'+Buffer.from(sou
   assert.throws(()=>quarterHelpers.parseMopsQuarterEpsHtml(report(),'2330',2026,4),/輸入/);
   const q2Financial={year:2026,quarter:2,stocks:{'2330':{}}};
   const body={kind:'QUARTER_EPS',year:2026,quarter:2,financialSnapshot:q2Financial,reports:[{symbol:'2330',sourceUrl:'https://mopsov.twse.com.tw/mops/web/ajax_t164sb04',html:report()}]};
-  assert.equal(quarterHelpers.validateOfficialQualityData(body,'2026-09-16').count,1);
+  assert.throws(()=>quarterHelpers.validateOfficialQualityData(body,'2026-09-16'),/前一季/,'Requirement 11 now requires a verified previous-quarter EPS before QoQ is accepted');
   const previous=report('22.08','13.95').replace('SSEASON=2','SSEASON=1').replace('115年第2季','115年第1季').replace('114年第2季','114年第1季');
   const paired={...body,reports:[{...body.reports[0],previousQuarterHtml:previous}]};
   const stock=quarterHelpers.validateOfficialQualityData(paired,'2026-09-16').stocks['2330'];
