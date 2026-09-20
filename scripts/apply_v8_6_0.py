@@ -163,11 +163,5 @@ routes=r'''    if (url.pathname === "/performance") return html(performanceCente
 ''' + route_anchor
 replace_once(route_anchor,routes,"performance and CSV routes")
 
-replace_once(
-'''  <h1>V8 選股／訊號交易日誌</h1>''',
-'''  <h1>V8 選股／訊號交易日誌</h1><p><a href="/performance" style="display:inline-block;padding:9px 13px;border-radius:8px;background:#1f6feb;color:#fff;text-decoration:none;font-weight:800">績效分析中心</a></p>''',
-    "journal performance link"
-)
-
 path.write_text(text,encoding="utf-8")
 print("Applied V8.6.0 performance center")
