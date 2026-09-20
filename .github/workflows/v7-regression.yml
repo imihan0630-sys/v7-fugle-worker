@@ -55,6 +55,7 @@ jobs:
           python3 scripts/apply_v8_7_6.py
           python3 scripts/apply_v8_7_7.py
           python3 scripts/apply_v8_7_8.py
+          python3 scripts/apply_v8_7_9.py
       - name: Syntax and offline behavior regression
         env:
           V7_TEST_WORKER_PATH: ${{ github.workspace }}/Worker.js
@@ -62,7 +63,7 @@ jobs:
           set -euo pipefail
           cp Worker.js /tmp/v7-worker.mjs
           node --check /tmp/v7-worker.mjs
-          grep -F 'const VERSION = "8.7.8-date-cluster-robustness";' Worker.js
+          grep -F 'const VERSION = "8.7.9-research-evidence-enrichment";' Worker.js
           grep -F 'SAME_SCAN_DATE_PAIRED_COHORT_DELTA' Worker.js
           grep -F 'trackedExperimentDefinitions' Worker.js
           grep -F 'RESEARCH_DATA_GAP' Worker.js
@@ -72,6 +73,10 @@ jobs:
           grep -F 'trackedIncrementalDefinitions' Worker.js
           grep -F 'LEAVE_ONE_SCAN_DATE_OUT_PARTIAL_CORRELATION' Worker.js
           grep -F 'FRAGILE_DATE_DEPENDENCE' Worker.js
+          grep -F 'CREATE TABLE IF NOT EXISTS trade_research_external_evidence' Worker.js
+          grep -F 'R07_MEDIAN_SPLIT_TWO_ENGINE_COMPARISON' Worker.js
+          grep -F 'MARGIN_SHORT_ONLY_NOT_SBL' Worker.js
+          grep -F 'RESEARCH_MICROSTRUCTURE_CUTOFF' Worker.js
           grep -F 'FAILED_CLOSE_WITHIN_3D' Worker.js
           grep -F 'PURGED_FORWARD_HOLDOUT' Worker.js
           grep -F 'CREATE TABLE IF NOT EXISTS trade_research_shadow_candidates' Worker.js
@@ -117,6 +122,7 @@ jobs:
           node tests/test_v8_7_6_anti_overfit.mjs
           node tests/test_v8_7_7_incremental_factor_diagnostics.mjs
           node tests/test_v8_7_8_date_cluster_robustness.mjs
+          node tests/test_v8_7_9_research_evidence_enrichment.mjs
           node tests/github_plan_mirror.mjs self-test
       - name: Read-only production authorization preflight
         if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
