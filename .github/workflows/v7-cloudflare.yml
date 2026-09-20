@@ -31,6 +31,7 @@ on:
       - "scripts/apply_v8_6_2.py"
       - "scripts/apply_v8_6_3.py"
       - "scripts/apply_v8_7_0.py"
+      - "scripts/apply_v8_7_1.py"
       - "RESEARCH_WORKLIST.md"
       - "research/**"
       - "data/v7_formal_scan_backfill.json"
@@ -137,16 +138,22 @@ jobs:
       - name: Apply V8.7.0 research foundation
         run: python3 scripts/apply_v8_7_0.py
 
+      - name: Apply V8.7.1 historical research reconstruction
+        run: python3 scripts/apply_v8_7_1.py
+
       - name: Syntax check Worker.js
         run: |
           set -euo pipefail
           cp Worker.js /tmp/Worker.mjs
           node --check /tmp/Worker.mjs
 
-      - name: Validate V8.7.0 production contract
+      - name: Validate V8.7.1 production contract
         run: |
           set -euo pipefail
-          grep -F 'const VERSION = "8.7.0-research-foundation";' Worker.js
+          grep -F 'const VERSION = "8.7.1-history-research-v2";' Worker.js
+          grep -F 'url.pathname === "/api/research/reconstruct-history"' Worker.js
+          grep -F 'RECONSTRUCTED_PRICE_ONLY' Worker.js
+          grep -F '趨勢持續性研究分數' Worker.js
           grep -F 'CREATE TABLE IF NOT EXISTS trade_research_snapshots' Worker.js
           grep -F 'url.pathname === "/api/research/dashboard"' Worker.js
           grep -F '台股交易決策監控系統｜研究驗證中心' Worker.js
@@ -191,6 +198,7 @@ jobs:
           node tests/test_v8_6_2_v7_formal_performance.mjs
           node tests/test_v8_6_3_v7_current_close.mjs
           node tests/test_v8_7_0_research_foundation.mjs
+          node tests/test_v8_7_1_history_research.mjs
           node tests/github_plan_mirror.mjs self-test
 
       - name: Snapshot existing public monitoring configuration
@@ -482,6 +490,39 @@ jobs:
           if(!check.ok || dashboard.systemName!=="台股交易決策監控系統") throw new Error("Research dashboard readback failed");
           if(!Array.isArray(dashboard.worklist) || dashboard.worklist.length!==4) throw new Error("Research worklist readback failed");
           if(dashboard.promotionGate?.promotionEligible===true) throw new Error("Formal core must remain locked with current sample size");
+          NODE
+
+      - name: Reconstruct verified historical research snapshots
+        if: contains(github.event.head_commit.message, '[research-reconstruct-history]')
+        env:
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+        run: |
+          node - <<'NODE'
+          const origin="https://fugle-test.imihan0630.workers.dev";
+          const headers={"x-admin-token":process.env.V7_ADMIN_TOKEN,"content-type":"application/json","accept":"application/json"};
+          const response=await fetch(origin+"/api/research/reconstruct-history",{
+            method:"POST",headers,body:"{}",signal:AbortSignal.timeout(120000)
+          });
+          const data=await response.json();
+          console.log(JSON.stringify(data));
+          if(!response.ok || data.ok!==true || data.imported<1) throw new Error("Historical research reconstruction failed");
+          if(data.noPlanChanges!==true || data.noPush!==true || data.noTrade!==true || data.noSelection!==true || data.noCurrentDataBackfill!==true) {
+            throw new Error("Historical research reconstruction safety contract failed");
+          }
+          const check=await fetch(origin+"/api/research/dashboard?days=730",{
+            headers:{"x-admin-token":process.env.V7_ADMIN_TOKEN},signal:AbortSignal.timeout(30000)
+          });
+          const dashboard=await check.json();
+          console.log(JSON.stringify({
+            snapshotCoverage:dashboard.snapshotCoverage,
+            completenessAudit:dashboard.completenessAudit,
+            pathSummary:dashboard.pathPerformance?.summary,
+            factorStudy:{sampleCount:dashboard.factorStudy?.sampleCount,fullMatureCount:dashboard.factorStudy?.fullMatureCount,reconstructedMatureCount:dashboard.factorStudy?.reconstructedMatureCount},
+            promotionGate:dashboard.promotionGate
+          }));
+          if(!check.ok || (dashboard.snapshotCoverage?.reconstructed||0)<1) throw new Error("Historical research snapshot readback failed");
+          if((dashboard.completenessAudit?.reconstructionForwardFillViolations||0)!==0) throw new Error("Historical reconstruction look-ahead guard failed");
+          if(dashboard.promotionGate?.promotionEligible===true) throw new Error("Formal core must remain locked");
           NODE
 
       - name: V8.1.0 read-only operations acceptance
