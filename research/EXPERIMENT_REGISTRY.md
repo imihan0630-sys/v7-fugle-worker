@@ -3,6 +3,8 @@
 更新：2026-09-20  
 治理狀態：RESEARCH ONLY / FORMAL CORE LOCKED
 
+機器可讀鏡像：V8.7.5 的 RESEARCH_EXPERIMENT_CATALOG。Markdown 與程式定義若不一致，以新 experiment/version 明確修訂，不得靜默覆寫。
+
 本檔用來固定研究假說、定義、反證條件與測試次數。任何漂亮結果都不得直接轉成正式選股規則；新參數、新窗口或新切法視為新的試驗，不得覆寫舊定義後只保留贏家。
 
 ## R01 成功突破 vs 假突破
