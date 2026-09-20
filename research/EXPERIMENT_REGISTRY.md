@@ -61,6 +61,13 @@
 - 反證：兩引擎沒有穩定路徑差異、差異只由少數選股日或單一 Regime 驅動，或被 Residual RS / Breakout Quality 等既有因子完全解釋。
 - 禁止：事後尋找 1.5x / 1.8x / 2.0x 量能、任意 RS 門檻或不同持有窗口來挑最好看的版本；任何新切法另立 experiment/version。
 
+## Evidence Readiness Matrix
+- V8.7.10 對 R01–R08 使用既有治理門檻顯示研究成熟度，不新增選股條件。
+- 狀態：WAITING_DATA、ACCUMULATING、DESCRIPTIVE_READY、DATA_QUALITY_BLOCKED。
+- D5 因子型研究沿用至少 60 筆成熟樣本與 15 個獨立選股日；同日配對研究沿用至少 20 個成熟配對日；Regime/Persistence 沿用至少 15 個可用正式研究日。
+- DESCRIPTIVE_READY 只表示「可開始描述性解讀」，不是 promotion eligible，更不是交易訊號。
+- 若 Shadow Archive 為 RESEARCH_DATA_GAP，相關實驗一律 DATA_QUALITY_BLOCKED，先修資料再解讀。
+
 ## 共通治理
 - 證據獨立單位優先採「選股日」，不是單一股票筆數；同一選股日多檔股票視為群聚樣本。
 - V8.7.8 起，7 組增量對照固定做 leave-one-scan-date-out 敏感度；這是既有預註冊假說的穩健性診斷，不另創造可挑選的新因子。
