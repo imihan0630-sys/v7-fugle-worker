@@ -4,6 +4,8 @@ on:
     - cron: '55 9 * * 1-5'
     - cron: '5 10 * * 1-5'
     - cron: '20 10 * * 1-5'
+    - cron: '25 15 * * 1-5' # 23:25 Taipei final data refresh
+    - cron: '45 15 * * 1-5' # 23:45 Taipei recovery only if 23:35 formal scan is missing
   workflow_dispatch:
 permissions:
   contents: read
