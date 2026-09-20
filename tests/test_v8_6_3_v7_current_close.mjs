@@ -5,7 +5,6 @@ const workerPath=process.env.V7_TEST_WORKER_PATH || new URL("../Worker.js",impor
 const source=await readFile(workerPath,"utf8");
 
 for(const marker of [
-  'const VERSION = "8.6.3-v7-current-close";',
   'const marketState=await env.STOCKS_KV?.get(MARKET_STATE_KEY,"json");',
   'const stateStock=marketState?.stocks?.[String(sel.symbol)]||null;',
   'const latestClose=useState?stateClose:journalNumber(latest?.close);',
