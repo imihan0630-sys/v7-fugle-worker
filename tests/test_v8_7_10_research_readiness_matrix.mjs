@@ -6,8 +6,9 @@ const source=await readFile(workerPath,"utf8");
 const exported="\nexport {researchReadinessEvidenceFromOutcomes,researchEvidenceReadinessMatrix};";
 const mod=await import("data:text/javascript;base64,"+Buffer.from(source+exported).toString("base64")+"#"+Date.now());
 
+assert.match(source,/const VERSION = "8\.7\.\d+[^"]*";/);
+
 for(const marker of [
-  "8.7.10-research-readiness-matrix",
   "Research Evidence Readiness",
   "DATA_QUALITY_BLOCKED",
   "DESCRIPTIVE_READY",
