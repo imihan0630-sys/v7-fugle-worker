@@ -14,7 +14,7 @@ for(const marker of [
 
 console.log(JSON.stringify({
   ok:true,
-  version:"8.6.3-v7-current-close",
+  version:"8.6.3-or-later",
   latestCloseSource:"V7_MARKET_STATE",
   d1HistoryFallback:true
 }));
