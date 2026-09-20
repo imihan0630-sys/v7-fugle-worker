@@ -28,6 +28,8 @@ on:
       - "scripts/apply_v8_5_2.py"
       - "scripts/apply_v8_6_0.py"
       - "scripts/apply_v8_6_1.py"
+      - "scripts/apply_v8_6_2.py"
+      - "data/v7_formal_scan_backfill.json"
       - "data/recovered_chat_selections.json"
       - "tests/**"
       - "!tests/inspect_official_quality_sources.mjs"
@@ -122,16 +124,19 @@ jobs:
       - name: Apply V8.6.1 shared portal navigation
         run: python3 scripts/apply_v8_6_1.py
 
+      - name: Apply V8.6.2 V7 formal selection performance
+        run: python3 scripts/apply_v8_6_2.py
+
       - name: Syntax check Worker.js
         run: |
           set -euo pipefail
           cp Worker.js /tmp/Worker.mjs
           node --check /tmp/Worker.mjs
 
-      - name: Validate V8.6.1 production contract
+      - name: Validate V8.6.2 production contract
         run: |
           set -euo pipefail
-          grep -F 'const VERSION = "8.6.1-shared-navigation";' Worker.js
+          grep -F 'const VERSION = "8.6.2-v7-formal-performance";' Worker.js
           grep -F 'const WATCHLIST_MAX = 12;' Worker.js
           grep -F 'async function finishDataIncompleteScan(' Worker.js
           grep -F 'function buildReviewedWatchlist(' Worker.js
@@ -170,6 +175,7 @@ jobs:
           node tests/test_v8_5_2_history_backfill.mjs
           node tests/test_v8_6_0_performance_center.mjs
           node tests/test_v8_6_1_shared_navigation.mjs
+          node tests/test_v8_6_2_v7_formal_performance.mjs
           node tests/github_plan_mirror.mjs self-test
 
       - name: Snapshot existing public monitoring configuration
@@ -405,6 +411,33 @@ jobs:
           const journal=await check.json();
           console.log(JSON.stringify({recoveredSelections:journal.recoveredSelections,plans:journal.plans,signals:journal.signals}));
           if(!check.ok || journal.recoveredSelections<records.length) throw new Error("Historical journal readback failed");
+          NODE
+
+      - name: Import verified V7 formal scan backfill
+        if: contains(github.event.head_commit.message, '[v7-formal-backfill]')
+        env:
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+        run: |
+          node - <<'NODE'
+          const fs=await import("node:fs");
+          const origin="https://fugle-test.imihan0630.workers.dev";
+          const records=JSON.parse(fs.readFileSync("data/v7_formal_scan_backfill.json","utf8"));
+          const response=await fetch(origin+"/api/v7-formal-backfill",{
+            method:"POST",
+            headers:{"x-admin-token":process.env.V7_ADMIN_TOKEN,"content-type":"application/json","accept":"application/json"},
+            body:JSON.stringify({records}),
+            signal:AbortSignal.timeout(60000)
+          });
+          const data=await response.json();
+          console.log(JSON.stringify(data));
+          if(!response.ok || data.ok!==true || data.imported!==records.length) throw new Error("V7 formal scan backfill failed");
+          const check=await fetch(origin+"/api/v7-formal-performance?days=730",{
+            headers:{"x-admin-token":process.env.V7_ADMIN_TOKEN},
+            signal:AbortSignal.timeout(30000)
+          });
+          const perf=await check.json();
+          console.log(JSON.stringify({summary:perf.summary,byScanDate:perf.byScanDate}));
+          if(!check.ok || !Array.isArray(perf.rows) || perf.rows.filter(x=>x.scanDate==="2026-09-11").length<5) throw new Error("V7 formal performance readback failed");
           NODE
 
       - name: V8.1.0 read-only operations acceptance
