@@ -27,6 +27,7 @@ on:
       - "scripts/apply_v8_5_0.py"
       - "scripts/apply_v8_5_2.py"
       - "scripts/apply_v8_6_0.py"
+      - "scripts/apply_v8_6_1.py"
       - "data/recovered_chat_selections.json"
       - "tests/**"
       - "!tests/inspect_official_quality_sources.mjs"
@@ -118,16 +119,19 @@ jobs:
       - name: Apply V8.6.0 performance center
         run: python3 scripts/apply_v8_6_0.py
 
+      - name: Apply V8.6.1 shared portal navigation
+        run: python3 scripts/apply_v8_6_1.py
+
       - name: Syntax check Worker.js
         run: |
           set -euo pipefail
           cp Worker.js /tmp/Worker.mjs
           node --check /tmp/Worker.mjs
 
-      - name: Validate V8.6.0 production contract
+      - name: Validate V8.6.1 production contract
         run: |
           set -euo pipefail
-          grep -F 'const VERSION = "8.6.0-performance-center";' Worker.js
+          grep -F 'const VERSION = "8.6.1-shared-navigation";' Worker.js
           grep -F 'const WATCHLIST_MAX = 12;' Worker.js
           grep -F 'async function finishDataIncompleteScan(' Worker.js
           grep -F 'function buildReviewedWatchlist(' Worker.js
@@ -165,6 +169,7 @@ jobs:
           node tests/test_v8_5_0_trade_journal.mjs
           node tests/test_v8_5_2_history_backfill.mjs
           node tests/test_v8_6_0_performance_center.mjs
+          node tests/test_v8_6_1_shared_navigation.mjs
           node tests/github_plan_mirror.mjs self-test
 
       - name: Snapshot existing public monitoring configuration
