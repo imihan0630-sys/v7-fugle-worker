@@ -52,7 +52,7 @@ for(const marker of [
 
 console.log(JSON.stringify({
   ok:true,
-  version:"8.5.0-trade-journal",
+  version:"8.5.0-or-later",
   planHistory:true,
   signalTimestampHistory:true,
   completedTradeWinRate:true,
