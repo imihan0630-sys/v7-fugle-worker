@@ -379,7 +379,7 @@ jobs:
           V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
         run: |
           node - <<'NODE'
-          const fs=require("fs");
+          const fs=await import("node:fs");
           const origin="https://fugle-test.imihan0630.workers.dev";
           const records=JSON.parse(fs.readFileSync("data/recovered_chat_selections.json","utf8"));
           const response=await fetch(origin+"/api/journal/history-import",{
