@@ -219,15 +219,15 @@ replace_once(
 )
 
 replace_once(
-'''    saved = await saveStockConfig(env, stocks, "Phase 4.3 A/B Strategy Rebase After-market Scan", totalCapital);
-    bridge = await sendTo3Min(buildThreeMinPayload(marketDate,totalCapital,stocks),env);''',
-'''    saved = await saveStockConfig(env, stocks, "Phase 4.3 A/B Strategy Rebase After-market Scan", totalCapital);
+'''  const journal = !dryRun ? await recordTradeJournalDay(''',
+'''  if(!dryRun) {
     try {
       shadowArchiveSave = await persistShadowCandidateArchive(env,scan.shadowArchive);
     } catch(error) {
       shadowArchiveSave = {ok:false,saved:0,error:String(error).slice(0,300),researchOnly:true,noPlanChanges:true,noPush:true,noTrade:true};
     }
-    bridge = await sendTo3Min(buildThreeMinPayload(marketDate,totalCapital,stocks),env);''',
+  }
+  const journal = !dryRun ? await recordTradeJournalDay(''',
     "persist shadow archive nonblocking"
 )
 
