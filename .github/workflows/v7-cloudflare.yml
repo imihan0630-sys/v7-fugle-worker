@@ -34,6 +34,7 @@ on:
       - "scripts/apply_v8_7_1.py"
       - "scripts/apply_v8_7_2.py"
       - "scripts/apply_v8_7_3.py"
+      - "scripts/apply_v8_7_4.py"
       - "RESEARCH_WORKLIST.md"
       - "research/**"
       - "data/v7_formal_scan_backfill.json"
@@ -149,6 +150,9 @@ jobs:
       - name: Apply V8.7.3 validation firewall
         run: python3 scripts/apply_v8_7_3.py
 
+      - name: Apply V8.7.4 counterfactual research
+        run: python3 scripts/apply_v8_7_4.py
+
       - name: Syntax check Worker.js
         run: |
           set -euo pipefail
@@ -158,8 +162,11 @@ jobs:
       - name: Validate V8.7.3 production contract
         run: |
           set -euo pipefail
-          grep -F 'const VERSION = "8.7.3-validation-firewall";' Worker.js
+          grep -F 'const VERSION = "8.7.4-counterfactual-research";' Worker.js
           grep -F 'PURGED_FORWARD_HOLDOUT' Worker.js
+          grep -F 'SAME_SCAN_DATE_PAIRED_COHORT_DELTA' Worker.js
+          grep -F 'FAILED_CLOSE_WITHIN_3D' Worker.js
+          grep -F 'WITHIN_SCAN_DATE_MEDIAN_SPLIT' Worker.js
           grep -F 'trackedFactorDefinitions' Worker.js
           grep -F 'CREATE TABLE IF NOT EXISTS trade_research_shadow_candidates' Worker.js
           grep -F 'QUALIFIED_NOT_SELECTED' Worker.js
@@ -214,6 +221,7 @@ jobs:
           node tests/test_v8_7_1_history_research.mjs
           node tests/test_v8_7_2_shadow_candidate_archive.mjs
           node tests/test_v8_7_3_validation_firewall.mjs
+          node tests/test_v8_7_4_counterfactual_research.mjs
           node tests/github_plan_mirror.mjs self-test
 
       - name: Snapshot existing public monitoring configuration
@@ -311,6 +319,50 @@ jobs:
           V7_TEST_WORKER_PATH: ${{ github.workspace }}/Worker.js
           V7_DEPLOY_BASELINE_PATH: /tmp/v7-predeploy.json
         run: node tests/verify_deployment.mjs
+
+      - id: research_verify
+        name: Verify research-only counterfactual readback
+        env:
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+        run: |
+          node - <<'NODE'
+          const origin="https://fugle-test.imihan0630.workers.dev";
+          const response=await fetch(origin+"/api/research/dashboard?days=90",{
+            headers:{"x-admin-token":process.env.V7_ADMIN_TOKEN,"accept":"application/json"},
+            signal:AbortSignal.timeout(60000)
+          });
+          const data=await response.json();
+          console.log(JSON.stringify({
+            version:data.version||null,
+            shadow:data.shadowCandidates||null,
+            counterfactual:{
+              archivedRows:data.counterfactualResearch?.archivedRows,
+              coverage:data.counterfactualResearch?.coverage,
+              selectionAlphaMethod:data.counterfactualResearch?.selectionAlpha?.method
+            },
+            execution:{
+              selectedPlans:data.executionAlpha?.selectedPlans,
+              buyTriggeredPlans:data.executionAlpha?.buyTriggeredPlans
+            },
+            regime:{usableDays:data.regimePersistence?.usableDays},
+            validation:data.validationFirewall||null
+          }));
+          if(!response.ok) throw new Error("Research dashboard readback HTTP "+response.status);
+          if(data.counterfactualResearch?.researchOnly!==true ||
+             data.counterfactualResearch?.decisionImpact!==false ||
+             data.counterfactualResearch?.formalScoreImpact!==false) {
+            throw new Error("Counterfactual research firewall contract failed");
+          }
+          if(data.executionAlpha?.researchOnly!==true || data.executionAlpha?.decisionImpact!==false) {
+            throw new Error("Execution Alpha research firewall contract failed");
+          }
+          if(data.regimePersistence?.researchOnly!==true || data.regimePersistence?.decisionImpact!==false) {
+            throw new Error("Regime/Persistence research firewall contract failed");
+          }
+          if(data.validationFirewall?.formalCoreImpact!==false) {
+            throw new Error("Formal core firewall contract failed");
+          }
+          NODE
 
       - name: Seed D1 plan archive and report Firestore migration readiness
         if: contains(github.event.head_commit.message, '[v8-firestore-migration]')
@@ -547,7 +599,7 @@ jobs:
         run: node tests/accept_v8_1_ops.mjs
 
       - name: Auto rollback if deployment verification fails
-        if: ${{ failure() && steps.deploy.outcome == 'success' && steps.verify.outcome == 'failure' }}
+        if: ${{ failure() && steps.deploy.outcome == 'success' && (steps.verify.outcome == 'failure' || steps.research_verify.outcome == 'failure') }}
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
