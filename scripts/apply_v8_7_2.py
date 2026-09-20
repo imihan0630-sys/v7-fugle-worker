@@ -141,6 +141,7 @@ async function persistShadowCandidateArchive(env,archive) {
   await ensureD1Schema(env);
   const session=env.V7_DB.withSession("first-primary");
   const now=new Date().toISOString();
+  await session.prepare("DELETE FROM trade_research_shadow_candidates WHERE scan_date=?1").bind(String(archive.scanDate)).run();
   let saved=0;
   for(const row of rows){
     await session.prepare(`INSERT INTO trade_research_shadow_candidates(
