@@ -72,6 +72,7 @@ Shadow 後續結果：
 - V8.7.8：新增以 scanDate 為獨立群聚單位的 leave-one-date-out 穩健性檢查；同一日多檔股票不得當成獨立證據。成熟條件固定為至少 60 筆、15 個獨立選股日、10 次有效留一日檢查；若方向一致率低於 70%，或移除單一日期造成偏相關大幅改變，標記 FRAGILE_DATE_DEPENDENCE，只限制正式升級審查資格，不影響交易。
 - V8.7.9：新增 research-only 外部證據保存：上市公司月營收、當日融資融券、TWSE 注意/處置標記，以及 2020-03-23 連續交易制度分界。資料源失敗或日期不符一律 UNKNOWN；融券資料明確標示僅為 margin short，不冒充 SBL short。新增預註冊 R08 Two-Engine Momentum，沿用 R07 同日中位數切法比較 Quiet Underreaction / Attention Continuation 的 D5/D10/D20、MFE/MAE 與 Regime 敏感度，不新增正式分數或門檻。
 - V8.7.10：新增 Research Evidence Readiness Matrix，將 R01–R08 既有成熟門檻集中成機器可讀狀態：WAITING_DATA / ACCUMULATING / DESCRIPTIVE_READY / DATA_QUALITY_BLOCKED。Readiness 只描述研究證據是否足以解讀，不代表可升級正式核心；Shadow 資料缺口會先標記 DATA_QUALITY_BLOCKED。
+- V8.7.11：補齊 research-only 證據來源語意與市場 coverage：月營收同時抓 TWSE / TPEx，避免上櫃股因只查上市來源而被誤判缺資料；TWSE 新增 TWT93U 實際借券賣出 raw evidence，並明確禁止把一般借券成交視為放空。單日 SBL 不冒充學術研究的 5/20/60 日 shorting-flow；月營收 current snapshot 不冒充歷史 first-known vintage。此版不新增 R09、不改正式選股。
 
 ## 6. 正式核心升級
 狀態：LOCKED
