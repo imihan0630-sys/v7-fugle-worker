@@ -35,7 +35,7 @@ assert.equal(cost.selectedD5Samples,35);
 assert.equal(cost.scenarios.length,3);
 assert.equal(cost.status,"DESCRIPTIVE_READY");
 
-const study={sampleCount:80,distinctScanDates:20,distinctYears:2,regimes:["BULL_BROAD","MIXED"],trainDates:12,holdoutDates:6,
+const study={sampleCount:80,fullMatureCount:80,reconstructedMatureCount:0,distinctScanDates:20,distinctYears:2,regimes:["BULL_BROAD","MIXED"],trainDates:12,holdoutDates:6,
   validation:{method:"PURGED_FORWARD_HOLDOUT"},
   factors:[{key:"x",label:"x",direction:"HIGH",train:{n:40,spreadPct:1},holdout:{n:20,spreadPct:0.5}}]};
 const maturity=mod.researchGovernanceMaturity(
