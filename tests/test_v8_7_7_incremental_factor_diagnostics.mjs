@@ -7,7 +7,6 @@ const exported="\nexport {RESEARCH_INCREMENTAL_CONTRASTS,researchIncrementalFact
 const mod=await import("data:text/javascript;base64,"+Buffer.from(source+exported).toString("base64")+"#"+Date.now());
 
 for(const marker of [
-  "8.7.7-incremental-factor-diagnostics",
   "WITHIN_SCAN_DATE_DEMEANED_PARTIAL_CORRELATION",
   "trackedIncrementalDefinitions",
   "totalTrackedVariants",
