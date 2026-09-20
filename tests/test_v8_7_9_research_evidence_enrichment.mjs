@@ -6,8 +6,9 @@ const source=await readFile(workerPath,"utf8");
 const exported="\nexport {RESEARCH_EXPERIMENT_CATALOG,RESEARCH_MICROSTRUCTURE_CUTOFF,researchRevenueEvidenceMap,researchMarginEvidenceFromPayload,researchTwoEngineStudy,researchExternalEvidenceCoverage};";
 const mod=await import("data:text/javascript;base64,"+Buffer.from(source+exported).toString("base64")+"#"+Date.now());
 
+assert.match(source,/const VERSION = "8\.7\.\d+[^"]*";/);
+
 for(const marker of [
-  "8.7.9-research-evidence-enrichment",
   "research-external-evidence-v1",
   "trade_research_external_evidence",
   "R07_MEDIAN_SPLIT_TWO_ENGINE_COMPARISON",
