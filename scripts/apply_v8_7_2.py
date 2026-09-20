@@ -76,52 +76,56 @@ function buildShadowCandidateEntry(audit,cohort,cohortRank,scanDate,selectedFlag
   };
 }
 
-function buildShadowCandidateArchive(auditRows,selected,rankFn,scanDate) {
-  const audits=Array.isArray(auditRows)?auditRows:[];
+function buildShadowCandidateArchive(featureRows,scored,basePoolDiagnostics,nearMisses,selected,sectorStats,rankFn,scanDate) {
+  const features=Array.isArray(featureRows)?featureRows:[];
   const selectedSymbols=new Set((selected||[]).map(x=>String(x.symbol)));
   const used=new Set();
   const out=[];
-  const add=(audit,cohort,rank,selectedFlag=false)=>{
-    const symbol=String(audit?.f?.symbol||"");
+  const featureMap=new Map(features.map(f=>[String(f.symbol),f]));
+  const sectorFor=f=>(sectorStats||{})[f?.industry]||{score:0};
+  const add=(f,result,cohort,rank,selectedFlag=false)=>{
+    const symbol=String(f?.symbol||"");
     if(!symbol || used.has(symbol)) return;
     used.add(symbol);
-    out.push(buildShadowCandidateEntry(audit,cohort,rank,scanDate,selectedFlag));
+    out.push(buildShadowCandidateEntry({f,sector:sectorFor(f),result},cohort,rank,scanDate,selectedFlag));
   };
-  const bySymbol=new Map(audits.map(a=>[String(a?.f?.symbol||""),a]));
-  (selected||[]).forEach((item,index)=>{
-    const audit=bySymbol.get(String(item.symbol));
-    if(audit) add({...audit,result:item},"SELECTED",index+1,true);
-  });
-  const byPool=(rows,limitEach)=>{
+  const byPool=(rows,limitEach,getF=x=>x?.f||x)=>{
     const result=[];
     for(const pool of ["GENERAL","THOUSAND"]) {
-      result.push(...rows.filter(a=>((toNumber(a?.f?.close)||0)>=THOUSAND_STOCK_PRICE?"THOUSAND":"GENERAL")===pool).slice(0,limitEach));
+      result.push(...rows.filter(row=>((toNumber(getF(row)?.close)||0)>=THOUSAND_STOCK_PRICE?"THOUSAND":"GENERAL")===pool).slice(0,limitEach));
     }
     return result;
   };
-  const qualified=audits.filter(a=>a?.result?.ok===true && !selectedSymbols.has(String(a?.f?.symbol||"")))
-    .sort((a,b)=>rankFn(a.result,b.result));
-  byPool(qualified,6).forEach((audit,index)=>add(audit,"QUALIFIED_NOT_SELECTED",index+1,false));
 
-  const near=audits.filter(a=>a?.result?.ok!==true && a?.result?.basePassed===true &&
-      String(a?.result?.reason||"").includes("A拉回承接/B突破後承接"))
-    .map(a=>({...a,debug:buildChannelDebug(a.f,a.sector)}))
+  (selected||[]).forEach((item,index)=>{
+    const f=featureMap.get(String(item.symbol))||item;
+    add(f,item,"SELECTED",index+1,true);
+  });
+
+  const qualified=(scored||[]).filter(item=>!selectedSymbols.has(String(item.symbol))).sort(rankFn);
+  byPool(qualified,6,x=>x).forEach((item,index)=>add(featureMap.get(String(item.symbol))||item,item,"QUALIFIED_NOT_SELECTED",index+1,false));
+
+  const nearSymbols=new Set((nearMisses||[]).map(x=>String(x.symbol)));
+  const near=features.filter(f=>nearSymbols.has(String(f.symbol)))
+    .map(f=>({f,result:scoreCandidate(f,sectorFor(f)),debug:buildChannelDebug(f,sectorFor(f))}))
     .sort((a,b)=>(a.debug.missingCount-b.debug.missingCount)||(b.debug.nearScore-a.debug.nearScore)||String(a.f.symbol).localeCompare(String(b.f.symbol)));
-  byPool(near,6).forEach((audit,index)=>add(audit,"NEAR_MISS",index+1,false));
+  byPool(near,6,x=>x.f).forEach((row,index)=>add(row.f,row.result,"NEAR_MISS",index+1,false));
 
-  const rejected=audits.filter(a=>a?.result?.ok!==true && a?.result?.basePassed===true &&
-      !String(a?.result?.reason||"").includes("A拉回承接/B突破後承接"))
-    .sort((a,b)=>String(a?.result?.reason||"").localeCompare(String(b?.result?.reason||""))||String(a.f.symbol).localeCompare(String(b.f.symbol)));
-  byPool(rejected,6).forEach((audit,index)=>add(audit,"REJECTED_AFTER_BASE",index+1,false));
+  const scoredSymbols=new Set((scored||[]).map(x=>String(x.symbol)));
+  const baseCandidates=(basePoolDiagnostics||[])
+    .filter(row=>!scoredSymbols.has(String(row?.f?.symbol||"")) && !nearSymbols.has(String(row?.f?.symbol||"")))
+    .map(row=>({...row,result:scoreCandidate(row.f,row.sector)}))
+    .filter(row=>row.result?.ok!==true && row.result?.basePassed===true)
+    .sort((a,b)=>String(a.result?.reason||"").localeCompare(String(b.result?.reason||""))||String(a.f.symbol).localeCompare(String(b.f.symbol)));
+  byPool(baseCandidates,6,x=>x.f).forEach((row,index)=>add(row.f,row.result,"REJECTED_AFTER_BASE",index+1,false));
 
-  const controls=audits.filter(a=>{
-      const f=a?.f||{};
+  const controls=features.filter(f=>{
       const minLots=(toNumber(f.close)||0)>=THOUSAND_STOCK_PRICE?300:1000;
       return !used.has(String(f.symbol||"")) && f.historyDays>=60 && (toNumber(f.close)||0)>=MIN_CLOSE_PRICE &&
         (toNumber(f.avgVolume20Lots)||0)>=minLots;
     })
-    .sort((a,b)=>researchStableHash(String(scanDate)+"|"+String(a.f.symbol))-researchStableHash(String(scanDate)+"|"+String(b.f.symbol)));
-  byPool(controls,6).forEach((audit,index)=>add(audit,"BROAD_CONTROL",index+1,false));
+    .sort((a,b)=>researchStableHash(String(scanDate)+"|"+String(a.symbol))-researchStableHash(String(scanDate)+"|"+String(b.symbol)));
+  byPool(controls,6,x=>x).forEach((f,index)=>add(f,scoreCandidate(f,sectorFor(f)),"BROAD_CONTROL",index+1,false));
 
   return {
     schemaVersion:"shadow-candidate-archive-v1",scanDate:String(scanDate),researchOnly:true,decisionImpact:false,
@@ -182,29 +186,11 @@ async function readShadowCandidateSummary(env,days=180) {
 replace_once(anchor,helpers,"shadow research helpers")
 
 replace_once(
-'''  const scored = [];
-  const basePoolDiagnostics = [];''',
-'''  const scored = [];
-  const basePoolDiagnostics = [];
-  const selectionAuditRows = [];''',
-    "selection audit collection"
-)
-
-replace_once(
-'''    const result = scoreCandidate(f, sector);
-    if (result.basePassed) {''',
-'''    const result = scoreCandidate(f, sector);
-    selectionAuditRows.push({f,sector,result});
-    if (result.basePassed) {''',
-    "capture selection audit row"
-)
-
-replace_once(
 '''  const selected = [...generalTop, ...thousandTop].sort(rankFn);
   const finalSymbols = new Set(selected.map(item => item.symbol));''',
 '''  const selected = [...generalTop, ...thousandTop].sort(rankFn);
   const finalSymbols = new Set(selected.map(item => item.symbol));
-  const shadowArchive = buildShadowCandidateArchive(selectionAuditRows,selected,rankFn,scanDate);''',
+  const shadowArchive = buildShadowCandidateArchive(featureRows,scored,basePoolDiagnostics,diagnostics.nearMisses,selected,sectorStats,rankFn,scanDate);''',
     "build shadow archive"
 )
 
