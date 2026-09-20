@@ -16,6 +16,18 @@ assert.equal(source.includes('10 10 * * MON-FRI'),false);
 assert.equal(source.includes('18:10 盤後掃描'),false);
 assert.equal(source.includes('Number(value.hour) >= 18'),false);
 
+const marketWorkflow=await readFile(new URL("../.github/workflows/v7-market-data.yml",import.meta.url),"utf8");
+const mirrorWorkflow=await readFile(new URL("../.github/workflows/v8-plan-mirror.yml",import.meta.url),"utf8");
+const healthWorkflow=await readFile(new URL("../.github/workflows/v7-health.yml",import.meta.url),"utf8");
+const recoverySource=await readFile(new URL("./recover_after_market.mjs",import.meta.url),"utf8");
+const healthSource=await readFile(new URL("./scheduled_health.mjs",import.meta.url),"utf8");
+assert.ok(marketWorkflow.includes("25 15 * * 1-5"),"23:25 final data refresh missing");
+assert.ok(marketWorkflow.includes("45 15 * * 1-5"),"23:45 recovery schedule missing");
+assert.ok(mirrorWorkflow.includes("50 15 * * 1-5"),"23:50 encrypted mirror missing");
+assert.ok(healthWorkflow.includes("55 15 * * 1-5"),"23:55 health verification missing");
+assert.ok(recoverySource.includes("time<'23:35' || time>'23:59'"),"Recovery window must begin at 23:35");
+assert.ok(healthSource.includes("time<'23:45' || time>'23:59'"),"After-market health must run after formal scan");
+
 const migrated=replaceAfterMarketSchedule([
   {cron:"* 1-4 * * MON-FRI"},
   {cron:"0-24 5 * * MON-FRI"},
