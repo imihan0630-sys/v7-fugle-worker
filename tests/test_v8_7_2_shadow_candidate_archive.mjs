@@ -71,7 +71,11 @@ for(let i=0;i<20;i++){
 const selected=[selectedResult];
 const before=JSON.stringify(selected);
 const rankFn=(a,b)=>(b.priorityScore||0)-(a.priorityScore||0);
-const archive=mod.buildShadowCandidateArchive(audits,selected,rankFn,"2026-09-21");
+const features=audits.map(x=>x.f);
+const scored=audits.filter(x=>x.result.ok===true).map(x=>x.result);
+const basePoolDiagnostics=audits.filter(x=>x.result.basePassed===true).map(x=>({f:x.f,sector}));
+const nearMisses=audits.filter(x=>String(x.result.reason||"").includes("A拉回承接/B突破後承接")).map(x=>({symbol:x.f.symbol}));
+const archive=mod.buildShadowCandidateArchive(features,scored,basePoolDiagnostics,nearMisses,selected,{"測試產業":sector},rankFn,"2026-09-21");
 assert.equal(JSON.stringify(selected),before,"shadow archive must not mutate formal selection");
 assert.equal(archive.researchOnly,true);
 assert.equal(archive.decisionImpact,false);
