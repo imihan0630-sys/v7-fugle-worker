@@ -37,6 +37,7 @@ on:
       - "scripts/apply_v8_7_4.py"
       - "scripts/apply_v8_7_5.py"
       - "scripts/apply_v8_7_6.py"
+      - "scripts/apply_v8_7_7.py"
       - "RESEARCH_WORKLIST.md"
       - "research/**"
       - "data/v7_formal_scan_backfill.json"
@@ -161,6 +162,9 @@ jobs:
       - name: Apply V8.7.6 anti-overfit diagnostics
         run: python3 scripts/apply_v8_7_6.py
 
+      - name: Apply V8.7.7 incremental factor diagnostics
+        run: python3 scripts/apply_v8_7_7.py
+
       - name: Syntax check Worker.js
         run: |
           set -euo pipefail
@@ -170,13 +174,15 @@ jobs:
       - name: Validate V8.7.3 production contract
         run: |
           set -euo pipefail
-          grep -F 'const VERSION = "8.7.6-anti-overfit-diagnostics";' Worker.js
+          grep -F 'const VERSION = "8.7.7-incremental-factor-diagnostics";' Worker.js
           grep -F 'PURGED_FORWARD_HOLDOUT' Worker.js
           grep -F 'trackedExperimentDefinitions' Worker.js
           grep -F 'totalTrackedDefinitions' Worker.js
           grep -F 'RESEARCH_DATA_GAP' Worker.js
           grep -F 'PAIRWISE_PEARSON_FULL_FORMAL_SCAN' Worker.js
           grep -F 'eligibleForFormalReview' Worker.js
+          grep -F 'WITHIN_SCAN_DATE_DEMEANED_PARTIAL_CORRELATION' Worker.js
+          grep -F 'trackedIncrementalDefinitions' Worker.js
           grep -F 'SAME_SCAN_DATE_PAIRED_COHORT_DELTA' Worker.js
           grep -F 'FAILED_CLOSE_WITHIN_3D' Worker.js
           grep -F 'WITHIN_SCAN_DATE_MEDIAN_SPLIT' Worker.js
@@ -237,6 +243,7 @@ jobs:
           node tests/test_v8_7_4_counterfactual_research.mjs
           node tests/test_v8_7_5_research_governance.mjs
           node tests/test_v8_7_6_anti_overfit.mjs
+          node tests/test_v8_7_7_incremental_factor_diagnostics.mjs
           node tests/github_plan_mirror.mjs self-test
 
       - name: Snapshot existing public monitoring configuration
@@ -384,7 +391,9 @@ jobs:
                 antiOverfit:{
                   redundancyStatus:data.antiOverfit?.redundancy?.status,
                   costStressStatus:data.antiOverfit?.costStress?.status,
-                  eligibleForFormalReview:data.antiOverfit?.governanceMaturity?.eligibleForFormalReview
+                  eligibleForFormalReview:data.antiOverfit?.governanceMaturity?.eligibleForFormalReview,
+                  incrementalDefinitions:data.antiOverfit?.incrementalDiagnostics?.trackedDefinitions,
+                  incrementalMature:data.antiOverfit?.incrementalDiagnostics?.matureContrasts
                 },
                 validation:data.validationFirewall||null
               }));
@@ -416,12 +425,16 @@ jobs:
                 throw new Error("Research experiment ledger contract failed");
               }
               if((data.validationFirewall?.multipleTesting?.trackedExperimentDefinitions||0)!==7 ||
-                 (data.validationFirewall?.multipleTesting?.totalTrackedDefinitions||0)<21) {
-                throw new Error("Multiple-testing ledger did not include frozen experiments");
+                 (data.validationFirewall?.multipleTesting?.trackedIncrementalDefinitions||0)!==7 ||
+                 (data.validationFirewall?.multipleTesting?.totalTrackedDefinitions||0)<28) {
+                throw new Error("Multiple-testing ledger did not include frozen experiments and incremental contrasts");
               }
               if(data.antiOverfit?.redundancy?.researchOnly!==true ||
                  data.antiOverfit?.redundancy?.decisionImpact!==false ||
                  data.antiOverfit?.costStress?.researchOnly!==true ||
+                 data.antiOverfit?.incrementalDiagnostics?.researchOnly!==true ||
+                 data.antiOverfit?.incrementalDiagnostics?.decisionImpact!==false ||
+                 data.antiOverfit?.incrementalDiagnostics?.formalCoreImpact!==false ||
                  data.antiOverfit?.governanceMaturity?.formalCoreImpact!==false) {
                 throw new Error("Anti-overfit research firewall contract failed");
               }
