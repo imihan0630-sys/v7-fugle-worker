@@ -67,6 +67,7 @@ Shadow 後續結果：
 - 若只在單一年度、單一產業、單一 Regime 有效，視為反證警訊。
 - V8.7.5：R01–R07 進入機器可讀 experiment ledger；14 個既有 factor definitions + 7 個 frozen experiments 一併納入 multiple-testing 計數。
 - V8.7.5：自 2026-09-21 起比對正式選股日與 Shadow archive，監控缺檔、SELECTED 覆蓋不符、BROAD_CONTROL 缺失；只標記研究資料異常，不阻斷交易。
+- V8.7.6：新增 FULL_FORMAL_SCAN 因子 pairwise redundancy 診斷、SELECTED D5 30/60/100bps round-trip 成本壓力測試，以及保守的機器化 research maturity gate；任何缺口只會鎖住「提出正式升級審查」資格，不影響正式交易。
 
 ## 6. 正式核心升級
 狀態：LOCKED
