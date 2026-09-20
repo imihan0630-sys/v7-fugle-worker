@@ -55,7 +55,7 @@ replace_once(
 replace_once(
 '''    trainDates:trainDates.size,holdoutDates:holdoutDates.size,factors,
     interpretation:"因子研究只做描述與樣本外一致性檢查，不直接改正式選股分數。CONTEXT因子不以單調高低判定。",
-    multipleTestingGuard:"同時研究多因子容易產生資料探勘偏誤；未達升級門檻前不將單次漂亮結果視為有效規則。歷史重建樣本可研究，但不能取代前瞻正式快照。"''',
+    multipleTestingGuard:"同時研究多因子容易產生資料探勘偏誤；未達升級門檻前不將單次漂亮結果視為有效規則。"''',
 '''    trainDates:trainDates.size,holdoutDates:holdoutDates.size,factors,
     validation:{
       method:"PURGED_FORWARD_HOLDOUT",
