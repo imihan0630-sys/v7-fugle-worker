@@ -16,7 +16,7 @@ for(const marker of [
 
 const snapshots=[];
 for(let i=0;i<35;i++) snapshots.push({
-  scan_date:"2026-"+String(1+Math.floor(i/20)).padStart(2,"0")+"-"+String(1+(i%20)).padStart(2,"0"),
+  scan_date:(i<20?"2026":"2027")+"-01-"+String(1+(i%20)).padStart(2,"0"),
   market_regime:i%2?"BULL_BROAD":"MIXED",
   snapshot:{sourceCompleteness:"FULL_FORMAL_SCAN",market:{regime:i%2?"BULL_BROAD":"MIXED"},sector:{name:i%3?"AI":"PCB"},
     price:{residualSectorRs20:i,positiveDayRatio20:i*2,maxDrawdown20Pct:-i,atrPercent:2+i/100,volatility20:3+i/100},
