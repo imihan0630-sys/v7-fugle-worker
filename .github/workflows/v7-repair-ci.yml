@@ -29,6 +29,9 @@ on:
       - "scripts/apply_v8_6_1.py"
       - "scripts/apply_v8_6_2.py"
       - "scripts/apply_v8_6_3.py"
+      - "scripts/apply_v8_7_0.py"
+      - "RESEARCH_WORKLIST.md"
+      - "research/**"
       - "data/v7_formal_scan_backfill.json"
       - "data/recovered_chat_selections.json"
       - "tests/**"
@@ -122,6 +125,9 @@ jobs:
       - name: Apply V8.6.3 V7 latest-close source
         run: python3 scripts/apply_v8_6_3.py
 
+      - name: Apply V8.7.0 research foundation
+        run: python3 scripts/apply_v8_7_0.py
+
       - name: Syntax check Worker.js
         run: |
           cp Worker.js /tmp/Worker.mjs
@@ -150,11 +156,14 @@ jobs:
           node tests/test_v8_6_1_shared_navigation.mjs
           node tests/test_v8_6_2_v7_formal_performance.mjs
           node tests/test_v8_6_3_v7_current_close.mjs
+          node tests/test_v8_7_0_research_foundation.mjs
           node tests/github_plan_mirror.mjs self-test
 
       - name: Verify expected version
         run: |
-          grep -F 'const VERSION = "8.6.3-v7-current-close";' Worker.js
+          grep -F 'const VERSION = "8.7.0-research-foundation";' Worker.js
+          grep -F 'CREATE TABLE IF NOT EXISTS trade_research_snapshots' Worker.js
+          grep -F 'url.pathname === "/api/research/dashboard"' Worker.js
           grep -F 'url.pathname==="/api/system-overview"' Worker.js
           grep -F 'url.pathname==="/api/push-outbox"' Worker.js
           grep -F 'url.pathname==="/api/external-validation/stats"' Worker.js

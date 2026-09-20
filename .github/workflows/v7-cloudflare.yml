@@ -30,6 +30,9 @@ on:
       - "scripts/apply_v8_6_1.py"
       - "scripts/apply_v8_6_2.py"
       - "scripts/apply_v8_6_3.py"
+      - "scripts/apply_v8_7_0.py"
+      - "RESEARCH_WORKLIST.md"
+      - "research/**"
       - "data/v7_formal_scan_backfill.json"
       - "data/recovered_chat_selections.json"
       - "tests/**"
@@ -131,16 +134,22 @@ jobs:
       - name: Apply V8.6.3 V7 latest-close source
         run: python3 scripts/apply_v8_6_3.py
 
+      - name: Apply V8.7.0 research foundation
+        run: python3 scripts/apply_v8_7_0.py
+
       - name: Syntax check Worker.js
         run: |
           set -euo pipefail
           cp Worker.js /tmp/Worker.mjs
           node --check /tmp/Worker.mjs
 
-      - name: Validate V8.6.3 production contract
+      - name: Validate V8.7.0 production contract
         run: |
           set -euo pipefail
-          grep -F 'const VERSION = "8.6.3-v7-current-close";' Worker.js
+          grep -F 'const VERSION = "8.7.0-research-foundation";' Worker.js
+          grep -F 'CREATE TABLE IF NOT EXISTS trade_research_snapshots' Worker.js
+          grep -F 'url.pathname === "/api/research/dashboard"' Worker.js
+          grep -F '台股交易決策監控系統｜研究驗證中心' Worker.js
           grep -F 'const WATCHLIST_MAX = 12;' Worker.js
           grep -F 'async function finishDataIncompleteScan(' Worker.js
           grep -F 'function buildReviewedWatchlist(' Worker.js
@@ -181,6 +190,7 @@ jobs:
           node tests/test_v8_6_1_shared_navigation.mjs
           node tests/test_v8_6_2_v7_formal_performance.mjs
           node tests/test_v8_6_3_v7_current_close.mjs
+          node tests/test_v8_7_0_research_foundation.mjs
           node tests/github_plan_mirror.mjs self-test
 
       - name: Snapshot existing public monitoring configuration
@@ -443,6 +453,35 @@ jobs:
           const perf=await check.json();
           console.log(JSON.stringify({summary:perf.summary,byScanDate:perf.byScanDate}));
           if(!check.ok || !Array.isArray(perf.rows) || perf.rows.filter(x=>x.scanDate==="2026-09-11").length<5) throw new Error("V7 formal performance readback failed");
+          NODE
+
+      - name: Backfill current formal research snapshot
+        if: contains(github.event.head_commit.message, '[research-backfill-current]')
+        env:
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+        run: |
+          node - <<'NODE'
+          const origin="https://fugle-test.imihan0630.workers.dev";
+          const headers={"x-admin-token":process.env.V7_ADMIN_TOKEN,"content-type":"application/json","accept":"application/json"};
+          const response=await fetch(origin+"/api/research/backfill-current",{
+            method:"POST",headers,body:"{}",signal:AbortSignal.timeout(60000)
+          });
+          const data=await response.json();
+          console.log(JSON.stringify(data));
+          if(!response.ok || data.ok!==true || data.imported<1) throw new Error("Research snapshot current backfill failed");
+          if(data.noPlanChanges!==true || data.noPush!==true || data.noTrade!==true) throw new Error("Research backfill safety contract failed");
+          const check=await fetch(origin+"/api/research/dashboard?days=730",{
+            headers:{"x-admin-token":process.env.V7_ADMIN_TOKEN},signal:AbortSignal.timeout(30000)
+          });
+          const dashboard=await check.json();
+          console.log(JSON.stringify({
+            snapshotCoverage:dashboard.snapshotCoverage,
+            pathSummary:dashboard.pathPerformance?.summary,
+            promotionGate:dashboard.promotionGate
+          }));
+          if(!check.ok || dashboard.systemName!=="台股交易決策監控系統") throw new Error("Research dashboard readback failed");
+          if(!Array.isArray(dashboard.worklist) || dashboard.worklist.length!==4) throw new Error("Research worklist readback failed");
+          if(dashboard.promotionGate?.promotionEligible===true) throw new Error("Formal core must remain locked with current sample size");
           NODE
 
       - name: V8.1.0 read-only operations acceptance

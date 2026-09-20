@@ -10,8 +10,8 @@ for(const marker of [
   "async function readV7FormalSelectionPerformance",
   'url.pathname === "/api/v7-formal-performance"',
   'url.pathname === "/api/v7-formal-backfill"',
-  "V7 正式盤後選股績效",
-  "只包含 V7/V8 系統正式盤後 scan 的入選標的"
+  "正式盤後選股績效",
+  "只包含台股交易決策監控系統正式盤後 scan 的入選標的"
 ]) assert.ok(source.includes(marker),marker);
 
 const rows=JSON.parse(await readFile(new URL("../data/v7_formal_scan_backfill.json",import.meta.url),"utf8"));
@@ -26,5 +26,6 @@ console.log(JSON.stringify({
   version:"8.6.2-or-later",
   backfillRows:rows.length,
   formalScanOnly:true,
-  excludesRecoveredCandidates:true
+  excludesRecoveredCandidates:true,
+  visibleSystemName:"台股交易決策監控系統"
 }));
