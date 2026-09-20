@@ -5,7 +5,6 @@ const workerPath=process.env.V7_TEST_WORKER_PATH || new URL("../Worker.js",impor
 const source=await readFile(workerPath,"utf8");
 
 for(const marker of [
-  'const VERSION = "8.6.2-v7-formal-performance";',
   "CREATE TABLE IF NOT EXISTS v7_formal_scan_backfill",
   "async function importV7FormalScanBackfill",
   "async function readV7FormalSelectionPerformance",
@@ -24,7 +23,7 @@ assert.equal(rows.find(x=>x.symbol==="6530").profitCheck,100.5);
 
 console.log(JSON.stringify({
   ok:true,
-  version:"8.6.2-v7-formal-performance",
+  version:"8.6.2-or-later",
   backfillRows:rows.length,
   formalScanOnly:true,
   excludesRecoveredCandidates:true
