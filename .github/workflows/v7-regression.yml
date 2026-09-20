@@ -51,6 +51,7 @@ jobs:
           python3 scripts/apply_v8_7_2.py
           python3 scripts/apply_v8_7_3.py
           python3 scripts/apply_v8_7_4.py
+          python3 scripts/apply_v8_7_5.py
       - name: Syntax and offline behavior regression
         env:
           V7_TEST_WORKER_PATH: ${{ github.workspace }}/Worker.js
@@ -58,8 +59,10 @@ jobs:
           set -euo pipefail
           cp Worker.js /tmp/v7-worker.mjs
           node --check /tmp/v7-worker.mjs
-          grep -F 'const VERSION = "8.7.4-counterfactual-research";' Worker.js
+          grep -F 'const VERSION = "8.7.5-research-governance";' Worker.js
           grep -F 'SAME_SCAN_DATE_PAIRED_COHORT_DELTA' Worker.js
+          grep -F 'trackedExperimentDefinitions' Worker.js
+          grep -F 'RESEARCH_DATA_GAP' Worker.js
           grep -F 'FAILED_CLOSE_WITHIN_3D' Worker.js
           grep -F 'PURGED_FORWARD_HOLDOUT' Worker.js
           grep -F 'CREATE TABLE IF NOT EXISTS trade_research_shadow_candidates' Worker.js
@@ -101,6 +104,7 @@ jobs:
           node tests/test_v8_7_2_shadow_candidate_archive.mjs
           node tests/test_v8_7_3_validation_firewall.mjs
           node tests/test_v8_7_4_counterfactual_research.mjs
+          node tests/test_v8_7_5_research_governance.mjs
           node tests/github_plan_mirror.mjs self-test
       - name: Read-only production authorization preflight
         if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
