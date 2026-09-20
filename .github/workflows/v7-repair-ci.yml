@@ -34,6 +34,7 @@ on:
       - "scripts/apply_v8_7_2.py"
       - "scripts/apply_v8_7_3.py"
       - "scripts/apply_v8_7_4.py"
+      - "scripts/apply_v8_7_5.py"
       - "RESEARCH_WORKLIST.md"
       - "research/**"
       - "data/v7_formal_scan_backfill.json"
@@ -144,6 +145,9 @@ jobs:
       - name: Apply V8.7.4 counterfactual research
         run: python3 scripts/apply_v8_7_4.py
 
+      - name: Apply V8.7.5 research governance
+        run: python3 scripts/apply_v8_7_5.py
+
       - name: Syntax check Worker.js
         run: |
           cp Worker.js /tmp/Worker.mjs
@@ -177,12 +181,15 @@ jobs:
           node tests/test_v8_7_2_shadow_candidate_archive.mjs
           node tests/test_v8_7_3_validation_firewall.mjs
           node tests/test_v8_7_4_counterfactual_research.mjs
+          node tests/test_v8_7_5_research_governance.mjs
           node tests/github_plan_mirror.mjs self-test
 
       - name: Verify expected version
         run: |
-          grep -F 'const VERSION = "8.7.4-counterfactual-research";' Worker.js
+          grep -F 'const VERSION = "8.7.5-research-governance";' Worker.js
           grep -F 'PURGED_FORWARD_HOLDOUT' Worker.js
+          grep -F 'trackedExperimentDefinitions' Worker.js
+          grep -F 'RESEARCH_DATA_GAP' Worker.js
           grep -F 'SAME_SCAN_DATE_PAIRED_COHORT_DELTA' Worker.js
           grep -F 'FAILED_CLOSE_WITHIN_3D' Worker.js
           grep -F 'CREATE TABLE IF NOT EXISTS trade_research_shadow_candidates' Worker.js

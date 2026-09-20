@@ -35,6 +35,7 @@ on:
       - "scripts/apply_v8_7_2.py"
       - "scripts/apply_v8_7_3.py"
       - "scripts/apply_v8_7_4.py"
+      - "scripts/apply_v8_7_5.py"
       - "RESEARCH_WORKLIST.md"
       - "research/**"
       - "data/v7_formal_scan_backfill.json"
@@ -153,6 +154,9 @@ jobs:
       - name: Apply V8.7.4 counterfactual research
         run: python3 scripts/apply_v8_7_4.py
 
+      - name: Apply V8.7.5 research governance
+        run: python3 scripts/apply_v8_7_5.py
+
       - name: Syntax check Worker.js
         run: |
           set -euo pipefail
@@ -162,8 +166,11 @@ jobs:
       - name: Validate V8.7.3 production contract
         run: |
           set -euo pipefail
-          grep -F 'const VERSION = "8.7.4-counterfactual-research";' Worker.js
+          grep -F 'const VERSION = "8.7.5-research-governance";' Worker.js
           grep -F 'PURGED_FORWARD_HOLDOUT' Worker.js
+          grep -F 'trackedExperimentDefinitions' Worker.js
+          grep -F 'totalTrackedDefinitions' Worker.js
+          grep -F 'RESEARCH_DATA_GAP' Worker.js
           grep -F 'SAME_SCAN_DATE_PAIRED_COHORT_DELTA' Worker.js
           grep -F 'FAILED_CLOSE_WITHIN_3D' Worker.js
           grep -F 'WITHIN_SCAN_DATE_MEDIAN_SPLIT' Worker.js
@@ -222,6 +229,7 @@ jobs:
           node tests/test_v8_7_2_shadow_candidate_archive.mjs
           node tests/test_v8_7_3_validation_firewall.mjs
           node tests/test_v8_7_4_counterfactual_research.mjs
+          node tests/test_v8_7_5_research_governance.mjs
           node tests/github_plan_mirror.mjs self-test
 
       - name: Snapshot existing public monitoring configuration
@@ -345,6 +353,15 @@ jobs:
               buyTriggeredPlans:data.executionAlpha?.buyTriggeredPlans
             },
             regime:{usableDays:data.regimePersistence?.usableDays},
+            integrity:{
+              status:data.shadowIntegrity?.status,
+              expectedScanDays:data.shadowIntegrity?.expectedScanDays,
+              archivedScanDays:data.shadowIntegrity?.archivedScanDays
+            },
+            experiments:{
+              definitions:data.experimentLedger?.trackedExperimentDefinitions,
+              variants:data.experimentLedger?.trackedExperimentVariants
+            },
             validation:data.validationFirewall||null
           }));
           if(!response.ok) throw new Error("Research dashboard readback HTTP "+response.status);
@@ -358,6 +375,20 @@ jobs:
           }
           if(data.regimePersistence?.researchOnly!==true || data.regimePersistence?.decisionImpact!==false) {
             throw new Error("Regime/Persistence research firewall contract failed");
+          }
+          if(data.shadowIntegrity?.researchOnly!==true ||
+             data.shadowIntegrity?.decisionImpact!==false ||
+             data.shadowIntegrity?.formalCoreImpact!==false) {
+            throw new Error("Shadow archive integrity firewall contract failed");
+          }
+          if(data.experimentLedger?.researchOnly!==true ||
+             data.experimentLedger?.decisionImpact!==false ||
+             data.experimentLedger?.trackedExperimentDefinitions!==7) {
+            throw new Error("Research experiment ledger contract failed");
+          }
+          if((data.validationFirewall?.multipleTesting?.trackedExperimentDefinitions||0)!==7 ||
+             (data.validationFirewall?.multipleTesting?.totalTrackedDefinitions||0)<21) {
+            throw new Error("Multiple-testing ledger did not include frozen experiments");
           }
           if(data.validationFirewall?.formalCoreImpact!==false) {
             throw new Error("Formal core firewall contract failed");

@@ -41,7 +41,7 @@
 同日安全重跑採 scan_date 先清除再重寫，避免 stale cohort 殘留。
 
 ## 4. Counterfactual Outcome / Selection vs Execution
-狀態：IMPLEMENTING / ACCUMULATING（V8.7.4）
+狀態：IMPLEMENTED / ACCUMULATING（V8.7.4）
 
 Shadow 後續結果：
 - D+1 / 3 / 5 / 10 / 20 報酬、MFE、MAE
@@ -65,6 +65,8 @@ Shadow 後續結果：
 - 檢查 coverage、zero-pick、MFE/MAE、盈虧比、成本與滑價、因子冗餘、複雜度。
 - 研究結果不得因單次漂亮回測自動升級。
 - 若只在單一年度、單一產業、單一 Regime 有效，視為反證警訊。
+- V8.7.5：R01–R07 進入機器可讀 experiment ledger；14 個既有 factor definitions + 7 個 frozen experiments 一併納入 multiple-testing 計數。
+- V8.7.5：自 2026-09-21 起比對正式選股日與 Shadow archive，監控缺檔、SELECTED 覆蓋不符、BROAD_CONTROL 缺失；只標記研究資料異常，不阻斷交易。
 
 ## 6. 正式核心升級
 狀態：LOCKED
