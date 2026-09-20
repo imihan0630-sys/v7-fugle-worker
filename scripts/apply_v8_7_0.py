@@ -130,6 +130,16 @@ replace_once(
     "attach research snapshot"
 )
 
+
+replace_once(
+'''    pushEnabled: item.pushEnabled !== false
+  };''',
+'''    pushEnabled: item.pushEnabled !== false,
+    researchSnapshot: item?.researchSnapshot && typeof item.researchSnapshot === "object" ? item.researchSnapshot : null
+  };''',
+    "preserve research snapshot through normalization"
+)
+
 anchor='''function journalPerformanceAggregate(rows,keyFn) {'''
 helpers=r'''const RESEARCH_FACTOR_CATALOG=[
   {key:"price.residualSectorRs20",label:"產業超額RS20",direction:"HIGH"},
