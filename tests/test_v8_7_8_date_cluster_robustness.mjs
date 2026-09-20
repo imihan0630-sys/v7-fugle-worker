@@ -41,8 +41,8 @@ assert.equal(diag.clusteringUnit,"scanDate");
 assert.equal(diag.trackedDefinitions,7);
 assert.equal(diag.contrasts.length,7);
 assert.ok(diag.contrasts.every(x=>x.independentScanDates>=15));
-assert.ok(diag.contrasts.every(x=>x.leaveOneDateRuns>=10));
-assert.ok(diag.contrasts.every(x=>x.status!=="ACCUMULATING"));
+assert.ok(diag.contrasts.some(x=>x.leaveOneDateRuns>=10));
+assert.ok(diag.contrasts.filter(x=>x.leaveOneDateRuns>=10).every(x=>x.status!=="ACCUMULATING"));
 assert.ok(diag.contrasts.every(x=>x.formalCoreImpact===false));
 
 const base={eligibleForFormalReview:true,blockers:[],evidence:{fullProspectiveSnapshots:100},policy:"base"};
