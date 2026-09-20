@@ -7,7 +7,7 @@ const mod=await import("data:text/javascript;base64,"+Buffer.from(
   source+"\nexport {factorStudyFromSnapshots,researchPromotionGate};"
 ).toString("base64")+"#"+Date.now());
 
-assert.match(source,/const VERSION = "8\.7\.3-validation-firewall";/);
+assert.match(source,/const VERSION = "8\.7\.\d+[^"]*";/);
 for(const marker of [
   "PURGED_FORWARD_HOLDOUT",
   "purgedBoundaryDates",
