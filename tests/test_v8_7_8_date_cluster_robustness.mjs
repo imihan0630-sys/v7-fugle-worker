@@ -6,8 +6,9 @@ const source=await readFile(workerPath,"utf8");
 const exported="\nexport {RESEARCH_INCREMENTAL_CONTRASTS,researchDateClusterRobustness,researchApplyClusterRobustnessToMaturity};";
 const mod=await import("data:text/javascript;base64,"+Buffer.from(source+exported).toString("base64")+"#"+Date.now());
 
+assert.match(source,/const VERSION = "8\.7\.\d+[^"]*";/);
+
 for(const marker of [
-  "8.7.8-date-cluster-robustness",
   "LEAVE_ONE_SCAN_DATE_OUT_PARTIAL_CORRELATION",
   "FRAGILE_DATE_DEPENDENCE",
   "clusterRobustness",

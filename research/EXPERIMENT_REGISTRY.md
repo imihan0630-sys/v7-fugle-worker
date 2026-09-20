@@ -53,6 +53,14 @@
 - 反證：Quiet Strength 未優於 Attention Strength，或結果只存在極少數日期。
 - 禁止：事後改成 1.5x、1.8x、2.0x 等固定倍量門檻追求漂亮結果；新門檻必須另立 experiment ID。
 
+## R08 Two-Engine Momentum
+- 目的：檢驗同樣是強勢股，Quiet Underreaction 與 Attention Continuation 是否具有不同的後續路徑與 Regime 敏感度。
+- 固定分類：沿用 R07，同一選股日以 residualSectorRs20 與 volumeTodayVsPrev5 的橫截面中位數切分；強勢且低相對量＝QUIET_UNDERREACTION_PROXY，強勢且高相對量＝ATTENTION_CONTINUATION_PROXY。
+- 固定結果：D5 / D10 / D20 報酬、MFE、MAE，以及同日兩引擎平均差與 Market Regime 分布。
+- 外部證據：月營收、融資融券、官方注意/處置只作 context / falsification metadata，不參與 R08 分類，不加分。
+- 反證：兩引擎沒有穩定路徑差異、差異只由少數選股日或單一 Regime 驅動，或被 Residual RS / Breakout Quality 等既有因子完全解釋。
+- 禁止：事後尋找 1.5x / 1.8x / 2.0x 量能、任意 RS 門檻或不同持有窗口來挑最好看的版本；任何新切法另立 experiment/version。
+
 ## 共通治理
 - 證據獨立單位優先採「選股日」，不是單一股票筆數；同一選股日多檔股票視為群聚樣本。
 - V8.7.8 起，7 組增量對照固定做 leave-one-scan-date-out 敏感度；這是既有預註冊假說的穩健性診斷，不另創造可挑選的新因子。

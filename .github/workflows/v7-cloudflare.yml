@@ -39,6 +39,7 @@ on:
       - "scripts/apply_v8_7_6.py"
       - "scripts/apply_v8_7_7.py"
       - "scripts/apply_v8_7_8.py"
+      - "scripts/apply_v8_7_9.py"
       - "RESEARCH_WORKLIST.md"
       - "research/**"
       - "data/v7_formal_scan_backfill.json"
@@ -169,16 +170,19 @@ jobs:
       - name: Apply V8.7.8 date-cluster robustness diagnostics
         run: python3 scripts/apply_v8_7_8.py
 
+      - name: Apply V8.7.9 research evidence enrichment
+        run: python3 scripts/apply_v8_7_9.py
+
       - name: Syntax check Worker.js
         run: |
           set -euo pipefail
           cp Worker.js /tmp/Worker.mjs
           node --check /tmp/Worker.mjs
 
-      - name: Validate V8.7.8 production contract
+      - name: Validate V8.7.9 production contract
         run: |
           set -euo pipefail
-          grep -F 'const VERSION = "8.7.8-date-cluster-robustness";' Worker.js
+          grep -F 'const VERSION = "8.7.9-research-evidence-enrichment";' Worker.js
           grep -F 'PURGED_FORWARD_HOLDOUT' Worker.js
           grep -F 'trackedExperimentDefinitions' Worker.js
           grep -F 'totalTrackedDefinitions' Worker.js
@@ -189,6 +193,10 @@ jobs:
           grep -F 'trackedIncrementalDefinitions' Worker.js
           grep -F 'LEAVE_ONE_SCAN_DATE_OUT_PARTIAL_CORRELATION' Worker.js
           grep -F 'FRAGILE_DATE_DEPENDENCE' Worker.js
+          grep -F 'CREATE TABLE IF NOT EXISTS trade_research_external_evidence' Worker.js
+          grep -F 'R07_MEDIAN_SPLIT_TWO_ENGINE_COMPARISON' Worker.js
+          grep -F 'MARGIN_SHORT_ONLY_NOT_SBL' Worker.js
+          grep -F 'RESEARCH_MICROSTRUCTURE_CUTOFF' Worker.js
           grep -F 'SAME_SCAN_DATE_PAIRED_COHORT_DELTA' Worker.js
           grep -F 'FAILED_CLOSE_WITHIN_3D' Worker.js
           grep -F 'WITHIN_SCAN_DATE_MEDIAN_SPLIT' Worker.js
@@ -392,7 +400,18 @@ jobs:
                 },
                 experiments:{
                   definitions:data.experimentLedger?.trackedExperimentDefinitions,
-                  variants:data.experimentLedger?.trackedExperimentVariants
+                  variants:data.experimentLedger?.trackedExperimentVariants,
+                  ids:data.experimentLedger?.experiments?.map(x=>x.id)
+                },
+                externalEvidence:{
+                  status:data.externalEvidence?.status,
+                  total:data.externalEvidence?.total,
+                  dates:data.externalEvidence?.dates
+                },
+                twoEngine:{
+                  status:data.counterfactualResearch?.twoEngineStudy?.status,
+                  method:data.counterfactualResearch?.twoEngineStudy?.method,
+                  pairedD5:data.counterfactualResearch?.twoEngineStudy?.paired?.d5?.pairedDates
                 },
                 antiOverfit:{
                   redundancyStatus:data.antiOverfit?.redundancy?.status,
@@ -429,13 +448,25 @@ jobs:
               }
               if(data.experimentLedger?.researchOnly!==true ||
                  data.experimentLedger?.decisionImpact!==false ||
-                 data.experimentLedger?.trackedExperimentDefinitions!==7) {
+                 data.experimentLedger?.trackedExperimentDefinitions!==8 ||
+                 !data.experimentLedger?.experiments?.some(x=>x.id==="R08")) {
                 throw new Error("Research experiment ledger contract failed");
               }
-              if((data.validationFirewall?.multipleTesting?.trackedExperimentDefinitions||0)!==7 ||
+              if((data.validationFirewall?.multipleTesting?.trackedExperimentDefinitions||0)!==8 ||
                  (data.validationFirewall?.multipleTesting?.trackedIncrementalDefinitions||0)!==7 ||
-                 (data.validationFirewall?.multipleTesting?.totalTrackedDefinitions||0)<28) {
-                throw new Error("Multiple-testing ledger did not include frozen experiments and incremental contrasts");
+                 (data.validationFirewall?.multipleTesting?.totalTrackedDefinitions||0)<29) {
+                throw new Error("Multiple-testing ledger did not include R08 and incremental contrasts");
+              }
+              if(data.externalEvidence?.researchOnly!==true ||
+                 data.externalEvidence?.decisionImpact!==false ||
+                 data.externalEvidence?.formalCoreImpact!==false) {
+                throw new Error("External research evidence firewall contract failed");
+              }
+              if(data.counterfactualResearch?.twoEngineStudy?.researchOnly!==true ||
+                 data.counterfactualResearch?.twoEngineStudy?.decisionImpact!==false ||
+                 data.counterfactualResearch?.twoEngineStudy?.formalCoreImpact!==false ||
+                 data.counterfactualResearch?.twoEngineStudy?.method!=="R07_MEDIAN_SPLIT_TWO_ENGINE_COMPARISON") {
+                throw new Error("R08 Two-Engine research firewall contract failed");
               }
               if(data.antiOverfit?.redundancy?.researchOnly!==true ||
                  data.antiOverfit?.redundancy?.decisionImpact!==false ||
