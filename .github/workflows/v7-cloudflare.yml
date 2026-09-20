@@ -29,6 +29,7 @@ on:
       - "scripts/apply_v8_6_0.py"
       - "scripts/apply_v8_6_1.py"
       - "scripts/apply_v8_6_2.py"
+      - "scripts/apply_v8_6_3.py"
       - "data/v7_formal_scan_backfill.json"
       - "data/recovered_chat_selections.json"
       - "tests/**"
@@ -127,16 +128,19 @@ jobs:
       - name: Apply V8.6.2 V7 formal selection performance
         run: python3 scripts/apply_v8_6_2.py
 
+      - name: Apply V8.6.3 V7 latest-close source
+        run: python3 scripts/apply_v8_6_3.py
+
       - name: Syntax check Worker.js
         run: |
           set -euo pipefail
           cp Worker.js /tmp/Worker.mjs
           node --check /tmp/Worker.mjs
 
-      - name: Validate V8.6.2 production contract
+      - name: Validate V8.6.3 production contract
         run: |
           set -euo pipefail
-          grep -F 'const VERSION = "8.6.2-v7-formal-performance";' Worker.js
+          grep -F 'const VERSION = "8.6.3-v7-current-close";' Worker.js
           grep -F 'const WATCHLIST_MAX = 12;' Worker.js
           grep -F 'async function finishDataIncompleteScan(' Worker.js
           grep -F 'function buildReviewedWatchlist(' Worker.js
@@ -176,6 +180,7 @@ jobs:
           node tests/test_v8_6_0_performance_center.mjs
           node tests/test_v8_6_1_shared_navigation.mjs
           node tests/test_v8_6_2_v7_formal_performance.mjs
+          node tests/test_v8_6_3_v7_current_close.mjs
           node tests/github_plan_mirror.mjs self-test
 
       - name: Snapshot existing public monitoring configuration
