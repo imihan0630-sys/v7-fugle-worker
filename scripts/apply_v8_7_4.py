@@ -25,7 +25,7 @@ replace_once(
 
 helpers=Path("research/counterfactual_v8_7_4.js").read_text(encoding="utf-8").strip()
 anchor='''function buildIndependentPoolPreview(item, rank, finalSymbols = new Set()) {'''
-replace_once(anchor,helpers+"\\n\\n"+anchor,"counterfactual research helpers")
+replace_once(anchor,helpers+"\n\n"+anchor,"counterfactual research helpers")
 
 replace_once(
 '''async function readResearchDashboard(env,days=730) {
