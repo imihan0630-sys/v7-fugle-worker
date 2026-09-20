@@ -151,6 +151,9 @@ jobs:
       - name: Apply V8.7.6 anti-overfit diagnostics
         run: python3 scripts/apply_v8_7_6.py
 
+      - name: Apply V8.7.7 incremental factor diagnostics
+        run: python3 scripts/apply_v8_7_7.py
+
       - name: Syntax check Worker.js
         run: |
           cp Worker.js /tmp/Worker.mjs
@@ -186,16 +189,19 @@ jobs:
           node tests/test_v8_7_4_counterfactual_research.mjs
           node tests/test_v8_7_5_research_governance.mjs
           node tests/test_v8_7_6_anti_overfit.mjs
+          node tests/test_v8_7_7_incremental_factor_diagnostics.mjs
           node tests/github_plan_mirror.mjs self-test
 
       - name: Verify expected version
         run: |
-          grep -F 'const VERSION = "8.7.6-anti-overfit-diagnostics";' Worker.js
+          grep -F 'const VERSION = "8.7.7-incremental-factor-diagnostics";' Worker.js
           grep -F 'PURGED_FORWARD_HOLDOUT' Worker.js
           grep -F 'trackedExperimentDefinitions' Worker.js
           grep -F 'RESEARCH_DATA_GAP' Worker.js
           grep -F 'PAIRWISE_PEARSON_FULL_FORMAL_SCAN' Worker.js
           grep -F 'eligibleForFormalReview' Worker.js
+          grep -F 'WITHIN_SCAN_DATE_DEMEANED_PARTIAL_CORRELATION' Worker.js
+          grep -F 'trackedIncrementalDefinitions' Worker.js
           grep -F 'SAME_SCAN_DATE_PAIRED_COHORT_DELTA' Worker.js
           grep -F 'FAILED_CLOSE_WITHIN_3D' Worker.js
           grep -F 'CREATE TABLE IF NOT EXISTS trade_research_shadow_candidates' Worker.js
