@@ -6,7 +6,7 @@ const source=await readFile(process.env.V7_TEST_WORKER_PATH || new URL('../Worke
 const helpers=await import('data:text/javascript;base64,'+Buffer.from(source+'\nexport {loadTradingCalendar,isTradingDate};').toString('base64'));
 const now=new Date(),date=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Taipei',year:'numeric',month:'2-digit',day:'2-digit'}).format(now);
 const time=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Taipei',hour:'2-digit',minute:'2-digit',hour12:false}).format(now);
-if(time<'18:10' || time>'23:00') {console.log(JSON.stringify({skipped:true,reason:'Outside same-day recovery window',date,time}));process.exit(0);}
+if(time<'23:35' || time>'23:59') {console.log(JSON.stringify({skipped:true,reason:'Outside 23:35-23:59 same-day recovery window',date,time}));process.exit(0);}
 await helpers.loadTradingCalendar({},Number(date.slice(0,4)));
 if(!helpers.isTradingDate(date)) {console.log(JSON.stringify({skipped:true,reason:'Not a trading day',date}));process.exit(0);}
 assert.ok(process.env.V7_ADMIN_TOKEN,'Normal configured administrator token required');

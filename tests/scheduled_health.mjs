@@ -73,7 +73,7 @@ async function main() {
   const time=new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Taipei',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(now);
   await helpers.loadTradingCalendar({},Number(date.slice(0,4)));
   const intraday=process.argv.includes('--intraday');
-  if(!helpers.isTradingDate(date) || (intraday ? time<'09:20' || time>'13:24' : time<'18:35' || time>'23:00')) {
+  if(!helpers.isTradingDate(date) || (intraday ? time<'09:20' || time>'13:24' : time<'23:45' || time>'23:59')) {
     console.log(JSON.stringify({skipped:true,date,time,reason:'Outside verified trading-day/window; no business action'}));return;
   }
   assert.ok(process.env.V7_ADMIN_TOKEN,'Normal configured administrator token required');

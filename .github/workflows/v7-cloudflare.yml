@@ -42,6 +42,7 @@ on:
       - "scripts/apply_v8_7_9.py"
       - "scripts/apply_v8_7_10.py"
       - "scripts/apply_v8_7_11.py"
+      - "scripts/apply_v8_7_12.py"
       - "RESEARCH_WORKLIST.md"
       - "research/**"
       - "data/v7_formal_scan_backfill.json"
@@ -181,16 +182,21 @@ jobs:
       - name: Apply V8.7.11 cross-market evidence provenance
         run: python3 scripts/apply_v8_7_11.py
 
+      - name: Apply V8.7.12 after-market 23:35 policy
+        run: python3 scripts/apply_v8_7_12.py
+
       - name: Syntax check Worker.js
         run: |
           set -euo pipefail
           cp Worker.js /tmp/Worker.mjs
           node --check /tmp/Worker.mjs
 
-      - name: Validate V8.7.11 production contract
+      - name: Validate V8.7.12 production contract
         run: |
           set -euo pipefail
-          grep -F 'const VERSION = "8.7.11-cross-market-evidence-provenance";' Worker.js
+          grep -F 'const VERSION = "8.7.12-after-market-2335";' Worker.js
+          grep -F '35 15 * * MON-FRI' Worker.js
+          grep -F '23:35 盤後掃描' Worker.js
           grep -F 'PURGED_FORWARD_HOLDOUT' Worker.js
           grep -F 'trackedExperimentDefinitions' Worker.js
           grep -F 'totalTrackedDefinitions' Worker.js
@@ -278,6 +284,7 @@ jobs:
           node tests/test_v8_7_9_research_evidence_enrichment.mjs
           node tests/test_v8_7_10_research_readiness_matrix.mjs
           node tests/test_v8_7_11_cross_market_evidence.mjs
+          node tests/test_v8_7_12_after_market_2335.mjs
           node tests/github_plan_mirror.mjs self-test
 
       - name: Snapshot existing public monitoring configuration
@@ -368,6 +375,13 @@ jobs:
               raise SystemExit(f"Cloudflare API returned success != true: {data}")
           print("Cloudflare Worker content deploy succeeded.")
           PY
+
+      - name: Migrate after-market Cron to 23:35 Taipei only
+        env:
+          CF_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CF_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          SCRIPT_NAME: fugle-test
+        run: node tests/update_cloudflare_after_market_cron.mjs
 
       - id: verify
         name: Verify deployed version and preserved configuration

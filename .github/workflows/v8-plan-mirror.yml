@@ -3,7 +3,7 @@ name: V8 Encrypted Plan Mirror
 on:
   workflow_dispatch:
   schedule:
-    - cron: "35 10 * * 1-5"
+    - cron: "50 15 * * 1-5" # 23:50 Taipei, after 23:35 formal scan
   push:
     branches: [main]
     paths:

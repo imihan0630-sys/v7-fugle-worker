@@ -58,6 +58,7 @@ jobs:
           python3 scripts/apply_v8_7_9.py
           python3 scripts/apply_v8_7_10.py
           python3 scripts/apply_v8_7_11.py
+          python3 scripts/apply_v8_7_12.py
       - name: Syntax and offline behavior regression
         env:
           V7_TEST_WORKER_PATH: ${{ github.workspace }}/Worker.js
@@ -65,7 +66,9 @@ jobs:
           set -euo pipefail
           cp Worker.js /tmp/v7-worker.mjs
           node --check /tmp/v7-worker.mjs
-          grep -F 'const VERSION = "8.7.11-cross-market-evidence-provenance";' Worker.js
+          grep -F 'const VERSION = "8.7.12-after-market-2335";' Worker.js
+          grep -F '35 15 * * MON-FRI' Worker.js
+          grep -F '23:35 盤後掃描' Worker.js
           grep -F 'SAME_SCAN_DATE_PAIRED_COHORT_DELTA' Worker.js
           grep -F 'trackedExperimentDefinitions' Worker.js
           grep -F 'RESEARCH_DATA_GAP' Worker.js
@@ -134,6 +137,7 @@ jobs:
           node tests/test_v8_7_9_research_evidence_enrichment.mjs
           node tests/test_v8_7_10_research_readiness_matrix.mjs
           node tests/test_v8_7_11_cross_market_evidence.mjs
+          node tests/test_v8_7_12_after_market_2335.mjs
           node tests/github_plan_mirror.mjs self-test
       - name: Read-only production authorization preflight
         if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
