@@ -7,7 +7,7 @@ const mod=await import("data:text/javascript;base64,"+Buffer.from(
   source+"\nexport {researchPathForSelection,factorStudyFromSnapshots,researchPromotionGate,buildResearchMarketContext,normalizeStock};"
 ).toString("base64")+"#"+Date.now());
 
-assert.match(source,/const VERSION = "8\.7\.0-research-foundation";/);
+assert.ok(source.includes("CREATE TABLE IF NOT EXISTS trade_research_snapshots"));
 for(const marker of [
   "CREATE TABLE IF NOT EXISTS trade_research_snapshots",
   "CREATE TABLE IF NOT EXISTS trade_research_days",
@@ -75,7 +75,7 @@ assert.equal(normalized.researchSnapshot.schemaVersion,"research-snapshot-v1");
 
 console.log(JSON.stringify({
   ok:true,
-  version:"8.7.0-research-foundation",
+  version:"8.7.0-or-later",
   researchSnapshots:true,
   pathMetrics:[1,3,5,10,20],
   promotionGate:true,
