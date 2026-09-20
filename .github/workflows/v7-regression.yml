@@ -47,6 +47,7 @@ jobs:
           python3 scripts/apply_v8_6_2.py
           python3 scripts/apply_v8_6_3.py
           python3 scripts/apply_v8_7_0.py
+          python3 scripts/apply_v8_7_1.py
       - name: Syntax and offline behavior regression
         env:
           V7_TEST_WORKER_PATH: ${{ github.workspace }}/Worker.js
@@ -54,7 +55,8 @@ jobs:
           set -euo pipefail
           cp Worker.js /tmp/v7-worker.mjs
           node --check /tmp/v7-worker.mjs
-          grep -F 'const VERSION = "8.7.0-research-foundation";' Worker.js
+          grep -F 'const VERSION = "8.7.1-history-research-v2";' Worker.js
+          grep -F 'url.pathname === "/api/research/reconstruct-history"' Worker.js
           grep -F 'CREATE TABLE IF NOT EXISTS trade_research_snapshots' Worker.js
           grep -F 'url.pathname === "/api/research/dashboard"' Worker.js
           grep -F 'const WATCHLIST_MAX = 12;' Worker.js
@@ -88,6 +90,7 @@ jobs:
           node tests/test_v8_6_2_v7_formal_performance.mjs
           node tests/test_v8_6_3_v7_current_close.mjs
           node tests/test_v8_7_0_research_foundation.mjs
+          node tests/test_v8_7_1_history_research.mjs
           node tests/github_plan_mirror.mjs self-test
       - name: Read-only production authorization preflight
         if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
