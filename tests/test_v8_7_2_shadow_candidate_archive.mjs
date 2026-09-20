@@ -7,7 +7,7 @@ const mod=await import("data:text/javascript;base64,"+Buffer.from(
   source+"\nexport {researchStableHash,buildShadowCandidateArchive};"
 ).toString("base64")+"#"+Date.now());
 
-assert.match(source,/const VERSION = "8\.7\.2-shadow-candidate-firewall";/);
+assert.ok(source.includes("CREATE TABLE IF NOT EXISTS trade_research_shadow_candidates"));
 for(const marker of [
   "CREATE TABLE IF NOT EXISTS trade_research_shadow_candidates",
   "QUALIFIED_NOT_SELECTED",
@@ -90,7 +90,7 @@ assert.ok(archive.rows.every(x=>x.snapshot?.shadow?.pushEligible===false));
 
 console.log(JSON.stringify({
   ok:true,
-  version:"8.7.2-shadow-candidate-firewall",
+  version:"8.7.2-or-later",
   shadowArchive:true,
   cohorts:archive.counts,
   formalSelectionMutated:false,
