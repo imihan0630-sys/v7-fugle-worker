@@ -334,65 +334,93 @@ jobs:
           V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
         run: |
           node - <<'NODE'
+          import {readFileSync} from "node:fs";
           const origin="https://fugle-test.imihan0630.workers.dev";
-          const response=await fetch(origin+"/api/research/dashboard?days=90",{
-            headers:{"x-admin-token":process.env.V7_ADMIN_TOKEN,"accept":"application/json"},
-            signal:AbortSignal.timeout(60000)
-          });
-          const data=await response.json();
-          console.log(JSON.stringify({
-            version:data.version||null,
-            shadow:data.shadowCandidates||null,
-            counterfactual:{
-              archivedRows:data.counterfactualResearch?.archivedRows,
-              coverage:data.counterfactualResearch?.coverage,
-              selectionAlphaMethod:data.counterfactualResearch?.selectionAlpha?.method
-            },
-            execution:{
-              selectedPlans:data.executionAlpha?.selectedPlans,
-              buyTriggeredPlans:data.executionAlpha?.buyTriggeredPlans
-            },
-            regime:{usableDays:data.regimePersistence?.usableDays},
-            integrity:{
-              status:data.shadowIntegrity?.status,
-              expectedScanDays:data.shadowIntegrity?.expectedScanDays,
-              archivedScanDays:data.shadowIntegrity?.archivedScanDays
-            },
-            experiments:{
-              definitions:data.experimentLedger?.trackedExperimentDefinitions,
-              variants:data.experimentLedger?.trackedExperimentVariants
-            },
-            validation:data.validationFirewall||null
-          }));
-          if(!response.ok) throw new Error("Research dashboard readback HTTP "+response.status);
-          if(data.counterfactualResearch?.researchOnly!==true ||
-             data.counterfactualResearch?.decisionImpact!==false ||
-             data.counterfactualResearch?.formalScoreImpact!==false) {
-            throw new Error("Counterfactual research firewall contract failed");
+          const source=readFileSync("Worker.js","utf8");
+          const expected=source.match(/const VERSION = "([^"]+)";/)?.[1];
+          if(!expected) throw new Error("Unable to determine expected Worker version");
+          let lastVersion=null,lastError=null;
+          for(let attempt=1;attempt<=24;attempt++){
+            try{
+              const response=await fetch(origin+"/api/research/dashboard?days=90&deployVerify="+Date.now()+"-"+attempt,{
+                headers:{
+                  "x-admin-token":process.env.V7_ADMIN_TOKEN,
+                  "accept":"application/json",
+                  "cache-control":"no-cache"
+                },
+                signal:AbortSignal.timeout(60000)
+              });
+              const data=await response.json();
+              lastVersion=data.version||null;
+              console.log(JSON.stringify({
+                attempt,expectedVersion:expected,observedVersion:lastVersion,
+                shadow:data.shadowCandidates||null,
+                counterfactual:{
+                  archivedRows:data.counterfactualResearch?.archivedRows,
+                  coverage:data.counterfactualResearch?.coverage,
+                  selectionAlphaMethod:data.counterfactualResearch?.selectionAlpha?.method
+                },
+                execution:{
+                  selectedPlans:data.executionAlpha?.selectedPlans,
+                  buyTriggeredPlans:data.executionAlpha?.buyTriggeredPlans
+                },
+                regime:{usableDays:data.regimePersistence?.usableDays},
+                integrity:{
+                  status:data.shadowIntegrity?.status,
+                  expectedScanDays:data.shadowIntegrity?.expectedScanDays,
+                  archivedScanDays:data.shadowIntegrity?.archivedScanDays
+                },
+                experiments:{
+                  definitions:data.experimentLedger?.trackedExperimentDefinitions,
+                  variants:data.experimentLedger?.trackedExperimentVariants
+                },
+                validation:data.validationFirewall||null
+              }));
+              if(!response.ok) throw new Error("Research dashboard readback HTTP "+response.status);
+              if(lastVersion!==expected){
+                lastError=new Error("Propagation pending: expected "+expected+" but observed "+lastVersion);
+                await new Promise(resolve=>setTimeout(resolve,3000));
+                continue;
+              }
+              if(data.counterfactualResearch?.researchOnly!==true ||
+                 data.counterfactualResearch?.decisionImpact!==false ||
+                 data.counterfactualResearch?.formalScoreImpact!==false) {
+                throw new Error("Counterfactual research firewall contract failed");
+              }
+              if(data.executionAlpha?.researchOnly!==true || data.executionAlpha?.decisionImpact!==false) {
+                throw new Error("Execution Alpha research firewall contract failed");
+              }
+              if(data.regimePersistence?.researchOnly!==true || data.regimePersistence?.decisionImpact!==false) {
+                throw new Error("Regime/Persistence research firewall contract failed");
+              }
+              if(data.shadowIntegrity?.researchOnly!==true ||
+                 data.shadowIntegrity?.decisionImpact!==false ||
+                 data.shadowIntegrity?.formalCoreImpact!==false) {
+                throw new Error("Shadow archive integrity firewall contract failed");
+              }
+              if(data.experimentLedger?.researchOnly!==true ||
+                 data.experimentLedger?.decisionImpact!==false ||
+                 data.experimentLedger?.trackedExperimentDefinitions!==7) {
+                throw new Error("Research experiment ledger contract failed");
+              }
+              if((data.validationFirewall?.multipleTesting?.trackedExperimentDefinitions||0)!==7 ||
+                 (data.validationFirewall?.multipleTesting?.totalTrackedDefinitions||0)<21) {
+                throw new Error("Multiple-testing ledger did not include frozen experiments");
+              }
+              if(data.validationFirewall?.formalCoreImpact!==false) {
+                throw new Error("Formal core firewall contract failed");
+              }
+              console.log("Research readback verified on expected deployment: "+expected);
+              process.exit(0);
+            }catch(error){
+              lastError=error;
+              if(lastVersion===expected) throw error;
+              console.warn("Research readback retry "+attempt+": "+String(error));
+              if(attempt<24) await new Promise(resolve=>setTimeout(resolve,3000));
+            }
           }
-          if(data.executionAlpha?.researchOnly!==true || data.executionAlpha?.decisionImpact!==false) {
-            throw new Error("Execution Alpha research firewall contract failed");
-          }
-          if(data.regimePersistence?.researchOnly!==true || data.regimePersistence?.decisionImpact!==false) {
-            throw new Error("Regime/Persistence research firewall contract failed");
-          }
-          if(data.shadowIntegrity?.researchOnly!==true ||
-             data.shadowIntegrity?.decisionImpact!==false ||
-             data.shadowIntegrity?.formalCoreImpact!==false) {
-            throw new Error("Shadow archive integrity firewall contract failed");
-          }
-          if(data.experimentLedger?.researchOnly!==true ||
-             data.experimentLedger?.decisionImpact!==false ||
-             data.experimentLedger?.trackedExperimentDefinitions!==7) {
-            throw new Error("Research experiment ledger contract failed");
-          }
-          if((data.validationFirewall?.multipleTesting?.trackedExperimentDefinitions||0)!==7 ||
-             (data.validationFirewall?.multipleTesting?.totalTrackedDefinitions||0)<21) {
-            throw new Error("Multiple-testing ledger did not include frozen experiments");
-          }
-          if(data.validationFirewall?.formalCoreImpact!==false) {
-            throw new Error("Formal core firewall contract failed");
-          }
+          throw new Error("Research readback never reached expected deployment "+expected+
+            "; last observed="+String(lastVersion)+"; last error="+String(lastError));
           NODE
 
       - name: Seed D1 plan archive and report Firestore migration readiness
