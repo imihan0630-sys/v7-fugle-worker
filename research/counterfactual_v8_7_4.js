@@ -1,3 +1,9 @@
+function researchNumber(value) {
+  if(value===null || value===undefined || value==="") return null;
+  const n=Number(value);
+  return Number.isFinite(n)?n:null;
+}
+
 function researchMean(values) {
   const xs=(values||[]).map(Number).filter(Number.isFinite);
   return xs.length ? xs.reduce((a,b)=>a+b,0)/xs.length : null;
@@ -22,26 +28,26 @@ function researchMetricStats(values) {
 }
 
 function researchShadowBreakoutReference(snapshot) {
-  const direct=journalNumber(snapshot?.price?.breakoutReferencePriceResearch);
+  const direct=researchNumber(snapshot?.price?.breakoutReferencePriceResearch);
   if(direct!==null && direct>0) return direct;
-  const close=journalNumber(snapshot?.price?.close);
-  const distance=journalNumber(snapshot?.price?.breakoutDistancePct);
+  const close=researchNumber(snapshot?.price?.close);
+  const distance=researchNumber(snapshot?.price?.breakoutDistancePct);
   if(close!==null && close>0 && distance!==null && distance>-99) return close/(1+distance/100);
   return null;
 }
 
 function researchShadowOutcomeForRow(row,bars) {
   const snapshot=row?.snapshot||{};
-  const baseline=journalNumber(snapshot?.price?.close);
+  const baseline=researchNumber(snapshot?.price?.close);
   const scanDate=String(row?.scan_date||row?.scanDate||"").slice(0,10);
   const post=(Array.isArray(bars)?bars:[])
-    .filter(bar=>String(bar?.date||"").slice(0,10)>scanDate && journalNumber(bar?.close)!==null)
+    .filter(bar=>String(bar?.date||"").slice(0,10)>scanDate && researchNumber(bar?.close)!==null)
     .sort((a,b)=>String(a.date).localeCompare(String(b.date)));
   const metricForSlice=slice=>{
     if(!slice.length || !(baseline>0)) return null;
-    const highs=slice.map(x=>journalNumber(x?.high)??journalNumber(x?.close)).filter(Number.isFinite);
-    const lows=slice.map(x=>journalNumber(x?.low)??journalNumber(x?.close)).filter(Number.isFinite);
-    const last=slice.at(-1),lastClose=journalNumber(last?.close);
+    const highs=slice.map(x=>researchNumber(x?.high)??researchNumber(x?.close)).filter(Number.isFinite);
+    const lows=slice.map(x=>researchNumber(x?.low)??researchNumber(x?.close)).filter(Number.isFinite);
+    const last=slice.at(-1),lastClose=researchNumber(last?.close);
     const maxHigh=highs.length?Math.max(...highs):null,minLow=lows.length?Math.min(...lows):null;
     return {
       tradingDays:slice.length,
@@ -53,14 +59,14 @@ function researchShadowOutcomeForRow(row,bars) {
   };
   const horizons={};
   for(const h of [1,3,5,10,20]) horizons["d"+h]=post.length>=h?metricForSlice(post.slice(0,h)):null;
-  const next=post[0]||null,nextOpen=journalNumber(next?.open),nextClose=journalNumber(next?.close);
+  const next=post[0]||null,nextOpen=researchNumber(next?.open),nextClose=researchNumber(next?.close);
   const overnightPct=baseline>0 && nextOpen!==null && nextOpen>0 ? round((nextOpen/baseline-1)*100,2) : null;
   const intradayPct=nextOpen!==null && nextOpen>0 && nextClose!==null ? round((nextClose/nextOpen-1)*100,2) : null;
   const breakoutReference=researchShadowBreakoutReference(snapshot);
   const breakoutActive=breakoutReference!==null && baseline!==null && baseline>=breakoutReference;
   const first3=post.slice(0,3);
-  const closeFail=breakoutActive ? first3.find(x=>(journalNumber(x?.close)??Infinity)<breakoutReference) : null;
-  const intradayViolation=breakoutActive ? first3.find(x=>(journalNumber(x?.low)??Infinity)<breakoutReference) : null;
+  const closeFail=breakoutActive ? first3.find(x=>(researchNumber(x?.close)??Infinity)<breakoutReference) : null;
+  const intradayViolation=breakoutActive ? first3.find(x=>(researchNumber(x?.low)??Infinity)<breakoutReference) : null;
   let breakoutStatus="NO_REFERENCE";
   if(breakoutReference!==null) {
     if(!breakoutActive) breakoutStatus="NOT_ACTIVE_AT_SCAN";
@@ -135,7 +141,7 @@ function researchPairedSelectionAlpha(outcomes) {
 function researchExecutionAlphaFromRows(plans,signals) {
   const firstBuy=new Map();
   for(const row of (signals||[]).slice().sort((a,b)=>String(a.occurred_at||"").localeCompare(String(b.occurred_at||"")))) {
-    if(String(row.signal_type)!=="BUY" || journalNumber(row.market_price)===null) continue;
+    if(String(row.signal_type)!=="BUY" || researchNumber(row.market_price)===null) continue;
     const key=String(row.plan_scan_date||"")+"|"+String(row.symbol||"");
     if(!firstBuy.has(key)) firstBuy.set(key,row);
   }
@@ -143,9 +149,9 @@ function researchExecutionAlphaFromRows(plans,signals) {
   for(const plan of plans||[]) {
     const key=String(plan.scan_date||"")+"|"+String(plan.symbol||"");
     const buy=firstBuy.get(key);
-    const formal=journalNumber(plan.formal_close),entry=journalNumber(buy?.market_price);
+    const formal=researchNumber(plan.formal_close),entry=researchNumber(buy?.market_price);
     if(!(formal>0) || !(entry>0)) continue;
-    const low=journalNumber(plan.buy_low),high=journalNumber(plan.buy_high);
+    const low=researchNumber(plan.buy_low),high=researchNumber(plan.buy_high);
     const mid=low!==null&&high!==null?(low+high)/2:null;
     rows.push({
       scanDate:String(plan.scan_date),symbol:String(plan.symbol),name:plan.name||"",
@@ -238,14 +244,14 @@ function researchQuietAttentionStudy(outcomes) {
   const dates=[...new Set((outcomes||[]).map(x=>x.scanDate))];
   for(const date of dates) {
     const rows=(outcomes||[]).filter(x=>x.scanDate===date && Number.isFinite(x.horizons?.d5?.returnPct) &&
-      Number.isFinite(journalNumber(x.snapshot?.price?.residualSectorRs20)) &&
-      Number.isFinite(journalNumber(x.snapshot?.volume?.volumeTodayVsPrev5)));
+      Number.isFinite(researchNumber(x.snapshot?.price?.residualSectorRs20)) &&
+      Number.isFinite(researchNumber(x.snapshot?.volume?.volumeTodayVsPrev5)));
     if(rows.length<4) continue;
-    const strengthMed=researchMedian(rows.map(x=>journalNumber(x.snapshot.price.residualSectorRs20)));
-    const attentionMed=researchMedian(rows.map(x=>journalNumber(x.snapshot.volume.volumeTodayVsPrev5)));
+    const strengthMed=researchMedian(rows.map(x=>researchNumber(x.snapshot.price.residualSectorRs20)));
+    const attentionMed=researchMedian(rows.map(x=>researchNumber(x.snapshot.volume.volumeTodayVsPrev5)));
     for(const row of rows) {
-      const strong=journalNumber(row.snapshot.price.residualSectorRs20)>=strengthMed;
-      const attention=journalNumber(row.snapshot.volume.volumeTodayVsPrev5)>=attentionMed;
+      const strong=researchNumber(row.snapshot.price.residualSectorRs20)>=strengthMed;
+      const attention=researchNumber(row.snapshot.volume.volumeTodayVsPrev5)>=attentionMed;
       const key=strong?(attention?"ATTENTION_STRENGTH":"QUIET_STRENGTH"):(attention?"ATTENTION_WEAK":"QUIET_WEAK");
       buckets[key].push(row.horizons.d5.returnPct);
     }
@@ -274,7 +280,7 @@ function buildShadowResearchDiagnostics(outcomes) {
       intradayPct:researchMetricStats(d1.map(x=>x.firstDay.intradayPct)),
       spreadIntradayMinusOvernightPct:researchMetricStats(d1.map(x=>x.firstDay.intradayPct-x.firstDay.overnightPct))
     },
-    residualRS:researchDailyMedianStudy(outcomes,x=>journalNumber(x.snapshot?.price?.residualSectorRs20),"HIGH_RESIDUAL_RS","LOW_RESIDUAL_RS"),
+    residualRS:researchDailyMedianStudy(outcomes,x=>researchNumber(x.snapshot?.price?.residualSectorRs20),"HIGH_RESIDUAL_RS","LOW_RESIDUAL_RS"),
     quietVsAttention:researchQuietAttentionStudy(outcomes)
   };
 }
