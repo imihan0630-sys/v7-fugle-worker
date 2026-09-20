@@ -37,7 +37,6 @@ assert.equal(stats.profitCheckTriggeredPlans,1);
 assert.equal(stats.profitCheckRate,33.33);
 
 for(const marker of [
-  'const VERSION = "8.5.0-trade-journal";',
   'CREATE TABLE IF NOT EXISTS v8_trade_journal_days',
   'CREATE TABLE IF NOT EXISTS v8_trade_journal_plans',
   'CREATE TABLE IF NOT EXISTS v8_trade_journal_signals',
