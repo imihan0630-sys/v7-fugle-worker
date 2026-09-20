@@ -35,7 +35,7 @@ assert.equal(otc.pointInTimeHistoryStatus,"CURRENT_SNAPSHOT_ONLY");
 assert.equal(otc.firstKnownAt,null);
 
 const sblPayload={
-  date:"20260921",
+  date:"20260918",
   fields:["代號","名稱","前日餘額","賣出","買進","現券","今日餘額","次一營業日限額","前日餘額","當日賣出","當日還券","當日調整","當日餘額","次一營業日可限額","備註"],
   data:[["2330","台積電","100","2","3","0","99","10000","5000","700","200","10","5510","20000",""]]
 };
@@ -45,9 +45,11 @@ assert.equal(sbl.map.get("2330").sblShortSale,700);
 assert.equal(sbl.map.get("2330").sblShortBalance,5510);
 assert.equal(sbl.map.get("2330").shortSideScope,"ACTUAL_SBL_SHORT_SALE");
 assert.equal(sbl.map.get("2330").flowWindowStatus,"RAW_DAILY_ONLY_NO_CONTIGUOUS_HISTORY");
-const stale=mod.researchTwseSblShortEvidenceFromPayload({...sblPayload,date:"20260920"},"2026-09-21");
-assert.equal(stale.dateMatched,false);
-assert.equal(stale.map.size,0);
+assert.equal(sbl.pointInTimeEligible,true);
+assert.equal(sbl.map.get("2330").evidenceAvailableBeforeScan,true);
+const sameDay=mod.researchTwseSblShortEvidenceFromPayload({...sblPayload,date:"20260921"},"2026-09-21");
+assert.equal(sameDay.pointInTimeEligible,false);
+assert.equal(sameDay.map.size,0);
 
 const twseStatus=mod.researchOfficialStatusForMarketV8711("TWSE","AVAILABLE",new Map(),"2330","UNKNOWN_TPEX");
 assert.equal(twseStatus.status,"AVAILABLE");
