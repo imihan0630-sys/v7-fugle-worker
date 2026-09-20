@@ -7,7 +7,7 @@ const mod=await import("data:text/javascript;base64,"+Buffer.from(
   source+"\nexport {researchTickSize,researchLimitState,researchPriceFeaturesFromBars,buildHistoricalResearchSnapshot,researchSnapshotCompletenessAudit,researchPromotionGate};"
 ).toString("base64")+"#"+Date.now());
 
-assert.match(source,/const VERSION = "8\.7\.1-history-research-v2";/);
+assert.ok(source.includes("function researchPriceFeaturesFromBars"));
 for(const marker of [
   'url.pathname === "/api/research/reconstruct-history"',
   "RECONSTRUCTED_PRICE_ONLY",
@@ -78,7 +78,7 @@ assert.ok(gate.reasons.some(x=>x.includes("前瞻正式完整快照")));
 
 console.log(JSON.stringify({
   ok:true,
-  version:"8.7.1-history-research-v2",
+  version:"8.7.1-or-later",
   noLookAheadReconstruction:true,
   pathHistoryRefresh:true,
   factorV2:["persistence","tickDistance","limitState"],
