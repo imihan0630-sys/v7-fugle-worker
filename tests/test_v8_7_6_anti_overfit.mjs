@@ -6,8 +6,9 @@ const source=await readFile(workerPath,"utf8");
 const exported="\nexport {researchFactorRedundancy,researchCostStress,researchGovernanceMaturity};";
 const mod=await import("data:text/javascript;base64,"+Buffer.from(source+exported).toString("base64")+"#"+Date.now());
 
+assert.match(source,/const VERSION = "8\.7\.\d+[^"]*";/);
+
 for(const marker of [
-  "8.7.6-anti-overfit-diagnostics",
   "PAIRWISE_PEARSON_FULL_FORMAL_SCAN",
   "roundTripBps",
   "eligibleForFormalReview",
