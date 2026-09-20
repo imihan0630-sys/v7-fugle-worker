@@ -47,7 +47,6 @@ assert.ok(csv.startsWith("\ufeff"));
 assert.ok(csv.includes('"甲,測試"'));
 
 for(const marker of [
-  'const VERSION = "8.6.0-performance-center";',
   'function performanceCenterPage()',
   'url.pathname === "/performance"',
   'url.pathname === "/api/journal/export"',
@@ -57,7 +56,7 @@ for(const marker of [
 
 console.log(JSON.stringify({
   ok:true,
-  version:"8.6.0-performance-center",
+  version:"8.6.0-or-later",
   breakdowns:["strategy","signalLevel","priceClass","month"],
   csvExport:true,
   externalValidationIntegrated:true
