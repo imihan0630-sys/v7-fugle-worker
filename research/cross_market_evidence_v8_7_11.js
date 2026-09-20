@@ -43,9 +43,10 @@ function researchMergeRevenueEvidenceV8711(symbol,twseMap,tpexMap,providers) {
 
 function researchTwseSblShortEvidenceFromPayload(payload,requestedScanDate) {
   const sourceDate=researchDateFromAny(payload?.date||payload?.Date||payload?.stat||null);
-  const dateMatched=sourceDate===String(requestedScanDate||"");
+  const scanDate=String(requestedScanDate||"");
+  const pointInTimeEligible=Boolean(sourceDate&&scanDate&&sourceDate<scanDate);
   const map=new Map();
-  if(!dateMatched) return {sourceDate,dateMatched:false,map};
+  if(!pointInTimeEligible) return {sourceDate,dateMatched:false,pointInTimeEligible:false,map};
   const tables=Array.isArray(payload?.tables)?payload.tables:[payload];
   for(const table of tables) {
     const data=Array.isArray(table?.data)?table.data:[];
@@ -57,6 +58,7 @@ function researchTwseSblShortEvidenceFromPayload(payload,requestedScanDate) {
         status:"AVAILABLE",
         sourceMarket:"TWSE",
         sourceDate,
+        evidenceAvailableBeforeScan:true,
         sourceDataset:"TWT93U",
         sourceEndpoint:"https://www.twse.com.tw/rwd/zh/marginTrading/TWT93U",
         sblShortPrevBalance:researchLooseNumber(values[8]),
@@ -67,11 +69,12 @@ function researchTwseSblShortEvidenceFromPayload(payload,requestedScanDate) {
         sblShortNextLimit:researchLooseNumber(values[13]),
         shortSideScope:"ACTUAL_SBL_SHORT_SALE",
         flowWindowStatus:"RAW_DAILY_ONLY_NO_CONTIGUOUS_HISTORY",
+        availabilityRule:"sourceDate must be strictly earlier than scanDate",
         flowWindowPolicy:"Do not label one-day SBL as the 5/20/60-day shorting-flow signal. Rolling flow requires unbiased contiguous daily history."
       });
     }
   }
-  return {sourceDate,dateMatched:true,map};
+  return {sourceDate,dateMatched:true,pointInTimeEligible:true,map};
 }
 
 function researchOfficialStatusForMarketV8711(sourceMarket,providerStatus,map,symbol,unknownReason) {
@@ -108,7 +111,7 @@ async function collectResearchExternalEvidenceV8711(archive) {
   };
   const compactDate=scanDate.replace(/-/g,"");
   const marginUrl="https://www.twse.com.tw/rwd/zh/marginTrading/MI_MARGN?date="+encodeURIComponent(compactDate)+"&selectType=STOCK&response=json";
-  const sblUrl="https://www.twse.com.tw/rwd/zh/marginTrading/TWT93U?date="+encodeURIComponent(compactDate)+"&response=json";
+  const sblUrl="https://www.twse.com.tw/exchangeReport/TWT93U?response=json";
   const settled=await Promise.allSettled([
     researchFetchJson(RESEARCH_V8711_EVIDENCE_ENDPOINTS.twseMonthlyRevenue),
     researchFetchJson(RESEARCH_V8711_EVIDENCE_ENDPOINTS.tpexMonthlyRevenue),
@@ -136,10 +139,11 @@ async function collectResearchExternalEvidenceV8711(archive) {
   if(providers.twseMargin.status==="AVAILABLE"&&!marginParsed.dateMatched) providers.twseMargin.status="SOURCE_DATE_MISMATCH";
 
   const sblParsed=settled[3].status==="fulfilled"
-    ?researchTwseSblShortEvidenceFromPayload(settled[3].value,scanDate):{sourceDate:null,dateMatched:false,map:new Map()};
+    ?researchTwseSblShortEvidenceFromPayload(settled[3].value,scanDate):{sourceDate:null,dateMatched:false,pointInTimeEligible:false,map:new Map()};
   providers.twseSblShort.sourceDate=sblParsed.sourceDate;
   providers.twseSblShort.dateMatched=sblParsed.dateMatched;
-  if(providers.twseSblShort.status==="AVAILABLE"&&!sblParsed.dateMatched) providers.twseSblShort.status="SOURCE_DATE_MISMATCH";
+  providers.twseSblShort.pointInTimeEligible=sblParsed.pointInTimeEligible===true;
+  if(providers.twseSblShort.status==="AVAILABLE"&&!sblParsed.pointInTimeEligible) providers.twseSblShort.status="NOT_POINT_IN_TIME_ELIGIBLE";
 
   const attentionMap=settled[4].status==="fulfilled"?researchOfficialStatusMap(settled[4].value):new Map();
   const dispositionMap=settled[5].status==="fulfilled"?researchOfficialStatusMap(settled[5].value):new Map();
@@ -187,7 +191,7 @@ async function collectResearchExternalEvidenceV8711(archive) {
   return {
     scanDate,rows:evidenceRows,providers,schemaVersion:"research-external-evidence-v2",
     researchOnly:true,decisionImpact:false,formalCoreImpact:false,
-    policy:"V8.7.11擴充跨市場證據與來源語意：TWSE/TPEX月營收分開保存；TWSE實際借券賣出(TWT93U)與一般借券成交分離；資料源失敗、日期不符或尚未涵蓋市場一律UNKNOWN。不得以current snapshot偽造歷史first-known時間，不得改正式排名、配資、監控、推播或交易。"
+    policy:"V8.7.11擴充跨市場證據與來源語意：TWSE/TPEX月營收分開保存；TWSE實際借券賣出(TWT93U)只接受 scanDate 之前已發布的最近資料，避免把選股後晚間才公布的同日數據偷看進來；借券成交與實際借券賣出分離。資料源失敗、日期不符或尚未涵蓋市場一律UNKNOWN。不得以current snapshot偽造歷史first-known時間，不得改正式排名、配資、監控、推播或交易。"
   };
 }
 
