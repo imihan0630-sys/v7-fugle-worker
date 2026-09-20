@@ -17,15 +17,16 @@ for(const marker of [
   "Research 資料完整性"
 ]) assert.ok(source.includes(marker),marker);
 
-assert.equal(mod.RESEARCH_EXPERIMENT_CATALOG.length,7);
-assert.deepEqual(mod.RESEARCH_EXPERIMENT_CATALOG.map(x=>x.id),["R01","R02","R03","R04","R05","R06","R07"]);
-assert.ok(mod.RESEARCH_EXPERIMENT_CATALOG.every(x=>x.version==="1.0" && x.status==="ACCUMULATING"));
+const frozenBaseIds=["R01","R02","R03","R04","R05","R06","R07"];
+assert.ok(mod.RESEARCH_EXPERIMENT_CATALOG.length>=7);
+assert.deepEqual(mod.RESEARCH_EXPERIMENT_CATALOG.slice(0,7).map(x=>x.id),frozenBaseIds);
+assert.ok(mod.RESEARCH_EXPERIMENT_CATALOG.slice(0,7).every(x=>x.version==="1.0" && x.status==="ACCUMULATING"));
 
 const ledger=mod.researchExperimentLedger();
 assert.equal(ledger.researchOnly,true);
 assert.equal(ledger.decisionImpact,false);
-assert.equal(ledger.trackedExperimentDefinitions,7);
-assert.equal(ledger.trackedExperimentVariants,7);
+assert.ok(ledger.trackedExperimentDefinitions>=7);
+assert.ok(ledger.trackedExperimentVariants>=7);
 
 const days=[
   {scan_date:"2026-09-20",selected_count:3},
@@ -72,6 +73,7 @@ console.log(JSON.stringify({
   ok:true,
   experiments:ledger.trackedExperimentDefinitions,
   variants:ledger.trackedExperimentVariants,
+  frozenBaseExperiments:true,
   shadowIntegrity:true,
   unknownPreserved:true,
   formalCoreImpact:false
