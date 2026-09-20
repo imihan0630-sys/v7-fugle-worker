@@ -40,6 +40,7 @@ on:
       - "scripts/apply_v8_7_7.py"
       - "scripts/apply_v8_7_8.py"
       - "scripts/apply_v8_7_9.py"
+      - "scripts/apply_v8_7_10.py"
       - "RESEARCH_WORKLIST.md"
       - "research/**"
       - "data/v7_formal_scan_backfill.json"
@@ -173,16 +174,19 @@ jobs:
       - name: Apply V8.7.9 research evidence enrichment
         run: python3 scripts/apply_v8_7_9.py
 
+      - name: Apply V8.7.10 research evidence readiness matrix
+        run: python3 scripts/apply_v8_7_10.py
+
       - name: Syntax check Worker.js
         run: |
           set -euo pipefail
           cp Worker.js /tmp/Worker.mjs
           node --check /tmp/Worker.mjs
 
-      - name: Validate V8.7.9 production contract
+      - name: Validate V8.7.10 production contract
         run: |
           set -euo pipefail
-          grep -F 'const VERSION = "8.7.9-research-evidence-enrichment";' Worker.js
+          grep -F 'const VERSION = "8.7.10-research-readiness-matrix";' Worker.js
           grep -F 'PURGED_FORWARD_HOLDOUT' Worker.js
           grep -F 'trackedExperimentDefinitions' Worker.js
           grep -F 'totalTrackedDefinitions' Worker.js
@@ -197,6 +201,9 @@ jobs:
           grep -F 'R07_MEDIAN_SPLIT_TWO_ENGINE_COMPARISON' Worker.js
           grep -F 'MARGIN_SHORT_ONLY_NOT_SBL' Worker.js
           grep -F 'RESEARCH_MICROSTRUCTURE_CUTOFF' Worker.js
+          grep -F 'Research Evidence Readiness' Worker.js
+          grep -F 'DATA_QUALITY_BLOCKED' Worker.js
+          grep -F 'researchEvidenceReadinessMatrix' Worker.js
           grep -F 'SAME_SCAN_DATE_PAIRED_COHORT_DELTA' Worker.js
           grep -F 'FAILED_CLOSE_WITHIN_3D' Worker.js
           grep -F 'WITHIN_SCAN_DATE_MEDIAN_SPLIT' Worker.js
@@ -258,6 +265,9 @@ jobs:
           node tests/test_v8_7_5_research_governance.mjs
           node tests/test_v8_7_6_anti_overfit.mjs
           node tests/test_v8_7_7_incremental_factor_diagnostics.mjs
+          node tests/test_v8_7_8_date_cluster_robustness.mjs
+          node tests/test_v8_7_9_research_evidence_enrichment.mjs
+          node tests/test_v8_7_10_research_readiness_matrix.mjs
           node tests/github_plan_mirror.mjs self-test
 
       - name: Snapshot existing public monitoring configuration
@@ -413,6 +423,12 @@ jobs:
                   method:data.counterfactualResearch?.twoEngineStudy?.method,
                   pairedD5:data.counterfactualResearch?.twoEngineStudy?.paired?.d5?.pairedDates
                 },
+                readiness:{
+                  status:data.evidenceReadiness?.status,
+                  descriptiveReady:data.evidenceReadiness?.descriptiveReady,
+                  experimentCount:data.evidenceReadiness?.experiments?.length,
+                  statuses:data.evidenceReadiness?.experiments?.map(x=>x.id+":"+x.status)
+                },
                 antiOverfit:{
                   redundancyStatus:data.antiOverfit?.redundancy?.status,
                   costStressStatus:data.antiOverfit?.costStress?.status,
@@ -467,6 +483,14 @@ jobs:
                  data.counterfactualResearch?.twoEngineStudy?.formalCoreImpact!==false ||
                  data.counterfactualResearch?.twoEngineStudy?.method!=="R07_MEDIAN_SPLIT_TWO_ENGINE_COMPARISON") {
                 throw new Error("R08 Two-Engine research firewall contract failed");
+              }
+              if(data.evidenceReadiness?.researchOnly!==true ||
+                 data.evidenceReadiness?.decisionImpact!==false ||
+                 data.evidenceReadiness?.formalCoreImpact!==false ||
+                 !Array.isArray(data.evidenceReadiness?.experiments) ||
+                 data.evidenceReadiness.experiments.length!==8 ||
+                 data.evidenceReadiness.experiments.some(x=>x.formalCoreImpact!==false)) {
+                throw new Error("Research Evidence Readiness firewall contract failed");
               }
               if(data.antiOverfit?.redundancy?.researchOnly!==true ||
                  data.antiOverfit?.redundancy?.decisionImpact!==false ||
