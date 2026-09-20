@@ -38,6 +38,7 @@ on:
       - "scripts/apply_v8_7_5.py"
       - "scripts/apply_v8_7_6.py"
       - "scripts/apply_v8_7_7.py"
+      - "scripts/apply_v8_7_8.py"
       - "RESEARCH_WORKLIST.md"
       - "research/**"
       - "data/v7_formal_scan_backfill.json"
@@ -165,16 +166,19 @@ jobs:
       - name: Apply V8.7.7 incremental factor diagnostics
         run: python3 scripts/apply_v8_7_7.py
 
+      - name: Apply V8.7.8 date-cluster robustness diagnostics
+        run: python3 scripts/apply_v8_7_8.py
+
       - name: Syntax check Worker.js
         run: |
           set -euo pipefail
           cp Worker.js /tmp/Worker.mjs
           node --check /tmp/Worker.mjs
 
-      - name: Validate V8.7.3 production contract
+      - name: Validate V8.7.8 production contract
         run: |
           set -euo pipefail
-          grep -F 'const VERSION = "8.7.7-incremental-factor-diagnostics";' Worker.js
+          grep -F 'const VERSION = "8.7.8-date-cluster-robustness";' Worker.js
           grep -F 'PURGED_FORWARD_HOLDOUT' Worker.js
           grep -F 'trackedExperimentDefinitions' Worker.js
           grep -F 'totalTrackedDefinitions' Worker.js
@@ -183,6 +187,8 @@ jobs:
           grep -F 'eligibleForFormalReview' Worker.js
           grep -F 'WITHIN_SCAN_DATE_DEMEANED_PARTIAL_CORRELATION' Worker.js
           grep -F 'trackedIncrementalDefinitions' Worker.js
+          grep -F 'LEAVE_ONE_SCAN_DATE_OUT_PARTIAL_CORRELATION' Worker.js
+          grep -F 'FRAGILE_DATE_DEPENDENCE' Worker.js
           grep -F 'SAME_SCAN_DATE_PAIRED_COHORT_DELTA' Worker.js
           grep -F 'FAILED_CLOSE_WITHIN_3D' Worker.js
           grep -F 'WITHIN_SCAN_DATE_MEDIAN_SPLIT' Worker.js
@@ -393,7 +399,9 @@ jobs:
                   costStressStatus:data.antiOverfit?.costStress?.status,
                   eligibleForFormalReview:data.antiOverfit?.governanceMaturity?.eligibleForFormalReview,
                   incrementalDefinitions:data.antiOverfit?.incrementalDiagnostics?.trackedDefinitions,
-                  incrementalMature:data.antiOverfit?.incrementalDiagnostics?.matureContrasts
+                  incrementalMature:data.antiOverfit?.incrementalDiagnostics?.matureContrasts,
+                  clusterMethod:data.antiOverfit?.clusterRobustness?.method,
+                  clusterFragile:data.antiOverfit?.clusterRobustness?.fragileContrastIds
                 },
                 validation:data.validationFirewall||null
               }));
@@ -435,6 +443,10 @@ jobs:
                  data.antiOverfit?.incrementalDiagnostics?.researchOnly!==true ||
                  data.antiOverfit?.incrementalDiagnostics?.decisionImpact!==false ||
                  data.antiOverfit?.incrementalDiagnostics?.formalCoreImpact!==false ||
+                 data.antiOverfit?.clusterRobustness?.researchOnly!==true ||
+                 data.antiOverfit?.clusterRobustness?.decisionImpact!==false ||
+                 data.antiOverfit?.clusterRobustness?.formalCoreImpact!==false ||
+                 data.antiOverfit?.clusterRobustness?.method!=="LEAVE_ONE_SCAN_DATE_OUT_PARTIAL_CORRELATION" ||
                  data.antiOverfit?.governanceMaturity?.formalCoreImpact!==false) {
                 throw new Error("Anti-overfit research firewall contract failed");
               }

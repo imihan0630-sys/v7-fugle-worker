@@ -69,6 +69,7 @@ Shadow 後續結果：
 - V8.7.5：自 2026-09-21 起比對正式選股日與 Shadow archive，監控缺檔、SELECTED 覆蓋不符、BROAD_CONTROL 缺失；只標記研究資料異常，不阻斷交易。
 - V8.7.6：新增 FULL_FORMAL_SCAN 因子 pairwise redundancy 診斷、SELECTED D5 30/60/100bps round-trip 成本壓力測試，以及保守的機器化 research maturity gate；任何缺口只會鎖住「提出正式升級審查」資格，不影響正式交易。
 - V8.7.7：新增預註冊的條件增量診斷（within-scan-date de-mean + D5 partial correlation），固定 7 組有研究意義的候選/控制因子對照，不允許事後掃描全部配對挑贏家；這 7 組也納入 multiple-testing ledger，僅研究、不影響正式核心。
+- V8.7.8：新增以 scanDate 為獨立群聚單位的 leave-one-date-out 穩健性檢查；同一日多檔股票不得當成獨立證據。成熟條件固定為至少 60 筆、15 個獨立選股日、10 次有效留一日檢查；若方向一致率低於 70%，或移除單一日期造成偏相關大幅改變，標記 FRAGILE_DATE_DEPENDENCE，只限制正式升級審查資格，不影響交易。
 
 ## 6. 正式核心升級
 狀態：LOCKED
