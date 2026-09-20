@@ -33,6 +33,7 @@ on:
       - "scripts/apply_v8_7_1.py"
       - "scripts/apply_v8_7_2.py"
       - "scripts/apply_v8_7_3.py"
+      - "scripts/apply_v8_7_4.py"
       - "RESEARCH_WORKLIST.md"
       - "research/**"
       - "data/v7_formal_scan_backfill.json"
@@ -140,6 +141,9 @@ jobs:
       - name: Apply V8.7.3 validation firewall
         run: python3 scripts/apply_v8_7_3.py
 
+      - name: Apply V8.7.4 counterfactual research
+        run: python3 scripts/apply_v8_7_4.py
+
       - name: Syntax check Worker.js
         run: |
           cp Worker.js /tmp/Worker.mjs
@@ -172,12 +176,15 @@ jobs:
           node tests/test_v8_7_1_history_research.mjs
           node tests/test_v8_7_2_shadow_candidate_archive.mjs
           node tests/test_v8_7_3_validation_firewall.mjs
+          node tests/test_v8_7_4_counterfactual_research.mjs
           node tests/github_plan_mirror.mjs self-test
 
       - name: Verify expected version
         run: |
-          grep -F 'const VERSION = "8.7.3-validation-firewall";' Worker.js
+          grep -F 'const VERSION = "8.7.4-counterfactual-research";' Worker.js
           grep -F 'PURGED_FORWARD_HOLDOUT' Worker.js
+          grep -F 'SAME_SCAN_DATE_PAIRED_COHORT_DELTA' Worker.js
+          grep -F 'FAILED_CLOSE_WITHIN_3D' Worker.js
           grep -F 'CREATE TABLE IF NOT EXISTS trade_research_shadow_candidates' Worker.js
           grep -F 'url.pathname === "/api/research/reconstruct-history"' Worker.js
           grep -F 'CREATE TABLE IF NOT EXISTS trade_research_snapshots' Worker.js
