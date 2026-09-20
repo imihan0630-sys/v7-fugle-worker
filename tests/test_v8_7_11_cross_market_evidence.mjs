@@ -6,8 +6,9 @@ const source=await readFile(workerPath,"utf8");
 const exported="\nexport {researchRevenueEvidenceMapV8711,researchMergeRevenueEvidenceV8711,researchTwseSblShortEvidenceFromPayload,researchOfficialStatusForMarketV8711,researchExternalEvidenceCoverageV8711};";
 const mod=await import("data:text/javascript;base64,"+Buffer.from(source+exported).toString("base64")+"#"+Date.now());
 
+assert.match(source,/const VERSION = "8\.7\.\d+[^"]*";/);
+
 for(const marker of [
-  "8.7.11-cross-market-evidence-provenance",
   "research-external-evidence-v2",
   "mopsfin_t187ap05_O",
   "ACTUAL_SBL_SHORT_SALE",
