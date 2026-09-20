@@ -44,6 +44,7 @@ jobs:
           python3 scripts/apply_v8_5_2.py
           python3 scripts/apply_v8_6_0.py
           python3 scripts/apply_v8_6_1.py
+          python3 scripts/apply_v8_6_2.py
       - name: Syntax and offline behavior regression
         env:
           V7_TEST_WORKER_PATH: ${{ github.workspace }}/Worker.js
@@ -51,7 +52,7 @@ jobs:
           set -euo pipefail
           cp Worker.js /tmp/v7-worker.mjs
           node --check /tmp/v7-worker.mjs
-          grep -F 'const VERSION = "8.6.1-shared-navigation";' Worker.js
+          grep -F 'const VERSION = "8.6.2-v7-formal-performance";' Worker.js
           grep -F 'const WATCHLIST_MAX = 12;' Worker.js
           grep -F 'async function finishDataIncompleteScan(' Worker.js
           grep -F 'function buildReviewedWatchlist(' Worker.js
@@ -80,6 +81,7 @@ jobs:
           node tests/test_v8_5_2_history_backfill.mjs
           node tests/test_v8_6_0_performance_center.mjs
           node tests/test_v8_6_1_shared_navigation.mjs
+          node tests/test_v8_6_2_v7_formal_performance.mjs
           node tests/github_plan_mirror.mjs self-test
       - name: Read-only production authorization preflight
         if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
