@@ -4,25 +4,25 @@ function researchNumber(value) {
   return Number.isFinite(n)?n:null;
 }
 
-function researchMean(values) {
+function counterfactualMean(values) {
   const xs=(values||[]).map(Number).filter(Number.isFinite);
   return xs.length ? xs.reduce((a,b)=>a+b,0)/xs.length : null;
 }
 
-function researchMedian(values) {
+function counterfactualMedian(values) {
   const xs=(values||[]).map(Number).filter(Number.isFinite).sort((a,b)=>a-b);
   if(!xs.length) return null;
   const mid=Math.floor(xs.length/2);
   return xs.length%2 ? xs[mid] : (xs[mid-1]+xs[mid])/2;
 }
 
-function researchMetricStats(values) {
+function counterfactualMetricStats(values) {
   const xs=(values||[]).map(Number).filter(Number.isFinite);
   if(!xs.length) return {n:0,avg:null,median:null,positivePct:null};
   return {
     n:xs.length,
-    avg:round(researchMean(xs),2),
-    median:round(researchMedian(xs),2),
+    avg:round(counterfactualMean(xs),2),
+    median:round(counterfactualMedian(xs),2),
     positivePct:round(xs.filter(x=>x>0).length/xs.length*100,2)
   };
 }
@@ -102,9 +102,9 @@ function researchOutcomeCohortSummary(outcomes) {
     for(const h of [1,3,5,10,20]) {
       const metrics=rows.map(x=>x.horizons?.["d"+h]).filter(Boolean);
       horizons["d"+h]={
-        returnPct:researchMetricStats(metrics.map(x=>x.returnPct)),
-        mfePct:researchMetricStats(metrics.map(x=>x.mfePct)),
-        maePct:researchMetricStats(metrics.map(x=>x.maePct))
+        returnPct:counterfactualMetricStats(metrics.map(x=>x.returnPct)),
+        mfePct:counterfactualMetricStats(metrics.map(x=>x.mfePct)),
+        maePct:counterfactualMetricStats(metrics.map(x=>x.maePct))
       };
     }
     result[cohort]={n:rows.length,horizons};
@@ -125,9 +125,9 @@ function researchPairedSelectionAlpha(outcomes) {
         const selected=rows.filter(x=>x.cohort==="SELECTED").map(x=>x.horizons?.["d"+h]?.returnPct).filter(Number.isFinite);
         const controls=rows.filter(x=>x.cohort===comparator).map(x=>x.horizons?.["d"+h]?.returnPct).filter(Number.isFinite);
         if(!selected.length || !controls.length) continue;
-        deltas.push(researchMean(selected)-researchMean(controls));
+        deltas.push(counterfactualMean(selected)-counterfactualMean(controls));
       }
-      byComparator[comparator]["d"+h]={...researchMetricStats(deltas),pairedDates:deltas.length,
+      byComparator[comparator]["d"+h]={...counterfactualMetricStats(deltas),pairedDates:deltas.length,
         interpretation:deltas.length>=20?"DESCRIPTIVE_READY":"ACCUMULATING"};
     }
   }
@@ -165,8 +165,8 @@ function researchExecutionAlphaFromRows(plans,signals) {
     researchOnly:true,decisionImpact:false,
     definition:"Execution Alpha 先以首次正式 BUY 實際價相對選股日收盤價的價格改善衡量；正值=等到較低價格才進。選股日收盤價只是研究基準，不是假設可成交價。",
     selectedPlans:selected,buyTriggeredPlans:rows.length,buyTriggerRate:selected?round(rows.length/selected*100,2):null,
-    entryTimingPct:researchMetricStats(rows.map(x=>x.entryTimingPct)),
-    buyBandMidAlphaPct:researchMetricStats(rows.map(x=>x.buyBandMidAlphaPct)),
+    entryTimingPct:counterfactualMetricStats(rows.map(x=>x.entryTimingPct)),
+    buyBandMidAlphaPct:counterfactualMetricStats(rows.map(x=>x.buyBandMidAlphaPct)),
     rows:rows.slice(-80)
   };
 }
@@ -208,7 +208,7 @@ function researchRegimePersistenceFromDays(days) {
   }
   return {
     researchOnly:true,decisionImpact:false,usableDays:usable.length,transitions,
-    top5SectorRetentionPct:researchMetricStats(retentions),
+    top5SectorRetentionPct:counterfactualMetricStats(retentions),
     longestTop5Streak:Object.entries(maxStreak).sort((a,b)=>b[1]-a[1]).slice(0,10).map(([sector,days])=>({sector,days})),
     rule:"Regime transition 與產業 persistence 只使用前瞻正式研究日；UNKNOWN/歷史重建市場狀態不補值。"
   };
@@ -233,10 +233,10 @@ function researchDailyMedianStudy(outcomes,valueFn,labelHigh,labelLow) {
   for(const date of dates) {
     const rows=(outcomes||[]).filter(x=>x.scanDate===date && Number.isFinite(x.horizons?.d5?.returnPct) && Number.isFinite(valueFn(x)));
     if(rows.length<4) continue;
-    const med=researchMedian(rows.map(valueFn));
+    const med=counterfactualMedian(rows.map(valueFn));
     for(const row of rows) buckets[valueFn(row)>=med?labelHigh:labelLow].push(row.horizons.d5.returnPct);
   }
-  return Object.fromEntries(Object.entries(buckets).map(([k,v])=>[k,researchMetricStats(v)]));
+  return Object.fromEntries(Object.entries(buckets).map(([k,v])=>[k,counterfactualMetricStats(v)]));
 }
 
 function researchQuietAttentionStudy(outcomes) {
@@ -247,8 +247,8 @@ function researchQuietAttentionStudy(outcomes) {
       Number.isFinite(researchNumber(x.snapshot?.price?.residualSectorRs20)) &&
       Number.isFinite(researchNumber(x.snapshot?.volume?.volumeTodayVsPrev5)));
     if(rows.length<4) continue;
-    const strengthMed=researchMedian(rows.map(x=>researchNumber(x.snapshot.price.residualSectorRs20)));
-    const attentionMed=researchMedian(rows.map(x=>researchNumber(x.snapshot.volume.volumeTodayVsPrev5)));
+    const strengthMed=counterfactualMedian(rows.map(x=>researchNumber(x.snapshot.price.residualSectorRs20)));
+    const attentionMed=counterfactualMedian(rows.map(x=>researchNumber(x.snapshot.volume.volumeTodayVsPrev5)));
     for(const row of rows) {
       const strong=researchNumber(row.snapshot.price.residualSectorRs20)>=strengthMed;
       const attention=researchNumber(row.snapshot.volume.volumeTodayVsPrev5)>=attentionMed;
@@ -258,7 +258,7 @@ function researchQuietAttentionStudy(outcomes) {
   }
   return {
     method:"WITHIN_SCAN_DATE_MEDIAN_SPLIT",
-    groups:Object.fromEntries(Object.entries(buckets).map(([k,v])=>[k,researchMetricStats(v)])),
+    groups:Object.fromEntries(Object.entries(buckets).map(([k,v])=>[k,counterfactualMetricStats(v)])),
     rule:"Attention 目前只用當日相對量 volumeTodayVsPrev5 當 proxy，不等同新聞/搜尋注意力；每個選股日用 Shadow 橫截面中位數切分，避免任意固定倍量門檻。"
   };
 }
@@ -271,14 +271,14 @@ function buildShadowResearchDiagnostics(outcomes) {
   return {
     breakout:{
       activeAtScan:active.length,held3D:held.length,failedClose3D:failed.length,pending:active.filter(x=>x.breakout?.status==="PENDING").length,
-      heldD5:researchMetricStats(held.map(x=>x.horizons?.d5?.returnPct)),
-      failedD5:researchMetricStats(failed.map(x=>x.horizons?.d5?.returnPct)),
+      heldD5:counterfactualMetricStats(held.map(x=>x.horizons?.d5?.returnPct)),
+      failedD5:counterfactualMetricStats(failed.map(x=>x.horizons?.d5?.returnPct)),
       definition:"成功/假突破先固定3交易日收盤守住/跌回 priorHigh20，不因結果修改窗口。"
     },
     intradayVsOvernight:{
-      n:d1.length,overnightPct:researchMetricStats(d1.map(x=>x.firstDay.overnightPct)),
-      intradayPct:researchMetricStats(d1.map(x=>x.firstDay.intradayPct)),
-      spreadIntradayMinusOvernightPct:researchMetricStats(d1.map(x=>x.firstDay.intradayPct-x.firstDay.overnightPct))
+      n:d1.length,overnightPct:counterfactualMetricStats(d1.map(x=>x.firstDay.overnightPct)),
+      intradayPct:counterfactualMetricStats(d1.map(x=>x.firstDay.intradayPct)),
+      spreadIntradayMinusOvernightPct:counterfactualMetricStats(d1.map(x=>x.firstDay.intradayPct-x.firstDay.overnightPct))
     },
     residualRS:researchDailyMedianStudy(outcomes,x=>researchNumber(x.snapshot?.price?.residualSectorRs20),"HIGH_RESIDUAL_RS","LOW_RESIDUAL_RS"),
     quietVsAttention:researchQuietAttentionStudy(outcomes)
