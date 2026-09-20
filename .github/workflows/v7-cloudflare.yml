@@ -25,6 +25,8 @@ on:
       - "scripts/apply_v8_4_0.py"
       - "scripts/apply_v8_4_1.py"
       - "scripts/apply_v8_5_0.py"
+      - "scripts/apply_v8_5_2.py"
+      - "data/recovered_chat_selections.json"
       - "tests/**"
       - "!tests/inspect_official_quality_sources.mjs"
       - ".github/workflows/v7-cloudflare.yml"
@@ -109,16 +111,19 @@ jobs:
       - name: Apply V8.5.0 persistent trade journal
         run: python3 scripts/apply_v8_5_0.py
 
+      - name: Apply V8.5.2 historical journal backfill
+        run: python3 scripts/apply_v8_5_2.py
+
       - name: Syntax check Worker.js
         run: |
           set -euo pipefail
           cp Worker.js /tmp/Worker.mjs
           node --check /tmp/Worker.mjs
 
-      - name: Validate V8.5.0 production contract
+      - name: Validate V8.5.2 production contract
         run: |
           set -euo pipefail
-          grep -F 'const VERSION = "8.5.0-trade-journal";' Worker.js
+          grep -F 'const VERSION = "8.5.2-history-backfill";' Worker.js
           grep -F 'const WATCHLIST_MAX = 12;' Worker.js
           grep -F 'async function finishDataIncompleteScan(' Worker.js
           grep -F 'function buildReviewedWatchlist(' Worker.js
@@ -154,6 +159,7 @@ jobs:
           node tests/test_v8_4_0_github_mirror.mjs
           node tests/test_v8_4_1_provider_neutral.mjs
           node tests/test_v8_5_0_trade_journal.mjs
+          node tests/test_v8_5_2_history_backfill.mjs
           node tests/github_plan_mirror.mjs self-test
 
       - name: Snapshot existing public monitoring configuration
@@ -365,6 +371,30 @@ jobs:
           const health=await healthResponse.json();
           console.log(JSON.stringify(health));
           if(!healthResponse.ok || health.ok!==true || health.selectedCount!==health.planCount) throw new Error("Trade journal readback verification failed");
+          NODE
+
+      - name: Import recovered project-chat selections into journal
+        if: contains(github.event.head_commit.message, '[v8-history-backfill]')
+        env:
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+        run: |
+          node - <<'NODE'
+          const fs=require("fs");
+          const origin="https://fugle-test.imihan0630.workers.dev";
+          const records=JSON.parse(fs.readFileSync("data/recovered_chat_selections.json","utf8"));
+          const response=await fetch(origin+"/api/journal/history-import",{
+            method:"POST",
+            headers:{"x-admin-token":process.env.V7_ADMIN_TOKEN,"content-type":"application/json","accept":"application/json"},
+            body:JSON.stringify({records}),
+            signal:AbortSignal.timeout(60000)
+          });
+          const data=await response.json();
+          console.log(JSON.stringify(data));
+          if(!response.ok || data.ok!==true || data.imported!==records.length) throw new Error("Historical journal import failed");
+          const check=await fetch(origin+"/api/journal?days=730",{headers:{"x-admin-token":process.env.V7_ADMIN_TOKEN},signal:AbortSignal.timeout(30000)});
+          const journal=await check.json();
+          console.log(JSON.stringify({recoveredSelections:journal.recoveredSelections,plans:journal.plans,signals:journal.signals}));
+          if(!check.ok || journal.recoveredSelections<records.length) throw new Error("Historical journal readback failed");
           NODE
 
       - name: V8.1.0 read-only operations acceptance

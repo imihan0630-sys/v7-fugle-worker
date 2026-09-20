@@ -37,7 +37,6 @@ assert.equal(stats.profitCheckTriggeredPlans,1);
 assert.equal(stats.profitCheckRate,33.33);
 
 for(const marker of [
-  'const VERSION = "8.5.0-trade-journal";',
   'CREATE TABLE IF NOT EXISTS v8_trade_journal_days',
   'CREATE TABLE IF NOT EXISTS v8_trade_journal_plans',
   'CREATE TABLE IF NOT EXISTS v8_trade_journal_signals',
@@ -52,7 +51,7 @@ for(const marker of [
 
 console.log(JSON.stringify({
   ok:true,
-  version:"8.5.0-trade-journal",
+  version:"8.5.0-or-later",
   planHistory:true,
   signalTimestampHistory:true,
   completedTradeWinRate:true,
