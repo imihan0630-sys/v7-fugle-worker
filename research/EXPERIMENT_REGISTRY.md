@@ -74,5 +74,6 @@
 - 少於 20 個成熟「同日配對」日期：只標記 ACCUMULATING，不作方向性結論。
 - 新參數/新窗口/新分類＝新試驗次數，必須保留舊結果。
 - 必須同時查看 coverage、zero-pick、MFE、MAE、平均報酬、盈虧比、交易成本與滑價。
+- 外部證據擴充（如 V8.7.11 的 TPEx 月營收、TWSE 實際 SBL 賣出）不自動形成新 experiment；若未來要測 5/20/60 日 shorting-flow 或營收 persistence 門檻，必須另行預註冊，不能從 raw metadata 直接挑窗口。
 - Shadow 標的不監控、不配資金、不推播、不交易。
 - 研究結果不得自動修改 Formal core；正式核心升級仍需獨立版本、OOS、purged holdout、冗餘檢查與人工策略審查。

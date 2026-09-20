@@ -57,6 +57,7 @@ jobs:
           python3 scripts/apply_v8_7_8.py
           python3 scripts/apply_v8_7_9.py
           python3 scripts/apply_v8_7_10.py
+          python3 scripts/apply_v8_7_11.py
       - name: Syntax and offline behavior regression
         env:
           V7_TEST_WORKER_PATH: ${{ github.workspace }}/Worker.js
@@ -64,7 +65,7 @@ jobs:
           set -euo pipefail
           cp Worker.js /tmp/v7-worker.mjs
           node --check /tmp/v7-worker.mjs
-          grep -F 'const VERSION = "8.7.10-research-readiness-matrix";' Worker.js
+          grep -F 'const VERSION = "8.7.11-cross-market-evidence-provenance";' Worker.js
           grep -F 'SAME_SCAN_DATE_PAIRED_COHORT_DELTA' Worker.js
           grep -F 'trackedExperimentDefinitions' Worker.js
           grep -F 'RESEARCH_DATA_GAP' Worker.js
@@ -81,6 +82,10 @@ jobs:
           grep -F 'Research Evidence Readiness' Worker.js
           grep -F 'DATA_QUALITY_BLOCKED' Worker.js
           grep -F 'researchEvidenceReadinessMatrix' Worker.js
+          grep -F 'research-external-evidence-v2' Worker.js
+          grep -F 'mopsfin_t187ap05_O' Worker.js
+          grep -F 'ACTUAL_SBL_SHORT_SALE' Worker.js
+          grep -F 'RAW_DAILY_ONLY_NO_CONTIGUOUS_HISTORY' Worker.js
           grep -F 'FAILED_CLOSE_WITHIN_3D' Worker.js
           grep -F 'PURGED_FORWARD_HOLDOUT' Worker.js
           grep -F 'CREATE TABLE IF NOT EXISTS trade_research_shadow_candidates' Worker.js
@@ -128,6 +133,7 @@ jobs:
           node tests/test_v8_7_8_date_cluster_robustness.mjs
           node tests/test_v8_7_9_research_evidence_enrichment.mjs
           node tests/test_v8_7_10_research_readiness_matrix.mjs
+          node tests/test_v8_7_11_cross_market_evidence.mjs
           node tests/github_plan_mirror.mjs self-test
       - name: Read-only production authorization preflight
         if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository

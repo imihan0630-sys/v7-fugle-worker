@@ -24,6 +24,9 @@
 - 不使用選股日之後資料重建選股日特徵。
 - UNKNOWN 不得當 BAD。
 - 外部官方資料源逾時、缺值或來源日期與 scan_date 不符時，只能標記 UNKNOWN；不得用之後公布的資料回填當日研究快照。
+- 上市與上櫃官方來源必須分市場保存 coverage；不得因 TWSE 資料源未見上櫃代號，就把 TPEx 標的解讀為 false / BAD。
+- 借券成交、借券餘額與「實際借券賣出」是不同概念；Short-side 研究優先保存實際借券賣出，單日 raw evidence 不得冒充 5/20/60 日 rolling shorting-flow。
+- 月營收的資料年月是報告期間，不是首次市場知悉時間；current snapshot 可以前瞻留存，但不得偽造歷史 vintage / firstKnownAt。
 - 不把高度相關的多個因子重複計票。
 - 不以「勝率提高」作為唯一升級條件。
 - 不為了提高勝率把訊號壓縮到幾乎沒有。
