@@ -25,6 +25,7 @@ on:
       - "scripts/apply_v8_4_1.py"
       - "scripts/apply_v8_5_0.py"
       - "scripts/apply_v8_5_2.py"
+      - "scripts/apply_v8_6_0.py"
       - "data/recovered_chat_selections.json"
       - "tests/**"
       - ".github/workflows/v7-cloudflare.yml"
@@ -105,6 +106,9 @@ jobs:
       - name: Apply V8.5.2 historical journal backfill
         run: python3 scripts/apply_v8_5_2.py
 
+      - name: Apply V8.6.0 performance center
+        run: python3 scripts/apply_v8_6_0.py
+
       - name: Syntax check Worker.js
         run: |
           cp Worker.js /tmp/Worker.mjs
@@ -129,11 +133,12 @@ jobs:
           node tests/test_v8_4_1_provider_neutral.mjs
           node tests/test_v8_5_0_trade_journal.mjs
           node tests/test_v8_5_2_history_backfill.mjs
+          node tests/test_v8_6_0_performance_center.mjs
           node tests/github_plan_mirror.mjs self-test
 
       - name: Verify expected version
         run: |
-          grep -F 'const VERSION = "8.5.2-history-backfill";' Worker.js
+          grep -F 'const VERSION = "8.6.0-performance-center";' Worker.js
           grep -F 'url.pathname==="/api/system-overview"' Worker.js
           grep -F 'url.pathname==="/api/push-outbox"' Worker.js
           grep -F 'url.pathname==="/api/external-validation/stats"' Worker.js

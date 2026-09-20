@@ -450,7 +450,11 @@
     "name": "聯電",
     "status": "SCREENED_SHORTLIST",
     "source": "project-file",
-    "notes": "35檔逐股複核主要觀察；非直接買進訊號"
+    "notes": "35檔逐股複核主要觀察；A回測觀察帶137~138.5，137失守取消；B門檻144.5突破再回測；非直接買進訊號",
+    "buyLow": 137,
+    "buyHigh": 138.5,
+    "stop": 137,
+    "breakout": 144.5
   },
   {
     "date": "2026-09-09",
@@ -459,7 +463,11 @@
     "name": "富世達",
     "status": "SCREENED_SHORTLIST",
     "source": "project-file",
-    "notes": "35檔逐股複核主要觀察；非直接買進訊號"
+    "notes": "35檔逐股複核主要觀察；A回測觀察帶2235~2265，2235失守取消；B門檻2325突破再回測；非直接買進訊號",
+    "buyLow": 2235,
+    "buyHigh": 2265,
+    "stop": 2235,
+    "breakout": 2325
   },
   {
     "date": "2026-09-09",
@@ -468,7 +476,11 @@
     "name": "營邦",
     "status": "SCREENED_SHORTLIST",
     "source": "project-file",
-    "notes": "35檔逐股複核主要觀察；非直接買進訊號"
+    "notes": "35檔逐股複核主要觀察；A回測觀察帶669~675，664失守取消；B門檻715突破再回測；非直接買進訊號",
+    "buyLow": 669,
+    "buyHigh": 675,
+    "stop": 664,
+    "breakout": 715
   },
   {
     "date": "2026-09-09",
@@ -477,7 +489,11 @@
     "name": "定穎投控",
     "status": "SCREENED_SHORTLIST",
     "source": "project-file",
-    "notes": "35檔逐股複核主要觀察；非直接買進訊號"
+    "notes": "35檔逐股複核主要觀察；A回測觀察帶130.5~132.5，130.5失守取消；B門檻138突破再回測；非直接買進訊號",
+    "buyLow": 130.5,
+    "buyHigh": 132.5,
+    "stop": 130.5,
+    "breakout": 138
   },
   {
     "date": "2026-09-09",
@@ -486,7 +502,11 @@
     "name": "愛普*",
     "status": "SCREENED_SHORTLIST",
     "source": "project-file",
-    "notes": "延伸觀察；非直接買進訊號"
+    "notes": "延伸觀察；A回測觀察帶968~980，968失守取消；B門檻1015突破再回測；非直接買進訊號",
+    "buyLow": 968,
+    "buyHigh": 980,
+    "stop": 968,
+    "breakout": 1015
   },
   {
     "date": "2026-09-09",
@@ -495,7 +515,11 @@
     "name": "家登",
     "status": "SCREENED_SHORTLIST",
     "source": "project-file",
-    "notes": "延伸觀察；非直接買進訊號"
+    "notes": "延伸觀察；A方案先看563、缺口後另看551，兩方案分開；B門檻573突破再回測；非直接買進訊號",
+    "buyLow": 551,
+    "buyHigh": 563,
+    "stop": 551,
+    "breakout": 573
   },
   {
     "date": "2026-09-11",
