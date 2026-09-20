@@ -41,6 +41,7 @@ on:
       - "scripts/apply_v8_7_8.py"
       - "scripts/apply_v8_7_9.py"
       - "scripts/apply_v8_7_10.py"
+      - "scripts/apply_v8_7_11.py"
       - "RESEARCH_WORKLIST.md"
       - "research/**"
       - "data/v7_formal_scan_backfill.json"
@@ -177,16 +178,19 @@ jobs:
       - name: Apply V8.7.10 research evidence readiness matrix
         run: python3 scripts/apply_v8_7_10.py
 
+      - name: Apply V8.7.11 cross-market evidence provenance
+        run: python3 scripts/apply_v8_7_11.py
+
       - name: Syntax check Worker.js
         run: |
           set -euo pipefail
           cp Worker.js /tmp/Worker.mjs
           node --check /tmp/Worker.mjs
 
-      - name: Validate V8.7.10 production contract
+      - name: Validate V8.7.11 production contract
         run: |
           set -euo pipefail
-          grep -F 'const VERSION = "8.7.10-research-readiness-matrix";' Worker.js
+          grep -F 'const VERSION = "8.7.11-cross-market-evidence-provenance";' Worker.js
           grep -F 'PURGED_FORWARD_HOLDOUT' Worker.js
           grep -F 'trackedExperimentDefinitions' Worker.js
           grep -F 'totalTrackedDefinitions' Worker.js
@@ -204,6 +208,11 @@ jobs:
           grep -F 'Research Evidence Readiness' Worker.js
           grep -F 'DATA_QUALITY_BLOCKED' Worker.js
           grep -F 'researchEvidenceReadinessMatrix' Worker.js
+          grep -F 'research-external-evidence-v2' Worker.js
+          grep -F 'mopsfin_t187ap05_O' Worker.js
+          grep -F 'ACTUAL_SBL_SHORT_SALE' Worker.js
+          grep -F 'RAW_DAILY_ONLY_NO_CONTIGUOUS_HISTORY' Worker.js
+          grep -F 'UNKNOWN_TPEX_SBL_NOT_CAPTURED_V8_7_11' Worker.js
           grep -F 'SAME_SCAN_DATE_PAIRED_COHORT_DELTA' Worker.js
           grep -F 'FAILED_CLOSE_WITHIN_3D' Worker.js
           grep -F 'WITHIN_SCAN_DATE_MEDIAN_SPLIT' Worker.js
@@ -268,6 +277,7 @@ jobs:
           node tests/test_v8_7_8_date_cluster_robustness.mjs
           node tests/test_v8_7_9_research_evidence_enrichment.mjs
           node tests/test_v8_7_10_research_readiness_matrix.mjs
+          node tests/test_v8_7_11_cross_market_evidence.mjs
           node tests/github_plan_mirror.mjs self-test
 
       - name: Snapshot existing public monitoring configuration
@@ -414,9 +424,15 @@ jobs:
                   ids:data.experimentLedger?.experiments?.map(x=>x.id)
                 },
                 externalEvidence:{
+                  schemaVersion:data.externalEvidence?.schemaVersion,
                   status:data.externalEvidence?.status,
                   total:data.externalEvidence?.total,
-                  dates:data.externalEvidence?.dates
+                  dates:data.externalEvidence?.dates,
+                  byMarket:data.externalEvidence?.byMarket,
+                  twseRevenueAvailable:data.externalEvidence?.twseRevenueAvailable,
+                  tpexRevenueAvailable:data.externalEvidence?.tpexRevenueAvailable,
+                  actualSblShortAvailable:data.externalEvidence?.actualSblShortAvailable,
+                  tpexSblUnknown:data.externalEvidence?.tpexSblUnknown
                 },
                 twoEngine:{
                   status:data.counterfactualResearch?.twoEngineStudy?.status,
@@ -475,8 +491,13 @@ jobs:
               }
               if(data.externalEvidence?.researchOnly!==true ||
                  data.externalEvidence?.decisionImpact!==false ||
-                 data.externalEvidence?.formalCoreImpact!==false) {
+                 data.externalEvidence?.formalCoreImpact!==false ||
+                 data.externalEvidence?.schemaVersion!=="research-external-evidence-v2") {
                 throw new Error("External research evidence firewall contract failed");
+              }
+              if((data.validationFirewall?.multipleTesting?.trackedExperimentDefinitions||0)!==8 ||
+                 (data.validationFirewall?.multipleTesting?.totalTrackedDefinitions||0)<29) {
+                throw new Error("V8.7.11 must not add an experiment or shrink the multiple-testing ledger");
               }
               if(data.counterfactualResearch?.twoEngineStudy?.researchOnly!==true ||
                  data.counterfactualResearch?.twoEngineStudy?.decisionImpact!==false ||
