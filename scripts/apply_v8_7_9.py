@@ -157,9 +157,9 @@ replace_once(
 
 replace_once(
 '''    counterfactualResearch,executionAlpha,regimePersistence,shadowIntegrity,
-    experimentLedger:researchExperimentLedger(),''',
+    experimentLedger:{...researchExperimentLedger(),''',
 '''    counterfactualResearch,executionAlpha,regimePersistence,shadowIntegrity,externalEvidence,
-    experimentLedger:researchExperimentLedger(),''',
+    experimentLedger:{...researchExperimentLedger(),''',
     "dashboard external evidence payload"
 )
 
