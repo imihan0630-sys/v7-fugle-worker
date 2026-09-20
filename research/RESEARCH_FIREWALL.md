@@ -28,6 +28,7 @@
 - 不以「勝率提高」作為唯一升級條件。
 - 不為了提高勝率把訊號壓縮到幾乎沒有。
 - 不因 Shadow 表現漂亮自動升級。
+- Research Evidence Readiness 的 DESCRIPTIVE_READY 不得解讀為正式升級資格；正式 promotion gate 與人工重要策略決策仍獨立存在。
 
 ## 四、升級門檻
 現有門檻之外，正式升級還要檢查：
