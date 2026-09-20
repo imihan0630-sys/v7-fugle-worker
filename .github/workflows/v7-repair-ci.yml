@@ -148,6 +148,9 @@ jobs:
       - name: Apply V8.7.5 research governance
         run: python3 scripts/apply_v8_7_5.py
 
+      - name: Apply V8.7.6 anti-overfit diagnostics
+        run: python3 scripts/apply_v8_7_6.py
+
       - name: Syntax check Worker.js
         run: |
           cp Worker.js /tmp/Worker.mjs
