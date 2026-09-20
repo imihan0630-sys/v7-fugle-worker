@@ -32,6 +32,7 @@ on:
       - "scripts/apply_v8_6_3.py"
       - "scripts/apply_v8_7_0.py"
       - "scripts/apply_v8_7_1.py"
+      - "scripts/apply_v8_7_2.py"
       - "RESEARCH_WORKLIST.md"
       - "research/**"
       - "data/v7_formal_scan_backfill.json"
@@ -141,16 +142,22 @@ jobs:
       - name: Apply V8.7.1 historical research reconstruction
         run: python3 scripts/apply_v8_7_1.py
 
+      - name: Apply V8.7.2 shadow candidate firewall
+        run: python3 scripts/apply_v8_7_2.py
+
       - name: Syntax check Worker.js
         run: |
           set -euo pipefail
           cp Worker.js /tmp/Worker.mjs
           node --check /tmp/Worker.mjs
 
-      - name: Validate V8.7.1 production contract
+      - name: Validate V8.7.2 production contract
         run: |
           set -euo pipefail
-          grep -F 'const VERSION = "8.7.1-history-research-v2";' Worker.js
+          grep -F 'const VERSION = "8.7.2-shadow-candidate-firewall";' Worker.js
+          grep -F 'CREATE TABLE IF NOT EXISTS trade_research_shadow_candidates' Worker.js
+          grep -F 'QUALIFIED_NOT_SELECTED' Worker.js
+          grep -F 'BROAD_CONTROL' Worker.js
           grep -F 'url.pathname === "/api/research/reconstruct-history"' Worker.js
           grep -F 'RECONSTRUCTED_PRICE_ONLY' Worker.js
           grep -F '趨勢持續性研究分數' Worker.js
@@ -199,6 +206,7 @@ jobs:
           node tests/test_v8_6_3_v7_current_close.mjs
           node tests/test_v8_7_0_research_foundation.mjs
           node tests/test_v8_7_1_history_research.mjs
+          node tests/test_v8_7_2_shadow_candidate_archive.mjs
           node tests/github_plan_mirror.mjs self-test
 
       - name: Snapshot existing public monitoring configuration
