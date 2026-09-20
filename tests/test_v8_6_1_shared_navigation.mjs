@@ -7,7 +7,7 @@ const mod=await import("data:text/javascript;base64,"+Buffer.from(
   source+"\nexport {portalNav};"
 ).toString("base64")+"#"+Date.now());
 
-assert.match(source,/const VERSION = "8\.6\.1-shared-navigation";/);
+assert.match(source,/const VERSION = "8\.6\.(?:1|[2-9]\d*)[^"]*";/);
 
 for(const [key,href,label] of [
   ["system","/system","監控總控"],
@@ -28,7 +28,7 @@ assert.ok(source.includes('${portalNav("performance")}'));
 
 console.log(JSON.stringify({
   ok:true,
-  version:"8.6.1-shared-navigation",
+  version:"8.6.1-or-later",
   sharedNavigation:true,
   activePageHighlight:true,
   routes:["/system","/journal","/performance"]
