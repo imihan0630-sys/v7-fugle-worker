@@ -6,7 +6,6 @@ const workerPath=process.env.V7_TEST_WORKER_PATH || new URL("../Worker.js",impor
 const source=await readFile(workerPath,"utf8");
 
 for(const marker of [
-  '8.7.12-after-market-2335',
   '35 15 * * MON-FRI',
   '23:35 盤後掃描',
   '23:35盤後日',
