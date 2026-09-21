@@ -1,6 +1,6 @@
 # Research Checkpoint
 
-Updated: 2026-09-22T07:35+08:00
+Updated: 2026-09-22T07:42+08:00
 
 ## Continuity / baseline
 - Formal Core: **LOCKED**.
@@ -67,6 +67,16 @@ Overlap implication:
 2. Breakout Quality already embeds attention volume at 25% plus breakout distance at 15%; therefore treating raw volume and breakout quality as separate independent confirmations can double-count volume. I03/I04 are the correct preregistered falsification pair before adding another path-quality factor.
 3. No new factor/threshold/window is registered. R01-R08 and I01-I07 stay frozen; Formal Core remains LOCKED.
 
+### Live readiness + overlap continuation — 2026-09-22T07:42+08:00
+- Production readback verified directly: `8.8.1-execution-coverage`, TEST_MODE=false, KV/D1 present. Public `/research` shell is reachable; protected `/api/research/dashboard` correctly returns 401 without ADMIN_TOKEN, so no secret was requested or exposed.
+- Term-level overlap map:
+  - R01 breakout hold/failure overlaps `breakoutQualityResearch` through breakout distance only; R01 outcome classification remains forward path evidence and is not mechanically identical.
+  - R05 overnight/intraday decomposition is outcome-path evidence and does not mechanically overlap persistence, but any future opening-gap continuation score must control persistence/momentum rather than count both as independent confirmations.
+  - R07/R08 attention proxy `volumeTodayVsPrev5` is already embedded at 25% inside breakout quality. I03/I04 therefore test a partially nested candidate/control pair; interpret attenuation as redundancy evidence, not as clean causal isolation.
+  - I02 persistence vs residual RS is conceptually cleaner: persistence contains path breadth/multi-horizon trend/drawdown/MA state, while residual RS removes sector return. Correlation can still arise from momentum, but there is no direct formula nesting.
+- Data-readiness constraint: 2026-09-22 market session has not yet produced mature execution-shadow-v2 evidence at this checkpoint; no directional Execution Alpha inference is permitted. Protected research API requires admin authorization, so field-level live coverage cannot be read anonymously.
+- No new experiment, factor, threshold, window or formal rule registered. Formal Core remains LOCKED.
+
 ## R01-R08 / I01-I07 impact
 - R01-R08 unchanged; I01-I07 unchanged; no R09.
 - I02/I03/I04 explicitly serve as redundancy controls for future path/ID hypotheses.
@@ -90,9 +100,9 @@ Overlap implication:
 
 ## Exact next continuation point
 Priority 6 Execution Alpha remains in **P2 research-readiness / coverage diagnostics**. Continue without user interaction unless a B/C decision or genuine blocker appears:
-1. With exact formulas now recovered, map term-level overlap against R01/R05/R07/R08 and I02/I03/I04, especially positive-day breadth, multi-horizon sign, volume attention and breakout distance; do not register a new factor yet.
-2. Inspect prospective research snapshots once 2026-09-22 trading-day data exists and quantify field-level coverage by independent scan date; keep missing fields UNKNOWN.
-3. Continue Taiwan evidence review on path persistence, turnover-conditioned momentum and regime sensitivity; prefer falsification/redundancy work over adding factors.
+1. Treat I03/I04 as a nested-factor redundancy diagnostic because breakout quality already contains 25% attention volume; do not interpret its partial correlation as clean causal isolation.
+2. After 2026-09-22 intraday snapshots actually exist, quantify independent-date coverage for openingGapPct, sessionAvgPrice/VWAP proxy, spreadPct, depthImbalance and executionMarketState; keep missing fields UNKNOWN.
+3. Continue Taiwan evidence review on turnover-conditioned momentum and market-structure sensitivity; prioritize falsification of persistence/attention overlap over adding factors.
 4. Let prospective execution-shadow-v2 accumulate actual trading-day snapshots; never fabricate/backfill historical execution fields.
 5. When snapshots exist, read field-level coverage by independent scan date for openingGapPct, sessionAvgPrice/VWAP proxy, spreadPct, depthImbalance and executionMarketState before directional inference.
 6. Preserve spread as execution-cost/liquidity control, depth imbalance as descriptive state, and opening gap as diagnostic/control until prospective evidence survives controls.
