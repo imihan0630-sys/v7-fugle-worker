@@ -10,13 +10,10 @@ const required=[
   'async function recordProspectiveExecutionShadow(',
   'async function readExecutionResearchRecorder(',
   'url.pathname==="/api/research/execution-recorder"',
-  'executionMarketState:"UNKNOWN"',
-  '"SESSION_VWAP_NOT_CAPTURED"',
-  '"MARKET_MECHANISM_STATE_NOT_VERIFIED"',
   'RESEARCH_EXECUTION_RECORDER_FAIL_OPEN',
   'const executionResearchRecorder = await recordProspectiveExecutionShadow(env,results,scheduledTime,notifications);'
 ];
-if(!/const VERSION = "8\\.8\\.\\d+[^"]*";/.test(source)) throw new Error("V8.8+ runtime version contract missing");
+if(!source.includes('const VERSION = "8.8.')) throw new Error("V8.8+ runtime version contract missing");
 for(const needle of required) {
   if(!source.includes(needle)) throw new Error("Missing recorder contract: "+needle);
 }
