@@ -59,6 +59,7 @@ jobs:
           python3 scripts/apply_v8_7_10.py
           python3 scripts/apply_v8_7_11.py
           python3 scripts/apply_v8_7_12.py
+          python3 scripts/apply_v8_7_13.py
       - name: Syntax and offline behavior regression
         env:
           V7_TEST_WORKER_PATH: ${{ github.workspace }}/Worker.js
@@ -66,7 +67,7 @@ jobs:
           set -euo pipefail
           cp Worker.js /tmp/v7-worker.mjs
           node --check /tmp/v7-worker.mjs
-          grep -F 'const VERSION = "8.7.12-after-market-2335";' Worker.js
+          grep -F 'const VERSION = "8.7.13-daily-mobile-alert";' Worker.js
           grep -F '35 15 * * MON-FRI' Worker.js
           grep -F '23:35 盤後掃描' Worker.js
           grep -F 'SAME_SCAN_DATE_PAIRED_COHORT_DELTA' Worker.js
@@ -108,6 +109,7 @@ jobs:
           grep -F 'url.pathname==="/api/external-validation/stats"' Worker.js
           node tests/test_requirements_repair.mjs
           node tests/test_three_min_auth_check.mjs
+          node tests/test_v8_7_13_daily_mobile_alert.mjs
           node tests/test_three_min_current_recovery.mjs
           node tests/test_v8_1_ops_hardening.mjs
           node tests/test_v8_1_1_acceptance_state.mjs
