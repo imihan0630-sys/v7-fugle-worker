@@ -1,6 +1,6 @@
 # Research Checkpoint
 
-Updated: 2026-09-22T08:38+08:00
+Updated: 2026-09-22T08:45+08:00
 
 ## Continuity / baseline
 - Formal Core: **LOCKED**.
@@ -166,6 +166,14 @@ Convergence / falsification:
 3. R06 market-state transition is a mandatory conditioning/falsification dimension once sample maturity allows; pooling continuation and transition dates could cancel real effects or manufacture unstable averages.
 4. The 2015 price-limit change is a historical regime boundary for external evidence, but prospective Shadow beginning 2026-09-21 cannot estimate that structural break itself. Use it only to reject naive transfer of older Taiwan estimates.
 5. No new factor or threshold is justified.
+
+### Readiness-gate semantic audit — 2026-09-22T08:45+08:00
+Audit of `research/readiness_v8_7_10.js` found a research-governance nuance:
+- R02 readiness currently gates only on >=20 Selection Alpha D5 paired dates. It includes BUY-trigger count as evidence, but does not require any minimum number of BUY-triggered plans before labeling R02 DESCRIPTIVE_READY.
+- Because R02 is explicitly "Selection Alpha vs Execution Alpha", a future state could technically become DESCRIPTIVE_READY for Selection Alpha while Execution Alpha remains too sparse to interpret.
+- This is a research-readiness semantics issue only; it does not alter Formal Core. Do not silently change the existing frozen readiness definition in the middle of accumulation.
+- Record as a candidate Class A versioned readiness refinement after prospective BUY evidence begins: split R02 readiness into Selection-side and Execution-side sub-readiness rather than adding an arbitrary BUY threshold now.
+- No code change in this cycle because choosing a BUY minimum before observing operational coverage would be an unnecessary new parameter and increase researcher degrees of freedom.
 
 ## Bias / data-quality firewall
 - UNKNOWN remains UNKNOWN; no BAD/0 coercion.
