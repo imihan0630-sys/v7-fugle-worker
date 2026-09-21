@@ -1,6 +1,6 @@
 # Research Checkpoint
 
-Updated: 2026-09-22T08:45+08:00
+Updated: 2026-09-22T08:52+08:00
 
 ## Continuity / baseline
 - Formal Core: **LOCKED**.
@@ -189,6 +189,21 @@ Audit of `research/readiness_v8_7_10.js` found a research-governance nuance:
 - No code change, branch, PR, regression test or deployment required.
 - Formal Core remains LOCKED.
 - Durable note commit this cycle: `be85cde98b4b9e4e681665add181865b53090903`.
+
+### Pre-open convergence before first live session — 2026-09-22T08:52+08:00
+Current research path is now constrained enough for the first 2026-09-22 prospective execution session:
+- No new path/attention/persistence factor should be added before I02/I03/I04/I05/I07 have prospective evidence.
+- No opening-gap sign rule should be added; Taiwan literature supports horizon- and regime-dependent continuation/reversal.
+- Execution Alpha must remain explicitly conditional on triggered BUY; trigger rate and non-BUY opportunity path are separate evidence.
+- OPEN_BASELINE must be analyzed as an early post-open baseline, not a clean continuous-session microstructure observation.
+- R02 readiness has a semantic gap (selection-side maturity can outpace execution-side maturity); preserve current definition for continuity and version any later refinement.
+- The next information gain now comes from actual 09:00/09:11/09:16/09:31 prospective snapshots, not further parameter invention.
+
+Exact continuation when the session begins:
+1. Verify that OPEN_BASELINE/FIRST_10M/FIRST_15M/FIRST_30M rows are actually stored for monitored formal-plan symbols.
+2. Audit field coverage and UNKNOWN reasons by event type, without scoring outcomes.
+3. Check quote timestamps/bar-end timestamps for PIT consistency and stale-data contamination.
+4. Keep Formal Core locked and do not infer alpha from a single date.
 
 ## Exact next continuation point
 Priority 6 Execution Alpha remains in **P2 research-readiness / coverage diagnostics**. Continue without user interaction unless a B/C decision or genuine blocker appears:
