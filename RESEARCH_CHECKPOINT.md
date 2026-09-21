@@ -1,6 +1,6 @@
 # Research Checkpoint
 
-Updated: 2026-09-22T07:48+08:00
+Updated: 2026-09-22T07:55+08:00
 
 ## Continuity / baseline
 - Formal Core: **LOCKED**.
@@ -76,6 +76,17 @@ Overlap implication:
   - I02 persistence vs residual RS is conceptually cleaner: persistence contains path breadth/multi-horizon trend/drawdown/MA state, while residual RS removes sector return. Correlation can still arise from momentum, but there is no direct formula nesting.
 - Data-readiness constraint: 2026-09-22 market session has not yet produced mature execution-shadow-v2 evidence at this checkpoint; no directional Execution Alpha inference is permitted. Protected research API requires admin authorization, so field-level live coverage cannot be read anonymously.
 - No new experiment, factor, threshold, window or formal rule registered. Formal Core remains LOCKED.
+
+### Persistence / extreme-strength falsification — 2026-09-22T07:55+08:00
+Further Taiwan evidence tightens the interpretation of the current persistence/overheat fields:
+- Chen, Hsieh & Lee (2023) documents that roughly 46% of winner and 52% of loser constituents leave their groups immediately after formation in their six-month setup; nonpersistent members reverse, while persistent members show much stronger continuation. This supports studying persistence, but their academic definition is portfolio-membership persistence, not the system's `persistenceScoreResearch`.
+- Lin, Xia, Yang & Yang (2020) finds extreme absolute-strength stocks in Taiwan are unusually volatile and can attenuate conventional momentum profitability; removing extremes improved their intermediate-term momentum results. This is relevant to the existing `overheatPenaltyResearch`, but does NOT validate its current formula or thresholds.
+
+Falsification consequence:
+1. Do not cite these papers as direct validation of `persistenceScoreResearch` or `overheatPenaltyResearch`; construct validity is incomplete because definitions differ.
+2. Existing persistence score should be treated as a proxy family member, not "the literature's persistence factor".
+3. Extreme-strength evidence increases the importance of checking whether apparent momentum/persistence benefit disappears after volatility/overheat controls; no new exclusion threshold is allowed from this evidence.
+4. Future OOS diagnostics should separate "persistent path" from "extreme absolute strength / volatility" to avoid mistaking removal of unstable extremes for genuine continuation alpha.
 
 ## R01-R08 / I01-I07 impact
 - R01-R08 unchanged; I01-I07 unchanged; no R09.
