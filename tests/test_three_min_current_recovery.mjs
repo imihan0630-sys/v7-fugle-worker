@@ -35,7 +35,12 @@ function recentTradingDate(dateString) {
 function followingTradingDate(dateString) {
   let d=dateString; do d=shiftDate(d,1); while(!isTestTradingDate(d)); return d;
 }
-const TEST_SCAN_DATE=recentTradingDate(TAIWAN_TODAY);
+const TAIPEI_HOUR = Number(new Intl.DateTimeFormat("en-US", {
+  timeZone:"Asia/Taipei", hour:"2-digit", hourCycle:"h23"
+}).format(new Date()));
+const TEST_SCAN_DATE=recentTradingDate(
+  isTestTradingDate(TAIWAN_TODAY) && TAIPEI_HOUR < 14 ? shiftDate(TAIWAN_TODAY,-1) : TAIWAN_TODAY
+);
 const TEST_PLAN_DATE=followingTradingDate(TEST_SCAN_DATE);
 
 const payload = {
