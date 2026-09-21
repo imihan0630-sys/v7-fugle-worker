@@ -1,6 +1,6 @@
 # Research Checkpoint
 
-Updated: 2026-09-22T08:15+08:00
+Updated: 2026-09-22T08:22+08:00
 
 ## Continuity / baseline
 - Formal Core: **LOCKED**.
@@ -134,6 +134,15 @@ Interpretation:
 - FIRST_10M/15M/30M are intentionally sampled after the named interval completes, reducing incomplete-bar look-ahead ambiguity.
 - OPEN_BASELINE is not a pure pre-open order-book snapshot; it is an early post-opening observation that can contain the opening call-auction result plus the first continuous trades. Label must remain OPEN_BASELINE, not "opening auction microstructure".
 - No timing change is justified before prospective coverage is observed. Any future stage-window change would create a new research measurement version and must preserve the old series.
+
+### Execution Alpha conditioning audit — 2026-09-22T08:22+08:00
+Repository audit of `research/counterfactual_v8_7_4.js` confirms:
+- Execution Alpha uses only the first real formal BUY signal with a finite market price, measured as `(formalClose-entryPrice)/formalClose`; positive means the execution waited for a lower price.
+- Plans with no BUY are excluded from the price-improvement distribution rather than coerced to 0, while `buyTriggerRate` separately reports BUY-triggered plans / selected plans.
+- This avoids one bias (fake zero Execution Alpha) but creates an interpretation boundary: conditional price improvement among triggered BUYs is not the total economic value of the execution policy. A policy can show positive conditional price improvement while missing subsequent winners.
+- Therefore future Execution Alpha evaluation must pair conditional entry improvement with trigger rate and opportunity-cost/path outcomes of no-BUY selected plans. Do not combine them into a single score until preregistered.
+
+No code change yet: the existing recorder already preserves the needed selection and path data; first priority is prospective coverage/maturity.
 
 ## Bias / data-quality firewall
 - UNKNOWN remains UNKNOWN; no BAD/0 coercion.
