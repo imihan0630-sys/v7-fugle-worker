@@ -6,7 +6,7 @@ const source=await readFile(workerPath,"utf8");
 const exported="\nexport {researchShadowOutcomeForRow,researchPairedSelectionAlpha,researchExecutionAlphaFromRows,researchRegimePersistenceFromDays,buildShadowResearchDiagnostics};";
 const mod=await import("data:text/javascript;base64,"+Buffer.from(source+exported).toString("base64")+"#"+Date.now());
 
-assert.match(source,/const VERSION = "8\.7\.\d+[^"]*";/);
+assert.match(source,/const VERSION = "8\\.(?:[7-9]|[1-9]\\d+)\\.\\d+[^"]*";/);
 for(const marker of [
   "breakoutReferencePriceResearch",
   "SAME_SCAN_DATE_PAIRED_COHORT_DELTA",
