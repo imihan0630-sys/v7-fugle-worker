@@ -1,160 +1,83 @@
 # Research Checkpoint
 
-Updated: 2026-09-22T05:41+08:00
+Updated: 2026-09-22T05:57+08:00
 
 ## Continuity / baseline
-- Formal Core: LOCKED.
+- Formal Core: **LOCKED**.
 - Repository: `imihan0630-sys/v7-fugle-worker`.
 - Production Worker: `fugle-test` / `https://fugle-test.imihan0630.workers.dev/`.
 - Actual Production readback overrides remembered/chat version strings.
 - Prospective Shadow begins 2026-09-21; no fabricated historical Shadow.
 - Missing evidence remains UNKNOWN, never BAD/0.
-- Owner approved the validated optimization batch on 2026-09-22.
+- R01-R08 and I01-I07 remain frozen unless explicitly versioned; no R09 currently exists.
 
-## Completed engineering — V8.8.0 Prospective Shadow Execution Recorder
-Production readback: **8.8.0-shadow-execution-recorder**.
+## Current production research infrastructure
+### V8.8.0 — Prospective Shadow Execution Recorder
+- Production readback after deployment: `8.8.0-shadow-execution-recorder`.
+- Sparse research-only snapshots: OPEN_BASELINE, FIRST_10M_COMPLETE, FIRST_15M_COMPLETE, FIRST_30M_COMPLETE, FORMAL_SIGNAL_OBSERVED when a formal notification event exists.
+- PIT timestamps/freshness are stored; no historical execution Shadow was fabricated.
+- Merge: `e9fe3c94c826593b9f2b85e6fdfc5c09b62b4646`; rollback source: `9951b93b308f5ef7bfb0f244ffca6ded90e54cea`.
+- Regression / Repair CI / deployment verification passed.
 
-### What was implemented
-Sparse prospective research-only execution snapshots are now recorded from already-polled runtime state at:
-- OPEN_BASELINE
-- FIRST_10M_COMPLETE
-- FIRST_15M_COMPLETE
-- FIRST_30M_COMPLETE
-- FORMAL_SIGNAL_OBSERVED when a formal notification event exists
+### V8.8.1 — Execution Source Coverage
+- Production deployment workflow run 90: SUCCESS.
+- Research schema: `execution-shadow-v2`.
+- Zero-additional-call fields from already-polled Fugle quote: openingGapPct, sessionAvgPrice / explicitly labeled VWAP proxy, best spread, five-level bid/ask depth and depthImbalance, conservative executionMarketState.
+- Market state remains UNKNOWN when flags are insufficient; no claim of disposition/VI identification.
+- Merge: `9283719e661e42a09b3b0d9fdfe27d54f3753d3e`; V8.8.0 is rollback baseline.
+- No A/B, ranking, Top6, 3+3, capital, entry/add/reduce/sell/stop, monitoring eligibility or push behavior change.
 
-PIT fields include scheduledTime, decisionAt, observedAt/featureKnownAt, quote lastTradeAt where valid, completed 10m/15m bar start/end, freshness flags, current price and the already-existing formal decision.
+## P2 research status — Execution Research Readiness
+Status: **ACCUMULATING / RESEARCH ONLY**.
 
-The first version intentionally stores these as UNKNOWN/null rather than inventing them:
-- opening gap
-- session VWAP
-- bid/ask spread
-- depth imbalance
-- market mechanism state
+### Microstructure falsification prior
+- Taiwan evidence supports treating spread primarily as transaction-cost/liquidity evidence rather than directional alpha.
+- Five-level depth imbalance is descriptive microstructure state until prospective evidence shows incremental predictive/execution value after controls.
+- Do not interpret aggregate book imbalance as institutional flow; current five-level book has no trader identity.
+- Required controls include contemporaneous momentum/return, positiveDayRatio20, residualSectorRs20, turnover/attention, spread/liquidity, volatility, overnight gap, market state, transaction costs and scan-date clustering.
 
-### Safety result
-- No new vendor calls.
-- No A/B, ranking, Top6, 3+3, capital, entry/add/reduce/sell/stop, formal 10m/15m semantics, monitoring eligibility or push behavior changes.
-- Recorder runs after formal signal processing and live-state persistence.
-- Recorder errors are fail-open and create research data gaps only.
-- Duplicate sparse events use D1 INSERT OR IGNORE.
-- R01-R08 and I01-I07 unchanged; no R09.
+### New Taiwan price-path / intraday evidence — 2026-09-22
+Durable detailed note: `research/notes/P2_2026-09-22_0552_ID_INTRADAY_PRIOR.md`.
 
-### Engineering classification
-Class B during implementation because a research-only table/write was added to the shared D1/runtime path. Owner explicitly approved modification and deployment.
+Research convergence:
+- Taiwan-specific information-discreteness evidence reports stronger earnings-momentum continuation when information arrives more continuously / attracts less attention; price-limit events are attention-grabbing discrete events.
+- Taiwan momentum-persistency evidence reports that high turnover among nominal winner/loser portfolios attenuates ordinary momentum, while persistent winners/losers show stronger intermediate continuation.
+- Taiwan intraday-vs-overnight evidence reports positive intraday momentum but negative overnight momentum, consistent with intraday underreaction versus overnight overreaction/correction.
+- A Taiwan 2000-2021 short-term study reports a market-structure caveat: average reversal before the 2015 price-limit relaxation and average short-term momentum after it; turnover-conditioned momentum and reversal can coexist.
 
-### Branch / PR / commits
-- Implementation branch: `research/execution-recorder-v8-8-0`.
-- PR: #93.
-- Merge commit on main: `e9fe3c94c826593b9f2b85e6fdfc5c09b62b4646`.
-- Pre-change main / rollback source point: `9951b93b308f5ef7bfb0f244ffca6ded90e54cea`.
+Research implications / falsification rules:
+1. Price-path quality / persistence has a stronger Taiwan prior than raw cumulative return alone, but this does **not** justify a new factor yet.
+2. Positive opening gap must not be assumed bullish. Future P2 analysis should distinguish gap + intraday confirmation from gap without confirmation, but no threshold/classification is registered yet.
+3. Information discreteness overlaps conceptually with existing persistence, positiveDayRatio20, breakout quality and R07/R08 attention proxies. A new ID factor now would create material redundancy / Factor-Zoo risk.
+4. Taiwan's price-limit regime and turnover are explicit falsification dimensions; effects isolated to one regime or turnover bucket are not general evidence.
+5. Do not tune ID windows, gap thresholds, intraday confirmation thresholds or holding periods after seeing Shadow outcomes. Any new definition requires a separately preregistered experiment/version.
 
-### Tests
-- V8 Regression Tests run 274: SUCCESS.
-- V8 Repair CI run 126: SUCCESS.
-- Targeted V8.8.0 recorder contract test: PASS within both suites.
-- Existing V8.7 research contract tests were made version-forward compatible; behavior assertions remain.
-- Deploy workflow syntax check + behavioral regression: SUCCESS.
-- Formal protected behavior contract greps and existing full test suite: SUCCESS.
-
-### Deployment / readback
-- V8 Cloudflare Deploy run 87: SUCCESS.
-- Predeploy version guard observed `8.7.13-daily-mobile-alert`; build `8.8.0-shadow-execution-recorder`.
-- Existing workflow captured and retained the verified predeploy Worker/Cron backup artifact before deployment.
-- Code-only Cloudflare deployment: SUCCESS.
-- Existing after-market Cron migration/preservation: SUCCESS.
-- Deployed version/config verification: SUCCESS.
-- Research readback observed `8.8.0-shadow-execution-recorder`.
-- Existing Shadow integrity remained HEALTHY at readback; R01-R08 readiness remained research-only/accumulating.
-
-## Research interpretation
-The recorder is infrastructure for falsification, not a trading signal. Current Taiwan evidence still does not justify promoting first30/VWAP/10m/15m strength into a formal score or gate.
-
-## UNKNOWN / bias firewall
-- No historical execution Shadow was fabricated.
-- Exact spread/depth/VWAP/market-mechanism availability from the current already-polled quote payload is still unverified.
-- UNKNOWN remains UNKNOWN; do not infer NORMAL market state from price behavior.
-- Future execution studies must control existing momentum, positiveDayRatio20, residualSectorRs20, volume/attention, overnight gap, market mechanism state where known, transaction cost and scan-date clustering.
-
-## Completed engineering — V8.8.1 Execution Source Coverage
-Production deploy workflow: **SUCCESS (V8 Cloudflare Deploy run 90)**.
-
-### New evidence / source verification
-Fugle's current official Intraday Quote contract (docs updated 2026-01-09) confirms the already-required quote response contains:
-- previousClose + openPrice;
-- avgPrice (intraday average transaction price);
-- five-level bids / asks with price and size;
-- tradingHalt plus isTrial / isContinuous / delayed-open / delayed-close / limit-halt flags.
-Therefore opening-gap diagnostics, an explicitly labeled avgPrice/VWAP proxy, best-spread and five-level depth imbalance can be captured with **zero additional vendor calls**.
-
-### V8.8.1 implementation
-- Research snapshot schema advances to execution-shadow-v2.
-- Adds openingGapPct from openPrice/previousClose when both are valid.
-- Adds sessionAvgPrice and sessionVwapProxy, explicitly preserving semantics as FUGLE_INTRADAY_QUOTE_AVG_PRICE rather than claiming an independently reconstructed VWAP.
-- Adds bestBid/bestAsk/spreadPct and bidDepth5/askDepth5/depthImbalance.
-- Adds conservative executionMarketState from quote flags: HALTED / TRIAL / CONTINUOUS / NON_CONTINUOUS_FLAGGED / UNKNOWN.
-- Does **not** claim to identify disposition status or a dedicated VI event. Insufficient flags remain UNKNOWN.
-- All added quote fields are passed through only after the existing formal decision is computed; they do not enter formal selection/trading logic.
-
-### Safety / bias result
-- No new Fugle calls.
-- No Formal Core factor/score/threshold/ranking change.
-- No A/B, Top6, 3+3, capital, entry/add/reduce/sell/stop, formal 10m/15m semantics, monitoring eligibility or push change.
-- UNKNOWN remains UNKNOWN.
-- avgPrice is labeled a proxy/official quote field, avoiding semantic overclaim.
-- These are diagnostics/observations only; no new R09 and no automatic promotion.
-
-### Engineering / tests / deployment
-- Branch: research/execution-coverage-v8-8-1.
-- PR: #94.
-- Merge commit: 9283719e661e42a09b3b0d9fdfe27d54f3753d3e.
-- V8 Regression Tests run 279 on PR: SUCCESS.
-- V8 Repair CI run 130 on PR: SUCCESS.
-- Main regression run 282: SUCCESS.
-- First deploy trigger run 89 failed before build because a temporary comment inserted into baseline Worker.js broke the old patch chain at apply_v7_5_33.py. No production deploy occurred from that failed run.
-- The comment was removed, restoring the exact patch baseline; main regression remained SUCCESS.
-- V8 Cloudflare Deploy run 90: SUCCESS.
-- Production deployment was therefore completed only after the patch-chain baseline was restored.
-- Formal Core remains LOCKED.
-
-### Rollback
-- V8.8.0 production baseline/merge: e9fe3c94c826593b9f2b85e6fdfc5c09b62b4646.
-- V8.8.1 merge: 9283719e661e42a09b3b0d9fdfe27d54f3753d3e.
-- Existing deployment workflow retains verified predeploy Worker/Cron backup before code-only deployment.
-
-## P2 research learning — microstructure falsification prior (2026-09-22 05:41 +08)
-### Research question
-How should spread and five-level depth imbalance be interpreted before enough prospective execution-shadow-v2 dates exist?
-
-### Supporting / contrary evidence
-- Taiwan order-imbalance literature shows strong contemporaneous price pressure and persistence in some trader classes, but little consistent evidence that aggregate imbalance predicts future returns beyond the trading day. This argues against treating depth imbalance as a ready-made directional alpha.
-- Taiwan evidence on institutional/individual intraday imbalance likewise reports contemporaneous price-pressure effects but no consistent future-return predictability from institutional imbalance.
-- Taiwan market-quality evidence links day-trading activity to wider bid-ask spreads, greater depth and higher volatility, so spread/depth can move together as market-quality/liquidity state rather than as a simple bullish/bearish signal.
-- Taiwan tick-size research explicitly treats quoted spread as a transaction-cost measure for immediacy demand. Therefore spreadPct has a stronger prior as execution-cost/control evidence than as Selection Alpha.
-
-### Research decision / falsification prior
-- Do not pre-register a directional claim such as `positive depthImbalance => higher future return` yet.
-- Primary P2 use of spreadPct: transaction-cost / liquidity control and possible execution-quality interaction.
-- Primary P2 use of depthImbalance: descriptive microstructure state; test incremental value only after conditioning on contemporaneous return/momentum, turnover/attention, spread and market state.
-- A valid future Execution Alpha claim must survive within-scan-date/date-cluster controls and show incremental improvement in execution outcome/MFE-MAE/net return, not merely contemporaneous price pressure.
-- openingGapPct and sessionAvgPrice/VWAP proxy remain separate diagnostics; this cycle did not establish a new directional hypothesis for them.
-
-### Bias / redundancy / UNKNOWN checks
-- Avoid causal interpretation from contemporaneous imbalance-return correlation.
-- Avoid converting book imbalance into a proxy for institutional flow; current five-level book does not identify trader type.
-- Spread/depth are likely correlated with liquidity, size, turnover and volatility; redundancy controls are mandatory.
-- Disposition/VI-specific state remains UNKNOWN without a reliable PIT source.
-- No historical execution fields were backfilled.
-
-### Experiment / engineering impact
+### R01-R08 / I01-I07 impact
+- R05 receives stronger Taiwan-specific external prior; its definition is unchanged.
+- R03/R04/R07/R08 remain required comparators/controls.
 - R01-R08 unchanged; I01-I07 unchanged; no R09 created.
-- Engineering classification: research interpretation only; no code change, no branch, no deployment.
+- No Formal Core change.
+
+## Bias / data-quality firewall
+- UNKNOWN remains UNKNOWN; no BAD/0 coercion.
+- No historical execution-shadow-v2 backfill.
+- Independent scan date remains the primary evidence unit; same-day stocks are clustered observations.
+- No causal claim from contemporaneous correlations.
+- Turnover can be both attention proxy and conditioning variable; avoid double-counting correlated information.
+- Disposition/VI-specific state remains UNKNOWN until a reliable official PIT source distinguishes it.
+
+## Engineering status this cycle
+- Classification: research interpretation only.
+- No code change, branch, PR, regression test or deployment required.
 - Formal Core remains LOCKED.
+- Durable research note commits: `d260c593e3a2be728e6779ab434d6efed72c2a88`, extended by `a8cfdf5f7155d94d4bc9e59a6f402551a99e951a`.
 
 ## Exact next continuation point
-Priority 6 Execution Alpha remains in **P2 research-readiness / coverage diagnostics**:
-1. Let prospective execution-shadow-v2 accumulate actual trading-day snapshots; do not fabricate/backfill historical execution fields.
-2. Read field-level coverage rates by independent scan date for openingGapPct, sessionAvgPrice/VWAP proxy, spreadPct, depthImbalance and executionMarketState when actual trading-day snapshots exist.
-3. Treat spread primarily as execution-cost/liquidity control and depth imbalance as descriptive state until prospective evidence demonstrates incremental predictive/execution value.
-4. Keep disposition/VI-specific state UNKNOWN until an official PIT source can distinguish it reliably.
-5. Evaluate Execution Alpha only after enough independent dates exist, controlling Selection Alpha, positiveDayRatio20, residualSectorRs20, momentum/attention, overnight gap, liquidity/volatility, transaction costs and date clustering.
-6. No formal execution gate/score proposal until prospective/OOS evidence survives these controls.
+Priority 6 Execution Alpha remains in **P2 research-readiness / coverage diagnostics**. Continue without user interaction unless a B/C decision or genuine blocker appears:
+1. Inspect repository definitions / generated patch chain for persistence, positiveDayRatio20 and breakout/path-quality fields to map overlap with information discreteness before proposing any new Shadow diagnostic.
+2. Continue Taiwan evidence review on path persistence, turnover-conditioned momentum and regime sensitivity; prefer falsification/redundancy work over adding factors.
+3. Let prospective execution-shadow-v2 accumulate actual trading-day snapshots; never fabricate/backfill historical execution fields.
+4. When snapshots exist, read field-level coverage by independent scan date for openingGapPct, sessionAvgPrice/VWAP proxy, spreadPct, depthImbalance and executionMarketState before directional inference.
+5. Preserve spread as execution-cost/liquidity control and depth imbalance as descriptive state unless prospective incremental evidence survives controls.
+6. Preserve opening gap as diagnostic/control until prospective evidence tests whether intraday confirmation separates continuation from overnight correction.
+7. No formal execution gate/score proposal until prospective/OOS evidence survives Selection Alpha, momentum/attention, residual RS, liquidity/volatility, transaction-cost and date-cluster controls.
