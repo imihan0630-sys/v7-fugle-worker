@@ -1,6 +1,6 @@
 # Research Checkpoint
 
-Updated: 2026-09-22T08:22+08:00
+Updated: 2026-09-22T08:30+08:00
 
 ## Continuity / baseline
 - Formal Core: **LOCKED**.
@@ -143,6 +143,15 @@ Repository audit of `research/counterfactual_v8_7_4.js` confirms:
 - Therefore future Execution Alpha evaluation must pair conditional entry improvement with trigger rate and opportunity-cost/path outcomes of no-BUY selected plans. Do not combine them into a single score until preregistered.
 
 No code change yet: the existing recorder already preserves the needed selection and path data; first priority is prospective coverage/maturity.
+
+### Execution-cost framework convergence — 2026-09-22T08:30+08:00
+External execution literature check reinforces the conditioning audit:
+- Implementation Shortfall frameworks explicitly include opportunity cost for unfilled intended quantity; evaluating only executed fills can make patient/non-filling execution look artificially good.
+- This does not mean the current research metric is wrong: it is correctly labeled conditional entry-price improvement. It means it must not be promoted or described as total execution value.
+- For this semi-automatic system, "no formal BUY triggered" is economically analogous to an unexecuted intended opportunity only after the intended quantity and evaluation horizon are defined prospectively. Those definitions are not yet frozen, so no synthetic opportunity-cost metric is created now.
+- Existing D1/D3/D5/D10/D20 path outcomes plus buyTriggerRate are sufficient raw ingredients for a future preregistered decomposition after coverage matures.
+
+This strengthens the current decision to accumulate rather than engineer another metric before the first prospective execution days exist.
 
 ## Bias / data-quality firewall
 - UNKNOWN remains UNKNOWN; no BAD/0 coercion.
