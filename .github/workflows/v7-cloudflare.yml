@@ -44,6 +44,7 @@ on:
       - "scripts/apply_v8_7_11.py"
       - "scripts/apply_v8_7_12.py"
       - "scripts/apply_v8_7_13.py"
+      - "scripts/apply_v8_8_0.py"
       - "RESEARCH_WORKLIST.md"
       - "research/**"
       - "data/v7_formal_scan_backfill.json"
@@ -189,6 +190,9 @@ jobs:
       - name: Apply V8.7.13 daily mobile alert hardening
         run: python3 scripts/apply_v8_7_13.py
 
+      - name: Apply V8.8.0 prospective Shadow Execution Recorder
+        run: python3 scripts/apply_v8_8_0.py
+
       - name: Syntax check Worker.js
         run: |
           set -euo pipefail
@@ -198,7 +202,10 @@ jobs:
       - name: Validate V8.7.12 production contract
         run: |
           set -euo pipefail
-          grep -F 'const VERSION = "8.7.13-daily-mobile-alert";' Worker.js
+          grep -F 'const VERSION = "8.8.0-shadow-execution-recorder";' Worker.js
+          grep -F 'CREATE TABLE IF NOT EXISTS trade_research_execution_snapshots' Worker.js
+          grep -F 'url.pathname==="/api/research/execution-recorder"' Worker.js
+          grep -F 'RESEARCH_EXECUTION_RECORDER_FAIL_OPEN' Worker.js
           grep -F '35 15 * * MON-FRI' Worker.js
           grep -F '23:35 盤後掃描' Worker.js
           grep -F 'PURGED_FORWARD_HOLDOUT' Worker.js
@@ -290,6 +297,7 @@ jobs:
           node tests/test_v8_7_10_research_readiness_matrix.mjs
           node tests/test_v8_7_11_cross_market_evidence.mjs
           node tests/test_v8_7_12_after_market_2335.mjs
+          node tests/test_v8_8_0_execution_recorder.mjs
           node tests/github_plan_mirror.mjs self-test
 
       - name: Snapshot existing public monitoring configuration

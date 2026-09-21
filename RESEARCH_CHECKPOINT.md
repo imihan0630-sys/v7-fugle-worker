@@ -1,71 +1,74 @@
 # Research Checkpoint
 
-Updated: 2026-09-22T00:20+08:00
+Updated: 2026-09-22T04:43+08:00
 
 ## Continuity / baseline
 - Formal Core: LOCKED.
 - Repository: `imihan0630-sys/v7-fugle-worker`.
 - Production Worker: `fugle-test` / `https://fugle-test.imihan0630.workers.dev/`.
-- Actual Production readback must override remembered/chat version strings.
+- Actual Production readback overrides remembered/chat version strings.
 - Prospective Shadow begins 2026-09-21; no fabricated historical Shadow.
 - Missing evidence remains UNKNOWN, never BAD/0.
-- Owner authorization rule: research may continue autonomously, but program modification/deployment requires first presenting a validated optimization proposal and receiving explicit owner approval.
+- Owner explicitly approved starting the validated optimization batch on 2026-09-22.
 
-## Repository state recovered this cycle
-- Read main `RESEARCH_ENGINEERING_GOVERNANCE.md`, `RESEARCH_WORKLIST.md`, and this checkpoint before continuing.
-- Governance still classifies formal 15m/10m confirmation semantics as Class C; Execution Alpha remains diagnostic/Shadow unless explicitly approved.
-- Prior checkpoint established the prospective Shadow Execution Recorder as the only validated engineering candidate; owner approval to modify/deploy has not yet been given.
-- No runtime code changed and no deployment/version claim is made this cycle.
+## Engineering in progress — V8.8.0 Prospective Shadow Execution Recorder
+Branch: `research/execution-recorder-v8-8-0`
+PR: #93
+Current branch head before this checkpoint update included repair commit `5c127ab5d0e696d9f711d86b86fead646b35ae98`.
+Pre-change main / rollback point: `9951b93b308f5ef7bfb0f244ffca6ded90e54cea`.
 
-## Research advanced this cycle — Priority 6 Execution Alpha / first30 falsification
+### Research / experiment
+Execution Alpha evidence remains regime-, participant-, instrument- and cost-sensitive. Current evidence does not justify promoting first30/VWAP/10m/15m strength into a formal score/gate. Exact point-in-time execution state cannot be safely reconstructed later, so prospective capture remains the validated engineering objective.
 
-### Research question
-Does available Taiwan evidence justify turning early-session/first30 strength into a formal execution rule, or does it instead strengthen the case for prospective state recording and confounder controls?
+### Implemented scope
+- `scripts/apply_v8_8_0.py`: V8.8.0 sparse prospective recorder.
+- `tests/test_v8_8_0_execution_recorder.mjs`: targeted research-only/UNKNOWN/hook-order guard.
+- `.github/workflows/v7-cloudflare.yml`: production build/deploy chain updated to apply/validate V8.8.0.
+- `.github/workflows/v7-regression.yml`: full regression now applies V8.8.0 and runs the targeted test.
+- `.github/workflows/v7-repair-ci.yml`: repair verification aligned through V8.8.0.
+- `tests/test_v8_7_13_daily_mobile_alert.mjs`: repaired to test the V8.7.13 behavior contract without incorrectly pinning all future runtime versions to 8.7.13.
 
-### New supporting evidence
-- Peer-reviewed 2021 research on Taiwanese ETFs documents intraday time-series momentum between early half-hour returns and the last half-hour return. However, the predictive effect of the first half-hour disappears after controlling for institutional and foreign-investor trading behavior. This is important evidence that an apparent first30 signal can be mediated by order-flow/investor-behavior state rather than represent independent execution alpha.
-- Taiwan 0050 research (2003-2016 sample) likewise finds first-half-hour return can predict the final half hour, with stronger effects on high-volume/high-volatility and some macro/news states; it also reports non-universality during the 2008 crisis. This supports regime conditioning rather than a universal first30 rule.
-- Separate Taiwan momentum research distinguishes intraday and overnight information and argues that these components can carry different return information, reinforcing the need not to collapse opening gap/overnight and intraday path into one momentum variable.
-- TWSE Fact Book 2025 shows domestic individual investors still represented 54.07% of 2024 trading value, while foreign juridical investors represented 33.72%. Market participant composition therefore remains a material microstructure context and weakens any assumption that an ETF-era first30 relation transfers mechanically to current individual-stock Top6 execution.
+Sparse events: OPEN_BASELINE, FIRST_10M_COMPLETE, FIRST_15M_COMPLETE, FIRST_30M_COMPLETE, FORMAL_SIGNAL_OBSERVED.
+PIT fields include scheduledTime, decisionAt, observedAt/featureKnownAt, quote lastTradeAt where valid, completed 10m/15m bar start/end, freshness flags, current price and already-existing formal decision.
 
-### Counterevidence / falsification
-- The strongest modern peer-reviewed Taiwan evidence located this cycle is for ETFs, not the system's individual-stock Top6 universe. External validity to individual stocks is therefore unproven.
-- The ETF first-half-hour predictive effect disappears after controlling for institutional/foreign trading behavior, which is direct redundancy/confounding evidence against treating first30 return as standalone alpha.
-- Older TWSE individual-stock contrarian evidence reports short-horizon reversals and that gross abnormal returns disappear after reasonable explicit transaction costs; the sample is old (2004), so it is not sufficient for current rule design but remains a useful falsification warning.
-- No sufficiently strong post-2020 Taiwan individual-stock evidence was found this cycle that would justify a formal first30/VWAP threshold.
-
-### Redundancy / bias firewall
-- Do not add first30 return, opening gap, VWAP distance, or 10m/15m strength as a new score/gate based on the evidence above.
-- Future prospective analysis must condition on or residualize at least: overnight/opening-gap component, prior-day momentum, breakout quality, `positiveDayRatio20`, `residualSectorRs20`, attention/volume state, market mechanism state, and where reliably available contemporaneous institutional/foreign order-flow state.
-- Keep Selection Alpha separate from Execution Alpha: a feature that predicts later-day return may still fail to improve entry price, fill probability, slippage, MFE/MAE or net outcome after costs.
-- Scan date remains the independence cluster; multiple Top6 stocks on one date are not six independent experiments.
+### Supporting evidence / counterevidence / redundancy
+- Supporting: prospective PIT capture is required to test execution timing without historical look-ahead.
+- Counterevidence: Taiwan evidence does not support a universal first30/VWAP trading rule; no such rule is added.
+- Redundancy firewall: recorder does not create R09 or any score/gate; future analysis must residualize existing momentum, positiveDayRatio20, residualSectorRs20, volume/attention, overnight gap and market-state effects.
+- Selection bias/date clustering: future inference remains clustered by independent scan date, not by individual Top6 row.
 
 ### UNKNOWN / data quality
-- Reliable point-in-time intraday institutional/foreign order-flow availability from current runtime/vendor remains UNKNOWN.
-- Reliable real-time VI/halt/disposition market-state fields remain UNKNOWN until runtime payload inspection after recorder approval.
-- Current post-2020 individual-stock first30/VWAP evidence remains insufficient; do not substitute ETF evidence as if it were individual-stock evidence.
+Still intentionally UNKNOWN/null unless proven available from already-polled payload:
+- opening gap
+- session VWAP
+- bid/ask spread
+- depth imbalance
+- market mechanism state (VI/halt/disposition/call auction)
+No UNKNOWN is coerced to BAD/0 or NORMAL.
 
-### R01-R08 / I01-I07 impact
-- R01-R08 and I01-I07 unchanged.
-- No R09 created.
-- No formal factor/threshold promoted.
-- Execution Recorder rationale is strengthened: prospective observation is needed precisely because literature signals are regime-, participant-, instrument- and cost-sensitive.
+### R01-R08 / I01-I07
+Unchanged. No R09. No formal factor/threshold promotion.
 
-## Engineering classification / actions this cycle
-- No new engineering proposal beyond the previously presented prospective Shadow Execution Recorder.
-- Recorder remains provisionally Class A only if isolated, fail-open, reuse-only and unable to alter formal latency/output; otherwise Class B.
-- Formal 10m/15m semantics and any first30/VWAP trading rule remain Class C.
-- Per owner authorization, no program modification or deployment without explicit approval.
+## Engineering classification / safety
+Class B during implementation because this adds a D1 table/write on shared runtime. Owner approval has been received, but promotion remains gated on regression/deploy verification.
+- No new vendor calls.
+- No A/B, ranking, Top6, 3+3, capital, entry/add/reduce/sell/stop, formal 10m/15m, monitoring eligibility or push semantic change.
+- Recorder hook runs after formal signal processing and live-state persistence.
+- Recorder failure is fail-open and can only create a research data gap.
+- Duplicate sparse events use D1 INSERT OR IGNORE.
 
 ## Tests / deployment
-- Code tests: not applicable; runtime unchanged.
-- Research validation: governance/worklist/checkpoint recovered; modern Taiwan ETF intraday evidence, Taiwan 0050 evidence, participant-composition evidence and older individual-stock transaction-cost falsification reviewed.
-- Deployment: none.
+- First V8.8-aware regression run `35652665570` correctly built V8.8.0 but failed before the new targeted test because legacy `test_v8_7_13_daily_mobile_alert.mjs` asserted the exact old runtime version `8.7.13-daily-mobile-alert`.
+- This was a test-maintenance incompatibility, not a detected Formal Core behavior change. The test's actual DAILY_SELECTION Slack mention assertions were preserved; only the stale exact-version pin was made forward-compatible in commit `5c127ab5d0e696d9f711d86b86fead646b35ae98`.
+- Earlier V8 regression run before applying V8.8.0 passed, confirming the baseline, but is not sufficient evidence for V8.8.0 promotion.
+- Repair CI earlier exposed a separate stale-chain failure in `test_three_min_current_recovery`; the repair workflow has since been aligned through V8.8.0 and must be re-observed on the current head.
+- Production deployment/readback has NOT occurred. Do not claim V8.8.0 is live.
 
-## Decision status
-- No first30/VWAP rule is ready for engineering or Formal Core proposal.
-- The prospective Shadow Execution Recorder remains the only optimization currently worth implementing, because it enables genuine prospective falsification without pretending historical exact state can be reconstructed.
-- No additional owner decision is required unless/until the owner chooses to approve that recorder.
-
-## Exact next continuation point
-If recorder approval remains absent/deferred, continue Priority 6 by investigating point-in-time source coverage for contemporaneous execution-cost proxies and order-flow state that can be captured without new shared vendor calls: bid/ask spread where available, quote depth/imbalance where available, realized slippage proxy, and whether current already-polled payloads expose sufficient fields. Falsify each against redundancy with liquidity/volume/price and against transaction-cost circularity. Do not code. If owner explicitly approves the recorder, instead inspect persistence bindings/schema and `Worker.js` quote/bar/monitoring call sites plus vendor payload fields, classify A vs B before coding, create rollback branch, implement minimal fail-open recorder, run targeted/full regression and Formal Core invariant comparisons, then deploy only if authorized and verify workflow + Production readback/health.
+## Unfinished / exact next continuation point
+1. Wait for/inspect the fresh PR CI triggered by the current branch head after `5c127ab5...` and this checkpoint commit.
+2. Require V8 Regression Tests to build V8.8.0, run all legacy regressions plus `test_v8_8_0_execution_recorder.mjs`, and pass read-only production preflight.
+3. Inspect V8 Repair CI separately; if it fails only from another stale version/test-chain assumption, repair on branch without weakening behavioral invariants. Any genuine Formal Core regression stops promotion.
+4. Only when required regression evidence is green, merge PR #93.
+5. Observe the existing Cloudflare deployment workflow. Require predeploy backup, successful code-only deploy, postdeploy `/api/version` readback = `8.8.0-shadow-execution-recorder`, production health/readback, and recorder endpoint/table readiness. Do not create fake historical Shadow or real test signals.
+6. If deployment/readback fails, use the pre-change rollback point/workflow backup and preserve evidence.
+7. After V8.8.0 is stable, inspect already-polled quote payload coverage for spread/depth/VWAP/market-state fields; only propose a next optimization when real coverage exists.
