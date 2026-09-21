@@ -1,6 +1,6 @@
 # Research Checkpoint
 
-Updated: 2026-09-22T06:44+08:00
+Updated: 2026-09-22T06:53+08:00
 
 ## Continuity / baseline
 - Formal Core: **LOCKED**.
@@ -46,7 +46,22 @@ New convergence:
 4. `positiveDayRatio20` is **UNKNOWN at definition-provenance level** for this audit. Do not infer its formula from its name, and do not treat this as evidence that the field is absent from deployed research snapshots.
 5. Combining persistence + positive-day ratio + breakout quality after observing outcomes would itself be a new experiment/variant and is prohibited without preregistration.
 
-### R01-R08 / I01-I07 impact
+#### Exact formula provenance recovery — 2026-09-22T06:53+08:00
+Source recovered from `scripts/apply_v8_7_1.py` rather than inferred from field names.
+
+- `positiveDayRatio20`: from up to the latest 20 one-day close-to-close returns available through scanDate; percentage of finite returns strictly > 0.
+- `persistenceScoreResearch`: requires at least 3 finite components, then computes `0.35*positiveDayRatio20 + 0.25*positiveHorizonPct + 0.20*ddQuality + 0.20*maQuality`. `positiveHorizonPct` is the percentage of positive ret5/ret10/ret20/ret60; `ddQuality=clamp(100 + maxDrawdown20Pct*5,0,100)`; `maQuality` is 0/50/100 from close above MA20 and MA60. Important implementation detail: the weighted expression uses `(positiveDayRatio20||0)`, `(positiveHorizonPct||0)`, `(ddQuality||0)`, so a missing component among the allowed one can contribute zero after the >=3 finite-component gate.
+- `setup.breakoutQualityResearch`: `clamp(dailyClosePosition*35 + (1-dailyUpperShadowRatio)*25 + clamp((volVs5||0)/2,0,1)*25 + clamp(((breakoutPct||0)+1)/4,0,1)*15,0,100)`.
+- `dailyClosePosition=(close-low)/(high-low)` with 0.5 on zero range; `dailyUpperShadowRatio=(high-max(open,close))/(high-low)` with 0 on zero range; `volVs5=todayVolume/avg(previous5 volumes)`; `breakoutPct=(close/priorHigh20-1)*100`.
+- Snapshot provenance: prospective snapshots use `research-snapshot-v2`; `positiveDayRatio20` prefers an existing item field when present, otherwise reconstructed researchPrice; persistence/breakout quality are reconstructed from historical bars through scanDate.
+- Existing preregistered redundancy controls confirmed in `research/incremental_v8_7_7.js`: I02 tests Persistence beyond Residual RS; I03/I04 directly test Breakout Quality vs Attention Volume with within-scan-date demeaning and D5 partial correlation. Maturity remains >=60 samples and >=15 distinct scan dates.
+
+Overlap implication:
+1. Persistence is structurally a composite of path breadth (positive-day ratio), multi-horizon momentum, drawdown quality, and MA state; it is not an independent primitive. Any future Information Discreteness/path score using positive-day breadth or multi-horizon sign would mechanically overlap.
+2. Breakout Quality already embeds attention volume at 25% plus breakout distance at 15%; therefore treating raw volume and breakout quality as separate independent confirmations can double-count volume. I03/I04 are the correct preregistered falsification pair before adding another path-quality factor.
+3. No new factor/threshold/window is registered. R01-R08 and I01-I07 stay frozen; Formal Core remains LOCKED.
+
+## R01-R08 / I01-I07 impact
 - R01-R08 unchanged; I01-I07 unchanged; no R09.
 - I02/I03/I04 explicitly serve as redundancy controls for future path/ID hypotheses.
 - R05 remains the execution-path prior; R07/R08 remain attention controls.
@@ -69,8 +84,8 @@ New convergence:
 
 ## Exact next continuation point
 Priority 6 Execution Alpha remains in **P2 research-readiness / coverage diagnostics**. Continue without user interaction unless a B/C decision or genuine blocker appears:
-1. Trace the generated/deployment research patch chain and production research schema to recover exact formulas/provenance for `price.persistenceScoreResearch`, `positiveDayRatio20` (if deployed), and `setup.breakoutQualityResearch`; do not infer from names.
-2. Compare recovered formulas term-by-term for shared inputs/windows and identify deterministic or near-deterministic overlap before registering any new Shadow diagnostic.
+1. With exact formulas now recovered, map term-level overlap against R01/R05/R07/R08 and I02/I03/I04, especially positive-day breadth, multi-horizon sign, volume attention and breakout distance; do not register a new factor yet.
+2. Inspect prospective research snapshots once 2026-09-22 trading-day data exists and quantify field-level coverage by independent scan date; keep missing fields UNKNOWN.
 3. Continue Taiwan evidence review on path persistence, turnover-conditioned momentum and regime sensitivity; prefer falsification/redundancy work over adding factors.
 4. Let prospective execution-shadow-v2 accumulate actual trading-day snapshots; never fabricate/backfill historical execution fields.
 5. When snapshots exist, read field-level coverage by independent scan date for openingGapPct, sessionAvgPrice/VWAP proxy, spreadPct, depthImbalance and executionMarketState before directional inference.
