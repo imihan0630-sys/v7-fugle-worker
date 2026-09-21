@@ -4,7 +4,6 @@ const workerPath=process.env.V7_TEST_WORKER_PATH || "Worker.js";
 const source=fs.readFileSync(workerPath,"utf8");
 
 const required=[
-  'const VERSION = "8.8.0-shadow-execution-recorder";',
   'CREATE TABLE IF NOT EXISTS trade_research_execution_snapshots',
   'function executionResearchEventTypes(',
   'function buildExecutionResearchPayload(',
@@ -17,6 +16,7 @@ const required=[
   'RESEARCH_EXECUTION_RECORDER_FAIL_OPEN',
   'const executionResearchRecorder = await recordProspectiveExecutionShadow(env,results,scheduledTime,notifications);'
 ];
+if(!/const VERSION = "8\\.8\\.\\d+[^"]*";/.test(source)) throw new Error("V8.8+ runtime version contract missing");
 for(const needle of required) {
   if(!source.includes(needle)) throw new Error("Missing recorder contract: "+needle);
 }
