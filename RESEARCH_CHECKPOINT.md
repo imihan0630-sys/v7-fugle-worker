@@ -1,6 +1,6 @@
 # Research Checkpoint
 
-Updated: 2026-09-22T06:53+08:00
+Updated: 2026-09-22T07:35+08:00
 
 ## Continuity / baseline
 - Formal Core: **LOCKED**.
@@ -10,6 +10,12 @@ Updated: 2026-09-22T06:53+08:00
 - Prospective Shadow begins 2026-09-21; no fabricated historical Shadow.
 - Missing evidence remains UNKNOWN, never BAD/0.
 - R01-R08 and I01-I07 remain frozen unless explicitly versioned; no R09 currently exists.
+
+### Continuity enforcement — 2026-09-22T07:35+08:00
+- Active user rule reaffirmed: once a research cycle is explicitly started, continue autonomously through all non-human steps. Do not stop merely to narrate progress.
+- Permitted stop conditions are limited to: genuine MFA/reauth/secret/permission blocker, explicit Class B/Class C production decision, or a true technical blocker that connected tools cannot resolve.
+- Ordinary findings, provenance recovery, research notes, Class A diagnostics, repository reads, falsification work and checkpoint persistence are continuation points, not stop points.
+- When one research subtask completes, immediately advance to the next checkpoint item; report only at a genuine stop boundary or when explicitly asked for status.
 
 ## Current production research infrastructure
 ### V8.8.0 — Prospective Shadow Execution Recorder
