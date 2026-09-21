@@ -1,6 +1,6 @@
 # Research Checkpoint
 
-Updated: 2026-09-22T08:08+08:00
+Updated: 2026-09-22T08:15+08:00
 
 ## Continuity / baseline
 - Formal Core: **LOCKED**.
@@ -121,6 +121,19 @@ Official TWSE trading-mechanism evidence was checked to constrain execution-shad
 - Future coverage analysis must stratify or at minimum label OPEN_BASELINE separately from FIRST_10M/15M/30M rather than pooling their spread/depth distributions.
 
 No engineering change is needed yet: current recorder already stores stage and conservative market-state provenance. This is a research interpretation constraint, not a new trading rule.
+
+### Execution-stage timing audit — 2026-09-22T08:15+08:00
+Repository audit of `apply_v8_8_0.py` confirms stage windows are based on Taiwan clock:
+- OPEN_BASELINE: 09:00-09:02
+- FIRST_10M_COMPLETE: 09:11-09:12
+- FIRST_15M_COMPLETE: 09:16-09:17
+- FIRST_30M_COMPLETE: 09:31-09:32
+- FORMAL_SIGNAL_OBSERVED: whenever formal notifications exist.
+
+Interpretation:
+- FIRST_10M/15M/30M are intentionally sampled after the named interval completes, reducing incomplete-bar look-ahead ambiguity.
+- OPEN_BASELINE is not a pure pre-open order-book snapshot; it is an early post-opening observation that can contain the opening call-auction result plus the first continuous trades. Label must remain OPEN_BASELINE, not "opening auction microstructure".
+- No timing change is justified before prospective coverage is observed. Any future stage-window change would create a new research measurement version and must preserve the old series.
 
 ## Bias / data-quality firewall
 - UNKNOWN remains UNKNOWN; no BAD/0 coercion.
