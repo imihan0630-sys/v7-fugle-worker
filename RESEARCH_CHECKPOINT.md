@@ -1,6 +1,6 @@
 # Research Checkpoint
 
-Updated: 2026-09-22T04:43+08:00
+Updated: 2026-09-22T04:48+08:00
 
 ## Continuity / baseline
 - Formal Core: LOCKED.
@@ -9,66 +9,75 @@ Updated: 2026-09-22T04:43+08:00
 - Actual Production readback overrides remembered/chat version strings.
 - Prospective Shadow begins 2026-09-21; no fabricated historical Shadow.
 - Missing evidence remains UNKNOWN, never BAD/0.
-- Owner explicitly approved starting the validated optimization batch on 2026-09-22.
+- Owner approved the validated optimization batch on 2026-09-22.
 
-## Engineering in progress — V8.8.0 Prospective Shadow Execution Recorder
-Branch: `research/execution-recorder-v8-8-0`
-PR: #93
-Current branch head before this checkpoint update included repair commit `5c127ab5d0e696d9f711d86b86fead646b35ae98`.
-Pre-change main / rollback point: `9951b93b308f5ef7bfb0f244ffca6ded90e54cea`.
+## Completed engineering — V8.8.0 Prospective Shadow Execution Recorder
+Production readback: **8.8.0-shadow-execution-recorder**.
 
-### Research / experiment
-Execution Alpha evidence remains regime-, participant-, instrument- and cost-sensitive. Current evidence does not justify promoting first30/VWAP/10m/15m strength into a formal score/gate. Exact point-in-time execution state cannot be safely reconstructed later, so prospective capture remains the validated engineering objective.
+### What was implemented
+Sparse prospective research-only execution snapshots are now recorded from already-polled runtime state at:
+- OPEN_BASELINE
+- FIRST_10M_COMPLETE
+- FIRST_15M_COMPLETE
+- FIRST_30M_COMPLETE
+- FORMAL_SIGNAL_OBSERVED when a formal notification event exists
 
-### Implemented scope
-- `scripts/apply_v8_8_0.py`: V8.8.0 sparse prospective recorder.
-- `tests/test_v8_8_0_execution_recorder.mjs`: targeted research-only/UNKNOWN/hook-order guard.
-- `.github/workflows/v7-cloudflare.yml`: production build/deploy chain updated to apply/validate V8.8.0.
-- `.github/workflows/v7-regression.yml`: full regression now applies V8.8.0 and runs the targeted test.
-- `.github/workflows/v7-repair-ci.yml`: repair verification aligned through V8.8.0.
-- `tests/test_v8_7_13_daily_mobile_alert.mjs`: repaired to test the V8.7.13 behavior contract without incorrectly pinning all future runtime versions to 8.7.13.
+PIT fields include scheduledTime, decisionAt, observedAt/featureKnownAt, quote lastTradeAt where valid, completed 10m/15m bar start/end, freshness flags, current price and the already-existing formal decision.
 
-Sparse events: OPEN_BASELINE, FIRST_10M_COMPLETE, FIRST_15M_COMPLETE, FIRST_30M_COMPLETE, FORMAL_SIGNAL_OBSERVED.
-PIT fields include scheduledTime, decisionAt, observedAt/featureKnownAt, quote lastTradeAt where valid, completed 10m/15m bar start/end, freshness flags, current price and already-existing formal decision.
-
-### Supporting evidence / counterevidence / redundancy
-- Supporting: prospective PIT capture is required to test execution timing without historical look-ahead.
-- Counterevidence: Taiwan evidence does not support a universal first30/VWAP trading rule; no such rule is added.
-- Redundancy firewall: recorder does not create R09 or any score/gate; future analysis must residualize existing momentum, positiveDayRatio20, residualSectorRs20, volume/attention, overnight gap and market-state effects.
-- Selection bias/date clustering: future inference remains clustered by independent scan date, not by individual Top6 row.
-
-### UNKNOWN / data quality
-Still intentionally UNKNOWN/null unless proven available from already-polled payload:
+The first version intentionally stores these as UNKNOWN/null rather than inventing them:
 - opening gap
 - session VWAP
 - bid/ask spread
 - depth imbalance
-- market mechanism state (VI/halt/disposition/call auction)
-No UNKNOWN is coerced to BAD/0 or NORMAL.
+- market mechanism state
 
-### R01-R08 / I01-I07
-Unchanged. No R09. No formal factor/threshold promotion.
-
-## Engineering classification / safety
-Class B during implementation because this adds a D1 table/write on shared runtime. Owner approval has been received, but promotion remains gated on regression/deploy verification.
+### Safety result
 - No new vendor calls.
-- No A/B, ranking, Top6, 3+3, capital, entry/add/reduce/sell/stop, formal 10m/15m, monitoring eligibility or push semantic change.
-- Recorder hook runs after formal signal processing and live-state persistence.
-- Recorder failure is fail-open and can only create a research data gap.
+- No A/B, ranking, Top6, 3+3, capital, entry/add/reduce/sell/stop, formal 10m/15m semantics, monitoring eligibility or push behavior changes.
+- Recorder runs after formal signal processing and live-state persistence.
+- Recorder errors are fail-open and create research data gaps only.
 - Duplicate sparse events use D1 INSERT OR IGNORE.
+- R01-R08 and I01-I07 unchanged; no R09.
 
-## Tests / deployment
-- First V8.8-aware regression run `35652665570` correctly built V8.8.0 but failed before the new targeted test because legacy `test_v8_7_13_daily_mobile_alert.mjs` asserted the exact old runtime version `8.7.13-daily-mobile-alert`.
-- This was a test-maintenance incompatibility, not a detected Formal Core behavior change. The test's actual DAILY_SELECTION Slack mention assertions were preserved; only the stale exact-version pin was made forward-compatible in commit `5c127ab5d0e696d9f711d86b86fead646b35ae98`.
-- Earlier V8 regression run before applying V8.8.0 passed, confirming the baseline, but is not sufficient evidence for V8.8.0 promotion.
-- Repair CI earlier exposed a separate stale-chain failure in `test_three_min_current_recovery`; the repair workflow has since been aligned through V8.8.0 and must be re-observed on the current head.
-- Production deployment/readback has NOT occurred. Do not claim V8.8.0 is live.
+### Engineering classification
+Class B during implementation because a research-only table/write was added to the shared D1/runtime path. Owner explicitly approved modification and deployment.
 
-## Unfinished / exact next continuation point
-1. Wait for/inspect the fresh PR CI triggered by the current branch head after `5c127ab5...` and this checkpoint commit.
-2. Require V8 Regression Tests to build V8.8.0, run all legacy regressions plus `test_v8_8_0_execution_recorder.mjs`, and pass read-only production preflight.
-3. Inspect V8 Repair CI separately; if it fails only from another stale version/test-chain assumption, repair on branch without weakening behavioral invariants. Any genuine Formal Core regression stops promotion.
-4. Only when required regression evidence is green, merge PR #93.
-5. Observe the existing Cloudflare deployment workflow. Require predeploy backup, successful code-only deploy, postdeploy `/api/version` readback = `8.8.0-shadow-execution-recorder`, production health/readback, and recorder endpoint/table readiness. Do not create fake historical Shadow or real test signals.
-6. If deployment/readback fails, use the pre-change rollback point/workflow backup and preserve evidence.
-7. After V8.8.0 is stable, inspect already-polled quote payload coverage for spread/depth/VWAP/market-state fields; only propose a next optimization when real coverage exists.
+### Branch / PR / commits
+- Implementation branch: `research/execution-recorder-v8-8-0`.
+- PR: #93.
+- Merge commit on main: `e9fe3c94c826593b9f2b85e6fdfc5c09b62b4646`.
+- Pre-change main / rollback source point: `9951b93b308f5ef7bfb0f244ffca6ded90e54cea`.
+
+### Tests
+- V8 Regression Tests run 274: SUCCESS.
+- V8 Repair CI run 126: SUCCESS.
+- Targeted V8.8.0 recorder contract test: PASS within both suites.
+- Existing V8.7 research contract tests were made version-forward compatible; behavior assertions remain.
+- Deploy workflow syntax check + behavioral regression: SUCCESS.
+- Formal protected behavior contract greps and existing full test suite: SUCCESS.
+
+### Deployment / readback
+- V8 Cloudflare Deploy run 87: SUCCESS.
+- Predeploy version guard observed `8.7.13-daily-mobile-alert`; build `8.8.0-shadow-execution-recorder`.
+- Existing workflow captured and retained the verified predeploy Worker/Cron backup artifact before deployment.
+- Code-only Cloudflare deployment: SUCCESS.
+- Existing after-market Cron migration/preservation: SUCCESS.
+- Deployed version/config verification: SUCCESS.
+- Research readback observed `8.8.0-shadow-execution-recorder`.
+- Existing Shadow integrity remained HEALTHY at readback; R01-R08 readiness remained research-only/accumulating.
+
+## Research interpretation
+The recorder is infrastructure for falsification, not a trading signal. Current Taiwan evidence still does not justify promoting first30/VWAP/10m/15m strength into a formal score or gate.
+
+## UNKNOWN / bias firewall
+- No historical execution Shadow was fabricated.
+- Exact spread/depth/VWAP/market-mechanism availability from the current already-polled quote payload is still unverified.
+- UNKNOWN remains UNKNOWN; do not infer NORMAL market state from price behavior.
+- Future execution studies must control existing momentum, positiveDayRatio20, residualSectorRs20, volume/attention, overnight gap, market mechanism state where known, transaction cost and scan-date clustering.
+
+## Exact next continuation point
+Priority 6 Execution Alpha continues with **P1 source-coverage verification**:
+1. Verify from Fugle's current quote/candle contract and, where safely observable, already-polled production payload whether session VWAP, bid/ask spread, depth/imbalance and reliable market-state fields are actually available without additional vendor calls.
+2. Record field-level coverage/UNKNOWN rate prospectively; do not infer missing values.
+3. If coverage is sufficient, prepare the next owner-facing optimization proposal for execution-cost diagnostics and market-state provenance. Do not modify/deploy another program change until owner approval.
+4. If coverage is insufficient, keep P1 UNKNOWN and proceed to P2 research-readiness diagnostics using V8.8.0 recorder samples.
