@@ -42,6 +42,26 @@ replace_once(
 # active formal plan still belongs to the previous completed trading day.
 # The old recovery guard used the calendar weekday and rejected that valid
 # plan with HTTP 409, which also blocked deployments after midnight.
+# Idempotent recovery: once the current stored plan has already been accepted and
+# exactly read back, repeated recovery checks must return success without another
+# external POST. This keeps acceptance probes safe and stable.
+replace_once(
+    '''        const latest=await env.STOCKS_KV.get(LAST_SCAN_KEY,"json");
+        const config=await env.STOCKS_KV.get(KV_KEY,"json");
+        if(!latest || !config) return json({error:"缺少目前盤後計畫或監控設定；停止修復",noWrite:true,noPlanChanges:true,noPush:true},409,true);''',
+    '''        const latest=await env.STOCKS_KV.get(LAST_SCAN_KEY,"json");
+        const config=await env.STOCKS_KV.get(KV_KEY,"json");
+        if(!latest || !config) return json({error:"缺少目前盤後計畫或監控設定；停止修復",noWrite:true,noPlanChanges:true,noPush:true},409,true);
+        if(latest.threeMin?.sent===true && latest.threeMin?.simulated!==true && latest.threeMin?.verified===true &&
+           latest.diagnostics?.requirements30?.requirement26?.complete===true) {
+          return json({ok:true,recovered:true,scanDate:latest.scanDate,planDate:latest.threeMinPayload?.planDate||null,
+            selectedCount:Number(latest.selectedCount||0),externalPostPerformed:false,recoveredFromExistingRecord:true,
+            threeMinAccepted:true,threeMinVerified:true,httpStatus:latest.threeMin?.httpStatus??200,requirement26Complete:true,
+            noSelection:true,noPlanChanges:true,noPush:true},200,true);
+        }''',
+    "already verified current-plan recovery"
+)
+
 replace_once(
     '        const currentMarketDate=mostRecentWeekday(today);',
 '''        const taipeiHour=Number(new Intl.DateTimeFormat("en-US",{timeZone:"Asia/Taipei",hour:"2-digit",hourCycle:"h23"}).format(new Date()));
