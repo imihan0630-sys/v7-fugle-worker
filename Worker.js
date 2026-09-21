@@ -13,7 +13,7 @@
 // Cron expression: 0-24 5 * * MON-FRI // 台灣 13:00-13:24 每分鐘
 // Cron expression: * 9 * * MON-FRI     // 台灣 17:00-17:59 每分鐘建立歷史日K快取＋逐日法人快照
 // Cron expression: 10 10 * * MON-FRI  // 台灣 18:10 盤後掃描
-const VERSION = "7.5.26-q1-statement-column-validation";
+// V8.8.1 deployment trigger: research-only execution coverage; Formal Core unchanged.\nconst VERSION = "7.5.26-q1-statement-column-validation";
 const TEST_MODE_DEFAULT = true;
 const KV_KEY = "STOCK_CONFIG_V7";
 const LEGACY_KV_KEY = "STOCK_CONFIG_V6";
