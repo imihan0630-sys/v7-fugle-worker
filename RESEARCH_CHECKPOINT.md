@@ -11,51 +11,62 @@ Updated: 2026-09-21T20:48+08:00
 - Missing evidence remains UNKNOWN, never BAD/0.
 
 ## Repository state recovered this cycle
-- `RESEARCH_ENGINEERING_GOVERNANCE.md` exists on main and defines Class A/B/C boundaries and protected formal invariants.
-- `RESEARCH_WORKLIST.md` exists on main and records implementation through V8.7.11 research evidence work, R01-R08 governance, maturity/readiness/anti-overfit diagnostics, and Formal Core LOCKED.
-- `RESEARCH_CHECKPOINT.md` was required by the durable-continuity protocol but was absent from main (404). This file is created as a Class A research-governance continuity artifact only; it cannot alter formal selection/runtime behavior.
-- Production HTTP readback could not be obtained in this cycle because the available web fetch path reported the Worker URL inaccessible. Therefore no Production version/health claim is made here.
+- Read main `RESEARCH_ENGINEERING_GOVERNANCE.md`, `RESEARCH_WORKLIST.md`, and this checkpoint before continuing.
+- Governance still classifies isolated research/Shadow evidence and provenance as Class A only when formal outputs cannot change.
+- Worklist still records R01-R08 research governance and Formal Core LOCKED.
+- Production HTTP readback remains unverified in this cycle; no Production version/health claim is made.
 
-## Last completed research direction
-Priority 5 — Supply-Chain Lead-Lag.
+## Research advanced this cycle — Priority 5 Supply-Chain Lead-Lag PIT coverage feasibility
 
 ### Research question
-Can point-in-time confirmed customer/supplier relationships provide incremental lead-lag information after controlling own momentum, sector/residual momentum, size/liquidity and classical factor exposure, without network look-ahead?
+Is Taiwan official/reliable disclosure coverage sufficiently identified and timestampable to justify engineering a prospective stock-to-stock customer/supplier edge ingestion layer, rather than merely an industry/value-chain taxonomy?
 
-### Supporting evidence carried forward
-- Prior research supports information diffusion along economically linked customer/supplier relationships and fundamental information transmission.
-- A potentially useful interaction hypothesis remains: confirmed edge × customer fundamental surprise × supplier information state / disclosure proximity.
+### New supporting evidence
+- TWSE annual-report disclosure format explicitly provides tables for major sales customers for the latest two years and current-year-to-prior-quarter, including name, amount, share of sales, and relationship. This confirms that a relationship-strength field can exist when the counterparty is actually identified.
+- TPEx/TWSE industry value-chain platforms provide broad upstream/midstream/downstream membership and are useful as taxonomy/context controls.
 
-### Counterevidence carried forward
-- Much cross-firm lead-lag can disappear after controlling common factor exposures, size/liquidity and own/sector momentum.
-- Customer momentum can decay post-publication and can be confounded with large-to-small lead-lag.
-- Taiwan disclosure-based customer/supplier identity can be sparse or coded, so absence of an observed edge is UNKNOWN rather than no relationship.
+### New counterevidence / feasibility finding
+- Official industry value-chain pages identify firms by value-chain segment but do not establish bilateral customer→supplier edges. They therefore cannot safely populate `customer_id -> supplier_id` relationships.
+- Annual-report major-customer disclosure is thresholded and can contain coded/unidentified counterparties. Consequently observed stock-to-stock edges are structurally sparse and non-random; absence of a named edge is UNKNOWN, not evidence of no relationship.
+- Search/retrieval this cycle did not reveal a reliable official bulk endpoint that yields point-in-time bilateral identified customer/supplier edges with publication timestamps and sufficient cross-sectional coverage for automated prospective ingestion.
+
+### Direction convergence
+- Do NOT implement `supplyChainEdgeAsOf` ingestion yet. The coverage gate is not passed.
+- Separate two concepts: (1) `valueChainTaxonomyAsOf` = broad official industry-chain membership, potentially useful only as research context/control; (2) `bilateralSupplyChainEdgeAsOf` = identified customer/supplier relationship with source publication time and strength. Never substitute (1) for (2).
+- Supply-Chain Lead-Lag remains a research hypothesis, not a factor and not an R09.
 
 ### Redundancy / bias firewall
-- Must control `residualSectorRs20`, own momentum and liquidity/size before calling residual predictability Supply-Chain Alpha.
-- Do not double-count `positiveDayRatio20` / information discreteness if used only as an interaction diagnostic.
-- No current-news supply-chain map may be backfilled into historical dates.
-- Relationship edges require source publication timestamp / `known_at` eligibility.
-- Coverage and identity disclosure are expected to be non-random; selection/market-source bias must be measured.
+- Industry/value-chain membership risks duplicating `residualSectorRs20`; it must not become an additional vote/score without incremental evidence.
+- Named-edge samples are subject to disclosure-threshold bias, confidentiality/coding bias, firm-size bias, survivorship/availability bias and publication-date clustering.
+- Current web/news supply-chain maps remain prohibited for historical backfill.
+- Any future bilateral edge must satisfy `known_at <= signal_time`.
+- `positiveDayRatio20` / information discreteness may only be tested as a preregistered interaction after a valid edge exists; no double counting.
 
 ### UNKNOWN / data quality
-- Unidentified/coded customers, sub-10% relationships, unavailable historical disclosure vintages and unverified edge start/end dates remain UNKNOWN.
-- No zero-imputation for missing edges.
+- Coded customer/supplier identity = UNKNOWN counterparty.
+- Below-disclosure-threshold relationship = UNKNOWN, not zero.
+- Industry-chain co-membership = taxonomy evidence only, not bilateral edge evidence.
+- Missing source publication timestamp or unverified relationship period = not PIT-eligible.
 
 ### R01-R08 / I01-I07 impact
-- No experiment definition is promoted or modified in this checkpoint.
-- Existing R01-R08/I01-I07 remain unchanged pending evidence that Supply-Chain adds incremental information beyond existing research factors.
+- R01-R08 and I01-I07 unchanged.
+- No new experiment definition, score, threshold, gate or formal output is created.
+- Supply-Chain does not yet pass the data-readiness gate required to justify a new experiment family.
 
 ## Engineering classification / actions this cycle
-- Class A: created this durable `RESEARCH_CHECKPOINT.md` continuity record because the required checkpoint file was absent. Documentation/governance only; no runtime code, formal output, monitoring, push, capital or selection path changed.
-- Branch/commit: written directly as a documentation-only main commit via GitHub contents API because no runtime code is touched; resulting commit is recorded by GitHub write response.
-- Tests: code/runtime tests not applicable to this documentation-only addition. Formal invariants are unchanged by construction because only a Markdown file is added.
-- Deployment: none requested or claimed; no Worker code changed.
-- Rollback: delete/revert this Markdown-only commit if needed.
+- Class A documentation/checkpoint update only: record the failed coverage gate and prevent premature implementation.
+- Runtime code changed: none.
+- Formal invariants: unchanged by construction; no A/B, Top6, 3+3, capital, monitoring, signal or push code touched.
+- Deployment: none; no Worker code changed.
+- Rollback: revert this checkpoint commit if needed.
 
-## Unfinished items / blocker
-1. Production readback/health/version remains unverified this cycle because the available web fetch tool could not access the Worker URL.
-2. Supply-Chain PIT coverage/UNKNOWN-rate feasibility remains the next research task; no ingestion code should be added before coverage is measured.
+## Tests / deployment
+- Code tests: not applicable because no runtime code changed.
+- Production readback/health: not verified this cycle; no deployment occurred.
+
+## Unfinished items
+1. A statistically defensible identified-vs-coded-vs-UNKNOWN percentage cannot yet be claimed because no official bulk bilateral-edge dataset was found; do not fabricate a coverage percentage.
+2. Production runtime readback remains unverified in this cycle.
 
 ## Exact next continuation point
-Resume Priority 5 at **Taiwan point-in-time supply-chain edge coverage / UNKNOWN-rate feasibility**. Quantify whether official/reliable disclosures provide enough identified, timestamped customer/supplier edges for prospective research. Measure identified-vs-coded-vs-UNKNOWN coverage and disclosure clustering. Only if coverage is adequate should a Class A isolated proposal for `supplyChainEdgeAsOf`, `known_at`, `relationship_strength`, and `identity_status` be implemented. If coverage is too sparse/non-random, keep Supply-Chain as a research hypothesis and do not add system complexity. After resolving this gate, proceed to Priority 6 Execution Alpha.
+Supply-Chain PIT engineering gate is **NOT PASSED**; do not add bilateral-edge ingestion complexity now. Proceed to Priority 6 **Execution Alpha**, beginning with point-in-time execution-state design for the formal 15-minute confirmation and auxiliary 10-minute structure: establish timestamp semantics, opening-gap/VWAP/first-30-minute diagnostics, market-mechanism exclusions/states, and transaction-cost/slippage observability strictly as Research/Shadow. First test redundancy with existing Selection factors and ensure Execution Alpha cannot alter Selection Core. If future official/reliable bilateral-edge coverage becomes available, reopen Supply-Chain as a separate preregistered research task rather than silently backfilling it.
