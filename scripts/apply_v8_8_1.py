@@ -6,7 +6,7 @@ def one(a,b,label):
  if n!=1: raise SystemExit(f"{label}: {n}")
  text=text.replace(a,b,1)
 
-one('const VERSION = "8.7.13-daily-mobile-alert";','const VERSION = "8.8.1-execution-coverage";',"version")
+one('const VERSION = "8.8.0-shadow-execution-recorder";','const VERSION = "8.8.1-execution-coverage";',"version")
 
 old='''      quote: {
         closePrice: quote?.closePrice ?? null,
