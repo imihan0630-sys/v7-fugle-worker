@@ -38,5 +38,20 @@ replace_once(
     "slack daily mention parsing"
 )
 
+# After midnight but before the current trading session has completed, the
+# active formal plan still belongs to the previous completed trading day.
+# The old recovery guard used the calendar weekday and rejected that valid
+# plan with HTTP 409, which also blocked deployments after midnight.
+replace_once(
+    '        const currentMarketDate=mostRecentWeekday(today);',
+'''        const taipeiHour=Number(new Intl.DateTimeFormat("en-US",{timeZone:"Asia/Taipei",hour:"2-digit",hourCycle:"h23"}).format(new Date()));
+        let currentMarketDate=today;
+        if(!isTradingDate(today) || taipeiHour<14) {
+          currentMarketDate=shiftDateString(today,-1);
+          while(!isTradingDate(currentMarketDate)) currentMarketDate=shiftDateString(currentMarketDate,-1);
+        }''',
+    "current formal plan date across midnight"
+)
+
 path.write_text(text,encoding="utf-8")
 print("Applied V8.7.13 daily Slack mobile alert hardening")
