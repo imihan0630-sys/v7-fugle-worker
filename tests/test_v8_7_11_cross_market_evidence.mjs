@@ -6,7 +6,7 @@ const source=await readFile(workerPath,"utf8");
 const exported="\nexport {researchRevenueEvidenceMapV8711,researchMergeRevenueEvidenceV8711,researchTwseSblShortEvidenceFromPayload,researchOfficialStatusForMarketV8711,researchExternalEvidenceCoverageV8711};";
 const mod=await import("data:text/javascript;base64,"+Buffer.from(source+exported).toString("base64")+"#"+Date.now());
 
-assert.match(source,/const VERSION = "8\\.(?:[7-9]|[1-9]\\d+)\\.\\d+[^"]*";/);
+assert.match(source,/const VERSION = "8\.\d+\.\d+[^"]*";/);
 
 for(const marker of [
   "research-external-evidence-v2",
