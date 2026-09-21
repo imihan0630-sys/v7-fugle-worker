@@ -35,6 +35,7 @@ on:
       - "scripts/apply_v8_7_3.py"
       - "scripts/apply_v8_7_4.py"
       - "scripts/apply_v8_7_5.py"
+      - "scripts/apply_v8_8_0.py"
       - "RESEARCH_WORKLIST.md"
       - "research/**"
       - "data/v7_formal_scan_backfill.json"
@@ -154,6 +155,27 @@ jobs:
       - name: Apply V8.7.7 incremental factor diagnostics
         run: python3 scripts/apply_v8_7_7.py
 
+      - name: Apply V8.7.8 date-cluster robustness diagnostics
+        run: python3 scripts/apply_v8_7_8.py
+
+      - name: Apply V8.7.9 research evidence enrichment
+        run: python3 scripts/apply_v8_7_9.py
+
+      - name: Apply V8.7.10 research evidence readiness matrix
+        run: python3 scripts/apply_v8_7_10.py
+
+      - name: Apply V8.7.11 cross-market evidence provenance
+        run: python3 scripts/apply_v8_7_11.py
+
+      - name: Apply V8.7.12 after-market 23:35 policy
+        run: python3 scripts/apply_v8_7_12.py
+
+      - name: Apply V8.7.13 daily mobile alert hardening
+        run: python3 scripts/apply_v8_7_13.py
+
+      - name: Apply V8.8.0 prospective Shadow Execution Recorder
+        run: python3 scripts/apply_v8_8_0.py
+
       - name: Syntax check Worker.js
         run: |
           cp Worker.js /tmp/Worker.mjs
@@ -190,11 +212,20 @@ jobs:
           node tests/test_v8_7_5_research_governance.mjs
           node tests/test_v8_7_6_anti_overfit.mjs
           node tests/test_v8_7_7_incremental_factor_diagnostics.mjs
+          node tests/test_v8_7_8_date_cluster_robustness.mjs
+          node tests/test_v8_7_9_research_evidence_enrichment.mjs
+          node tests/test_v8_7_10_research_readiness_matrix.mjs
+          node tests/test_v8_7_11_cross_market_evidence.mjs
+          node tests/test_v8_7_12_after_market_2335.mjs
+          node tests/test_v8_7_13_daily_mobile_alert.mjs
+          node tests/test_v8_8_0_execution_recorder.mjs
           node tests/github_plan_mirror.mjs self-test
 
       - name: Verify expected version
         run: |
-          grep -F 'const VERSION = "8.7.7-incremental-factor-diagnostics";' Worker.js
+          grep -F 'const VERSION = "8.8.0-shadow-execution-recorder";' Worker.js
+          grep -F 'CREATE TABLE IF NOT EXISTS trade_research_execution_snapshots' Worker.js
+          grep -F 'RESEARCH_EXECUTION_RECORDER_FAIL_OPEN' Worker.js
           grep -F 'PURGED_FORWARD_HOLDOUT' Worker.js
           grep -F 'trackedExperimentDefinitions' Worker.js
           grep -F 'RESEARCH_DATA_GAP' Worker.js
