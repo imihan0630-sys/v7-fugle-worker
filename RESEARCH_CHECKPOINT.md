@@ -1,6 +1,6 @@
 # Research Checkpoint
 
-Updated: 2026-09-22T08:01+08:00
+Updated: 2026-09-22T08:08+08:00
 
 ## Continuity / baseline
 - Formal Core: **LOCKED**.
@@ -111,6 +111,16 @@ Research implication:
 - Do NOT add I08 yet. Adding a new contrast before the first prospective day matures would be technically permissible research-only work but is not currently justified: the immediate need is construct-validity and coverage, not another hypothesis count.
 - Use existing I02/I05/I07 jointly as falsification context once mature: if persistence appears positive only where overheat is low or volatility/compression is favorable, treat that as a dependency requiring a separately preregistered future experiment rather than retrofitting the current definitions.
 - This avoids expanding multiple-testing burden before any prospective evidence exists.
+
+### Official TWSE microstructure constraint — 2026-09-22T08:08+08:00
+Official TWSE trading-mechanism evidence was checked to constrain execution-shadow interpretation:
+- Regular-session orders may enter from 08:30, but the opening is a call auction; continuous trading is 09:00-13:25 and the close is another call auction.
+- Intraday Volatility Interruption can suspend matching for two minutes when a potential execution exceeds the applicable 3.5% reference band; matching resumes via call auction before continuous trading.
+- Therefore an OPEN_BASELINE observation is structurally different from a normal continuous-session observation, and a spread/depth snapshot around opening or interruption cannot be assumed comparable to ordinary continuous trading.
+- Current execution-shadow-v2 conservatively keeps mechanism state UNKNOWN unless quote flags verify it. That is correct; do not infer VI/disposition status from spread/depth shape.
+- Future coverage analysis must stratify or at minimum label OPEN_BASELINE separately from FIRST_10M/15M/30M rather than pooling their spread/depth distributions.
+
+No engineering change is needed yet: current recorder already stores stage and conservative market-state provenance. This is a research interpretation constraint, not a new trading rule.
 
 ## Bias / data-quality firewall
 - UNKNOWN remains UNKNOWN; no BAD/0 coercion.
