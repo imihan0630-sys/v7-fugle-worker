@@ -1,6 +1,6 @@
 # Research Checkpoint
 
-Updated: 2026-09-22T08:30+08:00
+Updated: 2026-09-22T08:38+08:00
 
 ## Continuity / baseline
 - Formal Core: **LOCKED**.
@@ -152,6 +152,20 @@ External execution literature check reinforces the conditioning audit:
 - Existing D1/D3/D5/D10/D20 path outcomes plus buyTriggerRate are sufficient raw ingredients for a future preregistered decomposition after coverage matures.
 
 This strengthens the current decision to accumulate rather than engineer another metric before the first prospective execution days exist.
+
+### Taiwan turnover / attention contradiction audit — 2026-09-22T08:38+08:00
+Fresh literature verification found an important reason not to hard-code one attention story:
+- Chen, Hsieh & Lee (2023) finds persistent momentum in Taiwan and links longer winner/loser persistence to heterogeneous beliefs; turnover is used as one heterogeneous-belief proxy. Their persistency definition is consecutive portfolio membership, not this system's composite persistence score.
+- Lin, Ko, Feng & Yang (2016) finds market-state continuation vs transition is crucial: momentum is positive during state continuation and reverses during transitions. In their turnover split, continuation-state momentum is concentrated in higher-turnover stocks, which they interpret through attention/overconfidence.
+- Ho et al. (2023) separately finds intraday-momentum profitability is stronger in stocks more prone to underreaction, using information discreteness and turnover as attention measures; overnight momentum is negative.
+- A 2022 NTU study covering 2000-2021 reports the 2015 widening of Taiwan price limits coincides with a shift from average reversal pre-change to modest short-term momentum post-change, with high-turnover and low-turnover groups showing opposite patterns after the change.
+
+Convergence / falsification:
+1. Turnover/volume cannot be assigned a universal sign such as "high attention bad" or "quiet strength always better". Taiwan evidence supports both underreaction and attention/overconfidence channels depending on horizon and market state.
+2. R07/R08 are therefore correctly framed as competing path hypotheses rather than a ranking rule. Do not promote Quiet Strength merely because the information-discreteness literature is attractive.
+3. R06 market-state transition is a mandatory conditioning/falsification dimension once sample maturity allows; pooling continuation and transition dates could cancel real effects or manufacture unstable averages.
+4. The 2015 price-limit change is a historical regime boundary for external evidence, but prospective Shadow beginning 2026-09-21 cannot estimate that structural break itself. Use it only to reject naive transfer of older Taiwan estimates.
+5. No new factor or threshold is justified.
 
 ## Bias / data-quality firewall
 - UNKNOWN remains UNKNOWN; no BAD/0 coercion.
