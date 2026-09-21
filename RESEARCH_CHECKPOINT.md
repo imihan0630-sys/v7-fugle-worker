@@ -1,6 +1,6 @@
 # Research Checkpoint
 
-Updated: 2026-09-22T07:55+08:00
+Updated: 2026-09-22T08:01+08:00
 
 ## Continuity / baseline
 - Formal Core: **LOCKED**.
@@ -105,6 +105,12 @@ Research implication:
 2. Treat openingGapPct as context; future execution analysis must distinguish immediate intraday continuation from longer-horizon correction and condition on market regime when sample size permits.
 3. Do not create a retail-flow factor now: current execution-shadow-v2 does not capture a PIT retail-share field, and adding one before existing R05/R06 mature would expand the Factor Zoo.
 4. No threshold/window changed; no new experiment registered.
+
+### Existing-test sufficiency check — 2026-09-22T08:01+08:00
+- I05 already preregisters `overheatPenaltyResearch` beyond `breakoutQualityResearch`; I07 preregisters compression beyond raw volatility. However, there is no frozen contrast that directly tests persistence beyond overheat/volatility.
+- Do NOT add I08 yet. Adding a new contrast before the first prospective day matures would be technically permissible research-only work but is not currently justified: the immediate need is construct-validity and coverage, not another hypothesis count.
+- Use existing I02/I05/I07 jointly as falsification context once mature: if persistence appears positive only where overheat is low or volatility/compression is favorable, treat that as a dependency requiring a separately preregistered future experiment rather than retrofitting the current definitions.
+- This avoids expanding multiple-testing burden before any prospective evidence exists.
 
 ## Bias / data-quality firewall
 - UNKNOWN remains UNKNOWN; no BAD/0 coercion.
