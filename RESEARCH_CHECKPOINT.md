@@ -1,6 +1,6 @@
 # Research Checkpoint
 
-Updated: 2026-09-22T07:42+08:00
+Updated: 2026-09-22T07:48+08:00
 
 ## Continuity / baseline
 - Formal Core: **LOCKED**.
@@ -82,6 +82,18 @@ Overlap implication:
 - I02/I03/I04 explicitly serve as redundancy controls for future path/ID hypotheses.
 - R05 remains the execution-path prior; R07/R08 remain attention controls.
 - No Formal Core change.
+
+### Taiwan regime / overnight falsification extension — 2026-09-22T07:48+08:00
+External literature review added a useful contradiction that prevents over-simplifying the earlier prior:
+- Ho et al. (2023, Pacific-Basin Finance Journal) reports positive intraday-momentum returns and negative overnight-momentum returns in Taiwan, supporting the existing R05 separation.
+- Zhang et al. (2023, Pacific-Basin Finance Journal) reports Taiwan overnight returns can show short-term persistence and long-term reversal associated with investor sentiment, with stronger short-term persistence when retail trading share is high. Therefore "overnight = reversal" is too strong; horizon and participant mix matter.
+- Lin et al. (2016, Pacific-Basin Finance Journal) reports Taiwan momentum profits differ materially across market-state persistence vs transition: continuation in persistent states and reversal during transitions. This strengthens R06 as a falsification/control dimension rather than a new score.
+
+Research implication:
+1. Keep R05 definition unchanged. Do not encode positive/negative opening gap as bullish/bearish.
+2. Treat openingGapPct as context; future execution analysis must distinguish immediate intraday continuation from longer-horizon correction and condition on market regime when sample size permits.
+3. Do not create a retail-flow factor now: current execution-shadow-v2 does not capture a PIT retail-share field, and adding one before existing R05/R06 mature would expand the Factor Zoo.
+4. No threshold/window changed; no new experiment registered.
 
 ## Bias / data-quality firewall
 - UNKNOWN remains UNKNOWN; no BAD/0 coercion.
