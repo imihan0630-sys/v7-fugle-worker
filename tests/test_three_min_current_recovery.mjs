@@ -14,10 +14,34 @@ class KV {
   async put(key,value) { this.map.set(key,String(value)); }
 }
 
+const TAIWAN_TODAY = new Intl.DateTimeFormat("en-CA", {
+  timeZone: "Asia/Taipei", year: "numeric", month: "2-digit", day: "2-digit"
+}).format(new Date());
+const TEST_HOLIDAYS_2026 = new Set([
+  "2026-01-01","2026-02-12","2026-02-13","2026-02-15","2026-02-16","2026-02-17","2026-02-18","2026-02-19","2026-02-20",
+  "2026-02-27","2026-02-28","2026-04-03","2026-04-04","2026-04-05","2026-04-06","2026-05-01","2026-06-19",
+  "2026-09-25","2026-09-28","2026-10-09","2026-10-10","2026-10-25","2026-10-26","2026-12-25"
+]);
+function shiftDate(dateString,delta) {
+  const d=new Date(dateString+"T12:00:00Z"); d.setUTCDate(d.getUTCDate()+delta); return d.toISOString().slice(0,10);
+}
+function isTestTradingDate(dateString) {
+  const day=new Date(dateString+"T12:00:00Z").getUTCDay();
+  return day!==0 && day!==6 && !TEST_HOLIDAYS_2026.has(dateString);
+}
+function recentTradingDate(dateString) {
+  let d=dateString; while(!isTestTradingDate(d)) d=shiftDate(d,-1); return d;
+}
+function followingTradingDate(dateString) {
+  let d=dateString; do d=shiftDate(d,1); while(!isTestTradingDate(d)); return d;
+}
+const TEST_SCAN_DATE=recentTradingDate(TAIWAN_TODAY);
+const TEST_PLAN_DATE=followingTradingDate(TEST_SCAN_DATE);
+
 const payload = {
   schemaVersion:"V7_PLAN_2",
-  scanDate:"2026-09-18",
-  planDate:"2026-09-21",
+  scanDate:TEST_SCAN_DATE,
+  planDate:TEST_PLAN_DATE,
   totalCapital:200000,
   remainingCash:150000,
   stocks:[{
@@ -25,18 +49,18 @@ const payload = {
     buyLow:489.54,buyHigh:496.92,breakout:492,maxChase:500,stop:472.06,profitCheck:573,
     capitalWeight:25,firstTrancheWeight:60,secondTrancheWeight:40,
     firstEntryCondition:"test",secondEntryCondition:"test",priorityScore:89.4,
-    strategyChannel:"B",formalClose:492,closeDate:"2026-09-18",planDate:"2026-09-21",
+    strategyChannel:"B",formalClose:492,closeDate:TEST_SCAN_DATE,planDate:TEST_PLAN_DATE,
     totalAllocation:50000,firstAmount:30000,secondAmount:20000,firstShares:60,secondShares:40,totalShares:100,
     rewardRisk:3.7,sectorFlow:90,relativeStrength:20,signalLevel:"A",selectedReason:"test",
     positionStage:"NONE",referencePrice:496.92,shareCalculation:"test"
   }]
 };
 
-const config = {version:7,updatedAt:"2026-09-18T10:15:00.000Z",totalCapital:200000,stocks:[{symbol:"3105",name:"穩懋"}]};
+const config = {version:7,updatedAt:TEST_SCAN_DATE+"T10:15:00.000Z",totalCapital:200000,stocks:[{symbol:"3105",name:"穩懋"}]};
 const latest = {
   version:"8.0.3-3min-auth-check",
-  generatedAt:"2026/09/18 18:15:52",
-  scanDate:"2026-09-18",
+  generatedAt:TEST_SCAN_DATE.replaceAll("-","/")+" 18:15:52",
+  scanDate:TEST_SCAN_DATE,
   dryRun:false,
   selectedCount:1,
   totalCapital:200000,
