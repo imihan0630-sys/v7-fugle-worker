@@ -1,6 +1,6 @@
 # Research Checkpoint
 
-Updated: 2026-09-22T05:57+08:00
+Updated: 2026-09-22T06:44+08:00
 
 ## Continuity / baseline
 - Formal Core: **LOCKED**.
@@ -17,7 +17,6 @@ Updated: 2026-09-22T05:57+08:00
 - Sparse research-only snapshots: OPEN_BASELINE, FIRST_10M_COMPLETE, FIRST_15M_COMPLETE, FIRST_30M_COMPLETE, FORMAL_SIGNAL_OBSERVED when a formal notification event exists.
 - PIT timestamps/freshness are stored; no historical execution Shadow was fabricated.
 - Merge: `e9fe3c94c826593b9f2b85e6fdfc5c09b62b4646`; rollback source: `9951b93b308f5ef7bfb0f244ffca6ded90e54cea`.
-- Regression / Repair CI / deployment verification passed.
 
 ### V8.8.1 — Execution Source Coverage
 - Production deployment workflow run 90: SUCCESS.
@@ -30,32 +29,27 @@ Updated: 2026-09-22T05:57+08:00
 ## P2 research status — Execution Research Readiness
 Status: **ACCUMULATING / RESEARCH ONLY**.
 
-### Microstructure falsification prior
-- Taiwan evidence supports treating spread primarily as transaction-cost/liquidity evidence rather than directional alpha.
-- Five-level depth imbalance is descriptive microstructure state until prospective evidence shows incremental predictive/execution value after controls.
-- Do not interpret aggregate book imbalance as institutional flow; current five-level book has no trader identity.
-- Required controls include contemporaneous momentum/return, positiveDayRatio20, residualSectorRs20, turnover/attention, spread/liquidity, volatility, overnight gap, market state, transaction costs and scan-date clustering.
+### Taiwan price-path / intraday prior
+Durable note: `research/notes/P2_2026-09-22_0552_ID_INTRADAY_PRIOR.md`.
+- Taiwan evidence supports path persistence / continuous-information underreaction as a stronger prior than raw cumulative return alone.
+- Positive opening gap is not assumed bullish; overnight momentum can reverse while intraday momentum continues.
+- Price-limit regime and turnover remain explicit falsification dimensions.
+- Spread remains transaction-cost/liquidity evidence; five-level depth imbalance remains descriptive until prospective incremental evidence survives controls.
 
-### New Taiwan price-path / intraday evidence — 2026-09-22
-Durable detailed note: `research/notes/P2_2026-09-22_0552_ID_INTRADAY_PRIOR.md`.
+### Path-quality overlap audit — 2026-09-22 06:44
+Durable note: `research/notes/P2_2026-09-22_0644_PATH_OVERLAP_AUDIT.md`; commit `be85cde98b4b9e4e681665add181865b53090903`.
 
-Research convergence:
-- Taiwan-specific information-discreteness evidence reports stronger earnings-momentum continuation when information arrives more continuously / attracts less attention; price-limit events are attention-grabbing discrete events.
-- Taiwan momentum-persistency evidence reports that high turnover among nominal winner/loser portfolios attenuates ordinary momentum, while persistent winners/losers show stronger intermediate continuation.
-- Taiwan intraday-vs-overnight evidence reports positive intraday momentum but negative overnight momentum, consistent with intraday underreaction versus overnight overreaction/correction.
-- A Taiwan 2000-2021 short-term study reports a market-structure caveat: average reversal before the 2015 price-limit relaxation and average short-term momentum after it; turnover-conditioned momentum and reversal can coexist.
-
-Research implications / falsification rules:
-1. Price-path quality / persistence has a stronger Taiwan prior than raw cumulative return alone, but this does **not** justify a new factor yet.
-2. Positive opening gap must not be assumed bullish. Future P2 analysis should distinguish gap + intraday confirmation from gap without confirmation, but no threshold/classification is registered yet.
-3. Information discreteness overlaps conceptually with existing persistence, positiveDayRatio20, breakout quality and R07/R08 attention proxies. A new ID factor now would create material redundancy / Factor-Zoo risk.
-4. Taiwan's price-limit regime and turnover are explicit falsification dimensions; effects isolated to one regime or turnover bucket are not general evidence.
-5. Do not tune ID windows, gap thresholds, intraday confirmation thresholds or holding periods after seeing Shadow outcomes. Any new definition requires a separately preregistered experiment/version.
+New convergence:
+1. `research/incremental_v8_7_7.js` already preregisters I02 persistence beyond residual RS and I03/I04 breakout quality vs attention volume. These are existing counted research dimensions and are the first redundancy/falsification controls for any future ID/path proposal.
+2. R01, R05, R07 and R08 already cover breakout holding/failure, overnight-vs-intraday decomposition, and attention-vs-strength paths. A new information-discreteness factor now would materially expand the Factor Zoo before existing overlap is falsified.
+3. Checked-in base `Worker.js` exposes raw path ingredients (ret20/ret60, volumeTodayVsPrev5, volatility20, priorHigh20, close position, upper shadow, MA structure/breakout setup), but literal deployed research definitions for `positiveDayRatio20` / `price.persistenceScoreResearch` / `setup.breakoutQualityResearch` were not located in the base source/code search. Their exact formulas must therefore be recovered from the generated/deployment research patch chain or production research schema before any new diagnostic is registered.
+4. `positiveDayRatio20` is **UNKNOWN at definition-provenance level** for this audit. Do not infer its formula from its name, and do not treat this as evidence that the field is absent from deployed research snapshots.
+5. Combining persistence + positive-day ratio + breakout quality after observing outcomes would itself be a new experiment/variant and is prohibited without preregistration.
 
 ### R01-R08 / I01-I07 impact
-- R05 receives stronger Taiwan-specific external prior; its definition is unchanged.
-- R03/R04/R07/R08 remain required comparators/controls.
-- R01-R08 unchanged; I01-I07 unchanged; no R09 created.
+- R01-R08 unchanged; I01-I07 unchanged; no R09.
+- I02/I03/I04 explicitly serve as redundancy controls for future path/ID hypotheses.
+- R05 remains the execution-path prior; R07/R08 remain attention controls.
 - No Formal Core change.
 
 ## Bias / data-quality firewall
@@ -63,21 +57,22 @@ Research implications / falsification rules:
 - No historical execution-shadow-v2 backfill.
 - Independent scan date remains the primary evidence unit; same-day stocks are clustered observations.
 - No causal claim from contemporaneous correlations.
+- No outcome-driven ID window, gap threshold, intraday-confirmation threshold or holding period introduced.
 - Turnover can be both attention proxy and conditioning variable; avoid double-counting correlated information.
 - Disposition/VI-specific state remains UNKNOWN until a reliable official PIT source distinguishes it.
 
 ## Engineering status this cycle
-- Classification: research interpretation only.
+- Classification: research interpretation / provenance audit only.
 - No code change, branch, PR, regression test or deployment required.
 - Formal Core remains LOCKED.
-- Durable research note commits: `d260c593e3a2be728e6779ab434d6efed72c2a88`, extended by `a8cfdf5f7155d94d4bc9e59a6f402551a99e951a`.
+- Durable note commit this cycle: `be85cde98b4b9e4e681665add181865b53090903`.
 
 ## Exact next continuation point
 Priority 6 Execution Alpha remains in **P2 research-readiness / coverage diagnostics**. Continue without user interaction unless a B/C decision or genuine blocker appears:
-1. Inspect repository definitions / generated patch chain for persistence, positiveDayRatio20 and breakout/path-quality fields to map overlap with information discreteness before proposing any new Shadow diagnostic.
-2. Continue Taiwan evidence review on path persistence, turnover-conditioned momentum and regime sensitivity; prefer falsification/redundancy work over adding factors.
-3. Let prospective execution-shadow-v2 accumulate actual trading-day snapshots; never fabricate/backfill historical execution fields.
-4. When snapshots exist, read field-level coverage by independent scan date for openingGapPct, sessionAvgPrice/VWAP proxy, spreadPct, depthImbalance and executionMarketState before directional inference.
-5. Preserve spread as execution-cost/liquidity control and depth imbalance as descriptive state unless prospective incremental evidence survives controls.
-6. Preserve opening gap as diagnostic/control until prospective evidence tests whether intraday confirmation separates continuation from overnight correction.
+1. Trace the generated/deployment research patch chain and production research schema to recover exact formulas/provenance for `price.persistenceScoreResearch`, `positiveDayRatio20` (if deployed), and `setup.breakoutQualityResearch`; do not infer from names.
+2. Compare recovered formulas term-by-term for shared inputs/windows and identify deterministic or near-deterministic overlap before registering any new Shadow diagnostic.
+3. Continue Taiwan evidence review on path persistence, turnover-conditioned momentum and regime sensitivity; prefer falsification/redundancy work over adding factors.
+4. Let prospective execution-shadow-v2 accumulate actual trading-day snapshots; never fabricate/backfill historical execution fields.
+5. When snapshots exist, read field-level coverage by independent scan date for openingGapPct, sessionAvgPrice/VWAP proxy, spreadPct, depthImbalance and executionMarketState before directional inference.
+6. Preserve spread as execution-cost/liquidity control, depth imbalance as descriptive state, and opening gap as diagnostic/control until prospective evidence survives controls.
 7. No formal execution gate/score proposal until prospective/OOS evidence survives Selection Alpha, momentum/attention, residual RS, liquidity/volatility, transaction-cost and date-cluster controls.
