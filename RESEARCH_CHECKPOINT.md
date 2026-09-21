@@ -1,6 +1,6 @@
 # Research Checkpoint
 
-Updated: 2026-09-22T04:48+08:00
+Updated: 2026-09-22T05:41+08:00
 
 ## Continuity / baseline
 - Formal Core: LOCKED.
@@ -121,10 +121,40 @@ Therefore opening-gap diagnostics, an explicitly labeled avgPrice/VWAP proxy, be
 - V8.8.1 merge: 9283719e661e42a09b3b0d9fdfe27d54f3753d3e.
 - Existing deployment workflow retains verified predeploy Worker/Cron backup before code-only deployment.
 
+## P2 research learning — microstructure falsification prior (2026-09-22 05:41 +08)
+### Research question
+How should spread and five-level depth imbalance be interpreted before enough prospective execution-shadow-v2 dates exist?
+
+### Supporting / contrary evidence
+- Taiwan order-imbalance literature shows strong contemporaneous price pressure and persistence in some trader classes, but little consistent evidence that aggregate imbalance predicts future returns beyond the trading day. This argues against treating depth imbalance as a ready-made directional alpha.
+- Taiwan evidence on institutional/individual intraday imbalance likewise reports contemporaneous price-pressure effects but no consistent future-return predictability from institutional imbalance.
+- Taiwan market-quality evidence links day-trading activity to wider bid-ask spreads, greater depth and higher volatility, so spread/depth can move together as market-quality/liquidity state rather than as a simple bullish/bearish signal.
+- Taiwan tick-size research explicitly treats quoted spread as a transaction-cost measure for immediacy demand. Therefore spreadPct has a stronger prior as execution-cost/control evidence than as Selection Alpha.
+
+### Research decision / falsification prior
+- Do not pre-register a directional claim such as `positive depthImbalance => higher future return` yet.
+- Primary P2 use of spreadPct: transaction-cost / liquidity control and possible execution-quality interaction.
+- Primary P2 use of depthImbalance: descriptive microstructure state; test incremental value only after conditioning on contemporaneous return/momentum, turnover/attention, spread and market state.
+- A valid future Execution Alpha claim must survive within-scan-date/date-cluster controls and show incremental improvement in execution outcome/MFE-MAE/net return, not merely contemporaneous price pressure.
+- openingGapPct and sessionAvgPrice/VWAP proxy remain separate diagnostics; this cycle did not establish a new directional hypothesis for them.
+
+### Bias / redundancy / UNKNOWN checks
+- Avoid causal interpretation from contemporaneous imbalance-return correlation.
+- Avoid converting book imbalance into a proxy for institutional flow; current five-level book does not identify trader type.
+- Spread/depth are likely correlated with liquidity, size, turnover and volatility; redundancy controls are mandatory.
+- Disposition/VI-specific state remains UNKNOWN without a reliable PIT source.
+- No historical execution fields were backfilled.
+
+### Experiment / engineering impact
+- R01-R08 unchanged; I01-I07 unchanged; no R09 created.
+- Engineering classification: research interpretation only; no code change, no branch, no deployment.
+- Formal Core remains LOCKED.
+
 ## Exact next continuation point
-Priority 6 Execution Alpha moves to **P2 research-readiness / coverage diagnostics**:
+Priority 6 Execution Alpha remains in **P2 research-readiness / coverage diagnostics**:
 1. Let prospective execution-shadow-v2 accumulate actual trading-day snapshots; do not fabricate/backfill historical execution fields.
-2. Add/read field-level coverage rates by independent scan date for openingGapPct, sessionAvgPrice/VWAP proxy, spreadPct, depthImbalance and executionMarketState.
-3. Keep disposition/VI-specific state UNKNOWN until an official PIT source can distinguish it reliably.
-4. Evaluate Execution Alpha only after enough independent dates exist, controlling Selection Alpha, positiveDayRatio20, residualSectorRs20, momentum/attention, overnight gap, transaction costs and date clustering.
-5. No formal execution gate/score proposal until prospective/OOS evidence survives these controls.
+2. Read field-level coverage rates by independent scan date for openingGapPct, sessionAvgPrice/VWAP proxy, spreadPct, depthImbalance and executionMarketState when actual trading-day snapshots exist.
+3. Treat spread primarily as execution-cost/liquidity control and depth imbalance as descriptive state until prospective evidence demonstrates incremental predictive/execution value.
+4. Keep disposition/VI-specific state UNKNOWN until an official PIT source can distinguish it reliably.
+5. Evaluate Execution Alpha only after enough independent dates exist, controlling Selection Alpha, positiveDayRatio20, residualSectorRs20, momentum/attention, overnight gap, liquidity/volatility, transaction costs and date clustering.
+6. No formal execution gate/score proposal until prospective/OOS evidence survives these controls.
