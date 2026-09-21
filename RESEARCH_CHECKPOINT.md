@@ -1,6 +1,6 @@
 # Research Checkpoint
 
-Updated: 2026-09-21T23:35+08:00
+Updated: 2026-09-21T23:58+08:00
 
 ## Continuity / baseline
 - Formal Core: LOCKED.
@@ -14,81 +14,56 @@ Updated: 2026-09-21T23:35+08:00
 ## Repository state recovered this cycle
 - Read main `RESEARCH_ENGINEERING_GOVERNANCE.md`, `RESEARCH_WORKLIST.md`, and this checkpoint before continuing.
 - Governance still classifies formal 15m/10m confirmation semantics as Class C; Execution Alpha remains diagnostic/Shadow unless explicitly approved.
-- Prior checkpoint established that `Worker.js` intends minute Quote polling with 10m/15m K updates only after bar close, but there is no durable PIT execution recorder for exact feature availability / contemporaneous VWAP / market-mechanism state.
-- No runtime code was changed this cycle; therefore no deployment or Production version claim is made.
+- Prior checkpoint established a worthwhile candidate optimization: a minimal prospective Shadow Execution Recorder preserving exact feature availability and contemporaneous execution state without changing Formal Core.
+- Owner has not explicitly approved code modification/deployment in the current continuation turn; no runtime code changed and no deployment/version claim is made.
 
-## Research advanced this cycle — Priority 6 Execution Alpha / minimal prospective recorder proposal
+## Research advanced this cycle — Priority 6 Execution Alpha / market-state observability
 
 ### Research question
-Is a prospective Shadow execution-state recorder sufficiently useful, isolated, low-cost and falsifiable to justify engineering, without changing formal selection or trading behavior?
+What market-mechanism state must a prospective Execution Recorder preserve so VWAP/first30/10m/15m evidence is not falsely interpreted as normal continuous-trading execution?
 
 ### New supporting evidence
-- Taiwan individual-stock evidence located this cycle materially strengthens the need for prospective measurement rather than assuming one direction: an intraday Taiwan-stock study reports short-horizon price reversal/overreaction and distinguishes 30-minute contrarian behavior from 120-minute momentum behavior. This directly warns against promoting a generic first-30-minute momentum rule.
-- Taiwan market order-flow evidence shows both informed and liquidity traders concentrate activity near the open, with liquidity trading slightly more influential in explaining volume. Therefore opening strength can mix information and liquidity demand rather than represent a clean alpha signal.
-- Taiwan evidence on executed limit versus market orders reports limit-order execution can outperform market orders even after accounting for non-execution, supporting the broader proposition that Execution Alpha may arise through fill/adverse-selection quality rather than stock selection.
-- Existing Taiwan ETF/index-futures evidence still supports studying first-half-hour information, but cannot be silently generalized to individual stocks.
+- Current TWSE trading-mechanism documentation confirms regular trading is call auction at the open, continuous trading during the intraday session, and call auction again at the close.
+- TWSE intraday Volatility Interruption (VI) is a materially different execution state: when triggered, matching is postponed for two minutes, only limit ROD orders/cancellations/volume changes are accepted, market/IOC/FOK orders are not accepted, and resumption occurs by call auction before returning to continuous trading.
+- TWSE also documents disposition / altered-trading-method securities where periodic call auction can apply. Therefore a generic `NORMAL` state is insufficient for execution research; identical price/VWAP features can have different fill mechanics depending on matching regime.
+- This strengthens the recorder proposal because contemporaneous market-state provenance is necessary to distinguish execution quality from microstructure-state contamination.
 
-### New counterevidence / falsification
-- The individual-stock Taiwan evidence is directionally inconsistent with a naive first-30-minute continuation hypothesis: short-horizon reversal exists, while momentum appears at a longer intraday horizon. This is important counterevidence against adding `first30Return > 0` as a formal confirmation rule.
-- Opening activity is structurally contaminated by liquidity demand and Taiwan's high opening volatility; raw gap/VWAP/opening-range thresholds risk learning microstructure rather than incremental execution value.
-- Evidence spans different historical market structures; Taiwan moved to continuous intraday trading in 2020, so old findings require a market-mechanism/regime control before modern use.
+### Counterevidence / falsification
+- Market-mechanism documentation proves institutional states exist, but does not prove the current vendor/runtime exposes a reliable real-time field for every state. Engineering must not infer VI/disposition/periodic-call status from price patterns.
+- A recorder without trustworthy state provenance could create false precision. Unsupported state remains UNKNOWN.
+- This evidence does not establish that VWAP, first30 strength, 10m or 15m timing adds alpha. It only establishes a confounder that prospective execution research must control.
 
 ### Redundancy / bias firewall
-- No new score, threshold, R09 or formal 10m/15m rule.
-- Any prospective test must separate Selection Alpha from Execution Alpha and control prior-day momentum, breakout quality, `positiveDayRatio20`, `residualSectorRs20`, attention/volume state and market regime.
-- Same-day symbols are clustered evidence. Results must be evaluated by independent scan dates, realistic observable fill timing, slippage and transaction costs.
-- Do not reconstruct historical exact VWAP/feature-known timestamps from EOD bars.
+- No new score, threshold, R09 or formal confirmation rule.
+- `executionMarketState` is a provenance/control variable, not a bullish/bearish factor.
+- Future tests must separate normal continuous-trading observations from VI/call-auction/disposition observations or mark state UNKNOWN; do not pool them as equivalent execution opportunities.
+- Continue controls for prior-day momentum, breakout quality, `positiveDayRatio20`, `residualSectorRs20`, attention/volume state, scan-date clustering, slippage and transaction costs.
 
 ### UNKNOWN / data quality
-- Historical exact `featureKnownAt`, VWAP-at-decision and execution market state remain UNKNOWN where not prospectively recorded.
-- Modern post-2020 individual-stock Taiwan first30/VWAP incremental effect remains UNKNOWN.
-- VI/halt/disposition-periodic-call state availability from current runtime/source has not yet been proven field-by-field; recorder must preserve UNKNOWN if unavailable rather than infer NORMAL.
-
-### Minimal isolated recorder proposal (candidate optimization; not yet implemented)
-Purpose: preserve contemporaneous evidence so future 10m/15m/VWAP/opening hypotheses can be falsified without look-ahead.
-
-Proposed scope:
-- Research-only records for the already-known formal monitored/selected symbols; no eligibility/ranking changes and no additional trading universe fetch solely to create alpha.
-- Event snapshots rather than every-minute archival: opening baseline plus first completed 10m, first completed 15m, 09:30/first-30-minute checkpoint, and existing formal decision/signal evaluation timestamps when observable. This keeps storage small and aligns records to preregistered hypotheses.
-- Minimum fields: `tradeDate`, `symbol`, `snapshotType`, `barStartAt`, `barEndAt`, `lastTradeAt`, `capturedAt`, `featureKnownAt`, `decisionAt` (nullable), `lastPrice`, `cumVolume`, contemporaneous cumulative `sumPriceVolume`/VWAP inputs where source semantics support them, `vwapAtCapture`, `openingGapPct`, `first30Return` when actually known, `executionMarketState`, `marketStateSource`, `dataQuality`, `sourceTimestamp`, `sourceMarket`.
-- Missing/unsupported state = UNKNOWN; never infer NORMAL.
-- Immutable prospective semantics: no historical synthetic backfill.
-
-### Storage / API cost estimate
-- With Top6-scale monitoring and four fixed early-session snapshots, baseline is about 24 rows/trading day before any decision-event snapshots. Even allowing several decision snapshots per symbol, expected volume is hundreds, not thousands, of rows/day.
-- Reuse already-polled Quote/bar data where possible. The proposal should not add a new high-frequency vendor call solely for research; if a required field needs extra calls, that becomes a separate cost/rate-limit review and may move the change toward Class B.
-- Exact byte/storage cost remains implementation-dependent on the current persistence binding/schema; verify before coding.
-
-### Targeted tests / protected invariants for proposed implementation
-1. Frozen-input formal candidate eligibility/order identical before/after recorder.
-2. Top6 and 3+3 outputs identical.
-3. Formal 10m/15m confirmation semantics and signal state identical.
-4. Monitoring/push/capital/trade-plan outputs identical.
-5. Recorder failure is fail-open for formal runtime: it may mark research evidence missing but cannot block formal processing.
-6. No extra research field may be consumed by formal scoring/ranking code.
-7. Timestamp tests prove a 10m/15m feature is not persisted as known before bar completion.
-8. UNKNOWN tests prove unavailable market state/VWAP is not coerced to zero/normal.
-9. Duplicate/idempotency tests for repeated scheduled invocations.
-10. Storage/rate-limit test confirms no material degradation to formal scan latency.
+- Whether current Fugle/other runtime quote payload exposes VI, halt/resume, disposition-periodic-call or equivalent machine-readable state remains UNKNOWN until exact call sites/payloads are inspected.
+- If only official daily disposition lists are available, they can establish disposition status point-in-time but not necessarily every intraday VI interval.
+- Historical exact execution state remains UNKNOWN where not prospectively captured.
 
 ### R01-R08 / I01-I07 impact
 - R01-R08 and I01-I07 unchanged.
 - No R09 created.
-- Execution Alpha research direction is now more sharply falsifiable: first30 continuation is explicitly challenged by Taiwan individual-stock reversal evidence; recorder is intended to determine which horizon/market state, if any, survives prospectively and net of costs.
+- Execution Alpha recorder proposal is strengthened: market-state provenance is now a required falsification/control field, not optional metadata.
 
 ## Engineering classification / actions this cycle
-- Proposed recorder is provisionally Class A only if isolated research persistence can reuse existing data and fail open without affecting shared runtime latency/scheduling. If it requires shared schema/path changes, extra vendor calls, or can delay formal monitoring, classify Class B instead.
-- Formal 10m/15m confirmation changes remain Class C.
-- No code modification/deployment this cycle because owner approval is required before program modification.
+- Candidate recorder remains provisionally Class A only if isolated research persistence can reuse already-polled data, fail open, and avoid material latency/shared-schema risk.
+- If reliable market-state capture requires new shared fetches, scheduling changes, or vendor calls that can affect formal runtime, classify Class B and stop before production promotion.
+- Formal 10m/15m semantics remain Class C.
+- No code modification/deployment this cycle; explicit owner approval is still required before program modification/deployment.
 
 ## Tests / deployment
 - Code tests: not applicable; runtime unchanged.
-- Research validation: repository governance/worklist/checkpoint read; repository root/storage search performed; literature search added Taiwan individual-stock/order-flow/execution counterevidence.
+- Research validation: governance/worklist/checkpoint recovered; current TWSE official trading-mechanism evidence reviewed for opening/continuous/closing and VI state semantics.
 - Deployment: none.
 
 ## Decision status
-- The recorder now meets the threshold to present as a worthwhile optimization proposal: its value is not to assert a new alpha but to prevent future look-ahead and make Execution Alpha hypotheses prospectively falsifiable. The strongest new evidence is precisely contradictory horizon behavior in Taiwan stocks, which makes contemporaneous timestamped evidence more valuable.
-- Owner approval is required before code modification/deployment.
+- No new strategy rule is ready.
+- The prospective Shadow Execution Recorder remains the only currently validated engineering candidate. This cycle adds a material design requirement: preserve trustworthy market-mechanism state/provenance and keep unsupported states UNKNOWN.
+- Do not implement until owner explicitly approves the previously presented recorder optimization.
 
 ## Exact next continuation point
-If owner approves the prospective Shadow Execution Recorder, first inspect the exact current persistence bindings/schema and `Worker.js` quote/bar/monitoring call sites; determine whether the implementation is truly isolated Class A or must be Class B. Create a rollback branch, implement the smallest fail-open event recorder, run targeted + full regression and Formal Core invariant comparisons, then use the existing authorized deployment chain and verify workflow + Production readback/health. If owner does not approve or defers, continue Priority 6 research without code, focusing on modern post-2020 Taiwan individual-stock VWAP/first30 evidence and market-state observability.
+If owner explicitly approves the prospective Shadow Execution Recorder, inspect current persistence bindings/schema and `Worker.js` quote/bar/monitoring call sites, including actual vendor payload fields for VI/halt/disposition/market-state observability. Determine Class A vs B before coding; create rollback branch; implement the smallest fail-open event recorder; run targeted + full regression and Formal Core invariant comparisons; only then use the authorized deployment chain and verify workflow + Production readback/health. If approval remains absent/deferred, continue Priority 6 research on modern post-2020 Taiwan individual-stock VWAP/first30 evidence and reliable market-state source coverage without modifying runtime.
