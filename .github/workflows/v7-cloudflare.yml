@@ -42,7 +42,7 @@ on:
       - "scripts/apply_v8_7_9.py"
       - "scripts/apply_v8_7_10.py"
       - "scripts/apply_v8_7_11.py"
-      - "scripts/apply_v8_7_12.py"
+      - "scripts/apply_v8_7_12.py"\n      - "scripts/apply_v8_7_13.py"
       - "RESEARCH_WORKLIST.md"
       - "research/**"
       - "data/v7_formal_scan_backfill.json"
