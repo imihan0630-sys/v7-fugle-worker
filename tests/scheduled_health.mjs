@@ -124,6 +124,17 @@ async function main() {
     const dailyOutbox=(outbox.recent||[]).find(item=>String(item.signal_id)===String(scan.dailyReport.signalId));
     assert.ok(dailyOutbox,'Daily after-market report missing from durable outbox');
     assert.equal(dailyOutbox.delivery_state,'ACCEPTED','Daily after-market report was not accepted by webhook');
+    let zeroSelectionFailsafeAccepted=null;
+    if(Number(scan.selectedCount||0)===0) {
+      const zeroSignalId=`DAILY_ZERO_SELECTION_CONFIRM:${date}`;
+      assert.equal(scan.zeroSelectionConfirmation?.simulated,false,'Zero-selection failsafe must be a real push');
+      assert.equal(scan.zeroSelectionConfirmation?.sent,true,'Zero-selection failsafe push was not accepted');
+      assert.equal(scan.pipeline?.zeroSelectionConfirmationAccepted,true,'Zero-selection failsafe is not marked accepted');
+      const zeroOutbox=(outbox.recent||[]).find(item=>String(item.signal_id)===zeroSignalId);
+      assert.ok(zeroOutbox,'Zero-selection failsafe missing from durable outbox');
+      assert.equal(zeroOutbox.delivery_state,'ACCEPTED','Zero-selection failsafe was not accepted by webhook');
+      zeroSelectionFailsafeAccepted=true;
+    }
 
     // V7.5.33：觀察池是獨立唯讀結果，最多12檔，且不得與正式池重疊。
     const watchResponse=await fetch(origin+'/api/watchlist?health='+Date.now(),{
@@ -184,7 +195,7 @@ async function main() {
       externalReadbackVerified:true,externalPlanProvider:proof.bridgeProvider,requirement26Accepted:true,
       storageEvidence:storageEvidence?{mode:storageEvidence.mode,d1Archived:storageEvidence.d1?.latestArchived,
         githubVerified:storageEvidence.github?.verified===true,firebaseConfigured:storageEvidence.firebase?.configured}:null,
-      dailyReportOutboxAccepted:true,
+      dailyReportOutboxAccepted:true,zeroSelectionFailsafeAccepted,
       tradeJournal:{verified:true,selectedCount:journal.selectedCount,planCount:journal.planCount,signalCount:journal.signalCount},
       pushOutbox:{unresolved:outbox.unresolved,staleUnresolved:outbox.staleUnresolved},
       handsetReceipts:{total:receipts.total,dailySelection:receipts.dailySelection,intraday:receipts.intraday},

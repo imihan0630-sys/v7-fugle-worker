@@ -37,6 +37,7 @@ on:
       - "scripts/apply_v8_7_5.py"
       - "scripts/apply_v8_8_0.py"
       - "scripts/apply_v8_8_1.py"
+      - "scripts/apply_v8_8_2.py"
       - "RESEARCH_WORKLIST.md"
       - "research/**"
       - "data/v7_formal_scan_backfill.json"
@@ -180,6 +181,9 @@ jobs:
       - name: Apply V8.8.1 execution source coverage
         run: python3 scripts/apply_v8_8_1.py
 
+      - name: Apply V8.8.2 zero-selection push failsafe
+        run: python3 scripts/apply_v8_8_2.py
+
       - name: Syntax check Worker.js
         run: |
           cp Worker.js /tmp/Worker.mjs
@@ -224,13 +228,15 @@ jobs:
           node tests/test_v8_7_13_daily_mobile_alert.mjs
           node tests/test_v8_8_0_execution_recorder.mjs
           node tests/test_v8_8_1_execution_coverage.mjs
+          node tests/test_v8_8_2_zero_selection_push.mjs
           node tests/github_plan_mirror.mjs self-test
 
       - name: Verify expected version
         run: |
-          grep -F 'const VERSION = "8.8.1-execution-coverage";' Worker.js
+          grep -F 'const VERSION = "8.8.2-zero-selection-push-failsafe";' Worker.js
           grep -F 'CREATE TABLE IF NOT EXISTS trade_research_execution_snapshots' Worker.js
           grep -F 'RESEARCH_EXECUTION_RECORDER_FAIL_OPEN' Worker.js
+          grep -F 'DAILY_ZERO_SELECTION_CONFIRM' Worker.js
           grep -F 'PURGED_FORWARD_HOLDOUT' Worker.js
           grep -F 'trackedExperimentDefinitions' Worker.js
           grep -F 'RESEARCH_DATA_GAP' Worker.js
