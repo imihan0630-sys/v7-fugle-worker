@@ -90,11 +90,55 @@ V8.8.0 `trade_research_execution_snapshots` records OPEN/10m/15m/30m and `FORMAL
 - Formal Core unchanged by construction.
 - A new public aggregate-only research endpoint could be Class A in principle under governance, but adding it to the production build requires careful isolation/regression and must not be confused with a deployment-pipeline modification. No implementation in this run.
 
+## PRIORITY OVERRIDE — user-directed trading-decision bottleneck research (2026-09-22)
+
+Until this priority question is materially resolved, A/B schedules must treat the following as the main research lane. Data-quality engineering such as B-13/B-16 is secondary unless it directly blocks these conclusions.
+
+User question:
+- Why are there daily candidates but very few actual BUY opportunities?
+- Is capital staying idle because selection is too narrow, entry confirmation is too strict, one-day plan TTL is too short, tranche logic is too conservative, or because the strictness is actually protecting capital?
+- After partial reduction, is there a missing evidence-based route to restore exposure?
+- Do not change rules merely because the latest example rallied; all proposals require positive + reverse falsification.
+
+### New one-date paired evidence from 2026-09-17 formal scan
+Existing CI logs identify final formal selections on 2026-09-17 as 4763 材料*-KY and 1301 台塑. The same diagnostics expose the top 12 near-miss names:
+1102, 1210, 1216, 1304, 1305, 1326, 1477, 1503, 1514, 1519, 1609, 1708.
+
+Using Fugle daily OHLC from the 2026-09-17 selection close through 2026-09-22:
+- Final SELECTED pair equal-weight close-to-close return: approximately +0.37%.
+- Near-miss 12-name equal-weight close-to-close return: approximately -0.77%.
+- SELECTED average MFE over subsequent sessions: approximately +7.55%; average MAE approximately -0.57%.
+- Near-miss average MFE: approximately +1.12%; average MAE approximately -1.46%.
+
+Interpretation:
+1. This single observed date does **not** support the claim that final downstream filters were obviously too strict. On this date the selected pair had better endpoint return, much larger upside excursion, and smaller downside excursion than the first 12 near misses.
+2. Reverse caution: n=1 scan date, selected n=2, and 4763 contributed a large share of selected MFE. This result is highly date/name sensitive and must not be generalized or used to tighten filters.
+3. Therefore selection scarcity and entry scarcity remain separate hypotheses. The next useful evidence is multi-date SELECTED vs NEAR_MISS/REJECTED path, and BUY-triggered vs no-BUY SELECTED path.
+4. Do not loosen selection rules just to increase daily count. A high candidate count is not an objective.
+
+### Current formal funnel evidence retained
+- 2026-09-16: 1,873 ordinary stocks scanned, 3 selected.
+- 2026-09-17: 1,875 scanned, 2 selected; baseEligible 513; rrEligible 9.
+- 2026-09-17 primary exclusions included 1,124 liquidity, 335 no A/B setup, 71 RR<2, plus other quality/risk gates.
+- Current journal aggregate available from existing deployment verification showed 4 SELECTED plans and 1 observed formal BUY signal (25% observed conversion in that incomplete journal sample). This is not a month-long denominator.
+
+### Revised exact research sequence
+1. Selection layer: accumulate same-date SELECTED vs NEAR_MISS vs REJECTED_AFTER_BASE outcomes across independent scan dates, including endpoint return, MFE, MAE and invalidation-before-upside ordering.
+2. Entry layer: for every SELECTED plan, classify BUY_OBSERVED vs NO_BUY without imputing missing signals. Compare future path, zone-touch, stop-before-upside, and whether the name remained valid after plan expiry.
+3. Capital layer: decompose planned utilization into selectedCount, allocation cap, first-tranche, second-tranche/ADD conversion, and confirmed fill. Cash utilization itself is diagnostic, not a target.
+4. TTL layer: compare EXPIRE_AS_IS vs REVALIDATED_RESELECT; do not use blind carry-forward as the default.
+5. Position-management layer: REDUCE is only a recommendation until actual reduced shares are confirmed. Study REDUCED_CONFIRMED -> RE-ADD_ELIGIBLE only with trusted execution state; compare against STAY_REDUCED after costs/whipsaw.
+6. ABF 3037/8046/3189 is a falsification case-study cohort only. Do not tune a re-entry rule around 8046's later rally.
+7. Any proposed rule change must improve total-capital opportunity-cost-adjusted outcome without materially worsening MAE/drawdown/false-break/transaction-cost/date-regime robustness.
+8. Formal Core remains LOCKED; no production change from this research without explicit owner approval.
+
+
 ## Exact next continuation point
-1. Re-read latest main checkpoint + latest research commit; merge any newer A/B progress before work.
-2. Treat B-21's broad "no append-only signal journal" statement as superseded by B-24. Do not repeat that audit unless schema/code materially changes.
-3. Continue USER PRIORITY OVERRIDE by obtaining **safe aggregate Production evidence** for `v8_trade_journal_plans` vs first BUY rows by `plan_scan_date` for 2026-09-16 through 2026-09-22. Desired fields only: scanDate, selectedPlans, buyObservedPlans, buyObservedRate; no symbols/plan prices/secrets required.
-4. First inspect whether an already-authorized GitHub workflow/artifact can emit that aggregate without changing shared deployment/runtime. If yes, use it. If no, design the smallest isolated Class A research-only aggregate read surface; do not modify the deployment workflow itself without Class B approval.
-5. Preserve four layers from now on: (a) THEORETICAL allocator ceiling, (b) PLAN/intended tranches, (c) SIGNAL-OBSERVED BUY/ADD/REDUCE, (d) EXECUTED confirmed fills/actual shares. Never collapse them.
-6. Once aggregate BUY-observed coverage is available, compare conversion by independent scan date only; do not treat multiple symbols on one date as independent evidence. Keep confirmed-fill conversion UNKNOWN until a genuine fill source exists.
-7. Continue restoration concepts Shadow-only/untuned. Any formal A/B, liquidity, RR, 15m, allocator, trim, restoration or fill assumption change remains Class B/C and must not be promoted autonomously.
+1. Re-read latest checkpoint and main commit before work; this user-directed trading-decision bottleneck lane has priority over generic observability engineering unless observability blocks the answer.
+2. Recover additional independent formal scan dates and compare SELECTED vs NEAR_MISS / REJECTED_AFTER_BASE with D1/D3/D5 path, MFE, MAE, and invalidation-before-upside ordering. Do not pool names across dates without preserving scan-date clustering.
+3. Recover individual formal BUY signal identity/timing from safe durable logs/journal when available; never infer no-BUY identity from aggregate counts.
+4. For SELECTED with no observed BUY, distinguish: no zone touch, zone touch but failed confirmation, invalidation/stop first, plan expiry, and UNKNOWN. If clause-level evidence is unavailable, keep UNKNOWN.
+5. Quantify capital funnel separately: selectedCount -> planned allocation -> first tranche -> BUY observed -> confirmed fill -> ADD/full. Do not optimize utilization.
+6. Continue 3006 TTL case into EXPIRE_AS_IS vs REVALIDATED_RESELECT evidence on additional names/dates; blind carry-forward remains a falsification comparator, not a candidate rule.
+7. For REDUCE/re-entry, search durable historical recommendation events and confirmed share-state evidence. Without confirmed reduced shares, do not label an event REDUCED_CONFIRMED.
+8. Keep B-13/B-16 provenance branch parked unless needed to unblock the above outcomes. No deployment or Formal Core change.
