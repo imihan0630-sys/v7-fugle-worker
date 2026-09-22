@@ -1,6 +1,6 @@
 # Research Checkpoint
 
-Updated: 2026-09-22T10:16+08:00
+Updated: 2026-09-22T10:24+08:00
 
 ## Continuity / baseline
 - Formal Core: **LOCKED**.
@@ -301,6 +301,19 @@ Research consequences:
 3. Separate immediate price-pressure path from D5/D10/D20 persistence; a same-day/next-day effect is not automatically swing alpha.
 4. Keep existing formal rule locked; this is a research falsification requirement, not a production-rule deletion.
 5. No new threshold or weight.
+
+### Volatility contraction / breakout reverse validation — 2026-09-22T10:24+08:00
+Breakout literature and Taiwan market mechanics imply that "compression then expansion" must be treated as a conditional setup, not a universal bullish pattern:
+- Volatility contraction can precede information resolution and large moves, but direction is not identified by contraction itself. A subsequent volume/price breakout supplies direction only after the event, creating look-ahead risk if the setup is labeled bullish before confirmation.
+- In Taiwan, daily price limits, opening/closing auctions and disposition/VI-like matching changes can mechanically compress or distort observed ranges/volatility. A low raw volatility reading is therefore not always latent demand/supply balance.
+- Existing I07 (Compression beyond Raw Volatility) is the correct preregistered route to test whether the system's compression construct adds information beyond volatility itself.
+
+Research consequences:
+1. Do not add another "squeeze" indicator or Bollinger-width clone before I07 matures; that would be factor duplication.
+2. Separate pre-breakout compression quality from post-breakout confirmation. Never use future expansion to label the prior setup in a PIT snapshot.
+3. Test compression incrementally after liquidity, price-limit/disposition context, breakout quality and overheat controls.
+4. Failure cases (compression followed by downside expansion or no expansion) must remain in the archive; successful squeezes alone would create survivorship/selection bias.
+5. No Formal Core change.
 
 ## Bias / data-quality firewall
 - UNKNOWN remains UNKNOWN; no BAD/0 coercion.
