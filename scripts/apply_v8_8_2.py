@@ -68,7 +68,7 @@ replace_once(
 replace_once(
 '''    ? { text: formatSlackSignalMessage(payload), ...(payload?.signalType === "DAILY_SELECTION" ? { link_names: 1 } : {}) }
     : payload;''',
-'''    ? { text: formatSlackSignalMessage(payload), ...(["DAILY_SELECTION","DAILY_ZERO_SELECTION_CONFIRM"].includes(payload?.signalType) ? { link_names: 1 } : {}) }
+'''    ? { text: formatSlackSignalMessage(payload), ...(payload?.signalType === "DAILY_SELECTION" ? { link_names: 1 } : payload?.signalType === "DAILY_ZERO_SELECTION_CONFIRM" ? { link_names: 1 } : {}) }
     : payload;''',
     "zero-selection mention parsing"
 )
