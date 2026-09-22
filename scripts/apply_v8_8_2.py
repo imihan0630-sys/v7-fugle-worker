@@ -73,17 +73,19 @@ replace_once(
     "zero-selection mention parsing"
 )
 
-replace_once(
-'''    await env.STOCKS_KV.put(reportKey, JSON.stringify({...report,signalId:dailyPayload.signalId,resultType:dailyPayload.resultType,
-      selectedCount:dailyPayload.selectedCount,checkedAt:new Date().toISOString()}), { expirationTtl: 30 * 86400 });''',
-'''    await env.STOCKS_KV.put(reportKey, JSON.stringify({...report,signalId:dailyPayload.signalId,resultType:dailyPayload.resultType,
-      selectedCount:dailyPayload.selectedCount,checkedAt:new Date().toISOString()}), { expirationTtl: 30 * 86400 });
-    if(stocks.length===0) {
+report_put='await env.STOCKS_KV.put(reportKey,'
+start=text.find(report_put)
+if start<0:
+    raise SystemExit("zero-selection failsafe delivery: report KV write not found")
+end=text.find(";\n",start)
+if end<0:
+    raise SystemExit("zero-selection failsafe delivery: report KV statement end not found")
+end+=2
+text=text[:end]+'''    if(stocks.length===0) {
       const zeroPayload=buildZeroSelectionConfirmPayload(marketDate);
       zeroSelectionConfirmation=await sendTrackedPush(zeroPayload,env,{note:"盤後0檔備援確認推播"});
-    }''',
-    "zero-selection failsafe delivery"
-)
+    }
+'''+text[end:]
 
 replace_once(
 '''    dailyReport: report,
