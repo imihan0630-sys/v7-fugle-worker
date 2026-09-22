@@ -1,6 +1,6 @@
 # Research Checkpoint
 
-Updated: 2026-09-22T08:58+08:00
+Updated: 2026-09-22T09:04+08:00
 
 ## Continuity / baseline
 - Formal Core: **LOCKED**.
@@ -187,6 +187,15 @@ Research consequences:
 2. Treat near-limit observations as a distinct contamination/control concern when interpreting breakout/attention and execution depth; current execution-shadow-v2 does not yet store distance-to-price-limit, so do not infer it retrospectively.
 3. Spread/depth remain controls/descriptors, not alpha factors. Any future normalization should be versioned and preferably relative to price/tick/own-history rather than raw absolute spread/depth.
 4. No new factor is registered now; this evidence increases falsification requirements rather than factor count.
+
+### Tick-normalization / institutional-flow falsification — 2026-09-22T09:04+08:00
+Current TWSE rules and Taiwan evidence add two controls:
+- TWSE Article 62 uses a stepwise stock tick schedule (NT$0.01 below 10; 0.05 for 10-<50; 0.10 for 50-<100; 0.50 for 100-<500; 1 for 500-<1000; 5 for >=1000). Article 63 generally applies ±10% daily limits, with specified exceptions.
+- Therefore percentage spread alone is not enough for cross-sectional execution comparison: the minimum feasible spread in percentage terms changes discontinuously at price bands. Future execution diagnostics should preserve `spreadPct` but derive a research-only `spreadTicks` or tick-normalized spread from the contemporaneous price/tick schedule before comparing low- and high-price names.
+- This is especially relevant to the system's thousand-dollar-stock pool: a NT$5 tick at >=1000 creates a very different spread floor than sub-500 stocks. Pool-level comparisons could otherwise mistake mechanical tick geometry for liquidity/execution quality.
+- Taiwan foreign-institution evidence is mixed for profitability: foreign investors have been documented as momentum traders, but prior foreign ownership can anchor/strengthen their momentum trading without improving momentum profitability. Thus institutional consecutive buying should not be treated as independent proof that a momentum setup has alpha; it remains a formal strategy input but research must control overlap with price momentum and ownership/size/liquidity context.
+
+Candidate research-only engineering idea (not implemented yet): versioned `spreadTicks` in execution-shadow-v3, computed from the official current tick schedule. This is measurement normalization, not a formal trading rule. Because current v2 prospective series is just beginning, preserve v2 raw fields and only add a parallel derived field if engineering is later justified; never rewrite old snapshots.
 
 ## Bias / data-quality firewall
 - UNKNOWN remains UNKNOWN; no BAD/0 coercion.
