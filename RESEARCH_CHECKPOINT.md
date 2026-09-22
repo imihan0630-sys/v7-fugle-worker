@@ -1,7 +1,7 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-30.
-Updated: 2026-09-23 01:43 Asia/Taipei.
+Checkpoint sequence: B-31.
+Updated: 2026-09-23 02:11 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Earlier detailed evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
@@ -14,7 +14,7 @@ Updated: 2026-09-23 01:43 Asia/Taipei.
 
 ## Production/research baseline retained
 - Verified research infrastructure baseline: V8.8.1 `8.8.1-execution-coverage`, schema `execution-shadow-v2`; V8.8.0 rollback baseline.
-- Latest main immediately before B-30: `e7ca018f7d6651c8f71c655fd9c31a2f2534438c` (B-29 checkpoint).
+- Latest main before B-31 research read: `d892c95a0ee78dbe656fc85c9eb72456abbefd2f` (B-30 checkpoint).
 - Last verified prospective Shadow evidence remains 31 rows / one prospective scan date / zero mature D1/D3/D5/D10/D20 outcomes unless a newer trusted read proves otherwise.
 - B-13/B-16 provenance engineering remains DEFERRED, not cancelled.
 
@@ -46,36 +46,42 @@ Cash utilization is diagnostic, not an optimization target.
 - 3017 daily low 3290 stayed above buyHigh 3285 => NO_ZONE_TOUCH.
 - B-29 Actions audit found no export proving complete 09/18 signal-journal coverage. `JOURNAL_COVERAGE_UNKNOWN` remains; workflow success/negative repo search cannot be interpreted as zero signals.
 
-## NEW B-30 — authorized runtime aggregate path exists, but it is deployment-scoped and not historical identity proof
+## B-30 retained — authorized runtime aggregate path
+- `.github/workflows/v7-cloudflare.yml` has an authorized post-deploy `Verify research-only counterfactual readback` using repository secret `V7_ADMIN_TOKEN` against `/api/research/dashboard?days=90`.
+- Logged aggregate includes `execution.selectedPlans` and `execution.buyTriggeredPlans`, but no covered signal time boundaries, per-date breakdown or symbol/action identity.
+- Therefore aggregate runtime authorization exists, but B-29 `JOURNAL_COVERAGE_UNKNOWN` for 09/18 remained unresolved.
+
+## NEW B-31 — execution-recorder semantics bound the recoverable history; 09/18 reconstruction is impossible from this recorder
 ### Research question
-Does the existing authorized deployment chain already contain a secret-safe runtime/D1-capable read path that can reduce execution-coverage UNKNOWN without asking the owner for credentials or exposing secret values?
+Can the already-deployed `/api/research/execution-recorder` provide trustworthy date-bounded evidence for 2026-09-18 without modifying production/deploy workflows?
 
 ### Evidence / findings
-- Yes, partially. `.github/workflows/v7-cloudflare.yml` already has an authorized post-deploy `Verify research-only counterfactual readback` step using repository secret `V7_ADMIN_TOKEN` to call Production `/api/research/dashboard?days=90`.
-- That step logs a deliberately bounded aggregate object including `execution.selectedPlans` and `execution.buyTriggeredPlans`, plus Shadow coverage/readiness/integrity diagnostics. It does not print the admin token.
-- Therefore generic runtime authorization is **not** the fundamental blocker for aggregate Execution Alpha observability: the existing deploy chain can read the protected research dashboard safely.
-- However this read is deployment-scoped, not a date-specific append-only journal export. The logged aggregate shown by workflow code does not include covered signal time boundaries, per-date breakdown, or symbol/action identity. Consequently it cannot by itself prove whether any of the five 2026-09-18 plans had BUY/ADD rows, nor can an aggregate zero/nonzero count be assigned specifically to 09/18 without matching historical coverage semantics.
-- The current scheduled health workflow is public-health oriented; no evidence in this pass shows that it exports the protected execution aggregates.
-- Conclusion: B-29's `JOURNAL_COVERAGE_UNKNOWN` for 09/18 is preserved, but the next engineering/research path is narrower: reuse the already-authorized protected research-dashboard read mechanism for **research-only aggregate/date-bounded observability**, rather than searching GitHub or asking for secrets.
+- `scripts/apply_v8_8_0.py` defines `/api/research/execution-recorder` as an authorized GET endpoint. It accepts only `days`, computes `fromDate`, reads `trade_research_execution_snapshots WHERE trade_date>=fromDate`, orders by trade date/observed time, caps the SQL result at 500 rows, and returns aggregate `byEvent` plus `recent: rows.slice(0,80)` containing `trade_date`, `symbol`, `event_type`, `event_key`, timestamps and parsed payload.
+- The endpoint therefore has enough identity fields to client-filter a target date **only if that date was prospectively recorded and remains inside the returned row window**. It does not accept an exact `tradeDate`, `from`, `to`, cursor, or explicit coverage-boundary parameter; a zero for a target date is not automatically proof of complete target-date coverage because the 500-row cap can truncate older dates.
+- More importantly, the execution recorder itself was introduced by V8.8.0 commit `e9fe3c94c826593b9f2b85e6fdfc5c09b62b4646` at 2026-09-21 20:46:38Z = 2026-09-22 04:46:38 Asia/Taipei, after the 2026-09-18 trading day. The recorder is explicitly prospective and writes only when the monitor runs after deployment.
+- Therefore `/api/research/execution-recorder` **cannot contain genuine 2026-09-18 observations by construction**. Any attempt to use its absence as NO_SIGNAL for 09/18 would be fabricated historical Shadow / coverage coercion.
+- This closes the 09/18 runtime-recorder lane: keep BUY-observed/15m confirmation UNKNOWN except for already-trusted contemporaneous evidence; do not spend more cycles trying to recover 09/18 from V8.8.x execution snapshots.
+- Earliest plausible full trading day for this recorder is 2026-09-22, subject to actual deployment/readback and recorder coverage verification. Do not assume completeness merely from the commit timestamp.
 
 ### Reverse evidence / bias controls
-- A deploy-time aggregate is not a historical per-date journal and cannot be back-assigned to 09/18.
-- `buyTriggeredPlans` is BUY-signal observation, not confirmed brokerage fill.
-- No missing row is coerced to NO_SIGNAL; UNKNOWN remains UNKNOWN until explicit coverage boundaries exist.
-- No later return is used to infer entry eligibility.
-- No new factor/threshold/experiment introduced; R01-R08/I01-I07 unchanged.
+- The endpoint's rolling `days` filter is not the same as complete date-bounded coverage because of the hard 500-row cap and 80-row `recent` response subset.
+- Recorder rows are signal/decision observations, not brokerage fills.
+- V8.8.0 commit time proves 09/18 cannot have been prospectively recorded; it does **not** prove 09/22 recorder health/completeness.
+- No later price return was used to infer a missing BUY or 15m condition.
+- No missing row was converted to NO_SIGNAL; 09/18 remains UNKNOWN where contemporaneous evidence is absent.
+- No new factor, threshold, experiment, ranking or formal behavior introduced; R01-R08/I01-I07 unchanged.
 
 ### Engineering classification
-- Evidence-only checkpoint in this pass: Class A, no runtime/code/schema/deployment change.
-- A new standalone workflow that merely reads an existing research-only endpoint could still touch deployment-pipeline/workflow governance and must be classified carefully before implementation. Prefer an isolated research-only export/read path that cannot affect production scheduling or Formal Core; if it changes shared workflow/runtime behavior, treat as Class B proposal first.
-- Formal Core invariants unchanged by construction.
+- Evidence-only Class A research checkpoint. No runtime/code/schema/workflow/deployment change.
+- Adding exact date/cursor/coverage metadata to a shared protected runtime endpoint would require classification before implementation; because it touches deployed runtime/API semantics, default to Class B proposal unless isolated safely as research-only without shared-runtime risk.
+- Formal Core invariants unchanged.
 
 ## Exact next continuation point
 1. Re-read governance/worklist/checkpoint and latest main SHA; re-check checkpoint SHA immediately before any write.
-2. Do not repeat broad 09/18 Actions/code searches. Inspect existing research endpoint semantics/tests for whether `/api/research/dashboard` or `/api/research/execution-recorder` can already return date-bounded execution coverage. Required proof: explicit covered date/time range + successful query + per-date aggregate or symbol/action rows / explicit zero rows.
-3. If an existing endpoint already supports safe date-bounded read, use the existing authorized secret-bearing workflow mechanism without exposing secrets; retrieve only the minimum research evidence needed. If enabling that read requires modifying a shared production/deploy workflow, classify as Class B and prepare proposal/branch/tests only—do not promote automatically.
-4. If no safe date-bounded runtime path exists, stop spending cycles on 09/18 and advance the next independent formal scan date / prospective Shadow maturity. Never fabricate historical Shadow.
-5. Only trustworthy historical 15m OHLCV may test frozen 15m clauses; never approximate missing bars.
-6. Funnel remains selected/planned -> price-path contact -> 15m-confirm eligible -> BUY observed -> confirmed fill. Signal != fill. Quantify allocator cap/first tranche separately from BUY observed and confirmed fill.
+2. **Do not revisit 09/18 through the V8.8.x execution recorder.** Advance to the first prospectively recordable independent execution date, 2026-09-22, and determine actual recorder coverage using trusted runtime/readback evidence. Required proof before interpreting missing signals: successful protected query + explicit returned trade_date rows + evidence that the target date is not truncated by the 500-row cap; if completeness cannot be proved, mark partial coverage/UNKNOWN.
+3. Prefer existing authorized read mechanisms. Do not expose secrets. Do not modify shared deploy workflow merely to obtain data; if modification is necessary, Class B proposal/branch/tests only.
+4. In parallel, check whether 2026-09-22 produced a new prospective Shadow scan date after market. If trusted readback shows a second scan date, update independent-date count and maturity horizons without fabricating D1 before the next trading close. Preserve `WAITING_DATA` vs data-quality failure semantics.
+5. Continue funnel: selected/planned -> price-path contact -> 15m-confirm eligible -> BUY observed -> confirmed fill. Signal != fill. Quantify allocator cap/first tranche separately from BUY observed and confirmed fill.
+6. Only trustworthy historical/prospective 15m OHLCV may test frozen 15m clauses; never approximate missing bars.
 7. TTL research remains `EXPIRE_AS_IS` vs `REVALIDATED_RESELECT`; blind carry-forward is falsification comparator only.
 8. REDUCE/re-entry requires trusted actual reduced shares before `REDUCED_CONFIRMED`; otherwise recommendation-only.
