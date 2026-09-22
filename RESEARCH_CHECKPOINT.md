@@ -1,7 +1,7 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-27.
-Updated: 2026-09-23 00:15 Asia/Taipei.
+Checkpoint sequence: B-28.
+Updated: 2026-09-23 00:40 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Earlier detailed evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
@@ -14,7 +14,7 @@ Updated: 2026-09-23 00:15 Asia/Taipei.
 
 ## Production/research baseline retained
 - Verified research infrastructure baseline: V8.8.1 `8.8.1-execution-coverage`, schema `execution-shadow-v2`; V8.8.0 rollback baseline.
-- Main immediately before B-27 research write: latest observed main `895d07a2f076ae911ea27d3c6982dd536277247b` (plan mirror), with B-26 checkpoint commit `b06ca19feec11136fa0d35c3b79a4591fd1b88f5` in ancestry.
+- Latest main observed immediately before B-28 write: `d5387b7e49bd49d002685fa86a83cdf214ae1cc4` (B-27 checkpoint).
 - Execution-shadow D1 persistence/read coverage remains UNKNOWN from safe public reads. Workflow/cron success is not persistence evidence.
 - Last verified prospective Shadow evidence remains 31 rows / one prospective scan date / zero mature D1/D3/D5/D10/D20 outcomes unless a newer safe durable read proves otherwise.
 - B-13/B-16 provenance engineering remains DEFERRED, not cancelled.
@@ -61,44 +61,46 @@ Cash utilization is diagnostic, not an optimization target.
 - Plans: 4763 材料*-KY PULLBACK 47.16-48.25 stop 46.45; 1301 台塑 PULLBACK 63.88-65.36 stop 62.92; 3491 昇達科 MOMENTUM breakout 1510, buy 1490-1515, maxChase 1550, stop 1440; 3665 貿聯-KY MOMENTUM breakout 2055, buy 2030-2065, maxChase 2100, stop 1960; 3017 奇鋐 MOMENTUM reclaim 3230 then breakout 3285, buy 3230-3285, maxChase 3350, stop 3170.
 - Corresponding workflow verified config/pool provenance but had zero workflow artifacts; this is not signal/fill evidence.
 
-## NEW B-27 — 2026-09-18 daily-path falsification / eligibility bounds
+## B-27 retained — daily-path falsification / eligibility bounds
+- 4763: 09/18 O/H/L/C 48.00/50.50/47.45/50.50; pullback zone touched, stop not reached; 15m confirmation UNKNOWN.
+- 1301: 65.40/65.60/64.20/65.00; zone touched, stop not reached; 15m confirmation UNKNOWN.
+- 3491: 1515/1565/1475/1565; breakout/zone price regions observed and maxChase exceeded sometime during day; chronological breakout->pullback->confirmation UNKNOWN.
+- 3665: 2060/2210/2045/2210; breakout/zone price regions observed and maxChase exceeded sometime during day; chronological breakout->pullback->confirmation UNKNOWN.
+- 3017: 3345/3450/3290/3430; daily low 3290 stayed above buyHigh 3285, therefore NO_ZONE_TOUCH on 09/18 under contemporaneous plan.
+- Four of five plans therefore cannot be explained by simple `price never reached relevant plan region`; this does not establish four missed BUYs.
+- Safe repo search did not prove signal-journal coverage; state remains JOURNAL_COVERAGE_UNKNOWN.
+
+## NEW B-28 — timestamp evidence narrows momentum chronology, but 15m remains unavailable
 ### Research question
-Using the recovered contemporaneous plan and independently sourced 2026-09-18 OHLC/trading-range evidence, which entry-path facts can be proven without pretending daily bars reveal 15m confirmation or intraday ordering?
+Can safe public contemporaneous evidence add any intraday ordering facts for the 2026-09-18 plans without reconstructing unavailable 15m bars or using later outcomes as confirmation?
 
 ### Evidence / findings
-- 4763 材料*-KY: 2026-09-18 O/H/L/C = 48.00 / 50.50 / 47.45 / 50.50. The 47.16-48.25 pullback zone was definitely traded; stop 46.45 was not reached. Therefore `ZONE_TOUCHED = PROVEN`, `STOP_BEFORE_UPSIDE = FALSE at daily-range level`; 15m volume-contraction/stop-falling/next-bar-strength confirmation remains **UNKNOWN**.
-- 1301 台塑: O/H/L/C = 65.40 / 65.60 / 64.20 / 65.00. The 63.88-65.36 zone was definitely traded; stop 62.92 was not reached. Therefore `ZONE_TOUCHED = PROVEN`, while the required 15m confirmation remains **UNKNOWN**.
-- 3491 昇達科: O/H/L/C = 1515 / 1565 / 1475 / 1565. Prices traded both above breakout 1510 and through the 1490-1515 buy zone; maxChase 1550 was exceeded later within the day; stop 1440 was not reached. Daily OHLC cannot prove the required sequence `effective breakout -> pullback holds -> complete 15m confirmation`, so BUY eligibility/confirmation remains **UNKNOWN**, not PASS/FAIL.
-- 3665 貿聯-KY: O/H/L/C = 2060 / 2210 / 2045 / 2210. Prices traded above breakout 2055 and inside the 2030-2065 buy zone; maxChase 2100 was exceeded later; stop 1960 was not reached. Again daily OHLC cannot establish whether the valid breakout occurred before a qualifying pullback/15m confirmation. Classification remains `PRICE_PREREQUISITES_OBSERVED; CONFIRMATION/ORDER UNKNOWN`.
-- 3017 奇鋐: O/H/L/C = 3345 / 3450 / 3290 / 3430. The entire day stayed above the formal buyHigh 3285 (daily low 3290), while maxChase 3350 was exceeded. This safely proves **NO_ZONE_TOUCH on 2026-09-18** under the contemporaneous 3230-3285 buy zone. It does not prove what a different rule should have done.
-- Thus the second independent plan date provides a useful falsification split: at least 4/5 names had plan-price contact/prerequisite overlap at daily-range resolution, while 3017 definitely did not touch its entry zone. This does **not** establish 4 missed BUYs because all four require 15m confirmation and momentum names require chronological breakout/pullback semantics.
-- Default-branch GitHub search found no safe plaintext 2026-09-18 `v8_trade_journal_signals` identity/coverage rows for these five names. Absence from code search is not proven zero-signal coverage; journal state for this date remains `JOURNAL_COVERAGE_UNKNOWN`.
-
-### Date-level comparison / interpretation
-- 2026-09-17 remains a proven 3-plan, full-day, 15m-ready, zero-notification date but exact per-symbol blocking clauses are UNKNOWN.
-- 2026-09-18 now proves that simple `price never reached plan` cannot explain all five plans: four names traded through relevant plan-price regions/prerequisites at daily resolution. However, without 15m chronological evidence or proven journal coverage, the stronger claim `confirmation layer blocked them` is still not proven.
-- Therefore the current capital-utilization hypothesis narrows from generic entry scarcity to a testable fork: **price-path miss vs confirmation/ordering/journal observation**. Evidence is still only two independent trading dates and is insufficient for threshold changes.
+- Fresh public search still did not surface trustworthy historical 15m OHLCV bars for 4763/1301/3491/3665/3017. Therefore the requested 15m clauses (`volume contraction`, `no-new-low`, `next-bar strength`, exact breakout->pullback->hold ordering) remain UNKNOWN. No daily-bar proxy is substituted.
+- 3665 貿聯-KY has an independently timestamped contemporaneous report: at **11:02 on 2026-09-18**, price was already at the 2210 limit-up price. Against the contemporaneous plan (breakout 2055, buy zone 2030-2065, maxChase 2100), this proves that by 11:02 the stock had already progressed above breakout and above maxChase. It does **not** prove whether a valid breakout->pullback into 2030-2065->15m confirmation occurred earlier in the session. Thus classification becomes `ABOVE_MAXCHASE_BY_11:02 = PROVEN; PRE-11:02 ENTRY_SEQUENCE = UNKNOWN`.
+- 3017 contemporaneous quote evidence confirms 09/18 O/H/L/C 3345/3450/3290/3430 and 14:30 close; this independently supports B-27 NO_ZONE_TOUCH because the day's low 3290 remained above buyHigh 3285. It still does not justify chasing above the zone.
+- Public sources for 4763 and 3491 corroborate 09/18 close/date context, but no timestamped intraday path sufficient for formal 15m clauses was recovered. 1301 likewise remains without safe high-resolution ordering evidence in this pass.
+- Therefore the date-level fork tightens only modestly: 3017 is a proven price-path miss; 3665 is proven to have become too extended by 11:02, while the existence/nonexistence of an earlier valid entry remains UNKNOWN; 4763/1301/3491 still require 15m or proven signal-journal evidence.
 
 ### Reverse evidence / bias controls
-- Daily OHLC is not substituted for 15m bars; no intraday ordering is inferred from high/low alone.
-- A later strong close in 4763/3491/3665/3017 is not used to label the formal rule wrong. 3017's NO_ZONE_TOUCH is a contemporaneous-plan fact, not a recommendation to chase above 3285.
-- `maxChase exceeded sometime during day` does not imply it was exceeded before a valid entry opportunity.
-- Search failure for journal rows is `JOURNAL_COVERAGE_UNKNOWN`, not `NO_SIGNAL_ROW`.
-- Five symbols on one plan date remain one independent date for inference; no pseudo-replication.
-- No parameter/window was selected from winners; no new factor, R09/I08, or historical Shadow was created.
+- A limit-up timestamp is not backfilled into earlier 15m bars and is not treated as proof that BUY should have fired.
+- `above maxChase by 11:02` is not equivalent to `maxChase blocked the whole day`; an earlier eligible entry could have existed.
+- Later strong closes are not used to loosen entry rules.
+- Search failure for historical 15m bars or journal rows remains UNKNOWN, never FAIL/0.
+- All five names remain one independent plan date; no pseudo-replication.
+- No new parameter, factor, R09/I08, or historical Shadow introduced.
 
 ### R01-R08 / I01-I07 impact
-- No definition/status change. Evidence only refines execution-path falsification and capital-funnel attribution.
+- No definition/status change. This is execution-path falsification/provenance evidence only.
 
 ### Engineering / deployment
-- Evidence-only checkpoint update; Class A documentation/provenance.
-- No Worker, schema, workflow, runtime, factor, threshold, selection, allocation, monitoring, signal or push change. No deployment.
+- Evidence-only Class A checkpoint update. No code/runtime/schema/workflow/deployment change.
+- Formal Core invariants unchanged by construction.
 
 ## Exact next continuation point
-1. Re-read governance, worklist, latest checkpoint and latest main commit first; re-check checkpoint SHA immediately before any write.
-2. Continue 2026-09-18 at higher temporal resolution only from safe contemporaneous/durable evidence: seek 15m/intraday ordering for 4763/1301/3491/3665/3017. Specifically test whether 4763/1301 achieved `zone -> no-new-low/volume contraction -> next-bar strength`, and whether 3491/3665 achieved `breakout -> pullback into zone -> hold -> next-bar strength` before maxChase. Keep UNKNOWN where bars/volume are unavailable.
-3. Recover formal signal-journal coverage/identity for 2026-09-18 from a source that proves coverage, not code-search absence. Distinguish `NO_SIGNAL_ROW_WITH_PROVEN_COVERAGE` from `JOURNAL_COVERAGE_UNKNOWN`.
-4. At date level, compare 2026-09-17 vs 2026-09-18 entry-path attrition: selected/planned count -> price-path eligible/contact -> 15m-confirm eligible -> BUY observed -> confirmed fill. Never infer confirmed fill from signal.
+1. Re-read governance, worklist, latest checkpoint and latest main commit; re-check checkpoint SHA immediately before any write.
+2. Prioritize **proven signal-journal coverage/identity for 2026-09-18** over repeated generic web searches for 15m bars. Seek an authorized workflow/API/artifact or durable export that can establish whether each of 4763/1301/3491/3665/3017 has BUY/ADD/etc rows. Distinguish `NO_SIGNAL_ROW_WITH_PROVEN_COVERAGE` from `JOURNAL_COVERAGE_UNKNOWN`.
+3. Only if a trustworthy historical 15m OHLCV source becomes available, test the frozen clauses exactly: 4763/1301 `zone -> no-new-low/volume contraction -> next-bar strength`; 3491/3665 `breakout -> pullback into zone -> hold -> next-bar strength`, including maxChase ordering. Do not approximate missing bars.
+4. Date-level funnel for 09/17 vs 09/18 remains: selected/planned -> price-path contact -> 15m-confirm eligible -> BUY observed -> confirmed fill. Never infer confirmed fill from signal.
 5. Continue selection layer with another independent formal scan date and SELECTED vs NEAR_MISS/REJECTED_AFTER_BASE D1/D3/D5, MFE/MAE when evidence exists.
 6. Quantify capital funnel separately by date: selectedCount -> allocator cap -> first tranche -> BUY observed -> confirmed fill -> ADD/full. Confirmed fill remains UNKNOWN absent trusted execution reconciliation.
 7. TTL research remains `EXPIRE_AS_IS` vs `REVALIDATED_RESELECT`; blind carry-forward is falsification comparator only.
