@@ -1,6 +1,6 @@
 # Research Checkpoint
 
-Checkpoint sequence: A-12 after main `1d5380cbb8074573767147ce4b754845d85315b0`.
+Checkpoint sequence: B-13 after main `0b5211ccca3c744f4b1bebcd536d67dd2e5a94bd`.
 
 > Canonical current cursor for both A/B research schedules. Prior detailed checkpoints remain durable in Git history and must not be re-run.
 
@@ -46,38 +46,56 @@ Price/pool/liquidity are mechanically related; mirrored Residual RS is one const
 - Shared data-quality blocking is narrowly tied to `shadowIntegrity.status === RESEARCH_DATA_GAP`, currently covering missing Shadow archive, SELECTED-count mismatch, or missing BROAD_CONTROL for prospective formal dates.
 - Therefore HEALTHY/WAITING_DATA is **not** universal data-quality certification and does not certify execution-recorder health.
 
-## NEW A-12 — malformed snapshot / outcome-enrichment observability audit (2026-09-22 16:39 Taipei)
-### What is detectable with existing diagnostics
-- Outcome maturity is detected only through finite derived outcome fields. `researchReadinessEvidenceFromOutcomes()` counts D5 only when `horizons.d5.returnPct` is finite; R04/R07 additionally require finite PIT covariates. Missing covariates therefore reduce those experiment-specific usable counts, but the readiness output does not identify the cause as malformed JSON versus a legitimately absent PIT field.
-- Normal horizon immaturity is represented by absent/null horizon metrics and can correctly remain WAITING_DATA when archive integrity is otherwise healthy.
-- Shadow archive structural gaps already covered by `researchShadowIntegrityFromRows()` remain separately detectable as RESEARCH_DATA_GAP.
+## A-12 — malformed snapshot / outcome-enrichment observability audit retained
+- Readiness sees finite derived outcome/covariate counts, not parse/enrichment provenance.
+- Valid missing PIT covariates, malformed snapshot JSON and failed/unavailable outcome enrichment can collapse to similar lower usable counts.
+- Do not convert missing covariates/outcomes to zero/BAD and do not infer strategy weakness from reduced eligible counts until provenance is known.
 
-### What is not reliably distinguishable today
-- A malformed `snapshot_json` row is not proven by the readiness matrix itself. Downstream code consumes parsed `snapshot`; if an upstream reader skips/neutralizes a parse failure, readiness can only observe missing usable covariates/outcomes, not the parse-failure provenance.
-- A valid snapshot with one missing PIT covariate and a malformed snapshot can therefore collapse to the same downstream symptom for R04/R07: fewer eligible samples.
-- Outcome-enrichment failure after an otherwise structurally complete archive can also resemble ordinary horizon immaturity because readiness observes finite outcome fields, not an explicit enrichment-attempt/result ledger.
-- Consequently, `WAITING_DATA` can mean genuinely not yet mature **or** an undiagnosed enrichment/parse coverage problem unless a separate integrity signal exists. It must not be interpreted as proof that the pipeline is healthy.
+## NEW B-13 — exact Shadow parse -> history -> outcome failure semantics trace (2026-09-22)
+### Exact path confirmed
+- `readShadowCounterfactualResearch()` reads `trade_research_shadow_candidates` including raw `snapshot_json`.
+- Snapshot parsing is explicitly fail-open: `let snapshot={}; try { snapshot=JSON.parse(row.snapshot_json||"{}") } catch(_) {}`. Therefore malformed `snapshot_json` is **silently neutralized to `{}`**, not surfaced, not counted and not marked DATA_QUALITY_BLOCKED.
+- It then loads `v7_history_cache.history_json` by archived symbol. History parsing is also fail-open: parse failure becomes `histories[symbol]=[]`. A symbol with no returned history row is also passed to outcome enrichment as `[]`.
+- `researchShadowOutcomeForRow(row,bars)` uses `snapshot.price.close` as baseline. With malformed/empty snapshot, baseline becomes null; all horizon metrics stay null even if valid future bars exist.
+- With valid snapshot but missing/unparseable history, `post=[]`; all D1/D3/D5/D10/D20 horizons remain null. This is observationally identical to a genuinely immature horizon at the current readiness layer unless separate provenance is recorded.
+- The outcome function itself does not throw for these cases and returns an outcome row with null horizons; `outcomeRows` therefore counts attempted rows, not successful enrichment rows.
+
+### Important distinction from the formal history reader
+- `readHistoryCache()` elsewhere in the formal worker also skips malformed per-symbol history JSON, but B-13 does **not** propose changing that shared/formal path. The ambiguity being addressed here is specifically the research-only Shadow reader inside `readShadowCounterfactualResearch()`.
+- Therefore the smallest safe fix can remain isolated at the research boundary; touching shared history/cache plumbing would be unnecessary Class B risk.
 
 ### Falsification / bias implications
-- Do not convert missing covariates or missing outcomes to zero/BAD to make the distinction easier.
-- Do not infer strategy weakness from reduced eligible counts until parse/enrichment provenance is known.
-- Do not add a new factor/experiment to solve an observability problem. This is data-quality provenance, not alpha research.
-- One prospective scan date remains insufficient for inference; same-date clustering unchanged.
+- `archivedRows == outcomeRows` does not prove usable outcome coverage; rows can survive with null baseline/horizons.
+- Low D5 coverage cannot be attributed solely to calendar immaturity. It can also reflect malformed snapshot JSON, malformed/missing history cache, or valid snapshot with missing baseline.
+- Treating these silent failures as ordinary WAITING_DATA risks coverage bias: affected symbols/cohorts could disappear selectively from R01-R08 usable samples.
+- No evidence currently shows that such corruption has actually occurred in prospective rows; occurrence rate remains **UNKNOWN**. This trace proves an observability blind spot, not a present corruption incident.
 
-### Engineering classification / decision
-- This audit is Class A documentation/evidence only. No runtime/schema/deployment/Formal Core change made.
-- A future isolated research-only diagnostic could count `snapshotParseOk/snapshotParseError` and outcome-enrichment attempt/status without changing formal outputs, but implementation is **not yet justified** until the exact Shadow reader/enricher failure path and storage semantics are traced. Avoid instrumenting the wrong layer.
-- R01-R08/I01-I07 unchanged. Formal Core remains LOCKED.
+### Smallest isolated Class A diagnostic design (DESIGN ONLY; not yet deployed)
+At `readShadowCounterfactualResearch()` only, preserve existing outcome calculations and add research-only diagnostic counters/status; do not alter stored rows, formal selection, history cache, ranking, push or trading:
+1. Parse each `snapshot_json` with explicit status: `SNAPSHOT_PARSE_OK` / `SNAPSHOT_PARSE_ERROR`; parse error remains UNKNOWN data, never `{}` interpreted as valid.
+2. For successfully parsed snapshots, record `BASELINE_CLOSE_OK` vs `BASELINE_CLOSE_MISSING` using the existing `snapshot.price.close` requirement.
+3. For each archived symbol distinguish `HISTORY_ROW_MISSING`, `HISTORY_PARSE_ERROR`, `HISTORY_EMPTY`, `HISTORY_OK` before calling outcome enrichment.
+4. After `researchShadowOutcomeForRow`, count horizon status separately: `D1_NOT_YET_MATURE` only when history is valid and fewer than one post-scan trading bars exist; analogous maturity counts may be summarized for D3/D5/D10/D20 without inventing outcomes.
+5. Expose aggregate counts plus optional recent row statuses only through the existing research dashboard/API. No schema migration is required for the first diagnostic version.
+6. Keep existing `coverage.dN` definition unchanged for comparability; add provenance diagnostics beside it rather than silently redefining historical metrics.
+
+### Engineering classification / status
+- Trace and diagnostic design are Class A research-only.
+- No code/runtime/schema/deployment change made in B-13 because main pushes to `research/**` or patch scripts trigger the production deployment workflow. Governance requires targeted + regression/invariant tests before deployment; committing an untested implementation directly to main would invert that order.
+- Formal Core unchanged; R01-R08/I01-I07 unchanged; no new factor, threshold, window or experiment.
 
 ## Conditional R03/R04/R07/R08 diagnostic design — design only
 When mature: sector-persistence x Residual-RS; Quiet vs Attention within persistence state; Attention vs existing breakout-quality/volume component; scan-date clustered leave-one-date-out. Sparse cells remain UNKNOWN/ACCUMULATING.
 
 ## Exact next continuation point
 1. Re-read latest governance/worklist/checkpoint and latest main research commit; re-check checkpoint SHA immediately before any write.
-2. Do not repeat the one-date maturity audit unless a safe durable artifact shows a new prospective Shadow date or mature horizon.
-3. Trace the exact Shadow D1 read -> `snapshot_json` parse -> `researchShadowOutcomeForRow()` enrichment path and determine whether parse errors are skipped, neutralized, or surfaced; separately trace what happens when price-history bars are unavailable. Record exact failure semantics.
-4. Only if that trace proves a silent ambiguity, design the smallest isolated Class A diagnostic at the research boundary (parse status + enrichment attempt/status/counts). No shared formal plumbing. Run targeted + regression/invariant tests before any deployment.
-5. Keep execution-shadow D1 storage/read coverage UNKNOWN unless an authorized artifact explicitly returns persisted recorder rows/counts. Readiness HEALTHY/WAITING_DATA is not execution-recorder certification.
-6. If individual BUY identity later becomes safely readable, use the frozen balance conventions above; do not tune covariates after outcomes.
-7. Keep `REDUCED_CONFIRMED` UNKNOWN until trusted actual-share observations exist.
-8. Formal Core remains LOCKED. No Class B/C production change without explicit owner decision.
+2. Implement the B-13 diagnostic only on a non-production branch/PR or equivalent testable isolation first: explicit snapshot parse, baseline, history-row/history-parse/history-empty and horizon-maturity provenance in `readShadowCounterfactualResearch()`; no schema change and no shared formal plumbing.
+3. Add targeted tests covering: malformed snapshot + valid history; valid snapshot + malformed history; valid snapshot + missing history row; valid snapshot/history but immature D1; mature D1; verify missing stays UNKNOWN/null and existing `coverage.dN` values remain backward-compatible.
+4. Run existing regression/invariant suite and verify protected formal outputs are byte/semantically unchanged before any deployment. If isolation cannot guarantee that, stop as Class B and request owner decision rather than merging.
+5. Only after tests pass may the Class A diagnostic be merged/deployed through the existing authorized path; verify workflow, production version/readback and research endpoint. Do not claim deployment from commit alone.
+6. After diagnostic observability exists, inspect real prospective counts. Until then actual malformed snapshot/history occurrence remains UNKNOWN; do not infer corruption.
+7. Do not repeat the one-date maturity audit unless a safe durable artifact shows a new prospective Shadow date or mature horizon.
+8. Keep execution-shadow D1 storage/read coverage UNKNOWN unless an authorized artifact explicitly returns persisted recorder rows/counts. Readiness HEALTHY/WAITING_DATA is not execution-recorder certification.
+9. If individual BUY identity later becomes safely readable, use the frozen balance conventions above; do not tune covariates after outcomes.
+10. Keep `REDUCED_CONFIRMED` UNKNOWN until trusted actual-share observations exist.
+11. Formal Core remains LOCKED. No Class B/C production change without explicit owner decision.
