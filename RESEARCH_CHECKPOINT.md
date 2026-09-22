@@ -1,157 +1,83 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-11 after main `6c92ea1ac05369cd9c85146633aac822c34c3178`.
+Checkpoint sequence: A-12 after main `1d5380cbb8074573767147ce4b754845d85315b0`.
 
-> Continuity note: prior detailed checkpoints remain durable in Git history. This file is the canonical current cursor for both A/B research schedules.
+> Canonical current cursor for both A/B research schedules. Prior detailed checkpoints remain durable in Git history and must not be re-run.
 
 ## Governance / immutable boundary
-- Formal Core: **LOCKED**. No A/B definitions, ranking, score, threshold, Top6/3+3, capital, entry/add/reduce/sell/stop, monitoring or push semantics may change autonomously.
-- R01-R08 and I01-I07 remain frozen; no R09/I08.
-- New evidence/factors remain research/Shadow. Class B/C production changes require explicit owner decision.
-- Prospective Shadow starts 2026-09-21. No fabricated historical Shadow. Missing evidence = UNKNOWN, never BAD/0.
+- Formal Core: **LOCKED**. No autonomous change to A/B definitions, ranking, score, thresholds, Top6/3+3, capital, entry/add/reduce/sell/stop, monitoring or push semantics.
+- R01-R08 and I01-I07 frozen; no R09/I08.
+- Prospective Shadow begins 2026-09-21. No fabricated historical Shadow. Missing evidence = UNKNOWN, never BAD/0.
 - Independent scan date is the evidence unit. Continue selection-bias, look-ahead, data-snooping, market-source-bias, Factor-Zoo, overfit, coverage/zero-pick, transaction-cost, date-cluster and redundancy checks.
 
 ## Production/research baseline retained
 - Previously verified research infrastructure: V8.8.1 `8.8.1-execution-coverage`, schema `execution-shadow-v2`; merge `9283719e661e42a09b3b0d9fdfe27d54f3753d3e`; V8.8.0 rollback baseline.
-- Execution-shadow D1 storage coverage remains **UNKNOWN** from safe public reads. Public monitor does not persist recorder result; protected research/journal endpoints require authorization. Do not infer storage success from cron SUCCESS or a live BUY.
-- Existing aggregate CI/deploy evidence: journaled research sample had selectedPlans=4 and buyTriggeredPlans=1 after the 2026-09-22 trigger; Shadow archive 31 rows / one prospective date and zero mature D1/D3/D5/D10/D20 outcomes at last verified read. This is not a month-long denominator.
-- Formal selection funnel is independently narrow in observed historical CI evidence: 2026-09-16 selected 3/~1,873; 2026-09-17 selected 2/~1,875. On 9/17 baseEligible=513, rrEligible=9, A full setup=97, B full setup=7, final A=2/B=0. Do not treat primary exclusion counts as missed winners.
+- Execution-shadow D1 storage/read coverage remains **UNKNOWN** from safe public reads. Workflow/cron success is not persistence evidence.
+- Last verified prospective Shadow evidence: 31 rows / one prospective scan date / zero mature D1/D3/D5/D10/D20 outcomes. Do not manufacture a newer date or mature horizon from current prices.
+- Formal selection funnel is narrow in retained CI evidence; exclusion counts are not missed-winner counts.
 
-## Retained construct/provenance findings
-- R06 exact thresholds are repository constructs, not literature-validated cutoffs; do not retune after outcomes.
-- Fugle `avgPrice` is cumulative intraday/day-to-observation average, not interval VWAP.
-- `frame.latest.time` is source candle bar-start time; `barEndAt` is locally derived theoretical end, not source publication time. `candlePublishedAt` remains UNKNOWN.
-- Reduced quote object discards raw Fugle `lastTrade.time`/`total.time`; changing shared quote plumbing is Class B.
-- R03 sector persistence, R04 Residual RS and R07/R08 Attention are related momentum layers, not independent votes. `breakoutQualityResearch` already embeds a 25% volume component, so Attention has explicit redundancy risk.
+## Retained provenance / construct findings
+- R06 exact thresholds are repository constructs, not literature-validated cutoffs; no outcome-driven retuning.
+- Fugle `avgPrice` is cumulative day-to-observation average, not interval VWAP.
+- `frame.latest.time` is candle bar-start; `barEndAt` is locally derived theoretical end; source publication time remains UNKNOWN.
+- Reduced quote object discards raw Fugle `lastTrade.time`/`total.time`; shared quote plumbing change would be Class B.
+- R03 sector persistence, R04 Residual RS and R07/R08 Attention are related momentum layers, not independent votes. Breakout quality already embeds volume, creating explicit redundancy risk.
 
-## Entry/capital funnel — durable state
-Capital utilization must be decomposed as:
-`universe -> base/liquidity -> A/B formation -> RR/quality/risk -> SELECTED -> eligible clock -> zone touch -> confirmation -> formal BUY -> confirmed fill -> ADD/FULL -> REDUCE -> confirmed reduced state -> restoration`.
+## Entry / execution observability retained
+- Capital funnel must remain decomposed: universe -> base/liquidity -> A/B formation -> RR/quality/risk -> SELECTED -> eligible clock -> zone touch -> confirmation -> formal BUY -> confirmed fill -> ADD/FULL -> REDUCE -> confirmed reduced state -> restoration.
+- Formal A/B BUY cannot occur until about 10:45 Taipei under current 15m volume/confirmation mechanics; current execution-shadow schedule leaves much of 09:32-10:44 unobserved for plans that never signal.
+- Journal `occurred_at` identifies BUY timing only when individual signal rows are safely readable. Aggregate selectedPlans/buyTriggeredPlans cannot identify no-BUY symbols.
+- Absence of BUY cannot currently be attributed to maxChase, expiry, zone, volume or retest; clause-failure counts remain UNKNOWN.
+- REDUCE signal is recommendation, not execution. `REDUCED_CONFIRMED` requires trusted timestamped actual-share evidence and remains UNKNOWN.
 
-Known mechanics:
-- Formal A/B BUY cannot occur until about 10:45 Taipei because 15m `volumeRatio` needs five prior same-day bars and both A/B need a subsequent confirming/retest bar.
-- Current execution-shadow schedule leaves 09:32-10:44 largely unobserved for plans that never signal. Potential FIRST_60M/FIRST_90M/ENTRY_ELIGIBILITY_BASELINE instrumentation remains deferred until recorder storage is verified.
-- One-day plan validity plus maxChase and confirmation gates can compound scarcity. 3006 showed later valid confirmation is possible, so the clock gate is not by itself proof of defect.
-- 3006 2026-09-16 -> 9/22 case supports researching revalidation-aware persistence, not blind multi-day carry-forward.
+## BUY-observed vs no-BUY balance preregistration retained
+Existing prospective Shadow already has the PIT covariates; do not add fields merely for balance analysis:
+- price=`snapshot.price.close`
+- primary liquidity=`snapshot.volume.avgAmount20`; `avgVolume20Lots` secondary
+- strategy=`snapshot.strategy`
+- pool=row `pool`
+- sector=`snapshot.sector.name`
+- canonical Residual RS=`snapshot.price.residualSectorRs20`; mirrored sector path validation-only
+- volatility=`snapshot.price.volatility20`
+Price/pool/liquidity are mechanically related; mirrored Residual RS is one construct. Balance is descriptive and must cluster by scan date. Individual BUY identity remains NOT_JOINABLE from safe durable evidence.
 
-## Entry-gate observability retained
-- Journal `occurred_at` can identify BUY timing only when individual signal rows are safely readable.
-- Absence of BUY cannot be causally assigned to maxChase, expiry, zone, volume or retest because no durable clause-level rejection event is established.
-- Therefore maxChase-block, expiry-block and clause-failure counts remain **UNKNOWN**, not zero.
-- Reliable current identity is SELECTED -> BUY-observed vs SELECTED -> no-BUY-observed; causal gate attribution remains UNKNOWN until prospective evidence exists.
+## Readiness semantics retained (B-11)
+- `researchReadinessRow()` gives `DATA_QUALITY_BLOCKED` precedence when shared `dataQualityBlocked` is true; otherwise zero immature required evidence may be `WAITING_DATA`.
+- Shared data-quality blocking is narrowly tied to `shadowIntegrity.status === RESEARCH_DATA_GAP`, currently covering missing Shadow archive, SELECTED-count mismatch, or missing BROAD_CONTROL for prospective formal dates.
+- Therefore HEALTHY/WAITING_DATA is **not** universal data-quality certification and does not certify execution-recorder health.
 
-## REDUCE reconstructability retained
-- REDUCE signal is a recommendation event, not proof of execution; signal emission does not mutate actual shares or positionStage.
-- Position stages remain NONE/FIRST/FULL; no REDUCED/TRIMMED state.
-- Keep cohorts distinct: `REDUCE_SIGNAL_OBSERVED` vs `REDUCED_CONFIRMED`. The latter requires trusted actual-share evidence.
-- REDUCED->RE-ADD research must index confirmed post-reduction shares, not push time; no recovery threshold is chosen.
+## NEW A-12 — malformed snapshot / outcome-enrichment observability audit (2026-09-22 16:39 Taipei)
+### What is detectable with existing diagnostics
+- Outcome maturity is detected only through finite derived outcome fields. `researchReadinessEvidenceFromOutcomes()` counts D5 only when `horizons.d5.returnPct` is finite; R04/R07 additionally require finite PIT covariates. Missing covariates therefore reduce those experiment-specific usable counts, but the readiness output does not identify the cause as malformed JSON versus a legitimately absent PIT field.
+- Normal horizon immaturity is represented by absent/null horizon metrics and can correctly remain WAITING_DATA when archive integrity is otherwise healthy.
+- Shadow archive structural gaps already covered by `researchShadowIntegrityFromRows()` remain separately detectable as RESEARCH_DATA_GAP.
 
-## A-6 — safe-read and trusted-share audit (2026-09-22 13:41 Taipei)
-- No repository artifact provides a secret-free individual journal-signal export or durable public read of individual BUY/REDUCE rows. Existing protected journal/research endpoints remain the known route. Exact BUY-time distribution and individual REDUCE-signal population therefore remain UNKNOWN from safe evidence.
-- Repository artifacts do not establish complete timestamped pre/post actual-share history around REDUCE events. `REDUCED_CONFIRMED` coverage remains UNKNOWN; alerts/daily OHLC cannot be converted into fills.
-- Minimal future confirmed-reduction evidence, if later justified as isolated Class A: symbol, observedAt, trusted source/provenance, actually observed sharesBefore/sharesAfter, linkable reduce-signal identity, confirmationStatus CONFIRMED/UNKNOWN, and executionPrice only if trusted. No inferred fill time/price/share delta.
+### What is not reliably distinguishable today
+- A malformed `snapshot_json` row is not proven by the readiness matrix itself. Downstream code consumes parsed `snapshot`; if an upstream reader skips/neutralizes a parse failure, readiness can only observe missing usable covariates/outcomes, not the parse-failure provenance.
+- A valid snapshot with one missing PIT covariate and a malformed snapshot can therefore collapse to the same downstream symptom for R04/R07: fewer eligible samples.
+- Outcome-enrichment failure after an otherwise structurally complete archive can also resemble ordinary horizon immaturity because readiness observes finite outcome fields, not an explicit enrichment-attempt/result ledger.
+- Consequently, `WAITING_DATA` can mean genuinely not yet mature **or** an undiagnosed enrichment/parse coverage problem unless a separate integrity signal exists. It must not be interpreted as proof that the pipeline is healthy.
 
-## B-7 — BUY-observed vs no-BUY covariate-balance feasibility audit (2026-09-22)
-- `researchExecutionAlphaFromRows()` currently joins plans to first BUY signals by `(plan_scan_date, symbol)`, but the current execution-alpha projection discards most PIT covariates.
-- Shadow preserves full `snapshot`, `pool`, cohort and selected identity, so a descriptive balance table is conceptually joinable only when individual BUY identity is available in the same authorized research execution.
-- Aggregate `selectedPlans=4`, `buyTriggeredPlans=1` is insufficient to infer the three no-BUY identities or attributes.
-- BUY-observed is execution-selected, not randomized. Raw outcome differences mix execution with selection/confounding; same-date clustering remains mandatory.
+### Falsification / bias implications
+- Do not convert missing covariates or missing outcomes to zero/BAD to make the distinction easier.
+- Do not infer strategy weakness from reduced eligible counts until parse/enrichment provenance is known.
+- Do not add a new factor/experiment to solve an observability problem. This is data-quality provenance, not alpha research.
+- One prospective scan date remains insufficient for inference; same-date clustering unchanged.
 
-## A-8 — exact PIT covariate field audit (2026-09-22 14:43 Taipei)
-### Pre-registered balance fields
-The existing prospective Shadow schema already captures the requested covariates at selection time; no new field is justified yet:
-- **price — AVAILABLE_PIT:** `snapshot.price.close`.
-- **liquidity — AVAILABLE_PIT:** `snapshot.volume.avgVolume20Lots` and `snapshot.volume.avgAmount20`.
-- **strategy A/B — AVAILABLE_PIT:** `snapshot.strategy`.
-- **pool — AVAILABLE_PIT:** Shadow row column `pool`.
-- **sector — AVAILABLE_PIT:** `snapshot.sector.name`.
-- **Residual RS — AVAILABLE_PIT:** `snapshot.price.residualSectorRs20` (also mirrored as `snapshot.sector.residualRs20`; same construct).
-- **volatility — AVAILABLE_PIT:** `snapshot.price.volatility20`.
-
-### Provenance / joinability boundary
-- `buildResearchSnapshot()` marks research-only / decisionImpact=false and prospective provenance; price features are bounded through `scanDate`; prospective Shadow carries `capturedAtSelection:true`, `shadowOnly:true`, `noForwardFill:true`.
-- Shadow storage persists `pool` plus full `snapshot_json`; SELECTED rows are archived.
-- Covariate availability is not the blocker. Remaining blocker is individual BUY identity/read coverage and execution-shadow recorder storage coverage.
-- Changing shared plan/runtime plumbing merely to expose fields would be Class B and is not justified while isolated Shadow already contains them.
-
-### Bias / redundancy checks
-- Price, pool and liquidity are mechanically related; THOUSAND pool is defined from price. Do not interpret them as independent causal controls.
-- Residual RS mirrored paths are one variable, not two votes.
-- Strategy A/B is selected by formal setup rules and may be confounded with volatility/attention/path shape. Balance diagnostics are descriptive only.
-- Missing/malformed PIT fields remain UNKNOWN; no later data backfill.
-- One prospective scan date is insufficient for inference.
-
-## B-9 — recorder safe-read boundary + balance preregistration (2026-09-22)
-### Safe-read evidence
-- Audited scheduled GitHub Actions health run `35690221950`. Its successful health payload contains no execution-shadow recorder write count, persisted-row identity, D1 coverage, or individual BUY journal identity.
-- Therefore workflow SUCCESS is not recorder-persistence evidence. Execution-shadow D1 storage coverage remains UNKNOWN and BUY-observed identity remains NOT_JOINABLE from safe durable evidence.
-
-### Frozen descriptive balance choices (pre-outcome)
-- Primary liquidity=`snapshot.volume.avgAmount20`; `avgVolume20Lots` secondary only.
-- Canonical Residual RS=`snapshot.price.residualSectorRs20`; mirrored sector path validation-only.
-- These are measurement conventions, not factors/thresholds/experiments/formal gates.
-
-## A-10 — prospective Shadow maturity/coverage audit (2026-09-22 15:43 Taipei)
-### Evidence audited
-- Re-read current main governance/worklist/checkpoint and current research readiness implementation before interpreting maturity.
-- Current readiness code only counts an outcome as D5-mature when `horizons.d5.returnPct` is finite, and counts independent evidence by distinct `scanDate`; R01/R04/R07 require at least 60 mature D5 samples and 15 independent scan dates, while R02/R08 require 20 paired D5 dates. These are pre-existing frozen readiness rules, not newly tuned thresholds.
-- The latest durable prospective evidence remains the previously verified Shadow archive: **31 rows, one prospective scan date, zero mature D1/D3/D5/D10/D20 outcomes**. No newer safe durable artifact located in this audit establishes an additional prospective Shadow scan date or mature horizon.
-- The latest scheduled health workflow is still run `35690221950` (2026-09-22 13:18 Taipei); it is a monitor-health artifact, not a Shadow maturity/coverage export. It cannot be used to manufacture a second scan date or mature D1.
-
-### Interpretation / falsification
-- Status remains **ACCUMULATING / WAITING_DATA**, not directional evidence. One scan date is one clustered evidence unit regardless of the 31 stock rows.
-- Zero mature outcomes means no Selection Alpha, Execution Alpha, breakout-success, Residual-RS, Quiet/Attention or Two-Engine direction should be inferred yet.
-- This is not a negative strategy result and not a zero-pick result; it is an evidence-maturity limitation.
-- Do not backfill 2026-09-22 outcomes from later/current prices unless the existing prospective pipeline records them under its PIT rules. No synthetic D1/D3/D5 rows.
-- Existing readiness implementation itself enforces distinct scan-date counting, which is consistent with the governance rule against treating same-day stocks as independent evidence.
-
-### Bias / data-quality checks
-- Selection bias: unchanged; Shadow cohorts are prospective, but only one date cannot establish representativeness.
-- Look-ahead: no later price/outcome data were inserted.
-- Data snooping / Factor Zoo: no new factor, window, threshold, R09 or I08 added.
-- Market-source bias: no new source inference made.
-- Date clustering: explicitly preserved; 31 rows != 31 independent dates.
-- UNKNOWN semantics: no safe evidence of newer Shadow maturity was converted to zero/BAD.
-
-### Engineering classification / status
-- Class A documentation/evidence audit only. No executable code, schema, runtime, deployment or Formal Core output changed; no deployment required.
+### Engineering classification / decision
+- This audit is Class A documentation/evidence only. No runtime/schema/deployment/Formal Core change made.
+- A future isolated research-only diagnostic could count `snapshotParseOk/snapshotParseError` and outcome-enrichment attempt/status without changing formal outputs, but implementation is **not yet justified** until the exact Shadow reader/enricher failure path and storage semantics are traced. Avoid instrumenting the wrong layer.
 - R01-R08/I01-I07 unchanged. Formal Core remains LOCKED.
 
-## NEW B-11 — readiness semantics / data-quality falsification audit (2026-09-22 16:10 Taipei)
-### What the existing machinery actually distinguishes
-- `researchReadinessRow()` assigns `DATA_QUALITY_BLOCKED` first when the shared `dataQualityBlocked` flag is true; only otherwise can a zero/immature required outcome become `WAITING_DATA`. This precedence is explicit and deterministic.
-- The shared data-quality flag is narrowly sourced from `shadowIntegrity.status === "RESEARCH_DATA_GAP"`. `researchShadowIntegrityFromRows()` produces that status only for prospective formal scan dates with at least one of: no Shadow archive rows, SELECTED count mismatch versus the formal journal day, or missing BROAD_CONTROL.
-- Normal horizon immaturity is represented separately by experiment checks with `waiting:true` when the relevant mature count is zero. Therefore a healthy archive with zero mature D5 evidence becomes `WAITING_DATA`, while an archive-integrity gap overrides it to `DATA_QUALITY_BLOCKED`.
-
-### Important limitation / alternative failure mechanism
-- The distinction is valid for the integrity conditions it actually observes, but it is **not a universal data-quality detector**. Corrupt/malformed `snapshot_json`, missing individual PIT covariates, outcome-enrichment failure after an otherwise complete archive, execution-shadow recorder non-persistence, or an unreadable protected journal are not automatically proven by `shadowIntegrity` and can remain UNKNOWN or appear as ordinary waiting/accumulating evidence depending on the downstream counters.
-- In particular, current execution-shadow D1 storage coverage remains UNKNOWN. The readiness matrix must not be interpreted as certifying execution-recorder health merely because Shadow archive integrity is HEALTHY.
-- Conversely, `RESEARCH_DATA_GAP` is not evidence that the strategy failed or produced zero picks; it is a research-data coverage fault.
-
-### Bias / governance checks
-- No outcome values, thresholds, windows, factor definitions or experiment variants were changed. No data-snooping/Factor-Zoo expansion.
-- No historical Shadow or missing horizon was synthesized; UNKNOWN remains UNKNOWN.
-- Same-date clustering and independent-scan-date semantics are unchanged.
-- This audit does not resolve market-source bias, execution selection bias, transaction costs, redundancy or overfit; those remain separate gates and must not be inferred from readiness status.
-
-### Engineering classification / status
-- Class A documentation/evidence audit only. Existing code already distinguishes normal maturity waiting from the currently defined Shadow archive integrity gap; no code change is justified by this audit.
-- Formal Core, runtime, schema, deployment, R01-R08 and I01-I07 unchanged.
-
 ## Conditional R03/R04/R07/R08 diagnostic design — design only
-When mature, condition existing frozen outcomes as:
-1. sector-persistence state x Residual-RS HIGH/LOW;
-2. Quiet vs Attention within sector-persistence state;
-3. Attention vs existing breakout-quality/volume component for incremental information;
-4. scan-date clustered leave-one-date-out robustness.
-Sparse cells remain UNKNOWN/ACCUMULATING. Do not pool merely for significance.
+When mature: sector-persistence x Residual-RS; Quiet vs Attention within persistence state; Attention vs existing breakout-quality/volume component; scan-date clustered leave-one-date-out. Sparse cells remain UNKNOWN/ACCUMULATING.
 
 ## Exact next continuation point
 1. Re-read latest governance/worklist/checkpoint and latest main research commit; re-check checkpoint SHA immediately before any write.
-2. Re-audit safe durable artifacts for a new prospective Shadow scan date or newly matured D1/D3/D5 horizon. If none exists, preserve ACCUMULATING/WAITING_DATA and do not repeat the same maturity audit.
-3. Audit the next non-blocked observability question: whether malformed/missing prospective `snapshot_json` or failed outcome enrichment can be distinguished from normal horizon immaturity using existing research-only diagnostics. Document exact detectable vs undetectable failure modes before proposing instrumentation.
-4. Keep execution-shadow D1 storage/read coverage UNKNOWN unless an authorized artifact explicitly returns persisted recorder rows/counts. Readiness HEALTHY/WAITING_DATA is not execution-recorder certification.
-5. If individual BUY identity later becomes safely readable, use frozen balance conventions: primary liquidity=`snapshot.volume.avgAmount20`; canonical Residual RS=`snapshot.price.residualSectorRs20`; cluster by scan date. Do not add/tune covariates after outcomes.
-6. Keep REDUCED_CONFIRMED UNKNOWN until trusted actual-share observations exist; append-only confirmation recorder remains design only.
-7. Keep joint sector-persistence diagnostic as design until maturity/governance gates are satisfied.
+2. Do not repeat the one-date maturity audit unless a safe durable artifact shows a new prospective Shadow date or mature horizon.
+3. Trace the exact Shadow D1 read -> `snapshot_json` parse -> `researchShadowOutcomeForRow()` enrichment path and determine whether parse errors are skipped, neutralized, or surfaced; separately trace what happens when price-history bars are unavailable. Record exact failure semantics.
+4. Only if that trace proves a silent ambiguity, design the smallest isolated Class A diagnostic at the research boundary (parse status + enrichment attempt/status/counts). No shared formal plumbing. Run targeted + regression/invariant tests before any deployment.
+5. Keep execution-shadow D1 storage/read coverage UNKNOWN unless an authorized artifact explicitly returns persisted recorder rows/counts. Readiness HEALTHY/WAITING_DATA is not execution-recorder certification.
+6. If individual BUY identity later becomes safely readable, use the frozen balance conventions above; do not tune covariates after outcomes.
+7. Keep `REDUCED_CONFIRMED` UNKNOWN until trusted actual-share observations exist.
 8. Formal Core remains LOCKED. No Class B/C production change without explicit owner decision.
