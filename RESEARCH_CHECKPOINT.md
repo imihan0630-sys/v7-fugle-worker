@@ -1,6 +1,6 @@
 # Research Checkpoint
 
-Updated: 2026-09-22T08:52+08:00
+Updated: 2026-09-22T08:58+08:00
 
 ## Continuity / baseline
 - Formal Core: **LOCKED**.
@@ -174,6 +174,19 @@ Audit of `research/readiness_v8_7_10.js` found a research-governance nuance:
 - This is a research-readiness semantics issue only; it does not alter Formal Core. Do not silently change the existing frozen readiness definition in the middle of accumulation.
 - Record as a candidate Class A versioned readiness refinement after prospective BUY evidence begins: split R02 readiness into Selection-side and Execution-side sub-readiness rather than adding an arbitrary BUY threshold now.
 - No code change in this cycle because choosing a BUY minimum before observing operational coverage would be an unnecessary new parameter and increase researcher degrees of freedom.
+
+### Price-limit / microstructure knowledge extension — 2026-09-22T08:58+08:00
+Additional Taiwan evidence narrows how execution and attention fields should be interpreted:
+- Lin et al. (2016) finds information discreteness can isolate underreaction-driven earnings momentum in Taiwan, but Lin et al. (market-dynamics study) finds the same ID logic does not explain momentum conditional on market-state continuation/transition. This is direct construct-context evidence: an attention proxy can work for earnings-information momentum yet fail for price momentum.
+- Yang et al. (2018) documents continuing-overreaction momentum in Taiwan that remains after controls for small firms, idiosyncratic volatility, illiquidity and turnover; price-limit handling materially affects the measure.
+- Cho et al. (2003) documents a high-frequency magnet effect toward Taiwan price limits, especially the upper bound. Therefore extreme intraday strength near limits may reflect market-mechanism dynamics, not simply stronger information.
+- Kuo et al. (2010) shows TWSE tick-size changes affected quoted spread, execution costs, depth and trade size. Hence raw spreadPct/depthImbalance are not timeless structural factors; they are execution-state variables whose scale depends on microstructure/tick regime.
+
+Research consequences:
+1. Do not equate volume/turnover attention proxies across earnings momentum, price momentum and execution microstructure.
+2. Treat near-limit observations as a distinct contamination/control concern when interpreting breakout/attention and execution depth; current execution-shadow-v2 does not yet store distance-to-price-limit, so do not infer it retrospectively.
+3. Spread/depth remain controls/descriptors, not alpha factors. Any future normalization should be versioned and preferably relative to price/tick/own-history rather than raw absolute spread/depth.
+4. No new factor is registered now; this evidence increases falsification requirements rather than factor count.
 
 ## Bias / data-quality firewall
 - UNKNOWN remains UNKNOWN; no BAD/0 coercion.
