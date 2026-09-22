@@ -516,6 +516,39 @@ The evidence currently points to **multiple conservative layers**, not one defec
 
 No Formal Core or production logic changed.
 
+## 3006 one-day plan TTL case reconstruction — 2026-09-22
+
+Using official TWSE daily OHLC data and the frozen V7 A-channel plan formula, the 2026-09-16 3006 晶豪科 setup can be reconstructed without using future data:
+- 2026-09-16 close = 281.
+- Through that date: MA10 ≈287.55, MA20 ≈280.20, rightLow=263, recentLow5Prev=263.
+- `chooseDailySupport` therefore selects MA20≈280.20 as the highest valid support candidate.
+- Frozen A plan formula gives an estimated buy zone ≈278.80–285.24 (`support*0.995` to `support*1.018`).
+This is a deterministic reconstruction from the production source and official historical bars, but the archived 9/16 plan payload itself did not expose buyLow/buyHigh in the available workflow logs, so label it **RECONSTRUCTED**, not authoritative plan readback.
+
+Observed subsequent daily path:
+- 9/17 O281.5 H285.5 L276.5 C278.5: the reconstructed buy zone was traded through intraday.
+- 9/18 O290 H296.5 L285 C291: the lower edge was not reached, but the daily low briefly overlapped the reconstructed upper edge around 285.
+- 9/21 O293 H293 L279 C285: price returned materially into the earlier zone.
+- The independently reselected 9/21 plan for 9/22 had official public buy zone 280.59–287.08, close to the reconstructed earlier zone, and the current journal later recorded one formal BUY trigger.
+
+Two-sided interpretation:
+1. **Case for longer plan persistence:** a one-day plan can expire even though the original support thesis remains relevant and price revisits the same zone on later days. 3006 demonstrates this possibility.
+2. **Case against automatic carry-forward:** the stock also changed state materially across 9/18–9/21 (gap-up, higher excursion, then pullback). Blindly extending the stale 9/16 plan would ignore new daily information; independent re-selection correctly revalidated the thesis and generated a similar but updated zone.
+3. Therefore the likely research candidate is **revalidation-aware persistence**, not simple multi-day plan extension.
+
+### R02 execution-timing diagnostic design (no implementation)
+For each SELECTED plan with no confirmed fill:
+- freeze the original buy zone/stop and observe +1/+2 trading days;
+- record whether zone is touched, whether the original stop/structural invalidation occurs first, and whether a fresh daily re-selection independently validates the name;
+- compare three descriptive paths: EXPIRE_AS_IS, BLIND_CARRY_FORWARD, REVALIDATED_RESELECT;
+- measure D1/D3/D5 opportunity return, MFE/MAE from the hypothetical entry, stale-zone invalidation rate, and how often re-selection restores eligibility at a materially different zone.
+Falsification:
+- if blind carry-forward adds fills but worsens MAE/false-entry/costs versus revalidated re-selection, reject persistence extension;
+- if revalidated re-selection misses many valid revisits before the next scan while original thesis remains intact, then one-day TTL may be too strict;
+- no threshold/window tuning from the 3006 example.
+
+No formal rule changed.
+
 ## Bias / data-quality firewall
 UNKNOWN stays UNKNOWN; no historical execution-shadow backfill; independent scan date is primary evidence unit; no causal claims from contemporaneous correlation; no outcome-driven threshold/window retuning; watch selection bias, look-ahead, data snooping, market-source bias, Factor Zoo, overfit, coverage, zero-pick, costs and date clustering.
 
