@@ -293,6 +293,48 @@ Research implication:
 - do not loosen entry rules to solve cash reserve created by sizing policy.
 
 
+## Selection-funnel observability and two-sided literature check — 2026-09-22
+### Historical selection bottleneck data already exist
+Source audit confirms every formal after-market scan builds a rich `diagnostics` object containing:
+- scanned / with60Days / baseEligible / rrEligible,
+- A/B channel counts,
+- exclusion-reason counts,
+- up to 12 near misses,
+- per-condition pass/fail and "only missing this one condition" counts for A and B,
+- final 3+3 pool usage and unused slots.
+V8.5.0 persists the entire object as `diagnostics_json` in `v8_trade_journal_days`.
+
+However:
+- current `/api/journal` intentionally does not select/expose `diagnostics_json`,
+- public `/api/recommendations` intentionally omits full diagnostics and only exposes selected recommendations/capital plan,
+- no current safe public route exposes historical daily funnel reasons.
+
+Therefore we should **not** guess whether selection itself is too strict from today's selectedCount. The evidence required to answer that question already exists in D1 but is protected/unexposed.
+No ADMIN_TOKEN request is necessary while other research remains.
+
+Future Class A candidate, only if justified:
+- an isolated research aggregate that reads historical `diagnostics_json` and returns date-aggregated counts/rates only (no secrets, no formal output changes).
+- Before implementing, confirm isolation from shared runtime and preserve historical definitions; do not retune gates from the aggregate itself.
+
+### Literature supports selective persistence, but also supplies the reverse case
+Taiwan-specific evidence converges on a conditional, not universal, momentum/re-entry thesis:
+- Chen, Hsieh & Lee (2023), Pacific-Basin Finance Journal, explicitly revisit Taiwan momentum through winner/loser **persistency**. This supports testing whether strength that persists is materially different from one-off strength.
+- Lin, Ko, Feng & Yang (2016), Pacific-Basin Finance Journal, show Taiwan momentum depends on **market dynamics/state continuation vs transition**. This argues against a universal "re-add after recovery" rule.
+- Ho, Hsiao, Lo & Yang (2023), Pacific-Basin Finance Journal, separate intraday and overnight return information in Taiwan. This reinforces that entry timing/path cannot be collapsed into a single momentum score.
+- Barber, Lee, Liu & Odean (2007) document a Taiwan disposition effect: investors are substantially more prone to realize gains than losses. This is a relevant falsification warning for partial-profit logic because "locking profit" can reflect a sell-winners-early bias.
+
+Important reverse qualifications:
+1. Persistency papers do not validate our exact persistenceScoreResearch formula or a REDUCED->RE-ADD threshold.
+2. Market-state evidence says a rule that works in continuation states can reverse in transition states.
+3. Disposition-effect evidence is behavioral and historical; it does not prove a rules-based partial trim is irrational, especially when the trim reduces drawdown.
+4. Intraday/overnight decomposition implies that an apparently strong close/recovery can have different next-session behavior; do not infer re-entry quality from close-to-close return alone.
+
+Research implication:
+- Any add-back hypothesis must require evidence of persistent strength and survive R06 regime-transition checks.
+- Any trim critique must compare upside missed **and** downside/drawdown avoided.
+- No new factor, no production change.
+
+
 ## Exact next continuation point
 1. Re-read latest checkpoint/main and re-check SHA.
 2. Audit frame10/frame15 timestamp provenance: `researchBarTiming` derives bar end by adding timeframe to `frame.latest.time`; verify whether `buildBar.time` comes directly from Fugle candle `bar.date`, and distinguish calculated completion time from source-observed freshness. Record failure modes around delayed candle publication and cached prior frames.
