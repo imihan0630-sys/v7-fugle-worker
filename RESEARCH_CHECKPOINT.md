@@ -354,6 +354,41 @@ For every transition, measure conversion rate and subsequent path. This will ide
 
 No Formal Core, thresholds, buy/sell logic, state names, monitor behavior, or deployment changed in this manual turn.
 
+## Live-funnel observation — 2026-09-22 12:34 Taipei
+
+Public production readback (`/?format=json` and `/api/recommendations`) gives a concrete same-day example of why cash utilization can stay low even before considering missed BUY signals:
+- 2026-09-21 after-market selection produced exactly 1 plan for 2026-09-22: 3006 晶豪科.
+- Total capital = NT$200,000; planned allocation for the sole selected name = NT$70,000 (35% of capital), leaving NT$130,000 cash by design.
+- First tranche = NT$42,000 (21% of total capital); second tranche = NT$28,000 (14%).
+Therefore even a successful first BUY can initially deploy only 21% of total capital on a one-candidate day. Full two-tranche deployment would still use only 35% unless more candidates are selected.
+
+This means the observed under-deployment has at least **three distinct layers**:
+1. selection breadth / selectedCount,
+2. BUY conversion,
+3. tranche conversion (FIRST -> ADD/FULL).
+It is incorrect to blame low utilization on BUY scarcity alone.
+
+### Same-day clause replay as falsification example
+The public 15m bars for 3006 show a sequence around 11:00-11:15 that appears to satisfy the A pullback logic:
+- 11:00 bar entered the buy zone, closed above buyLow, volumeRatio 0.36<=0.9, bullish/reversal/strong close;
+- 11:15 bar made a higher low and bullish turn-up.
+Source-level replay therefore suggests a formal A BUY condition could have become true when the 11:15 bar completed (around the 11:30/11:31 evaluation).
+Actual journal receipt/push is not publicly verified here, so do not claim a real BUY notification occurred.
+
+Falsification implication:
+- The ~10:45 earliest-entry gate does not mechanically prevent all valid entries; today provides a plausible later qualifying sequence.
+- Scarcity must be decomposed empirically rather than assuming the clock gate is the sole cause.
+- Conversely, one qualifying example does not show current filters are optimal; the missed-opportunity cohort remains required.
+
+### Capital-utilization interpretation
+Positive case:
+- 35% single-name cap + 60/40 staging limits concentration and false-entry damage.
+Reverse case:
+- If selectedCount is frequently 0-1 and ADD conversion is also low, independent conservative layers multiply, causing structurally persistent cash even when selection quality is good.
+Required future metric: distribution by scan date of selectedCount, planned-capital %, first-tranche-capital %, BUY conversion, ADD conversion, and total actually deployable/triggered capital. Do not optimize utilization alone.
+
+No production rule changed.
+
 ## Bias / data-quality firewall
 UNKNOWN stays UNKNOWN; no historical execution-shadow backfill; independent scan date is primary evidence unit; no causal claims from contemporaneous correlation; no outcome-driven threshold/window retuning; watch selection bias, look-ahead, data snooping, market-source bias, Factor Zoo, overfit, coverage, zero-pick, costs and date clustering.
 
