@@ -1,120 +1,75 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-1 after `bc2702a8e85729ff11f0c8b7042fdcffa0a45a16`.
-
-> Time note: prior checkpoint contained wall-clock labels ahead of actual Taipei time. This compact handoff intentionally uses a sequence label rather than inventing a new wall-clock timestamp. Git commit time is the durable ordering source.
+Checkpoint sequence: A-2 after main `dcfb7c2206b2bb8aff6c3763b9daf6edbecc943f`.
 
 ## Continuity / baseline
-- Formal Core: **LOCKED**.
-- Repository: `imihan0630-sys/v7-fugle-worker`.
-- Production Worker: `fugle-test` / `https://fugle-test.imihan0630.workers.dev/`.
-- Actual Production readback overrides remembered/chat version strings.
-- Prospective Shadow begins 2026-09-21; no fabricated historical Shadow.
-- Missing evidence remains UNKNOWN, never BAD/0.
-- R01-R08 and I01-I07 remain frozen unless explicitly versioned; no R09 currently exists.
-- A/B research schedules share this file as the canonical cursor. Each run must re-read latest main + this checkpoint and re-check SHA before writing; never overwrite a newer handoff.
-- Ordinary findings/commits are continuation points, not stop boundaries. Human interruption only for genuine MFA/reauth/secret/permission, explicit Class B/C production decision, or true unresolved technical blocker.
+- Formal Core: **LOCKED**. Production Worker `fugle-test`; actual Production readback overrides chat/version memory.
+- Prospective Shadow begins 2026-09-21; no fabricated historical Shadow. Missing evidence remains UNKNOWN, never BAD/0.
+- R01-R08 and I01-I07 remain frozen; no R09/I08. A/B schedules share this file as canonical cursor and must re-read/re-check SHA before writes.
+- V8.8.1 production research infrastructure was previously verified as `8.8.1-execution-coverage`, schema `execution-shadow-v2`; merge `9283719e661e42a09b3b0d9fdfe27d54f3753d3e`, V8.8.0 rollback baseline. No formal selection/ranking/Top6/3+3/capital/trading/monitoring/push behavior changed.
 
-## Current production research infrastructure
-### V8.8.0 / V8.8.1 prospective execution Shadow
-- V8.8.0 introduced sparse research-only execution snapshots: OPEN_BASELINE, FIRST_10M_COMPLETE, FIRST_15M_COMPLETE, FIRST_30M_COMPLETE, FORMAL_SIGNAL_OBSERVED.
-- V8.8.1 production readback previously verified as `8.8.1-execution-coverage`; schema `execution-shadow-v2`.
-- Fields from already-polled Fugle quote: openingGapPct, sessionAvgPrice / explicitly labeled VWAP proxy, best spread, five-level bid/ask depth, depthImbalance, conservative executionMarketState.
-- Market state remains UNKNOWN when flags are insufficient; no claim of disposition/VI identification.
-- V8.8.1 merge: `9283719e661e42a09b3b0d9fdfe27d54f3753d3e`; V8.8.0 rollback baseline.
-- No A/B, ranking, Top6, 3+3, capital, entry/add/reduce/sell/stop, monitoring eligibility or push behavior change.
+## Frozen research / maturity
+- R01 breakout hold/fail; R02 Selection vs Execution Alpha; R03 industry persistence; R04 Residual RS; R05 overnight/intraday; R06 regime transition; R07 Quiet vs Attention; R08 Two-Engine Momentum.
+- I01-I07 frozen. I03/I04 partly nested because breakoutQualityResearch already contains 25% volume/attention.
+- Promotion review remains prospective/OOS only: >=60 D5 mature, >=30 prospective full snapshots, >=15 independent scan dates, >=2 years, >=2 regimes, purged training >=10 dates, holdout >=5 dates, direction consistency plus coverage/zero-pick/redundancy/cost/overfit/date-cluster checks. Passing never auto-promotes.
+- Same-date stocks are clustered observations. Selection Alpha is descriptive same-date cohort difference, not causal alpha or portfolio P&L. Control presence does not prove covariate balance; inspect price/liquidity/sector/residual-RS/volatility balance when mature.
 
-## Frozen research / readiness
-- R01 successful vs failed breakout: priorHigh20, HELD_3D vs FAILED_CLOSE_WITHIN_3D.
-- R02 Selection Alpha vs Execution Alpha: same-date cohort delta; Execution Alpha conditional on first real formal BUY. No-BUY is excluded from price-improvement distribution, not set to zero; buyTriggerRate is separate.
-- R03 industry rotation/persistence.
-- R04 Residual RS.
-- R05 next-day Overnight vs Intraday decomposition.
-- R06 Market Regime Transition.
-- R07 Quiet Strength vs Attention Strength.
-- R08 Two-Engine Momentum.
-- I01-I07 remain frozen incremental contrasts. I03/I04 are partially nested because breakoutQualityResearch already contains 25% attention volume; attenuation is redundancy evidence, not clean causal isolation.
-- Promotion review gate remains prospective/OOS only: >=60 D5 mature, >=30 prospective full snapshots, >=15 independent formal scan dates, >=2 years, >=2 regimes, purged training >=10 dates, holdout >=5 dates, direction consistency, coverage/zero-pick/redundancy/cost/overfit/date-cluster checks. Passing never auto-promotes Formal Core.
-
-## Key formula provenance already recovered
-- `positiveDayRatio20`: % positive close-to-close returns over up to latest 20 daily returns through scanDate.
-- `persistenceScoreResearch = 0.35*positiveDayRatio20 + 0.25*positiveHorizonPct + 0.20*ddQuality + 0.20*maQuality`, gated by >=3 finite components. It is a composite, not a primitive.
+## Recovered formula provenance
+- `positiveDayRatio20`: positive close-to-close fraction over up to latest 20 returns through scanDate.
+- `persistenceScoreResearch = .35*positiveDayRatio20 + .25*positiveHorizonPct + .20*ddQuality + .20*maQuality`, gated by >=3 finite components; composite, not primitive.
 - `breakoutQualityResearch = clamp(closePosition*35 + (1-upperShadow)*25 + clamp(volVs5/2)*25 + clamp((breakoutPct+1)/4)*15,0,100)`.
 - `overheatPenaltyResearch = clamp(max(0,ret20-20)*1.6 + max(0,maDistance20Pct-12)*2.2 + max(0,ATR%-6)*5 + max(0,abs(gapPct)-4)*4,0,100)`.
-- `compressionScoreResearch = clamp(100 - (range10/range20)*40 - (range5/range20)*60,0,100)`; geometric range compression, not directional volatility signal.
-- Overheat thresholds are frozen research-design parameters, not proven Taiwan optima. Compression can be high in a downtrend and is not bullish by itself.
+- `compressionScoreResearch = clamp(100-(range10/range20)*40-(range5/range20)*60,0,100)`; geometric compression, not bullish direction.
 
-## Anti-bias / estimand constraints already established
-- Same-day stocks are clustered observations; leave-one-scan-date-out diagnostics exist for I01-I07.
-- Pairwise Pearson redundancy is only a coarse alarm; nonlinear redundancy can remain. Do not add post-hoc transforms before maturity.
-- Shadow integrity checks archive presence, SELECTED-count agreement and BROAD_CONTROL presence, but control presence does not prove covariate balance.
-- Future mature-sample Selection Alpha interpretation should inspect raw cohort balance in price, liquidity/turnover, sector, residual RS and volatility before causal language. Do not propensity-match now.
-- Current Selection Alpha is an unweighted same-date descriptive cohort difference, not portfolio P&L or causal alpha.
-- Cost stress 30/60/100 bps is scenario analysis only; it omits missed/no-BUY opportunity cost.
+## R06 construct-validity constraint
+Exact research classifier from repository: BULL_BROAD marketReturn20>=3% & breadth>=55%; BEAR_BROAD <=-3% & <=45%; INDEX_STRONG_BREADTH_WEAK return>=0 & breadth<45%; BREADTH_RECOVERY return<0 & breadth>=55%; otherwise MIXED. Literature supports state-dependence directionally but not these exact thresholds. MIXED is heterogeneous and hard boundaries are unstable near cutoffs. Do not retune after outcomes; any alternative must be a newly preregistered construct.
 
-## Taiwan evidence convergence already established
-- Momentum/attention/turnover are regime- and horizon-dependent; no universal `quiet better` or `high turnover better` rule.
-- Market-state transitions can reverse momentum; industry persistence and residual stock strength must remain distinct.
-- Monthly-revenue persistence is promising, but single spectacular prints plus large pre-event run-up can show next-day reversal while later drift remains positive. No PIT monthly-history experiment until announcement history provenance is safe.
-- Analyst revision direction may be more useful than static forecast level if timestamped PIT consensus history becomes available; no 52-week-high clone due overlap/regime instability.
-- Accrual/cash-flow quality is a future falsification/control candidate, not a bullish factor; older Taiwan accrual anomaly has structural-break/IFRS caveats.
-- Institutional flow is confirmation/context until incremental evidence survives momentum/liquidity controls; price pressure and information are confounded.
-- Attention/disposition status is endogenous and changes matching mechanics; when prospectively available it is a control/stratifier, not an alpha factor.
-- Spread/depth are execution-state controls/descriptors; tick geometry matters, especially >=NT$1000 stocks. No spreadTicks implementation yet.
+## Fugle avgPrice semantics
+Official Fugle stock intraday quote docs define `avgPrice` as 當日成交均價. At FIRST_10M/15M/30M, `sessionAvgPrice` / `sessionVwapProxy` is cumulative/session-to-observation-time, not interval VWAP. Keep semantic label `FUGLE_INTRADAY_QUOTE_AVG_PRICE`; do not claim independently reconstructed VWAP without value/volume reconstruction.
 
-## New B-1 audit — R06 construct validity
-Repository source `scripts/apply_v8_7_0.py` establishes the exact research market-regime classifier:
-- `BULL_BROAD`: marketReturn20 >= +3% AND above-MA20 breadth >=55%.
-- `BEAR_BROAD`: marketReturn20 <= -3% AND above-MA20 breadth <=45%.
-- `INDEX_STRONG_BREADTH_WEAK`: marketReturn20 >=0 AND breadth <45%.
-- `BREADTH_RECOVERY`: marketReturn20 <0 AND breadth >=55%.
-- Otherwise `MIXED`; R06 transition analysis later excludes UNKNOWN but uses these research labels prospectively.
+## New A-2 audit — execution timestamp provenance / stale-data risk
+Repository `scripts/apply_v8_8_0.py` currently computes:
+`const lastTradeAt=researchIsoFromQuoteTimestamp(result?.quote?.lastUpdated);`
+and stores that value as payload `lastTradeAt`. V8.8.1 passthrough retains `lastUpdated` but does not pass through Fugle `lastTrade.time` or `closeTime`.
 
-Reverse validation / construct warning:
-1. Academic Taiwan market-state papers do **not** use these exact +3/-3 and 55/45 thresholds. Literature support is directional (state persistence/transition matters), not direct validation of this classifier.
-2. The classifier mixes a 20-day index return with cross-sectional MA20 breadth. A label transition can therefore occur from either index movement or breadth crossing a hard boundary; it is not a pure latent-regime estimator.
-3. `MIXED` is heterogeneous and can contain near-threshold bull/bear states plus genuinely neutral states. Do not interpret all MIXED->X transitions as equivalent economic shocks.
-4. Hard boundaries create classification instability near +3/-3 or 45/55. Do not retune after outcomes. If later evidence justifies alternative thresholds/smoothing, version as a new preregistered research construct rather than rewriting R06 history.
-5. R06 remains a falsification/conditioning dimension; no formal score or gate.
+Official Fugle stock `GET /intraday/quote/{symbol}` documentation distinguishes these fields:
+- `lastUpdated`: 最後更新時間 (quote's last update time),
+- `lastTrade.time`: 最後一筆成交時間,
+- `closeTime`: last/close-price transaction time,
+- `total.time`: cumulative statistics timestamp.
+The docs also expose `lastTrade` independently from book updates and trial state. Therefore `lastUpdated` is **not semantically proven to be a trade timestamp**. Naming the transformed `lastUpdated` value `lastTradeAt` overstates provenance and can hide stale-trade vs fresh-book differences.
 
-## New B-1 audit — Fugle avgPrice semantics
-Official Fugle Developer Docs for `GET /intraday/quote/{symbol}` explicitly define `avgPrice` as **「當日成交均價」** and the same quote response exposes cumulative `total.tradeValue`, `total.tradeVolume`, `total.transaction` statistics. The migration guide maps legacy `quote.priceAvg.price` directly to v1 `avgPrice`.
+PIT/freshness implications:
+1. `observedAt` proves recorder wall-clock observation only; it does not prove quote trade freshness.
+2. A fresh `lastUpdated` may reflect a quote/book update rather than a new trade; execution-price freshness must not be inferred from it alone.
+3. Future research coverage should distinguish `quoteUpdatedAt` from true `lastTradeAt` and, if captured, `statsUpdatedAt` (`total.time`).
+4. Existing prospective v2 rows must be interpreted conservatively: current payload `lastTradeAt` is actually quote-update provenance until schema/code is versioned. Do not rewrite historical rows or pretend corrected provenance existed earlier.
+5. This is a research-data-quality issue, not evidence that formal monitoring is wrong. Formal Core remains untouched.
 
-Interpretation constraint:
-- At FIRST_10M/FIRST_15M/FIRST_30M, `sessionAvgPrice` / `sessionVwapProxy` is a **session-to-observation-time daily average field**, not an interval-specific 10/15/30-minute VWAP.
-- Keep the existing explicit proxy semantic label `FUGLE_INTRADAY_QUOTE_AVG_PRICE`; do not call it independently reconstructed VWAP.
-- The docs confirm `avgPrice` is daily transaction average, but do not document the exact internal weighting formula in the field description. Therefore do not assert more than the official semantic without reconstructing from trades/aggregate value-volume.
-- This is a semantics/provenance clarification only; no code change or Formal Core impact.
+Engineering classification: a future isolated correction that only adds/renames research snapshot provenance fields can be Class A if formal quote freshness/monitoring semantics are not touched. Before implementation, freeze protected formal outputs and regression-test invariants. Do not change shared quote freshness logic as part of that patch.
 
-## First-live-session coverage constraint
-- Recorder windows: OPEN_BASELINE 09:00-09:02; FIRST_10M 09:11-09:12; FIRST_15M 09:16-09:17; FIRST_30M 09:31-09:32.
-- OPEN_BASELINE is early post-open, not a pure opening-auction book snapshot.
-- Protected `/api/research/execution-recorder` / dashboard requires admin authorization. Do not request or expose ADMIN_TOKEN while other research remains.
-- If safe public/read-only evidence cannot prove D1 rows, coverage remains UNKNOWN; never infer successful storage merely because the stage time passed.
-- No directional Execution Alpha inference from one date.
+## First-live-session / coverage constraints
+- Recorder windows: OPEN_BASELINE 09:00-09:02; FIRST_10M 09:11-09:12; FIRST_15M 09:16-09:17; FIRST_30M 09:31-09:32. OPEN_BASELINE is early post-open, not pure auction snapshot.
+- Protected recorder API requires admin authorization. Do not request/expose ADMIN_TOKEN while other research remains. Without safe read evidence, D1 coverage is UNKNOWN; stage time does not prove storage.
+- No directional Execution Alpha inference from one date. Cost stress 30/60/100bps omits missed/no-BUY opportunity cost.
+
+## Taiwan evidence / falsification convergence
+- Taiwan momentum is state/horizon dependent. Evidence supports persistence-conditioned momentum, intraday continuation vs overnight reversal, and market-state dependence, while other Taiwan evidence shows momentum-gap failure under local price-limit structure. This argues against a universal attention/turnover or generic momentum rule.
+- Do not add turnover, 52-week-high, analyst, accrual, spread-normalization, squeeze, R09 or I08 factors now. Institutional flow remains context until incremental evidence survives momentum/liquidity controls.
 
 ## Bias / data-quality firewall
-- UNKNOWN remains UNKNOWN; no BAD/0 coercion.
-- No historical execution-shadow-v2 backfill.
-- Independent scan date remains primary evidence unit.
-- No causal claim from contemporaneous correlations.
-- No outcome-driven threshold/window/holding-period retuning.
-- No new factor, I08, R09, squeeze clone, 52-week-high clone, analyst factor, accrual factor, or spread normalization until provenance/maturity justifies preregistration.
-- Turnover/volume can be attention proxy and conditioning variable; avoid double counting.
-- Disposition/VI-specific state remains UNKNOWN unless reliable official PIT evidence distinguishes it.
+UNKNOWN stays UNKNOWN; no historical execution-shadow backfill; independent scan date is primary evidence unit; no causal claims from contemporaneous correlation; no outcome-driven threshold/window retuning; watch selection bias, look-ahead, data snooping, market-source bias, Factor Zoo, overfit, coverage, zero-pick, costs and date clustering.
 
 ## Engineering status this handoff
-- Classification: research interpretation / provenance audit only (Class A documentation).
-- No production code, branch, deployment, monitoring, push or Formal Core behavior changed.
-- Durable ordering: this checkpoint commit supersedes the verbose prior checkpoint while preserving the current canonical state; detailed earlier evidence remains recoverable from Git history and prior research notes.
+- Class A documentation/provenance audit only. No production code/branch/deployment/formal behavior changed this run.
+- New material finding: current research payload misnames quote `lastUpdated` as `lastTradeAt`; treat existing field as quote-update provenance until a separately versioned research-only correction is implemented and validated.
 
 ## Exact next continuation point
-Priority 6 Execution Alpha remains **P2 research-readiness / coverage diagnostics**. Next A/B run must re-read latest checkpoint/main first, then:
-1. If safe access exists, verify actual prospective execution-shadow-v2 storage and quantify field coverage by event type/independent date for openingGapPct, sessionAvgPrice, spreadPct, depthImbalance, executionMarketState plus UNKNOWN reasons. Do not score outcomes.
-2. Audit quote `lastUpdated`, `lastTradeAt`, observedAt, frame10/frame15 barStart/barEnd semantics for stale-data/PIT contamination. A stage timestamp is not proof that underlying quote/bar was fresh.
-3. Keep `sessionAvgPrice` cumulative/session-to-time; never interpret it as interval VWAP.
-4. Use exact R06 classifier provenance above when conditioning later evidence, but treat literature mapping as directional only; watch threshold-boundary instability and MIXED heterogeneity.
-5. Continue falsification research on persistence/attention/industry overlap rather than adding factors. Seek contradictory Taiwan evidence and market-structure breaks.
-6. Audit future no-BUY opportunity-cost data feasibility (intended quantity/capital semantics and selected-plan path outcomes) without creating a metric until prospectively defined.
-7. Explore PIT-valid monthly-revenue announcement-history capture only if source timestamps/history are safe; do not register an experiment yet.
-8. Formal Core remains LOCKED. No B/C production change without explicit human decision.
+1. Re-read latest checkpoint/main and re-check SHA.
+2. Inspect the formal quote-fetch mapping to confirm whether Fugle `lastTrade`, `closeTime`, `total.time` are currently discarded before `result.quote`; determine the smallest isolated Class A passthrough/schema-v3 correction that adds `quoteUpdatedAt`, true `lastTradeAt`, and optionally `statsUpdatedAt` without changing formal freshness logic.
+3. Before any code write, compare protected formal outputs and classify shared-runtime risk. If isolation is not clean, downgrade to Class B proposal only.
+4. If safe access exists, quantify actual execution-shadow-v2 field coverage by event/date and UNKNOWN reasons; otherwise keep storage coverage UNKNOWN.
+5. Audit frame10/frame15 barStart/barEnd freshness against observedAt; bar completion timestamp is not automatically source freshness.
+6. Continue falsification on persistence/attention/industry overlap; no new factors.
+7. Audit no-BUY opportunity-cost data feasibility without defining a metric yet; explore PIT-valid monthly-revenue announcement history only if timestamps are safe.
+8. Formal Core remains LOCKED; no B/C production change without explicit human decision.
