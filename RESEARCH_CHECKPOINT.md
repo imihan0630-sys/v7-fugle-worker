@@ -1,6 +1,6 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-16 after main `948a187925c5e525991e309f9e4577d2734af67b`.
+Checkpoint sequence: B-17 after main `992b047cc99b1043af193d59b6da72fc053795ab`.
 
 > Canonical current cursor for both A/B research schedules. Prior detailed checkpoints remain durable in Git history and must not be re-run.
 
@@ -25,126 +25,99 @@ Checkpoint sequence: B-16 after main `948a187925c5e525991e309f9e4577d2734af67b`.
 - REDUCE signal is recommendation, not execution; `REDUCED_CONFIRMED` remains UNKNOWN without trusted timestamped actual-share evidence.
 
 ## USER PRIORITY OVERRIDE — capital utilization / selection / execution / re-entry
+This remains the canonical A/B-schedule research priority. B-16 provenance engineering is **DEFERRED, not cancelled**.
 
-This is now the canonical A/B-schedule research priority. B-16 provenance engineering is **DEFERRED, not cancelled**. Do not resume B-16 until this root-cause stream reaches a genuine evidence blocker, owner decision, or checkpoint explicitly releases the defer.
-
-### Question to answer
+### Root question
 Why does the system select names but rarely deploy capital, and why can partial de-risking leave exposure permanently reduced even when trend/sector strength later reasserts? Decompose:
 `universe -> base/liquidity -> A/B formation -> quality/RR -> SELECTED -> BUY -> confirmed fill -> ADD/FULL -> REDUCE -> confirmed reduced shares -> restoration`.
 Do not optimize cash utilization by itself and do not alter Formal Core from a small retrospective sample.
 
-### Same-date falsification: 2026-09-17 final SELECTED vs 12 exact NEAR_MISS names
-The 12 CI-recorded near misses each failed exactly one A condition. Using their 2026-09-17 close as baseline and Fugle daily OHLC for the next three trading days:
-- NEAR_MISS mean D1=-0.18%, D2=-0.29%, D3=-0.77%, MFE=+1.12%, MAE=-1.46%.
-- medians: D1=-0.21%, D2=-0.56%, D3=-0.72%, MFE=+0.83%, MAE=-1.44%.
-- The eight names whose sole A miss was the trend condition averaged D1=-0.16%, D2=-0.24%, D3=-0.83%, MFE=+1.24%, MAE=-1.40%.
-- One-condition examples did not uniformly become missed winners: 1326 support-distance miss (4.4% vs 4%) reached D3 -3.06%; 1609 volume miss reached D3 +1.20%; 1102 shallow-pullback miss reached D3 +0.42%. Singletons are descriptive only.
-The two final 2026-09-17 selected names, using the same close-to-future-daily-path convention:
-- 4763 材料*-KY: D1 +5.87%, D2 +4.09%, D3 +0.73%, MFE +12.16%, MAE -0.52%.
-- 1301 台塑: D1 +0.62%, D2 +0.93%, D3 0.00%, MFE +2.94%, MAE -0.62%.
-- selected mean D1 +3.24%, D2 +2.51%, D3 +0.37%, MFE +7.55%, MAE -0.57%.
-Interpretation: this single-date evidence argues **against indiscriminately relaxing A conditions** just to create more trades. Strict selection captured materially better short-path behavior on this date while the near-miss cohort was flat/negative on average. It does not prove current thresholds are optimal; n=2 selected / n=12 near miss on one scan date is far below promotion evidence.
-
-### Selection-construct mismatch candidate: especially B line
-Current production B is a same-day confirmed-breakout construct:
-- MA/trend gate,
-- close >= priorHigh20*1.002,
-- volumeTodayVsPrev5 >=1.3,
-- daily close position >=65%,
-- upper shadow <=35%,
-- ret20 <=30%.
-On 2026-09-17 only 7/513 base-distribution names fully passed B, and 0 became final B.
-This is narrower than the owner's intended B concept of 3M +10~30%, roughly 1M consolidation, contraction then expansion, right-foot > left-foot, neckline organization and mainstream catch-up. The current code does not require right-foot > left-foot or a one-month consolidation construct, while it does require an already completed daily breakout.
-Positive case: confirmed-breakout B is objective and may reduce anticipatory false starts.
-Reverse case: it may structurally miss pre-breakout/right-foot catch-up setups the owner intended, creating B scarcity and forcing the system to wait until a move is already completed.
-Research question: compare a **descriptive pre-breakout B-intent cohort** against current B-confirmed candidates prospectively; do not replace current B or tune thresholds retrospectively.
-
-### A construct note
-Current A requires: trend, 2–15% pullback, <=4% support distance, volume contraction/no selling expansion, intact structure, not late-stage. Intraday entry then requires zone touch/hold + prior 15m volume<=0.9 + reversal/strong close + higher low + bullish turn-up.
-The 9/17 exact near-miss audit does not support generic relaxation. Next evidence should focus on whether the **daily A + intraday A conjunction** rejects otherwise valid selected names, rather than weakening daily A first.
-
-### Capital utilization: multiple conservative layers confirmed
-Current allocation code intentionally deploys:
-- 1 selected name -> at most 35% total capital;
-- 2 names -> at most 60%;
-- 3+ names -> at most 85%;
-- each name max 35%;
-- each plan is split 60% first tranche / 40% second tranche.
-Thus a one-name day can deploy only 21% of total capital on first confirmed BUY and at most 35% even after ADD. This is a design source of idle cash independent of entry scarcity.
-Reverse case: the staging/caps reduce concentration and false-entry damage. Do not raise deployment merely to eliminate cash.
+### Same-date falsification retained: 2026-09-17
+- 12 exact NEAR_MISS names each failed exactly one A condition: mean D1=-0.18%, D2=-0.29%, D3=-0.77%, MFE=+1.12%, MAE=-1.46%; medians D1=-0.21%, D2=-0.56%, D3=-0.72%, MFE=+0.83%, MAE=-1.44%.
+- Eight sole-trend-miss names: mean D1=-0.16%, D2=-0.24%, D3=-0.83%, MFE=+1.24%, MAE=-1.40%.
+- Selected 4763: D1 +5.87%, D2 +4.09%, D3 +0.73%, MFE +12.16%, MAE -0.52%; 1301: D1 +0.62%, D2 +0.93%, D3 0.00%, MFE +2.94%, MAE -0.62%.
+- Selected mean D1 +3.24%, D2 +2.51%, D3 +0.37%, MFE +7.55%, MAE -0.57%.
+- Interpretation remains descriptive only: this one date argues against indiscriminate A relaxation, not that current thresholds are optimal.
 
 ### Formal selection breadth bottleneck retained
-Observed CI:
 - 2026-09-16: 1,873 scanned -> 3 selected.
 - 2026-09-17: 1,875 scanned -> 2 selected; 513 baseEligible; 9 rrEligible.
-- 9/17 primary exclusions included 1,124 "20日流動性不足" and 335 no A/B formation.
-Authoritative repo spec currently uses 20-day avg volume 1000 lots for general stocks / 300 lots for >=1000-price stocks, with documented exceptions. This gate is the largest observed early bottleneck.
-Current Shadow archive cannot falsify this largest gate because liquidity rejects return basePassed=false, REJECTED_AFTER_BASE requires basePassed=true, and BROAD_CONTROL also requires the same formal liquidity minimum. Therefore current prospective counterfactual data systematically omit liquidity rejects.
-Do not call the liquidity threshold wrong. Research-only coverage candidate: LIQUIDITY_REJECTED_CONTROL with price, avgVolume20Lots, avgAmount20, spread/depth when available, sector, volatility and cost/slippage-stressed future path. No implementation without owner approval.
+- 9/17 primary exclusions included 1,124 `20日流動性不足` and 335 no A/B formation.
+- Current Shadow omits the largest liquidity-reject gate because those rows have basePassed=false; LIQUIDITY_REJECTED_CONTROL remains design-only pending owner approval.
 
-### ABF / 8046 trim case: two-sided audit
-Recovered prior decision history:
-- Before reduction the user held 200 shares of 8046.
-- 2026-09-04 advice escalated after the 9/3 close 1080 and another weak session; concerns included consecutive sharp weakness, foreign/institutional selling pressure, ABF relative weakness and capacity/competition uncertainty.
-- User confirmed selling 100 shares on 9/4; closing inventory became 100 shares @ cost 886.25, 9/4 close 1055.
-- Subsequent guidance explicitly held the remaining 100 but no durable restoration/re-add path was specified.
-Post-9/4 close through 9/22:
-- 8046 final +10.43% vs 9/4 close, MFE +10.43%, MAE -3.79%.
-- Same ABF cohort: 3037 +24.17% with subsequent MAE +1.00%; 3189 +10.99%, MAE -4.27%.
-This supports the hypothesis that remaining permanently reduced missed a later sector recovery, but it does **not** prove the 9/4 trim itself was ex-ante wrong: the reduction initially avoided a further 3.8% downside in 8046.
-Candidate re-strength dates illustrate whipsaw risk:
-- hypothetical 8046 restore at 9/9 close1110 -> 9/22 +4.95% but interim MAE -7.66%;
-- restore at 9/16 close1105 -> +5.43%, interim MAE -4.98%;
-- restore at 9/18 close1100 -> +5.91%, interim MAE -4.55%.
-Therefore a naive "price recovered -> immediately add back" rule can materially increase whipsaw/drawdown. The real gap is the **absence of an explicit, testable restoration state**, not proof that any simple re-add threshold is good.
+### Capital utilization retained
+- 1 selected -> at most 35% total; 2 -> 60%; 3+ -> 85%; each name max 35%; each plan 60% first tranche / 40% second tranche.
+- Thus one-name first BUY can deploy only 21% total and at most 35% after ADD. This is a structural idle-cash source independent of entry scarcity, with the reverse benefit of concentration/false-entry protection.
 
-### Current BUY evidence correction
-A protected research aggregate previously showed selectedPlans=4, buyTriggeredPlans=1 over its journal window, but it does not identify the symbol. A 2026-09-22 intraday health run reported monitoredCount=1, formal15Ready=1, notificationCount=0. Do **not** attribute the aggregate BUY to 3006 or claim a 9/22 real BUY notification.
-This correction is binding for future research.
+### ABF restoration case retained
+- 8046 trim initially avoided additional downside but later missed sector recovery; naive immediate restore can create 4.5–7.7% interim drawdown in examined dates.
+- Gap is absence of explicit testable restoration state, not proof any simple re-add rule works.
+- Research-only state model remains FULL -> REDUCE_RECOMMENDED -> REDUCED_CONFIRMED -> READD_ELIGIBLE / STAY_REDUCED / EXIT; confirmed shares required.
 
-### Main-stream falsification order
-1. Continue same-date SELECTED vs NEAR_MISS / REJECTED path comparisons as independent scan dates accumulate.
-2. Reconstruct selectedCount, BUY conversion, first-tranche and ADD conversion separately; no-BUY is not zero return and signal is not confirmed fill.
-3. Audit whether current B implementation is construct-valid for the owner's intended catch-up/pre-breakout B line; compare prospectively before proposing any formal change.
-4. Treat one-day TTL as EXPIRE_AS_IS vs BLIND_CARRY_FORWARD vs REVALIDATED_RESELECT. 3006 already shows revalidation-aware persistence is more defensible than blind extension.
-5. For position management, define research states only: FULL -> REDUCE_RECOMMENDED -> REDUCED_CONFIRMED -> READD_ELIGIBLE / STAY_REDUCED / EXIT. REDUCED_CONFIRMED requires trusted actual shares; never infer fill from push.
-6. ABF is a case-study cohort, not a special rule. A restoration hypothesis must generalize beyond ABF or be labeled cohort-specific.
-7. Formal Core remains LOCKED; no thresholds, A/B definitions, capital ratios, liquidity gates, entry or re-add production logic change without explicit owner decision.
+## NEW B-17 — B-line construct-validity audit (2026-09-22 Taipei)
+### Exact production B definition verified from main
+`strategySetupState(f)` requires all six:
+1. `trendB`: MA20/MA60 structure plus bullishStack OR justTurnBullish OR close>MA10.
+2. `breakoutB`: close >= priorHigh20 * 1.002.
+3. `volumeB`: volumeTodayVsPrev5 >= 1.3.
+4. `strongCloseB`: dailyClosePosition >= 0.65.
+5. `upperShadowB`: dailyUpperShadowRatio <= 0.35.
+6. `notLateB`: lateStage !== true AND ret20 <= 30.
+If B passes it takes precedence over A in `scoreCandidate`; B entry is built around priorHigh20. Intraday execution then remains separate and requires formal 15m confirmation before BUY/ADD.
 
+### Field-by-field construct mismatch versus owner-intended B
+Owner-intended B concept: 3M gain about +10~30%, roughly 1M consolidation, contraction then expansion, right-foot > left-foot, neckline organization, mainstream catch-up.
 
-## Retained B-13 / A-14 finding
-- `readShadowCounterfactualResearch()` silently neutralizes malformed `snapshot_json` to `{}`.
-- Malformed `v7_history_cache.history_json` becomes `[]`; missing history rows also reach outcome enrichment as `[]`.
-- `researchShadowOutcomeForRow()` needs `snapshot.price.close`; missing/malformed snapshot or history can therefore leave horizons null without distinguishing corruption from immaturity.
-- Actual prospective corruption occurrence remains **UNKNOWN**. This is an observability blind spot, not evidence corruption occurred.
-- Isolation branch `research/b13-shadow-provenance` exists from rollback point `2f10777684755fcd4406a56b5bd33921723f71e1`.
-- Planned diagnostics are Class A only while confined to research Shadow diagnostics with outcome calculations and legacy `coverage.dN` semantics unchanged.
+**Represented only partially / proxy:**
+- Momentum not-late: production has ret20<=30, but this is a 20-day upper cap, not a 3-month +10~30% band. No 3M lower bound is required.
+- Neckline/breakout: priorHigh20 is an objective 20-day high proxy, but production requires the close already be >=0.2% above it. It therefore represents confirmed breakout, not pre-breakout neckline organization.
+- Volume expansion: production requires same-day volume >=1.3x prior-5 average. It does not explicitly require a preceding contraction phase.
+- Trend: MA structure is present, but it is not equivalent to right-foot > left-foot.
 
-## NEW B-16 — complete safe source reconstruction achieved (2026-09-22 Taipei)
-### Actions completed
-- Re-read latest governance, worklist and canonical checkpoint before continuing; re-read checkpoint SHA immediately before this write.
-- Continued existing `research/b13-shadow-provenance`; did not recreate it and did not repeat B-13 tracing.
-- Split the previously truncating head into line ranges 1-120 and 121-249, and reused the already-safe 250-499 tail. All three reads returned the same branch blob SHA `efb93275d585b021ac8c7fa5ba3c2d039449105a`.
-- The ranges are contiguous with no gap/overlap (1-120, 121-249, 250-end), so the complete source image is now safely reconstructable for a whole-file branch update.
-- Reconfirmed the exact reader boundary and legacy behavior from the reconstructed source: malformed snapshot -> `{}`; malformed history -> `[]`; absent history -> fallback `[]`; `coverage.dN` counts finite `returnPct` only.
+**Absent as explicit B gates:**
+- 3-month return +10~30%.
+- roughly one-month sideways/consolidation quality.
+- explicit contraction-before-expansion sequence.
+- right-foot > left-foot geometry.
+- explicit mainstream catch-up / laggard-within-strong-sector relation.
 
-### Engineering status
-- No source modification yet in this cycle: the previous edit-safety blocker is now removed, but implementation/tests remain unfinished.
-- Next code change remains isolated Class A: add provenance diagnostics only; preserve every existing outcome calculation and legacy coverage value.
-- No production deployment attempted; no formal behavior changed.
+**Additional production hard gates not inherent in the owner-intended descriptive B concept:**
+- same-day completed breakout above priorHigh20 by 0.2%;
+- same-day >=1.3x volume expansion;
+- close location >=65% of daily range;
+- upper shadow <=35%;
+- ret20 <=30% and lateStage false.
+These make production B a stricter `confirmed breakout quality` construct rather than a direct implementation of the intended `pre-breakout/catch-up` construct.
 
-### Bias / falsification / UNKNOWN checks
-- No outcome values were inspected and no factor/threshold/window/experiment/classification was tuned.
-- Missing evidence was not coerced to BAD/0.
-- Actual malformed snapshot/history incidence remains UNKNOWN until diagnostics are deployed and prospective rows are observed.
-- Selection-bias, look-ahead, market-source, Factor-Zoo, transaction-cost, date-cluster and redundancy conclusions are unchanged.
-- Execution-shadow D1 persistence remains UNKNOWN.
+### Positive hypothesis
+The extra same-day confirmation gates are objective and can suppress anticipatory false starts, weak closes, failed breakouts and long-upper-shadow traps. They may improve execution quality even if they reduce B frequency. The 9/17 same-date A near-miss evidence also warns against relaxing gates merely to increase trade count.
+
+### Reverse / falsification hypothesis
+Because production B requires the breakout to have already closed through priorHigh20 with >=1.3x volume and strong-close anatomy, it can structurally exclude valid right-foot / neckline / catch-up setups *before* breakout. This plausibly contributes to observed B scarcity (9/17: only 7/513 base-distribution names passed B, final B=0), but does not prove the current B is inferior. The absent 3M/consolidation/right-foot/mainstream dimensions also mean current B cannot be claimed construct-valid for the full owner-intended concept.
+
+### Bias / overfit guard
+- No threshold was changed or tuned from outcomes.
+- No new factor or experiment ID was created; R01-R08/I01-I07 remain frozen.
+- Do not compare a retrospectively hand-picked pre-breakout cohort against current B. A pre-breakout B-intent cohort must be preregistered and captured prospectively at the scan timestamp.
+- Independent scan date remains the unit; require multiple dates/regimes, costs, coverage and date-cluster robustness before any Class C proposal.
+- Current B scarcity may also arise upstream from liquidity/base filters or downstream from RR/quality/intraday confirmation; do not attribute all idle cash to B mismatch.
+
+### Engineering/classification
+- No code, thresholds, formal selection, allocation, monitoring or push behavior changed.
+- A future formal B-definition change is Class C and owner decision mandatory.
+- A new research-only prospective B-intent Shadow cohort is potentially Class A only if isolated from formal/shared runtime; if it requires shared production scan plumbing or schema/runtime changes it becomes Class B. Therefore implementation remains design-only pending classification/owner approval already recorded in prior checkpoint.
+
+## Retained B-13/B-16 deferred provenance stream
+- Malformed snapshot/history can be silently neutralized and actual prospective incidence remains UNKNOWN.
+- Isolation branch `research/b13-shadow-provenance` exists; complete source reconstruction was achieved in B-16.
+- Provenance implementation/tests remain deferred while owner-priority root-cause stream is active.
 
 ## Exact next continuation point
-1. Re-read latest checkpoint/main and SHA. Stay on the owner-priority root-cause stream; B-16 remains deferred.
-2. Recover additional independent formal scan dates with exact SELECTED and NEAR_MISS/REJECTED cohorts from durable CI/D1 evidence; repeat the same fixed D1/D3/MFE/MAE comparison without threshold retuning.
-3. Audit current B construct versus owner-intended B construct field-by-field. Identify which intended properties are absent, which current hard gates were added, and whether they plausibly explain the observed B=0 frequency. Positive and reverse case required.
-4. Quantify capital-utilization decomposition from existing journal/selection evidence: selectedCount -> planned deployment ratio -> BUY-observed -> confirmed fill UNKNOWN/known -> ADD-observed -> full allocation. Never equate BUY signal with fill.
-5. Continue 8046/3037/3189 case only as a falsification cohort. Search for non-ABF historical REDUCE recommendations/confirmed reductions if durable evidence exists; otherwise mark generalization UNKNOWN.
-6. Design-only: preregister LIQUIDITY_REJECTED_CONTROL and pre-breakout B-intent Shadow cohorts. Do not implement/deploy without owner approval.
-7. Keep Formal Core LOCKED. Any evidence-backed production proposal must be presented with expected benefit, reverse evidence, risks and engineering class before action.
+1. Re-read latest governance/worklist/checkpoint/main SHA; merge any A progress before writing.
+2. Continue root-cause stream, not deferred B-16.
+3. Recover additional independent formal scan dates with exact SELECTED and NEAR_MISS/REJECTED cohorts from durable CI/D1 evidence; repeat fixed D1/D3/MFE/MAE comparisons without threshold retuning. If no additional exact cohort is safely recoverable, mark unavailable/UNKNOWN and move on.
+4. Quantify capital-utilization decomposition from existing durable evidence: selectedCount -> planned deployment ratio -> BUY-observed -> confirmed fill known/UNKNOWN -> ADD-observed -> full allocation. Never equate BUY signal with fill. Separate selection scarcity from execution scarcity and allocation caps.
+5. Audit daily A -> intraday A conjunction: determine which intraday clauses can block an already-selected A plan and whether durable diagnostics expose clause-level no-BUY reasons. Missing clause identity remains UNKNOWN.
+6. Search durable repository evidence for non-ABF REDUCE recommendations and especially confirmed share reductions. If no trusted actual-share evidence exists, generalization of restoration remains UNKNOWN.
+7. Keep LIQUIDITY_REJECTED_CONTROL and pre-breakout B-intent cohorts design-only; do not implement/deploy without the already-required owner/classification gate.
+8. Formal Core remains LOCKED. Any production proposal must present expected benefit, reverse evidence, risks, coverage/cost/overfit evidence and Class C status before owner decision.
