@@ -122,6 +122,59 @@ Reverse qualification:
 - **Evidence for a particular re-add trigger:** not yet sufficient. Simple price-reclaim anchors show 3.8–7.7% interim MAE in this one case.
 - **Research priority:** build prospective position-management evidence across many REDUCE events/holdings, not tune around 8046.
 
+## Manual continuation — coverage boundary and no-BUY join audit (2026-09-22)
+
+### Actual execution-shadow-v2 storage coverage remains UNKNOWN from safe public reads
+Read-only production audit found:
+- Public monitor root returns live monitor state, current plan, bars, quote, finalDecision and cron SUCCESS.
+- It does **not** expose the `executionResearchRecorder` write result because V8.8.0 stores the public KV summary before the research recorder runs; the recorder result is only returned from that monitor invocation and is not persisted into the public KV payload.
+- `/api/research/execution-recorder?days=5` returns 401 without admin authorization.
+- `/api/journal?days=60` also returns 401; no alternate public performance endpoint was found.
+Therefore elapsed stage time, cron success and presence of a live BUY must **not** be treated as proof that D1 execution-shadow rows were stored. Keep D1 recorder coverage UNKNOWN until an authorized/safe read exists.
+
+This is a useful firewall result: do not solve evidence scarcity by requesting/exposing ADMIN_TOKEN while other research can continue.
+
+### No-BUY opportunity-cost join is structurally feasible
+The production schema confirms a stable PIT identity and the exact available fields.
+
+`v8_trade_journal_plans`, key `(scan_date,symbol)`, stores:
+- `plan_date`, strategy, signal level,
+- formal close / buyLow / buyHigh / breakout / maxChase / stop,
+- allocation ratio / total allocation,
+- firstShares / secondShares / totalShares,
+- reward-risk and selected reason.
+
+`v8_trade_journal_signals` stores:
+- `plan_scan_date`, `plan_date`, trade date, occurred_at,
+- symbol, signal type, position stage,
+- market price, signal amount, signal shares, reason/instruction.
+There is an index on `(plan_scan_date,symbol,occurred_at)`.
+
+Existing Shadow outcomes use the same scan-date + symbol identity and already provide forward D1/D3/D5/D10/D20 return/MFE/MAE from the scan-date baseline.
+
+Thus the research join can safely classify:
+- SELECTED + first formal BUY observed,
+- SELECTED + no formal BUY observed,
+without coding no-BUY as zero.
+
+### What the current data still cannot prove
+A no-BUY plan with positive future return is not automatically an executable missed trade. The existing plan/signal tables do **not** by themselves preserve every minute/bar-level reason why entry failed over the plan day.
+
+A valid decomposition must therefore keep separate:
+1. scan-date selection path,
+2. plan allocation at risk,
+3. formal BUY conversion,
+4. whether price entered/touched the planned zone,
+5. whether confirmation clauses failed,
+6. future path / MAE,
+7. any hypothetical alternative fill only if a future alternative rule is preregistered.
+
+Items 4-5 require either existing execution-shadow/bar evidence when coverage is available or future clause-level prospective instrumentation. Do not infer them from daily OHLC after the fact.
+
+### Estimand warning
+The current `journalTradeStats` already reports `buyTriggerRate = buyTriggeredPlans / selectedPlans`. That is the correct first diagnostic for conversion scarcity, but it is not capital utilization and not opportunity-cost-adjusted return.
+No single new score is defined here; field feasibility only.
+
 ## Bias / data-quality firewall
 UNKNOWN stays UNKNOWN; no historical execution-shadow backfill; independent scan date is primary evidence unit; no causal claims from contemporaneous correlation; no outcome-driven threshold/window retuning; watch selection bias, look-ahead, data snooping, market-source bias, Factor Zoo, overfit, coverage, zero-pick, costs and date clustering.
 
