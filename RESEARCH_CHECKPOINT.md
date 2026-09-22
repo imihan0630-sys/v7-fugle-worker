@@ -1,6 +1,6 @@
 # Research Checkpoint
 
-Updated: 2026-09-22T10:24+08:00
+Updated: 2026-09-22T10:35+08:00
 
 ## Continuity / baseline
 - Formal Core: **LOCKED**.
@@ -314,6 +314,20 @@ Research consequences:
 3. Test compression incrementally after liquidity, price-limit/disposition context, breakout quality and overheat controls.
 4. Failure cases (compression followed by downside expansion or no expansion) must remain in the archive; successful squeezes alone would create survivorship/selection bias.
 5. No Formal Core change.
+
+### Exact overheat/compression provenance audit — 2026-09-22T10:35+08:00
+Repository source recovery from `scripts/apply_v8_7_1.py` now establishes the exact frozen research formulas:
+- `overheatPenaltyResearch = clamp(max(0,ret20-20)*1.6 + max(0,maDistance20Pct-12)*2.2 + max(0,ATR%-6)*5 + max(0,abs(gapPct)-4)*4,0,100)`.
+- `compressionScoreResearch = clamp(100 - (range10/range20)*40 - (range5/range20)*60,0,100)`, where each range is the high/low span over the respective recent window.
+- I05 tests Overheat beyond Breakout Quality; I07 tests Compression beyond raw 20-day return volatility. Both are frozen D5 incremental contrasts.
+
+Reverse-validation implications:
+1. Overheat is explicitly a composite of 20-day return extension, distance above MA20, ATR% and absolute daily gap. It therefore overlaps momentum/path/risk variables by construction and must never be counted as four independent warnings.
+2. The gap component is symmetric through `abs(gapPct)`: large gap-down and gap-up both raise overheat penalty. This is better interpreted as "extreme displacement/risk" than bullish-overextension specifically.
+3. Compression is a nested-range geometry measure, not realized-volatility compression. I07 is therefore a legitimate construct test: if it adds nothing beyond volatility20, the geometric squeeze story is redundant.
+4. Compression formula can score highly in a directional downtrend if recent high-low spans contract. It contains no trend direction. Any future bullish use must remain conditioned on separately frozen strength/breakout evidence; compression alone is not bullish.
+5. Overheat thresholds (ret20 20%, MA20 distance 12%, ATR 6%, gap 4%) are research design parameters, not empirically proven Taiwan optimums. Do not retune them after seeing outcomes; if later challenged, create a new preregistered version rather than modifying v1.
+6. No new factor or production change. The recovered provenance strengthens interpretation of I05/I07 and identifies concrete failure modes to inspect prospectively.
 
 ## Bias / data-quality firewall
 - UNKNOWN remains UNKNOWN; no BAD/0 coercion.
