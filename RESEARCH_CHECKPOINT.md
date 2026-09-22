@@ -476,6 +476,46 @@ Interpretation:
 - The next decisive evidence is the future path of triggered vs non-triggered SELECTED plans, not the trigger rate by itself.
 
 
+## Historical formal-funnel reconstruction — 2026-09-22
+
+Existing completed CI/deploy logs provide two adjacent formal-scan snapshots under the same V7 core family, without rerunning or changing production.
+
+### 2026-09-16 dry-run/full acceptance
+- ordinary stocks scanned: 1,873
+- selected: 3 (0.16% of scanned)
+- primary exclusion counts (mutually assigned final exclusion reason): 20-day liquidity 1,110–1,151 depending acceptance pass/version within the day; A/B setup absent 305–395; RR<2 about 72–90; market-cap/other quality filters also material.
+- a late verified dry-run reported selectedCount=3 with exclusions: liquidity 1,110; A/B setup absent 305; RR<2 72; low market cap 111; abnormal one-day move 37; weak sector 35; data/valuation/quality reasons smaller.
+
+### 2026-09-17 scan preview
+- scanned: 1,875; with60Days: 1,863
+- selected: 2 (0.11% of scanned)
+- baseEligible: 513; rrEligible: 9
+- final primary exclusions: 20-day liquidity 1,124 (59.9% of scanned), no A/B setup 335 (17.9%), RR<2 71 (3.8%), market cap<10億 111 (5.9%), missing RS 62 (3.3%), valuation 41, missing quality data 38, abnormal one-day move 32, weak sector 18, other smaller reasons.
+- among the 513 condition-distribution denominator, A full setup pass=97 (18.9%); B full setup pass=7 (1.4%).
+- A individual pass rates: trend 36.3%, pullback 62.6%, near-support 78.2%, volume 87.3%, structure 83.4%, not-late 97.5%.
+- B individual pass rates: trend 26.9%, breakout 6.8%, volume 30.0%, strong-close 29.4%, upper-shadow 52.2%, not-late 96.1%.
+- only 2 A and 0 B survived the complete downstream formal selection to final candidates.
+- thousand-price pool: 44 baseEligible, 1 RR-eligible, 0 final; 36 primarily failed A/B formation.
+
+### Interpretation
+This is material evidence that capital under-deployment is **not solely an intraday BUY-trigger problem**. The formal daily selection funnel itself was extremely narrow on two adjacent observed dates, producing 3 and 2 plans from ~1,875 ordinary stocks before intraday entry confirmation even starts.
+
+However:
+1. Do not interpret the liquidity exclusion count as “1,124 missed winners.” It is a primary gate count; most would still fail later conditions.
+2. Do not loosen 20-day liquidity simply because it is the largest exclusion bucket. It protects execution/slippage and is an authoritative requirement; relaxing it may trade apparent opportunity for real cost/risk.
+3. A/B condition pass rates are correlated, not independent probabilities; multiplying them would overstate strictness.
+4. The 9/17 A full-pass 97 -> final A 2 collapse shows **downstream quality/RR/risk filters** are at least as important as raw A-pattern availability. We need forward outcomes of REJECTED_AFTER_BASE / NEAR_MISS cohorts to know whether those filters add value.
+5. B is structurally rare on 9/17: only 7/513 full setup pass and 0 final. This may reflect genuine breakout scarcity, over-strict B definition, or both. It cannot be decided from one date.
+6. Current prospective Shadow archive already stores NEAR_MISS and REJECTED_AFTER_BASE with exclusion reasons, so the correct next step is to let their D1/D3/D5 outcomes mature rather than alter formal thresholds.
+
+### Funnel hypothesis update
+Capital utilization should now be decomposed into:
+`market universe -> liquidity/base quality -> A/B formation -> RR/quality/risk filters -> SELECTED -> formal BUY -> confirmed fill -> ADD/FULL -> REDUCE -> confirmed reduced state -> restoration`.
+
+The evidence currently points to **multiple conservative layers**, not one defective threshold. Future changes must isolate one layer at a time.
+
+No Formal Core or production logic changed.
+
 ## Bias / data-quality firewall
 UNKNOWN stays UNKNOWN; no historical execution-shadow backfill; independent scan date is primary evidence unit; no causal claims from contemporaneous correlation; no outcome-driven threshold/window retuning; watch selection bias, look-ahead, data snooping, market-source bias, Factor Zoo, overfit, coverage, zero-pick, costs and date clustering.
 
