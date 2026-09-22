@@ -1,6 +1,6 @@
 # Research Checkpoint
 
-Updated: 2026-09-22T10:00+08:00
+Updated: 2026-09-22T10:08+08:00
 
 ## Continuity / baseline
 - Formal Core: **LOCKED**.
@@ -275,6 +275,19 @@ Research consequence:
 
 ### Continuity rule reinforced — 2026-09-22T10:00+08:00
 Manual research must not stop merely to narrate intermediate findings. Intermediate commits, literature convergence, falsification results, or completion of one subtask are continuation points, not report boundaries. Continue immediately into the next non-human research task. Only interrupt for a genuine human-action boundary already defined by governance (MFA/reauth/secret/permission, explicit Class B/C production decision, or true technical blocker). User status requests are the other reporting exception.
+
+### Earnings-quality / accrual anomaly reverse validation — 2026-09-22T10:08+08:00
+Taiwan evidence adds a potentially useful fundamental-quality family, but with a strong regime caveat:
+- Taiwan accrual-anomaly research finds higher accruals are associated with lower subsequent returns in earlier samples, consistent with investors overestimating accrual persistence relative to cash-flow persistence.
+- However later Taiwan evidence reports that accrual-anomaly profitability weakened/disappeared after accounting-rule changes and the move toward IFRS-era reporting. This is exactly the kind of structural-break evidence that prevents blindly importing an old anomaly into the current market.
+- Therefore "earnings growth" alone is insufficient evidence of quality; cash-flow backing / accrual composition is conceptually relevant, but the historical Taiwan anomaly cannot be assumed current or monotonic.
+
+Research consequences:
+1. Do not add an accrual factor from historical literature alone.
+2. If future PIT fundamentals provide operating cash flow and accrual components, use them first as a falsification/control for revenue/EPS persistence rather than as an independent bullish score.
+3. Any test must be post-IFRS/current-regime focused and separated from older Taiwan samples.
+4. Fundamental Persistence should be harder to pass when reported growth is not supported by cash-flow quality, but no threshold/weight is set before prospective evidence.
+5. No Formal Core change.
 
 ## Bias / data-quality firewall
 - UNKNOWN remains UNKNOWN; no BAD/0 coercion.
