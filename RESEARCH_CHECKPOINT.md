@@ -1,7 +1,7 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-25.
-Updated: 2026-09-22 23:11 Asia/Taipei.
+Checkpoint sequence: B-26.
+Updated: 2026-09-22 23:41 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Earlier detailed evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
@@ -14,7 +14,7 @@ Updated: 2026-09-22 23:11 Asia/Taipei.
 
 ## Production/research baseline retained
 - Verified research infrastructure baseline: V8.8.1 `8.8.1-execution-coverage`, schema `execution-shadow-v2`; V8.8.0 rollback baseline.
-- Main immediately before B-25: `1bfcf26ea55e065f3ed79e5fa48698ed3579a82f`.
+- Main immediately before B-26: `5b81a69092c41cbdef57ba35d80242a9764f3634`.
 - Execution-shadow D1 persistence/read coverage remains UNKNOWN from safe public reads. Workflow/cron success is not persistence evidence.
 - Last verified prospective Shadow evidence remains 31 rows / one prospective scan date / zero mature D1/D3/D5/D10/D20 outcomes unless a newer safe durable read proves otherwise.
 - B-13/B-16 provenance engineering remains DEFERRED, not cancelled.
@@ -29,84 +29,63 @@ Cash utilization is diagnostic, not an optimization target.
 - 2026-09-17 scan: 1,875 scanned -> 2 selected; 513 baseEligible; 9 rrEligible; primary rejects included 1,124 liquidity, 335 no A/B formation, 71 RR<2.
 - Frozen allocator caps planned deployment at 35% / 60% / 85% for 1 / 2 / 3+ names; first tranches about 21% / 36% / 51% before caps/rounding.
 - Production B is stricter confirmed-breakout quality than the owner's intended pre-breakout/catch-up concept; redesign is Class C.
-- Current Shadow excludes the largest liquidity-reject gate because those rows fail basePassed; this is an evidence-coverage gap, not proof the gate is wrong.
-- `v8_trade_journal_signals` is an append-only/idempotent formal signal-observation journal. It can establish BUY/ADD/REDUCE/etc signal observations when rows are durably readable, but it is not a brokerage fill journal.
-- Current Execution Alpha is BUY-signal timing alpha, not confirmed-fill execution alpha.
+- Current Shadow excludes the largest liquidity-reject gate because those rows fail basePassed; evidence-coverage gap, not proof the gate is wrong.
+- `v8_trade_journal_signals` can establish formal BUY/ADD/REDUCE/etc observations when rows are durably readable; it is not a brokerage fill journal. Current Execution Alpha is BUY-signal timing alpha, not confirmed-fill alpha.
 - Brokerage/manual fills remain UNKNOWN unless separately confirmed.
 
 ## Selection-layer evidence retained
 ### 2026-09-17 formal scan paired cohort
 - Final selected: 4763 材料*-KY, 1301 台塑.
-- Top 12 near-miss names retained in prior checkpoint history.
-- Through 2026-09-22, selected pair equal-weight endpoint return about +0.37%, average MFE about +7.55%, average MAE about -0.57%.
+- Through 2026-09-22, selected pair equal-weight endpoint about +0.37%, average MFE about +7.55%, average MAE about -0.57%.
 - Near-miss 12 equal-weight endpoint about -0.77%, average MFE about +1.12%, average MAE about -1.46%.
-- Interpretation: this single scan date does **not** support blanket loosening of downstream selection filters. It is only one independent date and is name-sensitive; do not tighten from it either.
+- One independent date only: neither loosen nor tighten downstream filters from this cohort.
 
 ## Position-management evidence retained
 ### 8046 南電 / ABF falsification case
 - 2026-09-04 user-confirmed trim of 100/200 shares occurred near a local trough after a sharp ABF shock.
-- 8046, 3037, 3189 all subsequently participated in the rebound, supporting study of sector-aware restoration eligibility rather than treating 8046 as an isolated winner.
-- Ex-post opportunity cost of the sold 8046 tranche became large while additional downside after the trim was small, but this does not prove the ex-ante trim was irrational.
-- A naive fixed-price re-add is not validated; recovery thresholds from this single episode are prohibited.
-- Candidate Shadow state concept remains: `REDUCED_CONFIRMED -> RECOVERY_WATCH -> RE-ADD_ELIGIBLE`, only when actual reduced shares are trusted and stock/sector recovery plus acceptable RR are present. Compare against STAY_REDUCED after costs/whipsaw.
+- 8046, 3037, 3189 subsequently rebounded; study sector-aware restoration eligibility rather than treating 8046 as isolated.
+- Ex-post opportunity cost was large but does not prove ex-ante trim irrational. No single-episode recovery threshold is allowed.
+- Candidate Shadow concept: `REDUCED_CONFIRMED -> RECOVERY_WATCH -> RE-ADD_ELIGIBLE`, only with trusted actual reduced shares, stock/sector recovery and acceptable RR; compare with STAY_REDUCED after costs/whipsaw.
 - No production re-entry rule approved.
 
-## Direct 2026-09-17 plan-day entry scarcity retained
-Read-only scheduled-health evidence on the 2026-09-17 trading day:
+## 2026-09-17 trading-day entry scarcity retained
+- Formal plans: 6706 惠特, 3006 晶豪科, 6505 台塑化.
 - 09:27 Taipei: monitoredCount=3, formal15Ready=3, waitingForFreshData=0, notificationCount=0.
 - 13:19 Taipei: monitoredCount=3, formal15Ready=3, waitingForFreshData=0, notificationCount=0.
-- Formal plans: 6706 惠特, 3006 晶豪科, 6505 台塑化.
-Thus all three plans had usable formal 15m data and none produced an operation notification by 13:19.
+- Through 2026-09-22: 6706 endpoint about +1.36%, MFE +14.29%, MAE -4.42%; 3006 endpoint -0.89%, MFE +5.52%, MAE -1.60%; 6505 endpoint +8.32%, MFE +11.55%, MAE about +0.12%; trio equal-weight endpoint about +2.93%.
+- B-25 conclusion retained: on this date the proximal observable bottleneck was downstream of selection/allocation and upstream of BUY-observed. This is not a brokerage-fill statement and does not identify the blocking clause.
 
-Observed post-selection path through 2026-09-22:
-- 6706: 147 -> 149, endpoint about +1.36%; MFE about +14.29%; MAE about -4.42%.
-- 3006: 281 -> 278.5, endpoint about -0.89%; MFE about +5.52%; MAE about -1.60%.
-- 6505: 80.5 -> 87.2, endpoint about +8.32%; MFE about +11.55%; MAE about +0.12% relative to selection close.
-- Equal-weight endpoint of trio about +2.93%.
-This demonstrates a real selected-but-no-operation day, but not the clause that blocked each symbol.
-
-## NEW B-25 — isolate the proximal capital bottleneck on the fully monitored zero-signal day
+## NEW B-26 — symbol attribution safety + second independent plan evidence
 ### Research question
-On the 2026-09-17 trading day, was idle planned capital primarily caused by too few selected names / allocator caps, or by the post-selection entry/operation layer?
+Can 6706/3006/6505 be assigned a specific failure clause from safe durable evidence, and can another independent plan date be recovered without inventing history?
 
-### Evidence and decomposition
-- The plan day had **3 selected/monitored names**. Under the frozen allocator, 3+ names permit up to about **85%** planned deployment, with first tranches totaling about **51%** before caps/rounding.
-- Both morning and late-session health checks show all 3 names had formal 15m data ready, no fresh-data wait, and **0 operation notifications**.
-- Therefore selection count was sufficient to open the allocator's 3-name tier; the allocator itself would have permitted materially more deployment than occurred at the signal-observation layer.
-- On this specific day, the **proximal observable bottleneck is downstream of selection/allocation and upstream of BUY-observed**. In other words, the system had names and planned capacity, but formal operation eligibility did not activate.
-- This does **not** establish actual cash utilization because brokerage fills are not durably observed here. It establishes only that no formal operation signal activated the first-tranche path by 13:19.
+### Evidence / findings
+- Current default-branch code search does not contain the historical 6706/3006/6505 plan payload, and the inspected 2026-09-17 workflow metadata/artifact surface does not expose a plaintext artifact with their exact buy zones/stops/maxChase. Therefore their symbol-level failure attribution remains **UNKNOWN**. Zero notifications must not be relabeled as `NO_ZONE_TOUCH` or `ZONE_TOUCH_CONFIRM_FAIL` without the historical plan and intraday ordering evidence.
+- A separate durable commit (`f3c163c8e79e3c15525b5045eef9c6bd35860aa3`) recovers the **2026-09-18 plan** generated from the 2026-09-17 scan and verifies the production config write/readback. It contains five plans: 4763 材料*-KY, 1301 台塑, 3491 昇達科, 3665 貿聯-KY, 3017 奇鋐.
+- The recovered 2026-09-18 plan preserves exact contemporaneous plan fields. Key examples: 4763 PULLBACK buy 47.16-48.25 stop 46.45; 1301 PULLBACK buy 63.88-65.36 stop 62.92; 3491 MOMENTUM breakout 1510 buy 1490-1515 maxChase 1550 stop 1440; 3665 MOMENTUM breakout 2055 buy 2030-2065 maxChase 2100 stop 1960; 3017 MOMENTUM requires reclaim 3230 then breakout 3285, buy 3230-3285 maxChase 3350 stop 3170.
+- The corresponding workflow run completed successfully and verified the configured pool split (2 non-thousand + 3 thousand), but had **zero workflow artifacts**. This proves plan/config provenance, not BUY signal occurrence or fill.
+- This gives a second independent plan-date object for entry/invalidation ordering research, but not yet a second independent outcome comparison. Do not pool its five names as five independent dates.
 
-### Positive hypothesis
-Entry confirmation / zone / chase / invalidation / TTL logic may be suppressing otherwise useful opportunities. 6505 is the strongest missed-opportunity example in this tiny cohort because its subsequent path was strongly positive with essentially no daily-low drawdown below selection close.
-
-### Reverse evidence / alternative mechanisms
-- 3006 ended negative by 9/22, so a looser entry rule would not uniformly improve outcomes.
-- 6706 experienced about -4.4% MAE despite large MFE; earlier entry could increase drawdown or whipsaw.
-- `formal15Ready=3` proves usable completed 15m data existed; it does **not** prove that the 15m confirmation clause passed.
-- Zero notification does not identify whether the block was no zone touch, failed confirmation, maxChase, stop/invalidation, stage/state, or plan expiry.
-- Health evidence ends at 13:19 in the retained observations; do not silently convert that into a full brokerage-day fill statement.
-
-### Bias / robustness checks
-- This is one independent plan date; no cross-name pseudo-replication is allowed.
-- No parameter was chosen from the observed winners.
-- No missing clause evidence was coded BAD/0; failure attribution remains UNKNOWN.
-- No later rally is used to rewrite the historical plan or fabricate Shadow.
-- Transaction-cost and actual executed-capital effects remain UNKNOWN without fills.
-- This finding narrows the bottleneck location for one date but does not establish a general entry-rule defect.
+### Reverse evidence / bias controls
+- Historical plaintext absence in the safe repo surface is not proof the 9/17 plans never had zones; it is an evidence-access limitation.
+- Workflow success is not signal-journal coverage and not brokerage execution evidence.
+- The 9/18 plan was recovered from contemporaneous durable code/config evidence, not reconstructed from later winners; no hindsight threshold fitting was performed.
+- No missing field is coded BAD/0. 6706/3006/6505 clause attribution stays UNKNOWN.
+- No parameter or Formal Core change follows from one newly recovered plan date.
 
 ### R01-R08 / I01-I07 impact
-- No definition/status change; no R09/I08.
-- Evidence is a bottleneck diagnostic only.
+- No definition/status change; no R09/I08. This is provenance and execution-falsification evidence only.
 
-### Engineering / formal impact
-- Evidence-only checkpoint update. No code, schema, workflow, runtime, factor, threshold or Formal Core change.
+### Engineering / deployment
+- Evidence-only checkpoint update; Class A documentation/provenance only.
+- No Worker, schema, workflow, runtime, factor, threshold, selection, allocation, monitoring, signal or push change. No deployment.
 
 ## Exact next continuation point
-1. Re-read governance, worklist, latest checkpoint and latest main commit first.
-2. Prioritize **symbol-level failure attribution** for 6706 / 3006 / 6505 on the 2026-09-17 plan day. Recover exact plan zones/stops/maxChase and safe intraday evidence if durably available; classify each as `NO_ZONE_TOUCH`, `ZONE_TOUCH_CONFIRM_FAIL`, `INVALIDATED_FIRST`, `EXPIRED_VALID`, or `UNKNOWN`. Never infer a clause from zero notifications alone.
-3. In parallel, recover at least one additional independent formal scan/plan date and compare SELECTED vs NEAR_MISS / REJECTED_AFTER_BASE with D1/D3/D5 path, MFE, MAE and invalidation-before-upside ordering. Preserve scan-date clustering.
-4. Recover individual formal BUY signal identity/timing from safe durable logs/journal when available. Signal absence is UNKNOWN unless journal coverage for that date is established.
-5. Quantify capital funnel separately by date: selectedCount -> allocator cap -> first tranche -> BUY observed -> confirmed fill -> ADD/full. Do not optimize utilization.
-6. Continue TTL research as `EXPIRE_AS_IS` vs `REVALIDATED_RESELECT`; blind carry-forward remains a falsification comparator, not a candidate rule.
-7. REDUCE/re-entry research requires trusted actual reduced shares before `REDUCED_CONFIRMED`; otherwise remain recommendation-only.
-8. Keep B-13/B-16 provenance branch parked unless it directly blocks the priority lane. No deployment or Formal Core change.
+1. Re-read governance, worklist, latest checkpoint and latest main commit first; re-check checkpoint SHA immediately before any write.
+2. Use the recovered contemporaneous 2026-09-18 five-plan payload as the next independent plan-date experiment. Recover safe intraday/daily OHLC path for 4763/1301/3491/3665/3017 and classify only what can be proven in chronological order: zone touch, breakout prerequisite, stop/invalidation-before-upside, maxChase, expiry. Confirmation failure remains UNKNOWN without 15m confirmation evidence.
+3. Recover formal signal-journal coverage/identity for 2026-09-18 if safely available. Distinguish `NO_SIGNAL_ROW_WITH_PROVEN_COVERAGE` from `JOURNAL_COVERAGE_UNKNOWN`.
+4. Compare 2026-09-18 entry eligibility/invalidation ordering with the retained 2026-09-17 zero-notification day at the **date** level, not name level. Do not tune thresholds.
+5. Continue selection layer with another independent formal scan date and SELECTED vs NEAR_MISS/REJECTED_AFTER_BASE D1/D3/D5, MFE/MAE when evidence exists.
+6. Quantify capital funnel separately by date: selectedCount -> allocator cap -> first tranche -> BUY observed -> confirmed fill -> ADD/full. Confirmed fill remains UNKNOWN absent trusted execution reconciliation.
+7. TTL research remains `EXPIRE_AS_IS` vs `REVALIDATED_RESELECT`; blind carry-forward is falsification comparator only.
+8. REDUCE/re-entry requires trusted actual reduced shares before `REDUCED_CONFIRMED`; otherwise recommendation-only. Keep B-13/B-16 parked unless directly blocking this lane.
