@@ -1,6 +1,6 @@
 # Research Checkpoint
 
-Updated: 2026-09-22T10:43+08:00
+Updated: 2026-09-22T10:51+08:00
 
 ## Continuity / baseline
 - Formal Core: **LOCKED**.
@@ -338,6 +338,20 @@ Audit of `research/anti_overfit_v8_7_6.js` found two important safeguards and on
 - Future Class A diagnostic candidate after enough data: rank/Spearman and simple monotonic-bin redundancy checks on the same frozen factor catalog, without searching for the most flattering transform. Do not implement before prospective sample maturity because adding diagnostics now creates no decision value.
 - Cost stress is also incomplete for execution-policy evaluation because missed/no-BUY opportunities are absent; keep it paired with trigger rate/opportunity-path research.
 No production change.
+
+### Date-cluster robustness audit — 2026-09-22T10:51+08:00
+Audit of `research/cluster_robustness_v8_7_8.js` confirms the system does not treat same-day stocks as independent evidence:
+- I01-I07 use leave-one-scan-date-out partial-correlation diagnostics after within-date demeaning.
+- Maturity requires >=60 observations, >=15 independent scan dates and >=10 valid leave-one-date runs.
+- A mature nontrivial signal is marked fragile if sign consistency drops below 70% or removing one date changes partial correlation by >=max(0.05,75% of the base effect).
+- Formal-review eligibility is blocked when mature contrasts show date-cluster fragility.
+
+Reverse-validation:
+1. This protects against one spectacular market day driving an apparent factor effect, but it is still sensitivity analysis, not a full cluster-robust standard-error or bootstrap inference framework.
+2. With only 15 independent dates, asymptotic inference would itself be fragile; the current conservative descriptive labeling is preferable to premature p-values.
+3. Future statistical inference, if added, should cluster/resample by scan date and preserve the preregistered contrasts; do not bootstrap individual stocks as if independent.
+4. A factor that survives leave-one-date-out but only in one regime/sector can still fail. Date robustness does not replace R06 regime and sector breadth checks.
+5. No engineering change until more independent dates accumulate.
 
 ## Bias / data-quality firewall
 - UNKNOWN remains UNKNOWN; no BAD/0 coercion.
