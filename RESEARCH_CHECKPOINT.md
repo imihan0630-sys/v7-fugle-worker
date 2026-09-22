@@ -195,6 +195,52 @@ D. state-reconciliation failures that prevent ADD/re-add.
 Only B supports a pure "entry gate too strict" hypothesis. C/D can instead be position-state architecture problems.
 
 
+## Position reconciliation and performance-metric blind spot — 2026-09-22
+Patch-chain audit (V8.1.2 + V8.5.0/V8.6.0) refines the state diagnosis.
+
+### Confirmed execution-state reconciliation exists, but remains manual/authorized
+V8.1.2 provides `/api/positions` specifically to reconcile real execution state. It may update only:
+- `positionStage`,
+- `actualShares`,
+- `averageCost`,
+- `firstEntryConfirmedAt`,
+for symbols already in the current plan. It explicitly refuses to alter immutable plan fields.
+
+This confirms that BUY alert != fill is an intentional safety property. The correct positive-side architecture is "confirmed fill -> position reconciliation -> ADD eligibility", not "BUY push -> assume filled".
+
+However, V8.1.2 still accepts only NONE/FIRST/FULL. There is no PARTIAL/REDUCED state. Thus the earlier asymmetry finding survives the later patch chain:
+- a genuine partial trim cannot be represented semantically as a distinct state,
+- FULL after a partial reduction remains FULL unless manually mapped to FIRST, which would conflate "half of planned initial build" with "reduced from full",
+- ADD eligibility remains tied to FIRST, not to a separately confirmed REDUCED state.
+
+Reverse case: adding REDUCED is not automatically beneficial; the missing state only means the system cannot *test or express* a symmetric add-back policy cleanly today.
+
+### Main performance center cannot answer the user's current question
+V8.5.0 `journalTradeStats` defines the primary trade result as:
+first formal BUY -> first SELL/STOP_LOSS.
+ADD, REDUCE and PROFIT_CHECK are retained as events but explicitly excluded from the primary win-rate calculation.
+
+V8.6.0 enriches that same trade-level result by strategy/grade/price class/month, but still inherits the first-BUY-to-first-full-exit return.
+
+Therefore current win rate / average return cannot determine:
+- whether staged 60/40 deployment improves total-capital return,
+- how much capital remained idle by policy vs no-BUY,
+- whether REDUCE protected capital or sold winners too early,
+- whether a re-add path would improve realized return,
+- portfolio-level exposure-days / cash drag.
+
+This is a measurement blind spot, not proof that the trading logic is wrong.
+
+### Required research metric separation
+Future research-only diagnostics should report at least four independent layers and never collapse them into one "win rate":
+1. **Selection path** — scan-close D1/D3/D5/D10/D20, regardless of fill.
+2. **Entry conversion** — first-tranche BUY trigger rate and failed-clause distribution.
+3. **Capital exposure** — planned allocation, first/second tranche actually eligible/confirmed, exposure-days and idle-cash decomposition.
+4. **Position-management path** — REDUCE/ADD/SELL sequence, realized-weighted P&L plus post-reduce MFE/MAE.
+
+Do not change the existing primary win-rate definition retroactively. Add a versioned research estimand beside it so historical continuity is preserved.
+
+
 ## Exact next continuation point
 1. Re-read latest checkpoint/main and re-check SHA.
 2. Audit frame10/frame15 timestamp provenance: `researchBarTiming` derives bar end by adding timeframe to `frame.latest.time`; verify whether `buildBar.time` comes directly from Fugle candle `bar.date`, and distinguish calculated completion time from source-observed freshness. Record failure modes around delayed candle publication and cached prior frames.
