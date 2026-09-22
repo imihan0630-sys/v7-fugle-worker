@@ -62,6 +62,19 @@ UNKNOWN stays UNKNOWN; no historical execution-shadow backfill; independent scan
 - Timestamp provenance correction is classified Class B because the proposed passthrough would touch a shared runtime result object/function used by formal signal code. No autonomous production change allowed.
 - Material new finding: raw Fugle quote retains the needed timestamps until `analyzeStockSmart`; the loss occurs at the reduced `result.quote` mapping, not at `fetchQuote`.
 
+## User-raised falsification priority — 2026-09-22
+New research question: the system may be under-deploying capital because selected candidates appear daily but formal BUY triggers are rare, and partial de-risking may lack a symmetric re-entry/add-back path after strength reasserts. This is a hypothesis, not a requested Formal Core change.
+
+Required two-sided validation before any rule proposal:
+1. **Selection bottleneck vs execution bottleneck**: measure daily SELECTED quality against same-date controls first. If SELECTED does not outperform controls, loosening entry is the wrong fix. If SELECTED does outperform but BUY trigger rate is low and non-triggered selected names subsequently outperform, execution gating becomes the prime suspect.
+2. **No-BUY opportunity cost**: for SELECTED plans with no formal BUY, preserve D1/D3/D5/D10/D20 return/MFE/MAE and compare with BUY-triggered plans. Do not code no-BUY as zero return. Evaluate total-capital opportunity cost separately from conditional Execution Alpha.
+3. **Capital utilization is diagnostic, not an optimization target**: track idle-cash share, buy-trigger rate, deployed-capital days, and total-capital return. Do not loosen rules merely to increase utilization; a high-quality strategy may rationally stay in cash.
+4. **Trim / re-entry symmetry**: audit every partial reduce/sell recommendation, especially ABF holdings, with post-decision D1/D3/D5/D10 path. Test whether risk reduction avoided drawdown versus whether a later recovery/re-acceleration rule could have restored exposure. A subsequent rally alone does not prove the original trim was ex-ante wrong.
+5. **State-machine hypothesis**: current behavior may be asymmetric if it has explicit de-risk triggers but weak or absent re-add triggers. Research a shadow-only state transition framework: FULL -> REDUCED -> RE-ADD_ELIGIBLE / HOLD_REDUCED / EXIT, with no production thresholds until evidence is sufficient.
+6. **ABF case study**: use 3037/8046/3189 only as a falsification cohort, not a hand-tuned exception. Compare industry persistence, price path, overheat, drawdown avoided, and missed upside after trims. Do not optimize around the latest winner.
+7. **One-change-at-a-time shadow tests**: if evidence points to execution scarcity, test entry-confirmation relaxation separately from selection changes. If evidence points to selection weakness, do not simultaneously alter entry rules. If evidence points to position management, keep selection/entry frozen while testing re-add logic.
+8. Promotion gate: any proposed change must improve opportunity-cost-adjusted total-capital outcomes without materially worsening MAE, drawdown, false-break rate, transaction-cost stress, zero-pick behavior, or date/regime robustness. No Formal Core change without explicit human decision.
+
 ## Exact next continuation point
 1. Re-read latest checkpoint/main and re-check SHA.
 2. Audit frame10/frame15 timestamp provenance: `researchBarTiming` derives bar end by adding timeframe to `frame.latest.time`; verify whether `buildBar.time` comes directly from Fugle candle `bar.date`, and distinguish calculated completion time from source-observed freshness. Record failure modes around delayed candle publication and cached prior frames.
