@@ -389,6 +389,65 @@ Required future metric: distribution by scan date of selectedCount, planned-capi
 
 No production rule changed.
 
+## Manual continuation — confirmed state asymmetry + external reverse evidence (2026-09-22)
+
+### Position-state mutation audit: asymmetry confirmed at signal-state layer
+Direct audit of `processSignalStateCore` confirms the monitor's delivery state does not autonomously transition the trading plan after BUY/ADD/REDUCE:
+- `stage = result.plan.positionStage`; the signal-state snapshot merely copies that stage.
+- BUY/ADD delivery records `lastEntrySignalBarTime` and de-duplicates by `stage:signalType`, but does not set plan stage from NONE→FIRST or FIRST→FULL.
+- REDUCE likewise does not mutate actualShares, positionStage, or create a reduced-position state.
+- Thus any actual position-stage/share update must arrive through a separate plan/config/user-confirmation path; the source-level signal engine itself cannot represent FULL→REDUCED→RE-ADD.
+This upgrades the earlier finding from "no REDUCED enum observed" to a stronger architectural conclusion: the formal decision/delivery state machine has no endogenous reduced-exposure restoration state.
+
+Positive interpretation:
+- Not mutating position on mere push acceptance is safer than assuming a trade filled; it avoids fabricating brokerage execution.
+Reverse interpretation:
+- Without a separately confirmed reduced state and re-entry eligibility model, the system can issue a correct partial de-risk suggestion and then lack a formal state from which to reason about restoring only the sold portion.
+- This can systematically create "續抱但不加回" behavior even if sector/stock strength later recovers.
+
+Research requirement:
+- Keep brokerage execution truth separate from recommendation state.
+- A future Shadow design should model `REDUCED_CONFIRMED` only after explicit confirmed actual shares (or another trusted execution source), never from a REDUCE push alone.
+- Re-add research should compare incremental restoration of the sold tranche, not treat it as a fresh full-position BUY.
+
+### External two-sided evidence on stop/re-entry
+Relevant broader evidence is mixed and supports falsification rather than automatic re-entry:
+- Kaminski & Lo (Journal of Financial Markets, 2014) frame stop-loss value as conditional on return dynamics and explicitly include exit/re-entry thresholds; their results are not a universal case for stop rules.
+- Lo & Remorov (Journal of Financial Markets, 2017) show in US individual stocks that tight stop-loss policies can underperform buy-and-hold in mean-variance terms because excessive trading costs matter; re-entry behavior and regime/serial-correlation assumptions materially affect results.
+- Clare et al. (Journal of Asset Management, 2013) find popular stop-loss additions did not add value to their S&P 500 moving-average framework and that higher-frequency decisions could be worse, a direct warning against reactive trim/re-add cycling.
+
+Implications for our hypothesis:
+1. "Add a re-entry rule" is not supported as a generic improvement.
+2. The only defensible question is conditional: after a *confirmed* reduction, does a preregistered recovery state improve total-capital outcome after transaction costs and whipsaw relative to remaining reduced?
+3. Re-entry frequency itself is a risk variable; more restoration events are not automatically better.
+4. Taiwan-specific prospective evidence is still required; US index/stock results are mechanism context, not direct transfer.
+
+### Historical-data availability audit
+Repository-side durable files currently provide only sparse reconstructed formal-selection history:
+- `data/v7_formal_scan_backfill.json` contains five 2026-09-11 formal selections.
+- `data/recovered_chat_selections.json` contains mixed historical/user/chat selections, including some 2026 formal selections, but it is not a complete daily production journal and cannot be used to estimate a month-long production BUY conversion rate.
+- GitHub encrypted external mirrors cannot be interpreted without the encryption secret and should not be guessed/decrypted from repository metadata.
+Therefore the user's "~2–3 BUY triggers in a month" remains an important observed complaint, but the repository alone cannot yet validate the exact denominator or conversion rate. Do not convert that impression into a numeric research result.
+
+### Preregistered Shadow REDUCED→RE-ADD_ELIGIBLE design (design only, no implementation)
+Unit: a confirmed partial reduction event with trusted pre/post actual shares.
+Index time: confirmation of reduced shares, not REDUCE recommendation timestamp alone.
+Candidate recovery evidence must be based only on PIT data after the reduction and must not reuse future outcome labels.
+Comparators:
+A. STAY_REDUCED: sold tranche stays cash through fixed evaluation horizons.
+B. SHADOW_RESTORE: sold tranche is hypothetically restored only when a preregistered recovery state is observed.
+Outputs: D1/D3/D5/D10/D20 incremental tranche return, MFE, MAE, total portfolio path, transaction-cost stress, restoration frequency, whipsaw/re-reduction frequency.
+Failure criteria:
+- gain disappears after costs;
+- MAE/drawdown materially worsens;
+- benefit depends on one stock/ABF only;
+- result is dominated by one scan/event date;
+- restoration triggers too frequently in range-bound regimes;
+- no improvement versus simple stay-reduced across independent dates/regimes.
+No price/volume thresholds are chosen now. Any threshold definition would require a separate preregistered version and must not be tuned around 8046.
+
+No production code, Formal Core, position logic, thresholds, or deployment changed.
+
 ## Bias / data-quality firewall
 UNKNOWN stays UNKNOWN; no historical execution-shadow backfill; independent scan date is primary evidence unit; no causal claims from contemporaneous correlation; no outcome-driven threshold/window retuning; watch selection bias, look-ahead, data snooping, market-source bias, Factor Zoo, overfit, coverage, zero-pick, costs and date clustering.
 
