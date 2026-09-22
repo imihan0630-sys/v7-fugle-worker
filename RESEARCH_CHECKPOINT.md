@@ -1,6 +1,6 @@
 # Research Checkpoint
 
-Updated: 2026-09-22T09:52+08:00
+Updated: 2026-09-22T10:00+08:00
 
 ## Continuity / baseline
 - Formal Core: **LOCKED**.
@@ -272,6 +272,9 @@ Research consequence:
 3. Revenue/earnings/price alignment should be tested incrementally after controlling shared information, not counted as 3 independent votes.
 4. For short-term selection, strong fundamental news after a large pre-event run-up is specifically a reversal-risk condition to test; for swing horizon, the same event may still drift positively. Keep horizons separate.
 5. No new score/weight/threshold is registered.
+
+### Continuity rule reinforced — 2026-09-22T10:00+08:00
+Manual research must not stop merely to narrate intermediate findings. Intermediate commits, literature convergence, falsification results, or completion of one subtask are continuation points, not report boundaries. Continue immediately into the next non-human research task. Only interrupt for a genuine human-action boundary already defined by governance (MFA/reauth/secret/permission, explicit Class B/C production decision, or true technical blocker). User status requests are the other reporting exception.
 
 ## Bias / data-quality firewall
 - UNKNOWN remains UNKNOWN; no BAD/0 coercion.
