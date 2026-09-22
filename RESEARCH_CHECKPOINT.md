@@ -194,6 +194,52 @@ Reverse case:
 
 No ABF-specific formal rule or automation prompt is changed.
 
+## Manual continuation — intraday clock gate audit (2026-09-22)
+
+A source-level timing audit found a strong mechanical constraint that can reduce formal entry frequency even when a daily candidate is valid.
+
+### Formal A/B BUY is structurally impossible before about 10:45 Taipei
+`buildBar` computes intraday `volumeRatio` only when a bar has **five prior same-day bars**.
+For 15-minute bars:
+- 09:00, 09:15, 09:30, 09:45, 10:00 bars have `volumeRatio=null`.
+- The first bar with a comparable five-bar volume baseline is the 10:15 bar, which completes at 10:30.
+
+A-line:
+- Formal BUY requires the **previous** complete 15m bar to have `volumeRatio<=0.9`, plus reversal/strong close, followed by a current higher-low/turn-up bar.
+- At 10:30 the previous 10:00 bar still has no volume ratio.
+- Earliest possible formal A BUY is therefore the 10:45 evaluation, using 10:15 as the setup bar and 10:30 as confirmation.
+
+B-line:
+- Confirmed breakout requires `volumeRatio>=1.3`, so the earliest possible confirmed 15m breakout bar is 10:15 (known at 10:30).
+- The same bar cannot simultaneously be the formal retest because formal retest requires volume <=1.1; a later bar is required.
+- Earliest possible formal B BUY is therefore also about 10:45.
+
+This means the first ~105 minutes from the 09:00 open through the 10:45 decision are effectively **calibration / observation only** for formal BUY, despite the plan being valid for only one trading day.
+
+### Positive interpretation
+- Opening volume is structurally abnormal. Waiting until five same-day 15m bars exist avoids comparing a 09:00 opening-auction-heavy bar against an unstable baseline.
+- The two-bar confirmation further avoids buying initial opening weakness; today's 3006 example illustrates this benefit.
+
+### Reverse interpretation / scarcity risk
+- Strong A recoveries or B breakouts that complete their best risk/reward entry before 10:45 can become too extended, miss the buy zone, or hit maxChase before formal eligibility starts.
+- Because plan validity expires after the same next trading day, there is no later-day recovery of that missed opportunity unless the stock is independently reselected.
+- This timing constraint can therefore interact multiplicatively with one-day validity and no-chase rules; it is not merely one extra condition.
+
+### Important reverse check: B recent-bar memory is NOT the formal bug initially suspected
+`analyzeFrame` keeps the last 12 bars. A 15m session through the final monitored completed bar has 17 completed bars; the last 12 begin at index 5, exactly the first bar whose five-bar volume ratio is valid (10:15).
+Thus every 15m bar that could legally qualify as a volume-confirmed B breakout remains in `frame15.recent` through the final formal monitoring window. The 12-bar memory is therefore internally aligned with the volume-baseline design for formal B logic.
+Do not misdiagnose the recent-array length as a late-day B memory bug.
+
+### Required falsification before any timing change
+Use prospective early-session Shadow data to compare:
+1. candidates whose favorable path occurred before 10:45 but formal BUY could not yet occur,
+2. candidates that remained in the zone and later confirmed,
+3. candidates whose early move failed/reversed before 10:45.
+
+If early would-be entries have materially worse MAE/false-break outcomes, the delay is protective. If favorable executable entries are repeatedly lost with no compensating risk reduction, then the timing/baseline design deserves a versioned alternative study.
+
+No same-day volume baseline, entry time, plan validity, A/B trigger, or Formal Core rule is changed.
+
 ## Bias / data-quality firewall
 UNKNOWN stays UNKNOWN; no historical execution-shadow backfill; independent scan date is primary evidence unit; no causal claims from contemporaneous correlation; no outcome-driven threshold/window retuning; watch selection bias, look-ahead, data snooping, market-source bias, Factor Zoo, overfit, coverage, zero-pick, costs and date clustering.
 
