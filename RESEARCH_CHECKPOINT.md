@@ -1,9 +1,9 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-21.
-Updated: 2026-09-22 21:12 Asia/Taipei.
+Checkpoint sequence: B-22.
+Updated: 2026-09-22 21:43 Asia/Taipei.
 
-> Canonical cursor for both A/B research schedules. B-20 and earlier evidence remains durable in Git history; do not re-run completed work.
+> Canonical cursor for both A/B research schedules. B-21 and earlier evidence remains durable in Git history; do not re-run completed work.
 
 ## Governance / immutable boundary
 - Formal Core **LOCKED**: no autonomous A/B, ranking, threshold, Top6/3+3, capital, entry/add/reduce/sell/stop, monitoring or push changes.
@@ -22,7 +22,7 @@ Primary root question remains:
 `universe -> base/liquidity -> A/B formation -> quality/RR -> SELECTED -> BUY -> confirmed fill -> ADD/FULL -> REDUCE -> confirmed reduced shares -> restoration`.
 Do not optimize cash utilization alone and do not alter Formal Core from small retrospective samples.
 
-### Retained B-17/B-20 findings
+## Retained findings through B-21
 - 9/16: 1,873 scanned -> 3 selected. 9/17: 1,875 scanned -> 2 selected; 513 baseEligible; 9 rrEligible; 1,124 primary liquidity rejects; 335 no A/B formation.
 - Frozen allocator caps planned deployment at 35% / 60% / 85% for 1 / 2 / 3+ names; first tranches about 21% / 36% / 51% before caps/rounding.
 - Tiny 9/16-9/17 cohorts had meaningful MFE but weak endpoint advantage vs TAIEX; selection quality, execution and position management remain separate hypotheses.
@@ -30,73 +30,63 @@ Do not optimize cash utilization alone and do not alter Formal Core from small r
 - Production B is stricter confirmed-breakout quality than the owner's intended pre-breakout/catch-up concept; redesign would be Class C.
 - Current Shadow excludes the largest liquidity-reject gate because those rows fail basePassed; this is an evidence-coverage gap, not proof the gate is wrong.
 - Exact 8046 reduction recommendation/fill timestamp, price and reduced shares remain UNKNOWN.
-- Current REDUCE = profit-zone distribution: existing position + currentPrice>=reduceAt + bearish completed 15m + volumeRatio>=1.3. Generic downside exits are separate STOP_LOSS/SELL mechanisms.
-- Exact 9/16 plan identities/zones/stops/targets remain unjoinable from current durable repo evidence and therefore UNKNOWN.
+- Current REDUCE = profit-zone distribution; generic downside exits are separate STOP_LOSS/SELL mechanisms.
+- Exact 9/16 plan identities/zones/stops/targets remain unjoinable from previously inspected plaintext repo evidence and therefore UNKNOWN.
 - Restoration concepts STAY_REDUCED / EARLY_BREADTH_RECOVERY / FULL_TREND_RECOVERY remain untuned Shadow concepts only.
-- B-20 established `v7_signal_delivery_state` is current delivery/dedup state, not an append-only execution journal; push acceptance is not brokerage execution.
+- `v7_signal_delivery_state` is current delivery/dedup state, not an append-only execution journal; push acceptance is not brokerage execution.
+- B-21 completed the repository schema/tree audit: no separate append-only per-symbol operation-signal/fill journal was found. Historical BUY/ADD/REDUCE/STOP_LOSS/SELL instances and fills remain UNKNOWN. A prospective recorder touching the formal signal path is Class B unless isolated.
 
-## NEW B-21 — complete append-only signal/event schema audit
+## NEW B-22 — encrypted plan mirror provenance boundary
 ### Research question
-Does the repository contain any append-only signal/event/journal source, separate from `v7_signal_delivery_state`, that can safely recover historical BUY/ADD/REDUCE/STOP_LOSS/SELL instances or confirmed fills for 9/16-9/22?
+Can safe repository artifacts recover exact formal plan identities/planned-capital rows for 9/16-9/22 without inferring BUY/fills or exposing secrets, and can the existing mirror be repurposed as a post-hoc Class A signal collector?
 
 ### Evidence audited
-- Re-read latest main governance, worklist and checkpoint first; latest main research commit before this write was `2ad2ef637448e04ecc733af4792fef7dc4da6e2d` (`research: checkpoint B-20 signal persistence semantics`).
-- Inspected repository tree and `research/` contents on main for migrations, schema files, signal/event/journal artifacts and research recorders.
-- Inspected `Worker.js` D1 `ensureD1Schema()` definitions and nearby read/write helpers.
-- Re-read checkpoint immediately before write; blob SHA remained `db12b8894fdde75247eed3f17b38992cf1f43b94`, so no concurrent A/B checkpoint update was overwritten.
+- Re-read latest main governance, worklist and checkpoint first; checkpoint was B-21.
+- Inspected main repository tree, `data/recovered_chat_selections.json`, `.github/workflows/v8-plan-mirror.yml`, `tests/github_plan_mirror.mjs`, `external-mirror/latest.enc.json`, and commit history for the mirror path.
+- Re-read checkpoint immediately before write; blob SHA remained `6b93ee96d89208a36a5032548e72766fc3668f01`, so no concurrent A/B checkpoint update is being overwritten.
 
-### Finding 1 — current main D1 schema has no append-only operation-signal/event table
-`ensureD1Schema()` defines the operational tables visible in current main:
-- `v7_live_state` — one current snapshot row (`id=1`);
-- `v7_cron_runs` — append-only cron execution audit, but no per-symbol trading signal/fill semantics;
-- `v7_history_cache` — per-symbol history cache;
-- `v7_history_seed_state` — one seed-progress state row;
-- `v7_institution_snapshots` — per-date institution snapshot;
-- `v7_quality_snapshots` — per dataset/date quality snapshot;
-- `v7_signal_delivery_state` — current per-state-key delivery/dedup snapshot.
-No append-only BUY/ADD/REDUCE/STOP_LOSS/SELL event table is defined there.
+### Finding 1 — a durable plan archive exists, but plaintext is intentionally unavailable to safe repo reads
+The repository contains an encrypted V8 plan mirror. `tests/github_plan_mirror.mjs` exports `/api/storage/export-current`, verifies `provider=D1_GITHUB_ENCRYPTED`, and encrypts `payloadJson` using AES-256-GCM with a key derived from `V7_ADMIN_TOKEN`. The committed envelope contains ciphertext + hash only; plaintext is explicitly excluded. Therefore the safe GitHub connector can prove a plan payload was mirrored and its hash, but cannot recover exact symbols/zones/stops/targets/capital rows without the protected secret. This is a provenance boundary, not evidence that plan rows do not exist.
 
-### Finding 2 — repository tree does not expose a separate migration/schema artifact that closes the gap
-The main tree contains Worker.js, research modules, workflow files, data snapshots and encrypted external mirror files, but no standalone D1 migration directory/schema file or clearly named append-only signal journal artifact was found in this audit. Research modules are experiment/evidence/counterfactual/readiness tooling; none identified here provides historical formal operation-signal event rows for 9/16-9/22.
+### Finding 2 — mirror history currently proves only two durable payload versions in the inspected path history
+Commit history for `external-mirror/latest.enc.json` shows mirror commits dated 2026-09-19 and 2026-09-21, with payload hashes `2ae424...` and `96513b...`. The latest envelope hash is `96513b...`. Commit time is mirror time, not automatically the plan's scanDate; exact scanDate/plan rows remain encrypted. No 9/16-9/18 exact plaintext plan identity is recoverable from these safe reads alone.
 
-### Finding 3 — `v7_cron_runs` is append-only but is not the missing execution evidence
-Cron rows contain scheduling/job status, skip state, Fugle-call count, detail and error. They can prove a scheduled job ran or failed, but cannot prove that symbol 8046 (or any symbol) emitted REDUCE, that a push was accepted, or that shares were actually reduced. Treating cron success as signal/fill evidence would create false provenance.
+### Finding 3 — the existing mirror is plan-only and cannot serve as an isolated operation-event collector
+The mirror workflow runs after the formal scan and calls the admin export-current endpoint. Its safety assertions explicitly require `noPlanChanges`, `noPush`, `noThreeMinWrite`, and `noTrade`. This is useful as a post-hoc plan archive, but it observes the current plan payload, not per-event BUY/ADD/REDUCE/SELL signal episodes. Reusing it does not close the B-21 operation-event gap unless a separate already-produced append-only event source exists—which B-21 did not find.
 
-### Finding 4 — historical 9/16-9/22 operation instances remain UNKNOWN
-After completing the schema/tree search requested by B-20, no safe append-only source has been identified that can reconstruct per-event BUY/ADD/REDUCE/STOP_LOSS/SELL identity, trigger price/time, suggested shares, or confirmed fill/share transition for 9/16-9/22. Therefore those historical facts remain UNKNOWN; no retrospective synthetic journal will be created.
+### Finding 4 — no safe Class A post-hoc signal collector is presently supported by durable outputs
+Because current durable outputs expose plan snapshots and current delivery/dedup state rather than an append-only event stream, a post-hoc collector would either (a) miss transient signal episodes or (b) have to read/modify the shared formal signal path/state. Thus no reliable Class A event recorder design is established yet. The prospective event recorder remains a Class B proposal; no integration was performed.
 
-### Prospective recorder evaluation
-A future append-only research recorder is conceptually useful because deterministic `signalId = tradeDate:symbol:positionStage:signalType:episode-N` already exists. However, recording at the formal signal/push path would modify shared runtime/storage behavior. Even if the new table/API is research-only, inserting writes into `processSignalState`/delivery flow creates indirect production latency/failure/storage risk. Under `RESEARCH_ENGINEERING_GOVERNANCE.md`, that implementation is **Class B unless it can be redesigned so collection is isolated from the formal signal path**. Therefore no recorder was added automatically in this run.
+### Finding 5 — capital-utilization attribution remains partially identifiable, execution utilization does not
+Allocator-cap mechanics and selected-count evidence can still quantify theoretical/planned utilization at an aggregate level. Exact per-symbol planned first tranche/max allocation for 9/16-9/22 requires decryptable plan payload or another plaintext durable artifact. BUY-observed and confirmed fill utilization remain UNKNOWN and must stay separate from SELECTED/planned capital.
 
-A safe design target for later review is an append-only research event with PIT fields such as signalId, tradeDate, symbol, positionStage, signalType, episode, triggerBarTime when available, observedCurrentPrice, reason, suggestedShares/amount, emittedAt, delivery status/time and provenance. Confirmed execution must remain a separate field/source and must never be inferred from delivery. Historical rows must not be backfilled from later holdings or price paths.
-
-### Supporting evidence / falsification / alternative mechanisms
-- Supporting: deterministic signalId would permit prospective episode-level joins without changing the formal signal definition.
-- Falsification: existence of `v7_cron_runs` and successful workflows does not close the operation-event gap; they lack per-symbol signal/fill identity.
-- Alternative mechanisms for historical share changes remain manual action, historical-version behavior, STOP/SELL paths, external broker execution or another non-repository source; without durable evidence each remains UNKNOWN.
+### Supporting evidence / falsification / alternatives
+- Supporting: encrypted mirror workflow is deliberately designed to preserve exact plan payloads without plaintext leakage and verifies the encrypted readback against production export.
+- Falsification: presence of encrypted mirror files does not make their internal plan rows safely observable; ciphertext/hash cannot be treated as symbol-level evidence.
+- Alternative: an authorized workflow possessing `V7_ADMIN_TOKEN` can decrypt/verify internally, but current connected safe read tools do not expose the secret and must not request it in chat. A future research artifact could emit non-sensitive plan-summary statistics only if designed without altering Formal Core; any shared-runtime change must be classified before implementation.
 
 ### Bias / data-quality checks
-- No look-ahead reconstruction from 9/22 price behavior.
-- No later holdings used to infer a prior signal or fill.
-- No workflow success treated as signal evidence.
-- No UNKNOWN coerced to BAD/0.
-- No new factor/window/threshold introduced; no Factor-Zoo or data-snooping expansion.
-- Historical absence of evidence is not evidence that no signal occurred; it only means current durable repository evidence cannot prove it.
+- No ciphertext was guessed/decrypted without the key.
+- No commit timestamp was substituted for scanDate.
+- No selected symbol was inferred from later holdings or price behavior.
+- No plan row was treated as BUY or fill evidence.
+- Missing exact plan rows remain UNKNOWN, not zero.
+- No new factor/window/threshold; no Factor-Zoo expansion.
 
 ### R01-R08 / I01-I07 impact
-- No experiment/factor status or definition changed; no R09/I08.
-- Execution/restoration research remains provenance-blocked for historical operation instances until confirmed execution evidence exists.
+- No definition/status change; no R09/I08.
+- Execution/restoration evidence remains provenance-limited.
 
 ### Engineering classification / branch / tests / deployment
-- Class A source/schema audit only; no code/schema/runtime change.
-- Prospective recorder implementation is classified **Class B as currently conceived** because it would touch the shared formal signal path/storage runtime; proposal only, no autonomous merge/deploy.
-- No branch/tests/deployment needed for this evidence-only run; Formal Core unchanged by construction.
+- Class A evidence/provenance audit only; no code/schema/runtime change.
+- Existing encrypted mirror remains unchanged.
+- Prospective operation-event recorder remains Class B as currently conceived; no autonomous merge/deploy.
+- Formal Core unchanged by construction.
 
 ## Exact next continuation point
 1. Re-read latest main checkpoint + latest research commit; if another A/B run advanced it, merge and continue from the newer cursor.
-2. Keep USER PRIORITY OVERRIDE primary.
-3. Do **not** repeat the append-only schema search unless main gains a new schema/migration/event artifact after B-21.
-4. Continue the capital-utilization chain from the earliest point with durable evidence: inspect safe repo artifacts/data/workflow outputs for exact formal plan identities and planned capital rows for 9/16-9/22, prioritizing dates not yet recovered. Separate SELECTED/planned capital from BUY-observed/confirmed fill; do not infer fills.
-5. In parallel, evaluate whether an isolated post-hoc Class A collector can observe already-produced research/live outputs without inserting writes into `processSignalState`; if not, leave the prospective event recorder as a Class B proposal requiring owner approval before production integration.
-6. If exact plan rows become recoverable, quantify `SELECTED -> planned first tranche -> planned max allocation` by independent plan date and compare unused capital attributable to selection breadth versus allocator caps. Keep BUY/fill utilization UNKNOWN unless confirmed execution exists.
-7. Keep restoration concepts Shadow-only/untuned; any formal restoration, liquidity, A/B, RR, 15m, allocator, trim or signal-recorder integration change that can affect production remains Class B/C and must not be promoted autonomously.
+2. Do not repeat B-21 append-only schema audit or B-22 encrypted-mirror boundary audit unless main/runtime artifacts materially change.
+3. Continue USER PRIORITY OVERRIDE by inspecting any remaining safe plaintext artifacts/workflow outputs for 9/16-9/22 exact plan identities or aggregate planned-capital summaries. Do not attempt to obtain or expose `V7_ADMIN_TOKEN`; do not infer encrypted content.
+4. Evaluate a **research-only non-sensitive plan-summary artifact** design that could be produced from already-existing plan export in the authorized mirror workflow (e.g., scanDate, selected count, aggregate planned first-tranche %, aggregate planned max %, with no trading-side mutation). Classify carefully: changing deployment/workflow or shared export path may be Class B; a purely offline derivative of already-exported plan data may be isolatable but must not leak sensitive plan details.
+5. If exact plan rows remain inaccessible, shift research to aggregate capital attribution using already-proven selected counts + frozen allocator caps, explicitly labeling it THEORETICAL/PLANNED rather than executed. BUY/fill utilization stays UNKNOWN.
+6. Keep restoration concepts Shadow-only/untuned; any formal restoration, liquidity, A/B, RR, 15m, allocator, trim or signal-recorder integration change that can affect production remains Class B/C and must not be promoted autonomously.
