@@ -1,7 +1,7 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-33.
-Updated: 2026-09-23 03:12 Asia/Taipei.
+Checkpoint sequence: B-34.
+Updated: 2026-09-23 03:40 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Earlier detailed evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
@@ -14,7 +14,6 @@ Updated: 2026-09-23 03:12 Asia/Taipei.
 
 ## Production/research baseline retained
 - Verified research infrastructure baseline: V8.8.1 `8.8.1-execution-coverage`, schema `execution-shadow-v2`; V8.8.0 rollback baseline.
-- Latest main before B-33 research read: `1adf86c36469c02ed2b374d0bd7def579d1de272` (B-32 checkpoint commit).
 - Last verified prospective Shadow evidence remains 31 rows / one prospective scan date / zero mature D1/D3/D5/D10/D20 outcomes unless a newer trusted read proves otherwise.
 - B-13/B-16 provenance engineering remains DEFERRED, not cancelled.
 
@@ -32,52 +31,45 @@ Cash utilization is diagnostic, not an optimization target.
 - 2026-09-17 selected cohort: 4763 材料*-KY and 1301 台塑. Through 09/22 selected pair equal-weight endpoint about +0.37%, average MFE +7.55%, MAE -0.57%; near-miss 12 endpoint about -0.77%, MFE +1.12%, MAE -1.46%. One independent date only; no filter change.
 - 8046 南電: user-confirmed 2026-09-04 trim 100/200 shares near local trough. Sector-aware restoration remains Shadow concept only; no production re-entry rule.
 
-## 2026-09-17 / 09-18 retained historical evidence
+## Historical execution evidence retained
 - 09/17 formal plans: 6706 惠特, 3006 晶豪科, 6505 台塑化. 09:27 and 13:19 monitoredCount=3, formal15Ready=3, waitingForFreshData=0, notificationCount=0. Exact historical zones unavailable; symbol-level blocking clause UNKNOWN.
 - 09/18 contemporaneous plans: 4763, 1301, 3491, 3665, 3017. 3017 daily low 3290 > buyHigh 3285 => NO_ZONE_TOUCH. Others retain 15m/chronology UNKNOWN where contemporaneous bars are unavailable.
 - V8.8.x execution recorder was deployed only after 09/18; it cannot reconstruct 09/18 prospectively. Do not revisit that lane.
+- 09/22 scheduled health run `35751075627` positively verified formal selectedCount=0, planCount=0, signalCount=0. Preserve 09/22 as a formal zero-pick date, not an Execution Alpha failure.
 
-## B-32 retained — 2026-09-22 formal zero-selection positively verified
-- Scheduled health run `35751075627` successfully verified the formal 2026-09-22 after-market state: selectedCount=0, journal planCount=0, signalCount=0, with external readback verified and no trade.
-- 09/22 is a selection-zero date, not an Execution Alpha/BUY-conversion failure. Preserve it in zero-pick diagnostics.
-- Confirmed brokerage fills remain outside this evidence.
-
-## NEW B-33 — 09/22 Shadow archive existence remains UNKNOWN; current trusted health path does not observe Shadow
+## NEW B-34 — close 09/22 Shadow inference lane; await next positive-plan date
 ### Research question
-Can the existing trusted readback used for 09/22 formal health also establish whether a prospective Shadow archive was written on 09/22?
+Does any currently trusted durable output provide explicit per-scan-date Shadow archive counts sufficient to verify a 2026-09-22 Shadow scan without inference from aggregate totals?
 
 ### Evidence / findings
-- `tests/scheduled_health.mjs --after-market`, the exact authorized path behind the successful 09/22 health run, reads `/api/scan/status`, `/api/journal/health?date=...`, config, cron/outbox/receipts, watchlist, storage/readback and acceptance reconciliation. It does **not** query a Shadow archive/counterfactual endpoint or count `trade_research_shadow_candidates`.
-- Therefore the successful 09/22 health run positively proves formal `SELECTED=0 / plan=0 / signal=0`, but it cannot prove `NO_SHADOW_SCAN` and cannot prove that a 09/22 Shadow scan exists.
-- The research implementation `readShadowCounterfactualResearch()` reads `trade_research_shadow_candidates` over a date window and returns aggregate `archivedRows`, `outcomeRows`, horizon coverage and only the last 80 outcomes. It does not expose an explicit per-scan-date archive coverage/count field.
-- Consequently, even a newer aggregate readback cannot safely infer 09/22 archive existence merely from total archivedRows increasing or staying unchanged: another scan date, rerun/replacement, or the `recentOutcomes` 80-row cap can make that inference ambiguous.
-- No durable trusted output located in this cycle explicitly states a 2026-09-22 Shadow row count or per-date Shadow coverage. Per governance, 09/22 Shadow status remains **UNKNOWN**, not `NO_SHADOW_SCAN`.
+- Re-read B-33 exact continuation point and checked current main before writing. Main advanced only by the B-33 checkpoint commit; no newer competing research checkpoint was found.
+- The existing authorized 09/22 health path remains formal/journal health only; it does not observe `trade_research_shadow_candidates`.
+- Current Shadow counterfactual research output remains aggregate (`archivedRows`, outcome/horizon coverage, capped recent outcomes) and does not provide an explicit per-scan-date archive count/coverage field.
+- A targeted repository search for an existing Shadow per-date coverage/readback produced no matching implementation/output. No trusted durable runtime artifact located in this cycle states a 2026-09-22 Shadow row count.
+- Therefore `SHADOW_SCAN_STATUS(2026-09-22)=UNKNOWN` remains the only defensible state. The lane is now intentionally closed until explicit per-date evidence appears; do not spend further cycles inferring it from aggregate row totals.
 
 ### Research interpretation / falsification
-- Distinguish two states permanently in this lane: `NO_FORMAL_SELECTION` is verified for 09/22; `SHADOW_SCAN_STATUS=UNKNOWN` remains unresolved.
-- A zero-formal-selection day may still legitimately have Shadow NEAR_MISS/REJECTED/BROAD_CONTROL rows. Therefore formal zero-pick cannot be used as a proxy for absent Shadow coverage.
-- The current aggregate Shadow API shape creates an observability gap for independent-date accumulation: total rows are insufficient to prove how many prospective scan dates are represented.
-- This is a data-quality/coverage observability issue only. It is not evidence that Shadow failed to write, and it is not evidence for changing formal selection thresholds.
+- `NO_FORMAL_SELECTION(09/22)=VERIFIED` and `SHADOW_SCAN_STATUS(09/22)=UNKNOWN` remain separate facts.
+- The observability gap means prospective independent Shadow-date count cannot safely be incremented above one. It does not prove a failed archive write and does not justify relaxing formal gates.
+- No factor direction, threshold, entry rule, allocator or re-entry conclusion changed.
 
 ### Bias / UNKNOWN controls
-- Selection bias: retain 09/22 zero-pick in formal denominator even while Shadow status is UNKNOWN.
-- Look-ahead/data snooping: no later return used to infer archive existence or selection quality.
-- Coverage: prospective independent Shadow scan-date count remains one verified date until explicit per-date evidence appears.
-- Factor Zoo/redundancy/market-source bias: no factor/experiment/source definition changed.
-- Overfit/date clustering: no directional conclusion from one zero-pick date.
+- Selection bias: 09/22 stays in the formal zero-pick denominator.
+- Look-ahead/data snooping: no later returns or aggregate-row deltas used to infer archive existence.
+- Coverage/date clustering: verified prospective Shadow independent-date count remains one.
+- Factor Zoo/redundancy/market-source bias/overfit: no definitions changed; no directional claim added.
 
 ### Engineering classification
-- This cycle is evidence-only Class A; no code/runtime/schema/workflow/deployment changes.
-- A future isolated research-only per-scan-date Shadow coverage diagnostic would conceptually be Class A only if it cannot alter shared runtime/formal behavior; touching shared endpoint/runtime/deployment paths must be reclassified under governance before implementation. B-13/B-16 provenance work remains deferred.
-- Formal Core invariants unchanged.
+- Evidence-only Class A. No code, schema, workflow, runtime, deployment, Formal Core, monitoring or push change.
+- Per-date Shadow observability remains a possible future diagnostic proposal; do not touch shared runtime autonomously merely to resolve 09/22.
 
 ## Exact next continuation point
 1. Re-read governance/worklist/checkpoint and latest main SHA; re-check checkpoint SHA immediately before any write.
-2. Preserve 09/22 as `NO_FORMAL_SELECTION` and `SHADOW_SCAN_STATUS=UNKNOWN`; do not infer one from the other.
-3. Do not re-run generic repository searches for 09/22 Shadow. Look for a **trusted existing runtime/research readback with explicit per-scan-date Shadow counts**. Only such evidence may raise verified independent Shadow dates above one.
-4. If no existing per-date Shadow readback exists, document the observability gap and continue the primary funnel on the next formal date with >=1 plan rather than spending cycles trying to infer 09/22 from aggregate row totals. A diagnostic engineering proposal may be prepared later under governance, but do not alter shared runtime autonomously.
-5. On the next date with >=1 formal plan, verify `/api/research/execution-recorder` coverage before interpreting absent signals: successful protected query + explicit target-date rows/coverage + proof target date is not truncated by the 500-row cap.
-6. Continue funnel by independent date: selected/planned -> price-path contact -> 15m-confirm eligible -> BUY observed -> confirmed fill. Signal != fill. Preserve zero-pick dates in selection-rate diagnostics.
-7. Only trustworthy 15m OHLCV may test frozen 15m clauses; never approximate missing bars.
-8. TTL research remains `EXPIRE_AS_IS` vs `REVALIDATED_RESELECT`; blind carry-forward is falsification comparator only.
-9. REDUCE/re-entry requires trusted actual reduced shares before `REDUCED_CONFIRMED`; otherwise recommendation-only.
+2. Do NOT revisit 09/22 Shadow inference unless a new trusted output explicitly exposes per-scan-date Shadow counts. Keep `NO_FORMAL_SELECTION=VERIFIED`, `SHADOW_SCAN_STATUS=UNKNOWN`.
+3. At/after the next formal scan date with >=1 plan, first establish the target date and formal plan count from trusted Production readback.
+4. Before interpreting absent BUY/ADD/REDUCE signals, query/verify `/api/research/execution-recorder` coverage: protected query success + explicit target-date rows/coverage + proof the target date is not truncated by the 500-row cap.
+5. Continue the funnel by independent date: selected/planned -> price-path contact -> trustworthy 15m-confirm eligibility -> BUY observed -> confirmed fill. Signal != fill.
+6. Preserve zero-pick dates in selection-rate diagnostics. Only trustworthy 15m OHLCV may test frozen 15m clauses; never approximate missing bars.
+7. TTL research remains `EXPIRE_AS_IS` vs `REVALIDATED_RESELECT`; blind carry-forward is falsification comparator only.
+8. REDUCE/re-entry requires trusted actual reduced shares before `REDUCED_CONFIRMED`; otherwise recommendation-only.
+9. B-13/B-16 provenance diagnostics remain deferred and may resume only when they outrank the primary funnel or when a safe isolated Class A implementation path is available.
