@@ -1,6 +1,6 @@
 # Research Checkpoint
 
-Updated: 2026-09-22T09:20+08:00
+Updated: 2026-09-22T09:28+08:00
 
 ## Continuity / baseline
 - Formal Core: **LOCKED**.
@@ -222,6 +222,14 @@ Implications for current research:
 3. Institutional flow around the announcement is potentially conditioning information, not proof of direction.
 4. Current snapshot already carries quarterlyRevenueYoY/QoQ and quarterly EPS-related evidence, but a proper monthly-revenue persistence series requires PIT announcement history. Do not approximate it from a single latest revenue number.
 5. This direction is worthy of future Class A Shadow research, but do not register a new experiment until the existing prospective archive confirms that monthly-revenue announcement dates/history can be captured PIT without backfill leakage.
+
+### User objective translated into research discipline — 2026-09-22T09:28+08:00
+User reaffirmed the economic objective: rapidly improve the system's ability to surface high-quality Taiwan stocks for short-term and swing opportunities. Research interpretation:
+- Optimize evidence quality and decision usefulness, not headline win-rate. Never promise profit or manufacture a high hit rate by shrinking coverage, leaking future data, or tuning after outcomes.
+- Short-term and swing horizons must remain separately evaluated because Taiwan evidence repeatedly shows horizon-dependent reversal/continuation.
+- Candidate quality must be decomposed into Selection Alpha, Execution Alpha, path quality, fundamental persistence, regime/industry persistence, liquidity/cost and downside/false-break risk; correlated confirmations are not independent votes.
+- "Best" future candidates require current real price/data, formal eligibility filters, and prospective evidence; research cannot substitute stale prices or retrospective stories.
+- Speed objective means prioritize high-information falsification and data coverage over adding many factors.
 
 ## Bias / data-quality firewall
 - UNKNOWN remains UNKNOWN; no BAD/0 coercion.
