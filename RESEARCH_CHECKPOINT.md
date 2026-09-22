@@ -1,7 +1,7 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-37.
-Updated: 2026-09-23 05:13 Asia/Taipei.
+Checkpoint sequence: B-38.
+Updated: 2026-09-23 05:18 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Earlier detailed evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
@@ -30,6 +30,42 @@ Cash utilization is diagnostic, not an optimization target.
 - `v8_trade_journal_signals` can establish formal BUY/ADD/REDUCE observations when rows are durably readable; it is not a brokerage fill journal. Confirmed fills remain UNKNOWN absent trusted execution reconciliation.
 - 2026-09-17 selected cohort: 4763 材料*-KY and 1301 台塑. Through 09/22 selected pair equal-weight endpoint about +0.37%, average MFE +7.55%, MAE -0.57%; near-miss 12 endpoint about -0.77%, MFE +1.12%, MAE -1.46%. One independent date only; no filter change.
 - 8046 南電: user-confirmed 2026-09-04 trim 100/200 shares near local trough. Sector-aware restoration remains Shadow concept only; no production re-entry rule.
+
+## NEW B-38 — bounded human-momentum discretion hypothesis (research-only)
+### Owner hypothesis
+A purely defensive rule stack may systematically under-model a useful human behavior: when a stock is rising with genuine market acceptance, an experienced trader may deliberately buy strength before every conservative confirmation has completed. The target is **追漲而非追高**: pay for evidence of continuation, not for emotional FOMO.
+
+### Positive thesis to test
+- Strong price acceptance, relative-strength persistence, sector/breadth confirmation, expanding participation, and orderly higher-low structure may contain information that is lost when the engine waits for every pullback/retest/15m clause.
+- A bounded momentum entry could improve execution alpha, reduce idle cash caused by confirmation latency, and capture moves that never provide the ideal pullback.
+- The useful behavior may apply both to execution of formal SELECTED names and, separately, as a research-only rescue tag for high-quality near-miss names. These must be evaluated independently to avoid mixing selection alpha with execution alpha.
+
+### Falsification / human-bias thesis
+- The same behavior can be FOMO, late-cycle chasing, exhaustion, gap-chasing, or fake-breakout buying.
+- Human discretion can also create inconsistency, hindsight rationalization, and regime-dependent overconfidence; therefore no narrative override is allowed.
+- Any candidate optimization must be compared against false-breakout rate, stop-first chronology, MAE, spread/slippage/turnover cost, gap/exhaustion risk, and whipsaw across independent dates/regimes.
+
+### Shadow design candidate — no Formal Core change
+Evaluate an additive research tag such as `HUMAN_MOMENTUM_SHADOW`, never a production A/B grade and never an automatic override. For each eligible observation, record:
+- whether the stock is already formal SELECTED or only near-miss;
+- price location versus breakout/buyHigh/maxChase and normalized distance using ATR/volatility, not only fixed percent;
+- intraday acceptance: closes holding above breakout/VWAP/reference level, higher lows, failure-recovery behavior, and whether pullbacks are shallow/orderly;
+- participation: volume/turnover expansion without one-bar blowoff concentration;
+- relative strength versus sector/market and whether the sector is confirming;
+- trend age / prior run-up / gap size / upper-wick or parabolic-exhaustion flags;
+- hypothetical early-strength entry price, current formal BUY time/price if any, stop, MFE/MAE, stop-first vs target-first chronology, D1/D3/D5, and transaction-cost-adjusted result.
+
+### Required comparisons
+1. Current formal execution vs `HUMAN_MOMENTUM_SHADOW` on the **same formally selected names**. This isolates execution alpha.
+2. Current SELECTED vs near-miss + human-momentum rescue tag. This is a separate selection-alpha experiment; do not pool it with #1.
+3. Split by market regime and sector confirmation.
+4. Specifically measure cases where Shadow enters earlier and wins, enters earlier and stops, formal waits and later buys higher, formal never buys but thesis succeeds, and Shadow buys a blowoff/fake breakout.
+5. No threshold optimization from a single date. Independent scan/signal date remains the primary evidence unit.
+
+### Governance
+- Formal Core remains LOCKED. No change to A/B, BUY, maxChase, stop, capital, or deployment.
+- This is a hypothesis registration, not evidence that human-like aggression is superior.
+- Any future production proposal requires positive + negative evidence, costs, cross-date/regime robustness, and explicit owner approval.
 
 ## Historical execution evidence retained
 - 09/17 formal plans: 6706 惠特, 3006 晶豪科, 6505 台塑化. 09:27 and 13:19 monitoredCount=3, formal15Ready=3, waitingForFreshData=0, notificationCount=0. Exact historical zones unavailable; symbol-level blocking clause UNKNOWN.
@@ -73,10 +109,11 @@ Can the refined B-36 provenance semantics be implemented in an isolated, testabl
 
 ## Exact next continuation point
 1. Re-read governance/worklist/checkpoint and latest main SHA; re-check checkpoint SHA immediately before any write.
-2. If a newer trusted formal scan with >=1 plan exists, primary funnel regains priority: establish plan date/count from Production readback, then verify execution-recorder target-date coverage and 500-row non-truncation before interpreting signals.
-3. Otherwise continue on `research/b13-shadow-provenance`: execute the new targeted test artifact through an authorized repository CI/test path if available; do not treat source assertions as executed evidence.
-4. Add an explicit regression test that snapshots old `researchShadowOutcomeForRow()` and old `coverage.dN` behavior against representative frozen inputs, then prove the provenance helper leaves those outputs unchanged.
-5. Only after targeted tests + regression/invariant evidence pass, integrate provenance into `readShadowCounterfactualResearch()` as additive diagnostics. No outcome or `coverage.dN` redefinition. If integration touches shared runtime in a way that cannot guarantee isolation, reclassify Class B and stop before merge/deploy.
-6. Do not label insufficient cached bars `NOT_YET_MATURE`; keep `OBSERVED_HISTORY_INSUFFICIENT` plus `CALENDAR_MATURITY=UNKNOWN` unless trustworthy calendar maturity evidence exists.
-7. Do NOT revisit 09/18 execution or 09/22 Shadow inference without new trusted evidence. Keep 09/22 `NO_FORMAL_SELECTION=VERIFIED`, `SHADOW_SCAN_STATUS=UNKNOWN`.
-8. Signal != fill. `REDUCED_CONFIRMED` requires trusted actual reduced shares.
+2. If a newer trusted formal scan with >=1 plan exists, primary funnel regains priority: establish plan date/count from Production readback, then verify execution-recorder target-date coverage and 500-row non-truncation before interpreting signals. On that same date, add research-only `HUMAN_MOMENTUM_SHADOW` observations so early-strength execution can be compared with formal BUY without changing production behavior.
+3. Keep selection-alpha and execution-alpha human-discretion experiments separate: first test the same SELECTED names; only then evaluate any near-miss rescue cohort.
+4. Otherwise continue on `research/b13-shadow-provenance`: execute the new targeted test artifact through an authorized repository CI/test path if available; do not treat source assertions as executed evidence.
+5. Add an explicit regression test that snapshots old `researchShadowOutcomeForRow()` and old `coverage.dN` behavior against representative frozen inputs, then prove the provenance helper leaves those outputs unchanged.
+6. Only after targeted tests + regression/invariant evidence pass, integrate provenance into `readShadowCounterfactualResearch()` as additive diagnostics. No outcome or `coverage.dN` redefinition. If integration touches shared runtime in a way that cannot guarantee isolation, reclassify Class B and stop before merge/deploy.
+7. Do not label insufficient cached bars `NOT_YET_MATURE`; keep `OBSERVED_HISTORY_INSUFFICIENT` plus `CALENDAR_MATURITY=UNKNOWN` unless trustworthy calendar maturity evidence exists.
+8. Do NOT revisit 09/18 execution or 09/22 Shadow inference without new trusted evidence. Keep 09/22 `NO_FORMAL_SELECTION=VERIFIED`, `SHADOW_SCAN_STATUS=UNKNOWN`.
+9. Signal != fill. `REDUCED_CONFIRMED` requires trusted actual reduced shares.
