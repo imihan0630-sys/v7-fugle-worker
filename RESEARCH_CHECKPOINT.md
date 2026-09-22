@@ -1,9 +1,9 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-20.
-Updated: 2026-09-22 20:43 Asia/Taipei.
+Checkpoint sequence: B-21.
+Updated: 2026-09-22 21:12 Asia/Taipei.
 
-> Canonical cursor for both A/B research schedules. B-19 and earlier evidence remains durable in Git history; do not re-run completed work.
+> Canonical cursor for both A/B research schedules. B-20 and earlier evidence remains durable in Git history; do not re-run completed work.
 
 ## Governance / immutable boundary
 - Formal Core **LOCKED**: no autonomous A/B, ranking, threshold, Top6/3+3, capital, entry/add/reduce/sell/stop, monitoring or push changes.
@@ -22,7 +22,7 @@ Primary root question remains:
 `universe -> base/liquidity -> A/B formation -> quality/RR -> SELECTED -> BUY -> confirmed fill -> ADD/FULL -> REDUCE -> confirmed reduced shares -> restoration`.
 Do not optimize cash utilization alone and do not alter Formal Core from small retrospective samples.
 
-### Retained B-17/B-19 findings
+### Retained B-17/B-20 findings
 - 9/16: 1,873 scanned -> 3 selected. 9/17: 1,875 scanned -> 2 selected; 513 baseEligible; 9 rrEligible; 1,124 primary liquidity rejects; 335 no A/B formation.
 - Frozen allocator caps planned deployment at 35% / 60% / 85% for 1 / 2 / 3+ names; first tranches about 21% / 36% / 51% before caps/rounding.
 - Tiny 9/16-9/17 cohorts had meaningful MFE but weak endpoint advantage vs TAIEX; selection quality, execution and position management remain separate hypotheses.
@@ -30,71 +30,73 @@ Do not optimize cash utilization alone and do not alter Formal Core from small r
 - Production B is stricter confirmed-breakout quality than the owner's intended pre-breakout/catch-up concept; redesign would be Class C.
 - Current Shadow excludes the largest liquidity-reject gate because those rows fail basePassed; this is an evidence-coverage gap, not proof the gate is wrong.
 - Exact 8046 reduction recommendation/fill timestamp, price and reduced shares remain UNKNOWN.
-- B-19 source audit established current REDUCE = profit-zone distribution: existing position + currentPrice>=reduceAt + bearish completed 15m + volumeRatio>=1.3. Generic downside exits are separate STOP_LOSS/SELL mechanisms.
+- Current REDUCE = profit-zone distribution: existing position + currentPrice>=reduceAt + bearish completed 15m + volumeRatio>=1.3. Generic downside exits are separate STOP_LOSS/SELL mechanisms.
 - Exact 9/16 plan identities/zones/stops/targets remain unjoinable from current durable repo evidence and therefore UNKNOWN.
 - Restoration concepts STAY_REDUCED / EARLY_BREADTH_RECOVERY / FULL_TREND_RECOVERY remain untuned Shadow concepts only.
+- B-20 established `v7_signal_delivery_state` is current delivery/dedup state, not an append-only execution journal; push acceptance is not brokerage execution.
 
-## NEW B-20 — signal-state persistence semantics audit
+## NEW B-21 — complete append-only signal/event schema audit
 ### Research question
-What durable evidence does `processSignalState` actually preserve for BUY/ADD/REDUCE/STOP_LOSS/SELL, and can it prove a signal instance or confirmed execution without secrets?
+Does the repository contain any append-only signal/event/journal source, separate from `v7_signal_delivery_state`, that can safely recover historical BUY/ADD/REDUCE/STOP_LOSS/SELL instances or confirmed fills for 9/16-9/22?
 
 ### Evidence audited
-- Re-read latest main governance/worklist/checkpoint before work.
-- `Worker.js` `runBackgroundMonitor`, `processSignalState`, `acquireSignalStateLease`, `persistSignalStateLease`, `processSignalStateCore`, `buildPushPayload`, `shouldPhonePushSignal`.
-- Safe GitHub Actions run history for 2026-09-16..2026-09-22; no secret-bearing runtime call used.
-- Re-read checkpoint immediately before write; blob SHA remained `a87ac8df3cb8c3ab1098f06a6b6a72e52f2fc452`, so no concurrent A/B checkpoint update was overwritten.
+- Re-read latest main governance, worklist and checkpoint first; latest main research commit before this write was `2ad2ef637448e04ecc733af4792fef7dc4da6e2d` (`research: checkpoint B-20 signal persistence semantics`).
+- Inspected repository tree and `research/` contents on main for migrations, schema files, signal/event/journal artifacts and research recorders.
+- Inspected `Worker.js` D1 `ensureD1Schema()` definitions and nearby read/write helpers.
+- Re-read checkpoint immediately before write; blob SHA remained `db12b8894fdde75247eed3f17b38992cf1f43b94`, so no concurrent A/B checkpoint update was overwritten.
 
-### Finding 1 — D1 signal state is delivery-state evidence, not an execution journal
-`v7_signal_delivery_state.snapshot_json` persists state keyed by `V7_SIGNAL_STATE:<symbol>`. The snapshot contains only:
-- tradeDate / testMode;
-- active signal types;
-- fired keys of the form `<positionStage>:<signalType>`;
-- current `positionStage`;
-- per-fired-key `episodes` counters;
-- `pendingDeliveries` with signalId/episode/status/reservedAt and, on failure, httpStatus/checkedAt;
-- `lastEntrySignalBarTime` for sent BUY/ADD;
-- updatedAt.
-It does **not** persist a durable per-event row containing symbol + signal type + trigger price + reason + suggested shares + exact emittedAt + execution/fill fields.
+### Finding 1 — current main D1 schema has no append-only operation-signal/event table
+`ensureD1Schema()` defines the operational tables visible in current main:
+- `v7_live_state` — one current snapshot row (`id=1`);
+- `v7_cron_runs` — append-only cron execution audit, but no per-symbol trading signal/fill semantics;
+- `v7_history_cache` — per-symbol history cache;
+- `v7_history_seed_state` — one seed-progress state row;
+- `v7_institution_snapshots` — per-date institution snapshot;
+- `v7_quality_snapshots` — per dataset/date quality snapshot;
+- `v7_signal_delivery_state` — current per-state-key delivery/dedup snapshot.
+No append-only BUY/ADD/REDUCE/STOP_LOSS/SELL event table is defined there.
 
-### Finding 2 — a fired state proves notification acceptance semantics, not brokerage execution
-`buildPushPayload` constructs a signalId (`tradeDate:symbol:positionStage:signalType:episode-N`), currentPrice, reason, suggested amount/shares, stop/profitCheck and display time, but those payload fields are not copied into the durable signal-state snapshot. `fired` is added only when `sendPush(...).sent` is true; pending reservation exists to avoid blind duplicate delivery after crashes. Therefore:
-- `fired`/episode can support that a signal type entered a delivered/accepted notification state for that stage/date under the running system;
-- it does **not** prove an order was placed, filled, partially filled, or that position shares changed;
-- `lastEntrySignalBarTime` is BUY/ADD signal-bar evidence only, not fill time;
-- REDUCE/SELL/STOP_LOSS have no analogous durable trigger-bar field in this state snapshot.
+### Finding 2 — repository tree does not expose a separate migration/schema artifact that closes the gap
+The main tree contains Worker.js, research modules, workflow files, data snapshots and encrypted external mirror files, but no standalone D1 migration directory/schema file or clearly named append-only signal journal artifact was found in this audit. Research modules are experiment/evidence/counterfactual/readiness tooling; none identified here provides historical formal operation-signal event rows for 9/16-9/22.
 
-### Finding 3 — current state can lose historical signal identity after reset/transition
-State is scoped to the current tradeDate/mode; previous `fired` entries are filtered by current `positionStage` and whether the signal remains active. Signal release/re-entry deliberately permits a new episode. This design is correct for push deduplication but means the current snapshot is not a complete historical operation-signal journal. KV mirrors are TTL-limited and D1 stores the current snapshot per state key rather than append-only event history.
+### Finding 3 — `v7_cron_runs` is append-only but is not the missing execution evidence
+Cron rows contain scheduling/job status, skip state, Fugle-call count, detail and error. They can prove a scheduled job ran or failed, but cannot prove that symbol 8046 (or any symbol) emitted REDUCE, that a push was accepted, or that shares were actually reduced. Treating cron success as signal/fill evidence would create false provenance.
 
-### Finding 4 — safe workflow history does not close the historical 9/16-9/22 join gap
-GitHub Actions history proves scheduled workflows ran, but workflow success is not evidence that a particular operation signal existed, was delivered, or was executed. No safe durable artifact identified in this run supplied append-only BUY/ADD/REDUCE/STOP/SELL event rows for 9/16-9/22. Therefore actual historical signal instances and fills remain UNKNOWN unless a separate durable journal/artifact is discovered.
+### Finding 4 — historical 9/16-9/22 operation instances remain UNKNOWN
+After completing the schema/tree search requested by B-20, no safe append-only source has been identified that can reconstruct per-event BUY/ADD/REDUCE/STOP_LOSS/SELL identity, trigger price/time, suggested shares, or confirmed fill/share transition for 9/16-9/22. Therefore those historical facts remain UNKNOWN; no retrospective synthetic journal will be created.
 
-### Supporting evidence / falsification
-- Supporting: signalId is deterministic per date/symbol/stage/type plus episode, so a future append-only research recorder could join signal episodes cleanly without changing formal semantics.
-- Falsification: the existence of REDUCE source code cannot prove an 8046 REDUCE occurred; a current `positionStage` also cannot prove the transition was caused by the automated signal path.
-- Alternative mechanisms remain manual action, historical-version behavior, STOP/SELL, or non-joinable external execution.
+### Prospective recorder evaluation
+A future append-only research recorder is conceptually useful because deterministic `signalId = tradeDate:symbol:positionStage:signalType:episode-N` already exists. However, recording at the formal signal/push path would modify shared runtime/storage behavior. Even if the new table/API is research-only, inserting writes into `processSignalState`/delivery flow creates indirect production latency/failure/storage risk. Under `RESEARCH_ENGINEERING_GOVERNANCE.md`, that implementation is **Class B unless it can be redesigned so collection is isolated from the formal signal path**. Therefore no recorder was added automatically in this run.
 
-### Bias / data-quality / UNKNOWN checks
-- Did not infer historical events from later holdings, later price paths, workflow success or source capability.
-- Did not equate push acceptance with execution/fill.
-- Did not reconstruct missing trigger prices/shares/times from chat memory.
-- Historical 9/16-9/22 operation-signal identities/fills remain UNKNOWN where no append-only durable evidence exists.
-- No threshold reverse-engineering from the 9/22 ABF rally.
+A safe design target for later review is an append-only research event with PIT fields such as signalId, tradeDate, symbol, positionStage, signalType, episode, triggerBarTime when available, observedCurrentPrice, reason, suggestedShares/amount, emittedAt, delivery status/time and provenance. Confirmed execution must remain a separate field/source and must never be inferred from delivery. Historical rows must not be backfilled from later holdings or price paths.
+
+### Supporting evidence / falsification / alternative mechanisms
+- Supporting: deterministic signalId would permit prospective episode-level joins without changing the formal signal definition.
+- Falsification: existence of `v7_cron_runs` and successful workflows does not close the operation-event gap; they lack per-symbol signal/fill identity.
+- Alternative mechanisms for historical share changes remain manual action, historical-version behavior, STOP/SELL paths, external broker execution or another non-repository source; without durable evidence each remains UNKNOWN.
+
+### Bias / data-quality checks
+- No look-ahead reconstruction from 9/22 price behavior.
+- No later holdings used to infer a prior signal or fill.
+- No workflow success treated as signal evidence.
+- No UNKNOWN coerced to BAD/0.
+- No new factor/window/threshold introduced; no Factor-Zoo or data-snooping expansion.
+- Historical absence of evidence is not evidence that no signal occurred; it only means current durable repository evidence cannot prove it.
 
 ### R01-R08 / I01-I07 impact
 - No experiment/factor status or definition changed; no R09/I08.
-- Finding strengthens execution-provenance requirements before interpreting Execution Alpha/restoration opportunity.
+- Execution/restoration research remains provenance-blocked for historical operation instances until confirmed execution evidence exists.
 
 ### Engineering classification / branch / tests / deployment
-- Class A evidence/source audit only; no code/schema/runtime change.
-- Branch/commit/tests/deployment: no engineering branch or deployment required this run; Formal Core unchanged by construction.
-- Production readback was not used to claim signal history because the needed historical endpoint is not safely public and no secret was requested.
+- Class A source/schema audit only; no code/schema/runtime change.
+- Prospective recorder implementation is classified **Class B as currently conceived** because it would touch the shared formal signal path/storage runtime; proposal only, no autonomous merge/deploy.
+- No branch/tests/deployment needed for this evidence-only run; Formal Core unchanged by construction.
 
 ## Exact next continuation point
 1. Re-read latest main checkpoint + latest research commit; if another A/B run advanced it, merge and continue from the newer cursor.
 2. Keep USER PRIORITY OVERRIDE primary.
-3. Search repository schema/migrations/research code and safe workflow artifacts specifically for any **append-only** signal/event/journal table or artifact separate from `v7_signal_delivery_state`; inspect D1 schema definitions around signal/execution tables. Do not assume absence until schema search is complete.
-4. If an append-only event source exists and is safely readable, recover 9/16-9/22 BUY/ADD/REDUCE/STOP_LOSS/SELL instances and classify signal-emitted vs push-accepted vs confirmed execution. Only confirmed fills may update execution/restoration evidence.
-5. If no append-only source exists, record the evidence gap explicitly and evaluate a minimal isolated Class A prospective recorder proposal; do not retrofit historical events and do not alter shared/formal runtime without reclassification.
-6. Continue formal scan breadth/planned-capital sequence only when exact plan identities/rows are recoverable.
-7. Keep restoration concepts Shadow-only/untuned; any formal restoration, liquidity, A/B, RR, 15m, allocator or trim change remains Class C/LOCKED.
+3. Do **not** repeat the append-only schema search unless main gains a new schema/migration/event artifact after B-21.
+4. Continue the capital-utilization chain from the earliest point with durable evidence: inspect safe repo artifacts/data/workflow outputs for exact formal plan identities and planned capital rows for 9/16-9/22, prioritizing dates not yet recovered. Separate SELECTED/planned capital from BUY-observed/confirmed fill; do not infer fills.
+5. In parallel, evaluate whether an isolated post-hoc Class A collector can observe already-produced research/live outputs without inserting writes into `processSignalState`; if not, leave the prospective event recorder as a Class B proposal requiring owner approval before production integration.
+6. If exact plan rows become recoverable, quantify `SELECTED -> planned first tranche -> planned max allocation` by independent plan date and compare unused capital attributable to selection breadth versus allocator caps. Keep BUY/fill utilization UNKNOWN unless confirmed execution exists.
+7. Keep restoration concepts Shadow-only/untuned; any formal restoration, liquidity, A/B, RR, 15m, allocator, trim or signal-recorder integration change that can affect production remains Class B/C and must not be promoted autonomously.
