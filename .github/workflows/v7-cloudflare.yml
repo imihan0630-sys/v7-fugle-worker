@@ -46,6 +46,7 @@ on:
       - "scripts/apply_v8_7_13.py"
       - "scripts/apply_v8_8_0.py"
       - "scripts/apply_v8_8_1.py"
+      - "scripts/apply_v8_8_2.py"
       - "RESEARCH_WORKLIST.md"
       - "research/**"
       - "data/v7_formal_scan_backfill.json"
@@ -197,6 +198,9 @@ jobs:
       - name: Apply V8.8.1 execution source coverage
         run: python3 scripts/apply_v8_8_1.py
 
+      - name: Apply V8.8.2 zero-selection push guard
+        run: python3 scripts/apply_v8_8_2.py
+
       - name: Syntax check Worker.js
         run: |
           set -euo pipefail
@@ -206,7 +210,7 @@ jobs:
       - name: Validate V8.7.12 production contract
         run: |
           set -euo pipefail
-          grep -F 'const VERSION = "8.8.1-execution-coverage";' Worker.js
+          grep -F 'const VERSION = "8.8.2-zero-selection-push-guard";' Worker.js
           grep -F 'CREATE TABLE IF NOT EXISTS trade_research_execution_snapshots' Worker.js
           grep -F 'url.pathname==="/api/research/execution-recorder"' Worker.js
           grep -F 'RESEARCH_EXECUTION_RECORDER_FAIL_OPEN' Worker.js
@@ -303,6 +307,7 @@ jobs:
           node tests/test_v8_7_12_after_market_2335.mjs
           node tests/test_v8_8_0_execution_recorder.mjs
           node tests/test_v8_8_1_execution_coverage.mjs
+          node tests/test_v8_8_2_zero_selection_push.mjs
           node tests/github_plan_mirror.mjs self-test
 
       - name: Snapshot existing public monitoring configuration
