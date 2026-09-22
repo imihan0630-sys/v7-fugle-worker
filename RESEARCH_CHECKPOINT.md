@@ -1,6 +1,6 @@
 # Research Checkpoint
 
-Updated: 2026-09-22T09:12+08:00
+Updated: 2026-09-22T09:20+08:00
 
 ## Continuity / baseline
 - Formal Core: **LOCKED**.
@@ -209,6 +209,19 @@ Research consequence:
 3. Attention status itself is outcome-linked; using it as a predictor without careful timing would create leakage/endogeneity risk. Preserve announcement-effective timing.
 4. Current executionMarketState quote flags are not sufficient to identify official disposition status; keep UNKNOWN rather than infer.
 5. No engineering change now before the first v2 coverage audit.
+
+### Fundamental Persistence extension — 2026-09-22T09:20+08:00
+Taiwan-specific monthly-revenue literature provides a stronger candidate direction than adding another price-only factor:
+- Hung, Lu & Yang (2025/2026) reports positive Taiwan monthly-revenue momentum using YoY revenue growth; persistence in revenue growth materially strengthens the effect, and monthly revenue information contributes independently of quarterly revenue announcements.
+- Chen, Liu & Chiao (2022) reports unexpected monthly revenue predicts future earnings growth and stock returns; monthly-revenue surprise, quarterly-revenue surprise and quarterly-earnings surprise are correlated but retain independent cross-sectional information in their tests.
+- Lai et al. (2026) adds a crucial horizon contradiction: record-high monthly revenue can be followed by next-day intraday reversal, especially after strong pre-announcement run-ups/high prices/rapid revenue growth, while subsequent 20-day returns are positive. Pre-announcement institutional net selling strengthens the short-term reversal/recovery pattern.
+
+Implications for current research:
+1. "Fundamental Persistence" should focus on repeated/persistent revenue growth or surprise history, not a single spectacular revenue print.
+2. A strong monthly revenue event plus already-extended price can have opposite short-horizon and medium-horizon behavior. Therefore fundamental strength must not automatically loosen the system's no-chase discipline.
+3. Institutional flow around the announcement is potentially conditioning information, not proof of direction.
+4. Current snapshot already carries quarterlyRevenueYoY/QoQ and quarterly EPS-related evidence, but a proper monthly-revenue persistence series requires PIT announcement history. Do not approximate it from a single latest revenue number.
+5. This direction is worthy of future Class A Shadow research, but do not register a new experiment until the existing prospective archive confirms that monthly-revenue announcement dates/history can be captured PIT without backfill leakage.
 
 ## Bias / data-quality firewall
 - UNKNOWN remains UNKNOWN; no BAD/0 coercion.
