@@ -241,6 +241,58 @@ Future research-only diagnostics should report at least four independent layers 
 Do not change the existing primary win-rate definition retroactively. Add a versioned research estimand beside it so historical continuity is preserved.
 
 
+## Live execution counterexample and structural idle-cash confirmation — 2026-09-22
+Safe public production readback at 2026-09-22 11:34 Taipei provides a useful counterexample and separates two mechanisms.
+
+### One live formal BUY did occur
+Current production plan:
+- 3006 晶豪科, A拉回承接, B級.
+- scan date 2026-09-21, plan date 2026-09-22, formal close 285.
+- buy zone 280.59–287.08, stop 276.36, profit check/reduceAt 309.5.
+- current plan allocation 35% of NT$200,000 = NT$70,000; first tranche NT$42,000 (146 shares), second tranche NT$28,000 (97 shares).
+At 11:34 production readback showed:
+- current price 281.5,
+- fresh quote and fresh formal 15m data,
+- pullback result = BUY,
+- finalDecision = BUY / "A拉回承接：15分K確認，可第一筆",
+- monitor status = A / 立即處理.
+
+This is a direct counterexample to any universal claim that the execution gate never triggers. It does **not** contradict the user's month-level scarcity observation; it demonstrates why the research must estimate conversion over all plans/dates rather than rely on anecdotes.
+
+### Today's path illustrates what the two-bar gate is doing
+Relevant 15m sequence:
+- 09:00 opened 288.5 and sold down; early session was weak.
+- 10:15 close 280, volume ratio 0.76, still bearish.
+- 10:45 close 280, volume ratio 0.65, still bearish.
+- 11:00 close 281.5, volume ratio 0.36, strong close + bullish reversal/engulfing.
+- 11:15 close 282.5 with low 281 > prior low 279.5, bullish, volume ratio 0.8.
+The formal A logic therefore waited through the opening weakness and only triggered after stabilization/higher-low confirmation.
+
+Positive interpretation: the gate avoided buying near the 288.5 opening price and waited for evidence of stabilization around 281–282.
+Reverse interpretation: if many future winners recover after a single reversal bar, the second-bar confirmation may delay entries unnecessarily. One day cannot decide this.
+
+Required future clause-level test:
+- identify first time zone touch occurs,
+- first valid low-volume reversal bar,
+- first higher-low confirmation,
+- formal BUY time,
+- post-trigger MFE/MAE.
+Compare the incremental value of each step prospectively; do not remove a clause because one stock would have entered earlier.
+
+### Structural idle cash is independently confirmed
+Yesterday's formal recommendation selected only this one stock. Public capital plan:
+- total capital NT$200,000,
+- planned investment NT$70,000,
+- remaining cash NT$130,000,
+- first tranche NT$42,000,
+- second tranche NT$28,000.
+So even on a day with a valid candidate **and** a successful first BUY trigger, the first tranche uses only ~21% of total capital. This confirms that a substantial portion of cash idleness is intentional allocation architecture, not solely failed entry signals.
+
+Research implication:
+- month-level capital utilization must decompose policy reserve vs failed first-entry conversion vs unconfirmed/reserved second tranche.
+- do not loosen entry rules to solve cash reserve created by sizing policy.
+
+
 ## Exact next continuation point
 1. Re-read latest checkpoint/main and re-check SHA.
 2. Audit frame10/frame15 timestamp provenance: `researchBarTiming` derives bar end by adding timeframe to `frame.latest.time`; verify whether `buildBar.time` comes directly from Fugle candle `bar.date`, and distinguish calculated completion time from source-observed freshness. Record failure modes around delayed candle publication and cached prior frames.
