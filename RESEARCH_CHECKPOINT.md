@@ -1,6 +1,6 @@
 # Research Checkpoint
 
-Updated: 2026-09-22T09:36+08:00
+Updated: 2026-09-22T09:44+08:00
 
 ## Continuity / baseline
 - Formal Core: **LOCKED**.
@@ -244,6 +244,20 @@ Research implications:
 3. If analyst revisions are later captured, preregister an incremental test beyond price momentum, monthly-revenue persistence, residual RS and institution score; do not treat revision + institution buying as independent votes.
 4. Short-term and swing horizons remain separate: analyst-revision evidence is roughly one-month scale, not evidence for next-day entry timing.
 5. No formal-core change.
+
+### Industry momentum / factor-momentum reverse validation — 2026-09-22T09:44+08:00
+Fresh Taiwan evidence strengthens an existing design choice while also limiting it:
+- A 2026 Taiwan factor-momentum thesis using 2005-2024 data and 32 fundamental/price factors finds standard factor momentum weakens materially after industry-related variation is removed; short-term industry momentum remains comparatively robust. Broader factor momentum also loses significance after adjusting for unconditional factor premia. This argues against treating a large collection of correlated factors as independent alpha sources.
+- Older Taiwan work also found industry momentum stronger/more persistent than individual price momentum in its sample, but sample periods and market structure differ, so this is supporting context rather than current proof.
+- Lin et al. (2016) provides the reverse validation: even momentum itself flips sign during market-state transitions despite positive continuation-state results. Industry strength therefore cannot be promoted without regime-transition control.
+- A 2022 Taiwan short-term momentum study finds the 2015 price-limit widening coincides with a change from average reversal to modest momentum; post-change high-turnover and low-turnover groups can have opposite signs. This further rejects a timeless industry/momentum rule.
+
+Research consequence:
+1. Preserve R03 industry persistence and R06 regime transition as separate evidence dimensions. Industry continuation is promising, but must survive transition-state falsification.
+2. Do not add generic factor momentum. The 2026 evidence suggests much of it can be industry exposure or unconditional factor premium in disguise.
+3. For candidate ranking research, "leading industry + strong stock" should eventually be tested against "strong stock in non-leading industry" and "leading industry control stock" on the same scan date; otherwise stock alpha and industry beta remain confounded.
+4. Existing Residual RS is especially valuable as the counterweight: a stock should not receive research credit twice for industry strength and stock strength unless residual stock-level strength remains after sector removal.
+5. No formal-core change and no new experiment ID yet.
 
 ## Bias / data-quality firewall
 - UNKNOWN remains UNKNOWN; no BAD/0 coercion.
