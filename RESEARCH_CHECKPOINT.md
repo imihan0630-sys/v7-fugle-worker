@@ -240,6 +240,38 @@ If early would-be entries have materially worse MAE/false-break outcomes, the de
 
 No same-day volume baseline, entry time, plan validity, A/B trigger, or Formal Core rule is changed.
 
+## Manual continuation — early-window Shadow observability gap (2026-09-22)
+
+The newly identified 10:45 earliest-entry clock gate is **not fully testable with the current execution-shadow stage schedule**.
+
+Current sparse events:
+- OPEN_BASELINE ~09:00-09:02
+- FIRST_10M_COMPLETE ~09:11-09:12
+- FIRST_15M_COMPLETE ~09:16-09:17
+- FIRST_30M_COMPLETE ~09:31-09:32
+- FORMAL_SIGNAL_OBSERVED when a formal signal exists
+
+But the formal A/B BUY clock cannot become eligible until ~10:45 because the first comparable 15m volume-ratio bar is 10:15 and a subsequent confirming/retest bar is required.
+
+Therefore the critical interval **09:32–10:44** is unobserved by scheduled execution-shadow events for plans that never produce a formal signal. Current Shadow can show the opening state and eventual formal signals, but cannot reliably distinguish:
+- early favorable move that became too extended before eligibility,
+- early failed move that the delay correctly filtered,
+- candidate that remained tradable into the formal window.
+
+### Research-only instrumentation candidate
+If/when recorder storage is verified, a zero-additional-market-call extension could add sparse research-only stages using the monitor result already computed:
+- FIRST_60M_COMPLETE (~10:01)
+- FIRST_90M_COMPLETE (~10:31)
+- ENTRY_ELIGIBILITY_BASELINE (~10:46, after the first possible two-bar 15m decision)
+
+These snapshots would preserve the actual 15m bar sequence around the hidden clock gate without changing entry logic, ranking, signals, push, capital or trading.
+
+### Reverse / engineering constraint
+- Do not add stages merely because the clock-gate hypothesis sounds plausible; first verify the current recorder is actually writing D1 rows.
+- Extra D1 writes increase research storage and should remain sparse.
+- Any implementation must remain fail-open and use already-fetched monitor results; no extra Fugle calls.
+- This is a possible Class A research instrumentation change only after recorder-storage observability is established. No implementation performed in this turn.
+
 ## Bias / data-quality firewall
 UNKNOWN stays UNKNOWN; no historical execution-shadow backfill; independent scan date is primary evidence unit; no causal claims from contemporaneous correlation; no outcome-driven threshold/window retuning; watch selection bias, look-ahead, data snooping, market-source bias, Factor Zoo, overfit, coverage, zero-pick, costs and date clustering.
 
