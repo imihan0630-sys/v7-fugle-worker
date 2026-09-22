@@ -1,6 +1,6 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-7 after main `e7b58dff48d77c913e9104822bad0deec0876d5a`.
+Checkpoint sequence: A-8 after main `e7b58dff48d77c913e9104822bad0deec0876d5a`.
 
 > Continuity note: prior detailed checkpoints remain durable in Git history. This file is the canonical current cursor for both A/B research schedules.
 
@@ -51,22 +51,40 @@ Known mechanics:
 - Repository artifacts do not establish complete timestamped pre/post actual-share history around REDUCE events. `REDUCED_CONFIRMED` coverage remains UNKNOWN; alerts/daily OHLC cannot be converted into fills.
 - Minimal future confirmed-reduction evidence, if later justified as isolated Class A: symbol, observedAt, trusted source/provenance, actually observed sharesBefore/sharesAfter, linkable reduce-signal identity, confirmationStatus CONFIRMED/UNKNOWN, and executionPrice only if trusted. No inferred fill time/price/share delta.
 
-## NEW B-7 — BUY-observed vs no-BUY covariate-balance feasibility audit (2026-09-22)
-### What existing artifacts can and cannot join
-- `researchExecutionAlphaFromRows()` currently joins `v8_trade_journal_plans` to first BUY signals by `(plan_scan_date, symbol)`. The plan query exposes only `scan_date,symbol,name,formal_close,buy_low,buy_high`; it does **not** expose strategy, pool, sector, liquidity, Residual RS or volatility in this research read.
-- The Shadow outcome path preserves each archive row's full `snapshot`, plus `pool` and cohort, so PIT research covariates such as sector/Residual-RS/volatility may exist there when captured at scan time. However the current execution-alpha rows discard that snapshot and retain only scanDate/symbol/name/formalClose/entryPrice/time and price-improvement metrics.
-- Therefore a descriptive BUY-observed vs no-BUY balance table is **conceptually joinable** by `(scanDate,symbol)` only if both individual plan membership and BUY identity are available in the same authorized research execution. It is **not safely reconstructable from the present public/durable aggregate evidence**.
-- Existing aggregate `selectedPlans=4`, `buyTriggeredPlans=1` is insufficient for covariate balance. Do not infer the three no-BUY identities or their attributes.
+## B-7 — BUY-observed vs no-BUY covariate-balance feasibility audit (2026-09-22)
+- `researchExecutionAlphaFromRows()` currently joins plans to first BUY signals by `(plan_scan_date, symbol)`, but the current execution-alpha projection discards most PIT covariates.
+- Shadow preserves full `snapshot`, `pool`, cohort and selected identity, so a descriptive balance table is conceptually joinable only when individual BUY identity is available in the same authorized research execution.
+- Aggregate `selectedPlans=4`, `buyTriggeredPlans=1` is insufficient to infer the three no-BUY identities or attributes.
+- BUY-observed is execution-selected, not randomized. Raw outcome differences mix execution with selection/confounding; same-date clustering remains mandatory.
 
-### Confounding / bias implication
-- BUY-observed is an execution-selected subgroup, not a randomized sample. Price level, strategy A/B, pool, liquidity, sector, volatility and momentum state can all affect both trigger probability and later outcome; raw BUY-vs-no-BUY outcome differences would therefore mix execution effect with selection/confounding.
-- Covariate balance is descriptive diagnostics only, not causal adjustment and not a new factor. Same-date clustering remains mandatory; one prospective scan date cannot establish balance or outcome direction.
-- Missing PIT covariates remain UNKNOWN. Do not backfill sector/Residual-RS/volatility using later snapshots.
-- Positive mechanism: confirmation may screen weak paths. Reverse mechanism: confirmation may preferentially chase high-attention/high-volatility names and miss quiet winners. Current evidence cannot choose between them.
+## NEW A-8 — exact PIT covariate field audit (2026-09-22 14:43 Taipei)
+### Pre-registered balance fields
+The existing prospective Shadow schema already captures the requested covariates at selection time; no new field is justified yet:
+- **price — AVAILABLE_PIT:** `snapshot.price.close`.
+- **liquidity — AVAILABLE_PIT:** `snapshot.volume.avgVolume20Lots` and `snapshot.volume.avgAmount20`; both are selection-time research snapshot fields. Do not choose whichever looks better after outcomes; a future report must pre-specify one primary liquidity scale or report both descriptively without winner-picking.
+- **strategy A/B — AVAILABLE_PIT:** `snapshot.strategy` stores `A拉回承接` / `B突破後承接` when the formal candidate carries channel A/B. For SELECTED rows this is the formal selected strategy identity.
+- **pool — AVAILABLE_PIT:** Shadow row column `pool` is deterministically captured as `GENERAL` or `THOUSAND` from selection-time close and the frozen thousand-stock boundary.
+- **sector — AVAILABLE_PIT:** `snapshot.sector.name`.
+- **Residual RS — AVAILABLE_PIT:** `snapshot.price.residualSectorRs20` (also mirrored as `snapshot.sector.residualRs20`). Use one canonical path only to avoid duplicate-vote/redundancy mistakes.
+- **volatility — AVAILABLE_PIT:** `snapshot.price.volatility20`.
 
-### Engineering classification
-- No code was changed. A future isolated research-only join/report could be Class A only if it reads existing research/journal data without changing shared schemas, runtime fetches, formal selection or signals. Adding fields to shared plan/runtime plumbing or protected production paths would be Class B and requires proposal/approval before production promotion.
-- No new factor, threshold, window or experiment was created. Formal Core unchanged.
+### Provenance / joinability boundary
+- `buildResearchSnapshot()` marks research-only / decisionImpact=false and prospective provenance; V8.7.1 reconstructs price features only from bars through `scanDate`, while prospective Shadow explicitly adds `capturedAtSelection:true`, `shadowOnly:true`, `noForwardFill:true`.
+- Shadow storage persists `pool` separately plus full `snapshot_json`; SELECTED rows are included in the archive before other cohorts.
+- Therefore **covariate availability is no longer the blocker**. The remaining blocker is identity/read coverage: individual BUY-observed identities are not safely available from current public/durable aggregate evidence, and execution-shadow D1 storage coverage remains UNKNOWN.
+- Formal-plan normalized objects also preserve `researchSnapshot`, but changing shared plan/runtime plumbing merely to expose these fields would be Class B and is not justified while the isolated Shadow copy already contains them.
+
+### Bias / redundancy checks
+- Price, pool and liquidity are mechanically related; THOUSAND pool is defined from price. They must not be interpreted as independent causal controls.
+- `residualSectorRs20` appears in two snapshot paths but is the same construct, not two variables.
+- Strategy A/B is selected by formal setup rules and can be strongly confounded with volatility/attention/path shape. Balance diagnostics are descriptive only.
+- UNKNOWN stays UNKNOWN for any malformed/missing snapshot field; no later market data may backfill a selection-time covariate.
+- One prospective scan date remains insufficient for inference; no outcome direction is evaluated in this audit.
+
+### Engineering classification / status
+- Class A source/documentation audit only. No executable code, schema, runtime, deployment, factor, threshold, window or experiment changed.
+- No tests/deployment required because executable code is unchanged; Formal Core invariants unchanged by construction.
+- R01-R08 / I01-I07 unchanged; no R09/I08.
 
 ## Conditional R03/R04/R07/R08 diagnostic design — design only
 When mature, condition existing frozen outcomes as:
@@ -76,17 +94,12 @@ When mature, condition existing frozen outcomes as:
 4. scan-date clustered leave-one-date-out robustness.
 Sparse cells remain UNKNOWN/ACCUMULATING. Do not pool merely for significance.
 
-## Engineering status
-- B-7 is source/documentation research only; no executable code, production runtime, deployment, thresholds, signals or formal outputs changed.
-- Classification: Class A research finding/design only. No deployment/tests required because executable code is unchanged; Formal Core invariants unchanged by construction.
-- No new factor/experiment/window; R01-R08/I01-I07 unchanged.
-
 ## Exact next continuation point
 1. Re-read latest governance/worklist/checkpoint and latest main commit; re-check checkpoint SHA immediately before any write.
-2. Continue prospective SELECTED -> BUY-observed vs no-BUY only when D1/D3/D5/D10/D20 outcomes mature; same-date stocks remain clustered and positive daily return must never be treated as proof of executability.
-3. Before any early-window/clause-level recorder or shared-plumbing change, establish execution-shadow recorder storage/read coverage through an existing safe/authorized path; otherwise retain UNKNOWN.
-4. Audit the exact PIT field names in Shadow `snapshot` and formal-plan construction for the pre-registered descriptive balance set: price, liquidity, strategy A/B, pool, sector, Residual RS and volatility. Mark each field AVAILABLE_PIT / UNKNOWN / NOT_JOINABLE; do not add new fields yet.
-5. If all required identities/fields become safely readable, specify (but do not outcome-tune) a scan-date-clustered balance report for BUY-observed vs no-BUY. Do not interpret outcome differences until balance/confounding is described and multiple prospective dates mature.
+2. Treat the seven balance dimensions above as frozen descriptive diagnostics; do not add new covariates or tune definitions after seeing outcomes.
+3. Establish execution-shadow recorder storage/read coverage through an existing safe/authorized path before building any BUY-observed identity report. If individual BUY identities remain unavailable, keep the report NOT_JOINABLE/UNKNOWN rather than modifying shared plumbing.
+4. Once individual BUY identity and SELECTED Shadow rows are safely readable for multiple prospective scan dates, specify a scan-date-clustered balance report. Pre-specify primary liquidity representation and canonical Residual-RS path before computing group differences.
+5. Continue prospective SELECTED -> BUY-observed vs no-BUY outcome interpretation only after D1/D3/D5/D10/D20 mature; positive daily return is never proof of executability.
 6. Keep REDUCED_CONFIRMED UNKNOWN until trusted actual-share observations exist; future append-only confirmation recorder remains design only.
 7. Keep joint sector-persistence diagnostic as design until maturity/governance gates are satisfied.
 8. Formal Core remains LOCKED. No Class B/C production change without explicit owner decision.
