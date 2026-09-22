@@ -1,7 +1,7 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-39.
-Updated: 2026-09-23 05:18 Asia/Taipei.
+Checkpoint sequence: B-40.
+Updated: 2026-09-23 05:44 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Earlier detailed evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
@@ -31,63 +31,17 @@ Cash utilization is diagnostic, not an optimization target.
 - 2026-09-17 selected cohort: 4763 材料*-KY and 1301 台塑. Through 09/22 selected pair equal-weight endpoint about +0.37%, average MFE +7.55%, MAE -0.57%; near-miss 12 endpoint about -0.77%, MFE +1.12%, MAE -1.46%. One independent date only; no filter change.
 - 8046 南電: user-confirmed 2026-09-04 trim 100/200 shares near local trough. Sector-aware restoration remains Shadow concept only; no production re-entry rule.
 
-## NEW B-38 — bounded human-momentum discretion hypothesis (research-only)
-### Owner hypothesis
-A purely defensive rule stack may systematically under-model a useful human behavior: when a stock is rising with genuine market acceptance, an experienced trader may deliberately buy strength before every conservative confirmation has completed. The target is **追漲而非追高**: pay for evidence of continuation, not for emotional FOMO.
+## B-38 retained — bounded human-momentum discretion hypothesis (research-only)
+- Hypothesis: experienced `追漲而非追高` behavior may capture genuine price acceptance before every conservative confirmation completes.
+- Must be falsified against FOMO/exhaustion/fake-breakout/gap-chasing, MAE, stop-first chronology, costs and whipsaw.
+- Keep execution-alpha experiment on the same formal SELECTED names separate from any near-miss selection-alpha rescue experiment.
+- Candidate tag remains `HUMAN_MOMENTUM_SHADOW`, research-only; no Formal Core change.
 
-### Positive thesis to test
-- Strong price acceptance, relative-strength persistence, sector/breadth confirmation, expanding participation, and orderly higher-low structure may contain information that is lost when the engine waits for every pullback/retest/15m clause.
-- A bounded momentum entry could improve execution alpha, reduce idle cash caused by confirmation latency, and capture moves that never provide the ideal pullback.
-- The useful behavior may apply both to execution of formal SELECTED names and, separately, as a research-only rescue tag for high-quality near-miss names. These must be evaluated independently to avoid mixing selection alpha with execution alpha.
-
-### Falsification / human-bias thesis
-- The same behavior can be FOMO, late-cycle chasing, exhaustion, gap-chasing, or fake-breakout buying.
-- Human discretion can also create inconsistency, hindsight rationalization, and regime-dependent overconfidence; therefore no narrative override is allowed.
-- Any candidate optimization must be compared against false-breakout rate, stop-first chronology, MAE, spread/slippage/turnover cost, gap/exhaustion risk, and whipsaw across independent dates/regimes.
-
-### Shadow design candidate — no Formal Core change
-Evaluate an additive research tag such as `HUMAN_MOMENTUM_SHADOW`, never a production A/B grade and never an automatic override. For each eligible observation, record:
-- whether the stock is already formal SELECTED or only near-miss;
-- price location versus breakout/buyHigh/maxChase and normalized distance using ATR/volatility, not only fixed percent;
-- intraday acceptance: closes holding above breakout/VWAP/reference level, higher lows, failure-recovery behavior, and whether pullbacks are shallow/orderly;
-- participation: volume/turnover expansion without one-bar blowoff concentration;
-- relative strength versus sector/market and whether the sector is confirming;
-- trend age / prior run-up / gap size / upper-wick or parabolic-exhaustion flags;
-- hypothetical early-strength entry price, current formal BUY time/price if any, stop, MFE/MAE, stop-first vs target-first chronology, D1/D3/D5, and transaction-cost-adjusted result.
-
-### Required comparisons
-1. Current formal execution vs `HUMAN_MOMENTUM_SHADOW` on the **same formally selected names**. This isolates execution alpha.
-2. Current SELECTED vs near-miss + human-momentum rescue tag. This is a separate selection-alpha experiment; do not pool it with #1.
-3. Split by market regime and sector confirmation.
-4. Specifically measure cases where Shadow enters earlier and wins, enters earlier and stops, formal waits and later buys higher, formal never buys but thesis succeeds, and Shadow buys a blowoff/fake breakout.
-5. No threshold optimization from a single date. Independent scan/signal date remains the primary evidence unit.
-
-### Governance
-- Formal Core remains LOCKED. No change to A/B, BUY, maxChase, stop, capital, or deployment.
-- This is a hypothesis registration, not evidence that human-like aggression is superior.
-- Any future production proposal requires positive + negative evidence, costs, cross-date/regime robustness, and explicit owner approval.
-
-## NEW B-39 — zero-selection notification delivery incident
-### Owner requirement
-- A completed after-market scan must notify the owner even when `selectedCount=0`. Zero selection is a valid decision result, not a reason to suppress the daily notification.
-
-### Verified evidence
-- Current code path builds a `DAILY_SELECTION:<scanDate>` payload even for zero names, with title `V7盤後：今日 0 檔，維持現金`, and calls the daily-report push path regardless of `stocks.length`.
-- 2026-09-22 scheduled health run `35751075627` completed successfully. Its after-market verifier requires the daily report to have `sent=true`, `simulated=false`, a durable `DAILY_SELECTION:<date>` signal id, and an outbox row with `delivery_state=ACCEPTED`.
-- The same verifier explicitly returns `handsetReceiptVerified:false`; webhook acceptance therefore does **not** prove the owner's handset received the message.
-- Owner reports no after-market notification was received. Treat this as a delivery-semantics/reliability gap, not as proof the zero-selection branch was skipped.
-
-### Proposed production behavior (Class C — NOT deployed)
-1. Every successful after-market scan, including 0 selections, must create exactly one daily result notification.
-2. Do not equate upstream HTTP/webhook `ACCEPTED` with owner-visible delivery.
-3. Daily-selection completion should expose separate states such as `WEBHOOK_ACCEPTED`, `HANDSET_RECEIPT_CONFIRMED`, and `DELIVERY_UNCONFIRMED` where technically supported.
-4. If handset receipt is supported but absent after a bounded interval, raise an explicit delivery warning and/or perform a bounded idempotent retry; never duplicate trading signals uncontrollably.
-5. Preserve the distinction between `0 selections successfully completed` and `scan/push failed`.
-6. No selection, ranking, BUY, capital, stop, or other Formal Core rule changes are part of this proposal.
-
-### Governance
-- Push/notification behavior is Class C under `RESEARCH_ENGINEERING_GOVERNANCE.md`.
-- This checkpoint records the owner requirement and incident evidence only. No production push behavior was changed or deployed in this step.
+## B-39 retained — zero-selection notification delivery incident
+- Owner requires a daily result notification even when selectedCount=0.
+- Current code creates a zero-name DAILY_SELECTION payload and upstream verifier can prove webhook/outbox ACCEPTED, but cannot prove handset receipt (`handsetReceiptVerified:false`).
+- Owner reported no after-market notification. Treat as delivery-semantics/reliability gap, not proof zero-selection branch was skipped.
+- Any push/notification behavior change is Class C. No production change deployed.
 
 ## Historical execution evidence retained
 - 09/17 formal plans: 6706 惠特, 3006 晶豪科, 6505 台塑化. 09:27 and 13:19 monitoredCount=3, formal15Ready=3, waitingForFreshData=0, notificationCount=0. Exact historical zones unavailable; symbol-level blocking clause UNKNOWN.
@@ -96,46 +50,39 @@ Evaluate an additive research tag such as `HUMAN_MOMENTUM_SHADOW`, never a produ
 - 09/22 scheduled health run `35751075627` positively verified formal selectedCount=0, planCount=0, signalCount=0. Preserve 09/22 as a formal zero-pick date, not an Execution Alpha failure.
 - `SHADOW_SCAN_STATUS(2026-09-22)=UNKNOWN`; no trusted per-date Shadow count exists. Do not infer it from aggregate totals.
 
-## B-36 retained — provenance semantics refinement
-- Existing `readShadowCounterfactualResearch()` silently maps malformed `snapshot_json` to `{}`, malformed history JSON to `[]`, and a missing history row also reaches outcome enrichment as `[]`; existing `coverage.dN` cannot distinguish these from ordinary incomplete horizons.
-- Falsified the too-simple rule `fewer than h cached post-scan bars => not yet mature`. Cache insufficiency and calendar maturity are different dimensions.
-- Frozen conservative semantics: snapshot parse state; baseline close state; history row/parse/empty/OK state; `historyLastDate`; `postScanValidBars`; horizon `OUTCOME_AVAILABLE` vs provenance failure/`OBSERVED_HISTORY_INSUFFICIENT`; calendar maturity remains UNKNOWN unless a trustworthy trading-calendar source is explicitly available at the research boundary.
-- No evidence yet proves malformed/stale prospective rows actually occur; occurrence rate remains UNKNOWN.
+## B-36/B-37 retained — provenance semantics + isolated scaffold
+- Existing counterfactual research can collapse malformed snapshot/history and missing history into ordinary empty structures; existing `coverage.dN` cannot distinguish these provenance failures.
+- Conservative semantics remain frozen: snapshot parse state; baseline close state; history row/parse/empty/OK; historyLastDate; postScanValidBars; OUTCOME_AVAILABLE vs provenance failure/OBSERVED_HISTORY_INSUFFICIENT; calendar maturity UNKNOWN without trusted calendar evidence.
+- Isolated branch `research/b13-shadow-provenance` contains `research/shadow_provenance_v8_8_2.js` and `research/shadow_provenance_v8_8_2.test.mjs` at branch commit `78228598587800b8c24112d706078208fcdce7b4`.
+- Helper is not imported by production/runtime; existing outcome and coverage behavior remain untouched. Tests were authored but not yet executed.
 
-## NEW B-37 — isolated provenance implementation scaffold
-### Research question
-Can the refined B-36 provenance semantics be implemented in an isolated, testable Class A artifact without touching the existing counterfactual outcome calculations or Formal Core?
+## NEW B-40 — authorized CI path audit for provenance tests
+### Research / engineering question
+Can the isolated Class A provenance targeted test be executed through an already-authorized repository CI path without modifying deployment/runtime or falsely claiming an unexecuted test PASS?
 
-### Evidence / implementation
-- Re-read governance/worklist/checkpoint and latest main first. Latest main before this cycle was B-36 commit `e4037c81200fe90f9e9d4edfb6f4c7a57a7bfc42`; checkpoint blob SHA was `ab6b5464d3e53c77c7d838d2fa3c9d7543112be4`.
-- Re-read the current branch blob for `research/counterfactual_v8_7_4.js`. Existing outcome and `coverage.dN` logic was not modified.
-- On isolated branch `research/b13-shadow-provenance`, added `research/shadow_provenance_v8_8_2.js` at commit `9ba76f885b1915d7073e3c42a556a837d8927b6e`.
-- The helper implements only research provenance: `SNAPSHOT_PARSE_OK/ERROR`, `BASELINE_CLOSE_OK/MISSING`, `HISTORY_ROW_MISSING/PARSE_ERROR/EMPTY/OK`, `historyLastDate`, `postScanValidBars`, conservative horizon provenance, and `calendarMaturity: UNKNOWN`.
-- Added targeted test artifact `research/shadow_provenance_v8_8_2.test.mjs` at branch commit `78228598587800b8c24112d706078208fcdce7b4` covering malformed snapshot + valid history, valid snapshot + malformed history, missing history row, empty history, insufficient post-scan bars, mature D1, and explicit UNKNOWN-preserving semantics.
-- Important: tests are **written but not yet executed** in this cycle because the connected GitHub interface does not expose arbitrary branch command execution. Do not claim PASS from test source alone.
-- The helper is not imported by production/runtime code, so this cycle cannot alter formal selection, ranking, monitoring, notification, capital, signals, existing outcomes, or existing `coverage.dN`.
+### Evidence
+- Re-read governance, worklist and latest canonical checkpoint first; checkpoint blob before this write was `36b9ad223efbf0e710808a5273d93c46d86b27ff`.
+- Re-read the branch test and helper. The targeted test source covers malformed snapshot, malformed/missing/empty history, observed-history insufficiency, finite D1 outcome precedence and UNKNOWN-preserving parse semantics.
+- Audited `.github/workflows` on `research/b13-shadow-provenance`. Existing `v7-regression.yml` has `workflow_dispatch`, but its automatic push trigger is limited to `main` and `repair/v7-30-rules-20260916`; it does not automatically execute this research branch.
+- Existing regression workflow also does not invoke `research/shadow_provenance_v8_8_2.test.mjs` in the inspected workflow section. Therefore an existing successful production regression run cannot be repurposed as evidence that the new targeted test passed.
+- Connected GitHub tooling in this run exposes read/re-run operations for existing workflow runs/jobs but no safe generic workflow-dispatch action for starting a new branch run. A GET-style GitHub fetch cannot POST a workflow dispatch. No test execution was fabricated.
 
 ### Falsification / bias / safety
-- The implementation deliberately does not synthesize bars, infer missing data from current prices, backfill historical Shadow, or reinterpret missing as BAD/0.
-- A parsed history with too few post-scan valid closes becomes `OBSERVED_HISTORY_INSUFFICIENT` for horizons beyond observed coverage; it is never labeled calendar-immature.
-- If an existing finite outcome is supplied to the helper, provenance reports `OUTCOME_AVAILABLE`; the helper does not recompute or overwrite that outcome.
-- Selection bias risk from silently missing histories becomes observable once integrated; this cycle does not assert that such missing histories actually exist.
-- No factor, threshold, window, cohort definition, transaction-cost assumption, or R01-R08/I01-I07 definition changed. Factor Zoo/redundancy counts unchanged.
+- Test source assertions are not execution evidence. Status remains TEST_WRITTEN_NOT_EXECUTED.
+- No attempt was made to merge the helper into main merely to obtain CI, because that would reverse the required safety order (tests/invariants before integration).
+- No new factor, threshold, window, cohort, R01-R08/I01-I07 definition, historical Shadow or market evidence was created.
+- Formal outputs, existing `coverage.dN`, selection, capital, monitoring and push behavior remain unchanged.
 
 ### Engineering classification / deployment
-- Class A isolated research-only scaffold.
-- Branch only: `research/b13-shadow-provenance` at `78228598587800b8c24112d706078208fcdce7b4`.
-- Production deployment: none. Formal Core/runtime unchanged.
-- Main receives checkpoint only; no research helper code was merged to main.
-- Integration into `readShadowCounterfactualResearch()` remains pending until tests/regression/invariants can be executed and old `coverage.dN` equivalence is proven.
+- Class A research-only audit; no runtime/deployment change.
+- Branch code unchanged this cycle; main receives checkpoint only.
+- Production deployment: none. Rollback baseline remains V8.8.0; verified production research baseline remains V8.8.1.
 
 ## Exact next continuation point
 1. Re-read governance/worklist/checkpoint and latest main SHA; re-check checkpoint SHA immediately before any write.
-2. If a newer trusted formal scan with >=1 plan exists, primary funnel regains priority: establish plan date/count from Production readback, then verify execution-recorder target-date coverage and 500-row non-truncation before interpreting signals. On that same date, add research-only `HUMAN_MOMENTUM_SHADOW` observations so early-strength execution can be compared with formal BUY without changing production behavior.
-3. Keep selection-alpha and execution-alpha human-discretion experiments separate: first test the same SELECTED names; only then evaluate any near-miss rescue cohort.
-4. Otherwise continue on `research/b13-shadow-provenance`: execute the new targeted test artifact through an authorized repository CI/test path if available; do not treat source assertions as executed evidence.
-5. Add an explicit regression test that snapshots old `researchShadowOutcomeForRow()` and old `coverage.dN` behavior against representative frozen inputs, then prove the provenance helper leaves those outputs unchanged.
-6. Only after targeted tests + regression/invariant evidence pass, integrate provenance into `readShadowCounterfactualResearch()` as additive diagnostics. No outcome or `coverage.dN` redefinition. If integration touches shared runtime in a way that cannot guarantee isolation, reclassify Class B and stop before merge/deploy.
-7. Do not label insufficient cached bars `NOT_YET_MATURE`; keep `OBSERVED_HISTORY_INSUFFICIENT` plus `CALENDAR_MATURITY=UNKNOWN` unless trustworthy calendar maturity evidence exists.
-8. Do NOT revisit 09/18 execution or 09/22 Shadow inference without new trusted evidence. Keep 09/22 `NO_FORMAL_SELECTION=VERIFIED`, `SHADOW_SCAN_STATUS=UNKNOWN`.
-9. Signal != fill. `REDUCED_CONFIRMED` requires trusted actual reduced shares.
+2. If a newer trusted formal scan with >=1 plan exists, primary funnel regains priority: establish plan date/count from Production readback, then verify execution-recorder target-date coverage and 500-row non-truncation before interpreting signals. Add same-date research-only HUMAN_MOMENTUM_SHADOW observations on formal SELECTED names first; do not mix near-miss rescue with execution alpha.
+3. Otherwise continue `research/b13-shadow-provenance` without integrating into runtime: add an explicit standalone regression test artifact that freezes representative old `researchShadowOutcomeForRow()` / `coverage.dN` outputs and demonstrates the provenance helper is observational-only. Keep it executable with plain Node and no secrets/network.
+4. Search for an already-authorized CI mechanism that can execute branch research tests without changing shared deployment workflow. If none exists, record the limitation; do not modify shared workflow solely to run this test without reclassification (workflow/pipeline change is Class B).
+5. Only after targeted tests + old-output regression/invariant tests have actually executed and passed may provenance integration be considered. Integration must remain additive; no outcome/coverage redefinition. If isolation cannot be guaranteed, reclassify Class B and stop before promotion.
+6. Keep `OBSERVED_HISTORY_INSUFFICIENT` distinct from calendar maturity; `CALENDAR_MATURITY=UNKNOWN` unless trusted calendar evidence exists.
+7. Do NOT revisit 09/18 execution or infer 09/22 Shadow without new trusted evidence. Signal != fill; `REDUCED_CONFIRMED` requires trusted actual reduced shares.
