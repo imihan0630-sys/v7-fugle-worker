@@ -53,7 +53,7 @@ replace_once(
 '''function formatSlackSignalMessage(payload) {
   if (payload?.signalType === "DAILY_ZERO_SELECTION_CONFIRM") {
     return [
-      `<!channel>\\n🔔 *${payload.title}*`,
+      `<!here>\\n🔔 *${payload.title}*`,
       payload.instruction,
       "正式 SELECTED：0 檔",
       "狀態：掃描完成，不是系統漏跑",

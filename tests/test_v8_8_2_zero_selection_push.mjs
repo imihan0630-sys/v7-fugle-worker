@@ -16,6 +16,7 @@ assert.ok(source.includes('deliverySemantics:"WEBHOOK_ACCEPTED_DOES_NOT_PROVE_HA
 assert.ok(source.includes('payload?.signalType === "DAILY_SELECTION" ? { link_names: 1 } : {}'));
 assert.ok(source.includes('payload?.signalType === "DAILY_ZERO_SELECTION_CONFIRM" ? { link_names: 1 } : {}'));
 assert.ok(source.includes("狀態：掃描完成，不是系統漏跑"));
+assert.ok(source.includes(`<!here>\\\\n🔔 *${payload.title}*`));
 assert.ok(health.includes("DAILY_ZERO_SELECTION_CONFIRM:"));
 assert.ok(health.includes("Zero-selection failsafe missing from durable outbox"));
 console.log(JSON.stringify({
