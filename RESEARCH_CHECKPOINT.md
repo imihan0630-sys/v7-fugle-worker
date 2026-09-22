@@ -1,6 +1,6 @@
 # Research Checkpoint
 
-Checkpoint sequence: A-6 after main `21da24fff48801a18bb46aa3636dea848e7660a6`.
+Checkpoint sequence: B-7 after main `e7b58dff48d77c913e9104822bad0deec0876d5a`.
 
 > Continuity note: prior detailed checkpoints remain durable in Git history. This file is the canonical current cursor for both A/B research schedules.
 
@@ -46,33 +46,27 @@ Known mechanics:
 - Keep cohorts distinct: `REDUCE_SIGNAL_OBSERVED` vs `REDUCED_CONFIRMED`. The latter requires trusted actual-share evidence.
 - REDUCED->RE-ADD research must index confirmed post-reduction shares, not push time; no recovery threshold is chosen.
 
-## NEW A-6 — safe-read and trusted-share audit (2026-09-22 13:41 Taipei)
-### Existing safe journal read
-- Re-read latest main tree and current source paths. No repository artifact provides a secret-free individual journal-signal export or a durable public read of individual BUY/REDUCE rows.
-- Existing protected journal/research endpoints remain the known route for individual rows; this turn found no alternate authorized-without-secret-exposure read.
-- Consequence: exact BUY-time distribution and individual REDUCE-signal population remain **UNKNOWN** from currently safe evidence. Do not request/expose ADMIN_TOKEN merely to improve research convenience.
+## A-6 — safe-read and trusted-share audit (2026-09-22 13:41 Taipei)
+- No repository artifact provides a secret-free individual journal-signal export or durable public read of individual BUY/REDUCE rows. Existing protected journal/research endpoints remain the known route. Exact BUY-time distribution and individual REDUCE-signal population therefore remain UNKNOWN from safe evidence.
+- Repository artifacts do not establish complete timestamped pre/post actual-share history around REDUCE events. `REDUCED_CONFIRMED` coverage remains UNKNOWN; alerts/daily OHLC cannot be converted into fills.
+- Minimal future confirmed-reduction evidence, if later justified as isolated Class A: symbol, observedAt, trusted source/provenance, actually observed sharesBefore/sharesAfter, linkable reduce-signal identity, confirmationStatus CONFIRMED/UNKNOWN, and executionPrice only if trusted. No inferred fill time/price/share delta.
 
-### Position confirmation / actual-share history
-- Current architecture separates emitted operation signals from actual position confirmation. Durable source evidence retained from prior audit shows REDUCE emission does not mutate shares/stage.
-- Repository artifacts do not establish a complete timestamped pre/post actual-share history around REDUCE events. Chat/recovered selections are not an execution ledger and must not be promoted into confirmed fills.
-- Therefore `REDUCED_CONFIRMED` coverage remains **UNKNOWN**; no historical conversion rate or restoration outcome may be estimated.
+## NEW B-7 — BUY-observed vs no-BUY covariate-balance feasibility audit (2026-09-22)
+### What existing artifacts can and cannot join
+- `researchExecutionAlphaFromRows()` currently joins `v8_trade_journal_plans` to first BUY signals by `(plan_scan_date, symbol)`. The plan query exposes only `scan_date,symbol,name,formal_close,buy_low,buy_high`; it does **not** expose strategy, pool, sector, liquidity, Residual RS or volatility in this research read.
+- The Shadow outcome path preserves each archive row's full `snapshot`, plus `pool` and cohort, so PIT research covariates such as sector/Residual-RS/volatility may exist there when captured at scan time. However the current execution-alpha rows discard that snapshot and retain only scanDate/symbol/name/formalClose/entryPrice/time and price-improvement metrics.
+- Therefore a descriptive BUY-observed vs no-BUY balance table is **conceptually joinable** by `(scanDate,symbol)` only if both individual plan membership and BUY identity are available in the same authorized research execution. It is **not safely reconstructable from the present public/durable aggregate evidence**.
+- Existing aggregate `selectedPlans=4`, `buyTriggeredPlans=1` is insufficient for covariate balance. Do not infer the three no-BUY identities or their attributes.
 
-### Minimal future evidence design — research-only specification, not implemented
-If an isolated Class-A recorder becomes justified after storage/read coverage is verified, the minimum evidence for a confirmed reduction should be append-only and separate from production position state:
-- `symbol`
-- `observedAt`
-- `source` / provenance of the trusted actual-share observation
-- `sharesBefore` (only when actually observed)
-- `sharesAfter` (only when actually observed)
-- `linkedReduceSignalId` or stable `(planScanDate,symbol,reduceOccurredAt)` when linkable
-- `confirmationStatus` = CONFIRMED / UNKNOWN; never infer CONFIRMED from a signal
-- optional `executionPrice` only when supplied by trusted execution evidence; otherwise UNKNOWN
-No inferred fill time, price or share delta from alerts/daily OHLC is permitted.
+### Confounding / bias implication
+- BUY-observed is an execution-selected subgroup, not a randomized sample. Price level, strategy A/B, pool, liquidity, sector, volatility and momentum state can all affect both trigger probability and later outcome; raw BUY-vs-no-BUY outcome differences would therefore mix execution effect with selection/confounding.
+- Covariate balance is descriptive diagnostics only, not causal adjustment and not a new factor. Same-date clustering remains mandatory; one prospective scan date cannot establish balance or outcome direction.
+- Missing PIT covariates remain UNKNOWN. Do not backfill sector/Residual-RS/volatility using later snapshots.
+- Positive mechanism: confirmation may screen weak paths. Reverse mechanism: confirmation may preferentially chase high-attention/high-volatility names and miss quiet winners. Current evidence cannot choose between them.
 
-### Bias / falsification consequence
-- This blocks hindsight labeling of recommendation events as executed trades and prevents survivorship/selection bias in restoration studies.
-- Positive hypothesis remains that a symmetric restoration state may recover upside after prudent trims; reverse mechanism remains whipsaw/cost amplification. Existing evidence cannot choose between them.
-- No new factor/window/threshold/experiment was created; no outcome-driven tuning and no Formal Core change.
+### Engineering classification
+- No code was changed. A future isolated research-only join/report could be Class A only if it reads existing research/journal data without changing shared schemas, runtime fetches, formal selection or signals. Adding fields to shared plan/runtime plumbing or protected production paths would be Class B and requires proposal/approval before production promotion.
+- No new factor, threshold, window or experiment was created. Formal Core unchanged.
 
 ## Conditional R03/R04/R07/R08 diagnostic design — design only
 When mature, condition existing frozen outcomes as:
@@ -83,15 +77,16 @@ When mature, condition existing frozen outcomes as:
 Sparse cells remain UNKNOWN/ACCUMULATING. Do not pool merely for significance.
 
 ## Engineering status
-- A-6 is source/documentation research only; no executable code, production runtime, deployment, thresholds, signals or formal outputs changed.
-- Classification: Class A research finding/specification only. No branch/deployment/tests required because executable code is unchanged; Formal Core invariants unchanged by construction.
+- B-7 is source/documentation research only; no executable code, production runtime, deployment, thresholds, signals or formal outputs changed.
+- Classification: Class A research finding/design only. No deployment/tests required because executable code is unchanged; Formal Core invariants unchanged by construction.
 - No new factor/experiment/window; R01-R08/I01-I07 unchanged.
 
 ## Exact next continuation point
 1. Re-read latest governance/worklist/checkpoint and latest main commit; re-check checkpoint SHA immediately before any write.
-2. Continue the prospective SELECTED -> BUY-observed vs no-BUY comparison only when D1/D3/D5/D10/D20 outcomes mature; keep same-date stocks clustered and do not infer executability from positive daily returns.
-3. Before adding any early-window or clause-level recorder, first establish execution-shadow recorder storage/read coverage through an existing safe/authorized path; if unavailable, retain UNKNOWN rather than modifying shared runtime.
-4. Audit whether current Shadow/plan artifacts can support a **descriptive covariate-balance table** for BUY-observed vs no-BUY (price, liquidity, strategy A/B, pool, sector, residual-RS/volatility where PIT fields exist) without new factors. This is to detect selection/execution confounding before interpreting outcome differences.
-5. Keep REDUCED_CONFIRMED coverage UNKNOWN until trusted actual-share observations exist. The minimal append-only evidence fields above are a future Class-A design only, not permission to alter production position state.
-6. Keep joint sector-persistence diagnostic as design until maturity/governance gates are satisfied.
-7. Formal Core remains LOCKED. No Class B/C production change without explicit owner decision.
+2. Continue prospective SELECTED -> BUY-observed vs no-BUY only when D1/D3/D5/D10/D20 outcomes mature; same-date stocks remain clustered and positive daily return must never be treated as proof of executability.
+3. Before any early-window/clause-level recorder or shared-plumbing change, establish execution-shadow recorder storage/read coverage through an existing safe/authorized path; otherwise retain UNKNOWN.
+4. Audit the exact PIT field names in Shadow `snapshot` and formal-plan construction for the pre-registered descriptive balance set: price, liquidity, strategy A/B, pool, sector, Residual RS and volatility. Mark each field AVAILABLE_PIT / UNKNOWN / NOT_JOINABLE; do not add new fields yet.
+5. If all required identities/fields become safely readable, specify (but do not outcome-tune) a scan-date-clustered balance report for BUY-observed vs no-BUY. Do not interpret outcome differences until balance/confounding is described and multiple prospective dates mature.
+6. Keep REDUCED_CONFIRMED UNKNOWN until trusted actual-share observations exist; future append-only confirmation recorder remains design only.
+7. Keep joint sector-persistence diagnostic as design until maturity/governance gates are satisfied.
+8. Formal Core remains LOCKED. No Class B/C production change without explicit owner decision.
