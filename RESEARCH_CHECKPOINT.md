@@ -1,6 +1,6 @@
 # Research Checkpoint
 
-Checkpoint sequence: A-3 after main `b46c9cbc4ca6a65986e2a147f6197263dba651c0`.
+Checkpoint sequence: B-4 after main `82bbd564d74581182c14f35f11b6276fa299be04`.
 
 ## Continuity / baseline
 - Formal Core: **LOCKED**. Production Worker `fugle-test`; actual Production readback overrides chat/version memory.
@@ -272,19 +272,52 @@ These snapshots would preserve the actual 15m bar sequence around the hidden clo
 - Any implementation must remain fail-open and use already-fetched monitor results; no extra Fugle calls.
 - This is a possible Class A research instrumentation change only after recorder-storage observability is established. No implementation performed in this turn.
 
+## NEW B-4 — persistence / attention / industry-overlap redundancy audit (2026-09-22 12:15 Taipei)
+
+### Frozen-definition audit
+The experiment registry already creates an important anti-double-counting structure:
+- R03 is a **sector-state** construct: adjacent formal research-date Top5 industry overlap, longest Top5 streak, and regime transitions.
+- R04 is a **stock-within-sector** construct: `price.residualSectorRs20`, explicitly intended to separate stock strength from sector return.
+- R07/R08 use `price.residualSectorRs20` as strength and `volume.volumeTodayVsPrev5` as the attention proxy, split by same-date cross-sectional medians.
+Therefore R03 sector persistence and R07/R08 stock attention are not independent momentum votes by construction; they are different levels of the same broad momentum environment and must be conditioned jointly rather than stacked.
+
+### Redundancy / alternative-mechanism falsification
+Three alternative explanations must remain live when future results mature:
+1. apparent R03 persistence alpha may simply be sector beta/industry continuation; R04 already preregisters the falsifier that Residual RS can fully explain it;
+2. apparent R07/R08 attention alpha may be a by-product of breakout-quality volume because `breakoutQualityResearch` already allocates 25% to `volVs5`; this is an explicit redundancy risk, not independent confirmation;
+3. a sector-wide repricing day can simultaneously raise industry persistence, residual strength for leaders and relative volume, producing correlated labels on the same scan date. Treating those labels as separate evidence would create pseudo-replication and Factor-Zoo inflation.
+
+### Required mature-sample diagnostics — no new experiment
+When prospective samples become sufficient, keep the existing frozen experiments and report conditional diagnostics rather than inventing thresholds:
+- R03 outcome by sector-persistence state **within Residual-RS HIGH/LOW**;
+- R07/R08 Quiet vs Attention comparison **within sector-persistence state**, where sample size permits;
+- compare attention proxy against existing `breakoutQualityResearch`/volume component before claiming incremental information;
+- retain scan date as the independent clustering unit and report whether any apparent effect disappears under leave-one-date-out checks.
+If cells are sparse, mark UNKNOWN/ACCUMULATING; do not pool them merely to obtain significance.
+
+### Bias / governance consequence
+- No new factor, score, threshold, window, classification, or experiment ID is created; this is a falsification/redundancy plan for frozen R03/R04/R07/R08.
+- Selection bias remains material because Shadow cohorts arise from the formal candidate funnel; cohort comparisons are descriptive unless balance is demonstrated.
+- Date clustering is especially important because sector-wide attention shocks label many stocks simultaneously.
+- Transaction costs remain downstream mandatory checks; high-attention continuation can look attractive gross while being worse after spread/slippage/chase costs.
+- No outcome inspection was used to choose a winning subgroup. No look-ahead, historical Shadow fabrication, market-source substitution, or UNKNOWN coercion introduced.
+- Engineering status: documentation-only Class A research progress; executable code and Formal Core unchanged.
+
 ## Bias / data-quality firewall
 UNKNOWN stays UNKNOWN; no historical execution-shadow backfill; independent scan date is primary evidence unit; no causal claims from contemporaneous correlation; no outcome-driven threshold/window retuning; watch selection bias, look-ahead, data snooping, market-source bias, Factor Zoo, overfit, coverage, zero-pick, costs and date clustering.
 
 ## Engineering status this handoff
-- A-3 candle timestamp provenance audit completed and checkpointed.
+- A-3 candle timestamp provenance audit retained.
+- B-4 redundancy/falsification audit completed and checkpointed.
 - No production code/branch/deployment/formal behavior changed.
-- R01-R08/I01-I07 unchanged.
+- R01-R08/I01-I07 unchanged; no R09/I08 created.
+- Execution-shadow D1 storage coverage remains UNKNOWN without a safe authorized read.
 - Timestamp correction to true quote trade time remains Class B if it touches shared runtime; no promotion performed.
 
 ## Exact next continuation point
 1. Re-read latest checkpoint/main and re-check SHA before any write.
-2. Search for a safe public/read-only route, workflow artifact, or log that can establish actual execution-shadow-v2 storage coverage without ADMIN_TOKEN. If none exists, keep D1 coverage UNKNOWN; do not infer storage from elapsed stage time.
-3. Audit no-BUY opportunity-cost data feasibility at field/join level: intended quantity/capital, selected-plan identity, BUY trigger, future path availability. Keep the estimand decomposed; do not define/optimize a metric yet.
-4. Continue falsification on persistence/attention/industry overlap; no new factors.
-5. Explore PIT-valid monthly-revenue announcement history only if first-known timestamps/source vintage can be proven; current snapshot must not masquerade as historical vintage.
-6. Formal Core remains LOCKED. Do not alter formal freshness semantics. No Class B/C production change without explicit human decision.
+2. Continue from the frozen R03/R04/R07/R08 redundancy plan: inspect whether existing machine-readable diagnostics already expose the conditional fields needed for sector-persistence × residual-RS × attention analysis. Do not add a new experiment or threshold.
+3. If fields are not already observable, classify any proposed instrumentation before coding; prefer isolated Class A research output and do not touch shared formal runtime paths.
+4. Explore PIT-valid monthly-revenue announcement history only if first-known timestamps/source vintage can be proven; current snapshot must not masquerade as historical vintage.
+5. Keep early-window Shadow instrumentation deferred until actual execution-shadow-v2 recorder storage is safely verified.
+6. Formal Core remains LOCKED. No Class B/C production change without explicit human decision.
