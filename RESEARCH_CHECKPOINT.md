@@ -1,6 +1,6 @@
 # Research Checkpoint
 
-Updated: 2026-09-22T10:35+08:00
+Updated: 2026-09-22T10:43+08:00
 
 ## Continuity / baseline
 - Formal Core: **LOCKED**.
@@ -328,6 +328,16 @@ Reverse-validation implications:
 4. Compression formula can score highly in a directional downtrend if recent high-low spans contract. It contains no trend direction. Any future bullish use must remain conditioned on separately frozen strength/breakout evidence; compression alone is not bullish.
 5. Overheat thresholds (ret20 20%, MA20 distance 12%, ATR 6%, gap 4%) are research design parameters, not empirically proven Taiwan optimums. Do not retune them after seeing outcomes; if later challenged, create a new preregistered version rather than modifying v1.
 6. No new factor or production change. The recovered provenance strengthens interpretation of I05/I07 and identifies concrete failure modes to inspect prospectively.
+
+### Anti-overfit implementation audit — 2026-09-22T10:43+08:00
+Audit of `research/anti_overfit_v8_7_6.js` found two important safeguards and one future weakness:
+- Redundancy screening uses only FULL_FORMAL_SCAN prospective snapshots and flags pairwise Pearson |r|>=0.85 with n>=20; governance blocks formal-review eligibility when high redundancy remains unresolved.
+- Cost stress applies 30/60/100 bps round-trip scenarios to SELECTED D5 outcomes; this is correctly labeled scenario analysis rather than claimed realized cost.
+- Weakness: pairwise Pearson correlation can miss nonlinear redundancy and conditional duplication. Two factors can encode the same information nonlinearly while Pearson r stays below 0.85; conversely, high correlation need not mean one has no incremental predictive value.
+- Therefore I01-I07 incremental contrasts are essential and pairwise redundancy must remain a coarse alarm, not a deletion rule.
+- Future Class A diagnostic candidate after enough data: rank/Spearman and simple monotonic-bin redundancy checks on the same frozen factor catalog, without searching for the most flattering transform. Do not implement before prospective sample maturity because adding diagnostics now creates no decision value.
+- Cost stress is also incomplete for execution-policy evaluation because missed/no-BUY opportunities are absent; keep it paired with trigger rate/opportunity-path research.
+No production change.
 
 ## Bias / data-quality firewall
 - UNKNOWN remains UNKNOWN; no BAD/0 coercion.
