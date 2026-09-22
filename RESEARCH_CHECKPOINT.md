@@ -1,6 +1,6 @@
 # Research Checkpoint
 
-Updated: 2026-09-22T09:44+08:00
+Updated: 2026-09-22T09:52+08:00
 
 ## Continuity / baseline
 - Formal Core: **LOCKED**.
@@ -258,6 +258,20 @@ Research consequence:
 3. For candidate ranking research, "leading industry + strong stock" should eventually be tested against "strong stock in non-leading industry" and "leading industry control stock" on the same scan date; otherwise stock alpha and industry beta remain confounded.
 4. Existing Residual RS is especially valuable as the counterweight: a stock should not receive research credit twice for industry strength and stock strength unless residual stock-level strength remains after sector removal.
 5. No formal-core change and no new experiment ID yet.
+
+### Fundamental-price confluence vs lottery/salience falsification — 2026-09-22T09:52+08:00
+Taiwan evidence now supports a more disciplined "confluence" hypothesis, with an important anti-chase filter:
+- Chen et al. (Journal of Banking & Finance, 2014) finds revenue surprises, earnings surprises and prior returns each contain some exclusive unpriced information; no single momentum family dominates. Joint alignment can be stronger, but fundamental momentum and price momentum are partially overlapping rather than fully independent.
+- Hung, Lu & Yang (2025/2026) strengthens the monthly-revenue persistence leg, while Lai et al. (2026) shows record-high monthly revenue can still produce next-day intraday reversal after strong pre-announcement run-ups, followed by positive ~20-day drift.
+- Wang & Lien (2023) finds Taiwan attention-grabbing/lottery-like stocks with extreme upside behavior can be overpriced and have lower subsequent returns; retail attention intensifies the anomaly. This supplies a direct reverse-validation warning against interpreting spectacular recent returns/limit hits as "more confirmation".
+- Therefore "fundamental + price + volume all strong" is not automatically safer. At extremes, the same apparent confluence can be salience/crowding/overreaction.
+
+Research consequence:
+1. Future confluence research must distinguish moderate aligned evidence from extreme salient/overheated evidence; do not assume monotonic benefit as more signals become extreme.
+2. Existing overheatPenaltyResearch and price-limit/attention evidence are natural falsification controls for any future fundamental-price confluence hypothesis.
+3. Revenue/earnings/price alignment should be tested incrementally after controlling shared information, not counted as 3 independent votes.
+4. For short-term selection, strong fundamental news after a large pre-event run-up is specifically a reversal-risk condition to test; for swing horizon, the same event may still drift positively. Keep horizons separate.
+5. No new score/weight/threshold is registered.
 
 ## Bias / data-quality firewall
 - UNKNOWN remains UNKNOWN; no BAD/0 coercion.
