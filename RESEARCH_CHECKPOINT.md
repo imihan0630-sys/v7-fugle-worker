@@ -1,7 +1,7 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-35.
-Updated: 2026-09-23 04:13 Asia/Taipei.
+Checkpoint sequence: B-36.
+Updated: 2026-09-23 04:43 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Earlier detailed evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
@@ -15,7 +15,7 @@ Updated: 2026-09-23 04:13 Asia/Taipei.
 ## Production/research baseline retained
 - Verified research infrastructure baseline: V8.8.1 `8.8.1-execution-coverage`, schema `execution-shadow-v2`; V8.8.0 rollback baseline.
 - Last verified prospective Shadow evidence remains 31 rows / one prospective scan date / zero mature D1/D3/D5/D10/D20 outcomes unless a newer trusted read proves otherwise.
-- B-13/B-16 provenance engineering remains DEFERRED, not cancelled.
+- B-13/B-16 provenance engineering remains DEFERRED but active as the safe fallback lane while no newer positive-plan date exists.
 
 ## Primary research lane — capital utilization / selection / execution / re-entry
 Root funnel: `universe -> base/liquidity -> A/B formation -> quality/RR -> SELECTED -> BUY-observed -> confirmed fill -> ADD/FULL -> REDUCE-observed -> confirmed reduced shares -> restoration`.
@@ -38,39 +38,48 @@ Cash utilization is diagnostic, not an optimization target.
 - 09/22 scheduled health run `35751075627` positively verified formal selectedCount=0, planCount=0, signalCount=0. Preserve 09/22 as a formal zero-pick date, not an Execution Alpha failure.
 - `SHADOW_SCAN_STATUS(2026-09-22)=UNKNOWN`; no trusted per-date Shadow count exists. Do not infer it from aggregate totals.
 
-## NEW B-35 — verify cursor state before next positive-plan date
+## B-35 retained — no newer positive-plan date
+- Latest trusted inspected scheduled health evidence remained the 09/22 zero-plan run. Encrypted plan-mirror activity is not readable plan-count/identity evidence.
+- No new zero-pick observation was added and the SELECTED -> BUY bottleneck hypothesis remains under test.
+
+## NEW B-36 — B-13 provenance design falsification/refinement
 ### Research question
-Has a newer trusted formal scan with >=1 plan appeared since B-34, such that the prospective SELECTED -> 15m -> BUY/fill funnel can advance without fabricating a date?
+While waiting for the next trusted positive-plan date, is the deferred B-13 Shadow provenance diagnostic itself sufficiently precise to distinguish true horizon immaturity from data-pipeline incompleteness without changing existing outcomes?
 
 ### Evidence / findings
-- Re-read governance, worklist and canonical checkpoint first; latest checkpoint was B-34 with blob SHA `304ea1bc58eed3730772d0fd7f4eadd7b0a8f8c5`.
-- Latest main research commit before this write was B-34 (`e4b06f096ab7a6811ce0101eeeec668c4b6b803a`); no competing A checkpoint update was present.
-- GitHub Actions history still exposes the 09/22 scheduled health run `35751075627` as the latest trusted scheduled health evidence in the inspected window. Its head commit is an encrypted plan mirror generated 2026-09-22 23:56 Asia/Taipei; the encrypted artifact itself cannot be treated as readable plan identity/count evidence.
-- No newer trusted positive-plan scan date was established in this cycle. Therefore the primary execution funnel cannot safely advance to a new independent date yet.
-- This is a timing/coverage state, not a research conclusion. Do not convert the absence of a newer readable positive-plan artifact into another zero-pick date.
+- Re-read governance/worklist/checkpoint and latest main first. Main was B-35 commit `6d3713c7a65758b849f6490ac15b3ad02a5e9e7c`; no competing newer checkpoint was present before this write.
+- The existing isolated branch `research/b13-shadow-provenance` was still at B-13. It was fast-forwarded to current main `6d3713c7a65758b849f6490ac15b3ad02a5e9e7c` as a rollback/testable isolation point; no code was changed and nothing was deployed.
+- Current `readShadowCounterfactualResearch()` still silently maps malformed `snapshot_json` to `{}`; malformed history JSON to `[]`; and a missing history row also reaches outcome enrichment as `[]`. Existing `coverage.dN` therefore cannot distinguish these failure modes from ordinary immature outcomes.
+- B-13's proposed `D1_NOT_YET_MATURE` rule needs one further guard: a successfully parsed but stale/incomplete `v7_history_cache` can also have fewer than the required post-scan bars. Calling that condition simply `NOT_YET_MATURE` would overstate calendar immaturity and hide cache freshness/coverage uncertainty.
+- Therefore provenance must separate **calendar maturity** from **observed-history sufficiency**. A row may be calendar-mature for D1/D3/etc while the cache still lacks enough post-scan bars; that state must remain data-coverage UNKNOWN, not ordinary waiting.
 
-### Research interpretation / falsification
-- The 09/22 zero-pick remains verified only from its trusted health readback; no new zero-pick observation was added.
-- A plan-mirror commit proves mirroring activity, not readable selected symbols, plan count, BUY eligibility or execution. Treating ciphertext size/commit existence as a proxy would be an unsupported alternative mechanism and is rejected.
-- No evidence arose to change the earlier hypothesis that the main bottleneck may lie between SELECTED and BUY-observed; that hypothesis remains under test, not accepted.
+### Refined diagnostic semantics (Class A design; no outcome redefinition)
+For each archived Shadow row, diagnostics should preserve existing `coverage.dN` exactly and add orthogonal provenance:
+1. Snapshot: `SNAPSHOT_PARSE_OK | SNAPSHOT_PARSE_ERROR`; baseline: `BASELINE_CLOSE_OK | BASELINE_CLOSE_MISSING`.
+2. History source: `HISTORY_ROW_MISSING | HISTORY_PARSE_ERROR | HISTORY_EMPTY | HISTORY_OK`.
+3. For `HISTORY_OK`, expose `historyLastDate` and `postScanValidBars` after the same date/finite-close filter already used by outcome enrichment.
+4. Horizon status must not label missing bars as calendar immaturity solely from `postScanValidBars`. Use conservative states: `OUTCOME_AVAILABLE` when existing outcome is finite; `OBSERVED_HISTORY_INSUFFICIENT` when parsed history has fewer than h valid post-scan bars; `BASELINE_UNAVAILABLE` or history error states as applicable. Calendar maturity may be reported separately only if derived from a trustworthy trading-calendar source already available at the research boundary; otherwise `CALENDAR_MATURITY=UNKNOWN`.
+5. Do not synthesize missing bars, infer them from current price, or use later web prices to repair historical Shadow. No historical Shadow backfill.
+6. Aggregate counters should be by failure/provenance state and may include recent row statuses; they remain research-only observability and cannot gate formal selection/trading.
 
-### Bias / UNKNOWN controls
-- Selection bias/coverage: independent positive-plan date count is unchanged; no invented date added.
-- Look-ahead/data snooping: encrypted payload was not reverse-inferred from later outcomes or ciphertext characteristics.
-- Market-source bias, Factor Zoo, redundancy, overfit and transaction-cost conclusions unchanged; no new factor/definition/parameter introduced.
-- Missing readable plan evidence remains UNKNOWN, never BAD/0.
+### Falsification / bias implications
+- This refinement falsifies the too-simple interpretation `fewer than h cached post-scan bars => not yet mature`.
+- Without the separation, stale-cache symbols/cohorts could be selectively excluded from R01-R08 and create coverage/selection bias while appearing as harmless waiting data.
+- No evidence currently proves stale/malformed prospective rows actually exist; occurrence rate remains **UNKNOWN**. This is an observability defect/risk, not a corruption finding.
+- No factor, threshold, experiment window or outcome definition changed; Factor Zoo, redundancy and transaction-cost counts unchanged.
 
-### Engineering classification
-- Evidence-only Class A. No code, schema, workflow, runtime, deployment, Formal Core, monitoring or push change.
+### Engineering classification / branch / deployment
+- Class A research-only design and branch preparation.
+- Branch: `research/b13-shadow-provenance`, fast-forwarded to main B-35 before implementation.
+- Code commit: none this cycle. Tests: not run because implementation was intentionally not written before the refined semantics were frozen.
+- Deployment: none. Production Formal Core/runtime unchanged. Rollback/reference point: main `6d3713c7a65758b849f6490ac15b3ad02a5e9e7c`.
 
 ## Exact next continuation point
 1. Re-read governance/worklist/checkpoint and latest main SHA; re-check checkpoint SHA immediately before any write.
-2. Do NOT revisit 09/22 Shadow inference unless a new trusted output explicitly exposes per-scan-date Shadow counts. Keep `NO_FORMAL_SELECTION=VERIFIED`, `SHADOW_SCAN_STATUS=UNKNOWN`.
-3. At/after the next formal scan date with >=1 plan, first establish the target date and formal plan count from trusted Production readback. Do not infer plan count from encrypted mirror existence or ciphertext size.
-4. Before interpreting absent BUY/ADD/REDUCE signals, query/verify `/api/research/execution-recorder` coverage: protected query success + explicit target-date rows/coverage + proof the target date is not truncated by the 500-row cap.
-5. Continue the funnel by independent date: selected/planned -> price-path contact -> trustworthy 15m-confirm eligibility -> BUY observed -> confirmed fill. Signal != fill.
-6. Preserve zero-pick dates in selection-rate diagnostics. Only trustworthy 15m OHLCV may test frozen 15m clauses; never approximate missing bars.
-7. TTL research remains `EXPIRE_AS_IS` vs `REVALIDATED_RESELECT`; blind carry-forward is falsification comparator only.
-8. REDUCE/re-entry requires trusted actual reduced shares before `REDUCED_CONFIRMED`; otherwise recommendation-only.
-9. If the next positive-plan date is not yet available, do not manufacture progress by re-searching closed 09/18 or 09/22 lanes; either advance another unfinished research-only lane with durable new evidence or leave the cursor waiting.
-10. B-13/B-16 provenance diagnostics remain deferred and may resume only when they outrank the primary funnel or when a safe isolated Class A implementation path is available.
+2. If a newer trusted formal scan with >=1 plan exists, primary funnel regains priority: establish plan date/count from Production readback, then verify execution-recorder target-date coverage and 500-row non-truncation before interpreting signals.
+3. Otherwise continue B-13/B-16 on `research/b13-shadow-provenance`: implement only the refined research-only snapshot/baseline/history provenance and `postScanValidBars/historyLastDate` diagnostics. Preserve all existing outcome calculations and `coverage.dN` byte/semantic behavior.
+4. Targeted tests must cover malformed snapshot + valid history; valid snapshot + malformed history; missing history row; empty history; valid history with insufficient post-scan bars; mature D1; and must prove missing remains null/UNKNOWN and old coverage is unchanged.
+5. Do not label insufficient cached bars `NOT_YET_MATURE` unless a trustworthy calendar maturity source is explicitly available at the research boundary; otherwise use `OBSERVED_HISTORY_INSUFFICIENT` plus `CALENDAR_MATURITY=UNKNOWN`.
+6. Run regression/invariant suite and compare protected Formal Core outputs before any merge/deploy. If isolation cannot guarantee invariants, stop as Class B.
+7. Do NOT revisit 09/18 execution or 09/22 Shadow inference without new trusted evidence. Keep 09/22 `NO_FORMAL_SELECTION=VERIFIED`, `SHADOW_SCAN_STATUS=UNKNOWN`.
+8. Signal != fill. REDUCED_CONFIRMED requires trusted actual reduced shares.
