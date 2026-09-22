@@ -1,6 +1,6 @@
 # Research Checkpoint
 
-Checkpoint sequence: A-2 after main `dcfb7c2206b2bb8aff6c3763b9daf6edbecc943f`.
+Checkpoint sequence: B-2 after main `b46c9cbc4ca6a65986e2a147f6197263dba651c0`.
 
 ## Continuity / baseline
 - Formal Core: **LOCKED**. Production Worker `fugle-test`; actual Production readback overrides chat/version memory.
@@ -27,26 +27,23 @@ Exact research classifier from repository: BULL_BROAD marketReturn20>=3% & bread
 ## Fugle avgPrice semantics
 Official Fugle stock intraday quote docs define `avgPrice` as 當日成交均價. At FIRST_10M/15M/30M, `sessionAvgPrice` / `sessionVwapProxy` is cumulative/session-to-observation-time, not interval VWAP. Keep semantic label `FUGLE_INTRADAY_QUOTE_AVG_PRICE`; do not claim independently reconstructed VWAP without value/volume reconstruction.
 
-## New A-2 audit — execution timestamp provenance / stale-data risk
-Repository `scripts/apply_v8_8_0.py` currently computes:
-`const lastTradeAt=researchIsoFromQuoteTimestamp(result?.quote?.lastUpdated);`
-and stores that value as payload `lastTradeAt`. V8.8.1 passthrough retains `lastUpdated` but does not pass through Fugle `lastTrade.time` or `closeTime`.
+## Execution timestamp provenance / stale-data risk
+Repository `scripts/apply_v8_8_0.py` computes `lastTradeAt` from `result.quote.lastUpdated`. V8.8.1 keeps `lastUpdated` but does not pass through Fugle `lastTrade.time`, `closeTime`, or `total.time` into the research payload. Official Fugle quote semantics distinguish quote update, last trade, close-price transaction, and cumulative-statistics timestamps. Existing v2 `lastTradeAt` must therefore be interpreted as quote-update provenance, not proven trade time.
 
-Official Fugle stock `GET /intraday/quote/{symbol}` documentation distinguishes these fields:
-- `lastUpdated`: 最後更新時間 (quote's last update time),
-- `lastTrade.time`: 最後一筆成交時間,
-- `closeTime`: last/close-price transaction time,
-- `total.time`: cumulative statistics timestamp.
-The docs also expose `lastTrade` independently from book updates and trial state. Therefore `lastUpdated` is **not semantically proven to be a trade timestamp**. Naming the transformed `lastUpdated` value `lastTradeAt` overstates provenance and can hide stale-trade vs fresh-book differences.
+### New B-2 source-path audit
+Main source recovery confirms the raw `fetchQuote(symbol, env)` returns the full Fugle JSON, so `lastTrade`, `closeTime` and `total` are available at the raw quote boundary and are discarded only when `analyzeStockSmart` constructs its reduced `result.quote` object. The reduced object is shared with formal signal processing: `applyPlanValidity(..., quote)` and `processSignalStateCore` read `result.quote.isTrial`, while `executionDataStatus` separately consumes the raw quote before reduction.
 
-PIT/freshness implications:
-1. `observedAt` proves recorder wall-clock observation only; it does not prove quote trade freshness.
-2. A fresh `lastUpdated` may reflect a quote/book update rather than a new trade; execution-price freshness must not be inferred from it alone.
-3. Future research coverage should distinguish `quoteUpdatedAt` from true `lastTradeAt` and, if captured, `statsUpdatedAt` (`total.time`).
-4. Existing prospective v2 rows must be interpreted conservatively: current payload `lastTradeAt` is actually quote-update provenance until schema/code is versioned. Do not rewrite historical rows or pretend corrected provenance existed earlier.
-5. This is a research-data-quality issue, not evidence that formal monitoring is wrong. Formal Core remains untouched.
+Engineering classification consequence:
+1. Adding fields to the reduced `result.quote` object is logically research-only data passthrough, but it modifies a shared runtime object that formal signal code also reads. Under `RESEARCH_ENGINEERING_GOVERNANCE.md`, this is **Class B shared-runtime / indirect formal-risk**, not clean Class A.
+2. Therefore B does **not** modify/merge/deploy production code. A safe proposal can be prepared later, but promotion requires explicit owner review unless redesigned into a truly isolated research-only path.
+3. A cleaner design candidate is to build a separate `researchQuoteProvenance` object directly from raw quote inside `analyzeStockSmart` and pass it only to the research recorder; however this still touches the shared runtime function/hook, so it must be branch-tested and treated Class B until protected formal-output invariance is demonstrated and owner approves production promotion.
+4. Do not rename or rewrite historical execution-shadow-v2 rows. Any corrected future payload must be a new schema/version so pre-correction provenance remains distinguishable.
+5. Formal quote freshness currently uses `lastUpdated ?? closeTime` in `executionDataStatus`. This is existing formal behavior and is explicitly outside the research correction scope; changing it would affect formal signal eligibility and is Class C unless separately researched/approved.
 
-Engineering classification: a future isolated correction that only adds/renames research snapshot provenance fields can be Class A if formal quote freshness/monitoring semantics are not touched. Before implementation, freeze protected formal outputs and regression-test invariants. Do not change shared quote freshness logic as part of that patch.
+PIT/freshness implications remain:
+- `observedAt` proves recorder wall-clock observation only.
+- quote-update freshness does not prove a new trade occurred.
+- Future research should distinguish `quoteUpdatedAt`, true `lastTradeAt`, and `statsUpdatedAt`; current v2 remains conservatively interpreted.
 
 ## First-live-session / coverage constraints
 - Recorder windows: OPEN_BASELINE 09:00-09:02; FIRST_10M 09:11-09:12; FIRST_15M 09:16-09:17; FIRST_30M 09:31-09:32. OPEN_BASELINE is early post-open, not pure auction snapshot.
@@ -61,15 +58,15 @@ Engineering classification: a future isolated correction that only adds/renames 
 UNKNOWN stays UNKNOWN; no historical execution-shadow backfill; independent scan date is primary evidence unit; no causal claims from contemporaneous correlation; no outcome-driven threshold/window retuning; watch selection bias, look-ahead, data snooping, market-source bias, Factor Zoo, overfit, coverage, zero-pick, costs and date clustering.
 
 ## Engineering status this handoff
-- Class A documentation/provenance audit only. No production code/branch/deployment/formal behavior changed this run.
-- New material finding: current research payload misnames quote `lastUpdated` as `lastTradeAt`; treat existing field as quote-update provenance until a separately versioned research-only correction is implemented and validated.
+- Source-path audit completed. No production code/branch/deployment/formal behavior changed.
+- Timestamp provenance correction is classified Class B because the proposed passthrough would touch a shared runtime result object/function used by formal signal code. No autonomous production change allowed.
+- Material new finding: raw Fugle quote retains the needed timestamps until `analyzeStockSmart`; the loss occurs at the reduced `result.quote` mapping, not at `fetchQuote`.
 
 ## Exact next continuation point
 1. Re-read latest checkpoint/main and re-check SHA.
-2. Inspect the formal quote-fetch mapping to confirm whether Fugle `lastTrade`, `closeTime`, `total.time` are currently discarded before `result.quote`; determine the smallest isolated Class A passthrough/schema-v3 correction that adds `quoteUpdatedAt`, true `lastTradeAt`, and optionally `statsUpdatedAt` without changing formal freshness logic.
-3. Before any code write, compare protected formal outputs and classify shared-runtime risk. If isolation is not clean, downgrade to Class B proposal only.
-4. If safe access exists, quantify actual execution-shadow-v2 field coverage by event/date and UNKNOWN reasons; otherwise keep storage coverage UNKNOWN.
-5. Audit frame10/frame15 barStart/barEnd freshness against observedAt; bar completion timestamp is not automatically source freshness.
-6. Continue falsification on persistence/attention/industry overlap; no new factors.
-7. Audit no-BUY opportunity-cost data feasibility without defining a metric yet; explore PIT-valid monthly-revenue announcement history only if timestamps are safe.
-8. Formal Core remains LOCKED; no B/C production change without explicit human decision.
+2. Audit frame10/frame15 timestamp provenance: `researchBarTiming` derives bar end by adding timeframe to `frame.latest.time`; verify whether `buildBar.time` comes directly from Fugle candle `bar.date`, and distinguish calculated completion time from source-observed freshness. Record failure modes around delayed candle publication and cached prior frames.
+3. Search for a safe public/read-only route, workflow artifact, or log that can establish actual execution-shadow-v2 storage coverage without ADMIN_TOKEN. If none exists, keep D1 coverage UNKNOWN; do not infer storage from elapsed stage time.
+4. Continue falsification on persistence/attention/industry overlap; no new factors.
+5. Audit no-BUY opportunity-cost data feasibility: intended quantity/capital, selected-plan identity, BUY trigger, future path availability; do not define/optimize a metric yet.
+6. Explore PIT-valid monthly-revenue announcement history only if first-known timestamps/source vintage can be proven; current snapshot must not masquerade as historical vintage.
+7. Formal Core remains LOCKED. Do not alter formal freshness semantics. No Class B/C production change without explicit human decision.
