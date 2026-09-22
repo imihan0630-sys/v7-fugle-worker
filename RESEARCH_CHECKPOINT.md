@@ -175,6 +175,25 @@ Items 4-5 require either existing execution-shadow/bar evidence when coverage is
 The current `journalTradeStats` already reports `buyTriggerRate = buyTriggeredPlans / selectedPlans`. That is the correct first diagnostic for conversion scarcity, but it is not capital utilization and not opportunity-cost-adjusted return.
 No single new score is defined here; field feasibility only.
 
+## Manual continuation — ABF sector repricing falsification (2026-09-22)
+
+Today's move is not an 8046-only anomaly:
+- 8046 南電 reached 1,165, +9.91%.
+- 3037 欣興 reached 1,120, +9.80%.
+- 3189 景碩 was around 901, +8.95% in the same morning.
+This is a broad ABF/IC-substrate repricing day rather than a single-stock idiosyncratic rebound.
+
+Implication for the 8046 post-trim question:
+- A re-add framework based only on 8046 reclaiming one price level would ignore sector information and would have been vulnerable to the whipsaws already observed between 9/4 and 9/21.
+- If a future REDUCED→RE-ADD hypothesis is researched, existing R03 industry persistence and R06 regime transition should be used as **conditioning/falsification controls**, not as new votes to stack.
+- A sector-wide recovery/repricing event may be more informative than a one-stock bounce, but one 2026-09-22 sector surge is insufficient to define a threshold.
+
+Reverse case:
+- Sector-wide strength can itself be an attention/late-stage shock and can reverse, especially in Taiwan where momentum is state-dependent.
+- Therefore today's broad ABF surge supports investigating sector-confirmed re-entry, but it does not validate “ABF strong day = buy back.”
+
+No ABF-specific formal rule or automation prompt is changed.
+
 ## Bias / data-quality firewall
 UNKNOWN stays UNKNOWN; no historical execution-shadow backfill; independent scan date is primary evidence unit; no causal claims from contemporaneous correlation; no outcome-driven threshold/window retuning; watch selection bias, look-ahead, data snooping, market-source bias, Factor Zoo, overfit, coverage, zero-pick, costs and date clustering.
 
