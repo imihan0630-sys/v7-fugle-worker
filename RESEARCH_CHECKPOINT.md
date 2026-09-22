@@ -1,6 +1,6 @@
 # Research Checkpoint
 
-Updated: 2026-09-22T10:08+08:00
+Updated: 2026-09-22T10:16+08:00
 
 ## Continuity / baseline
 - Formal Core: **LOCKED**.
@@ -288,6 +288,19 @@ Research consequences:
 3. Any test must be post-IFRS/current-regime focused and separated from older Taiwan samples.
 4. Fundamental Persistence should be harder to pass when reported growth is not supported by cash-flow quality, but no threshold/weight is set before prospective evidence.
 5. No Formal Core change.
+
+### Foreign-flow information vs price-pressure falsification — 2026-09-22T10:16+08:00
+Taiwan institutional-flow literature supports keeping foreign flow as contextual evidence rather than treating every net buy as informed alpha:
+- Foreign investors in Taiwan are documented as momentum-oriented traders, and their trading can predict returns at some horizons; however part of the association can arise from price pressure, ownership structure and persistence in trading rather than new fundamental information.
+- Evidence on forecast events also shows asymmetric informed-trading content: institutional buying can carry information in some settings while selling need not be symmetric.
+- This creates a confound with the formal A-line requirement that at least one foreign/investment-trust/main-force side is consecutively buying: consecutive buying can overlap mechanically with existing momentum and liquidity conditions.
+
+Research consequences:
+1. In research, institutional flow must be decomposed as confirmation/context, not counted as an independent vote without incremental testing.
+2. Compare same-date candidates with similar momentum/residual RS but different institution scores to estimate incremental content.
+3. Separate immediate price-pressure path from D5/D10/D20 persistence; a same-day/next-day effect is not automatically swing alpha.
+4. Keep existing formal rule locked; this is a research falsification requirement, not a production-rule deletion.
+5. No new threshold or weight.
 
 ## Bias / data-quality firewall
 - UNKNOWN remains UNKNOWN; no BAD/0 coercion.
