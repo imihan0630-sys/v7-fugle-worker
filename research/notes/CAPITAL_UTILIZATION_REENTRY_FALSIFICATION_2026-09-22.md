@@ -155,3 +155,20 @@ Taiwan evidence supports conditional momentum, not universal continuation:
 - Barber, Lee, Liu & Odean (2007), European Financial Management, DOI 10.1111/j.1468-036X.2007.00367.x: disposition effect warns against assuming profit-taking is automatically rational, but does not invalidate rules-based risk reduction.
 
 These studies motivate falsification controls; they do not validate our exact thresholds or state machine.
+
+
+## Risk-reduction literature: why later upside does not settle the trim question
+
+Broader stop-loss / risk-reduction literature provides the missing opposite side to the disposition-effect critique:
+- Kaminski & Lo (2014), Journal of Financial Markets, DOI 10.1016/j.finmar.2013.07.001: stop-loss rules reduce exposure after losses; for random-walk prices they reduce expected return, while momentum/serial correlation can make them useful. Their value depends on the return process rather than being universally positive or negative.
+- Lo & Remorov (2017), Journal of Financial Markets, DOI 10.1016/j.finmar.2017.02.003: tight stop-loss rules on U.S. stocks often underperform after transaction costs; performance can improve under sufficiently positive serial correlation/regime structure, and some policies reduce downside risk more than they improve raw return.
+- Dai, Marshall, Nguyen & Visaltanachoti (2021), International Review of Finance, DOI 10.1111/irfi.12328: trailing stop rules can lower total/downside risk, especially in declining states, while mean returns can be inferior and tight rules lose benefit after costs.
+
+Research consequence:
+1. Evaluate a REDUCE decision on **both** return foregone and downside/volatility/drawdown avoided.
+2. A later rally does not by itself falsify the trim; a trim that consistently reduces downside at acceptable opportunity cost can still be useful.
+3. Conversely, a trim that repeatedly cuts persistent winners, saves little MAE, and creates costly re-entry churn may be dominated.
+4. Regime/serial-correlation conditioning is essential; do not infer one universal trim/re-add rule.
+5. Transaction costs and turnover must be included because repeated reduce/re-add cycles can erase apparent improvement.
+
+This literature is not Taiwan-specific and is not evidence for any exact system threshold. It is used only as a falsification framework alongside Taiwan-specific momentum/regime evidence.
