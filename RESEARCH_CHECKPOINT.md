@@ -1,6 +1,6 @@
 # Research Checkpoint
 
-Updated: 2026-09-22T09:28+08:00
+Updated: 2026-09-22T09:36+08:00
 
 ## Continuity / baseline
 - Formal Core: **LOCKED**.
@@ -230,6 +230,20 @@ User reaffirmed the economic objective: rapidly improve the system's ability to 
 - Candidate quality must be decomposed into Selection Alpha, Execution Alpha, path quality, fundamental persistence, regime/industry persistence, liquidity/cost and downside/false-break risk; correlated confirmations are not independent votes.
 - "Best" future candidates require current real price/data, formal eligibility filters, and prospective evidence; research cannot substitute stale prices or retrospective stories.
 - Speed objective means prioritize high-information falsification and data coverage over adding many factors.
+
+### Analyst revision / 52-week anchor falsification — 2026-09-22T09:36+08:00
+New Taiwan-specific evidence adds two candidate knowledge families, with explicit counterevidence:
+- Finance Research Letters (2026) finds consensus analyst forecast-earnings-growth revisions predict Taiwan returns: upward-revision portfolios earned positive market-adjusted returns persisting up to about one month; raw expected earnings growth was conditional on positive expected growth / rising markets, while revision direction was more consistent. This suggests "change in expectations" may contain more incremental information than a static forecast level.
+- Older Taiwan event evidence around analyst earnings forecasts finds institutional ownership changes and returns are intertwined with herding/price impact; institutional buying showed informed-trader evidence, but selling did not symmetrically do so. Therefore analyst revision + institutional buying cannot be assumed to be two independent confirmations.
+- Hao et al. (2016) finds mixed Taiwan 52-week-high evidence: portfolio 52-week-high strategy was insignificant in the main portfolio test, recency worked only in some states/periods, January effects mattered, and profitability changed across historical regimes. Cross-sectional regressions produced different dominance. This is strong anti-overfit evidence against simply adding "near 52-week high" as a bullish factor.
+- Lin (2024) further finds extreme salient payoffs can weaken the Taiwan 52-week-high anomaly, reinforcing that extreme recent winners/lottery-like salience can contaminate anchor signals.
+
+Research implications:
+1. Analyst revision direction is a potentially higher-value future PIT evidence field than static analyst target/forecast level, but only if timestamped consensus history is obtainable without look-ahead.
+2. Do not add 52-week-high proximity as a new factor. Existing breakout/priorHigh20/persistence/overheat already capture nearby price-path information; 52-week-high would risk Factor Zoo expansion and mechanical overlap.
+3. If analyst revisions are later captured, preregister an incremental test beyond price momentum, monthly-revenue persistence, residual RS and institution score; do not treat revision + institution buying as independent votes.
+4. Short-term and swing horizons remain separate: analyst-revision evidence is roughly one-month scale, not evidence for next-day entry timing.
+5. No formal-core change.
 
 ## Bias / data-quality firewall
 - UNKNOWN remains UNKNOWN; no BAD/0 coercion.
