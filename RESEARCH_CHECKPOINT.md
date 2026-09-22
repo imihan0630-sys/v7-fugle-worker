@@ -130,6 +130,71 @@ This prevents hindsight from treating every later winner as a missed executable 
 - Adding a research-only offline diagnostic over existing journal + Shadow tables can be Class A if isolated from runtime/formal outputs.
 - Changing plan validity, A/B intraday confirmation, positionStage states, ADD eligibility or REDUCE behavior is Class C Formal Core / trading behavior and requires explicit human decision after evidence.
 
+## Capital-utilization mechanics and state-continuity audit — 2026-09-22
+Further source audit separates three different causes of "idle capital" and finds an additional state-continuity limitation.
+
+### Planned cash reserve is substantial by design
+`allocateAndBuildPlans` deliberately caps aggregate planned deployment before any intraday entry test:
+- 1 selected stock: target deploy ratio 35%.
+- 2 selected stocks: target deploy ratio 60%.
+- 3+ selected stocks: target deploy ratio 85%.
+- Each stock is capped at 35% of total capital, and excess weight above the cap is **not redistributed** to other selected stocks.
+- Each stock is then split 60% first tranche / 40% second tranche.
+
+Therefore, even if every first-tranche BUY triggers, initial deployed capital is at most approximately:
+- 1 stock: 21% of total capital,
+- 2 stocks: 36%,
+- 3+ stocks: 51%.
+Actual values can be lower when the 35% single-stock cap truncates a high-weight candidate without redistribution.
+
+This means user-observed idle cash can come from at least three distinct layers:
+1. intentional reserve caused by candidate-count / concentration policy,
+2. second-tranche cash reserved for later ADD,
+3. cash left unused because formal BUY never triggers.
+These must be measured separately. "Buy-trigger rate" alone cannot explain total cash utilization.
+
+Reverse case:
+- Deliberate reserve reduces concentration and keeps dry powder on low-opportunity days.
+- Raising deployment solely because cash feels idle can mechanically increase risk without improving selection/execution alpha.
+- Any future capital-utilization proposal must compare total-capital return **and** drawdown/MAE/cost, not just invested percentage.
+
+### ADD is even more constrained than the first audit suggested
+Source audit shows:
+- `processSignalStateCore` requires `planDateMatches` for BUY, ADD and EARLY_ALERT.
+- ADD additionally requires a finite externally supplied `firstEntryConfirmedAt` and a later completed 15m bar than the prior entry-signal bar.
+- Repository search finds `firstEntryConfirmedAt` parsed/read, but the BUY signal path does not mutate the plan to set it.
+- Repository search likewise finds no automatic transition of the saved plan from NONE -> FIRST -> FULL after a signal.
+This is correct from an execution-integrity perspective because a push/recommendation is not proof of a fill. But it means ADD cannot become reliable without confirmed execution-state reconciliation from the user/broker/external source.
+
+Reverse implication:
+- Do **not** "fix" this by treating a sent BUY alert as an executed trade. That would fabricate holdings.
+- The architectural research question is confirmed-fill state synchronization, not automatic state mutation from recommendations.
+
+### Profit-check precedence can suppress ADD
+`buildFinalDecision` checks `profit.level === "profit"` before A/B BUY. Thus once price is already at/above the first profit-check level, the final decision is PROFIT_CHECK rather than BUY/ADD even if a fresh entry pattern also exists. This is conservative and avoids adding into the first profit-taking zone, but it can further reduce second-tranche deployment.
+
+### Daily scan vs open-position continuity
+`runAfterMarketScanCore` refuses to overwrite the monitored stock configuration if **any current configured stock has positionStage != NONE**:
+`OPEN_POSITION_PROTECTED：仍有持倉，不得用新選股覆蓋實際持股及原停損計畫；需先完成持倉對帳`.
+When no configured open position exists, `saveStockConfig` replaces the entire current stock list with the new daily list; new after-market plans are emitted with `positionStage:"NONE"`.
+Consequences:
+- Correctly reconciled open positions protect their risk plan, but they also block the automatic daily replacement path.
+- If real broker holdings are not reconciled into the monitored configuration, the automatic scanner can continue generating fresh NONE-state plans, but those plans cannot be treated as authoritative holdings state.
+- This exposes a separation between "daily candidate monitor" and "actual portfolio state" that matters for capital-utilization and re-add research.
+
+### ABF case-study scope correction
+Repository search finds no hard-coded 3037/8046/3189/ABF-specific rule in the formal Worker. The user's 南電 partial-reduction example may therefore originate from a separate holdings/radar judgment path rather than the formal V7 `REDUCE` state machine. Do not claim the formal REDUCE implementation caused that exact historical decision without event evidence.
+Use the ABF names as case studies only after the actual recommendation timestamp/context is recovered; keep formal-monitor architecture and assistant/radar discretionary guidance analytically separate.
+
+### Immediate research consequence
+Before changing selection/entry rules, decompose observed idle cash into:
+A. policy reserve,
+B. untriggered first-tranche capital,
+C. reserved second-tranche capital,
+D. state-reconciliation failures that prevent ADD/re-add.
+Only B supports a pure "entry gate too strict" hypothesis. C/D can instead be position-state architecture problems.
+
+
 ## Exact next continuation point
 1. Re-read latest checkpoint/main and re-check SHA.
 2. Audit frame10/frame15 timestamp provenance: `researchBarTiming` derives bar end by adding timeframe to `frame.latest.time`; verify whether `buildBar.time` comes directly from Fugle candle `bar.date`, and distinguish calculated completion time from source-observed freshness. Record failure modes around delayed candle publication and cached prior frames.
