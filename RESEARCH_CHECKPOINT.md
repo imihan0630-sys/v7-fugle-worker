@@ -133,6 +133,57 @@ Interpretation:
 8. Formal Core remains LOCKED; no production change from this research without explicit owner approval.
 
 
+## ABF trim/re-entry case audit — 8046 南電 episode (2026-09-22)
+
+Prior decision history recovered from the project conversation:
+- 2026-09-01: user held 8046 南電 200 shares, cost about 916.30, close 1,225.
+- 2026-09-03: close 1,080 after a sharp sector selloff.
+- 2026-09-04 intraday around 1,020: recommendation was to reduce 50% (sell 100 shares) because of a second day of weakness plus Broadcom/TOPPAN capacity-share risk; user confirmed selling 100.
+- Remaining 100 shares were subsequently judged HOLD / no add. A recovery around 1,050 had been discussed as a strength-recovery condition, while 1,000–1,020 was the downside-defense area.
+
+Fugle daily OHLC confirms the post-trim path:
+- 9/04 close 1,055; day low 1,010.
+- 9/07 close 1,050.
+- 9/08 close 1,025, low 1,015.
+- 9/09 close 1,110.
+- 9/22 close 1,165, limit-up day.
+From a hypothetical 1,020 trim execution, the sold tranche's maximum additional downside after the decision was tiny relative to the later upside: the subsequent low was around 1,010–1,015 (roughly -0.5% to -1.0%), while 9/22 close was about +14.2% above 1,020.
+
+### Positive interpretation of the trim
+- The recommendation occurred after a very large two-day ABF shock and amid unresolved supply-share risk.
+- Partial reduction, not full exit, preserved half the upside while reducing exposure to a possible continuation crash.
+- A single later rally does not prove the trim was ex-ante irrational.
+
+### Reverse evidence against the management logic
+- Ex post, the trim occurred very near the local trough. The avoided downside after the trim was small, while the opportunity cost on the sold tranche became large.
+- More importantly, the earlier decision logic already had a recovery concept around 1,050, and 8046 reclaimed/closed around that level on 9/07 and then closed 1,110 on 9/09, yet the decision process remained "續抱、不加碼" for the remaining position.
+- This supports an **asymmetry diagnosis**: de-risking had explicit actionability; recovery evidence did not have a symmetric, tranche-specific restoration action.
+
+### Sector-level reverse check: not just one winner
+Fugle daily data from 9/04 close to 9/22 close:
+- 8046 南電: 1,055 -> 1,165, about +10.4%.
+- 3037 欣興: 902 -> 1,120, about +24.2%.
+- 3189 景碩: 819 -> 909, about +11.0%.
+All three ABF names participated in the rebound. This weakens the explanation that 8046's recovery was purely idiosyncratic and strengthens the hypothesis that sector re-strength should have been part of restoration eligibility.
+
+### But a naive re-add rule is not validated
+Example:
+- Re-adding merely on 8046 reclaiming ~1,050 on 9/07 would have captured later upside, but the stock still revisited ~1,015–1,025 afterward.
+- Waiting for a stronger 1,100-area close (9/09 close 1,110) reduces false recovery risk but creates a worse entry and still experienced a later low around 1,025.
+Therefore "reclaim X -> automatically add back" can whipsaw or chase. Threshold tuning from this one episode is prohibited.
+
+### Research implication
+The candidate logic is a state restoration framework, not a fixed price rule:
+REDUCED_CONFIRMED -> RECOVERY_WATCH -> RE-ADD_ELIGIBLE only when:
+1. original downside thesis is no longer strengthening,
+2. stock-specific price/volume recovery is confirmed,
+3. sector/peer recovery is present,
+4. re-add price still has acceptable risk/reward,
+5. the sold tranche amount is known from trusted actual-share state.
+Compare against STAY_REDUCED using opportunity return, MAE, transaction cost, whipsaw frequency and date/sector robustness.
+
+No production re-entry rule is approved or changed from this case.
+
 ## Exact next continuation point
 1. Re-read latest checkpoint and main commit before work; this user-directed trading-decision bottleneck lane has priority over generic observability engineering unless observability blocks the answer.
 2. Recover additional independent formal scan dates and compare SELECTED vs NEAR_MISS / REJECTED_AFTER_BASE with D1/D3/D5 path, MFE, MAE, and invalidation-before-upside ordering. Do not pool names across dates without preserving scan-date clustering.
