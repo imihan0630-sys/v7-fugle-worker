@@ -75,6 +75,61 @@ Required two-sided validation before any rule proposal:
 7. **One-change-at-a-time shadow tests**: if evidence points to execution scarcity, test entry-confirmation relaxation separately from selection changes. If evidence points to selection weakness, do not simultaneously alter entry rules. If evidence points to position management, keep selection/entry frozen while testing re-add logic.
 8. Promotion gate: any proposed change must improve opportunity-cost-adjusted total-capital outcomes without materially worsening MAE, drawdown, false-break rate, transaction-cost stress, zero-pick behavior, or date/regime robustness. No Formal Core change without explicit human decision.
 
+## Immediate capital-utilization / re-entry audit — 2026-09-22
+Repository audit now identifies three concrete structural hypotheses behind the user's observed low entry frequency and asymmetric position management. These are **research findings, not production-change approval**.
+
+### H1 — one-day plan validity can create execution scarcity
+- After-market plans are built with `planDate = nextTradingDate(scanDate)`.
+- `applyPlanValidity` suppresses BUY/ADD when `plan.planDate !== taiwanDate()`.
+- Therefore every newly selected plan has only the immediately following trading day to satisfy the formal intraday entry pattern unless a later scan independently selects the same stock again into a new plan.
+- This is a strong mechanical candidate for low BUY trigger frequency, especially when combined with strict 15-minute confirmation.
+- Reverse case: one-day validity protects against stale setups and prevents a once-good candidate from remaining indefinitely actionable. Extending validity without revalidation could worsen chasing and stale-entry risk.
+- Required test: compare same stock/day SELECTED plans that did not trigger BUY but remained technically valid/strong over D1-D3 versus plans that became invalid. Do not simply lengthen the validity window.
+
+### H2 — entry logic is a conjunction of already-filtered setup + intraday reconfirmation
+Daily selection already requires:
+- A: trend + 2-15% pullback + within 4% of support + volume contraction/no sell-volume + structure intact + not late stage.
+- B: trend + close >= priorHigh20*1.002 + daily volume >=1.3x prev5 + close-position >=65% + upper-shadow <=35% + not-late.
+Then intraday execution requires a second, stricter sequence:
+- A formal BUY only after the prior 15m bar entered the buy zone, held it, volume ratio <=0.9, reversal/strong close, followed by a current bar with higher low and bullish turn-up.
+- B formal BUY requires an already confirmed breakout bar (close >= breakout*1.003, volume ratio >=1.3, strong close, upper shadow <45%), then a later retest touching the buy zone, holding >=breakout*0.997, retest volume <=1.1, bullish reversal/strong close, no long upper shadow.
+- B also refuses entries above `maxChase`; A explicitly refuses to chase when price remains above the buy zone.
+This is a plausible **double-filter / setup-then-perfect-entry** bottleneck.
+Reverse case: the second gate may be exactly what prevents late/failed breakouts. Low frequency alone is not evidence it is wrong.
+Required test: classify no-BUY plans by failed intraday clause (never touched zone / touched but no volume contraction / no reversal / price ran away above zone / stale planDate / freshness issue) and compare later D1/D3/D5 outcomes. Only the clauses whose failed cases still perform well are candidates for relaxation.
+
+### H3 — partial-reduction state is not represented
+- `normalizePositionStage` recognizes only NONE, FIRST and FULL.
+- `REDUCE` emits a recommendation but there is no REDUCED/PARTIAL state transition in the formal state model.
+- `ADD` is only generated when `positionStage === "FIRST"`.
+- A FULL position that is partially reduced therefore has no native formal path `FULL -> REDUCED -> RE-ADD`; unless external/manual plan data is deliberately rewritten to FIRST, the existing code cannot express a symmetric add-back state.
+- `actualShares` is an imported field used to size REDUCE/SELL; signal emission itself does not mutate holdings or positionStage.
+This strongly supports the user's concern that de-risk logic can be asymmetric.
+Reverse case: automatic re-adding after every partial trim can create churn and buybacks into failed rebounds. A missing state does not prove add-back should be easy.
+Required test: audit every REDUCE event with post-event D1/D3/D5/D10 MFE/MAE and compare (a) drawdown avoided, (b) upside missed, and (c) whether a pre-specified recovery pattern would have re-entered before most of the recovery without materially increasing whipsaw.
+
+### No-BUY opportunity-cost data feasibility
+Existing data are sufficient for a research-only diagnostic without inventing history:
+- `v8_trade_journal_plans` stores plan identity, formal close, buy band, allocation ratio, total allocation, first/second/total shares.
+- `v8_trade_journal_signals` stores first formal BUY plus ADD/REDUCE/SELL/STOP_LOSS event data.
+- Shadow counterfactual infrastructure already stores SELECTED outcomes with D1/D3/D5/D10/D20 return, MFE and MAE from PIT scan-date baseline.
+- Existing R02 Execution Alpha only analyzes BUY-triggered plans and explicitly excludes no-BUY plans rather than coding them as zero.
+Therefore a join by `scan_date|symbol` can split SELECTED plans into BUY-triggered vs no-BUY and compare future paths without changing formal logic.
+
+### Important estimand constraint
+Do **not** call the future no-BUY comparison "missed profit" by default. A non-triggered plan that rises may have never offered a feasible fill under the intended rule. Required decomposition:
+1. selection opportunity path from scan close,
+2. whether the planned buy zone was ever tradable/touched,
+3. whether formal confirmation was absent,
+4. hypothetical relaxed-rule fill only under a preregistered alternative,
+5. transaction cost / slippage and MAE.
+This prevents hindsight from treating every later winner as a missed executable trade.
+
+### Engineering classification
+- Current finding is source audit / research design only: no production change.
+- Adding a research-only offline diagnostic over existing journal + Shadow tables can be Class A if isolated from runtime/formal outputs.
+- Changing plan validity, A/B intraday confirmation, positionStage states, ADD eligibility or REDUCE behavior is Class C Formal Core / trading behavior and requires explicit human decision after evidence.
+
 ## Exact next continuation point
 1. Re-read latest checkpoint/main and re-check SHA.
 2. Audit frame10/frame15 timestamp provenance: `researchBarTiming` derives bar end by adding timeframe to `frame.latest.time`; verify whether `buildBar.time` comes directly from Fugle candle `bar.date`, and distinguish calculated completion time from source-observed freshness. Record failure modes around delayed candle publication and cached prior frames.
