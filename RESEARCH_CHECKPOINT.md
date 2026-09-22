@@ -448,6 +448,34 @@ No price/volume thresholds are chosen now. Any threshold definition would requir
 
 No production code, Formal Core, position logic, thresholds, or deployment changed.
 
+## Existing-workflow aggregate reconstruction — 2026-09-22
+
+A safe read-only path was found in already-completed GitHub deployment logs: the deployment verification step queries the protected research dashboard using the repository secret internally, but prints only aggregate research metrics with the secret redacted. No new deployment or secret access was requested.
+
+Across successful V8 deploy runs 87, 88, 90, 91, 92, 93 and 94, the dashboard consistently reported:
+- selectedPlans = 4
+- buyTriggeredPlans = 0
+- Shadow archive = 31 rows / 1 prospective date (2026-09-21)
+- counterfactual D1/D3/D5/D10/D20 mature coverage = 0
+
+By deploy runs 95 and 96 (around 11:49-11:50 Taipei on 2026-09-22), the same dashboard reported:
+- selectedPlans = 4
+- buyTriggeredPlans = 1
+- the selected-plan denominator and Shadow counts were unchanged.
+
+Interpretation:
+1. Within the currently journaled 4-plan research sample, observed formal BUY conversion moved from 0/4 to 1/4 = 25%.
+2. Because the denominator remained exactly 4 while only BUY-trigger count changed, this is evidence of a newly observed BUY signal rather than a new selection widening the denominator.
+3. The current public monitor simultaneously showed the sole active 2026-09-22 plan is 3006 晶豪科. This strongly links the new trigger to the current plan, but exact signal row/time is not exposed by the aggregate log, so do not assert a precise timestamp.
+4. Current public plan remains `positionStage=NONE`, `actualShares=null`, `firstEntryConfirmedAt=null`; therefore a formal BUY signal has been observed in the journal but a real fill is not confirmed by the monitor. This is a concrete example of the distinction between **signal conversion** and **capital deployment**.
+5. The user's impression of only ~2–3 triggers in a month is still not numerically verified because the current journal denominator is only four plans and is not a complete month-long production history.
+
+### Falsification consequence
+- Entry scarcity is now empirically present in the currently observable journal (1/4 triggered), but there is still zero mature forward-outcome coverage for the 2026-09-21 Shadow date at the verification time.
+- Therefore it is premature to call the 3 no-BUY plans "missed winners" or to loosen entry rules.
+- The next decisive evidence is the future path of triggered vs non-triggered SELECTED plans, not the trigger rate by itself.
+
+
 ## Bias / data-quality firewall
 UNKNOWN stays UNKNOWN; no historical execution-shadow backfill; independent scan date is primary evidence unit; no causal claims from contemporaneous correlation; no outcome-driven threshold/window retuning; watch selection bias, look-ahead, data snooping, market-source bias, Factor Zoo, overfit, coverage, zero-pick, costs and date clustering.
 
