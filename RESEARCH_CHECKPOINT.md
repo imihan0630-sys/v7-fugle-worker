@@ -1,6 +1,6 @@
 # Research Checkpoint
 
-Updated: 2026-09-22T10:51+08:00
+Updated: 2026-09-22T10:59+08:00
 
 ## Continuity / baseline
 - Formal Core: **LOCKED**.
@@ -352,6 +352,19 @@ Reverse-validation:
 3. Future statistical inference, if added, should cluster/resample by scan date and preserve the preregistered contrasts; do not bootstrap individual stocks as if independent.
 4. A factor that survives leave-one-date-out but only in one regime/sector can still fail. Date robustness does not replace R06 regime and sector breadth checks.
 5. No engineering change until more independent dates accumulate.
+
+### Shadow-integrity reverse audit — 2026-09-22T10:59+08:00
+Audit of `research/governance_v8_7_5.js` confirms a strong selection-bias firewall:
+- Post-2026-09-21 formal research days are checked for any Shadow archive, exact SELECTED-count agreement, and existence of BROAD_CONTROL.
+- Any missing archive, selected-count mismatch or zero broad-control day marks `RESEARCH_DATA_GAP`; research maturity is blocked but formal trading is not interrupted.
+- This directly protects against analyzing only winners/selected names.
+
+Remaining limitation:
+1. Presence of BROAD_CONTROL does not by itself prove the control cohort is representative. A control can exist yet be systematically different in liquidity, price, sector, market cap or eligibility quality.
+2. Counterfactual same-date comparisons reduce market-day confounding but do not automatically balance these cross-sectional covariates.
+3. Future mature-sample audit should report cohort covariate balance (at minimum price, liquidity/turnover, sector composition, residual RS and volatility) before interpreting Selection Alpha causally.
+4. Do not propensity-match or optimize a matching model now; that would add researcher degrees of freedom before enough prospective dates. First report raw standardized differences / distribution overlap using frozen covariates.
+5. This is a future Class A diagnostic candidate, not a new selection rule.
 
 ## Bias / data-quality firewall
 - UNKNOWN remains UNKNOWN; no BAD/0 coercion.
