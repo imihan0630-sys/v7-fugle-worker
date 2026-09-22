@@ -1,6 +1,6 @@
 # Research Checkpoint
 
-Checkpoint sequence: A-10 after main `bd72ad25ca7c1ba921bfb224dd2c4cab79661558`.
+Checkpoint sequence: B-11 after main `6c92ea1ac05369cd9c85146633aac822c34c3178`.
 
 > Continuity note: prior detailed checkpoints remain durable in Git history. This file is the canonical current cursor for both A/B research schedules.
 
@@ -91,7 +91,7 @@ The existing prospective Shadow schema already captures the requested covariates
 - Canonical Residual RS=`snapshot.price.residualSectorRs20`; mirrored sector path validation-only.
 - These are measurement conventions, not factors/thresholds/experiments/formal gates.
 
-## NEW A-10 — prospective Shadow maturity/coverage audit (2026-09-22 15:43 Taipei)
+## A-10 — prospective Shadow maturity/coverage audit (2026-09-22 15:43 Taipei)
 ### Evidence audited
 - Re-read current main governance/worklist/checkpoint and current research readiness implementation before interpreting maturity.
 - Current readiness code only counts an outcome as D5-mature when `horizons.d5.returnPct` is finite, and counts independent evidence by distinct `scanDate`; R01/R04/R07 require at least 60 mature D5 samples and 15 independent scan dates, while R02/R08 require 20 paired D5 dates. These are pre-existing frozen readiness rules, not newly tuned thresholds.
@@ -117,6 +117,27 @@ The existing prospective Shadow schema already captures the requested covariates
 - Class A documentation/evidence audit only. No executable code, schema, runtime, deployment or Formal Core output changed; no deployment required.
 - R01-R08/I01-I07 unchanged. Formal Core remains LOCKED.
 
+## NEW B-11 — readiness semantics / data-quality falsification audit (2026-09-22 16:10 Taipei)
+### What the existing machinery actually distinguishes
+- `researchReadinessRow()` assigns `DATA_QUALITY_BLOCKED` first when the shared `dataQualityBlocked` flag is true; only otherwise can a zero/immature required outcome become `WAITING_DATA`. This precedence is explicit and deterministic.
+- The shared data-quality flag is narrowly sourced from `shadowIntegrity.status === "RESEARCH_DATA_GAP"`. `researchShadowIntegrityFromRows()` produces that status only for prospective formal scan dates with at least one of: no Shadow archive rows, SELECTED count mismatch versus the formal journal day, or missing BROAD_CONTROL.
+- Normal horizon immaturity is represented separately by experiment checks with `waiting:true` when the relevant mature count is zero. Therefore a healthy archive with zero mature D5 evidence becomes `WAITING_DATA`, while an archive-integrity gap overrides it to `DATA_QUALITY_BLOCKED`.
+
+### Important limitation / alternative failure mechanism
+- The distinction is valid for the integrity conditions it actually observes, but it is **not a universal data-quality detector**. Corrupt/malformed `snapshot_json`, missing individual PIT covariates, outcome-enrichment failure after an otherwise complete archive, execution-shadow recorder non-persistence, or an unreadable protected journal are not automatically proven by `shadowIntegrity` and can remain UNKNOWN or appear as ordinary waiting/accumulating evidence depending on the downstream counters.
+- In particular, current execution-shadow D1 storage coverage remains UNKNOWN. The readiness matrix must not be interpreted as certifying execution-recorder health merely because Shadow archive integrity is HEALTHY.
+- Conversely, `RESEARCH_DATA_GAP` is not evidence that the strategy failed or produced zero picks; it is a research-data coverage fault.
+
+### Bias / governance checks
+- No outcome values, thresholds, windows, factor definitions or experiment variants were changed. No data-snooping/Factor-Zoo expansion.
+- No historical Shadow or missing horizon was synthesized; UNKNOWN remains UNKNOWN.
+- Same-date clustering and independent-scan-date semantics are unchanged.
+- This audit does not resolve market-source bias, execution selection bias, transaction costs, redundancy or overfit; those remain separate gates and must not be inferred from readiness status.
+
+### Engineering classification / status
+- Class A documentation/evidence audit only. Existing code already distinguishes normal maturity waiting from the currently defined Shadow archive integrity gap; no code change is justified by this audit.
+- Formal Core, runtime, schema, deployment, R01-R08 and I01-I07 unchanged.
+
 ## Conditional R03/R04/R07/R08 diagnostic design — design only
 When mature, condition existing frozen outcomes as:
 1. sector-persistence state x Residual-RS HIGH/LOW;
@@ -127,9 +148,9 @@ Sparse cells remain UNKNOWN/ACCUMULATING. Do not pool merely for significance.
 
 ## Exact next continuation point
 1. Re-read latest governance/worklist/checkpoint and latest main research commit; re-check checkpoint SHA immediately before any write.
-2. Keep execution-shadow D1 storage/read coverage UNKNOWN unless an existing authorized artifact explicitly returns persisted recorder rows/counts. Do not treat scheduled-health SUCCESS as storage evidence.
-3. On the next run, first re-audit safe durable artifacts for a **new prospective Shadow scan date or newly matured D1/D3/D5 horizon**. If none exists, do not repeat this maturity audit; move to the next non-blocked research question and preserve ACCUMULATING/WAITING_DATA.
-4. A high-value non-blocked next question is to audit whether the existing readiness/maturity machinery distinguishes `WAITING_DATA` caused by normal horizon immaturity from `DATA_QUALITY_BLOCKED` caused by missing/corrupt Shadow coverage, without changing code. If semantics are ambiguous, document the exact failure mode before proposing any Class A observability change.
+2. Re-audit safe durable artifacts for a new prospective Shadow scan date or newly matured D1/D3/D5 horizon. If none exists, preserve ACCUMULATING/WAITING_DATA and do not repeat the same maturity audit.
+3. Audit the next non-blocked observability question: whether malformed/missing prospective `snapshot_json` or failed outcome enrichment can be distinguished from normal horizon immaturity using existing research-only diagnostics. Document exact detectable vs undetectable failure modes before proposing instrumentation.
+4. Keep execution-shadow D1 storage/read coverage UNKNOWN unless an authorized artifact explicitly returns persisted recorder rows/counts. Readiness HEALTHY/WAITING_DATA is not execution-recorder certification.
 5. If individual BUY identity later becomes safely readable, use frozen balance conventions: primary liquidity=`snapshot.volume.avgAmount20`; canonical Residual RS=`snapshot.price.residualSectorRs20`; cluster by scan date. Do not add/tune covariates after outcomes.
 6. Keep REDUCED_CONFIRMED UNKNOWN until trusted actual-share observations exist; append-only confirmation recorder remains design only.
 7. Keep joint sector-persistence diagnostic as design until maturity/governance gates are satisfied.
