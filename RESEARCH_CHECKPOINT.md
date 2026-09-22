@@ -303,6 +303,57 @@ If cells are sparse, mark UNKNOWN/ACCUMULATING; do not pool them merely to obtai
 - No outcome inspection was used to choose a winning subgroup. No look-ahead, historical Shadow fabrication, market-source substitution, or UNKNOWN coercion introduced.
 - Engineering status: documentation-only Class A research progress; executable code and Formal Core unchanged.
 
+## Immediate manual research — signal scarcity and trim/re-entry source audit (2026-09-22T12:33+08:00)
+
+### 1. Existing diagnostics are not yet sufficient for the requested joint falsification
+Source audit of `research/counterfactual_v8_7_4.js`, `research/evidence_enrichment_v8_7_9.js`, and `research/readiness_v8_7_10.js` shows:
+- R03 currently exposes aggregate regime/Top5-sector persistence statistics by research day.
+- R04/R07/R08 outcomes expose stock-level `residualSectorRs20` and `volumeTodayVsPrev5`, with same-date median splits.
+- Current machine-readable outputs do **not** directly join each stock outcome to the contemporaneous sector-persistence state needed for sector-persistence × Residual-RS × Attention conditional diagnostics.
+Implication: the data primitives exist, but the existing research output does not yet expose the joint cells. Any future instrumentation should be isolated research-only and must not touch Formal Core. Per user rule, no code/deployment change is made without explicit approval.
+
+### 2. Entry scarcity is structurally multiplicative, not one single threshold
+Formal source audit confirms several conditions must align on the same one-day plan:
+- A pullback requires zone entry + hold above buyLow + prior-bar volumeRatio<=0.9 + reversal/strong close + higher low + current bullish turn-up.
+- B requires a prior valid breakout bar (close >= breakout*1.003, volumeRatio>=1.3, strong close, upper shadow <0.45), followed by a later retest that touches the retest zone, holds near breakout, has volumeRatio<=1.1 (or null), turns bullish, and has no long upper shadow.
+- Formal 15m BUY freshness is mandatory; 10m only previews B.
+- maxChase blocks formal BUY if current price is already above maxChase.
+- planDate is one trading day; a missed entry is not carried forward unless independently reselected.
+Combined with the previously verified ~10:45 earliest feasible formal A/B entry, these gates can compound and create very low conversion even if each individual condition looks reasonable.
+
+Positive case: these filters can reduce opening-auction noise, failed breakouts and chasing.
+Reverse case: the conjunction may reject valid early trend continuations simply because the ideal retest/volume sequence never occurs after eligibility opens.
+Required test remains BUY-triggered vs no-BUY SELECTED future path plus early-window path evidence; do not relax any one gate based on intuition alone.
+
+### 3. Strong source-level evidence of trim/re-entry asymmetry
+Current production position-state model only recognizes:
+- `NONE`
+- `FIRST`
+- `FULL`
+There is no `REDUCED`, `TRIMMED`, or equivalent state.
+
+Operation logic:
+- `REDUCE` emits when a held position is in the profit zone and the latest 15m bar is bearish with volumeRatio>=1.3.
+- `ADD` is emitted only when `positionStage === "FIRST"` and the ordinary BUY setup reappears.
+- For `FULL`, a later BUY setup does **not** emit ADD.
+- The REDUCE signal itself does not establish a distinct reduced-position state inside the source-level decision state machine.
+
+This materially supports the user's hypothesis that risk-off handling and risk-on restoration are asymmetric at the model/state-machine level. It does **not** prove a re-add rule would improve outcomes.
+
+Required two-sided falsification:
+1. For historical/prospective REDUCE events, measure D1/D3/D5/D10 path, MFE, MAE and drawdown avoided after reduction.
+2. Separately test when/if the stock and sector re-established strength after the reduction.
+3. Compare a shadow REDUCED→RE-ADD_ELIGIBLE state against staying reduced, including transaction costs and whipsaw frequency.
+4. Do not use 8046 alone; ABF can be a case-study cohort, but the hypothesis must generalize to non-ABF trims or remain cohort-specific.
+5. A later rally does not invalidate the original trim unless ex-ante risk-adjusted evidence shows the reduction was systematically harmful.
+
+### 4. New priority conclusion
+The highest-information next work is not to add selection factors. It is to decompose the funnel:
+`SELECTED -> eligible clock -> zone touch -> confirmation -> formal BUY -> position stage -> REDUCE -> possible restoration`.
+For every transition, measure conversion rate and subsequent path. This will identify whether the dominant leak is selection quality, entry timing/confirmation, plan expiry/maxChase, or missing post-trim restoration.
+
+No Formal Core, thresholds, buy/sell logic, state names, monitor behavior, or deployment changed in this manual turn.
+
 ## Bias / data-quality firewall
 UNKNOWN stays UNKNOWN; no historical execution-shadow backfill; independent scan date is primary evidence unit; no causal claims from contemporaneous correlation; no outcome-driven threshold/window retuning; watch selection bias, look-ahead, data snooping, market-source bias, Factor Zoo, overfit, coverage, zero-pick, costs and date clustering.
 
@@ -316,8 +367,9 @@ UNKNOWN stays UNKNOWN; no historical execution-shadow backfill; independent scan
 
 ## Exact next continuation point
 1. Re-read latest checkpoint/main and re-check SHA before any write.
-2. Continue from the frozen R03/R04/R07/R08 redundancy plan: inspect whether existing machine-readable diagnostics already expose the conditional fields needed for sector-persistence × residual-RS × attention analysis. Do not add a new experiment or threshold.
-3. If fields are not already observable, classify any proposed instrumentation before coding; prefer isolated Class A research output and do not touch shared formal runtime paths.
-4. Explore PIT-valid monthly-revenue announcement history only if first-known timestamps/source vintage can be proven; current snapshot must not masquerade as historical vintage.
-5. Keep early-window Shadow instrumentation deferred until actual execution-shadow-v2 recorder storage is safely verified.
-6. Formal Core remains LOCKED. No Class B/C production change without explicit human decision.
+2. Quantify the entry funnel from existing stored fields without redefining rules: SELECTED count, formal BUY conversion, BUY timing, maxChase/plan-expiry exclusions where observable, and no-BUY future D1/D3/D5/D10/D20 path. Do not infer clause failure when clause-level evidence is absent.
+3. Audit whether any existing journal/history data can reconstruct REDUCE-event forward paths and actual post-reduction share state without fabrication. If actual reduced shares/state are not reliably stored, mark UNKNOWN.
+4. Design, but do not implement without approval, a research-only conditional diagnostic joining scanDate sector-persistence state with stock-level Residual-RS/Attention outcomes.
+5. Design, but do not implement without approval, a shadow REDUCED→RE-ADD_ELIGIBLE research state with no production effect; preregister positive and reverse failure criteria before coding.
+6. Keep early-window Shadow instrumentation deferred until recorder storage is safely verified.
+7. Formal Core remains LOCKED. No Class B/C production change without explicit human decision.
