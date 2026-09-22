@@ -412,6 +412,40 @@ The system is not merely "one strict BUY trigger." It contains stacked conservat
 The correct research task is to identify which layer rejects names that later have favorable **risk-adjusted executable paths**, rather than loosening all layers together.
 
 
+## Shadow archive coverage limitation for the new bottleneck questions — 2026-09-22
+Audit of V8.7.2 shows the existing Shadow Candidate Archive is valuable but **not sufficient to answer all newly raised gate-specific questions without bias**.
+
+Current prospective archive construction:
+- SELECTED: all selected names.
+- QUALIFIED_NOT_SELECTED: up to 6 per pool.
+- NEAR_MISS: up to 6 per pool, drawn only from names failing the A/B setup formation step.
+- REJECTED_AFTER_BASE: up to 6 per pool from base-passed later-stage rejects.
+- BROAD_CONTROL: up to 6 per pool via stable-hash sampling.
+
+Critical limitation:
+`REJECTED_AFTER_BASE` is sorted by exclusion-reason text then symbol before taking only 6 per pool. Therefore it is not a representative sample of all later-stage failures and can systematically omit specific reasons such as:
+- no verifiable resistance / target null,
+- RR <2,
+- A setup pass but quality grade C,
+- fundamental/sector/ATR later-stage failures.
+
+The current archive was designed for broad anti-selection-bias comparison, not reason-specific gate attribution.
+
+Consequence for current research:
+1. Do not estimate "how much opportunity the RR gate / A-quality gate loses" from the current REJECTED_AFTER_BASE cohort as if it were exhaustive.
+2. Historical `diagnostics_json` can quantify how often each rejection reason binds, but it does not preserve full per-stock future-path identity for every reject.
+3. Reason-specific causal/falsification work needs a prospective, preregistered sampling scheme or exhaustive lightweight identity archive.
+
+Possible future Class A instrumentation, **not yet implemented**:
+- preserve aggregate per-reason counts daily,
+- for each frozen rejection reason retain a deterministic reason-stratified sample with explicit sampling probability/limit,
+- or persist only minimal identity + scan baseline for all post-base rejects if D1/CPU cost is proven acceptable.
+Do not change sampling after seeing which reason looks profitable.
+Any instrumentation must remain research-only, fail-open, no ranking/plan/push/trade impact.
+
+This prevents a second-order selection bias: using a convenience subset of rejected candidates to decide which gate to relax.
+
+
 ## Exact next continuation point
 1. Re-read latest checkpoint/main and re-check SHA.
 2. Audit frame10/frame15 timestamp provenance: `researchBarTiming` derives bar end by adding timeframe to `frame.latest.time`; verify whether `buildBar.time` comes directly from Fugle candle `bar.date`, and distinguish calculated completion time from source-observed freshness. Record failure modes around delayed candle publication and cached prior frames.
