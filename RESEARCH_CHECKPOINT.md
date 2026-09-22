@@ -112,12 +112,65 @@ Because production B requires the breakout to have already closed through priorH
 - Isolation branch `research/b13-shadow-provenance` exists; complete source reconstruction was achieved in B-16.
 - Provenance implementation/tests remain deferred while owner-priority root-cause stream is active.
 
+## USER PRIORITY OVERRIDE — capital idleness / entry scarcity / trim-reentry
+
+The owner explicitly redirected research back to the trading-decision problem. This now outranks B-13/B-16 data-quality engineering unless a data-quality issue directly blocks this investigation. Do not let generic research-engineering work consume the next A/B schedules.
+
+### Source-level capital-utilization finding
+The formal allocator itself imposes a strong cash floor before any intraday confirmation:
+- selectedCount=1 -> planned deploy ratio 35%; first tranche is 60% of that = about 21% of total capital.
+- selectedCount=2 -> planned deploy ratio 60%; first tranches together are about 36% of total capital.
+- selectedCount>=3 -> planned deploy ratio 85%; first tranches together are about 51% before single-name caps/rounding.
+Thus persistent idle cash can arise from **selection breadth + allocator + BUY conversion + ADD conversion**, not BUY scarcity alone.
+
+Observed formal examples:
+- 2026-09-17 scan selected 2 names. Exact allocations: 4763 NT$62k (31.2%), 1301 NT$57k (28.8%): full planned deployment NT$119k/200k = 59.5%; first tranches total NT$71.4k = 35.7%.
+- 2026-09-21 scan selected 1 name, 3006: full planned deployment NT$70k = 35%; first tranche NT$42k = 21%.
+- 2026-09-16 scan selected 3 names from 1,873 ordinary stocks; source policy implies at most ~85% planned before first-tranche staging.
+
+### Selection-vs-execution falsification from the small observable cohort
+Using formal scan closes and subsequent daily bars through 2026-09-22:
+- 9/16 cohort (6706,3006,6505) mean close-to-close return from selection close to 9/22 ≈ +2.93%; TAIEX over the same interval ≈ +4.26%.
+- 9/17 cohort (4763,1301) mean close-to-close return ≈ +0.37%; TAIEX over the same interval ≈ +3.27%.
+This tiny sample does **not** establish negative Selection Alpha, but it directly falsifies the simplistic claim that “the selected stocks were obviously strong and only entry rules blocked profit.” Close-to-close selection quality is not yet proven superior.
+
+At the same time, the five selected names showed large path opportunity before 9/22 round-trips:
+- 6706 MFE from selection close ≈ +14.29%, MAE ≈ -4.42%.
+- 3006 MFE ≈ +5.52%, MAE ≈ -1.60%.
+- 6505 MFE ≈ +11.55%, MAE ≈ +0.12%.
+- 4763 MFE ≈ +12.16%, MAE ≈ -0.52%.
+- 1301 MFE ≈ +2.94%, MAE ≈ -0.62%.
+Mean MFE ≈ +9.29% while mean endpoint return ≈ +1.91%.
+
+Interpretation: there may be meaningful **path/execution/position-management opportunity** even when endpoint Selection Alpha is not superior. Therefore entry scarcity, profit capture, trim/re-entry and selection quality must be tested separately.
+
+### 4763 vs 1301 same-day contrast
+Both 9/17 formal A plans traded into their planned buy zones on 9/18 without breaching formal stop that day:
+- 4763 zone 47.16–48.25, stop 46.45; 9/18 low 47.45, high 50.5; later 9/21 high 53.5 exceeded profitCheck 51. This is a plausible valid opportunity that a too-strict confirmation rule could miss.
+- 1301 zone 63.88–65.36, stop 62.92; 9/18 low 64.2, high 65.6; later max through 9/22 only 66.5 versus profitCheck 68.6, then close returned to 64.6. Relaxing entry here would add little payoff.
+This pair is direct evidence against blanket loosening: the same relaxation could help one case and add low-value exposure in another.
+
+### Funnel architecture finding
+Daily selection is intentionally narrow:
+- 9/16: 1,873 scanned -> 3 selected.
+- 9/17: 1,875 scanned -> 2 selected; baseEligible 513, rrEligible 9, A final 2, B final 0.
+The largest primary exclusion bucket is the 20-day liquidity gate (~1,100 names), but current Shadow cohorts exclude liquidity rejects because they require basePassed. Therefore the largest selection bottleneck is currently **not prospectively falsifiable** by the existing Shadow archive. Do not infer the liquidity rule is wrong; it is an evidence-coverage gap.
+
+### Working hypotheses — all remain two-sided
+H1 Selection is too narrow: supported by 0.1–0.2% selected/scanned rates; opposed by lack of proven Selection Alpha and by execution/slippage protection.
+H2 Intraday BUY confirmation is too strict: supported by low journal conversion and valid-zone examples; opposed by falling-knife/stop-first cases and by 3006's post-trigger weakness.
+H3 Capital staging is too conservative for sparse selection: structurally true for utilization, but whether it hurts risk-adjusted total-capital return is unproven.
+H4 Profit/position management leaks more return than selection itself: supported by high MFE vs low endpoint return in the small selected cohort; opposed by hindsight bias and absence of confirmed fills for most cases.
+H5 Trim logic is asymmetric: source state has NONE/FIRST/FULL but no confirmed reduced-exposure restoration state; whether re-add improves outcomes remains unproven after costs/whipsaw.
+
+No Formal Core change. No threshold/allocator/entry/exit modification without explicit owner decision after falsification evidence.
+
 ## Exact next continuation point
-1. Re-read latest governance/worklist/checkpoint/main SHA; merge any A progress before writing.
-2. Continue root-cause stream, not deferred B-16.
-3. Recover additional independent formal scan dates with exact SELECTED and NEAR_MISS/REJECTED cohorts from durable CI/D1 evidence; repeat fixed D1/D3/MFE/MAE comparisons without threshold retuning. If no additional exact cohort is safely recoverable, mark unavailable/UNKNOWN and move on.
-4. Quantify capital-utilization decomposition from existing durable evidence: selectedCount -> planned deployment ratio -> BUY-observed -> confirmed fill known/UNKNOWN -> ADD-observed -> full allocation. Never equate BUY signal with fill. Separate selection scarcity from execution scarcity and allocation caps.
-5. Audit daily A -> intraday A conjunction: determine which intraday clauses can block an already-selected A plan and whether durable diagnostics expose clause-level no-BUY reasons. Missing clause identity remains UNKNOWN.
-6. Search durable repository evidence for non-ABF REDUCE recommendations and especially confirmed share reductions. If no trusted actual-share evidence exists, generalization of restoration remains UNKNOWN.
-7. Keep LIQUIDITY_REJECTED_CONTROL and pre-breakout B-intent cohorts design-only; do not implement/deploy without the already-required owner/classification gate.
-8. Formal Core remains LOCKED. Any production proposal must present expected benefit, reverse evidence, risks, coverage/cost/overfit evidence and Class C status before owner decision.
+1. Keep USER PRIORITY OVERRIDE as the primary line; B-13/B-16 engineering is paused unless it blocks evidence needed here.
+2. Reconstruct exact 9/16 plan zones/stops/targets if durable evidence can be recovered; otherwise label UNKNOWN/RECONSTRUCTED, never guess.
+3. Recover any 9/18 formal scan/plan result and extend the selected-count / planned-capital / first-tranche-utilization sequence to more independent days.
+4. For each recoverable formal plan, classify path in order: zone touched? stop/invalidation first? formal BUY observed? target/MFE first? round-trip? This is the key test for whether entry confirmation protects from falling knives versus misses valid continuation.
+5. Investigate ABF 3037/8046/3189 trim/re-entry as a cohort, not a one-stock anecdote: reconstruct documented reduce recommendations, subsequent D1/D3/D5/D10 path, drawdown avoided, MFE missed, and whether sector persistence/price strength re-established before upside.
+6. Audit current REDUCE condition versus actual ABF trend behavior and formulate a Shadow-only recovery-state preregistration. No production state/threshold change.
+7. Do not loosen liquidity, A/B, RR, 15m confirmation, allocation or trim rules from these small cases. Require cross-date/regime evidence and costs/MAE.
+8. Formal Core remains LOCKED.
