@@ -1,6 +1,6 @@
 # Research Checkpoint
 
-Updated: 2026-09-22T09:04+08:00
+Updated: 2026-09-22T09:12+08:00
 
 ## Continuity / baseline
 - Formal Core: **LOCKED**.
@@ -196,6 +196,19 @@ Current TWSE rules and Taiwan evidence add two controls:
 - Taiwan foreign-institution evidence is mixed for profitability: foreign investors have been documented as momentum traders, but prior foreign ownership can anchor/strengthen their momentum trading without improving momentum profitability. Thus institutional consecutive buying should not be treated as independent proof that a momentum setup has alpha; it remains a formal strategy input but research must control overlap with price momentum and ownership/size/liquidity context.
 
 Candidate research-only engineering idea (not implemented yet): versioned `spreadTicks` in execution-shadow-v3, computed from the official current tick schedule. This is measurement normalization, not a formal trading rule. Because current v2 prospective series is just beginning, preserve v2 raw fields and only add a parallel derived field if engineering is later justified; never rewrite old snapshots.
+
+### Attention/disposition as an omitted market-mechanism state — 2026-09-22T09:12+08:00
+Official 2026 TWSE surveillance rules and recent Taiwan disposition research reveal a missing research context:
+- TWSE attention/disposition status is endogenous to abnormal price change, volume, turnover, concentration and related trading conditions. Repeated attention announcements can lead to disposition measures; first disposition can change matching to periodic matching (e.g. approximately every two minutes under the cited rule).
+- This means attention/disposition status can mechanically alter liquidity, spread, depth, timing and momentum-path observations. It is neither a clean exogenous alpha factor nor ordinary liquidity noise.
+- Recent Taiwan thesis evidence (2015-2025 disposition events) reports heterogeneous post-disposition paths by trigger type; another NTU study reports negative abnormal returns shortly after disposition announcements followed by rebound. These are supporting context, not sufficient for a formal rule.
+
+Research consequence:
+1. Add "official attention/disposition status" to the future execution data-quality/control wishlist, but do not fabricate historical PIT status and do not add it as an alpha factor.
+2. When available prospectively, disposition observations should be stratified/excluded from ordinary continuous-market spread/depth comparisons because matching mechanics differ.
+3. Attention status itself is outcome-linked; using it as a predictor without careful timing would create leakage/endogeneity risk. Preserve announcement-effective timing.
+4. Current executionMarketState quote flags are not sufficient to identify official disposition status; keep UNKNOWN rather than infer.
+5. No engineering change now before the first v2 coverage audit.
 
 ## Bias / data-quality firewall
 - UNKNOWN remains UNKNOWN; no BAD/0 coercion.
