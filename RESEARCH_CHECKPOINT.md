@@ -165,12 +165,69 @@ H5 Trim logic is asymmetric: source state has NONE/FIRST/FULL but no confirmed r
 
 No Formal Core change. No threshold/allocator/entry/exit modification without explicit owner decision after falsification evidence.
 
+## USER PRIORITY continuation — 9/18 breadth evidence + ABF recovery-path audit
+
+### 9/18 formal breadth evidence recovered
+A completed existing GitHub Actions recovery log for scanDate 2026-09-18 provides durable aggregate evidence:
+- formal recovery selectedCount = 3;
+- pipelineComplete = false;
+- the same workflow had successfully refreshed official quality/index data first.
+The log does not expose the three stock identities, so identities remain UNKNOWN and must not be guessed from unrelated EPS-review symbols.
+
+Capital-use implication from the frozen allocator:
+- three selected names raise planned deployment cap from the 35%/60% one-/two-name levels to ~85% before per-name caps/rounding;
+- first-tranche deployment can still be only ~51% of total capital even when three names qualify.
+Therefore observed idle cash remains a composition of selection breadth, allocator staging, BUY conversion and ADD/fill conversion.
+
+### ABF cohort reconstruction through 2026-09-22
+Daily adjusted OHLCV was reconstructed for 3037 欣興, 8046 南電 and 3189 景碩. The exact date of the owner's historical 8046 partial-sale recommendation is not durably joinable from the current repo/project evidence, so do NOT assign a date or compute "missed profit from the actual trim" yet.
+
+The cohort had a severe shared risk episode around 9/3:
+- 8046 close 1080 after 1200 on 9/2 (-10.0% close-to-close), then 9/4 close 1055.
+- 3037 close 923 after 973 (-5.1%), then 9/4 close 902.
+- 3189 close 775 after 847 (-8.5%), then 9/4 close 819 after an intraday low 766.
+This is important reverse evidence: a partial risk reduction during that breakdown would have had a genuine ex-ante risk-control basis; the later rally alone cannot invalidate it.
+
+### When did ABF strength actually re-establish?
+Using only contemporaneously observable close/volume and rolling MA states:
+- 9/09: all three rose and all three closed above MA5, but none was above MA10/MA20. This was an early rebound, not a confirmed medium-term recovery.
+- 9/16: all three closed higher and all three were above MA10, but the next session (9/17) all three fell. A simple "all above MA10 -> add back" rule would have whipsawed immediately.
+- 9/18: all three rose again and all three closed above MA5 and MA10. Approx daily moves: 8046 +3.29%, 3037 +4.36%, 3189 +3.35%. But none of 8046/3037 had yet reclaimed MA20; 3189 was only marginally above its MA20. None closed above the prior session high. This is a plausible **early recovery state**, not a clean breakout.
+- 9/21: 8046 fell -3.64% and traded to 1050; 3189 also softened, while 3037 strengthened and reclaimed MA20. A 9/18 early add-back in 8046 would have experienced roughly -4.5% adverse excursion from 1100 to the 9/21 low before the subsequent rally.
+- 9/22: all three closed strongly higher and above MA5/MA10/MA20; 8046 closed 1165 (+9.91%), 3037 1120 (+9.80%), 3189 909 (+9.92%). By then confirmation was strong, but much of the one-day upside was already expressed at/after the opening gap.
+
+### Two-sided conclusion on the owner's 8046 complaint
+Support for adding a restoration mechanism:
+- the architecture has no REDUCED_CONFIRMED -> RE-ADD_ELIGIBLE state;
+- 9/18 already showed broad ABF early recovery across all three names, so "reduced forever / only hold remainder" can miss a genuine resumed theme.
+
+Reverse evidence against a simplistic add-back:
+- earlier 9/09 and 9/16 recovery-looking states were followed by renewed weakness;
+- even 9/18 early recovery was followed by a material 8046 drawdown on 9/21 before the 9/22 limit-up;
+- waiting for MA20/prior-high confirmation would reduce whipsaw but would also enter much later, potentially after a gap.
+Therefore the architecture gap is real, but the optimal recovery threshold is **not** obvious from this episode and must not be hand-tuned to 8046.
+
+### Shadow-only recovery-state preregistration candidate
+Do not implement yet. Compare three fixed concepts prospectively after a trusted confirmed partial reduction:
+A. STAY_REDUCED — sold tranche remains cash.
+B. EARLY_BREADTH_RECOVERY — sold tranche becomes eligible only after the stock reclaims short trend (MA5/MA10) while at least 2/3 ABF peers simultaneously show positive short-trend breadth; no automatic fill.
+C. FULL_TREND_RECOVERY — eligibility only after reclaim of MA20 / prior structural high, accepting later entry.
+Evaluate D1/D3/D5/D10 tranche return, MFE/MAE, cost stress, re-reduction/whipsaw rate, and market/sector regime. These are concepts, not tuned thresholds and not formal rules.
+
+Falsification:
+- if EARLY_BREADTH gains are erased by whipsaws/costs, reject early re-add;
+- if FULL_TREND recovery consistently enters after most upside and total-capital capture remains poor, it is too late;
+- if STAY_REDUCED has similar return with materially lower MAE, no restoration rule is justified;
+- require non-ABF partial-reduction events before generalizing a state-machine change.
+
+No Formal Core or production behavior changed.
+
 ## Exact next continuation point
-1. Keep USER PRIORITY OVERRIDE as the primary line; B-13/B-16 engineering is paused unless it blocks evidence needed here.
-2. Reconstruct exact 9/16 plan zones/stops/targets if durable evidence can be recovered; otherwise label UNKNOWN/RECONSTRUCTED, never guess.
-3. Recover any 9/18 formal scan/plan result and extend the selected-count / planned-capital / first-tranche-utilization sequence to more independent days.
-4. For each recoverable formal plan, classify path in order: zone touched? stop/invalidation first? formal BUY observed? target/MFE first? round-trip? This is the key test for whether entry confirmation protects from falling knives versus misses valid continuation.
-5. Investigate ABF 3037/8046/3189 trim/re-entry as a cohort, not a one-stock anecdote: reconstruct documented reduce recommendations, subsequent D1/D3/D5/D10 path, drawdown avoided, MFE missed, and whether sector persistence/price strength re-established before upside.
-6. Audit current REDUCE condition versus actual ABF trend behavior and formulate a Shadow-only recovery-state preregistration. No production state/threshold change.
-7. Do not loosen liquidity, A/B, RR, 15m confirmation, allocation or trim rules from these small cases. Require cross-date/regime evidence and costs/MAE.
-8. Formal Core remains LOCKED.
+1. Keep USER PRIORITY OVERRIDE primary.
+2. Search durable project/repo evidence for the exact 8046 reduction recommendation/confirmation date and price. If not found, keep actual-trim opportunity cost UNKNOWN; do not infer from holdings snapshots.
+3. Extend formal scan breadth/planned-capital sequence to other recoverable dates around 9/16–9/22. Separate selectedCount from pipeline success and from actual BUY/fill.
+4. Recover exact 9/16 plan zones/stops/targets if possible; otherwise retain reconstructed/UNKNOWN labels.
+5. For every recoverable plan classify path order: zone touch -> invalidation/stop -> formal BUY if joinable -> target/MFE -> endpoint. Compare BUY-triggered and no-BUY only when identity is safely joinable.
+6. Audit source-level REDUCE trigger against ABF daily/15m behavior and determine whether the trigger detects temporary profit-zone distribution versus true trend break. Reverse-test false reductions.
+7. Keep the three recovery concepts (STAY_REDUCED / EARLY_BREADTH_RECOVERY / FULL_TREND_RECOVERY) shadow-only and untuned. Do not implement without owner decision.
+8. No liquidity/A-B/RR/15m/allocator/trim change from small samples. Formal Core remains LOCKED.
