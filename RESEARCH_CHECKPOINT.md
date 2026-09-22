@@ -1,7 +1,7 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-41.
-Updated: 2026-09-23 06:13 Asia/Taipei.
+Checkpoint sequence: B-42.
+Updated: 2026-09-23 06:44 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Earlier detailed evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
@@ -53,32 +53,39 @@ Cash utilization is diagnostic, not an optimization target.
 ## B-36/B-37 retained — provenance semantics + isolated scaffold
 - Existing counterfactual research can collapse malformed snapshot/history and missing history into ordinary empty structures; existing `coverage.dN` cannot distinguish these provenance failures.
 - Conservative semantics remain frozen: snapshot parse state; baseline close state; history row/parse/empty/OK; historyLastDate; postScanValidBars; OUTCOME_AVAILABLE vs provenance failure/OBSERVED_HISTORY_INSUFFICIENT; calendar maturity UNKNOWN without trusted calendar evidence.
-- Isolated branch `research/b13-shadow-provenance` contains `research/shadow_provenance_v8_8_2.js` and `research/shadow_provenance_v8_8_2.test.mjs`; helper is not imported by production/runtime.
-- B-40 audited CI: existing shared regression workflow does not execute the research test on this branch, and no authorized branch workflow-dispatch action is exposed. Tests remain not executed; no PASS is inferred.
+- Isolated branch `research/b13-shadow-provenance` contains `research/shadow_provenance_v8_8_2.js`, targeted test, and observational invariant fixture at branch commit `46c0ba15f58f432944e477b1b3d16fbf6403705f`; helper is not imported by production/runtime.
 
-## NEW B-41 — observational regression fixture added on isolated branch
-### Engineering progress
-- Added `research/shadow_provenance_observational_regression_v8_8_2.test.mjs` on `research/b13-shadow-provenance`, branch commit `46c0ba15f58f432944e477b1b3d16fbf6403705f`.
-- Fixture freezes representative legacy `outcome.horizons` and `coverage.dN` values before calling the provenance helper, then asserts both remain deep-equal afterward.
-- Fixture separately checks additive provenance semantics: finite D1 outcome remains `OUTCOME_AVAILABLE`; insufficient later observed bars remain `OBSERVED_HISTORY_INSUFFICIENT`; calendar maturity remains `UNKNOWN`; malformed snapshot diagnostics do not rewrite frozen legacy outcome/coverage objects.
-- Plain Node, no secrets/network/runtime binding required.
+## NEW B-42 — both isolated plain-Node provenance tests executed successfully
+### Engineering progress / evidence
+- Re-read governance/worklist/checkpoint and latest main before work. Main at cycle start: `0388ea48a7d9d1ba0a29d869adc8fa099b826c2f`; provenance branch: `46c0ba15f58f432944e477b1b3d16fbf6403705f`.
+- No newer trusted formal scan with >=1 plan was found in available GitHub Actions evidence; latest visible scheduled health evidence remains 09/22 zero-pick, so provenance continuation retained priority.
+- Connected GitHub tooling still exposes no safe branch workflow-dispatch action. Instead, the exact UTF-8 contents of the branch helper and both tests were fetched through the connected GitHub tool, materialized into an isolated local temporary directory, and executed with the installed Node runtime. No secret, network access, Cloudflare binding, workflow edit, or production runtime was used.
+- `node shadow_provenance_v8_8_2.test.mjs` => PASS.
+- `node shadow_provenance_observational_regression_v8_8_2.test.mjs` => PASS.
+- Targeted cases therefore executed successfully for malformed snapshot/history, missing/empty history, observed-history insufficiency, finite-outcome precedence, and UNKNOWN-preserving semantics.
+- Observational invariant fixture executed successfully: representative frozen legacy `outcome.horizons` and `coverage.dN` objects remained deep-equal before/after diagnostics; D1 finite outcome stayed `OUTCOME_AVAILABLE`; later insufficient observed bars stayed `OBSERVED_HISTORY_INSUFFICIENT`; calendar maturity stayed UNKNOWN.
 
-### Falsification / limitations
-- This is an invariant fixture, not proof that every production `researchShadowOutcomeForRow()` output is equivalent; the exact production function was not safely extracted as a standalone callable in this cycle. Do not overclaim full legacy regression coverage.
-- The new fixture and prior targeted test are still **TEST_WRITTEN_NOT_EXECUTED** because no authorized branch test runner/dispatch path is available through connected tooling. Source assertions are not execution evidence.
-- No workflow was modified solely to run tests because deployment-pipeline changes are Class B.
-- No factor/threshold/window/cohort was added; no historical Shadow fabricated. UNKNOWN semantics preserved.
+### Falsification / limitations / data quality
+- This is local execution of the exact fetched branch sources, not GitHub Actions CI and not Production execution. Do not label it CI PASS or deployment verification.
+- The observational fixture is representative, not exact equivalence proof for every production `researchShadowOutcomeForRow()` path. Production function integration has not occurred and no production fixture was invented.
+- First attempt to fetch raw GitHub directly from the local container failed because that runtime has no DNS/network access; no conclusion was drawn from the transient environment limitation. Exact sources were then obtained from the authorized GitHub connector before execution.
+- No new factor/threshold/window/cohort, no historical Shadow backfill, no BAD/0 coercion. Selection bias/look-ahead/market-source/Factor-Zoo exposure unchanged because this artifact only diagnoses provenance.
 
-### Engineering classification / deployment
-- Class A isolated research artifact only.
-- Production/runtime imports unchanged; no merge/deploy; Formal Core unchanged.
-- Main change this cycle is checkpoint only.
+### R01-R08 / I01-I07 impact
+- Definitions unchanged. Potential benefit is data-quality observability only: future experiment readiness can distinguish missing/malformed evidence from genuine immature/absent outcomes instead of silently collapsing them.
+- No maturity/readiness status is upgraded solely from these test passes; prospective independent-date requirements remain unchanged.
+
+### Engineering classification / deployment / rollback
+- Class A isolated research-only validation.
+- Branch code unchanged this cycle; no merge, no runtime import, no deployment. Formal Core and production outputs unchanged.
+- Test status advances from TEST_WRITTEN_NOT_EXECUTED to **LOCAL_EXACT_SOURCE_PASS** for both plain-Node tests. CI status remains NOT_RUN.
+- Rollback baseline remains V8.8.0; verified production research baseline remains V8.8.1. Branch rollback point remains parent `78228598587800b8c24112d706078208fcdce7b4` if the provenance artifacts are later abandoned.
 
 ## Exact next continuation point
 1. Re-read governance/worklist/checkpoint and latest main SHA; re-check checkpoint SHA immediately before any write.
 2. If a newer trusted formal scan with >=1 plan exists, primary funnel regains priority: establish plan date/count from Production readback, verify execution-recorder target-date coverage and 500-row non-truncation before interpreting signals, then add same-date `HUMAN_MOMENTUM_SHADOW` observations only on formal SELECTED names.
-3. Otherwise continue provenance branch: seek a safe way to execute both plain-Node tests without modifying shared workflow. If no authorized runner exists, keep status TEST_WRITTEN_NOT_EXECUTED and do not integrate.
-4. Strengthen observational regression only with durable production fixtures that can be extracted without look-ahead or semantic invention; distinguish representative fixture from exact production equivalence.
-5. Only after targeted + invariant tests actually execute and pass may additive provenance integration be considered. Any shared workflow/runtime/storage modification requires reclassification; Formal Core remains locked.
-6. Keep `OBSERVED_HISTORY_INSUFFICIENT` distinct from calendar maturity; `CALENDAR_MATURITY=UNKNOWN` unless trusted calendar evidence exists.
+3. Otherwise provenance lane may now advance one gate: inspect the exact production `researchShadowOutcomeForRow()` and surrounding counterfactual call path to design an **additive, research-only integration proposal** that cannot mutate existing outcome/coverage semantics. Do not integrate merely because local tests passed.
+4. Prefer extracting a durable production-shaped fixture for exact-equivalence regression before integration. If extraction requires shared runtime/workflow/storage modification, reclassify Class B and stop before promotion.
+5. If integration can remain a separate observational diagnostic path with no shared formal behavior, keep Class A; after code change run targeted + invariant + existing regression tests and compare Formal Core invariants before any merge/deploy.
+6. `OBSERVED_HISTORY_INSUFFICIENT` remains distinct from calendar maturity; `CALENDAR_MATURITY=UNKNOWN` unless trusted calendar evidence exists.
 7. Do NOT revisit 09/18 execution or infer 09/22 Shadow without new trusted evidence. Signal != fill; `REDUCED_CONFIRMED` requires trusted actual reduced shares.
