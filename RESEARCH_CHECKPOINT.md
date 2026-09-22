@@ -335,6 +335,83 @@ Research implication:
 - No new factor, no production change.
 
 
+## Hidden selection asymmetries / stacked-conservatism audit — 2026-09-22
+Source-level algebra reveals several non-obvious selection constraints that can reduce opportunity even before intraday confirmation. These are candidates for falsification, **not proposed relaxations**.
+
+### A-line has a second hidden quality gate; B-line effectively does not
+Formal grade thresholds are A>=80, B>=65. For A:
+`setupQuality = 70 - 3*abs(pullbackPct-7) - 3*supportDistancePct + volumeBonus`,
+where volumeBonus=12 only when today's volume/prev5 <=0.9, otherwise 4.
+
+A daily setup can pass the explicit broad rules (pullback 2–15%, support distance <=4%, volume condition, structure, trend, not-late) yet still be rejected as C-grade:
+- if volumeTodayVsPrev5 <=0.9, B-grade requires
+  `abs(pullback-7) + supportDistance <= 5.67`.
+- otherwise B-grade requires
+  `abs(pullback-7) + supportDistance <= 3.0`.
+Example: a valid A setup with pullback 12%, support distance 1%, and strong volume contraction gets quality 64 and is rejected despite all six A checks passing.
+
+By contrast, for B:
+`setupQuality = 55 + min(25,volVs5*8) + closePosition*20 - upperShadow*25`.
+At the weakest values that still satisfy the B setup itself (vol=1.3, closePosition=0.65, upperShadow=0.35), quality is ~69.65, already above B-grade 65.
+Therefore the "策略品質低於B級" hard filter is structurally an additional A-line gate but is nearly redundant for valid B setups.
+
+Research implication:
+- A/B opportunity scarcity must be measured separately.
+- If A near-miss outcomes show that pass-but-C names perform similarly to B-grade A names, the hidden A gate may be redundant.
+- Reverse case: the quality gate may isolate only the best support geometry and intentionally prevent loose "technically valid" pullbacks. Do not change without outcome comparison.
+
+### RR target logic creates an anti-new-high asymmetry for B
+B entry reference is `priorHigh20*1.003`.
+`nearestRealResistance` only accepts a target > entry*1.01 from targetPrice, priorHigh20, priorHigh60, or older pivot highs.
+For a B breakout:
+- priorHigh20 can never be the target because it is below the entry.
+- if the stock is breaking above its 60-day high and has no external targetPrice / older overhead pivot >1% above entry, the function returns null.
+- that candidate is hard-rejected as "上方無可驗證實質壓力，無法計算真實RR".
+
+Thus a clean new-high breakout can be rejected **because it has no overhead resistance from which to calculate RR**, whereas an A pullback with overhead resistance can calculate RR normally.
+This is logically conservative but potentially anti-momentum.
+
+Positive interpretation: refusing an unverifiable target prevents invented upside and preserves honest RR.
+Reverse interpretation: absence of overhead resistance is not evidence of low reward; it can be characteristic of genuine price discovery/new-high momentum. Treating "unknown target" as automatic rejection may systematically discard exactly the strongest B cases.
+
+Required falsification:
+- isolate rejected-after-base cases whose sole later-stage failure is `target===null`,
+- compare D1/D3/D5/D10 path, MFE/MAE and false-break rate against accepted B cases,
+- never invent an ATR/multiple target after observing winners. Any alternative exit/target framework would require a newly preregistered Class C proposal.
+
+### Strong-day / limit-up candidates face stacked anti-chase protection
+Before A/B setup evaluation, `abs(changePercent)>=9.8%` is a hard reject.
+B also requires ret20<=30 / not-late and then next day refuses price above maxChase while demanding a retest and reconfirmation.
+This stack can materially reduce participation in fast momentum episodes.
+
+Reverse evidence already in the research record:
+- Taiwan price-limit mechanics can generate magnet/attention effects and distort apparent momentum near limits.
+- extreme-strength literature is not uniformly bullish; extreme absolute strength can attenuate conventional momentum.
+Therefore removing the 9.8% guard because a later limit-up winner was missed would be classic outcome-driven overfitting.
+
+Required test:
+- compare near-limit rejected cohort against ordinary B candidates across regimes and post-2015 microstructure,
+- separately measure continuation, next-day reversal and MAE,
+- no threshold retuning from the current sample.
+
+### Liquidity policy is materially stricter than the global coarse filter
+The formal code uses 20-day average volume >=1,000 lots for sub-NT$1,000 stocks (300 lots for >=NT$1,000), plus extra market-cap/liquidity constraints. This is stricter/different from the coarse global exclusion rule of 5-day average volume >=500.
+This may be deliberate execution-risk protection, but it is another possible selection-funnel reducer. Historical `diagnostics_json` can show whether it is actually binding before any debate over changing it.
+
+### Net interpretation
+The system is not merely "one strict BUY trigger." It contains stacked conservatism at:
+1. universe/liquidity/data completeness,
+2. sector/fundamental gates,
+3. A/B setup,
+4. A-specific effective quality tightening,
+5. verifiable-RR requirement,
+6. extreme-day avoidance,
+7. one-day plan validity,
+8. two-step intraday confirmation,
+9. staged capital deployment.
+The correct research task is to identify which layer rejects names that later have favorable **risk-adjusted executable paths**, rather than loosening all layers together.
+
+
 ## Exact next continuation point
 1. Re-read latest checkpoint/main and re-check SHA.
 2. Audit frame10/frame15 timestamp provenance: `researchBarTiming` derives bar end by adding timeframe to `frame.latest.time`; verify whether `buildBar.time` comes directly from Fugle candle `bar.date`, and distinguish calculated completion time from source-observed freshness. Record failure modes around delayed candle publication and cached prior frames.
