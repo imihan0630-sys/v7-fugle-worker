@@ -1,6 +1,6 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-38.
+Checkpoint sequence: B-39.
 Updated: 2026-09-23 05:18 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Earlier detailed evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
@@ -66,6 +66,28 @@ Evaluate an additive research tag such as `HUMAN_MOMENTUM_SHADOW`, never a produ
 - Formal Core remains LOCKED. No change to A/B, BUY, maxChase, stop, capital, or deployment.
 - This is a hypothesis registration, not evidence that human-like aggression is superior.
 - Any future production proposal requires positive + negative evidence, costs, cross-date/regime robustness, and explicit owner approval.
+
+## NEW B-39 — zero-selection notification delivery incident
+### Owner requirement
+- A completed after-market scan must notify the owner even when `selectedCount=0`. Zero selection is a valid decision result, not a reason to suppress the daily notification.
+
+### Verified evidence
+- Current code path builds a `DAILY_SELECTION:<scanDate>` payload even for zero names, with title `V7盤後：今日 0 檔，維持現金`, and calls the daily-report push path regardless of `stocks.length`.
+- 2026-09-22 scheduled health run `35751075627` completed successfully. Its after-market verifier requires the daily report to have `sent=true`, `simulated=false`, a durable `DAILY_SELECTION:<date>` signal id, and an outbox row with `delivery_state=ACCEPTED`.
+- The same verifier explicitly returns `handsetReceiptVerified:false`; webhook acceptance therefore does **not** prove the owner's handset received the message.
+- Owner reports no after-market notification was received. Treat this as a delivery-semantics/reliability gap, not as proof the zero-selection branch was skipped.
+
+### Proposed production behavior (Class C — NOT deployed)
+1. Every successful after-market scan, including 0 selections, must create exactly one daily result notification.
+2. Do not equate upstream HTTP/webhook `ACCEPTED` with owner-visible delivery.
+3. Daily-selection completion should expose separate states such as `WEBHOOK_ACCEPTED`, `HANDSET_RECEIPT_CONFIRMED`, and `DELIVERY_UNCONFIRMED` where technically supported.
+4. If handset receipt is supported but absent after a bounded interval, raise an explicit delivery warning and/or perform a bounded idempotent retry; never duplicate trading signals uncontrollably.
+5. Preserve the distinction between `0 selections successfully completed` and `scan/push failed`.
+6. No selection, ranking, BUY, capital, stop, or other Formal Core rule changes are part of this proposal.
+
+### Governance
+- Push/notification behavior is Class C under `RESEARCH_ENGINEERING_GOVERNANCE.md`.
+- This checkpoint records the owner requirement and incident evidence only. No production push behavior was changed or deployed in this step.
 
 ## Historical execution evidence retained
 - 09/17 formal plans: 6706 惠特, 3006 晶豪科, 6505 台塑化. 09:27 and 13:19 monitoredCount=3, formal15Ready=3, waitingForFreshData=0, notificationCount=0. Exact historical zones unavailable; symbol-level blocking clause UNKNOWN.
