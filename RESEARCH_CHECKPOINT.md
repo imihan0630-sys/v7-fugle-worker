@@ -1,7 +1,7 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-36.
-Updated: 2026-09-23 04:43 Asia/Taipei.
+Checkpoint sequence: B-37.
+Updated: 2026-09-23 05:13 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Earlier detailed evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
@@ -15,7 +15,7 @@ Updated: 2026-09-23 04:43 Asia/Taipei.
 ## Production/research baseline retained
 - Verified research infrastructure baseline: V8.8.1 `8.8.1-execution-coverage`, schema `execution-shadow-v2`; V8.8.0 rollback baseline.
 - Last verified prospective Shadow evidence remains 31 rows / one prospective scan date / zero mature D1/D3/D5/D10/D20 outcomes unless a newer trusted read proves otherwise.
-- B-13/B-16 provenance engineering remains DEFERRED but active as the safe fallback lane while no newer positive-plan date exists.
+- B-13/B-16 provenance engineering is active on isolated branch `research/b13-shadow-provenance`; nothing from that branch is deployed.
 
 ## Primary research lane — capital utilization / selection / execution / re-entry
 Root funnel: `universe -> base/liquidity -> A/B formation -> quality/RR -> SELECTED -> BUY-observed -> confirmed fill -> ADD/FULL -> REDUCE-observed -> confirmed reduced shares -> restoration`.
@@ -38,48 +38,45 @@ Cash utilization is diagnostic, not an optimization target.
 - 09/22 scheduled health run `35751075627` positively verified formal selectedCount=0, planCount=0, signalCount=0. Preserve 09/22 as a formal zero-pick date, not an Execution Alpha failure.
 - `SHADOW_SCAN_STATUS(2026-09-22)=UNKNOWN`; no trusted per-date Shadow count exists. Do not infer it from aggregate totals.
 
-## B-35 retained — no newer positive-plan date
-- Latest trusted inspected scheduled health evidence remained the 09/22 zero-plan run. Encrypted plan-mirror activity is not readable plan-count/identity evidence.
-- No new zero-pick observation was added and the SELECTED -> BUY bottleneck hypothesis remains under test.
+## B-36 retained — provenance semantics refinement
+- Existing `readShadowCounterfactualResearch()` silently maps malformed `snapshot_json` to `{}`, malformed history JSON to `[]`, and a missing history row also reaches outcome enrichment as `[]`; existing `coverage.dN` cannot distinguish these from ordinary incomplete horizons.
+- Falsified the too-simple rule `fewer than h cached post-scan bars => not yet mature`. Cache insufficiency and calendar maturity are different dimensions.
+- Frozen conservative semantics: snapshot parse state; baseline close state; history row/parse/empty/OK state; `historyLastDate`; `postScanValidBars`; horizon `OUTCOME_AVAILABLE` vs provenance failure/`OBSERVED_HISTORY_INSUFFICIENT`; calendar maturity remains UNKNOWN unless a trustworthy trading-calendar source is explicitly available at the research boundary.
+- No evidence yet proves malformed/stale prospective rows actually occur; occurrence rate remains UNKNOWN.
 
-## NEW B-36 — B-13 provenance design falsification/refinement
+## NEW B-37 — isolated provenance implementation scaffold
 ### Research question
-While waiting for the next trusted positive-plan date, is the deferred B-13 Shadow provenance diagnostic itself sufficiently precise to distinguish true horizon immaturity from data-pipeline incompleteness without changing existing outcomes?
+Can the refined B-36 provenance semantics be implemented in an isolated, testable Class A artifact without touching the existing counterfactual outcome calculations or Formal Core?
 
-### Evidence / findings
-- Re-read governance/worklist/checkpoint and latest main first. Main was B-35 commit `6d3713c7a65758b849f6490ac15b3ad02a5e9e7c`; no competing newer checkpoint was present before this write.
-- The existing isolated branch `research/b13-shadow-provenance` was still at B-13. It was fast-forwarded to current main `6d3713c7a65758b849f6490ac15b3ad02a5e9e7c` as a rollback/testable isolation point; no code was changed and nothing was deployed.
-- Current `readShadowCounterfactualResearch()` still silently maps malformed `snapshot_json` to `{}`; malformed history JSON to `[]`; and a missing history row also reaches outcome enrichment as `[]`. Existing `coverage.dN` therefore cannot distinguish these failure modes from ordinary immature outcomes.
-- B-13's proposed `D1_NOT_YET_MATURE` rule needs one further guard: a successfully parsed but stale/incomplete `v7_history_cache` can also have fewer than the required post-scan bars. Calling that condition simply `NOT_YET_MATURE` would overstate calendar immaturity and hide cache freshness/coverage uncertainty.
-- Therefore provenance must separate **calendar maturity** from **observed-history sufficiency**. A row may be calendar-mature for D1/D3/etc while the cache still lacks enough post-scan bars; that state must remain data-coverage UNKNOWN, not ordinary waiting.
+### Evidence / implementation
+- Re-read governance/worklist/checkpoint and latest main first. Latest main before this cycle was B-36 commit `e4037c81200fe90f9e9d4edfb6f4c7a57a7bfc42`; checkpoint blob SHA was `ab6b5464d3e53c77c7d838d2fa3c9d7543112be4`.
+- Re-read the current branch blob for `research/counterfactual_v8_7_4.js`. Existing outcome and `coverage.dN` logic was not modified.
+- On isolated branch `research/b13-shadow-provenance`, added `research/shadow_provenance_v8_8_2.js` at commit `9ba76f885b1915d7073e3c42a556a837d8927b6e`.
+- The helper implements only research provenance: `SNAPSHOT_PARSE_OK/ERROR`, `BASELINE_CLOSE_OK/MISSING`, `HISTORY_ROW_MISSING/PARSE_ERROR/EMPTY/OK`, `historyLastDate`, `postScanValidBars`, conservative horizon provenance, and `calendarMaturity: UNKNOWN`.
+- Added targeted test artifact `research/shadow_provenance_v8_8_2.test.mjs` at branch commit `78228598587800b8c24112d706078208fcdce7b4` covering malformed snapshot + valid history, valid snapshot + malformed history, missing history row, empty history, insufficient post-scan bars, mature D1, and explicit UNKNOWN-preserving semantics.
+- Important: tests are **written but not yet executed** in this cycle because the connected GitHub interface does not expose arbitrary branch command execution. Do not claim PASS from test source alone.
+- The helper is not imported by production/runtime code, so this cycle cannot alter formal selection, ranking, monitoring, notification, capital, signals, existing outcomes, or existing `coverage.dN`.
 
-### Refined diagnostic semantics (Class A design; no outcome redefinition)
-For each archived Shadow row, diagnostics should preserve existing `coverage.dN` exactly and add orthogonal provenance:
-1. Snapshot: `SNAPSHOT_PARSE_OK | SNAPSHOT_PARSE_ERROR`; baseline: `BASELINE_CLOSE_OK | BASELINE_CLOSE_MISSING`.
-2. History source: `HISTORY_ROW_MISSING | HISTORY_PARSE_ERROR | HISTORY_EMPTY | HISTORY_OK`.
-3. For `HISTORY_OK`, expose `historyLastDate` and `postScanValidBars` after the same date/finite-close filter already used by outcome enrichment.
-4. Horizon status must not label missing bars as calendar immaturity solely from `postScanValidBars`. Use conservative states: `OUTCOME_AVAILABLE` when existing outcome is finite; `OBSERVED_HISTORY_INSUFFICIENT` when parsed history has fewer than h valid post-scan bars; `BASELINE_UNAVAILABLE` or history error states as applicable. Calendar maturity may be reported separately only if derived from a trustworthy trading-calendar source already available at the research boundary; otherwise `CALENDAR_MATURITY=UNKNOWN`.
-5. Do not synthesize missing bars, infer them from current price, or use later web prices to repair historical Shadow. No historical Shadow backfill.
-6. Aggregate counters should be by failure/provenance state and may include recent row statuses; they remain research-only observability and cannot gate formal selection/trading.
+### Falsification / bias / safety
+- The implementation deliberately does not synthesize bars, infer missing data from current prices, backfill historical Shadow, or reinterpret missing as BAD/0.
+- A parsed history with too few post-scan valid closes becomes `OBSERVED_HISTORY_INSUFFICIENT` for horizons beyond observed coverage; it is never labeled calendar-immature.
+- If an existing finite outcome is supplied to the helper, provenance reports `OUTCOME_AVAILABLE`; the helper does not recompute or overwrite that outcome.
+- Selection bias risk from silently missing histories becomes observable once integrated; this cycle does not assert that such missing histories actually exist.
+- No factor, threshold, window, cohort definition, transaction-cost assumption, or R01-R08/I01-I07 definition changed. Factor Zoo/redundancy counts unchanged.
 
-### Falsification / bias implications
-- This refinement falsifies the too-simple interpretation `fewer than h cached post-scan bars => not yet mature`.
-- Without the separation, stale-cache symbols/cohorts could be selectively excluded from R01-R08 and create coverage/selection bias while appearing as harmless waiting data.
-- No evidence currently proves stale/malformed prospective rows actually exist; occurrence rate remains **UNKNOWN**. This is an observability defect/risk, not a corruption finding.
-- No factor, threshold, experiment window or outcome definition changed; Factor Zoo, redundancy and transaction-cost counts unchanged.
-
-### Engineering classification / branch / deployment
-- Class A research-only design and branch preparation.
-- Branch: `research/b13-shadow-provenance`, fast-forwarded to main B-35 before implementation.
-- Code commit: none this cycle. Tests: not run because implementation was intentionally not written before the refined semantics were frozen.
-- Deployment: none. Production Formal Core/runtime unchanged. Rollback/reference point: main `6d3713c7a65758b849f6490ac15b3ad02a5e9e7c`.
+### Engineering classification / deployment
+- Class A isolated research-only scaffold.
+- Branch only: `research/b13-shadow-provenance` at `78228598587800b8c24112d706078208fcdce7b4`.
+- Production deployment: none. Formal Core/runtime unchanged.
+- Main receives checkpoint only; no research helper code was merged to main.
+- Integration into `readShadowCounterfactualResearch()` remains pending until tests/regression/invariants can be executed and old `coverage.dN` equivalence is proven.
 
 ## Exact next continuation point
 1. Re-read governance/worklist/checkpoint and latest main SHA; re-check checkpoint SHA immediately before any write.
 2. If a newer trusted formal scan with >=1 plan exists, primary funnel regains priority: establish plan date/count from Production readback, then verify execution-recorder target-date coverage and 500-row non-truncation before interpreting signals.
-3. Otherwise continue B-13/B-16 on `research/b13-shadow-provenance`: implement only the refined research-only snapshot/baseline/history provenance and `postScanValidBars/historyLastDate` diagnostics. Preserve all existing outcome calculations and `coverage.dN` byte/semantic behavior.
-4. Targeted tests must cover malformed snapshot + valid history; valid snapshot + malformed history; missing history row; empty history; valid history with insufficient post-scan bars; mature D1; and must prove missing remains null/UNKNOWN and old coverage is unchanged.
-5. Do not label insufficient cached bars `NOT_YET_MATURE` unless a trustworthy calendar maturity source is explicitly available at the research boundary; otherwise use `OBSERVED_HISTORY_INSUFFICIENT` plus `CALENDAR_MATURITY=UNKNOWN`.
-6. Run regression/invariant suite and compare protected Formal Core outputs before any merge/deploy. If isolation cannot guarantee invariants, stop as Class B.
+3. Otherwise continue on `research/b13-shadow-provenance`: execute the new targeted test artifact through an authorized repository CI/test path if available; do not treat source assertions as executed evidence.
+4. Add an explicit regression test that snapshots old `researchShadowOutcomeForRow()` and old `coverage.dN` behavior against representative frozen inputs, then prove the provenance helper leaves those outputs unchanged.
+5. Only after targeted tests + regression/invariant evidence pass, integrate provenance into `readShadowCounterfactualResearch()` as additive diagnostics. No outcome or `coverage.dN` redefinition. If integration touches shared runtime in a way that cannot guarantee isolation, reclassify Class B and stop before merge/deploy.
+6. Do not label insufficient cached bars `NOT_YET_MATURE`; keep `OBSERVED_HISTORY_INSUFFICIENT` plus `CALENDAR_MATURITY=UNKNOWN` unless trustworthy calendar maturity evidence exists.
 7. Do NOT revisit 09/18 execution or 09/22 Shadow inference without new trusted evidence. Keep 09/22 `NO_FORMAL_SELECTION=VERIFIED`, `SHADOW_SCAN_STATUS=UNKNOWN`.
-8. Signal != fill. REDUCED_CONFIRMED requires trusted actual reduced shares.
+8. Signal != fill. `REDUCED_CONFIRMED` requires trusted actual reduced shares.
