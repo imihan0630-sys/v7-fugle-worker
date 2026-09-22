@@ -184,6 +184,42 @@ Compare against STAY_REDUCED using opportunity return, MAE, transaction cost, wh
 
 No production re-entry rule is approved or changed from this case.
 
+## Direct 2026-09-17 entry-scarcity evidence — 3 selected, 0 notifications (2026-09-22)
+
+Read-only scheduled-health logs provide direct same-day evidence for the 2026-09-17 plan day:
+- 09:27 Taipei health check: monitoredCount=3, formal15Ready=3, waitingForFreshData=0, notificationCount=0.
+- 13:19 Taipei health check: monitoredCount=3, formal15Ready=3, waitingForFreshData=0, notificationCount=0.
+Thus all three formal plans (6706 惠特, 3006 晶豪科, 6505 台塑化) had usable 15m data, yet **no operation notification fired by 13:19**. This is stronger evidence than the later aggregate journal count that the formal entry/operation layer can suppress all selected names on a full trading day.
+
+### What happened to the selected names afterward
+Fugle daily OHLC, measured from 2026-09-16 selection close to 2026-09-22 close:
+- 6706 惠特: 147 -> 149, about +1.36%; subsequent MFE about +14.29%, MAE about -4.42%.
+- 3006 晶豪科: 281 -> 278.5, about -0.89%; MFE about +5.52%, MAE about -1.60%.
+- 6505 台塑化: 80.5 -> 87.2, about +8.32%; MFE about +11.55%, MAE about +0.12% relative to selection close (subsequent daily lows never went below the selection close in the observed window).
+Equal-weight endpoint return of the selected trio through 9/22 is about +2.93%.
+
+### Two-sided interpretation
+Evidence for "entry too strict":
+- 6505 is a clear candidate missed-opportunity example: no formal notification on plan day, followed by strong positive path with essentially no drawdown below the selection close.
+- 6706 also had large upside excursion despite no notification.
+
+Evidence against blindly loosening entry:
+- 3006 did not produce a positive endpoint by 9/22.
+- 6706 had a -4.4% adverse excursion from selection close before/around later upside, so a looser entry could have increased drawdown.
+- The health log proves zero notifications, but does not expose which exact clause blocked each symbol. It is invalid to blame 15m confirmation, zone touch, maxChase, or another clause without symbol-level clause evidence.
+
+### Research consequence
+The "selected but no entry" problem is now empirically demonstrated on at least one fully monitored day, not just user impression.
+Next priority is **symbol-level failure attribution** for selected/no-notification plans:
+1. Did price enter the planned zone?
+2. Was there a valid completed 15m confirmation sequence?
+3. Did price leave the zone before formal eligibility?
+4. Did maxChase / stop / invalidation block the trade?
+5. Was the plan simply expired at day end?
+Any unavailable clause evidence remains UNKNOWN.
+
+No rule was changed.
+
 ## Exact next continuation point
 1. Re-read latest checkpoint and main commit before work; this user-directed trading-decision bottleneck lane has priority over generic observability engineering unless observability blocks the answer.
 2. Recover additional independent formal scan dates and compare SELECTED vs NEAR_MISS / REJECTED_AFTER_BASE with D1/D3/D5 path, MFE, MAE, and invalidation-before-upside ordering. Do not pool names across dates without preserving scan-date clustering.
