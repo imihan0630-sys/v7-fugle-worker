@@ -1,6 +1,6 @@
 # Research Checkpoint
 
-Updated: 2026-09-22T10:59+08:00
+Updated: 2026-09-22T11:07+08:00
 
 ## Continuity / baseline
 - Formal Core: **LOCKED**.
@@ -365,6 +365,20 @@ Remaining limitation:
 3. Future mature-sample audit should report cohort covariate balance (at minimum price, liquidity/turnover, sector composition, residual RS and volatility) before interpreting Selection Alpha causally.
 4. Do not propensity-match or optimize a matching model now; that would add researcher degrees of freedom before enough prospective dates. First report raw standardized differences / distribution overlap using frozen covariates.
 5. This is a future Class A diagnostic candidate, not a new selection rule.
+
+### Selection-Alpha estimand audit — 2026-09-22T11:07+08:00
+Audit of `researchPairedSelectionAlpha` clarifies exactly what current R02 estimates:
+- For each scan date and comparator cohort, it computes the unweighted mean future return of SELECTED minus the unweighted mean future return of that comparator, then averages those daily deltas across dates.
+- This is a valid same-date descriptive estimand and prevents days with many stocks from automatically dominating the cross-date aggregate.
+- It is not yet a causal "selection effect": SELECTED and BROAD_CONTROL/NEAR_MISS/REJECTED cohorts can differ systematically in price, liquidity, sector, volatility and factor exposure.
+- It is also not a portfolio P&L estimand because within-day names are equally weighted regardless of intended capital, fill probability, transaction cost or pool constraints.
+
+Reverse-validation consequences:
+1. Keep the current metric exactly as frozen descriptive Selection Alpha.
+2. Do not relabel it as strategy alpha or expected P&L even when positive.
+3. Future covariate-balance diagnostics should precede any causal interpretation; execution/cost weighting belongs in a separate estimand, not a retrofit to R02.
+4. Compare multiple comparator cohorts rather than cherry-picking whichever produces the largest positive delta; disagreement across BROAD_CONTROL, QUALIFIED_NOT_SELECTED, NEAR_MISS and REJECTED_AFTER_BASE is itself evidence about where selection value arises.
+5. No code or formal-core change.
 
 ## Bias / data-quality firewall
 - UNKNOWN remains UNKNOWN; no BAD/0 coercion.
