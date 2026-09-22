@@ -79,6 +79,49 @@ Do not label `barEndAt` as observed freshness or publication time. Do not infer 
 - A-line has an effective extra quality gate; B target/RR logic can reject clean new-high breakouts with no verifiable overhead resistance. These remain falsification hypotheses, not relaxation proposals.
 - Current REJECTED_AFTER_BASE Shadow sampling is capped/sorted and is not representative for reason-specific gate attribution; do not estimate gate opportunity cost from it as if exhaustive.
 
+## Manual continuation — 8046 trim/re-entry case and radar asymmetry (2026-09-22)
+
+### 8046 南電 case study: trim was defensible ex ante; the unresolved issue is re-add logic
+User-confirmed action context from the prior decision record: 2026-09-04 the user sold 100 shares of 8046 after a prior-day limit-down and continued weakness, while retaining 100 shares.
+
+Contemporaneous market evidence was genuinely two-sided:
+- Risk side: 2026-09-03 南電 closed limit-down at 1,080 on BT-price expectations, high-level repricing and heavy institutional selling; 2026-09-04 early trading extended weakness toward ~1,020 while the market also priced Broadcom/TOPPAN supply-chain/order-share risk.
+- Fundamental counter-side: the same 2026-09-03 reporting still described ABF pricing as firm/tight and AI-driven ABF demand as structurally strong. Therefore the information set did **not** support an all-or-nothing bearish conclusion.
+
+Ex-post price path from the 2026-09-04 reduction:
+- Approximate sale reference ~1,020; same-day/post-sale low was ~1,010, so downside avoided on the sold half was only about 1% relative to that reference before the later recovery.
+- 2026-09-22 intraday reached/locked 1,165 (+9.91% on the day). From 1,020 this is about +14.2% missed upside on the sold half.
+- Using 2026-09-04 close 1,055 as a non-execution baseline, the subsequent low 1,015 was about -3.8% and 1,165 is about +10.4%.
+
+These ex-post numbers are **not** proof the trim was wrong. The trim occurred under a real tail-risk/repricing shock; hindsight must not use the later limit-up as if it were known on 9/4.
+
+### Simple re-add rules do not pass the reverse test
+Several obvious hindsight re-add anchors would have suffered meaningful interim drawdown before 9/22:
+- Re-add at 9/4 close 1,055: later low 1,015 ≈ -3.8% MAE; 9/22 1,165 ≈ +10.4%.
+- Re-add after 9/9 strong rebound close 1,110: later low 1,025 ≈ -7.7% MAE; 9/22 1,165 ≈ +5.0%.
+- Re-add after 9/16 close 1,105: later low 1,050 ≈ -5.0% MAE; 9/22 ≈ +5.4%.
+- Re-add after 9/18 close 1,100: 9/21 low 1,050 ≈ -4.5% MAE; 9/22 ≈ +5.9%.
+
+Therefore “跌深反彈/重新站回某價就加回” is not validated by this case; it would have created nontrivial whipsaw. The case supports **researching** a REDUCED→RE-ADD state, but does not yet support any specific threshold or automatic add-back rule.
+
+### Separate architecture: assistant/radar ABF logic is also asymmetric
+Current active automations were audited separately from the formal Worker:
+- Fast global-holdings radar prompts explicitly preserve an **ABF sell/reduce alert** path.
+- The active 12:50 bidirectional scan includes general holdings add/reduce/take-profit/stop-loss checks.
+- None of the active prompts defines a specific ABF post-trim state, a REDUCED state, or an evidence-based “risk resolved → restore exposure” transition.
+
+This is distinct from the Worker state-machine gap. It can explain why the user may repeatedly receive “續抱/不再減碼” after a partial ABF trim without an equally explicit framework for restoring the sold portion.
+
+Reverse qualification:
+- Adding an ABF-specific re-entry rule just because 8046 later hit limit-up would overfit one recent winner.
+- Any recommendation-layer change affects trading guidance and is therefore treated as Class C decision logic, not an autonomous prompt edit.
+
+### Case-level conclusion
+- **Partial trim decision:** not proven wrong ex ante; contemporaneous downside evidence was real and fundamentals were mixed rather than broken.
+- **Post-trim management:** current architecture lacks a symmetric, testable REDUCED→RE-ADD state both in formal Worker semantics and in ABF-specific radar guidance.
+- **Evidence for a particular re-add trigger:** not yet sufficient. Simple price-reclaim anchors show 3.8–7.7% interim MAE in this one case.
+- **Research priority:** build prospective position-management evidence across many REDUCE events/holdings, not tune around 8046.
+
 ## Bias / data-quality firewall
 UNKNOWN stays UNKNOWN; no historical execution-shadow backfill; independent scan date is primary evidence unit; no causal claims from contemporaneous correlation; no outcome-driven threshold/window retuning; watch selection bias, look-ahead, data snooping, market-source bias, Factor Zoo, overfit, coverage, zero-pick, costs and date clustering.
 
