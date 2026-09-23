@@ -272,7 +272,8 @@ replace_once(
   return {
     candidates: allocateAndBuildPlans(selected, totalCapital, scanDate),
     diagnostics,
-    thousandStockPool: diagnostics.thousandStockPool
+    thousandStockPool: diagnostics.thousandStockPool,
+    shadowArchive
   };''',
 '''    unusedGeneralSlots: MAX_STOCKS_PER_POOL - generalTop.length,
     unusedThousandSlots: MAX_STOCKS_PER_POOL - thousandTop.length
