@@ -50,6 +50,7 @@ on:
       - "scripts/apply_v8_9_0.py"
       - "scripts/apply_v8_9_1.py"
       - "scripts/apply_v8_9_2.py"
+      - "scripts/apply_v8_9_3.py"
       - "RESEARCH_WORKLIST.md"
       - "research/**"
       - "data/v7_formal_scan_backfill.json"
@@ -213,6 +214,9 @@ jobs:
       - name: Apply V8.9.2 three-pool daily push
         run: python3 scripts/apply_v8_9_2.py
 
+      - name: Apply V8.9.3 Hybrid WATCH two-layer state machine
+        run: python3 scripts/apply_v8_9_3.py
+
       - name: Syntax check Worker.js
         run: |
           set -euo pipefail
@@ -222,7 +226,7 @@ jobs:
       - name: Validate V8.7.12 production contract
         run: |
           set -euo pipefail
-          grep -F 'const VERSION = "8.9.2-three-pool-push";' Worker.js
+          grep -F 'const VERSION = "8.9.3-hybrid-watch-layer";' Worker.js
           grep -F 'CREATE TABLE IF NOT EXISTS trade_research_execution_snapshots' Worker.js
           grep -F 'url.pathname==="/api/research/execution-recorder"' Worker.js
           grep -F 'RESEARCH_EXECUTION_RECORDER_FAIL_OPEN' Worker.js
@@ -282,6 +286,15 @@ jobs:
           grep -F 'function enrichThreePoolDailyPayload' Worker.js
           grep -F 'url.pathname === "/api/daily-report/resend"' Worker.js
           grep -F '千元 Hybrid' Worker.js
+          grep -F 'const HYBRID_WATCH_MAX = 5;' Worker.js
+          grep -F 'function scoreHybridWatchCandidate' Worker.js
+          grep -F 'function evaluateHybridWatchUpgrade' Worker.js
+          grep -F 'function monitorHybridWatchCandidates' Worker.js
+          grep -F 'EARLY_ENTRY_ELIGIBLE' Worker.js
+          grep -F 'TRIGGERED_WAITLIST' Worker.js
+          grep -F 'url.pathname === "/api/hybrid-watch-performance"' Worker.js
+          grep -F 'url.pathname === "/api/hybrid-watch/bootstrap-latest"' Worker.js
+          grep -F 'WATCH不占3席、不占20萬' Worker.js
 
       - name: Behavioral regression (no real pushes or writes)
         env:
@@ -853,6 +866,27 @@ jobs:
           done
           echo "Rollback command completed but restored runtime version was not verified."
           exit 1
+
+      - name: Bootstrap latest Hybrid WATCH after verified deploy
+        if: contains(github.event.head_commit.message, '[hybrid-watch-bootstrap]')
+        env:
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+        run: |
+          node - <<'NODE'
+          const origin="https://fugle-test.imihan0630.workers.dev";
+          const response=await fetch(origin+"/api/hybrid-watch/bootstrap-latest",{
+            method:"POST",
+            headers:{"x-admin-token":process.env.V7_ADMIN_TOKEN,"content-type":"application/json","accept":"application/json"},
+            body:"{}",
+            signal:AbortSignal.timeout(120000)
+          });
+          const data=await response.json();
+          console.log(JSON.stringify(data,null,2));
+          if(!response.ok || data.ok!==true) throw new Error("Hybrid WATCH bootstrap failed");
+          if(data.noFormalChanges!==true || data.noTrade!==true || data.noPush!==true || data.dryRunSelection!==true) {
+            throw new Error("Hybrid WATCH bootstrap safety contract failed");
+          }
+          NODE
 
       - name: Resend latest 3+3+3 daily report after verified deploy
         if: contains(github.event.head_commit.message, '[resend-daily-report]')
