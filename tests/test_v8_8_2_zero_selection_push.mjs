@@ -3,7 +3,10 @@ import {readFile} from 'node:fs/promises';
 
 const source=await readFile(process.env.V7_TEST_WORKER_PATH || new URL('../Worker.js',import.meta.url),'utf8');
 
-assert.match(source,/const VERSION = "8\.8\.2-zero-selection-push-guard";/);
+{
+  const version=source.match(/const VERSION = "(\d+)\.(\d+)\.(\d+)[^"]*";/)?.slice(1,4).map(Number);
+  assert.ok(version && version[0]===8 && (version[1]>8 || (version[1]===8 && version[2]>=2)),"V8.8.2+ runtime required");
+}
 assert.match(source,/zeroSelection:stocks\.length===0,/);
 assert.match(source,/pushRequired:true,/);
 assert.match(source,/V8盤後選股完成：0 檔符合，維持現金/);
