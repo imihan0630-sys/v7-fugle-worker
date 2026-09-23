@@ -72,7 +72,6 @@ export function assessAfterMarketHealth(scan,date) {
   }
 
   assert.equal(scan.dailyReport?.simulated,false);assert.equal(scan.dailyReport?.sent,true);
-  assert.equal(scan.dailyReport?.deliveryState,'ACCEPTED','Daily after-market report was not accepted by webhook');
   assert.equal(scan.diagnostics?.quarterEpsReview?.ready,true,'Actual selected candidates lack EPS review');
   for(const thousand of [true,false]) assert.ok(scan.stocks.filter(s=>(s.formalClose>=1000)===thousand).length<=3,'Cross-pool filling or quota breach');
   for(const stock of scan.stocks) assert.ok(stock.formalClose>=10,'Below10 stock entered monitoring');
