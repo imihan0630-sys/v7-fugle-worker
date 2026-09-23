@@ -239,7 +239,7 @@ async function promoteHybridWatchCandidate(env,watch,currentPrice,tradeDate,reas
       await env.V7_DB.withSession("first-primary").prepare("UPDATE v9_hybrid_watch_lifecycle SET state=?1,triggered_at=?2,"+
         "trigger_trade_date=?3,trigger_market_price=?4,allocation=?5,delivery_state=?6,updated_at=?2 WHERE scan_date=?7 AND symbol=?8")
         .bind(allocation.state,new Date().toISOString(),tradeDate,currentPrice,allocation.promoted?.totalAllocation||0,
-          outcome?.deliveryState||outcome?.sent===true?"ACCEPTED":"UNKNOWN",String(watch.scanDate||watch.closeDate||""),String(watch.symbol)).run();
+          outcome?.deliveryState||(outcome?.sent===true?"ACCEPTED":"UNKNOWN"),String(watch.scanDate||watch.closeDate||""),String(watch.symbol)).run();
     }
     const completed={completed:true,state:allocation.state,sent:outcome?.sent===true,deliveryState:outcome?.deliveryState||null,
       signalId:payload.signalId,tradeDate,currentPrice,updatedAt:new Date().toISOString()};
@@ -585,13 +585,34 @@ replace_once(
 )
 
 route_marker='''    if (url.pathname === "/api/strategy-pool-performance") {'''
-route=r'''    if (url.pathname === "/api/hybrid-watch-performance") {
+bootstrap_route=r'''    if (url.pathname === "/api/hybrid-watch/bootstrap-latest") {
+      if(!isAuthorized(request,env)) return json({error:"ADMIN_TOKEN 錯誤"},401,true);
+      if(request.method!=="POST") return json({error:"Method not allowed"},405,true);
+      const latest=await env.STOCKS_KV?.get(LAST_SCAN_KEY,"json");
+      if(!latest?.scanDate) return json({ok:false,error:"尚無可重建WATCH的盤後選股日"},404,true);
+      const targetDate=String(latest.scanDate);
+      const scheduledTime=Date.parse(targetDate+"T18:30:00+08:00");
+      const preview=await runAfterMarketScan(env,scheduledTime,{dryRun:true});
+      const watch=Array.isArray(preview?.hybridWatchStocks)?preview.hybridWatchStocks.slice(0,HYBRID_WATCH_MAX):[];
+      await env.STOCKS_KV.put(HYBRID_WATCH_KV_KEY,JSON.stringify({
+        version:VERSION,scanDate:targetDate,planDate:nextTradingDate(targetDate),
+        state:"HYBRID_WATCH",max:HYBRID_WATCH_MAX,occupiesHybridSlot:false,capitalReserved:0,
+        bootstrappedAt:new Date().toISOString(),stocks:watch
+      }),{expirationTtl:14*86400});
+      await archiveHybridWatchCandidates(env,targetDate,watch);
+      return json({ok:true,version:VERSION,scanDate:targetDate,planDate:nextTradingDate(targetDate),
+        hybridWatchCount:watch.length,watchStocks:watch.map(x=>({symbol:x.symbol,name:x.name,triggerPrice:x.triggerPrice,
+          maxChase:x.maxChase,missingCondition:x.missingCondition})),
+        dryRunSelection:true,noFormalChanges:true,noTrade:true,noPush:true},200,true);
+    }
+
+''' + r'''    if (url.pathname === "/api/hybrid-watch-performance") {
       if(request.method!=="GET") return json({error:"Method not allowed"},405,true);
       return json(await readHybridWatchPerformance(env,url.searchParams.get("days")||365),200,true);
     }
 
 '''
-insert_before_once(route_marker,route,"hybrid watch performance route")
+insert_before_once(route_marker,bootstrap_route,"hybrid watch routes")
 
 path.write_text(text,encoding="utf-8")
 print("Applied V8.9.3 Hybrid WATCH two-layer state machine")
