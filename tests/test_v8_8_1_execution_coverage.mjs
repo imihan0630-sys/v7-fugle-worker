@@ -1,7 +1,7 @@
 import fs from "node:fs";
 const source=fs.readFileSync(process.env.V7_TEST_WORKER_PATH||"Worker.js","utf8");
+if(!/const VERSION = "8\.8\.(?:1|[2-9]|[1-9]\d+)[^"]*";/.test(source)) throw new Error("V8.8.1+ execution coverage contract requires a non-regressed 8.8.x+ runtime");
 const must=[
-'const VERSION = "8.8.1-execution-coverage";',
 'previousClose: quote?.previousClose ?? null',
 'avgPrice: quote?.avgPrice ?? null',
 'bids: Array.isArray(quote?.bids)',
@@ -19,4 +19,4 @@ const formalStart=source.indexOf("const pullback = stock.mode");
 const formalEnd=source.indexOf("return {\n      ok: true",formalStart);
 const quoteResearch=source.indexOf("Research-only passthrough",formalEnd);
 if(!(formalStart>=0&&formalEnd>formalStart&&quoteResearch>formalEnd)) throw new Error("Research quote passthrough must remain downstream of formal decision computation");
-console.log("V8.8.1 execution coverage contract OK");
+console.log("V8.8.1+ execution coverage contract OK");
