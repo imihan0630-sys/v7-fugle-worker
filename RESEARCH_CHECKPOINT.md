@@ -1,7 +1,7 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-84.
-Updated: 2026-09-24 03:43 Asia/Taipei.
+Checkpoint sequence: B-85.
+Updated: 2026-09-24 04:10 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Earlier detailed evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
@@ -13,7 +13,7 @@ Updated: 2026-09-24 03:43 Asia/Taipei.
 
 ## Production/research baseline retained
 - Previous verified production/research baseline through B-72 was V8.8.2. Prior deployment commit retained: `12faf559558efe429c6deb93aa9a193a3557968c` (`Deploy V8.9.1 three-pool dashboard`). Repository evidence is not Production readback.
-- No newer trusted live Production plan/readback established through B-84. Live plan status remains UNKNOWN.
+- No newer trusted live Production plan/readback established through B-85. Live plan status remains UNKNOWN.
 - Last trusted prospective Shadow evidence remains 31 rows / one prospective scan date / zero mature D1/D3/D5/D10/D20 outcomes unless newer trusted read proves otherwise.
 - 2026-09-22 scheduled health previously verified selectedCount=0, planCount=0, signalCount=0; preserve as formal zero-pick date, not Execution Alpha failure. `SHADOW_SCAN_STATUS(2026-09-22)=UNKNOWN`.
 
@@ -46,44 +46,44 @@ Updated: 2026-09-24 03:43 Asia/Taipei.
 - Prospective-only immutable calendar provenance contract remains frozen; existing pairs remain UNKNOWN; no backfill.
 - `.github/workflows/v7-cloudflare.yml` triggers Production deployment on main changes to `research/**` and ordinary `tests/**`; the one excluded quality-source diagnostic is not a loophole. No purpose-fit non-deploy-triggered harness was proven. Validator implementation remains stopped at contract; workflow-path changes are Class B proposal-first.
 
-## B-83 retained — Top5 ordering provenance
-- `topSectors` is PIT-derived at scan time, but prior audit found no explicit secondary tie-break in the persisted ordering rule and missing/non-finite sector score can collapse to 0.
+## B-83/B-84 retained — Top5 ordering provenance
+- `topSectors` is PIT-derived at scan time. `buildTodaySectorStats()` retains full-precision JS score, but producer group insertion order is inherited from upstream row/object order and is not an explicit semantic tie-break contract.
+- Separate diagnostic `buildConditionDistribution()` rounds before its own diagnostic sort; it must not be used to infer the persisted research-market writer behavior.
 - Keep separate readiness dimensions: `TOP5_SET_MEMBERSHIP` versus `TOP5_ORDERING`. R03 overlap is a set operation, but a true tie across the 5th/6th boundary can change set membership.
-- No retrospective tie-breaker is permitted.
+- No retrospective tie-breaker is permitted. Apparent rounded ties are provenance ambiguity unless raw equality is proven.
 
-## B-84 — sectorStats producer / raw-vs-rounded tie audit
+## B-85 — actual persisted research-market Top5 writer / rank-consumer audit
 ### Repository evidence
-- Re-read governance/worklist/checkpoint and current main. Immediately before write checkpoint blob remained `056a3f452ffa48013a927ffdae043156aac549c1` (B-83), so no concurrent newer checkpoint had to be merged.
-- `buildTodaySectorStats(rows, features)` builds `groups` by iterating the supplied `rows` in their existing order. A sector key is inserted on its **first encountered stock**: `(groups[key] ||= []).push(row)`. It later creates `raw = Object.entries(groups)...` and writes `output[item.industry] = item` in that same group-entry order. There is no explicit industry sort in this producer.
-- The sector score itself is computed from scan-time values as `amount/maxAmount*45 + breadth*0.3 + clamp(avgChange*5+15,0,25)` and retained in `sectorStats` at full JS numeric precision; it is not rounded inside `buildTodaySectorStats`.
-- `normalizeClosingPayload()` preserves the official payload row order (`source.map(...).filter(Boolean)`) and validates count/duplicate symbols, but does not impose a stable symbol/industry sort. `buildMarketRowsFromHistoryCache()` iterates a Set assembled from object-key sources and likewise does not define an industry ordering contract.
-- Therefore sector object insertion order is reproducible only insofar as upstream source/object enumeration order is reproducible; the repository does **not** establish it as an explicit stable semantic tie-break contract.
-- Separate downstream diagnostic `buildConditionDistribution()` demonstrates an important distinction: it rounds sector score to 1 decimal **before** sorting its diagnostic `topSectors`, so equal displayed/diagnostic scores can be rounding ties. This is not proof that the persisted research-market Top5 writer used rounded values for its original sort.
+- Re-read governance/worklist/checkpoint and latest main. Latest main before this write was `a9ddc8ca3107936402c50bb25b58ddc5b3e6c73a` (`research: checkpoint B-84 sector order provenance`). Immediately before write checkpoint blob remained `9af1b2ce1c420987fa93aa03f8062af264d25cc2` (B-84); no concurrent newer checkpoint required merge.
+- The actual research-market writer is introduced by `scripts/apply_v8_7_0.py` in `buildResearchMarketContext(...)`.
+- It constructs persisted sectors as `Object.entries(sectorStats||{}).sort((a,b)=>(toNumber(b[1]?.score)||0)-(toNumber(a[1]?.score)||0)).slice(0,20).map(...)`.
+- Therefore ordering is performed on the available **full-precision `sectorStats.score` before persistence rounding**. Only inside the post-sort map is score persisted as `round(...,2)`; breadth/avgChange are also rounded after ordering.
+- The same post-sort map assigns `rank:index+1`. Under the writer contract, a freshly produced valid row therefore has rank equal to persisted array position + 1.
+- The writer still has no explicit secondary tie-break. If two raw scores are exactly equal, ECMAScript stable sort preserves the inherited `Object.entries(sectorStats)` insertion order; B-84 already established that insertion order is incidental upstream ordering, not a durable semantic tie-break contract.
+- The persisted research-day table stores `market_json` containing this rounded post-sort structure. Raw pre-round score is not separately persisted by this writer. Consequently a historical exact raw tie cannot be reconstructed from two equal rounded persisted scores.
+- The R03/R06 consumer in `research/counterfactual_v8_7_4.js` does **not** sort by `rank`. `researchRegimePersistenceFromDays()` takes `(market.topSectors||[]).slice(0,5)` and uses array order/names directly for Top5 set, streak and retention. It ignores persisted `rank` for membership/order reconstruction.
 
 ### Falsification / interpretation
-- Hypothesis “sectorStats insertion order is an explicit deterministic tie-break provenance” is **not supported**. It is an incidental consequence of upstream row/object order, not a durable ranking rule.
-- A displayed/persisted rounded-score tie must not automatically be called a raw-score tie. The producer computes full-precision scores, so two sectors that both display e.g. 71.2 may still have had distinct raw scores at sort time.
-- Conversely, if only rounded persisted scores/ranks survive and raw pre-sort scores are not durably saved, historical exact raw-tie status is UNKNOWN. Do not reconstruct it from current market data and do not invent alphabetical/breadth/amount tie-breaks.
-- For R03 Top5 set interpretation, an apparent 5th/6th rounded tie is therefore a **provenance ambiguity**, not proof of unstable membership. Only a proven raw-score equality at the boundary would establish a true score tie; absent raw durable evidence, classify boundary tie provenance UNKNOWN.
-
-### Rank contract audit direction
-- `topSectors.rank` remains evidence only if rank values are finite positive integers, unique, and consistent with persisted array position. Missing/duplicate/malformed rank or disagreement with array position => `TOP5_ORDERING=UNKNOWN/DATA_QUALITY`; it must not automatically invalidate the independently usable five-name set.
-- No code/schema/runtime change was made this round because the task is source-contract falsification. Engineering class: research analysis only (Class A evidence), no deployment.
+- Hypothesis “persisted research-market Top5 sorts rounded scores before ranking” is **falsified**. It sorts full-precision score first and rounds only for persistence.
+- Hypothesis “consumer can repair malformed array order from persisted rank” is also **falsified** for the current R03/R06 consumer; it trusts array order and does not re-sort by rank.
+- Therefore `rank` is best treated as a writer-contract integrity check, not an alternate historical ordering source. Missing/duplicate/non-positive/non-integer rank or rank != array index+1 => `TOP5_ORDERING=DATA_QUALITY/UNKNOWN`; do not silently reorder the array by rank.
+- Because the R03 retention calculation is set-based over the first five array entries, malformed rank alone does not invalidate five-name set membership if the array itself contains five unique non-empty names. Array-order corruption that changes which names occupy positions 1-5 is a separate data-quality issue.
+- Historical raw-tie status remains **UNKNOWN** whenever only rounded persisted scores survive. Do not infer raw equality from equal 2-decimal values, do not backfill current sector scores, and do not invent alphabetical/breadth/amount tie-breaks.
 
 ### Bias / safety audit
-- PIT/look-ahead: no current sector data backfilled; only writer/normalizer contracts were inspected.
-- Selection/data-snooping: no sector selected/removed by future outcome; no tie-break parameter search.
-- Factor Zoo/overfit/redundancy/transaction cost: no factor, threshold, score, experiment or trading rule added.
-- Coverage/zero-pick/date clustering unchanged. Market-source bias not converted into a venue inference.
-- R03/R06 impact: improves readiness semantics only; does not assert or falsify Alpha. I01-I07 unchanged.
-- Formal Core, Worker, storage, Cron, dashboard, monitoring and push unchanged; no Production deployment.
+- PIT/look-ahead: only deployment source/writer and frozen consumer contracts inspected; no current market data used to reconstruct historical ranks.
+- Selection/data-snooping: no outcome-driven ranking change, threshold search or tie-break search.
+- Market-source bias: no listing venue inference or source substitution.
+- Factor Zoo/overfit/redundancy/transaction cost: no factor, experiment, score, threshold or trading rule added.
+- Coverage/zero-pick/date clustering unchanged. R03/R06 interpretation tightened only; no alpha conclusion.
+- Formal Core, Worker, storage, calendar, workflow, dashboard, monitoring and push unchanged; no Production deployment.
 
 ## Exact next continuation point
 1. Re-read governance/worklist/checkpoint/latest main and re-check checkpoint SHA before any write.
 2. If a newer trusted formal scan has >=1 plan, immediately restore primary funnel priority: establish plan date/count from trusted Production readback; verify execution-recorder target-date coverage and 500-row non-truncation before interpreting signals; then add same-date `HUMAN_MOMENTUM_SHADOW` only on formal SELECTED names.
-3. Continue R03/R06 source-contract audit without code changes: locate the **actual persisted research-market `topSectors` writer** and determine whether it sorts on full-precision `sectorStats.score` and only rounds for persistence, or rounds before sorting. Do not infer this from `buildConditionDistribution()`, which is a separate diagnostic path.
-4. Audit persisted `topSectors.rank`: malformed/duplicate/missing ranks and array-position disagreement must remain DATA_QUALITY/UNKNOWN for ordering while set-membership stays independently assessed. Determine whether writer always assigns `rank=index+1` after final sort and whether consumer trusts array order or rank.
-5. If raw full-precision score is not persisted, freeze historical raw-tie status as UNKNOWN; do not add a tie-breaker or historical backfill.
+3. Continue R03/R06 source-contract audit without code changes: trace the `trade_research_days` writer from `marketResearchContext` into `market_json` and confirm it persists the already-built Top20 array unchanged rather than re-sorting/re-ranking it. Also identify whether any later migration rewrites `market_json` semantics.
+4. Audit the current readiness/consumer boundary for malformed Top5 arrays: duplicate/non-empty industry names, fewer than five unique names, malformed rank, rank/position mismatch, and score-null/zero coercion. Preserve set-membership vs ordering separation; do not add a new threshold.
+5. Freeze historical raw-tie status as UNKNOWN because raw full-precision sector score is not separately durable in `market_json`; no tie-breaker or historical backfill.
 6. Preserve B-81/B-82 deployment-coupling evidence; do not implement validator/helper on main merely because it is research-only. Any workflow-path change remains Class B proposal-first.
 7. Do not modify shared calendar runtime/cache/date resolution; do not retroactively upgrade B-73/B-74 pairs; no historical Shadow/calendar backfill.
 8. If exact-source execution becomes available, verify B-73 branch exact head/blobs before test; only exit 0 + fixture PASS may upgrade SOURCE_WRITTEN_NOT_EXECUTED.
