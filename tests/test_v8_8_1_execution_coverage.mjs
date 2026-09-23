@@ -1,6 +1,7 @@
 import fs from "node:fs";
 const source=fs.readFileSync(process.env.V7_TEST_WORKER_PATH||"Worker.js","utf8");
-if(!/const VERSION = "8\.8\.(?:1|[2-9]|[1-9]\d+)[^"]*";/.test(source)) throw new Error("V8.8.1+ execution coverage contract requires a non-regressed 8.8.x+ runtime");
+const version=source.match(/const VERSION = "(\d+)\.(\d+)\.(\d+)[^"]*";/)?.slice(1,4).map(Number);
+if(!version || version[0]!==8 || version[1]<8 || (version[1]===8 && version[2]<1)) throw new Error("V8.8.1+ execution coverage contract requires a non-regressed runtime");
 const must=[
 'previousClose: quote?.previousClose ?? null',
 'avgPrice: quote?.avgPrice ?? null',
