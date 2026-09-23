@@ -1,7 +1,7 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-71.
-Updated: 2026-09-23 21:14 Asia/Taipei.
+Checkpoint sequence: B-72.
+Updated: 2026-09-23 21:56 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Earlier detailed evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
@@ -15,7 +15,7 @@ Updated: 2026-09-23 21:14 Asia/Taipei.
 - Verified production/research infrastructure baseline: V8.8.2 `8.8.2-zero-selection-push-guard`, schema `execution-shadow-v2`; pre-change backup V8.8.1.
 - Last verified prospective Shadow evidence remains 31 rows / one prospective scan date / zero mature D1/D3/D5/D10/D20 outcomes unless newer trusted read proves otherwise.
 - 2026-09-22 scheduled health positively verified selectedCount=0, planCount=0, signalCount=0; preserve as formal zero-pick date, not Execution Alpha failure. `SHADOW_SCAN_STATUS(2026-09-22)=UNKNOWN`.
-- No newer trusted Production plan readback was available through B-71; live plan status remains UNKNOWN rather than assumed zero.
+- No newer trusted Production plan readback was available through B-72; live plan status remains UNKNOWN rather than assumed zero.
 
 ## Primary research lane retained
 - Root funnel: `universe -> base/liquidity -> A/B formation -> quality/RR -> SELECTED -> BUY-observed -> confirmed fill -> ADD/FULL -> REDUCE-observed -> confirmed reduced shares -> restoration`.
@@ -30,62 +30,50 @@ Updated: 2026-09-23 21:14 Asia/Taipei.
 - `readShadowCounterfactualResearch()` may read up to 5000 Shadow rows but exposes only last 80 row-level recentOutcomes; never treat 80 as full archive.
 - B-62 `PRE_BASE_LIQUIDITY_CONTROL` remains Class B proposal-only; current Shadow cannot falsify the largest liquidity-reject gate.
 - BROAD_CONTROL is deterministic eligible-survivor control, max 6 GENERAL + 6 THOUSAND, not full-universe random control. Durable pool + scan-time industry exist; immutable listing venue remains UNKNOWN. Branch `research/b67-broad-control-concentration` stays branch-only; duplicate scan_date+symbol is a data-quality anomaly excluded from effective denominators.
-- R03/R06 sequence structure is the clean pre-maturity lane; all directional alpha claims remain gated by their frozen maturity requirements.
 - Diagnostic branch tests remain `SOURCE_WRITTEN_NOT_EXECUTED`; do not upgrade to PASS without exact-source execution.
 
-## B-70 retained — R03/R06 reader-path defect
-- `researchRegimePersistenceFromDays(days)` filters to rows with a non-UNKNOWN regime before sorting/adjacency; known-regime-only conditioning can bridge across an intervening missing/UNKNOWN/malformed date.
-- `readResearchRegimePersistence()` silently drops malformed `market_json` parse failures. Existing aggregate is descriptive only over usable known-regime rows; it is not a readiness denominator.
-- Readiness must preserve date states and must not bridge adjacent pairs across missing/UNKNOWN/malformed expected dates.
+## B-70/B-71 retained — R03/R06 sequence/readiness audit
+- Existing `researchRegimePersistenceFromDays()` first removes UNKNOWN regime rows, then sorts remaining rows and computes adjacency. `readResearchRegimePersistence()` silently drops malformed `market_json`. Existing aggregate therefore can bridge across missing/malformed dates and is not a completeness denominator.
+- `recordTradeJournalDay()` source-proves zero-pick formal dates are written to `v8_trade_journal_days`; V8.7.0 source-proves `trade_research_days` is also written once per successful journal-day path regardless of selected count. Per-date runtime persistence still requires trusted readback.
+- `trade_research_days.market_json` is NOT NULL, but `buildResearchMarketContext()` defaults `regime="MIXED"`; unavailable regime inputs therefore do not naturally produce `UNKNOWN`. Stored MIXED alone is not proof of a genuinely mixed regime.
+- `v8_trade_journal_days` is the primary expected prospective formal-date source for readiness. It is independent of `trade_research_days`, though both can share a writer failure mechanism.
 
-## NEW B-71 — R03/R06 writer path and expected-date source audit
-### Source-proven writer semantics
-- V8.5 `recordTradeJournalDay(scanDate,stocks,...)` normalizes `stocks` to `list=[]` when empty, **always inserts/upserts `v8_trade_journal_days` before iterating plans**, deletes same-date plan rows, and verifies `selected_count === plan row count`. Therefore a successful Production zero-pick scan is designed to persist a formal journal-day row with `selected_count=0`; zero picks are not omitted merely because the plan list is empty.
-- `runAfterMarketScanCore()` calls `recordTradeJournalDay(marketDate,stocks,...)` whenever `!dryRun`, with status explicitly set to `"今日0檔，維持現金"` when `stocks.length===0`. This call is outside any `stocks.length>0` guard. Thus the zero-pick formal-date writer path is source-proven.
-- V8.7.0 extended that same `recordTradeJournalDay()` function: after the per-stock research-snapshot loop, it **always inserts/upserts one `trade_research_days` row** using the same `scanDate`, regardless of `list.length`. Therefore `ZERO_PICK_DATE_INCLUDED_IN_RESEARCH_DAY_SEQUENCE` is now **SOURCE_PROVEN_BY_WRITER_PATH = YES**, subject to the journal write actually succeeding at runtime.
-- The research-day write occurs inside the same try/catch as the journal-day write. If any write/verification in that function fails, the function returns `stored:false`; source proof does not equal runtime proof for a particular date. Runtime row existence for 2026-09-22 remains unverified unless a trusted D1/readback is obtained.
+## NEW B-72 — exact R03/R06 field-level readiness semantics
+### Regime input completeness is provable from immutable `market_json`
+- Source audit of V8.7.0 proves the regime algorithm uses exactly two inputs: finite `marketReturn20` and finite `breadth20`, where `breadth20 = aboveMa20 / featureRows.length * 100` when featureRows is non-empty.
+- The persisted market object stores `marketReturn20` and `aboveMa20Pct`; `aboveMa20Pct` is the persisted rounded form of the same breadth20 quantity used by the regime classifier. Therefore field availability can be checked from the immutable row without recomputing from present-day market data.
+- Freeze readiness rule: `regimeInputCompleteness=PROVEN_COMPLETE` only when both persisted `marketReturn20` and `aboveMa20Pct` are finite numbers. Otherwise `UNKNOWN`. A stored regime label never overrides this rule.
+- Rounding of `aboveMa20Pct` does not affect the availability/readiness test; this helper must not recompute or challenge the existing regime label.
 
-### `market_json` semantics — important negative finding
-- `trade_research_days.market_json` is written as `JSON.stringify(researchMarket)`, where `researchMarket = diagnostics.researchMarketContext || first researchSnapshot.market || {}`. The column is NOT NULL, so the writer does not intentionally omit the row because regime is unavailable.
-- `buildResearchMarketContext()` initializes `regime="MIXED"` and only changes it when both marketReturn20 and breadth20 are finite enough for the regime rules. It does **not** emit `regime="UNKNOWN"` when those regime inputs are unavailable.
-- Therefore the earlier readiness state `ROW_AVAILABLE_UNKNOWN_REGIME` is not normally produced by the current writer. More importantly, a persisted `MIXED` value can mean either a genuine mixed regime **or fallback/default classification when regime inputs were insufficient**. This is a provenance ambiguity, not evidence that the market was genuinely MIXED.
-- Do not reinterpret legacy/current `MIXED` rows as UNKNOWN without the original scan-time inputs. Do not backfill. For readiness, distinguish `ROW_AVAILABLE_REGIME_LABEL` from `REGIME_INPUT_PROVEN_COMPLETE`; if required regime inputs cannot be proven finite from the immutable `market_json`, classification quality is UNKNOWN.
+### Top5 sector computability is structural, not a score-quality claim
+- V8.7.0 persists `topSectors` from scan-time `sectorStats`, sorted by the existing sector score and capped at 20. Each entry includes rank, industry, score, breadth, avgChange and amountVs20DayAverage.
+- Existing R06 persistence logic uses only the first five non-empty `industry` strings; it does not require sector score/breadth/amount to be finite at read time.
+- Freeze readiness rule: `top5SectorComputable=YES` only when `topSectors` is an array whose first five usable entries contain five unique non-empty industry names. `NO` when a parseable array exists but fewer than five usable unique industries are present. `UNKNOWN` when the field is absent/not an array or the enclosing `market_json` is malformed/missing.
+- Do not coerce missing industry to `未分類`, do not use current sector metadata, and do not infer five sectors from fewer stored entries. This is PIT-safe and prevents a partial Top-N list from masquerading as Top5 evidence.
 
-### Independent expected formal-date source
-- `v8_trade_journal_days` is an already-persisted formal scan-day table and is written for zero-pick scans. It can serve as the primary expected prospective formal-date source for R03/R06 completeness checks.
-- It is separate from `trade_research_days`, so a journal day with no corresponding research-day row is a measurable research coverage gap. Because both are written by the same function/try block, absence patterns may share a failure mechanism; this limits causal diagnosis but does not prevent date-completeness comparison.
-- `V7_LAST_SCAN_KEY` / successful scan summary is an additional source-level formal scan artifact, but historical retention/readback coverage is not yet proven sufficient to replace `v8_trade_journal_days` as the canonical expected-date denominator.
+### Expected-date eligibility predicate narrowed
+- V8.5 source shows normal `runAfterMarketScanCore()` calls `recordTradeJournalDay()` only on the non-dry-run path after a scan has produced its `stocks`/diagnostics result; zero selections are explicitly recorded as `今日0檔，維持現金`.
+- The admin backfill route can also create/update the same journal row, but only from `LAST_SCAN_KEY` when `latest.dryRun !== true` and a `scanDate` exists. Thus backfilled rows still represent a persisted formal non-dry-run scan artifact rather than a research reconstruction.
+- For R03/R06 prospective readiness, freeze denominator eligibility to `scan_date >= 2026-09-21` rows present in `v8_trade_journal_days`; do not filter by `selected_count>0`, status wording, regime label, or research-row presence. A journal row is an expected formal date; missing research-day row is itself the coverage gap.
+- Historical V8.5.2 reconstruction remains outside this prospective denominator by the 2026-09-21 cutoff.
 
-### Safe descriptive readiness table now defined
-For each prospective expected date from `v8_trade_journal_days`, report only:
-- `expectedDate`
-- `formalSelectedCount`
-- `researchDayRowPresent`
-- `marketJsonParseStatus = PARSEABLE | MALFORMED | MISSING`
-- `regimeLabel` as stored, without correction/backfill
-- `regimeInputCompleteness = PROVEN_COMPLETE | UNKNOWN`
-- `top5SectorComputable = YES | NO | UNKNOWN`
-- `adjacentPairComputable` only when this date and the immediately preceding expected formal date both have parseable rows and required fields; never bridge gaps
-- observed transition/Top5-overlap counts only as descriptive counts, with no stability pass/fail threshold.
-
-### Bias / governance audit
-- Selection bias: zero-pick dates are retained in the expected-date denominator; no selected-only conditioning.
-- Look-ahead: expected dates come from prospective formal journal rows; no present-day metadata backfill.
-- Data snooping / Factor Zoo / overfit: no new factor, experiment, threshold, regime definition, Top5 rule or window.
-- Coverage: source proves zero-pick writer inclusion, but per-date runtime persistence remains UNKNOWN without trusted readback.
-- Market-source bias: default `MIXED` under insufficient inputs is now explicitly treated as provenance ambiguity, not a valid market-state observation.
-- Date clustering: independent formal scan date remains the unit.
+### Bias / falsification audit
+- Selection bias: zero-pick dates remain in denominator; no selected-only conditioning.
+- Look-ahead/PIT: readiness uses only persisted scan-time market fields; no present-day sector/market backfill.
+- Market-source bias: default MIXED cannot certify regime input completeness.
+- Data snooping/Factor Zoo/overfit: no new factor, experiment, threshold, window, regime rule or Top5 ranking rule.
+- Date clustering: expected formal scan date remains the independent unit; adjacency may never bridge an expected-date gap.
 - Transaction cost: not applicable to structural readiness.
 
-### Engineering status
-- Documentation/checkpoint audit only. No Worker/schema/runtime/workflow/Formal Core/monitoring/push change. No deployment.
-- Existing aggregate must not be modified in place merely to fix readiness semantics; shared runtime changes are Class B proposal-first. An offline supplied-row Class A helper remains the preferred next engineering shape if needed.
+### Engineering classification/status
+- Documentation/source audit only; no Worker/schema/runtime/workflow/Formal Core/monitoring/push change; no deployment.
+- The now-frozen field semantics are sufficient to implement the previously planned offline supplied-row Class A helper without changing existing runtime aggregates.
 
 ## Exact next continuation point
 1. Re-read governance/worklist/checkpoint/latest main and re-check checkpoint SHA before any write.
 2. If a newer trusted formal scan has >=1 plan, immediately restore primary funnel priority: establish plan date/count from trusted Production readback; verify execution-recorder target-date coverage and 500-row non-truncation before interpreting signals; then add same-date `HUMAN_MOMENTUM_SHADOW` only on formal SELECTED names.
-3. Continue R03/R06 readiness by source-auditing the exact fields inside `buildResearchMarketContext()` needed to prove `regimeInputCompleteness` and `top5SectorComputable`; define field-level UNKNOWN semantics without changing the existing regime algorithm.
-4. Source-audit whether `v8_trade_journal_days` can contain non-success/partial scan rows or only completed formal scan days. Freeze the exact eligibility predicate for the expected-date denominator; do not count failed scan attempts as formal research dates.
-5. If 3-4 are proven, implement only an **offline supplied-row Class A descriptive helper** on an isolated branch: expected journal dates vs research-day rows, parse state, regime-input completeness, Top5 computability, and non-bridging adjacent-pair readiness. No runtime wiring, alpha, thresholds, or deployment.
+3. Implement an **offline supplied-row Class A descriptive helper** on an isolated branch using the frozen B-72 semantics: expected journal dates vs research-day rows, market JSON parse state, regime-input completeness, Top5 computability, and adjacent-pair readiness that never bridges expected-date gaps. No runtime wiring, alpha, thresholds, or deployment.
+4. Add targeted falsification fixtures for: zero-pick expected date, missing research row, malformed market_json, default MIXED with missing inputs, valid MIXED with complete inputs, partial (<5) topSectors, duplicate sector names, and a missing middle expected date. Keep tests `SOURCE_WRITTEN_NOT_EXECUTED` unless exact-source execution becomes available.
+5. Re-check main checkpoint SHA before any durable write; if another A/B lane advanced it, merge that newer continuation instead of overwriting.
 6. Keep B-62 proposal-only; do not repeat listing-venue discovery. B-67/B-68 semantics remain frozen.
 7. Signal != fill; `REDUCED_CONFIRMED` requires trusted actual reduced shares.
