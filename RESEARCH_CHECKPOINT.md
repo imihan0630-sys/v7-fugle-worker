@@ -1,7 +1,7 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-89.
-Updated: 2026-09-24 06:16 Asia/Taipei.
+Checkpoint sequence: B-90.
+Updated: 2026-09-24 06:19 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Detailed B-01..B-88 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
@@ -68,11 +68,35 @@ Updated: 2026-09-24 06:16 Asia/Taipei.
 - V8.8.2 mandatory zero-selection daily push acceptance semantics remain preserved underneath the patch stack.
 - This note is a record of an **owner-approved production change**, not permission for future autonomous Formal Core changes. The governance lock above remains in force for any further rule/threshold/capital/entry-exit modifications.
 
+## B-90 — independent backfill provenance + normal industry-key proof
+### Independent durable evidence for /api/research/backfill-current
+- Git history contains exactly one commit in the inspected range with the trigger tag `[research-backfill-current]`: commit `25c15918fe598fca33feecd474109932b062e276` (`V8.7.0: research data layer and validation [research-backfill-current]`), committed 2026-09-20 06:37:22Z.
+- GitHub Actions run `35494708153` (`V8 Cloudflare Deploy`) completed SUCCESS. Step 45 `Backfill current formal research snapshot` completed SUCCESS.
+- Durable job logs show the route was actually called and returned:
+  - `{"ok":true,"scanDate":"2026-09-18","imported":3,"noPlanChanges":true,"noPush":true,"noTrade":true}`
+  - immediate dashboard readback: `snapshotCoverage.total=3, full=0, partial=3, distinctDates=1`.
+- Therefore freeze: `BACKFILL_CURRENT_INVOCATION(2026-09-18)=PROVEN` and the route did write partial-current reconstruction evidence for that scan date at that time.
+- This does **not** by itself prove the current persisted `trade_research_days` row for 2026-09-18 is still backfill-origin, because the same day row is UPSERT-able by later writers. Without a row-linked immutable write-origin/version field or a complete later-writer exclusion proof, `CURRENT_DAY_ROW_ORIGIN(2026-09-18)=UNKNOWN`.
+- Action logs are valid independent evidence of route execution and scan-date targeting; they are not sufficient to infer current row origin after possible later overwrites.
+
+### Empty industry-key hypothesis narrowed
+- Base source `buildTodaySectorStats(rows,features)` groups with `const key = row.industry || "未分類"`.
+- Therefore null/undefined/empty-string industry values in normal todayRows are normalized to the non-empty key `未分類` before `sectorStats` is created.
+- `buildResearchMarketContext(...,sectorStats,...)` derives `topSectors` from `Object.entries(sectorStats)`; for the normal full-formal-scan writer path, an empty-string Top5 industry name is therefore not producible from an empty/null source industry through this code path.
+- Freeze: `NORMAL_FORMAL_EMPTY_TOPSECTOR_NAME_FROM_SOURCE_INDUSTRY=FALSIFIED`.
+- Keep the malformed-data rule for arbitrary persisted JSON: migrated/corrupt/manual rows may still contain empty names, so validators must continue to treat empty names as DATA_QUALITY_BLOCKED rather than silently normalizing historical persisted evidence.
+- `未分類` is a valid non-empty bucket label, not an empty-name failure. It may still be analytically coarse, but that is a separate semantic-quality issue and must not be reclassified as missing data.
+
+### Bias / safety
+- No present-day market/sector values were used to backfill historical evidence.
+- No factor, threshold, tie-break, score, window, Formal selection rule, monitoring or push behavior changed.
+- This is provenance/source-contract research only; no Worker/schema/workflow/runtime deployment performed in B-90.
+
 ## Exact next continuation point
 1. Re-read governance/worklist/checkpoint/latest main and re-check checkpoint SHA before any write.
 2. If a newer trusted formal scan has >=1 plan, restore primary funnel priority: establish plan date/count from trusted Production readback; verify execution-recorder target-date coverage and 500-row non-truncation before interpreting signals; then add same-date `HUMAN_MOMENTUM_SHADOW` only on formal SELECTED names.
-3. For R03/R06, next audit whether any **independent durable evidence** can establish day-row origin without inference: e.g. deployment/action logs or endpoint audit records that prove whether `/api/research/backfill-current` actually ran for a given scan_date. If none is durable and row-linked, keep `DAY_ROW_ORIGIN=UNKNOWN`; do not infer from `created_at`, date, or snapshot sourceCompleteness alone.
-4. Trace the upstream `buildTodaySectorStats` industry-key construction to determine whether empty-string industry keys are possible in normal full formal scans. Treat source proof, not current sample absence, as evidence.
+3. For R03/R06, continue from B-90: identify whether any later writer can be proven to have overwritten `trade_research_days(scan_date=2026-09-18)` after the proven backfill invocation. If a complete durable later-writer audit cannot exclude overwrite, keep `CURRENT_DAY_ROW_ORIGIN(2026-09-18)=UNKNOWN`.
+4. Treat normal full-formal empty industry-key production as falsified by `row.industry || "未分類"`; next inspect whether `未分類` participation in Top5 should remain structurally valid for set membership while separately flagged as semantic-quality coarse/unknown.
 5. Freeze malformed rules from B-89: five unique non-empty names are required for Top5 set membership; rank/score/tie defects can separately block ordering. Do not introduce a repair, threshold, secondary tie-break or historical backfill.
 6. Historical raw-tie status stays UNKNOWN.
 7. Do not implement validator/helper on main; workflow-path change remains Class B proposal-first.
