@@ -30,7 +30,15 @@ function dayGap(a, b) {
 }
 
 export function r03r06SequenceReadiness(journalRows = [], researchRows = [], cutoff = '2026-09-21') {
-  const expected = [...new Set(journalRows.map(r => isoDate(r?.scan_date ?? r?.scanDate)).filter(d => d && d >= cutoff))].sort();
+  const journalCounts = new Map();
+  for (const row of journalRows) {
+    const d = isoDate(row?.scan_date ?? row?.scanDate);
+    if (!d || d < cutoff) continue;
+    journalCounts.set(d, (journalCounts.get(d) || 0) + 1);
+  }
+  const expected = [...journalCounts.keys()].sort();
+  const duplicateJournalDates = expected.filter(d => journalCounts.get(d) > 1);
+
   const byDate = new Map();
   const duplicateResearchDates = new Set();
   for (const row of researchRows) {
@@ -39,14 +47,16 @@ export function r03r06SequenceReadiness(journalRows = [], researchRows = [], cut
     if (byDate.has(d)) duplicateResearchDates.add(d); else byDate.set(d, row);
   }
   const dates = expected.map(scanDate => {
+    const journalRow = journalCounts.get(scanDate) > 1 ? 'DUPLICATE' : 'SINGLE';
     const row = byDate.get(scanDate);
-    if (!row) return { scanDate, researchRow: 'MISSING', marketJson: 'UNKNOWN', regimeInputCompleteness: 'UNKNOWN', top5SectorComputable: 'UNKNOWN' };
-    if (duplicateResearchDates.has(scanDate)) return { scanDate, researchRow: 'DUPLICATE', marketJson: 'UNKNOWN', regimeInputCompleteness: 'UNKNOWN', top5SectorComputable: 'UNKNOWN' };
+    if (!row) return { scanDate, journalRow, researchRow: 'MISSING', marketJson: 'UNKNOWN', regimeInputCompleteness: 'UNKNOWN', top5SectorComputable: 'UNKNOWN' };
+    if (duplicateResearchDates.has(scanDate)) return { scanDate, journalRow, researchRow: 'DUPLICATE', marketJson: 'UNKNOWN', regimeInputCompleteness: 'UNKNOWN', top5SectorComputable: 'UNKNOWN' };
     const parsed = parseMarketJson(row.market_json ?? row.marketJson);
-    if (parsed.state !== 'PARSED') return { scanDate, researchRow: 'PRESENT', marketJson: parsed.state, regimeInputCompleteness: 'UNKNOWN', top5SectorComputable: 'UNKNOWN' };
+    if (parsed.state !== 'PARSED') return { scanDate, journalRow, researchRow: 'PRESENT', marketJson: parsed.state, regimeInputCompleteness: 'UNKNOWN', top5SectorComputable: 'UNKNOWN' };
     const m = parsed.value;
     return {
       scanDate,
+      journalRow,
       researchRow: 'PRESENT',
       marketJson: 'PARSED',
       regimeInputCompleteness: finite(m.marketReturn20) && finite(m.aboveMa20Pct) ? 'PROVEN_COMPLETE' : 'UNKNOWN',
@@ -56,7 +66,8 @@ export function r03r06SequenceReadiness(journalRows = [], researchRows = [], cut
   const adjacentPairs = [];
   for (let i = 1; i < dates.length; i++) {
     const a = dates[i - 1], b = dates[i];
-    const structural = a.researchRow === 'PRESENT' && b.researchRow === 'PRESENT' && a.marketJson === 'PARSED' && b.marketJson === 'PARSED';
+    const journalClean = a.journalRow === 'SINGLE' && b.journalRow === 'SINGLE';
+    const structural = journalClean && a.researchRow === 'PRESENT' && b.researchRow === 'PRESENT' && a.marketJson === 'PARSED' && b.marketJson === 'PARSED';
     const r06Structural = structural && a.regimeInputCompleteness === 'PROVEN_COMPLETE' && b.regimeInputCompleteness === 'PROVEN_COMPLETE';
     const r03Structural = structural && a.top5SectorComputable === 'YES' && b.top5SectorComputable === 'YES';
     adjacentPairs.push({
@@ -65,11 +76,18 @@ export function r03r06SequenceReadiness(journalRows = [], researchRows = [], cut
       calendarDayGap: dayGap(a.scanDate, b.scanDate),
       expectedJournalAdjacency: 'YES',
       exchangeSessionAdjacency: 'UNKNOWN',
+      journalDenominatorQuality: journalClean ? 'CLEAN' : 'DUPLICATE_DATE_ANOMALY',
       r06RegimeFieldsReady: r06Structural ? 'YES' : 'NO',
       r03Top5FieldsReady: r03Structural ? 'YES' : 'NO',
       r06RegimePairReady: r06Structural ? 'UNKNOWN_SESSION_ADJACENCY' : 'NO',
       r03Top5PairReady: r03Structural ? 'UNKNOWN_SESSION_ADJACENCY' : 'NO'
     });
   }
-  return { expectedDateCount: expected.length, dates, adjacentPairs };
+  return {
+    expectedDateCount: expected.length,
+    duplicateJournalDateCount: duplicateJournalDates.length,
+    duplicateJournalDates,
+    dates,
+    adjacentPairs
+  };
 }
