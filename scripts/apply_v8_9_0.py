@@ -360,21 +360,18 @@ text=text[:save_start]+'''    saved = await saveStockConfig(env, stocks, "3+3 Fo
       [HYBRID_POOL_ID]:hybridStocks
     });'''+text[save_end:]
 
-# Summary keeps legacy totalCapital field for compatibility but explicitly defines the new semantics.
-replace_once(
-'''    selectedCount: stocks.length,
-    totalCapital,
-    capitalPlan: {
-      totalCapital,
-      plannedInvestment: stocks.reduce((sum, stock) => sum + (toNumber(stock.totalAllocation) || 0), 0),
-      remainingCash: Math.max(0, totalCapital - stocks.reduce((sum, stock) => sum + (toNumber(stock.totalAllocation) || 0), 0)),
-      firstTrancheTotal: stocks.reduce((sum, stock) => sum + (toNumber(stock.firstAmount) || 0), 0),
-      secondTrancheTotal: stocks.reduce((sum, stock) => sum + (toNumber(stock.secondAmount) || 0), 0),
-      rule: "總資金預設20萬；依priorityScore動態分配；第一筆60%/第二筆40%；3檔以上最多動用約85%；單股最多35%；未用資金保留現金"
-    },
-    stocks,
-    thousandStockPool: scan.thousandStockPool || null,''',
-'''    selectedCount: stocks.length,
+# Summary keeps legacy totalCapital field for compatibility but explicitly defines the new per-pool semantics.
+scan_core=text.find("async function runAfterMarketScanCore(")
+summary_start=text.find("  const summary = {",scan_core)
+fields_start=text.find("    selectedCount: stocks.length,",summary_start)
+if summary_start<0 or fields_start<0:
+    raise SystemExit("scan summary selectedCount block not found")
+fields_end=text.find("    researchShadowArchive:",fields_start)
+if fields_end<0:
+    fields_end=text.find("    diagnostics:",fields_start)
+if fields_end<0:
+    raise SystemExit("scan summary diagnostics boundary not found")
+new_fields='''    selectedCount: stocks.length,
     hybridSelectedCount: hybridStocks.length,
     totalCapital: STRATEGY_POOL_CAPITAL,
     poolCapital: STRATEGY_POOL_CAPITAL,
@@ -392,9 +389,9 @@ replace_once(
     hybridStocks,
     thousandStockPool: scan.thousandStockPool || null,
     hybridStockPool: scan.hybridStockPool || null,
-    strategyOverlap: scan.strategyOverlap || null,''',
-"summary pool capital and hybrid"
-)
+    strategyOverlap: scan.strategyOverlap || null,
+'''
+text=text[:fields_start]+new_fields+text[fields_end:]
 
 # Add helper before public recommendations.
 insert_before_once(
