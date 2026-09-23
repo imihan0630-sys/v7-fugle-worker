@@ -169,6 +169,33 @@ jobs:
           grep -F 'TRIGGERED_WAITLIST' Worker.js
           grep -F 'url.pathname === "/api/hybrid-watch-performance"' Worker.js
           grep -F 'WATCH不占3席、不占20萬' Worker.js
+      - name: V8.9.3 Hybrid WATCH dry-run diagnostic
+        if: contains(github.event.head_commit.message, '[hybrid-watch-diagnostic]')
+        env:
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+        run: |
+          node - <<'NODE'
+          const origin="https://fugle-test.imihan0630.workers.dev";
+          const response=await fetch(origin+"/api/scan-preview",{
+            method:"POST",
+            headers:{"x-admin-token":process.env.V7_ADMIN_TOKEN,"content-type":"application/json","accept":"application/json"},
+            body:JSON.stringify({marketDate:"2026-09-23"}),
+            signal:AbortSignal.timeout(120000)
+          });
+          const data=await response.json();
+          console.log(JSON.stringify({
+            ok:data.ok??response.ok,version:data.version,scanDate:data.scanDate,
+            hybridSelectedCount:data.hybridSelectedCount,hybridWatchCount:data.hybridWatchCount,
+            hybridStocks:(data.hybridStocks||[]).map(x=>({symbol:x.symbol,name:x.name,reason:x.selectedReason})),
+            hybridWatchStocks:(data.hybridWatchStocks||[]).map(x=>({symbol:x.symbol,name:x.name,watchReason:x.watchReason,missingCondition:x.missingCondition})),
+            hybridStockPool:data.hybridStockPool,
+            hybridWatchDiagnostics:data.diagnostics?.hybridWatch,
+            hybridExclusions:data.hybridStockPool?.exclusions,
+            finalPoolMerge:data.diagnostics?.finalPoolMerge
+          },null,2));
+          if(!response.ok) throw new Error("scan-preview failed");
+          NODE
+
       - name: Read-only production authorization preflight
         if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
         env:
