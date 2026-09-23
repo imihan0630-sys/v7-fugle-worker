@@ -30,13 +30,23 @@ const validSnapshotMissingBaseline = {
   snapshot: { price: { residualSectorRs20: 1.7 }, volume: { volumeTodayVsPrev5: 0.9 } },
   breakout: { reference: null, status: 'NO_REFERENCE' }, firstDay: { overnightPct: null, intradayPct: null }, horizons: { d5: null, d10: null, d20: null }
 };
+// Deliberately inconsistent synthetic serializer state. The current production serializer cannot
+// compute a finite return without a finite baseline, but B-13 precedence says an already finite
+// serialized outcome is authoritative if such a row is ever encountered downstream.
+const finiteOutcomeDespiteBrokenProvenance = {
+  scanDate: '2026-09-28', symbol: '7777', cohort: 'BROAD_CONTROL', baselineClose: null,
+  snapshot: { price: { residualSectorRs20: 0.4 }, volume: { volumeTodayVsPrev5: 1.1 } },
+  breakout: { reference: null, status: 'NO_REFERENCE' }, firstDay: { overnightPct: null, intradayPct: null },
+  horizons: { d5: { returnPct: 4.2 }, d10: null, d20: null }
+};
 
 const provenance = {
   '2026-09-25|4444': { snapshotState: 'SNAPSHOT_OK', historyState: 'HISTORY_PARSE_ERROR' },
   '2026-09-26|5555': { snapshotState: 'SNAPSHOT_PARSE_ERROR', historyState: 'HISTORY_ROW_MISSING' },
-  '2026-09-27|6666': { snapshotState: 'SNAPSHOT_OK', historyState: 'HISTORY_OK' }
+  '2026-09-27|6666': { snapshotState: 'SNAPSHOT_OK', historyState: 'HISTORY_OK' },
+  '2026-09-28|7777': { snapshotState: 'SNAPSHOT_OK', historyState: 'HISTORY_PARSE_ERROR' }
 };
-const result = buildPricePathReadinessMatrix([immature, mature, missingField, validSnapshotBrokenHistory, malformedSnapshot, validSnapshotMissingBaseline], provenance);
+const result = buildPricePathReadinessMatrix([immature, mature, missingField, validSnapshotBrokenHistory, malformedSnapshot, validSnapshotMissingBaseline, finiteOutcomeDespiteBrokenProvenance], provenance);
 const g = result.groups.find(x => x.scanDate === '2026-09-23' && x.cohort === 'NEAR_MISS');
 assert.equal(g.rows, 2);
 assert.equal(g.fields.r07ResidualSectorRs20.AVAILABLE, 2, 'field coverage must not depend on D5 maturity');
@@ -62,5 +72,9 @@ const noBaseline = result.groups.find(x => x.scanDate === '2026-09-27' && x.coho
 assert.equal(noBaseline.fields.r05BaselineClose.FIELD_UNKNOWN_OR_MISSING, 1, 'parsed snapshot with absent baseline is missing data, not snapshot parse failure');
 assert.equal(noBaseline.fields.r07ResidualSectorRs20.AVAILABLE, 1, 'other scan-time fields remain observable when baseline alone is missing');
 assert.equal(noBaseline.outcomes.d5.PROVENANCE_BLOCKED, 1, 'missing baseline must not be mislabeled as immature future outcome');
+
+const finiteWins = result.groups.find(x => x.scanDate === '2026-09-28' && x.cohort === 'BROAD_CONTROL');
+assert.equal(finiteWins.outcomes.d5.AVAILABLE, 1, 'finite serialized outcome remains authoritative even if attached provenance is inconsistent');
+assert.equal(finiteWins.fields.r05BaselineClose.FIELD_UNKNOWN_OR_MISSING, 1, 'authoritative future metric must not fabricate a missing scan-time baseline');
 assert.equal(result.unit, 'INDEPENDENT_SCAN_DATE_X_COHORT');
 console.log('price_path_readiness fixtures PASS');
