@@ -10,6 +10,13 @@ def replace_once(old,new,label):
         raise SystemExit(f"{label}: expected 1 match, found {count}")
     text=text.replace(old,new,1)
 
+def insert_after_once(marker,addition,label):
+    global text
+    count=text.count(marker)
+    if count!=1:
+        raise SystemExit(f"{label}: expected 1 marker, found {count}")
+    text=text.replace(marker,marker+addition,1)
+
 replace_once(
     'const VERSION = "8.8.1-execution-coverage";',
     'const VERSION = "8.8.2-zero-selection-push-guard";',
@@ -34,32 +41,30 @@ replace_once(
     "daily payload zero-selection push invariant"
 )
 
-replace_once(
-    '''    report = previousReport?.sent === true && Boolean(previousReport.simulated) === isTestMode(env) ? { ...previousReport, deduplicated: true }
-      : await sendTrackedPush(dailyPayload, env,{note:"每日盤後結果／0檔回報"});
-    await env.STOCKS_KV.put(reportKey, JSON.stringify({...report,signalId:dailyPayload.signalId,resultType:dailyPayload.resultType,
-      selectedCount:dailyPayload.selectedCount,checkedAt:new Date().toISOString()}), { expirationTtl: 30 * 86400 });''',
-    '''    report = previousReport?.sent === true && Boolean(previousReport.simulated) === isTestMode(env) ? { ...previousReport, deduplicated: true }
-      : await sendTrackedPush(dailyPayload, env,{note:"每日盤後結果／0檔回報"});
+send_marker='''      : await sendTrackedPush(dailyPayload, env,{note:"每日盤後結果／0檔回報"});'''
+insert_after_once(
+    send_marker,
+    '''
     if(!isTestMode(env) && (report?.sent!==true || report?.deliveryState!=="ACCEPTED")) {
       throw new Error("DAILY_RESULT_PUSH_NOT_ACCEPTED：盤後選股已完成，但每日結果推播未被Webhook接受；不得把本輪標成成功，也不得把0檔誤當通知完成");
-    }
-    await env.STOCKS_KV.put(reportKey, JSON.stringify({...report,signalId:dailyPayload.signalId,resultType:dailyPayload.resultType,
-      selectedCount:dailyPayload.selectedCount,zeroSelection:dailyPayload.zeroSelection,pushRequired:true,
-      checkedAt:new Date().toISOString()}), { expirationTtl: 30 * 86400 });''',
+    }''',
     "mandatory daily result acceptance"
 )
 
+# Persist explicit zero-selection/push-required semantics with the existing daily-report record.
 replace_once(
-    '''      dailyWebhookAccepted: report.sent === true && report.simulated !== true,
-      phoneReceiptVerified: report.receiptVerified === true,
-      complete:''',
-    '''      dailyWebhookAccepted: report.sent === true && report.simulated !== true,
+    '''selectedCount:dailyPayload.selectedCount,checkedAt:new Date().toISOString()''',
+    '''selectedCount:dailyPayload.selectedCount,zeroSelection:dailyPayload.zeroSelection,pushRequired:true,checkedAt:new Date().toISOString()''',
+    "daily report persisted push semantics"
+)
+
+pipeline_marker='''      dailyWebhookAccepted: report.sent === true && report.simulated !== true,''';
+insert_after_once(
+    pipeline_marker,
+    '''
       dailyDeliveryState: report.deliveryState || (report.sent === true ? "WEBHOOK_ACCEPTED_UNTRACKED" : "NOT_ACCEPTED"),
       dailyResultPushRequired: true,
-      dailyResultZeroSelection: stocks.length === 0,
-      phoneReceiptVerified: report.receiptVerified === true,
-      complete:''',
+      dailyResultZeroSelection: stocks.length === 0,''',
     "pipeline daily delivery semantics"
 )
 
