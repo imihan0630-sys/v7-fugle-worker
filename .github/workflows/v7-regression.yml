@@ -66,7 +66,8 @@ jobs:
           python3 scripts/apply_v8_9_0.py
           python3 scripts/apply_v8_9_1.py
           python3 scripts/apply_v8_9_2.py
-          # V8.9.1 dashboard regression contract
+          python3 scripts/apply_v8_9_3.py
+          # V8.9.3 Hybrid WATCH regression contract
       - name: Syntax and offline behavior regression
         env:
           V7_TEST_WORKER_PATH: ${{ github.workspace }}/Worker.js
@@ -74,7 +75,7 @@ jobs:
           set -euo pipefail
           cp Worker.js /tmp/v7-worker.mjs
           node --check /tmp/v7-worker.mjs
-          grep -F 'const VERSION = "8.9.2-three-pool-push";' Worker.js
+          grep -F 'const VERSION = "8.9.3-hybrid-watch-layer";' Worker.js
           grep -F 'CREATE TABLE IF NOT EXISTS trade_research_execution_snapshots' Worker.js
           grep -F 'RESEARCH_EXECUTION_RECORDER_FAIL_OPEN' Worker.js
           grep -F '35 15 * * MON-FRI' Worker.js
@@ -160,6 +161,14 @@ jobs:
           grep -F 'url.pathname === "/api/daily-report/resend"' Worker.js
           grep -F '千元 Hybrid' Worker.js
           grep -F 'dailyAllPoolsZero' Worker.js
+          grep -F 'const HYBRID_WATCH_MAX = 5;' Worker.js
+          grep -F 'function scoreHybridWatchCandidate' Worker.js
+          grep -F 'function evaluateHybridWatchUpgrade' Worker.js
+          grep -F 'function monitorHybridWatchCandidates' Worker.js
+          grep -F 'EARLY_ENTRY_ELIGIBLE' Worker.js
+          grep -F 'TRIGGERED_WAITLIST' Worker.js
+          grep -F 'url.pathname === "/api/hybrid-watch-performance"' Worker.js
+          grep -F 'WATCH不占3席、不占20萬' Worker.js
       - name: Read-only production authorization preflight
         if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
         env:
