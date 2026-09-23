@@ -65,6 +65,7 @@ jobs:
           python3 scripts/apply_v8_8_2.py
           python3 scripts/apply_v8_9_0.py
           python3 scripts/apply_v8_9_1.py
+          # V8.9.1 dashboard regression contract
       - name: Syntax and offline behavior regression
         env:
           V7_TEST_WORKER_PATH: ${{ github.workspace }}/Worker.js
