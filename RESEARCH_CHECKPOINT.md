@@ -1,7 +1,7 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-57.
-Updated: 2026-09-23 14:12 Asia/Taipei.
+Checkpoint sequence: B-58.
+Updated: 2026-09-23 14:40 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Earlier detailed evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
@@ -56,58 +56,52 @@ Root funnel: `universe -> base/liquidity -> A/B formation -> quality/RR -> SELEC
 - Exact `.github/workflows/v7-cloudflare.yml` means `research/**` changes on main enter production deployment; new research code must remain isolated unless deployment neutrality is proven. Shared dashboard/runtime wiring or workflow changes are Class B proposal-first.
 - Runtime finite-value coverage remains UNKNOWN without trusted runtime read.
 
-## NEW B-57 — Branch-only readiness matrix implemented, not wired
-### Continuity / concurrency
-- Re-read governance/worklist/canonical B-56 checkpoint and latest main commit before work. Latest main before branch creation was `25838e48d32b137757bcdc1bf71c968d57e14f46` (`research: B-56 audit aggregate field-presence readiness gap`).
-- Re-fetched canonical checkpoint immediately before write; blob remained `0b4624a0234f24f069028eb669dbf56036962b93`, so no newer A/B checkpoint needed merging.
-- No newer trusted Production readback with >=1 formal plan was established; primary execution funnel is not reinterpreted.
+## B-57 retained — Branch-only readiness matrix
+- Branch `research/b57-price-path-readiness` from main `25838e48d32b137757bcdc1bf71c968d57e14f46`.
+- Matrix unit fixed to `INDEPENDENT_SCAN_DATE_X_COHORT`; scan-time fieldState is separate from future outcomeState.
+- R01/R05/R07/R08 observability only; no new factor/threshold/window/effect claim.
+- Legacy `coverage.dN`, `byCohort`, `selectionAlpha`, `diagnostics`, `recentOutcomes` and all Formal Core outputs remain untouched.
+- Branch is not wired to dashboard/runtime/main and is not deployed. Any later shared-runtime wiring is Class B proposal-first.
 
-### Engineering classification / frozen invariants
-- Classification before code: **Class A, branch-only research helper**. It only transforms already-produced research outcome/snapshot objects into observational readiness counts and has no storage, schema, network, formal selection, monitoring or push path.
-- Frozen invariants: legacy `coverage.dN`, `byCohort`, `selectionAlpha`, `diagnostics`, `recentOutcomes`, Formal Core, A/B qualification, Top6/3+3, capital, BUY/ADD/REDUCE/SELL/STOP, monitoring and push remain untouched.
-- Any later wiring into shared dashboard/runtime/main is a separate **Class B** proposal-first decision; this branch is not deployed.
+## NEW B-58 — Falsification found and corrected: snapshot vs history provenance
+### Finding
+- Exact B-57 source audit confirmed a semantic conflation: one combined provenance state was passed to both `readinessState()` and `outcomeState()`.
+- Counterexample: a valid scan-time snapshot can positively contain `residualSectorRs20`, relative volume, baseline and breakout reference while later history JSON is malformed/missing. The old helper would mark those known scan-time fields `PROVENANCE_BLOCKED` solely because future history failed.
+- This would undercount field readiness and introduce outcome-availability/survivorship bias. It is not acceptable to let future-history failure erase already-observed scan-time evidence.
 
-### Isolated implementation
-- Created branch `research/b57-price-path-readiness` from main `25838e48d32b137757bcdc1bf71c968d57e14f46`.
-- Added `research/price_path_readiness_v8_8_2.js`; branch implementation commit `bfc062f798e0ad759c133126f65bedda4e6b9c23`.
-- Added fixture `research/price_path_readiness_v8_8_2.test.js`; branch head commit `4fe06dcfa9da2f6cb343596efaf24c1f28cff57b`.
-- Matrix unit is fixed to `INDEPENDENT_SCAN_DATE_X_COHORT`.
-- Scan-time `fieldState` is separated from future `outcomeState`:
-  - R01 field: breakout reference availability; outcome: fixed 3-close held/failed state.
-  - R05 field: scan-time baseline close; outcomes: next-day overnight and intraday.
-  - R07 field: `residualSectorRs20`; D5/D10/D20 maturity remains separate.
-  - R08 fields: `residualSectorRs20` and `volumeTodayVsPrev5`; future horizons remain separate.
-- States are constrained to `AVAILABLE / FIELD_UNKNOWN_OR_MISSING / PROVENANCE_BLOCKED` for fields and `AVAILABLE / OUTCOME_NOT_MATURE / PROVENANCE_BLOCKED` for outcomes. No BAD/0 coercion exists.
+### Class / implementation
+- Classification remains **Class A branch-only research helper**; no runtime/shared wiring, storage, schema, formal output or deployment change.
+- Updated `research/price_path_readiness_v8_8_2.js` on `research/b57-price-path-readiness`, commit `b5020fa05e2b57943412350ac677c94d5e150454`.
+- Helper now resolves split provenance: `snapshotState`/snapshot.state controls scan-time fieldState; `historyState`/outcomeState/history.state controls future outcomeState. Legacy combined `state` remains conservative fallback only when split provenance is unavailable.
+- Updated fixture with two falsification cases, branch head `f8d73c13bc14d6dab812e58b9c7a570f92475a3b`:
+  1. valid snapshot + `HISTORY_PARSE_ERROR` => scan-time R07/R08 fields must remain AVAILABLE while D5 is PROVENANCE_BLOCKED;
+  2. `SNAPSHOT_PARSE_ERROR` + missing history/baseline => scan-time fields remain PROVENANCE_BLOCKED and outcome is PROVENANCE_BLOCKED.
 
-### Fixture intent / test status
-- Fixture deliberately places one immature and one mature row on the same scanDate/cohort and asserts both scan-time residual-RS and relative-volume fields count AVAILABLE while D5 splits AVAILABLE vs OUTCOME_NOT_MATURE. This directly guards against D5-conditioned readiness/survivorship bias.
-- Separate row asserts missing R07/R08 fields remain FIELD_UNKNOWN_OR_MISSING while D5 is OUTCOME_NOT_MATURE.
-- **Test source written, NOT_EXECUTED** in this cycle. Do not claim PASS from assertions existing in source. No CI/workflow change was made.
+### Test / evidence status
+- Source and assertions are written but **NOT_EXECUTED**. Status remains `SOURCE_WRITTEN_NOT_EXECUTED`; do not infer PASS from source inspection.
+- No CI/workflow modification was made. B-49 exact-source runner constraint remains unchanged and is not being rediscovered.
 
-### Bias / falsification / redundancy checks
-- Selection/availability bias: field coverage is computed before and independently from outcome maturity.
-- Look-ahead: helper consumes scan-time snapshot fields as supplied; it does not reconstruct or backfill historical scan-time evidence.
-- Data snooping / Factor Zoo: no new experiment, threshold, window, cutoff, score or ranking; R01-R08 definitions remain frozen.
-- Market-source bias: actual TWSE/TPEx finite-value coverage remains UNKNOWN until authorized runtime rows are observed.
-- Redundancy: R07/R08 shared residual-RS is explicitly represented as the same underlying field, not counted as two independent discoveries.
-- Date clustering: output grouping is scanDate x cohort; stock rows are counts within a date/cohort, not independent dates.
-- Transaction costs: no alpha/effect claim is made; unchanged.
-- Counterexample retained: a row can have all scan-time fields AVAILABLE while every future outcome remains OUTCOME_NOT_MATURE; therefore readiness must not be inferred from outcome coverage.
+### Bias / redundancy / UNKNOWN audit
+- Selection/availability bias improved: future-history failures can no longer suppress positively observed scan-time fields when split provenance is supplied.
+- Look-ahead unchanged: no future information is backfilled into scan-time fields.
+- UNKNOWN remains conservative: malformed snapshot is provenance-blocked, not BAD/0; valid-but-absent field is FIELD_UNKNOWN_OR_MISSING.
+- Factor Zoo/data snooping unchanged: no R09/I08, threshold, window, score or ranking added.
+- R07/R08 shared residual-RS remains one underlying field; no double-discovery claim.
+- Transaction-cost, date-cluster and market-source effect claims remain unchanged/UNKNOWN.
 
 ### R01-R08 / I01-I07 impact
-- R01/R05/R07/R08: observability design only; experiment definitions/effects unchanged and runtime coverage remains UNKNOWN.
-- R02/R03/R04/R06 and I01-I07: unchanged.
-- Fundamental Persistence remains UNKNOWN/context-only.
+- R01/R05/R07/R08: readiness semantics corrected only; experiment definitions and directional effects unchanged.
+- R02/R03/R04/R06 and I01-I07 unchanged.
+- Production runtime finite-value coverage remains UNKNOWN without trusted authorized readback.
 
 ### Deployment / rollback
-- Main runtime code unchanged; branch is isolated and not deployed.
-- Rollback branch work by abandoning `research/b57-price-path-readiness`; main pre-branch point `25838e48d32b137757bcdc1bf71c968d57e14f46` remains unaffected.
+- Main runtime unchanged; branch not deployed.
+- Rollback: abandon `research/b57-price-path-readiness`; Formal Core and production remain unaffected.
 
 ## Exact next continuation point
-1. Re-read governance/worklist/checkpoint/latest main and re-check checkpoint blob SHA before any write.
-2. If a newer trusted formal scan with >=1 plan exists, immediately restore primary funnel priority: establish plan date/count from trusted Production readback, verify execution-recorder target-date coverage and 500-row non-truncation before interpreting signals, then add same-date `HUMAN_MOMENTUM_SHADOW` only on formal SELECTED names.
-3. Otherwise continue B-57 branch-only helper verification. Inspect exact branch source and fixture; execute only if a trusted no-reconstruction runner path is available. Until then test status is `SOURCE_WRITTEN_NOT_EXECUTED`, not PASS.
-4. Audit a subtle semantic edge before any integration: `PROVENANCE_BLOCKED` must not suppress a scan-time field that was positively parsed from a valid snapshot merely because future history provenance failed. If provenance is split into snapshot provenance vs history/outcome provenance, fieldState must depend only on snapshot provenance while outcomeState may depend on history provenance. Treat this as a falsification test of the B-57 helper, not as permission to broaden scope.
-5. Add branch-only fixtures for that edge plus malformed snapshot/baseline cases if source audit confirms the helper currently conflates snapshot and history provenance. Keep UNKNOWN semantics conservative.
-6. Do not wire readiness into dashboard/runtime/main without separate Class B review. Do not alter legacy coverage/byCohort/selectionAlpha/diagnostics/recentOutcomes.
-7. Provenance exact-path remains `EXACT_SOURCE_NOT_RUN`; do not repeat byte-transport discovery or implement B-49 CI proposal without approval. Do not infer 09/22 Shadow without new trusted evidence; signal != fill; `REDUCED_CONFIRMED` requires trusted actual reduced shares.
+1. Re-read governance/worklist/checkpoint/latest main and re-check checkpoint SHA before any write.
+2. If a newer trusted formal scan with >=1 plan exists, restore primary funnel priority immediately: establish plan date/count from trusted Production readback, verify execution-recorder target-date coverage and 500-row non-truncation before interpreting signals, then add same-date `HUMAN_MOMENTUM_SHADOW` only on formal SELECTED names.
+3. Otherwise continue branch-only B-58 verification. Re-fetch exact branch helper + fixture and inspect whether baseline provenance needs a distinct state from snapshot parse provenance; do not invent a state unless existing B-13 provenance design already supports it.
+4. If no further semantic conflation is found, freeze the branch helper interface and prepare a deployment-neutral verification plan. Test remains `SOURCE_WRITTEN_NOT_EXECUTED` until a trusted no-reconstruction execution path exists.
+5. Do not wire readiness into dashboard/runtime/main without separate Class B review. Do not alter legacy coverage/byCohort/selectionAlpha/diagnostics/recentOutcomes.
+6. Provenance exact-path remains `EXACT_SOURCE_NOT_RUN`; do not repeat byte-transport discovery or implement B-49 CI proposal without approval. Do not infer 09/22 Shadow without new trusted evidence; signal != fill; `REDUCED_CONFIRMED` requires trusted actual reduced shares.
