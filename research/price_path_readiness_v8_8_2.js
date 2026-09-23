@@ -8,7 +8,7 @@ function readinessFinite(value) {
 }
 
 function readinessState(present, provenanceState) {
-  if (provenanceState && provenanceState !== "OK" && provenanceState !== "OUTCOME_AVAILABLE") return "PROVENANCE_BLOCKED";
+  if (provenanceState && provenanceState !== "OK" && provenanceState !== "SNAPSHOT_OK") return "PROVENANCE_BLOCKED";
   return present ? "AVAILABLE" : "FIELD_UNKNOWN_OR_MISSING";
 }
 
@@ -17,11 +17,20 @@ function outcomeState(metric, provenanceState) {
   return readinessFinite(metric) ? "AVAILABLE" : "OUTCOME_NOT_MATURE";
 }
 
+function provenanceStates(provenance) {
+  const legacy = String(provenance?.state || "OK");
+  // Prefer split provenance whenever supplied. A valid scan-time snapshot must not be
+  // suppressed merely because later history/outcome provenance failed.
+  const snapshot = String(provenance?.snapshotState || provenance?.snapshot?.state || legacy);
+  const outcome = String(provenance?.historyState || provenance?.outcomeState || provenance?.history?.state || legacy);
+  return { snapshot, outcome };
+}
+
 function pricePathReadinessForOutcome(row, provenance) {
   const snapshot = row?.snapshot || {};
   const price = snapshot?.price || {};
   const volume = snapshot?.volume || {};
-  const provenanceState = String(provenance?.state || provenance?.outcomeState || "OK");
+  const provenanceState = provenanceStates(provenance);
   const baselinePresent = readinessFinite(row?.baselineClose ?? price?.close);
   const breakoutReferencePresent = readinessFinite(row?.breakout?.reference) ||
     readinessFinite(price?.breakoutReferencePriceResearch) ||
@@ -34,19 +43,19 @@ function pricePathReadinessForOutcome(row, provenance) {
     cohort: String(row?.cohort || "UNKNOWN"),
     symbol: String(row?.symbol || ""),
     fields: {
-      r01BreakoutReference: readinessState(breakoutReferencePresent, provenanceState),
-      r05BaselineClose: readinessState(baselinePresent, provenanceState),
-      r07ResidualSectorRs20: readinessState(residualPresent, provenanceState),
-      r08ResidualSectorRs20: readinessState(residualPresent, provenanceState),
-      r08VolumeTodayVsPrev5: readinessState(relativeVolumePresent, provenanceState)
+      r01BreakoutReference: readinessState(breakoutReferencePresent, provenanceState.snapshot),
+      r05BaselineClose: readinessState(baselinePresent, provenanceState.snapshot),
+      r07ResidualSectorRs20: readinessState(residualPresent, provenanceState.snapshot),
+      r08ResidualSectorRs20: readinessState(residualPresent, provenanceState.snapshot),
+      r08VolumeTodayVsPrev5: readinessState(relativeVolumePresent, provenanceState.snapshot)
     },
     outcomes: {
-      r01ThreeDayBreakout: outcomeState(["HELD_3D", "FAILED_CLOSE_WITHIN_3D"].includes(row?.breakout?.status) ? 1 : null, provenanceState),
-      r05NextDayOvernight: outcomeState(row?.firstDay?.overnightPct, provenanceState),
-      r05NextDayIntraday: outcomeState(row?.firstDay?.intradayPct, provenanceState),
-      d5: outcomeState(row?.horizons?.d5?.returnPct, provenanceState),
-      d10: outcomeState(row?.horizons?.d10?.returnPct, provenanceState),
-      d20: outcomeState(row?.horizons?.d20?.returnPct, provenanceState)
+      r01ThreeDayBreakout: outcomeState(["HELD_3D", "FAILED_CLOSE_WITHIN_3D"].includes(row?.breakout?.status) ? 1 : null, provenanceState.outcome),
+      r05NextDayOvernight: outcomeState(row?.firstDay?.overnightPct, provenanceState.outcome),
+      r05NextDayIntraday: outcomeState(row?.firstDay?.intradayPct, provenanceState.outcome),
+      d5: outcomeState(row?.horizons?.d5?.returnPct, provenanceState.outcome),
+      d10: outcomeState(row?.horizons?.d10?.returnPct, provenanceState.outcome),
+      d20: outcomeState(row?.horizons?.d20?.returnPct, provenanceState.outcome)
     }
   };
 }
@@ -76,7 +85,7 @@ function buildPricePathReadinessMatrix(outcomes, provenanceByKey = {}) {
     decisionImpact: false,
     unit: "INDEPENDENT_SCAN_DATE_X_COHORT",
     groups: Object.values(groups).sort((a, b) => `${a.scanDate}|${a.cohort}`.localeCompare(`${b.scanDate}|${b.cohort}`)),
-    rule: "Scan-time field presence is counted independently of future D1/D5/D10/D20 maturity. Missing or provenance-blocked evidence is never coerced to BAD/0."
+    rule: "Scan-time field presence uses snapshot provenance only and is counted independently of future outcome maturity/history provenance. Missing or provenance-blocked evidence is never coerced to BAD/0."
   };
 }
 
