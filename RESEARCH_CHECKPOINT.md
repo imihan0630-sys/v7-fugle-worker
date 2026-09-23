@@ -1,7 +1,7 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-55.
-Updated: 2026-09-23 13:14 Asia/Taipei.
+Checkpoint sequence: B-56.
+Updated: 2026-09-23 13:44 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Earlier detailed evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
@@ -47,64 +47,57 @@ Root funnel: `universe -> base/liquidity -> A/B formation -> quality/RR -> SELEC
 - Readiness is counted by independent scan date and cohort. Zero-pick dates remain valid formal observations; row count never substitutes for independent dates.
 - Future OHLC only populates outcomes after observation; no historical snapshot backfill with future information.
 
-## B-53/B-54 retained — Serializer and deployment boundary
+## B-53/B-55 retained — Serializer, route, regime and deployment boundary
 - `readShadowCounterfactualResearch()` reads up to 5000 archived Shadow rows, computes outcomes from post-scan history, aggregate coverage/cohort diagnostics, and returns only `recentOutcomes: outcomes.slice(-80)` at row level.
 - Row serializer exposes scanDate/cohort/baseline/horizons/firstDay/breakout/full snapshot. R05 Overnight/Intraday is emitted. R07/R08 residualSectorRs20 and volumeTodayVsPrev5 can pass through snapshot when finite.
-- Regime is stored/read separately through `trade_research_days.market_json`; B-54 had not yet established the external HTTP route or a per-row regime join.
+- Authenticated external route is source-proven as GET `/api/research/dashboard?days=...`; no secret was requested or bypassed and no authorized live dashboard response has been read in this automation context.
+- Regime remains a separate `trade_research_days.market_json` path; inspected implementation has no per-row counterfactual regime join. Any shared-runtime join is Class B proposal-first.
 - Exact `.github/workflows/v7-cloudflare.yml` means `research/**` changes on main enter production deployment; new research code must remain isolated unless deployment neutrality is proven. Shared dashboard/runtime wiring or workflow changes are Class B proposal-first.
 - Readiness states remain `AVAILABLE / OUTCOME_NOT_MATURE / FIELD_UNKNOWN_OR_MISSING / PROVENANCE_BLOCKED`, counted by scanDate x cohort; runtime finite-value coverage remains UNKNOWN without trusted runtime read.
 
-## NEW B-55 — Exact dashboard route and regime-join boundary positively verified
+## NEW B-56 — Existing aggregate readiness does not expose per-date/per-cohort field-presence
 ### Continuity / concurrency
-- Re-read governance/worklist/canonical B-54 checkpoint and latest main first. Main head before this write was `67ce41bce15cd00c2658a52236b27c5862d3bd5a` (`research: B-54 audit readiness integration deployment boundary`).
-- Checkpoint blob immediately before write was re-fetched as `159c7e5d67073600e48413b83e22d8068c749fa4`; no newer A/B checkpoint appeared before write.
-- No newer trusted Production readback with >=1 formal plan was established in this cycle; primary execution funnel is therefore not reinterpreted.
+- Re-read governance/worklist/canonical B-55 checkpoint before audit. Checkpoint blob immediately before write was `e9ca8f473932e063b3e1dcef98aead277901707d`; re-fetched immediately before write and no newer A/B checkpoint appeared.
+- No newer trusted Production readback with >=1 formal plan was established in this cycle; primary execution funnel is not reinterpreted.
 
-### Exact external route established from source
-- Exact `scripts/apply_v8_7_0.py` positively defines the protected GET route `/api/research/dashboard?days=...`; it requires `isAuthorized(request,env)` / `x-admin-token`, rejects non-GET, and returns `readResearchDashboard(...)`.
-- The same exact source defines `/research` as the research-center UI and its browser code calls `/api/research/dashboard?days=...` with the ADMIN_TOKEN header.
-- Exact `scripts/apply_v8_7_4.py` later extends that same `readResearchDashboard()` payload with `counterfactualResearch`, `executionAlpha`, and `regimePersistence`. Therefore the deployed research dashboard route for the counterfactual payload is source-proven as `/api/research/dashboard`, not merely inferred from helper naming.
-- This is code-level route proof only. This automation context does not possess/expose the ADMIN_TOKEN value and did not attempt to obtain or bypass it. No authorized live dashboard response was read this cycle; runtime finite-value counts remain UNKNOWN.
+### Positive source audit
+- Exact `research/counterfactual_v8_7_4.js` shows the aggregate returned by `readShadowCounterfactualResearch()` consists of: `archivedRows`, `outcomeRows`, `historySymbols`, horizon-only `coverage.d1/d3/d5/d10/d20`, `byCohort` horizon outcome statistics, `selectionAlpha`, `diagnostics`, and `recentOutcomes` last-80 rows.
+- `researchOutcomeCohortSummary()` groups by cohort but only summarizes horizon return/MFE/MAE metrics. It does not count field presence for breakout reference/status, firstDay overnight/intraday, `residualSectorRs20`, or `volumeTodayVsPrev5`, and it does not retain per-scanDate field-presence counts.
+- `buildShadowResearchDiagnostics()` aggregates breakout counts, first-day overnight/intraday only when both are finite, residual-RS D5 median study, and Quiet/Attention D5 study. These are effect/diagnostic aggregates, not a scanDate x cohort readiness matrix and they cannot distinguish field missingness from outcome immaturity/provenance failure.
+- Therefore the currently inspected exact aggregate path does **not** positively provide the required per-scanDate/per-cohort field-presence counts for R01/R05/R07/R08. This conclusion is based on exact serializer/aggregate source, not merely search absence.
 
-### Regime join audit — positive source boundary
-- Exact `research/counterfactual_v8_7_4.js` shows `readShadowCounterfactualResearch()` queries only `trade_research_shadow_candidates` plus `v7_history_cache`, then serializes outcomes; it does not read `trade_research_days` and does not attach regime to each counterfactual row.
-- Exact same module separately defines `readResearchRegimePersistence()` which reads `trade_research_days(scan_date,market_json)` and parses `{scanDate, market}` for aggregate transition/persistence diagnostics.
-- Exact `scripts/apply_v8_7_4.py` loads `counterfactualResearch` and `regimePersistence` as separate Promise results and emits them as separate dashboard fields. There is no join between those two paths in the exact implementation inspected.
-- Therefore per-row/per-cohort regime readiness is not currently available from the existing counterfactual result. A scanDate observational join is technically possible from existing stored sources, but implementing/wiring it into shared dashboard runtime is Class B proposal-first under the current deployment boundary. No such change was made.
-
-### Readiness consequence
-- R01: source path to row breakout state/reference is established; runtime finite coverage still UNKNOWN.
-- R05: source path to firstDay overnight/intraday is established; runtime finite coverage still UNKNOWN.
-- R07/R08: source path to residualSectorRs20 and volumeTodayVsPrev5 through snapshot is established; runtime finite coverage still UNKNOWN.
-- Regime: day-level source exists separately, but counterfactual row-level join is absent in inspected exact implementation. Mark row-level regime readiness `FIELD_UNKNOWN_OR_MISSING` only when a particular archived row/day is actually inspected and lacks a usable join source; do not globally coerce all rows to missing from source structure alone.
-- Current prospective maturity remains insufficient for directional alpha. No effect estimate, return ranking, threshold sweep or new experiment was performed.
+### Research consequence
+- Existing aggregate statistics must not be reused as a readiness denominator: e.g. `intradayVsOvernight.n` requires both first-day fields finite and therefore conflates field presence with D1 outcome availability; residual/quiet studies additionally require mature D5 and cross-sectional eligibility.
+- Using those counts as evidence-readiness would create survivorship/availability conditioning and could undercount fields on immature dates, biasing prospective coverage toward already-mature observations.
+- Correct readiness remains observational: for each independent `scanDate x cohort`, separately count field present/unknown and outcome maturity/provenance state before any alpha estimate.
+- Runtime finite-value coverage remains UNKNOWN because no authorized live dashboard response was obtained. No directional alpha, threshold search, or return ranking was performed.
 
 ### Bias / falsification / redundancy checks
-- Selection bias: the dashboard's `recentOutcomes` remains last-80; even a future authorized live read may only characterize that truncated sample at row level, never full archive coverage.
-- Look-ahead: no historical backfill or future information inserted into scan-time fields.
-- Data snooping / Factor Zoo: no R09/I08, new cutoff, new window, or outcome-driven label.
-- Market-source bias: runtime missingness by TWSE/TPEx remains UNKNOWN; source structure alone cannot establish equal market coverage.
-- Redundancy: R07/R08 continue to share residual-RS/relative-volume inputs; no double-counting as independent evidence.
-- Date clustering: independent scan date remains evidence unit; one prospective Shadow date remains far below maturity.
-- Transaction costs: no alpha claim was made; existing cost stress is unchanged.
+- Selection/availability bias: explicitly prevented by refusing to use D1/D5-conditioned diagnostics as field-presence denominators.
+- Look-ahead: no backfill or future data inserted into scan-time fields.
+- Data snooping / Factor Zoo: no R09/I08, cutoff, window or composite introduced.
+- Market-source bias: TWSE/TPEx field missingness remains UNKNOWN until actual archived rows can be read through an authorized path.
+- Redundancy: R07/R08 shared inputs remain recognized; no independent-evidence double count.
+- Date clustering: readiness unit remains independent scanDate x cohort, not stock-row count.
+- Transaction costs: no alpha claim; unchanged.
 
 ### R01-R08 / I01-I07 impact
-- R01/R05/R07/R08: observability route and regime-join boundary clarified only; definitions/status unchanged.
+- R01/R05/R07/R08: only readiness-observability gap clarified; definitions and status unchanged.
 - R02/R03/R04/R06 and I01-I07: unchanged.
 - Fundamental Persistence remains UNKNOWN/context-only.
 
 ### Engineering classification / tests / deployment / rollback
 - Classification: Class A source/documentation audit only.
 - Code/runtime/schema/workflow: unchanged; only canonical checkpoint updated.
-- Tests: not applicable to source-route audit; no runtime claim made.
+- Tests: not applicable to source aggregate audit; no runtime claim made.
 - Deployment: no production runtime change intended by this checkpoint-only commit; protected formal outputs unchanged.
-- Rollback: previous checkpoint blob `159c7e5d67073600e48413b83e22d8068c749fa4` / Git history.
+- Rollback: previous checkpoint blob `e9ca8f473932e063b3e1dcef98aead277901707d` / Git history.
 
 ## Exact next continuation point
 1. Re-read governance/worklist/checkpoint/latest main and re-check checkpoint blob SHA before any write.
 2. If a newer trusted formal scan with >=1 plan exists, immediately restore primary funnel priority: establish plan date/count from trusted Production readback, verify execution-recorder target-date coverage and 500-row non-truncation before interpreting signals, then add same-date `HUMAN_MOMENTUM_SHADOW` only on formal SELECTED names.
-3. Otherwise do not re-discover the dashboard route: it is source-proven as authenticated GET `/api/research/dashboard?days=...`. Only if an already-authorized connector/runtime path can supply the required auth without exposing secrets, read it and label `recentOutcomes` as truncated; otherwise runtime field coverage remains UNKNOWN without asking for secret values.
-4. Continue Class A source audit of readiness using existing exact sources: determine whether any existing aggregate (not row-level last-80) already exposes per-scanDate/per-cohort field-presence counts for R01/R05/R07/R08. Positive source proof required; absence of search results is not proof of absence.
-5. For regime, do not repeat join discovery: exact implementation has separate counterfactual and research-day paths with no inspected row join. Any additive scanDate join in shared dashboard/runtime is Class B proposal-first; branch-only design is allowed but main promotion is not.
-6. Preserve readiness states AVAILABLE / OUTCOME_NOT_MATURE / FIELD_UNKNOWN_OR_MISSING / PROVENANCE_BLOCKED and independent-date/cohort counts. No directional alpha until frozen maturity gates are met.
+3. Otherwise do not re-discover the dashboard route or aggregate gap. Runtime field coverage remains UNKNOWN unless an already-authorized path can read the authenticated dashboard without exposing secrets.
+4. Continue Price Path Quality/Information Discreteness as a Class A design audit only: define the minimal **branch-only** readiness matrix schema/algorithm using existing archived snapshot/outcome inputs, with separate `fieldState` and `outcomeState`, grouped by independent `scanDate x cohort`. Do not wire it into shared runtime/main yet.
+5. The design must prevent conditioning on D1/D5 maturity: R01 scan-time reference presence, R05 scan-time baseline presence vs next-day outcome state, R07/R08 scan-time residual/relative-volume presence are counted independently of future horizon availability. Missing/parse failures remain UNKNOWN/PROVENANCE_BLOCKED, never BAD/0.
+6. Before any code, classify the branch-only helper as Class A and list frozen invariants: no change to legacy `coverage.dN`, `byCohort`, selectionAlpha, diagnostics, recentOutcomes, Formal Core, monitoring or push. If later shared dashboard wiring is proposed, classify that promotion separately as Class B.
 7. Provenance exact-path remains `EXACT_SOURCE_NOT_RUN`; do not repeat byte-transport discovery or implement the B-49 Class B CI proposal without approval. Do not infer 09/22 Shadow without new trusted evidence; signal != fill; `REDUCED_CONFIRMED` requires trusted actual reduced shares.
