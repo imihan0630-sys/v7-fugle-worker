@@ -1,7 +1,7 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-59.
-Updated: 2026-09-23 15:11 Asia/Taipei.
+Checkpoint sequence: B-60.
+Updated: 2026-09-23 15:40 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Earlier detailed evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
@@ -28,57 +28,66 @@ Root funnel: `universe -> base/liquidity -> A/B formation -> quality/RR -> SELEC
 
 ## Provenance lane retained through B-49
 - Current counterfactual path can collapse malformed snapshot/history, missing history, and valid-but-insufficient observed history into legacy null horizons; legacy `coverage.dN` cannot explain cause.
-- B-13 isolated helper explicitly distinguishes `snapshotStatus`, `baselineStatus`, `historyStatus`, `postScanValidBars`, and horizon provenance. Missing baseline is `BASELINE_UNAVAILABLE`; malformed snapshot is distinct from history failure.
+- B-13 isolated helper distinguishes snapshot, baseline, history, post-scan valid bars and horizon provenance. Missing baseline is `BASELINE_UNAVAILABLE`; malformed snapshot is distinct from history failure.
 - Safest design remains parallel/additive diagnostics. Do not alter `researchShadowOutcomeForRow()`, `researchOutcomeCohortSummary()`, `researchPairedSelectionAlpha()` or legacy `coverage.dN` semantics.
 - `research/b13-shadow-provenance` remains isolated/not deployed. Targeted + observational tests retain `LOCAL_EXACT_SOURCE_PASS`; exact-path fixture remains `LOCAL_RECONSTRUCTED_ASSERTION_PASS / EXACT_SOURCE_NOT_RUN`; CI NOT_RUN.
 - B-49 established no trusted no-change byte-materialization path from connected GitHub reader into local runner; minimal manual isolated CI bridge is Class B proposal-only. Do not repeat transport discovery without new capability/approval.
 
-## B-50 through B-56 retained boundaries
-- Fundamental Persistence remains UNKNOWN/context-only: monthly revenue is R08 context/falsification metadata, not a new persistence experiment. No arbitrary windows or historical PIT backfill.
+## B-50 through B-59 retained boundaries
+- Fundamental Persistence remains UNKNOWN/context-only; no arbitrary windows or historical PIT backfill.
 - Price Path uses only frozen R01 `priorHigh20` + future 3-close hold/fail; R05 next-day Overnight/Intraday; R07/R08 same-date medians of `residualSectorRs20` and `volumeTodayVsPrev5`. No new thresholds/windows/composite scores.
 - `readShadowCounterfactualResearch()` reads up to 5000 Shadow rows but returns only last 80 row-level `recentOutcomes`; do not treat 80 as full archive.
 - Existing aggregate diagnostics are maturity/effect-conditioned and cannot be reused as field-readiness denominators.
-- Regime is a separate `trade_research_days.market_json` path; no per-row counterfactual join. Shared-runtime join is Class B proposal-first.
+- Regime is a separate `trade_research_days.market_json` path; shared-runtime join is Class B proposal-first.
 - Authenticated dashboard route is source-proven GET `/api/research/dashboard?days=...`; no authorized live dashboard response has been read in this automation context. Runtime finite-value coverage remains UNKNOWN.
 - `.github/workflows/v7-cloudflare.yml` means `research/**` changes on main enter production deployment; research helper code stays branch-only unless deployment neutrality is proven.
+- Branch `research/b57-price-path-readiness`; matrix unit `INDEPENDENT_SCAN_DATE_X_COHORT`; scan-time field state is separate from future outcome state.
+- B-58 split snapshot from later history provenance so later history failure cannot erase valid scan-time fields.
+- B-59 added baseline as a third semantic axis: finite observed metric => AVAILABLE; otherwise missing baseline => PROVENANCE_BLOCKED; then history provenance; only valid provenance with no metric => OUTCOME_NOT_MATURE.
+- Tests remain `SOURCE_WRITTEN_NOT_EXECUTED`; branch not wired/deployed.
 
-## B-57/B-58 retained — branch-only readiness matrix and split provenance
-- Branch `research/b57-price-path-readiness`; matrix unit fixed to `INDEPENDENT_SCAN_DATE_X_COHORT`; scan-time field state is separate from future outcome state.
-- R01/R05/R07/R08 observability only; legacy coverage/byCohort/selectionAlpha/diagnostics/recentOutcomes and Formal Core untouched.
-- B-58 falsified combined provenance: later history failure must not erase valid scan-time snapshot fields. Helper now uses split snapshot vs history/outcome provenance.
-- Fixtures cover valid snapshot + broken history and malformed snapshot. Tests remain `SOURCE_WRITTEN_NOT_EXECUTED`; branch not wired/deployed.
+## NEW B-60 — finite serialized outcome is authoritative; inconsistent provenance is not a new readiness bucket
+### Research question / experiment
+- Inspect the remaining B-59 semantic edge: can a finite serialized future outcome coexist with missing baseline/history provenance under the current production serializer, and if an inconsistent downstream row appears, which state wins?
+- This is a readiness/provenance falsification check only; no new experiment ID, factor, threshold, score or alpha claim.
 
-## NEW B-59 — baseline provenance is a third semantic axis
-### Finding / falsification
-- Exact B-13 provenance design already supports baseline separately: `baselineStatus=BASELINE_CLOSE_OK|BASELINE_CLOSE_MISSING`, and horizon provenance returns `BASELINE_UNAVAILABLE` after checking for an actually finite observed outcome and before history/maturity classification.
-- Therefore B-58's two-axis snapshot/history split was necessary but not sufficient. Counterexample: snapshot parses correctly and contains residual RS / relative volume, history is `HISTORY_OK`, but baseline close is absent. Scan-time R07/R08 fields are still positively observable, while return-based future outcomes cannot be interpreted as merely `OUTCOME_NOT_MATURE`.
-- Treating that case as maturity would mix data-quality failure into maturity denominators and can bias readiness upward/downward depending on missing-baseline incidence.
+### Supporting evidence
+- Current production `researchShadowOutcomeForRow()` derives `baseline` from `snapshot.price.close` and `metricForSlice()` returns null unless `baseline>0`. D1/D3/D5/D10/D20 return/MFE/MAE therefore cannot be generated as finite values by this serializer when baseline is missing.
+- The same serializer builds post-scan bars from valid finite closes; finite horizon metrics are downstream serialized evidence, not inferred by the readiness helper.
+- Therefore the state `finite dN outcome + missing baseline` is impossible from the current normal serializer contract, though an externally corrupted/stale/inconsistent payload could still present it.
 
-### Class A branch-only correction
-- Updated `research/price_path_readiness_v8_8_2.js` on `research/b57-price-path-readiness`, commit `d0f416927ac518bb91f5a6d7b9ee1c5f48aa8921`.
-- `outcomeState()` now preserves B-13 ordering: finite observed metric => AVAILABLE; otherwise missing baseline => PROVENANCE_BLOCKED; then history provenance; only valid provenance with no metric => OUTCOME_NOT_MATURE.
-- No new provenance vocabulary was invented. Baseline presence is derived from the existing row baseline/snapshot close and maps conservatively to the readiness bucket `PROVENANCE_BLOCKED` for unavailable return outcomes.
-- Added falsification fixture on branch head `1c5ec96bf5e6d60c776eb4e6c7e2398a0968111f`: valid parsed snapshot + missing baseline + valid R07/R08 fields + `HISTORY_OK` must keep R07 AVAILABLE, mark R05 baseline FIELD_UNKNOWN_OR_MISSING, and mark D5 PROVENANCE_BLOCKED rather than OUTCOME_NOT_MATURE.
+### Falsification / semantic decision
+- Preserve B-13 precedence: if an actually finite serialized outcome is present, readiness marks that outcome `AVAILABLE` even when attached baseline/history provenance is inconsistent.
+- Crucially this does **not** backfill scan-time evidence: a missing baseline field remains `FIELD_UNKNOWN_OR_MISSING`; the finite future metric does not fabricate baseline presence.
+- No new `INCONSISTENT` state is introduced because that would expand the frozen readiness vocabulary without evidence that the production serializer emits such rows. If later live evidence shows this inconsistency, treat it as a data-quality incident and revisit provenance diagnostics, not as alpha evidence.
 
-### Test / evidence status
-- Source/assertions written but **NOT_EXECUTED**. Status remains `SOURCE_WRITTEN_NOT_EXECUTED`; no PASS inferred from inspection.
-- No workflow/CI/runtime/storage/schema/dashboard/main helper wiring changed. Production remains untouched.
+### Class A branch-only engineering
+- Branch: `research/b57-price-path-readiness`.
+- Added an explicit deliberately inconsistent fixture: finite D5 return + missing baseline + `HISTORY_PARSE_ERROR`.
+- Assertion freezes two independent semantics: D5 remains `AVAILABLE`; R05 baseline remains `FIELD_UNKNOWN_OR_MISSING`.
+- Branch commit: `135412c435cc9e0e8f060e871e0b904a13ade161`.
+- Helper interface itself is now semantically frozen for B-57/B-60: no additional state vocabulary or fields should be added absent new counterexample/live evidence.
+
+### Tests / deployment
+- Source/assertions written but **NOT_EXECUTED**. Status remains `SOURCE_WRITTEN_NOT_EXECUTED`; no PASS inferred from source inspection.
+- No workflow/CI/runtime/storage/schema/dashboard/main helper wiring changed. No deployment performed. Production Formal Core untouched.
+- Rollback: branch can be reset before `135412c435cc9e0e8f060e871e0b904a13ade161`; main contains checkpoint only.
 
 ### Bias / UNKNOWN / redundancy audit
-- Selection/availability bias improved by preventing missing-baseline rows from contaminating maturity counts while preserving other known scan-time fields.
-- Look-ahead unchanged; no future value backfills scan-time evidence.
-- UNKNOWN semantics remain conservative: parsed-but-absent baseline is missing evidence, not BAD/0; malformed snapshot remains provenance-blocked.
-- Factor Zoo/data snooping unchanged: no new experiment, factor, threshold, window, score or ranking. R07/R08 residual RS remains one underlying field, not two discoveries.
-- Transaction-cost, market-source, date-cluster and directional alpha claims remain unchanged/UNKNOWN.
+- Selection/availability bias: improved semantic separation; maturity counts are not polluted by missing baseline/history, while a real finite serialized outcome is not discarded solely due to stale provenance metadata.
+- Look-ahead: unchanged; no future metric is used to fill a scan-time field.
+- UNKNOWN/data quality: missing baseline remains missing; malformed provenance remains blocked where no finite outcome exists. No BAD/0 coercion.
+- Factor Zoo/data snooping/overfit: unchanged; no R09/I08, no new threshold/window/composite, no performance search.
+- Market-source bias, transaction costs, date clustering and directional effects remain unchanged/UNKNOWN.
 
 ### R01-R08 / I01-I07 impact
-- R01/R05/R07/R08 readiness semantics only; experiment definitions/effects unchanged. R02/R03/R04/R06 and I01-I07 unchanged.
+- R01/R05/R07/R08 readiness semantics only; definitions/effects unchanged. R02/R03/R04/R06 and I01-I07 unchanged.
 - Formal Core remains LOCKED.
 
 ## Exact next continuation point
 1. Re-read governance/worklist/checkpoint/latest main and re-check checkpoint SHA before any write.
 2. If newer trusted formal scan has >=1 plan, immediately restore primary funnel priority: establish plan date/count from trusted production readback, verify execution-recorder target-date coverage and 500-row non-truncation before interpreting signals, then add same-date `HUMAN_MOMENTUM_SHADOW` only on formal SELECTED names.
-3. Otherwise continue branch-only readiness verification from B-59. Re-fetch exact helper/fixture and inspect the remaining semantic edge: an actually finite serialized outcome with missing baseline/history provenance. Preserve B-13's existing rule that a finite outcome is authoritative, but verify this cannot create an impossible/inconsistent readiness state in the current serializer contract.
-4. If no additional conflation exists, freeze the helper interface and write a deployment-neutral verification plan. Test remains `SOURCE_WRITTEN_NOT_EXECUTED` until trusted no-reconstruction execution exists.
+3. Otherwise treat B-57/B-60 helper semantics as frozen. Write a deployment-neutral verification plan only: enumerate exact branch blobs/SHAs, assertions, protected invariants, and what constitutes trusted execution without modifying workflow/runtime/main.
+4. Test remains `SOURCE_WRITTEN_NOT_EXECUTED` until trusted no-reconstruction execution exists. Do not repeat B-49 transport discovery unless capability changes.
 5. Do not wire readiness into dashboard/runtime/main without separate Class B review. Do not alter legacy coverage/byCohort/selectionAlpha/diagnostics/recentOutcomes.
 6. Provenance exact-path remains `EXACT_SOURCE_NOT_RUN`; do not implement B-49 CI proposal without approval. Signal != fill; `REDUCED_CONFIRMED` requires trusted actual reduced shares.
