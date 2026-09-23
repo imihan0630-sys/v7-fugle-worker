@@ -138,10 +138,9 @@ text=text[:daily_start]+new_daily+text[daily_end:]
 # Persist explicit three-pool counts with the daily report; keep legacy selectedCount/zeroSelection as Formal semantics.
 replace_once(
     '''selectedCount:dailyPayload.selectedCount,zeroSelection:dailyPayload.zeroSelection,pushRequired:true,checkedAt:new Date().toISOString()''',
-    '''selectedCount:dailyPayload.selectedCount,zeroSelection:dailyPayload.zeroSelection,pushRequired:true,
+    '''selectedCount:dailyPayload.selectedCount,zeroSelection:dailyPayload.zeroSelection,pushRequired:true,checkedAt:new Date().toISOString(),
           hybridSelectedCount:dailyPayload.hybridSelectedCount,totalDisplayedCount:dailyPayload.totalDisplayedCount,
-          allPoolsZero:dailyPayload.allPoolsZero,poolCounts:dailyPayload.poolCounts,
-          checkedAt:new Date().toISOString()''',
+          allPoolsZero:dailyPayload.allPoolsZero,poolCounts:dailyPayload.poolCounts''',
     "persist three-pool daily counts"
 )
 
