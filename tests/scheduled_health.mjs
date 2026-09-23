@@ -50,20 +50,34 @@ export function assessAfterMarketHealth(scan,date) {
   assert.equal(scan.scanDate,date,'No completed analysis for today');
   assert.equal(scan.dryRun,false,'Readonly preview cannot prove actual plan import');
   assert.equal(scan.config?.saved,true);assert.equal(scan.config?.verified,true);
-  const bridge=scan.planBridge || scan.threeMin;
-  const payload=scan.planPayload || scan.threeMinPayload;
-  assert.equal(bridge?.simulated,false);assert.equal(bridge?.sent,true);
-  // assessAfterMarketHealth validates the completed write shape only; exact external readback is
-  // verified below against the active provider so legacy fixtures and live provider checks stay separate.
-  assert.equal(payload?.schemaVersion,'V7_PLAN_2','New full payload has not been accepted');
-  assert.equal(payload?.scanDate,date,'Plan payload is not from today');
-  assert.equal(payload?.stocks?.length,scan.selectedCount,'Plan payload stock count differs from selected plan');
+  const formalCount=Number(scan.selectedCount||0);
+  const hybridCount=Number(scan.hybridSelectedCount||0);
+  assert.equal(formalCount,scan.stocks?.length||0);
+  assert.equal(hybridCount,scan.hybridStocks?.length||0);
+  assert.ok(hybridCount>=0 && hybridCount<=3,'Hybrid pool quota breach');
+  for(const stock of (scan.hybridStocks||[])) assert.ok(Number(stock.formalClose)>=1000,'Non-thousand stock entered Hybrid pool');
+
+  // External plan mirroring is meaningful only when Formal selected plans exist.
+  // A legitimate 0-pick day has nothing to mirror and must not be marked unhealthy.
+  let newFullPayloadAccepted=false,bridgeProvider=null;
+  if(formalCount>0) {
+    const bridge=scan.planBridge || scan.threeMin;
+    const payload=scan.planPayload || scan.threeMinPayload;
+    assert.equal(bridge?.simulated,false);assert.equal(bridge?.sent,true);
+    assert.equal(payload?.schemaVersion,'V7_PLAN_2','New full payload has not been accepted');
+    assert.equal(payload?.scanDate,date,'Plan payload is not from today');
+    assert.equal(payload?.stocks?.length,formalCount,'Plan payload stock count differs from selected plan');
+    newFullPayloadAccepted=true;
+    bridgeProvider=bridge?.provider||'D1_THREEMIN_COMPAT';
+  }
+
   assert.equal(scan.dailyReport?.simulated,false);assert.equal(scan.dailyReport?.sent,true);
+  assert.equal(scan.dailyReport?.deliveryState,'ACCEPTED','Daily after-market report was not accepted by webhook');
   assert.equal(scan.diagnostics?.quarterEpsReview?.ready,true,'Actual selected candidates lack EPS review');
-  assert.equal(scan.selectedCount,scan.stocks?.length);
   for(const thousand of [true,false]) assert.ok(scan.stocks.filter(s=>(s.formalClose>=1000)===thousand).length<=3,'Cross-pool filling or quota breach');
   for(const stock of scan.stocks) assert.ok(stock.formalClose>=10,'Below10 stock entered monitoring');
-  return {date,selectedCount:scan.selectedCount,newFullPayloadAccepted:true,bridgeProvider:(scan.planBridge||scan.threeMin)?.provider||'D1_THREEMIN_COMPAT',dailyReportHttpAccepted:true,handsetReceiptVerified:false};
+  return {date,selectedCount:formalCount,hybridSelectedCount:hybridCount,newFullPayloadAccepted,bridgeProvider,
+    dailyReportHttpAccepted:true,handsetReceiptVerified:scan.dailyReport?.receiptVerified===true};
 }
 
 async function main() {
@@ -145,7 +159,8 @@ async function main() {
     }
 
     let verifiedScan=scan,storageEvidence=null;
-    if(runtime.readiness?.planStorageMode==='D1_GITHUB_ENCRYPTED') {
+    const hasFormalPlans=Number(scan.selectedCount||0)>0;
+    if(hasFormalPlans && runtime.readiness?.planStorageMode==='D1_GITHUB_ENCRYPTED') {
       storageEvidence=await fetch(origin+'/api/storage/status',{headers:{'accept':'application/json'},signal:AbortSignal.timeout(20000)}).then(async response=>{
         assert.equal(response.ok,true,'Storage status read failed');return response.json();
       });
@@ -159,7 +174,7 @@ async function main() {
       assert.equal(verifiedScan.planBridge?.github?.verified,true,'GitHub exact readback acceptance was not persisted');
       assert.equal(verifiedScan.pipeline?.externalPlanVerified,true,'Generic external plan verification is incomplete');
       assert.equal(verifiedScan.pipeline?.threeMinVerified,null,'3Min must be inactive after GitHub mirror cutover');
-    } else if(runtime.readiness?.planStorageMode==='D1_FIRESTORE') {
+    } else if(hasFormalPlans && runtime.readiness?.planStorageMode==='D1_FIRESTORE') {
       storageEvidence=await fetch(origin+'/api/storage/status',{headers:{'accept':'application/json'},signal:AbortSignal.timeout(20000)}).then(async response=>{
         assert.equal(response.ok,true,'Storage status read failed');return response.json();
       });
@@ -168,7 +183,7 @@ async function main() {
       assert.equal(storageEvidence.d1?.latestArchived,true,'D1 primary plan archive missing');
       assert.equal(scan.planBridge?.provider,'D1_FIRESTORE','Latest scan did not use Firestore bridge');
       assert.equal(scan.planBridge?.firebase?.verified,true,'Firestore exact readback was not persisted');
-    } else {
+    } else if(hasFormalPlans) {
       // Historical compatibility only: verify the existing 3Min record without creating a new plan.
       const readback=await admin('/api/three-min/verify','POST');
       assert.equal(readback.verified,true,'Full legacy external payload readback differs');
@@ -176,12 +191,14 @@ async function main() {
       assert.equal(verifiedScan.threeMin?.verified,true,'Legacy 3Min exact readback was not persisted');
     }
     assert.equal(verifiedScan.scanDate,date,'External readback acceptance attached to a stale scan');
-    assert.equal(verifiedScan.diagnostics?.requirements30?.requirement26?.complete,true,'Rule 26 was not marked complete after exact external readback');
-    assert.equal(verifiedScan.diagnostics?.requirements30?.incompleteRules?.includes(26),false,'Rule 26 still appears incomplete after exact external readback');
+    if(hasFormalPlans) {
+      assert.equal(verifiedScan.diagnostics?.requirements30?.requirement26?.complete,true,'Rule 26 was not marked complete after exact external readback');
+      assert.equal(verifiedScan.diagnostics?.requirements30?.incompleteRules?.includes(26),false,'Rule 26 still appears incomplete after exact external readback');
+    }
     console.log(JSON.stringify({
       actualAfterMarketHealth:proof,
       watchlistVerified:{count:watch.count,maxStocks:watch.maxStocks,noFormalOverlap:true,marketDate:watch.marketDate},
-      externalReadbackVerified:true,externalPlanProvider:proof.bridgeProvider,requirement26Accepted:true,
+      externalReadbackVerified:hasFormalPlans,externalPlanProvider:proof.bridgeProvider,requirement26Accepted:hasFormalPlans,
       storageEvidence:storageEvidence?{mode:storageEvidence.mode,d1Archived:storageEvidence.d1?.latestArchived,
         githubVerified:storageEvidence.github?.verified===true,firebaseConfigured:storageEvidence.firebase?.configured}:null,
       dailyReportOutboxAccepted:true,
