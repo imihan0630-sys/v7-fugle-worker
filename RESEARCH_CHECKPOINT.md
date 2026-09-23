@@ -1,7 +1,7 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-62.
-Updated: 2026-09-23 16:39 Asia/Taipei.
+Checkpoint sequence: B-63.
+Updated: 2026-09-23 17:11 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Earlier detailed evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
@@ -47,58 +47,59 @@ Root funnel: `universe -> base/liquidity -> A/B formation -> quality/RR -> SELEC
 - B-60 froze finite serialized outcome precedence: finite future metric remains AVAILABLE even if attached provenance is inconsistent, but never fabricates missing scan-time fields. No new INCONSISTENT bucket.
 - B-61 froze exact branch/blob identities and trusted-execution contract. Tests remain `SOURCE_WRITTEN_NOT_EXECUTED`; branch not wired/deployed.
 
-## NEW B-62 — liquidity-reject/control coverage isolation audit
+## B-62 — liquidity-reject/control coverage isolation audit
+- Current Shadow conditions on surviving base/liquidity; it cannot falsify the largest observed liquidity reject gate.
+- A prospective reason-preserving `PRE_BASE_LIQUIDITY_CONTROL` would require capture inside shared formal scan plus durable storage, so direct implementation is **Class B proposal-only**. Do not overload frozen `REJECTED_AFTER_BASE`.
+- No implementation/runtime/schema change was made. Any future approved capture must be prospective only, preserve exact rejection reason/UNKNOWN, stay outside formal ranking/trading/push, and reconcile same-date counts against formal exclusion aggregates.
+
+## NEW B-63 — BROAD_CONTROL sampling-bias falsification audit
 ### Research question
-- Can the largest observed rejection gate (liquidity/base failure) be added as a prospective falsification/control population without touching Formal Core or silently changing existing R02 cohort semantics?
-- This is a coverage/selection-bias audit only. No claim that the liquidity gate is good/bad, no new factor/window/threshold, and no historical Shadow fabrication.
+- Does the existing frozen BROAD_CONTROL construction itself introduce systematic pool/market/date imbalance that can distort R02 Selection Alpha even before outcome maturity?
+- Static/source-level audit only; no alpha claim and no change to the frozen R02 comparator definition.
 
-### Supporting source evidence
-- Current `selectTomorrowCandidates()` constructs `featureRows`, then calls the formal `scoreCandidate(f, sector)` once per feature row. It appends a row to `basePoolDiagnostics` **only when `result.basePassed` is true**; rejected rows are otherwise reduced to aggregate `diagnostics.exclusions[result.reason]`, with only A/B-formation misses optionally retained as a 12-row `nearMisses` debug sample.
-- `diagnostics.conditionDistribution` is built from `basePoolDiagnostics`, therefore its denominator is already conditioned on passing base/liquidity. It cannot falsify the liquidity gate itself.
-- Existing R02 explicitly freezes BROAD_CONTROL, QUALIFIED_NOT_SELECTED, NEAR_MISS and REJECTED_AFTER_BASE as separate controls. Re-labeling pre-base liquidity rejects as `REJECTED_AFTER_BASE` would violate the frozen cohort meaning and contaminate existing Selection Alpha comparisons.
-- Existing Shadow integrity only verifies archive existence, SELECTED coverage and BROAD_CONTROL presence; it does not prove coverage of pre-base rejects.
+### Exact source semantics established
+- `buildShadowCandidateArchive()` builds cohorts sequentially and maintains a shared `used` set. SELECTED, QUALIFIED_NOT_SELECTED, NEAR_MISS and REJECTED_AFTER_BASE are inserted first; BROAD_CONTROL is sampled only from feature rows not already used.
+- BROAD_CONTROL eligibility is not a raw-universe random sample. It requires `historyDays>=60`, `close>=MIN_CLOSE_PRICE`, and the same price-dependent liquidity floor used in the archive helper: >=1000 lots for GENERAL and >=300 lots for THOUSAND.
+- Eligible controls are deterministically ordered by `researchStableHash(scanDate + "|" + symbol)`, then `byPool(...,6)` takes up to six GENERAL and six THOUSAND rows. Therefore the control is reproducible within a date but is a capped, pool-stratified pseudo-random sample of **surviving eligible unused feature rows**, not a market-representative sample.
+- The helper assigns pool only as GENERAL/THOUSAND from close price. No TWSE/TPEx market field participates in the sampling/stratification rule.
+- R02 correctly keeps BROAD_CONTROL separate from QUALIFIED_NOT_SELECTED, NEAR_MISS and REJECTED_AFTER_BASE; changing or merging these now would violate the frozen experiment definition.
 
-### Isolation result / engineering classification
-- A truly prospective per-symbol liquidity-reject control requires capturing `f` plus `scoreCandidate` rejection reason during the formal scan and durably writing those rows for later outcomes.
-- The necessary source data exists at scan time, so no look-ahead/backfill is needed. However, the capture point is inside the shared formal scan path (`selectTomorrowCandidates`) and durable persistence would extend shared runtime/storage behavior.
-- Therefore **direct implementation is Class B**, not autonomous Class A, despite the intended rows being research-only. No shared scan/storage/runtime code was changed in this run.
-- A branch-only/offline Class A helper could define normalization/diagnostics over supplied hypothetical rows, but without a trusted prospective capture source it would not close the real coverage gap; building such a helper now would create ceremony without evidence and is deferred.
+### Falsification result
+- Pool imbalance: partially controlled by design because sampling caps each price pool at six, but this is equal-cap stratification, not weighting to the formal universe or SELECTED pool distribution. If one pool has few eligible rows, the other pool is not allowed to fill unused capacity; effective control composition can vary by date.
+- Market imbalance: **structurally possible and currently unmeasured** because TWSE/TPEx is not stratified or balanced in BROAD_CONTROL sampling. A date could by chance contain mostly one market even when the eligible universe is mixed.
+- Date imbalance: each date can contribute a different number/composition of controls (0-12). Existing R02 mitigates raw row-count dominance by computing same-date SELECTED-minus-control mean before cross-date aggregation, but a thin or composition-skewed control on a date can still make that date's delta noisy. Independent scan date remains the evidence unit.
+- Survivor/conditioning bias: BROAD_CONTROL explicitly excludes symbols already consumed by earlier cohorts and also imposes history/liquidity eligibility. It is therefore useful as a broad *eligible-survivor* comparator, but it must not be interpreted as a random control for the full scanned universe or as evidence about pre-base liquidity rejects.
+- Deterministic hash ordering avoids manual cherry-picking and makes reruns reproducible, but hash determinism does **not** prove representative market/industry composition.
 
-### Safest prospective design if later approved as Class B
-- Add a new research-only population name distinct from all frozen R02 cohorts, e.g. `PRE_BASE_LIQUIDITY_CONTROL`; do **not** overload `REJECTED_AFTER_BASE`.
-- Capture only rows actually evaluated on that scan date, with immutable scan-date snapshot fields and exact formal rejection reason already emitted by `scoreCandidate`; never reconstruct older dates.
-- Preserve reason granularity rather than collapsing every base failure into one BAD label; missing source fields remain UNKNOWN.
-- Keep it excluded from formal ranking, Top6/3+3, capital, monitoring and push; exclude it from existing R02 Selection Alpha until a separately preregistered experiment/version explicitly defines a comparison.
-- Evidence unit remains independent scan date. Report coverage counts and reason distribution before any return comparison; outcome maturity must remain separate from field coverage.
-- Add integrity checks comparing captured pre-base control counts/reasons against same-date formal exclusion aggregates, with mismatches marked RESEARCH_DATA_GAP rather than altering trading.
+### What is known vs UNKNOWN
+- Known from source: deterministic date+symbol hash, max 6 per GENERAL/THOUSAND, prior-cohort exclusion, history/price/liquidity eligibility, no market stratification.
+- UNKNOWN without full prospective row readback: actual per-date TWSE/TPEx mix, industry mix, eligible-universe-to-control sampling fraction, overlap/composition stability across dates, and whether any observed R02 effect is sensitive to those imbalances.
+- Do not infer empirical imbalance from the static risk alone. Current prospective archive is too young and full row-level trusted readback is unavailable in this automation context.
 
-### Falsification / bias / redundancy audit
-- Selection bias: this gap is material because the current research archive conditions on surviving the largest gate; present Shadow evidence cannot answer whether rejected low-liquidity names would have out/underperformed.
-- Look-ahead: safe design is prospective only; historical reconstruction is prohibited.
-- Data snooping / Factor Zoo / overfit: no new alpha experiment is opened; first objective is coverage and falsification, not searching for a winning liquidity threshold.
-- Redundancy: existing BROAD_CONTROL does not substitute for a reason-preserving pre-base reject population because it does not establish membership in the liquidity-reject gate.
-- Market-source bias: unchanged/UNKNOWN; control should preserve TWSE/TPEx market metadata if later captured so coverage can be audited by market.
-- Transaction costs: especially important for liquidity rejects; raw returns without executable cost/slippage context must not be interpreted as tradable alpha.
-- Date clustering: independent scan date remains the unit; thousands of same-day rejects are not thousands of independent observations.
-- Coverage/zero-pick: design improves ability to explain zero-pick/funnel behavior but must never loosen the gate automatically.
+### Bias / overfit / transaction-cost audit
+- Selection bias: BROAD_CONTROL is conditioned on archive eligibility and earlier-cohort exclusion; label it accordingly in interpretation.
+- Look-ahead: none in the source sampling rule; date+symbol hash and scan-time fields are prospective. No historical Shadow reconstruction allowed.
+- Data snooping / Factor Zoo: no new factor, threshold, window, or comparator was introduced. Do not search alternate seeds/caps after seeing returns.
+- Market-source bias: possible due to absent TWSE/TPEx stratification; empirical magnitude UNKNOWN.
+- Redundancy: BROAD_CONTROL cannot replace PRE_BASE_LIQUIDITY_CONTROL; conversely a future pre-base control must not replace frozen BROAD_CONTROL.
+- Transaction costs: BROAD_CONTROL already passes a liquidity floor, so it is not an appropriate comparator for estimating execution feasibility of rejected low-liquidity names. Cost/slippage remains a separate requirement.
+- Date clustering: R02 same-date pairing is directionally correct; same-day 12 controls are not 12 independent dates.
+- Coverage/zero-pick: a BROAD_CONTROL row can exist even when SELECTED is zero, but that date cannot form an R02 paired Selection Alpha delta; zero-pick remains a formal funnel observation, not a zero alpha.
+
+### Engineering classification / action
+- This audit is Class A source-level research evidence; checkpoint-only durable documentation. No Worker/research helper/schema/runtime changes.
+- Do **not** alter BROAD_CONTROL sampling now: doing so changes frozen R02 cohort semantics and creates a new experiment/comparator version. Any future alternative market-stratified or universe-weighted control must be preregistered as a separate research experiment/version and remain Shadow-only until governance gates are met.
+- No executable test claimed; source audit only. Formal Core remains LOCKED.
 
 ### R01-R08 / I01-I07 impact
-- R02: exposes a missing falsification population but **does not change** frozen R02 controls or effect estimates.
-- R01/R03-R08: definitions/effects unchanged.
-- I01-I07: unchanged; no new incremental pair or experiment.
-- Formal Core remains LOCKED.
-
-### Engineering / tests / deployment
-- Classification: Class B proposal/evidence only because prospective capture must touch shared scan/runtime/storage.
-- Branch/commit: none for implementation; checkpoint-only main update.
-- Tests: source audit only; no new executable test claimed.
-- Deployment: none. Production Formal Core and runtime unchanged.
-- Rollback: revert this checkpoint commit only; no runtime artifact exists.
+- R02: interpretation tightened — BROAD_CONTROL means deterministic capped pool-stratified eligible-survivor control, not full-universe random control. Frozen effect computation unchanged.
+- R01/R03-R08 unchanged. I01-I07 unchanged. No R09/I08.
 
 ## Exact next continuation point
 1. Re-read governance/worklist/checkpoint/latest main and re-check checkpoint SHA before any write.
 2. If newer trusted formal scan has >=1 plan, immediately restore primary funnel priority: establish plan date/count from trusted production readback, verify execution-recorder target-date coverage and 500-row non-truncation before interpreting signals, then add same-date `HUMAN_MOMENTUM_SHADOW` only on formal SELECTED names.
-3. Otherwise keep B-62 liquidity-control implementation proposal-only unless owner explicitly approves the Class B shared-runtime/storage change. Do not create `PRE_BASE_LIQUIDITY_CONTROL` in production or overload `REJECTED_AFTER_BASE`.
-4. Continue to another genuinely independent Class A research gap that can be advanced without shared runtime wiring. Prioritize a static/source-level falsification audit of whether existing BROAD_CONTROL sampling itself can induce market/pool/date imbalance, using only frozen definitions and source semantics; if empirical evaluation requires unavailable full prospective rows, record UNKNOWN rather than inventing data.
-5. Readiness test remains `SOURCE_WRITTEN_NOT_EXECUTED` until the B-61 trusted-execution contract is met. Do not repeat B-49 transport discovery without new capability.
-6. Do not wire readiness into dashboard/runtime/main without separate Class B review. Provenance exact-path remains `EXACT_SOURCE_NOT_RUN`; signal != fill; `REDUCED_CONFIRMED` requires trusted actual reduced shares.
+3. Keep B-62 liquidity-control implementation proposal-only unless owner explicitly approves the Class B shared-runtime/storage change.
+4. Continue independent Class A falsification without changing frozen definitions: next audit whether BROAD_CONTROL's deterministic hash + 6/6 caps can create repeated-symbol or industry concentration across prospective dates, and define a **diagnostic-only** concentration/readiness specification using existing rows (e.g. report symbol repeat share, market/industry coverage when metadata exists, and effective controls/date) without changing the sampler. If full prospective rows/metadata are unavailable, record empirical values UNKNOWN; do not invent or backfill them.
+5. Do not create a new comparator, seed, cap, threshold, or experiment from this audit. Any alternate sampler is a separately preregistered research version and must not overwrite R02.
+6. Readiness test remains `SOURCE_WRITTEN_NOT_EXECUTED` until the B-61 trusted-execution contract is met. Do not repeat B-49 transport discovery without new capability.
+7. Provenance exact-path remains `EXACT_SOURCE_NOT_RUN`; signal != fill; `REDUCED_CONFIRMED` requires trusted actual reduced shares.
