@@ -1,7 +1,7 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-77.
-Updated: 2026-09-24 00:14 Asia/Taipei.
+Checkpoint sequence: B-78.
+Updated: 2026-09-24 00:40 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Earlier detailed evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
@@ -12,9 +12,9 @@ Updated: 2026-09-24 00:14 Asia/Taipei.
 - GitHub/runtime evidence overrides chat memory.
 
 ## Production/research baseline retained
-- Previous verified production/research baseline through B-72 was V8.8.2. Latest main commit observed at B-77 start was `da74049cf06a88a9d6473a0d8f2a1e575f4e838f` (B-76 checkpoint); repository evidence is not Production readback.
+- Previous verified production/research baseline through B-72 was V8.8.2. Repository evidence is not Production readback.
 - Prior deployment commit retained from checkpoint: `12faf559558efe429c6deb93aa9a193a3557968c`, `Deploy V8.9.1 three-pool dashboard`.
-- No newer trusted live Production plan/readback established in B-77. Live plan status remains UNKNOWN.
+- No newer trusted live Production plan/readback established in B-78. Live plan status remains UNKNOWN.
 - Last trusted prospective Shadow evidence remains 31 rows / one prospective scan date / zero mature D1/D3/D5/D10/D20 outcomes unless newer trusted read proves otherwise.
 - 2026-09-22 scheduled health previously verified selectedCount=0, planCount=0, signalCount=0; preserve as formal zero-pick date, not Execution Alpha failure. `SHADOW_SCAN_STATUS(2026-09-22)=UNKNOWN`.
 
@@ -48,36 +48,37 @@ Updated: 2026-09-24 00:14 Asia/Taipei.
 - Correct retained conclusion: journal-row adjacency itself is not exchange-session adjacency; an exchange calendar exists, but pair-specific PIT provenance is not yet durable in the readiness rows.
 - Existing `exchangeSessionAdjacency=UNKNOWN` remains unchanged; no historical pair is repaired from present-day source inspection.
 
-## B-77 — journal/research duplicate reachability source proof
-### Source findings
-- Direct source retrieval of `scripts/apply_v8_5_0.py` proves `v8_trade_journal_days` is created with `scan_date TEXT PRIMARY KEY`.
-- Its writer `recordTradeJournalDay()` uses `INSERT ... ON CONFLICT(scan_date) DO UPDATE`; a normal same-date rerun updates the existing day row instead of creating a second physical row. Therefore B-75 `DUPLICATE_DATE_ANOMALY` is correctly retained as a **corruption/contract falsification guard**, not an expected rerun state.
-- The same writer deletes and rewrites `v8_trade_journal_plans` for the scan date, while plans themselves use `PRIMARY KEY(scan_date,symbol)`. This reinforces that same-day reruns are replacement semantics, not extra independent evidence.
-- Direct source retrieval of `scripts/apply_v8_7_0.py` proves `trade_research_days` is created with `scan_date TEXT PRIMARY KEY`.
-- The research-day writer shown in `backfillCurrentResearchSnapshots()` uses `INSERT ... ON CONFLICT(scan_date) DO UPDATE` for `trade_research_days`; normal reruns update one row. Thus helper `researchRow=DUPLICATE` is also a **corruption/contract guard** under the proven schema, not a normal rerun state.
-- `trade_research_snapshots` separately uses `PRIMARY KEY(scan_date,symbol)` and UPSERT by that pair, so same-day/same-symbol research snapshot reruns replace rather than multiply observations.
+## B-77 retained — journal/research duplicate reachability source proof
+- `v8_trade_journal_days.scan_date` and `trade_research_days.scan_date` are source-level PRIMARY KEY contracts with UPSERT replacement semantics.
+- `v8_trade_journal_plans` and `trade_research_snapshots` use `(scan_date,symbol)` uniqueness/upsert semantics. Same-day reruns replace rather than create independent evidence under compliant schema/writers.
+- Duplicate helper fixtures remain corruption/contract falsification guards because source contract does not prove live historical D1 integrity.
 
-### Counterevidence / scope limits
-- The proof is repository-source semantics, not a live D1 integrity read. It establishes what compliant schema/writers allow, but does not prove an existing Production database has never been manually corrupted or created from an incompatible historical schema. Therefore duplicate guards remain useful and should not be removed merely because normal writers are unique.
-- Current main `Worker.js` is a base source transformed by sequential `scripts/apply_*` deployment steps; direct raw Worker blob alone is not sufficient evidence for generated V8 runtime semantics. B-77 therefore used the exact patch scripts that define these tables/writers.
-- No evidence found in this cycle that later research patches intentionally relax these uniqueness contracts. Absence of such evidence is not a live DB schema readback.
+## B-78 — authoritative 2026 TPEx/TWSE closure parity evidence
+### New evidence
+- Authoritative TPEx 115-year market open/closure table explicitly lists the 2026 OTC-market closure calendar. It includes 2026-09-25 Mid-Autumn Festival closure and 2026-09-28 Teachers' Day closure, plus the same major 2026 holiday structure observed in TWSE's official holiday schedule.
+- Authoritative TWSE 2026 holiday schedule independently lists 2026-09-25 and 2026-09-28 as closures, with the same 2026 holiday dates relevant to the current prospective research window.
+- Therefore the prior blanket concern that a TWSE calendar might not represent TPEx session closures is **falsified for the authoritative 2026 calendar dates directly compared**. For prospective 2026 dates, exchange-wide closure parity can be supported when both authoritative annual calendars agree.
+- This does **not** establish immutable per-row listing venue, and it does not prove all historical years or special instrument-specific suspensions. A company-specific trading halt is not an exchange-wide session closure and must not be conflated with calendar adjacency.
+
+### PIT / provenance boundary
+- The authoritative annual calendars are current external evidence. B-78 does not rewrite or backfill any existing Shadow/research row and does not retroactively change B-73/B-74 pair readiness.
+- Existing helper still has no durable pair-specific calendar source/vintage fields. Thus `exchangeSessionAdjacency=UNKNOWN` remains correct for already-persisted rows unless the required calendar provenance was durably captured at the relevant research time or a separately governed prospective provenance mechanism is introduced.
+- For new prospective research only, a safe future design may persist `calendarSource`, `calendarYear`, `calendarCapturedAt/verifiedAt`, and market-scope evidence before pair interpretation. Because adding shared persistence/runtime fields could touch common storage paths, classify any such implementation before coding; prefer isolated Class A research storage, otherwise Class B proposal-first.
 
 ### Bias / governance audit
-- Selection bias / zero-pick: unchanged. A zero-pick day remains one independent denominator date; rerunning it cannot create extra sample weight.
-- Date clustering: uniqueness contracts directly prevent same-date reruns from inflating independent-date counts under normal writers.
-- Look-ahead/PIT: no historical row or outcome was backfilled/rewritten by this research cycle.
-- Market-source bias: not implicated in uniqueness proof; calendar TPEx parity remains separately unresolved.
+- Market-source bias: materially reduced for 2026 exchange-wide closures because TWSE and TPEx authoritative annual calendars independently agree on the directly compared closure dates.
+- Look-ahead/PIT: no historical readiness was upgraded from today's web lookup; existing pairs remain UNKNOWN without durable vintage provenance.
+- Selection bias / zero-pick / date clustering: unchanged; one formal scan date remains one evidence unit.
 - Data snooping / Factor Zoo / overfit / redundancy: no factor, threshold, window, sampler, alpha rule, experiment, or classification added.
-- Transaction cost: not applicable to storage uniqueness/readiness.
-- UNKNOWN semantics: live DB integrity remains UNKNOWN absent trusted schema/data readback; source contract != empirical integrity proof.
-- Classification: source review only / Class A research interpretation. No shared storage change, branch change, runtime change, merge, or deployment.
+- UNKNOWN semantics: preserved. Calendar parity evidence does not manufacture missing per-row provenance.
+- Classification: source research / Class A interpretation only. No runtime, storage, Formal Core, deployment, monitoring, or push change.
 
 ## Exact next continuation point
 1. Re-read governance/worklist/checkpoint/latest main and re-check checkpoint SHA before any write.
 2. If a newer trusted formal scan has >=1 plan, immediately restore primary funnel priority: establish plan date/count from trusted Production readback; verify execution-recorder target-date coverage and 500-row non-truncation before interpreting signals; then add same-date `HUMAN_MOMENTUM_SHADOW` only on formal SELECTED names.
-3. Preserve B-77 uniqueness proof: `v8_trade_journal_days.scan_date` and `trade_research_days.scan_date` are source-level PRIMARY KEY contracts with UPSERT replacement semantics. Keep duplicate fixtures as corruption/contract guards; do not treat duplicates as expected rerun behavior.
-4. Continue R03/R06 readiness by verifying whether existing trading-calendar data has **durable source/vintage provenance** sufficient for prospective pair-specific session adjacency. Distinguish runtime calendar availability from persisted research provenance. Do not backfill historical pairs from today's calendar.
-5. Independently verify TPEx/TWSE session-closure parity for the prospective dates under study from authoritative source semantics before allowing a TWSE calendar to certify both markets. If parity cannot be proven, keep venue/session provenance UNKNOWN rather than assuming it.
+3. Preserve B-77 uniqueness proof and B-78 2026 calendar-parity scope: source-level uniqueness is not live DB integrity; 2026 TWSE/TPEx exchange-wide closure parity is supported only for authoritative calendar dates directly compared, not listing venue or individual-security halts.
+4. Continue R03/R06 readiness by locating whether the existing calendar subsystem persists source URL/year/fetchedAt/verifiedAt or only caches a date set. Determine whether prospective pair-specific session provenance can be proven without modifying shared runtime.
+5. Do not retroactively upgrade B-73/B-74 pairs from B-78 web evidence. If durable provenance is absent, design the smallest prospective-only research provenance proposal and classify it A vs B before coding.
 6. If a trusted read-only Production D1/schema path becomes available, check actual table definitions/integrity for duplicate rows without mutating storage; source contracts alone do not prove historical DB integrity.
 7. If exact-source execution becomes available, verify branch head `0277b0fb1e8a82fbd7ca8d77f9883d64d375d3b0` and exact blobs, then execute the test; only exit 0 + fixture PASS may upgrade SOURCE_WRITTEN_NOT_EXECUTED.
 8. Do not wire helper into runtime/dashboard. Keep B-62 proposal-only; do not repeat listing-venue discovery.
