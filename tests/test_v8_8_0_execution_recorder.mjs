@@ -13,7 +13,8 @@ const required=[
   'RESEARCH_EXECUTION_RECORDER_FAIL_OPEN',
   'const executionResearchRecorder = await recordProspectiveExecutionShadow(env,results,scheduledTime,notifications);'
 ];
-if(!source.includes('const VERSION = "8.8.')) throw new Error("V8.8+ runtime version contract missing");
+const version=source.match(/const VERSION = "(\d+)\.(\d+)\.(\d+)[^"]*";/)?.slice(1,4).map(Number);
+if(!version || version[0]!==8 || version[1]<8) throw new Error("V8.8+ runtime version contract missing");
 for(const needle of required) {
   if(!source.includes(needle)) throw new Error("Missing recorder contract: "+needle);
 }
