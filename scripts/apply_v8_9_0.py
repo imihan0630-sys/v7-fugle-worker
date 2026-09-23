@@ -509,20 +509,26 @@ replace_once(
 "three-pool status"
 )
 
-# Keep daily push mandatory; include Shadow selections as context only, never as Formal trade instructions.
-replace_once(
-'''    const dailyPayload = buildDailySelectionPayload(marketDate, stocks, scan.diagnostics);''',
-'''    const dailyPayload = buildDailySelectionPayload(marketDate, stocks, scan.diagnostics);
-    dailyPayload.hybridShadow = hybridStocks.map(stock=>({
+# Keep daily push mandatory; include Hybrid Shadow as context only, never as Formal trade instructions.
+scan_core=text.find("async function runAfterMarketScanCore(")
+daily_call=text.find("buildDailySelectionPayload(",scan_core)
+if daily_call<0:
+    raise SystemExit("daily selection payload call not found")
+daily_line_start=text.rfind("\n",0,daily_call)+1
+daily_line_end=text.find("\n",daily_call)
+daily_line=text[daily_line_start:daily_line_end]
+if "dailyPayload" not in daily_line:
+    raise SystemExit("daily selection payload assignment not found")
+addition='''    dailyPayload.hybridShadow = hybridStocks.map(stock=>({
       rank:stock.rank||stock.sourceRank,symbol:stock.symbol||stock.code,name:stock.name,
       signalLevel:stock.signalLevel,buyLow:stock.buyLow,buyHigh:stock.buyHigh,stop:stock.stop,
       profitCheck:stock.profitCheck,reason:stock.selectedReason,shadowOnly:true
     }));
     dailyPayload.strategyOverlap = scan.strategyOverlap || null;
     dailyPayload.architecture = "3+3+3";
-    dailyPayload.poolCapital = STRATEGY_POOL_CAPITAL;''',
-"daily payload hybrid context"
-)
+    dailyPayload.poolCapital = STRATEGY_POOL_CAPITAL;
+'''
+text=text[:daily_line_end+1]+addition+text[daily_line_end+1:]
 
 # Recalculate capital per Formal pool, not across both pools.
 start=text.find("function recalculatePlanCapital(stocks, totalCapital) {")
