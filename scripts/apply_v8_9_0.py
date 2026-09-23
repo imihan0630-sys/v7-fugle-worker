@@ -360,12 +360,6 @@ text=text[:save_start]+'''    saved = await saveStockConfig(env, stocks, "3+3 Fo
       [HYBRID_POOL_ID]:hybridStocks
     });'''+text[save_end:]
 
-bridge_start=text.find("    bridge = await sendTo3Min(",save_start)
-if bridge_start<0:
-    raise SystemExit("3Min bridge line not found")
-bridge_end=text.find("\n",bridge_start)
-text=text[:bridge_start]+'''    bridge = await sendTo3Min(buildThreeMinPayload(marketDate,STRATEGY_POOL_CAPITAL*2,stocks),env);'''+text[bridge_end:]
-
 # Summary keeps legacy totalCapital field for compatibility but explicitly defines the new semantics.
 replace_once(
 '''    selectedCount: stocks.length,
