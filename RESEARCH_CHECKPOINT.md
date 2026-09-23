@@ -1,7 +1,7 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-65.
-Updated: 2026-09-23 18:14 Asia/Taipei.
+Checkpoint sequence: B-66.
+Updated: 2026-09-23 18:41 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Earlier detailed evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
@@ -50,44 +50,38 @@ Root funnel: `universe -> base/liquidity -> A/B formation -> quality/RR -> SELEC
 - Frozen diagnostic specification: effective controls/date, distinct/repeated symbols, max appearances, market/industry coverage when immutable metadata exists, pool x industry cross-tab, and eligible denominator UNKNOWN unless durably available. No pass/fail concentration threshold.
 - R02 same-date pairing reduces row-count dominance but does not establish representative control composition. No alternate sampler/seed/cap/threshold.
 
-## NEW B-65 — stored Shadow metadata availability audit
+## B-65/B-66 — immutable Shadow metadata audit / venue search frozen
 ### Source-proven findings
-- `trade_research_shadow_candidates` durable schema has explicit `pool` but **no explicit listing-market or industry columns**. The persisted row fields are scan_date, symbol, name, cohort, cohort_rank, selected_flag, exclusion_reason, pool, snapshot_json, created_at, updated_at.
-- `buildShadowCandidateEntry()` computes `pool` at scan time from the feature-row close (`THOUSAND` vs `GENERAL`) and persists it directly. Therefore B-64 pool diagnostics are source-proven structurally available for every successfully persisted Shadow row; empirical completeness remains UNKNOWN until trusted rows are read.
-- `buildResearchSnapshot()` stores immutable scan-time industry as `snapshot.sector.name = item.industry || null`. Shadow construction calls this snapshot builder on the scan-time feature row and then marks `capturedAtSelection=true`, `shadowOnly=true`, `noForwardFill=true`. Therefore B-64 industry diagnostics can use `snapshot.sector.name` prospectively without a current-metadata join; null remains UNKNOWN.
-- The snapshot's `market` object is **market regime/context**, not the stock's listing venue. It contains fields such as regime, marketReturn20, breadth and top sectors. It does not encode whether the individual stock is TWSE or TPEx.
-- Formal scan feature rows do carry `row.market` from TWSE/TPEx ingestion, so listing venue exists transiently during the scan, but the V8.7.2 Shadow serializer does not copy it into either a durable column or the research snapshot. Therefore historical/prospective persisted Shadow listing-market coverage is **NOT SOURCE-PROVEN AVAILABLE** from the current Shadow row schema.
-- Do not infer TWSE/TPEx from symbol, current listings, names, or present-day metadata. For B-64, `marketCoverageByDate` must remain UNKNOWN with current persisted rows unless a trusted existing field is later proven.
+- `trade_research_shadow_candidates` persists scan_date, symbol, name, cohort, cohort_rank, selected_flag, exclusion_reason, pool, snapshot_json, created_at, updated_at; no explicit listing-market or industry column.
+- `pool` is computed from the scan-time feature row and persisted directly. `snapshot.sector.name` stores scan-time industry and is valid for prospective industry diagnostics; null remains UNKNOWN.
+- Snapshot `market` is market regime/context, not individual-stock TWSE/TPEx venue.
+- Formal scan feature rows transiently carry venue (`row.market`) from TWSE/TPEx ingestion, but the Shadow serializer does not persist it.
+- B-66 inspected the current main repository tree and Shadow-adjacent persisted/read paths available in source. No separate immutable per-symbol listing-venue table/path keyed by `scan_date + symbol` was source-proven. Existing market-level research-day context is not a stock venue mapping, and live/current official-data paths cannot be used to backfill old Shadow rows.
+- Therefore **TWSE/TPEx composition for existing persisted Shadow rows is frozen UNKNOWN**. Stop repeated equivalent venue searches unless a genuinely new persisted source/path is introduced or discovered.
 
 ### Supporting / falsifying interpretation
-- Support for industry concentration diagnostic: industry is captured at selection time in the same prospective snapshot used for counterfactual research, so no look-ahead join is required.
-- Falsifier/limitation: source proof of a field's serializer path does not prove all persisted rows have non-null industry; actual finite/non-null coverage is still UNKNOWN without trusted row readback.
-- Support for pool x industry cross-tab: pool is a durable column and industry is inside the same row's snapshot, so the cross-tab is structurally definable offline from supplied Shadow rows.
-- Falsifier/limitation: absence of listing-market metadata means TWSE/TPEx concentration cannot currently be measured from Shadow rows without changing capture/storage. Adding it inside the shared scan/persistence path would be a shared-runtime/storage change and is therefore **Class B proposal-first**, not autonomous B-65 work.
+- Pool + stored industry are sufficient to define an offline BROAD_CONTROL concentration diagnostic without look-ahead.
+- Structural serializer proof does not establish empirical non-null industry coverage; that remains UNKNOWN until trusted rows are supplied/read.
+- Absence of a source-proven immutable venue field prevents a valid TWSE/TPEx concentration diagnostic on current Shadow history. Inferring venue from symbol/current listings/current API metadata is prohibited.
+- Adding venue capture to shared scan/storage remains **Class B proposal-first** and was not implemented.
 
 ### Bias / overfit / data-quality audit
-- Selection bias: unchanged; BROAD_CONTROL remains an eligible-survivor sample after prior-cohort exclusion.
-- Look-ahead: industry may only come from stored `snapshot.sector.name`; no later metadata join. Listing market remains UNKNOWN rather than backfilled.
-- Market-source bias: inability to distinguish TWSE/TPEx in stored Shadow rows is now an explicit coverage limitation, not silently ignored.
-- Data snooping / Factor Zoo / overfit: no new factor, return window, sampler, seed, cap or threshold was introduced.
-- Coverage: structural availability != empirical non-null coverage. Pool/industry empirical rates remain UNKNOWN pending trusted rows.
-- Date clustering: unchanged; independent scan date remains the evidence unit.
-- Transaction costs/redundancy/zero-pick: unchanged; metadata diagnostics do not imply alpha or executability and zero-SELECTED dates still cannot form paired R02 alpha.
+- Selection bias unchanged: BROAD_CONTROL remains eligible-survivor control after prior-cohort exclusion.
+- Look-ahead guarded: only stored `snapshot.sector.name` may supply industry; venue stays UNKNOWN.
+- Market-source bias is explicit rather than silently imputed.
+- No factor/window/sampler/seed/cap/threshold added; no return-conditioned analysis performed.
+- Independent scan date remains the evidence unit; transaction-cost/redundancy/zero-pick semantics unchanged.
 
-### Engineering classification / action
-- Class A checkpoint/source audit only. No Worker, schema, workflow, sampler, runtime, Formal Core, monitoring or push change.
-- No branch diagnostic was written yet because B-64 first required proving which immutable fields actually exist. No executable test claimed.
-- A future offline diagnostic may consume supplied/pinned Shadow rows and use `row.pool` + `row.snapshot.sector.name`; it must emit listing market as UNKNOWN unless the input itself contains a proven immutable venue field.
-
-### R01-R08 / I01-I07 impact
-- R02 only: clarifies which control-composition diagnostics are structurally supportable. Frozen R02 cohort/effect calculation unchanged.
-- R01/R03-R08 unchanged. I01-I07 unchanged. No R09/I08.
+### Engineering / tests / deployment
+- Class A source/checkpoint audit only. No Worker/schema/workflow/runtime/Formal Core/monitor/push change.
+- No branch diagnostic written in B-66 yet. No executable test claimed. Deployment: NONE. Rollback: checkpoint commit only.
+- R02 interpretation only; R01/R03-R08 and I01-I07 unchanged. No R09/I08.
 
 ## Exact next continuation point
 1. Re-read governance/worklist/checkpoint/latest main and re-check checkpoint SHA before any write.
 2. If a newer trusted formal scan has >=1 plan, immediately restore primary funnel priority: establish plan date/count from trusted Production readback; verify execution-recorder target-date coverage and 500-row non-truncation before interpreting signals; then add same-date `HUMAN_MOMENTUM_SHADOW` only on formal SELECTED names.
 3. Keep B-62 liquidity-control implementation proposal-only unless owner explicitly approves the Class B shared-runtime/storage change.
-4. Continue B-64/B-65 as Class A: inspect whether any **already persisted immutable** listing-market field exists in a different existing Shadow-adjacent table/read path keyed by scan_date+symbol. Do not join current metadata and do not change schema/runtime. If none is source-proven, freeze TWSE/TPEx coverage as UNKNOWN and stop searching repeated equivalent paths.
-5. Then define the minimal branch/offline diagnostic over supplied rows only using source-proven `pool` and `snapshot.sector.name`: effective controls/date, repeat symbols, max appearances, industry coverage/largest-industry share and pool x industry cross-tab. No return-conditioned output and no thresholds.
-6. Do not wire the diagnostic to main/runtime until deployment neutrality is proven. If exact execution remains unavailable, keep test status honest. Do not create alternate sampler/seed/cap/threshold/experiment.
+4. Do **not** repeat listing-venue discovery: existing Shadow TWSE/TPEx coverage is frozen UNKNOWN under B-66 unless a genuinely new persisted immutable source appears.
+5. Continue B-64 as Class A by defining the minimal branch/offline diagnostic over supplied rows only using `row.pool` + stored `row.snapshot.sector.name`: effective controls/date, distinct/repeated symbols, max appearances, industry non-null coverage, largest-industry share, and pool x industry cross-tab. Emit venue coverage as UNKNOWN. No returns, no thresholds, no alternate sampler/seed/cap.
+6. Keep diagnostic branch-only; do not wire to main/runtime until deployment neutrality is proven. If exact execution remains unavailable, keep test status honest.
 7. Readiness test remains `SOURCE_WRITTEN_NOT_EXECUTED`; provenance exact-path remains `EXACT_SOURCE_NOT_RUN`. Signal != fill; `REDUCED_CONFIRMED` requires trusted actual reduced shares.
