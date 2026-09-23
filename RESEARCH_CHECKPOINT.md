@@ -1,7 +1,7 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-61.
-Updated: 2026-09-23 16:09 Asia/Taipei.
+Checkpoint sequence: B-62.
+Updated: 2026-09-23 16:39 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Earlier detailed evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
@@ -33,7 +33,7 @@ Root funnel: `universe -> base/liquidity -> A/B formation -> quality/RR -> SELEC
 - `research/b13-shadow-provenance` remains isolated/not deployed. Targeted + observational tests retain `LOCAL_EXACT_SOURCE_PASS`; exact-path fixture remains `LOCAL_RECONSTRUCTED_ASSERTION_PASS / EXACT_SOURCE_NOT_RUN`; CI NOT_RUN.
 - B-49 established no trusted no-change byte-materialization path from connected GitHub reader into local runner; minimal manual isolated CI bridge is Class B proposal-only. Do not repeat transport discovery without new capability/approval.
 
-## B-50 through B-60 retained boundaries
+## B-50 through B-61 retained boundaries
 - Fundamental Persistence remains UNKNOWN/context-only; no arbitrary windows or historical PIT backfill.
 - Price Path uses only frozen R01 `priorHigh20` + future 3-close hold/fail; R05 next-day Overnight/Intraday; R07/R08 same-date medians of `residualSectorRs20` and `volumeTodayVsPrev5`. No new thresholds/windows/composite scores.
 - `readShadowCounterfactualResearch()` reads up to 5000 Shadow rows but returns only last 80 row-level `recentOutcomes`; do not treat 80 as full archive.
@@ -45,59 +45,60 @@ Root funnel: `universe -> base/liquidity -> A/B formation -> quality/RR -> SELEC
 - B-58 split snapshot from later history provenance so later history failure cannot erase valid scan-time fields.
 - B-59 added baseline as a third semantic axis: finite observed metric => AVAILABLE; otherwise missing baseline => PROVENANCE_BLOCKED; then history provenance; only valid provenance with no metric => OUTCOME_NOT_MATURE.
 - B-60 froze finite serialized outcome precedence: finite future metric remains AVAILABLE even if attached provenance is inconsistent, but never fabricates missing scan-time fields. No new INCONSISTENT bucket.
-- Tests remain `SOURCE_WRITTEN_NOT_EXECUTED`; branch not wired/deployed.
+- B-61 froze exact branch/blob identities and trusted-execution contract. Tests remain `SOURCE_WRITTEN_NOT_EXECUTED`; branch not wired/deployed.
 
-## NEW B-61 — deployment-neutral verification contract frozen
-### Purpose
-- Execute the B-60 exact next point without changing workflow/runtime/main: freeze exactly what must be executed and what evidence would count as trusted verification.
-- This is verification governance only; no alpha/effect claim, no new factor/window/threshold/experiment.
+## NEW B-62 — liquidity-reject/control coverage isolation audit
+### Research question
+- Can the largest observed rejection gate (liquidity/base failure) be added as a prospective falsification/control population without touching Formal Core or silently changing existing R02 cohort semantics?
+- This is a coverage/selection-bias audit only. No claim that the liquidity gate is good/bad, no new factor/window/threshold, and no historical Shadow fabrication.
 
-### Exact branch identity
-- Branch: `research/b57-price-path-readiness`.
-- Branch head: `135412c435cc9e0e8f060e871e0b904a13ade161`.
-- Helper path/blob: `research/price_path_readiness_v8_8_2.js` = `d88e3981ce0b2ae6bb79faae274e7f8df3827076` (5338 bytes).
-- Fixture path/blob: `research/price_path_readiness_v8_8_2.test.js` = `949dfe5fb9bb2f5500bf7c1ca975eb88280e9019` (6139 bytes).
-- These identities are the verification inputs; any changed blob means this contract must be re-reviewed before execution evidence is accepted.
+### Supporting source evidence
+- Current `selectTomorrowCandidates()` constructs `featureRows`, then calls the formal `scoreCandidate(f, sector)` once per feature row. It appends a row to `basePoolDiagnostics` **only when `result.basePassed` is true**; rejected rows are otherwise reduced to aggregate `diagnostics.exclusions[result.reason]`, with only A/B-formation misses optionally retained as a 12-row `nearMisses` debug sample.
+- `diagnostics.conditionDistribution` is built from `basePoolDiagnostics`, therefore its denominator is already conditioned on passing base/liquidity. It cannot falsify the liquidity gate itself.
+- Existing R02 explicitly freezes BROAD_CONTROL, QUALIFIED_NOT_SELECTED, NEAR_MISS and REJECTED_AFTER_BASE as separate controls. Re-labeling pre-base liquidity rejects as `REJECTED_AFTER_BASE` would violate the frozen cohort meaning and contaminate existing Selection Alpha comparisons.
+- Existing Shadow integrity only verifies archive existence, SELECTED coverage and BROAD_CONTROL presence; it does not prove coverage of pre-base rejects.
 
-### Assertions that trusted execution must satisfy
-1. Field readiness is independent of D5 maturity: mature/immature rows with valid snapshot fields both count R07/R08 fields AVAILABLE.
-2. Missing scan-time fields remain FIELD_UNKNOWN_OR_MISSING; they are never BAD/0.
-3. Later history parse failure cannot erase valid scan-time snapshot fields; it may block future outcomes only.
-4. Malformed snapshot is PROVENANCE_BLOCKED, not ordinary missing field.
-5. Missing baseline does not erase other valid scan-time fields; baseline-dependent future outcomes are PROVENANCE_BLOCKED rather than OUTCOME_NOT_MATURE.
-6. Deliberately inconsistent finite D5 + missing baseline/history failure keeps D5 AVAILABLE while baseline remains FIELD_UNKNOWN_OR_MISSING.
-7. Aggregation unit remains exactly `INDEPENDENT_SCAN_DATE_X_COHORT`.
+### Isolation result / engineering classification
+- A truly prospective per-symbol liquidity-reject control requires capturing `f` plus `scoreCandidate` rejection reason during the formal scan and durably writing those rows for later outcomes.
+- The necessary source data exists at scan time, so no look-ahead/backfill is needed. However, the capture point is inside the shared formal scan path (`selectTomorrowCandidates`) and durable persistence would extend shared runtime/storage behavior.
+- Therefore **direct implementation is Class B**, not autonomous Class A, despite the intended rows being research-only. No shared scan/storage/runtime code was changed in this run.
+- A branch-only/offline Class A helper could define normalization/diagnostics over supplied hypothetical rows, but without a trusted prospective capture source it would not close the real coverage gap; building such a helper now would create ceremony without evidence and is deferred.
 
-### Protected invariants
-- No modification to Formal Core, A/B, rank/score/threshold, Top6/3+3, capital, BUY/ADD/REDUCE/SELL/STOP, monitoring or push.
-- No modification to `researchShadowOutcomeForRow()`, legacy coverage/byCohort/selectionAlpha/diagnostics/recentOutcomes semantics.
-- No storage/schema/runtime/dashboard wiring and no workflow change.
-- No historical Shadow backfill and no use of future outcomes to fill scan-time fields.
-- UNKNOWN/data-quality states stay non-directional; no readiness count becomes alpha evidence.
+### Safest prospective design if later approved as Class B
+- Add a new research-only population name distinct from all frozen R02 cohorts, e.g. `PRE_BASE_LIQUIDITY_CONTROL`; do **not** overload `REJECTED_AFTER_BASE`.
+- Capture only rows actually evaluated on that scan date, with immutable scan-date snapshot fields and exact formal rejection reason already emitted by `scoreCandidate`; never reconstruct older dates.
+- Preserve reason granularity rather than collapsing every base failure into one BAD label; missing source fields remain UNKNOWN.
+- Keep it excluded from formal ranking, Top6/3+3, capital, monitoring and push; exclude it from existing R02 Selection Alpha until a separately preregistered experiment/version explicitly defines a comparison.
+- Evidence unit remains independent scan date. Report coverage counts and reason distribution before any return comparison; outcome maturity must remain separate from field coverage.
+- Add integrity checks comparing captured pre-base control counts/reasons against same-date formal exclusion aggregates, with mismatches marked RESEARCH_DATA_GAP rather than altering trading.
 
-### What counts as trusted execution
-- Runner must execute the exact Git objects above without model/manual reconstruction of file contents.
-- Before execution, evidence must establish checked-out/ref-resolved commit `135412c...` and exact helper/test blob SHAs `d88e3981...` / `949dfe5f...`.
-- The executed command must be limited to the branch fixture (for example Node running the exact test file) and must produce exit status 0 plus the fixture's PASS output.
-- Execution evidence must be durably attributable to those exact blobs (trusted checkout/artifact/log). A copied/retyped/reconstructed local harness is insufficient.
-- Trusted execution must not deploy, mutate production storage, require production secrets, or modify shared workflow/runtime. If achieving execution requires workflow/pipeline modification, it is Class B proposal-first and this run must remain NOT_EXECUTED.
+### Falsification / bias / redundancy audit
+- Selection bias: this gap is material because the current research archive conditions on surviving the largest gate; present Shadow evidence cannot answer whether rejected low-liquidity names would have out/underperformed.
+- Look-ahead: safe design is prospective only; historical reconstruction is prohibited.
+- Data snooping / Factor Zoo / overfit: no new alpha experiment is opened; first objective is coverage and falsification, not searching for a winning liquidity threshold.
+- Redundancy: existing BROAD_CONTROL does not substitute for a reason-preserving pre-base reject population because it does not establish membership in the liquidity-reject gate.
+- Market-source bias: unchanged/UNKNOWN; control should preserve TWSE/TPEx market metadata if later captured so coverage can be audited by market.
+- Transaction costs: especially important for liquidity rejects; raw returns without executable cost/slippage context must not be interpreted as tradable alpha.
+- Date clustering: independent scan date remains the unit; thousands of same-day rejects are not thousands of independent observations.
+- Coverage/zero-pick: design improves ability to explain zero-pick/funnel behavior but must never loosen the gate automatically.
 
-### Current status / falsification
-- Current status remains `SOURCE_WRITTEN_NOT_EXECUTED`; this plan itself is not a test result.
-- No new transport capability appeared in this run, so B-49 transport discovery was not repeated.
-- A future assertion failure falsifies the helper semantics and blocks any wiring proposal. A blob mismatch invalidates the frozen verification contract until re-reviewed.
-
-### Bias / UNKNOWN audit
-- Selection/availability bias: verification explicitly protects maturity-independent field denominators.
-- Look-ahead: future outcomes cannot populate scan-time fields.
-- Data snooping/Factor Zoo/overfit: no performance search, no R09/I08, no threshold/window change.
-- Market-source bias, transaction costs, date clustering, redundancy and directional alpha remain unchanged/UNKNOWN.
+### R01-R08 / I01-I07 impact
+- R02: exposes a missing falsification population but **does not change** frozen R02 controls or effect estimates.
+- R01/R03-R08: definitions/effects unchanged.
+- I01-I07: unchanged; no new incremental pair or experiment.
 - Formal Core remains LOCKED.
+
+### Engineering / tests / deployment
+- Classification: Class B proposal/evidence only because prospective capture must touch shared scan/runtime/storage.
+- Branch/commit: none for implementation; checkpoint-only main update.
+- Tests: source audit only; no new executable test claimed.
+- Deployment: none. Production Formal Core and runtime unchanged.
+- Rollback: revert this checkpoint commit only; no runtime artifact exists.
 
 ## Exact next continuation point
 1. Re-read governance/worklist/checkpoint/latest main and re-check checkpoint SHA before any write.
 2. If newer trusted formal scan has >=1 plan, immediately restore primary funnel priority: establish plan date/count from trusted production readback, verify execution-recorder target-date coverage and 500-row non-truncation before interpreting signals, then add same-date `HUMAN_MOMENTUM_SHADOW` only on formal SELECTED names.
-3. Otherwise do not extend B-57/B-60 helper vocabulary or fixtures absent a new live counterexample. Search for a genuinely independent Class A research gap from the frozen R01-R08/I01-I07 worklist/registry that can improve falsification or coverage without runtime wiring; prioritize liquidity-reject/control coverage design because current Shadow omits the largest rejection gate.
-4. Any liquidity-control design must remain prospective/research-only, must not fabricate historical Shadow, must preserve base/liquidity rejection reasons and independent scan-date clustering, and must first prove it can be isolated from formal candidate/ranking/runtime behavior. If isolation requires shared scan/storage changes, classify Class B and stop at proposal/evidence.
+3. Otherwise keep B-62 liquidity-control implementation proposal-only unless owner explicitly approves the Class B shared-runtime/storage change. Do not create `PRE_BASE_LIQUIDITY_CONTROL` in production or overload `REJECTED_AFTER_BASE`.
+4. Continue to another genuinely independent Class A research gap that can be advanced without shared runtime wiring. Prioritize a static/source-level falsification audit of whether existing BROAD_CONTROL sampling itself can induce market/pool/date imbalance, using only frozen definitions and source semantics; if empirical evaluation requires unavailable full prospective rows, record UNKNOWN rather than inventing data.
 5. Readiness test remains `SOURCE_WRITTEN_NOT_EXECUTED` until the B-61 trusted-execution contract is met. Do not repeat B-49 transport discovery without new capability.
 6. Do not wire readiness into dashboard/runtime/main without separate Class B review. Provenance exact-path remains `EXACT_SOURCE_NOT_RUN`; signal != fill; `REDUCED_CONFIRMED` requires trusted actual reduced shares.
