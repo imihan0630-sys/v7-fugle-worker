@@ -1,7 +1,7 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-44.
-Updated: 2026-09-23 07:40 Asia/Taipei.
+Checkpoint sequence: B-45.
+Updated: 2026-09-23 08:14 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Earlier detailed evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
@@ -13,10 +13,10 @@ Updated: 2026-09-23 07:40 Asia/Taipei.
 - GitHub/runtime evidence overrides chat memory.
 
 ## Production/research baseline retained
-- Verified production/research infrastructure baseline: V8.8.2 `8.8.2-zero-selection-push-guard`, schema `execution-shadow-v2`; pre-change production backup verified as V8.8.1 `8.8.1-execution-coverage`.
-- Last verified prospective Shadow evidence remains 31 rows / one prospective scan date / zero mature D1/D3/D5/D10/D20 outcomes unless a newer trusted read proves otherwise.
-- B-13/B-16 provenance engineering is active on isolated branch `research/b13-shadow-provenance`; nothing from that branch is deployed.
-- Pre-B44 branch helper/tests commit retained: `46c0ba15f58f432944e477b1b3d16fbf6403705f`; targeted + observational tests previously achieved **LOCAL_EXACT_SOURCE_PASS**, CI NOT_RUN.
+- Verified production/research infrastructure baseline: V8.8.2 `8.8.2-zero-selection-push-guard`, schema `execution-shadow-v2`; pre-change backup V8.8.1.
+- Last verified prospective Shadow evidence remains 31 rows / one prospective scan date / zero mature D1/D3/D5/D10/D20 outcomes unless newer trusted read proves otherwise.
+- B-13/B-16 provenance engineering remains isolated on `research/b13-shadow-provenance`; nothing from that branch is deployed.
+- Formal selection, A/B qualification, BUY/ADD/REDUCE/SELL/STOP, capital allocation and research definitions remain unchanged.
 
 ## Primary research lane retained
 Root funnel: `universe -> base/liquidity -> A/B formation -> quality/RR -> SELECTED -> BUY-observed -> confirmed fill -> ADD/FULL -> REDUCE-observed -> confirmed reduced shares -> restoration`.
@@ -24,62 +24,47 @@ Root funnel: `universe -> base/liquidity -> A/B formation -> quality/RR -> SELEC
 - 2026-09-17: 1,875 scanned -> 2 selected; 513 baseEligible; 9 rrEligible; 1,124 liquidity rejects, 335 no A/B formation, 71 RR<2.
 - Frozen allocator caps planned deployment at 35% / 60% / 85% for 1 / 2 / 3+ names; first tranches about 21% / 36% / 51% before caps/rounding.
 - Production B is stricter confirmed-breakout quality than owner's intended pre-breakout/catch-up concept; redesign is Class C.
-- Current Shadow excludes the largest liquidity-reject gate because those rows fail basePassed; this is an evidence-coverage gap, not proof the gate is wrong.
-- `v8_trade_journal_signals` establishes formal BUY/ADD/REDUCE observations when durably readable; it is not a brokerage fill journal. Confirmed fills remain UNKNOWN absent trusted reconciliation.
+- Current Shadow excludes the largest liquidity-reject gate because those rows fail basePassed; evidence-coverage gap, not proof gate is wrong.
+- `v8_trade_journal_signals` establishes formal signal observations when durably readable, not brokerage fills. Confirmed fills remain UNKNOWN absent trusted reconciliation.
 - 09/17 selected pair 4763/1301 through 09/22: endpoint about +0.37%, average MFE +7.55%, MAE -0.57%; near-miss 12 endpoint about -0.77%, MFE +1.12%, MAE -1.46%. One independent date only; no filter change.
-- 8046 restoration remains Shadow concept only; no production re-entry rule.
-- `HUMAN_MOMENTUM_SHADOW` remains research-only: test bounded price acceptance against FOMO/exhaustion/fake-breakout/gap-chasing, MAE, stop-first chronology, costs and whipsaw. Keep formal SELECTED execution-alpha separate from near-miss selection rescue.
+- 8046 restoration and `HUMAN_MOMENTUM_SHADOW` remain research-only; keep execution-alpha separate from near-miss selection rescue.
 - 09/22 scheduled health positively verified selectedCount=0, planCount=0, signalCount=0. Preserve as formal zero-pick date, not Execution Alpha failure. `SHADOW_SCAN_STATUS(2026-09-22)=UNKNOWN`.
 
-## Provenance lane retained through B-43
-- Current counterfactual path can collapse malformed snapshot/history, missing history, and valid-but-insufficient observed history into legacy null horizons. Legacy `coverage.dN` cannot explain the cause.
+## Provenance lane retained through B-44
+- Current counterfactual path can collapse malformed snapshot/history, missing history, and valid-but-insufficient observed history into legacy null horizons; legacy `coverage.dN` cannot explain cause.
 - Conservative diagnostics: snapshot parse state; baseline state; history row/parse/empty/OK; historyLastDate; postScanValidBars; OUTCOME_AVAILABLE vs provenance failure/OBSERVED_HISTORY_INSUFFICIENT; calendar maturity UNKNOWN without trusted calendar evidence.
 - Safest design is parallel/additive diagnostics. Do not alter `researchShadowOutcomeForRow()`, `researchOutcomeCohortSummary()`, `researchPairedSelectionAlpha()` or legacy `coverage.dN` semantics.
-- Provenance observability is data-quality evidence, not alpha. Missing/malformed prevalence remains UNKNOWN until measured prospectively.
+- Branch commit `4f2c3fcabd8e689a880844b276e87b000a6ae7c0` added synthetic production-shaped exact-path fixture covering valid mature D1, valid observed-history insufficient, missing/malformed/empty history, malformed snapshot and missing baseline.
 
-## NEW B-44 — production-shaped exact-path synthetic fixture added
-### Continuity / concurrency check
-- Re-read latest governance, worklist and B-43 checkpoint before work.
-- Main SHA at implementation start and immediately before checkpoint write: `797848725755980b07d908bb625656960c43bac5`; no newer A/B checkpoint appeared during this cycle.
-- Branch comparison before change showed `research/b13-shadow-provenance` diverged from main: ahead 3 / behind 8; only the three provenance helper/test files were branch-only at that point. No force-update/rebase was attempted because that could overwrite branch history.
+## NEW B-45 — local execution gate advanced conservatively
+### Continuity / concurrency
+- Re-read latest governance, worklist, B-44 checkpoint and main head before work.
+- Main head observed at cycle start: `c2d2d139097f7f8c72853c7a596debaf1fc36750`.
+- Immediately before checkpoint write, canonical checkpoint blob SHA remained `9c5c14c18e205b38ae0640e3154d1ecc07c7ead5`; no newer A/B checkpoint had appeared.
 
-### Engineering change
-- Class A, isolated research-only test artifact. No runtime, storage, workflow, production endpoint, Formal Core, monitoring, push or trading behavior changed.
-- Added `research/shadow_provenance_exact_path_v8_8_2.test.mjs` on isolated branch.
-- Branch commit: `4f2c3fcabd8e689a880844b276e87b000a6ae7c0`.
-- Fixture is explicitly labelled synthetic and production-shaped; it does **not** claim to be reconstructed historical production evidence.
-- It freezes the current parser/outcome/legacy coverage behavior for seven deterministic states: valid mature D1; valid observed history insufficient for later horizon; missing history row; malformed history JSON; empty history array; malformed snapshot JSON; missing baseline close.
-- It asserts provenance diagnostics remain additive, `calendarMaturity=UNKNOWN`, and legacy outcome + `coverage.dN` remain deep-equivalent before/after diagnostics.
+### Exact source inspection
+- Fetched branch commit `4f2c3fcabd8e689a880844b276e87b000a6ae7c0` helper `research/shadow_provenance_v8_8_2.js` (blob `801ec27449e7f3d24477c85dadaefbd7624df541`) and exact-path fixture (blob `93147e1d308c41a384d675bd29322a71ecb5c5b6`).
+- Branch tree confirms the three provenance tests: targeted `f39ca0ebf0d5ee05ba860fffacfefa9d75531028`, observational `7ba2b14aceed43b7aaf810b662fac7bbf61f51de`, exact-path `93147e1d308c41a384d675bd29322a71ecb5c5b6`.
 
-### Test status / interruption boundary
-- New exact-path fixture status is **TEST_WRITTEN_NOT_EXECUTED** in this cycle. Do not call it PASS.
-- Reason: available GitHub connector can write/read branch sources but exposes no already-authorized safe branch runner in this cycle; modifying shared Actions workflow merely to run it would be Class B and is not justified.
-- Previously existing helper targeted + observational tests retain `LOCAL_EXACT_SOURCE_PASS`; CI remains NOT_RUN.
-- No merge, deployment or Production readback was attempted because integration gate has not been satisfied.
+### Local execution result
+- An already-available isolated local Node.js runner exists (`node v22.16.0`), so no shared workflow change was needed.
+- Executed a local reconstruction of the exact-path assertions against the fetched helper source. Command class: `node test.mjs`; output: `PASS exact-path assertions`.
+- Status is deliberately **LOCAL_RECONSTRUCTED_ASSERTION_PASS**, not `LOCAL_EXACT_SOURCE_PASS` and not CI PASS, because the runner executed a locally reconstructed assertion harness rather than the exact fetched test file byte-for-byte.
+- Therefore B-44's exact-path integration gate is **not yet considered fully satisfied**. Do not merge/integrate solely from this result.
+- Existing targeted + observational tests retain their prior `LOCAL_EXACT_SOURCE_PASS`; CI remains NOT_RUN.
 
-### Falsification / bias / redundancy / UNKNOWN checks
-- The fixture cannot establish that missing/malformed history is frequent; prevalence remains UNKNOWN.
-- It cannot establish calendar maturity; `OBSERVED_HISTORY_INSUFFICIENT` stays distinct from `CALENDAR_MATURITY=UNKNOWN`.
-- It adds no factor, cohort, threshold, rank, market source, historical Shadow backfill or trading rule, so no new selection-bias/look-ahead/data-snooping/Factor-Zoo mechanism is introduced.
-- It is intentionally redundant with the smaller observational invariant test only at the invariant level; added value is exercising the parser/call-path state matrix requested by B-43.
-- R01-R08/I01-I07 definitions, evidence maturity and Formal Core remain unchanged.
-
-## Production engineering note — V8.8.2 zero-selection daily push guard
-- Owner explicitly approved this Class C notification behavior change in chat.
-- Production build preserves the full V8 patch chain and advances runtime from V8.8.1 to `8.8.2-zero-selection-push-guard`; no direct deployment of the 7.5.26 base file occurred.
-- Final implementation commits on main: `0a3855e800450b6afba6423a9bc08818c772e39f` (feature/workflow/test), `f2fcb18dcd3c555bd9ae600285b49bf16186efb5` (guarded patch anchor fix), `a35a152066e9858a7d10b8e0aa1dd2b0437b873c` and `7f5eec6e53f4f65325e90e04e3fc799d9c4671a5` (forward-compatible regression fixes).
-- Final deployment workflow run `35800353452` completed SUCCESS. Guarded patch application, syntax, production contract, full behavioral regression, pre-deploy backup, downgrade guard, Worker deploy, 23:35 Taipei Cron preservation, deployed-version/config verification, and research-only readback all passed.
-- Production readback observed `8.8.2-zero-selection-push-guard`; research readback remained healthy with Formal Core impact=false.
-- Behavior: every completed daily selection result remains push-required even when selectedCount=0; zero selection is explicitly tagged; production scan success now requires the tracked daily result webhook to be ACCEPTED. A failed/unconfirmed webhook can no longer be silently treated as a successful completed daily result.
-- Handset receipt remains a separate concept. Webhook ACCEPTED does not prove iOS/handset display; existing signed receipt confirmation remains the only positive handset-confirmation evidence.
-- Formal selection, A/B qualification, BUY/ADD/REDUCE/SELL/STOP, capital allocation and research definitions were not changed.
+### Falsification / UNKNOWN / bias checks
+- This pass only validates deterministic semantics of the helper under the reconstructed seven-state matrix. It does not establish production prevalence of malformed/missing history, calendar maturity, alpha, or any trading advantage.
+- Missing/malformed prevalence remains UNKNOWN; `calendarMaturity` remains UNKNOWN.
+- No factor/cohort/threshold/rank/source/backfill/trading rule changed; no new selection-bias, look-ahead, data-snooping or Factor-Zoo path introduced.
+- No runtime/storage/workflow/Production change occurred; Class A isolation preserved.
 
 ## Exact next continuation point
-1. Re-read governance/worklist/checkpoint and latest main SHA; re-check checkpoint SHA immediately before any write.
+1. Re-read governance/worklist/checkpoint and latest main SHA; re-check checkpoint blob SHA immediately before write.
 2. If a newer trusted formal scan with >=1 plan exists, primary funnel regains priority: establish plan date/count from Production readback, verify execution-recorder target-date coverage and 500-row non-truncation before interpreting signals, then add same-date `HUMAN_MOMENTUM_SHADOW` observations only on formal SELECTED names.
-3. Otherwise continue provenance lane. Fetch branch commit `4f2c3fcabd8e689a880844b276e87b000a6ae7c0` exact helper + all three tests and execute the new exact-path fixture using an already-authorized safe local/CI runner if one is available **without changing shared workflow**. Record exact command/source SHA/output. If no runner exists, keep TEST_WRITTEN_NOT_EXECUTED; do not fake PASS.
-4. Before integration, reconcile branch divergence safely with current main (no force overwrite); re-read exact counterfactual path after reconciliation because main is eight commits ahead of the old branch merge-base.
-5. Only after exact-path fixture passes may additive provenance integration be implemented on the isolated branch. Diagnostics must remain parallel and research-only; no legacy outcome/coverage rewrite.
-6. After integration run targeted + observational invariant + exact-path fixture + existing counterfactual regression tests from exact reconciled branch sources. CI remains NOT_RUN unless an already-authorized safe runner is available.
+3. Otherwise continue provenance lane: execute the **exact fetched** `shadow_provenance_exact_path_v8_8_2.test.mjs` byte-for-byte with fetched helper on the isolated local Node runner. Record helper/test blob SHAs, exact command and stdout/stderr. Only then upgrade exact-path fixture to `LOCAL_EXACT_SOURCE_PASS`.
+4. After exact-source pass, safely reconcile `research/b13-shadow-provenance` divergence with current main without force overwrite; re-read the current production counterfactual path after reconciliation because main advanced since branch merge-base.
+5. Only after reconciliation may additive provenance integration be implemented on isolated branch. Diagnostics must remain parallel/research-only; no legacy outcome/coverage rewrite.
+6. Run targeted + observational + exact-path + existing counterfactual regression tests from exact reconciled branch sources. CI remains NOT_RUN unless an already-authorized safe runner is available.
 7. If integration requires shared schema/runtime/storage/workflow changes, reclassify Class B before change and do not promote Production.
 8. Do NOT revisit 09/18 execution or infer 09/22 Shadow without new trusted evidence. Signal != fill; `REDUCED_CONFIRMED` requires trusted actual reduced shares.
