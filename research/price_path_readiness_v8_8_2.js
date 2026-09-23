@@ -12,9 +12,13 @@ function readinessState(present, provenanceState) {
   return present ? "AVAILABLE" : "FIELD_UNKNOWN_OR_MISSING";
 }
 
-function outcomeState(metric, provenanceState) {
+function outcomeState(metric, provenanceState, baselinePresent = true) {
+  // Preserve the existing B-13 ordering: a finite observed outcome is authoritative;
+  // otherwise a missing baseline is a provenance/data-quality block, not maturity.
+  if (readinessFinite(metric)) return "AVAILABLE";
+  if (!baselinePresent) return "PROVENANCE_BLOCKED";
   if (provenanceState && provenanceState !== "OK" && provenanceState !== "OUTCOME_AVAILABLE" && provenanceState !== "OBSERVED_HISTORY_INSUFFICIENT") return "PROVENANCE_BLOCKED";
-  return readinessFinite(metric) ? "AVAILABLE" : "OUTCOME_NOT_MATURE";
+  return "OUTCOME_NOT_MATURE";
 }
 
 function provenanceStates(provenance) {
@@ -50,12 +54,12 @@ function pricePathReadinessForOutcome(row, provenance) {
       r08VolumeTodayVsPrev5: readinessState(relativeVolumePresent, provenanceState.snapshot)
     },
     outcomes: {
-      r01ThreeDayBreakout: outcomeState(["HELD_3D", "FAILED_CLOSE_WITHIN_3D"].includes(row?.breakout?.status) ? 1 : null, provenanceState.outcome),
-      r05NextDayOvernight: outcomeState(row?.firstDay?.overnightPct, provenanceState.outcome),
-      r05NextDayIntraday: outcomeState(row?.firstDay?.intradayPct, provenanceState.outcome),
-      d5: outcomeState(row?.horizons?.d5?.returnPct, provenanceState.outcome),
-      d10: outcomeState(row?.horizons?.d10?.returnPct, provenanceState.outcome),
-      d20: outcomeState(row?.horizons?.d20?.returnPct, provenanceState.outcome)
+      r01ThreeDayBreakout: outcomeState(["HELD_3D", "FAILED_CLOSE_WITHIN_3D"].includes(row?.breakout?.status) ? 1 : null, provenanceState.outcome, baselinePresent),
+      r05NextDayOvernight: outcomeState(row?.firstDay?.overnightPct, provenanceState.outcome, baselinePresent),
+      r05NextDayIntraday: outcomeState(row?.firstDay?.intradayPct, provenanceState.outcome, baselinePresent),
+      d5: outcomeState(row?.horizons?.d5?.returnPct, provenanceState.outcome, baselinePresent),
+      d10: outcomeState(row?.horizons?.d10?.returnPct, provenanceState.outcome, baselinePresent),
+      d20: outcomeState(row?.horizons?.d20?.returnPct, provenanceState.outcome, baselinePresent)
     }
   };
 }
@@ -85,7 +89,7 @@ function buildPricePathReadinessMatrix(outcomes, provenanceByKey = {}) {
     decisionImpact: false,
     unit: "INDEPENDENT_SCAN_DATE_X_COHORT",
     groups: Object.values(groups).sort((a, b) => `${a.scanDate}|${a.cohort}`.localeCompare(`${b.scanDate}|${b.cohort}`)),
-    rule: "Scan-time field presence uses snapshot provenance only and is counted independently of future outcome maturity/history provenance. Missing or provenance-blocked evidence is never coerced to BAD/0."
+    rule: "Scan-time field presence uses snapshot provenance only and is counted independently of future outcome maturity/history provenance. Missing baseline blocks return/outcome interpretation but is never coerced to BAD/0."
   };
 }
 
