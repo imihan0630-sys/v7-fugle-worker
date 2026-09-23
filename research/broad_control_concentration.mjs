@@ -16,27 +16,37 @@ function readIndustry(row) {
 export function diagnoseBroadControlConcentration(rows = []) {
   const controls = rows.filter(r => r?.cohort === "BROAD_CONTROL" && asText(r?.scan_date) && asText(r?.symbol));
   const byDate = new Map();
-  const appearances = new Map();
   for (const row of controls) {
     const d = asText(row.scan_date);
     if (!byDate.has(d)) byDate.set(d, []);
     byDate.get(d).push(row);
-    const sym = asText(row.symbol);
-    appearances.set(sym, (appearances.get(sym) || 0) + 1);
   }
 
   const dates = [...byDate.keys()].sort();
+  const crossDateAppearances = new Map();
   const perDate = dates.map(scanDate => {
-    const rs = byDate.get(scanDate);
-    const symbols = rs.map(r => asText(r.symbol));
-    const distinct = new Set(symbols);
-    const industries = rs.map(readIndustry);
+    const observed = byDate.get(scanDate);
+    const groups = new Map();
+    for (const row of observed) {
+      const sym = asText(row.symbol);
+      if (!groups.has(sym)) groups.set(sym, []);
+      groups.get(sym).push(row);
+    }
+    const duplicateSymbols = [...groups.entries()].filter(([, rs]) => rs.length > 1).map(([symbol, rs]) => ({symbol, rows: rs.length}));
+    const duplicateSet = new Set(duplicateSymbols.map(x => x.symbol));
+    // Duplicate scan_date+symbol keys are data-quality anomalies. Exclude the ambiguous
+    // key from concentration denominators instead of silently double-counting it or
+    // arbitrarily choosing one duplicate row.
+    const analyzable = observed.filter(r => !duplicateSet.has(asText(r.symbol)));
+    for (const sym of groups.keys()) crossDateAppearances.set(sym, (crossDateAppearances.get(sym) || 0) + 1);
+
+    const industries = analyzable.map(readIndustry);
     const knownIndustries = industries.filter(Boolean);
     const industryCounts = new Map();
     for (const x of knownIndustries) industryCounts.set(x, (industryCounts.get(x) || 0) + 1);
     const largestIndustryCount = industryCounts.size ? Math.max(...industryCounts.values()) : null;
     const cross = {};
-    for (const r of rs) {
+    for (const r of analyzable) {
       const pool = asText(r.pool) || "UNKNOWN";
       const industry = readIndustry(r) || "UNKNOWN";
       cross[pool] ||= {};
@@ -44,27 +54,31 @@ export function diagnoseBroadControlConcentration(rows = []) {
     }
     return {
       scanDate,
-      effectiveControls: rs.length,
-      distinctSymbols: distinct.size,
-      repeatedRowsWithinDate: rs.length - distinct.size,
+      observedRows: observed.length,
+      uniqueSymbolKeys: groups.size,
+      duplicateRowsBeyondFirst: observed.length - groups.size,
+      duplicateSymbols,
+      dataQualityWarning: duplicateSymbols.length ? "DUPLICATE_SCAN_DATE_SYMBOL" : null,
+      effectiveControls: analyzable.length,
       industryKnown: knownIndustries.length,
-      industryUnknown: rs.length - knownIndustries.length,
-      industryNonNullCoverage: rs.length ? knownIndustries.length / rs.length : null,
+      industryUnknown: analyzable.length - knownIndustries.length,
+      industryNonNullCoverage: analyzable.length ? knownIndustries.length / analyzable.length : null,
       largestIndustryShareOfKnown: knownIndustries.length && largestIndustryCount != null ? largestIndustryCount / knownIndustries.length : null,
       poolXIndustry: cross,
       venueCoverage: "UNKNOWN"
     };
   });
 
-  const repeatSymbols = [...appearances.entries()].filter(([, n]) => n > 1).sort((a,b) => b[1]-a[1] || a[0].localeCompare(b[0]));
+  const repeatSymbols = [...crossDateAppearances.entries()].filter(([, n]) => n > 1).sort((a,b) => b[1]-a[1] || a[0].localeCompare(b[0]));
   return {
     diagnostic: "BROAD_CONTROL_CONCENTRATION_READINESS",
     unit: "INDEPENDENT_SCAN_DATE",
-    totalRows: controls.length,
+    totalObservedRows: controls.length,
     independentScanDates: dates.length,
-    distinctSymbolsAcrossDates: appearances.size,
+    distinctSymbolsAcrossDates: crossDateAppearances.size,
     repeatedSymbolsAcrossDates: repeatSymbols.map(([symbol, appearances]) => ({symbol, appearances})),
-    maxAppearances: appearances.size ? Math.max(...appearances.values()) : 0,
+    maxAppearances: crossDateAppearances.size ? Math.max(...crossDateAppearances.values()) : 0,
+    datesWithDuplicateKeys: perDate.filter(x => x.duplicateSymbols.length).map(x => x.scanDate),
     eligibleDenominator: "UNKNOWN",
     venueCoverage: "UNKNOWN",
     perDate
