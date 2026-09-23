@@ -159,3 +159,36 @@ jobs:
         env:
           V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
         run: node tests/production_preflight.mjs
+
+      - name: Latest after-market read-only diagnostic
+        if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
+        env:
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+        run: |
+          node - <<'NODE'
+          const origin="https://fugle-test.imihan0630.workers.dev";
+          const headers={"x-admin-token":process.env.V7_ADMIN_TOKEN,"accept":"application/json"};
+          const get=async path=>{
+            const r=await fetch(origin+path,{headers,signal:AbortSignal.timeout(30000)});
+            const j=await r.json().catch(()=>({}));
+            if(!r.ok) throw new Error(path+" HTTP "+r.status);
+            return j;
+          };
+          const [scan,outbox,receipts,cron]=await Promise.all([
+            get("/api/scan/status"),get("/api/push-outbox?limit=50"),
+            get("/api/push-receipts?limit=50"),get("/api/cron/status")
+          ]);
+          const signalId=scan?.dailyReport?.signalId||null;
+          const out=(outbox?.recent||[]).find(x=>String(x.signal_id||"")===String(signalId||""));
+          console.log(JSON.stringify({
+            scanDate:scan?.scanDate,dryRun:scan?.dryRun,selectedCount:scan?.selectedCount,
+            hybridSelectedCount:scan?.hybridSelectedCount,
+            config:scan?.config,
+            planBridge:{provider:scan?.planBridge?.provider,sent:scan?.planBridge?.sent,verified:scan?.planBridge?.verified,simulated:scan?.planBridge?.simulated},
+            dailyReport:scan?.dailyReport,
+            dailyOutbox:out?{signal_id:out.signal_id,delivery_state:out.delivery_state,http_status:out.http_status,created_at:out.created_at,updated_at:out.updated_at}:null,
+            outbox:{configured:outbox?.configured,unresolved:outbox?.unresolved,staleUnresolved:outbox?.staleUnresolved},
+            receipts:{total:receipts?.total,dailySelection:receipts?.dailySelection,intraday:receipts?.intraday},
+            cronRecent:(cron?.recent||[]).slice(0,8).map(x=>({job_type:x.job_type,status:x.status,scheduled_at:x.scheduled_at,finished_at:x.finished_at,error:x.error}))
+          },null,2));
+          NODE
