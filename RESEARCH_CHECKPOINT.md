@@ -1,7 +1,7 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-78.
-Updated: 2026-09-24 00:40 Asia/Taipei.
+Checkpoint sequence: B-79.
+Updated: 2026-09-24 01:11 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Earlier detailed evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
@@ -14,7 +14,7 @@ Updated: 2026-09-24 00:40 Asia/Taipei.
 ## Production/research baseline retained
 - Previous verified production/research baseline through B-72 was V8.8.2. Repository evidence is not Production readback.
 - Prior deployment commit retained from checkpoint: `12faf559558efe429c6deb93aa9a193a3557968c`, `Deploy V8.9.1 three-pool dashboard`.
-- No newer trusted live Production plan/readback established in B-78. Live plan status remains UNKNOWN.
+- No newer trusted live Production plan/readback established in B-79. Live plan status remains UNKNOWN.
 - Last trusted prospective Shadow evidence remains 31 rows / one prospective scan date / zero mature D1/D3/D5/D10/D20 outcomes unless newer trusted read proves otherwise.
 - 2026-09-22 scheduled health previously verified selectedCount=0, planCount=0, signalCount=0; preserve as formal zero-pick date, not Execution Alpha failure. `SHADOW_SCAN_STATUS(2026-09-22)=UNKNOWN`.
 
@@ -53,33 +53,42 @@ Updated: 2026-09-24 00:40 Asia/Taipei.
 - `v8_trade_journal_plans` and `trade_research_snapshots` use `(scan_date,symbol)` uniqueness/upsert semantics. Same-day reruns replace rather than create independent evidence under compliant schema/writers.
 - Duplicate helper fixtures remain corruption/contract falsification guards because source contract does not prove live historical D1 integrity.
 
-## B-78 — authoritative 2026 TPEx/TWSE closure parity evidence
-### New evidence
-- Authoritative TPEx 115-year market open/closure table explicitly lists the 2026 OTC-market closure calendar. It includes 2026-09-25 Mid-Autumn Festival closure and 2026-09-28 Teachers' Day closure, plus the same major 2026 holiday structure observed in TWSE's official holiday schedule.
-- Authoritative TWSE 2026 holiday schedule independently lists 2026-09-25 and 2026-09-28 as closures, with the same 2026 holiday dates relevant to the current prospective research window.
-- Therefore the prior blanket concern that a TWSE calendar might not represent TPEx session closures is **falsified for the authoritative 2026 calendar dates directly compared**. For prospective 2026 dates, exchange-wide closure parity can be supported when both authoritative annual calendars agree.
-- This does **not** establish immutable per-row listing venue, and it does not prove all historical years or special instrument-specific suspensions. A company-specific trading halt is not an exchange-wide session closure and must not be conflated with calendar adjacency.
+## B-78 retained — authoritative 2026 TPEx/TWSE closure parity evidence
+- Authoritative TPEx and TWSE 2026 calendars independently agree on directly compared exchange-wide closure dates including 2026-09-25 and 2026-09-28.
+- Scope remains narrow: this supports 2026 exchange-wide closure parity only for authoritative dates directly compared; it does not establish listing venue, historical-year parity, or individual-security halt semantics.
+- No historical Shadow/research row was rewritten or upgraded from current web evidence.
 
-### PIT / provenance boundary
-- The authoritative annual calendars are current external evidence. B-78 does not rewrite or backfill any existing Shadow/research row and does not retroactively change B-73/B-74 pair readiness.
-- Existing helper still has no durable pair-specific calendar source/vintage fields. Thus `exchangeSessionAdjacency=UNKNOWN` remains correct for already-persisted rows unless the required calendar provenance was durably captured at the relevant research time or a separately governed prospective provenance mechanism is introduced.
-- For new prospective research only, a safe future design may persist `calendarSource`, `calendarYear`, `calendarCapturedAt/verifiedAt`, and market-scope evidence before pair interpretation. Because adding shared persistence/runtime fields could touch common storage paths, classify any such implementation before coding; prefer isolated Class A research storage, otherwise Class B proposal-first.
+## B-79 — calendar persistence provenance source audit
+### New source proof
+- Current main `Worker.js` defines a hard-coded `MARKET_CALENDARS` entry for 2026 as an in-memory `Set` of closure dates. The hard-coded object carries no source URL, fetchedAt, verifiedAt, source publication date, or market-scope metadata.
+- `loadTradingCalendar(env, year)` first returns immediately when the year already exists in `MARKET_CALENDARS`; therefore 2026 normally uses the embedded date set without a runtime fetch and without producing a contemporaneous provenance record.
+- For non-embedded years, the loader checks KV key `V7_TRADING_CALENDAR:<year>`. The accepted cached payload contract is only `{year, holidays}`. The write path likewise persists `JSON.stringify({year, holidays})` with TTL; it does **not** persist source URL, fetchedAt, verifiedAt, source vintage/publication timestamp, TWSE/TPEx parity evidence, or a content hash.
+- If cache is absent, the loader fetches TWSE `holidaySchedule` and validates `queryYear` plus non-empty `data`, then derives the holiday date set. The fetch URL exists only in source code, not in the persisted calendar payload.
+- `isTradingDate(dateString)` consumes only year/weekend/date-membership semantics. It cannot expose which calendar source/vintage established a specific pair's adjacency.
 
-### Bias / governance audit
-- Market-source bias: materially reduced for 2026 exchange-wide closures because TWSE and TPEx authoritative annual calendars independently agree on the directly compared closure dates.
-- Look-ahead/PIT: no historical readiness was upgraded from today's web lookup; existing pairs remain UNKNOWN without durable vintage provenance.
+### Conclusion / counterevidence
+- The hypothesis that existing calendar persistence might already be sufficient to prove prospective pair-specific PIT session provenance is **falsified** by current source: the durable payload lacks the required provenance fields.
+- B-78's external 2026 TWSE/TPEx parity evidence remains useful source research, but it cannot be joined retroactively to an already-persisted R03/R06 pair as if that evidence had been captured at the decision timestamp.
+- `exchangeSessionAdjacency=UNKNOWN` therefore remains correct for existing B-73/B-74 readiness rows. No pair is upgraded in B-79.
+- A minimal future prospective provenance record would need at least calendar year, exact source identity/URL, capturedAt or verifiedAt, source vintage/publication evidence when available, market scope/parity status, and preferably a deterministic holiday-set hash. This is a design requirement only, not implemented.
+
+### Classification / bias audit
+- Any modification to existing `loadTradingCalendar`, `MARKET_CALENDARS`, shared KV payload, or shared runtime date resolution is **Class B proposal-first** because those paths are shared runtime/date infrastructure.
+- A separately isolated research-only provenance artifact that is not consumed by formal scans could potentially be Class A, but its write/read path must be demonstrably disconnected from formal date resolution before coding.
+- Look-ahead/PIT: no historical pair upgraded and no present-day source used to fabricate historical provenance.
+- Market-source bias: B-78 parity remains bounded to directly compared 2026 authoritative closures; B-79 does not infer listing venue or security-specific halts.
 - Selection bias / zero-pick / date clustering: unchanged; one formal scan date remains one evidence unit.
-- Data snooping / Factor Zoo / overfit / redundancy: no factor, threshold, window, sampler, alpha rule, experiment, or classification added.
-- UNKNOWN semantics: preserved. Calendar parity evidence does not manufacture missing per-row provenance.
-- Classification: source research / Class A interpretation only. No runtime, storage, Formal Core, deployment, monitoring, or push change.
+- Data snooping / Factor Zoo / overfit / redundancy / transaction cost: no factor, threshold, window, sampler, alpha rule, experiment, or trading interpretation added.
+- UNKNOWN semantics preserved.
 
 ## Exact next continuation point
 1. Re-read governance/worklist/checkpoint/latest main and re-check checkpoint SHA before any write.
 2. If a newer trusted formal scan has >=1 plan, immediately restore primary funnel priority: establish plan date/count from trusted Production readback; verify execution-recorder target-date coverage and 500-row non-truncation before interpreting signals; then add same-date `HUMAN_MOMENTUM_SHADOW` only on formal SELECTED names.
-3. Preserve B-77 uniqueness proof and B-78 2026 calendar-parity scope: source-level uniqueness is not live DB integrity; 2026 TWSE/TPEx exchange-wide closure parity is supported only for authoritative calendar dates directly compared, not listing venue or individual-security halts.
-4. Continue R03/R06 readiness by locating whether the existing calendar subsystem persists source URL/year/fetchedAt/verifiedAt or only caches a date set. Determine whether prospective pair-specific session provenance can be proven without modifying shared runtime.
-5. Do not retroactively upgrade B-73/B-74 pairs from B-78 web evidence. If durable provenance is absent, design the smallest prospective-only research provenance proposal and classify it A vs B before coding.
-6. If a trusted read-only Production D1/schema path becomes available, check actual table definitions/integrity for duplicate rows without mutating storage; source contracts alone do not prove historical DB integrity.
-7. If exact-source execution becomes available, verify branch head `0277b0fb1e8a82fbd7ca8d77f9883d64d375d3b0` and exact blobs, then execute the test; only exit 0 + fixture PASS may upgrade SOURCE_WRITTEN_NOT_EXECUTED.
-8. Do not wire helper into runtime/dashboard. Keep B-62 proposal-only; do not repeat listing-venue discovery.
-9. Signal != fill; `REDUCED_CONFIRMED` requires trusted actual reduced shares.
+3. Preserve B-77 uniqueness proof, B-78 parity scope, and B-79 persistence proof: existing calendar cache is `{year,holidays}` only and does not establish pair-specific PIT provenance.
+4. Design, but do not implement in shared runtime, the smallest prospective-only R03/R06 calendar-provenance contract. First test whether it can live as an isolated research-only artifact with no dependency from formal date resolution; if not demonstrably isolated, classify Class B and leave proposal-only.
+5. Explicitly define falsification semantics for the proposed provenance artifact: source fetch failure, year mismatch, TWSE/TPEx parity unverified, stale/absent capture timestamp, malformed holiday set, or hash mismatch must yield UNKNOWN/DATA_QUALITY_BLOCKED rather than inferred adjacency.
+6. Do not retroactively upgrade B-73/B-74 pairs from B-78/B-79 source evidence and do not backfill historical Shadow.
+7. If a trusted read-only Production D1/schema path becomes available, check actual table definitions/integrity for duplicate rows without mutating storage; source contracts alone do not prove historical DB integrity.
+8. If exact-source execution becomes available, verify branch head `0277b0fb1e8a82fbd7ca8d77f9883d64d375d3b0` and exact blobs, then execute the test; only exit 0 + fixture PASS may upgrade SOURCE_WRITTEN_NOT_EXECUTED.
+9. Do not wire helper into runtime/dashboard. Keep B-62 proposal-only; do not repeat listing-venue discovery.
+10. Signal != fill; `REDUCED_CONFIRMED` requires trusted actual reduced shares.
