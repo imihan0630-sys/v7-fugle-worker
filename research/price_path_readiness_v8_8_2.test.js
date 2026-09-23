@@ -16,8 +16,21 @@ const missingField = {
   snapshot: { price: { close: 80 }, volume: {} }, breakout: { reference: null, status: 'NO_REFERENCE' },
   firstDay: { overnightPct: null, intradayPct: null }, horizons: { d5: null, d10: null, d20: null }
 };
+const validSnapshotBrokenHistory = {
+  scanDate: '2026-09-25', symbol: '4444', cohort: 'BROAD_CONTROL', baselineClose: 120,
+  snapshot: { price: { close: 120, breakoutReferencePriceResearch: 118, residualSectorRs20: 2.4 }, volume: { volumeTodayVsPrev5: 0.7 } },
+  breakout: { reference: 118, status: 'PENDING' }, firstDay: { overnightPct: null, intradayPct: null }, horizons: { d5: null, d10: null, d20: null }
+};
+const malformedSnapshot = {
+  scanDate: '2026-09-26', symbol: '5555', cohort: 'REJECTED_AFTER_BASE', baselineClose: null,
+  snapshot: {}, breakout: { reference: null, status: 'NO_REFERENCE' }, firstDay: {}, horizons: {}
+};
 
-const result = buildPricePathReadinessMatrix([immature, mature, missingField]);
+const provenance = {
+  '2026-09-25|4444': { snapshotState: 'SNAPSHOT_OK', historyState: 'HISTORY_PARSE_ERROR' },
+  '2026-09-26|5555': { snapshotState: 'SNAPSHOT_PARSE_ERROR', historyState: 'HISTORY_ROW_MISSING' }
+};
+const result = buildPricePathReadinessMatrix([immature, mature, missingField, validSnapshotBrokenHistory, malformedSnapshot], provenance);
 const g = result.groups.find(x => x.scanDate === '2026-09-23' && x.cohort === 'NEAR_MISS');
 assert.equal(g.rows, 2);
 assert.equal(g.fields.r07ResidualSectorRs20.AVAILABLE, 2, 'field coverage must not depend on D5 maturity');
@@ -28,5 +41,15 @@ const m = result.groups.find(x => x.scanDate === '2026-09-24' && x.cohort === 'S
 assert.equal(m.fields.r07ResidualSectorRs20.FIELD_UNKNOWN_OR_MISSING, 1);
 assert.equal(m.fields.r08VolumeTodayVsPrev5.FIELD_UNKNOWN_OR_MISSING, 1);
 assert.equal(m.outcomes.d5.OUTCOME_NOT_MATURE, 1);
+
+const split = result.groups.find(x => x.scanDate === '2026-09-25' && x.cohort === 'BROAD_CONTROL');
+assert.equal(split.fields.r07ResidualSectorRs20.AVAILABLE, 1, 'valid scan-time field must survive later history failure');
+assert.equal(split.fields.r08VolumeTodayVsPrev5.AVAILABLE, 1, 'valid scan-time relative volume must survive later history failure');
+assert.equal(split.outcomes.d5.PROVENANCE_BLOCKED, 1, 'history failure may block future outcome only');
+
+const badSnapshot = result.groups.find(x => x.scanDate === '2026-09-26' && x.cohort === 'REJECTED_AFTER_BASE');
+assert.equal(badSnapshot.fields.r05BaselineClose.PROVENANCE_BLOCKED, 1, 'malformed snapshot must not become ordinary missing field');
+assert.equal(badSnapshot.fields.r07ResidualSectorRs20.PROVENANCE_BLOCKED, 1);
+assert.equal(badSnapshot.outcomes.d5.PROVENANCE_BLOCKED, 1);
 assert.equal(result.unit, 'INDEPENDENT_SCAN_DATE_X_COHORT');
 console.log('price_path_readiness fixtures PASS');
