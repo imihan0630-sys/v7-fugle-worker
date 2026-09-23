@@ -1,7 +1,7 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-46.
-Updated: 2026-09-23 08:48 Asia/Taipei.
+Checkpoint sequence: B-47.
+Updated: 2026-09-23 09:14 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Earlier detailed evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
@@ -28,42 +28,38 @@ Root funnel: `universe -> base/liquidity -> A/B formation -> quality/RR -> SELEC
 - 09/17 selected pair 4763/1301 through 09/22: endpoint about +0.37%, average MFE +7.55%, MAE -0.57%; near-miss 12 endpoint about -0.77%, MFE +1.12%, MAE -1.46%. One independent date only; no filter change.
 - 8046 restoration and `HUMAN_MOMENTUM_SHADOW` remain research-only; keep execution-alpha separate from near-miss selection rescue.
 
-## Provenance lane retained through B-45
+## Provenance lane retained through B-46
 - Current counterfactual path can collapse malformed snapshot/history, missing history, and valid-but-insufficient observed history into legacy null horizons; legacy `coverage.dN` cannot explain cause.
 - Conservative diagnostics: snapshot parse state; baseline state; history row/parse/empty/OK; historyLastDate; postScanValidBars; OUTCOME_AVAILABLE vs provenance failure/OBSERVED_HISTORY_INSUFFICIENT; calendar maturity UNKNOWN without trusted calendar evidence.
 - Safest design is parallel/additive diagnostics. Do not alter `researchShadowOutcomeForRow()`, `researchOutcomeCohortSummary()`, `researchPairedSelectionAlpha()` or legacy `coverage.dN` semantics.
 - Isolated branch commit `4f2c3fcabd8e689a880844b276e87b000a6ae7c0` contains helper blob `801ec27449e7f3d24477c85dadaefbd7624df541` and exact-path fixture blob `93147e1d308c41a384d675bd29322a71ecb5c5b6` plus prior targeted/observational tests.
-- Targeted + observational tests retain `LOCAL_EXACT_SOURCE_PASS` from prior cycles. Exact-path fixture retains only `LOCAL_RECONSTRUCTED_ASSERTION_PASS`; CI NOT_RUN.
+- Targeted + observational tests retain `LOCAL_EXACT_SOURCE_PASS`. Exact-path fixture remains `LOCAL_RECONSTRUCTED_ASSERTION_PASS / EXACT_SOURCE_NOT_RUN`; CI NOT_RUN.
 
-## NEW B-46 — exact-source execution attempted; transport boundary identified
+## NEW B-47 — Git blob API path verified, but direct runner materialization still unavailable
 ### Continuity / concurrency
-- Re-read latest governance, worklist and canonical B-45 checkpoint before work.
-- Main head read at cycle start was `c15af476ac764539d1bedc37aa27ee1106db4de9`, the B-45 checkpoint commit.
-- Immediately before this write, canonical checkpoint blob SHA remained `cb5c0e116f704da0f691bec1fc454ee687a0b46f`; no newer A/B checkpoint appeared.
+- Re-read governance, worklist, canonical B-46 checkpoint and latest main commit before work.
+- Main head at cycle start: `8a325aa5c817366d58f1fe3d1de0ae8de4865d1b` (B-46 checkpoint commit).
+- Immediately before this write, canonical checkpoint blob SHA remained `1f382f77a51c8cec65990eb05848c3a622aa266d`; no newer A/B checkpoint appeared.
 
-### Exact-source verification
-- Re-fetched the exact isolated-branch helper and exact-path fixture through the connected GitHub source reader.
-- Verified helper blob SHA remains `801ec27449e7f3d24477c85dadaefbd7624df541` and fixture blob SHA remains `93147e1d308c41a384d675bd29322a71ecb5c5b6`.
-- Attempted to obtain those exact bytes directly in the isolated local runner by cloning the repository at the pinned commit and then execute `node shadow_provenance_exact_path_v8_8_2.test.mjs`.
-- Local runner network/DNS cannot resolve `github.com`; clone failed before any source was executed: `Could not resolve host: github.com`.
-- This is a source-transport limitation between the connected GitHub reader and isolated local runner, not a test failure.
+### Exact-source evidence
+- Re-fetched isolated-branch helper through GitHub Contents with UTF-8 and base64 forms; both identify blob SHA `801ec27449e7f3d24477c85dadaefbd7624df541`.
+- Read pinned commit tree directly; it confirms exact-path fixture path `research/shadow_provenance_exact_path_v8_8_2.test.mjs`, size 5141, blob SHA `93147e1d308c41a384d675bd29322a71ecb5c5b6`, alongside helper blob `801ec27449e7f3d24477c85dadaefbd7624df541`.
+- Read the exact fixture through GitHub Git Blobs API by SHA; source is available and deterministic through the connected GitHub reader.
+- However, the connector response is text/content exposed to the model, not a mounted byte file in the isolated Node runner. Re-typing/model-copying that content into a local file would violate B-46's gate against recreating the fixture by hand and calling it exact.
+- Therefore this cycle deliberately did **not** upgrade the test status and did not claim byte-for-byte runner execution.
 
-### Test status / safety decision
-- Exact-path status remains **LOCAL_RECONSTRUCTED_ASSERTION_PASS / EXACT_SOURCE_NOT_RUN**. Do not upgrade to `LOCAL_EXACT_SOURCE_PASS` and do not call it CI PASS.
-- Did not modify shared GitHub Actions merely to bridge the transport gap; deployment/workflow changes would be Class B and are unnecessary at this stage.
-- Did not merge/rebase/integrate provenance code, did not deploy, and did not touch Production.
-
-### Falsification / UNKNOWN / bias checks
-- No evidence about prevalence of malformed/missing history was produced; prevalence remains UNKNOWN.
-- `calendarMaturity` remains UNKNOWN; observed-history insufficiency is not calendar maturity.
-- No factor/cohort/threshold/rank/source/backfill/trading rule changed. No new selection-bias, look-ahead, data-snooping or Factor-Zoo path introduced.
-- R01-R08/I01-I07 evidence maturity unchanged. Formal Core invariants unchanged by construction because no runtime code changed.
+### Safety / falsification
+- The transport problem is narrower now: GitHub source access is healthy; only trusted byte materialization from connector to runner is missing.
+- No evidence about production prevalence of provenance failure states was generated; prevalence remains UNKNOWN.
+- No calendar maturity inference was added. No historical Shadow was fabricated.
+- No formal factor, rank, threshold, cohort, market source, scan, signal, capital, trade or push behavior changed.
+- No workflow/schema/runtime/storage change was made; Formal Core remains LOCKED.
 
 ## Exact next continuation point
 1. Re-read governance/worklist/checkpoint and latest main SHA; re-check checkpoint blob SHA immediately before write.
 2. If a newer trusted formal scan with >=1 plan exists, primary funnel regains priority: establish plan date/count from Production readback, verify execution-recorder target-date coverage and 500-row non-truncation before interpreting signals, then add same-date `HUMAN_MOMENTUM_SHADOW` observations only on formal SELECTED names.
-3. Otherwise continue provenance lane without changing shared workflow: find an already-authorized path that can materialize the two pinned GitHub blobs into the local runner byte-for-byte (or an existing GitHub runner that can execute the branch source) and verify hashes before execution. Only an execution of the exact fetched fixture/helper may upgrade exact-path to `LOCAL_EXACT_SOURCE_PASS`.
-4. If no such safe transport exists, retain `EXACT_SOURCE_NOT_RUN`; do not weaken the gate or recreate the fixture by hand and call it exact.
+3. Otherwise continue provenance lane. Do not repeat generic GitHub source discovery: exact helper/fixture blobs and paths are now proven. Seek an already-authorized connector/file-reference or runner mechanism that transfers GitHub blob bytes directly into execution storage without model/manual reconstruction. Verify Git blob SHA before execution.
+4. Only exact byte materialization + execution of helper `801ec274...` with fixture `93147e1d...` may upgrade exact-path to `LOCAL_EXACT_SOURCE_PASS`. Otherwise retain `EXACT_SOURCE_NOT_RUN`.
 5. After exact-source pass, safely reconcile `research/b13-shadow-provenance` divergence with current main without force overwrite; re-read current production counterfactual path after reconciliation.
 6. Only after reconciliation may additive provenance integration be implemented on isolated branch. Diagnostics remain parallel/research-only; no legacy outcome/coverage rewrite.
 7. Run targeted + observational + exact-path + existing counterfactual regression tests from exact reconciled branch sources. CI remains NOT_RUN unless an already-authorized safe runner is available.
