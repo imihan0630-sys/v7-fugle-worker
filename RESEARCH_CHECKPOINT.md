@@ -1,7 +1,7 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-56.
-Updated: 2026-09-23 13:44 Asia/Taipei.
+Checkpoint sequence: B-57.
+Updated: 2026-09-23 14:12 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Earlier detailed evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
@@ -47,57 +47,67 @@ Root funnel: `universe -> base/liquidity -> A/B formation -> quality/RR -> SELEC
 - Readiness is counted by independent scan date and cohort. Zero-pick dates remain valid formal observations; row count never substitutes for independent dates.
 - Future OHLC only populates outcomes after observation; no historical snapshot backfill with future information.
 
-## B-53/B-55 retained — Serializer, route, regime and deployment boundary
+## B-53/B-56 retained — Serializer, route, regime and aggregate boundary
 - `readShadowCounterfactualResearch()` reads up to 5000 archived Shadow rows, computes outcomes from post-scan history, aggregate coverage/cohort diagnostics, and returns only `recentOutcomes: outcomes.slice(-80)` at row level.
 - Row serializer exposes scanDate/cohort/baseline/horizons/firstDay/breakout/full snapshot. R05 Overnight/Intraday is emitted. R07/R08 residualSectorRs20 and volumeTodayVsPrev5 can pass through snapshot when finite.
 - Authenticated external route is source-proven as GET `/api/research/dashboard?days=...`; no secret was requested or bypassed and no authorized live dashboard response has been read in this automation context.
 - Regime remains a separate `trade_research_days.market_json` path; inspected implementation has no per-row counterfactual regime join. Any shared-runtime join is Class B proposal-first.
+- Existing aggregate path does not expose per-scanDate/per-cohort field-presence counts. `intradayVsOvernight.n`, residual-RS and Quiet/Attention diagnostics are maturity/effect-conditioned and must not be reused as readiness denominators.
 - Exact `.github/workflows/v7-cloudflare.yml` means `research/**` changes on main enter production deployment; new research code must remain isolated unless deployment neutrality is proven. Shared dashboard/runtime wiring or workflow changes are Class B proposal-first.
-- Readiness states remain `AVAILABLE / OUTCOME_NOT_MATURE / FIELD_UNKNOWN_OR_MISSING / PROVENANCE_BLOCKED`, counted by scanDate x cohort; runtime finite-value coverage remains UNKNOWN without trusted runtime read.
+- Runtime finite-value coverage remains UNKNOWN without trusted runtime read.
 
-## NEW B-56 — Existing aggregate readiness does not expose per-date/per-cohort field-presence
+## NEW B-57 — Branch-only readiness matrix implemented, not wired
 ### Continuity / concurrency
-- Re-read governance/worklist/canonical B-55 checkpoint before audit. Checkpoint blob immediately before write was `e9ca8f473932e063b3e1dcef98aead277901707d`; re-fetched immediately before write and no newer A/B checkpoint appeared.
-- No newer trusted Production readback with >=1 formal plan was established in this cycle; primary execution funnel is not reinterpreted.
+- Re-read governance/worklist/canonical B-56 checkpoint and latest main commit before work. Latest main before branch creation was `25838e48d32b137757bcdc1bf71c968d57e14f46` (`research: B-56 audit aggregate field-presence readiness gap`).
+- Re-fetched canonical checkpoint immediately before write; blob remained `0b4624a0234f24f069028eb669dbf56036962b93`, so no newer A/B checkpoint needed merging.
+- No newer trusted Production readback with >=1 formal plan was established; primary execution funnel is not reinterpreted.
 
-### Positive source audit
-- Exact `research/counterfactual_v8_7_4.js` shows the aggregate returned by `readShadowCounterfactualResearch()` consists of: `archivedRows`, `outcomeRows`, `historySymbols`, horizon-only `coverage.d1/d3/d5/d10/d20`, `byCohort` horizon outcome statistics, `selectionAlpha`, `diagnostics`, and `recentOutcomes` last-80 rows.
-- `researchOutcomeCohortSummary()` groups by cohort but only summarizes horizon return/MFE/MAE metrics. It does not count field presence for breakout reference/status, firstDay overnight/intraday, `residualSectorRs20`, or `volumeTodayVsPrev5`, and it does not retain per-scanDate field-presence counts.
-- `buildShadowResearchDiagnostics()` aggregates breakout counts, first-day overnight/intraday only when both are finite, residual-RS D5 median study, and Quiet/Attention D5 study. These are effect/diagnostic aggregates, not a scanDate x cohort readiness matrix and they cannot distinguish field missingness from outcome immaturity/provenance failure.
-- Therefore the currently inspected exact aggregate path does **not** positively provide the required per-scanDate/per-cohort field-presence counts for R01/R05/R07/R08. This conclusion is based on exact serializer/aggregate source, not merely search absence.
+### Engineering classification / frozen invariants
+- Classification before code: **Class A, branch-only research helper**. It only transforms already-produced research outcome/snapshot objects into observational readiness counts and has no storage, schema, network, formal selection, monitoring or push path.
+- Frozen invariants: legacy `coverage.dN`, `byCohort`, `selectionAlpha`, `diagnostics`, `recentOutcomes`, Formal Core, A/B qualification, Top6/3+3, capital, BUY/ADD/REDUCE/SELL/STOP, monitoring and push remain untouched.
+- Any later wiring into shared dashboard/runtime/main is a separate **Class B** proposal-first decision; this branch is not deployed.
 
-### Research consequence
-- Existing aggregate statistics must not be reused as a readiness denominator: e.g. `intradayVsOvernight.n` requires both first-day fields finite and therefore conflates field presence with D1 outcome availability; residual/quiet studies additionally require mature D5 and cross-sectional eligibility.
-- Using those counts as evidence-readiness would create survivorship/availability conditioning and could undercount fields on immature dates, biasing prospective coverage toward already-mature observations.
-- Correct readiness remains observational: for each independent `scanDate x cohort`, separately count field present/unknown and outcome maturity/provenance state before any alpha estimate.
-- Runtime finite-value coverage remains UNKNOWN because no authorized live dashboard response was obtained. No directional alpha, threshold search, or return ranking was performed.
+### Isolated implementation
+- Created branch `research/b57-price-path-readiness` from main `25838e48d32b137757bcdc1bf71c968d57e14f46`.
+- Added `research/price_path_readiness_v8_8_2.js`; branch implementation commit `bfc062f798e0ad759c133126f65bedda4e6b9c23`.
+- Added fixture `research/price_path_readiness_v8_8_2.test.js`; branch head commit `4fe06dcfa9da2f6cb343596efaf24c1f28cff57b`.
+- Matrix unit is fixed to `INDEPENDENT_SCAN_DATE_X_COHORT`.
+- Scan-time `fieldState` is separated from future `outcomeState`:
+  - R01 field: breakout reference availability; outcome: fixed 3-close held/failed state.
+  - R05 field: scan-time baseline close; outcomes: next-day overnight and intraday.
+  - R07 field: `residualSectorRs20`; D5/D10/D20 maturity remains separate.
+  - R08 fields: `residualSectorRs20` and `volumeTodayVsPrev5`; future horizons remain separate.
+- States are constrained to `AVAILABLE / FIELD_UNKNOWN_OR_MISSING / PROVENANCE_BLOCKED` for fields and `AVAILABLE / OUTCOME_NOT_MATURE / PROVENANCE_BLOCKED` for outcomes. No BAD/0 coercion exists.
+
+### Fixture intent / test status
+- Fixture deliberately places one immature and one mature row on the same scanDate/cohort and asserts both scan-time residual-RS and relative-volume fields count AVAILABLE while D5 splits AVAILABLE vs OUTCOME_NOT_MATURE. This directly guards against D5-conditioned readiness/survivorship bias.
+- Separate row asserts missing R07/R08 fields remain FIELD_UNKNOWN_OR_MISSING while D5 is OUTCOME_NOT_MATURE.
+- **Test source written, NOT_EXECUTED** in this cycle. Do not claim PASS from assertions existing in source. No CI/workflow change was made.
 
 ### Bias / falsification / redundancy checks
-- Selection/availability bias: explicitly prevented by refusing to use D1/D5-conditioned diagnostics as field-presence denominators.
-- Look-ahead: no backfill or future data inserted into scan-time fields.
-- Data snooping / Factor Zoo: no R09/I08, cutoff, window or composite introduced.
-- Market-source bias: TWSE/TPEx field missingness remains UNKNOWN until actual archived rows can be read through an authorized path.
-- Redundancy: R07/R08 shared inputs remain recognized; no independent-evidence double count.
-- Date clustering: readiness unit remains independent scanDate x cohort, not stock-row count.
-- Transaction costs: no alpha claim; unchanged.
+- Selection/availability bias: field coverage is computed before and independently from outcome maturity.
+- Look-ahead: helper consumes scan-time snapshot fields as supplied; it does not reconstruct or backfill historical scan-time evidence.
+- Data snooping / Factor Zoo: no new experiment, threshold, window, cutoff, score or ranking; R01-R08 definitions remain frozen.
+- Market-source bias: actual TWSE/TPEx finite-value coverage remains UNKNOWN until authorized runtime rows are observed.
+- Redundancy: R07/R08 shared residual-RS is explicitly represented as the same underlying field, not counted as two independent discoveries.
+- Date clustering: output grouping is scanDate x cohort; stock rows are counts within a date/cohort, not independent dates.
+- Transaction costs: no alpha/effect claim is made; unchanged.
+- Counterexample retained: a row can have all scan-time fields AVAILABLE while every future outcome remains OUTCOME_NOT_MATURE; therefore readiness must not be inferred from outcome coverage.
 
 ### R01-R08 / I01-I07 impact
-- R01/R05/R07/R08: only readiness-observability gap clarified; definitions and status unchanged.
+- R01/R05/R07/R08: observability design only; experiment definitions/effects unchanged and runtime coverage remains UNKNOWN.
 - R02/R03/R04/R06 and I01-I07: unchanged.
 - Fundamental Persistence remains UNKNOWN/context-only.
 
-### Engineering classification / tests / deployment / rollback
-- Classification: Class A source/documentation audit only.
-- Code/runtime/schema/workflow: unchanged; only canonical checkpoint updated.
-- Tests: not applicable to source aggregate audit; no runtime claim made.
-- Deployment: no production runtime change intended by this checkpoint-only commit; protected formal outputs unchanged.
-- Rollback: previous checkpoint blob `e9ca8f473932e063b3e1dcef98aead277901707d` / Git history.
+### Deployment / rollback
+- Main runtime code unchanged; branch is isolated and not deployed.
+- Rollback branch work by abandoning `research/b57-price-path-readiness`; main pre-branch point `25838e48d32b137757bcdc1bf71c968d57e14f46` remains unaffected.
 
 ## Exact next continuation point
 1. Re-read governance/worklist/checkpoint/latest main and re-check checkpoint blob SHA before any write.
 2. If a newer trusted formal scan with >=1 plan exists, immediately restore primary funnel priority: establish plan date/count from trusted Production readback, verify execution-recorder target-date coverage and 500-row non-truncation before interpreting signals, then add same-date `HUMAN_MOMENTUM_SHADOW` only on formal SELECTED names.
-3. Otherwise do not re-discover the dashboard route or aggregate gap. Runtime field coverage remains UNKNOWN unless an already-authorized path can read the authenticated dashboard without exposing secrets.
-4. Continue Price Path Quality/Information Discreteness as a Class A design audit only: define the minimal **branch-only** readiness matrix schema/algorithm using existing archived snapshot/outcome inputs, with separate `fieldState` and `outcomeState`, grouped by independent `scanDate x cohort`. Do not wire it into shared runtime/main yet.
-5. The design must prevent conditioning on D1/D5 maturity: R01 scan-time reference presence, R05 scan-time baseline presence vs next-day outcome state, R07/R08 scan-time residual/relative-volume presence are counted independently of future horizon availability. Missing/parse failures remain UNKNOWN/PROVENANCE_BLOCKED, never BAD/0.
-6. Before any code, classify the branch-only helper as Class A and list frozen invariants: no change to legacy `coverage.dN`, `byCohort`, selectionAlpha, diagnostics, recentOutcomes, Formal Core, monitoring or push. If later shared dashboard wiring is proposed, classify that promotion separately as Class B.
-7. Provenance exact-path remains `EXACT_SOURCE_NOT_RUN`; do not repeat byte-transport discovery or implement the B-49 Class B CI proposal without approval. Do not infer 09/22 Shadow without new trusted evidence; signal != fill; `REDUCED_CONFIRMED` requires trusted actual reduced shares.
+3. Otherwise continue B-57 branch-only helper verification. Inspect exact branch source and fixture; execute only if a trusted no-reconstruction runner path is available. Until then test status is `SOURCE_WRITTEN_NOT_EXECUTED`, not PASS.
+4. Audit a subtle semantic edge before any integration: `PROVENANCE_BLOCKED` must not suppress a scan-time field that was positively parsed from a valid snapshot merely because future history provenance failed. If provenance is split into snapshot provenance vs history/outcome provenance, fieldState must depend only on snapshot provenance while outcomeState may depend on history provenance. Treat this as a falsification test of the B-57 helper, not as permission to broaden scope.
+5. Add branch-only fixtures for that edge plus malformed snapshot/baseline cases if source audit confirms the helper currently conflates snapshot and history provenance. Keep UNKNOWN semantics conservative.
+6. Do not wire readiness into dashboard/runtime/main without separate Class B review. Do not alter legacy coverage/byCohort/selectionAlpha/diagnostics/recentOutcomes.
+7. Provenance exact-path remains `EXACT_SOURCE_NOT_RUN`; do not repeat byte-transport discovery or implement B-49 CI proposal without approval. Do not infer 09/22 Shadow without new trusted evidence; signal != fill; `REDUCED_CONFIRMED` requires trusted actual reduced shares.
