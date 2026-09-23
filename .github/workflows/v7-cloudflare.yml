@@ -49,6 +49,7 @@ on:
       - "scripts/apply_v8_8_2.py"
       - "scripts/apply_v8_9_0.py"
       - "scripts/apply_v8_9_1.py"
+      - "scripts/apply_v8_9_2.py"
       - "RESEARCH_WORKLIST.md"
       - "research/**"
       - "data/v7_formal_scan_backfill.json"
@@ -209,6 +210,9 @@ jobs:
       - name: Apply V8.9.1 three-pool dashboard
         run: python3 scripts/apply_v8_9_1.py
 
+      - name: Apply V8.9.2 three-pool daily push
+        run: python3 scripts/apply_v8_9_2.py
+
       - name: Syntax check Worker.js
         run: |
           set -euo pipefail
@@ -218,7 +222,7 @@ jobs:
       - name: Validate V8.7.12 production contract
         run: |
           set -euo pipefail
-          grep -F 'const VERSION = "8.9.1-three-pool-dashboard";' Worker.js
+          grep -F 'const VERSION = "8.9.2-three-pool-push";' Worker.js
           grep -F 'CREATE TABLE IF NOT EXISTS trade_research_execution_snapshots' Worker.js
           grep -F 'url.pathname==="/api/research/execution-recorder"' Worker.js
           grep -F 'RESEARCH_EXECUTION_RECORDER_FAIL_OPEN' Worker.js
@@ -275,6 +279,9 @@ jobs:
           grep -F 'url.pathname==="/api/storage/export-current"' Worker.js
           grep -F 'url.pathname==="/api/storage/github-accept"' Worker.js
           grep -F 'D1_GITHUB_ENCRYPTED' Worker.js
+          grep -F 'function enrichThreePoolDailyPayload' Worker.js
+          grep -F 'url.pathname === "/api/daily-report/resend"' Worker.js
+          grep -F '千元 Hybrid' Worker.js
 
       - name: Behavioral regression (no real pushes or writes)
         env:
@@ -846,6 +853,32 @@ jobs:
           done
           echo "Rollback command completed but restored runtime version was not verified."
           exit 1
+
+      - name: Resend latest 3+3+3 daily report after verified deploy
+        if: contains(github.event.head_commit.message, '[resend-daily-report]')
+        env:
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+        run: |
+          node - <<'NODE'
+          const origin="https://fugle-test.imihan0630.workers.dev";
+          const response=await fetch(origin+"/api/daily-report/resend",{
+            method:"POST",
+            headers:{"x-admin-token":process.env.V7_ADMIN_TOKEN,"content-type":"application/json","accept":"application/json"},
+            body:"{}",
+            signal:AbortSignal.timeout(30000)
+          });
+          const data=await response.json();
+          console.log(JSON.stringify({
+            ok:data.ok,version:data.version,scanDate:data.scanDate,
+            formalSelectedCount:data.formalSelectedCount,hybridSelectedCount:data.hybridSelectedCount,
+            totalDisplayedCount:data.totalDisplayedCount,noRescan:data.noRescan,
+            noPlanChanges:data.noPlanChanges,noTrade:data.noTrade,
+            deliveryState:data.report?.deliveryState,httpStatus:data.report?.httpStatus,
+            receiptVerified:data.report?.receiptVerified
+          }));
+          if(!response.ok || data.ok!==true) throw new Error("Daily report resend was not accepted");
+          if(data.noRescan!==true || data.noPlanChanges!==true || data.noTrade!==true) throw new Error("Resend safety contract failed");
+          NODE
 
       - name: Cache verified official market data (this repair only)
         if: contains(github.event.head_commit.message, '[v7-live-acceptance]')
