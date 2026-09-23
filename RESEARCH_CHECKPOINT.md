@@ -1,7 +1,7 @@
 # Research Checkpoint
 
 Checkpoint sequence: B-89.
-Updated: 2026-09-24 06:13 Asia/Taipei.
+Updated: 2026-09-24 06:16 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Detailed B-01..B-88 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
@@ -54,6 +54,19 @@ Updated: 2026-09-24 06:13 Asia/Taipei.
 - Coverage/zero-pick/date clustering/transaction costs/market-source bias unchanged. Defective rows reduce interpretable coverage; they must not be dropped silently from denominators.
 - R03/R06: structural interpretation tightened only; no alpha/readiness upgrade. R01/R02/R04/R05/R07/R08 and I01-I07 unchanged.
 - Engineering classification: source/data-contract audit only. No Worker, D1/KV schema, workflow, dashboard, formal selection, monitoring, notification or Production deployment changed.
+
+## Production engineering note — owner-approved 3+3+3 architecture (2026-09-23/24)
+- Owner explicitly approved changing the production strategy architecture to **3+3+3** while keeping Formal thousand and Hybrid selection logic intentionally different.
+- Pool A `FORMAL_GENERAL`: price < 1,000, 0~3 names, no padding. Pool B `FORMAL_THOUSAND`: price >= 1,000, 0~3 names, no padding. Pool C `HYBRID_THOUSAND_SHADOW`: price >= 1,000, 0~3 names, no padding.
+- Each pool has a ring-fenced **NT$200,000** strategy/research capital budget; capital does not cross pools.
+- Formal General/Thousand keep the existing Formal A/B core. Hybrid is independent and does not reuse Formal `scoreCandidate()` or `strategySetupState()`; it uses fundamental quality + persistent Smart Money + early price acceptance + overheat guard + >=10% verifiable remaining upside.
+- A symbol may appear in both Formal Thousand and Hybrid. Cross-pool duplication is preserved as convergence evidence only; it must not auto-upgrade signal grade, position size, BUY status or ADD.
+- Hybrid remains **Shadow-only**: visible and archived, but not written into Formal STOCK_CONFIG and not a Formal BUY/push source.
+- V8.9.0 added the three-pool selection/archive layer and per-pool capital semantics. V8.9.1 added the read-only `/pools` dashboard plus `/api/strategy-pool-performance` for prospective D1/D3/D5/latest selection tracking by pool.
+- No historical Hybrid selections may be fabricated. Pool performance must accrue prospectively from persisted selections; selection performance is not realized BUY→SELL trade win rate.
+- Verified deployment evidence: V8.9.0 workflow run `35870357514` SUCCESS; V8.9.1 workflow run `35871427600` SUCCESS; V8.9.1 regression run `35871427866` SUCCESS. Production readback observed exactly `8.9.1-three-pool-dashboard`; research firewall remained valid with `formalCoreImpact:false`.
+- V8.8.2 mandatory zero-selection daily push acceptance semantics remain preserved underneath the patch stack.
+- This note is a record of an **owner-approved production change**, not permission for future autonomous Formal Core changes. The governance lock above remains in force for any further rule/threshold/capital/entry-exit modifications.
 
 ## Exact next continuation point
 1. Re-read governance/worklist/checkpoint/latest main and re-check checkpoint SHA before any write.
