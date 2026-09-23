@@ -106,10 +106,11 @@ replace_once(
 )
 
 # Replace the DAILY_SELECTION formatter structurally because V8.7.13 adds <!channel>.
-fmt_start=text.find("function formatSlackSignalMessage(payload) {")
-daily_start=text.find('  if (payload?.signalType === "DAILY_SELECTION") {',fmt_start)
-daily_end=text.find("  // 系統／鏈路測試",daily_start)
-if fmt_start<0 or daily_start<0 or daily_end<0:
+fmt_start=text.find("function formatSlackSignalMessage")
+daily_token=text.find('payload?.signalType === "DAILY_SELECTION"',fmt_start)
+daily_start=text.rfind("  if (",fmt_start,daily_token+1)
+daily_end=text.find('  if (payload?.type === "SYSTEM_TEST"',daily_token)
+if fmt_start<0 or daily_token<0 or daily_start<0 or daily_end<0:
     raise SystemExit("Slack DAILY_SELECTION formatter boundary not found")
 new_daily=r'''  if (payload?.signalType === "DAILY_SELECTION") {
     const pools=Array.isArray(payload?.strategyPools)?payload.strategyPools:[];
