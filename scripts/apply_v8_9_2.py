@@ -149,8 +149,12 @@ insert_after_once(
     '''      dailyResultZeroSelection: stocks.length === 0,''',
     '''
       dailyHybridSelectedCount: hybridStocks.length,
-      dailyAllPoolsZero: dailyPayload.allPoolsZero===true,
-      dailyPoolCounts: dailyPayload.poolCounts,''',
+      dailyAllPoolsZero: stocks.length===0 && hybridStocks.length===0,
+      dailyPoolCounts: {
+        FORMAL_GENERAL:stocks.filter(stock=>stock?.strategyPool==="FORMAL_GENERAL" || (stock?.strategyPool==null && (toNumber(stock?.formalClose)||0)<THOUSAND_STOCK_PRICE)).length,
+        FORMAL_THOUSAND:stocks.filter(stock=>stock?.strategyPool==="FORMAL_THOUSAND" || (stock?.strategyPool==null && (toNumber(stock?.formalClose)||0)>=THOUSAND_STOCK_PRICE)).length,
+        [HYBRID_POOL_ID]:hybridStocks.length
+      },''',
     "pipeline three-pool push fields"
 )
 
