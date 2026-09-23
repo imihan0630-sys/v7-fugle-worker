@@ -24,6 +24,17 @@ replace_once(
 )
 
 replace_once(
+'''    enabled: true,
+
+    symbol,''',
+'''    enabled: true,
+    strategyPool: String(item.strategyPool || "").trim() || null,
+
+    symbol,''',
+    "preserve strategy pool through normalization"
+)
+
+replace_once(
     'const THOUSAND_STOCK_PRICE = 1000;',
     '''const THOUSAND_STOCK_PRICE = 1000;
 const STRATEGY_POOL_CAPITAL = 200000; // 3+3+3：每池固定20萬，資金不跨池
@@ -172,7 +183,7 @@ function allocateHybridPlans(selected,totalCapital,scanDate) {
     const secondAmount=totalAllocation-firstAmount;
     const buyLow=round(item.planBuyLow,2),buyHigh=round(item.planBuyHigh,2);
     return {
-      code:item.symbol,name:item.name,rank:index+1,
+      code:item.symbol,symbol:item.symbol,name:item.name,rank:index+1,
       formalClose:item.close,closeDate:scanDate,planDate:nextTradingDate(scanDate),
       mode:"HYBRID",channel:"H",signalLevel:item.signalLevel||"B",
       strategyPool:HYBRID_POOL_ID,shadowOnly:true,pushEnabled:false,
@@ -331,10 +342,14 @@ replace_once(
 )
 
 # Persist Hybrid separately; it never enters Formal STOCK_CONFIG_V7 and therefore cannot de-duplicate a shared symbol.
-replace_once(
-'''    saved = await saveStockConfig(env, stocks, "Phase 4.3 A/B Strategy Rebase After-market Scan", totalCapital);
-    bridge = await sendTo3Min(buildThreeMinPayload(marketDate,totalCapital,stocks),env);''',
-'''    saved = await saveStockConfig(env, stocks, "3+3 Formal pools; each ring-fenced 200k", STRATEGY_POOL_CAPITAL);
+scan_core=text.find("async function runAfterMarketScanCore(")
+if scan_core<0:
+    raise SystemExit("runAfterMarketScanCore not found")
+save_start=text.find("    saved = await saveStockConfig(",scan_core)
+if save_start<0:
+    raise SystemExit("formal save line not found")
+save_end=text.find("\n",save_start)
+text=text[:save_start]+'''    saved = await saveStockConfig(env, stocks, "3+3 Formal pools; each ring-fenced 200k", STRATEGY_POOL_CAPITAL);
     await env.STOCKS_KV.put(HYBRID_KV_KEY,JSON.stringify({
       version:VERSION,scanDate:marketDate,planDate:nextTradingDate(marketDate),
       poolId:HYBRID_POOL_ID,poolCapital:STRATEGY_POOL_CAPITAL,shadowOnly:true,stocks:hybridStocks
@@ -343,10 +358,13 @@ replace_once(
       FORMAL_GENERAL:stocks.filter(stock=>stock.strategyPool==="FORMAL_GENERAL"),
       FORMAL_THOUSAND:stocks.filter(stock=>stock.strategyPool==="FORMAL_THOUSAND"),
       [HYBRID_POOL_ID]:hybridStocks
-    });
-    bridge = await sendTo3Min(buildThreeMinPayload(marketDate,STRATEGY_POOL_CAPITAL*2,stocks),env);''',
-"persist ring-fenced formal and hybrid"
-)
+    });'''+text[save_end:]
+
+bridge_start=text.find("    bridge = await sendTo3Min(",save_start)
+if bridge_start<0:
+    raise SystemExit("3Min bridge line not found")
+bridge_end=text.find("\n",bridge_start)
+text=text[:bridge_start]+'''    bridge = await sendTo3Min(buildThreeMinPayload(marketDate,STRATEGY_POOL_CAPITAL*2,stocks),env);'''+text[bridge_end:]
 
 # Summary keeps legacy totalCapital field for compatibility but explicitly defines the new semantics.
 replace_once(
