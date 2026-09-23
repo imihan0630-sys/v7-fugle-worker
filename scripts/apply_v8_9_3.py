@@ -24,6 +24,17 @@ def insert_after_once(marker,addition,label):
         raise SystemExit(f"{label}: expected 1 marker, found {count}")
     text=text.replace(marker,marker+addition,1)
 
+def replace_once_after(marker,old,new,label):
+    global text
+    start=text.find(marker)
+    if start<0:
+        raise SystemExit(f"{label}: marker not found")
+    head,tail=text[:start],text[start:]
+    count=tail.count(old)
+    if count!=1:
+        raise SystemExit(f"{label}: expected 1 match after marker, found {count}")
+    text=head+tail.replace(old,new,1)
+
 replace_once(
     'const VERSION = "8.9.2-three-pool-push";',
     'const VERSION = "8.9.3-hybrid-watch-layer";',
@@ -553,7 +564,8 @@ replace_once(
 )
 
 # Make /api/strategy-pools show current intraday Hybrid promotions plus WATCH state.
-replace_once(
+replace_once_after(
+    '    if (url.pathname === "/api/strategy-pools") {',
     '''      const formal=Array.isArray(latest.stocks)?latest.stocks:[];
       const hybrid=Array.isArray(latest.hybridStocks)?latest.hybridStocks:[];''',
     '''      const formal=Array.isArray(latest.stocks)?latest.stocks:[];
