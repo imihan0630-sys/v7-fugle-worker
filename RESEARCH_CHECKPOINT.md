@@ -1,7 +1,7 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-79.
-Updated: 2026-09-24 01:11 Asia/Taipei.
+Checkpoint sequence: B-80.
+Updated: 2026-09-24 01:39 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Earlier detailed evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
@@ -14,7 +14,7 @@ Updated: 2026-09-24 01:11 Asia/Taipei.
 ## Production/research baseline retained
 - Previous verified production/research baseline through B-72 was V8.8.2. Repository evidence is not Production readback.
 - Prior deployment commit retained from checkpoint: `12faf559558efe429c6deb93aa9a193a3557968c`, `Deploy V8.9.1 three-pool dashboard`.
-- No newer trusted live Production plan/readback established in B-79. Live plan status remains UNKNOWN.
+- No newer trusted live Production plan/readback established in B-80. Live plan status remains UNKNOWN; direct public `/api/version` readback was inaccessible to the available web reader in B-80 and is not treated as evidence.
 - Last trusted prospective Shadow evidence remains 31 rows / one prospective scan date / zero mature D1/D3/D5/D10/D20 outcomes unless newer trusted read proves otherwise.
 - 2026-09-22 scheduled health previously verified selectedCount=0, planCount=0, signalCount=0; preserve as formal zero-pick date, not Execution Alpha failure. `SHADOW_SCAN_STATUS(2026-09-22)=UNKNOWN`.
 
@@ -58,36 +58,62 @@ Updated: 2026-09-24 01:11 Asia/Taipei.
 - Scope remains narrow: this supports 2026 exchange-wide closure parity only for authoritative dates directly compared; it does not establish listing venue, historical-year parity, or individual-security halt semantics.
 - No historical Shadow/research row was rewritten or upgraded from current web evidence.
 
-## B-79 — calendar persistence provenance source audit
-### New source proof
-- Current main `Worker.js` defines a hard-coded `MARKET_CALENDARS` entry for 2026 as an in-memory `Set` of closure dates. The hard-coded object carries no source URL, fetchedAt, verifiedAt, source publication date, or market-scope metadata.
-- `loadTradingCalendar(env, year)` first returns immediately when the year already exists in `MARKET_CALENDARS`; therefore 2026 normally uses the embedded date set without a runtime fetch and without producing a contemporaneous provenance record.
-- For non-embedded years, the loader checks KV key `V7_TRADING_CALENDAR:<year>`. The accepted cached payload contract is only `{year, holidays}`. The write path likewise persists `JSON.stringify({year, holidays})` with TTL; it does **not** persist source URL, fetchedAt, verifiedAt, source vintage/publication timestamp, TWSE/TPEx parity evidence, or a content hash.
-- If cache is absent, the loader fetches TWSE `holidaySchedule` and validates `queryYear` plus non-empty `data`, then derives the holiday date set. The fetch URL exists only in source code, not in the persisted calendar payload.
-- `isTradingDate(dateString)` consumes only year/weekend/date-membership semantics. It cannot expose which calendar source/vintage established a specific pair's adjacency.
+## B-79 retained — calendar persistence provenance source audit
+- Current main `Worker.js` hard-codes the 2026 closure set without source/capture/vintage/scope metadata. For non-embedded years, `loadTradingCalendar()` accepts/persists KV `{year,holidays}` only; source URL exists only in code and is not part of durable payload.
+- Therefore existing calendar persistence cannot prove pair-specific PIT session provenance. Existing B-73/B-74 `exchangeSessionAdjacency=UNKNOWN` remains correct and no historical pair is upgraded.
+- Modifying `loadTradingCalendar`, `MARKET_CALENDARS`, shared KV calendar payload, or formal date resolution is Class B proposal-first.
 
-### Conclusion / counterevidence
-- The hypothesis that existing calendar persistence might already be sufficient to prove prospective pair-specific PIT session provenance is **falsified** by current source: the durable payload lacks the required provenance fields.
-- B-78's external 2026 TWSE/TPEx parity evidence remains useful source research, but it cannot be joined retroactively to an already-persisted R03/R06 pair as if that evidence had been captured at the decision timestamp.
-- `exchangeSessionAdjacency=UNKNOWN` therefore remains correct for existing B-73/B-74 readiness rows. No pair is upgraded in B-79.
-- A minimal future prospective provenance record would need at least calendar year, exact source identity/URL, capturedAt or verifiedAt, source vintage/publication evidence when available, market scope/parity status, and preferably a deterministic holiday-set hash. This is a design requirement only, not implemented.
+## B-80 — smallest prospective-only R03/R06 calendar-provenance contract design
+### Isolation finding
+- Current repository tree has a dedicated `research/` subtree separate from `Worker.js`; a provenance artifact can be represented as a research-only file/record without modifying `MARKET_CALENDARS`, `loadTradingCalendar`, `isTradingDate`, shared KV keys, D1 schema, formal scan routes, Cron, dashboard, push, or deployment workflow.
+- This supports a **Class A design path only if the artifact remains write/read isolated**: formal runtime must never import or consult it, and R03/R06 offline readiness may consume it only as supplied research evidence.
+- Automatic capture through an existing deployment/runtime workflow would cross the Class B boundary. B-80 therefore designs the contract but does not add workflow/runtime persistence.
 
-### Classification / bias audit
-- Any modification to existing `loadTradingCalendar`, `MARKET_CALENDARS`, shared KV payload, or shared runtime date resolution is **Class B proposal-first** because those paths are shared runtime/date infrastructure.
-- A separately isolated research-only provenance artifact that is not consumed by formal scans could potentially be Class A, but its write/read path must be demonstrably disconnected from formal date resolution before coding.
-- Look-ahead/PIT: no historical pair upgraded and no present-day source used to fabricate historical provenance.
-- Market-source bias: B-78 parity remains bounded to directly compared 2026 authoritative closures; B-79 does not infer listing venue or security-specific halts.
-- Selection bias / zero-pick / date clustering: unchanged; one formal scan date remains one evidence unit.
-- Data snooping / Factor Zoo / overfit / redundancy / transaction cost: no factor, threshold, window, sampler, alpha rule, experiment, or trading interpretation added.
-- UNKNOWN semantics preserved.
+### Minimal prospective record contract
+One immutable research record per `calendarYear + captureId` (or content hash), captured only from the approval/implementation date forward:
+- `schemaVersion`: fixed research provenance schema identifier.
+- `calendarYear`: integer year asserted by source.
+- `sources`: explicit authoritative source records for TWSE and TPEx, each containing `marketScope`, exact `sourceUrl`, `capturedAt`, `sourceYear`, and fetch/parse status.
+- `holidays`: normalized sorted unique `YYYY-MM-DD` exchange-wide closure dates only; weekends remain calendar logic, not duplicated as holidays.
+- `holidaySetSha256`: deterministic SHA-256 over canonical normalized holiday payload.
+- `parityStatus`: `VERIFIED_MATCH`, `UNVERIFIED`, or `MISMATCH`; only VERIFIED_MATCH may support shared TWSE/TPEx exchange-wide adjacency for the directly verified year.
+- `verifiedAt`: timestamp when both authoritative payloads were successfully compared; must not predate either source capture.
+- `captureMode`: `PROSPECTIVE_ONLY`; no historical reconstruction flag is permitted.
+- `notes`: optional bounded research note; never a substitute for machine fields.
+
+### Pair-use semantics
+- A future R03/R06 pair may be session-adjacency READY only when both dates are on/after the provenance record's `verifiedAt` date boundary as governed prospectively, both fall within the proven `calendarYear`, the record hash verifies, parityStatus is VERIFIED_MATCH, and the normalized calendar proves there is no intervening trading session.
+- The artifact proves exchange-wide session adjacency only. It does not prove individual-stock tradability, listing venue, security-specific halt, or outcome availability.
+- Existing 2026 pairs created before this artifact exists remain UNKNOWN; B-78/B-79 evidence is not retroactively promoted into row-level PIT provenance.
+
+### Falsification / data-quality semantics
+Any of the following yields `UNKNOWN` / `DATA_QUALITY_BLOCKED`, never inferred adjacency and never BAD/0:
+- either authoritative source fetch failed, timed out, returned non-parseable content, or lacks the asserted year;
+- TWSE/TPEx normalized closure sets are not both present or parity is UNVERIFIED/MISMATCH;
+- `calendarYear` disagrees with either sourceYear or requested pair year;
+- `capturedAt` or `verifiedAt` is absent/malformed, `verifiedAt` predates a source capture, or pair evidence would require using a record not yet verified at the governed prospective boundary;
+- holiday list contains malformed dates, duplicates before normalization that cannot be explained safely, out-of-year dates, or an empty/unreasonably incomplete payload without authoritative confirmation;
+- recomputed canonical SHA-256 differs from `holidaySetSha256`;
+- source URL/scope is missing, changed without a new immutable capture, or one market is represented only by the other market's source;
+- any attempt is made to use the artifact for security-specific halt semantics.
+
+### Bias / governance audit
+- Look-ahead/PIT: artifact is prospective-only; no backfill and no existing pair upgrade.
+- Market-source bias: requires separate authoritative TWSE + TPEx records and explicit parity state rather than assuming one market represents both.
+- Selection bias / zero-pick / date clustering: calendar provenance is independent of selected symbols; one formal scan date remains one evidence unit.
+- Data snooping / Factor Zoo / overfit / redundancy / transaction cost: no factor, score, threshold, return window, sampler, experiment, or trading rule added.
+- R03/R06 impact: improves future evidence measurability only; no alpha conclusion.
+- I01-I07 impact: none to formal instrumentation; this is a research provenance contract design.
+- Engineering classification: **Class A design/proposal** if kept entirely under isolated research artifacts and supplied-row analysis; any shared runtime, KV/D1, workflow/deployment, formal date resolver, dashboard, or push integration is **Class B proposal-first**.
+- Implementation/tests/deployment: none in B-80. No branch/file beyond checkpoint changed; no Production deployment. Formal Core invariants unchanged by construction.
 
 ## Exact next continuation point
 1. Re-read governance/worklist/checkpoint/latest main and re-check checkpoint SHA before any write.
 2. If a newer trusted formal scan has >=1 plan, immediately restore primary funnel priority: establish plan date/count from trusted Production readback; verify execution-recorder target-date coverage and 500-row non-truncation before interpreting signals; then add same-date `HUMAN_MOMENTUM_SHADOW` only on formal SELECTED names.
-3. Preserve B-77 uniqueness proof, B-78 parity scope, and B-79 persistence proof: existing calendar cache is `{year,holidays}` only and does not establish pair-specific PIT provenance.
-4. Design, but do not implement in shared runtime, the smallest prospective-only R03/R06 calendar-provenance contract. First test whether it can live as an isolated research-only artifact with no dependency from formal date resolution; if not demonstrably isolated, classify Class B and leave proposal-only.
-5. Explicitly define falsification semantics for the proposed provenance artifact: source fetch failure, year mismatch, TWSE/TPEx parity unverified, stale/absent capture timestamp, malformed holiday set, or hash mismatch must yield UNKNOWN/DATA_QUALITY_BLOCKED rather than inferred adjacency.
-6. Do not retroactively upgrade B-73/B-74 pairs from B-78/B-79 source evidence and do not backfill historical Shadow.
+3. Preserve B-77 uniqueness proof, B-78 parity scope, B-79 persistence proof, and B-80 isolation boundary. Do not modify shared calendar runtime/cache/date resolution.
+4. Next, define the canonical hash serialization and a supplied-record validator interface for the B-80 contract, including exact status outputs for all falsification cases. Keep it offline/research-only and do not implement runtime persistence or workflows.
+5. Before coding any Class A validator, prove from repository imports/workflows that the chosen `research/` file is not imported by Worker/formal runtime; if isolation cannot be proven, stop at Class B proposal-only.
+6. Do not retroactively upgrade B-73/B-74 pairs and do not backfill historical Shadow/calendar provenance.
 7. If a trusted read-only Production D1/schema path becomes available, check actual table definitions/integrity for duplicate rows without mutating storage; source contracts alone do not prove historical DB integrity.
 8. If exact-source execution becomes available, verify branch head `0277b0fb1e8a82fbd7ca8d77f9883d64d375d3b0` and exact blobs, then execute the test; only exit 0 + fixture PASS may upgrade SOURCE_WRITTEN_NOT_EXECUTED.
 9. Do not wire helper into runtime/dashboard. Keep B-62 proposal-only; do not repeat listing-venue discovery.
