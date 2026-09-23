@@ -116,21 +116,21 @@ new_daily=r'''  if (payload?.signalType === "DAILY_SELECTION") {
     const pools=Array.isArray(payload?.strategyPools)?payload.strategyPools:[];
     const poolBlocks=pools.length ? pools.map(pool=>{
       const header=`【${pool.label} ${(pool.stocks||[]).length}/${pool.quota||3}】${pool.shadowOnly?"（Shadow）":""}`;
-      if(!(pool.stocks||[]).length) return header+"\\n無符合";
-      return header+"\\n"+pool.stocks.map((stock,index)=>{
+      if(!(pool.stocks||[]).length) return header+"\n無符合";
+      return header+"\n"+pool.stocks.map((stock,index)=>{
         const zone=stock.buyLow!==null&&stock.buyHigh!==null ? `參考區 ${fmt(stock.buyLow)}～${fmt(stock.buyHigh)}` : "參考區 -";
         const tag=stock.shadowOnly?"Hybrid觀察":"Formal";
-        return `${index+1}. ${stock.name} ${stock.symbol}｜${tag}｜${stock.signalLevel||"-"}\\n${zone}｜停損 ${fmt(stock.stop)}｜目標 ${fmt(stock.profitCheck)}\\n入選原因：${stock.reason||"-"}`;
-      }).join("\\n");
+        return `${index+1}. ${stock.name} ${stock.symbol}｜${tag}｜${stock.signalLevel||"-"}\n${zone}｜停損 ${fmt(stock.stop)}｜目標 ${fmt(stock.profitCheck)}\n入選原因：${stock.reason||"-"}`;
+      }).join("\n");
     }) : (payload.stocks||[]).map(stock =>
-      `${stock.rank}. ${stock.name} ${stock.symbol}｜${stock.mode}\\n第一筆 ${fmt(stock.firstAmount)}元／${stock.firstShares}股：${stock.firstCondition}\\n第二筆 ${fmt(stock.secondAmount)}元／${stock.secondShares}股：${stock.secondCondition}\\n停損 ${fmt(stock.stop)}｜停利檢查 ${fmt(stock.profitCheck)}\\n入選原因：${stock.reason}`);
+      `${stock.rank}. ${stock.name} ${stock.symbol}｜${stock.mode}\n第一筆 ${fmt(stock.firstAmount)}元／${stock.firstShares}股：${stock.firstCondition}\n第二筆 ${fmt(stock.secondAmount)}元／${stock.secondShares}股：${stock.secondCondition}\n停損 ${fmt(stock.stop)}｜停利檢查 ${fmt(stock.profitCheck)}\n入選原因：${stock.reason}`);
     const overlap=payload?.strategyOverlap?.overlapSymbols||[];
     return [
-      `<!channel>\\n📋 *${payload.title}*`, payload.instruction,
+      `<!channel>\n📋 *${payload.title}*`, payload.instruction,
       ...poolBlocks,
       overlap.length ? `共同入選：${overlap.join("、")}（只代表跨邏輯一致性，不自動加碼）` : null,
       `監控：${payload.monitorUrl}`, `時間：${payload.time}`
-    ].filter(Boolean).join("\\n\\n");
+    ].filter(Boolean).join("\n\n");
   }
 '''
 text=text[:daily_start]+new_daily+text[daily_end:]
