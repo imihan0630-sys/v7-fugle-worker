@@ -13,7 +13,7 @@ Updated: 2026-09-23 07:40 Asia/Taipei.
 - GitHub/runtime evidence overrides chat memory.
 
 ## Production/research baseline retained
-- Verified research infrastructure baseline: V8.8.1 `8.8.1-execution-coverage`, schema `execution-shadow-v2`; V8.8.0 rollback baseline.
+- Verified production/research infrastructure baseline: V8.8.2 `8.8.2-zero-selection-push-guard`, schema `execution-shadow-v2`; pre-change production backup verified as V8.8.1 `8.8.1-execution-coverage`.
 - Last verified prospective Shadow evidence remains 31 rows / one prospective scan date / zero mature D1/D3/D5/D10/D20 outcomes unless a newer trusted read proves otherwise.
 - B-13/B-16 provenance engineering is active on isolated branch `research/b13-shadow-provenance`; nothing from that branch is deployed.
 - Pre-B44 branch helper/tests commit retained: `46c0ba15f58f432944e477b1b3d16fbf6403705f`; targeted + observational tests previously achieved **LOCAL_EXACT_SOURCE_PASS**, CI NOT_RUN.
@@ -63,6 +63,16 @@ Root funnel: `universe -> base/liquidity -> A/B formation -> quality/RR -> SELEC
 - It adds no factor, cohort, threshold, rank, market source, historical Shadow backfill or trading rule, so no new selection-bias/look-ahead/data-snooping/Factor-Zoo mechanism is introduced.
 - It is intentionally redundant with the smaller observational invariant test only at the invariant level; added value is exercising the parser/call-path state matrix requested by B-43.
 - R01-R08/I01-I07 definitions, evidence maturity and Formal Core remain unchanged.
+
+## Production engineering note — V8.8.2 zero-selection daily push guard
+- Owner explicitly approved this Class C notification behavior change in chat.
+- Production build preserves the full V8 patch chain and advances runtime from V8.8.1 to `8.8.2-zero-selection-push-guard`; no direct deployment of the 7.5.26 base file occurred.
+- Final implementation commits on main: `0a3855e800450b6afba6423a9bc08818c772e39f` (feature/workflow/test), `f2fcb18dcd3c555bd9ae600285b49bf16186efb5` (guarded patch anchor fix), `a35a152066e9858a7d10b8e0aa1dd2b0437b873c` and `7f5eec6e53f4f65325e90e04e3fc799d9c4671a5` (forward-compatible regression fixes).
+- Final deployment workflow run `35800353452` completed SUCCESS. Guarded patch application, syntax, production contract, full behavioral regression, pre-deploy backup, downgrade guard, Worker deploy, 23:35 Taipei Cron preservation, deployed-version/config verification, and research-only readback all passed.
+- Production readback observed `8.8.2-zero-selection-push-guard`; research readback remained healthy with Formal Core impact=false.
+- Behavior: every completed daily selection result remains push-required even when selectedCount=0; zero selection is explicitly tagged; production scan success now requires the tracked daily result webhook to be ACCEPTED. A failed/unconfirmed webhook can no longer be silently treated as a successful completed daily result.
+- Handset receipt remains a separate concept. Webhook ACCEPTED does not prove iOS/handset display; existing signed receipt confirmation remains the only positive handset-confirmation evidence.
+- Formal selection, A/B qualification, BUY/ADD/REDUCE/SELL/STOP, capital allocation and research definitions were not changed.
 
 ## Exact next continuation point
 1. Re-read governance/worklist/checkpoint and latest main SHA; re-check checkpoint SHA immediately before any write.
