@@ -536,6 +536,7 @@ end=text.find("\n\n// ======================================================\n//
 if start<0 or end<0:
     raise SystemExit("recalculatePlanCapital function boundary not found")
 replacement=r'''function recalculatePlanCapital(stocks, totalCapital) {
+  if(totalCapital!==null && totalCapital!==undefined && (!Number.isFinite(totalCapital) || totalCapital<=0)) throw new Error("總資金必須大於0");
   const poolCapital=Number.isFinite(totalCapital)&&totalCapital>0 ? totalCapital : STRATEGY_POOL_CAPITAL;
   const groups=new Map();
   for (const stock of stocks) {
