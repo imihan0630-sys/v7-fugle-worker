@@ -1,7 +1,7 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-52.
-Updated: 2026-09-23 11:43 Asia/Taipei.
+Checkpoint sequence: B-53.
+Updated: 2026-09-23 12:11 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Earlier detailed evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
@@ -41,57 +41,61 @@ Root funnel: `universe -> base/liquidity -> A/B formation -> quality/RR -> SELEC
 - Arbitrary revenue persistence windows would be a new experiment and violate the current no-R09/I08 freeze plus Factor-Zoo/data-snooping controls.
 - Fundamental Persistence therefore remains UNKNOWN/context-only; no threshold/window search or historical PIT backfill is permitted.
 
-## B-51 retained — Price Path Quality / Information Discreteness frozen map
-- R01 is the fixed breakout path-integrity experiment: scan-date `priorHigh20`, 3 future trading-day close-hold label, D5/D10/MFE/MAE outcomes.
-- R05 is the fixed next-day Overnight/Intraday decomposition.
-- R07/R08 use same-scan-date medians of `residualSectorRs20` and `volumeTodayVsPrev5`; relative volume is only an attention proxy, not literal news/search/social attention.
-- No new path threshold, holding window, volume multiple, wick cutoff, ATR cutoff or composite score is permitted while R01-R08 are frozen.
+## B-51/B-52 retained — Price Path Quality readiness boundary
+- R01 = fixed `priorHigh20` + future 3-close hold/fail; R05 = next-day Overnight/Intraday; R07/R08 = same-date medians of `residualSectorRs20` and `volumeTodayVsPrev5`.
+- No new threshold/window/volume multiple/wick cutoff/ATR cutoff/composite score while R01-R08 are frozen.
+- Readiness is counted by independent scan date and cohort. Zero-pick dates remain valid formal observations; row count never substitutes for independent dates.
+- Future OHLC only populates outcomes after observation; no historical snapshot backfill with future information.
 
-## NEW B-52 — Price-path evidence readiness audit; coverage before effects
+## NEW B-53 — Exact counterfactual serializer field-exposure verification
 ### Continuity / concurrency
-- Re-read governance, worklist and canonical B-51 checkpoint first. Main head at cycle start and immediately before checkpoint write remained `ce39f0d040edda541331978c8dfee3b0eb42bde1` (`research: B-51 map frozen price-path falsification fields`).
-- Canonical checkpoint blob SHA immediately before write remained `14d91dda1b75a4df4c9e0993ea68002ef6c49cf1`; no newer A/B checkpoint appeared.
-- No newer trusted Production readback with >=1 plan was established this cycle, so the primary execution funnel was not reinterpreted.
+- Re-read governance, worklist and canonical B-52 checkpoint first. Main head at cycle start was `d705793ccce9c143ce00d1925d1e11219a637de1` (`research: B-52 audit price-path evidence readiness`).
+- Canonical checkpoint blob immediately before this write was re-fetched as `206c00deea668261fb6eb73deddc244b2d709a11`; no newer A/B checkpoint appeared during the cycle.
+- No newer trusted Production readback with >=1 plan was established, so the primary execution funnel was not reinterpreted.
 
-### What existing code/data can already support
-- `buildMarketFeatures()` computes scan-time `close`, `open`, `priorHigh20`, `volumeTodayVsPrev5`, `dailyClosePosition`, `dailyUpperShadowRatio`, `atrPercent`, `volatility20`, `ret20` and related path descriptors from the historical bars available at scan time. These are sufficient raw scan-time ingredients for the R01 baseline and R07/R08 relative-volume side if they are durably preserved in the research snapshot.
-- Existing history bars contain OHLC, so R05's next-day open/close and R01's future close sequence are derivable from future history **only as outcomes after the scan**, not as scan-time features. This preserves the look-ahead boundary when outcome computation is delayed until bars actually exist.
-- The frozen registry already defines R01/R05/R07/R08 labels and maturity gates; therefore no new experiment ID, threshold or window is needed merely to measure coverage/readiness.
+### Positive source verification — what the existing serializer actually emits
+Exact main source `research/counterfactual_v8_7_4.js` establishes the following, without relying on code-search absence:
+- `researchShadowOutcomeForRow()` emits row-level `scanDate`, `symbol`, `name`, `cohort`, `pool`, `exclusionReason`, `baselineClose`, `horizons`, `firstDay`, `breakout`, and the complete parsed `snapshot` object.
+- `horizons.d1/d3/d5/d10/d20`, when mature, each expose `tradingDays`, `asOfDate`, `returnPct`, `mfePct`, `maePct`; immature horizons are `null`.
+- `firstDay` exposes `overnightPct`, `intradayPct`, D1 total return and D1 as-of date. Therefore R05 component exposure is positively verified in the serializer; raw `nextOpen`/`nextClose` are not separately emitted, but the frozen R05 components themselves are.
+- `breakout` exposes `reference`, `activeAtScan`, fixed R01 `status`, `closeFailDate`, and `intradayViolationDate`. The helper obtains the breakout reference first from `snapshot.price.breakoutReferencePriceResearch`, otherwise derives it from `snapshot.price.close` plus `snapshot.price.breakoutDistancePct`. The serializer does **not** expose the three future closes themselves.
+- `recentOutcomes` returns only `outcomes.slice(-80)`. Thus row-level endpoint observability is capped to the latest 80 serialized outcomes even though the D1 query can archive up to 5000 Shadow rows.
+- `coverage.dN` is aggregate mature-row count only. It does not provide per-date/per-cohort readiness and does not explain provenance failure vs insufficient observation.
 
-### Important readiness gaps / UNKNOWNs
-- `residualSectorRs20` is required for R07/R08, but this cycle did not establish from the connected main-source read that every prospective Shadow row exposes it in a directly readable endpoint payload. Treat row-level R07/R08 strength coverage as **UNKNOWN**, not zero.
-- Likewise, the code can derive future next open/close from history, but a durable endpoint/readback exposing per-row R05 Overnight/Intraday components was not positively established this cycle. R05 endpoint-level component coverage remains **UNKNOWN** even though the underlying computation is conceptually available.
-- D5/D10/MFE/MAE are frozen outcome concepts, but the last trusted prospective sample still has zero mature outcomes. Therefore R01/R07/R08 directional effect remains **ACCUMULATING/UNKNOWN** regardless of field availability.
-- `regime` and `scanDate` are required grouping/provenance dimensions. The frozen registry specifies them, but this cycle did not use absence of a source-code search hit as evidence of missing runtime data; runtime exposure must be positively verified before any coverage percentage is claimed.
-- No attempt was made to infer 2026-09-22 Shadow existence from formal zero-pick evidence.
+### Positive source verification — R07/R08 fields
+- The same exact source proves the serializer retains the complete parsed `snapshot`, and `researchQuietAttentionStudy()` directly reads `snapshot.price.residualSectorRs20` and `snapshot.volume.volumeTodayVsPrev5`.
+- Therefore the serializer **can emit those two values whenever they were actually present in the archived snapshot**; this removes B-52's serializer-level UNKNOWN.
+- It does **not** prove every prospective Shadow row contains valid finite values. Row-level runtime coverage remains UNKNOWN until a trusted readback is counted; missing/invalid snapshot values must not be coerced to zero.
 
-### No-new-parameter observational matrix definition
-When a trusted row-level read is available, readiness should be counted by **independent scan date** and cohort, not by pooled stock rows:
-- R01 readiness: `scanDate + cohort + priorHigh20 + scanClose + three future closes + D5/D10/MFE/MAE availability`; label only when the fixed three future trading closes are actually observed.
-- R05 readiness: `scanDate + cohort + scanClose + nextOpen + nextClose`; report component availability and missingness, not alpha direction.
-- R07/R08 readiness: `scanDate + cohort + residualSectorRs20 + volumeTodayVsPrev5 + D5/D10/D20/MFE/MAE + regime`; median groups are only valid within the same scan date and only when the cross-section has usable values.
-- Always report same-date cohort counts separately for SELECTED / QUALIFIED_NOT_SELECTED / NEAR_MISS / REJECTED_AFTER_BASE / BROAD_CONTROL. Do not collapse controls.
-- Coverage states: AVAILABLE, OUTCOME_NOT_MATURE, FIELD_UNKNOWN/MISSING, PROVENANCE_BLOCKED. Missing data never becomes BAD/0.
+### Regime exposure remains separate
+- Counterfactual row outcomes do not attach `regime`. `readResearchRegimePersistence()` separately reads `trade_research_days.market_json` and exposes usable regime-day sequences.
+- Therefore the existing counterfactual row serializer alone is insufficient for a per-row R07/R08 `regime` readiness matrix. Joining regime by scanDate would require either a research-side observational join/read or an additive serializer change.
+- Do not infer regime absence in storage: exact source positively shows it exists in the separate research-day path when `market_json.regime` is available.
 
-### Bias / falsification / redundancy implications
-- Selection bias: a date with zero formal picks remains a valid formal zero-pick observation; it must not be dropped merely because R01/R05 cannot form SELECTED labels that date.
-- Look-ahead: future OHLC can only populate frozen outcomes after observation; never copy current/future history into a historical scan snapshot.
-- Data snooping / Factor Zoo: readiness matrix contains no return-ranking, no cutoff sweep and no post-hoc path score.
-- Redundancy: eventual R01 separation must still be checked against residual RS/breakout-quality diagnostics; R07/R08 are not independent confirmations because they share the same two frozen inputs.
-- Market-source bias: TWSE/TPEx missing history or missing row fields must be reported by market/source when possible; no market-specific missingness may be coerced to failure.
-- Date clustering/overfit: one prospective scan date cannot support directionality; row count does not substitute for independent-date count.
-- Transaction cost: no directional alpha was computed, so no gross-return claim bypasses the existing 30/60/100 bps stress requirement.
+### Readiness consequence / no directional claim
+- R01: row-level scan date/cohort/baseline close/fixed breakout status/reference + D5/D10/MFE/MAE are exposed; raw future closes are not. For the frozen R01 classification, raw future closes are not required to interpret the already-fixed HELD/FAILED/PENDING status, but they would be needed for an audit trail that independently recomputes the label.
+- R05: serializer-level readiness is stronger than B-52 assumed because Overnight/Intraday components are already emitted. Runtime finite-value coverage remains UNKNOWN until readback.
+- R07/R08: factor values are carried through snapshot when present, and D5/D10/D20/MFE/MAE exist when mature; regime is not joined into each outcome row. Runtime finite-value coverage and same-date cross-section sufficiency remain UNKNOWN.
+- Last trusted prospective sample still has zero mature outcomes; all directional alpha remains ACCUMULATING/UNKNOWN. No return ranking or threshold sweep was performed.
+
+### Bias / falsification / redundancy checks
+- Selection bias: `recentOutcomes` last-80 truncation can distort cohort/date representation if used as if complete. Any readiness matrix must not silently use that slice as full archive coverage.
+- Look-ahead: outcome function correctly filters history to bars strictly after `scanDate`; scan-time snapshot remains separate from future outcomes.
+- Data snooping / Factor Zoo: no new parameter, window, label or experiment was introduced.
+- Market-source bias: finite-value runtime coverage must eventually be split/checkable by source/market if missingness is material; source code alone cannot prove equal TWSE/TPEx row coverage.
+- Redundancy: R07/R08 continue to share the same residual-RS and relative-volume inputs and are not independent confirmations.
+- Date clustering/overfit: current prospective evidence remains far below independent-date maturity; no directionality claimed.
+- Transaction cost: no alpha/effect estimate was made, so existing 30/60/100 bps stress remains untouched.
 
 ### Engineering classification / impact
-- Class A documentation/readiness audit only; no runtime code, branch, test, deployment, schema, endpoint, factor, rank, threshold or Formal Core output changed.
-- R01-R08 / I01-I07 definitions unchanged. Impact is evidence-quality/readiness only, chiefly R01/R05/R07/R08 observability; all other experiments unaffected.
-- Formal Core invariants unchanged by construction.
+- Class A documentation/readiness audit only. No runtime code, schema, endpoint, deployment, branch, factor, threshold, rank, signal, capital, push or Formal Core behavior changed.
+- Existing serializer is adequate for many readiness fields but not for a complete per-date/per-cohort matrix because `recentOutcomes` is last-80 and regime is separate. A matrix built from full D1 rows + research-day regime can remain research-only if implemented in a completely isolated module/read path; modifying shared endpoint/runtime wiring may become Class B and requires proposal-first review.
 
 ## Exact next continuation point
-1. Re-read governance/worklist/checkpoint and latest main SHA; re-check checkpoint blob SHA immediately before any write.
-2. If a newer trusted formal scan with >=1 plan exists, primary funnel regains priority: establish plan date/count from trusted Production readback, verify execution-recorder target-date coverage and 500-row non-truncation before interpreting signals, then add same-date `HUMAN_MOMENTUM_SHADOW` observations only on formal SELECTED names.
-3. Otherwise continue Price Path Quality readiness by locating the existing research endpoint/counterfactual serializer and **positively verifying** which of these fields are actually emitted per prospective Shadow row: `scanDate`, cohort, scan close, `priorHigh20`, `residualSectorRs20`, `volumeTodayVsPrev5`, regime, R01 label/future-close availability, R05 overnight/intraday, D5/D10/D20/MFE/MAE. Absence from search is not proof of absence; use exact source/readback evidence.
-4. If the endpoint already emits enough data, produce the no-new-parameter per-date/per-cohort readiness matrix only; do not calculate directional alpha before maturity. If fields are missing, first determine whether a parallel research-only serializer can be isolated as Class A. Any shared runtime/API/schema change with indirect formal risk is Class B proposal-only.
-5. Preserve Fundamental Persistence as UNKNOWN/context-only; no new persistence experiment/window while R01-R08 are frozen.
-6. Provenance exact-path remains `EXACT_SOURCE_NOT_RUN`; do not repeat byte-transport discovery or implement the B-49 Class B workflow proposal without explicit owner approval.
-7. Do NOT revisit 09/18 execution or infer 09/22 Shadow without new trusted evidence. Signal != fill; `REDUCED_CONFIRMED` requires trusted actual reduced shares.
+1. Re-read governance/worklist/checkpoint/latest main; re-check checkpoint blob SHA immediately before write.
+2. If a newer trusted formal scan with >=1 plan exists, primary funnel regains priority: establish plan date/count from trusted Production readback, verify execution-recorder target-date coverage and 500-row non-truncation before interpreting signals, then add same-date `HUMAN_MOMENTUM_SHADOW` only on formal SELECTED names.
+3. Otherwise continue B-53 readiness by locating the exact route that returns `readShadowCounterfactualResearch()` and determine whether a trusted authorized runtime read can expose `recentOutcomes` now. If yes, count only finite-value/explicit statuses and label the last-80 limitation; do not treat it as complete archive coverage.
+4. In parallel, inspect whether an existing research-only function already joins `trade_research_shadow_candidates` / counterfactual outcomes with `trade_research_days.market_json.regime`. If no such isolated join exists, design the smallest **Class A isolated observational readiness module** that reads existing tables without schema changes and returns per-date/per-cohort field availability; do not wire/deploy if that requires shared runtime/API changes.
+5. Any readiness module must report AVAILABLE / OUTCOME_NOT_MATURE / FIELD_UNKNOWN_OR_MISSING / PROVENANCE_BLOCKED and preserve separate cohorts. It must not calculate directional alpha until frozen maturity gates are met.
+6. Preserve Fundamental Persistence as UNKNOWN/context-only. Provenance exact-path remains `EXACT_SOURCE_NOT_RUN`; do not repeat byte-transport discovery or implement the B-49 Class B workflow proposal without approval.
+7. Do not revisit 09/18 execution or infer 09/22 Shadow without new trusted evidence. Signal != fill; `REDUCED_CONFIRMED` requires trusted actual reduced shares.
