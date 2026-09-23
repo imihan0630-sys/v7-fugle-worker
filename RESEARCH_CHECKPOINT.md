@@ -1,7 +1,7 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-50.
-Updated: 2026-09-23 10:45 Asia/Taipei.
+Checkpoint sequence: B-51.
+Updated: 2026-09-23 11:12 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Earlier detailed evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
@@ -36,39 +36,50 @@ Root funnel: `universe -> base/liquidity -> A/B formation -> quality/RR -> SELEC
 - Targeted + observational tests retain `LOCAL_EXACT_SOURCE_PASS`. Exact-path fixture remains `LOCAL_RECONSTRUCTED_ASSERTION_PASS / EXACT_SOURCE_NOT_RUN`; CI NOT_RUN.
 - B-49 established there is no trusted no-change byte-materialization path from connected GitHub reader into the local execution runner; minimal manual isolated CI bridge is Class B and remains proposal-only.
 
-## NEW B-50 — Fundamental Persistence boundary clarified; no hidden R09/window mining
+## B-50 retained — Fundamental Persistence boundary clarified
+- Frozen registry defines only R01-R08. Monthly-revenue evidence is context/falsification metadata for R08, not a persistence experiment.
+- Arbitrary revenue persistence windows would be a new experiment and violate the current no-R09/I08 freeze plus Factor-Zoo/data-snooping controls.
+- Fundamental Persistence therefore remains UNKNOWN/context-only; no threshold/window search or historical PIT backfill is permitted.
+
+## NEW B-51 — Price Path Quality / Information Discreteness mapped to frozen definitions
 ### Continuity / concurrency
-- Re-read governance, worklist, canonical B-49 checkpoint and latest main commit before work.
-- Main head at cycle start was `9b3b3605cd666bbee27e20ee3deaf4800ace4194` (B-49 checkpoint commit).
-- Immediately before this write, canonical checkpoint blob SHA remained `d47f3792e739aa30485443485bc3585924a955c7`; no newer A/B checkpoint appeared.
+- Re-read governance, worklist, canonical B-50 checkpoint, frozen experiment registry, research firewall and latest main commit before work.
+- Main head at cycle start was `86e12fb6fc327c55f74d7ca2c87c3e6b7746bcc3` (`research: B-50 freeze fundamental persistence boundary`).
+- Immediately before this write, canonical checkpoint blob SHA remained `7cc45e7ca0e159988d4727e67525e42854eb225c`; no newer A/B checkpoint appeared.
 
-### Research finding / falsification boundary
-- Priority lane names Fundamental Persistence, but the frozen experiment registry currently defines only R01-R08. Existing monthly-revenue evidence is explicitly context/falsification metadata for R08 and does **not** define a persistence experiment.
-- Registry governance explicitly says future revenue-persistence thresholds/windows require a separately preregistered experiment and cannot be selected after inspecting raw metadata. Governance simultaneously freezes R01-R08 and forbids R09/I08 in the current research phase.
-- Therefore testing arbitrary 2/3/6/12-month revenue persistence windows now would violate the Factor-Zoo/data-snooping guard even if done only in Shadow. This is a real research constraint, not missing engineering work.
-- Safe work under the current freeze is limited to evidence quality/PIT provenance and descriptive coverage of already-defined monthly-revenue metadata; no directionality claim, threshold search, rank/score use, or formal-selection effect is permitted.
-- TPEx/TWSE monthly-revenue source parity from V8.7.11 remains evidence infrastructure, not proof that Fundamental Persistence has alpha. Historical first-known vintage remains a known limitation; current snapshots must not be backfilled into historical decision timestamps.
+### Frozen path-quality evidence map — no new experiment/window
+- R01 is the direct frozen price-path falsification experiment: fixed baseline = scan-date `priorHigh20`; fixed labels = `HELD_3D` only if all next 3 trading-day closes remain >= baseline, otherwise `FAILED_CLOSE_WITHIN_3D` if any closes below. Fixed outcomes are existing D5/D10 plus MFE/MAE; changing 3 days, using lows, or choosing a different baseline is prohibited without a new experiment.
+- R05 is the frozen information-arrival decomposition: next-day Overnight = next open / scan close - 1; Intraday = next close / next open - 1. This can test whether continuation is gap-driven or session-driven without inventing an information-discreteness threshold.
+- R07/R08 provide a frozen attention proxy only: `volumeTodayVsPrev5`, split cross-sectionally by each scan date's median together with `residualSectorRs20`. This is not literal news/search/social attention and must not be relabeled as such. It can falsify whether path quality differs between quiet-underreaction and attention-continuation proxies without adding 1.5x/1.8x/2.0x thresholds.
+- Existing raw descriptive fields can explain mechanisms without creating a new hypothesis: `dailyClosePosition`, `dailyUpperShadowRatio`, `priorHigh20`, `volumeTodayVsPrev5`, `volumeContraction5to20`, `atrPercent`, `volatility20`, `ret20`, `residualSectorRs20`. They are descriptive/context fields unless already consumed by R01-R08; do not mine cutoffs from them.
+- Formal `strategySetupState()` already contains hard A/B thresholds (for example B breakout vs priorHigh20, volume >=1.3x, close-position >=0.65, upper-shadow <=0.35). Those are Formal Core mechanics, not permission to create additional Shadow threshold sweeps. Research must observe/falsify them without changing or multiplying them.
 
-### Data quality / bias checks
-- Fundamental Persistence effect remains UNKNOWN because no preregistered persistence definition exists and prospective independent dates are insufficient.
-- Treating current monthly-revenue snapshots as historical PIT evidence would create look-ahead bias; choosing the best persistence window after seeing returns would create data snooping / Factor Zoo inflation.
-- No new R09, no new threshold/window, no historical Shadow, no BAD/0 coercion, and no formal factor/rank/score change were created.
-- This cycle therefore narrows the research lane instead of manufacturing an apparently productive but invalid persistence backtest.
+### Hypotheses that can be falsified now without R09
+1. **Breakout path integrity**: R01 asks whether 3-day close-hold above priorHigh20 has stable D5/D10/MFE/MAE separation from failed-close cases. Null/反證 = no stable difference, single-date/sector/regime dependence, or redundancy with residual RS/breakout quality.
+2. **Information timing**: R05 asks whether next-day continuation comes mainly from overnight gap or intraday move. Null/反證 = unstable decomposition, extreme-gap dependence, or insufficient independent dates.
+3. **Attention-path mechanism**: R07/R08 ask whether strong residual-RS names with low vs high relative volume have different subsequent paths. Null/反證 = no stable path difference, few-date concentration, regime concentration, or complete explanation by residual RS/breakout quality.
+- These are not three new experiments; they are the existing R01/R05/R07/R08 read through the Price Path Quality / Information Discreteness lens.
 
-### Runtime/readback
-- Direct unauthenticated web reads of `/api/health` and `/api/research/dashboard?days=7` were inaccessible from the available web reader this cycle; no newer trusted Production plan/readback was established. Do not infer a new plan date from absence of access.
-- Existing verified Production baseline is retained until a trusted authorized read supersedes it.
+### Bias / redundancy / maturity controls
+- Selection bias: compare SELECTED with same-date Shadow cohorts separately; do not pool controls or treat stock rows from one date as independent dates.
+- Look-ahead: scan-date path fields must be frozen at scan time; future closes/opens only populate outcomes/labels defined by the registry.
+- Data snooping / Factor Zoo: no new threshold, holding window, baseline, volume multiple, wick cutoff, ATR cutoff or composite path score may be selected after viewing returns.
+- Redundancy: R01 path integrity must be checked against residual RS / breakout quality; R07/R08 already share residualSectorRs20 and volumeTodayVsPrev5, so apparent agreement is not independent evidence.
+- Coverage/zero-pick: zero formal picks remain a valid formal outcome, not a failed experiment. Shadow coverage gaps remain data-quality gaps.
+- Transaction costs: any eventual D5/D10 interpretation must retain existing 30/60/100 bps round-trip stress; gross path separation alone is insufficient.
+- Date clustering/overfit: independent scan date is the evidence unit; current prospective evidence is still far below maturity, so all directionality remains ACCUMULATING/UNKNOWN.
+- Market-source bias: path variables are price/volume derived, but universe/history coverage can still differ by market; do not interpret missing TPEx/TWSE history as BAD.
 
 ### Engineering classification
-- Documentation/checkpoint-only research governance clarification: Class A / no runtime effect.
-- Branch/code/tests/deployment: none this cycle.
-- Formal Core invariants: unchanged by construction.
+- Research mapping/checkpoint only: Class A / no runtime effect.
+- No code, branch, tests, deployment, threshold, rank or formal output changed.
+- Formal Core invariants unchanged by construction.
 
 ## Exact next continuation point
 1. Re-read governance/worklist/checkpoint and latest main SHA; re-check checkpoint blob SHA immediately before write.
-2. If a newer trusted formal scan with >=1 plan exists, primary funnel regains priority: establish plan date/count from Production readback, verify execution-recorder target-date coverage and 500-row non-truncation before interpreting signals, then add same-date `HUMAN_MOMENTUM_SHADOW` observations only on formal SELECTED names.
-3. Otherwise do **not** invent a Fundamental Persistence experiment while R01-R08 are frozen. Advance priority 3 Price Path Quality / Information Discreteness using only already-frozen R01-R08 definitions and existing prospective observations; first map which existing fields/experiments can falsify path-quality hypotheses without creating a new threshold/window.
-4. Preserve Fundamental Persistence as UNKNOWN/context-only until a future explicit experiment-governance decision allows a preregistered definition. Any future persistence proposal must specify PIT vintage, fixed window/metric, null/falsification, redundancy against existing fundamental quality, independent-date maturity, and transaction-cost relevance before data inspection.
-5. Provenance exact-path remains `EXACT_SOURCE_NOT_RUN`; do not repeat byte-transport discovery or implement the B-49 Class B workflow proposal without explicit owner approval.
-6. Only exact byte materialization + execution of helper `801ec274...` with fixture `93147e1d...` may upgrade exact-path to `LOCAL_EXACT_SOURCE_PASS`.
+2. If a newer trusted formal scan with >=1 plan exists, primary funnel regains priority: establish plan date/count from trusted Production readback, verify execution-recorder target-date coverage and 500-row non-truncation before interpreting signals, then add same-date `HUMAN_MOMENTUM_SHADOW` observations only on formal SELECTED names.
+3. Otherwise continue Price Path Quality with **coverage/readiness, not effect hunting**: map whether the existing research endpoint/Shadow rows expose all inputs needed for R01/R05/R07/R08 on prospective dates (`priorHigh20`, scan close, next open/close, residualSectorRs20, volumeTodayVsPrev5, D5/D10/MFE/MAE, regime/scanDate). Missing fields stay UNKNOWN. Do not add fields to shared runtime unless isolated Class A is clearly possible.
+4. If existing rows are sufficient, define a no-new-parameter observational matrix keyed by independent scan date: R01 label coverage, R05 overnight/intraday coverage, R07/R08 proxy-group coverage, plus same-date cohort counts. Do not calculate directional alpha until maturity gates are met.
+5. Preserve Fundamental Persistence as UNKNOWN/context-only; no new persistence experiment/window while R01-R08 are frozen.
+6. Provenance exact-path remains `EXACT_SOURCE_NOT_RUN`; do not repeat byte-transport discovery or implement the B-49 Class B workflow proposal without explicit owner approval.
 7. Do NOT revisit 09/18 execution or infer 09/22 Shadow without new trusted evidence. Signal != fill; `REDUCED_CONFIRMED` requires trusted actual reduced shares.
