@@ -1,7 +1,7 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-53.
-Updated: 2026-09-23 12:11 Asia/Taipei.
+Checkpoint sequence: B-54.
+Updated: 2026-09-23 12:39 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Earlier detailed evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
@@ -47,55 +47,60 @@ Root funnel: `universe -> base/liquidity -> A/B formation -> quality/RR -> SELEC
 - Readiness is counted by independent scan date and cohort. Zero-pick dates remain valid formal observations; row count never substitutes for independent dates.
 - Future OHLC only populates outcomes after observation; no historical snapshot backfill with future information.
 
-## NEW B-53 — Exact counterfactual serializer field-exposure verification
+## B-53 retained — Exact counterfactual serializer field exposure
+- `readShadowCounterfactualResearch()` reads up to 5000 archived Shadow rows, computes outcomes from post-scan history, aggregate coverage/cohort diagnostics, and returns only `recentOutcomes: outcomes.slice(-80)` at row level.
+- Row serializer exposes scanDate/cohort/baseline/horizons/firstDay/breakout/full snapshot. R05 Overnight/Intraday is emitted. R07/R08 residualSectorRs20 and volumeTodayVsPrev5 can pass through snapshot when finite.
+- Regime is stored/read separately through `trade_research_days.market_json`; no per-row regime join exists in the counterfactual serializer.
+- Runtime finite-value coverage remains UNKNOWN until trusted runtime read. Last-80 must never be treated as complete archive coverage.
+
+## NEW B-54 — Readiness integration/deployment boundary audit
 ### Continuity / concurrency
-- Re-read governance, worklist and canonical B-52 checkpoint first. Main head at cycle start was `d705793ccce9c143ce00d1925d1e11219a637de1` (`research: B-52 audit price-path evidence readiness`).
-- Canonical checkpoint blob immediately before this write was re-fetched as `206c00deea668261fb6eb73deddc244b2d709a11`; no newer A/B checkpoint appeared during the cycle.
-- No newer trusted Production readback with >=1 plan was established, so the primary execution funnel was not reinterpreted.
+- Re-read governance, worklist and canonical B-53 checkpoint first. Main tree at this cycle is `70b5d1fc4e18105f167b8f0b267a2d6a147dc7f3`; checkpoint blob immediately before write re-fetched as `89a9fb217567255c7e67c3badde20824ad5b37bb`. No newer checkpoint appeared before this write.
+- No newer trusted Production readback with >=1 formal plan was established in this cycle, so execution-funnel priority was not reinterpreted.
 
-### Positive source verification — what the existing serializer actually emits
-Exact main source `research/counterfactual_v8_7_4.js` establishes the following, without relying on code-search absence:
-- `researchShadowOutcomeForRow()` emits row-level `scanDate`, `symbol`, `name`, `cohort`, `pool`, `exclusionReason`, `baselineClose`, `horizons`, `firstDay`, `breakout`, and the complete parsed `snapshot` object.
-- `horizons.d1/d3/d5/d10/d20`, when mature, each expose `tradingDays`, `asOfDate`, `returnPct`, `mfePct`, `maePct`; immature horizons are `null`.
-- `firstDay` exposes `overnightPct`, `intradayPct`, D1 total return and D1 as-of date. Therefore R05 component exposure is positively verified in the serializer; raw `nextOpen`/`nextClose` are not separately emitted, but the frozen R05 components themselves are.
-- `breakout` exposes `reference`, `activeAtScan`, fixed R01 `status`, `closeFailDate`, and `intradayViolationDate`. The helper obtains the breakout reference first from `snapshot.price.breakoutReferencePriceResearch`, otherwise derives it from `snapshot.price.close` plus `snapshot.price.breakoutDistancePct`. The serializer does **not** expose the three future closes themselves.
-- `recentOutcomes` returns only `outcomes.slice(-80)`. Thus row-level endpoint observability is capped to the latest 80 serialized outcomes even though the D1 query can archive up to 5000 Shadow rows.
-- `coverage.dN` is aggregate mature-row count only. It does not provide per-date/per-cohort readiness and does not explain provenance failure vs insufficient observation.
+### Exact integration path established
+- Exact `scripts/apply_v8_7_4.py` proves `readShadowCounterfactualResearch()` is loaded inside `readResearchDashboard()` and its result is emitted as `counterfactualResearch` in the existing research dashboard payload. Therefore the counterfactual serializer is not merely dead helper code; it is wired into the research dashboard build path.
+- This establishes a trusted code-level route into the dashboard payload, but this cycle did not positively establish the externally callable HTTP path nor obtain an authorized live runtime response. Runtime finite-value counts therefore remain UNKNOWN; no source-code inference is promoted to runtime evidence.
 
-### Positive source verification — R07/R08 fields
-- The same exact source proves the serializer retains the complete parsed `snapshot`, and `researchQuietAttentionStudy()` directly reads `snapshot.price.residualSectorRs20` and `snapshot.volume.volumeTodayVsPrev5`.
-- Therefore the serializer **can emit those two values whenever they were actually present in the archived snapshot**; this removes B-52's serializer-level UNKNOWN.
-- It does **not** prove every prospective Shadow row contains valid finite values. Row-level runtime coverage remains UNKNOWN until a trusted readback is counted; missing/invalid snapshot values must not be coerced to zero.
+### Critical deployment-boundary finding
+- Exact `.github/workflows/v7-cloudflare.yml` shows production deployment triggers on pushes to `main` that touch `RESEARCH_WORKLIST.md`, `research/**`, `tests/**`, the deploy workflow itself, and formal Worker/apply scripts.
+- Consequence: even a logically isolated new file under `research/**` merged to main automatically enters the production deployment workflow. A source-only Class A readiness helper is not operationally deployment-neutral on main.
+- Therefore the B-53 idea of adding an isolated readiness module must remain branch-only unless its promotion path is proven not to alter shared runtime/deployment behavior. Wiring it into `readResearchDashboard()` or changing the shared deploy workflow is Class B proposal-first under governance.
+- No module, schema, endpoint, workflow, Worker, deployment, factor, threshold, rank, signal, capital, push or Formal Core code was changed this cycle.
 
-### Regime exposure remains separate
-- Counterfactual row outcomes do not attach `regime`. `readResearchRegimePersistence()` separately reads `trade_research_days.market_json` and exposes usable regime-day sequences.
-- Therefore the existing counterfactual row serializer alone is insufficient for a per-row R07/R08 `regime` readiness matrix. Joining regime by scanDate would require either a research-side observational join/read or an additive serializer change.
-- Do not infer regime absence in storage: exact source positively shows it exists in the separate research-day path when `market_json.regime` is available.
+### Readiness design tightened without adding an experiment
+If/when implemented in an isolated research branch, the observational matrix should consume existing frozen fields only and report, per scanDate x cohort:
+- `AVAILABLE`: required scan-time field finite/explicit and required outcome mature.
+- `OUTCOME_NOT_MATURE`: scan-time field exists but frozen D1/D3/D5/D10/D20 observation is not yet available.
+- `FIELD_UNKNOWN_OR_MISSING`: archived scan-time field absent/non-finite; never coerce to 0/BAD.
+- `PROVENANCE_BLOCKED`: outcome absence cannot safely be distinguished from parse/history provenance failure.
+It must separately count R01 breakout status/reference, R05 overnight/intraday, R07/R08 residualSectorRs20/volumeTodayVsPrev5, horizons/MFE/MAE, and regime availability by scanDate. It must preserve cohorts and report independent dates, not just rows.
 
-### Readiness consequence / no directional claim
-- R01: row-level scan date/cohort/baseline close/fixed breakout status/reference + D5/D10/MFE/MAE are exposed; raw future closes are not. For the frozen R01 classification, raw future closes are not required to interpret the already-fixed HELD/FAILED/PENDING status, but they would be needed for an audit trail that independently recomputes the label.
-- R05: serializer-level readiness is stronger than B-52 assumed because Overnight/Intraday components are already emitted. Runtime finite-value coverage remains UNKNOWN until readback.
-- R07/R08: factor values are carried through snapshot when present, and D5/D10/D20/MFE/MAE exist when mature; regime is not joined into each outcome row. Runtime finite-value coverage and same-date cross-section sufficiency remain UNKNOWN.
-- Last trusted prospective sample still has zero mature outcomes; all directional alpha remains ACCUMULATING/UNKNOWN. No return ranking or threshold sweep was performed.
+### Bias / falsification / redundancy
+- Selection bias: full-archive readiness cannot be inferred from `recentOutcomes` last-80. A live dashboard read, if obtained, is useful for current finite-value inspection only and must be labeled truncated.
+- Look-ahead: no historical field backfill or future-data substitution permitted.
+- Market-source bias: TWSE/TPEx missingness must remain separately diagnosable where source metadata exists; absence is UNKNOWN.
+- Factor Zoo/data snooping: no R09/I08, threshold sweep, return ranking or new label introduced.
+- Redundancy: R07/R08 still share residual-RS/relative-volume inputs; readiness of both is not two independent pieces of alpha evidence.
+- Date clustering: independent scan date remains the unit; current prospective maturity remains insufficient for directionality.
 
-### Bias / falsification / redundancy checks
-- Selection bias: `recentOutcomes` last-80 truncation can distort cohort/date representation if used as if complete. Any readiness matrix must not silently use that slice as full archive coverage.
-- Look-ahead: outcome function correctly filters history to bars strictly after `scanDate`; scan-time snapshot remains separate from future outcomes.
-- Data snooping / Factor Zoo: no new parameter, window, label or experiment was introduced.
-- Market-source bias: finite-value runtime coverage must eventually be split/checkable by source/market if missingness is material; source code alone cannot prove equal TWSE/TPEx row coverage.
-- Redundancy: R07/R08 continue to share the same residual-RS and relative-volume inputs and are not independent confirmations.
-- Date clustering/overfit: current prospective evidence remains far below independent-date maturity; no directionality claimed.
-- Transaction cost: no alpha/effect estimate was made, so existing 30/60/100 bps stress remains untouched.
+### R01-R08 / I01-I07 impact
+- R01/R05/R07/R08: evidence-observability/readiness semantics clarified only; definitions unchanged.
+- R02/R03/R04/R06 and I01-I07: no definition, evidence, threshold or status change.
+- Fundamental Persistence remains UNKNOWN/context-only.
 
-### Engineering classification / impact
-- Class A documentation/readiness audit only. No runtime code, schema, endpoint, deployment, branch, factor, threshold, rank, signal, capital, push or Formal Core behavior changed.
-- Existing serializer is adequate for many readiness fields but not for a complete per-date/per-cohort matrix because `recentOutcomes` is last-80 and regime is separate. A matrix built from full D1 rows + research-day regime can remain research-only if implemented in a completely isolated module/read path; modifying shared endpoint/runtime wiring may become Class B and requires proposal-first review.
+### Engineering classification / tests / deployment / rollback
+- Classification: Class A documentation/source audit only.
+- Branch/code: none created/changed beyond this durable checkpoint.
+- Tests: not applicable to documentation audit; no runtime claim made.
+- Deployment: none intended from this checkpoint-only update; protected formal outputs unchanged.
+- Rollback: previous checkpoint blob `89a9fb217567255c7e67c3badde20824ad5b37bb` / Git history.
 
 ## Exact next continuation point
-1. Re-read governance/worklist/checkpoint/latest main; re-check checkpoint blob SHA immediately before write.
+1. Re-read governance/worklist/checkpoint/latest main and re-check checkpoint blob SHA before any write.
 2. If a newer trusted formal scan with >=1 plan exists, primary funnel regains priority: establish plan date/count from trusted Production readback, verify execution-recorder target-date coverage and 500-row non-truncation before interpreting signals, then add same-date `HUMAN_MOMENTUM_SHADOW` only on formal SELECTED names.
-3. Otherwise continue B-53 readiness by locating the exact route that returns `readShadowCounterfactualResearch()` and determine whether a trusted authorized runtime read can expose `recentOutcomes` now. If yes, count only finite-value/explicit statuses and label the last-80 limitation; do not treat it as complete archive coverage.
-4. In parallel, inspect whether an existing research-only function already joins `trade_research_shadow_candidates` / counterfactual outcomes with `trade_research_days.market_json.regime`. If no such isolated join exists, design the smallest **Class A isolated observational readiness module** that reads existing tables without schema changes and returns per-date/per-cohort field availability; do not wire/deploy if that requires shared runtime/API changes.
-5. Any readiness module must report AVAILABLE / OUTCOME_NOT_MATURE / FIELD_UNKNOWN_OR_MISSING / PROVENANCE_BLOCKED and preserve separate cohorts. It must not calculate directional alpha until frozen maturity gates are met.
-6. Preserve Fundamental Persistence as UNKNOWN/context-only. Provenance exact-path remains `EXACT_SOURCE_NOT_RUN`; do not repeat byte-transport discovery or implement the B-49 Class B workflow proposal without approval.
-7. Do not revisit 09/18 execution or infer 09/22 Shadow without new trusted evidence. Signal != fill; `REDUCED_CONFIRMED` requires trusted actual reduced shares.
+3. Otherwise locate the exact external HTTP route that serves `readResearchDashboard()` / `counterfactualResearch` from the deployed runtime. If an already-authorized trusted read is possible, inspect `recentOutcomes` only as a truncated live sample and count finite/explicit R01/R05/R07/R08 fields; do not infer full archive coverage.
+4. Inspect existing research modules for any already-implemented observational join of Shadow/counterfactual rows to `trade_research_days.market_json.regime`. Positive source proof required; absence of code-search results is not proof of absence.
+5. Do not add a new `research/**` file to main merely because its logic is Class A: current workflow would trigger production deployment. Any implementation should stay on an isolated branch until deployment neutrality is proven; any shared dashboard/runtime wiring or workflow change is Class B proposal-first.
+6. Preserve readiness states AVAILABLE / OUTCOME_NOT_MATURE / FIELD_UNKNOWN_OR_MISSING / PROVENANCE_BLOCKED and independent-date/cohort counts. No directional alpha until frozen maturity gates are met.
+7. Provenance exact-path remains `EXACT_SOURCE_NOT_RUN`; do not repeat byte-transport discovery or implement the B-49 Class B CI proposal without approval. Do not infer 09/22 Shadow without new trusted evidence; signal != fill; `REDUCED_CONFIRMED` requires trusted actual reduced shares.
