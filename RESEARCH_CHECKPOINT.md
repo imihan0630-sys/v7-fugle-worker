@@ -1,7 +1,7 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-67.
-Updated: 2026-09-23 19:11 Asia/Taipei.
+Checkpoint sequence: B-68.
+Updated: 2026-09-23 19:42 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Earlier detailed evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
@@ -55,41 +55,43 @@ Root funnel: `universe -> base/liquidity -> A/B formation -> quality/RR -> SELEC
 - Therefore TWSE/TPEx composition for existing persisted Shadow rows is frozen UNKNOWN. Do not infer venue from symbol/current listings/current metadata.
 - Adding venue capture to shared scan/storage remains Class B proposal-first and was not implemented.
 
-## NEW B-67 — offline BROAD_CONTROL concentration diagnostic
+## B-67 — offline BROAD_CONTROL concentration diagnostic retained
+- Isolated branch `research/b67-broad-control-concentration` from main; helper accepts supplied rows only and has no runtime/formal dependency.
+- Frozen descriptive outputs: controls/date, cross-date recurrence, stored-industry coverage/concentration, pool x industry, `eligibleDenominator=UNKNOWN`, `venueCoverage=UNKNOWN`.
+- No returns, alpha labels, thresholds, sampler/seed/cap changes, or concentration pass/fail rule.
+- Test status remains `SOURCE_WRITTEN_NOT_EXECUTED`; branch-only, deployment NONE.
+
+## NEW B-68 — duplicate-key denominator semantics hardened
 ### Engineering result
-- Created isolated branch `research/b67-broad-control-concentration` from main `0ba33de334c743250cdb4c82e5213b9b3bdae9be`.
-- Added `research/broad_control_concentration.mjs` and fixture `research/broad_control_concentration.test.mjs`; branch head after fixture commit `251a1dbf0b584552d85a11827285c48089eb5a00`.
-- Helper accepts supplied rows only and filters strictly to `cohort === BROAD_CONTROL`; it does not fetch runtime data and has no formal/runtime dependency.
-- Outputs: effective controls/date, distinct symbols/date, within-date duplicate rows, industry known/unknown and non-null coverage, largest-industry share among known industries, pool x industry cross-tab, cross-date repeated symbols/max appearances, plus explicit `eligibleDenominator=UNKNOWN` and `venueCoverage=UNKNOWN`.
-- Industry comes only from stored `snapshot.sector.name` (object or persisted snapshot_json). Malformed/missing snapshot industry stays UNKNOWN.
-- No returns, alpha labels, thresholds, sampler changes, alternate hash seed/cap, or pass/fail concentration rule were added.
+- Source-audited B-67 denominator behavior and identified that raw same-date duplicate `scan_date+symbol` rows could otherwise inflate `effectiveControls`, industry coverage, pool x industry counts, and cross-date appearance counts.
+- Updated branch helper so same-date duplicate keys are explicit data-quality anomalies: `DUPLICATE_SCAN_DATE_SYMBOL` plus `duplicateSymbols`, `duplicateRowsBeyondFirst`, and top-level `datesWithDuplicateKeys`.
+- Duplicate keys are excluded entirely from concentration denominators for that date rather than double-counted or resolved by arbitrarily choosing one conflicting row. `observedRows` and `uniqueSymbolKeys` remain visible; `effectiveControls` now means unambiguous analyzable controls.
+- Cross-date symbol recurrence counts each symbol at most once per scan date, so a storage duplicate cannot masquerade as repeated-date sampling.
+- Branch head after helper + falsification fixture: `88fcd9cf4e407ded46daf5b00cdfa44ea811f18d`.
 
 ### Supporting / falsifying interpretation
-- Support: the diagnostic now makes the B-63/B-64 structural concerns measurable when trusted persisted rows become available, without conditioning on future returns.
-- Falsifier/limitation: source code and synthetic fixture do **not** establish empirical concentration, industry completeness, or representativeness of real BROAD_CONTROL rows. Those remain UNKNOWN until trusted prospective rows are supplied/read.
-- Repeated symbols are descriptive only; recurrence is not automatically BAD because deterministic date-varying sampling can legitimately reselect an eligible survivor.
-- Largest-industry share uses known-industry rows as denominator and separately reports unknown count, preventing missing industry from silently becoming another sector.
+- Support: this preserves independent-date/control semantics and prevents malformed storage duplication from creating false concentration or recurrence evidence.
+- Falsifier/limitation: excluding an ambiguous duplicate key does not prove which duplicate was correct; it deliberately sacrifices that key rather than imputing truth. Real duplicate prevalence remains UNKNOWN without trusted persisted rows.
+- No pass/fail duplicate threshold was introduced. Any duplicate is surfaced as a data-quality warning, not automatically interpreted as strategy failure.
 
 ### Bias / overfit / data-quality audit
-- Selection bias remains explicit: this diagnoses an eligible-survivor control, not the full universe.
-- Look-ahead guarded: no current metadata joins; only persisted scan-time industry is used.
-- Market-source bias explicit: venue remains UNKNOWN.
-- Data snooping/Factor Zoo/overfit guarded: no returns, factor, window, threshold, seed, cap or experiment added.
-- Coverage/date-cluster: independent scan date is retained as the primary unit; cross-date symbol recurrence is reported separately.
-- Transaction cost/redundancy/zero-pick semantics unchanged; this diagnostic cannot establish alpha or executability.
+- Selection bias unchanged: BROAD_CONTROL remains eligible-survivor control, not full universe.
+- Look-ahead unchanged: only persisted scan-time snapshot industry is used; venue remains UNKNOWN.
+- Data snooping/Factor Zoo/overfit: no return, factor, window, threshold, seed, cap, or experiment added.
+- Date clustering improved semantically: recurrence is now date-presence, not raw-row count.
+- R02 interpretation/readiness only; R01/R03-R08 and I01-I07 unchanged. No R09/I08.
 
 ### Tests / deployment
-- Fixture source contains assertions for cohort filtering, two independent dates, repeated symbol detection, industry known/unknown behavior, malformed snapshot handling, largest-industry share, and venue/eligible-denominator UNKNOWN semantics.
-- Exact execution was not available in this run; status is **SOURCE_WRITTEN_NOT_EXECUTED**, not PASS.
-- Branch-only. No main Worker/schema/workflow/runtime/Formal Core/monitor/push change; deployment NONE.
-- R02 interpretation/readiness only; R01/R03-R08 and I01-I07 unchanged. No R09/I08.
+- Fixture now injects a conflicting duplicate `2026-09-22 + 4444` with different pool/industry and asserts warning, exclusion from effective denominator/cross-tab, and one-date recurrence semantics.
+- Exact branch execution still unavailable in this run; status remains **SOURCE_WRITTEN_NOT_EXECUTED**, not PASS.
+- Branch-only. No main Worker/schema/workflow/runtime/Formal Core/monitor/push change. Deployment NONE.
 
 ## Exact next continuation point
 1. Re-read governance/worklist/checkpoint/latest main and re-check checkpoint SHA before any write.
 2. If a newer trusted formal scan has >=1 plan, immediately restore primary funnel priority: establish plan date/count from trusted Production readback; verify execution-recorder target-date coverage and 500-row non-truncation before interpreting signals; then add same-date `HUMAN_MOMENTUM_SHADOW` only on formal SELECTED names.
 3. Keep B-62 liquidity-control implementation proposal-only unless owner explicitly approves the Class B shared-runtime/storage change.
 4. Do not repeat listing-venue discovery; existing Shadow TWSE/TPEx coverage remains UNKNOWN unless a genuinely new immutable source appears.
-5. Continue B-67 by source-auditing the offline diagnostic for denominator semantics and duplicate-row behavior. In particular decide whether same-date duplicate `scan_date+symbol` rows should be surfaced as a data-quality warning rather than silently counted as controls; do not invent a pass/fail threshold.
-6. If a trusted row readback becomes available, apply the frozen diagnostic descriptively only; do not interpret concentration as alpha and do not tune sampler/seed/cap from the result.
+5. B-67/B-68 diagnostic semantics are now frozen. Do not add more edge cases unless trusted rows reveal a real failure. If trusted persisted BROAD_CONTROL rows become readable, apply the diagnostic descriptively only; duplicate keys are data-quality warnings, not alpha evidence.
+6. Next research lane if no trusted row readback/new formal plan: advance priority 4 Negative Evidence/Falsification by auditing existing R01-R08 registry for pre-registered falsifiers that can be evaluated without mature future returns; do not create R09 or new thresholds/windows.
 7. Keep diagnostic branch-only; do not wire to main/runtime until deployment neutrality is proven. Test remains `SOURCE_WRITTEN_NOT_EXECUTED` until exact branch source is actually run.
 8. Provenance exact-path remains `EXACT_SOURCE_NOT_RUN`. Signal != fill; `REDUCED_CONFIRMED` requires trusted actual reduced shares.
