@@ -490,9 +490,13 @@ replace_once(
 )
 
 replace_once(
-    '''      const hybrid=Array.isArray(latest.hybridStocks)?latest.hybridStocks:[];''',
-    '''      const hybrid=Array.isArray(latest.hybridStocks)?latest.hybridStocks:[];
-      const watch=Array.isArray(latest.hybridWatchStocks)?latest.hybridWatchStocks:[];''',
+    '''      const formal=Array.isArray(latest.stocks)?latest.stocks:[];
+      const hybrid=Array.isArray(latest.hybridStocks)?latest.hybridStocks:[];
+      const payload=buildDailySelectionPayload(latest.scanDate,formal,latest.diagnostics||{});''',
+    '''      const formal=Array.isArray(latest.stocks)?latest.stocks:[];
+      const hybrid=Array.isArray(latest.hybridStocks)?latest.hybridStocks:[];
+      const watch=Array.isArray(latest.hybridWatchStocks)?latest.hybridWatchStocks:[];
+      const payload=buildDailySelectionPayload(latest.scanDate,formal,latest.diagnostics||{});''',
     "resend watch read"
 )
 replace_once(
