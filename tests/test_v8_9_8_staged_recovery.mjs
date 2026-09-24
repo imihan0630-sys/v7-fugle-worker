@@ -4,20 +4,23 @@ import {readFile} from 'node:fs/promises';
 const source=await readFile(process.env.V7_TEST_WORKER_PATH || new URL('../Worker.js',import.meta.url),'utf8');
 
 assert.match(source,/const VERSION = "8\.9\.8-staged-recovery";/);
-assert.match(source,/const selectionOnly = options\?\.selectionOnly === true && !dryRun;/);
-assert.match(source,/SELECTION_ONLY_RECOVERY/);
-assert.match(source,/selectionPersisted:/);
-assert.match(source,/url\.pathname === "\/api\/scan\/deliver"/);
-assert.match(source,/分段恢復僅接受管理員授權/);
-assert.match(source,/enrichThreePoolDailyPayload\(payload,formal,hybrid,latest\.strategyOverlap\|\|null,watch\)/);
-assert.match(source,/sendTo3Min\(latest\.threeMinPayload/);
-assert.match(source,/await env\.STOCKS_KV\.put\(LAST_SCAN_KEY,JSON\.stringify\(updated\)/);
-assert.match(source,/body\.selectionOnly===true/);
+assert.match(source,/url\.pathname === "\/api\/scan\/stage-selection"/);
+assert.match(source,/Staged historical recovery from verified dry-run/);
+assert.match(source,/runAfterMarketScan\(env,scheduledTime,\{dryRun:true\}\)/);
+assert.match(source,/selectionPersisted:true/);
+assert.match(source,/STAGED_RECOVERY_PENDING_DELIVERY/);
+assert.match(source,/OPEN_POSITION_PROTECTED/);
+assert.match(source,/archiveStrategyPools\(env,date/);
+assert.match(source,/archiveHybridWatchCandidates\(env,date,watch\)/);
+assert.match(source,/POST \/api\/daily-report\/resend/);
+assert.match(source,/externalPlanAccepted:false/);
+assert.match(source,/dailyDeliveryState:"PENDING"/);
 
 console.log(JSON.stringify({
   ok:true,
   version:'8.9.8-staged-recovery',
-  selectionStage:true,
-  deliveryStage:true,
+  verifiedDryRunSelection:true,
+  formalPlanPersistence:true,
+  deliveryDeferred:true,
   formalSelectionRulesChanged:false
 }));
