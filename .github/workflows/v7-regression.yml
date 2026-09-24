@@ -67,6 +67,7 @@ jobs:
           python3 scripts/apply_v8_9_1.py
           python3 scripts/apply_v8_9_2.py
           python3 scripts/apply_v8_9_3.py
+          python3 scripts/apply_v8_9_4.py
           # V8.9.3 Hybrid WATCH regression contract
       - name: Syntax and offline behavior regression
         env:
@@ -75,7 +76,7 @@ jobs:
           set -euo pipefail
           cp Worker.js /tmp/v7-worker.mjs
           node --check /tmp/v7-worker.mjs
-          grep -F 'const VERSION = "8.9.3-hybrid-watch-layer";' Worker.js
+          grep -F 'const VERSION = "8.9.4-hybrid-watch-consensus";' Worker.js
           grep -F 'CREATE TABLE IF NOT EXISTS trade_research_execution_snapshots' Worker.js
           grep -F 'RESEARCH_EXECUTION_RECORDER_FAIL_OPEN' Worker.js
           grep -F '35 15 * * MON-FRI' Worker.js
@@ -169,6 +170,9 @@ jobs:
           grep -F 'TRIGGERED_WAITLIST' Worker.js
           grep -F 'url.pathname === "/api/hybrid-watch-performance"' Worker.js
           grep -F 'WATCH不占3席、不占20萬' Worker.js
+          grep -F 'Smart Money共識形成中' Worker.js
+          grep -F 'hybridSmartMoneyForming' Worker.js
+          grep -F 'hybridWatchAudit' Worker.js
       - name: V8.9.3 Hybrid WATCH dry-run diagnostic
         if: contains(github.event.head_commit.message, '[hybrid-watch-diagnostic]')
         env:
