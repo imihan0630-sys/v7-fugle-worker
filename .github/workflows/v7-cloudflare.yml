@@ -362,6 +362,7 @@ jobs:
           node tests/test_v8_8_1_execution_coverage.mjs
           node tests/test_v8_8_2_zero_selection_push.mjs
           node tests/test_v8_9_7_recovery_hardening.mjs
+          node tests/test_v8_9_8_staged_recovery.mjs
           node tests/test_v8_9_0_three_pool_hybrid_shadow.mjs
           node tests/test_v8_9_1_three_pool_dashboard.mjs
           node tests/github_plan_mirror.mjs self-test
