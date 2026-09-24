@@ -71,6 +71,7 @@ jobs:
           python3 scripts/apply_v8_9_5.py
           python3 scripts/apply_v8_9_6.py
           python3 scripts/apply_v8_9_7.py
+          python3 scripts/apply_v8_9_8.py
           # V8.9.3 Hybrid WATCH regression contract
       - name: Syntax and offline behavior regression
         env:
@@ -79,7 +80,7 @@ jobs:
           set -euo pipefail
           cp Worker.js /tmp/v7-worker.mjs
           node --check /tmp/v7-worker.mjs
-          grep -F 'const VERSION = "8.9.7-recovery-hardening";' Worker.js
+          grep -F 'const VERSION = "8.9.8-staged-recovery";' Worker.js
           grep -F 'CREATE TABLE IF NOT EXISTS trade_research_execution_snapshots' Worker.js
           grep -F 'RESEARCH_EXECUTION_RECORDER_FAIL_OPEN' Worker.js
           grep -F '35 15 * * MON-FRI' Worker.js
