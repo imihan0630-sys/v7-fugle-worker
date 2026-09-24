@@ -1,9 +1,9 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-122.
-Updated: 2026-09-24 22:41 Asia/Taipei.
+Checkpoint sequence: B-123.
+Updated: 2026-09-24 23:11 Asia/Taipei.
 
-> Canonical cursor for both A/B research schedules. Detailed B-01..B-121 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
+> Canonical cursor for both A/B research schedules. Detailed B-01..B-122 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
 ## Governance / immutable boundary
 - Formal Core **LOCKED**. No autonomous A/B, ranking, thresholds, Top6/3+3/3+3+3, capital, entry/add/reduce/sell/stop, monitoring or push changes.
@@ -26,45 +26,22 @@ Updated: 2026-09-24 22:41 Asia/Taipei.
 - B-115 source-order inspection localized run `35987921399` to the multi-period MOPS financial fetch loop before FINANCIAL ingestion; later EPS-review/recovery stages were never reached.
 - B-116 localized the outstanding timeout to the paired 2025Q2 MOPS batch after both 2026Q2 TWSE/TPEx pages parsed successfully. Exact market culprit remains UNKNOWN. The first ~45s abort despite retry intent remains a retry/exception-observability discrepancy, not proof that retries were skipped.
 
-## B-117..B-121 — waiting-data recency checks
-- Repeated repository/Actions checks through 22:11 Taipei found no official-market-data run later than `35987921399` and no trusted completed recovery/Formal scan for 2026-09-24.
+## B-117..B-123 — waiting-data recency checks
+- Repeated repository/Actions checks through 23:11 Taipei found no official-market-data run later than `35987921399` and no trusted completed recovery/Formal scan for 2026-09-24.
+- At B-123 run start, latest main commit was B-122 `0b76f372200701a9229ad326fc2441295e0183a3`; no newer A/B checkpoint was present.
 - No new durable prospective Top5 day row was established.
-- Therefore 2026-09-24 remained prerequisite-failed/UNKNOWN, not a zero-pick; completed Formal zero-pick denominator remained exactly 2 independent dates (9/22, 9/23).
-- R03/R06 remained WAITING_DATA. Repeated scheduler observations are not independent market samples and do not increase sample size.
-- `OFFICIAL_QUALITY_FAILURE_ROOT_CAUSE` remained `TIMEOUT_IN_2025Q2_MOPS_PAIRED_BATCH_BEFORE_PARSE_COMPLETION`; exact TWSE/TPEx attribution remained UNKNOWN.
+- Therefore 2026-09-24 remains prerequisite-failed/UNKNOWN, not a zero-pick; completed Formal zero-pick denominator remains exactly 2 independent dates (9/22, 9/23).
+- R03/R06 remains WAITING_DATA. Repeated scheduler observations are not independent market samples and do not increase sample size.
+- `OFFICIAL_QUALITY_FAILURE_ROOT_CAUSE` remains `TIMEOUT_IN_2025Q2_MOPS_PAIRED_BATCH_BEFORE_PARSE_COMPLETION`; exact TWSE/TPEx attribution remains UNKNOWN.
 - `TPEX_ZERO_ROOT_CAUSE=UNKNOWN` unchanged.
-
-## B-122 — 22:41 recency check; no material state change
-### Fresh evidence
-- Re-read latest main `RESEARCH_ENGINEERING_GOVERNANCE.md`, `RESEARCH_WORKLIST.md`, B-121 checkpoint and latest main commit before continuation.
-- Latest main commit at run start was B-121 `1791f188dce3a1760af79704d7197dd10f02dfca`; no newer A/B checkpoint was present.
-- Re-checked repository Actions at 22:41 Taipei. The newest visible official-market-data run remains `35987921399`, completed failure at 18:36 Taipei; no later trusted official recovery/Formal scan is visible yet.
-- No new durable prospective Top5 day row was established in this cycle.
-- Re-read checkpoint immediately before write; blob remained `27186eb4cf5da02e0ae3a08047e937da338cb862`, so no concurrent A/B checkpoint update required merging.
-
-### Interpretation / falsification
-- No new independent market-date evidence exists. 2026-09-24 remains prerequisite-failed/UNKNOWN, not a zero-pick; completed Formal zero-pick denominator remains exactly 2 dates (9/22, 9/23).
-- R03/R06 remains WAITING_DATA; repeated scheduler observations do not increase independent sample size.
-- `OFFICIAL_QUALITY_FAILURE_ROOT_CAUSE` remains `TIMEOUT_IN_2025Q2_MOPS_PAIRED_BATCH_BEFORE_PARSE_COMPLETION`; exact TWSE/TPEx culprit remains UNKNOWN.
-- `TPEX_ZERO_ROOT_CAUSE=UNKNOWN` unchanged; no new artifact/log/export class appeared.
-
-### Bias / governance controls
-- No infrastructure failure was coerced into a negative trading signal or zero-pick observation.
-- No duplicate-date inflation, market-source attribution guess, look-ahead, historical Shadow fabrication, post-hoc factor/window/threshold/split, selection-bias or data-snooping promotion.
-- Factor Zoo, overfit, coverage, transaction-cost, date-cluster and redundancy controls unchanged.
-
-### R01-R08 / I01-I07 impact
-- R01-R08: no new mature outcome evidence; readiness unchanged / data-quality constrained.
-- I01-I07: no new intervention experiment and no causal performance inference.
-
-### Engineering classification / branch / tests / deployment
-- Read-only repository/Actions inspection + checkpoint only.
-- No Worker/workflow/D1/KV/source-routing/Formal/Hybrid WATCH/monitoring/notification change; no deployment.
+- No infrastructure failure was coerced into a negative trading signal or zero-pick observation; no duplicate-date inflation, look-ahead, historical Shadow fabrication, post-hoc factor/window/threshold/split, selection-bias or data-snooping promotion.
+- Factor Zoo, overfit, coverage, transaction-cost, date-cluster and redundancy controls unchanged. R01-R08 have no new mature outcome evidence; I01-I07 have no new intervention evidence.
+- Read-only repository/Actions inspection + checkpoint only; no Worker/workflow/D1/KV/source-routing/Formal/Hybrid WATCH/monitoring/notification change and no deployment.
 - Any timeout/retry/concurrency or per-request logging change remains Class B proposal-first.
 
 ## Exact next continuation point
 1. Re-read governance/worklist/checkpoint/latest main; re-check checkpoint SHA before write and merge newer A/B progress if present.
-2. First check for any official-market-data run after `35987921399`, especially later 23:25/23:45 Taipei schedules. Only a trusted completed recovery/Formal scan can classify 9/24.
+2. First check for any official-market-data run after `35987921399`, especially the later 23:25/23:45 Taipei windows. Only a trusted completed recovery/Formal scan can classify 9/24.
 3. If a later trusted scan has >=1 Formal plan, immediately restore funnel priority: verify execution-recorder target-date coverage and 500-row non-truncation before signal interpretation; same-date `HUMAN_MOMENTUM_SHADOW` remains research-only on Formal SELECTED names.
 4. If a later completed scan is zero-pick, only then extend completed zero-pick denominator from 2 to 3.
 5. If quality sync fails again, inspect plaintext for whether 2026Q2 batch completes and whether any 2025Q2 member logs. Compare timing against the 45s boundary. Do not infer TWSE/TPEx culprit from concurrent log order or missing sibling logs.
