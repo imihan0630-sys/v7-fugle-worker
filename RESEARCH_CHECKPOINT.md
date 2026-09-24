@@ -1,9 +1,9 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-123.
-Updated: 2026-09-24 23:11 Asia/Taipei.
+Checkpoint sequence: B-124.
+Updated: 2026-09-24 23:44 Asia/Taipei.
 
-> Canonical cursor for both A/B research schedules. Detailed B-01..B-122 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
+> Canonical cursor for both A/B research schedules. Detailed B-01..B-123 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
 ## Governance / immutable boundary
 - Formal Core **LOCKED**. No autonomous A/B, ranking, thresholds, Top6/3+3/3+3+3, capital, entry/add/reduce/sell/stop, monitoring or push changes.
@@ -28,24 +28,33 @@ Updated: 2026-09-24 23:11 Asia/Taipei.
 
 ## B-117..B-123 — waiting-data recency checks
 - Repeated repository/Actions checks through 23:11 Taipei found no official-market-data run later than `35987921399` and no trusted completed recovery/Formal scan for 2026-09-24.
-- At B-123 run start, latest main commit was B-122 `0b76f372200701a9229ad326fc2441295e0183a3`; no newer A/B checkpoint was present.
 - No new durable prospective Top5 day row was established.
-- Therefore 2026-09-24 remains prerequisite-failed/UNKNOWN, not a zero-pick; completed Formal zero-pick denominator remains exactly 2 independent dates (9/22, 9/23).
-- R03/R06 remains WAITING_DATA. Repeated scheduler observations are not independent market samples and do not increase sample size.
-- `OFFICIAL_QUALITY_FAILURE_ROOT_CAUSE` remains `TIMEOUT_IN_2025Q2_MOPS_PAIRED_BATCH_BEFORE_PARSE_COMPLETION`; exact TWSE/TPEx attribution remains UNKNOWN.
+- Therefore 2026-09-24 remained prerequisite-failed/UNKNOWN, not a zero-pick; completed Formal zero-pick denominator remained exactly 2 independent dates (9/22, 9/23).
+- R03/R06 remained WAITING_DATA. Repeated scheduler observations are not independent market samples and do not increase sample size.
 - `TPEX_ZERO_ROOT_CAUSE=UNKNOWN` unchanged.
 - No infrastructure failure was coerced into a negative trading signal or zero-pick observation; no duplicate-date inflation, look-ahead, historical Shadow fabrication, post-hoc factor/window/threshold/split, selection-bias or data-snooping promotion.
-- Factor Zoo, overfit, coverage, transaction-cost, date-cluster and redundancy controls unchanged. R01-R08 have no new mature outcome evidence; I01-I07 have no new intervention evidence.
+- Factor Zoo, overfit, coverage, transaction-cost, date-cluster and redundancy controls unchanged. R01-R08 had no new mature outcome evidence; I01-I07 had no new intervention evidence.
 - Read-only repository/Actions inspection + checkpoint only; no Worker/workflow/D1/KV/source-routing/Formal/Hybrid WATCH/monitoring/notification change and no deployment.
-- Any timeout/retry/concurrency or per-request logging change remains Class B proposal-first.
+
+## B-124 — 23:37 official sync changed the failure locus
+- New scheduled official-market-data run `36021494403` started 2026-09-24 23:37 Taipei and failed in quality synchronization; same-day recovery was skipped.
+- This run falsifies the prior assumption that the active failure still occurs in the 2025Q2 paired MOPS batch. All financial-period pages completed: 2026Q2 TWSE=1049, TPEx=884; 2025Q2 TPEx=884, TWSE=1045; 2026Q1 TPEx=882, TWSE=1046; 2025Q1 TPEx=863, TWSE=1022. FINANCIAL ingestion then succeeded with count=1882.
+- The new terminal error occurred ~18.25s after FINANCIAL cache success: `Unexpected token '<', "<!DOCTYPE "... is not valid JSON`.
+- Source-order inspection shows the immediate next operation after FINANCIAL ingestion is POST `/api/scan-preview` with `{dryRun:true, epsReviewOnly:true, marketDate}`, followed immediately by `await reviewResponse.json()`. No EPS-review success log appeared before the JSON parse exception.
+- Therefore `OFFICIAL_QUALITY_FAILURE_ROOT_CAUSE` is revised from the older timeout locus to `POST_FINANCIAL_EPS_REVIEW_RESPONSE_NON_JSON_HTML_OR_EQUIVALENT_BEFORE_REVIEW_PARSE`; exact HTTP status/body/source of the HTML remains UNKNOWN because the script parses JSON before logging status/content-type/body context.
+- This is strong evidence that the MOPS multi-period financial fetch path itself recovered on this run; it is not evidence that the overall quality sync or Formal scan completed.
+- 9/24 remains prerequisite-failed/UNKNOWN and is still **not** a third zero-pick date. Completed Formal zero-pick denominator remains exactly 2 independent dates (9/22, 9/23).
+- Bias controls unchanged: infrastructure/HTML response is not BAD/0 and not a negative market signal; no look-ahead, duplicate-date inflation, historical Shadow fabrication, selection-bias, market-source-bias, Factor Zoo or threshold tuning introduced.
+- R01-R08: no new mature outcome evidence. R03/R06 remain WAITING_DATA. I01-I07: no new intervention evidence.
+- Engineering classification: any change to shared scan-preview/runtime response handling or retry behavior is Class B proposal-first. No Worker/workflow/runtime/Formal/Hybrid WATCH/monitoring/notification change and no deployment in B-124.
 
 ## Exact next continuation point
 1. Re-read governance/worklist/checkpoint/latest main; re-check checkpoint SHA before write and merge newer A/B progress if present.
-2. First check for any official-market-data run after `35987921399`, especially the later 23:25/23:45 Taipei windows. Only a trusted completed recovery/Formal scan can classify 9/24.
+2. First check for an official-market-data run later than `36021494403`. Only a trusted completed recovery/Formal scan can classify 9/24.
 3. If a later trusted scan has >=1 Formal plan, immediately restore funnel priority: verify execution-recorder target-date coverage and 500-row non-truncation before signal interpretation; same-date `HUMAN_MOMENTUM_SHADOW` remains research-only on Formal SELECTED names.
 4. If a later completed scan is zero-pick, only then extend completed zero-pick denominator from 2 to 3.
-5. If quality sync fails again, inspect plaintext for whether 2026Q2 batch completes and whether any 2025Q2 member logs. Compare timing against the 45s boundary. Do not infer TWSE/TPEx culprit from concurrent log order or missing sibling logs.
-6. If a later failure again terminates on the first ~45s boundary despite `publicSource()` retry intent, prepare a Class B proposal for per-request `{market,year,quarter,attempt}` context and explicit retry outcome logging; proposal only, no main/runtime change without approval.
+5. If the same non-JSON failure repeats after FINANCIAL success, inspect run plaintext and source/runtime contract around `/api/scan-preview`: record HTTP status/content-type if available, distinguish Cloudflare/route HTML from JSON API payload, and do not infer cause from `<!DOCTYPE` alone.
+6. If durable evidence remains insufficient, prepare a Class B proposal for response-contract observability around EPS-review (`status`, `content-type`, bounded body prefix, endpoint/mode, attempt) plus explicit retry outcome logging; proposal only, no main/runtime change without approval.
 7. If a new durable prospective Top5 day row exists, continue R03/R06 frequency with independent date count, valid Top5-set count, `未分類` rate and malformed/UNKNOWN count; no repair/re-sort/de-dup/tie inference.
 8. If neither completed Formal scan nor new Top5 row exists, preserve WAITING_DATA; do not duplicate observations.
 9. Keep `TPEX_ZERO_ROOT_CAUSE=UNKNOWN`; B-101..B-104 provenance search remains exhausted unless a genuinely new artifact/log/export class appears.
