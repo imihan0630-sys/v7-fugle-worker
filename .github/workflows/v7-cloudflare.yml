@@ -53,6 +53,7 @@ on:
       - "scripts/apply_v8_9_3.py"
       - "scripts/apply_v8_9_4.py"
       - "scripts/apply_v8_9_5.py"
+      - "scripts/apply_v8_9_6.py"
       - "RESEARCH_WORKLIST.md"
       - "research/**"
       - "data/v7_formal_scan_backfill.json"
@@ -225,6 +226,9 @@ jobs:
       - name: Apply V8.9.5 Hybrid WATCH directional consensus
         run: python3 scripts/apply_v8_9_5.py
 
+      - name: Apply V8.9.6 Hybrid WATCH detailed audit
+        run: python3 scripts/apply_v8_9_6.py
+
       - name: Syntax check Worker.js
         run: |
           set -euo pipefail
@@ -234,7 +238,7 @@ jobs:
       - name: Validate V8.7.12 production contract
         run: |
           set -euo pipefail
-          grep -F 'const VERSION = "8.9.5-hybrid-watch-directional";' Worker.js
+          grep -F 'const VERSION = "8.9.6-hybrid-watch-audit";' Worker.js
           grep -F 'CREATE TABLE IF NOT EXISTS trade_research_execution_snapshots' Worker.js
           grep -F 'url.pathname==="/api/research/execution-recorder"' Worker.js
           grep -F 'RESEARCH_EXECUTION_RECORDER_FAIL_OPEN' Worker.js
@@ -308,6 +312,8 @@ jobs:
           grep -F 'hybridWatchAudit' Worker.js
           grep -F 'smartMoneyDirectional' Worker.js
           grep -F 'entry<ma20*0.94' Worker.js
+          grep -F 'nearestUpsidePct' Worker.js
+          grep -F 'sectorBreadth' Worker.js
 
       - name: Behavioral regression (no real pushes or writes)
         env:
