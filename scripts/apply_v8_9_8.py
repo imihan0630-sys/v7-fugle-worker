@@ -36,20 +36,19 @@ scan_core=text.find("async function runAfterMarketScanCore(")
 bridge_start=text.find("    bridge = await persistPlanBridge(",scan_core)
 if bridge_start<0:
     raise SystemExit("defer external delivery: bridge start not found")
-report_marker='    if (report.sent) await env.STOCKS_KV.put(reportKey, JSON.stringify(report), { expirationTtl: 14 * 86400 });'
-report_end=text.find(report_marker,bridge_start)
-if report_end<0:
-    raise SystemExit("defer external delivery: report end not found")
-report_end += len(report_marker)
-original=text[bridge_start:report_end]
+history_marker="\n  }\n\n  const historySeedState"
+history_pos=text.find(history_marker,bridge_start)
+if history_pos<0:
+    raise SystemExit("defer external delivery: history boundary not found")
+original=text[bridge_start:history_pos]
 indented="\n".join("  "+line for line in original.split("\n"))
 deferred='''    if (!selectionOnly) {
 '''+indented+'''
     } else {
-      bridge = {sent:false,verified:false,simulated:false,deferred:true,reason:"SELECTION_ONLY_RECOVERY"};
+      bridge = {sent:false,verified:false,simulated:false,deferred:true,provider:"DEFERRED",reason:"SELECTION_ONLY_RECOVERY"};
       report = {sent:false,simulated:false,deferred:true,reason:"SELECTION_ONLY_RECOVERY"};
     }'''
-text=text[:bridge_start]+deferred+text[report_end:]
+text=text[:bridge_start]+deferred+text[history_pos:]
 
 replace_once(
     '''      complete: !dryRun && saved.verified === true && bridge.verified === true && bridge.simulated !== true && report.sent === true && report.simulated !== true''',
