@@ -1,0 +1,44 @@
+name: V8 One-Time Preview 2026-09-24
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/v8-preview-20260924-once.yml"
+permissions:
+  contents: read
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Read-only 3+3+3 preview for 2026-09-24
+        env:
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+        run: |
+          node - <<'NODE'
+          const origin='https://fugle-test.imihan0630.workers.dev';
+          const response=await fetch(origin+'/api/scan-preview',{
+            method:'POST',
+            headers:{'x-admin-token':process.env.V7_ADMIN_TOKEN,'content-type':'application/json','accept':'application/json'},
+            body:JSON.stringify({dryRun:true,marketDate:'2026-09-24'}),
+            signal:AbortSignal.timeout(180000)
+          });
+          const contentType=String(response.headers.get('content-type')||'');
+          const text=await response.text();
+          console.log(JSON.stringify({status:response.status,contentType,bodyPrefix:text.slice(0,240).replace(/\s+/g,' ')}));
+          if(!response.ok) throw new Error('preview HTTP '+response.status);
+          const result=JSON.parse(text);
+          console.log(JSON.stringify({
+            scanDate:result.scanDate,
+            selectedCount:result.selectedCount,
+            stocks:result.stocks,
+            hybridSelectedCount:result.hybridSelectedCount,
+            hybridStocks:result.hybridStocks,
+            hybridWatch:result.diagnostics?.hybridWatch,
+            strategyOverlap:result.strategyOverlap,
+            dryRun:result.dryRun
+          }));
+          NODE
