@@ -1,16 +1,16 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-108.
-Updated: 2026-09-24 15:13 Asia/Taipei.
+Checkpoint sequence: B-109.
+Updated: 2026-09-24 15:43 Asia/Taipei.
 
-> Canonical cursor for both A/B research schedules. Detailed B-01..B-107 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
+> Canonical cursor for both A/B research schedules. Detailed B-01..B-108 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
 ## Governance / immutable boundary
 - Formal Core **LOCKED**. No autonomous A/B, ranking, thresholds, Top6/3+3/3+3+3, capital, entry/add/reduce/sell/stop, monitoring or push changes.
 - R01-R08 and I01-I07 frozen; no R09/I08. Prospective Shadow starts 2026-09-21; no fabricated historical Shadow. Missing evidence = UNKNOWN, never BAD/0.
 - GitHub/runtime evidence overrides chat memory. Production readback overrides repository/version strings.
 
-## Durable retained state through B-107
+## Durable retained state through B-108
 - Latest trusted owner-approved architecture remains 3+3+3: `FORMAL_GENERAL`, `FORMAL_THOUSAND`, `HYBRID_THOUSAND_SHADOW`, each ring-fenced NT$200,000; Hybrid is Shadow-only and cannot silently become Formal BUY eligibility.
 - B-62 `PRE_BASE_LIQUIDITY_CONTROL` remains Class B proposal-only. Signal observation != brokerage fill; `REDUCED_CONFIRMED` requires trusted actual reduced shares.
 - B-73..B-75 sequence-readiness helper remains SOURCE_WRITTEN_NOT_EXECUTED; journal adjacency != exchange-session adjacency; no historical calendar/Shadow backfill.
@@ -21,20 +21,20 @@ Updated: 2026-09-24 15:13 Asia/Taipei.
 - V8.9.6 Production activation is durably proven: V8.9.5 at 2026-09-24T00:13:05Z and V8.9.6 at 00:13:21Z; the 16-second transition window remains UNKNOWN for observations without self-versioning.
 - B-99 live research readback: Shadow total=62 across 2 archived dates; external evidence total=62, TWSE=53, TPEX=0, UNKNOWN=9; TPEx revenue available=0; shadow integrity RESEARCH_DATA_GAP; all R01-R08 readiness DATA_QUALITY_BLOCKED.
 - B-100..B-104: `TPEX_ZERO_ROOT_CAUSE=UNKNOWN`; H1=no OTC candidates, H2=OTC unmatched -> UNKNOWN, H3=specific TPEx monthly-revenue research provider/path unavailable remain unresolved. Existing durable plaintext provenance search is exhausted; future row-level observability is Class B proposal-only.
-- B-105..B-107: latest completed Action remained intraday-only scheduled health verification `35959388906`, created 2026-09-24T05:18:53Z (13:18 Asia/Taipei); no later completed Formal scan or new durable prospective Top5 day row was available, so zero-pick denominator remained exactly 2 dates and R03/R06 remained WAITING_DATA.
+- B-105..B-108: latest completed Action remained intraday-only scheduled health verification `35959388906`, created 2026-09-24T05:18:53Z (13:18 Asia/Taipei); no later completed Formal scan or new durable prospective Top5 day row was available, so zero-pick denominator remained exactly 2 dates and R03/R06 remained WAITING_DATA.
 
-## B-108 — 15:13 recency check; still no new independent market sample
+## B-109 — 15:43 recency check; no new independent market sample
 ### Fresh evidence
-- Re-read `RESEARCH_ENGINEERING_GOVERNANCE.md`, `RESEARCH_WORKLIST.md`, B-107 checkpoint, and latest main commit before inspection.
-- Latest main commit before this write was `5832f00b0992117512e84349ce4291a76368f4dc`, the B-107 checkpoint commit; no newer A cursor was present.
-- Re-queried main-branch Actions at 2026-09-24 15:13 Asia/Taipei. Newest available completed run remains scheduled health verification `35959388906`, created 2026-09-24T05:18:53Z (13:18 Asia/Taipei), already classified as intraday-only.
-- Re-read checkpoint immediately before this write; sequence/blob remained B-107 / `ed86e76623b98ca69ac2b7c0e4c65b8b97e84fc7`, so no concurrent A/B checkpoint required merging.
+- Re-read `RESEARCH_ENGINEERING_GOVERNANCE.md`, `RESEARCH_WORKLIST.md`, B-108 checkpoint, and latest main commit before inspection.
+- Latest main commit before this write was `0cbf88e433c50122ff9eda4b59f539f92af23114`, the B-108 checkpoint commit; no newer A/B cursor was present.
+- Re-queried main-branch Actions at 2026-09-24 15:43 Asia/Taipei. Newest available completed run remains scheduled health verification `35959388906`, created 2026-09-24T05:18:53Z (13:18 Asia/Taipei), already classified as intraday-only.
+- Re-read checkpoint immediately before this write; sequence/blob remained B-108 / `3208c30379b64f3377539be03667297b7606d199`, so no concurrent A/B checkpoint required merging.
 - No new completed after-market Formal scan and no new durable prospective Top5 day row/export became available through the checked repository/Actions surfaces.
 
 ### Interpretation / falsification
 - Completed Formal zero-pick denominator remains exactly 2 independent dates: 2026-09-22 and 2026-09-23. 2026-09-24 remains incomplete for daily-selection research at this cursor.
-- R03/R06 Top5/`未分類` prospective frequency remains `WAITING_DATA`; repeated hourly checks are not independent market samples.
-- `TPEX_ZERO_ROOT_CAUSE=UNKNOWN` remains unchanged; no genuinely new provenance class appeared, so exhausted B-101..B-104 routes were not re-opened.
+- R03/R06 Top5/`未分類` prospective frequency remains `WAITING_DATA`; repeated schedule checks are not independent market samples.
+- `TPEX_ZERO_ROOT_CAUSE=UNKNOWN` remains unchanged; exhausted B-101..B-104 provenance routes were not re-opened without a genuinely new evidence class.
 
 ### Bias / governance controls
 - Prevented sample/date-cluster inflation, look-ahead, historical Shadow fabrication, UNKNOWN coercion, market-source substitution, re-sort/de-dup and raw-tie inference.
@@ -48,7 +48,7 @@ Updated: 2026-09-24 15:13 Asia/Taipei.
 - Evidence inspection + durable checkpoint only; no runtime engineering change.
 - Branch: main checkpoint write only. No Worker/workflow/D1/KV/source-routing/Formal selection/Hybrid WATCH/monitoring/notification code changed.
 - Tests: not applicable because no code changed; continuity guard was fresh main/checkpoint re-read plus Actions recency check.
-- Deployment: none. Production untouched. Rollback is B-107 in Git history.
+- Deployment: none. Production untouched. Rollback is B-108 in Git history.
 
 ## Exact next continuation point
 1. Re-read governance/worklist/checkpoint/latest main and re-check checkpoint SHA before any write; merge a newer A/B cursor if present.
