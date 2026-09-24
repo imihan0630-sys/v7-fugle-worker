@@ -1,0 +1,43 @@
+name: V8 Staged Recovery 2026-09-24
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/v8-stage-20260924-once.yml"
+permissions:
+  contents: read
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Stage exact 2026-09-24 selection
+        env:
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+        run: |
+          node - <<'NODE'
+          const origin='https://fugle-test.imihan0630.workers.dev';
+          const headers={'x-admin-token':process.env.V7_ADMIN_TOKEN,'content-type':'application/json','accept':'application/json'};
+          const response=await fetch(origin+'/api/scan/stage-selection',{method:'POST',headers,body:JSON.stringify({marketDate:'2026-09-24'}),signal:AbortSignal.timeout(180000)});
+          const text=await response.text();
+          console.log(JSON.stringify({stageStatus:response.status,contentType:response.headers.get('content-type'),bodyPrefix:text.slice(0,1200).replace(/\s+/g,' ')}));
+          if(!response.ok) throw new Error('stage selection failed');
+          const result=JSON.parse(text);
+          if(result.selectionPersisted!==true) throw new Error('selection not persisted');
+          NODE
+      - name: Resend persisted 3+3+3 result
+        env:
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+        run: |
+          node - <<'NODE'
+          const origin='https://fugle-test.imihan0630.workers.dev';
+          const headers={'x-admin-token':process.env.V7_ADMIN_TOKEN,'content-type':'application/json','accept':'application/json'};
+          const response=await fetch(origin+'/api/daily-report/resend',{method:'POST',headers,body:'{}',signal:AbortSignal.timeout(90000)});
+          const text=await response.text();
+          console.log(JSON.stringify({resendStatus:response.status,contentType:response.headers.get('content-type'),bodyPrefix:text.slice(0,1600).replace(/\s+/g,' ')}));
+          if(!response.ok) throw new Error('daily resend failed');
+          const result=JSON.parse(text);
+          if(result.ok!==true) throw new Error('daily resend not accepted');
+          NODE
