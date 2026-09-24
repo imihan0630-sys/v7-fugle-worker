@@ -233,7 +233,9 @@ jobs:
 
       - name: Apply V8.9.7 recovery hardening
         run: python3 scripts/apply_v8_9_7.py
-          python3 scripts/apply_v8_9_8.py
+
+      - name: Apply V8.9.8 staged recovery
+        run: python3 scripts/apply_v8_9_8.py
 
       - name: Syntax check Worker.js
         run: |
