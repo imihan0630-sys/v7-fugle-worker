@@ -2,14 +2,20 @@ import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 process.on('uncaughtException',error=>{console.error('Quality synchronization failed: '+String(error.message).slice(0,900));process.exit(1);});
 const source=await readFile(process.env.V7_TEST_WORKER_PATH || new URL('../Worker.js',import.meta.url),'utf8');
-const helpers=await import('data:text/javascript;base64,'+Buffer.from(source+'\nexport {parseOfficialCsv,parseMopsIncomeHtml,parseMopsMarketOptions,parseMopsQuarterEpsHtml,validateOfficialQualityData,loadTradingCalendar,mostRecentWeekday};').toString('base64'));
+const helpers=await import('data:text/javascript;base64,'+Buffer.from(source+'\nexport {parseOfficialCsv,parseMopsIncomeHtml,parseMopsMarketOptions,parseMopsQuarterEpsHtml,validateOfficialQualityData,loadTradingCalendar,mostRecentWeekday,isTradingDate};').toString('base64'));
 const origin='https://fugle-test.imihan0630.workers.dev';
 const now=new Date();
 const today=new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Taipei',year:'numeric',month:'2-digit',day:'2-digit'}).format(now);
 await helpers.loadTradingCalendar({},Number(today.slice(0,4)));
 const hour=Number(new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Taipei',hour:'2-digit',hourCycle:'h23'}).format(now));
 const reference=hour<14 ? new Date(Date.parse(today+'T12:00:00Z')-86400000).toISOString().slice(0,10) : today;
-const marketDate=helpers.mostRecentWeekday(reference);
+const requestedMarketDate=String(process.env.QUALITY_MARKET_DATE || '').trim();
+const marketDate=requestedMarketDate || helpers.mostRecentWeekday(reference);
+assert.match(marketDate,/^\\d{4}-\\d{2}-\\d{2}$/,'QUALITY_MARKET_DATE must be YYYY-MM-DD');
+assert.ok(marketDate<=today,'QUALITY_MARKET_DATE cannot be in the future');
+assert.ok(Date.parse(today+'T00:00:00Z')-Date.parse(marketDate+'T00:00:00Z')<=14*86400000,'QUALITY_MARKET_DATE exceeds 14-day recovery window');
+await helpers.loadTradingCalendar({},Number(marketDate.slice(0,4)));
+assert.equal(helpers.isTradingDate(marketDate),true,'QUALITY_MARKET_DATE is not a trading day');
 assert.ok(process.env.V7_ADMIN_TOKEN,'Normal V7_ADMIN_TOKEN required');
 async function publicSource(url,options={}) {
   for(let attempt=0;attempt<3;attempt++) {
@@ -24,10 +30,36 @@ async function publicSource(url,options={}) {
 async function admin(path,options={}) {
   for(let attempt=0;attempt<3;attempt++) {
     try {
-      const response=await fetch(origin+path,{...options,headers:{'x-admin-token':process.env.V7_ADMIN_TOKEN,'content-type':'application/json'},signal:AbortSignal.timeout(path==='/api/scan-preview'?180000:45000)});
+      const response=await fetch(origin+path,{...options,headers:{'x-admin-token':process.env.V7_ADMIN_TOKEN,'content-type':'application/json','accept':'application/json'},signal:AbortSignal.timeout(path==='/api/scan-preview'?180000:45000)});
       if([401,403].includes(response.status)) throw new Error('Administrator authorization failed; stop without replacing credentials');return response;
     }catch(error){if(options.method==='POST' || attempt>=2 || !/fetch failed|timeout|ECONNRESET|ETIMEDOUT/i.test(String(error))) throw new Error(`Administrator ${options.method || 'GET'} ${path}: ${error.message}`);await new Promise(resolve=>setTimeout(resolve,1000*(attempt+1)));}
   }
+}
+async function readonlyPreview(body,label) {
+  let lastMeta=null;
+  for(let attempt=1;attempt<=3;attempt++) {
+    const response=await admin('/api/scan-preview',{method:'POST',body:JSON.stringify(body)});
+    const contentType=String(response.headers.get('content-type') || '');
+    const text=await response.text();
+    let result=null;
+    try { result=JSON.parse(text); }
+    catch(error) {
+      lastMeta={attempt,status:response.status,contentType,bodyPrefix:text.slice(0,240).replace(/\s+/g,' ')};
+      console.error(JSON.stringify({readonlyPreviewNonJson:true,label,...lastMeta}));
+      const retryable=attempt<3 && (response.status===429 || response.status>=500 || /text\/html/i.test(contentType) || /^\s*</.test(text));
+      if(retryable) {await new Promise(resolve=>setTimeout(resolve,1000*attempt));continue;}
+      throw new Error(label+' returned non-JSON response: '+JSON.stringify(lastMeta));
+    }
+    if(!response.ok) {
+      lastMeta={attempt,status:response.status,contentType,error:String(result?.error || '').slice(0,500)};
+      console.error(JSON.stringify({readonlyPreviewRejected:true,label,...lastMeta}));
+      if(attempt<3 && (response.status===429 || response.status>=500)) {await new Promise(resolve=>setTimeout(resolve,1000*attempt));continue;}
+      throw new Error(label+' failed: '+JSON.stringify(lastMeta));
+    }
+    console.log(JSON.stringify({readonlyPreviewAccepted:true,label,attempt,status:response.status,contentType}));
+    return result;
+  }
+  throw new Error(label+' failed after bounded retries: '+JSON.stringify(lastMeta));
 }
 const configResponse=await admin('/api/config');assert.equal(configResponse.ok,true);const before=await configResponse.json();
 for(let attempt=0;attempt<6;attempt++) {
@@ -90,9 +122,7 @@ for(let start=0;start<requests.length;start+=2) {
 const financialSnapshot=await sync({kind:'FINANCIAL',year,quarter,periods});
 // Review every preliminary qualifying candidate, before applying either pool quota.
 // This is a readonly source-selection preview; it never imports or pushes a plan.
-const reviewResponse=await admin('/api/scan-preview',{method:'POST',body:JSON.stringify({dryRun:true,epsReviewOnly:true,marketDate})});
-const review=await reviewResponse.json();
-assert.equal(reviewResponse.ok,true,`EPS source review failed: ${String(review.error || reviewResponse.status).slice(0,500)}`);
+const review=await readonlyPreview({dryRun:true,epsReviewOnly:true,marketDate},'EPS source review');
 assert.equal(review.dryRun,true);assert.equal(review.diagnostics?.quarterEpsReview?.provisional,true);
 const universe=review.diagnostics?.epsReviewUniverse;
 assert.ok(Array.isArray(universe) && universe.length<=200,'EPS review universe unavailable or exceeds verified request budget; do not silently truncate');
@@ -151,8 +181,7 @@ if(process.argv.includes('--dry-run')) {
   const storageTest=await admin('/api/signals/storage-test',{method:'POST',body:'{}'});
   const storageResult=await storageTest.json();assert.equal(storageTest.ok,true);assert.equal(storageResult.verified,true);assert.equal(storageResult.noRealSignals,true);
   console.log(JSON.stringify({liveSignalStorageVerified:storageResult}));
-  const response=await admin('/api/scan-preview',{method:'POST',body:JSON.stringify({dryRun:true,marketDate})});
-  const result=await response.json();assert.equal(response.ok,true,`Readonly selection acceptance failed: ${String(result.error || response.status).slice(0,500)}`);
+  const result=await readonlyPreview({dryRun:true,marketDate},'Readonly selection acceptance');
   assert.equal(result.dryRun,true);
   const finalConfig=await admin('/api/config');assert.deepEqual(await finalConfig.json(),before,'Preview must preserve current plans');
   console.log(JSON.stringify({qualityDryRunVerified:true,selectedCount:result.selectedCount,scanDate:result.scanDate,market:result.market,
