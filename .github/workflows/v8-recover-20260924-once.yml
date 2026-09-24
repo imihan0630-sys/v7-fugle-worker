@@ -15,12 +15,6 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Recover official quality for 2026-09-24
-        env:
-          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
-          QUALITY_MARKET_DATE: "2026-09-24"
-          QUALITY_RECOVERY_ONLY: "1"
-        run: node tests/sync_official_quality.mjs
       - name: Recover after-market selection for 2026-09-24
         env:
           V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
@@ -30,3 +24,5 @@ jobs:
 # retry-after-date-regex-fix
 
 # retry-reuse-verified-datasets
+
+# retry-formal-after-quality-ready
