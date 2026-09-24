@@ -15,14 +15,69 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Recover after-market selection for 2026-09-24
+      - name: Stage verified 2026-09-24 selection into production
         env:
           V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
-          RECOVERY_MARKET_DATE: "2026-09-24"
-        run: node tests/recover_after_market.mjs
-
-# retry-after-date-regex-fix
-
-# retry-reuse-verified-datasets
-
-# retry-formal-after-quality-ready
+        run: |
+          node - <<'NODE'
+          const origin='https://fugle-test.imihan0630.workers.dev';
+          async function admin(path,body) {
+            const response=await fetch(origin+path,{
+              method:'POST',
+              headers:{'x-admin-token':process.env.V7_ADMIN_TOKEN,'content-type':'application/json','accept':'application/json'},
+              body:JSON.stringify(body||{}),
+              signal:AbortSignal.timeout(180000)
+            });
+            const text=await response.text();
+            console.log(JSON.stringify({path,status:response.status,contentType:response.headers.get('content-type'),bodyPrefix:text.slice(0,500).replace(/\s+/g,' ')}));
+            let parsed; try{parsed=JSON.parse(text);}catch{throw new Error(path+' non-JSON');}
+            if(!response.ok) throw new Error(path+' failed '+JSON.stringify(parsed).slice(0,800));
+            return parsed;
+          }
+          const staged=await admin('/api/scan/stage-selection',{marketDate:'2026-09-24'});
+          console.log(JSON.stringify({stageResult:staged}));
+          NODE
+      - name: Resend persisted 3+3+3 daily report
+        env:
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+        run: |
+          node - <<'NODE'
+          const origin='https://fugle-test.imihan0630.workers.dev';
+          const response=await fetch(origin+'/api/daily-report/resend',{
+            method:'POST',
+            headers:{'x-admin-token':process.env.V7_ADMIN_TOKEN,'content-type':'application/json','accept':'application/json'},
+            body:'{}',signal:AbortSignal.timeout(60000)
+          });
+          const text=await response.text();
+          console.log(text);
+          if(!response.ok) throw new Error('daily resend failed '+response.status);
+          NODE
+      - name: Recover current external plan provider
+        env:
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+        continue-on-error: true
+        run: |
+          node - <<'NODE'
+          const origin='https://fugle-test.imihan0630.workers.dev';
+          const response=await fetch(origin+'/api/three-min/recover-current',{
+            method:'POST',
+            headers:{'x-admin-token':process.env.V7_ADMIN_TOKEN,'content-type':'application/json','accept':'application/json'},
+            body:'{}',signal:AbortSignal.timeout(60000)
+          });
+          const text=await response.text();
+          console.log(JSON.stringify({status:response.status,bodyPrefix:text.slice(0,2000)}));
+          if(!response.ok) process.exitCode=1;
+          NODE
+      - name: Verify persisted production result
+        env:
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+        run: |
+          node - <<'NODE'
+          const origin='https://fugle-test.imihan0630.workers.dev';
+          for(const path of ['/api/scan/status','/api/config']) {
+            const response=await fetch(origin+path,{headers:{'x-admin-token':process.env.V7_ADMIN_TOKEN,'accept':'application/json'},signal:AbortSignal.timeout(30000)});
+            const text=await response.text();
+            console.log(JSON.stringify({path,status:response.status,body:text.slice(0,12000)}));
+            if(!response.ok) throw new Error(path+' verify failed');
+          }
+          NODE
