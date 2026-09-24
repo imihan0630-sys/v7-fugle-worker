@@ -173,7 +173,7 @@ jobs:
           grep -F 'Smart Money共識形成中' Worker.js
           grep -F 'hybridSmartMoneyForming' Worker.js
           grep -F 'hybridWatchAudit' Worker.js
-      - name: V8.9.3 Hybrid WATCH dry-run diagnostic
+      - name: V8.9.4 Hybrid WATCH candidate audit
         if: contains(github.event.head_commit.message, '[hybrid-watch-diagnostic]')
         env:
           V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
@@ -194,6 +194,8 @@ jobs:
             hybridWatchStocks:(data.hybridWatchStocks||[]).map(x=>({symbol:x.symbol,name:x.name,watchReason:x.watchReason,missingCondition:x.missingCondition})),
             hybridStockPool:data.hybridStockPool,
             hybridWatchDiagnostics:data.diagnostics?.hybridWatch,
+            focusAudit:(data.diagnostics?.hybridWatch?.audit||[]).filter(x=>["6223","3661","5269","2404","2454","3017"].includes(String(x.symbol))),
+            eligibleAudit:(data.diagnostics?.hybridWatch?.audit||[]).filter(x=>x.watchEligible===true),
             hybridExclusions:data.hybridStockPool?.exclusions,
             finalPoolMerge:data.diagnostics?.finalPoolMerge
           },null,2));
