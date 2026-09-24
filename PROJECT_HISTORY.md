@@ -351,3 +351,20 @@
 - 建立 collaboration key「V8 Cloudflare Worker」（create + read）。明碼只在 3Min dashboard，不進聊天或 GitHub。
 - 目前 blocker：Cloudflare Worker 尚須把 3Min URL/verify URL/token 切到新端點。完成後由下一次正式新盤後掃描自動驗收第26項。
 - Free plan endpoint 仍有 7 日自動清理限制；若不升級方案或換 durable 外部儲存，日後仍會重現。
+
+
+## 2026-09-25｜9/24 盤後故障恢復完成（V8.9.9）
+
+- 9/24 原盤後流程因官方品質複核／長請求資源限制中止；不是「0 檔」。
+- 修復採分段恢復，不改 Formal A/B、3+3+3 配額、門檻或資金規則。
+- 正式 runtime：`8.9.9-staged-delivery`。
+- 9/24 官方品質資料恢復完成後，同版本只讀選股確認：
+  - FORMAL_GENERAL：2 檔（2006 東和鋼鐵、4977 眾達-KY）。
+  - FORMAL_THOUSAND：0 檔。
+  - HYBRID_THOUSAND_SHADOW：0 檔。
+  - HYBRID_WATCH：1 檔（6683 雍智科技），不占第三池3席、不占20萬。
+- 2026/09/25 07:37 台北時間 staged recovery 已正式持久化；讀回 `selectionPersisted=true`。
+- 每日 3+3+3 補發 Webhook HTTP 200，`deliveryState=ACCEPTED`；手機實收仍不可由 HTTP 2xx 推定，`receiptVerified=false`。
+- 外部計畫採先 GET 精確讀回再決定是否 POST；結果已找到完全相同既有紀錄，`externalPostPerformed=false`、`threeMinVerified=true`，避免重複寫入。
+- 最終 `/api/recommendations`：`resultType=CURRENT`、`pipeline.complete=true`。
+- Cloudflare Error 1102 已確認：同一請求重算全市場可能超過 Worker CPU/記憶體限制；故障恢復不得再依賴單一長 HTTP 請求，優先使用已驗證的 staged selection → delivery/readback 分段流程。
