@@ -1,16 +1,16 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-114.
-Updated: 2026-09-24 18:41 Asia/Taipei.
+Checkpoint sequence: B-115.
+Updated: 2026-09-24 19:12 Asia/Taipei.
 
-> Canonical cursor for both A/B research schedules. Detailed B-01..B-113 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
+> Canonical cursor for both A/B research schedules. Detailed B-01..B-114 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
 ## Governance / immutable boundary
 - Formal Core **LOCKED**. No autonomous A/B, ranking, thresholds, Top6/3+3/3+3+3, capital, entry/add/reduce/sell/stop, monitoring or push changes.
 - R01-R08 and I01-I07 frozen; no R09/I08. Prospective Shadow starts 2026-09-21; no fabricated historical Shadow. Missing evidence = UNKNOWN, never BAD/0.
 - GitHub/runtime evidence overrides chat memory. Production readback overrides repository/version strings.
 
-## Durable retained state through B-113
+## Durable retained state through B-114
 - Latest trusted owner-approved architecture remains 3+3+3: `FORMAL_GENERAL`, `FORMAL_THOUSAND`, `HYBRID_THOUSAND_SHADOW`, each ring-fenced NT$200,000; Hybrid is Shadow-only and cannot silently become Formal BUY eligibility.
 - B-62 `PRE_BASE_LIQUIDITY_CONTROL` remains Class B proposal-only. Signal observation != brokerage fill; `REDUCED_CONFIRMED` requires trusted actual reduced shares.
 - B-73..B-75 sequence-readiness helper remains SOURCE_WRITTEN_NOT_EXECUTED; journal adjacency != exchange-session adjacency; no historical calendar/Shadow backfill.
@@ -22,51 +22,50 @@ Updated: 2026-09-24 18:41 Asia/Taipei.
 - B-99 live research readback: Shadow total=62 across 2 archived dates; external evidence total=62, TWSE=53, TPEX=0, UNKNOWN=9; TPEx revenue available=0; shadow integrity RESEARCH_DATA_GAP; all R01-R08 readiness DATA_QUALITY_BLOCKED.
 - B-100..B-104: `TPEX_ZERO_ROOT_CAUSE=UNKNOWN`; H1=no OTC candidates, H2=OTC unmatched -> UNKNOWN, H3=specific TPEx monthly-revenue research provider/path unavailable remain unresolved. Existing durable plaintext provenance search is exhausted; future row-level observability is Class B proposal-only.
 - B-105..B-112: no later completed Formal scan or new durable prospective Top5 day row had become available; zero-pick denominator remained exactly 2 dates and R03/R06 remained WAITING_DATA.
-- B-113: 18:00 official sync run `35984655979` failed in the quality-sync step, so same-day recovery/analysis was skipped; 9/24 was not counted as zero-pick. Exact root cause was then UNKNOWN because plaintext job logs had not been available in that turn.
+- B-113: 18:00 official sync failed before same-day recovery; 9/24 not counted as zero-pick.
+- B-114: 18:33 retry run `35987921399` also failed. Plaintext log proved upstream TWSE/TPEx market/institutions, INDEX, TDCC, VALUATION, ANNOUNCEMENTS and the first Q2 income parses succeeded; terminal error was timeout after TWSE Q2 parse. Broad TPEx outage hypothesis was weakened, but exact downstream operation remained UNKNOWN.
 
-## B-114 — 18:33 retry also failed; plaintext log narrows root cause to quality-script timeout after successful upstream quality providers
+## B-115 — source-order inspection localizes timeout to the multi-period MOPS financial fetch loop
 ### Fresh evidence
-- Re-read `RESEARCH_ENGINEERING_GOVERNANCE.md`, `RESEARCH_WORKLIST.md`, B-113 checkpoint and latest main state before inspection.
-- A genuinely later scheduled `V7 Official Market Data Sync` run appeared: `35987921399`, created 2026-09-24T10:33:32Z (18:33:32 Asia/Taipei), completed FAILURE at 18:36:15.
-- Step structure repeated B-113: trading-day gate SUCCESS; official market cache SUCCESS; institutions SUCCESS; `Sync official index, quarterly financials, valuation and TDCC` FAILURE; downstream same-day recovery SKIPPED.
-- This turn obtained the full plaintext job log, which materially narrows the prior UNKNOWN failure class. Before failure the run successfully verified/cached: TWSE market 1,034 rows; TPEx market 847; institutions TWSE 1,067 + TPEx 775 = 1,842 with valid dates 9/24, 9/23, 9/22; INDEX 61; TDCC 2,956 (as-of 9/18); VALUATION 1,970; ANNOUNCEMENTS 157; TPEx Q2 income parsed 884; TWSE Q2 income parsed 1,049.
-- The terminal error at 2026-09-24T10:36:13Z is explicit: `Quality synchronization failed: The operation was aborted due to timeout`, followed by exit code 1.
-- Therefore `OFFICIAL_QUALITY_FAILURE_ROOT_CAUSE` is narrowed from generic UNKNOWN to `TIMEOUT_DURING_QUALITY_SYNC_AFTER_TWSE_Q2_PARSE`. The exact timed-out downstream request/assertion remains UNKNOWN because the log stops after TWSE Q2 parse and does not identify the next provider/operation.
-- The repeated failure does **not** support a broad TPEx outage: same-run TPEx market, institutions, announcements schema and TPEx Q2 financial parsing all succeeded before the timeout.
-- Re-read checkpoint immediately before write; it remained B-113 blob `900c56c9ae8223df91f369b1a381667f8c5964f8`, so no concurrent A/B cursor needed merging.
+- Re-read governance, worklist, B-114 checkpoint and latest main. Latest main before this write was B-114 commit `7ba9c07f68fbf490f98626c342eb11320ff333af`; no newer A/B checkpoint existed.
+- Re-checked recent Actions: no later completed official-market-data recovery run than `35987921399` was visible at this cursor, so there is still no trusted completed 9/24 Formal scan.
+- Inspected the exact main source `tests/sync_official_quality.mjs`. After ANNOUNCEMENTS it loads MOPS EPS CSV + market options, derives a set of current/prior comparison periods, then constructs `requests=[...periodKeys].flatMap(key=>['TWSE','TPEx'])` and fetches those MOPS income pages in batches of two via `Promise.all`.
+- Each financial request uses the same official endpoint `https://mopsov.twse.com.tw/mops/web/ajax_t163sb04` with market-specific `TYPEK`; each request is protected by `publicSource()` with a 45-second AbortSignal timeout and retry logic.
+- Only **after the entire multi-period request loop completes** does the script call `sync({kind:'FINANCIAL',...})`, then `/api/scan-preview` for EPS review. Therefore the B-114 terminal timeout, whose last log was within Q2 period parsing and which never logged FINANCIAL prevalidation/cache, is now localized to the **remaining multi-period MOPS financial fetch/parse loop before FINANCIAL ingestion**, not to later EPS-review `/api/scan-preview`.
+- Exact market/period request that timed out remains UNKNOWN because concurrent batch completion/log ordering does not prove which outstanding request aborted, and the terminal error did not include the URL/market/period context.
+- Re-read checkpoint immediately before write; blob remained `bff44bcca8b49caef497943e6a8862c73a2e0b41`, so no concurrent A/B cursor required merging.
 
 ### Interpretation / falsification
-- This is the second observed 9/24 quality-sync failure before recovery. It is still **not** a completed Formal scan and cannot be counted as a zero-pick date.
-- Completed Formal zero-pick denominator remains exactly 2 independent dates: 2026-09-22 and 2026-09-23. 2026-09-24 remains UNKNOWN/not-completed at this cursor.
-- B-113's broad candidate causes such as index freshness, TDCC, valuation, announcements, general TPEx market availability, or initial Q2 parsing are now partly falsified for this retry because those stages completed successfully. The remaining failure surface is downstream of TWSE Q2 parse inside `sync_official_quality.mjs`.
-- R03/R06 remains WAITING_DATA; no new durable prospective Top5 day row or completed 9/24 Formal scan is established by this run.
-- `TPEX_ZERO_ROOT_CAUSE=UNKNOWN` remains unchanged; this timeout is not evidence that TPEx monthly-revenue provenance H1/H2/H3 has been resolved.
+- `OFFICIAL_QUALITY_FAILURE_ROOT_CAUSE` is narrowed to `TIMEOUT_IN_MULTI_PERIOD_MOPS_FINANCIAL_FETCH_LOOP_BEFORE_FINANCIAL_INGESTION`; exact request = UNKNOWN.
+- This falsifies later-stage candidates for run `35987921399`: FINANCIAL ingestion, EPS-review scan-preview, Q4 terms validation, per-symbol direct statement review, and downstream recovery were never reached.
+- It does **not** prove TWSE vs TPEx culpability. The loop intentionally pairs TWSE+TPEx requests, and log order under Promise.all cannot identify the aborted member. No market-source blame is assigned.
+- 9/24 remains prerequisite-failed/UNKNOWN, not a zero-pick. Completed Formal zero-pick denominator remains exactly 2 independent dates: 9/22 and 9/23.
+- R03/R06 remains WAITING_DATA; no new durable prospective Top5 row established.
+- `TPEX_ZERO_ROOT_CAUSE=UNKNOWN` remains unchanged; this quality-sync MOPS financial timeout is separate from historical TPEx monthly-revenue provenance H1/H2/H3.
 
 ### Bias / governance controls
-- Prevented zero-pick denominator inflation from repeated prerequisite failures, provider-failure-as-negative-signal coercion, market-source bias, look-ahead, historical Shadow fabrication, and date-cluster inflation.
-- Successful TPEx stages are not extrapolated to the separate historical monthly-revenue research path.
-- No post-hoc factor/window/threshold/split introduced; selection bias, data snooping, Factor Zoo, overfit, coverage, transaction-cost, redundancy and date-cluster controls remain active.
+- Prevented infrastructure failure from being coerced into a negative trading signal; prevented repeated-run/date-cluster inflation and market-source attribution from concurrent log order.
+- No look-ahead, historical Shadow fabrication, post-hoc factor/window/threshold/split, selection-bias or data-snooping promotion.
+- Factor Zoo, overfit, coverage, transaction-cost and redundancy controls unchanged.
 
 ### R01-R08 / I01-I07 impact
-- R01-R08: no new mature outcome evidence; readiness unchanged. Repeated infrastructure timeout reinforces data-quality blocking, not a directional research conclusion.
-- I01-I07: no new intervention/engineering experiment and no causal performance inference.
+- R01-R08: no new mature outcome evidence; readiness unchanged / data-quality constrained.
+- I01-I07: no new intervention experiment and no causal performance inference.
 
 ### Engineering classification / branch / tests / deployment
-- Evidence inspection + durable checkpoint only; no runtime engineering change.
-- Branch: main checkpoint write only. No Worker/workflow/D1/KV/source-routing/Formal selection/Hybrid WATCH/monitoring/notification code changed.
-- Tests: no code changed. Evidence validation used run `35987921399`, its job metadata and plaintext job log.
-- Deployment: none. Production untouched. Rollback is B-113 in Git history.
-- Any timeout/retry/workflow restructuring, provider timeout tuning, or shared quality-sync behavior change remains Class B and requires owner approval before production promotion.
+- Source inspection + checkpoint only; no runtime code change.
+- No Worker/workflow/D1/KV/source-routing/Formal/Hybrid WATCH/monitoring/notification change.
+- No deployment. Any timeout/retry/concurrency/log-context change to this shared quality workflow remains Class B proposal-first.
 
 ## Exact next continuation point
-1. Re-read governance/worklist/checkpoint/latest main and re-check checkpoint SHA before any write; merge a newer A/B cursor if present.
-2. First check whether a later scheduled/recovery Action after run `35987921399` succeeds and produces a completed 2026-09-24 Formal scan. Do not classify 9/24 from either failed prerequisite run.
+1. Re-read governance/worklist/checkpoint/latest main; re-check checkpoint SHA before write and merge newer A/B progress if present.
+2. First check for any official-market-data run after `35987921399`, especially the later 23:25/23:45 Taipei schedules. Only a trusted completed recovery/Formal scan can classify 9/24.
 3. If a later trusted scan has >=1 Formal plan, immediately restore funnel priority: verify execution-recorder target-date coverage and 500-row non-truncation before signal interpretation; same-date `HUMAN_MOMENTUM_SHADOW` remains research-only on Formal SELECTED names.
-4. If a later completed scan is zero-pick, only then extend the completed zero-pick denominator/date sequence from 2 to 3.
-5. If the quality-sync failure repeats, use any new plaintext log to identify the exact operation immediately after TWSE Q2 parse and narrow `TIMEOUT_DURING_QUALITY_SYNC_AFTER_TWSE_Q2_PARSE`; do not guess the timed-out provider. Do not modify timeout/retry/shared workflow behavior on main without Class B approval.
-6. If a new durable prospective Top5 day row exists, continue R03/R06 frequency: report independent date count, valid Top5-set count, `未分類`-present count/rate, malformed/UNKNOWN count; do not repair/re-sort/de-dup or infer raw ties.
-7. If neither a completed Formal scan nor new durable Top5 row exists, preserve WAITING_DATA and do not duplicate old observations merely to create progress.
-8. Treat B-101..B-104 TPEx plaintext provenance search as exhausted unless a genuinely new artifact/log/export class appears. Keep `TPEX_ZERO_ROOT_CAUSE=UNKNOWN`; H1/H2/H3 remain unresolved.
-9. Preserve B-104 Class B row-level observability proposal only; do not implement/merge/deploy without owner approval.
-10. Keep `CURRENT_DAY_ROW_ORIGIN(2026-09-18)=UNKNOWN`; do not retroactively upgrade B-73/B-74 pairs.
-11. Do not implement workflow/version logging, validator/helper, shared calendar/cache/date-resolution, source-routing, timeout or retry changes on main without the applicable Class B decision.
+4. If a later completed scan is zero-pick, only then extend completed zero-pick denominator from 2 to 3.
+5. If quality sync fails again, inspect plaintext log for the **last successful market/year/quarter** in `officialFinancialPeriodParsed` and any wrapped `Public source ...` error. Use request construction order to narrow the exact outstanding market/period, but do not infer culprit from Promise.all log order alone.
+6. Do not modify the shared quality workflow timeout/retry/concurrency/logging on main without Class B owner approval. A proposal may recommend per-request market/year/quarter context and bounded concurrency, but proposal != deployment.
+7. If a new durable prospective Top5 day row exists, continue R03/R06 frequency with independent date count, valid Top5-set count, `未分類` rate and malformed/UNKNOWN count; no repair/re-sort/de-dup/tie inference.
+8. If neither completed Formal scan nor new Top5 row exists, preserve WAITING_DATA; do not duplicate observations.
+9. Keep `TPEX_ZERO_ROOT_CAUSE=UNKNOWN`; B-101..B-104 provenance search remains exhausted unless a genuinely new artifact/log/export class appears.
+10. Preserve B-104 Class B row-level observability proposal only; no implementation/merge/deploy without approval.
+11. Keep `CURRENT_DAY_ROW_ORIGIN(2026-09-18)=UNKNOWN`; do not retroactively upgrade B-73/B-74 pairs.
