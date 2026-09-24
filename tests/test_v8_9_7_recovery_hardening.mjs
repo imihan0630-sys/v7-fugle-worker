@@ -6,7 +6,7 @@ const quality=await readFile(new URL('./sync_official_quality.mjs',import.meta.u
 const recovery=await readFile(new URL('./recover_after_market.mjs',import.meta.url),'utf8');
 const workflow=await readFile(new URL('../.github/workflows/v7-market-data.yml',import.meta.url),'utf8');
 
-assert.match(source,/const VERSION = "8\.9\.7-recovery-hardening";/);
+assert.match(source,/const VERSION = "8\.9\.(?:7-recovery-hardening|8-staged-recovery)";/);
 assert.match(source,/歷史補跑僅接受管理員授權/);
 assert.match(source,/補跑日期無效、未來或超過14天/);
 assert.match(source,/scheduledTime=Date\.parse\(date\+"T10:20:00Z"\)/);
