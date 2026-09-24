@@ -18,9 +18,17 @@ if(!helpers.isTradingDate(date)) {console.log(JSON.stringify({skipped:true,reaso
 assert.ok(process.env.V7_ADMIN_TOKEN,'Normal configured administrator token required');
 const origin='https://fugle-test.imihan0630.workers.dev';
 async function admin(path,options={}) {
-  const response=await fetch(origin+path,{...options,headers:{'x-admin-token':process.env.V7_ADMIN_TOKEN,'content-type':'application/json'},signal:AbortSignal.timeout(options.method==='POST'?180000:45000)});
+  const response=await fetch(origin+path,{...options,headers:{'x-admin-token':process.env.V7_ADMIN_TOKEN,'content-type':'application/json','accept':'application/json'},signal:AbortSignal.timeout(options.method==='POST'?180000:45000)});
   if([401,403].includes(response.status)) throw new Error('Administrator authorization rejected; stop without bypass');
-  const result=await response.json();assert.equal(response.ok,true,String(result.error || response.status).slice(0,500));return result;
+  const contentType=String(response.headers.get('content-type') || '');
+  const text=await response.text();
+  let result;
+  try { result=JSON.parse(text); }
+  catch(error) {
+    throw new Error(`Administrator ${options.method || 'GET'} ${path} returned non-JSON status=${response.status} contentType=${contentType} bodyPrefix=${text.slice(0,240).replace(/\s+/g,' ')}`);
+  }
+  assert.equal(response.ok,true,String(result.error || response.status).slice(0,500));
+  return result;
 }
 const prior=await admin('/api/scan/status');
 if(prior.scanDate===date) {console.log(JSON.stringify({skipped:true,reason:'Today already selected; never resend plans',date}));process.exit(0);}
