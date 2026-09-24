@@ -3,7 +3,7 @@ import {readFile} from 'node:fs/promises';
 
 const source=await readFile(process.env.V7_TEST_WORKER_PATH || new URL('../Worker.js',import.meta.url),'utf8');
 
-assert.match(source,/const VERSION = "8\.9\.8-staged-recovery";/);
+assert.match(source,/const VERSION = "8\.9\.(?:8-staged-recovery|9-staged-delivery)";/);
 assert.match(source,/url\.pathname === "\/api\/scan\/stage-selection"/);
 assert.match(source,/Staged historical recovery from verified dry-run/);
 assert.match(source,/runAfterMarketScan\(env,scheduledTime,\{dryRun:true\}\)/);
