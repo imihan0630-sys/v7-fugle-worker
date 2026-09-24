@@ -15,29 +15,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Stage verified 2026-09-24 selection into production
-        env:
-          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
-        run: |
-          node - <<'NODE'
-          const origin='https://fugle-test.imihan0630.workers.dev';
-          async function admin(path,body) {
-            const response=await fetch(origin+path,{
-              method:'POST',
-              headers:{'x-admin-token':process.env.V7_ADMIN_TOKEN,'content-type':'application/json','accept':'application/json'},
-              body:JSON.stringify(body||{}),
-              signal:AbortSignal.timeout(180000)
-            });
-            const text=await response.text();
-            console.log(JSON.stringify({path,status:response.status,contentType:response.headers.get('content-type'),bodyPrefix:text.slice(0,500).replace(/\s+/g,' ')}));
-            let parsed; try{parsed=JSON.parse(text);}catch{throw new Error(path+' non-JSON');}
-            if(!response.ok) throw new Error(path+' failed '+JSON.stringify(parsed).slice(0,800));
-            return parsed;
-          }
-          const staged=await admin('/api/scan/stage-selection',{marketDate:'2026-09-24'});
-          console.log(JSON.stringify({stageResult:staged}));
-          NODE
-      - name: Resend persisted 3+3+3 daily report
+      - name: Persist accepted 3+3+3 resend into latest result
         env:
           V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
         run: |
@@ -49,13 +27,26 @@ jobs:
             body:'{}',signal:AbortSignal.timeout(60000)
           });
           const text=await response.text();
-          console.log(text);
+          console.log(JSON.stringify({status:response.status,bodyPrefix:text.slice(0,3000)}));
           if(!response.ok) throw new Error('daily resend failed '+response.status);
           NODE
-      - name: Recover current external plan provider
+      - name: Verify 3Min authorization read-only
         env:
           V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
-        continue-on-error: true
+        run: |
+          node - <<'NODE'
+          const origin='https://fugle-test.imihan0630.workers.dev';
+          const response=await fetch(origin+'/api/three-min/auth-check',{
+            headers:{'x-admin-token':process.env.V7_ADMIN_TOKEN,'accept':'application/json'},
+            signal:AbortSignal.timeout(30000)
+          });
+          const text=await response.text();
+          console.log(JSON.stringify({status:response.status,body:text}));
+          if(!response.ok) throw new Error('3Min auth check failed');
+          NODE
+      - name: Complete staged 3Min delivery exactly once
+        env:
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
         run: |
           node - <<'NODE'
           const origin='https://fugle-test.imihan0630.workers.dev';
@@ -65,10 +56,10 @@ jobs:
             body:'{}',signal:AbortSignal.timeout(60000)
           });
           const text=await response.text();
-          console.log(JSON.stringify({status:response.status,bodyPrefix:text.slice(0,2000)}));
-          if(!response.ok) process.exitCode=1;
+          console.log(JSON.stringify({status:response.status,body:text.slice(0,5000)}));
+          if(!response.ok) throw new Error('3Min staged delivery failed '+response.status);
           NODE
-      - name: Verify persisted production result
+      - name: Verify final production state
         env:
           V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
         run: |
@@ -77,7 +68,7 @@ jobs:
           for(const path of ['/api/scan/status','/api/config']) {
             const response=await fetch(origin+path,{headers:{'x-admin-token':process.env.V7_ADMIN_TOKEN,'accept':'application/json'},signal:AbortSignal.timeout(30000)});
             const text=await response.text();
-            console.log(JSON.stringify({path,status:response.status,body:text.slice(0,12000)}));
+            console.log(JSON.stringify({path,status:response.status,body:text.slice(0,16000)}));
             if(!response.ok) throw new Error(path+' verify failed');
           }
           NODE
