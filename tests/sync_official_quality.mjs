@@ -11,7 +11,7 @@ const hour=Number(new Intl.DateTimeFormat('en-GB',{timeZone:'Asia/Taipei',hour:'
 const reference=hour<14 ? new Date(Date.parse(today+'T12:00:00Z')-86400000).toISOString().slice(0,10) : today;
 const requestedMarketDate=String(process.env.QUALITY_MARKET_DATE || '').trim();
 const marketDate=requestedMarketDate || helpers.mostRecentWeekday(reference);
-assert.match(marketDate,/^\\d{4}-\\d{2}-\\d{2}$/,'QUALITY_MARKET_DATE must be YYYY-MM-DD');
+assert.match(marketDate,/^\d{4}-\d{2}-\d{2}$/,'QUALITY_MARKET_DATE must be YYYY-MM-DD');
 assert.ok(marketDate<=today,'QUALITY_MARKET_DATE cannot be in the future');
 assert.ok(Date.parse(today+'T00:00:00Z')-Date.parse(marketDate+'T00:00:00Z')<=14*86400000,'QUALITY_MARKET_DATE exceeds 14-day recovery window');
 await helpers.loadTradingCalendar({},Number(marketDate.slice(0,4)));
