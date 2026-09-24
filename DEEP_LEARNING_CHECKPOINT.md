@@ -93,6 +93,11 @@ Does the *path* by which a stock accumulates gains contain incremental selection
 ### Candidate status
 WORTH_SHADOW_RESEARCH（值得影子研究）, not eligible for Formal Core（正式核心） change.
 
+### Owner decision
+- 2026-09-25 Asia/Taipei: owner approved continuing DL-001 research and Shadow validation.
+- Approval is for research / Shadow validation only. It is not approval to alter Formal Core（正式核心）, formal ranking, thresholds, capital, execution, monitoring, or push behavior.
+- Do not ask again merely to continue the already-approved research. Ask again only if mature evidence later supports a concrete program optimization that can affect formal selection behavior.
+
 ### Candidate handoff
 - Mechanism: measure whether past return accumulated gradually/continuously versus through a few large jumps.
 - Current weakness addressed: current selection knows total return, breakout quality and overheat, but does not explicitly distinguish *how* the return path was formed.
@@ -106,6 +111,6 @@ WORTH_SHADOW_RESEARCH（值得影子研究）, not eligible for Formal Core（�
 
 ## Exact next continuation point
 1. Do not repeat the literature search above unless materially new evidence appears.
-2. If owner approves DL-001 research-layer implementation, define the smallest pre-registered Information Discreteness（資訊離散度） / jump-concentration feature without tuning thresholds to outcomes; implement research-only, then test redundancy and regime interaction.
+2. Owner has approved continuing DL-001 research / Shadow validation. Define the smallest pre-registered Information Discreteness（資訊離散度） feature without tuning thresholds to outcomes; test redundancy and regime interaction before any formal optimization proposal.
 3. Independently continue the next highest-value external-learning question after DL-001, preferably one not already represented by Residual RS（殘差相對強弱）, Quiet/Attention, breakout quality, or overheat.
 4. Keep Formal Core（正式核心） unchanged unless later mature evidence passes governance and owner explicitly approves.
