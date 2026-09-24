@@ -55,6 +55,7 @@ on:
       - "scripts/apply_v8_9_5.py"
       - "scripts/apply_v8_9_6.py"
       - "scripts/apply_v8_9_7.py"
+      - "scripts/apply_v8_9_8.py"
       - "RESEARCH_WORKLIST.md"
       - "research/**"
       - "data/v7_formal_scan_backfill.json"
@@ -232,6 +233,7 @@ jobs:
 
       - name: Apply V8.9.7 recovery hardening
         run: python3 scripts/apply_v8_9_7.py
+          python3 scripts/apply_v8_9_8.py
 
       - name: Syntax check Worker.js
         run: |
@@ -242,7 +244,7 @@ jobs:
       - name: Validate V8.7.12 production contract
         run: |
           set -euo pipefail
-          grep -F 'const VERSION = "8.9.7-recovery-hardening";' Worker.js
+          grep -F 'const VERSION = "8.9.8-staged-recovery";' Worker.js
           grep -F 'CREATE TABLE IF NOT EXISTS trade_research_execution_snapshots' Worker.js
           grep -F 'url.pathname==="/api/research/execution-recorder"' Worker.js
           grep -F 'RESEARCH_EXECUTION_RECORDER_FAIL_OPEN' Worker.js
@@ -360,6 +362,7 @@ jobs:
           node tests/test_v8_8_1_execution_coverage.mjs
           node tests/test_v8_8_2_zero_selection_push.mjs
           node tests/test_v8_9_7_recovery_hardening.mjs
+          node tests/test_v8_9_8_staged_recovery.mjs
           node tests/test_v8_9_0_three_pool_hybrid_shadow.mjs
           node tests/test_v8_9_1_three_pool_dashboard.mjs
           node tests/github_plan_mirror.mjs self-test
