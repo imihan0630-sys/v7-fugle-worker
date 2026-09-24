@@ -18,7 +18,7 @@ assert.match(quality,/readonlyPreviewNonJson/);
 assert.match(quality,/readonlyPreviewAccepted/);
 assert.match(quality,/bodyPrefix:text\.slice\(0,240\)/);
 assert.match(quality,/attempt<=3/);
-assert.match(quality,/text\/html/);
+assert.match(quality,/text\\\/html/);
 
 assert.match(recovery,/RECOVERY_MARKET_DATE/);
 assert.match(recovery,/historicalRecovery/);
