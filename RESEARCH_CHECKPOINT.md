@@ -1,57 +1,66 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-98.
-Updated: 2026-09-24 10:11 Asia/Taipei.
+Checkpoint sequence: B-99.
+Updated: 2026-09-24 10:42 Asia/Taipei.
 
-> Canonical cursor for both A/B research schedules. Detailed B-01..B-97 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
+> Canonical cursor for both A/B research schedules. Detailed B-01..B-98 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
 ## Governance / immutable boundary
 - Formal Core **LOCKED**. No autonomous A/B, ranking, thresholds, Top6/3+3/3+3+3, capital, entry/add/reduce/sell/stop, monitoring or push changes.
 - R01-R08 and I01-I07 frozen; no R09/I08. Prospective Shadow starts 2026-09-21; no fabricated historical Shadow. Missing evidence = UNKNOWN, never BAD/0.
 - GitHub/runtime evidence overrides chat memory. Production readback overrides repository/version strings.
 
-## Durable retained state through B-97
+## Durable retained state through B-98
 - Latest trusted owner-approved architecture remains 3+3+3: `FORMAL_GENERAL`, `FORMAL_THOUSAND`, `HYBRID_THOUSAND_SHADOW`, each ring-fenced NT$200,000; Hybrid is Shadow-only and cannot silently become Formal BUY eligibility.
 - B-62 `PRE_BASE_LIQUIDITY_CONTROL` remains Class B proposal-only. Signal observation != brokerage fill; `REDUCED_CONFIRMED` requires trusted actual reduced shares.
 - B-73..B-75 sequence-readiness helper remains SOURCE_WRITTEN_NOT_EXECUTED; journal adjacency != exchange-session adjacency; no historical calendar/Shadow backfill.
 - Top5 provenance rules remain frozen: set-membership and ordering are separate; exact raw-score ties are UNKNOWN; `未分類` is structurally non-empty but semantically coarse; no repair/re-sort/de-dup/backfill.
 - `CURRENT_DAY_ROW_ORIGIN(2026-09-18)=UNKNOWN` because day rows are UPSERT-able and lack immutable origin provenance.
 - Hybrid WATCH definitions changed materially across V8.9.3 -> V8.9.4 -> V8.9.5. These are Class-C signal/monitoring semantics even though the pool is named Shadow. Any performance cohort must be version-stratified; do not pool them as one frozen experiment.
-- V8.9.6 inspected source adds audit/output fields without a visible WATCH eligibility change, but it is shared-runtime/deployment work and therefore at least Class B. V8.9.3-8.9.5 owner authorization remains UNKNOWN absent durable owner evidence.
-- B-96 proved trusted Production runtime at 2026-09-24T00:13Z was still `8.9.5-hybrid-watch-directional`, despite V8.9.6 deploy intent. Latest trusted completed scan remained 2026-09-23 with Formal selectedCount=0 and Hybrid selectedCount=0. 2026-09-22 and 2026-09-23 are two adjacent observed Formal zero-pick dates; descriptive only, not a threshold-change basis.
-- B-97 observed 2026-09-24 09:26 Asia/Taipei intraday health with monitoredCount=0/formal15Ready=0 and no push backlog. This is not a completed daily zero-pick and must not enter the zero-pick denominator.
+- V8.9.6 source adds audit/output fields without a visible WATCH eligibility change; shared-runtime/deployment classification remains at least Class B. V8.9.3-8.9.5 owner authorization remains UNKNOWN absent durable owner evidence.
+- 2026-09-22 and 2026-09-23 remain two adjacent observed completed Formal zero-pick dates; descriptive only. 2026-09-24 intraday monitoredCount=0 is not a completed daily zero-pick and stays outside the denominator.
+- B-98 proved scheduled health queries `/api/version` but does not emit the literal version in its console payload; health success alone is not an activation timestamp.
 
-## B-98 — runtime-version observability gap isolated; no false activation upgrade
+## B-99 — V8.9.6 Production activation proven from durable deploy readback
 ### Fresh evidence
-- Re-read governance, worklist and B-97 checkpoint first. Immediately before write, checkpoint blob SHA was `9c15da0026083679fbdc34c1832764dfd71d3940` and main head was B-97 commit `85413f2c160a67cec1b24b13c7e4de6a90192d89`; no newer A/B cursor or semantic code commit appeared.
-- Latest listed Actions evidence remained scheduled health run `35942927209`; no newer completed after-market Formal scan was available at this continuation point.
-- Audited `.github/workflows/v7-health.yml` and `tests/scheduled_health.mjs` rather than inferring from the B-97 log. The health test **does** perform a public GET to Production `/api/version`, requires HTTP success, parses the JSON into `runtime`, and uses `runtime.version` to require exact equality with `/api/watchlist` version in after-market mode.
-- However, the current console payloads do **not** emit `runtime.version`. Intraday output prints health/Cron/outbox/receipt fields; after-market output prints scan/watch/storage/journal/outbox/receipt fields. Therefore a SUCCESS health run proves the version endpoint was readable and, in after-market mode, internally consistent with watchlist, but the durable Actions log cannot by itself identify the literal runtime version string.
-- Current committed root `Worker.js` still advertises legacy `7.5.26-q1-statement-column-validation`; repository root source is therefore not a valid substitute for the deployed V8.9.x runtime literal. This reinforces the existing rule that deployed readback, not repository version strings, determines Production activation.
+- Re-read governance, worklist and B-98 checkpoint first. Immediately before write, checkpoint blob SHA was `757c862b99384004b20a24a80d4043af44e0444c`; main head was B-98 commit `540a9f7a6f8a2f561d09bdfe15a615356c0327d1`. No newer A/B cursor appeared.
+- Queried Actions by the V8.9.6 semantic commit `c322c13163016a76b77c0a7d0e19ee0d0caa82f7`. It has two completed-success runs: regression `35937377710` and Cloudflare deploy `35937377707`.
+- Audited the actual deploy job/log instead of inferring from workflow success. Pre-deploy backup at 2026-09-24T00:13:05Z emitted literal runtime `8.9.5-hybrid-watch-directional`, proving the old version was still active immediately before deployment.
+- The Worker content PUT then succeeded at 2026-09-24T00:13:07Z. Deployment verification succeeded.
+- Crucially, the research-only readback at 2026-09-24T00:13:21Z emitted `expectedVersion=8.9.6-hybrid-watch-audit` and `observedVersion=8.9.6-hybrid-watch-audit`, then printed `Research readback verified on expected deployment: 8.9.6-hybrid-watch-audit`.
+- The same live research readback reported Shadow total=62 across 2 archived dates (2026-09-21, 2026-09-22), execution selectedPlans=4/buyTriggeredPlans=1, regime usableDays=4, shadowIntegrity=`RESEARCH_DATA_GAP` with expectedScanDays=3/archivedScanDays=2, and all R01-R08 readiness statuses `DATA_QUALITY_BLOCKED`.
+- External evidence in that live readback remained highly asymmetric: total=62, TWSE=53, TPEX=0, UNKNOWN=9; TPEx revenue available=0. This is direct evidence that TPEx evidence parity is still not achieved in the persisted prospective research cohort.
 
 ### Interpretation / falsification
-- Falsified the stronger interpretation that B-97 health SUCCESS meant `/api/version` was not queried at all. It **was queried**; the problem is evidence emission, not endpoint absence.
-- Also falsified the opposite overreach that health SUCCESS is enough to declare V8.9.6 active. Because the literal value is not printed, V8.9.6 activation remains `UNKNOWN`; latest trusted literal Production version remains B-96's `8.9.5-hybrid-watch-directional` until a newer durable readback emits the actual value.
-- This distinction matters for Hybrid moving-target control: a version-stratified cohort needs an auditable activation boundary. An unprinted in-memory version comparison cannot assign a durable V8.9.6 activation timestamp without additional evidence.
-- No new completed Formal scan exists at this checkpoint, so zero-pick coverage remains exactly two completed observed dates (2026-09-22, 2026-09-23). The 2026-09-24 intraday no-monitor observation remains excluded.
+- Falsified B-98's remaining activation UNKNOWN: V8.9.6 was durably observed live by 2026-09-24T00:13:21Z (08:13:21 Asia/Taipei). The activation boundary can therefore be used prospectively for version-stratified research; do not backdate it to commit/deploy intent.
+- Also proved a narrow transition window: at 00:13:05Z Production was still V8.9.5; by 00:13:21Z it was V8.9.6. Any Hybrid observation inside that interval without its own runtime provenance remains UNKNOWN rather than assigned by guess.
+- V8.9.6 may be treated as the same *source-defined eligibility regime* as V8.9.5 only for research comparisons that explicitly rely on the prior source audit showing no eligibility/state-transition change. It remains a distinct runtime version stratum for provenance.
+- The live dashboard's `RESEARCH_DATA_GAP` and 0 TPEx rows are negative evidence against declaring R03/R06 or TPEx parity ready. Do not convert absent TPEx evidence to BAD/0 and do not reconstruct missing rows from current sources.
+- No newer completed Formal after-market scan was found in this continuation point, so completed zero-pick coverage remains two dates only.
 
 ### Bias / governance controls
-- No selection threshold, factor, WATCH eligibility, signal semantics, capital, monitoring or push behavior changed.
-- No historical Shadow/calendar/version activation was backfilled from current repository state. Missing literal runtime activation remains UNKNOWN.
-- Version-stratification remains mandatory for V8.9.3/V8.9.4/V8.9.5 Hybrid cohorts; do not pool across moving definitions. V8.9.6 cannot be assigned to a cohort start date from deploy intent alone.
-- Selection bias, look-ahead, data snooping, market-source bias, Factor Zoo, overfit, coverage, zero-pick, transaction-cost, date-cluster and redundancy controls remain active.
+- Moving-target bias: V8.9.3/V8.9.4/V8.9.5 remain separate cohorts; V8.9.6 gets a proven activation timestamp and separate provenance label even if eligibility logic is source-equivalent to V8.9.5.
+- Market-source bias is now directly visible in live research coverage (TWSE 53 vs TPEX 0); do not pool this as market-neutral evidence.
+- Selection bias, look-ahead, data snooping, Factor Zoo, overfit, coverage, zero-pick, transaction-cost, date-cluster and redundancy controls remain active.
+- Missing prospective Top5/`未分類` persisted-row evidence remains UNKNOWN; no denominator was invented from source definitions.
+
+### R01-R08 / I01-I07 impact
+- No experiment or contrast definition changed. R01-R08/I01-I07 remain frozen and research-only.
+- R03/R06 readiness is not upgraded; live integrity remains DATA_QUALITY_BLOCKED and TPEx persisted coverage remains zero in the observed 62-row cohort.
+- Execution Alpha evidence remains descriptive only (4 selected plans, 1 BUY-triggered plan) and far below maturity thresholds.
 
 ### Engineering / deployment
-- Identified a minimal observability improvement: include literal `runtime.version` in read-only health console evidence. But the existing workflow/deployment path means changing shared test/workflow behavior is not treated as an autonomous main edit here; retain as Class B proposal-first under the existing B-81 deployment-path finding.
-- Evidence inspection + checkpoint only. No Worker, D1/KV schema, workflow, dashboard, Formal selection, Hybrid WATCH definition, monitoring, notification or Production deployment changed by B-98.
+- Evidence inspection + checkpoint only. No Worker, workflow, D1/KV schema, dashboard, Formal selection, Hybrid WATCH definition, monitoring, notification or Production deployment was changed by B-99.
+- The pre-existing V8.9.6 deploy run itself had rollback backup artifact and successful verification; B-99 did not initiate or re-run deployment.
+- Class B observability proposal to emit runtime version in scheduled-health logs remains optional; it is no longer needed to establish the V8.9.6 activation boundary because the existing deploy log supplied durable literal readback.
 
 ## Exact next continuation point
 1. Re-read governance/worklist/checkpoint/latest main and re-check checkpoint SHA before any write; merge a newer A/B cursor if present.
-2. Seek a trusted authorized read-only Production artifact/log that **emits** literal `/api/version`; do not treat a successful but non-emitting health check as an activation timestamp. Keep V8.9.6 activation UNKNOWN until proven.
+2. Treat `2026-09-24T00:13:21Z` as the earliest durably proven V8.9.6 live readback, with V8.9.5 proven at `00:13:05Z`; observations in the 16-second transition window without self-versioning remain UNKNOWN.
 3. Wait for a completed later Formal scan before updating zero-pick coverage. Never count intraday `monitoredCount=0` as a completed daily zero-pick.
 4. If a later trusted scan has >=1 Formal plan, immediately restore funnel priority: verify execution-recorder target-date coverage and 500-row non-truncation before signal interpretation; same-date `HUMAN_MOMENTUM_SHADOW` stays research-only on Formal SELECTED names.
-5. For Hybrid WATCH research, keep V8.9.3/V8.9.4/V8.9.5 cohorts version-stratified. Treat V8.9.6 as same eligibility regime only after trusted activation date plus source evidence confirms no intervening semantic patch.
-6. If no newer completed formal-plan evidence is available, continue R03/R06 supplied-row work. First look for an existing read-only durable research endpoint/artifact that exposes persisted `trade_research_days.market_json`/Top5 without modifying runtime. If such evidence is absent, record `未分類` frequency as UNKNOWN rather than inventing a denominator from source definitions or reconstructed rows.
-7. Structural Top5 membership and semantic-classification quality remain separate: `未分類` can satisfy non-empty membership but is semantically coarse; do not drop dates, repair names, re-sort, de-dup or infer raw ties.
-8. Keep `CURRENT_DAY_ROW_ORIGIN(2026-09-18)=UNKNOWN`; keep malformed rules and historical raw-tie UNKNOWN semantics frozen.
-9. Do not implement version logging, validator/helper, workflow-path, shared calendar/cache/date-resolution changes on main without the applicable Class B decision. Do not retroactively upgrade B-73/B-74 pairs.
+5. Otherwise continue highest-priority TPEx Evidence Parity/PIT work using the live negative evidence: determine why the persisted prospective cohort has `byMarket.TPEX=0` despite V8.7.11 cross-market revenue support. Distinguish (a) no TPEx candidates in archived cohort, (b) symbol-to-market classification UNKNOWN, and (c) TPEx evidence fetch/persistence failure. Do not infer which one without row-level evidence.
+6. Seek an existing read-only durable endpoint/artifact that exposes persisted row-level market/source provenance and `trade_research_days.market_json`/Top5. If unavailable, keep TPEx cause and `未分類` frequency UNKNOWN rather than reconstructing or changing runtime.
+7. Structural Top5 membership and semantic-classification quality remain separate; no repair/re-sort/de-dup/raw-tie inference.
+8. Keep `CURRENT_DAY_ROW_ORIGIN(2026-09-18)=UNKNOWN`; do not retroactively upgrade B-73/B-74 pairs.
+9. Do not implement workflow/version logging, validator/helper, shared calendar/cache/date-resolution or source-routing changes on main without the applicable Class B decision.
