@@ -14,6 +14,14 @@ Read `VERSIONING.md` before assigning any new version number. Version level is d
 - Data missing is not successful0 picks. Failed scans retain prior good configuration and are clearly labeled. Never replace missing financial/benchmark facts with neutral scores and call all30 complete.
 - Every monitoring import/update handoff includes https://fugle-test.imihan0630.workers.dev/ . Do not claim globally permanent chat memory; checked-in project instructions are the continuity basis when this repo is available.
 
+
+
+## Deep-learning continuity
+- Scheduled or manual 台股深度學習 must read `DEEP_LEARNING_CHECKPOINT.md` first, then the latest `RESEARCH_CHECKPOINT.md`, `RESEARCH_WORKLIST.md`, and `RESEARCH_ENGINEERING_GOVERNANCE.md` before continuing.
+- `DEEP_LEARNING_CHECKPOINT.md` is the durable cursor for deep-learning progress across ChatGPT threads. Do not restart from scratch when a chat changes or becomes too long.
+- Every substantive deep-learning run must write its evidence, counter-evidence, redundancy/bias checks, candidate handoff status, and exact next continuation point back to that file before ending. Re-read its latest SHA before write and merge concurrent progress rather than overwriting it.
+- Deep-learning findings remain research-only until they pass the existing governance path; this continuity rule does not authorize Formal Core changes.
+
 User authorizes continuing repairs without repeated OK confirmations. Stop for genuine authorization or protected-workflow blockers and state the exact required step without asking for secrets in chat.
 
 Latest repairs7.5.21: read REQUIREMENTS_30.md latest-state section before its historical table. Actual dated INDEX/TDCC/FINANCIAL/VALUATION/ANNOUNCEMENTS snapshots and latest3 institution dates gate selection; missing inputs must fail without replacing existing good plans. Only verified same-day closing cache may precede direct fetches. Currentdata source confidence is not proof of full30 completion.
