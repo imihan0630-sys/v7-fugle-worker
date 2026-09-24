@@ -33,7 +33,7 @@ replace_once(
 )
 
 scan_core=text.find("async function runAfterMarketScanCore(")
-bridge_start=text.find("    bridge = await sendTo3Min(",scan_core)
+bridge_start=text.find("    bridge = await persistPlanBridge(",scan_core)
 if bridge_start<0:
     raise SystemExit("defer external delivery: bridge start not found")
 report_marker='    if (report.sent) await env.STOCKS_KV.put(reportKey, JSON.stringify(report), { expirationTtl: 14 * 86400 });'
@@ -79,7 +79,7 @@ route=r'''    if (url.pathname === "/api/scan/deliver") {
         const watch=Array.isArray(latest.hybridWatchStocks)?latest.hybridWatchStocks:[];
         let bridge=latest?.threeMin;
         if(!(bridge?.sent===true && bridge?.verified===true)) {
-          bridge=await sendTo3Min(latest.threeMinPayload || buildThreeMinPayload(latest.scanDate,latest.totalCapital,formal),env);
+          bridge=await persistPlanBridge(latest.threeMinPayload || buildThreeMinPayload(latest.scanDate,latest.totalCapital,formal),env);
         }
         const reportKey=`V7_DAILY_REPORT:${latest.scanDate}`;
         const previousReport=await env.STOCKS_KV.get(reportKey,"json");
