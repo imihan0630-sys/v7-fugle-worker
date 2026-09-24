@@ -7,6 +7,11 @@ on:
     - cron: '25 15 * * 1-5' # 23:25 Taipei final data refresh
     - cron: '45 15 * * 1-5' # 23:45 Taipei recovery only if 23:35 formal scan is missing
   workflow_dispatch:
+    inputs:
+      market_date:
+        description: 'Optional prior trading date (YYYY-MM-DD) for guarded historical quality + after-market recovery'
+        required: false
+        type: string
 permissions:
   contents: read
 concurrency:
@@ -24,22 +29,36 @@ jobs:
         id: calendar
         run: node tests/trading_day_gate.mjs
       - name: Sync today's official market data (no target changes or orders)
-        if: steps.calendar.outputs.proceed == 'true'
+        if: steps.calendar.outputs.proceed == 'true' && (github.event_name != 'workflow_dispatch' || inputs.market_date == '')
         env:
           V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
         run: node tests/prepare_market_cache.mjs
       - name: Sync official institutions and missing recent trading days (no plan changes)
-        if: steps.calendar.outputs.proceed == 'true'
+        if: steps.calendar.outputs.proceed == 'true' && (github.event_name != 'workflow_dispatch' || inputs.market_date == '')
         env:
           V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
         run: node tests/sync_institution_data.mjs
       - name: Sync official index, quarterly financials, valuation and TDCC (no plan changes)
-        if: steps.calendar.outputs.proceed == 'true'
+        if: steps.calendar.outputs.proceed == 'true' && (github.event_name != 'workflow_dispatch' || inputs.market_date == '')
         env:
           V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
         run: node tests/sync_official_quality.mjs
       - name: Recover missing same-day analysis after complete data (skip prior success)
-        if: steps.calendar.outputs.proceed == 'true'
+        if: steps.calendar.outputs.proceed == 'true' && (github.event_name != 'workflow_dispatch' || inputs.market_date == '')
         env:
           V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+        run: node tests/recover_after_market.mjs
+
+      - name: Historical official quality recovery
+        if: github.event_name == 'workflow_dispatch' && inputs.market_date != ''
+        env:
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+          QUALITY_MARKET_DATE: ${{ inputs.market_date }}
+        run: node tests/sync_official_quality.mjs
+
+      - name: Historical after-market recovery
+        if: github.event_name == 'workflow_dispatch' && inputs.market_date != ''
+        env:
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+          RECOVERY_MARKET_DATE: ${{ inputs.market_date }}
         run: node tests/recover_after_market.mjs
