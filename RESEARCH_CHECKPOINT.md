@@ -1,16 +1,16 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-103.
-Updated: 2026-09-24 12:43 Asia/Taipei.
+Checkpoint sequence: B-104.
+Updated: 2026-09-24 13:10 Asia/Taipei.
 
-> Canonical cursor for both A/B research schedules. Detailed B-01..B-102 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
+> Canonical cursor for both A/B research schedules. Detailed B-01..B-103 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
 ## Governance / immutable boundary
 - Formal Core **LOCKED**. No autonomous A/B, ranking, thresholds, Top6/3+3/3+3+3, capital, entry/add/reduce/sell/stop, monitoring or push changes.
 - R01-R08 and I01-I07 frozen; no R09/I08. Prospective Shadow starts 2026-09-21; no fabricated historical Shadow. Missing evidence = UNKNOWN, never BAD/0.
 - GitHub/runtime evidence overrides chat memory. Production readback overrides repository/version strings.
 
-## Durable retained state through B-102
+## Durable retained state through B-103
 - Latest trusted owner-approved architecture remains 3+3+3: `FORMAL_GENERAL`, `FORMAL_THOUSAND`, `HYBRID_THOUSAND_SHADOW`, each ring-fenced NT$200,000; Hybrid is Shadow-only and cannot silently become Formal BUY eligibility.
 - B-62 `PRE_BASE_LIQUIDITY_CONTROL` remains Class B proposal-only. Signal observation != brokerage fill; `REDUCED_CONFIRMED` requires trusted actual reduced shares.
 - B-73..B-75 sequence-readiness helper remains SOURCE_WRITTEN_NOT_EXECUTED; journal adjacency != exchange-session adjacency; no historical calendar/Shadow backfill.
@@ -23,45 +23,45 @@ Updated: 2026-09-24 12:43 Asia/Taipei.
 - B-100: `sourceMarket` is inferred from monthly-revenue symbol-map matching, so TPEX=0 cannot distinguish H1=no OTC candidates, H2=OTC candidate(s) unmatched -> UNKNOWN, H3=TPEx monthly-revenue provider unavailable/fetch failed.
 - B-101: no existing durable `/api/research/*` raw-row surface exposes `evidence_json`, per-row provider status or archived candidate market classification.
 - B-102: inspected scheduled health artifact/mirror path did not resolve capture-time TPEx research evidence; encrypted plan mirror is not proof of market/source state.
+- B-103: capture-time 2026-09-22 official-market Action proved TPEx infrastructure generally available (market/institutional/financial datasets succeeded), narrowing H3 to the specific monthly-revenue research provider/path; H1/H2/H3 remain unresolved.
 
-## B-103 — Capture-time official-market logs falsify a broad TPEx-outage explanation, but do not resolve monthly-revenue evidence
+## B-104 — Remaining plaintext diagnostic surfaces do not expose monthly-revenue capture provenance
 ### Fresh evidence
-- Re-read governance, worklist and B-102 checkpoint first; checkpoint SHA was re-read immediately before this write and remained `8c28cdde5a2524b11e4e970b9d51a53f9354dc31`, so no newer A/B cursor was overwritten.
-- Re-checked Actions: no newly completed later Formal scan was found after B-102, so 2026-09-24 remains outside the completed daily zero-pick denominator.
-- Audited the 2026-09-22 scheduled `V7 Official Market Data Sync` run `35716596207` and full job log `106709424387` as a capture-time evidence class not previously exhausted.
-- At 2026-09-22 18:33-18:36 Taipei, the run successfully cached **both** official markets for the same trading date: TWSE count=1038 and TPEx count=847, both `verified=true`.
-- The same run then cached institutional data with TWSE=1067, TPEx=787, total=1854 and verified the 2026-09-22/21/18 streak; it also successfully parsed TPEx quarterly financial data (for example 2026 Q2 count=884) and TPEx announcement schema alongside TWSE.
-- The workflow itself is explicitly a market-data/quality sync and does not expose research external-evidence rows or monthly-revenue provider status; `recover_after_market.mjs` skipped because this invocation was outside the 23:35-23:59 recovery window.
+- Re-read governance, worklist, B-103 checkpoint and latest main first. Latest main research commit was B-103 (`f80b0d4cc1a3bfdf7c7df907db0222e9c35af5ef`); no newer A/B cursor existed.
+- Re-checked Actions and found no newly completed later Formal daily scan suitable for adding 2026-09-24 to the zero-pick denominator.
+- Audited the V8.9.3 regression diagnostic run `35936071471` / job `107433285509`. The workflow had explicit steps for a production `/api/scan-preview` dry-run, read-only production authorization preflight and latest after-market read-only diagnostic.
+- Inspected the commit that added the diagnostic (`d853eb154f7a4aca45c6acf6ee94975ecc0431b5`). Its printed scan-preview payload is deliberately bounded to Hybrid selected/watch symbols, watch reasons, missing conditions, Hybrid pool/exclusions and final-pool merge diagnostics. It does **not** print research external-evidence rows, persisted `sourceMarket`, monthly-revenue provider/status/sourceDate/capturedAt, or point-in-time eligibility.
+- Repository code search for the research external-evidence table/provider wording produced no additional committed plaintext export surface. The available Actions job metadata confirms the diagnostics ran successfully, but job metadata itself contains only step status/timing, not the JSON stdout needed to distinguish H1/H2/H3; the connector does not expose raw job-log download for this endpoint.
 
 ### Interpretation / falsification
-- This is meaningful negative evidence against an overly broad H3 interpretation: **TPEx official-market infrastructure was not generally unavailable on 2026-09-22**. Multiple independent TPEx official datasets were successfully fetched and verified in a capture-time Action.
-- It does **not** prove the separate TPEx monthly-revenue collector used by `trade_research_external_evidence` succeeded at Shadow capture time. Therefore H3 is narrowed to `TPEx monthly-revenue research provider/path unavailable or failed`, not eliminated.
-- H1=no OTC Shadow candidates and H2=OTC candidate(s) existed but failed monthly-revenue symbol-map matching remain live. `TPEX_ZERO_ROOT_CAUSE=UNKNOWN` remains the correct state.
-- The 53/0/9 persisted external-evidence split still cannot be used as TWSE-vs-TPEx performance evidence.
+- The hypothesis that an existing V8.9.x regression/scan-preview diagnostic already preserved enough plaintext research provenance to resolve TPEx=0 is **not supported** by its committed payload contract.
+- This does not prove the monthly-revenue provider failed or succeeded. It only shows this diagnostic surface cannot discriminate H1/H2/H3.
+- Combined with B-101..B-103, currently reachable durable plaintext surfaces are exhausted without row-level monthly-revenue provenance. Therefore `TPEX_ZERO_ROOT_CAUSE=UNKNOWN` remains mandatory.
+- The broad exchange-outage hypothesis remains falsified for 2026-09-22, but the narrower monthly-revenue path H3 remains live alongside H1/H2.
 
 ### Bias / governance controls
-- Market-source bias remains unresolved, but a broad exchange-wide outage hypothesis is now falsified for 2026-09-22.
-- Look-ahead/PIT: only capture-time 2026-09-22 Action logs were used; no current provider response was substituted into historical rows.
-- Selection bias: no UNKNOWN row was relabeled as TPEx/TWSE and no candidate market was inferred from today's metadata.
-- Data snooping/Factor Zoo/overfit/date clustering/redundancy/transaction costs/coverage/zero-pick controls unchanged. No factor/threshold/window added.
-- UNKNOWN remains UNKNOWN; no historical Shadow fabricated.
+- No current provider response was substituted into historical rows; no look-ahead repair.
+- No UNKNOWN row was relabeled; no market inferred from present-day listing metadata.
+- No new factor, threshold, window or experiment was introduced. R01-R08/I01-I07 remain frozen.
+- Market-source bias remains unresolved; 53/0/9 cannot be used as TWSE-vs-TPEx performance evidence.
+- Selection bias, data snooping, Factor Zoo, overfit, coverage, zero-pick, transaction-cost, date-cluster and redundancy controls unchanged.
 
-### R01-R08 / I01-I07 impact
-- No experiment/contrast changed. R01-R08/I01-I07 remain frozen and research-only.
-- R03/R06 remain DATA_QUALITY_BLOCKED where TPEx parity/PIT provenance is required.
-- R08/external evidence still cannot claim cross-market neutrality; however future falsification should distinguish general TPEx exchange availability from the narrower monthly-revenue evidence path.
+### Engineering classification
+- A future row-level observability surface would touch shared runtime/API/storage plumbing even if read-only and research-only, so conservatively classify the proposal as **Class B** under governance. Proposal only; no code/branch/merge/deploy this round.
+- Minimum proposed fields: `scanDate`, symbol, persisted `sourceMarket`, monthly-revenue `provider`, `status`, `sourceDate`, `capturedAt`, `pointInTimeEligible`, and capture/runtime version.
+- Safety contract: admin-authenticated read-only endpoint/export; bounded rows/date filter; no formal consumer; no source routing/caching/date-resolution changes; UNKNOWN preserved verbatim; no historical reconstruction/backfill; regression must prove protected Formal outputs unchanged.
 
 ### Engineering / deployment
 - Evidence inspection + checkpoint only. No Worker/workflow/D1/KV/source routing/Formal selection/Hybrid WATCH/monitoring/notification change and no Production deployment.
-- No Class B/C change attempted.
+- No Class B/C implementation attempted.
 
 ## Exact next continuation point
 1. Re-read governance/worklist/checkpoint/latest main and re-check checkpoint SHA before any write; merge a newer A/B cursor if present.
 2. Check for a newly completed later Formal scan. Never count intraday `monitoredCount=0` as a completed daily zero-pick.
 3. If a trusted later scan has >=1 Formal plan, immediately restore funnel priority: verify execution-recorder target-date coverage and 500-row non-truncation before signal interpretation; same-date `HUMAN_MOMENTUM_SHADOW` remains research-only on Formal SELECTED names.
-4. Otherwise continue TPEx parity/PIT without re-running route, health/mirror, or general official-market availability checks. Audit remaining capture-time evidence classes for 2026-09-21/22 specifically for the **monthly-revenue research path**: after-market scan logs near the Shadow writes, regression/deploy diagnostics that printed research dashboard/provider summaries, scan response payloads, or committed/exported plaintext research snapshots.
-5. Keep `TPEX_ZERO_ROOT_CAUSE=UNKNOWN` unless durable row/provider evidence distinguishes H1/H2/H3. Broad TPEx exchange availability is now proven for 2026-09-22, but monthly-revenue provider success remains UNKNOWN. Do not use today's provider data as historical substitute.
-6. If remaining durable evidence classes are exhausted with no discriminator, draft a **Class B proposal only** for future row-level observability: minimum research-only fields (`scanDate`, symbol, persisted `sourceMarket`, revenue provider/status/sourceDate/capturedAt/pointInTimeEligible, capture/runtime version), admin-authenticated read-only access, no formal consumer, bounded rows, UNKNOWN preserved. Do not merge/deploy without owner approval.
+4. Otherwise treat the existing durable plaintext TPEx monthly-revenue evidence search as exhausted unless a genuinely new artifact/log/export class appears. Do not repeat route, health/mirror, general official-market, or V8.9.x scan-preview diagnostic audits.
+5. Keep `TPEX_ZERO_ROOT_CAUSE=UNKNOWN`; H1/H2/H3 remain unresolved. Do not use today's provider/listing data as historical substitute.
+6. Preserve the B-104 **Class B proposal only** for future row-level observability. Do not implement/merge/deploy without owner approval. If owner approval is later obtained, isolate the smallest read-only research surface and prove no protected Formal output changes.
 7. Continue R03/R06 persisted Top5/`未分類` frequency only from durable prospective rows; structural membership and semantic classification remain separate; no repair/re-sort/de-dup/raw-tie inference.
 8. Keep `CURRENT_DAY_ROW_ORIGIN(2026-09-18)=UNKNOWN`; do not retroactively upgrade B-73/B-74 pairs.
 9. Do not implement workflow/version logging, validator/helper, shared calendar/cache/date-resolution or source-routing changes on main without the applicable Class B decision.
