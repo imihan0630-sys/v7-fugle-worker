@@ -32,30 +32,24 @@ replace_once(
     "selection-only mode"
 )
 
-replace_once(
-    '''    bridge = await sendTo3Min(buildThreeMinPayload(marketDate,totalCapital,stocks),env);
-    const reportKey = `V7_DAILY_REPORT:${marketDate}`;
-    const previousReport = await env.STOCKS_KV.get(reportKey, "json");
-    const dailyPayload = buildDailySelectionPayload(marketDate, stocks, scan.diagnostics);
-    enrichThreePoolDailyPayload(dailyPayload,stocks,hybridStocks,scan.strategyOverlap||null,hybridWatchStocks);
-    report = previousReport?.sent === true && Boolean(previousReport.simulated) === isTestMode(env) ? { ...previousReport, deduplicated: true }
-      : await sendPush(dailyPayload, env);
-    if (report.sent) await env.STOCKS_KV.put(reportKey, JSON.stringify(report), { expirationTtl: 14 * 86400 });''',
-    '''    if (!selectionOnly) {
-      bridge = await sendTo3Min(buildThreeMinPayload(marketDate,totalCapital,stocks),env);
-      const reportKey = `V7_DAILY_REPORT:${marketDate}`;
-      const previousReport = await env.STOCKS_KV.get(reportKey, "json");
-      const dailyPayload = buildDailySelectionPayload(marketDate, stocks, scan.diagnostics);
-      enrichThreePoolDailyPayload(dailyPayload,stocks,hybridStocks,scan.strategyOverlap||null,hybridWatchStocks);
-      report = previousReport?.sent === true && Boolean(previousReport.simulated) === isTestMode(env) ? { ...previousReport, deduplicated: true }
-        : await sendPush(dailyPayload, env);
-      if (report.sent) await env.STOCKS_KV.put(reportKey, JSON.stringify(report), { expirationTtl: 14 * 86400 });
+scan_core=text.find("async function runAfterMarketScanCore(")
+bridge_start=text.find("    bridge = await sendTo3Min(",scan_core)
+if bridge_start<0:
+    raise SystemExit("defer external delivery: bridge start not found")
+report_marker='    if (report.sent) await env.STOCKS_KV.put(reportKey, JSON.stringify(report), { expirationTtl: 14 * 86400 });'
+report_end=text.find(report_marker,bridge_start)
+if report_end<0:
+    raise SystemExit("defer external delivery: report end not found")
+report_end += len(report_marker)
+original=text[bridge_start:report_end]
+indented="\n".join("  "+line for line in original.split("\n"))
+deferred='''    if (!selectionOnly) {
+'''+indented+'''
     } else {
       bridge = {sent:false,verified:false,simulated:false,deferred:true,reason:"SELECTION_ONLY_RECOVERY"};
       report = {sent:false,simulated:false,deferred:true,reason:"SELECTION_ONLY_RECOVERY"};
-    }''',
-    "defer external delivery"
-)
+    }'''
+text=text[:bridge_start]+deferred+text[report_end:]
 
 replace_once(
     '''      complete: !dryRun && saved.verified === true && bridge.verified === true && bridge.simulated !== true && report.sent === true && report.simulated !== true''',
