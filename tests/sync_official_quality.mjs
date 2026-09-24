@@ -62,6 +62,22 @@ async function readonlyPreview(body,label) {
   throw new Error(label+' failed after bounded retries: '+JSON.stringify(lastMeta));
 }
 const configResponse=await admin('/api/config');assert.equal(configResponse.ok,true);const before=await configResponse.json();
+const recoveryOnly=String(process.env.QUALITY_RECOVERY_ONLY || '')==='1';
+let existingQuality=null;
+if(recoveryOnly) {
+  const response=await admin('/api/quality-status?marketDate='+encodeURIComponent(marketDate));
+  assert.equal(response.ok,true,'Historical quality status unavailable');
+  existingQuality=await response.json();
+  assert.equal(existingQuality.marketDate,marketDate);
+  console.log(JSON.stringify({historicalQualityRecovery:true,marketDate,existingQuality}));
+}
+function datasetReady(kind) {
+  if(!recoveryOnly) return false;
+  if(kind==='INDEX') return existingQuality?.index?.ready===true;
+  if(kind==='TDCC') return existingQuality?.tdcc?.ready===true;
+  return existingQuality?.datasets?.[kind]?.ready===true;
+}
+
 for(let attempt=0;attempt<6;attempt++) {
   const response=await admin('/api/quality-data');if(response.status===405) break;
   assert.ok([404,200].includes(response.status));assert.ok(attempt<5,'Quality route not deployed; no writes attempted');await new Promise(resolve=>setTimeout(resolve,3000));
@@ -74,6 +90,7 @@ async function sync(body) {
   assert.equal(result.verified,true);assert.equal(result.noPlanChanges,true);console.log(JSON.stringify({officialQualityCached:true,...result}));
   return validated;
 }
+if(!datasetReady('INDEX')) {
 const months=await Promise.all(Array.from({length:3},async (_,offset)=>{
   const date=new Date(marketDate+'T12:00:00Z');date.setUTCDate(1);date.setUTCMonth(date.getUTCMonth()-offset);
   const sourceUrl=`https://www.twse.com.tw/exchangeReport/FMTQIK?response=json&date=${date.toISOString().slice(0,10).replaceAll('-','')}`;
@@ -81,19 +98,30 @@ const months=await Promise.all(Array.from({length:3},async (_,offset)=>{
 }));
 if(months[0].payload.data?.at(-1)?.[0]?.replaceAll('/','')!==String(Number(marketDate.slice(0,4))-1911)+marketDate.slice(5).replaceAll('-','')) throw new Error('Official index is not current; stop without presenting missing data as successful zero picks');
 await sync({kind:'INDEX',months});
+}
+else console.log(JSON.stringify({historicalQualityReuse:true,kind:'INDEX',marketDate}));
+if(!datasetReady('TDCC')) {
 const tdccUrl='https://opendata.tdcc.com.tw/getOD.ashx?id=1-5';
 const tdcc=helpers.parseOfficialCsv(await (await publicSource(tdccUrl)).text(),['資料日期','證券代號','持股分級','人數','股數','占集保庫存數比例%']).map(row=>({...row,'證券代號':String(row['證券代號']).trim()}));
 console.log(JSON.stringify({tdccAdjustmentSchema:tdcc.find(row=>row['持股分級']==='16' && /^[1-9][0-9]{3}$/.test(row['證券代號'])),tdccTotalSchema:tdcc.find(row=>row['持股分級']==='17' && /^[1-9][0-9]{3}$/.test(row['證券代號']))}));
 const fields=['資料日期','證券代號','持股分級','股數','占集保庫存數比例%'];
 await sync({kind:'TDCC',sourceUrl:tdccUrl,fields,rows:tdcc.filter(row=>/^[1-9][0-9]{3}$/.test(String(row['證券代號']))).map(row=>fields.map(field=>row[field]))});
+}
+else console.log(JSON.stringify({historicalQualityReuse:true,kind:'TDCC',marketDate}));
+if(!datasetReady('VALUATION')) {
 const twseUrl=`https://www.twse.com.tw/exchangeReport/BWIBBU_d?response=json&date=${marketDate.replaceAll('-','')}&selectType=ALL`;
 const tpexUrl='https://www.tpex.org.tw/openapi/v1/tpex_mainboard_peratio_analysis';
 const [twsePayload,tpexPayload]=await Promise.all([twseUrl,tpexUrl].map(async url=>(await publicSource(url)).json()));
 await sync({kind:'VALUATION',twseUrl,tpexUrl,twsePayload,tpexPayload});
+}
+else console.log(JSON.stringify({historicalQualityReuse:true,kind:'VALUATION',marketDate}));
+if(!datasetReady('ANNOUNCEMENTS')) {
 const announcementTwse='https://openapi.twse.com.tw/v1/opendata/t187ap04_L',announcementTpex='https://www.tpex.org.tw/openapi/v1/mopsfin_t187ap04_O';
 const [announcementsTwse,announcementsTpex]=await Promise.all([announcementTwse,announcementTpex].map(async url=>(await publicSource(url)).json()));
 console.log(JSON.stringify({officialAnnouncementSchemas:{TWSE:{fields:Object.keys(announcementsTwse[0] || {}),date:announcementsTwse[0]?.['發言日期']},TPEx:{fields:Object.keys(announcementsTpex[0] || {}),date:announcementsTpex[0]?.['發言日期']}}}));
 await sync({kind:'ANNOUNCEMENTS',twseUrl:announcementTwse,tpexUrl:announcementTpex,twsePayload:announcementsTwse,tpexPayload:announcementsTpex});
+}
+else console.log(JSON.stringify({historicalQualityReuse:true,kind:'ANNOUNCEMENTS',marketDate}));
 const epsRows=helpers.parseOfficialCsv(await (await publicSource('https://mopsfin.twse.com.tw/opendata/t187ap14_L.csv')).text());
 const marketOptions=helpers.parseMopsMarketOptions(await (await publicSource('https://mopsov.twse.com.tw/mops/web/t163sb04')).text());
 console.log(JSON.stringify({officialMopsMarketOptions:marketOptions}));
@@ -119,7 +147,10 @@ for(let start=0;start<requests.length;start+=2) {
     return {market,year:y,quarter:q,sourceUrl,stocks};
   }));periods.push(...batch);
 }
-const financialSnapshot=await sync({kind:'FINANCIAL',year,quarter,periods});
+const financialBody={kind:'FINANCIAL',year,quarter,periods};
+const financialSnapshot=helpers.validateOfficialQualityData(financialBody,marketDate);
+if(!datasetReady('FINANCIAL')) await sync(financialBody);
+else console.log(JSON.stringify({historicalQualityReuse:true,kind:'FINANCIAL',marketDate,count:financialSnapshot.count}));
 // Review every preliminary qualifying candidate, before applying either pool quota.
 // This is a readonly source-selection preview; it never imports or pushes a plan.
 const review=await readonlyPreview({dryRun:true,epsReviewOnly:true,marketDate},'EPS source review');
@@ -174,9 +205,17 @@ for(let start=0;start<universe.length;start+=2) {
     return {sourceUrl:directSourceUrl,symbol:item.symbol,html,...(previousQuarterHtml!==undefined ? {previousQuarterHtml} : {})};
   }));reports.push(...batch);
 }
-await sync({kind:'QUARTER_EPS',year,quarter,reports,financialSnapshot});
+if(!datasetReady('QUARTER_EPS')) await sync({kind:'QUARTER_EPS',year,quarter,reports,financialSnapshot});
+else console.log(JSON.stringify({historicalQualityReuse:true,kind:'QUARTER_EPS',marketDate}));
 const afterResponse=await admin('/api/config');assert.equal(afterResponse.ok,true);assert.deepEqual(await afterResponse.json(),before,'Quality sync cannot change current plans or capital');
-const statusResponse=await admin('/api/quality-status?marketDate='+marketDate);assert.equal(statusResponse.ok,true);console.log(JSON.stringify({officialQualityStatus:await statusResponse.json(),configurationUnchanged:true,noSelection:true,noThreeMinWrite:true,noPush:true}));
+const statusResponse=await admin('/api/quality-status?marketDate='+marketDate);assert.equal(statusResponse.ok,true);
+const finalStatus=await statusResponse.json();
+if(recoveryOnly) {
+  assert.equal(finalStatus.index?.ready,true,'INDEX still missing after recovery');
+  assert.equal(finalStatus.tdcc?.ready,true,'TDCC still missing after recovery');
+  for(const kind of ['FINANCIAL','VALUATION','ANNOUNCEMENTS','QUARTER_EPS']) assert.equal(finalStatus.datasets?.[kind]?.ready,true,kind+' still missing after recovery');
+}
+console.log(JSON.stringify({officialQualityStatus:finalStatus,configurationUnchanged:true,noSelection:true,noThreeMinWrite:true,noPush:true}));
 if(process.argv.includes('--dry-run')) {
   const storageTest=await admin('/api/signals/storage-test',{method:'POST',body:'{}'});
   const storageResult=await storageTest.json();assert.equal(storageTest.ok,true);assert.equal(storageResult.verified,true);assert.equal(storageResult.noRealSignals,true);
