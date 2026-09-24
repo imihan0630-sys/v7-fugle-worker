@@ -1,9 +1,9 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-117.
-Updated: 2026-09-24 20:10 Asia/Taipei.
+Checkpoint sequence: B-118.
+Updated: 2026-09-24 20:42 Asia/Taipei.
 
-> Canonical cursor for both A/B research schedules. Detailed B-01..B-116 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
+> Canonical cursor for both A/B research schedules. Detailed B-01..B-117 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
 ## Governance / immutable boundary
 - Formal Core **LOCKED**. No autonomous A/B, ranking, thresholds, Top6/3+3/3+3+3, capital, entry/add/reduce/sell/stop, monitoring or push changes.
@@ -31,7 +31,6 @@ Updated: 2026-09-24 20:10 Asia/Taipei.
 - Re-read latest governance, worklist and B-116 checkpoint from main; latest research commit at run start was B-116 `2fd0a9f7aaa48f89e625c1e199589aed1cfef5c5`.
 - Re-checked repository Actions at 20:10 Taipei. The newest visible official-market-data run remains `35987921399`, completed failure at 18:36 Taipei; no later trusted official recovery/Formal scan is visible yet.
 - No new durable prospective Top5 day row was established in this cycle.
-- Re-read checkpoint immediately before write; blob remained `125fc45fab986904cc55874f0358ea53ee64dec6`, so no concurrent A/B checkpoint update required merging.
 
 ### Interpretation / falsification
 - 2026-09-24 remains prerequisite-failed/UNKNOWN, not a zero-pick. Completed Formal zero-pick denominator remains exactly 2 independent dates: 9/22 and 9/23.
@@ -39,9 +38,22 @@ Updated: 2026-09-24 20:10 Asia/Taipei.
 - `OFFICIAL_QUALITY_FAILURE_ROOT_CAUSE` remains `TIMEOUT_IN_2025Q2_MOPS_PAIRED_BATCH_BEFORE_PARSE_COMPLETION`; exact TWSE/TPEx attribution remains UNKNOWN.
 - `TPEX_ZERO_ROOT_CAUSE=UNKNOWN` unchanged; no new provenance class appeared.
 
+## B-118 — no material state change before later recovery windows
+### Fresh evidence
+- Re-read governance, worklist and latest B-117 checkpoint from main at 20:42 Taipei.
+- Re-checked repository Actions. The newest visible official-market-data run remains `35987921399`, completed failure at 18:36 Taipei; no later trusted official recovery/Formal scan is visible yet.
+- Re-read checkpoint immediately before write; blob remained `86060e4952268fad931c37fd9607e74088859176`, so no concurrent A/B checkpoint update required merging.
+
+### Interpretation / falsification
+- No new independent market-date evidence exists in this cycle. 2026-09-24 remains prerequisite-failed/UNKNOWN, not a zero-pick; completed Formal zero-pick denominator remains exactly 2 dates (9/22, 9/23).
+- R03/R06 remains WAITING_DATA; no duplicate scheduler observation is counted as a new sample.
+- `OFFICIAL_QUALITY_FAILURE_ROOT_CAUSE` remains `TIMEOUT_IN_2025Q2_MOPS_PAIRED_BATCH_BEFORE_PARSE_COMPLETION`; exact market culprit remains UNKNOWN.
+- `TPEX_ZERO_ROOT_CAUSE=UNKNOWN` unchanged.
+
 ### Bias / governance controls
-- No duplicate-date inflation, infrastructure-failure-to-negative-signal coercion, market-source attribution guess, look-ahead, historical Shadow fabrication, post-hoc factor/window/threshold/split, selection-bias or data-snooping promotion.
-- Factor Zoo, overfit, coverage, zero-pick, transaction-cost, date-cluster and redundancy controls unchanged.
+- No infrastructure failure was coerced into a negative trading signal or zero-pick observation.
+- No duplicate-date inflation, market-source attribution guess, look-ahead, historical Shadow fabrication, post-hoc factor/window/threshold/split, selection-bias or data-snooping promotion.
+- Factor Zoo, overfit, coverage, transaction-cost, date-cluster and redundancy controls unchanged.
 
 ### R01-R08 / I01-I07 impact
 - R01-R08: no new mature outcome evidence; readiness unchanged / data-quality constrained.
