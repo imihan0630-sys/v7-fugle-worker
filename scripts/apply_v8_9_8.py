@@ -23,92 +23,88 @@ replace_once(
     "runtime version"
 )
 
-replace_once(
-    '''  const dryRun = options?.dryRun === true;
-  const epsReviewOnly=dryRun && options?.epsReviewOnly===true;''',
-    '''  const dryRun = options?.dryRun === true;
-  const selectionOnly = options?.selectionOnly === true && !dryRun;
-  const epsReviewOnly=dryRun && options?.epsReviewOnly===true;''',
-    "selection-only mode"
-)
+route_marker='''    // 手動執行盤後全市場掃描（部署驗收／補跑用）
+    if (url.pathname === "/api/scan") {'''
 
-scan_core=text.find("async function runAfterMarketScanCore(")
-bridge_start=text.find("    bridge = await persistPlanBridge(",scan_core)
-if bridge_start<0:
-    raise SystemExit("defer external delivery: bridge start not found")
-history_marker="\n  }\n\n  const historySeedState"
-history_pos=text.find(history_marker,bridge_start)
-if history_pos<0:
-    raise SystemExit("defer external delivery: history boundary not found")
-original=text[bridge_start:history_pos]
-indented="\n".join("  "+line for line in original.split("\n"))
-deferred='''    if (!selectionOnly) {
-'''+indented+'''
-    } else {
-      bridge = {sent:false,verified:false,simulated:false,deferred:true,provider:"DEFERRED",reason:"SELECTION_ONLY_RECOVERY"};
-      report = {sent:false,simulated:false,deferred:true,reason:"SELECTION_ONLY_RECOVERY"};
-    }'''
-text=text[:bridge_start]+deferred+text[history_pos:]
-
-replace_once(
-    '''      complete: !dryRun && saved.verified === true && bridge.verified === true && bridge.simulated !== true && report.sent === true && report.simulated !== true''',
-    '''      selectionOnly,
-      selectionPersisted: !dryRun && saved.verified === true,
-      complete: !dryRun && !selectionOnly && saved.verified === true && bridge.verified === true && bridge.simulated !== true && report.sent === true && report.simulated !== true''',
-    "pipeline staged recovery state"
-)
-
-replace_once(
-    '''        return json(await runAfterMarketScan(env, scheduledTime,{onlyIfMissing:body.onlyIfMissing===true}), 200, true);''',
-    '''        if(body.selectionOnly===true && !isAuthorized(request,env)) return json({error:"分段恢復僅接受管理員授權"},401,true);
-        return json(await runAfterMarketScan(env, scheduledTime,{onlyIfMissing:body.onlyIfMissing===true,selectionOnly:body.selectionOnly===true}), 200, true);''',
-    "scan selection-only endpoint"
-)
-
-route_marker='''    // 最近一次盤後選股結果
-    if (url.pathname === "/api/scan/status") {'''
-route=r'''    if (url.pathname === "/api/scan/deliver") {
+route=r'''    // 歷史盤後分段恢復：沿用完全相同的只讀選股核心，先正式寫入監控計畫；
+    // 外部鏡像與每日推播由既有補發流程分開處理，避免長請求把選股寫入一起拖死。
+    if (url.pathname === "/api/scan/stage-selection") {
       if(!isAuthorized(request,env)) return json({error:"ADMIN_TOKEN 錯誤"},401,true);
       if(request.method!=="POST") return json({error:"Method not allowed"},405,true);
       try {
-        const latest=await env.STOCKS_KV?.get(LAST_SCAN_KEY,"json");
-        if(!latest?.scanDate || latest?.config?.verified!==true) return json({error:"沒有已驗證的正式盤後選股可補送"},409,true);
-        const formal=Array.isArray(latest.stocks)?latest.stocks:[];
-        const hybrid=Array.isArray(latest.hybridStocks)?latest.hybridStocks:[];
-        const watch=Array.isArray(latest.hybridWatchStocks)?latest.hybridWatchStocks:[];
-        let bridge=latest?.threeMin;
-        if(!(bridge?.sent===true && bridge?.verified===true)) {
-          bridge=await persistPlanBridge(latest.threeMinPayload || buildThreeMinPayload(latest.scanDate,latest.totalCapital,formal),env);
+        const body=await request.json().catch(()=>({}));
+        const date=normalizeMarketDate(body.marketDate);
+        if(!date || date>taiwanDate() || date<shiftDateString(taiwanDate(),-14)) throw new Error("恢復日期無效、未來或超過14天");
+        await loadTradingCalendar(env,Number(date.slice(0,4)));
+        if(!isTradingDate(date)) throw new Error("恢復日期不是交易日");
+        const loadedConfig=await loadStockConfig(env);
+        if((loadedConfig.stocks||[]).some(stock=>stock.positionStage!=="NONE")) {
+          throw new Error("OPEN_POSITION_PROTECTED：仍有持倉，不得用歷史恢復覆寫實際持股及原停損計畫");
         }
-        const reportKey=`V7_DAILY_REPORT:${latest.scanDate}`;
-        const previousReport=await env.STOCKS_KV.get(reportKey,"json");
-        let report=previousReport?.sent===true && Boolean(previousReport.simulated)===isTestMode(env) ? {...previousReport,deduplicated:true} : null;
-        if(!report) {
-          const payload=buildDailySelectionPayload(latest.scanDate,formal,latest.diagnostics||{});
-          enrichThreePoolDailyPayload(payload,formal,hybrid,latest.strategyOverlap||null,watch);
-          report=await sendPush(payload,env);
-          if(report.sent) await env.STOCKS_KV.put(reportKey,JSON.stringify(report),{expirationTtl:14*86400});
-        }
-        const updated={...latest,threeMin:bridge,dailyReport:report,pipeline:{
-          ...(latest.pipeline||{}),
-          threeMinAccepted:bridge?.sent===true && bridge?.simulated!==true,
-          threeMinVerified:bridge?.verified===true && bridge?.simulated!==true,
-          dailyReportAccepted:report?.sent===true && report?.simulated!==true,
-          selectionPersisted:latest?.config?.verified===true,
-          complete:latest?.config?.verified===true && bridge?.verified===true && bridge?.simulated!==true && report?.sent===true && report?.simulated!==true
-        }};
-        await env.STOCKS_KV.put(LAST_SCAN_KEY,JSON.stringify(updated),{expirationTtl:14*86400});
-        await env.STOCKS_KV.put("V7_LAST_SCAN_ATTEMPT",JSON.stringify({
-          status:"SUCCESS",requestedDate:latest.scanDate,scanDate:latest.scanDate,selectedCount:formal.length,
-          generatedAt:latest.generatedAt,threeMin:bridge,dailyReport:report
+
+        const scheduledTime=Date.parse(date+"T10:20:00Z");
+        const preview=await runAfterMarketScan(env,scheduledTime,{dryRun:true});
+        if(preview?.scanDate!==date) throw new Error("歷史恢復選股日期不一致");
+        const formal=validateStocks(Array.isArray(preview?.stocks)?preview.stocks:[]);
+        const hybrid=Array.isArray(preview?.hybridStocks)?preview.hybridStocks.slice(0,HYBRID_MAX_STOCKS):[];
+        const watch=Array.isArray(preview?.hybridWatchStocks)?preview.hybridWatchStocks.slice(0,HYBRID_WATCH_MAX):[];
+
+        const saved=await saveStockConfig(env,formal,"Staged historical recovery from verified dry-run",STRATEGY_POOL_CAPITAL);
+        if(saved.verified!==true) throw new Error("歷史恢復正式監控計畫寫入後讀回不一致");
+
+        await env.STOCKS_KV.put(HYBRID_KV_KEY,JSON.stringify({
+          version:VERSION,scanDate:date,planDate:nextTradingDate(date),
+          poolId:HYBRID_POOL_ID,poolCapital:STRATEGY_POOL_CAPITAL,shadowOnly:true,stocks:hybrid
         }),{expirationTtl:14*86400});
-        return json({ok:updated.pipeline.complete===true,scanDate:latest.scanDate,selectedCount:formal.length,
-          hybridSelectedCount:hybrid.length,hybridWatchCount:watch.length,threeMin:bridge,dailyReport:report,pipeline:updated.pipeline},200,true);
-      } catch(err) {return json({error:String(err)},500,true);}
+        await env.STOCKS_KV.put(HYBRID_WATCH_KV_KEY,JSON.stringify({
+          version:VERSION,scanDate:date,planDate:nextTradingDate(date),
+          state:"HYBRID_WATCH",max:HYBRID_WATCH_MAX,occupiesHybridSlot:false,capitalReserved:0,stocks:watch
+        }),{expirationTtl:14*86400});
+        await archiveStrategyPools(env,date,{
+          FORMAL_GENERAL:formal.filter(stock=>stock.strategyPool==="FORMAL_GENERAL"),
+          FORMAL_THOUSAND:formal.filter(stock=>stock.strategyPool==="FORMAL_THOUSAND"),
+          [HYBRID_POOL_ID]:hybrid
+        });
+        await archiveHybridWatchCandidates(env,date,watch);
+
+        const committed={
+          ...preview,version:VERSION,dryRun:false,generatedAt:taiwanTime(),
+          status:`歷史恢復已完成選股寫入｜非千元Formal ${formal.filter(x=>x.strategyPool==="FORMAL_GENERAL").length}/3｜千元Formal ${formal.filter(x=>x.strategyPool==="FORMAL_THOUSAND").length}/3｜千元Hybrid ${hybrid.length}/3｜WATCH ${watch.length}`,
+          selectedCount:formal.length,hybridSelectedCount:hybrid.length,hybridWatchCount:watch.length,
+          stocks:formal,hybridStocks:hybrid,hybridWatchStocks:watch,
+          config:{saved:true,verified:true,dryRun:false,updatedAt:saved.updatedAt},
+          planBridge:{sent:false,verified:false,deferred:true,reason:"STAGED_RECOVERY_PENDING_DELIVERY"},
+          threeMin:{sent:false,verified:false,skipped:true,reason:"provider-neutral staged recovery"},
+          dailyReport:{sent:false,simulated:false,deferred:true,reason:"STAGED_RECOVERY_PENDING_DELIVERY"},
+          threeMinPayload:buildThreeMinPayload(date,STRATEGY_POOL_CAPITAL,formal),
+          pipeline:{
+            ...(preview.pipeline||{}),
+            selectionCompleted:true,configAccepted:true,configVerified:true,
+            externalPlanProvider:null,externalPlanAccepted:false,externalPlanVerified:false,
+            dailyReportAccepted:false,dailyWebhookAccepted:false,dailyDeliveryState:"PENDING",
+            selectionPersisted:true,complete:false
+          }
+        };
+        await env.STOCKS_KV.put(LAST_SCAN_KEY,JSON.stringify(committed),{expirationTtl:14*86400});
+        await env.STOCKS_KV.put("V7_LAST_SCAN_ATTEMPT",JSON.stringify({
+          status:"SELECTION_PERSISTED",requestedDate:date,scanDate:date,selectedCount:formal.length,
+          generatedAt:committed.generatedAt,dailyReport:committed.dailyReport
+        }),{expirationTtl:14*86400});
+
+        return json({
+          ok:true,version:VERSION,scanDate:date,selectionPersisted:true,
+          formalSelectedCount:formal.length,hybridSelectedCount:hybrid.length,hybridWatchCount:watch.length,
+          formalSymbols:formal.map(x=>x.symbol),hybridSymbols:hybrid.map(x=>x.symbol),watchSymbols:watch.map(x=>x.symbol),
+          nextStep:"POST /api/daily-report/resend；不重跑選股、不改計畫"
+        },200,true);
+      } catch(err) {
+        return json({ok:false,error:String(err)},500,true);
+      }
     }
 
 '''
-insert_before_once(route_marker,route,"staged delivery endpoint")
+
+insert_before_once(route_marker,route,"staged historical selection route")
 
 path.write_text(text,encoding="utf-8")
 print("Applied V8.9.8 staged recovery")
