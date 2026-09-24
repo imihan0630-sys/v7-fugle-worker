@@ -1,16 +1,16 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-116.
-Updated: 2026-09-24 19:46 Asia/Taipei.
+Checkpoint sequence: B-117.
+Updated: 2026-09-24 20:10 Asia/Taipei.
 
-> Canonical cursor for both A/B research schedules. Detailed B-01..B-115 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
+> Canonical cursor for both A/B research schedules. Detailed B-01..B-116 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
 ## Governance / immutable boundary
 - Formal Core **LOCKED**. No autonomous A/B, ranking, thresholds, Top6/3+3/3+3+3, capital, entry/add/reduce/sell/stop, monitoring or push changes.
 - R01-R08 and I01-I07 frozen; no R09/I08. Prospective Shadow starts 2026-09-21; no fabricated historical Shadow. Missing evidence = UNKNOWN, never BAD/0.
 - GitHub/runtime evidence overrides chat memory. Production readback overrides repository/version strings.
 
-## Durable retained state through B-115
+## Durable retained state through B-116
 - Latest trusted owner-approved architecture remains 3+3+3: `FORMAL_GENERAL`, `FORMAL_THOUSAND`, `HYBRID_THOUSAND_SHADOW`, each ring-fenced NT$200,000; Hybrid is Shadow-only and cannot silently become Formal BUY eligibility.
 - B-62 `PRE_BASE_LIQUIDITY_CONTROL` remains Class B proposal-only. Signal observation != brokerage fill; `REDUCED_CONFIRMED` requires trusted actual reduced shares.
 - B-73..B-75 sequence-readiness helper remains SOURCE_WRITTEN_NOT_EXECUTED; journal adjacency != exchange-session adjacency; no historical calendar/Shadow backfill.
@@ -24,43 +24,37 @@ Updated: 2026-09-24 19:46 Asia/Taipei.
 - B-105..B-112: no later completed Formal scan or new durable prospective Top5 day row had become available; zero-pick denominator remained exactly 2 dates and R03/R06 remained WAITING_DATA.
 - B-113/B-114: 9/24 official sync and retry failed before same-day recovery; 9/24 not counted as zero-pick. Retry run `35987921399` proved upstream market/institution/INDEX/TDCC/VALUATION/ANNOUNCEMENTS succeeded and failure occurred in financial quality stage.
 - B-115 source-order inspection localized run `35987921399` to the multi-period MOPS financial fetch loop before FINANCIAL ingestion; later EPS-review/recovery stages were never reached.
+- B-116 localized the outstanding timeout to the paired 2025Q2 MOPS batch after both 2026Q2 TWSE/TPEx pages parsed successfully. Exact market culprit remains UNKNOWN. The first ~45s abort despite retry intent remains a retry/exception-observability discrepancy, not proof that retries were skipped.
 
-## B-116 — plaintext timing + deterministic request order narrows timeout to 2025Q2 TWSE/TPEx batch
+## B-117 — no newer official recovery yet; preserve independent-date denominator
 ### Fresh evidence
-- Re-read governance, worklist and B-115 checkpoint. Re-checked recent Actions at 19:40-19:46 Taipei: no official-market-data run newer than `35987921399` was visible yet, so no trusted completed 9/24 Formal scan exists at this cursor.
-- Re-read exact main `tests/sync_official_quality.mjs` and full plaintext job log for run `35987921399` job `107594845128`.
-- Source deterministically constructs `periodKeys` insertion order from the dominant EPS period. For the observed current period 2026Q2, the first two keys are `2026Q2`, then `2025Q2`; each key expands in fixed order to `TWSE`, `TPEx`, and the loop executes two requests per batch.
-- Plaintext proves **both members of batch 1 completed**: TPEx 2026Q2 parsed 884 stocks at 10:35:22.240Z; TWSE 2026Q2 parsed 1,049 stocks at 10:35:28.304Z.
-- Because `await Promise.all(batch1)` must complete before the loop advances, batch 2 (`TWSE 2025Q2` + `TPEx 2025Q2`) could only start after the TWSE 2026Q2 completion at 10:35:28.304Z.
-- The terminal timeout was logged at 10:36:13.305Z, approximately 45.001 seconds later, exactly matching the per-request `AbortSignal.timeout(45000)` horizon. There are **no** `officialIncomeHeaders` or `officialFinancialPeriodParsed` logs for either 2025Q2 member before termination.
-- Therefore the failing outstanding work is now localized to the **2025Q2 paired batch**. Exact market remains UNKNOWN: absence of parse logs means one or both requests failed to complete before the terminal abort, and concurrent `Promise.all` cannot attribute culpability to TWSE or TPEx.
-- A code-path oddity remains unresolved: `publicSource()` appears intended to retry timeout-like failures up to 3 attempts, yet the job terminates on the first ~45s boundary with the raw message `The operation was aborted due to timeout` rather than a wrapped `Public source ...` message. This is evidence of a retry/exception-observability discrepancy, not proof that retries were skipped; root cause remains UNKNOWN without instrumentation.
-- Re-read checkpoint immediately before write; blob remained `60a878319c6762a216dcfe8d4b74172583172d2f`, so no concurrent A/B cursor required merging.
+- Re-read latest governance, worklist and B-116 checkpoint from main; latest research commit at run start was B-116 `2fd0a9f7aaa48f89e625c1e199589aed1cfef5c5`.
+- Re-checked repository Actions at 20:10 Taipei. The newest visible official-market-data run remains `35987921399`, completed failure at 18:36 Taipei; no later trusted official recovery/Formal scan is visible yet.
+- No new durable prospective Top5 day row was established in this cycle.
+- Re-read checkpoint immediately before write; blob remained `125fc45fab986904cc55874f0358ea53ee64dec6`, so no concurrent A/B checkpoint update required merging.
 
 ### Interpretation / falsification
-- `OFFICIAL_QUALITY_FAILURE_ROOT_CAUSE` narrows from generic multi-period MOPS timeout to `TIMEOUT_IN_2025Q2_MOPS_PAIRED_BATCH_BEFORE_PARSE_COMPLETION`; exact market = UNKNOWN.
-- 2026Q2 TWSE and TPEx financial pages are positively exonerated for this run because both parsed successfully. The failure occurred only after batch 1 completed.
-- Do **not** infer TPEx blame from the historical `TPEX=0` research evidence issue; this is a separate quality-sync path and the failed 2025Q2 batch has no market attribution.
-- 9/24 remains prerequisite-failed/UNKNOWN, not a zero-pick. Completed Formal zero-pick denominator remains exactly 2 dates: 9/22 and 9/23.
-- R03/R06 remains WAITING_DATA; no new durable prospective Top5 row established.
+- 2026-09-24 remains prerequisite-failed/UNKNOWN, not a zero-pick. Completed Formal zero-pick denominator remains exactly 2 independent dates: 9/22 and 9/23.
+- R03/R06 remains WAITING_DATA. Repeated scheduler observations are not independent market samples and do not increase sample size.
+- `OFFICIAL_QUALITY_FAILURE_ROOT_CAUSE` remains `TIMEOUT_IN_2025Q2_MOPS_PAIRED_BATCH_BEFORE_PARSE_COMPLETION`; exact TWSE/TPEx attribution remains UNKNOWN.
+- `TPEX_ZERO_ROOT_CAUSE=UNKNOWN` unchanged; no new provenance class appeared.
 
 ### Bias / governance controls
-- Prevented infrastructure failure from becoming a negative trading signal and prevented concurrent-request ambiguity from becoming market-source bias.
-- No look-ahead, historical Shadow fabrication, post-hoc factor/window/threshold/split, selection-bias or data-snooping promotion.
-- Factor Zoo, overfit, coverage, transaction-cost and redundancy controls unchanged.
+- No duplicate-date inflation, infrastructure-failure-to-negative-signal coercion, market-source attribution guess, look-ahead, historical Shadow fabrication, post-hoc factor/window/threshold/split, selection-bias or data-snooping promotion.
+- Factor Zoo, overfit, coverage, zero-pick, transaction-cost, date-cluster and redundancy controls unchanged.
 
 ### R01-R08 / I01-I07 impact
 - R01-R08: no new mature outcome evidence; readiness unchanged / data-quality constrained.
 - I01-I07: no new intervention experiment and no causal performance inference.
 
 ### Engineering classification / branch / tests / deployment
-- Read-only source/log inspection + checkpoint only; no runtime code change.
-- No Worker/workflow/D1/KV/source-routing/Formal/Hybrid WATCH/monitoring/notification change.
-- No deployment. Any per-request context logging, retry handling, timeout or concurrency change remains Class B proposal-first.
+- Read-only repository/Actions inspection + checkpoint only.
+- No Worker/workflow/D1/KV/source-routing/Formal/Hybrid WATCH/monitoring/notification change; no deployment.
+- Any timeout/retry/concurrency or per-request logging change remains Class B proposal-first.
 
 ## Exact next continuation point
 1. Re-read governance/worklist/checkpoint/latest main; re-check checkpoint SHA before write and merge newer A/B progress if present.
-2. First check for any official-market-data run after `35987921399`, especially the later 23:25/23:45 Taipei schedules. Only a trusted completed recovery/Formal scan can classify 9/24.
+2. First check for any official-market-data run after `35987921399`, especially later 23:25/23:45 Taipei schedules. Only a trusted completed recovery/Formal scan can classify 9/24.
 3. If a later trusted scan has >=1 Formal plan, immediately restore funnel priority: verify execution-recorder target-date coverage and 500-row non-truncation before signal interpretation; same-date `HUMAN_MOMENTUM_SHADOW` remains research-only on Formal SELECTED names.
 4. If a later completed scan is zero-pick, only then extend completed zero-pick denominator from 2 to 3.
 5. If quality sync fails again, inspect plaintext for whether 2026Q2 batch completes and whether any 2025Q2 member logs. Compare timing against the 45s boundary. Do not infer TWSE/TPEx culprit from concurrent log order or missing sibling logs.
