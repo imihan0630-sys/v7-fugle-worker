@@ -69,6 +69,7 @@ jobs:
           python3 scripts/apply_v8_9_3.py
           python3 scripts/apply_v8_9_4.py
           python3 scripts/apply_v8_9_5.py
+          python3 scripts/apply_v8_9_6.py
           # V8.9.3 Hybrid WATCH regression contract
       - name: Syntax and offline behavior regression
         env:
@@ -77,7 +78,7 @@ jobs:
           set -euo pipefail
           cp Worker.js /tmp/v7-worker.mjs
           node --check /tmp/v7-worker.mjs
-          grep -F 'const VERSION = "8.9.5-hybrid-watch-directional";' Worker.js
+          grep -F 'const VERSION = "8.9.6-hybrid-watch-audit";' Worker.js
           grep -F 'CREATE TABLE IF NOT EXISTS trade_research_execution_snapshots' Worker.js
           grep -F 'RESEARCH_EXECUTION_RECORDER_FAIL_OPEN' Worker.js
           grep -F '35 15 * * MON-FRI' Worker.js
@@ -176,6 +177,8 @@ jobs:
           grep -F 'hybridWatchAudit' Worker.js
           grep -F 'smartMoneyDirectional' Worker.js
           grep -F 'entry<ma20*0.94' Worker.js
+          grep -F 'nearestUpsidePct' Worker.js
+          grep -F 'sectorBreadth' Worker.js
       - name: V8.9.4 Hybrid WATCH candidate audit
         if: contains(github.event.head_commit.message, '[hybrid-watch-diagnostic]')
         env:
