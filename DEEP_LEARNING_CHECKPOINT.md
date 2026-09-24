@@ -61,12 +61,51 @@ Updated: 2026-09-24 Asia/Taipei
   - overheat penalty（過熱懲罰） + remaining upside（剩餘上漲空間）.
 - Hybrid WATCH（混合觀察） already implements part of early-consensus logic; new learning must test incremental value rather than re-labeling the same information.
 
+## DL-001 — Information Discreteness（資訊離散度）／Gradual Price Path（漸進價格路徑）
+Run date: 2026-09-24 Asia/Taipei
+
+### Question
+Does the *path* by which a stock accumulates gains contain incremental selection value beyond total return, breakout quality, volume, overheat, and current Quiet/Attention research?
+
+### Evidence
+1. Lin, Ko, Chen & Chu, Pacific-Basin Finance Journal (2016), "Information discreteness, price limits and earnings momentum": direct Taiwan-market evidence from 1989-2014. Earnings momentum was stronger when information arrived more continuously and attracted less attention; price-limit events behaved as attention-grabbing discrete information.
+2. Huang, Lee, Song & Xiang, Journal of Financial Economics (2022), "A frog in every pan": continuous information from economically linked lead firms produced stronger delayed response than discrete information, extending the mechanism to customer/supplier and other lead-lag settings.
+3. Galvani, Finance Research Letters (2024), "Frog in the Pan and the market-state effect on momentum": counter-evidence/conditioning result. The information-discreteness relation appeared in UP markets, not DOWN markets.
+4. Lin et al., Pacific-Basin Finance Journal (2016), "Market dynamics and momentum in the Taiwan stock market": Taiwan conventional momentum can disappear because of frequent market transitions; positive momentum was conditional on continuing market states.
+5. Ho et al., Pacific-Basin Finance Journal (2023), "Momentum investing and a tale of intraday and overnight returns: Evidence from Taiwan": past intraday and overnight components contain different predictive information, supporting the broader idea that return path/composition matters, not only cumulative return.
+
+### Comparison with current system
+- Existing research already stores ret5/10/20/60, positiveDayRatio20, maxDrawdown20Pct, gapPct, breakoutDistancePct, dailyClosePosition, upper-shadow ratio, volume expansion/contraction, breakout-quality score, overheat penalty, Residual RS（殘差相對強弱）, and Quiet/Attention diagnostics.
+- No durable explicit Information Discreteness（資訊離散度）, jump-concentration, or gradual-return-path feature was found in the current research layer.
+- Therefore this is not obviously identical to an existing factor, but it may correlate with positiveDayRatio20, maxDrawdown20Pct, volatility, gap, and Quiet Strength（低關注強勢）. Incremental-value testing is mandatory.
+
+### Positive mechanism
+- A stock that reaches the same 20-day return through many small same-direction moves may reflect persistent underreaction and incomplete information absorption.
+- This could help distinguish "early persistent strength" from one-day attention spikes, potentially improving early selection and reducing late chasing.
+
+### Counter-evidence / failure modes
+- The 2024 evidence indicates the effect may vanish in DOWN（下跌） market states.
+- Taiwan momentum itself is regime-sensitive; frequent regime transitions can erase the premium.
+- Price limits, large gaps, earnings announcements, or one-day large institutional flows may make a discrete jump informative rather than harmful.
+- A gradual path may simply proxy low volatility, trend smoothness, low drawdown, or Quiet Strength（低關注強勢） already captured by current features.
+- Adding a new score without incremental testing risks Factor Zoo（因子動物園） and Overfitting（過度擬合）.
+
+### Candidate status
+WORTH_SHADOW_RESEARCH（值得影子研究）, not eligible for Formal Core（正式核心） change.
+
+### Candidate handoff
+- Mechanism: measure whether past return accumulated gradually/continuously versus through a few large jumps.
+- Current weakness addressed: current selection knows total return, breakout quality and overheat, but does not explicitly distinguish *how* the return path was formed.
+- Expected benefit: earlier identification of persistent underreaction; possible reduction of attention-spike / late-chase candidates.
+- Primary risk: redundancy with existing path-quality and low-volatility variables; regime dependence.
+- Validation design: research-only feature(s), pre-registered before outcome inspection; compare D5/D10/D20, MFE/MAE, stop-first, coverage and zero-pick impact. Test within BULL_BROAD（廣泛多頭） / MIXED（混合） / BEAR_BROAD（廣泛空頭） separately. Require incremental partial-correlation / same-date comparisons against positiveDayRatio20, volatility20, maxDrawdown20Pct, breakoutQualityResearch and Quiet/Attention classification.
+- Engineering class: Class A（A級，僅研究／影子） if stored only in research snapshot and diagnostics with decisionImpact=false. Any use in Formal ranking/threshold becomes Class C（C級，正式核心） and requires owner approval.
+
 ## Candidate handoff
-- None newly promoted by this checkpoint initialization.
+- DL-001: Information Discreteness（資訊離散度）／Gradual Price Path（漸進價格路徑） — WORTH_SHADOW_RESEARCH（值得影子研究）; owner approval should be requested before turning it into an optimization experiment that could later influence selection.
 
 ## Exact next continuation point
-1. Read the latest Formal research checkpoint and avoid duplicating any completed R01-R08 / I01-I07 work.
-2. Start with the highest-value unresolved external-learning question that has potential incremental information beyond current factors.
-3. Prefer evidence directly applicable to Taiwan equities; if using foreign-market evidence, explicitly test transferability limits.
-4. For every positive hypothesis, actively search for counter-evidence and failure regimes.
-5. Write the durable result and exact next point back here before the run ends.
+1. Do not repeat the literature search above unless materially new evidence appears.
+2. If owner approves DL-001 research-layer implementation, define the smallest pre-registered Information Discreteness（資訊離散度） / jump-concentration feature without tuning thresholds to outcomes; implement research-only, then test redundancy and regime interaction.
+3. Independently continue the next highest-value external-learning question after DL-001, preferably one not already represented by Residual RS（殘差相對強弱）, Quiet/Attention, breakout quality, or overheat.
+4. Keep Formal Core（正式核心） unchanged unless later mature evidence passes governance and owner explicitly approves.
