@@ -583,3 +583,24 @@ YES for research infrastructure integrity: resolving the actual archive lineage 
 6. Run only frozen PATTERN-RG1..RG4 plus preregistered redundancy controls before adding interactions.
 7. Continue positive AND negative validation; reject Pattern variables that collapse into priorHigh60/MA60/ret20/overheat/R01 or atrPercent/volatility20/volumeContraction/platformRange.
 8. Do not propose Formal optimization until prospective evidence meets existing maturity/date/regime/holdout/cost gates.
+
+
+## Pattern Maturity continuation — DL-003G (2026-09-25 Asia/Taipei)
+- Draft PR #102 advanced in isolated research-only state.
+- VCP range/volume context, W lifecycle and Platform lifecycle are now executable and regression-covered; named labels remain subordinate to latent geometry/context.
+- New isolated Pattern cache adapter consumes Corporate Actions `TECHNICAL_CONTINUITY` and `RAW_EXECUTION` semantic spaces with point-in-time provenance and hash-drift detection; it does not build a competing adjustment engine.
+- New observability contract measures coverage, DATA_BLOCKED reasons, replay/prefix exactness, scale agreement and compute time.
+- First adapter CI attempt failed from a literal escaped-newline import bug; the error was diagnosed and repaired rather than reported-and-stopped. Corrected branch head `adefb586b4af2cbff6afd62dd0a6e0f7c413c784` passed V8 Repair `36147957526` and V8 Regression `36147957785`.
+- New 2025 peer-reviewed Taiwan historical-high evidence shows that a true break above old highs can be a distinct momentum/reference-point regime, with turnover/size/seasonality heterogeneity. This is counterevidence against treating major resistance as a monotonic bearish veto.
+- Future Pattern state should therefore preserve lifecycle: APPROACH_MAJOR_ZONE / FIRST_BREAK_ABOVE_MAJOR_ZONE / ACCEPTED_ABOVE_MAJOR_ZONE / FAILED_MAJOR_ZONE_BREAK, while controlling current priorHigh/ret20/overheat/volume/R01 variables.
+- No Pattern outcomes were inspected; no parameter was tuned on returns; no R09; Formal Core remains LOCKED.
+- Durable detail: `KLINE_PATTERN_RESEARCH.md` main commit `a1dccc96f1aaf8f80efc52b3939b72062e9fd14b`.
+
+### Exact next continuation point
+1. Keep Draft PR #102 unmerged/un-deployed and reconcile branch divergence with latest main before further code.
+2. Specify isolated prospective Pattern observer persistence/API boundary and episode de-dup, preserving existing Shadow parent lineage.
+3. Freeze outcome-free coverage/blocked/replay/prefix/scale/compute acceptance gates before prospective logging.
+4. No historical Formal-cohort fabrication; only complete prospective parent coverage may later join D1/D3/D5/D10/MFE/MAE/R01.
+5. When enough prospective dates exist, run only PATTERN-RG1..RG4 plus frozen redundancy controls.
+6. Treat major-zone first-break/acceptance/failure as lifecycle context, never a hard resistance veto unless future mature evidence supports a separate owner-reviewed proposal.
+7. Formal Core remains LOCKED.
