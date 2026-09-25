@@ -1,0 +1,187 @@
+name: PV Shadow Class-A Enable
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirmation:
+        description: "Type ENABLE_PV_SHADOW_V0_1"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pv-shadow-class-a-enable
+  cancel-in-progress: false
+
+jobs:
+  enable:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Enable only PV_SHADOW_ENABLED and verify isolation
+        env:
+          PV_ENABLE_CONFIRMATION: ${{ inputs.confirmation }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+        run: |
+          node --input-type=module <<'NODE'
+          import assert from "node:assert/strict";
+          import { createHash } from "node:crypto";
+          import { mkdir, writeFile } from "node:fs/promises";
+
+          const accountId = process.env.CLOUDFLARE_ACCOUNT_ID;
+          const apiToken = process.env.CLOUDFLARE_API_TOKEN;
+          const adminToken = process.env.V7_ADMIN_TOKEN;
+          const confirmation = process.env.PV_ENABLE_CONFIRMATION;
+          const scriptName = "fugle-test";
+          const origin = "https://fugle-test.imihan0630.workers.dev";
+          const cfOrigin = "https://api.cloudflare.com/client/v4";
+
+          assert.equal(confirmation, "ENABLE_PV_SHADOW_V0_1", "Explicit enable confirmation mismatch");
+          assert.ok(accountId, "Missing CLOUDFLARE_ACCOUNT_ID");
+          assert.ok(apiToken, "Missing CLOUDFLARE_API_TOKEN");
+          assert.ok(adminToken, "Missing V7_ADMIN_TOKEN");
+
+          const canonicalize = value => Array.isArray(value) ? value.map(canonicalize) :
+            value && typeof value === "object" ? Object.fromEntries(Object.keys(value).sort().map(key => [key, canonicalize(value[key])])) :
+            value === undefined ? null : value;
+          const hash = value => createHash("sha256").update(typeof value === "string" ? value : JSON.stringify(canonicalize(value))).digest("hex");
+
+          async function jsonFetch(url, options = {}, label = url) {
+            const response = await fetch(url, { ...options, signal: AbortSignal.timeout(45000) });
+            const text = await response.text();
+            let data;
+            try { data = JSON.parse(text); } catch { data = null; }
+            if (!response.ok) throw new Error(`${label} HTTP ${response.status}: ${String(data?.errors?.[0]?.message || text).slice(0, 300)}`);
+            return data;
+          }
+
+          const cfHeaders = { authorization: `Bearer ${apiToken}`, accept: "application/json" };
+          const adminHeaders = { "x-admin-token": adminToken, accept: "application/json", "cache-control": "no-cache" };
+          async function cfGet(path, label) {
+            const data = await jsonFetch(`${cfOrigin}/accounts/${accountId}${path}`, { headers: cfHeaders }, label);
+            assert.equal(data?.success, true, `${label} success != true`);
+            return data.result;
+          }
+          const getSettings = () => cfGet(`/workers/scripts/${scriptName}/settings`, "Worker settings");
+          async function getContent() {
+            const response = await fetch(`${cfOrigin}/accounts/${accountId}/workers/scripts/${scriptName}/content/v2`, { headers: cfHeaders, signal: AbortSignal.timeout(45000) });
+            assert.equal(response.ok, true, `Active Worker content HTTP ${response.status}`);
+            return response.text();
+          }
+          const adminGet = path => jsonFetch(`${origin}${path}`, { headers: adminHeaders }, path);
+          const bindingValue = binding => typeof binding?.text === "string" ? binding.text : typeof binding?.value === "string" ? binding.value : null;
+          const bindingShape = bindings => (bindings || []).filter(binding => binding?.name !== "PV_SHADOW_ENABLED")
+            .map(binding => ({ name: binding.name, type: binding.type })).sort((a, b) => a.name.localeCompare(b.name));
+          const formalConfigProjection = config => ({
+            updatedAt: config?.updatedAt || null,
+            totalCapital: config?.totalCapital || null,
+            stocks: (config?.stocks || []).map(stock => ({
+              symbol: stock.symbol, strategyPool: stock.strategyPool || null, channel: stock.channel || null,
+              buyLow: stock.buyLow ?? null, buyHigh: stock.buyHigh ?? null, breakout: stock.breakout ?? null,
+              maxChase: stock.maxChase ?? null, stop: stock.stop ?? null, profitCheck: stock.profitCheck ?? null,
+              suggestedLots: stock.suggestedLots ?? null
+            }))
+          });
+          const formalScanProjection = scan => {
+            const copy = structuredClone(scan || {});
+            delete copy.pvShadow;
+            return {
+              scanDate: copy.scanDate || null, generatedAt: copy.generatedAt || null,
+              selectedCount: copy.selectedCount ?? null, totalCapital: copy.totalCapital ?? null,
+              stocks: copy.stocks || [], pipeline: copy.pipeline || null, config: copy.config || null
+            };
+          };
+          const preservedAnnotations = (settings, message) => ({
+            ...(typeof settings?.annotations?.["workers/tag"] === "string" ? { "workers/tag": settings.annotations["workers/tag"] } : {}),
+            "workers/message": message
+          });
+          const inheritedBindings = (settings, pvValue) => {
+            const inherited = (settings?.bindings || []).filter(binding => binding?.name && binding.name !== "PV_SHADOW_ENABLED")
+              .map(binding => ({ name: binding.name, type: "inherit", version_id: "latest" }));
+            if (pvValue !== null) inherited.push({ name: "PV_SHADOW_ENABLED", type: "plain_text", text: pvValue });
+            return inherited;
+          };
+          async function patchBindings(settings, pvValue, message) {
+            const form = new FormData();
+            form.append("settings", new Blob([JSON.stringify({
+              annotations: preservedAnnotations(settings, message),
+              bindings: inheritedBindings(settings, pvValue)
+            })], { type: "application/json" }), "settings.json");
+            const data = await jsonFetch(`${cfOrigin}/accounts/${accountId}/workers/scripts/${scriptName}/settings`, {
+              method: "PATCH", headers: { authorization: `Bearer ${apiToken}`, accept: "application/json" }, body: form
+            }, "Patch Worker settings");
+            assert.equal(data?.success, true, "Patch Worker settings success != true");
+          }
+
+          const [beforeSettings, beforeContent, beforeConfig, beforeScan] = await Promise.all([
+            getSettings(), getContent(), adminGet("/api/config?pvEnable=before"), adminGet("/api/scan/status?pvEnable=before")
+          ]);
+          const beforePv = (beforeSettings.bindings || []).find(binding => binding?.name === "PV_SHADOW_ENABLED");
+          const beforePvValue = bindingValue(beforePv);
+          const originalPvValue = beforePv ? beforePvValue : null;
+          const beforeBindingShape = bindingShape(beforeSettings.bindings);
+          const beforeContentHash = hash(beforeContent);
+          const beforeConfigHash = hash(formalConfigProjection(beforeConfig));
+          const beforeScanHash = hash(formalScanProjection(beforeScan));
+          let patched = false;
+          let rollbackAttempted = false;
+
+          try {
+            if (String(beforePvValue).toLowerCase() !== "true") {
+              await patchBindings(beforeSettings, "true", "Enable PV_SHADOW_V0_1 LOG_ONLY DATA_QA");
+              patched = true;
+            }
+            const [afterSettings, afterContent, afterConfig, afterScan] = await Promise.all([
+              getSettings(), getContent(), adminGet("/api/config?pvEnable=after"), adminGet("/api/scan/status?pvEnable=after")
+            ]);
+            const afterPv = (afterSettings.bindings || []).find(binding => binding?.name === "PV_SHADOW_ENABLED");
+            assert.ok(afterPv, "PV_SHADOW_ENABLED binding missing after enable");
+            assert.equal(afterPv.type, "plain_text", "PV_SHADOW_ENABLED must remain non-secret plain text");
+            assert.equal(String(bindingValue(afterPv)).toLowerCase(), "true", "PV_SHADOW_ENABLED is not true after enable");
+            assert.deepEqual(bindingShape(afterSettings.bindings), beforeBindingShape, "Non-PV Worker binding names/types changed");
+            assert.equal(hash(afterContent), beforeContentHash, "Worker source content changed while enabling PV Shadow");
+            assert.equal(hash(formalConfigProjection(afterConfig)), beforeConfigHash, "Formal config fingerprint changed while enabling PV Shadow");
+            assert.equal(hash(formalScanProjection(afterScan)), beforeScanHash, "Formal scan fingerprint changed while enabling PV Shadow");
+            const report = {
+              checkedAt: new Date().toISOString(), operation: patched ? "ENABLED" : "ALREADY_ENABLED",
+              pvShadowEnabled: true, pvBindingType: afterPv.type, nonPvBindingsPreserved: true,
+              activeContentSha256Before: beforeContentHash, activeContentSha256After: hash(afterContent),
+              formalConfigFingerprintBefore: beforeConfigHash, formalConfigFingerprintAfter: hash(formalConfigProjection(afterConfig)),
+              formalScanFingerprintWithoutPvBefore: beforeScanHash, formalScanFingerprintWithoutPvAfter: hash(formalScanProjection(afterScan)),
+              formalIsolation: true, rollbackAttempted: false
+            };
+            await mkdir("artifacts", { recursive: true });
+            await writeFile("artifacts/pv-shadow-enable.json", JSON.stringify(report, null, 2) + "\n");
+            console.log(JSON.stringify(report, null, 2));
+          } catch (error) {
+            if (patched) {
+              rollbackAttempted = true;
+              try {
+                await patchBindings(await getSettings(), originalPvValue, "Rollback PV_SHADOW_V0_1 enable after failed isolation check");
+              } catch (rollbackError) {
+                console.error(`Rollback failed: ${rollbackError.message}`);
+              }
+            }
+            await mkdir("artifacts", { recursive: true });
+            await writeFile("artifacts/pv-shadow-enable.json", JSON.stringify({
+              checkedAt: new Date().toISOString(), operation: "FAILED", error: error.message, rollbackAttempted
+            }, null, 2) + "\n");
+            throw error;
+          }
+          NODE
+      - name: Preserve sanitized enable evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pv-shadow-enable-${{ github.run_id }}
+          path: artifacts/pv-shadow-enable.json
+          if-no-files-found: warn
+          retention-days: 30
