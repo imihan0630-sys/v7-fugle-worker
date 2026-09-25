@@ -1065,3 +1065,249 @@ MS-025: Read the actual current execution-recorder schema/readback and quantify 
 MS-026: Determine whether existing snapshots already support a first spread/depth outcome study with no new runtime capture.
 MS-027: If coverage is adequate, pre-register and run a zero-code baseline test using only existing recorder fields.
 MS-028: Only if existing coverage cannot answer the question, prepare an isolated research-capture engineering proposal with exact cadence/storage/rate-limit budget.
+
+
+---
+
+## MS-027 — Zero-code baseline remains blocked by coverage, not by lack of variables
+
+The existing V8.8.1 recorder already contains spread/depth state, but the current read contract is rolling-window newest-first, SQL LIMIT 500 and exposes only the newest 80 rows. It has no exact-date cursor, total matching rows, truncation flag, expected event set, or per-date completeness proof.
+
+Therefore:
+- returned rows may be used for descriptive examples only;
+- missing target-date rows must remain UNKNOWN;
+- no BUY-vs-NO-BUY or event-frequency study can use convenience samples from the current endpoint;
+- no apparent low/zero occurrence can be interpreted as a true absence.
+
+This falsifies the idea that “we already have spread/depth, so just backtest it now.” The blocker is observational completeness, not feature availability.
+
+Status: MS-027 DATA_QUALITY_BLOCKED.
+
+---
+
+## MS-028 — Isolated research collector architecture
+
+### Principle
+Dynamic microstructure collection must not become a dependency of Formal monitoring.
+
+Preferred separation:
+1. independent research collector process / Worker surface;
+2. reads a bounded research symbol cohort;
+3. connects to Fugle WebSocket books + trades;
+4. aggregates into research-only buckets;
+5. writes only research storage;
+6. no code path from Formal BUY / monitoring / push waits for or reads the collector;
+7. collector failure is research-data loss only, never a trading-system failure.
+
+### Governance classification
+- Documentation / offline design: Class A research work.
+- A new deployed Worker / Durable Object / binding / secret / shared Fugle quota usage is infrastructure and can indirectly affect Production resource/API limits; treat deployment as Class B proposal-first unless it is proven fully isolated.
+- Any use of collected features in Formal selection/BUY/maxChase/stop/monitoring/push is Class C.
+
+### Why separate from current Formal Worker
+Cloudflare Workers have platform subrequest/connection/runtime limits, and Fugle REST has plan-specific rate limits. A high-frequency research loop inserted into the Formal request path would add avoidable latency, quota and failure coupling.
+
+Cloudflare reference:
+- https://developers.cloudflare.com/workers/platform/limits/
+
+Fugle reference:
+- https://developer.fugle.tw/docs/pricing/
+
+Status: ARCHITECTURE FROZEN; no deployment.
+
+---
+
+## MS-029 — Fugle quota budget: WebSocket is structurally better than REST polling for this lane
+
+### Current official Fugle plan limits
+As of 2026-09-25 official pricing docs:
+- Basic: 5 WebSocket subscriptions, 1 connection, 60 intraday REST requests/minute.
+- Developer: 300 subscriptions, 2 connections, 600 intraday REST requests/minute.
+- Advanced: 2000 subscriptions, 2 connections, 2000 intraday REST requests/minute.
+- One subscription = one symbol x one channel.
+
+Source:
+- https://developer.fugle.tw/docs/pricing/
+
+### Subscription arithmetic
+For books + trades:
+- 6 symbols = 12 subscriptions.
+- 9 symbols = 18 subscriptions.
+- 14 symbols = 28 subscriptions.
+
+Therefore a Basic-plan WebSocket quota cannot cover books+trades for a 6-symbol cohort. Developer/Advanced quotas can.
+
+### REST polling arithmetic
+At 5-second cadence there are 12 polls/minute per endpoint.
+- 6 symbols x 1 endpoint = 72 req/min > Basic 60/min.
+- 6 symbols x 2 endpoints = 144 req/min.
+- 9 symbols x 2 endpoints = 216 req/min.
+- 14 symbols x 2 endpoints = 336 req/min.
+
+Thus 5-second multi-symbol REST polling is already incompatible with Basic for even one endpoint across 6 symbols, and although Developer can support these arithmetic examples, consuming shared REST quota is unnecessary if event-driven WebSocket data are available.
+
+### Important account boundary
+The user's actual Fugle MarketData plan is not established by repository evidence. Do not assume Developer/Advanced. Collector deployment must verify actual quota first.
+
+Status: WEBSOCKET-FIRST DESIGN.
+
+---
+
+## MS-030 — Storage budget: do not retain every raw message by default
+
+Taiwan regular trading session is about 4.5 hours = 16,200 seconds.
+
+Fixed bucket counts:
+
+### 6 symbols
+- 1s: 97,200 rows/day; 2,138,400 rows/22 sessions.
+- 5s: 19,440 rows/day; 427,680 rows/22 sessions.
+- 15s: 6,480 rows/day; 142,560 rows/22 sessions.
+
+### 9 symbols
+- 1s: 145,800 rows/day; 3,207,600 rows/22 sessions.
+- 5s: 29,160 rows/day; 641,520 rows/22 sessions.
+- 15s: 9,720 rows/day; 213,840 rows/22 sessions.
+
+Illustrative payload-only sizing (NOT measured D1 physical size):
+- 6 symbols, 5s, 22 sessions at 300–600 bytes/row: ~128–257 MB.
+- 9 symbols, 5s, 22 sessions at 300–600 bytes/row: ~192–385 MB.
+- 6 symbols, 1s, 22 sessions at 300–600 bytes/row: ~642 MB–1.28 GB.
+
+Indexes/SQLite page overhead can make actual storage larger. Current Cloudflare D1 limits list 500 MB per database on Free and 10 GB on Paid.
+
+Source:
+- https://developers.cloudflare.com/d1/platform/limits/
+
+### Design consequence
+Do not pre-commit to 1-second permanent storage.
+Pilot 1s/5s/15s for state-reconstruction fidelity without looking at return outcomes, then retain the coarsest cadence that preserves the required microstructure states.
+
+Raw trade/book event archives, if ever needed, should have short retention or a storage tier designed for bulk event data rather than silently consuming the existing trading D1.
+
+Status: STORAGE BUDGET FROZEN AS A PILOT CONSTRAINT.
+
+---
+
+## MS-031 — Research bucket schema: preserve dynamics, not every message
+
+A compact bucket should retain enough information to distinguish consumption, replenishment, spread stress and price response.
+
+### Identity / provenance
+- tradeDate
+- symbol
+- bucketStart / bucketEnd
+- source
+- schemaVersion
+- capturedAt
+- pointInTimeEligible
+- collectorVersion
+
+### Coverage
+- connectedMs / expectedMs
+- bookMessageCount
+- tradeMessageCount
+- reconnectCount
+- coverageState = COMPLETE / PARTIAL / UNKNOWN
+- firstProviderTime / lastProviderTime
+
+### Price / spread
+- midOpen / midClose
+- midHigh / midLow
+- spreadTicksOpen / Close / Min / Max
+- spreadBpsOpen / Close / Min / Max
+- weightedMidProxyOpen / Close where L1 sizes are present
+
+### Depth
+- bidDepth1Open / Close / Min / Max
+- askDepth1Open / Close / Min / Max
+- bidDepth5Open / Close
+- askDepth5Open / Close
+- depthImbalanceOpen / Close / Min / Max
+
+### Dynamic liquidity
+Computed from incoming book changes before aggregation:
+- bidDepletionQtyProxy
+- bidReplenishmentQtyProxy
+- askDepletionQtyProxy
+- askReplenishmentQtyProxy
+- bidPriceStepCount
+- askPriceStepCount
+- spreadWidenCount
+- spreadNarrowCount
+
+Call these proxies unless event semantics prove exact cancellation/addition classification.
+
+### Trades / pressure
+- tradeCount
+- tradeVolume
+- tradeAtAskVolumeProxy
+- tradeAtBidVolumeProxy
+- midpointOrUnclassifiedVolume
+- pressureProxy
+- pressureToPriceResponse
+
+### Mechanism guards
+- anyTrial
+- allContinuous
+- anyLimitUp / anyLimitDown
+- anyLimitHalt / delayed state
+- oddLot = false for the initial regular-lot lane
+
+This preserves the variables needed for MS-013–015 without storing every individual quote forever.
+
+Status: MINIMUM AGGREGATED DATA CONTRACT FROZEN.
+
+---
+
+## MS-032 — Completeness is part of the feature, not housekeeping
+
+Microstructure is unusually vulnerable to silent data gaps: losing a few seconds can turn “replenishment” into “no replenishment” or reverse an imbalance state.
+
+Therefore every bucket/session requires explicit quality state.
+
+### Hard rules
+1. Missing connection interval is never filled by carrying forward the last book and pretending it was observed.
+2. A reconnect starts a new coverage segment.
+3. Provider timestamp order violations are logged; do not silently sort away evidence of delivery anomalies.
+4. Fugle trade serial may be stored as diagnostics, but continuity must not be assumed without validating its semantics for the exact channel/session.
+5. Book channel has no documented sequence number in the current schema; absence of an update cannot prove that the book was unchanged during a connection gap.
+6. Fugle heartbeat is every 30 seconds; heartbeat/connection state can prove liveness only at that level, not every individual market event.
+
+Source:
+- https://developer.fugle.tw/docs/data/websocket-api/getting-started/
+
+### Research inclusion
+Primary inferential analyses should require COMPLETE or a pre-registered minimum coverage ratio. PARTIAL data can be used for data-quality diagnostics but must not be automatically classified as negative market states.
+
+### Falsification
+If complete-coverage samples become too small after honest quality gating, the correct result is INSUFFICIENT_DATA, not relaxing the quality definition until significance appears.
+
+Status: COVERAGE CONTRACT FROZEN.
+
+---
+
+## Fifth synthesis — feasibility result
+
+The key result from MS-025–032 is:
+
+> The microstructure idea is technically feasible, but the correct bottleneck is prospective, complete data collection—not another formula.
+
+We already have coarse spread/depth snapshots. The missing information is dynamic:
+- consumption,
+- replenishment,
+- pressure persistence,
+- spread recovery,
+- transaction intensity,
+- pressure-to-price response.
+
+Those need a separate collector or an equally isolated prospective stream. The collector's first objective is **data fidelity**, not trading performance.
+
+## Exact next continuation after MS-032
+
+MS-033: Order-flow toxicity and the VPIN debate — learn why “toxic flow” can be useful conceptually but dangerous as a magic indicator.
+MS-034: Hidden liquidity / iceberg / spoofing boundaries — what can and cannot be inferred from public top-five depth.
+MS-035: Queue position and fill probability — distinguish signal quality from limit-order execution probability.
+MS-036: Market impact decomposition — temporary vs permanent impact and implications for chasing.
+MS-037: Intraday event studies around breakout/failed breakout with microstructure states.
+MS-038: After the concept lane, evaluate whether a separate collector proposal should be prepared; no deployment without infrastructure/quota review.
