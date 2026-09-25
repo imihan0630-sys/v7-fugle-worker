@@ -5551,3 +5551,79 @@ Possible exhaustion signature:
 
 This may provide richer information than the raw count itself.
 
+
+
+## DL-002Y — Pattern × Relative Strength Interaction v0.1
+
+### Goal
+Test whether pattern topology becomes more informative when paired with relative-strength trajectory, without double-counting existing Residual RS.
+
+### External prior
+Large practitioner pattern statistics suggest a potentially important distinction:
+- absolute RS level before a pattern,
+- RS direction/change into breakout,
+may not have the same information content.
+In one large chart-pattern dataset, patterns whose relative-strength line improved into breakout compared favorably with cases where relative strength deteriorated.
+
+This is hypothesis-generating evidence, not proof for Taiwan or our Formal system.
+
+### Existing-system overlap
+Current research already contains:
+- Residual RS
+- sector persistence
+- Quiet/Attention diagnostics
+- sector ranking / market regime
+
+Therefore do NOT add “high RS = bullish” as a new factor.
+
+### Potential incremental variables
+- rsSlopeAtPatternStart
+- rsSlopeAtMaturity
+- rsSlopeChange
+- residualRSSlopeChange
+- sectorRSSlopeChange
+- rsNewHighBeforePriceBreakout
+- priceBreakoutBeforeRSBreakout
+- rsDivergenceState
+- rsPersistenceDuringHandle/VCP
+
+### Mechanism hypotheses
+1. LEADER_PERSISTENCE:
+   high RS remains high through pattern maturity.
+
+2. EMERGING_LEADER:
+   mediocre/weak RS improves materially as pattern matures.
+
+3. DETERIORATING_LEADER:
+   strong RS weakens into breakout; possible late-stage risk.
+
+4. FALSE_RS:
+   price pattern improves but sector/residual RS does not confirm.
+
+### Pattern-specific interactions
+VCP:
+- Does residual RS stay stable/rise while volatility contracts?
+
+Cup/handle:
+- Does RS improve on the right side and remain firm through the handle?
+
+W:
+- Does RS make a higher low even when price retests/undercuts the first bottom?
+
+Flag:
+- Does RS remain strong during shallow consolidation?
+
+Failed breakout:
+- Is RS deterioration already visible before pivot failure?
+
+### Key test
+Compare topology features with:
+- level of Residual RS,
+- slope/change in Residual RS,
+- interaction topology × RS change.
+
+If interaction adds nothing after controlling current RS variables, reject it as redundant.
+
+### No production implication
+Research/Shadow only. No ranking or selection change.
+
