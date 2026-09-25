@@ -485,3 +485,56 @@ No Formal Core change is approved or implied.
   2. validate adjusted=true behavior on TWSE/TPEx corporate-action fixtures;
   3. freeze deterministic C1-C8 fixture inputs/expected detector states;
   4. then evaluate whether isolated Class-A PATTERN_SELECTION_SHADOW_V0_1 implementation is ready.
+
+
+## Pattern Maturity continuation — DL-003D (2026-09-25 21:22 Asia/Taipei)
+
+### Research topic / question
+Reconcile the stale Pattern continuation recorded in this file against newer durable K-line research, verify whether Shadow Candidate Archive physically exists, and tighten corporate-action adjustment validation before any Pattern Shadow implementation.
+
+### Sources / evidence
+- GitHub main `KLINE_PATTERN_CHECKPOINT.md` and `KLINE_PATTERN_RESEARCH.md`: newer durable Pattern work has already frozen the isolated data schema/replay contract and implementation order; do not redo those items.
+- GitHub main `scripts/apply_v8_7_2.py`: creates D1 table `trade_research_shadow_candidates`, persists SELECTED / QUALIFIED_NOT_SELECTED / NEAR_MISS / REJECTED_AFTER_BASE / BROAD_CONTROL, and exposes research-only summaries.
+- GitHub main `.github/workflows/v7-cloudflare.yml`: production build applies V8.7.2 and validates `CREATE TABLE IF NOT EXISTS trade_research_shadow_candidates`; therefore absence from raw base `Worker.js` is not evidence that the runtime archive is absent.
+- Fugle official Historical Candles docs: `adjusted=true/false` is supported for D/W/M, response identifies `adjusted`, and adjusted=true computes change from the adjusted series. Official docs also state ex-dividend daily change uses adjusted previous-close semantics. Example confirms adjusted OHLC behavior for TWSE 2412 around 2026-07-09.
+- Fugle official Corporate Actions docs: dividend endpoint provides exchange, previousClose/referencePrice and dividend components; capital-change endpoint provides effectiveDate and adjustmentFactor for par-value changes/capital reductions/ETF splits/merges.
+
+### Supporting evidence
+1. The conceptual Shadow Candidate Archive blocker is RESOLVED at code/build-contract level: the physical D1 table and cohort construction are implemented by the V8.7.2 build patch.
+2. Pattern Shadow can prospectively link to the existing archive instead of inventing a new cohort store.
+3. Vendor documentation supports an explicit RAW vs ADJUSTED morphology contract and provides official corporate-action metadata needed for cross-checking.
+
+### Counterevidence / alternative mechanisms
+- Raw main `Worker.js` is a pre-build base; repository code search alone can falsely suggest the archive is absent. Build lineage must be considered.
+- Documentation proves API semantics but does NOT by itself prove a representative TPEx corporate-action fixture reproduces the expected adjusted continuity numerically. TPEx fixture validation remains UNKNOWN, not PASS.
+- Adjusted history may be vendor-revised after later corporate actions; raw bars, fetched adjusted bars, source payload hash/version and corporate-action registry must therefore remain separate.
+
+### Bias / overfit / redundancy checks
+- No return outcomes were inspected and no detector threshold was tuned.
+- No historical Shadow rows were fabricated.
+- Pattern cohort storage will reuse existing Shadow Candidate Archive; creating a second archive would be redundant and risks cohort drift.
+- Corporate-action adjustment is a data-validity requirement, not an alpha factor and must not be scored.
+
+### Comparison with current selector / three-pool architecture
+- Existing archive is generated from the formal scan pipeline and preserves cohort/pool context while declaring researchOnly=true and decisionImpact=false.
+- Pattern research should attach immutable detector snapshots to these existing candidate/control populations and later compare incremental information within the same scan dates.
+- No A/B definition, 3+3+3 quota, ranking, BUY, maxChase, capital, push or Formal monitoring behavior needs to change for this research layer.
+
+### Incremental value
+YES for research infrastructure integrity: resolving the actual archive lineage removes a false blocker and prevents duplicate storage. Alpha value remains UNKNOWN until prospective Pattern snapshots accumulate and pass replay/data QA.
+
+### Conclusion status
+- Shadow archive lineage: RESOLVED / REUSE_EXISTING.
+- Fugle adjusted semantics: DOCUMENTED / TWSE EXAMPLE CONFIRMED.
+- TPEx corporate-action numeric fixture: UNKNOWN / VALIDATION_REQUIRED.
+- Pattern detector alpha: UNKNOWN / NO RETURN CLAIM.
+- Engineering: still Class-A candidate only if isolated, LOG_ONLY/Shadow-only and Formal-isolation tests pass; no implementation authorization is inferred here.
+- Formal Core: LOCKED / unchanged.
+
+### Exact next continuation point
+1. Do not repeat DL-003B/C: they are already frozen in `KLINE_PATTERN_RESEARCH.md`.
+2. Validate at least one TPEx and one additional TWSE corporate-action fixture by comparing RAW vs adjusted=true OHLC around the event against official dividend/capital-change reference fields; if authenticated historical payload is unavailable, keep the numeric result UNKNOWN rather than infer PASS from documentation.
+3. Freeze deterministic C1-C8 synthetic/adversarial fixture inputs and expected swing/topology/maturity states under the already-frozen detector architecture; no future returns may be used.
+4. Audit whether the existing Shadow archive rows expose a stable row reference/link contract sufficient for `pattern_outcome_link`; avoid a second candidate archive.
+5. Only after adjustment + replay/prefix-invariance + C1-C8 gates are executable, evaluate isolated Class-A `PATTERN_SELECTION_SHADOW_V0_1` implementation readiness.
+6. Continue external evidence search for weekly/daily nested resistance and Pattern x regime interactions, explicitly controlling redundancy with priorHigh60/MA60/R01 and existing breakout/overheat fields.
