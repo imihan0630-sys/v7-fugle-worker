@@ -1,0 +1,91 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-09-25 23:00 Asia/Taipei",
+  "purpose": "CA-113 bounded dual-exchange denominator archive pilot preparation while CA-111 TWSE daily raw-unit proof remains unresolved.",
+  "decisionImpact": false,
+  "formalCoreChanged": false,
+  "status": "PREPARED_NOT_EXECUTED",
+  "scope": {
+    "exchanges": [
+      "TWSE",
+      "TPEx"
+    ],
+    "targetFamilies": [
+      "stock_dividend_or_capitalization",
+      "par_value_change",
+      "capital_reduction",
+      "cash_capital_increase_payment_certificate"
+    ],
+    "witnesses": [
+      "8454",
+      "8422",
+      "3593",
+      "2465",
+      "5314"
+    ],
+    "windowRule": "bounded event-centered windows only; no full historical completeness claim"
+  },
+  "sourceLanes": {
+    "TWSE": {
+      "dailyBackbone": "BFT51U/BFI85U candidate; raw unit still UNKNOWN",
+      "eventChangeLedger": "LT185 listed common-share/TDR count-change announcements; explicit effective-date/share-count semantics",
+      "tradingUnitGuards": [
+        "BFI85U",
+        "TRANISIN",
+        "T32"
+      ],
+      "readiness": "PARTIAL_BLOCKED_CA111"
+    },
+    "TPEx": {
+      "dailyBackbone": "EDIS S38 / STKT2QUOTESN.TXT",
+      "units": "trade volume=shares; issued shares=shares; market cap=NTD",
+      "readiness": "SEMANTIC_PARSER_READY_ARCHIVE_BYTES_PENDING"
+    }
+  },
+  "receiptFields": [
+    "exchange",
+    "symbol",
+    "session",
+    "denominatorType",
+    "rawValue",
+    "normalizedValueShares",
+    "unitContract",
+    "tradingUnit",
+    "knownAt",
+    "effectiveFromSession",
+    "sourceClass",
+    "sourceArtifactHash",
+    "parserVersion",
+    "quality",
+    "missingReason",
+    "revisionChainStatus"
+  ],
+  "completeness": {
+    "required": [
+      "expectedSessions",
+      "observedSessions",
+      "missingSessions",
+      "verifiedSuspensionSessions",
+      "unknownSuspensionSessions",
+      "unitUnknownCount",
+      "knownAtMissingCount",
+      "effectiveSessionMissingCount",
+      "conflictCount",
+      "parserFailures",
+      "futureLeakageViolations"
+    ],
+    "rule": "NO_EVENT/NO_CHANGE may be asserted only after the exact exchange/source/window is complete; otherwise UNKNOWN."
+  },
+  "antiLeakage": [
+    "No current denominator backfill into historical replay.",
+    "No universal x1000 for TWSE BFT51U.",
+    "No inferred continuity across missing sessions unless verified suspension/event provenance exists.",
+    "No mixing REGISTERED_ISSUED_SHARES with EXCHANGE_LISTED_OR_TRADABLE_SHARES.",
+    "No outcome/alpha testing in this pilot."
+  ],
+  "executionGate": {
+    "mayProceedNow": "TPEx bounded byte/archive pilot and TWSE event-ledger reconciliation preparation",
+    "blockedUntilCA111": "claiming complete dual-exchange daily denominator archive",
+    "ca114Note": "LT185 generic filing semantics independently support excluding private-placement/restricted shares from cumulative listed-share count, but payment certificates remain a distinct tradable stage; exact 2465 combined tradable denominator still requires a date-specific daily exchange artifact."
+  }
+}
