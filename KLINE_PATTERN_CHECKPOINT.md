@@ -88,3 +88,20 @@ DL-002 — Pattern Maturity / Multi-stage K-line Structure
 
 ## Latest durable research commit
 - `3377f6ded3eaeb4223b0f68562164da58554a495` — DL-003A detector architecture comparison.
+
+
+## Continuation update — DL-003D
+- Live connected Fugle audit found an important parameter-contract problem: `FCNT000154` requested with `adjusted=false` returned payload metadata `adjusted:true` for both TWSE 2412 and TPEx 6488. Therefore this connector route cannot certify RAW-vs-ADJUSTED parity; mismatch must block raw-gap/corporate-action validation rather than silently pass.
+- C1-C8 counterexample fixtures are now frozen with deterministic synthetic inputs and expected detector states in `KLINE_PATTERN_RESEARCH.md`.
+- Existing V8.7.2 Shadow Candidate Archive is confirmed as the Pattern parent population. Stable Pattern parent identity is `(scan_date,symbol)` plus parent snapshot hash; cohort_rank is not an identity key.
+- Pattern v0.1 status: SPEC_READY / DATA_CONTRACT_GUARDED / NOT_IMPLEMENTED.
+- Formal Core unchanged / LOCKED.
+
+### Updated exact next continuation point
+1. Resolve an authenticated RAW corporate-action source/path or prove the provider connector can truly return adjusted=false; until then RAW corporate-action fixture remains DATA_BLOCKED.
+2. Translate frozen C1-C8 fixtures into executable isolated detector tests before any outcome study.
+3. Implement only the lowest-level isolated research primitives first: data validator -> swing engine -> structural levels -> W/VCP/Platform; no full-universe scan and no Formal dependency.
+4. Require prefix-invariance/replay exactness and Formal-isolation regression before enabling prospective Pattern logging.
+5. Continue weekly/daily nested-resistance research controlling priorHigh60/MA60/R01 redundancy.
+
+Latest durable research commit before this checkpoint update: `1fc02001fc0fea01b1ab42464b7901c6fec18c1d`.
