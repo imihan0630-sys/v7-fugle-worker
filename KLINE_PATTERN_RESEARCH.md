@@ -7794,3 +7794,105 @@ Do not change stop placement automatically.
 ### Engineering boundary
 Any use of pattern invalidation to alter real stop/position logic is Class C and requires explicit owner approval.
 
+
+
+## DL-002CC — Support/Resistance Decay and Bounce Evidence
+
+### External evidence
+1. Applied Financial Economics (2012):
+   - rule-based horizontal support/resistance levels identified from historical local extrema;
+   - support levels were better than resistance at predicting trend interruption;
+   - nevertheless the resulting rules did not generate systematic excess returns versus buy-and-hold.
+
+2. Chung & Bellotti (2021 preprint):
+   - intraday support/resistance zones showed statistically significant temporary reversal behavior;
+   - zones with more prior bounces were more likely to bounce again;
+   - bounce probability decayed as the level aged.
+
+### Research implications
+A zone can have:
+- descriptive predictive relevance,
+without
+- sufficient economic edge after costs / opportunity cost.
+
+Therefore separate:
+ZONE_REACTION_PROBABILITY
+from
+FORWARD_RETURN_EDGE.
+
+### Zone-strength fields strengthened
+- priorBounceCount
+- priorBreakCount
+- timeSinceCreation
+- timeSinceLastBounce
+- bounceDepthHistory
+- bounceStrengthDecay
+- zoneAgeAdjustedStrength
+- touchRecencyWeightedCount
+
+### Decay hypothesis
+A zone formed long ago with no recent interaction may be less relevant than a similarly strong recent zone.
+
+### Counter-hypothesis
+Very old major highs/lows may remain psychologically salient.
+Do not impose monotonic decay as a law; test recency-weighted vs unweighted strength.
+
+## DL-002CD — Dynamic Trendlines vs Horizontal Zones
+
+### Why separate them
+Horizontal support/resistance is defined by repeated price regions.
+Trendlines/channels encode changing support/resistance over time.
+
+### Research-only dynamic geometry
+- risingSupportSlope
+- fallingResistanceSlope
+- channelWidthATR
+- touchCountDynamic
+- slopeStability
+- lineFitError
+- breakoutDistanceFromLine
+- horizontalZoneConflict
+
+### Use
+Primarily for:
+- flags
+- wedges
+- channels
+- tightening triangles.
+
+### Caution
+Two points always define a line.
+A valid research trendline should require:
+- at least 3 confirmed structural contacts or a fitted swing-based boundary,
+- point-in-time availability,
+- bounded fit error,
+- no hindsight selection of the “best-looking” line.
+
+### Comparison
+For continuation patterns compare:
+- horizontal pivot only,
+- dynamic boundary only,
+- both.
+
+If dynamic trendlines add no incremental information, discard them.
+
+## DL-002CE — Zone Reaction Is Not Automatically Trade Edge
+
+### Principle
+A support zone can increase the chance of a small bounce while still producing poor expected returns if:
+- upside is capped,
+- downside tails are larger,
+- transaction/slippage costs absorb the bounce,
+- the bounce arrives too late.
+
+### Required outcomes for zone research
+- probabilityOfReaction
+- medianReactionMFE
+- medianReactionMAE
+- timeToReaction
+- followThroughAfterReaction
+- R multiple vs current risk framework
+- cost-adjusted value
+
+This prevents “statistically significant bounce” from being mislabeled a good trade.
+
