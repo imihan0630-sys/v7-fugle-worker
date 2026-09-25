@@ -368,3 +368,17 @@
 - 外部計畫採先 GET 精確讀回再決定是否 POST；結果已找到完全相同既有紀錄，`externalPostPerformed=false`、`threeMinVerified=true`，避免重複寫入。
 - 最終 `/api/recommendations`：`resultType=CURRENT`、`pipeline.complete=true`。
 - Cloudflare Error 1102 已確認：同一請求重算全市場可能超過 Worker CPU/記憶體限制；故障恢復不得再依賴單一長 HTTP 請求，優先使用已驗證的 staged selection → delivery/readback 分段流程。
+
+
+## 2026-09-25｜V8.10.0 愛德恩App獨立股池上線
+
+- 正式 runtime：`8.10.0-aideen-independent-pool`。
+- 新增獨立 `AIDEEN_APP` 股池：0~5檔、不硬湊；與既有 3+3+3 完全隔離，不占原池名額。
+- 愛德恩標的必須先確認依 App 原生策略邏輯通過，再做二次風險／進場複核；不得以 Formal A/B 資格門檻代替 App 原生邏輯。
+- 每檔保存 App 策略來源、訊號價、訊號時間、候選決策（SELECTED / NEAR_MISS / REJECTED）與當下理由，避免事後改理由。
+- 愛德恩池資金跟隨系統基準資金；目前基準 NT$200,000。透過正式資金調整端點變更基準資金時，愛德恩池同步重算，但資金帳務與 3+3+3 分離。
+- 盤中監控已納入愛德恩池；signal-state 使用 `AIDEEN_APP:<symbol>` 命名空間，避免與 Formal 同股票代號互相覆蓋。
+- 新增 `/aideen`、`/api/aideen-pool`、`/api/aideen-performance`；績效與 3+3+3 分離，先追蹤 D1/D3/D5 與最新報酬，候選淘汰資料另存 D1。
+- 回歸測試已全數通過，Cloudflare 正式部署成功；線上 `/api/version` 已讀回 V8.10.0。
+- 部署後隔離驗證：原 2026-09-24 3+3+3 正式結果仍為 2006 東和鋼鐵、4977 眾達-KY；愛德恩池初始 0/5、資金 NT$200,000、現金 NT$200,000。
+- Formal Core、3+3+3 選股邏輯、排名、門檻與既有 9/24 正式結果均未修改。
