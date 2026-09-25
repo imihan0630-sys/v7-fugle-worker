@@ -5799,3 +5799,298 @@ It is:
 
 Status: V0_1_RESEARCH_SPEC_COMPLETE / AWAIT_OWNER_IMPLEMENTATION_APPROVAL / FORMAL_LOCKED.
 
+# PV-098 — Dealer Proprietary vs Dealer Hedge Must Be Separated Conceptually
+
+## Current official data
+TWSE T86 and TPEx daily institutional data both publish dealer activity in separate components:
+- dealers proprietary / 自行買賣;
+- dealers hedge / 避險;
+- combined dealers total.
+
+TWSE fields explicitly include:
+- 自營商買賣超股數(自行買賣)
+- 自營商買賣超股數(避險)
+- 自營商買賣超股數
+
+TPEx exposes the same split.
+
+Official sources:
+- https://www.twse.com.tw/fund/T86?response=html
+- https://www.tpex.org.tw/web/stock/3insti/daily_trade/3itrade_hedge_result.php?l=zh-tw&o=htm&se=E
+
+## Current Worker semantics audited
+Current Worker parses:
+- TWSE: `dealerNet = 自營商買賣超股數`
+- TPEx: combined dealer net field
+and stores only:
+- dealerNet
+- dealerBuyDays
+
+Therefore existing `dealerBuyDays` mixes:
+1. directional proprietary inventory decisions;
+2. derivative / ETF / structured-product hedging flows.
+
+## Why this matters
+A positive hedge flow can arise because a dealer needs to dynamically hedge:
+- call warrants;
+- put warrants;
+- ETFs;
+- ETNs;
+- other equity derivatives.
+
+That does not necessarily mean the dealer is expressing a bullish discretionary view on the stock.
+
+## Constructive interpretation of combined dealer buying
+- it still represents real cash-market demand;
+- persistent hedging demand can create genuine price/volume pressure;
+- hedge flow itself may contain information about derivative demand.
+
+## Adverse interpretation
+- it can be mechanically generated;
+- sign can reverse when delta/exposure changes;
+- expiration/unwind can reverse the cash-market impact;
+- combining hedge and proprietary may overstate “institutional conviction.”
+
+## Research decision
+Do NOT change Formal dealerBuyDays yet.
+
+Create a future research decomposition:
+- `dealerProprietaryNet`
+- `dealerHedgeNet`
+- `dealerCombinedNet`
+- streaks for each.
+
+Because the same official payload already contains these fields, incremental API cost should be zero.
+
+Status: HIGH_PRIORITY_TIER2_DECOMPOSITION / FORMAL_UNCHANGED.
+
+
+# PV-099 — Covered-Warrant Hedging Can Mechanically Affect Underlying Volume and Volatility
+
+## Taiwan evidence
+Research using Taiwan covered warrants finds dealer/issuer hedging demand can affect underlying stocks:
+- positive abnormal volume before warrant issuance;
+- stronger effects when hedging demand is larger;
+- persistent relation between hedge-demand elasticity and underlying volatility/volume during warrant life;
+- negative price effect after in-the-money call-warrant expiry due to hedge liquidation.
+
+Source:
+- Chung, Liu & Tsai (2014), Journal of Banking & Finance
+  https://doi.org/10.1016/j.jbankfin.2014.01.027
+
+## Mechanism
+For a call warrant:
+- dealer short call exposure may require buying underlying stock as delta increases;
+- if the underlying rises, delta can rise and force more buying;
+- at expiry/unwind, hedge inventory may be sold.
+
+For puts or other structures, direction can differ.
+
+## Implication for price-volume interpretation
+High underlying volume accompanied by large dealer hedge buying can be:
+- genuine mechanical demand;
+- not necessarily fundamental conviction;
+- potentially self-reinforcing intraday;
+- potentially reversible when hedge need disappears.
+
+## Opposing case
+Mechanical flow is still real flow.
+It can:
+- improve price discovery;
+- persist for multiple days;
+- interact with investor demand in a way that makes continuation genuine.
+
+Therefore dealer hedge flow is a **volume-origin label**, not a discount factor.
+
+## Candidate future research fields
+- `pvDealerProprietaryNet`
+- `pvDealerHedgeNet`
+- `pvDealerHedgeShareOfDealerFlow`
+- `pvDealerHedgeShareOfStockVolume`
+- `pvDealerFlowDivergence = sign(proprietary) vs sign(hedge)`
+
+Do not infer exact warrant delta demand without warrant-level outstanding/delta data.
+
+Status: MECHANICAL_FLOW_CONTEXT / NO_DIRECTIONAL SCORE.
+
+
+# PV-100 — ETF Creation/Redemption and Arbitrage Can Generate Constituent Flow without Stock-Specific Information
+
+## Official Taiwan mechanism
+TWSE and TPEx describe ETF creation/redemption as a primary-market process linking ETF units to baskets of constituent securities.
+
+For in-kind creation:
+- basket securities are delivered in exchange for ETF units.
+
+For redemption:
+- ETF units are exchanged for constituent baskets.
+
+This mechanism supports arbitrage between ETF price and NAV.
+
+Official sources:
+- https://www.twse.com.tw/en/products/securities/etf/overview/issuing.html
+- https://www.tpex.org.tw/en-us/product/etf/overview/introduction.html
+
+## Why this matters for stock PV
+Large ETF subscriptions/redemptions or arbitrage can create buy/sell demand in many constituents simultaneously.
+
+A constituent can therefore show:
+- elevated volume;
+- closing pressure;
+- sector/basket synchronization;
+without a stock-specific information event.
+
+## Constructive interpretation
+ETF-linked flow can be persistent and economically meaningful.
+If a broad theme receives durable ETF inflows, constituent demand may support continuation.
+
+## Adverse interpretation
+It may be:
+- mechanical basket replication;
+- arbitrage;
+- temporary rebalancing;
+- largely common-factor flow rather than stock-specific information.
+
+## Important counter-evidence
+Broader ETF research finds ETF shocks do not always lead underlying-stock returns; in some samples arbitrage opportunities arise from underlying moves and ETF quotes adjust afterward.
+
+Source:
+- Journal of Financial Economics (2021)
+  https://doi.org/10.1016/j.jfineco.2021.04.023
+
+Therefore “ETF flow causes the stock move” must not be assumed.
+
+## Research semantics
+Potential future context:
+- `ETF_BASKET_FLOW_CONTEXT`
+- `INDEX_REBALANCE_CONTEXT`
+- market/sector residual RVOL used to distinguish common basket activity from stock-specific activity.
+
+No direct alpha score.
+
+Status: COMMON_FLOW_CONTEXT / CAUSAL_DIRECTION_AMBIGUOUS.
+
+
+# PV-101 — Block Trades Can Inflate Daily RVOL but May Contain Either Information or Temporary Liquidity Pressure
+
+## Official daily-volume scope
+TWSE official daily stock statistics include:
+- regular trading;
+- odd-lot;
+- after-hours fixed price;
+- block trading;
+and exclude auction/tender offers.
+
+Therefore daily RVOL can be elevated by block-trade activity not visible in the default intraday regular-lot candle path.
+
+Official source:
+- https://www.twse.com.tw/en/exchangeReport/FMTQIK?response=html
+
+## Taiwan evidence
+Intraday Taiwan research on block orders finds:
+- professional institutional block orders have significant price impact;
+- foreign investors submit the largest and most aggressive block orders;
+- block-order aggressiveness/size rises nearer the close;
+- effects can contain both permanent information and temporary liquidity components.
+
+Source:
+- https://doi.org/10.1016/j.pacfin.2022.101828
+
+## Interpretation
+High daily RVOL + ordinary intraday participation:
+- more likely broad trading participation.
+
+High daily RVOL + modest regular-session intraday volume:
+- may indicate block/after-hours/odd-lot contribution.
+
+But this discrepancy is not automatically suspicious.
+
+## Constructive case
+Large block activity may carry genuine institutional information.
+
+## Adverse case
+It may be:
+- ownership transfer;
+- temporary liquidity demand;
+- portfolio rebalance;
+- negotiated execution with little relevance to next-day direction.
+
+## Candidate research variable
+If official block-volume data are reliably available per symbol:
+- `pvBlockTradeShare`
+- `pvRegularVsDailyVolumeGap`
+
+Do not estimate block share merely as:
+dailyVolume - intradayVolume
+because daily and intraday scope differ in several ways simultaneously.
+
+Status: DAILY_RVOL_ORIGIN_GUARD / DIRECT_RESIDUAL_ESTIMATE_PROHIBITED.
+
+
+# PV-102 — Volume-Origin Decomposition Priority after PV-098~101
+
+## What has changed
+Price-volume research now distinguishes two different questions:
+
+1. **How abnormal is participation?**
+   - daily RVOL
+   - slot RVOL
+   - cumulative pace
+
+2. **Where might that participation come from?**
+   - dealer proprietary flow
+   - dealer hedge flow
+   - ETF creation/redemption or index rebalance
+   - block trades
+   - odd-lot activity
+   - day trading
+   - actual securities-lending short sales
+
+The second family explains **origin**, not strength.
+
+## Highest-priority next decomposition
+### Dealer proprietary vs hedge
+Reasons:
+- official TWSE/TPEx data already expose the split;
+- current Worker already fetches the payload;
+- zero incremental API cost;
+- existing dealerBuyDays currently mixes both mechanisms;
+- strong microstructure rationale.
+
+This becomes the first Tier-2 origin decomposition worth testing.
+
+## Medium priority
+- actual SBL short-sale activity;
+- day-trading share;
+- index-rebalance context;
+- block-trade share where official per-stock data are feasible.
+
+## Lower / conditional priority
+- ETF creation/redemption constituent exposure;
+- odd-lot share;
+- warrant-level delta reconstruction.
+
+These require more joins/data semantics and risk feature creep.
+
+## Formal governance
+Current A-line condition “foreign/trust/dealer at least one side consecutive buying” remains unchanged.
+
+Before any change to the dealer component:
+1. preserve existing combined dealerNet;
+2. prospectively store proprietary and hedge separately;
+3. compare:
+   - combined dealer streak;
+   - proprietary streak;
+   - hedge streak;
+   - proprietary+foreign/trust combinations;
+4. evaluate D1/D3/D5, MFE/MAE, false-confirmation and capital-utilization impact;
+5. only then consider a Class-C proposal.
+
+## New hypothesis
+PV-H005:
+“Dealer proprietary-flow streak provides cleaner incremental institutional-confirmation information than combined dealer flow, while dealer hedge flow is primarily a volume-origin/risk-context variable.”
+
+Counter-hypothesis:
+Hedge demand itself may carry useful directional information or persistent mechanical demand, so stripping it out may worsen performance.
+
+Status: ORIGIN_DECOMPOSITION_FRAMEWORK_COMPLETE / FORMAL_LOCKED.
