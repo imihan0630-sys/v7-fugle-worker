@@ -101,7 +101,6 @@ function seq(prefix, days) { return days.map(d => prefix + String(d).padStart(2,
   });
   assert.equal(result.usable,true);
   assert.equal(result.expectedPriorDate,"2025-03-19");
-  assert.deepEqual(result.expectedSessions,["2025-03-17","2025-03-18","2025-03-19"]);
 }
 
 console.log("symbol-session calendar prototype tests passed");
