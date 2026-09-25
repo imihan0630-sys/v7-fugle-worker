@@ -843,3 +843,327 @@ FD-025: Fundamental-price disagreement lifecycle and falsification.
 FD-026: Cross-sectional peer-normalized surprise/quality versus own-history normalization.
 FD-027: Readiness / redundancy map against existing fundamentalScore, DL-001, Quiet/Attention, K-line/PV/RS.
 FD-028: Decide whether this concept lane is complete and whether prospective official-vintage capture can be proposed without touching Formal Core.
+
+
+---
+
+## FD-021 — Fundamental persistence: one strong quarter should not be extrapolated indefinitely
+
+A high growth print contains at least two questions:
+1. how large was the change?
+2. how persistent is that change likely to be?
+
+### Why persistence matters
+PEAD and earnings-time-series research exist partly because current earnings contain information about future earnings, but investors may not process the serial structure correctly.
+
+A single positive quarter can reflect:
+- durable demand,
+- temporary shipment timing,
+- low-base effect,
+- one-time gain,
+- inventory cycle,
+- currency,
+- accounting timing.
+
+### Research variables
+Do not create a one-number persistence score first.
+
+Track:
+- revenueYoY sequence over 3/6/12 months;
+- revenueAcceleration sequence;
+- quarterEPS direction sequence;
+- margin direction sequence;
+- cash-flow confirmation;
+- fraction of prior positive growth events followed by positive next-period growth, estimated only from pre-event history.
+
+### Mean-reversion guard
+Extremely high growth after an unusually weak base may naturally decelerate without becoming a bad business.
+
+Therefore:
+- acceleration down from +100% to +40% is deceleration but still strong realized growth;
+- do not label deceleration as negative surprise unless expectation says so.
+
+Status: PERSISTENCE / BASE-EFFECT SEPARATION FROZEN.
+
+---
+
+## FD-022 — Accruals are entangled with investment and growth
+
+Sloan-style accrual evidence is important, but the literature offers competing explanations:
+- mispricing due to investors overestimating accrual persistence;
+- investment/growth effects;
+- risk-based interpretations.
+
+Research on accrual and investment anomalies shows they are intrinsically related, and some studies find return-dispersion/risk variables can weaken the anomaly.
+
+Source:
+- Does return dispersion explain the accrual and investment anomalies?
+- Journal of Accounting and Economics / related asset-pricing literature.
+
+### Research consequence
+Never create:
+`lowAccrual = 1 -> good`
+
+Instead condition accrual quality on:
+- sales growth,
+- asset/investment growth,
+- working-capital change,
+- cash operating profitability,
+- industry,
+- lifecycle / size.
+
+### Preferred question
+For two firms with similar reported growth/profitability, does cash-supported earnings have greater subsequent persistence than accrual-heavy earnings?
+
+That is closer to the original mechanism and less likely to confuse growth investment with low quality.
+
+Status: SIMPLE ACCRUAL RANKING REJECTED; CONDITIONAL QUALITY STUDY RETAINED.
+
+---
+
+## FD-023 — Analyst dispersion is uncertainty/disagreement, not automatically bearish
+
+### Evidence
+Analyst forecast dispersion has a large, contested literature.
+
+Research finds:
+- dispersion is related to disagreement and trading around earnings;
+- change in dispersion may contain information distinct from the level;
+- some documented return relations are conditional on forecast direction, investor optimism/pessimism, disclosure behavior, or measurement choices.
+
+Sources:
+- Cen, Wei & Yang (2017), Disagreement, underreaction, and stock returns.
+- Ali et al. (2019), Corporate disclosure, analyst forecast dispersion, and stock returns.
+- Xu, Yang & Zhang (2026), Investor disagreement and state-dependent mispricing.
+
+### Data fields if a future consensus provider exists
+- analystCount
+- estimateMean / Median
+- estimateStd
+- coefficientOfVariation only when denominator is meaningful
+- dispersionChange5D / 20D
+- meanRevision5D / 20D
+- upgradeDowngradeBreadth
+
+### Important interaction
+A rising mean forecast with falling dispersion is different from:
+- falling mean + rising dispersion,
+- rising mean + rising dispersion.
+
+Do not use dispersion direction alone.
+
+### Measurement risk
+A 2025 paper shows analyst-window construction itself materially changes dispersion measures and their association with announcement volume/returns.
+
+Therefore forecast-vintage/window definition must be frozen before outcomes.
+
+Status: EXTERNAL-DATA-DEPENDENT UNCERTAINTY LAYER.
+
+---
+
+## FD-024 — Fundamental momentum is broader than one surprise
+
+### Evidence
+Earnings momentum has a long literature. Novy-Marx (2015 working paper) argues fundamental earnings momentum can explain substantial price-momentum behavior in his sample.
+
+A revenue/earnings/price momentum study associated with Taiwan researchers finds no single information type dominates: revenue surprises, earnings surprises and past returns can each contain exclusive information, with joint alignment especially informative in their sample.
+
+Sources:
+- NBER Working Paper 20984, Fundamentally, Momentum is Fundamental Momentum.
+- Chen et al. (2015), Does revenue momentum drive or ride earnings or price momentum?
+
+### Research translation
+Fundamental momentum can be represented as a **sequence**, not just one high growth print:
+- repeated positive model innovations;
+- repeated upward revisions;
+- repeated revenue acceleration;
+- earnings + revenue jointly improving;
+- margins/cash flow confirming.
+
+### Counterpoint
+Persistence can turn into extrapolation/overreaction.
+Taiwan monthly-sales research has evidence consistent with representativeness-driven reversal after repeated sales news in some samples.
+
+Therefore:
+- repeated good news is not mechanically more bullish;
+- pre-event price run-up and attention are required controls.
+
+Status: FUNDAMENTAL-SEQUENCE LANE RETAINED WITH OVERREACTION COUNTERSTATE.
+
+---
+
+## FD-025 — Fundamental × price disagreement is a lifecycle, not one-day contradiction
+
+A one-day disagreement may resolve in multiple ways.
+
+### Positive fundamental / weak price reaction
+Possible lifecycle:
+1. INFO_POSITIVE_REACTION_WEAK
+2. PRICE_CATCHUP
+3. CONFIRMED_UNDERREACTION
+
+or:
+1. INFO_POSITIVE_REACTION_WEAK
+2. FURTHER_WEAKNESS
+3. MARKET_REJECTED_HEADLINE
+
+### Negative fundamental / resilient price
+Possible lifecycle:
+1. INFO_NEGATIVE_PRICE_RESILIENT
+2. CONTINUED_RESILIENCE
+3. BAD_NEWS_PRICED_IN
+
+or:
+1. INFO_NEGATIVE_PRICE_RESILIENT
+2. DELAYED_BREAK
+3. FALSE_RESILIENCE
+
+### Falsification
+Do not label underreaction on event day and then backfill the label because price later rose.
+The state at t must only use data known at t.
+
+Post-event outcome labels are separate.
+
+Status: AS-OF LIFECYCLE FROZEN.
+
+---
+
+## FD-026 — Own-history surprise and peer-normalized fundamental change answer different questions
+
+### Own-history
+“Is this unusual for this company?”
+Examples:
+- revenue growth percentile vs its own prior years;
+- margin change vs own history;
+- model innovation normalized by own forecast errors.
+
+### Peer-relative
+“Is this unusual versus competitors facing similar conditions?”
+Examples:
+- revenue growth minus sector median;
+- margin change minus sector median;
+- earnings innovation percentile within reporting peers.
+
+### Benefits
+Peer normalization can remove:
+- macro cycle,
+- seasonal industry demand,
+- commodity/input-price cycle.
+
+### Risks
+- historical industry classification must be point-in-time;
+- peer group may be too small;
+- diversified companies may not fit one industry;
+- same-industry firms can have different geographic/product mix.
+
+### Rule
+Preserve both:
+- ownHistoryInnovation
+- peerResidualInnovation
+
+Do not collapse them into one score before evidence.
+
+Status: TWO-BENCHMARK DESIGN FROZEN.
+
+---
+
+## FD-027 — Redundancy map against the existing system
+
+| Fundamental dynamics candidate | Existing nearest field | Incremental question |
+|---|---|---|
+| realized revenue YoY/MoM | fundamentalScore | already present; reuse |
+| revenue acceleration | revenue YoY history | change of growth |
+| model revenue innovation | none | unexpected vs frozen seasonal expectation |
+| true consensus surprise | none | expectation error |
+| EPS SUE | epsYoY/change | standardized unexpected earnings |
+| forecast revision | none | expectations changing before/after event |
+| forecast dispersion | none | disagreement/uncertainty |
+| CFO/accrual quality | margins/EPS | persistence/quality of earnings |
+| margin dynamics | margin levels/YoY | quality of growth |
+| event price reaction | K-line/PV | market interpretation of fundamental event |
+| pre-event run-up | ret/K-line/attention | priced-in/overreaction context |
+| peer event transfer | sector/RS | new information from other firms |
+
+### Incremental-validation order
+1. current fundamentalScore / existing fields;
+2. K-line and price-volume event response;
+3. Residual RS / sector state;
+4. Quiet/Attention / Information Discreteness;
+5. Regime / liquidity;
+6. candidate fundamental-dynamics feature.
+
+### Kill rule
+If a candidate merely re-encodes revenueYoY/epsYoY or event-day price return and adds no stable incremental value, remove it.
+
+Status: REDUNDANCY GATE FROZEN.
+
+---
+
+## FD-028 — Concept-lane convergence and evidence path
+
+### Highest-value candidates by feasibility
+
+#### Tier 1 — official-source / near-term
+- monthly revenue event timestamp/vintage;
+- revenue acceleration;
+- frozen seasonal model innovation;
+- true quarterly EPS event;
+- realized margin dynamics;
+- event price reaction;
+- pre-event run-up;
+- multi-news guard.
+
+#### Tier 2 — official-source but additional parsing/history
+- CFO/accrual quality;
+- explicit company financial forecasts;
+- investor-conference/guidance extraction;
+- forecast-vs-actual company guidance.
+
+#### Tier 3 — external point-in-time provider required
+- analyst consensus surprise;
+- analyst forecast revisions;
+- analyst dispersion.
+
+### Scientific priority
+First build point-in-time event truth.
+Without that, sophisticated surprise formulas create false precision.
+
+### Concept status
+The fundamental-dynamics lane now covers:
+- level/change/surprise/revision/reaction semantics;
+- PEAD and revenue surprise;
+- Taiwan monthly revenue timing;
+- first-known vintage/corrections;
+- analyst revisions/disagreement;
+- SUE;
+- seasonality;
+- cash/accrual quality;
+- margins/operating leverage;
+- guidance;
+- event-time alignment;
+- price/fundamental interaction;
+- persistence;
+- fundamental momentum;
+- peer transfer / peer normalization;
+- redundancy and feasibility.
+
+Further feature invention should pause until point-in-time evidence is available.
+
+Status: CONCEPT_COMPLETE / EVIDENCE_PENDING.
+
+## Exact next continuation after FD-028
+
+Open the next genuinely under-studied knowledge lane.
+
+Priority recommendation:
+**Derivatives Information & Volatility Surface**
+- index futures basis / open interest / volume;
+- option implied volatility;
+- put-call skew and tail-risk pricing;
+- term structure;
+- futures/options positioning;
+- expiration/microstructure effects;
+- distinction between hedging demand and directional prediction;
+- Taiwan futures/options-specific data and settlement mechanics.
+
+Do not interpret put/call or foreign futures positioning as a one-line bullish/bearish oracle; build positive and counter-mechanisms first.
