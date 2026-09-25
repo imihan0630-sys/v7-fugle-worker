@@ -7564,3 +7564,108 @@ POINT_LEVEL logic vs ZONE_ACCEPTANCE logic:
 
 No Formal threshold changes during research.
 
+
+
+## DL-002BV — Sector Pattern Synchrony vs Generic Sector Strength
+
+### External evidence
+- Classic Journal of Finance research finds industry momentum explains a substantial portion of individual-stock momentum.
+- Peer-reviewed Taiwan evidence documents an industry momentum effect and links it to industry return autocorrelation.
+- Recent Taiwan research continues to study factor/industry momentum as a distinct component of short-term return persistence.
+
+### Existing overlap
+The system already has:
+- sector score
+- breadth
+- sector persistence
+- Residual RS
+- industry ranking
+
+Therefore do NOT create another generic “strong sector” factor.
+
+### Incremental question
+Does the number/quality of peer stocks simultaneously entering similar structural states add information beyond sector returns/breadth?
+
+### Pattern-synchrony fields
+- sectorPatternMaturePct
+- sectorPivotReadyPct
+- sectorBreakoutConfirmedPct
+- sectorFailurePct
+- peerCompressionPct
+- peerRSImprovingPct
+- leaderPatternState
+- medianPeerPatternAge
+- patternDispersionWithinSector
+- stockVsSectorPatternLeadLag
+
+### States
+ISOLATED_STOCK_PATTERN
+- stock matures while few peers do.
+
+SECTOR_SYNCHRONIZED
+- multiple peers mature/approach pivots.
+
+LEADER_FIRST
+- stock reaches maturity/breakout before sector peers.
+
+LAGGARD_CATCHUP
+- sector already advanced; stock pattern matures later.
+
+SECTOR_EXHAUSTION
+- peers have already broken out/extended while stock is only now approaching pivot.
+
+### Competing hypotheses
+H1 synchronized maturation reflects broad fundamental/information diffusion and improves continuation.
+H2 leader-first can capture the strongest stock before sector breadth catches up.
+H3 laggard-catchup may offer remaining room or may be late-cycle residual chasing.
+H4 broad simultaneous breakouts may also represent crowded attention/exhaustion.
+
+Test rather than choose a story.
+
+### Redundancy controls
+Compare with:
+- sector return
+- sector breadth
+- sector persistence
+- Residual RS
+- Attention/Quiet state
+- overall market regime
+
+If pattern synchrony adds no incremental information, discard it.
+
+## DL-002BW — Pattern Lead/Lag Within Sector
+
+### Goal
+Measure whether a stock structurally leads or lags peers.
+
+### Fields
+- daysAheadOfSectorMedianMaturity
+- daysAheadOfSectorMedianBreakout
+- rsLeadLag
+- compressionLeadLag
+- flowLeadLag
+- peerFollowThroughAfterLeader
+
+### Research questions
+- Do early leaders have better D5/D10 continuation?
+- Do late pattern maturities suffer from reduced remaining upside?
+- Does sector confirmation after a leader breakout improve revalidation confidence?
+
+### Relation to existing overheat research
+A laggard pattern in an already-extended sector may look technically early at stock level but economically late at sector-cycle level.
+Test against overheat/remaining-upside variables.
+
+## DL-002BX — Sector Synchrony Point-in-Time Integrity
+
+### Rule
+Sector pattern breadth on date t may only use peer pattern states known by t.
+
+No future peer breakout may be backfilled to say:
+“the sector was synchronized.”
+
+### Universe controls
+Use contemporaneous sector membership when available.
+If historical classification is unavailable, record classificationProvenance and avoid overstating exact historical sector membership.
+
+No Formal change.
+
