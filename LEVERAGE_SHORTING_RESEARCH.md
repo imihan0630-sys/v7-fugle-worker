@@ -1182,3 +1182,222 @@ LS-037: define normalization denominators using existing market cap / volume dat
 LS-038: build redundancy matrix against current institution / Price-Volume / derivatives evidence.
 LS-039: freeze smallest useful Shadow feature set and kill rules.
 LS-040: concept/data-design convergence.
+
+
+---
+
+## LS-035 — Historical source windows and major regime breakpoints
+
+### Source windows
+- TWSE daily margin transactions public history: available since 2001-01-01.
+- TPEx margin transactions: public history since 2007-01, with older 2003-08 to 2006-12 history linked separately.
+- TPEx SBL-short balance history: available since 2006-01.
+- TWSE/TPEx SBL-short formula changed from 2012-03-19.
+
+### Key regime breakpoints for interpretation
+At minimum tag:
+
+- 2012-03-19: SBL short-sale balance disclosure/formula regime change.
+- 2013-09-23: TWSE borrowed-stock short-sale uptick-rule exemption for eligible margin-trading securities, subject to exceptions.
+- 2014-01-06: certain securities/futures dealers' hedging SBL shorts exempt from daily maximum limit.
+- 2020-03-23: TWSE continuous intraday trading begins.
+- 2020-06-10: TWSE daily borrowed-stock short-sale limit uses 30% of prior-30-session average trading volume.
+- 2020-10-26: intraday odd-lot trading begins, affecting retail/trading structure.
+- 2025-05-26: TPEx borrowed-stock short-sale daily limit changes to 30% of prior-30-session average volume.
+
+Additional margin-ratio / short-margin / disposition-rule changes must be attached if the historical window crosses them.
+
+### Rule
+Do not pool pre/post regime blindly.
+A long backtest should either:
+- segment by regime;
+- include regime controls;
+- or restrict the primary study to a modern comparable period.
+
+Status: HISTORICAL REGIME MAP V1 FROZEN.
+
+---
+
+## LS-036 — Finalized-history research can begin offline without production changes
+
+### Feasible now
+Using public official historical pages, an offline research dataset can be built for:
+- finalized TWSE margin daily history;
+- finalized TWSE SBL-short daily history;
+- TPEx margin history;
+- TPEx SBL-short history.
+
+This does not require changing Formal Worker behavior.
+
+### What it can answer
+- long-run finalized balance/flow relationships;
+- rolling own-history normalization;
+- regime comparisons;
+- TWSE/TPEx parity;
+- H1–H5 descriptive/outcome tests using eventual daily truth.
+
+### What it cannot answer
+- whether a same-day value was actually available before a historical 23:35 decision;
+- first-seen preliminary balance vintage;
+- exact publication latency.
+
+Those require prospective capture.
+
+### Decision
+Offline finalized-history research is:
+`TECHNICALLY_FEASIBLE / POINT_IN_TIME_LIMITED`.
+
+No backfill is claimed complete in this turn.
+
+Status: OFFLINE HISTORY ALLOWED FOR FINALIZED-DAILY QUESTIONS ONLY.
+
+---
+
+## LS-037 — Normalization hierarchy using available data
+
+Avoid dependence on unavailable verified free float.
+
+### Tier 1 — most practical with existing price/volume history
+- marginBuy / dailyVolume
+- marginSell / dailyVolume
+- marginBalance / ADV20
+- marginShortSale / dailyVolume
+- marginShortBalance / ADV20
+- sblShortSale / dailyVolume
+- sblShortBalance / ADV20
+- sblReturn / priorSblShortBalance
+- own-history robust percentile for each level/flow
+
+### Tier 2 — official quota utilization
+When official quota is positive and semantics are valid:
+- marginBalance / marginQuota
+- marginShortBalance / shortQuota
+- sblShortBalance / total-control denominator only if explicitly defined/verified.
+
+### Tier 3 — capital/share normalization
+- balance / issued shares;
+- balance notional / market cap;
+only after verified point-in-time shares/market-cap data are available.
+
+### Free-float warning
+Issued shares are not free float.
+Do not label issued-share normalization “free-float short interest.”
+
+### Preferred v0.1
+Use ADV + own-history + quota-utilization views before adding capital-based normalization.
+
+Status: NORMALIZATION HIERARCHY FROZEN.
+
+---
+
+## LS-038 — Cross-lane redundancy matrix
+
+### Margin long vs Price-Volume
+Price-Volume knows how much participation occurred and whether price accepted it.
+Margin data add **financing identity / leverage stock**.
+Incremental if leverage state changes interpretation of the same price-volume pattern.
+
+### Short/SBL vs institutional cash flow
+Foreign/investment-trust/dealer cash buying/selling is not the same as borrowed short-sale activity.
+Do not net them into one “smart money” number.
+
+### SBL vs derivatives positioning
+Foreign futures/options can be hedge or directional.
+SBL shorting is cash-equity borrowed selling.
+They may interact but are not substitutes.
+
+### Margin/SBL vs Microstructure
+Microstructure is intraday execution/order-book state.
+Leverage/shorting is end-of-day position/flow state.
+
+### Margin leverage vs Portfolio Risk
+This lane studies **other market participants' leverage**.
+Portfolio Risk studies **our system's position risk**.
+No duplication.
+
+### Attention/disposition
+These are constraints/controls that condition leverage/short data; they are not independent bullish/bearish bonuses.
+
+Status: REDUNDANCY OWNERSHIP FROZEN.
+
+---
+
+## LS-039 — Smallest useful Shadow feature set and kill rules
+
+### Shadow v0.1 candidate set
+Keep it compact:
+
+1. `lsMarginLevelAdv20`
+2. `lsMarginFlowDailyVolume`
+3. `lsMarginOwnHistoryPct`
+4. `lsMarginShortLevelAdv20`
+5. `lsSblShortFlowDailyVolume`
+6. `lsSblShortLevelAdv20`
+7. `lsSblReturnRate`
+8. `lsQuotaConstraintState`
+9. `lsBalanceQualityState`
+10. `lsCrowdingState`
+
+Do not add multiple indicators that are algebraic variants of the same balance.
+
+### Kill rules
+Remove or stop expanding a feature family if:
+- no stable incremental information after existing controls;
+- results are driven by one date/sector/market;
+- effect exists only in obsolete rule regimes;
+- preliminary-to-final revisions are comparable to or larger than the measured effect;
+- TPEx parity fails and “Taiwan market” claims would actually mean TWSE only;
+- performance disappears after liquidity/price-volume controls;
+- feature complexity rises without incremental explanatory value.
+
+### Governance
+All v0.1 fields remain OBSERVER only.
+No VETO/MODIFIER/Formal score.
+
+Status: MINIMUM SHADOW SET FROZEN.
+
+---
+
+## LS-040 — Concept/data-design convergence
+
+The major conceptual questions are now covered:
+
+- leverage taxonomy;
+- level vs flow;
+- retail participation structure;
+- long-leverage crowding;
+- deleveraging risk;
+- margin short vs actual SBL short;
+- hedge confounding;
+- short information;
+- short covering / squeeze;
+- two-sided disagreement;
+- quota/restriction regimes;
+- preliminary/final balance vintage;
+- TWSE/TPEx source parity;
+- historical regime breaks;
+- normalization;
+- redundancy controls;
+- first empirical hypotheses.
+
+### Lane state
+**LEVERAGE_SHORTING = CONCEPT_COMPLETE / DATA_BUILD_PENDING.**
+
+### Highest-value next action
+Not more indicators.
+
+The next real value is:
+1. build/validate a finalized historical daily dataset offline;
+2. preserve prospective preliminary/final vintages;
+3. run the pre-registered H1–H5 tests;
+4. test incremental value against Price-Volume, Residual RS, sector/regime and existing Formal state.
+
+### No Formal change
+No selection/rank/BUY/ADD/REDUCE/SELL/stop/capital/monitor/push change.
+
+## Exact next continuation
+
+- LS-041: prepare offline historical-data specification and exact field mappings for TWSE/TPEx.
+- LS-042: validate a small multi-date sample before large backfill.
+- LS-043: only after schema validation, collect independent-date evidence.
+- In parallel, identify the next genuinely under-studied concept lane rather than invent more leverage indicators.
