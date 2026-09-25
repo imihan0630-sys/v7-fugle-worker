@@ -306,3 +306,26 @@ Potential after data-quality success:
 - attention/disposition/unusual-recommendation/abnormal-security flags.
 
 These are context/risk decompositions only and do not affect Formal decisions.
+
+
+## V0.1 canonical implementation authority
+The implementation-ready authority is now:
+`PRICE_VOLUME_SHADOW_IMPLEMENTATION_PLAN.md`.
+
+If this older design/spec text conflicts with that plan or with a later explicit supersession in `PRICE_VOLUME_CHECKPOINT.md`, follow the implementation plan / latest correction.
+
+Current schema:
+`PV_SHADOW_V0_1`.
+
+Current live zero-extra-call bound:
+- 17 completed 15m bars/symbol under the present cron;
+- max 102 feature snapshots/day across 6 monitored stocks.
+
+Current research status:
+- specification mature enough to propose Class-A LOG_ONLY implementation;
+- not implemented;
+- no prospective evidence for Formal optimization;
+- all PV states remain OBSERVER.
+
+Durable hypothesis history:
+`PRICE_VOLUME_HYPOTHESIS_LEDGER.md`.
