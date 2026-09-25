@@ -1,8 +1,8 @@
 # Market Microstructure Checkpoint
 
 Updated: 2026-09-25 Asia/Taipei
-Current cursor: MS-001 through MS-012 complete.
-Next: MS-013.
+Current cursor: MS-001 through MS-018 complete.
+Next: MS-019.
 
 ## Durable conclusions
 
@@ -66,14 +66,26 @@ Fugle official docs currently provide:
 
 Fugle explicitly excludes the opening first trade from its inside/outside-volume calculation because opening call auction may not represent the same supply-demand mechanism.
 
+## MS-013 through MS-018 durable update
+
+- Absorption is dynamic: pressure + repeated opposing-side replenishment + weak price response. One large displayed queue is insufficient.
+- Liquidity-vacuum breakouts and depth-supported breakouts must be separated; a large move in a thin book can reflect high price impact rather than strong demand.
+- Failed-breakout research is pre-registered around spread widening, pressure-price divergence, replenishment and depth-imbalance flips, with matched successful-breakout controls.
+- Taiwan 2004 order-imbalance evidence supports persistence from order splitting/herding but little aggregate price pressure beyond one day; trader-class findings are historically bounded and must not be transplanted to 2026.
+- 2026 TWSE market-structure commentary indicates a much more institutionalized market than circa 2000, strengthening the need for current revalidation.
+- V8.8.1 already records top-five bids/asks, spreadPct, bidDepth5, askDepth5, depthImbalance and executionMarketState in the research recorder. Do not duplicate these fields.
+- Current recorder event cadence (open, first 10m/15m/30m, formal signal) is too sparse for true event-level OFI or seconds-scale resiliency.
+- Incremental priority is now same-slot normalization, trade-pressure proxy, pressure-to-price response, weighted-mid displacement, transaction rate, replenishment/resiliency and persistence states.
+- Adding new REST trades/volumes calls directly to Formal monitoring can create shared-runtime risk and should be Class B unless isolated. Preferred future design is a separate research-only capture path.
+
 ## Exact next continuation
 
-- MS-013 absorption/replenishment.
-- MS-014 liquidity-vacuum breakout vs depth-supported breakout.
-- MS-015 spread/depth around failed breakouts.
-- MS-016 Taiwan order-imbalance / investor-class evidence.
-- MS-017 compare against existing V8.8.1 execution-recorder spread/depth fields and remove duplicates.
-- MS-018 determine whether isolated Class-A prospective capture can reuse existing recorder without changing Formal runtime semantics.
+- MS-019 minimum prospective cadence/storage burden for replenishment.
+- MS-020 adverse-selection / post-trade markout.
+- MS-021 Taiwan tick-size-band / thousand-dollar normalization.
+- MS-022 price-limit-proximity nonlinear behavior.
+- MS-023 cross-lane redundancy matrix.
+- MS-024 frozen empirical protocol before implementation.
 
 Files:
 - MICROSTRUCTURE_RESEARCH.md
