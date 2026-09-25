@@ -232,3 +232,60 @@ First ~50 completed events are DATA_QA only. Evidence review follows the predecl
 - trade-count baselines;
 - explicit VI state without authoritative event data;
 - free-float turnover without timestamped free-float data.
+
+
+## Frozen outcome labels
+A and B are evaluated separately.
+
+### B anchor
+First completed 15m bar satisfying the existing Formal B breakout-confirmed definition. Freeze breakout/retest/maxChase/stop and anchor OHLC at that time.
+
+Outcomes:
+- B_FAILED_REENTRY_B1/B2/B4: close < breakout*0.995
+- B_RETEST_ZONE_LOST_B1/B2/B4: close < frozen retestLow
+- B_NO_CLOSE_PROGRESS_B1/B2/B4: no later close > anchor close
+- B_NO_HIGH_PROGRESS_B1/B2/B4: no later high > anchor high
+- continuous MFE/MAE always stored
+
+### A anchor
+First Formal A BUY-confirmed completed 15m bar.
+
+Outcomes:
+- A_ZONE_LOST_B1/B2/B4: close < frozen buyLow
+- A_STOP_BROKEN_B1/B2/B4: only if stop existed at anchor
+- A_NO_CLOSE_PROGRESS_B1/B2/B4
+- A_NO_HIGH_PROGRESS_B1/B2/B4
+- continuous MFE/MAE
+
+## Horizon semantics
+- B1/B2/B4 are same-session future completed 15m bars only.
+- If the session ends before the required horizon, mark INCOMPLETE_SESSION_END.
+- NEXT_OPEN / NEXT_SESSION_HIGH_LOW / NEXT_CLOSE are separate overnight/next-session outcomes.
+- D1/D3/D5/D10 use official future trading dates, not calendar days.
+
+## Finalizer
+- snapshots immutable;
+- outcomes upsert by snapshot_id+horizon;
+- complete only when all source bars/dates exist;
+- every-minute reruns are idempotent;
+- completed outcomes must remain semantically identical under rerun.
+
+## Resource boundary
+Current Formal monitor max is 6 stocks.
+The ordinary intraday PV layer must reuse already-fetched 15m frames and add zero duplicate live candle calls.
+One historical 15m bootstrap is allowed per newly monitored symbol lacking >=20 valid-session baseline; then roll cache forward.
+
+At 18 x 15m slots and 6 symbols, full-bar logging ceiling is 108 feature rows/trading day. Unique bar-end identity prevents every-minute duplicate writes.
+
+## Research reporting
+Admin/research surface only until evidence matures.
+Report:
+- event vs snapshot counts;
+- coverage/UNKNOWN/guards;
+- A/B and regime/session splits;
+- existing local volumeRatio vs slot RVOL/cumulative pace;
+- false/no-progress;
+- MFE/MAE;
+- model A→E incremental comparisons.
+
+Do not emit PV-based BUY/SELL, grade changes, capital changes or push signals.
