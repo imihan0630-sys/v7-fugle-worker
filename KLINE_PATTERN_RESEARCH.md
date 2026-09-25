@@ -5416,3 +5416,138 @@ Follow-through features are only usable at the date they become observable.
 They cannot be attached retroactively to the original selection date as if known then.
 Use them for execution/revalidation research, not Selection Alpha at t0.
 
+
+
+## DL-002W — Pattern Time Structure / Staleness v0.1
+
+### Goal
+Model pattern duration and aging as continuous information rather than assuming one universal “ideal number of days.”
+
+### Why duration matters
+A pattern that forms too quickly may be noise or one volatile reversal.
+A pattern that drags on too long may span multiple regimes, stale supply/demand conditions, or a different structural process.
+
+Practitioner references disagree materially on duration ranges. This disagreement is evidence against using one textbook duration as a hard truth.
+
+### Universal time fields
+For every pattern family store:
+- patternStartDate
+- stateAsOf
+- ageTradingDays
+- barsSinceLastConfirmedSwing
+- barsSinceMaturity
+- barsSincePivotReady
+- barsSinceFirstBreakoutAttempt
+- barsSinceFailure
+- confirmationLagBars
+- provisionalAgeBars
+
+### Family-specific time fields
+VCP:
+- contractionDurations[]
+- timeBetweenContractions
+- finalTightAreaAge
+
+Cup:
+- leftRimToBottomDays
+- bottomResidenceDays
+- bottomToRightRimDays
+- cupDurationDays
+- handleDurationDays
+
+W:
+- low1ToNecklineDays
+- necklineToLow2Days
+- bottomSpacingDays
+
+Flag/platform:
+- poleDurationDays
+- consolidationDurationDays
+- consolidationToPoleDurationRatio
+
+### Staleness hypotheses
+Potentially stale:
+- many bars near pivot with repeated failed breakout attempts;
+- base duration becomes very long while relative strength deteriorates;
+- pattern matures but price never approaches pivot;
+- repeated high-volume reversals at the same resistance;
+- market/sector regime changes after pattern formation.
+
+Potentially constructive:
+- pattern persists while volatility and supply continue to contract;
+- maturity is recent and relative strength remains intact;
+- pivot attempts are few rather than repeatedly rejected.
+
+### Repeated-attempt count
+Store:
+- pivotTouchCount
+- failedCloseAbovePivotCount
+- failedBreakoutCount
+- daysSinceFirstPivotTouch
+
+Research question:
+Does repeated testing weaken resistance (absorption) or signal persistent supply / exhaustion?
+Do not assume one direction before testing.
+
+### Time normalization
+Also express duration relative to volatility/trend context:
+- ageVsATRRegime
+- consolidationDurationVsPriorImpulse
+- patternAgeVsSectorCycle proxy if available
+
+### No hard duration gate yet
+Do not reject a cup merely because it exceeds 6 months or a handle because it exceeds 4 weeks.
+First test duration as a continuous/descriptive variable and look for stable monotonic or nonlinear effects in prospective data.
+
+### Staleness state
+FRESH
+MATURE_FRESH
+AGING
+STALE
+REACTIVATED
+
+REACTIVATED requires a genuinely new structural event (e.g. fresh contraction/reclaim), not merely passage of time.
+
+### Interaction with Formal
+A stale-pattern flag may eventually help explain false positives, but it is Research/Shadow only.
+No Formal time cutoff is changed.
+
+## DL-002X — Failed Attempt Count / Resistance Absorption Question
+
+### Competing hypotheses
+H1 Absorption:
+Repeated approaches to resistance consume available supply and increase breakout odds.
+
+H2 Exhaustion:
+Repeated failed attempts reveal persistent overhead supply, weaken momentum, and increase reversal odds.
+
+Both stories are plausible. Therefore count attempts and observe outcomes rather than choosing one narrative.
+
+### Variables
+- resistanceTestCount
+- averageRejectionPct
+- averageUpperWickRatioAtTests
+- testVolumeTrend
+- interTestSpacingDays
+- higherLowBetweenTests
+- closeProgressionAcrossTests
+- RSProgressionAcrossTests
+- breakoutAttemptCount
+- failedBreakoutCount
+
+### Mechanism splits
+Possible absorption signature:
+- higher lows,
+- smaller rejection depth,
+- declining sell volume,
+- closes progressively nearer resistance.
+
+Possible exhaustion signature:
+- lower highs,
+- expanding upper wicks,
+- rising sell volume,
+- weakening RS,
+- wider pullbacks after each attempt.
+
+This may provide richer information than the raw count itself.
+
