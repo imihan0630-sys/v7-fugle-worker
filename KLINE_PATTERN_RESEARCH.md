@@ -7204,3 +7204,117 @@ Pattern Shadow:
 ### Engineering class
 An isolated new research table/API/snapshot path is Class A under current governance if regression tests prove zero impact on Formal outputs.
 
+
+
+## DL-002BM — Multi-Timeframe Coherence v0.1
+
+### Core question
+Does agreement across higher-, selection-, and execution-timeframes add incremental information, or merely repeat trend variables already present?
+
+### External evidence
+- Taiwan research using daily/weekly/monthly/intraday technical indicators reports materially different performance across frequencies; frequency choice itself matters.
+- Taiwan theses using weekly/monthly “signal resonance” report that combinations across horizons can outperform daily-only variants in their tested samples.
+- Broader finance research on trend factors and multi-horizon forecasting also supports the idea that short-, intermediate- and long-horizon price information can differ.
+
+These findings support testing multi-horizon coherence, not assuming that more timeframe agreement is always better.
+
+### Proposed hierarchy
+HIGHER_CONTEXT:
+- weekly / ~60-120d swing structure
+- major resistance/support
+- regime / sector state
+
+SELECTION_FRAME:
+- daily pattern maturity / primitives
+
+EXECUTION_FRAME:
+- 15m formal confirmation
+- 10m auxiliary only, preserving current system semantics
+
+### Coherence states
+ALIGNED_UP:
+- higher context constructive
+- daily setup constructive
+
+DAILY_EARLY_WEEKLY_NEUTRAL:
+- daily pattern matures before weekly structure fully turns.
+
+DAILY_CONFLICT_WEEKLY_DOWN:
+- attractive daily pattern inside deteriorating higher timeframe.
+
+WEEKLY_STRONG_DAILY_PULLBACK:
+- higher structure strong while daily forms support/recovery.
+
+### Research fields
+- weeklySwingTrend
+- weeklyCompressionState
+- weeklyResistanceZone
+- dailyPatternMaturity
+- dailyVsWeeklyPivotConflict
+- dailyVsWeeklySupportConflict
+- higherTimeframeRoomPct
+- timeframeAlignmentState
+- timeframeTransitionState
+
+### Key test
+Compare daily pattern outcomes with and without higher-timeframe alignment after controlling:
+- current MA20/MA60 trend,
+- ret60,
+- priorHigh60,
+- regime,
+- Residual RS.
+
+If weekly context adds nothing after these controls, reject it as redundant.
+
+### Anti-double-counting
+Do not add:
+“weekly bullish + daily bullish + MA bullish = three votes.”
+They may be the same trend information at different aggregations.
+
+### Role of intraday
+15m confirmation remains Execution Alpha.
+Weekly/daily agreement may condition which daily candidates are structurally attractive, but cannot use later intraday data in Selection Alpha.
+
+## DL-002BN — Multi-Timeframe Conflict May Be Informative
+
+### Why conflict matters
+A daily breakout into weekly resistance is not the same as a daily breakout with clear weekly space.
+
+Conversely, a daily W-bottom within a strong weekly uptrend may be a continuation pullback rather than a major reversal.
+
+### Conflict variables
+- dailyBreakoutIntoWeeklyZone
+- dailyWInsideWeeklyUptrend
+- dailyBullishWeeklyBearish
+- dailyMaturityBeforeWeeklyTurn
+- weeklyTrendDeteriorationDuringDailyPattern
+
+### Research hypotheses
+H1 alignment improves continuation-pattern follow-through.
+H2 early daily improvement before weekly confirmation may capture earlier entries but more false positives.
+H3 daily bullish structure against weekly deterioration may have poor follow-through.
+H4 reversal patterns should be interpreted differently depending on higher-timeframe trend.
+
+No assumption is promoted without same-date matched evidence.
+
+## DL-002BO — Timeframe Aggregation Consistency
+
+### Problem
+A weekly bar hides the order of daily events; a daily bar hides intraday order.
+
+Therefore “weekly cup” and “daily cup” are not automatically equivalent representations.
+
+### Rule
+Higher-timeframe features must be computed from only completed source bars.
+At Friday close, the current week becomes completed.
+Before then, current-week weekly OHLC is PROVISIONAL and cannot be backfilled as completed.
+
+### Research storage
+- timeframe
+- barCompletedAt
+- provisional
+- dataThrough
+- firstObservableAt
+
+This preserves point-in-time integrity across timeframe aggregation.
+
