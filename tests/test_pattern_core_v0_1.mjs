@@ -31,7 +31,10 @@ import {
   buildPatternCacheRecord,
   comparePatternCacheRecords,
   buildPatternObservability,
-  attachPatternQaMetrics
+  attachPatternQaMetrics,
+  buildPatternEpisodeReference,
+  comparePatternEpisodeReferences,
+  buildPatternRunReceipt
 } from "../research/pattern_observer_adapter_v0_1.mjs";
 
 function makeBars(closes, { startDay = 1, volume = 100, turnover = 2_000_000, tickPad = 0.2 } = {}) {
@@ -719,4 +722,74 @@ console.log("pattern core v0.1 C1-C8 and invariance tests passed");
   assert.equal(obs.scaleAgreementMedian,2.5);
   assert.equal(obs.computeMsMedian,6);
   assert.equal(obs.blockedReasons.RAW_EXECUTION_SERIES_NOT_READY,1);
+}
+
+
+// Episode identity and prospective run-receipt gates are outcome-free.
+{
+  const a=buildPatternEpisodeReference({
+    symbol:"1234",detectorVersion:"PATTERN_CORE_V0_1",patternFamily:"PLATFORM",
+    scale:"BASE",anchorIds:["H:2026-01-02","L:2026-01-05","H:2026-01-08"],initialConfirmedAt:"2026-01-10"
+  });
+  const same=buildPatternEpisodeReference({
+    symbol:"1234",detectorVersion:"PATTERN_CORE_V0_1",patternFamily:"PLATFORM",
+    scale:"BASE",anchorIds:["H:2026-01-02","L:2026-01-05","H:2026-01-08"],initialConfirmedAt:"2026-01-10"
+  });
+  const newAnchors=buildPatternEpisodeReference({
+    symbol:"1234",detectorVersion:"PATTERN_CORE_V0_1",patternFamily:"PLATFORM",
+    scale:"BASE",anchorIds:["H:2026-02-02","L:2026-02-05","H:2026-02-08"],initialConfirmedAt:"2026-02-10"
+  });
+  assert.equal(comparePatternEpisodeReferences(a,same).status,"SAME_EPISODE");
+  assert.equal(comparePatternEpisodeReferences(a,newAnchors).status,"DIFFERENT_EPISODE");
+
+  const complete=buildPatternRunReceipt({
+    runId:"r1",scanDate:"2026-09-29",detectorVersion:"PATTERN_CORE_V0_1",
+    expectedParentKeys:["2026-09-29|1111","2026-09-29|2222"],
+    attempts:[
+      {shadowParentKey:"2026-09-29|1111",status:"VALID"},
+      {shadowParentKey:"2026-09-29|2222",status:"BLOCKED",reason:"OPEN_MISSING"}
+    ],
+    prefixChecks:[true,true],replayChecks:[true,true]
+  });
+  assert.equal(complete.status,"COMPLETE");
+  assert.equal(complete.attemptCoverageRate,1);
+  assert.equal(complete.outcomeJoinEligible,true);
+
+  const missing=buildPatternRunReceipt({
+    runId:"r2",scanDate:"2026-09-29",detectorVersion:"PATTERN_CORE_V0_1",
+    expectedParentKeys:["2026-09-29|1111","2026-09-29|2222"],
+    attempts:[{shadowParentKey:"2026-09-29|1111",status:"VALID"}],
+    prefixChecks:[true],replayChecks:[true]
+  });
+  assert.equal(missing.status,"INCOMPLETE");
+  assert.equal(missing.outcomeJoinEligible,false);
+  assert.deepEqual(missing.missingParentKeys,["2026-09-29|2222"]);
+
+  const replayFail=buildPatternRunReceipt({
+    runId:"r3",scanDate:"2026-09-29",detectorVersion:"PATTERN_CORE_V0_1",
+    expectedParentKeys:["2026-09-29|1111"],
+    attempts:[{shadowParentKey:"2026-09-29|1111",status:"VALID"}],
+    prefixChecks:[true],replayChecks:[false]
+  });
+  assert.equal(replayFail.status,"QA_FAIL");
+  assert.equal(replayFail.replayExactFailures,1);
+  assert.equal(replayFail.outcomeJoinEligible,false);
+
+  const silentBlocked=buildPatternRunReceipt({
+    runId:"r4",scanDate:"2026-09-29",detectorVersion:"PATTERN_CORE_V0_1",
+    expectedParentKeys:["2026-09-29|1111"],
+    attempts:[{shadowParentKey:"2026-09-29|1111",status:"BLOCKED",reason:""}],
+    prefixChecks:[true],replayChecks:[true]
+  });
+  assert.equal(silentBlocked.status,"QA_FAIL");
+  assert.equal(silentBlocked.blockedWithoutReason,1);
+
+  const conflict=buildPatternRunReceipt({
+    runId:"r5",scanDate:"2026-09-29",detectorVersion:"PATTERN_CORE_V0_1",
+    expectedParentKeys:["2026-09-29|1111"],
+    attempts:[{shadowParentKey:"2026-09-29|1111",status:"PROVENANCE_CONFLICT",provenanceConflict:true}],
+    prefixChecks:[true],replayChecks:[true]
+  });
+  assert.equal(conflict.status,"QA_FAIL");
+  assert.equal(conflict.provenanceConflictCount,1);
 }
