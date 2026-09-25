@@ -138,7 +138,7 @@ Updated: 2026-09-25 13:44 Asia/Taipei.
 ## Parallel durable lane — Market Microstructure（市場微結構／訂單流／流動性）
 - Dedicated checkpoint: `MICROSTRUCTURE_CHECKPOINT.md`
 - Evidence / hypotheses: `MICROSTRUCTURE_RESEARCH.md`
-- Current cursor: MS-001 through MS-018 complete; continue from MS-019.
+- Current cursor: MS-001 through MS-024 complete; continue from MS-025.
 - Durable findings: spread is both execution friction and adverse-selection/liquidity information; short-horizon price change is more directly related to order-flow imbalance than raw volume in foundational microstructure evidence; imbalance must be interpreted jointly with market depth; persistence can arise from order splitting but is not monotonically directional; OHLCV cannot reconstruct true OFI/cancellations/queue state.
 - Taiwan controls are mandatory: continuous vs call-auction session, +/-10% daily price-limit context, tick-size/price tier, intraday volatility interruption, and regular-lot vs odd-lot mechanics.
 - Preferred research state: Liquidity Cost / Available Depth / Pressure / Price Response / Persistence / Constraint.
@@ -146,4 +146,5 @@ Updated: 2026-09-25 13:44 Asia/Taipei.
 - Deepened through MS-018: queue imbalance/microprice horizon limits, trade-sign inference errors, execution-cost separation, same-slot normalization, Fugle data availability, absorption/replenishment, liquidity-vacuum versus depth-supported breakout, failed-breakout microstructure, Taiwan order-imbalance evidence, recorder redundancy and safe capture architecture are durable.
 - Redundancy audit: V8.8.1 already captures top-five bids/asks, spreadPct, bidDepth5, askDepth5, depthImbalance and executionMarketState in research snapshots. Do not duplicate them. Truly incremental priorities are same-slot normalization, trade-pressure proxy, pressure-to-price response, weighted-mid displacement, transaction rate, replenishment/resiliency and persistence states.
 - Existing recorder cadence is too sparse for true event-level OFI/resiliency. New trades/volumes fetches in the Formal monitor path may create shared-runtime risk; prefer an isolated research capture path.
-- Exact continuation: MS-019 minimum prospective cadence/storage burden; MS-020 post-trade markout/adverse selection; MS-021 tick-size/thousand-dollar normalization; MS-022 price-limit proximity; MS-023 cross-lane redundancy matrix; MS-024 frozen empirical protocol.
+- Advanced through MS-024: dynamic-cadence requirements, markout/implementation-shortfall semantics, TWSE tick-band normalization, price-limit/VI nonlinear regimes, cross-lane redundancy gate and a frozen empirical protocol are durable. Next priority is to use existing recorder evidence before adding new capture code.
+- Exact continuation: MS-025 quantify recorder event/date coverage; MS-026 determine whether existing spread/depth snapshots support a zero-code baseline; MS-027 run that pre-registered baseline only if coverage is complete enough; MS-028 prepare isolated capture engineering only if existing evidence is insufficient.
