@@ -11461,3 +11461,102 @@ interaction of
 
 Store components before any composite score.
 
+
+
+## DL-002FX — Change-Point Detection: Online vs Hindsight Segmentation
+
+### Why relevant
+Change-point methods can identify shifts in:
+- return mean/trend
+- volatility
+- order-flow persistence
+- liquidity
+
+They may help define pattern phases or regime transitions.
+
+### Critical leakage risk
+OFFLINE change-point algorithms use observations after the candidate breakpoint to locate the breakpoint more precisely.
+
+If historical research labels the breakpoint at changeAt as though known then:
+LOOKAHEAD LEAKAGE.
+
+### Required semantics
+For every detected change:
+- changeAt: estimated location where regime changed
+- detectedAt: first timestamp the online algorithm had enough evidence to signal it
+- detectionDelay
+- posterior/confidence
+- variableChanged
+
+At decision date t:
+usable only if detectedAt <= t.
+
+### External prior
+Financial research explicitly motivates online rather than offline change-point detection for predictive/trading tasks.
+Recent Bayesian online methods have been applied to financial/economic regimes and order-flow/market-impact prediction.
+
+### Research role
+SECONDARY diagnostic, not v1 primary segmentation.
+
+Primary v1:
+confirmed swing topology.
+
+Possible later use:
+- volatility-regime transition
+- flow-regime transition
+- liquidity regime
+- validating phase boundaries independently of swings.
+
+## DL-002FY — Change-Point Detection Must Compete With Simpler States
+
+### Baselines
+- rolling volatility slope
+- current market regime
+- swing state
+- volume/turnover change
+- simple CUSUM-like descriptive changes
+
+Complex BOCPD/HMM/change-point model is justified only if it adds:
+- earlier reliable detection,
+- better failure/transition prediction,
+- stable OOS evidence.
+
+### Complexity risks
+- prior/hazard assumptions
+- parameter instability
+- false alarms
+- dependence-model choice
+- compute burden
+- difficult calibration with small samples
+
+### Rule
+Do not add BOCPD merely because it is sophisticated.
+
+## DL-002FZ — Offline Algorithms Are Allowed for Discovery, Not Historical Decisions
+
+### Permitted
+Offline segmentation may help:
+- discover candidate phase structures,
+- inspect historical examples,
+- generate hypotheses.
+
+### Not permitted
+Offline breakpoint may not be fed into an as-of-date selector at the breakpoint timestamp.
+
+To validate a discovered feature:
+translate to:
+- online detector,
+or
+- lagged/confirmed rule.
+
+### Generalization
+This rule applies to:
+- ZigZag
+- retrospective trendline fitting
+- regime labeling
+- support/resistance zone discovery
+- motif clustering
+- chart pattern annotation.
+
+Anything using future data must carry an explicit firstObservableAt.
+
