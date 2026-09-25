@@ -12537,3 +12537,212 @@ Do not downgrade SEMANTIC_MUTATION severity.
 But do not claim semantic corruption from an unclassified v0.1 conflict count.
 
 Status: MUTATION_CONFLICT_CAUSE_CLASSIFICATION_REQUIRED.
+
+# PVE-043 — D1 valid_sessions Is Cached Session Count, Not Per-Slot Validity
+
+## Source audit
+`pvWriteBaseline` stores:
+`valid_sessions = sessions.length`.
+
+A session enters the cache when it has at least one normalized observable bar.
+
+Therefore the field does NOT guarantee:
+- all 17 observable slots exist;
+- exact target slot exists;
+- cumulative prefix is complete;
+- range predecessor/anchor is valid.
+
+## Correct semantics
+Interpret current D1 field as:
+`cachedSessionCount`,
+despite its database name `valid_sessions`.
+
+## Feature readiness
+True readiness is slot-specific and already computed later as:
+- slotHistoryCount;
+- cumulativeHistoryCount;
+- rangeHistoryCount.
+
+## Receipt correction
+A bootstrap result with:
+`validSessions >= 20`
+means:
+“the cache contains >=20 session objects.”
+
+It does NOT mean:
+“every PV feature has a valid 20-session baseline.”
+
+Status: VALID_SESSIONS_FIELD_SEMANTICS_QUALIFIED.
+
+
+# PVE-044 — Bootstrap Skip Logic Uses Coarse Session Count and Can Leave Slot-Specific Coverage Insufficient
+
+## Current logic
+`pvBootstrapSymbol` skips historical refetch when:
+- schema version matches;
+- cache.validSessions >= 20.
+
+It does not check:
+- each slot's slotHistoryCount;
+- cumulativeHistoryCount;
+- rangeHistoryCount.
+
+## Possible state
+Cache:
+- 25 session objects;
+- only 18 valid 13:00 slots;
+- only 15 complete cumulative prefixes.
+
+Then bootstrap can return:
+`skipped=true, validSessions=25`,
+while 13:00 PV still correctly becomes DATA_INSUFFICIENT.
+
+## Consequence
+This is fail-closed at feature calculation time,
+but the bootstrap runtime receipt can look healthier than actual slot coverage.
+
+## Research policy
+Do not classify:
+`bootstrap skipped + validSessions>=20`
+as BASELINE_READY.
+
+Classify only:
+`CACHE_POPULATED`.
+
+Per-slot readiness comes from subsequent feature coverage.
+
+Status: BOOTSTRAP_SKIP_COARSE_COVERAGE_CONFIRMED.
+
+
+# PVE-045 — Baseline Session Completeness Is Intentionally Feature-Specific, Not All-or-Nothing
+
+## Constructive design
+The original spec correctly allows a historical session missing an unrelated slot to still contribute to a standalone exact-slot volume median.
+
+Example:
+09:30 missing,
+11:00 present.
+
+The 11:00 volume itself can still be a valid exact-slot observation.
+
+## Different requirements
+### Slot RVOL
+Needs exact target slot only.
+
+### Cumulative pace
+Needs complete prefix from 09:00 through target slot.
+
+### Range normalization
+Needs target slot plus valid immediate predecessor, or verified prior-session anchor for 09:00.
+
+## Implication
+A global “complete session” filter would unnecessarily discard valid slot-volume information.
+
+The correct solution is not:
+“require all 17 bars for everything.”
+
+It is:
+feature-specific coverage metadata.
+
+Status: FEATURE_SPECIFIC_BASELINE_VALIDITY_REAFFIRMED.
+
+
+# PVE-046 — Rolling the Current Session Can Store a Partial Session; That Is Acceptable Only under Feature-Specific Semantics
+
+## Current roll
+At latest slot 13:00:
+`pvRollObservedSession`
+stores the current session's available bars into baseline cache.
+
+It does not reject the session merely because an earlier required slot was missing.
+
+## Constructive case
+For future same-slot RVOL:
+an exact 13:00 volume can still be useful even if 09:30 was missing.
+
+## Adverse case
+The same partial session must not count as:
+- cumulative-prefix-valid for later slots after the gap;
+- range-continuity-valid where predecessor is missing.
+
+## Current data
+The stored bar carries:
+`cumulativeValid`,
+which protects cumulative use.
+
+It does not carry a dedicated:
+`rangePredecessorValid`.
+
+Thus range-baseline contamination from PVE-030 remains unresolved.
+
+Status: PARTIAL_SESSION_STORAGE_VALID_FOR_SLOT_VOLUME / RANGE_METADATA_INCOMPLETE.
+
+
+# PVE-047 — Baseline QA Receipt Needs Slot-Coverage Distribution, Not One validSessions Number
+
+## Minimum baseline receipt
+For each monitored symbol report at least:
+
+### Cache level
+- cachedSessionCount;
+- lastMarketDate;
+- schemaVersion;
+- corporateActionResetAt provenance state.
+
+### Slot coverage
+For each 17 slot keys:
+- slotVolumeCount;
+- cumulativePrefixCount;
+- rangeValidCount.
+
+### Summary
+- minSlotVolumeCount;
+- minCumulativePrefixCount;
+- minRangeValidCount;
+- fullyVolumeReadySlotCount;
+- fullyCumulativeReadySlotCount;
+- fullyRangeReadySlotCount.
+
+## v0.1 limitation
+Current runtime after-market receipt exposes only coarse:
+`validSessions`.
+
+Therefore 9/29 runtime receipt can prove cache population,
+not full per-slot readiness.
+
+At-rest D1 read or a future isolated summary is required for authoritative coverage distribution.
+
+Status: SLOT_COVERAGE_RECEIPT_CONTRACT_FROZEN.
+
+
+# PVE-048 — PVE-013 Bootstrap Pass Criteria Is Superseded for Feature Readiness
+
+## Supersession
+PVE-013 originally treated:
+- skipped=true with validSessions>=20;
+or
+- bootstrap saved with validSessions>=20
+as the main successful baseline condition.
+
+PVE-043~047 refine that statement.
+
+## New interpretation
+Those conditions establish:
+`BASELINE_CACHE_POPULATED`.
+
+They do NOT establish:
+`SLOT_FEATURE_BASELINE_READY`.
+
+Feature readiness requires the relevant:
+- slotHistoryCount;
+- cumulativeHistoryCount;
+- rangeHistoryCount
+under their separate validity contracts.
+
+## Why this is not contradiction
+The bootstrap function's job is to populate cache.
+The snapshot feature layer's job is to decide whether a particular feature has enough comparable history.
+
+The error was only in receipt interpretation, not necessarily in the cache population mechanism.
+
+Status: PVE_013_FEATURE_READINESS_INTERPRETATION_SUPERSEDED.
