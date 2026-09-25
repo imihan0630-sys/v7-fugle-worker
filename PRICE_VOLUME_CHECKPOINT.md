@@ -415,3 +415,30 @@ Class A if research-only; Class C if later used in formal 15m confirmation.
 5. PV-135: decide whether H005 capture merits a separate Class-A research-only proposal after PV_SHADOW_V0_1 DATA_QA stabilizes.
 6. Continue integrating existing research lanes; do not invent new standalone indicators.
 7. Formal Core remains LOCKED.
+
+## Progress added — PV-131 through PV-145
+- PV-131 concludes foreign/trust gross buy/sell is worth preserving as origin/context data, but explicitly rejects creating separate gross-flow Formal factors before incremental testing.
+- PV-132 freezes the source-scope compatibility contract: institutional flow and denominator volume must share audited session/trade scope before side-participation ratios are computed. Daily institutional flow may never use intraday 15m volume as denominator.
+- PV-133 defines how gross institutional participation may explain HIGH_EFFORT_LOW_PROGRESS, while requiring controls for total RVOL/current net flow to avoid duplicate information.
+- PV-134 freezes institutional point-in-time/finality semantics for the 23:35 scan. TWSE same-day detail is normally published well before scan; source variant including/excluding block trades must remain explicit. Missing/wrong-date data => UNKNOWN and Formal fail-open.
+- PV-135 decides H005 capture is design-ready but should not be implemented until PV_SHADOW_V0_1 passes initial DATA_QA stabilization.
+- PV-136 establishes that institutional streak length loses magnitude information; direction persistence, normalized magnitude, cumulative pressure and trajectory are separate dimensions.
+- PV-137 integrates Taiwan herding evidence and prohibits a universal linear “more consecutive buy days = better” assumption.
+- PV-138 freezes reverse-causality language: contemporaneous institutional flow can be informed, price-following, liquidity-providing or common-reaction flow. Same-day association is not causal proof.
+- PV-139 freezes institutional-flow normalization hierarchy: flow/daily volume, flow/ADV20, gross side participation and own-history percentiles; raw shares/lots remain provenance only for cross-stock inference.
+- PV-140 defines InstitutionFlowState x pvResponseState x pvAcceptanceState as a research interaction, not additive scoring.
+- PV-141 identifies a semantic issue: current Worker foreignNet is broad foreignMain+foreignDealer, whereas official reporting separates foreign dealers and official totals avoid double counting. No Formal change; future capture should preserve foreignMainNet, foreignDealerNet and broadForeignNet separately.
+- PV-142 prohibits treating foreign/trust/dealer signs as independent “votes”; consensus breadth must prove incremental value after common market/sector/passive-flow controls.
+- PV-143 keeps flow trajectory continuous first (slope/current-vs-prior/cumulative) rather than outcome-tuned accelerating/decaying thresholds.
+- PV-144 freezes raw-first architecture: persist buy/sell/net/source/scope/date/capturedAt before derived streaks or trajectory states.
+- PV-145 keeps institutional-origin capture modular and separate from core PV Shadow during initial DATA_QA.
+- PV_SHADOW_V0_1 remains unchanged; Formal Core remains LOCKED.
+
+## Revised exact next continuation point after PV-145
+1. PV-146: audit actual historical/current prevalence of non-zero foreignDealer flow and whether broadForeignNet materially differs from foreignMainNet.
+2. PV-147: build a source-scope fixture that proves institutional buy/sell totals and official daily volume use compatible scope on sampled TWSE/TPEx dates.
+3. PV-148: study institutional consensus breadth vs strongest-single-participant under market/sector residual controls without counting correlated flows as independent votes.
+4. PV-149: define research storage/API budget for a future raw institutional-origin recorder.
+5. PV-150: freeze the smallest institutional-origin capture schema and Class-A proposal boundary, but defer implementation until core PV DATA_QA stability.
+6. No new indicator family unless a genuine unresolved mechanism appears.
+7. Formal Core remains LOCKED.
