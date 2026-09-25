@@ -3913,3 +3913,298 @@ the “pattern” exists only under one brittle segmentation/template choice.
 DETECTOR_ARCHITECTURE_FROZEN_V0_1.
 No production detector implemented yet.
 No Formal Core change.
+
+
+## DL-003B — Isolated Pattern Research Data Schema / Replay Contract v0.1
+
+### Objective
+Design a research-only storage contract that can reproduce any historical pattern state exactly as it was knowable on date t, without mutating the shared Formal history cache.
+
+This is a specification only. No production schema is created by this research note.
+
+### Isolation requirements
+The Pattern Research data path must:
+- not feed Formal A/B selection,
+- not alter v7_history_cache,
+- not alter live monitor data,
+- not alter 3+3+3 pools,
+- not alter capital or push logic,
+- remain removable without changing formal outputs.
+
+If implemented under these constraints it can be treated as Class A research infrastructure. Reusing/changing shared Formal cache would be Class B.
+
+### Proposed logical tables
+
+#### 1. pattern_price_bars
+Purpose:
+point-in-time source OHLC and adjusted morphology series.
+
+Logical key:
+(symbol, trade_date, adjustment_mode, source_version)
+
+Fields:
+- symbol
+- market
+- trade_date
+- adjustment_mode: RAW / ADJUSTED
+- open
+- high
+- low
+- close
+- volume_shares
+- turnover
+- change
+- adjustment_factor if explicitly available/derived reproducibly
+- source_name
+- source_query_from
+- source_query_to
+- fetched_at
+- source_payload_hash
+- corporate_action_status
+- corporate_action_type
+- point_in_time_eligible
+- data_quality_flags_json
+
+Rules:
+- RAW and ADJUSTED bars are separate rows or logically separate fields; never overwrite one with the other.
+- duplicate symbol/date/mode is rejected or reconciled by explicit source-version policy.
+- missing OPEN remains null/blocked; never infer from close.
+
+#### 2. pattern_swing_events
+Purpose:
+repaint-safe confirmed swing hierarchy.
+
+Logical key:
+(symbol, scale, confirmed_at, swing_sequence)
+
+Fields:
+- symbol
+- scale: MICRO / BASE / MAJOR
+- swing_sequence
+- swing_type: HIGH / LOW
+- pivot_at
+- confirmed_at
+- pivot_price_adjusted
+- pivot_price_raw_mapped
+- extreme_high
+- extreme_low
+- threshold_at_leg_start_pct
+- threshold_at_leg_start_atr
+- leg_start_at
+- leg_start_confirmed_at
+- bars_in_leg
+- amplitude_pct
+- volume_stats_json
+- provisional=false for persisted confirmed swing rows
+- detector_version
+- data_snapshot_hash
+
+Critical:
+confirmed_at is the first date the swing became knowable.
+Queries for as-of t must filter confirmed_at <= t.
+
+#### 3. pattern_structural_levels
+Purpose:
+store point-in-time support/resistance/neckline/rim/pivot hypotheses.
+
+Fields:
+- symbol
+- as_of_date
+- level_id
+- level_type
+- pattern_family
+- adjusted_level
+- raw_level_mapped
+- source_swing_ids_json
+- touch_count
+- fit_residual
+- dispersion_pct
+- clarity_status
+- provisional
+- detector_version
+- snapshot_hash
+
+Examples:
+- W_NECKLINE
+- CUP_LEFT_RIM
+- CUP_RIGHT_RIM
+- VCP_PIVOT
+- PLATFORM_RESISTANCE
+- TRIANGLE_UPPER_AT_ASOF
+- WEEKLY_MAJOR_RESISTANCE
+
+#### 4. pattern_state_snapshots
+Purpose:
+canonical as-of-date detector output.
+
+Logical key:
+(symbol, as_of_date, detector_version)
+
+Fields:
+- symbol
+- as_of_date
+- detector_version
+- bar_data_through
+- pattern_labels_json
+- pattern_states_json
+- latent_geometry_json
+- confidence_profile_json
+- overlap_map_json
+- context_json
+- blocked_reasons_json
+- source_swing_ids_json
+- structural_level_ids_json
+- no_lookahead_verified
+- data_snapshot_hash
+- generated_at
+
+This is the primary replay/audit object.
+
+#### 5. pattern_detector_replay_audit
+Purpose:
+prove historical state reproducibility.
+
+Fields:
+- symbol
+- as_of_date
+- detector_version
+- original_snapshot_hash
+- replay_snapshot_hash
+- exact_match
+- mismatch_paths_json
+- input_bar_hash
+- input_swing_hash
+- replayed_at
+
+Any non-explained mismatch is a detector integrity failure, not an investment result.
+
+#### 6. pattern_method_comparison
+Purpose:
+compare primary swing/rule detector with independent research methods.
+
+Fields:
+- symbol
+- as_of_date
+- primary_labels_json
+- pip_labels_json
+- kernel_labels_json
+- dtw_nearest_family_json
+- agreement_status
+- disagreement_reason_json
+- method_versions_json
+
+No method is selected by future return.
+
+#### 7. pattern_outcome_link
+Purpose:
+link frozen pattern snapshots to existing research outcomes without modifying those outcomes.
+
+Fields:
+- symbol
+- scan_date/as_of_date
+- cohort_type
+- formal_pool
+- existing_research_row_id or stable reference
+- R01_outcome
+- D1/D3/D5/D10/D20 references
+- MFE/MAE references
+- execution_coverage_status
+- formal15_buy_status
+- link_generated_at
+
+Important:
+prefer references to canonical outcome records rather than copying/recomputing them differently.
+
+### Source snapshot hashing
+Every detector state should be tied to deterministic input hashes:
+- bar hash
+- swing hash
+- structural-level hash
+- detector config/version hash
+
+Purpose:
+if a later source correction changes a historical bar, the research system can tell whether a changed pattern state came from:
+- corrected source data,
+- changed detector code,
+- changed parameters,
+rather than silently rewriting history.
+
+### Detector versioning
+Example semantic identity:
+PATTERN_DETECTOR_0_1
+
+Freeze:
+- swing threshold semantics,
+- scale set,
+- topology definitions,
+- maturity-state definitions,
+- corporate-action handling,
+- raw/adjusted mapping,
+- line fitting rules.
+
+Changing any of these produces a new detector version.
+Do not overwrite old state snapshots.
+
+### As-of-date replay contract
+For any symbol S and date T:
+
+REPLAY(S,T,V) must:
+1. load only bars with trade_date <= T,
+2. use the same source/adjustment semantics as version V,
+3. rebuild confirmed swings where confirmed_at <= T,
+4. derive structural levels only from eligible swings,
+5. run topology detectors,
+6. produce state snapshot,
+7. match the stored snapshot hash for S,T,V.
+
+Future bars may not alter the stored historical snapshot under the same detector version.
+
+### Prefix-invariance test
+For a full history ending Tn:
+For each historical T:
+- stateA = detect(history <= T)
+- stateB = detect(fullHistory, asOf=T)
+
+Require:
+stateA == stateB
+for all confirmed/non-provisional fields.
+
+This becomes a mandatory detector regression test.
+
+### Corporate-action provenance
+If adjusted history can be revised by the data vendor after future corporate actions, preserve enough provenance to know which adjusted series/version was used.
+
+Preferred:
+- store raw bars permanently,
+- store adjusted bars/factor as actually fetched,
+- hash source payload,
+- do not silently regenerate an old snapshot from a newly revised adjustment convention and claim it is identical evidence.
+
+### Retention / size discipline
+Do not store every possible derived field as a new SQL column initially.
+Prefer:
+- core keys/provenance columns,
+- versioned JSON for feature vectors,
+until the feature set stabilizes.
+
+This reduces schema churn and avoids shared-runtime pressure.
+
+### Replay observability
+Research dashboard/report should expose:
+- bar coverage %
+- OPEN coverage %
+- adjusted/raw pair coverage %
+- corporate-action-known %
+- replay exact-match %
+- no-lookahead verified %
+- detector-blocked %
+- scale-stability distribution
+- cross-method disagreement %
+- compute duration
+
+These are evidence-quality metrics, not alpha metrics.
+
+### Status
+DATA_SCHEMA_AND_REPLAY_CONTRACT_FROZEN_V0_1.
+Specification only.
+No D1 schema or Worker runtime changed.
