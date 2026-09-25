@@ -2491,3 +2491,141 @@ E. Pattern catches big runners that Formal never buys because of maxChase:
 WORTH_PROSPECTIVE_SHADOW_LINKAGE.
 No Formal execution change.
 
+
+
+## DL-002T — False Break / Spring / Upthrust Structural Events v0.1
+
+### Evidence posture
+Horizontal support/resistance can be identified systematically from historical local extrema, and academic evidence suggests such levels can contain some information about trend interruption. However, support/resistance rules alone did not reliably generate abnormal returns versus simple benchmarks in one long U.S. study.
+
+Therefore false-break structures are EVENT FEATURES, not standalone alpha assumptions.
+
+### Generic acceptance/rejection framework
+For a structural level L, define two distinct events:
+
+BREAK_ACCEPTANCE:
+- price moves beyond L,
+- subsequent closes remain beyond L for a defined confirmation horizon / existing R01 semantics.
+
+BREAK_REJECTION:
+- price trades/closes beyond L,
+- then returns back through L before acceptance is established.
+
+Do not assume rejection implies an immediate opposite trend.
+
+### Bullish support undercut / Spring-like event
+Candidate sequence:
+1. confirmed support zone exists from prior swing lows / base boundary;
+2. price penetrates below support;
+3. penetration depth is measured in ATR/percent terms;
+4. price reclaims the support zone within a bounded number of bars;
+5. subsequent behavior is observed separately.
+
+Fields:
+- supportLevel
+- supportSource
+- undercutLow
+- undercutDepthPct
+- undercutDepthATR
+- barsBelowSupport
+- reclaimAt
+- reclaimCloseDistancePct
+- reclaimVolumeRatio
+- reclaimBodyStrength
+- nextResistanceDistancePct
+- priorTrendState
+- baseMaturityState
+
+### Bearish resistance Upthrust-like event
+Mirror structure:
+1. confirmed resistance exists;
+2. price penetrates above resistance;
+3. price fails to establish acceptance;
+4. closes return beneath resistance.
+
+Fields:
+- resistanceLevel
+- overshootHigh
+- overshootPct / ATR
+- barsAboveResistance
+- rejectionAt
+- rejectionVolume
+- upperWick / close-position features
+- priorTrend / overheat state
+
+### Critical distinction: intraday probe vs close failure
+Store separately:
+- INTRADAY_PROBE: high/low crosses level but close stays inside.
+- CLOSE_BREAK_RECLAIM: close breaches then a later close reclaims.
+- MULTIDAY_ACCEPTANCE_FAILURE: initial closes beyond level, later failure.
+
+These may have different implications.
+
+### Interaction with existing W-bottom
+UNDERCUT_RECLAIM_W from DL-002K is a specialized Spring-like event:
+- structural support = LOW1 zone,
+- LOW2 undercuts,
+- reclaim occurs,
+- neckline remains separate confirmation.
+
+Do not double-score both “Spring” and “W undercut/reclaim.”
+Store shared event IDs.
+
+### Interaction with existing B breakout
+Current Formal B already requires:
+- breakout above priorHigh20,
+- volume,
+- strong close,
+- limited upper shadow,
+- later 15-minute breakout/retest confirmation.
+
+DL-002T should study:
+- which daily breakout candidates later become R01 failures,
+- whether overshoot size, close position, volume, pivot clarity, multi-touch resistance, pattern maturity, or overheat explain false breaks.
+
+This may improve understanding of breakout quality without adding a new rule.
+
+### Pre-registered falsification variables
+Possible predictors of failed breakout:
+- pivotDispersionPct high
+- resistanceTouchCount
+- breakoutDistancePct
+- breakoutVolumeRatio
+- upperWickRatio
+- closePosition
+- overheatPenalty
+- ret20 / ret60
+- gapContribution
+- limitUpState
+- marketRegime
+- sectorPersistence
+- patternMaturity
+- DL-001 discreteness
+
+Do not scan arbitrary combinations and choose the best after outcomes.
+
+### Acceptance horizons
+Reuse existing frozen R01 breakout-failure outcome wherever possible.
+If additional horizons are explored (e.g. 1D/5D), they are descriptive until separately pre-registered; they must not replace R01 because one performs better.
+
+### Support/resistance source comparison
+Compare:
+- fixed-window priorHigh20/priorLow20,
+- confirmed swing levels,
+- W neckline,
+- cup rim,
+- platform boundary,
+- triangle/flag boundary.
+
+Question:
+Does topology-derived level clarity improve acceptance/rejection classification beyond fixed-window extrema?
+
+### Volume interpretation caution
+High volume on a breakout may represent genuine demand OR climactic activity.
+Low volume on a test may represent lack of supply OR lack of participation.
+Therefore volume is an interaction variable, not a one-direction truth.
+
+### Status
+WORTH_SHADOW_EVENT_RESEARCH.
+No Formal change.
+
