@@ -616,3 +616,15 @@ YES for research infrastructure integrity: resolving the actual archive lineage 
 - Disposition sessions should be excluded/paused from normal same-slot baselines rather than zero-filled; normal pre-disposition sessions may remain valid after restrictions end.
 - PV_SHADOW_V0_1 stays frozen during DATA_QA. New origin-decomposition ideas remain Tier-2 and OBSERVER only.
 - Formal Core LOCKED.
+
+## Price-Volume lane update — PV-118 through PV-130
+- Current PV research cursor: PV-001 through PV-130 complete.
+- A unified multi-origin taxonomy and AC0~AC4 attribution-confidence system now prevent unsupported claims such as “this breakout volume was caused by smart money/ETF/dealer hedging.”
+- TPEx attention/disposition source availability has been corrected: authoritative TPEx public/history sources exist; the current V8.7.11 UNKNOWN state is an integration/coverage gap, not absence of official data.
+- Dealer H005 now distinguishes gross participation from net directional imbalance. Same net flow can represent very different trading activity.
+- Source-scope compatibility is mandatory before any institutional gross/side participation ratio is computed; institutional daily flow must never use intraday 15m volume as denominator.
+- Raw RVOL, market/sector residual RVOL and origin context are complementary dimensions, not duplicate scores.
+- Origin studies use full Formal/control cohorts as the primary population; high-RVOL-only restriction is secondary due collider/selection-bias risk.
+- Tier-2 priority after core PV DATA_QA: dealer proprietary/hedge split, TPEx disposition parity, daily transaction-count decomposition, actual SBL context, residual daily RVOL.
+- PV_SHADOW_V0_1 remains frozen and unchanged; all new origin work is OBSERVER/Tier-2 only.
+- Formal Core remains LOCKED.
