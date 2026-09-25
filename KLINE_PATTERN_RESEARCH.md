@@ -710,3 +710,152 @@ ATR itself contains gap effects and can be distorted by corporate actions in raw
 ### Literature relation
 Directional Change literature commonly defines events by a pre-specified percentage reversal from a running extreme, and explicitly distinguishes the extreme from the later confirmation point. Dynamic-threshold research supports adapting thresholds to market state, but threshold optimization itself creates overfit risk. The v0.1 design uses a simple lagged ATR normalization and fixed 1/2/3 scale family to prioritize robustness over return optimization.
 
+
+
+## DL-002I — VCP Detection Specification v0.1
+
+### Goal
+Define VCP as a sequence of confirmed, non-overlapping swing contractions rather than a generic low-volatility state.
+
+### Input
+Use the repaint-safe swing hierarchy from DL-002H on adjusted OHLC.
+Primary scale for base geometry: BASE.
+MICRO and MAJOR are stability checks, not separate trading rules.
+
+### Candidate structure
+A VCP candidate requires:
+1. an established prior advance or at least a non-bearish higher-timeframe structure;
+2. at least 2 completed peak-to-trough contraction legs after the prior advance;
+3. contraction legs must be chronological and non-overlapping;
+4. each contraction has a confirmed swing high and subsequent confirmed swing low;
+5. latest structure remains below or near a defined pivot/reference high rather than already far extended.
+
+### Measured fields
+For contraction i:
+- peakPrice_i
+- troughPrice_i
+- depthPct_i = (peakPrice_i - troughPrice_i) / peakPrice_i * 100
+- durationBars_i
+- recoveryPct_i = (nextPeakPrice - troughPrice_i) / (peakPrice_i - troughPrice_i)
+- lowVsPriorLowPct_i
+- avgVolume_i
+- downLegVolume_i
+- upLegVolume_i
+
+Aggregate:
+- contractionCount
+- depthMonotonicity = fraction of adjacent contractions with depth_i+1 < depth_i
+- strictDepthSequence = true only if every later depth is smaller
+- lowProgressionScore = degree to which successive troughs are higher
+- durationCompressionScore
+- volumeDryUpSlope
+- finalTightnessPct
+- finalTightnessATR
+- pivotPrice
+- pivotDistancePct
+- scaleAgreement
+- confirmationLagBars
+
+### Do not require perfect monotonicity initially
+A real base may contract approximately rather than perfectly.
+Therefore v0.1 does NOT define VCP as “every leg must be smaller.”
+Instead store:
+- strictDepthSequence
+- depthMonotonicity
+- contractionDepthCV
+and evaluate whether partial monotonicity carries incremental information.
+
+This avoids hard-coding an idealized textbook picture before outcome evidence exists.
+
+### Volume logic
+Separate three ideas:
+1. base-wide volume trend,
+2. down-leg selling-volume decay,
+3. final-tight-area dry-up.
+
+Do not collapse them into one volume score.
+
+Candidate measures:
+- baseVolumeSlope
+- downLegVolumeDecay = normalized volume in each successive down leg
+- finalDryUpRatio = final-tight-area median volume / earlier-base median volume
+- breakoutVolumeRatio, only after breakout
+
+A pre-breakout VCP can be mature without breakoutVolumeRatio because breakout has not happened yet.
+
+### Pivot definition
+Primary pivot candidate:
+- highest confirmed swing high after the final completed contraction but before the current provisional leg,
+or
+- the most recent structural resistance shared by the last 2 contraction recoveries.
+
+Store multiple candidate references if ambiguous:
+- pivotPrimary
+- pivotSecondary
+- pivotDispersionPct
+
+If pivot ambiguity is high, lower pattern confidence rather than force one exact price.
+
+### Maturity states
+VCP_FORMING:
+- one contraction or insufficient confirmed structure.
+
+VCP_VALID:
+- at least two non-overlapping contractions, no major structural break.
+
+VCP_MATURE:
+- at least two contractions plus positive depthMonotonicity, improving lows and reduced volume/range.
+
+VCP_PIVOT_READY:
+- mature structure and current price within a pre-registered proximity band to pivot; proximity threshold to be frozen separately, not tuned on future returns.
+
+VCP_BREAKOUT_CONFIRMED:
+- price closes above pivot with existing Formal-style confirmation variables recorded, but breakout confirmation remains descriptive in Shadow.
+
+VCP_FAILED:
+- structural low/pattern invalidation breached before valid breakout or post-breakout R01 failure.
+
+### Failure / falsification
+Possible failure labels:
+- STRUCTURE_BREAK: close below key confirmed trough.
+- EXPANSION_FAILURE: later contraction becomes materially wider than earlier structure.
+- VOLUME_REEXPANSION: selling volume rises materially through later contraction.
+- PREMATURE_EXTENSION: price already too far above pivot before a valid retest/entry framework.
+- BREAKOUT_FAILURE_R01: reuse the frozen R01 breakout-failure outcome after breakout.
+
+Do not invent a new profitable/not-profitable label.
+
+### Redundancy controls
+Compare VCP fields directly against existing:
+- volumeContraction5to20
+- platformRange20Pct
+- atrPercent
+- volatility20
+- ret20
+- maxDrawdown20Pct
+- breakoutQualityResearch
+- overheatPenaltyResearch
+- DL-001 Information Discreteness
+
+The expected incremental variables are the sequence/topology terms:
+- contractionCount
+- depthMonotonicity
+- lowProgressionScore
+- downLegVolumeDecay
+- pivot ambiguity/stability
+- maturity lifecycle
+
+If these do not explain outcomes beyond existing variables, VCP should be rejected as a redundant relabeling.
+
+### Outcome test order
+1. same-date Near-miss: high VCP maturity vs low/no VCP;
+2. same-date Rejected-after-base matched controls;
+3. Formal SELECTED stratified by VCP maturity;
+4. regime split;
+5. partial/incremental tests versus existing contraction/volatility factors;
+6. only then consider a frozen Shadow experiment.
+
+### Status
+DEFINITION_FROZEN_V0_1 once committed.
+No Formal rule or threshold is changed.
+
