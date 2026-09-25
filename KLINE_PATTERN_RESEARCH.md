@@ -12901,3 +12901,130 @@ Always show:
 
 Never silently drop censored rows if their exclusion changes cohort composition.
 
+
+
+## DL-002HQ — Cross-Sectional Pattern Prevalence as a Market-State Variable
+
+### Core idea
+The number and quality of patterns across the whole market may itself contain information.
+
+Examples:
+- only 2 mature bullish bases in the market,
+- 150 mature bullish bases simultaneously.
+
+These are different environments even if one stock's local chart is identical.
+
+### Fields by date
+- matureBullishPatternCount
+- pivotReadyCount
+- breakoutCount
+- failedBreakoutCount
+- negativeMorphologyCount
+- healthyCompressionCount
+- sectorPatternBreadth
+- patternBreadthPercentile
+- failureBreadthPercentile
+
+### Hypotheses
+BROAD_HEALTH:
+many sectors show mature constructive structures.
+
+NARROW_LEADERSHIP:
+few stocks show good structures while broad market weakens.
+
+CROWDED_BREAKOUT_WAVE:
+many simultaneous breakouts may reflect broad confirmation or late-cycle crowding.
+
+FAILURE_WAVE:
+rising cross-sectional failed breakouts may be an early deterioration signal.
+
+### Existing overlap
+Must compete with ordinary market breadth / regime measures.
+If pattern breadth is just another breadth proxy, classify REDUNDANT.
+
+## DL-002HR — Failure Breadth / Breakout Quality Diffusion
+
+### Question
+Can deterioration appear first in the distribution of individual pattern failures before index-level trend breaks?
+
+### Date-level diagnostics
+- sharePivotReadyThatFail
+- medianBreakoutAcceptance
+- medianRetestQuality
+- fastReentryRate
+- olderResistanceCollisionRate
+- negativeMorphologyShare
+
+### Sector diffusion
+Track:
+- number of sectors with rising failure rate
+- concentration of failures in one sector vs broad spread
+
+### No market-timing rule
+This is descriptive research only.
+Do not turn a small sample of failed breakouts into a market exit signal.
+
+## DL-002HS — Opportunity Set / Zero-Pick Link
+
+### Current project problem
+Formal selection can become very narrow, creating idle capital.
+
+### Pattern research question
+On zero/low-pick dates, is the market genuinely lacking mature structures, or are Formal gates rejecting many structurally healthy near-misses?
+
+### Date-level funnel
+- eligible universe
+- mature pattern count
+- pattern + base eligible
+- Formal SELECTED
+- Near-miss
+- rejected after base
+- no-pick reason distribution
+
+### Cases
+TRUE_SCARCITY:
+few mature structures exist.
+
+FORMAL_NARROWING:
+many mature structures exist but fail non-pattern Formal gates.
+
+PATTERN_FALSE_ABUNDANCE:
+many visually mature patterns exist but adverse primitives/failure risk is high.
+
+### Value
+This connects DL-002 to the existing BUY scarcity / capital-utilization research without loosening Formal rules.
+
+## DL-002HT — Pattern Opportunity Cost of Rejection
+
+### For structurally mature Near-miss/Rejected candidates
+Measure:
+- D1/D3/D5/D10
+- MFE/MAE
+- R01 if breakout
+- reason rejected
+- pattern family/primitives
+- regime
+- liquidity
+
+### Compare
+- rejected with strong topology
+- rejected with weak topology
+- selected with strong topology
+- selected with weak topology
+
+### Key question
+Do current non-pattern filters reject a meaningful subset of high-quality topology, or do they correctly protect against apparently pretty but low-quality charts?
+
+No rule relaxation until enough prospective evidence exists.
+
+## DL-002HU — Pattern Scarcity Must Not Force-Fill
+
+### Principle
+Pattern breadth research must never become a quota.
+
+If no robust mature structures exist:
+- output scarcity,
+- do not lower detector thresholds to manufacture candidates.
+
+This preserves the project's no-force-fill principle.
+
