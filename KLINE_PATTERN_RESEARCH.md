@@ -627,3 +627,86 @@ A Tier-3 pattern can still become valuable if prospective Taiwan Shadow evidence
 A Tier-1 pattern can still fail in the current Taiwan regime.
 External literature sets prior plausibility; our as-of-date prospective evidence decides whether a pattern deserves later Formal review.
 
+
+
+## DL-002H — Pre-registered Swing Segmentation Specification v0.1
+
+### Objective
+Create a repaint-safe, volatility-aware swing hierarchy that can feed VCP, W-bottom, cup/handle and flag detectors without using future information.
+
+### Core event logic
+Use adjusted CLOSE to confirm directional changes and adjusted HIGH/LOW to describe the extreme inside a leg.
+
+For every confirmed swing store:
+- swingType: HIGH or LOW
+- pivotAt: date of the extreme
+- confirmedAt: first date the opposite close move crossed the leg threshold
+- pivotClose
+- extremeHigh / extremeLow
+- thresholdPct
+- thresholdAtrMultiple
+- legStartConfirmedAt
+- barsInLeg
+- amplitudePct
+- volumeStats
+
+A swing is usable for an as-of-date pattern only when confirmedAt <= asOfDate.
+
+### Threshold design
+Avoid one fixed percentage across all stocks.
+Define a lagged volatility unit using information known before the leg:
+- atrPctLag = ATR20(as of prior completed date) / priorClose
+- freeze the threshold when the new leg begins
+- thresholdPct = k * atrPctLag
+
+Pre-register a small scale family rather than optimizing k to future returns:
+- MICRO: k = 1
+- BASE: k = 2
+- MAJOR: k = 3
+
+These are scale definitions, not competing trading rules. Robust topology should ideally persist across adjacent scales. If a pattern only exists at one knife-edge k, mark it LOW_STABILITY rather than choosing that k because its future return is better.
+
+### Up-leg to confirmed swing high
+1. Start after a confirmed swing low.
+2. Track the highest adjusted high / highest adjusted close observed since leg start.
+3. A HIGH pivot candidate is the latest extreme.
+4. Confirm the HIGH only when a later adjusted close declines from the running peak by at least the frozen thresholdPct.
+5. Record pivotAt at the extreme date and confirmedAt at the first qualifying later close.
+6. Begin the down-leg using a new lagged threshold frozen at confirmation.
+
+Mirror the logic for a LOW:
+- track running low,
+- confirm only after a later adjusted close rises by the frozen threshold.
+
+### Same-day high/low ambiguity
+Daily OHLC does not reveal whether the high occurred before the low.
+Therefore:
+- do not use same-day high/low ordering to confirm a reversal,
+- close crossing controls confirmation chronology,
+- high/low merely refines the extreme price/location within an already chronological leg.
+
+### Why freeze the threshold within a leg
+If a dynamic ATR threshold shrinks during a calm period, a pivot could be confirmed because the threshold moved rather than because price made a sufficiently large reversal.
+Freezing the lagged threshold at leg start preserves a stable ex-ante event definition.
+
+### Stability diagnostics
+For every proposed pattern calculate:
+- scaleAgreement: number of MICRO/BASE/MAJOR scales supporting compatible topology,
+- pivotDateDispersionDays,
+- keyLevelDispersionPct,
+- stateAgreement,
+- confirmationLagBars.
+
+Interpretation:
+- HIGH_STABILITY: topology survives neighboring scales with similar pivot dates/levels.
+- MEDIUM_STABILITY: core structure survives but exact pivots move.
+- LOW_STABILITY: exists only at one scale or depends on provisional legs.
+
+No threshold family member is selected by future performance.
+
+### Potential limitation
+ATR itself contains gap effects and can be distorted by corporate actions in raw data. The segmentation volatility unit should therefore be computed on the adjusted morphology series with corporate-action handling from DL-002B.
+
+### Literature relation
+Directional Change literature commonly defines events by a pre-specified percentage reversal from a running extreme, and explicitly distinguishes the extreme from the later confirmation point. Dynamic-threshold research supports adapting thresholds to market state, but threshold optimization itself creates overfit risk. The v0.1 design uses a simple lagged ATR normalization and fixed 1/2/3 scale family to prioritize robustness over return optimization.
+
