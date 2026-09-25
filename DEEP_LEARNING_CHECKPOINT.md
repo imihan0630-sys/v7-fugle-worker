@@ -662,3 +662,14 @@ YES for research infrastructure integrity: resolving the actual archive lineage 
 - Current protected read endpoint is not an exhaustive coverage proof because of LIMIT 500 / recent-row truncation.
 - PV-H006 remains DATA_QUALITY_BLOCKED pending authoritative live recorder coverage audit.
 - Formal Core LOCKED.
+
+## Price-Volume lane update — PV-168 through PV-183
+- Current PV research cursor: PV-001 through PV-183 complete.
+- Existing Fugle Quote contains substantially more research information than execution-shadow-v2 preserves; a future v3 could add useful fields with zero extra Quote REST calls.
+- Provider avgPrice is consistent with cumulative trade-value/traded-share average in the official ordinary-equity example; scope/type provenance remains required.
+- AtBid/AtAsk and transaction totals can support coarse interval pressure/activity when differenced under monotonic same-session guards, but never true OFI/replenishment.
+- Current FORMAL_SIGNAL_OBSERVED recorder scope is batch-ambiguous: any notification causes rows for all results; nonmatching symbols may receive fallback SIGNAL. Such rows cannot be treated as symbol-specific signal events without independent match.
+- Critical PV quality dependency: daily PV Shadow explicitly uses V7_D1_DAILY_HISTORY_SHARES, while tested history-freshness PR #100 is still Draft/Open/unmerged and no equivalent guard is on main. Daily PV quality and Formal cohort quality therefore require separate freshness verification.
+- Intraday same-slot PV has a separate historical-15m baseline, but its research cohort can still be contaminated if Formal selection used stale daily history.
+- execution-shadow-v3 is design-ready but intentionally deferred; core DATA_QA and history-quality stabilization come first.
+- Formal Core remains LOCKED.
