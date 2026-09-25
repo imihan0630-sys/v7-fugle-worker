@@ -8276,3 +8276,341 @@ If one source breaks:
 - Formal remains unaffected.
 
 Status: MODULAR_RESEARCH_LANES_REQUIRED.
+
+# PV-146 — Foreign-Dealer Flow Appears Numerically Rare/Zero in Modern Samples, but Semantic Separation Still Matters
+
+## Current-date audit
+On 2026-09-24, TWSE's official BFI82U aggregate report shows:
+- foreign dealer buy = 0;
+- foreign dealer sell = 0;
+- foreign dealer net = 0.
+
+The stock-level TWT38U/T86 pages likewise show 0 foreign-dealer flow in the visible current rows.
+
+Official sources:
+- https://www.twse.com.tw/fund/BFI82U?response=html&type=day
+- https://www.twse.com.tw/fund/TWT38U?response=html
+- https://www.twse.com.tw/fund/T86?response=html
+
+TPEx 2026-09-24 institutional detail also shows 0 foreign-dealer buy/sell/net in the sampled ordinary-stock rows inspected.
+
+Source:
+- https://www.tpex.org.tw/web/stock/3insti/daily_trade/3itrade_hedge_result.php?l=zh-tw&o=htm
+
+## Historical spot checks
+Official TWSE stock-level pages inspected for:
+- 2020-12-17;
+- 2020-12-30;
+- 2021-06-28;
+- 2022-08-03
+also show 0 foreign-dealer flow in the displayed leading rows.
+
+This is not a systematic full-history prevalence estimate.
+
+## Interpretation
+The current Worker's:
+`broadForeignNet = foreignMain + foreignDealer`
+may often be numerically identical to `foreignMain` in modern data.
+
+However:
+- the official categories remain semantically distinct;
+- future non-zero values are possible;
+- cross-market official totals intentionally avoid double counting.
+
+## Decision
+Do not spend engineering priority on foreignDealer decomposition before dealer proprietary/hedge decomposition.
+
+But future raw institutional capture should preserve foreignDealer separately at near-zero marginal storage cost.
+
+Status: SEMANTICALLY_DISTINCT / CURRENT_NUMERICAL_IMPACT_APPEARS_LOW / SYSTEMATIC_PREVALENCE_NOT_YET_PROVEN.
+
+
+# PV-147 — Source-Scope Fixture: TWSE Compatible, TPEx Requires an Explicit Audit
+
+## TWSE fixture — 2330 on 2026-09-24
+
+Official daily volume:
+- 14,557,662 shares.
+
+Source:
+https://www.twse.com.tw/exchangeReport/STOCK_DAY?response=html&stockNo=2330
+
+Official T86 investor flow:
+- foreign main buy 6,078,590;
+- foreign main sell 10,746,422;
+- trust buy 131,000;
+- trust sell 1,418,718;
+- dealer proprietary buy 185,000;
+- dealer proprietary sell 9,000;
+- dealer hedge buy 127,438;
+- dealer hedge sell 60,737.
+
+Source:
+https://www.twse.com.tw/rwd/zh/fund/T86?response=html&selectType=ALLBUT0999
+
+Both official source notes state the relevant statistics include:
+- regular;
+- odd-lot;
+- after-hours fixed price;
+- block trades;
+and exclude auction/tender offers.
+
+Therefore, for this source pair:
+`flowScopeId == volumeScopeId`
+is supportable.
+
+## TWSE side-participation arithmetic
+Denominator:
+`2 * 14,557,662 = 29,115,324 trade-side shares`.
+
+Approximate side-participation shares:
+- foreign main: (6,078,590 + 10,746,422) / 29,115,324 = 57.79%;
+- trust: (131,000 + 1,418,718) / 29,115,324 = 5.32%;
+- dealer proprietary: (185,000 + 9,000) / 29,115,324 = 0.67%;
+- dealer hedge: (127,438 + 60,737) / 29,115,324 = 0.65%;
+- combined observed three-institution side activity ~= 64.4%.
+
+These are descriptive trade-side shares, not causal shares.
+
+## TPEx fixture — 8299 on 2026-09-24
+
+Official institutional page provides:
+- foreign main buy/sell;
+- trust buy/sell;
+- dealer proprietary buy/sell;
+- dealer hedge buy/sell.
+
+Official daily-price pages provide total volume, but TPEx exposes multiple daily-price products:
+- with/without after-hours fixed-price;
+- different historical page families.
+
+The institutional page heading explicitly mentions ordinary, block, odd-lot and omnibus-account trust activity, but does not establish exact one-to-one scope equality with every daily-price product.
+
+## Decision
+TWSE v1 scope mapping:
+READY for research side-participation under the explicitly matched source variants.
+
+TPEx v1:
+raw buy/sell/net may be stored, but participation-share calculation remains `SCOPE_UNVERIFIED` until the exact matching daily-volume source contract is audited.
+
+Status: TWSE_SCOPE_FIXTURE_PASS / TPEX_SCOPE_AUDIT_REQUIRED.
+
+
+# PV-148 — Institutional Consensus Breadth vs Strongest Participant
+
+## Problem
+Current Formal semantics use:
+“foreign / trust / dealer at least one side consecutively buying.”
+
+A natural alternative is institutional breadth:
+- one group buying;
+- two groups buying;
+- three groups buying.
+
+But correlated groups are not independent votes.
+
+## Competing hypotheses
+
+### H-BREADTH
+Two- or three-group same-sign participation adds incremental information because independent institutions reaching similar direction may represent broader sponsorship.
+
+### H-STRONGEST
+The largest normalized participant flow contains most of the useful information; breadth adds little after controlling for magnitude and common market/sector flow.
+
+### H-COMMON-CAUSE
+Apparent consensus is mostly driven by:
+- index/passive flow;
+- sector rotation;
+- broad market shocks;
+- the same price momentum.
+After residual/common-flow controls, breadth adds little.
+
+## Frozen descriptive variables
+For each date/symbol:
+- positiveGroupCount among foreignMain/trust/dealerProprietary;
+- negativeGroupCount;
+- strongestAbsNormalizedFlowGroup;
+- strongestAbsNormalizedFlowValue;
+- netConsensusState:
+  - CONSENSUS_BUY_3
+  - CONSENSUS_BUY_2
+  - SINGLE_BUY
+  - CONFLICTED
+  - CONSENSUS_SELL_2
+  - CONSENSUS_SELL_3
+  - NONE
+  - UNKNOWN
+
+Dealer hedge is NOT treated as an equal directional vote in the primary breadth definition.
+
+## Controls
+At minimum:
+- normalized flow magnitude;
+- market/sector residual RVOL;
+- sector breadth / Residual RS;
+- passive-flow event state;
+- market regime;
+- liquidity/price tier;
+- PV acceptance.
+
+## Outcomes
+- D1/D3/D5;
+- MFE/MAE;
+- false-confirmation;
+- candidate scarcity/capital utilization.
+
+## Promotion rule
+Breadth must add incremental information beyond strongest participant and total normalized flow.
+
+No “2 votes better than 1 vote” rule is assumed ex ante.
+
+Status: CONSENSUS_BREADTH_HYPOTHESIS_FROZEN / NO_VOTE_SCORE.
+
+
+# PV-149 — Storage/API Budget for a Future Institutional-Origin Recorder
+
+## Current infrastructure
+The existing `v7_institution_snapshots` table already stores one full-market snapshot per date.
+
+Current minimum-complete threshold:
+`INSTITUTION_SNAPSHOT_MIN_STOCKS = 1500`.
+
+Current stored per-symbol fields:
+- foreignNet;
+- trustNet;
+- dealerNet;
+- institutionTotalNet.
+
+Current official payload ingestion already includes TWSE/TPEx institution data, so additional buy/sell component capture can be zero-extra-API if parsed from the same payload.
+
+## Why not simply inflate the Formal snapshot forever
+Adding all raw buy/sell/net components for >1500 symbols to the existing Formal snapshot would:
+- multiply D1 JSON size;
+- couple research schema growth to Formal streak infrastructure;
+- make rollback/isolation harder.
+
+## Preferred two-layer research architecture
+
+### Layer 1 — short rolling full-market raw cache
+Purpose:
+support streak/trajectory for symbols that may become selected tomorrow.
+
+Store for a short retention window:
+- raw buy/sell/net by participant group;
+- source/scope/version.
+
+Retention:
+enough to cover research streak windows plus QA margin; do not retain indefinitely by default.
+
+### Layer 2 — durable cohort observations
+Persist long-term only for:
+- Formal selected names;
+- monitored names;
+- predeclared near-miss/control cohort.
+
+Fields:
+raw institutional components + cohort role + frozen scan context.
+
+This avoids keeping a verbose all-market raw record forever while preserving unbiased research cohorts.
+
+## API cost
+Expected:
+- zero incremental institution HTTP calls in normal daily capture if existing payload is reused;
+- incremental cost is D1 writes/storage only.
+
+## Write-volume estimate
+With <=6 monitored/selected plus a bounded research control cohort, durable daily rows remain small.
+
+The short full-market cache can remain one compact date row or a bounded normalized table, but must not alter Formal `v7_institution_snapshots` semantics in v0.1.
+
+## Failure isolation
+Institution-origin recorder failure:
+- must not block current institution streak snapshot;
+- must not block after-market scan;
+- must not change Formal features.
+
+Status: ZERO_EXTRA_API_ARCHITECTURE_FEASIBLE / SEPARATE_RESEARCH_STORAGE_PREFERRED.
+
+
+# PV-150 — Smallest Institutional-Origin Capture Schema and Class-A Boundary
+
+## Proposed schema
+Future research-only table:
+`v7_institution_origin_observations`
+
+Primary identity:
+- market_date
+- symbol
+- schema_version
+
+Core metadata:
+- source_market
+- source_variant
+- scope_id
+- captured_at
+- cohort_role
+- formal_snapshot_id/reference if available
+- decision_impact = 0
+
+Raw fields:
+### Foreign
+- foreign_main_buy
+- foreign_main_sell
+- foreign_main_net
+- foreign_dealer_buy
+- foreign_dealer_sell
+- foreign_dealer_net
+
+### Trust
+- trust_buy
+- trust_sell
+- trust_net
+
+### Dealer proprietary
+- dealer_prop_buy
+- dealer_prop_sell
+- dealer_prop_net
+
+### Dealer hedge
+- dealer_hedge_buy
+- dealer_hedge_sell
+- dealer_hedge_net
+
+### Official totals
+- dealer_combined_net
+- institution_total_net
+
+## Not stored as primary truth
+Do not make these durable truth fields:
+- buyDays;
+- trajectory label;
+- consensus breadth;
+- side-participation share.
+
+These are versioned derived research features computed from raw records.
+
+## Integrity
+- missing numeric field = null, never 0;
+- exact date match required;
+- TWSE/TPEx parser versions recorded;
+- official reconciliation identities tested where source semantics define them;
+- TPEx participation ratios remain null until scope mapping passes;
+- no future backfill mutating earlier point-in-time records.
+
+## Class-A boundary
+A future implementation qualifies as Class-A research-only only if:
+- it reuses the existing official institution payload;
+- adds no Formal dependency;
+- decisionImpact=false;
+- failure is fail-open;
+- no new user push;
+- no change to foreignBuyDays/trustBuyDays/dealerBuyDays;
+- no change to selection/ranking/capital/BUY.
+
+## Timing
+Do not implement yet.
+
+Earliest implementation proposal:
+after PV_SHADOW_V0_1 first DATA_QA stabilization gate passes.
+
+Status: INSTITUTION_ORIGIN_SCHEMA_V0_1_FROZEN / IMPLEMENTATION_DEFERRED.
