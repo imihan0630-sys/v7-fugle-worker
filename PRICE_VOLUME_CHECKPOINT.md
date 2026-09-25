@@ -17,7 +17,7 @@ Do not restart from generic “volume confirms price” introductions.
 - Any Formal A/B, ranking, threshold, capital, entry/exit, 15m confirmation, monitoring or push change is Class C and requires owner approval.
 
 ## Current research theme
-PV-001 — Volume is information, but “more volume = better” is not a valid rule.
+PV-004 — Sequence-level effort versus result after PV-002/PV-003 falsification work.
 
 ## Durable findings
 1. Volume contains information beyond price alone, but volume level is not unidirectionally bullish or bearish.
@@ -55,3 +55,18 @@ Class A if research-only; Class C if later used in formal 15m confirmation.
 5. Map all PV features against Pattern Maturity latent geometry and DL-001 Information Discreteness to avoid Factor Zoo duplication.
 6. Pre-register validation outcomes before inspecting returns: D1/D3/D5/D10, MFE/MAE, stop-first, false-break rate, coverage and regime splits.
 7. Formal Core remains unchanged until mature evidence supports a specific owner-approved proposal.
+
+
+## Progress added — PV-002 / PV-003 / PV-004
+- PV-002 separates constructive supply dry-up from no-demand risk. Low pullback volume is not intrinsically bullish.
+- Proposed discrimination uses pullback volume ratio, negative-bar volume, price slope, range contraction, close-location trend, support hold, liquidity, sector context and later rebound-demand state.
+- PV-003 challenges the current B-channel's implicit monotonic “more breakout volume is better” assumption. Literature supports both short-horizon high-volume continuation and higher disagreement/overconfidence/reversal risk.
+- Extreme breakout volume should therefore be tested as a nonlinear/contextual variable, especially with late-stage extension, gap, upper rejection, price-progress efficiency, institutional activity and sector participation.
+- PV-004 specifies an as-of-date event lifecycle so high-volume/no-progress remains ambiguous until later acceptance/failure evidence arrives. Later evidence updates state but never rewrites the historical decision timestamp.
+
+## Revised exact next continuation point
+1. PV-005: design Taiwan same-slot 15m volume baseline and cumulative-volume pace with coverage rules.
+2. PV-006: map price-volume features against VCP/Cup/W/Platform/false-break Pattern Maturity to avoid double counting.
+3. PV-007: study whether institutional participation and sector breadth help distinguish informed/broad participation from attention/disagreement volume.
+4. PV-008: build nonlinear breakout-volume validation plan with frozen buckets/quantiles before outcome inspection.
+5. PV-009: design prospective Shadow data schema and outcome ledger; no Formal use.
