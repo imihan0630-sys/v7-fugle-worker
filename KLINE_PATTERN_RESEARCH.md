@@ -10697,3 +10697,209 @@ Expected:
 DUAL_PRICE_SPACE_REQUIRED for Pattern Shadow v1 data layer.
 No Formal live-price behavior changes.
 
+
+
+## DL-002EX — Pattern Shadow Sampling Frame / Selection-Bias Control
+
+### Critical question
+What population is Pattern Shadow trying to improve?
+
+Primary v1 objective:
+incremental optimization of the CURRENT selection funnel.
+
+Therefore v1 does not need to scan every listed stock with every expensive pattern detector.
+But it must not observe only winners/selected candidates.
+
+### Required cohorts
+Attach Pattern Shadow to the existing point-in-time archive:
+- SELECTED
+- QUALIFIED_NOT_SELECTED
+- NEAR_MISS
+- REJECTED_AFTER_BASE
+- BROAD_CONTROL
+
+### Why BROAD_CONTROL is mandatory
+If pattern features are computed only for SELECTED/Near-miss:
+- pattern prevalence is conditioned on current Formal filters;
+- false-positive/base-rate estimates are distorted;
+- “beautiful pattern” may look rare only because controls were never measured.
+
+### Scope interpretation
+v1 answers:
+“Within and around the current Formal funnel, does topology add incremental information?”
+
+It does NOT yet answer:
+“Could a completely independent pattern-first scanner replace the current funnel?”
+
+That second question would require a broader full-market sampling design and a new experiment family.
+
+### Deterministic control sampling
+If BROAD_CONTROL is sampled rather than exhaustive:
+- sampling must be deterministic/reproducible for a scan date;
+- sampling rule frozen before outcomes;
+- retain inclusion probability / sampling stratum if applicable;
+- do not choose controls because their future path looked useful.
+
+## DL-002EY — Immutable Pattern Snapshot Schema v0.1
+
+### Snapshot table concept
+pattern_shadow_snapshot
+- scan_date
+- symbol
+- formal_cohort
+- formal_pool
+- detector_version
+- data_through
+- history_start_date
+- raw_bar_count
+- adjusted_bar_count
+- corporate_action_status
+- market_regime
+- sector
+- price_tier
+- liquidity_tier
+- primitive_json
+- pattern_state_json
+- negative_morphology_json
+- confidence_json
+- missingness_json
+- created_at
+- decision_impact = false
+
+Primary key concept:
+(scan_date, symbol, detector_version)
+
+### Rule
+Original feature snapshot is immutable.
+If detector definition changes:
+new detector_version, new row/version.
+Do not rewrite old feature values with newer rules.
+
+### Outcome table
+pattern_shadow_outcome
+- scan_date
+- symbol
+- detector_version
+- horizon
+- mature_at
+- return
+- mfe
+- mae
+- stop_first
+- r01_state
+- target_state
+- outcome_data_quality
+- updated_at
+
+Outcomes append/update as horizons mature.
+Features do not mutate.
+
+## DL-002EZ — Structural Object Tables
+
+### Why separate objects
+One giant JSON makes auditing hard.
+For debugging/research preserve structural objects.
+
+SWING object:
+- symbol
+- as_of
+- scale
+- swing_id
+- type
+- pivot_at
+- confirmed_at
+- extreme_price_adjusted
+- equivalent_raw/current price where relevant
+- threshold_at_leg_start
+- provisional
+- source bars checksum/version
+
+ZONE object:
+- zone_id
+- zone_version
+- origin_type
+- center
+- lower/upper
+- level_space
+- created_at/effective_at
+- parent_zone_ids
+- constituent_anchor_ids
+- state
+- no_lookahead_verified
+
+PATTERN_EPISODE:
+- episode_id
+- family
+- first_observable_at
+- state
+- anchors
+- state_history
+- resolved_at
+- resolution_type
+
+### Storage trade-off
+Implementation may denormalize for cost/performance, but conceptual provenance must remain recoverable.
+
+## DL-002FA — Detector Versioning Contract
+
+### A detector version freezes
+- data semantics
+- swing thresholds/scales
+- zone clustering rule
+- pattern topology
+- motif definitions
+- confidence fields
+
+Example:
+DL002_PATTERN_V1_0
+
+### Version change required when
+- threshold definition changes,
+- pattern state definition changes,
+- zone merge rule changes,
+- data adjustment semantics change,
+- new information is allowed into the feature.
+
+### No version change required for
+- additional future outcomes,
+- bug-free report formatting,
+- documentation typo.
+
+### Bug fix
+If a detector bug changes historical feature values:
+create corrected version and preserve old version as INVALIDATED_BY_BUG.
+Do not silently rewrite evidence.
+
+## DL-002FB — Research Compute Budget / Staged Evaluation
+
+### Stage 1 cheap daily
+For existing cohorts:
+- extended OHLC fetch/cache
+- swings
+- zones
+- primitives
+- named patterns
+- maturity
+
+### Stage 2 conditional
+Only for relevant candidate states:
+- minute-data closing-auction diagnostics
+- event context
+- short/margin context
+- cost-basis proxy
+
+### Stage 3 prospective expensive
+Only around selected research trigger windows:
+- exact volume-at-price
+- repeated quote/order-book snapshots
+- trade-flow
+
+### Benefit
+Avoid spending expensive data/compute on features that have not proven incremental value.
+
+### Safety
+Research compute must never delay or block Formal scan/monitor.
+If research fails:
+Formal remains unaffected,
+research data quality = UNKNOWN / FAILED_FETCH.
+
