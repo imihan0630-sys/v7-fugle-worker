@@ -9448,3 +9448,158 @@ LOW:
 Reason:
 research complexity must compete for limited sample size and multiple-testing budget.
 
+
+
+## DL-002DT — Popular Indicator Redundancy Triage
+
+### Principle
+Most classic indicators are deterministic transforms of the same OHLCV data.
+Adding many indicators can create the illusion of independent confirmation while double-counting the same path.
+
+### Bollinger Bands
+Mathematical content:
+- moving average location
+- rolling standard deviation / band width
+- normalized distance from mean
+
+Existing overlap:
+- MA10/20/60
+- ATR
+- volatility20
+- range compression
+- VCP contraction
+- support/resistance location
+
+Taiwan evidence:
+a historical Taiwan 50 event study finds positive abnormal returns around upper/lower Bollinger-band events in its sample.
+But this does not establish that Bollinger squeeze independently predicts breakouts in our setting.
+
+Status:
+BENCHMARK / REDUNDANCY_TEST_ONLY.
+
+Possible field:
+- bollingerBandwidth20
+only as a benchmark against swing-based contraction.
+
+If VCP topology adds nothing beyond Bollinger bandwidth/ATR, VCP is weakened.
+If Bollinger adds nothing beyond current volatility fields, discard it.
+
+### MACD
+Mathematical content:
+- difference between two exponential moving averages,
+- signal-line smoothing.
+
+Existing overlap:
+- trend
+- MA stack/turn
+- return momentum
+- multi-horizon slope.
+
+Status:
+LOW PRIORITY / likely redundant.
+
+### RSI
+Mathematical content:
+- ratio of average gains vs average losses over a fixed window.
+
+Existing overlap:
+- positive-day ratio
+- return path
+- momentum/overheat
+- directional efficiency.
+
+Status:
+LOW PRIORITY / benchmark only.
+
+### KD/Stochastic
+Mathematical content:
+- close location within recent high-low range + smoothing.
+
+Existing overlap:
+- daily close position
+- recentHigh/recentLow
+- pullback/support distance
+- overheat.
+
+Status:
+STRONGLY_REDUNDANT candidate.
+
+## DL-002DU — OBV Is Not Informed Flow
+
+### Definition problem
+OBV assigns the ENTIRE day’s volume:
+- positive if close > prior close,
+- negative if close < prior close.
+
+It ignores:
+- how far price moved,
+- intraday buy/sell split,
+- where trades occurred,
+- institutional identity,
+- closing-auction effects.
+
+### Existing better data
+Our environment can potentially use:
+- tradeVolumeAtBid/Ask prospectively,
+- exact price-by-volume prospectively,
+- daily institutional flows,
+- price response / Effort vs Result.
+
+### Research status
+OBV may be used only as a simple benchmark.
+
+If sophisticated flow/context features cannot beat OBV, complexity is questionable.
+But OBV itself should not be labeled “smart money.”
+
+## DL-002DV — MFI / Chaikin / Accumulation-Distribution Triage
+
+### Shared issue
+These indicators combine price-location and volume using hand-designed formulas.
+
+Potential overlap:
+- closeLocation
+- range
+- volume ratio
+- turnover
+- exact prospective bid/ask split
+- Effort vs Result
+- support/resistance context
+
+### Status
+LOW PRIORITY.
+Do not add unless external/prospective evidence shows incremental value after primitive controls.
+
+### Reason
+A hand-crafted OHLCV flow proxy is less attractive when direct flow/price-location features can be stored separately and tested transparently.
+
+## DL-002DW — Indicators as Benchmarks, Not Feature Zoo
+
+### Benchmark set
+If DL-002 later enters validation, retain a SMALL conventional benchmark:
+- Bollinger bandwidth
+- RSI
+- MACD
+- OBV
+
+Purpose:
+ask whether the new topology engine actually improves on simple familiar transforms.
+
+### Do not stack
+No:
+VCP + BB squeeze + RSI + MACD + KD + OBV = six confirmations.
+
+Instead compare:
+SIMPLE_INDICATOR_BASELINE
+vs
+LATENT_PRIMITIVES
+vs
+PRIMITIVES_PLUS_PATTERN_TOPOLOGY.
+
+### Evidence standard
+The complex model must justify itself through:
+- incremental out-of-sample performance,
+- stability,
+- false-positive reduction,
+- coverage/capital-use balance,
+not visual sophistication.
+
