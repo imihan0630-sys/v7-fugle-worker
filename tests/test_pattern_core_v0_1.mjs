@@ -98,7 +98,7 @@ function scaled(bars, k) {
   assert.equal(vcp.wideLoose, true);
 }
 
-// C3 ex-dividend mechanical gap: raw gap is not morphology gap.
+// C3 ex-dividend mechanical reset: raw price is guarded; residual morphology gap is tested separately.
 {
   const out = classifyCorporateActionGap({
     rawPrev: { close: 101 },
@@ -106,13 +106,17 @@ function scaled(bars, k) {
     morphologyPrev: { close: 91.5 },
     morphologyCurrent: { open: 91 },
     corporateActionTag: true,
-    adjustmentReady: true
+    adjustmentReady: true,
+    gapThresholdPct: 0.02
   });
-  assert.equal(out.rawGap, true);
-  assert.equal(out.morphologyMechanicalGap, false);
-  assert.equal(out.mechanicalCorporateActionGap, true);
-  assert.equal(out.threeGapsEligible, false);
-  assert.equal(out.wUndercutEligible, false);
+  assert.ok(Math.abs(out.rawGapPct) > 0.09);
+  assert.ok(Math.abs(out.morphologyGapPct) < 0.01);
+  assert.equal(out.mechanicalDiscontinuityNeutralized, true);
+  assert.equal(out.rawGapPatternEligible, false);
+  assert.equal(out.morphologyGapPatternEligible, true);
+  assert.equal(out.residualPatternGapFlag, false);
+  assert.equal(out.rawWUndercutEligible, false);
+  assert.equal(out.morphologyWUndercutEligible, true);
 
   const blocked = classifyCorporateActionGap({
     rawPrev: { close: 101 },
@@ -123,6 +127,37 @@ function scaled(bars, k) {
     adjustmentReady: false
   });
   assert.equal(blocked.status, "DATA_BLOCKED");
+}
+
+// Real cross-lane mechanics witnesses: corporate-action adjustment removes only the mechanical component.
+// 2412 residual gap is tiny after the official 134.3 continuity anchor.
+// 8454 retains a genuine positive residual gap versus its 1/1.05 ex-right reference.
+{
+  const cht = classifyCorporateActionGap({
+    rawPrev: { close: 139.5 },
+    rawCurrent: { open: 134 },
+    morphologyPrev: { close: 134.3 },
+    morphologyCurrent: { open: 134 },
+    corporateActionTag: true,
+    adjustmentReady: true,
+    gapThresholdPct: 0.02
+  });
+  assert.equal(cht.residualPatternGapFlag, false);
+  assert.ok(Math.abs(cht.morphologyGapPct) < 0.003);
+
+  const momo = classifyCorporateActionGap({
+    rawPrev: { close: 272 },
+    rawCurrent: { open: 265 },
+    morphologyPrev: { close: 272 / 1.05 },
+    morphologyCurrent: { open: 265 },
+    corporateActionTag: true,
+    adjustmentReady: true,
+    gapThresholdPct: 0.02
+  });
+  assert.equal(momo.rawGapPatternEligible, false);
+  assert.equal(momo.morphologyGapPatternEligible, true);
+  assert.equal(momo.residualPatternGapFlag, true);
+  assert.ok(momo.morphologyGapPct > 0.02);
 }
 
 // C4 limit-up breakout: acceptance remains unresolved on the constrained bar.
