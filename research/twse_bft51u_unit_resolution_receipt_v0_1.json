@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "generatedAt": "2026-09-25 Asia/Taipei",
+  "generatedAt": "2026-09-25 23:00 Asia/Taipei",
   "purpose": "CA-111 TWSE BFT51U raw-unit resolution receipt. Preserve every positive clue, failed retrieval path and counterexample; do not promote an inferred x1000 transform to VERIFIED without an official format/sample artifact or equivalent explicit official unit statement.",
   "decisionImpact": false,
   "formalCoreChanged": false,
@@ -10,7 +10,17 @@
     "officialEnUrl": "https://eshop.twse.com.tw/en/product/detail/e349f522707a4ab887726b37afdf25c7",
     "cadence": "DAILY",
     "productionTime": "approximately 14:40 Asia/Taipei",
-    "documentedFieldsZh": ["成交日期","股票代號","停止融資碼","停止融券碼","參考價","收盤價","發行張數","上市股數","當日無成交之調整參考價"],
+    "documentedFieldsZh": [
+      "成交日期",
+      "股票代號",
+      "停止融資碼",
+      "停止融券碼",
+      "參考價",
+      "收盤價",
+      "發行張數",
+      "上市股數",
+      "當日無成交之調整參考價"
+    ],
     "documentedStartDateZh": "2004-02-19",
     "documentedStartDateEn": "2004-03-01",
     "startDateStatus": "OFFICIAL_PAGE_DISCREPANCY_RETAINED"
@@ -74,6 +84,13 @@
       "source": "TWSE index after-hours product",
       "finding": "A separate official product explicitly labels issued shares as 發行股數 (單位：仟股), proving that TWSE does state units when intended. BFT51U indexed product text does not expose the same explicit unit statement.",
       "unitResolution": false
+    },
+    {
+      "source": "TWSE listed common-share/TDR share-count change announcement (LT185)",
+      "officialUrl": "https://www.twse.com.tw/zh/focus/lt185-dtr.html",
+      "finding": "Official TWSE public surface provides announcement date and effective date for listed common-share/TDR unit-count changes and CSV download. TWSE's own filing-operation material explicitly labels 已上市股數/申報上市股數/累計 in 股 and states cumulative listed shares exclude private-placement and restricted-trading shares in the illustrated workflow. This is explicit share-unit evidence for the event-driven listed-share-change lane, but it is not itself a complete daily denominator snapshot.",
+      "unitResolution": "EVENT_DRIVEN_LISTED_SHARE_CHANGES_IN_SHARES",
+      "closesBFT51UUnit": false
     }
   ],
   "candidateInterpretations": [
@@ -86,6 +103,11 @@
       "candidate": "Use BFI85U/TRANISIN as an independent post-2020 reconciliation lane",
       "status": "PROMISING_PARTIAL",
       "reason": "BFI85U contains 發行股數 and 交易單位 while TRANISIN/T32 expose security-specific trading units; exact numeric-format/unit documentation for BFI85U still needs capture before it can replace BFT51U as a VERIFIED share-count backbone."
+    },
+    {
+      "candidate": "Use LT185 as an official event-driven listed-share change ledger to reconcile daily denominator snapshots",
+      "status": "VERIFIED_EVENT_LANE_NOT_DAILY_BACKBONE",
+      "reason": "It supplies effective share-count changes in shares and preserves private-placement/restricted-share semantics, but continuity still requires a verified daily/seed denominator lane; therefore it cannot alone close CA-111."
     }
   ],
   "strictGate": {
@@ -97,11 +119,16 @@
       "plus security-type/trading-unit guard for non-standard-unit instruments"
     ],
     "ownerActionCurrentlyRequired": false,
-    "reason": "Research can continue on alternative official lanes and TPEx; only request owner subscription/authentication if every public/authorized route is exhausted and the binary artifact becomes the sole blocker."
+    "reason": "Research can continue on alternative official lanes and TPEx; only request owner subscription/authentication if every public/authorized route is exhausted and the binary artifact becomes the sole blocker.",
+    "additionalEvidence20260925": {
+      "finding": "LT185 narrows CA-114 private-placement/payment-certificate semantics and supplies an independent event-driven share-unit witness.",
+      "effectOnCA111": "PARTIAL_ONLY",
+      "ca111StillBlocked": true
+    }
   },
   "positiveNegativeConclusion": {
-    "positive": "Daily TWSE issued/listed denominator products and daily trading-unit reference products are officially documented, so a correct archive is structurally feasible.",
-    "negative": "The exact BFT51U raw-unit conversion is still not proven in the accessible official text surfaces, and non-thousand-unit securities invalidate a blind universal x1000 assumption.",
+    "positive": "Daily TWSE issued/listed denominator products and daily trading-unit reference products are officially documented, so a correct archive is structurally feasible. TWSE LT185 additionally provides an official event-driven listed-share-change lane with explicit share-count/effective-date semantics.",
+    "negative": "The exact BFT51U raw-unit conversion is still not proven in the accessible official text surfaces, and non-thousand-unit securities invalidate a blind universal x1000 assumption. LT185 is not a complete daily denominator snapshot, so it cannot by itself replace unresolved BFT51U/BFI85U raw-unit proof.",
     "ca111Status": "IN_PROGRESS_STRICT_BLOCKER_RETAINED"
   },
   "antiInference": [
