@@ -173,6 +173,7 @@ jobs:
           node tests/test_v8_9_9_staged_delivery.mjs
           node tests/test_v8_10_0_aideen_independent_pool.mjs
           node tests/test_v8_11_0_pv_shadow.mjs
+          node tests/test_pattern_core_v0_1.mjs
           node tests/test_v8_9_0_three_pool_hybrid_shadow.mjs
           node tests/test_v8_9_1_three_pool_dashboard.mjs
           node tests/github_plan_mirror.mjs self-test
