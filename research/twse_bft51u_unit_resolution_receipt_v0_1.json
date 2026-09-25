@@ -1,0 +1,113 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-09-25 Asia/Taipei",
+  "purpose": "CA-111 TWSE BFT51U raw-unit resolution receipt. Preserve every positive clue, failed retrieval path and counterexample; do not promote an inferred x1000 transform to VERIFIED without an official format/sample artifact or equivalent explicit official unit statement.",
+  "decisionImpact": false,
+  "formalCoreChanged": false,
+  "targetSource": {
+    "product": "BFT51U / 當日個股基本資料表 / Basic Information of All Stocks",
+    "officialZhUrl": "https://eshop.twse.com.tw/zh/product/detail/bc9bd889165844a9849d190fd1c69066",
+    "officialEnUrl": "https://eshop.twse.com.tw/en/product/detail/e349f522707a4ab887726b37afdf25c7",
+    "cadence": "DAILY",
+    "productionTime": "approximately 14:40 Asia/Taipei",
+    "documentedFieldsZh": ["成交日期","股票代號","停止融資碼","停止融券碼","參考價","收盤價","發行張數","上市股數","當日無成交之調整參考價"],
+    "documentedStartDateZh": "2004-02-19",
+    "documentedStartDateEn": "2004-03-01",
+    "startDateStatus": "OFFICIAL_PAGE_DISCREPANCY_RETAINED"
+  },
+  "retrievalAttempts": [
+    {
+      "artifact": "BFT51U sample CSV",
+      "url": "https://eshop.twse.com.tw/uploadFile/upload/000000006bbab10e016c4094f3a80037.csv",
+      "result": "FAILED_IN_RESEARCH_CLIENT",
+      "failure": "unsupported application/octet-stream / binary retrieval unavailable in current web research path"
+    },
+    {
+      "artifact": "A19 BFT51U format document effective 2019-07-29",
+      "url": "https://eshop.twse.com.tw/uploadFile/upload/000000006e0bbe8d016f3ae2e262036d.docx",
+      "result": "FAILED_IN_RESEARCH_CLIENT",
+      "failure": "binary DOCX retrieval unavailable in current web research path"
+    },
+    {
+      "artifact": "BFT50U reconciliation sample CSV",
+      "url": "https://eshop.twse.com.tw/uploadFile/upload/0000000076a82f740176ac9331d2000f.csv",
+      "result": "FAILED_IN_RESEARCH_CLIENT",
+      "failure": "binary CSV content not retrievable through current research client"
+    },
+    {
+      "artifact": "A18 BFT50U post-2020-12-28 format document",
+      "url": "https://eshop.twse.com.tw/uploadFile/upload/0000000072bb2952017608c47460016b.docx",
+      "result": "FAILED_IN_RESEARCH_CLIENT",
+      "failure": "binary DOCX retrieval unavailable in current web research path"
+    }
+  ],
+  "officialCorroboration": [
+    {
+      "source": "TWSE 2019 BFT51U format-change announcement",
+      "finding": "BFT51U format changed effective 2019-07-29; record length 80 bytes and price-field formats are documented, but the indexed announcement does not state the issued/listed raw units.",
+      "unitResolution": false
+    },
+    {
+      "source": "TWSE BFT50U product",
+      "finding": "Another daily product separately exposes 發行張數 and 上市股數, useful for semantic/date reconciliation but not sufficient to prove BFT51U raw numeric units.",
+      "unitResolution": false
+    },
+    {
+      "source": "TWSE BFI85U Security Main Data",
+      "officialUrl": "https://eshop.twse.com.tw/zh/product/detail/000000006f6a5e34017033452c8d0070",
+      "finding": "Daily from 2020-03-02; exposes both 交易單位 and 發行股數. This is a promising independent post-2020 denominator/trading-unit reconciliation lane, but the indexed product page does not itself state the raw numeric unit of 發行股數.",
+      "unitResolution": false
+    },
+    {
+      "source": "TWSE TRANISIN daily security-market overview",
+      "officialUrl": "https://eshop.twse.com.tw/zh/product/detail/000000006f6a5e3401702de5988d004b",
+      "finding": "Daily from 2020-03-02 and explicitly includes 交易單位 per security. This can identify non-standard trading units for denominator normalization.",
+      "unitResolution": "TRADING_UNIT_ONLY"
+    },
+    {
+      "source": "TWSE T32 non-thousand trading-unit securities file",
+      "officialUrl": "https://eshop.twse.com.tw/zh/product/detail/000000006e0bbe8d016f181f3b5e0325",
+      "finding": "Official daily file explicitly exists for foreign-currency and non-thousand-share/unit securities. Therefore a universal x1000 transform based only on the word 張 is unsafe unless security scope and source format are proven.",
+      "counterexampleToUniversalX1000": true
+    },
+    {
+      "source": "TWSE index after-hours product",
+      "finding": "A separate official product explicitly labels issued shares as 發行股數 (單位：仟股), proving that TWSE does state units when intended. BFT51U indexed product text does not expose the same explicit unit statement.",
+      "unitResolution": false
+    }
+  ],
+  "candidateInterpretations": [
+    {
+      "candidate": "BFT51U 發行張數/上市股數 x 1000 = shares for ordinary thousand-share trading-unit common stocks",
+      "status": "PLAUSIBLE_NOT_VERIFIED",
+      "reason": "Taiwan lot terminology and other TWSE materials associate 張 with thousand shares in ordinary contexts, but BFT51U exact format/sample unit proof is still unavailable and official non-thousand trading-unit securities exist."
+    },
+    {
+      "candidate": "Use BFI85U/TRANISIN as an independent post-2020 reconciliation lane",
+      "status": "PROMISING_PARTIAL",
+      "reason": "BFI85U contains 發行股數 and 交易單位 while TRANISIN/T32 expose security-specific trading units; exact numeric-format/unit documentation for BFI85U still needs capture before it can replace BFT51U as a VERIFIED share-count backbone."
+    }
+  ],
+  "strictGate": {
+    "TWSE_BFT51U_UNIT_NORMALIZATION_CONTRACT": "UNKNOWN",
+    "universalMultiplyBy1000": "PROHIBITED",
+    "requiredToClose": [
+      "official BFT51U A19 format/sample artifact with explicit numeric-unit semantics",
+      "or another official source that explicitly maps BFT51U raw 發行張數/上市股數 values to shares",
+      "plus security-type/trading-unit guard for non-standard-unit instruments"
+    ],
+    "ownerActionCurrentlyRequired": false,
+    "reason": "Research can continue on alternative official lanes and TPEx; only request owner subscription/authentication if every public/authorized route is exhausted and the binary artifact becomes the sole blocker."
+  },
+  "positiveNegativeConclusion": {
+    "positive": "Daily TWSE issued/listed denominator products and daily trading-unit reference products are officially documented, so a correct archive is structurally feasible.",
+    "negative": "The exact BFT51U raw-unit conversion is still not proven in the accessible official text surfaces, and non-thousand-unit securities invalidate a blind universal x1000 assumption.",
+    "ca111Status": "IN_PROGRESS_STRICT_BLOCKER_RETAINED"
+  },
+  "antiInference": [
+    "Do not treat field-name translation as unit proof.",
+    "Do not use current snapshots to backfill historical denominators.",
+    "Do not infer a missing daily denominator from adjacent dates without an independently time-stamped continuity proof.",
+    "Do not change Formal A/B, ranking, thresholds, capital, monitor, push or execution logic."
+  ]
+}
