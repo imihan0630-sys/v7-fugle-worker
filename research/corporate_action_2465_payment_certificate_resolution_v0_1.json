@@ -1,0 +1,99 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-09-25 Asia/Taipei",
+  "purpose": "CA-114 point-in-time semantic resolution for 2465 cash-capital-increase payment certificates versus registered/private-placement/listed/tradable denominator spaces.",
+  "decisionImpact": false,
+  "formalCoreChanged": false,
+  "status": "SEMANTIC_STAGE_RESOLVED_DAILY_ARCHIVE_RECEIPT_PENDING",
+  "evidence": [
+    {
+      "date": "2025-11-12",
+      "knownAt": "2025-11-12",
+      "sourceClass": "issuer/MOPS announcement mirrored in indexed public sources",
+      "facts": {
+        "cashIncreaseNewShares": 10000000,
+        "capitalIncreaseRecordDate": "2025-11-12",
+        "plannedPaymentCertificateTradingStart": "2025-11-17"
+      }
+    },
+    {
+      "date": "2025-11-17",
+      "knownAt": "2025-11-12",
+      "sourceClass": "issuer/TWSE-approved listing announcement mirrored in indexed public sources",
+      "facts": {
+        "originalListedCommonShares": 58946031,
+        "privatePlacementCommonSharesExcluded": 25000000,
+        "paymentCertificatesListed": 10000000,
+        "announcementCumulativeIncludingPaymentCertificates": 93946031
+      },
+      "interpretation": "Payment certificates are a separately listed tradable security stage. The 93,946,031 announcement total is not proof that all units were registered-issued ordinary shares on 2025-11-17."
+    },
+    {
+      "date": "2026-01-06",
+      "knownAt": "2026-01-08",
+      "sourceClass": "issuer/MOPS announcement mirrored in indexed public sources",
+      "facts": {
+        "economicAffairsRegistrationApproved": true,
+        "postRegistrationCommonSharesIncludingPrivateRestricted": 93946031
+      }
+    },
+    {
+      "date": "2026-01-16",
+      "knownAt": "2026-01-08",
+      "sourceClass": "issuer/MOPS announcement mirrored in indexed public sources",
+      "facts": {
+        "newOrdinarySharesListed": 10000000,
+        "paymentCertificatesDelistedAndConverted": true
+      },
+      "interpretation": "This is the ordinary-share conversion/listing stage; do not leak it backward to 2025-11-17 registered-share truth."
+    }
+  ],
+  "denominatorStates": {
+    "2025-11-17": {
+      "REGISTERED_ISSUED_COMMON_SHARES": {
+        "value": 83946031,
+        "quality": "SUPPORTED_BY_PRE_REGISTRATION_CAPITAL_STATE_BUT_DAILY_BFT51U_REGISTERED_EXACT_LANE_NOT_YET_ARCHIVED",
+        "components": {
+          "listedCommon": 58946031,
+          "privatePlacementCommon": 25000000
+        }
+      },
+      "EXCHANGE_LISTED_COMMON_SHARES": {
+        "value": 58946031,
+        "quality": "SUPPORTED_BY_ISSUER_LISTING_ANNOUNCEMENT"
+      },
+      "PAYMENT_CERTIFICATE_TRADABLE_UNITS": {
+        "value": 10000000,
+        "quality": "SUPPORTED_BY_ISSUER_LISTING_ANNOUNCEMENT"
+      },
+      "COMBINED_EXCHANGE_TRADABLE_UNITS": {
+        "value": 68946031,
+        "quality": "DERIVED_FROM_TWO_EXPLICIT_TRADABLE_COMPONENTS",
+        "warning": "Use only for a metric whose denominator contract explicitly combines ordinary listed shares and payment-certificate units. Never relabel as registered-issued common shares."
+      },
+      "PRIVATE_PLACEMENT_COMMON_SHARES": {
+        "value": 25000000,
+        "quality": "SUPPORTED_EXCLUDED_FROM_LISTED_COMMON"
+      }
+    },
+    "2026-01-16": {
+      "REGISTERED_ISSUED_COMMON_SHARES": {
+        "value": 93946031,
+        "quality": "SUPPORTED_AFTER_2026-01-06_REGISTRATION"
+      },
+      "PAYMENT_CERTIFICATE_TRADABLE_UNITS": {
+        "value": 0,
+        "quality": "CONVERTED/DELISTED_ON_ORDINARY_SHARE_LISTING"
+      },
+      "ordinaryShareStage": "POST_REGISTRATION_NEW_SHARES_LISTED"
+    }
+  },
+  "falsification": [
+    "Reject 93,946,031 as 2025-11-17 REGISTERED_ISSUED_COMMON_SHARES merely because the listing announcement calls it a cumulative listed total including payment certificates.",
+    "Reject 83,946,031 -> 93,946,031 registered-share step on 2025-11-17.",
+    "Do not include private-placement shares in EXCHANGE_LISTED_COMMON_SHARES.",
+    "Do not use 68,946,031 COMBINED_EXCHANGE_TRADABLE_UNITS for turnover unless the metric contract explicitly includes payment certificates in the same tradable universe."
+  ],
+  "remainingGate": "CA-113/114 still require bounded date-specific TWSE daily archive receipt around 2025-11-17 to reconcile BFT51U fields/security rows and prove coverage/revision behavior. Semantic stage is resolved; archive completeness is not.",
+  "formalCore": "LOCKED"
+}
