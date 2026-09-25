@@ -258,3 +258,273 @@ MS-009: Slippage / implementation shortfall / effective spread research and rela
 MS-010: Intraday seasonality of spread/depth/OFI in Taiwan; same-slot normalization design.
 MS-011: Data-availability audit in current Fugle/Worker pipeline; identify which fields can be captured prospectively without touching Formal Core.
 MS-012: Pre-register a minimal Shadow microstructure feature set and falsification criteria before outcome inspection.
+
+
+---
+
+## MS-007 — Queue imbalance and microprice: useful at very short horizons, but easy to over-interpret
+
+### Evidence
+Gould & Bonart (2015) test 10 liquid Nasdaq stocks and find best-bid / best-ask queue imbalance has statistically significant power for predicting the direction of the **next mid-price move**. The improvement is stronger for large-tick than small-tick stocks.
+
+Source:
+- https://arxiv.org/abs/1512.03492
+
+Stoikov's Micro-Price work treats the ordinary midprice as incomplete because the current spread and order-book imbalance shift the short-horizon fair-price estimate.
+
+Source:
+- https://papers.ssrn.com/sol3/papers.cfm?abstract_id=2970694
+
+### Constructive interpretation
+A simple best-level imbalance:
+`QI1=(bidQty1-askQty1)/(bidQty1+askQty1)`
+can carry useful information about the next very-short-horizon price move.
+
+A weighted-mid proxy can also be logged:
+`weightedMidProxy=(ask1*bidQty1 + bid1*askQty1)/(bidQty1+askQty1)`
+This is only a proxy; it must NOT be called the fitted Stoikov microprice.
+
+### Opposing interpretation
+- The documented horizon is essentially one tick / next mid-price change, not a 15m or D1 alpha guarantee.
+- Effect strength depends on tick regime and market structure.
+- Displayed queues can be canceled, so visible size is not committed demand/supply.
+- A large queue can be passive liquidity or a wall that attracts/fades flow; sign alone is insufficient.
+- Taiwan transfer requires tick-size, price-tier and session controls.
+
+### Research implication
+Use queue imbalance as an execution-state feature, not a standalone BUY trigger.
+
+Status: WORTH_SHADOW_RESEARCH.
+
+---
+
+## MS-008 — Trade direction must be inferred carefully; inferred side is not ground truth
+
+### Evidence
+Lee & Ready (1991) show two important classification problems:
+1. quote timestamps can be out of sync with the trade that caused the quote change;
+2. trades inside the quoted spread are difficult to classify.
+They propose quote / midpoint / tick-based inference procedures.
+
+Source:
+- https://doi.org/10.1111/j.1540-6261.1991.tb02683.x
+
+Later validation literature shows these algorithms can still misclassify a material share of trades, so the inferred aggressor side must be treated as a proxy rather than truth.
+
+### Fugle data semantics
+Current Fugle stock `intraday/trades` returns, when available for a trade:
+- bid
+- ask
+- price
+- size
+- time
+- serial
+
+This is enough to research quote-relative trade classification, but the schema does not itself label an explicit buyer-initiated / seller-initiated aggressor field.
+
+Fugle also exposes provider-computed inside/outside-volume style fields through `intraday/volumes` and quote/aggregate data. Those should be named as provider-side trade-pressure proxies, not true OFI.
+
+### Opposing interpretation
+- If a trade prints at the bid/ask, the quote could already have changed around it.
+- Midpoint trades remain ambiguous.
+- Vendor inside/outside volume and true order-book event OFI are different objects.
+- Do not combine an inferred trade-sign proxy and book OFI under one name.
+
+### Required naming discipline
+- `tradePressureProxy` for Fugle/provider inside-outside style measures.
+- `inferredAggressorSide` only when an explicit inference algorithm is applied.
+- `ofi` reserved for a defined order-book-event imbalance that includes quote-size changes / executions according to a frozen method.
+
+Status: DATA-SEMANTICS GUARD ADOPTED.
+
+---
+
+## MS-009 — Execution cost must be separated from signal quality
+
+### Core distinction
+A good signal can still be a bad trade if spread/slippage consumes the edge.
+
+For our system:
+- selection alpha = was the stock idea good?
+- execution alpha = did the timing / entry improve or destroy that idea?
+- realized fill quality = what price was actually obtained?
+
+Signal observation is NOT brokerage fill.
+
+### Candidate research measurements
+When a real fill exists:
+- arrivalMid = (bid1+ask1)/2 at decision timestamp
+- fillVsArrivalBps
+- fillVsAsk1Bps for buys
+- quotedSpreadBps
+- spreadPaidFraction
+- 10m / 30m post-fill markout
+- implementation-shortfall style realized cost relative to a frozen decision benchmark
+
+When no real fill exists:
+- do NOT report implementation shortfall.
+- report only executable-friction proxies such as quoted spread, plan-price distance, quote-mid distance and subsequent markout.
+
+### Positive hypothesis
+Widening normalized spread and thin ask-side depth during a chase should worsen execution alpha even if the directional signal remains correct.
+
+### Counter-hypothesis
+A spread can widen because high-value information is arriving; avoiding every wide-spread event can systematically miss the strongest moves.
+
+Status: HIGH PRIORITY FOR EXECUTION-ALPHA RESEARCH.
+
+---
+
+## MS-010 — Intraday seasonality means raw spread/depth thresholds are structurally weak
+
+### Evidence
+Taiwan-market-quality literature has documented systematic intraday patterns in spread, activity, volatility and depth. More generally, limit-order markets often show time-of-day patterns in liquidity.
+
+### Research implication
+Do NOT compare 09:05 spread/depth directly with 11:30 using one raw threshold.
+
+Preferred baseline:
+- same symbol,
+- same clock-time slot,
+- prior independent sessions only,
+- median / robust percentile rather than outcome-tuned cutoffs.
+
+Candidate fields:
+- spreadVsSameSlotMedian20
+- depth1VsSameSlotMedian20
+- depth5VsSameSlotMedian20
+- tradePressureVsSameSlotMedian20
+- transactionRateVsSameSlotMedian20
+
+### Required session separation
+- opening call auction / immediate post-open
+- normal continuous trading
+- volatility interruption / delayed matching
+- closing call auction / pre-close
+- intraday odd lot
+
+### Counter-evidence / risks
+- Same-slot baselines may need too much history for newly listed / illiquid names.
+- Structural changes in tick size or liquidity regime can stale the baseline.
+- Cross-stock normalization may still be needed when own-history coverage is poor.
+
+Status: SAME-SLOT NORMALIZATION IS THE DEFAULT RESEARCH DESIGN, not yet a Formal rule.
+
+---
+
+## MS-011 — Fugle / current Worker data-availability audit
+
+### What Fugle currently exposes
+Current official Fugle docs show:
+- REST `intraday/quote`: best-five bid/ask related quote data, last trade, limit/halt/trial/continuous flags, cumulative market state fields.
+- REST `intraday/trades`: bid, ask, trade price, size, time, serial.
+- REST `intraday/volumes`: price-level volume plus `volumeAtBid` / `volumeAtAsk`; Fugle explicitly notes opening-auction first volume is excluded from inside/outside calculation because the opening call auction may not reflect supply/demand in the same way.
+- WebSocket `books`: latest best-five bid/ask price/size and `isContinuous` / `isTrial`.
+- WebSocket `trades`: trade-by-trade bid/ask/price/size/time.
+- WebSocket supports trades / candles / books / aggregates / indices channels.
+
+### Current main-source audit
+Current repository `Worker.js` source:
+- calls Fugle `intraday/candles`;
+- calls Fugle `intraday/quote`;
+- `quotePrice()` currently extracts only closePrice / lastPrice / price;
+- source audit found no direct consumption of `intraday/trades`, `intraday/volumes`, bids/asks, `tradeVolumeAtBid`, or `tradeVolumeAtAsk`.
+
+Important boundary:
+plain main `Worker.js` is a source artifact and deploy-time guarded patches may make Production differ. Therefore this is a **source-availability finding**, not a claim that every deployed runtime path lacks these fields.
+
+### Consequence
+We do NOT need a new market-data vendor to begin microstructure Shadow research. Fugle already exposes enough prospective data for:
+1. quoted spread,
+2. top-5 depth imbalance,
+3. provider trade-pressure proxy,
+4. trial/continuous/limit/halt guards,
+5. transaction/trade-event rate,
+6. quote-to-trade state.
+
+True event-level OFI still requires a frozen event reconstruction method and prospective quote/book stream capture; it cannot be manufactured from historical candles.
+
+Status: DATA SOURCE FEASIBLE; IMPLEMENTATION NOT YET PROMOTED.
+
+---
+
+## MS-012 — Pre-registered minimal Shadow feature set
+
+Before looking at outcomes, freeze a minimum feature set to prevent Factor-Zoo expansion.
+
+### Minimal V1 feature set
+1. `msQuotedSpreadBps`
+2. `msDepthImbalance1`
+3. `msDepthImbalance5Notional`
+4. `msTradePressureProxy` = provider inside/outside pressure, explicitly NOT true OFI
+5. `msWeightedMidProxyBps` = weighted-mid proxy minus ordinary mid in bps
+6. `msTransactionRate`
+7. `msSessionState` = CONTINUOUS / TRIAL_OR_AUCTION / HALT_OR_INTERRUPTION / UNKNOWN
+8. `msPriceLimitState`
+9. same-slot-normalized versions of spread/depth/pressure where sufficient prior coverage exists
+10. provenance: capturedAt, source, pointInTimeEligible, coverage/UNKNOWN flags
+
+### Do NOT include initially
+- dozens of depth levels / horizons,
+- fitted machine-learning microprice,
+- arbitrary thresholds optimized to D5,
+- reconstructed historical OFI,
+- retrospective labels based on later breakout success.
+
+### Pre-registered positive hypotheses
+H1. Tight same-slot spread + positive pressure + positive price progress has better 10m/30m follow-through than price progress alone.
+H2. Buy pressure with no price progress has worse follow-through / larger MAE than buy pressure with proportional price response.
+H3. Widening spread during maxChase-like conditions worsens execution alpha.
+H4. Queue/depth imbalance adds incremental information after current price-volume, ATR/liquidity, Residual RS, overheat, sector and regime controls.
+
+### Pre-registered falsification
+Reject / downgrade the feature family if:
+- incremental effect disappears after existing controls;
+- result exists only in one stock, one price tier or opening minutes;
+- date-cluster leave-one-date-out direction is unstable;
+- transaction-cost / spread adjustment removes the effect;
+- signal requires outcome-tuned thresholds;
+- data coverage is too sparse or session state is ambiguous;
+- apparent effect is explained by price-limit / volatility-interruption mechanics.
+
+### Evaluation horizons
+Microstructure is primarily intraday:
+- next 1 / 5 / 10 / 15 / 30 minutes,
+- 15m BUY follow-through,
+- MFE / MAE,
+- false-breakout / retest failure,
+- executable spread / fill slippage when genuine fills exist.
+
+D1/D3/D5 may be recorded, but should not be the primary horizon for a book-state feature without evidence.
+
+### Governance
+Initial implementation can only be Class A if isolated to research logging / Shadow diagnostics with decisionImpact=false.
+Any use in Formal selection, BUY gating, maxChase, stop, capital, monitoring or notification is Class C and requires owner approval.
+
+Status: PRE-REGISTERED RESEARCH SPECIFICATION.
+
+---
+
+## Second synthesis — what we learned after the first deepening
+
+The strongest new insight is that our existing 15m logic has been looking mostly at **price/volume outcomes**, while microstructure can add **execution-state causes**:
+
+- candle says price moved;
+- volume says activity occurred;
+- spread says immediate trading friction;
+- depth says how much visible liquidity stood in the way;
+- pressure says which side was consuming/replenishing liquidity;
+- price response says whether that pressure actually moved price;
+- persistence says whether the state continued or exhausted;
+- Taiwan session flags say whether normal continuous-market interpretation is even valid.
+
+This does not justify adding a BUY condition today. It does justify a prospective Shadow capture design because the required Fugle data already exist.
+
+## Exact next continuation after MS-012
+
+MS-013: Study absorption / replenishment: strong buy pressure with weak price response versus genuine continuation.
+MS-014: Study liquidity vacuum / thin-book breakout versus depth-supported breakout.
+MS-015: Study spread/depth behavior immediately before and after failed breakouts.
+MS-016: Taiwan-specific order-imbalance evidence and investor-class findings; separate historical institutional evidence from current actionable features.
+MS-017: Compare microstructure candidate fields to existing V8.8.1 recorder spread/depth fields to eliminate duplicates before proposing any code.
+MS-018: Decide whether a fully isolated Class-A prospective capture can reuse existing execution recorder without changing Formal runtime semantics.
