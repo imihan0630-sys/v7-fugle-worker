@@ -1677,8 +1677,10 @@ Fugle current-day `intraday/trades` exposes individual trade `size`, so prospect
 
 But the documented historical candles do not include trade count.
 
+**PV-070 correction:** this limitation applies to historical *intraday* trade-count baselines from Fugle candles. Daily transaction count is available from official TWSE/TPEx closing data already fetched by Worker, so daily count/average-trade-size research is feasible at low incremental cost.
+
 ## Positive case
-Trade-count surprise may be a better information-intensity / volatility feature than raw shares alone.
+Intraday trade-count surprise may be a better information-intensity / volatility feature than raw shares alone; daily transaction-count decomposition is separately defined in PV-070/PV-073.
 
 ## Opposing case
 - evidence is from an older Taiwan OTC market structure and may not generalize to today's TWSE/TPEx;
@@ -1690,7 +1692,7 @@ Trade-count surprise may be a better information-intensity / volatility feature 
 ## Decision
 Do not burden the initial Shadow implementation. If candle-based PV features prove useful for risk but leave unexplained volatility, trade-count capture can become a second-stage prospective experiment.
 
-Status: SECOND_STAGE_ONLY / NOT_MINIMUM_SET.
+Status: INTRADAY_TRADE_COUNT_SECOND_STAGE; DAILY_COUNT_SUPERSEDED_BY_PV070_AS_FEASIBLE_TIER2.
 
 
 # PV-030 — Corporate Actions Can Break RVOL Baselines
@@ -3543,13 +3545,15 @@ Fugle documents that rate limits vary by plan and excess requests return HTTP 42
 Source:
 - https://developer.fugle.tw/docs/data/http-api/getting-started/
 
-## D1 snapshot upper bound
-Taiwan regular cash session is 270 minutes, so a complete session contains 18 x 15m slots.
+## D1 snapshot upper bound — SUPERSEDED BY PV-068
+Earlier PV-061 assumed a complete 270-minute session implied 18 observable 15m bars under the current live-monitor path. PV-068 corrected this after auditing Fugle timestamp semantics and the actual Formal cron.
+
+For **zero-extra-live-call v0.1**, the current monitor stops at 13:24, so only completed 15m bars starting 09:00 through 13:00 are observable: 17 bars/symbol.
 
 At the current Formal maximum of 6 symbols:
-- maximum if logging every completed 15m slot = 108 intraday feature snapshots / trading day.
+- current zero-extra-call ceiling = 17 x 6 = 102 intraday feature snapshots / trading day.
 
-The research experiment can log fewer if restricted to decision-relevant bars, but engineering should remain safe even at the 108-row feature-snapshot upper bound.
+Closing-auction / 13:15–13:30 research is outside this v0.1 live path unless separately designed and budgeted.
 
 ## D1 outcomes
 If B1/B2/B4 plus selected daily horizons are separate rows, outcome-row count can exceed feature-row count.
