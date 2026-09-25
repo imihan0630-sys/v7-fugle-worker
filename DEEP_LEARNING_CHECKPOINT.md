@@ -673,3 +673,13 @@ YES for research infrastructure integrity: resolving the actual archive lineage 
 - Intraday same-slot PV has a separate historical-15m baseline, but its research cohort can still be contaminated if Formal selection used stale daily history.
 - execution-shadow-v3 is design-ready but intentionally deferred; core DATA_QA and history-quality stabilization come first.
 - Formal Core remains LOCKED.
+
+## Price-Volume lane update — PV-184 through PV-190
+- Current PV research cursor: PV-001 through PV-190 complete.
+- Primary PV evidence now requires both valid PV feature data and verified Formal cohort provenance; a clean intraday feature does not make a stale-history-selected sample clean.
+- Existing prospective shadow-candidate cohorts are reused for control design; same-date stocks are not independent and date-level contrasts remain the primary inference unit.
+- Quality discoveries quarantine via overlay instead of mutating immutable snapshots.
+- Critical correction: PR #100's market-session-only history freshness is not production-ready as-is. Later Corporate Action research proves verified symbol-specific suspension days must be subtracted from expected market sessions; unknown suspension provenance fails closed.
+- Current Execution Alpha BUY-trigger statistics are sourced from the trade journal and are separate from the execution recorder's FORMAL_SIGNAL_OBSERVED scope defect.
+- Current evidence priority: symbol-session provenance/history integrity, core PV DATA_QA, recorder coverage, then optional recorder v3 / institutional-origin capture.
+- No production code, Formal rules, thresholds, ranking, capital, monitoring or push were changed in this research turn.
