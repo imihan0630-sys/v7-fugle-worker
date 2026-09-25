@@ -6735,3 +6735,112 @@ Therefore:
 ### No production change
 Research context only.
 
+
+
+## DL-002AY — Phase-Specific Informed Flow vs Generic Institutional Streak
+
+### External evidence
+Taiwan market research finds:
+- professional institutional trades can contain information related to future stock returns;
+- institutional order aggressiveness / larger professional orders have stronger price contribution per order;
+- foreign institutional order-imbalance volatility has predictive relationships in Taiwan;
+- investor-type heterogeneity matters.
+
+### Existing-system overlap
+Current Formal already tracks foreign/trust/dealer streaks and institutional alignment.
+Therefore DL-002 must NOT add another generic “institutional buying = good” score.
+
+### Incremental question
+Does WHERE informed/institutional participation appears inside a pattern matter?
+
+### Phase-specific fields
+For each pattern phase:
+- foreignNetByPhase
+- trustNetByPhase
+- dealerNetByPhase
+- institutionalAlignmentByPhase
+- institutionalAccelerationIntoMaturity
+- flowDivergenceFromPrice
+- flowDuringHandle
+- flowDuringSecondBottom
+- flowDuringFinalContraction
+- flowOnBreakout
+- flowOnRetest
+
+Where order-level research data later exists:
+- orderAggressiveness
+- largeOrderShare
+- buySellImbalance
+- orderImbalanceVolatility
+
+### Mechanism hypotheses
+ACCUMULATION_BEFORE_PRICE:
+- institutional/large-order demand improves while price remains in mature compression.
+
+CONFIRMING_FLOW:
+- price approaches pivot and professional demand strengthens.
+
+DIVERGENCE_WARNING:
+- price pattern improves while professional flow deteriorates.
+
+LATE_CHASE:
+- institutional flow arrives only after extended breakout; may add less value or indicate crowded attention.
+
+### Redundancy test
+Compare phase-specific flow against:
+- existing institutional streaks,
+- price/volume primitives,
+- Residual RS,
+- Quiet/Attention.
+
+Only retain if timing inside the pattern adds incremental information.
+
+### No production implication
+Research/Shadow only.
+
+## DL-002AZ — Price-Flow Divergence v0.1
+
+### Constructive divergence hypothesis
+Price flat/tight while informed-flow proxy improves:
+- possible hidden accumulation.
+
+### Adverse divergence hypothesis
+Price makes higher highs / approaches pivot while informed-flow proxy weakens:
+- possible distribution / weak sponsorship.
+
+### Fields
+- priceSlopePhase
+- flowSlopePhase
+- priceFlowSlopeDifference
+- priceFlowSignAgreement
+- flowLeadBars
+- priceLeadBars
+- divergencePersistence
+
+### Falsification
+A divergence may simply reflect noisy/incomplete institutional data.
+Require:
+- point-in-time valid flow coverage,
+- minimum history,
+- UNKNOWN when missing,
+- no current-data backfill into historical dates.
+
+## DL-002BA — Flow Persistence vs One-Day Shock
+
+### Question
+Is gradual/persistent sponsorship more useful than a single large flow day?
+
+### Fields
+- positiveFlowDayRatio
+- maxSingleDayFlowShare
+- flowConcentration
+- consecutivePositiveFlow
+- phaseFlowPersistence
+- flowShockZ
+- postShockPriceResponse
+
+### Relation to DL-001
+This parallels Information Discreteness:
+- gradual flow path vs one-shot attention event.
+Test whether flow persistence adds beyond price-path discreteness.
+
