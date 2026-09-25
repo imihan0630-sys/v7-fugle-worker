@@ -6,6 +6,7 @@ import {
   detectDirectionalChangeSwingsAtr,
   detectSwingScaleFamily,
   simpleAtrBeforeIndex,
+  buildFrozenResistanceZoneVersions,
   buildResistanceZones,
   detectWFromSwings,
   detectVcpFromSwings,
@@ -310,6 +311,67 @@ function scaled(bars, k) {
     const b = detectDirectionalChangeSwingsAtr({ bars, asOfDate, scaleK: 2, atrPeriod: 20 });
     assert.deepEqual(a, b);
   }
+}
+
+// Frozen structural zones: a later confirmed touch creates a successor version, not a rewrite.
+{
+  const base = Date.UTC(2026, 4, 1);
+  const bars = Array.from({ length: 45 }, (_, i) => {
+    const date = new Date(base + i * 86400000).toISOString().slice(0, 10);
+    const close = 100 + (i % 2 === 0 ? 0.1 : -0.1);
+    return {
+      date,
+      open: 100,
+      high: 100.4,
+      low: 99.6,
+      close,
+      volume: 1000,
+      turnover: 5_000_000
+    };
+  });
+  const at = i => bars[i].date;
+  const swings = [
+    { type:"HIGH", pivotAt:at(21), confirmedAt:at(23), pivotPrice:100.0 },
+    { type:"LOW",  pivotAt:at(24), confirmedAt:at(25), pivotPrice:97.0 },
+    { type:"HIGH", pivotAt:at(27), confirmedAt:at(29), pivotPrice:100.1 },
+    { type:"LOW",  pivotAt:at(30), confirmedAt:at(31), pivotPrice:97.5 },
+    { type:"HIGH", pivotAt:at(34), confirmedAt:at(36), pivotPrice:99.9 }
+  ];
+  const out = buildFrozenResistanceZoneVersions({
+    bars,
+    swings,
+    asOfDate: bars.at(-1).date,
+    scaleName: "BASE",
+    lookbackSessions: 45,
+    atrPeriod: 20,
+    atrWidthMultiple: 0.25,
+    minTouches: 2
+  });
+  assert.equal(out.status, "VALID");
+  assert.equal(out.versions.length, 2);
+  assert.equal(out.versions[0].version, 1);
+  assert.equal(out.versions[0].touchCount, 2);
+  assert.equal(out.versions[1].version, 2);
+  assert.equal(out.versions[1].touchCount, 3);
+  assert.equal(out.versions[0].zoneId, out.versions[1].zoneId);
+  assert.deepEqual(out.versions[0].anchorPivotDates, [at(21), at(27)]);
+  assert.deepEqual(out.versions[1].anchorPivotDates, [at(21), at(27), at(34)]);
+  assert.equal(out.versions[0].immutable, true);
+  assert.equal(out.versions[1].immutable, true);
+
+  // Replaying as-of the second touch must recover exactly the original first version.
+  const replay = buildFrozenResistanceZoneVersions({
+    bars,
+    swings,
+    asOfDate: at(29),
+    scaleName: "BASE",
+    lookbackSessions: 45,
+    atrPeriod: 20,
+    atrWidthMultiple: 0.25,
+    minTouches: 2
+  });
+  assert.equal(replay.versions.length, 1);
+  assert.deepEqual(replay.versions[0], out.versions[0]);
 }
 
 // Structural resistance zones need repeated confirmed swing highs.
