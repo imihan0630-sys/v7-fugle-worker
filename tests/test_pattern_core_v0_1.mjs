@@ -13,6 +13,7 @@ import {
   buildResistanceZones,
   detectWFromSwings,
   detectVcpFromSwings,
+  analyzeVcpContext,
   detectPlatform,
   classifyVShape,
   classifyCorporateActionGap,
@@ -179,6 +180,44 @@ function scaled(bars, k) {
   assert.equal(vcp.mature, false);
   assert.equal(vcp.maturityStatus, "TOPOLOGY_ONLY_NEEDS_RANGE_VOLUME");
   assert.equal(vcp.wideLoose, true);
+}
+
+// VCP full context: shrinking contractions + improving lows + declining sell volume/range can mature
+// only when prior-trend context is compatible. No future return is consulted.
+{
+  const closes = [90,95,100,91,82,90,98,93,88,94,97,94,92,93,93.5,94,94.2];
+  const volumes = [220,240,300,280,260,230,200,180,160,140,120,100,80,70,60,55,50];
+  const bars = makeBars(closes, { volume:volumes, turnover:closes.map((_,i)=>5_000_000-i*100_000) });
+  const swings = [
+    { type:"HIGH", pivotAt:bars[2].date, confirmedAt:bars[4].date, pivotPrice:100, pivotIndex:2 },
+    { type:"LOW",  pivotAt:bars[4].date, confirmedAt:bars[5].date, pivotPrice:82,  pivotIndex:4 },
+    { type:"HIGH", pivotAt:bars[6].date, confirmedAt:bars[8].date, pivotPrice:98,  pivotIndex:6 },
+    { type:"LOW",  pivotAt:bars[8].date, confirmedAt:bars[9].date, pivotPrice:88,  pivotIndex:8 },
+    { type:"HIGH", pivotAt:bars[10].date, confirmedAt:bars[12].date, pivotPrice:97, pivotIndex:10 },
+    { type:"LOW",  pivotAt:bars[12].date, confirmedAt:bars[13].date, pivotPrice:92, pivotIndex:12 }
+  ];
+  const mature = analyzeVcpContext({
+    bars, swings, asOfDate:bars.at(-1).date, priorTrendState:"UPTREND", finalWindowBars:5
+  });
+  assert.equal(mature.status, "VALID");
+  assert.equal(mature.contractionCount, 3);
+  assert.ok(mature.depthMonotonicity > 0);
+  assert.ok(mature.lowProgression > 0);
+  assert.equal(mature.downVolumeDecay, true);
+  assert.equal(mature.downRangeDecay, true);
+  assert.ok(mature.finalDryUpRatio < 1);
+  assert.ok(mature.finalRangeRatio < 1);
+  assert.equal(mature.maturityState, "MATURE");
+
+  const wrongContext = analyzeVcpContext({
+    bars, swings, asOfDate:bars.at(-1).date, priorTrendState:"DOWNTREND", finalWindowBars:5
+  });
+  assert.equal(wrongContext.maturityState, "GENERIC_COMPRESSION_NOT_CONTINUATION_VCP");
+
+  const unknownContext = analyzeVcpContext({
+    bars, swings, asOfDate:bars.at(-1).date, priorTrendState:"UNKNOWN", finalWindowBars:5
+  });
+  assert.equal(unknownContext.maturityState, "VALID_CONTEXT_UNKNOWN");
 }
 
 // C3 ex-dividend mechanical reset: raw price is guarded; residual morphology gap is tested separately.
