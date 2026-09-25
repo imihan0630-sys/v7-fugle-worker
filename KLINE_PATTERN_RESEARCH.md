@@ -11234,3 +11234,230 @@ NOT v1.
 Rule-based graph queries first.
 Similarity only if it adds incremental evidence.
 
+
+
+## DL-002FL — Cup Roundness Without Eyeballing v0.2
+
+### Problem
+“U-shaped, not V-shaped” is too subjective for reproducible research.
+
+### Normalize cup segment
+Between left rim L and right recovery R:
+- x = normalized trading-time position [0,1]
+- y = (price - bottomReference) / (rimReference - bottomReference)
+where y≈0 near bottom and y≈1 near rim.
+
+Use adjusted close for path and confirmed swing extremes for anchors.
+
+### Interpretable roundness components
+BOTTOM_RESIDENCE
+- fraction of cup bars with y <= q, where q is a pre-registered geometric band.
+- a V tends to spend little time near the bottom.
+
+BOTTOM_WIDTH
+- normalized time between first and last entry into bottom band.
+
+DECLINE_RECOVERY_BALANCE
+- ratio / difference of L->B and B->R durations.
+
+TURN_SMOOTHNESS
+- number/magnitude of slope sign reversals around bottom after smoothing with a fixed, pre-registered local method.
+
+MAX_SINGLE_REVERSAL_SHARE
+- fraction of total recovery accomplished in the largest one/few bars immediately after B.
+- large value indicates sharp V recovery.
+
+MICRO_SWING_BOTTOM_STRUCTURE
+- number and amplitude of MICRO swings near bottom.
+
+### Roundness descriptor
+Do not force a single score initially.
+Store component vector.
+
+Optional descriptive classification:
+V_LIKE
+ROUND_BOTTOM
+ASYMMETRIC_U
+CHOPPY_BOTTOM
+UNKNOWN
+
+### Why no polynomial “perfect U” fit initially
+A quadratic fit can reward visually smooth but economically irrelevant curves and adds model-choice freedom.
+Use transparent path components first.
+Curve-template distance remains a secondary benchmark.
+
+## DL-002FM — W Trough Equivalence via Zones, Not Arbitrary Percentages
+
+### Problem
+“Second low within 3% of first low” is arbitrary across:
+- price tiers
+- volatility regimes
+- tick sizes.
+
+### Zone-based equivalence
+Construct a support uncertainty zone around L1 using:
+- tick minimum,
+- lagged ATR uncertainty,
+- structural source dispersion.
+
+Classify L2:
+HIGHER_LOW:
+- L2’s uncertainty zone clearly above L1 zone.
+
+EQUAL_ZONE:
+- L2 zone overlaps materially with L1 support zone.
+
+UNDERCUT:
+- L2 extreme penetrates below L1 zone.
+
+UNDERCUT_RECLAIM:
+- L2 penetrates below, then a later close re-enters/accepts the original support zone.
+
+DEEP_BREAK:
+- penetration materially exceeds zone and no timely reclaim observed.
+
+### Continuous fields remain
+- low2VsLow1Pct
+- low2VsLow1ATR
+- low2VsLow1Ticks
+- overlapRatio
+- penetrationDepth
+- reclaimBars
+
+Do not collapse research to categories only.
+
+### Benefit
+Tolerance adapts to market granularity/volatility without outcome-fitting one universal percent.
+
+## DL-002FN — Neckline as Intervening Structural Zone
+
+### W neckline
+Do not simply use one highest bar between L1/L2.
+
+Candidate anchors:
+- confirmed BASE swing highs between lows,
+- repeated local rejection highs,
+- round-price/major-zone context only as secondary evidence.
+
+### If one clear swing high
+neckline = its uncertainty zone.
+
+### If several nearby highs
+cluster them into a resistance zone using DL-002EA.
+
+### If highs are widely dispersed
+necklineAmbiguity = HIGH.
+Pattern fit confidence decreases.
+
+### Fields
+- necklineAnchorCount
+- necklineZoneWidth
+- necklineCenter
+- necklineAmbiguity
+- necklineScaleAgreement
+- distanceToNeckline
+
+## DL-002FO — Flag / Channel Boundary Fitting v0.2
+
+### Problem
+Drawing two trendlines by eye creates hindsight freedom.
+
+### Input
+Use confirmed swing highs/lows only inside the consolidation after pole.
+
+### Upper boundary
+Fit robust line to relevant confirmed swing highs.
+
+### Lower boundary
+Fit robust line to confirmed swing lows.
+
+Store:
+- upperSlope
+- lowerSlope
+- upperFitErrorATR
+- lowerFitErrorATR
+- contactCountUpper
+- contactCountLower
+- channelWidthStart/End
+- convergenceRate
+
+### Minimum evidence
+Two points mathematically define a line but provide no robustness.
+With only two contacts:
+boundaryConfidence = LOW.
+Three or more confirmed contacts / cluster evidence raises confidence.
+
+### Geometry
+FLAG_DOWN:
+- upper/lower slopes both negative and roughly parallel.
+
+PENNANT:
+- upper slope negative / lower slope positive or otherwise converging.
+
+PLATFORM:
+- both near flat within uncertainty.
+
+EXPANDING:
+- width grows over time.
+
+### Do not outcome-tune “parallel”
+Store slope difference continuously.
+Classification tolerances pre-registered geometrically.
+
+## DL-002FP — VCP Contractions via Swing-Zone Graph
+
+### More exact definition
+From a major/base resistance reference:
+identify sequential down legs:
+H1 -> L1
+H2 -> L2
+H3 -> L3 ...
+
+Each H/L must be chronological confirmed nodes.
+
+Contraction depth:
+D_i = (H_i - L_i)/H_i.
+
+Recovery:
+R_i = (H_{i+1} - L_i)/(H_i-L_i).
+
+Support progression:
+compare L_i zones, not only point lows.
+
+### Important alternative structures
+If H_i progressively declines too much:
+may be descending triangle / weak recovery, not healthy VCP.
+
+Therefore store:
+- highProgression
+- lowProgression
+- recoveryRatioSequence
+- resistanceConvergence
+
+### Constructive VCP hypothesis
+Not merely shrinking D_i.
+Potential geometry:
+- D_i declines,
+- lows rise/hold,
+- highs remain near pivot / recover strongly,
+- final range tightens,
+- supply/volume declines.
+
+### Weak pseudo-VCP
+Shrinking depth because:
+- every rebound is weaker,
+- highs trend sharply lower,
+- price drifts away from pivot.
+
+This must be separated from genuine tightening near resistance.
+
+### New field
+pivotCompressionQuality:
+interaction of
+- depth contraction
+- low progression
+- recovery quality
+- distance to pivot
+
+Store components before any composite score.
+
