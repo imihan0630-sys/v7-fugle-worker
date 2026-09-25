@@ -9990,3 +9990,206 @@ Stratify by:
 ZONE_CLUSTERING_V0_1_DEFINITION_FROZEN.
 No Formal support/breakout level is changed.
 
+
+
+## DL-002EE — Pattern Research Data-Readiness Matrix v0.1
+
+### Purpose
+DL-002 now contains many hypotheses with very different data requirements.
+Do not let data availability silently determine truth.
+Every feature family must state whether it is:
+- READY_CURRENT
+- READY_WITH_SEPARATE_RESEARCH_FETCH
+- PROSPECTIVE_ONLY
+- DATA_BLOCKED
+- REDUNDANT / DEPRIORITIZED
+
+### READY_CURRENT — usable from existing point-in-time daily research fields/history, subject to current ~65-bar horizon
+Can study now on shorter structures:
+- current MA/trend context
+- priorHigh20 / priorHigh60
+- priorLow20
+- current rightFootHigher proxy
+- daily high/low/close geometry
+- ATR / volatility20
+- volume 5/20 relationships
+- daily close position / upper shadow for current bar
+- ret20/ret60
+- current liquidity / sector / institutional context already stored point-in-time
+- existing R01/D1/D3/D5/D10/MFE/MAE outcomes
+- failure/retest outcomes where recorder coverage is proven
+
+Limits:
+- current history cache omits historical open
+- current live cache horizon is too short for many multi-month bases
+- not enough to validate full DL-002
+
+### READY_WITH_SEPARATE_RESEARCH_FETCH — source supports it, but isolate from live cache
+Required for:
+- raw historical OPEN
+- adjusted OHLC
+- 120/252-day or longer morphology
+- long cup/handle
+- long W spacing
+- long-horizon extrema / 52-week references
+- historical candlesticks
+- capital-gains-overhang / cost-basis proxies
+- weekly completed-bar reconstruction
+- modern historical intraday minute analysis from 2023-05-23 onward
+- closing-auction decomposition
+- gap/intraday-vs-overnight decomposition
+
+Design:
+separate research fetch/cache so the live Formal history path is untouched.
+
+### PROSPECTIVE_ONLY — cannot credibly reconstruct full historical state
+- exact current-day volume-at-price snapshots
+- bid/ask volume-by-price side
+- dynamic best-five order-book imbalance
+- queue depletion/replenishment
+- exact trade-flow around a future pivot/retest
+- prospective Pattern Shadow state snapshots
+- any future point-in-time ownership/free-float data not available historically
+
+Rule:
+firstObservationDate must be stored; no historical fabrication.
+
+### EXTERNAL_POINT_IN_TIME_REQUIRED
+Possible only with trustworthy date-stamped external evidence:
+- corporate actions
+- monthly revenue / earnings event timestamp
+- true SBL short-sale flow
+- margin financing/short balances
+- ownership/free float
+- institutional ownership
+- sector membership
+- regulatory attention/disposition labels
+
+Current-value backfill into historical dates is prohibited.
+
+### DATA_BLOCKED until source semantics are solved
+- historical exact five-level queue
+- historical exact volume-at-price before prospective collection if no trade-level archive
+- exact investor cost basis
+- investor identity from aggregate volume
+- intraday high/low ordering from daily OHLC alone
+
+### REDUNDANT / DEPRIORITIZED
+No dedicated data engineering for:
+- Fibonacci ratios
+- Elliott labels
+- generic Ichimoku
+- Renko
+- Hurst/fractal features
+- large indicator zoo
+
+Unless new evidence changes priority.
+
+## DL-002EF — Minimum Viable Pattern Shadow v1
+
+### Goal
+Start with the smallest research layer that can answer the highest-value questions without waiting for every advanced data source.
+
+### v1 required inputs
+Separate research daily history:
+- raw O/H/L/C
+- adjusted O/H/L/C
+- volume
+- turnover
+- at least 252 trading days when available
+- source/fetchedAt/dataThrough
+- corporate-action handling/provenance
+Existing point-in-time research context:
+- Formal cohort / reasons
+- liquidity
+- regime
+- sector
+- Residual RS when valid
+- institutional point-in-time fields
+- existing outcome updater
+
+### v1 detectors
+1. repaint-safe MICRO/BASE/MAJOR swings
+2. 1D S/R zone clustering
+3. latent primitives P1-P8
+4. VCP v0.1
+5. W v0.1
+6. cup/handle v0.1
+7. flag/platform v0.1
+8. positive/negative motifs
+9. pattern maturity/lifecycle
+10. local-vs-major resistance conflict
+11. data/stability confidence
+
+### Explicitly NOT in v1
+- order book
+- exact volume profile
+- complex ML/DTW production scoring
+- cost basis as a required gate
+- Hurst/fractal
+- Fibonacci/Elliott
+- new Formal score
+- live push/monitoring changes
+
+### Why
+This isolates whether TOPOLOGY itself adds value before spending complexity budget on microstructure.
+
+### v1 output
+For every existing research cohort row:
+- primitive vector
+- matching pattern families
+- maturity state
+- key zones
+- negative morphology flags
+- scale stability
+- no-lookahead status
+- missingness/data quality
+- decisionImpact=false
+
+### v1 success question
+Does point-in-time topology improve explanation of forward outcomes beyond the existing Formal/research feature set?
+
+Not:
+“Can we build the fanciest pattern detector?”
+
+## DL-002EG — Pattern Shadow v2 / v3 Sequencing
+
+### v2 only after v1 evidence
+Add:
+- event interactions
+- short flow
+- holder-cost proxy
+- sector pattern synchrony
+- turnover/attention lifecycle
+- closing-auction quality
+
+### v3 only if incremental evidence justifies data burden
+Add prospective:
+- exact volume-at-price
+- dynamic order book
+- trade-flow absorption
+- constrained shape similarity / motif discovery
+
+### Kill switch
+If v1 topology itself shows no stable incremental value:
+do not build v2/v3 merely because data is available.
+
+## DL-002EH — Research Architecture Principle: Evidence Before Data Complexity
+
+### Rule
+Higher-resolution data is not automatically higher-value information.
+
+Daily topology can fail.
+Minute data can fail.
+Order-book data can fail.
+
+The correct sequence is:
+1. simple baseline
+2. topology
+3. context
+4. microstructure
+
+At each step require incremental evidence before advancing.
+
+This prevents engineering complexity from outrunning statistical evidence.
+
