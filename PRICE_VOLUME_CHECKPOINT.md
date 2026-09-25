@@ -238,3 +238,21 @@ Class A if research-only; Class C if later used in formal 15m confirmation.
 5. PV-062: define dashboard/report outputs that expose evidence without affecting Formal action.
 6. After PV-058~062, research-only implementation may be proposed as a self-contained Class A change.
 7. Formal Core remains LOCKED.
+
+## Progress added — PV-058 through PV-062
+- PV-058 freezes channel-specific false/no-follow-through labels. B reuses current Formal breakout *0.995 / retestLow semantics; A reuses frozen buyLow/stop. Threshold-free no-close/no-high-progress outcomes are also stored with continuous MFE/MAE.
+- PV-059 separates same-session B1/B2/B4 15m horizons from overnight/NEXT_SESSION and D1/D3/D5/D10 trading-day horizons. A late-session event that cannot complete B4 is INCOMPLETE, never rolled into the next day.
+- PV-060 defines idempotent outcome finalization. Feature snapshots remain immutable; outcomes upsert by snapshot_id+horizon only after source bars/dates are complete. Repeated every-minute cron runs must not create duplicates or mutate completed outcomes.
+- PV-061 audits resource design against current Worker: max 6 monitored symbols, every-minute Quote, 10m/15m refresh only after close. PV v0.1 should add zero live candle calls during ordinary monitoring by reusing existing frame15. Historical 15m baseline bootstraps once per newly monitored symbol and then rolls forward.
+- At 18 fifteen-minute slots x 6 symbols, the worst-case full-bar logging ceiling is 108 PV feature snapshots per trading day before outcomes. Never write duplicates every minute.
+- PV-062 defines a research/admin reporting surface only: counts, coverage, guards, A/B channel, regime/session splits, model A→E comparisons, false/no-progress and MFE/MAE. No trade instruction or push semantics.
+- Formal Core remains unchanged / LOCKED.
+
+## Revised exact next continuation point after PV-062
+1. PV-063: define exact pvResponseState formulas using ATR/range/close-location and robust participation, including price-limit/auction guards.
+2. PV-064: define exact pvAcceptanceState transitions for A and B separately, with immutable timestamps.
+3. PV-065: define pvPersistenceState thresholds/quantiles without outcome tuning.
+4. PV-066: define pvGuardState precedence when multiple guards coexist.
+5. PV-067: turn PRICE_VOLUME_SHADOW_SPEC.md into implementation-ready pseudocode/test cases, still without modifying Worker.js.
+6. Only after PV-063~067 consider a Class A research-only implementation proposal.
+7. Formal Core remains LOCKED.
