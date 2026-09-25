@@ -380,3 +380,16 @@ Updated: 2026-09-25 23:33 Asia/Taipei.
 - Current statuses: CA-113 = `TPEX_BOUNDED_PUBLIC_LANE_VALIDATED / S38_BYTES_PENDING / TWSE_EXACT_LISTED_ARCHIVE_PENDING`; CA-114 = `DAILY_ISSUED_REPORT_CONFLICT_CONFIRMED / EXACT_LISTED_TRADABLE_ARCHIVE_PENDING`.
 - Formal Core/A-B/ranking/thresholds/3+3+3/capital/entry/add/reduce/sell/stop/monitor/push remain unchanged. No Worker.js wiring, PR merge or Production deployment.
 - Exact continuation: acquire BFT51U `上市股數` or equivalent exact historical TWSE listed-share artifacts around 2465 2025-11-11..18 and resolve payment-certificate representation; continue immutable TPEx S38 byte/hash completeness if feasible; only then consider CA-115 readiness re-evaluation.
+
+
+## B-141 — CA-115 interim readiness remains NO-GO (2026-09-26 Asia/Taipei)
+- Fresh canonical read continued from B-140. CA-113/114 were not restarted; independently advanced Price-Volume work was not touched.
+- CA-115 interim readiness was evaluated because CA-113/114 now have materially stronger bounded evidence, but the result is NO_GO_DATA_PROVENANCE_GATES rather than implementation readiness.
+- Passed: CA-111 unit semantics; CA-112 TPEx S38 field/unit parser contract; CA-113 TPEx public historical reconciliation across independent eras plus verified-suspension negative control; CA-114 2465 instrument-stage semantics and MI_QFIIS non-equivalence falsification.
+- New independent counterevidence: official TWSE 2465 stock profile produced 2025-11-22 still reports paid-in capital NT$839,460,310 while its own price/volume table shows ordinary 2465 trading on 2025-11-17..21. This independently rejects interpreting MI_QFIIS 93,946,031 as contemporaneous registered common shares.
+- Remaining blockers: bounded historical TWSE BFT51U 上市股數/payment-certificate representation around 2025-11-17; immutable TPEx S38 bytes/hash/revision provenance; historical first-known timing. Ex-post historical query completeness is not point-in-time vintage proof.
+- Payment-certificate combined tradable denominator remains metric-specific UNKNOWN unless a contemporaneous source contract explicitly combines ordinary listed shares and certificate units.
+- Bias/quality: no outcome-driven denominator choice, no current-state backfill, no missing=0/BAD, no alpha test, no historical Shadow fabrication, no Factor Zoo expansion, R01-R08/I01-I07 unchanged.
+- Engineering: attempted a dedicated CA-115 JSON artifact through the normal contents API, but the mutation was blocked before commit. No claim that artifact exists. This checkpoint records the research result only if this write succeeds.
+- Formal Core remains LOCKED; no Worker.js wiring, PR merge, deployment, ranking/threshold/capital/monitor/push change.
+- Exact next continuation: continue CA-113 immutable TPEx archive provenance; continue CA-114 exact TWSE listed-share/payment-certificate daily representation around 2025-11-17; repeat CA-115 only after those provenance gates materially improve.
