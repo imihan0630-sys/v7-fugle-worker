@@ -1821,3 +1821,206 @@ CA-052: freeze official MFI94U offline source contract and coverage rules.
 CA-053: define Price-Index vs Total-Return Shadow result schema.
 CA-054: audit action-specific benchmark-treatment edge cases such as rights offerings and mixed cash+stock distributions.
 CA-055: update checkpoints and freeze the next empirical data-build step.
+
+
+---
+
+## CA-052 — Official MFI94U offline source contract
+
+Official TWSE sources are sufficient for an offline Total-Return benchmark archive.
+
+### Source
+TAIEX Total Return:
+- provider = TWSE;
+- report = MFI94U;
+- official OpenAPI catalog path = /indicesReport/MFI94U;
+- human/history page = /indicesReport/MFI94U.
+
+TAIEX Price Index:
+- keep the current Formal FMTQIK source for legacy/price-index comparison.
+
+### Canonical offline record
+- marketDate;
+- taiExPriceClose;
+- taiExTotalReturnClose;
+- priceSourceUrl;
+- totalReturnSourceUrl;
+- sourceFetchedAt;
+- sourcePayloadHash/version;
+- coverageQuality;
+- unknownReasons.
+
+### Coverage gate
+For each target scan date:
+- exact target date must exist in both series;
+- exact return-start date used by the stock must exist;
+- no duplicate dates;
+- no future dates;
+- no interpolation;
+- no nearest-date substitution;
+- no absence-as-zero.
+
+For a 20-day comparison the source must support the same exact pair of trading dates as the stock return definition.
+
+### Historical-vintage note
+TAIEX index values are official end-of-day index facts rather than later analyst estimates, but offline archive still records source fetch time/hash for reproducibility.
+
+### Architecture
+Offline/Research only.
+No Worker call, cron dependency or production quality gate is authorized.
+
+Status: OFFICIAL TOTAL-RETURN OFFLINE SOURCE CONTRACT FROZEN.
+
+---
+
+## CA-053 — RS Shadow result schema
+
+Per symbol / target date:
+
+Identity:
+- targetDate;
+- symbol;
+- pool;
+- existingFormalRank;
+- actionCoverageComplete;
+- actionEventsInWindow;
+- dataQuality.
+
+Returns:
+- legacyRawRet20;
+- technicalRet20;
+- priceIndexComparableRet20;
+- totalReturnComparableRet20;
+- taiExPriceReturn20;
+- taiExTotalReturn20.
+
+RS:
+- legacyRs;
+- priceCompatRs;
+- totalReturnRs.
+
+Ranking diagnostics:
+- legacyRsComponent;
+- priceCompatRsComponent;
+- totalReturnRsComponent;
+- legacyPriorityScore;
+- priceCompatCounterfactualPriorityScore;
+- totalReturnCounterfactualPriorityScore;
+- legacyRank;
+- priceCompatShadowRank;
+- totalReturnShadowRank;
+- legacyTop3;
+- priceCompatShadowTop3;
+- totalReturnShadowTop3.
+
+Controls:
+- noActionWindow;
+- priceCompatEqualsLegacyWhenExpected;
+- unknownReasons;
+- researchOnly=true;
+- decisionImpact=false.
+
+### Freeze all other factors
+For the first RS semantic comparison:
+- A/B channel state;
+- setupQuality;
+- sector score;
+- institutional score;
+- fundamentals;
+- RR;
+must be held fixed.
+
+This isolates ranking impact from RS semantics rather than mixing in the separate technical-continuity fix.
+
+Status: RS SHADOW RESULT SCHEMA FROZEN.
+
+---
+
+## CA-054 — Mixed corporate actions require mode-specific factors, not a Boolean flag
+
+The V2 research prototype used:
+- one priceFactor;
+- a Boolean priceIndexAdjusts.
+
+This is insufficient for mixed distributions.
+
+### Example: cash + stock dividend on the same ex-date
+
+Suppose:
+- previous close P0 = 100;
+- cash dividend D = 5;
+- stock dividend ratio s = 10%;
+- no other terms.
+
+Mechanical ex-date reference:
+(100 - 5) / 1.10 = 86.3636.
+
+Technical / total-return continuity factor:
+86.3636 / 100 = 0.863636.
+
+But a Price-Index-Comparable stock series should:
+- neutralize the 10% stock-distribution unit effect;
+- retain the 5% cash-dividend drag.
+
+Its pre-event comparable close should be:
+100 / 1.10 = 90.9091.
+
+Therefore its factor is:
+0.909091,
+not:
+- 1.0;
+- and not the full 0.863636 reference factor.
+
+If the event-day price equals the theoretical 86.3636:
+- technical/total-return mode shows roughly 0% mechanical return;
+- price-index-compatible mode shows about -5%, preserving cash-dividend drag.
+
+### Revised event contract
+Each event may need separate explicit factors:
+- technicalPriceFactor;
+- priceIndexComparableFactor;
+- totalReturnComparableFactor.
+
+A generic referencePrice/previousClose factor may populate technical/total-return mode for simple verified cases.
+It must NOT automatically populate Price-Index-Comparable mode for mixed cash distributions.
+
+### Rights offerings
+Cash capital increase / rights events also require formula-specific treatment because subscription price and entitlement value enter reference mechanics.
+Do not infer price-index factor from action label alone.
+
+### Unknown rule
+If a mode-specific factor cannot be verified:
+- that return mode is UNKNOWN for that event/window;
+- do not substitute another mode's factor.
+
+Status: MODE-SPECIFIC FACTOR MODEL REQUIRED.
+
+---
+
+## CA-055 — Evidence state after benchmark-semantic deepening
+
+What is now established:
+- raw technical history can be mechanically wrong around corporate actions;
+- technical continuity can fix real A/B state distortions;
+- volume requires separate unit/supply semantics;
+- present-day provider adjusted history is not point-in-time replay truth;
+- current Formal RS uses the TAIEX Price Index;
+- official TAIEX Total Return history is available from TWSE;
+- technical-return and ranking-return semantics must be separated;
+- mixed cash+stock actions require mode-specific factors.
+
+What is NOT established:
+- which RS definition is better for future returns;
+- whether Formal should change benchmark;
+- a complete point-in-time corporate-action registry across the whole market;
+- correct historical volume normalization for SUPPLY_CHANGE events.
+
+No Formal change is approved.
+
+## Exact next continuation
+
+CA-056: revise branch prototype from Boolean price-index adjustment to explicit mode-specific factors.
+CA-057: revise branch tests with a synthetic mixed cash+stock event that distinguishes 0%, -5% and raw semantics.
+CA-058: add an offline MFI94U source-contract document; no runtime code.
+CA-059: compare branch to main again and checkpoint.
+CA-060: next evidence target = automated construction of a small official corporate-action registry sample, not more indicators.
