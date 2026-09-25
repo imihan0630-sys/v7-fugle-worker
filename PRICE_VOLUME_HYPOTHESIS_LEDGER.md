@@ -153,3 +153,18 @@ Current research schema: PV_SHADOW_V0_1
 - FIRST_30M_COMPLETE is a milestone timestamp; current payload stores frame10/frame15, not a dedicated frame30.
 - Current recorder endpoint is bounded by SQL LIMIT 500 and recent-row output, so it cannot prove full-window event completeness.
 - Status: DATA_QUALITY_BLOCKED_PENDING_LIVE_COVERAGE_AUDIT.
+
+## Global PV cohort-quality prerequisite after PV-175/PV-177
+- H001~H004 use Formal selected/monitored cohorts by design. Primary inference now requires two independent quality dimensions:
+  1. PV feature data quality;
+  2. Formal cohort history-freshness quality.
+- A clean 15m PV snapshot does not rescue a candidate that entered the cohort from stale/incomplete Formal daily history.
+- Until production daily-history freshness is verified, rows with unverified cohort provenance remain DATA_QA / separate subgroup and are excluded from the primary clean H001~H004 inference.
+- 2026-09-24 is specifically DATA_QUALITY_STALE_HISTORY for rolling-history-dependent Formal/PV research based on B-130 evidence.
+
+### PV-H006 audit update after PV-168~183
+- Future execution-shadow-v3 can improve H006-B and partially H006-C with zero extra Quote API calls by preserving referencePrice, true lastTrade time, cumulative trade totals, AtBid/AtAsk, transaction count and raw top-five levels.
+- H006-D still requires denser prospective book/trade data for replenishment/resiliency.
+- Current FORMAL_SIGNAL_OBSERVED recorder semantics are batch-triggered; rows without independently matched same-symbol notification are EVENT_SCOPE_AMBIGUOUS and excluded from signal-event inference.
+- Interval pressure requires valid monotonic cumulative counters and explicit unclassified-volume coverage.
+- Status remains PLANNED / DATA_QUALITY_BLOCKED.
