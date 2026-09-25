@@ -2921,3 +2921,189 @@ CA-082: design historical bounded-period ingestion from official CSV/page artifa
 CA-083: add systematic no-action controls matched by date, price tier, liquidity and sector.
 CA-084: quantify how long raw-vs-continuity feature contamination persists after each action without using future return.
 CA-085: test interaction with history-freshness PR #100 and Pattern raw/adjusted dual-space rules.
+
+
+---
+
+## CA-081 — Prospective daily corporate-action archive contract
+
+New specification:
+CORPORATE_ACTION_ARCHIVE_SPEC.md
+
+Prospective archive sources:
+- TWSE TWT48U_ALL snapshots;
+- TWSE Official Document Announcements;
+- capital-reduction/par-value announcement/reference pages;
+- MOPS first-known filings and corrections;
+- TWSE FMTQIK/MFI94U benchmark snapshots.
+
+Every capture preserves:
+- fetchedAt;
+- payload hash;
+- parser version;
+- source status;
+- event version;
+- first-known/final-schedule-known timing;
+- supersession chain.
+
+No final event version may overwrite an earlier historical vintage.
+
+Status: PROSPECTIVE ARCHIVE CONTRACT FROZEN.
+
+---
+
+## CA-082 — Historical bounded ingestion requires completeness receipts
+
+For every historical interval and frozen stock universe, ingestion must emit a completeness receipt.
+
+Required receipt fields:
+- interval;
+- universe version/count;
+- source coverage by action type;
+- expected/observed/verified/unknown event counts;
+- parser failures;
+- missing source dates;
+- revision coverage;
+- artifact hashes.
+
+### Critical no-event rule
+NO_EVENT is legal only after every relevant event-source family is complete for that symbol/window.
+
+Otherwise:
+EVENT_COVERAGE_UNKNOWN.
+
+This prevents missing corporate-action data from silently becoming a clean no-action control.
+
+Status: HISTORICAL COMPLETENESS RECEIPT CONTRACT FROZEN.
+
+---
+
+## CA-083 — Systematic no-action control matching design
+
+No-action controls must not be arbitrary famous stocks.
+
+For each action window, candidate controls should match point-in-time on:
+- market date/regime;
+- exchange;
+- sector/industry where feasible;
+- price tier including thousand-dollar pool;
+- ADV/liquidity bucket;
+- market-cap bucket;
+- pre-event 20d/60d trend bucket;
+- volatility bucket.
+
+Exclude controls with:
+- any unresolved corporate action inside the relevant 60-session feature window;
+- suspension/halting ambiguity;
+- incomplete history;
+- event-coverage UNKNOWN.
+
+### Purpose
+Controls answer:
+“Would raw and continuity pipelines be identical when no mechanical event exists?”
+
+They are not selected to maximize outcome contrast.
+
+### Outcome firewall
+Matched controls can validate:
+- identity;
+- feature-distribution stability;
+- false transformation rate.
+
+They must not be used for alpha tuning until the event/control denominator is complete.
+
+Status: MATCHED NO-ACTION CONTROL DESIGN FROZEN / SAMPLE BUILD PENDING.
+
+---
+
+## CA-084 — Corporate-action contamination persists far beyond event day
+
+Artifact:
+research/corporate_action_contamination_persistence_v0_1.json
+
+Raw versus point-in-time continuity features were compared across post-event trading days without using forward-return outcomes.
+
+### 2412
+Observed 55 post-event trading days through 2026-09-24.
+- numeric feature differences still present on day 54;
+- A/B condition differences last observed day 46;
+- full A/B pass-state difference last observed day 34.
+Numeric convergence is right-censored because later data were not yet available.
+
+### 3593
+- numeric differences through trading-day offset 59;
+- A/B condition differences through offset 54;
+- full pass-state differences through offset 54.
+
+### 8103
+- numeric differences through offset 59;
+- A/B condition differences through offset 14;
+- full pass-state differences through offset 12.
+
+### 8422
+- numeric differences through offset 59;
+- A/B condition differences through offset 50;
+- full pass-state differences through offset 30.
+
+### Structural explanation
+This is expected from the feature architecture:
+- MA5/10 recover quickly;
+- 20-session return/MA/ATR/high-low/volume windows can carry contamination for roughly 20 sessions;
+- MA60/ret60/priorHigh60 can carry it for roughly 60 sessions.
+
+Therefore an event-day-only exclusion is insufficient.
+
+Status: ROLLING-WINDOW CONTAMINATION PERSISTENCE = EMPIRICALLY CONFIRMED.
+
+---
+
+## CA-085 — Critical interaction with history-freshness PR #100
+
+PR #100 correctly addresses stale/gapped all-market history, but the current proposed invariant uses market-wide official trading sessions.
+
+Corporate-action research exposes a separate legitimate gap class:
+**symbol-specific trading suspension.**
+
+Verified examples:
+- 8422 last old-share trade 2025-11-05, resumed 2025-11-17;
+- 3593 last old-share trade 2025-12-10, resumed 2025-12-22;
+- 8103 has the same capital-reduction suspension/resumption structure.
+
+For a resume-day target, a validator that requires the immediately prior market-wide trading session can falsely classify a valid suspended symbol as stale.
+
+### Required ordering
+
+1. Market calendar proves which dates were exchange sessions.
+2. Symbol-specific suspension archive proves which sessions the symbol was not supposed to trade.
+3. Freshness validator checks expected SYMBOL sessions, not blindly every market session.
+4. Only then can corporate-action continuity transform the valid raw history.
+5. Pattern/K-line raw-vs-adjusted dual-space logic consumes the validated series.
+
+### Fail-closed rule
+If suspension provenance is unavailable:
+UNKNOWN / DATA_INCOMPLETE.
+
+Do not:
+- invent bars;
+- forward-fill suspended sessions;
+- call the history fresh merely because a corporate action is suspected.
+
+### Action taken
+A blocking research comment was added to draft PR #100 requesting suspension-aware tests before any merge/deploy.
+
+This preserves B-130 stale-history protection while avoiding a new false-rejection class.
+
+### Pattern lane integration
+K-line/Pattern research already requires explicit raw vs adjusted price space and corporate-action flags.
+Corporate Actions should own the point-in-time event/continuity semantics.
+Pattern research should consume those semantics rather than independently invent another adjustment method.
+
+Status: CROSS-LANE INTEGRATION DEFECT FOUND / PR #100 MERGE SHOULD REMAIN BLOCKED UNTIL SUSPENSION SEMANTICS ARE TESTED.
+
+## Exact next continuation after CA-085
+
+CA-086: specify symbol-session calendar = market sessions minus verified symbol suspensions.
+CA-087: create suspension-aware freshness test fixtures for 8422/3593/8103 on a research branch only.
+CA-088: verify no conflict with B-130 stale-history rejection.
+CA-089: define the exact handoff object from validated raw history -> corporate-action continuity -> Pattern dual-space research.
+CA-090: only after cross-lane tests pass, prepare a combined owner decision memo; no merge/deploy.
