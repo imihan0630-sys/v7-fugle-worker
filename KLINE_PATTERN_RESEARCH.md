@@ -2240,3 +2240,129 @@ Named subclass performance in current Taiwan single stocks remains unproven.
 WORTH_SHADOW_RESEARCH.
 No Formal change.
 
+
+
+## DL-002R — High Tight Flag / Extreme Momentum vs Overheat v0.1
+
+### Why this pattern is strategically important
+The system prefers strong stocks but explicitly avoids late-stage / overextended chasing.
+High Tight Flag (HTF) sits exactly on that boundary:
+- extreme prior momentum,
+- short tight consolidation,
+- possible continuation,
+- but very high overheat / crash risk.
+
+Therefore HTF is not merely another flag. It is a test of whether “extreme strength” sometimes remains constructive after controlling overheat.
+
+### Evidence caution
+Practitioner literature historically described HTF as a very strong continuation pattern.
+However, updated practitioner research by Bulkowski later reported materially weaker relative performance than earlier editions and explicitly warned that the pattern no longer ranked near the top in updated samples.
+
+Research implication:
+HTF is a model-drift / historical-instability case study.
+Do not trust early pattern statistics as timeless.
+
+### Morphology fields
+Reuse Bull Flag topology but add extreme-impulse descriptors:
+- extremePoleReturnPct
+- extremePoleDurationBars
+- poleAcceleration
+- poleEfficiency
+- priorBaseDuration
+- priorBaseQuality
+- gapContributionPct
+- limitUpContributionCount
+- attentionSpikeCount
+- turnoverExpansion
+- postPoleFlagDepthPct
+- postPoleFlagDurationBars
+- postPoleTightness
+- postPoleVolumeDryUp
+- pivotDistancePct
+
+### Classical prior as descriptive only
+Older practitioner definitions often require roughly near-doubling over a short window followed by a relatively shallow/tight pause.
+Do NOT hard-code 90% / 2 months as a Formal threshold.
+Store continuous pole return and duration, and optionally a CLASSIC_HTF label for interpretability.
+
+### Central research conflict
+Current system has:
+- ret20 late-stage controls,
+- MA-distance overheat,
+- overheatPenaltyResearch,
+- maxChase constraints.
+
+HTF hypothesis says:
+“Some stocks that look objectively overextended may still have positive continuation if they undergo a sufficiently tight, low-supply consolidation.”
+
+This must be tested as an interaction, not as a reason to remove overheat controls.
+
+### Pre-registered interaction groups
+Within extreme-momentum candidates:
+A. HIGH_OVERHEAT + LOOSE_CONSOLIDATION
+B. HIGH_OVERHEAT + TIGHT_CONSOLIDATION
+C. MODERATE_OVERHEAT + TIGHT_CONSOLIDATION
+D. MODERATE_OVERHEAT + LOOSE_CONSOLIDATION
+
+Compare:
+- D3/D5/D10
+- MFE/MAE
+- breakout failure
+- stop-first
+- gap-down risk
+- regime dependence
+
+Primary falsification:
+If B does not materially improve on A after same-date / regime controls, “tight flag rescues overheat” is unsupported.
+
+### Attention / discreteness interaction
+HTF may overlap strongly with:
+- DL-001 Information Discreteness,
+- Attention Strength,
+- large gaps / limit-up events,
+- news catalysts.
+
+Therefore test:
+- gradual pole vs jump-concentrated pole,
+- low-attention accumulation vs event-driven spike,
+- number of price-limit days,
+- gap contribution to total pole return.
+
+A near-doubling caused by several limit-up/gap days may have different risk than a more continuous strong trend.
+
+### Prior-base interaction
+Older HTF literature often emphasizes that explosive movement can emerge from a prior substantial base.
+Store:
+- priorBaseDuration
+- priorBaseCompression
+- priorBaseBreakoutQuality
+- priorBasePatternLabels
+
+Hypothesis:
+HTF after a mature prior base may differ from HTF occurring at the end of a long extended trend.
+
+### Classification
+HTF_VALID:
+- extreme impulse + identifiable tight consolidation.
+
+HTF_PIVOT_READY:
+- tight consolidation near pivot.
+
+HTF_BREAKOUT_CONFIRMED:
+- breakout confirmed.
+
+HTF_OVERHEAT_CONFLICT:
+- morphology valid but location/overheat risk high.
+
+HTF_FAILED:
+- structure break or R01 post-breakout failure.
+
+Important:
+HTF_OVERHEAT_CONFLICT is not a buy/sell decision; it is the exact research state we want to study.
+
+### Evidence status
+PRACTITIONER_PATTERN_WITH_DOCUMENTED_PERFORMANCE_DRIFT.
+High priority as a falsification/interaction study, not as a new bullish factor.
+
+No Formal change.
+
