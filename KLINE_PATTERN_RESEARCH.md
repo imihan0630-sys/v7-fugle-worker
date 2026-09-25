@@ -8872,3 +8872,180 @@ Compare cost-basis proxy against:
 
 If it is merely a complicated reconstruction of past return/volume with no incremental value, retire it.
 
+
+
+## DL-002DB — Intraday Order-Book / Trade-Flow Research Feasibility
+
+### Source capability verified
+Fugle real-time stock quote provides:
+- best five bid levels and sizes,
+- best five ask levels and sizes,
+- cumulative trade value/volume,
+- cumulative tradeVolumeAtBid / tradeVolumeAtAsk,
+- last trade bid/ask/price/size,
+- current average price.
+
+Intraday trades provide trade price, size, timestamp and contemporaneous bid/ask fields when available.
+
+### Research opportunity
+For Pattern Shadow candidates only, prospectively observe microstructure around:
+- pivot approach,
+- breakout,
+- retest,
+- reclaim/failure.
+
+### Candidate fields
+BOOK:
+- bestBid / bestAsk
+- spreadTicks
+- bidDepth5
+- askDepth5
+- topLevelImbalance = (bidDepth5-askDepth5)/(bidDepth5+askDepth5)
+- depthConcentrationTop1
+- depthSlopeBid / depthSlopeAsk
+
+TRADE FLOW:
+- cumulativeAtAskShare
+- cumulativeAtBidShare
+- rollingAggressorImbalance
+- tradeSizeDistribution
+- tradeCountRate
+- turnoverRate
+
+PRICE RESPONSE:
+- priceChangePerNetAggressorVolume
+- pivotDistance
+- priceVsSessionAverage
+- microFollowThrough
+
+### Critical limitation
+A five-level book is a snapshot, not latent demand truth.
+Displayed orders can:
+- cancel,
+- move,
+- replenish,
+- be strategic.
+Therefore one static imbalance should never become a buy signal.
+
+## DL-002DC — Order-Book Imbalance Must Be Dynamic
+
+### Stronger research object
+Instead of one snapshot, measure persistence/change:
+- imbalanceAtT0
+- imbalanceChange
+- imbalancePersistenceSeconds
+- depthReplenishmentAfterTrade
+- askDepletionRate
+- bidDepletionRate
+- spreadRecovery
+- priceResponseToSameSignedFlow
+
+### Absorption-like observable behavior
+Possible support absorption:
+- aggressive sells occur,
+- bid liquidity repeatedly replenishes,
+- price makes little downward progress,
+- later price departs upward.
+
+Possible resistance absorption:
+- aggressive buys occur,
+- ask liquidity replenishes,
+- price makes little upward progress,
+- later price departs downward.
+
+Before later departure:
+label only FLOW_ABSORPTION_CANDIDATE, direction unresolved.
+
+### Data requirement
+This requires repeated snapshots/trades during the event window.
+It cannot be reconstructed from one final quote.
+
+## DL-002DD — Taiwan Order Flow Evidence and Investor Heterogeneity
+
+### Taiwan evidence
+- Research on institutional order-imbalance volatility finds foreign institutional imbalance contains predictive relationships in Taiwan.
+- 2026 Journal of Banking & Finance research using about five years of comprehensive TWSE limit-order-book data finds buy-sell order imbalance reflects behavioral demand patterns and differs materially by investor type.
+- Historical Taiwan account-level evidence shows individual aggressive trading and institutional trading have different performance characteristics.
+
+### Implication
+“Net buying pressure” is not homogeneous.
+Participant type and aggressiveness can matter.
+
+### Research hierarchy
+If only aggregate quote/trade data:
+- label AGGREGATE_FLOW.
+
+If institutional daily data:
+- label INSTITUTIONAL_DAILY_FLOW.
+
+Never pretend aggregate five-level imbalance identifies foreign/institutional demand.
+
+## DL-002DE — Microstructure Confirmation Must Compete Against 15m Simplicity
+
+### Current system
+Formal execution already uses completed 15-minute candles and 10-minute auxiliary confirmation.
+
+### Research question
+Does order-book/trade-flow context add enough incremental value to justify complexity beyond:
+- 15m price acceptance,
+- 15m volume,
+- higher low,
+- retest/reversal,
+- quote freshness?
+
+### Comparison
+BASELINE:
+current 15m research fields.
+
+PLUS_BOOK:
+baseline + dynamic five-level imbalance.
+
+PLUS_TRADE_FLOW:
+baseline + aggressor-flow measures.
+
+PLUS_BOTH:
+baseline + book + flow.
+
+### Economic metrics
+- false BUY avoided
+- valid BUY lost
+- lead/lag in confirmation
+- request/data cost
+- operational fragility
+- coverage
+- R01 / D1 / D3 / MFE / MAE
+
+### Simplicity gate
+If incremental value is small or unstable, reject microstructure layer.
+A complex input is not better merely because it is granular.
+
+## DL-002DF — Microstructure Data Is Prospective-Only
+
+### No historical fabrication
+Current accessible historical candles cannot reconstruct historical best-five queues.
+
+Therefore:
+- firstObservationDate must be explicit,
+- missing historical book = UNKNOWN,
+- no retrospective “what the queue must have looked like.”
+
+### Prospective snapshot design
+For selected research symbols around trigger windows:
+- observedAt
+- quoteSerial/lastUpdated
+- bids/asks
+- totals
+- patternState
+- pivot/zone
+- Formal decisionImpact=false
+
+### Engineering classification
+An isolated prospective recorder can be Class A if:
+- separate from Formal decision path,
+- async/failure-tolerant,
+- no additional latency/blocking of live monitor,
+- no push/capital/eligibility impact,
+- regression proves protected outputs identical.
+
+Any insertion into Formal 15m gate is Class C.
+
