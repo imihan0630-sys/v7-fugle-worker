@@ -9603,3 +9603,95 @@ The complex model must justify itself through:
 - coverage/capital-use balance,
 not visual sophistication.
 
+
+
+## DL-002DX — Float / Tradable-Supply Normalization
+
+### Motivation
+“Volume dry-up” should ideally be interpreted relative to the amount of stock actually available to trade, not only raw shares or lots.
+
+### Evidence boundary
+Taiwan evidence supports a relationship between ownership structure and liquidity, but the relation is nonlinear and heterogeneous.
+There is no basis to assume:
+high ownership concentration = bullish scarcity.
+
+### Candidate variables when point-in-time data is available
+- sharesOutstanding
+- estimatedFreeFloatShares
+- institutionalOwnershipPct
+- blockholderOwnershipPct
+- turnoverOfSharesOutstanding
+- turnoverOfFreeFloat
+- patternVolumeAsPctOfFloat
+- breakoutVolumeAsPctOfFloat
+- handleVolumeAsPctOfFloat
+
+### Use
+Normalize:
+- volume dry-up,
+- breakout participation,
+- turnover shock,
+- volume-at-price concentration.
+
+### Caution
+Free-float definitions can differ across data providers.
+Store provenance/date.
+Do not backfill current ownership/free float into historical pattern dates.
+
+## DL-002DY — Ownership Concentration Is Context, Not “Tight Chips”
+
+### Common narrative risk
+Practitioners may describe concentrated holdings as “籌碼集中” and infer lower selling pressure.
+
+### Research position
+Ownership concentration can also be associated with:
+- lower liquidity,
+- greater price impact,
+- governance/information effects,
+- higher volatility in some contexts.
+
+Therefore:
+OWNERSHIP_CONCENTRATION has no automatic bullish sign.
+
+### Test only interactions
+- concentration × healthy compression
+- concentration × dead liquidity
+- concentration × breakout participation
+- institutional ownership × sector/liquidity commonality
+
+### Redundancy
+Control:
+- market cap
+- average turnover
+- liquidity gate
+- institutional flow
+- volatility
+- price tier
+
+## DL-002DZ — Liquidity Commonality as Pattern Context
+
+### Taiwan evidence
+Institutional ownership is related to commonality in liquidity on TWSE; the relation varies by institution type, firm size and market declines.
+
+### Pattern question
+During a sector/market liquidity shock, a stock’s apparent:
+- volume dry-up,
+- spread widening,
+- breakout failure,
+may be market-wide rather than stock-specific.
+
+### Fields
+- stockLiquidityChange
+- sectorLiquidityChange
+- marketLiquidityChange
+- residualLiquidityChange
+- liquidityCommonalityState
+
+### Hypothesis
+Stock-specific constructive compression should be distinguished from market-wide liquidity withdrawal.
+
+### Practical implication
+If volume collapses because the entire market/sector liquidity collapses, do not automatically label it supply dry-up.
+
+No Formal change.
+
