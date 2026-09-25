@@ -8986,3 +8986,403 @@ Whether any of these states actually add stable predictive/utility value.
 Do not expand the combined PV feature family further until evidence exposes a concrete unresolved mechanism.
 
 Status: THEORY_CONVERGENCE / EVIDENCE_NEXT.
+
+# PV-161 — Exact Audit of execution-shadow-v2
+
+## Event cadence
+The current V8.8 recorder creates fixed research events:
+- OPEN_BASELINE: 09:00~09:02 scheduled minutes;
+- FIRST_10M_COMPLETE: 09:11~09:12;
+- FIRST_15M_COMPLETE: 09:16~09:17;
+- FIRST_30M_COMPLETE: 09:31~09:32;
+- FORMAL_SIGNAL_OBSERVED: only when the Formal pipeline emits notification(s).
+
+The fixed events are milestone snapshots, not continuous sampling.
+
+## Stored coarse fields after V8.8.1
+The execution-shadow-v2 payload can contain:
+- currentPrice;
+- quoteFresh;
+- auxiliary10Fresh;
+- formal15Fresh;
+- frame10 latest bar/timing;
+- frame15 latest bar/timing;
+- openingGapPct;
+- sessionAvgPrice;
+- sessionVwapProxy;
+- bestBid / bestAsk;
+- spreadPct;
+- bidDepth5 / askDepth5;
+- depthImbalance;
+- executionMarketState;
+- unknownReasons;
+- frozen Formal decision level/text.
+
+## What is NOT stored
+The payload does not preserve:
+- full per-level five-level price/size arrays;
+- trade-by-trade sequence;
+- total.tradeVolumeAtBid / total.tradeVolumeAtAsk;
+- transaction count;
+- trade aggressor sequence;
+- book update sequence;
+- replenishment/depletion events;
+- true OFI;
+- queue position;
+- hidden liquidity.
+
+Therefore it is a coarse snapshot recorder, not an order-flow recorder.
+
+## Important semantic defect / naming risk
+Current V8.8.0 code creates:
+`lastTradeAt = researchIsoFromQuoteTimestamp(result.quote.lastUpdated)`.
+
+But Fugle officially defines:
+- `lastUpdated` = quote last-update time;
+- `lastTrade.time` = actual last-trade time.
+
+Source:
+https://developer.fugle.tw/docs/data/http-api/intraday/quote/
+
+Therefore the stored field named `lastTradeAt` must be interpreted as:
+`QUOTE_UPDATED_AT_ALIAS`,
+not true trade time.
+
+Do not use it to infer:
+- trade recency;
+- no-trade duration;
+- transaction arrival rate.
+
+Status: EXECUTION_SHADOW_V2_CAPABILITY_AUDITED / LASTTRADEAT_SEMANTIC_WARNING.
+
+
+# PV-162 — What PV-H006 Can and Cannot Test with the Existing Recorder
+
+## H006-B — currently conceptually feasible
+If live coverage passes QA, the existing recorder can test coarse incremental context:
+
+PV state +:
+- spreadPct;
+- bidDepth5;
+- askDepth5;
+- depthImbalance;
+- executionMarketState;
+- quoteFresh/frame freshness;
+- opening/session-average context.
+
+Primary question:
+Does coarse liquidity/depth state add information beyond PV alone?
+
+## H006-C — NOT supported by current payload
+Requires side-specific pressure.
+
+Current payload lacks:
+- cumulative bid/ask matched-volume fields;
+- trade sequence;
+- aggressor-side proxies.
+
+Therefore:
+`pressure side = UNKNOWN`.
+
+## H006-D — NOT supported
+Requires:
+- replenishment;
+- depletion;
+- pressure-to-price-response dynamics;
+- resiliency.
+
+One sparse top-five snapshot cannot identify these.
+
+## No historical reconstruction
+Do not infer pressure/replenishment from:
+- OHLCV;
+- one depthImbalance snapshot;
+- later book state.
+
+Status: H006_B_POSSIBLE_IF_COVERAGE_PASS / H006_C_D_DATA_GATED.
+
+
+# PV-163 — Execution-Recorder Coverage QA Must Precede Any Outcome Study
+
+## Fixed-event opportunities
+For a symbol continuously monitored from the open, the recorder is designed to have up to four fixed milestone event types:
+- OPEN_BASELINE
+- FIRST_10M_COMPLETE
+- FIRST_15M_COMPLETE
+- FIRST_30M_COMPLETE
+
+FORMAL_SIGNAL_OBSERVED is conditional and has no fixed expected count.
+
+## Critical denominator problem
+A missing recorder row can mean:
+- symbol was not monitored at that time;
+- monitor cron did not run successfully;
+- quote/result was invalid;
+- recorder failed open;
+- D1 write failed;
+- row is outside the read endpoint's truncation window.
+
+Therefore “no row” is NOT “no signal” or “normal liquidity.”
+
+## Current endpoint limitation
+`readExecutionResearchRecorder` queries:
+- rolling date window;
+- ORDER BY newest first;
+- SQL LIMIT 500;
+and exposes only recent rows in the response.
+
+With several symbols/days, this can truncate the requested window.
+
+Therefore the protected endpoint cannot by itself prove:
+- complete 30-day coverage;
+- true event frequency;
+- true zero occurrence.
+
+## Required QA metrics
+Before H006-B outcome analysis, calculate from authoritative D1 queries:
+- rows by tradeDate / symbol / eventType;
+- unique dates;
+- unique symbols;
+- expected fixed-event opportunities for symbols known to be active at each milestone;
+- event coverage rate;
+- quoteFresh rate;
+- formal15Fresh/auxiliary10Fresh rate by event type;
+- non-null spread/depth rate;
+- CONTINUOUS / NON_CONTINUOUS / UNKNOWN rate;
+- observedAt - scheduledTime lag;
+- quote update age;
+- duplicate/conflict count.
+
+## Coverage classification
+- COMPLETE_ENOUGH_FOR_COARSE_STUDY
+- PARTIAL_DESCRIPTIVE_ONLY
+- UNKNOWN_DENOMINATOR
+- DATA_QUALITY_BLOCKED
+
+Do not lower the quality gate just to create a sample.
+
+Status: EXECUTION_COVERAGE_QA_FROZEN.
+
+
+# PV-164 — Exact PV x Execution-Recorder As-Of Join Rules
+
+## General rule
+Join by:
+- same marketDate;
+- same symbol;
+- event-time chronology;
+- frozen source schema.
+
+Never attach the nearest snapshot merely because it is temporally close.
+
+## OPEN_BASELINE
+No completed 15m PV response exists yet.
+
+Allowed use:
+- opening liquidity/context only.
+
+Do not join it to a later 15m PV response as if contemporaneous.
+
+## FIRST_10M_COMPLETE
+Can join:
+- completed 10m auxiliary context,
+provided `auxiliary10Fresh=true`.
+
+Not a primary 15m H006 observation.
+
+## FIRST_15M_COMPLETE
+Primary deterministic early H006 join.
+
+Require:
+- `formal15Fresh=true`;
+- execution event observed after the 09:00~09:15 bar end;
+- exact matching PV snapshot/bar end when available.
+
+If the PV snapshot cannot be matched to the same completed bar:
+join = UNKNOWN.
+
+## FIRST_30M_COMPLETE
+At 09:31~09:32:
+match only to the most recently completed 15m PV bar known by then.
+
+Do not interpret event name as proof that a dedicated 30m candle was stored; the recorder payload stores frame10/frame15, not frame30.
+
+## FORMAL_SIGNAL_OBSERVED
+Preferred join:
+- same symbol/date;
+- exact Formal frame15 barEnd used for the signal;
+- PV snapshot with the same source 15m bar identity.
+
+If exact source-bar identity is unavailable:
+do not use a post-hoc nearest-bar join for primary inference.
+
+## Alignment metadata
+Future joined dataset should store:
+- pvSnapshotId;
+- pvBarStart;
+- pvBarEnd;
+- executionObservedAt;
+- scheduledTime;
+- relativeOffsetSeconds;
+- joinQuality = EXACT_BAR / VALID_PRE_EVENT / INVALID_POST_EVENT / UNKNOWN.
+
+Status: AS_OF_JOIN_CONTRACT_V2_FROZEN.
+
+
+# PV-165 — sessionVwapProxy and openingGapPct Need Strict Semantic Guards
+
+## sessionAvgPrice / sessionVwapProxy
+Fugle documents `avgPrice` as:
+“當日成交均價” (daily average traded price).
+
+Source:
+https://developer.fugle.tw/docs/data/http-api/intraday/quote/
+
+The recorder correctly stores:
+- sessionAvgPrice = avgPrice;
+- sessionVwapProxy = avgPrice;
+- semantics = FUGLE_INTRADAY_QUOTE_AVG_PRICE.
+
+## Rule
+Do not call this an independently reconstructed VWAP.
+
+The current recorder does not store the quote's:
+- total.tradeValue;
+- total.tradeVolume
+needed to independently audit the formula in the stored row.
+
+Use:
+`FUGLE_DAILY_AVG_PRICE_PROXY`
+in research language.
+
+## Source scope
+Fugle intraday quote supports an optional `type=oddlot`.
+The ordinary request is a different source lane from odd-lot quote.
+
+Therefore the proxy inherits the quote request's source scope and must not be assumed to represent every daily trading mechanism.
+
+## openingGapPct problem
+Current V8.8.1 computes:
+`openPrice / previousClose - 1`.
+
+PV-046 already established this can be wrong on:
+- ex-rights;
+- ex-dividend;
+- corporate-action reference-price adjustment days.
+
+Therefore current field should be interpreted as:
+`rawPreviousCloseGapPct`,
+not exchange-reference-adjusted gap.
+
+Primary gap analysis must guard/UNKNOWN corporate-action dates unless verified referencePrice is used.
+
+Status: AVGPRICE_PROXY_SEMANTICS_FROZEN / RAW_GAP_GUARD_REQUIRED.
+
+
+# PV-166 — Top-Five Depth Is Displayed Snapshot Liquidity, Not the Full Book
+
+## Provider fact
+Fugle quote/books expose:
+- best five bids;
+- best five asks;
+with price and size.
+
+Sources:
+- https://developer.fugle.tw/docs/data/http-api/intraday/quote/
+- https://developer.fugle.tw/docs/data/websocket-api/market-data-channels/books/
+
+## Current recorder reduction
+execution-shadow-v2 stores:
+- bestBid;
+- bestAsk;
+- sum of top-five bid sizes;
+- sum of top-five ask sizes;
+- share-based depthImbalance.
+
+It does NOT persist the individual five levels in the research row.
+
+## Consequences
+Cannot later reconstruct exactly:
+- depth slope;
+- distance-weighted depth;
+- exact top-five notional depth;
+- queue shape;
+- level-specific replenishment.
+
+## Hidden-liquidity boundary
+Displayed top-five depth is not:
+- total available liquidity;
+- hidden/iceberg quantity;
+- queue priority;
+- execution probability.
+
+A large visible queue can cancel; hidden interest may exist beyond displayed size.
+
+## Cross-stock comparison
+Raw share/lot depth is especially dangerous across:
+- low-price stocks;
+- thousand-dollar stocks;
+- different tick bands.
+
+Prefer:
+- own-history/same-slot normalized share-depth;
+- price/tick-tier stratification.
+
+Exact notional-depth research requires preserving level-by-level prices/sizes or an audited approximation.
+
+## depthImbalance interpretation
+Current:
+`(bidDepth5 - askDepth5)/(bidDepth5 + askDepth5)`
+
+Call:
+`DISPLAYED_TOP5_SHARE_DEPTH_IMBALANCE`.
+
+Do not call:
+- true order imbalance;
+- OFI;
+- buying pressure.
+
+Status: DISPLAYED_DEPTH_BOUNDARY_FROZEN.
+
+
+# PV-167 — Current Sparse Recorder Is Not Yet Proven Ready for H006-B Outcome Inference
+
+## Positive
+The deployed patch design contains the coarse fields needed for a first H006-B baseline:
+- spread;
+- top-five aggregate depth;
+- depth imbalance;
+- market-state flags;
+- bar freshness;
+- Formal context.
+
+## Blocking evidence gap
+Repository code proves capability, not live sample completeness.
+
+Current read endpoint:
+- is bounded/truncated;
+- cannot prove expected-event completeness;
+- cannot distinguish every missing opportunity cause.
+
+Therefore current evidence status is:
+`H006_B_DATA_QUALITY_BLOCKED_PENDING_LIVE_COVERAGE_AUDIT`.
+
+## What may be done now
+- field-semantic QA;
+- individual-row descriptive examples;
+- event/type non-null audits on explicitly fetched rows;
+- exact-date coverage checks if an authoritative D1/read path is provided.
+
+## What may NOT be claimed
+- spread/depth predicts follow-through;
+- depth imbalance reduces false breakouts;
+- absence of recorder rows means no microstructure event;
+- BUY vs NO-BUY comparison from convenience endpoint rows.
+
+## Next rational step
+Not another microstructure formula.
+
+It is:
+an exact coverage audit of live D1 recorder data, followed by H006-B only if the gate passes.
+
+Status: COARSE_FEATURES_READY / EMPIRICAL_SAMPLE_NOT_YET_PROVEN.
