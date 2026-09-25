@@ -878,3 +878,181 @@ PF-030: build a small offline MSCI event-source validation sample across several
 PF-031: validate whether official MSCI files contain Taiwan-specific adds/deletes in machine-readable enough form for deterministic parsing.
 PF-032: build current TWSE passive ETF benchmark-dedup map for major Taiwan-equity benchmarks as a research artifact.
 PF-033: only after source contracts are stable, join events to price/volume outcomes without using current AUM as historical AUM.
+
+
+---
+
+## PF-030 — Four-cycle MSCI event-clock validation sample
+
+Official MSCI sources were checked for four review cycles spanning late 2025 through August 2026.
+
+Validated review clocks:
+
+| Review | Result announcement | Effective implementation |
+| --- | --- | --- |
+| November 2025 | 2025-11-05 | close of 2025-11-24 |
+| February 2026 | 2026-02-10 | close of 2026-02-27 |
+| May 2026 | 2026-05-12 | close of 2026-05-29 |
+| August 2026 | 2026-08-12 | close of 2026-08-31 |
+
+Official announcement examples:
+- November 2025 review: MSCI Global Standard Indexes November 2025 Index Review.
+- February 2026 review: MSCI Global Standard Indexes February 2026 Index Review.
+- May 2026 review: MSCI Global Standard Indexes May 2026 Index Review.
+- August 2026 review: MSCI Global Standard Indexes August 2026 Index Review.
+
+The MSCI review archive exposes review cycles over many years plus recurring additions/deletions artifacts and future review date CSV/PDF.
+
+### Result
+Announcement/effective event clocks are stable enough for deterministic event metadata.
+
+### Important timezone rule
+Store the provider timestamp exactly as published plus normalized UTC/Taipei time.
+Do not collapse a late-evening UTC/European announcement into the wrong Taiwan calendar date.
+
+Status: MSCI REVIEW EVENT CLOCK CONTRACT = VALIDATED FOR SMALL MULTI-CYCLE SAMPLE.
+
+---
+
+## PF-031 — Additions/deletions parser contract remains partial
+
+The official MSCI Index Review landing page clearly exposes, for each review cycle:
+- Equity Indexes review announcement;
+- Global Standard additions/deletions;
+- Small Cap additions/deletions;
+- Micro Cap additions/deletions;
+- review schedule CSV/PDF.
+
+This verifies that provider-level constituent-change artifacts exist.
+
+### What is not yet proven
+Current source audit has not yet frozen a stable unauthenticated machine endpoint/schema for the detailed Global Standard additions/deletions file that can be deterministically parsed into:
+- country;
+- security;
+- add/delete;
+- size segment;
+- event version;
+for every historical cycle.
+
+Search/index pages expose the links, and MSCI press/event announcements expose some Taiwan examples, but those are not a substitute for the complete list file.
+
+### Example Taiwan evidence
+The February 2026 MSCI Global Standard review highlights Hon Hai Precision (Taiwan) among the largest Emerging Markets additions.
+The August 2026 review highlights Nanya Technology (Taiwan) among the largest Emerging Markets additions.
+These confirm Taiwan rows occur in the official review event stream, but do not by themselves prove complete Taiwan constituent parsing.
+
+### Parser GO gate
+Before coding a historical parser:
+1. resolve direct official file URL/type for at least four cycles;
+2. verify stable fields/schema or a deterministic PDF/table parse;
+3. verify Taiwan rows against the review announcement;
+4. preserve provider publication timestamp and file version;
+5. detect missing/revised files explicitly.
+
+Until then:
+- event clocks = GO;
+- complete constituent parser = PARTIAL / NOT YET GO.
+
+Status: PF-031 SOURCE CONTRACT PARTIAL; NO OUTCOME BACKTEST YET.
+
+---
+
+## PF-032 — Current major Taiwan passive-ETF benchmark dedup sample
+
+Official TWSE ETF pages/dashboard confirm that multiple listed funds may share the same underlying benchmark.
+
+### Current verified benchmark examples
+
+| ETF | Benchmark | Treatment |
+| --- | --- | --- |
+| 0050 Yuanta Taiwan Top 50 | Taiwan 50 Index | vanilla passive tracker |
+| 006208 Fubon FTSE TWSE Taiwan 50 | Taiwan 50 Index | same benchmark group as 0050 |
+| 00631L Yuanta Daily Taiwan 50 Bull 2X | Taiwan 50 linked leveraged product | exclude from simple vanilla-AUM aggregation |
+| 0057 Fubon MSCI Taiwan ETF | MSCI Taiwan Index | MSCI Taiwan benchmark group |
+| 006203 Yuanta MSCI Taiwan ETF | MSCI Taiwan Index | same benchmark group as 0057 |
+| 0056 Yuanta Taiwan Dividend Plus | Taiwan Dividend+ Index | separate benchmark |
+| 0052 Fubon Taiwan Technology | FTSE TWSE Taiwan Technology Index | separate benchmark |
+| 00878 Cathay MSCI Taiwan ESG Sustainability High Dividend Yield | MSCI Taiwan Select ESG Sustainability High Yield Top 30 Index | separate benchmark |
+| 00919 Capital Taiwan Select High Dividend | TIP Customized Taiwan Select High Dividend Index | separate benchmark |
+| 009816 KGI Taiwan TOP 50 | TIP Customized Taiwan TOP 50 Index | separate benchmark |
+
+### Current scale example, not historical event flow
+TWSE institutional ETF data dated 2026-09-24 reports:
+- 0050 AUM = NT$2,480,056,582,663
+- 006208 AUM = NT$478,793,858,229
+
+Current combined vanilla Taiwan-50 tracker AUM in these two funds:
+NT$2,958,850,440,892.
+
+This number is useful only as a current scale illustration.
+It must NOT be copied backward to a historical review event.
+
+### Deduplication rule confirmed
+For a Taiwan 50 constituent event:
+- event count = 1 underlying benchmark event;
+- tracker exposure may include 0050 + 006208;
+- leveraged/inverse products remain separate unless a replication model is verified.
+
+Status: CURRENT MAJOR TRACKER DEDUP SAMPLE VALIDATED.
+
+---
+
+## PF-033 — First outcome join is blocked by source-quality gates
+
+The temptation now is to join known MSCI review dates to price/volume and immediately test additions/deletions.
+
+Do not do that yet.
+
+### Blocking items
+1. complete constituent-list parser contract not yet frozen;
+2. exact historical event-date tracker AUM not established for all trackers;
+3. effective-close auction-only measurement remains unavailable;
+4. offshore passive AUM remains missing.
+
+### What may proceed later
+A low-ambition event study can begin once official add/delete rows are deterministic:
+- announcement close to effective close path;
+- effective close to next open;
+- D1/D3/D5;
+- volume versus own history;
+- foreign flow context;
+without pretending to estimate exact passive dollars.
+
+### What may NOT proceed
+Do not infer:
+- actual passive flow NTD;
+- closing-auction flow share;
+- total benchmarked AUM;
+from current AUM or coarse 15m bars.
+
+Status: PF-033 OUTCOME JOIN = DATA-GATED / NOT STARTED.
+
+## PF-034 — Passive-flow evidence phase checkpoint
+
+The lane is now split into:
+
+A. Concept:
+COMPLETE.
+
+B. Source map:
+COMPLETE enough to know where authoritative data live.
+
+C. Event clocks:
+MSCI small multi-cycle validation COMPLETE.
+
+D. Constituent rows:
+PARTIAL.
+
+E. Event-date tracker AUM:
+PARTIAL.
+
+F. Close-auction microdata:
+MISSING.
+
+G. Outcome testing:
+NOT STARTED.
+
+This is the correct stopping point for indicator invention.
+Next work should improve data contracts, not add more passive-flow features.
+
+Status: PASSIVE FLOW = EVIDENCE BUILD PENDING.
