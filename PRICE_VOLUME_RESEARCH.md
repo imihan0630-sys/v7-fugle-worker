@@ -4684,4 +4684,409 @@ PV v0.1 is already sufficiently rich.
 The correct next move after state/spec QA is **collect prospective Shadow evidence**, not add more indicators.
 
 Status: FEATURE_PRUNING_COMPLETE / V0_1_SCOPE_STABLE.
+# PV-078 — Cross-File Consistency Audit and Supersession Discipline
+
+## Purpose
+Deep research creates a new failure mode: an early assumption can remain in an older section even after later work disproves or qualifies it. A future chat or engineer may then implement the stale statement.
+
+PV research therefore needs an explicit supersession discipline.
+
+## Audit findings fixed in this pass
+
+### A. PV-061 18-slot / 108-row assumption
+Earlier PV-061 treated the full 270-minute regular session as 18 observable 15m bars under the current zero-extra-call live path.
+
+PV-068 audited the actual Worker cron and provider timestamp semantics:
+- Formal monitor stops at 13:24;
+- a 15m bar is accepted only after barStart + 15m;
+- zero-extra-call v0.1 can therefore observe completed starts 09:00 through 13:00 only;
+- 17 bars/symbol, maximum 102 feature rows/day for 6 stocks.
+
+The old 108 statement is now explicitly marked SUPERSEDED wherever found.
+
+### B. PV-029 trade-count feasibility
+PV-029 originally concluded historical trade-count research was prospective-only because Fugle historical candles do not expose transaction count.
+
+PV-070 qualified this:
+- historical intraday trade count remains unavailable from candle history;
+- official TWSE/TPEx daily closing data do expose daily transaction count;
+- Worker already fetches those daily sources.
+
+The old broad “prospective-only” statement is now explicitly qualified.
+
+## Supersession rule
+When a later PV section changes an earlier factual/engineering assumption:
+1. do not delete the historical reasoning;
+2. mark the earlier statement SUPERSEDED / QUALIFIED;
+3. identify the later PV section;
+4. update CHECKPOINT, DEEP_LEARNING_CHECKPOINT and SHADOW_SPEC;
+5. implementation must follow the latest non-superseded definition.
+
+## Canonical precedence
+For implementation:
+1. PRICE_VOLUME_SHADOW_IMPLEMENTATION_PLAN.md
+2. PRICE_VOLUME_SHADOW_SPEC.md
+3. latest PRICE_VOLUME_CHECKPOINT.md continuation / corrections
+4. PRICE_VOLUME_RESEARCH.md full evidence history
+
+Research.md preserves the intellectual trail; the implementation files carry current executable semantics.
+
+Status: CONSISTENCY_AUDIT_COMPLETE_FOR_V0_1.
+
+
+# PV-079 — Exact Worker / D1 Implementation Delta Map for a Class-A Shadow Patch
+
+## Goal
+Identify exactly where a research-only patch would attach without modifying the Formal decision path.
+
+No code is changed by this section.
+
+## Current Formal flow audited
+Relevant current functions:
+- `ensureD1Schema(env)`
+- `normalizeMarketRow(row, market)`
+- `buildMarketFeatures(stock)`
+- `runAfterMarketScanCore(...)`
+- `runBackgroundMonitor(...)`
+- `analyzeStockSmart(...)`
+- `analyzeFrame(...)`
+- `buildBar(...)`
+- `evaluatePullback(...)`
+- `evaluateMomentum(...)`
+- `buildFinalDecision(...)`
+
+Formal intraday decisions are produced before signal-state/push processing.
+
+## Hard isolation rule
+Do NOT modify:
+- evaluatePullback;
+- evaluateMomentum;
+- evaluateStop;
+- buildFinalDecision;
+- compareResults;
+- evaluateOperationSignals;
+- selection/ranking eligibility functions.
+
+PV Shadow attaches **after** the Formal result exists.
+
+## Delta A — D1 schema only
+In `ensureD1Schema`, add research tables:
+- `v7_pv_shadow_snapshots`
+- `v7_pv_outcomes`
+- `v7_pv_intraday_baselines`
+- optional `v7_pv_meta` for schema/QA state.
+
+All tables are additive. Existing tables and keys are untouched.
+
+## Delta B — pure helper functions
+Add new side-effect-free helpers:
+- `medianFinite(values)`
+- `pvSafeRatio(num, den)`
+- `pvSlotKey(timestamp)`
+- `classifyPvSessionPhase(timestamp)`
+- `evaluatePvGuards(...)`
+- `classifyPvResponse(...)`
+- `advancePvAcceptance(...)`
+- `advancePvPersistence(...)`
+- `buildPvSnapshot(...)`
+- `pvSnapshotKey(...)`
+
+These helpers must not call Formal evaluators with altered inputs.
+
+## Delta C — intraday baseline cache
+Add isolated D1 functions:
+- `readPvIntradayBaseline(env, symbol)`
+- `writePvIntradayBaseline(env, baseline)`
+- `bootstrapPvIntradayBaseline(env, symbol, asOfDate)`
+- `rollPvIntradayBaseline(env, completedBars)`
+
+Bootstrap source:
+historical Fugle 15m candles, once per newly monitored symbol lacking >=20 valid prior sessions.
+
+## Delta D — bootstrap timing
+Preferred v0.1:
+after the Formal after-market plan has been successfully saved at 18:10, perform a best-effort PV baseline bootstrap for newly monitored symbols.
+
+Critical isolation:
+```text
+saveFormalPlan();
+try { await bootstrapMissingPvBaselines(); }
+catch (err) { log PV research error; DO NOT fail/rollback Formal plan; }
+```
+
+Do not make the next morning's Formal BUY path wait for a baseline.
+
+## Delta E — intraday snapshot hook
+In `runBackgroundMonitor`:
+1. compute `results` exactly as today;
+2. preserve an immutable Formal result fingerprint for tests;
+3. only when `need15 || forceFrames`, call best-effort `recordPv15mSnapshots(results,...)`;
+4. catch all PV storage/calculation errors;
+5. continue existing notification/signal state unchanged.
+
+Even if `frame15` is reused, snapshot key by bar timestamp prevents duplicate writes.
+
+Stricter implementation can require the bar-end key not already stored before doing the D1 insert.
+
+## Delta F — daily PV snapshot
+Daily `pvDailyRvol20` can be computed from the existing history associated with `buildMarketFeatures`.
+
+Preferred isolation:
+do NOT add PV fields to the Formal feature object used by selectors in v0.1.
+
+Instead, after Formal selection has completed, build a research snapshot from:
+- the selected/monitored symbol;
+- its existing history cache;
+- frozen Formal plan/context.
+
+This reduces accidental use by ranking code.
+
+## Delta G — outcome finalizer
+Add separate best-effort functions:
+- `finalizePvIntradayOutcomes(...)`
+- `finalizePvDailyOutcomes(...)`
+
+They read immutable snapshots and write only `v7_pv_outcomes`.
+
+They never write stock configuration, signal state or live Formal snapshot.
+
+## Delta H — research endpoint
+Optional admin-only:
+- `GET /api/research/pv/status`
+- `GET /api/research/pv/summary`
+
+No public homepage card and no push in v0.1.
+
+## Tier-2 future delta, NOT v0.1
+Only later:
+- `normalizeMarketRow` may parse daily transaction count;
+- daily market/sector residual RVOL;
+- issued-share turnover;
+- attention/disposition flags.
+
+Keeping Tier-2 out of the first patch minimizes blast radius.
+
+Status: IMPLEMENTATION_DELTA_MAP_FROZEN / NO_CODE_APPLIED.
+
+
+# PV-080 — PV_SHADOW_V0_1 Field Dictionary and Null / UNKNOWN Semantics
+
+## Identity fields
+- `snapshotId: string` — deterministic immutable key.
+- `schemaVersion: "PV_SHADOW_V0_1"`.
+- `symbol: string`.
+- `marketDate: YYYY-MM-DD`.
+- `observedAt: ISO timestamp`.
+- `observationType: "AFTER_MARKET" | "INTRADAY_15M"`.
+- `barStart: ISO|null`.
+- `barEnd: ISO|null`.
+- `eventKey: string|null`.
+- `decisionImpact: false`.
+
+## Frozen Formal context
+- `channel: "A" | "B" | "BOTH" | "UNKNOWN"`.
+- `planDate: string|null`.
+- `buyLow/buyHigh/breakout/maxChase/stop/profitCheck: number|null`.
+- `formalDecisionLevel: string|null`.
+- `formalDecisionText: string|null`.
+- `formalLocalVolumeRatio: number|null`.
+
+These values are copied for research; never recomputed later from an updated plan.
+
+## Core v0.1 numeric PV fields
+- `pvDailyRvol20: number|null`.
+- `pvSlotRvol20: number|null`.
+- `pvCumvolPace20: number|null`.
+- `pvSlotRangeExpansion20: number|null`.
+- `pvSignedProgress20: number|null`.
+- `pvBodyShare: number|null`.
+- `pvPeakRvol: number|null`.
+- `pvCurrentToPeakRvolRatio: number|null`.
+
+## State fields
+- `pvResponseState` enum:
+  - EFFICIENT_UP
+  - EFFICIENT_DOWN
+  - HIGH_EFFORT_LOW_PROGRESS
+  - LOW_EFFORT_LOW_PROGRESS
+  - NORMAL_RESPONSE
+  - GUARDED_RESPONSE
+  - UNKNOWN
+- `pvAcceptanceState`: channel-specific A_* / B_* enum + UNKNOWN.
+- `pvPersistenceState`:
+  NORMAL / FRESH_SHOCK / PERSISTENT / DECAYING / REIGNITED / NORMALIZED / UNKNOWN.
+- `pvGuardState`: precedence enum from PV-066.
+- `pvGuardFlags: string[]`.
+- `pvInterpretability: "VALID" | "GUARDED" | "INVALID"`.
+- `pvSessionPhase: "OPEN_AUCTION_MIXED" | "CONTINUOUS" | "CLOSE_AUCTION_MIXED" | "UNKNOWN"`.
+
+## Coverage / provenance
+- `slotHistoryCount: integer`.
+- `dailyHistoryCount: integer`.
+- `baselineAsOfDate: string|null`.
+- `baselineSource: string|null`.
+- `sourceBarTimestamp: string|null`.
+- `sourceFetchedAt: string|null`.
+- `coverageReasons: string[]`.
+- `corporateActionResetAt: string|null`.
+
+## Null vs UNKNOWN
+### Numeric fields
+Unavailable numeric data = `null`.
+Never substitute:
+- 0;
+- 1.0;
+- prior value;
+- market median
+unless the field definition explicitly calls for that value.
+
+Reason for null appears in guard/coverage fields.
+
+### State fields
+If the state cannot be classified because required data are missing/incompatible => explicit `UNKNOWN`.
+
+Do not use null for a state enum except an optional not-applicable auxiliary field.
+
+## Precision
+Store calculations at sufficient machine precision.
+Display rounding is a presentation concern.
+Do not round a stored 1.2996 to 1.30 and then classify it as >=1.3.
+
+Classification uses unrounded values.
+
+## Schema evolution
+Any change to:
+- threshold;
+- state transition;
+- slot definition;
+- baseline-window semantics;
+- source-unit semantics;
+- guard precedence
+requires a new schemaVersion (e.g. `PV_SHADOW_V0_2`).
+
+Old rows are never rewritten into the new semantic version.
+
+Additive non-semantic audit fields may be added without reclassifying old rows, but the change must be documented.
+
+Status: FIELD_DICTIONARY_FROZEN.
+
+
+# PV-081 — Rollout Acceptance Tests, Kill Switch and Rollback Criteria
+
+## Feature flag
+A research-only implementation must have:
+`PV_SHADOW_ENABLED=false` by default at first deployment.
+
+Enable only after unit/integration tests pass in the repository environment.
+
+Disabling the flag must:
+- stop PV computation/writes/bootstrap;
+- leave Formal monitoring fully operational;
+- not require deleting research tables.
+
+## Pre-deploy acceptance
+Mandatory:
+1. all PV-067 tests pass;
+2. existing Formal test suite passes unchanged;
+3. Formal-isolation fixture produces identical Formal outputs Shadow OFF vs ON;
+4. schema creation is idempotent;
+5. no existing D1 table migration is destructive.
+
+## LOG_ONLY acceptance
+First active phase:
+- zero PV-based user push;
+- zero PV fields consumed by Formal selection;
+- zero additional ordinary-session live candle calls;
+- baseline bootstrap failures isolated from Formal;
+- duplicate snapshot rate = 0;
+- source/unit guard failures become UNKNOWN, never guessed values.
+
+## Operational telemetry
+Track:
+- PV snapshot writes/run;
+- duplicate conflicts/run;
+- D1 write failures;
+- baseline bootstrap calls/errors;
+- PV compute duration;
+- total Formal Fugle calls with Shadow OFF/ON;
+- monitor cron success/failure;
+- guard/UNKNOWN rate.
+
+## Immediate rollback / kill-switch triggers
+Disable PV_SHADOW_ENABLED immediately if any:
+- selected symbols/ranks/plans differ because Shadow is enabled;
+- BUY/ADD/REDUCE/push payload changes;
+- Formal cron begins failing/timing out due PV work;
+- ordinary intraday Fugle call count rises unexpectedly;
+- a PV exception propagates into the Formal job;
+- duplicate snapshots are produced;
+- completed historical snapshot mutates;
+- daily shares and intraday lots are mixed in a ratio;
+- future/session-end data enter an earlier feature snapshot.
+
+## Data-quality pause, not full rollback
+Pause interpretation while keeping safe logging if:
+- >20% of expected primary observations are UNKNOWN for baseline reasons after bootstrap period;
+- guard rate unexpectedly shifts because provider semantics changed;
+- first-slot/closing-slot timestamp fixture fails;
+- baseline reset behavior is uncertain around a new corporate action type.
+
+Threshold 20% here is an operational QA alarm, not an alpha threshold.
+
+## Rollback mechanics
+1. set PV_SHADOW_ENABLED=false;
+2. do not delete D1 research data;
+3. preserve error/audit rows;
+4. confirm Formal outputs and call counts return to baseline;
+5. fix under a new code commit;
+6. if semantic meaning changes, increment schemaVersion before re-enable.
+
+Status: ROLLOUT_AND_ROLLBACK_CONTRACT_FROZEN.
+
+
+# PV-082 — Research Readiness Decision for Class-A Shadow Implementation
+
+## Question
+Has the research matured enough to implement a **research-only** recorder without influencing Formal decisions?
+
+## Evidence supporting readiness
+- a narrow primary question is pre-registered;
+- minimal feature set is frozen;
+- robust same-slot/daily normalization semantics are frozen;
+- A/B state transitions reuse current Formal geometry instead of inventing outcome-tuned thresholds;
+- risk and direction outcomes are separated;
+- no-look-ahead and episode de-duplication rules are defined;
+- current cron/API budget has been audited and corrected;
+- provider/unit/session/corporate-action guards are explicit;
+- implementation delta map isolates research after Formal results;
+- field dictionary/schema version is frozen;
+- idempotency, Formal isolation, kill-switch and rollback tests are defined;
+- Tier-2 feature creep has been explicitly pruned.
+
+## Evidence against any Formal promotion
+There is still **no prospective outcome sample** for the new same-slot RVOL / cumulative-pace states in this system.
+
+Therefore we do not yet know whether they:
+- improve false-confirmation detection;
+- reduce MAE;
+- improve MFE;
+- add value beyond current local volumeRatio;
+- remain stable across regimes/session phases.
+
+## Decision
+Research is sufficient to **propose a Class-A, LOG_ONLY, decisionImpact=false implementation of PV_SHADOW_V0_1**.
+
+Research is NOT sufficient to:
+- alter A/B eligibility;
+- alter ranking;
+- change BUY/ADD/REDUCE;
+- change maxChase/stop/capital;
+- add a PV veto;
+- change push behavior.
+
+## Owner-control boundary
+No Worker.js implementation is made in this research step.
+The implementation should begin only after the owner explicitly chooses to move from research specification to Class-A Shadow logging.
+
+Status: READY_TO_PROPOSE_CLASS_A_SHADOW / NOT_READY_FOR_FORMAL_OPTIMIZATION.
 
