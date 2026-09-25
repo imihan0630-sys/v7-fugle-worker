@@ -36,24 +36,43 @@ Required readiness:
 - stable/known volume unit;
 - no unresolved unit conversion.
 
-### ISSUED_SHARE_TURNOVER
+### REGISTERED_ISSUED_SHARE_TURNOVER
 
 Definition:
-executed share volume / point-in-time issued or listed shares.
+executed share volume / point-in-time registered issued shares.
 
 Purpose:
-normalizes trading activity for a changing share base.
+normalizes activity against the registered capital/share base.
 
 Minimum denominator contract:
 - symbol;
 - effective date/time;
-- issued/listed shares valid for that market session;
-- direct official share count; do not derive an exact denominator only from a nominal stock-dividend/rights ratio;
+- direct official registered issued-share count;
 - firstKnownAt / source provenance;
 - correction/supersession history.
 
 TPEx public statistics explicitly state that turnover rate is calculated by issued shares.
-This supports issued shares as a defensible minimum denominator for a supply-normalized turnover metric.
+This supports issued shares as one legitimate denominator definition, but it does NOT prove that registered issued shares equal exchange-listed/tradable supply on every corporate-action date.
+
+### EXCHANGE_LISTED_SHARE_TURNOVER
+
+Definition:
+executed share volume / point-in-time exchange-listed common shares.
+
+Purpose:
+normalizes trading activity against the share supply admitted to exchange trading.
+
+This must be separate from REGISTERED_ISSUED_SHARE_TURNOVER.
+8454 proves why: registered issued shares changed on 2025-09-22 while the capital-increase shares were not listed until 2025-10-09.
+8422 proves the same timing hazard for a unit conversion: registration completed 2025-08-21, while the new NT$1 shares did not trade until 2025-11-17.
+
+Minimum denominator contract:
+- symbol;
+- exchange;
+- listed-share count;
+- listing/delivery effective session;
+- source provenance and firstKnownAt;
+- revision/supersession history.
 
 ### FREE_FLOAT_TURNOVER
 
@@ -77,7 +96,8 @@ Replace the overloaded interpretation with explicit research fields:
 
 - `shareUnitComparable`;
 - `rawShareVolumeReady`;
-- `issuedShareTurnoverReady`;
+- `registeredIssuedShareTurnoverReady`;
+- `exchangeListedShareTurnoverReady`;
 - `freeFloatTurnoverReady`;
 - `supplyBreakPresent`;
 - `supplyBreakEffectiveDate`;
@@ -96,8 +116,14 @@ RAW_SHARE_VOLUME:
 - set `supplyBreakPresent=true`;
 - no automatic volume rescaling.
 
-ISSUED_SHARE_TURNOVER:
-- require point-in-time issued/listed-share denominator on both sides of the break;
+REGISTERED_ISSUED_SHARE_TURNOVER:
+- require point-in-time registered issued-share denominator;
+- switch only at its own effective registration/share-base event;
+- if missing, remain UNKNOWN.
+
+EXCHANGE_LISTED_SHARE_TURNOVER:
+- require point-in-time exchange-listed-share denominator;
+- switch only when the new shares become listed/tradable for the market session;
 - if missing, remain UNKNOWN.
 
 FREE_FLOAT_TURNOVER:
@@ -153,12 +179,13 @@ It creates a semantic break that must be tagged, and any turnover-normalized int
 No Formal behavior is changed here.
 Before any future promotion, owner review must decide whether Formal intends:
 A. raw executed share activity;
-B. issued-share turnover;
-C. free-float turnover;
+B. registered-issued-share turnover;
+C. exchange-listed-share turnover;
+D. free-float turnover;
 or separate features for each.
 
 Until then, the safest interpretation of the PR #101 field `volumeContinuityComplete=false` at SUPPLY_CHANGE is:
-NORMALIZED_VOLUME_CONTINUITY_NOT_PROVEN,
+THE_REQUESTED_NORMALIZED_VOLUME_SPACE_NOT_PROVEN,
 not
 RAW_EXECUTED_VOLUME_INVALID.
 
