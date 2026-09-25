@@ -5091,3 +5091,208 @@ Each Pattern Shadow snapshot should preserve:
 ### First implementation class if later approved
 Research-only snapshot writer / backfill tool = Class A if it has no decision impact.
 Any change to Formal candidate eligibility, ranking, capital, execution, monitoring or push = Class C and requires owner approval.
+
+
+## DL-002P — Failed Pattern / False-Breakout Taxonomy v0.1
+
+### Goal
+Study failure as a first-class morphology rather than treating every failed bullish pattern as a generic stop-out.
+
+### Why failure deserves its own lane
+A bullish setup can fail in several mechanically different ways:
+1. no real breakout acceptance,
+2. breakout occurs but immediately re-enters the base,
+3. breakout holds briefly then loses the pivot,
+4. pattern degrades before breakout,
+5. breakout succeeds locally but collides with older resistance,
+6. high-volume expansion is actually late-stage exhaustion.
+
+These mechanisms should not be collapsed into one FAILED flag.
+
+### Universal breakout-failure states
+PRE_BREAKOUT_INVALIDATION
+- key structural low/handle low/second-bottom low breaks before breakout.
+
+INTRABAR_POKE_ONLY
+- high exceeds pivot but close does not establish acceptance above pivot.
+- descriptive only on daily data; do not assume intraday sequence.
+
+CLOSE_BREAKOUT_NO_FOLLOWTHROUGH
+- close clears pivot but subsequent closes fail to expand/hold.
+
+FAST_REENTRY
+- after breakout, close returns inside the prior base/pattern within a short pre-registered horizon.
+
+PIVOT_LOSS_AFTER_RETEST
+- breakout occurred, retest reaches pivot zone, then closes materially below it.
+
+OLDER_RESISTANCE_COLLISION
+- clears local priorHigh20/pattern pivot but stalls below a higher major structural resistance.
+
+LATE_STAGE_EXHAUSTION
+- breakout occurs after already-extended price path with wide range / high volume / poor close acceptance.
+
+R01_BREAKOUT_FAILURE
+- retain existing frozen R01 three-day breakout failure as the common formal research outcome.
+
+### Do not redefine success
+Pattern failure taxonomy is descriptive.
+Outcome success/failure continues to use the existing frozen research outcomes (R01, D1/D3/D5/D10, MFE/MAE, stop-first).
+
+## DL-002Q — Volume Is Context, Not a Single Confirmation Threshold
+
+### Evidence conflict
+Practitioner guidance commonly treats high breakout volume as confirmation.
+However:
+- high participation at a breakout can represent committed demand,
+- but high volume after an extended move can also be climax/exhaustion,
+- broad backtest evidence suggests adding generic volume-confirmation filters often reduces trade frequency more reliably than it improves edge.
+
+Therefore “volume > X = good breakout” is not assumed.
+
+### Separate volume contexts
+1. PRE_BREAKOUT_DRY_UP
+- volume contracts while price/range tightens near pivot.
+
+2. BREAKOUT_PARTICIPATION
+- breakout-day/session volume relative to an appropriate baseline.
+
+3. RETEST_SUPPLY
+- volume during pullback/retest; low selling volume may be constructive.
+
+4. FOLLOW_THROUGH_DEMAND
+- participation on post-breakout advance bars.
+
+5. CLIMAX_RISK
+- very high volume + extended price path + wide range + poor close/failure to extend.
+
+### Research variables
+- breakoutVolumeRatio5
+- breakoutVolumeRatio20
+- breakoutTurnoverRatio20
+- retestDownVolumeRatio
+- followThroughVolumeRatio
+- volumeDryUpSlope
+- volumeShockZ
+- closeLocationOnVolumeShock
+- priceExtensionAtVolumeShock
+- rangeATRAtVolumeShock
+
+### Key hypothesis
+The same high volume can have opposite meaning depending on:
+- distance from base/pivot,
+- prior 20/60-day return,
+- close location,
+- range expansion,
+- next-day follow-through,
+- retest quality.
+
+This must be tested as an interaction, not a universal bullish threshold.
+
+### Formal overlap
+Current B already requires volumeTodayVsPrev5 >= 1.3.
+DL-002Q does NOT propose changing it.
+Research question:
+Does contextual volume interpretation explain which B breakouts later fail despite passing the existing 1.3x volume condition?
+
+## DL-002R — Trap / Re-entry Mechanics v0.1
+
+### Hypothesis
+A failed breakout can contain information beyond simply “trade lost” because traders who entered above resistance may become trapped when price re-enters the base.
+
+### Observable trap features
+- breakoutCloseAbovePivotPct
+- maxExcursionAbovePivotBeforeFailure
+- barsUntilReentry
+- reentryDepthPct
+- reentryCloseLocation
+- failureVolumeRatio
+- trappedRangeTurnover
+- priorBreakoutVolumeRatio
+- retestAttemptCount
+
+### Do not assume reversal alpha
+A failed breakout does NOT automatically become a short signal.
+Test three outcomes separately after re-entry:
+- continuation down,
+- mean reversion / range return,
+- reclaim and second breakout.
+
+### Reclaim state
+FAILED_BREAKOUT
+-> REENTRY
+-> RECLAIM_ATTEMPT
+-> RECLAIM_CONFIRMED or SECOND_FAILURE
+
+This is relevant to the broader system because a stock rejected after one failed breakout might later become valid again; failure should not create a permanent blacklist.
+
+## DL-002S — Negative Morphology Library v0.1
+
+### Purpose
+Create explicit counterexamples so positive-pattern detectors are falsifiable.
+
+### Families
+WIDE_LOOSE_BASE
+- repeated large swings without progressive compression.
+
+EXPANDING_RANGE
+- later swing amplitudes increase.
+
+HIGH_VOLUME_DISTRIBUTION
+- down legs carry increasing volume / turnover and weak closes.
+
+LOWER_HIGH_LOWER_LOW
+- confirmed bearish swing sequence.
+
+FAILED_RIGHT_SIDE
+- cup/right-side recovery stalls well before rim and rolls over.
+
+HANDLE_BREAKDOWN
+- handle loses its own structural low before pivot breakout.
+
+W_UNDERCUT_NO_RECLAIM
+- second trough undercuts first and fails to recover promptly.
+
+VCP_EXPANSION
+- a later contraction materially exceeds prior contraction size.
+
+BREAKOUT_REJECTION
+- breakout bar closes poorly / long upper rejection, then loses pivot.
+
+LOCAL_BREAKOUT_MAJOR_RESISTANCE
+- local 20d breakout into unresolved longer-term supply.
+
+### Research comparison
+For every positive pattern family, maintain matched negative/control morphology from the same date and liquidity/price/sector bucket.
+
+This helps answer:
+“Is the positive geometry actually informative, or are we just selecting stocks already in strong regimes?”
+
+## DL-002T — Failure Research Test Matrix
+
+### Same-date comparisons
+1. B breakouts that pass existing volume gate:
+   - contextual-confirmed vs climax-risk.
+2. VCP mature:
+   - successful breakout vs pre-breakout expansion failure.
+3. Cup/handle:
+   - handle dry-up vs handle selling-volume expansion.
+4. W bottom:
+   - higher/equal/undercut-reclaim vs undercut-no-reclaim.
+5. Local breakout:
+   - no older resistance vs major-resistance collision.
+
+### Outcomes
+Reuse:
+- R01 breakout failure
+- D1/D3/D5/D10
+- MFE/MAE
+- stop-first
+- time-to-reentry
+- time-to-reclaim
+
+### Priority hypothesis
+A contextual failure library may have higher practical value than adding more bullish score because it can potentially reduce false positives while preserving the locked Formal definitions during research.
+
+No Formal exclusion rule is approved at this stage.
+
