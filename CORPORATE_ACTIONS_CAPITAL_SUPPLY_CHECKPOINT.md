@@ -244,3 +244,19 @@ CA-115 remains gated by CA-111/113/114.
 CA-113 bounded dual-exchange denominator archive pilot with per-date/per-symbol completeness and revision receipts.
 CA-114 payment-certificate/private-placement denominator resolution using daily exchange artifacts plus an independent witness.
 CA-115 Class-A Shadow readiness re-evaluation only after CA-113/114 pass.
+
+
+## CA-113 alignment / CA-114 semantic-stage resolution
+- CA-113 pilot plan upgraded to v0.2 after CA-111 closure. TWSE exact listed-share candidate lane is now BFT51U 上市股數 raw field; BFT51U 發行張數 remains lot-count only and universal x1000 remains rejected. Pilot status is READY_FOR_BOUNDED_EXECUTION, not complete.
+- Full archive completeness is still gated by bounded source bytes/receipts with expected-vs-observed sessions, revision/knownAt coverage, suspension handling and parser-failure accounting on both exchanges.
+- CA-114 semantic stage for 2465 is materially resolved in `research/corporate_action_2465_payment_certificate_resolution_v0_1.json`.
+- 2025-11-17 issuer/TWSE-approved listing disclosure separates 58,946,031 original listed common shares (excluding 25,000,000 private-placement common shares) from 10,000,000 payment-certificate tradable units. Therefore 68,946,031 is a derived combined tradable-unit universe only for metrics whose denominator contract explicitly combines both instrument types; it is NOT registered-issued common shares.
+- 93,946,031 on the 2025-11-17 disclosure is a cumulative listing figure that includes payment certificates and must not be relabeled as registered-issued ordinary shares at that date.
+- Registration approval occurred 2026-01-06; new ordinary shares list and payment certificates terminate/convert on 2026-01-16. This independently falsifies backward leakage of the later ordinary-share state into 2025-11-17.
+- Remaining CA-114 gate is archive evidence, not semantic guesswork: capture bounded date-specific TWSE daily artifacts around 2025-11-17 and reconcile BFT51U/security rows with the explicit instrument-stage contract.
+- No outcome testing, no historical Shadow fabrication, no Formal change.
+
+## Updated exact continuation
+CA-113 execute bounded TWSE/TPEx archive receipts and quantify completeness/revision/UNKNOWN counts.
+CA-114 reconcile 2465 bounded daily TWSE rows against the now-frozen instrument-stage semantics; if source rows do not expose payment-certificate instrument supply, preserve metric-specific UNKNOWN rather than forcing one denominator.
+CA-115 re-evaluate Class-A Shadow implementation readiness only after CA-113 archive receipts and CA-114 reconciliation pass.
