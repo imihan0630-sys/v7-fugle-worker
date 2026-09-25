@@ -987,4 +987,230 @@ Status: LOW_TO_MEDIUM_PRIORITY / REDUNDANCY_TEST_FIRST.
 
 ## Formal decision
 No Formal A/B rule, threshold, capital rule, entry confirmation or push logic is changed by PV-008 through PV-015. All items remain research / Shadow hypotheses until prospective evidence shows incremental value.
+# PV-016 — Session Average / VWAP-Style Acceptance: Diagnostic, not Proven Alpha
+
+## Data fact
+Fugle intraday / historical intraday candles expose `average`, documented as the cumulative average transaction price from market open for intraday bars.
+
+Sources:
+- https://developer.fugle.tw/docs/data/http-api/intraday/candles/
+- https://developer.fugle.tw/docs/data/http-api/historical/candles/
+
+## Why it may help
+For a breakout / reacceleration event, price staying above the session cumulative average while same-slot participation remains elevated may be a compact description of intraday acceptance. Conversely, repeated failure above the average may show weak acceptance.
+
+Candidate diagnostics:
+- `closeVsSessionAvgPct`;
+- `lowVsSessionAvgPct`;
+- number / fraction of completed bars above session average;
+- reclaim / loss events relative to session average;
+- interaction with same-slot RVOL and pivot acceptance.
+
+## Strong warning
+VWAP is primarily established as an execution benchmark, not a universal return-prediction signal. Academic VWAP literature focuses heavily on execution / tracking, not on “price above VWAP = bullish alpha.”
+
+Source:
+- https://doi.org/10.1080/24725854.2019.1688896
+
+Therefore session-average position should be used only as an acceptance descriptor and must prove incremental information beyond:
+- close location;
+- trend / moving averages;
+- breakout distance;
+- same-slot RVOL;
+- intraday return.
+
+Status: MEDIUM_PRIORITY_DIAGNOSTIC / DO_NOT_PROMOTE_AS_STANDALONE_ALPHA.
+
+
+# PV-017 — Price Impact / Effort-vs-Result Normalization
+
+## Academic anchor
+Amihud's illiquidity measure uses absolute return divided by dollar trading volume as a rough low-frequency price-impact proxy. Later work shows that true intraday order-flow price-impact estimates are richer, and other research argues that part of the Amihud measure's return relation is driven by its volume component rather than pure price impact.
+
+Sources:
+- https://doi.org/10.1016/S1386-4181(01)00024-6
+- https://doi.org/10.1016/j.finmar.2013.02.001
+- https://doi.org/10.1093/rfs/hhx072
+
+## Research interpretation
+For our system, “price response per trading effort” may help describe a bar/sequence, but must not be mislabeled as a clean alpha factor.
+
+Candidate research features:
+- `absReturn / tradeValue`;
+- `trueRangePct / tradeValue`;
+- `pivotProgressATR / log(1 + valueRVOL)`;
+- signed price progress / abnormal value traded;
+- rolling median-normalized versions by symbol.
+
+## Positive interpretation
+High price progress per unit effort can indicate thin resistance / efficient directional movement.
+
+## Opposing interpretation
+The same ratio can simply indicate illiquidity, small-cap fragility or sparse depth. Very low price progress on huge volume can be either absorption or distribution. Price-limit bars mechanically censor progress.
+
+## Controls
+- liquidity gate;
+- market cap / price tier;
+- spread proxy if available;
+- price-limit state from PV-013;
+- follow-through state from PV-010.
+
+Status: WORTH_RESEARCH_AS_DIAGNOSTIC / NOT_STANDALONE_SELECTION_FACTOR.
+
+
+# PV-018 — Taiwan Gap x Volume Archetypes: Overnight Shock vs Intraday Acceptance
+
+## Taiwan-specific evidence
+Taiwan's market structure makes the open especially informative because overnight information cannot be continuously incorporated into TWSE-listed stock prices before the next session. Research on Taiwan separates overnight and intraday return behavior and reports that overnight-return patterns are linked to investor sentiment / retail participation, while intraday and overnight components can have materially different predictive behavior.
+
+Sources:
+- https://doi.org/10.1016/j.pacfin.2023.102086
+- https://doi.org/10.1016/j.pacfin.2023.102044
+- https://ideas.repec.org/a/eee/pacfin/v80y2023ics0927538x23001646.html
+- https://ideas.repec.org/a/eee/pacfin/v82y2023ics0927538x23002226.html
+
+## Research decomposition
+Do not call a positive opening gap “strong” or “exhaustion” by itself.
+
+Separate:
+1. `overnightReturn = open / prevClose - 1`;
+2. first 15m / 30m same-slot RVOL;
+3. intraday drift from open;
+4. gap-fill depth;
+5. close location / session-average relation;
+6. pivot / breakout acceptance;
+7. price-limit censoring.
+
+## Candidate archetypes
+Research labels only:
+- `GAP_INFO_ACCEPTED`: gap + elevated opening participation + later hold / intraday acceptance;
+- `GAP_SENTIMENT_RISK`: large gap + extreme opening activity + poor progress / gap erosion;
+- `GAP_LOW_PARTICIPATION`: gap without abnormal opening participation;
+- `GAP_AMBIGUOUS`: insufficient evidence.
+
+These labels require later as-of transitions; the opening print alone cannot assign the final state.
+
+## Formal relevance
+This may eventually help prevent the B breakout channel from treating a gap-driven breakout the same as a continuous-session breakout. For now, no Formal change.
+
+Status: HIGH_VALUE_TAIWAN_SHADOW_CANDIDATE.
+
+
+# PV-019 — Multi-Timeframe Volume Alignment without Double Counting
+
+## Problem
+The system has daily selection context and formal 15m entry confirmation. Adding daily, 60m, 30m, 15m and 10m volume scores independently would count the same participation event multiple times.
+
+## Architecture
+Use a hierarchy, not additive points:
+
+### Daily = context
+- supply contraction / breakout volume regime;
+- late-stage / overheat;
+- sector / institution context;
+- price-limit / gap context.
+
+### 60m or coarse intraday = transition
+Optional research-only view:
+- whether opening participation persists or decays;
+- whether the event remains above pivot / session average.
+
+### 15m = formal-resolution research layer
+- same-slot RVOL;
+- completed-bar close / range;
+- acceptance / retest / reacceleration state.
+
+### 10m = auxiliary only
+Keep current governance: auxiliary diagnostics must not silently become Formal confirmation.
+
+## Anti-duplication rule
+A single volume event should contribute one latent participation state, with observations from multiple timeframes updating confidence. Do not award separate points for “daily high volume,” “60m high volume,” and “15m high volume” if they are the same event.
+
+Status: ARCHITECTURE_RULE / FACTOR_ZOO_CONTROL.
+
+
+# PV-020 — Compact Latent Price-Volume State Architecture
+
+## Goal
+Avoid dozens of overlapping factors by separating what price-volume data are trying to answer.
+
+## Layer 1 — Participation state
+Possible research states:
+- `QUIET`
+- `NORMAL`
+- `ELEVATED`
+- `EXTREME`
+- `UNKNOWN`
+
+Derived from own-history RVOL, same-slot intraday RVOL and coverage quality.
+
+## Layer 2 — Price-response efficiency
+Possible states:
+- `EFFICIENT_UP`
+- `EFFICIENT_DOWN`
+- `HIGH_EFFORT_LOW_PROGRESS`
+- `LOW_EFFORT_LOW_PROGRESS`
+- `UNKNOWN`
+
+This layer is descriptive. `HIGH_EFFORT_LOW_PROGRESS` is not directional because it can be absorption or distribution.
+
+## Layer 3 — Structural acceptance lifecycle
+From PV-010:
+- `PRE_EVENT`
+- `BREAKOUT_ATTEMPT`
+- `INITIAL_ACCEPTANCE`
+- `RETEST`
+- `REACCELERATION`
+- `FAILED_REENTRY`
+- `AMBIGUOUS`
+
+## Layer 4 — Persistence
+From PV-014:
+- `ONE_OFF`
+- `PERSISTENT`
+- `DECAYING`
+- `UNKNOWN`
+
+## Layer 5 — Constraint / interpretation guard
+- `NORMAL_MARKET`
+- `PRICE_CENSORED`
+- `ILLIQUID`
+- `GAP_DOMINATED`
+- `DATA_INSUFFICIENT`
+
+## Why this is better than another score
+The same 3x volume ratio has different meaning depending on:
+- whether the stock is breaking out or already extended;
+- whether price progresses efficiently;
+- whether the move holds later;
+- whether the volume persists;
+- whether price is censored by a limit;
+- whether the event began as an overnight gap.
+
+The latent-state architecture preserves these distinctions without multiplying near-duplicate scores.
+
+## Candidate system handoff
+If eventually validated, the safest first integration is not “add X points.” It is:
+- record the latent PV state in Shadow;
+- compare outcomes inside existing SELECTED / Near-miss / Rejected cohorts;
+- only then ask whether it should alter ranking, eligibility or 15m confirmation.
+
+Any such Formal change remains Class C and requires owner approval.
+
+Status: HIGH_PRIORITY_INTEGRATION_ARCHITECTURE / FORMAL_LOCKED.
+
+
+# Batch synthesis after PV-020
+
+The research is converging away from “volume indicators” and toward a conditional state model:
+
+`participation -> price response -> structural acceptance -> persistence -> market-structure guard`.
+
+This directly supports the owner's requirement to learn both positive and negative interpretations of the same observation and prevents automatic conversion of a learned idea into a trading rule.
+
+Next research should test:
+- whether volume concentration by intraday time block adds information beyond same-slot RVOL;
+- whether volume dry-up before breakout and re-expansion after breakout form a stable sequence feature;
+- whether price-volume state adds incremental value after Pattern Maturity, Residual RS, sector, institution, overheat and Information Discreteness controls;
+- minimum prospective sample / stopping rules before any Shadow implementation is recommended.
 
