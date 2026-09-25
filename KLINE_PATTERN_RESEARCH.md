@@ -7318,3 +7318,132 @@ Before then, current-week weekly OHLC is PROVISIONAL and cannot be backfilled as
 
 This preserves point-in-time integrity across timeframe aggregation.
 
+
+
+## DL-002BP — Volume-at-Price / Cost-Zone Research Feasibility
+
+### Concept
+Time-based volume tells WHEN trading occurred.
+Volume-at-price tells WHERE trading occurred.
+
+This may improve support/resistance-zone research by measuring historical acceptance around prices rather than relying only on swing touches.
+
+### Source capability verified
+Fugle currently provides:
+- intraday volumes endpoint with exact current-day price buckets:
+  - price
+  - cumulative volume
+  - volumeAtBid
+  - volumeAtAsk
+- historical intraday candles from 2023-05-23 onward at 1/3/5/10/15/30/60-minute intervals.
+- historical minute candles provide OHLC, volume and cumulative average price, but not exact historical trade-by-price buckets.
+
+### Critical data-integrity distinction
+EXACT_CURRENT_PROFILE:
+- direct current-day intraday volume-by-price endpoint.
+- can be prospectively snapshotted.
+
+APPROX_HISTORICAL_PROFILE:
+- reconstructed from minute candles by assigning minute volume to a representative price/range.
+- this is NOT exact volume-at-price because intraminute trade-price distribution is unknown.
+
+Do not mix the two without provenance.
+
+### Prospective research opportunity
+For Formal/Shadow candidates only, an isolated research process could prospectively store the end-of-day exact volume-by-price profile:
+- profileDate
+- symbol
+- priceBucket
+- totalVolume
+- volumeAtBid
+- volumeAtAsk
+- source
+- capturedAt
+
+This would create genuine forward data for future support/resistance research without altering trading behavior.
+
+### Cost/acceptance zone candidates
+From exact stored profiles:
+- pointOfControlPrice
+- highVolumeNode zones
+- lowVolumeNode zones
+- profileConcentration
+- volumeWeightedMedianPrice
+- volumeAboveCurrentPrice
+- volumeBelowCurrentPrice
+- bidAskImbalanceByZone
+- pivotOverlapWithHighVolumeNode
+- supportOverlapWithHighVolumeNode
+- breakoutThroughLowVolumeArea
+
+### Hypotheses
+1. A price pivot overlapping a high-participation zone may behave differently from a visually similar pivot with little historical participation.
+2. Breakout with little volume-at-price overhead (“thin air”) may have more room than breakout directly into a high-volume overhead zone.
+3. High volume at a price can mean acceptance/position inventory, not automatically support; context and side-of-market matter.
+
+### Practitioner-evidence caution
+Volume Profile is widely used as a support/resistance map, but strong peer-reviewed evidence for its standalone equity alpha is limited.
+Therefore treat it as a zone/context feature requiring prospective validation.
+
+### Engineering classification
+Prospectively snapshotting an isolated research-only volume profile for research cohorts can be Class A if:
+- it does not alter Formal fetch timing/output,
+- it uses a separate table/path,
+- failures remain UNKNOWN and never block trading,
+- regression confirms zero Formal impact.
+
+No implementation in this research note itself.
+
+## DL-002BQ — Historical Volume-Profile Approximation Must Be Marked Approximate
+
+### If historical minute reconstruction is used
+Possible allocation methods:
+- all minute volume at close;
+- all minute volume at average;
+- distribute across [low, high] using a simple kernel.
+
+Each method creates artificial structure.
+
+### Rule
+Any reconstructed profile must store:
+- profileMethod
+- sourceTimeframe
+- approximation=true
+- bucketWidth
+- allocationRule
+
+### Robustness requirement
+A historical volume-profile finding is not credible unless it is stable across at least two reasonable allocation methods.
+
+### Preferred evidence order
+1. prospective exact price-by-volume snapshots;
+2. historical trade-level data if later available;
+3. minute-candle approximations only as exploratory evidence.
+
+## DL-002BR — VWAP / Average-Price Context Boundaries
+
+### Source capability
+Fugle minute candles expose the field average, documented as cumulative average transaction price from the open.
+
+### Research use
+This can support intraday execution context such as:
+- current price vs session cumulative average,
+- breakout/retest relative to session average,
+- acceptance above/below the session’s traded average.
+
+### Do not overclaim
+This is session cumulative average data.
+It should not be labeled arbitrary Anchored VWAP from a historical pattern pivot unless that quantity is explicitly reconstructed from sufficiently granular data.
+
+### Candidate execution fields
+- priceVsSessionAveragePct
+- pivotVsSessionAveragePct
+- retestVsSessionAverage
+- sessionAverageSlope
+- acceptanceAboveSessionAverageBars
+
+These are Execution Alpha features only.
+
+### Redundancy
+Compare against existing 15m close/reversal/volume fields.
+If session-average context adds nothing, reject it.
