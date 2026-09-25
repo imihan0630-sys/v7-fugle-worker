@@ -2537,3 +2537,264 @@ CA-072: add deterministic registry validation specification.
 CA-073: define feature-window coverage manifest: expected events vs observed/verified events.
 CA-074: build first offline feature-delta sample only from readiness-qualified windows.
 CA-075: do not start forward-return optimization until registry coverage is demonstrably complete.
+
+
+---
+
+## CA-037 — Expanded real-event sample: stock dividend + two capital-reduction subtypes
+
+Three additional 2025 events were added, bringing the direct technical-semantics sample to six event types/examples.
+
+### 2885 Yuanta Financial — pure stock dividend
+Official Yuanta Financial dividend history:
+- 2024 earnings distribution paid in 2025;
+- stock dividend = NT$0.30 per share;
+- ex-right date = 2025-08-12.
+
+Raw market series:
+- 2025-08-11 close = 33.20;
+- 2025-08-12 close = 32.20;
+- action-aware daily change = -0.05.
+
+The daily change implies an event reference near 32.25; the published theoretical reference was about 32.23.
+Research bridge uses 32.23 / 33.20 = 0.970783.
+
+Raw vs price-continuity diagnostic:
+- ret20: -0.16% -> +2.85%;
+- ret60: -1.53% -> +1.43%;
+- MA20: 32.09 -> 31.20;
+- ATR: 1.61% -> 1.49%;
+- A pullback check flips true -> false because the apparent 3.30% pullback becomes only 0.39% after the mechanical ex-right reset is removed.
+
+Full A/B remain false.
+
+This is important because corporate-action correction can remove a false pullback, not only rescue a false breakdown.
+
+### 8103 CviLux — cash-refund capital reduction
+TWSE official announcement confirms:
+- cash capital reduction;
+- old-stock trading suspension from 2025-11-27;
+- new shares resume/list on 2025-12-08.
+
+Public filing details:
+- reduction ratio = 15%;
+- refund = NT$1.5/share;
+- 92,278,436 shares -> 78,436,671 shares.
+
+Raw market series:
+- last pre-suspension close = 74.7;
+- 2025-12-08 close = 83.4;
+- action-aware change = -2.7.
+
+Thus the event reference is about 86.1, consistent with the cash-reduction formula:
+(74.7 - 1.5) / 0.85 = 86.1176 before tick rounding.
+
+Point-in-time price bridge factor:
+86.1 / 74.7 = 1.152610.
+
+Raw vs continuity:
+- ret20: +7.89% -> -6.39%;
+- ret60: +48.13% -> +28.52%;
+- MA20: 76.81 -> 87.89;
+- support distance: 8.59% -> 3.22%;
+- A trend true -> false;
+- A pullback true -> false;
+- A nearSupport false -> true;
+- B trend true -> false.
+
+Full A/B remain false.
+
+Raw history therefore makes the first resumed close look like a large upward jump from 74.7, even though the action-aware market move is negative versus the 86.1 post-reduction reference.
+
+### 3593 Logah Technology — loss-offset capital reduction
+TWSE official announcement confirms:
+- capital reduction to make up deficit;
+- old-stock trading suspension from 2025-12-11;
+- new shares resume/list on 2025-12-22.
+
+Public filing:
+- reduction ratio = 40.00000064%;
+- each 1,000 old shares becomes about 599.9999936 new shares;
+- 93,042,416 shares -> 55,825,449 shares including private-placement shares.
+
+Raw market series:
+- last pre-suspension close = 8.1;
+- 2025-12-22 close = 12.3;
+- action-aware change = -1.2.
+
+The event reference is 13.5:
+8.1 / 0.6 = 13.5.
+
+Price bridge factor:
+13.5 / 8.1 = 1.666667.
+
+Raw vs price-only continuity:
+- ret20: +68.49% -> +1.10%;
+- ret60: +75.71% -> +5.43%;
+- MA20: 7.72 -> 12.46;
+- pullback: mechanically nonsensical -46.08% -> 12.35%;
+- support distance: 59.33% -> 1.26%;
+- A technical setup false -> true under PRICE-ONLY continuity.
+
+However CA-038 shows why this price-only A pass is not yet trustworthy.
+
+### Expanded-sample conclusion
+The six-event evidence now spans:
+- cash dividend;
+- ex-right/reset;
+- par-value change;
+- stock dividend;
+- cash-refund capital reduction;
+- loss-offset capital reduction.
+
+Mechanical corporate actions can create both:
+- false weakness/breakdown;
+- false strength/breakout/trend.
+
+Status: CA PRICE-SEMANTICS MATERIALITY = REPLICATED ACROSS MULTIPLE ACTION TYPES.
+
+---
+
+## CA-038 — Share-volume-unit bridge is mandatory for share-count-changing actions
+
+Price continuity alone is insufficient when one old share does not map 1:1 to one post-action share.
+
+### Unit transformation rule
+
+To express pre-event share volume in post-event share units:
+
+preEventComparableVolume =
+rawPreEventVolume * (postActionShares / preActionShares).
+
+This preserves the economic share-unit basis.
+
+For pure cash dividends:
+share-unit factor = 1.
+
+For the current sample:
+- 2885 stock dividend 3%: factor ≈ 1.03;
+- 8103 cash reduction 15%: factor = 0.85;
+- 3593 loss reduction 40%: factor ≈ 0.60;
+- 8422 par-value 10-to-1 price-base event: empirical share-unit factor = 10 for the unit reset studied.
+
+### Observed volume-ratio impact
+
+2885:
+- raw volumeTodayVsPrev5 = 1.02;
+- share-unit bridged = 0.99.
+No B-volume flip.
+
+8103:
+- raw = 1.00;
+- share-unit bridged = 1.18.
+No B-volume flip.
+
+3593:
+- raw = 0.95;
+- share-unit bridged = 1.58.
+B volume check flips false -> true.
+A volume check flips true -> false.
+
+8422:
+- raw = 21.12;
+- share-unit bridged = 2.11.
+The event still has abnormal volume, but the apparent 21x explosion is mostly share-unit contamination.
+
+### Critical 3593 result
+Under PRICE-ONLY continuity, 3593 appears to pass full A technical setup.
+
+After the share-volume-unit bridge:
+- A volume check becomes false;
+- full A returns to false.
+
+Therefore:
+**a price-only corporate-action repair can itself create a false Formal A pass.**
+
+This is a stronger constraint than CA-034:
+Any production-safe continuity layer must treat price and share-volume units jointly for actions that alter share count/unit scale.
+
+### Turnover insight
+For split/reduction-like mechanics, traded notional/turnover is often a useful cross-check because:
+priceFactor * shareUnitFactor should approximately preserve economic notional absent true price movement and microstructure effects.
+
+Do not blindly replace share volume with turnover, because current Formal rules explicitly use share volume and liquidity thresholds. Instead preserve both:
+- rawVolumeShares;
+- comparableVolumeShares;
+- turnoverNTD;
+- volumeUnitFactor;
+- volumeUnitQuality.
+
+Status: PRICE-ONLY FIX REJECTED FOR SHARE-COUNT-CHANGING ACTIONS.
+
+---
+
+## CA-039 — Target-date-bounded no-look-ahead controls pass identity invariant
+
+A core invariant was tested on four symbols immediately before their future corporate actions.
+
+Control target dates:
+- 2885 target 2025-08-11; future action 2025-08-12;
+- 8103 target 2025-11-26; future action 2025-12-08;
+- 3593 target 2025-12-10; future action 2025-12-22;
+- 8422 target 2025-11-05; future action 2025-11-17.
+
+Rule:
+A corporate action may transform history only when effectiveDate <= targetDate.
+
+Result:
+- 2885: 1,117 historical rows, zero transformed field differences;
+- 8103: 1,190 rows, zero differences;
+- 3593: 1,200 rows, zero differences;
+- 8422: 1,175 rows, zero differences.
+
+All four identity controls PASS.
+
+### Required invariant
+For any target date before a future action:
+continuitySeries(targetDate) MUST equal rawSeries(targetDate) for that future action.
+
+This is the key firewall against the look-ahead observed in today's provider-adjusted history.
+
+### Additional no-action control requirement
+A future implementation must include symbols with no corporate action inside the entire feature window and assert exact bit-for-bit feature equality against current Formal output.
+
+Status: TARGET-DATE FUTURE-ACTION FIREWALL = VALIDATED IN RESEARCH LOGIC.
+
+---
+
+## CA-040 — Evidence now supports a research-only branch implementation
+
+The evidence remains material after:
+- six action examples;
+- price bridge tests;
+- share-volume-unit tests;
+- future-action identity controls.
+
+Therefore a Class B research branch/test harness is justified.
+
+Scope allowed:
+- isolated helper/test code;
+- fixed fixtures;
+- target-date action eligibility;
+- price factor;
+- share-unit factor;
+- raw versus continuity diagnostics;
+- no-action/future-action identity tests.
+
+Scope forbidden:
+- wiring into Worker Formal scan;
+- changing buildMarketFeatures inputs in production;
+- merge to main production path;
+- deploy.
+
+Promotion remains owner-gated.
+
+Status: CLASS B RESEARCH HARNESS = GO; FORMAL IMPLEMENTATION = NOT AUTHORIZED.
+
+## Exact next continuation
+
+CA-041: create research-only branch and deterministic test harness.
+CA-042: add fixtures for six action types plus no-action/future-action controls.
+CA-043: document volume-unit uncertainty and unsupported-action UNKNOWN behavior.
+CA-044: open draft PR as proposal/test evidence only; do not merge.
+CA-045: continue source work for automatic point-in-time event registry and historical share-count vintages.
