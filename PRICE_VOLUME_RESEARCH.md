@@ -3635,4 +3635,502 @@ Any Formal-isolation failure is red-alert engineering failure, not a market sign
 Prefer admin/research surface rather than the normal user-facing signal panel until the experiment has enough evidence, reducing the risk that a descriptive Shadow state is mistaken for an action signal.
 
 Status: RESEARCH_REPORTING_SPEC_DEFINED / NO_PUSH_NO_ACTION.
+# PV-063 — Exact pvResponseState Formula v0.1
+
+## Objective
+Describe how much price response occurred relative to observed participation without converting the state into a directional trading signal.
+
+This is a descriptive state machine, not a buy/sell rule.
+
+## Required inputs
+For the current completed 15m bar:
+- open/high/low/close;
+- closePosition;
+- upperShadowRatio;
+- lowerShadowRatio;
+- pvSlotRvol20;
+- prior-20-valid-session same-slot median true range;
+- pvGuardState / flags.
+
+Historical 15m bootstrap already contains OHLCV, so the same-slot range baseline does not require a second API family.
+
+## Derived variables
+- `barRange = high - low`
+- `body = abs(close - open)`
+- `signedBody = close - open`
+- `bodyShare = body / max(barRange, epsilon)`
+- `slotRangeMedian20 = median(prior 20 valid same-slot trueRange)`
+- `rangeExpansion20 = currentTrueRange / slotRangeMedian20`
+- `signedProgress20 = signedBody / slotRangeMedian20`
+
+If slotRangeMedian20 <= 0 or <20 valid sessions => response state UNKNOWN.
+
+## Participation bands
+Use existing research / Formal semantics rather than outcome-tuning:
+- LOW: pvSlotRvol20 <= 0.8
+- NORMAL: 0.8 < pvSlotRvol20 < 1.3
+- ELEVATED: 1.3 <= pvSlotRvol20 < 2.5
+- EXTREME: pvSlotRvol20 >= 2.5
+
+Rationale:
+- 0.8 already exists in current volume-signal semantics as contraction;
+- 1.3 already exists as attack/breakout volume;
+- 2.5 was frozen in PV-008 as the boundary into very high breakout-volume buckets.
+No outcome inspection is used to create these v0.1 boundaries.
+
+## Response states
+
+### EFFICIENT_UP
+Require:
+- participation ELEVATED or EXTREME;
+- close > open;
+- closePosition >= 2/3;
+- upperShadowRatio < 0.45;
+- signedProgress20 >= +0.25 OR rangeExpansion20 >= 1.0 with bodyShare >= 0.5.
+
+### EFFICIENT_DOWN
+Symmetric:
+- participation ELEVATED or EXTREME;
+- close < open;
+- closePosition <= 1/3;
+- lowerShadowRatio < 0.45;
+- signedProgress20 <= -0.25 OR rangeExpansion20 >= 1.0 with bodyShare >= 0.5.
+
+### HIGH_EFFORT_LOW_PROGRESS
+Require:
+- participation ELEVATED or EXTREME;
+AND at least one:
+- abs(signedProgress20) < 0.25;
+- bodyShare <= 0.25;
+- closePosition between 1/3 and 2/3.
+
+This state remains directionally AMBIGUOUS because it can represent absorption, distribution or two-sided disagreement.
+
+### LOW_EFFORT_LOW_PROGRESS
+Require:
+- participation LOW;
+- abs(signedProgress20) < 0.25;
+- rangeExpansion20 < 1.0.
+
+Possible interpretations include quiet supply contraction or no demand.
+
+### NORMAL_RESPONSE
+Anything valid that does not satisfy the stronger states.
+
+### UNKNOWN
+Any:
+- insufficient slot/range history;
+- invalid/missing OHLCV;
+- unsupported market structure;
+- corporate-action/reset semantics that make the baseline incomparable.
+
+## Guard interaction
+PRICE_CENSORED and AUCTION_MIXED observations may still store the raw derived metrics, but the primary directional response state is downgraded to `GUARDED_RESPONSE` for primary analysis; substate retains the mechanical classification for diagnostics.
+
+## Why range baseline is needed
+A tiny full-body green candle on 3x volume is not necessarily efficient price response.
+Same-slot range normalization prevents bodyShare alone from calling a historically tiny move “efficient.”
+
+Amihud-style return-per-dollar-volume measures are only rough price-impact proxies, and Taiwan evidence shows their interpretation can be dominated by volume/mispricing components, especially under price limits. Therefore pvResponseState is explicitly descriptive, not a liquidity/alpha factor.
+
+Sources:
+- https://doi.org/10.1016/S1386-4181(01)00024-6
+- https://doi.org/10.1016/j.pacfin.2023.101984
+
+Status: FORMULA_V0_1_FROZEN / SHADOW_ONLY.
+
+
+# PV-064 — Exact pvAcceptanceState Transitions for A and B
+
+## Principle
+Acceptance is channel-specific.
+A pullback does not pass through the same geometry as a B breakout.
+
+Every transition stores its own timestamp. Later states never rewrite earlier timestamps.
+
+## Common fields
+- acceptanceState;
+- acceptanceStateEnteredAt;
+- acceptanceEventKey;
+- previousAcceptanceState;
+- transitionReason;
+- frozenPlanLevels;
+- decisionImpact=false.
+
+## B channel
+
+### B_PRE_EVENT
+No valid breakout attempt yet.
+
+### B_BREAKOUT_ATTEMPT
+First completed 15m bar with:
+- high >= frozen breakout
+OR
+- close >= frozen breakout.
+
+This is observation only; Formal breakout confirmation may still be absent.
+
+### B_INITIAL_ACCEPTANCE
+Use the existing Formal breakoutConfirmed semantics:
+- completed bar close >= breakout * 1.003;
+- existing local previous-5-bar volumeRatio >=1.3;
+- strongClose;
+- upperShadowRatio <0.45.
+
+PV fields do not cause the transition; they are observed alongside it.
+
+### B_RETEST
+After B_INITIAL_ACCEPTANCE, a later completed bar overlaps the frozen retest zone:
+- low <= retestHigh;
+- high >= retestLow.
+
+### B_REACCELERATION
+After a B_RETEST bar that still holds structure:
+- close >= breakout * 0.997;
+- a later completed bar is bullish;
+- later close > retest-bar close OR later high > retest-bar high;
+- later close remains >= breakout * 0.997.
+
+This describes renewed price progress and does not require any new PV threshold.
+
+### B_FAILED_REENTRY
+At any point after B_BREAKOUT_ATTEMPT and before expiry:
+- completed 15m close < breakout * 0.995
+OR
+- completed 15m close < frozen retestLow after acceptance.
+
+Store which failure condition fired.
+
+### B_EXPIRED_AMBIGUOUS
+Episode ends by predeclared time/session rule without REACCELERATION or FAILED_REENTRY.
+
+## A channel
+
+### A_PRE_EVENT
+No interaction with pullback zone.
+
+### A_PULLBACK_TEST
+Completed bar overlaps frozen buy zone and closes >= buyLow.
+
+### A_INITIAL_ACCEPTANCE
+Reuse existing Formal pre-BUY setup semantics:
+- bar entered/overlapped the zone;
+- held close >= buyLow;
+- local previous-5-bar volumeRatio <=0.9;
+- reversalK OR strongClose.
+
+### A_REACCELERATION
+Equivalent to the existing Formal A BUY structure:
+- previous bar satisfied the accepted pullback setup;
+- current low >= previous low;
+- current bar bullish;
+- current close > previous close OR current high > previous high.
+
+Again PV Shadow does not cause the state; it observes it.
+
+### A_FAILED_REENTRY
+- completed 15m close < frozen buyLow;
+OR if a valid stop existed at anchor:
+- completed 15m close < frozen stop.
+
+### A_EXPIRED_AMBIGUOUS
+Zone interaction ended without reacceleration/failure under the frozen episode rule.
+
+## State-history rule
+Store transitions append-only:
+- `stateHistory=[{state,enteredAt,reason}]`
+or normalized rows if preferred.
+
+Never overwrite the first B_INITIAL_ACCEPTANCE timestamp when a later retest succeeds.
+
+Status: CHANNEL_SPECIFIC_STATE_MACHINE_FROZEN.
+
+
+# PV-065 — pvPersistenceState without Outcome Tuning
+
+## Goal
+Describe whether abnormal participation is fresh, sustained, fading or normalized using thresholds already frozen elsewhere.
+
+## Abnormal threshold
+For v0.1:
+`abnormal = normalizedParticipation >= 1.3`.
+
+This reuses the existing system's attack-volume threshold and the PV-063 participation boundary.
+
+Use:
+- daily pvDailyRvol20 for daily episodes;
+- pvSlotRvol20 for 15m slot episodes.
+
+Do not combine daily and 15m ratios into one sequence.
+
+## States
+
+### NORMAL
+No active event and current normalized participation <1.3.
+
+### FRESH_SHOCK
+Current >=1.3 and immediately prior comparable observation <1.3, or no active event exists.
+
+Create new event_key and freeze pre-event baseline.
+
+### PERSISTENT
+Current >=1.3 and event already has >=2 consecutive abnormal comparable observations.
+
+Store:
+- consecutiveAbnormalCount;
+- eventAge;
+- peakRvol;
+- observationsSincePeak.
+
+### DECAYING
+Event was FRESH/PERSISTENT and current <1.3 for exactly one comparable observation.
+
+Do not close the event yet; one normal observation may be temporary.
+
+### NORMALIZED
+Event has >=2 consecutive comparable observations <1.3.
+
+Close the event at the second below-threshold observation.
+
+### REIGNITED
+Optional diagnostic:
+while in DECAYING, current returns >=1.3 before normalization.
+Retain the same event_key but store reignitionCount.
+
+## Why two below-threshold observations
+This is a pre-registered hysteresis rule to prevent one noisy bar/day from ending an event.
+It is not tuned to returns.
+
+## Gap rules
+Missing/halted/non-comparable observations do not count as below-threshold observations.
+They pause state evaluation and raise a guard.
+
+## Daily event isolation
+A Friday abnormal day followed by Monday abnormal day is consecutive by trading observation, not separated by weekend calendar days.
+
+Status: PERSISTENCE_V0_1_FROZEN.
+
+
+# PV-066 — pvGuardState Precedence and Multi-Flag Semantics
+
+## Design
+One primary guard string is insufficient when multiple conditions coexist.
+Store:
+- `pvGuardState` = highest-precedence primary guard;
+- `pvGuardFlags[]` = all applicable guards;
+- `pvInterpretability` = VALID / GUARDED / INVALID.
+
+## Precedence
+
+### INVALID guards
+1. `INVALID_SOURCE_DATA`
+2. `UNSUPPORTED_MARKET_STRUCTURE`
+3. `CORPORATE_ACTION_RESET`
+4. `REFERENCE_PRICE_UNRESOLVED`
+5. `DATA_INSUFFICIENT`
+6. `STALE_OR_INCOMPLETE_BAR`
+
+Any INVALID guard means primary PV interpretation = UNKNOWN.
+Raw source data may still be stored for audit if valid enough.
+
+### GUARDED contextual states
+7. `PRICE_CENSORED`
+8. `AUCTION_MIXED`
+9. `GAP_DOMINATED`
+10. `ILLIQUIDITY_WARNING`
+11. `VI_STATE_UNKNOWN_CONFOUNDER`
+
+These allow metric storage but require stratified analysis or exclusion from the primary clean cohort.
+
+### VALID
+12. `NORMAL_MARKET`
+
+## Multiple flags example
+Ex-dividend opening bar near upper limit:
+- pvGuardState = REFERENCE_PRICE_UNRESOLVED if the adjusted reference is missing;
+- pvGuardFlags may also contain AUCTION_MIXED, PRICE_CENSORED, GAP_DOMINATED;
+- pvInterpretability = INVALID.
+
+If the adjusted reference is verified:
+- primary may become PRICE_CENSORED;
+- AUCTION_MIXED and GAP_DOMINATED remain flags;
+- interpretability = GUARDED.
+
+## Crucial governance rule
+A PV INVALID/GUARDED state never means the Formal stock is invalid.
+It means only that the PV research interpretation is invalid/guarded.
+
+Status: GUARD_PRECEDENCE_FROZEN.
+
+
+# PV-067 — Implementation-Ready Pseudocode and Test Contract
+
+## No Worker modification yet
+This section specifies code shape and tests only.
+Any implementation remains a separate research-only Class A proposal.
+
+## Pseudocode: completed 15m observation
+
+```text
+onCompleted15m(symbol, plan, frame15, dailyContext, baselineCache):
+    bar = frame15.latest
+    assert bar is completed
+
+    guards = evaluatePvGuards(symbol, plan, bar, dailyContext, baselineCache)
+
+    slotStats = baselineCache.sameSlot(bar.time)
+    if slotStats.validSessions < 20:
+        guards += DATA_INSUFFICIENT
+
+    slotRvol = safeRatio(bar.volume, slotStats.volumeMedian20)
+    cumPace = safeRatio(currentSessionCumulativeVolume(frame15),
+                        slotStats.cumulativeVolumeMedian20)
+
+    response = classifyResponse(
+        bar,
+        slotRvol,
+        slotStats.trueRangeMedian20,
+        guards
+    )
+
+    acceptance = advanceAcceptanceState(
+        previousState,
+        plan,
+        frame15,
+        existingFormalEvaluation
+    )
+
+    persistence = advancePersistenceState(
+        previousPersistence,
+        slotRvol,
+        comparableObservation=true
+    )
+
+    snapshot = immutable({
+        symbol,
+        barEnd,
+        planLevelsFrozen,
+        existingLocalVolumeRatio,
+        slotRvol,
+        cumPace,
+        response,
+        acceptance,
+        persistence,
+        guardState,
+        guardFlags,
+        coverage,
+        schemaVersion,
+        decisionImpact:false
+    })
+
+    insertIfAbsent(snapshotKey, snapshot)
+```
+
+## Pseudocode: baseline bootstrap
+
+```text
+ensure15mBaseline(symbol):
+    if cache exists and validSessions >= 20 and no reset:
+        return cache
+
+    bars = fetch historical 15m once
+    split by trading session and same-slot key
+    discard future/current incomplete session from baseline
+    discard invalid/halted/missing bars; do not zero-fill
+    calculate prior-session volumeMedian / trueRangeMedian /
+        cumulativeVolumeMedian
+    persist cache with asOf marketDate
+```
+
+## Pseudocode: finalizer
+
+```text
+finalizePendingOutcomes(newCompletedBarOrDailyBar):
+    pending = outcomes whose horizon can now be completed
+    for each:
+        load immutable snapshot
+        use frozen plan/pivot levels
+        compute horizon outcome
+        upsert(snapshotId,horizon)
+        if already complete:
+            assert semantic equality
+```
+
+## Required test contract
+
+### T1 No-look-ahead slot baseline
+Add an extreme future session to fixture.
+Historical snapshot for prior date must remain byte-identical.
+
+### T2 Bar completion
+At 10:14:59 a 10:00-10:15 bar cannot be used.
+At/after 10:15 according to verified provider semantics, it may be used.
+
+### T3 Same-slot seasonality
+A closing bar 1.5x recent midday bars but normal versus historical closing slots must show:
+- high local acceleration possible;
+- near-normal pvSlotRvol20 possible.
+Both values retained.
+
+### T4 Response ambiguity
+3x slot RVOL + tiny body/central close => HIGH_EFFORT_LOW_PROGRESS, not bullish.
+
+### T5 Efficient up
+Elevated RVOL + strong close + adequate normalized progress => EFFICIENT_UP.
+
+### T6 Price limit
+Same price/volume fixture with PRICE_CENSORED guard => primary response GUARDED, not clean efficient-up cohort.
+
+### T7 B state machine
+PRE_EVENT -> BREAKOUT_ATTEMPT -> INITIAL_ACCEPTANCE -> RETEST -> REACCELERATION with immutable timestamps.
+
+### T8 B failure
+Later close < breakout*0.995 => B_FAILED_REENTRY without rewriting prior acceptance.
+
+### T9 A state machine
+PRE_EVENT -> PULLBACK_TEST -> INITIAL_ACCEPTANCE -> A_REACCELERATION according to existing Formal conditions.
+
+### T10 Persistence hysteresis
+1.4,1.6,1.2,1.5 ratios =>
+FRESH_SHOCK -> PERSISTENT -> DECAYING -> REIGNITED,
+same event_key.
+
+### T11 Persistence close
+1.4,1.5,1.2,1.1 =>
+FRESH -> PERSISTENT -> DECAYING -> NORMALIZED.
+
+### T12 Missing observation
+1.5, missing, 1.4 does not count missing as below-threshold.
+
+### T13 Corporate action reset
+Pre-event baseline cannot be reused after reset until >=20 valid post-reset sessions.
+
+### T14 Unit safety
+Daily shares and intraday lots cannot enter the same raw ratio.
+
+### T15 Formal isolation
+With Shadow OFF vs ON, identical fixture inputs must produce exactly identical:
+- selected symbols;
+- source ranks;
+- plan prices;
+- finalDecision;
+- BUY/ADD/REDUCE;
+- allocation;
+- push payload.
+
+### T16 D1 idempotency
+15 one-minute monitor cycles inside the same completed 15m slot create exactly one feature row per symbol/schema.
+
+### T17 Outcome idempotency
+Repeated finalizer on same source data leaves completed outcome semantically identical.
+
+### T18 Late-session horizon
+13:15 event cannot manufacture B4 by consuming next-session bars.
+
+## Proposed schema version
+`PV_SHADOW_V0_1`
+
+A semantic change to thresholds/state rules must increment schemaVersion and must not rewrite prior rows.
+
+Status: IMPLEMENTATION_READY_SPEC / WORKER_UNCHANGED.
 
