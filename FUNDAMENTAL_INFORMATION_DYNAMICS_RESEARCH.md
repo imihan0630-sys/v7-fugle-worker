@@ -346,3 +346,500 @@ Possible competitive effects:
 - supplyChainRelationship only if explicitly sourced; do not infer from industry alone.
 
 Status: PEER INFORMATION TRANSFER WORTH RESEARCH.
+
+
+---
+
+## FD-011 — Surprise measurement hierarchy: expectation source is part of the variable
+
+A fundamental "surprise" is only defined relative to an expectation that existed **before** the release.
+
+### Tier A — True point-in-time analyst consensus
+Preferred when available:
+- consensus estimate timestamped before event;
+- analyst count;
+- mean / median estimate;
+- dispersion;
+- latest revision time.
+
+Fields:
+- consensusActual
+- consensusExpected
+- surpriseRaw = actual - expected
+- surprisePct only when denominator semantics are safe
+- surpriseScaled = raw surprise / frozen dispersion or another pre-registered scale
+
+Never use a consensus snapshot downloaded after the event as the pre-event expectation.
+
+### Tier B — Company guidance / company financial forecast
+Taiwan MOPS exposes financial forecast / forecast-vs-actual related disclosures and investor-conference information.
+
+This is **management expectation**, not analyst consensus.
+
+Fields:
+- companyGuidanceLow / High / Mid
+- guidancePeriod
+- guidanceIssuedAt
+- guidanceRevisedAt
+- actualVsGuidance
+
+### Tier C — Frozen model expectation
+When no external expectation exists, a model can estimate a benchmark using only information available before the event.
+
+Examples:
+- seasonal random-walk EPS model;
+- same-calendar-month revenue seasonal model;
+- rolling company-specific trend model.
+
+Naming:
+- modelInnovation
+not:
+- analystSurprise / consensusSurprise.
+
+### Tier D — Simple realized change
+- YoY
+- MoM
+- QoQ
+
+These are still useful, but they are **CHANGE**, not SURPRISE.
+
+Status: EXPECTATION-HIERARCHY SEMANTICS FROZEN.
+
+---
+
+## FD-012 — SUE: EPS YoY is not Standardized Unexpected Earnings
+
+### Literature definition
+The PEAD literature commonly defines SUE as:
+`(actual earnings - expected earnings) / scale`
+
+Expectation can come from:
+- a time-series earnings model, or
+- analyst forecasts.
+
+Scale can be:
+- historical standard deviation of forecast errors,
+- price,
+- another pre-specified deflator.
+
+The 2021 PEAD review explicitly notes that SUE construction varies across studies.
+
+Sources:
+- Fink (2021), A review of the Post-Earnings-Announcement Drift
+- Jegadeesh & Livnat (2006), Revenue surprises and stock returns
+
+### Research rule
+Do not have one generic field named `SUE` while changing the expectation/scale underneath.
+
+Use explicit names:
+- `sueSeasonalErrorStd`
+- `sueConsensusErrorStd`
+- `ueScaledByPrice`
+
+Each definition is a separate experiment.
+
+### Seasonal-model candidate
+For quarterly EPS, one simple pre-registered model:
+`UE_t = EPS_t - EPS_{t-4}`
+
+Then standardize with only prior seasonal errors, e.g. rolling historical standard deviation available before t.
+
+This is a model-based surprise, not analyst surprise.
+
+### Taiwan accounting guards
+- true single-quarter EPS only;
+- par-value/share-count/capital-action adjustments must be verified;
+- negative/zero prior EPS makes percentage growth problematic but does **not** invalidate raw unexpected EPS;
+- corrected filings require vintage control.
+
+### Current-system implication
+Existing `epsYoY` and `epsYoYChangeAmount` are useful CHANGE measures but are not SUE.
+
+Status: SUE SEMANTICS FROZEN; NO NEW FORMAL SCORE.
+
+---
+
+## FD-013 — Monthly revenue needs seasonality and calendar controls
+
+Taiwan monthly revenue has a strong operational calendar:
+- different numbers of working/shipping days;
+- Lunar New Year can shift activity between January and February;
+- company/industry seasonal patterns;
+- month-end shipment timing.
+
+A raw MoM comparison can therefore be misleading.
+
+### Preferred hierarchy
+1. YoY same calendar month — basic seasonality control.
+2. YoY acceleration:
+   `revenueYoY_t - revenueYoY_{t-1}`
+   This is **growth acceleration**, not surprise.
+3. Seasonal model innovation:
+   actual revenue minus a model fitted only on pre-event historical same-month/nearby information.
+4. Analyst/company expectation surprise when genuine pre-event expectations exist.
+
+### January/February guard
+For businesses materially exposed to Lunar New Year timing, test:
+- Jan and Feb separately;
+- combined Jan+Feb growth;
+- working-day / holiday-position controls if reliable.
+
+Do not choose whichever version has the best historical returns after seeing outcomes.
+
+### Taiwan evidence
+A 2013–2022 Taiwan study finds monthly revenue announcements carry significant information and that effects differ by exchange, industry and season, with stronger announcement effects in Q1 than Q4 in that sample. This supports treating season as a conditioning variable, not assuming one universal effect.
+
+Source:
+- Huang (2024), The Effect of Monthly Sales Announcements for Taiwan-Listed Companies.
+
+Status: SEASONALITY CONTROL REQUIRED.
+
+---
+
+## FD-014 — Earnings quality: cash versus accrual components
+
+### Evidence
+Sloan (1996) documents that the persistence of earnings depends on its cash-flow and accrual components; investors historically appeared to over-weight the less-persistent accrual component.
+
+Later work confirms accrual/cash-flow information is important but debates mechanisms and how it overlaps with profitability.
+
+Sources:
+- Sloan (1996), The Accounting Review, "Do Stock Prices Fully Reflect Information in Accruals and Cash Flows About Future Earnings?"
+- Ball et al. (2016), Accruals, cash flows, and operating profitability in the cross section of stock returns.
+
+### Basic accounting concept
+A simple broad proxy:
+`accrualComponent ≈ netIncome - operatingCashFlow`
+
+Scaled forms may use:
+- average total assets,
+- market capitalization,
+- sales,
+depending on the specific literature.
+
+### Why useful
+Two firms can report the same EPS growth:
+- Firm A: cash flow supports earnings.
+- Firm B: earnings growth is largely accrual-driven.
+
+These may have different persistence.
+
+### Counter-evidence / caveat
+High accruals are not automatically manipulation.
+Accruals are a normal part of accounting and can reflect legitimate working-capital growth.
+
+Do not label:
+- HIGH_ACCRUAL = FRAUD / BAD.
+
+### Taiwan data feasibility
+MOPS exposes cash-flow statements, so cash/accrual quality can in principle be built from official data.
+
+Current main Worker source audit finds no:
+- cashFlow,
+- operatingCash,
+- accrual,
+- operating-cash-flow fields.
+
+This is a genuine missing fundamental dimension.
+
+Status: HIGH-VALUE FUTURE SHADOW CANDIDATE.
+
+---
+
+## FD-015 — Margin dynamics and operating leverage: level is not enough
+
+Current system uses gross and operating margin levels / YoY changes.
+
+New questions:
+- Is revenue growth accelerating while margins expand or contract?
+- Is operating profit growing faster/slower than revenue?
+- Is the market rewarding growth quality or merely top-line acceleration?
+
+### Candidate realized states
+- revenueGrowth
+- grossMarginChange
+- operatingMarginChange
+- operatingIncomeGrowth
+- operatingLeverageRealized ≈ operatingIncomeGrowth - revenueGrowth
+
+Call these **realized dynamics**, not surprise.
+
+### Surprise form
+A true margin surprise needs a pre-event expected margin:
+- analyst consensus,
+- company guidance,
+- or frozen model.
+
+### Constructive state
+Revenue acceleration + margin expansion can indicate scalable growth.
+
+### Counter-state
+Revenue acceleration + margin compression can still be rational:
+- intentional investment,
+- new-product ramp,
+- input-cost shock,
+- mix shift.
+
+Therefore no automatic good/bad score.
+
+Status: QUALITY-OF-GROWTH INTERACTION CANDIDATE.
+
+---
+
+## FD-016 — Guidance / outlook is a first-class event, but coverage is selective
+
+### Taiwan disclosure environment
+TWSE/MOPS provide:
+- financial forecast sections;
+- actual-vs-forecast disclosures;
+- investor-conference information;
+- material information.
+
+TWSE rules require listed-company investor-conference information to be disclosed and generally require the event details to be announced at least the prior day; information presented is subject to disclosure requirements.
+
+Sources:
+- MOPS information structure
+- TWSE material-information procedures Article 8
+
+### Research fields
+When explicit quantitative guidance exists:
+- guidanceMetric
+- guidancePeriod
+- guidanceLow / High / Mid
+- guidanceIssuedAt
+- guidanceRevisionDirection
+- actualVsGuidance later
+
+When only qualitative outlook exists:
+- retain text/document;
+- do not automatically convert "審慎樂觀" into a numerical growth estimate.
+
+### Selection bias
+Not every company gives comparable guidance.
+Companies choosing to guide may systematically differ from non-guiders.
+
+Therefore:
+- guidance missing = UNKNOWN / NOT_PROVIDED,
+not zero or neutral.
+
+Status: GUIDANCE EVENT LANE FEASIBLE BUT COVERAGE-SENSITIVE.
+
+---
+
+## FD-017 — Taiwan event-time alignment for abnormal returns
+
+Fundamental-event studies need a tradable clock, not just a report date.
+
+### Event timestamp states
+- BEFORE_OPEN
+- DURING_SESSION
+- AFTER_CLOSE
+- DATE_ONLY_UNKNOWN_TIME
+
+### First tradable reference
+- BEFORE_OPEN: same-session open is post-information.
+- DURING_SESSION: intraday event study if exact timestamp and intraday data exist.
+- AFTER_CLOSE: next session open is first post-information price.
+- DATE_ONLY_UNKNOWN_TIME: do not pretend the day's open/close cleanly separates pre/post information.
+
+### Event windows
+Pre-event:
+- D-20 to D-1 return
+- D-5 to D-1 return
+- pre-event abnormal volume
+
+Immediate:
+- overnight gap when applicable
+- event-session abnormal return
+- event-volume RVOL
+
+Post:
+- D+1 / D+3 / D+5 / D+10 / D+20
+- MFE / MAE
+- market- and sector-adjusted returns
+
+### Simultaneous-news guard
+If the same timestamp/date contains:
+- earnings,
+- dividends,
+- guidance,
+- major contract,
+- financing,
+- litigation,
+etc.,
+the event is `MULTI_NEWS`.
+Do not attribute the whole return to EPS/revenue alone.
+
+### Taiwan market guards
+- price-limit proximity,
+- suspension,
+- delayed opening,
+- non-trading days.
+
+Status: EVENT-TIME PROTOCOL FROZEN.
+
+---
+
+## FD-018 — Fundamental event × K-line/price-volume reaction states
+
+This lane should integrate with, not duplicate, K-line and price-volume research.
+
+### State examples
+
+1. GOOD_INFO + GAP_UP + HOLD + VOLUME_CONFIRM
+2. GOOD_INFO + GAP_UP + FADE
+3. GOOD_INFO + NO_REACTION
+4. GOOD_INFO + NEGATIVE_REACTION
+5. BAD_INFO + GAP_DOWN + CONTINUE
+6. BAD_INFO + GAP_DOWN + RECOVER
+7. BAD_INFO + POSITIVE_REACTION
+
+### Interpretation questions
+GOOD_INFO + weak/negative reaction may mean:
+- already priced in;
+- expectation was even higher;
+- guidance/margins offset headline;
+- market/sector shock;
+- low information quality.
+
+BAD_INFO + positive reaction may mean:
+- bad news was expected;
+- "less bad" than consensus;
+- guidance improves;
+- short covering;
+- other simultaneous positive information.
+
+### Research principle
+Observed price reaction is not subordinate to our fundamental opinion.
+The disagreement is itself data.
+
+### Candidate interaction
+`FundamentalInnovation x PreEventRunup x EventReaction x PostEventAcceptance`
+
+Status: CROSS-LANE EVENT STATE FROZEN.
+
+---
+
+## FD-019 — Current data feasibility audit
+
+### Already available in repository/system
+Official/current:
+- monthly revenue amount / MoM / YoY / YTD YoY;
+- quarterly financials;
+- true single-quarter EPS review for candidates;
+- EPS YoY/change amount and profit/loss transition semantics;
+- gross / operating / net margins;
+- valuation;
+- official announcements;
+- MOPS/TWSE source infrastructure.
+
+### Public Taiwan sources also support
+- cash-flow statements;
+- financial forecasts and forecast-vs-actual disclosures;
+- investor-conference information.
+
+### Not currently represented in main Worker source
+- analyst consensus;
+- forecast revisions;
+- surprise fields;
+- cash-flow / accrual fields;
+- structured guidance;
+- explicit investor-conference event extraction.
+
+### Historical data-quality limits
+- current MOPS monthly revenue snapshot != guaranteed first-known vintage;
+- corrections must not be backfilled;
+- historical analyst consensus is unavailable from current official sources;
+- exact announcement timestamps may be missing for some current tables;
+- historical corporate-action/share-count consistency must be verified for SUE.
+
+### Implication
+Near-term research should prioritize:
+1. official actuals + exact availability/vintage;
+2. model innovations with frozen expectations;
+3. price reactions.
+
+Analyst-consensus research waits for a point-in-time provider.
+
+Status: FEASIBILITY MAP FROZEN.
+
+---
+
+## FD-020 — Minimal prospective Fundamental Event Shadow schema
+
+### Event identity
+- eventId
+- symbol
+- eventType
+- fiscal/revenue period
+- source
+- firstPublishedAt
+- firstTradableAt
+- capturedAt
+- correctionOfEventId / correctedFlag
+- pointInTimeEligible
+
+### Actual data
+Depending on event:
+- revenueActual
+- revenueYoY / MoM / acceleration
+- quarterEPSActual
+- epsYoYChangeAmount / profit-transition state
+- margins
+- CFO / accrual measures when available
+- company guidance actual fields when explicitly disclosed
+
+### Expectation
+- expectationType = ANALYST_CONSENSUS / COMPANY_GUIDANCE / FROZEN_MODEL / NONE
+- expectedValue
+- expectationAsOf
+- analystCount if applicable
+- expectationDispersion if applicable
+- modelVersion if applicable
+
+### Surprise / innovation
+- rawInnovation
+- standardizedInnovation
+- scalingMethod
+- no misleading percent surprise when denominator <=0
+
+### Market reaction
+- preRet5 / preRet20
+- eventGap
+- eventDayResidualReturn
+- eventRVOL
+- closePosition
+- D1 / D3 / D5 / D10 / D20
+- MFE / MAE
+- priceReactionState
+
+### Context / guards
+- marketRegime
+- sectorState
+- breadthState
+- liquidityState if available
+- simultaneousNewsCount/types
+- suspension/limit flags
+- dataQualityState
+
+### Missing-data semantics
+Expectation absent:
+- surprise fields = UNKNOWN,
+but actual-change event can still be studied.
+
+No exact timestamp:
+- intraday event reaction = UNKNOWN;
+- only safely aligned broader daily windows may be used according to a pre-registered conservative rule.
+
+Status: PROSPECTIVE SCHEMA FROZEN.
+
+## Exact next continuation after FD-020
+
+FD-021: Earnings persistence / mean reversion and why one quarter of growth should not be extrapolated.
+FD-022: Accruals versus investment/growth confounds; avoid simplistic "low accrual good".
+FD-023: Analyst dispersion and disagreement as uncertainty/attention state.
+FD-024: Fundamental momentum — sequences of revenue/EPS changes versus one-off surprise.
+FD-025: Fundamental-price disagreement lifecycle and falsification.
+FD-026: Cross-sectional peer-normalized surprise/quality versus own-history normalization.
+FD-027: Readiness / redundancy map against existing fundamentalScore, DL-001, Quiet/Attention, K-line/PV/RS.
+FD-028: Decide whether this concept lane is complete and whether prospective official-vintage capture can be proposed without touching Formal Core.
