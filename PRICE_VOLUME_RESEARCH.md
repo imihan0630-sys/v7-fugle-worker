@@ -1213,4 +1213,410 @@ Next research should test:
 - whether volume dry-up before breakout and re-expansion after breakout form a stable sequence feature;
 - whether price-volume state adds incremental value after Pattern Maturity, Residual RS, sector, institution, overheat and Information Discreteness controls;
 - minimum prospective sample / stopping rules before any Shadow implementation is recommended.
+# PV-021 — Intraday Volume Concentration by Time Block without Look-Ahead
+
+## Evidence / Taiwan context
+Taiwan intraday activity has a pronounced time-of-day pattern. A Taiwan study of 429 listed firms around the 2001 trading-hour extension reports U-shaped intraday trading volume and volatility, with stronger information-trading interpretation near the open and different motives near the close. Earlier Taiwan futures evidence also reports U-shaped intraday activity.
+
+Sources:
+- https://ir.lib.ncu.edu.tw/handle/987654321/12038
+- https://doi.org/10.1002/fut.10040
+
+The historical samples are old, so the U-shape is a structural prior to revalidate with current Fugle data, not a modern trading rule.
+
+## Frozen research blocks for 15m data
+For the current ordinary 09:00–13:30 Taiwan cash session, research v0.1 uses:
+- OPENING: 09:00–10:00, first 4 completed 15m bars;
+- MID: 10:00–12:30, next 10 completed 15m bars;
+- CLOSING: 12:30–13:30, final 4 completed 15m bars.
+
+If exchange hours or candle semantics change, increment schemaVersion rather than silently moving boundaries.
+
+## Two different measurements
+### A. As-of intraday, usable without future leakage
+At the end of each block:
+- `BLOCK_VOLUME`;
+- `BLOCK_RVOL20 = current block volume / median(prior 20 valid same blocks)`;
+- `CUMVOL_PACE20` at that timestamp;
+- `BLOCK_SHARE_OF_CUM = current block volume / cumulative volume so far`;
+- historical percentile / robust z-score of block volume.
+
+### B. End-of-day descriptive, research-only after 13:30
+- `OPEN_SHARE_FULLDAY`;
+- `MID_SHARE_FULLDAY`;
+- `CLOSE_SHARE_FULLDAY`.
+
+These full-day shares MUST NOT be inserted into a 10:00 or 12:30 decision snapshot because the day's final volume was not yet known.
+
+## Positive interpretation
+Unusually concentrated opening activity can indicate rapid incorporation of overnight information. Persistent elevated block activity after the opening can indicate that participation is not merely an opening auction / overnight reset.
+
+## Opposing interpretations
+- opening concentration can be retail attention, sentiment or gap-chasing;
+- closing concentration can reflect overnight inventory management, benchmark/auction mechanics or end-of-day execution rather than directional information;
+- a U-shaped market-wide pattern can make raw block volume look special when it is normal for the clock time;
+- one stock's high block volume may simply mirror a market-wide high-volume day.
+
+## Decision
+Time-block concentration adds context but does not replace same-slot RVOL. Same-slot normalization remains the primary clock-time control; block concentration is a secondary persistence/shape descriptor.
+
+Status: WORTH_SHADOW_RESEARCH / STRICT_NO_LOOKAHEAD_RULE.
+
+
+# PV-022 — Dry-Up -> Expansion -> Retest Contraction -> Reacceleration Sequence
+
+## Hypothesis
+Practitioner language often treats this four-stage sequence as a constructive setup:
+1. supply dry-up before breakout;
+2. participation expansion on breakout;
+3. volume contraction on retest while structure holds;
+4. renewed participation on reacceleration.
+
+This exact sequence should NOT be treated as an established law.
+
+Technical-pattern research by Lo, Mamaysky & Wang shows some objectively detected chart patterns contained incremental return information in their U.S. sample, but that does not validate this specific price-volume sequence. A recent preregistered breakout/retest experiment in U.S. small caps reported that the retest rule it tested did not improve outcomes. The latter is not a universal academic result, but it is a useful falsification warning.
+
+Sources:
+- https://www.nber.org/papers/w7613
+- https://bbresearch.net/ledger/does-breakout-and-retest-work
+
+## Research state sequence
+Use state transitions, not additive points:
+
+### S0 — PRE_BREAKOUT
+Record Pattern Maturity and support/pivot geometry.
+
+### S1 — DRYUP_CANDIDATE
+Require the PV-002 constructive-supply-dry-up conditions as a research state:
+- declining participation relative to own history;
+- no material support loss;
+- range / downside progress not worsening;
+- sufficient liquidity.
+
+A quiet but weakening stock stays `NO_DEMAND_RISK` or `AMBIGUOUS`.
+
+### S2 — BREAKOUT_EXPANSION
+Record:
+- nonlinear breakout-volume bucket from PV-008;
+- same-slot / daily RVOL;
+- price-response efficiency;
+- gap and price-limit guards.
+
+### S3 — RETEST
+Do not require that every successful breakout retests.
+If a retest occurs, record:
+- volume relative to breakout and its own same-slot baseline;
+- downside price progress per ATR;
+- pivot hold / re-entry;
+- close recovery;
+- time elapsed since breakout.
+
+### S4 — REACCELERATION
+Record:
+- renewed positive price progress;
+- participation re-expansion relative to the retest phase;
+- acceptance state;
+- sector / institutional moderators.
+
+## Falsification cases
+The full sequence should be rejected as useful if:
+- breakouts without retest perform as well or better;
+- retest volume contraction adds no value after pivot-hold geometry;
+- “re-expansion” is redundant with the existing 15m strong-close / volume logic;
+- benefit appears only after tuning phase lengths or thresholds to outcomes;
+- the effect disappears after scan-date / regime controls.
+
+Status: HIGH_VALUE_SEQUENCE_HYPOTHESIS / NOT_ASSUMED_ALPHA.
+
+
+# PV-023 — Incremental-Value Test: Price-Volume Must Beat What the System Already Knows
+
+## Core question
+The research target is not “does a PV feature correlate with returns?” It is:
+“Does the PV state add useful information after the existing selector already knows trend, pattern, relative strength, sector, institutions, overheat, liquidity and information discreteness?”
+
+## Baseline controls
+At minimum include available as-of features from:
+- Formal A/B eligibility and quality;
+- Pattern Maturity;
+- Residual RS;
+- sector strength / breadth;
+- institutional activity;
+- ret20 / ret60 / MA state;
+- overheat / lateStage;
+- liquidity tier / price tier;
+- Information Discreteness;
+- market regime;
+- gap / price-limit guard.
+
+## Comparisons
+Primary comparisons remain inside the existing funnel:
+1. SELECTED: PV-strong vs PV-weak;
+2. Near-miss: PV-strong vs matched PV-weak;
+3. Rejected control: PV-strong vs matched controls;
+4. BUY-triggered vs NO-BUY among the same selected plan cohort.
+
+Prefer same-scan-date or date-matched comparisons to reduce market-regime contamination.
+
+## Leakage controls
+- Split train/validation by date blocks, never random individual rows from the same date.
+- All PV features are frozen as-of observation timestamp.
+- Later retest/reacceleration states may evaluate later actions but cannot rewrite earlier features.
+- If thresholds are changed, create a new schema version and restart prospective validation rather than back-edit history.
+
+## Multiple-testing controls
+White's Reality Check and Harvey-Liu-Zhu both document why repeated testing on the same return history creates false discoveries. Therefore:
+- pre-register primary PV hypotheses;
+- cap the number of primary variants;
+- report all tested variants, not only winners;
+- use false-discovery / multiple-testing-aware inference where statistical claims are made;
+- require out-of-sample / forward evidence, not only in-sample t-statistics.
+
+Sources:
+- https://doi.org/10.1111/1468-0262.00152
+- https://www.nber.org/papers/w20592
+
+## Promotion criterion concept
+A PV feature is useful only if it shows:
+- incremental outcome separation beyond baseline;
+- stable sign across more than one time block / market regime where coverage is adequate;
+- economically meaningful MFE/MAE / failure-rate improvement, not only a tiny p-value;
+- no unacceptable coverage loss;
+- no obvious duplication of an existing Formal variable.
+
+Status: REQUIRED_GATE_BEFORE_ANY_FORMAL_PROPOSAL.
+
+
+# PV-024 — Prospective Coverage, Sample and Stopping Rules
+
+## Why no universal magic sample size
+Event-study power depends on effect size, event clustering, firm characteristics, event-induced variance and benchmark design. Research on event studies shows sample selection can bias inference, and even a paper studying small stock exchanges that suggested about 25 events as a minimum did so for its own particular setup. That number is not adequate as a universal promotion threshold for our clustered multi-feature Taiwan selector.
+
+Sources:
+- https://doi.org/10.1016/j.jempfin.2009.01.003
+- https://doi.org/10.1080/13518470600880176
+
+## Pre-registered operational gates v0.1
+These are engineering/research governance gates, NOT claims of universal statistical sufficiency.
+
+### Feature-computation coverage
+- same-slot / block baseline: >=20 prior valid sessions, matching PV-005;
+- less than 20 => UNKNOWN;
+- no zero-filling of halts / missing bars.
+
+### Pilot stage
+Purpose: data-quality and semantics only.
+- first 50 completed symbol-events may reveal bugs / missingness;
+- no alpha promotion decision from this stage;
+- definitions may be corrected only for semantic/data bugs, with versioning.
+
+### Evidence stage
+Begin outcome interpretation only after:
+- >=100 completed symbol-events;
+- >=30 distinct market dates represented;
+- no single scan date contributes >10% of the primary event sample;
+- main comparison cohorts each have enough observations to show distributions, not isolated anecdotes.
+
+These are conservative operational floors, not a claim of statistical power.
+
+### Stability milestones
+Evaluate at predeclared milestones such as 100 / 250 / 500 completed events.
+Do not continuously retune thresholds after every new winner/loser.
+A candidate that changes sign materially across milestones is unstable / UNKNOWN.
+
+### Regime coverage
+If a BULL/MIXED/BEAR or liquidity/price-tier subgroup has insufficient observations, report it as INSUFFICIENT rather than averaging it away.
+
+## Outcome uncertainty
+Use confidence intervals / date-clustered resampling where feasible and report raw effect sizes:
+- return lift;
+- MFE / MAE difference;
+- false-break reduction;
+- stop-first difference;
+- coverage / zero-pick impact.
+
+## Stop / archive rules
+Archive or demote a candidate when:
+- effect is economically trivial after adequate coverage;
+- incremental value disappears after baseline controls;
+- sign is unstable across milestones;
+- benefit comes from one market date / one sector;
+- data cost or missingness overwhelms benefit;
+- it is a duplicate description of an existing factor.
+
+Status: PROSPECTIVE_GOVERNANCE_DEFINED.
+
+
+# PV-025 — Minimum Viable Price-Volume Shadow Feature Set
+
+## Goal
+Implement the smallest useful research set, not every interesting feature found in the literature.
+
+## Keep existing fields
+Do NOT duplicate fields already present in Worker:
+- `volumeTodayVsPrev5`;
+- `volumeContraction5to20`;
+- `avgVolume20Lots`;
+- `avgAmount20`;
+- daily close position / upper shadow;
+- ret20 / lateStage;
+- sector and institutional context;
+- existing 15m local previous-5-bar `volumeRatio`.
+
+## Proposed new minimal Shadow fields
+All are `decisionImpact=false`.
+
+### 1. `pvDailyRvol20`
+Own-history daily participation normalization.
+Primary purpose: distinguish truly abnormal daily activity from raw high volume.
+
+### 2. `pvSlotRvol20`
+15m current slot / prior-valid-sessions same-slot median.
+Primary purpose: remove Taiwan clock-time seasonality.
+
+### 3. `pvCumvolPace20`
+Cumulative volume to current slot / historical median cumulative volume to same slot.
+Primary purpose: distinguish one-bar burst from an elevated whole-day participation regime.
+
+### 4. `pvResponseState`
+One of:
+- EFFICIENT_UP
+- EFFICIENT_DOWN
+- HIGH_EFFORT_LOW_PROGRESS
+- LOW_EFFORT_LOW_PROGRESS
+- UNKNOWN
+
+No directional inference from HIGH_EFFORT_LOW_PROGRESS alone.
+
+### 5. `pvAcceptanceState`
+Lifecycle state from PV-010:
+PRE_EVENT / BREAKOUT_ATTEMPT / INITIAL_ACCEPTANCE / RETEST / REACCELERATION / FAILED_REENTRY / AMBIGUOUS.
+
+### 6. `pvPersistenceState`
+ONE_OFF / PERSISTENT / DECAYING / UNKNOWN.
+
+### 7. `pvGuardState`
+NORMAL_MARKET / PRICE_CENSORED / ILLIQUID / GAP_DOMINATED / DATA_INSUFFICIENT.
+
+### 8. Coverage / provenance fields
+- slotHistoryCount;
+- dailyHistoryCount;
+- sourceTimestamp;
+- schemaVersion;
+- completedBar;
+- decisionImpact=false.
+
+## Explicitly reject from minimum set for now
+Do NOT add yet:
+- “buy volume / sell volume” from candle sign;
+- free-float turnover without reliable timestamped free-float data;
+- 52-week-high x turnover dedicated factor;
+- standalone VWAP-above/below score;
+- separate daily/60m/30m/15m/10m volume points;
+- numerous pattern-specific volume scores;
+- raw block-share-of-full-day in live snapshots;
+- trade-value price-impact as an alpha score.
+
+These remain secondary experiments only.
+
+## Why this is suitable for engineering
+The minimum set answers distinct questions:
+1. Is participation abnormal?
+2. Is it abnormal for this time of day?
+3. Is it persistent through the session?
+4. Is price responding efficiently?
+5. Is structure accepting or rejecting the move?
+6. Is the event persisting or decaying?
+7. Is market structure making the observation unreliable?
+
+It also reuses current Formal context instead of duplicating it.
+
+## Proposed next system action
+This set is suitable to propose for **research-only Shadow logging** in the stock-selection / monitoring code, because it can be isolated with `decisionImpact=false` and validated prospectively without changing Formal selection, ranking, entry, capital or push behavior.
+
+It is NOT yet suitable for Formal scoring.
+
+Status: MINIMUM_SHADOW_SET_READY_FOR_ENGINEERING_PROPOSAL / FORMAL_LOCKED.
+
+
+# PV-026 — Volume May Be More Reliable as an Information-Intensity / Risk Signal than a Direction Signal
+
+## Evidence
+Taiwan and broader microstructure literature repeatedly finds a strong relationship between trading activity and return volatility / information arrival. A Taiwan 5-minute study finds that price-volume information jointly matters for describing volatility, while later Taiwan work on abnormal volume also focuses on volatility rather than a simple directional-return rule. The broader mixture-of-distributions literature interprets volume and volatility as jointly responding to latent information flow.
+
+Sources:
+- https://doi.org/10.1016/S1044-0283(01)00023-0
+- https://ah.lib.nccu.edu.tw/item?item_id=38189
+- https://doi.org/10.1016/j.intfin.2006.10.001
+- https://www.cambridge.org/core/journals/journal-of-financial-and-quantitative-analysis/article/volume-and-volatility-in-a-commonfactor-mixture-of-distributions-model/ACFD6A47569CD7923F59E49CD081D585
+
+## Important implication
+A strong volume feature may fail as a directional stock-selection factor but still be valuable for:
+- uncertainty / expected-range estimation;
+- false-break / whipsaw risk;
+- stop-distance diagnostics;
+- maxChase / execution-risk research;
+- deciding how much confirmation is needed.
+
+This is a fundamentally different use from “high volume = buy.”
+
+## Positive case
+Abnormal participation can indicate information arrival and make subsequent movement / range expansion more likely, even if direction remains uncertain.
+
+## Opposing case
+Volume-volatility correlation does not tell us which direction price will move and can be partly mechanical / regime-dependent. Turning it into a bullish score would misuse the evidence.
+
+## Research handoff
+When validating the minimal PV set, test two targets separately:
+A. directional outcome / continuation;
+B. risk outcome / realized range, MFE+MAE magnitude, false-break and stop-first.
+
+A feature can survive for B even if it fails A.
+
+Status: HIGH_VALUE_REFRAMING / DIRECTION_AND_RISK_TARGETS_MUST_BE_SEPARATE.
+
+
+# PV-027 — Residual Abnormal Volume: Stock-Specific Participation beyond Market/Sector Activity
+
+## Motivation
+A stock can have 2x its normal volume simply because the entire market or its sector is unusually active. This weakens the interpretation of raw individual RVOL as stock-specific information.
+
+The common-factor volume/volatility literature supports the existence of common activity components, while the current system already measures sector participation.
+
+Source:
+- https://www.cambridge.org/core/journals/journal-of-financial-and-quantitative-analysis/article/volume-and-volatility-in-a-commonfactor-mixture-of-distributions-model/ACFD6A47569CD7923F59E49CD081D585
+
+## Candidate research residuals
+Do not add another score. Instead estimate:
+- `stockLogRvol - marketMedianLogRvol`;
+- `stockLogRvol - sectorMedianLogRvol`;
+- same concept for same-slot 15m RVOL where broad coverage is available.
+
+These measure whether the stock's abnormal participation exceeds the common activity backdrop.
+
+## Positive interpretation
+High residual RVOL may better identify stock-specific attention / information than raw RVOL.
+
+## Opposing interpretation
+- sector medians can be unstable in small industries;
+- market-wide bursts can themselves be relevant information;
+- residualization may remove genuine theme-level signal that the selector wants to retain;
+- current sector score may already capture much of this distinction.
+
+Therefore raw and residual RVOL should be compared side-by-side; do not assume residual is superior.
+
+Status: WORTH_SHADOW_COMPARISON / MODERATOR_NOT_EXTRA_POINTS.
+
+
+# Batch synthesis after PV-027
+
+The price-volume lane now has a concrete engineering boundary:
+- the minimal Shadow set is ready to propose;
+- Formal scoring is not;
+- PV research must evaluate direction and risk as separate targets;
+- residual stock-specific participation is a promising comparison, but it must not erase valid sector-level information.
+
+The strongest architecture remains:
+`participation -> price response -> acceptance -> persistence -> guard`,
+with market/sector common activity as contextual normalization rather than an extra additive score.
 
