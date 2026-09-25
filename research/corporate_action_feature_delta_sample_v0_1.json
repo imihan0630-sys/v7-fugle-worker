@@ -1,0 +1,163 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-09-25",
+  "purpose": "Mechanics-only raw-vs-point-in-time-continuity feature deltas using current Formal feature formulas. No forward-return optimization.",
+  "registryArtifact": "research/corporate_action_registry_sample_v0_2.json",
+  "coverageManifest": "research/corporate_action_feature_window_manifest_v0_1.json",
+  "decisionImpact": false,
+  "inferenceReady": false,
+  "records": [
+    {
+      "eventKey": "2412:2026-07-09:CASH_DIVIDEND_EX_DATE",
+      "symbol": "2412",
+      "targetDate": "2026-07-09",
+      "actionType": "CASH_DIVIDEND",
+      "raw": {
+        "ret20": -7.2917,
+        "ret60": -1.1111,
+        "ma20": 142.65,
+        "ma60": 139.35,
+        "atrPercent": 1.5356,
+        "pullbackPct": 9.1837,
+        "supportDistancePct": 6.4143,
+        "volumeTodayVsPrev5": 3.2646,
+        "Apass": false,
+        "Bpass": false
+      },
+      "continuity": {
+        "ret20": -3.7021,
+        "ret60": 2.7178,
+        "ma20": 137.5814,
+        "ma60": 134.2385,
+        "atrPercent": 1.3189,
+        "pullbackPct": 5.6673,
+        "supportDistancePct": 0.5957,
+        "volumeTodayVsPrev5": 3.2646,
+        "Apass": false,
+        "Bpass": false
+      },
+      "conditionFlips": [
+        "A.trend false->true",
+        "A.nearSupport false->true"
+      ]
+    },
+    {
+      "eventKey": "3593:2025-12-22:LOSS_REDUCTION_UNIT_CONVERSION",
+      "symbol": "3593",
+      "targetDate": "2025-12-22",
+      "actionType": "LOSS_REDUCTION",
+      "raw": {
+        "ret20": 68.4932,
+        "ret60": 75.7143,
+        "ma20": 7.72,
+        "ma60": 7.3942,
+        "atrPercent": 4.1382,
+        "pullbackPct": -46.0808,
+        "supportDistancePct": 59.3264,
+        "volumeTodayVsPrev5": 0.9452,
+        "Apass": false,
+        "Bpass": false
+      },
+      "continuity": {
+        "ret20": 1.0959,
+        "ret60": 5.4286,
+        "ma20": 12.4567,
+        "ma60": 12.1869,
+        "atrPercent": 3.6924,
+        "pullbackPct": 12.3515,
+        "supportDistancePct": 1.2577,
+        "volumeTodayVsPrev5": 1.5753,
+        "Apass": false,
+        "Bpass": false
+      },
+      "conditionFlips": [
+        "A.pullback false->true",
+        "A.nearSupport false->true",
+        "A.volume true->false",
+        "A.notLate false->true",
+        "B.breakout true->false",
+        "B.volume false->true",
+        "B.notLate false->true"
+      ]
+    },
+    {
+      "eventKey": "8103:2025-12-08:CASH_REFUND_REDUCTION_UNIT_CONVERSION",
+      "symbol": "8103",
+      "targetDate": "2025-12-08",
+      "actionType": "CASH_REFUND_REDUCTION",
+      "raw": {
+        "ret20": 7.8913,
+        "ret60": 48.135,
+        "ma20": 76.805,
+        "ma60": 64.8167,
+        "atrPercent": 7.9257,
+        "pullbackPct": 7.3333,
+        "supportDistancePct": 8.5867,
+        "volumeTodayVsPrev5": 1.0036,
+        "Apass": false,
+        "Bpass": false
+      },
+      "continuity": {
+        "ret20": -6.4131,
+        "ret60": 28.495,
+        "ma20": 87.907,
+        "ma60": 74.5112,
+        "atrPercent": 8.593,
+        "pullbackPct": 19.6193,
+        "supportDistancePct": 3.1992,
+        "volumeTodayVsPrev5": 1.1807,
+        "Apass": false,
+        "Bpass": false
+      },
+      "conditionFlips": [
+        "A.trend true->false",
+        "A.pullback true->false",
+        "A.nearSupport false->true",
+        "B.trend true->false"
+      ]
+    },
+    {
+      "eventKey": "8422:2025-11-17:PAR_VALUE_CHANGE_UNIT_CONVERSION",
+      "symbol": "8422",
+      "targetDate": "2025-11-17",
+      "actionType": "PAR_VALUE_CHANGE",
+      "raw": {
+        "ret20": -87.8025,
+        "ret60": -87.5253,
+        "ma20": 216.16,
+        "ma60": 204.0033,
+        "atrPercent": 72.8441,
+        "pullbackPct": 90.3516,
+        "supportDistancePct": 88.5733,
+        "volumeTodayVsPrev5": 21.116,
+        "Apass": false,
+        "Bpass": false
+      },
+      "continuity": {
+        "ret20": 21.9753,
+        "ret60": 24.7475,
+        "ma20": 22.7275,
+        "ma60": 20.7708,
+        "atrPercent": 3.0162,
+        "pullbackPct": 3.5156,
+        "supportDistancePct": 1.9187,
+        "volumeTodayVsPrev5": 2.1116,
+        "Apass": true,
+        "Bpass": false
+      },
+      "conditionFlips": [
+        "A.trend false->true",
+        "A.pullback false->true",
+        "A.nearSupport false->true",
+        "A.structure false->true",
+        "B.trend false->true"
+      ]
+    }
+  ],
+  "notes": [
+    "Only registry records passing point-in-time, technical-price and technical-volume readiness enter this mechanics sample.",
+    "Event coverage completeness remains UNKNOWN because the registry is convenience-selected, so these rows are not outcome-inference evidence.",
+    "8454 stock-dividend lifecycle records are excluded from this sample until first-known timing and later listed-share denominator gaps are resolved.",
+    "No forward returns, MFE/MAE, stop outcomes, ranking optimization or threshold tuning are included."
+  ]
+}
