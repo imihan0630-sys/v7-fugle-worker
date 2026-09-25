@@ -272,3 +272,21 @@ CA-115 re-evaluate Class-A Shadow implementation readiness only after CA-113 arc
 - Completeness accounting consequence: expected sessions must be generated from market sessions minus VERIFIED_SUSPENSION symbol-sessions. Missing daily denominator rows outside verified suspensions remain UNKNOWN/MISSING_SOURCE; they cannot be silently treated as no-change. No revision/knownAt completeness claim is made yet.
 - Status: CA-113 PARTIAL_RECEIPTS / ARCHIVE_BYTES_PENDING; CA-114 SEMANTIC_STAGE_RESOLVED_DAILY_ARCHIVE_RECEIPT_PENDING. No alpha/outcome test, no historical Shadow fabrication, no Formal change.
 - Exact continuation: acquire bounded historical TPEx S38 bytes for event-centered witness windows and materialize expected/observed/verified-suspension/unknown counts; obtain bounded TWSE BFT51U daily artifact access or an equivalent exact daily listed-share artifact for the same witness windows, especially 2465 around 2025-11-17; then evaluate revision/knownAt coverage before CA-115.
+
+
+## CA-113/CA-114 bounded daily-source evidence update
+- CA-113 official TPEx historical public query contract is now validated across independent eras. The endpoint returns daily market-wide rows including exact `發行股數` in shares; 2017-05-24 symbol 1258 and 2021-07-19 symbol 5820 both reconcile successfully, while 2025-03-22 weekend returns zero rows.
+- 5314 event-centered witness: issued shares are 14,700,000 on 2025-03-18/19, rows are absent at the checked 2025-03-20 and 2025-03-28 verified-suspension boundaries, then issued shares are 294,000,000 on 2025-03-31 resume and 2025-04-01. The exact 20x denominator step aligns to market resumption, not to a missing-data shortcut.
+- New artifact: `research/corporate_action_ca113_bounded_public_lane_receipt_v0_1.json`.
+- CA-113 status advances to `TPEX_BOUNDED_PUBLIC_LANE_VALIDATED / S38_BYTES_PENDING / TWSE_EXACT_LISTED_ARCHIVE_PENDING`. The public query does not prove immutable S38 bytes/hash, first-known timing or complete revision history.
+- CA-114 gained a decisive daily-source falsification. TWSE MI_QFIIS 2465 `發行股數` is 83,946,031 on 2025-11-11, jumps to 93,946,031 on 2025-11-12 with reason `2` and company-report date 2025-11-12, and remains 93,946,031 through the 2025-11-17 payment-certificate trading start.
+- That MI_QFIIS step occurs before payment certificates trade and before 2026-01-06 MOEA registration approval. Therefore MI_QFIIS `發行股數` is a distinct company-reporting/foreign-ownership-table semantic lane and is NOT interchangeable with REGISTERED_ISSUED_COMMON_SHARES, EXCHANGE_LISTED_COMMON_SHARES or combined tradable supply.
+- New artifact: `research/corporate_action_2465_payment_certificate_resolution_v0_2.json`.
+- CA-114 status advances to `DAILY_ISSUED_REPORT_CONFLICT_CONFIRMED / EXACT_LISTED_TRADABLE_ARCHIVE_PENDING`. The 58,946,031 listed ordinary + 10,000,000 payment-certificate = 68,946,031 combined tradable sensitivity remains valid only for an explicitly combined-instrument metric contract; it is not registered-issued common shares.
+- Positive and negative evidence both strengthen the same design rule: denominator fields with similar names cannot be merged across reporting, registration and trading-supply clocks.
+- Formal Core remains locked. No Worker.js wiring, PR merge, production deployment, ranking/threshold/capital/monitor/push change.
+
+## Updated exact continuation
+CA-113: obtain immutable TPEx S38 bytes/hash if feasible and continue bounded completeness/revision receipts; the public historical query is already validated as an official reconciliation lane.
+CA-114: obtain BFT51U `上市股數` or equivalent exact daily TWSE listed-share artifacts around 2465 2025-11-11..2025-11-18 and determine payment-certificate representation. Preserve UNKNOWN if the exact daily source cannot express a metric-compatible combined tradable denominator.
+CA-115: do not re-evaluate Class-A Shadow implementation readiness until the remaining TWSE exact-listed-share/archive gate is resolved and CA-113 completeness is sufficient.
