@@ -1,0 +1,127 @@
+{
+  "schemaVersion": "0.2",
+  "generatedAt": "2026-09-25 Asia/Taipei",
+  "purpose": "CA-114 daily-source reconciliation for 2465 payment certificates/private placement. Add official TWSE MI_QFIIS date-specific issued-share observations and falsify equivalence between that reported issued-share field, registered-issued common shares, and exchange-listed/tradable supply.",
+  "decisionImpact": false,
+  "formalCoreChanged": false,
+  "status": "DAILY_ISSUED_REPORT_CONFLICT_CONFIRMED / EXACT_LISTED_TRADABLE_ARCHIVE_PENDING",
+  "inheritedInstrumentStage": {
+    "originalListedCommonSharesExcludingPrivatePlacement": 58946031,
+    "privatePlacementCommonShares": 25000000,
+    "paymentCertificatesListedFrom20251117": 10000000,
+    "combinedTradableSensitivityFrom20251117": 68946031,
+    "preRegistrationCommonShares": 83946031,
+    "postRegistrationCommonSharesAfter20260106": 93946031,
+    "ordinaryShareConversionListingDate": "2026-01-16"
+  },
+  "twseMiQfiisContract": {
+    "endpointTemplate": "https://www.twse.com.tw/rwd/zh/fund/MI_QFIIS?date=YYYYMMDD&response=html&selectType=ALLBUT0999",
+    "sourceClass": "OFFICIAL_TWSE_DAILY_FOREIGN_OWNERSHIP_TABLE",
+    "targetField": "發行股數",
+    "auxiliaryFields": [
+      "與前日異動原因(註)",
+      "最近一次上市公司申報外資及陸資持股異動日期"
+    ],
+    "reason2Meaning": "Company filing can be triggered by capital change, fixed-base-date reporting, correction of prior filing, overseas securities issuance, merger, tender offer, and related filing situations.",
+    "semanticGuard": "The official daily field belongs to the foreign-investment holdings reporting table. Its timing can follow company-reporting rules and must not be assumed identical to MOEA registration or exchange-listed/tradable common shares."
+  },
+  "observations": [
+    {
+      "session": "2025-11-11",
+      "issuedShares": 83946031,
+      "changeReason": "",
+      "lastCompanyReportDate": "2025-05-19"
+    },
+    {
+      "session": "2025-11-12",
+      "issuedShares": 93946031,
+      "changeReason": "2",
+      "lastCompanyReportDate": "2025-11-12"
+    },
+    {
+      "session": "2025-11-13",
+      "issuedShares": 93946031,
+      "changeReason": "",
+      "lastCompanyReportDate": "2025-11-12"
+    },
+    {
+      "session": "2025-11-14",
+      "issuedShares": 93946031,
+      "changeReason": "",
+      "lastCompanyReportDate": "2025-11-12"
+    },
+    {
+      "session": "2025-11-17",
+      "issuedShares": 93946031,
+      "changeReason": "",
+      "lastCompanyReportDate": "2025-11-12"
+    },
+    {
+      "session": "2025-11-18",
+      "issuedShares": 93946031,
+      "changeReason": "",
+      "lastCompanyReportDate": "2025-11-12"
+    },
+    {
+      "session": "2025-11-21",
+      "issuedShares": 93946031,
+      "changeReason": "",
+      "lastCompanyReportDate": "2025-11-12"
+    },
+    {
+      "session": "2026-01-07",
+      "issuedShares": 93946031,
+      "changeReason": "2",
+      "lastCompanyReportDate": "2026-01-07"
+    }
+  ],
+  "falsification": {
+    "observedStepDate": "2025-11-12",
+    "observedStepShares": 10000000,
+    "paymentCertificateTradingStart": "2025-11-17",
+    "moeaRegistrationApproval": "2026-01-06",
+    "conclusion": [
+      "MI_QFIIS 發行股數 steps from 83,946,031 to 93,946,031 on 2025-11-12, before payment certificates begin trading on 2025-11-17 and before MOEA registration approval on 2026-01-06.",
+      "Therefore MI_QFIIS 發行股數 is not an admissible proxy for point-in-time REGISTERED_ISSUED_COMMON_SHARES.",
+      "It is also not proof of EXCHANGE_LISTED_COMMON_SHARES or COMBINED_EXCHANGE_TRADABLE_UNITS because the step precedes the payment-certificate trading start.",
+      "The same numeric value can belong to different semantic/reporting stages at different clocks; field-name equality is not semantic equality."
+    ]
+  },
+  "denominatorStateAfterReconciliation": {
+    "2025-11-17": {
+      "registeredIssuedCommonShares": {
+        "value": 83946031,
+        "quality": "PRE_REGISTRATION_STATE; MI_QFIIS 93,946,031 explicitly rejected as substitute"
+      },
+      "exchangeListedCommonShares": {
+        "value": 58946031,
+        "quality": "SUPPORTED_BY_LISTING_ANNOUNCEMENT"
+      },
+      "paymentCertificateTradableUnits": {
+        "value": 10000000,
+        "quality": "SUPPORTED_BY_LISTING_ANNOUNCEMENT"
+      },
+      "combinedExchangeTradableUnits": {
+        "value": 68946031,
+        "quality": "DERIVED_SENSITIVITY_FOR_EXPLICIT_COMBINED_INSTRUMENT_METRICS_ONLY"
+      },
+      "miQfiisReportedIssuedShares": {
+        "value": 93946031,
+        "quality": "OFFICIAL_REPORTED_FIELD_BUT_SEMANTICALLY_NON_EQUIVALENT_TO_REGISTERED_OR_LISTED_TRADABLE_DENOMINATORS"
+      }
+    }
+  },
+  "remainingGate": [
+    "Obtain BFT51U 上市股數 or an equivalent exact daily listed-share artifact around 2025-11-11..2025-11-18.",
+    "Determine whether the exact daily listed-share lane carries payment certificates in the same row/object or requires a separate security/instrument row.",
+    "Preserve UNKNOWN if the source does not expose a metric-compatible combined tradable denominator.",
+    "Do not re-evaluate CA-115 implementation readiness until CA-113 bounded dual-exchange archive completeness is sufficient."
+  ],
+  "antiInference": [
+    "Do not choose the denominator that creates the preferred threshold outcome.",
+    "Do not use MI_QFIIS 93,946,031 as registered-issued common shares on 2025-11-12 or 2025-11-17.",
+    "Do not use MI_QFIIS 93,946,031 as proof of payment-certificate tradability before 2025-11-17.",
+    "Do not backfill 2026-01 ordinary-share conversion state into 2025.",
+    "Formal Core remains locked."
+  ]
+}
