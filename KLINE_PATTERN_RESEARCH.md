@@ -6844,3 +6844,104 @@ This parallels Information Discreteness:
 - gradual flow path vs one-shot attention event.
 Test whether flow persistence adds beyond price-path discreteness.
 
+
+
+## DL-002BB — Event-Driven vs Endogenous Pattern Formation v0.1
+
+### Core question
+Did the pattern mature because of gradual endogenous supply/demand evolution, or was the structure dominated by a discrete information event?
+
+### Taiwan relevance
+Taiwan-listed firms disclose monthly revenue, creating recurring salient information events.
+Recent Taiwan evidence shows record-high monthly-revenue announcements can generate:
+- short-term reversal around the next-day opening, especially after strong pre-announcement run-ups,
+- but positive longer-horizon post-announcement drift over roughly 20 trading days.
+Other Taiwan work finds analyst forecast revisions and earnings-related information can also exhibit delayed price adjustment.
+
+### Research implication
+A breakout around an event can have very different mechanics from a non-event breakout.
+
+### Event-context tags
+- monthlyRevenueAnnouncement
+- earningsAnnouncement
+- analystRevisionEvent
+- materialInformationEvent
+- exRightDividendEvent
+- regulatoryAlertEvent
+- eventDateKnownAtAsOf
+- eventProximityDays
+- preEventRunupPct
+- eventGapPct
+- eventIntradayReturn
+- postEventDriftState
+
+### Pattern categories
+ENDOGENOUS_MATURATION
+- no salient known event near trigger; compression/recovery develops gradually.
+
+EVENT_CATALYZED
+- mature pattern exists before event, event triggers breakout.
+
+EVENT_CREATED
+- pattern/breakout appears mainly because a sudden event discontinuity creates the geometry.
+
+EVENT_DISTORTED
+- corporate action/regulatory/price-limit event makes normal morphology unreliable.
+
+### Key tests
+1. mature pattern + event catalyst vs mature pattern without event;
+2. event breakout without mature pattern vs event + mature pattern;
+3. strong pre-event runup vs modest pre-event runup;
+4. overnight event gap vs intraday acceptance.
+
+### Why this matters
+Without event tags, the research may falsely conclude:
+“cup breakout predicted the move,”
+when the actual driver was a revenue/earnings information shock.
+
+Likewise, the event alone may not explain which stocks sustain the move; pre-event pattern maturity may condition the post-event response.
+
+### No production implication
+Event context is research provenance/interaction only.
+
+## DL-002BC — Pre-Event Runup / Attention Risk
+
+### Evidence prior
+Recent Taiwan research on record-high monthly revenue announcements reports stronger short-term reversals after strong pre-announcement runups.
+Other Taiwan work around monthly-revenue periods links investor attention / lottery-like demand to pre-announcement price behavior.
+
+### Research variables
+- preEventReturn5/10/20
+- preEventATRExpansion
+- preEventLimitHitCount
+- preEventTurnoverExpansion
+- preEventRSChange
+- preEventPatternMaturity
+- eventSurpriseProxy if point-in-time valid
+
+### Hypothesis
+A beautiful technical breakout after a large pre-event runup may be more vulnerable to attention-driven short-term reversal than the same pattern with modest pre-event extension.
+
+This overlaps current overheat controls and must pass redundancy testing.
+
+## DL-002BD — Event × Pattern Interaction Matrix
+
+### Possible states
+NO_PATTERN_NO_EVENT
+PATTERN_NO_EVENT
+EVENT_NO_PATTERN
+PATTERN_PLUS_EVENT
+
+### Outcomes
+Compare same-date / matched controls on:
+- D1/D3/D5/D10/D20
+- overnight vs intraday return
+- MFE/MAE
+- R01 failure
+- stop-first
+- post-event drift
+
+### Interpretation
+If PATTERN_PLUS_EVENT dominates EVENT_NO_PATTERN after controls, pattern maturity may condition how information is absorbed.
+If no difference remains after event surprise/runup controls, technical morphology may be secondary.
+
