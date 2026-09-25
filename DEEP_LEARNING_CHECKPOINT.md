@@ -465,3 +465,23 @@ No Formal Core change is approved or implied.
 - Intraday and after-market PV work begins only after the corresponding Formal state/push persistence and is fail-open with zero PV push/action semantics.
 - Deterministic T1–T18 fixtures are the initial oracle. PV-H001 through PV-H004 now enter `DATA_QA`, with no prospective evidence and no permission to change Formal.
 - Formal Core remains LOCKED. The next phase is controlled enablement, first-session data-integrity review and the frozen first-50-event QA gate.
+
+
+## Pattern Maturity lane update — DL-002II through DL-002JH
+- Durable authority remains `KLINE_PATTERN_RESEARCH.md`.
+- Provider/code audit materially resolved prior data uncertainty:
+  - Fugle historical daily API already provides OPEN and turnover; current Worker mapping discards OPEN.
+  - Fugle supports explicit `adjusted=true/false` for D/W/M; current Worker does not specify adjustment mode.
+  - ordinary listed/OTC daily volume is shares; turnover is TWD; minute volume is lots.
+  - historical minute bars are provider-supported from 2023-05-23, but are not required for Pattern Selection Shadow v0.1.
+  - historical candle request windows must be <1 year, so 260-bar research bootstrap must use deterministic chunking.
+- Official corporate-action continuity is feasible for both TWSE and TPEx; Pattern research must preserve RAW traded series separately from MORPHOLOGY continuity and total-return outcome semantics.
+- Pattern Shadow storage/schema, no-lookahead anchor chronology, zone versioning, episode de-duplication, outcome anchors, C1-C8 counterexample stress pack, detector versioning and kill criteria are now specified.
+- Code search did not locate an implemented runtime table/API matching the conceptual Shadow Candidate Archive cohort names; do not assume that archive exists physically.
+- v0.1 scientific scope is deliberately narrow: observe current selector candidate/control populations and test incremental structural information; no full-universe pattern engine, ML/DTW, or Formal integration.
+- Formal Core remains LOCKED.
+- Exact next continuation:
+  1. locate/reconcile actual scan-pipeline storage for rejected/near-miss candidates under any different naming;
+  2. validate adjusted=true behavior on TWSE/TPEx corporate-action fixtures;
+  3. freeze deterministic C1-C8 fixture inputs/expected detector states;
+  4. then evaluate whether isolated Class-A PATTERN_SELECTION_SHADOW_V0_1 implementation is ready.
