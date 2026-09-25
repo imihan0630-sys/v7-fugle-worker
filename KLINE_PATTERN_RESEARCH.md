@@ -304,3 +304,89 @@ This is data infrastructure for research only. No Formal/Core/monitor/push behav
 - Long cup/major-base research is HORIZON_BLOCKED until the research dataset extends materially beyond the current ~65 bars.
 - Gap/Sakata research is ADJUSTMENT_BLOCKED until raw-vs-adjusted corporate-action handling is explicit.
 
+
+
+## DL-002C — Redundancy Map Against Current Formal K-line Features
+
+### W-bottom: current system already contains a crude proxy
+Current feature builder already computes:
+- leftLow = minimum low in an earlier 10-session half-window,
+- rightLow = minimum low in a later 10-session half-window,
+- rightFootHigher = rightLow > leftLow,
+- necklineProximityPct = close / priorHigh20.
+
+Therefore the research must NOT add “right foot higher” as a new independent factor and score it again.
+
+What is still missing:
+- proof that leftLow and rightLow are distinct confirmed swing troughs,
+- a confirmed intervening swing high between them,
+- actual neckline defined from that intervening high,
+- bottom spacing and symmetry,
+- second-bottom volume behavior,
+- undercut-and-reclaim timing,
+- neckline breakout lifecycle.
+
+Research hypothesis:
+A topology-aware W detector may add information beyond the current split-window proxy, but only if it beats/makes incremental contribution over rightFootHigher + priorHigh20 proximity.
+
+### VCP: substantial gap remains
+Current system already has:
+- volumeContraction5to20,
+- platformRange20Pct,
+- ATR / volatility20,
+- higher-level trend gates.
+
+Missing:
+- sequence of non-overlapping contraction legs,
+- monotonic shrinkage of contraction depth,
+- duration shrinkage,
+- higher-low sequence across confirmed legs,
+- per-leg volume dry-up,
+- final-tightness state near a pivot.
+
+Therefore VCP research should focus on sequence topology, not create another generic “low volatility” score.
+
+### Cup/handle: partial overlap, major topology gap
+Current system already has:
+- trend / MA stack,
+- pullback depth from a recent high,
+- support distance,
+- priorHigh20 and priorHigh60,
+- volume contraction,
+- overheat / late-stage controls.
+
+Missing:
+- multi-month bowl geometry,
+- left/right rim relationship,
+- bottom roundness,
+- right-side recovery,
+- handle position in upper half of the cup,
+- handle-specific depth and volume dry-up,
+- cup/handle state lifecycle.
+
+Important: priorHigh60 exists in research features and is used by nearestRealResistance, but the B breakout qualification itself is anchored to priorHigh20. Pattern research should test whether long-base pivots improve description without automatically changing the B gate.
+
+### Candlestick/Sakata: data and redundancy boundaries
+Current system can evaluate the latest day’s open/high/low/close features such as close position and upper-shadow ratio, but the historical D1 cache discards open.
+Therefore:
+- latest-bar body/wick context partly exists,
+- historical multi-day candlestick sequences do not exist reliably,
+- body/wick features must be checked for redundancy with dailyClosePosition and dailyUpperShadowRatio.
+
+### Formal redundancy test before any Shadow coding
+For each proposed pattern feature:
+1. classify as EXISTING, DERIVED_FROM_EXISTING, or NEW_TOPOLOGY;
+2. reject direct duplicates;
+3. for derived features, test whether they explain outcomes after controlling their parent variables;
+4. only NEW_TOPOLOGY or genuinely incremental derived features may proceed to Shadow validation.
+
+Initial classification:
+- rightFootHigher: EXISTING.
+- generic volume contraction: EXISTING.
+- 20d platform width: EXISTING.
+- VCP contraction sequence: NEW_TOPOLOGY.
+- actual W neckline between two confirmed troughs: NEW_TOPOLOGY.
+- cup rim symmetry / roundness / handle position: NEW_TOPOLOGY.
+- candlestick body/wick ratios: partly DERIVED_FROM_EXISTING, but historical sequence is currently DATA_BLOCKED.
+- pattern maturity lifecycle: NEW_TOPOLOGY.
+
