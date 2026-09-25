@@ -4,7 +4,7 @@ import fs from "node:fs";
 const source=fs.readFileSync(process.env.V7_TEST_WORKER_PATH||"Worker.js","utf8");
 {
   const version=source.match(/const VERSION = "(\d+)\.(\d+)\.(\d+)[^"]*";/)?.slice(1,4).map(Number);
-  assert.ok(version && version[0]===8 && version[1]===9 && version[2]>=1,"V8.9.1+ dashboard runtime required");
+  assert.ok(version && version[0]===8 && (version[1]>9 || (version[1]===9 && version[2]>=1)),"V8.9.1+ dashboard runtime required");
 }
 assert.match(source,/\{key:"pools",href:"\/pools",label:"3\+3\+3策略池"\}/);
 assert.match(source,/function strategyPoolsPage\(\)/);
