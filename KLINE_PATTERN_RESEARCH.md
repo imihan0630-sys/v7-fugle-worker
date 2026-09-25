@@ -390,3 +390,66 @@ Initial classification:
 - candlestick body/wick ratios: partly DERIVED_FROM_EXISTING, but historical sequence is currently DATA_BLOCKED.
 - pattern maturity lifecycle: NEW_TOPOLOGY.
 
+
+
+## DL-002D — Alignment with Existing Research Governance
+
+### Do not create R09 yet
+The formal research ledger already has frozen R01-R08 experiments and explicit multiple-testing accounting.
+DL-002 is still in definition/data-readiness stage. Creating a new numbered experiment before the feature definitions are frozen would unnecessarily enlarge the Factor Zoo.
+
+Decision:
+- keep DL-002 as a deep-learning / pattern-research lane,
+- do not register R09 yet,
+- only propose a new frozen experiment after data blockers are solved, definitions are pre-registered, and redundancy mapping is complete.
+
+### Reuse existing outcome definitions where possible
+Existing research already defines:
+- success vs failed breakout by whether the fixed breakout benchmark remains held on future closes over the frozen 3-day rule,
+- D1/D3/D5/D10/D20 outcomes,
+- MFE / MAE,
+- stop/target ordering with AMBIGUOUS_SAME_DAY when intraday order is unknowable,
+- Selection Alpha vs Execution Alpha.
+
+Pattern research should reuse those outcomes instead of inventing new “pattern success” labels.
+
+Pattern-specific additions may be descriptive only:
+- maturity reached or not,
+- pivot reached or not,
+- breakout confirmed or not,
+- retest confirmed or not,
+- state transition timing.
+
+For breakout families, R01’s frozen failed-close outcome remains the common falsification metric.
+
+### Reuse existing cohorts
+Shadow Candidate Archive already preserves:
+- SELECTED
+- QUALIFIED_NOT_SELECTED
+- NEAR_MISS
+- REJECTED_AFTER_BASE
+- BROAD_CONTROL
+
+DL-002 should attach as-of-date pattern diagnostics to these existing cohorts rather than creating a selectively curated “pretty chart” sample.
+
+### Maturity gate
+Any later claim that a pattern feature deserves a Formal review must still satisfy the existing research maturity gate:
+- enough mature D5 samples,
+- prospective complete snapshots,
+- independent scan dates,
+- multiple years,
+- multiple market regimes,
+- purged holdout,
+- training/holdout directional consistency,
+- no abnormal coverage or zero-pick deterioration,
+- redundancy / transaction-cost / overfit checks.
+
+Therefore a few visually convincing examples are evidence for debugging definitions only, never evidence for promotion.
+
+### Integration principle
+DL-002 is intended to answer:
+“Does multi-stage price topology add information beyond the current A/B factors?”
+
+It is NOT intended to answer:
+“Which named chart pattern looks most attractive after we inspect future winners?”
+
