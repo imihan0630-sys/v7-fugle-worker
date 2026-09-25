@@ -1,9 +1,9 @@
 # Corporate Actions & Capital Supply Checkpoint
 
 Updated: 2026-09-25 Asia/Taipei
-Current cursor: CA-001 through CA-095 complete.
+Current cursor: CA-001 through CA-100 complete.
 Status: MATERIALITY_CONFIRMED / RS_SEMANTICS_CONFIRMED / SUSPENSION_INTERACTION_FOUND / CROSS_LANE_PROTOTYPE_TESTED / EXCHANGE_SCOPED_SUSPENSION_CONTRACT / TWO_STAGE_LIFECYCLE_CONFIRMED.
-Next: CA-096.
+Next: CA-101.
 
 ## Durable conclusions
 - Announced equity supply/demand and realized share-base change are separate.
@@ -123,4 +123,25 @@ CA-097 minimum point-in-time denominator contract for SUPPLY_CHANGE volume compa
 CA-098 TPEx corporate-action suspension/resumption fixture plus exchange-scoped completeness tests.
 CA-099 combined PR #100/#101 falsification matrix.
 CA-100 evidence-gated owner decision memo only after CA-096..099; no autonomous merge/deploy.
+
+## CA-096 through CA-100 durable update
+- Full real 8454 61-bar mechanics artifact materialized: `research/corporate_action_8454_full_window_v0_1.json`.
+- Source-semantic falsification retained: Fugle FCNT000154 returned `adjusted:true` even when requested with `adjusted=false`; it is prohibited as raw evidence for this study. FCNT000002 preserves the raw 272 -> 261 ex-right discontinuity and is used for the real-bar witness.
+- On 2025-10-09, 8454 ex-right contamination has aged out of 20-session price features but remains in 60-session features: ret60 raw -0.77% vs continuity +4.19%; MA60 about 259.62 vs 253.99; priorHigh60 287 vs 273.33. Full A/B setup does not flip in this witness.
+- Volume semantics are split in `CORPORATE_ACTION_VOLUME_DENOMINATOR_SPEC.md`: RAW_SHARE_VOLUME, ISSUED_SHARE_TURNOVER and FREE_FLOAT_TURNOVER are separate spaces. Pure SUPPLY_CHANGE does not invalidate factual raw share-volume prints.
+- Exact share denominators must use direct official point-in-time counts, not nominal stock-dividend ratios. 8454 official counts are 252,357,405 before and 264,975,275 after the 2025 increase; naive 5% backsolve is off by five shares. CA-096 artifact corrected accordingly.
+- Real TPEx 5314 par-value-change suspension/resumption fixture added to PR #101: suspension 2025-03-20..03-28, resume 2025-03-31, expected prior symbol session 2025-03-19.
+- Combined falsification matrix added: verified suspension / unknown suspension / B-130 stale cache / multiple actions / no-action identity.
+- First integrated research run `36140962127` failed because the TPEx test asserted a field outside the validator return contract. The test, not the prototype, was corrected. Failure history is retained.
+- Current PR #101 head `6729c56d045d993c58cd89290411d45a5b394142`: Research run `36141243309`, V8 Regression `36141242876` and V8 Repair `36141243153` all succeeded. Integration matrix step explicitly executed and passed.
+- Evidence-gated owner memo materialized: `CORPORATE_ACTION_OWNER_DECISION_MEMO.md`. No owner option selected automatically.
+- PR #100 remains blocked from promotion as market-session-only freshness. Symbol-session provenance is prerequisite.
+- No Worker.js wiring from PR #101, no production deployment, no Formal Core change.
+
+## Exact next continuation
+CA-101 harden point-in-time issued-share denominator sourcing across major corporate-action families.
+CA-102 denominator-vintage fixtures / no future share-count leakage.
+CA-103 bounded raw-volume vs issued-share-turnover threshold disagreement study.
+CA-104 institutional-flow / market-cap / valuation denominator interactions.
+CA-105 lifecycle revision and same-day/multiple-stage edge cases.
 
