@@ -14676,3 +14676,66 @@ These are lifecycle labels only. No return threshold or buy/sell meaning is assi
 - Historical-high evidence: SUPPORTS LIFECYCLE STUDY, NOT HARD-VETO LOGIC.
 - Pattern alpha: UNKNOWN.
 - Formal Core: LOCKED.
+
+
+## DL-003H — Resistance Memory vs Post-Break Acceleration: Lifecycle, Not a Monotonic Score
+
+### Research question
+Should repeated resistance touches / proximity to an old high be treated as increasingly bearish, increasingly bullish, or as a state-dependent lifecycle variable?
+
+### External evidence
+1. Osler (Federal Reserve Bank of New York, Economic Policy Review 2000; Journal of Finance 2003) provides direct order-book/microstructure evidence from FX that support/resistance levels can predict interruptions, while clustered stop-loss orders just beyond such levels can intensify price movement after a cross.
+2. Garzarelli et al. (Scientific Reports 2014, London Stock Exchange data) report measurable support/resistance memory: conditional rebound probability rises with prior bounces. The paper explicitly does not establish exploitable net profitability after costs/frictions.
+3. Lee & Chou (Pacific-Basin Finance Journal 2025, Taiwan 1983-2022) distinguish approaching historical highs from breaking above them. In their Taiwan sample, a true historical-high breakout is associated with stronger/sustained momentum, with size/turnover/seasonality heterogeneity.
+
+### Combined interpretation
+The evidence is incompatible with a one-sign `touchCount` factor.
+
+Before a break:
+- repeated successful rejections can represent barrier memory / self-reinforcing expectations;
+- touch count alone is still insufficient because progressively higher lows / shrinking rejection distance can indicate absorption rather than strengthening resistance.
+
+At the break:
+- order clustering / stop activation can create an acceleration regime;
+- Taiwan historical-high evidence specifically warns that a true break above a salient old high can flip the interpretation of the same reference level.
+
+After the break:
+- persistence above the former resistance and re-entry/failure are separate states;
+- the former resistance can become support, but this must be observed causally rather than assumed.
+
+### Positive hypothesis
+Pattern adds value only if it distinguishes the lifecycle:
+`APPROACH -> REJECTION/ABSORPTION -> FIRST_BREAK -> HOLDING_ABOVE -> REENTRY/FAILURE`.
+
+Potential incremental fields:
+- rejection distance progression;
+- intervening-low progression;
+- time-between-tests;
+- firstBreakAt;
+- aboveZoneCloseStreak;
+- reenteredZoneAt;
+- failedBelowZoneAt.
+
+### Negative validation / falsification
+- FX order clustering may not transport to Taiwan equities.
+- LSE support/resistance memory does not prove net alpha and may be a self-fulfilling statistical regularity.
+- Taiwan historical-high effects can overlap momentum, market-cap, turnover, seasonality, attention and overheat.
+- A post-break continuation effect that disappears after current R01 / ret20 / priorHigh60 / overheat / volume controls is redundant.
+- Any rule requiring a hand-picked number of touches or post-break bars after inspecting returns is data snooping.
+
+### Current-selector comparison
+Existing Formal logic already knows local breakout / priorHigh20, ret20, MA structure and overheat context. Therefore Pattern must not duplicate a generic breakout bonus.
+
+The narrower incremental question is:
+- does pre-break progression / structural-zone state explain failures among otherwise similar local breakouts?
+- after a true structural-zone break, does holding/re-entry lifecycle add information beyond R01's existing local 3-day hold/fail outcome?
+
+### Design consequence
+`touchCount` remains unsigned descriptive evidence.
+`aboveZoneCloseStreak` remains numeric and outcome-free.
+No new binary acceptance threshold is added to the detector.
+Existing R01 3-day hold may later be used as a comparator/outcome, not as a hidden detector-tuning target.
+
+### Status
+WORTH_PROSPECTIVE_SHADOW_VALIDATION / NOT A FORMAL RULE.
+Formal Core remains LOCKED.
