@@ -644,3 +644,39 @@ Class A if research-only; Class C if later used in formal 15m confirmation.
 5. PVE-033: freeze which raw fields can enter H001/H002 even if Guard/response labels are quarantined.
 6. Keep H001/H002 outcome inference unrun until clean cohort + evidence floors.
 7. Formal Core remains LOCKED.
+
+## Evidence progress — PVE-029 through PVE-061
+- PVE-029 finds a historical 09:00 range-anchor asymmetry: historical sessions carry priorClose from the v0.1 last observable 13:00 bar, while live 09:00 uses quote.previousClose. This affects range-normalized response, not slot volume.
+- PVE-030: missing intermediate historical slots can make later trueRange span more than one 15m interval; cumulative validity catches the gap but rangeHistoryCount does not.
+- PVE-031~033 separate slot-volume, cumulative-volume and range/response quality. H001/H002 can be field-scoped independently from H003 Guard/response defects.
+- PVE-034 audits H001 comparator: normal Formal frame15 and PV use the same fetched completed 15m source/unit, but at-rest snapshot lacks explicit formalFrame15LatestTime provenance.
+- PVE-035: H001 primary comparison is common-support only. Formal previous-5 ratio begins at 10:15; earlier RVOL availability is a separate coverage study.
+- PVE-036: on missing-slot sessions Formal local ratio can remain numeric using previous available bars while PV current-session coverage becomes INVALID. Such rows are not clean H001 common support.
+- PVE-037/038 identify a snapshot idempotency defect: semantic fingerprint includes volatile sourceFetchedAt, so legitimate intraday/daily retries can be reported as mutationConflict.
+- PVE-039 confirms T16/T17 only clone a fixed object and do not test sourceFetchedAt-changing retries.
+- PVE-040 freezes semantic-fingerprint versus acquisition-provenance separation for a future version; historical rows are not rewritten.
+- PVE-041 confirms outcome fingerprint excludes completed_at and is structurally cleaner from this timestamp defect.
+- PVE-042 requires mutation conflicts to be classified as semantic mutation, volatile-provenance-only or unknown before kill-switch interpretation.
+- PVE-043 qualifies D1 valid_sessions: it is sessions.length / cached session count, not proof every slot/prefix/range has 20 valid samples.
+- PVE-044 bootstrap skip uses coarse session count, so skipped+>=20 means CACHE_POPULATED, not feature-ready.
+- PVE-045/046 preserve feature-specific baseline semantics: a partial session can validly contribute exact-slot volume while cumulative/range have stricter requirements.
+- PVE-047 freezes a future slot-coverage receipt: per-slot volume/prefix/range counts are needed; one validSessions number is insufficient.
+- PVE-048 explicitly supersedes the PVE-013 interpretation that validSessions>=20 alone proves feature readiness.
+- PVE-049 finds PV Acceptance is an approximation of Formal, not exact replay, because Formal local volume ratio is rounded to 2 decimals while PV uses unrounded ratio.
+- PVE-050 finds PV A lower-shadow acceptance branch lacks Formal's bullish requirement.
+- PVE-051 distinguishes 13:00 same-session censoring from absence of Formal confirmation; initial acceptance can be overwritten to EXPIRED_AMBIGUOUS because no follow-through window remains.
+- PVE-052: stopFirst cannot be known when stop and target are both touched inside the same OHLC bar; this is path-order ambiguous.
+- PVE-053: B1/B2/B4 are exact horizons only under verified slot continuity; otherwise next-available-bar slicing can stretch clock time.
+- PVE-054: daily outcomes use market sessions rather than symbol-session-aware horizons; legitimate symbol suspensions censor outcome rather than imply zero/failure.
+- PVE-055 establishes hypothesis-specific readiness: H003/H004 have higher gates than H001/H002.
+- PVE-056~061 qualify timestamp semantics. Intraday observedAt and acceptance enteredAt are bar-start identity times; daily observedAt=13:30 is a session anchor, not 23:35 decision-known time. featureKnownAt must be derived from sourceFetchedAt with barEnd checks. sourceFetchedAt is useful for PIT eligibility but should not define semantic fingerprint identity.
+- No runtime code, Formal rule, threshold, capital, push, token or permission changed.
+
+## Revised exact continuation after PVE-061
+1. PVE-062: audit daily outcome finalizer against stale-history/symbol-session provenance and determine which outcome fields are factual versus censored.
+2. PVE-063: audit persistence-state continuity across overnight/session boundaries and missing observations.
+3. PVE-064: audit eventKey semantics when acceptance and persistence events coexist; prevent pseudo-independent event inflation.
+4. PVE-065: define exact first-session QA receipt expected on 9/29 and baseline-ready receipt on 9/30, including known defect overlays.
+5. PVE-066: define v0.1 evidence salvage matrix—what can remain usable without code changes versus what requires a new research schema.
+6. Continue evidence/falsification; no threshold tuning or Formal promotion.
+7. Formal Core remains LOCKED.
