@@ -402,3 +402,19 @@ No Formal Core change is approved or implied.
   - ESB/other incompatible market structures are outside PV Shadow v0.1 semantics.
 - `PRICE_VOLUME_SHADOW_SPEC.md` has been synchronized with normalization and Taiwan market-structure guards.
 - Formal Core unchanged / LOCKED.
+
+## Price-Volume lane update — PV-048 through PV-057
+- Current cursor: PV-001 through PV-057 complete; continue from PV-058.
+- New durable conclusions:
+  - limit-up/down is a market-structure context; historical candles cannot reconstruct lock duration, unlock/relock history or queue history, while live five-level quote data support prospective candidate-state capture only;
+  - price-volume divergence must use pivots confirmed as-of-time and normalized participation, with constructive/adverse interpretations retained until later acceptance/failure;
+  - issued-share turnover is feasible from official daily TWSE/TPEx company-basic data, but issued shares are not free float and corporate-action dating is mandatory;
+  - all PV evidence must be evaluated across existing BULL_BROAD / MIXED / BEAR_BROAD regimes rather than assigned a universal sign;
+  - an integrated PV interpretation matrix now explicitly records constructive interpretation, adverse interpretation, UNKNOWN/guard conditions and exact evidence for each state;
+  - Pattern Maturity owns geometry; PV owns participation/response/acceptance. Named-pattern volume bonuses are prohibited when they duplicate the same latent PV state;
+  - sector leader/follower PV timing is a moderator only; leader definitions must be as-of-time and incremental value must beat current sector score/breadth/RS;
+  - abnormal-volume episodes retain a frozen pre-event baseline for persistence/decay while the ordinary robust rolling median remains intact;
+  - PV governance levels are OBSERVER/MODIFIER/VETO; every current PV feature is OBSERVER. Data invalidity can veto PV interpretation, not the Formal stock;
+  - the first prospective experiment is frozen: within the existing selected/monitored cohort, compare current previous-5-bar 15m volumeRatio against same-slot RVOL + cumulative pace + latent states for false/no-follow-through and MFE/MAE.
+- `PRICE_VOLUME_SHADOW_SPEC.md` has been synchronized through PV-057.
+- Formal Core unchanged / LOCKED.
