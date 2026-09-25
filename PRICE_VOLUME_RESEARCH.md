@@ -1619,4 +1619,242 @@ The price-volume lane now has a concrete engineering boundary:
 The strongest architecture remains:
 `participation -> price response -> acceptance -> persistence -> guard`,
 with market/sector common activity as contextual normalization rather than an extra additive score.
+# PV-028 — Volume-at-Price / Intrabar Distribution: Prospective Only unless Historical Semantics Exist
+
+## Data reality
+Fugle provides current-day:
+- `/intraday/trades/{symbol}` with trade price, size, time and cumulative volume;
+- `/intraday/volumes/{symbol}` with volume by price and bid/ask-side aggregates.
+
+The documented historical endpoint is historical candles, not historical trades or historical volume-at-price.
+
+Sources:
+- https://developer.fugle.tw/docs/data/http-api/intraday/trades/
+- https://developer.fugle.tw/docs/data/http-api/intraday/volumes/
+- https://developer.fugle.tw/docs/data/http-api/historical/candles/
+
+## Governance consequence
+Never fabricate historical volume profile, trade-count, bid/ask-volume or volume-at-price from OHLCV candles.
+An OHLCV bar cannot reveal where inside the range the volume actually traded.
+
+## Potential future research
+If prospective capture is later justified:
+- selected symbols only;
+- fixed capture timestamps;
+- raw source timestamp and completeness flag;
+- decisionImpact=false;
+- record volume concentration near pivot / breakout price;
+- record bid/ask volume-at-price only with the provider's documented semantics.
+
+Important provider caveat:
+Fugle documents that opening first-match volume is excluded from its bid/ask-side comparison for intraday volume-at-price because the opening call auction may not represent ordinary supply/demand. This reinforces the need to preserve source semantics.
+
+## Decision
+Interesting, but not part of the minimum Shadow set because:
+- no equivalent historical depth for backfill;
+- prospective storage/API cost;
+- high risk of over-interpreting microstructure;
+- current 15m/state architecture can be tested first.
+
+Status: DEFER / PROSPECTIVE_ONLY / DO_NOT_SYNTHESIZE_HISTORY.
+
+
+# PV-029 — Number of Trades vs Average Trade Size
+
+## Taiwan evidence
+Taiwan OTC research reports that transaction count has a stronger relationship with price volatility than average trade size in its sample. Related Taiwan microstructure work also finds that the number of trades can be more informative for volatility than average trade size.
+
+Sources:
+- https://doi.org/10.1108/03074350610703849
+- https://scholars.lib.ntu.edu.tw/handle/123456789/414879
+
+## Data feasibility
+Fugle current-day `intraday/trades` exposes individual trade `size`, so prospective metrics are technically possible:
+- tradeCount per slot;
+- median / mean trade size;
+- large-trade share;
+- tradeCount RVOL versus historical prospectively stored baseline.
+
+But the documented historical candles do not include trade count.
+
+## Positive case
+Trade-count surprise may be a better information-intensity / volatility feature than raw shares alone.
+
+## Opposing case
+- evidence is from an older Taiwan OTC market structure and may not generalize to today's TWSE/TPEx;
+- pagination / API cost is materially higher than candles;
+- trade splitting by algorithms can change interpretation through time;
+- prospective history would take time to accumulate;
+- likely more useful for risk/volatility than direction.
+
+## Decision
+Do not burden the initial Shadow implementation. If candle-based PV features prove useful for risk but leave unexplained volatility, trade-count capture can become a second-stage prospective experiment.
+
+Status: SECOND_STAGE_ONLY / NOT_MINIMUM_SET.
+
+
+# PV-030 — Corporate Actions Can Break RVOL Baselines
+
+## Data / market structure
+Raw share volume is not invariant to capital structure changes. Stock splits, par-value changes and capital reductions can change price/share units, shares outstanding and normal trading activity.
+
+Fugle has a corporate-actions capital-change endpoint with split/par-value/capital-reduction events, halt/resume dates and adjustment-related fields. TWSE also publishes capital-reduction reference-price rules.
+
+Sources:
+- https://developer.fugle.tw/docs/data/http-api/corporate-actions/capital-changes/
+- https://www.twse.com.tw/en/announcement/reduction/twtauu.html
+- https://doi.org/10.1111/j.1540-6261.1987.tb04370.x
+
+Historical Fugle candles support `adjusted=true` for daily/weekly/monthly price bars, but intraday bars are not documented as adjusted.
+
+Source:
+- https://developer.fugle.tw/docs/data/http-api/historical/candles/
+
+## Failure mode
+A 20-day RVOL baseline that straddles:
+- a split / reverse split;
+- par-value change;
+- material capital reduction;
+- long halt/resumption
+can create false abnormal volume even if underlying participation intensity has not changed comparably.
+
+## Conservative baseline-reset rule
+Research proposal:
+- set `CORPORATE_ACTION_GUARD` from halt through resume and baseline rebuild;
+- for same-slot / daily raw-volume baselines, do not mix pre-action and post-action sessions unless volume-adjustment semantics are independently verified;
+- require >=20 valid post-action sessions before normal PV baseline status;
+- until then `pvGuardState=DATA_INSUFFICIENT` or `CORPORATE_ACTION_RESET`.
+
+This sacrifices coverage but avoids silently manufacturing a signal.
+
+## Alternative later
+If a reliable historical share/volume adjustment method is verified, compare adjusted-baseline vs reset-baseline prospectively. Do not assume price adjustment factors automatically make volume comparable.
+
+Status: HIGH_PRIORITY_DATA_QUALITY_GUARD.
+
+
+# PV-031 — Downside / Upside Volume-Volatility Asymmetry
+
+## Evidence
+Taiwan research reports asymmetric volatility response, with negative shocks having stronger volatility impact in its sample. Broader Taiwan price-limit research also shows market-structure constraints can materially alter observed volatility and serial dependence.
+
+Sources:
+- https://ah.lib.nccu.edu.tw/item?item_id=38189
+- https://doi.org/10.1016/S0927-538X(98)00011-0
+- https://doi.org/10.1016/j.pacfin.2007.11.002
+
+## Research implication
+Do not assume an extreme-volume positive bar and an extreme-volume negative bar have symmetric risk implications.
+
+Candidate risk-only interactions:
+- negative return / bearish close x extreme participation;
+- downside true-range expansion x RVOL;
+- high downside effort x poor close;
+- negative gap x opening concentration;
+- downside event x price-limit proximity.
+
+## Positive/constructive counter-case
+Extreme downside volume can also be capitulation / absorption. A single high-volume red bar is not a sell conclusion. Later recovery, support reclaim and acceptance remain necessary to distinguish liquidation from accumulation.
+
+## Separation of targets
+Test:
+A. subsequent direction;
+B. subsequent realized range / MAE / stop-first;
+C. rebound/reversal probability after extreme downside effort.
+
+Do not collapse these into one bearish score.
+
+Status: WORTH_RISK_SHADOW / DIRECTION_REMAINS_AMBIGUOUS.
+
+
+# PV-032 — Map Price-Volume Research to the Existing Trading Funnel
+
+## Purpose
+Convert research into testable questions relevant to the current system without changing Formal behavior.
+
+## After-market selection
+Research fields:
+- pvDailyRvol20;
+- supply-contraction / no-demand state;
+- persistence state;
+- gap / corporate-action / price-limit guards;
+- residual stock-vs-sector/market RVOL comparison.
+
+Primary question:
+Does PV state improve D1/D3/D5, MFE/MAE and false-break outcomes inside SELECTED / Near-miss / Rejected after current selection controls?
+
+## 15m entry confirmation
+Compare current:
+- local previous-5-bar volumeRatio
+
+against research additions:
+- pvSlotRvol20;
+- pvCumvolPace20;
+- pvResponseState;
+- pvAcceptanceState.
+
+Primary question:
+Does clock-time normalization reduce false confirmation / no-follow-through cases without materially suppressing valid BUY events?
+
+This is currently the clearest direct optimization hypothesis because it addresses a known semantic weakness in the existing intraday volumeRatio.
+
+## maxChase / gap risk
+Research only:
+- gap-dominated guard;
+- extreme-volume + weak progress;
+- opening concentration;
+- price-limit proximity.
+
+Primary question:
+Do these explain poor chase outcomes / high MAE beyond existing maxChase and overheat logic?
+
+No maxChase change is approved.
+
+## stop / risk diagnostics
+Research only:
+- information-intensity / volatility PV target;
+- downside asymmetry;
+- price-censored guard.
+
+Primary question:
+Can PV state predict stop-first or unusually large realized range even when it cannot predict direction?
+
+Any stop-distance / capital-sizing change remains Formal Class C.
+
+## re-add after reduction
+Future research possibility:
+- recovery of acceptance state;
+- participation normalization;
+- renewed sector / stock residual participation.
+
+Do not attach PV to ABF re-add until the separate reduced-position state machine is validated; avoid solving two immature mechanisms at once.
+
+## Ranked engineering hypotheses
+Research priority, not trading recommendation:
+1. Same-slot 15m RVOL + cumulative pace versus current previous-5-bar ratio.
+2. Acceptance lifecycle for breakout / retest / failure.
+3. Price-limit / corporate-action / gap guards.
+4. Direction-vs-risk dual target.
+5. Residual stock-specific RVOL.
+6. Trade-count / volume-at-price only later if candle-based research leaves meaningful unexplained value.
+
+Status: SYSTEM_MAPPING_COMPLETE / FORMAL_UNCHANGED.
+
+
+# Batch synthesis after PV-032
+
+The PV lane now separates four categories cleanly:
+
+1. **Candidate information** — daily/same-slot abnormal participation, persistence, acceptance.
+2. **Interpretation context** — gap, sector/market common activity, pattern maturity, institutions.
+3. **Risk information** — volatility/intensity, downside asymmetry, false-break / stop risk.
+4. **Data guards** — price limits, corporate actions, missing history, illiquidity, current-only microstructure data.
+
+This is preferable to a single bullish/bearish “volume score.”
+
+The first engineering proposal should remain deliberately small:
+- add research-only logging for the PV-025 minimum set;
+- validate the current 15m local-volume ratio against same-slot RVOL/cumulative pace;
+- capture outcome ledgers prospectively;
+- do not alter selection, BUY, maxChase, stop, capital, push, or ABF re-add behavior.
 
