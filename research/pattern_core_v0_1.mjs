@@ -154,6 +154,181 @@ export function detectDirectionalChangeSwings({
   return { status: "VALID", reason: null, swings };
 }
 
+export function simpleAtrBeforeIndex(bars, index, period = 20) {
+  const p = Math.max(1, Math.floor(Number(period) || 20));
+  if (!Array.isArray(bars) || index < p || index > bars.length) return null;
+  const start = index - p;
+  const ranges = [];
+  for (let i = start; i < index; i += 1) {
+    const bar = bars[i];
+    const previousClose = i > 0 ? Number(bars[i - 1].close) : Number(bar.close);
+    const high = Number(bar.high);
+    const low = Number(bar.low);
+    if (![previousClose, high, low].every(Number.isFinite)) return null;
+    ranges.push(Math.max(high - low, Math.abs(high - previousClose), Math.abs(low - previousClose)));
+  }
+  return ranges.reduce((sum, x) => sum + x, 0) / ranges.length;
+}
+
+function frozenAtrThreshold(bars, legStartIndex, scaleK, atrPeriod) {
+  const atr = simpleAtrBeforeIndex(bars, legStartIndex, atrPeriod);
+  const priorClose = legStartIndex > 0 ? Number(bars[legStartIndex - 1].close) : null;
+  if (!(atr > 0) || !(priorClose > 0) || !(scaleK > 0)) return null;
+  return {
+    thresholdPct: scaleK * atr / priorClose,
+    atr,
+    priorClose,
+    thresholdFrozenAt: bars[legStartIndex - 1].date
+  };
+}
+
+// Architecture-faithful swing engine for research histories.
+// The threshold is k * lagged ATR% and is frozen at each leg start.
+// It intentionally does not use the current confirmation bar to redefine the threshold.
+export function detectDirectionalChangeSwingsAtr({
+  bars,
+  asOfDate,
+  scaleK = 2,
+  atrPeriod = 20
+} = {}) {
+  const validated = barsAsOf(bars, asOfDate);
+  const k = Number(scaleK);
+  const period = Math.max(1, Math.floor(Number(atrPeriod) || 20));
+  if (!(k > 0)) throw new Error("scaleK must be positive");
+  if (!validated.usable) return { status: validated.status, reason: validated.reason, swings: [] };
+
+  const series = validated.bars;
+  if (series.length <= period) {
+    return { status: "BLOCKED", reason: "ATR_WARMUP_INSUFFICIENT", swings: [] };
+  }
+
+  const startIndex = period;
+  let frozen = frozenAtrThreshold(series, startIndex, k, period);
+  if (!frozen) return { status: "BLOCKED", reason: "ATR_THRESHOLD_UNKNOWN", swings: [] };
+
+  const swings = [];
+  let state = "UNKNOWN";
+  let legStartIndex = startIndex;
+  let legStartConfirmedAt = null;
+  let runningHigh = {
+    price: series[startIndex].high,
+    close: series[startIndex].close,
+    date: series[startIndex].date,
+    index: startIndex
+  };
+  let runningLow = {
+    price: series[startIndex].low,
+    close: series[startIndex].close,
+    date: series[startIndex].date,
+    index: startIndex
+  };
+
+  const pushSwing = (type, pivot, confirmedAt, confirmedIndex) => {
+    swings.push({
+      type,
+      pivotAt: pivot.date,
+      confirmedAt,
+      pivotPrice: pivot.price,
+      pivotClose: pivot.close,
+      pivotIndex: pivot.index,
+      confirmedIndex,
+      scaleK: k,
+      atrPeriod: period,
+      thresholdPct: frozen.thresholdPct,
+      thresholdAtr: frozen.atr,
+      thresholdPriorClose: frozen.priorClose,
+      thresholdFrozenAt: frozen.thresholdFrozenAt,
+      legStartIndex,
+      legStartConfirmedAt
+    });
+  };
+
+  const beginNextLeg = (confirmationIndex, nextState) => {
+    // New-leg threshold is frozen from data ending on the prior completed bar.
+    // This avoids letting the confirmation bar itself resize the reversal threshold.
+    const nextFrozen = frozenAtrThreshold(series, confirmationIndex, k, period);
+    if (!nextFrozen) return false;
+    frozen = nextFrozen;
+    legStartIndex = confirmationIndex;
+    legStartConfirmedAt = series[confirmationIndex].date;
+    state = nextState;
+    return true;
+  };
+
+  for (let i = startIndex + 1; i < series.length; i += 1) {
+    const bar = series[i];
+
+    if (state === "UNKNOWN") {
+      if (bar.high >= runningHigh.price) runningHigh = { price: bar.high, close: bar.close, date: bar.date, index: i };
+      if (bar.low <= runningLow.price) runningLow = { price: bar.low, close: bar.close, date: bar.date, index: i };
+
+      const rebound = bar.close / runningLow.price - 1;
+      const decline = 1 - bar.close / runningHigh.price;
+      if (rebound >= frozen.thresholdPct && runningLow.index < i) {
+        pushSwing("LOW", runningLow, bar.date, i);
+        if (!beginNextLeg(i, "UP")) return { status: "BLOCKED", reason: "ATR_THRESHOLD_UNKNOWN", swings };
+        runningHigh = { price: bar.high, close: bar.close, date: bar.date, index: i };
+      } else if (decline >= frozen.thresholdPct && runningHigh.index < i) {
+        pushSwing("HIGH", runningHigh, bar.date, i);
+        if (!beginNextLeg(i, "DOWN")) return { status: "BLOCKED", reason: "ATR_THRESHOLD_UNKNOWN", swings };
+        runningLow = { price: bar.low, close: bar.close, date: bar.date, index: i };
+      }
+      continue;
+    }
+
+    if (state === "UP") {
+      if (bar.high >= runningHigh.price) runningHigh = { price: bar.high, close: bar.close, date: bar.date, index: i };
+      const decline = 1 - bar.close / runningHigh.price;
+      if (decline >= frozen.thresholdPct && runningHigh.index < i) {
+        pushSwing("HIGH", runningHigh, bar.date, i);
+        if (!beginNextLeg(i, "DOWN")) return { status: "BLOCKED", reason: "ATR_THRESHOLD_UNKNOWN", swings };
+        runningLow = { price: bar.low, close: bar.close, date: bar.date, index: i };
+      }
+      continue;
+    }
+
+    if (state === "DOWN") {
+      if (bar.low <= runningLow.price) runningLow = { price: bar.low, close: bar.close, date: bar.date, index: i };
+      const rebound = bar.close / runningLow.price - 1;
+      if (rebound >= frozen.thresholdPct && runningLow.index < i) {
+        pushSwing("LOW", runningLow, bar.date, i);
+        if (!beginNextLeg(i, "UP")) return { status: "BLOCKED", reason: "ATR_THRESHOLD_UNKNOWN", swings };
+        runningHigh = { price: bar.high, close: bar.close, date: bar.date, index: i };
+      }
+    }
+  }
+
+  return {
+    status: "VALID",
+    reason: null,
+    scaleK: k,
+    atrPeriod: period,
+    warmupBars: period,
+    swings
+  };
+}
+
+export function detectSwingScaleFamily({
+  bars,
+  asOfDate,
+  atrPeriod = 20,
+  scaleKs = { MICRO: 1, BASE: 2, MAJOR: 3 }
+} = {}) {
+  const entries = Object.entries(scaleKs || {});
+  const scales = {};
+  for (const [name, k] of entries) {
+    scales[name] = detectDirectionalChangeSwingsAtr({ bars, asOfDate, scaleK: Number(k), atrPeriod });
+  }
+  return {
+    detectorVersion: PATTERN_CORE_VERSION,
+    method: "DIRECTIONAL_CHANGE_LAGGED_ATR_FROZEN",
+    atrPeriod,
+    scales,
+    researchOnly: true,
+    decisionImpact: false
+  };
+}
+
 export function buildResistanceZones(swings, {
   tolerancePct = 0.015,
   minTouches = 2
