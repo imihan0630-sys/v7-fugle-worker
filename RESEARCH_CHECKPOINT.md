@@ -204,3 +204,18 @@ Updated: 2026-09-25 14:12 Asia/Taipei.
 - Portfolio-risk concept lane is converged.
 - Next genuinely under-studied lane: Trading Frictions, Turnover & Rebalancing.
 - Start with Taiwan explicit taxes/commissions, implicit spread/slippage, round-trip hurdle, turnover drag, FIRST/ADD/REDUCE/RE-ADD costs, no-trade/hysteresis concepts, and cost-aware trade/no-trade decisions.
+
+
+## Parallel durable lane — Trading Frictions, Turnover & Rebalancing status update
+- Dedicated files: `TRADING_FRICTIONS_RESEARCH.md`, `TRADING_FRICTIONS_CHECKPOINT.md`.
+- Current cursor: TF-001 through TF-020 complete.
+- Status: CONCEPT_COMPLETE / EVIDENCE_PENDING.
+- Source audit: current V8.5 journal main `returnPct` is first formal BUY signal market price to first later SELL/STOP_LOSS signal market price, i.e. signal-price gross return. It is not verified fill return and not after-cost net performance.
+- Existing position reconciliation supplies actualShares / averageCost / firstEntryConfirmedAt when reconciled, but audited source did not provide an exhaustive per-fill commission/tax/slippage ledger. Historical realized net-cost coverage remains NOT_ESTABLISHED.
+- Durable design: ACTUAL/PARTIAL_ACTUAL/MODELED/UNKNOWN cost provenance, gross/net-explicit/net-all-in separation, cause-attributed turnover, KEEP-vs-TRADE REDUCE/RE-ADD counterfactual, fill-completeness semantics, and market-mechanism cost cohorts.
+- Highest-value first evidence target remains ABF REDUCE -> RECOVERY_WATCH -> RE-ADD once actual reduced-share/fill/cost provenance is trustworthy.
+- Formal Core unchanged.
+
+## External-learning continuation
+- Trading Frictions concept lane is converged.
+- Next genuinely under-studied lane: Event Risk, Gap Risk & Overnight Information.
