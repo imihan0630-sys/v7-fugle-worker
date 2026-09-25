@@ -114,3 +114,35 @@ This contract does not:
 Any future Formal RS benchmark/definition change requires separate owner decision.
 
 Research-only offline ingestion is permitted if isolated from Production.
+
+
+## Validated machine contracts — 2026-09-25
+
+Current-month official OpenAPI endpoints were live-validated:
+- https://openapi.twse.com.tw/v1/exchangeReport/FMTQIK
+- https://openapi.twse.com.tw/v1/indicesReport/MFI94U
+
+Historical monthly exact-date contracts were also live-validated:
+- https://www.twse.com.tw/rwd/zh/afterTrading/FMTQIK?date=YYYYMM01&response=json
+- https://www.twse.com.tw/rwd/zh/TAIEX/MFI94U?date=YYYYMM01&response=json
+
+Validated historical months:
+- 2025-10;
+- 2025-11;
+- 2025-12;
+- 2026-06;
+- 2026-07.
+
+The monthly payloads return exact trading-date rows and therefore satisfy the required exact-date join contract when the requested stock return start/end dates are present.
+
+### Important distinction
+The no-parameter OpenAPI endpoints expose the current monthly set and are suitable for prospective archiving/current validation.
+
+Historical replay should use the explicit monthly historical query contract, preserving the query month and retrieval provenance.
+
+### First semantic diagnostic
+research/corporate_action_rs_semantic_sample_v0_1.json now stores four mechanics-only RS comparisons.
+
+The sample demonstrates that raw Legacy RS can be dominated by corporate-action mechanics around capital reduction/par-value events, while ordinary cash-dividend Price-Compatible RS intentionally remains aligned with raw price return.
+
+This is semantic evidence only, not evidence that one RS mode has superior future alpha.
