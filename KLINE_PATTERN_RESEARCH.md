@@ -14453,3 +14453,160 @@ Compare D1/D3/D5/D10 MFE/MAE and R01 failure within same scan dates, then partia
 
 ### Status
 WORTH_SHADOW_RESEARCH as a Pattern diagnostic, NOT an optimization proposal. Formal Core remains LOCKED.
+
+
+## DL-003F — Executable Pattern Detector QA Prototype / Cross-lane Semantics (2026-09-25 Asia/Taipei)
+
+### Research scope
+Advance Pattern v0.1 from frozen text specifications to executable detector-correctness evidence without inspecting forward returns, modifying Formal A/B, or wiring Pattern into the production Worker.
+
+### Isolated engineering evidence
+Draft PR #102 on branch `research/class-a-pattern-shadow-v0-1-20260925` contains only research/test/CI-spec files:
+- `research/pattern_core_v0_1.mjs`;
+- `tests/test_pattern_core_v0_1.mjs`;
+- `research/PATTERN_MAJOR_ZONE_HIERARCHY_V0_1.md`;
+- `research/PATTERN_REGIME_INTERACTION_V0_1.md`;
+- branch-only regression invocation in `.github/workflows/v7-regression.yml`.
+
+No `Worker.js` wiring, D1 migration, production route, selection change, push change or deployment exists in PR #102.
+
+Latest validated PR head for this section: `580d6080e89b4f750f16633c34bf8409b3e5941c`.
+GitHub evidence:
+- V8 Regression Tests run `36146803521`: SUCCESS;
+- V8 Repair CI run `36146803565`: SUCCESS.
+The regression run also executed the existing Formal/offline suite and the new Pattern tests before read-only diagnostics.
+
+### Failure history retained rather than hidden
+Two early detector-QA failures produced useful falsification:
+1. Run `36145052135` exposed that JavaScript `Number(null)===0` caused a missing OPEN to become a false numeric zero and then `OHLC_GEOMETRY_INVALID`. Numeric normalization was corrected so null/undefined/blank remain UNKNOWN rather than 0.
+2. Run `36145277182` exposed over-coupling in the C2 wide-loose fixture: a VCP topology oracle was depending on the still-evolving swing extractor. C2 was split into a direct confirmed-swing topology oracle, while swing extraction has its own independent tests.
+
+Both are research-prototype defects; neither touched Formal runtime.
+
+### Executable gates now covered
+The isolated suite executes:
+- C1 V-crash/rebound;
+- C2 wide-loose base;
+- C3 corporate-action mechanical reset;
+- C4 price-limit-constrained breakout;
+- C5 dead-liquidity tight base;
+- C6 local breakout below/inside major resistance;
+- C7 event-created gap decomposition;
+- C8 repeated-resistance absorption-like vs barrier-persistent progression;
+- duplicate/out-of-order bar rejection;
+- missing OPEN honesty;
+- price-scale invariance;
+- confirmed swing chronology `pivotAt <= confirmedAt`;
+- prefix invariance;
+- replay exactness;
+- immutable structural-zone versioning;
+- Shadow parent rerun provenance conflict detection;
+- RAW_EXECUTION vs TECHNICAL_CONTINUITY semantic-space firewall.
+
+### Swing architecture upgraded to frozen specification
+The research prototype now has a Directional-Change-style engine using:
+- simple true-range ATR20 consistent with the project's existing ATR convention;
+- `thresholdPct = k * lagged ATR20 / priorClose`;
+- threshold frozen at leg start from the prior completed bar;
+- MICRO / BASE / MAJOR scale family with k=1/2/3;
+- no same-day high/low ordering inference;
+- `pivotAt` and `confirmedAt` stored separately.
+
+This is detector correctness infrastructure, not a trading parameter search. No scale is selected by future performance.
+
+### Structural-zone versioning / nested resistance
+A frozen zone prototype now uses confirmed swing highs and immutable successor versions.
+Pre-registered v0.1 zone half-width:
+`max(2*ticks, 0.25*ATR20_at_creation, constituent max dispersion)`.
+A later confirmed touch creates a successor version; it does not rewrite the older historical zone.
+
+The hierarchy is frozen separately in `research/PATTERN_MAJOR_ZONE_HIERARCHY_V0_1.md`:
+- L0 existing Formal `priorHigh20` = comparator only, never redefined;
+- L1 BASE structural zone = k=2, trailing 120 symbol sessions;
+- L2 MAJOR structural zone = k=3, trailing 260 symbol sessions;
+- L3 simple 260-session high = redundancy comparator only.
+
+Important correction: v0.1 does NOT contain a 3%/5% hard available-air veto. `availableAirPct` is continuous and zone relation is descriptive. The C6 synthetic small-air value is a correctness fixture, not an alpha threshold.
+
+### VCP overclaim guard
+The swing-only VCP primitive now refuses to claim full `VCP_MATURE` because the frozen VCP specification also requires range/volume context.
+It emits topology fields plus `TOPOLOGY_ONLY_NEEDS_RANGE_VOLUME` until those dimensions are provided.
+This prevents a partial detector from being mislabeled as a complete pattern signal.
+
+### Corporate-action cross-lane resolution and new falsification
+Direct Fugle `FCNT000154 adjusted=false` remains prohibited as authenticated RAW because the connector can return payload metadata `adjusted:true` despite the false request.
+
+However, the Corporate Actions lane has materially advanced and Pattern no longer needs to invent a second adjustment engine:
+- FCNT000002 provides real raw traded-price witnesses;
+- Corporate Actions freezes `RAW_EXECUTION`, `TECHNICAL_CONTINUITY`, `PRICE_INDEX_COMPARABLE`, `TOTAL_RETURN_COMPARABLE` spaces;
+- Pattern consumes those declared spaces and requires point-in-time/provenance readiness.
+
+Real mechanics witnesses are now executable in Pattern QA:
+- TWSE 2412 cash-dividend fixture: raw prior close 139.5, continuity anchor 134.3, event open 134 => small residual gap after mechanical reset;
+- TWSE 8454 stock-dividend fixture: raw prior close 272, continuity reference 272/1.05, event open 265 => residual positive gap remains after mechanical reset;
+- TPEx 5314 par-value change: official 10 -> 0.5 face-value change / 1 old share -> 20 new shares, old close 1390 maps to continuity reference 69.5, resume open 69 => small residual gap.
+
+Critical conclusion: a corporate action must NOT mean “suppress every gap.”
+Correct semantics are:
+1. preserve raw quoted prices in RAW_EXECUTION;
+2. neutralize only the mechanical reset in TECHNICAL_CONTINUITY;
+3. any residual open-vs-continuity move remains genuine market information and can be evaluated by the later gap detector.
+
+This falsifies the simpler rule “corporate-action day => no gap signal.”
+
+### Shadow archive parent contract is executable
+Pattern reuses the existing V8.7.2 Shadow Candidate Archive.
+Pure helper contract:
+- natural parent identity = `scan_date|symbol`;
+- captured parent snapshot hash is mandatory;
+- same natural key + different parent hash => `PROVENANCE_CONFLICT`, never silent reattachment;
+- cohort rank is not an identity key.
+
+### Series provenance firewall
+Before detector use, the executable envelope requires:
+- role = GEOMETRY or RAW_EXECUTION;
+- matching semantic space;
+- source ID and payload hash;
+- `pointInTimeEligible=true`;
+- `corporateActionSemanticsReady=true`;
+- an adjusted=false request returning adjusted=true is blocked as `ADJUSTMENT_MODE_MISMATCH` for RAW_EXECUTION.
+
+Missing evidence remains BLOCKED/UNKNOWN, never BAD/0.
+
+### Pattern x Regime pre-registration
+`research/PATTERN_REGIME_INTERACTION_V0_1.md` freezes only four initial interactions to limit data snooping:
+- PATTERN-RG1 breakout acceptance x existing broad-market regime;
+- PATTERN-RG2 nested resistance x market regime;
+- PATTERN-RG3 VCP/compression topology x existing volatility context;
+- PATTERN-RG4 reversal topology x prior-trend context.
+
+External evidence remains deliberately mixed:
+- systematic chart-pattern recognition can contain conditional information (Lo/Mamaysky/Wang);
+- Taiwan candlestick evidence reports some out-of-sample/transaction-cost robustness but is based on older 1992-2009 market structure;
+- broad Asian technical-rule evidence shows data-snooping, non-synchronous trading and transaction costs can erase apparent profitability;
+- post-sample failure in technical-rule research is direct warning against choosing the best-looking variant.
+
+Regime therefore stratifies validation; it does not alter pattern geometry.
+
+### Bias / overfit / redundancy audit
+- no D1/D3/D5/D10/MFE/MAE inspected in this implementation cycle;
+- no historical Formal/Shadow cohort fabricated;
+- no detector parameter selected from returns;
+- nested resistance must later control priorHigh60 / MA60 / ret20 / overheat / R01 / simple 260-session-high distance;
+- VCP must later control atrPercent / volatility20 / volumeContraction5to20 / platformRange20Pct;
+- every future zone-width / regime / outcome-horizon variant counts as a new experiment definition.
+
+### Current readiness
+`PATTERN_SELECTION_SHADOW_V0_1 = DETECTOR_QA_PROTOTYPE_PASS / DATA_SEMANTICS_CROSS_LANE_READY_WITH_GUARDS / PROSPECTIVE_RUNTIME_NOT_WIRED / ALPHA_UNKNOWN`.
+
+This does NOT authorize a Pattern score, veto, ranking change, entry rule, full-universe scan or production deployment.
+Formal Core remains LOCKED.
+
+### Exact next continuation point
+1. Keep PR #102 Draft; do not merge/deploy merely because detector QA passes. Shared runtime fetch/storage/scheduling wiring must be reclassified before any production integration.
+2. Complete isolated range/volume context for VCP and exact W/Platform lifecycle outputs on the research branch; keep named-label confidence separate from latent geometry.
+3. Build an isolated Pattern research-cache adapter design that consumes Corporate Actions semantic spaces rather than provider-adjusted history directly; no competing adjustment engine.
+4. Add observability contract for coverage, DATA_BLOCKED reason counts, prefix/replay exactness, scale disagreement and compute cost.
+5. Only after prospective parent-cohort snapshots are captured with complete date coverage may Pattern fields link to existing D1/D3/D5/D10/MFE/MAE/R01 outcomes.
+6. Run PATTERN-RG1..RG4 exactly as pre-registered; no extra interaction search until the first four have independent-date evidence.
+7. Do not create R09 or propose Formal optimization until prospective incremental evidence passes redundancy, date-cluster, cost, regime and holdout gates.
