@@ -5,7 +5,10 @@ const workerPath=process.env.V7_TEST_WORKER_PATH || new URL("../Worker.js",impor
 const source=await readFile(workerPath,"utf8");
 const health=await readFile(new URL("./scheduled_health.mjs",import.meta.url),"utf8");
 
-assert.match(source,/const VERSION = "8\.(?:3\.[1-9]|[4-9]\.\d+)[^"]*";/);
+{
+  const version=source.match(/const VERSION = "(\d+)\.(\d+)\.(\d+)[^"]*";/)?.slice(1,4).map(Number);
+  assert.ok(version && (version[0]>8 || (version[0]===8 && (version[1]>3 || (version[1]===3 && version[2]>=1)))),"V8.3.1+ runtime required");
+}
 for(const marker of [
   'externalPlan:{',
   'planStorageMode:',
