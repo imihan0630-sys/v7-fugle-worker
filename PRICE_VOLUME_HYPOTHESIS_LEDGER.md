@@ -125,3 +125,22 @@ Current research schema: PV_SHADOW_V0_1
 - Primary H005 cohort uses the full existing Formal/control observation set across the RVOL distribution. Restricting only to high-RVOL events is secondary/descriptive because selection on high volume may create collider bias.
 - High-RVOL subgroup findings are never sufficient causal evidence by themselves.
 - Current status remains PLANNED; no capture implementation or Formal change yet.
+
+## PV-H006 — Microstructure resolves HIGH_EFFORT_LOW_PROGRESS
+- Origin: PV-151~160 / MICROSTRUCTURE_RESEARCH.md MS-023~MS-038
+- Schema: future cross-lane research join; NOT a new Formal feature
+- Status: PLANNED / EVIDENCE_GATED
+- Frozen question: Among PV observations classified HIGH_EFFORT_LOW_PROGRESS, does prospectively captured microstructure state add incremental information for breakout retention, false-confirmation and MFE/MAE?
+- Primary comparators:
+  A. PV state + existing Formal context
+  B. A + coarse spread/depth/execution state
+  C. B + side-specific pressure
+  D. C + replenishment/pressure-response state
+- Current data availability:
+  - existing V8.8.x execution recorder can potentially support B when timestamp coverage is valid;
+  - C/D require denser prospective trade/book capture and cannot be reconstructed from OHLCV.
+- Primary outcomes: +5m/+15m/+30m retention, structural failure, MFE/MAE, retracement fraction.
+- Guards: exact as-of timestamp alignment, continuous-market regime only for clean cohort, no post-event nearest-neighbor hindsight.
+- Falsification: archive dynamic layer if simple spread/depth/PV explains the result or sparse coverage drives findings.
+- Formal impact: none.
+- Decision: remain PLANNED.
