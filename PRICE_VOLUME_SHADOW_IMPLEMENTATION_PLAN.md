@@ -426,3 +426,55 @@ V0.1 is sufficiently specified for a Class-A LOG_ONLY implementation proposal.
 It is not evidence for Formal optimization.
 
 Implementation requires explicit owner approval.
+
+## 20. Validation governance
+
+Primary statistical unit:
+- eventKey, not raw snapshot count.
+
+Every report shows:
+- snapshots;
+- unique events;
+- unique symbols;
+- unique market dates;
+- largest date share;
+- largest sector share.
+
+Primary model family:
+A context only
+B + current local previous-5 volumeRatio
+C + pvSlotRvol20
+D + pvCumvolPace20
+E + response/acceptance/guard states
+
+No threshold tournament inside PV_SHADOW_V0_1.
+
+Primary effect reporting:
+- absolute structural-failure difference;
+- relative risk;
+- median MFE/MAE;
+- valid-opportunity retention;
+- adverse-confirmation capture;
+- coverage/UNKNOWN/guard rates;
+- regime/session/channel stability.
+
+Train/design vs confirmation splits use date blocks, never random stock rows.
+
+Any semantic threshold revision requires a new schemaVersion and later untouched validation block.
+
+## 21. Observer -> Modifier governance
+
+All PV_SHADOW_V0_1 fields are OBSERVER.
+
+A future Modifier proposal requires:
+1. data integrity;
+2. adequate prospective event/date coverage;
+3. incremental value after current Formal/local-volume context;
+4. stability across sufficiently covered regimes/session phases;
+5. favorable risk-avoidance vs opportunity-loss trade-off;
+6. simple rule;
+7. later untouched confirmation block.
+
+Win-rate improvement caused by suppressing BUY frequency / capital utilization is not sufficient.
+
+Predictive VETO is not part of v0.1 and requires a separate Class-C owner-approved proposal.
