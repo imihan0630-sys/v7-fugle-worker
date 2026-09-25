@@ -420,7 +420,7 @@ function contractionPairs(swings) {
 
 export function detectVcpFromSwings(swings, {
   minContractions = 2,
-  maxMatureDepthPct = 0.15
+  wideLooseDepthPct = null
 } = {}) {
   const contractions = contractionPairs(Array.isArray(swings) ? swings : []);
   const depths = contractions.map(x => x.depthPct);
@@ -433,12 +433,14 @@ export function detectVcpFromSwings(swings, {
   const medianDepth = depths.length
     ? [...depths].sort((a, b) => a - b)[Math.floor(depths.length / 2)]
     : null;
-  const wideLoose = medianDepth !== null && medianDepth > maxMatureDepthPct;
-  const mature = contractions.length >= minContractions &&
-    depthMonotonicity >= 0.5 &&
-    lowProgression >= 0.5 &&
-    !wideLoose;
+  const explicitWideLooseThreshold = finite(wideLooseDepthPct);
+  const wideLoose = explicitWideLooseThreshold !== null && medianDepth !== null
+    ? medianDepth > explicitWideLooseThreshold
+    : null;
+  const topologyCandidate = contractions.length >= minContractions;
 
+  // Full VCP maturity also requires range/volume context from the frozen spec.
+  // This swing-only primitive therefore cannot emit VCP_MATURE=true.
   return {
     contractionCount: contractions.length,
     contractions,
@@ -446,7 +448,9 @@ export function detectVcpFromSwings(swings, {
     lowProgression,
     medianDepth,
     wideLoose,
-    mature
+    topologyCandidate,
+    maturityStatus: topologyCandidate ? "TOPOLOGY_ONLY_NEEDS_RANGE_VOLUME" : "INSUFFICIENT_CONTRACTIONS",
+    mature: false
   };
 }
 
@@ -602,10 +606,20 @@ export function classifyNestedResistance({
   const upper = major * (1 + majorTolerancePct);
   const localBreakout = close > local;
   const availableAirPct = (lower - close) / close;
-  const majorZoneConflict = localBreakout && close <= upper && availableAirPct <= 0.03;
+  const zoneRelation = close < lower ? "BELOW_ZONE" : close <= upper ? "INSIDE_ZONE" : "ABOVE_ZONE";
+  const majorZoneConflict = localBreakout && zoneRelation !== "ABOVE_ZONE";
+  const nestedConflictState = !localBreakout
+    ? "NO_LOCAL_BREAKOUT"
+    : zoneRelation === "BELOW_ZONE"
+      ? "LOCAL_BREAKOUT_BELOW_MAJOR_ZONE"
+      : zoneRelation === "INSIDE_ZONE"
+        ? "LOCAL_BREAKOUT_INSIDE_MAJOR_ZONE"
+        : "LOCAL_BREAKOUT_ABOVE_MAJOR_ZONE";
   return {
     localBreakout,
     majorZoneConflict,
+    nestedConflictState,
+    zoneRelation,
     availableAirPct,
     majorZone: { center: major, lower, upper }
   };
