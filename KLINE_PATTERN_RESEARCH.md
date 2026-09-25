@@ -8092,3 +8092,171 @@ or
 
 Retirement is a successful research outcome, not a failure.
 
+
+
+## DL-002CK — Broader Technical-School Triage
+
+### Purpose
+The research program should learn broadly but implement selectively.
+Popularity is not evidence.
+Every technical-analysis school is classified by:
+- quantifiability,
+- incremental information,
+- empirical evidence,
+- redundancy with current primitives,
+- data burden,
+- overfit risk.
+
+### 1. Fibonacci Retracement — DEPRIORITIZE / NEGATIVE PRIOR
+Strong empirical evidence from an automated three-equity-market study:
+- Fibonacci zones were not statistically more likely to produce bounces than non-Fibonacci zones;
+- Fibonacci trading rules did not outperform random non-Fibonacci S/R zones;
+- they also underperformed simple buy-and-hold benchmarks in the study.
+
+Research implication:
+- do not add 23.6/38.2/50/61.8% retracement ratios as privileged support/resistance.
+- if a Fibonacci level overlaps a genuine swing/volume/round-number zone, credit the underlying zone, not the Fibonacci label.
+
+Status:
+REJECT_AS_PRIMARY_FACTOR unless new Taiwan-specific prospective evidence emerges.
+
+### 2. Elliott Wave — LOW PRIORITY / HIGH SUBJECTIVITY
+Evidence is mixed and often focused on fractal interpretation rather than actionable out-of-sample prediction.
+Historical literature notes substantial subjectivity in wave counting; different analysts can label the same path differently.
+
+Research implication:
+- do not encode 1-2-3-4-5 / A-B-C counts as a primary factor now.
+- useful underlying primitives already exist:
+  - multi-scale swings,
+  - trend/correction alternation,
+  - amplitude ratios,
+  - maturity/extension,
+  - fractal/multi-timeframe structure.
+
+If Elliott-style information has value, it should first appear through those objective primitives.
+
+Status:
+INTERPRETABILITY_ONLY / NOT PRIORITY.
+
+### 3. Wyckoff — PRIMITIVE EXTRACTION, NOT COMPOSITE-OPERATOR CLAIMS
+Direct high-quality peer-reviewed evidence for the full named Wyckoff accumulation/distribution schema is limited relative to its practitioner popularity.
+
+Potentially useful measurable substructures:
+- selling climax / range expansion,
+- automatic rally,
+- secondary test,
+- spring = undercut + reclaim,
+- upthrust = false breakout + re-entry,
+- sign of strength/weakness,
+- last-point-of-support / last-point-of-supply,
+- volume/range interaction through phases.
+
+These strongly overlap existing DL-002 primitives and motifs.
+
+Research rule:
+- do not infer hidden institutional intent (“smart money is accumulating”) from chart shape alone.
+- encode observable price/volume events and test them.
+
+Status:
+WORTH_PRIMITIVE_RESEARCH, not a standalone score.
+
+### 4. Point & Figure — SECONDARY EVENT-BASED REPRESENTATION
+Peer-reviewed futures research formalized Point & Figure and found mixed statistical significance: some rules worked, many did not.
+
+Conceptual overlap:
+- filters out small moves,
+- records only material directional price changes,
+- ignores clock time.
+
+This resembles DL-002H Directional Change / swing segmentation.
+
+Research question:
+Does Point & Figure add information beyond our volatility-normalized event-based swings?
+
+Status:
+LOW-MEDIUM PRIORITY comparison; likely redundant unless box/reversal representation shows incremental stability.
+
+### 5. Ichimoku — EVIDENCE MIXED / LIKELY REDUNDANT
+Peer-reviewed multi-market research finds some profitable Ichimoku rules in earlier subperiods but inconsistent value later; parameter sweeps can recover apparent profitable variants, raising overfit concerns.
+Taiwan-specific thesis evidence exists but is not sufficient for Formal promotion.
+
+Underlying components are combinations of:
+- rolling high/low midpoints,
+- trend,
+- support/resistance cloud,
+- lag/lead transforms.
+
+Current system already captures trend, highs/lows, support/resistance and multi-timeframe context.
+
+Status:
+REDUNDANCY_TEST_ONLY, not priority.
+
+### 6. Market/Volume Profile — DATA-CONSTRAINED CONTEXT
+Potential value:
+- price acceptance/cost zones,
+- overhead inventory,
+- thin/high-volume zones.
+
+Evidence as standalone alpha is weaker than practitioner usage.
+Exact historical price-by-volume data is currently unavailable retrospectively from the existing cache.
+
+Status:
+PROSPECTIVE_SHADOW candidate only, already documented in DL-002BP.
+
+### 7. Renko / Price-Only Event Bars — LIKELY DIRECTIONAL-CHANGE REDUNDANCY
+Renko discards time and records fixed price moves.
+Core idea overlaps event-based swing/Point & Figure/Directional Change.
+
+Research priority:
+only compare representation stability if needed; do not build another parallel detector now.
+
+### 8. Dow Theory — CONCEPTUALLY ABSORBED
+Core ideas:
+- primary/intermediate/secondary trends,
+- confirmation,
+- volume,
+- higher highs/lows.
+
+These are already represented through:
+- multi-scale swings,
+- multi-timeframe coherence,
+- volume context,
+- market/sector confirmation.
+
+Status:
+CONCEPTUALLY_COVERED; no separate factor.
+
+## DL-002CL — Popularity Does Not Grant Experiment Budget
+
+### Rule
+A technical method receives coding/experiment budget only if at least one is true:
+1. it introduces a genuinely new measurable primitive;
+2. strong external evidence justifies a focused replication;
+3. it directly addresses a known system weakness;
+4. it serves as a strong falsification benchmark.
+
+Otherwise retain as literature knowledge only.
+
+### Current triage
+HIGH RESEARCH VALUE:
+- repaint-safe swing topology
+- VCP sequence
+- pattern maturity
+- failure/reclaim
+- support/resistance zones
+- multi-timeframe conflict
+- event/flow/regime context
+- exact prospective volume-at-price
+
+MEDIUM:
+- Point & Figure comparison
+- Wyckoff observable motifs
+- shape similarity / DTW
+
+LOW / DEPRIORITIZED:
+- Fibonacci ratios
+- Elliott labels
+- generic Ichimoku scoring
+- extra moving-average systems
+- Renko duplicate implementation
+
