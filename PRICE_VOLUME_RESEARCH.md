@@ -9386,3 +9386,422 @@ It is:
 an exact coverage audit of live D1 recorder data, followed by H006-B only if the gate passes.
 
 Status: COARSE_FEATURES_READY / EMPIRICAL_SAMPLE_NOT_YET_PROVEN.
+
+# PV-168 — Zero-Extra-API Quote Fields Omitted from execution-shadow-v2
+
+## Official Fugle quote already contains
+The same intraday Quote call used by Formal monitoring exposes:
+- referencePrice;
+- openTime/highTime/lowTime/closeTime;
+- avgPrice;
+- full top-five bids/asks;
+- total.tradeValue;
+- total.tradeVolume;
+- total.tradeVolumeAtBid;
+- total.tradeVolumeAtAsk;
+- total.transaction;
+- total.time;
+- lastTrade bid/ask/price/size/time/serial;
+- lastTrial;
+- trading-halt / limit / trial / delayed / continuous / open / close flags;
+- lastUpdated / serial.
+
+Source:
+https://developer.fugle.tw/docs/data/http-api/intraday/quote/
+
+## Current V8.8.1 passthrough
+Current patch only passes from the already-fetched Quote into the analysis result:
+- previousClose;
+- openPrice;
+- avgPrice;
+- top-five arrays;
+- tradingHalt;
+- isContinuous;
+- isDelayedOpen/Close;
+- isLimitUp/DownHalt.
+
+It does not preserve:
+- referencePrice;
+- total.*;
+- actual lastTrade.*;
+- openTime;
+- price-limit price/bid/ask flags;
+- isOpen/isClose;
+- serial.
+
+## Engineering implication
+A future execution-shadow-v3 can materially improve research data at:
+**zero incremental Fugle REST calls**
+because the source Quote has already been fetched.
+
+The incremental costs would be:
+- payload size;
+- D1 storage;
+- schema/test complexity.
+
+Status: ZERO_EXTRA_API_FIELD_OPPORTUNITY_CONFIRMED.
+
+
+# PV-169 — Fugle avgPrice Semantics Can Be Audited from Cumulative Quote Totals
+
+## Official example
+Fugle's documented 2330 Quote example reports:
+- avgPrice = 568.77;
+- total.tradeValue = 31,019,803,000;
+- total.tradeVolume = 54,538.
+
+For an ordinary Taiwan equity quote where volume is lot-based in the example:
+`31,019,803,000 / (54,538 * 1000) = 568.7741...`
+
+This matches avgPrice after display rounding.
+
+Source:
+https://developer.fugle.tw/docs/data/http-api/intraday/quote/
+
+## Conclusion
+For the documented ordinary-equity example, avgPrice is consistent with:
+cumulative traded value / cumulative traded shares.
+
+## Guard
+Do not generalize the lot conversion blindly to:
+- indices;
+- odd-lot quote type;
+- non-equity ticker types.
+
+Future stored fields should retain:
+- ticker type;
+- quote type;
+- tradeValue;
+- tradeVolume;
+- source unit semantics.
+
+## Naming
+If totals are stored and formula reconciles:
+`providerCumulativeAveragePrice`.
+
+Do not claim:
+“independently reconstructed exchange VWAP”
+unless scope/unit reconciliation is explicitly proven.
+
+Status: AVGPRICE_RECONCILIATION_EVIDENCE_ACCEPTED / TYPE_SCOPE_GUARD.
+
+
+# PV-170 — Cumulative At-Bid / At-Ask Volume Is a Coarse Trade-Pressure Proxy, Not OFI
+
+## Provider fields
+Fugle Quote exposes:
+- total.tradeVolumeAtBid = cumulative 內盤成交量;
+- total.tradeVolumeAtAsk = cumulative 外盤成交量.
+
+Source:
+https://developer.fugle.tw/docs/data/http-api/intraday/quote/
+
+## Snapshot pressure proxy
+At one timestamp:
+`cumTradePressure = (askVolume - bidVolume) / (askVolume + bidVolume)`
+when denominator >0.
+
+This describes the provider's cumulative classified trade-side mix.
+
+## Interval proxy
+With two valid increasing cumulative snapshots:
+- dAsk = ask_t2 - ask_t1;
+- dBid = bid_t2 - bid_t1;
+- dTotal = totalVolume_t2 - totalVolume_t1;
+- intervalTradePressure = (dAsk-dBid)/(dAsk+dBid).
+
+Also store:
+`unclassifiedDelta = dTotal - dAsk - dBid`
+under verified common units.
+
+## Important limitations
+This is NOT:
+- order-flow imbalance based on book additions/cancellations;
+- exact aggressor identity;
+- replenishment;
+- hidden liquidity;
+- queue pressure.
+
+Cumulative provider classification can also be insensitive to sequence within the interval.
+
+## H006 implication
+A future v3 could partially support H006-C:
+**coarse trade-side pressure between sparse milestones**.
+
+It still cannot support H006-D:
+dynamic replenishment/resiliency.
+
+Status: COARSE_TRADE_PRESSURE_FEASIBLE / TRUE_OFI_PROHIBITED.
+
+
+# PV-171 — Cumulative Transaction Count Can Measure Activity Intensity, Not Investor Identity
+
+## Provider field
+Fugle Quote exposes:
+`total.transaction` = cumulative transaction count.
+
+Source:
+https://developer.fugle.tw/docs/data/http-api/intraday/quote/
+
+## Snapshot / interval research
+With valid monotonic snapshots:
+- dTransactions;
+- dVolume;
+- transactionRatePerMinute;
+- averageVolumePerTransaction = dVolume/dTransactions
+under verified volume units.
+
+## Possible value
+Two equal-volume intervals can differ:
+- many small executions;
+- fewer large executions.
+
+This may help decompose information intensity / churn.
+
+## Counter-interpretation
+High transaction count can reflect:
+- order splitting;
+- algorithms;
+- retail activity;
+- active price discovery;
+- market stress.
+
+Do not infer:
+“many trades = retail.”
+
+## v3 role
+Context/risk decomposition only.
+Incremental value must be tested after:
+- volume;
+- volatility/range;
+- price tier;
+- time of day.
+
+Status: TRANSACTION_INTENSITY_FEASIBLE_ZERO_EXTRA_API.
+
+
+# PV-172 — Minimal execution-shadow-v3 Research Extension
+
+## Goal
+Improve current coarse recorder using only already-fetched Quote fields.
+No additional live REST call.
+
+## Correct timestamp fields
+Replace semantic ambiguity by storing separately:
+- quoteUpdatedAt = quote.lastUpdated;
+- lastTradeAt = quote.lastTrade.time;
+- statsAt = quote.total.time;
+- openTradeAt = quote.openTime.
+
+Do not overload one timestamp.
+
+## Reference / guard fields
+- referencePrice;
+- previousClose;
+- openPrice;
+- isLimitUpPrice / isLimitDownPrice;
+- isLimitUpBid / isLimitDownBid;
+- isLimitUpAsk / isLimitDownAsk;
+- isLimitUpHalt / isLimitDownHalt;
+- tradingHalt;
+- isTrial;
+- isDelayedOpen / isDelayedClose;
+- isContinuous;
+- isOpen / isClose.
+
+This would allow corporate-action-safe reference-gap work when referencePrice is valid.
+
+## Cumulative participation fields
+- tradeValue;
+- tradeVolume;
+- tradeVolumeAtBid;
+- tradeVolumeAtAsk;
+- transaction;
+- totalTime.
+
+## Last-trade fields
+- lastTradeBid;
+- lastTradeAsk;
+- lastTradePrice;
+- lastTradeSize;
+- lastTradeAt;
+- lastTradeSerial.
+
+## Depth
+Prefer preserving the raw top-five:
+`[{price,size}, ...]`
+for bids and asks.
+
+Derived aggregates may also be stored, but raw levels remain the durable research truth.
+
+## Scope/provenance
+- quoteType (ordinary/oddlot);
+- exchange;
+- market;
+- tickerType if available;
+- provider schema version.
+
+## Governance
+This is a research-recorder proposal only.
+Do not implement during the core PV DATA_QA stabilization window without a separate authorized change.
+
+Status: EXECUTION_SHADOW_V3_MINIMUM_SCHEMA_FROZEN / NOT_IMPLEMENTED.
+
+
+# PV-173 — What v3 Would Improve without a New WebSocket Collector
+
+## H006-B
+Material improvement:
+- clean quote/trade timestamps;
+- reference-price-safe gap context;
+- raw five-level shape available;
+- cumulative transaction intensity;
+- better price-limit guards.
+
+## H006-C
+Partial improvement:
+by differencing cumulative:
+- at-bid;
+- at-ask;
+- total volume
+between sparse milestone snapshots.
+
+This supplies coarse interval trade-pressure context.
+
+## H006-D
+Still impossible:
+- order-book replenishment;
+- depletion;
+- event OFI;
+- resiliency;
+- pressure persistence within the interval.
+
+These need denser prospective books+trades capture.
+
+## Decision boundary
+Before proposing a separate WebSocket collector, first determine whether:
+PV + sparse v3 coarse pressure/depth
+already produces enough explanatory value.
+
+This follows the “simplest sufficient data” principle.
+
+Status: V3_CAN_EXTEND_B_AND_PART_C / D_REQUIRES_DENSER_COLLECTOR.
+
+
+# PV-174 — FORMAL_SIGNAL_OBSERVED Event Scope Is Ambiguous in the Current Recorder
+
+## Source audit
+Current `executionResearchEventTypes` adds:
+`FORMAL_SIGNAL_OBSERVED`
+whenever the batch-level `notifications` array is non-empty.
+
+Then `recordProspectiveExecutionShadow` loops over **all results** for every returned eventType.
+
+For FORMAL_SIGNAL_OBSERVED it builds eventKey using notifications matching the current symbol, but falls back to:
+`"SIGNAL"`
+when no matching notification exists.
+
+## Consequence
+If one monitored symbol emits a notification:
+other monitored symbols in the same run can also receive a
+FORMAL_SIGNAL_OBSERVED row with fallback eventKey SIGNAL.
+
+Therefore current rows cannot all be interpreted as:
+“this symbol emitted a Formal signal.”
+
+## Current research rule
+A FORMAL_SIGNAL_OBSERVED row is:
+- VERIFIED_SIGNAL_EVENT only when a matching notification for the same symbol can be independently established;
+- EVENT_SCOPE_AMBIGUOUS otherwise.
+
+A fallback eventKey of SIGNAL is not proof of a matching signal.
+
+## Future v3 correction
+For FORMAL_SIGNAL_OBSERVED:
+- create rows only for symbols with >=1 matching notification;
+- store matchedNotificationCount;
+- store signalIds/signalTypes;
+- preserve exact source 15m bar identity.
+
+## Governance
+This is a research-recorder semantics defect.
+Do not use ambiguous signal rows for BUY-vs-NO-BUY inference.
+
+Status: SIGNAL_EVENT_SCOPE_DEFECT_CONFIRMED / CURRENT_ROWS_GUARDED.
+
+
+# PV-175 — Daily PV Shadow Inherits the Existing D1 Daily-History Freshness Risk
+
+## Direct V8.11 source audit
+`pvBuildDailyFeature(history,marketDate)` computes:
+- current daily row;
+- prior 20 rows by date;
+- median prior volume;
+- pvDailyRvol20.
+
+The daily snapshot records:
+`baselineSource = "V7_D1_DAILY_HISTORY_SHARES"`.
+
+`recordPvDailyShadowSafe` receives:
+`cachedHistory`
+from the existing after-market history pipeline.
+
+## Existing project defect
+B-130 proved the current production daily-history cache can be stale while still satisfying the old length>=60 completeness check.
+
+Draft PR #100 implements a tested freshness/continuity guard, but as of the latest GitHub read:
+- PR #100 = OPEN;
+- DRAFT;
+- merged=false;
+- main does not contain the v8.10.1 freshness guard.
+
+## Consequence
+Until production freshness is independently fixed/validated:
+- pvDailyRvol20 from the shared daily cache is not automatically clean;
+- daily PV outcomes relying on that cached history can be contaminated by missing recent sessions.
+
+## Separation from intraday PV
+Intraday same-slot PV uses its own:
+FUGLE historical 15m bootstrap/cache.
+
+Therefore:
+- INTRADAY_15M PV DATA_QA may continue under its own coverage rules;
+- AFTER_MARKET pvDailyRvol20 requires an additional DAILY_HISTORY_FRESHNESS_VERIFIED prerequisite.
+
+## Research rule
+For dates/symbols without independent daily-history continuity proof:
+daily-history-dependent PV evidence =
+`DATA_QUALITY_HISTORY_FRESHNESS_UNVERIFIED`.
+
+Do not let this invalidate clean intraday PV observations automatically.
+
+Status: DAILY_PV_QUALITY_DEPENDENCY_CONFIRMED / INTRADAY_SEPARATE.
+
+
+# PV-176 — Freshness Is a Prerequisite, Not a Trading Feature
+
+## Principle
+History freshness must never become:
+- bullish;
+- bearish;
+- a ranking factor.
+
+It is a data-validity prerequisite.
+
+## If invalid
+Correct behavior:
+- rolling daily features = UNKNOWN / DATA_INCOMPLETE;
+- exclude from clean research cohort;
+- do not fabricate/fill missing sessions.
+
+## If valid
+Feature interpretation proceeds normally.
+Freshness itself earns no score.
+
+## System implication
+PR #100 addresses a prerequisite invariant and can change future Formal eligibility only by refusing stale data.
+It does not change A/B formulas.
+
+PV research must preserve that distinction.
+
+Status: DATA_VALIDITY_NOT_ALPHA_FROZEN.
