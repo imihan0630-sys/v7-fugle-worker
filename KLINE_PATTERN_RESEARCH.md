@@ -13314,3 +13314,109 @@ not “works” / “doesn't work.”
 6. Only after those pass, propose isolated Class-A implementation.
 7. Formal Core remains LOCKED.
 
+
+
+## DL-002IE — Live Code Data Audit Correction: Provider Already Returns OPEN
+
+### Important correction from Worker.js audit
+The current fetchHistoricalDaily request already asks Fugle historical candles for:
+- open
+- high
+- low
+- close
+- volume
+- turnover
+- change
+
+However the mapping immediately discards open and stores only:
+- date
+- close
+- high
+- low
+- volumeShares
+- tradeValue
+
+Therefore the historical-OPEN blocker is NOT primarily a provider-availability blocker.
+It is currently a local transformation/storage blocker.
+
+### Consequence
+Research-only infrastructure can potentially preserve OPEN without changing the Formal feature semantics, provided:
+- Formal history object remains backward compatible,
+- Pattern Shadow uses a separate schema/path,
+- regression proves Formal outputs unchanged.
+
+### Still unresolved
+The live code shows no explicit:
+- adjusted/raw OHLC separation,
+- ex-right/ex-dividend tags,
+- corporate-action adjustment handling.
+
+So candlestick/gap research remains blocked until corporate-action semantics are resolved even though OPEN is retrievable.
+
+## DL-002IF — Current History Horizon Is Shorter Than 120 Trading Bars
+
+### Code audit
+Current constants:
+- HISTORY_LOOKBACK_CALENDAR_DAYS = 120
+- MARKET_STATE_DAYS = 65
+
+The comment/logic treats >=60 bars as sufficient for the live 60-day technical base.
+
+### Important distinction
+120 CALENDAR days is roughly only ~80 trading sessions, not 120 trading bars.
+Therefore it is insufficient for robust multi-month cup/base research in many cases.
+
+### Research requirement correction
+Pattern Shadow should request a separate longer horizon by trading-bar target, not reuse the live Formal lookback constant.
+
+Suggested research semantics:
+- MIN_PATTERN_BARS = 120 completed trading bars
+- TARGET_PATTERN_BARS >= 180 for multi-month topology / prior-trend context
+- actual calendar fetch buffer materially larger than bar target
+
+Exact engineering fetch window must be fixed after provider quota/storage audit.
+
+### Formal isolation
+Do not increase live HISTORY_LOOKBACK_CALENDAR_DAYS merely for research.
+Use a separate research fetch/cache path.
+
+## DL-002IG — Turnover Is Already Available Upstream
+
+### Audit
+Fugle historical request already includes turnover and the live mapping stores it as tradeValue.
+
+### Research implication
+Healthy-compression vs dead-liquidity research can potentially use:
+- volumeShares
+- tradeValue
+without a new market-data provider.
+
+### Caveat
+Need unit validation before constructing:
+- AVWAP
+- turnover ratios
+- Amihud-like diagnostics.
+
+Do not assume turnover units from field name alone.
+
+## DL-002IH — Research Data Blockers Re-ranked
+
+### RESOLVED / likely easy
+Historical OPEN availability:
+- upstream request already returns it; mapping currently drops it.
+
+Turnover availability:
+- already requested/stored as tradeValue.
+
+### STILL BLOCKED / requires explicit solution
+1. raw vs adjusted OHLC semantics.
+2. corporate-action/ex-right/ex-dividend tags.
+3. longer independent research history.
+4. historical minute availability/retention validation.
+5. survivorship-aware historical universe if long backtests extend beyond current listings.
+6. point-in-time event/flow history coverage.
+
+### Engineering implication
+The first Pattern Shadow prototype does not need to modify Formal calculations.
+It needs a parallel research data representation preserving fields already available plus new provenance fields.
+
