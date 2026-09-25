@@ -393,3 +393,15 @@ Updated: 2026-09-25 23:33 Asia/Taipei.
 - Engineering: attempted a dedicated CA-115 JSON artifact through the normal contents API, but the mutation was blocked before commit. No claim that artifact exists. This checkpoint records the research result only if this write succeeds.
 - Formal Core remains LOCKED; no Worker.js wiring, PR merge, deployment, ranking/threshold/capital/monitor/push change.
 - Exact next continuation: continue CA-113 immutable TPEx archive provenance; continue CA-114 exact TWSE listed-share/payment-certificate daily representation around 2025-11-17; repeat CA-115 only after those provenance gates materially improve.
+
+
+## B-142 — CA-113/115 access-vs-provenance gate hardened (2026-09-26 02:44 Asia/Taipei)
+- Fresh-read governance/worklist/checkpoint/main; canonical remained B-141. Continued exact CA-113/114 provenance blockers and did not redo independently advanced research.
+- New official-source distinction: TPEx S38/STKT2QUOTESN is an official post-close data product (14:50/17:45 lane) and the already-validated public historical query is a reconciliation witness, but neither proves immutable delivered historical bytes/hash, revision chain, or first-known vintage. Therefore SOURCE_SEMANTICS_READY and PUBLIC_HISTORICAL_RECONCILIATION_READY must remain separate from IMMUTABLE_ARCHIVE_READY and PIT_VINTAGE_READY.
+- TWSE BFT51U official product explicitly supports historical subscription/download ranges, is daily ~14:40, and contains 發行張數/上市股數. Failure to possess bounded 2025-11-17 bytes is ACCESS_GATED, not SOURCE_ABSENT and not NO_CHANGE.
+- Independent counterevidence retained: official TWSE 2465 profile produced 2025-11-27 reports paid-in capital NT$839,460,310 while ordinary 2465 trading is shown in the same period. This continues to reject MI_QFIIS 93,946,031 as contemporaneous registered-common-share truth and does not resolve payment-certificate tradable denominator composition.
+- Provenance discrepancy remains: BFT51U Chinese product page start date 2004-02-19 vs English 2004-03-01. Preserve UNKNOWN; do not silently choose one.
+- CA-115 remains NO_GO_DATA_PROVENANCE_GATES. Access gating is itself a readiness result; evidence standards are not lowered to manufacture historical Shadow.
+- Bias/quality: ACCESS_GATED != MISSING_SOURCE != NO_CHANGE != BAD != 0; no current-state backfill, no inferred continuity, no outcome-driven denominator, no alpha test, no historical Shadow fabrication, no new factor/window/threshold. R01-R08/I01-I07 unchanged.
+- Engineering: Class A research/checkpoint only; no Worker.js, Formal Core, PR promotion, or Production change.
+- Exact next continuation: search authorized repo/workflow/artifact history for previously delivered TPEx S38 bytes/hash and TWSE BFT51U/BFT50U bounded historical artifacts; if absent, freeze ACCESS_GATED + PIT_VINTAGE_UNKNOWN into CA-115 readiness and move to the next evidence priority rather than repeatedly searching the same public lane.
