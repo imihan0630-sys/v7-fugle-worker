@@ -807,3 +807,261 @@ MS-021: Study spread/depth normalization by Taiwan tick-size bands and thousand-
 MS-022: Study whether price-limit proximity causes nonlinear depth/pressure behavior and requires a separate cohort.
 MS-023: Build a cross-lane redundancy matrix: microstructure vs price-volume vs K-line vs Residual RS vs volatility.
 MS-024: Freeze a first empirical test protocol before any new capture is implemented.
+
+
+---
+
+## MS-019 — Minimum prospective cadence: dynamic questions need dynamic data
+
+### Why current snapshots are insufficient
+The current execution recorder's OPEN / 10m / 15m / 30m / signal snapshots can describe state, but cannot identify:
+- whether ask depth was consumed then replenished,
+- how quickly spread recovered,
+- whether imbalance persisted for seconds or only appeared once,
+- whether a price jump occurred through a temporary liquidity vacuum.
+
+Resiliency literature measures recovery after liquidity shocks on seconds-to-minutes horizons, so multi-minute checkpoint snapshots are structurally too coarse.
+
+### Preferred data architecture
+For a narrow prospective research cohort:
+1. event-driven `books` and `trades` is the information-preserving source;
+2. if raw event storage is too costly, aggregate **outside the Formal path** into fixed short intervals;
+3. retain event timestamps, first/last state, min/max spread, bid/ask depth changes, trade count/size and market-state flags.
+
+Do not choose cadence by looking at which one produces the best return result.
+
+### Cadence pilot
+Before outcome testing, compare data fidelity at fixed candidate resolutions:
+- 1 second: 16,200 time buckets per symbol in a 4.5-hour regular session;
+- 5 seconds: 3,240 buckets;
+- 15 seconds: 1,080 buckets.
+
+The pilot decision criterion is **state-reconstruction fidelity / missingness / operational burden**, not profitability.
+
+### Decision rule
+If 5s aggregation preserves the same pressure/replenishment state classification as 1s for a high proportion of events, prefer 5s. If not, keep finer data only around designated research windows. This comparison must be made without using future-return outcomes.
+
+Status: PILOT DESIGN ONLY; no capture implementation yet.
+
+---
+
+## MS-020 — Post-trade markout and adverse selection
+
+### Concept
+Implementation shortfall separates paper decision performance from actual execution performance. For microstructure, post-event / post-fill markout asks what the midprice does after an execution or observed trade.
+
+Reference:
+- Perold (1988), The Implementation Shortfall: Paper versus Reality.
+
+### For our system
+When a genuine BUY fill exists:
+- freeze decisionTime and arrivalMid;
+- record fillPrice;
+- compute later midprices at +1m / +5m / +15m / +30m;
+- buyer markout can be measured as `(futureMid-fillPrice)/fillPrice`;
+- execution cost and directional follow-through stay separate.
+
+When no genuine fill exists:
+- do not call it fill markout;
+- use `postSignalMidMove` or `postPressureMidMove`.
+
+### Why useful
+A BUY can be directionally right but badly executed:
+- positive later return,
+- yet large spread/slippage at entry.
+
+Conversely, a tight execution can still be attached to a bad directional signal.
+
+### Adverse-selection interpretation
+For a liquidity provider, price moving against the side they just supplied indicates adverse selection. For our directional buyer, the same future move may be favorable. Always state whose perspective the signed markout uses.
+
+Status: LABEL SEMANTICS FROZEN.
+
+---
+
+## MS-021 — Taiwan tick-size bands make raw spread comparisons invalid
+
+### Current TWSE stock tick bands
+Official TWSE rules specify stock price ticks:
+- < NT$10: NT$0.01
+- NT$10 to <50: NT$0.05
+- NT$50 to <100: NT$0.10
+- NT$100 to <500: NT$0.50
+- NT$500 to <1,000: NT$1
+- >= NT$1,000: NT$5
+
+Source:
+- TWSE Operating Rules Article 62.
+
+### Consequence
+For our thousand-dollar pool, even a one-tick spread is mechanically much larger in dollars and may be materially larger in bps than in lower-price names.
+
+Therefore every spread analysis needs at least:
+- spreadNTD,
+- spreadTicks,
+- spreadBps,
+- priceTier / tickBand.
+
+Depth should also be represented in:
+- shares,
+- notional NTD,
+- own-history percentile.
+
+### Research implication
+Do not compare a NT$1,200 stock's raw spread/depth directly with a NT$120 stock. The existing 3+3/3+3+3 pool architecture makes this especially important.
+
+Status: MANDATORY NORMALIZATION.
+
+---
+
+## MS-022 — Price-limit proximity and volatility interruption are nonlinear microstructure regimes
+
+### Current TWSE mechanics
+- Ordinary stocks are generally subject to +/-10% daily price limits versus the opening auction reference price.
+- Intraday volatility interruption can delay matching for two minutes when the potential execution price exceeds the specified +/-3.5% reference band; after interruption, matching resumes with call-auction logic.
+- During interruption/trial states, displayed best-five / simulated information has different interpretation from normal continuous trading.
+
+Sources:
+- TWSE Operating Rules Article 63.
+- TWSE intraday price-stabilization rules.
+
+### Consequence
+Near limit-up / limit-down:
+- one side of the book may become structurally thin or empty,
+- spread and depth imbalance can saturate,
+- ordinary linear pressure-to-price relationships can break,
+- “buy pressure” at limit-up cannot produce unconstrained price progress.
+
+Therefore define:
+- distanceToUpperLimitTicks / Bps
+- distanceToLowerLimitTicks / Bps
+- limitFlag
+- VI / delayed / trial / continuous state
+
+and analyze limit-proximity observations as a separate cohort / guard.
+
+### Counterpoint
+Limit proximity can also signal genuine extreme information arrival. Excluding these observations entirely would throw away important regimes; the correct response is separate modeling, not automatic BAD.
+
+Status: SEPARATE REGIME REQUIRED.
+
+---
+
+## MS-023 — Cross-lane redundancy matrix
+
+Microstructure candidates must beat the question: “Does this add information beyond what we already know?”
+
+### Candidate versus existing lanes
+
+| Microstructure feature | Closest existing information | Expected incremental content |
+|---|---|---|
+| spreadBps / spreadTicks | liquidity, price tier | immediate execution friction |
+| depthImbalance | current depth recorder | already present; no duplicate |
+| same-slot spread/depth z/ratio | PV same-slot RVOL logic | liquidity state normalized by clock time |
+| tradePressureProxy | volume / RVOL | side-of-trade pressure, though proxy |
+| weightedMid displacement | price location / K-line | sub-spread short-horizon pressure |
+| pressureToPriceResponse | PV effort-vs-result | true/near-book effort-response at shorter horizon |
+| replenishment/resiliency | none strong | dynamic liquidity recovery |
+| transactionRate | volume/activity | event intensity distinct from share volume |
+| pressure persistence | PV persistence | side-specific pressure persistence |
+| price-limit/VI state | existing quote mechanism flags | guard/regime, already partly captured |
+
+### Redundancy test order
+1. existing recorder fields first,
+2. K-line / pattern maturity,
+3. price-volume latent layers,
+4. ATR/liquidity,
+5. Residual RS / sector,
+6. regime / overheat,
+7. microstructure candidate incremental effect.
+
+Use the project's existing same-date de-meaning / conditional-incremental / leave-one-date-out principles rather than inventing a new validation language.
+
+### Kill rule
+If a new microstructure field has high redundancy and no stable incremental relation to the primary intraday outcomes, remove it rather than adding another score.
+
+Status: REDUNDANCY GATE FROZEN.
+
+---
+
+## MS-024 — First empirical protocol frozen before implementation
+
+### Research question
+Do microstructure states improve explanation/prediction of intraday follow-through and execution quality beyond existing K-line, price-volume and risk variables?
+
+### Population
+Prospective only.
+Capture must begin before outcomes are known.
+Do not capture only stocks that later BUY; include all symbols in the defined monitored research cohort so NO-BUY / no-follow-through controls remain observable.
+
+### Primary features
+Reuse existing:
+- spreadPct
+- bidDepth5
+- askDepth5
+- depthImbalance
+- executionMarketState
+
+Add only genuinely new candidates:
+- spreadTicks / tickBand
+- sameSlotSpreadState
+- sameSlotDepthState
+- weightedMidDisplacementBps
+- tradePressureProxy
+- transactionRate
+- pressureToPriceResponse
+- replenishmentState
+- pressurePersistenceState
+- limitDistance / mechanism guards
+
+### Primary horizons
+- +1m, +5m, +10m, +15m, +30m
+- MFE / MAE over 15m and 30m
+- breakout reference hold/failure
+- post-signal mid move
+- real-fill slippage/markout only when verified fills exist
+
+### Primary comparisons
+1. same-date matched monitored stocks;
+2. successful vs failed breakout under matched liquidity/ATR/price-tier;
+3. BUY vs NO-BUY with complete coverage, without treating missing recorder rows as NO-BUY;
+4. pressure-with-price-response vs pressure-without-response;
+5. normal continuous state vs limit/VI/trial separate cohorts.
+
+### Statistical / bias controls
+- cluster evidence by independent scan/trading date;
+- use the existing minimum maturity discipline before directional claims;
+- same-slot baselines use only prior sessions;
+- no historical OHLCV reconstruction of microstructure;
+- no outcome-driven cadence, threshold or feature proliferation;
+- transaction costs / spread included for execution interpretations;
+- missing / truncated coverage = UNKNOWN;
+- multiple-testing ledger increments for materially new variants.
+
+### Promotion boundary
+Success here only earns “worth continued Shadow research.”
+No automatic change to Formal selection, BUY, maxChase, capital, stop, monitoring or push.
+
+Status: EMPIRICAL PROTOCOL FROZEN.
+
+---
+
+## Fourth synthesis — microstructure lane is now research-ready, not production-ready
+
+The lane has progressed from a broad idea to a falsifiable protocol:
+- what is already captured is known;
+- what is truly new is narrowed;
+- Taiwan tick/limit mechanics are explicit;
+- outcomes and control groups are frozen;
+- missing data semantics are defined;
+- duplicate factors have been removed;
+- Formal Core remains untouched.
+
+The next step should now be **evidence collection**, not another round of indicator invention.
+
+## Exact next continuation after MS-024
+
+MS-025: Read the actual current execution-recorder schema/readback and quantify present coverage by event/date before any new field is added.
+MS-026: Determine whether existing snapshots already support a first spread/depth outcome study with no new runtime capture.
+MS-027: If coverage is adequate, pre-register and run a zero-code baseline test using only existing recorder fields.
+MS-028: Only if existing coverage cannot answer the question, prepare an isolated research-capture engineering proposal with exact cadence/storage/rate-limit budget.
