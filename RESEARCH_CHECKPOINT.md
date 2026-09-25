@@ -367,3 +367,16 @@ Updated: 2026-09-25 23:33 Asia/Taipei.
 - Bias/quality: no current-snapshot backfill, no inferred continuity across missing sessions, no missing=0/BAD, no alpha/outcome test, no historical Shadow fabrication, no new factor/window/threshold. R01-R08/I01-I07 unchanged.
 - Engineering: Class A research/checkpoint only; dedicated CA checkpoint commit `eb54c57b17d9e8d8ac6e3152e28875d51f5949f0`. Formal Core/Worker/Production/PR #100/#101 unchanged.
 - Exact next continuation: acquire bounded historical TPEx S38 bytes and materialize expected/observed/VERIFIED_SUSPENSION/UNKNOWN/revision/knownAt counts; obtain bounded TWSE BFT51U or equivalent exact daily listed-share artifacts for witness windows, especially 2465 around 2025-11-17; only then CA-115 readiness re-evaluation.
+
+
+## B-140 — CA-113 public historical lane validated; CA-114 daily issued-share semantic conflict proven (2026-09-25 Asia/Taipei)
+- Fresh-read Corporate Actions and governance checkpoints were used; work continued from B-139 without restarting CA research or touching the independently advanced Price-Volume lane.
+- CA-113 now has a materialized bounded receipt: `research/corporate_action_ca113_bounded_public_lane_receipt_v0_1.json`.
+- Official TPEx historical daily query was validated across 2017, 2021 and 2025. It exposes exact `發行股數` shares and gives a strong 5314 par-value-change witness: 14,700,000 shares on 2025-03-18/19; checked suspension-boundary rows absent on 2025-03-20 and 2025-03-28; 294,000,000 shares on 2025-03-31 resume and 2025-04-01. A weekend query returns zero rows as a non-session negative control.
+- CA-113 interpretation: symbol-session provenance works as designed. Verified suspension is not missing-source failure, and the 20x share-base switch belongs at the resume session. The public historical query is a validated official reconciliation lane, but immutable S38 bytes/hash, first-known timing and full revision history remain unproven.
+- CA-114 new artifact: `research/corporate_action_2465_payment_certificate_resolution_v0_2.json`.
+- TWSE MI_QFIIS 2465 daily `發行股數` is 83,946,031 on 2025-11-11 and 93,946,031 from 2025-11-12 onward; the 2025-11-12 row carries reason `2` and company-report date 2025-11-12. The jump occurs before payment certificates start trading 2025-11-17 and before MOEA registration approval 2026-01-06.
+- This falsifies equivalence between MI_QFIIS `發行股數`, point-in-time registered common shares and exchange-listed/tradable supply. Similar field names are not a license to merge reporting, registration and trading clocks.
+- Current statuses: CA-113 = `TPEX_BOUNDED_PUBLIC_LANE_VALIDATED / S38_BYTES_PENDING / TWSE_EXACT_LISTED_ARCHIVE_PENDING`; CA-114 = `DAILY_ISSUED_REPORT_CONFLICT_CONFIRMED / EXACT_LISTED_TRADABLE_ARCHIVE_PENDING`.
+- Formal Core/A-B/ranking/thresholds/3+3+3/capital/entry/add/reduce/sell/stop/monitor/push remain unchanged. No Worker.js wiring, PR merge or Production deployment.
+- Exact continuation: acquire BFT51U `上市股數` or equivalent exact historical TWSE listed-share artifacts around 2465 2025-11-11..18 and resolve payment-certificate representation; continue immutable TPEx S38 byte/hash completeness if feasible; only then consider CA-115 readiness re-evaluation.
