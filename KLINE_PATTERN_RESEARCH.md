@@ -14610,3 +14610,69 @@ Formal Core remains LOCKED.
 5. Only after prospective parent-cohort snapshots are captured with complete date coverage may Pattern fields link to existing D1/D3/D5/D10/MFE/MAE/R01 outcomes.
 6. Run PATTERN-RG1..RG4 exactly as pre-registered; no extra interaction search until the first four have independent-date evidence.
 7. Do not create R09 or propose Formal optimization until prospective incremental evidence passes redundancy, date-cluster, cost, regime and holdout gates.
+
+
+## DL-003G — Pattern Observer Adapter / Observability + Historical-High Evidence Update
+
+### Engineering continuation (Draft PR #102, research branch only)
+Branch: `research/class-a-pattern-shadow-v0-1-20260925`.
+
+New isolated research-only file:
+- `research/pattern_observer_adapter_v0_1.mjs`
+
+New contract:
+- Pattern snapshot must attach to an existing Shadow parent reference, never create a second candidate universe.
+- Geometry input must be `TECHNICAL_CONTINUITY` with point-in-time provenance.
+- Execution/reference input must be `RAW_EXECUTION` with point-in-time provenance.
+- Provider adjustment coercion or missing Corporate Actions semantics blocks the record rather than being guessed.
+- Cache identity = Shadow parent identity + parent snapshot hash + as-of date + geometry/raw payload hashes + detector snapshot hash.
+- Same identity with changed provenance becomes `PROVENANCE_CONFLICT`, not a silent rewrite.
+
+Observer QA fields are outcome-free:
+- valid / blocked coverage;
+- blocked reason counts;
+- prefix exactness;
+- replay exactness;
+- scale agreement;
+- compute time.
+
+No D1/D3/D5/D10/MFE/MAE or R01 outcome is used by this adapter.
+No Formal selection, ranking, capital, monitoring, push or signal path is wired.
+
+### Failure/recovery evidence
+First implementation attempt failed V8 Regression because the test import contained literal escaped newline characters. The failure was diagnosed from CI logs and repaired on the same research branch. The corrected branch head `adefb586b4af2cbff6afd62dd0a6e0f7c413c784` passed:
+- V8 Repair CI run `36147957526`: SUCCESS.
+- V8 Regression Tests run `36147957785`: SUCCESS.
+
+The failed run remains useful process evidence: Class-A research code is not considered valid from commit success alone; executable regression evidence is required.
+
+### External evidence update — historical highs in Taiwan
+A 2025 Pacific-Basin Finance Journal study, “Price formation around historical highs in retail-dominated stock markets: Evidence from Taiwan” (Lee & Chou, 2025; article 102853), reports that breakouts above historical highs can exhibit stronger/sustained momentum than simple 52-week-high breakouts, with heterogeneity by firm size, turnover and seasonality.
+
+Research interpretation:
+- this weakens any simplistic rule that “near old resistance = automatically bad”;
+- nested resistance should remain a descriptive conflict/available-air variable, not a hard veto;
+- historical-high breakout state itself may represent a distinct reference-point regime from merely approaching a major zone;
+- turnover may alter post-breakout behavior, reinforcing the need to control existing price-volume fields rather than double-score Pattern + Volume.
+
+Counterevidence / caution:
+- the result is conditional on Taiwan’s retail-heavy market and specific sample/specification;
+- size, turnover and seasonality heterogeneity means unconditional transfer is unsafe;
+- historical-high effects can overlap current momentum, priorHigh60/260, overheat and attention variables;
+- Pattern must prove incremental value after those controls before any promotion.
+
+### Incremental hypothesis refinement
+For future prospective Shadow validation, distinguish:
+1. APPROACH_MAJOR_ZONE — below/inside a frozen major structural zone;
+2. FIRST_BREAK_ABOVE_MAJOR_ZONE — newly closes above the frozen zone;
+3. ACCEPTED_ABOVE_MAJOR_ZONE — later bars hold above after the first break;
+4. FAILED_MAJOR_ZONE_BREAK — returns below the zone under frozen R01-style chronology.
+
+These are lifecycle labels only. No return threshold or buy/sell meaning is assigned.
+
+### Status
+- Observer adapter: EXECUTABLE / REGRESSION_PASS / RESEARCH_BRANCH_ONLY.
+- Runtime wiring: NOT AUTHORIZED / NOT DEPLOYED.
+- Historical-high evidence: SUPPORTS LIFECYCLE STUDY, NOT HARD-VETO LOGIC.
+- Pattern alpha: UNKNOWN.
+- Formal Core: LOCKED.
