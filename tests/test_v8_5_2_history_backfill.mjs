@@ -2,7 +2,10 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 const workerPath=process.env.V7_TEST_WORKER_PATH || new URL("../Worker.js",import.meta.url).pathname;
 const source=await readFile(workerPath,"utf8");
-assert.match(source,/const VERSION = "8\.(?:5\.[2-9]\d*|[6-9]\.\d+)[^"]*";/);
+{
+  const version=source.match(/const VERSION = "(\d+)\.(\d+)\.(\d+)[^"]*";/)?.slice(1,4).map(Number);
+  assert.ok(version && (version[0]>8 || (version[0]===8 && (version[1]>5 || (version[1]===5 && version[2]>=2)))),"V8.5.2+ runtime required");
+}
 for (const marker of [
   "CREATE TABLE IF NOT EXISTS v8_trade_journal_recovered",
   'url.pathname === "/api/journal/history-import"',
