@@ -13826,3 +13826,134 @@ Expected:
 ### Acceptance criterion
 A detector that misclassifies these obvious counterexamples is not ready for outcome testing, regardless of backtest return.
 
+
+
+## DL-002IS — First Pattern Shadow Should Observe Existing Cohorts, Not Rescan the Universe
+
+### Reason
+The first scientific question is incremental value over the current selector.
+Therefore the cleanest v0.1 population is the already preserved same-date research cohorts:
+- SELECTED
+- QUALIFIED_NOT_SELECTED
+- NEAR_MISS
+- REJECTED_AFTER_BASE
+- BROAD_CONTROL where available.
+
+### Benefit
+This directly tests:
+“Given what the current system already knows, does pattern topology add information?”
+
+It avoids immediately creating a second independent stock-selection engine with different universe/missingness biases.
+
+### Later expansion
+Only after incremental evidence exists should a full-universe Pattern Discovery lane be considered.
+
+## DL-002IT — Pattern Shadow Sampling Plan v0.1
+
+### Unit hierarchy
+Level 1: snapshot
+Level 2: pattern episode
+Level 3: symbol
+Level 4: scan date
+Level 5: market regime
+
+### Primary independence
+Do not treat multiple symbols on one market shock date as fully independent.
+Report:
+- raw N
+- episode N
+- unique date N
+- date-clustered effect
+- leave-one-date-out stability.
+
+### Minimum maturity language
+Before enough independent dates/episodes:
+- DATA_QA
+- EARLY_SIGNAL
+- CONTRADICTORY
+- INSUFFICIENT_SAMPLE
+
+No “validated edge” wording.
+
+## DL-002IU — Detector Versioning and Reproducibility
+
+### Every snapshot must pin
+- detectorVersion
+- swingSpecVersion
+- zoneSpecVersion
+- patternSpecVersion
+- corporateActionTransformVersion
+- sourceSchemaVersion
+
+### Rule changes
+Changing:
+- swing threshold family,
+- zone width formula,
+- cup roundness definition,
+- VCP contraction semantics,
+counts as a new detector version.
+
+Historical snapshots from older versions remain immutable.
+Do not silently recompute old rows and mix them with the new detector as if one experiment.
+
+### Reprocessing
+Offline reprocessing is allowed for research comparison only if labeled:
+- REPROCESSED_WITH_VERSION_X
+and separated from genuinely prospective snapshots.
+
+## DL-002IV — Pattern Research Kill Criteria
+
+A candidate feature/pattern should be deliberately dropped from predictive consideration if any of the following persist after adequate data:
+1. no incremental effect beyond existing Formal/DL-001 primitives;
+2. effect sign flips across neighboring swing scales without mechanism;
+3. apparent result is dominated by one or two scan dates;
+4. effect disappears after corporate-action/event controls;
+5. only in-sample threshold variants work;
+6. transaction/execution reality erases the effect;
+7. coverage loss materially worsens capital utilization without offsetting risk benefit;
+8. fit confidence is uncalibrated to outcomes;
+9. result depends on future-revised zones/pivots;
+10. data availability is too poor to support point-in-time use.
+
+### Importance
+“Learning” includes learning what NOT to add to the system.
+
+## DL-002IW — Current Research Readiness Matrix
+
+### READY FOR RULE/SCHEMA IMPLEMENTATION
+- repaint-safe swings
+- zone versioning
+- latent primitives P1-P8
+- episode identity
+- VCP/W/cup/flag interpretable views
+- failure taxonomy
+- snapshot/outcome schema
+- daily cohort sampling
+
+### READY BUT DATA-GUARDED
+- turnover/liquidity context (units still require validation)
+- institutional phase context (point-in-time history coverage dependent)
+- event context (history/provenance dependent)
+- tick/limit context
+
+### BLOCKED FOR VALID PERFORMANCE TEST
+- historical candlestick/Sakata sequences until OPEN is preserved in research history and corporate-action semantics are applied
+- gap taxonomy across corporate actions until official action records are integrated
+- long-base prospective statistics until >=120/260-bar research histories exist
+- historical execution/retest reconstruction where minute history is unavailable
+
+### NOT NEEDED FOR V0.1
+- DTW/ML
+- shapelets
+- full-universe pattern discovery
+- automated Formal integration.
+
+## DL-002IX — Exact Continuation Point
+
+1. Validate tradeValue/turnover units from provider payload or runtime sample.
+2. Verify practical official corporate-action ingestion path for both TWSE and TPEx; keep UNKNOWN where parity is missing.
+3. Inspect existing Shadow Candidate Archive schema/API and determine whether Pattern Shadow should attach by reference or use a separate table.
+4. Produce deterministic fixtures for C1-C8 counterexamples.
+5. Only then consider Class-A implementation of PATTERN_SELECTION_SHADOW_V0_1.
+6. Formal Core remains LOCKED.
+
