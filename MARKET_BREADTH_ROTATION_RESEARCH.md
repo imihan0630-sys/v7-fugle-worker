@@ -741,3 +741,345 @@ BR-022: Study sector breadth + stock RS interaction (strong stock in weak sector
 BR-023: Study leader concentration mathematically (HHI / contribution share / effective number of leaders).
 BR-024: Define prospective breadth snapshot schema and evidence-readiness gates.
 BR-025: Decide whether breadth concepts are complete enough to move to evidence accumulation, then open next untouched lane.
+
+
+---
+
+## BR-019 — Concentration gap: cap-weighted index versus the “typical stock”
+
+A cap-weighted index can be strong even when the median stock is weak.
+
+### Minimum concentration panel
+For each market/date:
+- capWeightedReturn = official index return
+- equalWeightReturn = mean common-stock return
+- medianStockReturn
+- advanceShare
+- p25 / p75 return
+- crossSectionalDispersion
+- capVsEqualGap = capWeightedReturn - equalWeightReturn
+- capVsMedianGap = capWeightedReturn - medianStockReturn
+
+### Interpretation
+Positive large gap:
+- large-cap / high-weight leadership dominates.
+
+Near-zero gap:
+- index and typical member move similarly.
+
+Negative gap:
+- smaller/equal-weight members outperform index leadership.
+
+### Important caveat
+Equal weighting creates size exposure. A cap-vs-equal gap is a concentration diagnostic, not pure “health.”
+
+Research on equal-weight versus cap-weight indices shows long-run and short-run results can differ materially, and concentration can influence relative performance.
+
+### Taiwan design
+Keep TWSE and TPEx separate:
+- TWSE official cap-weighted index has strong large-cap influence.
+- TPEx has different constituent/liquidity composition.
+
+Combined breadth may be shown only after market-specific components and denominators are preserved.
+
+Status: CONCENTRATION PANEL FROZEN.
+
+---
+
+## BR-020 — Sector rank transition should measure movement, not only Top-N membership
+
+“Top 5 sector today” loses information:
+- rank 1 -> 2 and rank 1 -> 15 are both technically “changed.”
+- rank 6 -> 5 creates a Top5 entry despite tiny movement.
+
+### Proposed continuous variables
+For each sector:
+- rankRet5_t / rankRet20_t
+- deltaRank1D
+- deltaRank5D
+- percentileRank_t
+- deltaPercentileRank
+- relativeReturnAcceleration
+- breadthRank
+- breadthRankChange
+- compositeRotationVector = changes in return rank + breadth rank + RS state
+
+### Transition labels
+No arbitrary Top5 dependence:
+- RISING_LEADERSHIP
+- STABLE_LEADER
+- FALLING_LEADER
+- EARLY_IMPROVER
+- STABLE_MIDDLE
+- DETERIORATING
+- RECOVERING_LAGGARD
+- UNKNOWN
+
+### Rotation velocity
+Possible research measure:
+`rotationVelocity = |percentileRank_t - percentileRank_t-5|`
+
+But direction must be retained; magnitude alone treats rise/fall equally.
+
+### Counterpoint
+Fast rank change can be noisy mean reversion, not meaningful rotation.
+Require persistence and member breadth confirmation.
+
+Status: CONTINUOUS RANK-TRANSITION SPEC FROZEN.
+
+---
+
+## BR-021 — Industry momentum has multiple horizons; do not collapse them
+
+A recent literature review notes that industry momentum evidence exists at different formation horizons and that 1-month and 6/12-month forms can be weakly correlated, suggesting different mechanisms.
+
+Source:
+- Financial Markets and Portfolio Management (2022), Momentum: what do we know 30 years after Jegadeesh and Titman’s seminal paper?
+- https://doi.org/10.1007/s11408-022-00417-8
+
+### Research horizons
+Keep separate:
+- short rotation: 5D / 20D
+- intermediate: 60D / 120D
+- longer: ~252D only after sufficient point-in-time history
+
+Do not average them into one “sector momentum” score.
+
+### Important counter-evidence
+Industry momentum is not universal across markets/samples.
+A Latin America study reports no robust industry momentum after idiosyncratic-return controls and multiple-hypothesis considerations.
+
+Source:
+- Journal of Business Research, Industry momentum in Latin America
+- https://doi.org/10.1016/j.jbusres.2023.113715
+
+Industry-classification choice itself can materially alter momentum results.
+
+Source:
+- Research in International Business and Finance (2022), Industry classification, industry momentum and short-term reversal.
+
+### Taiwan implication
+Industry definition is part of the experiment.
+Do not silently switch/merge industry taxonomies after seeing results.
+
+Status: MULTI-HORIZON + CLASSIFICATION-SENSITIVE DESIGN FROZEN.
+
+---
+
+## BR-022 — Stock RS × sector state: four distinct cases
+
+A stock-level signal should be interpreted jointly with sector participation.
+
+### 2x2 conceptual matrix
+
+1. STOCK_STRONG + SECTOR_STRONG
+   - stock RS positive
+   - sector breadth/RS improving
+   Hypothesis: broad sponsorship / continuation candidate.
+
+2. STOCK_STRONG + SECTOR_WEAK
+   - idiosyncratic leader
+   Hypothesis A: exceptional stock, valuable independence.
+   Hypothesis B: lonely leader vulnerable to mean reversion.
+   Must test, not assume.
+
+3. STOCK_WEAK + SECTOR_STRONG
+   - potential laggard / catch-up
+   Hypothesis A: rotation candidate.
+   Hypothesis B: stock-specific weakness for a reason.
+
+4. STOCK_WEAK + SECTOR_WEAK
+   - weakest context, but could be washed-out reversal candidate.
+
+### Why useful
+Current Residual RS tells whether the stock outperforms market/sector.
+Current sector gate tells whether sector is weak today.
+What is missing is the **interaction and its future path**.
+
+### Pre-registered comparison
+Within same scan date / setup family:
+- compare future D1/D3/D5/MFE/MAE by 2x2 state;
+- control for A/B pattern, price-volume, ATR, liquidity, institutions, overheat.
+
+Do not promote “stock strong + sector strong” as winner before evidence.
+
+Status: INTERACTION STUDY FROZEN.
+
+---
+
+## BR-023 — Leadership concentration needs a mathematical measure
+
+Top-3 names alone cannot distinguish:
+- three similarly strong leaders,
+- one giant leader + two irrelevant names.
+
+### Candidate measures
+
+#### Contribution HHI
+If contribution weights `w_i` sum to 1:
+`HHI = sum(w_i^2)`
+
+Effective number of leaders:
+`N_eff = 1 / HHI`
+
+Possible contribution bases:
+- positive return contribution to sector equal-weight move;
+- positive traded-value-weighted return contribution;
+- market-cap contribution only if point-in-time cap weights are valid.
+
+#### Simpler robust measures
+- top1PositiveContributionShare
+- top3PositiveContributionShare
+- top3ReturnMinusMedian
+- fractionMembersOutperformSector
+- fractionMembersOutperformMarket
+
+### Guard
+If sector aggregate return is <=0 or positive contribution denominator is near zero, contribution HHI can become unstable/meaningless.
+Return UNKNOWN / use membership concentration instead of forcing a value.
+
+### Interpretation
+High HHI:
+- narrow leadership.
+
+Low HHI:
+- distributed leadership.
+
+No monotonic bullish/bearish assumption.
+
+Status: LEADERSHIP CONCENTRATION SPEC FROZEN.
+
+---
+
+## BR-024 — Prospective breadth snapshot schema
+
+A daily research-only snapshot should freeze the information set as known that day.
+
+### Header
+- scanDate
+- capturedAt
+- schemaVersion
+- sourceVersions
+- pointInTimeEligible
+- dataQualityState
+
+### Market breadth by market
+For TWSE / TPEx separately:
+- officialAdvancers
+- officialDecliners
+- officialUnchanged
+- officialUntraded
+- officialNoComparison
+- officialAdvanceShare
+- commonStockCount
+- commonStockAdvanceShare
+- eligibleCount
+- eligibleAdvanceShare
+- equalWeightReturn
+- medianReturn
+- capWeightedReturn
+- capVsEqualGap
+- capVsMedianGap
+- dispersion
+
+### Cross-sectional trend participation
+Coverage required:
+- ma20EligibleCount
+- pctAboveMA20
+- ma60EligibleCount
+- pctAboveMA60
+- newHigh20EligibleCount
+- pctNewHigh20
+- newLow20EligibleCount
+- pctNewLow20
+
+### Sector rows
+For each frozen industry identity:
+- industryCode
+- industryName
+- memberCount
+- historyCoverage20 / 60
+- breadth1D
+- breadth5D only when prospective history exists
+- pctAboveMA20/60
+- pctNewHigh20
+- equalWeightRet5/20/60
+- residualReturn vs market
+- returnRankPercentile
+- rankChange5D
+- leaderHHI / effectiveLeaders
+- top1/top3 contribution share
+- medianMemberReturn
+- unknownClassificationCount
+
+### Coverage / semantics
+Never omit:
+- universeDefinition
+- excludedCountsByReason
+- staleHistoryCount
+- unknownIndustryCount
+- marketSourceStatus
+
+Status: SNAPSHOT CONTRACT FROZEN.
+
+---
+
+## BR-025 — Evidence-readiness gates and concept-lane convergence
+
+### Market-level breadth readiness
+DESCRIPTIVE_READY when:
+- official TWSE/TPEx same-day counts verified,
+- market denominators explicit.
+
+PROSPECTIVE_TREND_READY when:
+- >=20 independent completed trading dates with consistent universe/schema.
+
+INFERENTIAL_ACCUMULATING:
+- enough independent dates for preregistered D1/D3/D5 analysis but below project maturity gates.
+
+### Sector rotation readiness
+Blocked if:
+- industry unknown rate materially high,
+- point-in-time industry identity not frozen,
+- stale daily histories present,
+- sector has insufficient member/history coverage.
+
+### Promotion gate
+Even statistically promising breadth findings remain Shadow research until they pass:
+- current project prospective sample/maturity rules,
+- date-cluster robustness,
+- redundancy,
+- transaction-cost relevance where trading implications exist,
+- multiple-testing controls,
+- owner approval for any Formal change.
+
+### Concept status
+The breadth/rotation lane now has:
+- universe semantics,
+- positive and negative academic evidence,
+- Taiwan source feasibility,
+- time-series breadth,
+- divergence/concentration,
+- new-high/MA participation,
+- industry momentum,
+- rotation velocity,
+- leadership diffusion/concentration,
+- stock×sector interaction,
+- point-in-time data-quality controls,
+- prospective schema/readiness gates.
+
+Further indicator invention should pause until prospective evidence begins.
+
+Status: CONCEPT_COMPLETE / EVIDENCE_PENDING.
+
+## Exact next continuation after BR-025
+
+Open the next genuinely under-studied lane rather than creating more breadth variants.
+
+Candidate next lane priority:
+1. **Fundamental information dynamics / earnings & revenue surprise / post-announcement drift**
+2. **Derivatives information: futures/options positioning, volatility/skew, basis**
+3. **Behavioral / attention / sentiment micro-signals beyond existing Quiet/Attention research**
+4. **Risk/portfolio construction beyond fixed position caps: correlation, marginal risk, drawdown clustering**
+
+Recommended next: Fundamental Information Dynamics, because current system uses fundamental quality but has not deeply separated **level, change, surprise, revision, and price reaction**.
