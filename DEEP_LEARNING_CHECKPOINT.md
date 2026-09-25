@@ -538,3 +538,21 @@ YES for research infrastructure integrity: resolving the actual archive lineage 
 4. Audit whether the existing Shadow archive rows expose a stable row reference/link contract sufficient for `pattern_outcome_link`; avoid a second candidate archive.
 5. Only after adjustment + replay/prefix-invariance + C1-C8 gates are executable, evaluate isolated Class-A `PATTERN_SELECTION_SHADOW_V0_1` implementation readiness.
 6. Continue external evidence search for weekly/daily nested resistance and Pattern x regime interactions, explicitly controlling redundancy with priorHigh60/MA60/R01 and existing breakout/overheat fields.
+
+
+## Pattern Maturity continuation — DL-003E (2026-09-25 Asia/Taipei)
+- New external evidence audit focused on nested daily/weekly resistance and Taiwan 52-week-high anchoring.
+- Taiwan peer-reviewed evidence (1982-2012, TWSE+OTC) supports the 52-week-high anchor as potentially informative but materially regime/specification sensitive; it does not justify a hard resistance veto.
+- Cross-market counterevidence finds horizontal support/resistance can predict some interruptions without producing excess return versus buy-and-hold. Therefore resistance geometry remains context/risk information, not presumed alpha.
+- Current-program comparison: priorHigh60, MA60, ret20, overheat and R01 already capture much of generic resistance/momentum. Incremental candidate is narrower: confirmed 120/260-bar structural-zone distance, zone age/recency, repeated-test progression and local-breakout-vs-major-zone conflict/availableAir.
+- Positive hypothesis: conditional on existing local breakout quality and momentum controls, small availableAir to a stable major zone may explain some near-term R01 failures / lower MFE.
+- Falsification: reject if effect disappears after priorHigh60/MA60/ret20/overheat controls, flips by neighboring zone scale without mechanism, or is driven by old regimes/dates.
+- Status: WORTH_SHADOW_RESEARCH only; no Formal optimization proposal, no score/gate change.
+- Durable detail is in KLINE_PATTERN_RESEARCH.md commit eb17b418659ad7543a4d2cd9fa3d7ebb22b5f7f6.
+
+### Exact next continuation point
+1. Pattern: resolve authenticated RAW-vs-ADJUSTED corporate-action path and executable C1-C8 tests; keep current connector mismatch DATA_BLOCKED.
+2. Pattern: pre-register one transparent major-zone hierarchy for nested-resistance Shadow fields before looking at outcomes; control priorHigh60/MA60/ret20/overheat/R01 redundancy.
+3. Pattern: only after detector/replay/prefix-invariance gates pass, enable prospective observer logging; no historical Formal-cohort fabrication.
+4. Cross-lane: consume Corporate Actions lane semantic spaces (RAW_EXECUTION / TECHNICAL_CONTINUITY / PRICE_INDEX_COMPARABLE / TOTAL_RETURN_COMPARABLE) rather than creating a competing adjustment engine.
+5. Formal Core remains LOCKED.
