@@ -13641,3 +13641,188 @@ PATTERN_EXECUTION_SHADOW_V0_1 = prospective 15m using already observed live fram
 
 This reduces data requirements and preserves Selection Alpha vs Execution Alpha separation.
 
+
+
+## DL-002IN — Worked No-Lookahead State Machine Example
+
+### Purpose
+Stress-test chronology before code.
+
+Assume daily bars produce the following confirmed events:
+D10 running high candidate at 100.
+D15 close reversal crosses the frozen swing threshold -> HIGH pivotAt=D10, confirmedAt=D15.
+D24 running low candidate at 88.
+D29 close rebound crosses threshold -> LOW pivotAt=D24, confirmedAt=D29.
+D38 second high at 98.
+D42 reversal confirms HIGH pivotAt=D38, confirmedAt=D42.
+D49 second low at 91.
+D53 rebound confirms LOW pivotAt=D49, confirmedAt=D53.
+
+### What the system may know
+At D24:
+- it may know price printed a low,
+- it may NOT label D24 a confirmed swing low yet.
+
+At D29:
+- D24 becomes a confirmed LOW with confirmedAt=D29.
+
+At D49:
+- a possible second bottom exists only provisionally.
+
+At D53:
+- the second low becomes confirmed.
+Only now can a confirmed W topology L1-N-L2 exist if the intervening confirmed high is valid.
+
+### Neckline chronology
+If the intervening high was confirmed at D42, the neckline exists by D53.
+If that high were not confirmed until after D53, the W cannot be labeled fully confirmed at D53.
+
+### Key anti-lookahead rule
+Pattern state date = max(confirmedAt of all required anchors), not max(pivotAt).
+
+This rule applies to:
+- VCP contraction count,
+- W completion,
+- cup rim/bottom anchors,
+- flag boundaries,
+- support/resistance zone constituents.
+
+## DL-002IO — Zone Width Must Be Frozen from Contemporaneous Scale
+
+### Risk
+If zone width is recomputed later using a future lower ATR, the historical zone becomes artificially precise.
+If recomputed using future higher ATR, it becomes artificially forgiving.
+
+### Rule
+When a zone is created:
+- store creation ATR/tick scale;
+- freeze original width semantics for historical evaluation.
+
+A later zone version may be created when new structure arrives, but it must supersede rather than rewrite the prior version.
+
+### Candidate width representation
+Store three components rather than one optimized formula:
+- tickFloorWidth
+- atrToleranceWidth
+- constituentDispersionWidth
+
+zoneWidth = deterministic pre-registered combination.
+No future-outcome tuning.
+
+## DL-002IP — Pattern Episode Identity / De-duplication
+
+### Problem
+A mature cup can appear in daily snapshots for 20 consecutive dates.
+Counting all 20 rows as 20 independent observations inflates sample size.
+
+### Episode key
+Each structural episode receives:
+- symbol
+- episodeFamily
+- anchorIdentity hash from confirmed pivot anchors
+- episodeStartedAt
+- firstMatureAt
+- firstPivotReadyAt
+- firstBreakoutAt
+- endedAt
+- terminalState
+
+### Snapshot vs episode
+Snapshots answer:
+“What was knowable on this date?”
+
+Episodes answer:
+“How many independent structures occurred?”
+
+Statistical reporting must show both:
+- snapshot count
+- independent episode count
+- independent scan-date count.
+
+### Episode mutation
+New daily states may advance the same episode.
+A genuinely new base requires structural invalidation/reset or sufficiently new anchor set, not merely a new calendar day.
+
+## DL-002IQ — Pattern Outcome Anchors Must Match the Research Question
+
+### Selection Alpha anchor
+Anchor = scan-date close / next executable reference already defined by project outcome semantics.
+Question:
+Did the as-of-date structure improve future outcome distribution?
+
+### Breakout-quality anchor
+Anchor = first observable breakout event.
+Question:
+Did breakout context predict acceptance/failure?
+
+### Retest-quality anchor
+Anchor = first completed retest/reclaim state.
+Question:
+Did waiting for retest improve execution quality?
+
+### Failure/reclaim anchor
+Anchor = first observable failure/re-entry.
+Question:
+Does failed-breakout morphology predict reclaim vs deterioration?
+
+### Rule
+Never mix these anchors in one “pattern return.”
+A pattern can be good selection context but poor breakout execution, or vice versa.
+
+## DL-002IR — Counterexample Stress Pack v0.1
+
+### C1 V-shaped crash/rebound
+Expected:
+- high recovery speed,
+- low bottom residence,
+- poor cup roundness,
+- possibly no confirmed multi-leg contraction.
+Should not become a high-confidence cup merely because endpoints resemble a U.
+
+### C2 Wide-loose base
+Expected:
+- repeated large amplitudes,
+- weak contraction monotonicity,
+- low stability across scales.
+Should fail VCP maturity.
+
+### C3 Ex-dividend mechanical gap
+Expected:
+- corporateActionTag active,
+- raw gap retained,
+- morphology series neutralizes mechanical discontinuity.
+Should not create bearish gap/W undercut by itself.
+
+### C4 Limit-up breakout
+Expected:
+- price-limit constrained flag,
+- wick/close-quality guarded,
+- acceptance unresolved until later unconstrained trading.
+
+### C5 Dead-liquidity tight base
+Expected:
+- narrow ticks/range but weak turnover,
+- tick dominance high,
+- healthy-compression confidence reduced/UNKNOWN.
+
+### C6 Local 20d breakout into 1y resistance
+Expected:
+- local breakout true,
+- major-zone conflict active,
+- available-air small.
+Do not relabel the local breakout false; preserve conflict context.
+
+### C7 Event-created gap breakout
+Expected:
+- event-created state,
+- separate overnight/intraday decomposition,
+- no attribution of entire move to prior pattern.
+
+### C8 Repeated resistance tests
+Expected:
+- raw touch count alone gives no sign;
+- progression fields decide absorption-like vs barrier-persistent.
+
+### Acceptance criterion
+A detector that misclassifies these obvious counterexamples is not ready for outcome testing, regardless of backtest return.
+
