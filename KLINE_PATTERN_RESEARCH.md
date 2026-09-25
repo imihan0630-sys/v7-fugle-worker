@@ -9049,3 +9049,115 @@ An isolated prospective recorder can be Class A if:
 
 Any insertion into Formal 15m gate is Class C.
 
+
+
+## DL-002DG — Volatility Level Is Not the Same as Volatility Contraction
+
+### Conflicting evidence
+External evidence on volatility and momentum is not one-directional:
+- some research finds high realised volatility during formation weakens momentum effects;
+- other research finds stronger short/intermediate momentum among high idiosyncratic-volatility stocks, along with faster/larger later reversals;
+- international evidence often finds market-volatility state conditions momentum profitability.
+
+### Implication
+Do not interpret VCP as:
+“low volatility stocks are better.”
+
+VCP hypothesis is:
+“the PATH of volatility contraction within an otherwise constructive structure may contain information.”
+
+### Separate variables
+LEVEL:
+- atrPercent
+- realisedVol20/60
+- idiosyncraticVol proxy
+- marketVolState
+- sectorVolState
+
+TRAJECTORY:
+- atrSlope
+- rangeSlope
+- swingDepthSlope
+- volOfVol
+- contractionMonotonicity
+- finalTightnessVsEarlierBase
+
+RELATIVE:
+- stockVolVsSector
+- stockVolVsOwnHistoryPercentile
+- finalTightnessVsPriceTier
+- finalTightnessTicks
+
+### Test
+VCP sequence topology must show incremental value after absolute volatility level controls.
+If contraction sequence is only another way to select low-vol stocks, its claimed mechanism is weakened.
+
+## DL-002DH — Volatility Regime Transition Around Breakout
+
+### Pattern hypothesis
+Many constructive bases appear to move:
+HIGHER_VOL_FORMATION
+-> DECLINING_VOL_MATURITY
+-> LOW_VOL_TIGHT_ZONE
+-> CONTROLLED_VOL_EXPANSION_ON_BREAK
+
+But failed patterns may show:
+LOW_VOL
+-> DOWNSIDE_VOL_EXPANSION
+or
+LOW_VOL
+-> CHAOTIC_TWO_SIDED_EXPANSION.
+
+### Fields
+- volAtPatternStart
+- volAtMaturity
+- volAtTrigger
+- breakoutRangeATR
+- postBreakoutVol
+- upsideRangeExpansion
+- downsideRangeExpansion
+- volDirectionality
+- expansionCloseQuality
+
+### Key distinction
+VOLATILITY_EXPANSION is not bullish.
+Directional acceptance determines whether expansion is constructive or failure.
+
+## DL-002DI — Volatility-of-Volatility / Stability of Compression
+
+### Problem
+A “low ATR” snapshot can hide unstable alternation:
+quiet -> huge bar -> quiet -> huge bar.
+
+### Fields
+- atrVolatility
+- rangeVariance
+- contractionStability
+- largeRangeBarCount
+- downsideShockCount
+- upsideShockCount
+- rangeOutlierShare
+
+### Hypothesis
+A mature VCP may require not just low final range but stable compression without repeated shock resets.
+
+### Counterpoint
+Too-stable low range can be dead liquidity.
+Always interact with DL-002AA liquidity/tick controls.
+
+## DL-002DJ — Volatility State Is a Context, Not a Formal Filter
+
+### Economic caution
+Volatility-managed portfolio research can improve risk-adjusted portfolio outcomes, but position scaling and portfolio volatility targeting are different questions from selecting a stock pattern.
+
+### Boundary
+DL-002 volatility research asks:
+- pattern quality / failure probability / timing.
+
+It does NOT authorize:
+- volatility-based position sizing,
+- changing capital allocation,
+- changing stop distance.
+
+Those would be Formal/portfolio decisions requiring separate approval.
+
