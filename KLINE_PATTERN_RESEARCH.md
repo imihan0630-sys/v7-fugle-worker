@@ -10554,3 +10554,146 @@ Prefer:
 
 No single metric is enough.
 
+
+
+## DL-002ET — Dual Price Space: Morphology vs Tradable Reference Levels
+
+### Source semantics
+Fugle supports adjusted=true for daily/weekly/monthly historical candles.
+The adjusted series retroactively adjusts pre-corporate-action history while post-event prices remain on the current scale.
+
+### Core problem
+Different research questions need different price semantics.
+
+MORPHOLOGY / RETURN question:
+“How did the economic price path evolve without mechanical corporate-action jumps?”
+Use ADJUSTED price space.
+
+TRADABLE / BEHAVIORAL question:
+“What nominal price did traders actually see and place orders around at that time?”
+Use RAW / event-aware nominal price space.
+
+Do not mix them inside one distance calculation.
+
+### Two-space model
+For each bar store:
+RAW:
+- rawOpen/high/low/close
+
+ADJUSTED:
+- adjOpen/high/low/close
+
+CORPORATE ACTION:
+- actionType
+- exDate
+- adjustmentFactor / cash entitlement when source supports
+- source/provenance
+
+### Morphology calculations
+Use adjusted:
+- swing segmentation
+- return path
+- ATR/volatility for long topology
+- cup/W/VCP geometry
+- long-horizon return
+- gap detection only after excluding corporate-action mechanical gaps
+
+### Execution / current-plan calculations
+Use raw current tradable prices:
+- buyLow/high
+- stop
+- quote comparison
+- live pivot execution
+- tick distance
+- actual limit prices
+
+### Historical S/R requires bridging
+A historical raw resistance of NT$100 before a corporate action is not directly comparable with a post-action current price of NT$90.
+
+For cross-action comparison create:
+- historicalRawLevel
+- equivalentCurrentScaleLevel
+- conversionFactorKnownAt/afterAction
+- levelSpace = RAW_AT_TIME / CURRENT_EQUIVALENT / ADJUSTED_MORPHOLOGY
+
+Never compare old raw level directly to current raw price across an adjustment event.
+
+## DL-002EU — Behavioral Reference Price Across Corporate Actions
+
+### Competing considerations
+1. Investors experienced the old nominal price and may remember it.
+2. After cash dividends/splits/capital changes, rational comparison requires economic adjustment.
+3. Brokerage charts often display adjusted or unadjusted history depending settings, changing visual salience.
+
+### Research handling
+Do not assume one perfect “psychological” level.
+
+Maintain:
+NOMINAL_MEMORY_LEVEL:
+- historical raw observed price.
+
+ECONOMIC_EQUIVALENT_LEVEL:
+- corporate-action converted level on current price basis.
+
+ADJUSTED_CHART_LEVEL:
+- level on the adjusted morphology series.
+
+### Research question
+Which representation better explains future reactions after corporate actions?
+
+This is exploratory and likely needs sufficient post-action revisit cases.
+
+### No retrospective knowledge leak
+The conversion for a corporate action becomes valid only once the event terms are known.
+Historical pre-event decision snapshots cannot use a future corporate action.
+
+## DL-002EV — Corporate-Action Boundary Splits Pattern Episodes
+
+### Problem
+A multi-month pattern can span an ex-dividend/split/capital-reduction event.
+
+### Rule
+Adjusted morphology may preserve continuity, but event context must be explicit.
+
+Store:
+- patternCrossesCorporateAction
+- actionInsidePatternPhase
+- pre/post action raw-scale discontinuity
+- adjustedContinuityCheck
+
+### Pattern interpretation
+If corporate action occurs inside:
+- cup bottom
+- handle
+- W second bottom
+- VCP contraction
+the pattern may remain valid in adjusted morphology, but:
+- raw gap/candle labels are invalid around the event,
+- nominal S/R must be converted,
+- volume/event effects may be atypical.
+
+### Candlestick rule
+Bars immediately affected by ex-right/ex-dividend mechanics are excluded from normal gap/candlestick labels unless using an explicitly adjusted definition.
+
+## DL-002EW — Adjustment Integrity Tests
+
+### Data QA
+For every corporate-action boundary:
+1. raw series shows expected mechanical price discontinuity if applicable;
+2. adjusted series removes/reduces the mechanical discontinuity consistently;
+3. volume units remain consistent;
+4. no duplicate/missing trading date;
+5. pre/post return calculation uses the intended series.
+
+### Detector QA
+Run a synthetic test where:
+- identical economic price path contains a cash-dividend discontinuity in raw prices.
+Expected:
+- adjusted swing/pattern geometry stays stable;
+- raw gap detector flags CORPORATE_ACTION_GAP, not bearish breakdown;
+- current-equivalent zone conversion preserves economic level.
+
+### Status
+DUAL_PRICE_SPACE_REQUIRED for Pattern Shadow v1 data layer.
+No Formal live-price behavior changes.
+
