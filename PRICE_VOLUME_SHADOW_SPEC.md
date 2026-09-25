@@ -1,0 +1,166 @@
+# Price-Volume Shadow Research Specification
+
+Status: RESEARCH_ONLY / decisionImpact=false / Formal Core LOCKED
+
+This file operationalizes the research conclusions in `PRICE_VOLUME_RESEARCH.md` through PV-037. It is a specification, not an implementation approval.
+
+## Objective
+Test whether contextual price-volume states add incremental information to the existing selector/monitor, especially:
+1. same-slot 15m relative volume vs the current previous-5-bar volume ratio;
+2. cumulative-volume pace;
+3. structural acceptance / failure;
+4. direction vs risk outcomes;
+5. market/sector-common vs stock-specific abnormal participation.
+
+## Formal isolation
+Shadow PV must not change A/B eligibility, ranking, 3+3 selection, BUY/ADD/REDUCE, maxChase, stop, capital allocation, push semantics or ABF re-add.
+
+Every stored snapshot must have `decisionImpact=false`.
+
+## Minimum feature set
+
+### Reuse existing Worker fields
+- volumeTodayVsPrev5
+- volumeContraction5to20
+- avgVolume20Lots
+- avgAmount20
+- dailyClosePosition
+- dailyUpperShadowRatio
+- lateStage / ret20
+- sector / institutional context
+- 15m previous-5-bar volumeRatio
+
+### Add daily Shadow fields
+- pvDailyRvol20
+- pvMarketResidualRvol
+- pvSectorResidualRvol
+- pvPersistenceState
+- pvGuardState
+- pvEventAgeTradingDays
+- pvDaysSincePeakRvol
+- coverage/provenance/schemaVersion
+
+### Add 15m Shadow fields
+- pvSlotRvol20
+- pvCumvolPace20
+- pvResponseState
+- pvAcceptanceState
+- pvPersistenceState
+- pvGuardState
+- slotHistoryCount
+- completedBar
+- coverage/provenance/schemaVersion
+
+## Proposed D1 schema
+
+### v7_pv_shadow_snapshots
+- snapshot_id TEXT PRIMARY KEY
+- symbol TEXT NOT NULL
+- market_date TEXT NOT NULL
+- observed_at TEXT NOT NULL
+- observation_type TEXT NOT NULL
+- schema_version TEXT NOT NULL
+- event_key TEXT
+- features_json TEXT NOT NULL
+- context_json TEXT
+- coverage_json TEXT
+- source_json TEXT
+- decision_impact INTEGER NOT NULL DEFAULT 0
+- created_at TEXT NOT NULL
+
+Logical identity: symbol + observed_at + observation_type + schema_version.
+
+### v7_pv_outcomes
+One row per snapshot/horizon:
+- snapshot_id TEXT NOT NULL
+- horizon TEXT NOT NULL
+- completed_at TEXT
+- direction_return REAL
+- mfe REAL
+- mae REAL
+- range_atr REAL
+- stop_first INTEGER
+- false_break INTEGER
+- acceptance_result TEXT
+- outcome_complete INTEGER NOT NULL DEFAULT 0
+- outcome_json TEXT
+- PRIMARY KEY(snapshot_id,horizon)
+
+Outcome data never rewrite feature snapshots.
+
+### v7_pv_intraday_baselines
+Selected/monitored symbols only:
+- symbol TEXT PRIMARY KEY
+- baseline_version TEXT NOT NULL
+- valid_sessions INTEGER NOT NULL
+- last_market_date TEXT
+- slot_stats_json TEXT NOT NULL
+- corporate_action_reset_at TEXT
+- updated_at TEXT NOT NULL
+
+## Data/API design
+- Daily PV uses the existing full-market daily history cache whenever coverage is valid.
+- Bootstrap a 15m same-slot baseline only for a newly monitored symbol lacking one.
+- Historical 15m baseline requires >=20 prior valid sessions.
+- After bootstrap, roll the cache forward; do not refetch the historical window on every monitor cycle.
+- Missing history / failed refresh => UNKNOWN, never neutral RVOL=1.
+- Full-market 15m residualization is deferred.
+
+Fugle source semantics:
+- historical intraday data starts 2023-05-23;
+- 15m is supported;
+- listed-stock intraday volume is lots while daily volume is shares;
+- index volume semantics differ from listed-stock volume;
+- adjusted=true is documented only for daily/weekly/monthly price candles.
+
+References:
+- https://developer.fugle.tw/docs/data/http-api/historical/candles/
+- https://developer.fugle.tw/docs/data/http-api/intraday/candles/
+
+## No-look-ahead invariants
+1. Intraday features use completed bars only.
+2. Same-slot baselines use sessions strictly before marketDate.
+3. Cumulative pace compares only through the same slot.
+4. Eventual full-day volume never enters an earlier live snapshot.
+5. RETEST/REACCELERATION creates later states; prior rows stay immutable.
+6. Outcomes are joined only after horizon completion.
+7. Corporate-action resets prevent mixing incompatible volume regimes.
+
+## Required tests
+- slot mapping and completed-bar boundary;
+- >=20 valid-session boundary;
+- missing/halted sessions excluded rather than zero-filled;
+- intraday lots vs daily shares never raw-cross-divided;
+- robust median/MAD edge cases;
+- zero/near-zero historical volume;
+- gap/price-limit/corporate-action guards;
+- leave-one-out sector median;
+- freshness / days-since-peak;
+- future-data mutation test;
+- later-retetest mutation test;
+- D1/API failure => Shadow UNKNOWN and Formal unchanged.
+
+Formal-isolation regression test must prove identical selected symbols, ranks, plan prices, BUY/ADD/REDUCE states, allocation and push events with Shadow enabled vs disabled.
+
+## Research outcome targets
+Direction and risk are separate:
+- D1/D3/D5/D10
+- MFE / MAE
+- ATR-normalized excursion/range
+- stop-first when a valid plan existed at t
+- false-break / failed acceptance
+- reacceleration
+- coverage
+
+## Rollout
+1. LOG_ONLY
+2. DATA_QA (~first 50 completed events; semantics only)
+3. EVIDENCE after predeclared coverage gates
+4. Compare current previous-5-bar volumeRatio against pvSlotRvol20 + pvCumvolPace20
+5. Evaluate incremental value after existing selector features
+6. Any Formal proposal is separate Class C work requiring owner approval
+
+## Current highest-value experiment
+Does same-slot 15m RVOL + cumulative-volume pace explain false confirmations / no-follow-through better than the current previous-5-bar volume ratio?
+
+No Formal change is implied by this specification.
