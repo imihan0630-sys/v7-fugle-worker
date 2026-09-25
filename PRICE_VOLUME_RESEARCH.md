@@ -5406,4 +5406,396 @@ Even a successful Modifier does not automatically become a VETO.
 Veto-level predictive authority would require a separate owner-approved Class C proposal and substantially stronger evidence.
 
 Status: PROMOTION_GOVERNANCE_FROZEN / ALL_PV_REMAINS_OBSERVER.
+# PV-088 — Deterministic Synthetic Fixtures before Implementation
+
+## Principle
+Before writing Shadow code, define inputs with expected outputs.
+The implementation must satisfy these fixtures without consulting real future returns.
+
+## Response fixtures
+
+### R1 — EFFICIENT_UP
+Given:
+- pvSlotRvol20 = 1.8;
+- slotRangeMedian20 = 10;
+- open=100, high=111, low=99, close=109;
+- no guards.
+
+Expected:
+- bullish;
+- closePosition = 10/12 ~=0.833;
+- bodyShare = 9/12 =0.75;
+- signedProgress20 = +0.9;
+- participation=ELEVATED;
+- pvResponseState=EFFICIENT_UP.
+
+### R2 — HIGH_EFFORT_LOW_PROGRESS
+Given:
+- pvSlotRvol20 = 3.0;
+- slotRangeMedian20 = 10;
+- open=100, high=106, low=94, close=101;
+- no guards.
+
+Expected:
+- EXTREME participation;
+- bodyShare ~=0.083;
+- signedProgress20=+0.1;
+- pvResponseState=HIGH_EFFORT_LOW_PROGRESS;
+- no bullish/bearish conclusion.
+
+### R3 — LOW_EFFORT_LOW_PROGRESS
+Given:
+- pvSlotRvol20=0.6;
+- slotRangeMedian20=10;
+- open=100, high=102, low=99, close=100.5.
+
+Expected:
+- LOW participation;
+- abs signedProgress20=0.05;
+- rangeExpansion<1;
+- LOW_EFFORT_LOW_PROGRESS.
+
+### R4 — GUARDED price-censored
+Reuse R1 mechanical price/volume values plus PRICE_CENSORED.
+
+Expected:
+- diagnosticSubstate=EFFICIENT_UP allowed;
+- primary pvResponseState=GUARDED_RESPONSE;
+- pvInterpretability=GUARDED;
+- never included in clean EFFICIENT_UP cohort.
+
+## Acceptance fixtures
+
+### B1 lifecycle
+Frozen breakout=100, retestLow=99.5, retestHigh=101.
+
+Sequence:
+1. bar high=100.2 close=99.9 => B_BREAKOUT_ATTEMPT.
+2. completed Formal-confirmed breakout bar => B_INITIAL_ACCEPTANCE.
+3. later bar low=100.2 high=102 close=100.4 => B_RETEST.
+4. later bullish bar closes above retest-bar close and remains >=99.7 => B_REACCELERATION.
+
+All earlier enteredAt timestamps stay unchanged.
+
+### B2 failed re-entry
+After initial acceptance:
+completed close=99.4 with breakout=100.
+
+Expected:
+B_FAILED_REENTRY because close<99.5.
+
+### A1 lifecycle
+Frozen buyLow=95, buyHigh=98.
+1. bar overlaps zone and closes 96.5 => A_PULLBACK_TEST.
+2. same/next valid setup with local volume<=0.9 and reversal/strong close => A_INITIAL_ACCEPTANCE.
+3. next bar higher-low + bullish + higher close/high => A_REACCELERATION.
+
+### A2 failure
+completed close=94.9 => A_FAILED_REENTRY.
+
+## Persistence fixtures
+
+### P1 reignition
+Comparable normalized participation:
+1.4, 1.6, 1.2, 1.5
+
+Expected:
+FRESH_SHOCK -> PERSISTENT -> DECAYING -> REIGNITED
+same eventKey.
+
+### P2 normalization
+1.4, 1.5, 1.2, 1.1
+
+Expected:
+FRESH -> PERSISTENT -> DECAYING -> NORMALIZED.
+
+### P3 missing pause
+1.4, MISSING, 1.2, 1.1
+
+Expected:
+missing does not count below threshold;
+state pauses; normalization only after two actual comparable sub-1.3 observations.
+
+## Guard fixtures
+
+### G1 missing history
+slotHistoryCount=19.
+
+Expected:
+DATA_INSUFFICIENT / INVALID / numeric slot RVOL=null.
+
+### G2 multiple flags
+verified ex-dividend reference + upper-limit proximity + first-slot auction.
+
+Expected:
+primary guard PRICE_CENSORED;
+flags include PRICE_CENSORED + AUCTION_MIXED + GAP_DOMINATED if applicable;
+interpretability=GUARDED.
+
+### G3 unresolved reference
+same as G2 but adjusted reference unavailable.
+
+Expected:
+REFERENCE_PRICE_UNRESOLVED outranks contextual flags;
+interpretability=INVALID.
+
+## Unit fixture
+Daily volume=1,000,000 shares and intraday bar volume=1,000 lots may numerically represent the same share quantity but are from different source/timeframe semantics.
+
+Expected:
+no raw cross-family ratio is computed solely because 1,000 lots*1,000 = 1,000,000 shares.
+
+Status: SYNTHETIC_ORACLE_DEFINED.
+
+
+# PV-089 — Exact Baseline Bootstrap and Slot-Key Semantics
+
+## Timezone
+All slot keys are Taiwan local exchange time, Asia/Taipei.
+
+Provider timestamps are parsed as offset-aware timestamps and converted/validated before slot assignment.
+
+## V0.1 observed slot universe
+Because current Formal cron stops at 13:24 and Shadow adds no live candle calls:
+expected observable completed 15m starts are:
+09:00, 09:15, 09:30, ..., 12:45, 13:00.
+
+17 slot keys.
+
+Historical provider may expose later bars; v0.1 baseline should not use a slot that the live experiment cannot observe.
+
+## Slot key
+`slotKey = HH:MM of provider bar start in Taiwan time`.
+
+Do not use array position alone.
+Missing bars must not shift later slot identity.
+
+## Prior-only baseline
+For a snapshot on market date T:
+- baseline sessions must be strictly < T;
+- current T bars never enter the denominator;
+- baselineAsOfDate records the most recent prior session used.
+
+## Validity for slot RVOL
+A prior session contributes to one slot if:
+- the exact slot exists;
+- OHLCV passes source validation;
+- bar belongs to supported market structure;
+- no incompatible corporate-action/reset state applies.
+
+A session missing a different slot may still contribute to this slot's standalone median.
+
+## Validity for cumulative pace
+A prior session contributes cumulative volume through slot S only if:
+- all required observable slot bars from 09:00 through S are present/valid under the provider's actual candle emission semantics;
+OR a separately verified cumulative-volume source proves the cumulative value.
+
+Do not sum across silently missing bars.
+
+## Explicit zero vs missing
+- explicitly returned valid bar with volume=0 may be stored as zero if provider semantics allow it;
+- absent bar is MISSING and is never fabricated as zero.
+
+If zeros dominate the median and denominator<=0 => derived ratio UNKNOWN.
+
+## Holiday/session handling
+Use the project's official trading calendar.
+Weekends/holidays are skipped; they are not zero-volume sessions.
+
+## Corporate-action reset
+After an incompatible reset event:
+- pre-event sessions are not mixed into the post-event raw-volume baseline;
+- require >=20 valid post-reset sessions for normal interpretation.
+
+## Cache version
+Baseline cache carries:
+- schemaVersion;
+- source/timeframe;
+- slot definitions;
+- baselineAsOfDate;
+- valid session counts;
+- corporateActionResetAt.
+
+Any source/timeframe/slot semantic change invalidates/rebuilds cache under a new version.
+
+Status: BOOTSTRAP_SEMANTICS_FROZEN.
+
+
+# PV-090 — Research and Formal Fingerprints for Isolation / Mutation Detection
+
+## Why fingerprints
+Tests should not depend on visual JSON comparison.
+A deterministic fingerprint can prove that:
+- Formal output did not change when Shadow was enabled;
+- historical PV snapshot did not mutate later.
+
+## Canonical serialization
+Before hashing:
+- sort object keys recursively;
+- preserve array order where semantically meaningful;
+- exclude explicitly non-semantic runtime fields such as generatedAt/audit write timestamp;
+- normalize null explicitly;
+- never omit a field because its value is false/0.
+
+Hash:
+SHA-256 over canonical UTF-8 JSON.
+
+## Formal fingerprint
+Include only semantic Formal outputs:
+- selected/planned symbol set and order;
+- sourceRank/displayRank where decision-semantic;
+- plan levels;
+- position stage;
+- finalDecision level/text;
+- Formal A/B evaluation states;
+- operation-signal types/amount/shares;
+- capital allocation.
+
+Do not include PV fields.
+
+Test:
+same fixture, Shadow OFF vs ON => identical Formal fingerprint.
+
+## PV snapshot fingerprint
+Include:
+- snapshot identity;
+- frozen Formal context copy;
+- all v0.1 feature/state/guard fields;
+- source bar identifiers;
+- baseline version/asOf.
+
+Exclude:
+- created_at;
+- last audit access time.
+
+On insert conflict:
+- same snapshotId + same fingerprint => idempotent duplicate attempt, ignore;
+- same snapshotId + different fingerprint => MUTATION_CONFLICT alert; do not overwrite silently.
+
+## Outcome fingerprint
+Once outcome_complete=1:
+canonical outcome semantic fields hash is frozen.
+
+Later finalizer rerun:
+- identical => idempotent;
+- different => OUTCOME_MUTATION_CONFLICT.
+
+Status: FINGERPRINT_CONTRACT_FROZEN.
+
+
+# PV-091 — Durable Hypothesis / Test Ledger
+
+## Purpose
+Prevent failed ideas from disappearing and being rediscovered/tuned later as if new.
+
+## Canonical file
+Create and maintain:
+`PRICE_VOLUME_HYPOTHESIS_LEDGER.md`.
+
+Each hypothesis entry:
+- hypothesisId;
+- title;
+- research origin PV section;
+- schemaVersion;
+- status: PLANNED / DATA_QA / TESTING / SUPPORTED / NOT_SUPPORTED / INCONCLUSIVE / ARCHIVED;
+- firstFrozenAt;
+- feature definitions;
+- primary outcome;
+- secondary outcomes;
+- cohort;
+- exclusions/guards;
+- milestones reviewed;
+- variants tried;
+- result summary;
+- decision;
+- next untouched confirmation period if applicable.
+
+## V0.1 initial hypotheses
+
+### PV-H001
+Same-slot 15m RVOL adds incremental information beyond local previous-5-bar volumeRatio for structural false/no-follow-through.
+
+### PV-H002
+Cumulative-volume pace adds information beyond same-slot RVOL by distinguishing one-bar spike from persistent day participation.
+
+### PV-H003
+Response/acceptance/guard states add information beyond numeric RVOL ratios.
+
+### PV-H004
+High abnormal participation has risk/information-intensity value even when directional return value is weak.
+
+## Rule
+A rejected/unsupported hypothesis remains in the ledger.
+Reopening it with a changed threshold requires:
+- a new hypothesis ID or version;
+- explicit reason;
+- new prospective confirmation data.
+
+Status: TEST_LEDGER_SCHEMA_FROZEN.
+
+
+# PV-092 — Final Pre-Implementation Readiness Audit
+
+## Safe to implement as Class-A research-only
+No owner judgment is needed on the mathematics of these already-frozen logging semantics:
+- D1 additive research tables;
+- feature flag default OFF;
+- 20-valid-session robust baselines;
+- slot keys / current-cron 17-bar scope;
+- null/UNKNOWN semantics;
+- pvResponseState v0.1;
+- A/B acceptance observer states;
+- persistence hysteresis;
+- guard precedence;
+- immutable snapshots/outcomes;
+- fingerprints;
+- idempotency;
+- admin-only research summary;
+- zero PV push/action effects.
+
+## Requires explicit owner approval before code work
+Moving from specification to actual Worker.js Class-A implementation is still a project-change decision.
+The owner must authorize:
+- adding D1 research tables;
+- adding research storage/calls after plan save;
+- enabling prospective data collection.
+
+This is not because Formal strategy changes; it is because production Worker code/storage would change.
+
+## Not safe / not justified to implement in Formal
+No evidence yet supports:
+- replacing local volumeRatio;
+- requiring pvSlotRvol20 for BUY;
+- PV-based ranking;
+- PV-based maxChase/stop/capital changes;
+- PV-based candidate rejection;
+- PV-based ABF re-add.
+
+## Remaining technical unknowns that do NOT block initial v0.1
+Can remain guarded/deferred:
+- exact 15m representation of 13:30 closing auction, because current zero-extra-call v0.1 stops earlier;
+- explicit VI event source;
+- day-trading data finality at 18:10;
+- free-float denominator;
+- historical intraday trade count;
+- volume-at-price history.
+
+## Blocking conditions if implementation is authorized
+Before enabling logging:
+- fixture tests must confirm provider 15m slot timestamp semantics for observed slots;
+- D1 schema/tests must pass;
+- Formal fingerprint OFF/ON must match;
+- historical bootstrap must demonstrate no current-session leakage.
+
+## Readiness judgment
+Research phase for **PV_SHADOW_V0_1 specification** is mature.
+
+The rational next step is not more indicator invention.
+It is:
+1. owner-authorized Class-A LOG_ONLY implementation;
+2. DATA_QA;
+3. prospective evidence collection;
+4. only then decide whether any PV idea deserves a Formal proposal.
+
+Status: V0_1_RESEARCH_SPEC_COMPLETE / AWAIT_OWNER_IMPLEMENTATION_APPROVAL / FORMAL_LOCKED.
 
