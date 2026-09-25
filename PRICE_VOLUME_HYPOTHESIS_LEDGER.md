@@ -90,3 +90,25 @@ Current research schema: PV_SHADOW_V0_1
 - Result:
 - Decision:
 - Untouched confirmation period:
+
+## PV-H005 — Dealer proprietary vs hedge flow
+
+- Origin: PV-098 / PV-099 / PV-102 / PV-106
+- Schema: future Tier-2 research version; NOT PV_SHADOW_V0_1
+- Status: PLANNED
+- Frozen question: Does dealer proprietary-flow streak provide cleaner incremental institutional-confirmation information than the current combined dealer flow, while dealer hedge flow primarily explains mechanical/risk context?
+- Counter-hypothesis: Dealer hedge demand itself may carry useful directional information or persistent real cash demand; removing it may worsen performance.
+- Data feasibility: TWSE/TPEx official institutional payloads already contain proprietary and hedge fields separately; expected incremental API cost = zero if the existing payload is preserved.
+- Cohort: existing Formal selected/control cohorts only; do not alter cohort inclusion.
+- Comparators:
+  A. current combined dealerBuyDays
+  B. proprietary-only dealerBuyDays
+  C. hedge-only dealerBuyDays
+  D. foreign/trust confirmation without dealer
+  E. conditional combinations
+- Primary outcomes: false-confirmation, D1/D3/D5, MFE/MAE.
+- Utility outcomes: selected-name scarcity and capital-utilization impact.
+- Controls: regime, sector, liquidity, price tier, PV acceptance, passive-flow/expiry/disposition context where available.
+- Promotion rule: no Formal change until incremental value and untouched confirmation evidence pass governance.
+- Current result: no test yet.
+- Decision: remain PLANNED.
