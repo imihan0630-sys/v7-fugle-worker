@@ -426,7 +426,22 @@ No Formal Core change is approved or implied.
   - same-session B1/B2/B4 horizons never roll across the overnight boundary; incomplete late-session horizons remain INCOMPLETE, while NEXT_SESSION and D1/D3/D5/D10 are separate outcome families;
   - PV outcome completion is idempotent under the current every-minute cron architecture: immutable feature snapshots, one outcome per snapshot+horizon, no duplicate or retroactive mutation;
   - resource audit shows the minimum PV layer should reuse existing 15m frames with zero extra live candle calls during ordinary monitoring; historical same-slot baseline bootstraps once per newly monitored symbol then rolls forward;
-  - with current max 6 monitored stocks and 18 regular-session 15m slots, full-bar feature logging upper bound is 108 rows/trading day before outcomes; repeated minute cron runs must not duplicate rows;
+  - **superseded by PV-068:** current Formal cron stops at 13:24, so zero-extra-call v0.1 observes completed 15m bars starting 09:00 through 13:00 only: 17 bars x 6 stocks = 102 rows/trading day before outcomes; repeated minute cron runs must not duplicate rows;
   - research reporting remains admin/research only with no PV-based push or action language.
 - `PRICE_VOLUME_SHADOW_SPEC.md` has been synchronized through PV-062.
+- Formal Core unchanged / LOCKED.
+
+## Price-Volume lane update — PV-063 through PV-077
+- Current cursor: PV-001 through PV-077 complete; continue from PV-078.
+- New durable conclusions:
+  - pvResponseState v0.1 now has frozen formula semantics using robust same-slot participation, same-slot true-range normalization, close location, body/wick structure and guard-aware downgrade; HIGH_EFFORT_LOW_PROGRESS remains directionally ambiguous.
+  - A and B use separate immutable acceptance state machines; Shadow observes current Formal geometry and never causes a state transition.
+  - persistence uses a pre-registered hysteresis rule around the existing 1.3 abnormal threshold; missing/halted observations pause state evolution rather than normalize the episode.
+  - guard semantics now store primary precedence + all flags + VALID/GUARDED/INVALID interpretability; PV data invalidity never invalidates the Formal stock.
+  - implementation-ready pseudocode and mandatory tests exist under schema PV_SHADOW_V0_1; Worker.js remains unchanged.
+  - provider/cron audit corrected the zero-extra-call 15m ceiling to 17 bars/symbol and 102 rows/day across 6 stocks; closing-auction research is outside the current live-monitor path.
+  - Taiwan-specific Tier-2 context now includes day-trading intensity, official daily transaction count/average trade size, attention/disposition flags and strict source-scope normalization.
+  - PV-029 was partially corrected: historical intraday transaction count remains unavailable from candle history, but daily transaction count is already present in official exchange closing data and can be added at low incremental cost.
+  - Tier-2 scope has been pruned; the next value should come from prospective v0.1 evidence rather than adding more indicators.
+- PRICE_VOLUME_SHADOW_SPEC.md is synchronized with the corrected 102-row current-cron bound and source-scope rules.
 - Formal Core unchanged / LOCKED.
