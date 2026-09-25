@@ -7896,3 +7896,92 @@ A support zone can increase the chance of a small bounce while still producing p
 
 This prevents “statistically significant bounce” from being mislabeled a good trade.
 
+
+
+## DL-002CF — Taiwan Closing-Auction Distortion Around Daily Breakouts
+
+### Taiwan market microstructure
+TWSE uses a five-minute closing call auction in the final pre-close interval (13:25-13:30).
+Research on Taiwan finds:
+- the closing call reduced some closing volatility/noise relative to prior mechanisms;
+- transparency reforms in 2012 improved market quality and reduced possible closing-price manipulation;
+- nevertheless month-end, quarter-end and index-futures-expiration effects have historically concentrated in the final closing interval.
+
+### Why this matters
+Current Formal B uses the daily close relative to priorHigh20.
+A daily close above resistance can arise in two distinct ways:
+A. price traded/accepted above resistance before the closing auction;
+B. the final closing auction alone lifts the official close above resistance.
+
+These may have different follow-through quality.
+
+### Research fields using historical minute data
+From 2023-05-23 onward Fugle historical minute candles permit:
+- preClosingCallPrice = last completed minute before 13:25
+- officialClose = final closing auction price / final bar
+- closingAuctionReturnPct
+- preCallVsPivotPct
+- officialCloseVsPivotPct
+- breakoutCreatedByClosingAuction
+- breakoutStrengthenedByClosingAuction
+- closingAuctionVolumeShare if inferable from minute volumes
+- finalFiveMinuteRange / volume context
+
+### Context tags
+- monthEnd
+- quarterEnd
+- indexFuturesExpirationDay if calendar is available
+- rebalanceEvent if point-in-time known
+
+### Key tests
+Compare B-style daily breakout candidates:
+1. PRECALL_ALREADY_ABOVE_PIVOT
+2. AUCTION_CREATED_BREAKOUT
+3. AUCTION_RESCUED_WEAK_CLOSE
+4. AUCTION_REJECTED_BREAKOUT
+
+Outcomes:
+- next-day overnight return
+- next-day intraday return
+- D1/D3/D5
+- R01 failure
+- 15m execution reach / retest
+
+### Hypothesis
+A close-only breakout created by the auction may have weaker natural price acceptance than one already established before 13:25.
+This is plausible but not assumed.
+
+### Important caution
+The closing auction is the official equilibrium-setting mechanism and can improve price discovery.
+Do not classify every auction-driven move as manipulation or bad quality.
+
+### Research boundary
+This is a research explanation for daily-close breakout quality only.
+No Formal B close condition changes.
+
+## DL-002CG — Closing Price Quality / Last-Interval Decomposition
+
+### Broader idea
+Daily candle features such as:
+- closeLocation
+- upper wick
+- breakout close
+may be sensitive to the final auction.
+
+### Research decomposition
+- preCallDailyCloseLocation proxy
+- officialDailyCloseLocation
+- closeLocationChangeFromAuction
+- upperWickChangeFromAuction
+- breakoutStatusPreCall
+- breakoutStatusOfficialClose
+
+### Benefit
+Distinguishes:
+“strong all-day close”
+from
+“strong official close generated in the final auction.”
+
+### Data horizon
+Historical minute evidence begins in 2023, so this is a modern-regime research lane and should not be backfilled before data availability.
+
