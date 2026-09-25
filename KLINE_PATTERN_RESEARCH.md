@@ -7041,3 +7041,166 @@ Stock reaches pivot while breadth deteriorates.
 ### Redundancy rule
 If breadthSlope adds nothing beyond existing sector persistence/regime variables, discard it.
 
+
+
+## DL-002BH — Support/Resistance Role Reversal Must Be Proven, Not Assumed
+
+### Practitioner claim
+Old resistance often becomes support after breakout, and old support becomes resistance after breakdown.
+
+### Research position
+Treat role reversal as a testable state transition, not a law.
+
+### Zone transition
+RESISTANCE_ACTIVE
+-> FIRST_BREAK_ABOVE
+-> ACCEPTED_ABOVE
+-> RETEST_FROM_ABOVE
+-> ROLE_REVERSAL_CONFIRMED or FAILED_BACK_INSIDE
+
+Mirror for support breakdown.
+
+### Confirmation fields
+- closesAboveZoneBeforeRetest
+- barsUntilRetest
+- retestDepthIntoZone
+- retestCloseLocation
+- retestVolumeContext
+- subsequentHigherLow
+- reclaimAfterTemporaryUndercut
+
+### Anti-leakage
+The zone strength at date t can use only touches/events known through t.
+Future successful retests must never be backfilled to make the historical zone look stronger.
+
+### Research question
+Does proven role reversal add execution information beyond current 15m hold/retest logic?
+No assumption of automatic polarity flip.
+
+## DL-002BI — Fit Confidence vs Predictive Probability
+
+### Critical distinction
+Pattern-fit confidence answers:
+“How closely does this chart match the frozen geometry?”
+
+It does NOT answer:
+“What is the probability the stock will rise?”
+
+A perfect textbook cup can still fail.
+
+### Separate outputs
+- geometryFitConfidence
+- dataQualityConfidence
+- stabilityConfidence
+- evidenceMaturityStatus
+- observedOutcomeRateBucket (research report only after sufficient samples)
+
+Never label a 90% geometry fit as “90% chance of success.”
+
+### Calibration
+After adequate prospective samples, bucket detector outputs by confidence and test:
+- monotonic D5/MFE improvement,
+- R01 failure rate,
+- stop-first rate,
+- confidence calibration stability across dates/regimes.
+
+If higher fit confidence does not improve outcomes monotonically/stably, the fit score is cosmetic and should not be used for decision ranking.
+
+## DL-002BJ — Universe / Survivorship / Listing-Age Controls
+
+### Historical-risk
+A chart-pattern backtest built only from stocks that are listed today creates survivorship bias:
+failed/delisted firms disappear, making historical patterns look better.
+
+### Required historical-universe semantics
+For each as-of date:
+- include only securities genuinely eligible/listed at that date,
+- retain later-delisted securities when source data permits,
+- apply contemporaneous listing status,
+- do not use future market-cap/liquidity membership.
+
+### Listing-age
+Long patterns require sufficient history.
+For newly listed stocks:
+- insufficientHistory = UNKNOWN / INELIGIBLE_FOR_PATTERN_ANALYSIS,
+- never classify “no cup” merely because 120 bars do not exist.
+
+### IPO / new-listing special behavior
+IPO/new listing periods can have:
+- no mature historical resistance,
+- unusual price limits/trading rules,
+- unstable ATR,
+- large gaps.
+Keep a separate NEW_LISTING context and do not force normal multi-month topology.
+
+## DL-002BK — Point-in-Time Zone Construction
+
+### Problem
+A historical resistance cluster is easy to draw after seeing all future touches.
+That is look-ahead.
+
+### Rule
+At every as-of date rebuild zones only from confirmed swings available then.
+Store:
+- zoneCreatedAt
+- constituentLevelsKnownAtCreation
+- constituentConfirmedAt[]
+- zoneUpdatedAt
+- updateReason
+- touchCountAsOf
+- zoneVersion
+
+### Zone evolution
+Zones may widen/narrow/merge as new confirmed structure arrives.
+Historical snapshot must retain the older version; do not rewrite history.
+
+### Example
+If two future swing highs later form a beautiful triple-top resistance, the first historical date may have had only one weak swing high.
+The detector must preserve that uncertainty.
+
+## DL-002BL — Prospective Pattern Shadow Architecture
+
+### Goal
+Create a durable research layer that can continue across chats and accumulate point-in-time evidence without touching Formal Core.
+
+### Daily Pattern Shadow snapshot
+For every stored research candidate/control:
+- scanDate
+- symbol
+- Formal cohort
+- dataThroughDate
+- detectorVersion
+- swingSpecVersion
+- patternSpecVersion
+- latent primitives
+- named pattern states
+- zones
+- motifs
+- fit/stability confidence
+- regime/event/flow context
+- data-quality flags
+- firstObservableAt
+- selectionVsExecution eligibility
+
+### Outcome updater
+Later append:
+- D1/D3/D5/D10/D20
+- MFE/MAE
+- R01
+- stop-first
+- breakout/retest/reclaim lifecycle
+
+Never alter the original snapshot.
+
+### Formal isolation
+Pattern Shadow:
+- no capital
+- no push
+- no formal ranking
+- no monitoring eligibility change
+- no Formal thresholds
+- no auto-promotion
+
+### Engineering class
+An isolated new research table/API/snapshot path is Class A under current governance if regression tests prove zero impact on Formal outputs.
+
