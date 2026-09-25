@@ -616,3 +616,31 @@ Class A if research-only; Class C if later used in formal 15m confirmation.
 5. H001/H002 remain unrun until CLEAN_COHORT_VERIFIED + sample floors.
 6. Continue learning only through source/quality/falsification questions that can be answered before new market data arrive.
 7. Formal Core remains LOCKED.
+
+## Evidence progress — PVE-013 through PVE-028
+- PVE-013 freezes /api/scan/status as an after-market runtime receipt only: bootstrap.requested/results and daily.stored/details can prove the write path acknowledged work, not independent D1 at-rest persistence.
+- PVE-014 proves intraday PV receipt is not persisted in LAST_MONITOR_KEY: the KV snapshot is written before execution/PV recorders run. /api/live and /api/signals therefore cannot be used as after-the-fact intraday PV write receipts.
+- PVE-015: generic Cron success is not PV recorder success; it lacks PV stored/conflict/fingerprint detail.
+- PVE-016 freezes the observability ladder: ENABLED_ONLY -> RUNTIME_RECEIPT -> FEATURE_AT_REST_VERIFIED -> CLEAN_COHORT_VERIFIED -> OUTCOME_MATURE -> DESCRIPTIVE_EVIDENCE_READY. No level may be skipped by inference.
+- PVE-017 corrects the first-session lineage: 2026-09-29 intraday features inherit plans from the known-bad 2026-09-24 stale-history selection, so they are DATA_QA-only for primary H001~H004 inference.
+- PVE-018: earliest potentially clean cohort is the 2026-09-29 after-market selection for a later session, still pending independent symbol-session/pool provenance.
+- PVE-019: D1 HTTP 403 means AT_REST_QA_UNAUTHORIZED, not zero rows.
+- PVE-020 freezes the first post-enable trading-day evidence decision tree and zero-plan semantics.
+- PVE-021 identifies expected cold-start: historical same-slot baseline bootstrap only occurs after an after-market scan, so 9/29 intraday should naturally be DATA_INSUFFICIENT rather than fabricated neutral values.
+- PVE-022: 2026-09-30 is only the earliest possible baseline-ready intraday date if 9/29 after-market bootstrap succeeds; baseline-ready still does not imply clean cohort.
+- PVE-023 confirms pvDailyRvol20 continuity is not validated by v0.1: the function only finds current row plus last 20 available rows, so stale recent-session gaps can still yield a numeric daily RVOL and non-INVALID guard.
+- PVE-024 finds a research-only Guard bug: Formal liquidity thresholds are thousand>=300 lots / general>=1000 lots, while pvIlliquidityWarning reverses them; Formal liquidityException is a descriptive string but PV checks ===true. Formal is unaffected; ILLIQUIDITY_WARNING is not trusted research truth.
+- PVE-025 finds several Guard interfaces without verified production upstream plumbing: corporateActionResetAt, pvGapDominated, marketStructure; viStateUnknownConfounder is hardcoded false.
+- PVE-026 confirms price-censor logic uses quote.previousClose rather than exchange-consistent reference price, so ex-right/dividend/corporate-action sessions require independent guard/overlay.
+- PVE-027 makes Guard-label integrity a separate QA axis from snapshot/baseline/cohort/at-rest/outcome quality.
+- PVE-028 freezes first-window priorities around recorder falsification/data quality, not win rate or threshold promotion.
+- No runtime/Formal/token/secret change was made.
+
+## Revised exact continuation after PVE-028
+1. PVE-029: audit historical 15m true-range baseline semantics, especially previous-session close handling for 09:00.
+2. PVE-030: audit missing-intermediate-slot effects on trueRange/rangeHistoryCount versus cumulative coverage.
+3. PVE-031: audit current-vs-historical response normalization symmetry and identify which fields remain clean if range baseline is guarded.
+4. PVE-032: define a minimum label-quality overlay for v0.1 rows without mutating immutable snapshots.
+5. PVE-033: freeze which raw fields can enter H001/H002 even if Guard/response labels are quarantined.
+6. Keep H001/H002 outcome inference unrun until clean cohort + evidence floors.
+7. Formal Core remains LOCKED.
