@@ -887,3 +887,226 @@ CA-032: run raw-vs-reference/adjusted feature-impact calculations offline.
 CA-033: determine whether actual A/B states change.
 CA-034: if material, prepare a Class B history-semantics proposal/test plan only.
 CA-035: continue buyback/SEO/CB realized-supply source validation separately.
+
+
+---
+
+## CA-031 — Verified three-event corporate-action sample
+
+A small source-validation sample now uses the same raw trading series source plus a point-in-time reference bridge.
+
+### 2412 Chunghwa Telecom — 2026-07-09 cash dividend
+Official company evidence:
+- ex-dividend trade date: 2026-07-09;
+- cash dividend: NT$5.2/share.
+
+Raw trading series:
+- 2026-07-08 close = 139.5;
+- 2026-07-09 close = 133.5;
+- daily change field = -1.0, implying the market reference used for the daily change is approximately 134.5 after tick treatment.
+
+Point-in-time bridge factor used for this diagnostic:
+134.5 / 139.5 = 0.964158.
+
+### 4554 — 2025-08-26 ex-right/reference reset
+Raw trading series:
+- prior close = 36.95;
+- event-day close = 32.5;
+- daily change = +0.1;
+- event-day reference implied by change = approximately 32.4.
+
+Point-in-time bridge factor:
+32.4 / 36.95 = 0.876861.
+
+### 8422 — 2025-11-17 par-value change / large price-base reset
+Official TWSE/raw market data:
+- prior tradable close = 250;
+- event-day close = 24.7;
+- daily change = -0.3;
+- event reference implied by change = 25.
+
+Point-in-time bridge factor:
+25 / 250 = 0.1.
+
+TWSE daily market data independently confirms the 250 -> 24.7 scale break around the resumed trading date.
+
+### Method
+For the technical-state diagnostic only:
+- all OHLC before the effective event date are multiplied by the target-date-known bridge factor;
+- event-day OHLC remain actual traded prices;
+- volume is left unchanged in this first price-only test;
+- no future returns are used.
+
+Status: SMALL VERIFIED EVENT SAMPLE BUILT.
+
+---
+
+## CA-032 — Raw vs point-in-time continuity feature impact
+
+The current Formal buildMarketFeatures/strategySetupState formulas were reproduced without changing thresholds.
+
+### 2412 cash dividend
+
+Raw:
+- ret20 = -7.29%
+- ret60 = -1.11%
+- MA20 = 142.65
+- MA60 = 139.35
+- ATR = 1.54%
+- priorHigh20 = 147
+- pullback = 9.18%
+- support distance = 6.41%
+
+Point-in-time bridge:
+- ret20 = -3.85%
+- ret60 = +2.57%
+- MA20 = 137.78
+- MA60 = 134.44
+- ATR = 1.32%
+- priorHigh20 = 141.73
+- pullback = 5.81%
+- support distance = 0.74%
+
+Formal A sub-condition flip:
+- nearSupport: false -> true.
+
+Full A and B still remain false on this event date.
+
+### 4554 ex-right reset
+
+Raw:
+- ret20 = -18.95%
+- ret60 = -12.16%
+- MA20 = 37.03
+- MA60 = 38.96
+- ATR = 5.54%
+- pullback = 25.97%
+- support distance = 12.23%
+
+Point-in-time bridge:
+- ret20 = -7.57%
+- ret60 = +0.17%
+- MA20 = 32.67
+- MA60 = 34.23
+- ATR = 4.48%
+- pullback = 15.57%
+- support distance = 0.52%
+
+A sub-condition flips:
+- nearSupport false -> true;
+- structure false -> true.
+
+Full A/B remain false because other conditions still fail.
+
+### 8422 par-value change
+
+Raw:
+- ret20 = -87.80%
+- ret60 = -87.53%
+- MA20 = 216.16
+- MA60 = 204.00
+- ATR = 72.84%
+- priorHigh20 = 256
+- pullback = 90.35%
+- support distance = 88.57%
+
+Point-in-time bridge:
+- ret20 = +21.98%
+- ret60 = +24.75%
+- MA20 = 22.73
+- MA60 = 20.77
+- ATR = 3.02%
+- priorHigh20 = 25.6
+- pullback = 3.52%
+- support distance = 1.92%
+
+A condition flips:
+- trend false -> true;
+- pullback false -> true;
+- nearSupport false -> true;
+- structure false -> true.
+
+B trend also flips false -> true.
+
+Most importantly:
+- Formal A technical setup pass = false on raw series;
+- Formal A technical setup pass = true on the point-in-time continuity bridge.
+
+This proves practical state materiality, not merely cosmetic chart distortion.
+
+Caveat:
+The test isolates price continuity. Share-volume-base changes, especially the 8422 par-value event, require a separate volume-unit bridge before any production implementation.
+
+Status: TECHNICAL-STATE MATERIALITY = CONFIRMED IN SMALL SAMPLE.
+
+---
+
+## CA-033 — Blind provider adjusted=true is empirically unsafe for historical replay
+
+The same three symbols were queried through the provider's current adjusted historical series, with query end set to the historical event date.
+
+Observed event-date closes:
+
+- 2412 actual target close 133.5 -> adjusted target close 133.5.
+- 4554 actual target close 32.5 -> adjusted target close 27.83.
+- 8422 actual target close 24.7 -> adjusted target close 23.65.
+
+For 4554 and 8422, the adjusted series changes the event-day actual traded close itself.
+
+Interpretation:
+The adjusted series retrieved today is expressed on a later adjustment basis that includes corporate actions beyond the historical target event, even though the requested query window ends on the target date.
+
+Therefore a present-day adjusted=true query cannot be assumed to reconstruct the point-in-time series that a historical scan would have seen.
+
+This empirically validates the look-ahead concern from CA-026.
+
+### Additional connector provenance finding
+The connected Fugle content action for "adjusted historical price" returned adjusted=true even when adjusted=false was passed in the initial test. Therefore that content action cannot be used as the raw comparator. The independent trading-price content source was used for raw observations.
+
+Status:
+- CURRENT ADJUSTED SERIES = useful for continuity/reference research;
+- CURRENT ADJUSTED SERIES = NOT POINT-IN-TIME HISTORICAL TRUTH.
+
+---
+
+## CA-034 — Class B history-semantics proposal is now justified
+
+Evidence threshold for a proposal has been met because:
+1. source semantics are ambiguous in current Formal request;
+2. current Formal technical features depend directly on the affected OHLC history;
+3. verified real corporate actions create material feature changes;
+4. at least one real sample flips full Formal A technical setup state;
+5. blindly using today's adjusted series creates historical look-ahead.
+
+### Proposed direction
+Do not patch selection logic.
+
+Instead prepare a history-data integrity layer that:
+- explicitly records series semantics;
+- attaches corporate-action event/reference metadata;
+- builds a target-date-bounded continuity view for technical calculations;
+- retains raw traded series for execution/gap/event research;
+- leaves Formal behavior unchanged until separately approved.
+
+### Required tests
+- cash dividend;
+- stock dividend/ex-right;
+- cash capital increase ex-right;
+- par-value change/split;
+- loss-offset capital reduction;
+- cash-refund capital reduction;
+- multiple corporate actions in one 60-day window;
+- target-date replay before a later corporate action;
+- current-date scan;
+- benchmark RS semantic consistency;
+- volume/share-unit break handling;
+- exact reproduction of current behavior when no corporate action exists;
+- interaction regression with history-freshness PR #100.
+
+### Governance
+Class B proposal/test plan only.
+No merge.
+No deployment.
+No Formal input change.
+
+Status: PROPOSAL-READY / OWNER APPROVAL REQUIRED BEFORE ANY FORMAL IMPLEMENTATION.
