@@ -17,7 +17,7 @@ Do not restart from generic “volume confirms price” introductions.
 - Any Formal A/B, ranking, threshold, capital, entry/exit, 15m confirmation, monitoring or push change is Class C and requires owner approval.
 
 ## Current research theme
-PV-004 — Sequence-level effort versus result after PV-002/PV-003 falsification work.
+PV-007 — Institutional/sector participation as moderator after same-slot 15m feasibility and pattern-integration design.
 
 ## Durable findings
 1. Volume contains information beyond price alone, but volume level is not unidirectionally bullish or bearish.
@@ -70,3 +70,19 @@ Class A if research-only; Class C if later used in formal 15m confirmation.
 3. PV-007: study whether institutional participation and sector breadth help distinguish informed/broad participation from attention/disagreement volume.
 4. PV-008: build nonlinear breakout-volume validation plan with frozen buckets/quantiles before outcome inspection.
 5. PV-009: design prospective Shadow data schema and outcome ledger; no Formal use.
+
+
+## Progress added — PV-005 / PV-006 / PV-007
+- Fugle historical candles can provide 15m history back to 2023-05-23, making same-slot volume research technically feasible.
+- PV-005 keeps three distinct intraday measurements: local previous-5-bar acceleration, same-slot abnormal volume, and cumulative day-volume pace.
+- Minimum coverage / halt / missing-session semantics must be explicit; insufficient history = UNKNOWN.
+- PV-006 maps price-volume state onto Pattern Maturity lifecycle and forbids duplicate named-pattern volume scores when one latent supply-contraction variable explains them.
+- PV-007 treats institutional and sector participation as moderators of abnormal volume, not new additive factors, because the current system already contains institutional and sector features.
+
+## Revised exact next continuation point after PV-007
+1. PV-008: define frozen nonlinear breakout-volume response study with quantile bins / splines and explicit climax interaction.
+2. PV-009: design research-only data schema that can store daily + 15m PV features with as-of timestamp, source provenance, coverage and decisionImpact=false.
+3. PV-010: specify prospectively testable “volume acceptance lifecycle” from breakout -> retest -> re-acceleration / failure.
+4. PV-011: study up-volume/down-volume asymmetry and whether signed volume proxies add information beyond institutional flow.
+5. PV-012: study turnover vs raw volume and free-float normalization feasibility for cross-stock comparisons.
+6. Keep Formal Core unchanged.
