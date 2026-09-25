@@ -7288,3 +7288,306 @@ Potential future hypothesis:
 higher origin-attribution confidence improves explanatory stability, not necessarily directional alpha.
 
 Status: ABSTENTION_ALLOWED / FORCED_CAUSAL_LABELS_PROHIBITED.
+
+# PV-126 — Gross Participation and Net Direction Are Different Dealer Signals
+
+## Problem
+Dealer net flow compresses two quantities into one number.
+
+Example A:
+- buy 1,000,000
+- sell 950,000
+- net +50,000
+
+Example B:
+- buy 60,000
+- sell 10,000
+- net +50,000
+
+Both have the same net flow but radically different market participation.
+
+## Separate constructs
+
+### Directional imbalance
+For a dealer component:
+`directionalImbalance = (buy - sell) / (buy + sell)`
+
+Range:
+-1 to +1 when denominator >0.
+
+Interpretation:
+how one-sided the participant's activity is.
+
+### Side-participation share
+If total-volume scope is verified compatible:
+`sideParticipationShare = (buy + sell) / (2 * totalMarketVolume)`
+
+Why denominator has 2x:
+every executed share has a buyer-side and a seller-side.
+The numerator counts participant-side volume.
+
+Interpretation:
+share of all trade-side volume attributed to that participant category.
+
+This is NOT:
+- unique-trade share;
+- causal share of price movement;
+- ownership turnover.
+
+## Required separate fields
+For proprietary:
+- propGross = propBuy + propSell
+- propNet = propBuy - propSell
+- propDirectionalImbalance
+- propSideParticipationShare (only with compatible denominator)
+
+For hedge:
+- hedgeGross
+- hedgeNet
+- hedgeDirectionalImbalance
+- hedgeSideParticipationShare
+
+## Scope guard
+TWSE official investor statistics can include regular, odd-lot, after-hours fixed-price and block trading; official product families also distinguish excluding-vs-including block versions.
+Therefore side-participation ratios require an explicitly compatible total-volume source/version.
+
+Sources:
+- https://www.twse.com.tw/en/fund/T86
+- https://eshop.twse.com.tw/en/product/detail/6edec1b6e62345cb9f1244acbbcefae0
+- https://eshop.twse.com.tw/en/product/detail/f73d0e1584694b6986c9f7751abc3ca3
+
+## Why this matters for PV-H005
+The strongest version of H005 is not merely:
+“proprietary net vs hedge net.”
+
+It is:
+“Does directional proprietary imbalance and/or proprietary participation carry cleaner incremental information than combined dealer net, while hedge participation explains mechanical-flow intensity?”
+
+Status: GROSS_VS_NET_SEMANTICS_FROZEN.
+
+
+# PV-127 — Participant-Side Share Is Descriptive, Not a Causal Volume Share
+
+## Important accounting issue
+If an institution buys from another institution in the same category:
+- the buy side is counted;
+- the sell side is counted;
+- the trade itself is still one market execution.
+
+Thus:
+`(buy+sell)/(2*marketVolume)`
+is a valid **trade-side participation share** under compatible scope,
+but not the fraction of unique executions “caused by” that category.
+
+## Consequence
+Allowed:
+“dealer hedge accounts represented 18% of compatible reported trade-side volume.”
+
+Not allowed:
+“18% of today's volume was caused by dealer hedging.”
+
+## Net-flow ratio
+`net / totalVolume`
+is a directional pressure proxy, not a participation share.
+
+## Research design
+For H005 always report:
+- gross side-participation;
+- net directional imbalance;
+- raw net;
+separately.
+
+Do not choose one after seeing outcomes.
+
+Status: PARTICIPATION_ACCOUNTING_GUARD_FROZEN.
+
+
+# PV-128 — Selection-on-High-RVOL Can Create Collider / Selection Bias
+
+## Problem
+Suppose both:
+- dealer hedge activity;
+- company-specific information
+can cause high volume.
+
+If research includes only “high-RVOL events,” conditioning on high volume can induce an artificial relationship between the two causes even when they were otherwise weakly related.
+
+More generally, conditioning on a common effect can create collider-stratification / selection bias.
+
+Method sources:
+- Cole et al., illustrating collider bias:
+  https://pmc.ncbi.nlm.nih.gov/articles/PMC2846442/
+- Hernán & Robins, Causal Inference: What If:
+  https://www.hsph.harvard.edu/miguel-hernan/wp-content/uploads/sites/1268/2024/04/hernanrobins_WhatIf_26apr24.pdf
+
+## PV implication
+Do not test origin variables only inside:
+`pvSlotRvol20 >= 1.3`
+and then interpret associations causally.
+
+High RVOL itself is affected by many candidate origins.
+
+## Safer primary cohort
+For H005 and future origin studies:
+- use the existing Formal selected/control cohort independent of dealer split;
+- retain the full range of RVOL;
+- model/interact with RVOL rather than restrict entirely to high-RVOL events.
+
+High-RVOL subgroup can be a secondary descriptive slice.
+
+## Example
+Primary:
+Does proprietary/hedge decomposition add information across all eligible observations after controlling for participation?
+
+Secondary:
+Among high-RVOL events, what patterns are seen?
+
+The secondary analysis is not causal proof.
+
+Status: COLLIDER_SELECTION_GUARD_FROZEN.
+
+
+# PV-129 — Origin-Conditioned Outcome Design Must Separate Mechanism, Participation and Outcome
+
+## Minimal causal ordering
+At observation time:
+
+Context/regime
+  -> origin flow states
+  -> observed participation / price response
+  -> future acceptance/outcome
+
+But reality can also contain:
+- common causes of origin and price;
+- feedback within the same session;
+- anticipatory trading.
+
+Therefore simple regressions cannot prove causality.
+
+## Research layers
+
+### Layer A — descriptive source decomposition
+What origin evidence coexists with the event?
+
+No outcome inference required.
+
+### Layer B — incremental prediction
+Does origin evidence add out-of-sample information after:
+- raw RVOL;
+- residual RVOL;
+- price response;
+- Formal context;
+- regime/sector/liquidity?
+
+This is predictive, not causal.
+
+### Layer C — causal mechanism
+Requires stronger design:
+- event timing;
+- exogenous rule/index changes;
+- direct tagged execution;
+- credible identification.
+
+Most PV work remains Layer A/B.
+
+## Reporting language
+Layer A:
+“coincides with.”
+
+Layer B:
+“adds incremental predictive separation.”
+
+Layer C:
+“causal effect” only when identification is defensible.
+
+Status: PREDICTION_CAUSALITY_BOUNDARY_FROZEN.
+
+
+# PV-130 — Tier-2 Origin-Data Priority Ranking by Information Gain per Engineering Cost
+
+## Priority 1 — Dealer proprietary vs hedge
+Information gain:
+HIGH.
+Engineering cost:
+LOW.
+Reason:
+existing official payload already contains fields; no new API expected.
+
+Research objective:
+PV-H005.
+
+## Priority 2 — TPEx attention/disposition parity
+Information gain:
+HIGH for data validity.
+Engineering cost:
+LOW-MEDIUM.
+Reason:
+official public query/history exists; current gap is integration, not source absence.
+
+Objective:
+prevent invalid normal-market 15m interpretation.
+
+## Priority 3 — Daily transaction-count decomposition
+Information gain:
+MEDIUM-HIGH.
+Engineering cost:
+LOW.
+Reason:
+daily source already includes transaction count.
+
+Objective:
+count-driven vs size-driven abnormal volume.
+
+## Priority 4 — TWSE actual SBL / short context
+Information gain:
+MEDIUM-HIGH.
+Engineering cost:
+MEDIUM.
+Reason:
+research source exists; 23:30 publication gives narrow timing margin for 23:35 scan.
+
+Objective:
+risk/crowding/false-confirmation context.
+
+## Priority 5 — Market/sector residual daily RVOL
+Information gain:
+HIGH.
+Engineering cost:
+MEDIUM.
+Reason:
+existing full-market daily data make it feasible.
+
+Objective:
+stock-specific vs common participation.
+
+## Priority 6 — TPEx margin/SBL parity
+Information gain:
+MEDIUM-HIGH.
+Engineering cost:
+MEDIUM-HIGH because access/integration/licensing semantics remain.
+
+## Priority 7 — Day-trading share / block-share
+Information gain:
+MEDIUM.
+Engineering cost:
+MEDIUM-HIGH due scope/finality parity.
+
+## Priority 8 — Passive-flow exact quantity / close-auction attribution
+Information gain:
+potentially high for event days.
+Engineering cost:
+HIGH / DATA-GATED.
+
+## Priority 9 — Warrant-level delta / exact hedge reconstruction
+Information gain:
+potentially high in subset.
+Engineering cost:
+VERY HIGH.
+
+## Governance
+Priority is research sequencing, not permission to implement into Formal.
+
+Current next best research data extension remains:
+**dealer proprietary/hedge split capture**, followed by **TPEx disposition parity**.
+
+Status: ORIGIN_DATA_PRIORITY_FROZEN.
