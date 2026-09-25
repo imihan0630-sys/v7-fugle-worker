@@ -6094,3 +6094,231 @@ Counter-hypothesis:
 Hedge demand itself may carry useful directional information or persistent mechanical demand, so stripping it out may worsen performance.
 
 Status: ORIGIN_DECOMPOSITION_FRAMEWORK_COMPLETE / FORMAL_LOCKED.
+
+# PV-103 — Margin Financing / Short Interest Are Leverage-and-Disagreement States, Not Simple Direction Scores
+
+## Taiwan evidence
+Historical TWSE research using 1991–2004 data found heavily shorted stocks subsequently produced negative risk-adjusted abnormal returns, with the effect weakening as holding horizon lengthened. The same study also found interaction between high relative short interest and high margin-trading levels consistent with disagreement/overvaluation dynamics.
+
+Source:
+- Hu, Huang & Liao (2009), Quarterly Review of Economics and Finance
+  https://doi.org/10.1016/j.qref.2008.07.002
+
+## Why direct translation is unsafe
+The study:
+- uses an older regulatory/microstructure regime;
+- focuses on monthly/longer horizons;
+- predates today's market structure, ETF scale, algorithmic trading and current short-sale rules.
+
+Therefore:
+“high short interest => short-term bearish signal”
+is not justified for the present system.
+
+## Better research interpretation
+Margin/short variables describe:
+- leverage;
+- disagreement;
+- crowding;
+- potential forced-cover / forced-sell risk;
+- financing sensitivity.
+
+## Candidate states
+- `MARGIN_LONG_CROWDING`
+- `SHORT_CROWDING`
+- `TWO_SIDED_LEVERAGED_DISAGREEMENT`
+- `LEVERAGE_NORMAL`
+- `UNKNOWN`
+
+These should be derived from normalized rates, not raw balances.
+
+## Normalization candidates
+Use:
+- balance / issued shares;
+- change in balance / turnover;
+- own-history percentile or robust z-score;
+- margin-long vs short ratio.
+
+Raw share count across firms is not comparable.
+
+## Constructive counter-cases
+High margin financing can:
+- reflect conviction;
+- support momentum while financing remains available.
+
+High short interest can:
+- contain information;
+- but also create future short-cover demand.
+
+Therefore both sides can create continuation OR reversal depending on price acceptance and crowding.
+
+Status: LEVERAGE_RISK_CONTEXT / NO_SIMPLE_DIRECTION SCORE.
+
+
+# PV-104 — Same-Day Short-Sale / SBL Data Are Potentially As-Of-Safe for the Current 23:35 Scan
+
+## Current production times
+Official data-shop documentation states:
+- TWSE Daily Short Sale Balances: production around 23:30 Taipei time;
+- TPEx Margin Trading and SBL balance file: production around 22:00 Taipei time.
+
+Sources:
+- https://eshop.twse.com.tw/en/product/detail/000000006e0bbe8d016f183dc3be033a
+- https://eshop.tpex.org.tw/en/product/detail/2c92e013922929930192b293cae303ff
+
+## Current system timing
+The current after-market Formal scan runs at approximately 23:35 Taipei time.
+
+Therefore, unlike the old 18:10 architecture:
+- TPEx same-day margin/SBL data should normally be temporally available before scan;
+- TWSE same-day short-sale balance is theoretically available only a few minutes before scan.
+
+## Important operational risk
+23:30 production does not guarantee:
+- public endpoint is populated by exactly 23:35 every day;
+- CDN/API propagation is complete;
+- no delayed production occurs.
+
+Therefore TWSE has a very narrow freshness margin.
+
+## Safe future ingestion semantics
+If researched:
+1. fetch with exact source date = marketDate;
+2. store sourcePublishedAt / fetchedAt;
+3. if marketDate mismatch or data unavailable => UNKNOWN;
+4. never delay or fail Formal scan waiting for it;
+5. never substitute previous day as current day without an explicit lag flag.
+
+## Governance
+Same-day availability makes these fields **eligible for research at 23:35**, but not automatically eligible for Formal use.
+
+Status: AS_OF_FEASIBLE_WITH_NARROW_TWSE_MARGIN / FAIL_OPEN_REQUIRED.
+
+
+# PV-105 — Margin + Short Interaction as Disagreement / Crowding Research
+
+## Hypothesis
+When both:
+- normalized margin-long exposure is high;
+- normalized short/SBL exposure is high;
+the stock may be experiencing elevated disagreement and leverage crowding.
+
+Potential outcomes:
+- higher realized volatility;
+- larger intraday range;
+- more false breakouts;
+- larger MFE and MAE simultaneously.
+
+## Constructive interpretation
+Two-sided participation can:
+- improve liquidity;
+- accelerate price discovery;
+- create fuel for a directional breakout once one side loses.
+
+## Adverse interpretation
+Crowded leverage can:
+- amplify forced selling;
+- amplify short covering;
+- increase whipsaw.
+
+## Research variables
+Potential Tier-2:
+- `pvMarginBalanceRate`
+- `pvShortBalanceRate`
+- `pvSblShortSaleRate`
+- `pvLeverageDisagreementState`
+- `pvMarginDeltaRvol20`
+- `pvShortDeltaRvol20`
+
+## Primary outcomes
+Do not begin with next-return sign.
+First test:
+- realized range;
+- MAE;
+- false-confirmation rate;
+- stop-first;
+- gap risk;
+- MFE/MAE joint expansion.
+
+## Why this belongs after v0.1
+The mechanism is plausible, but it requires:
+- additional daily joins;
+- shares-outstanding normalization;
+- exact source-timing semantics;
+- separate margin-short vs SBL-short definitions.
+
+Status: TIER2_RISK_MECHANISM / DEFER UNTIL CORE PV DATA_QA.
+
+
+# PV-106 — Existing DealerBuyDays Has a Known Interpretation Risk
+
+## Current implementation audit
+Current Worker:
+- parses official combined `dealerNet`;
+- persists only combined dealerNet;
+- computes `dealerBuyDays` from combined net.
+
+This means the existing institutional confirmation rule can count:
+- proprietary dealer buying;
+- hedge-related dealer buying;
+as one combined streak.
+
+## This is not necessarily a bug
+The combined number is an official dealer total and represents real net cash-market demand.
+
+However, it is semantically broader than:
+“dealer directional conviction.”
+
+## Research risk
+If hedge flows dominate some names:
+- dealerBuyDays may overstate directional institutional sponsorship;
+- especially in stocks with active warrant/ETF/derivative hedging.
+
+Counter-case:
+- hedging flow itself may be persistent and useful;
+- removing it could reduce predictive value.
+
+## Required future test
+PV-H005 should compare:
+A. current combined dealerBuyDays;
+B. proprietary-only dealerBuyDays;
+C. hedge-only dealerBuyDays;
+D. foreign/trust confirmation without dealer;
+E. conditional combinations.
+
+Outcomes:
+- D1/D3/D5;
+- MFE/MAE;
+- false-confirmation;
+- selected-name scarcity / capital utilization.
+
+No Formal change before prospective or sufficiently clean historical evidence.
+
+Status: KNOWN_SEMANTIC_RISK / VALIDATION_REQUIRED.
+
+
+# PV-107 — Priority after Leverage and Dealer-Flow Research
+
+## High priority
+1. Dealer proprietary vs hedge decomposition.
+   - zero incremental API cost;
+   - current payload already contains the fields;
+   - directly tests an existing Formal context variable.
+
+2. As-of short/SBL availability audit at 23:35.
+   - important because the timing architecture changed from 18:10 to 23:35.
+
+## Medium priority
+3. Margin-short disagreement / crowding.
+4. actual SBL short-sale flow vs short balance.
+
+## Lower priority
+5. detailed warrant-level delta reconstruction;
+6. ETF constituent creation/redemption attribution;
+7. full block-trade decomposition.
+
+## Current rule
+Do not expand PV_SHADOW_V0_1 during DATA_QA.
+
+All PV-098~107 items remain Tier-2 research/context candidates.
+
+Status: PRIORITY_FROZEN / V0_1_UNCHANGED / FORMAL_LOCKED.
