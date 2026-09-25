@@ -1,9 +1,9 @@
 # Corporate Actions & Capital Supply Checkpoint
 
 Updated: 2026-09-25 Asia/Taipei
-Current cursor: CA-001 through CA-030 complete.
-Status: CONCEPT_COMPLETE / SOURCE_AUDIT_COMPLETE / DATA_QUALITY_VALIDATION_NEXT.
-Next: CA-031.
+Current cursor: CA-001 through CA-036 complete.
+Status: CONCEPT_COMPLETE / SOURCE_AUDIT_COMPLETE / MATERIALITY_CONFIRMED / CLASS_B_PROPOSAL_READY.
+Next: CA-037.
 
 ## Durable conclusions
 - Announced equity supply/demand and realized share-base change are separate.
@@ -41,3 +41,19 @@ CA-027 small multi-date source validation only after source contracts pass.
 - Fugle corporate-actions dividends/capital-changes make an isolated Research registry feasible.
 - Minimal Shadow schema and source-validation protocol are frozen.
 - Any Formal history-semantic correction is Class B proposal-first; no production change.
+
+
+## CA-031 through CA-036 durable update
+- Three-event validation completed: 2412 cash dividend, 4554 ex-right reset, 8422 par-value change.
+- Point-in-time reference bridging materially changes return, MA, ATR, support and structure features.
+- 8422 is the decisive witness: raw series makes Formal A technical setup fail; target-date-known continuity bridge makes all A setup checks pass.
+- Current provider adjusted history is unsafe for historical replay because old event-day traded closes can be rewritten onto a later adjustment basis.
+- Class B proposal file created: CORPORATE_ACTION_HISTORY_SEMANTICS_PROPOSAL.md. It is documentation and a test plan only.
+- Current latest capital/latest issued-common-share fields are current snapshots and cannot be used as historical shares outstanding.
+- Formal Core unchanged.
+
+## Exact next continuation
+CA-037 widen the real event sample.
+CA-038 research share-volume-unit bridging.
+CA-039 run no-action controls.
+CA-040 consider branch/test work only if the evidence remains material.
