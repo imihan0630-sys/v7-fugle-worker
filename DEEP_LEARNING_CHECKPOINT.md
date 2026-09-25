@@ -324,3 +324,17 @@ No Formal Core change is approved or implied.
 - Key rule: every price-volume claim must record both constructive and opposing interpretations before it can become a Shadow candidate.
 - High-priority candidate: 15-minute same-slot relative-volume normalization, because Taiwan intraday volume has strong time-of-day seasonality and current previous-5-bar comparison may confound clock-time effects with abnormal participation. Fugle historical 15m coverage makes isolated research technically feasible. Also retain contextual/nonlinear breakout-volume quality and constructive-dry-up vs no-demand separation as Shadow candidates.
 - Formal Core remains unchanged.
+
+## Price-Volume lane update — PV-008 through PV-015
+- Dedicated files remain `PRICE_VOLUME_RESEARCH.md` and `PRICE_VOLUME_CHECKPOINT.md`.
+- Current cursor: PV-001 through PV-015 complete; continue from PV-016.
+- Newly durable conclusions:
+  - breakout volume must be modeled nonlinearly; extreme volume can represent informed participation, attention/crowding, liquidity demand, absorption, distribution or exhaustion depending on price acceptance and context;
+  - price-volume interpretation should use an as-of acceptance lifecycle rather than a single event-bar label;
+  - Taiwan +/-10% price limits censor price progress, so generic effort-vs-result metrics require a separate price-limit cohort/control;
+  - persistent abnormal volume and one-day shocks are distinct states;
+  - signed up/down-volume proxies are noisy and must not be called true buy/sell volume;
+  - own-history RVOL is preferred before cross-stock turnover normalization; issued shares are not free float;
+  - turnover x 52-week-high evidence exists but currently has high redundancy / implementation-cost risk.
+- Strongest Shadow directions remain: same-slot 15m RVOL, nonlinear breakout volume, constructive dry-up vs no-demand, acceptance lifecycle, price-limit control, and abnormal-volume persistence.
+- Formal Core unchanged / LOCKED.
