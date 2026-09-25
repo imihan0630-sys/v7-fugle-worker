@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import {
   PATTERN_CORE_VERSION,
+  buildShadowParentReference,
+  compareShadowParentReferences,
   validatePatternBars,
   detectDirectionalChangeSwings,
   detectDirectionalChangeSwingsAtr,
@@ -45,6 +47,34 @@ function scaled(bars, k) {
     low: x.low * k,
     close: x.close * k
   }));
+}
+
+// Shadow parent reference: natural key stays (scan_date,symbol), while snapshot hash detects rerun drift.
+{
+  const p1 = buildShadowParentReference({
+    scanDate: "2026-09-25",
+    symbol: "1234",
+    parentSnapshot: { cohort:"NEAR_MISS", rank:2, setup:{x:1} }
+  });
+  const p1Replay = buildShadowParentReference({
+    scanDate: "2026-09-25",
+    symbol: "1234",
+    parentSnapshot: { setup:{x:1}, rank:2, cohort:"NEAR_MISS" }
+  });
+  const p2 = buildShadowParentReference({
+    scanDate: "2026-09-25",
+    symbol: "1234",
+    parentSnapshot: { cohort:"SELECTED", rank:1, setup:{x:1} }
+  });
+  const other = buildShadowParentReference({
+    scanDate: "2026-09-25",
+    symbol: "5678",
+    parentSnapshot: { cohort:"NEAR_MISS" }
+  });
+  assert.equal(p1.shadowParentKey, "2026-09-25|1234");
+  assert.equal(compareShadowParentReferences(p1, p1Replay).status, "SAME_PARENT_EXACT");
+  assert.equal(compareShadowParentReferences(p1, p2).status, "PROVENANCE_CONFLICT");
+  assert.equal(compareShadowParentReferences(p1, other).status, "DIFFERENT_PARENT");
 }
 
 // Data validator: duplicate, ordering and OPEN honesty.
