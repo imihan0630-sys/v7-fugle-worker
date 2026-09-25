@@ -209,3 +209,13 @@ These blocked-readiness findings are themselves durable evidence:
 - zero post-enable trading days != zero PV signals.
 
 They must not be erased once later clean data arrive.
+
+## PVE namespace/readiness clarification
+- Candidate Shadow Archive and PV Shadow are distinct evidence systems.
+- The observed 62-row archive is NOT H001/H002 PV feature evidence.
+- Current PV at-rest row count remains UNKNOWN.
+- H001/H002 can accumulate prospective PV feature QA after enable, but primary inference remains WAITING_CLEAN_COHORT_PROVENANCE.
+- H003/H004 inherit the same gate.
+- H006 remains DATA_QUALITY_BLOCKED pending exact-date execution-recorder completeness.
+- Zero-plan dates are legal zero-opportunity dates and must not be counted as PV recorder failures.
+- Readiness layers must be reported separately: runtime receipt, at-rest feature QA, cohort provenance, outcome maturity.
