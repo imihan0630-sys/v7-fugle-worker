@@ -1,0 +1,150 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-09-25",
+  "purpose": "Research-only corporate-action registry sample. Not inference-ready.",
+  "decisionImpact": false,
+  "records": [
+    {
+      "eventKey": "2412:2026-07-09:CASH_DIVIDEND",
+      "symbol": "2412",
+      "name": "中華電",
+      "actionType": "CASH_DIVIDEND",
+      "effectiveDate": "2026-07-09",
+      "firstKnownAt": null,
+      "previousRawClose": 139.5,
+      "economicAdjustmentReference": 134.3,
+      "exchangeOpeningReference": null,
+      "providerAdjustedAnchor": 134.3,
+      "dailyChangeReference": null,
+      "technicalPriceFactor": 0.9627240143369177,
+      "priceIndexComparableFactor": 1,
+      "totalReturnComparableFactor": 0.9627240143369177,
+      "volumeTransformMode": "NONE",
+      "shareUnitFactor": 1,
+      "sourceQuality": "MIXED_OFFICIAL_COMPANY_PLUS_PROVIDER",
+      "factorQuality": "HIGH",
+      "firstKnownQuality": "UNKNOWN",
+      "sourceUrls": [
+        "https://www.cht.com.tw/zh-tw/home/cht/investors/shareholder-services/return-to-shareholders"
+      ],
+      "unknownReasons": [
+        "PRIMARY_EXCHANGE_OPENING_REFERENCE_NOT_ARCHIVED",
+        "FIRST_KNOWN_TIMESTAMP_NOT_ARCHIVED",
+        "SECONDARY_REFERENCE_CONFLICT_134.3_VS_134.5"
+      ]
+    },
+    {
+      "eventKey": "8454:2025-08-21:STOCK_DIVIDEND",
+      "symbol": "8454",
+      "name": "富邦媒",
+      "actionType": "STOCK_DIVIDEND",
+      "effectiveDate": "2025-08-21",
+      "firstKnownAt": null,
+      "previousRawClose": 272,
+      "economicAdjustmentReference": 259.04761904761904,
+      "exchangeOpeningReference": null,
+      "providerAdjustedAnchor": null,
+      "dailyChangeReference": null,
+      "technicalPriceFactor": 0.9523809523809523,
+      "priceIndexComparableFactor": 0.9523809523809523,
+      "totalReturnComparableFactor": 0.9523809523809523,
+      "volumeTransformMode": "SUPPLY_CHANGE",
+      "shareUnitFactor": null,
+      "statedStockDistributionRatio": 0.05,
+      "newSharesIssued": 12617870,
+      "newSharesListingDate": "2025-10-09",
+      "sourceQuality": "OFFICIAL_COMPANY_DOCUMENT_PLUS_RAW_MARKET_DATA",
+      "factorQuality": "HIGH",
+      "firstKnownQuality": "PARTIAL",
+      "sourceUrls": [
+        "https://corp.momo.com.tw/file/investor/shareholdersMeeting/202601211911/20260508153630.pdf"
+      ],
+      "unknownReasons": [
+        "PRIMARY_EXCHANGE_OPENING_REFERENCE_NOT_ARCHIVED",
+        "EXACT_FIRST_KNOWN_TIMESTAMP_NOT_ARCHIVED",
+        "TRADABLE_SHARE_TIMELINE_NEEDS_POINT_IN_TIME_REGISTRY"
+      ]
+    },
+    {
+      "eventKey": "3593:2025-12-22:LOSS_REDUCTION",
+      "symbol": "3593",
+      "name": "力銘",
+      "actionType": "LOSS_REDUCTION",
+      "effectiveDate": "2025-12-22",
+      "firstKnownAt": null,
+      "previousRawClose": 8.1,
+      "economicAdjustmentReference": 13.5,
+      "exchangeOpeningReference": null,
+      "providerAdjustedAnchor": null,
+      "dailyChangeReference": null,
+      "technicalPriceFactor": 1.6666666666666667,
+      "priceIndexComparableFactor": 1.6666666666666667,
+      "totalReturnComparableFactor": 1.6666666666666667,
+      "volumeTransformMode": "UNIT_SCALE",
+      "shareUnitFactor": 0.6,
+      "sourceQuality": "PROVIDER_VERIFIED_SAMPLE_OFFICIAL_ARTIFACT_PENDING",
+      "factorQuality": "MEDIUM_HIGH",
+      "firstKnownQuality": "UNKNOWN",
+      "sourceUrls": [],
+      "unknownReasons": [
+        "SPECIFIC_PRIMARY_ACTION_ARTIFACT_NOT_ARCHIVED",
+        "FIRST_KNOWN_TIMESTAMP_NOT_ARCHIVED"
+      ]
+    },
+    {
+      "eventKey": "8103:2025-12-08:CASH_REFUND_REDUCTION",
+      "symbol": "8103",
+      "name": "瀚荃",
+      "actionType": "CASH_REFUND_REDUCTION",
+      "effectiveDate": "2025-12-08",
+      "firstKnownAt": null,
+      "previousRawClose": 74.7,
+      "economicAdjustmentReference": 86.11764705882354,
+      "exchangeOpeningReference": null,
+      "providerAdjustedAnchor": null,
+      "dailyChangeReference": null,
+      "technicalPriceFactor": 1.1528466808410112,
+      "priceIndexComparableFactor": 1.1528466808410112,
+      "totalReturnComparableFactor": 1.1528466808410112,
+      "volumeTransformMode": "UNIT_SCALE",
+      "shareUnitFactor": 0.85,
+      "cashRefundPerOldShare": 1.5,
+      "sourceQuality": "PROVIDER_VERIFIED_SAMPLE_OFFICIAL_ARTIFACT_PENDING",
+      "factorQuality": "MEDIUM_HIGH",
+      "firstKnownQuality": "UNKNOWN",
+      "sourceUrls": [],
+      "unknownReasons": [
+        "SPECIFIC_PRIMARY_ACTION_ARTIFACT_NOT_ARCHIVED",
+        "FIRST_KNOWN_TIMESTAMP_NOT_ARCHIVED"
+      ]
+    },
+    {
+      "eventKey": "8422:2025-11-17:PAR_VALUE_CHANGE",
+      "symbol": "8422",
+      "name": "可寧衛",
+      "actionType": "PAR_VALUE_CHANGE",
+      "effectiveDate": "2025-11-17",
+      "firstKnownAt": null,
+      "previousRawClose": 250,
+      "economicAdjustmentReference": 25,
+      "exchangeOpeningReference": null,
+      "providerAdjustedAnchor": null,
+      "dailyChangeReference": null,
+      "technicalPriceFactor": 0.1,
+      "priceIndexComparableFactor": 0.1,
+      "totalReturnComparableFactor": 0.1,
+      "volumeTransformMode": "UNIT_SCALE",
+      "shareUnitFactor": 10,
+      "sourceQuality": "OFFICIAL_TWSE_MARKET_DATA_PLUS_OFFICIAL_METHOD",
+      "factorQuality": "HIGH",
+      "firstKnownQuality": "UNKNOWN",
+      "sourceUrls": [
+        "https://www.twse.com.tw/exchangeReport/STOCK_DAY_AVG?date=20251101&response=html&stockNo=8422",
+        "https://www.twse.com.tw/zh/announcement/change/cal.html"
+      ],
+      "unknownReasons": [
+        "SPECIFIC_FIRST_KNOWN_ANNOUNCEMENT_NOT_ARCHIVED"
+      ]
+    }
+  ]
+}
