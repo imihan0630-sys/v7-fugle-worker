@@ -6326,3 +6326,125 @@ Does variable-length segmentation add incremental information after fixed window
 If swing-defined features do not improve incremental diagnostics, keep the simpler fixed-window system.
 Complexity is not a benefit by itself.
 
+
+
+## DL-002AO — Local Motif Falsification Set v0.1
+
+### Goal
+Create a small, mechanism-driven motif library before any outcome-guided motif mining.
+
+### Constructive motifs
+M1 UNDERCUT_RECLAIM_TIGHTEN
+- local support undercut
+- prompt close reclaim
+- subsequent range contraction
+- no immediate selling-volume expansion
+
+M2 RIGHT_SIDE_ACCELERATION_HANDLE
+- improving recovery slope
+- approach to resistance
+- shallow pullback
+- handle range/volume contraction
+
+M3 PIVOT_TEST_HIGHER_LOW
+- resistance retest
+- pullback forms higher low
+- close progression returns toward pivot
+- rejection depth decreases
+
+M4 BREAKOUT_RETEST_REACCELERATION
+- close breakout
+- retest with reduced sell pressure
+- renewed close/range strength
+
+### Adverse motifs
+N1 UNDERCUT_NO_RECLAIM
+- support undercut
+- weak/slow reclaim or no reclaim
+- continued lower lows
+
+N2 HIGH_VOLUME_REJECTION_REPEAT
+- repeated pivot tests
+- long upper rejection / weak closes
+- high or rising volume
+- no close progression
+
+N3 EXPANSION_AFTER_TIGHTNESS
+- tight area
+- sudden downside range expansion
+- selling-volume expansion
+
+N4 BREAKOUT_REENTRY_WEAK_BOUNCE
+- breakout
+- fast re-entry into base
+- weak bounce fails below pivot
+- second deterioration
+
+### Why pre-register these
+They are derived from already-defined mechanisms, not selected because their future returns looked attractive.
+
+### Validation
+For each constructive motif, compare with its adverse mirror on the same date and similar:
+- liquidity
+- price tier
+- sector
+- regime
+- parent pattern maturity
+
+Use existing D1/D3/D5/D10, MFE/MAE, R01 and stop-first outcomes.
+
+## DL-002AP — Parent Pattern vs Local Motif Hierarchy
+
+### Question
+Does the local motif add value independent of the parent pattern?
+
+Example:
+- A cup may be mature.
+- A right-side acceleration + shallow handle motif appears.
+Does the motif improve outcomes within already-mature cups?
+
+### Hierarchical tests
+1. Parent pattern only.
+2. Motif only.
+3. Parent + motif.
+4. Primitive controls + motif.
+5. Primitive controls + parent label + motif.
+
+Interpretation:
+- if motif survives primitive controls and parent label, it is a genuine local incremental candidate;
+- if parent loses significance after motif controls, the full named pattern may mostly be context;
+- if neither survives primitive controls, discard both as redundant descriptions.
+
+### Avoid hierarchy leakage
+Motifs occurring after the selection timestamp cannot explain Selection Alpha.
+They may only enter revalidation/execution research from the date they become observable.
+
+## DL-002AQ — Boundary between Selection Alpha and Execution Alpha in Pattern Research
+
+### Selection-time information
+Allowed at scan date:
+- confirmed daily swings
+- pattern maturity as-of close
+- local motif states already completed
+- pivot distance
+- RS / volume / time structure known then
+
+### Execution-time information
+Only after scan date:
+- intraday breakout quality
+- 15m retest
+- follow-through
+- temporary undercut/reclaim
+- post-breakout local motifs
+
+### Rule
+Do not let post-selection motifs make the original selector look smarter in hindsight.
+
+Store:
+- firstObservableAt
+- eligibleForSelectionResearch
+- eligibleForExecutionResearch
+
+### Importance
+This preserves the current project distinction between Selection Alpha and Execution Alpha and prevents look-ahead contamination.
+
