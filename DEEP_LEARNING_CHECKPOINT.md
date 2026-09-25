@@ -729,3 +729,12 @@ YES for research infrastructure integrity: resolving the actual archive lineage 
 - A valid zero-Formal-plan day can have zero PV rows; expected opportunity denominator must be explicit.
 - Prospective PV feature/data-quality collection should continue even while selection-cohort alpha interpretation remains gated.
 - No Worker/runtime/API/secret/Formal change was made.
+
+## Price-Volume evidence update — PVE-013 through PVE-028
+- PV evidence lane now separates after-market runtime acknowledgements, intraday persistence observability, D1 at-rest proof, cohort provenance and outcome maturity.
+- /api/scan/status can expose after-market PV bootstrap/daily runtime receipts because pvShadow is included in the final LAST_SCAN_KEY summary. The intraday recorder result is not persisted in LAST_MONITOR_KEY because PV runs afterward.
+- 2026-09-29 is the first ordinary post-enable session but is not primary H001~H004 evidence: its plan lineage inherits the known-stale 9/24 selection and it is expected to be same-slot baseline cold-start before the first after-market bootstrap.
+- 2026-09-30 is only the earliest possible baseline-ready intraday session if the 9/29 bootstrap succeeds; clean-cohort provenance remains a separate gate.
+- v0.1 Guard-label integrity has known defects: reversed liquidity thresholds, liquidityException type mismatch, unverified upstream CA/gap/marketStructure plumbing, VI hardcoded false, and raw previousClose used for price-censor semantics.
+- These are research-label/data-quality defects only; Formal A/B/ranking/BUY/capital/push remain unchanged.
+- First evidence window prioritizes falsifying recorder/guard correctness, not estimating alpha.
