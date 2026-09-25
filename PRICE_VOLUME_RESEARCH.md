@@ -11397,3 +11397,312 @@ COLLECT_FEATURE_EVIDENCE_NOW.
 DEFER_COHORT_ALPHA_INFERENCE.
 
 Status: COLLECTION_CONTINUES / PRIMARY_ALPHA_GATED.
+
+# PVE-013 — After-Market PV Runtime Receipt Contract
+
+## Observable source
+The current V8.11 after-market summary includes:
+- pvShadow.enabled;
+- pvShadow.bootstrap;
+- pvShadow.daily;
+and the final summary is persisted to LAST_SCAN_KEY, exposed by authenticated /api/scan/status.
+
+Therefore /api/scan/status can provide a **runtime receipt** after a completed after-market scan.
+
+## Bootstrap receipt checks
+For a non-zero Formal plan day:
+- enabled == true;
+- decisionImpact == false;
+- bootstrap.requested equals the count of non-AIDEEN Formal plans;
+- results length matches requested;
+- each result has no error;
+- each result is either:
+  - skipped=true with validSessions >= 20;
+  - or bootstrapped and saved with validSessions >= 20.
+
+A runtime bootstrap receipt is:
+`WRITE_PATH_ACKNOWLEDGED`.
+
+It is not an independent D1 at-rest readback.
+
+## Daily receipt checks
+- daily.enabled == true;
+- daily.schemaVersion == PV_SHADOW_V0_1;
+- daily.mode == LOG_ONLY;
+- daily.decisionImpact == false;
+- daily.formalCoreImpact == false;
+- zeroPvPushes == true;
+- zeroPvActions == true;
+- details contain per-plan save/error information.
+
+`daily.stored` is the function's insertion acknowledgement, not independent proof that later D1 SELECT/fingerprint readback succeeds.
+
+## Zero-plan semantics
+If Formal selected zero eligible plans:
+- bootstrap.requested == 0;
+- daily.stored == 0;
+can be valid.
+
+Classification:
+`ZERO_FORMAL_PLANS_VALID`,
+not recorder failure.
+
+Status: AFTER_MARKET_RUNTIME_RECEIPT_CONTRACT_FROZEN.
+
+
+# PVE-014 — Intraday PV Receipt Is Not Persisted in LAST_MONITOR_KEY
+
+## Source-order audit
+Current monitor order is:
+1. Formal signal evaluation / push processing;
+2. live snapshot write;
+3. build kvSummary;
+4. persist kvSummary to LAST_MONITOR_KEY;
+5. execution research recorder;
+6. PV intraday recorder;
+7. return enriched in-memory object.
+
+Thus the return object may contain:
+- executionResearchRecorder;
+- pvShadow;
+but LAST_MONITOR_KEY was already written before those fields existed.
+
+## Consequence
+Authenticated:
+- /api/live;
+- /api/signals
+cannot be assumed to provide the PV intraday write receipt from the persisted KV snapshot.
+
+## Manual monitor is not a read-only substitute
+POST /api/monitor executes runBackgroundMonitor with forced frames.
+It can:
+- fetch live market data;
+- evaluate Formal signals;
+- process signal state/push paths;
+- write live state;
+- then run research recorders.
+
+Therefore it is an execution endpoint, not a read-only evidence endpoint.
+
+Do not invoke it merely to inspect whether historical PV writes occurred.
+
+Status: INTRADAY_RUNTIME_RECEIPT_PERSISTENCE_BLIND_SPOT_CONFIRMED.
+
+
+# PVE-015 — Cron Success Is Not PV Recorder Success
+
+## Existing cron evidence
+v7_cron_runs records generic fields such as:
+- scheduled time;
+- job type;
+- status;
+- skipped;
+- Fugle calls;
+- error.
+
+It does not independently persist:
+- pvShadow.stored;
+- mutation conflicts;
+- per-symbol PV write receipts;
+- snapshot fingerprints.
+
+## Rule
+A successful monitor/Cron run means:
+the scheduled job completed under its own job semantics.
+
+It does NOT prove:
+- PV snapshot row exists;
+- PV fingerprint matches;
+- every selected symbol was recorded.
+
+This mirrors the already-observed GitHub Actions rule:
+workflow job success != qaPass.
+
+Status: CRON_SUCCESS_NOT_PV_AT_REST_PROOF.
+
+
+# PVE-016 — Current PV Observability Matrix
+
+## Already verified
+### Enable state
+Level:
+ENABLED_ONLY.
+
+Evidence:
+successful controlled enable run + binding readback.
+
+### Formal isolation
+Level:
+FORMAL_ISOLATION_VERIFIED.
+
+Evidence:
+Worker content/config/scan fingerprints unchanged during enable.
+
+## Observable after first valid after-market scan
+### Bootstrap/daily runtime receipt
+Level:
+RUNTIME_RECEIPT.
+
+Source:
+/api/scan/status.
+
+## Not currently observable with existing authorized read paths
+### Intraday recorder runtime receipt after the fact
+Persistent LAST_MONITOR_KEY lacks post-persistence PV recorder metadata.
+
+### PV D1 at-rest snapshot/fingerprint truth
+Read-only workflow direct D1 SELECT currently receives HTTP 403.
+
+## Evidence hierarchy
+1. ENABLED_ONLY
+2. RUNTIME_RECEIPT
+3. FEATURE_AT_REST_VERIFIED
+4. CLEAN_COHORT_VERIFIED
+5. OUTCOME_MATURE
+6. DESCRIPTIVE_EVIDENCE_READY
+
+Never skip a level by inference.
+
+Status: OBSERVABILITY_MATRIX_FROZEN.
+
+
+# PVE-017 — 2026-09-29 Intraday PV Is DATA_QA, Not Clean H001-H004 Evidence
+
+## Calendar lineage
+Official project calendar marks:
+- 2026-09-25 holiday;
+- 2026-09-26/27 weekend;
+- 2026-09-28 holiday.
+
+Therefore the first ordinary session after PV enable is 2026-09-29.
+
+## Plan lineage issue
+The prior completed trading session is 2026-09-24.
+
+B-130 proved the 2026-09-24 Formal selection was contaminated by stale daily history.
+
+Thus plans carried into the next trading session can have:
+- observationDate = 2026-09-29;
+- selectionScanDate = 2026-09-24;
+- cohortHistoryQuality = INVALID/QUARANTINED.
+
+## Consequence
+Any 2026-09-29 intraday PV features may be useful for:
+- slot parsing QA;
+- baseline QA;
+- snapshot idempotency;
+- guard-state QA;
+- runtime/storage QA.
+
+But they do not qualify as primary clean H001-H004 evidence.
+
+Clean feature data != clean selection cohort.
+
+Status: 2026_09_29_INTRADAY_DATA_QA_ONLY_FOR_PRIMARY_PV_ALPHA.
+
+
+# PVE-018 — Earliest Potential Clean Cohort Is the 2026-09-29 After-Market Selection, Not the Morning Session
+
+## Candidate timeline
+If the 2026-09-29 after-market scan completes:
+its newly selected plans are intended for the next valid trading session.
+
+Those plans are the earliest post-enable cohort that is not inherited from the known-bad 2026-09-24 selection.
+
+## Still not automatically clean
+Current Production does not yet persist a production-grade symbol-session quality receipt.
+
+Therefore 2026-09-29 after-market plans become:
+`POTENTIALLY_CLEAN_PENDING_PROVENANCE`.
+
+They reach:
+`CLEAN_COHORT_VERIFIED`
+only if an independent point-in-time or immediate authoritative quality audit establishes:
+- latest expected prior symbol session is present;
+- no unresolved symbol suspension provenance;
+- corporate-action volume semantics are not UNKNOWN for required features;
+- pool selection integrity is not compromised.
+
+## Implication
+Earliest possible primary intraday H001-H004 observation:
+a later session using a verified 2026-09-29 selection cohort.
+
+It is not automatically 2026-09-29 itself.
+
+Status: FIRST_CLEAN_COHORT_CLOCK_CORRECTED.
+
+
+# PVE-019 — D1 HTTP 403 Is an Observability Failure, Not Evidence of Missing PV Rows
+
+## Current read-only QA result
+The QA workflow can verify:
+- deployed runtime;
+- PV enable binding;
+- Formal isolation projections.
+
+Its direct Cloudflare D1 SELECT returns HTTP 403.
+
+## Correct interpretation
+Supported:
+`D1_AT_REST_QA_UNAUTHORIZED`.
+
+Not supported:
+- PV table empty;
+- PV writes failed;
+- baselines absent;
+- snapshots absent.
+
+An authorization failure contains no row-existence information.
+
+## Research state
+PV at-rest row count remains:
+`UNKNOWN`
+until:
+- D1 Read authorization exists;
+or
+- an owner-approved isolated read path provides equivalent independent evidence.
+
+No secret/token scope was changed.
+
+Status: AUTHORIZATION_UNKNOWN_NOT_ZERO_FROZEN.
+
+
+# PVE-020 — First Post-Enable Trading-Day Decision Tree
+
+## Step 1 — identify Formal opportunity count
+From the completed scan/plan lineage:
+- zero plan -> ZERO_FORMAL_PLANS_VALID;
+- one or more plans -> PV_OPPORTUNITIES_EXPECTED.
+
+## Step 2 — after-market runtime receipt
+Inspect /api/scan/status:
+- pvShadow enabled;
+- bootstrap requested/results/errors;
+- daily stored/details;
+- zeroPvPushes/actions.
+
+Classify:
+- RUNTIME_RECEIPT_PASS;
+- RUNTIME_RECEIPT_PARTIAL;
+- RUNTIME_RECEIPT_FAIL;
+- ZERO_FORMAL_PLANS_VALID.
+
+## Step 3 — feature QA
+For 9/29 intraday:
+use only for DATA_QA because cohort lineage comes from quarantined 9/24 selection.
+
+## Step 4 — at-rest QA
+Remain UNKNOWN if D1 SELECT authorization is still blocked.
+Runtime acknowledgement does not promote to FEATURE_AT_REST_VERIFIED.
+
+## Step 5 — cohort provenance
+Audit the 9/29 after-market selected pool separately.
+Only verified pool-date provenance can seed later clean H001-H004 observations.
+
+## Step 6 — no alpha
+Do not calculate H001/H002 effect sizes until:
+- clean cohort exists;
+- at-rest evidence quality meets the frozen gate;
+- sample/date floors mature.
+
+Status: FIRST_SESSION_EVIDENCE_PROTOCOL_FROZEN.
