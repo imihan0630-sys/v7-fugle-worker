@@ -11982,3 +11982,123 @@ A maturity/watch layer could improve capital use without weakening Formal if it:
 
 This remains Shadow until evidence and owner approval.
 
+
+
+## DL-002GM — Intraday Time-of-Day Volume Normalization
+
+### Current code baseline verified
+Worker buildBar computes:
+current completed intraday bar volume /
+average volume of the previous 5 intraday bars.
+
+This is simple and point-in-time safe, but it does not explicitly control for normal time-of-day volume seasonality.
+
+### Taiwan evidence
+TWSE studies document strong intraday seasonality:
+- trading volume/order flow tends to be high near the open and close (J/U/inverse-J descriptions depending sample/metric);
+- volatility and spreads also vary by time of day;
+- information and liquidity trading contribute differently across the session.
+
+### Research question
+Does a bar’s volume remain unusual AFTER controlling for its clock-time baseline?
+
+### Prospective/historical-minute fields
+For each 10m/15m slot:
+- barVolume
+- prev5BarVolumeRatio (current baseline)
+- sameSlotMedianVolume20d
+- sameSlotMeanVolume20d
+- timeOfDayVolumeRatio
+- timeOfDayVolumeZ
+- sessionProgressPct
+- openingWindow
+- closingWindow
+- closingAuctionBar
+
+### Point-in-time construction
+For date t, same-slot baseline may use only prior completed trading days < t.
+
+No current-day future bars.
+
+### Comparison
+PREV5_ONLY
+TIME_OF_DAY_ONLY
+PREV5_PLUS_TIME_OF_DAY
+
+Evaluate:
+- B breakout confirmation quality
+- A pullback “volume contraction”
+- R01 failure
+- BUY coverage
+- missed/noisy signals
+
+### Hypothesis
+A 1.3x previous-five-bars volume spike late in the day may be less exceptional if that slot is normally high-volume.
+Conversely, a modest absolute bar at midday may be highly abnormal relative to its quiet time slot.
+
+No direction assumed.
+
+## DL-002GN — Intraday Volatility / Spread Seasonality
+
+### Same issue beyond volume
+Time of day also affects:
+- volatility
+- spread
+- depth
+- information asymmetry
+
+### Research normalization
+For prospective microstructure:
+- spreadTicksVsSameSlot
+- rangeATRIntradayVsSameSlot
+- tradeCountVsSameSlot
+- depthVsSameSlot
+- aggressorFlowVsSameSlot
+
+### Why
+A “wide spread” at open may be normal.
+The same spread at midday may be abnormal.
+
+### Simplicity
+Only add a time-of-day normalization if it improves incremental execution diagnostics beyond current 15m fields.
+
+## DL-002GO — Opening and Closing Bars Are Special Contexts
+
+### Opening
+Overnight information is incorporated.
+Volume/volatility/information asymmetry can be high.
+
+### Closing
+Liquidity/overnight-risk, institutional and closing-auction effects can increase activity.
+The 13:30 official close includes the closing call mechanism.
+
+### Tags
+- OPENING_DISCOVERY
+- NORMAL_SESSION
+- LATE_SESSION
+- CLOSING_AUCTION
+
+### Rule
+Do not compare these bars as exchangeable observations without a session-phase tag.
+
+## DL-002GP — Current Intraday Volume Ratio Is a Baseline, Not Ground Truth
+
+### Research stance
+Do not modify Formal now.
+
+The existing previous-5-bar ratio has advantages:
+- easy
+- current-day adaptive
+- no historical intraday cache required
+- point-in-time
+
+Time-of-day normalized volume has advantages:
+- controls structural intraday seasonality.
+
+### Falsification
+If same-slot normalization does not improve:
+- false-breakout discrimination,
+- pullback-quality discrimination,
+- stability across session periods,
+then keep the simpler existing ratio.
+
