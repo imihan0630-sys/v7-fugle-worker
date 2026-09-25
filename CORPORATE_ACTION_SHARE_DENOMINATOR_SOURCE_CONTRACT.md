@@ -179,36 +179,54 @@ Legal/accounting reduction dates, registration dates and market unit-switch date
 Trading-history continuity must align to the exchange trading lifecycle.
 Financial statements may retrospectively restate weighted-average shares for EPS; that restatement is not a bar-level denominator.
 
-### D. Cash capital increase — 2465
+### D. Cash capital increase / payment certificates — 2465
 
-This case proves that REGISTERED_ISSUED_SHARES and public exchange-listed/tradable supply can diverge because of private-placement shares.
+This case is a stronger timing counterexample than the earlier draft implied.
 
-Evidence:
-- company first-party historical/current capital pages show total issued shares moving from 83,946,031 to 93,946,031 after the 10,000,000-share cash capital increase;
-- the 2025-11-12 capital-increase listing announcement states that the original listed common shares were 58,946,031, explicitly excluding 25,000,000 private-placement shares;
-- the same announcement states that 10,000,000 cash-capital-increase payment certificates were approved to begin listed trading on 2025-11-17.
+Verified/corroborated lifecycle:
+- pre-increase registered paid-in capital/share base: NT$839,460,310 / 83,946,031 shares;
+- 25,000,000 of those shares were private-placement shares and were explicitly excluded from the announcement's "original listed common shares" count;
+- original public-listed common shares stated by the 2025-11-12 listing announcement: 58,946,031;
+- cash-increase payment certificates: 10,000,000 shares;
+- payment certificates begin listed trading: 2025-11-17;
+- TWSE 2465 stock-profile snapshots produced 2025-11-22/27 still display paid-in capital NT$839,460,310;
+- the MOEA company change-registration list records NT$939,460,310 with approval date 2026-01-06.
 
-Therefore at least three counts must not be collapsed:
-- registered issued total before: 83,946,031;
-- original publicly listed common shares stated by the announcement: 58,946,031;
-- private-placement shares excluded from that original listed count: 25,000,000.
+The listing announcement also states a post-increase cumulative listed total of 93,946,031 and paid-in capital NT$939,460,310. That wording is not arithmetically the same semantic object as:
+58,946,031 original public-listed shares + 10,000,000 newly tradable payment certificates = 68,946,031,
+because the former total also numerically includes the 25,000,000 private-placement shares.
 
-The announcement also contains wording that reports a cumulative listed total of 93,946,031 after the increase, which is not arithmetically identical to 58,946,031 + 10,000,000.
-Until the exact TWSE/MOPS machine-field definition and primary artifact are archived, do NOT silently resolve that wording conflict by assumption.
+Therefore the earlier convenience scenario
+83,946,031 -> 93,946,031 on 2025-11-17
+is **not admissible as point-in-time REGISTERED_ISSUED_SHARES truth**. It is retained only as a falsification witness showing how silently switching denominator semantics can manufacture a normalized-volume difference.
 
-For CA-103 mechanics sensitivity only, two denominator scenarios are retained:
-1. REGISTERED_ISSUED_TOTAL: 83,946,031 -> 93,946,031;
-2. PUBLIC_LISTED_BASE sensitivity: 58,946,031 -> 68,946,031.
+Safe interpretation:
+1. REGISTERED_ISSUED_SHARES:
+   - do not step merely because payment certificates start trading;
+   - the directly observed official registration change is 2026-01-06;
+   - exact historical knownAt remains source-version dependent.
+2. EXCHANGE_LISTED_OR_TRADABLE_SHARES:
+   - a real supply step occurs on 2025-11-17 because 10,000,000 payment certificates begin trading;
+   - 58,946,031 -> 68,946,031 is retained as a **public-tradable sensitivity** only;
+   - exact exchange-field semantics remain PARTIAL_CONFLICT until a primary machine contract that explicitly resolves private-placement treatment is archived.
+3. PRIVATE_PLACEMENT_SHARES:
+   - must not be silently treated as ordinary freely tradable supply.
+4. PAYMENT_CERTIFICATE_SHARES:
+   - are a distinct tradable instrument/stage before final common-share registration/conversion and must preserve their own lifecycle provenance.
 
-Both scenarios produce the same Boolean disagreement on 2025-11-18 for the current A low-volume threshold, although the exact normalized ratio differs.
-This makes threshold sensitivity robust to the tested denominator ambiguity, but it does NOT make either exchange-listed denominator production-verified.
+CA-103 result:
+- strict then-registered-share normalization produces no 2025-11-18 1.05 threshold flip because the registered denominator does not step on 2025-11-17;
+- the public-tradable sensitivity produces a flip (raw 1.0908796 vs normalized 1.0003297);
+- therefore the disagreement is real **only conditional on the denominator semantic being tradable supply**, not a universal corporate-action correction.
 
 Status:
-- `2465_REGISTERED_ISSUED_TOTAL=CORROBORATED`;
-- `2465_2025-11-17_PAYMENT_CERTIFICATE_LISTING=CORROBORATED_MOPS_ANNOUNCEMENT_MIRROR`;
-- `2465_EXACT_EXCHANGE_LISTED_DENOMINATOR=PARTIAL_CONFLICT`.
+- `2465_REGISTERED_ISSUED_PRE_2026_01_06=83,946,031` = CORROBORATED;
+- `2465_REGISTERED_CAPITAL_CHANGE_APPROVAL=2026-01-06` = OFFICIAL_MOEA;
+- `2465_2025-11-17_PAYMENT_CERTIFICATE_LISTING=10,000,000` = CORROBORATED_MOPS/TWSE;
+- `2465_PUBLIC_TRADABLE_58,946,031_TO_68,946,031` = SENSITIVITY / NOT PRODUCTION VERIFIED;
+- `2465_EXACT_EXCHANGE_LISTED_DENOMINATOR` = PARTIAL_CONFLICT;
+- `2465_83,946,031_TO_93,946,031_ON_2025-11-17_AS_REGISTERED_DENOMINATOR` = FALSIFIED.
 
-Do not promote either scenario to production until the primary exchange/MOPS artifact and field definition are frozen.
 
 ## 6. Source hierarchy
 
@@ -264,7 +282,86 @@ A denominator archive must emit:
 
 A downstream normalized feature is READY only when its exact denominatorType has complete point-in-time coverage.
 
-## 9. Governance
+## 9. CA-102 denominator-vintage replay contract
+
+Deterministic fixtures are materialized in:
+`research/corporate_action_denominator_vintage_threshold_v0_1.json`.
+
+Replay invariant:
+- a denominator version is consumable only if `knownAt <= replayAsOf`;
+- and its semantic `effectiveFromSession <= targetSession`;
+- a later correction may improve EX_POST_MECHANICS_TRUTH but may not be backfilled into POINT_IN_TIME_KNOWN_TRUTH.
+
+Required falsification cases:
+1. future-known version must not leak backward;
+2. known-but-not-effective supply change must not switch early;
+3. known-and-effective version may switch;
+4. late correction must not rewrite the historical decision-time denominator.
+
+Real corporate-action records with missing exact first-known timestamps remain UNKNOWN for point-in-time replay even when ex-post mechanics are verified.
+
+## 10. CA-103 bounded threshold sensitivity
+
+Frozen source artifact:
+`research/corporate_action_denominator_vintage_threshold_v0_1.json`.
+
+Real mechanics:
+- 8454 event-day witness: raw ratio 0.8253790 vs registered-issued-turnover analogue 0.7860752; no 1.05/1.30 Boolean disagreement.
+- 2465 2025-11-17..21:
+  - strict registered denominator: no denominator step on 11/17, therefore no disagreement with raw ratios;
+  - public-tradable sensitivity: one 1.05 disagreement on 2025-11-18 (raw 1.0908796 vs 1.0003297);
+  - no 1.30 breakout disagreement in the five tested sessions.
+
+Structural result:
+for `todayTurnover / avg(previous5Turnover)`, a one-time denominator step matters only while the five-session lookback straddles that step. Once current and all five prior sessions share the same denominator, a constant denominator cancels algebraically unless another denominator change occurs.
+
+This is semantics/mechanics evidence only. It is not an outcome test and not evidence that normalized turnover predicts returns.
+
+## 11. CA-104 downstream denominator interaction contract
+
+### Institutional flow
+Raw official net-share flows remain factual share counts across a pure supply change.
+Do not retroactively rescale:
+- foreignNet;
+- trustNet;
+- dealerNet;
+- institutionTotalNet.
+
+Any normalized variant such as institutional net shares / issued shares, listed shares, or free float must name its denominator space and pass the same point-in-time vintage gate.
+
+Institutional buy-day streaks are sign/count semantics and do not become denominator-normalized merely because a supply event exists.
+
+### Market capitalization
+The current Worker has a fallback of the form:
+`marketCapYi = sharesOutstanding * close / 1e8`
+when an explicit market-cap field is absent.
+
+Research replay must not combine a historical price with a current share-count snapshot.
+A market-cap record therefore needs:
+- marketCapSemantic;
+- denominatorType;
+- denominatorValue;
+- priceDate/session;
+- knownAt;
+- source provenance.
+
+Do not assume registered issued shares, publicly tradable shares and free float produce the same economic "market cap" object, especially when private-placement shares or payment certificates exist.
+
+### Valuation / EPS
+EPS weighted-average shares are a financial-report denominator, not a daily trading-supply denominator.
+Corporate-action restatement under financial-reporting rules must not be reused as a bar-level turnover bridge.
+
+Point-in-time P/E/P/B research must preserve the official valuation snapshot/methodology and its source date.
+Do not recompute old valuation using a current share base merely to fill a historical gap.
+
+### Holdings percentages
+A holding percentage can move mechanically when its denominator changes even if the holder transacts zero shares.
+Preserve raw holder shares and denominator-vintaged percentage as separate fields.
+
+Status:
+DOWNSTREAM_DENOMINATOR_SPACES_SEPARATED / NO FORMAL CHANGE.
+
+## 12. Governance
 
 Research/Shadow only.
 No Worker.js wiring.
