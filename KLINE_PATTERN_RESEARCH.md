@@ -13028,3 +13028,139 @@ If no robust mature structures exist:
 
 This preserves the project's no-force-fill principle.
 
+
+
+## DL-002HV — Pattern Value Must Be Evaluated Net of Executability
+
+### Problem
+A pattern can look statistically attractive but be impractical because:
+- entry occurs after a gap,
+- liquidity is poor,
+- stop distance is too wide,
+- available upside to major resistance is small,
+- price-limit mechanics impair fills.
+
+### Separate layers
+STRUCTURAL_QUALITY
+- topology / primitives.
+
+EXECUTION_FEASIBILITY
+- entry/retest/slippage/liquidity.
+
+ECONOMIC_VALUE
+- forward reward relative to realistic risk/cost.
+
+### Research fields
+- structuralQualityVector
+- availableRoomToResistance
+- stopDistancePct/ATR/ticks
+- estimatedSlippage
+- turnover/liquidity
+- gapEntryPenalty
+- expectedTradeFrequency
+- capitalOccupancyDays
+- opportunityCost
+
+### Important
+Do not reject a structurally valuable feature merely because one execution design is poor.
+That may mean Selection Alpha exists but Execution Alpha needs different handling.
+
+## DL-002HW — Pattern Quality vs Reward/Risk Are Distinct
+
+### Example
+A beautiful VCP may sit only 3% below major resistance with an 8% structural stop.
+The pattern can be real but the trade RR is poor.
+
+Conversely:
+a mediocre-looking pattern may have large open upside and tight invalidation.
+
+### Research
+Cross-tab:
+- topology quality
+- current Formal RR
+- real-resistance room
+- realized MFE/MAE
+
+### Question
+Does topology help calibrate whether the theoretical RR is actually reachable?
+
+No replacement of Formal RR gate.
+
+## DL-002HX — Time-to-Target / Capital Occupancy
+
+### Existing concern
+Capital utilization matters; a signal that eventually works after 40 sessions is different from one that works in 3.
+
+### Fields
+- timeToMFE5/10/15/20Pct
+- timeToTarget
+- timeToStop
+- daysCapitalOccupied
+- maxAdverseBeforeTarget
+- noEventByHorizon
+
+### Pattern hypothesis
+Different structures may have different payoff speed:
+- flag/VCP may resolve faster,
+- cup/W may require longer,
+but this must be measured, not assumed.
+
+### Portfolio relevance
+A pattern with modest return but fast resolution can have different capital efficiency from a slow pattern.
+
+Research only; no portfolio optimization yet.
+
+## DL-002HY — Utility Is Not Raw Win Rate
+
+### Avoid
+“Pattern A wins 65%, therefore it is better.”
+
+### Report jointly
+- hit rate
+- median/mean return
+- MFE/MAE
+- left-tail loss
+- stop-first
+- time-to-resolution
+- coverage
+- turnover/cost
+- capital occupancy
+
+### Why
+High win rate can coexist with rare large losses.
+Low win rate can coexist with favorable payoff asymmetry.
+
+### No composite utility score yet
+Keep dimensions visible until owner-approved objectives/weights exist.
+
+## DL-002HZ — Pattern Research Decision Table
+
+### Possible conclusions for each feature
+PROMISING_INCREMENTAL
+- stable OOS incremental information.
+
+RISK_FILTER_CANDIDATE
+- mainly reduces severe failures.
+
+EXECUTION_CONTEXT_CANDIDATE
+- useful after selection, not for ranking.
+
+INTERPRETABILITY_ONLY
+- explains chart but no incremental outcome information.
+
+REDUNDANT
+- duplicates existing Formal/DL-001 variables.
+
+UNSTABLE
+- sensitive to date/threshold/regime.
+
+DATA_BLOCKED
+- cannot validly test yet.
+
+INSUFFICIENT_SAMPLE
+- no conclusion.
+
+### Importance
+Not every learned concept needs to enter the trading engine.
+A mature research system should be able to learn something and then deliberately decide NOT to use it.
+
