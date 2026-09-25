@@ -27,6 +27,43 @@ export function stableHash(value) {
   return createHash("sha256").update(JSON.stringify(stable(value))).digest("hex");
 }
 
+export function buildShadowParentReference({ scanDate, symbol, parentSnapshot } = {}) {
+  const date = String(scanDate || "");
+  const stock = String(symbol || "");
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || !stock) {
+    return { status: "BLOCKED", reason: "SHADOW_PARENT_IDENTITY_INCOMPLETE" };
+  }
+  if (!parentSnapshot || typeof parentSnapshot !== "object") {
+    return { status: "BLOCKED", reason: "SHADOW_PARENT_SNAPSHOT_MISSING" };
+  }
+  return {
+    status: "VALID",
+    identityVersion: "SHADOW_PARENT_V0_1",
+    shadowParentKey: date + "|" + stock,
+    scanDate: date,
+    symbol: stock,
+    parentSnapshotHash: stableHash(parentSnapshot),
+    researchOnly: true,
+    decisionImpact: false
+  };
+}
+
+export function compareShadowParentReferences(a, b) {
+  if (!a || !b || a.status !== "VALID" || b.status !== "VALID") {
+    return { status: "BLOCKED", reason: "INVALID_PARENT_REFERENCE" };
+  }
+  if (a.shadowParentKey !== b.shadowParentKey) {
+    return { status: "DIFFERENT_PARENT", sameIdentity: false, provenanceConflict: false };
+  }
+  const sameHash = a.parentSnapshotHash === b.parentSnapshotHash;
+  return {
+    status: sameHash ? "SAME_PARENT_EXACT" : "PROVENANCE_CONFLICT",
+    sameIdentity: true,
+    sameSnapshotHash: sameHash,
+    provenanceConflict: !sameHash
+  };
+}
+
 export function validatePatternBars({ bars, requireOpen = false } = {}) {
   if (!Array.isArray(bars) || bars.length === 0) {
     return { usable: false, status: "BLOCKED", reason: "NO_BARS", bars: [] };
