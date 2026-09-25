@@ -14394,3 +14394,62 @@ Still blocking a clean implementation PASS:
 Status:
 `PATTERN_SELECTION_SHADOW_V0_1 = SPEC_READY / DATA_CONTRACT_GUARDED / NOT_IMPLEMENTED`.
 Formal Core remains LOCKED.
+
+
+## DL-003E — Nested Resistance / 52-Week-High Evidence Audit
+
+### Research question
+Does longer-horizon resistance add independent information to daily local-breakout / R01 failure research, or is it merely a duplicate of priorHigh60, MA60 and generic momentum?
+
+### External evidence
+1. Hao, Chu, Ho & Ko (International Review of Economics & Finance, 2016) study Taiwan common stocks including OTC, 1982-2012. The 52-week-high anchor and recency measures contain overlapping but non-identical momentum information. Results are regime/specification sensitive: portfolio 52-week-high return is not uniformly significant; January and market-state effects matter; cross-sectional tests find the 52-week-high anchor more robust than pure recency in their sample.
+2. A horizontal support/resistance study on US NYSE/NASDAQ data finds local support/resistance can predict some trend interruptions, but does not generate excess returns versus buy-and-hold. This is useful counterevidence against assuming every resistance interaction is alpha.
+3. Newer Taiwan thesis evidence on 52-week-high strategies exists, but design/search-space and publication tier are weaker than peer-reviewed evidence; treat as secondary plausibility only, not promotion evidence.
+
+### Mechanism interpretation
+A daily 20d breakout can coexist with a nearby longer-horizon anchor. The potentially incremental object is not '52-week high score' but NESTED_RESISTANCE_CONFLICT:
+- local breakout state remains true;
+- longer-horizon structural zone proximity is recorded separately;
+- availableAir to major zone is explicit;
+- resistance age/recency and touch progression are descriptive fields;
+- market regime conditions interpretation.
+
+This directly matches frozen C6: local breakout into major resistance must preserve both facts rather than redefine the local breakout as false.
+
+### Redundancy audit against current system
+Likely redundant primitives:
+- priorHigh60 proximity,
+- MA60 distance,
+- ret20 / generic momentum,
+- R01 breakout failure outcome.
+Potential incremental fields:
+- 120/260-bar confirmed structural-zone distance rather than rolling max only;
+- zone age and anchor recency;
+- repeated-test progression/rejection geometry;
+- daily-local vs weekly/major-zone conflict;
+- availableAir measured to the nearest independently confirmed major zone.
+
+### Positive validation hypothesis
+Conditional on the same local breakout quality and existing priorHigh60/MA60/ret20 controls, small availableAir to a stable major structural zone may increase near-term rejection/failure risk or reduce immediate MFE. This could explain some R01 failures without altering the definition of R01.
+
+### Negative validation / falsification
+- Resistance may be a behavioral label with no excess-return value after momentum and costs.
+- Strong momentum can break old highs; treating resistance as a hard veto can systematically reject leaders.
+- 52-week-high evidence in Taiwan is regime-sensitive and historically dated relative to current 10% limit/continuous-trading regime.
+- A rolling 260d high may simply proxy momentum/overheat; if partial/incremental tests vanish after priorHigh60/ret20/overheat controls, reject as redundant.
+- Multiple zone definitions create data-snooping risk; pre-register one transparent confirmed-zone hierarchy before outcomes.
+
+### Research design
+Shadow-only, no score/gate:
+- localBreakout20;
+- majorZoneDistancePct;
+- availableAirPct;
+- majorZoneAgeBars;
+- anchorRecencyBars;
+- repeatedTouchProgression;
+- rejectionPersistence;
+- conflictState = LOCAL_BREAKOUT_MAJOR_RESISTANCE_CONFLICT.
+Compare D1/D3/D5/D10 MFE/MAE and R01 failure within same scan dates, then partial/incremental tests controlling priorHigh60/MA60/ret20/overheat. Cluster by scan date and split modern market regime. No threshold is chosen from future returns.
+
+### Status
+WORTH_SHADOW_RESEARCH as a Pattern diagnostic, NOT an optimization proposal. Formal Core remains LOCKED.
