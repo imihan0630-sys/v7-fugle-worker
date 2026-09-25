@@ -9161,3 +9161,103 @@ It does NOT authorize:
 
 Those would be Formal/portfolio decisions requiring separate approval.
 
+
+
+## DL-002DK — Taiwan Lottery/Attention Overheat Around Patterns
+
+### Strong Taiwan evidence
+Journal of Financial Markets evidence shows the ordinary MAX measure is distorted by Taiwan price limits.
+A modified MAX using limit-hit intensity predicts lower future returns for high-lottery-like stocks in the historical TWSE sample.
+
+Other Taiwan evidence shows:
+- positive-skewness / lottery preference is associated with lower future returns in some cross-sectional settings;
+- the effect varies by market state;
+- attention and distance from the 52-week high interact with lottery preference.
+
+### Pattern implication
+A visually powerful setup with repeated limit-up events may be:
+- genuine leadership,
+- OR attention-driven late-stage overpricing.
+
+Therefore repeated extreme upside days should not be interpreted as pure strength.
+
+### Candidate fields
+- upLimitHitCount20/60
+- downLimitHitCount20/60
+- netLimitHitRate
+- daysSinceLastUpLimit
+- maxDailyReturnAdjustedForLimitState
+- positiveSkewnessProxy
+- attentionShockCount
+- turnoverShockCount
+- patternMaturityAtFirstLimitHit
+- numberOfLimitHitsAfterPatternMaturity
+- distanceTo52WeekHigh
+
+### States
+EARLY_LEADERSHIP_EXTREME
+- first/early extreme move from a quiet developing base.
+
+ATTENTION_BUILDING
+- repeated large/limit moves with rising turnover.
+
+LOTTERY_OVERHEAT_RISK
+- repeated extreme upside events + high attention + extension + weak incremental progress.
+
+LIMIT_CENSORED_MOMENTUM
+- price is repeatedly capped, so observed daily shape understates latent intraday demand; direction remains context-dependent.
+
+### Redundancy
+Current research already has:
+- overheat penalty research,
+- limit-hit context,
+- Attention/Quiet,
+- ret20 / lateStage.
+
+Modified-MAX style measures proceed only if they add information beyond those.
+
+## DL-002DL — Extreme Positive Return Is Not the Same as Constructive Breakout
+
+### Constructive breakout candidate
+- mature base before move,
+- available room above,
+- strong acceptance,
+- manageable prior extension,
+- sector/RS confirmation,
+- no attention-climax pattern.
+
+### Lottery-like extreme candidate
+- little structural base,
+- sudden large/limit return,
+- abnormal turnover/attention,
+- positive skewness / repeated extreme days,
+- poor risk/reward after extension.
+
+### Research question
+Does pattern maturity BEFORE the first extreme positive day distinguish durable leadership from attention-driven lottery behavior?
+
+This is a direct test of “structure before momentum” rather than “large return = strength.”
+
+## DL-002DM — 52-Week High × Lottery/Attention Interaction
+
+### Taiwan evidence
+Recent Taiwan evidence finds lottery anomaly behavior depends on distance from the 52-week high and investor attention; the 52-week high can act as a salient perceived ceiling.
+
+### Research fields
+- distanceTo52WeekHigh
+- age52WeekHigh
+- modifiedMaxProxy
+- attentionState
+- extremeCrossingEvent
+- volumeShockAt52WeekCross
+- acceptanceAbove52WeekHigh
+
+### Hypotheses
+1. high attention far below old high may reflect lottery chasing without structural acceptance.
+2. approaching a salient old high can change investor behavior and turnover.
+3. successful acceptance beyond a 52-week high may differ from repeated limit-hit speculation below it.
+
+### No production implication
+No MAX/limit-hit exclusion is added to Formal.
+This is an overheat/failure context candidate only.
+
