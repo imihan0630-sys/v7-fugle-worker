@@ -1,8 +1,8 @@
 # Market Microstructure Checkpoint
 
 Updated: 2026-09-25 Asia/Taipei
-Current cursor: MS-001 through MS-026 complete.
-Next: MS-027.
+Current cursor: MS-001 through MS-043 complete.
+Next: MS-044.
 
 ## Durable conclusions
 
@@ -123,3 +123,28 @@ Files:
 ## Revised exact continuation
 - MS-027 blocked until complete-enough recorder evidence exists; do not run on convenience samples.
 - MS-028 prepare isolated research capture/readout design only, with cadence/storage/rate-limit budget and proof Formal runtime semantics are untouched. Re-evaluate MS-027 first if a complete existing artifact/readback appears.
+
+
+## MS-027 through MS-043 — concept convergence
+- MS-027 zero-code baseline remains DATA_QUALITY_BLOCKED because recorder coverage is not exhaustive.
+- MS-028–032 froze an isolated-collector architecture, Fugle quota/storage budget, compact bucket schema and explicit completeness contract. Dynamic research requires prospective data; no historical OHLCV reconstruction.
+- Official Fugle plan evidence: Basic currently supports 5 WebSocket subscriptions / 60 intraday REST calls per minute; Developer 300 / 600; Advanced 2000 / 2000. Books+trades requires 2 subscriptions per symbol. Actual account plan remains UNKNOWN until verified.
+- Illustrative fixed-bucket burden shows 1s permanent capture scales too quickly; pilot 1s/5s/15s fidelity before choosing cadence.
+- MS-033 retained flow-toxicity as a concept but explicitly rejected VPIN as a magic metric because published evidence is contested and sensitive to intensity/classification/sampling.
+- MS-034 public top-five depth is only displayed liquidity; hidden liquidity exists and intent such as spoofing/iceberg cannot be asserted from public patterns alone.
+- MS-035 separated signal quality, executable price quality and limit-fill probability. Hypothetical touch != proven fill.
+- MS-036 separated transient from retained price impact; simple multi-horizon retention/retracement study preferred over structural impact modeling.
+- MS-037 froze breakout/failed-breakout microstructure event-study windows and matched controls.
+- MS-038 concluded a separate research collector is scientifically justified but is Class-B infrastructure proposal-first; no deployment.
+- MS-039 created `MICROSTRUCTURE_COLLECTOR_PROPOSAL.md` with isolation/quota/storage/fidelity/go-no-go gates and no code/deploy.
+- MS-040 current TWSE opening/closing/VI call auctions are separate regimes from continuous trading.
+- MS-041 price discovery can arrive with lag; pressure must be tested at multiple horizons rather than only immediate reaction.
+- MS-042 market/industry-wide liquidity commonality is documented globally and in Taiwan; stock liquidity stress must be separated from sector/market liquidity stress.
+- MS-043 introduced a research-only Liquidity Regime layer distinct from Price Regime.
+- Conceptual microstructure lane is now converged. Additional indicator invention is paused to avoid Factor-Zoo risk.
+- Formal Core remains LOCKED; no Formal/monitor/signal/capital/push change and no deployment.
+
+## Exact next continuation
+- MS-044 mark concept lane CONCEPT_COMPLETE / EVIDENCE_PENDING.
+- Start new durable lane: Market Breadth + Sector Rotation + Leadership.
+- First tasks: breadth definitions, advance/decline structure, new-high/new-low participation, breadth divergence, industry momentum/rotation, leader participation, Taiwan data-source feasibility, positive/counter evidence.
