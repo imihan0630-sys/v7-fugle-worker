@@ -10193,3 +10193,121 @@ At each step require incremental evidence before advancing.
 
 This prevents engineering complexity from outrunning statistical evidence.
 
+
+
+## DL-002EI — Margin Financing / Retail Leverage × Pattern Maturity
+
+### Taiwan evidence
+Taiwan-specific research finds individual-investor margin-long activity can contribute to positive mispricing and predict lower subsequent returns in historical TWSE samples.
+TWSE 2026 market commentary reports margin trading remains overwhelmingly dominated by domestic individual investors (>98%), even as the overall cash market becomes more institutional.
+
+### Pattern implication
+A breakout with rising margin financing can mean:
+- broad speculative participation,
+- retail attention/crowding,
+- leverage chasing,
+not necessarily informed confirmation.
+
+### Candidate fields
+- marginPurchaseBalance
+- marginPurchaseBalanceChange1/5/20
+- marginPurchaseUtilization / eligible shares if available
+- marginBuyVolume
+- marginBalanceVsFreeFloat
+- marginAccelerationDuringPattern
+- marginShockAtBreakout
+- marginChangeOnRetest
+- marginChangeAfterFailure
+- marginVsInstitutionalFlowDivergence
+
+### States
+QUIET_MARGIN_BASE
+- pattern matures without abnormal margin buildup.
+
+MARGIN_CONFIRMATION_CANDIDATE
+- margin rises moderately with price acceptance; descriptive only.
+
+RETAIL_LEVERAGE_CHASE
+- sharp margin acceleration after/into an extended breakout.
+
+MARGIN_DIVERGENCE
+- margin rises while institutional/price acceptance deteriorates.
+
+DELEVERAGING_PRESSURE
+- margin balance falls sharply during/after breakdown.
+
+### Hypotheses
+H1 mature structure before margin expansion may differ from margin-led price spikes.
+H2 abrupt margin buildup after a large runup may increase failure/overheat risk.
+H3 margin deleveraging can amplify downside failure but may also clean positioning before reclaim.
+H4 the interaction with institutional flow is more informative than margin level alone.
+
+### Redundancy
+Control against:
+- turnover/attention
+- modified MAX / limit-hit intensity
+- ret20/lateStage
+- institutional flow
+- market regime
+- liquidity
+- event catalyst
+
+If margin merely proxies attention/turnover, retire it as a distinct pattern feature.
+
+## DL-002EJ — Margin Long vs Short Flow Are Not Symmetric Information Signals
+
+### Evidence
+Taiwan literature suggests:
+- individual margin long activity often reflects sentiment/speculation/mispricing;
+- informed short selling can have different informational content;
+- margin and short activities affect adverse selection / bid-ask spreads.
+
+### Research rule
+Do not combine:
+marginLong - shortFlow
+into one generic “bull-bear balance” without testing participant/source semantics.
+
+Store separately:
+- retailLeverageLong
+- marginShort
+- actualSBLShortSale
+- institutionalLongFlow
+
+### Pattern matrix
+PRICE_STRONG + MARGIN_LONG_UP + INSTITUTIONAL_UP
+PRICE_STRONG + MARGIN_LONG_UP + INSTITUTIONAL_DOWN
+PRICE_STRONG + SHORT_FLOW_UP
+PRICE_WEAK + MARGIN_LONG_STUCK_HIGH
+PRICE_RECLAIM + MARGIN_DELEVERAGED
+
+These are contextual states, not automatic signals.
+
+## DL-002EK — Crowding / Leverage Can Alter Failure Severity
+
+### Question
+Does leverage/crowding influence only the probability of failure, or also the severity after failure?
+
+### Outcomes
+- failure probability
+- MAE after failure
+- gap-down frequency
+- time-to-reclaim
+- downside volume expansion
+- volatility expansion
+- stop-first rate
+
+### Hypothesis
+A crowded leveraged breakout may not fail more often, but when it fails, forced deleveraging could worsen the left tail.
+
+This must be tested separately from average D5 return.
+
+### Tail-risk metrics
+- 5th percentile forward return
+- worst D5/D10
+- downside semideviation
+- MAE tail
+- conditional MAE among R01 failures
+
+### No production change
+Margin/crowding remains research-only context.
+
