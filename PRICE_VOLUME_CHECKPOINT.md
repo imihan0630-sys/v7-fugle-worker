@@ -331,3 +331,20 @@ Class A if research-only; Class C if later used in formal 15m confirmation.
 5. PV-092: final pre-implementation readiness audit; identify unresolved blockers that require owner decision versus items safe for Class-A implementation.
 6. Do not expand the indicator set unless a genuine unresolved mechanism is found.
 7. Formal Core remains LOCKED.
+
+## Progress added — PV-088 through PV-092
+- PV-088 defines deterministic synthetic oracle fixtures for response, A/B acceptance, persistence, guards and unit safety. The implementation must match these expected states before real market outcomes are examined.
+- PV-089 freezes baseline bootstrap semantics: Taiwan-local start-time slot keys, current-session exclusion, exact-slot identity, slot-specific validity, stricter contiguous validity for cumulative pace, explicit-zero vs missing distinction, official holiday skipping and corporate-action reset.
+- PV-090 freezes canonical SHA-256 fingerprints for Formal-output isolation, immutable PV snapshots and completed outcomes. Same key + different semantic fingerprint is a mutation conflict and must never silently overwrite.
+- PV-091 creates PRICE_VOLUME_HYPOTHESIS_LEDGER.md so planned, failed, inconclusive and supported hypotheses remain durable. Initial frozen hypotheses PV-H001 through PV-H004 cover slot RVOL, cumulative pace, latent states and risk-without-direction.
+- PV-092 completes the pre-implementation readiness audit. PV_SHADOW_V0_1 research semantics are mature enough for owner-authorized Class-A LOG_ONLY implementation, but no prospective sample exists for Formal optimization.
+- Remaining unknowns such as exact 13:30 15m representation, explicit VI source, same-day day-trading finality, free float and historical intraday trade count do not block the narrow v0.1 because they remain guarded/out of scope.
+- Formal Core remains unchanged / LOCKED.
+
+## Current state after PV-092
+- PRICE_VOLUME_RESEARCH.md: research specification complete through PV-092.
+- PRICE_VOLUME_SHADOW_SPEC.md: current Shadow design.
+- PRICE_VOLUME_SHADOW_IMPLEMENTATION_PLAN.md: canonical current engineering plan.
+- PRICE_VOLUME_HYPOTHESIS_LEDGER.md: canonical hypothesis/test history.
+- Next rational action is not indicator expansion. It is owner-approved Class-A LOG_ONLY implementation and prospective DATA_QA.
+- Until owner explicitly approves implementation, continue only unresolved evidence/semantic research and keep Worker.js unchanged.
