@@ -259,4 +259,58 @@ function singleReturn(out) {
   assert.ok(out.unknownReasons.includes("UNKNOWN_SHARE_FACTOR:SHARE_UNIT_FACTOR_UNKNOWN"));
 }
 
+// Real lifecycle composition witness: 8454 stock-dividend ex-right and later new-share listing
+// both fall inside one rolling history window. Price continuity remains deterministic, while
+// volume comparability fails closed at the SUPPLY_CHANGE stage until a point-in-time share
+// denominator is available. Input event order must not change the result.
+{
+  const bars = [
+    bar("2025-08-20", 272, 300),
+    bar("2025-08-21", 261, 301),
+    bar("2025-10-08", 250, 500),
+    bar("2025-10-09", 252, 700)
+  ];
+  const exRightEvent = {
+    eventKey: "8454:2025-08-21:EX_RIGHT",
+    effectiveDate: "2025-08-21",
+    actionType: "STOCK_DIVIDEND_EX_RIGHT",
+    technicalPriceFactor: 1 / 1.05,
+    priceIndexComparableFactor: 1 / 1.05,
+    totalReturnComparableFactor: 1 / 1.05,
+    volumeTransformMode: "NONE"
+  };
+  const listingEvent = {
+    eventKey: "8454:2025-10-09:NEW_SHARES_LISTED",
+    effectiveDate: "2025-10-09",
+    actionType: "NEW_SHARES_LISTED",
+    technicalPriceFactor: 1,
+    priceIndexComparableFactor: 1,
+    totalReturnComparableFactor: 1,
+    volumeTransformMode: "SUPPLY_CHANGE"
+  };
+
+  const forward = buildPointInTimeContinuity({
+    bars,
+    events: [exRightEvent, listingEvent],
+    targetDate: "2025-10-09"
+  });
+  const reversed = buildPointInTimeContinuity({
+    bars,
+    events: [listingEvent, exRightEvent],
+    targetDate: "2025-10-09"
+  });
+
+  assert.equal(forward.appliedEvents.length, 2);
+  assert.deepEqual(forward.continuityBars, reversed.continuityBars);
+  assert.ok(Math.abs(forward.continuityBars[0].close - (272 / 1.05)) < 1e-9);
+  assert.equal(forward.continuityBars[1].close, 261);
+  assert.equal(forward.continuityBars[2].close, 250);
+  assert.equal(forward.continuityBars[3].close, 252);
+  assert.equal(forward.continuityBars[0].volume, 300);
+  assert.equal(forward.continuityBars[2].volume, 500);
+  assert.equal(forward.priceContinuityComplete, true);
+  assert.equal(forward.volumeContinuityComplete, false);
+  assert.ok(forward.unknownReasons.includes("8454:2025-10-09:NEW_SHARES_LISTED:VOLUME_COMPARABILITY_PARTIAL"));
+}
+
 console.log("corporate action semantic prototype tests passed");
