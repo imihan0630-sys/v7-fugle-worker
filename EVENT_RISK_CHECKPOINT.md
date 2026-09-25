@@ -1,8 +1,8 @@
 # Event Risk, Gap Risk & Overnight Information Checkpoint
 
 Updated: 2026-09-25 Asia/Taipei
-Current cursor: ER-001 through ER-025 complete.
-Next: ER-026 source/data feasibility audit.
+Current cursor: ER-001 through ER-028 complete.
+Next: evidence collection / governance decision before implementation.
 Status: CONCEPT_COMPLETE / EVIDENCE_PENDING.
 
 ## Durable conclusions
@@ -53,3 +53,12 @@ ER-025 convergence/readiness.
 ER-026 audit current repository/runtime source for point-in-time event timestamps, opening/reference-price data and corporate-action guards.
 ER-027 determine whether existing recorder can support prospective ER-024 with zero/shared-code changes.
 ER-028 prepare research-only event-vintage capture proposal only if needed.
+
+
+## ER-026 through ER-028 durable update
+- Current official ANNOUNCEMENTS quality sync uses official TWSE/TPEx sources but normalized storage keeps announcement date + title, not intraday first-known/disclosure time. It is date-level context, not intraday point-in-time truth.
+- Current V8.8.1 execution snapshot passes previousClose/openPrice but does not persist Fugle quote referencePrice/openTime. Corporate-action-adjusted gap classification is therefore incomplete.
+- Existing recorder milestone cadence is not an exhaustive all-symbol opening panel.
+- Full ER-024 cannot be answered faithfully with current stored fields alone. A smaller existing-data descriptive pilot must be labeled separately.
+- `EVENT_RISK_CAPTURE_PROPOSAL.md` now freezes a point-in-time event/opening capture design with expected-vs-observed coverage, corporate-action firewall, UNKNOWN semantics, research-only/fail-open architecture and governance boundaries.
+- No implementation/deploy occurred. Formal Core unchanged.
