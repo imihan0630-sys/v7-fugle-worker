@@ -233,3 +233,13 @@ They must not be erased once later clean data arrive.
 - These defects do not alter Formal decisions. Raw RVOL/cumulative/raw bar-response fields may remain research-usable under independent source quality, but any study using affected Guard labels is quarantined until corrected/versioned or quality-overlay-adjusted.
 - H001~H004 primary status remains WAITING_CLEAN_COHORT_PROVENANCE / DATA_QA.
 - H006 remains DATA_QUALITY_BLOCKED.
+
+## H001-H004 evidence-contract refinement after PVE-029~061
+- H001/H002 are now explicitly decoupled from range/response-state defects. They may use raw slot RVOL / cumulative pace only under field-scoped quality gates, clean cohort provenance and adequate at-rest evidence.
+- H001 primary comparison uses common-support observations only: Formal previous-5 ratio and pvSlotRvol20 must both be available and refer to the same completed bar. Early-slot RVOL availability is reported separately as coverage, not predictive superiority.
+- Formal local volumeRatio is the actual rounded 2-decimal production value; PV slot RVOL is unrounded. Precision differences must not be mistaken for alpha.
+- H003 readiness is more restrictive because v0.1 response/acceptance/Guard labels have identified fidelity defects: historical opening-range anchor, missing-slot range continuity, liquidity-Guard bug, unverified guard plumbing, raw previousClose reference, Formal replay rounding mismatch and A lower-shadow drift.
+- H004 additionally requires exact horizon continuity, symbol-session-aware daily outcomes and path-order ambiguity handling. Same-bar stop+target is UNKNOWN for ordering from OHLC.
+- Snapshot mutation conflicts in v0.1 must be classified before use: sourceFetchedAt can change on legitimate retries and is currently included in semantic fingerprint. A nonzero conflict count is not automatically semantic corruption.
+- Point-in-time analysis must use featureKnownAt derived from sourceFetchedAt/barEnd; v0.1 observedAt/acceptance enteredAt are bar-start identities, not knowledge time.
+- H001/H002/H003/H004 remain unsupported/unrejected; evidence collection and QA continue.
