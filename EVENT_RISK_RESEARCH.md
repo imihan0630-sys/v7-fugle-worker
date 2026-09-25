@@ -459,3 +459,329 @@ ER-022: event-aware projected heat.
 ER-023: negative controls and falsification tests.
 ER-024: prospective Shadow protocol.
 ER-025: concept convergence / evidence readiness.
+
+
+---
+
+## ER-016 — Scheduled-event calendar needs certainty levels
+
+A statutory filing deadline is not the same as a pre-announced exact event date/time.
+
+### Event-calendar certainty
+- EXACT_SCHEDULE_KNOWN — exact date/time publicly known before the trading decision.
+- DATE_KNOWN_TIME_UNKNOWN — public date known, exact time unknown.
+- DEADLINE_WINDOW_KNOWN — only regulatory filing window/deadline known.
+- UNSCHEDULED_DISCLOSED — no valid prior schedule; event becomes known at disclosure.
+- UNKNOWN.
+
+### Example
+“Monthly revenue must be filed by the 10th” does not prove a company will publish exactly on the 10th.
+
+### No-look-ahead rule
+Historical databases that show eventual publication dates may not be used as if those dates were known beforehand unless a contemporaneous schedule announcement proves it.
+
+Status: EVENT-CALENDAR CERTAINTY TAXONOMY FROZEN.
+
+---
+
+## ER-017 — Taiwan recurring disclosure windows: window truth vs publication truth
+
+### Monthly operating revenue
+Taiwan listed companies generally file prior-month operating revenue by the 10th day of each calendar month.
+
+Primary sources:
+- Securities and Exchange Act Article 36:
+  https://twse-regulation.twse.com.tw/TW/law/DOC01_print.aspx?FLCODE=fl007009&FLNO=36
+- TWSE periodic-reporting rules:
+  https://twse-regulation.twse.com.tw/m/en/LawContent.aspx?FID=FL007250
+
+### Financial reports
+Article 36 generally requires:
+- annual report within three months after fiscal-year end;
+- Q1/Q2/Q3 financial reports within 45 days after quarter end.
+
+### Investor conferences
+Conference schedules and materials can be publicly announced through MOPS/TWSE before the event in many cases.
+
+### Research semantics
+Store separately:
+- regulatoryDeadline;
+- scheduledEventAt;
+- actualPublishedAt;
+- firstKnownScheduledAt.
+
+Only `firstKnownScheduledAt` can establish ex-ante exact schedule knowledge.
+
+Status: TAIWAN DISCLOSURE-WINDOW SEMANTICS FROZEN.
+
+---
+
+## ER-018 — Gap-through-stop stress must be empirical and scenario-based
+
+### Actual event metric
+For a long position with planned stop S and next executable/fill price X below S:
+`gapThroughStopLossNTD = shares * max(0, S-X)`
+
+This is additional loss beyond the planned stop boundary before fees.
+
+### Research distributions
+Estimate separately by:
+- ordinary overnight;
+- known scheduled event;
+- unscheduled material event;
+- market-wide shock;
+- sector shock;
+- limit-down/near-limit state;
+- weekend/holiday interval.
+
+### Stress scenarios before enough actual samples exist
+Use explicitly hypothetical layers such as:
+- historical stock-specific adverse-gap percentile;
+- sector adverse-gap percentile;
+- market shock scenario;
+- one-limit-session / multi-session constrained-exit scenario.
+
+Do not claim a price-limit scenario is the expected loss.
+
+### Key outcome
+`realizedLoss / plannedStopRisk`
+is a useful calibration diagnostic when actual fills exist.
+
+Status: GAP-THROUGH-STOP CALIBRATION FRAME FROZEN.
+
+---
+
+## ER-019 — Overseas-market context is relevant to Taiwan's overnight interval, but it is not a duplicate macro score
+
+Older Taiwan linkage research found substantial US-to-Taiwan volatility spillover, especially in close-to-open returns.
+
+Source:
+- Chou, Lin & Wu (1999), Pacific Economic Review 4, 305-320.
+- DOI: 10.1111/1468-0106.00081
+
+Recent Taiwan research also emphasizes that overseas information arriving while Taiwan stocks are closed can be reflected at the next opening.
+
+Source:
+- Momentum investing and a tale of intraday and overnight returns: Evidence from Taiwan, Pacific-Basin Finance Journal (2023).
+
+### Context fields
+For an overnight stock-gap study, freeze only the context needed:
+- prior US session broad-index move;
+- relevant global sector/peer move where justified;
+- Taiwan futures night-session change if point-in-time data are available;
+- USD/TWD overnight move where relevant.
+
+### Anti-double-count
+The macro lane may already know these variables.
+Event Risk uses them to explain/common-factor-adjust the stock gap, not to award another bullish/bearish score.
+
+### Counterpoint
+Foreign-market relationships are regime-dependent and can weaken or reverse. No fixed US→Taiwan beta is assumed.
+
+Status: OVERSEAS CONTEXT = GAP EXPLANATORY CONTROL.
+
+---
+
+## ER-020 — The opening auction is the first major price-discovery point after overnight information
+
+Current TWSE regular-market mechanism:
+- pre-open/opening uses call auction;
+- intraday 09:00–13:25 uses continuous matching;
+- closing 13:25–13:30 uses call auction.
+
+Primary source:
+- https://www.twse.com.tw/en/products/system/trading.html
+
+Taiwan overnight-return research specifically notes the opening auction's role in aggregating reactions to information released while the market was closed.
+
+### Research timestamps
+Separate:
+- priorClose;
+- openingAuctionPrice;
+- first continuous-trading observations;
+- 5m/15m/30m post-open marks.
+
+### Question
+Does the overnight gap:
+- immediately incorporate information;
+- continue during the first 15m;
+- partially/full reverse;
+- remain price-limit constrained?
+
+### Guard
+Do not use the first 15m outcome to classify the opening gap state itself.
+
+Status: OPENING AUCTION + POST-OPEN PATH SEPARATED.
+
+---
+
+## ER-021 — Common-event clustering should be event-specific, not only correlation-based
+
+### Examples
+- NVIDIA/customer earnings can affect several Taiwan AI suppliers.
+- Oil/material shocks can hit multiple companies.
+- USD/TWD or rate shocks can affect exporters/financials differently.
+- A single customer order cut can affect a supply-chain cluster.
+
+### Event-exposure graph
+Research-only representation:
+`event -> exposed symbols -> capital / planned heat`
+
+Fields:
+- eventId
+- eventCategory
+- exposureReason
+- evidenceSource
+- symbolsExposed
+- liveCapitalExposed
+- plannedHeatExposed
+- confidence / UNKNOWN
+
+### Counterpoint
+Theme narratives are easy to overfit.
+Every exposure link needs a documented economic relation available before or at the event, not post-hoc price co-movement alone.
+
+Status: EVENT-EXPOSURE GRAPH CONCEPT FROZEN.
+
+---
+
+## ER-022 — Event-aware projected heat is scenario risk, not a new stop rule
+
+Portfolio heat based on stop distance assumes approximate executability.
+Event-aware stress adds discontinuity scenarios.
+
+For each live position:
+- plannedStopRiskNTD;
+- adverseGapScenarioNTD;
+- constrainedExitScenarioNTD where relevant.
+
+Portfolio:
+`eventStressLossNTD = sum(positionScenarioLoss_i)`
+
+### Do not simply add
+Planned-stop risk and event-gap scenario loss are alternative path scenarios and can overlap.
+Avoid double counting by clearly defining scenario paths.
+
+### Candidate views
+- NORMAL_STOP_PATH
+- ADVERSE_GAP_PATH
+- COMMON_EVENT_CLUSTER_PATH
+- LIMIT_CONSTRAINED_PATH
+
+Status: SCENARIO-BASED EVENT HEAT FROZEN.
+
+---
+
+## ER-023 — Negative controls and falsification are mandatory
+
+### Negative/control cohorts
+Compare event/gap states against:
+- same stock ordinary non-event nights;
+- same-date matched stocks without the event;
+- sector peers;
+- market-adjusted/residual gap;
+- corporate-action-adjusted controls.
+
+### Falsification
+Reject an “event risk factor” if:
+- effect is fully explained by market/sector overnight movement;
+- only one famous event/date drives the result;
+- corporate actions create the apparent gap;
+- publication timestamp is after the decision but treated as before;
+- only large winners are labeled as “events”;
+- effect disappears out of sample.
+
+### Price-limit historical evidence
+Older Taiwan limit studies are mechanism evidence only because limit width and trading mechanism have changed.
+
+Status: EVENT-RISK ANTI-NARRATIVE FIREWALL FROZEN.
+
+---
+
+## ER-024 — Prospective Shadow protocol
+
+### Population
+For every Formal selected/live monitored symbol on each trading date:
+- record event-calendar certainty before close;
+- record live position stage/exposure;
+- capture disclosures that become public after decision time;
+- capture next opening auction and post-open marks.
+
+Do not restrict capture to large gaps.
+
+### Required point-in-time fields
+- decisionAt
+- eventKnownStateAtDecision
+- scheduledEventAt if known
+- MOPS/material disclosure firstKnownAt
+- priorClose/reference adjustments
+- openingAuctionPrice
+- price-limit state
+- 5m/15m/30m/close
+- D1/D3/D5
+- positionStage
+- actualShares where verified
+- stop
+- sector/market overnight context
+- data provenance / UNKNOWN reasons
+
+### Primary questions
+1. How often does price gap through planned stop?
+2. Does known-event exposure increase adverse-gap tail risk?
+3. Does FULL vs FIRST materially change realized event loss?
+4. Does market/sector-adjusted residual gap predict continuation/fade?
+5. Does limit proximity create multi-day unresolved exit risk?
+6. Does event-aware scenario heat identify risk missed by ordinary planned heat?
+
+### Bias guards
+- capture all monitored names/dates;
+- independent-date inference;
+- no retrospective event labeling;
+- no outcome-selected gap threshold;
+- corporate-action firewall;
+- current-rule versus historical-rule separation.
+
+Status: PROSPECTIVE EVENT-RISK PROTOCOL V1 FROZEN.
+
+---
+
+## ER-025 — Event-risk concept convergence
+
+Covered conceptually:
+- overnight/intraday return decomposition;
+- scheduled vs unscheduled event certainty;
+- MOPS first-known provenance;
+- recurring Taiwan disclosure windows;
+- gap-through-stop;
+- ±10% price-limit constrained exits;
+- weekend/holiday exposure;
+- opening auction;
+- overseas/common-factor gap context;
+- event clusters across portfolio;
+- stage-dependent exposure;
+- event-aware portfolio stress;
+- negative controls;
+- prospective validation.
+
+### What is not ready
+Do not create a Formal “event penalty” or automatically:
+- skip all pre-earnings trades;
+- halve positions before every scheduled event;
+- widen/tighten stops because an event is near;
+- chase positive gaps;
+- sell negative gaps.
+
+All such choices require strategy-specific net evidence.
+
+### Lane state
+**EVENT_RISK concept learning = CONCEPT_COMPLETE / EVIDENCE_PENDING.**
+
+Formal Core remains LOCKED.
+
+## Exact next continuation
+
+The next research action should prioritize evidence and integration rather than more event indicators:
+1. audit current data sources for point-in-time MOPS/event timestamps and opening/reference-price fields;
+2. determine whether existing recorder can support ER-024 without new shared-runtime calls;
+3. if incomplete, prepare a research-only event-vintage capture proposal under governance;
+4. integrate future event-risk outcomes with Portfolio Heat and Trading Frictions without duplicate scores.
