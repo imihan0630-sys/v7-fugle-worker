@@ -692,6 +692,141 @@ export function detectVcpFromSwings(swings, {
   };
 }
 
+function medianFinite(values) {
+  return median((Array.isArray(values) ? values : []).map(Number).filter(Number.isFinite));
+}
+
+function barTrueRange(series, index) {
+  const bar = series[index];
+  if (!bar) return null;
+  const high = Number(bar.high);
+  const low = Number(bar.low);
+  const prev = index > 0 ? Number(series[index - 1].close) : Number(bar.close);
+  if (![high, low, prev].every(Number.isFinite)) return null;
+  return Math.max(high - low, Math.abs(high - prev), Math.abs(low - prev));
+}
+
+export function analyzeVcpContext({
+  bars,
+  swings,
+  asOfDate,
+  priorTrendState = "UNKNOWN",
+  finalWindowBars = 5
+} = {}) {
+  const validated = barsAsOf(bars, asOfDate);
+  if (!validated.usable) {
+    return { status:"BLOCKED", reason:validated.reason, maturityState:"UNKNOWN" };
+  }
+  const series = validated.bars;
+  const indexByDate = new Map(series.map((x, i) => [x.date, i]));
+  const eligibleSwings = (Array.isArray(swings) ? swings : [])
+    .filter(x => x?.confirmedAt <= asOfDate && indexByDate.has(x.pivotAt))
+    .map(x => ({
+      ...x,
+      pivotIndex:Number.isInteger(x.pivotIndex) ? x.pivotIndex : indexByDate.get(x.pivotAt),
+      pivotPrice:Number(x.pivotPrice)
+    }))
+    .filter(x => Number.isInteger(x.pivotIndex) && Number.isFinite(x.pivotPrice));
+
+  const topology = detectVcpFromSwings(eligibleSwings);
+  const contractions = [];
+  for (let i = 0; i < eligibleSwings.length - 1; i += 1) {
+    const hi = eligibleSwings[i], lo = eligibleSwings[i + 1];
+    if (hi.type !== "HIGH" || lo.type !== "LOW" || lo.pivotIndex <= hi.pivotIndex) continue;
+    const legBars = series.slice(hi.pivotIndex, lo.pivotIndex + 1);
+    const volumes = legBars.map(x => finite(x.volume)).filter(x => x !== null && x >= 0);
+    const ranges = legBars.map((_, j) => barTrueRange(series, hi.pivotIndex + j)).filter(Number.isFinite);
+    contractions.push({
+      high:hi.pivotPrice,
+      low:lo.pivotPrice,
+      highAt:hi.pivotAt,
+      lowAt:lo.pivotAt,
+      highIndex:hi.pivotIndex,
+      lowIndex:lo.pivotIndex,
+      depthPct:(hi.pivotPrice - lo.pivotPrice) / hi.pivotPrice,
+      durationBars:lo.pivotIndex - hi.pivotIndex,
+      medianDownVolume:medianFinite(volumes),
+      medianDownTrueRange:medianFinite(ranges)
+    });
+  }
+
+  const depths = contractions.map(x => x.depthPct);
+  let depthImprovementPairs = 0;
+  for (let i = 1; i < depths.length; i += 1) if (depths[i] < depths[i - 1]) depthImprovementPairs += 1;
+  const depthMonotonicity = depths.length > 1 ? depthImprovementPairs / (depths.length - 1) : 0;
+
+  let lowImprovementPairs = 0;
+  for (let i = 1; i < contractions.length; i += 1) if (contractions[i].low > contractions[i - 1].low) lowImprovementPairs += 1;
+  const lowProgression = contractions.length > 1 ? lowImprovementPairs / (contractions.length - 1) : 0;
+
+  const downVolumes = contractions.map(x => x.medianDownVolume).filter(Number.isFinite);
+  const downRanges = contractions.map(x => x.medianDownTrueRange).filter(Number.isFinite);
+  const downVolumeDecay = downVolumes.length >= 2 ? downVolumes.at(-1) < downVolumes[0] : null;
+  const downRangeDecay = downRanges.length >= 2 ? downRanges.at(-1) < downRanges[0] : null;
+
+  const firstBaseIndex = contractions.length ? contractions[0].highIndex : null;
+  const lastLowIndex = contractions.length ? contractions.at(-1).lowIndex : null;
+  const windowSize = Math.max(3, Math.floor(Number(finalWindowBars) || 5));
+  let finalDryUpRatio = null;
+  let finalRangeRatio = null;
+  let finalWindowCount = 0;
+  if (firstBaseIndex !== null && lastLowIndex !== null) {
+    const finalStart = Math.max(lastLowIndex, series.length - windowSize);
+    const finalBars = series.slice(finalStart);
+    const earlierBars = series.slice(firstBaseIndex, finalStart);
+    finalWindowCount = finalBars.length;
+    const finalVol = medianFinite(finalBars.map(x => finite(x.volume)));
+    const earlierVol = medianFinite(earlierBars.map(x => finite(x.volume)));
+    if (finalVol !== null && earlierVol !== null && earlierVol > 0) finalDryUpRatio = finalVol / earlierVol;
+
+    const finalRanges = finalBars.map((_, j) => barTrueRange(series, finalStart + j)).filter(Number.isFinite);
+    const earlierRanges = earlierBars.map((_, j) => barTrueRange(series, firstBaseIndex + j)).filter(Number.isFinite);
+    const finalRange = medianFinite(finalRanges);
+    const earlierRange = medianFinite(earlierRanges);
+    if (finalRange !== null && earlierRange !== null && earlierRange > 0) finalRangeRatio = finalRange / earlierRange;
+  }
+
+  const trend = String(priorTrendState || "UNKNOWN").toUpperCase();
+  const continuationContext = ["ADVANCE","UPTREND","NON_BEARISH"].includes(trend)
+    ? true
+    : trend === "BEARISH" || trend === "DOWNTREND"
+      ? false
+      : null;
+
+  const enough = contractions.length >= 2;
+  const improvingStructure = depthMonotonicity > 0 && lowProgression > 0;
+  const volumeImproving = downVolumeDecay === true && finalDryUpRatio !== null && finalDryUpRatio < 1;
+  const rangeImproving = downRangeDecay === true && finalRangeRatio !== null && finalRangeRatio < 1;
+
+  let maturityState = "FORMING";
+  if (enough) maturityState = "VALID";
+  if (enough && continuationContext === null) maturityState = "VALID_CONTEXT_UNKNOWN";
+  if (enough && continuationContext === false) maturityState = "GENERIC_COMPRESSION_NOT_CONTINUATION_VCP";
+  if (enough && continuationContext === true && improvingStructure && volumeImproving && rangeImproving) {
+    maturityState = "MATURE";
+  }
+
+  return {
+    status:"VALID",
+    reason:null,
+    contractionCount:contractions.length,
+    contractions,
+    depthMonotonicity,
+    lowProgression,
+    downVolumeDecay,
+    downRangeDecay,
+    finalDryUpRatio,
+    finalRangeRatio,
+    finalWindowCount,
+    priorTrendState:trend,
+    continuationContext,
+    topologyCandidate:topology.topologyCandidate,
+    maturityState,
+    researchOnly:true,
+    decisionImpact:false
+  };
+}
+
 export function detectPlatform(bars, {
   asOfDate,
   minBars = 5,
