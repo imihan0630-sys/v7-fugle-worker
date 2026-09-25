@@ -490,3 +490,31 @@ Class A if research-only; Class C if later used in formal 15m confirmation.
 5. PV-172: define a minimal future execution-shadow-v3 research extension using only already-fetched quote fields, but do not implement during core PV DATA_QA.
 6. PV-173: decide whether v3 can materially improve H006-B/C without a new WebSocket collector.
 7. Formal Core remains LOCKED.
+
+## Progress added — PV-168 through PV-183
+- PV-168 audits zero-extra-API Quote fields omitted from execution-shadow-v2. The already-fetched Fugle Quote exposes referencePrice, cumulative tradeValue/Volume/AtBid/AtAsk/transaction/time, actual lastTrade fields, more limit/session flags and full top-five levels; v3 can preserve these without extra REST calls.
+- PV-169 verifies Fugle's official 2330 example: tradeValue/(tradeVolume*1000) matches avgPrice for the documented ordinary-equity example. Type/source-unit guards remain mandatory.
+- PV-170 defines cumulative AtBid/AtAsk as a coarse provider trade-pressure proxy only; it is not OFI/aggressor truth/replenishment. Interval deltas are preferred over raw cumulative levels.
+- PV-171 defines transaction-count intensity/average-trade-size research from cumulative Quote totals, with order-splitting/algo/retail ambiguity retained.
+- PV-172 freezes a minimal execution-shadow-v3 proposal: correct quoteUpdatedAt vs actual lastTradeAt, referencePrice and full guard flags, cumulative totals, true lastTrade fields and raw top-five levels. Design only; not implemented.
+- PV-173 concludes v3 can materially improve H006-B and partially H006-C but cannot deliver H006-D replenishment/resiliency without denser collection.
+- PV-174 confirms a recorder event-scope defect: batch-level any-notification activates FORMAL_SIGNAL_OBSERVED for all results, with nonmatching symbols able to receive fallback eventKey SIGNAL. Current signal-event rows require independent same-symbol notification verification.
+- PV-175 proves daily PV Shadow inherits the shared V7 D1 daily-history cache: pvDailyRvol20 baselineSource is V7_D1_DAILY_HISTORY_SHARES. Since tested history-freshness PR #100 remains Draft/Open/unmerged and no equivalent guard is on main, daily PV evidence needs a separate history-freshness prerequisite.
+- PV-176 freezes history freshness as data validity, never alpha.
+- PV-177 adds separate PV feature-quality and Formal cohort-eligibility-quality axes. Clean intraday features on a stale-history-selected cohort are not clean evidence for H001~H004.
+- PV-178~180 freeze interval differencing, monotonic cumulative-counter guards and explicit unclassified trade volume.
+- PV-181 keeps trade-pressure x displayed-depth interactions descriptive; sparse snapshots cannot confirm absorption.
+- PV-182 notes raw top-five levels enable level-shape/microprice-style snapshot descriptors but still not queue dynamics.
+- PV-183 defers v3 implementation until core PV Shadow QA and Formal history-freshness quality are stable.
+- Production status audit: PR #100 remains OPEN + DRAFT + merged=false; main contains no equivalent v8.10.1 freshness guard found in repo search. No merge/deploy was performed here.
+- PV_SHADOW_V0_1 and Formal Core remain unchanged.
+
+## Revised exact next continuation point after PV-183
+1. PV-184: define cohort-quality provenance fields and clean/guarded analysis cohorts for H001~H006.
+2. PV-185: define how historical outcomes should be quarantined if cohort freshness is later found invalid, without mutating immutable feature snapshots.
+3. PV-186: study selection-conditioning bias from Formal chosen/monitored cohort and define control/near-miss cohort requirements.
+4. PV-187: define matched-date/control weighting without pretending stock rows on one day are independent.
+5. PV-188: define how future history-freshness validation should feed research metadata without becoming a strategy feature.
+6. PV-189: audit whether signal-event recorder scope defect can bias Execution Alpha BUY-trigger statistics.
+7. PV-190: evidence-convergence checkpoint and next highest-value data action.
+8. Formal Core remains LOCKED.
