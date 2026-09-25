@@ -785,3 +785,179 @@ The next research action should prioritize evidence and integration rather than 
 2. determine whether existing recorder can support ER-024 without new shared-runtime calls;
 3. if incomplete, prepare a research-only event-vintage capture proposal under governance;
 4. integrate future event-risk outcomes with Portfolio Heat and Trading Frictions without duplicate scores.
+
+
+---
+
+## ER-026 — Current source/data feasibility audit
+
+### A. Existing official ANNOUNCEMENTS snapshot is useful but not intraday point-in-time safe
+
+Current source path:
+- TWSE: `https://openapi.twse.com.tw/v1/opendata/t187ap04_L`
+- TPEx: `https://www.tpex.org.tw/openapi/v1/mopsfin_t187ap04_O`
+- synchronized by `tests/sync_official_quality.mjs`
+- stored as the `ANNOUNCEMENTS` quality dataset.
+
+Current `validateOfficialQualityData()` reduces each accepted row to:
+`{date: announcementDate, title}`
+
+and keeps a rolling 30-day window relative to the quality market date.
+
+### Consequence
+This is enough for coarse date-level “recent official announcement” context.
+
+It is **not enough** for ER point-in-time questions such as:
+“Was this disclosure already public at 13:20?”
+
+Because the persisted normalized object does not retain announcement time / first-known timestamp.
+
+### Additional historical-recovery warning
+A date-filtered current official feed is not automatically a point-in-time historical archive.
+Historical reconstruction must prove:
+- the row existed at the claimed decision time;
+- later corrections/revisions are not silently substituted;
+- completeness for the target date.
+
+Status:
+- DATE-LEVEL OFFICIAL ANNOUNCEMENT CONTEXT = AVAILABLE
+- INTRADAY FIRST-KNOWN EVENT VINTAGE = NOT AVAILABLE IN CURRENT NORMALIZED SNAPSHOT
+
+---
+
+### B. Existing V8.8.1 execution recorder has partial opening-gap ingredients
+
+V8.8.1 passes through from the already-required Fugle quote:
+- `previousClose`
+- `openPrice`
+- `avgPrice`
+- top-five bids/asks
+- mechanism-state fields.
+
+Official Fugle quote documentation also exposes:
+- `referencePrice` = today's reference price
+- `openTime` = opening-price execution time
+- `limitUpPrice`
+- `limitDownPrice` via ticker/related quote context.
+
+Source:
+- https://developer.fugle.tw/docs/data/http-api/intraday/quote/
+- https://developer.fugle.tw/docs/data/http-api/intraday/ticker/
+
+### Current gap
+The audited V8.8.1 research passthrough does **not** persist `referencePrice` or `openTime`.
+
+Therefore:
+- ordinary `openPrice / previousClose - 1` can sometimes be computed;
+- corporate-action/reference-price-adjusted gap cannot be safely classified from the recorder alone;
+- exact opening-auction timestamp provenance is incomplete.
+
+Do not treat `previousClose` as `referencePrice` when they differ.
+
+---
+
+### C. Existing recorder cadence remains sparse
+
+Execution recorder events are formal-monitor milestone snapshots, not a full all-symbol daily opening panel.
+
+Therefore it cannot by itself guarantee ER-024 coverage for:
+- all Formal selected/live monitored symbols;
+- all trading dates;
+- exact opening-auction observation;
+- all event/no-event controls.
+
+### ER-026 conclusion
+Current system has valuable ingredients but not enough provenance/completeness for a trusted prospective Event-Risk study without additional capture semantics.
+
+Status: PARTIAL_SUPPORT / POINT-IN-TIME_GAP.
+
+---
+
+## ER-027 — Zero/shared-code-change feasibility result
+
+Question:
+“Can ER-024 be run faithfully using current stored fields only?”
+
+Answer:
+**Not completely.**
+
+### What can be studied with zero new runtime fields
+When rows exist:
+- `previousClose` versus `openPrice`;
+- post-open execution-state snapshots;
+- spread/depth around existing recorder milestones;
+- date-level official announcement context;
+- position stage / plan stop from existing plans.
+
+### What cannot be trusted without additional evidence
+- exact event first-known time;
+- exact scheduled-event certainty history;
+- corporate-action-adjusted reference gap;
+- opening-auction time provenance;
+- exhaustive denominator of all monitored symbol-date openings;
+- complete no-event control cohort.
+
+### Research rule
+Do not weaken ER-024 to fit the available data and then call it the same experiment.
+
+A smaller zero-code descriptive pilot may be run later, but it must be labeled:
+`ER_EXISTING_DATA_DESCRIPTIVE`
+and cannot answer the full point-in-time event-risk causal/incremental questions.
+
+Status: FULL ER-024 ZERO-CODE FEASIBILITY = NO.
+
+---
+
+## ER-028 — Event-vintage capture proposal boundary
+
+Because missing semantics touch shared data collection, prepare a proposal before implementation.
+
+### Minimum additions proposed
+
+#### Quote/opening provenance
+Reuse the quote already fetched by Formal monitoring where technically safe:
+- referencePrice
+- openPrice
+- openTime
+- previousClose
+- limitUpPrice / limitDownPrice only if available without adding risky shared-path calls.
+
+#### Event provenance
+Research-only storage:
+- sourceMarket
+- symbol
+- disclosureId/hash if stable
+- title
+- disclosureDate
+- disclosureTime / firstKnownAt
+- capturedAt
+- source URL / source version
+- correction/revision linkage if available
+- event-calendar certainty
+- decisionImpact = false
+
+#### Coverage
+For every target research symbol/date:
+- expected opening observation;
+- observed opening observation;
+- expected event-source poll/capture;
+- observed poll/capture;
+- missingReason.
+
+### Architecture preference
+1. Prefer isolated research capture/storage.
+2. Do not make Formal selection/monitoring depend on event capture.
+3. Fail open for Formal behavior if research capture fails.
+4. No new provider request on latency-sensitive Formal path unless separately approved.
+5. Retain point-in-time snapshots rather than reconstructing later from a mutable current feed.
+
+### Governance
+- Pure documentation/proposal = research-safe.
+- Reusing already-fetched fields in a research-only sink may still require shared-runtime review because production Worker/schema is touched.
+- New polling/provider calls or any Formal dependency are at least Class B.
+- Any rule that changes entry/ADD/REDUCE/sizing/stop around events is Class C.
+
+### No implementation in this turn
+This is a design proposal only.
+
+Status: EVENT-VINTAGE CAPTURE PROPOSAL FROZEN; IMPLEMENTATION NOT AUTHORIZED.
