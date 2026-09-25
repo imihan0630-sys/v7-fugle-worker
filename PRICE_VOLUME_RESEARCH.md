@@ -10062,3 +10062,328 @@ Otherwise three simultaneous moving parts would exist:
 That would make attribution of research/data failures difficult.
 
 Status: V3_DESIGN_READY / IMPLEMENTATION_SEQUENCE_DEFERRED.
+
+# PV-184 — Cohort-Quality Provenance Contract
+
+## Why
+PV experiments are conditioned on Formal cohort membership.
+A future research row needs to know not only:
+“what was the PV state?”
+but:
+“was the candidate cohort generated from trustworthy input history?”
+
+## Required provenance
+
+### Selection identity
+- selectionScanDate;
+- observationMarketDate;
+- symbol;
+- cohort:
+  - SELECTED
+  - QUALIFIED_NOT_SELECTED
+  - NEAR_MISS
+  - REJECTED_AFTER_BASE
+  - BROAD_CONTROL;
+- cohortRank;
+- selectedFlag;
+- shadowCandidateSnapshot/schema reference.
+
+### History-quality state at selection
+- historyQualityState:
+  - VERIFIED_SYMBOL_SESSION_COMPLETE
+  - MARKET_SESSION_ONLY_UNVERIFIED
+  - STALE_CONFIRMED
+  - SUSPENSION_PROVENANCE_UNKNOWN
+  - UNKNOWN;
+- expectedPriorSymbolSession;
+- actualLatestPriorBarDate;
+- continuityProofVersion;
+- suspensionArchiveVersion;
+- qualityCheckedAt.
+
+### Plan lineage
+For monitored days after the selection day:
+- planDate;
+- originalSelectionScanDate;
+- selectedPlan identity/version.
+
+The observation date must not replace the original selection-quality provenance.
+
+## Primary clean cohort
+For H001-H006 primary inference:
+- point-in-time archived cohort exists;
+- history-quality state verified;
+- PV/execution feature quality passes;
+- relevant event-source coverage passes.
+
+Everything else remains:
+- stored;
+- auditable;
+- guarded;
+but outside the primary clean estimate.
+
+Status: COHORT_PROVENANCE_CONTRACT_FROZEN.
+
+
+# PV-185 — Later Data-Quality Discoveries Must Quarantine Rows, Not Rewrite History
+
+## Principle
+Immutable snapshots preserve what the system observed at the time.
+If we later discover:
+- stale history;
+- wrong source scope;
+- event misclassification;
+we do not mutate the old feature snapshot to make history look cleaner.
+
+## Separate quality annotation
+Future analysis should maintain a quality overlay keyed by:
+- snapshotId / cohort row;
+- discoveredAt;
+- issueCode;
+- evidenceVersion;
+- analysisEligibility.
+
+Example:
+`STALE_HISTORY_CONFIRMED_2026_09_24`.
+
+## Analysis states
+- PRIMARY_ELIGIBLE
+- GUARDED_DESCRIPTIVE
+- QUARANTINED_INPUT_DEFECT
+- UNKNOWN_PENDING_PROVENANCE
+
+## Outcomes
+Existing outcome rows can remain factual market paths.
+They are simply excluded from the analysis whose input assumptions were violated.
+
+## Benefit
+This preserves:
+- auditability;
+- no-repaint history;
+- knowledge of past production defects;
+- the ability to reanalyze under later quality rules.
+
+Status: QUALITY_OVERLAY_NOT_SNAPSHOT_MUTATION_FROZEN.
+
+
+# PV-186 — Formal Selection Conditioning Limits What PV Evidence Can Generalize To
+
+## Existing research archive
+The repository already prospectively archives:
+- SELECTED;
+- QUALIFIED_NOT_SELECTED;
+- NEAR_MISS;
+- REJECTED_AFTER_BASE;
+- BROAD_CONTROL.
+
+The control architecture is valuable and should be reused.
+
+## Selection-conditioning warning
+H001-H004's primary cohort intentionally studies:
+“PV inside the Formal decision funnel.”
+
+Therefore evidence from SELECTED/monitored stocks does NOT automatically answer:
+- whether PV predicts the entire Taiwan market;
+- whether a threshold should be applied before the Formal selector;
+- whether PV should replace Formal A/B setup.
+
+## Comparator roles
+
+### SELECTED
+Answers:
+does PV distinguish path/execution quality among Formal plans?
+
+### QUALIFIED_NOT_SELECTED
+Tests quota/ranking opportunity cost.
+
+### NEAR_MISS
+Tests whether Formal technical gates discard setups with different PV behavior.
+
+### REJECTED_AFTER_BASE
+Tests later-gate selectivity.
+
+### BROAD_CONTROL
+Provides broad same-date baseline, but is not a perfect matched counterfactual.
+
+## Intraday limitation
+Only stocks prospectively monitored have intraday PV/execution data.
+
+Do not fabricate historical 15m Shadow for unmonitored control names.
+
+If future H001/H006 needs intraday controls:
+they must be prospectively captured under a bounded predeclared control design.
+
+Status: SELECTION_CONDITIONING_SCOPE_FROZEN.
+
+
+# PV-187 — Same-Date Evidence Should Be Aggregated at the Date Level before Cross-Date Inference
+
+## Why
+Six stocks on the same day share:
+- market shock;
+- macro;
+- sector correlations;
+- volatility regime;
+- execution infrastructure.
+
+They are not six independent experiments.
+
+## Existing project principle
+The broader research system already treats scan date as the primary independent evidence cluster.
+
+PV adopts the same rule.
+
+## Comparison design
+Within each date:
+1. compute cohort/state-level summary;
+2. compute selected-vs-control or PV-state contrast;
+3. carry one date-level contrast forward.
+
+Across dates:
+- report equal-date-weighted result first;
+- report count-weighted result only as secondary;
+- date-block bootstrap / leave-one-date-out where sample allows.
+
+## Matching dimensions
+When enough observations exist:
+- market;
+- pool / price tier;
+- liquidity;
+- sector or sector-relative state;
+- baseline trend/ATR;
+- relevant Formal setup channel.
+
+Do not over-match until no observations remain.
+
+## Date concentration
+Always report:
+- independent dates;
+- max one-date contribution;
+- leave-one-date-out sign stability.
+
+Status: DATE_LEVEL_PRIMARY_INFERENCE_FROZEN.
+
+
+# PV-188 — Final History-Freshness Contract Must Be Symbol-Session Aware
+
+## New cross-lane evidence
+Corporate Action research falsified a pure market-session-only freshness rule.
+
+Verified capital-action suspensions can create legitimate no-bar dates while the exchange is open.
+
+Supported project witnesses include TWSE and TPEx symbols.
+
+## Correct expected history
+`EXPECTED_SYMBOL_SESSIONS =
+OFFICIAL_EXCHANGE_SESSIONS
+- VERIFIED_SYMBOL_SUSPENSION_SESSIONS`
+
+Unknown suspension provenance fails closed.
+
+## Consequence for PR #100
+PR #100 correctly solves the B-130 class of stale recent-session cache under ordinary trading.
+
+But it must NOT be promoted in its current market-session-only form because it can reject legitimate suspension gaps.
+
+The project Corporate Action decision memo explicitly reaches the same conclusion.
+
+## Correct dependency order
+1. official exchange calendar;
+2. exchange-scoped point-in-time suspension archive;
+3. expected symbol sessions;
+4. freshness validation;
+5. corporate-action semantic transformations;
+6. downstream Formal/PV/Pattern features.
+
+## PV rule
+History freshness remains a prerequisite,
+but “complete” must mean complete relative to expected symbol sessions, not every exchange session.
+
+Status: SYMBOL_SESSION_FRESHNESS_REQUIRED / PR100_AS_IS_NOT_PRODUCTION_READY.
+
+
+# PV-189 — Recorder Signal-Scope Defect Does Not Invalidate Existing Execution Alpha, but It Blocks Signal-Microstructure Attribution
+
+## Existing Execution Alpha source audit
+`readExecutionAlphaResearch` reads:
+- `v8_trade_journal_plans`;
+- `v8_trade_journal_signals`;
+and counts formal BUY signal rows.
+
+It does NOT derive buyTriggeredPlans from:
+`trade_research_execution_snapshots.FORMAL_SIGNAL_OBSERVED`.
+
+## Therefore
+The recorder event-scope defect in PV-174 does NOT by itself invalidate:
+- selectedPlans;
+- buyTriggeredPlans;
+- entryTimingPct
+from the existing Execution Alpha implementation.
+
+## What is blocked
+Any study asking:
+“What was spread/depth/market state at this symbol's Formal signal?”
+
+cannot trust a recorder FORMAL_SIGNAL_OBSERVED row unless:
+- same-symbol notification is independently matched;
+- source bar/time aligns.
+
+## Rule
+Keep two evidence channels separate:
+- Formal signal truth = trade journal signal state;
+- microstructure context = recorder, subject to event-scope/coverage quality.
+
+Join only when both identities match.
+
+Status: EXECUTION_ALPHA_SEPARATE / SIGNAL_MICROSTRUCTURE_JOIN_GUARDED.
+
+
+# PV-190 — Evidence-Convergence Checkpoint: Data Integrity Dominates New Factor Research
+
+## Current blockers ordered by research importance
+
+### 1. Symbol-session-aware daily history quality
+Why:
+Formal selection and daily PV features depend on daily history.
+
+Current state:
+- B-130 defect proven;
+- PR #100 tested but insufficient as-is;
+- Corporate Action lane has a validated symbol-session prototype/research design;
+- production integration not authorized/complete.
+
+### 2. PV_SHADOW_V0_1 DATA_QA
+Need:
+- baseline coverage;
+- immutable/idempotent snapshots;
+- Formal isolation;
+- actual prospective event counts.
+
+### 3. Execution-recorder authoritative coverage
+Current convenience endpoint cannot prove target-date completeness.
+
+Need:
+- exact-date count/pagination/truncation/expected-event observability.
+
+### 4. execution-shadow-v3
+Zero-extra-API design has value,
+but should wait until 1~3 are stable enough not to confound debugging.
+
+### 5. Institutional-origin H005
+Design-ready, zero-extra-API candidate;
+also waits behind core QA.
+
+## What not to do now
+Do not:
+- invent a new volume oscillator;
+- tune RVOL thresholds;
+- promote dealer proprietary;
+- promote pressure/depth;
+- infer BUY/NO-BUY from missing recorder rows;
+- merge PR #100 as-is.
+
+## Highest-value learning path
+The next knowledge gain comes from:
+**provenance, coverage and prospective data**, not more formulas.
+
+Status: PV_THEORY_MATURE / DATA_INTEGRITY_AND_EVIDENCE_PRIORITY.
