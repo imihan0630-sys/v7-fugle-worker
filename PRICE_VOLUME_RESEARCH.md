@@ -11706,3 +11706,286 @@ Do not calculate H001/H002 effect sizes until:
 - sample/date floors mature.
 
 Status: FIRST_SESSION_EVIDENCE_PROTOCOL_FROZEN.
+
+# PVE-021 — Cold-Start Means 2026-09-29 Intraday Baseline Is Expected to Be Insufficient
+
+## Timing
+PV Shadow was enabled after the 2026-09-24 session.
+The next dates are:
+- 2026-09-25 holiday;
+- 2026-09-26/27 weekend;
+- 2026-09-28 holiday;
+- 2026-09-29 first ordinary session.
+
+## Bootstrap location
+The 15m historical baseline bootstrap is invoked only in the post-Formal after-market scan path.
+
+Therefore no ordinary post-enable after-market bootstrap can occur before the close of 2026-09-29 unless a separate manual scan is deliberately run.
+
+## Intraday consequence
+During 2026-09-29 intraday monitoring, a newly enabled symbol baseline can be:
+- absent;
+- or contain only locally rolled prospective session data.
+
+Then:
+- slotHistoryCount < 20;
+- cumulativeHistoryCount < 20;
+- rangeHistoryCount < 20;
+and guard becomes DATA_INSUFFICIENT.
+
+This is expected cold-start behavior, not a failure.
+
+## Research use
+2026-09-29 intraday rows can test:
+- completed-bar extraction;
+- immutable snapshot mechanics;
+- guard correctness;
+- no-look-ahead;
+- duplicate/mutation handling.
+
+They are not expected to provide clean same-slot RVOL evidence before baseline bootstrap.
+
+Status: FIRST_INTRADAY_SESSION_COLD_START_EXPECTED.
+
+
+# PVE-022 — Earliest Technically Baseline-Ready Intraday Session Is 2026-09-30, Conditional on 9/29 Bootstrap Success
+
+## Bootstrap semantics
+After the 2026-09-29 session, bootstrap fetches historical 15m data only through:
+`marketDate - 1`,
+then merges any already observed current-session cache.
+
+This preserves no-look-ahead for the earlier 9/29 snapshots.
+
+## For 2026-09-30
+If 9/29 after-market bootstrap succeeds:
+- >=20 valid prior sessions can exist;
+- 9/29 itself can legitimately become a prior completed session for 9/30;
+- pvSlotRvol20 / pvCumvolPace20 can become technically available.
+
+## Remaining gate
+Baseline-ready != clean evidence.
+
+The 9/29 after-market selected cohort still needs:
+- symbol-session provenance;
+- pool selection integrity;
+- corporate-action comparability.
+
+Therefore 9/30 is only the earliest **possible** primary-quality intraday date.
+
+Status: 2026_09_30_EARLIEST_POSSIBLE_BASELINE_READY_DATE.
+
+
+# PVE-023 — Daily PV Guard Does Not Currently Detect Stale Continuity Gaps
+
+## Source audit
+`pvBuildDailyFeature(history,marketDate)`:
+- sorts available rows;
+- finds current date;
+- takes the last 20 rows before marketDate.
+
+`pvRecordDailySnapshot` marks invalid only when:
+- current row is missing;
+- prior row count <20;
+- unsupported market structure flag is set.
+
+## Missing check
+It does not validate:
+- expected prior symbol session;
+- continuity through recent sessions;
+- suspension-aware calendar provenance.
+
+Therefore a stale cache with 20 older rows can still produce:
+- dailyHistoryCount=20;
+- pvDailyRvol20 value;
+- pvInterpretability not INVALID.
+
+## Consequence
+Daily pvInterpretability from v0.1 is not sufficient proof of daily-history quality.
+
+A separate symbol-session quality overlay is mandatory.
+
+Status: DAILY_PV_CONTINUITY_GUARD_MISSING_CONFIRMED.
+
+
+# PVE-024 — PV Illiquidity Guard Thresholds Are Reversed Relative to Formal
+
+## Formal rule
+Current Formal scoreCandidate uses:
+- close >= 1000: minLots = 300;
+- close < 1000: minLots = 1000.
+
+## PV v0.1 implementation
+`pvIlliquidityWarning(plan)` currently uses:
+- close >= 1000: threshold 1000;
+- close < 1000: threshold 300.
+
+This reverses the intended market-liquidity tier.
+
+## Additional semantic mismatch
+Formal `liquidityException` is a descriptive string when the exception is granted.
+
+PV code tests:
+`plan?.liquidityException === true`.
+
+Therefore the exception test is not aligned with the actual Formal data type.
+
+## Impact
+This does NOT affect:
+- Formal eligibility;
+- ranking;
+- BUY/ADD/REDUCE;
+- capital;
+- push.
+
+It can affect:
+- ILLIQUIDITY_WARNING flag;
+- pvInterpretability=GUARDED;
+- clean-vs-guarded research cohort membership.
+
+## Research policy
+Until corrected and versioned:
+- do not use v0.1 ILLIQUIDITY_WARNING as a trusted research label;
+- derive liquidity quality from the frozen Formal rule/provenance when analyzing existing rows;
+- preserve original rows unchanged and annotate the known labeling defect.
+
+Status: RESEARCH_LABEL_DEFECT_CONFIRMED / FORMAL_UNAFFECTED.
+
+
+# PVE-025 — Several Frozen PV Guards Have Interfaces but No Verified Production Data Plumbing
+
+## Repo search audit
+
+### corporateActionResetAt
+Appears in:
+- PV v0.1 helper/cache;
+- tests/spec.
+
+No independent upstream Formal plan population was found.
+
+### pvGapDominated
+Appears only in PV v0.1 guard consumption.
+No upstream plan producer was found.
+
+### marketStructure
+PV checks plan.marketStructure for ESB.
+No upstream plan population was found in the current repo search.
+
+### VI state
+`viStateUnknownConfounder` is hardcoded false in the PV snapshot builder.
+
+## Interpretation
+These guards are:
+- implemented as interfaces;
+- tested synthetically in some cases;
+but not proven operationally populated in Production.
+
+## Rule
+Do not report:
+“corporate-action / gap / ESB / VI guard coverage passed”
+merely because the fields/functions exist.
+
+Required state:
+`GUARD_SOURCE_UNVERIFIED`
+until upstream provenance is demonstrated.
+
+Status: GUARD_PLUMBING_GAP_CONFIRMED.
+
+
+# PVE-026 — Current Price-Censor Guard Uses previousClose, Not Exchange Reference Price
+
+## Current implementation
+Intraday PV uses:
+`referenceClose = result.quote.previousClose`
+and:
+`pvPriceCensored(bar, referenceClose)`.
+
+The opening reference-unresolved test only checks whether previousClose is null.
+
+## Problem
+On ex-right/ex-dividend/certain corporate-action sessions:
+the exchange reference price can differ from raw previous close.
+
+PV-046 and later Corporate Action research already established this distinction.
+
+## Consequence
+Possible v0.1 errors:
+- false PRICE_CENSORED;
+- missed reference-price issue;
+- distorted opening/gap interpretation.
+
+## Research policy
+Corporate-action/reference-adjusted sessions:
+- exclude from clean price-censor/gap inference unless exchange-consistent reference price is independently available;
+- annotate existing v0.1 row with reference-price-quality UNKNOWN/GUARDED.
+
+Do not rewrite immutable row values.
+
+Status: RAW_PREVIOUS_CLOSE_REFERENCE_DEFECT_CONFIRMED.
+
+
+# PVE-027 — Guard Integrity Must Be a Separate QA Dimension
+
+## Why
+A snapshot can be:
+- structurally immutable;
+- based on completed bars;
+- baseline-complete;
+yet carry a wrong guard label.
+
+Therefore DATA_QA requires separate dimensions:
+
+1. Snapshot integrity
+2. Baseline integrity
+3. Guard-label integrity
+4. Cohort provenance integrity
+5. At-rest verification
+6. Outcome completeness
+
+## First known guard-label defects
+- reversed liquidity thresholds;
+- liquidityException type mismatch;
+- unverified corporateActionResetAt plumbing;
+- unverified pvGapDominated plumbing;
+- unverified marketStructure plumbing;
+- VI confounder hardcoded false;
+- previousClose used instead of exchange referencePrice.
+
+## Primary-analysis rule
+A row with a known guard-label defect can remain useful for:
+- raw pvSlotRvol20;
+- raw pvCumvolPace20;
+- raw bar-response components
+if their own source quality is clean.
+
+But it cannot be included in a study that treats the defective guard label as ground truth.
+
+Status: GUARD_LABEL_QA_SEPARATED.
+
+
+# PVE-028 — First Evidence Window Should Prioritize Recorder Falsification over Alpha
+
+## 9/29 priorities
+1. Does cold-start correctly yield DATA_INSUFFICIENT rather than fabricated neutral RVOL?
+2. Are duplicate/mutation behaviors correct?
+3. Does after-market bootstrap reach >=20 valid sessions?
+4. Does daily write receipt remain isolated from Formal?
+5. Are known guard defects visible/annotated rather than silently trusted?
+
+## 9/30 priorities
+If 9/29 bootstrap succeeds:
+1. same-slot baselineAsOfDate < observation date;
+2. valid slot/range/cumulative counts;
+3. stable source units;
+4. Formal local volumeRatio and pvSlotRvol20 coexist without cross-mutation;
+5. cohort provenance independently classified.
+
+## Not yet priority
+- win rate;
+- threshold superiority;
+- H001/H002 effect size;
+- signal promotion.
+
+The first evidence window is primarily an attempt to falsify recorder correctness.
+
+Status: FIRST_WINDOW_FALSIFICATION_FIRST.
