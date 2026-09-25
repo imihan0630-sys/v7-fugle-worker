@@ -6945,3 +6945,99 @@ Compare same-date / matched controls on:
 If PATTERN_PLUS_EVENT dominates EVENT_NO_PATTERN after controls, pattern maturity may condition how information is absorbed.
 If no difference remains after event surprise/runup controls, technical morphology may be secondary.
 
+
+
+## DL-002BE — Pattern × Market-State Continuation/Transition v0.1
+
+### Taiwan evidence
+Pacific-Basin Finance Journal evidence finds Taiwan momentum behaves very differently when the market remains in the same state versus transitions:
+- positive momentum during market-state continuation,
+- reversal during state transitions.
+The frequent transitions help explain why unconditional Taiwan momentum can look weak.
+
+### Pattern implication
+A technically mature bullish pattern may be more likely to persist when the broader market state is stable/continuing, and more vulnerable when the market is transitioning.
+
+### Reuse existing regime framework
+Do not invent a new market regime if the research system already has durable BULL_BROAD / MIXED / BEAR_BROAD or equivalent labels.
+
+Add:
+- regimeAtPatternStart
+- regimeAtMaturity
+- regimeAtBreakout
+- regimeTransitionDuringPattern
+- daysSinceRegimeChange
+- breadthChangeDuringPattern
+- marketRSChangeDuringPattern
+
+### Core comparisons
+For each pattern/primitive:
+1. same-state continuation;
+2. transition into stronger state;
+3. transition into weaker state;
+4. persistently mixed/choppy state.
+
+### Hypotheses
+- compression + improving RS during a stable bull state may represent constructive continuation;
+- the same compression during a weakening transition may be mere hesitation before failure;
+- W/reversal structures may behave differently during transitions than continuation patterns.
+
+### Do not pool blindly
+Report pattern results by regime continuation/transition before any unconditional average.
+
+## DL-002BF — Pattern Family × Regime Role
+
+### Continuation-oriented structures
+- VCP
+- flag/platform
+- cup/handle
+
+Primary hypothesis:
+better in continuing/up-improving regimes.
+
+### Reversal-oriented structures
+- W / double bottom
+- undercut-reclaim
+- bullish reversal candlesticks
+
+Primary hypothesis:
+may have more relevance near regime transitions, but this is not assumed.
+
+### Test interaction
+Do not conclude:
+“W works in bear markets”
+from intuition.
+Test:
+pattern primitive × regime state × regime transition direction.
+
+### Multiple-testing control
+Only a limited pre-registered interaction matrix is allowed:
+- continuation patterns × continuation vs weakening transition;
+- reversal patterns × transition vs stable bear/mixed;
+- failure motifs × weakening transition.
+
+## DL-002BG — Market Breadth Confirmation vs Redundancy
+
+### Existing overlap
+Current research already tracks market/sector breadth and sector persistence.
+
+### Incremental question
+Does breadth change specifically during pattern maturation matter beyond breadth level?
+
+Fields:
+- breadthAtPatternStart
+- breadthAtMaturity
+- breadthSlope
+- sectorBreadthSlope
+- breadthDivergenceFromStock
+- breadthTransitionBeforeBreakout
+
+### Constructive hypothesis
+Stock pattern matures while sector/market breadth improves.
+
+### Warning hypothesis
+Stock reaches pivot while breadth deteriorates.
+
+### Redundancy rule
+If breadthSlope adds nothing beyond existing sector persistence/regime variables, discard it.
+
