@@ -428,3 +428,316 @@ Sector/stock:
 - no outcome-tuned breadth thresholds.
 
 Status: FIRST PROTOCOL FROZEN. Formal Core unchanged.
+
+
+---
+
+## BR-011 — Breadth thrust: research the acceleration, not a folklore threshold
+
+“Breadth thrust” is a practitioner concept: participation shifts from very weak to very strong over a short interval.
+
+### Research translation
+Do not begin from a named indicator's fixed threshold.
+
+Represent:
+- breadthLevel
+- breadthSlope
+- breadthAcceleration
+- pctAdvancing5D
+- pctAboveMA20 change
+- newHighShare change
+- sectorParticipationCount change
+
+Candidate event:
+`BREADTH_ACCELERATION_EVENT` = unusually rapid participation expansion relative to the same market's own history.
+
+### Why not adopt a named threshold now
+Current literature search finds mixed evidence for broad technical market indicators and substantial data-snooping risk. A fixed “thrust” threshold selected because it worked historically would add another Factor-Zoo branch.
+
+### Positive mechanism
+Rapid participation expansion after a washed-out period may represent broad demand returning rather than one-index-leader rebound.
+
+### Counter-mechanism
+A breadth surge can occur during:
+- short covering,
+- indiscriminate relief rallies,
+- late-cycle speculative broadening,
+and need not imply durable trend.
+
+Status: CONCEPT WORTH TESTING; NO FOLKLORE THRESHOLD ADOPTED.
+
+---
+
+## BR-012 — Breadth deterioration near market peaks has a timing problem
+
+### Practitioner evidence
+Breadth divergences are widely used as cautionary diagnostics: an index can make new highs while fewer stocks confirm.
+
+### Core statistical problem
+A divergence can begin long before price turns.
+Therefore “divergence existed before a top” does not establish useful timing.
+
+Required measurements:
+- divergenceStartDate
+- daysFromDivergenceToPeak
+- maxFurtherIndexGainAfterDivergence
+- maxDrawdownBeforePeak
+- falseAlarmDuration
+- whether breadth later re-confirms before any material decline
+
+### Null / counterexample
+Index can continue rising for weeks/months under narrow leadership.
+A divergence may predict future cross-sectional dispersion rather than negative index return.
+
+### Research outcome hierarchy
+1. participation change
+2. dispersion / equal-weight relative performance
+3. volatility / drawdown risk
+4. only then aggregate index return
+
+This avoids forcing breadth into a directional market-timing story it may not support.
+
+Status: DIVERGENCE DURATION / FALSE-ALARM PROTOCOL FROZEN.
+
+---
+
+## BR-013 — Cross-sector correlation controls whether “rotation” is even meaningful
+
+### Evidence
+Industry/sector momentum evidence is regime dependent. Research on intra/inter-industry time-series momentum finds strong sector-level predictability in the 1990s but not the 2000s, coincident with a sustained rise in correlations across sectors.
+
+### Proposed rotation-environment variables
+- medianPairwiseSectorCorr20
+- medianPairwiseSectorCorr60
+- sectorReturnDispersion5 / 20
+- fractionSectorsPositive5 / 20
+- topBottomSectorSpread5 / 20
+- rankTurnover5D
+
+### Interpretation
+Low/moderate correlation + high dispersion:
+- more room for genuine relative sector leadership/rotation.
+
+Very high correlation + low dispersion:
+- “sector rotation” may just be market beta moving everything together.
+
+### Counterpoint
+High correlation does not eliminate all sector information; relative returns can still matter. Correlation is a conditioning state, not a hard reject.
+
+Status: HIGH-VALUE ROTATION REGIME CANDIDATE.
+
+---
+
+## BR-014 — Leadership diffusion lifecycle
+
+Instead of static “top 3 leaders,” track how leadership spreads through members.
+
+### Proposed lifecycle
+1. LEADER_ONLY
+   - one/few leaders outperform
+   - median member weak
+   - breadth low
+
+2. EARLY_DIFFUSION
+   - leaders remain strong
+   - median improves
+   - breadth / pctAboveMA rises
+
+3. BROAD_PARTICIPATION
+   - many members positive / above trend
+   - leader concentration declines without collapse
+
+4. LATE_BROADENING
+   - breadth very high
+   - weaker members surge
+   - leaders may stop improving
+   - requires overheat/valuation/volume controls
+
+5. NARROWING
+   - sector price/leader remains strong
+   - median/breadth/new highs roll over
+
+6. LEADERSHIP_BREAK
+   - leaders lose RS / sector rank falls
+
+### Why nonlinear
+“Broader is always better” is too simple.
+Early diffusion may be constructive; indiscriminate late broadening can be a maturity/exhaustion state.
+
+### Required context
+- sector return age / duration
+- overheat
+- volume state
+- market Regime
+- sector correlation environment
+
+Status: LIFECYCLE HYPOTHESIS.
+
+---
+
+## BR-015 — Current sector hard gate may discard context; research it without changing it
+
+Current Formal logic rejects a sector if:
+- breadth < 40%, or
+- avgChange < -1%, or
+- amountVs20DayAverage < 0.5.
+
+This is production truth, not evidence that those exact cutoffs are optimal.
+
+### Research questions
+1. Are rejected-by-sector-gate Near-miss stocks systematically worse at D1/D3/D5?
+2. Which component is doing useful work?
+3. Does one-day breadth <40% remain informative after:
+   - sector 5D/20D breadth trend,
+   - Residual RS,
+   - market Regime,
+   - sector correlation,
+   - stock setup quality?
+4. Are there high-quality early rotation cases where one-day breadth is temporarily weak but breadth acceleration is positive?
+5. Does the activity threshold mostly duplicate stock/sector volume features?
+
+### Important boundary
+No threshold sweep to find a prettier 37%, 43%, etc.
+First test the **current frozen thresholds** against prospective cohorts.
+Alternative definitions become separately preregistered experiments only after the current gate is understood.
+
+Status: FORMAL-GATE AUDIT PROPOSED, RESEARCH ONLY.
+
+---
+
+## BR-016 — Point-in-time universe is the hardest breadth data problem
+
+### Survivorship risk
+Reconstructing old breadth from today's listed stocks:
+- excludes delisted firms,
+- may include firms not yet listed at the historical date,
+- changes the denominator,
+- can bias new-high / MA / A-D measures.
+
+### Industry reclassification risk
+Current repository history bars preserve price/volume, but do not preserve a historical industry classification on every bar.
+Current enrichment/profile industry may overwrite the stock's present state.
+
+Therefore:
+- current industry label must not be blindly applied backward to dates before a reclassification;
+- historical sector breadth reconstructed with current classifications is not strictly point-in-time.
+
+### Listings / IPOs
+New stocks lack 20/60/120/252 sessions.
+They must be:
+- excluded only from metrics requiring unavailable history,
+- still counted appropriately in official A/D if the exchange counts them,
+- accompanied by denominator/coverage fields.
+
+### Delisting / suspension
+Do not carry stale last prices forward as unchanged active members.
+
+### Recommended data architecture
+For every research date store:
+- universeDefinition
+- market
+- symbol
+- eligibility flags
+- industryCode/name as known that date
+- listing/history-age flags
+- comparison eligibility
+- source/provenance
+
+Status: POINT-IN-TIME MEMBERSHIP REQUIRED FOR HISTORICAL CLAIMS.
+
+---
+
+## BR-017 — Redundancy map against existing system
+
+| New breadth/rotation concept | Existing nearest feature | Incremental question |
+|---|---|---|
+| official market advance share | market index return / Regime | participation behind index |
+| eligible advance share | one-day sector breadth | market-wide eligible participation |
+| breadth slope/acceleration | one-day breadth | time evolution |
+| pctAboveMA20/60 | individual MA/K-line | cross-sectional participation |
+| new-high share | breakout/ret20 | breadth of trend extension |
+| sectorRet20 | current sector peer return | already partly present; reuse |
+| sector rank change | sector score / sector return | rotation velocity |
+| sector breadth trend | one-day sector breadth | persistence/diffusion |
+| leader concentration | top-3 leaders | concentration vs distribution |
+| leader persistence | current leaders | durability |
+| cross-sector correlation | Regime | whether rotation is distinct from market beta |
+| equal-weight vs cap-weight gap | TWSE index return | concentration of index leadership |
+
+### Kill rules
+Remove/deprioritize a feature if:
+- correlation/redundancy with existing state is high,
+- conditional/incremental effect is unstable,
+- effect vanishes out-of-sample or by date clustering,
+- only one threshold/window works,
+- classification/universe coverage is poor.
+
+Status: REDUNDANCY GATE FROZEN.
+
+---
+
+## BR-018 — Zero-code feasibility audit: what can be learned now versus prospectively
+
+### Can be studied now with official current/as-of-date data
+- official TWSE same-day A/D state
+- official TPEx same-day A/D state
+- current eligible-universe breadth
+- current sector breadth
+- current equal-weight / median stock return from complete daily rows
+- current sector dispersion / rank
+- current leader concentration if full current rows are available
+
+### Historical inference blocked or qualified
+1. Whole-market A/D:
+   - possible only if dated official historical endpoints / archives are fetched and coverage verified.
+2. pctAboveMA / new-high breadth:
+   - current D1 histories have known freshness issue (B-130/B-131) pending repair/revalidation.
+3. Historical sector breadth/rotation:
+   - current bars do not retain point-in-time industry classification, creating classification look-back risk.
+4. Historical universe:
+   - current active-stock reconstruction creates survivorship/listing bias unless dated membership is recovered.
+5. Existing sector breadth:
+   - uses filtered >=NT$10 scan rows, so it is not whole-market evidence.
+
+### Prospective low-risk route
+Without touching Formal decisions:
+- compute/store one research snapshot per completed scan date,
+- snapshot both official-market and eligible-universe definitions,
+- freeze industry classification/provenance on that date,
+- persist denominators and UNKNOWN/coverage,
+- then accumulate independent dates.
+
+This is conceptually Class A only if implemented downstream and decisionImpact=false; using shared scan/runtime storage may still require Class-B engineering review under current governance.
+
+### Conclusion
+Do not force a historical breadth backtest from contaminated universes.
+Prospective snapshots are more scientifically defensible.
+
+Status: HISTORICAL CLAIMS DATA-QUALITY-LIMITED; PROSPECTIVE SNAPSHOT PREFERRED.
+
+---
+
+## Second synthesis — what this lane adds beyond current sector score
+
+Current system already asks:
+“Is this sector weak today?”
+
+The new lane asks:
+- Is participation widening or narrowing over time?
+- Is index strength broad or concentrated?
+- Is a sector entering, maturing in, or exiting leadership?
+- Is the leader set diffusing to members or becoming more concentrated?
+- Is apparent sector rotation genuine relative movement or merely high market-wide correlation?
+- Does breadth add anything after existing K-line, price-volume, Residual RS, Regime and current sector gate?
+
+This is materially different from adding another one-day sector score.
+
+## Exact next continuation after BR-018
+
+BR-019: Define market/equal-weight/median concentration gap precisely for TWSE+TPEx.
+BR-020: Define sector rank-transition matrix and rotation velocity without arbitrary “top N” dependence.
+BR-021: Study persistence vs reversal of industry momentum by horizon; short/medium/long horizon separation.
+BR-022: Study sector breadth + stock RS interaction (strong stock in weak sector vs average stock in strong sector).
+BR-023: Study leader concentration mathematically (HHI / contribution share / effective number of leaders).
+BR-024: Define prospective breadth snapshot schema and evidence-readiness gates.
+BR-025: Decide whether breadth concepts are complete enough to move to evidence accumulation, then open next untouched lane.
