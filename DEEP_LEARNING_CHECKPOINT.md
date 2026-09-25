@@ -109,6 +109,206 @@ WORTH_SHADOW_RESEARCH（值得影子研究）, not eligible for Formal Core（�
 ## Candidate handoff
 - DL-001: Information Discreteness（資訊離散度）／Gradual Price Path（漸進價格路徑） — WORTH_SHADOW_RESEARCH（值得影子研究）; owner approval should be requested before turning it into an optimization experiment that could later influence selection.
 
+
+## DL-002 — Pattern Maturity（型態成熟度）／Multi-stage K-line Structure（多階段K線結構）
+Run date: 2026-09-25 Asia/Taipei
+
+### Question
+Can explicit multi-stage chart morphology add incremental selection value beyond the current Formal A/B structure, especially by identifying high-quality setups that are still maturing before a classic breakout or pullback-entry condition becomes fully eligible?
+
+### New evidence and provenance
+1. Lo, Mamaysky & Wang, Journal of Finance (2000), “Foundations of Technical Analysis”: technical chart shapes can be converted from subjective visual ideas into systematic automatic pattern-recognition rules. In a large U.S. stock sample (1962-1996), several patterns such as double-bottoms carried incremental information relative to unconditional return distributions. This supports research on quantified morphology, but not blind trust in pattern names.
+2. Lu, Pacific-Basin Finance Journal (2014), “The profitability of candlestick charting in the Taiwan stock market”: using Taiwan stock daily OHLC data from 1992-2009, four one-day candlestick patterns remained profitable after transaction costs, bootstrap checks, out-of-sample tests and sub-samples. The paper also shows that trend context matters and that not every candlestick pattern works.
+3. Lu, Shiu & Liu, Review of Financial Economics (2012), Taiwan 50 components: Piercing, Bullish Engulfing and Bullish Harami were the profitable bullish two-day reversal patterns in their sample; bearish reversal patterns were much weaker. The study explicitly included transaction costs and out-of-sample/bootstrap checks. Important limitation: results depend on trend definition and holding strategy, so candlestick names should not become standalone Formal signals.
+4. Wang & Chan, Expert Systems with Applications (2007): template-matched bull-flag rules were tested on both NASDAQ and the Taiwan Weighted Index, supporting the idea that continuation geometry can be formalized rather than eyeballed. This is evidence for researchability, not a production rule.
+5. Fidelity’s Cup-with-Handle specification provides useful literature anchors for measurable morphology: prior advance, rounded cup, right-side recovery, handle formation near the upper half, handle pullback commonly not more than about one-third of the cup advance, volume drying in the handle, and increased volume on breakout. These are research anchors, not tuned Formal thresholds.
+6. Fidelity’s Double-Bottom material defines confirmation as two troughs separated by a middle peak with breakout above that middle peak. Therefore “two lows” alone is not a confirmed W-bottom; pre-breakout maturity and confirmed-breakout states must be separated.
+7. Sakata Five Methods are retained as a historical taxonomy (Three Mountains, Three Rivers, Three Gaps, Three Soldiers, Three Methods). Because their modern definitions are broad and partly reconstructed from later technical-analysis tradition, they should be decomposed into measurable OHLC/sequence features rather than treated as authoritative standalone signals.
+
+### Comparison with current Formal system
+Current Formal already includes substantial chart information:
+- MA20/MA60 trend and bullish-stack state,
+- priorHigh20 / recent highs,
+- pullbackPct and supportDistancePct,
+- volumeTodayVsPrev5 and 5-to-20-day contraction,
+- dailyClosePosition and upper-shadow ratio,
+- ATR/volatility,
+- ret20 / late-stage checks,
+- breakout and pullback A/B gates.
+
+The material gap is not “no K-line logic.” The gap is topology and lifecycle:
+- no explicit swing-leg segmentation,
+- no count/order of contractions,
+- no base age/duration,
+- no cup roundness or rim symmetry,
+- no handle location/depth,
+- no neckline topology,
+- no flag pole/channel geometry,
+- no explicit pre-breakout maturity state,
+- no continuous pattern-fit confidence,
+- no explicit failed-pattern lifecycle.
+
+Therefore DL-002 is potentially incremental, but redundancy with current breakout quality, pullback quality, volume contraction, overheat, ATR and Information Discreteness must be tested.
+
+### Pre-registered research feature families
+No production thresholds are changed. These are candidate measurements only.
+
+#### VCP / progressive contraction
+- contractionCount
+- contractionDepthPct[]
+- contractionDurationDays[]
+- depthMonotonicity
+- durationMonotonicity
+- higherLowRatio
+- volumeDryUpSlope
+- finalTightnessPct
+- finalTightnessATR
+- pivotPrice
+- pivotDistancePct
+- breakoutRangeExpansion
+- breakoutVolumeRatio
+- trendContext / stage2LikeTrend gate
+
+Key rule: contractions must be identified as non-overlapping swing legs. Overlapping rolling windows such as 5d/10d/20d can create a mechanical illusion of “shrinking volatility” and are not sufficient evidence of a true VCP.
+
+#### Cup / Cup-with-Handle
+- priorAdvancePct
+- cupDurationDays
+- cupDepthPct
+- bottomRoundnessScore
+- leftRightRimDiffPct
+- rightSideRecoveryPct
+- handleDurationDays
+- handleDepthPct
+- handlePositionInCup
+- handleVolumeDryUp
+- pivotPrice
+- pivotDistancePct
+- breakoutVolumeRatio
+
+Critical distinction: CUP_FORMING -> RIGHT_SIDE_RECOVERY -> HANDLE_FORMING -> HANDLE_TIGHT -> PIVOT_READY -> BREAKOUT_CONFIRMED -> FAILED.
+
+#### Double-bottom / W-bottom
+- leftLow / rightLow
+- troughSimilarityPct
+- bottomSpacingDays
+- necklinePrice
+- necklineHeightPct
+- rightLowVsLeftLowPct
+- secondBottomVolumeRatio
+- undercutAndReclaim flag
+- reclaimSpeedDays
+- necklineBreakoutVolumeRatio
+
+Critical distinction: two troughs are only morphology. Confirmation requires neckline breakout. Research should separately test:
+A. right low higher than left,
+B. approximately equal lows,
+C. slight undercut followed by rapid reclaim.
+Do not assume A is superior before testing.
+
+#### Flag / Pennant / Platform
+- poleReturnPct / poleDurationDays
+- consolidationDepthPct
+- consolidationDurationDays
+- channelSlope
+- rangeCompressionSlope
+- volumeDryUpSlope
+- distanceToPriorHighPct
+- breakoutVolumeRatio
+- trendContext
+- failedBreakoutWithin3D / within5D
+
+#### Candlestick / Sakata-derived sequence features
+Treat these as contextual confirmation features, not standalone strategies:
+- standardized real-body size / ATR,
+- upper/lower wick ratio,
+- body overlap / engulfing ratio,
+- gap size,
+- close position,
+- sequence direction count,
+- volume confirmation,
+- prior trend state,
+- location versus support/resistance.
+
+Priority bullish two-day patterns for Taiwan-specific research: Piercing, Bullish Engulfing, Bullish Harami, because Taiwan evidence exists. This is a research priority only, not a claim they remain profitable in 2026.
+
+### Pattern maturity state machine
+Use a generic lifecycle across pattern families:
+1. FORMING
+2. STRUCTURE_VALID
+3. MATURE_PRE_BREAKOUT
+4. PIVOT_READY
+5. BREAKOUT_CONFIRMED
+6. RETEST_CONFIRMING
+7. FAILED
+
+This is the central DL-002 hypothesis: continuous maturity state may preserve information that a binary pass/fail Formal gate loses.
+
+### Positive mechanism
+- A/B Formal requires a relatively complete pullback or breakout condition.
+- Some stocks may already show diminishing supply, higher lows, tightening range and volume dry-up before breakout.
+- A maturity state could identify “almost ready” setups without weakening Formal gates, potentially explaining part of the current low-selection / idle-capital problem.
+
+### Counter-evidence / failure modes
+- Classic chart patterns are vulnerable to hindsight bias: after the fact almost any path can be visually fit to a named shape.
+- VCP and cup/handle have weaker peer-reviewed direct evidence than generic chart-pattern and Taiwan candlestick literature; treat them as hypotheses, not established alpha.
+- Pattern geometry can be redundant with existing ATR, volatility, positive-day ratio, pullback quality, breakout quality, volume contraction and overheat.
+- Pattern profitability is regime-dependent and can vary with trend definition, holding rule and transaction costs.
+- A pre-breakout pattern may never break; a breakout pattern may fail immediately. “Beautiful setup” is not synonymous with positive expectancy.
+- Many related pattern variants create multiple-testing / Factor-Zoo risk.
+
+### Bias / overfit controls
+- Freeze definitions before inspecting future outcomes.
+- Pattern state at date t may use only bars available through t.
+- Pre-breakout maturity and post-breakout confirmation must be separate labels; never backfill a mature state because a later breakout succeeded.
+- No historical Shadow fabrication.
+- Use walk-forward / non-overlapping out-of-sample blocks and date-clustered evaluation.
+- Compare within the same scan date where possible; match/control for market regime, liquidity, price tier and sector.
+- Evaluate incremental value after controlling for current Formal features rather than raw standalone win rate.
+- Correct for multiple pattern tests; do not promote the single best-looking variant from many tried definitions.
+- Include transaction costs and slippage in any trading-rule experiment; selection-alpha analysis remains separate from execution-alpha analysis.
+
+### Validation design
+Primary cohorts:
+- Formal SELECTED
+- Near-miss
+- Rejected / Control
+
+Primary outcomes:
+- D1 / D3 / D5 / D10 return
+- MFE / MAE
+- stop-first rate
+- breakout-failure within 3D / 5D
+- time-to-pivot / time-to-entry
+- entry-zone reach rate
+- zero-pick / capital-utilization impact if used only as a Shadow supplement
+
+Core comparisons:
+1. Pattern-strong Near-miss vs pattern-weak Near-miss on the same date.
+2. Pattern-strong Rejected vs matched rejected controls.
+3. Formal SELECTED with high pattern maturity vs Formal SELECTED without it.
+4. Pattern maturity incremental effect after controlling for ret20, ATR, volume contraction, breakoutQualityResearch, supportDistance, Residual RS, overheat and DL-001 Information Discreteness.
+5. Regime split: BULL_BROAD / MIXED / BEAR_BROAD or the system’s durable regime labels.
+
+### Candidate status
+WORTH_SHADOW_RESEARCH.
+No Formal Core change is approved or implied.
+
+### Candidate handoff
+- Mechanism: represent multi-day price geometry as an explicit maturity lifecycle rather than only binary A/B completion.
+- Current weakness addressed: Formal may discard high-quality maturing structures before they fully qualify, contributing to sparse selection.
+- Expected benefit: earlier visibility into structured setups without lowering Formal gates.
+- Main risks: hindsight pattern fitting, redundancy, regime dependence, multiple-testing.
+- Engineering class: Class A if implemented only as research snapshot / Shadow diagnostics with decisionImpact=false. Any effect on Formal ranking, thresholds, eligibility, capital, monitoring or push becomes Class C and requires owner approval.
+
+### Exact DL-002 continuation
+1. Build the swing-leg segmentation specification first (pivot detection without look-ahead leakage).
+2. Define VCP contraction geometry on those swing legs; do not use overlapping-window shrinkage as the primary detector.
+3. Define cup roundness/rim/handle metrics and W-bottom neckline states.
+4. Define Taiwan candlestick feature formulas for Piercing, Bullish Engulfing and Bullish Harami using OHLC normalized by ATR/price.
+5. Map each DL-002 feature against existing Formal research fields and remove duplicates before any coding proposal.
+6. Only after definitions are frozen, run prospective / historical-as-of-date Shadow validation. Do not inspect outcomes first and tune definitions afterward.
+
 ## Exact next continuation point
 1. Do not repeat the literature search above unless materially new evidence appears.
 2. Owner has approved continuing DL-001 research / Shadow validation. Define the smallest pre-registered Information Discreteness（資訊離散度） feature without tuning thresholds to outcomes; test redundancy and regime interaction before any formal optimization proposal.
