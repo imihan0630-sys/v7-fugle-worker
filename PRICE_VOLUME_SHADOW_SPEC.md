@@ -181,3 +181,54 @@ Direction and risk are separate:
 Does same-slot 15m RVOL + cumulative-volume pace explain false confirmations / no-follow-through better than the current previous-5-bar volume ratio?
 
 No Formal change is implied by this specification.
+
+
+## Governance levels
+All current PV research is Level 0 OBSERVER.
+- OBSERVER: log/explain/segment only; no Formal effect.
+- MODIFIER: future Class C only after stable incremental evidence and owner approval.
+- VETO: data-semantic guards may invalidate PV interpretation; they do not reject the Formal stock. Predictive trading veto is not approved.
+
+## Event baseline
+When an abnormal-volume episode starts, preserve:
+- ordinary rolling prior-20 median baseline;
+- frozen pre-event baseline inside the event record.
+
+Use the frozen baseline for persistence/decay within the episode so later high-volume event days do not redefine their own reference. Do not blanket-exclude all earnings/news days from the ordinary median.
+
+## First prospective experiment
+Cohort: symbols already selected/monitored by Formal only. PV does not alter cohort inclusion.
+
+Compare:
+A. existing context/Formal fields;
+B. A + current previous-5-bar 15m volumeRatio;
+C. B + pvSlotRvol20;
+D. C + pvCumvolPace20;
+E. D + pvResponseState / pvAcceptanceState / pvGuardState.
+
+Primary outcomes:
+- false/no-follow-through;
+- MFE/MAE;
+- structural acceptance/failure.
+
+Secondary:
+- D1;
+- stop-first where a valid plan existed;
+- maxChase adverse excursion.
+
+First ~50 completed events are DATA_QA only. Evidence review follows the predeclared PV-024 coverage milestones. No threshold retuning at each milestone.
+
+## Deferred Tier 2
+- market/sector residual RVOL;
+- divergence continuous fields using as-of confirmed pivots;
+- issued-share turnover with timestamped official shares;
+- event freshness/decay;
+- sector leader/follower timing;
+- late-stage PV interaction.
+
+## Prospective-only / deferred microstructure
+- limit lock duration / unlock count / queue history;
+- full historical volume-at-price;
+- trade-count baselines;
+- explicit VI state without authoritative event data;
+- free-float turnover without timestamped free-float data.
