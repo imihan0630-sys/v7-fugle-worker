@@ -91,9 +91,10 @@ function scaled(bars, k) {
     { type:"HIGH", pivotAt:"2026-01-05", confirmedAt:"2026-01-06", pivotPrice:98 },
     { type:"LOW",  pivotAt:"2026-01-06", confirmedAt:"2026-01-07", pivotPrice:79 }
   ];
-  const vcp = detectVcpFromSwings(swings, { maxMatureDepthPct: 0.15 });
+  const vcp = detectVcpFromSwings(swings, { wideLooseDepthPct: 0.15 });
   assert.equal(vcp.contractionCount, 3);
   assert.equal(vcp.mature, false);
+  assert.equal(vcp.maturityStatus, "TOPOLOGY_ONLY_NEEDS_RANGE_VOLUME");
   assert.equal(vcp.wideLoose, true);
 }
 
@@ -166,6 +167,7 @@ function scaled(bars, k) {
   });
   assert.equal(out.localBreakout, true);
   assert.equal(out.majorZoneConflict, true);
+  assert.equal(out.nestedConflictState, "LOCAL_BREAKOUT_BELOW_MAJOR_ZONE");
   assert.ok(out.availableAirPct > 0 && out.availableAirPct < 0.01);
 }
 
