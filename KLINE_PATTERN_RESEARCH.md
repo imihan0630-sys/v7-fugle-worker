@@ -3286,3 +3286,188 @@ Therefore named subclasses should add little/no weight by themselves.
 TOPOLOGY_SUBCLASSES_FROZEN_V0_1.
 No Formal change.
 
+
+
+## DL-002Y — Pattern Confidence / Ambiguity Profile v0.1
+
+### Why no single score
+A single PatternScore encourages:
+- arbitrary weights,
+- hidden double counting,
+- outcome tuning,
+- false precision.
+
+v0.1 therefore uses a profile of independent confidence dimensions.
+
+### Confidence dimensions
+
+#### 1. DATA_QUALITY
+Fields:
+- openAvailable
+- adjustedSeriesVerified
+- rawSeriesVerified
+- corporateActionStatusKnown
+- dateContinuity
+- duplicateFree
+- sufficientHistory
+- pointInTimeEligible
+
+Status:
+- COMPLETE
+- PARTIAL
+- BLOCKED
+
+A BLOCKED critical field prevents the affected pattern family from being fully classified.
+
+#### 2. NO_LOOKAHEAD_INTEGRITY
+Fields:
+- allSwingConfirmedAsOfDate
+- provisionalLegUsed
+- futureSuffixInvariant
+- stateReplayVerified
+
+Status:
+- VERIFIED
+- PROVISIONAL
+- FAILED
+
+FAILED invalidates the research observation.
+
+#### 3. SCALE_STABILITY
+Fields:
+- microSupport
+- baseSupport
+- majorSupport
+- scaleAgreementCount
+- pivotDateDispersion
+- structuralLevelDispersionPct
+
+Status:
+- HIGH_STABILITY
+- MEDIUM_STABILITY
+- LOW_STABILITY
+
+#### 4. GEOMETRY_FIT
+Pattern-specific raw descriptors:
+- line residuals,
+- rim symmetry,
+- neckline clarity,
+- contraction monotonicity,
+- roundness descriptors,
+- pole/channel fit.
+
+Do not compress into one cross-pattern score.
+Store:
+- geometryFitComponents{}
+- criticalGeometryViolation[]
+
+#### 5. LEVEL_CLARITY
+Fields:
+- pivotCandidateCount
+- pivotDispersionPct
+- supportCandidateCount
+- resistanceCandidateCount
+- boundaryTouchCount
+- necklineAmbiguity
+
+Status:
+- CLEAR
+- MODERATE
+- AMBIGUOUS
+
+#### 6. MATURITY
+Use family-specific state machine:
+- FORMING
+- STRUCTURE_VALID
+- MATURE_PRE_BREAKOUT
+- PIVOT_READY
+- BREAKOUT_CONFIRMED
+- RETEST_CONFIRMING
+- FAILED
+
+Maturity is not confidence.
+A very clear pattern can still be immature.
+
+#### 7. PATTERN_OVERLAP
+Fields:
+- patternLabels[]
+- sharedSwingIds[]
+- overlapCount
+- latentFeatureOverlap
+- contradictoryLabels[]
+
+Status:
+- UNIQUE
+- NESTED
+- OVERLAPPING
+- CONFLICTED
+
+#### 8. CONTEXT_COMPATIBILITY
+Descriptive only:
+- weekly/daily relationship
+- trend context
+- overheat conflict
+- sector/market regime
+- liquidity context
+- attention/discreteness context
+
+Do not treat “compatible” as proven alpha.
+
+#### 9. EVIDENCE_TIER
+External prior:
+- TIER_1: stronger systematic/academic pattern-recognition support
+- TIER_2: market-specific but specification-sensitive evidence
+- TIER_3: practitioner hypothesis with weaker direct peer-reviewed alpha evidence
+
+Evidence tier is NOT a stock-level score.
+It describes confidence in the research hypothesis family.
+
+### Summary object
+A stock/pattern observation may expose:
+
+patternConfidenceProfile = {
+  dataQuality,
+  noLookaheadIntegrity,
+  scaleStability,
+  levelClarity,
+  maturity,
+  overlapStatus,
+  contextFlags[],
+  evidenceTier
+}
+
+No total score in v0.1.
+
+### Critical blockers
+A pattern observation cannot be used for performance inference if:
+- NO_LOOKAHEAD_INTEGRITY = FAILED
+- pointInTimeEligible = false
+- required OHLC fields missing
+- corporate-action ambiguity directly affects the pattern
+- insufficient history for the pattern family
+
+Mark UNKNOWN/BLOCKED, never zero/negative.
+
+### Pattern comparison
+When comparing two patterns/stocks:
+Do not say one has “higher confidence” unless the exact dimensions are stated.
+
+Example:
+- Stock A: clearer pivot, lower scale stability.
+- Stock B: more stable across scales, but cup rim ambiguity.
+
+This avoids an opaque ordinal ranking.
+
+### Later research option
+If a compact score becomes operationally necessary:
+- pre-register it before forward outcomes,
+- use transparent weights or a simple rule,
+- benchmark against the raw profile,
+- count it as a new experiment,
+- do not optimize weights on the same validation sample.
+
+### Status
+CONFIDENCE_PROFILE_FROZEN_V0_1.
+No aggregate score.
+No Formal change.
+
