@@ -1,8 +1,8 @@
 # Derivatives Information & Volatility Surface Checkpoint
 
 Updated: 2026-09-25 Asia/Taipei
-Current cursor: DR-001 through DR-015 complete.
-Next: DR-016.
+Current cursor: DR-001 through DR-029 complete.
+Next: evidence accumulation; concept lane complete.
 
 ## Durable conclusions
 
@@ -34,3 +34,18 @@ DR-021 joint foreign cash/futures/options state.
 DR-022 Taiwan price discovery/night-session literature.
 DR-023 official data-source feasibility.
 DR-024 minimal Shadow schema + falsification.
+
+
+## DR-016 through DR-029 — concept convergence
+- IV term structure and skew term structure are horizon-specific risk-price layers, not direct direction signals.
+- Public OI cannot identify dealer GEX sign; unsigned gamma/OI concentration can be described, dealer hedge direction cannot be asserted without position-side assumptions.
+- Academic expiration pinning is distinct from popular “max pain”; max-pain indicator rejected, expiry clustering mechanism retained.
+- Front/next futures and fair-value-adjusted basis are required around roll/expiry.
+- Foreign cash x futures x options is a joint exposure state; raw foreign net-short futures remain hedge-confounded.
+- Taiwan futures/options contribute to price discovery; futures often lead but leadership varies with liquidity/mechanism. Night futures may add Taiwan-specific interpretation beyond global indices.
+- TAIFEX official historical data feasibility is high for PCR, VIX, participant positions, futures and full option chains; robust IV surfaces still require a frozen inversion/filter/rate/dividend method.
+- Minimal derivatives Shadow schema, prediction-target decomposition, macro-event IV guard, historical rules-regime segmentation and redundancy gate are frozen.
+- Concept status: CONCEPT_COMPLETE / EVIDENCE_PENDING. Formal Core unchanged.
+
+## Next lane
+Portfolio & Risk Construction / Correlation Clusters.
