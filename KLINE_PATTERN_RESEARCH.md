@@ -12714,3 +12714,190 @@ A transition from quiet to rapidly crowded near breakout may differ from a high 
 
 Again: hypothesis, not signal.
 
+
+
+## DL-002HK — Pattern Episode Identity and Re-selection Semantics
+
+### Core problem
+A symbol can appear repeatedly across adjacent scan dates.
+Those rows are not independent if they belong to the same underlying base/pattern episode.
+
+### Episode identity
+Define a research-only patternEpisodeId from:
+- symbol
+- dominant structural zone/base
+- pattern start anchor
+- no major invalidation between snapshots
+
+A new episode begins only after:
+- structural invalidation,
+- major regime reset,
+- materially new base after breakout/failure,
+- or a pre-registered maximum separation rule.
+
+### Why this matters
+Without episode grouping:
+- one 20-day cup can be counted as 10 independent successful samples,
+- leave-one-row-out validation leaks nearly identical charts,
+- SELECTED vs Near-miss counts can overstate sample size.
+
+### Fields
+- patternEpisodeId
+- episodeStartAt
+- episodeLastSeenAt
+- episodeState
+- snapshotOrdinal
+- daysSinceFirstSnapshot
+- reselectedWithinEpisode
+- newEpisodeReason
+
+### Validation
+Primary statistical unit should be reported both:
+- snapshot-level
+- episode-level
+
+Confidence claims must emphasize independent episodes/dates, not raw rows.
+
+## DL-002HL — Re-selection Is Information, But Not Independent Evidence
+
+### Current-system relevance
+A stock can be selected, leave the pool, later revalidate/reselect.
+This may reflect:
+- persistent underlying structure,
+- a genuinely new setup,
+- repeated noisy triggering.
+
+### Research states
+SAME_EPISODE_RESELECT
+NEW_EPISODE_RESELECT
+POST_FAILURE_RECLAIM_RESELECT
+POST_BREAKOUT_NEW_BASE_RESELECT
+
+### Outcomes
+Measure whether re-selection improves or worsens:
+- D1/D3/D5/D10
+- MFE/MAE
+- stop-first
+- R01
+relative to first selection in the same episode.
+
+### Anti-duplication
+Do not count first selection + same-episode reselection as two independent wins in headline sample size.
+
+## DL-002HM — Maturity Velocity vs Maturity Level
+
+### Question
+Two patterns can both be MATURE today:
+- one tightened gradually over 20 sessions,
+- one jumped from loose to tight in 3 sessions.
+
+The state level is identical, the transition speed is not.
+
+### Fields
+- maturityScoreLevel
+- maturitySlope5
+- maturitySlope10
+- barsFromVALIDtoMATURE
+- barsFromMATUREtoPIVOT_READY
+- compressionAcceleration
+- rsAccelerationDuringMaturation
+- turnoverChangeDuringMaturation
+
+### Competing hypotheses
+GRADUAL_MATURATION:
+may represent orderly supply absorption.
+
+RAPID_MATURATION:
+may represent genuine information arrival or a transient shock.
+
+Do not assume gradual is always better; test event context and subsequent stability.
+
+### Interaction
+Rapid maturation + discrete event:
+likely different mechanism from
+rapid maturation without identifiable event.
+
+## DL-002HN — Pattern State Transition Matrix
+
+### Purpose
+Study patterns as processes rather than static labels.
+
+For each family estimate prospective transitions:
+FORMING -> VALID
+VALID -> MATURE
+MATURE -> PIVOT_READY
+PIVOT_READY -> BREAKOUT
+BREAKOUT -> HOLD
+BREAKOUT -> FAILURE
+FAILURE -> RECLAIM
+RECLAIM -> SECOND_BREAKOUT
+
+### Outputs
+- transition counts
+- median time in state
+- transition probability with uncertainty
+- outcome distributions conditional on transition path
+
+### Important
+These are empirical transition frequencies, not assumed Markov trading probabilities.
+
+### Value
+The system may eventually learn that:
+- some states are useful observability markers,
+- some transitions are useful risk filters,
+without needing a monolithic pattern score.
+
+## DL-002HO — Time-in-State and Hazard-Style Research
+
+### Question
+Does the chance of breakout/failure change as a pattern remains in the same state?
+
+Examples:
+- PIVOT_READY for 1 day vs 15 days.
+- HANDLE_TIGHT for 2 days vs 20 days.
+- repeated MATURE state with no progress.
+
+### Descriptive hazard fields
+- timeInCurrentState
+- eventOccurredNext1/3/5
+- competingEventType
+- rightCensored
+
+### Competing risks
+From PIVOT_READY:
+- breakout
+- invalidation
+- staleness
+- no event yet
+
+### Why useful
+This handles unfinished patterns more honestly than labeling all non-breakouts as failures.
+
+No survival model complexity until sample size is sufficient.
+
+## DL-002HP — Right-Censoring of Unfinished Patterns
+
+### Problem
+At research cutoff, many patterns are still forming.
+Calling them FAILED biases results.
+
+### States at cutoff
+MATURE_OUTCOME_OBSERVED
+RIGHT_CENSORED_STILL_ACTIVE
+INVALIDATED
+STALE_BY_FROZEN_RULE
+
+### Outcome windows
+D5/D10/D20 require enough future sessions.
+If not available:
+OUTCOME_NOT_MATURED.
+
+### Reporting
+Always show:
+- eligible N
+- matured N
+- censored N
+- invalidated N
+
+Never silently drop censored rows if their exclusion changes cohort composition.
+
