@@ -538,3 +538,26 @@ Class A if research-only; Class C if later used in formal 15m confirmation.
 5. PV-195: define readiness criteria for first H001/H002 descriptive comparison once clean dates accumulate.
 6. Keep new factor invention paused; prioritize evidence completeness and point-in-time provenance.
 7. Formal Core remains LOCKED.
+
+## Progress added — PV-191 through PV-200
+- PV-191 makes Corporate Action/Symbol-Session the single owner of history-quality semantics. PV consumes versioned usable/status/reason/latestPriorDate/expectedPriorDate and volume-transform receipts rather than building another event/calendar engine.
+- PV-192 freezes an append-only research quality-overlay schema so later-discovered stale history/source/event defects quarantine evidence without rewriting immutable snapshots.
+- PV-193 separates row feature validity from pool-date selection integrity. Because 3+3 quota/ranking can propagate one bad candidate into displaced candidates, a corrupted candidate may invalidate the selected/qualified set for that pool-date even if other rows are individually clean.
+- PV-194 defines outcome-blind PV DATA_QA receipts separately for intraday, daily and cohort provenance. QA pass cannot depend on return/win-rate.
+- PV-195 freezes earliest H001/H002 evidence gate: existing PV-024 sample/date floors + DATA_QA_PASS + clean cohort provenance + no Formal-isolation/mutation failure; current primary inference state is WAITING_CLEAN_COHORT_PROVENANCE.
+- PV-196 separates history freshness from corporate-action volume comparability. UNIT_SCALE, SUPPLY_CHANGE and UNKNOWN volume semantics need distinct treatment; factual raw share volume is not the same as economically comparable turnover intensity.
+- PV-197 freezes that a clean control group cannot repair a misclassified/stale selected set; such dates can be retained as production-defect postmortems, not intended-Formal alpha evidence.
+- PV-198 prohibits retroactively manufacturing prospective intraday Shadow controls from historical OHLCV. Future intraday controls must be captured prospectively under a deterministic design.
+- PV-199 freezes point-in-time selection-quality receipts with later corrections handled by append-only annotations.
+- PV-200 closes PV Phase-II theory: core mechanisms, origin/context layers, microstructure interaction, anti-bias and quality governance are sufficiently specified. The next learning value is evidence/falsification, not new factor invention.
+- Cross-lane correction: PR #100 remains Open/Draft/unmerged and its market-session-only freshness must NOT be promoted as-is. Corporate Action research has tested the prerequisite symbol-session contract: expected sessions = official exchange sessions minus VERIFIED symbol-specific suspension sessions; unknown provenance fails closed.
+- No code merge/deploy or Formal change occurred in this PV research sequence.
+
+## Exact next continuation after PV-200
+1. Evidence lane PVE-001: build/read an outcome-blind PV DATA_QA receipt from actual prospective Shadow rows when authoritative runtime access is available.
+2. PVE-002: quantify clean selection-cohort provenance coverage by scan date/pool using existing shadow-candidate archive plus symbol-session evidence.
+3. PVE-003: audit execution recorder exact-date coverage and verified FORMAL_SIGNAL_OBSERVED mappings before H006-B.
+4. PVE-004: once clean floors pass, run only frozen H001/H002 A->B->C->D comparison; no threshold tuning.
+5. PVE-005: preserve failed/null findings in hypothesis ledger.
+6. Continue theory only if empirical residuals expose a concrete unexplained mechanism.
+7. Formal Core remains LOCKED.
