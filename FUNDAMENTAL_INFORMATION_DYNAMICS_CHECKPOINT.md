@@ -1,8 +1,8 @@
 # Fundamental Information Dynamics Checkpoint
 
 Updated: 2026-09-25 Asia/Taipei
-Current cursor: FD-001 through FD-010 complete.
-Next: FD-011.
+Current cursor: FD-001 through FD-028 complete.
+Next: evidence accumulation; concept lane complete.
 
 ## Durable conclusions
 
@@ -46,3 +46,26 @@ FD-017: Event-time alignment and abnormal-return baselines for Taiwan.
 FD-018: Interaction with K-line/price-volume: gap-and-hold, gap-and-fade, no-reaction.
 FD-019: Data-source feasibility / historical vintage audit in current repository.
 FD-020: Freeze minimal prospective Fundamental Event Shadow schema.
+
+
+## FD-011 through FD-028 — concept convergence
+
+- Expectation source is part of the surprise variable: true analyst consensus, company guidance, frozen model expectation and simple realized change are separate objects.
+- EPS YoY is not SUE. SUE requires actual minus pre-event expectation plus an explicit scale; every expectation/scale variant is a separate experiment.
+- Taiwan monthly revenue requires seasonality/calendar controls. YoY acceleration is change-of-growth, not surprise.
+- Cash/accrual quality is a genuine missing dimension in current main Worker source. MOPS exposes cash-flow statements, but high accrual must not be simplistically labeled bad/manipulated.
+- Margin level, margin change and true margin surprise are separate. Revenue acceleration with margin compression is not automatically bad.
+- MOPS/TWSE provide financial forecast / forecast-vs-actual and investor-conference disclosure surfaces, but management guidance is not analyst consensus and coverage is selective.
+- Fundamental event studies require exact first-published / first-tradable timing and multi-news guards; date-only events cannot support clean intraday attribution.
+- Fundamental information x K-line/price-volume reaction states are frozen; price disagreement with headline fundamentals is itself data.
+- Earnings persistence, base effects and mean reversion must be separated from one-quarter growth.
+- Accrual effects are entangled with investment/growth/risk; a simple low-accrual ranking is rejected.
+- Analyst dispersion/disagreement is conditional and measurement-sensitive; current system has no point-in-time consensus provider.
+- Fundamental momentum is a sequence concept but has an overreaction/representativeness counterstate.
+- Own-history innovation and peer-relative innovation answer distinct questions and must remain separate.
+- Redundancy map against existing fundamentalScore/K-line/PV/RS/attention/regime is frozen.
+- Feasibility tiers: official point-in-time events first; cash/guidance second; analyst consensus/revision requires external point-in-time data.
+- Concept lane status: CONCEPT_COMPLETE / EVIDENCE_PENDING. Formal Core unchanged.
+
+## Next lane
+Derivatives Information & Volatility Surface.
