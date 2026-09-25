@@ -599,3 +599,291 @@ CA-024: audit CB issue/conversion/outstanding data sources and machine contracts
 CA-025: audit current market-history adjustment semantics for ex-right/dividend/reduction.
 CA-026: freeze minimal corporate-action Shadow schema and evidence-quality states.
 CA-027: only then run small multi-date source validation; no outcome test until source contracts pass.
+
+
+---
+
+## CA-022 — Treasury-share official source audit
+
+MOPS publicly exposes treasury-share basic information, expiration/completion information, threshold-triggered repurchase information, and employee-transfer information.
+
+From 2026-05-01, amended treasury-share filing rules moved the filing/announcement process fully into MOPS electronic submission, strengthening prospective first-known provenance.
+
+TWSE MOPS Push Service Package 2 provides structured official records including:
+- U02 treasury-stock expiration/cancellation/transfer already performed;
+- U03 repurchase exceeding a specified threshold;
+- U17 board resolution to repurchase shares for employee-option fulfillment.
+
+Conclusion:
+- public human-query source = GO;
+- official structured paid source = GO;
+- stable free machine lifecycle endpoint = NOT YET FROZEN.
+
+Execution rate and cancellation must not be reconstructed from headlines alone.
+
+Status: TREASURY SOURCE CONTRACT = PUBLIC GO / STRUCTURED PAID GO / FREE MACHINE PARTIAL.
+
+---
+
+## CA-023 — Cash-capital-increase / new-share source audit
+
+MOPS provides fundraising-plan execution, company capital increase/decrease summaries, significant-information announcements, and ex-right/dividend announcements.
+
+TWSE MOPS Push Package 2 provides:
+- U04 public notice before securities delivery under Company Act Articles 252/273;
+- U05 stock listing approval;
+- U18 new shares delivered for conversions/subscriptions of prior convertible/warrant bonds.
+
+TWSE public ex-right/dividend reference-price pages provide downloadable CSV and formulas. TWSE Data E-Shop documents files containing subscription ratio/price, public/employee/shareholder allocations, and issued shares before/after ex-right or capital reduction/cash injection.
+
+Conclusion:
+The lifecycle is official-data feasible, but no single free machine feed has been established for:
+board decision -> regulatory effectiveness -> pricing -> subscription -> paid-in completion -> actual new-share delivery/listing.
+
+Status: SEO SOURCE = MULTI-SOURCE FEASIBLE / ONE-FEED CONTRACT NOT FROZEN.
+
+---
+
+## CA-024 — Convertible-bond source audit
+
+Public MOPS exposes:
+- domestic CB basic information;
+- CB monthly reports;
+- domestic/overseas securities conversion status;
+- related bond announcements.
+
+Structured MOPS Push data include:
+- U18 new shares from prior CB/warrant conversion;
+- U24 conversion suspension;
+- U26 ownership-transfer suspension;
+- U28 conversion start;
+- U29 first conversion;
+- U32 conversion-price change;
+- U35 put-right exercise;
+- U38 compulsory redemption/expiry/delisting;
+- U41 CB fully converted to common stock or repurchased.
+
+Package 3 also contains M18 monthly domestic/overseas securities conversion/exchange information.
+
+Thus official content is strong enough to reconstruct issue terms, conversion start, conversion-price changes, conversion progress and completion/redemption. A stable free historical machine contract remains partial.
+
+Status: CB CONTENT STRONG / FREE AUTOMATION CONTRACT PARTIAL.
+
+---
+
+## CA-025 — Current Formal history adjustment audit: material semantic risk
+
+Current source calls Fugle historical daily candles with:
+- timeframe D;
+- fields open, high, low, close, volume, turnover, change;
+- ascending order.
+
+But the request does not explicitly pin adjusted=true or adjusted=false.
+
+The mapping then retains date, close, high, low, volume and turnover while discarding open, change and provider adjustment metadata.
+
+Fugle documents that:
+- historical D/W/M candles support adjusted=true/false;
+- daily change on ex-right/ex-dividend dates is calculated versus the adjusted previous close;
+- adjusted=true returns an adjusted price sequence and an adjusted flag.
+
+Current buildMarketFeatures directly uses stored closes/highs/lows for:
+- ret20 / ret60;
+- MA5 / MA10 / MA20 / MA60;
+- ATR20;
+- volatility20;
+- priorHigh20 / priorLow20 / priorHigh60;
+- platform range and related A/B setup state.
+
+No corporate-action bridge/guard is applied first.
+
+Mechanical reference resets in documented examples can be very large:
+- 6752: 158.5 -> 150.95, about -4.76%;
+- 4554: 36.95 -> 32.39, about -12.34%;
+- 8422 par-value change: 250 -> 25, -90%;
+- 3593 capital reduction: 8.1 -> 13.5, +66.67%;
+- 8103 cash-refund reduction: 74.7 -> 86.11, +15.27%.
+
+These are not ordinary market returns.
+
+Therefore an unbridged corporate-action discontinuity can mechanically change MA ordering, MA distance, returns, ATR, platform highs/lows, support distance and A/B classification.
+
+Status: CORPORATE_ACTION_HISTORY_SEMANTICS_RISK = CONFIRMED BY SOURCE/CODE AUDIT.
+
+---
+
+## CA-026 — Why blindly setting adjusted=true is not a safe Formal fix
+
+A simple adjusted=true switch is NOT approved.
+
+Reason 1 — Historical replay look-ahead:
+For a historical target date, it must be proven that the adjusted series uses only actions effective by that target date. A later corporate action must not rewrite an earlier research information set.
+
+Reason 2 — Benchmark semantics:
+Formal RS compares stock ret20 with the official TAIEX price-index return. Dividend-adjusted stock returns versus an unaligned benchmark can change the meaning of RS.
+
+Reason 3 — Volume/share-base breaks:
+Price adjustment alone does not solve share-volume scaling after stock dividends, splits or capital reductions.
+
+Preferred research model:
+- RAW_EXECUTION_SERIES = actual traded prices;
+- CONTINUITY_SERIES = point-in-time corporate-action bridged prices used only where technically justified;
+- corporate-action event state retained separately.
+
+Candidate point-in-time bridge:
+actionFactor = referencePrice / previousClose.
+Only actions effective on or before the scan/target date may enter the cumulative bridge.
+
+Status: SIMPLE adjusted=true FORMAL CHANGE = NOT APPROVED.
+
+---
+
+## CA-027 — Existing provider can support an isolated Corporate Action registry
+
+Fugle now documents dedicated corporate-action endpoints.
+
+Dividends endpoint supplies:
+- event date;
+- previousClose;
+- referencePrice;
+- dividend type;
+- cash dividend;
+- stock-dividend shares;
+- opening reference price;
+- limit prices.
+
+Capital-changes endpoint supplies:
+- capital reduction;
+- par-value change;
+- split/reverse split;
+- halt/resume dates;
+- adjustment factor;
+- prior/reference/opening-reference prices;
+- reduction reason;
+- refund per share;
+- post-reduction rights-offering ratio/price.
+
+These fields are enough for a Research/Shadow registry of major mechanical price resets.
+
+They do not replace MOPS for treasury-share lifecycle, full SEO lifecycle, CB completion, or first-known announcement provenance.
+
+Status: ISOLATED CORPORATE-ACTION REGISTRY = DATA-FEASIBLE.
+
+---
+
+## CA-028 — Minimal Corporate Action Shadow schema
+
+Identity/provenance:
+- eventKey, symbol, market;
+- actionType/actionSubtype;
+- announcedAt, firstKnownAt, effectiveDate, realizedDate;
+- source, sourceCapturedAt, sourceVersion/hash;
+- quality = ACTUAL / VERIFIED_OFFICIAL / MODELED / UNKNOWN.
+
+Share supply:
+- sharesOutstandingBefore/After;
+- announcedShareChange;
+- realizedShareChange;
+- shareChangePct;
+- freeFloat before/after only if verified.
+
+Reference mechanics:
+- previousClose;
+- referencePrice;
+- openingReferencePrice;
+- adjustmentFactor;
+- rawGapPct;
+- referenceAdjustedGapPct.
+
+Buyback:
+- purpose;
+- plannedShares;
+- actualRepurchasedShares;
+- executionRate;
+- cancelledShares.
+
+SEO:
+- issueShares;
+- issuePrice;
+- subscriptionRatio;
+- statedUseOfProceeds;
+- newSharesDeliveryDate.
+
+CB:
+- faceValueOutstanding;
+- conversionPrice;
+- conversionStart;
+- actualConvertedAmount;
+- realizedNewShares;
+- conversionPriceVersion.
+
+Research flags:
+- technicalContinuityRisk;
+- volumeShareBaseBreak;
+- decisionImpact=false;
+- unknownReasons.
+
+No corporate-action score.
+
+Status: SHADOW SCHEMA V1 FROZEN.
+
+---
+
+## CA-029 — First source-validation protocol
+
+Step A:
+Select verified examples covering cash-dividend only, stock-dividend/ex-right, cash-capital-increase ex-right, loss-offset capital reduction, cash-refund capital reduction, and par-value change/split.
+
+Step B:
+For each target date compare:
+- raw previous close/reference price;
+- raw historical OHLC;
+- provider adjusted=true OHLC;
+- current Formal cached history where available.
+
+Step C:
+Calculate current Formal technical features versus a point-in-time continuity-bridged Research version:
+- ret20/ret60;
+- MA stack;
+- ATR;
+- platform highs/lows;
+- A/B checks;
+- RR/selection only as Shadow diagnostics.
+
+Falsification:
+Do not call the issue practically material if the current source already preserves continuity or the differences do not change relevant technical states across a sufficiently broad multi-date sample.
+
+Do not optimize the bridge against future returns. The first criterion is market/accounting correctness.
+
+Status: DATA-QUALITY VALIDATION PROTOCOL FROZEN.
+
+---
+
+## CA-030 — Governance boundary
+
+Any future change that pins historical price semantics, retains corporate-action-aware change, or inserts an action bridge can alter future Formal eligibility.
+
+Classification: Class B proposal-first.
+
+Allowed now:
+- documentation;
+- offline tests;
+- branch/proposal/test plan;
+- Shadow comparison.
+
+Not allowed without owner approval:
+- production merge;
+- change to Formal selection inputs;
+- deployment.
+
+Future validation must also test interaction with the separate history-freshness work on PR #100.
+
+Status: FORMAL CORE UNCHANGED.
+
+## Revised exact continuation
+
+CA-031: build a small verified corporate-action event sample.
+CA-032: run raw-vs-reference/adjusted feature-impact calculations offline.
+CA-033: determine whether actual A/B states change.
+CA-034: if material, prepare a Class B history-semantics proposal/test plan only.
+CA-035: continue buyback/SEO/CB realized-supply source validation separately.
