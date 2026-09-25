@@ -11989,3 +11989,244 @@ If 9/29 bootstrap succeeds:
 The first evidence window is primarily an attempt to falsify recorder correctness.
 
 Status: FIRST_WINDOW_FALSIFICATION_FIRST.
+
+# PVE-029 — Historical 09:00 True-Range Baseline Uses the Wrong Previous-Session Anchor
+
+## Source audit
+`pvNormalizeHistoricalSessions(raw,beforeMarketDate)` first filters historical bars to the v0.1 observable slots only:
+09:00 through 13:00.
+
+For each historical session:
+- `pvEnrichSessionBars(bars, priorClose)` computes bar trueRange;
+- after the session, `priorClose = normalized.at(-1).close`.
+
+Because the observable slot list ends at 13:00 (bar ending 13:15), the carried `priorClose` is the last v0.1-observable bar close, not the official cash-market close after the later session/closing-auction activity.
+
+## Current-session asymmetry
+`pvExtractCompletedSession15(raw,...,referenceClose)` receives:
+`quote.previousClose`
+for the live session's first bar.
+
+Therefore:
+- current 09:00 trueRange is anchored to provider previousClose;
+- historical 09:00 trueRange baseline is anchored to prior historical 13:00-bar close.
+
+The numerator and denominator do not share the same previous-close semantics.
+
+## Affected fields
+Potentially affected:
+- historical 09:00 `trueRange`;
+- `slotRangeMedian20` at 09:00;
+- `pvSlotRangeExpansion20`;
+- `pvSignedProgress20` because signed progress divides by slotRangeMedian20;
+- response-state classification at 09:00.
+
+Not directly affected:
+- same-slot volume median;
+- `pvSlotRvol20`;
+- same-slot cumulative-volume median, subject to its own prefix coverage rules.
+
+## Research rule
+Until historical official/reference previous-close anchoring is corrected/versioned:
+- 09:00 range-normalized response fields = RANGE_BASELINE_ANCHOR_UNVERIFIED;
+- H001/H002 raw volume-ratio study may remain separable if all other volume/baseline quality gates pass;
+- H003 response-state analysis must quarantine affected 09:00 observations.
+
+Status: HISTORICAL_OPEN_RANGE_ANCHOR_DEFECT_CONFIRMED.
+
+
+# PVE-030 — Missing Intermediate Historical Slots Can Inflate Later TrueRange without Invalidating rangeHistoryCount
+
+## Current historical normalization
+Historical sessions can be partial.
+
+Within `pvEnrichSessionBars`:
+- when a slot is missing, `prefixValid=false` and cumulative volume becomes invalid for later slots;
+- but later present bars are still normalized;
+- their trueRange uses the last available prior bar close.
+
+Example:
+- 09:00 present;
+- 09:15 missing;
+- 09:30 present.
+
+The 09:30 trueRange is calculated against the 09:00 close.
+That can capture a 30-minute gap/move rather than the intended adjacent 15-minute transition.
+
+## BaselineStats asymmetry
+`pvBaselineStats`:
+- cumulative median requires `cumulativeValid===true`;
+- range median only requires positive `trueRange`.
+
+Thus a partial historical session can be excluded from cumulative-pace baseline but still included in `rangeHistoryCount` and `slotRangeMedian20`.
+
+## Current live session is more conservative
+For a live session:
+`pvExtractCompletedSession15` adds `MISSING_REQUIRED_SESSION_SLOT`.
+
+The snapshot builder treats that coverage reason as `invalidSourceData`, making the current response INVALID.
+
+Therefore historical range-baseline acceptance is looser than current-session feature acceptance.
+
+## Research rule
+A historical slot trueRange is range-baseline-eligible only when:
+- the exact slot exists;
+- its immediately preceding required slot exists for non-opening slots;
+- opening slot has a verified prior-session reference/close anchor.
+
+Until implemented:
+- rangeHistoryCount is not trusted as a clean range-baseline count;
+- volume slotHistoryCount remains separately usable;
+- cumulativeHistoryCount remains usable only under existing prefix-valid semantics.
+
+Status: HISTORICAL_RANGE_CONTINUITY_DEFECT_CONFIRMED.
+
+
+# PVE-031 — Volume Normalization and Response Normalization Must Be Quality-Separated
+
+## Core distinction
+
+### Volume layer
+`pvSlotRvol20`
+requires:
+- current exact slot volume;
+- >=20 historical exact same-slot volumes;
+- no current-session leakage;
+- unit/source consistency.
+
+It does NOT mathematically require trueRange.
+
+### Cumulative-volume layer
+`pvCumvolPace20`
+requires:
+- complete prefix through the target slot in current session;
+- >=20 historical complete prefixes through that same slot.
+
+### Response layer
+`pvSlotRangeExpansion20` and `pvSignedProgress20`
+additionally require a clean historical range baseline.
+
+Because PVE-029/030 identify range-anchor/continuity defects, response quality can fail while volume quality remains valid.
+
+## Quality fields
+Future analysis overlay should distinguish:
+- SLOT_VOLUME_BASELINE_VALID;
+- CUMULATIVE_VOLUME_BASELINE_VALID;
+- RANGE_BASELINE_VALID;
+- RANGE_BASELINE_INVALID_OPEN_ANCHOR;
+- RANGE_BASELINE_INVALID_PREDECESSOR_GAP;
+- UNKNOWN.
+
+## Implication for hypotheses
+H001:
+same-slot RVOL vs local previous-5 ratio can proceed once slot-volume/cohort/at-rest gates pass, even if range baseline remains quarantined.
+
+H002:
+cumulative pace can proceed once prefix coverage passes.
+
+H003:
+response/acceptance/guard-state evidence remains blocked by the additional range/guard-label defects.
+
+Status: H001_H002_DECOUPLED_FROM_RANGE_RESPONSE_QUALITY.
+
+
+# PVE-032 — Minimum v0.1 Quality Overlay without Snapshot Mutation
+
+## Purpose
+Preserve immutable v0.1 rows while preventing known implementation defects from contaminating analysis.
+
+## Overlay dimensions
+
+### snapshotIntegrity
+- VALID
+- INVALID
+- UNKNOWN
+
+### slotVolumeBaselineQuality
+- VALID
+- INSUFFICIENT
+- SOURCE_INVALID
+- UNKNOWN
+
+### cumulativeBaselineQuality
+- VALID
+- PREFIX_INCOMPLETE
+- INSUFFICIENT
+- UNKNOWN
+
+### rangeBaselineQuality
+- VALID
+- OPEN_ANCHOR_UNVERIFIED
+- PREDECESSOR_GAP_UNVERIFIED
+- INSUFFICIENT
+- UNKNOWN
+
+### guardLabelQuality
+- VALID
+- KNOWN_DEFECT_LIQUIDITY
+- REFERENCE_PRICE_UNVERIFIED
+- SOURCE_PLUMBING_UNVERIFIED
+- UNKNOWN
+
+### cohortQuality
+- CLEAN_VERIFIED
+- HISTORY_PROVENANCE_UNVERIFIED
+- QUARANTINED_INPUT_DEFECT
+- UNKNOWN
+
+### atRestQuality
+- VERIFIED
+- WRITE_ACK_ONLY
+- UNAUTHORIZED_UNKNOWN
+- UNKNOWN
+
+## Rule
+Analysis eligibility is derived from the minimum required dimensions for that hypothesis.
+
+Do not define one universal row-level PASS that unnecessarily discards fields unaffected by another layer's defect.
+
+Status: FIELD_SCOPED_QUALITY_OVERLAY_FROZEN.
+
+
+# PVE-033 — Frozen Field Eligibility for H001/H002 under Known v0.1 Defects
+
+## H001 required fields
+Primary comparison:
+- existing Formal local previous-5 `volumeRatio`;
+- `pvSlotRvol20`.
+
+Required quality:
+- exact completed current slot;
+- slotVolumeBaselineQuality=VALID;
+- source units compatible;
+- at-rest/immutable evidence adequate;
+- clean cohort provenance for primary inference.
+
+Not required:
+- range baseline;
+- pvResponseState;
+- ILLIQUIDITY_WARNING;
+- gap/VI/CA guard labels,
+unless the observation belongs to a known market-structure/corporate-action state that independently invalidates volume comparability.
+
+## H002 required fields
+Adds:
+- `pvCumvolPace20`.
+
+Additional quality:
+- current and historical prefix completeness;
+- cumulativeBaselineQuality=VALID.
+
+## H003
+Requires substantially more:
+- clean range baseline;
+- valid Guard labels;
+- acceptance-state provenance;
+- market-structure context.
+
+Therefore H003 remains more strongly blocked than H001/H002.
+
+## Anti-cherry-pick rule
+This decomposition is based on causal/data dependencies identified before outcomes, not on which fields later perform better.
+
+Status: H001_H002_MINIMUM_FIELD_CONTRACT_FROZEN.
