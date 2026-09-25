@@ -227,3 +227,80 @@ No Formal Core, ranking, thresholds, capital, execution, monitoring or push chan
 6. Quantify Taiwan candlestick formulas for Piercing, Bullish Engulfing and Bullish Harami after trend/ATR/volume normalization.
 7. Map all DL-002 features against current Formal features and remove redundant variables before any coding proposal.
 8. Freeze definitions, then validate same-date SELECTED / Near-miss / Rejected with D1/D3/D5/D10, MFE/MAE, stop-first and failure rates.
+
+
+## DL-002B — Data Readiness Audit for Pattern Research
+
+### Production history-cache limitation discovered
+Current Worker historical warmup requests Fugle daily candles with fields including open/high/low/close/volume/turnover/change, but the mapping written into the D1 history cache keeps only:
+- date
+- close
+- high
+- low
+- volumeShares
+- tradeValue
+
+The historical open is discarded.
+
+Implication:
+- current Formal can still use close/high/low/volume structure,
+- but historical body/gap patterns such as Engulfing, Piercing, Harami, Morning Star and many Sakata-derived sequences cannot be reconstructed correctly from the current cache,
+- therefore no candlestick-pattern backtest should fake or infer missing opens.
+
+### History horizon limitation
+Current constants use roughly 120 calendar days of warmup and persist the latest ~65 market-state bars per symbol.
+This is sufficient for the current 20/60-day Formal structure but can be insufficient for:
+- 1-6 month cup-with-handle bases,
+- long W/double-bottom spacing,
+- multi-stage major-base segmentation,
+- long pattern-failure/recovery studies.
+
+The research layer should therefore use a separate longer as-of-date cache rather than silently stretching the live Formal cache.
+
+### Fugle source capability
+Fugle historical candles support:
+- open/high/low/close/volume
+- adjusted=true for restored/adjusted daily/weekly/monthly price series
+- ranges up to less than one year per request
+
+Therefore the source can support a longer, adjusted pattern-research dataset without changing the trading logic.
+
+### Corporate-action / adjustment risk
+The current production historical-candle request does not specify adjusted=true.
+Fugle documentation notes that daily change on ex-right/ex-dividend dates uses an adjusted previous-close basis, while adjusted=true returns an adjusted price series.
+
+For pattern research this creates a critical distinction:
+- raw prices are needed for actual tradable price levels and current execution plans,
+- adjusted prices are preferable for multi-month topology, returns and gap/shape continuity across corporate actions,
+- ex-right/ex-dividend events must not be mistaken for Sakata gaps, breakdowns or new swing legs.
+
+Preferred research data design:
+1. RAW_OHLC: executable nominal prices.
+2. ADJUSTED_OHLC: morphology/return series for long pattern detection.
+3. CORPORATE_ACTION_TAG: ex-right/ex-dividend/capital-event flag where available.
+4. Never mix raw pivots with adjusted pivots in one geometry calculation.
+
+### Daily OHLC path ambiguity
+Daily high and low do not reveal intraday ordering. A bar can contain both a high and a low that cross a swing threshold, but OHLC alone cannot tell which occurred first.
+For repaint-safe daily swing segmentation:
+- prefer close-confirmed directional changes for confirmation chronology,
+- retain high/low to locate the extreme inside the confirmed leg,
+- if high/low-based confirmation is tested, require a rule that avoids same-bar ordering assumptions.
+
+### Research cache proposal (not implementation approval)
+A separate Pattern Research cache should retain at minimum:
+- date
+- rawOpen/rawHigh/rawLow/rawClose
+- adjustedOpen/adjustedHigh/adjustedLow/adjustedClose
+- volume / turnover
+- corporateActionTag
+- source / fetchedAt
+- enough history for multi-month bases (target horizon to be pre-registered before outcome testing)
+
+This is data infrastructure for research only. No Formal/Core/monitor/push behavior changes are approved.
+
+### New blocking conditions
+- Candlestick research is DATA_BLOCKED until historical open is retained.
+- Long cup/major-base research is HORIZON_BLOCKED until the research dataset extends materially beyond the current ~65 bars.
+- Gap/Sakata research is ADJUSTMENT_BLOCKED until raw-vs-adjusted corporate-action handling is explicit.
+
