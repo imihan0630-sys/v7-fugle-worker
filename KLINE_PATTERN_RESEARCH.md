@@ -6034,3 +6034,131 @@ Do high-confidence cases where both agree have better stability/outcomes, or doe
 
 No ML detector may influence Formal selection during DL-002 research.
 
+
+
+## DL-002AH — Shape Similarity / DTW as a Secondary Research Lens
+
+### Motivation
+Stock chart patterns can have similar morphology despite different amplitudes and durations. Rule-based detectors may miss deformed but structurally similar cases.
+
+### External evidence
+Research on financial chart recognition has used:
+- PIP / turning-point segmentation,
+- template/rule matching,
+- Dynamic Time Warping (DTW),
+- SAX symbolic representations,
+- curve fitting / shape classification.
+
+Subsequence-DTW studies explicitly allow similar historical patterns to occur at different price levels and lengths.
+
+### Research role
+Shape similarity is a SECONDARY detector only.
+
+Primary:
+- repaint-safe confirmed swings,
+- explicit latent primitives,
+- named-pattern rule views.
+
+Secondary:
+- normalized path similarity.
+
+### Normalization required
+Before similarity comparison:
+- normalize price level,
+- preserve direction,
+- use adjusted price series for morphology,
+- normalize amplitude carefully,
+- retain duration separately rather than erasing it completely,
+- keep tick/ATR context outside the normalized shape.
+
+### Why duration cannot be fully warped away
+If DTW is unconstrained, a 10-day sharp V can be made to look like a 100-day rounded cup.
+But duration itself may contain information.
+Therefore:
+- constrain warping,
+- store warpingCost,
+- store originalDurationRatio,
+- reject extreme temporal distortion.
+
+### Similarity fields
+- shapeDistance
+- warpingCost
+- durationRatio
+- amplitudeRatio
+- turningPointAgreement
+- ruleShapeAgreement
+- nearestHistoricalArchetype
+- nearestHistoricalOutcomeDistribution (research only, strict as-of-date archive)
+
+### Anti-leakage
+Historical nearest-neighbor library for date t may contain only patterns completed before t.
+No future pattern/outcome may enter the similarity database.
+
+### Key falsification
+If shape similarity adds no incremental information after latent primitives, discard it.
+Do not retain ML/DTW merely because it sounds sophisticated.
+
+## DL-002AI — Scale / Amplitude / Duration Invariance Boundaries
+
+### Problem
+Pattern recognition often wants invariance:
+- same pattern at NT$50 vs NT$1,500,
+- same cup over 30 vs 90 days,
+- same amplitude at different volatility.
+
+Too much invariance destroys potentially useful information.
+
+### Preserve both normalized and absolute descriptors
+Normalized morphology:
+- z/relative-price path
+- ATR-normalized amplitudes
+- relative duration positions
+
+Absolute/context:
+- trading days
+- actual % depth
+- tick depth
+- ATR regime
+- turnover/liquidity
+- price tier
+
+### Research principle
+Use normalized representation for “shape identity.”
+Use absolute/context variables for “economic meaning.”
+
+Example:
+Two cups can have the same normalized U shape, but:
+- one is 8% deep over 40 days,
+- one is 45% deep over 180 days.
+They should not be treated as identical economic setups.
+
+## DL-002AJ — Pattern Discovery vs Pattern Validation
+
+### Separate tasks
+DISCOVERY:
+Find recurring path structures or clusters without claiming profitability.
+
+VALIDATION:
+Test frozen structures on forward outcomes.
+
+Do not discover and validate on the same outcome sample.
+
+### Discovery options
+- interpretable swing primitives,
+- unsupervised shape clustering,
+- SAX/DTW similarity,
+- shapelets,
+- rule taxonomy.
+
+### Validation requirements
+Once a new structure is discovered:
+1. freeze definition/version,
+2. assign experiment count,
+3. wait for independent/prospective sample or untouched holdout,
+4. test same-date matched controls,
+5. apply multiple-testing discipline.
+
+### Reason
+A discovered cluster will almost always look meaningful in the data that created it.
+Only an untouched sample can tell whether it has predictive value.
+
