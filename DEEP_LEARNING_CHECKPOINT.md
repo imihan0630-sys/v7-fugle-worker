@@ -320,7 +320,7 @@ No Formal Core change is approved or implied.
 ## Parallel durable lane — Price-Volume Relationship（價量關係）
 - Dedicated checkpoint: `PRICE_VOLUME_CHECKPOINT.md`
 - Evidence / hypotheses: `PRICE_VOLUME_RESEARCH.md`
-- Current cursor: PV-001 complete; continue from PV-002.
+- Current cursor: PV-001 through PV-007 complete; continue from PV-008.
 - Key rule: every price-volume claim must record both constructive and opposing interpretations before it can become a Shadow candidate.
-- High-priority candidate: 15-minute same-slot relative-volume normalization, because Taiwan intraday volume has strong time-of-day seasonality and current previous-5-bar comparison may confound clock-time effects with abnormal participation.
+- High-priority candidate: 15-minute same-slot relative-volume normalization, because Taiwan intraday volume has strong time-of-day seasonality and current previous-5-bar comparison may confound clock-time effects with abnormal participation. Fugle historical 15m coverage makes isolated research technically feasible. Also retain contextual/nonlinear breakout-volume quality and constructive-dry-up vs no-demand separation as Shadow candidates.
 - Formal Core remains unchanged.
