@@ -4953,3 +4953,141 @@ overlapCluster
 incrementalEvidenceStatus
 
 It should not output a production BUY score during the research phase.
+
+
+## DL-002N — Sakata / Candlestick Sequence Research Framework v0.1
+
+### Position
+Sakata and candlestick names are treated as a historical taxonomy and interpretability layer. The research object is the underlying OHLC sequence conditional on trend, location, volatility and volume.
+
+### Feature normalization
+For each bar t:
+- bodyPct = abs(C-O)/priorClose
+- bodyATR = abs(C-O)/ATR20_lag
+- upperWickATR = (H-max(O,C))/ATR20_lag
+- lowerWickATR = (min(O,C)-L)/ATR20_lag
+- closeLocation = (C-L)/(H-L)
+- gapFromPrevCloseATR = (O-Cprev)/ATR20_lag
+- rangeATR = (H-L)/ATR20_lag
+- volumeVs20
+- turnoverVs20
+- priceLimitProximity
+- corporateActionTag
+
+For sequences retain relational ordering rather than only names.
+
+### Named patterns as labels
+Examples to encode after OPEN data readiness:
+- Bullish/Bearish Engulfing
+- Piercing / Dark Cloud Cover
+- Harami
+- Hammer / Hanging Man
+- Morning / Evening Star
+- Three White Soldiers / Three Black Crows
+- Rising / Falling Three Methods
+- gap sequences related to Three Gaps
+
+Each label must specify:
+- exact OHLC inequalities,
+- body/range minimums if used,
+- required prior trend,
+- location context,
+- whether gaps are required,
+- corporate-action exclusion.
+
+### Sakata Five Methods mapping
+Three Mountains:
+- research as repeated-top / head-and-shoulders / multi-peak topology, not a mystical fixed formation.
+
+Three Rivers:
+- research as repeated-bottom / inverse-head-and-shoulders / multi-trough topology.
+
+Three Gaps:
+- research as sequential gap events, with strict corporate-action and price-limit controls.
+
+Three Soldiers:
+- research as directional multi-bar body sequence with body/wick/range/volume normalization.
+
+Three Methods:
+- research as trend -> controlled counter-move/consolidation -> continuation sequence.
+
+### Context interaction
+A candle sequence may have opposite meaning depending on location.
+Required contextual tags:
+- priorTrendState
+- distanceToSupport
+- distanceToResistance
+- patternMaturityContext (e.g. inside handle, at W second bottom, after breakout)
+- marketRegime
+- liquidityTier
+- priceTier
+
+Research question:
+Does a candle sequence add information as a confirmation event inside a larger topology?
+Example:
+Bullish Engulfing at W second bottom may be different from the same two bars in the middle of a random range.
+
+### Interaction testing discipline
+Do not enumerate every candle x every pattern x every regime combination.
+Pre-register a small mechanism-driven set:
+1. bullish reversal candle at confirmed support / second bottom;
+2. bullish reversal candle during handle/pullback after volume dry-up;
+3. bearish rejection candle at pivot/resistance;
+4. continuation sequence after breakout/retest.
+
+This controls combinatorial Factor-Zoo growth.
+
+### Data blocker remains
+Historical OPEN is required. No performance claim until the research dataset is repaired/extended.
+
+## DL-002O — Research Data Specification v0.1
+
+### Separate from live Formal cache
+Do not mutate the live trading cache merely to make research convenient.
+Build/derive a research dataset with as-of-date provenance.
+
+Minimum per daily bar:
+- symbol
+- date
+- raw O/H/L/C
+- adjusted O/H/L/C
+- volume
+- turnover
+- corporateActionTag
+- market regime tags
+- source
+- fetchedAt
+
+Target history:
+- enough for at least 120 trading sessions before each as-of-date for multi-month topology;
+- preferably longer for prior-trend context, but the exact fetch horizon must be fixed before outcome analysis.
+
+### Derived fields must be as-of-date reproducible
+- lagged ATR
+- lagged moving averages
+- confirmed swings with pivotAt/confirmedAt
+- pattern states
+- key levels
+- provisional flags
+- data-quality flags
+
+### Missingness
+UNKNOWN stays UNKNOWN.
+Do not coerce missing OPEN, corporate-action status or insufficient history into false/zero.
+
+### Auditability
+Each Pattern Shadow snapshot should preserve:
+- detectorVersion
+- dataThroughDate
+- historyStartDate
+- barCount
+- adjustedSeriesUsed
+- corporateActionHandling
+- swingSpecVersion
+- patternSpecVersion
+- noLookaheadVerified
+- missingFields
+
+### First implementation class if later approved
+Research-only snapshot writer / backfill tool = Class A if it has no decision impact.
+Any change to Formal candidate eligibility, ranking, capital, execution, monitoring or push = Class C and requires owner approval.
