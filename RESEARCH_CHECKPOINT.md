@@ -300,16 +300,14 @@ Updated: 2026-09-25 16:58 Asia/Taipei.
 
 
 ## Corporate Actions & Capital Supply status update
-- Files: CORPORATE_ACTIONS_CAPITAL_SUPPLY_RESEARCH.md, CORPORATE_ACTIONS_CAPITAL_SUPPLY_CHECKPOINT.md, CORPORATE_ACTION_HISTORY_SEMANTICS_PROPOSAL.md, CORPORATE_ACTION_REGISTRY_VALIDATION_SPEC.md, CORPORATE_ACTION_RS_SOURCE_CONTRACT.md, CORPORATE_ACTION_DISCOVERY_SOURCE_CONTRACT.md.
-- Research artifacts: registry v0.2, feature-window manifest v0.1, mechanics feature-delta sample v0.1, RS semantic sample v0.1.
-- Current cursor: CA-001 through CA-080 complete.
-- Status: MATERIALITY_CONFIRMED / LIFECYCLE_REGISTRY_V0_2 / MECHANICS_DELTA_BUILT / RS_SEMANTICS_CONFIRMED / EVIDENCE_DENOMINATOR_PENDING.
-- Lifecycle rule: ex-right price reset and later new-share listing/supply are separate when dates differ. Stock-dividend ex-right does not automatically rescale tradable-share volume.
-- Target-date/window rule: only events with historyStartDate < effectiveDate <= targetDate can transform the supplied history.
-- Registry validation is fail-closed and multidimensional. Convenience samples remain INFERENCE_READY=false.
-- Mechanics sample confirms large raw-vs-continuity feature changes; 8422 full A technical setup flips FAIL -> PASS.
-- TWSE historical FMTQIK Price Index and MFI94U Total Return Index exact-date contracts are live-validated. First RS semantic sample shows very large corporate-action contamination in raw Legacy RS for 3593/8103/8422.
-- These are mechanical/semantic findings only; no forward-return alpha claim or threshold tuning is authorized.
-- Class B research prototype is isolated on branch research/class-b-corporate-action-history-semantics-20260925; draft PR #101 changes only research/test files. No merge/deploy without owner approval.
-- Formal Core unchanged.
-- Exact continuation: CA-081 prospective archive; CA-082 bounded historical completeness receipts; CA-083 systematic no-action controls; CA-084 contamination persistence; CA-085 interaction with history-freshness PR #100 and Pattern dual-space rules.
+- Files: CORPORATE_ACTIONS_CAPITAL_SUPPLY_RESEARCH.md, CORPORATE_ACTIONS_CAPITAL_SUPPLY_CHECKPOINT.md, CORPORATE_ACTION_HISTORY_SEMANTICS_PROPOSAL.md, CORPORATE_ACTION_REGISTRY_VALIDATION_SPEC.md, CORPORATE_ACTION_RS_SOURCE_CONTRACT.md, CORPORATE_ACTION_DISCOVERY_SOURCE_CONTRACT.md, CORPORATE_ACTION_ARCHIVE_SPEC.md.
+- Artifacts: registry v0.2, feature-window manifest v0.1, mechanics feature-delta v0.1, RS semantic sample v0.1, contamination-persistence v0.1.
+- Current cursor: CA-001 through CA-090 complete.
+- Status: MATERIALITY_CONFIRMED / RS_SEMANTICS_CONFIRMED / SUSPENSION_INTERACTION_FOUND / CROSS_LANE_PROTOTYPE_READY / TEST_EXECUTION_PENDING.
+- Corporate-action contamination is not event-day-only: numeric rolling-feature differences can persist roughly 60 trading sessions; A/B state differences can persist for weeks.
+- Critical cross-lane finding: PR #100 market-wide freshness semantics can reject valid symbol histories after verified capital-action suspensions. A blocker comment is posted on PR #100.
+- Symbol-session contract = official market sessions minus VERIFIED symbol suspension sessions; unknown suspension provenance fails closed.
+- Draft PR #101 now contains research-only corporate-action continuity plus symbol-session suspension prototypes/fixtures. No Worker.js wiring, merge or deployment.
+- Semantic spaces: RAW_EXECUTION, TECHNICAL_CONTINUITY, PRICE_INDEX_COMPARABLE, TOTAL_RETURN_COMPARABLE. Pattern lane consumes these declared spaces rather than inventing a separate adjustment engine.
+- No forward-return alpha claim or threshold tuning.
+- Exact continuation: CA-091 executable test evidence; CA-092 integration order; CA-093 suspension archive; CA-094 multiple actions per 60-session window; CA-095 two-stage stock-dividend lifecycle contamination.
