@@ -1,0 +1,85 @@
+# K-line Pattern Research Checkpoint
+
+Updated: 2026-09-25 Asia/Taipei
+
+## Purpose
+Durable handoff for the user's continuous K-line / chart-pattern deep research.
+When a new chat continues K-line learning, read this file first, then `KLINE_PATTERN_RESEARCH.md`.
+Do not restart from generic pattern introductions.
+
+## Governance
+- Formal Core remains LOCKED.
+- Research / Shadow first.
+- Missing evidence = UNKNOWN.
+- No look-ahead, no historical Shadow fabrication, no outcome-tuned pattern definitions.
+- Any later change affecting Formal selection/ranking/threshold/capital/execution/monitor/push needs explicit owner approval.
+
+## Current research theme
+DL-002 — Pattern Maturity / Multi-stage K-line Structure
+
+## Completed durable sections
+- DL-002A repaint-safe swing segmentation concept
+- DL-002B data-readiness audit
+- DL-002C redundancy map against current Formal features
+- DL-002D alignment with existing R01-R08 research governance
+- DL-002E Taiwan market-regime portability
+- DL-002F candlestick evidence conflict / preregistration
+- DL-002G evidence tiers
+- DL-002H swing segmentation specification v0.1
+- DL-002I VCP specification v0.1
+- DL-002J Cup-with-Handle specification v0.1
+- DL-002K W/Double-Bottom specification v0.1
+- DL-002L Platform / Bull Flag / Triangle specification v0.1
+- DL-002M Sakata / multi-candle sequence specification v0.1
+- DL-002N cross-pattern de-duplication / latent geometry layer
+- DL-002O isolated research data architecture / validation plan
+- DL-002P adversarial detector test suite
+- DL-002Q multi-peak / multi-trough reversal family
+- DL-002R High Tight Flag vs overheat interaction
+- DL-002S Pattern Maturity vs existing 15-minute execution layer
+- DL-002T false-break / Spring / Upthrust structural events
+- DL-002U multi-timeframe weekly/daily/15m context
+- DL-002V gap / Three-Gap / Island-Reversal research
+
+## Key findings to retain
+1. The system already uses substantial daily K-line structure; the real missing layer is multi-stage topology/lifecycle, not “K-lines are absent.”
+2. Current system already has a crude W proxy: leftLow/rightLow/rightFootHigher. Do not duplicate it.
+3. Current B breakout qualification mainly uses priorHigh20; longer pattern pivots/necklines may differ.
+4. Current live history cache retains ~65 bars and discards historical OPEN even though Fugle source can provide it.
+5. Fugle official historical candles support OHLCV, adjusted=true, listed-stock daily data back to 2010, with <1-year range per request.
+6. Long-base and candlestick research should use a separate research-only data path, not mutate shared Formal cache by default.
+7. Raw vs adjusted OHLC must be explicit; corporate-action gaps must not become pattern signals.
+8. Swing points must keep pivotAt and confirmedAt. Confirmed pattern state at date t may use only swings with confirmedAt<=t.
+9. VCP must use non-overlapping confirmed contraction legs; overlapping 5/10/20-day windows can create false contraction.
+10. Named patterns are interpretation labels; quantitative research should use latent geometry dimensions to avoid double counting.
+11. Cup/VCP have weaker direct academic alpha evidence than generic systematic chart-pattern recognition; treat them as hypotheses.
+12. Taiwan candlestick studies are specification-sensitive; named candles cannot be assumed timeless.
+13. Old Taiwan evidence predates 2015 price-limit widening and 2020 continuous trading; transportability must be tested.
+14. High Tight Flag is a useful overheat conflict study because updated practitioner performance deteriorated versus early claims.
+15. Pattern maturity must be studied separately from existing 15-minute BUY execution; good selection can still create NO-BUY because of no retest/maxChase.
+16. Opening gaps vs true range gaps are distinct; Taiwan overnight and intraday returns contain different information.
+
+## Current blockers
+- CANDLESTICK_HISTORY_OPEN: research source available, live cache inadequate.
+- LONG_PATTERN_HORIZON: research source available, live cache too short.
+- CORPORATE_ACTION_ADJUSTMENT: source supports adjusted=true; research handling must be explicit.
+- EXECUTION_COVERAGE: missing recorder rows cannot be interpreted as NO-BUY without complete date coverage.
+
+## Exact next continuation point
+1. Deep-dive price-volume structure: accumulation/distribution, volume dry-up, breakout volume, effort-vs-result, and redundancy with current volume fields.
+2. Research Pennant / Ascending Triangle / Falling Wedge / Rising Wedge as topology subclasses; avoid new scores if latent geometry already covers them.
+3. Define Pattern Confidence without outcome-tuned weights; prefer transparent component vector and stability/ambiguity flags.
+4. Specify detector implementation order: swing engine -> structural levels -> VCP/W/Platform -> Cup -> Flag/Triangle -> multi-candle patterns after OPEN data readiness.
+5. Design isolated Pattern Research cache schema and point-in-time fetch/replay tests as Class A proposal; do not touch Formal cache.
+6. Implement synthetic/adversarial detector tests before real-return backtesting if/when research code is built.
+7. Link pattern diagnostics prospectively to existing Shadow Candidate Archive and execution recorder once data coverage permits.
+8. Reuse R01 and existing D1/D3/D5/D10/MFE/MAE outcomes; do not create R09 until definitions/data/redundancy work is frozen.
+9. Continue external evidence search for genuinely independent pattern information and counter-evidence, not more pattern-name collection.
+
+## Durable files
+- `KLINE_PATTERN_CHECKPOINT.md` — this cursor.
+- `KLINE_PATTERN_RESEARCH.md` — detailed DL-002 research.
+- `DEEP_LEARNING_CHECKPOINT.md` — broader deep-learning program.
+- `RESEARCH_CHECKPOINT.md` — canonical Formal research cursor.
+- `RESEARCH_WORKLIST.md` — frozen research infrastructure / R01-R08.
+- `RESEARCH_ENGINEERING_GOVERNANCE.md` — Class A/B/C boundaries.
