@@ -189,3 +189,22 @@ CA-112 freeze a stable TPEx historical daily denominator ingestion contract.
 CA-113 execute a bounded dual-exchange denominator archive pilot with completeness receipts.
 CA-114 resolve payment-certificate/private-placement denominator treatment with daily exchange artifacts and an independent witness.
 CA-115 re-evaluate Class-A Shadow implementation readiness only after CA-111 through CA-114 pass; Formal Core remains locked.
+
+
+## CA-111 progress / CA-112 independent completion
+- Contiguous cursor remains CA-001 through CA-110 complete because CA-111 is still unresolved.
+- CA-111 receipt materialized: `research/twse_bft51u_unit_resolution_receipt_v0_1.json`.
+- CA-111 positive evidence: BFT51U/BFT50U daily issued/listed fields are official; BFI85U exposes daily `交易單位` + `發行股數` from 2020-03-02; TRANISIN exposes daily security `交易單位`; T32 explicitly proves non-thousand-unit securities exist.
+- CA-111 blocker retained: official BFT51U sample/format binaries are not readable through the current research client, indexed official text does not explicitly pin the raw issued/listed numeric unit, and a universal x1000 shortcut remains prohibited.
+- CA-112 completed independently ahead of the contiguous cursor. New contract: `CORPORATE_ACTION_TPEX_DENOMINATOR_INGESTION_CONTRACT.md`.
+- TPEx official EDIS S38 / `STKT2QUOTESN.TXT` format proves `成交股數` is 9(12) shares, `發行股數` is 9(13) shares, and `市值` is 9(14) NTD. S38 official lane starts 2015-11-16.
+- Research-only S38 parser/test added to draft PR #101 branch. Commit `78f627d36de44e50d50f74bb387e19dec9558a7a` passed Research Corporate Action Prototype `36149848429`, V8 Regression `36149848439`, and V8 Repair `36149848481`; job `108120054170` explicitly passed the S38 parser test.
+- CA-112 is semantic/parser complete but a full historical S38 byte archive has not been acquired.
+- Formal Core remains locked. No Worker.js wiring, PR merge or production deploy.
+
+## Updated exact continuation
+CA-111 remains the next contiguous blocker: obtain explicit official BFT51U raw-unit proof or a fully verified alternative TWSE daily issued/listed-share lane with trading-unit guards.
+CA-112 is already complete as an independent lane.
+CA-113 may begin only as bounded archive-pilot preparation until CA-111 closes; full dual-exchange completeness cannot be claimed early.
+CA-114 payment-certificate/private-placement denominator resolution follows with daily exchange artifacts and an independent witness.
+CA-115 readiness re-evaluation remains gated by CA-111/113/114.
