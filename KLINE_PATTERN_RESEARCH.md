@@ -3620,3 +3620,296 @@ Additional horizons are descriptive sensitivity analyses.
 FAILURE_LIFECYCLE_FROZEN_V0_1.
 No Formal change.
 
+
+
+## DL-003A — Pattern Detection Algorithm Architecture Comparison v0.1
+
+### Research question
+Which detection architecture best fits this system's requirements:
+- no look-ahead / repaint,
+- as-of-date replay,
+- transparent explanations,
+- variable pattern duration,
+- multi-scale stability,
+- low overfit risk,
+- direct redundancy testing against existing Formal features,
+- practical compute cost for a Taiwan-stock research universe?
+
+### Methods compared
+
+#### A. Directional Change / confirmed swing segmentation
+Mechanism:
+- maintain a running price extreme,
+- confirm reversal only after price moves by a pre-defined threshold in the opposite direction,
+- separate the historical extremum (pivotAt) from the later confirmation point (confirmedAt).
+
+External support:
+Directional Change literature explicitly distinguishes extrema from later confirmation points and treats price moves beyond a threshold as event-time observations rather than fixed-clock samples.
+
+Strengths:
+- strongest chronology discipline for no-look-ahead research,
+- naturally produces the HIGH/LOW sequence required by W, VCP, triangles, H&S and structural levels,
+- easily records pivotAt vs confirmedAt,
+- transparent and auditable,
+- naturally multi-scale through pre-registered thresholds,
+- low computational cost,
+- easy to replay one bar at a time.
+
+Weaknesses:
+- threshold-sensitive,
+- confirmation lag is unavoidable,
+- very smooth/rounded structures may be reduced to only a few pivots,
+- a volatility-normalized threshold still requires careful pre-registration.
+
+Fit for our system:
+PRIMARY SEGMENTATION CANDIDATE.
+
+#### B. Perceptually Important Points (PIP)
+Mechanism:
+- iteratively select points whose geometric distance from the current simplified representation is largest,
+- compress a long price path into a smaller set of visually important points.
+
+Evidence:
+Fu et al. use PIPs so sequences/templates of different lengths can be compared.
+A later comparative segmentation study evaluated PIP, PAA, PLA and Turning Points and reported especially strong pattern-matching performance for PIP combined with rule-based/hybrid approaches.
+
+Strengths:
+- good dimensionality reduction,
+- preserves human-visible shape,
+- useful for variable-length pattern comparison,
+- can simplify cups/flags/triangles cleanly,
+- strong independent comparator to swing segmentation.
+
+Weaknesses:
+- classic full-window PIP can be hindsight-sensitive: adding future observations can change which earlier points are selected,
+- number of PIPs is a parameter,
+- a compressed “important” point is not automatically an economically confirmed swing,
+- as-of-date replay must recalculate on each prefix; final-window PIPs cannot be backdated.
+
+Fit:
+SECONDARY RESEARCH DETECTOR / CROSS-CHECK.
+Never treat full-history PIP points as if known historically.
+
+#### C. Fixed-window Turning Points / local extrema
+Mechanism:
+- local high/low defined by N bars before/after.
+
+Strengths:
+- simple,
+- intuitive,
+- cheap,
+- common in research preprocessing.
+
+Weaknesses:
+- using future bars to certify a local maximum/minimum creates explicit look-ahead if the pivot is timestamped at the extreme,
+- fixed N behaves differently across volatility regimes,
+- window length can create brittle pattern labels.
+
+Fit:
+BENCHMARK ONLY unless confirmation timestamp is shifted to the first date the future-window requirement is actually satisfied.
+Not preferred as primary engine.
+
+#### D. Rule-based topology
+Mechanism:
+- use explicit inequalities / geometry rules on segmented points:
+  e.g. LOW1 -> MID_HIGH -> LOW2, boundary slopes, rim similarity, contraction sequence.
+
+Evidence:
+Formal chart-pattern-classification research has translated natural-language chart patterns into machine-readable rule specifications and shown rule-based identification can compete with template, Euclidean and DTW methods.
+
+Strengths:
+- highly interpretable,
+- exact reason for pattern state can be stored,
+- natural integration with our pattern maturity lifecycle,
+- easy to identify overlap/redundancy,
+- easy to enforce corporate-action/no-lookahead constraints.
+
+Weaknesses:
+- definitions can become brittle or hand-tuned,
+- many inequalities create Factor-Zoo risk,
+- natural-language patterns often have no universal numeric definition.
+
+Fit:
+PRIMARY CLASSIFICATION LAYER on top of confirmed swings.
+Use continuous descriptors where possible, not dozens of hard pass/fail thresholds.
+
+#### E. Template matching
+Mechanism:
+- compare normalized price shape to prototype/template.
+
+Strengths:
+- intuitively maps to visual charting,
+- tolerates some deviation from exact textbook rules,
+- useful for similarity benchmarking.
+
+Weaknesses:
+- template choice is subjective,
+- normalization and pattern length can materially change matches,
+- multiple templates per family can create hidden multiple testing,
+- less transparent than topology rules when explaining why a stock was selected.
+
+Fit:
+SECONDARY BENCHMARK, not primary decision architecture.
+
+#### F. Dynamic Time Warping (DTW)
+Mechanism:
+- nonlinearly align two sequences in time to minimize distance,
+- can match similar shapes occurring at different speeds/durations.
+
+Evidence:
+Financial pattern-recognition research uses subsequence DTW and DTW-based representations because the method accommodates temporal shifts/warping.
+One NYSE charting study found significant bearish-class prediction but not significant bullish performance, illustrating that algorithmic pattern matching does not imply universal directional alpha.
+
+Strengths:
+- handles variable speed/duration well,
+- robust to temporal displacement,
+- can find analogous shapes without hard swing definitions,
+- useful independent benchmark.
+
+Weaknesses:
+- flexible warping can make structurally different paths appear similar,
+- difficult to map distance back to a transparent trading rationale,
+- warping constraints/normalization/template library create many tuning degrees of freedom,
+- computationally heavier,
+- risk of nearest-neighbor/data-snooping effects if historical future returns are used to select templates.
+
+Fit:
+RESEARCH BENCHMARK / NEAREST-SHAPE COMPARATOR.
+Not primary Formal-facing detector.
+
+#### G. Nonparametric Kernel Regression
+Mechanism:
+- smooth price series nonparametrically,
+- identify geometric features/patterns from the smoothed path.
+
+Evidence:
+Lo, Mamaysky & Wang (Journal of Finance, 2000) used nonparametric kernel regression to automate detection of classic chart patterns and found several patterns carried incremental information relative to unconditional return distributions in their historical U.S. sample.
+
+Strengths:
+- important academic benchmark,
+- smooths micro-noise,
+- supports continuous shape recognition rather than exact point rules,
+- useful for validating that topology findings are not artifacts of one swing algorithm.
+
+Weaknesses:
+- bandwidth selection matters materially,
+- endpoint behavior near the latest bar is difficult,
+- symmetric smoothing can accidentally use future neighbors unless one-sided/as-of-date implementation is enforced,
+- harder to explain than swing topology,
+- compute cost higher for broad rolling replay.
+
+Fit:
+ACADEMIC BENCHMARK / ROBUSTNESS CHECK.
+If used historically, require one-sided/as-of-date smoothing for the current endpoint.
+
+#### H. ML / neural / fuzzy classifiers
+Mechanism:
+- learn pattern representation or classification from labelled examples.
+
+Strengths:
+- can model complex nonlinear morphology,
+- can combine price/volume/context,
+- may reduce reliance on hand-written textbook definitions.
+
+Weaknesses:
+- labels themselves may be subjective,
+- current prospective Formal/Shadow sample is small,
+- high overfit risk,
+- opaque feature interactions,
+- difficult to prove incremental value versus existing Formal features,
+- can silently learn future/regime artifacts if dataset construction is imperfect.
+
+Fit:
+DEFERRED.
+Do not start here.
+Only reconsider after a large, clean, point-in-time-labelled dataset exists.
+
+### Architecture decision v0.1
+
+PRIMARY PIPELINE:
+1. adjusted/raw research OHLC with point-in-time provenance,
+2. repaint-safe Directional Change / confirmed swing engine,
+3. transparent rule/topology feature extraction,
+4. continuous latent geometry descriptors,
+5. pattern-family labels + maturity state,
+6. confidence/ambiguity profile,
+7. validation against existing Formal/Shadow outcomes.
+
+SECONDARY INDEPENDENT CHECKS:
+- PIP + rule/hybrid classifier,
+- one-sided Kernel Regression morphology benchmark.
+
+TERTIARY / EXPLORATORY:
+- constrained DTW similarity.
+
+DEFERRED:
+- ML/neural/fuzzy learned classifier.
+
+### Why this architecture fits the current trading system
+The purpose of DL-002/003 is not to build a separate black-box stock picker.
+It is to determine whether chart topology contains incremental information beyond current A/B logic.
+
+Confirmed swings + transparent topology allow direct answers such as:
+- “the stock has 3 progressively smaller contractions,”
+- “the true W neckline is 4.2% above priorHigh20,”
+- “the cup handle is in the upper 78% of the base,”
+- “two candidate pivots disagree by 3.1%,”
+instead of only:
+- “DTW similarity = 0.87.”
+
+This is essential for later redundancy/falsification work.
+
+### No-lookahead requirements by method
+Directional Change:
+- pivotAt + confirmedAt mandatory.
+
+PIP:
+- recompute per as-of-date prefix; do not reuse final-window points.
+
+Turning Points:
+- confirmation timestamp must include the required future-window lag.
+
+Rule-based:
+- consume only point-in-time-eligible inputs.
+
+DTW/template:
+- query window ends at asOfDate; reference library may use only historical templates whose labels/outcomes would have been available under the experiment design.
+
+Kernel regression:
+- no symmetric future smoothing at the live endpoint; use causal/one-sided endpoint handling.
+
+ML:
+- purged temporal splits + point-in-time labels + no cross-window leakage mandatory.
+
+### Algorithm comparison metrics before any return test
+- prefixInvariance / repaint rate
+- pivot/state confirmation delay
+- pattern detection stability across scales
+- cross-method agreement
+- false positive rate on adversarial synthetic set
+- computational cost
+- pattern ambiguity rate
+- data-blocked rate
+- explainability coverage
+
+Only after detector correctness is established should D1/D3/D5/D10/MFE/MAE be examined.
+
+### Cross-method evidence design
+For each as-of-date sample store:
+- primarySwingPatternLabels
+- pipPatternLabels
+- kernelPatternLabels
+- dtwNearestFamily (exploratory)
+- crossMethodAgreement
+- disagreementReason
+
+Strongest research case:
+a topology effect survives materially different detectors.
+
+Weak case:
+the “pattern” exists only under one brittle segmentation/template choice.
+
+### Status
+DETECTOR_ARCHITECTURE_FROZEN_V0_1.
+No production detector implemented yet.
+No Formal Core change.
