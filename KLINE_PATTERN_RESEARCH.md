@@ -488,3 +488,100 @@ The broader research system already treats market regime changes as a concern an
 ### No production implication
 These tags are research provenance / stratification only. They do not alter Formal eligibility, scores, monitoring or push behavior.
 
+
+
+## DL-002F — Candlestick Evidence Conflict and Pre-registration
+
+### Important evidence conflict
+Two Taiwan studies using overlapping pre-2010 eras produce materially different conclusions because their pattern universe and exit design differ.
+
+A. Lu, Shiu & Liu, Review of Financial Economics (2012)
+- Taiwan 50 component stocks, 2002-10-29 through 2008-12-31; out-of-sample 2009-01-05 through 2011-10-31.
+- Tests three conventional bullish reversal patterns: Piercing, Bullish Engulfing, Bullish Harami, plus bearish counterparts.
+- Uses variable holding: enter at the next open after a bullish pattern and hold until an opposite bearish pattern.
+- Reports all three bullish reversal patterns profitable in its tested design, especially Piercing.
+- Explicitly deletes observations involving ex-right/ex-dividend dates because those events create mechanically adjusted opening gaps.
+- Identifies prior trend using monotonic 5-day moving average over six successive dates.
+
+B. Lu & Shiu, Emerging Markets Finance & Trade (2012)
+- Taiwan 50 component stocks, 2002-2009.
+- Systematically enumerates 24 two-day open/close ordering patterns instead of only practitioner-named patterns.
+- Uses fixed 1/5/10-day holding returns.
+- Finds that conventional/practitioner patterns are not the robust winners; different four-price-order patterns (notably 1234 in a downtrend and 1324 in an uptrend) carried the strongest evidence after costs/robustness tests.
+- Also shows trend context is essential; pooling all market episodes can erase profitability.
+
+### Research interpretation
+This is not a contradiction to “resolve” by choosing the prettier result. It is direct evidence that:
+- candlestick alpha is specification-sensitive,
+- trend definition matters,
+- exit/holding rule matters,
+- corporate-action handling matters,
+- named-pattern taxonomy may be less informative than raw OHLC relational features.
+
+Therefore DL-002 should not pre-select Piercing/Engulfing/Harami as privileged scoring factors merely because one historical Taiwan study reported profits.
+
+### Better research design
+Store both:
+1. NAMED_PATTERN labels for interpretability.
+2. RAW_RELATIONAL_PATTERN encoding for two-day OHLC relationships.
+
+The raw encoding lets the data test morphology without forcing every useful sequence into a traditional name.
+
+For a two-day pattern define normalized inputs:
+- O1,C1,H1,L1,V1
+- O2,C2,H2,L2,V2
+- body1 = abs(C1-O1)
+- body2 = abs(C2-O2)
+- body1ATR = body1 / ATR20
+- body2ATR = body2 / ATR20
+- gapOpen = (O2-C1)/C1
+- bodyContainment / engulfing ratios
+- volumeRatio = V2 / rollingVolumeBaseline
+- priorTrendState
+- supportResistanceLocation
+- priceLimitState
+- corporateActionTag
+
+### Conventional bullish formulas for research labels
+Require prior downtrend context, then:
+
+Piercing:
+- C1 < O1
+- C2 > O2
+- O2 <= C1
+- C2 > C1 + 0.5*(O1-C1)
+- C2 < O1 for the strict classic label; if C2 >= O1 classify as Engulfing rather than Piercing.
+
+Bullish Engulfing:
+- C1 < O1
+- C2 > O2
+- O2 <= C1
+- C2 >= O1
+
+Bullish Harami:
+- C1 < O1
+- C2 > O2
+- O2 > C1
+- C2 < O1
+- second real body is inside the first real body.
+Research should additionally quantify body1/body2 size instead of relying on vague “long/small” words.
+
+### Trend-context variants
+Do not tune one trend definition after seeing outcomes. Pre-register a limited comparison:
+- PAPER_MA5_MONOTONIC: six-date monotonic MA5 trend, matching the cited Taiwan studies.
+- SYSTEM_TREND: current Formal trend context using MA20/MA60 and structure.
+- SWING_TREND: repaint-safe confirmed swing lower-high/lower-low or higher-high/higher-low topology.
+
+Goal: determine whether candlestick information is incremental under the system’s actual trend context, not reproduce an old paper’s exact trading rule.
+
+### Outcome separation
+Named candlestick research should first be Selection Alpha / conditional-return research using existing D1/D3/D5/D10 outcomes.
+Do not adopt the historical paper’s “hold until opposite candle” as a production exit rule; that would confound pattern quality with a new execution strategy and would be a Formal/Execution change.
+
+### Corporate-action requirement strengthened
+The RFE study explicitly removed ex-right/ex-dividend observations because adjusted opens create false gap/reversal appearances. This independently validates DL-002B’s requirement that corporate actions be tagged or adjusted before gap/candlestick research.
+
+### Current status
+Candlestick lane remains DATA_BLOCKED for system-wide historical validation until historical OPEN and corporate-action-aware data are available.
+Definitions can be frozen now; performance testing must wait for data readiness.
+
