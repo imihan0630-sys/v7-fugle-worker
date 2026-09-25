@@ -168,3 +168,12 @@ Current research schema: PV_SHADOW_V0_1
 - Current FORMAL_SIGNAL_OBSERVED recorder semantics are batch-triggered; rows without independently matched same-symbol notification are EVENT_SCOPE_AMBIGUOUS and excluded from signal-event inference.
 - Interval pressure requires valid monotonic cumulative counters and explicit unclassified-volume coverage.
 - Status remains PLANNED / DATA_QUALITY_BLOCKED.
+
+## Clean-cohort readiness gate after PV-184~200
+- H001/H002 primary inference status: WAITING_CLEAN_COHORT_PROVENANCE.
+- Intraday PV feature rows may continue DATA_QA, but primary prospective comparison requires verified selection-time symbol-session history quality for the Formal cohort.
+- Market-session-only freshness is insufficient; verified symbol-specific suspension sessions must be removed from expected sessions.
+- PR #100 as currently drafted is not treated as production-ready because later Corporate Action research falsified market-session-only continuity.
+- H003/H004 inherit the same clean-cohort prerequisite.
+- H006 additionally requires authoritative execution-recorder coverage and verified symbol-specific Formal signal event mapping.
+- No hypothesis is rejected or supported by these data-quality findings; evidence interpretation is deferred until prerequisites are met.
