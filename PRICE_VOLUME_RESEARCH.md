@@ -6546,3 +6546,112 @@ Do not estimate “actual passive flow” from coarse RVOL.
 Use the passive-flow lane's provenance-quality event state.
 
 Status: CROSS_LANE_REUSE / NO_DUPLICATE_INDEX_MODEL.
+
+# PV-114 — Derivatives Expiry Is a Market-State Moderator, Not a Stock-Level Causal Attribution
+
+## Existing derivatives lane
+The repository already contains `DERIVATIVES_VOLATILITY_RESEARCH.md`, whose core conclusion is:
+- futures/options evidence should first be used as market-state / risk context;
+- aggregate PCR, OI, basis and foreign futures positions are not direct stock-picking oracles;
+- expiry composition and settlement mechanics require explicit guards.
+
+PV should consume these states rather than rebuild derivatives models.
+
+Status: CROSS_LANE_REUSE.
+
+
+# PV-115 — Taiwan Expiry Windows Can Mechanically Affect Late-Session Spot Activity
+
+## Official settlement mechanics
+TAIFEX domestic equity-index futures/options final settlement uses the arithmetic mean of the underlying index during the last 30 minutes before cash-market close.
+
+Source:
+- https://www.taifex.com.tw/enl/eng5/formulaIndex
+
+Single-stock futures/equity options final settlement uses the arithmetic mean of the underlying security during the last 60 minutes of cash-market trading.
+
+Source:
+- https://www.taifex.com.tw/enl/eng5/formulaStock
+
+## Implication
+On expiry/final-settlement sessions:
+- hedging;
+- inventory adjustment;
+- basis convergence;
+- option/futures position liquidation
+can create spot-market activity during the settlement window.
+
+## Critical guard
+A high-volume late-session stock bar on expiry day does NOT prove derivative hedging caused the flow.
+
+Need separate evidence:
+- derivative product exists;
+- expiry/final-settlement date;
+- relevant underlying;
+- dealer/participant positioning where available.
+
+Status: EXPIRY_WINDOW_CONTEXT / CAUSAL ATTRIBUTION PROHIBITED.
+
+
+# PV-116 — Index-Derivatives Expiry Is Mainly a Common-Factor Contamination Problem
+
+## Difference from covered warrants
+Covered warrants can generate stock-specific hedge demand in the individual underlying.
+
+Index futures/options are primarily broad-market instruments.
+
+Therefore their spot impact should usually appear as:
+- broad index/large-cap activity;
+- correlated constituent flow;
+- late-session common participation.
+
+## PV integration
+This strengthens the value of:
+- market residual RVOL;
+- sector residual RVOL;
+- cross-sectional breadth;
+- expiry-day market-state flag.
+
+If the entire market volume rises during an index expiry window, raw stock RVOL may overstate stock-specific information.
+
+## Counter-case
+A high-weight constituent can receive disproportionate impact due index contribution/liquidity.
+
+Therefore common-factor residualization helps but does not perfectly remove expiry mechanics.
+
+Status: BROAD COMMON-FLOW MODERATOR.
+
+
+# PV-117 — Derivative-Hedge Context Ownership
+
+## Stock-specific hedge origin
+Owned primarily by:
+- covered warrant / structured-product dealer hedge flow;
+- single-stock futures/options where meaningful.
+
+Potential PV context:
+`STOCK_SPECIFIC_DERIVATIVE_HEDGE_CONTEXT`
+
+## Market-wide derivative state
+Owned by Derivatives/Volatility lane:
+- index futures basis;
+- option IV/VIX;
+- PCR;
+- OI;
+- expiry/roll;
+- foreign derivatives positioning.
+
+PV consumes:
+`DERIVATIVES_EXPIRY_CONTEXT`
+or broader risk state.
+
+## Rule
+Do not add:
+- PCR points;
+- foreign-futures-short points;
+- VIX points
+into a stock PV score.
+
+Use them only to test whether the same stock PV state behaves differently under different market derivative states.
+
+Status: DERIVATIVES-PV OWNERSHIP FROZEN.
