@@ -2170,3 +2170,126 @@ For each record, freeze:
 Only after registry schema/data pass should RS Shadow ranking comparison begin.
 
 Do not add more scoring indicators before this evidence layer exists.
+
+
+---
+
+## CA-061 — Corporate-action “reference price” must be split into distinct fields
+
+The 2412 cash-dividend sample exposed a provenance problem.
+
+Known facts:
+- prior raw close = 139.5;
+- cash dividend = 5.2;
+- economic ex-dividend arithmetic gives 134.3;
+- provider adjusted history also maps the prior close to 134.3;
+- some market reporting/change semantics show 134.5.
+
+Therefore a generic referencePrice field is unsafe.
+
+### Revised registry fields
+- previousRawClose;
+- economicAdjustmentReference;
+- exchangeOpeningReference;
+- providerAdjustedAnchor;
+- dailyChangeReference;
+- referenceQuality;
+- referenceConflictReasons.
+
+### Ownership
+Technical/total-return continuity:
+prefer the verified economic/action adjustment basis.
+
+Execution, price-limit and gap studies:
+require the official exchange opening/reference-price basis.
+
+Do not infer one from the other when tick/rounding/provider conventions differ.
+
+### 2412 quality decision
+- economicAdjustmentReference = 134.3;
+- providerAdjustedAnchor = 134.3;
+- exchangeOpeningReference = UNKNOWN until a primary exchange record is archived;
+- conflicting secondary references are preserved as conflict evidence rather than silently selected.
+
+Status: REFERENCE-PRICE PROVENANCE LAYER FROZEN.
+
+---
+
+## CA-062 — 2412 recalculation with economic reference 134.3
+
+Recomputed point-in-time technical bridge factor:
+134.3 / 139.5 = 0.96272401.
+
+Technical features on 2026-07-09 become:
+- ret20 = -3.70%;
+- ret60 = +2.72%;
+- MA20 = 137.58;
+- MA60 = 134.24;
+- ATR = 1.32%;
+- priorHigh20 = 141.52;
+- pullback = 5.67%;
+- support distance = 0.60%.
+
+A checks:
+- trend = true;
+- pullback = true;
+- nearSupport = true;
+- volume = false;
+- structure = false;
+- notLate = true.
+
+Full A remains FAIL.
+
+This supersedes the earlier 134.5 technical-bridge diagnostic for 2412.
+The broader conclusion is unchanged and slightly strengthened: a small cash-dividend reference difference can flip additional subconditions even without flipping the full setup.
+
+Status: 2412 TECHNICAL SAMPLE CORRECTED.
+
+---
+
+## CA-063 — Stock-dividend share supply is not an ex-date UNIT_SCALE event
+
+Official Fubon Media documentation for the 2025 stock distribution states:
+- capital-surplus stock distribution = 0.5 per share / 50 shares per 1000;
+- 12,617,870 new shares issued;
+- regulatory effectiveness in July 2025;
+- ex-right entitlement/record process in August;
+- new shares completed listing on 2025-10-09.
+
+### Consequence
+The additional 5% shares were not all new tradable shares on the ex-right date.
+
+Therefore:
+- price continuity can begin at the ex-right/reference event;
+- tradable-share supply changes on a different lifecycle;
+- pre-ex-right raw trading volume must NOT automatically be multiplied by 1.05 and called actual-volume continuity.
+
+For stock dividends:
+volumeTransformMode = SUPPLY_CHANGE
+until point-in-time listed/tradable-share vintages establish a better denominator.
+
+This directly validates the CA-043 correction.
+
+Status: STOCK-DIVIDEND VOLUME CLASSIFICATION VERIFIED BY ISSUANCE TIMELINE.
+
+---
+
+## CA-064 — Registry sample v0.1 quality policy
+
+A first registry sample is now useful, but it is not yet an inference dataset.
+
+Every record carries:
+- source quality;
+- factor quality;
+- first-known completeness;
+- separate reference semantics;
+- volume transform mode;
+- UNKNOWN reasons.
+
+Records with:
+- missing firstKnownAt;
+- unarchived specific official event document;
+- reference conflicts
+remain valid for schema/source testing but are NOT eligible for point-in-time outcome inference.
+
+Status: REGISTRY SAMPLE BUILD AUTHORIZED AS RESEARCH ARTIFACT.
