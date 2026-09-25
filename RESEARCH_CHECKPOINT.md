@@ -186,3 +186,21 @@ Updated: 2026-09-25 14:12 Asia/Taipei.
 ## External-learning continuation
 - Microstructure, breadth/rotation, and fundamental-dynamics concept lanes are converged. Do not create more variants until evidence accumulates.
 - Next genuinely under-studied lane: Derivatives Information & Volatility Surface, with Taiwan futures/options mechanics and positive/counter mechanisms.
+
+
+## Parallel durable lane — Portfolio & Risk Construction status update
+- Dedicated files: `PORTFOLIO_RISK_RESEARCH.md`, `PORTFOLIO_RISK_CHECKPOINT.md`.
+- Current cursor: PR-001 through PR-024 complete.
+- Status: CONCEPT_COMPLETE / EVIDENCE_PENDING.
+- Durable additions: shrinkage-covariance hierarchy, diagnostic-first clustering, capital-vs-risk concentration separation, rejection of short-window ES as a sizing gate, planned/projected portfolio heat, cash-state attribution, priorityScore conviction-calibration gate, and within-pool plus consolidated-live risk views.
+- Formal Core unchanged.
+
+## Market-microstructure lineage correction
+- Raw `main/Worker.js` is a pre-build base and does not itself prove deployed V8.8 recorder presence.
+- Production GitHub Actions explicitly applies V8.8.0/V8.8.1 before later patches, validates the recorder table/endpoint/fail-open contract in the built Worker, then deploys the built Worker.
+- Build pipeline inclusion is verified; live D1 coverage remains UNKNOWN and this turn did not independently read the protected runtime recorder.
+
+## External-learning continuation
+- Portfolio-risk concept lane is converged.
+- Next genuinely under-studied lane: Trading Frictions, Turnover & Rebalancing.
+- Start with Taiwan explicit taxes/commissions, implicit spread/slippage, round-trip hurdle, turnover drag, FIRST/ADD/REDUCE/RE-ADD costs, no-trade/hysteresis concepts, and cost-aware trade/no-trade decisions.
