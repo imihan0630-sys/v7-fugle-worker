@@ -1,13 +1,14 @@
 # Class B Proposal — Formal daily-history freshness invariant
 
 Date: 2026-09-25
-Status: PROPOSAL / TEST PLAN ONLY — DO NOT PROMOTE
-Baseline main: fff5c685cd77d4c3d00ca2fb519449c89234107a
+Status: OWNER-APPROVED IMPLEMENTATION + TESTING / DRAFT PR — DO NOT MERGE OR DEPLOY
+Original proposal baseline: fff5c685cd77d4c3d00ca2fb519449c89234107a
+Implementation sync baseline: c89b65ea12e9ccb0f4dabdbb2eb7b7310ba28eaa
 
 ## Problem
 B-130 proved that `runHistorySeed()` currently treats a D1 history cache as complete when `history.length >= 60` without proving that the cache reaches the required prior trading session or that recent sessions are continuous. `updateMarketState()` then appends the target scan date after filtering dates < scanDate. A stale cache can therefore create a false contiguous rolling series.
 
-This is shared runtime and can change future Formal eligibility, so it is Class B. No production implementation or promotion is authorized by this proposal.
+This is shared runtime and can change future Formal eligibility, so it is Class B. The owner authorized implementation plus complete testing on 2026-09-25. Merge and Production deployment remain explicitly unauthorized.
 
 ## Proposed invariant
 For a target `marketDate`, a cached history is usable for rolling Formal features only when:
@@ -15,7 +16,7 @@ For a target `marketDate`, a cached history is usable for rolling Formal feature
 2. Expected prior trading date = the immediately preceding official trading session before `marketDate`.
 3. Latest cached bar date equals expected prior trading date.
 4. Recent cached dates required by the rolling feature window are strictly increasing, unique, and match official trading sessions without internal gaps.
-5. No cached date is >= `marketDate`.
+5. No cached date may be later than `marketDate`. The existing 17:00 warmup/fallback cache may contain one `marketDate` bar; it is never admitted as a prior session and is deterministically replaced by the official scan row.
 6. If any check cannot be proven, status is `DATA_INCOMPLETE/UNKNOWN`; never BAD/0 and never silently eligible.
 7. Historical recovery evaluates freshness relative to the recovery target market date, not rerun wall-clock date.
 
@@ -35,7 +36,7 @@ For a target `marketDate`, a cached history is usable for rolling Formal feature
 6. Historical recovery uses target market date, not current date.
 7. Reproduce B-130 stale sequence (cache through 2026-09-11 + append 2026-09-24) => rejected before Formal feature calculation.
 8. Fresh complete sequence for the same target date => existing A/B feature formulas unchanged.
-9. Regression: Top6/3+3/A-B formulas/capital/signal/push code unchanged.
+9. Regression: Top6/3+3/3+3+3/A-B formulas/capital/signal/push code unchanged.
 10. Failure/unknown calendar => DATA_INCOMPLETE, never zero-pick.
 
 ## Evidence / falsification
@@ -44,5 +45,14 @@ For a target `marketDate`, a cached history is usable for rolling Formal feature
 - 2006/4977 are root-cause witnesses only, not recommendations and not sufficient to estimate prevalence.
 - A validator that only checks bar count or calendar-day age is insufficient and should be rejected.
 
+## Implemented branch-only shape
+- Guarded patch version: `8.10.1-history-freshness-guard`.
+- `HISTORY_SEED_SCHEMA` is bumped so a pre-guard resolved queue cannot bypass reclassification.
+- Calendar-aware validation requires the latest prior official session plus the last 60 official sessions in exact order.
+- Stale/gapped/duplicate/out-of-order/future histories are excluded before `buildMarketFeatures`; unavailable calendar proof remains UNKNOWN.
+- The exact B-130 date shape (cache through 2026-09-11 plus 2026-09-24) is rejected with expected prior session 2026-09-23.
+- Fresh history produces unchanged rolling features and unchanged `strategySetupState()` output.
+- Formal formulas, thresholds, ranking, quotas, capital, monitoring, signals and push logic are untouched.
+
 ## Rollback
-Proposal branch only. No runtime deployment. Delete/close branch or PR to roll back the proposal artifact.
+Draft PR branch only. No merge or runtime deployment. Revert the V8.10.1 patch/test/workflow commits or close PR #100 to roll back the branch artifact.

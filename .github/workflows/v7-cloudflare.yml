@@ -58,6 +58,7 @@ on:
       - "scripts/apply_v8_9_8.py"
       - "scripts/apply_v8_9_9.py"
       - "scripts/apply_v8_10_0.py"
+      - "scripts/apply_v8_10_1.py"
       - "RESEARCH_WORKLIST.md"
       - "research/**"
       - "data/v7_formal_scan_backfill.json"
@@ -245,6 +246,9 @@ jobs:
       - name: Apply V8.10.0 independent Aideen App pool
         run: python3 scripts/apply_v8_10_0.py
 
+      - name: Apply V8.10.1 history freshness guard
+        run: python3 scripts/apply_v8_10_1.py
+
       - name: Syntax check Worker.js
         run: |
           set -euo pipefail
@@ -254,7 +258,9 @@ jobs:
       - name: Validate V8.7.12 production contract
         run: |
           set -euo pipefail
-          grep -F 'const VERSION = "8.10.0-aideen-independent-pool";' Worker.js
+          grep -F 'const VERSION = "8.10.1-history-freshness-guard";' Worker.js
+          grep -F 'const HISTORY_SEED_SCHEMA = "full-market-v3-history-freshness";' Worker.js
+          grep -F 'function validateHistoryFreshness(' Worker.js
           grep -F 'const AIDEEN_POOL_ID = "AIDEEN_APP";' Worker.js
           grep -F 'const AIDEEN_MAX_STOCKS = 5;' Worker.js
           grep -F 'url.pathname === "/api/aideen-pool"' Worker.js
@@ -379,6 +385,7 @@ jobs:
           node tests/test_v8_9_8_staged_recovery.mjs
           node tests/test_v8_9_9_staged_delivery.mjs
           node tests/test_v8_10_0_aideen_independent_pool.mjs
+          node tests/test_v8_10_1_history_freshness.mjs
           node tests/test_v8_9_0_three_pool_hybrid_shadow.mjs
           node tests/test_v8_9_1_three_pool_dashboard.mjs
           node tests/github_plan_mirror.mjs self-test

@@ -15,9 +15,9 @@ for(const marker of [
   "前瞻正式完整快照的5日成熟樣本少於30筆",
   "趨勢持續性研究分數",
   "突破距離Tick數",
-  "<title>\n台股交易決策監控系統\n</title>",
-  "<h1>\n台股交易決策監控系統\n</h1>"
-]) assert.ok(source.includes(marker),marker);
+  /<title>\r?\n台股交易決策監控系統\r?\n<\/title>/,
+  /<h1>\r?\n台股交易決策監控系統\r?\n<\/h1>/
+]) assert.ok(marker instanceof RegExp ? marker.test(source) : source.includes(marker),marker);
 
 assert.equal(mod.researchTickSize(9.99),0.01);
 assert.equal(mod.researchTickSize(10),0.05);
