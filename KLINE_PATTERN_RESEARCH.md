@@ -5627,3 +5627,57 @@ If interaction adds nothing after controlling current RS variables, reject it as
 ### No production implication
 Research/Shadow only. No ranking or selection change.
 
+
+
+## DL-002Z — Taiwan Tick-Size / Price-Limit Normalization v0.1
+
+### Why this matters
+Taiwan stocks have discrete price ticks that vary by price band, and ordinary stocks are subject to a daily ±10% fluctuation limit around the opening reference price.
+Therefore pattern geometry measured only in percentages can be distorted across price tiers.
+
+Examples:
+- a 1-tick move in a NT$30 stock is not equivalent to a 1-tick move in a NT$1,500 stock;
+- a “0.2% breakout” may be only one tick for a high-priced stock;
+- narrow handles or equal W-bottom lows can be mechanical consequences of price discretization;
+- price-limit sessions truncate observed daily ranges.
+
+### Research normalization
+For every key level / distance store all three:
+1. percent distance,
+2. ATR-normalized distance,
+3. tick-count distance.
+
+Fields:
+- tickSizeAtPrice
+- pivotDistanceTicks
+- handleDepthTicks
+- rimDiffTicks
+- troughSimilarityTicks
+- breakoutDistanceTicks
+- undercutTicks
+- stopDistanceTicks
+- rangeTicks
+
+### Price-limit state
+Tag:
+- nearUpperLimit
+- nearLowerLimit
+- lockedUpperLimit / lockedLowerLimit if observable
+- limitConstrainedRange
+- noLimitNewListingWindow where applicable
+
+A bar constrained by the daily limit should not be interpreted as an unconstrained natural range contraction/expansion.
+
+### Pattern implications
+VCP:
+- finalTightness must exceed pure tick granularity; a 1–2 tick “tight area” may be discretization, not supply contraction.
+
+Cup/W:
+- rim similarity and trough similarity need tick-aware tolerance.
+
+Breakout:
+- require descriptive breakout distance in ticks as well as %/ATR; do not treat a one-tick close over resistance as equivalent across price tiers.
+
+### Research-only
+This is normalization / data-quality work only. No Formal threshold change.
+
