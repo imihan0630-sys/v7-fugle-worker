@@ -4208,3 +4208,209 @@ These are evidence-quality metrics, not alpha metrics.
 DATA_SCHEMA_AND_REPLAY_CONTRACT_FROZEN_V0_1.
 Specification only.
 No D1 schema or Worker runtime changed.
+
+
+## DL-003C — Detector Implementation Order / Evidence Gates v0.1
+
+### Principle
+Do not implement all named patterns at once.
+Build from lowest-level invariant components upward so each layer can be falsified independently.
+
+### Phase 0 — Data contract
+Build/validate only in isolated research path:
+- RAW OHLC
+- ADJUSTED OHLC
+- volume/turnover
+- corporate-action status
+- source/provenance/hash
+- long enough trailing horizon
+- point-in-time eligibility
+
+Exit gate:
+- date continuity verified,
+- duplicate-free,
+- required OPEN coverage for candlestick lanes,
+- raw/adjusted mapping reproducible,
+- no shared Formal output changes.
+
+### Phase 1 — Swing engine
+Implement DL-002H only:
+- MICRO / BASE / MAJOR
+- pivotAt / confirmedAt
+- frozen lagged-ATR threshold per leg
+- provisional last leg
+- prefix-invariance replay
+
+Exit gate:
+- synthetic swing cases pass,
+- prefix-invariance exact for confirmed states,
+- same-day OHLC ambiguity cannot create impossible ordering,
+- scale-stability diagnostics emitted,
+- no future suffix changes historical confirmed swings.
+
+No named patterns yet.
+
+### Phase 2 — Structural levels
+From confirmed swings derive:
+- support/resistance zones
+- true W neckline
+- repeated horizontal boundaries
+- sloped boundary candidates
+- pivot ambiguity
+- level clarity
+
+Exit gate:
+- all levels cite source swing IDs,
+- no line uses a swing confirmed after asOfDate,
+- adversarial unrelated old-high cases do not overwrite true neckline,
+- raw/adjusted level mapping is explicit.
+
+### Phase 3 — Highest-priority topology
+Implement first:
+1. W / Double Bottom
+2. VCP
+3. Horizontal Platform
+
+Reason:
+- directly addresses current-system gaps,
+- does not require historical OPEN,
+- topology is relatively transparent,
+- W has stronger general chart-pattern research pedigree,
+- VCP tests genuinely new contraction sequence information,
+- Platform directly compares against existing platformRange20Pct.
+
+Exit gate per family:
+- positive synthetic examples detected,
+- negative/adversarial examples rejected,
+- overlap with current Formal fields reported,
+- state replay exact,
+- no returns inspected for threshold tuning.
+
+### Phase 4 — Long-base / continuation topology
+Implement:
+4. Cup / Cup-with-Handle
+5. Bull Flag
+6. Symmetrical/Ascending/Descending Triangle
+7. Pennant / Wedges
+8. multi-peak/multi-trough reversal family
+
+Prerequisite:
+- longer research horizon available.
+- cross-pattern shared-swing mapping working.
+
+Exit gate:
+- nested patterns can coexist without duplicate evidence,
+- ambiguous families preserved rather than forced,
+- line-fit/pivot ambiguity exposed.
+
+### Phase 5 — Multi-timeframe context
+Build weekly context from adjusted daily/weekly data:
+- weekly swings
+- major support/resistance
+- parent/child pattern relationship
+
+Exit gate:
+- weekly context adds no duplicate count,
+- daily state does not depend on future weekly close,
+- week aggregation respects Taiwan trading calendar.
+
+### Phase 6 — Candlestick / gap families
+Implement only after OPEN + corporate-action readiness:
+- Piercing / Engulfing / Harami
+- Morning/Evening Star
+- Soldiers / Three Methods
+- Opening gap / true gap / Three Gaps / island structures
+
+Exit gate:
+- ex-right/ex-dividend synthetic tests pass,
+- corporate-action gaps are excluded,
+- named labels and raw relational OHLC representation both stored.
+
+### Phase 7 — Independent detector benchmarks
+Add:
+- PIP + rule/hybrid
+- one-sided/as-of-date Kernel Regression
+- constrained DTW exploratory similarity
+
+Purpose:
+robustness, not replacement.
+
+Exit gate:
+- cross-method agreement/disagreement available,
+- no detector selected based on forward returns.
+
+### Phase 8 — Prospective Shadow linkage
+Only after detector correctness:
+- append research snapshot diagnostics to prospective existing Shadow cohorts,
+- no eligibility/ranking impact,
+- link to existing outcome framework.
+
+Exit gate:
+- protected Formal outputs byte/semantically identical on frozen inputs,
+- research data gaps never become BAD/0,
+- point-in-time lineage complete.
+
+### Phase 9 — Outcome evaluation
+Use existing:
+- D1/D3/D5/D10/D20
+- MFE/MAE
+- R01
+- execution coverage / BUY status
+
+Do not create R09 until:
+- detector definitions frozen,
+- data coverage sufficient,
+- redundancy mapped,
+- cohort linkage prospective and stable.
+
+### Detector observability / health metrics
+Every research run should report:
+
+DATA:
+- symbols requested
+- symbols with complete raw/adjusted bars
+- OPEN coverage
+- corporate-action-known coverage
+- horizon coverage
+
+INTEGRITY:
+- replay exact-match rate
+- prefix-invariance failures
+- no-lookahead failures
+- duplicate/date errors
+- blocked observations
+
+STRUCTURE:
+- swing count by scale
+- confirmation-lag distribution
+- low-stability share
+- pivot-ambiguity share
+- pattern overlap/conflict rate
+
+METHOD ROBUSTNESS:
+- primary vs PIP agreement
+- primary vs kernel agreement
+- exploratory DTW family agreement
+- method-disagreement rate
+
+COMPUTE:
+- bars processed
+- symbols/sec
+- storage growth
+- API calls
+- runtime failures
+
+OUTCOME metrics are deliberately not part of detector health.
+
+### Stop conditions
+A detector family should NOT advance to outcome testing if:
+- replay mismatch exists,
+- future-prefix invariance fails,
+- required source data are missing,
+- synthetic false positives are unresolved,
+- definition changed after looking at outcomes without registering a new version.
+
+### Status
+IMPLEMENTATION_ORDER_AND_GATES_FROZEN_V0_1.
+No research code deployed.
+No Formal change.
