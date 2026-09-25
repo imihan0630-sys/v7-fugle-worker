@@ -1,10 +1,10 @@
 {
-  "schemaVersion": "0.1",
-  "generatedAt": "2026-09-25 23:00 Asia/Taipei",
-  "purpose": "CA-113 bounded dual-exchange denominator archive pilot preparation while CA-111 TWSE daily raw-unit proof remains unresolved.",
+  "schemaVersion": "0.2",
+  "generatedAt": "2026-09-25 Asia/Taipei",
+  "purpose": "CA-113 bounded dual-exchange denominator archive pilot after CA-111 raw-unit closure.",
   "decisionImpact": false,
   "formalCoreChanged": false,
-  "status": "PREPARED_NOT_EXECUTED",
+  "status": "READY_FOR_BOUNDED_EXECUTION",
   "scope": {
     "exchanges": [
       "TWSE",
@@ -27,14 +27,15 @@
   },
   "sourceLanes": {
     "TWSE": {
-      "dailyBackbone": "BFT51U/BFI85U candidate; raw unit still UNKNOWN",
+      "dailyBackbone": "BFT51U 上市股數 raw field for exact listed-share candidate; BFT51U 發行張數 remains lot-count only.",
       "eventChangeLedger": "LT185 listed common-share/TDR count-change announcements; explicit effective-date/share-count semantics",
       "tradingUnitGuards": [
         "BFI85U",
         "TRANISIN",
         "T32"
       ],
-      "readiness": "PARTIAL_BLOCKED_CA111"
+      "readiness": "UNIT_CONTRACT_RESOLVED_ARCHIVE_COVERAGE_PENDING",
+      "unitContract": "CA-111 v0.2: universal x1000 rejected; security-specific trading-unit guard mandatory."
     },
     "TPEx": {
       "dailyBackbone": "EDIS S38 / STKT2QUOTESN.TXT",
@@ -78,14 +79,15 @@
   },
   "antiLeakage": [
     "No current denominator backfill into historical replay.",
-    "No universal x1000 for TWSE BFT51U.",
+    "No universal x1000 for TWSE BFT51U 發行張數; use exact listed-share raw field plus security-specific trading-unit guards.",
     "No inferred continuity across missing sessions unless verified suspension/event provenance exists.",
     "No mixing REGISTERED_ISSUED_SHARES with EXCHANGE_LISTED_OR_TRADABLE_SHARES.",
     "No outcome/alpha testing in this pilot."
   ],
   "executionGate": {
     "mayProceedNow": "TPEx bounded byte/archive pilot and TWSE event-ledger reconciliation preparation",
-    "blockedUntilCA111": "claiming complete dual-exchange daily denominator archive",
-    "ca114Note": "LT185 generic filing semantics independently support excluding private-placement/restricted shares from cumulative listed-share count, but payment certificates remain a distinct tradable stage; exact 2465 combined tradable denominator still requires a date-specific daily exchange artifact."
+    "blockedUntilCA111": "CLEARED_BY_CA111_V0_2",
+    "ca114Note": "2465 2025-11-17 official announcement explicitly separates original listed common shares 58,946,031 (excluding 25,000,000 private-placement shares) and 10,000,000 payment certificates. Treat payment certificates as a distinct tradable instrument stage; do not relabel them registered-issued ordinary shares before registration/new-share conversion.",
+    "fullCompletenessGate": "Still blocked until bounded archive bytes/receipts prove expected-vs-observed sessions and revision/knownAt coverage on both exchanges."
   }
 }
