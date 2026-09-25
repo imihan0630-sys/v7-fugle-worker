@@ -451,3 +451,351 @@ PR-021 cash as an active risk allocation, not unused failure.
 PR-022 concentration versus conviction: when top-score weighting helps/hurts.
 PR-023 interaction with 3+3+3 ring-fenced capital.
 PR-024 evidence-readiness / Formal-boundary convergence.
+
+
+---
+
+## PR-016 — Covariance shrinkage for a small, noisy Top6 universe
+
+### Why sample covariance is still fragile here
+Our portfolio has at most six names, so this is not a “large p” institutional problem. But 20-60 daily observations are still a small sample when:
+- names are highly correlated,
+- volatility regimes change,
+- one or two extreme days dominate,
+- some symbols have incomplete histories.
+
+A matrix can be invertible and still be poorly conditioned.
+
+### Evidence
+Ledoit & Wolf (2004) show that shrinking a noisy sample covariance toward a structured target can improve conditioning and estimation accuracy.
+
+Source:
+- Ledoit & Wolf, Journal of Multivariate Analysis 88 (2004), 365-411.
+- DOI: 10.1016/S0047-259X(03)00096-4
+- https://www.ledoit.net/Well-conditioned2004.pdf
+
+### Frozen research hierarchy
+For Top6 risk diagnostics:
+1. pairwise sample correlation as the transparent baseline;
+2. sample covariance;
+3. Ledoit-Wolf-style shrinkage covariance as the first robust alternative;
+4. no optimizer until estimator stability is demonstrated.
+
+Do not tune shrinkage strength against future returns.
+
+### Missing-data rule
+Insufficient synchronized history => UNKNOWN, not zero covariance/correlation.
+
+### Small-p simplification
+For one or two live positions, pairwise risk diagnostics may be more interpretable than invoking a full covariance model.
+
+Status: SHRINKAGE APPROVED FOR SHADOW RISK ESTIMATION; NOT FORMAL SIZING.
+
+---
+
+## PR-017 — Hierarchical clustering is more useful first as a diagnostic than as an allocator
+
+### Positive evidence
+Hierarchical Risk Parity (HRP) was proposed to reduce instability/concentration problems associated with quadratic optimizers and does not require covariance-matrix inversion.
+
+Source:
+- López de Prado (2016), Journal of Portfolio Management 42(4), 59-69.
+- DOI: 10.3905/jpm.2016.42.4.059
+- https://papers.ssrn.com/sol3/abstract_id=2708678
+
+### Counter-evidence
+Out-of-sample studies do not show HRP universally dominates other allocation methods. A 2023 Brazilian-market comparison found HRP generally did not produce the best performance across methods, although it was competitive on some measures.
+
+Source:
+- Reis et al. (2023), Brazilian Review of Finance 21(4), 81-103.
+- DOI: 10.12660/rbfin.v21n4.2023.89848
+
+### System conclusion
+Use clustering first to answer:
+“Are these nominally different stocks actually one risk cluster?”
+
+Do **not** jump to HRP weights.
+
+### Stability protocol
+Candidate diagnostic:
+- correlation distance `sqrt((1-rho)/2)`;
+- fixed linkage method before outcomes;
+- compare 20d/60d/120d when enough history exists;
+- bootstrap/co-assignment stability where feasible;
+- compare raw-return clusters with market-residual clusters later.
+
+Unstable membership => CLUSTER_UNSTABLE, not a permanent sector identity.
+
+Status: CLUSTERING = DIAGNOSTIC LAYER FIRST.
+
+---
+
+## PR-018 — Separate capital-name count from independent-risk count
+
+Six holdings do not necessarily mean six independent bets.
+
+### Simple capital concentration
+For long-only capital weights:
+`effectiveCapitalNames = 1 / sum(w_i^2)`
+
+Examples:
+- six equal weights => 6;
+- one dominant position => approaches 1.
+
+This is transparent but ignores correlation.
+
+### Covariance-spectrum concentration
+Candidate participation-ratio diagnostic:
+`effectiveRiskDimension = (sum(lambda_i))^2 / sum(lambda_i^2)`
+
+where lambda are non-negative covariance/correlation eigenvalues.
+
+This asks whether portfolio variation is spread across several independent directions or dominated by one common mode.
+
+### Effective Number of Bets naming guard
+Meucci's “Effective Number of Bets” is based on a specific diversification distribution over uncorrelated bets and entropy.
+
+Source:
+- Meucci (2009/2010), Managing Diversification.
+- https://papers.ssrn.com/sol3/Delivery.cfm/SSRN_ID1683640_code403805.pdf?abstractid=1358533&mirid=1
+
+Do not call the simple Herfindahl or eigenvalue participation ratio “Meucci ENB”.
+
+### Kill rule
+If the sophisticated risk-dimension metric is unstable while effectiveCapitalNames and cluster share already explain the same issue, keep the simpler metric.
+
+Status: TWO-LAYER CONCENTRATION MEASUREMENT FROZEN.
+
+---
+
+## PR-019 — Expected Shortfall is conceptually better for tails, but short windows make it statistically weak
+
+### Why ES matters
+Expected Shortfall estimates the average loss beyond a chosen tail quantile, so it captures loss severity that VaR can ignore.
+
+Evidence:
+- Acerbi & Tasche (2002), Expected Shortfall: A Natural Coherent Alternative to Value at Risk.
+- DOI: 10.1111/1468-0300.00091
+
+### Small-sample problem
+At a 95% tail:
+- 20 daily observations -> about 1 tail observation;
+- 60 -> about 3;
+- 252 -> about 12-13.
+
+Therefore 20d/60d historical ES is too noisy to act as a sizing gate.
+
+### Research hierarchy
+For our system:
+1. planned-stop heat;
+2. deterministic gap/limit stress scenarios;
+3. historical worst-day / worst-k-day diagnostics;
+4. only then long-window historical ES with uncertainty.
+
+If ES is eventually reported:
+- use point-in-time portfolio weights;
+- require enough observations;
+- show bootstrap/estimation uncertainty;
+- never present ES as a guaranteed maximum loss.
+
+Status: ES DESCRIPTIVE ONLY; SHORT-WINDOW ES REJECTED.
+
+---
+
+## PR-020 — Portfolio heat is a high-value bridge between trading rules and portfolio risk
+
+### Definitions
+For verified live positions:
+`plannedRiskNTD_i = actualPositionValue_i * abs(entry_i-stop_i)/entry_i`
+
+`plannedPortfolioHeat = sum(plannedRiskNTD_i) / totalCapital`
+
+For an unfilled plan, label the same calculation:
+`projectedHeat`, not actual heat.
+
+### Extensions
+Track:
+- total planned heat;
+- cluster planned heat;
+- projected heat after FIRST;
+- projected heat after ADD;
+- stressed heat at 1.5x and 2.0x planned stop loss;
+- realized loss versus planned heat after exits.
+
+### Critical caveat
+Portfolio heat assumes stop-distance accounting, not guaranteed execution. Gaps, price limits and thin liquidity can exceed it.
+
+### No threshold yet
+Do not invent “safe = 6%” or any similar number from trading folklore. Thresholds require strategy-specific outcome evidence.
+
+Status: HIGH-PRIORITY SHADOW METRIC.
+
+---
+
+## PR-021 — Cash can be protection, delay, or a broken-opportunity symptom
+
+The system currently worries about idle capital because BUY triggers can be rare. That does **not** mean “more invested is always better.”
+
+### Distinguish cash states
+Research labels:
+- STRUCTURAL_RESERVE — cash left by the formal deploy-ratio design;
+- NO_ELIGIBLE_OPPORTUNITY — no qualified plan exists;
+- PENDING_ENTRY — plan exists but entry conditions not met;
+- POST_REDUCTION — capital freed by risk reduction;
+- DATA_OR_SIGNAL_BLOCKED — cash exists because required data/signals failed;
+- UNKNOWN.
+
+### Why this matters
+The same 60% cash can mean:
+- prudent risk avoidance during correlated stress;
+- normal waiting for a pullback;
+- overly strict BUY logic missing valid opportunities;
+- an infrastructure/data defect.
+
+These must not be scored the same.
+
+### Counterfactual outcome
+For each cash state test:
+- drawdown avoided;
+- missed D1/D3/D5 return;
+- missed MFE;
+- later deployability;
+- portfolio volatility reduction.
+
+Cash utilization is an outcome dimension, not a stand-alone objective.
+
+Status: CASH-STATE ATTRIBUTION FROZEN.
+
+---
+
+## PR-022 — PriorityScore is a ranking signal, not yet a calibrated sizing conviction
+
+Current allocation is influenced by Formal `priorityScore`. This creates an implicit assumption:
+“higher score deserves more capital.”
+
+That assumption needs separate evidence.
+
+### External evidence is mixed
+Taiwan mutual-fund research finds some relationship between concentration, manager skill and future performance, but support for superior risk-adjusted performance is partial.
+
+Source:
+- Hung, Lien & Chien (2020), Review of Financial Economics 38, 423-451.
+- DOI: 10.1002/rfe.1086
+
+Other fund research finds conviction can have an inverted-U relationship with future performance: excessive conviction can coincide with lower returns and higher risk.
+
+Source:
+- Jin et al. (2020), International Review of Financial Analysis 71, 101550.
+- DOI: 10.1016/j.irfa.2020.101550
+
+These manager studies do not validate our algorithmic score.
+
+### Required internal test before stronger score-weighting claims
+Within each scan date:
+- rank selected names by priorityScore;
+- test monotonic D1/D3/D5 return, MFE, MAE and stop-hit rates;
+- cluster inference by independent date;
+- evaluate incremental relation after sector/regime/liquidity;
+- use holdout dates.
+
+If score rank is not stably monotonic with forward opportunity/risk, it should not be treated as calibrated expected return.
+
+Status: SCORE-CONVICTION CALIBRATION REQUIRED.
+
+---
+
+## PR-023 — 3+3+3 ring-fencing controls capital accounting, not consolidated economic risk
+
+Current architecture separates:
+- FORMAL_GENERAL;
+- FORMAL_THOUSAND;
+- HYBRID_THOUSAND_SHADOW.
+
+The Shadow pool must remain separate from actual-live risk.
+
+### Two mandatory portfolio views
+1. **Within-pool risk**
+   - deployed capital,
+   - planned heat,
+   - cluster exposure,
+   - covariance/risk contribution.
+
+2. **Consolidated live-account risk**
+   - combine all genuinely live Formal positions across pools;
+   - re-estimate common clusters and co-movement.
+
+### Hidden issue
+A thousand-dollar stock and a sub-thousand stock cannot be the same exact price-tier slot on the same date, but they can still be:
+- the same AI-server theme;
+- same PCB/ABF cycle;
+- same export/currency exposure;
+- same customer demand shock.
+
+Therefore per-pool 35% position caps do not guarantee diversified total-account risk.
+
+### Shadow firewall
+HYBRID_THOUSAND_SHADOW is measured separately and may be compared counterfactually, but must not inflate actual deployed-capital or actual heat.
+
+Status: WITHIN-POOL + CONSOLIDATED-LIVE RISK VIEWS FROZEN.
+
+---
+
+## PR-024 — Portfolio-risk concept lane convergence
+
+### Ready now for descriptive Shadow calculation using existing/near-existing data
+Tier A:
+- deployed capital / cash;
+- actual position value;
+- plannedRiskNTD / projectedRiskNTD;
+- planned/projected portfolio heat;
+- effectiveCapitalNames;
+- pairwise 20d/60d correlations;
+- cluster capital share;
+- cross-pool consolidated live view;
+- cash-state reason.
+
+Tier B: requires implementation and adequate history
+- Ledoit-Wolf shrinkage covariance;
+- component/marginal risk contribution;
+- cluster stability;
+- market-residual correlation;
+- effectiveRiskDimension;
+- downside/joint-stop diagnostics.
+
+Tier C: not ready for Formal use
+- historical ES from short windows;
+- HRP allocation;
+- equal-risk-contribution allocator;
+- minimum-variance / maximum-Sharpe optimizers;
+- hard portfolio-heat threshold;
+- score-based concentration changes.
+
+### Evidence gate
+Any sizing/allocation change requires:
+- independent-date evidence;
+- transaction-cost/slippage inclusion;
+- current allocation as control;
+- no post-hoc parameter sweep;
+- holdout validation;
+- no deterioration in stop-loss / drawdown behavior hidden by average returns.
+
+### Lane state
+PORTFOLIO_RISK concept learning = CONCEPT_COMPLETE / EVIDENCE_PENDING.
+
+Formal Core remains LOCKED.
+No live capital, entry, ADD, REDUCE, SELL, stop, monitor or push logic changed.
+
+## Exact next continuation after PR-024
+
+Open a new durable lane:
+**Trading Frictions, Turnover & Rebalancing**
+
+First questions:
+- explicit Taiwan stock taxes/commissions versus implicit spread/slippage;
+- round-trip break-even hurdle;
+- turnover drag;
+- FIRST/ADD/REDUCE/RE-ADD friction;
+- no-trade / hysteresis concepts;
+- tax asymmetry for same-day versus non-day-trade stock sales;
+- high-price and odd-lot minimum-fee effects;
+- when a theoretically better allocation is not worth trading into.
