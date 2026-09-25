@@ -1604,3 +1604,236 @@ MS-041: Study price discovery: which price/flow states incorporate information v
 MS-042: Study cross-sectional liquidity risk — whether liquidity deterioration is stock-specific, sector-wide or market-wide.
 MS-043: Study market-wide liquidity/commonality and how it should interact with Regime.
 MS-044: Then move to the next genuinely under-studied knowledge lane once microstructure concepts converge.
+
+
+---
+
+## MS-039 — Collector proposal document completed
+
+A separate durable proposal now exists:
+- `MICROSTRUCTURE_COLLECTOR_PROPOSAL.md`
+
+It defines:
+- isolation contract,
+- quota checks,
+- P0 1–2 symbol pilot,
+- 1s/5s/15s fidelity comparison,
+- bucket schema,
+- storage measurement,
+- no Formal dependency,
+- Class-B deployment boundary.
+
+No collector code or deployment was performed.
+
+Status: PROPOSAL COMPLETE, NOT APPROVED FOR DEPLOYMENT.
+
+---
+
+## MS-040 — Opening/closing call auctions are a different microstructure regime
+
+### Current Taiwan mechanism
+TWSE currently uses:
+- opening call auction,
+- continuous trading from 09:00–13:25,
+- closing call auction from 13:25–13:30,
+- call auction after an intraday volatility interruption.
+
+During call-auction sessions, order aggregation and price formation differ from continuous matching. Market/IOC/FOK behavior also differs; TWSE notes that market orders are not accepted in call-auction sessions.
+
+Source:
+- https://www.twse.com.tw/en/products/system/trading.html
+
+### Literature
+Auction literature shows that call auctions can improve price discovery/execution quality in some markets, but effectiveness depends on liquidity and institutional design.
+
+Examples:
+- Madhavan & Panchapagesan, Price Discovery in Auction Markets.
+- Pagano & Schwartz, A Closing Call's Impact on Market Quality.
+- Later cross-market work finds benefits can be stronger for liquid stocks and weaker for low-volume names.
+
+### Consequence for research
+Do not place opening/closing auction observations in the same baseline as ordinary continuous-market buckets.
+
+Separate:
+- PRE_OPEN / OPEN_CALL
+- EARLY_CONTINUOUS
+- NORMAL_CONTINUOUS
+- VI_CALL
+- PRE_CLOSE / CLOSE_CALL
+
+### Important interpretation
+An opening imbalance is partly the result of overnight information accumulation and batch clearing. A 09:00 auction price jump is not the same mechanism as a 10:30 aggressive flow-driven move.
+
+Similarly, closing auction price/volume can be driven by benchmark/index/fund execution needs and batch matching.
+
+Status: AUCTION REGIME SEPARATION MANDATORY.
+
+---
+
+## MS-041 — Price discovery: trades can contain information, but price impact arrives with lag
+
+### Evidence
+Hasbrouck (1991) models trades and quote revisions jointly and interprets the ultimate price impact of a trade innovation as its information effect.
+
+Empirical findings in that work include:
+- full price impact can arrive with a lag,
+- impact rises concavely with trade size,
+- large trades can widen spread,
+- trades during wide spreads can have larger price impact.
+
+Source:
+- Journal of Finance 46(1), 179–207.
+- https://doi.org/10.1111/j.1540-6261.1991.tb03749.x
+
+### Implication
+Immediate reaction is not the whole information effect.
+
+For our research:
+- pressure at t0 should be evaluated at multiple post-event horizons;
+- a price move that continues after flow subsides differs from one that fully reverses;
+- spread widening can indicate information risk, but is not itself directional.
+
+### Positive hypothesis
+Pressure that produces persistent midprice revision after liquidity normalizes may be more information-like than pressure producing only transient displacement.
+
+### Counter-hypothesis
+Persistent price movement can come from public news/market/sector factors rather than private information in the stock's order flow.
+
+Control:
+- market return,
+- sector return,
+- market/sector liquidity state,
+- event/news flags where available.
+
+Status: PRICE-DISCOVERY HORIZON MODEL ADOPTED FOR RESEARCH.
+
+---
+
+## MS-042 — Individual-stock liquidity can deteriorate because the whole market/sector is deteriorating
+
+### Evidence
+Chordia, Roll & Subrahmanyam (2000) document commonality in liquidity: individual-stock spread/depth/effective-spread changes co-move with market- and industry-wide liquidity even after controlling for stock-specific determinants.
+
+Source:
+- Journal of Financial Economics 56(1), 3–28.
+- https://doi.org/10.1016/S0304-405X(99)00057-4
+
+Hasbrouck & Seppi (2001) also find common factors in returns, order flows and liquidity.
+
+Source:
+- Journal of Financial Economics 59(3), 383–411.
+- https://doi.org/10.1016/S0304-405X(00)00091-X
+
+### Taiwan-specific evidence
+Taiwan OTC research documents both market-wide and industry-wide liquidity commonality in daily and intraday data, with effects differing across intraday intervals.
+
+Source:
+- Lee et al. (2006), International Review of Financial Analysis 15, 306–327.
+
+A later TWSE study links liquidity commonality positively with institutional ownership and finds the relation can be stronger during market declines.
+
+Source:
+- Pacific-Basin Finance Journal 29 (2014), 59–85.
+- https://doi.org/10.1016/j.pacfin.2014.03.008
+
+### Consequence
+A stock-specific spread widening is ambiguous.
+
+It can be:
+1. idiosyncratic liquidity stress,
+2. sector-wide stress,
+3. market-wide stress.
+
+Therefore future microstructure normalization should include:
+- stockSpreadState
+- sectorLiquidityState
+- marketLiquidityState
+- residualLiquidityStress = stock state after controlling for common market/sector state
+
+Status: RELATIVE LIQUIDITY STATE IS A HIGH-VALUE CANDIDATE.
+
+---
+
+## MS-043 — Liquidity Regime should be a separate layer from Price Regime
+
+Our existing Regime thinking is mostly price/trend/volatility oriented.
+
+Microstructure literature implies another dimension:
+
+### Price Regime
+- trend / range
+- bull / bear
+- high / low volatility
+
+### Liquidity Regime
+- normal / abundant
+- stressed / widening spread
+- thin depth
+- market-wide withdrawal
+- sector-specific withdrawal
+- recovery/resiliency
+
+These are related but not identical.
+
+Example:
+- a rising market can have deteriorating liquidity;
+- a falling market can be liquid with orderly repricing;
+- the same breakout geometry may behave differently under normal vs stressed market-wide liquidity.
+
+### Proposed research labels
+No thresholds yet:
+- LIQ_NORMAL
+- LIQ_STOCK_SPECIFIC_STRESS
+- LIQ_SECTOR_STRESS
+- LIQ_MARKET_STRESS
+- LIQ_RECOVERY
+- LIQ_UNKNOWN
+
+### Required controls
+Use same-slot normalization before cross-stock aggregation.
+Price-tier/tick normalization remains mandatory.
+Do not compute market liquidity from a convenience subset that changes day by day.
+
+### Integration hypothesis
+Microstructure should interact with the existing Regime rather than become another additive point score.
+
+Potential structure:
+`PriceRegime x LiquidityRegime x StockMicrostructureState`
+
+This can test whether a signal's quality is conditional on systemic liquidity.
+
+Status: NEW CROSS-LANE HYPOTHESIS; SHADOW ONLY.
+
+---
+
+## Seventh synthesis — microstructure concept lane has converged
+
+At this point the major concepts are covered:
+- spread / depth,
+- OFI / pressure,
+- queue imbalance,
+- replenishment / absorption,
+- liquidity vacuum,
+- trade-sign uncertainty,
+- markout/slippage,
+- tick/price-limit/VI controls,
+- hidden liquidity,
+- queue/fill probability,
+- transient/persistent impact,
+- auctions,
+- price discovery,
+- market/sector liquidity commonality,
+- liquidity regime.
+
+The remaining work is primarily:
+1. prospective data collection / evidence,
+2. validation against current features,
+3. only then possible engineering or Formal proposals.
+
+Continuing to invent additional microstructure indicators now would raise Factor-Zoo risk.
+
+## Exact next continuation after MS-043
+
+MS-044: Freeze microstructure concept-learning lane as CONCEPT_COMPLETE / EVIDENCE_PENDING.
+MS-045: Open the next genuinely under-studied knowledge lane: Market Breadth + Sector Rotation + Leadership.
+MS-046+: Learn breadth thrusts, advance/decline structure, new-high/new-low structure, participation divergence, sector-relative momentum, leadership breadth and rotation states with positive/negative evidence and Taiwan implementation constraints.
