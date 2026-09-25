@@ -86,7 +86,8 @@ const bindings = settings?.bindings || [];
 const pvBinding = findBinding(bindings, "PV_SHADOW_ENABLED");
 const pvValue = plainTextBindingValue(pvBinding);
 const pvEnabled = String(pvValue || "").toLowerCase() === "true";
-assert.equal(pvEnabled, true, "PV_SHADOW_ENABLED is not true in deployed Worker settings");
+const qaFailures = [];
+if (!pvEnabled) qaFailures.push("PV_SHADOW_ENABLED_NOT_TRUE");
 
 const d1Binding = findBinding(bindings, "V7_DB");
 const databaseId = d1Binding?.id || d1Binding?.database_id;
@@ -201,7 +202,7 @@ const liveFormalFingerprint = hash({ tradeDate: liveFormal.tradeDate || null, re
 
 const pvScan = scan?.pvShadow || null;
 const afterMarketWindow = taipeiTime >= "23:45";
-if (afterMarketWindow) {
+if (afterMarketWindow && pvEnabled) {
   assert.equal(scan.scanDate, taipeiDate, "23:35 after-market scan is not from today");
   assert.equal(pvScan?.enabled, true, "After-market PV Shadow did not run enabled");
   assert.equal(pvScan?.decisionImpact, false);
@@ -227,6 +228,8 @@ const report = {
     version: runtime.version,
     activeContentSha256: hash(activeContent),
     pvShadowEnabled: pvEnabled,
+    pvBindingConfigured: Boolean(pvBinding),
+    pvBindingObservedValue: pvValue === null ? "MISSING" : pvValue,
     pvBindingType: pvBinding?.type || null,
     d1BindingPresent: Boolean(databaseId)
   },
@@ -282,9 +285,12 @@ const report = {
     latest: cron.latest || cron.latestRun || null,
     currentAfterMarketScanDate: scan.scanDate || null,
     currentAfterMarketPvPresent: Boolean(pvScan)
-  }
+  },
+  qaPass: qaFailures.length === 0,
+  qaFailures
 };
 
 await mkdir("artifacts", { recursive: true });
 await writeFile("artifacts/pv-shadow-readonly-qa.json", JSON.stringify(report, null, 2));
 console.log(JSON.stringify(report, null, 2));
+if (qaFailures.length) process.exitCode = 1;
