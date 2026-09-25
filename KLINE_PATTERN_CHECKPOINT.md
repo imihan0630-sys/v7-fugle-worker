@@ -40,6 +40,7 @@ DL-002 — Pattern Maturity / Multi-stage K-line Structure
 - DL-002T false-break / Spring / Upthrust structural events
 - DL-002U multi-timeframe weekly/daily/15m context
 - DL-002V gap / Three-Gap / Island-Reversal research
+- DL-002W conditional price-volume / effort-vs-result research
 
 ## Key findings to retain
 1. The system already uses substantial daily K-line structure; the real missing layer is multi-stage topology/lifecycle, not “K-lines are absent.”
@@ -66,20 +67,16 @@ DL-002 — Pattern Maturity / Multi-stage K-line Structure
 - EXECUTION_COVERAGE: missing recorder rows cannot be interpreted as NO-BUY without complete date coverage.
 
 ## Exact next continuation point
-1. Deep-dive price-volume structure: accumulation/distribution, volume dry-up, breakout volume, effort-vs-result, and redundancy with current volume fields.
-2. Research Pennant / Ascending Triangle / Falling Wedge / Rising Wedge as topology subclasses; avoid new scores if latent geometry already covers them.
-3. Define Pattern Confidence without outcome-tuned weights; prefer transparent component vector and stability/ambiguity flags.
-4. Specify detector implementation order: swing engine -> structural levels -> VCP/W/Platform -> Cup -> Flag/Triangle -> multi-candle patterns after OPEN data readiness.
-5. Design isolated Pattern Research cache schema and point-in-time fetch/replay tests as Class A proposal; do not touch Formal cache.
-6. Implement synthetic/adversarial detector tests before real-return backtesting if/when research code is built.
-7. Link pattern diagnostics prospectively to existing Shadow Candidate Archive and execution recorder once data coverage permits.
-8. Reuse R01 and existing D1/D3/D5/D10/MFE/MAE outcomes; do not create R09 until definitions/data/redundancy work is frozen.
-9. Continue external evidence search for genuinely independent pattern information and counter-evidence, not more pattern-name collection.
+1. Research Pennant / Ascending Triangle / Descending Triangle / Falling Wedge / Rising Wedge as topology subclasses; do not create new independent scores if DL-002N latent geometry already represents them.
+2. Define Pattern Confidence / Ambiguity without outcome-tuned weights; prefer component vectors, scale stability, pivot clarity and data-quality flags over one optimized score.
+3. Deep-dive pattern failure timing: immediate rejection vs delayed failure vs successful retest, reusing R01 where possible.
+4. Research weekly/daily nested-pattern relationships and whether weekly structural resistance explains daily breakout failures after controlling priorHigh60/MA60.
+5. Specify detector implementation order: swing engine -> structural levels -> VCP/W/Platform -> Cup -> Flag/Triangle -> multi-candle patterns after OPEN/adjustment readiness.
+6. Design the isolated Pattern Research cache schema and replay tests as a Class A research-only proposal; do not mutate shared Formal cache.
+7. Implement synthetic/adversarial detector tests before return backtesting if research code is built.
+8. Link pattern diagnostics prospectively to existing Shadow Candidate Archive and execution recorder only when date coverage is complete.
+9. Reuse R01 and existing D1/D3/D5/D10/MFE/MAE outcomes; do not create R09 until definitions/data/redundancy work is frozen.
+10. Continue external evidence search for genuinely independent pattern information and counter-evidence; avoid collecting more names without mechanism.
 
-## Durable files
-- `KLINE_PATTERN_CHECKPOINT.md` — this cursor.
-- `KLINE_PATTERN_RESEARCH.md` — detailed DL-002 research.
-- `DEEP_LEARNING_CHECKPOINT.md` — broader deep-learning program.
-- `RESEARCH_CHECKPOINT.md` — canonical Formal research cursor.
-- `RESEARCH_WORKLIST.md` — frozen research infrastructure / R01-R08.
-- `RESEARCH_ENGINEERING_GOVERNANCE.md` — Class A/B/C boundaries.
+## Latest durable research commit
+- `e32059b7d9faebf16b90bb5768e0552f88064bdc` — DL-002W price-volume structure.
