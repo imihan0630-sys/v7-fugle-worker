@@ -2293,3 +2293,87 @@ Records with:
 remain valid for schema/source testing but are NOT eligible for point-in-time outcome inference.
 
 Status: REGISTRY SAMPLE BUILD AUTHORIZED AS RESEARCH ARTIFACT.
+
+
+---
+
+## CA-065 — Event versioning is mandatory for point-in-time corporate-action replay
+
+Real examples show that the action itself may be known early while the final exchange schedule is revised later.
+
+### 3593
+MOPS-mirror timeline shows:
+- earlier exchange-plan announcement in November 2025;
+- later schedule changes;
+- final correction published 2025-12-09 18:39:32 for the schedule leading to 2025-12-22 new-share trading.
+
+A historical replay before the final correction must not use the later final schedule.
+
+### 8103
+Timeline:
+- cash-reduction decision known by 2025-05-08;
+- initial exchange plan published in August;
+- final revised schedule leading to 2025-12-08 new-share trading published 2025-10-20.
+
+### 8422
+The 10-to-1 par-value exchange plan specifying 2025-11-17 new-share trading was publicly announced on 2025-10-16.
+
+### Required fields
+- eventVersion;
+- firstKnownAt;
+- finalScheduleKnownAt;
+- supersedes[];
+- effectiveDate valid for that version;
+- sourceCapturedAt/source hash.
+
+### Rule
+Historical replay at time T may only use the latest event version known by T.
+
+Do not collapse an event to its final version before replay.
+
+Status: EVENT-VERSION VINTAGE MODEL CONFIRMED BY REAL SCHEDULE REVISIONS.
+
+---
+
+## CA-066 — Registry sample v0.1 upgraded with version provenance
+
+Research artifact:
+research/corporate_action_registry_sample_v0_1.json
+
+Current sample contains:
+- 2412 cash dividend;
+- 8454 stock dividend;
+- 3593 loss-offset reduction;
+- 8103 cash-refund reduction;
+- 8422 par-value change.
+
+The sample now carries:
+- eventVersion;
+- supersedes;
+- firstKnownAt;
+- finalScheduleKnownAt;
+- separate reference semantics;
+- mode-specific factors;
+- volumeTransformMode;
+- source/factor/first-known quality;
+- unknown reasons.
+
+### Important quality state
+This remains a schema/source-validation artifact, NOT an inference-ready all-market corporate-action archive.
+
+Records sourced through timestamped MOPS mirrors remain explicitly identified as such until preferred primary MOPS archival records are preserved.
+
+### Supersession note
+For 2412, the earlier 134.5 technical bridge is superseded.
+Research technical/total-return continuity now uses economicAdjustmentReference 134.3.
+The exchange/trading-reference field remains separately unresolved where primary exchange evidence is not archived.
+
+Status: REGISTRY SAMPLE V0.1 BUILT / PARTIAL POINT-IN-TIME PROVENANCE.
+
+## Exact next continuation after CA-066
+
+CA-067: convert the registry schema into deterministic validation rules and quality states.
+CA-068: add no-action control records and incomplete-event negative controls.
+CA-069: define how the 60-day history window queries all effective event versions without future leakage.
+CA-070: use the registry sample to produce the first offline Shadow feature-delta dataset; no return-outcome optimization.
+CA-071: only after registry/feature-delta validation, begin Price-Index vs Total-Return RS ranking comparison.
