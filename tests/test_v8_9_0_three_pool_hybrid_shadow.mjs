@@ -6,7 +6,7 @@ const src=fs.readFileSync(path,"utf8");
 
 {
   const version=src.match(/const VERSION = "(\d+)\.(\d+)\.(\d+)[^"]*";/)?.slice(1,4).map(Number);
-  assert.ok(version && version[0]===8 && version[1]===9 && version[2]>=0,"V8.9.0+ runtime required");
+  assert.ok(version && version[0]===8 && (version[1]>9 || (version[1]===9 && version[2]>=0)),"V8.9.0+ runtime required");
 }
 assert.match(src,/const STRATEGY_POOL_CAPITAL = 200000;/);
 assert.match(src,/const HYBRID_MAX_STOCKS = 3;/);
