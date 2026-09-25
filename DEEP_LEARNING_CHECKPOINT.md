@@ -349,3 +349,16 @@ No Formal Core change is approved or implied.
   - preferred architecture is now five latent layers: Participation, Price Response, Acceptance Lifecycle, Persistence, Constraint/Guard.
 - The research lane is intentionally converging toward a compact conditional state model instead of accumulating indicators.
 - Formal Core unchanged / LOCKED.
+
+## Price-Volume lane update — PV-021 through PV-027
+- Current cursor: PV-001 through PV-027 complete; continue from PV-028.
+- New durable conclusions:
+  - intraday time-block concentration must use as-of historical block baselines; live snapshots must never use eventual full-day volume as denominator;
+  - the practitioner dry-up -> expansion -> retest contraction -> reacceleration sequence is a falsifiable hypothesis, not a proven bullish law;
+  - PV features must demonstrate incremental value after Formal A/B, Pattern Maturity, Residual RS, sector, institution, overheat, liquidity, Information Discreteness and regime controls;
+  - prospective governance now has explicit pilot/evidence/milestone gates; no continuous outcome-driven threshold tuning;
+  - a minimum viable research-only Shadow set is defined: pvDailyRvol20, pvSlotRvol20, pvCumvolPace20, pvResponseState, pvAcceptanceState, pvPersistenceState, pvGuardState plus coverage/provenance, while reusing existing Worker fields;
+  - price-volume usefulness must be tested separately for directional alpha and risk/information-intensity prediction;
+  - stock-specific residual RVOL versus market/sector activity is worth testing as contextual normalization, not another additive score.
+- Minimal PV Shadow logging is now technically/research-governance ready to propose, but no Formal scoring change is approved.
+- Formal Core unchanged / LOCKED.
