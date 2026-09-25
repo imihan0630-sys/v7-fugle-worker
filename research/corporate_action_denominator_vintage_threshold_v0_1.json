@@ -1,0 +1,259 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-09-25 Asia/Taipei",
+  "purpose": "CA-102/CA-103 denominator-vintage anti-leakage fixtures and bounded threshold-sensitivity mechanics. Research-only; no alpha or Formal decision impact.",
+  "decisionImpact": false,
+  "inferenceReady": false,
+  "formalCoreChanged": false,
+  "frozenThresholds": {
+    "source": "PRICE_VOLUME_RESEARCH.md current Formal semantics",
+    "aPullbackLowVolume": "volumeTodayVsPrev5 <= 1.05 OR volumeContraction5to20 <= 0.95",
+    "bBreakoutVolume": "volumeTodayVsPrev5 >= 1.30"
+  },
+  "denominatorSpaces": [
+    "REGISTERED_ISSUED_SHARES",
+    "EXCHANGE_LISTED_OR_TRADABLE_SHARES",
+    "OUTSTANDING_SHARES",
+    "FREE_FLOAT_SHARES",
+    "EPS_WEIGHTED_AVERAGE_SHARES"
+  ],
+  "replayRule": {
+    "admissibleOnlyWhen": [
+      "denominator.knownAt <= replayAsOf",
+      "denominator.effectiveFromSession <= targetSession"
+    ],
+    "truthModes": [
+      "POINT_IN_TIME_KNOWN_TRUTH",
+      "EX_POST_MECHANICS_TRUTH"
+    ],
+    "futureKnownValueBackfill": "PROHIBITED"
+  },
+  "syntheticVintageFixtures": [
+    {
+      "id": "VINTAGE_A_FUTURE_KNOWN_BLOCK",
+      "targetSession": "2025-10-10",
+      "replayAsOf": "2025-09-21T23:59:59+08:00",
+      "versions": [
+        {
+          "valueShares": 100000000,
+          "knownAt": "2025-01-01T00:00:00+08:00",
+          "effectiveFromSession": "2025-01-02"
+        },
+        {
+          "valueShares": 110000000,
+          "knownAt": "2025-09-22T12:00:00+08:00",
+          "effectiveFromSession": "2025-10-09"
+        }
+      ],
+      "expected": "OLD_VERSION_ONLY_OR_UNKNOWN_IF_OLD_COVERAGE_EXPIRES; future-known 110m must not leak backward"
+    },
+    {
+      "id": "VINTAGE_B_KNOWN_BUT_NOT_EFFECTIVE",
+      "targetSession": "2025-09-25",
+      "replayAsOf": "2025-09-25T23:59:59+08:00",
+      "versions": [
+        {
+          "valueShares": 100000000,
+          "knownAt": "2025-01-01T00:00:00+08:00",
+          "effectiveFromSession": "2025-01-02"
+        },
+        {
+          "valueShares": 110000000,
+          "knownAt": "2025-09-22T12:00:00+08:00",
+          "effectiveFromSession": "2025-10-09"
+        }
+      ],
+      "expected": "100000000; knowing a future effective supply change does not switch the denominator early"
+    },
+    {
+      "id": "VINTAGE_C_EFFECTIVE_AND_KNOWN",
+      "targetSession": "2025-10-10",
+      "replayAsOf": "2025-10-10T23:59:59+08:00",
+      "versions": [
+        {
+          "valueShares": 100000000,
+          "knownAt": "2025-01-01T00:00:00+08:00",
+          "effectiveFromSession": "2025-01-02"
+        },
+        {
+          "valueShares": 110000000,
+          "knownAt": "2025-09-22T12:00:00+08:00",
+          "effectiveFromSession": "2025-10-09"
+        }
+      ],
+      "expected": "110000000"
+    },
+    {
+      "id": "VINTAGE_D_LATE_REVISION_NO_RETRO_LEAK",
+      "targetSession": "2025-10-10",
+      "replayAsOf": "2025-10-10T23:59:59+08:00",
+      "versions": [
+        {
+          "version": "v1",
+          "valueShares": 110000000,
+          "knownAt": "2025-09-22T12:00:00+08:00",
+          "effectiveFromSession": "2025-10-09"
+        },
+        {
+          "version": "v2-correction",
+          "valueShares": 109999995,
+          "knownAt": "2025-10-15T12:00:00+08:00",
+          "effectiveFromSession": "2025-10-09",
+          "revisionOf": "v1"
+        }
+      ],
+      "expected": "v1 for point-in-time replay; v2 only for ex-post mechanics audit or replayAsOf >= 2025-10-15"
+    }
+  ],
+  "realEventWitnesses": [
+    {
+      "symbol": "8454",
+      "name": "富邦媒",
+      "action": "STOCK_DIVIDEND_THEN_NEW_SHARES_LISTED",
+      "registeredIssuedShares": {
+        "before": 252357405,
+        "after": 264975275,
+        "registrationApprovalDate": "2025-09-22"
+      },
+      "newSharesListedDate": "2025-10-09",
+      "eventDayMechanics": {
+        "rawVolumeTodayVsPrev5": 0.8253790005614823,
+        "registeredIssuedTurnoverAnalogue": 0.7860752393716327,
+        "aLowVolumeRaw": true,
+        "aLowVolumeNormalized": true,
+        "bBreakoutRaw": false,
+        "bBreakoutNormalized": false,
+        "thresholdDisagreement": false
+      },
+      "provenance": [
+        "research/corporate_action_8454_full_window_v0_1.json",
+        "momo annual report official capital table"
+      ],
+      "note": "Real mechanics witness; exact first-known timestamp is not archived, so ex-post mechanics truth must not be relabeled point-in-time known truth."
+    },
+    {
+      "symbol": "2465",
+      "name": "麗臺科技",
+      "action": "CASH_CAPITAL_INCREASE_PAYMENT_CERTIFICATES",
+      "paymentCertificateListingDate": "2025-11-17",
+      "paymentCertificateShares": 10000000,
+      "registeredCapitalEvidence": {
+        "preRegistrationPaidInCapitalNTD": 839460310,
+        "preRegistrationIssuedShares": 83946031,
+        "officialChangeRegistrationApprovalDate": "2026-01-06",
+        "postRegistrationPaidInCapitalNTD": 939460310,
+        "postRegistrationIssuedShares": 93946031,
+        "finding": "The 93,946,031 registered-share state is not admissible as the 2025-11-17 point-in-time REGISTERED_ISSUED_SHARES denominator."
+      },
+      "listingAnnouncementEvidence": {
+        "originalPublicListedCommonSharesExcludingPrivatePlacement": 58946031,
+        "privatePlacementShares": 25000000,
+        "newPaymentCertificatesListed": 10000000,
+        "derivedPublicTradableSensitivityAfter": 68946031,
+        "announcementReportedCumulativeListedTotal": 93946031,
+        "quality": "PARTIAL_CONFLICT",
+        "note": "Announcement wording mixes original public-listed shares excluding private placement with a cumulative total that numerically includes private-placement shares. Do not coerce this into one VERIFIED exchange-listed denominator."
+      },
+      "officialDailyVolumesShares": {
+        "2025-11-10": 377589,
+        "2025-11-11": 822463,
+        "2025-11-12": 288063,
+        "2025-11-13": 312219,
+        "2025-11-14": 551497,
+        "2025-11-17": 1725754,
+        "2025-11-18": 807250,
+        "2025-11-19": 493084,
+        "2025-11-20": 439593,
+        "2025-11-21": 400052
+      },
+      "fiveSessionMechanics": [
+        {
+          "date": "2025-11-17",
+          "rawRatio": 3.66895835627645,
+          "registeredIssuedRatio": 3.66895835627645,
+          "publicTradableSensitivityRatio": 3.136809035559722,
+          "rawLow": false,
+          "registeredLow": false,
+          "publicTradableLow": false,
+          "rawBreakout": true,
+          "registeredBreakout": true,
+          "publicTradableBreakout": true
+        },
+        {
+          "date": "2025-11-18",
+          "rawRatio": 1.09087955770763,
+          "registeredIssuedRatio": 1.09087955770763,
+          "publicTradableSensitivityRatio": 1.0003297085602088,
+          "rawLow": false,
+          "registeredLow": false,
+          "publicTradableLow": true,
+          "rawBreakout": false,
+          "registeredBreakout": false,
+          "publicTradableBreakout": false
+        },
+        {
+          "date": "2025-11-19",
+          "rawRatio": 0.6690814628704052,
+          "registeredIssuedRatio": 0.6690814628704052,
+          "publicTradableSensitivityRatio": 0.6353882924147654,
+          "rawLow": true,
+          "registeredLow": true,
+          "publicTradableLow": true,
+          "rawBreakout": false,
+          "registeredBreakout": false,
+          "publicTradableBreakout": false
+        },
+        {
+          "date": "2025-11-20",
+          "rawRatio": 0.5650580337723957,
+          "registeredIssuedRatio": 0.5650580337723957,
+          "publicTradableSensitivityRatio": 0.5445453387568848,
+          "rawLow": true,
+          "registeredLow": true,
+          "publicTradableLow": true,
+          "rawBreakout": false,
+          "registeredBreakout": false,
+          "publicTradableBreakout": false
+        },
+        {
+          "date": "2025-11-21",
+          "rawRatio": 0.49792665398446373,
+          "registeredIssuedRatio": 0.49792665398446373,
+          "publicTradableSensitivityRatio": 0.48659393290190844,
+          "rawLow": true,
+          "registeredLow": true,
+          "publicTradableLow": true,
+          "rawBreakout": false,
+          "registeredBreakout": false,
+          "publicTradableBreakout": false
+        }
+      ],
+      "boundedDisagreement": {
+        "registeredIssuedLowVolumeDisagreementCount": 0,
+        "publicTradableSensitivityLowVolumeDisagreementCount": 1,
+        "breakoutDisagreementCount": 0,
+        "sessionCount": 5,
+        "interpretation": "A threshold flip exists only under the tested tradable-supply denominator interpretation, not under the strict then-registered issued-share denominator. This is denominator-semantics evidence, not alpha."
+      },
+      "provenance": [
+        "TWSE official 2465 stock-profile snapshot produced 2025-11-22/27 for daily volumes and then-paid-in capital",
+        "MOPS listing announcement text for 2025-11-17 payment certificates",
+        "MOEA company change-registration list: 2026-01-06 capital 939,460,310"
+      ]
+    }
+  ],
+  "structuralObservation": "For a ratio of current turnover to the previous-5-session average, a one-time denominator step can affect only windows that straddle the step. Once current plus all five prior sessions use the same denominator, denominator scaling cancels algebraically unless another denominator change occurs.",
+  "antiInference": [
+    "No future returns inspected.",
+    "No threshold tuned.",
+    "No pooled alpha claim.",
+    "No production denominator selected.",
+    "No UNKNOWN coerced to 0/false.",
+    "The 2465 93,946,031-on-2025-11-17 scenario is retained only as a falsified/unsafe denominator interpretation, not point-in-time truth."
+  ],
+  "conclusion": {
+    "ca102": "DENOMINATOR_VINTAGE_FIXTURES_FROZEN",
+    "ca103": "SEMANTIC_THRESHOLD_DISAGREEMENT_CONFIRMED_BUT_DENOMINATOR_DEPENDENT",
+    "formalCore": "LOCKED_UNCHANGED"
+  }
+}
