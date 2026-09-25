@@ -930,3 +930,255 @@ LS-031: locate exact TPEx machine-readable endpoints and map fields one-to-one.
 LS-032: establish same-day publication/capture timing constraints relative to 23:35 Formal scan.
 LS-033: define finalized-history backfill protocol with rules-regime metadata.
 LS-034: freeze first empirical hypotheses and matched controls before any outcome read.
+
+
+---
+
+## LS-030 — Official source-schema validation
+
+### TWSE MI_MARGN verified fields
+Official TWSE reports expose, per security:
+- margin purchase: buy, sell, cash redemption, previous balance, current balance, next-business-day quota;
+- margin short: covering/buy, short sale, stock redemption, previous balance, current balance, next-business-day quota;
+- margin/short offset;
+- note / restriction status.
+
+This confirms LS-025's finding that current V8.7.11 normalized evidence persists only a subset.
+
+### TWSE TWT93U verified fields
+Official TWT93U exposes:
+- margin-short previous balance / sale / covering / stock redemption / current balance / next limit;
+- SBL-short previous balance / actual sale / return / adjustment / current balance / next limit;
+- status note.
+
+The report explicitly states:
+`SBL short current balance = prior balance + current sell - current return + adjustment`.
+
+### Revision sensitivity
+TWSE explicitly warns MI_MARGN same-day current balance can be adjusted and later prior-balance should be treated as final.
+
+No adjacent-day stock-level revision magnitude has yet been measured in this lane.
+Therefore:
+- revision RISK = VERIFIED;
+- typical revision SIZE = UNKNOWN.
+
+Status: SOURCE SCHEMA VERIFIED; REVISION MAGNITUDE NOT YET QUANTIFIED.
+
+---
+
+## LS-031 — TPEx parity mapping and machine-readable endpoint boundary
+
+Official TPEx pages provide historical:
+- margin transactions;
+- margin usage / limits;
+- margin-short + SBL-short balances;
+- current restrictions and quota status.
+
+Source pages:
+- https://www.tpex.org.tw/en-us/mainboard/trading/margin-trading/transactions.html
+- https://www.tpex.org.tw/en-us/mainboard/trading/margin-trading/sbl.html
+
+TPEx SBL page states:
+- data history exists since 2006;
+- SBL short balance formula matches prior + sell - return + adjustment;
+- current 30% of prior-30-day average-volume intraday SBL short limit applies from 2025-05-26, subject to exceptions/controls;
+- page is updated approximately 20:30 and 22:30.
+
+### Exact endpoint status
+The public web pages expose HTML/CSV download capability, but this research turn has not verified a stable documented machine-readable JSON endpoint/schema suitable for production code.
+
+Therefore:
+- PUBLIC HISTORICAL DATA AVAILABILITY = VERIFIED;
+- EXACT PROGRAMMATIC ENDPOINT CONTRACT = UNRESOLVED.
+
+Do not invent an API path from historical website implementation.
+
+Status: MARKET PARITY SOURCE EXISTS; ENDPOINT CONTRACT NEEDS OFFLINE VALIDATION.
+
+---
+
+## LS-032 — Same-day availability relative to the 23:35 Formal scan
+
+### TWSE margin
+MI_MARGN:
+- published during the evening after credit institutions finish daily processing;
+- exact completion time varies with volume, transmissions and adjustment work;
+- same-day current balance remains preliminary.
+
+Therefore:
+- do not assume same-day MI_MARGN is available before 23:35;
+- use actual first-success `capturedAt`.
+
+### TWSE TWT93U
+TWSE report notes approximate public updates:
+- ~20:30
+- ~22:30
+with actual timing dependent on end-of-day operations.
+
+TWSE Data E-Shop separately states the TWT93U product file is produced around 23:30.
+
+Implication:
+- 23:35 Formal scan is close enough that source readiness must be observed, not assumed;
+- second public update may ordinarily exist before scan, but exact completeness must be verified.
+
+### TPEx SBL
+TPEx likewise states ~20:30 and ~22:30 updates.
+
+### Decision-time rule
+For any same-day leverage/short feature:
+`sourceObservedBeforeDecision = capturedAt <= decisionAt`
+
+If false or UNKNOWN:
+- feature is UNKNOWN for that decision;
+- later final data may be used only as outcome/research truth, not retroactive input.
+
+Status: 23:35 AVAILABILITY MUST BE OBSERVATION-BASED.
+
+---
+
+## LS-033 — Finalized historical backfill protocol
+
+### Purpose
+Historical backfill can create finalized daily sequences for:
+- rolling leverage/crowding;
+- long-horizon descriptive research;
+- regime studies.
+
+It cannot recreate precise historical first-known timestamps unless archived contemporaneous observations exist.
+
+### Backfill steps
+For every official trading date:
+1. verify date against official market calendar;
+2. fetch TWSE / TPEx margin source for that exact date;
+3. fetch TWSE / TPEx SBL-short source for that exact date;
+4. validate market/date/schema;
+5. normalize units;
+6. retain restriction/note fields;
+7. store source URL/schema version;
+8. mark backfilled daily balance as `HISTORICAL_FINAL_ONLY`;
+9. never set `sourceObservedBeforeDecision=true` from backfill alone.
+
+### Rules-regime metadata
+Attach effective rule state where relevant:
+- short-sale price-rule regime;
+- SBL quota regime;
+- margin-ratio / short-margin regime;
+- continuous-trading regime;
+- source-formula regime changes.
+
+### Unit guard
+Some public reports use trading units while others expose shares.
+Normalize only after field-level unit verification.
+Never multiply by 1,000 by assumption.
+
+Status: FINALIZED-HISTORY BACKFILL PROTOCOL FROZEN.
+
+---
+
+## LS-034 — First pre-registered hypotheses and matched controls
+
+No threshold will be tuned from outcomes before the first test.
+
+### H1 — Long-leverage crowding risk
+Condition concept:
+- high normalized margin level;
+- positive margin flow;
+- strong recent price run;
+- weakening price acceptance.
+
+Hypothesis:
+- higher subsequent MAE / false-breakout / stop-first risk than matched controls.
+
+Counter-hypothesis:
+- rising leverage is simply participating in a genuine persistent trend and has no adverse incremental effect.
+
+Primary target:
+- risk/fragility, not automatic negative return.
+
+---
+
+### H2 — Deleveraging stress candidate
+Condition:
+- high prior normalized margin exposure;
+- adverse price shock;
+- sharp finalized margin-balance reduction / margin-sale flow;
+- elevated volume or liquidity stress.
+
+Hypothesis:
+- higher next-session volatility / downside MAE.
+
+Counter:
+- rapid deleveraging may cleanse weak hands and precede stabilization.
+
+---
+
+### H3 — Actual SBL-short information
+Condition:
+- elevated actual borrowed-stock short-sale flow/balance after normalization.
+
+Hypothesis:
+- weaker D3/D5 returns or higher downside risk after controlling for prior trend, liquidity and sector.
+
+Counter:
+- hedge/arbitrage demand explains the shorting and removes directional relation.
+
+Historical Taiwan evidence motivates this test but does not set effect size.
+
+---
+
+### H4 — Short-squeeze candidate
+Condition:
+- elevated prior normalized SBL-short balance;
+- positive price shock / strong acceptance;
+- SBL return/cover flow rises or short balance falls.
+
+Hypothesis:
+- higher near-term upside MFE and realized volatility.
+
+Counter:
+- short reduction is ordinary hedge unwinding and adds no incremental continuation.
+
+---
+
+### H5 — Two-sided crowding
+Condition:
+- elevated normalized margin-long exposure;
+- elevated short-side exposure.
+
+Hypothesis:
+- higher realized volatility / larger MFE+MAE range due disagreement.
+
+Counter:
+- both balances merely scale with liquid/high-turnover stocks and disappear after liquidity controls.
+
+### Matched controls
+At minimum:
+- same scan date;
+- same market (TWSE/TPEx);
+- liquidity tier;
+- price tier;
+- sector/regime;
+- prior return / ATR;
+- K-line maturity;
+- Price-Volume acceptance;
+- Residual RS;
+- attention/disposition state;
+- shorting-rule regime.
+
+### Inference
+- market date is the independent cluster;
+- separate direction and risk outcomes;
+- no convenience-only executed winners;
+- missing leverage/short evidence = UNKNOWN;
+- costs included if a result is translated into an execution counterfactual.
+
+Status: FIRST HYPOTHESES PRE-REGISTERED BEFORE OUTCOME READ.
+
+## Exact next continuation after LS-034
+
+LS-035: quantify available historical source windows and rule-regime breakpoints.
+LS-036: decide whether finalized-history research can begin offline without production schema changes.
+LS-037: define normalization denominators using existing market cap / volume data and identify free-float limitations.
+LS-038: build redundancy matrix against current institution / Price-Volume / derivatives evidence.
+LS-039: freeze smallest useful Shadow feature set and kill rules.
+LS-040: concept/data-design convergence.
