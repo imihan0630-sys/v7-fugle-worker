@@ -1,0 +1,700 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-09-25",
+  "purpose": "CA-096 real 61-bar mechanics witness for 8454. Research-only; no decision impact.",
+  "decisionImpact": false,
+  "inferenceReady": false,
+  "symbol": "8454",
+  "name": "富邦媒",
+  "targetDate": "2025-10-09",
+  "source": {
+    "contentSpecId": "FCNT000002",
+    "contentSpecName": "近5年價量(交易用)",
+    "barCount": 61,
+    "windowStart": "2025-07-15",
+    "windowEnd": "2025-10-09",
+    "volumeInputUnit": "lots from source; multiplied by 1000 only for share-based Formal arithmetic",
+    "rawSemanticsCrossCheck": "FCNT000002 preserves 2025-08-20 close 272 and 2025-08-21 close 261 across the ex-right reset. FCNT000154 was separately requested with adjusted=false but returned adjusted=true and therefore is prohibited as raw evidence in this artifact."
+  },
+  "events": [
+    {
+      "eventKey": "8454:2025-08-21:STOCK_DIVIDEND_EX_RIGHT",
+      "effectiveDate": "2025-08-21",
+      "technicalPriceFactor": 0.9523809523809523,
+      "volumeTransformMode": "NONE"
+    },
+    {
+      "eventKey": "8454:2025-10-09:NEW_SHARES_LISTED",
+      "effectiveDate": "2025-10-09",
+      "technicalPriceFactor": 1,
+      "volumeTransformMode": "SUPPLY_CHANGE",
+      "newSharesIssued": 12617870
+    }
+  ],
+  "shareBaseDiagnostic": {
+    "statedStockDistributionRatio": 0.05,
+    "derivedPreListingShares": 252357400,
+    "derivedPostListingShares": 264975270,
+    "supplyIncreasePct": 5.000000000000004,
+    "rawVolumeTodayVsPrev5": 0.8253790005614823,
+    "turnoverNormalizedTodayVsPrev5": 0.7860752386299831,
+    "note": "Turnover-normalized ratio is a denominator diagnostic, not a rewrite of raw executed share volume."
+  },
+  "formalFeatureMechanics": {
+    "raw": {
+      "ret20Pct": 4.0322580645161255,
+      "ret60Pct": -0.7692307692307665,
+      "ma20": 246.2,
+      "ma60": 259.6166666666667,
+      "atr20Pct": 2.073643410852713,
+      "priorHigh20": 258.5,
+      "priorLow20": 240,
+      "priorHigh60": 287,
+      "volumeTodayVsPrev5": 0.8253790005614823,
+      "volumeContraction5to20": 1.153497409326425
+    },
+    "technicalContinuity": {
+      "ret20Pct": 4.0322580645161255,
+      "ret60Pct": 4.192307692307695,
+      "ma20": 246.2,
+      "ma60": 253.99285714285716,
+      "atr20Pct": 2.073643410852713,
+      "priorHigh20": 258.5,
+      "priorLow20": 240,
+      "priorHigh60": 273.3333333333333,
+      "volumeTodayVsPrev5": 0.8253790005614823,
+      "volumeContraction5to20": 1.153497409326425
+    }
+  },
+  "observedDeltas": {
+    "ret60Pct": 4.961538461538462,
+    "ma60": -5.623809523809513,
+    "priorHigh60": -13.666666666666686,
+    "ret20Pct": 0,
+    "ma20": 0
+  },
+  "interpretation": [
+    "By 2025-10-09 the 2025-08-21 ex-right reset has left the 20-session price window but remains inside 60-session features.",
+    "Raw and continuity ret20/ma20 are identical in this witness, while ret60/ma60/priorHigh60 still differ.",
+    "The 2025-10-09 new-share listing is a supply event, not a second price-reset event.",
+    "Raw share-volume arithmetic is still numerically defined because share units did not convert; turnover comparability is a separate denominator question.",
+    "No alpha, bullish/bearish, ranking or Formal eligibility inference is permitted from this artifact."
+  ],
+  "unknownReasons": [
+    "EXACT_FIRST_KNOWN_TIMESTAMP_NOT_ARCHIVED",
+    "POINT_IN_TIME_LISTED_SHARE_DENOMINATOR_NOT_ARCHIVED",
+    "EVENT_COVERAGE_COMPLETE_UNKNOWN"
+  ],
+  "bars": [
+    {
+      "date": "2025-07-15",
+      "open": 254.5,
+      "high": 261.5,
+      "low": 254.5,
+      "close": 260,
+      "volumeLots": 306,
+      "tradeValue": 79463496,
+      "refPrice": 255
+    },
+    {
+      "date": "2025-07-16",
+      "open": 258.5,
+      "high": 263,
+      "low": 258.5,
+      "close": 259,
+      "volumeLots": 161,
+      "tradeValue": 42140247,
+      "refPrice": 260
+    },
+    {
+      "date": "2025-07-17",
+      "open": 259,
+      "high": 267,
+      "low": 259,
+      "close": 265.5,
+      "volumeLots": 344,
+      "tradeValue": 91124211,
+      "refPrice": 259
+    },
+    {
+      "date": "2025-07-18",
+      "open": 269.5,
+      "high": 270,
+      "low": 266,
+      "close": 267,
+      "volumeLots": 283,
+      "tradeValue": 75949933,
+      "refPrice": 265.5
+    },
+    {
+      "date": "2025-07-21",
+      "open": 269,
+      "high": 272.5,
+      "low": 266,
+      "close": 266.5,
+      "volumeLots": 220,
+      "tradeValue": 59051401,
+      "refPrice": 267
+    },
+    {
+      "date": "2025-07-22",
+      "open": 266.5,
+      "high": 267,
+      "low": 263.5,
+      "close": 263.5,
+      "volumeLots": 225,
+      "tradeValue": 59714368,
+      "refPrice": 266.5
+    },
+    {
+      "date": "2025-07-23",
+      "open": 268,
+      "high": 283,
+      "low": 267,
+      "close": 279.5,
+      "volumeLots": 1035,
+      "tradeValue": 286860561,
+      "refPrice": 263.5
+    },
+    {
+      "date": "2025-07-24",
+      "open": 280.5,
+      "high": 285.5,
+      "low": 277,
+      "close": 282.5,
+      "volumeLots": 617,
+      "tradeValue": 174324667,
+      "refPrice": 279.5
+    },
+    {
+      "date": "2025-07-25",
+      "open": 280.5,
+      "high": 285,
+      "low": 280.5,
+      "close": 282,
+      "volumeLots": 255,
+      "tradeValue": 72318302,
+      "refPrice": 282.5
+    },
+    {
+      "date": "2025-07-28",
+      "open": 284.5,
+      "high": 287,
+      "low": 280.5,
+      "close": 286,
+      "volumeLots": 294,
+      "tradeValue": 83870701,
+      "refPrice": 282
+    },
+    {
+      "date": "2025-07-29",
+      "open": 286,
+      "high": 287,
+      "low": 280.5,
+      "close": 281,
+      "volumeLots": 208,
+      "tradeValue": 59046621,
+      "refPrice": 286
+    },
+    {
+      "date": "2025-07-30",
+      "open": 281,
+      "high": 286,
+      "low": 279.5,
+      "close": 284.5,
+      "volumeLots": 263,
+      "tradeValue": 74747211,
+      "refPrice": 281
+    },
+    {
+      "date": "2025-07-31",
+      "open": 283,
+      "high": 285,
+      "low": 279,
+      "close": 283,
+      "volumeLots": 281,
+      "tradeValue": 79317610,
+      "refPrice": 284.5
+    },
+    {
+      "date": "2025-08-01",
+      "open": 279,
+      "high": 282,
+      "low": 277,
+      "close": 278,
+      "volumeLots": 194,
+      "tradeValue": 54392301,
+      "refPrice": 283
+    },
+    {
+      "date": "2025-08-04",
+      "open": 276.5,
+      "high": 276.5,
+      "low": 267.5,
+      "close": 272.5,
+      "volumeLots": 353,
+      "tradeValue": 96124341,
+      "refPrice": 278
+    },
+    {
+      "date": "2025-08-05",
+      "open": 272.5,
+      "high": 277.5,
+      "low": 272.5,
+      "close": 275,
+      "volumeLots": 169,
+      "tradeValue": 46465735,
+      "refPrice": 272.5
+    },
+    {
+      "date": "2025-08-06",
+      "open": 272,
+      "high": 273,
+      "low": 264,
+      "close": 265,
+      "volumeLots": 545,
+      "tradeValue": 145386808,
+      "refPrice": 275
+    },
+    {
+      "date": "2025-08-07",
+      "open": 266,
+      "high": 267.5,
+      "low": 264.5,
+      "close": 265.5,
+      "volumeLots": 315,
+      "tradeValue": 83864260,
+      "refPrice": 265
+    },
+    {
+      "date": "2025-08-08",
+      "open": 264,
+      "high": 266,
+      "low": 262.5,
+      "close": 263,
+      "volumeLots": 220,
+      "tradeValue": 58352220,
+      "refPrice": 265.5
+    },
+    {
+      "date": "2025-08-11",
+      "open": 261,
+      "high": 267.5,
+      "low": 259,
+      "close": 267,
+      "volumeLots": 255,
+      "tradeValue": 67819365,
+      "refPrice": 263
+    },
+    {
+      "date": "2025-08-12",
+      "open": 265,
+      "high": 270,
+      "low": 265,
+      "close": 267.5,
+      "volumeLots": 293,
+      "tradeValue": 78891748,
+      "refPrice": 267
+    },
+    {
+      "date": "2025-08-13",
+      "open": 270,
+      "high": 273.5,
+      "low": 269.5,
+      "close": 271.5,
+      "volumeLots": 409,
+      "tradeValue": 111456331,
+      "refPrice": 267.5
+    },
+    {
+      "date": "2025-08-14",
+      "open": 274.5,
+      "high": 275.5,
+      "low": 272.5,
+      "close": 273.5,
+      "volumeLots": 173,
+      "tradeValue": 47661296,
+      "refPrice": 271.5
+    },
+    {
+      "date": "2025-08-15",
+      "open": 275,
+      "high": 275,
+      "low": 269.5,
+      "close": 271,
+      "volumeLots": 239,
+      "tradeValue": 64881586,
+      "refPrice": 273.5
+    },
+    {
+      "date": "2025-08-18",
+      "open": 269.5,
+      "high": 275.5,
+      "low": 269.5,
+      "close": 272.5,
+      "volumeLots": 188,
+      "tradeValue": 51564476,
+      "refPrice": 271
+    },
+    {
+      "date": "2025-08-19",
+      "open": 270.5,
+      "high": 273.5,
+      "low": 268.5,
+      "close": 272,
+      "volumeLots": 187,
+      "tradeValue": 50876648,
+      "refPrice": 272.5
+    },
+    {
+      "date": "2025-08-20",
+      "open": 272,
+      "high": 276,
+      "low": 270.5,
+      "close": 272,
+      "volumeLots": 300,
+      "tradeValue": 82059067,
+      "refPrice": 272
+    },
+    {
+      "date": "2025-08-21",
+      "open": 265,
+      "high": 266,
+      "low": 259,
+      "close": 261,
+      "volumeLots": 301,
+      "tradeValue": 79064615,
+      "refPrice": 272
+    },
+    {
+      "date": "2025-08-22",
+      "open": 260.5,
+      "high": 261.5,
+      "low": 256.5,
+      "close": 256.5,
+      "volumeLots": 314,
+      "tradeValue": 81193784,
+      "refPrice": 261
+    },
+    {
+      "date": "2025-08-25",
+      "open": 257.5,
+      "high": 261,
+      "low": 257.5,
+      "close": 258,
+      "volumeLots": 122,
+      "tradeValue": 31827894,
+      "refPrice": 256.5
+    },
+    {
+      "date": "2025-08-26",
+      "open": 257,
+      "high": 260,
+      "low": 255.5,
+      "close": 259,
+      "volumeLots": 224,
+      "tradeValue": 58044923,
+      "refPrice": 258
+    },
+    {
+      "date": "2025-08-27",
+      "open": 257.5,
+      "high": 259.5,
+      "low": 257.5,
+      "close": 258,
+      "volumeLots": 143,
+      "tradeValue": 37067139,
+      "refPrice": 259
+    },
+    {
+      "date": "2025-08-28",
+      "open": 255.5,
+      "high": 259,
+      "low": 255.5,
+      "close": 258,
+      "volumeLots": 200,
+      "tradeValue": 51592198,
+      "refPrice": 258
+    },
+    {
+      "date": "2025-08-29",
+      "open": 258,
+      "high": 258,
+      "low": 252.5,
+      "close": 253,
+      "volumeLots": 406,
+      "tradeValue": 103288764,
+      "refPrice": 258
+    },
+    {
+      "date": "2025-09-01",
+      "open": 252,
+      "high": 253,
+      "low": 247.5,
+      "close": 248.5,
+      "volumeLots": 253,
+      "tradeValue": 63412351,
+      "refPrice": 253
+    },
+    {
+      "date": "2025-09-02",
+      "open": 249,
+      "high": 253.5,
+      "low": 249,
+      "close": 253.5,
+      "volumeLots": 146,
+      "tradeValue": 36748420,
+      "refPrice": 248.5
+    },
+    {
+      "date": "2025-09-03",
+      "open": 255,
+      "high": 255,
+      "low": 250.5,
+      "close": 252.5,
+      "volumeLots": 89,
+      "tradeValue": 22477502,
+      "refPrice": 253.5
+    },
+    {
+      "date": "2025-09-04",
+      "open": 253,
+      "high": 256,
+      "low": 253,
+      "close": 254,
+      "volumeLots": 93,
+      "tradeValue": 23765795,
+      "refPrice": 252.5
+    },
+    {
+      "date": "2025-09-05",
+      "open": 255.5,
+      "high": 255.5,
+      "low": 252.5,
+      "close": 255,
+      "volumeLots": 79,
+      "tradeValue": 20185552,
+      "refPrice": 254
+    },
+    {
+      "date": "2025-09-08",
+      "open": 254.5,
+      "high": 257,
+      "low": 252,
+      "close": 252,
+      "volumeLots": 242,
+      "tradeValue": 61434005,
+      "refPrice": 255
+    },
+    {
+      "date": "2025-09-09",
+      "open": 252,
+      "high": 252,
+      "low": 247,
+      "close": 248,
+      "volumeLots": 348,
+      "tradeValue": 86717058,
+      "refPrice": 252
+    },
+    {
+      "date": "2025-09-10",
+      "open": 247.5,
+      "high": 248,
+      "low": 243,
+      "close": 245.5,
+      "volumeLots": 399,
+      "tradeValue": 97937135,
+      "refPrice": 248
+    },
+    {
+      "date": "2025-09-11",
+      "open": 245.5,
+      "high": 245.5,
+      "low": 240.5,
+      "close": 241,
+      "volumeLots": 430,
+      "tradeValue": 104487984,
+      "refPrice": 245.5
+    },
+    {
+      "date": "2025-09-12",
+      "open": 241,
+      "high": 244.5,
+      "low": 241,
+      "close": 242.5,
+      "volumeLots": 242,
+      "tradeValue": 58991605,
+      "refPrice": 241
+    },
+    {
+      "date": "2025-09-15",
+      "open": 243,
+      "high": 244,
+      "low": 240,
+      "close": 241,
+      "volumeLots": 225,
+      "tradeValue": 54397658,
+      "refPrice": 242.5
+    },
+    {
+      "date": "2025-09-16",
+      "open": 241,
+      "high": 244,
+      "low": 241,
+      "close": 242,
+      "volumeLots": 173,
+      "tradeValue": 42139853,
+      "refPrice": 241
+    },
+    {
+      "date": "2025-09-17",
+      "open": 242,
+      "high": 246.5,
+      "low": 242,
+      "close": 242,
+      "volumeLots": 289,
+      "tradeValue": 70601191,
+      "refPrice": 242
+    },
+    {
+      "date": "2025-09-18",
+      "open": 243.5,
+      "high": 247.5,
+      "low": 243,
+      "close": 246.5,
+      "volumeLots": 357,
+      "tradeValue": 87745549,
+      "refPrice": 242
+    },
+    {
+      "date": "2025-09-19",
+      "open": 249.5,
+      "high": 250,
+      "low": 246,
+      "close": 248.5,
+      "volumeLots": 361,
+      "tradeValue": 89614682,
+      "refPrice": 246.5
+    },
+    {
+      "date": "2025-09-22",
+      "open": 250,
+      "high": 250,
+      "low": 243.5,
+      "close": 244.5,
+      "volumeLots": 200,
+      "tradeValue": 49107262,
+      "refPrice": 248.5
+    },
+    {
+      "date": "2025-09-23",
+      "open": 244.5,
+      "high": 245.5,
+      "low": 242,
+      "close": 243,
+      "volumeLots": 148,
+      "tradeValue": 36201245,
+      "refPrice": 244.5
+    },
+    {
+      "date": "2025-09-24",
+      "open": 245.5,
+      "high": 255,
+      "low": 243,
+      "close": 251.5,
+      "volumeLots": 490,
+      "tradeValue": 123008895,
+      "refPrice": 243
+    },
+    {
+      "date": "2025-09-25",
+      "open": 251.5,
+      "high": 251.5,
+      "low": 248.5,
+      "close": 249,
+      "volumeLots": 192,
+      "tradeValue": 48051740,
+      "refPrice": 251.5
+    },
+    {
+      "date": "2025-09-26",
+      "open": 250.5,
+      "high": 250.5,
+      "low": 243.5,
+      "close": 246.5,
+      "volumeLots": 198,
+      "tradeValue": 48698033,
+      "refPrice": 249
+    },
+    {
+      "date": "2025-09-30",
+      "open": 246,
+      "high": 246.5,
+      "low": 240.5,
+      "close": 241.5,
+      "volumeLots": 343,
+      "tradeValue": 83162120,
+      "refPrice": 246.5
+    },
+    {
+      "date": "2025-10-01",
+      "open": 241.5,
+      "high": 244,
+      "low": 241.5,
+      "close": 243.5,
+      "volumeLots": 146,
+      "tradeValue": 35676627,
+      "refPrice": 241.5
+    },
+    {
+      "date": "2025-10-02",
+      "open": 245,
+      "high": 245,
+      "low": 241.5,
+      "close": 241.5,
+      "volumeLots": 121,
+      "tradeValue": 29415777,
+      "refPrice": 243.5
+    },
+    {
+      "date": "2025-10-03",
+      "open": 241.5,
+      "high": 243,
+      "low": 240,
+      "close": 241,
+      "volumeLots": 192,
+      "tradeValue": 46535487,
+      "refPrice": 241.5
+    },
+    {
+      "date": "2025-10-07",
+      "open": 241,
+      "high": 257,
+      "low": 241,
+      "close": 256.5,
+      "volumeLots": 1022,
+      "tradeValue": 258171645,
+      "refPrice": 241
+    },
+    {
+      "date": "2025-10-08",
+      "open": 254.5,
+      "high": 258.5,
+      "low": 253.5,
+      "close": 258.5,
+      "volumeLots": 300,
+      "tradeValue": 76914508,
+      "refPrice": 256.5
+    },
+    {
+      "date": "2025-10-09",
+      "open": 259,
+      "high": 259,
+      "low": 254.5,
+      "close": 258,
+      "volumeLots": 294,
+      "tradeValue": 75698478,
+      "refPrice": 258.5
+    }
+  ]
+}
