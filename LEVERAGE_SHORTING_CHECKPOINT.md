@@ -1,9 +1,9 @@
 # Leverage & Shorting Checkpoint
 
 Updated: 2026-09-25 Asia/Taipei
-Current cursor: LS-001 through LS-040 complete.
-Status: CONCEPT_COMPLETE / DATA_BUILD_PENDING.
-Next: LS-041 offline historical-data specification.
+Current cursor: LS-001 through LS-046 complete.
+Status: CONCEPT_COMPLETE / DATA_SPEC_COMPLETE / SOURCE_CONTRACT_PARTIAL.
+Next: LS-047 parser validation after official TPEx margin artifact/endpoint is available.
 
 ## Durable conclusions
 
@@ -53,3 +53,22 @@ LS-041: prepare offline historical-data specification and exact TWSE/TPEx field 
 LS-042: validate a small multi-date sample before large backfill.
 LS-043: only after schema validation, collect independent-date evidence.
 In parallel, identify the next genuinely under-studied concept lane rather than invent more leverage indicators.
+
+
+## LS-041 through LS-046 durable update
+
+- `LEVERAGE_SHORTING_DATA_SPEC.md` freezes offline finalized-history grain, source mappings, vintage/finality, units, regime metadata, completeness and backfill go/no-go rules.
+- Small fixed sample validation: TWSE margin and TWSE SBL schemas/algebra PASS; TPEx margin displayed schema/algebra PASS; TPEx SBL displayed schema/algebra PASS.
+- TPEx official EDIS S47 `Margin_SBL.csv` machine contract is verified, including production metadata and field order.
+- TPEx margin officially offers BIG5/UTF-8 CSV, but stable programmatic download endpoint/parameter contract remains unresolved; do not guess URLs.
+- Unit audit: TPEx margin is displayed in lots, TWSE MI_MARGN uses trading units, and SBL files use share counts. Raw fields are not universally comparable before verified unit normalization.
+- Cross-market automated large backfill remains NO_GO until the unresolved TPEx margin source contract is solved or an official downloadable-artifact ingestion workflow is chosen.
+- Safe fallback is official artifact ingestion with source/date/checksum/schema/parser metadata; no access-control bypass or hidden-endpoint guessing.
+- No outcome tests H1-H5 have been run yet. Formal Core unchanged.
+
+## Exact next continuation
+
+LS-047: validate TPEx margin parser only when an official artifact/endpoint is available.
+LS-048: finalized-history backfill pilot with no outcome testing.
+LS-049: completeness/revision audit.
+LS-050: only after data gates pass, run pre-registered H1-H5 tests.
