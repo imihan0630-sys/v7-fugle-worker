@@ -4133,4 +4133,280 @@ Repeated finalizer on same source data leaves completed outcome semantically ide
 A semantic change to thresholds/state rules must increment schemaVersion and must not rewrite prior rows.
 
 Status: IMPLEMENTATION_READY_SPEC / WORKER_UNCHANGED.
+# PV-068 — Fugle Candle Timestamp Semantics and Current-Cron Coverage Correction
+
+## Provider timestamp semantics
+Fugle v1 migration documentation explicitly states that for 1-minute candles:
+- trades from 09:00:00 through 09:00:59 belong to the candle timestamped 09:00.
+
+The official historical-candle example also shows a separate 13:30 one-minute candle for the closing auction print.
+
+Sources:
+- https://developer.fugle.tw/docs/data/migration-guide/
+- https://developer.fugle.tw/docs/data/http-api/historical/candles/
+
+Therefore v1 candle timestamps are start-of-bucket semantics for ordinary minute bars.
+
+## Important unresolved detail
+Do not infer the exact 15m treatment of the isolated 13:30 closing-auction print solely from the 1m example.
+A fixture must verify whether historical/intraday 15m returns:
+- a separate 13:30 bar;
+- a special aggregation;
+- or another documented boundary behavior.
+
+## Current Worker coverage
+The existing Formal cron runs:
+- every minute 09:00–12:59 Taiwan time;
+- every minute 13:00–13:24;
+- it does NOT run 13:25–13:30.
+
+Current `analyzeFrame` treats a bar as complete only after:
+`barStart + timeframe`.
+
+Therefore under current Formal data flow:
+- 13:00–13:15 can be observed as a completed 15m bar;
+- 13:15–13:30 cannot become completed before the current monitor cron stops;
+- the 13:30 closing-auction print is not part of the ordinary live-monitor observation path.
+
+## Correction to PV-061 resource ceiling
+The earlier “18 x 15m slots x 6 stocks = 108 rows/day” assumption is not correct for **zero-extra-live-call v0.1 under the current cron**.
+
+Observed completed 15m starts are expected from 09:00 through 13:00 inclusive:
+17 possible completed bars per symbol.
+
+Thus current zero-extra-call ceiling:
+`17 x 6 = 102 intraday feature snapshots / trading day`.
+
+This is an engineering bound for the present cron, not a statement that the exchange has only 17 15m market intervals.
+
+## Closing-auction research
+If later research wants 13:15–13:30 / closing-auction information, it needs a separate after-close capture/finalization design and must be budgeted separately.
+Do NOT silently extend the Formal monitor cron just to collect research.
+
+Status: PROVIDER_SEMANTICS_PARTLY_CONFIRMED / V0_1_COVERAGE_CORRECTED.
+
+
+# PV-069 — Day-Trading Intensity as a Taiwan-Specific Volume-Quality Moderator
+
+## Evidence
+Taiwan research after relaxation of day-trading restrictions finds day-trading volume rose materially and that unexpected day-trading volume can have stronger relationships with volatility / return dynamics than aggregate market volume.
+
+Source:
+- https://doi.org/10.1016/j.heliyon.2023.e14939
+
+Earlier Taiwan research also finds speculative/day-trading activity can affect intraday volatility, with effects depending on how speculative activity is measured.
+
+Source:
+- https://doi.org/10.1016/S1044-0283(03)00043-7
+
+## Official data availability
+TWSE publishes per-security day-trading volume/value in its day-trading statistics report.
+TPEx likewise publishes per-security day-trading volume/value, with an important caveat that TPEx values can continue to be adjusted through T+2, and T+2 is the final correct figure.
+
+Sources:
+- https://www.twse.com.tw/exchangeReport/TWTB4U?response=html&selectType=All
+- https://www.twse.com.tw/zh/products/system/day-trading.html
+- https://www.tpex.org.tw/zh-tw/mainboard/trading/day-trading/statistics/day.html
+
+## Candidate after-market fields
+- `pvDayTradeVolumeShares`;
+- `pvDayTradeShare = officialDayTradeVolume / compatibleOfficialTotalVolume`;
+- `pvDayTradeShareRvol20`;
+- `pvDayTradeDataFinality = T / T+1 / T+2_FINAL`.
+
+Do not compute the ratio until numerator/denominator volume scope is verified compatible.
+
+## Constructive interpretation
+High day-trading share can improve liquidity and indicate broad active participation.
+
+## Adverse interpretation
+High day-trading share can also mean:
+- short-horizon churn;
+- attention/speculation;
+- elevated volatility;
+- weaker persistence into later sessions.
+
+Therefore it is a moderator of volume quality / risk, not a discount factor and not a bullish/bearish score.
+
+## Timing rule
+Because final day-trading statistics are after-market and TPEx may revise to T+2:
+- never use final T+2 knowledge in a T-day selection snapshot;
+- T-day as-known value may be stored with finality flag;
+- later revisions create a separate data-quality/final record, not retroactive mutation of the T-day as-of feature.
+
+Status: TAIWAN_SPECIFIC_TIER2_MODERATOR / AS_OF_FINALITY_REQUIRED.
+
+
+# PV-070 — Correction: Daily Transaction Count Is Available from Official Closing Data
+
+## Correction to PV-029
+PV-029 correctly states that historical Fugle candles do not provide historical transaction count, so **intraday historical trade-count baselines** are not available from candle history.
+
+However, daily transaction count is available from official Taiwan daily stock reports.
+
+TWSE official daily stock data include:
+- traded shares;
+- traded value;
+- number of transactions.
+
+TPEx daily stock quotes likewise publish transaction-count fields in the official daily data family.
+
+Sources:
+- https://data.gov.tw/dataset/11549
+- https://data.gov.tw/dataset/11370
+
+## Current Worker opportunity
+The Worker already fetches:
+- TWSE `STOCK_DAY_ALL`;
+- TPEx `tpex_mainboard_daily_close_quotes`.
+
+But `normalizeMarketRow` currently extracts:
+- volumeShares;
+- tradeValue;
+and does **not** persist transaction count.
+
+Therefore daily transaction-count research is potentially a low-cost extension of data already being fetched.
+
+## Candidate daily fields
+- `pvTransactionCount`;
+- `pvAverageTradeSizeShares = volumeShares / transactionCount`;
+- `pvTransactionCountRvol20`;
+- `pvAverageTradeSizeRvol20`.
+
+## Why this may matter
+Two stocks can both trade 2x normal share volume:
+- one because many small transactions occurred;
+- another because average trade size rose.
+
+Taiwan research has reported that number of trades can explain volatility differently from average trade size.
+
+## Opposing interpretation
+- trade splitting / algorithmic execution changes the meaning of “average trade size” over time;
+- transaction count may duplicate volume/attention;
+- public daily count does not identify buyer/seller type;
+- cross-market field semantics must be fixture-tested before merging TWSE and TPEx.
+
+## Decision
+Upgrade **daily transaction count** from second-stage prospective-only to:
+`TIER2_LOW_INCREMENTAL_COST_CANDIDATE`.
+
+Intraday trade-count remains prospective/current-trades only.
+
+Status: PV-029_PARTIALLY_CORRECTED / DAILY_COUNT_FEASIBLE.
+
+
+# PV-071 — Daily vs Intraday Volume Scope Must Not Be Assumed Identical
+
+## Market structure
+TWSE has multiple trading mechanisms beyond ordinary round-lot regular trading:
+- regular trading;
+- intraday odd-lot;
+- after-hours fixed-price;
+- after-hours odd-lot;
+- block trading;
+- other sessions.
+
+TWSE market daily summaries explicitly state that some daily statistics cover regular, odd-lot, after-hours fixed-price and block trading.
+
+Source:
+- https://www.twse.com.tw/en/products/system/trading.html
+- https://www.twse.com.tw/en/exchangeReport/FMTQIK?response=html
+
+Fugle intraday candles support a separate `type=oddlot` parameter, which is evidence that default intraday candle scope and odd-lot scope are distinct.
+
+Source:
+- https://developer.fugle.tw/docs/data/http-api/intraday/candles/
+
+## Research consequence
+Do NOT assume:
+`sum(default intraday 15m volume) * 1000 == historical daily volume`.
+
+The daily and intraday products may have different session/instrument-scope semantics.
+
+## v0.1 safe rule
+- daily RVOL is normalized only against historical daily volume from the same source family;
+- intraday slot RVOL/cumulative pace are normalized only against historical intraday default-candle volume from the same source family;
+- never use daily total as the denominator of intraday cumulative pace.
+
+This was already the intended architecture; PV-071 makes the source-scope reason explicit.
+
+## Fixture reconciliation
+Before any cross-timeframe volume arithmetic:
+on several liquid TWSE and TPEx stocks/dates compare:
+1. sum of default 1m/15m intraday volume;
+2. Fugle daily volume;
+3. official exchange daily volume;
+4. odd-lot volume where separately available.
+
+Store observed scope relationship; do not “correct” discrepancies without source documentation.
+
+Status: SOURCE_SCOPE_GUARD / CROSS_TIMEFRAME_RAW_VOLUME_DIVISION_PROHIBITED.
+
+
+# PV-072 — Attention / Disposition / Abnormal-Security Status as PV Context
+
+## Data availability
+Fugle v1 migration documentation exposes security metadata/state including:
+- `isAttention`;
+- `isDisposition`;
+- `isUnusuallyRecommended`;
+- `isSpecificAbnormally`;
+- securityStatus.
+
+Source:
+- https://developer.fugle.tw/docs/data/migration-guide/
+
+TWSE also publishes official attention / disposition-related datasets in its market-information/OpenAPI ecosystem.
+
+## Why it matters
+A stock under attention/disposition or unusual-promotion status can show abnormal:
+- volume;
+- transaction count;
+- volatility;
+- liquidity;
+because market participants are reacting not only to the underlying stock story but also to regulatory attention or trading restrictions.
+
+## Research fields
+- `pvAttentionFlag`;
+- `pvDispositionFlag`;
+- `pvUnusualRecommendationFlag`;
+- `pvAbnormalSecurityFlag`;
+- status source timestamp.
+
+## Interpretation
+These are context/guard variables, not negative scores.
+
+Possible adverse interpretation:
+- abnormal participation may be attention/speculation-driven;
+- trading rules/status can alter liquidity and behavior.
+
+Counter-case:
+- genuine fundamental information can coexist with an attention flag;
+- regulatory attention does not prove the move will reverse.
+
+## Governance
+Primary clean-cohort PV experiments should report results:
+- with these flags excluded;
+- and separately as a guarded subgroup.
+
+No automatic rejection of Formal candidates.
+
+Status: TIER2_CONTEXT_GUARD / NO_FORMAL_PENALTY.
+
+
+# Batch correction and synthesis after PV-072
+
+Three important corrections/refinements are now durable:
+
+1. **Zero-extra-call v0.1 current-cron coverage is 17 completed 15m bars per symbol, not 18.**
+   Current theoretical ceiling = 102 feature rows/day for six stocks.
+   Closing-auction research is outside the current live-monitor path.
+
+2. **Daily transaction count is available cheaply from exchange closing data already fetched by Worker.**
+   Only intraday historical trade-count remains unavailable from historical candles.
+
+3. **Daily and intraday volume must remain source-family-normalized.**
+   Their trading-session scope must not be assumed identical.
+
+The next layer of PV research should treat day-trading intensity and regulatory attention as contextual explanations for “why volume is high,” not as independent bullish/bearish signals.
 
