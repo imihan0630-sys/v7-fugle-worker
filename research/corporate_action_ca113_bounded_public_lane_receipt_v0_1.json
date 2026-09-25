@@ -1,0 +1,125 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-09-25 Asia/Taipei",
+  "purpose": "CA-113 bounded dual-exchange denominator archive pilot receipt. Validate an official TPEx historical public daily issued-share query lane with symbol-session suspension controls; record the remaining TWSE exact-listed-share archive blocker.",
+  "decisionImpact": false,
+  "formalCoreChanged": false,
+  "status": "TPEX_BOUNDED_PUBLIC_LANE_VALIDATED / S38_BYTES_PENDING / TWSE_EXACT_LISTED_ARCHIVE_PENDING",
+  "tpexPublicHistoricalContract": {
+    "sourceClass": "OFFICIAL_PUBLIC_HISTORICAL_DAILY_QUERY",
+    "endpointTemplate": "https://www.tpex.org.tw/web/stock/aftertrading/otc_quotes_no1430/stk_wn1430_result.php?d=<ROC_DATE>&l=zh-tw&o=htm&s=0&se=EW",
+    "fieldsInclude": [
+      "證券代號",
+      "證券名稱",
+      "成交股數",
+      "成交金額",
+      "發行股數"
+    ],
+    "denominatorField": "發行股數",
+    "normalizedUnit": "SHARES",
+    "role": "RECONCILIATION_AND_BOUNDED_PUBLIC_ARCHIVE_RECEIPT",
+    "substituteForImmutableS38Bytes": false
+  },
+  "independentDateValidation": [
+    {
+      "session": "2017-05-24",
+      "rocDate": "106/05/24",
+      "symbol": "1258",
+      "present": true,
+      "issuedShares": 36399459
+    },
+    {
+      "session": "2021-07-19",
+      "rocDate": "110/07/19",
+      "symbol": "5820",
+      "present": true,
+      "issuedShares": 3772452281
+    },
+    {
+      "session": "2025-03-22",
+      "rocDate": "114/03/22",
+      "marketSessionExpected": false,
+      "result": "ZERO_ROWS_NON_TRADING_DAY_NEGATIVE_CONTROL"
+    }
+  ],
+  "witness5314": {
+    "action": "PAR_VALUE_CHANGE_WITH_VERIFIED_SUSPENSION",
+    "verifiedSuspensionInterval": "2025-03-20 through 2025-03-28",
+    "resumeSession": "2025-03-31",
+    "checkedRows": [
+      {
+        "session": "2025-03-18",
+        "rowPresent": true,
+        "issuedShares": 14700000
+      },
+      {
+        "session": "2025-03-19",
+        "rowPresent": true,
+        "issuedShares": 14700000
+      },
+      {
+        "session": "2025-03-20",
+        "rowPresent": false,
+        "classification": "VERIFIED_SUSPENSION"
+      },
+      {
+        "session": "2025-03-28",
+        "rowPresent": false,
+        "classification": "VERIFIED_SUSPENSION"
+      },
+      {
+        "session": "2025-03-31",
+        "rowPresent": true,
+        "issuedShares": 294000000
+      },
+      {
+        "session": "2025-04-01",
+        "rowPresent": true,
+        "issuedShares": 294000000
+      }
+    ],
+    "denominatorStep": {
+      "beforeShares": 14700000,
+      "afterShares": 294000000,
+      "factor": 20,
+      "appliesAtTradingResume": "2025-03-31"
+    },
+    "interpretation": [
+      "The historical public TPEx lane returns exact integer issued shares on ordinary observed sessions.",
+      "The denominator step appears at the verified resume session, not inside the suspension interval.",
+      "Absence on verified suspension sessions is VERIFIED_SUSPENSION, not MISSING_SOURCE.",
+      "This independently supports symbol-session completeness accounting and the frozen S38 share-unit semantics."
+    ]
+  },
+  "completeness": {
+    "checkedOrdinarySessions": 4,
+    "checkedOrdinarySessionsObserved": 4,
+    "checkedVerifiedSuspensionBoundarySessions": 2,
+    "checkedVerifiedSuspensionBoundaryRowsAbsent": 2,
+    "checkedUnknownMissingSessions": 0,
+    "parserFailures": 0,
+    "futureLeakageViolations": 0,
+    "scopeWarning": "These counts cover only explicitly checked sessions/boundaries. They are not a claim that every intermediate suspension date or a full historical interval was fetched."
+  },
+  "tpexArchiveGate": {
+    "publicHistoricalQueryContract": "VALIDATED_ACROSS_2017_2021_2025",
+    "s38RawBytesArchived": false,
+    "immutableArtifactHashAvailable": false,
+    "revisionChainCompleteness": "NOT_PROVEN",
+    "knownAtCompleteness": "PUBLIC_QUERY_EX_POST_ONLY_FOR_HISTORICAL_ROWS",
+    "conclusion": "Suitable as a bounded official reconciliation/archive receipt, but not a substitute for immutable S38 byte/hash provenance when that stronger contract is required."
+  },
+  "twseGate": {
+    "bft51uRawUnitContract": "RESOLVED_BY_CA111",
+    "exactListedShareCandidate": "BFT51U 上市股數 raw field",
+    "boundedHistoricalBft51uBytesAround2465": "NOT_YET_ARCHIVED",
+    "status": "EXACT_LISTED_SHARE_ARCHIVE_PENDING"
+  },
+  "antiInference": [
+    "Do not treat ex-post public historical query retrieval as proof of historical first-known timing.",
+    "Do not infer NO_CHANGE from a missing row outside verified suspension provenance.",
+    "Do not substitute TPEx issued shares for TWSE listed shares or vice versa.",
+    "Do not claim S38 immutable-byte completeness from this public HTML query receipt.",
+    "No alpha, selection, ranking, threshold, capital, monitor, push or execution change."
+  ]
+}
