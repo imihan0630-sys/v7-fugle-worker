@@ -4238,3 +4238,82 @@ The previous universal ×1000 exact-share candidate is rejected. ×tradeUnit may
 
 Artifact: `research/twse_bft51u_unit_resolution_receipt_v0_2.json`.
 Formal Core unchanged.
+
+
+---
+
+## CA-113 — bounded TPEx historical public-lane validation / CA-114 daily-source falsification (2026-09-25)
+
+### CA-113 positive evidence
+
+A stable official TPEx historical market-wide daily query path was validated:
+
+`https://www.tpex.org.tw/web/stock/aftertrading/otc_quotes_no1430/stk_wn1430_result.php?d=<ROC_DATE>&l=zh-tw&o=htm&s=0&se=EW`
+
+The returned table includes the raw `發行股數` field. Independent-year checks succeeded:
+- 1258 on 2017-05-24: 36,399,459 issued shares;
+- 5820 on 2021-07-19: 3,772,452,281 issued shares;
+- 2025-03-22 weekend negative control: zero rows.
+
+The 5314 par-value-change witness provides a stronger event-centered validation:
+- 2025-03-18: 14,700,000 shares;
+- 2025-03-19: 14,700,000 shares;
+- 2025-03-20: row absent, inside VERIFIED suspension;
+- 2025-03-28: row absent, inside VERIFIED suspension;
+- 2025-03-31 resume: 294,000,000 shares;
+- 2025-04-01: 294,000,000 shares.
+
+This is an exact 20x issued-share step aligned to the verified trading resume session. It positively supports symbol-session completeness accounting and independently corroborates the frozen TPEx S38 share-unit semantics.
+
+### CA-113 counterevidence / archive limit
+
+The public historical query is an official reconciliation/archive surface, but it is not the same thing as immutable archived S38 `STKT2QUOTESN.TXT` bytes:
+- no S38 raw-byte hash was captured;
+- historical first-known `knownAt` cannot be reconstructed from ex-post query retrieval;
+- revision-chain completeness is not proven;
+- only explicitly checked sessions are counted; intermediate suspension sessions were not individually fetched in this receipt.
+
+Therefore CA-113 does NOT claim complete TPEx S38 archival provenance and does NOT claim complete dual-exchange archive readiness.
+
+Artifact:
+`research/corporate_action_ca113_bounded_public_lane_receipt_v0_1.json`.
+
+### CA-114 new TWSE daily-source falsification
+
+Official TWSE `MI_QFIIS` daily rows provide a separate `發行股數` field plus company-reporting change metadata.
+
+2465 observations:
+- 2025-11-11: 83,946,031;
+- 2025-11-12: 93,946,031, change reason `2`, latest company report date 2025-11-12;
+- 2025-11-13/14/17/18/21: remains 93,946,031;
+- 2026-01-07: 93,946,031, change reason `2`, latest company report date 2026-01-07.
+
+The 10,000,000-share MI_QFIIS step therefore occurs on 2025-11-12:
+- before payment certificates begin trading on 2025-11-17;
+- well before MOEA registration approval on 2026-01-06.
+
+This is decisive counterevidence against treating a generic official field named `發行股數` as one universal denominator clock. For 2465, the MI_QFIIS field is not admissible as point-in-time REGISTERED_ISSUED_COMMON_SHARES and is not proof of EXCHANGE_LISTED_COMMON_SHARES or COMBINED_EXCHANGE_TRADABLE_UNITS.
+
+The official MI_QFIIS note for change reason `2` confirms that this reporting table can update because of company filings associated with capital change, fixed-base-date reporting, corrections, overseas securities, merger/tender-offer and related filing situations. Reporting-clock truth must remain separate from registration-clock and trading-supply truth.
+
+The previously frozen 2025-11-17 instrument-stage semantics remain:
+- listed ordinary common shares = 58,946,031;
+- private-placement common shares = 25,000,000, excluded from the stated original listed-common count;
+- payment-certificate tradable units = 10,000,000;
+- combined tradable sensitivity = 68,946,031 only for a metric contract that explicitly combines the two tradable instrument types;
+- registered common-share state must not be switched to 93,946,031 merely from MI_QFIIS or the payment-certificate listing.
+
+Artifact:
+`research/corporate_action_2465_payment_certificate_resolution_v0_2.json`.
+
+### Current result
+
+CA-113:
+`TPEX_BOUNDED_PUBLIC_LANE_VALIDATED / S38_BYTES_PENDING / TWSE_EXACT_LISTED_ARCHIVE_PENDING`.
+
+CA-114:
+`DAILY_ISSUED_REPORT_CONFLICT_CONFIRMED / EXACT_LISTED_TRADABLE_ARCHIVE_PENDING`.
+
+The remaining highest-value blocker is now narrower: obtain BFT51U `上市股數` or an equivalent exact daily TWSE listed-share artifact around 2465 2025-11-11..2025-11-18, and determine how payment certificates are represented in that exact daily listed/tradable lane. If the source cannot expose a metric-compatible combined denominator, preserve UNKNOWN.
+
+No alpha inference, no Formal rule, no Worker.js wiring, no merge or production deployment.
