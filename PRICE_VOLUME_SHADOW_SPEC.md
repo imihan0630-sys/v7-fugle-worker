@@ -275,7 +275,7 @@ Current Formal monitor max is 6 stocks.
 The ordinary intraday PV layer must reuse already-fetched 15m frames and add zero duplicate live candle calls.
 One historical 15m bootstrap is allowed per newly monitored symbol lacking >=20 valid-session baseline; then roll cache forward.
 
-At 18 x 15m slots and 6 symbols, full-bar logging ceiling is 108 feature rows/trading day. Unique bar-end identity prevents every-minute duplicate writes.
+Under the current Formal cron (09:00-12:59 and 13:00-13:24), zero-extra-call v0.1 can observe completed 15m bars starting 09:00 through 13:00 inclusive: 17 bars/symbol, so the current ceiling is 102 feature rows/trading day for 6 symbols. Do not extend the Formal cron for research-only closing-auction capture.
 
 ## Research reporting
 Admin/research surface only until evidence matures.
@@ -289,3 +289,20 @@ Report:
 - model A→E incremental comparisons.
 
 Do not emit PV-based BUY/SELL, grade changes, capital changes or push signals.
+
+
+## Provider/session-scope corrections
+- Fugle v1 minute candles use start-of-bucket timestamps; 09:00:00-09:00:59 belongs to timestamp 09:00.
+- Official 1m history examples show a separate 13:30 closing-auction print. Exact 15m closing-auction aggregation must be fixture-tested rather than assumed.
+- Current Formal cron stops at 13:24. Therefore zero-extra-live-call Shadow v0.1 observes completed 15m bars only through the bar starting 13:00.
+- Current v0.1 ceiling: 17 completed 15m bars x 6 symbols = 102 feature snapshots/day.
+- Closing-auction / 13:15-13:30 research requires a separate later design; do not extend Formal cron silently.
+- Daily RVOL and intraday RVOL are normalized within their own source/timeframe families. Never divide raw daily volume by intraday volume or use daily total as live cumulative denominator without source-scope reconciliation.
+
+## Tier 2 Taiwan context additions
+Potential after data-quality success:
+- official daily transaction count and average trade size from TWSE/TPEx closing data;
+- day-trading volume/share with as-of finality flags (TPEx can revise through T+2);
+- attention/disposition/unusual-recommendation/abnormal-security flags.
+
+These are context/risk decompositions only and do not affect Formal decisions.
