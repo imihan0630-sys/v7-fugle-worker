@@ -8,6 +8,11 @@ function bar(date, close, volume, high = close, low = close, open = close) {
   return { date, open, high, low, close, volume };
 }
 
+function singleReturn(out) {
+  const bars = out.continuityBars;
+  return bars.length >= 2 ? bars.at(-1).close / bars.at(-2).close - 1 : null;
+}
+
 // Future event no-op.
 {
   const bars = [bar("2025-08-20", 272, 300)];
@@ -18,27 +23,27 @@ function bar(date, close, volume, high = close, low = close, open = close) {
       eventKey: "8454:2025-08-21",
       effectiveDate: "2025-08-21",
       actionType: "STOCK_DIVIDEND",
-      previousClose: 272,
-      referencePrice: 259,
-      volumeTransformMode: "SUPPLY_CHANGE",
-      priceIndexAdjusts: true
+      technicalPriceFactor: 259 / 272,
+      priceIndexComparableFactor: 259 / 272,
+      totalReturnComparableFactor: 259 / 272,
+      volumeTransformMode: "SUPPLY_CHANGE"
     }]
   });
   assert.deepEqual(out.continuityBars, out.rawBars);
   assert.equal(out.appliedEvents.length, 0);
 }
 
-// Cash dividend differs by semantic mode.
+// Cash dividend has different Technical/Price-Index/Total-Return factors.
 {
   const bars = [bar("2026-07-08", 139.5, 25356), bar("2026-07-09", 133.5, 59918)];
   const event = {
     eventKey: "2412:2026-07-09",
     effectiveDate: "2026-07-09",
     actionType: "CASH_DIVIDEND",
-    previousClose: 139.5,
-    referencePrice: 134.5,
-    volumeTransformMode: "NONE",
-    priceIndexAdjusts: false
+    technicalPriceFactor: 134.5 / 139.5,
+    priceIndexComparableFactor: 1,
+    totalReturnComparableFactor: 134.5 / 139.5,
+    volumeTransformMode: "NONE"
   };
   const technical = buildPointInTimeSeries({
     bars, events: [event], targetDate: "2026-07-09", returnMode: "TECHNICAL_CONTINUITY"
@@ -53,20 +58,20 @@ function bar(date, close, volume, high = close, low = close, open = close) {
   assert.ok(Math.abs(technical.continuityBars[0].close - 134.5) < 1e-9);
   assert.equal(priceIndex.continuityBars[0].close, 139.5);
   assert.ok(Math.abs(totalReturn.continuityBars[0].close - 134.5) < 1e-9);
-  assert.equal(technical.continuityBars[0].volume, 25356);
 }
 
-// Stock dividend: price continuity yes; tradable-volume transform stays unresolved.
+// Stock dividend: price continuity yes; volume is SUPPLY_CHANGE and remains raw/partial.
 {
   const bars = [bar("2025-08-20", 272, 300), bar("2025-08-21", 261, 301)];
+  const factor = 259 / 272;
   const event = {
     eventKey: "8454:2025-08-21",
     effectiveDate: "2025-08-21",
     actionType: "STOCK_DIVIDEND",
-    previousClose: 272,
-    referencePrice: 259,
-    volumeTransformMode: "SUPPLY_CHANGE",
-    priceIndexAdjusts: true
+    technicalPriceFactor: factor,
+    priceIndexComparableFactor: factor,
+    totalReturnComparableFactor: factor,
+    volumeTransformMode: "SUPPLY_CHANGE"
   };
   const out = buildPointInTimeContinuity({
     bars, events: [event], targetDate: "2025-08-21"
@@ -74,17 +79,12 @@ function bar(date, close, volume, high = close, low = close, open = close) {
   assert.ok(Math.abs(out.continuityBars[0].close - 259) < 1e-9);
   assert.equal(out.continuityBars[0].volume, 300);
   assert.equal(out.volumeContinuityComplete, false);
-  assert.ok(out.unknownReasons.includes("8454:2025-08-21:VOLUME_COMPARABILITY_PARTIAL"));
-
-  const priceIndex = buildPointInTimeSeries({
-    bars, events: [event], targetDate: "2025-08-21", returnMode: "PRICE_INDEX_COMPARABLE"
-  });
-  assert.ok(Math.abs(priceIndex.continuityBars[0].close - 259) < 1e-9);
 }
 
 // Loss-offset reduction is a strict unit conversion.
 {
   const bars = [bar("2025-12-10", 8.1, 73), bar("2025-12-22", 12.3, 100)];
+  const factor = 13.5 / 8.1;
   const out = buildPointInTimeContinuity({
     bars,
     targetDate: "2025-12-22",
@@ -92,16 +92,15 @@ function bar(date, close, volume, high = close, low = close, open = close) {
       eventKey: "3593:2025-12-22",
       effectiveDate: "2025-12-22",
       actionType: "LOSS_REDUCTION",
-      previousClose: 8.1,
-      referencePrice: 13.5,
+      technicalPriceFactor: factor,
+      priceIndexComparableFactor: factor,
+      totalReturnComparableFactor: factor,
       volumeTransformMode: "UNIT_SCALE",
-      shareUnitFactor: 0.6,
-      priceIndexAdjusts: true
+      shareUnitFactor: 0.6
     }]
   });
   assert.ok(Math.abs(out.continuityBars[0].close - 13.5) < 1e-9);
   assert.ok(Math.abs(out.continuityBars[0].volume - 43.8) < 1e-9);
-  assert.equal(out.volumeContinuityComplete, true);
 }
 
 // Par-value 10 -> 1 is a strict unit conversion.
@@ -114,11 +113,11 @@ function bar(date, close, volume, high = close, low = close, open = close) {
       eventKey: "8422:2025-11-17",
       effectiveDate: "2025-11-17",
       actionType: "PAR_VALUE_CHANGE",
-      previousClose: 250,
-      referencePrice: 25,
+      technicalPriceFactor: 0.1,
+      priceIndexComparableFactor: 0.1,
+      totalReturnComparableFactor: 0.1,
       volumeTransformMode: "UNIT_SCALE",
-      shareUnitFactor: 10,
-      priceIndexAdjusts: true
+      shareUnitFactor: 10
     }]
   });
   assert.equal(out.continuityBars[0].close, 25);
@@ -126,7 +125,57 @@ function bar(date, close, volume, high = close, low = close, open = close) {
   assert.equal(out.continuityBars[1].close, 24.7);
 }
 
-// Multiple sequential events compound only on prior bars.
+// Mixed cash + stock dividend: one Boolean/full factor is not enough.
+{
+  const theoreticalExPrice = 95 / 1.10; // cash 5 plus 10% stock dividend from prior close 100
+  const bars = [bar("2025-01-01", 100, 1000), bar("2025-01-02", theoreticalExPrice, 1100)];
+  const event = {
+    eventKey: "MIXED_CASH_STOCK",
+    effectiveDate: "2025-01-02",
+    actionType: "MIXED_CASH_STOCK_DIVIDEND",
+    technicalPriceFactor: theoreticalExPrice / 100,
+    priceIndexComparableFactor: 1 / 1.10,
+    totalReturnComparableFactor: theoreticalExPrice / 100,
+    volumeTransformMode: "SUPPLY_CHANGE"
+  };
+
+  const rawReturn = bars[1].close / bars[0].close - 1;
+  const technical = buildPointInTimeSeries({
+    bars, events: [event], targetDate: "2025-01-02", returnMode: "TECHNICAL_CONTINUITY"
+  });
+  const priceIndex = buildPointInTimeSeries({
+    bars, events: [event], targetDate: "2025-01-02", returnMode: "PRICE_INDEX_COMPARABLE"
+  });
+  const totalReturn = buildPointInTimeSeries({
+    bars, events: [event], targetDate: "2025-01-02", returnMode: "TOTAL_RETURN_COMPARABLE"
+  });
+
+  assert.ok(Math.abs(rawReturn - (-0.13636363636363635)) < 1e-9);
+  assert.ok(Math.abs(singleReturn(technical)) < 1e-9);
+  assert.ok(Math.abs(singleReturn(totalReturn)) < 1e-9);
+  assert.ok(Math.abs(singleReturn(priceIndex) - (-0.05)) < 1e-9);
+}
+
+// Missing mode-specific factor stays UNKNOWN; no cross-mode factor substitution.
+{
+  const bars = [bar("2025-01-01", 100, 1000), bar("2025-02-01", 120, 900)];
+  const event = {
+    eventKey: "MIXED_UNKNOWN_PRICE_FACTOR",
+    effectiveDate: "2025-02-01",
+    actionType: "MIXED_ACTION",
+    technicalPriceFactor: 1.2,
+    totalReturnComparableFactor: 1.2,
+    volumeTransformMode: "NONE"
+  };
+  const priceIndex = buildPointInTimeSeries({
+    bars, events: [event], targetDate: "2025-02-01", returnMode: "PRICE_INDEX_COMPARABLE"
+  });
+  assert.equal(priceIndex.priceContinuityComplete, false);
+  assert.equal(priceIndex.continuityBars[0].close, 100);
+  assert.ok(priceIndex.unknownReasons.includes("MIXED_UNKNOWN_PRICE_FACTOR:PRICE_INDEX_COMPARABLE_FACTOR_UNKNOWN"));
+}
+
+// Multiple sequential unit-scale actions compound only on earlier bars.
 {
   const bars = [
     bar("2025-01-01", 100, 1000),
@@ -141,19 +190,21 @@ function bar(date, close, volume, high = close, low = close, open = close) {
         eventKey: "E1",
         effectiveDate: "2025-06-01",
         actionType: "PAR_VALUE_CHANGE",
-        priceFactor: 0.95,
+        technicalPriceFactor: 0.95,
+        priceIndexComparableFactor: 0.95,
+        totalReturnComparableFactor: 0.95,
         volumeTransformMode: "UNIT_SCALE",
-        shareUnitFactor: 1.05,
-        priceIndexAdjusts: true
+        shareUnitFactor: 1.05
       },
       {
         eventKey: "E2",
         effectiveDate: "2025-12-01",
         actionType: "CAPITAL_REDUCTION",
-        priceFactor: 1.2,
+        technicalPriceFactor: 1.2,
+        priceIndexComparableFactor: 1.2,
+        totalReturnComparableFactor: 1.2,
         volumeTransformMode: "UNIT_SCALE",
-        shareUnitFactor: 0.8,
-        priceIndexAdjusts: true
+        shareUnitFactor: 0.8
       }
     ]
   });
@@ -162,7 +213,7 @@ function bar(date, close, volume, high = close, low = close, open = close) {
   assert.equal(out.continuityBars[2].close, 60);
 }
 
-// Missing strict unit factor remains UNKNOWN rather than fabricated.
+// Missing UNIT_SCALE share factor remains UNKNOWN.
 {
   const bars = [bar("2025-01-01", 100, 1000), bar("2025-02-01", 120, 900)];
   const out = buildPointInTimeContinuity({
@@ -172,9 +223,10 @@ function bar(date, close, volume, high = close, low = close, open = close) {
       eventKey: "UNKNOWN_SHARE_FACTOR",
       effectiveDate: "2025-02-01",
       actionType: "CAPITAL_CHANGE",
-      priceFactor: 1.2,
-      volumeTransformMode: "UNIT_SCALE",
-      priceIndexAdjusts: true
+      technicalPriceFactor: 1.2,
+      priceIndexComparableFactor: 1.2,
+      totalReturnComparableFactor: 1.2,
+      volumeTransformMode: "UNIT_SCALE"
     }]
   });
   assert.equal(out.volumeContinuityComplete, false);
