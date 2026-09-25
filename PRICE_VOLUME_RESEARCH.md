@@ -2279,4 +2279,250 @@ with:
 - market/sector common activity treated as context;
 - Information Discreteness treated as an interaction/moderator;
 - outcomes stored separately from immutable as-of features.
+# PV-038 — Volume-Conditioned Return Autocorrelation: Continuation vs Reversal Diagnostic
+
+## Evidence
+Llorente, Michaely, Saar & Wang model two broad mechanisms:
+- risk-sharing / liquidity-motivated high-volume returns tend to reverse;
+- private-information/speculative high-volume returns tend to continue.
+They test this through the interaction between volume and first-order return autocorrelation.
+
+Sources:
+- https://www.nber.org/papers/w8312
+- https://doi.org/10.1093/rfs/15.4.1005
+
+## Research feature idea
+A direct diagnostic can be based on:
+`nextReturn ~ currentReturn + abnormalVolume + currentReturn * abnormalVolume + controls`.
+
+The interaction term asks whether a high-volume price move tends to be followed by continuation or reversal.
+
+## Important limitation
+Do NOT interpret a positive coefficient as “informed traders were buying” or a negative coefficient as “liquidity traders were selling.” The latent trader motive is not observed in our data.
+
+## Estimation restraint
+The current ~60-day per-stock history is too short for a stable stock-specific dynamic-regression coefficient. Therefore:
+- do not add a per-stock Llorente beta to the minimum Shadow set;
+- if tested, pool across many dates/stocks with date/sector/liquidity controls;
+- optionally estimate by liquidity/price/market-cap strata;
+- validate out of sample.
+
+## Positive use
+This can empirically answer a central question already raised by PV research:
+“Under our Taiwan universe, when does abnormal-volume price movement continue versus mean-revert?”
+
+## Opposing case
+- coefficients can be regime-dependent;
+- bid/ask bounce and price limits can create serial-correlation artifacts;
+- overnight and intraday returns should not be mixed blindly;
+- strong current trend / pattern state may dominate the volume interaction.
+
+Status: RESEARCH_DIAGNOSTIC_ONLY / NOT_MINIMUM_SHADOW_FIELD.
+
+
+# PV-039 — Audit of Classic Volume Indicators: Mostly Repackaging, Not New Independent Factors
+
+## OBV
+Fidelity defines OBV as cumulative volume added on up-close days and subtracted on down-close days.
+
+Source:
+- https://www.fidelity.com/learning-center/trading-investing/technical-analysis/technical-indicator-guide/OBV
+
+Mathematically, this is a cumulative version of the signed-volume proxy already considered in PV-011.
+
+### Positive case
+OBV trend/divergence is a compact visualization of persistent price-direction-weighted volume.
+
+### Opposing case
+- every share on an up day is labeled “up volume,” despite every trade having both buyer and seller;
+- cumulative level is path-dependent and arbitrary in absolute value;
+- it overlaps return direction, positive-day ratio and volume persistence.
+
+Decision: DO NOT add OBV as an independent score.
+
+## Accumulation/Distribution and CMF
+Accumulation/Distribution weights volume by close location within the high-low range; CMF normalizes a rolling sum of similar money-flow-volume by total volume.
+
+Sources:
+- https://www.fidelity.com/products/atp/pdf/ATPChartingIndicators.pdf
+- https://www.fidelity.com/learning-center/trading-investing/technical-analysis/technical-indicator-guide/cmf
+
+### Positive case
+They combine “where did the bar close?” with “how much traded?” and therefore approximate effort-vs-result.
+
+### Opposing case
+The current system already has daily close position / upper shadow and volume fields. Gap days, limit-censored bars and narrow ranges can make close-location multipliers misleading.
+
+Decision: mathematical concept already represented by PV response-state ingredients; no separate CMF/A-D score.
+
+## MFI
+MFI is essentially an RSI-style oscillator applied to typical-price x volume money flow.
+
+Source:
+- https://www.fidelity.com/learning-center/trading-investing/technical-analysis/technical-indicator-guide/mfi
+
+### Positive case
+It normalizes directional price-volume flow into a bounded oscillator.
+
+### Opposing case
+- duplicates momentum + volume;
+- fixed 80/20 practitioner thresholds are not universal;
+- strong trends can remain “overbought/oversold” for extended periods even in Fidelity's own description;
+- it can obscure the separate mechanisms we intentionally preserve.
+
+Decision: do not add MFI to Formal or minimum Shadow.
+
+## Volume Oscillator
+VO = percentage difference between short and long volume moving averages.
+
+Source:
+- https://www.fidelity.com/learning-center/trading-investing/technical-analysis/technical-indicator-guide/volume-oscillator
+
+The current Worker already has:
+- short-vs-long volume relation via `volumeRatio` / `volumeContraction5to20`;
+- current-day vs previous-5 via `volumeTodayVsPrev5`.
+
+Decision: redundant.
+
+## Price/Volume Distribution chart approximation
+Some chart implementations allocate a bar's volume to histogram price buckets based on bar price information rather than actual historical trade-by-price records.
+
+Source:
+- https://www.fidelity.com/learning-center/trading-investing/technical-analysis/technical-indicator-guide/price-volume-distribution
+
+For our system, do not confuse such OHLCV-derived approximation with true exchange volume-at-price. PV-028 already reserves actual current-day Fugle volume-at-price as prospective-only microstructure data.
+
+## Synthesis
+Classic indicators are useful conceptual teaching tools, but the system should retain their primitive components rather than stacking OBV + CMF + MFI + VO on top of existing factors.
+
+Status: CLASSIC_INDICATOR_AUDIT_COMPLETE / NO_NEW_SCORE.
+
+
+# PV-040 — Robust Volume Normalization: Freeze Semantics before Testing
+
+## Problem
+Mean-based RVOL is sensitive to one or two prior extreme-volume days. Median-based RVOL is more robust but intentionally ignores part of the magnitude distribution. There is no reason to assume one normalization wins in every regime.
+
+## Proposed semantics
+
+### Daily primary
+For the new minimum Shadow field:
+`pvDailyRvol20 = volume_t / median(prior 20 valid daily volumes)`.
+
+Why median primary:
+- robust to a recent single extreme event;
+- current Worker already exposes mean-based volume context through avgVolume20 / previous-5 relationships, so this adds complementary information.
+
+### Same-slot 15m primary
+`pvSlotRvol20 = current slot volume / median(prior 20 valid same-slot volumes)`.
+
+This stays consistent with PV-005 and avoids a few event days dominating the baseline.
+
+### Cumulative pace primary
+`pvCumvolPace20 = current cumulative volume through slot / median(prior 20 valid cumulative volumes through same slot)`.
+
+## Secondary diagnostics, not independent scores
+- mean-based RVOL;
+- `logRvol = log(max(volume,epsilon)) - median(log prior volume)`;
+- robust z using median/MAD;
+- historical percentile.
+
+## Edge cases
+- median baseline <=0 => UNKNOWN;
+- <20 valid sessions => UNKNOWN;
+- corporate-action reset => history restarts;
+- halted / missing bars excluded, not zero-filled;
+- extreme values may be capped only for model-fitting stability, never silently changed in raw storage.
+
+## Why keep raw + transformed
+Always store source volume and baseline statistic so future researchers can reproduce the derived number. Do not store only a clipped z-score.
+
+Status: NORMALIZATION_SEMANTICS_FROZEN_FOR_SHADOW_V0_1.
+
+
+# PV-041 — Event De-duplication: One Abnormal-Volume Episode Is Not Ten Independent Samples
+
+## Problem
+If abnormal participation persists for five days, recording five daily rows is correct for state evolution but statistically treating them as five independent “signals” exaggerates sample size.
+
+The same issue occurs intraday when a 90-minute participation wave generates six consecutive 15m abnormal-volume bars.
+
+## Episode concept
+Create a research `event_key` when ParticipationState transitions from QUIET/NORMAL into ELEVATED/EXTREME.
+
+Later snapshots retain the same event_key while the episode remains active.
+
+Do not tune an arbitrary fixed “three-day episode” to outcomes. Store:
+- event start;
+- event age;
+- time/bars since peak;
+- state transitions;
+- normalization timestamp.
+
+## Primary vs secondary observations
+### Primary event-level analysis
+Use the first abnormal observation as the primary event snapshot for initial-shock outcome studies.
+
+### State-transition analysis
+Later rows are valid for:
+- persistence;
+- decay;
+- retest;
+- reacceleration;
+but are nested observations within the same event.
+
+## Inference
+Where statistical inference is used:
+- cluster by market date;
+- also account for repeated observations from the same event/symbol;
+- do not report raw snapshot count as if it equals independent event count.
+
+## Opposing risk
+Over-aggressive de-duplication can merge two genuinely distinct information shocks close together. Therefore raw snapshots remain stored; event_key is an analytical grouping layer, not destructive compression.
+
+Status: REQUIRED_SAMPLE_INTEGRITY_RULE.
+
+
+# PV-042 — Volume as Momentum-Life-Cycle Context, not Monotonic Strength
+
+## Evidence
+Lee & Swaminathan find that past trading volume helps explain the magnitude and persistence of momentum in their U.S. sample; high-volume winners reverse faster over longer horizons. Asia-Pacific evidence has also reported support for related volume/momentum life-cycle patterns, although results vary by country and sample.
+
+Sources:
+- https://doi.org/10.1111/0022-1082.00280
+- https://doi.org/10.1016/j.pacfin.2007.01.002
+
+## Critical horizon warning
+The original Lee-Swaminathan result concerns intermediate/longer horizons and turnover characteristics. It must NOT be imported as “today's high-volume winner should be sold tomorrow.”
+
+## System interaction
+The current system already has:
+- ret20 / ret60;
+- lateStage;
+- MA20 distance;
+- breakout structure;
+- overheat controls.
+
+Therefore volume should moderate stage, not create a new generic strength score.
+
+## Research state
+A `LATE_STAGE_VOLUME_RISK_CANDIDATE` may be recorded when:
+- price is already extended / lateStage;
+- abnormal volume is persistent or extreme;
+- price-response efficiency deteriorates;
+- upper rejection / weak acceptance appears.
+
+This remains a descriptive risk candidate until tested.
+
+## Positive continuation case
+High volume in an early/mid-stage breakout with strong structural acceptance can still precede continuation. Llorente-style information-driven continuation and short-run high-volume effects are counterexamples to a simple “high-volume winner = late” rule.
+
+## Falsification
+The late-stage volume interaction should be rejected if:
+- lateStage alone explains the outcome;
+- PV adds no incremental D1-D10 / MAE / false-break information;
+- effect exists only at horizons irrelevant to our system;
+- result depends on one bull-market cohort.
+
+Status: WORTH_INTERACTION_TEST / NO_SELL_OR_REDUCE_RULE.
 
