@@ -11053,3 +11053,347 @@ PVE-004 outcome comparison is NOT STARTED.
 This is a successful falsification of readiness, not a failed research result.
 
 Status: PVE_003_BLOCKED / PVE_004_GATE_NOT_MET.
+
+# PVE-005 — Blocked/Null Evidence Is a First-Class Result
+
+## Rule
+A readiness failure is preserved in the evidence ledger just like a positive or null statistical result.
+
+Current durable blocked findings:
+- PV Shadow enabled successfully, but D1 content QA is unauthorized;
+- zero completed post-enable trading days as of 2026-09-26;
+- Candidate Shadow archive has a missing enforced date;
+- selection-time symbol-session provenance is unavailable;
+- execution recorder exact-date completeness is unavailable.
+
+These cannot disappear when later data become available.
+
+## Why
+Otherwise later clean evidence could create survivorship in the research process:
+only successful collection periods would remain visible.
+
+Status: BLOCKED_EVIDENCE_PRESERVED.
+
+
+# PVE-006 — Minimum Post-Enable Evidence Receipt
+
+## Goal
+Create one outcome-blind receipt per prospective trading date before any H001/H002 analysis.
+
+## Layer A — Runtime enable / isolation
+Fields:
+- marketDate;
+- runtimeVersion;
+- pvShadowEnabled;
+- activeSourceHash;
+- decisionImpact;
+- formalCoreImpact;
+- ordinaryLiveCandleCallsAddedByPv;
+- Formal config fingerprint;
+- Formal scan fingerprint excluding PV.
+
+Pass condition:
+PV enabled and protected Formal fingerprints/invariants unchanged.
+
+## Layer B — After-market write receipt
+Current /api/scan/status can expose the after-market `pvShadow` summary after a post-enable Formal scan.
+
+Capture:
+- scanDate;
+- bootstrap.enabled/ok/requested/bootstrapped/results;
+- each baseline result validSessions/lastMarketDate/error;
+- daily.enabled/stored/outcomesStored;
+- daily.details[].symbol;
+- save.stored / duplicate / mutationConflict / fingerprint;
+- zeroPvPushes;
+- zeroPvActions.
+
+This proves the runtime hook attempted and received D1 write responses.
+It is not yet a full at-rest audit.
+
+## Layer C — Intraday write receipt
+Desired fields per completed 15m opportunity:
+- scheduledTime;
+- symbol;
+- snapshotId;
+- save.stored/duplicate/mutationConflict/fingerprint;
+- outcomesStored;
+- baseline roll result;
+- result data-freshness state.
+
+Current limitation:
+the intraday `pvShadow` result is appended after the Formal live-state persistence path.
+Existing persistent /api/live evidence is therefore not assumed to contain this receipt.
+
+Until independently proven:
+INTRADAY_WRITE_RECEIPT_PERSISTENCE = UNKNOWN.
+
+## Layer D — D1 at-rest audit
+Requires authoritative read access to:
+- v7_pv_shadow_snapshots;
+- v7_pv_outcomes;
+- v7_pv_intraday_baselines.
+
+Check:
+- counts;
+- duplicate semantic rows;
+- immutable fingerprints;
+- decisionImpact=0;
+- baseline valid_sessions>=20;
+- baseline last_market_date strictly prior to observed session where required;
+- coverage/guard distributions;
+- outcome fingerprints.
+
+Current state:
+BLOCKED_AUTHORIZATION.
+
+## Layer E — Cohort provenance
+Per Formal candidate/plan:
+- original selectionScanDate;
+- pool;
+- cohort role;
+- symbol-session quality state;
+- history-quality reason/version;
+- corporate-action volume comparability.
+
+Current state:
+NOT YET VERIFIED.
+
+## Receipt result
+Do not collapse all layers into one ambiguous Boolean.
+
+Store/report:
+- runtimeIsolationStatus;
+- afterMarketReceiptStatus;
+- intradayReceiptStatus;
+- d1AtRestStatus;
+- cohortProvenanceStatus;
+- evidenceReadinessStatus.
+
+Status: POST_ENABLE_RECEIPT_V1_FROZEN.
+
+
+# PVE-007 — Existing Admin Paths Can Partially QA PV without Direct D1, but Not Fully
+
+## Existing useful paths
+
+### Worker settings / config
+Can prove:
+- PV_SHADOW_ENABLED binding;
+- runtime version;
+- Formal configuration fingerprints.
+
+### /api/scan/status
+After a new after-market scan:
+can expose:
+- pvShadow.bootstrap;
+- pvShadow.daily;
+- stored/duplicate/mutation-conflict response metadata;
+- baseline validSessions/lastMarketDate from bootstrap receipts;
+- zeroPvPushes/zeroPvActions.
+
+This is valuable even if the GitHub token cannot query D1 directly.
+
+### /api/cron/status
+Can prove Cron-level execution/health metadata.
+
+But Cron success alone is not proof of each PV row.
+
+### /api/live
+The current V8.11 hook records PV after Formal live-state persistence.
+Therefore persistent /api/live is NOT assumed to prove the post-persistence PV recorder result unless actual runtime readback shows `live.pvShadow`.
+
+## What existing admin paths cannot prove
+Without direct D1/content-specific readback they cannot fully prove:
+- all persisted PV snapshot rows;
+- at-rest duplicate absence;
+- stored semantic fingerprints;
+- full baseline table coverage;
+- outcome-table completeness;
+- no later mutation at rest.
+
+## Class-B boundary
+A new protected PV D1 read endpoint would touch shared runtime/API.
+It remains Class-B proposal-first.
+
+## Preferred sequence
+1. use current after-market admin receipts on first post-enable session;
+2. continue collecting feature data;
+3. solve D1 read authorization or obtain explicit approval for an isolated protected read endpoint only if necessary;
+4. do not modify Formal behavior.
+
+Status: PARTIAL_ZERO_RUNTIME_CHANGE_QA_AVAILABLE.
+
+
+# PVE-008 — “Shadow” Namespace Must Be Explicit
+
+## Two unrelated research stores
+
+### Candidate Shadow Archive
+Table:
+`trade_research_shadow_candidates`
+
+Purpose:
+- SELECTED;
+- QUALIFIED_NOT_SELECTED;
+- NEAR_MISS;
+- REJECTED_AFTER_BASE;
+- BROAD_CONTROL.
+
+The live readback of 62 rows across 2026-09-21/22 belongs here.
+
+### Price-Volume Shadow
+Tables:
+- `v7_pv_shadow_snapshots`;
+- `v7_pv_outcomes`;
+- `v7_pv_intraday_baselines`.
+
+Purpose:
+- PV feature snapshots;
+- PV outcomes;
+- same-slot 15m baselines.
+
+Current actual row counts:
+UNKNOWN because direct D1 read is unauthorized and no post-enable trading date has completed.
+
+## Rule
+Never write:
+“PV Shadow has 62 rows.”
+
+Correct:
+“Candidate Shadow archive has 62 rows; PV Shadow at-rest row count is currently UNKNOWN.”
+
+Status: SHADOW_NAMESPACE_GUARD_FROZEN.
+
+
+# PVE-009 — Runtime Write Receipt Is Not the Same as At-Rest Verification
+
+## Positive evidence
+`pvInsertSnapshotImmutable` returns:
+- stored:true + fingerprint;
+- duplicate:true + fingerprint;
+- or mutationConflict:true + current/previous fingerprint.
+
+The daily after-market summary can preserve those per-symbol responses.
+
+This is useful contemporaneous write acknowledgement.
+
+## Counter-evidence
+A successful INSERT response does not independently prove:
+- later row persistence;
+- no external mutation;
+- complete table counts;
+- no missing rows from other symbols/events.
+
+Therefore distinguish:
+
+### WRITE_ACKNOWLEDGED
+Runtime D1 call reported a successful write.
+
+### AT_REST_VERIFIED
+Later independent read found the row and recomputed matching fingerprint.
+
+Both are useful.
+They are not interchangeable.
+
+Status: WRITE_ACK_VS_AT_REST_VERIFICATION_FROZEN.
+
+
+# PVE-010 — PV Evidence Readiness State Machine
+
+## Level 0 — ENABLED_ONLY
+- PV binding true;
+- Formal isolation verified;
+- no clean market observation yet.
+
+Current PVE state has reached at least this level.
+
+## Level 1 — RUNTIME_RECEIPT
+For a completed market date:
+- after-market/runtime receipts exist;
+- no mutation conflict;
+- no PV push/action;
+- baseline bootstrap reports expected behavior.
+
+## Level 2 — FEATURE_AT_REST_VERIFIED
+- D1 snapshots/baselines independently readable;
+- fingerprint/duplicate/coverage checks pass.
+
+## Level 3 — CLEAN_COHORT_VERIFIED
+- selection cohort history/symbol-session provenance passes;
+- pool-date integrity is known.
+
+## Level 4 — OUTCOME_MATURE
+- pre-registered outcome horizon completed;
+- enough independent dates/events exist under PV-024 floors.
+
+## Level 5 — DESCRIPTIVE_EVIDENCE_READY
+Only now run frozen H001/H002 descriptive comparison.
+
+No level implies Formal promotion.
+
+Status: PVE_READINESS_STATE_MACHINE_FROZEN.
+
+
+# PVE-011 — Zero Formal Plans Is a Valid Zero-Opportunity Day, Not a PV Failure
+
+## Problem
+On a completed market date the Formal selector may legitimately produce zero plans.
+
+Then:
+- baseline bootstrap requested=0;
+- no monitored PV symbols may exist;
+- PV snapshot count can legitimately be zero.
+
+## Rule
+Expected PV opportunity denominator must derive from:
+- eligible Formal monitored symbols;
+- actual completed monitor opportunities;
+not from “one trading day should have rows.”
+
+States:
+- ZERO_FORMAL_PLANS_VALID;
+- PV_OPPORTUNITIES_EXPECTED;
+- OPPORTUNITY_DENOMINATOR_UNKNOWN.
+
+## Guard
+Do not convert:
+zero PV rows on a zero-plan day
+into recorder failure.
+
+Conversely:
+zero rows when plans/opportunities were expected
+requires coverage investigation.
+
+Status: ZERO_PLAN_DENOMINATOR_SEMANTICS_FROZEN.
+
+
+# PVE-012 — Post-Enable PV Feature Collection Can Proceed while Cohort Alpha Remains Gated
+
+## Important separation
+Even though production does not yet have a production-grade symbol-session history-quality receipt:
+
+PV feature collection itself remains useful.
+
+Prospective PV snapshots can accumulate for:
+- feature/data QA;
+- baseline stability;
+- guard frequencies;
+- response-state distribution;
+- recorder reliability.
+
+## What remains prohibited
+Do not interpret those rows as evidence for:
+“PV improves correctly selected Formal candidates”
+until cohort provenance is clean.
+
+## Benefit
+This avoids two bad choices:
+- stopping all data collection until every provenance system is finished;
+- or prematurely treating unverified cohort data as alpha evidence.
+
+## Current strategy
+COLLECT_FEATURE_EVIDENCE_NOW.
+DEFER_COHORT_ALPHA_INFERENCE.
+
+Status: COLLECTION_CONTINUES / PRIMARY_ALPHA_GATED.
