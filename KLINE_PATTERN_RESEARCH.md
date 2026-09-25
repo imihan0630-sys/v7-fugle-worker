@@ -6448,3 +6448,165 @@ Store:
 ### Importance
 This preserves the current project distinction between Selection Alpha and Execution Alpha and prevents look-ahead contamination.
 
+
+
+## DL-002AR — Support/Resistance as Zones, Not Magic Lines
+
+### Core idea
+Support and resistance should be modeled as price regions with width, strength and provenance, not as a single exact number.
+
+### Evidence
+- Recent algorithmic S/R research explicitly constructs zones around candidate levels to reduce chart-drawing subjectivity.
+- Empirical work finds wider support/resistance zones can be associated with higher bounce probability, while also warning that this does not automatically imply a profitable strategy.
+- Taiwan order-price clustering is pervasive; round-price and size clustering occur systematically in TWSE orders. Therefore discrete price/tick behavior can create local order concentration around nearby prices rather than one mathematically exact level.
+- Other order-book research finds clustered orders/depth can contribute to the emergence of support/resistance behavior.
+
+### Zone object
+For each structural support/resistance region store:
+- centerPrice
+- lowerBound
+- upperBound
+- widthPct
+- widthATR
+- widthTicks
+- sourceType
+- sourceSwings[]
+- touchCount
+- rejectionCount
+- breakCount
+- lastTouchDate
+- ageDays
+- volume/turnover context
+- roundNumberProximity
+- scaleAgreement
+- strengthConfidence
+
+### Source types
+- SWING_HIGH_CLUSTER
+- SWING_LOW_CLUSTER
+- W_NECKLINE
+- CUP_RIM
+- VCP_PIVOT
+- PLATFORM_BOUNDARY
+- MAJOR_PRIOR_HIGH
+- MAJOR_PRIOR_LOW
+- ROUND_PRICE_CLUSTER
+- VOLUME_AT_PRICE_CLUSTER (research only if reliable data exists)
+
+### Zone construction
+Do not pick width from forward returns.
+Candidate ex-ante width basis:
+- max of tick-based minimum width and ATR-based tolerance,
+- capped by local swing dispersion.
+If multiple nearby structural levels overlap, merge into one composite zone and retain constituent sources.
+
+### Why this matters
+A close 0.1% above a single line may still be inside a genuine resistance zone.
+Likewise a retest slightly below a nominal pivot may still be holding the broader support zone.
+
+### Break / acceptance state
+APPROACHING_ZONE
+IN_ZONE
+FIRST_CLOSE_ABOVE_ZONE
+ACCEPTED_ABOVE_ZONE
+RETESTING_ZONE
+HELD_ZONE
+FAILED_BACK_INSIDE
+BROKE_BELOW_ZONE
+
+State transitions become more meaningful than binary “above pivot yes/no.”
+
+### No production rule change
+Current Formal buyLow/buyHigh and breakout levels remain unchanged.
+Zone research is Shadow only.
+
+## DL-002AS — Support/Resistance Strength: Touches Are Ambiguous
+
+### Competing mechanisms
+Repeated touches can imply:
+1. absorption: supply/demand is being consumed;
+2. persistent barrier: repeated rejection confirms strong overhead supply/support;
+3. self-fulfilling clustering: participants repeatedly place orders around salient levels.
+
+Therefore raw touch count alone is not directional.
+
+### Required context per touch
+- approachSlope
+- distanceTraveledBeforeTouch
+- rejectionDepth
+- closeLocation
+- volumeAtTouch
+- turnoverAtTouch
+- wickRatio
+- timeSincePriorTouch
+- higherLow/lowerHigh between touches
+- RS change between touches
+
+### Absorption-like progression
+- rejection depth shrinks,
+- lows rise,
+- closes finish nearer zone top,
+- selling volume at rejection falls,
+- time between attempts may shorten without deterioration.
+
+### Barrier-strength progression
+- repeated wide rejections,
+- upper-wick expansion,
+- selling volume increases,
+- RS weakens,
+- pullbacks deepen.
+
+### Research field
+touchProgressionState:
+- ABSORPTION_LIKE
+- BARRIER_PERSISTENT
+- MIXED
+- UNKNOWN
+
+Do not infer from count alone.
+
+## DL-002AT — Round-Number / Tick Clustering in Taiwan
+
+### Taiwan evidence
+TWSE research documents pervasive order-price and order-size clustering.
+Round prices can therefore act as behavioral/order-placement anchors independent of classical chart geometry.
+
+### Research variables
+- distanceToRoundPriceTicks
+- nearestRoundUnit
+- pivotCoincidesWithRoundPrice
+- zoneRoundPriceDensity
+- breakoutCrossesRoundPrice
+- retestAroundRoundPrice
+
+### Important caution
+Round-number clustering does not automatically equal exploitable support/resistance.
+Some markets show clustering but weak actual barrier effects.
+
+Therefore use round-number proximity as provenance/context, not as a standalone bullish/bearish signal.
+
+## DL-002AU — Local vs Major Zone Conflict
+
+### Problem
+A local 20-day breakout can occur directly into a larger multi-month resistance zone.
+
+### Conflict states
+LOCAL_CLEAR_MAJOR_CLEAR
+LOCAL_CLEAR_MAJOR_NEAR
+LOCAL_CLEAR_MAJOR_INSIDE
+LOCAL_CLEAR_MAJOR_REJECTED
+
+### Key measurements
+- localPivot
+- majorZoneLower/Upper
+- distanceLocalToMajorPct
+- distanceLocalToMajorATR
+- postLocalBreakoutRoomPct
+- nearestRealResistance existing value
+- patternSpecificMajorResistance
+
+### Research question
+Does “available air” between local breakout and major resistance explain why some technically valid B breakouts have poor follow-through?
+
+This may connect directly to current reward/risk logic, but remains research-only until incremental evidence exists.
+
