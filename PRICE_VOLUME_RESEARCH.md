@@ -2693,4 +2693,338 @@ The Taiwan-specific 15m layer now needs two kinds of normalization:
 
 This strengthens the core conclusion:
 a 15m volume number is only meaningful after we know **when it occurred, under which matching mechanism, relative to what baseline, and whether price/reference semantics were structurally altered**.
+# PV-048 — Limit-Up / Limit-Down Lock, Unlock and Queue Semantics
+
+## Current market rule
+TWSE ordinary stocks generally trade within +/-10% of the auction reference price at market open, subject to documented exceptions such as newly listed common stocks during their first five trading days. TPEx mainboard uses the same 10% framework for ordinary listed stocks.
+
+Sources:
+- https://twse-regulation.twse.com.tw/ENG/EN/law/DOC01.aspx?FLCODE=fl007304&FLNO=63
+- https://www.tpex.org.tw/en-us/mainboard/trading/rules/system.html
+- https://www.tpex.org.tw/en-us/about/company/faq.html
+
+## Data available prospectively
+Fugle current intraday quote exposes:
+- referencePrice;
+- lastPrice / last trade;
+- best-five bids and asks with size;
+- cumulative trade volume/value/transaction count;
+- bid-side / ask-side matched volume;
+- timestamps and trial information.
+
+Sources:
+- https://developer.fugle.tw/docs/data/http-api/intraday/quote/
+- https://developer.fugle.tw/docs/data/http-api/intraday/trades/
+
+## What cannot be reconstructed reliably from historical candles
+Historical 15m/daily OHLCV cannot tell us:
+- how long the stock was locked at limit;
+- how many times it unlocked/relocked;
+- historical queue size at the limit;
+- canceled queue size;
+- order priority;
+- whether a one-sided book existed between candle timestamps.
+
+Do not infer these from a high/close at the daily limit.
+
+## Prospective research states
+Only when an exact official/verified limit price and live book are available:
+- `NOT_LIMIT_CONSTRAINED`;
+- `UPPER_LIMIT_TOUCH`;
+- `LOWER_LIMIT_TOUCH`;
+- `UPPER_ONE_SIDED_BOOK_CANDIDATE`;
+- `LOWER_ONE_SIDED_BOOK_CANDIDATE`;
+- `UNLOCK_OBSERVED`;
+- `RELOCK_OBSERVED`;
+- `UNKNOWN`.
+
+Use “candidate” when book depth is only a snapshot. A five-level book does not equal the full queue.
+
+## Positive interpretation
+A stock holding the upper limit with persistent one-sided demand may indicate strong unmet demand / censored price discovery.
+
+## Opposing interpretation
+- price limits mechanically censor price progress;
+- queue size can be canceled;
+- a late upper-limit lock may represent attention/crowding;
+- unlock/relock can be information discovery, not necessarily weakness;
+- a lower-limit queue can contain panic or forced selling and may later reverse.
+
+Therefore limit state is a market-structure context, not a bullish/bearish score.
+
+## Engineering decision
+PV Shadow v0.1 should keep the existing generic `PRICE_CENSORED` guard.
+Detailed lock/unlock/queue research is a later **prospective-only** extension requiring exact limit-price semantics and time-stamped book capture.
+
+Status: PROSPECTIVE_ONLY / HISTORICAL_QUEUE_NOT_RECONSTRUCTABLE.
+
+
+# PV-049 — Price-Volume Divergence without Hindsight Pivot Picking
+
+## Problem
+Classic “price made a higher high but volume made a lower high” is highly vulnerable to hindsight:
+after the chart is complete, a researcher can choose whichever prior peak makes the divergence look best.
+
+Practitioner sources describe divergence this way, but robust academic evidence for a universal volume-divergence trading rule is limited. Treat it as a hypothesis, not a law.
+
+## As-of reference rule
+Reuse the Pattern Maturity / swing-segmentation framework.
+A divergence comparison may reference only a **previous pivot that was already confirmed before the current observation timestamp**.
+
+Never select a prior high/low because later outcomes made it visually convenient.
+
+## Normalize participation before comparison
+Do not compare raw volume across distant dates.
+For each pivot/event store:
+- daily RVOL20;
+- market/sector residual RVOL if available;
+- response efficiency;
+- event age;
+- market regime;
+- corporate-action guard.
+
+## Continuous research fields
+For a higher-high comparison:
+- `pvPriceExtremeProgressATR` = current extreme minus previous confirmed pivot, normalized by ATR known at t;
+- `pvParticipationDelta` = log(current normalized participation) - log(previous pivot normalized participation);
+- `pvResponseEfficiencyDelta`;
+- `pvDivergenceAge` = trading days between comparable pivots.
+
+Analogous fields apply to lower lows.
+
+Do not freeze a bullish/bearish threshold until prospective data are inspected under the pre-registration rules.
+
+## Bearish-divergence hypothesis
+Price makes a valid higher high while normalized participation is materially lower.
+
+Possible adverse interpretation:
+- marginal buyers are thinning;
+- trend may be losing participation.
+
+Constructive counter-interpretation:
+- supply may be scarce, allowing price to advance efficiently on less volume;
+- a mature leader may not need increasing raw participation at every new high.
+
+Therefore require later acceptance/failure, price efficiency and late-stage context.
+
+## Bullish-divergence hypothesis
+Price makes a valid lower low while selling participation is lower.
+
+Possible constructive interpretation:
+- selling pressure is drying up.
+
+Adverse counter-interpretation:
+- liquidity / interest may be disappearing;
+- there may be no meaningful rebound demand.
+
+Therefore combine with PV-002 supply-dry-up vs no-demand logic and later reclaim/acceptance.
+
+## Falsification
+Reject divergence if:
+- it adds no value beyond lateStage / Pattern Maturity / Residual RS;
+- results depend on pivot parameters;
+- effect vanishes using normalized rather than raw volume;
+- reference-pivot age drives the apparent signal;
+- the sign flips across market regimes.
+
+Status: WORTH_SHADOW_RESEARCH / HINDSIGHT_GUARD_REQUIRED.
+
+
+# PV-050 — Turnover Rate with Timestamped Issued Shares
+
+## Definition
+Standard share turnover is:
+`daily traded shares / shares outstanding (or issued common shares)`.
+
+Taiwan microstructure research commonly uses this construction. Official TWSE/TPEx statistics also describe turnover using issued shares.
+
+Sources:
+- https://pmc.ncbi.nlm.nih.gov/articles/PMC10105614/
+- https://www.twse.com.tw/downloads/zh/about/company/factbook/2026/3.01.html
+- https://www.tpex.org.tw/epaper/monthly/202609/en/statistical_1.html
+
+## Official data feasibility
+Official company-basic datasets for both TWSE-listed and TPEx-listed companies include:
+- report date;
+- company code;
+- issued common shares / TDR underlying issued shares.
+
+Sources:
+- https://data.gov.tw/dataset/18419
+- https://data.gov.tw/dataset/25036
+- https://openapi.twse.com.tw/
+
+This makes current/as-of issued-share turnover technically feasible.
+
+## Important distinction
+Issued shares are NOT free float.
+Do not call:
+`volume / issued shares`
+“free-float turnover.”
+
+A reliable timestamped free-float dataset would be needed for that.
+
+## Proposed Shadow variables
+Daily only first:
+- `pvIssuedShares`;
+- `pvIssuedShareAsOfDate`;
+- `pvTurnoverRate = dailyVolumeShares / issuedShares`;
+- `pvTurnoverRvol20 = current turnover / median(prior20 valid turnover)`.
+
+## Corporate-action alignment
+The shares denominator must be the value valid at the event date.
+A current share count must never be applied backward across:
+- stock split/reverse split;
+- capital reduction;
+- share issuance;
+- merger/reorganization;
+- par-value/capital changes.
+
+PV-030 corporate-action reset remains mandatory.
+
+## Why turnover may add value
+Raw share volume is difficult to compare across firms of very different capital structures.
+Turnover asks what fraction of the issued share base changed hands.
+
+## Opposing case
+- issued-share turnover still ignores actual free float and strategic holdings;
+- high turnover can represent informed activity, attention, speculation or disagreement;
+- turnover may duplicate liquidity / market-cap / volume features.
+
+## Engineering priority
+Secondary to own-history RVOL.
+Add only if timestamped issued-share snapshots can be stored cleanly and incremental-value tests show benefit.
+
+Do not estimate shares as marketCap / price as a hidden fallback when official shares are missing; rounding and event timing can contaminate the denominator.
+
+Status: FEASIBLE_SECONDARY_NORMALIZATION / NOT_MINIMUM_V0_1.
+
+
+# PV-051 — Price-Volume State Is Regime-Dependent
+
+## Evidence
+Research finds the return-volume relation can differ materially across bull and bear market states. Chen (2012) reports positive contemporaneous return-volume correlation in bull markets and negative correlation in bear markets, while dynamic predictive evidence from volume to returns is weaker. Emerging-Asian evidence, including Taiwan, also finds heterogeneous volume-return effects across return quantiles.
+
+Sources:
+- https://doi.org/10.1016/j.jbankfin.2012.02.003
+- https://doi.org/10.1111/j.1467-8586.2011.00428.x
+- https://doi.org/10.1016/j.irfa.2021.101923
+
+## System advantage
+The current research system already has durable broad-market regime labels such as:
+- BULL_BROAD;
+- MIXED;
+- BEAR_BROAD.
+
+Therefore no new regime model is needed just for PV.
+
+## Required validation split
+For every primary PV state report results by:
+- BULL_BROAD / MIXED / BEAR_BROAD;
+- high-market-volume vs normal/low-market-volume day;
+- optionally broad sector-participation state.
+
+## Examples of why sign may change
+### High volume + rising price
+Bull:
+- broad risk appetite / participation can support continuation.
+Counter:
+- may also be late-stage crowding.
+
+Bear:
+- can be short-covering / violent rebound rather than durable accumulation.
+
+### Low volume pullback
+Bull:
+- may be constructive supply contraction.
+Bear:
+- may simply reflect lack of buyers / illiquidity.
+
+### Extreme downside volume
+Bear:
+- can signal worsening liquidation risk.
+Counter:
+- can also be capitulation near a reversal.
+
+## Promotion rule
+A PV feature does not need identical magnitude in every regime, but:
+- if sign flips materially, the regime interaction must be explicit;
+- if benefit exists only in one small regime sample, keep it UNKNOWN rather than promoting a universal rule.
+
+Status: REGIME_INTERACTION_REQUIRED / UNIVERSAL_SIGN_PROHIBITED.
+
+
+# PV-052 — Integrated Price-Volume Interpretation Matrix
+
+## Principle
+A PV observation must resolve through four questions:
+1. What is participation doing?
+2. What is price doing per unit participation?
+3. Where in structure/life-cycle is this occurring?
+4. Is market/data structure distorting the observation?
+
+No single row below is an automatic buy/sell rule.
+
+| Observed state | Constructive interpretation | Adverse interpretation | UNKNOWN / guard conditions | Shadow evidence |
+|---|---|---|---|---|
+| Low volume during pullback | supply drying up | no demand / fading interest | illiquid, support not defined, missing history | pvDailyRvol20, contraction, slope, support hold, close location |
+| Moderate breakout volume | healthy participation | insufficient confirmation | gap-dominated, price-censored | nonlinear RVOL bucket, response state, acceptance |
+| Extreme breakout volume | broad/informed recognition | climax, disagreement, crowding | limit-up / corporate action / news ambiguity | RVOL, lateStage, gap, response efficiency, persistence |
+| High volume + strong price progress | efficient directional participation | could still be late-stage | price limit, gap, event/news shock | pvResponseState, lateStage, acceptance |
+| High volume + little progress | absorption | distribution/exhaustion | auction/VI/price-censored | response state + later acceptance/failure |
+| New high + lower normalized participation | scarce supply / efficient trend | bearish participation divergence | pivot not confirmed, old pivot, regime mismatch | PV-049 continuous divergence fields |
+| New low + lower selling participation | selling exhaustion | no liquidity / no rebound demand | illiquid, support absent | divergence + reclaim + demand state |
+| Persistent abnormal volume | information diffusion / sustained recognition | persistent crowding/attention | common market/sector volume | persistence, residual RVOL, acceptance |
+| Fast-decaying abnormal volume | event completed cleanly | failed interest / one-off attention | insufficient event history | event age, peak ratio, decay slope |
+| High closing-slot RVOL | genuine end-day demand | benchmark/auction flow | CLOSE_AUCTION_MIXED | same-slot RVOL, next-session acceptance |
+| Limit-up / one-sided book | censored unmet demand | unstable/cancelable queue, crowding | no exact limit/book history | PRICE_CENSORED, prospective limit state |
+| High turnover | broad share-base participation | speculation/disagreement | issued shares stale, free float unknown | pvTurnoverRate, RVOL, residual context |
+| Market-wide high volume + stock high volume | theme/risk-on confirmation | little stock-specific information | sector too small | raw RVOL + market/sector residual RVOL |
+| Stock high volume, market/sector normal | stock-specific attention/information | isolated speculation/noise | bad sector classification | residual RVOL |
+| Discrete price jump + extreme volume | fast information incorporation | attention/overreaction | news source unknown | Information Discreteness x PV interaction |
+| Continuous price drift + moderate persistent volume | gradual recognition | weak/slow demand | low liquidity | ID x persistence x acceptance |
+
+## Decision semantics
+Allowed research outputs:
+- `CONSTRUCTIVE_CANDIDATE`;
+- `ADVERSE_CANDIDATE`;
+- `AMBIGUOUS`;
+- `DATA_INSUFFICIENT`;
+- `MARKET_STRUCTURE_GUARD`.
+
+Do not force every observation into bullish or bearish.
+
+## Strongest engineering candidates after PV-052
+### Tier 1 — minimum v0.1
+- pvDailyRvol20;
+- pvSlotRvol20;
+- pvCumvolPace20;
+- pvResponseState;
+- pvAcceptanceState;
+- pvPersistenceState;
+- pvGuardState;
+- coverage/provenance.
+
+### Tier 2 — after v0.1 proves data quality
+- daily market/sector residual RVOL;
+- divergence continuous features;
+- turnover rate with timestamped issued shares;
+- event freshness/decay;
+- late-stage interaction.
+
+### Deferred / prospective microstructure
+- limit queue/lock duration;
+- intraday trade-count baseline;
+- historical volume-at-price;
+- explicit VI state without an event source;
+- true free-float turnover.
+
+## Final research stance at PV-052
+The useful price-volume model is not:
+“volume rises => stronger.”
+
+It is:
+**normalized participation + price response + structural acceptance + persistence + regime + market-structure/data guard.**
+
+Status: INTEGRATED_INTERPRETATION_MATRIX_COMPLETE / FORMAL_CORE_LOCKED.
 
