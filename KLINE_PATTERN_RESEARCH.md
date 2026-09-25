@@ -2366,3 +2366,128 @@ High priority as a falsification/interaction study, not as a new bullish factor.
 
 No Formal change.
 
+
+
+## DL-002S — Pattern Maturity vs Existing 15-minute Execution Layer v0.1
+
+### Question
+If a stock has a mature daily chart pattern at selection time, does that improve the probability/timing of the existing 15-minute BUY confirmation without weakening the execution rules?
+
+This directly addresses the system's sparse BUY / idle-capital problem while keeping selection and execution separate.
+
+### Separation of roles
+Daily pattern layer:
+- identifies structural maturity / pivot readiness.
+
+Existing execution layer:
+- 15-minute K is formal confirmation.
+- 10-minute K remains auxiliary.
+- pullback / breakout-retest logic remains unchanged.
+
+DL-002 must not silently convert PIVOT_READY into BUY.
+
+### Key hypotheses
+
+H1 — Mature patterns improve execution efficiency
+Pattern-mature candidates may:
+- enter the planned zone sooner,
+- produce cleaner 15-minute reversals/retests,
+- trigger BUY more often,
+- have lower MAE before BUY.
+
+H2 — Mature patterns may reduce execution opportunity
+A very mature/strong pattern may:
+- break out and never pull back into the current buy zone,
+- exceed maxChase,
+- remain strong but generate NO-BUY under conservative execution.
+
+If H2 dominates, the bottleneck is not stock selection quality but compatibility between daily setup geometry and the current execution style.
+
+H3 — Different pattern families may pair with different execution modes
+Examples to test descriptively:
+- W / inverse-H&S may align naturally with PULLBACK confirmation.
+- VCP / platform / flag may align more with breakout-retest confirmation.
+- Cup handle may straddle both depending on whether the scan occurs before or after pivot.
+
+Do not hard-map pattern -> execution rule before evidence.
+
+### Required per-plan research fields
+At scan date:
+- patternLabels[]
+- patternStates[]
+- latentFeatureVector
+- pivotDistancePct
+- patternConfidence / scaleAgreement descriptors
+- Formal channel A/B
+- buy zone / breakout / maxChase
+
+Next-session execution outcomes:
+- entryZoneReached
+- firstEntryZoneTime
+- pivotCrossed
+- maxChaseExceededBeforeEntry
+- formal15BuyTriggered
+- formal15BuyTime
+- timeFromOpenToBuyMinutes
+- early10mAlertOccurred
+- noBuyReason
+- intradayMFEBeforeBuy
+- intradayMAEBeforeBuy
+- nextCloseReturn
+- executionDataComplete
+
+### NO-BUY reason taxonomy
+Do not treat NO-BUY as one failure.
+
+Possible reasons:
+- NEVER_REACHED_BUY_ZONE
+- BROKE_OUT_WITHOUT_RETEST
+- MAXCHASE_EXCEEDED
+- ENTERED_ZONE_NO_STABILIZATION
+- ENTERED_ZONE_BUT_VOLUME_BAD
+- RETEST_FAILED
+- PLAN_INVALIDATED
+- DATA_COVERAGE_UNKNOWN
+- MARKET_HALTED / non-normal market state
+- BUY_TRIGGERED
+
+This taxonomy is essential to distinguish:
+“pattern was wrong”
+from
+“pattern was right but execution intentionally did not chase.”
+
+### Core comparisons
+1. Formal SELECTED + PIVOT_READY vs Formal SELECTED + FORMING.
+2. Near-miss high-maturity vs near-miss low-maturity, selection outcomes only.
+3. A channel by pattern family.
+4. B channel by pattern family.
+5. BUY-triggered vs NO-BUY split by pattern maturity.
+6. Pattern-mature NO-BUY names: future return/MFE to quantify opportunity cost of conservative execution.
+
+### No absence-as-zero
+Existing execution-recorder research already established that missing rows may reflect coverage/truncation, not true NO-BUY.
+DL-002S must inherit that rule:
+- only classify NO-BUY when target-date execution coverage is independently complete,
+- otherwise execution outcome = UNKNOWN.
+
+### Potential optimization interpretations later
+Only after mature evidence:
+A. Pattern improves selection but not BUY rate:
+   possible execution mismatch.
+
+B. Pattern improves BUY rate but not post-BUY return:
+   pattern may merely predict easy triggers, not alpha.
+
+C. Pattern improves both selection outcomes and BUY quality:
+   strongest later candidate for a formal review.
+
+D. Pattern improves neither:
+   reject/retain for interpretability only.
+
+E. Pattern catches big runners that Formal never buys because of maxChase:
+   investigate opportunity cost, but do not automatically loosen maxChase.
+
+### Status
+WORTH_PROSPECTIVE_SHADOW_LINKAGE.
+No Formal execution change.
+
