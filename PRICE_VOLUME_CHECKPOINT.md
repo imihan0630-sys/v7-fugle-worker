@@ -518,3 +518,23 @@ Class A if research-only; Class C if later used in formal 15m confirmation.
 6. PV-189: audit whether signal-event recorder scope defect can bias Execution Alpha BUY-trigger statistics.
 7. PV-190: evidence-convergence checkpoint and next highest-value data action.
 8. Formal Core remains LOCKED.
+
+## Progress added — PV-184 through PV-190
+- PV-184 freezes cohort-quality provenance. PV primary inference needs both valid feature data and verified Formal cohort input-history quality; monitored observations retain original selectionScanDate/plan lineage rather than replacing it with observation date.
+- PV-185 requires later data-quality discoveries to quarantine rows through a separate quality overlay; immutable snapshots/outcomes are not rewritten to hide past production defects.
+- PV-186 reuses the existing prospective research cohorts SELECTED / QUALIFIED_NOT_SELECTED / NEAR_MISS / REJECTED_AFTER_BASE / BROAD_CONTROL. Selected/monitored PV evidence answers questions inside the Formal funnel and cannot automatically generalize to the whole market. Historical intraday Shadow for unmonitored controls is prohibited.
+- PV-187 freezes date-level primary inference: same-date stocks are correlated, so compute within-date contrasts then aggregate across independent dates; equal-date weighting is primary and date concentration/leave-one-date-out stability must be reported.
+- PV-188 integrates later Corporate Action evidence and corrects the freshness direction. Market-session-only freshness is insufficient because verified symbol-specific suspensions create legitimate no-bar exchange-open sessions. Safe contract: EXPECTED_SYMBOL_SESSIONS = OFFICIAL_EXCHANGE_SESSIONS - VERIFIED_SYMBOL_SUSPENSION_SESSIONS; unknown suspension provenance fails closed.
+- PR #100 remains OPEN/DRAFT/unmerged and must not be promoted as-is. Its stale-cache rejection is useful, but the current market-session-only implementation can misclassify legitimate suspension gaps. The Corporate Action research line has independently reached and tested this conclusion.
+- PV-189 separates two evidence channels: current Execution Alpha buyTriggeredPlans comes from v8 trade-journal plans/signals, not execution-recorder FORMAL_SIGNAL_OBSERVED rows. Thus the recorder batch-scope defect blocks signal-microstructure attribution but does not itself invalidate current Execution Alpha trigger counts.
+- PV-190 declares theory mature enough that data integrity/provenance now outrank new factor invention. Priority order: symbol-session-aware history quality -> PV Shadow DATA_QA -> execution-recorder authoritative coverage -> only later v3 and H005.
+- No merge/deploy performed. PV_SHADOW_V0_1 unchanged; Formal Core LOCKED.
+
+## Revised exact next continuation point after PV-190
+1. PV-191: audit the Corporate Action symbol-session prototype contract specifically for PV daily-history consumers and identify what metadata PV needs rather than duplicating the CA engine.
+2. PV-192: define a minimal research quality-overlay schema joining cohort rows, PV snapshots, execution rows and history/suspension provenance.
+3. PV-193: define date-level exclusion/quarantine rules so one corrupted selected symbol does not automatically discard an otherwise valid entire date unless the date-level denominator is compromised.
+4. PV-194: define prospective PV DATA_QA acceptance receipts independent of alpha/outcomes.
+5. PV-195: define readiness criteria for first H001/H002 descriptive comparison once clean dates accumulate.
+6. Keep new factor invention paused; prioritize evidence completeness and point-in-time provenance.
+7. Formal Core remains LOCKED.
