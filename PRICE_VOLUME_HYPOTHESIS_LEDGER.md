@@ -112,3 +112,16 @@ Current research schema: PV_SHADOW_V0_1
 - Promotion rule: no Formal change until incremental value and untouched confirmation evidence pass governance.
 - Current result: no test yet.
 - Decision: remain PLANNED.
+
+### PV-H005 protocol extension after PV-126/PV-128
+- Gross participation and net direction are now frozen as separate constructs.
+- Required dealer fields include buy/sell/net for proprietary and hedge, not net only.
+- Derived research views:
+  - gross side participation;
+  - directional imbalance;
+  - buy/sell streaks;
+  - prop-vs-hedge sign state.
+- Any side-participation share requires compatible source scope; daily institutional statistics must not be divided by intraday 15m volume.
+- Primary H005 cohort uses the full existing Formal/control observation set across the RVOL distribution. Restricting only to high-RVOL events is secondary/descriptive because selection on high volume may create collider bias.
+- High-RVOL subgroup findings are never sufficient causal evidence by themselves.
+- Current status remains PLANNED; no capture implementation or Formal change yet.
