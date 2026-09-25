@@ -8073,3 +8073,206 @@ without incremental testing.
 Interaction improves description/prediction but does not prove the institution caused the move.
 
 Status: FLOW_ACCEPTANCE_INTERACTION_FROZEN / NO_FORMAL_SCORE.
+
+# PV-141 — Foreign Dealer Is a Distinct Semantic Category; “ForeignNet” Needs an Explicit Definition
+
+## Official reporting
+TWSE/TPEx institutional reports separate:
+- foreign investors excluding foreign dealers;
+- foreign dealers;
+- investment trusts;
+- dealers.
+
+TWSE notes foreign-dealer trading is not included in the official total.
+TPEx notes foreign-dealer trading is already included in dealer trading and therefore is not separately included in the three-institution total.
+
+Sources:
+- https://www.twse.com.tw/en/fund/T86
+- https://www.tpex.org.tw/web/stock/3insti/daily_trade/3itrade_hedge_result.php?l=zh-tw&o=htm
+
+## Current Worker audit
+TWSE parser currently constructs:
+`foreignNet = foreignMain + foreignDealer`.
+
+TPEx parser uses the combined foreign row field.
+
+Thus current `foreignNet` is closer to a broad “foreign-account flow” concept than the official:
+`Foreign Investors excluding Foreign Dealers`
+concept.
+
+## Why this matters
+A label such as:
+“foreign consecutive buying”
+must specify whether it means:
+- foreign investors excluding foreign dealers;
+- broad foreign accounts including foreign dealers.
+
+Without that definition, historical comparisons and official-total reconciliation can be ambiguous.
+
+## Decision
+Do NOT alter current Formal semantics during PV research.
+
+Research capture should preserve separately:
+- foreignMainNet;
+- foreignDealerNet;
+- broadForeignNet;
+and provenance.
+
+Future evidence can decide which definition is useful.
+
+Status: FOREIGN_FLOW_SEMANTIC_SPLIT_REQUIRED / FORMAL_UNCHANGED.
+
+
+# PV-142 — Institutional Categories Are Not Independent Votes
+
+## Temptation
+A future rule might count:
+- foreign buy = 1 vote;
+- trust buy = 1 vote;
+- dealer buy = 1 vote.
+
+Then “3/3 buying” looks stronger than “1/3.”
+
+## Problem
+The categories can be correlated because of:
+- common market information;
+- index rebalance;
+- sector rotation;
+- same price momentum;
+- shared liquidity conditions;
+- ETF/hedge mechanics.
+
+Dealer hedge can also respond mechanically to flows initiated by other investors.
+
+Therefore three positive categories are not three independent pieces of evidence.
+
+## Better research question
+Does **institutional breadth** add incremental information beyond:
+- strongest participant flow;
+- total institutional net;
+- gross institutional participation;
+- market/sector common activity;
+- PV acceptance?
+
+## Candidate descriptive state
+- SINGLE_GROUP
+- TWO_GROUP_CONSENSUS
+- THREE_GROUP_CONSENSUS
+- CONFLICTED
+- NONE
+- UNKNOWN
+
+No additive vote score.
+
+Status: INSTITUTIONAL_BREADTH_NOT_INDEPENDENT_EVIDENCE.
+
+
+# PV-143 — Flow Trajectory Is More Informative Than Streak Count Alone
+
+## Descriptive trajectory
+For a same-sign streak, preserve the normalized sequence:
+`f_{t-k}, ..., f_t`
+
+Possible trajectory labels after evidence design:
+- ACCELERATING
+- STABLE
+- DECELERATING
+- REVERSING
+- IRREGULAR
+- UNKNOWN
+
+## Avoid premature thresholds
+Do not define:
+“last flow < 50% first flow = decaying”
+without prospective evidence.
+
+Initial research can use:
+- normalized linear slope;
+- current / median prior streak magnitude;
+- cumulative normalized flow;
+as continuous diagnostics.
+
+## Important distinction
+A decelerating positive streak may still be constructive if:
+- price accepts;
+- supply contracts;
+- sector is strong.
+
+An accelerating streak can be late/crowded.
+
+Therefore trajectory is context, not a monotonic score.
+
+Status: FLOW_TRAJECTORY_CONTINUOUS_FIRST.
+
+
+# PV-144 — Investor-Flow Capture Should Preserve Raw Components before Derived Streaks
+
+## Data architecture principle
+The durable record should store daily raw point-in-time components first:
+- buy;
+- sell;
+- net;
+- source;
+- scope;
+- date;
+- capturedAt.
+
+Derived:
+- streak days;
+- normalized flow;
+- trajectory;
+- consensus breadth
+can always be recomputed under a versioned research definition.
+
+The reverse is impossible:
+a stored `foreignBuyDays=3` cannot recover the underlying daily magnitudes.
+
+## Implication for future Class-A capture
+If/when institutional origin capture is implemented:
+store raw components rather than only adding:
+- propBuyDays;
+- hedgeBuyDays.
+
+This prevents future research from being trapped by today's derived definition.
+
+Status: RAW_FIRST_DERIVED_LATER_FROZEN.
+
+
+# PV-145 — Institutional-Origin Research Should Remain Separate from Core PV Shadow during Initial QA
+
+## Reason
+PV_SHADOW_V0_1 is validating:
+- clock-time normalization;
+- response;
+- acceptance;
+- persistence;
+- guards.
+
+Institution-flow decomposition studies:
+- participant identity;
+- gross/net;
+- streak trajectory;
+- mechanical hedge origin.
+
+These are related but distinct data-generation questions.
+
+## Governance
+Do not merge the schemas during first QA.
+
+Later integration should be by:
+- marketDate;
+- symbol;
+- as-of-safe timestamps;
+- schema versions.
+
+This lets researchers ask:
+`PV state x institution-origin state`
+without making either recorder depend on the other.
+
+## Benefit
+If one source breaks:
+- PV core remains valid;
+- institution research becomes UNKNOWN;
+- Formal remains unaffected.
+
+Status: MODULAR_RESEARCH_LANES_REQUIRED.
