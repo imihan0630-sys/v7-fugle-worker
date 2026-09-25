@@ -625,3 +625,366 @@ The question is incremental interaction, not another additive score.
 - daily institutional data may not align perfectly with intraday event timing.
 
 Status: INTERACTION_ONLY / REDUNDANCY_RISK_HIGH.
+# PV-008 — Nonlinear Breakout-Volume Response / Climax Interaction
+
+## Research question
+The current B-channel formally requires breakout-day volume / previous-5-day average volume >= 1.3 and then rewards higher relative volume up to a cap. This embeds a partly monotonic assumption: more breakout volume is better, at least over the scored range.
+
+The literature does not justify that assumption as a universal rule. Gervais, Kaniel & Mingelgrin report a high-volume return premium in U.S. stocks, while Wang & Cheng report the opposite sign for extreme-volume stocks in China, especially among prior winners / glamour stocks. Lee & Swaminathan show high-volume winners can reverse sooner over longer horizons. More recent evidence also shows turnover can shift short-horizon behavior from reversal toward momentum in some markets, but this relation is not universal.
+
+Sources:
+- https://doi.org/10.1111/0022-1082.00349
+- https://doi.org/10.1016/j.pacfin.2004.04.002
+- https://doi.org/10.1111/0022-1082.00280
+- https://doi.org/10.1093/rfs/hhab055
+- https://doi.org/10.1016/j.jempfin.2024.101556
+
+## Positive mechanism
+A breakout accompanied by abnormal participation may reflect new information, recognition, broad demand or informed trading. If price accepts the new level, heavy participation can support continuation.
+
+## Opposing mechanism
+Extreme volume can also reflect disagreement, attention chasing, forced liquidity, distribution, late-stage crowding or overreaction. In that case the largest volume can be worse than moderate expansion.
+
+## Frozen Shadow study
+Do not tune thresholds after outcome inspection. Preserve the Formal >=1.3 rule unchanged and create research-only buckets using the existing `volumeTodayVsPrev5`:
+- V0: <1.0
+- V1: 1.0 to <1.3
+- V2: 1.3 to <1.8
+- V3: 1.8 to <2.5
+- V4: 2.5 to <4.0
+- V5: >=4.0
+
+In parallel, compute own-history percentile / robust z-score so the fixed buckets are not the only view. The fixed bins are diagnostic bins, not buy/sell judgments.
+
+## Climax-candidate interactions
+An extreme-volume bar becomes a `CLIMAX_CANDIDATE`, not a bearish label, when abnormal volume coexists with one or more:
+- late-stage extension / high ret20 or large MA20 distance;
+- large gap;
+- poor close location;
+- large upper shadow / rejection;
+- weak price progress per ATR despite extreme volume;
+- sector non-confirmation;
+- institution non-confirmation;
+- next-bar/day failure to hold the breakout.
+
+Opposite interpretation remains possible: high volume + poor immediate progress can be absorption. Follow-through decides the later state.
+
+## Outcomes
+Pre-register:
+- D1 / D3 / D5 / D10 return;
+- MFE / MAE;
+- stop-first;
+- close-below-pivot within 1/3/5D;
+- retest-hold rate;
+- time-to-reacceleration;
+- by market regime, liquidity tier, price tier, pattern maturity and late-stage state.
+
+Status: HIGH_PRIORITY_SHADOW_STUDY / FORMAL_UNCHANGED.
+
+
+# PV-009 — Research-Only Data Schema and Outcome Ledger
+
+## Principle
+Price-volume research must be reproducible as-of-time and must never rewrite historical features because later price action became known.
+
+## Daily Shadow record
+Proposed research-only record, `decisionImpact=false`:
+- schemaVersion, symbol, marketDate, asOfTimestamp, sourceProvenance;
+- OHLC, volumeShares, tradeValue;
+- rvol5, rvol20, logVolumeZ20 / robust percentile;
+- valueRvol20;
+- volumeTodayVsPrev5, volumeContraction5to20;
+- ATR/range expansion, close location, upper/lower shadow;
+- gapPct, ret20, MA20 distance, lateStage;
+- pivot / breakout distance in ATR;
+- Pattern Maturity state;
+- sector participation snapshot;
+- institution snapshot;
+- liquidity coverage;
+- price-limit state;
+- dataCoverage / missingness reason;
+- decisionImpact=false.
+
+## Intraday Shadow record
+Key by `symbol + marketDate + slotEnd`:
+- timeframe;
+- local previous-5-bar volume ratio;
+- same-slot historical median / robust dispersion;
+- same-slot relative volume;
+- cumulative expected-volume pace;
+- OHLC, range, body, close location, shadows;
+- price vs session cumulative average when available;
+- pivot distance;
+- freshness / completed-bar flag;
+- historical-slot coverage count;
+- decisionImpact=false.
+
+## Outcome ledger
+Outcome data are stored separately and joined only after the horizon has elapsed:
+- eventId / featureSnapshotId;
+- D1/D3/D5/D10;
+- MFE/MAE;
+- stopFirst;
+- falseBreak1D/3D/5D;
+- retestHold;
+- reacceleration;
+- realized horizon completion status.
+
+Never backfill the feature snapshot from the outcome ledger.
+
+## Technical feasibility
+Fugle historical candles expose OHLC, volume and daily turnover, and historical intraday candles support 1/3/5/10/15/30/60-minute bars. That is sufficient for isolated daily + 15m Shadow capture without touching Formal logic.
+
+Sources:
+- https://developer.fugle.tw/docs/data/http-api/historical/candles/
+- https://developer.fugle.tw/docs/data/http-api/intraday/candles/
+
+Status: SCHEMA_DEFINED / CLASS_A_IF_RESEARCH_ONLY.
+
+
+# PV-010 — Volume Acceptance Lifecycle
+
+## Core idea
+A breakout-volume bar is an event start, not a conclusion. Price-volume interpretation should be a state machine that updates only as later evidence arrives.
+
+## Research states
+1. `NO_EVENT`
+2. `BREAKOUT_ATTEMPT`
+3. `INITIAL_ACCEPTANCE`
+4. `RETEST`
+5. `REACCELERATION`
+6. `FAILED_REENTRY`
+7. `EXPIRED_OR_AMBIGUOUS`
+
+## Observable transitions
+### BREAKOUT_ATTEMPT
+As-of bar/date only:
+- price probes or closes beyond a pre-existing pivot / platform boundary;
+- record RVOL, range, close location, gap and price-limit state.
+
+### INITIAL_ACCEPTANCE
+Requires later evidence, for example:
+- close remains above / recovers above pivot;
+- price progress is not immediately reversed;
+- close location remains constructive.
+
+No fixed trading threshold is approved; these are research definitions to freeze before testing.
+
+### RETEST
+Observe:
+- distance to pivot;
+- whether volume contracts relative to breakout event;
+- whether downside price progress is small relative to selling effort;
+- whether the close recovers / holds structure.
+
+### REACCELERATION
+Observe:
+- renewed positive price progress;
+- improvement in close location;
+- renewed participation relative to the retest phase;
+- sector / institution moderators.
+
+### FAILED_REENTRY
+Observe:
+- decisive close back inside the prior range / below pivot;
+- expanding downside range or poor recovery;
+- later evidence must be timestamped when it actually occurs.
+
+## Why this matters
+Llorente, Michaely, Saar & Wang distinguish information-driven high-volume returns, which can continue, from risk-sharing/liquidity-driven high-volume returns, which can reverse. A lifecycle of acceptance/failure is a practical observable proxy for this otherwise latent motive.
+
+Sources:
+- https://www.nber.org/papers/w8312
+- https://doi.org/10.1093/rfs/15.4.1005
+
+Status: HIGH_VALUE_STATE_MACHINE_CANDIDATE / NO_FORMAL_USE.
+
+
+# PV-011 — Up-Volume / Down-Volume Asymmetry: Useful Proxy, Dangerous Label
+
+## Research question
+Can the direction of volume over multiple bars add information beyond total volume?
+
+## Critical semantic warning
+Every executed trade has both a buyer and seller. Calling all volume on an up bar “buy volume” and all volume on a down bar “sell volume” is only a price-direction proxy. It is not true aggressor-side order flow.
+
+## Low-cost proxies worth testing
+Daily and 15m research-only variants:
+- `signedVolCC = sign(close - prevClose) * volume`;
+- `signedVolOC = sign(close - open) * volume`;
+- `upDownVolumeBalanceN = (upVolume - downVolume)/(upVolume + downVolume)`;
+- positive-bar vs negative-bar volume ratio;
+- price progress per signed-volume shock.
+
+## Positive case
+Persistent positive signed-volume imbalance with improving price acceptance may reveal directional participation not captured by total RVOL alone. Prior research has used signed-volume-based measures to study momentum / overreaction.
+
+Source:
+- https://www.sciencedirect.com/science/article/pii/S1059056022000740
+
+## Opposing case
+- bar-signing is noisy and can misclassify gap days / intrabar reversals;
+- it can duplicate return momentum, positive-day ratio and close-location features;
+- institutional net-flow features already capture a separate directionality signal;
+- historical candle data do not provide true historical aggressor-side order flow.
+
+Therefore it must pass an incremental-value test after controlling for existing return, candle, institution and sector variables.
+
+Status: MEDIUM_PRIORITY_SHADOW / HIGH_REDUNDANCY_RISK.
+
+
+# PV-012 — Turnover / Shares-Outstanding Normalization
+
+## Why raw volume is not cross-stock comparable
+100,000 shares can be trivial for one company and huge for another. Cross-stock interpretation should distinguish:
+- raw shares;
+- traded value;
+- share turnover;
+- value turnover;
+- free-float turnover where defensible.
+
+## Feasible layers
+### A. Own-history RVOL
+Already highest priority because it avoids cross-sectional size distortion without needing share-count data.
+
+### B. Issued-share turnover
+`volumeShares / issuedCommonShares`.
+
+TWSE / public-company basic data include issued common share count and are updated daily. This can support a current cross-sectional turnover research field.
+
+Sources:
+- https://openapi.twse.com.tw/
+- https://data.gov.tw/dataset/28567
+
+### C. Value-turnover proxy
+Current Worker data already contain historical `tradeValue` and current `marketCapYi`. A research proxy `tradeValue / marketCap` is technically possible, but historical use is dangerous if a current market-cap snapshot is applied backward through corporate actions.
+
+## Free-float warning
+Issued shares are not free float. A free-float turnover factor should not be invented from issued shares. Until a reliable, timestamped free-float source is available, label free-float turnover UNKNOWN rather than approximate it silently.
+
+## Research position
+Use own-history RVOL first. Add issued-share / value-turnover normalization only as secondary cross-sectional context with explicit as-of provenance.
+
+Status: WORTH_SHADOW_RESEARCH / DATA_QUALITY_GATED.
+
+
+# PV-013 — Taiwan Price-Limit-Aware Price-Volume Semantics
+
+## Current market rule
+TWSE stocks normally have daily price fluctuation limits of +/-10% from the auction reference price. Newly TWSE-listed common stocks have no price limit for their first five trading days, subject to the rule's stated exceptions.
+
+Source:
+- https://twse-regulation.twse.com.tw/ENG/EN/law/DOC01.aspx?FLCODE=fl007304&FLNO=63
+- https://www.twse.com.tw/en/products/system/trading.html
+
+## Why this changes price-volume interpretation
+Near an upper or lower limit, observed price progress is censored by market structure. Therefore:
+- “extreme volume + little further price progress” can be falsely labeled inefficiency / distribution;
+- return-per-volume and range-per-volume metrics are mechanically compressed;
+- next-period continuation or reversal can contain information that could not be expressed in the event bar.
+
+Taiwan studies report delayed price discovery / serial-correlation effects around price limits and evidence of overnight continuation followed by later reversal in historical samples. These findings are not a direct modern trading rule, but they are enough to prohibit naive treatment of limit-hit bars as ordinary bars.
+
+Sources:
+- https://www.sciencedirect.com/science/article/pii/S0927538X98000110
+- https://www.sciencedirect.com/science/article/pii/S1059056000000824
+- https://www.sciencedirect.com/science/article/pii/S0927538X19301957
+
+## Shadow fields
+- distanceToUpperLimitPct / distanceToLowerLimitPct;
+- touchedUpperLimit / touchedLowerLimit;
+- closedAtUpperLimit / closedAtLowerLimit;
+- priceCensored=true/false;
+- firstFiveListingDays / no-limit regime if known;
+- intraday lock/reopen metrics only if robust 1m history is available.
+
+## Governance
+Generic effort-vs-result regressions should either:
+1. exclude price-censored observations, or
+2. analyze them as a separate cohort.
+
+A limit-up close is not automatically bullish; a limit-hit reversal is not automatically bearish. The state requires subsequent acceptance / failure evidence.
+
+Status: TAIWAN_SPECIFIC_HIGH_PRIORITY_CONTROL.
+
+
+# PV-014 — Persistence of Abnormal Volume vs One-Day Shock
+
+## Evidence
+Recent research on persistence in abnormal trading volume finds that persistent abnormal-volume episodes can be associated with continued short-run drift, while trading activity later mean-reverts and return behavior can eventually reverse.
+
+Source:
+- https://doi.org/10.1080/1351847X.2024.2303092
+
+This is consistent with the broader idea that a single volume spike and a multi-day participation wave are different phenomena.
+
+## Candidate features
+Research only:
+- abnormalVolumeDays3 / abnormalVolumeDays5;
+- rvolPersistence3 / rvolPersistence5;
+- mean / median log-RVOL over 3/5 days;
+- volumeDecaySlope after event;
+- timeSincePeakRVOL;
+- persistence x price-acceptance interaction.
+
+## Positive interpretation
+Persistent elevated participation plus sustained price acceptance may indicate information diffusion / recognition and continuation.
+
+## Opposing interpretation
+Persistent elevated participation late in an extended move may be crowding / attention persistence before exhaustion. If price progress decays while volume stays high, interpretation should worsen rather than improve.
+
+Status: WORTH_SHADOW_RESEARCH / INTERACT_WITH_PV010.
+
+
+# PV-015 — Turnover x 52-Week-High Context: Evidence Exists, Redundancy Risk High
+
+## Evidence
+Chen, Stivers & Sun (2024) report that short-term reversal weakens as turnover and price-to-52-week-high increase, with momentum appearing in stocks that are simultaneously high-turnover and near their 52-week highs.
+
+Source:
+- https://doi.org/10.1016/j.jempfin.2024.101556
+
+Related international work finds high-turnover stocks can exhibit short-term momentum, but Chinese-market replications show materially different behavior. This is exactly why the interaction must not be imported as a universal rule.
+
+Sources:
+- https://doi.org/10.1093/rfs/hhab055
+- https://doi.org/10.1016/j.pacfin.2022.101920
+
+## Current-system overlap
+The system already has:
+- ret20 / ret60;
+- prior highs / high60;
+- breakout structure;
+- overheat / lateStage logic;
+- liquidity constraints.
+
+Fugle `historical/stats` exposes `week52High`, but adding a full-universe call solely for this field may add cost and duplicate existing structure.
+
+Source:
+- https://developer.fugle.tw/docs/data/http-api/historical/stats/
+
+## Decision
+Treat 52-week-high x turnover as a literature moderator and redundancy test, not a current engineering priority. Only promote if it adds incremental information after the existing high60 / breakout / lateStage variables.
+
+Status: LOW_TO_MEDIUM_PRIORITY / REDUNDANCY_TEST_FIRST.
+
+
+# Batch synthesis after PV-015
+
+## Strongest candidates so far
+1. Same-slot 15m RVOL + cumulative-volume pace.
+2. Nonlinear breakout-volume response instead of monotonic “more is better.”
+3. Acceptance lifecycle: breakout -> hold -> retest -> reacceleration / failure.
+4. Taiwan price-limit-aware censoring control.
+5. Persistent abnormal-volume wave vs one-day shock.
+6. Constructive dry-up vs no-demand separation.
+
+## Candidates that require restraint
+- signed up/down-volume proxies: noisy and potentially redundant;
+- share / value turnover: useful context but historical normalization quality matters;
+- 52-week-high x turnover: supported in some samples but likely overlaps current breakout / overheat structure;
+- institutional / sector volume: moderator only, avoid duplicate additive scores.
+
+## Formal decision
+No Formal A/B rule, threshold, capital rule, entry confirmation or push logic is changed by PV-008 through PV-015. All items remain research / Shadow hypotheses until prospective evidence shows incremental value.
+
