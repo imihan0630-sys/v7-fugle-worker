@@ -1436,3 +1436,165 @@ Triangles / Platforms:
 
 No Formal change.
 
+
+
+## DL-002M — Sakata / Multi-Candle Sequence Research Specification v0.1
+
+### Historical/provenance caution
+Modern sources commonly group Sakata Five Methods into:
+- Three Mountains
+- Three Rivers
+- Three Gaps
+- Three Soldiers
+- Three Methods
+
+However, modern descriptions are not perfectly uniform.
+Some sources map “Three Rivers” broadly to reversal candlestick sequences such as morning/evening-star families, while others describe repeated valleys / bottoming structure.
+Modern educational sources also note that the Sakata framework is generally considered a later reconstruction rooted in Homma-related market philosophy rather than a preserved original set of exact candlestick formulas.
+
+Research implication:
+Do NOT encode Sakata names as authoritative binary factors.
+Use them as taxonomy labels over measurable sub-patterns.
+
+### A. Three Mountains family
+Map into swing topology:
+- triple-top-like repeated resistance,
+- head-and-shoulders-like variant when middle peak is materially higher,
+- neckline/support formed by intervening troughs.
+
+Fields:
+- peak1/peak2/peak3
+- peakDispersionPct
+- centerPeakExcessPct
+- trough1/trough2
+- necklineSlope
+- necklineBreakState
+- priorAdvanceContext
+- volumeByPeak
+- confirmationState
+
+Expected overlap:
+- substantial overlap with future head-and-shoulders / multi-peak topology research.
+Do not create a separate score merely because the Sakata label is different.
+
+### B. Three Rivers family
+Because terminology is non-uniform, store at least two distinct subfamilies:
+
+B1. MULTI_TROUGH_TOPOLOGY
+- three-valley / triple-bottom-like structure,
+- separate from W-bottom because there are three confirmed troughs.
+
+B2. STAR_REVERSAL_SEQUENCE
+- morning-star / evening-star-like 3-candle sequence,
+- requires historical OPEN and is therefore DATA_BLOCKED until DL-002B is solved.
+
+Do not merge B1 and B2 in statistics.
+
+### C. Three Gaps
+Three consecutive gaps can represent powerful momentum / exhaustion depending on context.
+
+Research fields:
+- gapCount
+- gapDirection
+- gapPct[]
+- gapNormalizedByATR[]
+- cumulativeMovePct
+- priceLimitHitCount
+- corporateActionTag
+- gapFillWithin1D/3D/5D
+- trendContext
+- volumeByGap
+- distanceFromMA20/MA60
+- overheatState
+
+Critical controls for Taiwan:
+- ex-right/ex-dividend events must not be counted as market-generated gaps,
+- limit-up/down mechanics can cluster extreme moves,
+- 7% vs 10% price-limit regimes must be separated,
+- old call-auction vs continuous-trading eras must not be blindly pooled.
+
+Therefore Three Gaps is ADJUSTMENT_BLOCKED until corporate-action-aware raw/adjusted OHLC is available.
+
+### D. Three Soldiers
+Instead of only “three bullish candles” or “three bearish candles,” measure sequence quality.
+
+Bullish sequence fields:
+- bullishBodyCount3
+- closeProgressionPct[]
+- openWithinPriorBodyCount
+- bodyAtrRatio[]
+- upperWickRatio[]
+- lowerWickRatio[]
+- total3DReturn
+- volumeProgression
+- priorTrendState
+- distanceFromSupport
+- overheatState
+
+Bearish mirror features likewise.
+
+Why:
+Three bullish candles near a depressed support zone may represent reversal/continuation strength.
+Three huge bullish candles after an extended run may instead represent late-stage overheat.
+The same visual label can have opposite risk depending on location/context.
+
+### E. Three Methods / Rising Three Methods
+Modern descriptions commonly define a bullish Rising Three Methods sequence as:
+- initial strong bullish candle,
+- several smaller counter-trend candles contained substantially within the first candle's range/body,
+- final bullish candle resuming upward movement and closing beyond the first candle.
+
+Research fields:
+- impulseBodyAtr
+- insideCounterBarsCount
+- counterBodyAtrMean
+- counterRangeContainmentPct
+- counterVolumeDryUp
+- finalResumeBodyAtr
+- finalCloseBeyondImpulse
+- priorTrendState
+- sequenceDuration
+- breakoutVolumeRatio
+
+This structure is conceptually similar to a micro flag / pause.
+Therefore redundancy with Bull Flag must be explicitly tested.
+
+### F. Raw relational encoding
+For any N-candle Sakata/candlestick sequence, preserve a pattern-agnostic representation:
+- sign(C-O)
+- body/ATR
+- upperWick/ATR
+- lowerWick/ATR
+- gap from previous close/open
+- close position within range
+- H/L/C relative ranks across N bars
+- volume ratios
+- prior trend
+- support/resistance location
+- price-limit state
+- corporate-action tag
+
+Named pattern labels sit on top of this raw representation.
+If a named label adds no information beyond raw features, retain it only for interpretability.
+
+### Evidence caution
+Taiwan and Chinese-market candlestick studies support the possibility of conditional predictive information, but results vary by:
+- liquidity,
+- firm size,
+- trend context,
+- holding horizon,
+- pattern definition.
+
+A 2016 Pacific-Basin Finance Journal study on Chinese stocks found bullish Harami, Engulfing and Piercing more effective in highly liquid small firms, while other reversal patterns behaved differently in lower-liquidity stocks.
+This reinforces subgroup/regime testing and argues against one universal candlestick score.
+
+### Sakata research status
+- THREE_MOUNTAINS: TOPOLOGY_RESEARCHABLE
+- THREE_RIVERS_MULTI_TROUGH: TOPOLOGY_RESEARCHABLE
+- STAR_REVERSAL: DATA_BLOCKED_OPEN
+- THREE_GAPS: ADJUSTMENT_BLOCKED
+- THREE_SOLDIERS: DATA_BLOCKED_OPEN for full definition
+- THREE_METHODS: DATA_BLOCKED_OPEN for full definition
+
+No Formal implication.
+
