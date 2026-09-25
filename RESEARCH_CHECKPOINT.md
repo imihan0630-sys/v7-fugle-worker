@@ -300,11 +300,16 @@ Updated: 2026-09-25 16:58 Asia/Taipei.
 
 
 ## Corporate Actions & Capital Supply status update
-- Files: CORPORATE_ACTIONS_CAPITAL_SUPPLY_RESEARCH.md, CORPORATE_ACTIONS_CAPITAL_SUPPLY_CHECKPOINT.md, CORPORATE_ACTION_HISTORY_SEMANTICS_PROPOSAL.md.
-- Current cursor: CA-001 through CA-036 complete.
-- Status: CONCEPT_COMPLETE / SOURCE_AUDIT_COMPLETE / MATERIALITY_CONFIRMED / CLASS_B_PROPOSAL_READY.
-- Three-event real-data validation confirms that corporate-action price resets can materially alter Formal technical features. 8422 par-value change flips the complete A technical setup from fail on raw history to pass under a target-date-known continuity bridge.
-- Today's provider-adjusted historical series is not safe as point-in-time replay because historical event-day prices can be rewritten onto a later adjustment basis.
-- Current latest capital/share-count snapshots are current context only, not historical realized share-count truth.
-- Proposal/test plan is checked in; no production behavior changed.
-- Next: CA-037 broader event sample; CA-038 share-volume-unit bridge; CA-039 no-action controls; CA-040 branch/test work only after evidence survives.
+- Files: CORPORATE_ACTIONS_CAPITAL_SUPPLY_RESEARCH.md, CORPORATE_ACTIONS_CAPITAL_SUPPLY_CHECKPOINT.md, CORPORATE_ACTION_HISTORY_SEMANTICS_PROPOSAL.md, CORPORATE_ACTION_REGISTRY_VALIDATION_SPEC.md, CORPORATE_ACTION_RS_SOURCE_CONTRACT.md, CORPORATE_ACTION_DISCOVERY_SOURCE_CONTRACT.md.
+- Research artifacts: registry v0.2, feature-window manifest v0.1, mechanics feature-delta sample v0.1, RS semantic sample v0.1.
+- Current cursor: CA-001 through CA-080 complete.
+- Status: MATERIALITY_CONFIRMED / LIFECYCLE_REGISTRY_V0_2 / MECHANICS_DELTA_BUILT / RS_SEMANTICS_CONFIRMED / EVIDENCE_DENOMINATOR_PENDING.
+- Lifecycle rule: ex-right price reset and later new-share listing/supply are separate when dates differ. Stock-dividend ex-right does not automatically rescale tradable-share volume.
+- Target-date/window rule: only events with historyStartDate < effectiveDate <= targetDate can transform the supplied history.
+- Registry validation is fail-closed and multidimensional. Convenience samples remain INFERENCE_READY=false.
+- Mechanics sample confirms large raw-vs-continuity feature changes; 8422 full A technical setup flips FAIL -> PASS.
+- TWSE historical FMTQIK Price Index and MFI94U Total Return Index exact-date contracts are live-validated. First RS semantic sample shows very large corporate-action contamination in raw Legacy RS for 3593/8103/8422.
+- These are mechanical/semantic findings only; no forward-return alpha claim or threshold tuning is authorized.
+- Class B research prototype is isolated on branch research/class-b-corporate-action-history-semantics-20260925; draft PR #101 changes only research/test files. No merge/deploy without owner approval.
+- Formal Core unchanged.
+- Exact continuation: CA-081 prospective archive; CA-082 bounded historical completeness receipts; CA-083 systematic no-action controls; CA-084 contamination persistence; CA-085 interaction with history-freshness PR #100 and Pattern dual-space rules.
