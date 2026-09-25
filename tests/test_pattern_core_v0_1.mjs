@@ -1,0 +1,258 @@
+import assert from "node:assert/strict";
+import {
+  PATTERN_CORE_VERSION,
+  validatePatternBars,
+  detectDirectionalChangeSwings,
+  buildResistanceZones,
+  detectWFromSwings,
+  detectVcpFromSwings,
+  detectPlatform,
+  classifyVShape,
+  classifyCorporateActionGap,
+  classifyLimitBreakout,
+  classifyDeadLiquidityTightBase,
+  classifyNestedResistance,
+  classifyEventGapBreakout,
+  classifyRepeatedResistanceTests,
+  buildPatternSnapshot,
+  replayPatternSnapshot
+} from "../research/pattern_core_v0_1.mjs";
+
+function makeBars(closes, { startDay = 1, volume = 100, turnover = 2_000_000, tickPad = 0.2 } = {}) {
+  return closes.map((close, i) => {
+    const prev = i ? closes[i - 1] : close;
+    const open = prev;
+    const high = Math.max(open, close) + tickPad;
+    const low = Math.min(open, close) - tickPad;
+    return {
+      date: "2026-01-" + String(startDay + i).padStart(2, "0"),
+      open, high, low, close,
+      volume: Array.isArray(volume) ? volume[i] : volume,
+      turnover: Array.isArray(turnover) ? turnover[i] : turnover
+    };
+  });
+}
+
+function scaled(bars, k) {
+  return bars.map(x => ({
+    ...x,
+    open: x.open * k,
+    high: x.high * k,
+    low: x.low * k,
+    close: x.close * k
+  }));
+}
+
+// Data validator: duplicate, ordering and OPEN honesty.
+{
+  const ok = makeBars([10, 11, 10.5]);
+  assert.equal(validatePatternBars({ bars: ok }).usable, true);
+  const duplicate = [...ok, { ...ok.at(-1) }];
+  assert.equal(validatePatternBars({ bars: duplicate }).reason, "DUPLICATE_BAR_DATE");
+  const reversed = [ok[1], ok[0], ok[2]];
+  assert.equal(validatePatternBars({ bars: reversed }).reason, "OUT_OF_ORDER_BAR_DATE");
+  const missingOpen = ok.map(x => ({ ...x, open: null }));
+  assert.equal(validatePatternBars({ bars: missingOpen, requireOpen: true }).reason, "OPEN_MISSING");
+  assert.equal(validatePatternBars({ bars: missingOpen, requireOpen: false }).usable, true);
+}
+
+// C1 V-shaped crash/rebound.
+{
+  const bars = makeBars([100, 98, 94, 86, 78, 82, 90, 97, 101], {
+    volume: [100,110,130,180,240,220,180,150,140]
+  });
+  const c1 = classifyVShape(bars, { asOfDate: bars.at(-1).date });
+  assert.equal(c1.vShapedBase, true);
+  assert.ok(c1.bottomResidenceBars <= 2);
+  assert.equal(c1.highConfidenceCup, false);
+
+  // Prefix replay: future suffix cannot backdate a different historical snapshot.
+  for (let i = 4; i < bars.length; i += 1) {
+    const prefix = bars.slice(0, i + 1);
+    const asOfDate = prefix.at(-1).date;
+    const a = buildPatternSnapshot({ bars: prefix, asOfDate, swingThresholdPct: 0.05 });
+    const b = buildPatternSnapshot({ bars, asOfDate, swingThresholdPct: 0.05 });
+    assert.deepEqual(a, b);
+  }
+}
+
+// C2 wide-loose base: not mature VCP.
+{
+  const bars = makeBars([100, 82, 99, 80, 98, 79, 96, 84, 95]);
+  const swing = detectDirectionalChangeSwings({ bars, asOfDate: bars.at(-1).date, thresholdPct: 0.05 });
+  const vcp = detectVcpFromSwings(swing.swings, { maxMatureDepthPct: 0.15 });
+  assert.ok(vcp.contractionCount >= 2);
+  assert.equal(vcp.mature, false);
+  assert.equal(vcp.wideLoose, true);
+}
+
+// C3 ex-dividend mechanical gap: raw gap is not morphology gap.
+{
+  const out = classifyCorporateActionGap({
+    rawPrev: { close: 101 },
+    rawCurrent: { open: 91 },
+    morphologyPrev: { close: 91.5 },
+    morphologyCurrent: { open: 91 },
+    corporateActionTag: true,
+    adjustmentReady: true
+  });
+  assert.equal(out.rawGap, true);
+  assert.equal(out.morphologyMechanicalGap, false);
+  assert.equal(out.mechanicalCorporateActionGap, true);
+  assert.equal(out.threeGapsEligible, false);
+  assert.equal(out.wUndercutEligible, false);
+
+  const blocked = classifyCorporateActionGap({
+    rawPrev: { close: 101 },
+    rawCurrent: { open: 91 },
+    morphologyPrev: { close: 91.5 },
+    morphologyCurrent: { open: 91 },
+    corporateActionTag: true,
+    adjustmentReady: false
+  });
+  assert.equal(blocked.status, "DATA_BLOCKED");
+}
+
+// C4 limit-up breakout: acceptance remains unresolved on the constrained bar.
+{
+  const out = classifyLimitBreakout({
+    priorResistance: 100,
+    referencePrice: 100,
+    bar: { open: 100, high: 110, low: 100, close: 110 },
+    priceLimitPct: 0.10
+  });
+  assert.equal(out.localBreakout, true);
+  assert.equal(out.priceLimitConstrained, true);
+  assert.equal(out.acceptanceState, "UNRESOLVED");
+}
+
+// C5 dead-liquidity tight base: tiny geometric range cannot become healthy compression by itself.
+{
+  const closes = [50.00,50.05,50.00,50.05,50.00,50.05,50.00,50.05];
+  const bars = closes.map((close, i) => ({
+    date: "2026-02-" + String(i + 1).padStart(2, "0"),
+    open: close,
+    high: close,
+    low: close,
+    close,
+    volume: 1,
+    turnover: 10_000
+  }));
+  const out = classifyDeadLiquidityTightBase({ bars, tickSize: 0.05, minHealthyTurnover: 1_000_000 });
+  assert.equal(out.geometricTightness, true);
+  assert.equal(out.tickDominanceHigh, true);
+  assert.equal(out.liquidityQualityLow, true);
+  assert.equal(out.healthyCompressionConfidence, "REDUCED_OR_UNKNOWN");
+}
+
+// C6 local 20d breakout into major resistance.
+{
+  const out = classifyNestedResistance({
+    localResistance: 100,
+    majorZoneCenter: 103,
+    currentClose: 101.5,
+    majorTolerancePct: 0.01
+  });
+  assert.equal(out.localBreakout, true);
+  assert.equal(out.majorZoneConflict, true);
+  assert.ok(out.availableAirPct > 0 && out.availableAirPct < 0.01);
+}
+
+// C7 event-created gap breakout: overnight and intraday pieces remain separate.
+{
+  const out = classifyEventGapBreakout({
+    previousClose: 100,
+    resistance: 105,
+    bar: { open: 108, high: 112, low: 107, close: 110 },
+    eventProvenanceKnown: true
+  });
+  assert.equal(out.gapBreakout, true);
+  assert.equal(out.eventCreated, true);
+  assert.ok(Math.abs(out.overnightReturn - 0.08) < 1e-12);
+  assert.ok(Math.abs(out.intradayReturn - (110/108 - 1)) < 1e-12);
+  assert.equal(out.attribution, "EVENT_AND_PRIOR_PATTERN_SEPARATE");
+
+  const unknown = classifyEventGapBreakout({
+    previousClose: 100,
+    resistance: 105,
+    bar: { open: 108, high: 112, low: 107, close: 110 },
+    eventProvenanceKnown: false
+  });
+  assert.equal(unknown.attribution, "UNKNOWN");
+}
+
+// C8 repeated resistance: equal touch count can imply different progression states.
+{
+  const absorption = classifyRepeatedResistanceTests([
+    { low: 96, close: 98, resistance: 100 },
+    { low: 97, close: 99, resistance: 100 },
+    { low: 98.5, close: 99.7, resistance: 100 }
+  ]);
+  const barrier = classifyRepeatedResistanceTests([
+    { low: 96, close: 98, resistance: 100 },
+    { low: 95.8, close: 97.9, resistance: 100 },
+    { low: 96.1, close: 98.0, resistance: 100 }
+  ]);
+  assert.equal(absorption.touchCount, barrier.touchCount);
+  assert.equal(absorption.progression, "ABSORPTION_LIKE");
+  assert.equal(barrier.progression, "BARRIER_PERSISTENT_OR_AMBIGUOUS");
+}
+
+// Swing chronology and W topology use confirmedAt; no future pivot confirmation is backdated.
+{
+  const bars = makeBars([100, 94, 88, 92, 99, 94, 89, 95, 101, 98]);
+  const { swings } = detectDirectionalChangeSwings({ bars, asOfDate: bars.at(-1).date, thresholdPct: 0.05 });
+  for (const s of swings) assert.ok(s.confirmedAt >= s.pivotAt);
+  const w = detectWFromSwings(swings, { lowTolerancePct: 0.08 });
+  assert.equal(typeof w.formed, "boolean");
+}
+
+// Structural resistance zones need repeated confirmed swing highs.
+{
+  const swings = [
+    { type:"HIGH", pivotAt:"2026-01-01", confirmedAt:"2026-01-03", pivotPrice:100 },
+    { type:"LOW",  pivotAt:"2026-01-04", confirmedAt:"2026-01-05", pivotPrice:94 },
+    { type:"HIGH", pivotAt:"2026-01-08", confirmedAt:"2026-01-10", pivotPrice:100.8 },
+    { type:"HIGH", pivotAt:"2026-01-15", confirmedAt:"2026-01-17", pivotPrice:110 }
+  ];
+  const zones = buildResistanceZones(swings, { tolerancePct: 0.015, minTouches: 2 });
+  assert.equal(zones.length, 1);
+  assert.equal(zones[0].touchCount, 2);
+  assert.equal(zones[0].stable, true);
+}
+
+// Platform primitive is geometry-only and outcome-agnostic.
+{
+  const bars = makeBars([100,100.5,100.2,100.4,100.1], { tickPad: 0.1 });
+  const p = detectPlatform(bars, { asOfDate: bars.at(-1).date, minBars: 5, maxRangePct: 0.02 });
+  assert.equal(p.formed, true);
+}
+
+// Price-scale invariance: multiplying OHLC by a constant preserves normalized topology.
+{
+  const bars = makeBars([100, 92, 98, 90, 99, 94, 101, 97, 103]);
+  const a = buildPatternSnapshot({ bars, asOfDate: bars.at(-1).date, swingThresholdPct: 0.05 });
+  const b = buildPatternSnapshot({ bars: scaled(bars, 10), asOfDate: bars.at(-1).date, swingThresholdPct: 0.05 });
+  assert.deepEqual(
+    a.swings.map(x => ({ type:x.type, pivotAt:x.pivotAt, confirmedAt:x.confirmedAt })),
+    b.swings.map(x => ({ type:x.type, pivotAt:x.pivotAt, confirmedAt:x.confirmedAt }))
+  );
+  assert.equal(a.w.formed, b.w.formed);
+  assert.equal(a.vcp.mature, b.vcp.mature);
+  assert.equal(a.platform.formed, b.platform.formed);
+}
+
+// Replay exactness and research firewall.
+{
+  const bars = makeBars([100,95,90,96,102,98,104]);
+  const args = { bars, asOfDate: bars.at(-1).date, swingThresholdPct: 0.05 };
+  const original = buildPatternSnapshot(args);
+  const replay = replayPatternSnapshot(args).replay;
+  assert.deepEqual(original, replay);
+  assert.equal(original.snapshotHash, replay.snapshotHash);
+  assert.equal(original.detectorVersion, PATTERN_CORE_VERSION);
+  assert.equal(original.researchOnly, true);
+  assert.equal(original.decisionImpact, false);
+}
+
+console.log("pattern core v0.1 C1-C8 and invariance tests passed");
