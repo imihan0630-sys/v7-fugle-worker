@@ -652,3 +652,281 @@ LS-026: design point-in-time daily history capture for TWSE + TPEx margin/SBL wi
 LS-027: estimate storage/API burden and whether official historical endpoints permit research backfill without look-ahead.
 LS-028: freeze minimal Shadow schema and data-completeness contract.
 LS-029: only then consider a proposal; no implementation until governance classification.
+
+
+---
+
+## LS-025 — Exact current V8.7.11 MI_MARGN schema audit
+
+The source helper `researchMarginEvidenceFromPayload()` currently persists:
+
+### Margin long
+- `marginBuy`
+- `marginSell`
+- `marginPrevBalance`
+- `marginTodayBalance`
+- `marginBalanceChangePct = today / prev - 1`
+
+### Margin short
+- `marginShortCover`
+- `marginShortSale`
+- `marginShortPrevBalance`
+- `marginShortTodayBalance`
+
+### Semantic guard
+- `shortSideScope = MARGIN_SHORT_ONLY_NOT_SBL`
+
+### Missing from current normalized research evidence
+Although official MI_MARGN reports expose more fields, the current helper does not persist:
+- cash redemption / cash repayment;
+- stock redemption;
+- next-business-day margin quota;
+- next-business-day short quota;
+- margin/short offsetting quantity;
+- note / restriction codes;
+- preliminary-vs-final balance quality;
+- revision amount.
+
+### Critical issue
+TWSE's official report states that the same-day “today balance” is auxiliary because credit institutions may continue adjustment work on the following day, and the later “previous-day balance” should be treated as the final correct balance.
+
+Therefore current:
+`marginBalanceChangePct`
+must be interpreted as:
+`PRELIMINARY_SAME_DAY_BALANCE_CHANGE_PCT`
+unless a later finalized value confirms it.
+
+No production field is renamed in this research turn; this is a research semantics correction.
+
+Status: CURRENT V8 FIELD AUDIT COMPLETE / PRELIMINARY-BALANCE WARNING ADDED.
+
+---
+
+## LS-026 — Point-in-time daily history and vintage design
+
+### Required two-vintage model for margin balances
+
+For trade date T:
+
+#### Vintage 1 — same-evening preliminary
+Capture the official T report when first available:
+- marginTodayBalancePreliminary
+- shortTodayBalancePreliminary
+- preliminaryCapturedAt
+
+This represents what was knowable at that time.
+
+#### Vintage 2 — next-trading-day finalization
+On the next official trading day T+1, read:
+- T+1 row's `marginPrevBalance`
+- T+1 row's `shortPrevBalance`
+
+These are the authoritative finalized balances for T according to TWSE's own report semantics.
+
+Store:
+- marginBalanceFinal
+- shortBalanceFinal
+- finalizedKnownAt
+- marginRevision = final - preliminary
+- shortRevision = final - preliminary
+
+### Weekend/holiday rule
+“T+1” means next official trading session, not next calendar day.
+
+### Never overwrite
+Keep both preliminary and final vintages.
+
+Why:
+- live research needs what was available at decision time;
+- historical outcome research needs to know whether revisions are large enough to change classifications.
+
+### Same-date scan eligibility
+A feature used at a 23:35 scan may use only source records actually captured before that decision time.
+If the official dataset was not observed before decision:
+- same-day value = UNKNOWN for that decision.
+
+Status: VINTAGE MODEL FROZEN.
+
+---
+
+## LS-027 — Official historical-source feasibility and burden
+
+### TWSE
+Official pages support date-addressable historical data for:
+- MI_MARGN margin transactions;
+- TWT93U borrowed-stock short-sale balances.
+
+### TPEx
+Official pages provide historical queries for:
+- OTC margin balances;
+- OTC margin-short / borrowed-stock short-sale balances.
+
+This means rolling daily history is technically research-feasible without reconstructing it from price data.
+
+### Backfill boundary
+Historical official data can establish the eventual daily values.
+It does **not** establish the exact first-known intraday timestamp unless contemporaneous capture exists.
+
+Therefore historical backfill may support:
+- finalized daily rolling levels/flows;
+- historical descriptive studies.
+
+It cannot support:
+- same-night point-in-time availability claims
+unless publication timing is separately proven.
+
+### Illustrative storage burden
+Whole-market daily normalized storage is not trivial:
+- ~1,800 symbols × ~250 sessions ≈ 450,000 symbol-day rows/year.
+- Storing both margin and SBL in one compact normalized row is preferable to separate duplicated rows.
+- Retain raw source metadata once per market/date rather than copying long URLs/provider blobs into every symbol row.
+
+### Architecture priority
+1. Start with monitored/research cohort capture prospectively.
+2. If whole-market normalization is later needed, use one daily market ingest then normalize once.
+3. Do not issue per-symbol official-source requests.
+
+Status: DAILY HISTORY FEASIBLE; POINT-IN-TIME BACKFILL LIMIT EXPLICIT.
+
+---
+
+## LS-028 — Minimal Shadow schema and completeness contract
+
+### Raw daily symbol record
+
+Identity:
+- tradeDate
+- symbol
+- market: TWSE / TPEX
+- sourceSchemaVersion
+
+Margin long:
+- marginBuy
+- marginSell
+- marginCashRedemption
+- marginPrevBalanceReported
+- marginTodayBalancePreliminary
+- marginBalanceFinal
+- marginNextQuota
+
+Margin short:
+- shortCover
+- shortSale
+- shortStockRedemption
+- shortPrevBalanceReported
+- shortTodayBalancePreliminary
+- shortBalanceFinal
+- shortNextQuota
+- marginShortOffsetting
+
+SBL actual short sale:
+- sblShortPrevBalance
+- sblShortSale
+- sblShortReturn
+- sblShortAdjust
+- sblShortBalance
+- sblShortNextLimit
+
+Constraint:
+- marginRestrictionCode
+- shortRestrictionCode
+- sblRestrictionCode
+- noteRaw
+
+Vintage/provenance:
+- preliminaryCapturedAt
+- finalizedKnownAt
+- sourceDate
+- sourceURL
+- sourceMarket
+- sourceObservedBeforeDecision
+- qualityState
+- unknownReasons
+
+### Derived features stored separately
+Do not overwrite raw data:
+- marginBalanceChangePreliminary
+- marginBalanceChangeFinal
+- marginRevisionPct
+- normalizedMarginLevel
+- normalizedMarginFlow
+- normalizedShortLevel
+- normalizedSblShortFlow
+- shortReturnRate
+- ownHistoryPercentiles
+- state taxonomy.
+
+### Completeness states
+- COMPLETE_FINAL
+- COMPLETE_PRELIMINARY_ONLY
+- PARTIAL_SOURCE
+- DATE_MISMATCH
+- MISSING_SYMBOL
+- PROVIDER_UNAVAILABLE
+- SCHEMA_CHANGED
+- UNKNOWN
+
+### Rolling-window rule
+A 5/20/60-session feature is valid only if:
+- exact official trading dates are known;
+- all required sessions exist;
+- no duplicate dates;
+- no future date;
+- denominator fields are valid;
+- rules regime is compatible.
+
+No forward fill.
+
+Status: MINIMUM SHADOW SCHEMA V1 FROZEN.
+
+---
+
+## LS-029 — Research-only capture proposal boundary
+
+A full leverage/shorting evidence lane is justified because:
+- the sources exist;
+- current V8 already captures partial one-day evidence;
+- the missing pieces are primarily history, TPEx parity, restrictions and balance finalization.
+
+### Proposed implementation order
+
+Phase A — proposal / offline validation
+- verify exact TWSE and TPEx source schemas over multiple dates;
+- verify symbol coverage;
+- verify revision behavior;
+- verify historical pagination/date parameters;
+- no Worker change.
+
+Phase B — isolated research capture
+- daily market-level ingest after official publication;
+- append preliminary vintage;
+- next trading day finalize prior-day balance;
+- preserve source metadata;
+- research tables only.
+
+Phase C — only after complete history
+- compute fixed pre-registered 5/20/60 rolling fields;
+- run LS-023 protocol;
+- no Formal action.
+
+### Governance
+- Documentation and offline source validation: research-safe.
+- New D1 tables / workflows / provider pulls in production environment: proposal-first shared infrastructure; treat as Class B unless clearly isolated and approved.
+- Any factor that alters stock eligibility/rank/BUY/ADD/REDUCE/SELL/stop/capital/push: Class C.
+
+### Failure behavior
+Research capture failure must:
+- leave Formal operation untouched;
+- record UNKNOWN / coverage gap;
+- never substitute zeros;
+- never reuse stale leverage/short data as current.
+
+Status: CAPTURE PROPOSAL FROZEN; NO IMPLEMENTATION AUTHORIZED.
+
+## Exact next continuation after LS-029
+
+LS-030: source-schema validation across several recent TWSE dates and identify revision-sensitive fields.
+LS-031: locate exact TPEx machine-readable endpoints and map fields one-to-one.
+LS-032: establish same-day publication/capture timing constraints relative to 23:35 Formal scan.
+LS-033: define finalized-history backfill protocol with rules-regime metadata.
+LS-034: freeze first empirical hypotheses and matched controls before any outcome read.
