@@ -5888,3 +5888,149 @@ before inventing additional moving-average crosses or slope variants.
 The cited evidence is not Taiwan-specific and uses ML/image frameworks, so it does not prove the exact same hierarchy in Taiwan.
 Treat it as a research-priority signal, not a production rule.
 
+
+
+## DL-002AE — Pattern Family Decomposition / Minimal Primitive Set v0.1
+
+### Objective
+Reduce named-pattern proliferation into a small, auditable primitive set before any outcome optimization.
+
+### Proposed primitive groups
+P1 TREND:
+- confirmed swing trend state
+- MA context (existing)
+- Residual/sector RS context (existing research)
+
+P2 COMPRESSION:
+- swing-depth contraction
+- ATR/range contraction
+- duration contraction
+- tight-area stability
+
+P3 SUPPORT:
+- higher-low progression
+- equal-low zone
+- undercut/reclaim behavior
+- support test quality
+
+P4 RESISTANCE:
+- pivot clustering
+- neckline / rim geometry
+- local-vs-major resistance conflict
+- failed-attempt progression
+
+P5 RECOVERY_SHAPE:
+- V-shaped
+- rounded/U-shaped
+- stair-step
+- asymmetric recovery
+
+P6 FLOW:
+- selling-volume decay
+- volume dry-up
+- breakout participation
+- retest supply
+- climax/distribution context
+
+P7 TIME:
+- age
+- cadence
+- confirmation lag
+- staleness
+- failed-attempt count
+
+P8 ACCEPTANCE:
+- close acceptance above pivot
+- follow-through
+- retest/reclaim
+- fast re-entry / failure
+
+### Named labels become views
+VCP = P1 + P2 + P3 + P4 + P6 + P7
+Cup/Handle = P1 + P4 + P5 + P7 + optional P2/P6 in handle
+W = P3 + P4 + P5 + P7
+Flag/Platform = P1 + P2 + P4 + P7
+Candlestick/Sakata = local OHLC geometry + location inside P3/P4/P8
+
+### Research priority
+Test primitives first.
+A named label is worth retaining only if it adds information beyond its primitive components.
+
+### Practical effect
+If “cup-with-handle” adds no outcome information after:
+- recovery shape,
+- rim geometry,
+- handle compression,
+- time structure,
+then the named cup label should be retained only for interpretability, not as a predictor.
+
+## DL-002AF — Multiple Testing Budget / Reality-Check Discipline
+
+### Risk
+Pattern research can explode combinatorially:
+- 5 pattern families
+- multiple swing scales
+- many duration/depth thresholds
+- multiple volume variants
+- regime splits
+- RS interactions
+- retest variants
+
+Testing all combinations and reporting the best creates classic data snooping.
+
+### Evidence
+Finance literature on the factor zoo and technical-rule reality checks shows that repeated testing materially inflates false discoveries. Asian-market studies applying White Reality Check / Hansen SPA often find apparently profitable technical rules weaken substantially after data-snooping adjustment.
+
+### Research rules
+1. Every materially different detector definition receives a version and experiment count.
+2. Thresholds are frozen before forward-outcome inspection.
+3. Neighboring scales are used as stability checks, not as a return-optimized tournament.
+4. No “best of 50 variants” result may be promoted unless the entire search family is included in multiplicity accounting.
+5. Favor mechanism-driven comparisons over exhaustive grids.
+6. Use existing independent-date / holdout / transaction-cost / leave-one-date-out controls.
+7. If later sample size supports it, add a family-level Reality Check / SPA-style diagnostic for pattern variants rather than relying on individual p-values.
+
+### Practical experiment budget
+Initial DL-002 validation should cap the number of primary hypotheses:
+H1 VCP sequence topology adds beyond generic contraction.
+H2 true W neckline topology adds beyond rightFootHigher/priorHigh20.
+H3 cup recovery/handle topology adds beyond trend+pullback+volume contraction.
+H4 continuation pole+compression topology adds beyond platformRange20.
+H5 failure/context features explain false breakouts beyond breakout volume alone.
+H6 pattern maturity interacts with RS change incrementally.
+H7 retest confirmation trades lower false-breakout rate against missed no-retest winners.
+
+Everything else is exploratory/descriptive until one of these survives.
+
+## DL-002AG — Rule-Based vs Shape-Matching Detectors
+
+### Evidence
+Formal chart-pattern research has compared logical/rule specifications with Euclidean/template and Dynamic Time Warping approaches. Rule systems can identify interpretable named structures; shape-matching methods can capture approximate geometry.
+
+### Proposed dual detector design
+Detector A: INTERPRETABLE_RULES
+- confirmed swings
+- explicit topology
+- auditable inequalities
+- easy no-lookahead verification
+
+Detector B: SHAPE_SIMILARITY_RESEARCH
+- normalized path representation
+- distance to archetype / cluster
+- research-only diagnostic
+
+### Why not use shape matching first
+A flexible similarity model can silently fit noise and makes it harder to know why a stock matched.
+Start with interpretable primitives and use shape similarity only as a falsification/comparison tool.
+
+### Agreement diagnostic
+Store:
+- ruleMatch
+- shapeSimilarity
+- ruleShapeAgreement
+
+Research question:
+Do high-confidence cases where both agree have better stability/outcomes, or does shape matching merely duplicate rule features?
+
+No ML detector may influence Formal selection during DL-002 research.
+
