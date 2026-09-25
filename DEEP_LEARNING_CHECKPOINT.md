@@ -738,3 +738,11 @@ YES for research infrastructure integrity: resolving the actual archive lineage 
 - v0.1 Guard-label integrity has known defects: reversed liquidity thresholds, liquidityException type mismatch, unverified upstream CA/gap/marketStructure plumbing, VI hardcoded false, and raw previousClose used for price-censor semantics.
 - These are research-label/data-quality defects only; Formal A/B/ranking/BUY/capital/push remain unchanged.
 - First evidence window prioritizes falsifying recorder/guard correctness, not estimating alpha.
+
+## Price-Volume evidence update — PVE-001 through PVE-006
+- PV theory remains complete through PV-200; evidence lane has begun.
+- Runtime activation is now verified, not merely inferred from code: PV_SHADOW_ENABLED=true and V8.11.0 LOG_ONLY is deployed with Formal isolation preserved.
+- A read-only QA rerun after the expected after-market time showed 2026-09-25 was a holiday and was correctly skipped with zero Fugle calls; no fake scan/PV data were created.
+- Direct D1 row-level QA is currently blocked by Cloudflare token authorization (403), so duplicate/fingerprint/at-rest row checks are still unproven. Runtime/admin-level readback remains available.
+- Baseline bootstrap only occurs after successful after-market Formal completion; activation happened during a holiday block, so 2026-09-30 is the first natural candidate date for clean same-slot intraday evidence after a 2026-09-29 bootstrap.
+- Evidence state = DATA_QA_PARTIAL. No H001~H006 interpretation or Formal promotion.
