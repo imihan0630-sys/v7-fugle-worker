@@ -77,11 +77,19 @@ function scaled(bars, k) {
 }
 
 // C2 wide-loose base: not mature VCP.
+// Topology oracle is fed confirmed swings directly so this test isolates VCP classification
+// from the separate swing-extraction oracle below.
 {
-  const bars = makeBars([100, 82, 99, 80, 98, 79, 96, 84, 95]);
-  const swing = detectDirectionalChangeSwings({ bars, asOfDate: bars.at(-1).date, thresholdPct: 0.05 });
-  const vcp = detectVcpFromSwings(swing.swings, { maxMatureDepthPct: 0.15 });
-  assert.ok(vcp.contractionCount >= 2);
+  const swings = [
+    { type:"HIGH", pivotAt:"2026-01-01", confirmedAt:"2026-01-02", pivotPrice:100 },
+    { type:"LOW",  pivotAt:"2026-01-02", confirmedAt:"2026-01-03", pivotPrice:82 },
+    { type:"HIGH", pivotAt:"2026-01-03", confirmedAt:"2026-01-04", pivotPrice:99 },
+    { type:"LOW",  pivotAt:"2026-01-04", confirmedAt:"2026-01-05", pivotPrice:80 },
+    { type:"HIGH", pivotAt:"2026-01-05", confirmedAt:"2026-01-06", pivotPrice:98 },
+    { type:"LOW",  pivotAt:"2026-01-06", confirmedAt:"2026-01-07", pivotPrice:79 }
+  ];
+  const vcp = detectVcpFromSwings(swings, { maxMatureDepthPct: 0.15 });
+  assert.equal(vcp.contractionCount, 3);
   assert.equal(vcp.mature, false);
   assert.equal(vcp.wideLoose, true);
 }
