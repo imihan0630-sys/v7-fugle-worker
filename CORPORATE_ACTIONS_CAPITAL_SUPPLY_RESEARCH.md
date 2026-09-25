@@ -1160,3 +1160,200 @@ CA-037: widen the corporate-action technical-impact sample beyond three events, 
 CA-038: add volume/share-unit bridge research for split/par-value/stock-dividend cases.
 CA-039: test no-action controls to ensure continuity bridge reproduces current Formal features when no event exists.
 CA-040: only after CA-037..039, decide whether to prepare a branch/test implementation under the existing Class B proposal; no merge/deploy without owner approval.
+
+
+---
+
+## CA-037 — Broader real-event validation
+
+Three additional action types were validated using independent raw trading-price data plus point-in-time action references.
+
+### 8454 Fubon Media — stock dividend ex-right, 2025-08-21
+Company dividend history reports:
+- stock dividend = NT$0.5/share;
+- ex-right date = 2025-08-21.
+
+Raw:
+- prior close = 272;
+- event-day reference implied by close/change = about 259;
+- price bridge factor = 259 / 272 = 0.952206;
+- share-unit factor = 1.05.
+
+Raw A setup = FAIL.
+Point-in-time price+share bridge A setup = PASS.
+
+The primary state change is trend continuity:
+- A trend false -> true;
+- B trend false -> true.
+
+### 3593 Limin — loss-offset capital reduction, resumed 2025-12-22
+Official/provider action data:
+- prior close = 8.1;
+- resume reference = 13.5;
+- reduction ratio about 40%;
+- post-reduction shares per 1000 old shares = 600.
+
+Price bridge factor = 1.666667.
+Share-unit factor = 0.6.
+
+Raw ret20 = +68.49%.
+Continuity ret20 = +1.10%.
+
+Price-only bridge would make the full A technical setup PASS on the event date.
+However after share-unit volume continuity is also applied:
+- volumeTodayVsPrev5 = 1.58;
+- A volume condition flips true -> false;
+- full A returns to FAIL.
+
+This is a decisive warning that price-only repair can create a new false signal.
+
+### 8103 Lotes? / 瀚荃 — cash capital reduction, resumed 2025-12-08
+Official/provider action data:
+- prior close = 74.7;
+- reference price = 86.11;
+- cash refund = 1.5/share;
+- post-reduction shares per 1000 old shares = 850.
+
+Price bridge factor = 1.152744.
+Share-unit factor = 0.85.
+
+Raw versus continuity:
+- ret20 +7.89% -> -6.40%;
+- support-distance 8.59% -> 3.21%;
+- A trend true -> false;
+- A pullback true -> false;
+- A nearSupport false -> true.
+
+Full A/B remain false on the event date, but several technical-state bits materially change.
+
+### Result
+The broader sample now contains:
+- cash dividend;
+- stock dividend;
+- ex-right reset;
+- loss-offset capital reduction;
+- cash-refund capital reduction;
+- par-value change.
+
+Materiality is not confined to one extreme split case.
+
+Status: CA-037 BROADER ACTION-TYPE MATERIALITY CONFIRMED.
+
+---
+
+## CA-038 — Share-unit continuity is mandatory for volume-derived features
+
+Price continuity and share-volume continuity are separate transformations.
+
+### General rule
+A pre-action raw volume must only be converted into post-action share units when the action changes share units.
+
+Examples:
+- cash dividend: shareUnitFactor = 1;
+- stock dividend 5%: shareUnitFactor = 1.05;
+- 40% capital reduction: shareUnitFactor = 0.60;
+- 15% cash reduction: shareUnitFactor = 0.85;
+- par-value 10 -> 1 split: shareUnitFactor = 10.
+
+Price factor is NOT generally the inverse of share factor.
+Cash distributions and rights terms can break that identity.
+
+### Real effects
+
+8454:
+- raw volumeTodayVsPrev5 = 1.38;
+- share-unit-adjusted = 1.32.
+Still above B volume threshold, but close enough to show threshold sensitivity.
+
+3593:
+- raw = 0.95;
+- share-unit-adjusted = 1.58.
+This flips:
+- A volume true -> false;
+- B volume false -> true.
+
+8422:
+- raw event-day volumeTodayVsPrev5 = 21.12;
+- post-split-share-unit comparison = 2.11.
+Both exceed the B volume threshold, but raw magnitude is inflated by roughly the 10x share-unit change.
+
+8103:
+- raw = 1.00;
+- adjusted = 1.18.
+
+### Window persistence
+The volume issue persists while rolling windows mix old-unit and new-unit bars.
+A single event-day flag is insufficient.
+
+### Required semantics
+Maintain separately:
+- rawVolumeShares;
+- continuityVolumeShares;
+- turnoverNTD.
+
+Turnover value is not automatically a perfect replacement, but it is less directly distorted by pure share-unit rescaling and should be retained as a control.
+
+Status: PRICE-ONLY CONTINUITY IS INSUFFICIENT.
+
+---
+
+## CA-039 — Persistence and no-look-ahead controls
+
+### First 10 post-event trading days
+
+Full A/B technical-state differences were observed beyond the event date.
+
+8454 stock dividend:
+- complete A differs on 2025-08-21, 08-22 and 09-04.
+
+3593 loss reduction:
+- complete A differs on 2025-12-30, 2026-01-02, 01-06 and 01-07.
+- condition-level differences occur on every sampled post-event date through 2026-01-07.
+
+8103 cash reduction:
+- complete A differs on 2025-12-11, 12-15, 12-17 and 12-18.
+
+8422 par-value change:
+- complete A differs on 2025-11-17, 11-24, 11-25, 11-27, 11-28 and 12-01.
+
+Therefore contamination is a rolling-window problem, not an event-day-only problem.
+
+### Future-event negative controls
+
+For targets immediately BEFORE the later corporate action:
+- 8454 target 2025-08-20, future event 2025-08-21;
+- 3593 target 2025-12-10, future event 2025-12-22;
+- 8103 target 2025-11-26, future event 2025-12-08;
+- 8422 target 2025-11-05, future event 2025-11-17.
+
+A target-date-bounded continuity algorithm applies no future event.
+
+For all four controls:
+- last price;
+- MA5/20/60;
+- ret20;
+- priorHigh20/priorLow20;
+- volumeTodayVsPrev5
+match raw history exactly.
+
+This validates the core no-look-ahead rule for the prototype design.
+
+Status: PERSISTENCE CONFIRMED / FUTURE-EVENT NO-OP CONTROL PASSED.
+
+## CA-040 — Prototype gate satisfied
+
+Evidence now supports building an isolated branch prototype.
+
+The prototype must:
+- never modify Worker.js on main;
+- never alter deployment workflows;
+- implement pure transformation functions only;
+- require explicit targetDate;
+- ignore events effective after targetDate;
+- keep raw and continuity series separate;
+- accept explicit priceFactor and shareUnitFactor;
+- mark volume continuity incomplete when share-unit factor is unknown;
+- support multiple sequential corporate actions;
+- include no-action/future-event tests.
+
+No Formal promotion is authorized.
