@@ -26,7 +26,13 @@ import {
   classifyRepeatedResistanceTests,
   buildPatternSnapshot,
   replayPatternSnapshot
-} from "../research/pattern_core_v0_1.mjs";\nimport {\n  buildPatternCacheRecord,\n  comparePatternCacheRecords,\n  buildPatternObservability,\n  attachPatternQaMetrics\n} from "../research/pattern_observer_adapter_v0_1.mjs";
+} from "../research/pattern_core_v0_1.mjs";
+import {
+  buildPatternCacheRecord,
+  comparePatternCacheRecords,
+  buildPatternObservability,
+  attachPatternQaMetrics
+} from "../research/pattern_observer_adapter_v0_1.mjs";
 
 function makeBars(closes, { startDay = 1, volume = 100, turnover = 2_000_000, tickPad = 0.2 } = {}) {
   return closes.map((close, i) => {
