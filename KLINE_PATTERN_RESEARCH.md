@@ -3109,3 +3109,180 @@ WORTH_SHADOW_RESEARCH.
 No universal bullish/bearish interpretation assigned.
 No Formal change.
 
+
+
+## DL-002X — Pennant / Triangle Subclasses / Wedges v0.1
+
+### Principle
+These formations should be represented primarily by boundary geometry.
+Named labels are subclasses of the DL-002N latent dimensions, not independent scores.
+
+### Ascending Triangle
+Geometry:
+- upper boundary approximately horizontal,
+- lower boundary rising,
+- repeated resistance tests,
+- higher lows,
+- convergence.
+
+Fields:
+- upperSlope
+- lowerSlope
+- upperTouchCount
+- lowerTouchCount
+- resistanceDispersionPct
+- supportFitResidual
+- triangleCompressionRatio
+- volumeSlope
+- pivotDistancePct
+- breakoutDirection
+- R01Acceptance
+
+Important:
+Do not assign bullish outcome before breakout.
+Practitioner material often observes upward breakouts more frequently, but downward breaks and false breaks occur.
+Research must condition on actual breakout direction and acceptance.
+
+### Descending Triangle
+Mirror geometry:
+- lower boundary approximately horizontal,
+- upper boundary falling.
+
+Fields mirror ascending triangle.
+For a long-only system this is more likely a risk/context structure, but an upside breakout can still occur.
+No automatic bearish exclusion is approved.
+
+### Pennant
+Pennant = short converging consolidation after a clear impulse/pole.
+
+Required:
+- explicit pole / impulse,
+- short post-pole convergence,
+- upper boundary descending,
+- lower boundary ascending,
+- contraction in range/ATR,
+- volume behavior recorded.
+
+Fields:
+- poleReturnPct
+- poleDurationBars
+- poleEfficiency
+- pennantDurationBars
+- pennantInitialHeightPct
+- pennantCurrentHeightPct
+- upperSlope/lowerSlope
+- convergenceRate
+- pennantVolumeDryUp
+- breakoutDirection
+- breakoutVolumeRatio
+
+Distinguish from Symmetrical Triangle:
+- pennant requires a prior pole and shorter duration;
+- symmetrical triangle does not require a pole.
+
+Do not hard-code a duration cutoff until pre-registered independently of outcomes.
+
+### Falling Wedge
+Geometry:
+- upper boundary falling,
+- lower boundary also falling,
+- boundaries converge,
+- upper line usually declines faster than lower line.
+
+Fields:
+- upperSlope < 0
+- lowerSlope < 0
+- slopeDifference
+- convergenceRate
+- lowerLowSequence
+- lowerHighSequence
+- momentumDecay
+- volumeSlope
+- breakoutDirection
+- priorTrendState
+
+Traditional interpretation often treats falling wedge as bullish after resistance breakout.
+Research interpretation:
+- FALLING_WEDGE_TOPOLOGY is neutral until breakout/acceptance.
+- classify REVERSAL_CONTEXT vs CONTINUATION_CONTEXT separately.
+
+### Rising Wedge
+Mirror:
+- both boundaries rise,
+- lower boundary rises faster,
+- range narrows.
+
+Traditionally considered bearish risk, but do not use as an automatic sell rule.
+For long-only research it may serve as:
+- exhaustion / late-stage diagnostic,
+- failed-breakout context,
+- overheat interaction.
+
+### Boundary fit
+All boundary subclasses use:
+- confirmed swings only,
+- robust line fitting,
+- fit residual,
+- touch count,
+- volatility-normalized touch tolerance,
+- as-of-date line versioning.
+
+No future swings may improve a historical line.
+
+### Classification rules
+Given fitted upper/lower slopes:
+
+PLATFORM:
+- both approximately flat.
+
+ASCENDING_TRIANGLE:
+- upper ~ flat, lower > 0.
+
+DESCENDING_TRIANGLE:
+- lower ~ flat, upper < 0.
+
+SYMMETRICAL_TRIANGLE:
+- upper < 0, lower > 0.
+
+FALLING_WEDGE:
+- upper < 0, lower < 0, converging.
+
+RISING_WEDGE:
+- upper > 0, lower > 0, converging.
+
+FLAG:
+- upper/lower roughly parallel after pole.
+
+PENNANT:
+- symmetrical convergence after pole, short relative to pole/base context.
+
+### Ambiguous geometry
+If slope confidence intervals / fit residuals make two classes plausible:
+- preserve both labels,
+- lower label confidence,
+- do not force a categorical winner.
+
+This is a core anti-overfit behavior.
+
+### Evidence posture
+Ascending triangles and wedges are well-established practitioner classifications.
+Direct modern Taiwan single-stock evidence is limited.
+Their research value is mainly:
+- structural compression,
+- boundary slope,
+- pivot clarity,
+- failure/acceptance behavior.
+
+### Redundancy
+Most raw geometry already lives in DL-002N:
+- compression
+- support/resistance topology
+- swing progression
+- pivot clarity.
+
+Therefore named subclasses should add little/no weight by themselves.
+
+### Status
+TOPOLOGY_SUBCLASSES_FROZEN_V0_1.
+No Formal change.
+
