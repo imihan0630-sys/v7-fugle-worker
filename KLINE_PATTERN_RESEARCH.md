@@ -4414,3 +4414,160 @@ A detector family should NOT advance to outcome testing if:
 IMPLEMENTATION_ORDER_AND_GATES_FROZEN_V0_1.
 No research code deployed.
 No Formal change.
+
+
+## DL-003D — 2026-09-24 As-of-Date Sanity Check Exposed a Formal History-Freshness Defect
+
+### Purpose
+Use current 2026-09-24 Formal selections only as outcome-free detector/data sanity examples. No future 2026-09-29 trading outcome was used and no pattern parameter was tuned to returns.
+
+Symbols checked:
+- 2006 東和鋼鐵 — Formal B selection
+- 4977 眾達-KY — Formal A selection
+- 6683 雍智科技 — Hybrid WATCH context
+
+Source:
+Fugle adjusted/raw daily candles through 2026-09-24.
+
+### Swing-scale sanity falsification
+The pre-registered swing v0.1 family k=1/2/3 × lagged ATR was run without inspecting future returns.
+
+Observed confirmed-swing counts in 2026 YTD:
+- 2006: k1=20, k2=8, k3=3
+- 4977: k1=22, k2=8, k3=4
+- 6683: k1=25, k2=6, k3=6
+
+Problem:
+For high-volatility names the larger scales produced frozen thresholds around 15%-30%. In 6683, k2 and k3 produced almost the same major sequence, so the labels MICRO/BASE/MAJOR are not yet justified as comparable structural scales across stocks.
+
+Conclusion:
+- v0.1 swing chronology remains useful,
+- but fixed k=1/2/3 ATR multiples are NOT yet validated scale semantics,
+- do not tune k from future returns,
+- next calibration should use detector-only targets such as event-frequency/stability across volatility buckets or another pre-registered scale construction.
+
+### Unexpected Formal data discrepancy
+The production 2026-09-24 research snapshot for 2006 recorded:
+- breakoutReferencePriceResearch = 84
+- ret5 = 8.6633663366
+- ret10 = 8.6633663366
+- ret20 = 9.75
+- volumeTodayVsPrev5 = 1.7670162029
+- volumeContraction5to20 = 0.6384707904
+- atrPercent = 2.3690205011
+
+Complete Fugle daily candles show:
+- 2026-09-18 high = 89
+- therefore true priorHigh20 at 2026-09-24 = 89, not 84.
+
+Raw and adjusted 2026-08-01..2026-09-24 bars agree on this; no recent corporate-action difference explains it.
+
+### Exact stale-cache reconstruction
+Take the complete Fugle history, remove trading dates:
+- 2026-09-14
+- 2026-09-15
+- 2026-09-16
+- 2026-09-17
+- 2026-09-18
+- 2026-09-21
+- 2026-09-22
+- 2026-09-23
+and then append 2026-09-24.
+
+This reconstructed sequence reproduces the production research snapshot EXACTLY for both 2006 and 4977 on:
+- ret5
+- ret10
+- ret20
+- priorHigh20
+- volumeTodayVsPrev5
+- volumeContraction5to20
+- ATR percent
+
+All compared numeric differences were exactly zero within floating-point representation.
+
+This establishes that the production 9/24 selection features were calculated from a history sequence effectively ending 9/11 plus the 9/24 current bar.
+
+### Root cause in source
+runHistorySeed rebuilds its daily queue when marketDate changes, but its completeCached definition checks only:
+- symbol is in target set,
+- history is an array,
+- history.length >= 60.
+
+It does NOT require:
+- latest cached bar date == marketDate,
+- recent trading-date continuity,
+- no missing recent trading sessions.
+
+Therefore an old 60+ bar cache can be treated as complete on a later trading date and excluded from refresh.
+
+The 18:10 scan then explicitly performs no emergency history warmup and merges cachedHistory into enrichment, so current-day market data can be appended to a stale historical sequence.
+
+### Formal impact test
+Recompute the current Formal A/B K-line gates from complete raw Fugle daily candles using the same code formulas.
+
+2006:
+Stale reconstructed history:
+- B trend=true
+- breakout=true
+- volume=true
+- strongClose=true
+- upperShadow=true
+- notLate=true
+- B.pass=true
+
+Complete history:
+- priorHigh20=89
+- close=87.8
+- volumeTodayVsPrev5=0.5794
+- B breakout=false
+- B volume=false
+- B.pass=false
+- A.pass=false
+
+Therefore 2006 would NOT pass the current Formal A/B technical setup gate with complete daily history.
+
+4977:
+Stale:
+- A.pass=true
+- ret20=+6.6456%
+
+Complete:
+- A.pass=true
+- ret20=-1.7493%
+- support/ATR/volume metrics materially differ.
+
+Thus 4977 remains technically A-eligible under this narrow gate recreation, but its full ranking/RR/final selection must be recomputed with complete history before claiming the original final selection remains valid.
+
+### Research integrity consequence
+The 2026-09-24 Formal result must not be used as clean evidence for K-line/pattern research without a DATA_QUALITY_STALE_HISTORY tag.
+
+Especially:
+- 2006 cannot be treated as a valid B-breakout example for DL-002.
+- Any 9/24 factor/outcome analysis depending on the corrupted rolling history must be revalidated after data repair.
+- This issue is data integrity, not negative market evidence.
+
+### Engineering classification
+Fixing the shared Formal history-refresh/freshness contract is Class B:
+- shared runtime/data path,
+- can change future candidate eligibility,
+- proposal/branch/test allowed,
+- production merge/deploy requires owner approval.
+
+### Minimal safe fix direction
+At daily seed queue rebuild, cached history must not be considered complete solely by bar count.
+At minimum require current-date freshness semantics.
+Prefer an explicit function returning:
+- barCountSufficient
+- latestBarDate
+- expectedMarketDate
+- recentContinuityStatus
+- staleReason
+
+Candidate selection should fail closed/UNKNOWN for stale recent history rather than calculate rolling features across a multi-session gap.
+
+No Formal thresholds need to change.
+
+### Status
+CONFIRMED_DATA_INTEGRITY_DEFECT.
+2006_2026_09_24_B_SETUP_INVALID_UNDER_COMPLETE_HISTORY.
+Formal Core rules themselves remain unchanged.
