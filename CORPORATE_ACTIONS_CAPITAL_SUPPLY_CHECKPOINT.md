@@ -1,9 +1,9 @@
 # Corporate Actions & Capital Supply Checkpoint
 
 Updated: 2026-09-25 Asia/Taipei
-Current cursor: CA-001 through CA-100 complete.
+Current cursor: CA-001 through CA-105 complete.
 Status: MATERIALITY_CONFIRMED / RS_SEMANTICS_CONFIRMED / SUSPENSION_INTERACTION_FOUND / CROSS_LANE_PROTOTYPE_TESTED / EXCHANGE_SCOPED_SUSPENSION_CONTRACT / TWO_STAGE_LIFECYCLE_CONFIRMED.
-Next: CA-101.
+Next: CA-106.
 
 ## Durable conclusions
 - Announced equity supply/demand and realized share-base change are separate.
@@ -145,3 +145,27 @@ CA-103 bounded raw-volume vs issued-share-turnover threshold disagreement study.
 CA-104 institutional-flow / market-cap / valuation denominator interactions.
 CA-105 lifecycle revision and same-day/multiple-stage edge cases.
 
+
+
+## CA-101 through CA-105 durable update
+- Point-in-time share denominators are now explicitly separated: REGISTERED_ISSUED_SHARES, EXCHANGE_LISTED_SHARES/tradable supply, OUTSTANDING_SHARES, FREE_FLOAT_SHARES and EPS_WEIGHTED_AVERAGE_SHARES. `knownAt` and `effectiveFromSession` are independent replay gates.
+- New durable source contract: `CORPORATE_ACTION_SHARE_DENOMINATOR_SOURCE_CONTRACT.md`.
+- New anti-leakage/mechanics artifact: `research/corporate_action_denominator_vintage_threshold_v0_1.json`.
+- New lifecycle edge artifact: `research/corporate_action_lifecycle_edge_matrix_v0_1.json`.
+- 8454 remains a positive two-clock witness: registered issued shares changed before the later 2025-10-09 new-share listing; registration must not switch the listed/tradable denominator early.
+- 2465 produced a critical falsification of the initial denominator interpretation. 10,000,000 cash-increase payment certificates began listed trading on 2025-11-17, but the official MOEA capital-change registration to NT$939,460,310 is dated 2026-01-06. Therefore 83,946,031 -> 93,946,031 on 2025-11-17 is NOT admissible as REGISTERED_ISSUED_SHARES truth.
+- 2465 announcement semantics remain partially conflicting for exchange-listed/tradable denominator treatment because original public-listed common shares exclude 25,000,000 private-placement shares while the announcement's cumulative total numerically includes them. Public-tradable 58,946,031 -> 68,946,031 is retained only as a sensitivity scenario.
+- CA-103 bounded mechanics: strict registered-share normalization yields 0/5 low-volume disagreements on 2465; public-tradable sensitivity yields 1/5 (2025-11-18 raw 1.0908796 vs normalized 1.0003297 crossing the 1.05 A low-volume boundary); 0/5 breakout-threshold disagreements. 8454 event-day witness also has no Boolean flip. No outcome/alpha inference.
+- Structural result: a one-time denominator step affects a current-vs-prev5 turnover ratio only while the five-session lookback straddles the step; after six sessions on one constant denominator, scaling cancels algebraically absent another denominator change.
+- Current institutional net-flow fields are raw share counts/sign streaks and remain factual across pure supply change. Any normalized institution-flow feature requires its own denominator space/vintage.
+- Current Worker market-cap fallback `sharesOutstanding * close` is unsafe for historical replay if a current share snapshot is applied to an old price across corporate actions. Research market-cap/valuation must preserve denominator/date/source semantics; no Worker code changed.
+- EPS weighted-average shares are a financial-report denominator and must never substitute for daily trading-supply denominators.
+- CA-105 freezes same-day, revision, cancellation, late-correction, unit-scale+supply-change, conflict, 8454 and 2465 lifecycle fixtures. Conflicts fail closed; revisions preserve historical versions; no latest-wins shortcut.
+- Formal Core unchanged. No Worker.js wiring, no production deployment, no alpha claim.
+
+## Exact next continuation
+CA-106 official TWSE + TPEx denominator-source archive/completeness receipt contract.
+CA-107 pre-registered multi-event bounded denominator-disagreement sample.
+CA-108 point-in-time market-cap / institutional-normalization replay fixtures.
+CA-109 executable lifecycle revision/cancellation research-only tests.
+CA-110 evidence checkpoint for a possible Class-A Shadow proposal only; no Formal merge/deploy.
