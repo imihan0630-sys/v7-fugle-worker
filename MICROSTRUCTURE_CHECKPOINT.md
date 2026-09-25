@@ -175,3 +175,27 @@ Files:
 - MS-036 exact opening/closing auction contamination windows.
 - MS-037 cross-lane state integration without double counting.
 - MS-038 smallest combined feature matrix before empirical work.
+
+
+## Deployment-lineage correction — 2026-09-25
+
+A source/runtime distinction is now explicit:
+
+- Current `main/Worker.js` is a pre-build base and does **not** itself contain the V8.8.x execution-recorder fields.
+- The production GitHub Actions workflow applies `scripts/apply_v8_8_0.py` and `scripts/apply_v8_8_1.py` sequentially before deployment, then explicitly validates that the built `Worker.js` contains:
+  - `CREATE TABLE IF NOT EXISTS trade_research_execution_snapshots`
+  - `/api/research/execution-recorder`
+  - `RESEARCH_EXECUTION_RECORDER_FAIL_OPEN`
+- The same workflow then applies later patches through V8.10.0 before uploading the built Worker to Cloudflare.
+
+Therefore:
+- “not present in main/Worker.js” is **not** evidence that the deployed build lacks the recorder;
+- “patch scripts and build-time validation exist” is evidence that the normal deployment pipeline is intended to include the recorder;
+- this turn did not independently read the live runtime source or protected recorder rows, so live-runtime deployment/coverage remains unverified here.
+
+Use status:
+- BUILD_PIPELINE_INCLUDES_RECORDER = VERIFIED
+- LIVE_RUNTIME_RECORDER_PRESENCE_THIS_TURN = NOT_INDEPENDENTLY_VERIFIED
+- LIVE_D1_COVERAGE = UNKNOWN
+
+This supersedes any wording that treats raw main-source presence as the deployment proof.
