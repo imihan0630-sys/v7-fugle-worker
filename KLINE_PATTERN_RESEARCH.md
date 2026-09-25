@@ -8499,3 +8499,139 @@ POSSIBLE_ABSORPTION_GEOMETRY
 rather than
 INSTITUTIONAL_ACCUMULATION.
 
+
+
+## DL-002CQ — Historical Price Extremes as Behavioral Reference Points
+
+### Taiwan-specific evidence
+Taiwan research has examined 5-day, 20-day, 60-day and 52-week highs as reference points and finds the relation between nearness to past highs and future returns depends on broader market conditions.
+Separate Taiwan 52-week-high research finds mixed anchoring/recency evidence and substantial time/regime dependence.
+
+### Implication for pattern research
+A prior high may matter for more than geometric resistance:
+- investors may anchor to it,
+- attention/volume can rise when price revisits/crosses an old extreme,
+- the age/recency of the extreme can change its salience.
+
+### Fields
+For each relevant high:
+- highPrice
+- highDate
+- ageTradingDays
+- distancePct
+- distanceATR
+- distanceTicks
+- timesRevisited
+- lastRevisitAge
+- volumeAtOriginalHigh if available
+- eventAtOriginalHigh
+- regimeAtOriginalHigh
+- currentRegime
+- highType: 20D / 60D / 120D / 252D / swingMajor
+
+### Reference-point context
+RECENT_HIGH
+- formed relatively recently.
+
+STALE_HIGH
+- old high not revisited for long period.
+
+FREQUENTLY_TESTED_HIGH
+- multiple point-in-time valid approaches.
+
+FIRST_RETURN_TO_OLD_HIGH
+- first revisit after a long interval.
+
+### No assumption
+An old high can act as:
+- resistance,
+- attention catalyst,
+- breakout anchor,
+- irrelevant stale history.
+Test by age/context rather than hard-coding.
+
+## DL-002CR — Crossing Old Extremes Can Trigger Volume/Attention
+
+### External evidence
+Management Science large-sample evidence reports trading volume rises substantially when prices cross prior trading-range extremes, with stronger effects when the extreme is older, firms are smaller, individual-investor interest is higher, and valuation ambiguity is greater.
+
+### Pattern implication
+A breakout-volume spike near an old high can be partly a behavioral attention/reference-point response, not necessarily fresh fundamental/institutional demand.
+
+### Research fields
+- extremeCrossingEvent
+- ageOfExtreme
+- volumeShockAtCross
+- retailAttentionProxy if available
+- institutionalFlowAtCross
+- priceAcceptanceAfterCross
+- postCrossVolumeDecay
+- oldHighVsPatternPivotAlignment
+
+### Key distinction
+VOLUME_ON_BREAKOUT can arise from:
+1. informed/committed demand,
+2. behavioral attention triggered by crossing a salient high,
+3. trapped-holder/supply turnover,
+4. mechanical/algorithmic threshold orders.
+
+Aggregate volume alone cannot separate these.
+
+### Test
+Compare old-extreme crossings:
+- high volume + strong acceptance;
+- high volume + weak acceptance;
+- low/moderate volume + strong acceptance;
+while controlling age/size/liquidity/event state.
+
+## DL-002CS — Reference-Point Age vs Zone Age
+
+### Distinction
+Zone age and reference-point age overlap but are not identical.
+
+ZONE_AGE:
+- time since structural support/resistance zone became knowable.
+
+REFERENCE_POINT_AGE:
+- time since a salient extreme price was printed.
+
+A zone may evolve from several highs; the oldest/most salient high can still influence attention even after zone geometry changes.
+
+### Fields
+- zoneAgeDays
+- dominantExtremeAgeDays
+- ageDispersionAmongZoneSources
+- firstTouchAfterLongAbsence
+- recencyScoreDescriptive
+
+### Interaction question
+Does the first revisit of a long-unseen high behave differently from repeated recent tests?
+
+No fixed decay function is assumed.
+
+## DL-002CT — 20/60-Day High vs Long-Horizon High Incremental Test
+
+### Relevance
+Current Formal already uses priorHigh20 and priorHigh60.
+Long-horizon pattern research may add 120/252-day reference points.
+
+### Minimal test
+Do not automatically add more high windows.
+Compare:
+1. priorHigh20 only;
+2. priorHigh20 + priorHigh60;
+3. swing-derived major zone;
+4. long-horizon 120/252-day extreme;
+5. all combined.
+
+### Outcomes
+- R01 failure
+- D1/D3/D5/D10
+- MFE/MAE
+- availableRoomToNextMajorZone
+- breakout-volume interpretation
+- candidate coverage
+
+### Simplicity preference
+If swing major zones already capture long-horizon extremes, fixed 120/252-day highs are redundant and should be dropped.
+
