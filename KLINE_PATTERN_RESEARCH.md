@@ -4571,3 +4571,243 @@ No Formal thresholds need to change.
 CONFIRMED_DATA_INTEGRITY_DEFECT.
 2006_2026_09_24_B_SETUP_INVALID_UNDER_COMPLETE_HISTORY.
 Formal Core rules themselves remain unchanged.
+
+
+## DL-002J — Cup-with-Handle / Coffee-Cup Topology v0.1
+
+### Goal
+Turn the visual “cup / coffee cup / cup-with-handle” idea into an as-of-date topology that can be tested without hindsight.
+
+### Structural anchors
+Use confirmed BASE/MAJOR swings from DL-002H on adjusted OHLC.
+A candidate cup requires chronological anchors:
+L = left rim confirmed swing high
+B = cup-bottom region / confirmed swing low cluster
+R = right-side recovery high or current recovery leg
+H = optional handle trough after R
+P = pivot / rim resistance
+
+Do not scan a future-complete window and then backdate the cup start.
+
+### Prior-trend requirement
+A cup is a continuation/base hypothesis, not merely any U-shaped recovery after a collapse.
+Record before L:
+- priorAdvancePct
+- priorAdvanceDuration
+- MA20/MA60 state
+- Residual RS if available
+- majorSwingTrend
+Do not hard-code one pass threshold yet; test whether prior trend is necessary after controlling current Formal trend factors.
+
+### Cup depth
+cupDepthPct = (rimReference - bottomReference) / rimReference.
+Store depth continuously; do not pre-select one “ideal” depth from practitioner literature.
+Also normalize:
+- cupDepthATR
+- cupDepthVsPriorAdvance
+- maxDrawdownWithinCup
+
+### Rim relationship
+leftRim = L price.
+rightRim = confirmed recovery high R if known; otherwise current recovery is PROVISIONAL.
+Measure:
+- rimDiffPct = abs(R-L)/L
+- rightRimVsLeftPct
+- rightSideRecoveryPct
+- daysLeftToBottom
+- daysBottomToRight
+A visually symmetric cup is a hypothesis, not a requirement.
+
+### Roundness — avoid subjective U vs V labels
+Represent bottom shape numerically:
+1. bottomResidenceRatio: fraction of cup duration spent in the lower X% of cup depth.
+2. recoveryAsymmetry: abs(daysLeftToBottom - daysBottomToRight) / cupDuration.
+3. bottomTurnCount: number of confirmed MICRO swings around the bottom region.
+4. slopeChangeSmoothness: dispersion of rolling normalized slopes around B.
+5. vShapeScore: speed of decline + speed of immediate recovery with little bottom residence.
+6. roundnessScore: composite descriptive score from residence/slope/turn structure, not a trading score.
+
+Do not choose X or composite weights from forward returns; pre-register geometric variants before testing.
+
+### Handle topology
+Handle can exist only after substantial right-side recovery.
+Handle anchors:
+R = right-side high
+H = subsequent confirmed/provisional pullback low
+P = rim/pivot reference
+
+Measure:
+- handleDepthPct = (R-H)/R
+- handleDepthVsCupDepth
+- handleDurationDays
+- handlePositionInCup = (H-B)/(rimReference-B)
+- handleRangeCompression
+- handleVolumeDryUp
+- handleDownVolumeRatio
+- handleHigherLow vs recent right-side structure
+- handleDistanceToPivotPct
+
+Practitioner guidance often prefers a shallow handle in the upper half and drying volume. These remain hypotheses to test, not assumed alpha.
+
+### Handle-free cup
+Do not force every valid cup to have a handle.
+Keep separate labels:
+- CUP_ONLY
+- CUP_WITH_HANDLE
+This permits testing whether the handle adds incremental information rather than defining success by tradition.
+
+### Pivot
+Candidate pivot references:
+- left rim,
+- right rim,
+- resistance cluster from confirmed swing highs,
+- volume-weighted resistance cluster if later justified.
+
+Store:
+- pivotPrimary
+- pivotSecondary
+- pivotDispersionPct
+- pivotSource
+If left/right rim disagreement is large, confidence decreases; do not force a precise pivot.
+
+### Lifecycle
+CUP_FORMING
+-> BOTTOM_FORMING
+-> RIGHT_SIDE_RECOVERY
+-> CUP_VALID
+-> HANDLE_FORMING (optional)
+-> HANDLE_TIGHT
+-> PIVOT_READY
+-> BREAKOUT_CONFIRMED
+-> RETEST_CONFIRMING
+-> FAILED
+
+A later breakout must never retroactively label an earlier date PIVOT_READY unless the required state was knowable then.
+
+### Failure modes
+- DEEPENING_BASE: new low materially expands cup depth.
+- RIGHT_SIDE_FAILURE: recovery fails and structure breaks before rim approach.
+- HANDLE_TOO_DEEP: descriptive flag; threshold to be pre-registered, not outcome-tuned.
+- HANDLE_VOLUME_EXPANSION: selling volume expands during handle.
+- PIVOT_AMBIGUITY: resistance references disagree materially.
+- LOCAL_ONLY_BREAKOUT: closes above priorHigh20 but remains below older cup rim / major structural resistance.
+- BREAKOUT_FAILURE_R01: reuse existing R01 failure outcome.
+
+### Key hypothesis versus current Formal B
+Current B breakout uses priorHigh20 as an important qualification reference, while cup topology may span much longer.
+The critical test is NOT “replace priorHigh20.”
+Test:
+- B breakout above priorHigh20 but below cup/major pivot;
+- breakout above both;
+- cup pivot breakout without a clean 20d textbook setup;
+and compare D1/D3/D5/D10, MFE/MAE and R01 failure.
+
+This directly tests whether some current “breakouts” are only local breakouts under older supply.
+
+### Redundancy map
+Likely existing/derived:
+- prior trend
+- pullback depth
+- volume contraction
+- priorHigh20/priorHigh60
+- support distance
+- ATR / volatility
+New topology:
+- rim relationship
+- bottom residence / roundness
+- recovery asymmetry
+- handle position relative to full cup
+- cup-vs-handle depth relationship
+- local breakout vs major cup pivot conflict
+- lifecycle maturity
+
+### Status
+DEFINITION_FROZEN_V0_1 after commit.
+Research/Shadow only. No Formal change.
+
+## DL-002K — W / Double-Bottom Topology v0.1
+
+### Goal
+Replace the current crude split-window “leftLow/rightLow” proxy with a true chronological two-trough topology, while explicitly testing whether topology adds information beyond the existing proxy.
+
+### Required anchors
+L1 = first confirmed swing low
+N = confirmed intervening swing high
+L2 = second confirmed swing low
+P = neckline at N or a resistance cluster centered on N
+
+Chronology must be L1 < N < L2.
+Both lows must be confirmed as-of-date under DL-002H. Current forming L2 can be PROVISIONAL but cannot be treated as a confirmed W.
+
+### Core measurements
+- low1Price
+- necklinePrice
+- low2Price
+- bottomSpacingDays
+- firstLegRecoveryPct
+- secondLowVsFirstPct
+- troughSimilarityPct
+- necklineHeightPct
+- secondBottomVolumeRatio
+- secondBottomSellingVolumeRatio
+- reclaimSpeedDays
+- pivotDistancePct
+- necklineBreakoutVolumeRatio
+- scaleAgreement
+- confirmationLagBars
+
+### Three right-foot hypotheses
+Do not assume the current preference for rightFootHigher is universally superior.
+Classify:
+A. HIGHER_LOW: L2 > L1 by a pre-registered tolerance.
+B. EQUAL_ZONE: L2 approximately equals L1.
+C. UNDERCUT_RECLAIM: L2 undercuts L1, then rapidly reclaims the L1 zone.
+
+Undercut-and-reclaim may represent stop/liquidity sweep or may simply be structural weakness. Test both possibilities.
+
+### Neckline
+Current system's necklineProximityPct uses priorHigh20 as an approximation.
+DL-002K neckline is the actual confirmed intervening swing high N.
+Also store:
+- priorHigh20
+- actualNeckline
+- necklineVsPriorHigh20Pct
+- priorHigh60
+This allows direct measurement of whether priorHigh20 is a good proxy or materially wrong.
+
+### Volume hypotheses
+Test separately:
+- L2 volume lower than L1: possible selling exhaustion.
+- L2 down-volume lower than L1 down-volume.
+- neckline breakout volume expansion.
+Do not combine into one score initially.
+
+### Lifecycle
+W_FIRST_BOTTOM
+-> W_NECKLINE_FORMED
+-> W_SECOND_BOTTOM_FORMING
+-> W_SECOND_BOTTOM_CONFIRMED
+-> W_PIVOT_READY
+-> W_BREAKOUT_CONFIRMED
+-> W_RETEST_CONFIRMING
+-> FAILED
+
+### Failure modes
+- LOWER_LOW_CONTINUATION: L2 undercut does not reclaim and decline continues.
+- NECKLINE_DEGRADES: later resistance structure invalidates the original neckline interpretation.
+- SECOND_BOTTOM_SELLING_EXPANSION.
+- BREAKOUT_FAILURE_R01.
+- TOO_SHORT_NOISE / TOO_LONG_REGIME_CHANGE as descriptive duration flags; thresholds must be pre-registered.
+
+### Incremental test against current proxy
+Within the same date compare:
+1. current rightFootHigher=true + true W topology;
+2. current rightFootHigher=true but no true W topology;
+3. true W topology with EQUAL_ZONE or UNDERCUT_RECLAIM where rightFootHigher=false;
+4. neither.
+
+This is the cleanest way to determine whether the new topology adds value or merely renames the existing feature.
+
+### Status
+DEFINITION_FROZEN_V0_1 after commit.
+Research/Shadow only. No Formal change.
