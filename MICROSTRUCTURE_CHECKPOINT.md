@@ -154,3 +154,24 @@ Files:
 - Market-microstructure concept learning is now CONCEPT_COMPLETE / EVIDENCE_PENDING.
 - Dynamic evidence requires prospective complete capture; collector proposal exists but is not deployed.
 - No further indicator invention until data-quality/evidence gates permit testing.
+
+
+## MS-025 through MS-032 durable update
+
+- Existing recorder capability does not prove live D1 sample coverage. Runtime coverage remains UNKNOWN until authorized recorder rows are read.
+- Zero-code baseline feasibility gate is frozen: multiple dates, complete monitored controls, non-null spread/depth fields, mechanism-state coverage, point-in-time outcome matching, explicit missingness, and tick-tier representation are required.
+- A 2025 NTU high-frequency TWSE top-five study reports meaningful incremental information in levels 2-5 and significant short-horizon association of book imbalance with future returns; use as Taiwan-specific motivation, not a universal production rule.
+- Taiwan price-limit policy-change evidence shows spread/depth/trader behavior distributions can shift structurally, supporting same-slot/own-history normalization rather than timeless absolute thresholds.
+- Resiliency now uses dual clocks: elapsed time and number of book/trade events since liquidity shock.
+- Deeper-book shape gets only a limited incremental test over best-level state to control Factor-Zoo risk.
+- 2026 Taiwan derivatives spoofing research reinforces displayed-liquidity cancellation/survival risk, but no stock spoofing classifier or intent inference is permitted.
+- Shadow state taxonomy frozen: LIQUIDITY_HEALTHY, DEMAND_ACCEPTED, DEMAND_ABSORBED, SUPPLY_ACCEPTED, SUPPLY_ABSORBED, LIQUIDITY_VACUUM_UP/DOWN, PRESSURE_EXHAUSTION_CANDIDATE, LIQUIDITY_STRESS, NON_CONTINUOUS_REGIME, UNKNOWN. No state directly maps to BUY/SELL.
+
+## Revised exact continuation
+
+- MS-033 deployment/version lineage audit for recorder fields.
+- MS-034 top-five notional versus share weighting under Taiwan price tiers.
+- MS-035 buy/sell pressure-response asymmetry.
+- MS-036 exact opening/closing auction contamination windows.
+- MS-037 cross-lane state integration without double counting.
+- MS-038 smallest combined feature matrix before empirical work.
