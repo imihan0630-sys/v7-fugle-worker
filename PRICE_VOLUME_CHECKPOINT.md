@@ -442,3 +442,30 @@ Class A if research-only; Class C if later used in formal 15m confirmation.
 5. PV-150: freeze the smallest institutional-origin capture schema and Class-A proposal boundary, but defer implementation until core PV DATA_QA stability.
 6. No new indicator family unless a genuine unresolved mechanism appears.
 7. Formal Core remains LOCKED.
+
+## Progress added — PV-146 through PV-160
+- PV-146 audits foreign-dealer prevalence. Current and several modern TWSE/TPEx official samples show foreign-dealer flow often zero, suggesting current broadForeignNet may frequently equal foreignMainNet numerically; the categories remain semantically distinct and future raw capture should preserve both.
+- PV-147 builds a source-scope fixture. TWSE institutional flow and daily volume can be matched under explicitly compatible official scope, making trade-side participation research feasible there. TPEx participation-share calculation remains SCOPE_UNVERIFIED pending exact denominator-source audit.
+- PV-148 freezes institutional-consensus breadth versus strongest-participant hypotheses; correlated institutional groups are not treated as independent votes.
+- PV-149 designs zero-extra-API future institutional-origin storage: short rolling full-market raw cache plus durable selected/monitor/control cohort observations, separate from Formal institution snapshot semantics.
+- PV-150 freezes the smallest research-only institutional-origin raw schema and Class-A boundary; implementation remains deferred until PV_SHADOW_V0_1 DATA_QA stabilizes.
+- PV-151~160 integrate MICROSTRUCTURE_RESEARCH.md instead of duplicating it. PV describes participation/price-response results; microstructure describes spread/depth/side pressure/replenishment mechanisms.
+- HIGH_EFFORT_LOW_PROGRESS is explicitly not called absorption without side-specific pressure and replenishment evidence.
+- Existing V8.8.x recorder is event-sparse; missing microstructure rows remain UNKNOWN and cannot be interpreted as healthy liquidity/no absorption.
+- Exact as-of PV x microstructure timestamp alignment is frozen; post-event snapshots cannot be attached backward to the decision event.
+- Minimal combined PV x microstructure state matrix is frozen. No matrix cell is a BUY/SELL label.
+- New durable hypothesis PV-H006 asks whether microstructure resolves HIGH_EFFORT_LOW_PROGRESS ambiguity. Existing coarse recorder may support spread/depth context; true pressure/replenishment needs denser prospective capture.
+- Signal quality and execution quality remain separate.
+- Taiwan price-tier/tick-size and non-continuous market mechanisms require explicit guards.
+- Theory is considered converged enough that evidence/coverage is now the priority.
+- PV_SHADOW_V0_1 unchanged; Formal Core LOCKED.
+
+## Revised exact next continuation point after PV-160
+1. PV-161: audit exact execution-shadow-v2 fields and event cadence in apply_v8_8_0.py / apply_v8_8_1.py.
+2. PV-162: freeze what H006-B can be tested with the current recorder versus what is impossible without denser data.
+3. PV-163: define execution-recorder coverage metrics and missingness QA before any outcome analysis.
+4. PV-164: freeze cross-lane as-of join keys/tolerances by event type.
+5. PV-165: audit sessionVwapProxy semantics and prevent it being treated as reconstructed exchange VWAP.
+6. PV-166: define top-five displayed-depth limitations / hidden-liquidity boundary.
+7. PV-167: decide whether current sparse recorder has enough coverage to begin coarse H006-B evidence accumulation.
+8. Formal Core remains LOCKED.
