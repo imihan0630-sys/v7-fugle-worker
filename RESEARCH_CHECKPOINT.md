@@ -300,14 +300,15 @@ Updated: 2026-09-25 16:58 Asia/Taipei.
 
 
 ## Corporate Actions & Capital Supply status update
-- Files: CORPORATE_ACTIONS_CAPITAL_SUPPLY_RESEARCH.md, CORPORATE_ACTIONS_CAPITAL_SUPPLY_CHECKPOINT.md, CORPORATE_ACTION_HISTORY_SEMANTICS_PROPOSAL.md, CORPORATE_ACTION_REGISTRY_VALIDATION_SPEC.md, CORPORATE_ACTION_RS_SOURCE_CONTRACT.md, CORPORATE_ACTION_DISCOVERY_SOURCE_CONTRACT.md, CORPORATE_ACTION_ARCHIVE_SPEC.md.
-- Artifacts: registry v0.2, feature-window manifest v0.1, mechanics feature-delta v0.1, RS semantic sample v0.1, contamination-persistence v0.1.
-- Current cursor: CA-001 through CA-090 complete.
-- Status: MATERIALITY_CONFIRMED / RS_SEMANTICS_CONFIRMED / SUSPENSION_INTERACTION_FOUND / CROSS_LANE_PROTOTYPE_READY / TEST_EXECUTION_PENDING.
-- Corporate-action contamination is not event-day-only: numeric rolling-feature differences can persist roughly 60 trading sessions; A/B state differences can persist for weeks.
-- Critical cross-lane finding: PR #100 market-wide freshness semantics can reject valid symbol histories after verified capital-action suspensions. A blocker comment is posted on PR #100.
-- Symbol-session contract = official market sessions minus VERIFIED symbol suspension sessions; unknown suspension provenance fails closed.
-- Draft PR #101 now contains research-only corporate-action continuity plus symbol-session suspension prototypes/fixtures. No Worker.js wiring, merge or deployment.
-- Semantic spaces: RAW_EXECUTION, TECHNICAL_CONTINUITY, PRICE_INDEX_COMPARABLE, TOTAL_RETURN_COMPARABLE. Pattern lane consumes these declared spaces rather than inventing a separate adjustment engine.
-- No forward-return alpha claim or threshold tuning.
-- Exact continuation: CA-091 executable test evidence; CA-092 integration order; CA-093 suspension archive; CA-094 multiple actions per 60-session window; CA-095 two-stage stock-dividend lifecycle contamination.
+- Files: `CORPORATE_ACTIONS_CAPITAL_SUPPLY_RESEARCH.md`, `CORPORATE_ACTIONS_CAPITAL_SUPPLY_CHECKPOINT.md`, `CORPORATE_ACTION_SHARE_DENOMINATOR_SOURCE_CONTRACT.md`, `CORPORATE_ACTION_VOLUME_DENOMINATOR_SPEC.md`, `CORPORATE_ACTION_HISTORY_SEMANTICS_PROPOSAL.md`, `CORPORATE_ACTION_REGISTRY_VALIDATION_SPEC.md`, `CORPORATE_ACTION_RS_SOURCE_CONTRACT.md`, `CORPORATE_ACTION_DISCOVERY_SOURCE_CONTRACT.md`, `CORPORATE_ACTION_ARCHIVE_SPEC.md`.
+- Artifacts include registry v0.2, feature-window manifest v0.1, mechanics feature-delta v0.1, RS semantic sample v0.1, contamination-persistence v0.1, `research/corporate_action_8454_full_window_v0_1.json`, `research/corporate_action_denominator_vintage_threshold_v0_1.json`, and `research/corporate_action_lifecycle_edge_matrix_v0_1.json`.
+- Current cursor: CA-001 through CA-105 complete; continue from CA-106.
+- Status: MATERIALITY_CONFIRMED / RS_SEMANTICS_CONFIRMED / SUSPENSION_INTERACTION_FOUND / DENOMINATOR_SEMANTICS_HARDENED / VINTAGE_ANTI_LEAKAGE_FROZEN / LIFECYCLE_EDGE_CONTRACT_FROZEN.
+- Corporate-action contamination can persist through rolling windows; price, raw share volume, registered-issued turnover, exchange-listed/tradable turnover, free-float turnover and EPS weighted-average shares are separate semantic spaces.
+- Replay requires both denominator `knownAt <= replayAsOf` and semantic `effectiveFromSession <= targetSession`; later ex-post corrections must not leak backward into historical decision-time truth.
+- Critical CA-101/103 falsification: 2465 payment certificates began trading 2025-11-17, but the official registered-capital change to NT$939,460,310 is dated 2026-01-06. The old 83,946,031 -> 93,946,031-on-11/17 registered-denominator interpretation is rejected and retained only as a falsification witness.
+- 2465 public-tradable 58,946,031 -> 68,946,031 remains sensitivity-only because private-placement/listing field semantics are PARTIAL_CONFLICT. It produces one 1.05 low-volume disagreement in five tested post-listing sessions; strict registered-share normalization produces zero. No alpha/outcome inference.
+- Current raw institutional net-share flows remain factual across pure supply change; normalized flows need an explicit point-in-time denominator. Historical market-cap/valuation replay must not combine old prices with current share snapshots.
+- Symbol-session suspension prerequisite and B-130 stale-cache negative control remain intact. PR #101 remains research-only; no Worker.js wiring, merge or Production deployment is authorized.
+- Formal Core/A-B/ranking/thresholds/3+3+3/capital/entry/add/reduce/sell/stop/monitor/push remain unchanged.
+- Exact continuation: CA-106 official TWSE + TPEx denominator archive/completeness receipt; CA-107 pre-registered multi-event denominator-disagreement sample; CA-108 market-cap/institution point-in-time replay fixtures; CA-109 executable lifecycle revision/cancellation research tests; CA-110 evidence checkpoint for a possible Class-A Shadow proposal only.
