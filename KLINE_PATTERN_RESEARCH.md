@@ -13164,3 +13164,153 @@ INSUFFICIENT_SAMPLE
 Not every learned concept needs to enter the trading engine.
 A mature research system should be able to learn something and then deliberately decide NOT to use it.
 
+
+
+## DL-002IA — Pattern Research Minimum Viable Implementation Order
+
+### Goal
+When engineering begins, avoid implementing every idea at once.
+
+### Stage 0 — data readiness
+Must have:
+- point-in-time daily OHLCV with historical OPEN
+- adjusted/raw separation
+- corporate-action tags
+- >=120 bars for long topology
+- current Taiwan regime/tick metadata
+
+Without this, candlestick/gap/long-base research remains partially blocked.
+
+### Stage 1 — structural engine
+Implement research-only:
+- repaint-safe swings
+- support/resistance zones
+- primitive P1-P8
+- episode identity
+- lifecycle states
+
+### Stage 2 — first pattern views
+Implement:
+- VCP
+- W
+- cup/handle
+- flag/platform
+as interpretable views over primitives.
+
+### Stage 3 — failure library
+Implement:
+- false breakout
+- fast reentry
+- undercut/reclaim
+- wide-loose / expansion
+- local-vs-major resistance collision
+
+### Stage 4 — context
+Add only point-in-time valid:
+- regime
+- RS
+- institutional flow
+- event tags
+- tick/limit
+- liquidity
+
+### Stage 5 — outcomes
+Append immutable:
+- D1/D3/D5/D10/D20
+- MFE/MAE
+- R01
+- stop-first
+- time-to-resolution
+
+### Stage 6 — simple incremental tests
+No ML first.
+Use:
+- same-date cohorts
+- episode grouping
+- simple controls
+- holdout/walk-forward
+
+### Stage 7 — secondary similarity/ML
+Only if sample size supports:
+- DTW/shape similarity
+- regularized models
+- shallow nonlinear benchmarks
+
+### Why
+This ordering makes every layer falsifiable and prevents the project from turning into an untraceable pattern zoo.
+
+## DL-002IB — Initial Engineering Scope Should Be Class A Only
+
+### Allowed first implementation
+- new isolated research table/KV namespace
+- new research-only endpoint
+- snapshot writer
+- outcome updater
+- offline/backfill research script
+- no use by Formal runtime decisions
+
+### Regression proof
+Before/after same input must show identical:
+- Formal General picks
+- Formal Thousand picks
+- Hybrid Shadow semantics
+- buyLow/buyHigh
+- stop/target
+- allocations
+- monitoring
+- push eligibility
+
+### Not allowed without owner approval
+- add pattern score to Formal ranking
+- reject candidate based on pattern
+- loosen/tighten A/B
+- change 15m confirmation
+- change RR/capital
+- alter push
+
+## DL-002IC — First Validation Pack
+
+### Primary frozen hypotheses
+H1 VCP sequence topology adds beyond generic contraction.
+H2 true W topology adds beyond rightFootHigher/priorHigh20.
+H3 cup right-side/handle topology adds beyond trend+pullback+volume contraction.
+H4 flag pole+compression adds beyond platformRange20.
+H5 failure/context features explain false breakout beyond breakout volume.
+H6 pattern maturity × RS change is incremental.
+H7 retest confirmation trades false-breakout reduction against missed no-retest winners.
+
+### Mandatory diagnostics
+For each:
+- coverage
+- independent dates
+- independent episodes
+- cohort balance
+- missingness
+- D1/D3/D5/D10
+- MFE/MAE
+- R01 where applicable
+- stop-first
+- regime split
+- sensitivity to neighboring swing scale
+- redundancy against Formal/DL-001
+- transaction/execution caveats
+
+### No promotion language
+Until maturity gate is met, use:
+EARLY_SIGNAL
+NO_SIGNAL
+CONTRADICTORY
+DATA_BLOCKED
+not “works” / “doesn't work.”
+
+## DL-002ID — Exact Continuation Point After Current Deep Dive
+
+### Next research sequence
+1. Audit current data providers/storage for historical OPEN, turnover, corporate-action handling and achievable research horizon.
+2. Audit whether minute history from 2023-05-23 is actually retrievable in current provider/runtime, not merely documented externally.
+3. Specify exact point-in-time research schema / Pattern Shadow storage.
+4. Build a no-code worked example of swing -> zones -> primitives -> pattern states on several historical charts using only information known as-of each date.
+5. Stress-test definitions on counterexamples: V-shape, wide-loose, event gap, limit-up, dead liquidity, local breakout into major resistance.
+6. Only after those pass, propose isolated Class-A implementation.
+7. Formal Core remains LOCKED.
+
