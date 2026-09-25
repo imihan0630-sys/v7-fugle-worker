@@ -595,3 +595,24 @@ Class A if research-only; Class C if later used in formal 15m confirmation.
 4. PVE-007: audit whether existing runtime/admin evidence can expose PV D1 QA through a read-only path without changing Cloudflare token permissions; any shared runtime endpoint remains Class-B proposal-first.
 5. On the first completed post-enable trading day, rerun the existing read-only QA; do not equate workflow-success with qaPass.
 6. Formal Core remains LOCKED.
+
+## Evidence methodology — PVE-005 through PVE-012
+- PVE-005 preserves blocked/null readiness evidence permanently.
+- PVE-006 freezes a layered post-enable receipt: runtime isolation, after-market write receipt, intraday write receipt, D1 at-rest audit, cohort provenance. Do not collapse these into one Boolean.
+- PVE-007 audits existing admin paths. /api/scan/status can provide useful after-market PV bootstrap/daily write acknowledgements after the first post-enable scan without direct D1 access. /api/cron/status is execution context only. Persistent /api/live is not assumed to contain post-persistence PV recorder metadata.
+- A new PV D1 read endpoint remains Class-B proposal-first; none was implemented.
+- PVE-008 corrects namespace ambiguity: the 62-row live readback belongs to `trade_research_shadow_candidates` Candidate Shadow Archive, NOT to `v7_pv_shadow_snapshots`. Actual PV Shadow at-rest row count remains UNKNOWN.
+- PVE-009 distinguishes runtime WRITE_ACKNOWLEDGED from independent AT_REST_VERIFIED fingerprint/readback.
+- PVE-010 freezes readiness levels ENABLED_ONLY -> RUNTIME_RECEIPT -> FEATURE_AT_REST_VERIFIED -> CLEAN_COHORT_VERIFIED -> OUTCOME_MATURE -> DESCRIPTIVE_EVIDENCE_READY.
+- PVE-011 freezes valid zero-plan semantics: zero Formal plans can legitimately imply zero PV opportunities; expected-opportunity denominator must be explicit.
+- PVE-012 allows prospective PV feature/data-quality collection to continue while H001-H004 alpha interpretation remains gated by cohort provenance.
+- No new PV factor, no Formal change, no runtime/API change, no secret/permission change.
+
+## Revised continuation after PVE-012
+1. Before 9/29 no additional true post-enable market sample can exist; do not manufacture one.
+2. On the first post-enable completed trading date, inspect /api/scan/status receipt first; classify ZERO_FORMAL_PLANS_VALID vs PV_OPPORTUNITIES_EXPECTED.
+3. If opportunities exist, require runtime receipt with no mutation conflicts and successful baseline bootstrap.
+4. Direct D1 at-rest QA remains separately blocked until D1 Read authorization exists or an owner-approved isolated read path is implemented.
+5. H001/H002 remain unrun until CLEAN_COHORT_VERIFIED + sample floors.
+6. Continue learning only through source/quality/falsification questions that can be answered before new market data arrive.
+7. Formal Core remains LOCKED.
