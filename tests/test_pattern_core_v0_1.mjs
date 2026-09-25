@@ -24,6 +24,7 @@ import {
   classifyNestedResistance,
   classifyEventGapBreakout,
   classifyRepeatedResistanceTests,
+  analyzeMajorZoneLifecycle,
   buildPatternSnapshot,
   replayPatternSnapshot
 } from "../research/pattern_core_v0_1.mjs";
@@ -792,4 +793,69 @@ console.log("pattern core v0.1 C1-C8 and invariance tests passed");
   });
   assert.equal(conflict.status,"QA_FAIL");
   assert.equal(conflict.provenanceConflictCount,1);
+}
+
+
+// Major-zone lifecycle is causal and state-dependent; touch/break state is not a one-sign score.
+{
+  const bars=makeBars([98,99,100,101,103,104,102,101,99,103,105],{tickPad:0.1});
+  const zoneLower=101.5,zoneUpper=102.5;
+
+  const pre=analyzeMajorZoneLifecycle({
+    bars,
+    asOfDate:bars[3].date,
+    zoneLower,zoneUpper
+  });
+  assert.equal(pre.lifecycle,"BELOW_MAJOR_ZONE");
+  assert.equal(pre.firstBreakAt,null);
+
+  const first=analyzeMajorZoneLifecycle({
+    bars,
+    asOfDate:bars[4].date,
+    zoneLower,zoneUpper
+  });
+  assert.equal(first.lifecycle,"FIRST_BREAK_ABOVE_MAJOR_ZONE");
+  assert.equal(first.aboveZoneCloseStreak,1);
+  assert.equal(first.breakCount,1);
+
+  const hold=analyzeMajorZoneLifecycle({
+    bars,
+    asOfDate:bars[5].date,
+    zoneLower,zoneUpper
+  });
+  assert.equal(hold.lifecycle,"HOLDING_ABOVE_MAJOR_ZONE");
+  assert.equal(hold.aboveZoneCloseStreak,2);
+
+  const reenter=analyzeMajorZoneLifecycle({
+    bars,
+    asOfDate:bars[6].date,
+    zoneLower,zoneUpper
+  });
+  assert.equal(reenter.lifecycle,"REENTERED_MAJOR_ZONE");
+  assert.equal(reenter.reentryCount,1);
+
+  const fail=analyzeMajorZoneLifecycle({
+    bars,
+    asOfDate:bars[8].date,
+    zoneLower,zoneUpper
+  });
+  assert.equal(fail.lifecycle,"FAILED_MAJOR_ZONE_BREAK");
+  assert.equal(fail.failedBelowZoneAt,bars[8].date);
+
+  const rebreak=analyzeMajorZoneLifecycle({
+    bars,
+    asOfDate:bars.at(-1).date,
+    zoneLower,zoneUpper
+  });
+  assert.equal(rebreak.lifecycle,"HOLDING_ABOVE_MAJOR_ZONE");
+  assert.equal(rebreak.breakCount,2);
+  assert.equal(rebreak.aboveZoneCloseStreak,2);
+
+  // Prefix invariance: full history as-of the first break equals the literal prefix.
+  const firstReplay=analyzeMajorZoneLifecycle({
+    bars:bars.slice(0,5),
+    asOfDate:bars[4].date,
+    zoneLower,zoneUpper
+  });
+  assert.deepEqual(firstReplay,first);
 }
