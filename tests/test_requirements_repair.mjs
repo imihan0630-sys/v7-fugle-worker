@@ -342,7 +342,7 @@ assert.equal(generated.totalAllocation,70000);
 assert.equal(api.scoreCandidate({...qualified,eps:null,revenueYoY:null,grossMargin:null,operatingMargin:null},{score:90}).ok,false);
 // 完整盤後流程使用假行情與假財報，驗證真正0檔、寫入讀回、每日通知去重、失敗保留原股池。
 const symbols = Array.from({length:1050}, (_, i) => String(1000+i));
-const history = Array.from({length:65}, (_, i) => ({date:new Date(Date.UTC(2026,5,1+i)).toISOString().slice(0,10),open:100,close:100,high:101,low:99,volumeShares:5000000,tradeValue:500000000}));
+const history = qualityApi.recentWeekdays('2026-09-15',65).reverse().map(date=>({date,open:100,close:100,high:101,low:99,volumeShares:5000000,tradeValue:500000000}));
 const extra = symbols.map(symbol => ({symbol, market:Number(symbol)<1600?'TWSE':'TPEx',marketCapYi:200,industry:'測試產業',eps:5,revenueYoY:10,grossMargin:30}));
 const fullEnv = {STOCKS_KV:new MemoryKV(),TEST_MODE:'true',V7_ENRICHMENT_JSON:JSON.stringify({stocks:extra,history:Object.fromEntries(symbols.map(symbol=>[symbol,history]))})};
 const institutionStocks=Object.fromEntries(Array.from({length:1600},(_,i)=>[String(1000+i),{foreignNet:0,trustNet:0,dealerNet:0,institutionTotalNet:0}]));

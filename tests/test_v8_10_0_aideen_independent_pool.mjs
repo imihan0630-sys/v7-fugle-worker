@@ -3,7 +3,7 @@ import fs from "node:fs";
 
 const source=fs.readFileSync(process.env.V7_TEST_WORKER_PATH||"Worker.js","utf8");
 
-assert.match(source,/const VERSION = "8\.10\.0-aideen-independent-pool";/);
+assert.match(source,/const VERSION = "8\.10\.1-history-freshness-guard";/);
 assert.match(source,/const AIDEEN_POOL_ID = "AIDEEN_APP";/);
 assert.match(source,/const AIDEEN_MAX_STOCKS = 5;/);
 assert.match(source,/const AIDEEN_KV_KEY = "V10_AIDEEN_APP_POOL";/);
@@ -44,7 +44,7 @@ assert.match(source,/與3\+3\+3完全隔離/);
 
 console.log(JSON.stringify({
   ok:true,
-  version:"8.10.0-aideen-independent-pool",
+  version:"8.10.1-history-freshness-guard",
   pool:"AIDEEN_APP",
   maxStocks:5,
   followsBaseCapital:true,

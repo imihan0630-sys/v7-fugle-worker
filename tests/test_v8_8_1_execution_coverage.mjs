@@ -17,7 +17,8 @@ const must=[
 for(const x of must) if(!source.includes(x)) throw new Error("Missing V8.8.1 contract: "+x);
 if(source.includes('executionMarketState:"NORMAL"')) throw new Error("Must not coerce unknown state to NORMAL");
 const formalStart=source.indexOf("const pullback = stock.mode");
-const formalEnd=source.indexOf("return {\n      ok: true",formalStart);
+const formalOffset=source.slice(formalStart).search(/return \{\r?\n      ok: true/);
+const formalEnd=formalOffset>=0?formalStart+formalOffset:-1;
 const quoteResearch=source.indexOf("Research-only passthrough",formalEnd);
 if(!(formalStart>=0&&formalEnd>formalStart&&quoteResearch>formalEnd)) throw new Error("Research quote passthrough must remain downstream of formal decision computation");
 console.log("V8.8.1+ execution coverage contract OK");
