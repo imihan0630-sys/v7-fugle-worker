@@ -314,3 +314,20 @@ Class A if research-only; Class C if later used in formal 15m confirmation.
 5. PV-087: define explicit Observer -> Modifier promotion gates and failure-to-promote conditions.
 6. No new indicator expansion unless a genuine unresolved mechanism appears.
 7. Formal Core remains LOCKED.
+
+## Progress added — PV-083 through PV-087
+- PV-083 freezes the statistical unit: event-level is primary for abnormal-volume shock/confirmation research; raw snapshots are nested within event/symbol/date and cannot be treated as iid sample size. Date-block splits and event/date dependence controls are mandatory.
+- PV-084 requires effect-size and stability reporting before significance: absolute failure-rate difference, risk ratio, median MFE/MAE/return and subgroup stability. P-values/AUC alone cannot justify usefulness.
+- PV-085 freezes the primary A->B->C->D->E comparison family and prohibits threshold tournaments/winner picking. Any semantic threshold revision becomes a new prospective schema version; failed tests remain in a durable ledger.
+- PV-086 defines utility as a trade-off between adverse confirmations avoided and valid follow-through opportunities lost, including impact on BUY frequency / idle capital. A filter that improves win rate by suppressing nearly all entries fails the system objective.
+- PV-087 freezes Observer->Modifier promotion gates: integrity, coverage, incremental value, stability, utility, simplicity and a fresh untouched confirmation block. All current PV remains OBSERVER; Modifier is not approved and Veto requires a separate higher-bar Class C proposal.
+- Formal Core remains unchanged / LOCKED.
+
+## Revised exact next continuation point after PV-087
+1. PV-088: create deterministic synthetic fixtures for the most important response/acceptance/persistence/guard cases before implementation.
+2. PV-089: define baseline bootstrap date/session parsing and exact slot keys, including holidays/missing bars/current-session exclusion.
+3. PV-090: define research feature fingerprints and Formal-output fingerprints for byte/semantic isolation tests.
+4. PV-091: define the durable hypothesis/test ledger schema to prevent forgotten failed experiments.
+5. PV-092: final pre-implementation readiness audit; identify unresolved blockers that require owner decision versus items safe for Class-A implementation.
+6. Do not expand the indicator set unless a genuine unresolved mechanism is found.
+7. Formal Core remains LOCKED.
