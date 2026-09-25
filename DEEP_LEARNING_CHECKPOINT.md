@@ -374,3 +374,16 @@ No Formal Core change is approved or implied.
 - Highest direct optimization hypothesis remains replacing/augmenting the current 15m previous-5-bar volume comparison in Shadow with same-slot RVOL + cumulative pace, then testing false-confirmation / no-follow-through outcomes.
 - Research-only minimum PV logging remains the preferred first engineering step; no selection/ranking/BUY/maxChase/stop/capital/push/re-add changes are approved.
 - Formal Core unchanged / LOCKED.
+
+## Price-Volume lane update — PV-033 through PV-037
+- Current cursor: PV-001 through PV-037 complete; continue from PV-038.
+- PV research now has a concrete research-only engineering spec in `PRICE_VOLUME_SHADOW_SPEC.md`.
+- Durable conclusions:
+  - direction and risk outcomes must be evaluated separately; PV may be useful for volatility/MAE/stop-first/false-confirmation even if return-sign prediction is weak;
+  - daily market/sector residual RVOL is feasible using current full-market daily history, but full-market 15m residualization is deferred;
+  - volume shocks need freshness/decay variables rather than a guessed universal N-day expiry;
+  - PV, Information Discreteness and news/attention context must be treated as interacting proxies, not blindly additive factors;
+  - research snapshots must be immutable as-of-time, outcomes stored separately, completed bars only, corporate-action reset enforced and Formal-isolation regression tested;
+  - highest-value experiment remains current previous-5-bar 15m volumeRatio vs same-slot RVOL + cumulative-volume pace.
+- `PRICE_VOLUME_SHADOW_SPEC.md` is specification only; no Worker.js Formal logic has been changed.
+- Formal Core unchanged / LOCKED.
