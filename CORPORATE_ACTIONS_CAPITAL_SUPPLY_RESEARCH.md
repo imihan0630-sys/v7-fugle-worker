@@ -1357,3 +1357,239 @@ The prototype must:
 - include no-action/future-event tests.
 
 No Formal promotion is authorized.
+
+
+---
+
+## CA-041 — One return series is insufficient: split semantics by use
+
+The current Formal path reuses one stock ret20 for:
+- technical overextension / late-stage checks;
+- market relative strength versus TAIEX;
+- sector-peer relative return.
+
+Corporate actions show these uses do not always share the same return semantics.
+
+### Series A — RAW_EXECUTION_SERIES
+Purpose:
+- actual fills;
+- actual gaps;
+- opening/closing execution;
+- event studies.
+
+Definition:
+Actual traded OHLC. Never rewritten.
+
+### Series B — TECHNICAL_CONTINUITY_SERIES
+Purpose:
+- MA;
+- ATR;
+- support/resistance;
+- platform/pullback/breakout structure;
+- technical ret20/ret60 / late-stage diagnostics.
+
+Treatment:
+Neutralize verified mechanical price-base resets using only actions effective by the target date.
+Cash dividends are normally neutralized here because a dividend reference reset should not manufacture a technical breakdown.
+
+### Series C — PRICE_INDEX_COMPARABLE_RETURN
+Purpose:
+Research-only relative-strength return that follows the corporate-action semantics of the official TAIEX Price Index.
+
+Critical difference:
+Cash dividends are NOT neutralized for this mode, because the TAIEX Price Index itself does not adjust its base for cash dividends.
+Other events for which TAIEX adjusts its base to preserve continuity should be neutralized correspondingly.
+
+### Series D — TOTAL_RETURN_COMPARABLE_RETURN
+Purpose:
+Research-only shareholder-wealth / momentum return comparable with the official TAIEX Total Return Index.
+
+Treatment:
+Same continuity events as the Price Index plus cash-dividend adjustment.
+
+### Consequence
+Do not replace the existing Formal ret20 with one generic adjusted ret20.
+
+Potential future Shadow names:
+- ret20Technical;
+- ret20PriceIndexComparable;
+- ret20TotalReturnComparable;
+- marketReturn20Price;
+- marketReturn20TotalReturn.
+
+Status: MULTI-SERIES RETURN SEMANTICS FROZEN FOR RESEARCH.
+
+---
+
+## CA-042 — Official TAIEX benchmark semantics confirm the split
+
+TWSE TAIEX Methodology explicitly defines:
+- Price Index;
+- Total Return Index.
+
+The Total Return Index adjusts for cash dividends.
+
+The index-maintenance rules also adjust the index base for specified capital/share events to preserve continuity, including several new-share, cancellation/reduction, conversion and capital-change cases.
+
+For ordinary cash ex-dividend:
+- TAIEX Price Index base is not adjusted;
+- TAIEX Total Return Index does adjust.
+
+Current Formal V7 official index source is verified in Worker.js as:
+- FMTQIK;
+- field = 發行量加權股價指數;
+therefore it is the Price Index.
+
+TWSE also publicly provides the official Total Return Index history through MFI94U.
+
+### Implication
+Using TECHNICAL_CONTINUITY stock ret20, which neutralizes a cash-dividend reset, against current Formal Price-Index return would mix semantics.
+
+Two research-clean alternatives exist:
+1. PRICE_INDEX_COMPARABLE stock return versus current TAIEX Price Index.
+2. TOTAL_RETURN_COMPARABLE stock return versus official TAIEX Total Return Index.
+
+Neither alternative is approved for Formal ranking.
+Changing Formal RS benchmark/definition would alter ranking and is a Formal-Core decision, not an automatic data-cleaning patch.
+
+Status: RS SEMANTIC MISMATCH CONFIRMED / SHADOW COMPARISON REQUIRED.
+
+---
+
+## CA-043 — Corporate-action treatment matrix
+
+### CASH_DIVIDEND
+Technical price continuity:
+- YES.
+
+Price-index-comparable return:
+- NO cash-dividend neutralization.
+
+Total-return-comparable return:
+- YES.
+
+Volume unit transform:
+- NONE.
+
+### STOCK_DIVIDEND / BONUS SHARES
+Technical price continuity:
+- YES.
+
+Price-index-comparable:
+- YES, because TAIEX market-value mechanics preserve continuity rather than treating the lower ex-right price as an economic loss.
+
+Total-return-comparable:
+- YES.
+
+Volume:
+- DO NOT automatically multiply historical trading volume merely from the stock-dividend ratio.
+The event increases eventual share supply, but tradable-new-share timing matters.
+Use actual listed-share vintages/turnover normalization or mark volume continuity PARTIAL.
+
+### PAR-VALUE CHANGE / SPLIT / REVERSE SPLIT
+Technical price continuity:
+- YES.
+
+Price-index-comparable:
+- YES.
+
+Total-return-comparable:
+- YES.
+
+Volume unit transform:
+- UNIT_SCALE with verified conversion factor.
+
+### LOSS-OFFSET CAPITAL REDUCTION
+Technical price continuity:
+- YES.
+
+Price-index-comparable:
+- YES.
+
+Total-return-comparable:
+- YES.
+
+Volume unit transform:
+- UNIT_SCALE with verified remaining-share ratio.
+
+### CASH-REFUND CAPITAL REDUCTION
+Technical price continuity:
+- YES.
+
+Price-index-comparable:
+- YES under index continuity mechanics.
+
+Total-return-comparable:
+- YES, with cash-return economics preserved by the reference/action treatment.
+
+Volume unit transform:
+- UNIT_SCALE with verified remaining-share ratio.
+
+### CASH CAPITAL INCREASE / RIGHTS
+Technical price continuity:
+- use verified ex-right reference mechanics.
+
+Price/total-return comparable:
+- require action-specific rights/entitlement semantics.
+
+Volume:
+- SUPPLY_CHANGE, not automatic UNIT_SCALE at ex-right.
+New-share delivery/listing timing is required.
+
+### CB CONVERSION / NEW SHARES
+No automatic historical OHLC unit rescaling unless an exchange reference-price event exists.
+Treat primarily as realized share-supply / index-base context.
+
+Volume:
+- SUPPLY_CHANGE; normalize with point-in-time shares outstanding rather than inventing a split factor.
+
+### BUYBACK CANCELLATION
+No per-share unit conversion.
+Treat as share-base contraction / index-base context.
+
+### Volume correction to prior CA-038
+The earlier use of 1.05 for 8454 pre-event volume is retained only as an ECONOMIC_EQUIVALENT_VOLUME hypothesis.
+It is NOT validated as the correct tradable-volume transformation.
+The strong UNIT_SCALE evidence remains 3593/8103/8422-type conversion events.
+
+Status: ACTION-TREATMENT MATRIX V1 FROZEN; STOCK-DIVIDEND/RIGHTS VOLUME CLAIM NARROWED.
+
+---
+
+## CA-044 — Research prototype requirements revised
+
+The branch prototype must distinguish:
+- price continuity semantics;
+- volume transformation semantics;
+- benchmark-return semantics.
+
+### VolumeTransformMode
+- NONE
+- UNIT_SCALE
+- SUPPLY_CHANGE
+- UNKNOWN
+
+Only UNIT_SCALE may directly rescale historical raw share volume.
+
+SUPPLY_CHANGE:
+- leaves raw volume unchanged;
+- marks rolling share-volume comparability incomplete until point-in-time shares/listing data are available;
+- may later support turnover-rate normalization.
+
+### ReturnMode
+- TECHNICAL_CONTINUITY
+- PRICE_INDEX_COMPARABLE
+- TOTAL_RETURN_COMPARABLE
+
+For CASH_DIVIDEND:
+- TECHNICAL_CONTINUITY applies the action price factor;
+- PRICE_INDEX_COMPARABLE does not;
+- TOTAL_RETURN_COMPARABLE applies it.
+
+### Governance refinement
+History continuity for technical data quality remains Class B proposal-first.
+Any promotion that changes the current RS benchmark/return definition changes Formal ranking semantics and requires explicit owner decision under Formal-Core governance.
+
+No production implementation is authorized.
+
+Status: PROTOTYPE V2 SEMANTICS FROZEN.
