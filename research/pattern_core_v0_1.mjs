@@ -827,6 +827,238 @@ export function analyzeVcpContext({
   };
 }
 
+export function analyzeWLifecycle({
+  bars,
+  swings,
+  asOfDate,
+  priorTrendState = "UNKNOWN",
+  atrPeriod = 20,
+  supportAtrMultiple = 0.5
+} = {}) {
+  const validated = barsAsOf(bars, asOfDate);
+  if (!validated.usable) return { status:"BLOCKED", reason:validated.reason, lifecycle:"UNKNOWN" };
+  const series = validated.bars;
+  const indexByDate = new Map(series.map((x, i) => [x.date, i]));
+  const eligible = (Array.isArray(swings) ? swings : [])
+    .filter(x => x?.confirmedAt <= asOfDate && indexByDate.has(x.pivotAt) && indexByDate.has(x.confirmedAt))
+    .map(x => ({
+      ...x,
+      pivotIndex:indexByDate.get(x.pivotAt),
+      confirmedIndex:indexByDate.get(x.confirmedAt),
+      pivotPrice:Number(x.pivotPrice)
+    }))
+    .filter(x => Number.isFinite(x.pivotPrice));
+
+  let low1 = null, mid = null, low2 = null;
+  for (let i = 0; i < eligible.length; i += 1) {
+    if (!low1 && eligible[i].type === "LOW") {
+      low1 = eligible[i];
+      continue;
+    }
+    if (low1 && !mid && eligible[i].type === "HIGH" && eligible[i].pivotIndex > low1.pivotIndex) {
+      mid = eligible[i];
+      continue;
+    }
+    if (low1 && mid && eligible[i].type === "LOW" && eligible[i].pivotIndex > mid.pivotIndex) {
+      low2 = eligible[i];
+    }
+  }
+
+  if (!low1) {
+    return { status:"VALID", lifecycle:"NO_CONFIRMED_LOW", researchOnly:true, decisionImpact:false };
+  }
+  if (!mid) {
+    return {
+      status:"VALID", lifecycle:"W_FORMING_LOW1",
+      low1Price:low1.pivotPrice, low1At:low1.pivotAt, low1ConfirmedAt:low1.confirmedAt,
+      researchOnly:true, decisionImpact:false
+    };
+  }
+  if (!low2) {
+    const last = series.at(-1);
+    const atrAtLow1 = simpleAtrBeforeIndex(series, low1.confirmedIndex, atrPeriod);
+    const tick = researchTickSize(low1.pivotPrice);
+    const supportHalfWidth = Math.max(tick ? 2*tick : 0, atrAtLow1 ? supportAtrMultiple*atrAtLow1 : 0);
+    const revisiting = Number(last.low) <= low1.pivotPrice + supportHalfWidth;
+    return {
+      status:"VALID",
+      lifecycle:revisiting ? "W_SECOND_TEST_FORMING" : "W_MID_HIGH_CONFIRMED",
+      low1Price:low1.pivotPrice, midHighPrice:mid.pivotPrice,
+      necklinePrice:mid.pivotPrice,
+      supportHalfWidth,
+      researchOnly:true, decisionImpact:false
+    };
+  }
+
+  const neckline = mid.pivotPrice;
+  const avgLow = (low1.pivotPrice + low2.pivotPrice) / 2;
+  const troughDifferencePct = avgLow > 0 ? (low2.pivotPrice / low1.pivotPrice - 1) : null;
+  const troughSimilarityAbsPct = troughDifferencePct === null ? null : Math.abs(troughDifferencePct);
+  const atrAtLow2 = simpleAtrBeforeIndex(series, low2.confirmedIndex, atrPeriod);
+  const tick = researchTickSize(avgLow);
+  const supportHalfWidth = Math.max(tick ? 2*tick : 0, atrAtLow2 ? supportAtrMultiple*atrAtLow2 : 0);
+  const supportLower = avgLow - supportHalfWidth;
+  const supportUpper = avgLow + supportHalfWidth;
+
+  const afterLow2 = series.slice(low2.confirmedIndex);
+  const breakoutIndexLocal = afterLow2.findIndex(x => Number(x.close) > neckline);
+  const breakoutIndex = breakoutIndexLocal >= 0 ? low2.confirmedIndex + breakoutIndexLocal : null;
+  const close = Number(series.at(-1).close);
+  const necklineDistancePct = neckline > 0 ? close / neckline - 1 : null;
+
+  const low2Variant = low2.pivotPrice > low1.pivotPrice + supportHalfWidth
+    ? "HIGHER_LOW_W"
+    : low2.pivotPrice < low1.pivotPrice - supportHalfWidth
+      ? "UNDERCUT_CANDIDATE_W"
+      : "EQUAL_LOW_W";
+
+  let undercutReclaim = false;
+  if (low2.pivotPrice < supportLower) {
+    undercutReclaim = afterLow2.some(x => Number(x.close) > supportUpper);
+  }
+
+  const postBreak = breakoutIndex === null ? [] : series.slice(breakoutIndex + 1);
+  const retest = postBreak.length
+    ? postBreak.some(x => Number(x.low) <= neckline + supportHalfWidth && Number(x.close) >= neckline - supportHalfWidth)
+    : false;
+  const failedAfterBreak = postBreak.length
+    ? postBreak.some(x => Number(x.close) < supportLower)
+    : false;
+  const supportCollapsedBeforeBreak = breakoutIndex === null &&
+    afterLow2.some(x => Number(x.close) < supportLower);
+
+  let lifecycle = "W_STRUCTURE_VALID";
+  if (supportCollapsedBeforeBreak) lifecycle = undercutReclaim ? "W_UNDERCUT_RECLAIM" : "W_FAILED";
+  else if (breakoutIndex !== null) lifecycle = failedAfterBreak ? "W_FAILED" : retest ? "W_RETEST_CONFIRMING" : "W_BREAKOUT_CONFIRMED";
+  else if (undercutReclaim) lifecycle = "W_UNDERCUT_RECLAIM";
+  else if (necklineDistancePct !== null && necklineDistancePct <= 0) lifecycle = "W_NECKLINE_APPROACH";
+
+  const trend = String(priorTrendState || "UNKNOWN").toUpperCase();
+  const family = ["DOWNTREND","DECLINE","DAMAGED"].includes(trend)
+    ? "REVERSAL_W"
+    : ["UPTREND","ADVANCE","NON_BEARISH"].includes(trend)
+      ? "CONTINUATION_W"
+      : "W_CONTEXT_UNKNOWN";
+
+  return {
+    status:"VALID",
+    lifecycle,
+    family,
+    low2Variant:undercutReclaim ? "UNDERCUT_RECLAIM_W" : low2Variant,
+    low1Price:low1.pivotPrice,
+    low1At:low1.pivotAt,
+    low1ConfirmedAt:low1.confirmedAt,
+    midHighPrice:mid.pivotPrice,
+    midHighAt:mid.pivotAt,
+    midHighConfirmedAt:mid.confirmedAt,
+    low2Price:low2.pivotPrice,
+    low2At:low2.pivotAt,
+    low2ConfirmedAt:low2.confirmedAt,
+    necklinePrice:neckline,
+    troughDifferencePct,
+    troughSimilarityAbsPct,
+    necklineHeightPct:avgLow > 0 ? (neckline - avgLow) / avgLow : null,
+    necklineDistancePct,
+    supportZone:{lower:supportLower,center:avgLow,upper:supportUpper,halfWidth:supportHalfWidth},
+    undercutReclaim,
+    breakoutAt:breakoutIndex === null ? null : series[breakoutIndex].date,
+    retestObserved:retest,
+    researchOnly:true,
+    decisionImpact:false
+  };
+}
+
+export function analyzePlatformLifecycle({
+  bars,
+  swings,
+  asOfDate,
+  atrPeriod = 20,
+  touchAtrMultiple = 0.5,
+  minUpperTouches = 2,
+  minLowerTouches = 2
+} = {}) {
+  const validated = barsAsOf(bars, asOfDate);
+  if (!validated.usable) return { status:"BLOCKED", reason:validated.reason, lifecycle:"UNKNOWN" };
+  const series = validated.bars;
+  const indexByDate = new Map(series.map((x, i) => [x.date, i]));
+  const eligible = (Array.isArray(swings) ? swings : [])
+    .filter(x => x?.confirmedAt <= asOfDate && indexByDate.has(x.pivotAt))
+    .map(x => ({...x,pivotIndex:indexByDate.get(x.pivotAt),pivotPrice:Number(x.pivotPrice)}))
+    .filter(x => Number.isFinite(x.pivotPrice));
+  const highs = eligible.filter(x => x.type === "HIGH");
+  const lows = eligible.filter(x => x.type === "LOW");
+  if (!highs.length || !lows.length) {
+    return {
+      status:"VALID", lifecycle:"PLATFORM_FORMING",
+      upperTouchCount:highs.length, lowerTouchCount:lows.length,
+      researchOnly:true, decisionImpact:false
+    };
+  }
+
+  const resistanceLevel = medianFinite(highs.map(x => x.pivotPrice));
+  const supportLevel = medianFinite(lows.map(x => x.pivotPrice));
+  if (!(resistanceLevel > supportLevel && supportLevel > 0)) {
+    return { status:"VALID", lifecycle:"PLATFORM_FORMING", researchOnly:true, decisionImpact:false };
+  }
+  const lastConfirmedIndex = Math.max(...eligible.map(x => indexByDate.get(x.confirmedAt) ?? x.pivotIndex));
+  const atr = simpleAtrBeforeIndex(series, Math.max(atrPeriod,lastConfirmedIndex), atrPeriod);
+  const center = (resistanceLevel + supportLevel) / 2;
+  const tick = researchTickSize(center);
+  const touchTolerance = Math.max(tick ? 2*tick : 0, atr ? touchAtrMultiple*atr : 0);
+  const upperTouches = highs.filter(x => Math.abs(x.pivotPrice - resistanceLevel) <= touchTolerance);
+  const lowerTouches = lows.filter(x => Math.abs(x.pivotPrice - supportLevel) <= touchTolerance);
+  const topologyValid = upperTouches.length >= minUpperTouches && lowerTouches.length >= minLowerTouches;
+  const platformStartIndex = topologyValid
+    ? Math.min(...[...upperTouches,...lowerTouches].map(x => x.pivotIndex))
+    : Math.min(...eligible.map(x => x.pivotIndex));
+  const baseBars = series.slice(platformStartIndex);
+  const tr = baseBars.map((_,j)=>barTrueRange(series,platformStartIndex+j)).filter(Number.isFinite);
+  const split = Math.max(1,Math.floor(tr.length/2));
+  const earlyRange = medianFinite(tr.slice(0,split));
+  const lateRange = medianFinite(tr.slice(split));
+  const rangeContractionRatio = earlyRange && lateRange !== null ? lateRange/earlyRange : null;
+
+  const volumes = baseBars.map(x=>finite(x.volume)).filter(x=>x!==null && x>=0);
+  const vSplit = Math.max(1,Math.floor(volumes.length/2));
+  const earlyVol = medianFinite(volumes.slice(0,vSplit));
+  const lateVol = medianFinite(volumes.slice(vSplit));
+  const volumeContractionRatio = earlyVol && lateVol !== null ? lateVol/earlyVol : null;
+
+  const close = Number(series.at(-1).close);
+  const breakout = topologyValid && close > resistanceLevel + touchTolerance;
+  const breakdown = topologyValid && close < supportLevel - touchTolerance;
+  const inside = close >= supportLevel - touchTolerance && close <= resistanceLevel + touchTolerance;
+
+  let lifecycle = topologyValid ? "PLATFORM_VALID" : "PLATFORM_FORMING";
+  if (topologyValid && rangeContractionRatio !== null && rangeContractionRatio < 1 &&
+      volumeContractionRatio !== null && volumeContractionRatio < 1 && inside) lifecycle = "PLATFORM_TIGHT";
+  if (breakout) lifecycle = "PLATFORM_BREAKOUT_CONFIRMED";
+  if (breakdown) lifecycle = "PLATFORM_FAILED";
+
+  return {
+    status:"VALID",
+    lifecycle,
+    topologyValid,
+    platformStartAt:series[platformStartIndex]?.date || null,
+    platformEndAt:series.at(-1).date,
+    platformDurationBars:series.length-platformStartIndex,
+    resistanceLevel,
+    supportLevel,
+    platformHeightPct:center>0?(resistanceLevel-supportLevel)/center:null,
+    upperTouchCount:upperTouches.length,
+    lowerTouchCount:lowerTouches.length,
+    touchTolerance,
+    rangeContractionRatio,
+    volumeContractionRatio,
+    closeLocationWithinPlatform:(resistanceLevel>supportLevel)?(close-supportLevel)/(resistanceLevel-supportLevel):null,
+    pivotDistancePct:resistanceLevel>0?close/resistanceLevel-1:null,
+    breakout,
+    breakdown,
+    researchOnly:true,
+    decisionImpact:false
+  };
+}
+
 export function detectPlatform(bars, {
   asOfDate,
   minBars = 5,
