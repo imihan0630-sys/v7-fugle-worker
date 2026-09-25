@@ -1401,3 +1401,110 @@ No selection/rank/BUY/ADD/REDUCE/SELL/stop/capital/monitor/push change.
 - LS-042: validate a small multi-date sample before large backfill.
 - LS-043: only after schema validation, collect independent-date evidence.
 - In parallel, identify the next genuinely under-studied concept lane rather than invent more leverage indicators.
+
+
+---
+
+## LS-042 — Fixed small-sample schema validation result
+
+Validation intentionally avoided any forward-return/outcome analysis.
+
+### TWSE margin — PASS
+Official TWSE samples from 2024-05-29 and 2026-08-14 show a stable displayed field contract:
+
+Margin:
+- buy
+- sell
+- cash redemption
+- prior balance
+- current balance
+- next-business-day limit
+
+Margin short:
+- buy/cover
+- sell
+- stock redemption
+- prior balance
+- current balance
+- next-business-day limit
+
+Plus:
+- margin/short offset
+- restriction/note field.
+
+The 2026-09-24 aggregate report independently confirms the current/preliminary balance warning and evening publication semantics.
+
+### TWSE SBL short — PASS
+Official TWT93U sample from 2026-08-14 matches the frozen normalized contract:
+
+Margin short:
+- prior balance
+- short sale
+- cover
+- stock redemption
+- current balance
+- next limit
+
+Actual borrowed-stock short sale:
+- prior balance
+- current sell
+- current return
+- current adjustment
+- current balance
+- next-business-day limit
+- note.
+
+Official TWT93U product metadata also confirms the machine-file field order and ~23:30 production time.
+
+### TPEx margin — DISPLAYED SCHEMA PASS
+Official TPEx indexed output shows:
+- prior margin balance
+- margin buy
+- margin sell
+- cash repayment
+- margin balance
+- financing-company component
+- usage rate
+- quota
+- prior short balance
+- short sale
+- cover
+- stock repayment
+- short balance
+- financing-company component
+- usage rate
+- quota
+- margin/short offset
+- note.
+
+This validates the semantic mapping, including useful TPEx-only displayed fields such as usage rate.
+
+### TPEx SBL — DISPLAYED SCHEMA PASS
+Official TPEx output shows:
+- margin-short prior balance / sell / buy / stock repayment / balance / limit
+- SBL-short prior balance / current sell / current return / adjustment / balance / next limit
+- note.
+
+The current rule page also confirms the SBL balance formula and post-2025-05-26 30%-of-prior-30-session-average-volume limit.
+
+### Remaining blocker
+The exact stable machine-readable endpoint / parameter / response-schema contract for TPEx has not yet been independently verified in this lane.
+
+Therefore LS-042 result is:
+
+`SCHEMA_PARTIAL_PASS / PROGRAMMATIC_ENDPOINT_PENDING`
+
+not FULL_PASS.
+
+### Consequence
+Large automated backfill is not yet authorized.
+TWSE field mapping is ready for offline parser validation.
+TPEx needs exact endpoint/CSV contract verification first.
+
+Status: LS-042 COMPLETE WITH PARTIAL PASS.
+
+## Exact next continuation after LS-042
+
+LS-043: verify TPEx downloadable CSV / machine endpoint contract without guessing URLs.
+LS-044: validate units and formula identities on a small exact-date sample.
+LS-045: only after LS-043/044 pass, freeze large-backfill go/no-go.
