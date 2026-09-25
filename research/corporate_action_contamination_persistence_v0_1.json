@@ -1,0 +1,91 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-09-25",
+  "purpose": "Measure persistence of raw-vs-point-in-time-continuity feature differences only. No future-return outcomes.",
+  "decisionImpact": false,
+  "inferenceReady": false,
+  "records": [
+    {
+      "symbol": "2412",
+      "eventDate": "2026-07-09",
+      "observedPostEventTradingDays": 55,
+      "lastNumericDifference": {
+        "offset": 54,
+        "date": "2026-09-24"
+      },
+      "lastAnyABCheckDifference": {
+        "offset": 46,
+        "date": "2026-09-14"
+      },
+      "lastFullABPassDifference": {
+        "offset": 34,
+        "date": "2026-08-27"
+      },
+      "daysWithAnyABCheckDifference": 43,
+      "daysWithFullABPassDifference": 26,
+      "note": "Observation censored by available data at 2026-09-24; numeric convergence not yet observed."
+    },
+    {
+      "symbol": "3593",
+      "eventDate": "2025-12-22",
+      "observedPostEventTradingDays": 70,
+      "lastNumericDifference": {
+        "offset": 59,
+        "date": "2026-03-27"
+      },
+      "lastAnyABCheckDifference": {
+        "offset": 54,
+        "date": "2026-03-20"
+      },
+      "lastFullABPassDifference": {
+        "offset": 54,
+        "date": "2026-03-20"
+      },
+      "daysWithAnyABCheckDifference": 40,
+      "daysWithFullABPassDifference": 19
+    },
+    {
+      "symbol": "8103",
+      "eventDate": "2025-12-08",
+      "observedPostEventTradingDays": 70,
+      "lastNumericDifference": {
+        "offset": 59,
+        "date": "2026-03-13"
+      },
+      "lastAnyABCheckDifference": {
+        "offset": 14,
+        "date": "2025-12-29"
+      },
+      "lastFullABPassDifference": {
+        "offset": 12,
+        "date": "2025-12-24"
+      },
+      "daysWithAnyABCheckDifference": 11,
+      "daysWithFullABPassDifference": 5
+    },
+    {
+      "symbol": "8422",
+      "eventDate": "2025-11-17",
+      "observedPostEventTradingDays": 70,
+      "lastNumericDifference": {
+        "offset": 59,
+        "date": "2026-02-10"
+      },
+      "lastAnyABCheckDifference": {
+        "offset": 50,
+        "date": "2026-01-28"
+      },
+      "lastFullABPassDifference": {
+        "offset": 30,
+        "date": "2025-12-30"
+      },
+      "daysWithAnyABCheckDifference": 50,
+      "daysWithFullABPassDifference": 17
+    }
+  ],
+  "interpretation": [
+    "Numeric contamination naturally persists while pre-event bars remain inside 60-session features such as MA60/ret60/priorHigh60.",
+    "Boolean A/B state contamination can persist for weeks and is not limited to the event day.",
+    "Persistence is a data-semantics result, not a predictive-return result."
+  ]
+}
