@@ -8635,3 +8635,102 @@ Compare:
 ### Simplicity preference
 If swing major zones already capture long-horizon extremes, fixed 120/252-day highs are redundant and should be dropped.
 
+
+
+## DL-002CU — Turnover / Attention as Pattern-Life-Cycle Context
+
+### External evidence
+Lee & Swaminathan (Journal of Finance, 2000) show past trading volume/turnover helps distinguish momentum life-cycle states:
+- turnover contains information about the magnitude and persistence of momentum;
+- high-volume winners reverse faster in their long-horizon evidence;
+- volume helps link underreaction and later overreaction.
+
+Taiwan research/thesis evidence also reports low-turnover “early momentum” versus high-turnover “late momentum” style differences, though thesis evidence is lower-quality than peer-reviewed evidence and must be treated accordingly.
+
+### Pattern interpretation
+A visually similar breakout can occur in:
+EARLY_ATTENTION
+- pattern matures while turnover remains relatively quiet/moderate.
+
+ATTENTION_RISING
+- turnover rises into trigger.
+
+HIGH_ATTENTION_MATURE
+- pattern is already widely traded / high turnover before breakout.
+
+ATTENTION_CLIMAX
+- extreme turnover + extension + poor incremental price progress.
+
+### Research fields
+- turnoverPercentile20/60/252
+- turnoverSlopeDuringPattern
+- turnoverAtPatternStart
+- turnoverAtMaturity
+- turnoverAtBreakout
+- turnoverConcentration
+- volumeShockCount
+- priceProgressPerTurnover
+- QuietAttentionState existing research mapping
+
+### Hypothesis
+Pattern edge may depend not merely on volume confirmation, but on where the stock sits in an attention/turnover life cycle.
+
+### Redundancy
+Must compare directly against existing Quiet/Attention research and overheat controls.
+If no incremental information remains, retire this as redundant.
+
+## DL-002CV — “High Volume Breakout” Can Be Early Confirmation or Late Attention
+
+### Competing stories
+EARLY_CONFIRMATION:
+- moderate prior attention,
+- tightening structure,
+- first meaningful participation surge,
+- strong acceptance/follow-through.
+
+LATE_ATTENTION:
+- already high turnover,
+- extended price path,
+- repeated public breakouts/limit hits,
+- another large volume surge,
+- weak marginal price progress.
+
+### Fields
+- priorTurnoverLevel
+- breakoutTurnoverShock
+- extensionBeforeBreakout
+- numberOfRecentAttentionEvents
+- effortResultState
+- followThrough
+- olderResistanceRoom
+
+### Research question
+Does breakout volume interact nonlinearly with prior attention?
+A 2x volume breakout from a quiet base may differ from a 2x volume breakout after weeks of elevated turnover.
+
+## DL-002CW — New Counter-evidence for DL-001 Information Discreteness
+
+### Important Taiwan counter-evidence
+Taiwan market-dynamics research reports that Da-style Information Discreteness did not isolate return predictability once market continuation/transition dynamics were considered; momentum profits across information-discreteness groups were insignificant in that conditional analysis.
+
+### Reconciliation with prior DL-001 evidence
+Existing DL-001 retained Taiwan evidence that gradual/continuous information can matter in other settings, including earnings momentum.
+The new evidence means:
+- Information Discreteness is NOT a universally dominant Taiwan factor;
+- its usefulness may depend on the target phenomenon (earnings momentum vs general price momentum);
+- market-state continuation/transition can be a more important conditioning variable.
+
+### Research consequence
+DL-001 remains WORTH_SHADOW_RESEARCH, but its prior is weakened/conditioned.
+
+Required interaction:
+- InfoDiscreteness × MarketStateContinuation
+- InfoDiscreteness × PatternMaturity
+- InfoDiscreteness × Attention/Turnover
+
+Do not promote DL-001 independently without showing incremental value after regime controls.
+
+### General lesson
+A factor can be supported in one Taiwan context and fail in another.
+Research state should preserve both evidence and counter-evidence rather than choosing one paper.
+
