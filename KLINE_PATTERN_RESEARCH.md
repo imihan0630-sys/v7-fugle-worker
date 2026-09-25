@@ -8734,3 +8734,141 @@ Do not promote DL-001 independently without showing incremental value after regi
 A factor can be supported in one Taiwan context and fail in another.
 Research state should preserve both evidence and counter-evidence rather than choosing one paper.
 
+
+
+## DL-002CX — Holder Cost Basis / Capital-Gains Overhang as Resistance Context
+
+### Mechanism
+Technical “overhead supply” can have a behavioral interpretation:
+holders compare current price with reference/cost prices, and gain/loss status can influence selling.
+
+### Strong evidence
+- Taiwan account-level evidence documents a strong aggregate disposition effect: investors are substantially more likely to realize winners than losers; the effect differs by investor type.
+- Grinblatt & Han (Journal of Financial Economics, 2005) model and empirically proxy aggregate investor reference price/cost basis using historical price and turnover. Their capital-gains-overhang measure predicts returns beyond raw past return in their sample.
+
+### Pattern implication
+A resistance zone may contain:
+GEOMETRIC_SUPPLY:
+- prior swing highs / rejected pivots.
+
+HOLDER_COST_SUPPLY:
+- prices where substantial surviving ownership may have acquired shares and where gain/loss reference behavior can change selling pressure.
+
+These can overlap or differ.
+
+### Research fields
+- estimatedReferencePrice
+- currentPriceVsReferencePct
+- capitalGainsOverhangProxy
+- estimatedHolderProfitShare
+- estimatedHolderLossShare
+- referencePriceZone
+- referenceZoneOverlapWithPivot
+- referenceZoneOverlapWithCupRim
+- referenceZoneOverlapWithMajorResistance
+
+### Important data-quality distinction
+Exact investor cost basis is not observable from normal OHLCV.
+Any historical-volume reconstruction is a proxy.
+
+Store:
+- costBasisMethod
+- lookbackHorizon
+- turnoverAssumption
+- adjustedPriceHandling
+- approximation=true
+
+### Prospective exact price-profile complement
+Future exact volume-at-price snapshots can improve local participation maps, but they still do not reveal whether shares remain held.
+Do not equate historical traded volume with current holder inventory.
+
+## DL-002CY — Disposition Pressure Can Be Asymmetric Around Zones
+
+### Taiwan evidence
+Taiwan aggregate investors show stronger propensity to sell winners than losers, while mutual funds/foreign investors showed different behavior in the historical account-level study.
+
+### Research hypotheses
+PRICE_ABOVE_REFERENCE:
+- more holders in gain territory;
+- realizations may create supply but can also represent healthy turnover.
+
+PRICE_BELOW_REFERENCE:
+- more holders in loss territory;
+- reluctance to sell may reduce supply initially, but a recovery toward cost basis may release trapped supply.
+
+RECOVERY_TO_REFERENCE:
+- price approaches estimated holder cost after a decline;
+- possible breakeven selling pressure.
+
+BREAK_ABOVE_REFERENCE:
+- successful acceptance above a cost zone may remove part of overhead supply.
+
+### Fields
+- distanceToReferenceZone
+- approachDirection
+- turnoverOnReferenceCross
+- acceptanceAboveReference
+- rejectionAtReference
+- institutionalVsRetailFlowAroundReference if available
+- zoneAge
+- referencePriceAge
+
+### No deterministic “trapped holders” claim
+Without actual ownership records, label:
+ESTIMATED_OVERHANG
+not
+KNOWN_TRAPPED_SHARES.
+
+## DL-002CZ — Historical Volume at Price Does Not Equal Current Inventory
+
+### Common technical-analysis error
+A high-volume price region is often described as “many people hold shares here.”
+That is only partly justified.
+
+Shares can change hands repeatedly after the original trade.
+Historical turnover can therefore overstate surviving ownership at old prices.
+
+### Research solution
+Distinguish:
+TRADED_VOLUME_DENSITY
+from
+ESTIMATED_SURVIVING_COST_BASIS.
+
+Possible surviving-weight model:
+- older traded volume decays as subsequent turnover implies shares may have changed hands.
+- use an explicit turnover-based survival approximation similar in spirit to capital-gains-overhang literature.
+
+### Required sensitivity
+Cost-basis proxy must be tested across:
+- reasonable lookback horizons,
+- survival/turnover assumptions,
+- raw vs adjusted price handling.
+
+No one estimator is treated as ground truth.
+
+## DL-002DA — Cost Basis × Pattern Interaction
+
+### Key comparisons
+1. breakout pivot below/inside/above estimated cost zone;
+2. cup rim overlaps major cost zone;
+3. W neckline overlaps cost zone;
+4. VCP tightens below cost zone;
+5. retest holds above previously crossed cost zone.
+
+### Hypotheses
+- pattern breakout into heavy estimated overhang may face more supply;
+- acceptance above both geometric resistance and cost zone may be stronger evidence than clearing only one;
+- cost-zone crossing could generate volume due to disposition/reference behavior, so high volume there is not automatically fresh demand.
+
+### Redundancy controls
+Compare cost-basis proxy against:
+- prior highs / zones
+- long-horizon high
+- volume profile
+- turnover/attention
+- historical return
+- Residual RS
+- event context
+
+If it is merely a complicated reconstruction of past return/volume with no incremental value, retire it.
+
