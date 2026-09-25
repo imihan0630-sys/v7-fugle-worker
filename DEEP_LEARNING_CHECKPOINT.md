@@ -362,3 +362,15 @@ No Formal Core change is approved or implied.
   - stock-specific residual RVOL versus market/sector activity is worth testing as contextual normalization, not another additive score.
 - Minimal PV Shadow logging is now technically/research-governance ready to propose, but no Formal scoring change is approved.
 - Formal Core unchanged / LOCKED.
+
+## Price-Volume lane update — PV-028 through PV-032
+- Current cursor: PV-001 through PV-032 complete; continue from PV-033.
+- New durable conclusions:
+  - current-day trade details / volume-at-price must not be backfilled from OHLCV; historical microstructure features require prospective capture;
+  - transaction-count research is potentially useful for volatility but is second-stage because current historical candle data lack trade count;
+  - corporate actions create structural breaks in raw-volume baselines; splits/par-value changes/capital reductions/long halts require a guard and baseline rebuild unless adjustment semantics are verified;
+  - downside high-volume events may carry asymmetric risk but remain directionally ambiguous because capitulation/absorption is possible;
+  - PV research has now been mapped to the existing funnel: after-market selection, 15m confirmation, gap/maxChase risk, stop-risk diagnostics, and future re-add research, with Formal behavior unchanged.
+- Highest direct optimization hypothesis remains replacing/augmenting the current 15m previous-5-bar volume comparison in Shadow with same-slot RVOL + cumulative pace, then testing false-confirmation / no-follow-through outcomes.
+- Research-only minimum PV logging remains the preferred first engineering step; no selection/ranking/BUY/maxChase/stop/capital/push/re-add changes are approved.
+- Formal Core unchanged / LOCKED.
