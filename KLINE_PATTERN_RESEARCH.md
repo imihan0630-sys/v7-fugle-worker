@@ -14255,3 +14255,142 @@ beyond existing Formal/DL-001 variables?
 ### Benefit
 This narrow scope gives a falsifiable first test and avoids turning the project into a second trading system before evidence exists.
 
+
+
+## DL-003D — Live Connector Adjustment Audit + Deterministic C1-C8 Fixture Contract v0.1
+
+### Live provider/connector audit
+The connected Fugle content catalog exposes `FCNT000154 還原歷史股價` with an optional `adjusted` parameter. A live audit requested both `adjusted=false` and `adjusted=true` for TWSE 2412 and TPEx 6488.
+
+Observed critical behavior:
+- the request identity retained the caller string `adjusted=false`,
+- but the returned `rawContent.adjusted` was `true` even for that request,
+- the apparent false/true payloads therefore cannot be treated as an authenticated RAW-vs-ADJUSTED pair.
+
+Conclusion:
+- this connector path is useful for adjusted historical morphology,
+- it is NOT sufficient to certify the RAW leg of the dual-series contract until parameter coercion/semantics are resolved,
+- TPEx numeric corporate-action continuity remains UNKNOWN rather than falsely passing.
+
+This is a data-contract finding, not an alpha finding.
+
+### Adjustment gate strengthened
+PATTERN_SELECTION_SHADOW_V0_1 must not claim RAW/ADJUSTED parity merely because the client requested `adjusted=false`.
+The stored response must verify:
+1. requestedAdjustmentMode,
+2. returnedAdjustmentMode,
+3. source payload hash,
+4. mismatch flag,
+5. corporate-action reference source/event ID.
+
+If requested=false but returned=true, set:
+`ADJUSTMENT_MODE_MISMATCH` and block raw-gap/candlestick/corporate-action validation for that sample.
+Do not silently downgrade to adjusted-only evidence.
+
+### Deterministic C1-C8 fixture contract
+These fixtures are detector-correctness oracles only. Prices are synthetic normalized units. No future return is attached.
+
+#### C1_V_CRASH_REBOUND
+Bars close path: 100, 98, 94, 86, 78, 82, 90, 97, 101.
+Volume path: 100,110,130,180,240,220,180,150,140 normalized units.
+Expected invariants:
+- V_SHAPED_BASE=true;
+- cupRoundness=LOW;
+- bottomResidenceBars<=2;
+- HIGH_CONFIDENCE_CUP=false;
+- prefix replay cannot backdate a rounded-bottom state.
+
+#### C2_WIDE_LOOSE_BASE
+Close path: 100, 82, 99, 80, 98, 79, 96, 84, 95.
+Expected contraction depths remain wide/non-monotone and neighboring scales disagree materially.
+Expected:
+- WIDE_LOOSE=true;
+- VCP_MATURE=false;
+- depthMonotonicity below mature requirement;
+- scaleStability LOW/MEDIUM, never promoted by choosing a favorable scale.
+
+#### C3_EX_DIV_MECHANICAL_GAP
+Economic/raw path around event: pre-event OHLC 100/102/99/101; next raw OHLC 91/93/90/92 after a synthetic 10-unit distribution/reference adjustment.
+Morphology-equivalent adjusted prior bar is transformed onto the post-event scale so the mechanical discontinuity is neutralized.
+Expected:
+- corporateActionTag=true;
+- rawGap=true;
+- morphologyMechanicalGap=false;
+- THREE_GAPS=false from this event alone;
+- W_UNDERCUT=false from this event alone;
+- if adjustment provenance is missing/mismatched => state UNKNOWN/DATA_BLOCKED, not bearish pattern.
+
+#### C4_LIMIT_UP_BREAKOUT
+Prior resistance=100. Breakout bar OHLC=100/110/100/110 in a 10% limit regime, followed by a next unconstrained bar fixture.
+Expected on breakout date:
+- localBreakout=true;
+- priceLimitConstrained=true;
+- acceptanceState=UNRESOLVED;
+- wick/close quality must not be interpreted as ordinary auction freedom.
+Only later unconstrained trading may advance acceptance lifecycle.
+
+#### C5_DEAD_LIQUIDITY_TIGHT_BASE
+Close path: 50.00,50.05,50.00,50.05,50.00,50.05,50.00,50.05 with extremely low turnover and range dominated by one tick.
+Expected:
+- geometricTightness=true;
+- tickDominance=HIGH;
+- liquidityQuality=LOW;
+- healthyCompressionConfidence=REDUCED_OR_UNKNOWN;
+- never VCP high-confidence solely because percent range is tiny.
+
+#### C6_LOCAL_BREAKOUT_INTO_MAJOR_RESISTANCE
+20d/local resistance=100; major 1y zone center=103 with frozen tolerance; current close=101.5.
+Expected:
+- localBreakout=true;
+- majorZoneConflict=true;
+- availableAir small/positive;
+- detector must preserve both facts rather than relabel local breakout=false.
+
+#### C7_EVENT_GAP_BREAKOUT
+Prior close=100; next event-day OHLC=108/112/107/110.
+Expected:
+- gapBreakout=true;
+- eventCreated=true;
+- overnightReturn and intradayReturn stored separately;
+- priorPatternAttribution cannot claim the whole 10% close-to-close move;
+- event provenance missing => attribution UNKNOWN.
+
+#### C8_REPEATED_RESISTANCE_TESTS
+Common resistance zone≈100.
+Variant A absorption-like lows/closes progress upward: tests from 96->98, 97->99, 98.5->99.7 with weakening rejection.
+Variant B barrier-persistent: repeated tests near 100 but closes/lows do not progress and rejection remains large.
+Expected:
+- equal raw touchCount is allowed;
+- A and B must differ in progression/rejection descriptors;
+- touchCount alone must not emit bullish/bearish sign.
+
+### Cross-fixture mandatory properties
+Every C1-C8 fixture must be replayed prefix-by-prefix and must satisfy:
+- confirmed-state prefix invariance;
+- chronological pivotAt/confirmedAt discipline;
+- price-scale invariance under positive multiplicative rescaling;
+- duplicate/out-of-order dates rejected;
+- missing required fields produce BLOCKED/UNKNOWN, never imputation;
+- no fixture uses outcome return to choose detector parameters.
+
+### Shadow archive link audit
+Existing V8.7.2 archive primary key is `(scan_date,symbol)` and each row stores cohort, cohort_rank, pool, selected_flag, exclusion_reason and immutable-ish snapshot JSON.
+For Pattern v0.1, the stable parent reference should therefore be explicit composite identity:
+`shadowParentKey = scan_date + '|' + symbol` plus a hash of the captured parent snapshot.
+Do not rely on cohort_rank as identity because rank may change across reruns/version changes.
+If a parent snapshot hash changes for the same key, record a provenance conflict/version rather than silently reattach the Pattern snapshot.
+
+### Implementation-readiness effect
+Resolved:
+- candidate/control parent archive exists and is reusable;
+- C1-C8 deterministic oracle is now frozen at input/expected-state level;
+- parent link identity is defined.
+
+Still blocking a clean implementation PASS:
+- authenticated RAW-vs-ADJUSTED corporate-action fixture because current connected content path coerces/returns adjusted=true for an adjusted=false request;
+- executable detector code/tests do not yet exist;
+- prefix-invariance and replay gates therefore remain specified but unexecuted.
+
+Status:
+`PATTERN_SELECTION_SHADOW_V0_1 = SPEC_READY / DATA_CONTRACT_GUARDED / NOT_IMPLEMENTED`.
+Formal Core remains LOCKED.
