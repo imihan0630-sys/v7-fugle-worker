@@ -60,25 +60,50 @@ function singleReturn(out) {
   assert.ok(Math.abs(totalReturn.continuityBars[0].close - 134.5) < 1e-9);
 }
 
-// Stock dividend: price continuity yes; volume is SUPPLY_CHANGE and remains raw/partial.
+// Stock dividend lifecycle is split:
+ // ex-right = price event with unchanged tradable share unit;
+ // later new-share listing = supply-change event.
 {
-  const bars = [bar("2025-08-20", 272, 300), bar("2025-08-21", 261, 301)];
-  const factor = 259 / 272;
-  const event = {
-    eventKey: "8454:2025-08-21",
+  const barsAtExRight = [bar("2025-08-20", 272, 300), bar("2025-08-21", 261, 301)];
+  const exRightFactor = 1 / 1.05;
+  const exRightEvent = {
+    eventKey: "8454:2025-08-21:EX_RIGHT",
     effectiveDate: "2025-08-21",
-    actionType: "STOCK_DIVIDEND",
-    technicalPriceFactor: factor,
-    priceIndexComparableFactor: factor,
-    totalReturnComparableFactor: factor,
+    actionType: "STOCK_DIVIDEND_EX_RIGHT",
+    technicalPriceFactor: exRightFactor,
+    priceIndexComparableFactor: exRightFactor,
+    totalReturnComparableFactor: exRightFactor,
+    volumeTransformMode: "NONE"
+  };
+  const atExRight = buildPointInTimeContinuity({
+    bars: barsAtExRight,
+    events: [exRightEvent],
+    targetDate: "2025-08-21"
+  });
+  assert.ok(Math.abs(atExRight.continuityBars[0].close - (272 / 1.05)) < 1e-9);
+  assert.equal(atExRight.continuityBars[0].volume, 300);
+  assert.equal(atExRight.volumeContinuityComplete, true);
+
+  const barsAtListing = [
+    bar("2025-10-08", 250, 500),
+    bar("2025-10-09", 252, 700)
+  ];
+  const listingEvent = {
+    eventKey: "8454:2025-10-09:NEW_SHARES_LISTED",
+    effectiveDate: "2025-10-09",
+    actionType: "NEW_SHARES_LISTED",
+    technicalPriceFactor: 1,
+    priceIndexComparableFactor: 1,
+    totalReturnComparableFactor: 1,
     volumeTransformMode: "SUPPLY_CHANGE"
   };
-  const out = buildPointInTimeContinuity({
-    bars, events: [event], targetDate: "2025-08-21"
+  const atListing = buildPointInTimeContinuity({
+    bars: barsAtListing,
+    events: [listingEvent],
+    targetDate: "2025-10-09"
   });
-  assert.ok(Math.abs(out.continuityBars[0].close - 259) < 1e-9);
-  assert.equal(out.continuityBars[0].volume, 300);
-  assert.equal(out.volumeContinuityComplete, false);
+  assert.equal(atListing.continuityBars[0].volume, 500);
+  assert.equal(atListing.volumeContinuityComplete, false);
 }
 
 // Loss-offset reduction is a strict unit conversion.
