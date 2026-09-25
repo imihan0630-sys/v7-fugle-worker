@@ -3282,3 +3282,191 @@ CA-092: determine the safest integration order between PR #100 freshness and sus
 CA-093: design a prospective suspension archive from official TWSE announcements.
 CA-094: test multiple corporate actions inside one 60-session window.
 CA-095: test stock-dividend ex-right followed by later new-share listing as two-stage contamination windows.
+
+---
+
+## CA-091 — Executable PR #101 evidence obtained
+
+The prior CA-090 state was TEST_EXECUTION_PENDING. That state is now superseded.
+
+Draft PR #101 head `35209c791ce59959ca5a4ffd0d1fdbd9b11f9492` produced trusted GitHub Actions execution:
+- Research Corporate Action Prototype run `36138447978`: completed / success;
+- V8 Repair CI run `36138447823`: completed / success;
+- V8 Regression Tests run `36138447812`: completed / success.
+
+Research job `108082103374` executed:
+- `node tests/test_corporate_action_continuity_prototype.mjs`
+  -> `corporate action semantic prototype tests passed`;
+- `node tests/test_symbol_session_calendar_prototype.mjs`
+  -> `symbol-session calendar prototype tests passed`.
+
+This confirms executable evidence for the pure research prototypes. It does NOT prove that the prototypes are production-ready and does not authorize merge/deploy.
+
+Status:
+PR_101_RESEARCH_TEST_EXECUTION = CONFIRMED_SUCCESS.
+FORMAL_CORE = UNCHANGED.
+WORKER_WIRING = NONE.
+
+---
+
+## CA-092 — Safe integration order between PR #100 and suspension/corporate-action context
+
+PR #100's branch implementation validates freshness against market-wide official sessions.
+That is correct for ordinary active symbols, but insufficient for verified symbol-specific capital-action suspensions.
+
+PR #101 separately proves a pure symbol-session definition:
+`EXPECTED_SYMBOL_SESSIONS = MARKET_SESSIONS - VERIFIED_SYMBOL_SUSPENSION_SESSIONS`.
+
+Positive evidence:
+- 8422 resume 2025-11-17 can legitimately use 2025-11-05 as the prior symbol session when 2025-11-06..2025-11-14 is a VERIFIED suspension interval.
+- 3593 and 8103 exhibit the same capital-action suspension/resumption class.
+- The PR #101 fixture passes these cases.
+
+Negative/falsification evidence:
+- Unknown suspension quality returns `SUSPENSION_PROVENANCE_UNKNOWN`; it does not silently excuse gaps.
+- B-130 stale cache remains rejected when no verified suspension explains 2026-09-14..2026-09-23 missing symbol sessions.
+- Therefore suspension awareness does not weaken the stale-history invariant; it changes only the expected-session set when evidence is VERIFIED.
+
+Safe dependency order:
+1. prove exchange market sessions;
+2. prove exchange-scoped symbol suspension intervals;
+3. derive expected symbol sessions;
+4. run freshness validation on the expected symbol sessions;
+5. only after raw history is valid, derive corporate-action semantic spaces;
+6. Pattern/K-line and other research lanes consume the declared semantic space.
+
+Merge/deploy implication:
+PR #100 should not be promoted as a market-session-only freshness implementation.
+The minimum safe promotion candidate must first consume a verified symbol-session layer or equivalent suspension-aware expected-session contract and must retain the B-130 negative control.
+
+Status:
+INTEGRATION_ORDER = SYMBOL_SESSION_PREREQUISITE_BEFORE_FRESHNESS_PROMOTION.
+NO MERGE / NO DEPLOY performed.
+
+---
+
+## CA-093 — Prospective suspension archive widened to TWSE + TPEx
+
+The previous archive design was materially TWSE-centric. That is insufficient for a Taiwan common-stock universe that includes TPEx securities.
+
+### TWSE official lane
+Verified public surfaces:
+- TWSE OpenAPI Swagger advertises `GET /exchangeReport/TWTAWU` for suspended-trading securities.
+- TWSE historical suspended-trading page supports period/security/category search and CSV export and states coverage from 2011-10-03:
+  https://www.twse.com.tw/zh/trading/historical/twtawu.html
+- TWSE Official Document Announcements and MOPS significant disclosures remain required to attribute corporate-action cause, revisions and first-known timing.
+
+Falsification / uncertainty:
+The direct TWTAWU API payload was not retrievable through this round's web client.
+Therefore exact field/schema assumptions are not promoted:
+`TWSE_TWTAWU_MACHINE_FIELD_CONTRACT=UNKNOWN`
+until a successful archived capture exists.
+
+### TPEx official lane
+Verified public surface:
+- TPEx Trading Halt/ Resumption Trade:
+  https://www.tpex.org.tw/en-us/announce/market/halt/historical.html
+  exposes Today/History, year/security-category filters and CSV download.
+- TPEx change-of-par-value and capital-reduction/new-share official pages provide separate corporate-action cause/resume evidence.
+
+Falsification / uncertainty:
+A stable public machine endpoint for the TPEx halt/resumption dataset was not frozen in this round.
+Therefore:
+`TPEX_HALT_MACHINE_ENDPOINT_CONTRACT=UNKNOWN`.
+Do not invent one.
+
+### New completeness rule
+Suspension coverage is exchange-scoped.
+A complete TWSE lane does not imply complete TPEx coverage.
+Absence may become NO_SUSPENSION only when the symbol's exchange/date/parser lane is proven complete; otherwise it remains SUSPENSION_PROVENANCE_UNKNOWN / EVENT_COVERAGE_UNKNOWN.
+
+The durable source/archive contracts were extended in:
+- CORPORATE_ACTION_ARCHIVE_SPEC.md;
+- CORPORATE_ACTION_DISCOVERY_SOURCE_CONTRACT.md.
+
+Status:
+PROSPECTIVE_SUSPENSION_ARCHIVE = EXCHANGE_SCOPED_CONTRACT_READY / MACHINE_CONTRACT_PARTIAL.
+
+---
+
+## CA-094 — Multiple corporate actions inside one rolling window
+
+The existing prototype already had a synthetic two-unit-conversion compounding test. That proves transformation ordering mechanics, but not a real Taiwan lifecycle family.
+
+A real lifecycle witness was added to PR #101 using 8454:
+- stock-dividend ex-right price event: 2025-08-21;
+- later new-shares-listed supply event: 2025-10-09;
+- both can coexist inside a 60-session rolling history.
+
+New deterministic test:
+- targetDate = 2025-10-09;
+- ex-right factor = `1 / 1.05`;
+- ex-right volume mode = NONE;
+- later listing factor = 1;
+- later listing volume mode = SUPPLY_CHANGE;
+- event input order is tested both forward and reversed.
+
+Expected and now tested semantics:
+- price adjustment applies only to bars before the ex-right event;
+- the later listing event does not retroactively create another price reset;
+- raw share volume is not mechanically rescaled at either stage;
+- the result is invariant to input event order because events are sorted by effective date;
+- price continuity remains complete;
+- volume continuity becomes incomplete when the SUPPLY_CHANGE stage enters the relevant window.
+
+PR #101 research-only commit:
+`a6b45a4253648372dcb462f0cacfedea50234775`
+message:
+`research: add 8454 two-stage corporate-action window test`.
+
+Fresh CI on that commit:
+- Research Corporate Action Prototype `36139660200`: success;
+- V8 Repair CI `36139659976`: success;
+- V8 Regression Tests `36139660103`: success.
+
+Status:
+REAL_TWO_EVENT_WINDOW_ORDERING = TESTED_SUCCESS.
+No Worker.js wiring, merge or deploy.
+
+---
+
+## CA-095 — Stock-dividend ex-right -> later new-share listing is a two-stage contamination problem
+
+8454 is the decisive lifecycle witness.
+
+Stage 1 — EX_RIGHT_PRICE_EVENT:
+- mechanical price reset occurs on the ex-right trading date;
+- technical/RS price semantics may require a point-in-time price bridge;
+- tradable-share volume is not automatically rescaled merely because stock dividend entitlement exists.
+
+Stage 2 — NEW_SHARES_LISTED:
+- later new shares enter the tradable supply;
+- this is not another mechanical ex-right price-reset event;
+- old daily share volume must not be multiplied by a stock-dividend ratio;
+- rolling volume comparisons become semantically incomplete unless a point-in-time listed-shares/float/turnover denominator is available.
+
+Positive validation:
+The new two-stage PR #101 test preserves price continuity and correctly flips `volumeContinuityComplete` to false at the listing stage.
+
+Negative validation:
+A naive one-event model would create at least one of two errors:
+1. rescale volume at the ex-right date before tradable supply actually changes; or
+2. ignore the later supply-stage comparability break because no new price factor is needed.
+
+Therefore:
+PRICE_EVENT and SUPPLY_EVENT must remain separate records even when they share one `actionFamilyId`.
+
+This is a mechanics/data-semantics result only.
+It is not evidence that stock dividends are bullish/bearish and it does not justify an alpha score.
+
+Status:
+TWO_STAGE_STOCK_DIVIDEND_CONTAMINATION = EMPIRICALLY_SUPPORTED_BY_REAL_LIFECYCLE_TEST.
+
+## Exact next continuation after CA-095
+
+CA-096: build a full 60-session 8454 real-bar window spanning both lifecycle stages and quantify which current Formal rolling price/volume features remain admissible vs UNKNOWN.
+CA-097: distinguish listed-shares, issued-shares, free-float and traded-volume denominators; determine the minimum denominator contract for SUPPLY_CHANGE volume comparability.
+CA-098: add exchange-scoped suspension completeness fixtures, including a TPEx corporate-action suspension/resumption witness.
+CA-099: combined PR #100/#101 test matrix — valid suspension, unknown suspension, ordinary stale cache, multiple actions, and no-action identity.
+CA-100: produce an evidence-gated owner decision memo only if CA-096..099 pass; still no autonomous merge/deploy or Formal Core change.
+
