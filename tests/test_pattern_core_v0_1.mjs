@@ -3,6 +3,9 @@ import {
   PATTERN_CORE_VERSION,
   validatePatternBars,
   detectDirectionalChangeSwings,
+  detectDirectionalChangeSwingsAtr,
+  detectSwingScaleFamily,
+  simpleAtrBeforeIndex,
   buildResistanceZones,
   detectWFromSwings,
   detectVcpFromSwings,
@@ -213,6 +216,63 @@ function scaled(bars, k) {
   for (const s of swings) assert.ok(s.confirmedAt >= s.pivotAt);
   const w = detectWFromSwings(swings, { lowTolerancePct: 0.08 });
   assert.equal(typeof w.formed, "boolean");
+}
+
+// Frozen-architecture swing engine: lagged ATR threshold is frozen per leg and supports MICRO/BASE/MAJOR.
+{
+  const closes = [
+    ...Array.from({ length: 25 }, (_, i) => 100 + (i % 2 === 0 ? 0.1 : -0.1)),
+    100,106,109,103,97,104,110,102,96,105,112,108,101,109
+  ];
+  const base = Date.UTC(2026, 2, 1);
+  const bars = closes.map((close, i) => {
+    const previous = i ? closes[i - 1] : close;
+    const day = new Date(base + i * 86400000).toISOString().slice(0, 10);
+    return {
+      date: day,
+      open: previous,
+      high: Math.max(previous, close) + 0.2,
+      low: Math.min(previous, close) - 0.2,
+      close,
+      volume: 1000,
+      turnover: 5_000_000
+    };
+  });
+
+  const atr = simpleAtrBeforeIndex(bars, 20, 20);
+  assert.ok(atr > 0);
+
+  const baseScale = detectDirectionalChangeSwingsAtr({
+    bars,
+    asOfDate: bars.at(-1).date,
+    scaleK: 2,
+    atrPeriod: 20
+  });
+  assert.equal(baseScale.status, "VALID");
+  assert.ok(baseScale.swings.length >= 3);
+  for (const swing of baseScale.swings) {
+    assert.ok(swing.confirmedAt >= swing.pivotAt);
+    assert.ok(swing.thresholdFrozenAt < swing.confirmedAt);
+    assert.ok(swing.thresholdPct > 0);
+    assert.equal(swing.scaleK, 2);
+    assert.equal(swing.atrPeriod, 20);
+  }
+
+  const family = detectSwingScaleFamily({ bars, asOfDate: bars.at(-1).date, atrPeriod: 20 });
+  assert.equal(family.method, "DIRECTIONAL_CHANGE_LAGGED_ATR_FROZEN");
+  for (const key of ["MICRO","BASE","MAJOR"]) {
+    assert.equal(family.scales[key].status, "VALID");
+    assert.ok(family.scales[key].swings.every(x => x.thresholdPct > 0));
+  }
+
+  // Prefix invariance for confirmed ATR-based states.
+  for (let cut = 28; cut < bars.length; cut += 2) {
+    const prefix = bars.slice(0, cut + 1);
+    const asOfDate = prefix.at(-1).date;
+    const a = detectDirectionalChangeSwingsAtr({ bars: prefix, asOfDate, scaleK: 2, atrPeriod: 20 });
+    const b = detectDirectionalChangeSwingsAtr({ bars, asOfDate, scaleK: 2, atrPeriod: 20 });
+    assert.deepEqual(a, b);
+  }
 }
 
 // Structural resistance zones need repeated confirmed swing highs.
