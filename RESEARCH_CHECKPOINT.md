@@ -219,3 +219,13 @@ Updated: 2026-09-25 14:12 Asia/Taipei.
 ## External-learning continuation
 - Trading Frictions concept lane is converged.
 - Next genuinely under-studied lane: Event Risk, Gap Risk & Overnight Information.
+
+
+## Parallel durable lane — Event Risk, Gap Risk & Overnight Information
+- Dedicated files: `EVENT_RISK_RESEARCH.md`, `EVENT_RISK_CHECKPOINT.md`, `EVENT_RISK_CAPTURE_PROPOSAL.md`.
+- Current cursor: ER-001 through ER-028 complete.
+- Status: CONCEPT_COMPLETE / EVIDENCE_PENDING.
+- Durable scope: overnight/intraday decomposition, scheduled-vs-unscheduled event certainty, MOPS point-in-time provenance, gap-through-stop risk, ±10% limit-constrained exits, weekend/holiday exposure, opening auction, overseas/common-factor gap controls, portfolio event clustering and event-aware stress.
+- Source audit: current ANNOUNCEMENTS quality snapshots normalize official rows to date/title only, so intraday first-known timing is not preserved. V8.8.1 snapshots have previousClose/openPrice but not quote referencePrice/openTime, so corporate-action-safe gap analysis is incomplete.
+- Full prospective ER-024 is not zero-code feasible with current stored evidence. A proposal-only point-in-time capture design is frozen; no implementation/deploy.
+- Formal Core unchanged.
