@@ -154,3 +154,34 @@ Updated: 2026-09-25 14:12 Asia/Taipei.
 - Existing recorder cadence is too sparse for true event-level OFI/resiliency. New trades/volumes fetches in the Formal monitor path may create shared-runtime risk; prefer an isolated research capture path.
 - Advanced through MS-024: dynamic-cadence requirements, markout/implementation-shortfall semantics, TWSE tick-band normalization, price-limit/VI nonlinear regimes, cross-lane redundancy gate and a frozen empirical protocol are durable. Next priority is to use existing recorder evidence before adding new capture code.
 - Exact continuation: MS-025 quantify recorder event/date coverage; MS-026 determine whether existing spread/depth snapshots support a zero-code baseline; MS-027 run that pre-registered baseline only if coverage is complete enough; MS-028 prepare isolated capture engineering only if existing evidence is insufficient.
+
+
+## Parallel durable lane — Market Microstructure（市場微結構／訂單流／流動性） status update
+- Dedicated files: `MICROSTRUCTURE_RESEARCH.md`, `MICROSTRUCTURE_CHECKPOINT.md`, `MICROSTRUCTURE_COLLECTOR_PROPOSAL.md`.
+- Current cursor: MS-001 through MS-044 complete.
+- Status: CONCEPT_COMPLETE / EVIDENCE_PENDING.
+- Existing V8.8.1 recorder already covers spread/top-five depth/depth imbalance/market-state snapshots. Dynamic replenishment/pressure/resiliency requires prospective complete capture.
+- Separate collector is proposal-only; no code/deploy. Formal Core unchanged.
+
+## Parallel durable lane — Market Breadth + Sector Rotation + Leadership
+- Dedicated files: `MARKET_BREADTH_ROTATION_RESEARCH.md`, `MARKET_BREADTH_ROTATION_CHECKPOINT.md`.
+- Current cursor: BR-001 through BR-025 complete.
+- Status: CONCEPT_COMPLETE / EVIDENCE_PENDING.
+- Critical source finding: current `buildTodaySectorStats()` breadth is computed from rows already filtered by the Formal scan normalization (including close >= NT$10 and non-common-instrument exclusions), so it is eligible/scan-universe sector breadth, not whole-market breadth.
+- Current production sector gate (breadth >=40%, avgChange >=-1%, amountVs20DayAverage >=0.5) remains unchanged; research will audit it prospectively without threshold sweep.
+- New conceptual layers frozen: universe-separated breadth, breadth trend/acceleration, cap-vs-equal/median concentration, sector rank transition, cross-sector correlation/dispersion, leadership diffusion/concentration, stock-RS x sector-state interaction, point-in-time universe/classification controls.
+- Formal Core unchanged.
+
+## Parallel durable lane — Fundamental Information Dynamics
+- Dedicated files: `FUNDAMENTAL_INFORMATION_DYNAMICS_RESEARCH.md`, `FUNDAMENTAL_INFORMATION_DYNAMICS_CHECKPOINT.md`.
+- Current cursor: FD-001 through FD-028 complete.
+- Status: CONCEPT_COMPLETE / EVIDENCE_PENDING.
+- Existing main Worker has realized fundamental level/change fields and `fundamentalScore()`, but no source-level `surprise`, `consensus`, `revision`, or `forecast` semantics.
+- Durable distinction: LEVEL / CHANGE / SURPRISE / REVISION / PRICE REACTION are separate information layers. EPS YoY is not SUE; revenue YoY/MoM is not revenue surprise.
+- Taiwan monthly revenue first-known timing/vintage, SUE expectation source, cash/accrual quality, margin dynamics, guidance, analyst disagreement, fundamental momentum, event-price reaction and peer transfer are now conceptually specified.
+- Near-term priority is point-in-time official event truth; analyst consensus/revision requires a verified historical point-in-time provider.
+- Formal Core unchanged.
+
+## External-learning continuation
+- Microstructure, breadth/rotation, and fundamental-dynamics concept lanes are converged. Do not create more variants until evidence accumulates.
+- Next genuinely under-studied lane: Derivatives Information & Volatility Surface, with Taiwan futures/options mechanics and positive/counter mechanisms.
