@@ -30,7 +30,7 @@ assert.match(source,/currentBaseCapital\(env\)/);
 assert.match(source,/recalculateAideenCapital\(env, capital\)/);
 assert.match(source,/monitoringStocks=\[\.\.\.\(loaded\.stocks\|\|\[\]\),\.\.\.\(aideen\.stocks\|\|\[\]\)\]/);
 assert.match(source,/aideenSignalStateKey\(result\)/);
-assert.match(source,/AIDEEN_APP:\$\{symbol\}/);
+assert.match(source,/\$\{AIDEEN_POOL_ID\}:\$\{symbol\}/);
 assert.match(source,/formalMonitoredCount/);
 assert.match(source,/aideenMonitoredCount/);
 
