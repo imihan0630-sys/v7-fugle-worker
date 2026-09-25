@@ -1311,3 +1311,296 @@ MS-035: Queue position and fill probability — distinguish signal quality from 
 MS-036: Market impact decomposition — temporary vs permanent impact and implications for chasing.
 MS-037: Intraday event studies around breakout/failed breakout with microstructure states.
 MS-038: After the concept lane, evaluate whether a separate collector proposal should be prepared; no deployment without infrastructure/quota review.
+
+
+---
+
+## MS-033 — Order-flow toxicity: useful concept, dangerous magic metric
+
+### Concept
+Flow is “toxic” from a liquidity provider's perspective when the counterparty is systematically better informed and the liquidity provider is adversely selected.
+
+Easley, López de Prado & O'Hara (2012) propose VPIN, a volume-time imbalance measure, as a practical proxy for flow toxicity.
+
+Source:
+- Review of Financial Studies 25(5), 1457–1493.
+- https://doi.org/10.1093/rfs/hhs053
+- https://papers.ssrn.com/sol3/papers.cfm?abstract_id=1695596
+
+### Positive interpretation
+The concept itself is valuable:
+- unusual one-sided flow can make passive liquidity fragile;
+- widening spread / retreating depth may be a rational response to information risk;
+- a directional trader should care whether a breakout is occurring in normal liquidity or in a market where liquidity providers are backing away.
+
+### Strong counter-evidence
+Andersen & Bondarenko (2014) challenge VPIN's incremental predictive value. They report:
+- weak future-volatility prediction,
+- strong mechanical relation to trading intensity,
+- sensitivity to trade classification,
+- sensitivity to where the volume clock starts.
+
+Source:
+- Journal of Financial Markets 17, 1–46.
+- https://doi.org/10.1016/j.finmar.2013.05.005
+
+Easley et al. published a rejoinder disputing this critique, so this is a genuinely contested literature rather than a settled “indicator works / does not work” result.
+
+### System decision
+Do NOT add VPIN as a named score now.
+
+If toxicity is researched later:
+- treat it as a latent liquidity-risk state;
+- compare against simple baselines such as transaction rate, pressure imbalance, spread and volatility;
+- require incremental value after those controls;
+- freeze trade-classification method before outcomes;
+- use multiple volume-clock start offsets as a robustness test rather than selecting the best one.
+
+Status: CONCEPT RETAINED; VPIN NOT ADOPTED.
+
+---
+
+## MS-034 — Hidden liquidity / iceberg / spoofing boundary
+
+### Evidence
+Bessembinder, Panayides & Venkataraman (2009) show that hidden orders can be economically important and that displayed order size is therefore not the full supply/demand picture. In their Euronext sample, hidden orders constituted a large share of order volume.
+
+Source:
+- Journal of Financial Economics 94(3), 361–383.
+- https://doi.org/10.1016/j.jfineco.2009.02.001
+
+### Consequence
+Public top-five depth is an **observable surface**, not total liquidity.
+
+Repeated execution at a price while displayed quantity repeatedly reappears may be consistent with hidden/replenishing liquidity, but it does not prove an iceberg order.
+
+Likewise:
+- large displayed size that later disappears does not prove spoofing;
+- cancellation can be legitimate inventory/risk management;
+- public data generally do not reveal trader intent.
+
+### Safe research vocabulary
+Allowed:
+- REPLENISHMENT_PATTERN
+- DISPLAYED_DEPTH_WITHDRAWAL
+- EXECUTION_WITH_WEAK_PRICE_PROGRESS
+- HIDDEN_LIQUIDITY_CANDIDATE
+
+Avoid:
+- “this participant is spoofing”
+- “this is definitely an iceberg”
+unless an authoritative enforcement record independently establishes it.
+
+### Research value
+The important question is not who intended what. It is whether:
+- displayed depth was reliable,
+- depth replenished,
+- executions failed to move price,
+- the state predicted follow-through / reversal incrementally.
+
+Status: INFERENCE BOUNDARY FROZEN.
+
+---
+
+## MS-035 — Queue position / fill probability is a separate problem from signal quality
+
+### Concept
+A limit BUY placed at the best bid does not fill merely because the bid is touched. Fill probability depends on:
+- queue ahead,
+- incoming sell market orders,
+- cancellations ahead,
+- price movement before execution,
+- exchange priority rules.
+
+Modern queueing models explicitly estimate fill probability conditional on limit-order-book state.
+
+Reference:
+- Lokin & Yu (2024), Fill Probabilities in a Limit Order Book with State-Dependent Stochastic Order Flows.
+- https://arxiv.org/abs/2403.02572
+
+### Relevance to our system
+Three questions must remain separate:
+
+1. **Signal quality** — was BUY directionally correct?
+2. **Executable price quality** — what price was realistically available?
+3. **Limit fill probability** — would an order at the planned limit have actually filled?
+
+A backtest that says “low touched buyLow, therefore filled” can overstate execution if queue/available volume is ignored.
+
+### Current evidence boundary
+Fugle public books/trades do not give our own broker order ID or exact queue position.
+Therefore exact historical fill probability for an unsubmitted hypothetical limit order is not observable.
+
+### Research proxies
+Possible later research:
+- traded volume through/at limit after order decision;
+- displayed queue ahead proxy at decision time;
+- time spent executable;
+- price moved through limit;
+- conservative fill labels.
+
+Do not call these true fill probability without a validated model.
+
+Status: EXECUTION-LAYER RESEARCH CANDIDATE.
+
+---
+
+## MS-036 — Temporary vs permanent market impact: why chasing can look stronger than it is
+
+### Evidence
+Almgren–Chriss execution theory separates transaction costs / market impact and inventory risk; market-impact literature distinguishes temporary/transient effects from persistent effects.
+
+Sources:
+- Almgren & Chriss, Optimal Liquidation / Optimal Execution of Portfolio Transactions.
+- https://papers.ssrn.com/sol3/papers.cfm?abstract_id=53501
+- Gatheral (2010), No-Dynamic-Arbitrage and Market Impact.
+- https://papers.ssrn.com/sol3/papers.cfm?abstract_id=1292353
+
+### Interpretation for a breakout
+Observed price acceleration can contain:
+- information-driven permanent repricing,
+- transient pressure from aggressive orders,
+- a liquidity vacuum,
+- a combination.
+
+If pressure stops and price rapidly mean-reverts while spread/depth normalize, part of the observed move behaved like transient impact.
+
+If price remains accepted after flow normalizes, the move is more consistent with persistent repricing.
+
+### Research state
+Do not attempt to estimate a full structural permanent-impact model initially.
+
+Use descriptive short-horizon response:
+- impactPeakBps
+- impactRetainedBps after 1/5/15m
+- retracementFraction
+- spread/depth recovery
+- pressure decay
+
+### Counterpoint
+“Retained price move” is not proof of informed trading; common news, correlated sector flow and market movement can also persist. Control for market/sector state.
+
+Status: SIMPLE TRANSIENT/PERSISTENT RESPONSE STUDY PREFERRED.
+
+---
+
+## MS-037 — Intraday event-study design around breakout / failed breakout
+
+### Event definition
+Use the already-frozen as-of breakout reference from the strategy/pattern layer. Do not redefine the breakout after seeing subsequent microstructure.
+
+Event t0:
+- first valid crossing/confirmation timestamp available in the prospective monitored dataset.
+
+### Pre-event windows
+- [-15m,-5m]
+- [-5m,0]
+for:
+- spread state,
+- depth state,
+- pressure state,
+- transaction intensity,
+- replenishment state.
+
+### Post-event windows
+- [0,+1m]
+- [0,+5m]
+- [0,+15m]
+- [0,+30m]
+
+### Outcomes
+- price retention above breakout reference,
+- MFE / MAE,
+- retracementFraction,
+- spread recovery,
+- pressure persistence/flip,
+- volume/price response,
+- eventual 15m/30m failed-breakout label.
+
+### Matched comparisons
+Successful and failed breakouts must be matched/controlled for:
+- same date or date-cluster,
+- market regime,
+- sector,
+- price/tick band,
+- liquidity,
+- ATR,
+- existing price-volume state,
+- opening/normal/limit/VI session state.
+
+### Key hypotheses
+- H1: pressure + price response + stable spread is healthier than pressure with no price response.
+- H2: extreme price movement with weak pressure and thin depth is more likely to retrace.
+- H3: repeated ask replenishment with weak upward progress is associated with lower post-breakout retention.
+- H4: depth imbalance alone is weaker than dynamic pressure-response/replenishment states.
+
+### Falsification
+If simple existing variables (RVOL, ATR, breakout quality, spread) explain the result and dynamic microstructure adds no stable incremental value, kill the dynamic feature rather than keeping it for narrative appeal.
+
+Status: EVENT-STUDY PROTOCOL FROZEN.
+
+---
+
+## MS-038 — Collector proposal decision
+
+### Findings
+A separate collector is scientifically justified only because:
+- existing recorder readback cannot prove complete historical coverage;
+- existing recorder cadence is too sparse for dynamic replenishment/OFI;
+- Fugle provides books/trades WebSocket data;
+- raw high-frequency data have meaningful quota/storage/runtime costs.
+
+### Current Fugle quota implications
+Official plan docs state each symbol x channel consumes one subscription:
+- books + trades for 6 symbols = 12 subscriptions,
+- for 9 symbols = 18.
+
+Basic plan currently permits only 5 subscriptions; Developer 300; Advanced 2000. Therefore any real collector must first verify the actual MarketData plan and cannot assume the current key supports the desired cohort.
+
+### Cloudflare architecture caution
+Cloudflare supports outbound WebSockets, including from Durable Objects, but outbound WebSockets do not hibernate like server-side accepted WebSockets. Current Cloudflare docs note that active outbound connections keep a Durable Object alive for a bounded period for eviction purposes, and platform/runtime/cost behavior must be considered.
+
+Sources:
+- https://developers.cloudflare.com/durable-objects/best-practices/websockets/
+- https://developers.cloudflare.com/changelog/post/2026-06-19-outbound-connections-keep-dos-alive/
+
+### Recommendation state
+Prepare a **proposal document only**, not deployed code.
+
+The proposal should:
+- isolate research collector from `fugle-test`,
+- require separate fail-open research storage,
+- verify Fugle plan/quota before activation,
+- pilot 1s/5s/15s fidelity on a very small symbol cohort,
+- establish measured row size and write rate before scaling,
+- never place the collector in Formal request/decision/push dependency graph.
+
+Status: CLASS-B INFRASTRUCTURE PROPOSAL ELIGIBLE; NO DEPLOYMENT AUTHORIZED.
+
+---
+
+## Sixth synthesis — what the microstructure lane now adds
+
+This lane has reached a qualitatively different layer than K-line / price-volume:
+
+- K-line tells us the path price drew.
+- Price-volume tells us how much participation accompanied it.
+- Microstructure asks **how available liquidity was consumed, replenished and repriced while that path formed**.
+
+The strongest candidates are not standalone bullish/bearish indicators. They are conditional diagnostics:
+- pressure with / without price response,
+- replenishment versus liquidity vacuum,
+- spread/depth stress,
+- transient versus retained price impact,
+- fill/execution feasibility.
+
+This makes microstructure most naturally useful for **15m entry quality, false-breakout control and execution alpha**, rather than replacing the after-market stock-selection core.
+
+## Exact next continuation after MS-038
+
+MS-039: Build the Class-B collector proposal document with no code/deploy.
+MS-040: Study auction microstructure separately — opening/closing call auction should not be treated like continuous trading.
+MS-041: Study price discovery: which price/flow states incorporate information versus merely provide liquidity.
+MS-042: Study cross-sectional liquidity risk — whether liquidity deterioration is stock-specific, sector-wide or market-wide.
+MS-043: Study market-wide liquidity/commonality and how it should interact with Regime.
+MS-044: Then move to the next genuinely under-studied knowledge lane once microstructure concepts converge.
