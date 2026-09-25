@@ -364,3 +364,28 @@ Class A if research-only; Class C if later used in formal 15m confirmation.
 - PV-H001 through PV-H004 move to `DATA_QA`; they are not supported or rejected yet.
 - Next exact continuation: enable `PV_SHADOW_ENABLED=true` only in a controlled environment, verify first-session slot/coverage/guard/fingerprint integrity and live-call counts, then collect the frozen first 50 events before any inferential analysis.
 - Any Formal fingerprint difference, PV exception propagation, PV push/action, unexpected live API growth, look-ahead, mutation conflict or unit mixing is an immediate kill-switch condition.
+
+## Progress added — PV-098 through PV-117
+- PV-098 audits current dealer-flow semantics: official TWSE/TPEx data split dealer proprietary vs hedge, but current Worker stores only combined dealerNet and dealerBuyDays. Combined flow is real cash demand but broader than directional dealer conviction.
+- PV-099 links Taiwan covered-warrant evidence: dynamic hedge demand can alter underlying volume/volatility and unwind around expiry. Hedge flow is a volume-origin label, not a bearish/bullish discount.
+- PV-100 integrates ETF creation/redemption/arbitrage as common basket flow. Causal direction between ETF and constituent prices is not assumed.
+- PV-101 confirms official daily volume can include block-trading activity; daily RVOL can therefore be elevated by non-regular-session sources. Never infer block share as daily-minus-intraday residual without source reconciliation.
+- PV-102 creates the volume-origin decomposition framework and registers dealer proprietary-vs-hedge as the highest-priority Tier-2 origin test because the fields already exist in the current official payload.
+- PV-103~107 integrate leverage/shorting semantics: margin and short balances are leverage/disagreement/crowding states, not simple direction scores; current 23:35 scan makes same-day TWSE/TPEx short/SBL data temporally research-eligible subject to exact freshness/finality checks. Current combined dealerBuyDays remains unchanged pending evidence.
+- PV-108~110 establish that disposition securities alter the matching clock. Periodic 5/20-minute auction sessions can invalidate normal 15m same-slot RVOL semantics. Attention is context; disposition is altered market structure. Disposition sessions should pause/exclude baseline accumulation, not be zero-filled or force a full corporate-action reset.
+- PV-111 identifies current cross-market coverage asymmetry: research infrastructure captures TWSE attention/disposition but TPEx disposition remains explicit UNKNOWN in V8.7.11. UNKNOWN must not be treated as non-disposition.
+- PV-112 integrates the existing Leverage/Shorting lane: disposition/attention are constraint variables conditioning leverage and PV, not alpha factors.
+- PV-113 integrates the existing Passive Flow lane: PV should consume provider-quality index-event states rather than rebuild a duplicate rebalance model.
+- PV-114~117 integrate the existing Derivatives/Volatility lane. Index futures/options expiry is primarily broad market/common-flow context; covered warrants/single-stock derivatives can be stock-specific. Expiry-day late-session volume does not prove hedge causality.
+- New durable hypothesis: PV-H005 dealer proprietary vs hedge flow decomposition.
+- PV_SHADOW_V0_1 remains unchanged during DATA_QA; all new items are Tier-2 / cross-lane research only.
+- Formal Core remains LOCKED.
+
+## Revised exact next continuation point after PV-117
+1. PV-118: build one unified volume-origin taxonomy: stock-specific information / discretionary flow / mechanical hedge / passive basket / leverage-crowding / market-structure distortion / common-factor flow / unknown.
+2. PV-119: define attribution-confidence levels so the system never states a causal origin more strongly than the evidence permits.
+3. PV-120: build a source-readiness matrix with TWSE/TPEx coverage, publication time, historical depth, revision/finality and incremental API cost for each origin.
+4. PV-121: define how residual RVOL and origin context interact without double counting.
+5. PV-122: freeze PV-H005 data-capture/test protocol using existing institution payloads, still no Formal change.
+6. Continue cross-lane integration before inventing any new indicator.
+7. Formal Core remains LOCKED.
