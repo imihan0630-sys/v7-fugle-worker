@@ -6162,3 +6162,167 @@ Once a new structure is discovered:
 A discovered cluster will almost always look meaningful in the data that created it.
 Only an untouched sample can tell whether it has predictive value.
 
+
+
+## DL-002AK — Local Segment Importance / Pattern Phase Decomposition v0.1
+
+### Core question
+Within a full pattern, which phase carries the actual incremental information?
+
+A full cup, W, VCP or flag can span many bars. If predictive information is concentrated in the final maturation segment, averaging the entire pattern may dilute it.
+
+### Phase decomposition
+For every pattern family, split history into:
+
+PHASE_0_PRECONDITION
+- trend / prior advance / earlier regime before the pattern begins.
+
+PHASE_1_FORMATION
+- initial base formation / first contraction / first bottom / initial decline and recovery.
+
+PHASE_2_MATURATION
+- later contractions, right-side recovery, second bottom, flag compression.
+
+PHASE_3_TRIGGER_ZONE
+- final tight area / handle / neckline approach / pivot approach / last support test.
+
+PHASE_4_POST_TRIGGER
+- breakout, retest, follow-through, failure, reclaim.
+
+### Research hypothesis
+The predictive information may not be evenly distributed.
+Candidate possibilities:
+- VCP: last 1-2 contractions matter more than the first contraction.
+- Cup: right-side recovery + handle may matter more than left-side decline.
+- W: second bottom + reclaim + neckline approach may matter more than first bottom.
+- Flag: late compression near pole high may matter more than the whole flag.
+- Candlestick: local reversal geometry matters mainly when it appears in PHASE_3 near structural support/resistance.
+
+### Phase features
+For each phase compute:
+- return
+- duration
+- ATR/range change
+- volume/turnover trend
+- RS change
+- low/high progression
+- distance to pivot/support
+- directional efficiency
+- drawdown
+- recovery speed
+- tick-normalized tightness
+
+### Ablation design
+For each pattern detector compare:
+A. full-pattern feature set;
+B. remove PHASE_0;
+C. remove early formation PHASE_1;
+D. trigger-zone only PHASE_3;
+E. PHASE_2 + PHASE_3;
+F. primitive-only controls without named pattern label.
+
+Do not select the best ablation on the same validation sample.
+Use discovery sample to freeze candidate phase comparisons, then untouched holdout/prospective dates.
+
+### Interpretation
+If PHASE_3-only performs as well as full-pattern features:
+- long historical morphology may be useful mainly for context,
+- execution/selection engineering could remain simpler.
+
+If full history adds incremental value:
+- longer research horizon is justified.
+
+## DL-002AL — Directional Efficiency and Path Smoothness
+
+### Motivation
+Two stocks can have the same return and same endpoints but reach them through different paths.
+
+Define path efficiency:
+- efficiencyRatio = abs(C_end - C_start) / sum(abs(C_t - C_t-1))
+
+High efficiency:
+- cleaner directional progression.
+
+Low efficiency:
+- noisy back-and-forth path.
+
+### Research use
+Measure separately by phase:
+- priorAdvanceEfficiency
+- rightSideRecoveryEfficiency
+- handleEfficiency
+- breakoutFollowThroughEfficiency
+
+Also measure:
+- adverseExcursionWithinPhase
+- reversalCount
+- signedReturnConsistency
+- pathLengthNormalizedByATR
+
+### Interaction hypotheses
+- high right-side recovery efficiency + low-volatility handle may signal organized demand;
+- excessively high prior-advance efficiency may instead indicate late-stage extension;
+- low efficiency inside handle may mean churn/distribution rather than healthy digestion.
+
+Therefore efficiency is contextual, not universally bullish.
+
+### Relation to DL-001
+DL-001 Information Discreteness / Gradual Price Path may overlap strongly with path efficiency.
+Before retaining this feature, test redundancy directly.
+If efficiency simply re-expresses DL-001, reject as duplicate.
+
+## DL-002AM — Shapelet-Style Local Motifs
+
+### Concept
+Instead of asking whether the entire chart matches a named pattern, ask whether short local subsequences (“motifs” / shapelets) recur before certain outcomes.
+
+Examples:
+- undercut -> rapid reclaim -> tight close cluster;
+- high-volume rejection -> weak bounce -> second rejection;
+- contraction -> brief range expansion -> immediate absorption;
+- right-side acceleration -> shallow low-volume handle.
+
+### Research discipline
+Do not mine thousands of motifs against forward returns in the same sample.
+
+Safe process:
+1. discover recurring motifs without outcome labels or on a discovery subset;
+2. translate motifs into interpretable OHLC/swing rules where possible;
+3. freeze motif definition;
+4. validate on untouched dates.
+
+### Why useful
+Named patterns may be too coarse.
+A short motif could explain why some cups succeed and others fail.
+
+### Why dangerous
+Outcome-guided shapelet discovery is an extreme data-snooping risk.
+Any supervised motif discovery must have strict nested train/validation/holdout separation.
+
+## DL-002AN — Variable-Length Windows vs Fixed 20/60-day Windows
+
+### External prior
+Recent chart-pattern research groups candlesticks into waves before prediction specifically to avoid relying only on fixed windows.
+DTW/subsequence research likewise searches variable-length historical segments.
+
+### Current-system comparison
+Formal features rely heavily on fixed horizons:
+- 5/10/20/60 days,
+- priorHigh20/priorHigh60,
+- volume 5 vs 20.
+
+These are stable and interpretable, but may slice through patterns at arbitrary places.
+
+### Research comparison
+For the same as-of date build:
+1. FIXED_WINDOW features (existing 20/60-day style);
+2. SWING_DEFINED variable-length phase features;
+3. HYBRID = fixed baseline + swing phases.
+
+Question:
+Does variable-length segmentation add incremental information after fixed windows?
+
+### Decision rule
+If swing-defined features do not improve incremental diagnostics, keep the simpler fixed-window system.
+Complexity is not a benefit by itself.
+
