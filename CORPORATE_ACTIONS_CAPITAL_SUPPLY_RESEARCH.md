@@ -4134,3 +4134,75 @@ CA-112: freeze stable TPEx historical daily denominator ingestion contract (mach
 CA-113: execute bounded dual-exchange daily denominator archive pilot with per-date/per-symbol completeness receipts.
 CA-114: resolve payment-certificate/private-placement denominator treatment around 2465 plus at least one independent witness.
 CA-115: re-evaluate Class-A Shadow implementation readiness only after CA-111..114 pass; Formal Core remains locked.
+
+
+---
+
+## CA-111 — TWSE BFT51U unit-resolution progress
+
+Materialized:
+`research/twse_bft51u_unit_resolution_receipt_v0_1.json`.
+
+The required strict unit proof is still NOT complete.
+
+Positive official evidence:
+- BFT51U is a daily 14:40 TWSE product with both `發行張數` and `上市股數`.
+- BFT50U independently exposes the same issued/listed concepts for reconciliation.
+- BFI85U Security Main Data is daily from 2020-03-02 and exposes both `交易單位` and `發行股數`.
+- TRANISIN is daily from 2020-03-02 and exposes per-security `交易單位`.
+- TWSE separately publishes T32 specifically for foreign-currency and non-thousand trading-unit securities.
+
+Negative/falsification evidence:
+- BFT51U official sample CSV and A19 format DOCX remain inaccessible through the current research client because they are binary artifacts.
+- BFT50U sample/format binaries are likewise inaccessible through this path.
+- The indexed 2019 TWSE BFT51U format-change announcement proves record structure changes but does not expose the issued/listed raw-unit definition.
+- A universal `raw value * 1000` rule is therefore NOT promoted to VERIFIED merely from the word `張`; the existence of an official non-thousand-unit security file is a direct guard against an unscoped shortcut.
+
+Promising fallback:
+BFI85U + TRANISIN/T32 can form an independent post-2020 issued-share/trading-unit reconciliation lane, but BFI85U numeric-unit documentation still needs an official format/sample capture before it can replace BFT51U as a VERIFIED share-count backbone.
+
+CA-111 status:
+`IN_PROGRESS_STRICT_BLOCKER_RETAINED`.
+
+No owner intervention is requested yet: public/authorized alternative official lanes still exist to investigate. Formal Core unchanged.
+
+---
+
+## CA-112 — TPEx official historical daily denominator ingestion contract
+
+Materialized:
+`CORPORATE_ACTION_TPEX_DENOMINATOR_INGESTION_CONTRACT.md`.
+
+Authoritative TPEx E-Data Shop lane:
+- file code `S38`;
+- file `STKT2QUOTESN.TXT`;
+- daily product, historical lane from 2015-11-16 onward;
+- fixed-width TXT;
+- official EDIS format explicitly defines `成交股數 9(12)` in shares, `發行股數 9(13)` in shares, and `市值 9(14)` in NTD.
+
+This closes the TPEx S38 raw-unit ambiguity:
+`TPEX_S38_ISSUED_SHARE_UNIT = SHARES`.
+
+Replay/archive contract now requires immutable raw artifact bytes, hash, trade date, fetchedAt, format version, parser version and acquisition method. Missing artifacts remain `DENOMINATOR_COVERAGE_UNKNOWN`; issued shares are never silently promoted to listed/tradable shares.
+
+Executable branch evidence:
+- `research/tpex_s38_denominator_parser_prototype.mjs`;
+- `tests/test_tpex_s38_denominator_parser_prototype.mjs`;
+- branch commit `78f627d36de44e50d50f74bb387e19dec9558a7a`.
+
+Fresh trusted CI:
+- Research Corporate Action Prototype `36149848429`: SUCCESS;
+- V8 Regression Tests `36149848439`: SUCCESS;
+- V8 Repair CI `36149848481`: SUCCESS;
+- research job `108120054170` explicitly passed the new TPEx S38 parser step.
+
+CA-112 status:
+`COMPLETE_INDEPENDENT_LANE / HISTORICAL_ARCHIVE_BYTES_NOT_YET_ACQUIRED`.
+
+This is an intentional out-of-order side-lane completion while CA-111 remains the contiguous blocker. No Worker.js wiring, no merge/deploy, no Formal change.
+
+## Updated continuation
+
+Contiguous cursor remains after CA-110 because CA-111 is not complete.
+Continue CA-111 first. CA-112 is already complete as an independent lane.
+After CA-111 passes, proceed to CA-113 bounded dual-exchange archive pilot, CA-114 payment-certificate/private-placement resolution, and CA-115 readiness re-evaluation.
