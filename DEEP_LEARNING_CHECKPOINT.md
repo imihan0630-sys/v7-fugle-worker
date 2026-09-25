@@ -696,3 +696,15 @@ YES for research infrastructure integrity: resolving the actual archive lineage 
 - Outcome-blind DATA_QA receipt and selection-time quality provenance are prerequisites before alpha interpretation.
 - PR #100 remains research-only and must not be promoted in its current market-session-only form; later Corporate Action evidence requires symbol-session provenance first.
 - No Formal/Core/runtime code was changed by this PV learning sequence.
+
+
+## Corporate Actions deep-learning update — CA-113/CA-114 bounded source semantics
+- Corporate Actions was continued from the durable CA-113 cursor; no earlier CA work was restarted.
+- New durable receipt `research/corporate_action_ca113_bounded_public_lane_receipt_v0_1.json` validates an official TPEx historical daily issued-share query across independent years plus a non-trading-day control.
+- 5314 provides direct positive/counter evidence for symbol-session provenance: issued shares remain 14.7m before the verified 2025-03-20..03-28 suspension, checked suspension-boundary rows are absent, and the resume session 2025-03-31 carries 294m shares. Missing-on-suspension must not be treated as source failure.
+- Public TPEx history is now a validated reconciliation lane, but immutable S38 bytes/hash and historical first-known/revision completeness remain separate stronger gates.
+- New `research/corporate_action_2465_payment_certificate_resolution_v0_2.json` proves a distinct TWSE reporting clock: MI_QFIIS 2465 `發行股數` jumps 83,946,031 -> 93,946,031 on 2025-11-12, before payment certificates trade on 2025-11-17 and before MOEA registration on 2026-01-06.
+- Therefore reporting-table `發行股數`, registered-issued common shares, listed common shares and combined tradable instrument supply must remain separate semantic objects even when values later converge numerically.
+- Positive and falsification evidence point in the same direction: source-field name is insufficient; denominatorType + event stage + knownAt/effectiveFromSession + instrument scope are mandatory.
+- Remaining Corporate Actions blocker is exact TWSE daily listed-share/payment-certificate representation around 2465 plus stronger bounded archive completeness. CA-115 remains gated.
+- Formal Core remains LOCKED; no production code, strategy factor, threshold, ranking, capital, monitoring or push behavior changed.
