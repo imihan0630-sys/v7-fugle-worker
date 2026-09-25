@@ -1,5 +1,7 @@
 from pathlib import Path
 
+# V8.10.0 build trigger after semver-safe legacy regression
+
 path=Path("Worker.js")
 text=path.read_text(encoding="utf-8")
 
