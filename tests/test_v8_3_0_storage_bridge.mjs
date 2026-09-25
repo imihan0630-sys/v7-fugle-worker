@@ -7,7 +7,10 @@ const mod=await import("data:text/javascript;base64,"+Buffer.from(
   source+"\nexport {canonicalPlanJson,sha256Hex,firebaseConfigured,writePlanArchiveD1,readPlanArchiveD1};"
 ).toString("base64")+"#"+Date.now());
 
-assert.match(source,/const VERSION = "8\.(?:3\.\d+|[4-9]\.\d+)[^"]*";/);
+{
+  const version=source.match(/const VERSION = "(\d+)\.(\d+)\.(\d+)[^"]*";/)?.slice(1,4).map(Number);
+  assert.ok(version && (version[0]>8 || (version[0]===8 && (version[1]>3 || (version[1]===3 && version[2]>=0)))),"V8.3.0+ runtime required");
+}
 
 class FakeStatement {
   constructor(db,sql){ this.db=db; this.sql=sql; this.args=[]; }
