@@ -1598,3 +1598,157 @@ This reinforces subgroup/regime testing and argues against one universal candles
 
 No Formal implication.
 
+
+
+## DL-002N — Cross-Pattern De-duplication / Latent Geometry Layer v0.1
+
+### Problem
+The same price structure can receive multiple traditional labels:
+- a shallow Cup-with-Handle handle can also look like a Flag,
+- a VCP final contraction can also look like a Platform or Triangle,
+- a W-bottom can be nested inside a larger Cup,
+- a Rising Three Methods sequence can be a micro-Flag,
+- Three Mountains can overlap with Head-and-Shoulders / Triple Top.
+
+If each named label becomes an independent score, the same underlying geometry will be counted multiple times.
+
+### Research principle
+Named patterns are interpretability labels.
+The primary quantitative layer should be a smaller set of latent geometry dimensions.
+
+### Proposed latent dimensions
+1. TREND_CONTEXT
+   - prior advance/decline
+   - MA/swing trend
+   - residual strength context
+
+2. COMPRESSION
+   - ATR/range contraction
+   - sequential contraction
+   - volume dry-up
+   - duration compression
+
+3. SUPPORT_RESISTANCE_TOPOLOGY
+   - repeated highs/lows
+   - horizontal vs sloped boundaries
+   - neckline / rim / pivot clarity
+   - distance to structural levels
+
+4. SWING_PROGRESSION
+   - higher lows / lower highs
+   - contraction depth sequence
+   - leg duration sequence
+   - recovery quality
+
+5. SHAPE_SYMMETRY
+   - rim/valley similarity
+   - time symmetry
+   - bowl roundness
+   - line-fit residuals
+
+6. IMPULSE_QUALITY
+   - flagpole strength
+   - net-path efficiency
+   - breakout range expansion
+   - gap/limit-move dependence
+
+7. VOLUME_STRUCTURE
+   - selling-volume decay
+   - base-wide volume slope
+   - handle/final-tight-area dry-up
+   - breakout-volume expansion
+
+8. PIVOT_CLARITY
+   - number of plausible pivots
+   - pivot dispersion
+   - scale agreement
+   - boundary fit residual
+
+9. MATURITY_STATE
+   - FORMING / VALID / MATURE / PIVOT_READY / BREAKOUT / RETEST / FAILED
+
+10. LOCATION_RISK
+   - overheat / distance from MA
+   - position in larger base
+   - price-limit / gap dependence
+   - resistance overhead
+
+### Pattern labels become mappings
+Examples:
+
+VCP:
+- high COMPRESSION
+- positive SWING_PROGRESSION
+- strong VOLUME_STRUCTURE dry-up
+- high PIVOT_CLARITY
+
+Cup-with-Handle:
+- SHAPE_SYMMETRY / roundness
+- right-side recovery
+- nested shallow handle COMPRESSION
+- rim/pivot topology
+
+W-bottom:
+- SUPPORT_RESISTANCE_TOPOLOGY
+- two-trough SWING_PROGRESSION
+- true neckline
+- reclaim/confirmation lifecycle
+
+Bull Flag:
+- high IMPULSE_QUALITY
+- short consolidation COMPRESSION
+- parallel/downward boundary topology
+- volume dry-up
+
+Triangle:
+- converging boundary topology
+- COMPRESSION
+- PIVOT_CLARITY / apex geometry
+
+Sakata sequences:
+- mostly short-horizon IMPULSE / LOCATION / raw relational OHLC features.
+
+### No aggregate “Pattern Score” yet
+Do not create one weighted 0-100 score at this stage.
+Reason:
+- weights would be arbitrary before validation,
+- named-pattern overlap would be hidden,
+- one large score encourages outcome-tuned weight fitting.
+
+Store a feature vector + labels + maturity state first.
+
+If a later Shadow experiment needs a summary, pre-register a simple non-outcome-tuned summary and compare it against the full vector. Do not optimize weights on the same sample.
+
+### Pattern overlap record
+For every as-of-date stock:
+- patternLabels[]
+- patternStates[]
+- sharedSwingIds[]
+- latentFeatureVector
+- overlapMatrix
+- dominantTopology = descriptive only
+- conflictFlags[]
+
+Example conflict:
+- CUP_HANDLE + FLAG may share the same handle swings.
+Mark shared geometry so they cannot later be treated as independent evidence.
+
+### Multi-scale sensitivity
+Recent chart-representation research shows pattern information can disappear as sequence simplification changes.
+This reinforces the DL-002H rule:
+- preserve MICRO / BASE / MAJOR views,
+- record scaleAgreement,
+- do not select the scale that produces the best forward return.
+
+### Promotion requirement
+A named pattern must demonstrate incremental information beyond:
+1. its own latent geometry dimensions,
+2. existing Formal variables,
+3. other overlapping pattern labels.
+
+If “Cup-with-Handle” adds no value after rim symmetry + compression + pivot clarity, the name remains UI/interpretability only.
+
+### Status
+ARCHITECTURE_FROZEN_V0_1.
+Research-only. No production score created.
+
