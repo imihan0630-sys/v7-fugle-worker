@@ -13957,3 +13957,157 @@ A candidate feature/pattern should be deliberately dropped from predictive consi
 5. Only then consider Class-A implementation of PATTERN_SELECTION_SHADOW_V0_1.
 6. Formal Core remains LOCKED.
 
+
+
+## DL-002IY — Fugle Historical API Audit Resolves Three Major Data Questions
+
+### Official provider documentation
+Fugle Historical Candles explicitly supports:
+- timeframe D/W/M and historical 1/3/5/10/15/30/60-minute bars;
+- daily listed/OTC stock history back to 2010;
+- historical minute bars from 2023-05-23;
+- adjusted=true/false for daily/weekly/monthly bars;
+- turnover on D/W/M;
+- single-query date span strictly less than one year.
+
+### Units are now resolved
+For listed/OTC ordinary stocks:
+- historical daily volume = shares;
+- historical minute volume = lots (張);
+- historical turnover = transaction value in TWD (元).
+
+Therefore the current Worker mapping:
+volumeShares <- bar.volume
+tradeValue <- bar.turnover
+is semantically correct for ordinary-stock daily bars.
+
+### Important code gap
+Current fetchHistoricalDaily does NOT send adjusted=true/false explicitly.
+It also discards payload.adjusted and bar.open.
+
+Therefore Pattern Shadow must make adjustment mode explicit rather than inherit an undocumented/default state.
+
+### Research fetch design
+For daily research:
+- fetch RAW with adjusted=false explicitly;
+- fetch ADJUSTED/MORPHOLOGY candidate with adjusted=true explicitly for comparison;
+- preserve payload.adjusted;
+- retain open/high/low/close/volume/turnover/change.
+
+Before trusting adjusted=true as the sole morphology continuity solution, compare it against official TWSE/TPEx ex-right reference events on deterministic fixtures.
+
+### Historical minute question resolved
+Historical 1/3/5/10/15/30/60m data are provider-supported from 2023-05-23.
+So historical execution research is not fundamentally unavailable.
+
+But:
+- it increases API/storage cost materially;
+- single-query windows are <1 year;
+- selection-pattern v0.1 still does not need it.
+
+Therefore minute backfill remains Stage-later, not a blocker.
+
+## DL-002IZ — Corporate-Action Source Parity: TWSE and TPEx Are Both Feasible
+
+### TWSE
+Official sources provide:
+- TWT48U_ALL ex-right/ex-dividend forecast in OpenAPI;
+- historical ex-right/ex-dividend reference-price calculation page with data from 2003-05-05;
+- official formulas/reference prices.
+
+### TPEx
+Official TPEx provides:
+- ex-right/ex-dividend forecast table from 2008 onward;
+- ex-right/ex-dividend calculation results from 2008-01-02 onward;
+- older historical reference data for 2000-09 through 2007-12;
+- official formulas and CSV/HTML export.
+
+### Consequence
+Corporate-action-aware Pattern Shadow is feasible for both listed and OTC mainboard stocks without treating TPEx as permanently UNKNOWN.
+
+### Still required
+Engineering must verify stable machine-readable endpoints / response schemas before implementation.
+Do not scrape presentation HTML if a stable CSV/API endpoint is available.
+
+### Market scope
+Formal ordinary TWSE/TPEx stocks only for v0.1.
+ESB/emerging-stock semantics remain out of scope because market structure differs materially.
+
+## DL-002JA — Adjusted Price Is Not the Same as Total-Return Outcome
+
+### Distinction
+Provider adjusted OHLC is useful for morphology continuity.
+But research outcome return must define whether cash distributions are included.
+
+Do not assume:
+adjusted chart return = executable total return
+without verifying provider adjustment convention.
+
+### Required return semantics
+PRICE_RETURN_RAW
+- actual raw close-to-close price change.
+
+MORPHOLOGY_RETURN
+- adjusted-series movement for structural continuity diagnostics.
+
+TOTAL_RETURN_RESEARCH
+- includes distributions using official action information where the outcome question requires investor economic return.
+
+### Use
+Pattern geometry: adjusted/morphology.
+Actual breakout/fill levels: raw.
+Economic performance across ex-dividend events: total-return-consistent.
+
+Never mix these silently.
+
+## DL-002JB — Shadow Candidate Archive Is a Research Concept, Not Yet a Located Runtime Table
+
+### Repository code-search audit
+Searches for:
+- Shadow Candidate Archive
+- NEAR_MISS
+- REJECTED_AFTER_BASE
+- QUALIFIED_NOT_SELECTED
+- BROAD_CONTROL
+did not locate a corresponding implemented runtime table/API in the indexed default-branch code.
+
+### Interpretation
+The cohort taxonomy exists in research governance/history, but Pattern Shadow v0.1 must not assume a concrete archive table already exists.
+
+### Safe design implication
+Before implementation:
+- locate any differently named existing research snapshot store, or
+- create an isolated Pattern Shadow cohort snapshot table populated from the scan pipeline's research outputs.
+
+Do not wire Pattern Shadow to a nonexistent conceptual archive.
+
+### Population priority remains
+Use same-date Formal scan candidates/rejections if they are point-in-time recoverable.
+If historical rejected cohorts were not durably stored, do not reconstruct them from today's data and call them historical point-in-time observations.
+
+## DL-002JC — API Budget / Backfill Chunking Constraint
+
+### Provider constraint
+Historical candle query span must be less than one year.
+
+### Daily 260-bar target
+A 420-calendar-day request exceeds one year and would violate the API contract.
+
+Correction to DL-002IJ:
+- target 260 completed trading bars remains reasonable;
+- fetch must be chunked into sub-year windows OR use a <1-year first chunk plus an earlier chunk;
+- merge/dedupe by date;
+- validate no gaps/duplicates;
+- do not silently shorten history when a chunk fails.
+
+### Preferred deterministic backfill
+For each symbol:
+1. request recent <1-year chunk;
+2. if <260 valid trading bars, request preceding chunk;
+3. merge ascending;
+4. keep last 260 valid bars after data-quality checks;
+5. record requested windows and actual history start.
+
+### Prospective daily maintenance
+After bootstrap, append one completed daily bar per trading day; avoid refetching full history.
+
