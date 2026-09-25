@@ -652,3 +652,13 @@ YES for research infrastructure integrity: resolving the actual archive lineage 
 - Existing V8.8.x execution recorder is sparse; coarse spread/depth/context may be testable, dynamic OFI/replenishment is not reconstructable.
 - PV-H006 registered for microstructure incremental value on ambiguous high-effort events.
 - PV_SHADOW_V0_1 remains frozen during DATA_QA; Formal Core LOCKED.
+
+## Price-Volume lane update — PV-161 through PV-167
+- Current PV research cursor: PV-001 through PV-167 complete.
+- execution-shadow-v2 is now treated as a sparse coarse liquidity recorder, not an order-flow database.
+- Coarse spread/depth/state research may be possible after live coverage QA; side-specific pressure/replenishment/OFI cannot be reconstructed from current stored rows.
+- Important semantic warnings: lastTradeAt currently aliases quote.lastUpdated; FIRST_30M_COMPLETE has no dedicated 30m frame; openingGapPct is raw-prev-close based and corporate-action guarded.
+- Top-five aggregate share depth cannot reconstruct per-level notional depth, queue shape or hidden liquidity.
+- Current protected read endpoint is not an exhaustive coverage proof because of LIMIT 500 / recent-row truncation.
+- PV-H006 remains DATA_QUALITY_BLOCKED pending authoritative live recorder coverage audit.
+- Formal Core LOCKED.
