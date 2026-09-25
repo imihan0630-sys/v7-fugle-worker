@@ -135,3 +135,29 @@ Latest durable research commit before this checkpoint update: `1fc02001fc0fea01b
 8. Do not create R09 or propose Formal change yet.
 
 Durable research detail: main `KLINE_PATTERN_RESEARCH.md` commit `a245b486dc60f29b623546416c2db4c6994465a4`.
+
+
+## Continuation update — DL-003G
+- Draft PR #102 research branch advanced without runtime wiring.
+- VCP range/volume context is now executable: shrinking contraction depth, improving lows, declining down-leg volume/range and final dry-up/range context are separated from swing-only topology; incompatible prior-trend context is labeled generic compression rather than continuation VCP.
+- W lifecycle is executable with true MID_HIGH neckline, undercut/reclaim variant, breakout/retest/failure chronology and prior-trend family context.
+- Platform lifecycle is executable with repeated confirmed upper/lower touches, range/volume contraction context and breakout/breakdown states; narrow rolling range alone is insufficient.
+- New isolated `pattern_observer_adapter_v0_1.mjs` now enforces Shadow-parent identity, Corporate Actions semantic spaces, point-in-time provenance, immutable payload hashes and provenance-conflict detection.
+- Pattern observability v0.1 now measures coverage, blocked reasons, replay/prefix exactness, scale agreement and compute cost; no outcome return enters detector/adapter QA.
+- Initial CI failed due to a literal escaped-newline import bug. It was diagnosed from Actions logs, fixed, and the corrected branch head `adefb586b4af2cbff6afd62dd0a6e0f7c413c784` passed V8 Repair `36147957526` and V8 Regression `36147957785`.
+- 2025 Pacific-Basin Finance Journal Taiwan evidence on historical-high breakouts materially strengthens the counterargument to a hard resistance veto: old/high reference points can become momentum/underreaction states after a true break, with size/turnover/seasonality heterogeneity.
+- Therefore major-zone logic stays lifecycle-based: approach -> first break -> accepted above -> failed break. No hard available-air veto.
+- No forward outcomes were inspected for Pattern. Alpha remains UNKNOWN. Formal Core remains LOCKED.
+
+### Current status
+`DETECTOR_QA_PLUS_LIFECYCLE_PASS / CACHE_ADAPTER_QA_PASS / OBSERVABILITY_SPEC_EXECUTABLE / RUNTIME_NOT_WIRED / ALPHA_UNKNOWN`.
+
+### Updated exact next continuation point
+1. Keep PR #102 Draft and un-deployed.
+2. Reconcile branch divergence against latest main before any further engineering; do not overwrite newer main changes.
+3. Specify prospective Pattern observer persistence schema/API boundary as isolated Class-A design; runtime wiring must still be reclassified before merge/deploy.
+4. Add explicit observer-level episode de-dup and blocked-coverage acceptance thresholds without using future returns.
+5. Prepare prospective-only Shadow-parent coverage gate; no historical Formal cohort fabrication.
+6. After enough prospective complete dates exist, run only preregistered PATTERN-RG1..RG4 and frozen redundancy controls.
+7. Distinguish major-zone lifecycle states (approach / first break / accepted / failed) from current R01/local breakout without changing Formal logic.
+8. Do not create R09 or propose Formal optimization until maturity/date/regime/holdout/cost gates are met.
