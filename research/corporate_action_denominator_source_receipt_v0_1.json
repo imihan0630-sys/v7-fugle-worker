@@ -1,0 +1,196 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-09-25 Asia/Taipei",
+  "purpose": "CA-106 official TWSE + TPEx daily share-denominator source-contract and completeness-receipt audit. Research-only; this receipt proves source semantics/readiness, not a completed historical denominator archive.",
+  "decisionImpact": false,
+  "inferenceReady": false,
+  "formalCoreChanged": false,
+  "scope": {
+    "exchanges": ["TWSE", "TPEx"],
+    "requiredSemanticSpaces": [
+      "REGISTERED_ISSUED_SHARES",
+      "EXCHANGE_LISTED_OR_TRADABLE_SHARES"
+    ],
+    "replayGates": [
+      "knownAt <= replayAsOf",
+      "effectiveFromSession <= targetSession",
+      "raw unit contract VERIFIED",
+      "source/date coverage complete for the requested lane",
+      "security-type treatment explicit",
+      "revision/conflict provenance preserved"
+    ]
+  },
+  "sourceLanes": [
+    {
+      "sourceId": "TWSE_DATA_ESHOP_BFT51U",
+      "exchange": "TWSE",
+      "sourceClass": "OFFICIAL_PAID_DAILY_FILE",
+      "sourceUrlZh": "https://eshop.twse.com.tw/zh/product/detail/bc9bd889165844a9849d190fd1c69066",
+      "sourceUrlEn": "https://eshop.twse.com.tw/en/product/detail/e349f522707a4ab887726b37afdf25c7",
+      "product": "BFT51U / 當日個股基本資料表 / Basic Information of All Stocks",
+      "cadence": "DAILY_TRADING_DAY",
+      "productionTime": "approximately 14:40 Asia/Taipei",
+      "documentedFieldsZh": [
+        "成交日期",
+        "股票代號",
+        "停止融資碼",
+        "停止融券碼",
+        "參考價",
+        "收盤價",
+        "發行張數",
+        "上市股數",
+        "當日無成交之調整參考價"
+      ],
+      "documentedFieldsEn": [
+        "Trade date",
+        "Stock code",
+        "Stopping margin trading code",
+        "Stopping short sale code",
+        "Referencing price",
+        "Closing price",
+        "No of Volumes issued",
+        "Shares outstanding",
+        "The adjusted referencing price for no transaction on the day"
+      ],
+      "documentedStartDate": {
+        "zhPage": "2004-02-19",
+        "enPage": "2004-03-01",
+        "status": "OFFICIAL_PAGE_DISCREPANCY_RETAINED"
+      },
+      "formats": ["TEXT", "CSV"],
+      "access": "PAID",
+      "monthlyPriceNTD": {
+        "internalUse": 1500,
+        "externalUse": 3000
+      },
+      "sampleArtifactAttempt": {
+        "sampleCsvUrl": "https://eshop.twse.com.tw/uploadFile/upload/000000006bbab10e016c4094f3a80037.csv",
+        "formatDocxUrl": "https://eshop.twse.com.tw/uploadFile/upload/000000006e0bbe8d016f3ae2e262036d.docx",
+        "result": "NOT_RETRIEVED_BY_RESEARCH_CLIENT",
+        "reason": "Sample CSV returned unsupported application/octet-stream through the web research client; format document retrieval also failed. No unit inference is allowed from field names alone."
+      },
+      "unitContract": {
+        "rawFieldNames": ["發行張數", "上市股數"],
+        "rawUnit": "UNKNOWN_UNTIL_OFFICIAL_FORMAT_OR_SAMPLE_CAPTURE",
+        "normalizedUnit": "UNKNOWN",
+        "status": "TWSE_BFT51U_UNIT_NORMALIZATION_CONTRACT_UNKNOWN"
+      },
+      "readiness": "PARTIAL",
+      "positiveEvidence": [
+        "Official product is daily and contains both issued and listed share-base fields.",
+        "Official product is historically documented from the mid-2000s."
+      ],
+      "counterEvidence": [
+        "Exact unit normalization is not proven.",
+        "Official Chinese and English start dates disagree by several trading days.",
+        "Paid access means a complete historical archive is not currently captured in this repository."
+      ]
+    },
+    {
+      "sourceId": "TWSE_BFT50U_RECONCILIATION",
+      "exchange": "TWSE",
+      "sourceClass": "OFFICIAL_DAILY_RECONCILIATION_PRODUCT",
+      "role": "RECONCILIATION_ONLY",
+      "documentedSemanticUse": "Provides daily issued/listed share fields alongside reference/limit prices.",
+      "substituteForMissingBFT51U": false,
+      "readiness": "PARTIAL",
+      "guard": "May corroborate semantics but must not silently fill a missing point-in-time BFT51U vintage."
+    },
+    {
+      "sourceId": "TPEX_DAILY_STOCK_QUOTES",
+      "exchange": "TPEx",
+      "sourceClass": "OFFICIAL_PUBLIC_DAILY_PAGE_CSV",
+      "sourceUrl": "https://www.tpex.org.tw/en-us/mainboard/trading/info/pricing.html",
+      "historicalChineseUrl": "https://www.tpex.org.tw/zh-tw/mainboard/trading/info/mi-pricing.html?type=AL",
+      "cadence": "DAILY_TRADING_DAY",
+      "historicalAvailability": "Official page states data are available since 2007/01, with older ranges linked separately.",
+      "verifiedField": "發行股數",
+      "verifiedExamples": [
+        {
+          "date": "2021-07-19",
+          "symbol": "5820",
+          "issuedShares": 3772452281
+        },
+        {
+          "date": "2017-05-24",
+          "symbol": "1258",
+          "issuedShares": 36399459
+        }
+      ],
+      "unitContract": {
+        "observedRepresentation": "Exact integer share counts on official historical tables",
+        "normalizedUnit": "SHARES",
+        "status": "PUBLIC_PAGE_FIELD_SEMANTICS_VERIFIED"
+      },
+      "machineContract": {
+        "stableLongRunApi": "NOT_FROZEN",
+        "csvExport": "PUBLIC_PAGE_DOCUMENTED",
+        "status": "ARTIFACT_INGESTION_FEASIBLE_MACHINE_API_PARTIAL"
+      },
+      "readiness": "PARTIAL_STRONG_PUBLIC_ARTIFACT"
+    },
+    {
+      "sourceId": "TPEX_TURNOVER_STATISTICS",
+      "exchange": "TPEx",
+      "sourceClass": "OFFICIAL_STATISTICAL_SEMANTIC_CROSSCHECK",
+      "sourceUrl": "https://www.tpex.org.tw/epaper/monthly/202609/zh/statistical_4.html",
+      "verifiedStatement": "資本額及周轉率係以發行股數計算",
+      "role": "SEMANTIC_CROSSCHECK",
+      "readiness": "VERIFIED"
+    }
+  ],
+  "crossExchangeFindings": [
+    "A field called turnover rate is not an exchange-neutral semantic object.",
+    "TPEx published turnover statistics explicitly use issued shares.",
+    "TWSE documentation elsewhere distinguishes issued from listed shares; daily research must carry denominatorType explicitly.",
+    "Cross-exchange normalization is prohibited until the exact selected denominator space is proven for both exchanges."
+  ],
+  "securityTypeGuards": [
+    {
+      "topic": "PAYMENT_CERTIFICATES",
+      "witness": "2465",
+      "status": "PARTIAL_CONFLICT",
+      "finding": "Payment certificates began trading before the later registered-capital change. Registered-issued and exchange-listed/tradable clocks are not interchangeable."
+    },
+    {
+      "topic": "PRIVATE_PLACEMENT",
+      "witness": "2465",
+      "status": "UNRESOLVED_FOR_EXACT_TRADABLE_DENOMINATOR",
+      "finding": "Announcement wording around public-listed common shares and cumulative listed total does not yet prove one exact tradable-share denominator."
+    }
+  ],
+  "completenessReceipt": {
+    "receiptType": "SOURCE_CONTRACT_AUDIT_NOT_DATA_ARCHIVE",
+    "twseDailyDenominatorSourceIdentified": true,
+    "twseIssuedAndListedFieldsDocumented": true,
+    "twseRawUnitContractVerified": false,
+    "twseHistoricalDailyFilesCaptured": false,
+    "tpexDailyIssuedFieldVerified": true,
+    "tpexHistoricalPublicPageVerified": true,
+    "tpexStableLongRunMachineApiFrozen": false,
+    "revisionChainsCapturedForFullInterval": false,
+    "paymentCertificateTreatmentResolved": false,
+    "privatePlacementTreatmentResolved": false,
+    "futureLeakageRuleFrozen": true,
+    "missingDateRuleFrozen": true,
+    "crossSourceConflictRuleFrozen": true,
+    "fullBoundedArchiveReady": false
+  },
+  "gates": {
+    "DENOMINATOR_SOURCE_CONTRACT": "COMPLETE_WITH_EXPLICIT_BLOCKERS",
+    "TWSE_DAILY_BACKBONE_IDENTIFIED": "YES",
+    "TWSE_UNIT_NORMALIZATION": "BLOCKED_PENDING_OFFICIAL_SAMPLE_OR_FORMAT_ARTIFACT",
+    "TPEX_PUBLIC_DAILY_ISSUED_LANE": "VERIFIED_AT_PAGE_ARTIFACT_LEVEL",
+    "TPEX_LONG_RUN_MACHINE_CONTRACT": "PARTIAL",
+    "PAYMENT_CERTIFICATE_PRIVATE_PLACEMENT_SEMANTICS": "PARTIAL_CONFLICT",
+    "FULL_HISTORICAL_ARCHIVE": "NO_GO",
+    "FORMAL_RUNTIME_DEPENDENCY": "NOT_AUTHORIZED"
+  },
+  "antiInference": [
+    "This receipt does not claim every historical date has been captured.",
+    "This receipt does not convert TWSE 張-based labels into shares without official unit proof.",
+    "This receipt does not choose registered-issued versus exchange-listed/tradable as one universal denominator.",
+    "No signal, ranking, threshold, capital, monitor, push or execution logic is changed."
+  ],
+  "conclusion": "CA-106 source-contract work is complete as a positive-and-negative evidence receipt: daily official denominator lanes are identified on both exchanges, but full archive readiness remains NO_GO until TWSE unit normalization, TPEx long-run ingestion, revision coverage and payment-certificate/private-placement semantics are resolved."
+}
