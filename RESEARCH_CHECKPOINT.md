@@ -1,7 +1,7 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-135.
-Updated: 2026-09-25 16:58 Asia/Taipei.
+Checkpoint sequence: B-139.
+Updated: 2026-09-25 23:33 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Detailed B-01..B-123 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
@@ -355,3 +355,15 @@ Updated: 2026-09-25 16:58 Asia/Taipei.
 - Bias/quality checks: no outcome-driven denominator choice, no missing=0/BAD, no current-state backfill, no future leakage, no historical Shadow fabrication, no Formal change.
 - Engineering: research-only artifacts/checkpoints committed on main; no Worker.js wiring, PR merge or Production deployment.
 - Exact next continuation: execute CA-113 bounded TWSE/TPEx archive receipts with expected/observed/missing/revision/knownAt/UNKNOWN accounting; reconcile CA-114 2465 daily TWSE rows against frozen instrument-stage semantics; then CA-115 readiness re-evaluation only if archive/data gates pass.
+
+
+## B-139 — CA-113 first bounded public-lane receipts (2026-09-25 23:33 Asia/Taipei)
+- Fresh-read governance/worklist/checkpoint/main and continued from B-138 / CA-113. Another research line had advanced Price-Volume through PV-190; it was not redone or overwritten.
+- CA-113 first bounded official receipts captured. TPEx official daily quote output independently exposes raw issued shares, supporting the frozen S38 share-unit contract as a reconciliation lane.
+- 5314 provides a strong symbol-session completeness negative control: official TPEx notice confirms par-value-change trading suspension 2025-03-20..2025-03-28 and resumption 2025-03-31. These dates are VERIFIED_SUSPENSION, not missing denominator observations. A separate official notice starts another suspension 2025-10-14, proving suspension provenance must be event/window-specific rather than inferred from one corporate-action family.
+- TWSE BFT51U official contract remains daily (~14:40) with 發行張數 and 上市股數, but bounded historical BFT51U bytes are not proven accessible through the current public path. Therefore 2465 2025-11-17 denominator reconciliation remains incomplete.
+- Counterevidence/UNKNOWN: TWSE public trading report can prove 2465 traded in the target period but does not expose payment-certificate/listed-share denominator composition, so it cannot close CA-114. Missing denominator rows outside VERIFIED_SUSPENSION remain UNKNOWN/MISSING_SOURCE; no no-change inference.
+- CA-113 status = PARTIAL_RECEIPTS / ARCHIVE_BYTES_PENDING. CA-114 remains SEMANTIC_STAGE_RESOLVED_DAILY_ARCHIVE_RECEIPT_PENDING. No revision/knownAt completeness claim yet.
+- Bias/quality: no current-snapshot backfill, no inferred continuity across missing sessions, no missing=0/BAD, no alpha/outcome test, no historical Shadow fabrication, no new factor/window/threshold. R01-R08/I01-I07 unchanged.
+- Engineering: Class A research/checkpoint only; dedicated CA checkpoint commit `eb54c57b17d9e8d8ac6e3152e28875d51f5949f0`. Formal Core/Worker/Production/PR #100/#101 unchanged.
+- Exact next continuation: acquire bounded historical TPEx S38 bytes and materialize expected/observed/VERIFIED_SUSPENSION/UNKNOWN/revision/knownAt counts; obtain bounded TWSE BFT51U or equivalent exact daily listed-share artifacts for witness windows, especially 2465 around 2025-11-17; only then CA-115 readiness re-evaluation.
