@@ -144,3 +144,12 @@ Current research schema: PV_SHADOW_V0_1
 - Falsification: archive dynamic layer if simple spread/depth/PV explains the result or sparse coverage drives findings.
 - Formal impact: none.
 - Decision: remain PLANNED.
+
+### PV-H006 audit update after PV-161~167
+- Existing execution-shadow-v2 capability is now audited precisely.
+- Coarse H006-B can use spreadPct, best bid/ask, aggregate top-five share depth, depthImbalance, executionMarketState and freshness flags only if live coverage passes QA.
+- H006-C/D remain DATA_GATED because current payload lacks trade-side pressure, transaction sequence, replenishment/depletion and dynamic book resiliency.
+- The current field named lastTradeAt is actually derived from Fugle quote.lastUpdated; it must not be interpreted as actual last-trade time.
+- FIRST_30M_COMPLETE is a milestone timestamp; current payload stores frame10/frame15, not a dedicated frame30.
+- Current recorder endpoint is bounded by SQL LIMIT 500 and recent-row output, so it cannot prove full-window event completeness.
+- Status: DATA_QUALITY_BLOCKED_PENDING_LIVE_COVERAGE_AUDIT.
