@@ -16,7 +16,10 @@ assert.match(page,/\/api\/external-validation\/stats/);
 assert.match(page,/不會改買區、停損、資金配置、3Min或推播/);
 
 const workerSource=await readFile(workerPath,"utf8");
-assert.match(workerSource,/const VERSION = "8\.(?:1\.[3-9]|[2-9]\.\d+)[^"]*";/);
+{
+  const version=workerSource.match(/const VERSION = "(\\d+)\\.(\\d+)\\.(\\d+)[^"]*";/)?.slice(1,4).map(Number);
+  assert.ok(version && version[0]===8 && (version[1]>1 || (version[1]===1 && version[2]>=3)),"V8.1.3+ runtime required");
+}
 assert.match(workerSource,/report=\{\.\.\.report,signalId:dailyPayload\.signalId/);
 assert.match(workerSource,/selectedCount:dailyPayload\.selectedCount,(?:zeroSelection:dailyPayload\.zeroSelection,pushRequired:true,)?checkedAt:new Date\(\)\.toISOString\(\)/);
 
