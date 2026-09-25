@@ -1,8 +1,8 @@
 # Market Microstructure Checkpoint
 
 Updated: 2026-09-25 Asia/Taipei
-Current cursor: MS-001 through MS-043 complete.
-Next: MS-044.
+Current cursor: MS-001 through MS-044 complete.
+Next: evidence accumulation; concept lane complete.
 
 ## Durable conclusions
 
@@ -148,3 +148,9 @@ Files:
 - MS-044 mark concept lane CONCEPT_COMPLETE / EVIDENCE_PENDING.
 - Start new durable lane: Market Breadth + Sector Rotation + Leadership.
 - First tasks: breadth definitions, advance/decline structure, new-high/new-low participation, breadth divergence, industry momentum/rotation, leader participation, Taiwan data-source feasibility, positive/counter evidence.
+
+
+## MS-044 — lane state
+- Market-microstructure concept learning is now CONCEPT_COMPLETE / EVIDENCE_PENDING.
+- Dynamic evidence requires prospective complete capture; collector proposal exists but is not deployed.
+- No further indicator invention until data-quality/evidence gates permit testing.
