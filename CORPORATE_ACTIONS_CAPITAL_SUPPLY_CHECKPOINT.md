@@ -1,9 +1,9 @@
 # Corporate Actions & Capital Supply Checkpoint
 
 Updated: 2026-09-25 Asia/Taipei
-Current cursor: CA-001 through CA-080 complete.
-Status: MATERIALITY_CONFIRMED / LIFECYCLE_REGISTRY_V0_2 / MECHANICS_DELTA_BUILT / RS_SEMANTICS_CONFIRMED / EVIDENCE_DENOMINATOR_PENDING.
-Next: CA-081.
+Current cursor: CA-001 through CA-090 complete.
+Status: MATERIALITY_CONFIRMED / RS_SEMANTICS_CONFIRMED / SUSPENSION_INTERACTION_FOUND / CROSS_LANE_PROTOTYPE_READY / TEST_EXECUTION_PENDING.
+Next: CA-091.
 
 ## Durable conclusions
 - Announced equity supply/demand and realized share-base change are separate.
@@ -82,3 +82,26 @@ CA-082 bounded historical ingestion/completeness receipts.
 CA-083 systematic matched no-action controls.
 CA-084 contamination persistence horizon.
 CA-085 interaction with history-freshness PR #100 and Pattern dual raw/adjusted spaces.
+
+
+## CA-081 through CA-090 durable update
+- Prospective archive and historical completeness-receipt contracts are frozen in CORPORATE_ACTION_ARCHIVE_SPEC.md.
+- NO_EVENT is legal only after complete event-source coverage; otherwise EVENT_COVERAGE_UNKNOWN.
+- Matched no-action control design is frozen by date/regime/exchange/sector/price tier/liquidity/market cap/trend/volatility.
+- Contamination persistence sample shows numeric feature differences can last about 60 trading sessions; A/B condition/pass differences can persist for weeks.
+- Critical PR #100 interaction found: market-wide session continuity alone misclassifies verified symbol-specific capital-action suspensions as stale/gapped.
+- Comment added to draft PR #100 documenting 8422/3593/8103 suspension blocker.
+- Symbol-session contract frozen: official market sessions minus VERIFIED symbol suspension sessions. Unknown suspension provenance fails closed.
+- Draft PR #101 now includes pure suspension-aware symbol-session prototype and fixtures in addition to corporate-action continuity prototype.
+- B-130 stale-cache rejection remains logically compatible: only verified suspension removes an expected symbol session.
+- Cross-lane handoff spaces frozen: RAW_EXECUTION, TECHNICAL_CONTINUITY, PRICE_INDEX_COMPARABLE, TOTAL_RETURN_COMPARABLE.
+- Pattern/K-line research consumes declared spaces and must not create an independent adjustment engine.
+- Branch-only research workflow defines Node test commands, but no workflow run was observed; do not claim test-pass evidence.
+- No Worker.js wiring in PR #101. No merge/deploy.
+
+## Exact next continuation
+CA-091 obtain executable PR #101 test evidence.
+CA-092 integration order between PR #100 freshness and suspension/corporate-action context.
+CA-093 prospective official suspension archive.
+CA-094 multiple actions in one 60-session window.
+CA-095 two-stage stock-dividend ex-right -> new-share-listing contamination.
