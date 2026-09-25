@@ -1353,3 +1353,104 @@ export function replayPatternSnapshot(args = {}) {
     decisionImpact: false
   };
 }
+
+
+export function analyzeMajorZoneLifecycle({
+  bars,
+  asOfDate,
+  zoneLower,
+  zoneUpper
+} = {}) {
+  const validated=barsAsOf(bars,asOfDate);
+  if(!validated.usable) return {status:"BLOCKED",reason:validated.reason,lifecycle:"UNKNOWN"};
+  const lower=finite(zoneLower),upper=finite(zoneUpper);
+  if(!(lower!==null && upper!==null && upper>=lower && lower>0)) {
+    return {status:"BLOCKED",reason:"MAJOR_ZONE_INVALID",lifecycle:"UNKNOWN"};
+  }
+  const series=validated.bars;
+  const relationOf=(close)=>{
+    const x=finite(close);
+    if(x===null) return "UNKNOWN";
+    if(x>upper) return "ABOVE_ZONE";
+    if(x<lower) return "BELOW_ZONE";
+    return "INSIDE_ZONE";
+  };
+
+  const firstBreakIndex=series.findIndex(x=>finite(x.close)!==null && Number(x.close)>upper);
+  const current=series.at(-1);
+  const currentRelation=relationOf(current?.close);
+
+  if(firstBreakIndex<0){
+    return {
+      status:"VALID",
+      lifecycle:currentRelation==="INSIDE_ZONE"?"APPROACH_MAJOR_ZONE":"BELOW_MAJOR_ZONE",
+      currentRelation,
+      firstBreakAt:null,
+      lastBreakAt:null,
+      breakCount:0,
+      aboveZoneCloseStreak:0,
+      reentryCount:0,
+      reenteredZoneAt:null,
+      failedBelowZoneAt:null,
+      zone:{lower,upper},
+      researchOnly:true,
+      decisionImpact:false
+    };
+  }
+
+  let breakCount=0;
+  let lastBreakAt=null;
+  let wasAbove=false;
+  let reentryCount=0;
+  let reenteredZoneAt=null;
+  let failedBelowZoneAt=null;
+
+  for(let i=firstBreakIndex;i<series.length;i+=1){
+    const relation=relationOf(series[i].close);
+    if(relation==="ABOVE_ZONE" && !wasAbove){
+      breakCount+=1;
+      lastBreakAt=series[i].date;
+      wasAbove=true;
+    } else if(relation!=="ABOVE_ZONE" && wasAbove){
+      reentryCount+=1;
+      if(reenteredZoneAt===null) reenteredZoneAt=series[i].date;
+      if(relation==="BELOW_ZONE" && failedBelowZoneAt===null) failedBelowZoneAt=series[i].date;
+      wasAbove=false;
+    } else if(relation==="BELOW_ZONE" && failedBelowZoneAt===null && i>firstBreakIndex){
+      failedBelowZoneAt=series[i].date;
+    }
+  }
+
+  let aboveZoneCloseStreak=0;
+  for(let i=series.length-1;i>=firstBreakIndex;i-=1){
+    if(relationOf(series[i].close)!=="ABOVE_ZONE") break;
+    aboveZoneCloseStreak+=1;
+  }
+
+  let lifecycle;
+  if(currentRelation==="ABOVE_ZONE") {
+    lifecycle=series.at(-1).date===series[firstBreakIndex].date && breakCount===1
+      ? "FIRST_BREAK_ABOVE_MAJOR_ZONE"
+      : "HOLDING_ABOVE_MAJOR_ZONE";
+  } else if(currentRelation==="INSIDE_ZONE") {
+    lifecycle="REENTERED_MAJOR_ZONE";
+  } else {
+    lifecycle="FAILED_MAJOR_ZONE_BREAK";
+  }
+
+  return {
+    status:"VALID",
+    lifecycle,
+    currentRelation,
+    firstBreakAt:series[firstBreakIndex].date,
+    lastBreakAt,
+    breakCount,
+    aboveZoneCloseStreak,
+    reentryCount,
+    reenteredZoneAt,
+    failedBelowZoneAt,
+    zone:{lower,upper},
+    researchOnly:true,
+    decisionImpact:false
+  };
+}
