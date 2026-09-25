@@ -3,6 +3,7 @@ import {
   PATTERN_CORE_VERSION,
   buildShadowParentReference,
   compareShadowParentReferences,
+  validatePatternSeriesEnvelope,
   validatePatternBars,
   detectDirectionalChangeSwings,
   detectDirectionalChangeSwingsAtr,
@@ -75,6 +76,57 @@ function scaled(bars, k) {
   assert.equal(compareShadowParentReferences(p1, p1Replay).status, "SAME_PARENT_EXACT");
   assert.equal(compareShadowParentReferences(p1, p2).status, "PROVENANCE_CONFLICT");
   assert.equal(compareShadowParentReferences(p1, other).status, "DIFFERENT_PARENT");
+}
+
+// Series semantic-space firewall: provider adjustment coercion cannot masquerade as RAW.
+{
+  const bars = makeBars([100,101,100.5]);
+  const common = {
+    sourceId:"fixture-source",
+    payloadHash:"abc123",
+    pointInTimeEligible:true,
+    corporateActionSemanticsReady:true
+  };
+
+  const raw = validatePatternSeriesEnvelope({
+    role:"RAW_EXECUTION",
+    semanticSpace:"RAW_EXECUTION",
+    bars,
+    provenance:{...common,requestedAdjustmentMode:false,returnedAdjustmentMode:false}
+  });
+  assert.equal(raw.status, "VALID");
+
+  const coerced = validatePatternSeriesEnvelope({
+    role:"RAW_EXECUTION",
+    semanticSpace:"RAW_EXECUTION",
+    bars,
+    provenance:{...common,requestedAdjustmentMode:false,returnedAdjustmentMode:true}
+  });
+  assert.equal(coerced.reason, "ADJUSTMENT_MODE_MISMATCH");
+
+  const wrongGeometry = validatePatternSeriesEnvelope({
+    role:"GEOMETRY",
+    semanticSpace:"RAW_EXECUTION",
+    bars,
+    provenance:common
+  });
+  assert.equal(wrongGeometry.reason, "GEOMETRY_REQUIRES_TECHNICAL_CONTINUITY");
+
+  const geometry = validatePatternSeriesEnvelope({
+    role:"GEOMETRY",
+    semanticSpace:"TECHNICAL_CONTINUITY",
+    bars,
+    provenance:common
+  });
+  assert.equal(geometry.status, "VALID");
+
+  const unknownAction = validatePatternSeriesEnvelope({
+    role:"GEOMETRY",
+    semanticSpace:"TECHNICAL_CONTINUITY",
+    bars,
+    provenance:{...common,corporateActionSemanticsReady:false}
+  });
+  assert.equal(unknownAction.reason, "CORPORATE_ACTION_SEMANTICS_UNKNOWN");
 }
 
 // Data validator: duplicate, ordering and OPEN honesty.
