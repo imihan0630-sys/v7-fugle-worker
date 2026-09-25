@@ -3107,3 +3107,178 @@ CA-087: create suspension-aware freshness test fixtures for 8422/3593/8103 on a 
 CA-088: verify no conflict with B-130 stale-history rejection.
 CA-089: define the exact handoff object from validated raw history -> corporate-action continuity -> Pattern dual-space research.
 CA-090: only after cross-lane tests pass, prepare a combined owner decision memo; no merge/deploy.
+
+
+---
+
+## CA-086 — Symbol-session calendar contract
+
+Market-wide session continuity is necessary but not sufficient.
+
+Define:
+
+SYMBOL_EXPECTED_SESSIONS(T) =
+OFFICIAL_MARKET_SESSIONS(before T)
+minus
+VERIFIED_SYMBOL_SUSPENSION_SESSIONS.
+
+Only VERIFIED suspension intervals may remove a market session.
+
+If a suspected suspension lacks authoritative provenance:
+SUSPENSION_PROVENANCE_UNKNOWN
+and freshness remains UNKNOWN/DATA_INCOMPLETE.
+
+### Why this matters
+Capital reduction/par-value exchange can suspend one symbol while the market remains open.
+
+The prior valid symbol session before resume day can therefore be many market sessions earlier.
+
+Status: SYMBOL-SESSION CALENDAR CONTRACT FROZEN.
+
+---
+
+## CA-087 — Suspension-aware freshness prototype and fixtures
+
+Draft PR #101 now includes:
+- research/symbol_session_calendar_prototype.mjs
+- tests/test_symbol_session_calendar_prototype.mjs
+
+Fixtures cover:
+- 8422 par-value suspension/resumption;
+- 3593 loss-reduction suspension/resumption;
+- 8103 cash-reduction suspension/resumption;
+- unknown suspension provenance;
+- B-130 stale-history control.
+
+Expected behavior:
+- verified suspension removes those dates from expected symbol sessions;
+- valid pre-suspension history can remain fresh on resume day;
+- unknown suspension evidence fails closed;
+- B-130 remains stale when no verified suspension explains the missing sessions.
+
+No Worker.js wiring exists in PR #101.
+
+Status: SUSPENSION-AWARE PURE PROTOTYPE + FIXTURES CREATED.
+
+---
+
+## CA-088 — B-130 protection and suspension handling are compatible
+
+These are different missing-bar classes.
+
+### B-130 stale cache
+Market session existed.
+Symbol should have traded.
+No verified suspension explains the missing bars.
+=> reject as STALE / DATA_INCOMPLETE.
+
+### Verified capital-action suspension
+Market session existed.
+Symbol was officially suspended.
+No bar should exist.
+=> exclude that date from expected SYMBOL sessions.
+
+### Unknown reason for no bar
+=> UNKNOWN / DATA_INCOMPLETE.
+
+Therefore suspension awareness does not weaken the stale-history guard.
+It improves the definition of the expected session set.
+
+Status: STALE-HISTORY AND SUSPENSION SEMANTICS ARE LOGICALLY COMPATIBLE.
+
+---
+
+## CA-089 — Exact cross-lane handoff object
+
+Validated history should flow through layers in this order:
+
+### Layer 1 — RAW_VALIDATED
+Fields:
+- symbol;
+- targetDate;
+- rawBars;
+- marketCalendarStatus;
+- symbolSessionStatus;
+- freshnessStatus;
+- suspensionEvents;
+- source provenance.
+
+No corporate-action price transformation yet.
+
+### Layer 2 — CORPORATE_ACTION_CONTEXT
+- relevant action events inside feature window;
+- event versions;
+- first-known/effective timing;
+- reference conflicts;
+- volume transform modes;
+- readiness/unknown reasons.
+
+### Layer 3 — derived semantic spaces
+
+RAW_EXECUTION_SPACE:
+- actual traded OHLC;
+- actual raw volume;
+- used for execution/slippage and factual market prints;
+- corporate-action reset flags mandatory.
+
+TECHNICAL_CONTINUITY_SPACE:
+- point-in-time continuity OHLC;
+- comparable volume only when readiness permits;
+- intended for MA/ATR/support/swing/pattern geometry research.
+
+PRICE_INDEX_COMPARABLE_SPACE:
+- stock price-return semantics aligned to TAIEX Price Index.
+
+TOTAL_RETURN_COMPARABLE_SPACE:
+- stock total-return semantics aligned to TAIEX Total Return Index.
+
+### Layer 4 — Pattern Research
+Pattern/K-line detectors consume the declared space.
+
+Rules:
+- support/resistance/swing topology should not treat a mechanical corporate-action reset as an ordinary break;
+- raw overnight gap studies may inspect RAW_EXECUTION_SPACE but must tag/exclude corporate-action reset gaps from ordinary pattern inference;
+- Pattern lane must not independently invent a second adjustment engine.
+
+### Layer 5 — diagnostics
+Persist:
+- semantic space;
+- action events applied;
+- transform version;
+- raw/continuity deltas;
+- UNKNOWN reasons.
+
+Status: CROSS-LANE HANDOFF CONTRACT V1 FROZEN.
+
+---
+
+## CA-090 — Combined owner decision memo is not yet ready
+
+Research-only prototypes now exist for:
+- corporate-action continuity;
+- lifecycle-aware volume semantics;
+- symbol-specific suspension calendars.
+
+Draft PR #101 remains isolated and unmerged.
+
+A small PR-specific GitHub Actions workflow was added on the research branch to define deterministic Node test commands, but no workflow run was observed from the current branch-only workflow addition.
+
+Therefore do NOT claim execution-pass evidence yet.
+
+Before an owner merge/deploy decision:
+1. execute both prototype test suites in a trusted runner;
+2. integrate/verify suspension source provenance;
+3. re-run B-130 stale-history tests;
+4. verify no-action identity;
+5. verify Pattern handoff semantics;
+6. decide whether PR #100 needs a suspension-aware revision or a separate prerequisite layer.
+
+Status: OWNER DECISION MEMO = PENDING TEST EXECUTION / NO MERGE / NO DEPLOY.
+
+## Exact next continuation after CA-090
+
+CA-091: obtain executable test evidence for PR #101 without touching production.
+CA-092: determine the safest integration order between PR #100 freshness and suspension/corporate-action context.
+CA-093: design a prospective suspension archive from official TWSE announcements.
+CA-094: test multiple corporate actions inside one 60-session window.
+CA-095: test stock-dividend ex-right followed by later new-share listing as two-stage contamination windows.
