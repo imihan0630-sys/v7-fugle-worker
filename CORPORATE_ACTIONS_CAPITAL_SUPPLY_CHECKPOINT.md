@@ -1,9 +1,9 @@
 # Corporate Actions & Capital Supply Checkpoint
 
 Updated: 2026-09-25 Asia/Taipei
-Current cursor: CA-001 through CA-105 complete.
+Current cursor: CA-001 through CA-110 complete.
 Status: MATERIALITY_CONFIRMED / RS_SEMANTICS_CONFIRMED / SUSPENSION_INTERACTION_FOUND / CROSS_LANE_PROTOTYPE_TESTED / EXCHANGE_SCOPED_SUSPENSION_CONTRACT / TWO_STAGE_LIFECYCLE_CONFIRMED.
-Next: CA-106.
+Next: CA-111.
 
 ## Durable conclusions
 - Announced equity supply/demand and realized share-base change are separate.
@@ -169,3 +169,23 @@ CA-107 pre-registered multi-event bounded denominator-disagreement sample.
 CA-108 point-in-time market-cap / institutional-normalization replay fixtures.
 CA-109 executable lifecycle revision/cancellation research-only tests.
 CA-110 evidence checkpoint for a possible Class-A Shadow proposal only; no Formal merge/deploy.
+
+
+## CA-106 through CA-110 durable update
+- CA-106 source-contract receipt materialized in research/corporate_action_denominator_source_receipt_v0_1.json.
+- TWSE official BFT51U is confirmed as a daily denominator backbone with both issued/listed share-base fields. Exact raw-unit normalization remains UNKNOWN because the official sample/format artifact was not retrievable by the research client. The official Chinese/English start-date discrepancy is preserved.
+- TPEx official Daily Stock Quotes provide historical daily issued-share counts at public-page/artifact level; official TPEx statistics confirm capital and turnover use issued shares. Stable long-run machine/API ingestion remains PARTIAL.
+- Full historical denominator archive remains NO_GO. Payment-certificate/private-placement treatment for the exact 2465 exchange-listed/tradable denominator remains PARTIAL_CONFLICT.
+- CA-107 pre-registered four-family mechanics artifact is research/corporate_action_volume_semantic_family_sample_v0_1.json. 3593 flips both tested volume-condition interpretations; 8454 and 8422 are counterexamples showing material numeric changes need not flip booleans; 2465 strict registered lane shows 0/5 low-volume disagreements while unresolved tradable-supply sensitivity shows 1/5.
+- CA-108 point-in-time downstream replay artifact is research/corporate_action_downstream_denominator_replay_v0_1.json. Raw institutional net shares remain factual; normalized flows and derived capitalization require explicit point-in-time denominator semantics.
+- CA-109 research-only lifecycle state-machine prototype/tests were added to draft PR #101 branch. Commit 0c18332013a79faf5f184858b046e9d75d4d11c6 passed Research Corporate Action Prototype run 36148491289, V8 Regression run 36148491397, and V8 Repair run 36148491185. Research job 108115507007 explicitly passed the revision/cancellation lifecycle step.
+- CA-110 readiness memo materialized in CORPORATE_ACTION_DENOMINATOR_SHADOW_READINESS.md.
+- Readiness result: PROPOSAL_ONLY; denominator data gates are not ready for implementation.
+- Formal Core, A/B logic, ranking, thresholds, capital, entry/add/reduce/sell/stop, monitor and push remain unchanged. No Worker.js wiring, no PR #101 merge, no production deploy.
+
+## Exact next continuation
+CA-111 obtain an official TWSE BFT51U sample/format artifact and pin raw units.
+CA-112 freeze a stable TPEx historical daily denominator ingestion contract.
+CA-113 execute a bounded dual-exchange denominator archive pilot with completeness receipts.
+CA-114 resolve payment-certificate/private-placement denominator treatment with daily exchange artifacts and an independent witness.
+CA-115 re-evaluate Class-A Shadow implementation readiness only after CA-111 through CA-114 pass; Formal Core remains locked.
