@@ -1,0 +1,89 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-09-25",
+  "purpose": "Research-only feature-window coverage manifest for corporate-action continuity. Not an inference-ready denominator.",
+  "registryArtifact": "research/corporate_action_registry_sample_v0_2.json",
+  "decisionImpact": false,
+  "coverageSemantics": {
+    "relevantEventRule": "historyStartDate < effectiveDate <= targetDate",
+    "futureEventsExcluded": true,
+    "convenienceSample": true,
+    "allMarketEventCoverageProven": false,
+    "inferenceReady": false
+  },
+  "windows": [
+    {
+      "symbol": "2412",
+      "targetDate": "2026-07-09",
+      "eventKey": "2412:2026-07-09:CASH_DIVIDEND_EX_DATE",
+      "pointInTimeReady": true,
+      "technicalPriceReady": true,
+      "technicalVolumeReady": true,
+      "eventCoverageComplete": "UNKNOWN",
+      "eligibleForMechanicsDelta": true,
+      "eligibleForOutcomeInference": false
+    },
+    {
+      "symbol": "3593",
+      "targetDate": "2025-12-22",
+      "eventKey": "3593:2025-12-22:LOSS_REDUCTION_UNIT_CONVERSION",
+      "pointInTimeReady": true,
+      "technicalPriceReady": true,
+      "technicalVolumeReady": true,
+      "eventCoverageComplete": "UNKNOWN",
+      "eligibleForMechanicsDelta": true,
+      "eligibleForOutcomeInference": false
+    },
+    {
+      "symbol": "8103",
+      "targetDate": "2025-12-08",
+      "eventKey": "8103:2025-12-08:CASH_REFUND_REDUCTION_UNIT_CONVERSION",
+      "pointInTimeReady": true,
+      "technicalPriceReady": true,
+      "technicalVolumeReady": true,
+      "eventCoverageComplete": "UNKNOWN",
+      "eligibleForMechanicsDelta": true,
+      "eligibleForOutcomeInference": false
+    },
+    {
+      "symbol": "8422",
+      "targetDate": "2025-11-17",
+      "eventKey": "8422:2025-11-17:PAR_VALUE_CHANGE_UNIT_CONVERSION",
+      "pointInTimeReady": true,
+      "technicalPriceReady": true,
+      "technicalVolumeReady": true,
+      "eventCoverageComplete": "UNKNOWN",
+      "eligibleForMechanicsDelta": true,
+      "eligibleForOutcomeInference": false
+    },
+    {
+      "symbol": "8454",
+      "targetDate": "2025-08-21",
+      "eventKey": "8454:2025-08-21:STOCK_DIVIDEND_EX_RIGHT",
+      "pointInTimeReady": false,
+      "technicalPriceReady": true,
+      "technicalVolumeReady": true,
+      "eventCoverageComplete": "UNKNOWN",
+      "eligibleForMechanicsDelta": false,
+      "eligibleForOutcomeInference": false,
+      "unknownReasons": [
+        "EXACT_FIRST_KNOWN_TIMESTAMP_NOT_ARCHIVED"
+      ]
+    },
+    {
+      "symbol": "8454",
+      "targetDate": "2025-10-09",
+      "eventKey": "8454:2025-10-09:NEW_SHARES_LISTED",
+      "pointInTimeReady": false,
+      "technicalPriceReady": true,
+      "technicalVolumeReady": false,
+      "eventCoverageComplete": "UNKNOWN",
+      "eligibleForMechanicsDelta": false,
+      "eligibleForOutcomeInference": false,
+      "unknownReasons": [
+        "EXACT_FIRST_KNOWN_TIMESTAMP_NOT_ARCHIVED",
+        "POINT_IN_TIME_LISTED_SHARE_DENOMINATOR_NOT_ARCHIVED"
+      ]
+    }
+  ]
+}
