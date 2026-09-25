@@ -145,3 +145,21 @@ Class A if research-only; Class C if later used in formal 15m confirmation.
 5. PV-032: map PV states into current entry / maxChase / stop-risk research targets without changing Formal decisions.
 6. Engineering proposal may be drafted for research-only Shadow logging; do not implement Formal use without owner approval.
 7. Formal Core remains LOCKED.
+
+## Progress added — PV-028 through PV-032
+- PV-028 confirms volume-at-price / trade-detail data are current-day microstructure sources, not historical candle equivalents. Never synthesize historical volume profile from OHLCV; defer to prospective capture only.
+- PV-029 records Taiwan evidence that transaction count may explain volatility better than average trade size, but current documented Fugle historical candles lack trade count. Keep this second-stage/prospective only.
+- PV-030 adds a high-priority corporate-action baseline-reset guard. Raw-volume baselines must not silently straddle splits, par-value changes, capital reductions or long halt/resume events; require a post-action rebuild unless adjustment semantics are verified.
+- PV-031 separates downside volume-volatility asymmetry from direction. Extreme downside volume can signal higher risk yet still represent capitulation/absorption; later acceptance remains necessary.
+- PV-032 maps PV research onto the actual system funnel. Highest direct optimization hypothesis remains same-slot 15m RVOL + cumulative pace versus current previous-5-bar ratio, followed by acceptance lifecycle and market-structure/data guards.
+- Do not mix immature PV research into ABF re-add until the reduced-position state machine is separately validated.
+- Formal Core remains unchanged / LOCKED.
+
+## Revised exact next continuation point after PV-032
+1. PV-033: define risk-target labels for realized range / MAE / stop-first so PV volatility value can be tested separately from direction.
+2. PV-034: specify market/sector residual-RVOL calculation using current full-market daily snapshots and assess 15m feasibility/cost.
+3. PV-035: study abnormal-volume half-life / decay and event freshness so stale volume shocks do not remain “strong.”
+4. PV-036: integrate PV states with Information Discreteness / news-event context without double counting attention.
+5. PV-037: draft the exact research-only Shadow engineering specification, storage schema, API budget and tests for the PV-025 minimum set.
+6. No Formal implementation without owner-approved proposal.
+7. Formal Core remains LOCKED.
