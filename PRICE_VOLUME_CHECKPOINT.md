@@ -561,3 +561,37 @@ Class A if research-only; Class C if later used in formal 15m confirmation.
 5. PVE-005: preserve failed/null findings in hypothesis ledger.
 6. Continue theory only if empirical residuals expose a concrete unexplained mechanism.
 7. Formal Core remains LOCKED.
+
+## Evidence progress — PVE-001 through PVE-003
+- PVE-001 used actual GitHub Actions/runtime artifacts rather than source inference.
+- PV Shadow enable chronology:
+  - enable run 36143785159 failed safely on concurrent Worker source hash mismatch and attempted rollback;
+  - enable run 36144091642 succeeded with PV_SHADOW_ENABLED=true, non-PV bindings preserved and identical Worker/Formal config/Formal scan fingerprints; formalIsolation=true.
+- Read-only QA run 36144193465 confirms PV enabled and Formal isolation fields, but artifact qaPass=false because Cloudflare D1 direct SELECT returned HTTP 403. Workflow job success != QA pass.
+- Official Cloudflare D1 /query accepts D1 Read or D1 Write token permission. Best-supported diagnosis is current GitHub workflow token lacks D1 Read scope; no token mutation was attempted.
+- As of 2026-09-26 there are zero completed post-enable market sessions: 9/25 and 9/28 are official TWSE holidays and 9/26-27 weekend. Earliest ordinary prospective session is 9/29.
+- PVE-001 state = ENABLE_PASS / FORMAL_ISOLATION_PASS / D1_QA_BLOCKED / ZERO_POST_ENABLE_TRADING_DAYS.
+- PVE-002 live research-dashboard readback from deploy run 36156803749:
+  - Shadow rows 62 across 2 dates;
+  - 9/21=31, 9/22=31;
+  - BROAD_CONTROL 24, NEAR_MISS 13, REJECTED_AFTER_BASE 24, SELECTED 1;
+  - expectedScanDays 3 vs archivedScanDays 2;
+  - integrity RESEARCH_DATA_GAP;
+  - D1/D3/D5/D10/D20 outcome coverage all zero.
+- Given enforcement date 9/21 and the known completed Formal sequence, the missing archive date is 9/23.
+- Selection-time symbol-session receipts do not exist for the 9/21-9/22 archive. Their primary PV cohort state is HISTORY_PROVENANCE_UNVERIFIED, not clean/invalid.
+- 9/24 staged-recovery Formal result is QUARANTINED_INPUT_DEFECT for rolling-history/PV inference because B-130 proved stale daily-history contamination.
+- Therefore verified clean selection-cohort dates for H001-H004 = 0.
+- PVE-003 reconfirms execution-recorder exact-date completeness remains unobservable under current LIMIT-500/newest-80 read contract. B-145's exact-date/run-receipt Class-B proposal is frozen but not implemented.
+- FORMAL_SIGNAL_OBSERVED also requires same-symbol signal verification due the PV-174 batch-scope defect.
+- H006 signal-microstructure remains DATA_QUALITY_BLOCKED.
+- PVE-004 is deliberately NOT STARTED because the pre-registered clean-data gates fail.
+- No alpha result, threshold tuning, Worker/runtime change, token/secret change, merge or deployment occurred.
+
+## Exact next continuation after PVE-003
+1. PVE-004 remains gated; do not run H001/H002 until at least one post-enable trading date produces authoritative PV DATA_QA and clean cohort provenance.
+2. PVE-005: freeze null/blocked evidence outcomes in the hypothesis ledger so readiness failures cannot disappear later.
+3. PVE-006: design the minimum post-9/29 evidence receipt joining PV snapshot QA + selection cohort provenance + symbol-session quality without adding a new strategy factor.
+4. PVE-007: audit whether existing runtime/admin evidence can expose PV D1 QA through a read-only path without changing Cloudflare token permissions; any shared runtime endpoint remains Class-B proposal-first.
+5. On the first completed post-enable trading day, rerun the existing read-only QA; do not equate workflow-success with qaPass.
+6. Formal Core remains LOCKED.
