@@ -3343,4 +3343,296 @@ The experiment requires Shadow logging but not a Formal strategy change.
 Any later use in BUY/ranking/selection requires a new owner-approved Class C proposal.
 
 Status: PRIMARY_PROSPECTIVE_EXPERIMENT_FROZEN / READY_FOR_RESEARCH_IMPLEMENTATION.
+# PV-058 — Exact False / No-Follow-Through Labels for the 15m Experiment
+
+## Principle
+Outcome labels may use later bars only after the horizon completes, but the anchor levels must come entirely from the Formal plan / completed bar known at event time.
+
+Never redraw breakout/support levels after observing failure.
+
+## Separate A and B channels
+Do not pool A pullback and B breakout outcomes as if they are the same event.
+
+### B breakout anchor
+Anchor timestamp = first completed 15m bar in the episode that satisfies the existing Formal B breakout-confirmed definition already present in Worker:
+- close >= breakout * 1.003;
+- local previous-5-bar volumeRatio >= 1.3;
+- strong close;
+- upper-shadow ratio < 0.45.
+
+The experiment does not change that definition; it observes alternative PV fields at the same anchor.
+
+Frozen at anchor:
+- breakout;
+- buyLow/buyHigh or derived retest range;
+- maxChase;
+- stop;
+- anchor OHLC;
+- existing local volumeRatio;
+- all PV Shadow fields.
+
+### B failure labels
+Use current Formal structural semantics where possible.
+
+- `B_FAILED_REENTRY_B1/B2/B4`:
+  within the completed-bar horizon, a 15m close falls below `breakout * 0.995`.
+  This reuses the system's existing “touch breakout then close below 0.995” failure tolerance rather than inventing a new threshold.
+
+- `B_RETEST_ZONE_LOST_B1/B2/B4`:
+  a completed 15m close falls below frozen `retestLow`.
+
+- `B_NO_CLOSE_PROGRESS_B1/B2/B4`:
+  after the anchor, no completed-bar close exceeds the anchor close inside the horizon.
+
+- `B_NO_HIGH_PROGRESS_B1/B2/B4`:
+  after the anchor, no completed-bar high exceeds the anchor high.
+
+These last two are deliberately threshold-free descriptive outcomes, not “bad trade” labels.
+
+### A pullback anchor
+Anchor timestamp = first Formal A BUY-confirmed completed 15m bar under the existing pullback logic.
+
+Frozen:
+- buyLow/buyHigh;
+- stop;
+- anchor OHLC;
+- prior stop/reversal bar used by Formal;
+- local volume ratio and PV fields.
+
+### A failure labels
+- `A_ZONE_LOST_B1/B2/B4`: completed 15m close < frozen buyLow.
+- `A_STOP_BROKEN_B1/B2/B4`: only when Formal stop existed at anchor, completed 15m close < frozen stop.
+- `A_NO_CLOSE_PROGRESS_B1/B2/B4`: no later completed-bar close > anchor close.
+- `A_NO_HIGH_PROGRESS_B1/B2/B4`: no later completed-bar high > anchor high.
+
+## Why multiple labels
+A breakout can fail structurally without immediately hitting the plan stop.
+A setup can hold structure yet show no follow-through.
+These are distinct outcomes and must not be collapsed into one subjective “false signal.”
+
+## MFE / MAE
+Always compute continuous MFE/MAE alongside the binary structural labels.
+Binary thresholds alone discard information.
+
+Status: LABEL_SEMANTICS_FROZEN / FORMAL_DEFINITIONS_REUSED.
+
+
+# PV-059 — Intraday Bar Horizons vs Trading-Day Horizons
+
+## Problem
+A 15m event at 09:30 and an event at 13:15 do not have equal same-day opportunity for 4 or 8 future bars.
+Rolling the late event into the next session would mix intraday continuation with overnight information.
+
+## Intraday bar horizons
+Primary same-session horizons:
+- B1 = next completed 15m bar;
+- B2 = next 2 completed 15m bars;
+- B4 = next 4 completed 15m bars.
+
+Rule:
+If the current trading session ends before the full bar horizon is observed, that horizon is `INCOMPLETE`.
+Do NOT continue counting into the next trading day.
+
+This makes morning/midday/late-session observations comparable on a clearly defined basis while honestly losing some late-session coverage for longer horizons.
+
+## Overnight / next-session outcomes
+Store separately:
+- NEXT_OPEN return;
+- NEXT_SESSION_HIGH/LOW excursion;
+- NEXT_CLOSE return.
+
+Do not call these B1/B2/B4.
+
+## Daily horizons
+D1 / D3 / D5 / D10 use future trading dates from the official trading calendar, not calendar days.
+
+## Overlap
+Multiple snapshots from the same event can have overlapping future windows.
+PV-041 event_key grouping remains mandatory so inference does not pretend overlapping snapshots are independent.
+
+## Session-phase reporting
+Always report B-horizon coverage by:
+- OPEN_AUCTION_MIXED;
+- CONTINUOUS;
+- CLOSE_AUCTION_MIXED.
+
+Closing-phase B4 will naturally have low/no same-session coverage; do not impute it.
+
+Status: HORIZON_SEMANTICS_FROZEN.
+
+
+# PV-060 — Outcome Completion / Finalization Jobs and Idempotency
+
+## Storage principle
+Feature snapshots are append-only / immutable.
+Outcome rows are completed later when enough future data exist.
+
+## Intraday finalization
+After a newly completed 15m bar:
+- identify pending B1/B2/B4 outcomes whose required same-session horizon has now completed;
+- calculate only from completed official bars;
+- upsert by `snapshot_id + horizon`;
+- once `outcome_complete=1`, repeated cron runs must produce the identical value or fail validation.
+
+At session end:
+- horizons impossible to complete because the session ended are marked `INCOMPLETE_SESSION_END`, not zero / failure.
+
+## Daily finalization
+After official daily data are available:
+- map snapshot market date through the existing official trading calendar;
+- finalize D1/D3/D5/D10 only when the required future trading date is present;
+- holidays/weekends do not count;
+- missing official bars keep outcome pending.
+
+## Idempotency
+A finalizer must be safe under the current every-minute cron architecture.
+
+Required keys:
+- feature snapshot unique identity;
+- outcome primary key = snapshot_id + horizon.
+
+Repeated job:
+- no duplicate snapshot;
+- no duplicate outcome;
+- no horizon counter advancement from rerun alone.
+
+## Provenance
+Outcome row stores:
+- source trading dates / bar ends;
+- finalized_at;
+- data completeness;
+- schema version.
+
+## Mutation test
+Re-running finalization one day later with the same source bars must leave the completed outcome byte-equivalent except for non-semantic audit metadata explicitly excluded from equality checks.
+
+Status: FINALIZER_DESIGN_DEFINED / NOT_IMPLEMENTED.
+
+
+# PV-061 — API and D1 Budget Audit under Current Monitor Architecture
+
+## Current Formal architecture
+Worker currently:
+- monitors at most 6 stocks (3 non-thousand + 3 thousand);
+- runs the intraday monitor every minute during the regular session;
+- fetches Quote each minute;
+- refreshes 10m/15m candles only after relevant bar close;
+- was explicitly designed around a 60-requests/minute Fugle safety architecture.
+
+These are existing project constraints; PV must not create a second parallel live-fetch loop.
+
+## Incremental live API cost for PV v0.1
+### During ordinary monitoring
+Target: **zero additional live candle calls**.
+
+PV calculations should consume the already fetched Formal 15m frame/candle response:
+- local volumeRatio already exists;
+- pvResponseState uses the same OHLCV;
+- current-session cumulative volume can be derived from existing bars;
+- event/acceptance state can be updated from the same frame.
+
+Do not call Fugle again merely to calculate Shadow fields.
+
+### Historical 15m bootstrap
+One historical 15m request per newly monitored symbol lacking a baseline, covering enough prior calendar history to obtain >=20 valid sessions.
+
+Then persist baseline/cache and roll it forward.
+
+Fugle documents that rate limits vary by plan and excess requests return HTTP 429; therefore the implementation must respect the active account's actual quota rather than hard-code an external plan assumption.
+
+Source:
+- https://developer.fugle.tw/docs/data/http-api/getting-started/
+
+## D1 snapshot upper bound
+Taiwan regular cash session is 270 minutes, so a complete session contains 18 x 15m slots.
+
+At the current Formal maximum of 6 symbols:
+- maximum if logging every completed 15m slot = 108 intraday feature snapshots / trading day.
+
+The research experiment can log fewer if restricted to decision-relevant bars, but engineering should remain safe even at the 108-row feature-snapshot upper bound.
+
+## D1 outcomes
+If B1/B2/B4 plus selected daily horizons are separate rows, outcome-row count can exceed feature-row count.
+This is acceptable architecturally only if:
+- inserts/upserts are idempotent;
+- indexes use snapshot/horizon keys;
+- payload JSON remains compact;
+- retention/archival is reviewed before long-term scale-up.
+
+Do not write the same 15m snapshot every minute.
+Unique identity must be bar-end based so 15 monitor runs during one bar still create only one row per symbol/bar/schema.
+
+## Daily layer
+Daily RVOL/residual calculations should use the existing D1 full-market history cache.
+Incremental daily historical Fugle calls should be zero when the cache is complete.
+
+## Explicit exclusions from v0.1 budget
+No:
+- full-market 15m baseline fetch;
+- historical trades pagination;
+- historical volume-at-price reconstruction;
+- second 10m Shadow baseline;
+- live order-book recording every minute.
+
+Status: V0_1_RESOURCE_DESIGN_ACCEPTABLE_IN_PRINCIPLE / MUST_MEASURE_ACTUAL_CALLS_AND_WRITES_IN_LOG_ONLY.
+
+
+# PV-062 — Research Reporting / Dashboard Semantics
+
+## Goal
+Surface evidence without turning Shadow diagnostics into trade instructions.
+
+## Research summary
+A PV research page/report should show:
+- snapshot/event count;
+- independent event count after de-duplication;
+- coverage / UNKNOWN / guard rates;
+- current local volumeRatio distribution;
+- pvSlotRvol20 distribution;
+- pvCumvolPace20 distribution;
+- A vs B channel counts;
+- BULL/MIXED/BEAR counts;
+- session-phase counts.
+
+## Primary experiment table
+Compare models/stages:
+A. context only;
+B. + local previous-5 volumeRatio;
+C. + slot RVOL;
+D. + cumulative pace;
+E. + response/acceptance/guard state.
+
+Show:
+- false structural failure rate;
+- no-close/no-high-progress rate;
+- median MFE/MAE;
+- coverage;
+- confidence interval / uncertainty where applicable.
+
+## No trading language
+Research UI must not say:
+- BUY because PV strong;
+- SELL because PV weak;
+- upgrade/downgrade Formal grade;
+- increase/reduce allocation.
+
+Allowed:
+- “Shadow state: ELEVATED participation / INITIAL_ACCEPTANCE”
+- “Research cohort historically showed X outcome distribution”
+- “Insufficient sample / UNKNOWN”
+
+## Drift / integrity alerts
+Report:
+- baseline missing;
+- corporate-action resets;
+- unusual guard-rate increase;
+- feature distribution shift;
+- Formal-isolation test failure.
+
+Any Formal-isolation failure is red-alert engineering failure, not a market signal.
+
+## Access
+Prefer admin/research surface rather than the normal user-facing signal panel until the experiment has enough evidence, reducing the risk that a descriptive Shadow state is mistaken for an action signal.
+
+Status: RESEARCH_REPORTING_SPEC_DEFINED / NO_PUSH_NO_ACTION.
 
