@@ -708,3 +708,15 @@ YES for research infrastructure integrity: resolving the actual archive lineage 
 - Positive and falsification evidence point in the same direction: source-field name is insufficient; denominatorType + event stage + knownAt/effectiveFromSession + instrument scope are mandatory.
 - Remaining Corporate Actions blocker is exact TWSE daily listed-share/payment-certificate representation around 2465 plus stronger bounded archive completeness. CA-115 remains gated.
 - Formal Core remains LOCKED; no production code, strategy factor, threshold, ranking, capital, monitoring or push behavior changed.
+
+## Price-Volume evidence update — PVE-001 through PVE-003
+- PV theory remains frozen through PV-200; evidence phase has started.
+- Actual Actions artifacts prove PV Shadow was successfully enabled on run 36144091642 after an earlier concurrency-safe failed attempt. Worker/Formal fingerprints were unchanged and formalIsolation=true.
+- Post-enable read-only QA run 36144193465 is NOT a QA pass: it confirms PV enabled but direct D1 SELECT is blocked by HTTP 403. The workflow token is consistent with lacking D1 Read scope; no secret/token permissions were altered.
+- There are zero completed post-enable market sessions as of 2026-09-26. 9/25 and 9/28 are official TWSE holidays; 9/26-27 are weekend. Earliest ordinary prospective PV market date is 9/29.
+- Existing research Shadow archive has 62 rows on 9/21-9/22 only and runtime integrity=RESEARCH_DATA_GAP, expectedScanDays=3 vs archivedScanDays=2. 9/23 is the missing enforced archive date.
+- 9/21-9/22 archive existence is not clean selection provenance because symbol-session quality receipts were not captured at selection time.
+- 9/24 is quarantined from clean rolling-history/PV research because B-130 proved stale Formal history.
+- Primary clean-cohort dates for H001-H004 remain zero; no H001/H002 outcome comparison was started.
+- Execution recorder exact-date completeness and signal-event mapping remain blocked, so H006 signal-microstructure inference is not started.
+- No Formal/runtime/token/secret/deploy behavior was changed.
