@@ -278,3 +278,20 @@ Class A if research-only; Class C if later used in formal 15m confirmation.
 5. PV-077: define which Tier-2 fields are worth keeping versus rejecting before any implementation grows beyond v0.1.
 6. Keep PRICE_VOLUME_SHADOW_SPEC.md synchronized; Worker remains untouched.
 7. Formal Core remains LOCKED.
+
+## Progress added — PV-073 through PV-077
+- PV-073 decomposes daily abnormal volume into transaction-count shock vs average-trade-size shock using official daily closing data. States COUNT_DRIVEN / SIZE_DRIVEN / BOTH_EXPANDED are descriptive only; do not infer retail vs institutional identity.
+- PV-074 studies intraday volume shape with simple as-of descriptors (peak slot RVOL, bars since peak, abnormal-slot count, post-opening persistence). Complex HHI/entropy concentration metrics are deferred because of likely redundancy with persistence/cumulative pace.
+- PV-075 confirms first 15m mixes opening call-auction and early continuous trading. Same-slot normalization remains valid for abnormality, but 1m auction/continuous decomposition is deferred unless first-slot results prove materially different.
+- PV-076 defines day-trading share as explanatory context for high-RVOL false-confirmation / MAE research, but same-day use is blocked by publication/finality timing relative to the 18:10 scan, especially TPEx T+2 revisions.
+- PV-077 prunes Tier-2 scope. Strong candidates after v0.1 QA: daily transaction decomposition, daily residual RVOL, event freshness. Conditional: issued-share turnover, divergence, attention/disposition flags. Deferred: opening 1m decomposition, intraday trade-count history, volume-at-price history, queue history, same-day day-trading selection input, HHI/entropy shape, full-market 15m residualization. Classic packaged volume indicators remain rejected as independent scores.
+- Current judgment: stop expanding indicators; next value comes from implementing/collecting prospective Shadow v0.1 evidence.
+- Formal Core remains unchanged / LOCKED.
+
+## Revised exact next continuation point after PV-077
+1. PV-078: perform consistency audit across PRICE_VOLUME_RESEARCH.md / CHECKPOINT / SHADOW_SPEC for superseded assumptions and contradictions.
+2. PV-079: build exact implementation delta map showing which Worker functions/tables would change in a research-only Class A patch, without applying it.
+3. PV-080: freeze v0.1 field dictionary, types, null/UNKNOWN semantics and schema-version migration rules.
+4. PV-081: freeze rollout acceptance tests and rollback criteria.
+5. PV-082: decide whether evidence is sufficient to propose Class A Shadow implementation to owner; no automatic implementation.
+6. Formal Core remains LOCKED.
