@@ -1752,3 +1752,155 @@ If “Cup-with-Handle” adds no value after rim symmetry + compression + pivot 
 ARCHITECTURE_FROZEN_V0_1.
 Research-only. No production score created.
 
+
+
+## DL-002O — Pattern Research Data Architecture / Validation Plan v0.1
+
+### Official Fugle capability verified
+Fugle Historical Candles documentation supports:
+- TWSE/TPEx listed-stock daily data back to 2010,
+- OHLCV and turnover/change fields,
+- adjusted=true for adjusted daily/weekly/monthly series,
+- each request range must be less than one year.
+
+Therefore the source is sufficient for multi-month pattern research without modifying the Formal data source.
+
+### Isolation principle
+Do NOT extend or mutate the shared live Formal history cache merely for DL-002.
+Reason:
+- shared data structures are Class B risk,
+- Formal currently only needs its existing shorter horizon,
+- pattern research needs OPEN + longer adjusted history + explicit provenance.
+
+Preferred architecture is a separate research-only cache / dataset.
+
+### Minimum research record
+Per symbol/date:
+- date
+- rawOpen/rawHigh/rawLow/rawClose
+- adjustedOpen/adjustedHigh/adjustedLow/adjustedClose
+- volumeShares
+- turnover
+- rawChange
+- corporateActionSuspected / corporateActionTag if available
+- source
+- fetchedAt
+- pointInTimeEligible
+- queryAdjusted flags
+
+Derived fields should be reproducible rather than permanently overwriting source OHLC.
+
+### Retrieval strategy
+Fugle requires <1-year request spans.
+A long research range should be fetched in bounded date chunks and merged by date with:
+- duplicate-date detection,
+- monotonic date checks,
+- adjusted flag verification,
+- symbol/market validation,
+- no silent empty-range substitution.
+
+### Recommended research horizons
+Do not retrieve all history merely because it exists.
+
+Prospective pattern diagnostics:
+- maintain enough trailing history to cover multi-month bases plus trend context.
+- candidate starting target: 300-400 trading sessions, to be finalized before outcome testing.
+
+Historical mechanism studies:
+- can use longer 2010+ price histories, but remain separate from formal historical Shadow cohorts.
+
+### Critical distinction: historical mechanics vs historical Shadow
+The research governance forbids fabricating historical Shadow samples.
+
+Allowed:
+- take historical price series and ask purely price-based questions such as:
+  “When an as-of-date W topology existed, what did future returns look like?”
+
+Not allowed:
+- retroactively label a 2022 stock as FORMAL_NEAR_MISS / REJECTED using today's full pipeline when that cohort was not prospectively archived with then-available evidence.
+
+Therefore maintain two evidence tracks:
+
+TRACK A — HISTORICAL_PATTERN_MECHANICS
+- as-of-date OHLC-only or point-in-time-safe features,
+- can provide mechanism plausibility and sample size,
+- cannot be called historical Formal Selection Alpha.
+
+TRACK B — PROSPECTIVE_FORMAL_COHORT_VALIDATION
+- uses actual SELECTED / QUALIFIED_NOT_SELECTED / NEAR_MISS / REJECTED_AFTER_BASE / BROAD_CONTROL archives captured prospectively,
+- primary evidence for whether DL-002 improves our system.
+
+### Point-in-time rules
+For any historical pattern state at date t:
+- OHLC through t only,
+- swing usable only if confirmedAt <= t,
+- current provisional leg may remain provisional,
+- no later breakout may revise earlier state,
+- adjusted series must be generated from a method whose adjustment convention is documented; results should be checked for corporate-action artifacts.
+
+### Corporate-action dual-series rule
+Pattern geometry:
+- use ADJUSTED_OHLC.
+
+Execution/reference levels:
+- use RAW_OHLC.
+
+Do not compare an adjusted pivot directly to a raw live price.
+If a pattern later becomes operationally relevant in research, map structural levels back to raw price scale as of the decision date using an explicit adjustment factor.
+
+### Avoid unnecessary full-market storage
+Pattern research does not initially need full 2010-present history for every stock in live D1.
+
+Staged data priority:
+1. current/prospective Formal + Shadow cohorts,
+2. matched controls needed for same-date tests,
+3. representative historical mechanics sample across regimes/sectors/liquidity,
+4. broader full-market expansion only if justified by evidence needs.
+
+### Selection-bias safeguard
+For TRACK A historical mechanics, sampling only famous winners is prohibited.
+Use pre-defined universe/date sampling such as:
+- all eligible stocks on sampled dates, or
+- deterministic stratified samples by year / liquidity / price tier / industry.
+
+### Validation hierarchy
+Stage 0 — detector correctness
+- synthetic patterns and adversarial non-patterns,
+- verify no look-ahead/repaint,
+- verify state transition chronology.
+
+Stage 1 — historical mechanics
+- outcome-agnostic definitions frozen,
+- broad historical sample,
+- D1/D3/D5/D10/MFE/MAE and failure rates,
+- market-regime stratification.
+
+Stage 2 — prospective cohort incremental value
+- same-date Formal/Shadow cohorts,
+- partial/incremental tests versus existing factors,
+- date-cluster robustness.
+
+Stage 3 — research maturity review
+- only when existing governance sample/date/regime/holdout gates mature.
+
+Stage 4 — possible owner-reviewed Formal proposal
+- never automatic.
+
+### Current data blockers reclassified
+OPEN_MISSING_IN_LIVE_CACHE:
+- not a source blocker; research-architecture blocker.
+
+LONG_HORIZON_MISSING_IN_LIVE_CACHE:
+- not a source blocker; use isolated research cache.
+
+ADJUSTMENT_HANDLING:
+- source capability verified; implementation/reproducibility remains to be designed.
+
+### Engineering classification
+A separate isolated research-only data path with no Formal dependency can qualify as Class A if:
+- no shared fetch/cache contract changes,
+- no live selection/monitor/push dependency,
+- protected Formal outputs are regression-identical.
+
+Any modification to shared Formal historical cache remains Class B proposal-first.
+
