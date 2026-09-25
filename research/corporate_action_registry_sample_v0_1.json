@@ -10,7 +10,7 @@
       "name": "中華電",
       "actionType": "CASH_DIVIDEND",
       "effectiveDate": "2026-07-09",
-      "firstKnownAt": null,
+      "firstKnownAt": "2026-06-15",
       "previousRawClose": 139.5,
       "economicAdjustmentReference": 134.3,
       "exchangeOpeningReference": null,
@@ -23,15 +23,18 @@
       "shareUnitFactor": 1,
       "sourceQuality": "MIXED_OFFICIAL_COMPANY_PLUS_PROVIDER",
       "factorQuality": "HIGH",
-      "firstKnownQuality": "UNKNOWN",
+      "firstKnownQuality": "DATE_ONLY_SECONDARY_MOPS_DERIVED",
       "sourceUrls": [
         "https://www.cht.com.tw/zh-tw/home/cht/investors/shareholder-services/return-to-shareholders"
       ],
       "unknownReasons": [
         "PRIMARY_EXCHANGE_OPENING_REFERENCE_NOT_ARCHIVED",
-        "FIRST_KNOWN_TIMESTAMP_NOT_ARCHIVED",
+        "EXACT_INTRADAY_FIRST_KNOWN_TIMESTAMP_NOT_ARCHIVED",
         "SECONDARY_REFERENCE_CONFLICT_134.3_VS_134.5"
-      ]
+      ],
+      "eventVersion": "cash_dividend_2026",
+      "supersedes": [],
+      "finalScheduleKnownAt": "2026-06-15"
     },
     {
       "eventKey": "8454:2025-08-21:STOCK_DIVIDEND",
@@ -62,8 +65,11 @@
       "unknownReasons": [
         "PRIMARY_EXCHANGE_OPENING_REFERENCE_NOT_ARCHIVED",
         "EXACT_FIRST_KNOWN_TIMESTAMP_NOT_ARCHIVED",
-        "TRADABLE_SHARE_TIMELINE_NEEDS_POINT_IN_TIME_REGISTRY"
-      ]
+        "TRADABLE_SHARE_TIMELINE_SEPARATE_FROM_EX_RIGHT"
+      ],
+      "eventVersion": "stock_distribution_2025",
+      "supersedes": [],
+      "finalScheduleKnownAt": null
     },
     {
       "eventKey": "3593:2025-12-22:LOSS_REDUCTION",
@@ -71,7 +77,7 @@
       "name": "力銘",
       "actionType": "LOSS_REDUCTION",
       "effectiveDate": "2025-12-22",
-      "firstKnownAt": null,
+      "firstKnownAt": "2025-11-06T10:20:00+08:00",
       "previousRawClose": 8.1,
       "economicAdjustmentReference": 13.5,
       "exchangeOpeningReference": null,
@@ -82,14 +88,28 @@
       "totalReturnComparableFactor": 1.6666666666666667,
       "volumeTransformMode": "UNIT_SCALE",
       "shareUnitFactor": 0.6,
-      "sourceQuality": "PROVIDER_VERIFIED_SAMPLE_OFFICIAL_ARTIFACT_PENDING",
+      "sourceQuality": "MOPS_MIRROR_TIMESTAMPPED_PLUS_PROVIDER_MARKET_DATA",
       "factorQuality": "MEDIUM_HIGH",
-      "firstKnownQuality": "UNKNOWN",
-      "sourceUrls": [],
+      "firstKnownQuality": "MOPS_MIRROR_TIMESTAMPPED",
+      "sourceUrls": [
+        "https://goodinfo.tw/tw/StockAnnounceDetail.asp?CLAIM_TIME=2025%2F12%2F09+18%3A39%3A32&STOCK_ID=3593",
+        "https://www.moneydj.com/kmdj/news/newsviewer.aspx?a=eef37ec0-7ff9-4bd3-bd6a-5afe0db696e4"
+      ],
       "unknownReasons": [
-        "SPECIFIC_PRIMARY_ACTION_ARTIFACT_NOT_ARCHIVED",
-        "FIRST_KNOWN_TIMESTAMP_NOT_ARCHIVED"
-      ]
+        "PRIMARY_MOPS_RECORD_URL_NOT_ARCHIVED_IN_SAMPLE"
+      ],
+      "eventVersion": "final_schedule_correction_2025-12-09",
+      "supersedes": [
+        {
+          "knownAt": "2025-11-06T10:20:00+08:00",
+          "note": "earlier reduction/new-share schedule"
+        },
+        {
+          "knownAt": "2025-11-17T17:33:00+08:00",
+          "note": "changed reduction exchange schedule"
+        }
+      ],
+      "finalScheduleKnownAt": "2025-12-09T18:39:32+08:00"
     },
     {
       "eventKey": "8103:2025-12-08:CASH_REFUND_REDUCTION",
@@ -97,7 +117,7 @@
       "name": "瀚荃",
       "actionType": "CASH_REFUND_REDUCTION",
       "effectiveDate": "2025-12-08",
-      "firstKnownAt": null,
+      "firstKnownAt": "2025-05-08T15:31:00+08:00",
       "previousRawClose": 74.7,
       "economicAdjustmentReference": 86.11764705882354,
       "exchangeOpeningReference": null,
@@ -109,14 +129,24 @@
       "volumeTransformMode": "UNIT_SCALE",
       "shareUnitFactor": 0.85,
       "cashRefundPerOldShare": 1.5,
-      "sourceQuality": "PROVIDER_VERIFIED_SAMPLE_OFFICIAL_ARTIFACT_PENDING",
+      "sourceQuality": "MOPS_MIRROR_TIMESTAMPPED_PLUS_PROVIDER_MARKET_DATA",
       "factorQuality": "MEDIUM_HIGH",
-      "firstKnownQuality": "UNKNOWN",
-      "sourceUrls": [],
+      "firstKnownQuality": "MOPS_MIRROR_TIMESTAMPPED",
+      "sourceUrls": [
+        "https://goodinfo.tw/tw/StockAnnounceDetail.asp?CLAIM_TIME=2025%2F10%2F20+16%3A17%3A22&STOCK_ID=8103",
+        "https://www.moneydj.com/kmdj/news/newsviewer.aspx?a=6d67d828-7dc0-4000-82a6-732160692e7b"
+      ],
       "unknownReasons": [
-        "SPECIFIC_PRIMARY_ACTION_ARTIFACT_NOT_ARCHIVED",
-        "FIRST_KNOWN_TIMESTAMP_NOT_ARCHIVED"
-      ]
+        "PRIMARY_MOPS_RECORD_URL_NOT_ARCHIVED_IN_SAMPLE"
+      ],
+      "eventVersion": "revised_schedule_2025-10-20",
+      "supersedes": [
+        {
+          "knownAt": "2025-08-26T14:21:09+08:00",
+          "note": "initial cash-reduction exchange plan before later schedule revision"
+        }
+      ],
+      "finalScheduleKnownAt": "2025-10-20T16:17:22+08:00"
     },
     {
       "eventKey": "8422:2025-11-17:PAR_VALUE_CHANGE",
@@ -124,7 +154,7 @@
       "name": "可寧衛",
       "actionType": "PAR_VALUE_CHANGE",
       "effectiveDate": "2025-11-17",
-      "firstKnownAt": null,
+      "firstKnownAt": "2025-10-16T16:55:58+08:00",
       "previousRawClose": 250,
       "economicAdjustmentReference": 25,
       "exchangeOpeningReference": null,
@@ -135,16 +165,26 @@
       "totalReturnComparableFactor": 0.1,
       "volumeTransformMode": "UNIT_SCALE",
       "shareUnitFactor": 10,
-      "sourceQuality": "OFFICIAL_TWSE_MARKET_DATA_PLUS_OFFICIAL_METHOD",
+      "sourceQuality": "OFFICIAL_TWSE_MARKET_DATA_PLUS_MOPS_MIRROR_TIMESTAMPPED",
       "factorQuality": "HIGH",
-      "firstKnownQuality": "UNKNOWN",
+      "firstKnownQuality": "MOPS_MIRROR_TIMESTAMPPED",
       "sourceUrls": [
         "https://www.twse.com.tw/exchangeReport/STOCK_DAY_AVG?date=20251101&response=html&stockNo=8422",
-        "https://www.twse.com.tw/zh/announcement/change/cal.html"
+        "https://www.twse.com.tw/zh/announcement/change/cal.html",
+        "https://wealth.firstbank.com.tw/investment-tips/trend-insight/news/news-detail?id=%7B02B55E46-F015-4730-B4D9-CC9F32877261%7D"
       ],
       "unknownReasons": [
-        "SPECIFIC_FIRST_KNOWN_ANNOUNCEMENT_NOT_ARCHIVED"
-      ]
+        "PRIMARY_MOPS_RECORD_URL_NOT_ARCHIVED_IN_SAMPLE"
+      ],
+      "eventVersion": "exchange_plan_2025-10-16",
+      "supersedes": [],
+      "finalScheduleKnownAt": "2025-10-16T16:55:58+08:00"
     }
+  ],
+  "registryNotes": [
+    "Records are research schema/source-validation samples, not inference-ready universe coverage.",
+    "finalScheduleKnownAt is distinct from firstKnownAt because corporate-action schedules may be revised.",
+    "MOPS mirror timestamps preserve observed publication timing but primary MOPS archival URLs remain preferred when obtainable.",
+    "2412 technical factor uses economicAdjustmentReference 134.3; any earlier 134.5 technical-bridge diagnostic is superseded."
   ]
 }
