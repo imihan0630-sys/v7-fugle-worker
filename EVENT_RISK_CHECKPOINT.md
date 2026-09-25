@@ -1,9 +1,9 @@
 # Event Risk, Gap Risk & Overnight Information Checkpoint
 
 Updated: 2026-09-25 Asia/Taipei
-Current cursor: ER-001 through ER-015 complete.
-Next: ER-016.
-Status: CONCEPT_BUILD / RESEARCH_ONLY.
+Current cursor: ER-001 through ER-025 complete.
+Next: ER-026 source/data feasibility audit.
+Status: CONCEPT_COMPLETE / EVIDENCE_PENDING.
 
 ## Durable conclusions
 - Daily return must be decomposed into overnight and intraday regimes with corporate-action/reference-price guards.
@@ -34,3 +34,22 @@ ER-022 event-aware projected heat.
 ER-023 falsification/negative controls.
 ER-024 prospective Shadow protocol.
 ER-025 convergence/readiness.
+
+
+## ER-016 through ER-025 durable update
+- Event-calendar certainty levels distinguish exact known schedules, date-only knowledge, deadline windows, unscheduled disclosures and UNKNOWN.
+- Monthly revenue regulatory deadline is not an exact ex-ante publication date. Store regulatoryDeadline, scheduledEventAt, actualPublishedAt and firstKnownScheduledAt separately.
+- Gap-through-stop risk is calibrated separately from planned stop risk, with empirical/scenario labels.
+- Overseas-market and Taiwan-futures context are explanatory controls for overnight gaps, not duplicate macro scores.
+- Opening auction is separated from post-open 5m/15m/30m path.
+- Event-specific exposure graphs are preferred over narrative theme clustering.
+- Event-aware portfolio heat uses alternative scenario paths rather than double-counting normal stop risk plus gap risk.
+- Negative controls require same-stock non-event nights, same-date peers, market/sector residuals and corporate-action guards.
+- Prospective ER-024 protocol captures all monitored symbols/dates, not only large gaps.
+- No automatic pre-event avoidance, de-risking, gap chase or gap sell rule is approved.
+- Formal Core unchanged.
+
+## Exact next continuation
+ER-026 audit current repository/runtime source for point-in-time event timestamps, opening/reference-price data and corporate-action guards.
+ER-027 determine whether existing recorder can support prospective ER-024 with zero/shared-code changes.
+ER-028 prepare research-only event-vintage capture proposal only if needed.
