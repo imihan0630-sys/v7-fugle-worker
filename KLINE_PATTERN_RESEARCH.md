@@ -5296,3 +5296,123 @@ A contextual failure library may have higher practical value than adding more bu
 
 No Formal exclusion rule is approved at this stage.
 
+
+
+## DL-002U — Breakout Retest Is a Trade-off, Not a Free Confirmation
+
+### Key counter-evidence
+Practitioner logic often treats a breakout retest as a superior confirmation step: old resistance becomes support, pullback volume contracts, then price resumes upward.
+However, a 2026 pre-registered study of 1,425 breakout events across 760 S&P 600 small-cap companies reported that the breakout-and-retest filter underperformed the breakouts it discarded.
+
+This does NOT prove retests are useless in Taiwan.
+It does prove that “wait for retest” has an opportunity cost and should not be treated as universally superior.
+
+### Relevance to current system
+Current Formal B execution already uses a breakout -> retest/hold -> renewed-strength logic on 15-minute bars.
+Therefore DL-002 must evaluate BOTH:
+1. false-breakout reduction from waiting for retest;
+2. missed-opportunity cost from breakouts that never retest and continue immediately.
+
+### Retest state taxonomy
+NO_RETEST_CONTINUATION
+- breakout occurs and price continues without revisiting the pivot zone.
+
+SHALLOW_RETEST
+- pullback approaches but does not materially touch pivot.
+
+PIVOT_RETEST_HOLD
+- price revisits pivot zone and closes/turns while maintaining structural support.
+
+TEMPORARY_UNDERCUT_RECLAIM
+- price briefly closes/trades below pivot but rapidly reclaims it.
+
+DEEP_RETEST
+- pullback penetrates materially into prior base but later recovers.
+
+FAILED_RETEST
+- price loses pivot and does not promptly reclaim.
+
+### Metrics
+- barsToRetest
+- minDistanceToPivotPct
+- maxUndercutPct
+- retestDurationBars
+- retestDownVolumeRatio
+- retestRangeATR
+- reclaimBars
+- resumptionStrength
+- followThroughMFE
+- missedNoRetestMFE
+- avoidedFalseBreakoutRate
+
+### Opportunity-cost test
+For all valid B-style breakouts, compare:
+A. entry at initial breakout event;
+B. entry only after current Formal-style 15m retest confirmation;
+C. no entry if no retest.
+
+Measure:
+- signal coverage
+- entry delay
+- entry price slippage vs breakout
+- D1/D3/D5
+- MFE/MAE
+- stop-first
+- R01 failure
+- missed winners with NO_RETEST_CONTINUATION
+
+This is Execution Alpha research, not a Formal rule change.
+
+### Volume during retest
+Low retest volume is a plausible “supply dried up” mechanism, but remains a hypothesis.
+Test retestDownVolumeRatio incrementally against:
+- breakout volume
+- prior base dry-up
+- market regime
+- price extension
+- current 15m confirmation fields
+
+### Reclaim nuance
+A close below pivot does not always imply the broader trend is dead.
+Keep TEMPORARY_UNDERCUT_RECLAIM separate from FAILED_RETEST.
+This aligns with the broader research principle that a failed first attempt can later revalidate.
+
+### No production implication
+No change to current 15m B execution semantics is approved.
+This research specifically measures whether the retest requirement improves quality enough to justify its opportunity cost.
+
+## DL-002V — Follow-through Quality After Breakout v0.1
+
+### Rationale
+Breakout-day features alone may be insufficient. What happens immediately after the breakout can reveal whether price is being accepted above the pivot.
+
+### Descriptive fields
+- day1CloseVsPivotPct
+- day2CloseVsPivotPct
+- consecutiveClosesAbovePivot
+- maxCloseBelowPivotPct
+- postBreakoutHigherLow
+- postBreakoutVolumePersistence
+- postBreakoutRangeCompression
+- postBreakoutCloseQuality
+- firstWeakCloseDay
+- firstReclaimDay
+
+### Positive hypotheses
+- multiple closes accepted above pivot;
+- higher low forms above/near pivot;
+- retest occurs on lighter selling volume;
+- subsequent up-bars regain range/volume.
+
+### Failure hypotheses
+- breakout bar has high volume but poor close;
+- next bar cannot extend;
+- immediate close back into range;
+- repeated pivot crossings / whipsaw;
+- widening range with no net progress.
+
+### Anti-hindsight rule
+Follow-through features are only usable at the date they become observable.
+They cannot be attached retroactively to the original selection date as if known then.
+Use them for execution/revalidation research, not Selection Alpha at t0.
+
