@@ -1,0 +1,75 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-09-25",
+  "purpose": "Semantic RS diagnostics only. No forward-return optimization.",
+  "decisionImpact": false,
+  "inferenceReady": false,
+  "benchmarkSources": {
+    "priceIndex": "TWSE FMTQIK exact monthly historical records",
+    "totalReturnIndex": "TWSE MFI94U exact monthly historical records"
+  },
+  "records": [
+    {
+      "symbol": "2412",
+      "startDate": "2026-06-10",
+      "targetDate": "2026-07-09",
+      "actionType": "CASH_DIVIDEND",
+      "stockLegacyReturnPct": -7.2917,
+      "stockPriceCompatibleReturnPct": -7.2917,
+      "stockTotalReturnCompatiblePct": -3.7021,
+      "priceIndexReturnPct": 4.9255,
+      "totalReturnIndexReturnPct": 5.6794,
+      "legacyRSPct": -12.2172,
+      "priceCompatibleRSPct": -12.2172,
+      "totalReturnRSPct": -9.3815
+    },
+    {
+      "symbol": "3593",
+      "startDate": "2025-11-13",
+      "targetDate": "2025-12-22",
+      "actionType": "LOSS_REDUCTION",
+      "stockLegacyReturnPct": 68.4932,
+      "stockPriceCompatibleReturnPct": 1.0959,
+      "stockTotalReturnCompatiblePct": 1.0959,
+      "priceIndexReturnPct": 0.8819,
+      "totalReturnIndexReturnPct": 1.0274,
+      "legacyRSPct": 67.6113,
+      "priceCompatibleRSPct": 0.214,
+      "totalReturnRSPct": 0.0685
+    },
+    {
+      "symbol": "8103",
+      "startDate": "2025-10-30",
+      "targetDate": "2025-12-08",
+      "actionType": "CASH_REFUND_REDUCTION",
+      "stockLegacyReturnPct": 7.8913,
+      "stockPriceCompatibleReturnPct": -6.4131,
+      "stockTotalReturnCompatiblePct": -6.4131,
+      "priceIndexReturnPct": 0.0574,
+      "totalReturnIndexReturnPct": 0.0579,
+      "legacyRSPct": 7.8339,
+      "priceCompatibleRSPct": -6.4705,
+      "totalReturnRSPct": -6.471
+    },
+    {
+      "symbol": "8422",
+      "startDate": "2025-10-07",
+      "targetDate": "2025-11-17",
+      "actionType": "PAR_VALUE_CHANGE",
+      "stockLegacyReturnPct": -87.8025,
+      "stockPriceCompatibleReturnPct": 21.9753,
+      "stockTotalReturnCompatiblePct": 21.9753,
+      "priceIndexReturnPct": 0.8649,
+      "totalReturnIndexReturnPct": 0.8664,
+      "legacyRSPct": -88.6674,
+      "priceCompatibleRSPct": 21.1104,
+      "totalReturnRSPct": 21.1089
+    }
+  ],
+  "notes": [
+    "Legacy RS uses current raw stock ret20 semantics versus TAIEX price-index return.",
+    "Price-Compatible RS removes mechanical non-cash price-base resets but ordinary cash-dividend stock return remains price-return comparable.",
+    "Total-Return RS uses total-return-compatible stock continuity versus TAIEX Total Return Index.",
+    "The sample is convenience-selected and is not alpha evidence."
+  ]
+}
