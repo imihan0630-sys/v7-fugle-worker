@@ -1904,3 +1904,197 @@ A separate isolated research-only data path with no Formal dependency can qualif
 
 Any modification to shared Formal historical cache remains Class B proposal-first.
 
+
+
+## DL-002P — Detector Falsification / Adversarial Pattern Test Suite v0.1
+
+### Principle
+Before testing profitability, test whether the detector recognizes structure correctly and refuses look-alike noise.
+
+A detector that only “finds” successful textbook examples is not validated.
+
+### Synthetic positive and negative cases
+
+#### VCP
+Positive:
+- prior advance,
+- 3 non-overlapping contractions,
+- depths 18% -> 10% -> 5%,
+- improving lows,
+- falling volume,
+- stable pivot,
+- no breakout yet.
+
+Negative A — overlapping-window illusion:
+- rolling 20/10/5-day range shrinks,
+- but confirmed swing legs do not form sequential contractions.
+
+Expected: NOT_VCP / generic compression only.
+
+Negative B — volatility shrinks but lows deteriorate:
+- 18% -> 10% -> 5% depth,
+- each trough lower than prior trough.
+
+Expected: low-quality or invalid topology, not mature VCP.
+
+Negative C — final contraction expands:
+- 15% -> 8% -> 14%.
+
+Expected: EXPANSION_FAILURE.
+
+Negative D — one-day crash/rebound:
+- apparent contraction due one extreme bar.
+
+Expected: LOW_STABILITY / not mature.
+
+#### Cup-with-Handle
+Positive:
+- prior advance,
+- broad rounded decline/recovery,
+- right rim near left rim,
+- shallow upper-half handle,
+- handle volume/range compression.
+
+Negative A — sharp V:
+- one fast drop + one fast rebound to rim.
+
+Expected: V_SHAPED_BASE, not high-roundness cup.
+
+Negative B — handle forms in lower half:
+Expected: HANDLE_LOW_IN_BASE.
+
+Negative C — second deep selloff mislabeled as handle:
+- handle depth near cup depth.
+
+Expected: weak/invalid handle, likely new base leg.
+
+Negative D — two rims far apart:
+Expected: RIM_DIVERGENCE / low cup confidence.
+
+Negative E — rounded base without prior advance:
+Expected: distinguish continuation Cup from generic Rounded Bottom; do not force Cup-with-Handle label.
+
+#### W / Double Bottom
+Positive:
+LOW1 -> MID_HIGH -> LOW2 -> neckline approach.
+
+Negative A — two lows with no intervening high:
+Expected: NO_DISTINCT_MID_HIGH.
+
+Negative B — fixed-window rightFootHigher true but swings are not distinct:
+Expected: crude proxy true, topology false.
+
+Negative C — LOW2 breaks LOW1 and never reclaims:
+Expected: SUPPORT_COLLAPSE.
+
+Negative D — neckline is actually an unrelated older priorHigh20:
+Expected: trueNeckline != priorHigh20; detector uses MID_HIGH.
+
+Positive special:
+- slight undercut of LOW1 followed by prompt reclaim.
+Expected: UNDERCUT_RECLAIM_W, separate variant.
+
+#### Bull Flag
+Positive:
+- strong efficient flagpole,
+- short shallow parallel/down-sloping consolidation,
+- declining volume.
+
+Negative A — no flagpole:
+Expected: generic channel/platform, not flag.
+
+Negative B — deep consolidation erases most of impulse:
+Expected: POLE_ERASED.
+
+Negative C — consolidation duration longer than pole and becomes multi-month base:
+Expected: reclassify as base/platform/triangle candidate.
+
+Negative D — upward-sloping loose channel after pole:
+Expected: low-quality flag / possible wedge, not classic bull flag.
+
+#### Triangle
+Positive:
+- descending confirmed highs,
+- ascending confirmed lows,
+- at least multiple boundary contacts,
+- boundaries converge.
+
+Negative A — only one high and one low define lines:
+Expected: LOW_TOUCH_COUNT.
+
+Negative B — parallel lines:
+Expected: channel/flag, not triangle.
+
+Negative C — boundaries diverge:
+Expected: broadening formation, not triangle.
+
+Negative D — apparent convergence only after using future swings:
+Expected: NO_LOOKAHEAD failure test.
+
+#### Sakata / candlestick
+Negative A — ex-dividend gap:
+Expected: corporate-action event, not Three Gaps.
+
+Negative B — three bullish candles after huge extended run:
+Expected: THREE_SOLDIERS morphology may be true, but LOCATION_RISK overheat high; no automatic bullish conclusion.
+
+Negative C — bullish engulfing without prior downtrend:
+Expected: label can be stored morphologically, reversalContext=false.
+
+### Chronology tests
+For every synthetic sequence:
+- snapshot detector at every day t,
+- verify state as of t is identical whether the future suffix is present or removed,
+- except PROVISIONAL state fields that are explicitly allowed to evolve.
+
+This is the strongest simple anti-repaint test:
+detector(history[0:t]) must equal historical state extracted from detector(fullHistory, asOf=t).
+
+### Scale tests
+Run MICRO / BASE / MAJOR segmentation.
+Expected:
+- topology may simplify at larger scales,
+- no future-return-based selection of the “best” scale,
+- scaleAgreement recorded.
+
+### Adjustment tests
+Construct a synthetic corporate-action factor:
+- raw price gaps 20% mechanically,
+- adjusted price continuous.
+
+Expected:
+- adjusted morphology sees no market gap,
+- raw execution series preserves actual quoted prices,
+- Three Gaps / swing detector does not treat corporate action as alpha signal.
+
+### Property-based invariants
+1. Price-scale invariance:
+   multiplying all OHLC by a constant should not change normalized pattern labels/states.
+
+2. Split-adjustment invariance:
+   equivalent adjusted series should produce same morphology.
+
+3. Prefix invariance:
+   adding future bars must not change past confirmed states.
+
+4. Monotonic-time invariance:
+   reordered dates must be rejected.
+
+5. Missing-data honesty:
+   missing OPEN blocks full candlestick labels; it must not be imputed from close.
+
+6. Duplicate-bar rejection:
+   duplicate symbol/date bars must trigger data-quality error.
+
+7. Pattern overlap transparency:
+   one set of swings may support multiple labels but sharedSwingIds must expose overlap.
+
+### Profitability is deliberately absent
+This suite tests detector validity, not returns.
+A detector must pass these tests before any outcome evaluation.
+
+### Status
+TEST_DESIGN_FROZEN_V0_1.
+No code implemented yet.
+No Formal change.
+
