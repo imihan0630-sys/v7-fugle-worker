@@ -469,3 +469,18 @@ Updated: 2026-09-26 06:41 Asia/Taipei.
 - Bias/quality: no famous-chain hand picking, no future-edge leakage, no missing=no-edge/0, no outcome/alpha test, no historical Shadow fabrication, no window/threshold sweep, no Factor Zoo addition. R01-R08/I01-I07 unchanged.
 - Engineering: Class A research documentation only; no runtime code, Worker, PR promotion, Production or Formal Core change.
 - Exact next continuation: SC-003 preregister lag/falsification matrix (event clocks, negative controls, common-shock residualization, independent-date inference) without searching outcomes; SC-004 freeze minimal prospective edge/event schema plus coverage/identity diagnostics; only then decide if a Class-A prospective collector is justified.
+
+
+## B-148 — Supply-chain SC-003/SC-004 preregistration complete (2026-09-26 07:55 Asia/Taipei)
+- Fresh-read governance/worklist/checkpoint/main; canonical start was B-147. A/main had concurrently advanced PVE and pattern research, which was not redone. Continued the exact supply-chain next point SC-003 -> SC-004.
+- Durable research contract created: `SUPPLY_CHAIN_LEAD_LAG_RESEARCH.md`.
+- SC-003 frozen before any outcome search. T0 is the first market-actionable session after knownAt; knownAt and effectiveFrom are separate clocks. A later termination disclosure cannot backfill an unknown relationship start.
+- Frozen outcome family only: D1/D3/D5/D10 residual return, D5/D10 MFE/MAE, plus the next PIT-eligible fundamental update. Any new horizon is a new registered experiment.
+- Control order is frozen: market/regime -> industry/sector/breadth -> existing Residual RS + price-volume/K-line -> own revenue/fundamental -> attention/event risk -> supply-chain candidate. Loss of increment after controls = REDUNDANT.
+- Negative controls are mandatory: same-industry/no-verified-edge, verified edge/no-new-event, concentration-only/no-resolved-counterparty, and matched unrelated controls. Theme/AI membership alone is not an edge.
+- Independent inference unit = event/first-known date. Multiple suppliers exposed to one customer event are one common-shock cluster, not multiple independent discoveries. Report date/industry/source-family concentration and mark FRAGILE_* if one cluster drives results.
+- SC-004 minimal PIT schemas frozen for SUPPLY_CHAIN_EDGE_VINTAGE, SUPPLY_CHAIN_EVENT_LEDGER and coverage receipts. Coverage/identity percentages may be computed only with explicit denominators; incomplete source universe cannot assert no-edge. Missing remains UNKNOWN.
+- Collector gate: before any Class-A prospective collector, run an outcome-blind bounded source sample across TWSE/TPEx and multiple industries to measure event availability, named-edge resolution, source-family concentration and UNKNOWN rate. No forward returns may be inspected during this feasibility step.
+- Bias/quality: no outcome-conditioned lag choice, no future-edge leakage, no famous AI/ABF hand-picking, no historical Shadow fabrication, no missing=0/BAD, no factor/threshold promotion; R01-R08/I01-I07 unchanged.
+- Engineering: Class A research documentation only; no Worker.js, Production, Formal selection/ranking/capital/signal/push change.
+- Exact next continuation: SC-005 execute the outcome-blind bounded source/identity coverage pilot with a predeclared cross-exchange/cross-industry sample; classify VERIFIED_NAMED_EDGE / CONCENTRATION_ONLY / MANAGEMENT_CLAIM / UNKNOWN and record identity-resolution + knownAt/effectiveFrom coverage. Only if coverage is operationally usable may SC-006 specify an isolated Class-A prospective collector; otherwise mark lane DATA_SOURCE_BLOCKED and move on.
