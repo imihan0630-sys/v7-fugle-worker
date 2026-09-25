@@ -453,3 +453,38 @@ DL-002 is intended to answer:
 It is NOT intended to answer:
 “Which named chart pattern looks most attractive after we inspect future winners?”
 
+
+
+## DL-002E — Taiwan Market-Regime Portability
+
+### Structural breaks relevant to K-line research
+Taiwan market microstructure is not stationary across the historical literature:
+- 2015-06-01: TWSE daily stock price fluctuation limit was widened from 7% to 10%.
+- 2020-03-23: continuous trading was launched during regular trading hours; before that, the market used periodic call auctions at five-second intervals.
+
+Current Worker has no explicit 2015-06-01 or 2020-03-23 market-mechanism tag in the live Formal feature layer.
+
+### Why this matters for pattern portability
+Older Taiwan candlestick studies used samples ending in 2008/2009, entirely before both structural changes.
+Therefore historical evidence that Piercing / Bullish Engulfing / Bullish Harami or single-line candlestick patterns were profitable is evidence that these formations are testable in Taiwan, NOT evidence that their return distribution persists unchanged in 2026.
+
+Potential mechanism changes:
+- a 7% limit mechanically capped daily body/range and increased limit-hit clustering relative to the current 10% regime;
+- continuous trading changed intraday price discovery and order execution compared with periodic call auctions;
+- gap, long-body, limit-up/down, breakout-distance and wick distributions can shift when market rules change.
+
+### Research regime tags
+Any long-history DL-002 test should carry at least:
+- PRICE_LIMIT_REGIME_7PCT: date < 2015-06-01
+- PRICE_LIMIT_REGIME_10PCT: date >= 2015-06-01
+- MATCHING_REGIME_CALL_AUCTION: date < 2020-03-23
+- MATCHING_REGIME_CONTINUOUS: date >= 2020-03-23
+
+For a 2026 decision, primary transportability evidence should emphasize the 10%-limit + continuous-trading regime. Older regimes remain useful for mechanism and robustness, not for pooling blindly.
+
+### Existing research interaction
+The broader research system already treats market regime changes as a concern and tracks the 2020 continuous-trading boundary in external evidence work. DL-002 should reuse that discipline and additionally tag the 2015 price-limit break.
+
+### No production implication
+These tags are research provenance / stratification only. They do not alter Formal eligibility, scores, monitoring or push behavior.
+
