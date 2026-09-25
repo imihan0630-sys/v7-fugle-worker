@@ -12473,3 +12473,146 @@ Do not treat limit-bound MFE/MAE as ordinary uncensored observations.
 Descriptive censoring first.
 Do not fit complex censored models until sample warrants it.
 
+
+
+## DL-002HC — Model Complexity Ladder for Incremental Evidence
+
+### Principle
+The purpose is not to maximize backtest fit.
+It is to determine whether pattern/topology contains robust incremental information.
+
+### Level 0 — descriptive
+- same-date medians
+- pattern prevalence
+- transition tables
+- MFE/MAE distributions
+- failure rates
+
+### Level 1 — simple conditioned comparison
+- within-date demeaned outcomes
+- matched cohorts
+- one candidate feature vs frozen controls
+
+### Level 2 — regularized linear/logistic models
+Use only after sample supports:
+- ridge / simple penalization
+- limited pre-registered controls
+- date/group-aware validation
+
+Purpose:
+incremental association, not final trading model.
+
+### Level 3 — constrained nonlinear models
+Only if residual plots/evidence justify:
+- simple GAM / spline with low degrees of freedom
+- pre-specified interactions
+- monotonic constraints where mechanism genuinely supports them
+
+### Level 4 — tree/boosting exploratory benchmark
+Only after much larger prospective dataset.
+Use:
+- strict chronological/grouped validation
+- shallow models
+- feature count control
+- explainability / ablation
+
+### Level 5 — image/CNN/sequence deep models
+NOT PRIORITY for current sample.
+Modern literature shows they can extract nonlinear chart information, but sample/complexity and explainability burdens are high.
+
+### Promotion rule
+If a complex model wins in-sample but simple primitive models do not show stable OOS signal:
+classify UNSTABLE_COMPLEXITY, not breakthrough.
+
+## DL-002HD — No Random Row Train/Test Split
+
+### Why
+Random row split leaks shared information:
+- same scan date in train/test
+- same pattern episode on adjacent days
+- overlapping D5/D10 windows
+- same market regime segment
+
+### Required split hierarchy
+1. chronological
+2. grouped by scan date
+3. grouped/blocked by pattern episode where relevant
+4. purged for forward outcome overlap
+5. untouched final holdout
+
+### Cross-validation
+Use:
+- leave-one-date-out for early small samples
+- expanding/walk-forward windows later
+- never random K-fold across rows as primary evidence
+
+## DL-002HE — Feature Selection Must Stay Inside Training
+
+### Leakage risk
+If we examine all data to choose:
+- best feature
+- best threshold
+- best interaction
+then run holdout-looking regression,
+the holdout is already contaminated.
+
+### Rule
+All:
+- feature pruning
+- threshold choice
+- nonlinear shape choice
+must be decided from training/discovery only.
+
+Holdout answers one question:
+did the frozen idea persist?
+
+## DL-002HF — Interpretability Hierarchy
+
+### Preferred evidence explanation
+1. raw primitive
+2. conditional comparison
+3. simple model coefficient/effect curve
+4. named-pattern interpretation
+
+Avoid:
+“model says buy because SHAP.”
+
+### Why
+If we cannot explain whether edge comes from:
+- compression
+- support progress
+- RS
+- volume
+- regime
+then we cannot safely decide whether it duplicates Formal or creates new risk.
+
+## DL-002HG — Prediction vs Ranking vs Filtering Are Different Tasks
+
+### Prediction
+Estimate forward outcome distribution.
+
+### Ranking
+Order candidates by relative opportunity.
+
+### Filtering
+Reject clearly adverse candidates.
+
+A feature may be:
+- poor standalone predictor,
+- useful negative filter,
+- useful tiebreaker.
+
+### Research outputs
+For each candidate feature state intended role:
+PREDICTOR
+RANKER
+RISK_FILTER
+OBSERVABILITY_ONLY
+
+Do not force every useful variable into one score.
+
+### Relevance
+Failure motifs may be better as RISK_FILTER candidates.
+Pattern maturity may be better as OBSERVABILITY/RANKER.
+No role promotion without evidence.
+
