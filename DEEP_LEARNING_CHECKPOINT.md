@@ -11,7 +11,7 @@ Updated: 2026-09-24 Asia/Taipei
 - New knowledge is research-only first. It must not directly modify Formal Core（正式核心）.
 
 ## Continuity rules
-- Every deep-learning run must begin by reading this file plus the latest `RESEARCH_CHECKPOINT.md`, `RESEARCH_WORKLIST.md`, and `RESEARCH_ENGINEERING_GOVERNANCE.md`.
+- Every deep-learning run must begin by reading this file plus the latest `RESEARCH_CHECKPOINT.md`, `RESEARCH_WORKLIST.md`, and `RESEARCH_ENGINEERING_GOVERNANCE.md`. If the task touches chart morphology or price-volume behavior, also read the dedicated `KLINE_PATTERN_CHECKPOINT.md` / `PRICE_VOLUME_CHECKPOINT.md` lane before continuing.
 - GitHub durable state overrides chat memory.
 - Never repeat completed topics merely because the chat/thread changed.
 - Before writing, re-read this file and confirm its latest blob SHA. If another run updated it, merge the newer progress rather than overwriting it.
@@ -40,6 +40,7 @@ Updated: 2026-09-24 Asia/Taipei
 10. Institutional / short-flow evidence（法人／放空資金證據）
 11. Overheat / remaining-upside control（過熱／剩餘空間控制）
 12. New independent variables not already represented in the system（系統尚未涵蓋的獨立變數）
+13. Price-volume relationship（價量關係） — context-dependent relative volume, effort-versus-result, breakout/pullback volume quality, and intraday same-slot normalization
 
 ## Handoff rule
 - If a finding becomes a credible optimization candidate, record it under `Candidate handoff` with:
@@ -314,3 +315,12 @@ No Formal Core change is approved or implied.
 2. Owner has approved continuing DL-001 research / Shadow validation. Define the smallest pre-registered Information Discreteness（資訊離散度） feature without tuning thresholds to outcomes; test redundancy and regime interaction before any formal optimization proposal.
 3. Independently continue the next highest-value external-learning question after DL-001, preferably one not already represented by Residual RS（殘差相對強弱）, Quiet/Attention, breakout quality, or overheat.
 4. Keep Formal Core（正式核心） unchanged unless later mature evidence passes governance and owner explicitly approves.
+
+
+## Parallel durable lane — Price-Volume Relationship（價量關係）
+- Dedicated checkpoint: `PRICE_VOLUME_CHECKPOINT.md`
+- Evidence / hypotheses: `PRICE_VOLUME_RESEARCH.md`
+- Current cursor: PV-001 complete; continue from PV-002.
+- Key rule: every price-volume claim must record both constructive and opposing interpretations before it can become a Shadow candidate.
+- High-priority candidate: 15-minute same-slot relative-volume normalization, because Taiwan intraday volume has strong time-of-day seasonality and current previous-5-bar comparison may confound clock-time effects with abnormal participation.
+- Formal Core remains unchanged.
