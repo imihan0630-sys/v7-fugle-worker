@@ -221,3 +221,20 @@ Class A if research-only; Class C if later used in formal 15m confirmation.
 5. PV-057: define the first prospective experiment protocol and freeze hypotheses before any Shadow implementation.
 6. Keep `PRICE_VOLUME_SHADOW_SPEC.md` synchronized; no Formal implementation without owner approval.
 7. Formal Core remains LOCKED.
+
+## Progress added — PV-053 through PV-057
+- PV-053 maps generic PV latent states onto Pattern Maturity and forbids named-pattern volume bonuses when geometry + generic PV already explain the information.
+- PV-054 studies time-ordered sector leader/follower participation. Industry lead-lag evidence supports information diffusion, but leader strength is only a moderator and must prove incremental value beyond current sector score/breadth/RS.
+- PV-055 prevents event-day baseline contamination by preserving the robust ordinary rolling median while freezing a separate pre-event baseline for within-episode persistence/decay. Do not blanket-exclude all news/earnings days.
+- PV-056 defines governance levels: OBSERVER, MODIFIER, VETO. All current PV research remains OBSERVER. Data-semantic invalidity may veto PV interpretation only; no predictive PV state may veto a Formal stock without separate Class C approval.
+- PV-057 freezes the first prospective experiment: among symbols already selected/monitored by Formal, compare current previous-5-bar 15m volumeRatio against pvSlotRvol20 + pvCumvolPace20 + latent states for false/no-follow-through, MFE/MAE and structural acceptance. PV must not change cohort selection.
+- Formal Core remains unchanged / LOCKED.
+
+## Revised exact next continuation point after PV-057
+1. PV-058: define exact false/no-follow-through labels for the 15m experiment using only frozen plan/pivot information.
+2. PV-059: define bar-horizon vs trading-day-horizon outcome windows and avoid overlapping-label leakage.
+3. PV-060: design D1 outcome completion/finalization jobs and idempotency for PV Shadow.
+4. PV-061: audit API-call and D1-write budget for selected/monitored-symbol 15m baselines under the current cron cadence.
+5. PV-062: define dashboard/report outputs that expose evidence without affecting Formal action.
+6. After PV-058~062, research-only implementation may be proposed as a self-contained Class A change.
+7. Formal Core remains LOCKED.
