@@ -177,3 +177,35 @@ Current research schema: PV_SHADOW_V0_1
 - H003/H004 inherit the same clean-cohort prerequisite.
 - H006 additionally requires authoritative execution-recorder coverage and verified symbol-specific Formal signal event mapping.
 - No hypothesis is rejected or supported by these data-quality findings; evidence interpretation is deferred until prerequisites are met.
+
+## PVE readiness evidence — 2026-09-26
+
+### H001 / H002
+- Evidence state: WAITING_CLEAN_COHORT_PROVENANCE.
+- PV enable/formal-isolation: PASS.
+- PV D1 content QA: BLOCKED by read authorization.
+- Post-enable completed market dates: 0.
+- Existing pre-enable research Shadow archive: 62 rows / 2 dates, but selection-time symbol-session provenance is UNVERIFIED.
+- Verified clean primary cohort dates: 0.
+- Outcome comparison: NOT STARTED.
+- No support/rejection conclusion.
+
+### H003 / H004
+- Inherit the same clean-cohort and post-enable-data gates.
+- No support/rejection conclusion.
+
+### H006
+- Coarse execution fields exist, but exact-date recorder completeness remains unproved.
+- Current FORMAL_SIGNAL_OBSERVED rows also require independent same-symbol signal matching.
+- State: DATA_QUALITY_BLOCKED.
+- Existing trade-journal BUY truth is not invalidated by this recorder limitation.
+- No support/rejection conclusion.
+
+### Null/blocked-result preservation
+These blocked-readiness findings are themselves durable evidence:
+- workflow success != qaPass;
+- archive existence != clean cohort;
+- missing recorder row != NO_BUY;
+- zero post-enable trading days != zero PV signals.
+
+They must not be erased once later clean data arrive.
