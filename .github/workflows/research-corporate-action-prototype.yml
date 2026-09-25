@@ -1,0 +1,26 @@
+name: Research Corporate Action Prototype
+
+on:
+  pull_request:
+    paths:
+      - "research/corporate_action_continuity_prototype.mjs"
+      - "research/symbol_session_calendar_prototype.mjs"
+      - "tests/test_corporate_action_continuity_prototype.mjs"
+      - "tests/test_symbol_session_calendar_prototype.mjs"
+      - ".github/workflows/research-corporate-action-prototype.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  research-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Corporate action continuity tests
+        run: node tests/test_corporate_action_continuity_prototype.mjs
+      - name: Symbol suspension calendar tests
+        run: node tests/test_symbol_session_calendar_prototype.mjs
