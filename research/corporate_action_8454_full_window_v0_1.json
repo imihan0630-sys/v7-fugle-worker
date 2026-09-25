@@ -37,11 +37,7 @@
   ],
   "shareBaseDiagnostic": {
     "statedStockDistributionRatio": 0.05,
-    "derivedPreListingShares": 252357400,
-    "derivedPostListingShares": 264975270,
-    "supplyIncreasePct": 5.000000000000004,
     "rawVolumeTodayVsPrev5": 0.8253790005614823,
-    "turnoverNormalizedTodayVsPrev5": 0.7860752386299831,
     "note": "Official company capital history is authoritative for the share-base diagnostic. The ratio-derived denominator is retained only as a falsification witness and must not be used as point-in-time truth.",
     "sourceQuality": "OFFICIAL_COMPANY_CAPITAL_HISTORY",
     "officialPreListingIssuedShares": 252357405,
