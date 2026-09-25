@@ -7,6 +7,7 @@ on:
       - "research/symbol_session_calendar_prototype.mjs"
       - "tests/test_corporate_action_continuity_prototype.mjs"
       - "tests/test_symbol_session_calendar_prototype.mjs"
+      - "tests/test_corporate_action_integration_matrix.mjs"
       - ".github/workflows/research-corporate-action-prototype.yml"
 
 permissions:
@@ -24,3 +25,5 @@ jobs:
         run: node tests/test_corporate_action_continuity_prototype.mjs
       - name: Symbol suspension calendar tests
         run: node tests/test_symbol_session_calendar_prototype.mjs
+      - name: Corporate action integration falsification matrix
+        run: node tests/test_corporate_action_integration_matrix.mjs
