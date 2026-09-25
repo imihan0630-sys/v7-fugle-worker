@@ -1837,3 +1837,228 @@ Continuing to invent additional microstructure indicators now would raise Factor
 MS-044: Freeze microstructure concept-learning lane as CONCEPT_COMPLETE / EVIDENCE_PENDING.
 MS-045: Open the next genuinely under-studied knowledge lane: Market Breadth + Sector Rotation + Leadership.
 MS-046+: Learn breadth thrusts, advance/decline structure, new-high/new-low structure, participation divergence, sector-relative momentum, leadership breadth and rotation states with positive/negative evidence and Taiwan implementation constraints.
+
+
+---
+
+## MS-025 — Existing-recorder coverage audit: code capability is not evidence coverage
+
+### What can be verified from repository source
+The V8.8.0/V8.8.1 scripts define a D1 table `trade_research_execution_snapshots` and a protected read endpoint `/api/research/execution-recorder`. The recorder is designed to store OPEN_BASELINE, FIRST_10M_COMPLETE, FIRST_15M_COMPLETE, FIRST_30M_COMPLETE and FORMAL_SIGNAL_OBSERVED snapshots.
+
+### What cannot be verified from repository source alone
+Repository source does not expose the live D1 row count or current event/date coverage. GitHub code search returning no stored payloads is expected because D1 runtime data are not repository files.
+
+Therefore:
+- “recorder exists” != “usable sample exists”;
+- “field is in schema” != “field has non-null coverage”;
+- no zero-code empirical result may be claimed until live recorder rows are read through an authorized runtime path.
+
+Status: COVERAGE = UNKNOWN, not zero.
+
+---
+
+## MS-026 — Zero-code baseline feasibility criteria
+
+A first baseline using only existing spread/depth snapshots is feasible only if live rows satisfy all of:
+
+1. multiple independent trading dates, not one date;
+2. monitored symbols include both subsequent follow-through and non-follow-through observations;
+3. `spreadPct`, `bidDepth5`, `askDepth5`, `depthImbalance` have acceptable non-null coverage;
+4. `executionMarketState` distinguishes normal continuous observations from ambiguous/non-continuous states;
+5. timestamps allow matching each snapshot to later 1m/5m/10m/15m/30m prices without look-ahead;
+6. missing recorder rows are distinguishable from genuine no-signal states;
+7. sample includes price/tick tiers, especially the thousand-dollar pool, so spread mechanics are not conflated.
+
+If any condition fails, the baseline must be marked immature rather than forcing a conclusion.
+
+Status: FEASIBILITY GATE FROZEN.
+
+---
+
+## MS-027 — New Taiwan evidence strengthens the top-five-depth hypothesis
+
+### 2025 NTU Taiwan top-five LOB study
+A 2025 National Taiwan University master's thesis uses high-frequency TWSE top-five quote data and reports:
+- deeper levels 2-5 contribute about 30% of price-discovery information in its framework;
+- best quotes and transaction price account for the remaining roughly 70%;
+- order-book height/depth imbalance is significantly related to short-term future returns;
+- predictive content differs systematically by trading activity, relative tick size and volatility.
+
+Source:
+- NTU Theses and Dissertations Repository
+- DOI: 10.6342/NTU202504709
+- https://tdr.lib.ntu.edu.tw/handle/123456789/101183
+
+### Why this matters to our system
+This is unusually relevant because:
+- it studies Taiwan rather than importing US evidence;
+- it explicitly uses the public top-five structure that Fugle exposes;
+- it supports keeping levels 2-5 rather than collapsing everything to best bid/ask only;
+- it independently supports our tick-size/activity/volatility stratification plan.
+
+### Counter-evidence / limits
+- It is one master's thesis, not enough by itself for production promotion.
+- The public abstract does not establish our exact 15m BUY horizon, stock universe or execution objective.
+- “30%” is study/model-specific and must not be treated as a universal constant.
+- We still need prospective validation on our monitored population.
+
+Status: STRONG TAIWAN-SPECIFIC MOTIVATION; NOT A FORMAL RULE.
+
+---
+
+## MS-028 — Price-limit policy changes alter the whole liquidity environment
+
+### Taiwan evidence
+Research on TWSE's expansion of daily price limits finds that after the rule change:
+- traders used more aggressive order prices but smaller trade sizes;
+- time-weighted spreads and intraday volatility increased;
+- market depth decreased;
+- execution quality measured by order duration/fill rate improved.
+
+Sources:
+- Lien, Hung, Zhu & Chen, Pacific-Basin Finance Journal (2019), Price limit changes and market quality in the Taiwan Stock Exchange.
+- Lien, Hung & Pan, Review of Quantitative Finance and Accounting (2020), Price limit changes, order decisions, and stock price movements.
+
+### Research implication
+Spread/depth thresholds are not timeless constants. Even a market-wide rule change can alter their distributions and trader behavior.
+
+For our system this reinforces:
+- own-history/same-slot normalization,
+- regime/version metadata,
+- no hard-coded absolute spread/depth threshold unless revalidated,
+- price-limit state as a conditioning variable.
+
+### Counterpoint
+The evidence studies a historical regulatory change, not day-to-day 2026 forecasting. Use it as structural evidence that market rules alter microstructure, not as a current directional signal.
+
+Status: STRUCTURAL EVIDENCE ACCEPTED.
+
+---
+
+## MS-029 — Resiliency should be measured in book events as well as clock time
+
+### Evidence
+Empirical resiliency work shows spread/depth can recover rapidly after effective market orders. One study reports recovery toward sample averages within roughly 20 best-limit updates, while other work emphasizes seconds-to-minutes recovery and cross-stock heterogeneity.
+
+Sources:
+- Xu et al., Limit-order book resiliency after effective market orders.
+- Lo & Hall (2015), Resiliency of the limit order book.
+- Clapham, Haferkorn & Zimmermann (2020), Does Speed Matter?
+
+### New design improvement
+Our earlier 1s/5s/15s pilot is necessary but incomplete. Add an **event-time representation**:
+- N book updates since shock,
+- N trades since shock,
+- cumulative opposing-side traded volume since shock.
+
+Why:
+- a quiet stock can have almost no information in 5 seconds;
+- an active stock can experience dozens of book changes in the same 5 seconds.
+
+### Frozen dual-clock design
+Every resiliency study should retain:
+1. clock time to recovery;
+2. event count to recovery.
+
+This makes comparisons across high- and low-activity stocks less misleading.
+
+Status: DUAL-CLOCK RESILIENCY DESIGN ADOPTED.
+
+---
+
+## MS-030 — Deeper-book shape may matter more than a single imbalance number
+
+### Evidence
+Meso-scale LOB research finds deeper order-book shape and relative limit-order additions/cancellations can carry more predictive content than simple book imbalance at certain horizons.
+
+Source:
+- Bechler & Ludkovski (2017), Order Flows and Limit Order Book Resiliency on the Meso-Scale.
+
+Combined with the 2025 Taiwan top-five study, this argues against reducing five levels to only one scalar too early.
+
+### Candidate shape features
+Keep the first empirical version small:
+- depthImbalance1
+- depthImbalance5
+- nearVsFarBidDepth = levels 1-2 / levels 3-5
+- nearVsFarAskDepth
+- depthSlopeBid / depthSlopeAsk (only after a frozen definition)
+- top5NotionalDepth
+
+### Counterpoint
+More levels create more degrees of freedom and Factor-Zoo risk. Levels 2-5 should survive an incremental test over level 1 before any derived shape family expands.
+
+### Kill rule
+If top-five shape adds no stable information beyond best-level state + existing liquidity controls, keep only the simpler representation.
+
+Status: LIMITED SHAPE TEST APPROVED FOR RESEARCH DESIGN.
+
+---
+
+## MS-031 — Displayed-liquidity manipulation risk means cancellation dynamics matter
+
+### New 2026 Taiwan derivatives evidence
+A 2026 Pacific-Basin Finance Journal study using complete intraday Taiwan derivatives order/trade data reports price effects and reversals around aggressive order revisions consistent with potential spoofing, with market-quality deterioration in those episodes.
+
+Source:
+- Order spoofing, price impact, and market quality, Pacific-Basin Finance Journal (2026).
+
+### Transfer boundary
+This is Taiwan derivatives evidence, not TWSE cash-equity proof. It cannot justify labeling stock-book changes as spoofing.
+
+### Research implication
+A static large bid/ask should never be treated as committed demand/supply.
+Future dynamic research should distinguish:
+- displayed depth that executes,
+- displayed depth that replenishes,
+- displayed depth that repeatedly cancels/moves away.
+
+Use neutral names such as:
+- cancellationRateProxy
+- displayedDepthSurvival
+- quoteRevisionIntensity
+
+Do NOT label a participant or event as spoofing without direct evidence of manipulative intent.
+
+Status: CANCELLATION/SURVIVAL RISK ADDED; NO SPOOFING CLASSIFIER.
+
+---
+
+## MS-032 — Revised microstructure state model
+
+After MS-001..031, the research state should not be a bullish/bearish score. Use interpretable states:
+
+1. LIQUIDITY_HEALTHY
+   - normalized spread controlled, adequate depth, continuous state.
+2. DEMAND_ACCEPTED
+   - buy pressure + proportional upward price response + weak opposing replenishment.
+3. DEMAND_ABSORBED
+   - buy pressure persists + weak price progress + ask replenishment.
+4. SUPPLY_ACCEPTED
+   - sell-side mirror of DEMAND_ACCEPTED.
+5. SUPPLY_ABSORBED
+   - sell-side mirror.
+6. LIQUIDITY_VACUUM_UP / DOWN
+   - large price response relative to pressure with thin opposing depth.
+7. PRESSURE_EXHAUSTION_CANDIDATE
+   - persistent pressure weakens/flips after reduced price progress.
+8. LIQUIDITY_STRESS
+   - spread/depth deterioration or mechanism ambiguity.
+9. NON_CONTINUOUS_REGIME
+   - trial/VI/delayed/limit-state observations requiring separate interpretation.
+10. UNKNOWN
+   - insufficient data.
+
+No state is automatically a BUY/SELL instruction.
+
+Status: INTERPRETABLE STATE TAXONOMY FROZEN FOR SHADOW RESEARCH.
+
+## Exact next continuation after MS-032
+
+MS-033: inspect deployment/version evidence to determine whether V8.8.1 recorder fields are actually present in the current deployed lineage, without claiming live D1 coverage.
+MS-034: study top-five notional weighting versus share weighting under Taiwan price tiers.
+MS-035: study pressure-response asymmetry for buys versus sells in Taiwan.
+MS-036: study opening/closing auction contamination and define exact exclusion windows.
+MS-037: connect microstructure states to current K-line/PV latent states without double counting.
+MS-038: freeze the smallest useful combined feature matrix before any empirical run.
