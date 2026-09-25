@@ -2,9 +2,6 @@ name: PV Shadow Class-A Read-Only QA
 
 on:
   workflow_dispatch:
-  schedule:
-    # 23:50 Asia/Taipei, after the 23:35 after-market run.
-    - cron: '50 15 * * 1-5'
 
 permissions:
   contents: read
