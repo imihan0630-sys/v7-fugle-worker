@@ -387,3 +387,18 @@ No Formal Core change is approved or implied.
   - highest-value experiment remains current previous-5-bar 15m volumeRatio vs same-slot RVOL + cumulative-volume pace.
 - `PRICE_VOLUME_SHADOW_SPEC.md` is specification only; no Worker.js Formal logic has been changed.
 - Formal Core unchanged / LOCKED.
+
+## Price-Volume lane update — PV-038 through PV-047
+- Current cursor: PV-001 through PV-047 complete; continue from PV-048.
+- New durable conclusions:
+  - volume-conditioned return autocorrelation is worth pooled research but not stable enough as a per-stock ~60D field, and it cannot identify trader motive directly;
+  - OBV / A-D / CMF / MFI / Volume Oscillator mostly repackage primitive price-direction, close-location and volume relationships already available, so they should not be stacked as independent scores;
+  - Shadow v0.1 RVOL semantics are frozen to robust prior-20-valid-session medians for daily, same-slot and cumulative-pace baselines; insufficient history => UNKNOWN;
+  - persistent abnormal-volume episodes require event de-duplication so many snapshots do not masquerade as independent signals;
+  - volume should moderate momentum life-cycle / late-stage context, not be interpreted as monotonic strength;
+  - Taiwan/TPEx mainboard 15m interpretation must distinguish opening call-auction, continuous session and closing call-auction phases;
+  - intraday volatility interruption is a genuine confounder but must not be reconstructed from OHLCV without a reliable event source;
+  - ex-rights/ex-dividend gap/return features must use exchange-consistent adjusted reference prices, not raw previous close;
+  - ESB/other incompatible market structures are outside PV Shadow v0.1 semantics.
+- `PRICE_VOLUME_SHADOW_SPEC.md` has been synchronized with normalization and Taiwan market-structure guards.
+- Formal Core unchanged / LOCKED.
