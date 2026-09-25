@@ -4206,3 +4206,35 @@ This is an intentional out-of-order side-lane completion while CA-111 remains th
 Contiguous cursor remains after CA-110 because CA-111 is not complete.
 Continue CA-111 first. CA-112 is already complete as an independent lane.
 After CA-111 passes, proceed to CA-113 bounded dual-exchange archive pilot, CA-114 payment-certificate/private-placement resolution, and CA-115 readiness re-evaluation.
+
+
+## CA-111 — TWSE BFT51U raw-unit closure (2026-09-25)
+### Question
+Can BFT51U 發行張數/上市股數 be converted safely into exact share denominators, including non-standard trading units and sub-lot remainders?
+
+### Official artifact evidence
+- BFT51U official sample CSV (2019-07-29) was successfully read through an authorized browser path after prior binary fetch failures.
+- BFI85U official sample CSV was also read. It carries a security-specific 交易單位 field plus 發行股數.
+
+### Positive witness
+- 2330: BFT51U 發行張數=25,930,380; 上市股數=25,930,380,458. BFI85U 交易單位=1,000 and 發行股數=25,930,380.
+- Whole-lot reconstruction = 25,930,380 × 1,000 = 25,930,380,000, which is 458 shares below BFT51U 上市股數.
+- Therefore 發行張數 is a lot/trading-unit count and cannot be promoted to exact shares by blind ×1000.
+
+### Independent witness and counterexample
+- 8454 leaves a 500-share remainder after ×1000, confirming the issue on another common stock.
+- 8422 is exactly divisible by 1,000, so its row would falsely validate the naive rule if used alone. It is retained as a negative-control/counterexample to overgeneralization.
+- BFI85U 00636K has 交易單位=100, proving the trade unit is security-specific. Because its sample date differs from the BFT51U sample, no same-date denominator equality is claimed for that symbol.
+
+### Semantics frozen
+1. BFT51U 發行張數 = raw lot/trading-unit count, not an exact share count.
+2. BFT51U 上市股數 = raw shares in the official sample and is the preferred exact listed-share denominator candidate subject to completeness/vintage controls.
+3. BFI85U 交易單位 is the required unit guard for non-standard securities.
+4. BFI85U 發行股數 numerically matches the BFT51U lot count on standard-lot witnesses; the English label must not be used to relabel it as exact shares.
+5. Registered-issued and exchange-listed/tradable denominators remain separate semantic spaces.
+
+### Falsification result
+The previous universal ×1000 exact-share candidate is rejected. ×tradeUnit may reconstruct only the whole-lot component and can still lose a remainder. This is a data-semantics result, not alpha evidence.
+
+Artifact: `research/twse_bft51u_unit_resolution_receipt_v0_2.json`.
+Formal Core unchanged.
