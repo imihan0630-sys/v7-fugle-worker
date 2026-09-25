@@ -376,20 +376,26 @@ replace_once(
 )
 
 replace_once(
-'''  const quoteCalls = loaded.stocks.length;
-  const candleCalls = loaded.stocks.length * ((forceFrames || need10 ? 1 : 0) + (forceFrames || need15 ? 1 : 0));''',
-'''  const quoteCalls = monitoringStocks.length;
-  const candleCalls = monitoringStocks.length * ((forceFrames || need10 ? 1 : 0) + (forceFrames || need15 ? 1 : 0));''',
+'''  const quoteCalls = loaded.stocks.length + (hybridWatchMonitor.quoteCalls||0);
+  const candleCalls = loaded.stocks.length * ((forceFrames || need10 ? 1 : 0) + (forceFrames || need15 ? 1 : 0)) + (hybridWatchMonitor.candleCalls||0);''',
+'''  const quoteCalls = monitoringStocks.length + (hybridWatchMonitor.quoteCalls||0);
+  const candleCalls = monitoringStocks.length * ((forceFrames || need10 ? 1 : 0) + (forceFrames || need15 ? 1 : 0)) + (hybridWatchMonitor.candleCalls||0);''',
     "monitor call accounting"
 )
 
 replace_once(
 '''    monitoredCount: results.length,
-    status: results.length ? `完成${results.length}檔智慧背景監控` : "今日 0 檔，維持現金",''',
+    hybridWatchMonitoredCount: hybridWatchMonitor.activeCount||0,
+    status: results.length || (hybridWatchMonitor.activeCount||0)
+      ? `完成Formal ${results.length}檔＋Hybrid WATCH ${hybridWatchMonitor.activeCount||0}檔監控`
+      : "今日正式與WATCH皆0檔，維持現金",''',
 '''    monitoredCount: results.length,
     formalMonitoredCount:(loaded.stocks||[]).length,
     aideenMonitoredCount:(aideen.stocks||[]).length,
-    status: results.length ? `完成${results.length}檔智慧背景監控（3+3+3正式監控 ${(loaded.stocks||[]).length}｜愛德恩App ${(aideen.stocks||[]).length}）` : "今日 0 檔，維持現金",''',
+    hybridWatchMonitoredCount: hybridWatchMonitor.activeCount||0,
+    status: results.length || (hybridWatchMonitor.activeCount||0)
+      ? `完成3+3+3正式監控 ${(loaded.stocks||[]).length}檔＋愛德恩App ${(aideen.stocks||[]).length}檔＋Hybrid WATCH ${hybridWatchMonitor.activeCount||0}檔`
+      : "今日正式、愛德恩App與WATCH皆0檔，維持現金",''',
     "monitor pool counts"
 )
 
