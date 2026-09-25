@@ -181,18 +181,34 @@ Financial statements may retrospectively restate weighted-average shares for EPS
 
 ### D. Cash capital increase — 2465
 
+This case proves that REGISTERED_ISSUED_SHARES and public exchange-listed/tradable supply can diverge because of private-placement shares.
+
 Evidence:
-- pre-increase issued shares disclosed around the rights process: 83,946,031;
-- cash capital increase: 10,000,000 new shares;
-- current company first-party investor page reports 93,946,031 issued common shares;
-- a secondary market calendar reports 2025-11-17 as the capital-increase new-share listing date.
+- company first-party historical/current capital pages show total issued shares moving from 83,946,031 to 93,946,031 after the 10,000,000-share cash capital increase;
+- the 2025-11-12 capital-increase listing announcement states that the original listed common shares were 58,946,031, explicitly excluding 25,000,000 private-placement shares;
+- the same announcement states that 10,000,000 cash-capital-increase payment certificates were approved to begin listed trading on 2025-11-17.
+
+Therefore at least three counts must not be collapsed:
+- registered issued total before: 83,946,031;
+- original publicly listed common shares stated by the announcement: 58,946,031;
+- private-placement shares excluded from that original listed count: 25,000,000.
+
+The announcement also contains wording that reports a cumulative listed total of 93,946,031 after the increase, which is not arithmetically identical to 58,946,031 + 10,000,000.
+Until the exact TWSE/MOPS machine-field definition and primary artifact are archived, do NOT silently resolve that wording conflict by assumption.
+
+For CA-103 mechanics sensitivity only, two denominator scenarios are retained:
+1. REGISTERED_ISSUED_TOTAL: 83,946,031 -> 93,946,031;
+2. PUBLIC_LISTED_BASE sensitivity: 58,946,031 -> 68,946,031.
+
+Both scenarios produce the same Boolean disagreement on 2025-11-18 for the current A low-volume threshold, although the exact normalized ratio differs.
+This makes threshold sensitivity robust to the tested denominator ambiguity, but it does NOT make either exchange-listed denominator production-verified.
 
 Status:
-share-count arithmetic is corroborated.
-Exact first-party archived listing/delivery receipt for the 2025 event is not frozen in this research round, so:
-`2465_CASH_INCREASE_LISTING_DATE_QUALITY=PARTIAL`.
+- `2465_REGISTERED_ISSUED_TOTAL=CORROBORATED`;
+- `2465_2025-11-17_PAYMENT_CERTIFICATE_LISTING=CORROBORATED_MOPS_ANNOUNCEMENT_MIRROR`;
+- `2465_EXACT_EXCHANGE_LISTED_DENOMINATOR=PARTIAL_CONFLICT`.
 
-Do not promote the secondary calendar as sole production provenance.
+Do not promote either scenario to production until the primary exchange/MOPS artifact and field definition are frozen.
 
 ## 6. Source hierarchy
 
