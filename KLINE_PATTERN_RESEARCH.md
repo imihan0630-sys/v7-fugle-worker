@@ -11034,3 +11034,203 @@ RECOMPUTED_ON_CORRECTED_DATA
 
 Research reports should disclose which.
 
+
+
+## DL-002FG — Unified Swing-Zone Topology Graph
+
+### Motivation
+Separate implementations for:
+- VCP
+- cup/handle
+- W
+- flag/platform
+can duplicate the same swing/zone calculations and drift into inconsistent definitions.
+
+### Proposed representation
+Build ONE point-in-time structural graph per symbol/as-of date.
+
+NODES:
+SWING_HIGH
+SWING_LOW
+RESISTANCE_ZONE
+SUPPORT_ZONE
+ROUND_PRICE_ANCHOR
+VOLUME_PROFILE_NODE (prospective/context)
+EVENT_NODE (context, not price node)
+
+Each node stores:
+- id
+- type
+- price / zone bounds
+- pivotAt
+- confirmedAt
+- scale
+- confidence
+- provenance
+- provisional
+- levelSpace
+- dataQuality
+
+EDGES:
+UP_LEG
+DOWN_LEG
+RETEST
+RECLAIM
+BREAK
+ROLE_REVERSAL
+ZONE_APPROACH
+
+Each edge stores:
+- start/end
+- durationBars
+- amplitudePct
+- amplitudeATR
+- amplitudeTicks
+- volume/turnover stats
+- RS change
+- efficiency
+- volatility trajectory
+- firstObservableAt
+
+### Named patterns become graph queries
+W:
+LOW -> HIGH -> LOW with neckline zone at intervening HIGH.
+
+VCP:
+alternating HIGH/LOW edges with declining down-leg amplitudes and tightening structure near resistance.
+
+Cup:
+HIGH -> extended recovery structure -> LOW region -> recovery toward old HIGH, optional handle subgraph.
+
+Flag:
+strong UP_LEG -> shallow/compressing corrective subgraph -> resistance approach.
+
+### Benefit
+- one source of truth for swings/zones;
+- shared no-lookahead semantics;
+- easier pattern overlap analysis;
+- easier versioning;
+- less duplicate computation;
+- easier falsification.
+
+## DL-002FH — Partial Graph Matching = Pattern Maturity
+
+### Key insight
+A pattern does not suddenly appear only at completion.
+
+Pattern maturity can be represented by:
+how much of a frozen topology template is already observable.
+
+### Example W
+State graph:
+L1 confirmed
+-> N confirmed
+-> L2 forming
+-> L2 confirmed
+-> neckline approach
+-> breakout
+
+### Example VCP
+contraction1 confirmed
+-> contraction2 confirmed
+-> possible third/final leg
+-> pivot approach
+
+### Maturity output
+- requiredNodesObserved
+- requiredEdgesObserved
+- optionalStructureObserved
+- conflictingStructurePresent
+- provisionalDependencies
+- completionFractionDescriptive
+- nextExpectedStructuralEvent
+
+### Critical caution
+completionFraction is NOT success probability.
+
+### Why useful
+A graph-based maturity engine naturally supports:
+- pre-breakout watch,
+- no retroactive labeling,
+- episode identity,
+- state transitions.
+
+## DL-002FI — Graph Conflict / Invalidating Evidence
+
+### Positive template matching alone is dangerous
+A chart can partially match a W while simultaneously having:
+- major lower highs,
+- expanding downside volume,
+- older resistance overhead,
+- weakening sector state.
+
+### Graph stores conflict edges/flags
+- bearish lower-high chain
+- support break
+- volume distribution
+- failed reclaim
+- major-zone collision
+- regime deterioration
+
+### Pattern result
+Return BOTH:
+supportingEvidence[]
+conflictingEvidence[]
+
+No “pattern detected” without its contradictions.
+
+### Research test
+Does conflict-adjusted topology outperform pure fit quality?
+
+## DL-002FJ — Topology Graph Enables Pattern Deduplication
+
+### Overlap example
+A cup handle can contain a small VCP.
+A W can form the bottom of a cup.
+A platform can be the final tight area of a VCP.
+
+### Graph overlap fields
+- sharedNodeRatio
+- sharedEdgeRatio
+- sharedZoneRatio
+- sameEpisode
+- nestedPattern
+- parentPatternId
+
+### Rule
+If two named patterns share most structural objects:
+treat as NESTED / ALIAS evidence, not independent votes.
+
+### Future validation
+Compare:
+- named-label count
+vs
+- number of independent structural primitives/episodes.
+
+Hypothesis:
+independent structural evidence matters more than number of pattern names.
+
+## DL-002FK — Graph-Based Shape Similarity Later
+
+### Secondary future option
+Once topology graph is stable, shape similarity can compare:
+- node sequence
+- edge amplitudes/durations
+- zone arrangement
+rather than raw every-bar prices.
+
+Potential benefits:
+- lower dimensionality
+- better interpretability
+- less sensitivity to noisy bars
+
+Possible methods:
+- graph edit distance
+- sequence distance over swing legs
+- constrained DTW over edge features
+
+### Priority
+NOT v1.
+Rule-based graph queries first.
+Similarity only if it adds incremental evidence.
+
