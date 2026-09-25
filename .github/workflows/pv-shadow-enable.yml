@@ -76,6 +76,15 @@ jobs:
             assert.equal(response.ok, true, `Active Worker content HTTP ${response.status}`);
             return response.text();
           }
+          function extractWorkerSource(content) {
+            const boundary = content.match(/^--([^\r\n]+)/)?.[1];
+            if (!boundary) return content;
+            const part = content.split(`--${boundary}`).find(item => item.includes("const VERSION ="));
+            assert.ok(part, "Worker JavaScript module part missing from content response");
+            const separator = part.search(/\r?\n\r?\n/);
+            assert.ok(separator >= 0, "Worker JavaScript module headers are malformed");
+            return part.slice(separator).replace(/^\r?\n\r?\n/, "").replace(/\r?\n$/, "");
+          }
           const adminGet = path => jsonFetch(`${origin}${path}`, { headers: adminHeaders }, path);
           const bindingValue = binding => typeof binding?.text === "string" ? binding.text : typeof binding?.value === "string" ? binding.value : null;
           const bindingShape = bindings => (bindings || []).filter(binding => binding?.name !== "PV_SHADOW_ENABLED")
@@ -128,7 +137,7 @@ jobs:
           const beforePvValue = bindingValue(beforePv);
           const originalPvValue = beforePv ? beforePvValue : null;
           const beforeBindingShape = bindingShape(beforeSettings.bindings);
-          const beforeContentHash = hash(beforeContent);
+          const beforeContentHash = hash(extractWorkerSource(beforeContent));
           const beforeConfigHash = hash(formalConfigProjection(beforeConfig));
           const beforeScanHash = hash(formalScanProjection(beforeScan));
           let patched = false;
@@ -147,13 +156,13 @@ jobs:
             assert.equal(afterPv.type, "plain_text", "PV_SHADOW_ENABLED must remain non-secret plain text");
             assert.equal(String(bindingValue(afterPv)).toLowerCase(), "true", "PV_SHADOW_ENABLED is not true after enable");
             assert.deepEqual(bindingShape(afterSettings.bindings), beforeBindingShape, "Non-PV Worker binding names/types changed");
-            assert.equal(hash(afterContent), beforeContentHash, "Worker source content changed while enabling PV Shadow");
+            assert.equal(hash(extractWorkerSource(afterContent)), beforeContentHash, "Worker source content changed while enabling PV Shadow");
             assert.equal(hash(formalConfigProjection(afterConfig)), beforeConfigHash, "Formal config fingerprint changed while enabling PV Shadow");
             assert.equal(hash(formalScanProjection(afterScan)), beforeScanHash, "Formal scan fingerprint changed while enabling PV Shadow");
             const report = {
               checkedAt: new Date().toISOString(), operation: patched ? "ENABLED" : "ALREADY_ENABLED",
               pvShadowEnabled: true, pvBindingType: afterPv.type, nonPvBindingsPreserved: true,
-              activeContentSha256Before: beforeContentHash, activeContentSha256After: hash(afterContent),
+              activeContentSha256Before: beforeContentHash, activeContentSha256After: hash(extractWorkerSource(afterContent)),
               formalConfigFingerprintBefore: beforeConfigHash, formalConfigFingerprintAfter: hash(formalConfigProjection(afterConfig)),
               formalScanFingerprintWithoutPvBefore: beforeScanHash, formalScanFingerprintWithoutPvAfter: hash(formalScanProjection(afterScan)),
               formalIsolation: true, rollbackAttempted: false
