@@ -7669,3 +7669,128 @@ If historical classification is unavailable, record classificationProvenance and
 
 No Formal change.
 
+
+
+## DL-002BY — Double-Bottom Strong Falsification Prior
+
+### New counter-evidence
+A 2026 SSRN preprint (“The Double Bottom Under the Microscope”) reports roughly 13,704 mechanically detected double-bottom events across six liquid futures markets over about seven years.
+
+Reported result:
+- formation, confirmation and neckline-break entries did not consistently beat random entries at the same moment;
+- common quality filters such as symmetry, volume, prior trend and low similarity did not show robust forward information;
+- the apparent strength of neckline-break confirmation could be mechanically contaminated by measuring a move that is already underway rather than remaining forward return from an actionable timestamp.
+
+### Limitations
+- futures, not Taiwan equities;
+- preprint, not treated as final peer-reviewed truth;
+- detector definitions may differ from DL-002K;
+- market structure and horizons differ.
+
+### Why retain this evidence
+It directly falsifies the casual assumption:
+“a cleaner double bottom + neckline break must have edge.”
+
+### Stronger DL-002K test
+For every W state distinguish:
+- FORMATION_RETURN: move from second low toward neckline;
+- CONFIRMATION_RETURN_ALREADY_REALIZED: return embedded before the neckline break becomes observable;
+- FORWARD_ACTIONABLE_RETURN: return only after first actionable confirmation timestamp.
+
+Primary evidence for selection usefulness must be FORWARD_ACTIONABLE_RETURN, not total low-to-post-breakout move.
+
+### Baseline requirement
+Compare to matched/random same-date entries, not just positive raw return.
+A bull market can make every neckline break look profitable.
+
+### Consequence
+W morphology remains a hypothesis.
+It earns no privileged status merely because it is a classic chart pattern.
+
+## DL-002BZ — Pattern Confirmation Mechanical-Return Bias
+
+### General problem
+Many pattern definitions require price to move in the predicted direction before “confirmation.”
+Examples:
+- W neckline break,
+- cup rim breakout,
+- flag breakout,
+- head-and-shoulders neckline break.
+
+If performance measurement begins at the earlier pivot/low, the detector receives credit for return that was required to define the pattern in the first place.
+
+### Required timestamps
+- earliestFormationObservableAt
+- maturePreBreakoutObservableAt
+- confirmationObservableAt
+- firstActionablePriceAfterConfirmation
+
+### Outcome attribution
+PRE_CONFIRMATION_MOVE
+POST_CONFIRMATION_FORWARD_RETURN
+TOTAL_PATTERN_MOVE
+
+Only POST_CONFIRMATION_FORWARD_RETURN is valid for judging confirmation-entry edge.
+
+### Selection research
+Pre-breakout maturity can be evaluated from scan date without waiting for confirmation.
+This is one reason Pattern Maturity may be more informative than a fully completed textbook label.
+
+## DL-002CA — Pattern-Measured Targets Are Separate Hypotheses
+
+### Practitioner convention
+Technical-analysis texts often project:
+- W height above neckline,
+- cup/base height above breakout,
+- flagpole length from breakout,
+- triangle/range height.
+
+### Evidence boundary
+The existence/predictive value of a chart pattern does not validate its traditional measured-move target.
+Academic evidence supporting pattern-conditioned return predictability is not the same as evidence that “pattern height = future move.”
+
+### Research comparison
+For each confirmed pattern compute descriptively:
+- classicalMeasuredTarget
+- nearestRealResistance (existing system concept)
+- fixed forward MFE horizons
+- ATR-normalized target distances
+
+Evaluate:
+- target hit before invalidation
+- time to target
+- overshoot/undershoot
+- whether measured target lies beyond known major resistance
+- calibration by pattern family/regime
+
+### No Formal target change
+Current target/RR logic remains locked.
+Traditional measured moves are a research benchmark only.
+
+## DL-002CB — Structural Invalidation vs Current Stop Research
+
+### Distinguish
+PATTERN_INVALIDATION_LEVEL:
+- level at which frozen morphology is no longer valid.
+
+CURRENT_FORMAL_STOP:
+- existing system stop based on support/ATR and plan logic.
+
+They need not be equal.
+
+### Research fields
+- patternInvalidationPrice
+- formalStopPrice
+- stopVsInvalidationPct
+- invalidationOccursFirst
+- stopOccursFirst
+- recoverAfterFormalStopButPatternValid
+- patternFailsBeforeFormalStop
+
+### Research purpose
+Understand whether pattern topology contains risk information.
+Do not change stop placement automatically.
+
+### Engineering boundary
+Any use of pattern invalidation to alter real stop/position logic is Class C and requires explicit owner approval.
+
