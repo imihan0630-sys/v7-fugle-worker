@@ -48,6 +48,7 @@ Minimum denominator contract:
 - symbol;
 - effective date/time;
 - issued/listed shares valid for that market session;
+- direct official share count; do not derive an exact denominator only from a nominal stock-dividend/rights ratio;
 - firstKnownAt / source provenance;
 - correction/supersession history.
 
@@ -120,15 +121,18 @@ Artifact:
 2025 stock-dividend lifecycle:
 - ex-right price event: 2025-08-21;
 - new shares listed: 2025-10-09;
-- stock distribution ratio: 5%;
-- new shares: 12,617,870;
-- derived pre-listing share base: 252,357,400;
-- derived post-listing share base: 264,975,270.
+- nominal stock distribution ratio: 5% / 50 new shares per 1,000 old shares;
+- new shares actually issued: 12,617,870;
+- official pre-increase issued shares: 252,357,405;
+- official post-registration issued shares: 264,975,275;
+- actual aggregate share-base increase: about 4.9999999009%.
+
+The official counts are important: blindly back-solving 12,617,870 / 5% gives 252,357,400 old shares, five shares short of the company's official pre-increase count. Fractional-share handling/rounding makes the nominal distribution ratio unsuitable as an exact denominator source.
 
 At 2025-10-09:
 - raw `volumeTodayVsPrev5` = 0.825379;
-- issued-share-turnover-normalized analogue = 0.786075;
-- the 5% share-base increase changes the ratio by about -4.76% relative to the raw ratio;
+- official-issued-share-turnover-normalized analogue = 0.786075;
+- the roughly 5% share-base increase changes the ratio by about -4.76% relative to the raw ratio;
 - this specific witness does NOT flip the A/B volume condition.
 
 Counterexample / boundary sensitivity:
