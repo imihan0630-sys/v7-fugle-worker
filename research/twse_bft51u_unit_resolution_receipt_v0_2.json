@@ -1,0 +1,110 @@
+{
+  "schemaVersion": "0.2",
+  "generatedAt": "2026-09-25 Asia/Taipei",
+  "purpose": "CA-111 closure receipt. Resolve TWSE BFT51U raw-unit semantics using the official BFT51U CSV sample plus the official BFI85U CSV sample with security-specific trading-unit evidence.",
+  "decisionImpact": false,
+  "formalCoreChanged": false,
+  "officialArtifacts": {
+    "bft51u": {
+      "product": "BFT51U / 當日個股基本資料表",
+      "productUrl": "https://eshop.twse.com.tw/zh/product/detail/bc9bd889165844a9849d190fd1c69066",
+      "sampleUrl": "https://eshop.twse.com.tw/uploadFile/upload/000000006bbab10e016c4094f3a80037.csv",
+      "sampleDate": "2019-07-29",
+      "fields": [
+        "發行張數",
+        "上市股數"
+      ]
+    },
+    "bfi85u": {
+      "product": "BFI85U / 證券主檔",
+      "productUrl": "https://eshop.twse.com.tw/zh/product/detail/000000006f6a5e34017033452c8d0070",
+      "sampleUrl": "https://eshop.twse.com.tw/uploadFile/upload/0000000070849b0a0170853ac92c0005.csv",
+      "sampleReferenceDate": "2020-02-14/2020-03-era sample",
+      "fields": [
+        "交易單位",
+        "發行股數"
+      ]
+    }
+  },
+  "witnesses": [
+    {
+      "symbol": "2330",
+      "bft51u_20190729": {
+        "issuedLotsRaw": 25930380,
+        "listedSharesRaw": 25930380458
+      },
+      "bfi85u_sample": {
+        "tradeUnit": 1000,
+        "issuedVolumeRaw": 25930380
+      },
+      "test": {
+        "issuedLotsTimesTradeUnit": 25930380000,
+        "listedSharesRaw": 25930380458,
+        "remainderShares": 458
+      },
+      "conclusion": "BFT51U 發行張數 is a lot/trading-unit count, not an exact share count. Multiplying by 1000 reconstructs only the whole-lot component and loses the 458-share remainder. BFT51U 上市股數 is already an exact raw share count in this witness."
+    },
+    {
+      "symbol": "8454",
+      "bft51u_20190729": {
+        "issuedLotsRaw": 140058,
+        "listedSharesRaw": 140058500
+      },
+      "test": {
+        "issuedLotsTimes1000": 140058000,
+        "listedSharesRaw": 140058500,
+        "remainderShares": 500
+      },
+      "conclusion": "Independent common-stock witness confirms that blind 發行張數 × 1000 cannot recover exact listed shares when a sub-lot remainder exists."
+    },
+    {
+      "symbol": "8422",
+      "bft51u_20190729": {
+        "issuedLotsRaw": 108888,
+        "listedSharesRaw": 108888000
+      },
+      "test": {
+        "issuedLotsTimes1000": 108888000,
+        "remainderShares": 0
+      },
+      "conclusion": "Counterexample retained: some securities are exact multiples of the standard lot, so ×1000 can appear correct. This does not validate the transform universally."
+    },
+    {
+      "symbol": "00636K",
+      "bfi85u_sample": {
+        "tradeUnit": 100,
+        "issuedVolumeRaw": 81
+      },
+      "bft51u_20190729": {
+        "issuedLotsRaw": 126,
+        "listedSharesRaw": 126200
+      },
+      "conclusion": "Official BFI85U proves security-specific non-1000 trading units exist. The dates differ, so this row is used only as a trading-unit guard, not as a same-date denominator equality test."
+    }
+  ],
+  "resolvedSemantics": {
+    "bft51uIssuedLots": "RAW LOT/TRADING-UNIT COUNT; not exact shares; conversion requires the security-specific trade unit and still may lose sub-lot remainder.",
+    "bft51uListedShares": "RAW SHARE COUNT in the official sample; suitable as an exact listed-share denominator candidate subject to date/coverage/completeness controls.",
+    "bfi85uTradeUnit": "SECURITY-SPECIFIC SHARES PER TRADING UNIT; required guard for non-standard-unit instruments.",
+    "bfi85uIssuedVolume": "Numerically matches BFT51U 發行張數 for same standard-lot witnesses; do not relabel as exact shares without remainder-aware source evidence."
+  },
+  "positiveNegativeValidation": {
+    "positive": "2330 and 8454 independently show sub-lot remainders, proving why exact listed shares cannot be reconstructed from lot counts alone. 8422 is retained as the misleading exact-multiple counterexample.",
+    "negative": "The old candidate universal x1000 rule is falsified as an exact-share reconstruction rule. It is permitted only as a whole-lot component after a verified trade-unit lookup, never as exact denominator truth."
+  },
+  "strictGate": {
+    "TWSE_BFT51U_RAW_UNIT_CONTRACT": "RESOLVED",
+    "universalMultiplyBy1000": "REJECTED_FOR_EXACT_SHARE_DENOMINATOR",
+    "preferredExactListedShareLane": "BFT51U 上市股數 raw field",
+    "registeredIssuedShareExactLane": "STILL REQUIRES A SOURCE THAT PRESERVES SUB-LOT REMAINDERS; BFT51U 發行張數 alone is insufficient",
+    "securitySpecificTradeUnitGuard": "MANDATORY",
+    "ca111Status": "COMPLETE"
+  },
+  "antiInference": [
+    "Do not treat 發行張數 as exact shares.",
+    "Do not multiply every BFT51U 發行張數 by 1000.",
+    "Do not use BFI85U 發行股數 as exact shares merely because of its English label.",
+    "Keep registered-issued shares and exchange-listed shares as separate denominator spaces.",
+    "Do not change Formal Core or production behavior from this research finding."
+  ]
+}
