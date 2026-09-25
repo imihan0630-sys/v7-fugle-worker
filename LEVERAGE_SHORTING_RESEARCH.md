@@ -1581,3 +1581,194 @@ Status: LS-043 COMPLETE / ONE ENGINEERING SOURCE CONTRACT REMAINS.
 LS-044: validate units and algebraic identities using fixed exact-date rows, without looking at future returns.
 LS-045: finalize large-backfill go/no-go.
 LS-046: if endpoint remains blocked, define a safe alternative ingestion contract based on official downloadable CSV/manual artifact rather than inventing an API.
+
+
+---
+
+## LS-044 — Unit and algebra validation
+
+Validation used fixed official rows only; no forward-return outcomes were inspected.
+
+### A. TWSE margin-long identity — PASS
+For an official 2026-08-14 row, the displayed fields satisfy the expected accounting relation:
+
+`current margin balance = prior balance + margin buy - margin sell - cash redemption`
+
+Example row:
+- prior 31,723
+- buy 2,226
+- sell 2,986
+- cash redemption 5
+- result = 30,958
+
+Displayed current balance = 30,958.
+
+### B. TWSE margin-short identity — PASS
+Same row:
+
+`current short balance = prior balance + short sale - short cover - stock redemption`
+
+- prior 1,158
+- short sale 126
+- cover 5
+- stock redemption 0
+- result = 1,279
+
+Displayed current balance = 1,279.
+
+### C. TWSE actual SBL-short identity — PASS
+Official TWT93U row:
+
+`current = prior + sold - returned + adjustment`
+
+Example:
+- prior 152,961,000
+- sold 7,349,000
+- returned 183,000
+- adjustment 0
+- result = 160,127,000
+
+Displayed current balance = 160,127,000.
+
+### D. TPEx margin identity — PASS
+Official TPEx displayed row:
+
+Margin long:
+- prior 5,041
+- buy 365
+- sell 199
+- cash repayment 0
+- calculated current 5,207
+- displayed current 5,207.
+
+Margin short:
+- prior 10
+- sale 0
+- cover 0
+- stock repayment 0
+- calculated current 10
+- displayed current 10.
+
+### E. TPEx actual SBL-short identity — PASS
+Official 2026-09-24 displayed row:
+
+- prior 240,000
+- sold 0
+- returned 100,000
+- adjustment 0
+- calculated current 140,000
+- displayed current 140,000.
+
+### Unit finding
+The public sources do not use one universal numeric unit:
+
+- TPEx margin table explicitly labels balances/offsets in **lots (張)**.
+- TWSE aggregate MI_MARGN describes margin/short values in **trading units (交易單位)**.
+- TWSE TWT93U product metadata defines SBL/margin-short file quantities as **shares (股數)**.
+- TPEx SBL machine format is a numeric share-oriented post-close dataset, but each field still retains source-unit metadata in our research spec.
+
+### Normalization rule
+Never join or ratio raw margin and SBL numbers before unit normalization.
+
+Store:
+- rawValue
+- rawUnit
+- normalizedShares
+- tradingUnitShares
+- unitSource
+- unitQuality.
+
+For v0.1 common-stock research:
+- conversion to shares is allowed only after the security's trading unit is independently verified for that date/instrument.
+- excluded ETFs/warrants/etc. must not be used to infer the common-stock conversion rule.
+
+Status:
+- ACCOUNTING IDENTITIES = PASS
+- UNIT SEMANTICS = RESOLVED AT SOURCE-TYPE LEVEL
+- UNIVERSAL RAW-NUMBER COMPARABILITY = REJECTED.
+
+---
+
+## LS-045 — Large-backfill go/no-go
+
+Current gate:
+
+- TWSE margin displayed schema: PASS
+- TWSE margin algebra: PASS
+- TWSE margin preliminary/final semantics: PASS
+- TWSE SBL schema/formula: PASS
+- TPEx margin displayed schema/algebra: PASS
+- TPEx SBL displayed schema/formula: PASS
+- TPEx SBL machine CSV contract: PASS
+- source-unit differences: IDENTIFIED / GUARDED
+- TPEx margin stable programmatic CSV endpoint: PENDING
+
+### Decision
+`AUTOMATED_CROSS_MARKET_LARGE_BACKFILL = NO_GO_YET`
+
+This is not because TPEx data are absent.
+It is because the exact stable programmatic contract for one source remains unresolved.
+
+### Safe work that may continue
+- offline parser/test design;
+- fixed official sample artifacts;
+- TWSE source validation;
+- TPEx SBL S47 parser design;
+- unit conversion guards;
+- prospective schema/provenance design.
+
+Status: NO_GO FOR LARGE AUTOMATED BACKFILL; RESEARCH CONTINUES.
+
+---
+
+## LS-046 — Safe fallback ingestion when an API contract is not verified
+
+If a stable TPEx margin programmatic endpoint remains unavailable, the acceptable fallback is **official downloadable artifact ingestion**, not URL guessing.
+
+### Accepted source classes
+1. official TPEx UTF-8 CSV downloaded from the margin page;
+2. official documented EDIS/data-product file if available/licensed;
+3. user/provisioned official raw file with source date and checksum.
+
+### Required artifact metadata
+- sourceAuthority = TPEx
+- sourcePage
+- requestedDate
+- downloadedAt
+- fileName
+- encoding
+- sha256/checksum
+- schemaVersion
+- parserVersion
+- rowCount
+
+### Parser rule
+Parser maps by validated header names when the official file has headers.
+If the file is positional:
+- require exact official format version;
+- fail closed on column-count/schema mismatch.
+
+### Safety
+Do not scrape around access controls or invent hidden endpoints.
+A blocked direct-fetch path is a source-access limitation, not permission to bypass it.
+
+### Research implication
+The LS lane can still be built correctly even if some official data enter as daily artifacts rather than an undocumented JSON API.
+
+Status: OFFICIAL-ARTIFACT FALLBACK CONTRACT FROZEN.
+
+## LS lane state after LS-046
+
+**CONCEPT_COMPLETE / DATA_SPEC_COMPLETE / SOURCE_CONTRACT_PARTIAL**
+
+Remaining concrete blocker:
+- TPEx margin stable programmatic endpoint, or a chosen official-artifact ingestion workflow.
+
+No Formal change and no production deployment.
+
+## Exact next continuation
+
+LS-047: only after an official TPEx margin artifact/endpoint is available, validate parser on multiple dates.
+LS-048: then run finalized-history backfill pilot with no outcome research.
+LS-049: audit completeness/revisions.
+LS-050: only then execute pre-registered H1-H5 evidence tests.
