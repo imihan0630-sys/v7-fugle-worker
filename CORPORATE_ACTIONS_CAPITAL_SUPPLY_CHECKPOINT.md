@@ -1,9 +1,9 @@
 # Corporate Actions & Capital Supply Checkpoint
 
 Updated: 2026-09-25 Asia/Taipei
-Current cursor: CA-001 through CA-090 complete.
-Status: MATERIALITY_CONFIRMED / RS_SEMANTICS_CONFIRMED / SUSPENSION_INTERACTION_FOUND / CROSS_LANE_PROTOTYPE_READY / TEST_EXECUTION_PENDING.
-Next: CA-091.
+Current cursor: CA-001 through CA-095 complete.
+Status: MATERIALITY_CONFIRMED / RS_SEMANTICS_CONFIRMED / SUSPENSION_INTERACTION_FOUND / CROSS_LANE_PROTOTYPE_TESTED / EXCHANGE_SCOPED_SUSPENSION_CONTRACT / TWO_STAGE_LIFECYCLE_CONFIRMED.
+Next: CA-096.
 
 ## Durable conclusions
 - Announced equity supply/demand and realized share-base change are separate.
@@ -105,3 +105,22 @@ CA-092 integration order between PR #100 freshness and suspension/corporate-acti
 CA-093 prospective official suspension archive.
 CA-094 multiple actions in one 60-session window.
 CA-095 two-stage stock-dividend ex-right -> new-share-listing contamination.
+
+## CA-091 through CA-095 durable update
+- PR #101 now has executable GitHub Actions evidence. Research Corporate Action Prototype run `36138447978` passed both corporate-action continuity and symbol-session test suites; companion V8 Repair CI and Regression runs also passed.
+- Integration order is now explicit: verified market sessions -> verified exchange-scoped symbol suspensions -> expected symbol sessions -> freshness validation -> corporate-action semantic transforms -> Pattern/K-line consumers. PR #100 must not be promoted as market-session-only freshness.
+- Suspension archive scope is widened from TWSE-centric to exchange-scoped TWSE + TPEx. TWSE historical suspension CSV and TPEx Trading Halt/Resumption Trade CSV are official discovery surfaces. Exact direct TWSE TWTAWU payload fields and an exact TPEx machine endpoint remain UNKNOWN until successful capture contracts are archived.
+- NO_SUSPENSION is legal only after the symbol's exchange/date/parser lane is complete. Missing cross-exchange coverage remains SUSPENSION_PROVENANCE_UNKNOWN / EVENT_COVERAGE_UNKNOWN.
+- PR #101 commit `a6b45a4253648372dcb462f0cacfedea50234775` adds a real 8454 two-stage lifecycle test: 2025-08-21 stock-dividend ex-right plus 2025-10-09 new-share listing inside one rolling window.
+- The 8454 test proves event-order invariance, keeps ex-right and supply stages separate, applies price bridging only where appropriate, does not mechanically rescale old share volume, and fails volume comparability closed at SUPPLY_CHANGE.
+- Fresh runs on that commit all passed: Research Corporate Action Prototype `36139660200`, V8 Repair CI `36139659976`, V8 Regression Tests `36139660103`.
+- This is mechanics/data-semantics evidence, not alpha evidence. No bullish/bearish inference, score, threshold or Formal eligibility change is authorized.
+- No Worker.js wiring, no production deployment, no Formal Core change.
+
+## Exact next continuation
+CA-096 full 60-session 8454 real-bar lifecycle window.
+CA-097 minimum point-in-time denominator contract for SUPPLY_CHANGE volume comparability.
+CA-098 TPEx corporate-action suspension/resumption fixture plus exchange-scoped completeness tests.
+CA-099 combined PR #100/#101 falsification matrix.
+CA-100 evidence-gated owner decision memo only after CA-096..099; no autonomous merge/deploy.
+
