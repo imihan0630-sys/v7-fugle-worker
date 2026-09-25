@@ -338,3 +338,14 @@ No Formal Core change is approved or implied.
   - turnover x 52-week-high evidence exists but currently has high redundancy / implementation-cost risk.
 - Strongest Shadow directions remain: same-slot 15m RVOL, nonlinear breakout volume, constructive dry-up vs no-demand, acceptance lifecycle, price-limit control, and abnormal-volume persistence.
 - Formal Core unchanged / LOCKED.
+
+## Price-Volume lane update — PV-016 through PV-020
+- Current cursor: PV-001 through PV-020 complete; continue from PV-021.
+- New durable synthesis:
+  - session cumulative average / VWAP-style position is an acceptance diagnostic, not proven standalone alpha;
+  - price-impact / effort-result features require liquidity and Taiwan price-limit controls;
+  - Taiwan opening gaps must be split into overnight shock and intraday acceptance because the two return components have different behavioral / information dynamics;
+  - multi-timeframe volume should update one latent participation state rather than award duplicate points at daily/60m/15m/10m horizons;
+  - preferred architecture is now five latent layers: Participation, Price Response, Acceptance Lifecycle, Persistence, Constraint/Guard.
+- The research lane is intentionally converging toward a compact conditional state model instead of accumulating indicators.
+- Formal Core unchanged / LOCKED.
