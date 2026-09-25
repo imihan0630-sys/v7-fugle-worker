@@ -10387,3 +10387,431 @@ The next knowledge gain comes from:
 **provenance, coverage and prospective data**, not more formulas.
 
 Status: PV_THEORY_MATURE / DATA_INTEGRITY_AND_EVIDENCE_PRIORITY.
+
+# PV-191 — PV Should Consume Symbol-Session Quality; It Must Not Rebuild the Corporate-Action Engine
+
+## Existing PR #101 research prototype
+The symbol-session prototype already defines:
+- official market sessions;
+- verified symbol suspension intervals;
+- expected symbol sessions;
+- history freshness validation.
+
+Key output fields include:
+- usable;
+- status;
+- reason;
+- latestPriorDate;
+- expectedPriorDate.
+
+Unknown/invalid suspension provenance fails closed.
+
+## PV consumer contract
+PV needs only a versioned quality receipt:
+
+- historyUsable;
+- historyQualityStatus;
+- historyQualityReason;
+- latestPriorDate;
+- expectedPriorDate;
+- symbolSessionProofVersion;
+- suspensionProvenanceVersion.
+
+PV must not:
+- discover corporate actions independently;
+- infer suspension from missing bars;
+- maintain a second calendar engine.
+
+## Corporate-action continuity
+PR #101 also distinguishes:
+- price continuity;
+- volume continuity;
+- volumeTransformMode:
+  - NONE
+  - UNIT_SCALE
+  - SUPPLY_CHANGE
+  - UNKNOWN.
+
+PV should consume these semantics where daily volume comparability matters.
+
+Status: CA_ENGINE_SINGLE_OWNER / PV_QUALITY_CONSUMER_ONLY.
+
+
+# PV-192 — Research Quality Overlay Schema
+
+## Purpose
+Attach later-discovered quality information without rewriting immutable feature snapshots.
+
+## Proposed research-only structure
+Logical table/view:
+`research_quality_annotations`
+
+Fields:
+- annotation_id;
+- source_type:
+  - PV_SNAPSHOT
+  - SHADOW_CANDIDATE
+  - EXECUTION_SNAPSHOT
+  - FORMAL_PLAN
+  - OUTCOME;
+- source_id;
+- symbol;
+- market_date;
+- quality_domain:
+  - FEATURE_DATA
+  - COHORT_HISTORY
+  - SYMBOL_SESSION
+  - CORPORATE_ACTION
+  - EVENT_SCOPE
+  - SOURCE_SCOPE
+  - COVERAGE;
+- quality_state:
+  - VALID
+  - GUARDED
+  - INVALID
+  - UNKNOWN;
+- reason_code;
+- evidence_version;
+- discovered_at;
+- effective_analysis_policy;
+- provenance_json;
+- decision_impact=false.
+
+## Append-only
+A later annotation does not delete earlier knowledge.
+If evidence improves:
+add a new annotation with a newer evidence version.
+
+Analysis chooses the latest applicable evidence under a documented rule.
+
+## Example
+Snapshot created 2026-09-24.
+Later B-130 proves selection history stale.
+
+Add:
+`COHORT_HISTORY / INVALID / STALE_LATEST_SYMBOL_SESSION`.
+
+The original PV snapshot remains byte-identical.
+
+Status: QUALITY_OVERLAY_SCHEMA_FROZEN / NOT_IMPLEMENTED.
+
+
+# PV-193 — Row Quality and Pool-Date Selection Integrity Are Different
+
+## Row-level contamination
+If one symbol's PV bar is malformed:
+that row can be quarantined while other symbols remain valid.
+
+## Selection-set contamination
+Formal uses:
+- eligibility;
+- ranking;
+- 3+3 quota/pool logic.
+
+If one candidate was wrongly eligible or wrongly ranked because of stale history, it can:
+- enter SELECTED incorrectly;
+- displace another candidate;
+- alter QUALIFIED_NOT_SELECTED membership/rank.
+
+Therefore the issue can propagate through the selection set.
+
+## Quality levels
+
+### ROW_FEATURE_VALIDITY
+Is this symbol's feature record valid?
+
+### POOL_SELECTION_INTEGRITY
+Can we trust the selected/not-selected ordering for the entire price pool on that scan date?
+
+### DATE_MARKET_CONTEXT_VALIDITY
+Is broad market/sector context itself valid?
+
+## Analysis rule
+Per-symbol descriptive path:
+other verified rows on the date can remain usable.
+
+Selection Alpha / selected-vs-qualified comparison:
+if pool membership could change under corrected inputs,
+that **pool-date** is quarantined until a complete fresh rerun/replay establishes the counterfactual selected set.
+
+Do not simply remove the bad selected symbol and pretend the remaining selected set is the correct counterfactual.
+
+## Implication for 3+3
+General and thousand pools are independent.
+Contamination in one pool does not automatically invalidate the other pool if the other pool's complete candidate/rank inputs are verified.
+
+Status: QUOTA_PROPAGATION_QUALITY_FROZEN.
+
+
+# PV-194 — PV DATA_QA Acceptance Receipt Is Outcome-Blind
+
+## Objective
+Decide whether the recorder is trustworthy before asking whether the signal “works.”
+
+## Intraday PV receipt
+For each QA window report:
+- expected observed bar opportunities;
+- snapshot count;
+- unique snapshot count;
+- duplicate attempts;
+- mutation conflicts;
+- >=20 valid same-slot baseline coverage;
+- cumulative-pace coverage;
+- range-baseline coverage;
+- guard/UNKNOWN distribution;
+- source-bar completed status;
+- no future/current-session baseline leakage;
+- API calls Shadow OFF vs ON;
+- Formal fingerprints OFF vs ON;
+- D1 write failures;
+- baseline bootstrap errors;
+- corporate-action/disposition guard coverage.
+
+## Daily PV receipt
+Separately report:
+- daily snapshot count;
+- dailyHistoryCount;
+- latest prior history date;
+- symbol-session freshness state;
+- volume-continuity state;
+- daily outcome completion coverage.
+
+Do not merge daily/intraday readiness into one green/red flag.
+
+## Cohort receipt
+- selectionScanDate provenance coverage;
+- verified cohort-history fraction;
+- invalid/unknown pool-date count;
+- selected/control archive completeness.
+
+## Acceptance semantics
+- DATA_QA_PASS
+- DATA_QA_PARTIAL
+- DATA_QUALITY_BLOCKED
+
+No return/MFE/win-rate field may determine QA pass.
+
+Status: OUTCOME_BLIND_DATA_QA_RECEIPT_FROZEN.
+
+
+# PV-195 — Earliest Readiness for H001/H002 Descriptive Evidence
+
+## Existing prospective floors
+PV-024 already froze operational milestones:
+- first ~50 completed events = DATA_QA only;
+- outcome interpretation after broader coverage;
+- review milestones 100 / 250 / 500;
+- at least 30 distinct market dates before broad evidence interpretation;
+- no one scan date >10% of the sample.
+
+These remain operational floors, not universal statistical-power claims.
+
+## Additional clean-data requirements
+Before first H001/H002 descriptive comparison:
+- intraday PV DATA_QA_PASS;
+- verified cohort-quality available for the primary rows;
+- no unresolved Formal-isolation failure;
+- no snapshot mutation;
+- slot-baseline coverage stable;
+- date/session-phase distributions reported.
+
+Operational QA alarm from PV-081 remains:
+if >20% expected primary observations remain UNKNOWN for baseline reasons after bootstrap, interpretation pauses.
+
+## H001
+Compare:
+existing local previous-5 volumeRatio
+vs
++ pvSlotRvol20.
+
+## H002
+Then:
++ pvCumvolPace20.
+
+## No tuning
+Use frozen definitions.
+Do not change 1.3/2.5 thresholds after seeing the first clean outcomes.
+
+## Current readiness
+Until clean cohort-history provenance is available:
+`WAITING_CLEAN_COHORT_PROVENANCE`
+for primary inference, even if intraday recorder rows accumulate.
+
+Status: FIRST_EVIDENCE_GATE_FROZEN.
+
+
+# PV-196 — Corporate-Action Volume Semantics Need More Than a Freshness Pass
+
+## Freshness is not comparability
+A history can contain every expected symbol session and still cross a corporate action that changes volume comparability.
+
+## Volume transform modes from CA prototype
+
+### NONE
+Raw share-volume history remains directly comparable under the event model.
+
+### UNIT_SCALE
+A stock split/reverse split/unit change can mechanically alter share counts.
+
+For a clean normalized-volume baseline:
+require verified shareUnitFactor and an explicit comparable volume space.
+
+### SUPPLY_CHANGE
+Raw share volume remains factual executed shares,
+but the supply denominator changed.
+
+Implication:
+raw RVOL remains a factual own-history ratio, yet economic “turnover intensity” comparability may be partial.
+
+Store/guard rather than mechanically rescale old raw volume without a verified denominator contract.
+
+### UNKNOWN
+Clean comparative volume inference unavailable.
+
+## PV distinction
+- historyFreshness = are required bars present?
+- volumeComparability = are volume units/economic denominators comparable?
+
+Both are required metadata.
+
+Status: FRESHNESS_AND_VOLUME_COMPARABILITY_SEPARATE.
+
+
+# PV-197 — A Clean Control Group Cannot Repair a Corrupted Selection Set
+
+## Temptation
+Compare stale-history SELECTED stocks against BROAD_CONTROL and hope the control corrects bias.
+
+## Why it fails
+If the selected set itself is wrong:
+the estimand changed.
+
+The study is no longer:
+“Formal SELECTED vs control.”
+
+It becomes:
+“whatever stale-cache production selected vs control.”
+
+A clean control cannot identify the intended strategy's selection effect.
+
+## Rule
+Selection Alpha dates/pools with uncertain selection-set integrity:
+- quarantine from intended-Formal Selection Alpha;
+- may be retained as a separate production-defect historical cohort.
+
+## Value of keeping them
+They can answer:
+“What was the consequence of the stale-cache production defect?”
+
+That is a valid operational postmortem,
+not strategy-alpha evidence.
+
+Status: CONTROL_CANNOT_FIX_TREATMENT_MISCLASSIFICATION.
+
+
+# PV-198 — No Retroactive Fabrication of Missing Intraday Research Controls
+
+## Problem
+After discovering a useful PV feature, it may be tempting to fetch historical 15m candles for every Near-miss/Broad Control and create “what the Shadow would have seen.”
+
+## Why unsafe
+That would know:
+- which features became interesting;
+- which dates mattered;
+- which stocks became controls
+after outcomes and research design evolved.
+
+It also lacks point-in-time:
+- quote state;
+- live data failures;
+- exact provider revisions;
+- execution recorder state.
+
+## Rule
+Historical OHLCV can support mechanics/backtests explicitly labeled retrospective.
+
+It cannot be inserted into the prospective PV Shadow sample as if recorded live.
+
+## Future controls
+If intraday control evidence is needed:
+prospectively capture a bounded, deterministic control cohort from the scan date forward.
+
+Status: PROSPECTIVE_CONTROL_ONLY_FOR_PRIMARY_SHADOW_EVIDENCE.
+
+
+# PV-199 — History Quality Should Be Attached at Selection Time, Not Inferred Months Later
+
+## Ideal future workflow
+At the after-market scan:
+1. derive expected symbol sessions;
+2. validate history freshness/continuity;
+3. capture the quality receipt;
+4. run Formal only on allowed data policy;
+5. archive candidate/cohort with the same receipt.
+
+## Why
+Later reconstruction may face:
+- corrected source data;
+- changed calendars;
+- newly discovered suspensions;
+- revised corporate-action records.
+
+Point-in-time receipt preserves what was known.
+
+## Revision
+If later authoritative evidence changes:
+add a quality annotation;
+do not rewrite the original receipt.
+
+## Research benefit
+Separates:
+- system-as-known-at-time;
+- later-truth/postmortem.
+
+Status: SELECTION_TIME_QUALITY_RECEIPT_FROZEN.
+
+
+# PV-200 — Price-Volume Research Phase II Convergence
+
+## Knowledge state
+By PV-200, the lane has covered:
+- relative/time-of-day-normalized participation;
+- price response;
+- acceptance;
+- persistence;
+- regime/common activity;
+- price limits/auctions/disposition;
+- corporate-action/freshness semantics;
+- volume origins;
+- institutional gross/net/persistence;
+- passive/ETF mechanics;
+- leverage/shorting;
+- derivatives/expiry;
+- microstructure integration;
+- control/cohort/statistical governance;
+- immutable quality overlays.
+
+## Main unresolved questions are now empirical
+1. Is same-slot RVOL better than local previous-5-bar volume ratio?
+2. Does cumulative pace add value?
+3. Do response/acceptance states add value?
+4. Does volume primarily add directional information or risk information?
+5. Can coarse microstructure resolve high-effort/low-progress ambiguity?
+6. Does dealer proprietary flow add information beyond combined dealer flow?
+
+## Main unresolved infrastructure prerequisites
+1. production-grade symbol-session history-quality provenance;
+2. clean PV Shadow DATA_QA receipts;
+3. authoritative execution-recorder coverage;
+4. enough independent prospective dates/events.
+
+## Research discipline
+No new price-volume factor family should be added merely to keep “learning.”
+
+Future learning should now preferentially:
+- validate sources;
+- collect clean prospective evidence;
+- falsify existing hypotheses;
+- investigate a new mechanism only when evidence reveals a specific unexplained residual.
+
+Status: PV_PHASE_II_THEORY_CONVERGED / EVIDENCE_AND_FALSIFICATION_NEXT.
