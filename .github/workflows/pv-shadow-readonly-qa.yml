@@ -1,0 +1,38 @@
+name: PV Shadow Class-A Read-Only QA
+
+on:
+  workflow_dispatch:
+  schedule:
+    # 23:50 Asia/Taipei, after the 23:35 after-market run.
+    - cron: '50 15 * * 1-5'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pv-shadow-class-a-readonly-qa
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Read deployed settings, admin readbacks, and D1 SELECT-only evidence
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+        run: node tests/pv_shadow_readonly_qa.mjs
+      - name: Preserve sanitized Class-A QA report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pv-shadow-readonly-qa-${{ github.run_id }}
+          path: artifacts/pv-shadow-readonly-qa.json
+          if-no-files-found: warn
+          retention-days: 30
