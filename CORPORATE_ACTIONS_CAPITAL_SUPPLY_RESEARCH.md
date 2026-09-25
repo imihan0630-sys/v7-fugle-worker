@@ -2377,3 +2377,163 @@ CA-068: add no-action control records and incomplete-event negative controls.
 CA-069: define how the 60-day history window queries all effective event versions without future leakage.
 CA-070: use the registry sample to produce the first offline Shadow feature-delta dataset; no return-outcome optimization.
 CA-071: only after registry/feature-delta validation, begin Price-Index vs Total-Return RS ranking comparison.
+
+
+---
+
+## CA-067 — One corporate action can require multiple effective events
+
+Stock-dividend evidence changes the lifecycle model.
+
+Example 8454:
+- ex-right date creates an entitlement/price-reference reset;
+- the newly issued stock does not become listed/tradable until a later date.
+
+Therefore one “stock dividend event” must not automatically apply price and share-supply effects on the same date.
+
+### Revised lifecycle
+
+A. EX_RIGHT_PRICE_EVENT
+- effective at ex-right date;
+- applies mode-specific price factor;
+- raw tradable-share volume unit remains unchanged;
+- volumeTransformMode = NONE unless a true same-day unit conversion occurs.
+
+B. NEW_SHARES_LISTED
+- effective when additional shares become listed/tradable;
+- no mechanical historical price factor unless separately evidenced;
+- factors may be 1 for price modes;
+- volumeTransformMode = SUPPLY_CHANGE;
+- point-in-time shares outstanding / float becomes relevant.
+
+### 8454 corrected event-day result
+Using price factor 1 / 1.05 and leaving raw volume unchanged:
+
+Raw:
+- ret20 = -7.61%;
+- MA20 = 273.18;
+- MA60 = 274.86;
+- volumeTodayVsPrev5 = 1.38;
+- volumeContraction5to20 = 0.76;
+- A trend = false;
+- A full pass = false.
+
+Price-continuity with raw tradable volume:
+- ret20 = -2.99%;
+- MA20 = 260.79;
+- MA60 = 261.98;
+- volumeTodayVsPrev5 = 1.38;
+- volumeContraction5to20 = 0.76;
+- A trend = true;
+- A volume still passes because prior 5-day volume is contracted versus 20-day volume;
+- full A = true.
+
+Thus the A-state flip remains valid without any speculative volume scaling.
+
+### Rights/cash capital increase
+Apply the same principle:
+- ex-right entitlement/reference event;
+- later new-share delivery/listing supply event.
+
+Status: PRICE EVENT AND SHARE-SUPPLY EVENT DECOUPLED.
+
+---
+
+## CA-068 — Event relevance is scoped to the exact history window
+
+For a target-date history window:
+
+historyStartDate = first actual bar supplied to the feature calculation.
+
+An action affects continuity transformation only if:
+historyStartDate < effectiveDate <= targetDate.
+
+### Why
+
+Event effective before/on the first bar:
+- every bar in the supplied window is already post-event;
+- no pre-event bar exists to transform;
+- a supply change before the window does not create mixed-regime share volume inside that window.
+
+Event effective after targetDate:
+- must not enter technical/RS history;
+- it may belong to Event Risk as a future known event, but that is a different lane.
+
+### Multiple events
+Apply eligible events in chronological order.
+Each event transforms only bars strictly earlier than its own effective date.
+
+### Prototype
+The research branch now scopes eligible events to the supplied history window.
+
+Status: WINDOW-SCOPED EVENT APPLICATION FROZEN.
+
+---
+
+## CA-069 — Registry quality is multidimensional, not one PASS/FAIL flag
+
+Required readiness dimensions:
+
+### SCHEMA_VALID
+- dates parse;
+- factors are positive when present;
+- event version identifiers valid;
+- source metadata present.
+
+### POINT_IN_TIME_READY
+- firstKnown/version-known timing sufficient for target;
+- no later revision is backfilled into an earlier replay;
+- effective date corresponds to the version known at target.
+
+### TECHNICAL_PRICE_READY
+- every relevant price-reset event in the history window has a verified technicalPriceFactor.
+
+### TECHNICAL_VOLUME_READY
+- every UNIT_SCALE event has a verified shareUnitFactor;
+- no unresolved SUPPLY_CHANGE crosses the volume feature window unless a point-in-time shares/turnover normalization is available.
+
+### PRICE_RS_READY
+- every relevant event has a verified priceIndexComparableFactor;
+- exact TAIEX Price Index start/end dates exist.
+
+### TOTAL_RS_READY
+- every relevant event has a verified totalReturnComparableFactor;
+- exact TAIEX Total Return start/end dates exist.
+
+### INFERENCE_READY
+Requires:
+- relevant readiness dimensions;
+- complete universe/denominator coverage for the study question;
+- no convenience sampling;
+- source revision completeness.
+
+A record can be TECHNICAL_PRICE_READY while not INFERENCE_READY.
+
+Status: READINESS MATRIX FROZEN.
+
+---
+
+## CA-070 — Registry sample advances to lifecycle-aware v0.2
+
+The next registry sample supersedes the single-event stock-dividend representation.
+
+8454 is split into:
+1. 2025-08-21 STOCK_DIVIDEND_EX_RIGHT;
+2. 2025-10-09 NEW_SHARES_LISTED.
+
+The first owns price continuity.
+The second owns realized tradable-share supply.
+
+3593 and 8103 preserve multiple announcement/schedule versions.
+8422 preserves first-known exchange-plan timing before the 2025-11-17 unit conversion.
+2412 preserves separate economic/reference fields and reference conflict status.
+
+Status: REGISTRY LIFECYCLE MODEL V0.2 FROZEN.
+
+## Exact next continuation after CA-070
+
+CA-071: materialize registry sample v0.2 and mark v0.1 superseded for lifecycle semantics.
+CA-072: add deterministic registry validation specification.
+CA-073: define feature-window coverage manifest: expected events vs observed/verified events.
+CA-074: build first offline feature-delta sample only from readiness-qualified windows.
+CA-075: do not start forward-return optimization until registry coverage is demonstrably complete.
