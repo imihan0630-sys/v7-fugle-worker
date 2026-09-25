@@ -12746,3 +12746,246 @@ The snapshot feature layer's job is to decide whether a particular feature has e
 The error was only in receipt interpretation, not necessarily in the cache population mechanism.
 
 Status: PVE_013_FEATURE_READINESS_INTERPRETATION_SUPERSEDED.
+
+# PVE-049 — PV Acceptance Replays Formal Logic Approximately, Not Exactly
+
+## Intended design
+PV acceptance state machine was designed to reuse existing Formal geometry and confirmation semantics.
+
+## Audited divergence
+Formal local 15m volumeRatio:
+- is calculated from current/previous five bars;
+- is rounded to 2 decimals in `buildBar`;
+- Formal A/B logic consumes that rounded value.
+
+PV acceptance:
+- consumes `bar.localVolumeRatio` calculated independently inside `pvEnrichSessionBars`;
+- stores/uses the unrounded ratio.
+
+Therefore boundary decisions can diverge.
+
+## Example — B
+Raw local ratio:
+1.295.
+
+Formal:
+round(1.295,2) may be represented/evaluated at the 1.30 boundary and can satisfy >=1.3 under runtime rounding behavior.
+
+PV:
+1.295 < 1.3,
+so the same bar can fail PV's B_INITIAL_ACCEPTANCE transition.
+
+## Example — A
+Raw ratio just above 0.90 can round to 0.90 in Formal but remain >0.90 in PV.
+
+## Research conclusion
+PV acceptance is:
+`FORMAL_LOGIC_APPROXIMATION`,
+not an authoritative replay of the actual Formal decision state.
+
+Status: ACCEPTANCE_FORMAL_FIDELITY_NOT_EXACT.
+
+
+# PVE-050 — A Acceptance Lower-Shadow Rule Is Broader than Formal
+
+## Formal lowerShadowStop
+Formal requires:
+- bullish bar;
+- lower shadow >= max(body, 25% range).
+
+## PV A initial acceptance
+PV uses:
+- overlap/hold;
+- localVolumeRatio <=0.9;
+- and either:
+  - closePosition >= 2/3;
+  - OR lowerShadowRatio >= max(bodyShare,0.25).
+
+The second branch does not explicitly require bullish=true.
+
+## Consequence
+A bearish candle with a sufficiently long lower shadow can potentially satisfy the PV lower-shadow branch even though Formal `lowerShadowStop` would be false.
+
+## Impact
+This affects:
+- A_INITIAL_ACCEPTANCE;
+- later A_REACCELERATION lineage;
+- anchor eligibility/outcomes for H003/H004.
+
+It does not affect actual Formal BUY logic.
+
+## Analysis rule
+Until corrected/versioned:
+PV A acceptance labels require:
+`ACCEPTANCE_REPLAY_FIDELITY_GUARDED`.
+
+Status: A_ACCEPTANCE_RULE_DRIFT_CONFIRMED.
+
+
+# PVE-051 — 13:00 Expiry Can Override a Fresh Acceptance State
+
+## Current state-machine order
+PV first evaluates:
+- failure;
+- reacceleration;
+- retest;
+- initial acceptance / pullback test.
+
+Then, if slotKey == 13:00 and the resulting state is not:
+- B_REACCELERATION;
+- B_FAILED_REENTRY;
+- A_REACCELERATION;
+- A_FAILED_REENTRY,
+it overwrites state with:
+- B_EXPIRED_AMBIGUOUS;
+or
+- A_EXPIRED_AMBIGUOUS.
+
+## Consequence
+A B bar that first achieves B_INITIAL_ACCEPTANCE at 13:00 is immediately stored as B_EXPIRED_AMBIGUOUS.
+
+This can be a defensible same-session-outcome convention because there is no full B1 window left in the v0.1 observable session.
+
+But it is not the same statement as:
+“Formal did not confirm the breakout.”
+
+## Required distinction
+- `FORMAL_CONFIRMATION_AT_LATE_SESSION`;
+- `PV_SAME_SESSION_FOLLOWTHROUGH_WINDOW_UNAVAILABLE`.
+
+Do not collapse them into one failure/ambiguous trading signal interpretation.
+
+Status: LATE_SESSION_ACCEPTANCE_CENSORING_SEMANTICS_FROZEN.
+
+
+# PVE-052 — stopFirst Cannot Be Ordered Reliably from OHLC When Stop and Target Are Both Touched in One Bar
+
+## Current outcome logic
+For each future OHLC bar:
+1. if low <= stop -> stopFirst=1 and break;
+2. else if high >= profit -> break.
+
+## Problem
+If the same 15m/daily bar has:
+- low <= stop;
+- high >= profit,
+OHLC does not reveal which occurred first intrabar.
+
+The current code deterministically assigns stop-first.
+
+## Correct evidence state
+When both stop and target are touched in the same coarse bar:
+`STOP_TARGET_ORDER_AMBIGUOUS`.
+
+Without finer timestamp/trade data,
+do not classify stop-first as known.
+
+## Impact
+MFE/MAE remain factual extrema for the bar window.
+Path-order label does not.
+
+Status: STOP_FIRST_OHLC_PATH_AMBIGUITY_CONFIRMED.
+
+
+# PVE-053 — B1/B2/B4 Horizons Are “Next Available Bars” Unless Slot Continuity Is Independently Valid
+
+## Current builder
+After anchor index:
+`future = sessionBars.slice(anchorIndex+1, anchorIndex+1+count)`.
+
+If an intermediate expected slot is missing,
+the horizon consumes the next available bars.
+
+Example:
+anchor 10:00,
+10:15 missing,
+10:30 present.
+
+B1 becomes the 10:30 bar rather than an exact +15m horizon.
+
+## Current mitigation
+A snapshot on a session with missing required slots is already marked invalid-source by PV extraction.
+
+Thus clean analysis can exclude it.
+
+## Rule
+Horizon semantics are valid as exact bar horizons only when:
+- current-session slot continuity through the required horizon is verified.
+
+Otherwise:
+- outcome may remain stored for audit;
+- primary B1/B2/B4 inference excludes it.
+
+Status: OUTCOME_HORIZON_CONTINUITY_GUARD_FROZEN.
+
+
+# PVE-054 — Daily Outcome Calendar Is Market-Session Based, Not Symbol-Session Aware
+
+## Current daily outcome
+`pvFutureTradingRows` advances with:
+`nextTradingDate`
+using the exchange calendar, then requires a history row on each expected market session.
+
+## Legitimate symbol suspension
+If the exchange is open but the symbol is validly suspended:
+the expected market-date row is absent.
+
+The function returns null rather than skipping to the next symbol trading session.
+
+## Positive property
+It does not fabricate a return.
+
+## Limitation
+Daily outcome maturity can remain missing for a legitimate suspension,
+and the horizon semantics are not yet:
+“next N valid symbol sessions.”
+
+## Research rule
+Future clean daily outcomes need the same symbol-session calendar owner used for history freshness.
+
+Until then:
+- missing daily outcome around verified suspension = CENSORED_SYMBOL_SUSPENSION;
+- not zero return;
+- not failed signal.
+
+Status: DAILY_OUTCOME_SYMBOL_SESSION_GAP_CONFIRMED.
+
+
+# PVE-055 — H003/H004 Need a Higher Evidence Bar than H001/H002
+
+## H001/H002
+Can focus on:
+- raw volume normalization;
+- cumulative pace;
+under field-scoped quality gates.
+
+## H003
+Depends on:
+- response-state range normalization;
+- Guard labels;
+- acceptance replay fidelity.
+
+Known defects now include:
+- historical range anchors;
+- predecessor gaps;
+- Guard plumbing/thresholds;
+- Formal replay rounding;
+- A lower-shadow rule drift;
+- late-session censoring semantics.
+
+## H004
+Risk outcomes additionally depend on:
+- exact horizon continuity;
+- stop/target path ambiguity;
+- symbol-session-aware daily horizons.
+
+## Decision
+Do not let clean H001/H002 readiness automatically promote H003/H004.
+
+Separate evidence gates:
+- H001_GATE
+- H002_GATE
+- H003_GATE
+- H004_GATE.
+
+Status: HYPOTHESIS_SPECIFIC_READINESS_REQUIRED.
