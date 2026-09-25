@@ -2024,3 +2024,149 @@ CA-057: revise branch tests with a synthetic mixed cash+stock event that disting
 CA-058: add an offline MFI94U source-contract document; no runtime code.
 CA-059: compare branch to main again and checkpoint.
 CA-060: next evidence target = automated construction of a small official corporate-action registry sample, not more indicators.
+
+
+---
+
+## CA-056 — Branch prototype upgraded to explicit mode-specific factors
+
+Research branch:
+research/class-b-corporate-action-history-semantics-20260925
+
+V3 event contract now separates:
+- technicalPriceFactor;
+- priceIndexComparableFactor;
+- totalReturnComparableFactor.
+
+There is intentionally no automatic generic fallback into Price-Index-Comparable mode.
+
+Reason:
+Mixed cash+stock or rights events can have different correct factors for:
+- technical continuity;
+- TAIEX Price-Index-compatible return;
+- total-return-compatible return.
+
+If the requested mode factor is absent:
+- priceContinuityComplete = false;
+- an UNKNOWN reason is emitted;
+- another mode's factor is not substituted.
+
+Status: MODE-SPECIFIC FACTOR PROTOTYPE COMPLETE.
+
+---
+
+## CA-057 — Mixed cash + stock dividend test fixture added
+
+Synthetic frozen example:
+- prior close = 100;
+- cash dividend = 5;
+- stock dividend ratio = 10%.
+
+Theoretical ex-price:
+(100 - 5) / 1.10 = 86.3636.
+
+Raw price return:
+86.3636 / 100 - 1 = -13.6364%.
+
+Technical / Total-Return factor:
+0.863636.
+Expected mechanical return after continuity = approximately 0%.
+
+Price-Index-Comparable factor:
+1 / 1.10 = 0.909091.
+Expected return:
+86.3636 / 90.9091 - 1 = -5%.
+
+Thus the three semantics intentionally disagree:
+- RAW = -13.64%;
+- PRICE_INDEX_COMPAT = -5%;
+- TECHNICAL/TOTAL_RETURN = 0%.
+
+The branch test fixture encodes these expected values.
+
+Test fixture is checked in but is not claimed as CI-executed in this turn.
+
+Status: MIXED-ACTION SEMANTIC TEST FROZEN.
+
+---
+
+## CA-058 — Offline MFI94U source contract created
+
+Dedicated file:
+CORPORATE_ACTION_RS_SOURCE_CONTRACT.md
+
+It freezes:
+- current Formal FMTQIK Price Index as the price benchmark;
+- official TWSE MFI94U as the Total Return benchmark;
+- exact target/start-date coverage;
+- no interpolation / no nearest-date substitution / no missing-as-zero;
+- source provenance;
+- Shadow-only join fields;
+- validation gates;
+- no production Worker fetch.
+
+Status: RS BENCHMARK SOURCE CONTRACT COMPLETE.
+
+---
+
+## CA-059 — Research branch isolation remains intact
+
+Latest main-to-branch comparison:
+- branch differs in exactly two files:
+  1. research/corporate_action_continuity_prototype.mjs
+  2. tests/test_corporate_action_continuity_prototype.mjs
+- no Worker.js changes;
+- no deployment workflow changes.
+
+The branch is behind newer main research-document commits because main research continued after branch creation.
+This does not indicate a production-code conflict; the actual diff remains isolated research files.
+
+Status: BRANCH ISOLATION VERIFIED.
+
+---
+
+## CA-060 — Corporate-action lane evidence phase checkpoint
+
+Completed:
+- concept;
+- official source map;
+- raw-history semantic defect audit;
+- six action-type real samples;
+- rolling-window persistence;
+- no-future-event controls;
+- unit-scale versus supply-change volume distinction;
+- technical versus Price-Index versus Total-Return semantics;
+- mixed-event factor decomposition;
+- isolated branch prototype;
+- official TAIEX Total Return offline source contract.
+
+Still missing:
+- broad point-in-time all-market corporate-action registry;
+- authoritative tradable-share/listing timeline for SUPPLY_CHANGE volume normalization;
+- multi-date Shadow RS ranking sample;
+- automated execution of branch test fixtures in CI;
+- owner decision on any Formal implementation.
+
+No Formal Core change.
+
+## Exact next evidence target after CA-060
+
+Build a small official point-in-time corporate-action registry dataset across independent dates:
+- sample ordinary cash dividends;
+- stock dividends;
+- capital reductions;
+- par-value changes;
+- rights/cash capital increases;
+- no-action controls.
+
+For each record, freeze:
+- first-known/effective dates;
+- raw reference inputs;
+- per-mode factors;
+- volumeTransformMode;
+- source/provenance;
+- coverage status.
+
+Only after registry schema/data pass should RS Shadow ranking comparison begin.
+
+Do not add more scoring indicators before this evidence layer exists.
