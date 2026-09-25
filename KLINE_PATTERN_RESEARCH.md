@@ -12230,3 +12230,135 @@ Use only:
 
 No backdating.
 
+
+
+## DL-002GU — Anchored VWAP as a Reference Benchmark, Not Magic Support
+
+### Distinguish three concepts
+1. GEOMETRIC_ZONE
+- repeated swing/price reaction structure.
+
+2. ANCHORED_VWAP
+- volume-weighted average transaction price since a chosen observable anchor.
+
+3. HOLDER_COST_BASIS_PROXY
+- estimate of surviving holders’ reference costs, incorporating turnover/survival assumptions.
+
+They are not interchangeable.
+
+### Why AVWAP may be useful
+It provides an observable average traded-price reference since:
+- breakout
+- major swing low/high
+- event announcement
+- start of pattern episode
+
+But it does NOT tell:
+- who still holds shares,
+- whether the average is support,
+- whether informed investors bought there.
+
+### Daily historical construction
+When daily turnover and volume are valid:
+AVWAP_from_anchor =
+sum(turnover from anchor..t) /
+sum(volume from anchor..t)
+
+Need unit checks.
+
+### Anchor-day ambiguity
+If the anchor is an intraday pivot on day d:
+daily AVWAP includes trades before the pivot on day d.
+
+Therefore:
+DAILY_ANCHOR_APPROX
+for historical daily-only reconstruction.
+
+From 2023-05-23 minute data:
+INTRADAY_ANCHOR_REFINED
+can begin after the actual observable intraday anchor when appropriate.
+
+### Candidate anchors
+- patternEpisodeStart
+- second W bottom confirmation
+- breakout confirmation
+- event date
+- major support reclaim
+- major gap/event bar
+
+Do not anchor arbitrarily at whichever date produces the best line.
+
+### Fields
+- avwapAnchorType
+- avwapAnchorAt
+- avwap
+- priceVsAVWAPPct
+- avwapSlope
+- pivotVsAVWAP
+- retestVsAVWAP
+- zoneOverlapWithAVWAP
+- avwapMethod
+- anchorPrecision
+
+## DL-002GV — AVWAP Must Compete With Simpler References
+
+### Benchmarks
+- MA20
+- actual geometric support zone
+- session average
+- estimated holder cost
+- prior breakout level
+
+### Key question
+Does AVWAP add any incremental explanation of:
+- retest hold
+- failure/reclaim
+- MFE/MAE
+after existing supports are controlled?
+
+### Overlap risk
+AVWAP can behave like another moving average with a special start date.
+If it adds no incremental value, classify REDUNDANT.
+
+## DL-002GW — Anchor Selection Is an Experiment Risk
+
+### Problem
+There are many plausible anchors.
+Choosing the best-looking anchor after observing future price is severe hindsight bias.
+
+### Pre-registered anchor hierarchy
+For each research question, freeze anchor source:
+- breakout study -> breakout confirmation timestamp
+- W study -> second-bottom confirmation / neckline break depending question
+- event study -> event first-known timestamp
+- base study -> pattern episode start
+
+### No arbitrary chart click
+Human-selected anchor not allowed in quantitative validation unless independently pre-specified.
+
+### Multiple anchors
+If several legitimate anchors exist:
+store all as descriptive references,
+but each materially different anchor hypothesis counts toward multiple testing.
+
+## DL-002GX — AVWAP Crossing Is Not Automatically a Signal
+
+### States
+ABOVE_AVWAP
+BELOW_AVWAP
+RECLAIM_AVWAP
+LOSE_AVWAP
+CHOP_AROUND_AVWAP
+
+### Context
+Crossing can reflect:
+- ordinary mean crossing,
+- event-cost reference,
+- strong trend,
+- noise.
+
+### Validation
+Test only within relevant parent patterns/episodes and against geometric zones.
+
+No Formal filter or entry rule.
+
