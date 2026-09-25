@@ -509,30 +509,63 @@ export function classifyCorporateActionGap({
   morphologyPrev,
   morphologyCurrent,
   corporateActionTag = false,
-  adjustmentReady = true
+  adjustmentReady = true,
+  gapThresholdPct = null
 } = {}) {
   if (!adjustmentReady) {
     return {
       status: "DATA_BLOCKED",
       reason: "ADJUSTMENT_MODE_MISMATCH_OR_PROVENANCE_UNKNOWN",
-      rawGap: null,
-      morphologyMechanicalGap: null
+      rawGapPct: null,
+      morphologyGapPct: null,
+      residualPatternGapFlag: null,
+      rawGapPatternEligible: false,
+      morphologyGapPatternEligible: false
     };
   }
-  const rawGapPct = Number(rawCurrent?.open) / Number(rawPrev?.close) - 1;
-  const morphologyGapPct = Number(morphologyCurrent?.open) / Number(morphologyPrev?.close) - 1;
-  const rawGap = Number.isFinite(rawGapPct) && Math.abs(rawGapPct) >= 0.05;
-  const morphologyMechanicalGap = Number.isFinite(morphologyGapPct) && Math.abs(morphologyGapPct) >= 0.02;
-  const mechanicalCorporateActionGap = corporateActionTag && rawGap && !morphologyMechanicalGap;
+
+  const rawPreviousClose = Number(rawPrev?.close);
+  const rawOpen = Number(rawCurrent?.open);
+  const morphologyPreviousClose = Number(morphologyPrev?.close);
+  const morphologyOpen = Number(morphologyCurrent?.open);
+  if (![rawPreviousClose, rawOpen, morphologyPreviousClose, morphologyOpen].every(Number.isFinite) ||
+      !(rawPreviousClose > 0 && morphologyPreviousClose > 0)) {
+    return {
+      status: "DATA_BLOCKED",
+      reason: "CORPORATE_ACTION_GAP_INPUT_INCOMPLETE",
+      rawGapPct: null,
+      morphologyGapPct: null,
+      residualPatternGapFlag: null,
+      rawGapPatternEligible: false,
+      morphologyGapPatternEligible: false
+    };
+  }
+
+  const rawGapPct = rawOpen / rawPreviousClose - 1;
+  const morphologyGapPct = morphologyOpen / morphologyPreviousClose - 1;
+  const adjustmentFactorObserved = morphologyPreviousClose / rawPreviousClose;
+  const threshold = finite(gapThresholdPct);
+  const residualPatternGapFlag = threshold !== null && threshold > 0
+    ? Math.abs(morphologyGapPct) >= threshold
+    : null;
+
+  // A corporate action does not mean the day has "no gap".
+  // It means raw pre/post prices are not the correct morphology comparison.
+  // Any residual move versus the continuity reference remains genuine market information.
   return {
     status: "VALID",
-    rawGap,
+    corporateActionTag: Boolean(corporateActionTag),
     rawGapPct,
-    morphologyMechanicalGap,
     morphologyGapPct,
-    mechanicalCorporateActionGap,
-    threeGapsEligible: !mechanicalCorporateActionGap,
-    wUndercutEligible: !mechanicalCorporateActionGap
+    adjustmentFactorObserved,
+    mechanicalDiscontinuityNeutralized: Boolean(corporateActionTag),
+    patternGapPct: morphologyGapPct,
+    residualPatternGapFlag,
+    rawGapPatternEligible: !corporateActionTag,
+    morphologyGapPatternEligible: true,
+    rawWUndercutEligible: !corporateActionTag,
+    morphologyWUndercutEligible: true,
+    semanticSpace: "TECHNICAL_CONTINUITY_RESIDUAL"
   };
 }
 
