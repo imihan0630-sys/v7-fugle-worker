@@ -13420,3 +13420,224 @@ Turnover availability:
 The first Pattern Shadow prototype does not need to modify Formal calculations.
 It needs a parallel research data representation preserving fields already available plus new provenance fields.
 
+
+
+## DL-002II — Corporate-Action Handling: Use an Explicit Morphology Series
+
+### New source audit
+TWSE provides official ex-right/ex-dividend information and reference-price calculations. The public OpenAPI exposes TWT48U_ALL for ex-right/ex-dividend forecasts, while TWSE's historical ex-right reference-price page states data are available from 2003-05-05. Official reference-price data include the pre-event close and ex-right/ex-dividend reference price.
+
+### Important design correction
+Pattern research does NOT need to guess whether the Fugle historical OHLC endpoint is adjusted.
+Treat provider adjustment semantics as UNKNOWN until independently verified.
+
+Instead define two explicit series:
+1. RAW_MARKET_SERIES — the actual traded O/H/L/C as delivered.
+2. MORPHOLOGY_CONTINUITY_SERIES — a research transformation that neutralizes mechanical corporate-action jumps using official exchange reference-price information.
+
+### Why
+Candlestick/gap research needs the actual traded open, but multi-month topology must not mistake an ex-dividend mechanical price drop for:
+- a support break,
+- a W undercut,
+- a gap-down,
+- a volatility expansion,
+- a new swing low.
+
+Therefore raw and continuity semantics must coexist; one cannot replace the other.
+
+### Corporate-action event record
+- symbol
+- effectiveDate
+- actionType
+- priorClose
+- officialReferencePrice
+- cashDividend
+- stockDividend / rights fields when available
+- source
+- capturedAt
+- availableAt
+- pointInTimeEligible
+- adjustmentFactorDerived
+- dataQuality
+
+### Usage matrix
+Candlestick body on event day:
+- use RAW O/H/L/C, but tag CORPORATE_ACTION_EVENT and normally exclude from ordinary gap-pattern labels.
+
+Long topology / swing continuity:
+- use MORPHOLOGY_CONTINUITY_SERIES.
+
+Execution / actual fill economics:
+- use RAW traded prices.
+
+Return outcomes:
+- use total-return-consistent semantics where feasible; never mix raw ex-dividend price drop with ordinary loss.
+
+### Guard
+If official action data are missing or ambiguous:
+corporateActionStatus = UNKNOWN
+and gap/topology interpretations spanning the event are GUARDED, not BAD.
+
+## DL-002IJ — Exact Research History Target v0.1
+
+### Current live constraint
+The Formal cache fetches 120 calendar days and stores at most 65 market-state bars.
+That is intentionally optimized for live 60-day features, not long pattern research.
+
+### Research target
+Freeze a separate target:
+- minimum valid bars for long topology: 120 completed trading bars
+- target retained bars: 260 completed trading bars
+- preferred fetch buffer: 420 calendar days
+
+Rationale:
+- 120 bars supports roughly half-year structures;
+- 260 bars preserves prior-trend context and one-year resistance;
+- calendar buffer absorbs weekends/holidays without dynamically extending based on outcomes.
+
+### No Formal reuse
+Do not increase HISTORY_LOOKBACK_CALENDAR_DAYS or MARKET_STATE_DAYS for research.
+A Pattern Shadow history path must be separate.
+
+### Insufficient-history states
+<60 bars: SHORT_HISTORY
+60-119: MEDIUM_HISTORY_ONLY
+120-259: LONG_PATTERN_ELIGIBLE
+>=260: FULL_RESEARCH_CONTEXT
+
+Pattern families declare their minimum history; missing history is UNKNOWN/INELIGIBLE, never “pattern absent.”
+
+## DL-002IK — Pattern Shadow Storage Schema v0.1
+
+### Isolation principle
+Use new research-only tables/namespaces; do not overload v7_history_cache or Formal live-state tables.
+
+### Proposed tables
+
+pattern_research_bars
+Primary key: symbol + market_date
+Fields:
+- symbol, market_date
+- raw_open/high/low/close
+- morphology_open/high/low/close
+- volume_shares, trade_value
+- corporate_action_status
+- adjustment_factor
+- source
+- fetched_at
+- data_quality
+- schema_version
+
+pattern_shadow_snapshots
+Primary key: scan_date + symbol + detector_version
+Fields:
+- scan_date, symbol
+- formal_cohort
+- data_through_date
+- history_start_date, bar_count
+- swing_spec_version
+- pattern_spec_version
+- primitives_json
+- zones_json
+- pattern_states_json
+- motifs_json
+- context_json
+- confidence_json
+- missingness_json
+- first_observable_at
+- decision_impact fixed FALSE
+- created_at
+
+pattern_shadow_outcomes
+Primary key: scan_date + symbol + detector_version + horizon
+Fields:
+- horizon
+- return_pct
+- mfe_pct, mae_pct
+- r01_state
+- stop_first_state
+- time_to_resolution
+- completed_at
+- immutable_fingerprint
+
+pattern_zone_versions
+Primary key: symbol + as_of_date + zone_id + zone_version
+Fields:
+- bounds/center
+- source constituents
+- constituent confirmedAt
+- strength diagnostics
+- created_at
+- supersedes_version
+
+### Immutability
+Original snapshots are append-only.
+Outcome completion may append outcome rows but never mutate the original feature snapshot.
+
+### Formal isolation proof required before implementation
+No read path from these tables into:
+- scoreCandidate
+- strategySetupState
+- plan construction
+- analyzeStockSmart
+- processSignalState
+- allocation
+- push.
+
+## DL-002IL — Provider/Storage Audit: Existing D1 Is Suitable but Shared-Binding Risk Exists
+
+### Current architecture
+Worker.js already uses V7_DB D1 for:
+- live state
+- cron audit
+- history cache
+- history seed state
+- institutional snapshots
+- quality snapshots
+- signal delivery state.
+
+### Governance classification
+Creating new research-only tables inside the same D1 binding is logically Class A only if:
+- schema creation cannot delay/fail Formal paths,
+- research writes are fail-open and occur after Formal persistence,
+- Formal queries never join/read them,
+- storage/CPU growth is bounded.
+
+However, because V7_DB is a shared runtime binding, an implementation that changes shared cron timing or schema initialization could become Class B indirect risk.
+
+### Safer design
+Preferred:
+- separate lazy research schema initializer, never in the Formal hot-path;
+- research collection after Formal work;
+- hard execution/call/storage budget;
+- feature flag default OFF;
+- fail-open on every research error;
+- no research migration required for Formal startup.
+
+If a separate D1 binding is already available later, it is even cleaner, but a new binding itself is deployment/configuration work and must be classified before change.
+
+## DL-002IM — Historical Minute Data Is Optional for Selection-Pattern v0.1
+
+### Scope correction
+The first Pattern Shadow validation does not require historical minute bars.
+
+Daily selection topology needs:
+- daily point-in-time OHLCV/turnover,
+- corporate-action handling,
+- long history,
+- regime/context.
+
+Intraday minute/15m history is required only for:
+- historical reconstruction of execution motifs,
+- exact breakout/retest chronology,
+- same-day gap-fill/order questions.
+
+### Consequence
+Do not block Stage-1 daily Pattern Shadow on unresolved historical-minute retention.
+
+Split:
+PATTERN_SELECTION_SHADOW_V0_1 = daily only.
+PATTERN_EXECUTION_SHADOW_V0_1 = prospective 15m using already observed live frames, with historical backfill optional later.
+
+This reduces data requirements and preserves Selection Alpha vs Execution Alpha separation.
+
