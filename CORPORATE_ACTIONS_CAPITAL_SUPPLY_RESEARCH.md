@@ -1110,3 +1110,53 @@ No deployment.
 No Formal input change.
 
 Status: PROPOSAL-READY / OWNER APPROVAL REQUIRED BEFORE ANY FORMAL IMPLEMENTATION.
+
+
+---
+
+## CA-035 — Current share-count snapshots are not historical realized-supply truth
+
+Connected Fugle content exposes:
+- latest capital;
+- latest issued common shares.
+
+Example current 8422 readback:
+- latest capital: 1,358,762,544;
+- latest issued common shares: 1,359,472,977.
+
+These are current/latest snapshots.
+
+They do NOT establish the point-in-time share count on:
+- 2025-11-17;
+- a past cash-capital-increase listing date;
+- a past CB conversion date;
+- a past buyback cancellation date.
+
+Therefore they cannot be copied backward to compute historical realized dilution/contraction.
+
+Historical equity-supply research requires a vintaged sequence from official action filings/capital-change records or an independently verified historical share-count source.
+
+### Rule
+- latestSharesOutstanding = current context only;
+- historicalSharesOutstanding(T) = UNKNOWN unless point-in-time/vintaged evidence exists.
+
+Status: CURRENT SHARE SNAPSHOT USEFUL / HISTORICAL BACKFILL PROHIBITED.
+
+## CA-036 — Corporate Actions lane evidence checkpoint
+
+Current state:
+- concept model: COMPLETE;
+- buyback/SEO/CB official source map: COMPLETE enough for design;
+- free machine lifecycle contracts: PARTIAL;
+- raw-vs-continuity technical materiality: CONFIRMED in small real sample;
+- adjusted=true historical replay safety: REJECTED;
+- Class B history-semantics proposal: CREATED;
+- historical realized share-count series: NOT YET ESTABLISHED;
+- production change: NONE.
+
+## Exact next continuation after CA-036
+
+CA-037: widen the corporate-action technical-impact sample beyond three events, prioritizing pure stock dividend, loss-offset capital reduction and cash-refund capital reduction.
+CA-038: add volume/share-unit bridge research for split/par-value/stock-dividend cases.
+CA-039: test no-action controls to ensure continuity bridge reproduces current Formal features when no event exists.
+CA-040: only after CA-037..039, decide whether to prepare a branch/test implementation under the existing Class B proposal; no merge/deploy without owner approval.
