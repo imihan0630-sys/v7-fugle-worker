@@ -7591,3 +7591,273 @@ Current next best research data extension remains:
 **dealer proprietary/hedge split capture**, followed by **TPEx disposition parity**.
 
 Status: ORIGIN_DATA_PRIORITY_FROZEN.
+
+# PV-131 — Foreign / Trust Gross Participation May Matter, but Do Not Multiply the Factor Zoo
+
+## Data reality
+Official TWSE/TPEx institutional reports publish buy, sell and net values for:
+- foreign investors;
+- investment trusts;
+- dealers proprietary;
+- dealers hedge.
+
+Current Worker persists only:
+- foreignNet;
+- trustNet;
+- dealerNet;
+plus streaks.
+
+## Why gross activity may add information
+Taiwan evidence shows institutional:
+- trade size;
+- order aggressiveness;
+- price contribution;
+can differ materially by trader type.
+
+Some studies find professional institutional trades have informational content for future returns, while other Taiwan evidence shows foreign traders can behave more passively under certain market conditions.
+
+Sources:
+- Lien, Hung & Lin (2020), International Review of Economics & Finance:
+  https://doi.org/10.1016/j.iref.2019.10.011
+- Hao et al. (2015), Pacific-Basin Finance Journal:
+  https://doi.org/10.1016/j.pacfin.2015.05.002
+- Tsai, Shu & Chiang (2019), Journal of Multinational Financial Management:
+  https://doi.org/10.1016/j.mulfin.2019.100591
+
+## Research implication
+Gross foreign/trust participation may describe:
+- information-processing intensity;
+- liquidity provision;
+- portfolio turnover;
+- common/global flow;
+without necessarily sharing the sign of net flow.
+
+## Anti-feature-zoo decision
+Do NOT create separate new Formal factors:
+- foreignGrossScore;
+- trustGrossScore;
+- dealerGrossScore.
+
+Instead:
+capture gross buy/sell as origin/context data and test incremental value after:
+- existing net flow;
+- RVOL;
+- residual RVOL;
+- sector/regime.
+
+Status: CAPTURE_WORTHWHILE / NO_NEW_STANDALONE_SCORE.
+
+
+# PV-132 — Source-Scope Compatibility Contract for Institutional Participation Ratios
+
+## Problem
+A ratio is meaningful only if numerator and denominator cover compatible trading sessions/types.
+
+TWSE official institutional statistics and official daily stock statistics both can cover:
+- regular trading;
+- odd-lot;
+- after-hours fixed-price;
+- block trading;
+while excluding auction/tender offers.
+
+Sources:
+- TWSE T86 report remarks:
+  https://www.twse.com.tw/en/fund/T86
+- TWSE daily STOCK_DAY / market summary remarks:
+  https://www.twse.com.tw/en/exchangeReport/STOCK_DAY
+  https://www.twse.com.tw/en/exchangeReport/FMTQIK
+
+But TWSE also distributes versions excluding block trades versus including block trades.
+
+Source:
+https://eshop.twse.com.tw/en/product/detail/6edec1b6e62345cb9f1244acbbcefae0
+
+## Required metadata
+Every gross-flow record must carry:
+- `flowScopeId`
+- includesRegular
+- includesOddLot
+- includesAfterHoursFixed
+- includesBlock
+- excludesAuction
+- sourceVersion
+
+Every denominator must carry:
+- `volumeScopeId`
+with the same dimensions.
+
+## Compatibility rule
+Compute:
+`sideParticipationShare`
+only when:
+`flowScopeId == volumeScopeId`
+or an explicit audited mapping proves equivalence.
+
+Otherwise:
+- raw buy/sell/net may still be stored;
+- participation-share field = null;
+- coverage reason = SCOPE_MISMATCH.
+
+## Intraday prohibition
+Daily institutional gross data must never be divided by:
+- default 15m candle volume;
+- regular-session-only cumulative volume
+unless a dedicated same-scope numerator exists.
+
+Status: FLOW_DENOMINATOR_SCOPE_CONTRACT_FROZEN.
+
+
+# PV-133 — Gross Institutional Participation Can Help Explain HIGH_EFFORT_LOW_PROGRESS, but It Must Not Duplicate Volume
+
+## Question
+When PV observes:
+`HIGH_EFFORT_LOW_PROGRESS`
+is high activity coming from:
+- strong two-sided institutional trading;
+- directional institutional imbalance;
+- mechanical hedge;
+- non-institutional/retail/common flow?
+
+## Candidate decomposition
+Within the same high-effort bar/day context:
+- total RVOL;
+- foreign side-participation;
+- trust side-participation;
+- dealer proprietary side-participation;
+- dealer hedge side-participation;
+- directional imbalance by category.
+
+## Possible interpretations
+
+### High gross institutional participation + low directional imbalance
+Possible:
+- liquidity provision;
+- rotation/rebalancing;
+- disagreement;
+- two-sided execution.
+
+### High gross + strong directional imbalance
+Possible:
+- more one-sided institutional demand/supply.
+
+### Low institutional participation + high total RVOL
+Possible:
+- retail/day-trading;
+- non-three-institution participants;
+- block/other flows;
+- common activity.
+
+## Important counterpoint
+Gross institutional participation is mechanically related to total volume.
+Therefore an apparent predictive result may be only a restatement of RVOL.
+
+## Incremental-value requirement
+Any gross-participation variable must be tested after:
+- total RVOL;
+- daily transaction count;
+- market/sector common activity;
+- current net flows.
+
+If no residual information remains, archive it.
+
+Status: HIGH_EFFORT_DECOMPOSITION_CANDIDATE / REDUNDANCY_HIGH.
+
+
+# PV-134 — Institutional Data Vintage / Finality Semantics for the 23:35 Scan
+
+## Current scan timing
+Formal after-market scan is approximately 23:35 Taipei time.
+
+## TWSE institutional data
+Official TWSE investor-detail products are generated:
+- around 18:00 excluding block trades;
+- around 20:00 including block trades.
+
+Source:
+https://eshop.twse.com.tw/en/product/detail/6edec1b6e62345cb9f1244acbbcefae0
+
+The public T86 report notes statistics use original transactions and do not incorporate later brokerage account-error corrections.
+
+Source:
+https://www.twse.com.tw/en/fund/T86
+
+## Research consequence
+For a 23:35 decision snapshot:
+same-day TWSE institutional flow is temporally available under normal publication.
+
+But source identity matters:
+- excluding-block version;
+- including-block version;
+must not be silently mixed historically.
+
+## TPEx
+Current official daily institutional page is available after close and exposes the proprietary/hedge split.
+Production/finality should be captured from source timestamp rather than assumed identical to TWSE.
+
+## Required fields
+- sourceMarket
+- sourceFamily
+- sourceVariant
+- marketDate
+- publishedAtKnown / sourceProducedAt if documented
+- fetchedAt
+- asOfEligibleAt2335
+- finalityState
+- revisionPolicy
+
+## Fail-open rule
+If same-day source is:
+- unavailable;
+- wrong date;
+- schema changed;
+then institution origin fields = UNKNOWN.
+
+Formal scan must not fail or reuse prior day as current day.
+
+Status: INSTITUTION_VINTAGE_CONTRACT_FROZEN.
+
+
+# PV-135 — Decision on H005 Capture Proposal Timing
+
+## Question
+Should dealer proprietary/hedge split capture be implemented immediately?
+
+## Evidence for
+- strong mechanism rationale;
+- official fields already exist in payloads;
+- expected zero incremental API calls;
+- current combined dealerBuyDays has a known semantic mixture;
+- buy/sell/net capture is low-complexity and point-in-time useful.
+
+## Evidence against immediate implementation
+PV_SHADOW_V0_1 is still in DATA_QA.
+
+Adding a second new research recorder immediately would:
+- expand the debugging surface;
+- make data-quality failures harder to attribute;
+- blur the clean prospective start of the core PV experiment.
+
+## Decision
+**Do not implement H005 capture until PV_SHADOW_V0_1 passes its first DATA_QA stabilization gate.**
+
+Preparation status:
+- hypothesis frozen;
+- source feasible;
+- field schema defined;
+- integrity rules defined;
+- gross/net semantics defined.
+
+Implementation status:
+WAIT.
+
+## Trigger to revisit
+Earliest:
+after the core PV Shadow demonstrates:
+- no Formal isolation failures;
+- no duplicate/mutation issues;
+- baseline/slot coverage stable;
+- expected D1 writes/API behavior stable.
+
+Then H005 can be proposed as a separate Class-A research-only capture change.
+
+Status: H005_DESIGN_READY / IMPLEMENTATION_DEFERRED_UNTIL_CORE_DATA_QA_STABLE.
