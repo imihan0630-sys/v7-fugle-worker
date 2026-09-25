@@ -8,7 +8,10 @@ const mod=await import("data:text/javascript;base64,"+Buffer.from(
   source+"\nexport {deriveEvidenceAcceptance,CORE_OPERATION_RECEIPT_TYPES};"
 ).toString("base64")+"#"+Date.now());
 
-assert.match(source,/const VERSION = "8\.(?:2\.[1-9]|[3-9]\.\d+)[^"]*";/);
+{
+  const version=source.match(/const VERSION = "(\d+)\.(\d+)\.(\d+)[^"]*";/)?.slice(1,4).map(Number);
+  assert.ok(version && (version[0]>8 || (version[0]===8 && (version[1]>2 || (version[1]===2 && version[2]>=1)))),"V8.2.1+ runtime required");
+}
 
 const empty=mod.deriveEvidenceAcceptance({
   latest:{pipeline:{}},
