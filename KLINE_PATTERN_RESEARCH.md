@@ -10903,3 +10903,134 @@ If research fails:
 Formal remains unaffected,
 research data quality = UNKNOWN / FAILED_FETCH.
 
+
+
+## DL-002FC — Extended Historical Data Acquisition Contract
+
+### Fugle source constraints verified
+Historical daily candles:
+- TWSE/TPEx listed-stock daily history available back to 2010.
+- single request interval must be strictly less than one year.
+- adjusted=true available for D/W/M.
+- historical intraday candles available from 2023-05-23.
+- rate limits vary by API plan and return HTTP 429 when exceeded.
+
+### Research requirement
+Pattern Shadow v1 needs roughly:
+- 252 trading days for long-horizon reference / base morphology,
+plus
+- warmup for lagged ATR / prior trend before the earliest pattern anchor.
+
+Therefore calendar coverage may exceed one API request even though 252 trading days is roughly one market year.
+
+### Fetch design
+Use deterministic chunks each < 1 year:
+- chunk boundaries fixed by date,
+- fetch ascending or normalize ordering after fetch,
+- merge by (symbol,date),
+- reject conflicting duplicate bars,
+- verify continuity against trading calendar where possible.
+
+### Required fields
+Explicitly request:
+- open
+- high
+- low
+- close
+- volume
+- turnover
+- change
+
+Fetch both:
+RAW adjusted=false
+ADJUSTED adjusted=true
+
+Do not depend on endpoint defaults.
+
+### Cache identity
+Key research cache by:
+- symbol
+- date
+- adjustedFlag
+- sourceVersion / fetchedAt
+
+Avoid coupling to live v7_history_cache.
+
+### Completeness
+Store:
+- requestedFrom
+- requestedTo
+- returnedFirstDate
+- returnedLastDate
+- barCount
+- duplicateCount
+- missingTradingDateCount
+- sourceStatus
+- chunkCount
+
+Insufficient history = explicit status, not empty/no-pattern.
+
+## DL-002FD — Rate-Limit / Failure Isolation
+
+### API reality
+Fugle rate limits depend on plan; exceeding them returns 429.
+
+### Research rule
+Do NOT assume a numeric rate limit from documentation unless account plan proves it.
+
+### Safe behavior
+- bounded concurrency
+- retry only transient/429 with backoff
+- cache successful historical chunks
+- no repeated re-fetch of immutable old chunks
+- resume from checkpoint
+- research fetch failure never blocks Formal scan/monitor
+
+### Data priority
+1. existing research cohorts / controls
+2. missing extended history only
+3. advanced intraday context conditionally
+
+No full-market brute-force historical download until capacity and benefit justify it.
+
+## DL-002FE — Point-in-Time Historical Stats Caveat
+
+### Fugle historical stats endpoint
+Provides current 52-week high/low for a requested symbol.
+
+### Important research limitation
+A current historical-stats response is NOT automatically a point-in-time 52-week high for an old scan date.
+
+For historical scan-date research:
+derive the 52-week high/low from bars available through that historical date.
+
+### Rule
+Never backfill today’s week52High/week52Low into an old snapshot.
+
+This preserves point-in-time integrity.
+
+## DL-002FF — Research Data Checksum / Reproducibility
+
+### Need
+External providers can correct historical data.
+A later re-fetch may differ from the bars originally used.
+
+### Snapshot provenance
+For each research calculation store:
+- source
+- fetchedAt
+- dataThrough
+- barRange
+- adjusted flag
+- deterministic checksum/hash of input bars where practical
+- detectorVersion
+
+### If source history changes
+Do not silently mix old feature snapshot with newly corrected bars.
+
+Possible statuses:
+ORIGINAL_SOURCE_SNAPSHOT
+RECOMPUTED_ON_CORRECTED_DATA
+
+Research reports should disclose which.
+
