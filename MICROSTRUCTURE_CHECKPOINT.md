@@ -1,8 +1,8 @@
 # Market Microstructure Checkpoint
 
 Updated: 2026-09-25 Asia/Taipei
-Current cursor: MS-001 through MS-024 complete.
-Next: MS-025.
+Current cursor: MS-001 through MS-026 complete.
+Next: MS-027.
 
 ## Durable conclusions
 
@@ -109,3 +109,17 @@ Files:
 - MS-026 test whether existing spread/depth snapshots can answer a first baseline question with zero code.
 - MS-027 if coverage permits, pre-register/run zero-code baseline using existing fields.
 - MS-028 only if inadequate, prepare isolated research-capture proposal with cadence/storage/rate-limit budget.
+
+
+## MS-025 through MS-026 — recorder coverage gate
+- V8.8.0 writes are prospective/event-driven only at OPEN_BASELINE, FIRST_10M_COMPLETE, FIRST_15M_COMPLETE, FIRST_30M_COMPLETE and FORMAL_SIGNAL_OBSERVED while monitor results exist.
+- Current read contract cannot prove exhaustive date/event coverage: rolling days only, newest-first SQL LIMIT 500, only newest 80 exposed, no exact-date cursor/truncation/expected-event/completeness fields.
+- Coverage by historical event/date is therefore NOT_QUANTIFIABLE_FROM_CURRENT_READ_CONTRACT. Missing rows remain UNKNOWN, never NO-BUY/BAD/0.
+- Sparse snapshots can describe captured spread/depth state but cannot identify seconds-scale replenishment/resiliency or true OFI.
+- MS-026 zero-code inferential baseline is DATA_QUALITY_BLOCKED. Running outcome comparisons on returned rows would create coverage/selection bias. Descriptive audits may label the sample non-exhaustive but cannot estimate event frequency or absence.
+- Counter-hypothesis: zero-code would be sufficient if complete target-date coverage were proven; current contract does not prove it.
+- Shared endpoint completeness extension remains Class B proposal-first. No runtime/Formal/monitor/signal/capital/push change.
+
+## Revised exact continuation
+- MS-027 blocked until complete-enough recorder evidence exists; do not run on convenience samples.
+- MS-028 prepare isolated research capture/readout design only, with cadence/storage/rate-limit budget and proof Formal runtime semantics are untouched. Re-evaluate MS-027 first if a complete existing artifact/readback appears.
