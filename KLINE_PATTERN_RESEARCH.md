@@ -12362,3 +12362,114 @@ Test only within relevant parent patterns/episodes and against geometric zones.
 
 No Formal filter or entry rule.
 
+
+
+## DL-002GY — Structural Failure vs Executable Exit Risk
+
+### Distinguish three events
+PATTERN_INVALIDATION:
+structure is no longer valid.
+
+STOP_SIGNAL:
+current Formal/research stop condition is triggered.
+
+EXECUTABLE_EXIT:
+an actual tradable exit could occur at/near the assumed price.
+
+These are not identical.
+
+### Taiwan-specific risk
+With daily price limits and discrete ticks:
+- price can gap through a stop;
+- a stock can approach/lock at limit-down;
+- available bid liquidity can be poor;
+- modeled stop price may not be executable.
+
+### Research fields
+- invalidationAt
+- formalStopSignalAt
+- stopReferencePrice
+- nextTradableOpen
+- gapThroughStopPct
+- limitDownState
+- limitDownLockedProxy if observable
+- bidLiquidityAtStop prospective
+- realized/slippageProxy
+- daysUntilPriceTradesBackAboveStop
+- exitCensored
+
+### Daily-data semantics
+If daily high/low shows stop crossed:
+label STOP_TOUCHED_OR_CROSSED.
+Do not automatically label EXECUTED_AT_STOP.
+
+### Intraday historical refinement
+From 2023 minute data:
+estimate first trade/bar through stop and subsequent tradable prices.
+Still cannot guarantee user-specific fill without order-level execution data.
+
+## DL-002GZ — Pattern Failure Tail Risk
+
+### Average MAE can hide catastrophic failures
+Report:
+- median MAE
+- 90th / 95th percentile MAE
+- gap-through-stop frequency
+- limit-down involvement
+- consecutive down-limit / extreme-down days
+- time-to-liquidity-normalization
+
+### Context interactions
+Test whether severe failures are concentrated in:
+- retail leverage crowding
+- lottery/limit-hit names
+- dead liquidity
+- event-created patterns
+- weakening regime
+- high short-flow warning
+- failed local breakout into major resistance
+
+### Value
+A pattern filter may be worthwhile even if mean D5 improvement is modest, if it materially reduces left-tail failure severity.
+
+## DL-002HA — Target/Stop Same-Day Ambiguity Extended
+
+### Existing governance
+Same-day target and stop triggers with daily OHLC are already marked AMBIGUOUS_SAME_DAY.
+
+### Pattern extension
+Similarly ambiguous:
+- support undercut then reclaim same day,
+- breakout then failure same day,
+- high and low cross both zone boundaries.
+
+Daily OHLC cannot order those events.
+
+### Rule
+If event ordering matters:
+- use intraday source when historically available,
+or
+- mark AMBIGUOUS_INTRADAY_ORDER.
+
+Never assume favorable ordering.
+
+## DL-002HB — Price-Limit Censoring of MFE/MAE
+
+### Problem
+Observed daily maximum/minimum is bounded by price limits.
+A limit-up/down close can censor latent demand/supply.
+
+### Research tag
+- upsideCensoredByLimit
+- downsideCensoredByLimit
+
+### Interpretation
+- MFE at limit-up may understate latent upside pressure.
+- MAE at limit-down may understate latent downside pressure because trading cannot print lower that day.
+
+Do not treat limit-bound MFE/MAE as ordinary uncensored observations.
+
+### Future handling
+Descriptive censoring first.
+Do not fit complex censored models until sample warrants it.
+
