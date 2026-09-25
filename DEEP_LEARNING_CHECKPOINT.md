@@ -628,3 +628,15 @@ YES for research infrastructure integrity: resolving the actual archive lineage 
 - Tier-2 priority after core PV DATA_QA: dealer proprietary/hedge split, TPEx disposition parity, daily transaction-count decomposition, actual SBL context, residual daily RVOL.
 - PV_SHADOW_V0_1 remains frozen and unchanged; all new origin work is OBSERVER/Tier-2 only.
 - Formal Core remains LOCKED.
+
+## Price-Volume lane update — PV-131 through PV-145
+- Current PV research cursor: PV-001 through PV-145 complete.
+- Institutional origin research now separates gross activity, net direction, streak persistence and trajectory rather than treating “consecutive buying” as a single strength variable.
+- Official buy/sell/net data for foreign, trust, dealer proprietary and dealer hedge are worth preserving, but no new standalone Formal factors are approved.
+- All institutional participation ratios require source-scope compatibility with the denominator; daily flow can never be divided by 15m regular-session volume.
+- Institutional streak evidence in Taiwan is participant/regime/buy-sell asymmetric; longer streak is not assumed monotonically better.
+- Current Worker foreignNet is documented as a broad foreignMain+foreignDealer construct; official foreign-main and foreign-dealer semantics should be stored separately in future research capture.
+- Investor categories are not independent votes because common information/passive/sector/hedge mechanisms can correlate them.
+- Raw buy/sell/net point-in-time records are the durable research object; streaks and trajectories are derived/versioned views.
+- H005 implementation remains deferred until PV_SHADOW_V0_1 DATA_QA is stable.
+- Formal Core remains LOCKED.
