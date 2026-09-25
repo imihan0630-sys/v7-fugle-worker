@@ -8614,3 +8614,375 @@ Earliest implementation proposal:
 after PV_SHADOW_V0_1 first DATA_QA stabilization gate passes.
 
 Status: INSTITUTION_ORIGIN_SCHEMA_V0_1_FROZEN / IMPLEMENTATION_DEFERRED.
+
+# PV-151 — Cross-Lane Ownership: PV Describes the Result, Microstructure Describes the Mechanism
+
+## Distinct questions
+
+### Price-Volume lane
+Observes:
+- how abnormal participation is;
+- how much price moved;
+- where price closed;
+- whether structure was accepted;
+- whether participation persisted.
+
+### Microstructure lane
+Observes:
+- spread/liquidity cost;
+- displayed depth;
+- side-specific pressure;
+- replenishment/resiliency;
+- pressure-to-price response;
+- queue/mechanism state.
+
+## Integration rule
+PV answers:
+“high effort, low progress.”
+
+Microstructure may help answer:
+“which side was applying pressure, and where was that pressure absorbed?”
+
+Do not duplicate microstructure pressure into another PV score.
+
+Status: RESULT_LAYER_VS_MECHANISM_LAYER_FROZEN.
+
+
+# PV-152 — HIGH_EFFORT_LOW_PROGRESS Is an Umbrella State, Not “Absorption”
+
+## PV-only observation
+Example:
+- elevated/extreme RVOL;
+- tiny body;
+- central close;
+- weak normalized progress.
+
+Correct PV label:
+`HIGH_EFFORT_LOW_PROGRESS`.
+
+## With microstructure evidence
+
+### DEMAND_ABSORBED candidate
+Requires prospective evidence consistent with:
+- positive buy-pressure proxy;
+- repeated ask-side replenishment;
+- weak upward progress per unit pressure;
+- no clean upward repricing.
+
+### SUPPLY_ABSORBED candidate
+Mirror:
+- persistent sell pressure;
+- bid-side replenishment;
+- weak downward progress;
+- no clean downward repricing.
+
+### TWO_SIDED_DISAGREEMENT candidate
+Possible when:
+- high transaction intensity;
+- balanced/alternating pressure;
+- high gross participation;
+- price remains range-bound.
+
+### LIQUIDITY_VACUUM
+A large price move on thin depth / weak pressure is a different mechanism and should not be confused with high-effort absorption.
+
+## Language guard
+Without microstructure side/response data:
+do not write:
+- accumulation;
+- distribution;
+- seller absorption;
+- buyer absorption.
+
+Use:
+`HIGH_EFFORT_LOW_PROGRESS / mechanism unresolved`.
+
+Status: ABSORPTION_REQUIRES_SIDE_SPECIFIC_EVIDENCE.
+
+
+# PV-153 — Existing Microstructure Recorder Coverage Is Event-Sparse; Missing Rows Must Stay UNKNOWN
+
+## Existing repository evidence
+The V8.8.x execution recorder is built into the deployment patch chain and captures useful:
+- spread;
+- top-of-book/depth;
+- selected execution-state snapshots.
+
+However the existing microstructure checkpoint states the recorder is event-sparse rather than a continuous high-frequency order-book archive.
+
+## Consequence
+It may capture:
+- open;
+- first 10m/15m/30m milestones;
+- signal-related moments;
+while missing the exact seconds/minutes needed to prove:
+- replenishment;
+- pressure persistence;
+- true event OFI;
+- hidden liquidity.
+
+## PV integration rule
+If a PV event lacks a temporally valid microstructure record:
+`microstructureState = UNKNOWN`.
+
+Do NOT infer:
+“no absorption”
+or:
+“healthy liquidity”
+from missing recorder rows.
+
+## Research implication
+Current recorder can support coarse context.
+Dynamic absorption/resiliency requires denser prospective capture under the separate microstructure collector governance.
+
+Status: EVENT_SPARSE_COVERAGE_GUARD_FROZEN.
+
+
+# PV-154 — Exact Timestamp Alignment Contract for PV x Microstructure
+
+## Problem
+A microstructure snapshot captured after a breakout fails cannot be attached backward to the original breakout as if it were known then.
+
+## Alignment fields
+Each joined row must preserve:
+- pvBarStart;
+- pvBarEnd;
+- microObservedAt;
+- relativeOffsetSeconds;
+- microSnapshotType;
+- sourceSchemaVersion.
+
+## Allowed alignment groups
+
+### PRE_EVENT
+Micro observed before the frozen PV event/confirmation timestamp.
+
+### AT_EVENT
+Micro observed within a narrow predeclared timestamp tolerance around the event.
+
+### POST_EVENT
+Micro observed after event and used only as:
+- transition;
+- outcome;
+- recovery/decay evidence.
+
+POST_EVENT features cannot be used to explain what the live model “knew” at t0.
+
+## No nearest-neighbor hindsight
+Do not simply attach the nearest micro snapshot if it occurred materially after the decision timestamp.
+
+If no valid pre/at-event record exists:
+input feature = UNKNOWN.
+
+Status: CROSS_LANE_AS_OF_ALIGNMENT_FROZEN.
+
+
+# PV-155 — Minimal PV x Microstructure Combined State Matrix
+
+## Purpose
+Avoid a large interaction-factor zoo.
+
+Use only a compact matrix:
+
+### PV participation/response
+- EFFICIENT_UP
+- EFFICIENT_DOWN
+- HIGH_EFFORT_LOW_PROGRESS
+- LOW_EFFORT_LOW_PROGRESS
+- NORMAL_RESPONSE
+- GUARDED/UNKNOWN
+
+### Microstructure state
+- LIQUIDITY_HEALTHY
+- DEMAND_ACCEPTED
+- DEMAND_ABSORBED
+- SUPPLY_ACCEPTED
+- SUPPLY_ABSORBED
+- LIQUIDITY_VACUUM_UP
+- LIQUIDITY_VACUUM_DOWN
+- PRESSURE_EXHAUSTION_CANDIDATE
+- LIQUIDITY_STRESS
+- NON_CONTINUOUS_REGIME
+- UNKNOWN
+
+## Examples
+
+### EFFICIENT_UP x DEMAND_ACCEPTED
+Constructive continuation candidate.
+
+Counter:
+can still be late-stage / passive-flow / event-driven.
+
+### HIGH_EFFORT_LOW_PROGRESS x DEMAND_ABSORBED
+Upward effort being absorbed; higher false-break risk hypothesis.
+
+Counter:
+absorption may eventually exhaust supply and precede a valid breakout.
+
+### HIGH_EFFORT_LOW_PROGRESS x SUPPLY_ABSORBED
+Selling pressure being absorbed; possible stabilization/reversal candidate.
+
+Counter:
+buyers may only be temporarily delaying downside.
+
+### EFFICIENT_UP x LIQUIDITY_VACUUM_UP
+Fast apparent strength with thin liquidity; chase/slippage and retracement risk hypothesis.
+
+Counter:
+strong information can legitimately move through a thin book and retain the repricing.
+
+## Governance
+No matrix cell is an automatic BUY/SELL label.
+The value must be tested prospectively.
+
+Status: MINIMAL_COMBINED_STATE_MATRIX_FROZEN.
+
+
+# PV-156 — PV-H006: Does Microstructure Resolve PV Ambiguity?
+
+## Frozen hypothesis
+Among PV observations with:
+`HIGH_EFFORT_LOW_PROGRESS`,
+prospective microstructure pressure/replenishment state adds incremental information for:
+- breakout retention;
+- false-confirmation;
+- MFE/MAE
+beyond PV state alone.
+
+## Comparators
+A. PV state + existing Formal context.
+B. A + spread/depth coarse state.
+C. B + pressure side.
+D. C + replenishment/pressure-response state.
+
+## Primary population
+All monitored observations with valid coverage, not only eventual BUYs.
+
+## Primary outcomes
+- structural hold/failure;
+- +5m/+15m/+30m retention where microstructure study supports;
+- MFE/MAE;
+- retracement fraction.
+
+## Falsification
+Reject the dynamic microstructure layer if:
+- simple spread/depth/PV variables explain the effect;
+- results rely on sparse/misaligned rows;
+- one date/sector/tick band drives the result;
+- dynamic features do not survive untouched prospective confirmation.
+
+## Data status
+Current sparse recorder may support B.
+C/D require sufficient prospective trade/book capture and coverage proof.
+
+Status: PV-H006 FROZEN / EVIDENCE_GATED.
+
+
+# PV-157 — Signal Quality and Execution Quality Are Separate
+
+## Example
+A breakout can have:
+- valid PV acceptance;
+- strong demand pressure;
+but:
+- wide spread;
+- thin depth;
+- large chase/slippage risk.
+
+This can be a good directional signal and a poor execution opportunity.
+
+Conversely:
+tight spread/deep book does not make a bad setup good.
+
+## Ownership
+- PV / Pattern / Formal: signal/structure quality.
+- Microstructure / Trading Frictions: execution quality and immediate liquidity.
+- Portfolio/Risk: sizing and exposure.
+
+## Rule
+Do not use a spread/slippage metric to retroactively relabel a failed investment thesis.
+Do not use signal quality to ignore execution cost.
+
+Status: SIGNAL_EXECUTION_SEPARATION_FROZEN.
+
+
+# PV-158 — Taiwan Price Tier / Tick Size Makes Share-Depth Comparisons Dangerous
+
+## Why
+A top-five depth of 100 lots means very different notional liquidity for:
+- NT$20 stock;
+- NT$200 stock;
+- NT$2,000 stock.
+
+Taiwan tick sizes also change across price bands, altering:
+- spread in ticks;
+- spread in bps;
+- displayed queue economics.
+
+## Relevance
+The current system explicitly has a separate thousand-dollar/high-price pool.
+
+Therefore microstructure comparison should retain:
+- share depth;
+- notional depth;
+- spread ticks;
+- spread bps;
+- price/tick band.
+
+## PV integration
+A high-RVOL thousand-dollar stock with modest lot depth may still have substantial notional depth.
+Do not call it illiquid from raw lots alone.
+
+Status: NOTIONAL_AND_TICK_NORMALIZATION_REQUIRED.
+
+
+# PV-159 — Disposition / VI / Auction States Override Clean PV x Microstructure Interpretation
+
+## Cross-lane guard
+If observation is in:
+- disposition periodic auction;
+- volatility interruption/reopening;
+- opening/closing call auction mixture;
+- price-limit-censored state;
+then ordinary continuous-book microstructure meanings may not apply.
+
+Example:
+depth imbalance during a call auction is not the same object as continuous-session queue imbalance.
+
+## Rule
+Primary clean combined cohort requires:
+`continuous comparable market structure`.
+
+Guarded/non-continuous observations remain separate research cohorts rather than being deleted.
+
+Status: MARKET_MECHANISM_PRECEDENCE_FROZEN.
+
+
+# PV-160 — Combined-Lane Research Has Reached an Evidence Boundary
+
+## What is now sufficiently specified
+- PV core state;
+- volume-origin context;
+- institutional-flow semantics;
+- passive-flow context;
+- leverage/shorting context;
+- derivatives context;
+- microstructure integration;
+- market-structure guards;
+- as-of alignment;
+- anti-double-counting rules.
+
+## What is not solved by more theory
+Whether any of these states actually add stable predictive/utility value.
+
+## Highest-value next work
+1. let PV_SHADOW_V0_1 finish DATA_QA;
+2. measure current V8.8.x microstructure recorder coverage;
+3. join only valid as-of rows;
+4. run frozen H001-H004 / H006 analyses when sample matures;
+5. only then decide whether denser microstructure collection is worth infrastructure cost.
+
+## Rule
+Do not expand the combined PV feature family further until evidence exposes a concrete unresolved mechanism.
+
+Status: THEORY_CONVERGENCE / EVIDENCE_NEXT.
