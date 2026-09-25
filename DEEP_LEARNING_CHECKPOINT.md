@@ -683,3 +683,16 @@ YES for research infrastructure integrity: resolving the actual archive lineage 
 - Current Execution Alpha BUY-trigger statistics are sourced from the trade journal and are separate from the execution recorder's FORMAL_SIGNAL_OBSERVED scope defect.
 - Current evidence priority: symbol-session provenance/history integrity, core PV DATA_QA, recorder coverage, then optional recorder v3 / institutional-origin capture.
 - No production code, Formal rules, thresholds, ranking, capital, monitoring or push were changed in this research turn.
+
+## Price-Volume lane update — PV-191 through PV-200
+- Current PV theory cursor: PV-001 through PV-200 complete.
+- PV Phase-II theory is now considered converged; future work shifts to PVE evidence/falsification rather than adding volume indicators.
+- PV consumes the Corporate Action/Symbol-Session quality engine instead of duplicating it. Freshness means expected symbol sessions, not merely exchange sessions; verified suspension is subtracted and unknown provenance fails closed.
+- One bad Formal history record can propagate through 3+3 pool ranking/quota, so pool-date selection integrity is distinct from row-level feature validity.
+- Immutable snapshots are never rewritten when later quality defects are discovered; append-only quality annotations determine analysis eligibility.
+- H001~H004 primary evidence is WAITING_CLEAN_COHORT_PROVENANCE even if intraday PV feature DATA_QA continues.
+- Existing prospective research cohorts remain the correct comparator architecture, but controls cannot repair a corrupted selected treatment set.
+- Historical OHLCV may support labeled retrospective mechanics, never be inserted as fabricated prospective Shadow controls.
+- Outcome-blind DATA_QA receipt and selection-time quality provenance are prerequisites before alpha interpretation.
+- PR #100 remains research-only and must not be promoted in its current market-session-only form; later Corporate Action evidence requires symbol-session provenance first.
+- No Formal/Core/runtime code was changed by this PV learning sequence.
