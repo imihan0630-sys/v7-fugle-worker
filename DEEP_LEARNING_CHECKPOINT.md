@@ -720,3 +720,12 @@ YES for research infrastructure integrity: resolving the actual archive lineage 
 - Primary clean-cohort dates for H001-H004 remain zero; no H001/H002 outcome comparison was started.
 - Execution recorder exact-date completeness and signal-event mapping remain blocked, so H006 signal-microstructure inference is not started.
 - No Formal/runtime/token/secret/deploy behavior was changed.
+
+## PVE methodology update — PVE-005 through PVE-012
+- Important namespace correction: 62 rows from the existing live research readback are Candidate Shadow Archive rows (`trade_research_shadow_candidates`), not PV Shadow rows. PV Shadow at-rest row count is still UNKNOWN.
+- Existing /api/scan/status can supply useful after-market PV bootstrap/daily write receipts after a post-enable scan even while direct D1 read remains blocked.
+- Runtime write acknowledgement and later D1 at-rest fingerprint verification are separate evidence levels.
+- PV evidence readiness is now layered rather than a single qaPass.
+- A valid zero-Formal-plan day can have zero PV rows; expected opportunity denominator must be explicit.
+- Prospective PV feature/data-quality collection should continue even while selection-cohort alpha interpretation remains gated.
+- No Worker/runtime/API/secret/Formal change was made.
