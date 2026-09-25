@@ -1,0 +1,158 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-09-25 Asia/Taipei",
+  "purpose": "CA-107 pre-registered four-family mechanics sample. Compare only semantically valid raw-vs-alternative volume spaces; no forward outcomes, alpha inference or threshold tuning.",
+  "decisionImpact": false,
+  "inferenceReady": false,
+  "formalCoreChanged": false,
+  "preRegisteredFamilySet": [
+    {
+      "symbol": "8454",
+      "family": "STOCK_DIVIDEND_SUPPLY_CHANGE"
+    },
+    {
+      "symbol": "2465",
+      "family": "CASH_INCREASE_PAYMENT_CERTIFICATE_SUPPLY"
+    },
+    {
+      "symbol": "3593",
+      "family": "LOSS_REDUCTION_UNIT_SCALE"
+    },
+    {
+      "symbol": "8422",
+      "family": "PAR_VALUE_CHANGE_UNIT_SCALE"
+    }
+  ],
+  "selectionRule": "Use the four real corporate-action family witnesses already frozen in the CA-101 source contract before CA-107 outcome inspection. Do not add/remove an event based on whether a threshold flips.",
+  "thresholds": {
+    "aLowVolume": 1.05,
+    "bBreakoutVolume": 1.3,
+    "provenance": "existing Formal semantics in PRICE_VOLUME_RESEARCH.md; frozen for mechanics comparison only"
+  },
+  "semanticRule": [
+    "SUPPLY_CHANGE cases compare raw executed-share ratio with an explicitly named point-in-time turnover denominator scenario.",
+    "UNIT_SCALE cases compare native raw share-unit ratio with the previously frozen technical-continuity share-unit bridge.",
+    "Do not pool these into one universal normalization because denominator change and unit conversion are different transformations.",
+    "UNKNOWN or PARTIAL denominator scenarios stay labeled and do not become production truth."
+  ],
+  "cases": [
+    {
+      "symbol": "8454",
+      "name": "富邦媒",
+      "family": "STOCK_DIVIDEND_SUPPLY_CHANGE",
+      "targetSession": "2025-10-09",
+      "comparison": "RAW_SHARE_VOLUME vs REGISTERED_ISSUED_SHARE_TURNOVER analogue",
+      "rawRatio": 0.8253790005614823,
+      "alternativeRatio": 0.7860752393716327,
+      "aLowVolumeRaw": true,
+      "aLowVolumeAlternative": true,
+      "bBreakoutRaw": false,
+      "bBreakoutAlternative": false,
+      "aThresholdFlip": false,
+      "bThresholdFlip": false,
+      "quality": "EX_POST_MECHANICS_VERIFIED / FIRST_KNOWN_INCOMPLETE",
+      "positiveOrCounter": "COUNTEREXAMPLE_NO_BOOLEAN_FLIP",
+      "sourceArtifacts": [
+        "research/corporate_action_8454_full_window_v0_1.json",
+        "research/corporate_action_denominator_vintage_threshold_v0_1.json"
+      ]
+    },
+    {
+      "symbol": "2465",
+      "name": "麗臺科技",
+      "family": "CASH_INCREASE_PAYMENT_CERTIFICATE_SUPPLY",
+      "targetWindow": "2025-11-17..2025-11-21",
+      "comparisons": [
+        {
+          "semanticSpace": "REGISTERED_ISSUED_SHARE_TURNOVER",
+          "denominatorStepOn2025_11_17": false,
+          "aThresholdDisagreements": 0,
+          "bThresholdDisagreements": 0,
+          "sessions": 5,
+          "quality": "CORROBORATED_REGISTERED_TIMING",
+          "interpretation": "Registered share state does not step merely because payment certificates begin trading."
+        },
+        {
+          "semanticSpace": "PUBLIC_TRADABLE_SUPPLY_SENSITIVITY",
+          "denominatorBefore": 58946031,
+          "denominatorAfterSensitivity": 68946031,
+          "aThresholdDisagreements": 1,
+          "bThresholdDisagreements": 0,
+          "sessions": 5,
+          "disagreementSession": {
+            "date": "2025-11-18",
+            "rawRatio": 1.09087955770763,
+            "alternativeRatio": 1.0003297085602088,
+            "rawLowVolume": false,
+            "alternativeLowVolume": true
+          },
+          "quality": "PARTIAL_CONFLICT / SENSITIVITY_ONLY",
+          "interpretation": "Threshold disagreement is real under a tradable-supply interpretation, but exact exchange-listed denominator semantics remain unresolved because private-placement/payment-certificate treatment is not production-verified."
+        }
+      ],
+      "positiveOrCounter": "BOTH: STRICT_REGISTERED_NO_FLIP / TRADABLE_SENSITIVITY_FLIP",
+      "sourceArtifacts": [
+        "research/corporate_action_denominator_vintage_threshold_v0_1.json"
+      ]
+    },
+    {
+      "symbol": "3593",
+      "name": "力銘",
+      "family": "LOSS_REDUCTION_UNIT_SCALE",
+      "targetSession": "2025-12-22",
+      "shareUnitFactor": 0.6,
+      "comparison": "RAW_NATIVE_SHARE_UNITS vs TECHNICAL_CONTINUITY_SHARE_UNITS",
+      "rawRatio": 0.9452,
+      "alternativeRatio": 1.5753,
+      "aLowVolumeRaw": true,
+      "aLowVolumeAlternative": false,
+      "bBreakoutRaw": false,
+      "bBreakoutAlternative": true,
+      "aThresholdFlip": true,
+      "bThresholdFlip": true,
+      "quality": "POINT_IN_TIME_MECHANICS_READY / EVENT_COVERAGE_NOT_INFERENCE_COMPLETE",
+      "positiveOrCounter": "POSITIVE_MECHANICS_FLIP",
+      "sourceArtifacts": [
+        "research/corporate_action_feature_delta_sample_v0_1.json"
+      ],
+      "note": "This is a UNIT_SCALE continuity bridge, not an issued-share-turnover normalization."
+    },
+    {
+      "symbol": "8422",
+      "name": "可寧衛*",
+      "family": "PAR_VALUE_CHANGE_UNIT_SCALE",
+      "targetSession": "2025-11-17",
+      "shareUnitFactor": 10,
+      "comparison": "RAW_NATIVE_SHARE_UNITS vs TECHNICAL_CONTINUITY_SHARE_UNITS",
+      "rawRatio": 21.116,
+      "alternativeRatio": 2.1116,
+      "aLowVolumeRaw": false,
+      "aLowVolumeAlternative": false,
+      "bBreakoutRaw": true,
+      "bBreakoutAlternative": true,
+      "aThresholdFlip": false,
+      "bThresholdFlip": false,
+      "quality": "POINT_IN_TIME_MECHANICS_READY / EVENT_COVERAGE_NOT_INFERENCE_COMPLETE",
+      "positiveOrCounter": "COUNTEREXAMPLE_LARGE_NUMERIC_DISTORTION_WITHOUT_BOOLEAN_FLIP",
+      "sourceArtifacts": [
+        "research/corporate_action_feature_delta_sample_v0_1.json"
+      ],
+      "note": "A 10x share-unit change massively distorts the raw ratio but does not cross the already-satisfied 1.30 Boolean boundary in this witness."
+    }
+  ],
+  "falsificationSummary": [
+    "8454 falsifies the claim that every supply-base adjustment changes a Formal volume Boolean.",
+    "2465 falsifies the claim that payment-certificate listing necessarily equals an immediate registered-issued-share step.",
+    "3593 confirms that a unit-scale change can reverse both low-volume and breakout-volume Boolean interpretation.",
+    "8422 falsifies the claim that even a very large raw/continuity numeric difference must flip a Boolean threshold."
+  ],
+  "noPoolingReason": "Cases use different semantic transformations and one 2465 denominator is sensitivity-only. A pooled disagreement percentage would imply false comparability.",
+  "antiBias": [
+    "Family set frozen from prior research before CA-107 result classification.",
+    "No forward return, MFE, MAE, stop or signal outcome inspected.",
+    "No threshold sweep or optimization.",
+    "No case added/removed because of flip direction.",
+    "Formal Core remains unchanged."
+  ],
+  "conclusion": "Corporate-action volume semantics are materially capable of changing current volume-condition Booleans, but the effect is conditional on action family, semantic space, event timing and threshold location. No monotonic correction rule is justified."
+}
