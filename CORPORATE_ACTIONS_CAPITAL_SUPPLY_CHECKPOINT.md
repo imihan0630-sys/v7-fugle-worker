@@ -1,9 +1,9 @@
 # Corporate Actions & Capital Supply Checkpoint
 
 Updated: 2026-09-25 Asia/Taipei
-Current cursor: CA-001 through CA-110 complete.
+Current cursor: CA-001 through CA-112 complete.
 Status: MATERIALITY_CONFIRMED / RS_SEMANTICS_CONFIRMED / SUSPENSION_INTERACTION_FOUND / CROSS_LANE_PROTOTYPE_TESTED / EXCHANGE_SCOPED_SUSPENSION_CONTRACT / TWO_STAGE_LIFECYCLE_CONFIRMED.
-Next: CA-111.
+Next: CA-113.
 
 ## Durable conclusions
 - Announced equity supply/demand and realized share-base change are separate.
@@ -225,3 +225,22 @@ CA-111: continue official TWSE daily raw-unit proof; prefer explicit BFT51U/BFI8
 CA-113: execute only bounded TPEx archive bytes + TWSE event-ledger reconciliation receipts; do not claim full dual-exchange completeness before CA-111 closes.
 CA-114: obtain a 2465 date-specific daily exchange artifact around 2025-11-17 that distinguishes ordinary listed shares, private-placement shares and payment-certificate tradable supply.
 CA-115 remains gated by CA-111/113/114.
+
+
+## CA-111 closure — official BFT51U/BFI85U unit reconciliation
+- Authorized browser retrieval succeeded for the official BFT51U sample CSV and BFI85U sample CSV after the earlier binary-only research path failed.
+- BFT51U sample 2019-07-29 provides both 發行張數 and 上市股數. BFI85U independently provides 交易單位 and 發行股數.
+- 2330: BFT51U 發行張數 25,930,380; 上市股數 25,930,380,458. BFI85U trade unit 1,000; 發行股數 25,930,380. 25,930,380 × 1,000 = 25,930,380,000, leaving 458 shares. Therefore 發行張數 is not an exact share count and blind ×1000 loses the sub-lot remainder.
+- 8454: 140,058 × 1,000 = 140,058,000 versus 上市股數 140,058,500, independently leaving 500 shares.
+- 8422: 108,888 × 1,000 exactly equals 108,888,000, retained as a counterexample showing why a few exact-multiple rows can falsely make ×1000 look universally valid.
+- BFI85U 00636K trade unit=100 proves security-specific non-1,000 trading units exist; its date differs from the BFT51U row and is used only as a unit guard.
+- Resolution: `TWSE_BFT51U_RAW_UNIT_CONTRACT=RESOLVED`; `universalMultiplyBy1000=REJECTED_FOR_EXACT_SHARE_DENOMINATOR`.
+- Preferred exact listed-share candidate: BFT51U 上市股數 raw field. Registered-issued exact shares still require a remainder-preserving source; BFT51U 發行張數 alone is insufficient.
+- Receipt: `research/twse_bft51u_unit_resolution_receipt_v0_2.json`.
+- CA-112 was already independently complete, so contiguous cursor now advances through CA-112.
+- Formal Core remains locked; no Worker.js wiring, merge, deployment or decision-rule change.
+
+## Updated exact continuation
+CA-113 bounded dual-exchange denominator archive pilot with per-date/per-symbol completeness and revision receipts.
+CA-114 payment-certificate/private-placement denominator resolution using daily exchange artifacts plus an independent witness.
+CA-115 Class-A Shadow readiness re-evaluation only after CA-113/114 pass.
