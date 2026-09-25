@@ -2918,3 +2918,194 @@ Named Three-Gap / Island-Reversal profitability remains unproven.
 WORTH_SHADOW_RESEARCH after adjustment-ready data.
 No Formal change.
 
+
+
+## DL-002W — Price-Volume Structure / Effort-vs-Result v0.1
+
+### Evidence posture
+Broad academic evidence does NOT support a universal monotonic rule that “more volume predicts higher returns.”
+A 2021 meta-analysis across 44 studies / 468 estimates reports:
+- material publication bias,
+- smaller true effects than naive literature impressions,
+- strong heterogeneity by market, asset type, frequency and methodology.
+
+Taiwan-specific evidence also links trading volume to differential information-adjustment speed / lead-lag behavior, but this is not equivalent to “high volume is bullish.”
+
+Therefore volume must be modeled conditionally with price path, location and regime.
+
+### Existing Formal volume fields
+Already present:
+- avgVolume20Lots
+- avgAmount20
+- volumeRatio (5d vs 20d)
+- volumeTodayVsPrev5
+- volumeContraction5to20
+- liquidity gates
+- some breakout-volume checks
+
+DL-002 must not duplicate these as new factors.
+
+### New conditional volume dimensions
+
+#### 1. Base-wide activity trend
+- volumeSlopeBase
+- turnoverSlopeBase
+- medianVolumeFirstHalf
+- medianVolumeSecondHalf
+- volumeCompressionRatio
+
+Purpose:
+measure whether activity gradually contracts through a base.
+
+#### 2. Down-leg supply behavior
+For each confirmed downswing:
+- downLegVolumeTotal
+- downLegVolumePerBar
+- downLegMedianVolume
+- downLegTurnover
+- downLegReturnPct
+- downLegVolumePerAbsReturn
+
+Across contractions:
+- sellingVolumeDecay
+- sellingTurnoverDecay
+- downLegEffortResultTrend
+
+Hypothesis:
+later pullbacks may show less selling effort or less price damage.
+
+#### 3. Up-leg demand behavior
+For each confirmed upswing:
+- upLegVolumeTotal
+- upLegVolumePerBar
+- upLegReturnPct
+- upLegVolumePerReturn
+- positiveVolumeShare
+
+Compare:
+- upVsDownVolumeRatio
+- upVsDownReturnEfficiency
+
+#### 4. Final dry-up
+Do not define dry-up as “volume below average” alone.
+
+Record:
+- finalDryUpVolumeRatio
+- finalDryUpTurnoverRatio
+- finalRangeCompression
+- finalATRCompression
+- finalCloseLocation
+- distanceToPivot
+
+A dry-up far below resistance during a weak decline is not the same as a dry-up in a tight high-level base.
+
+#### 5. Breakout effort vs result
+On breakout:
+- breakoutVolumeRatio
+- breakoutTurnoverRatio
+- breakoutRangeATR
+- breakoutClosePosition
+- breakoutDistanceBeyondPivot
+- breakoutNextDayAcceptance
+- breakout3D_R01
+
+Derived descriptive cases:
+A. HIGH_EFFORT_HIGH_RESULT
+B. HIGH_EFFORT_LOW_RESULT
+C. LOW_EFFORT_HIGH_RESULT
+D. LOW_EFFORT_LOW_RESULT
+
+Do not presuppose which one is best.
+Example falsification:
+High volume + tiny price progress / long upper wick may be absorption/exhaustion rather than strength.
+
+#### 6. Volume-price divergence
+Pre-register simple, transparent diagnostics:
+- priceSlope > 0 while volumeSlope < 0
+- priceRangeCompression while volume contracts
+- price flat while turnover expands
+- new high on lower/higher volume relative to previous high
+
+These are descriptors, not signals.
+
+### Signed-volume proxy caution
+Daily bars do not reveal buyer-initiated vs seller-initiated trade flow.
+Classifying all volume on an up-close day as “buy volume” is only a proxy.
+
+If used:
+- call it UP_DAY_VOLUME / DOWN_DAY_VOLUME,
+- never call it actual buying/selling pressure.
+
+Potential fields:
+- upDayVolumeRatio
+- downDayVolumeRatio
+- upDayTurnoverRatio
+- downDayTurnoverRatio
+
+### Turnover vs raw volume
+Raw share volume is affected by:
+- shares outstanding,
+- stock price,
+- liquidity regime.
+
+Turnover value can be more comparable across price levels, while turnover rate relative to free float would be better if point-in-time shares/free-float data are reliable.
+
+Do not invent historical free-float values.
+
+### Volume context by pattern
+VCP:
+- successive down-leg volume decay + final dry-up.
+
+Cup/Handle:
+- handle-specific volume dry-up versus cup baseline.
+
+W:
+- LOW2 selling volume versus LOW1.
+
+Flag:
+- pole high participation + flag contraction.
+
+Triangle/Platform:
+- volume contraction into narrowing range.
+
+HTF:
+- extreme pole participation versus post-pole contraction.
+
+Gap:
+- overnight jump must be separated from intraday turnover response.
+
+### Relation to attention
+Large turnover/volume may be:
+- information flow,
+- attention,
+- disagreement,
+- forced trading,
+- institutional participation.
+
+DL-002W must be compared with existing Quiet/Attention research rather than calling volume “Smart Money.”
+
+### Taiwan-specific hypothesis
+Older Taiwan work suggests high-volume portfolios can lead low-volume portfolios in returns, consistent with different speeds of information adjustment.
+Test only as context:
+- high vs low activity within same liquidity bucket,
+- do not mix this with absolute illiquidity.
+
+### Redundancy / falsification
+Control against:
+- volumeTodayVsPrev5
+- volumeContraction5to20
+- avgVolume20
+- avgAmount20
+- volatility
+- ret20
+- Information Discreteness
+- Quiet/Attention
+- institutional flows
+
+If detailed leg-volume features add no incremental value, retain only current simple volume metrics.
+
+### Status
+WORTH_SHADOW_RESEARCH.
+No universal bullish/bearish interpretation assigned.
+No Formal change.
+
