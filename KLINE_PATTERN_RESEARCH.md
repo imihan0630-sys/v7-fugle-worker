@@ -2762,3 +2762,159 @@ Do not mix raw and adjusted series.
 WORTH_SHADOW_CONTEXT_RESEARCH.
 No Formal or execution change.
 
+
+
+## DL-002V — Gap / Three-Gap / Island-Reversal Research v0.1
+
+### Taiwan-specific motivation
+Recent Taiwan evidence distinguishes information contained in intraday returns from overnight returns:
+- intraday momentum evidence is associated with underreaction,
+- overnight momentum can behave differently and has been linked to overreaction / later correction,
+- opening prices in Taiwan are especially meaningful because overnight information is incorporated at the opening call auction.
+
+Therefore “gap” is not one generic bullish/bearish object.
+
+### Distinguish two gap concepts
+
+A. OPENING_GAP
+- open_t vs close_{t-1}
+- can exist even if the two daily ranges overlap.
+
+openingGapPct = (open_t / close_{t-1} - 1) * 100
+
+B. TRUE_RANGE_GAP
+Bullish true gap:
+- low_t > high_{t-1}
+
+Bearish true gap:
+- high_t < low_{t-1}
+
+gapZone:
+- bullish = [high_{t-1}, low_t]
+- bearish = [high_t, low_{t-1}]
+
+These must be stored separately.
+
+### Core fields
+- openingGapPct
+- openingGapATR
+- trueGapDirection
+- trueGapSizePct
+- trueGapSizeATR
+- gapZoneLow / gapZoneHigh
+- gapFilledIntraday
+- gapFillCloseState
+- daysToPartialFill
+- daysToFullFill
+- volumeRatio
+- turnoverRatio
+- priceLimitState
+- corporateActionTag
+- overnightReturnComponent
+- intradayReturnComponent
+- DL001Discreteness
+- patternContext
+- marketRegime
+
+### Three Gaps / Sakata Three Gaps
+Define only after corporate-action filtering.
+
+For consecutive gaps:
+- gapSequenceCount
+- sequenceDirection
+- gapSizesATR[]
+- cumulativeOpeningReturn
+- cumulativeIntradayReturn
+- limitHitCount
+- volumeSequence
+- fillStateByGap
+- distanceFromMA20/MA60
+- overheatState
+
+Do not assume the third gap is automatically exhaustion.
+Test:
+- continuation vs reversal conditional on overheat, price-limit clustering, volume, regime and gap composition.
+
+### Gap composition
+A 20% multi-day rise can be formed by:
+- large overnight gaps + weak intraday closes,
+- small gaps + strong intraday follow-through,
+- limit-up clustering,
+- continuous intraday advance.
+
+This overlaps directly with DL-001 Information Discreteness / Gradual Price Path.
+
+Research interaction:
+- GAP_DOMINATED_PATH
+- INTRADAY_DOMINATED_PATH
+- MIXED_PATH
+
+Do not score gap features independently from DL-001 before redundancy testing.
+
+### Island reversal
+A classic island-like structure conceptually requires:
+1. gap away from prior price range,
+2. isolated trading cluster,
+3. opposite-direction gap that leaves the cluster separated from surrounding price ranges.
+
+Research fields:
+- entryGapZone
+- islandStartAt
+- islandEndAt
+- islandDurationBars
+- islandRangePct
+- exitGapZone
+- gapZoneOverlap
+- islandVolumeProfile
+- priorTrendState
+- overheat / panic state
+
+Critical:
+- corporate actions must be excluded,
+- daily OHLC must actually show non-overlapping ranges,
+- an opening gap alone is insufficient.
+
+### Price-limit interaction
+Taiwan 10% daily limits can produce clustered gaps/limit closes.
+Store:
+- limitUp / limitDown state per day,
+- number of consecutive limit events,
+- next-day opening gap,
+- next-day intraday follow-through.
+
+Question:
+Does a “Three Gaps” sequence still contain independent information once price-limit mechanics and overnight/intraday decomposition are controlled?
+
+### Corporate actions
+All gap research is invalid without explicit handling of:
+- cash dividends,
+- stock dividends / rights,
+- capital reductions / splits where relevant.
+
+Use adjusted series for morphology continuity, while raw series preserves traded prices.
+If raw series shows a gap but adjusted series does not, classify:
+CORPORATE_ACTION_GAP, not MARKET_GAP.
+
+### Regime portability
+Split at least:
+- 7% price-limit era,
+- 10% price-limit era,
+- pre/post continuous trading.
+
+Primary relevance for 2026 is 10% limit + continuous intraday trading.
+
+### Outcomes
+Use:
+- D1/D3/D5/D10
+- MFE/MAE
+- gap fill probability/time
+- R01 failure when gap accompanies breakout
+- intraday vs overnight continuation decomposition
+
+### Evidence status
+Taiwan overnight/intraday literature gives strong reason to decompose gap returns.
+Named Three-Gap / Island-Reversal profitability remains unproven.
+
+WORTH_SHADOW_RESEARCH after adjustment-ready data.
+No Formal change.
+
