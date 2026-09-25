@@ -534,3 +534,377 @@ DR-021: Foreign cash × futures × options joint state, with hedge ambiguity.
 DR-022: Taiwan-specific evidence on futures/options price discovery and night-session information.
 DR-023: Official TAIFEX data-source feasibility and point-in-time historical availability.
 DR-024: Freeze minimal derivatives Shadow snapshot schema and falsification protocol.
+
+
+---
+
+## DR-016 — Implied-volatility term structure: near risk and long risk are different
+
+A single VIX/IV level collapses maturities that can price different risks.
+
+### Candidate state
+For matched moneyness/delta:
+- nearIV
+- nextIV
+- fartherIV
+- termSlope = fartherIV - nearIV
+- nearEventPremium = nearIV - interpolated longer-horizon baseline
+
+### Interpretation
+Near IV > farther IV may reflect:
+- near-term event/crash risk,
+- supply/demand stress,
+- expiry-specific scarcity.
+
+Farther IV > near IV may reflect:
+- calmer near term with persistent longer uncertainty,
+- ordinary upward term structure.
+
+### Evidence
+Volatility-term-premium research shows term-structure prices and premia vary across horizons and can contain information for option/variance returns.
+
+Source:
+- Federal Reserve Bank of New York Staff Report 867, Equity Volatility Term Premia.
+- Vasquez (2017), JFQA, Equity Volatility Term Structures and the Cross Section of Option Returns.
+
+### Guard
+Term slope is not direct market direction.
+It is a horizon distribution of priced uncertainty/risk premium.
+
+Status: TERM-STRUCTURE LAYER FROZEN.
+
+---
+
+## DR-017 — Skew term structure separates immediate crash insurance from longer-tail pricing
+
+Short-dated and longer-dated downside skew can reflect different forces.
+
+Research on risk-neutral skewness term structure reports that short- and long-horizon skewness can carry different return information.
+
+Source:
+- The information content of the term structure of risk-neutral skewness (2020).
+
+### Candidate fields
+Using a frozen delta/moneyness definition:
+- skewNear
+- skewNext
+- skewFar
+- skewTermSlope
+- downsideWingRichness
+- skewShock
+
+### Positive mechanism
+Short-dated downside put richness can reveal immediate protection demand / event risk.
+
+### Counter-mechanism
+It can also reflect:
+- market-maker inventory,
+- temporary supply shortage,
+- illiquidity,
+- strike discreteness,
+- expiry concentration.
+
+### Mandatory controls
+- bid/ask quality;
+- OI/volume;
+- expiry;
+- delta/moneyness;
+- price-limit/market stress;
+- surface-fit quality.
+
+Status: TAIL-RISK TERM STRUCTURE CANDIDATE.
+
+---
+
+## DR-018 — Public OI cannot identify dealer gamma exposure sign
+
+Gamma itself is computable for a contract conditional on a pricing model.
+But **dealer gamma exposure (GEX)** additionally requires knowing or assuming who owns which side.
+
+Public OI tells:
+- total open contracts.
+
+It does not tell:
+- dealer long vs short;
+- customer long vs short;
+- OTC offsets;
+- intraday opening/closing flows;
+- futures/stock hedge inventory.
+
+### Safe outputs
+If only public OI exists:
+- unsignedGammaConcentration
+- strikeGammaMassProxy
+- OIWeightedGammaMagnitude
+
+Do NOT label:
+- dealerGexPositive / dealerGexNegative
+unless participant-side inventory is actually identified.
+
+### Research role
+High gamma concentration near spot/expiry may indicate stronger potential hedge sensitivity, but hedge **direction** remains assumption-dependent.
+
+Status: GEX-SIGN INFERENCE PROHIBITED WITHOUT POSITION SIDE.
+
+---
+
+## DR-019 — “Max pain” is not the same as documented expiration pinning
+
+### Evidence that is real
+Ni, Pearson & Poteshman (2005) document that optionable U.S. stocks cluster more often near option strike prices on expiration dates and link the effect partly to hedge rebalancing and other expiration mechanisms.
+
+Source:
+- Journal of Financial Economics 78(1), Stock price clustering on option expiration dates.
+
+### What this does NOT prove
+It does not establish the popular claim:
+> price is pulled toward the one strike that minimizes total option-holder payout ("max pain").
+
+Strike pinning:
+- local clustering near strikes.
+
+Max-pain theory:
+- convergence to a specific chain-wide payout-minimizing strike.
+
+Those are different hypotheses.
+
+### Taiwan research decision
+Do not add “max pain” to the system.
+
+If expiration clustering is ever tested:
+- preregister nearest-heavy-strike / OI-concentration hypotheses;
+- separate weekly/monthly expiries;
+- compare to non-expiry control days;
+- do not select the strike after the close.
+
+Status: MAX-PAIN INDICATOR REJECTED; EXPIRY-PINNING MECHANISM RETAINED.
+
+---
+
+## DR-020 — Futures curve and roll: front basis is not enough
+
+Near expiry, front-contract basis converges mechanically toward spot/final settlement conditions.
+
+Therefore track:
+- front contract;
+- next contract;
+- days to each expiry;
+- front fair-value-adjusted basis;
+- next fair-value-adjusted basis;
+- calendar spread;
+- roll window.
+
+### Roll states
+- NORMAL_FRONT
+- PRE_ROLL
+- EXPIRY_DAY
+- POST_ROLL_RESET
+
+### Research question
+Does abnormal basis persist across both front and next contracts?
+If only the expiring front looks extreme while next contract is normal, the signal may be expiry mechanics rather than broad sentiment.
+
+### Dividend/carry guard
+Expected dividends differ by horizon; front-vs-next fair values require horizon-consistent dividend/rate assumptions.
+
+Status: CURVE/ROLL CONTEXT REQUIRED.
+
+---
+
+## DR-021 — Foreign cash × futures × options must be read as a joint exposure state
+
+Single-market labels are ambiguous.
+
+### Candidate joint states
+
+A. Cash buy + futures net-short increasing
+- possible long-cash hedge / basis/risk reduction.
+
+B. Cash buy + futures short decreasing / long increasing
+- more aligned directional risk-on state.
+
+C. Cash sell + futures net-short increasing
+- more directionally consistent risk-off state.
+
+D. Cash sell + futures short decreasing
+- cash reduction with derivative hedge removal / mixed state.
+
+Then add option context:
+- put/call position changes;
+- skew/VIX;
+- expiry.
+
+### Important rule
+Do not call any state "foreign investor forecast" before prospective validation.
+
+### Normalization
+Use:
+- futures notional / cash net flow;
+- net OI change / total OI;
+- price/index move;
+- basis;
+rather than raw contracts alone.
+
+Status: JOINT-EXPOSURE HYPOTHESIS FROZEN.
+
+---
+
+## DR-022 — Taiwan derivatives do contribute to price discovery, but dominance is state/mechanism dependent
+
+### Taiwan evidence
+Hsieh, Lee & Yuan (2008) find futures have a dominant tendency in price discovery relative to index options, while options still contribute non-trivially; results depend on the method used to infer option-implied spot.
+
+Chen & Gau (2009) find stock/futures/options price-discovery shares can change after tick-size changes because relative transaction costs/liquidity change.
+
+Later Taiwan work also finds meaningful price-discovery competition between regular/mini futures, with liquidity/arbitrage mechanisms affecting which contract leads.
+
+Sources:
+- Journal of Futures Markets 28 (2008), 354-375.
+- Journal of Futures Markets 29 (2009), 74-93.
+- Journal of Futures Markets 41 (2021), 926-948.
+
+### Night-session evidence
+Taiwan after-hours futures trading was introduced to allow reactions to global events while cash is closed. Research theses/studies find night trading is materially influenced by U.S. market information and affects the price-discovery process.
+
+### System implication
+Night futures can be an early next-cash-session information channel.
+But our global radar already contains U.S. indices, so incremental value must be tested.
+
+Potential comparison:
+- U.S. index move alone
+vs
+- U.S. move + TAIEX night futures residual move.
+
+The residual may capture Taiwan-specific interpretation.
+
+Status: NIGHT-FUTURES RESIDUAL INFORMATION CANDIDATE.
+
+---
+
+## DR-023 — Official TAIFEX data feasibility is strong, but IV surface requires computation/cleaning
+
+Official TAIFEX currently provides historical/current public data for:
+- TXO volume/OI PCR;
+- TAIEX options volatility index;
+- institutional futures/options trades and OI;
+- full option daily chain by expiry/strike/call-put with prices, settlement, volume, OI and best bid/ask;
+- futures/options contract specifications and expiry information.
+
+The option daily market table is available historically from early TXO history and distinguishes general/night sessions in query semantics.
+
+### What is not directly solved by a daily chain
+To construct a robust IV surface, research still needs:
+- spot/futures reference;
+- rate;
+- expected dividend/carry;
+- time-to-expiry;
+- option pricing/inversion method;
+- stale/zero-bid filtering;
+- quote-quality rules.
+
+### Point-in-time advantage
+Unlike analyst consensus, much of this derivative data is exchange-native and historically queryable, making clean historical research more feasible.
+
+### Caveats
+- contract definitions/weekly products changed over time;
+- night-session introduction is a structural break;
+- expiry series composition evolves;
+- current product mechanics must not be backfilled into earlier regimes without version awareness.
+
+Status: DATA FEASIBILITY HIGH.
+
+---
+
+## DR-024 — Minimal prospective/historical Derivatives Shadow schema
+
+### Date/session identity
+- tradeDate
+- session = REGULAR / NIGHT
+- capturedAt
+- source
+- rulesRegimeVersion
+
+### Futures
+- spotIndexClose/reference
+- frontContract
+- frontDaysToExpiry
+- frontPrice
+- rawBasis / basisBps
+- fairBasis / abnormalBasis
+- nextContract / nextBasis
+- calendarSpread
+- totalOI / deltaOI
+- volume
+
+### Institutional futures
+Per dealer/trust/foreign:
+- tradeLong / tradeShort / tradeNet
+- OILong / OIShort / OINet
+- deltaOINet
+- normalizedNetOI
+- notional
+
+### Options aggregate
+- volumePCR
+- oiPCR
+- totalCall/Put volume
+- totalCall/Put OI
+- expiryComposition
+- expiryDay/roll flags
+
+### Volatility/tail
+- taifexVix
+- vixChange
+- realizedVolTrailing
+- ivVsTrailingRv
+- nearIV / nextIV
+- termSlope
+- skewNear / skewNext
+- skewTermSlope
+- surfaceCoverage
+- surfaceFitQuality
+
+### Joint context
+- foreignCashNet
+- cashFuturesDivergenceState
+- marketRegime
+- breadthState
+- liquidityRegime
+- globalOvernightState
+
+### Data quality
+- missingContractCount
+- staleQuoteCount
+- zeroBidExcludedCount
+- liquidStrikeCount
+- surfaceMethodVersion
+- rates/dividend source
+- UNKNOWN fields
+
+### Pre-registered hypotheses
+H1. Derivative risk-state features improve next-session volatility/drawdown prediction more consistently than return direction.
+H2. Fair-value-adjusted basis adds more information than raw basis.
+H3. Foreign futures positioning is more informative jointly with cash flow/basis than standalone raw net contracts.
+H4. IV/skew shocks identify tail-risk regimes but their direction-return relation is conditional.
+H5. Night-futures residual vs global-index move adds Taiwan-specific next-open information.
+H6. Aggregate PCR has horizon/expiry dependence and should not have a universal threshold.
+
+### Falsification
+Downgrade/remove if:
+- effect is only expiry mechanics;
+- raw global indices explain night-futures result;
+- VIX/skew add no value beyond realized volatility/Regime;
+- institutional positions are unstable after cash-flow hedge controls;
+- surface results depend heavily on one interpolation/filter choice;
+- only one PCR cutoff/window works.
+
+Status: FIRST DERIVATIVES PROTOCOL FROZEN.
+
+## Exact next continuation after DR-024
+
+DR-025: Build redundancy map versus existing Global Radar / Regime / ATR / breadth.
+DR-026: Separate prediction targets: return direction vs volatility vs drawdown vs gap.
+DR-027: Study event-conditioned IV around CPI/Fed/earnings/global shocks without look-ahead.
+DR-028: Define point-in-time historical rules-regime segments for weekly options/night trading/product changes.
+DR-029: Concept convergence and evidence-readiness gate.
+DR-030: Then open the next untouched lane: Portfolio/Risk Construction & correlation clusters.
