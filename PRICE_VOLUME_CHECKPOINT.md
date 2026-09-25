@@ -148,7 +148,7 @@ Class A if research-only; Class C if later used in formal 15m confirmation.
 
 ## Progress added — PV-028 through PV-032
 - PV-028 confirms volume-at-price / trade-detail data are current-day microstructure sources, not historical candle equivalents. Never synthesize historical volume profile from OHLCV; defer to prospective capture only.
-- PV-029 records Taiwan evidence that transaction count may explain volatility better than average trade size, but current documented Fugle historical candles lack trade count. Keep this second-stage/prospective only.
+- PV-029 records Taiwan evidence that transaction count may explain volatility better than average trade size. **Superseded/qualified by PV-070:** Fugle historical candles lack intraday transaction count, so intraday historical count remains second-stage/prospective; daily transaction count is available from official TWSE/TPEx closing data and is a feasible Tier-2 field.
 - PV-030 adds a high-priority corporate-action baseline-reset guard. Raw-volume baselines must not silently straddle splits, par-value changes, capital reductions or long halt/resume events; require a post-action rebuild unless adjustment semantics are verified.
 - PV-031 separates downside volume-volatility asymmetry from direction. Extreme downside volume can signal higher risk yet still represent capitulation/absorption; later acceptance remains necessary.
 - PV-032 maps PV research onto the actual system funnel. Highest direct optimization hypothesis remains same-slot 15m RVOL + cumulative pace versus current previous-5-bar ratio, followed by acceptance lifecycle and market-structure/data guards.
@@ -244,7 +244,7 @@ Class A if research-only; Class C if later used in formal 15m confirmation.
 - PV-059 separates same-session B1/B2/B4 15m horizons from overnight/NEXT_SESSION and D1/D3/D5/D10 trading-day horizons. A late-session event that cannot complete B4 is INCOMPLETE, never rolled into the next day.
 - PV-060 defines idempotent outcome finalization. Feature snapshots remain immutable; outcomes upsert by snapshot_id+horizon only after source bars/dates are complete. Repeated every-minute cron runs must not create duplicates or mutate completed outcomes.
 - PV-061 audits resource design against current Worker: max 6 monitored symbols, every-minute Quote, 10m/15m refresh only after close. PV v0.1 should add zero live candle calls during ordinary monitoring by reusing existing frame15. Historical 15m baseline bootstraps once per newly monitored symbol and then rolls forward.
-- At 18 fifteen-minute slots x 6 symbols, the worst-case full-bar logging ceiling is 108 PV feature snapshots per trading day before outcomes. Never write duplicates every minute.
+- **Superseded by PV-068:** the earlier 18-slot/108-row estimate ignored the current cron ending at 13:24. Zero-extra-call v0.1 observes completed 15m bars starting 09:00 through 13:00: 17 bars x 6 symbols = 102 feature snapshots/day. Never write duplicates every minute.
 - PV-062 defines a research/admin reporting surface only: counts, coverage, guards, A/B channel, regime/session splits, model A→E comparisons, false/no-progress and MFE/MAE. No trade instruction or push semantics.
 - Formal Core remains unchanged / LOCKED.
 
