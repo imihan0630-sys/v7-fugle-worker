@@ -3964,3 +3964,173 @@ CA-107: widen CA-103 to a pre-registered multi-event bounded sample across stock
 CA-108: create point-in-time market-cap / institutional-normalization replay fixtures and quantify denominator disagreements.
 CA-109: make lifecycle revision/cancellation fixtures executable in the research-only test lane; preserve negative controls and no Worker.js wiring.
 CA-110: evidence checkpoint: decide whether the denominator archive/state machine is mature enough for a Class-A Shadow implementation proposal only; no Formal merge/deploy.
+
+
+---
+
+## CA-106 — Official TWSE + TPEx daily denominator source receipt
+
+Materialized:
+`research/corporate_action_denominator_source_receipt_v0_1.json`.
+
+### TWSE
+
+Official Data E-Shop BFT51U is confirmed as a DAILY all-stock denominator backbone produced at approximately 14:40 each trading day.
+
+Official documented fields include both:
+- `發行張數` / issued-volume field;
+- `上市股數` / listed-share field.
+
+Positive result:
+daily issued/listed denominator source coverage is officially documented and historical paid files are available.
+
+Negative result retained:
+- the official sample CSV could not be read by the research web client because it was served as unsupported `application/octet-stream`;
+- the official format DOCX retrieval also failed in this research environment;
+- therefore exact `發行張數` / `上市股數` raw-unit normalization remains UNKNOWN and is not inferred from labels;
+- Chinese product page documents start date 2004-02-19 while English page documents 2004-03-01; discrepancy is preserved rather than silently reconciled.
+
+### TPEx
+
+Official Daily Stock Quotes expose `發行股數` as exact-looking integer share counts on historical per-security tables. Official page states historical availability since 2007/01, with older ranges linked separately.
+
+Independent official semantic cross-check:
+TPEx published statistics explicitly state that capital and turnover are calculated using issued shares.
+
+Positive result:
+TPEx daily issued-share denominator is verified at public-page/artifact level.
+
+Remaining blocker:
+a stable long-run machine/API ingestion contract has not yet been frozen. CSV/page artifact ingestion is feasible but must preserve fetch metadata, parser version and raw artifact hash.
+
+### Cross-exchange guard
+
+TWSE and TPEx denominator conventions must not be collapsed into one generic `turnoverRate`/`shareCount` field.
+
+2465 remains the critical payment-certificate/private-placement counterexample: registered-issued and exchange-listed/tradable clocks can differ, and exact tradable-supply semantics remain PARTIAL_CONFLICT.
+
+CA-106 result:
+`DENOMINATOR_SOURCE_CONTRACT = COMPLETE_WITH_EXPLICIT_BLOCKERS`.
+`FULL_HISTORICAL_ARCHIVE = NO_GO`.
+
+Formal Core unchanged.
+
+---
+
+## CA-107 — Pre-registered multi-family denominator-disagreement sample
+
+Materialized:
+`research/corporate_action_volume_semantic_family_sample_v0_1.json`.
+
+Family set was frozen before result classification:
+- 8454 stock-dividend SUPPLY_CHANGE;
+- 2465 cash-increase/payment-certificate SUPPLY;
+- 3593 loss-reduction UNIT_SCALE;
+- 8422 par-value-change UNIT_SCALE.
+
+Results:
+- 8454: raw 0.825379 vs registered-issued-turnover analogue 0.786075; no A-low or B-breakout Boolean flip.
+- 2465 strict then-registered denominator: 0/5 A-low disagreements and 0/5 breakout disagreements.
+- 2465 public-tradable sensitivity: 1/5 A-low disagreement on 2025-11-18, raw 1.0908796 vs alternative 1.0003297; still PARTIAL_CONFLICT / sensitivity-only.
+- 3593: raw 0.9452 vs continuity 1.5753; both A-low and B-breakout Boolean interpretations flip.
+- 8422: raw 21.116 vs continuity 2.1116; large numeric distortion but no Boolean flip because both remain beyond the same threshold side.
+
+Falsification result:
+corporate-action volume semantics can be material, but there is no universal correction rule and numeric distortion does not imply a signal-condition flip.
+
+No forward return, MFE/MAE, stop or alpha outcome was inspected; no threshold was tuned.
+
+Formal Core unchanged.
+
+---
+
+## CA-108 — Point-in-time downstream denominator replay fixtures
+
+Materialized:
+`research/corporate_action_downstream_denominator_replay_v0_1.json`.
+
+Mechanics-only replay confirms:
+- raw institutional net-share counts remain factual across pure SUPPLY_CHANGE;
+- normalized institutional flow changes mechanically with denominator semantic/vintage;
+- derived historical capitalization changes with denominator vintage even when price is held fixed;
+- a later/current share snapshot multiplied by an old historical price is a future-vintage error;
+- registered-issued, listed/tradable, free-float and EPS weighted-average shares are different denominator spaces.
+
+8454 witness:
+252,357,405 vs 264,975,275 shares changes the same-close derived capitalization by about 5% and changes a fixed 100,000-share normalized-flow percentage accordingly.
+
+2465 witness:
+the later 93,946,031 registered-share state is explicitly prohibited from 2025-11-18 point-in-time replay; public-tradable 68,946,031 remains sensitivity-only.
+
+No market-cap ranking, institutional direction inference, valuation threshold or Worker.js behavior is changed.
+
+Formal Core unchanged.
+
+---
+
+## CA-109 — Executable lifecycle revision/cancellation state-machine tests
+
+Draft PR #101 research branch adds:
+- `research/corporate_action_lifecycle_state_machine_prototype.mjs`;
+- `tests/test_corporate_action_lifecycle_state_machine_prototype.mjs`.
+
+Executable cases:
+1. revision before original effective date;
+2. late correction with no retrospective leakage;
+3. cancellation before effective date;
+4. post-effective cancellation negative control;
+5. same-session UNIT_SCALE + SUPPLY_CHANGE deterministic ordering;
+6. unreconciled semantic conflict fails closed;
+7. exact duplicate idempotence;
+8. NO_EVENT only after complete source coverage.
+
+Research branch commit:
+`0c18332013a79faf5f184858b046e9d75d4d11c6`.
+
+Fresh trusted GitHub Actions evidence:
+- Research Corporate Action Prototype run `36148491289`: SUCCESS;
+- V8 Regression Tests run `36148491397`: SUCCESS;
+- V8 Repair CI run `36148491185`: SUCCESS.
+
+Research job `108115507007` explicitly passed the new lifecycle revision/cancellation step together with continuity, symbol-session, integration-matrix and denominator-vintage tests.
+
+No Worker.js wiring. Draft PR #101 remains unmerged.
+
+Formal Core unchanged.
+
+---
+
+## CA-110 — Evidence checkpoint for possible Class-A Shadow proposal
+
+Materialized:
+`CORPORATE_ACTION_DENOMINATOR_SHADOW_READINESS.md`.
+
+Positive evidence now mature enough for a proposal-only design:
+- explicit denominator semantic spaces;
+- `knownAt` + `effectiveFromSession` anti-leakage gates;
+- fail-closed conflict/missing-coverage states;
+- raw-volume vs normalized-turnover separation;
+- deterministic lifecycle ordering;
+- revision/cancellation executable semantics;
+- positive and counterexample mechanics evidence.
+
+Implementation blockers remain:
+1. TWSE BFT51U unit normalization UNKNOWN;
+2. no complete bounded daily TWSE denominator archive;
+3. TPEx stable long-run machine/API ingestion contract not frozen;
+4. exact 2465 payment-certificate/private-placement tradable denominator unresolved;
+5. full real dual-exchange revision/completeness receipts not yet produced;
+6. no live prospective immutable denominator-vintage collector evidence.
+
+Evidence-gated result:
+`CLASS_A_SHADOW_PROPOSAL_READINESS = PROPOSAL_ONLY / DATA_GATES_NOT_READY_FOR_IMPLEMENTATION`.
+
+No implementation, merge, deployment or Formal dependency is authorized.
+
+## Exact next continuation after CA-110
+
+CA-111: obtain official TWSE BFT51U sample/format artifact through an authorized path and pin raw units; preserve start-date discrepancy unless officially reconciled.
+CA-112: freeze stable TPEx historical daily denominator ingestion contract (machine endpoint or immutable official CSV-artifact workflow).
+CA-113: execute bounded dual-exchange daily denominator archive pilot with per-date/per-symbol completeness receipts.
+CA-114: resolve payment-certificate/private-placement denominator treatment around 2465 plus at least one independent witness.
+CA-115: re-evaluate Class-A Shadow implementation readiness only after CA-111..114 pass; Formal Core remains locked.
