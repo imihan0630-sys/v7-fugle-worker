@@ -1,8 +1,8 @@
 # Market Breadth + Sector Rotation + Leadership Checkpoint
 
 Updated: 2026-09-25 Asia/Taipei
-Current cursor: BR-001 through BR-010 complete.
-Next: BR-011.
+Current cursor: BR-001 through BR-025 complete.
+Next: evidence accumulation; concept lane complete.
 
 ## Durable conclusions
 
@@ -48,3 +48,25 @@ BR-015: Sector-strength decomposition to test whether current one-day hard gate 
 BR-016: Point-in-time universe / listings-delistings / industry reclassification data quality.
 BR-017: Build redundancy map against current sector score, Residual RS, PV, K-line, Regime.
 BR-018: Decide whether existing official data permit zero-code/prospective snapshot research before any new collector/schema proposal.
+
+
+## BR-011 through BR-025 — concept convergence
+
+- Breadth thrust is retained as participation acceleration, but no named/fixed folklore threshold is adopted.
+- Breadth divergence requires duration/false-alarm measurement; first interpret it as concentration/participation divergence, not an automatic market-top signal.
+- Cross-sector correlation and return dispersion condition whether sector rotation is distinct from market beta.
+- Leadership is modeled as a lifecycle: leader-only -> early diffusion -> broad participation -> possible late broadening -> narrowing -> leadership break.
+- Existing Formal sector gate (breadth >=40%, avgChange >=-1%, amountVs20DayAverage >=0.5) is frozen production truth, not proof those thresholds are optimal. Research must test the current gate first rather than threshold sweep.
+- Point-in-time universe and industry classification are mandatory. Current price histories do not freeze historical industry identity per bar; historical sector reconstruction with current classifications carries look-back risk.
+- Concentration panel frozen: cap-weighted return vs equal-weight return vs median stock plus advance share/dispersion.
+- Sector rotation uses continuous rank transition / percentile movement instead of only Top-N membership.
+- Industry momentum is multi-horizon and classification-sensitive; evidence is not universal across countries/samples.
+- Stock RS x sector state is a four-state interaction study, with no state pre-declared superior.
+- Leadership concentration uses contribution shares/HHI/effective leaders with UNKNOWN semantics when denominators are unstable.
+- Prospective breadth snapshot schema and readiness gates are frozen.
+- Historical broad/sector claims remain data-quality limited by stale-history, survivorship and historical classification issues.
+- Concept lane status: CONCEPT_COMPLETE / EVIDENCE_PENDING. Do not create more breadth indicators before evidence accumulates.
+- Formal Core unchanged.
+
+## Next lane
+Open Fundamental Information Dynamics: distinguish fundamental level, change, surprise, revision and market price reaction.
