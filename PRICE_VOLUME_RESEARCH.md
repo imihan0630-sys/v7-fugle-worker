@@ -10815,3 +10815,241 @@ Future learning should now preferentially:
 - investigate a new mechanism only when evidence reveals a specific unexplained residual.
 
 Status: PV_PHASE_II_THEORY_CONVERGED / EVIDENCE_AND_FALSIFICATION_NEXT.
+
+# PVE-001 — First Prospective PV Shadow QA Evidence
+
+## Evidence source
+GitHub Actions artifacts from the dedicated Class-A workflows:
+- PV Shadow enable run #1: 36143785159;
+- PV Shadow enable run #2: 36144091642;
+- read-only QA run #3: 36142362937;
+- read-only QA run #4: 36144193465.
+
+These are runtime/Actions evidence, not source-code inference.
+
+## Enable chronology
+
+### Before successful enable
+QA #3 at 2026-09-25 21:39 Asia/Taipei reported:
+- runtime = 8.11.0-pv-shadow-v0.1-log-only;
+- PV_SHADOW_ENABLED=false;
+- pvBindingConfigured=false;
+- qaPass=false.
+
+### First enable attempt
+Run 36143785159 failed because Worker source content changed during the enable transaction.
+The workflow detected the before/after source-hash mismatch and attempted rollback.
+
+This failure is retained as positive safety evidence:
+the enable path did not silently accept a concurrent source change.
+
+### Second enable attempt
+Run 36144091642 succeeded.
+
+Artifact proves:
+- operation = ENABLED;
+- PV_SHADOW_ENABLED=true;
+- non-PV bindings preserved;
+- Worker source hash before/after identical:
+  1829cadb375d4fe1b2b7423f02a230ac75c8f8696f229be28c80a4d97f17dba0;
+- Formal config fingerprint before/after identical:
+  1e7507294026fe8c150a30c577cb5b5a78e559a49d6083cdba454fdd8357d4aa;
+- Formal scan fingerprint excluding PV before/after identical:
+  16eb53942521a0deb33c9c99c72766a27ea249cd3ced73b7fb771562f5276ff3;
+- formalIsolation=true;
+- rollbackAttempted=false.
+
+Therefore:
+PV_ENABLE = PASS.
+FORMAL_ISOLATION_AT_ENABLE = PASS.
+
+## Post-enable QA
+QA #4 at 2026-09-25 21:56 Asia/Taipei reported:
+- PV_SHADOW_ENABLED=true;
+- binding configured as plain_text true;
+- runtime expected;
+- decisionImpact=false;
+- formalCoreImpact=false;
+- ordinary live candle calls added by PV = 0;
+- source hook after Formal = true.
+
+However:
+- qaPass=false;
+- sole failure = D1_DIRECT_READ_NOT_AUTHORIZED;
+- D1 SELECT returned HTTP 403:
+  "The given account is not valid or is not authorized to access this service".
+
+## Cloudflare permission audit
+The QA script uses:
+POST /accounts/{account_id}/d1/database/{database_id}/query
+and hard-rejects SQL other than SELECT/WITH/PRAGMA.
+
+Cloudflare's official D1 Query API documents accepted API-token permissions as:
+- D1 Read; or
+- D1 Write.
+
+Official source:
+https://developers.cloudflare.com/api/resources/d1/subresources/database/methods/query/
+
+Therefore the 403 is consistent with the GitHub workflow token lacking D1 Read permission even though it can read Worker settings/content.
+
+This is a best-supported diagnosis, not token-scope introspection proof.
+
+## Trading-day boundary
+PV was enabled after the 2026-09-24 completed market day.
+TWSE's official 2026 holiday calendar closes the market on:
+- 2026-09-25 Mid-Autumn Festival;
+- 2026-09-28 Teachers' Day.
+2026-09-26/27 are weekend days.
+
+Therefore as of 2026-09-26:
+there are ZERO completed trading days after PV enable.
+The earliest ordinary prospective market day is 2026-09-29, absent an extraordinary closure.
+
+QA #4's currentAfterMarketScanDate=2026-09-24 is consistent with this.
+
+## Critical interpretation
+GitHub Actions workflow conclusion=success does NOT mean PV DATA_QA passed.
+
+The workflow job succeeded in producing the diagnostic artifact.
+The artifact itself says qaPass=false.
+
+Frozen PVE-001 state:
+ENABLE_PASS / FORMAL_ISOLATION_PASS / D1_QA_BLOCKED / ZERO_POST_ENABLE_TRADING_DAYS.
+
+No alpha inference is permitted.
+
+
+# PVE-002 — Clean Cohort Provenance Is Not Yet Available
+
+## Live research-dashboard readback
+Latest inspected successful deploy readback:
+GitHub Actions run 36156803749.
+
+The protected research dashboard reported:
+- Shadow total = 62;
+- archived dates = 2;
+- latestDate = 2026-09-22;
+- byDate:
+  - 2026-09-21 = 31;
+  - 2026-09-22 = 31;
+- byCohort:
+  - BROAD_CONTROL = 24;
+  - NEAR_MISS = 13;
+  - REJECTED_AFTER_BASE = 24;
+  - SELECTED = 1.
+
+Counterfactual outcome coverage at that readback:
+- D1 = 0;
+- D3 = 0;
+- D5 = 0;
+- D10 = 0;
+- D20 = 0.
+
+## Integrity gate
+The same runtime readback reported:
+- expectedScanDays = 3;
+- archivedScanDays = 2;
+- status = RESEARCH_DATA_GAP.
+
+The archive enforcement date is 2026-09-21.
+
+Known completed Formal sequence establishes:
+- 2026-09-21 = archived;
+- 2026-09-22 = archived and Formal zero-pick;
+- 2026-09-23 = completed Formal zero-pick but not present in the archive readback.
+
+Therefore the missing enforced archive date in this evidence window is 2026-09-23.
+
+## 2026-09-24
+9/24 was later completed via staged recovery with two FORMAL_GENERAL selections.
+
+But B-130 subsequently proved stale daily-history contamination in the recovered Formal inputs.
+Therefore 9/24 is:
+QUARANTINED_INPUT_DEFECT
+for rolling-history-dependent/PV clean-cohort analysis.
+
+It must not be backfilled into prospective Shadow as if it had been cleanly observed.
+
+## Selection-time history provenance
+The 9/21 and 9/22 Shadow rows predate the symbol-session quality-receipt architecture.
+
+No durable selection-time receipt proves:
+VERIFIED_SYMBOL_SESSION_COMPLETE
+for those archived rows.
+
+Therefore:
+- archive existence != clean cohort;
+- 9/21 and 9/22 = HISTORY_PROVENANCE_UNVERIFIED for primary PV inference;
+- 9/23 = ARCHIVE_MISSING;
+- 9/24 = QUARANTINED_INPUT_DEFECT.
+
+## Current clean-cohort count
+For H001-H004 primary inference:
+verified clean selection-cohort dates = 0.
+
+This does NOT say the 62 archived rows are bad market data.
+It says they do not yet satisfy the stricter pre-registered selection-provenance requirement.
+
+Status: PVE_002_ARCHIVE_EXISTS_BUT_CLEAN_COHORT_NOT_PROVEN.
+
+
+# PVE-003 — Execution Recorder Exact-Date Evidence Remains Blocked
+
+## Existing runtime limitation
+Current execution-recorder read contract:
+- rolling date window;
+- newest first;
+- SQL LIMIT 500;
+- externally exposes only newest 80 recent rows;
+- no exact trade-date filter;
+- no cursor/offset;
+- no total exact-date row count;
+- no hasMore/truncated proof;
+- no expected-event completion receipt.
+
+Therefore missing visible rows cannot mean:
+- NO_BUY;
+- no microstructure event;
+- zero signal.
+
+## Existing B-145 proposal
+The canonical research line already froze the correct Class-B contract:
+1. ROW_COMPLETENESS:
+   - exact trade_date equality;
+   - totalRows before pagination;
+   - deterministic pagination/cursor;
+   - hasMore/truncated;
+   - per-event/per-symbol counts;
+   - COMPLETE/INCOMPLETE/UNKNOWN.
+2. EXPECTED_EVENT_COMPLETENESS:
+   - persisted run receipt;
+   - expected symbols/event types;
+   - attempted/stored/skipped;
+   - fail-open/error class.
+
+That proposal remains unimplemented/unpromoted.
+
+## Additional signal-event gate
+PV-174 already proved FORMAL_SIGNAL_OBSERVED is batch-scope ambiguous in the current recorder.
+
+A signal-microstructure row additionally needs:
+- independently matched same-symbol Formal notification/signal truth;
+- exact source-bar/time alignment.
+
+## PVE-003 conclusion
+H006-B/C signal-microstructure evidence remains:
+DATA_QUALITY_BLOCKED_NO_EXACT_DATE_COMPLETENESS.
+
+Existing trade-journal BUY truth remains a separate valid evidence channel.
+Recorder absence is never converted to NO_BUY.
+
+## PVE-004 gate
+Because:
+- H001/H002 have zero verified clean cohort dates;
+- H006 lacks exact-date recorder completeness;
+PVE-004 outcome comparison is NOT STARTED.
+
+This is a successful falsification of readiness, not a failed research result.
+
+Status: PVE_003_BLOCKED / PVE_004_GATE_NOT_MET.
