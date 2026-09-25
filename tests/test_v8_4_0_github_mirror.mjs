@@ -6,7 +6,10 @@ const source=await readFile(workerPath,"utf8");
 const mirror=await readFile(new URL("./github_plan_mirror.mjs",import.meta.url),"utf8");
 const health=await readFile(new URL("./scheduled_health.mjs",import.meta.url),"utf8");
 
-assert.match(source,/const VERSION = "8\.(?:4\.\d+|[5-9]\.\d+)[^"]*";/);
+{
+  const version=source.match(/const VERSION = "(\d+)\.(\d+)\.(\d+)[^"]*";/)?.slice(1,4).map(Number);
+  assert.ok(version && (version[0]>8 || (version[0]===8 && (version[1]>4 || (version[1]===4 && version[2]>=0)))),"V8.4.0+ runtime required");
+}
 for(const marker of [
   'const GITHUB_MIRROR_PROVIDER="D1_GITHUB_ENCRYPTED";',
   'CREATE TABLE IF NOT EXISTS v8_external_mirror_acceptance',
