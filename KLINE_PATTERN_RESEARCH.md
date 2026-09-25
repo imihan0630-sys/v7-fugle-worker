@@ -9695,3 +9695,298 @@ If volume collapses because the entire market/sector liquidity collapses, do not
 
 No Formal change.
 
+
+
+## DL-002EA — Point-in-Time Zone Clustering Algorithm v0.1
+
+### Objective
+Convert confirmed swing highs/lows and other point-in-time structural anchors into reproducible support/resistance ZONES without hand-drawing and without using future touches.
+
+### External-method prior
+Published S/R research has used:
+- modified K-means,
+- Gaussian mixture models,
+- extrema heuristics,
+- volume-weighted/stochastic zone models.
+
+Taiwan limit-order research independently shows round/even-price clustering creates genuine price barriers, so behavioral/tick anchors should remain explicit provenance rather than being erased inside one generic clustering model.
+
+### Design choice
+Primary detector should NOT begin with vanilla K-means because:
+- K must be chosen in advance;
+- every point is forced into a cluster;
+- isolated/noisy pivots receive a cluster assignment even when they should remain noise;
+- cluster center can be sensitive to scale/outliers.
+
+Primary v0.1:
+ONE-DIMENSIONAL DENSITY / AGGLOMERATIVE ZONE BUILDING on confirmed structural prices.
+
+K-means/GMM remain benchmark detectors, not default truth.
+
+### Candidate anchors
+RESISTANCE candidates:
+- confirmed BASE/MAJOR swing highs
+- W neckline
+- cup rim
+- VCP/pattern pivot
+- priorHigh20/priorHigh60 as explicit benchmark anchors
+- long-horizon confirmed extreme
+- round-price anchor if sufficiently near structural evidence
+- exact prospective high-volume-node anchor if available
+
+SUPPORT candidates:
+- confirmed BASE/MAJOR swing lows
+- W lows
+- handle low
+- post-break retest low
+- priorLow20/major low benchmark
+- round-price / exact prospective volume node if structurally relevant
+
+Support and resistance candidates are clustered separately at creation time.
+A role reversal later changes zone state; it does not retroactively change its origin.
+
+### Point-in-time gate
+A candidate level is eligible on date t only if:
+- sourceConfirmedAt <= t
+- required bar/data source was observable by t
+- corporate-action adjustment/provenance is valid
+- dataQuality != UNKNOWN for the required source
+
+### Distance metric
+For candidate prices p_i and p_j define descriptive normalized distances:
+- pctDistance
+- tickDistance
+- atrDistance using lagged adjusted ATR known at candidate creation
+
+Do not use one universal NT$ distance.
+
+### Initial neighborhood tolerance
+Use a pre-registered uncertainty envelope rather than outcome-tuning:
+candidateWidth_i = max(
+  minimumTickWidth_i,
+  ATR-based uncertainty_i,
+  sourceDispersion if source itself is a cluster
+)
+
+No future return is used to set width.
+
+### Primary grouping procedure
+1. Sort eligible candidate anchors by adjusted price.
+2. Start with each anchor as an independent proto-zone.
+3. Iteratively merge adjacent proto-zones only when their uncertainty envelopes overlap or their normalized distance is within the pre-registered neighborhood tolerance.
+4. Isolated anchors remain SINGLE_SOURCE zones; they are not forced into another zone.
+5. Preserve all constituent anchor IDs/provenance.
+6. Compute zone center using a robust estimator (weighted median preferred over simple mean).
+7. Compute lower/upper bounds from constituent uncertainty envelopes and observed dispersion, subject to a pre-registered maximum-width sanity cap.
+8. Mark very wide/multimodal clusters AMBIGUOUS rather than forcing one zone.
+
+### Why weighted median
+A mean can be dragged by one extreme pivot.
+Median/weighted median is robust and keeps the zone tied to actual historical prices.
+
+Weights at v0.1 are STRUCTURAL only, not outcome-trained:
+- MICRO / BASE / MAJOR scale identity retained
+- source type retained
+- recency/touch count stored separately rather than automatically converted into return-optimized weights
+
+Do not assign “major swing = 3 points” because it backtested better.
+
+### Output
+zoneId
+zoneVersion
+zoneTypeOrigin
+centerPrice
+lowerBound
+upperBound
+widthPct
+widthATR
+widthTicks
+candidateCount
+constituentAnchorIds[]
+constituentPrices[]
+constituentConfirmedAt[]
+sourceTypes[]
+scaleSet[]
+priceDispersion
+ageDays
+createdAt
+updatedAt
+dataThrough
+ambiguityFlag
+noLookaheadVerified
+
+### Baseline comparison
+Detector A:
+simple priorHigh20/priorHigh60 / swing extrema baseline.
+
+Detector B:
+1D agglomerative/density zone v0.1.
+
+Detector C:
+K-means benchmark.
+
+Detector D:
+GMM benchmark.
+
+Future exact volume-at-price may enable:
+Detector E:
+volume-weighted zone model.
+
+No method is selected by same-sample forward return.
+
+## DL-002EB — Zone Merge / Split / Evolution Rules
+
+### Core principle
+Zones evolve as NEW information arrives.
+Historical zone snapshots are immutable.
+
+### MERGE
+Two live zones may merge at date t when:
+- their uncertainty envelopes overlap materially,
+- OR new confirmed anchors bridge the gap.
+
+Create:
+newZoneVersion / mergedZoneId
+with:
+- parentZoneIds
+- effectiveAt = t
+
+Do not rewrite the parents’ historical snapshots.
+
+### SPLIT
+A zone may be flagged for split when:
+- constituent prices become clearly bimodal,
+- width exceeds the pre-registered maximum relative to ATR/ticks,
+- new evidence repeatedly reacts at two distinct subregions.
+
+Split produces child zones effective from the new observation date.
+Never backdate the split.
+
+### DRIFT
+A zone center may drift as new confirmed structural contacts arrive.
+Store:
+- previousCenter
+- newCenter
+- centerShiftTicks/ATR
+- updateReason
+
+Large drift lowers stability confidence.
+
+### RETIRE
+A zone is not deleted because price crossed it once.
+Possible states:
+ACTIVE
+WEAKENING
+BROKEN
+ROLE_REVERSAL_CANDIDATE
+ROLE_REVERSAL_CONFIRMED
+STALE
+RETIRED_FROM_ACTIVE_SET
+
+Historical record remains.
+
+### Staleness
+Age alone does not erase a zone.
+Use descriptive:
+- age
+- recent contacts
+- source age dispersion
+- later structural supersession
+
+Do not outcome-tune a “zone expires after N days” rule.
+
+## DL-002EC — Zone Strength Without Future Leakage
+
+### Strength is multidimensional
+Do NOT collapse immediately into one scalar score.
+
+Store components:
+STRUCTURAL_DENSITY
+- number of independent confirmed anchors.
+
+SCALE_AGREEMENT
+- MICRO/BASE/MAJOR overlap.
+
+REACTION_HISTORY
+- point-in-time valid prior bounces/rejections only.
+
+RECENCY
+- time since creation / last interaction.
+
+DISPERSION
+- tighter constituent clustering vs wide ambiguity.
+
+ROUND_PRICE_OVERLAP
+- Taiwan behavioral/tick context.
+
+VOLUME_PROFILE_OVERLAP
+- exact prospective only unless approximation explicitly tagged.
+
+COST_BASIS_OVERLAP
+- estimated/approximate holder reference-price context.
+
+### Touch independence
+Multiple adjacent daily highs from the same failed attempt are NOT necessarily independent evidence.
+
+Define a contact episode:
+- one approach/rejection sequence separated from the next by a minimum structural departure, not merely another bar.
+
+This prevents “five consecutive highs near 100” from being counted as five independent confirmations.
+
+### Strength at time t
+Can only use episodes completed before/on t.
+Future reactions do not improve historical strength.
+
+### Predictive calibration later
+After prospective sample accumulation:
+- test each component separately,
+- test monotonicity,
+- test whether a combined score adds value.
+
+No current “zone strength 85/100” probability claim.
+
+## DL-002ED — Zone Algorithm Falsification Matrix
+
+### Competing algorithms
+A. fixed-window prior highs/lows
+B. confirmed-swing single levels
+C. 1D agglomerative/density zones
+D. K-means
+E. GMM
+F. volume-weighted zones when exact data exists
+
+### Evaluate two different tasks
+
+TASK 1: REACTION DETECTION
+- bounce/rejection probability
+- distance before reaction
+- false zone rate
+- zone stability
+
+TASK 2: ECONOMIC VALUE
+- D1/D3/D5
+- MFE/MAE
+- R01
+- availableRoom
+- execution delay
+- cost-adjusted value
+
+A method can be good at predicting tiny reactions yet economically useless.
+
+### Complexity penalty
+If complex clustering only marginally improves reaction detection and adds no actionable value versus priorHigh20/60 or simple confirmed swings:
+REJECT_COMPLEXITY.
+
+### Taiwan-specific robustness
+Stratify by:
+- price/tick band
+- round-price overlap
+- liquidity
+- market regime
+- thousand-stock vs general pool
+- limit-hit context
+
+### Current status
+ZONE_CLUSTERING_V0_1_DEFINITION_FROZEN.
+No Formal support/breakout level is changed.
+
