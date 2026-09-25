@@ -12616,3 +12616,101 @@ Failure motifs may be better as RISK_FILTER candidates.
 Pattern maturity may be better as OBSERVABILITY/RANKER.
 No role promotion without evidence.
 
+
+
+## DL-002HH — Institutional Ownership Level vs New Flow
+
+### Taiwan evidence
+Foreign institutional momentum behavior in Taiwan has been shown to be anchored by prior foreign ownership:
+- higher prior foreign ownership can strengthen momentum-style trading behavior,
+- but the anchoring effect does not necessarily improve momentum profitability and can hurt it in some cases.
+
+### Pattern implication
+Separate:
+OWNERSHIP_STOCK
+- already-held institutional exposure.
+
+NEW_FLOW
+- current buying/selling.
+
+A stock with:
+high ownership + continued buying
+is not automatically stronger evidence than:
+lower ownership + new flow acceleration.
+
+### Fields
+- foreignOwnershipPct
+- trustOwnership if valid
+- ownershipPercentile
+- ownershipChange
+- foreignNetFlow
+- flowRelativeToExistingOwnership
+- patternMaturityAtOwnershipChange
+- ownershipCrowdingState
+
+### States
+NEW_SPONSORSHIP
+- low/moderate prior ownership, improving flow.
+
+ESTABLISHED_SPONSORSHIP
+- high ownership, persistent flow.
+
+CROWDED_LONG_CANDIDATE
+- very high ownership + high attention/extension + little incremental price result.
+
+OWNERSHIP_DISTRIBUTION_WARNING
+- price strong while ownership/flow deteriorates.
+
+No direction is assumed without testing.
+
+## DL-002HI — Crowding Is Multidimensional
+
+### Potential long-side crowding proxies
+- margin financing
+- institutional ownership
+- institutional herd intensity
+- high turnover/attention
+- repeated limit-up / lottery signals
+- estimated holder gains
+- sector synchrony
+
+### Potential short-side crowding proxies
+- short-sale flow/balance
+- securities borrowing context
+- downside attention
+
+### Do not sum blindly
+These variables have different participants and meanings.
+Create a crowding VECTOR, not one arbitrary score.
+
+### Research questions
+1. Does bullish pattern failure severity increase when several long-crowding proxies align?
+2. Can high short crowding + strong acceptance produce different upside MFE (squeeze-like) behavior?
+3. Does crowding matter only in certain market regimes?
+
+### Multiple-testing restraint
+Only test mechanism-driven combinations.
+No exhaustive 2^N crowding-state search.
+
+## DL-002HJ — Positioning Change May Matter More Than Positioning Level
+
+### Analog to RS and turnover
+Static level:
+“How crowded is it?”
+
+Change:
+“Is crowding building or unwinding while the pattern matures?”
+
+Fields:
+- marginSlope
+- ownershipSlope
+- shortFlowSlope
+- turnoverSlope
+- crowdingAcceleration
+- patternPhaseAtCrowdingInflection
+
+### Hypothesis
+A transition from quiet to rapidly crowded near breakout may differ from a high but stable positioning state.
+
+Again: hypothesis, not signal.
+
