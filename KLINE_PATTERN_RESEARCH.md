@@ -14111,3 +14111,147 @@ For each symbol:
 ### Prospective daily maintenance
 After bootstrap, append one completed daily bar per trading day; avoid refetching full history.
 
+
+
+## DL-002JD — Corporate-Action Adjustment Validation Fixtures
+
+### Goal
+Before using adjusted=true for pattern geometry, prove its behavior around real corporate-action dates.
+
+### Fixture classes
+A. CASH_DIVIDEND
+B. STOCK_DIVIDEND
+C. CASH_CAPITAL_INCREASE / rights event
+D. CAPITAL_REDUCTION / resume trading where available
+E. NO_ACTION control date
+
+### For each fixture capture
+- raw prior close
+- official exchange reference price
+- raw event-day open/high/low/close
+- Fugle adjusted=false OHLC
+- Fugle adjusted=true OHLC
+- provider adjusted flag
+- change field
+- expected mechanical discontinuity
+- derived continuity ratio
+
+### Assertions
+1. adjusted=false matches actual traded/raw prices.
+2. provider change on ex-right/dividend day follows documented adjusted prior-close basis.
+3. adjusted=true removes/normalizes the mechanical discontinuity consistently.
+4. no-action control dates are not altered unexpectedly beyond provider convention.
+5. TWSE and TPEx semantics are consistent enough for shared morphology logic; otherwise preserve market-specific adapter.
+
+### Failure handling
+If adjusted=true semantics are unsuitable for a specific action type:
+- do not invent a patch silently;
+- use official reference-price transform for that event type;
+- mark transformMethod explicitly.
+
+## DL-002JE — Data-Quality Gates Before Pattern Detection
+
+### Per-symbol/day hard guards
+INVALID:
+- duplicate date
+- nonpositive O/H/L/C
+- high < max(open,close)
+- low > min(open,close)
+- high < low
+- negative volume/turnover
+- date outside requested trading range
+
+GUARDED:
+- corporate action unresolved
+- limit-constrained bar
+- suspension/resumption context
+- missing turnover
+- suspicious one/two-tick range in illiquid context
+- adjusted/raw mismatch beyond explained action
+
+VALID:
+- all required fields coherent and provenance known.
+
+### Detector behavior
+INVALID bars:
+- do not feed topology; episode becomes DATA_INVALID across the gap.
+
+GUARDED bars:
+- may preserve chronology but affected features become UNKNOWN/GUARDED.
+
+No imputation from future bars.
+
+## DL-002JF — Research History Bootstrap Cost Model
+
+### Daily-only v0.1
+For N symbols:
+- initial bootstrap requires one or more historical daily requests per symbol because query span <1 year;
+- after bootstrap, one incremental daily maintenance fetch can update research bars.
+
+### Scope control
+Do not bootstrap all ~1,800 stocks merely because data are available.
+
+Initial Pattern Shadow should bootstrap only:
+- current same-date research cohort candidates/controls,
+- plus a bounded matched-control sample.
+
+### Why
+The first question is incremental information over the existing selector, not full-universe discovery.
+This lowers API/storage cost and accelerates prospective evidence.
+
+### Expansion trigger
+Only expand toward full-universe discovery if:
+- detector/data QA passes,
+- cohort-level incremental evidence is promising,
+- API/storage budget is measured,
+- survivorship-aware universe construction is available.
+
+## DL-002JG — Daily vs Intraday Volume Unit Firewall
+
+### Provider semantics
+For ordinary listed/OTC stocks:
+- daily historical volume is shares;
+- historical/intraday minute volume is lots.
+
+### Risk
+Combining daily and 15m volume numerically without conversion creates a 1000x unit error.
+
+### Rule
+Store explicit:
+- volumeValue
+- volumeUnit = SHARES | LOTS | TWD
+- normalizedVolumeShares where conversion is valid.
+
+For ordinary board-lot minute bars:
+normalizedVolumeShares = volumeLots * 1000.
+
+### Exception
+Do not blindly apply *1000 to:
+- emerging stocks,
+- odd-lot feeds,
+- indices.
+
+Market/instrument type must drive conversion.
+
+### Formal isolation
+Existing Formal intraday semantics are unchanged.
+This firewall applies to new research storage only.
+
+## DL-002JH — Pattern Shadow v0.1 Scientific Question Is Now Narrowed
+
+### Primary question
+Within the current selector's point-in-time candidate/control population, do repaint-safe structural primitives and pattern maturity improve:
+- false-breakout discrimination,
+- MFE/MAE distribution,
+- D3/D5 outcomes,
+beyond existing Formal/DL-001 variables?
+
+### Not v0.1 questions
+- Can an ML chart model beat the whole selector?
+- Can patterns scan all Taiwan stocks independently?
+- Can a pattern score replace A/B?
+- Can historical 15m optimize entries?
+
+### Benefit
+This narrow scope gives a falsifiable first test and avoids turning the project into a second trading system before evidence exists.
+
