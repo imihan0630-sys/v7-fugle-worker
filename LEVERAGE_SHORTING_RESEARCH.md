@@ -1508,3 +1508,76 @@ Status: LS-042 COMPLETE WITH PARTIAL PASS.
 LS-043: verify TPEx downloadable CSV / machine endpoint contract without guessing URLs.
 LS-044: validate units and formula identities on a small exact-date sample.
 LS-045: only after LS-043/044 pass, freeze large-backfill go/no-go.
+
+
+---
+
+## LS-043 — TPEx machine-contract verification result
+
+### TPEx SBL — MACHINE CONTRACT VERIFIED
+Official TPEx EDIS post-close format documentation specifies:
+
+- file code: `S47`
+- file name: `Margin_SBL.csv`
+- format: CSV
+- header/metadata includes:
+  - data date
+  - production time
+  - record count
+- per-symbol columns:
+  - security code
+  - margin-short prior balance
+  - margin-short sale
+  - margin-short buy/cover
+  - stock repayment
+  - margin-short current balance
+  - margin-short quota
+  - SBL-short prior balance
+  - SBL-short current sell
+  - SBL-short current return
+  - SBL-short current adjustment
+  - SBL-short current balance
+  - next-business-day SBL short-sale limit
+  - note.
+
+This matches the normalized LS schema.
+
+Status:
+`TPEX_SBL_MACHINE_CONTRACT = VERIFIED`.
+
+### TPEx margin — DOWNLOAD CONTRACT PARTIALLY VERIFIED
+Official TPEx margin page explicitly provides:
+- CSV BIG5 download;
+- CSV UTF-8 download;
+- historical data since 2007-01, with older linked history.
+
+Displayed field semantics are validated.
+
+However, this research turn could not retrieve the underlying stable CSV download URL / request parameter contract because direct page fetches were blocked by TPEx web protection.
+
+Do not infer or hard-code an old website URL pattern.
+
+Status:
+`TPEX_MARGIN_DISPLAY_SCHEMA = VERIFIED`
+`TPEX_MARGIN_CSV_AVAILABLE = VERIFIED`
+`TPEX_MARGIN_PROGRAMMATIC_ENDPOINT = UNRESOLVED`.
+
+### Updated LS-042/043 gate
+- TWSE margin schema: PASS
+- TWSE SBL schema: PASS
+- TPEx SBL machine schema: PASS
+- TPEx margin displayed schema: PASS
+- TPEx margin programmatic endpoint: PENDING
+
+Therefore:
+`DATA_BUILD_GATE = PARTIAL_PASS`
+
+Large automated cross-market backfill remains blocked only by the unresolved TPEx margin endpoint contract and final unit/sample validation.
+
+Status: LS-043 COMPLETE / ONE ENGINEERING SOURCE CONTRACT REMAINS.
+
+## Exact next continuation after LS-043
+
+LS-044: validate units and algebraic identities using fixed exact-date rows, without looking at future returns.
+LS-045: finalize large-backfill go/no-go.
+LS-046: if endpoint remains blocked, define a safe alternative ingestion contract based on official downloadable CSV/manual artifact rather than inventing an API.
