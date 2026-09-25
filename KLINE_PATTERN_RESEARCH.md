@@ -14739,3 +14739,57 @@ Existing R01 3-day hold may later be used as a comparator/outcome, not as a hidd
 ### Status
 WORTH_PROSPECTIVE_SHADOW_VALIDATION / NOT A FORMAL RULE.
 Formal Core remains LOCKED.
+
+
+## DL-003I — Taiwan Price-Limit Breakout: Constrained Price Discovery Must Be a Separate Lifecycle
+
+### Research question
+When a structural breakout closes at or near Taiwan's daily price limit, can that bar be treated as ordinary breakout acceptance?
+
+### Taiwan evidence
+1. Cho, Russell, Tiao & Tsay (Journal of Empirical Finance, 2003) use TWSE high-frequency data and document a statistically/economically significant upper-limit magnet effect: prices accelerate toward the ceiling as the upper limit is approached. Their discussion also centers delayed price discovery, trading interference and volatility spillover.
+2. Huang, Fu & Ke (International Review of Economics & Finance, 2001) find, for Taiwan limit moves, overnight continuation followed by reversal during the subsequent trading period. A limit close therefore can split information across the next open and next intraday session rather than complete price discovery on the hit day.
+3. Lien, Hung, Zhu & Chen (Pacific-Basin Finance Journal, 2019) show that widening Taiwan's price limits changed order aggressiveness, spread, volatility, depth and execution quality.
+4. Hsieh, Chiao & Lin (2025) study the 2015 widening from 7% to 10% and report faster information transmission but higher price errors/risk after widening.
+5. Modern-regime portability remains limited: much classic evidence predates the 10% regime and the 2020 continuous-trading change. A 2026 Taiwan price-discovery study explicitly restricts its sample to the 2015-2020 interval to avoid mixing the continuous-trading regime, reinforcing that market-structure breaks must be segmented.
+
+### Conclusion for Pattern mechanics
+The frozen C4 rule is retained and strengthened:
+- a structural breakout can be TRUE while price discovery is still CONSTRAINED;
+- a limit-constrained breakout bar cannot by itself establish ordinary post-break acceptance;
+- `localBreakout=true` and `priceLimitConstrained=true` must coexist rather than one overwriting the other;
+- later unconstrained sessions are required to observe how the market resolves the constraint.
+
+### Outcome-free lifecycle fields
+Prospective Pattern snapshots should preserve:
+- `localBreakout`;
+- `priceLimitConstrained`;
+- `distanceToUpperLimitTicks`;
+- `limitHitIntraday`;
+- `closedAtLimit`;
+- `consecutiveLimitSessions`;
+- `firstUnconstrainedSessionAt`;
+- `unconstrainedCloseAboveStructuralLevel`;
+- `nextSessionOvernightPct`;
+- `nextSessionIntradayPct`;
+- `marketStructureRegime` (pre-2015 / 10%-call-auction / 10%-continuous-trading).
+
+The overnight/intraday decomposition belongs to later outcome diagnostics, not detector tuning.
+
+### Redundancy / overlap
+The existing research system already stores limit-state/tick-distance concepts, and Event Risk / Price-Volume lanes also study overnight/intraday decomposition. Pattern's potentially incremental object is narrower:
+**structural-breakout lifecycle conditional on constrained price discovery**.
+
+Do not create a second generic limit-hit factor.
+
+### Falsification
+Reject incremental Pattern value if:
+- C4 state adds nothing after existing limitState/tickDistance, R01, ret20, overheat and liquidity controls;
+- apparent effect exists only in the obsolete 7%/call-auction regime;
+- next-session continuation/reversal is driven entirely by event/news gaps or broad market moves;
+- a post-hoc number of unconstrained bars is required to rescue the effect.
+
+### Status
+MECHANISM_SUPPORTED / MODERN EFFECT SIZE UNKNOWN / PROSPECTIVE SHADOW ONLY.
+No Formal breakout, BUY, maxChase or limit-state rule is changed.
+Formal Core remains LOCKED.
