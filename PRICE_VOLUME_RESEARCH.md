@@ -12230,3 +12230,310 @@ Therefore H003 remains more strongly blocked than H001/H002.
 This decomposition is based on causal/data dependencies identified before outcomes, not on which fields later perform better.
 
 Status: H001_H002_MINIMUM_FIELD_CONTRACT_FROZEN.
+
+# PVE-034 — H001 Comparator Uses the Same Current 15m Source but Needs Explicit Bar-Identity Provenance
+
+## Current source path
+During a normal 15m refresh:
+- Formal `analyzeFrame(raw15,15)` and PV `pvExtractCompletedSession15(raw15,...)` consume the same fetched 15m payload.
+- Both only use completed bars.
+- Both use the provider's 15m volume field.
+
+Thus current-bar volume source/unit is aligned under normal execution.
+
+## Formal comparator
+`frame15.latest.volumeRatio`:
+- current bar volume / mean(previous 5 completed bars);
+- rounded through `round(value)`, default 2 decimals.
+
+## PV comparator
+`pvSlotRvol20`:
+- current exact-slot volume / median(prior 20 valid same-slot volumes);
+- stored as unrounded numeric research value.
+
+## Missing durable proof
+The PV snapshot stores:
+- source.sourceBarTimestamp;
+- formalLocalVolumeRatio.
+
+It does not store:
+- `formalFrame15LatestTime`.
+
+Therefore an at-rest row cannot independently prove that the stored Formal local ratio came from the exact same source bar timestamp.
+
+## Primary analysis rule
+Require one of:
+1. schema/version invariant proving the same-raw builder path plus clean no-gap current session;
+or preferably in a future schema,
+2. explicit `formalFrame15LatestTime == sourceBarTimestamp`.
+
+Status: H001_CURRENT_SOURCE_ALIGNED / EXPLICIT_BAR_ID_PROVENANCE_MISSING.
+
+
+# PVE-035 — H001 Predictive Comparison Requires Common Support; Early-Slot Coverage Is a Separate Benefit
+
+## Formal local-ratio availability
+With an ordinary 15m session:
+- 09:00 index 0;
+- ...
+- 10:00 index 4;
+- 10:15 index 5.
+
+The previous-5 ratio is first available at 10:15.
+
+Therefore the first five observable slots:
+- 09:00
+- 09:15
+- 09:30
+- 09:45
+- 10:00
+have no Formal local previous-5 ratio.
+
+Same-slot RVOL can be available at those slots once historical baseline is mature.
+
+## Primary H001 comparison
+To test incremental predictive value fairly:
+compare B vs C only on observations where:
+- Formal local volumeRatio is non-null;
+- pvSlotRvol20 is non-null;
+- both refer to the same completed bar;
+- all shared quality gates pass.
+
+This common-support subset begins no earlier than 10:15.
+
+## Separate coverage analysis
+Report separately:
+- number/percentage of early observations where slot RVOL exists but local ratio cannot yet exist;
+- whether those early observations are operationally useful.
+
+Do not count “one feature exists while the other is structurally unavailable” as predictive superiority.
+
+Status: H001_COMMON_SUPPORT_PRIMARY / EARLY_COVERAGE_SECONDARY.
+
+
+# PVE-036 — Formal Local Volume Ratio and PV Slot RVOL Have Different Missing-Slot Failure Semantics
+
+## Formal path
+`analyzeFrame` validates raw bars and sorts completed bars.
+`buildBar` uses the previous five available completed bars.
+
+It does not independently require that those bars are five consecutive expected 15m clock slots.
+
+## PV current-session path
+`pvExtractCompletedSession15` explicitly checks expected slot presence through the latest observed slot.
+
+If a required prior slot is missing:
+`MISSING_REQUIRED_SESSION_SLOT`
+is added and the PV snapshot becomes invalid-source/INVALID.
+
+## Consequence
+On a malformed/missing-slot session:
+- Formal local ratio may remain numerically available;
+- PV declares the current session invalid.
+
+## H001 rule
+Primary common-support analysis requires:
+- no current-session missing-slot coverage reason.
+
+Do not compare a structurally invalid slot-RVOL observation to a numerically present Formal ratio.
+
+Status: H001_MISSING_SLOT_COMMON_SUPPORT_GUARD_FROZEN.
+
+
+# PVE-037 — Snapshot Fingerprint Includes sourceFetchedAt and Can Turn Legitimate Retries into Mutation Conflicts
+
+## Current snapshot fingerprint
+`pvSnapshotFingerprint(snapshot)` hashes:
+- identity;
+- features;
+- context;
+- coverage;
+- the entire source object.
+
+The source object contains:
+`sourceFetchedAt`.
+
+## Retry scenario
+Same logical 15m bar:
+- same snapshotId;
+- same bar OHLCV;
+- same Formal context;
+- same baselines;
+but retried at a later scheduledTime.
+
+Then:
+- sourceFetchedAt changes;
+- semantic fingerprint changes;
+- immutable write returns `mutationConflict=true` instead of DUPLICATE.
+
+## Production paths where retry is possible
+Normal need15 cadence usually refreshes once per completed bar.
+
+But retry/reprocessing can occur through:
+- forceFrames when same-day previous live state is unavailable;
+- recovery/restart behavior;
+- authorized manual monitor execution;
+- repeated processing around state restoration.
+
+Thus the defect is not eliminated by ordinary cadence.
+
+## Impact
+- no overwrite occurs, so first row remains immutable;
+- Formal is unaffected;
+- mutation-conflict telemetry can become a false-positive;
+- QA could incorrectly conclude semantic mutation occurred.
+
+Status: SNAPSHOT_FINGERPRINT_VOLATILE_PROVENANCE_DEFECT_CONFIRMED.
+
+
+# PVE-038 — Daily Snapshot Retry Has the Same Volatile-Fingerprint Problem
+
+## Daily identity
+Daily snapshot uses fixed:
+`observedAt = marketDate + 13:30:00+08:00`.
+
+Thus same-day reruns produce the same snapshotId.
+
+## Volatile source
+Daily source includes:
+`sourceFetchedAt = new Date().toISOString()`.
+
+A later same-day after-market retry can therefore produce:
+- same logical snapshotId;
+- different sourceFetchedAt;
+- different fingerprint;
+- mutationConflict.
+
+## Consequence
+After-market recovery/retry can create false mutation alarms even when:
+- daily OHLCV;
+- Formal plan;
+- feature values
+are identical.
+
+Status: DAILY_RETRY_MUTATION_FALSE_POSITIVE_RISK_CONFIRMED.
+
+
+# PVE-039 — T16/T17 Do Not Exercise Volatile-Provenance Retry
+
+## Existing test behavior
+T16 verifies:
+- stable logical snapshot key;
+- abstract duplicate/mutation decision.
+
+T17 creates one snapshot object and compares its fingerprint with:
+`structuredClone(snapshot)`.
+
+The fixture source contains only a stable slotKey.
+
+Then insert-path duplicate test reuses the exact same semantic object.
+
+## Missing fixture
+There is no test where:
+- snapshotId is unchanged;
+- all market/decision semantics are unchanged;
+- sourceFetchedAt differs only because acquisition occurred later.
+
+Likewise no daily retry fixture varies sourceFetchedAt.
+
+## Result
+Current tests prove deterministic hashing of identical objects.
+They do not prove retry idempotency under real acquisition metadata.
+
+Status: IDEMPOTENCY_TEST_COVERAGE_GAP_CONFIRMED.
+
+
+# PVE-040 — Semantic Fingerprint and Acquisition Provenance Must Be Separate Concepts
+
+## Correct conceptual contract
+
+### Semantic fingerprint
+Should include fields whose change means the logical observation changed:
+- source bar identity;
+- OHLCV-derived features;
+- baseline version/as-of;
+- Formal frozen context;
+- guard/state semantics;
+- schema version.
+
+### Acquisition provenance
+May include:
+- fetchedAt;
+- retry attempt time;
+- audit-write time;
+- network/request metadata.
+
+These can legitimately differ across idempotent retries.
+
+## Rule
+Acquisition timestamps may be stored for audit,
+but should not by themselves turn an otherwise identical logical observation into a semantic mutation.
+
+## Existing rows
+Do not rewrite historical fingerprints.
+
+A future corrected schema/version should:
+- freeze the revised fingerprint contract;
+- distinguish old-v0.1 retry-conflict semantics;
+- retain first-write provenance.
+
+Status: SEMANTIC_VS_ACQUISITION_PROVENANCE_CONTRACT_FROZEN.
+
+
+# PVE-041 — Outcome Fingerprint Does Not Share the sourceFetchedAt Defect
+
+## Current outcome hash
+`pvOutcomeFingerprint` includes:
+- snapshotId;
+- horizon;
+- return/MFE/MAE/rangeAtr;
+- stopFirst;
+- falseBreak;
+- acceptanceResult;
+- outcomeComplete.
+
+It does not include:
+- completed_at insertion timestamp.
+
+## Consequence
+A later finalizer rerun with the same market outcome should hash identically even though the database completed_at would have differed on a fresh insert.
+
+Therefore:
+- snapshot idempotency has a known volatile-provenance defect;
+- outcome idempotency is structurally cleaner under the audited fields.
+
+Separate these two QA dimensions.
+
+Status: OUTCOME_FINGERPRINT_TIMESTAMP_SEPARATION_PASS.
+
+
+# PVE-042 — MutationConflict Must Be Classified by Cause before It Is a Kill-Switch Signal
+
+## Original governance
+Any mutation conflict was treated as an immediate serious QA alarm.
+
+## New evidence
+PVE-037/038 show some mutation conflicts can arise solely from:
+`sourceFetchedAt`
+changing on a legitimate retry.
+
+## Required classification
+Before interpreting a future conflict:
+
+### SEMANTIC_MUTATION
+Feature/context/baseline/source-bar semantics changed for same snapshotId.
+Serious data-integrity failure.
+
+### VOLATILE_PROVENANCE_ONLY
+Only acquisition/audit timestamp changed.
+Implementation fingerprint defect; first immutable row remains intact.
+
+### UNKNOWN_CONFLICT
+At-rest details unavailable or diff cannot be reconstructed.
+
+## Governance
+Do not downgrade SEMANTIC_MUTATION severity.
+
+But do not claim semantic corruption from an unclassified v0.1 conflict count.
+
+Status: MUTATION_CONFLICT_CAUSE_CLASSIFICATION_REQUIRED.
