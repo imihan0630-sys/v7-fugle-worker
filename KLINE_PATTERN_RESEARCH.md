@@ -8260,3 +8260,242 @@ LOW / DEPRIORITIZED:
 - extra moving-average systems
 - Renko duplicate implementation
 
+
+
+## DL-002CM — Effort vs Result / Price-Impact Primitive v0.1
+
+### Why study this
+Wyckoff’s “Effort vs Result” idea has a useful measurable core:
+- effort = trading activity / turnover / participation,
+- result = directional price progress / range / acceptance.
+
+The narrative claim that large interests are accumulating or distributing is not directly observable and must not be inferred from price-volume shape alone.
+
+### External evidence boundary
+- Practitioner Wyckoff literature interprets unusually high volume with little price progress as possible absorption, but direction depends on location/context.
+- Finance literature shows volume and price movement have complex relations; unusual volume can proxy attention as well as information.
+- Taiwan-specific Pacific-Basin Finance Journal evidence shows the return-to-volume Amihud construct’s pricing in Taiwan can be dominated by a mispricing/volume component rather than a pure illiquidity component, with price limits materially affecting interpretation.
+- Taiwan institutional order-imbalance research shows order-flow information can matter, but simple aggregate volume is not equivalent to informed flow.
+
+### Define effort
+Keep multiple observable versions:
+- volumeVs20
+- turnoverVs20
+- volumeShockZ
+- turnoverShockZ
+- exactVolumeAtPriceConcentration (prospective only)
+- bidAskImbalance / institutional-flow proxies when point-in-time valid
+
+### Define result
+Separate:
+- netReturnATR = abs(close-open or close-priorClose) / ATR
+- directionalProgress = signed close-to-close progress / ATR
+- barRangeATR
+- closeLocation
+- pivotProgress = movement toward/through a structural zone
+- followThroughProgress over later observable bars
+- acceptanceState
+
+### Four descriptive quadrants
+HIGH_EFFORT_HIGH_RESULT
+- activity produces material directional progress.
+
+HIGH_EFFORT_LOW_RESULT
+- large activity with limited net progress.
+- indicates opposing liquidity / disagreement / absorption-like behavior, but direction is UNKNOWN until context/follow-through.
+
+LOW_EFFORT_HIGH_RESULT
+- large price progress on little activity.
+- may represent thin liquidity, gap, low supply, or fragile movement.
+
+LOW_EFFORT_LOW_RESULT
+- inactivity / dead liquidity / balanced trade.
+
+### Location is mandatory
+For HIGH_EFFORT_LOW_RESULT store:
+- atSupportZone
+- atResistanceZone
+- insideBase
+- afterExtension
+- atBreakout
+- atRetest
+- nearPriceLimit
+- nearRoundNumber
+- eventContext
+
+Interpretation is conditional:
+- near support + later upside departure may be absorption-like;
+- near resistance + later downside departure may be distribution-like;
+- before departure, label only EFFORT_RESULT_DIVERGENCE.
+
+### Follow-through validation
+Possible later labels:
+- DIVERGENCE_RESOLVED_UP
+- DIVERGENCE_RESOLVED_DOWN
+- DIVERGENCE_UNRESOLVED
+- DIVERGENCE_WHIPSAW
+
+Never backdate the resolved direction to the original high-effort bar.
+
+### Taiwan-specific caution
+Do not use a raw return/volume ratio as a direct “liquidity” or “absorption” score in Taiwan.
+Price limits, mispricing/attention and tick effects can alter the meaning.
+Control:
+- priceLimitState
+- tickDominance
+- liquidity tier
+- event/attention state
+- exact/inexact order-flow provenance
+
+### Redundancy
+Compare against:
+- existing volumeTodayVsPrev5
+- volumeContraction5to20
+- closeLocation
+- upper-shadow ratio
+- turnover/liquidity
+- Quiet/Attention
+- DL-001 price discreteness
+- failure/reclaim motifs
+
+Expected incremental component is the interaction between ACTIVITY and PRICE_PROGRESS at a structural location, not volume alone.
+
+## DL-002CN — Wyckoff Spring / Upthrust as Observable Motifs
+
+### Principle
+Keep observable event geometry; discard unverifiable intent narratives.
+
+### SPRING label
+A support-zone spring candidate:
+1. price trades/closes below a previously known support zone;
+2. undercut magnitude is recorded in %/ATR/ticks;
+3. price later re-enters/reclaims the zone within a frozen time window;
+4. subsequent state may tighten or advance.
+
+Store:
+- undercutDepth
+- undercutVolumeContext
+- reclaimBars
+- reclaimCloseLocation
+- reclaimVolume
+- supportZoneStrengthAsOf
+- postReclaimTightness
+- postReclaimMFE/MAE
+
+First observable “spring confirmed” timestamp is the reclaim, not the low.
+
+### UPTHRUST label
+Mirror at resistance:
+1. price breaches known resistance;
+2. fails acceptance and re-enters the zone/range;
+3. later direction remains unknown until observed.
+
+Store:
+- overshootDepth
+- breachVolume
+- reentryBars
+- reentryCloseQuality
+- resistanceZoneStrengthAsOf
+- postReentry path
+
+### Relation to existing DL-002 motifs
+Spring overlaps:
+- UNDERCUT_RECLAIM_TIGHTEN
+- W UNDERCUT_RECLAIM
+
+Upthrust overlaps:
+- BREAKOUT_REENTRY
+- HIGH_VOLUME_REJECTION
+- FAILED_BREAKOUT
+
+Therefore Wyckoff labels are primarily interpretability aliases unless they add incremental timing/context information.
+
+### SOS / SOW
+SIGN_OF_STRENGTH:
+- directional expansion through resistance + acceptance/follow-through.
+
+SIGN_OF_WEAKNESS:
+- directional expansion through support + acceptance/follow-through.
+
+These are not inferred institutional actions; they are observable structural transitions.
+
+### LPS / LPSY
+LAST_POINT_OF_SUPPORT / SUPPLY can be represented as:
+- post-break/reclaim retest of a zone,
+- reduced adverse progress,
+- renewed directional departure.
+
+Do not call a point “last” until a later path proves it was last; historical label must be:
+- LPS_CANDIDATE at the time,
+- LPS_CONFIRMED only later.
+This avoids hindsight naming.
+
+## DL-002CO — High Effort / Low Progress Needs Directional Resolution
+
+### Central falsification
+If HIGH_EFFORT_LOW_RESULT were inherently bullish “absorption,” it should predict positive forward returns regardless of location.
+That is implausible and contradicted by the same pattern appearing near distribution/resistance.
+
+### Test matrix
+Within same-date matched groups:
+1. high effort / low result at support;
+2. high effort / low result at resistance;
+3. high effort / high positive result;
+4. high effort / high negative result;
+5. low effort / low result controls.
+
+Stratify by:
+- market regime
+- liquidity
+- event proximity
+- price-limit state
+- parent pattern
+- RS trend
+
+### Outcomes
+- D1/D3/D5/D10
+- MFE/MAE
+- zone reaction
+- zone break
+- R01 if breakout-related
+- reclaim/failure transition
+
+### Interpretation
+The expected value may come from LOCATION × EFFORT_RESULT interaction, not the raw ratio.
+
+## DL-002CP — Aggregate Volume Is Not Order Flow
+
+### Distinction
+Daily total volume:
+- measures activity.
+
+Signed/order-level flow:
+- measures directional aggressor imbalance or participant type.
+
+They are not interchangeable.
+
+### Taiwan evidence
+Institutional order-imbalance volatility, particularly foreign institutional activity, has documented predictive relationships in Taiwan markets.
+
+### Research hierarchy
+Lowest information:
+- total volume only.
+
+Better:
+- turnover + price result + close quality.
+
+Better when valid:
+- bid/ask split / price-by-volume side,
+- institutional net flow,
+- order imbalance.
+
+Best but data-limited:
+- account/order-level aggressiveness or trade classification.
+
+### Rule
+Never describe a high-volume daily bar as “institutional absorption” unless direct participant/order-flow evidence exists.
+Use:
+POSSIBLE_ABSORPTION_GEOMETRY
+rather than
+INSTITUTIONAL_ACCUMULATION.
+
