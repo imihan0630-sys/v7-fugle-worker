@@ -389,3 +389,29 @@ Class A if research-only; Class C if later used in formal 15m confirmation.
 5. PV-122: freeze PV-H005 data-capture/test protocol using existing institution payloads, still no Formal change.
 6. Continue cross-lane integration before inventing any new indicator.
 7. Formal Core remains LOCKED.
+
+## Progress added — PV-118 through PV-130
+- PV-118 freezes a unified volume-origin taxonomy: stock-specific information, discretionary directional flow, mechanical hedge, passive basket, leverage crowding, market-structure distortion, common-factor flow, negotiated/liquidity transfer, retail short-horizon activity, and unknown/mixed.
+- PV-119 freezes attribution-confidence levels AC0~AC4. Context overlap is not causality; same-symbol official flow can support AC2; compatible gross flow shares can support AC3; causal claims require much stronger identification. Net flow is never treated as a causal share of volume.
+- PV-120 creates a source-readiness matrix. Dealer proprietary/hedge split is the best next Tier-2 capture because TWSE/TPEx official data already expose it and current payloads can be reused. TPEx attention/disposition has authoritative public sources; current UNKNOWN is an integration gap, not source absence.
+- PV-121 separates raw RVOL, market/sector residual RVOL and origin context. They answer abnormality, specificity and mechanism respectively; they must not be stacked as duplicate additive points.
+- PV-122 freezes the PV-H005 data-capture/test protocol, including buy/sell/net split, source/date/provenance, integrity checks, A~E comparator family, D1/D3/D5/MFE/MAE/false-confirmation and capital-utilization outcomes.
+- PV-123 explicitly qualifies PV-111: TPEx disposition data exist officially; production code simply does not yet integrate them.
+- PV-124 requires multi-origin evidence sets rather than a forced primary cause.
+- PV-125 makes abstention a valid research output when origin evidence conflicts or is weak.
+- PV-126 separates dealer gross participation from net directional imbalance. Same net flow can represent radically different gross trading involvement.
+- PV-127 defines participant-side share semantics and prohibits interpreting it as unique-trade or causal share.
+- PV-128 adds a collider/selection-bias guard: origin research must not use only high-RVOL observations as the primary population.
+- PV-129 freezes the descriptive -> predictive -> causal hierarchy. Most PV origin research remains descriptive/incremental-predictive, not causal.
+- PV-130 ranks Tier-2 origin data by expected information gain versus engineering cost. Priority order starts with dealer proprietary/hedge split, TPEx disposition parity, daily transaction-count decomposition, TWSE actual SBL context, and daily market/sector residual RVOL.
+- PV_SHADOW_V0_1 remains frozen during DATA_QA. All origin work remains Tier-2/Observer.
+- Formal Core remains LOCKED.
+
+## Revised exact next continuation point after PV-130
+1. PV-131: audit whether foreign/trust flows also need gross-participation vs net-direction separation, or whether that would mostly duplicate dealer lessons.
+2. PV-132: define source-scope compatibility contracts for institutional flow vs official total volume across TWSE/TPEx.
+3. PV-133: study whether gross institutional participation improves interpretation of HIGH_EFFORT_LOW_PROGRESS without creating duplicate volume signals.
+4. PV-134: define point-in-time institutional data vintage/revision semantics for the 23:35 scan.
+5. PV-135: decide whether H005 capture merits a separate Class-A research-only proposal after PV_SHADOW_V0_1 DATA_QA stabilizes.
+6. Continue integrating existing research lanes; do not invent new standalone indicators.
+7. Formal Core remains LOCKED.
