@@ -1,9 +1,9 @@
 # Corporate Actions & Capital Supply Checkpoint
 
 Updated: 2026-09-25 Asia/Taipei
-Current cursor: CA-001 through CA-036 complete.
-Status: CONCEPT_COMPLETE / SOURCE_AUDIT_COMPLETE / MATERIALITY_CONFIRMED / CLASS_B_PROPOSAL_READY.
-Next: CA-037.
+Current cursor: CA-001 through CA-080 complete.
+Status: MATERIALITY_CONFIRMED / LIFECYCLE_REGISTRY_V0_2 / MECHANICS_DELTA_BUILT / RS_SEMANTICS_CONFIRMED / EVIDENCE_DENOMINATOR_PENDING.
+Next: CA-081.
 
 ## Durable conclusions
 - Announced equity supply/demand and realized share-base change are separate.
@@ -57,3 +57,28 @@ CA-037 widen the real event sample.
 CA-038 research share-volume-unit bridging.
 CA-039 run no-action controls.
 CA-040 consider branch/test work only if the evidence remains material.
+
+
+## CA-037 through CA-080 durable update
+- Corporate-action research has advanced far beyond the initial three-event sample.
+- Lifecycle semantics are frozen: price-reference events and realized share-supply/listing events are separate when they occur on different dates.
+- Stock-dividend ex-right does not automatically rescale tradable-share volume; later new-share listing is a separate SUPPLY_CHANGE stage.
+- Registry sample v0.2 is materialized and v0.1 is superseded for lifecycle semantics.
+- Deterministic registry validation spec is materialized. Missing factors/timing remain UNKNOWN; never default to 1/0/no-event.
+- Window relevance rule: historyStartDate < effectiveDate <= targetDate.
+- Readiness is multidimensional: schema, point-in-time, technical price, technical volume, Price-RS, Total-RS, inference.
+- First coverage manifest and readiness-qualified mechanics feature-delta sample are materialized.
+- Four mechanics-qualified windows: 2412, 3593, 8103, 8422. 8454 remains excluded from first mechanics-delta sample because first-known/listed-share provenance is incomplete.
+- 8422 still flips full A technical setup from raw FAIL to continuity PASS. 3593 proves price-only correction is insufficient because verified share-unit volume handling flips volume checks.
+- Official TWSE discovery source map is frozen. TWT48U_ALL supports prospective ex-right discovery; historical public ex-right/capital-reduction/par-value pages plus official announcements provide validation; Data E-Shop documents complete paid historical files.
+- Official TWSE historical monthly FMTQIK Price Index and MFI94U Total Return Index contracts are live-validated for 2025-10/11/12 and 2026-06/07.
+- First RS semantic sample: 3593 Legacy RS +67.61% vs Price-Compatible +0.21%; 8103 +7.83% vs -6.47%; 8422 -88.67% vs +21.11%. These are semantic/mechanical findings, not alpha claims.
+- Research-only Class B prototype exists on branch research/class-b-corporate-action-history-semantics-20260925. Draft PR #101 is open. It changes only research/test files and must not be merged without owner approval.
+- No Worker.js wiring, no production deploy, no Formal Core change.
+
+## Exact next continuation
+CA-081 prospective daily corporate-action archive contract.
+CA-082 bounded historical ingestion/completeness receipts.
+CA-083 systematic matched no-action controls.
+CA-084 contamination persistence horizon.
+CA-085 interaction with history-freshness PR #100 and Pattern dual raw/adjusted spaces.
