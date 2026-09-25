@@ -4409,4 +4409,275 @@ Three important corrections/refinements are now durable:
    Their trading-session scope must not be assumed identical.
 
 The next layer of PV research should treat day-trading intensity and regulatory attention as contextual explanations for “why volume is high,” not as independent bullish/bearish signals.
+# PV-073 — Decompose Daily Abnormal Volume into Transaction Count vs Average Trade Size
+
+## Identity
+At daily level:
+`traded shares = transaction count x average shares per transaction`.
+
+The components answer different questions:
+- did activity rise because there were many more executions?
+- or because average executed size was larger?
+
+## Taiwan evidence
+Taiwan OTC evidence finds number of transactions explains price volatility/liquidity more strongly than average trade size in its sample, and the relation varies with market condition.
+
+Sources:
+- https://doi.org/10.1108/03074350610703849
+- https://scholars.lib.ntu.edu.tw/handle/123456789/414879
+
+## Candidate daily fields
+Using official TWSE/TPEx daily closing data:
+- `pvTransactionCount`;
+- `pvAvgTradeSizeShares = volumeShares / transactionCount`;
+- `pvTransactionCountRvol20 = currentCount / median(prior20 valid counts)`;
+- `pvAvgTradeSizeRvol20 = currentAvgSize / median(prior20 valid avg sizes)`.
+
+## Descriptive decomposition states
+Reuse 1.3 abnormal threshold without outcome tuning:
+- `COUNT_DRIVEN`: count RVOL>=1.3, avg-size RVOL<1.3;
+- `SIZE_DRIVEN`: avg-size RVOL>=1.3, count RVOL<1.3;
+- `BOTH_EXPANDED`: both>=1.3;
+- `NEITHER_COMPONENT_EXTREME`: neither>=1.3;
+- `UNKNOWN`.
+
+## Possible interpretations
+
+### COUNT_DRIVEN
+Constructive:
+- wider participation / attention / information arrival.
+
+Adverse:
+- order splitting / algorithmic fragmentation;
+- speculative churn;
+- high retail attention.
+
+### SIZE_DRIVEN
+Constructive:
+- larger blocks / concentrated conviction may matter.
+
+Adverse:
+- one/few large executions can distort the day;
+- cannot identify institutional investor from trade size alone;
+- block/auction/session-scope effects can contaminate interpretation.
+
+### BOTH_EXPANDED
+Constructive:
+- broad and deep participation.
+
+Adverse:
+- maximum crowding/attention can also occur near peaks.
+
+## Governance
+Do not label count-driven as retail or size-driven as institutional without investor-type evidence.
+Treat decomposition as information-intensity/risk context.
+
+Status: TIER2_LOW_COST_DECOMPOSITION.
+
+
+# PV-074 — Intraday Volume Shape: Front-Loaded, Persistent, or Spiky
+
+## Motivation
+Two days can have the same cumulative-volume pace but different shapes:
+- huge opening burst then silence;
+- steady elevated participation all session;
+- one isolated midday spike.
+
+PV-005 slot RVOL + cumulative pace already capture much of this. The question is whether a compact shape descriptor adds anything incremental.
+
+## Live/as-of-safe descriptors
+At each observed completed 15m bar:
+- `pvPeakSlotRvolSoFar`;
+- `pvBarsSincePeakSlotRvol`;
+- `pvAbnormalSlotCountSoFar` using >=1.3;
+- `pvPostOpeningAbnormalCount`;
+- `pvOpeningBlockRvol` once the opening block is complete;
+- `pvCurrentToPeakSlotRvol`.
+
+These use only bars observed so far.
+
+## Post-observation-window descriptors
+After the current monitor's final completed 13:00-start bar:
+- concentration of observed-session volume shares across the 17 available completed slots;
+- optional Herfindahl / entropy of volume share;
+- fraction of observed volume in opening block.
+
+These are descriptive for the **observed monitor window**, not the full exchange day because 13:15–13:30/closing auction is outside zero-extra-call v0.1.
+
+## Positive interpretation
+Persistent elevated participation across many slots may be more robust than one isolated burst.
+
+## Adverse interpretation
+- persistent activity can be persistent speculation/crowding;
+- front-loaded volume can represent legitimate overnight information incorporation;
+- a single spike can be an institutional/block-like event or noise;
+- shape metrics may duplicate pvPersistenceState and cumulative pace.
+
+## Decision
+Do not add HHI/entropy to v0.1.
+First test whether simpler:
+- abnormalSlotCount;
+- barsSincePeak;
+- cumulative pace;
+already explain the outcomes.
+
+Status: SHAPE_IDEA_VALID / COMPLEX_CONCENTRATION_METRICS_DEFERRED.
+
+
+# PV-075 — First-15m Opening Auction Mixture vs Continuous Trading
+
+## Market / provider fact
+TWSE mainboard opens through a call auction at 09:00, then continuous trading begins.
+Fugle v1 minute candles timestamp 09:00:00–09:00:59 activity at 09:00.
+
+Sources:
+- https://www.twse.com.tw/en/products/system/trading.html
+- https://developer.fugle.tw/docs/data/migration-guide/
+
+Therefore the first default 15m bar inevitably mixes:
+- opening auction print / overnight price discovery;
+- early continuous trading.
+
+## Same-slot normalization benefit
+Comparing today's first 15m bar with historical first 15m bars is still valid for abnormal-participation detection because the mixture is structurally repeated.
+
+## But interpretation remains ambiguous
+A huge first-15m bar can come from:
+- opening call auction imbalance;
+- immediate continuous follow-through;
+- both.
+
+These mechanisms may have different implications.
+
+## Optional decomposition
+A research-only 1m decomposition could compare:
+- 09:00 candle / first-15m total;
+- 09:01–09:14 continuous volume / first-15m total;
+- continuous price drift after opening print.
+
+## Cost/benefit
+This would require:
+- historical 1m baseline/cache;
+- extra live or historical data handling;
+- more session-boundary tests.
+
+It violates the “zero additional live candle calls” simplicity if implemented naively.
+
+## Decision
+Do not include opening-auction decomposition in v0.1.
+Revisit only if the primary experiment finds first-slot pvSlotRvol20 behaves materially differently from later slots.
+
+Status: CONDITIONAL_SECOND_STAGE / FIRST_SLOT_STRATIFY_FIRST.
+
+
+# PV-076 — Can Day-Trading Share Explain High-RVOL False Confirmations?
+
+## Hypothesis
+Some extreme volume may be short-horizon churn rather than durable participation.
+A high day-trading share could therefore interact with:
+- high RVOL;
+- high MAE;
+- failed breakout acceptance;
+- fast volume decay.
+
+## Counter-hypothesis
+Day trading can improve liquidity and accelerate price discovery. High day-trade share need not worsen continuation.
+
+Taiwan evidence supports both the importance of day-trading activity and its volatility channel; it does not justify a universal adverse sign.
+
+Sources:
+- https://doi.org/10.1016/j.heliyon.2023.e14939
+- https://doi.org/10.1016/j.gfj.2003.10.003
+
+## Timing problem
+The current Formal after-market scan runs at 18:10.
+Official per-security day-trading statistics may not be final or even available by that exact decision time:
+- TWSE data products describe generation later in the evening for some products;
+- TPEx explicitly notes T/T+1 revisions and T+2 finality.
+
+Therefore same-day final day-trading share cannot be silently used as if known at 18:10.
+
+## Research use
+First use day-trading share as:
+- explanatory / outcome-analysis context;
+- with exact retrieval timestamp and finality.
+
+Do not use it in same-day Formal selection or rank.
+
+If later a reliable as-of-18:10 source is proven, that is a new data-semantics project.
+
+Status: EXPLANATORY_ONLY_FOR_NOW / TIMING_BLOCKS_FORMAL_USE.
+
+
+# PV-077 — Tier-2 Pruning before Shadow v0.1 Implementation
+
+## Principle
+Deep research should reduce the feature set, not endlessly expand it.
+
+## Keep for v0.1
+Only Tier-1 already frozen:
+- pvDailyRvol20;
+- pvSlotRvol20;
+- pvCumvolPace20;
+- pvResponseState;
+- pvAcceptanceState;
+- pvPersistenceState;
+- pvGuardState/flags;
+- coverage/provenance;
+- current existing volume fields.
+
+## Strong Tier-2 candidates after v0.1 data quality
+### KEEP CANDIDATE — daily transaction decomposition
+Reason:
+- official daily data already fetched;
+- low marginal API cost;
+- distinct mechanism: count vs avg trade size.
+
+### KEEP CANDIDATE — daily market/sector residual RVOL
+Reason:
+- daily full-market history already exists;
+- helps separate common activity from stock-specific activity.
+
+### KEEP CANDIDATE — event freshness
+Reason:
+- low storage/computation cost;
+- directly addresses stale-shock problem.
+
+### CONDITIONAL — issued-share turnover
+Reason:
+- conceptually useful;
+- needs timestamped share denominator / corporate-action alignment.
+
+### CONDITIONAL — divergence fields
+Reason:
+- useful only after Pattern Maturity pivot semantics are fully stable;
+- high hindsight/redundancy risk.
+
+### CONDITIONAL — attention/disposition flags
+Reason:
+- useful clean-vs-guarded subgroup;
+- data availability for historical/as-of snapshots must be verified.
+
+## Defer
+- opening 1m auction decomposition;
+- intraday historical trade count;
+- volume-at-price history;
+- limit queue history;
+- day-trading-share as same-day selection input;
+- complex HHI/entropy intraday-shape features;
+- full-market 15m residual RVOL.
+
+## Reject as independent scores
+- OBV;
+- CMF/A-D;
+- MFI;
+- Volume Oscillator;
+- pattern-specific duplicate volume bonuses;
+- “buy/sell volume” inferred solely from candle direction.
+
+## Current judgment
+PV v0.1 is already sufficiently rich.
+The correct next move after state/spec QA is **collect prospective Shadow evidence**, not add more indicators.
+
+Status: FEATURE_PRUNING_COMPLETE / V0_1_SCOPE_STABLE.
 
