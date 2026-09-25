@@ -125,3 +125,23 @@ Class A if research-only; Class C if later used in formal 15m confirmation.
 5. PV-025: define exact minimal Shadow feature set; explicitly reject redundant candidates.
 6. Only after PV-021~025 should engineering insertion into research-only snapshots be proposed.
 7. Formal Core remains LOCKED.
+
+## Progress added — PV-021 through PV-027
+- PV-021 adds opening/mid/closing volume concentration but enforces strict no-look-ahead semantics: full-day block shares are post-close only; live snapshots use same-block historical baselines and cumulative pace.
+- PV-022 formalizes dry-up -> breakout expansion -> retest contraction -> reacceleration as a falsifiable state sequence, not an assumed bullish law. Retest is optional and must prove incremental value.
+- PV-023 requires incremental-value testing after existing Formal A/B, Pattern Maturity, Residual RS, sector, institution, overheat, liquidity, Information Discreteness and regime controls. Date-blocked validation and multiple-testing controls are mandatory.
+- PV-024 defines prospective operational coverage gates: >=20 valid history sessions for slot features; first 50 events data-quality only; evidence interpretation after >=100 completed events and >=30 distinct market dates, with milestone reviews at 100/250/500. These are governance floors, not universal statistical-power claims.
+- PV-025 defines the minimum viable Shadow set and explicitly rejects redundant indicators. Proposed new fields: pvDailyRvol20, pvSlotRvol20, pvCumvolPace20, pvResponseState, pvAcceptanceState, pvPersistenceState, pvGuardState plus coverage/provenance. Existing Worker volume fields remain reused, not duplicated.
+- PV-026 separates directional alpha from risk/information-intensity value. A PV feature may fail to predict sign yet still help predict volatility, false-break, stop-first or execution risk.
+- PV-027 proposes market/sector-residual abnormal volume as a comparison, not an extra score, because stock RVOL may reflect common market/sector activity.
+- Minimal Shadow set is ready for an engineering proposal with decisionImpact=false; Formal scoring is not ready.
+- Formal Core remains unchanged / LOCKED.
+
+## Revised exact next continuation point after PV-027
+1. PV-028: study volume distribution / concentration inside a bar or day only if data semantics support it; avoid inventing volume-at-price from OHLCV candles.
+2. PV-029: study trade-count vs average-trade-size evidence and whether available Taiwan/Fugle data can support it historically.
+3. PV-030: study corporate actions / shares-outstanding changes and baseline-reset rules so RVOL history is not corrupted by capital changes.
+4. PV-031: study downside vs upside volume-volatility asymmetry and whether risk controls should be direction-sensitive.
+5. PV-032: map PV states into current entry / maxChase / stop-risk research targets without changing Formal decisions.
+6. Engineering proposal may be drafted for research-only Shadow logging; do not implement Formal use without owner approval.
+7. Formal Core remains LOCKED.
