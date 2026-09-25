@@ -127,3 +127,29 @@ If automated acquisition requires MFA, secret entry or a new commercial subscrip
 This closes the semantic/unit/parser contract for the official TPEx S38 artifact lane.
 It does not claim that the repository already contains every historical S38 file.
 It does not change Formal Core or Worker.js.
+
+## Executable parser evidence
+
+Draft PR #101 research branch now includes:
+- `research/tpex_s38_denominator_parser_prototype.mjs`;
+- `tests/test_tpex_s38_denominator_parser_prototype.mjs`.
+
+The parser freezes the official S38 prefix through industry code at 201 characters and reads:
+- trade volume directly as shares;
+- issued shares directly as shares;
+- market capitalization directly as NTD;
+without any x1000 normalization.
+
+Negative controls reject:
+- too-short rows;
+- non-numeric issued-share fields;
+- duplicate symbols within one artifact.
+
+Branch commit `78f627d36de44e50d50f74bb387e19dec9558a7a` has fresh trusted execution:
+- Research Corporate Action Prototype `36149848429`: SUCCESS;
+- V8 Regression Tests `36149848439`: SUCCESS;
+- V8 Repair CI `36149848481`: SUCCESS.
+
+Research job `108120054170` explicitly passed `TPEx S38 denominator parser tests` together with the existing corporate-action continuity, suspension, integration, denominator-vintage and lifecycle tests.
+
+This is parser/semantic evidence only. It does not claim that the repository already contains a complete historical S38 archive.
