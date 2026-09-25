@@ -74,6 +74,7 @@ jobs:
           python3 scripts/apply_v8_9_8.py
           python3 scripts/apply_v8_9_9.py
           python3 scripts/apply_v8_10_0.py
+          python3 scripts/apply_v8_11_0.py
           # V8.9.3 Hybrid WATCH regression contract
       - name: Syntax and offline behavior regression
         env:
@@ -82,7 +83,12 @@ jobs:
           set -euo pipefail
           cp Worker.js /tmp/v7-worker.mjs
           node --check /tmp/v7-worker.mjs
-          grep -F 'const VERSION = "8.10.0-aideen-independent-pool";' Worker.js
+          grep -F 'const VERSION = "8.11.0-pv-shadow-v0.1-log-only";' Worker.js
+          grep -F 'const PV_SHADOW_SCHEMA_VERSION = "PV_SHADOW_V0_1";' Worker.js
+          grep -F 'CREATE TABLE IF NOT EXISTS v7_pv_shadow_snapshots' Worker.js
+          grep -F 'CREATE TABLE IF NOT EXISTS v7_pv_outcomes' Worker.js
+          grep -F 'CREATE TABLE IF NOT EXISTS v7_pv_intraday_baselines' Worker.js
+          grep -F 'decisionImpact:false' Worker.js
           grep -F 'const AIDEEN_POOL_ID = "AIDEEN_APP";' Worker.js
           grep -F 'url.pathname === "/api/aideen-pool"' Worker.js
           grep -F 'CREATE TABLE IF NOT EXISTS trade_research_execution_snapshots' Worker.js
@@ -166,6 +172,7 @@ jobs:
           node tests/test_v8_9_8_staged_recovery.mjs
           node tests/test_v8_9_9_staged_delivery.mjs
           node tests/test_v8_10_0_aideen_independent_pool.mjs
+          node tests/test_v8_11_0_pv_shadow.mjs
           node tests/test_v8_9_0_three_pool_hybrid_shadow.mjs
           node tests/test_v8_9_1_three_pool_dashboard.mjs
           node tests/github_plan_mirror.mjs self-test

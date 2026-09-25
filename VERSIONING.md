@@ -106,3 +106,9 @@
 - 本次不改股池與選股核心架構，也不新增新的投資決策功能；修正的是第26項外部 3Min 串接的驗收狀態、readback 證據與健康檢查，因此屬修正版。
 - 第26項只有在真實完整 payload POST + exact readback 後才可自動完成；舊計畫、模擬、單純 HTTP 回應均不能充數。
 - 同日診斷確認 9/18 3Min 401 的根因是 Free plan 舊 endpoint 7 日自動刪除，不是選股程式本身。
+
+## 11. V8.11.0｜PV Shadow V0.1（2026-09-25）
+
+- Runtime：`8.11.0-pv-shadow-v0.1-log-only`。
+- 本次新增獨立 Class-A 價量研究資料收集功能，未更動核心股池／選股架構，因此屬 V8 功能版本。
+- `PV_SHADOW_ENABLED=false` 為預設；啟用時仍為 `LOG_ONLY`、`decisionImpact=false`，不得影響 Formal Core、推播或操作。

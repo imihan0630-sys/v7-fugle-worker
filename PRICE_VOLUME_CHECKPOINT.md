@@ -347,4 +347,20 @@ Class A if research-only; Class C if later used in formal 15m confirmation.
 - PRICE_VOLUME_SHADOW_IMPLEMENTATION_PLAN.md: canonical current engineering plan.
 - PRICE_VOLUME_HYPOTHESIS_LEDGER.md: canonical hypothesis/test history.
 - Next rational action is not indicator expansion. It is owner-approved Class-A LOG_ONLY implementation and prospective DATA_QA.
-- Until owner explicitly approves implementation, continue only unresolved evidence/semantic research and keep Worker.js unchanged.
+- Superseded by PV-093: owner authorization was subsequently received; the patch-chain implementation is recorded below while Formal Core remains unchanged.
+
+## Progress added — PV-093 implementation
+
+- Owner authorization was received; V8.11.0 implements `PV_SHADOW_V0_1` as Class-A `LOG_ONLY`, `decisionImpact=false`, `formalCoreImpact=false`.
+- The default flag remains OFF. OFF performs no PV bootstrap, feature calculation or D1 write.
+- ON stores immutable intraday/daily snapshots, horizon outcomes and prior-session-only baseline rows in the three frozen D1 tables. Ordinary monitoring reuses completed 15m bars and adds zero live candle calls.
+- PV hooks run after Formal processing and are fail-open. They emit zero PV pushes/actions and cannot alter selection, ranking, capital, A/B/stop decisions or the existing local volume ratio.
+- Mandatory deterministic T1–T18 tests and the 44-test legacy/full regression pass are the implementation acceptance gate; no prospective market evidence is claimed by this milestone.
+- Formal Core remains LOCKED.
+
+## Current state after PV-093
+
+- Engineering phase: implementation completed; next phase is prospective `DATA_QA`.
+- PV-H001 through PV-H004 move to `DATA_QA`; they are not supported or rejected yet.
+- Next exact continuation: enable `PV_SHADOW_ENABLED=true` only in a controlled environment, verify first-session slot/coverage/guard/fingerprint integrity and live-call counts, then collect the frozen first 50 events before any inferential analysis.
+- Any Formal fingerprint difference, PV exception propagation, PV push/action, unexpected live API growth, look-ahead, mutation conflict or unit mixing is an immediate kill-switch condition.

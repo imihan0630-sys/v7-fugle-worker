@@ -3,7 +3,7 @@ import fs from "node:fs";
 
 const source=fs.readFileSync(process.env.V7_TEST_WORKER_PATH||"Worker.js","utf8");
 
-assert.match(source,/const VERSION = "8\.10\.0-aideen-independent-pool";/);
+assert.match(source,/const VERSION = "8\.11\.0-pv-shadow-v0\.1-log-only";/);
 assert.match(source,/const AIDEEN_POOL_ID = "AIDEEN_APP";/);
 assert.match(source,/const AIDEEN_MAX_STOCKS = 5;/);
 assert.match(source,/const AIDEEN_KV_KEY = "V10_AIDEEN_APP_POOL";/);

@@ -1,6 +1,6 @@
 # Price-Volume Shadow V0.1 — Implementation Plan
 
-Status: READY_TO_PROPOSE / CLASS_A_RESEARCH_ONLY / NOT_IMPLEMENTED
+Status: IMPLEMENTED / CLASS_A_RESEARCH_ONLY / LOG_ONLY / decisionImpact=false
 
 Canonical engineering semantics for PV_SHADOW_V0_1.
 Formal Core remains LOCKED.
@@ -478,3 +478,13 @@ A future Modifier proposal requires:
 Win-rate improvement caused by suppressing BUY frequency / capital utilization is not sufficient.
 
 Predictive VETO is not part of v0.1 and requires a separate Class-C owner-approved proposal.
+
+## 22. Implementation record — V8.11.0 / PV-093
+
+- Owner authorization was received and `PV_SHADOW_V0_1` was implemented as Class-A `LOG_ONLY` with `decisionImpact=false` and `formalCoreImpact=false`.
+- `PV_SHADOW_ENABLED` defaults to `false`. OFF performs no PV bootstrap, calculation or D1 writes.
+- ON reuses completed Formal 15m data during ordinary monitoring, adds no live candle call, emits no PV push/action and records immutable snapshots/outcomes plus versioned intraday baselines.
+- The three D1 stores are `v7_pv_shadow_snapshots`, `v7_pv_outcomes` and `v7_pv_intraday_baselines`.
+- The intraday hook runs after Formal signal handling and live-state persistence. The after-market hook runs after Formal plan persistence, bridge delivery and daily push persistence. All PV failures are contained as metadata.
+- Deterministic T1–T18 fixtures cover no-look-ahead, completed-bar boundaries, state machines, guards, persistence, unit separation, immutable fingerprints, same-session horizons, separate `NEXT_OPEN`/`NEXT_SESSION` outcomes and Formal isolation.
+- This implementation creates collection infrastructure only. It supplies no prospective evidence and does not authorize a Modifier or any Formal optimization.

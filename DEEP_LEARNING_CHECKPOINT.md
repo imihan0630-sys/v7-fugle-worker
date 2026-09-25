@@ -457,3 +457,11 @@ No Formal Core change is approved or implied.
 - All current PV remains Level-0 OBSERVER. The only implementation readiness conclusion is: owner-authorized Class-A LOG_ONLY decisionImpact=false Shadow logging is sufficiently specified. No Formal A/B/ranking/BUY/maxChase/stop/capital/push/re-add optimization is supported yet.
 - Worker.js remains unchanged / Formal Core LOCKED.
 - Next rational phase after owner authorization: implementation -> DATA_QA -> prospective evidence -> untouched confirmation block -> only then consider any Modifier proposal.
+
+## Price-Volume lane update — PV-093
+
+- Owner-authorized V8.11.0 implements `PV_SHADOW_V0_1` as Class-A `LOG_ONLY`; `PV_SHADOW_ENABLED=false` remains the default and every stored record declares `decisionImpact=false`.
+- The collector reuses completed 15m monitoring data, keeps daily/intraday units separate, stores immutable fingerprints and outcomes, and performs baseline bootstrap only in the after-market research path.
+- Intraday and after-market PV work begins only after the corresponding Formal state/push persistence and is fail-open with zero PV push/action semantics.
+- Deterministic T1–T18 fixtures are the initial oracle. PV-H001 through PV-H004 now enter `DATA_QA`, with no prospective evidence and no permission to change Formal.
+- Formal Core remains LOCKED. The next phase is controlled enablement, first-session data-integrity review and the frozen first-50-event QA gate.

@@ -406,3 +406,12 @@
   - 原 3+3+3 仍維持 2026-09-24：2006 東和鋼鐵、4977 眾達-KY；6683 雍智科技仍為 Hybrid WATCH。
 - 完整 Regression Tests（回歸測試） run `36084561862` 成功；Cloudflare Deploy（雲端部署） run `36084561878` 成功。
 - 此版本沒有修改 Formal Core（正式選股核心）、A/B條件、3+3+3配額、原三池資金規則或9/24既有正式計畫。
+
+## 2026-09-25｜V8.11.0 PV Shadow V0.1 Class-A LOG_ONLY
+
+- Runtime：`8.11.0-pv-shadow-v0.1-log-only`。
+- 新增 `PV_SHADOW_V0_1` 研究側車，預設 `PV_SHADOW_ENABLED=false`；ON 時仍固定 `decisionImpact=false`、`formalCoreImpact=false`。
+- 新增不可變 PV snapshot/outcome 與 intraday baseline D1 儲存；普通盤中監控重用既有完成 15 分 K，不增加 live candle call。
+- PV 盤中與盤後工作均排在 Formal 狀態、計畫與推播持久化之後，錯誤 fail-open，且不產生 PV 推播或操作。
+- 新增 T1–T18 deterministic fixtures、獨立 `NEXT_OPEN`/`NEXT_SESSION` 結果與 CI patch-chain 驗證；完整 44 項回歸通過。
+- Formal Core、A/B/stop、排序、資金、既有 local volumeRatio 與正式決策語義均未修改。
