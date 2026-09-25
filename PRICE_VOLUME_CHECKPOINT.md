@@ -680,3 +680,14 @@ Class A if research-only; Class C if later used in formal 15m confirmation.
 5. PVE-066: define v0.1 evidence salvage matrix—what can remain usable without code changes versus what requires a new research schema.
 6. Continue evidence/falsification; no threshold tuning or Formal promotion.
 7. Formal Core remains LOCKED.
+
+## Evidence lane — PVE-001 through PVE-006
+- New canonical prospective evidence file: PRICE_VOLUME_EVIDENCE.md.
+- PVE-001 verifies actual runtime activation: GitHub Actions enable run 36144091642 succeeded; PV_SHADOW_ENABLED=true; binding plain_text; Formal isolation true; no rollback.
+- Latest read-only QA workflow run 36144193465 confirms deployed runtime 8.11.0-pv-shadow-v0.1-log-only, decisionImpact=false, formalCoreImpact=false, active hook after Formal and zero extra ordinary live candle calls.
+- The QA workflow itself returns qaPass=false because direct D1 SELECT is not authorized (Cloudflare 403). This is a row-level QA observability block, not evidence that PV runtime rows are absent.
+- Re-running the existing read-only job after 23:35 proved the 2026-09-25 scan was correctly SKIPPED because 2026-09-25 is a configured market holiday; 2026-09-28 is also holiday. The system made zero Fugle calls and did not fabricate a scan/PV baseline.
+- Because bootstrap only runs after a successful Formal after-market scan, 2026-09-29 intraday is expected to be DATA_INSUFFICIENT for same-slot baseline before the 23:35 bootstrap. 2026-09-30 is the first natural candidate date for clean >=20-session intraday baseline evidence.
+- Two QA diagnostic blind spots were identified without changing code: cron audit drops result.reason for SKIPPED runs, and the QA script's afterMarketWindow assertion is not trading-calendar aware and could false-fail on a holiday after 23:45.
+- Overall PVE-001 readiness = DATA_QA_PARTIAL, not DATA_QA_PASS and not alpha evidence.
+- Formal Core and PV_SHADOW_V0_1 unchanged.
