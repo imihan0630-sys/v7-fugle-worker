@@ -11560,3 +11560,136 @@ This rule applies to:
 
 Anything using future data must carry an explicit firstObservableAt.
 
+
+
+## DL-002GA — Institutional Flow Is Not Automatically Independent Confirmation
+
+### Taiwan evidence
+Taiwan institutional-investor research documents both:
+- informative institutional herding / future return differences,
+and
+- positive-feedback / momentum-like trading behavior.
+
+More recent Taiwan evidence also finds the effect of institutional herding varies by market state and herding intensity.
+
+### Research implication
+When both:
+- price pattern strengthens,
+- institutional buying increases,
+the signals may be:
+A. independent informed sponsorship,
+B. institutional reaction to the same prior price momentum,
+C. common response to an external event,
+D. herding/crowding.
+
+Therefore two observed signals do not automatically equal two independent pieces of evidence.
+
+### Lead-lag decomposition
+Store:
+- patternMaturityAtFlowStart
+- firstInstitutionalAccelerationAt
+- priceMomentumBeforeFlow
+- residualRSBeforeFlow
+- flowLeadsPatternDays
+- patternLeadsFlowDays
+- eventBeforeBoth
+- sectorFlowBeforeStockFlow
+
+### States
+FLOW_LEADS_PRICE_STRUCTURE
+- flow strengthens before price topology improves.
+
+COINCIDENT_CONFIRMATION
+- flow and price improve together.
+
+PRICE_LEADS_FLOW
+- pattern/price strengthens first; institutions enter later.
+
+LATE_INSTITUTIONAL_CHASE
+- flow accelerates only after extended breakout.
+
+### Hypothesis
+FLOW_LEADS_PRICE_STRUCTURE may contain more independent information than PRICE_LEADS_FLOW, but this must be tested.
+
+## DL-002GB — Residualize Institutional Flow Against Recent Price Trend
+
+### Goal
+Ask whether institutional flow contains information beyond its predictable relationship with recent price performance.
+
+### Research-only residual concept
+Model/condition flow using only point-in-time variables such as:
+- recent return
+- sector return
+- market return
+- turnover
+- event context
+- prior ownership if valid
+
+Then compare:
+RAW_FLOW
+vs
+UNEXPECTED_FLOW / residualized flow.
+
+### Caution
+Do not overfit a complex flow model with small sample.
+Begin with simple within-date / return-bucket conditioning.
+
+### Key question
+Does unexpected institutional demand during pattern maturation predict outcomes beyond:
+- pattern geometry,
+- momentum,
+- sector strength?
+
+If not, raw flow may be redundant confirmation.
+
+## DL-002GC — Institution Type Matters
+
+### Taiwan evidence
+Foreign investors, domestic funds/trusts and dealers can exhibit different:
+- information advantages,
+- herding patterns,
+- feedback behavior,
+- market-state sensitivity.
+
+### Research rule
+Do not aggregate all institutions into one “smart money” label.
+
+Retain:
+- foreign
+- investment trust
+- dealer
+- aligned/disagreed state
+
+### Pattern interactions
+- foreign leads, trust follows
+- trust leads in smaller domestic names
+- all aligned
+- foreign vs trust divergence
+- dealer-only move
+
+No type is assumed superior in every regime.
+
+## DL-002GD — Herding Intensity vs Breadth
+
+### Distinction
+CONCENTRATED_HERD:
+few institutions / high-intensity one-sided flow.
+
+BROAD_HERD:
+widespread institutional alignment.
+
+Taiwan 2025 evidence suggests herding impacts can differ with market state and intensity.
+
+### Research fields
+- institutionalAlignmentCount
+- flowConcentrationByType
+- flowIntensity
+- marketState
+- stockSize
+- turnover
+- sectorSynchrony
+
+### No production rule
+Existing “at least one side buying” Formal condition remains unchanged.
+This research only tests independence/timing.
+
