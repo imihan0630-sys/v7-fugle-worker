@@ -1,7 +1,7 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-139.
-Updated: 2026-09-25 23:33 Asia/Taipei.
+Checkpoint sequence: B-144.
+Updated: 2026-09-26 05:39 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Detailed B-01..B-123 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
@@ -416,3 +416,16 @@ Updated: 2026-09-25 23:33 Asia/Taipei.
 - Bias/quality: no current-state backfill, no ex-post query promoted to first-known vintage, no missing=0/BAD, no inferred no-change, no alpha/outcome test, no historical Shadow fabrication, no new factor/window/threshold. R01-R08/I01-I07 unchanged.
 - Engineering: Class A checkpoint/research only. Formal Core/Worker/Production/PR #100/#101 unchanged; no merge or deploy.
 - Exact next continuation: move from the exhausted CA provenance search to the next highest-value unresolved evidence gate already in the canonical research program: execution-recorder target-date completeness/non-truncation before BUY/NO-BUY interpretation. Preserve CA-115 NO_GO until genuinely new authorized denominator bytes/vintage evidence appears.
+
+
+## B-144 — Execution recorder authoritative-history search exhausted; exact-date completeness remains blocked (2026-09-26 05:39 Asia/Taipei)
+- Fresh-read governance/worklist/checkpoint/main; canonical start was B-143. Continued the exact next gate: execution-recorder target-date completeness/non-truncation before BUY/NO-BUY interpretation.
+- Runtime source contract reconfirmed from V8.8.0: recorder read uses `trade_date >= fromDate`, newest-first ordering and `LIMIT 500`; API returns only `recent: rows.slice(0,80)`. It has no exact-date filter, pagination, pre-limit total count, truncation flag, expected-event count, or per-date completeness metadata.
+- V8.8.0 write contract records only event clocks OPEN_BASELINE/FIRST_10M_COMPLETE/FIRST_15M_COMPLETE/FIRST_30M_COMPLETE plus FORMAL_SIGNAL_OBSERVED when notifications exist. INSERT OR IGNORE protects event keys but does not prove every scheduled monitor invocation completed or every expected symbol was present.
+- Authorized GitHub Actions history was searched for 2026-09-24 authoritative evidence. The successful official-market-data sync run 36021494403 has no artifacts and its data-sync/recovery steps were skipped. Scheduled health runs 35942927209 and 35959388906 succeeded on intraday-snapshot verification but expose no workflow artifacts and do not provide execution-recorder row counts.
+- Therefore no GitHub workflow/artifact evidence can independently prove 2026-09-24 recorder row completeness or rescue rows hidden behind the 500-row read cap.
+- Research interpretation remains DATA_QUALITY_BLOCKED: absence from the visible recorder response is UNKNOWN, not NO_BUY/BAD/0. BUY-vs-NO-BUY and Execution Alpha for the target date remain gated to prevent truncation/visible-row survivorship bias.
+- Engineering classification: a future exact-date completeness read would touch the shared authenticated runtime/API and is Class B proposal-first. Safe proposal requirements are date equality filtering, count-before-page/totalRows, pagination or bounded page token, truncation flag, per-event/per-symbol counts, and explicit completeness UNKNOWN semantics. Branch/tests may be prepared, but no Production promotion is authorized.
+- Bias/quality: no selection inference from visible rows, no missing=0/BAD, no historical Shadow fabrication, no new factor/window/threshold; R01-R08/I01-I07 unchanged.
+- Formal Core/A-B/ranking/thresholds/3+3+3/capital/entry/add/reduce/sell/stop/monitor/push unchanged; no Worker.js or Production change this run.
+- Exact next continuation: prepare a Class-B research proposal/branch test contract for exact-date recorder completeness without promotion; before writing, re-read canonical SHA and merge any concurrent checkpoint advance. Separately keep 2026-09-24 BUY/NO-BUY as UNKNOWN until authoritative exact-date completeness becomes observable.
