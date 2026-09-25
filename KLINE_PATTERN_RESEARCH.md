@@ -5742,3 +5742,149 @@ If “dead liquidity” is already fully excluded by current gates, reject the n
 ### No production change
 Research/Shadow only.
 
+
+
+## DL-002AB — Common Latent Structure vs Named Pattern Labels
+
+### Core question
+Are VCP, cup/handle, W-bottom, flags and platforms truly independent predictors, or are they overlapping descriptions of a smaller set of latent price-path structures?
+
+### External evidence
+- Lo, Mamaysky & Wang (2000) showed that systematic chart geometry can carry incremental information, but this does not imply each practitioner label is independent.
+- A 2017 Information Sciences paper formally represented 53 chart patterns and grouped them into 5 categories based on underlying properties. This supports the idea that many named patterns share structural primitives.
+- 2024 Journal of Financial Economics evidence (“Charting by machines”) finds nonlinear predictive information in historical price paths distinct from standard momentum, reversal and extant technical signals.
+- A 2026 ablation study of chart-image CNNs finds OHLC price geometry is the dominant predictive component; moving-average overlays are largely redundant and volume bars add relatively little incremental information.
+
+### Research implication
+The system should model a small set of common structural primitives first, then treat named patterns as combinations of those primitives.
+
+### Candidate latent primitives
+1. TREND_CONTEXT
+   - prior directional state
+   - higher/lower swing sequence
+   - residual/sector RS trajectory
+
+2. COMPRESSION
+   - range contraction
+   - ATR contraction
+   - swing-depth contraction
+   - duration contraction
+   - tick-normalized tightness
+
+3. SUPPORT_PROGRESS
+   - higher lows
+   - undercut-and-reclaim
+   - support-test stability
+
+4. RESISTANCE_GEOMETRY
+   - one dominant pivot
+   - clustered pivots/rims
+   - neckline
+   - older resistance conflict
+
+5. RECOVERY_SHAPE
+   - V recovery
+   - rounded recovery
+   - stair-step recovery
+   - asymmetric recovery
+
+6. SUPPLY_DEMAND_VOLUME
+   - selling-volume decay
+   - dry-up
+   - breakout participation
+   - retest supply
+   - climax risk
+
+7. TIME_STRUCTURE
+   - pattern age
+   - contraction cadence
+   - confirmation lag
+   - staleness
+
+8. ACCEPTANCE_AFTER_BREAK
+   - closes above pivot
+   - retest behavior
+   - reclaim / failure
+
+### Named-pattern decomposition
+VCP ≈ TREND_CONTEXT + COMPRESSION + SUPPORT_PROGRESS + RESISTANCE_GEOMETRY + SUPPLY_DEMAND_VOLUME.
+
+Cup-with-handle ≈ TREND_CONTEXT + RECOVERY_SHAPE + RESISTANCE_GEOMETRY + optional COMPRESSION in handle + TIME_STRUCTURE.
+
+W / double-bottom ≈ SUPPORT_PROGRESS + RESISTANCE_GEOMETRY + RECOVERY_SHAPE + optional undercut/reclaim.
+
+Flag/platform ≈ TREND_CONTEXT + COMPRESSION + RESISTANCE_GEOMETRY + TIME_STRUCTURE.
+
+Candlestick/Sakata ≈ short-horizon OHLC GEOMETRY + LOCATION_CONTEXT + ACCEPTANCE/REVERSAL.
+
+### Anti-double-counting rule
+A stock matching three named patterns does not equal three independent positive signals.
+Pattern names become interpretable views over shared primitives.
+
+### Research output hierarchy
+Level 1: raw OHLC / volume / tick / time fields.
+Level 2: latent structural primitives.
+Level 3: named pattern labels.
+Level 4: pattern maturity / lifecycle.
+Level 5: incremental outcome evidence.
+
+Formal promotion, if ever proposed, should prefer the smallest stable primitive set that explains the evidence rather than a large collection of pattern labels.
+
+## DL-002AC — Dimension Reduction / Factor-Zoo Control
+
+### Motivation
+Harvey, Liu & Zhu (2016) argue that hundreds of tested return factors create severe multiple-testing problems and require much higher evidentiary hurdles.
+Modern asset-pricing research similarly emphasizes dimension reduction and out-of-sample regularization when candidate predictors proliferate.
+
+Pattern research is especially exposed to this risk because:
+- each pattern can have many thresholds,
+- each threshold can interact with trend, volume, regime and duration,
+- many labels describe overlapping geometry.
+
+### Pre-registered reduction process
+Before outcome testing:
+1. classify every candidate feature into one latent primitive;
+2. mark direct duplicates;
+3. mark deterministic transforms;
+4. mark strongly conceptually overlapping variables;
+5. retain a small representative set per primitive.
+
+After prospective data accumulates:
+6. compute pairwise and conditional redundancy;
+7. use within-date de-meaning / partial-correlation diagnostics already available in research governance;
+8. use leave-one-date-out stability;
+9. test whether named labels add anything after primitive controls;
+10. prefer simpler feature sets when predictive performance is similar.
+
+### No winner-picking from a large grid
+Do not run 100 VCP thresholds and keep the best.
+Do not test dozens of cup-depth bands and select the one with highest D5 return.
+Each materially different definition counts as a separate experiment.
+
+### Minimum question
+For every candidate:
+“What information does this feature contain that the current Formal system, DL-001, and other DL-002 primitives do not already contain?”
+
+If the answer cannot be demonstrated, reject as REDUNDANT even if raw returns look good.
+
+## DL-002AD — OHLC Geometry Priority
+
+### New evidence-driven priority
+Recent chart-image research indicates raw OHLC geometry can carry more predictive information than moving-average overlays, with volume adding less incremental information in at least one modern ablation study.
+
+### Implication for our system
+Current Formal already contains several moving-average features.
+DL-002 should therefore prioritize:
+- swing geometry
+- curvature/recovery shape
+- compression sequence
+- pivot topology
+- undercut/reclaim
+- acceptance/failure path
+
+before inventing additional moving-average crosses or slope variants.
+
+### Caution
+The cited evidence is not Taiwan-specific and uses ML/image frameworks, so it does not prove the exact same hierarchy in Taiwan.
+Treat it as a research-priority signal, not a production rule.
+
