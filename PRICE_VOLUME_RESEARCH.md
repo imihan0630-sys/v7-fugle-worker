@@ -7861,3 +7861,215 @@ after the core PV Shadow demonstrates:
 Then H005 can be proposed as a separate Class-A research-only capture change.
 
 Status: H005_DESIGN_READY / IMPLEMENTATION_DEFERRED_UNTIL_CORE_DATA_QA_STABLE.
+
+# PV-136 — Institutional Streak Length Loses Flow Magnitude Information
+
+## Current issue
+Current Worker uses:
+- foreignBuyDays
+- trustBuyDays
+- dealerBuyDays
+
+These preserve sign persistence but not magnitude.
+
+Example:
+Sequence A:
++1000, +900, +800 lots
+
+Sequence B:
++1000, +50, +5 lots
+
+Both are “3 consecutive buy days,” but participation persistence is very different.
+
+## Required conceptual separation
+1. **Direction persistence**
+   - consecutive positive/negative days.
+
+2. **Normalized magnitude**
+   - daily net / compatible daily volume;
+   - daily net / ADV20;
+   - side-participation where scope-compatible.
+
+3. **Cumulative pressure**
+   - sum of signed normalized flows over the streak.
+
+4. **Trajectory**
+   - strengthening;
+   - stable;
+   - decaying;
+   - reversing;
+without forcing a tuned threshold before evidence.
+
+## Why this matters
+A long streak with vanishing magnitude may represent:
+- residual allocation;
+- passive rebalance tail;
+- stale signal.
+
+A short but very large flow may represent:
+- concentrated information;
+- one-off rebalance;
+- event shock.
+
+Neither dominates universally.
+
+Status: STREAK_LENGTH_NOT_INTENSITY.
+
+
+# PV-137 — Taiwan Herding Evidence Supports Persistence Research, but Not a Universal “Longer = Better” Rule
+
+## Evidence
+Taiwan studies document institutional herding/persistence, but behavior differs by:
+- investor type;
+- firm size/liquidity;
+- market pressure;
+- buy vs sell side.
+
+Hsieh (2013) finds institutional herding and positive-feedback behavior with stronger effects in some stock/market states.
+
+Source:
+https://doi.org/10.1016/j.irfa.2013.01.003
+
+Hung, Lu & Lee (2010) find Taiwan mutual funds may follow their own prior trading and report asymmetric future-return behavior for herd buying versus selling.
+
+Source:
+https://doi.org/10.1016/j.pacfin.2010.06.001
+
+Other Taiwan evidence finds institutional/margin herding changes during extreme market moves.
+
+Source:
+https://www.sciencedirect.com/science/article/abs/pii/S1059056014000707
+
+## Implication
+Do not encode:
+`buyDays 4 > buyDays 3 > buyDays 2`
+as a universal linear score.
+
+Instead test:
+- sign persistence;
+- flow intensity;
+- market regime;
+- buy/sell asymmetry;
+- participant type.
+
+Status: PERSISTENCE_CONTEXT_DEPENDENT.
+
+
+# PV-138 — Institutional Flow Can Be Informed, Liquidity-Provision, or Price-Following
+
+## Mixed Taiwan evidence
+Institutional trading is not one mechanism.
+
+Research reports:
+- professional institutional order size/aggressiveness can contain future-price information;
+- foreign institutions can contribute to price discovery in some market states;
+- foreign institutions can become market followers/passive liquidity providers in other states;
+- older Taiwan evidence even finds contrarian/stabilizing foreign behavior in some periods.
+
+Sources:
+- https://doi.org/10.1016/j.iref.2019.10.011
+- https://doi.org/10.1016/j.mulfin.2019.100591
+- https://doi.org/10.1016/j.pacfin.2015.05.002
+- https://doi.org/10.1016/S1057-5219(02)00069-8
+
+## PV consequence
+Institutional flow observed on the same day as a price move may be:
+- cause;
+- response;
+- liquidity provision;
+- hedge;
+- common reaction to third-party information.
+
+Therefore contemporaneous:
+`institutionalNet_t x return_t`
+cannot establish information direction.
+
+## Research timing
+Separate:
+- lagged flow -> future outcome;
+- contemporaneous flow + contemporaneous PV response;
+- future flow as outcome only.
+
+Do not use future institutional persistence to relabel an earlier snapshot.
+
+Status: REVERSE_CAUSALITY_GUARD_FROZEN.
+
+
+# PV-139 — Flow Persistence Should Be Normalized Before Cross-Stock Comparison
+
+## Problem
++5,000 lots is huge for one stock and trivial for another.
+
+## Candidate normalized views
+Prefer descriptive hierarchy:
+
+### Flow vs daily turnover
+`netFlow / compatibleDailyVolume`
+
+### Flow vs own ADV20
+`netFlow / ADV20`
+
+### Gross side participation
+`(buy+sell)/(2*compatibleDailyVolume)`
+
+### Own-history percentile
+Percentile of normalized flow using only prior valid observations.
+
+## Capital/size view
+Optional after issued-share semantics are point-in-time valid:
+`netFlow / issuedShares`
+
+Do not call this free-float flow.
+
+## Rule
+Raw net shares/lots may be retained for provenance but should not drive cross-stock inference alone.
+
+Status: INSTITUTION_FLOW_NORMALIZATION_HIERARCHY_FROZEN.
+
+
+# PV-140 — Institutional Flow x Price Acceptance Is More Informative Than Flow Alone, but Must Avoid Duplicate Scoring
+
+## Interaction intuition
+Same institutional buy flow can occur with different price responses.
+
+### Large buy + efficient-up / acceptance
+Possible:
+- directional demand is being accepted.
+
+### Large buy + high-effort/low-progress
+Possible:
+- seller absorption;
+- distribution against institution;
+- rebalance/liquidity transfer.
+
+### Large buy + failed re-entry
+Possible:
+- flow was insufficient;
+- mechanical/non-informational;
+- stronger opposing supply.
+
+### Small net + large gross participation
+Possible:
+- two-sided liquidity provision / rotation.
+
+## Research interaction
+Use:
+`InstitutionFlowState x pvResponseState x pvAcceptanceState`
+
+But do not add independent points for:
+- flow;
+- RVOL;
+- response;
+- acceptance
+without incremental testing.
+
+## Outcome questions
+- Does accepted proprietary buying improve D1/D3/D5 compared with rejected proprietary buying?
+- Does hedge buying behave differently from proprietary buying under the same PV state?
+- Does foreign/trust flow only help in BULL_BROAD/MIXED or also BEAR_BROAD?
+- Does gross participation explain MAE/range more than direction?
+
+## Causality guard
+Interaction improves description/prediction but does not prove the institution caused the move.
+
+Status: FLOW_ACCEPTANCE_INTERACTION_FROZEN / NO_FORMAL_SCORE.
