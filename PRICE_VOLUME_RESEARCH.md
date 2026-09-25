@@ -435,3 +435,193 @@ Critical rule:
 later states may update the live research lifecycle, but cannot be used to rewrite what the system knew at the original timestamp.
 
 Status: SPECIFIED_FOR_SHADOW_DESIGN.
+
+
+# PV-005 — Taiwan Same-Slot 15-Minute Volume Normalization
+
+## Feasibility
+Fugle Historical Candles supports intraday timeframes including 15 minutes.
+Its documented historical intraday coverage begins 2023-05-23.
+This makes a research-only same-slot baseline feasible without changing Formal data semantics.
+
+Official docs:
+https://developer.fugle.tw/docs/data/http-api/historical/candles/
+https://developer.fugle.tw/docs/data/http-api/intraday/candles/
+
+## Problem with current previous-5-bar comparison
+Current intraday logic uses the current bar divided by the average of the previous five bars.
+That is useful as a local acceleration measure, but it mixes two effects:
+1. genuine abnormal participation;
+2. normal time-of-day volume seasonality.
+
+Taiwan microstructure research shows opening/closing activity is structurally different from midday activity.
+Therefore “1.5x previous five bars” is not equivalent at 09:15, 11:30 and 13:15.
+
+## Research-only baseline v0.1
+For each symbol and 15-minute slot:
+- build a rolling history of prior valid sessions;
+- use robust medians first, because event days can create extreme outliers;
+- preserve mean/std alternatives for z-score comparison.
+
+Candidate fields:
+- `SLOT_VOLUME_MEDIAN_20`
+- `SLOT_RVOL_20 = currentSlotVolume / median(prior same-slot volume)`
+- `SLOT_LOGVOL_Z20`
+- `CUM_VOLUME_TO_SLOT`
+- `CUMVOL_MEDIAN_TO_SLOT_20`
+- `CUMVOL_PACE_20 = current cumulative volume / median historical cumulative volume to same slot`
+- `LOCAL_ACCEL_PREV5` = retain current metric for independent comparison
+- `SLOT_EXCESS_VS_DAY_PACE` = SLOT_RVOL / max(CUMVOL_PACE before/current slot, epsilon), exploratory
+
+## Minimum data rules
+Research proposal:
+- require >=20 valid historical sessions for primary slot baseline;
+- expose coverage count, median, MAD/std and missing-session count;
+- insufficient coverage = UNKNOWN, not neutral 1.0;
+- do not silently fill halted / non-trading slots with zero;
+- newly listed or frequently halted symbols remain data-limited.
+
+The exact minimum must be frozen before return-outcome comparison.
+
+## Special-session handling
+Exclude or separately flag:
+- shortened / exceptional exchange sessions;
+- prolonged trading halts;
+- no-trade bars;
+- obvious data gaps;
+- newly listed periods with unstable baseline;
+- symbols/timeframes whose volume unit semantics differ from ordinary listed shares.
+
+## Three interpretations to retain simultaneously
+1. `LOCAL_ACCEL_PREV5`: did activity accelerate relative to the immediately preceding bars?
+2. `SLOT_RVOL`: is this bar unusual for this time of day?
+3. `CUMVOL_PACE`: is the entire day running above/below its normal participation pace?
+
+None subsumes the others.
+
+Example:
+- 09:00 bar can be 3x previous-bars conceptually impossible / unstable because no prior five bars exist, but SLOT_RVOL has a valid historical comparison.
+- 13:15 bar may be high versus midday previous bars but ordinary for late-session seasonality.
+- a stock can have high CUMVOL_PACE all day while one slot has no incremental surge.
+
+## Validation
+Compare current intraday volume metric vs same-slot variants on:
+- formal selected names only first, to avoid selection contamination;
+- prospective dates with complete recorder coverage;
+- whether BUY-trigger / NO-BUY classification is better explained;
+- false breakout / maxChase / no-retest outcomes;
+- MFE/MAE after observation;
+- morning vs midday vs late-session strata.
+
+No historical reconstruction of BUY states from later prices.
+
+## Engineering class
+- Isolated historical fetch + research snapshot + diagnostics: Class A.
+- Any change to Formal 15m confirmation / BUY semantics: Class C.
+
+Status: IMPLEMENTABLE_AS_CLASS_A_RESEARCH, but not yet justified as Formal logic.
+
+
+# PV-006 — Integration with Pattern Maturity: volume must describe lifecycle, not duplicate pattern names
+
+## Principle
+Pattern research already concludes named patterns should be decomposed into latent geometry.
+Price-volume research should attach participation / supply-demand state to those same lifecycle states instead of creating separate “volume patterns” that double-count the same setup.
+
+## Integration map
+
+### VCP / contraction structures
+Geometry already measures contraction legs.
+Price-volume research adds:
+- whether volume contracts across non-overlapping legs;
+- whether range contraction and volume contraction occur together;
+- whether final contraction shows low supply without loss of support;
+- whether breakout participation is moderate/healthy or extreme/climactic.
+
+Opposing case:
+volume contraction can simply reflect fading interest. Require relative-strength / support / rebound-demand context.
+
+### Cup-with-Handle
+Geometry defines cup and handle maturity.
+Price-volume adds:
+- handle volume relative to cup/right-side baseline;
+- downside-bar volume during handle;
+- breakout RVOL quality;
+- post-break acceptance.
+
+Opposing case:
+a very quiet handle with weakening closes can be no demand, not constructive drying supply.
+
+### W / Double Bottom
+Geometry defines two troughs and neckline.
+Price-volume adds:
+- selling effort on first vs second trough;
+- price response per unit volume;
+- neckline-break participation;
+- whether retest volume contracts while neckline holds.
+
+Opposing case:
+a low-volume second low is not automatically accumulation; it can be thin participation.
+
+### Platform / Flag / Triangle
+Geometry defines compression and boundary.
+Price-volume adds:
+- participation decay through the base;
+- local vs same-slot breakout surge;
+- acceptance / failure lifecycle.
+
+Opposing case:
+volume contraction inside a base may have little discriminating power; breakout quality may carry more information. Treat formation-volume claims as hypotheses, not axioms.
+
+### False breakout / Upthrust / Spring
+Geometry detects level breach and re-entry.
+Price-volume adds:
+- breach RVOL and price-efficiency;
+- rejection effort;
+- re-entry participation;
+- follow-through.
+
+Critical ambiguity:
+high-volume rejection can be distribution or absorption. Direction is not resolved from the breach bar alone.
+
+## Anti-Factor-Zoo rule
+Do not separately score:
+“VCP volume contraction,” “cup handle dry-up,” “platform dry-up,” and “W second-bottom low volume”
+if they are all manifestations of the same latent variable.
+Prefer one reusable `SUPPLY_CONTRACTION_STATE` attached to pattern lifecycle.
+
+Status: INTEGRATION_ARCHITECTURE_DEFINED.
+
+
+# PV-007 — Institutional / Sector Participation as a Moderator, not a duplicate factor
+
+## Evidence
+Huang, Heian & Zhang (2011) find high-volume premiums can differ by the mechanism producing the volume shock; in their U.S. evidence, increased institutional ownership is associated with stronger high-volume premiums.
+Taiwan research on price contribution also finds professional institutions' order aggressiveness / trade size can carry different information from aggregate retail-heavy activity.
+
+Sources:
+https://doi.org/10.1111/j.1475-6803.2010.01283.x
+https://doi.org/10.1016/j.iref.2019.10.011
+
+## Existing system
+The current system already has:
+- institutional score / consecutive buy days / normalized net activity;
+- sector score, breadth, amount vs 20-day average and volume vs 20-day average.
+
+Therefore “add institutional volume” or “add sector volume” is likely redundant.
+
+## Better hypothesis
+Use them as moderators of abnormal individual-stock volume:
+- high stock RVOL + sector participation + institutional participation;
+- high stock RVOL without sector confirmation and without institutional support;
+- low-volume quiet strength with/without sector persistence.
+
+The question is incremental interaction, not another additive score.
+
+## Counter-interpretations
+- institutional flows can be reactive, hedging-related, or already embedded in price;
+- broad sector volume can occur near thematic peaks;
+- absence of institutional net buying does not prove retail speculation;
+- daily institutional data may not align perfectly with intraday event timing.
+
+Status: INTERACTION_ONLY / REDUNDANCY_RISK_HIGH.
