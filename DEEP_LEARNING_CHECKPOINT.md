@@ -640,3 +640,15 @@ YES for research infrastructure integrity: resolving the actual archive lineage 
 - Raw buy/sell/net point-in-time records are the durable research object; streaks and trajectories are derived/versioned views.
 - H005 implementation remains deferred until PV_SHADOW_V0_1 DATA_QA is stable.
 - Formal Core remains LOCKED.
+
+## Price-Volume lane update — PV-146 through PV-160
+- Current PV research cursor: PV-001 through PV-160 complete.
+- Institutional-origin research is design-complete enough to defer implementation: raw buy/sell/net first, derived streak/trajectory later, scope-compatible denominators only, modular recorder separate from core PV Shadow.
+- Foreign-dealer flow appears numerically rare/zero in sampled modern official data, so semantic separation is preserved but engineering priority remains below dealer proprietary/hedge.
+- TWSE institutional trade-side participation has a matched-scope fixture; TPEx scope equivalence remains unverified.
+- Institutional breadth versus strongest participant is a hypothesis, not a vote score.
+- PV now reuses the existing Microstructure research lane. HIGH_EFFORT_LOW_PROGRESS is an umbrella result state, not absorption/distribution.
+- Side-specific absorption requires pressure + replenishment + weak price progress evidence. Without it, mechanism remains unresolved.
+- Existing V8.8.x execution recorder is sparse; coarse spread/depth/context may be testable, dynamic OFI/replenishment is not reconstructable.
+- PV-H006 registered for microstructure incremental value on ambiguous high-effort events.
+- PV_SHADOW_V0_1 remains frozen during DATA_QA; Formal Core LOCKED.
