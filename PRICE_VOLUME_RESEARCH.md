@@ -6322,3 +6322,227 @@ Do not expand PV_SHADOW_V0_1 during DATA_QA.
 All PV-098~107 items remain Tier-2 research/context candidates.
 
 Status: PRIORITY_FROZEN / V0_1_UNCHANGED / FORMAL_LOCKED.
+
+# PV-108 — Disposition Securities Change the Trading Clock; Standard 15m PV Semantics Can Break
+
+## Taiwan market structure
+TWSE disposition measures can change matching from normal continuous trading to periodic call auction.
+
+TWSE investor education describes examples:
+- first disposition: matching every 5 minutes;
+- repeated disposition: matching every 20 minutes;
+- securities already under special periodic trading can be extended further;
+- pre-collection of cash/securities and tighter credit conditions may also apply.
+
+Official source:
+- https://www.twse.com.tw/rwd/staticFiles/product/publication/0001069208.pdf
+
+## Why this is critical for PV
+A 20-minute matching cycle does not align with 15-minute candle slots.
+
+Observed 15m candles can therefore show:
+- near-zero volume in one slot;
+- a burst in the next slot;
+- artificial range/body concentration;
+because execution timing is imposed by regulation rather than natural participation.
+
+This can corrupt:
+- pvSlotRvol20;
+- pvCumvolPace20;
+- pvResponseState;
+- pvPersistenceState.
+
+## Decision
+Disposition-day intraday PV must not be interpreted as normal-market 15m participation.
+
+Future guard:
+`DISPOSITION_PERIODIC_AUCTION`
+
+Interpretability:
+INVALID for the primary clean 15m PV cohort.
+
+Raw observations may still be stored for audit / separate market-structure research.
+
+Status: ALTERED_TRADING_CLOCK_INVALIDATES_CLEAN_15M_PV.
+
+
+# PV-109 — Attention and Disposition Are Different Guard Levels
+
+## Attention security
+An attention flag warns that the security meets exchange surveillance conditions.
+
+Attention status by itself does not necessarily replace the normal continuous-trading clock.
+
+Research role:
+- context;
+- attention/speculation moderator;
+- not automatically invalid.
+
+Candidate:
+`ATTENTION_CONTEXT` => GUARDED or contextual subgroup.
+
+## Disposition security
+Disposition can impose actual trading restrictions:
+- periodic call auction;
+- pre-collected cash/securities;
+- tighter margin/short-sale conditions.
+
+Research role:
+- altered market structure;
+- primary clean 15m PV invalid when periodic matching is active.
+
+Candidate:
+`DISPOSITION_PERIODIC_AUCTION` => INVALID for clean intraday PV.
+
+## Important rule
+Do not collapse:
+attention == disposition.
+
+They have different causal impact on price-volume data generation.
+
+Status: ATTENTION_CONTEXT ≠ DISPOSITION_MARKET_STRUCTURE.
+
+
+# PV-110 — Disposition Sessions Should Be Excluded from Same-Slot Baseline, Not Treated as Zero
+
+## Baseline consequence
+If a stock trades normally for 19 days, then spends 10 days under periodic disposition trading, those disposition sessions are not comparable same-slot observations.
+
+Therefore:
+- do not enter them into the normal 15m slot median;
+- do not zero-fill missing/misaligned slots;
+- do not let their forced bursts distort cumulative pace.
+
+## After disposition ends
+Disposition is usually a temporary trading regime, not a permanent corporate-action transformation.
+
+Therefore the preferred rule is:
+- retain valid pre-disposition normal sessions;
+- pause baseline accumulation during disposition;
+- resume adding normal sessions after normal trading returns.
+
+A full 20-post-event reset is NOT automatically required as it is for a split/capital reduction.
+
+## Possible post-release context
+The first normal sessions after restrictions end can still experience:
+- pent-up participation;
+- released leverage/shorting demand;
+- normalization of liquidity.
+
+Potential context:
+`POST_DISPOSITION_RELEASE`
+
+Do not hard-code a 1/3/5-day duration before evidence.
+
+Status: BASELINE_PAUSE_NOT_ZERO / NO_AUTOMATIC_FULL_RESET.
+
+
+# PV-111 — Current Cross-Market Disposition Evidence Has a Coverage Asymmetry
+
+## Existing research infrastructure audit
+Current research external-evidence code already captures:
+- TWSE official attention/disposition context.
+
+But the V8.7.11 cross-market evidence layer explicitly records TPEx:
+- `UNKNOWN_TPEX_ATTENTION_NOT_CAPTURED_V8_7_11`
+- `UNKNOWN_TPEX_DISPOSITION_NOT_CAPTURED_V8_7_11`
+
+Therefore:
+TPEx missing flag cannot mean “normal.”
+
+## Consequence for PV
+A future disposition guard cannot be promoted as a Taiwan-wide clean filter until:
+- TPEx authoritative source is captured;
+- date/finality semantics are verified.
+
+Until then:
+- TWSE flagged disposition => known guard;
+- TPEx status unavailable => UNKNOWN coverage state.
+
+## Research-only workaround
+For historical/outcome analysis:
+- exclude known TWSE disposition events from clean 15m cohort;
+- report TPEx disposition coverage limitation separately;
+- do not silently classify TPEx as non-disposition.
+
+Status: CROSS_MARKET_PARITY_GAP / UNKNOWN_NOT_FALSE.
+
+
+# PV-112 — Leverage/Shorting Lane Confirms Disposition Is a Constraint Variable, Not an Alpha Factor
+
+## Cross-lane integration
+The existing `LEVERAGE_SHORTING_RESEARCH.md` independently concluded:
+- attention/disposition rules alter margin/short eligibility and price discovery;
+- sudden changes in short activity cannot be interpreted without checking regulatory restrictions;
+- constraint state should be a control/guard.
+
+This reinforces the PV result:
+a volume change during disposition can arise from a changed participant set and matching mechanism.
+
+## Combined causal chain
+Disposition may change:
+1. who can finance/short;
+2. cash/securities pre-collection;
+3. matching frequency;
+4. observed transaction timing;
+5. liquidity;
+6. daily/intraday volume;
+7. false-break / price-response behavior.
+
+Therefore the same observed RVOL cannot be compared naïvely with normal-regime observations.
+
+## Ownership
+- Leverage/Shorting lane owns financing/shorting restrictions.
+- PV lane owns whether the resulting volume/price observation is comparable.
+- Market Microstructure owns matching mechanics.
+
+No duplicate score.
+
+Status: CROSS_LANE_GUARD OWNERSHIP FROZEN.
+
+
+# PV-113 — Existing Passive-Flow Lane Already Covers Index-Rebalance Contamination; PV Should Consume the State, Not Rebuild It
+
+## Cross-lane audit
+The existing `PASSIVE_FLOW_INDEX_REBALANCING_RESEARCH.md` has already established:
+- index addition/deletion/weight change is distinct from fundamental news;
+- mechanical passive demand can still have real price impact;
+- announcement and effective windows are separate states;
+- additions/deletions are asymmetric;
+- event-date index weights are required;
+- late-session 15m bars cannot isolate closing-auction flow;
+- passive-flow evidence remains data-gated.
+
+## Integration rule
+PV should not build a second index-rebalance model.
+
+Future PV context should consume a passive-flow event state such as:
+- NO_EVENT
+- ANNOUNCED_PRE_EFFECTIVE
+- EFFECTIVE_MINUS_1
+- EFFECTIVE_SESSION
+- POST_EFFECTIVE
+
+Then ask:
+Does the same PV state behave differently inside vs outside passive-flow windows?
+
+## Primary comparison
+Example:
+`EXTREME_RVOL + EFFICIENT_UP`
+
+Compare:
+- no passive-flow event;
+- index effective-session;
+- post-effective.
+
+Outcomes:
+- next-session acceptance;
+- reversal;
+- D3/D5 retention;
+- MFE/MAE.
+
+## Rule
+Do not estimate “actual passive flow” from coarse RVOL.
+Use the passive-flow lane's provenance-quality event state.
+
+Status: CROSS_LANE_REUSE / NO_DUPLICATE_INDEX_MODEL.
