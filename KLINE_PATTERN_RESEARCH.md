@@ -5681,3 +5681,64 @@ Breakout:
 ### Research-only
 This is normalization / data-quality work only. No Formal threshold change.
 
+
+
+## DL-002AA — Healthy Compression vs Dead Liquidity v0.1
+
+### Core problem
+Narrow range + low volume can mean:
+A. supply is drying up while demand remains latent (potentially constructive), or
+B. the stock is simply illiquid / ignored / difficult to trade.
+
+The two can look similar in a chart.
+
+### Taiwan-specific caution
+Taiwan evidence suggests trading-volume and price-limit mechanics materially affect common illiquidity measures. Therefore generic U.S. liquidity interpretations should not be transplanted directly.
+
+### Required separation
+HEALTHY_COMPRESSION candidate:
+- range/ATR contracts,
+- volume contracts moderately,
+- turnover remains above minimum viable levels,
+- spread/tick granularity does not dominate,
+- relative strength holds/improves,
+- lows do not deteriorate,
+- occasional demand response remains visible.
+
+DEAD_LIQUIDITY candidate:
+- range is narrow because few trades occur,
+- turnover collapses,
+- many bars are only a few ticks wide,
+- price impact per unit turnover is high,
+- gaps/ticks dominate geometry,
+- RS/sector participation weakens,
+- breakout participation absent.
+
+### Research fields
+- avgTurnover20
+- turnoverContraction5to20
+- zeroOrNearZeroVolumeDays
+- rangeTicksMedian
+- rangeATRMedian
+- percentRangeMedian
+- AmihudLikeImpact = abs(return)/turnover (research diagnostic only)
+- tickDominanceRatio
+- volumeParticipationPercentile
+- sectorTurnoverRelative
+- RSChangeDuringCompression
+- breakoutParticipationAfterCompression
+
+### Key interaction
+Do not reward compression unless:
+- morphology is stable across ATR/tick normalization,
+- liquidity remains sufficient for executable trading,
+- the tightening is not explained primarily by dead turnover.
+
+### Formal overlap
+Current Formal already has liquidity gates.
+DL-002AA must test incremental value after controlling existing liquidity eligibility.
+If “dead liquidity” is already fully excluded by current gates, reject the new feature as redundant.
+
+### No production change
+Research/Shadow only.
+
