@@ -859,3 +859,190 @@ If these do not explain outcomes beyond existing variables, VCP should be reject
 DEFINITION_FROZEN_V0_1 once committed.
 No Formal rule or threshold is changed.
 
+
+
+## DL-002J — Cup-with-Handle Detection Specification v0.1
+
+### External anchors
+Fidelity describes Cup-with-Handle as a bullish continuation structure with:
+- a prior advance,
+- a rounded/bowl-like cup,
+- approximately similar highs on the two sides of the cup,
+- a handle on the right side,
+- handle retracement typically no more than about one-third of the cup advance,
+- cup duration commonly about 1-6 months and handle roughly 1-4 weeks,
+- increased volume on breakout.
+
+Older Fidelity/ATP practitioner material is more specific, but its numeric ranges (for example cup correction, handle depth and breakout-volume percentages) should be treated as descriptive priors, not hard-coded truths.
+
+Recent financial-time-series pattern-classification research explicitly notes that there is no industry-wide unambiguous definition for many named chart patterns, including Cup-with-Handle. Therefore DL-002 must avoid one brittle textbook rule set.
+
+### Research principle
+Do not define Cup-with-Handle by a single binary template.
+Represent it as a topology + shape-quality + maturity state.
+
+### Required topology
+Using confirmed swings from DL-002H, a cup candidate needs:
+1. left rim: confirmed swing high after a prior advance;
+2. cup bottom region: one or more confirmed low swings materially below the left rim;
+3. right-side recovery: later confirmed swing high approaching the left-rim zone;
+4. optional handle: a shallower pullback occurring after right-side recovery and before breakout.
+
+The cup can exist without a completed handle.
+The handle cannot exist before right-side recovery.
+
+### Horizon
+Primary cup research horizon should support multi-month bases.
+Do not constrain the cup to priorHigh20 or the current ~65-bar live cache.
+Candidate research window should be capable of covering at least ~6 months of trading days plus context before the left rim.
+
+The exact maximum lookback is a data-design decision and must be pre-registered before outcome testing.
+
+### Cup geometry fields
+- leftRimPrice
+- leftRimAt
+- cupBottomPrice
+- cupBottomAt
+- rightRimPrice
+- rightRimAt
+- cupDurationBars
+- cupDepthPct = (leftRimPrice - cupBottomPrice) / leftRimPrice * 100
+- rightRimRecoveryPct = (rightRimPrice - cupBottomPrice) / (leftRimPrice - cupBottomPrice) * 100
+- rimDifferencePct = abs(rightRimPrice-leftRimPrice) / mean(rims) * 100
+- leftDeclineBars
+- rightRecoveryBars
+- timeSymmetryRatio
+- priceSymmetryScore
+- baseVolumeSlope
+- bottomVolumeRatio
+- rightSideVolumeRecovery
+
+### Roundness: do not use one fragile U-shape metric
+A cup should be distinguishable from a sharp V reversal, but "roundness" is subjective.
+Store multiple non-outcome-tuned descriptors instead of one optimized score:
+
+1. bottomResidenceRatio
+   - fraction of cup bars spent within a narrow band around the lower portion of the cup range.
+   - a true rounded base should usually spend more time near the bottom than a one-day V reversal.
+
+2. curvatureResidual
+   - normalize time to [-1,1] and price to [0,1].
+   - fit a simple symmetric quadratic / parabola as a descriptive baseline.
+   - record normalized residual error; lower error means smoother bowl, but do not assume lower is always better.
+
+3. slopeTransitionSmoothness
+   - compare rolling-slope progression from negative -> flat -> positive.
+   - abrupt sign reversal indicates V-shape; gradual transition supports rounded morphology.
+
+4. swingCountInsideCup
+   - count confirmed MICRO swings inside the BASE-scale cup.
+   - one sharp down/up pair is V-like; multiple small oscillations can support a rounded base.
+
+No single roundness descriptor is privileged before validation.
+
+### Handle topology
+A handle candidate starts only after right-side recovery.
+
+Fields:
+- handleStartAt
+- handleStartPrice
+- handleLow
+- handleEndAt
+- handleDurationBars
+- handleDepthPct = (handleStartPrice-handleLow)/handleStartPrice*100
+- handleDepthVsCupDepth = handleDepthPct / cupDepthPct
+- handlePositionPct = normalized vertical position of handle low within cup range
+- handleRangeCompression
+- handleAtrCompression
+- handleVolumeDryUpRatio
+- handleHigherLow
+- handleDownSlope
+- handleSwingCount
+- handleStabilityAcrossScales
+
+### Upper-half concept
+Practitioner descriptions usually expect the handle to form in the upper part of the cup.
+Do not hard-code "upper half = pass".
+Store continuous handlePositionPct:
+- 0 = cup bottom
+- 100 = rim level
+
+Then test whether higher handle placement has incremental value.
+
+### Pivot
+Possible pivot references:
+- max(leftRimPrice, rightRimPrice),
+- handle resistance / most recent confirmed swing high,
+- shared resistance zone across rim and handle highs.
+
+Store:
+- cupPivotPrimary
+- cupPivotSecondary
+- pivotDispersionPct
+- pivotSource
+- pivotDistancePct
+
+If rim and handle resistance disagree materially, reduce pattern confidence rather than forcing one level.
+
+### Maturity lifecycle
+CUP_FORMING
+- left rim and decline exist but right-side recovery incomplete.
+
+CUP_BOTTOMING
+- a bottom region exists with improving stabilization / roundness but no strong right recovery.
+
+RIGHT_SIDE_RECOVERY
+- price has recovered materially toward the left rim.
+
+HANDLE_FORMING
+- a shallower right-side pullback is occurring after recovery.
+
+HANDLE_TIGHT
+- handle range/ATR/volume are contracting while structural support holds.
+
+CUP_PIVOT_READY
+- mature handle/right-side structure is near a stable pivot.
+
+CUP_BREAKOUT_CONFIRMED
+- close confirms above the selected structural pivot; existing breakout diagnostics recorded.
+
+CUP_FAILED
+- structural invalidation before valid breakout or frozen R01 failure after breakout.
+
+### Failure labels
+- V_SHAPED_BASE: bottom residence/transition suggests abrupt reversal rather than a rounded base.
+- RIGHT_SIDE_WEAK: recovery stalls far below left-rim zone.
+- HANDLE_TOO_DEEP: recorded as a severity measure, not hard fail in v0.1.
+- HANDLE_LOW_IN_BASE: handle forms too low relative to cup geometry.
+- HANDLE_VOLUME_EXPANSION: selling volume rises rather than dries.
+- RIM_DIVERGENCE: left/right rim prices are structurally inconsistent.
+- STRUCTURE_BREAK: closes below key cup/handle support.
+- BREAKOUT_FAILURE_R01: reuse frozen R01 outcome.
+
+### Redundancy map
+Existing Formal already captures:
+- trend,
+- pullback depth,
+- volume contraction,
+- priorHigh20/priorHigh60,
+- ATR/volatility,
+- overheat.
+
+Expected new topology:
+- cup duration beyond short windows,
+- rounded-bottom descriptors,
+- rim symmetry / recovery,
+- handle location,
+- handle-specific compression,
+- cup-to-handle nested geometry,
+- maturity lifecycle.
+
+If these variables add no information after controlling existing factors, Cup-with-Handle should be classified as a descriptive relabeling, not a new factor.
+
+### Evidence classification
+The named Cup-with-Handle pattern has strong practitioner recognition and is algorithmically classifiable, including recent curve-pattern classification research, but direct peer-reviewed evidence of standalone trading alpha is weaker than the evidence that chart morphology in general can carry information.
+
+Therefore status remains:
+WORTH_SHADOW_RESEARCH / TIER_3_PRIOR.
+No Formal promotion implication.
+
