@@ -6,7 +6,10 @@ const quality=await readFile(new URL('./sync_official_quality.mjs',import.meta.u
 const recovery=await readFile(new URL('./recover_after_market.mjs',import.meta.url),'utf8');
 const workflow=await readFile(new URL('../.github/workflows/v7-market-data.yml',import.meta.url),'utf8');
 
-assert.match(source,/const VERSION = "8\.9\.(?:7-recovery-hardening|8-staged-recovery|9-staged-delivery)";/);
+{
+  const version=source.match(/const VERSION = "(\d+)\.(\d+)\.(\d+)[^"]*";/)?.slice(1,4).map(Number);
+  assert.ok(version && (version[0]>8 || (version[0]===8 && (version[1]>9 || (version[1]===9 && version[2]>=7)))),"V8.9.7+ runtime required");
+}
 assert.match(source,/歷史補跑僅接受管理員授權/);
 assert.match(source,/補跑日期無效、未來或超過14天/);
 assert.match(source,/scheduledTime=Date\.parse\(date\+"T10:20:00Z"\)/);
