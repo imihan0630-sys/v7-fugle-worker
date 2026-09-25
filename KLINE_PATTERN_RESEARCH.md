@@ -3471,3 +3471,152 @@ CONFIDENCE_PROFILE_FROZEN_V0_1.
 No aggregate score.
 No Formal change.
 
+
+
+## DL-002Z — Pattern Failure Timing / Acceptance Lifecycle v0.1
+
+### Problem
+A binary “breakout succeeded / failed” label hides materially different paths:
+- same-day rejection,
+- next-day failure,
+- clean breakout followed by failed retest,
+- initial continuation followed by delayed collapse,
+- temporary failure followed by rapid reclaim.
+
+These paths may have different implications for selection quality and execution.
+
+### Keep frozen R01 as primary outcome
+R01 remains the canonical research definition for successful vs false breakout over its fixed 3-day close-hold framework.
+
+DL-002Z adds descriptive timing fields.
+It does NOT replace R01.
+
+### Breakout event timeline
+At breakout date B0 store:
+- pivotLevel
+- breakoutClose
+- breakoutExtensionPct
+- breakoutVolumeRatio
+- breakoutClosePosition
+- patternStateAtBreak
+
+Subsequent daily states:
+B0_SAME_DAY
+B1
+B2
+B3
+and later descriptive continuation where data permits.
+
+### Failure timing fields
+- firstCloseBackInsideAt
+- barsUntilFirstCloseBackInside
+- firstCloseBelowPivotAt
+- barsUntilBelowPivot
+- maxExtensionBeforeFailurePct
+- MFEBeforeFailure
+- MAEBeforeFailure
+- failureDepthPct
+- failureDepthATR
+- failureVolumeRatio
+- retestOccurred
+- retestAt
+- retestHeld
+- reclaimAfterFailure
+- barsToReclaim
+- newHighAfterReclaim
+
+### Descriptive failure classes
+
+IMMEDIATE_REJECTION
+- breakout cannot hold through same/next close context.
+
+EARLY_FAILURE
+- initial break occurs but level fails within early post-break window.
+
+RETEST_FAILURE
+- breakout holds initially,
+- price returns to pivot,
+- retest closes/structures fail.
+
+DELAYED_FAILURE
+- meaningful extension occurs first,
+- later returns below pivot after initial apparent success.
+
+FAILED_THEN_RECLAIMED
+- break fails,
+- later reclaims pivot within tracked window.
+
+ACCEPTED
+- R01 success and no early structural rejection within primary window.
+
+These labels are descriptive and must be mapped to frozen R01 rather than redefine success.
+
+### Pattern-specific invalidation vs breakout failure
+Separate:
+
+PATTERN_INVALIDATION_PRE_BREAK
+- structure breaks before valid breakout.
+
+BREAKOUT_ACCEPTANCE_FAILURE
+- valid breakout occurred, then failed.
+
+EXECUTION_NO_ENTRY
+- pattern may succeed, but Formal 15m rules never produced BUY.
+
+TRADE_FAILURE
+- actual entry occurred and later stop/exit outcome failed.
+
+These are four different layers.
+
+### Why this matters
+A pattern can be:
+- good Selection Alpha,
+- poor Execution Alpha,
+- or a genuine false structure.
+
+Without timing separation those can be mistakenly combined.
+
+### Retest quality fields
+If a retest occurs:
+- retestLowVsPivotPct
+- retestCloseVsPivotPct
+- retestVolumeRatio
+- retestDurationBars
+- retestRangeATR
+- retestHigherLow
+- retestReversalStrength
+- daysFromBreakout
+
+Do not assume low-volume retest is always good; test conditionally.
+
+### Opportunity-cost path
+For pattern-mature NO-BUY cases:
+- if price breaks and never retests, mark BROKE_WITHOUT_ENTRY;
+- track D1/D3/D5/MFE to estimate opportunity cost of conservative execution;
+- do not relabel it a failed execution unless coverage is complete.
+
+### R01 compatibility
+Store:
+- R01Outcome
+- failureTimingClass
+- timingFields{}
+
+Example:
+R01 = FAIL
+failureTiming = RETEST_FAILURE
+
+or:
+R01 = SUCCESS
+laterState = DELAYED_FAILURE after primary R01 window
+
+This preserves comparability.
+
+### No horizon shopping
+Do not choose a 1D, 3D or 5D success rule because it produces the best pattern statistics.
+R01 remains fixed.
+Additional horizons are descriptive sensitivity analyses.
+
+### Status
+FAILURE_LIFECYCLE_FROZEN_V0_1.
+No Formal change.
+
