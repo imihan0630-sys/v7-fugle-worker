@@ -3716,3 +3716,251 @@ CA-103: quantify raw-volume vs issued-share-turnover threshold disagreement rate
 CA-104: research corporate-action interactions with institutional-flow normalization and market-cap/valuation denominators.
 CA-105: widen lifecycle/state-machine tests to same-day/multiple-stage/revision edge cases; keep Formal Core locked.
 
+
+
+---
+
+## CA-101 — Point-in-time share-denominator source contract hardened
+
+A durable source contract now exists in:
+`CORPORATE_ACTION_SHARE_DENOMINATOR_SOURCE_CONTRACT.md`.
+
+### Required denominator spaces
+
+The research can no longer use one generic `sharesOutstanding` concept.
+
+Separate:
+- REGISTERED_ISSUED_SHARES;
+- EXCHANGE_LISTED_SHARES / tradable listed supply;
+- OUTSTANDING_SHARES;
+- FREE_FLOAT_SHARES;
+- EPS_WEIGHTED_AVERAGE_SHARES.
+
+Each version must preserve both:
+- `knownAt`: when the value became available to the system;
+- `effectiveFromSession`: when that denominator semantics becomes applicable to a market session.
+
+Replay may consume a version only when both gates pass.
+
+### Real family validation
+
+8454 stock dividend:
+- registered issued shares 252,357,405 -> 264,975,275;
+- registration approval 2025-09-22;
+- new shares listed 2025-10-09.
+This proves registration and tradable-supply clocks differ.
+
+8422 par-value change:
+- registration occurred months before the actual market share-unit switch;
+- old-unit shares continued trading until the suspension/resume boundary.
+This proves a registration date cannot be reused as a bar-unit conversion date.
+
+3593 capital reduction:
+- reduction basis, registration and resumed trading/new-share listing are separate dates.
+This proves financial-report/accounting share restatement is not a bar-level trading denominator.
+
+2465 cash increase/payment certificates:
+- the listing-stage evidence initially appeared to support a 83,946,031 -> 93,946,031 share-base step on 2025-11-17;
+- deeper official registration evidence falsifies that as REGISTERED_ISSUED_SHARES timing;
+- 10,000,000 payment certificates began listed trading on 2025-11-17, while the MOEA change-registration list records NT$939,460,310 capital only on 2026-01-06;
+- therefore tradable supply can change before final registered common-share state.
+
+This negative result is retained. It is exactly the kind of denominator-semantic error the source contract is designed to prevent.
+
+Status:
+POINT_IN_TIME_DENOMINATOR_CONTRACT = HARDENED.
+FORMAL CORE = UNCHANGED.
+
+---
+
+## CA-102 — Denominator-vintage anti-leakage fixtures
+
+Materialized:
+`research/corporate_action_denominator_vintage_threshold_v0_1.json`.
+
+Four deterministic replay fixtures freeze the anti-look-ahead behavior:
+
+1. FUTURE_KNOWN_BLOCK:
+   a denominator learned after replayAsOf cannot leak backward even if its effective session is earlier than the target being studied.
+
+2. KNOWN_BUT_NOT_EFFECTIVE:
+   a future supply change may be known, but the old denominator remains active until its own effective market session.
+
+3. KNOWN_AND_EFFECTIVE:
+   the new version becomes consumable only after both clocks pass.
+
+4. LATE_REVISION_NO_RETRO_LEAK:
+   a correction learned later can improve EX_POST_MECHANICS_TRUTH but cannot rewrite what POINT_IN_TIME_KNOWN_TRUTH was at the historical decision time.
+
+Real-event guard:
+8454's exact first-known timestamp is not fully archived, so verified ex-post mechanics must not be relabeled as historically known truth.
+
+Status:
+DENOMINATOR_VINTAGE_FIXTURES = FROZEN.
+NO FUTURE SHARE-COUNT LEAKAGE = REQUIRED.
+
+---
+
+## CA-103 — Bounded raw-volume vs turnover-normalized threshold disagreement
+
+The first bounded mechanics artifact is:
+`research/corporate_action_denominator_vintage_threshold_v0_1.json`.
+
+No forward returns are used.
+No parameter is tuned.
+This is not an alpha test.
+
+### 8454 real event-day witness
+
+On 2025-10-09:
+- raw volumeTodayVsPrev5 = 0.8253790;
+- registered-issued-turnover analogue = 0.7860752;
+- A low-volume threshold 1.05: both PASS;
+- B breakout threshold 1.30: both FAIL.
+
+So a material numeric change does not necessarily cause a Boolean condition flip.
+
+### 2465 five-session real listing window
+
+TWSE historical stock-profile snapshot volumes are preserved for 2025-11-10 through 2025-11-21.
+
+Critical source correction:
+- strict then-registered denominator stays 83,946,031 through the tested 2025-11 window;
+- 93,946,031 was not yet the confirmed registered-share state on 2025-11-17;
+- therefore REGISTERED_ISSUED_SHARE_TURNOVER has no denominator step at the payment-certificate listing date and produces zero threshold disagreement with raw volume in this window.
+
+A separate public-tradable sensitivity uses:
+58,946,031 original listed common shares excluding 25,000,000 private-placement shares
+-> 68,946,031 after adding 10,000,000 listed payment certificates.
+
+Under that sensitivity:
+- 2025-11-18 raw ratio = 1.0908796;
+- normalized ratio = 1.0003297;
+- raw A low-volume <=1.05 = FAIL;
+- tradable-supply normalized A low-volume <=1.05 = PASS.
+
+Five-session count:
+- registered-issued low-volume disagreement: 0/5;
+- public-tradable sensitivity low-volume disagreement: 1/5;
+- breakout >=1.30 disagreement: 0/5.
+
+Because the exact exchange-listed denominator definition for private-placement treatment remains PARTIAL_CONFLICT, the 1/5 result is a sensitivity result, not production truth.
+
+### Structural result
+
+For:
+current turnover / average(previous 5 turnover),
+a one-time denominator step can alter the ratio only while the rolling window straddles the step.
+After current plus all five prior sessions share one constant denominator, that denominator cancels algebraically unless another denominator event occurs.
+
+This gives a finite contamination horizon for this specific normalized ratio.
+
+Status:
+THRESHOLD_DISAGREEMENT = REAL BUT DENOMINATOR-SEMANTIC DEPENDENT.
+ALPHA = NOT TESTED.
+FORMAL = UNCHANGED.
+
+---
+
+## CA-104 — Institutional flow, market-cap and valuation denominator interactions
+
+### Institutional flow
+
+Current Worker institutional fields are raw net-share counts / sign streaks:
+- foreignNet;
+- trustNet;
+- dealerNet;
+- institutionTotalNet;
+- foreignBuyDays / trustBuyDays / dealerBuyDays.
+
+A pure supply change does not invalidate those factual net-share counts.
+
+Do not rescale historical raw institution flow merely because new shares are listed.
+
+If research later constructs:
+- institutionNet / issued shares;
+- institutionNet / listed shares;
+- institutionNet / free float;
+each becomes a separate denominator-defined feature and must pass the CA-101/102 point-in-time contract.
+
+A holdings percentage is different again:
+the percentage can move mechanically when the denominator changes even with zero holder trading.
+
+### Market capitalization
+
+Current `Worker.js` can fall back to:
+`sharesOutstanding * close / 1e8`
+when explicit `marketCapYi` is missing.
+
+That is safe only for the semantic/date represented by the supplied share count.
+It is unsafe for historical replay if a current share snapshot is multiplied by an old price across a corporate action.
+
+Research market-cap records therefore need:
+- marketCapSemantic;
+- denominatorType/value;
+- price session;
+- knownAt;
+- source provenance.
+
+Registered issued shares, tradable listed shares and free float are not interchangeable market-value denominators, especially with private-placement shares/payment certificates.
+
+No Worker code is changed here.
+
+### Valuation / EPS
+
+EPS weighted-average shares belong to financial-report semantics.
+They are not a daily trading-supply denominator.
+
+Capital reduction/split accounting may restate comparative EPS deliberately.
+That does not authorize using the restated weighted-average share count to normalize old daily volume.
+
+Point-in-time valuation research must preserve the source snapshot/methodology rather than recomputing historical P/E with a present-day share base.
+
+Status:
+INSTITUTION / MARKET_CAP / VALUATION DENOMINATOR FIREWALL = FROZEN.
+NO FORMAL CHANGE.
+
+---
+
+## CA-105 — Lifecycle revision and same-day/multiple-stage edge matrix
+
+Materialized:
+`research/corporate_action_lifecycle_edge_matrix_v0_1.json`.
+
+The matrix freezes eight cases:
+
+1. same-day registration + listing;
+2. revision before the original effective date;
+3. late correction after effective date;
+4. cancellation before effective date;
+5. same-day UNIT_SCALE + SUPPLY_CHANGE;
+6. conflicting primary denominator artifacts;
+7. real 8454 registration -> later new-share listing;
+8. real 2465 payment-certificate listing -> later registered-share change.
+
+### Frozen lifecycle rules
+
+- Event identity includes actionFamilyId + stage + effectiveSession + version.
+- Different semantic stages remain separate even on the same session.
+- Input/ingestion order must not determine transformation order.
+- Revision preserves old versions for historical replay; it does not delete history.
+- A cancelled planned event never becomes realized supply.
+- UNIT_SCALE, PRICE_RESET and SUPPLY_CHANGE are independently idempotent transforms.
+- Conflicting primary artifacts produce CONFLICT / UNKNOWN for normalized features; no latest-wins shortcut.
+- Raw factual share volume may remain usable even when a normalized denominator is UNKNOWN.
+- NO_EVENT is legal only when event-source coverage is complete.
+
+This artifact is a deterministic specification fixture, not executable CI evidence.
+No runtime implementation is claimed.
+
+Status:
+LIFECYCLE_REVISION_EDGE_CONTRACT = FROZEN.
+FORMAL CORE = LOCKED / UNCHANGED.
+
+## Exact next continuation after CA-105
+
+CA-106: build an official TWSE + TPEx denominator-source archive/completeness receipt contract, including payment certificates/private-placement treatment.
+CA-107: widen CA-103 to a pre-registered multi-event bounded sample across stock dividend, cash increase/payment certificate, capital reduction and unit-scale families without outcome inference.
+CA-108: create point-in-time market-cap / institutional-normalization replay fixtures and quantify denominator disagreements.
+CA-109: make lifecycle revision/cancellation fixtures executable in the research-only test lane; preserve negative controls and no Worker.js wiring.
+CA-110: evidence checkpoint: decide whether the denominator archive/state machine is mature enough for a Class-A Shadow implementation proposal only; no Formal merge/deploy.
