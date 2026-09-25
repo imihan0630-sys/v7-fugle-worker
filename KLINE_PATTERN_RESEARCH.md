@@ -9261,3 +9261,104 @@ Recent Taiwan evidence finds lottery anomaly behavior depends on distance from t
 No MAX/limit-hit exclusion is added to Formal.
 This is an overheat/failure context candidate only.
 
+
+
+## DL-002DN — Shorting Flow × Pattern Maturity
+
+### Taiwan evidence
+Pacific-Basin Finance Journal (2023) reports both short- and long-term shorting flows predict future Taiwan stock returns, consistent with informed shorting.
+Earlier Taiwan work also finds heavily shorted stocks exhibit negative subsequent abnormal returns in historical samples.
+
+### Existing research overlap
+The broader project already records research-only:
+- margin short evidence,
+- actual SBL short-sales evidence,
+with source-semantics warnings.
+
+DL-002 should not create a generic short-interest score.
+
+### Incremental question
+Does shorting FLOW CHANGE during specific pattern phases contain information about pattern failure/success?
+
+### Phase fields
+- shortFlowAtPatternStart
+- shortFlowAtMaturity
+- shortFlowAtPivot
+- shortFlowOnBreakout
+- shortFlowOnRetest
+- shortFlowSlopeDuringMaturity
+- shortFlowShock
+- shortFlowDivergenceFromPrice
+- shortFlowDivergenceFromInstitutionalLongFlow
+
+### Hypotheses
+CONSTRUCTIVE:
+- bullish pattern matures while informed shorting pressure declines.
+
+WARNING:
+- price approaches/breaks pivot while shorting flow accelerates.
+
+SQUEEZE_CANDIDATE:
+- high prior short exposure + strong acceptance + short flow not expanding / covering evidence.
+But do not infer actual short covering without suitable flow/balance changes.
+
+### Outcomes
+- R01 failure
+- D1/D3/D5/D10
+- MFE/MAE
+- breakout acceptance
+- reclaim/failure
+
+## DL-002DO — Securities Borrowing Is Not Short Selling
+
+### Official TWSE semantics
+Borrowed securities may be used for:
+- short sale,
+- hedging,
+- arbitrage,
+- returning prior loans,
+and other purposes.
+
+Therefore:
+SBL_TRANSACTION_VOLUME != SHORT_SALE_VOLUME.
+SBL_BALANCE != SHORT_SALE_BALANCE.
+
+### Research data hierarchy
+Preferred:
+1. actual borrowed-securities short-sale flow;
+2. short-sale balance;
+3. margin short flow/balance with its distinct retail/credit semantics;
+4. generic borrowing volume only as context, not directional shorting evidence.
+
+### Missingness
+If only borrowing data is available:
+shortFlow = UNKNOWN,
+not inferred from SBL borrowing.
+
+This preserves existing research governance.
+
+## DL-002DP — Short Flow vs Visible Bearish Price Morphology
+
+### Question
+Does informed shorting lead visible technical deterioration, coincide with it, or arrive after it?
+
+### Compare timing
+- firstShortFlowDeteriorationAt
+- firstRSDeteriorationAt
+- firstNegativeMotifAt
+- firstStructureBreakAt
+- firstFailedBreakoutAt
+
+### Possible lead/lag states
+SHORT_FLOW_LEADS
+PRICE_PATTERN_LEADS
+SIMULTANEOUS
+NO_RELATION
+
+### Practical research value
+If short flow consistently leads failed patterns prospectively, it may become an independent warning candidate.
+If it merely reacts after price breaks, it is redundant for selection.
+
+### No Formal implication
+Any real exclusion/filter based on short flow would require later evidence and explicit approval.
+
