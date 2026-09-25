@@ -51,6 +51,20 @@ Every stored snapshot must have `decisionImpact=false`.
 - completedBar
 - coverage/provenance/schemaVersion
 
+## Taiwan market-structure guards
+Add to intraday/context semantics:
+- pvSessionPhase = OPEN_AUCTION_MIXED / CONTINUOUS / CLOSE_AUCTION_MIXED / UNKNOWN
+- pvViState = KNOWN_VI / KNOWN_NO_VI / UNKNOWN only when a reliable source exists; never infer VI from OHLCV shape
+- referencePriceGuard = NORMAL / EX_RIGHTS_DIVIDEND / CORPORATE_ACTION / UNKNOWN
+- unsupported market structures (e.g. TPEx Emerging Stock Board) => pvGuardState=UNSUPPORTED_MARKET_STRUCTURE
+
+Shadow v0.1 normalization is frozen as:
+- pvDailyRvol20 = current daily volume / median(prior 20 valid daily volumes)
+- pvSlotRvol20 = current 15m slot volume / median(prior 20 valid same-slot volumes)
+- pvCumvolPace20 = current cumulative volume through slot / median(prior 20 valid cumulative volumes through same slot)
+
+Mean/log/MAD/percentile variants may be stored for diagnostics but are not additional scores.
+
 ## Proposed D1 schema
 
 ### v7_pv_shadow_snapshots
@@ -133,7 +147,10 @@ References:
 - intraday lots vs daily shares never raw-cross-divided;
 - robust median/MAD edge cases;
 - zero/near-zero historical volume;
-- gap/price-limit/corporate-action guards;
+- gap/price-limit/corporate-action/ex-rights guards;
+- auction-session phase classification;
+- 1m-to-15m fixture test to verify Fugle 15m bucket boundaries before freezing open/close semantics;
+- unsupported-market-structure guard;
 - leave-one-out sector median;
 - freshness / days-since-peak;
 - future-data mutation test;
