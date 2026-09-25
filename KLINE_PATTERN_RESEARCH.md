@@ -11693,3 +11693,149 @@ Taiwan 2025 evidence suggests herding impacts can differ with market state and i
 Existing “at least one side buying” Formal condition remains unchanged.
 This research only tests independence/timing.
 
+
+
+## DL-002GE — Last Trade vs Midquote Acceptance
+
+### Problem
+A last transaction above a pivot does not necessarily mean the market has broadly repriced above it.
+
+Possible case:
+- one buyer lifts the best ask above pivot;
+- last trade prints above;
+- best bid / midquote remain below;
+- next trades fall back.
+
+Daily/15m transaction candles can classify this as a close breakout even though quote acceptance is weak.
+
+### Prospective fields
+At trigger observations:
+- lastTrade
+- bestBid
+- bestAsk
+- midquote
+- spreadTicks
+- lastVsMidTicks
+- bidVsPivotTicks
+- askVsPivotTicks
+- midVsPivotTicks
+- lastVsPivotTicks
+- bidDepthAbove/nearPivot if representable
+- subsequentTradeAcceptance
+
+### Acceptance states
+TRADE_ONLY_BREAK
+- last > zone but mid/bid do not establish above.
+
+ASK_SIDE_BREAK
+- trades hit ask above zone, mid near/below zone.
+
+MIDQUOTE_ACCEPTED
+- midquote also above zone.
+
+BID_ACCEPTED
+- best bid above zone; stronger displayed-market acceptance.
+
+PERSISTENT_ACCEPTANCE
+- quote/trade state persists through a defined observation window.
+
+### No automatic ordering
+BID_ACCEPTED is intuitively stronger, but must be validated prospectively.
+Displayed book can cancel/replenish.
+
+## DL-002GF — Tick-Aware Breakout Materiality
+
+### TWSE current tick schedule
+For regular stocks:
+- <10: 0.01
+- 10–<50: 0.05
+- 50–<100: 0.10
+- 100–<500: 0.50
+- 500–<1000: 1.00
+- >=1000: 5.00
+
+### Consequence
+A percentage-only breakout threshold has different market granularity across price bands.
+
+### Store
+- breakoutDistancePct
+- breakoutDistanceATR
+- breakoutDistanceTicks
+- zoneClearanceTicks
+- spreadTicks
+- breakoutDistanceVsSpread
+
+### Materiality diagnostic
+ONE_TICK_CLEARANCE
+- breakout only one minimum tick beyond zone.
+
+MULTI_TICK_CLEARANCE
+- several ticks beyond.
+
+SPREAD_DOMINATED
+- breakout distance comparable to current bid-ask spread.
+
+### Thousand-stock relevance
+At NT$1,000+, one tick = NT$5, roughly 0.5% near 1000.
+Thus some seemingly small percentage differences are indivisible market increments, not continuous-price precision.
+
+### Research question
+Does multi-tick / spread-adjusted acceptance explain follow-through beyond raw percentage breakout?
+
+## DL-002GG — Trade-Price Candle vs Quote-Based Execution Evidence
+
+### Daily selection
+Historical daily candles remain transaction-price based.
+Do not attempt to replace them with unavailable historical quote series.
+
+### Prospective execution research
+Use quote-based context only after selection:
+- 15m candle = transaction path
+- quote/order-book = supplemental acceptance evidence
+
+### Comparison
+CANDLE_ONLY
+CANDLE_PLUS_SPREAD
+CANDLE_PLUS_MIDQUOTE
+CANDLE_PLUS_DYNAMIC_BOOK
+
+Measure whether extra data improves:
+- false signal rate
+- delay
+- missed moves
+- operational robustness
+
+### Simplicity gate
+If candle + spread captures most benefit, do not keep full order-book complexity.
+
+## DL-002GH — Microstructure Noise Around Zone Boundaries
+
+### Problem
+Near a support/resistance boundary, tiny price alternation can reflect:
+- bid-ask bounce,
+- tick discreteness,
+- sparse trades,
+not meaningful structural failure/reclaim.
+
+### Research tolerance
+Use:
+- tick count
+- spread
+- ATR
+- zone uncertainty
+
+before calling:
+BREAK / RECLAIM / RETEST_FAIL.
+
+### No hidden threshold tuning
+Store penetration continuously first.
+Classification tolerance frozen before outcomes.
+
+### Interaction
+This is especially important for:
+- thousand stocks
+- illiquid names
+- narrow VCP final areas
+- one-tick W undercuts
+- closing-auction breakouts.
+
