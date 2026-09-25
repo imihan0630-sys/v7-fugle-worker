@@ -6,10 +6,12 @@ on:
       - "research/corporate_action_continuity_prototype.mjs"
       - "research/symbol_session_calendar_prototype.mjs"
       - "research/share_denominator_resolver_prototype.mjs"
+      - "research/corporate_action_lifecycle_state_machine_prototype.mjs"
       - "tests/test_corporate_action_continuity_prototype.mjs"
       - "tests/test_symbol_session_calendar_prototype.mjs"
       - "tests/test_corporate_action_integration_matrix.mjs"
       - "tests/test_share_denominator_resolver_prototype.mjs"
+      - "tests/test_corporate_action_lifecycle_state_machine_prototype.mjs"
       - ".github/workflows/research-corporate-action-prototype.yml"
 
 permissions:
@@ -31,3 +33,5 @@ jobs:
         run: node tests/test_corporate_action_integration_matrix.mjs
       - name: Share denominator vintage tests
         run: node tests/test_share_denominator_resolver_prototype.mjs
+      - name: Corporate action lifecycle revision and cancellation tests
+        run: node tests/test_corporate_action_lifecycle_state_machine_prototype.mjs
