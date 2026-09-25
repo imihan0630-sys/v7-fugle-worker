@@ -9805,3 +9805,260 @@ It does not change A/B formulas.
 PV research must preserve that distinction.
 
 Status: DATA_VALIDITY_NOT_ALPHA_FROZEN.
+
+# PV-177 — Clean Intraday Features Can Still Sit on a Contaminated Formal Cohort
+
+## Problem
+PV_SHADOW's first prospective experiment intentionally uses stocks already selected/monitored by Formal.
+
+This avoids PV changing its own sample.
+
+However, if the Formal cohort itself was produced from stale daily history, the sample inclusion can be wrong even when:
+- intraday 15m candles are correct;
+- same-slot baseline is correct;
+- PV snapshot is immutable.
+
+## Two independent quality axes
+
+### Feature Data Quality
+Is the PV observation itself valid?
+Examples:
+- valid 15m baseline;
+- completed bar;
+- no unit mismatch;
+- valid guards.
+
+### Cohort Eligibility Quality
+Was the stock's inclusion in the selected/monitored cohort based on fresh, complete Formal history?
+
+States:
+- COHORT_HISTORY_VERIFIED
+- COHORT_HISTORY_UNVERIFIED
+- COHORT_HISTORY_INVALID
+- UNKNOWN
+
+## Research rule
+Primary H001-H004 inference should require:
+- valid PV feature quality;
+- and verified cohort eligibility quality.
+
+Unverified cohort rows may remain in DATA_QA/storage but must be reported separately.
+
+## Important nuance
+An invalid cohort does not mean the stock's later market behavior is invalid.
+It means the observation does not answer the pre-registered question:
+“How does PV behave among correctly selected Formal candidates?”
+
+Status: FEATURE_QUALITY_X_COHORT_QUALITY_FROZEN.
+
+
+# PV-178 — Cumulative Trade-Pressure Must Be Differenced before Intraday Comparison
+
+## Problem
+At 11:30, cumulative at-bid/at-ask volume contains everything since open.
+At 09:16, it contains only early trading.
+
+Directly comparing cumulative pressure levels across times can confound:
+- time of day;
+- opening auction/early activity;
+- earlier events.
+
+## Preferred view
+For event interval t1->t2:
+- dAsk;
+- dBid;
+- dTotal;
+- dTransactions.
+
+Then calculate interval pressure only from the incremental flow.
+
+## Baseline
+If event-specific interval pressure is compared historically:
+use the same event window / same time-of-day interval.
+
+Do not compare:
+09:00-09:15 pressure
+with
+12:30-13:00 pressure
+without normalization.
+
+## Cumulative level role
+Cumulative pressure can remain a session-state context:
+“what has dominated the day so far?”
+
+But it is distinct from:
+“what flow occurred during the current PV event?”
+
+Status: INTERVAL_DELTA_PRIMARY / CUMULATIVE_CONTEXT_SECONDARY.
+
+
+# PV-179 — Counter-Differencing Requires Monotonicity and Session Identity Guards
+
+## Required conditions before differencing cumulative Quote totals
+Both snapshots must share:
+- symbol;
+- tradeDate;
+- quote type;
+- market/exchange scope;
+- monotonically increasing provider stats time.
+
+Require:
+- tradeVolume_t2 >= tradeVolume_t1;
+- atBid_t2 >= atBid_t1;
+- atAsk_t2 >= atAsk_t1;
+- transaction_t2 >= transaction_t1.
+
+## If any counter decreases
+Possible causes:
+- new session/reset;
+- source/type mismatch;
+- provider correction/reset;
+- bad join.
+
+Result:
+`COUNTER_DELTA_INVALID`.
+
+Do not coerce negative deltas to zero.
+
+## Timestamp
+Prefer `total.time` for the stats snapshot,
+with quoteUpdatedAt / lastTradeAt retained separately.
+
+Status: CUMULATIVE_COUNTER_INVARIANT_FROZEN.
+
+
+# PV-180 — At-Bid + At-Ask May Not Equal Total Volume; Preserve the Unclassified Bucket
+
+## Definition
+For compatible units:
+`unclassifiedVolume = total.tradeVolume - tradeVolumeAtBid - tradeVolumeAtAsk`.
+
+## Why non-zero is plausible
+Some transactions may not fit the provider's inside/outside classification cleanly, especially around:
+- equal-price/reference cases;
+- auctions;
+- special mechanisms;
+- classification boundaries.
+
+## Rule
+Never normalize pressure as if:
+`AtBid + AtAsk == Total`
+were guaranteed.
+
+Store:
+- classifiedVolume;
+- unclassifiedVolume;
+- classifiedShare = classifiedVolume/totalVolume.
+
+If classifiedShare is too low for a pre-registered quality threshold:
+pressure state = UNKNOWN/LOW_COVERAGE.
+
+## No outcome-tuned threshold
+Initial DATA_QA should inspect the distribution of classifiedShare before freezing a cutoff.
+
+Status: UNCLASSIFIED_TRADE_VOLUME_FIRST_CLASS_QUALITY_FIELD.
+
+
+# PV-181 — Trade Pressure x Displayed Depth Is an Interaction, Not a Direction Oracle
+
+## Candidate 2D context
+Future v3 may provide:
+- intervalTradePressure;
+- displayedTop5DepthImbalance.
+
+These reflect different objects:
+- executed trade-side mix;
+- currently displayed resting liquidity.
+
+## Example states
+
+### Positive trade pressure + ask-thin/bid-heavy displayed book
+Possible:
+- demand acceptance / easier upward repricing.
+
+Counter:
+- displayed book can cancel/replenish immediately.
+
+### Positive trade pressure + ask-heavy book + weak price progress
+Possible:
+- demand absorption candidate.
+
+Counter:
+- one sparse snapshot cannot prove ask replenishment.
+
+### Negative trade pressure + bid-heavy book + weak downside progress
+Possible:
+- supply absorption candidate.
+
+Counter:
+- visible bids can disappear.
+
+## Rule
+Without repeated book observations:
+call these:
+`ACCEPTANCE/ABSORPTION_CONTEXT_CANDIDATE`
+not confirmed microstructure states.
+
+Status: PRESSURE_DEPTH_INTERACTION_DESCRIPTIVE_ONLY.
+
+
+# PV-182 — Raw Top-Five Levels Enable Better Descriptors, but Still Not Queue Dynamics
+
+## With future v3 raw levels
+Possible snapshot descriptors:
+- L1 spread ticks/bps;
+- per-level notional depth;
+- distance-weighted depth;
+- depth slope;
+- L1 size imbalance;
+- microprice-style proxy using best bid/ask sizes.
+
+## Limits
+One snapshot still cannot identify:
+- cancellation vs execution;
+- replenishment;
+- queue age/priority;
+- hidden liquidity;
+- spoofing.
+
+## Research hierarchy
+Before dynamic collector:
+test whether simple raw-level snapshot descriptors add incremental value beyond:
+- aggregate top5 depth;
+- spread;
+- price tier/tick band;
+- PV response.
+
+If not, do not build more complex book features.
+
+Status: LEVEL_SHAPE_SNAPSHOT_FEASIBLE / DYNAMICS_STILL_UNAVAILABLE.
+
+
+# PV-183 — execution-shadow-v3 Should Wait behind Two Data-Quality Gates
+
+## Gate A — Core PV Shadow
+PV_SHADOW_V0_1 must demonstrate stable:
+- baseline;
+- snapshot idempotency;
+- Formal isolation;
+- coverage.
+
+## Gate B — Formal daily-history freshness
+Because the PV experiment cohort depends on Formal selection:
+cohort history freshness needs a trustworthy production invariant or independent verification.
+
+## Only then
+A v3 recorder proposal should be evaluated for:
+- zero-extra-API value;
+- payload/storage cost;
+- H006 incremental information.
+
+## Why wait
+Otherwise three simultaneous moving parts would exist:
+1. core PV recorder QA;
+2. Formal cohort input-quality uncertainty;
+3. execution recorder schema change.
+
+That would make attribution of research/data failures difficult.
+
+Status: V3_DESIGN_READY / IMPLEMENTATION_SEQUENCE_DEFERRED.
