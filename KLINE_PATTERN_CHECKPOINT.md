@@ -105,3 +105,33 @@ DL-002 — Pattern Maturity / Multi-stage K-line Structure
 5. Continue weekly/daily nested-resistance research controlling priorHigh60/MA60/R01 redundancy.
 
 Latest durable research commit before this checkpoint update: `1fc02001fc0fea01b1ab42464b7901c6fec18c1d`.
+
+
+## Continuation update — DL-003F
+- Draft PR #102 now carries an isolated executable Pattern detector-QA prototype; no Worker.js wiring or production deployment.
+- Latest validated research head for this update: `580d6080e89b4f750f16633c34bf8409b3e5941c`.
+- V8 Regression run `36146803521` SUCCESS and V8 Repair run `36146803565` SUCCESS.
+- Early failures are retained as evidence: null->0 coercion was fixed to preserve UNKNOWN; C2 was de-coupled so VCP topology and swing extraction have independent oracles.
+- Executable C1-C8, prefix/replay, price-scale, data-quality, ATR-frozen MICRO/BASE/MAJOR swings, immutable zone versioning, Shadow parent hash conflict detection, and RAW_EXECUTION/TECHNICAL_CONTINUITY provenance firewall are now present.
+- Major-zone hierarchy is pre-registered outcome-free: priorHigh20 comparator; BASE k=2 / 120 sessions; MAJOR k=3 / 260 sessions; simple 260-session high redundancy comparator. No hard available-air veto.
+- VCP swing-only code refuses to claim full maturity until range/volume context exists.
+- Corporate-action semantics are now cross-lane: direct FCNT000154 adjusted=false remains blocked as RAW, while Pattern consumes Corporate Actions lane semantic spaces. Real TWSE 2412 / 8454 and TPEx 5314 mechanics witnesses are covered.
+- New falsification: corporate-action day does not imply “suppress all gaps”; only the mechanical reset is neutralized, while residual continuity-space gap remains market information.
+- Four Pattern x Regime interactions are frozen only: RG1 breakout acceptance, RG2 nested resistance, RG3 compression/VCP, RG4 reversal/prior-trend.
+- No outcome return was used to tune detector parameters. Pattern alpha remains UNKNOWN.
+- Formal Core unchanged / LOCKED.
+
+### Current status
+`DETECTOR_QA_PROTOTYPE_PASS / DATA_SEMANTICS_CROSS_LANE_READY_WITH_GUARDS / PROSPECTIVE_RUNTIME_NOT_WIRED / ALPHA_UNKNOWN`.
+
+### Updated exact next continuation point
+1. Keep PR #102 Draft; no merge/deploy from detector QA alone.
+2. Complete isolated VCP range/volume context and exact W/Platform lifecycle outputs.
+3. Specify isolated Pattern research-cache adapter consuming Corporate Actions semantic spaces; do not use FCNT000154 false/raw as trusted RAW and do not build another adjustment engine.
+4. Add Pattern observability: coverage, blocked-reason rates, replay/prefix exactness, scale disagreement, compute cost.
+5. Only then consider prospective Pattern observer logging attached to existing Shadow parents; runtime wiring requires governance reclassification first.
+6. No historical Formal-cohort fabrication and no outcome testing until prospective coverage is complete.
+7. When evidence exists, run only preregistered PATTERN-RG1..RG4 plus frozen redundancy controls before any new interaction search.
+8. Do not create R09 or propose Formal change yet.
+
+Durable research detail: main `KLINE_PATTERN_RESEARCH.md` commit `a245b486dc60f29b623546416c2db4c6994465a4`.
