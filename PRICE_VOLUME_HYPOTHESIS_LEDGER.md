@@ -219,3 +219,17 @@ They must not be erased once later clean data arrive.
 - H006 remains DATA_QUALITY_BLOCKED pending exact-date execution-recorder completeness.
 - Zero-plan dates are legal zero-opportunity dates and must not be counted as PV recorder failures.
 - Readiness layers must be reported separately: runtime receipt, at-rest feature QA, cohort provenance, outcome maturity.
+
+## Evidence-quality update after PVE-013~028
+- PVE evidence remains outcome-gated. Runtime enable/isolation is proven, but PV D1 at-rest truth remains UNKNOWN because the read-only workflow receives HTTP 403 on direct D1 SELECT.
+- First ordinary post-enable session is 2026-09-29, but its intraday plan lineage inherits the known-stale 2026-09-24 selection. Therefore 2026-09-29 intraday PV is DATA_QA-only for H001~H004.
+- Because historical 15m baseline bootstrap is attached to after-market scanning, 2026-09-29 intraday is expected cold-start / DATA_INSUFFICIENT. 2026-09-30 is only the earliest possible baseline-ready intraday session if 9/29 bootstrap succeeds.
+- Known PV_SHADOW_V0_1 research-label defects now block treating Guard labels as ground truth:
+  - liquidity thresholds reversed versus Formal (thousand/general);
+  - Formal liquidityException is a string while PV checks boolean true;
+  - corporateActionResetAt / pvGapDominated / marketStructure upstream plumbing unverified;
+  - VI confounder hardcoded false;
+  - price-censor logic uses raw previousClose instead of exchange-consistent reference price.
+- These defects do not alter Formal decisions. Raw RVOL/cumulative/raw bar-response fields may remain research-usable under independent source quality, but any study using affected Guard labels is quarantined until corrected/versioned or quality-overlay-adjusted.
+- H001~H004 primary status remains WAITING_CLEAN_COHORT_PROVENANCE / DATA_QA.
+- H006 remains DATA_QUALITY_BLOCKED.
