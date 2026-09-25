@@ -138,9 +138,10 @@ Updated: 2026-09-25 13:44 Asia/Taipei.
 ## Parallel durable lane — Market Microstructure（市場微結構／訂單流／流動性）
 - Dedicated checkpoint: `MICROSTRUCTURE_CHECKPOINT.md`
 - Evidence / hypotheses: `MICROSTRUCTURE_RESEARCH.md`
-- Current cursor: MS-001 through MS-006 complete; continue from MS-007.
+- Current cursor: MS-001 through MS-012 complete; continue from MS-013.
 - Durable findings: spread is both execution friction and adverse-selection/liquidity information; short-horizon price change is more directly related to order-flow imbalance than raw volume in foundational microstructure evidence; imbalance must be interpreted jointly with market depth; persistence can arise from order splitting but is not monotonically directional; OHLCV cannot reconstruct true OFI/cancellations/queue state.
 - Taiwan controls are mandatory: continuous vs call-auction session, +/-10% daily price-limit context, tick-size/price tier, intraday volatility interruption, and regular-lot vs odd-lot mechanics.
 - Preferred research state: Liquidity Cost / Available Depth / Pressure / Price Response / Persistence / Constraint.
 - Highest-value integration target is research-only 15m BUY / Execution Alpha diagnostics for false breakout, chase/slippage and absorption; no Formal Core, monitoring, signal, capital or push change.
-- Exact continuation: MS-007 queue imbalance + microprice; MS-008 trade-sign inference; MS-009 effective spread/slippage; MS-010 same-slot seasonality; MS-011 Fugle/Worker data-availability audit; MS-012 frozen Shadow spec and falsification plan.
+- Deepened through MS-012: queue imbalance/microprice horizon limits, trade-sign inference errors, execution-cost separation, same-slot normalization, Fugle data availability, and a pre-registered 10-field Shadow V1 feature set are now durable. Current main-source audit finds candles+quote calls but no direct trades/volumes/depth consumption; source truth only, because deployed runtime may differ.
+- Exact continuation: MS-013 absorption/replenishment; MS-014 liquidity-vacuum vs depth-supported breakout; MS-015 spread/depth around failed breakouts; MS-016 Taiwan imbalance/investor-class evidence; MS-017 recorder redundancy check; MS-018 isolated Class-A capture feasibility.
