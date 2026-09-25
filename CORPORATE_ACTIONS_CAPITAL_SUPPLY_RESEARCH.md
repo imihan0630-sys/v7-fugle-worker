@@ -1593,3 +1593,231 @@ Any promotion that changes the current RS benchmark/return definition changes Fo
 No production implementation is authorized.
 
 Status: PROTOTYPE V2 SEMANTICS FROZEN.
+
+
+---
+
+## CA-045 — Corporate-action contamination reaches ranking through current ret20 reuse
+
+Current Formal source reuses stock ret20 in several roles.
+
+Technical role:
+- lateStage;
+- A/B structure context;
+- debug/diagnostics.
+
+Market-RS role:
+current rs = stock ret20 - TAIEX Price Index return20.
+
+The RS component enters priorityScore through the current formula:
+clamp(50 + rs * 2, 0, 100) * 0.14.
+
+Therefore a corporate-action distortion in ret20 can change ranking even when other gates pass.
+
+Real small-event magnitude:
+
+2412 cash dividend:
+- raw ret20 = -7.29%;
+- technical-continuity ret20 = -3.85%;
+- difference = 3.44 percentage points.
+
+8454 stock-dividend case:
+- raw ret20 = -7.61%;
+- technical continuity = -2.97%;
+- difference = 4.64 percentage points.
+
+Before clamping, those differences correspond to roughly:
+- 6.88 RS-score points for 2412;
+- 9.28 RS-score points for 8454;
+or about:
+- 0.96;
+- 1.30
+priority-score points respectively at the current 14% RS weight.
+
+This can matter for close-ranked candidates.
+
+Sector-peer diagnostic:
+sectorReturn20 currently averages peer stock ret20 values.
+A mechanically distorted peer can therefore contaminate displayed sectorRelativeStrength for other stocks in the same industry.
+
+Current source does not place sectorRs directly into priorityScore, so this is currently a diagnostic/semantic issue rather than the same direct ranking channel.
+
+Governance:
+Any RS-return or benchmark replacement can change priority ranking and potentially selected Top3/Top6.
+This is not auto-promotable as a hidden data fix.
+
+Status: RANKING MATERIALITY CHANNEL CONFIRMED.
+
+---
+
+## CA-046 — Official TAIEX Total Return source is available for Shadow benchmark comparison
+
+Official TWSE methodology:
+- defines TAIEX Price Index and Total Return Index;
+- Total Return Index adjusts for cash dividends;
+- both share other index-maintenance continuity rules except the cash-dividend treatment.
+
+Current Formal benchmark source:
+- FMTQIK;
+- field = 發行量加權股價指數;
+therefore it is the Price Index.
+
+Official Total Return history source:
+- TWSE MFI94U / 發行量加權股價報酬指數.
+
+The current repository contains no MFI94U ingestion path.
+
+Research-only comparison:
+
+A. LEGACY_RS:
+current raw stock ret20 versus TAIEX Price Index.
+
+B. PRICE_INDEX_COMPAT_RS:
+stock Price-Index-Comparable return versus TAIEX Price Index.
+
+C. TOTAL_RETURN_RS:
+stock Total-Return-Comparable return versus official TAIEX Total Return Index.
+
+Cash-dividend semantics:
+- PRICE_INDEX_COMPAT retains ordinary cash-dividend price drag;
+- TOTAL_RETURN neutralizes cash dividends on stock and benchmark.
+
+Capital/split/reduction events:
+- Price-compatible and Total-return-compatible stock series both require the appropriate continuity treatment corresponding to index-maintenance rules.
+
+Status: TOTAL-RETURN BENCHMARK SOURCE FEASIBLE / REPO INGESTION ABSENT.
+
+---
+
+## CA-047 — Pre-registered RS comparison before any benchmark change
+
+Population:
+Use all target-date stocks/dates for which raw history, corporate-action coverage, TAIEX Price Index history and TAIEX Total Return history are complete.
+
+Include:
+- action-window stocks;
+- matched no-action controls.
+
+Do not select only cases where modes differ.
+
+Three RS definitions:
+1. LEGACY = raw stock ret20 - price-index return20.
+2. PRICE_COMPAT = price-index-comparable stock ret20 - price-index return20.
+3. TOTAL_RETURN = total-return-comparable stock ret20 - total-return-index return20.
+
+First semantic questions:
+- How often does ranking order change?
+- How often does Top3-per-pool membership change in Shadow replay?
+- Are differences concentrated around corporate-action windows?
+- Does PRICE_COMPAT equal LEGACY on no-action controls?
+- Does one mode remove mechanical outliers without broad unrelated ranking drift?
+
+Phase 1 is semantic/data-quality validation only:
+- score differences;
+- rank differences;
+- candidate membership differences;
+- no-action equality.
+
+Do NOT choose a mode by future returns yet.
+
+Only after semantic correctness is established may D1/D3/D5/MFE/MAE be studied.
+
+Changing Formal benchmark or RS definition is an explicit Formal-Core ranking decision.
+
+Status: RS COMPARISON PROTOCOL FROZEN.
+
+---
+
+## CA-048 — Technical-history correction and RS strategy are separate decisions
+
+Decision A — Technical-history integrity:
+Should technical features use point-in-time continuity rather than mechanical raw discontinuities?
+Evidence supports Class B engineering investigation.
+
+Decision B — Relative-strength definition:
+Which stock return semantics should rank against which TAIEX benchmark?
+This is a ranking/strategy question and requires separate Shadow evidence plus explicit owner decision.
+
+Do not bundle A and B into one patch.
+
+Recommended sequence:
+1. finish technical continuity validation;
+2. keep legacy RS unchanged during technical Shadow comparison;
+3. add independent Shadow RS fields;
+4. compare benchmark semantics;
+5. only then consider any Formal RS decision.
+
+Status: TECHNICAL DATA FIX AND RS STRATEGY CHANGE DECOUPLED.
+
+---
+
+## CA-049 — Branch prototype volume semantics revised
+
+Research branch:
+research/class-b-corporate-action-history-semantics-20260925
+
+Prototype now has explicit VolumeTransformMode:
+- NONE
+- UNIT_SCALE
+- SUPPLY_CHANGE
+- UNKNOWN
+
+Only UNIT_SCALE rescales historical share volume.
+
+SUPPLY_CHANGE:
+- leaves raw volume unchanged;
+- marks volume comparability incomplete;
+- requires later point-in-time shares/listing evidence or turnover-rate normalization.
+
+This supersedes the earlier blanket stock-dividend volume scaling assumption.
+
+Status: BRANCH PROTOTYPE V2 VOLUME SEMANTICS COMPLETE.
+
+---
+
+## CA-050 — Branch prototype return modes revised
+
+Prototype now supports:
+- TECHNICAL_CONTINUITY
+- PRICE_INDEX_COMPARABLE
+- TOTAL_RETURN_COMPARABLE.
+
+Cash-dividend fixture:
+- Technical mode adjusts pre-event price;
+- Price-Index-Comparable mode leaves cash-dividend price drag;
+- Total-Return mode adjusts it.
+
+Stock-dividend fixture:
+- price continuity applies;
+- volume remains unresolved SUPPLY_CHANGE rather than being fabricated.
+
+Capital reduction/par-value fixtures:
+- UNIT_SCALE volume conversion remains explicit.
+
+Test fixtures are checked into the branch.
+They have not been claimed as CI-executed in this research turn.
+
+Status: BRANCH PROTOTYPE V2 RETURN SEMANTICS COMPLETE.
+
+---
+
+## CA-051 — Branch isolation re-verified
+
+Before the semantic V2 commits, main-to-branch comparison showed only:
+- research/corporate_action_continuity_prototype.mjs
+- tests/test_corporate_action_continuity_prototype.mjs
+
+No Worker.js or workflow file was changed.
+
+V2 continues to modify only those same research/test files on the research branch.
+
+Formal main and deployment path remain untouched.
+
+Status: ISOLATION PRESERVED.
+
+## Exact next continuation
+
+CA-052: freeze official MFI94U offline source contract and coverage rules.
+CA-053: define Price-Index vs Total-Return Shadow result schema.
+CA-054: audit action-specific benchmark-treatment edge cases such as rights offerings and mixed cash+stock distributions.
+CA-055: update checkpoints and freeze the next empirical data-build step.
