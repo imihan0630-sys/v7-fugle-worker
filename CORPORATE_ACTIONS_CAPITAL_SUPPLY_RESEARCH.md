@@ -2732,3 +2732,192 @@ CA-077: build deterministic event-window discovery manifest for a bounded histor
 CA-078: validate official TAIEX Price Index and Total Return Index exact-date source contracts on several event/no-event windows.
 CA-079: compare Legacy RS vs Price-Index-Compatible RS vs Total-Return RS only as semantic diagnostics.
 CA-080: keep forward-return optimization blocked until denominator completeness is demonstrated.
+
+
+---
+
+## CA-076 — Complete event discovery requires a denominator source, not hand-picked actions
+
+New source contract:
+CORPORATE_ACTION_DISCOVERY_SOURCE_CONTRACT.md
+
+### Verified official discovery layers
+
+1. TWSE OpenAPI TWT48U_ALL
+- current/prospective listed-stock ex-right/ex-dividend forecast table;
+- exposes date, code, stock-dividend ratio, rights subscription ratio/price, cash dividend and allocation fields.
+
+2. TWSE historical/public pages
+- Ex-right Announcement;
+- Ex-right Price Data;
+- Capital Reduction Announcement;
+- Reference Price for Capital Reduction;
+- Change of Par Value Announcement;
+- Reference Price after Change of Par Value.
+
+3. TWSE Official Document Announcements
+- exchange-plan/new-share listing/resume-trading dates.
+
+4. TWSE Data E-Shop
+- documented complete daily Common Stock EX-Right and Capital Reduction files;
+- includes issued shares before/after actions;
+- available historically from 2005-03-01 for the product;
+- paid official data contract.
+
+### Gate
+Prospective complete discovery = FEASIBLE.
+Historical complete official discovery = FEASIBLE through documented paid files.
+Historical complete FREE automated discovery = still PARTIAL because one stable all-event historical machine endpoint has not been frozen across every lifecycle stage.
+
+Status: EVENT-DENOMINATOR SOURCE MAP COMPLETE / FREE HISTORICAL AUTOMATION PARTIAL.
+
+---
+
+## CA-077 — Bounded-period event discovery manifest design
+
+A bounded study must begin from the event denominator, not from stocks that already showed suspicious charts.
+
+For study interval [startDate, endDate]:
+
+A. Freeze point-in-time common-stock universe.
+B. Enumerate every ex-right/ex-dividend/rights event.
+C. Enumerate every capital-reduction resume event.
+D. Enumerate every par-value-change event.
+E. Enumerate every later new-share-listing supply event.
+F. Preserve announcement/revision versions.
+G. Join events to symbols only after the event table is complete.
+H. Emit explicit:
+- EXPECTED_EVENT_COUNT;
+- OBSERVED_EVENT_COUNT;
+- VERIFIED_EVENT_COUNT;
+- UNKNOWN_EVENT_COUNT;
+- sourceCoverageByActionType.
+
+No-event controls can only be sampled from symbol/windows after this denominator pass.
+
+Current v0.2 convenience registry does not satisfy this standard.
+
+Status: BOUNDED DISCOVERY MANIFEST CONTRACT FROZEN / FULL HISTORICAL MANIFEST NOT YET BUILT.
+
+---
+
+## CA-078 — TWSE Price Index and Total Return Index exact-date source contracts are now live-validated
+
+Official current OpenAPI endpoints:
+- /exchangeReport/FMTQIK;
+- /indicesReport/MFI94U.
+
+Live payloads return:
+- ROC date;
+- TAIEX price index;
+- TAIEX Total Return Index.
+
+Official historical monthly contracts were also live-validated:
+- /rwd/zh/afterTrading/FMTQIK?date=YYYYMM01&response=json
+- /rwd/zh/TAIEX/MFI94U?date=YYYYMM01&response=json
+
+Validated historical months:
+- 2025-10;
+- 2025-11;
+- 2025-12;
+- 2026-06;
+- 2026-07.
+
+These monthly records provide exact trading-date values needed for the stock return start date and target date.
+
+No interpolation or nearest-date substitution is needed for the first four qualified event windows.
+
+Status: HISTORICAL PRICE-INDEX AND TOTAL-RETURN BENCHMARK CONTRACTS = GO.
+
+---
+
+## CA-079 — First Legacy vs Price-Compatible vs Total-Return RS semantic sample
+
+Artifact:
+research/corporate_action_rs_semantic_sample_v0_1.json
+
+This is a semantic diagnostic only.
+
+### 2412 cash dividend
+2026-06-10 -> 2026-07-09:
+- TAIEX Price Index return = +4.93%;
+- TAIEX Total Return Index return = +5.68%;
+- Legacy RS = -12.22%;
+- Price-Compatible RS = -12.22%;
+- Total-Return RS = -9.38%.
+
+Interpretation:
+For an ordinary cash dividend, Price-Compatible stock return intentionally stays price-return based. Total-return semantics add the dividend back and compare with a total-return benchmark.
+
+### 3593 loss reduction
+2025-11-13 -> 2025-12-22:
+- Price Index return = +0.88%;
+- Total Return Index return = +1.03%;
+- Legacy RS = +67.61%;
+- Price-Compatible RS = +0.21%;
+- Total-Return RS = +0.07%.
+
+The apparent +67.6 percentage-point Legacy relative strength is overwhelmingly a capital-reduction price-base artifact.
+
+### 8103 cash-refund reduction
+2025-10-30 -> 2025-12-08:
+- Price Index return = +0.06%;
+- Total Return Index return = +0.06%;
+- Legacy RS = +7.83%;
+- Price-Compatible RS = -6.47%;
+- Total-Return RS = -6.47%.
+
+The sign itself reverses after the corporate-action bridge.
+
+### 8422 par-value change
+2025-10-07 -> 2025-11-17:
+- Price Index return = +0.86%;
+- Total Return Index return = +0.87%;
+- Legacy RS = -88.67%;
+- Price-Compatible RS = +21.11%;
+- Total-Return RS = +21.11%.
+
+This is a roughly 109.8 percentage-point semantic swing in relative strength.
+
+### Core conclusion
+One universal “adjusted return” is wrong.
+
+Required semantic modes remain separate:
+- LEGACY/RAW PRICE RETURN;
+- PRICE_INDEX_COMPARABLE;
+- TOTAL_RETURN_COMPARABLE.
+
+Corporate-action mechanics can dominate current raw RS around unit-conversion events.
+
+Status: RS SEMANTIC MATERIALITY = CONFIRMED / ALPHA VALUE NOT TESTED.
+
+---
+
+## CA-080 — No forward-return optimization after the RS semantic result
+
+The RS differences are extremely large in some examples.
+
+That is exactly why threshold tuning must remain blocked.
+
+Do NOT:
+- choose the RS mode that gives the best later return;
+- retune RS thresholds on these hand-picked events;
+- claim Price-Compatible or Total-Return RS improves selection win rate;
+- promote either to Formal.
+
+Next evidence target is denominator completeness and no-action controls.
+
+The first question is:
+“Which return definition is mechanically coherent for the stated benchmark?”
+
+Only after that is frozen can future predictive value be tested on a complete, independent event/control sample.
+
+Status: RS SEMANTIC BUG/RISK EVIDENCE STRONG / PREDICTIVE-ALPHA CLAIM NONE.
+
+## Exact next continuation after CA-080
+
+CA-081: define a prospective daily corporate-action archive using TWT48U_ALL + TWSE announcements + MOPS versioning.
+CA-082: design historical bounded-period ingestion from official CSV/page artifacts with explicit completeness receipts.
+CA-083: add systematic no-action controls matched by date, price tier, liquidity and sector.
+CA-084: quantify how long raw-vs-continuity feature contamination persists after each action without using future return.
+CA-085: test interaction with history-freshness PR #100 and Pattern raw/adjusted dual-space rules.
