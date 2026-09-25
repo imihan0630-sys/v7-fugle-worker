@@ -631,3 +631,250 @@ PF-026: audit local passive ETF AUM/benchmark mapping feasibility.
 PF-027: define event deduplication and overlapping-index logic.
 PF-028: identify whether existing 15m/quote recorder can measure effective-close distortion without new live calls.
 PF-029: freeze evidence-readiness / capture proposal if needed.
+
+
+---
+
+## PF-025 — Historical index-review source feasibility audit
+
+### MSCI: strong official review-event feasibility
+MSCI maintains official previous Index Review pages that expose review cycles such as May/August 2026 and provide:
+- review announcements;
+- additions/deletions files;
+- announcement/effective-date schedules.
+
+Official sources:
+- https://www.msci.com/eqb/gimi/stdindex/index_review.html
+- https://www.msci.com/eqb/gcc/index_review.html
+
+Example: MSCI's May 2026 notice stated the review results would be announced May 12, 2026 and changes implemented as of the close of May 29, 2026.
+
+Implication:
+- announcedAt/effectiveAt can be sourced from official MSCI review artifacts;
+- actual published review files can anchor point-in-time event truth;
+- historical constituent-change event research is feasible for MSCI review cycles.
+
+### Taiwan Index Plus / TWSE local indices: official data exists, but complete historical constituent files are not all a free open archive
+TWSE Data E-Shop officially offers Full Index Constituents Files for TIP indices, including:
+- constituent market value/weight;
+- opening-reference-price information;
+- corporate-action information;
+- periodic-review constituent changes.
+
+Source:
+- https://eshop.twse.com.tw/en/category/sub/61
+
+This is excellent official provenance, but it is a paid data product for many index files.
+
+### Free/public local-index materials
+TWSE public pages provide current index/ETF context and some historical tables/announcements, but current research has not verified a free, stable, exhaustive historical old/new-weight archive for every local index review.
+
+### Feasibility conclusion
+- MSCI historical review events: GO for source construction.
+- TIP/TWSE local indices: PARTIAL GO; official complete constituent history exists, but access/cost/source contract must be resolved.
+- Do not scrape news articles as the authoritative event clock when official provider artifacts exist.
+
+Status: HISTORICAL EVENT SOURCE FEASIBILITY = MSCI STRONG / LOCAL OFFICIAL PARTIAL.
+
+---
+
+## PF-026 — Local passive ETF AUM / benchmark mapping feasibility
+
+### Current cross-sectional mapping is strong
+TWSE ETF e添富 publishes for listed ETFs:
+- active/passive classification;
+- benchmark;
+- current AUM;
+- issuer;
+- trading value/volume;
+- product details.
+
+Official sources:
+- https://www.twse.com.tw/en/ETFortune-institute/
+- https://www.twse.com.tw/en/ETFortune-institute/products
+
+Individual ETF pages explicitly show benchmark and AUM.
+
+Example:
+- 0050 benchmark = Taiwan 50 Index.
+- 006208 benchmark = Taiwan 50 Index.
+
+Official product pages:
+- https://www.twse.com.tw/en/ETFortune-institute/etfInfo/0050
+- https://www.twse.com.tw/en/ETFortune-institute/etfInfo/006208
+
+### Important dedup insight
+Multiple ETFs can track the same underlying benchmark.
+Therefore tracker exposure must aggregate by benchmark before translating an index event to a passive-flow proxy.
+
+### Historical AUM limitation
+Individual ETF pages expose a monthly-AUM view, while the institutional dashboard exposes current daily AUM rankings.
+
+Current audit has NOT established a stable official daily historical AUM API for every listed ETF across arbitrary past event dates.
+
+Therefore:
+- current benchmark mapping = VERIFIED;
+- current AUM cross-section = VERIFIED;
+- monthly historical AUM availability = VERIFIED at product-page level;
+- exact daily historical event-date AUM for every ETF = NOT YET VERIFIED.
+
+### Research use
+Until daily historical AUM is verified:
+- do not backfill exact trackerAUM_at_effectiveClose from today's AUM;
+- a nearest-prior monthly AUM can only be a lower-frequency MODELED proxy with explicit quality label.
+
+Status: BENCHMARK MAP GO / EVENT-DATE DAILY AUM PARTIAL.
+
+---
+
+## PF-027 — Overlapping-event deduplication logic
+
+### Problem
+One economic index rebalance can appear multiple times through:
+- several ETFs tracking the same benchmark;
+- leveraged/inverse products referencing the same family;
+- duplicate provider announcements;
+- multiple index families changing the same stock on the same effective close.
+
+Counting each ETF as an independent index event creates false sample size and double-counted flow.
+
+### Frozen hierarchy
+
+#### Level 1 — Underlying benchmark event
+Canonical key:
+provider | indexId | effectiveAt | symbol | eventType | eventVersion
+
+One membership/weight event exists once at this level.
+
+#### Level 2 — Tracker exposure
+Aggregate all verified passive trackers for that benchmark:
+benchmarkTrackerAUM = sum(pointInTimeAUM_i)
+
+Each ETF contributes exposure, not a new independent event.
+
+#### Level 3 — Cross-index overlap
+If the same symbol is changed by genuinely different benchmarks at the same/near effective close:
+- retain each benchmark event;
+- create overlapGroupId;
+- compute independentIndexEventCount;
+- estimate flow proxy by benchmark separately then aggregate only for economic exposure.
+
+### Leveraged/inverse guard
+Leveraged/inverse ETFs do not map 1:1 from AUM to stock cash demand.
+Do not add their AUM to vanilla passive equity tracker AUM without a verified replication/exposure model.
+
+### Active ETF guard
+An ETF labelled active is not mechanically tied to benchmark constituent weights.
+Do not count active ETF AUM as passive tracker exposure solely because it has a reference benchmark.
+
+### Example implication
+0050 and 006208 both tracking Taiwan 50 represent two tracker exposures to one Taiwan 50 constituent-change event, not two independent event observations.
+
+Status: THREE-LEVEL DEDUPLICATION MODEL FROZEN.
+
+---
+
+## PF-028 — Existing recorder cannot isolate effective-close auction distortion
+
+### What current V8.8 recorder can provide
+At its milestone snapshots it can provide:
+- quote/spread/depth state;
+- opening/10m/15m/30m/formal-signal research snapshots where recorded.
+
+### What the passive-flow question requires
+To measure effective-close benchmark pressure, ideal observations include:
+- state shortly before 13:25;
+- closing call-auction indicative/trial state if available;
+- final 13:30 close;
+- auction-only or 13:25–13:30 traded volume/value;
+- next-session open.
+
+### Current limitation
+The recorder is not a dedicated close-auction collector.
+A 15-minute candle that spans the close cannot isolate the 13:25–13:30 call auction from preceding continuous trading.
+
+Therefore current recorder cannot faithfully estimate:
+- closingAuctionVolumeShare;
+- auction-only price displacement;
+- exact pre-close to auction-close depth transition.
+
+### Zero-code descriptive fallback
+When existing intraday bars exist, one may describe:
+- late-session 15m return/volume;
+- close to next-open;
+but must label these as coarse late-session proxies, not closing-auction measurements.
+
+Status: EFFECTIVE-CLOSE AUCTION MEASUREMENT = DATA-GAP.
+
+---
+
+## PF-029 — Evidence-readiness and capture proposal
+
+### Evidence that is already source-ready
+1. MSCI official review announcement/effective dates.
+2. MSCI additions/deletions review artifacts.
+3. TWSE ETF current benchmark mapping and AUM.
+4. Some monthly ETF AUM history.
+5. Current stock price/volume and existing institutional-flow research context.
+
+### Evidence still missing/partial
+1. exhaustive local-index historical old/new constituent weights;
+2. exact event-date daily ETF AUM for all trackers;
+3. close-auction-specific stock price/volume/depth;
+4. point-in-time tracker holdings/creation-redemption behavior;
+5. offshore benchmarked AUM.
+
+### Minimal future capture/archive
+
+#### Index event table
+- provider
+- indexId
+- eventVersion
+- announcedAt
+- effectiveAt
+- symbol
+- eventType
+- oldWeight
+- newWeight
+- sourceUrl
+- sourceCapturedAt
+- provenanceQuality
+
+#### Tracker map
+- fundCode
+- benchmarkIndexId
+- passiveFlag
+- leverageType
+- aumDate
+- aum
+- aumQuality
+
+#### Close-auction research record
+- tradeDate
+- symbol
+- eventKey
+- preClosePrice
+- closePrice
+- lateSessionVolume
+- auctionVolume if directly available
+- nextOpen
+- expiryOverlap
+- marketState
+- coverageQuality
+
+### Governance
+- Building offline/provider-event archives is research-only if isolated from Formal runtime.
+- Adding new live close-auction capture to shared Worker/schedules requires governance review.
+- No passive-flow state can veto or promote a Formal candidate without separate owner approval.
+
+### Lane state
+PASSIVE_FLOW_INDEX_REBALANCING = CONCEPT_COMPLETE / SOURCE_MAP_COMPLETE / EVIDENCE_BUILD_PENDING.
+
+No production change.
+
+## Exact next continuation
+
+PF-030: build a small offline MSCI event-source validation sample across several 2025–2026 review cycles.
+PF-031: validate whether official MSCI files contain Taiwan-specific adds/deletes in machine-readable enough form for deterministic parsing.
+PF-032: build current TWSE passive ETF benchmark-dedup map for major Taiwan-equity benchmarks as a research artifact.
+PF-033: only after source contracts are stable, join events to price/volume outcomes without using current AUM as historical AUM.
