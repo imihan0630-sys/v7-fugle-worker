@@ -107,3 +107,21 @@ Class A if research-only; Class C if later used in formal 15m confirmation.
 5. PV-020: define a compact latent-state architecture so dry-up, breakout participation, acceptance, persistence and exhaustion do not become a Factor Zoo.
 6. Then design a minimum prospective Shadow experiment and sample-size/coverage stopping rules before any coding proposal that could affect selection.
 7. Formal Core remains LOCKED.
+
+## Progress added — PV-016 through PV-020
+- PV-016 treats Fugle session cumulative average / VWAP-style position only as an intraday acceptance diagnostic, not a proven standalone alpha factor.
+- PV-017 introduces price-impact / effort-vs-result diagnostics but explicitly separates liquidity effects from directional alpha and requires price-limit / liquidity controls.
+- PV-018 separates Taiwan overnight gap information from intraday acceptance. Gap + volume is not automatically strength; gap sentiment risk and information acceptance must be distinguished by later price behavior.
+- PV-019 defines a multi-timeframe hierarchy: daily=context, coarse intraday=transition, 15m=resolution, 10m=auxiliary. Do not add duplicate volume points across timeframes for the same event.
+- PV-020 consolidates the research into latent states: Participation, Price Response, Acceptance Lifecycle, Persistence, and Constraint/Guard. This is preferred to a growing collection of independent volume scores.
+- Current research direction is now conditional-state modeling rather than traditional “volume indicator” accumulation.
+- Formal Core remains unchanged / LOCKED.
+
+## Revised exact next continuation point after PV-020
+1. PV-021: study intraday volume concentration by time block (opening / mid-session / closing) beyond same-slot RVOL and cumulative pace.
+2. PV-022: test sequence structure: pre-breakout dry-up -> breakout re-expansion -> retest contraction -> reacceleration.
+3. PV-023: design residual/incremental-value tests versus Pattern Maturity, Residual RS, sector, institution, overheat and Information Discreteness.
+4. PV-024: define prospective sample-size, coverage and stopping rules before recommending any Shadow implementation.
+5. PV-025: define exact minimal Shadow feature set; explicitly reject redundant candidates.
+6. Only after PV-021~025 should engineering insertion into research-only snapshots be proposed.
+7. Formal Core remains LOCKED.
