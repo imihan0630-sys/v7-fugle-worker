@@ -1,5 +1,5 @@
 // Research-only prototype. No production dependency.
-// Purpose: build target-date-bounded corporate-action series with explicit semantics.
+// Purpose: target-date-bounded corporate-action series with explicit per-mode semantics.
 
 const RETURN_MODES = new Set([
   "TECHNICAL_CONTINUITY",
@@ -17,6 +17,11 @@ const VOLUME_MODES = new Set([
 function n(value) {
   const x = Number(value);
   return Number.isFinite(x) ? x : null;
+}
+
+function positiveFactor(value) {
+  const x = n(value);
+  return x !== null && x > 0 ? x : null;
 }
 
 function cloneBars(bars, targetDate) {
@@ -38,38 +43,48 @@ function cloneBars(bars, targetDate) {
 function normalizedEvent(event) {
   const effectiveDate = String(event && event.effectiveDate || "");
   const actionType = String(event && event.actionType || "UNKNOWN");
-  const priceFactorInput = n(event && event.priceFactor);
-  const referencePrice = n(event && event.referencePrice);
-  const previousClose = n(event && event.previousClose);
-  const priceFactor =
-    priceFactorInput && priceFactorInput > 0 ? priceFactorInput :
-    referencePrice && referencePrice > 0 && previousClose && previousClose > 0
-      ? referencePrice / previousClose
-      : null;
+  const previousClose = positiveFactor(event && event.previousClose);
+  const referencePrice = positiveFactor(event && event.referencePrice);
+
+  const genericFactor =
+    positiveFactor(event && event.priceFactor) ||
+    (referencePrice && previousClose ? referencePrice / previousClose : null);
+
+  const technicalPriceFactor =
+    positiveFactor(event && event.technicalPriceFactor) ||
+    genericFactor;
+
+  const totalReturnComparableFactor =
+    positiveFactor(event && event.totalReturnComparableFactor) ||
+    technicalPriceFactor;
+
+  // Intentionally NO generic fallback for Price-Index-Comparable mode.
+  // Mixed cash+stock/right events need their own verified factor.
+  const priceIndexComparableFactor =
+    positiveFactor(event && event.priceIndexComparableFactor);
 
   const volumeTransformMode = VOLUME_MODES.has(String(event && event.volumeTransformMode))
     ? String(event.volumeTransformMode)
     : "UNKNOWN";
-  const shareUnitFactor = n(event && event.shareUnitFactor);
 
   return {
     eventKey: String(event && event.eventKey || (effectiveDate + ":" + actionType)),
     effectiveDate,
     actionType,
-    priceFactor,
+    technicalPriceFactor,
+    priceIndexComparableFactor,
+    totalReturnComparableFactor,
     volumeTransformMode,
-    shareUnitFactor: shareUnitFactor && shareUnitFactor > 0 ? shareUnitFactor : null,
-    // TAIEX Price Index does not neutralize ordinary cash dividends.
-    priceIndexAdjusts: event && event.priceIndexAdjusts === true,
+    shareUnitFactor: positiveFactor(event && event.shareUnitFactor),
     source: event && event.source || null
   };
 }
 
-function applyPriceForMode(event, returnMode) {
-  if (returnMode === "PRICE_INDEX_COMPARABLE") return event.priceIndexAdjusts === true;
-  // Technical continuity and total-return-comparable modes both neutralize
-  // verified mechanical price-base resets, including ordinary cash dividends.
-  return true;
+function factorForMode(event, returnMode) {
+  if (returnMode === "TECHNICAL_CONTINUITY") return event.technicalPriceFactor;
+  if (returnMode === "PRICE_INDEX_COMPARABLE") return event.priceIndexComparableFactor;
+  if (returnMode === "TOTAL_RETURN_COMPARABLE") return event.totalReturnComparableFactor;
+  return null;
 }
 
 export function buildPointInTimeSeries({
@@ -94,11 +109,11 @@ export function buildPointInTimeSeries({
   let volumeContinuityComplete = true;
 
   for (const event of eligibleEvents) {
-    const applyPrice = applyPriceForMode(event, returnMode);
+    const modeFactor = factorForMode(event, returnMode);
 
-    if (applyPrice && !(event.priceFactor > 0)) {
+    if (!(modeFactor > 0)) {
       priceContinuityComplete = false;
-      unknownReasons.push(event.eventKey + ":PRICE_FACTOR_UNKNOWN");
+      unknownReasons.push(event.eventKey + ":" + returnMode + "_FACTOR_UNKNOWN");
     }
 
     if (event.volumeTransformMode === "UNIT_SCALE" && !(event.shareUnitFactor > 0)) {
@@ -114,11 +129,11 @@ export function buildPointInTimeSeries({
     for (const bar of continuityBars) {
       if (bar.date >= event.effectiveDate) continue;
 
-      if (applyPrice && event.priceFactor > 0) {
-        bar.open *= event.priceFactor;
-        bar.high *= event.priceFactor;
-        bar.low *= event.priceFactor;
-        bar.close *= event.priceFactor;
+      if (modeFactor > 0) {
+        bar.open *= modeFactor;
+        bar.high *= modeFactor;
+        bar.low *= modeFactor;
+        bar.close *= modeFactor;
       }
 
       if (
@@ -134,9 +149,11 @@ export function buildPointInTimeSeries({
       eventKey: event.eventKey,
       effectiveDate: event.effectiveDate,
       actionType: event.actionType,
-      priceApplied: applyPrice && event.priceFactor > 0,
-      priceFactor: event.priceFactor,
-      priceIndexAdjusts: event.priceIndexAdjusts,
+      returnMode,
+      appliedPriceFactor: modeFactor,
+      technicalPriceFactor: event.technicalPriceFactor,
+      priceIndexComparableFactor: event.priceIndexComparableFactor,
+      totalReturnComparableFactor: event.totalReturnComparableFactor,
       volumeTransformMode: event.volumeTransformMode,
       shareUnitFactor: event.shareUnitFactor,
       source: event.source
@@ -157,7 +174,6 @@ export function buildPointInTimeSeries({
   };
 }
 
-// Backward-compatible research alias. Technical continuity only.
 export function buildPointInTimeContinuity(args) {
   return buildPointInTimeSeries({ ...args, returnMode: "TECHNICAL_CONTINUITY" });
 }
