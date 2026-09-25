@@ -604,3 +604,15 @@ YES for research infrastructure integrity: resolving the actual archive lineage 
 5. When enough prospective dates exist, run only PATTERN-RG1..RG4 plus frozen redundancy controls.
 6. Treat major-zone first-break/acceptance/failure as lifecycle context, never a hard resistance veto unless future mature evidence supports a separate owner-reviewed proposal.
 7. Formal Core remains LOCKED.
+
+## Price-Volume lane update — PV-098 through PV-117
+- Current PV research cursor: PV-001 through PV-117 complete.
+- The lane has moved from “how abnormal is volume?” to “what may have caused the volume?” while preserving ambiguity and no-look-ahead.
+- Dealer flow audit found current Worker dealerBuyDays is based on combined dealer flow, which mixes proprietary and hedge activity. Official TWSE/TPEx payloads already contain the split, so PV-H005 is registered as a zero-extra-API Tier-2 research hypothesis; no Formal change.
+- Covered-warrant hedging, ETF creation/redemption, block trades, leverage/shorting, index/passive flow and derivatives expiry are now treated as possible volume-origin/context mechanisms rather than automatic directional scores.
+- Existing specialized lanes were reused rather than duplicated: LEVERAGE_SHORTING_RESEARCH.md, PASSIVE_FLOW_INDEX_REBALANCING_RESEARCH.md and DERIVATIVES_VOLATILITY_RESEARCH.md.
+- Disposition stocks are now recognized as a serious 15m comparability issue because periodic call-auction timing can conflict with 15m slots. Attention is contextual; disposition can invalidate the clean PV cohort.
+- Current research evidence has TWSE attention/disposition coverage but TPEx disposition remains UNKNOWN; missing coverage is not interpreted as normal.
+- Disposition sessions should be excluded/paused from normal same-slot baselines rather than zero-filled; normal pre-disposition sessions may remain valid after restrictions end.
+- PV_SHADOW_V0_1 stays frozen during DATA_QA. New origin-decomposition ideas remain Tier-2 and OBSERVER only.
+- Formal Core LOCKED.
