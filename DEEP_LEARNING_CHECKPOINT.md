@@ -556,3 +556,30 @@ YES for research infrastructure integrity: resolving the actual archive lineage 
 3. Pattern: only after detector/replay/prefix-invariance gates pass, enable prospective observer logging; no historical Formal-cohort fabrication.
 4. Cross-lane: consume Corporate Actions lane semantic spaces (RAW_EXECUTION / TECHNICAL_CONTINUITY / PRICE_INDEX_COMPARABLE / TOTAL_RETURN_COMPARABLE) rather than creating a competing adjustment engine.
 5. Formal Core remains LOCKED.
+
+
+## Pattern Maturity continuation — DL-003F (2026-09-25 Asia/Taipei)
+- Pattern research has advanced from SPEC-only into an isolated executable detector-QA prototype on Draft PR #102; no Worker.js/runtime wiring or deploy.
+- Latest validated PR head in this update: `580d6080e89b4f750f16633c34bf8409b3e5941c`.
+- CI evidence: V8 Regression `36146803521` SUCCESS; V8 Repair `36146803565` SUCCESS.
+- Early failures were retained and repaired: null/blank numeric values no longer coerce to 0; C2 VCP topology is independently tested rather than hidden inside swing extraction.
+- C1-C8 adversarial fixtures are executable. Prefix invariance, replay exactness, price-scale invariance, missing-OPEN honesty, duplicate/order guards, confirmed `pivotAt/confirmedAt`, immutable zone versions, Shadow parent-hash drift detection and semantic-space provenance guards are executable.
+- Primary swing prototype now implements the frozen lagged-ATR design: k=1/2/3 MICRO/BASE/MAJOR and threshold frozen from the prior completed bar at leg start. No scale chosen by future returns.
+- Outcome-free nested-resistance hierarchy is frozen: Formal priorHigh20 comparator; BASE k=2/120 symbol sessions; MAJOR k=3/260 sessions; simple 260-session high redundancy comparator. Available-air stays continuous; there is no hard resistance veto.
+- Swing-only VCP layer cannot claim full maturity until range/volume context is implemented; status stays `TOPOLOGY_ONLY_NEEDS_RANGE_VOLUME`.
+- Corporate Actions cross-lane now supplies the correct semantic contract. FCNT000154 adjusted=false remains blocked as trusted RAW, while Pattern consumes RAW_EXECUTION / TECHNICAL_CONTINUITY etc. Real QA witnesses now include TWSE 2412/8454 and TPEx 5314.
+- Important falsification: a corporate-action day must not blindly suppress all gaps. Only the mechanical reset is neutralized; a residual continuity-space gap remains market information.
+- Pattern reuses the V8.7.2 Shadow archive with parent identity `scan_date|symbol` plus parent snapshot hash; same natural key/different hash is a provenance conflict.
+- Exactly four Pattern x Regime hypotheses are preregistered (RG1 breakout acceptance, RG2 nested resistance, RG3 VCP/compression, RG4 reversal/prior trend). No combinatorial interaction search.
+- No forward-return outcomes were inspected; alpha remains UNKNOWN; no R09; Formal Core remains LOCKED.
+- Durable details: KLINE_PATTERN_RESEARCH.md main commit `a245b486dc60f29b623546416c2db4c6994465a4`; KLINE_PATTERN_CHECKPOINT.md commit `1b53e88c5aab6e7dbb4bb57f2889a72c7a794776`.
+
+### Exact next continuation point
+1. Keep Draft PR #102 unmerged/un-deployed; detector QA alone is not production authorization.
+2. Complete isolated VCP range/volume context and W/Platform lifecycle semantics, preserving latent-geometry vs named-label separation.
+3. Specify the isolated Pattern research-cache adapter that consumes Corporate Actions semantic spaces; no direct trusted RAW from the coercing FCNT000154 path and no second adjustment engine.
+4. Add observability contract: coverage, DATA_BLOCKED reasons, prefix/replay exactness, scale disagreement, compute cost.
+5. Only after prospective complete Shadow-parent coverage exists may Pattern snapshots link to D1/D3/D5/D10/MFE/MAE/R01 outcomes.
+6. Run only frozen PATTERN-RG1..RG4 plus preregistered redundancy controls before adding interactions.
+7. Continue positive AND negative validation; reject Pattern variables that collapse into priorHigh60/MA60/ret20/overheat/R01 or atrPercent/volatility20/volumeContraction/platformRange.
+8. Do not propose Formal optimization until prospective evidence meets existing maturity/date/regime/holdout/cost gates.
