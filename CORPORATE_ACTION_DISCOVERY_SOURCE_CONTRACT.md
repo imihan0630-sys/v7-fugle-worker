@@ -114,3 +114,37 @@ Historical complete free automated discovery: PARTIAL.
 Historical complete official paid-file discovery: DOCUMENTED FEASIBLE.
 
 No Formal runtime dependency is authorized.
+
+## 9. Suspension/resumption source lanes (CA-093 extension)
+
+### TWSE
+- OpenAPI catalog/Swagger advertises `/exchangeReport/TWTAWU` for suspended-trading securities.
+- Historical suspended-trading page: https://www.twse.com.tw/zh/trading/historical/twtawu.html
+  - query by period/security/category;
+  - CSV export;
+  - page states data available from 2011-10-03.
+- Official Document Announcements and MOPS significant disclosures remain necessary to bind a suspension to a corporate-action cause, preserve schedule revisions and establish point-in-time knowledge.
+
+Direct payload-field validation for the TWTAWU API endpoint was not completed in this round because the research web client could not retrieve the direct API payload. Therefore:
+`TWSE_TWTAWU_MACHINE_FIELD_CONTRACT=UNKNOWN`
+until an archived successful capture proves the schema.
+
+### TPEx
+- Official Trading Halt/ Resumption Trade history:
+  https://www.tpex.org.tw/en-us/announce/market/halt/historical.html
+  exposes Today/History, year/security-category filters and CSV download.
+- TPEx change-of-par-value announcement/reference-price pages and capital-reduction/new-share announcements are required when the halt/resumption is caused by unit conversion or share replacement.
+- TPEx and MOPS timestamps are distinct provenance fields. Preserve both when available.
+
+An exact stable public TPEx machine endpoint for the halt/resumption dataset has not been frozen here.
+Therefore:
+`TPEX_HALT_MACHINE_ENDPOINT_CONTRACT=UNKNOWN`.
+Do not fabricate an API path; archive the official HTML/CSV artifact plus fetch metadata until a stable contract is verified.
+
+### Completeness rule
+Suspension coverage must be proven per exchange.
+A TWSE-complete lane does not imply TPEx completeness and vice versa.
+Absence of a suspension record is not evidence of NO_SUSPENSION unless the symbol's exchange lane, date range and parser coverage are complete.
+
+No Formal runtime dependency is authorized.
+
