@@ -343,3 +343,15 @@ Updated: 2026-09-25 16:58 Asia/Taipei.
 - Dedicated Corporate Actions research/checkpoint were updated. CA-112 was already complete independently, so contiguous cursor is now CA-001 through CA-112 complete; continue CA-113.
 - Formal Core, A/B logic, ranking, thresholds, 3+3+3, capital, entry/add/reduce/sell/stop, monitor and push remain unchanged. No Worker.js wiring, merge or Production deployment.
 - Exact continuation: CA-113 bounded dual-exchange denominator archive pilot with completeness/revision receipts; CA-114 2465 payment-certificate/private-placement denominator resolution plus independent witness; CA-115 readiness re-evaluation only after CA-113/114 pass.
+
+
+## B-138 — CA-113 pilot aligned; CA-114 instrument-stage semantics resolved (2026-09-25 Asia/Taipei)
+- Start-of-run governance/worklist/checkpoint/main were re-read. Canonical start was B-137 / CA-113; A had advanced Price-Volume independently, which was not redone.
+- CA-113 plan upgraded to v0.2 after CA-111 closure: TWSE exact listed-share candidate = BFT51U 上市股數 raw field; BFT51U 發行張數 remains lot-count only; security-specific trading-unit guard remains mandatory. Pilot is READY_FOR_BOUNDED_EXECUTION, not complete.
+- CA-114 semantic-stage receipt materialized: `research/corporate_action_2465_payment_certificate_resolution_v0_1.json`.
+- Positive evidence: 2465 disclosure for 2025-11-17 explicitly separates 58,946,031 original listed common shares (excluding 25,000,000 private-placement common shares) and 10,000,000 listed payment-certificate units. For a metric that explicitly combines both tradable instrument types, 68,946,031 is the derived combined tradable-unit universe.
+- Counterevidence/guard: 68,946,031 must NOT be relabeled REGISTERED_ISSUED_COMMON_SHARES. The same disclosure's 93,946,031 cumulative figure includes payment certificates and likewise is not proof of 2025-11-17 registered-issued ordinary shares. Registration was approved 2026-01-06; new ordinary shares list and payment certificates terminate/convert 2026-01-16. Later ordinary-share state must not leak backward.
+- CA-114 is SEMANTIC_STAGE_RESOLVED_DAILY_ARCHIVE_RECEIPT_PENDING. Bounded daily TWSE rows around 2025-11-17 are still required to reconcile BFT51U/security rows and prove coverage/revision behavior. If the daily lane cannot expose payment-certificate supply, metric-specific denominator remains UNKNOWN rather than forcing a value.
+- Bias/quality checks: no outcome-driven denominator choice, no missing=0/BAD, no current-state backfill, no future leakage, no historical Shadow fabrication, no Formal change.
+- Engineering: research-only artifacts/checkpoints committed on main; no Worker.js wiring, PR merge or Production deployment.
+- Exact next continuation: execute CA-113 bounded TWSE/TPEx archive receipts with expected/observed/missing/revision/knownAt/UNKNOWN accounting; reconcile CA-114 2465 daily TWSE rows against frozen instrument-stage semantics; then CA-115 readiness re-evaluation only if archive/data gates pass.
