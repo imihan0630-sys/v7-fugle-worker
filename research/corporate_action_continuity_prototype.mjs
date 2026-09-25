@@ -98,9 +98,16 @@ export function buildPointInTimeSeries({
 
   const rawBars = cloneBars(bars, targetDate);
   const continuityBars = rawBars.map(bar => ({ ...bar }));
+  const historyStartDate = rawBars.length ? rawBars[0].date : null;
   const eligibleEvents = (Array.isArray(events) ? events : [])
     .map(normalizedEvent)
-    .filter(event => event.effectiveDate && event.effectiveDate <= targetDate)
+    // Events at/before the first supplied bar do not cross this history window:
+    // all supplied bars are already on the post-event side.
+    .filter(event =>
+      event.effectiveDate &&
+      event.effectiveDate <= targetDate &&
+      (!historyStartDate || event.effectiveDate > historyStartDate)
+    )
     .sort((a, b) => a.effectiveDate.localeCompare(b.effectiveDate));
 
   const appliedEvents = [];
@@ -162,6 +169,7 @@ export function buildPointInTimeSeries({
 
   return {
     targetDate,
+    historyStartDate,
     returnMode,
     rawBars,
     continuityBars,
