@@ -10311,3 +10311,246 @@ This must be tested separately from average D5 return.
 ### No production change
 Margin/crowding remains research-only context.
 
+
+
+## DL-002EL — Statistical Validation Contract for Pattern Research
+
+### Core unit of independence
+Stocks observed on the same scan date share:
+- market regime,
+- macro shock,
+- sector shocks,
+- broad liquidity/attention conditions.
+
+Therefore N stocks != N fully independent observations.
+
+Primary independence unit:
+INDEPENDENT_SCAN_DATE.
+
+Report:
+- row count
+- unique scan dates
+- unique sectors
+- median rows per date
+- outcome-mature scan dates
+
+### Primary comparison order
+1. WITHIN-DATE matched / demeaned comparison.
+2. Date-clustered aggregate effect.
+3. Leave-one-date-out stability.
+4. Purged forward holdout.
+5. Calendar/regime split.
+
+Raw pooled averages are descriptive only.
+
+### Same-date matched controls
+For a pattern-positive candidate, prefer controls from the same scan date with similar:
+- Formal cohort
+- liquidity tier
+- price tier / thousand vs general
+- sector when enough peers exist
+- ret20 / volatility / overheat
+- Residual RS
+- existing A/B setup status
+
+Do not match on future information.
+
+### Effect estimates
+For each primary hypothesis report:
+- mean/median outcome difference
+- robust spread / confidence interval
+- date-level sign consistency
+- partial/cross-sectional association after controls
+- coverage
+- effect by regime
+
+Do not report one p-value as proof.
+
+## DL-002EM — Overlapping Forward Returns / Purging
+
+### Problem
+D5/D10/D20 outcomes from adjacent scan dates overlap in calendar time.
+Treating them as independent inflates apparent evidence.
+
+### Rules
+- retain scan-date clustering;
+- for holdout split, purge training dates whose forward outcome windows overlap holdout;
+- embargo where needed around boundary;
+- outcome horizon defines purge length.
+
+### Separate horizons
+D1
+D3
+D5
+D10
+D20
+
+Each has a different effective sample size.
+Do not say “60 samples” without stating which horizon is mature.
+
+### Event overlap
+A symbol appearing on multiple dates can also create dependence.
+Store:
+- symbolClusterCount
+- consecutiveObservationRuns
+- repeatedPatternEpisodeId
+
+A single long cup observed for ten days is not ten independent cups.
+
+## DL-002EN — Pattern Episode Identity
+
+### Problem
+Daily snapshots of one continuing VCP/base can duplicate one economic event.
+
+### Episode model
+Assign patternEpisodeId when:
+- same symbol
+- same structural anchors / zone family
+- state evolves without structural reset.
+
+Start a NEW episode only after:
+- structural invalidation and later reformation,
+- materially new base after a major move,
+- prior episode fully resolved and reset criteria met.
+
+### Benefits
+Report both:
+SNAPSHOT-level:
+what was knowable each day.
+
+EPISODE-level:
+how many genuinely distinct patterns existed.
+
+### Outcomes
+Episode-level metrics avoid overstating sample count by repeated daily observations.
+
+## DL-002EO — Competing Risks for Pattern Life Cycle
+
+### Pattern can resolve in several mutually competing ways
+From PIVOT_READY:
+- BREAKOUT
+- PRE_BREAKOUT_FAILURE
+- STALE_WITHOUT_TRIGGER
+- EVENT_RESET / DATA_CENSORING
+
+From BREAKOUT:
+- SUSTAINED_ACCEPTANCE
+- FAST_REENTRY
+- RETEST_HOLD
+- RETEST_FAIL
+- CENSORED
+
+### Why simple averages are insufficient
+A pattern that never triggers should not be treated as zero return from a nonexistent entry.
+A stale/censored pattern differs from a failed breakout.
+
+### Research model
+At minimum store:
+- timeToFirstResolution
+- resolutionType
+- censored flag
+
+If sample later becomes adequate, competing-risk / survival analysis can estimate transition incidence.
+
+### No forced model now
+With small sample, use descriptive transition tables first.
+Do not fit complex hazard models prematurely.
+
+## DL-002EP — Cross-Sectional Association Is Not Causality
+
+### Language rule
+Allowed:
+“pattern maturity is associated with lower R01 failure after controls.”
+
+Not allowed:
+“VCP causes higher returns.”
+
+Chart structure may proxy:
+- information arrival,
+- investor attention,
+- sector fundamentals,
+- liquidity,
+- institutional positioning,
+- market state.
+
+### Goal
+Predictive incremental value is sufficient for selection research.
+Causal stories remain hypotheses unless identification supports them.
+
+## DL-002EQ — Calibration and Monotonicity Test
+
+### If a continuous primitive/fit metric is useful
+Higher values should preferably show stable, ordered changes in outcomes.
+
+Test buckets pre-registered:
+- low
+- medium
+- high
+or quantiles defined on training only.
+
+Evaluate:
+- D5/D10
+- R01 failure
+- MFE/MAE
+- stop-first
+- coverage
+
+### Warning
+A U-shaped effect may be real.
+Do not force monotonic score if evidence is nonlinear.
+
+### Out-of-sample binning
+Cut points learned on training must be frozen for holdout.
+No rebucketing holdout to make monotonicity look better.
+
+## DL-002ER — Permutation / Randomization Baseline
+
+### Purpose
+Ask whether observed separation is larger than what could arise by chance under the same date structure.
+
+### Safe permutation
+Shuffle pattern labels WITHIN scan date and appropriate cohort/strata.
+Preserve:
+- date sizes
+- market regime
+- outcome distribution by date
+- cohort counts
+
+### Uses
+- sanity check raw separation
+- benchmark complex detector against chance
+- estimate false-discovery pressure
+
+### Limitation
+Permutation is not a substitute for holdout/prospective evidence.
+
+## DL-002ES — Evaluation Metrics for Rare Pattern States
+
+### Problem
+Some mature patterns may be rare.
+Accuracy is meaningless when negatives dominate.
+
+### For binary research outcomes
+Prefer:
+- precision
+- recall
+- false-positive rate
+- base rate
+- lift over base rate
+- PR-style summaries when sample sufficient
+
+### For ranking/continuous metrics
+- rank correlation within date
+- top-vs-bottom bucket spread
+- calibration
+- coverage
+
+### For trading relevance
+- MFE/MAE
+- stop-first
+- cost-adjusted return
+- capital utilization
+- missed-winner opportunity cost
+
+No single metric is enough.
+
