@@ -2629,3 +2629,136 @@ Therefore volume is an interaction variable, not a one-direction truth.
 WORTH_SHADOW_EVENT_RESEARCH.
 No Formal change.
 
+
+
+## DL-002U — Multi-Timeframe Pattern Context v0.1
+
+### Strategic fit
+The current system already separates:
+- daily bars for after-market selection,
+- 15-minute bars for formal execution confirmation,
+- 10-minute bars for auxiliary observation.
+
+DL-002 adds a possible WEEKLY structural context layer for research, not a second decision engine.
+
+### Role separation
+WEEKLY:
+- primary / large-base context,
+- major trend and long structural levels,
+- multi-month cup / head-and-shoulders / major W context.
+
+DAILY:
+- pattern maturity,
+- swing topology,
+- pivot / neckline / handle / flag details,
+- after-market selection context.
+
+15-MINUTE:
+- actual tactical confirmation under existing execution rules.
+
+10-MINUTE:
+- auxiliary early observation only, unchanged.
+
+### Why weekly may add information
+Long patterns can be fragmented by daily noise.
+Weekly aggregation may:
+- simplify multi-month bases,
+- expose larger structural resistance,
+- distinguish a daily bullish setup inside a deteriorating major structure,
+- reduce sensitivity to one-day noise.
+
+But weekly bars also lose timing detail and can duplicate MA60 / long-horizon daily information.
+
+Therefore weekly context must prove incremental value.
+
+### Weekly research fields
+- weeklySwingTrend
+- weeklyHigherHighCount
+- weeklyHigherLowCount
+- weeklyMajorResistance
+- weeklyMajorSupport
+- weeklyBaseDurationWeeks
+- weeklyPatternLabels[]
+- weeklyPatternStates[]
+- weeklyATRPercent
+- weeklyVolumeTrend
+- weeklyCloseVsMA10W / MA30W equivalents as descriptive context
+- dailyWeeklyPatternAgreement
+- dailyPivotVsWeeklyResistancePct
+
+Do not automatically reuse practitioner MA periods as hard gates.
+
+### Cross-timeframe pattern relationship
+Examples:
+
+NESTED:
+- weekly cup + daily handle
+- weekly W + daily VCP
+- weekly base + daily flag
+
+ALIGNED:
+- same bullish topology visible on weekly and daily.
+
+CONFLICT:
+- daily bullish breakout approaching weekly major resistance,
+- daily pattern mature while weekly structure remains lower-high/lower-low.
+
+INDEPENDENT:
+- daily short-term setup has no meaningful weekly named pattern.
+
+### De-duplication rule
+Weekly and daily versions of the same underlying swings must not count as independent factors.
+
+Store:
+- parentPatternId
+- childPatternId
+- sharedPriceRegion
+- sharedStructuralLevel
+- timeframeRelationship
+
+### Hypotheses
+H1:
+Daily pattern maturity has better outcomes when weekly trend/context is supportive.
+
+H2:
+Weekly resistance proximity explains some daily false breakouts.
+
+H3:
+Weekly context is redundant once MA60, priorHigh60, ret60 and Residual RS are controlled.
+
+H3 is a serious null hypothesis; weekly context should be rejected if it adds no information.
+
+### Validation
+Within same date / pattern family:
+- weekly aligned vs weekly neutral vs weekly conflict.
+
+Outcomes:
+- D3/D5/D10
+- MFE/MAE
+- R01 breakout failure
+- 15-minute BUY trigger rate
+- maxChase/no-retest opportunity cost
+
+Control:
+- MA60 relationship
+- priorHigh60
+- ret60
+- volatility
+- sector / market regime
+
+### Weekly bar construction
+Prefer source-provided adjusted W candles or deterministic aggregation from adjusted daily data.
+If aggregating:
+- weekly open = first trading-day adjusted open,
+- high = max highs,
+- low = min lows,
+- close = last trading-day adjusted close,
+- volume = sum volume,
+- week boundaries must use Taiwan trading calendar.
+
+Do not mix raw and adjusted series.
+
+### Status
+WORTH_SHADOW_CONTEXT_RESEARCH.
+No Formal or execution change.
+
