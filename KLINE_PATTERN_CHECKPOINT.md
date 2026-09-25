@@ -42,6 +42,14 @@ DL-002 — Pattern Maturity / Multi-stage K-line Structure
 - DL-002V gap / Three-Gap / Island-Reversal research
 - DL-002W conditional price-volume / effort-vs-result research
 
+- DL-002X Pennant / triangle subclasses / wedges
+
+- DL-002Y Pattern Confidence / Ambiguity Profile
+
+- DL-002Z Pattern Failure Timing / Acceptance Lifecycle
+
+- DL-003A detector algorithm architecture comparison
+
 ## Key findings to retain
 1. The system already uses substantial daily K-line structure; the real missing layer is multi-stage topology/lifecycle, not “K-lines are absent.”
 2. Current system already has a crude W proxy: leftLow/rightLow/rightFootHigher. Do not duplicate it.
@@ -67,16 +75,16 @@ DL-002 — Pattern Maturity / Multi-stage K-line Structure
 - EXECUTION_COVERAGE: missing recorder rows cannot be interpreted as NO-BUY without complete date coverage.
 
 ## Exact next continuation point
-1. Research Pennant / Ascending Triangle / Descending Triangle / Falling Wedge / Rising Wedge as topology subclasses; do not create new independent scores if DL-002N latent geometry already represents them.
-2. Define Pattern Confidence / Ambiguity without outcome-tuned weights; prefer component vectors, scale stability, pivot clarity and data-quality flags over one optimized score.
-3. Deep-dive pattern failure timing: immediate rejection vs delayed failure vs successful retest, reusing R01 where possible.
-4. Research weekly/daily nested-pattern relationships and whether weekly structural resistance explains daily breakout failures after controlling priorHigh60/MA60.
-5. Specify detector implementation order: swing engine -> structural levels -> VCP/W/Platform -> Cup -> Flag/Triangle -> multi-candle patterns after OPEN/adjustment readiness.
-6. Design the isolated Pattern Research cache schema and replay tests as a Class A research-only proposal; do not mutate shared Formal cache.
-7. Implement synthetic/adversarial detector tests before return backtesting if research code is built.
-8. Link pattern diagnostics prospectively to existing Shadow Candidate Archive and execution recorder only when date coverage is complete.
-9. Reuse R01 and existing D1/D3/D5/D10/MFE/MAE outcomes; do not create R09 until definitions/data/redundancy work is frozen.
-10. Continue external evidence search for genuinely independent pattern information and counter-evidence; avoid collecting more names without mechanism.
+1. Specify isolated Pattern Research cache schema with raw/adjusted OHLC, provenance, corporate-action flags, feature snapshots and detector-version metadata.
+2. Specify deterministic as-of-date replay tests: fetched data -> swing engine -> topology -> pattern state must reproduce the historical snapshot exactly.
+3. Define implementation order: research data layer -> swing engine -> structural levels -> VCP/W/Platform -> Cup -> Flag/Triangle/Wedge -> candlesticks/gaps after OPEN/adjustment readiness.
+4. Define Pattern Research observability: coverage, data-blocked rate, repaint/prefix-invariance, detector disagreement, compute cost.
+5. Research nested weekly/daily structure and whether weekly resistance explains daily R01 failures after controlling priorHigh60/MA60.
+6. Keep primary detector architecture frozen: confirmed Directional-Change-style swings + transparent topology; PIP/kernel as independent robustness checks; DTW exploratory; ML deferred.
+7. Implement synthetic/adversarial detector tests before any forward-return optimization if code is built.
+8. Link diagnostics prospectively to Shadow Candidate Archive and execution recorder only when date coverage is complete.
+9. Reuse R01 and existing D1/D3/D5/D10/MFE/MAE outcomes; do not create R09 yet.
+10. Keep Formal Core unchanged until mature evidence supports a specific owner-approved proposal.
 
 ## Latest durable research commit
-- `e32059b7d9faebf16b90bb5768e0552f88064bdc` — DL-002W price-volume structure.
+- `3377f6ded3eaeb4223b0f68562164da58554a495` — DL-003A detector architecture comparison.
