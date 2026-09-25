@@ -208,3 +208,20 @@ CA-112 is already complete as an independent lane.
 CA-113 may begin only as bounded archive-pilot preparation until CA-111 closes; full dual-exchange completeness cannot be claimed early.
 CA-114 payment-certificate/private-placement denominator resolution follows with daily exchange artifacts and an independent witness.
 CA-115 readiness re-evaluation remains gated by CA-111/113/114.
+
+
+## CA-111 continued / CA-113 bounded preparation
+- CA-111 remains IN_PROGRESS. Official TWSE public evidence was extended with the listed common-share/TDR share-count change announcement lane (LT185).
+- LT185 is an official event-driven ledger with announcement/effective-date filtering and CSV export. TWSE filing-operation material explicitly describes 已上市股數 / 申報上市股數 / 累計 in 股 and states the illustrated cumulative listed-share count excludes private-placement and restricted-trading shares.
+- This is a strong independent share-unit/event-semantic witness, but it is not a complete daily denominator snapshot. It therefore does NOT prove BFT51U raw units and does NOT by itself close CA-111.
+- BFT51U universal x1000 remains PROHIBITED. BFI85U/TRANISIN/T32 remain trading-unit/reconciliation candidates until an explicit daily raw-unit contract is captured.
+- CA-113 bounded archive-pilot preparation is materialized in `research/corporate_action_dual_exchange_archive_pilot_plan_v0_1.json`.
+- Pilot is PREPARED_NOT_EXECUTED. TPEx S38 may proceed as a bounded archive-byte pilot; TWSE may proceed with event-ledger reconciliation preparation, but complete dual-exchange daily denominator coverage cannot be claimed while CA-111 is unresolved.
+- CA-114 received an independent semantic witness: generic TWSE listed-share maintenance excludes private-placement/restricted shares from cumulative listed-share count. This strengthens the 2465 public-listed/private-placement separation, but payment certificates remain a distinct tradable stage, so the exact 2025-11-17 combined exchange-tradable denominator remains PARTIAL until a date-specific daily exchange artifact resolves instrument treatment.
+- No outcome/alpha testing. No Worker.js wiring. No production deployment. Formal Core unchanged.
+
+## Updated exact continuation
+CA-111: continue official TWSE daily raw-unit proof; prefer explicit BFT51U/BFI85U format/sample or an equivalent daily official share lane with trading-unit guard.
+CA-113: execute only bounded TPEx archive bytes + TWSE event-ledger reconciliation receipts; do not claim full dual-exchange completeness before CA-111 closes.
+CA-114: obtain a 2465 date-specific daily exchange artifact around 2025-11-17 that distinguishes ordinary listed shares, private-placement shares and payment-certificate tradable supply.
+CA-115 remains gated by CA-111/113/114.
