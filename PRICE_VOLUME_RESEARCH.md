@@ -3027,4 +3027,320 @@ It is:
 **normalized participation + price response + structural acceptance + persistence + regime + market-structure/data guard.**
 
 Status: INTEGRATED_INTERPRETATION_MATRIX_COMPLETE / FORMAL_CORE_LOCKED.
+# PV-053 — Pattern-Maturity x Price-Volume Matrix without Duplicate Scoring
+
+## Goal
+The K-line / Pattern Maturity lane already models geometry. PV must contribute only participation/response/acceptance information that is not already encoded in the pattern score.
+
+Academic chart-pattern work supports studying objectively defined geometry, but does not justify multiplying scores for every named pattern-volume slogan.
+
+Source:
+- https://www.nber.org/papers/w7613
+
+## Shared latent PV components
+Use the same reusable components across VCP, cup/handle, W, platform and false-break:
+- supply contraction vs no-demand;
+- breakout participation;
+- response efficiency;
+- acceptance / retest / failure;
+- persistence;
+- market/data guard.
+
+## Pattern mapping
+
+### VCP / tightening structure
+Geometry owns:
+- contraction legs;
+- narrowing price swings;
+- pivot maturity.
+
+PV adds:
+- whether participation contracts across already-defined legs;
+- whether downside effort falls without support loss;
+- breakout/reacceleration participation.
+
+Do not create a separate “VCP volume score” if the same supply-contraction state already exists.
+
+### Cup / Handle
+Geometry owns:
+- rim/cup/handle shape;
+- handle location and depth.
+
+PV adds:
+- handle supply state;
+- breakout participation;
+- post-break acceptance.
+
+### W / Double Bottom
+Geometry owns:
+- first/second trough and neckline.
+
+PV adds:
+- normalized selling participation at comparable troughs;
+- reclaim/neckline participation;
+- retest acceptance.
+
+A lower-volume second trough can be selling exhaustion OR no demand. No automatic bullish label.
+
+### Platform / Flag / Triangle
+Geometry owns:
+- range boundary / compression.
+
+PV adds:
+- base participation state;
+- breakout RVOL;
+- false-break lifecycle.
+
+### False Break / Upthrust / Spring
+Geometry owns:
+- level breach and re-entry.
+
+PV adds:
+- effort on breach;
+- price progress;
+- rejection / absorption ambiguity;
+- later acceptance/failure.
+
+## Anti-duplication test
+Before adding any pattern x PV field ask:
+“If Pattern Maturity and the generic PV latent states are both known, does this new field contain anything else?”
+
+If no, reject it.
+
+Status: INTEGRATION_MAP_COMPLETE / NO_PATTERN_VOLUME_BONUS.
+
+
+# PV-054 — Sector Leader / Follower Participation Synchronization
+
+## Evidence
+Industry information can diffuse gradually. Hou (2007) finds intra-industry lead-lag effects where large firms tend to lead smaller firms, consistent with slow diffusion of common industry information.
+
+Source:
+- https://doi.org/10.1093/revfin/hhm003
+
+This supports studying time-ordered sector participation, but does NOT imply that simultaneous sector volume is always bullish.
+
+## Research hierarchy
+For each sector/day:
+1. identify leaders using information available before the follower observation:
+   - market-cap/liquidity tier;
+   - existing sector-relative-strength leadership;
+   - no future return information.
+2. record leader abnormal participation / price acceptance;
+3. record follower event time and lag;
+4. evaluate whether follower PV event is:
+   - synchronized;
+   - leader-first diffusion;
+   - isolated;
+   - broad indiscriminate sector burst.
+
+## Candidate fields
+- `pvSectorLeaderState`;
+- `pvLeaderRvolMedian`;
+- `pvLeaderAcceptanceBreadth`;
+- `pvFollowerLagDays`;
+- `pvSectorParticipationBreadth`;
+- `pvStockVsLeaderResidualParticipation`.
+
+## Constructive interpretation
+A follower setup occurring after accepted price/volume strength in established sector leaders may represent information diffusion / rotation.
+
+## Adverse interpretation
+- follower can simply be late-stage catch-up;
+- broad sector volume can occur at thematic peaks;
+- leader definition can become hindsight if based on later performance;
+- large firms may lead due liquidity/attention rather than fundamental information.
+
+## Governance
+This is a moderator of stock PV context, not a sector-volume bonus.
+It must prove incremental value beyond the current sector score / breadth / RS variables.
+
+Status: WORTH_INTERACTION_TEST / HIGH_REDUNDANCY_RISK.
+
+
+# PV-055 — Event-Day Volume and Baseline Contamination
+
+## Evidence
+Earnings/news events often generate abnormal trading volume and attention, but the relation between event-day volume and subsequent returns is not one-directional. PEAD research links attention, unexpected volume, disagreement and delayed price adjustment in different ways.
+
+Sources:
+- https://doi.org/10.1111/j.1475-679X.2006.00193.x
+- https://doi.org/10.1016/j.jbef.2020.100446
+- https://doi.org/10.1016/j.econmod.2022.105796
+- https://www.nber.org/papers/w11683
+
+## Problem
+Suppose an earnings/material-information event creates 4 days of 5x normal volume.
+If each day is treated as a fresh independent event:
+- sample size is inflated;
+- rolling baseline can start adapting to the event itself;
+- “decay” becomes harder to interpret.
+
+## Dual-baseline solution
+### Ordinary rolling baseline
+Keep the robust prior-20-session median for general RVOL.
+Because median is robust, one isolated event day should not dominate it.
+
+### Frozen event-start baseline
+When a new abnormal-volume episode begins:
+- save the pre-event median baseline in the event record;
+- use that frozen baseline for within-episode persistence/decay diagnostics;
+- do not replace it with later event days.
+
+This allows:
+`currentVolume / preEventBaseline`
+to measure event decay cleanly.
+
+## Public-event context
+If a verified earnings/material-information timestamp exists, store it as context.
+Do not require an external news source for v0.1 and do not infer that “no tagged event” means no information.
+
+## Opposing case
+Excluding all earnings/news days from ordinary volume history could make the baseline unrealistically quiet and add an external-data dependency.
+Therefore v0.1 should **not** blanket-exclude event days from the 20-session median.
+
+Status: FROZEN_EVENT_BASELINE_WORTH_ADDING / NO_BLANKET_EVENT_EXCLUSION.
+
+
+# PV-056 — PV Governance: Observer, Modifier, Veto
+
+## Why this layer is needed
+A research feature can be useful without deserving power over Formal decisions.
+The owner explicitly requires judgment rather than automatically inserting every learned idea into the selector.
+
+## Level 0 — OBSERVER
+Default for all PV research.
+May:
+- log state;
+- explain behavior;
+- segment outcomes;
+- appear in research reports.
+
+May NOT change:
+- eligibility;
+- ranking;
+- BUY;
+- maxChase;
+- stop;
+- capital;
+- push.
+
+All current PV fields are here.
+
+## Level 1 — MODIFIER
+Future possibility only after prospective incremental evidence and explicit owner approval.
+Examples:
+- adjust confidence of 15m confirmation;
+- alter research ranking within otherwise eligible names;
+- require extra confirmation in a validated high-risk state.
+
+Promotion requirements:
+- stable incremental value after existing features;
+- adequate coverage/regime evidence;
+- economic relevance;
+- Formal-isolation proposal reviewed as Class C.
+
+## Level 2 — VETO
+Extremely high bar.
+
+### Data-semantic veto
+Allowed in research immediately:
+- missing history;
+- unsupported market structure;
+- corporate-action incompatible baseline;
+- stale/incomplete bar.
+Meaning: veto **PV interpretation**, not the stock's Formal eligibility.
+
+### Predictive trading veto
+Not approved.
+An adverse PV pattern must never automatically reject a Formal candidate unless a later separate Class C proposal demonstrates strong, stable benefit and the owner approves.
+
+## Important distinction
+“PV data invalid” and “stock is bad” are completely different statements.
+
+Status: GOVERNANCE_HIERARCHY_DEFINED / ALL_CURRENT_PV=OBSERVER.
+
+
+# PV-057 — First Prospective Price-Volume Experiment: Pre-Registered Protocol
+
+## Primary question
+Does same-slot 15m RVOL plus cumulative-volume pace add incremental information beyond the current previous-5-bar volume ratio for distinguishing valid confirmation from false/no-follow-through confirmation?
+
+This is intentionally narrower than testing every PV idea simultaneously.
+
+## Cohort
+Use only stocks already selected/monitored by the existing Formal system.
+Do not let PV alter which symbols enter the cohort.
+
+For every eligible completed 15m observation save:
+- existing local previous-5-bar volumeRatio;
+- pvSlotRvol20;
+- pvCumvolPace20;
+- response/acceptance/guard state;
+- existing Formal 15m inputs;
+- plan/pivot context;
+- market regime;
+- sector/institution context.
+
+## Primary outcomes
+Frozen before inspection:
+1. false/no-follow-through after the observed confirmation state;
+2. MFE and MAE over predefined completed-bar horizons;
+3. structural acceptance/failure;
+4. BUY-trigger vs NO-BUY descriptive split, without rewriting historical BUY logic.
+
+## Secondary outcomes
+- D1 return after relevant event;
+- stop-first when a valid Formal plan existed;
+- maxChase adverse excursion.
+
+## Primary hypotheses
+### H1
+Same-slot RVOL/cumulative pace contain information not captured by local previous-5-bar volumeRatio.
+
+### H2
+The incremental value, if any, comes from clock-time normalization and participation persistence rather than simply “larger volume is better.”
+
+### H3
+PV guard states reduce interpretability; guarded observations should not be pooled blindly with normal-session observations.
+
+No direction (bullish/bearish) threshold is tuned from the same sample.
+
+## Comparator models
+A. Existing Formal/context fields only.
+B. A + current local volumeRatio.
+C. B + pvSlotRvol20.
+D. C + pvCumvolPace20.
+E. D + latent response/acceptance/guard states.
+
+The research question is the incremental change from A->B->C->D->E, not which model can be tuned to the best historical result.
+
+## Evaluation
+Report:
+- effect size;
+- MFE/MAE;
+- false-confirmation rate;
+- coverage;
+- BULL/MIXED/BEAR splits;
+- morning/midday/closing-phase splits;
+- date-clustered uncertainty where applicable.
+
+Use PV-024 operational milestones:
+- first ~50 completed events = DATA_QA only;
+- evidence interpretation only after predeclared broader coverage;
+- milestone reviews at 100 / 250 / 500 events without threshold retuning.
+
+## Stop rules
+Do not promote if:
+- same-slot metrics add no incremental information;
+- effect is driven only by one regime/date/sector;
+- coverage cost is too high;
+- clock-time normalization does not outperform or complement local acceleration;
+- benefits disappear after existing Formal controls.
+
+## Implementation boundary
+The experiment requires Shadow logging but not a Formal strategy change.
+Any later use in BUY/ranking/selection requires a new owner-approved Class C proposal.
+
+Status: PRIMARY_PROSPECTIVE_EXPERIMENT_FROZEN / READY_FOR_RESEARCH_IMPLEMENTATION.
 
