@@ -297,3 +297,14 @@ Updated: 2026-09-25 16:58 Asia/Taipei.
 - MSCI review event clocks validated across four 2025–2026 cycles. Complete detailed constituent parser remains PARTIAL.
 - TWSE current ETF benchmark/AUM mapping is strong; exact historical daily event-date AUM remains partial. Benchmark-level deduplication is frozen.
 - Current recorder cannot isolate closing-auction-only distortion. Outcome testing remains gated; no passive-flow score or Formal rule added.
+
+
+## Corporate Actions & Capital Supply status update
+- Files: CORPORATE_ACTIONS_CAPITAL_SUPPLY_RESEARCH.md, CORPORATE_ACTIONS_CAPITAL_SUPPLY_CHECKPOINT.md, CORPORATE_ACTION_HISTORY_SEMANTICS_PROPOSAL.md.
+- Current cursor: CA-001 through CA-036 complete.
+- Status: CONCEPT_COMPLETE / SOURCE_AUDIT_COMPLETE / MATERIALITY_CONFIRMED / CLASS_B_PROPOSAL_READY.
+- Three-event real-data validation confirms that corporate-action price resets can materially alter Formal technical features. 8422 par-value change flips the complete A technical setup from fail on raw history to pass under a target-date-known continuity bridge.
+- Today's provider-adjusted historical series is not safe as point-in-time replay because historical event-day prices can be rewritten onto a later adjustment basis.
+- Current latest capital/share-count snapshots are current context only, not historical realized share-count truth.
+- Proposal/test plan is checked in; no production behavior changed.
+- Next: CA-037 broader event sample; CA-038 share-volume-unit bridge; CA-039 no-action controls; CA-040 branch/test work only after evidence survives.
