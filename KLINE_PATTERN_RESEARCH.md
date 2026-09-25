@@ -11839,3 +11839,146 @@ This is especially important for:
 - one-tick W undercuts
 - closing-auction breakouts.
 
+
+
+## DL-002GI — Pattern Quality vs Entry Delay / Remaining Upside
+
+### Problem
+A stricter pattern confirmation can:
+- reduce false positives,
+but also:
+- enter later,
+- increase entry price,
+- reduce distance to next resistance,
+- worsen reward/risk,
+- miss no-retest continuation.
+
+Therefore higher win rate is not necessarily better economic performance.
+
+### Required timing prices
+For each pattern episode:
+- scanClose
+- maturePreBreakoutPrice
+- firstBreakoutConfirmationPrice
+- retestConfirmationPrice
+- firstFormal15mActionablePrice when available
+- nextMajorResistanceAtEachTimestamp
+- structuralInvalidationAtEachTimestamp
+
+### Delay costs
+- maturityToBreakoutBars
+- breakoutToRetestBars
+- priceSlippageMaturityToBreakout
+- priceSlippageBreakoutToRetest
+- remainingRoomAtMaturity
+- remainingRoomAtConfirmation
+- rrAtMaturityResearch
+- rrAtConfirmationResearch
+
+These are research measurements, not new trading plans.
+
+### Core trade-off
+QUALITY_GAIN:
+- lower R01 failure
+- lower MAE
+- lower stop-first
+
+OPPORTUNITY_COST:
+- lower coverage
+- later entry
+- higher entry price
+- lower remaining upside
+- missed direct runners
+- more zero-pick / idle capital
+
+### Evaluation
+A confirmation rule is useful only if quality gain compensates for opportunity cost.
+
+## DL-002GJ — Expected Value Beats Win Rate
+
+### Do not optimize only
+- % positive D5
+- % target hit
+- pattern success rate
+
+### Need distribution
+Report:
+- median/mean forward return
+- downside tail
+- MFE/MAE
+- stop-first
+- target-first where applicable
+- payoff ratio
+- cost-adjusted expectancy
+- coverage
+
+### Simple descriptive expectancy
+For a frozen research entry concept:
+EV ≈ average realized forward return net of assumed cost,
+with tail/risk statistics alongside.
+
+Do not invent a probability model when sample is small.
+
+### Example
+Pattern A:
+60% wins but tiny upside / large failures.
+
+Pattern B:
+45% wins but much larger upside / controlled downside.
+
+A higher win rate alone cannot rank them.
+
+## DL-002GK — Pattern Confirmation Can Mechanically Worsen RR
+
+### Mechanism
+A fully confirmed breakout must move upward before entry.
+If target/major resistance does not move:
+reward shrinks.
+
+If structural invalidation remains near the old base:
+risk may stay similar or grow.
+
+### Research fields
+- confirmationMoveAlreadyConsumedPct
+- rewardRemainingPct
+- riskDistancePct
+- rrCompressionFromConfirmation
+- nearestResistanceChanged
+- stopReferenceChanged
+
+### Key comparison
+PRE_BREAKOUT_MATURITY
+vs
+BREAKOUT_CONFIRMATION
+vs
+RETEST_CONFIRMATION
+
+Question:
+At which state does incremental failure reduction stop compensating for RR compression?
+
+### Formal boundary
+No pre-breakout entry is authorized.
+This is research only and can eventually explain whether the current confirmation architecture leaves too much return on the table.
+
+## DL-002GL — Pattern Filter Must Report Capital-Use Impact
+
+### Because current system issue includes sparse signals
+Every candidate pattern filter must report:
+- candidatesBefore
+- candidatesAfter
+- selectedCoverageDelta
+- buyTriggeredCoverageDelta
+- zeroPickDelta
+- averagePlannedCapitalUseDelta
+- opportunityCostOfRejectedWinners
+
+### No quality-only promotion
+A filter that improves average D5 but cuts candidate flow by 80% may be economically worse for this system.
+
+### Conversely
+A maturity/watch layer could improve capital use without weakening Formal if it:
+- identifies near-ready structures for observation,
+- but does not auto-promote them.
+
+This remains Shadow until evidence and owner approval.
+
