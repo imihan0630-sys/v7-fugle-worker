@@ -186,5 +186,9 @@
     "finalScheduleKnownAt is distinct from firstKnownAt because corporate-action schedules may be revised.",
     "MOPS mirror timestamps preserve observed publication timing but primary MOPS archival URLs remain preferred when obtainable.",
     "2412 technical factor uses economicAdjustmentReference 134.3; any earlier 134.5 technical-bridge diagnostic is superseded."
-  ]
+  ],
+  "status": "SUPERSEDED_LIFECYCLE_SEMANTICS",
+  "supersededBy": "research/corporate_action_registry_sample_v0_2.json",
+  "supersededReason": "v0.1 models 8454 stock dividend as one event; v0.2 separates ex-right price event from later new-share listing/supply event and refines readiness semantics.",
+  "inferenceUse": "PROHIBITED"
 }
