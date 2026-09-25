@@ -243,3 +243,13 @@ They must not be erased once later clean data arrive.
 - Snapshot mutation conflicts in v0.1 must be classified before use: sourceFetchedAt can change on legitimate retries and is currently included in semantic fingerprint. A nonzero conflict count is not automatically semantic corruption.
 - Point-in-time analysis must use featureKnownAt derived from sourceFetchedAt/barEnd; v0.1 observedAt/acceptance enteredAt are bar-start identities, not knowledge time.
 - H001/H002/H003/H004 remain unsupported/unrejected; evidence collection and QA continue.
+
+## Prospective evidence status after PVE-001~006
+- H001: WAITING_FIRST_CLEAN_BASELINE + WAITING_CLEAN_COHORT_PROVENANCE.
+- H002: WAITING_FIRST_CLEAN_BASELINE + WAITING_CLEAN_COHORT_PROVENANCE.
+- H003: DATA_QA_ONLY; response/acceptance state code exists but no clean prospective evidence yet.
+- H004: DATA_QA_ONLY; risk outcomes not yet eligible for inference.
+- H005: remains PLANNED / implementation deferred.
+- H006: remains DATA_QUALITY_BLOCKED pending recorder coverage and exact signal-event mapping.
+- Runtime activation evidence does not count as hypothesis support.
+- Non-trading-day no-fabrication is a system QA pass, not a market-signal result.
