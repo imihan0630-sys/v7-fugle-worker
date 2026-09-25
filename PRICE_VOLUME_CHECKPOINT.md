@@ -469,3 +469,24 @@ Class A if research-only; Class C if later used in formal 15m confirmation.
 6. PV-166: define top-five displayed-depth limitations / hidden-liquidity boundary.
 7. PV-167: decide whether current sparse recorder has enough coverage to begin coarse H006-B evidence accumulation.
 8. Formal Core remains LOCKED.
+
+## Progress added — PV-161 through PV-167
+- PV-161 audits exact execution-shadow-v2 capability and event cadence. Fixed snapshots occur at open, first 10m/15m/30m milestones plus Formal notification events; recorder is sparse, not continuous.
+- Current coarse fields include spread, aggregate top-five share depth, depth imbalance, market-state/freshness flags, frame10/frame15 context, opening gap and provider average-price proxy. It does not store trade sequence, bid/ask matched-volume totals, transaction count, full per-level depth arrays, replenishment, OFI or queue state.
+- A semantic issue is frozen: current lastTradeAt is populated from quote.lastUpdated, which Fugle defines as quote update time; it cannot be used as actual trade time.
+- PV-162 limits H006-B to coarse spread/depth/state if coverage passes; H006-C/D remain data-gated.
+- PV-163 freezes recorder-coverage QA. Missing row is never no-signal; current LIMIT-500 read endpoint cannot prove full-window completeness.
+- PV-164 freezes exact as-of joins. OPEN_BASELINE has no completed 15m PV response; FIRST_15M and Formal signal joins require same completed source bar where possible; post-event nearest-neighbor hindsight is prohibited.
+- PV-165 freezes avgPrice/opening-gap semantics. Fugle avgPrice remains provider daily average-price proxy; current openingGapPct uses raw previousClose and is guarded on ex-right/dividend corporate-action dates.
+- PV-166 defines top-five displayed depth boundary: current depthImbalance is displayed share-depth imbalance, not OFI/true pressure/hidden liquidity or queue probability. Per-level shape and exact notional depth cannot be reconstructed from current stored payload.
+- PV-167 concludes H006-B coarse features are technically present but empirical inference remains DATA_QUALITY_BLOCKED until live D1 coverage is audited.
+- PV_SHADOW_V0_1 unchanged; Formal Core LOCKED.
+
+## Revised exact next continuation point after PV-167
+1. PV-168: audit zero-extra-API Fugle quote fields not currently preserved by execution-shadow-v2.
+2. PV-169: verify avgPrice mathematically against official tradeValue/tradeVolume example and freeze scope-aware semantics.
+3. PV-170: study cumulative tradeVolumeAtBid/Ask as a coarse trade-pressure proxy and its limitations versus OFI.
+4. PV-171: study transaction-count intensity from quote.total.transaction and whether milestone differencing can add information beyond volume.
+5. PV-172: define a minimal future execution-shadow-v3 research extension using only already-fetched quote fields, but do not implement during core PV DATA_QA.
+6. PV-173: decide whether v3 can materially improve H006-B/C without a new WebSocket collector.
+7. Formal Core remains LOCKED.
