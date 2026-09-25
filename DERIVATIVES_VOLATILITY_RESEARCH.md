@@ -908,3 +908,201 @@ DR-027: Study event-conditioned IV around CPI/Fed/earnings/global shocks without
 DR-028: Define point-in-time historical rules-regime segments for weekly options/night trading/product changes.
 DR-029: Concept convergence and evidence-readiness gate.
 DR-030: Then open the next untouched lane: Portfolio/Risk Construction & correlation clusters.
+
+
+---
+
+## DR-025 — Redundancy map: derivatives must beat existing market-risk context
+
+| Derivatives candidate | Closest existing context | Incremental question |
+|---|---|---|
+| TAIEX VIX level/change | ATR / market volatility Regime | forward option-implied risk vs trailing realized risk |
+| IV vs trailing RV | ATR / realized volatility | option insurance richness |
+| skew | drawdown/overheat/regime | tail-risk price asymmetry |
+| futures basis | index trend / foreign flow | futures-vs-cash relative pricing after carry |
+| futures OI | volume/activity | leveraged risk-transfer participation |
+| foreign futures net OI | foreign cash flow | hedge-adjusted derivative exposure |
+| PCR | market sentiment proxies | option demand composition |
+| night futures residual | U.S. indices/global radar | Taiwan-specific interpretation of global news |
+| expiry state | calendar | mechanical contamination guard |
+
+### Validation order
+1. existing price/volatility Regime;
+2. global market returns;
+3. Taiwan cash-market breadth/liquidity;
+4. foreign cash flow;
+5. derivative candidate.
+
+If a derivative signal vanishes after these controls, it should remain descriptive or be removed.
+
+Status: REDUNDANCY GATE FROZEN.
+
+---
+
+## DR-026 — Derivatives may predict risk better than direction
+
+Do not force every feature into “tomorrow up/down.”
+
+Separate targets:
+
+### Direction
+- next open gap
+- D1/D3/D5 index residual return
+
+### Volatility
+- next-session realized range/variance
+- 5D realized volatility
+
+### Downside risk
+- next-session MAE
+- 5D max drawdown
+- probability/magnitude of large downside tail
+
+### Cross-sectional environment
+- stock return dispersion
+- breadth deterioration
+- liquidity stress
+
+### Why
+VIX/skew are directly tied to distribution/risk pricing. They may be useful for predicting:
+- how violent,
+- how asymmetric,
+- how uncertain
+the next state is,
+without reliably predicting sign.
+
+### System implication
+Potential future benefit may be:
+- risk throttle,
+- confidence/context,
+not stock ranking.
+
+No production risk throttle is approved.
+
+Status: TARGET DECOMPOSITION FROZEN.
+
+---
+
+## DR-027 — Event-conditioned IV must be treated differently from ordinary IV
+
+Known scheduled macro events:
+- central-bank decisions;
+- CPI / inflation;
+- employment reports;
+- major Taiwan/global election or policy events where relevant;
+can concentrate near-term option premium.
+
+### Research state
+For a scheduled event known at t:
+- eventWithin1D/3D/5D
+- nearIVPremiumVsNext
+- skewShift
+- preEventPCR/OI
+- postEventVolCrush
+
+### Key mechanism
+High near-term IV before a scheduled event can mean:
+- expected large move,
+not:
+- expected down move.
+
+After event resolution, IV can fall sharply even if price falls.
+
+### Look-ahead guard
+Only use events and release times that were scheduled/known before t.
+Do not retroactively tag “surprise news” into a pre-event scheduled-risk feature.
+
+### Redundancy
+Our macro radar already knows some scheduled events; derivative features should test whether **market pricing of those events** adds information beyond event presence alone.
+
+Status: EVENT-RISK PRICING CANDIDATE.
+
+---
+
+## DR-028 — Historical rules-regime segmentation is mandatory
+
+Taiwan derivatives market design changed over time:
+- weekly option variants/product availability;
+- after-hours trading introduction;
+- contract/strike availability;
+- market participation;
+- margin/position rules;
+- quote/data fields.
+
+A long historical backtest that applies 2026 mechanics to all years is structurally wrong.
+
+### Required snapshot metadata
+- productRulesVersion
+- nightSessionAvailable
+- expiryTypeAvailable
+- contractMultiplier
+- settlementRuleVersion
+- strikeListingRegime
+- dataFieldCoverage
+
+### Structural-break policy
+When rules change:
+- analyze pre/post separately first;
+- do not pool until stability is demonstrated.
+
+### Example
+Night-session features cannot exist before that session existed.
+Friday weekly contracts cannot be backfilled before their product regime.
+
+Status: RULES-VINTAGE CONTROL FROZEN.
+
+---
+
+## DR-029 — Concept convergence / evidence readiness
+
+The derivatives lane now covers:
+- PCR/OI semantics;
+- trader-type information;
+- VIX / implied volatility;
+- skew and term structure;
+- variance risk premium look-ahead;
+- futures fair basis;
+- institutional hedge ambiguity;
+- option OI/Greeks limits;
+- expiry/settlement/night session;
+- price discovery;
+- max-pain rejection / pinning distinction;
+- official data feasibility;
+- joint cash/futures/options state;
+- target decomposition;
+- event-conditioned IV;
+- historical rules regimes;
+- redundancy/falsification.
+
+### Evidence readiness
+
+DESCRIPTIVE_READY:
+- official PCR/VIX/institutional/futures/option-chain data with explicit date/session/expiry.
+
+SURFACE_READY:
+- enough liquid strikes/expiries plus frozen IV inversion/filter/rate/dividend method.
+
+INFERENTIAL_READY:
+- independent dates across multiple volatility/expiry regimes;
+- current project maturity/date-cluster controls;
+- no threshold/data-method cherry-picking.
+
+### Concept status
+CONCEPT_COMPLETE / EVIDENCE_PENDING.
+
+Further derivatives indicator invention should pause.
+
+## Exact next continuation after DR-029
+
+Open the next under-studied lane:
+**Portfolio & Risk Construction / Correlation Clusters**
+
+Priority questions:
+- equal capital != equal risk;
+- correlation clusters can create hidden concentration across different stock codes;
+- volatility scaling and marginal contribution to risk;
+- drawdown correlation and crisis correlation;
+- sector/ABF/AI-chain concentration;
+- first/add/full sizing versus portfolio-level risk;
+- whether fixed per-stock caps should remain the sole sizing framework;
+- all research-only unless owner later approves Formal changes.
