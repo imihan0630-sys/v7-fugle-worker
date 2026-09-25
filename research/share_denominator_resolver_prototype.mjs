@@ -21,6 +21,7 @@ export function resolvePointInTimeDenominator({
   const known = sameType
     .filter(v => v.quality === "VERIFIED")
     .filter(v => iso(v.knownAt) <= asOf)
+    .filter(v => !v.supersededAt || iso(v.supersededAt) > asOf)
     .filter(v => activeOnSession(v, target))
     .sort((a,b) =>
       iso(b.effectiveFromSession).localeCompare(iso(a.effectiveFromSession)) ||
