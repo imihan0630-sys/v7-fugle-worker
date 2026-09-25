@@ -295,3 +295,22 @@ Class A if research-only; Class C if later used in formal 15m confirmation.
 4. PV-081: freeze rollout acceptance tests and rollback criteria.
 5. PV-082: decide whether evidence is sufficient to propose Class A Shadow implementation to owner; no automatic implementation.
 6. Formal Core remains LOCKED.
+
+## Progress added — PV-078 through PV-082
+- PV-078 completed a cross-file consistency audit. Superseded assumptions are now marked rather than silently deleted: the 18-slot/108-row v0.1 bound is superseded by the audited 17-slot/102-row current-cron bound; PV-029 is qualified so only intraday historical trade-count remains prospective while official daily transaction count is feasible.
+- A durable supersession rule is now defined. For implementation, the canonical precedence is PRICE_VOLUME_SHADOW_IMPLEMENTATION_PLAN.md -> PRICE_VOLUME_SHADOW_SPEC.md -> latest CHECKPOINT corrections -> RESEARCH evidence history.
+- PV-079 maps a Class-A Shadow patch to exact Worker/D1 integration points while explicitly forbidding semantic changes inside evaluatePullback/evaluateMomentum/evaluateStop/buildFinalDecision/compareResults/evaluateOperationSignals and selector/ranking/capital logic. Research attaches only after Formal results exist.
+- PV-080 freezes the PV_SHADOW_V0_1 field dictionary, numeric null vs state UNKNOWN semantics, guard/provenance fields, unrounded classification and schema-version rules. Any semantic threshold/state/slot/unit change requires a new version and never rewrites old rows.
+- PV-081 freezes feature-flag, rollout, telemetry, kill-switch and rollback criteria. Any Formal output/push difference, propagated PV exception, unexpected live API growth, look-ahead, snapshot mutation or unit mixing is an immediate disable trigger.
+- PV-082 concludes that research is mature enough to propose a Class-A LOG_ONLY decisionImpact=false Shadow implementation, but there is still zero prospective evidence supporting Formal optimization.
+- New canonical engineering file: PRICE_VOLUME_SHADOW_IMPLEMENTATION_PLAN.md.
+- Worker.js remains unchanged; Formal Core remains LOCKED.
+
+## Revised exact next continuation point after PV-082
+1. PV-083: freeze statistical evaluation unit and dependence handling (event-level vs snapshot-level, date/symbol/event clustering).
+2. PV-084: define effect-size and calibration reporting so tiny statistical significance cannot masquerade as useful trading value.
+3. PV-085: freeze multiple-testing / model-comparison governance for the A->E primary experiment.
+4. PV-086: define practical utility metrics for false-confirmation reduction versus missed-valid-confirmation cost, still without changing Formal.
+5. PV-087: define explicit Observer -> Modifier promotion gates and failure-to-promote conditions.
+6. No new indicator expansion unless a genuine unresolved mechanism appears.
+7. Formal Core remains LOCKED.
