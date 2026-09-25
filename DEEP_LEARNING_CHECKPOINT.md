@@ -445,3 +445,15 @@ No Formal Core change is approved or implied.
   - Tier-2 scope has been pruned; the next value should come from prospective v0.1 evidence rather than adding more indicators.
 - PRICE_VOLUME_SHADOW_SPEC.md is synchronized with the corrected 102-row current-cron bound and source-scope rules.
 - Formal Core unchanged / LOCKED.
+
+## Price-Volume lane update — PV-078 through PV-092
+- Current research cursor: PV-001 through PV-092 complete.
+- PV v0.1 has moved from idea discovery to validation/implementation readiness; further indicator expansion is intentionally paused.
+- Superseded assumptions are explicitly marked rather than silently deleted. Current zero-extra-call live coverage is 17 completed 15m bars/symbol, 102 rows/day max for six monitored stocks; daily transaction count is feasible from official closing data even though historical intraday trade-count is not available from candles.
+- New canonical engineering authority: `PRICE_VOLUME_SHADOW_IMPLEMENTATION_PLAN.md`.
+- New durable test history: `PRICE_VOLUME_HYPOTHESIS_LEDGER.md`, starting with PV-H001 through PV-H004.
+- PV_SHADOW_V0_1 now has frozen: response formula, separate A/B acceptance state machines, persistence hysteresis, guard precedence, field/null semantics, slot/bootstrap rules, fingerprints, deterministic fixtures, outcome horizons, idempotent finalizers, Formal-isolation tests, feature flag, kill switch, rollback criteria and validation governance.
+- Statistical evaluation is event/date aware; raw 15m snapshot count is not treated as iid sample size. Effect size, MFE/MAE, coverage, valid-opportunity loss and capital-utilization impact matter alongside statistical inference.
+- All current PV remains Level-0 OBSERVER. The only implementation readiness conclusion is: owner-authorized Class-A LOG_ONLY decisionImpact=false Shadow logging is sufficiently specified. No Formal A/B/ranking/BUY/maxChase/stop/capital/push/re-add optimization is supported yet.
+- Worker.js remains unchanged / Formal Core LOCKED.
+- Next rational phase after owner authorization: implementation -> DATA_QA -> prospective evidence -> untouched confirmation block -> only then consider any Modifier proposal.
