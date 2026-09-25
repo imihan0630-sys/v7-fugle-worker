@@ -2098,3 +2098,145 @@ TEST_DESIGN_FROZEN_V0_1.
 No code implemented yet.
 No Formal change.
 
+
+
+## DL-002Q — Multi-Peak / Multi-Trough Reversal Family v0.1
+
+### Motivation
+Traditional labels overlap heavily:
+- Three Mountains
+- Triple Top
+- Head-and-Shoulders Top
+- Three Rivers / Triple Bottom
+- Inverse Head-and-Shoulders
+
+Instead of independent scores, define one generic multi-extrema topology and derive interpretable subclasses.
+
+### Generic top topology
+HIGH1 -> LOW1 -> HIGH2 -> LOW2 -> HIGH3
+
+Fields:
+- peakPrices[3]
+- troughPrices[2]
+- peakSpacingBars[]
+- peakDispersionPct
+- centerPeakExcessPct
+- necklineSlope
+- necklineFitResidual
+- necklineBreakState
+- volumeByPeak[]
+- volumeSlopeAcrossPeaks
+- priorAdvancePct
+- priorTrendState
+
+Subclasses:
+- TRIPLE_TOP: three peaks roughly similar.
+- HEAD_SHOULDERS_TOP: center peak materially above outer peaks; outer peaks reasonably comparable.
+- IRREGULAR_MULTI_TOP: topology valid but does not fit either named subclass cleanly.
+
+### Generic bottom topology
+LOW1 -> HIGH1 -> LOW2 -> HIGH2 -> LOW3
+
+Fields mirror the top family:
+- troughPrices[3]
+- reactionHighs[2]
+- troughSpacingBars[]
+- troughDispersionPct
+- centerTroughDepthPct
+- necklineSlope
+- necklineFitResidual
+- necklineBreakState
+- volumeByTrough[]
+- priorDeclinePct
+- priorTrendState
+
+Subclasses:
+- TRIPLE_BOTTOM
+- INVERSE_HEAD_SHOULDERS
+- IRREGULAR_MULTI_BOTTOM
+
+### Neckline
+For H&S:
+- top neckline connects the two reaction LOWs;
+- bottom neckline connects the two reaction HIGHs.
+
+A pattern is morphologically formed before neckline break, but reversal confirmation is separate.
+Store:
+- necklineAtCurrentDate
+- distanceToNecklinePct
+- breakoutConfirmed
+- retestState
+
+Do not collapse FORMING and CONFIRMED.
+
+### Shoulder/head proportionality
+Do not use rigid textbook percentages.
+Store:
+- outerPeakSimilarity / outerTroughSimilarity
+- headExcess / headDepth
+- timeSymmetry
+- shoulderDurationSimilarity
+- scaleAgreement
+
+Named subclass confidence is continuous.
+
+### Volume
+Practitioner literature often expects weakening volume across successive top peaks and stronger volume on bullish inverse-H&S breakout.
+Research fields:
+- volumePeak1/2/3
+- volumeTrough1/2/3
+- shoulderVolumeAsymmetry
+- necklineBreakoutVolume
+
+Do not hard-gate volume pattern in v0.1.
+Test incrementally.
+
+### Relation to Sakata
+- Three Mountains maps to generic multi-top topology.
+- Three Rivers multi-trough interpretation maps to generic multi-bottom topology.
+- Head-and-Shoulders is a shape subclass, not a separate independent factor.
+
+This prevents duplicated evidence.
+
+### Relation to Formal
+Potentially incremental:
+- true neckline geometry,
+- peak/trough sequence,
+- head/shoulder proportionality,
+- multi-touch reversal maturation.
+
+Likely redundant:
+- generic trend weakening,
+- distance to MA,
+- upper shadow,
+- priorHigh20/60,
+- rightFootHigher.
+
+### Long-only system relevance
+Bullish selection research priority:
+1. INVERSE_HEAD_SHOULDERS
+2. TRIPLE_BOTTOM
+3. irregular multi-bottom recovery
+
+Bearish top patterns are still valuable as:
+- late-stage / avoid-chasing diagnostics,
+- post-entry risk context,
+but they must not automatically alter Formal sell/reduce logic without owner approval.
+
+### Confirmation/failure
+Use existing R01-style post-breakout failure metric for confirmed bullish neckline breaks where applicable.
+For pre-confirmation:
+- FORMING
+- STRUCTURE_VALID
+- NECKLINE_APPROACH
+- BREAKOUT_CONFIRMED
+- RETEST_CONFIRMING
+- FAILED
+
+### Evidence status
+General chart-topology research supports systematic pattern recognition.
+Named subclass performance in current Taiwan single stocks remains unproven.
+
+WORTH_SHADOW_RESEARCH.
+No Formal change.
+
