@@ -3470,3 +3470,249 @@ CA-098: add exchange-scoped suspension completeness fixtures, including a TPEx c
 CA-099: combined PR #100/#101 test matrix — valid suspension, unknown suspension, ordinary stale cache, multiple actions, and no-action identity.
 CA-100: produce an evidence-gated owner decision memo only if CA-096..099 pass; still no autonomous merge/deploy or Formal Core change.
 
+---
+
+## CA-096 — Full real 61-bar 8454 lifecycle window
+
+A complete real daily-bar mechanics witness is now materialized:
+`research/corporate_action_8454_full_window_v0_1.json`.
+
+Source:
+Fugle Stock `FCNT000002` ("近5年價量(交易用)") raw trading series.
+
+Critical source falsification:
+A separate `FCNT000154` request was sent with `adjusted=false`, but the returned payload explicitly reported `adjusted=true`.
+Therefore FCNT000154 is not accepted as raw evidence for this study.
+The raw-trading contract was cross-checked through FCNT000002, which preserves:
+- 2025-08-20 close = 272;
+- 2025-08-21 close = 261;
+and thus preserves the actual ex-right discontinuity.
+
+Target:
+2025-10-09, with 61 bars for exact ret60/priorHigh60 mechanics.
+
+Events in the window:
+- 2025-08-21 stock-dividend EX_RIGHT_PRICE_EVENT;
+- 2025-10-09 NEW_SHARES_LISTED / SUPPLY_CHANGE.
+
+Raw vs TECHNICAL_CONTINUITY:
+- ret20: 4.0323% vs 4.0323%;
+- ret60: -0.7692% vs +4.1923%;
+- MA20: 246.20 vs 246.20;
+- MA60: 259.6167 vs 253.9929;
+- ATR20%: 2.0736 vs 2.0736;
+- priorHigh20: 258.5 vs 258.5;
+- priorHigh60: 287.0 vs 273.3333.
+
+Interpretation:
+By 2025-10-09 the ex-right reset has aged out of 20-session price features but remains inside 60-session features.
+This is exactly the rolling-contamination shape predicted by CA-084.
+
+Negative result retained:
+The raw and continuity versions both fail the full A/B setup on 2025-10-09.
+Therefore this witness supports semantic/material feature differences but does NOT support a forced signal-flip claim.
+
+Volume:
+- raw volumeTodayVsPrev5 = 0.825379;
+- volumeContraction5to20 = 1.153497.
+The later SUPPLY_CHANGE does not justify mechanically rescaling old executed-share volume.
+
+Status:
+FULL_REAL_8454_60_SESSION_MECHANICS = MATERIALIZED.
+NO ALPHA CLAIM.
+FORMAL CORE UNCHANGED.
+
+---
+
+## CA-097 — Raw share volume vs issued-share/free-float turnover
+
+The previous single Boolean `technicalVolumeReady` / `volumeContinuityComplete` is too coarse for lifecycle semantics.
+
+New durable specification:
+`CORPORATE_ACTION_VOLUME_DENOMINATOR_SPEC.md`.
+
+### Required split
+
+RAW_SHARE_VOLUME:
+- actual executed shares;
+- no denominator;
+- pure SUPPLY_CHANGE does not change the meaning of one executed share;
+- do not mechanically rescale historical raw volume.
+
+ISSUED_SHARE_TURNOVER:
+- executed shares / point-in-time issued or listed shares;
+- minimum defensible denominator for normalizing a changing share base.
+
+FREE_FLOAT_TURNOVER:
+- executed shares / point-in-time free-float shares;
+- distinct research question and denominator contract.
+
+Suggested research readiness fields:
+- shareUnitComparable;
+- rawShareVolumeReady;
+- issuedShareTurnoverReady;
+- freeFloatTurnoverReady;
+- supplyBreakPresent;
+- supplyBreakEffectiveDate;
+- denominatorKnownAt;
+- denominatorSource;
+- unknownReasons.
+
+### 8454 exact denominator falsification
+
+The initial diagnostic used the nominal 5% stock-distribution ratio to backsolve:
+12,617,870 / 5% = 252,357,400 shares.
+
+Official company capital history proves that exact backsolve is wrong by five shares:
+- official pre-increase shares: 252,357,405;
+- official post-registration shares: 264,975,275;
+- actual new shares: 12,617,870;
+- actual aggregate increase: about 4.9999999009%.
+
+The company FAQ states the 264,975,275 issued shares were approved by MOEA on 2025-09-22.
+The annual report capital table shows 252,357,405 before the increase and 264,975,275 after.
+
+Therefore:
+NOMINAL_DISTRIBUTION_RATIO != AUTHORITATIVE_EXACT_DENOMINATOR.
+
+The CA-096 artifact was corrected to preserve the nominal-ratio backsolve only as a falsification witness; official share counts are now the authoritative denominator evidence.
+
+At 2025-10-09:
+- raw volumeTodayVsPrev5 = 0.825379;
+- issued-share-turnover-normalized analogue using official share counts = about 0.786075.
+No A/B volume-condition flip occurs in this specific witness.
+
+Boundary sensitivity remains real:
+- raw 1.32 with a ~5% denominator step becomes about 1.257, crossing a 1.30 breakout-volume threshold;
+- raw 1.08 becomes about 1.029, which can cross a 1.05 low-volume threshold.
+
+These are semantic boundary examples only, not outcome or alpha evidence.
+
+Formal implication:
+Current Formal A/B arithmetic is explicitly raw share-volume based.
+A pure SUPPLY_CHANGE does not make those raw arithmetic features undefined.
+Any future switch/addition to turnover-normalized features is a separate owner-governed strategy/data-definition decision.
+
+Status:
+VOLUME_SPACE_SPLIT = REQUIRED.
+OFFICIAL_POINT_IN_TIME_DENOMINATOR = REQUIRED.
+NO FORMAL CHANGE.
+
+---
+
+## CA-098 — TPEx corporate-action suspension witness
+
+A real TPEx fixture is now included in PR #101.
+
+Official witness:
+5314 世紀民生 / par-value change:
+- old par value: NT$10;
+- new par value: NT$0.5;
+- suspension interval: 2025-03-20 through 2025-03-28;
+- new shares resume trading: 2025-03-31;
+- TPEx announcement document number referenced by the fixture: 11400008901.
+
+Research branch commit:
+`3003492b46600bc7bed556e753de57da3fc5239e`
+adds the TPEx fixture to:
+`tests/test_symbol_session_calendar_prototype.mjs`.
+
+Expected semantics:
+For target 2025-03-31, the prior expected symbol session is 2025-03-19 after removing the VERIFIED TPEx suspension interval from TPEx market sessions.
+
+Important design result:
+The pure symbol-session calendar logic is exchange-agnostic.
+Exchange-specific responsibility belongs in the source/provenance layer.
+
+Status:
+TPEX_REAL_SUSPENSION_FIXTURE = ADDED / VERIFIED BY CI AFTER TEST CONTRACT FIX.
+
+---
+
+## CA-099 — Combined falsification matrix
+
+New PR #101 test:
+`tests/test_corporate_action_integration_matrix.mjs`.
+
+Matrix:
+1. VERIFIED suspension -> valid symbol history;
+2. UNKNOWN suspension -> fail closed;
+3. ordinary B-130 stale cache -> reject;
+4. two corporate actions in one window -> deterministic ordering / price complete / normalized volume continuity not proven;
+5. no corporate action -> strict transform identity.
+
+Workflow:
+`.github/workflows/research-corporate-action-prototype.yml`
+now runs the integration matrix explicitly.
+
+### Failure retained, diagnosed and corrected
+
+First integrated run:
+`36140962127` = FAILURE.
+
+Cause:
+The new TPEx 5314 fixture asserted `result.expectedSessions`, but `validateSymbolHistoryFreshness()` does not expose that field in its return contract.
+
+This was a TEST-CONTRACT ERROR, not a prototype-logic failure.
+
+Corrective action:
+commit
+`6729c56d045d993c58cd89290411d45a5b394142`
+removed the unsupported assertion without changing the prototype behavior.
+
+Fresh trusted execution on current PR #101 head:
+- Research Corporate Action Prototype `36141243309`: SUCCESS;
+- V8 Regression Tests `36141242876`: SUCCESS;
+- V8 Repair CI `36141243153`: SUCCESS.
+
+Research job `108091334629` explicitly reports success for:
+- Corporate action continuity tests;
+- Symbol suspension calendar tests;
+- Corporate action integration falsification matrix.
+
+Status:
+COMBINED_FALSIFICATION_MATRIX = EXECUTED_SUCCESS.
+FAILURE_HISTORY RETAINED.
+NO PROTOTYPE BEHAVIOR WAS CHANGED TO MAKE THE TEST PASS.
+
+---
+
+## CA-100 — Evidence-gated owner decision memo
+
+Materialized:
+`CORPORATE_ACTION_OWNER_DECISION_MEMO.md`.
+
+The memo separates:
+- empirically supported data-semantics conclusions;
+- executable test evidence;
+- PR #100 / #101 dependency ordering;
+- remaining source/completeness blockers;
+- future owner decision options.
+
+Current draft states:
+- PR #100 must not be promoted as market-session-only freshness;
+- symbol-session provenance is a prerequisite layer;
+- PR #101 remains research-only and has no Worker.js wiring;
+- no merge/deploy is authorized;
+- Formal Core remains locked.
+
+Remaining blockers include:
+- production-grade TWSE + TPEx suspension capture/completeness receipts;
+- point-in-time event version archive;
+- explicit raw vs normalized volume semantic contract for downstream consumers;
+- production integration tests against preserved real historical caches;
+- owner authorization for any future Class B runtime change.
+
+Status:
+OWNER_DECISION_MEMO = EVIDENCE_GATED_READY.
+NO OWNER OPTION AUTO-SELECTED.
+NO MERGE / NO DEPLOY.
+
+## Exact next continuation after CA-100
+
+CA-101: harden point-in-time issued-share denominator sourcing across cash capital increase, stock dividend, capital reduction and par-value change.
+CA-102: build denominator-vintage fixtures that prove no future share-count leakage into historical replay.
+CA-103: quantify raw-volume vs issued-share-turnover threshold disagreement rates on a bounded non-inference sample.
+CA-104: research corporate-action interactions with institutional-flow normalization and market-cap/valuation denominators.
+CA-105: widen lifecycle/state-machine tests to same-day/multiple-stage/revision edge cases; keep Formal Core locked.
+
