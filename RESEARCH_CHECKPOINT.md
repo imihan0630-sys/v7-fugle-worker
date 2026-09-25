@@ -405,3 +405,14 @@ Updated: 2026-09-25 23:33 Asia/Taipei.
 - Bias/quality: ACCESS_GATED != MISSING_SOURCE != NO_CHANGE != BAD != 0; no current-state backfill, no inferred continuity, no outcome-driven denominator, no alpha test, no historical Shadow fabrication, no new factor/window/threshold. R01-R08/I01-I07 unchanged.
 - Engineering: Class A research/checkpoint only; no Worker.js, Formal Core, PR promotion, or Production change.
 - Exact next continuation: search authorized repo/workflow/artifact history for previously delivered TPEx S38 bytes/hash and TWSE BFT51U/BFT50U bounded historical artifacts; if absent, freeze ACCESS_GATED + PIT_VINTAGE_UNKNOWN into CA-115 readiness and move to the next evidence priority rather than repeatedly searching the same public lane.
+
+
+## B-143 — CA-115 authorized-history search exhausted; provenance gate frozen (2026-09-26 03:40 Asia/Taipei)
+- Fresh-read governance/worklist/checkpoint/main; canonical start was B-142. Continued the exact authorized repo/workflow/artifact-history search rather than repeating public-source discovery.
+- Repository tree and indexed code/history were searched for `STKT2QUOTESN`, `S38`, `BFT51U`, and `BFT50U`. No delivered historical TPEx S38 raw file, immutable byte hash, or bounded historical TWSE BFT51U/BFT50U data artifact is present on main.
+- The only S38 code-history commit found is `c14eb82565031d56711b4d0b10a5da076eb3b4c9`, which explicitly states the evidence is parser/semantic only and does not claim a complete historical S38 archive. The draft-PR parser CI therefore cannot be reinterpreted as archive provenance.
+- Existing BFT51U repo artifacts are unit-resolution receipts/sample evidence, not bounded 2465 2025-11-17 historical daily product bytes. This independently confirms the B-142 ACCESS_GATED classification rather than SOURCE_ABSENT.
+- CA-115 readiness is now frozen at `NO_GO_DATA_PROVENANCE_GATES` for historical denominator Shadow implementation until new authorized bytes/vintage provenance arrives. Repeated searching of the same public/repo lane is stopped; evidence standards are not lowered.
+- Bias/quality: no current-state backfill, no ex-post query promoted to first-known vintage, no missing=0/BAD, no inferred no-change, no alpha/outcome test, no historical Shadow fabrication, no new factor/window/threshold. R01-R08/I01-I07 unchanged.
+- Engineering: Class A checkpoint/research only. Formal Core/Worker/Production/PR #100/#101 unchanged; no merge or deploy.
+- Exact next continuation: move from the exhausted CA provenance search to the next highest-value unresolved evidence gate already in the canonical research program: execution-recorder target-date completeness/non-truncation before BUY/NO-BUY interpretation. Preserve CA-115 NO_GO until genuinely new authorized denominator bytes/vintage evidence appears.
