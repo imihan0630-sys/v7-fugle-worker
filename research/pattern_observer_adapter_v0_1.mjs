@@ -173,3 +173,132 @@ export function attachPatternQaMetrics(record, {
   };
   return { ...out, qaHash: stableObserverHash(out) };
 }
+
+
+export function buildPatternEpisodeReference({
+  symbol,
+  detectorVersion,
+  semanticContractVersion = "CA_SEMANTIC_SPACES_V0_1",
+  patternFamily,
+  scale = "BASE",
+  anchorIds,
+  initialConfirmedAt
+} = {}) {
+  const stock=String(symbol||"");
+  const detector=String(detectorVersion||"");
+  const family=String(patternFamily||"");
+  const normalizedScale=String(scale||"");
+  const confirmed=String(initialConfirmedAt||"");
+  const anchors=(Array.isArray(anchorIds)?anchorIds:[]).map(x=>String(x||"")).filter(Boolean);
+  if(!stock || !detector || !family || !normalizedScale || !/^\d{4}-\d{2}-\d{2}$/.test(confirmed) || anchors.length===0){
+    return blocked("EPISODE_IDENTITY_INCOMPLETE");
+  }
+  const identity={
+    symbol:stock,
+    detectorVersion:detector,
+    semanticContractVersion:String(semanticContractVersion||""),
+    patternFamily:family,
+    scale:normalizedScale,
+    anchorIds:anchors,
+    initialConfirmedAt:confirmed
+  };
+  return {
+    status:"VALID",
+    ...identity,
+    episodeKey:stableObserverHash(identity),
+    researchOnly:true,
+    decisionImpact:false,
+    formalCoreImpact:false
+  };
+}
+
+export function comparePatternEpisodeReferences(a,b){
+  if(!a || !b || a.status!=="VALID" || b.status!=="VALID") return blocked("EPISODE_REFERENCE_INVALID");
+  const same=a.episodeKey===b.episodeKey;
+  return {
+    status:same?"SAME_EPISODE":"DIFFERENT_EPISODE",
+    sameEpisode:same,
+    anchorChanged:stableObserverHash(a.anchorIds)!==stableObserverHash(b.anchorIds),
+    researchOnly:true,
+    decisionImpact:false,
+    formalCoreImpact:false
+  };
+}
+
+export function buildPatternRunReceipt({
+  runId,
+  scanDate,
+  detectorVersion,
+  expectedParentKeys,
+  attempts,
+  prefixChecks = [],
+  replayChecks = []
+} = {}) {
+  const expected=[...new Set((Array.isArray(expectedParentKeys)?expectedParentKeys:[]).map(x=>String(x||"")).filter(Boolean))].sort();
+  const rows=Array.isArray(attempts)?attempts:[];
+  const byKey=new Map();
+  const duplicateParentKeys=[];
+  const unexpectedParentKeys=[];
+  let blockedWithoutReason=0;
+  let provenanceConflictCount=0;
+
+  for(const row of rows){
+    const key=String(row?.shadowParentKey||"");
+    if(!key){ unexpectedParentKeys.push("<MISSING_KEY>"); continue; }
+    if(byKey.has(key)){ duplicateParentKeys.push(key); continue; }
+    byKey.set(key,row);
+    if(!expected.includes(key)) unexpectedParentKeys.push(key);
+    if(row?.status==="BLOCKED" && !String(row?.reason||"")) blockedWithoutReason+=1;
+    if(row?.status==="PROVENANCE_CONFLICT" || row?.provenanceConflict===true) provenanceConflictCount+=1;
+  }
+
+  const missingParentKeys=expected.filter(k=>!byKey.has(k));
+  const expectedAttempts=expected.map(k=>byKey.get(k)).filter(Boolean);
+  const validCount=expectedAttempts.filter(x=>x?.status==="VALID").length;
+  const blockedCount=expectedAttempts.filter(x=>x?.status==="BLOCKED").length;
+  const unknownStatusCount=expectedAttempts.length-validCount-blockedCount;
+
+  const prefix=Array.isArray(prefixChecks)?prefixChecks:[];
+  const replay=Array.isArray(replayChecks)?replayChecks:[];
+  const prefixFailures=prefix.filter(x=>x!==true).length;
+  const replayFailures=replay.filter(x=>x!==true).length;
+
+  const correctnessFailure=
+    duplicateParentKeys.length>0 ||
+    unexpectedParentKeys.length>0 ||
+    blockedWithoutReason>0 ||
+    provenanceConflictCount>0 ||
+    unknownStatusCount>0 ||
+    prefixFailures>0 ||
+    replayFailures>0;
+
+  const incomplete=missingParentKeys.length>0;
+  const status=correctnessFailure?"QA_FAIL":incomplete?"INCOMPLETE":"COMPLETE";
+
+  return {
+    receiptVersion:"PATTERN_RUN_RECEIPT_V0_1",
+    runId:String(runId||""),
+    scanDate:String(scanDate||""),
+    detectorVersion:String(detectorVersion||""),
+    expectedParentCount:expected.length,
+    attemptedParentCount:expectedAttempts.length,
+    validCount,
+    blockedCount,
+    missingCount:missingParentKeys.length,
+    attemptCoverageRate:expected.length?expectedAttempts.length/expected.length:null,
+    missingParentKeys,
+    duplicateParentKeys:[...new Set(duplicateParentKeys)].sort(),
+    unexpectedParentKeys:[...new Set(unexpectedParentKeys)].sort(),
+    blockedWithoutReason,
+    provenanceConflictCount,
+    prefixExactChecked:prefix.length,
+    prefixExactFailures:prefixFailures,
+    replayExactChecked:replay.length,
+    replayExactFailures:replayFailures,
+    status,
+    outcomeJoinEligible:status==="COMPLETE",
+    researchOnly:true,
+    decisionImpact:false,
+    formalCoreImpact:false
+  };
+}
