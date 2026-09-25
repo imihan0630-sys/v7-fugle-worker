@@ -14,6 +14,8 @@ import {
   detectWFromSwings,
   detectVcpFromSwings,
   analyzeVcpContext,
+  analyzeWLifecycle,
+  analyzePlatformLifecycle,
   detectPlatform,
   classifyVShape,
   classifyCorporateActionGap,
@@ -218,6 +220,66 @@ function scaled(bars, k) {
     bars, swings, asOfDate:bars.at(-1).date, priorTrendState:"UNKNOWN", finalWindowBars:5
   });
   assert.equal(unknownContext.maturityState, "VALID_CONTEXT_UNKNOWN");
+}
+
+// W lifecycle: true neckline comes from MID_HIGH, undercut/reclaim is distinct, and future bars do not backdate state.
+{
+  const closes = [
+    ...Array.from({length:20},(_,i)=>110-i*0.4),
+    101,98,96,99,104,101,97,95.5,97,101,104,106,103.5,105
+  ];
+  const bars = makeBars(closes,{startDay:1,volume:closes.map((_,i)=>200-i)});
+  const swings = [
+    {type:"LOW",pivotAt:bars[22].date,confirmedAt:bars[23].date,pivotPrice:95.8},
+    {type:"HIGH",pivotAt:bars[24].date,confirmedAt:bars[26].date,pivotPrice:104.2},
+    {type:"LOW",pivotAt:bars[27].date,confirmedAt:bars[28].date,pivotPrice:95.3}
+  ];
+  const structureDate=bars[28].date;
+  const structure=analyzeWLifecycle({bars,swings,asOfDate:structureDate,priorTrendState:"DOWNTREND"});
+  assert.equal(structure.status,"VALID");
+  assert.equal(structure.family,"REVERSAL_W");
+  assert.equal(structure.necklinePrice,104.2);
+  assert.ok(["W_STRUCTURE_VALID","W_UNDERCUT_RECLAIM","W_NECKLINE_APPROACH"].includes(structure.lifecycle));
+
+  const full=analyzeWLifecycle({bars,swings,asOfDate:bars.at(-1).date,priorTrendState:"DOWNTREND"});
+  assert.equal(full.breakoutAt!==null,true);
+  assert.ok(["W_BREAKOUT_CONFIRMED","W_RETEST_CONFIRMING"].includes(full.lifecycle));
+
+  const replay=analyzeWLifecycle({bars:bars.slice(0,29),swings,asOfDate:structureDate,priorTrendState:"DOWNTREND"});
+  assert.deepEqual(replay,structure);
+}
+
+// Platform lifecycle: repeated confirmed upper/lower touches are required; simple narrow range alone is not enough.
+{
+  const closes=[
+    ...Array.from({length:20},()=>100),
+    100,104.8,101,95.2,99,105.1,101,95.1,99.5,104.9,101,95.3,99.8,102,100.5
+  ];
+  const volumes=closes.map((_,i)=>i<25?200:Math.max(60,180-(i-25)*12));
+  const bars=makeBars(closes,{startDay:1,volume:volumes,tickPad:0.1});
+  const swings=[
+    {type:"HIGH",pivotAt:bars[21].date,confirmedAt:bars[23].date,pivotPrice:105.0},
+    {type:"LOW", pivotAt:bars[23].date,confirmedAt:bars[24].date,pivotPrice:95.0},
+    {type:"HIGH",pivotAt:bars[25].date,confirmedAt:bars[27].date,pivotPrice:105.1},
+    {type:"LOW", pivotAt:bars[27].date,confirmedAt:bars[28].date,pivotPrice:95.1},
+    {type:"HIGH",pivotAt:bars[29].date,confirmedAt:bars[31].date,pivotPrice:104.9},
+    {type:"LOW", pivotAt:bars[31].date,confirmedAt:bars[32].date,pivotPrice:95.2}
+  ];
+  const p=analyzePlatformLifecycle({bars,swings,asOfDate:bars.at(-1).date,atrPeriod:20});
+  assert.equal(p.status,"VALID");
+  assert.equal(p.topologyValid,true);
+  assert.ok(p.upperTouchCount>=2);
+  assert.ok(p.lowerTouchCount>=2);
+  assert.ok(["PLATFORM_VALID","PLATFORM_TIGHT"].includes(p.lifecycle));
+  assert.ok(p.resistanceLevel>p.supportLevel);
+
+  const insufficient=analyzePlatformLifecycle({
+    bars,
+    swings:swings.slice(0,2),
+    asOfDate:bars.at(-1).date,
+    atrPeriod:20
+  });
+  assert.equal(insufficient.lifecycle,"PLATFORM_FORMING");
 }
 
 // C3 ex-dividend mechanical reset: raw price is guarded; residual morphology gap is tested separately.
