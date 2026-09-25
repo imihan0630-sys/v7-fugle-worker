@@ -148,3 +148,59 @@ Absence of a suspension record is not evidence of NO_SUSPENSION unless the symbo
 
 No Formal runtime dependency is authorized.
 
+
+
+## 10. Daily share-denominator source lanes (CA-106)
+
+Corporate-action event discovery and share-denominator observation are separate source problems.
+
+### TWSE denominator backbone
+
+Official Data E-Shop BFT51U provides a DAILY all-stock basic file with both an issued field and a listed-share field from the mid-2000s onward.
+This is the strongest documented daily official denominator backbone identified in this round.
+
+Source-status:
+- daily cadence: VERIFIED BY PRODUCT DOCUMENTATION;
+- issued/listed dual-field presence: VERIFIED BY PRODUCT DOCUMENTATION;
+- historical availability: DOCUMENTED;
+- free access: NO, paid product;
+- exact raw-unit conversion: UNKNOWN until official sample/format artifact is successfully archived.
+
+Monthly TWSE turnover/basic-statistics products can reconcile denominator semantics:
+they separately expose issued and listed shares, and the documented turnover product uses listed shares.
+They cannot replace a missing daily vintage.
+
+### TPEx denominator backbone
+
+Official TPEx daily close-quote pages expose `發行股數` per security alongside executed shares and prices.
+Historical date-specific quote surfaces are publicly available.
+
+Source-status:
+- daily issued-share field: VERIFIED;
+- public historical page availability: VERIFIED;
+- stable long-run machine/API contract: not yet frozen in this research;
+- exact listed-vs-issued alternative denominator field: not established here.
+
+TPEx published statistics explicitly state that capital and turnover are calculated using issued shares.
+
+### Cross-exchange warning
+
+A field named `turnover` is not exchange-neutral evidence.
+TWSE documented turnover and TPEx published turnover use different denominator conventions.
+
+Any cross-market research must either:
+1. normalize both to the same explicitly proven denominator space; or
+2. keep exchange-native turnover semantics separate.
+
+Do not compare them as one feature merely because the label is the same.
+
+### Exact CA-106 gate
+
+Denominator source readiness is not COMPLETE until:
+- unit semantics are pinned;
+- every required trading date is captured or continuity is independently proven;
+- security type/private-placement/payment-certificate treatment is resolved for event windows;
+- revisions are preserved;
+- cross-source conflicts are surfaced rather than overwritten.
+
+No Formal runtime dependency is authorized.
