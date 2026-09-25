@@ -1,0 +1,216 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-09-25 Asia/Taipei",
+  "purpose": "CA-105 deterministic lifecycle/revision edge matrix. Research-only specification fixtures; not a production runtime test.",
+  "decisionImpact": false,
+  "executableTestEvidence": false,
+  "formalCoreChanged": false,
+  "eventIdentityKey": [
+    "symbol",
+    "exchange",
+    "shareClass",
+    "actionFamilyId",
+    "stage",
+    "effectiveSession",
+    "version"
+  ],
+  "canonicalStages": [
+    "ANNOUNCED",
+    "REGULATORY_EFFECTIVE",
+    "REGISTERED",
+    "EX_RIGHT_PRICE_EVENT",
+    "PAYMENT_CERTIFICATE_LISTED",
+    "NEW_SHARES_LISTED",
+    "UNIT_SCALE_EFFECTIVE",
+    "SUPPLY_CHANGE_EFFECTIVE",
+    "CANCELLED",
+    "SUPERSEDED"
+  ],
+  "orderingRule": [
+    "Sort by effectiveSession, then semantic stage order, never by ingestion order.",
+    "Revisions replace the referenced version only from their own knownAt forward for point-in-time replay.",
+    "Different semantic stages on the same session remain separate records even when actionFamilyId is shared.",
+    "Price factors, share-unit factors and supply-denominator steps are independently idempotent; no stage may apply another stage's transform by implication."
+  ],
+  "fixtures": [
+    {
+      "id": "EDGE_01_SAME_DAY_REGISTRATION_AND_LISTING",
+      "input": [
+        {
+          "stage": "REGISTERED",
+          "effectiveSession": "2026-01-05",
+          "knownAt": "2026-01-05T08:00:00+08:00"
+        },
+        {
+          "stage": "NEW_SHARES_LISTED",
+          "effectiveSession": "2026-01-05",
+          "knownAt": "2026-01-02T17:00:00+08:00"
+        }
+      ],
+      "expected": [
+        "Keep two semantic records.",
+        "REGISTERED_ISSUED_SHARES and EXCHANGE_LISTED_SHARES may both step on the same session only because each own stage is proven.",
+        "No double price adjustment and no historical raw-volume rescaling."
+      ]
+    },
+    {
+      "id": "EDGE_02_REVISION_BEFORE_EFFECTIVE",
+      "input": [
+        {
+          "version": "v1",
+          "stage": "NEW_SHARES_LISTED",
+          "effectiveSession": "2026-01-10",
+          "knownAt": "2026-01-02T17:00:00+08:00"
+        },
+        {
+          "version": "v2",
+          "revisionOf": "v1",
+          "stage": "NEW_SHARES_LISTED",
+          "effectiveSession": "2026-01-12",
+          "knownAt": "2026-01-08T17:00:00+08:00"
+        }
+      ],
+      "expected": [
+        "Replay as of 2026-01-07 sees v1 schedule.",
+        "Replay as of 2026-01-09 sees v2 schedule.",
+        "No supply step occurs on 2026-01-10 after v2 supersedes v1 before effectiveness."
+      ]
+    },
+    {
+      "id": "EDGE_03_LATE_CORRECTION_AFTER_EFFECTIVE",
+      "input": [
+        {
+          "version": "v1",
+          "valueShares": 110000000,
+          "effectiveSession": "2026-01-10",
+          "knownAt": "2026-01-05T12:00:00+08:00"
+        },
+        {
+          "version": "v2",
+          "revisionOf": "v1",
+          "valueShares": 109999995,
+          "effectiveSession": "2026-01-10",
+          "knownAt": "2026-01-15T12:00:00+08:00"
+        }
+      ],
+      "expected": [
+        "Point-in-time replay as of 2026-01-12 uses v1.",
+        "Ex-post mechanics may use v2 for audit.",
+        "v2 must not silently rewrite a 2026-01-12 decision-time feature."
+      ]
+    },
+    {
+      "id": "EDGE_04_CANCELLED_BEFORE_EFFECTIVE",
+      "input": [
+        {
+          "version": "v1",
+          "stage": "NEW_SHARES_LISTED",
+          "effectiveSession": "2026-02-02",
+          "knownAt": "2026-01-20T17:00:00+08:00"
+        },
+        {
+          "version": "v2",
+          "revisionOf": "v1",
+          "stage": "CANCELLED",
+          "knownAt": "2026-01-29T17:00:00+08:00"
+        }
+      ],
+      "expected": [
+        "No denominator step on 2026-02-02.",
+        "Historical replay before cancellation may know a planned event but must not treat it as realized supply.",
+        "ANNOUNCED/PENDING and REALIZED supply stay separate."
+      ]
+    },
+    {
+      "id": "EDGE_05_SAME_DAY_UNIT_SCALE_AND_SUPPLY_CHANGE",
+      "input": [
+        {
+          "stage": "UNIT_SCALE_EFFECTIVE",
+          "effectiveSession": "2026-03-02",
+          "shareUnitFactor": 10,
+          "knownAt": "2026-02-20T17:00:00+08:00"
+        },
+        {
+          "stage": "SUPPLY_CHANGE_EFFECTIVE",
+          "effectiveSession": "2026-03-02",
+          "valueSharesAfter": 550000000,
+          "knownAt": "2026-02-20T17:00:00+08:00"
+        }
+      ],
+      "expected": [
+        "Apply unit-continuity transform only in the continuity semantic space.",
+        "Apply denominator step only to the declared turnover space.",
+        "Do not multiply raw execution volume and then also denominator-normalize as if these were one transform."
+      ]
+    },
+    {
+      "id": "EDGE_06_CONFLICTING_PRIMARY_ARTIFACTS",
+      "input": [
+        {
+          "source": "official-A",
+          "denominatorType": "EXCHANGE_LISTED_SHARES",
+          "valueShares": 68000000,
+          "quality": "VERIFIED"
+        },
+        {
+          "source": "official-B",
+          "denominatorType": "EXCHANGE_LISTED_SHARES",
+          "valueShares": 93000000,
+          "quality": "VERIFIED"
+        }
+      ],
+      "expected": [
+        "Resolve to quality CONFLICT, not latest-wins.",
+        "Normalized turnover is UNKNOWN until semantic/source conflict is resolved.",
+        "Raw factual share volume remains usable if its own provenance is valid."
+      ]
+    },
+    {
+      "id": "EDGE_07_REAL_8454_TWO_CLOCK_ANCHOR",
+      "input": [
+        {
+          "stage": "REGISTERED",
+          "effectiveSession": "2025-09-22",
+          "valueSharesAfter": 264975275
+        },
+        {
+          "stage": "NEW_SHARES_LISTED",
+          "effectiveSession": "2025-10-09",
+          "newShares": 12617870
+        }
+      ],
+      "expected": [
+        "Registered and listed/tradable denominators may differ between stages.",
+        "The 2025-09-22 registration must not force the listed/tradable denominator to step early."
+      ]
+    },
+    {
+      "id": "EDGE_08_REAL_2465_PAYMENT_CERTIFICATE_ANCHOR",
+      "input": [
+        {
+          "stage": "PAYMENT_CERTIFICATE_LISTED",
+          "effectiveSession": "2025-11-17",
+          "newShares": 10000000
+        },
+        {
+          "stage": "REGISTERED",
+          "effectiveSession": "2026-01-06",
+          "registeredIssuedSharesAfter": 93946031
+        }
+      ],
+      "expected": [
+        "A tradable supply event can precede final registered-share change.",
+        "Do not collapse payment-certificate listing and common-share registration into one date.",
+        "Exact exchange-listed/tradable denominator remains PARTIAL_CONFLICT when private-placement treatment is unresolved."
+      ]
+    }
+  ],
+  "failClosedRules": [
+    "Missing knownAt => POINT_IN_TIME_KNOWN_TRUTH UNKNOWN.",
+    "Missing effectiveSession => normalized feature UNKNOWN.",
+    "Conflicting denominator semantics => normalized feature UNKNOWN.",
+    "No event is equivalent to NO_EVENT only when source coverage is complete.",
+    "Cancellation/revision must preserve prior versions for replay rather than deleting history."
+  ],
+  "conclusion": "CA-105 lifecycle edge contract frozen; executable implementation remains future research engineering only."
+}
