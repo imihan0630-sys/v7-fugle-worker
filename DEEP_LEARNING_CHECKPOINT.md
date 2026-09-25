@@ -746,3 +746,14 @@ YES for research infrastructure integrity: resolving the actual archive lineage 
 - Direct D1 row-level QA is currently blocked by Cloudflare token authorization (403), so duplicate/fingerprint/at-rest row checks are still unproven. Runtime/admin-level readback remains available.
 - Baseline bootstrap only occurs after successful after-market Formal completion; activation happened during a holiday block, so 2026-09-30 is the first natural candidate date for clean same-slot intraday evidence after a 2026-09-29 bootstrap.
 - Evidence state = DATA_QA_PARTIAL. No H001~H006 interpretation or Formal promotion.
+
+## Price-Volume evidence update — PVE-029 through PVE-061
+- Current PV evidence cursor: PVE-001 through PVE-061, with theory PV-001 through PV-200 complete.
+- H001/H002 raw volume evidence is now explicitly separated from H003 range/response/Guard quality. Historical 09:00 trueRange and missing-slot range continuity have defects that need not invalidate exact-slot volume medians.
+- Formal previous-5 volume ratio and PV slot RVOL normally share the same current 15m source, but the primary comparison requires common support and exact-bar provenance; early-slot coverage is a separate question.
+- Snapshot fingerprinting has a known retry defect because volatile sourceFetchedAt is hashed as semantic content; outcome fingerprinting does not share the insertion-time issue. Mutation conflicts must be cause-classified.
+- D1 valid_sessions means cached session objects, not all-slot validity; per-slot volume/cumulative/range counts define true feature readiness.
+- PV acceptance is not an exact replay of Formal at threshold boundaries and contains an A lower-shadow rule drift; H003 remains more gated.
+- stopFirst path order is unknowable from a bar that touches both stop and target; daily outcomes also need symbol-session-aware handling for suspensions.
+- v0.1 observedAt/enteredAt are market bar identity times, not feature-known times. Existing sourceFetchedAt/barEnd fields allow a conservative point-in-time overlay without mutating snapshots.
+- No production change was made; evidence-first/falsification-first governance remains active.
