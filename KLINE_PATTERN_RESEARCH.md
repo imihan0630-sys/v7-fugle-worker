@@ -6610,3 +6610,128 @@ Does “available air” between local breakout and major resistance explain why
 
 This may connect directly to current reward/risk logic, but remains research-only until incremental evidence exists.
 
+
+
+## DL-002AV — Overnight Gap vs Intraday Progression v0.1
+
+### Taiwan-specific evidence
+Pacific-Basin Finance Journal (2023) evidence from Taiwan finds past intraday and overnight returns contain different predictive information:
+- intraday-return momentum is positive and persistent,
+- overnight-return momentum is negative / reversal-like,
+with an interpretation of daytime underreaction versus overnight overreaction.
+
+This does not imply every individual overnight gap should be faded, but it is strong evidence that total close-to-close return should be decomposed.
+
+### Pattern implication
+A stock that reaches the same right-rim/pivot distance through:
+A. large overnight gaps,
+B. steady intraday progression,
+may have different continuation quality.
+
+### Research fields
+- overnightReturn = open / priorClose - 1
+- intradayReturn = close / open - 1
+- overnightShareOfDailyMove
+- cumulativeOvernightReturn5/20
+- cumulativeIntradayReturn5/20
+- gapCountInPattern
+- positiveGapShare
+- gapFillRateWithinDay if intraday data supports
+- limitConstrainedGap flag
+- corporateActionGap flag
+
+### Pattern interactions
+VCP:
+- repeated overnight gaps inside a “tight” pattern may mean the daily-close path hides intraday discontinuity.
+
+Cup/right side:
+- recovery driven mostly by overnight gaps may differ from persistent intraday demand.
+
+Breakout:
+- gap-over-pivot breakout vs intraday-through-pivot breakout should be separate states.
+
+W:
+- undercut/reclaim occurring intraday differs from overnight opening below support then recovery.
+
+### No mechanical fade rule
+The Taiwan evidence is portfolio-level and historical.
+Use overnight/intraday composition as context, not an automatic reversal signal.
+
+## DL-002AW — Gap Taxonomy v0.1
+
+### Gap types
+STRUCTURAL_GAP
+- gap associated with a major price-path transition / breakout.
+
+CONTINUATION_GAP_CANDIDATE
+- gap occurs within an established directional progression and price acceptance follows.
+
+EXHAUSTION_GAP_CANDIDATE
+- gap occurs after extended path, high attention/volume, poor close/follow-through.
+
+COMMON_NOISE_GAP
+- small gap within range without structural consequence.
+
+CORPORATE_ACTION_GAP
+- ex-right/ex-dividend/split-related; exclude from normal pattern interpretation.
+
+LIMIT_MECHANISM_GAP
+- previous limit-hit / price-limit mechanism likely constrained prior information incorporation.
+
+### Fields
+- gapPct
+- gapATR
+- gapTicks
+- gapVsPriorRange
+- gapIntoResistance
+- gapAbovePivot
+- closeVsOpenAfterGap
+- closeVsPivot
+- gapDayVolumeRatio
+- priorExtension
+- nextDayAcceptance
+- priceLimitPriorDay
+- corporateActionTag
+
+### Research question
+Is “gap breakout” quality explained by:
+- gap size itself,
+- intraday acceptance after the gap,
+- position relative to older resistance,
+- prior extension,
+rather than by the traditional gap name?
+
+## DL-002AX — Taiwan Price-Limit State as Pattern Context
+
+### Evidence
+Taiwan research shows price limits can delay information incorporation, affect serial correlation, and create continuation overnight followed by reversal during subsequent trading in older 7% regimes.
+High-frequency TWSE work also documents acceleration toward the upper price limit (“magnet effect”).
+Later research shows changing the price-limit band affects order aggressiveness, spreads, volatility, depth and execution quality.
+
+### Modern relevance caution
+Much classic evidence was collected under the old 7% regime, while current ordinary-stock limit is ±10%.
+Use mechanism as prior evidence, but validate only within the current 10% regime for 2026 relevance.
+
+### Pattern fields
+- limitHitToday
+- limitHitPrior1/2/3Days
+- nearLimitClose
+- limitHitFrequency20/60
+- consecutiveLimitHits
+- intradayUnlockedAfterLimit if observable
+- postLimitOvernightMove
+- postLimitIntradayMove
+
+### Interpretation
+A limit-up close is not equivalent to an unconstrained strong close:
+- true equilibrium price may be above the cap,
+- observed wick/range/close-location is mechanically censored,
+- next-day gap may carry delayed information.
+
+Therefore:
+- do not classify limit-constrained bars with ordinary range/close-quality rules without a tag,
+- do not call a limit-up “perfect no-upper-wick breakout” as if it were unconstrained.
+
+### No production change
+Research context only.
+
