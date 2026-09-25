@@ -159,6 +159,23 @@ function scaled(bars, k) {
   assert.equal(momo.morphologyGapPatternEligible, true);
   assert.equal(momo.residualPatternGapFlag, true);
   assert.ok(momo.morphologyGapPct > 0.02);
+
+  // TPEx 5314: official par-value change 10 -> 0.5, one old share -> 20 new shares.
+  // 2025-03-19 raw close 1390 maps to a 69.5 continuity/reference anchor.
+  // 2025-03-31 raw open 69 therefore has only a small residual gap after the mechanical reset.
+  const century = classifyCorporateActionGap({
+    rawPrev: { close: 1390 },
+    rawCurrent: { open: 69 },
+    morphologyPrev: { close: 1390 / 20 },
+    morphologyCurrent: { open: 69 },
+    corporateActionTag: true,
+    adjustmentReady: true,
+    gapThresholdPct: 0.02
+  });
+  assert.equal(century.rawGapPatternEligible, false);
+  assert.equal(century.morphologyGapPatternEligible, true);
+  assert.equal(century.residualPatternGapFlag, false);
+  assert.ok(Math.abs(century.morphologyGapPct) < 0.01);
 }
 
 // C4 limit-up breakout: acceptance remains unresolved on the constrained bar.
