@@ -7985,3 +7985,110 @@ from
 ### Data horizon
 Historical minute evidence begins in 2023, so this is a modern-regime research lane and should not be backfilled before data availability.
 
+
+
+## DL-002CH — Technical-Pattern Edge Decay / Adaptive-Market Risk
+
+### Strong external counter-evidence
+Financial Markets and Portfolio Management (2023) tests 6,406 technical trading rules across 23 developed and 18 emerging equity markets over long histories using Stepwise Superior Predictive Ability tests to control data snooping.
+
+Main findings relevant to DL-002:
+- many markets show in-sample technical predictability;
+- predictive ability declines sharply over time;
+- moderate transaction costs erase many apparent advantages;
+- rules selected as recent best performers do not show persistent out-of-sample superiority and often underperform buy-and-hold.
+
+### Implication
+Even a genuinely historical pattern effect can decay as:
+- market structure changes,
+- participants learn/adopt it,
+- liquidity/transaction technology changes,
+- regulation changes.
+
+### Pattern research must test stability over calendar time
+Fields / diagnostics:
+- effectByYear
+- effectByRollingWindow
+- recentVsOldEffect
+- directionConsistencyAcrossYears
+- effectHalfLifeDescriptive
+- transactionCostSensitivity
+- turnoverSignalFrequency
+- latestRegimeEffect
+
+### No automatic retuning
+Do NOT respond to decay by continuously tuning thresholds to the most recent winners.
+That creates a moving overfit target.
+
+Preferred process:
+1. freeze detector;
+2. accumulate prospective evidence;
+3. evaluate rolling stability;
+4. retire/de-emphasize stale research factors if evidence disappears;
+5. any new definition becomes a new experiment version.
+
+### 2026 relevance
+For any literature effect discovered in older data:
+OLD_EVIDENCE supports mechanism plausibility.
+RECENT_PROSPECTIVE_EVIDENCE determines current usefulness.
+
+## DL-002CI — Pattern Research Requires Economic, Not Only Statistical, Significance
+
+### Required layers
+STATISTICAL:
+- effect direction / uncertainty
+- date-cluster robustness
+- multiple-testing adjusted evidence
+
+ECONOMIC:
+- D5/D10 magnitude
+- MFE/MAE improvement
+- false-positive reduction
+- coverage lost
+- entry delay
+- turnover
+- transaction cost / slippage
+- capital utilization
+
+### Example
+A filter may reduce false breakouts from 30% to 28% but remove half the valid candidates.
+That may be statistically detectable yet economically harmful.
+
+### Relation to current system
+Because sparse BUY / idle capital is already a known research issue, every pattern filter must report:
+- candidateCoverageDelta
+- zeroPickDelta
+- capitalUtilizationDelta
+in addition to quality outcomes.
+
+No “better win rate” result is sufficient by itself.
+
+## DL-002CJ — Research Factor Retirement Rule
+
+### Purpose
+The research system needs a way to discard ideas, not only add them.
+
+Candidate status lifecycle:
+PROPOSED
+-> DEFINITION_FROZEN
+-> ACCUMULATING
+-> DESCRIPTIVE_READY
+-> VALIDATION_READY
+-> WORTH_REVIEW
+or
+-> REDUNDANT
+-> UNSTABLE
+-> ECONOMICALLY_WEAK
+-> STALE_EDGE
+-> REJECTED
+
+### Retirement triggers
+- no incremental effect after controls;
+- direction unstable across independent dates/regimes;
+- effect disappears in recent/prospective data;
+- transaction costs erase value;
+- coverage/capital-utilization damage is disproportionate;
+- high implementation/data burden for negligible value.
+
+Retirement is a successful research outcome, not a failure.
+
