@@ -418,3 +418,15 @@ No Formal Core change is approved or implied.
   - the first prospective experiment is frozen: within the existing selected/monitored cohort, compare current previous-5-bar 15m volumeRatio against same-slot RVOL + cumulative pace + latent states for false/no-follow-through and MFE/MAE.
 - `PRICE_VOLUME_SHADOW_SPEC.md` has been synchronized through PV-057.
 - Formal Core unchanged / LOCKED.
+
+## Price-Volume lane update — PV-058 through PV-062
+- Current cursor: PV-001 through PV-062 complete; continue from PV-063.
+- New durable conclusions:
+  - false/no-follow-through labels are now frozen separately for A and B using only levels that existed at the anchor timestamp; later bars determine outcomes but never redraw the anchor;
+  - same-session B1/B2/B4 horizons never roll across the overnight boundary; incomplete late-session horizons remain INCOMPLETE, while NEXT_SESSION and D1/D3/D5/D10 are separate outcome families;
+  - PV outcome completion is idempotent under the current every-minute cron architecture: immutable feature snapshots, one outcome per snapshot+horizon, no duplicate or retroactive mutation;
+  - resource audit shows the minimum PV layer should reuse existing 15m frames with zero extra live candle calls during ordinary monitoring; historical same-slot baseline bootstraps once per newly monitored symbol then rolls forward;
+  - with current max 6 monitored stocks and 18 regular-session 15m slots, full-bar feature logging upper bound is 108 rows/trading day before outcomes; repeated minute cron runs must not duplicate rows;
+  - research reporting remains admin/research only with no PV-based push or action language.
+- `PRICE_VOLUME_SHADOW_SPEC.md` has been synchronized through PV-062.
+- Formal Core unchanged / LOCKED.
