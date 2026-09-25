@@ -528,3 +528,282 @@ MS-015: Study spread/depth behavior immediately before and after failed breakout
 MS-016: Taiwan-specific order-imbalance evidence and investor-class findings; separate historical institutional evidence from current actionable features.
 MS-017: Compare microstructure candidate fields to existing V8.8.1 recorder spread/depth fields to eliminate duplicates before proposing any code.
 MS-018: Decide whether a fully isolated Class-A prospective capture can reuse existing execution recorder without changing Formal runtime semantics.
+
+
+---
+
+## MS-013 — Absorption is a dynamic process, not a single-book snapshot
+
+### Evidence
+Limit-order-book resiliency literature treats liquidity as dynamic: after a liquidity shock, spread/depth can deteriorate and then replenish as new limit orders arrive. Empirical work finds replenishment can occur quickly, but the speed and reliability differ by stock/liquidity class.
+
+Sources:
+- Lo & Hall (2015), Resiliency of the limit order book, Journal of Economic Dynamics and Control.
+- Cont, Kukanov & Stoikov (2014), order-book event price impact.
+
+### Research definition
+Do not call one large ask queue “absorption.”
+
+A buy-side absorption candidate requires an as-of sequence such as:
+1. aggressive/buy-pressure proxy remains positive,
+2. ask-side displayed liquidity is repeatedly consumed,
+3. ask liquidity repeatedly replenishes at or near the same prices,
+4. price progress per unit pressure weakens,
+5. spread does not resolve into a clean upward repricing.
+
+A continuation candidate is the opposite pattern:
+- ask depth consumed,
+- weak replenishment,
+- best ask/mid reprices upward,
+- price progress remains proportional to pressure.
+
+### Positive use
+This can explain two visually similar high-volume candles:
+- genuine demand removing supply,
+- heavy demand being absorbed by replenishing sellers.
+
+### Counter-interpretation
+- Replenishment is not automatically bearish: market makers may replenish while price trends.
+- Snapshot frequency can manufacture false “replenishment” if updates between snapshots are missed.
+- Hidden/iceberg liquidity cannot be observed directly from top-five snapshots.
+- Intent such as spoofing cannot be inferred merely because size disappears.
+
+### Candidate dynamic fields
+- askDepthReplenishmentRate
+- bidDepthReplenishmentRate
+- pressureToPriceResponse
+- consecutivePressureNoProgress
+- spreadRecoverySeconds / snapshots
+- depthRecoverySeconds / snapshots
+
+Status: HIGH-VALUE, requires denser prospective sampling than the current sparse recorder.
+
+---
+
+## MS-014 — Liquidity-vacuum breakout versus depth-supported breakout
+
+### Mechanism
+The same +1% price move can require very different order-flow pressure depending on available depth. Cont et al. find price impact is inversely related to market depth.
+
+This creates two competing breakout stories:
+
+A. DEPTH-SUPPORTED / ACCEPTED
+- meaningful pressure,
+- opposing depth is consumed,
+- price reprices,
+- spread remains controlled or recovers,
+- depth replenishes behind the move.
+
+B. LIQUIDITY-VACUUM
+- little visible opposing depth,
+- modest pressure produces a large price jump,
+- spread/depth quality deteriorates,
+- follow-through may be fragile once liquidity returns.
+
+### Positive interpretation
+A vacuum can create rapid upside and may precede genuine discovery if new information is strong.
+
+### Negative interpretation
+A fast candle in a thin book can exaggerate apparent strength and worsen chase/slippage. “Moves easily” is not the same as “has strong demand.”
+
+### Candidate research metric
+Use a normalized response ratio rather than raw move:
+- priceResponseBps / normalizedPressure
+- interpreted jointly with depth percentile and spread state
+
+Do not freeze a threshold until prospective data exist.
+
+Status: WORTH_SHADOW_RESEARCH.
+
+---
+
+## MS-015 — Failed breakout microstructure signature
+
+### Pre-registered hypothesis
+A failed breakout may be preceded or accompanied by one or more of:
+- spread widening relative to same-slot baseline,
+- weakening depth support,
+- pressure-price divergence (buy pressure persists but price stops progressing),
+- ask-side replenishment,
+- depth imbalance flipping after breakout,
+- quote mechanism / limit / interruption state making the apparent breakout non-comparable.
+
+### Competing hypothesis
+The same symptoms can occur during healthy price discovery under high information arrival. Therefore they must be tested against successful breakouts matched by:
+- same date / regime,
+- price tier,
+- liquidity,
+- ATR,
+- sector,
+- current price-volume state.
+
+### Outcome labels
+For this lane, primary labels are intraday:
+- holds breakout reference for next 15m / 30m,
+- returns below reference,
+- MFE / MAE,
+- spread-normalized slippage proxy,
+- retest depth.
+
+No retrospective pattern relabeling.
+
+Status: PRE-REGISTERED HYPOTHESIS.
+
+---
+
+## MS-016 — Taiwan-specific order-imbalance evidence: valuable, but historically bounded
+
+### Evidence
+Lee, Liu, Roll & Subrahmanyam (2004) use TWSE data that identify order originators. They find marketable order imbalance persistence differs by trader type and can arise from both order splitting and herding. Importantly, they find little evidence that aggregate price pressure from this persistence lasts beyond a trading day.
+
+Source:
+- Journal of Financial and Quantitative Analysis 39(2), 327-341.
+- CaltechAUTHORS record: https://authors.library.caltech.edu/records/krptp-9ny02
+
+### Why this matters
+It directly supports two research cautions:
+1. persistent order pressure in Taiwan is plausible;
+2. persistence does not imply multi-day permanent price impact.
+
+### Historical-transfer warning
+Do NOT transplant the paper's trader-class ranking into 2026 as current truth.
+
+TWSE's current 2026 market-structure commentary says domestic individual investors' trading-value share fell to about 52% during Jan-Jul 2026, versus up to 86.1% around 2000, reflecting a substantially more institutionalized market.
+
+Therefore:
+- the old investor-class findings are mechanism evidence,
+- not a current 2026 ranking of who is “informed.”
+
+Status: TAIWAN MECHANISM EVIDENCE ACCEPTED; CURRENT TRADER-TYPE EFFECT MUST BE REVALIDATED.
+
+---
+
+## MS-017 — Existing V8.8.1 recorder already covers part of this lane
+
+### Repository evidence
+Inspection of `scripts/apply_v8_8_1.py` shows the prospective research-only execution recorder already passes through:
+- previousClose
+- openPrice
+- avgPrice
+- top-five bids
+- top-five asks
+- tradingHalt
+- isContinuous
+- isDelayedOpen / isDelayedClose
+- isLimitUpHalt / isLimitDownHalt
+
+It already derives:
+- openingGapPct
+- sessionAvgPrice / VWAP proxy semantics
+- bestBid / bestAsk
+- spreadPct
+- bidDepth5
+- askDepth5
+- depthImbalance
+- executionMarketState
+- UNKNOWN reasons
+
+This is important: several proposed microstructure fields are **not new work**.
+
+### Redundancy decision
+Do not create duplicate fields for:
+- raw spread,
+- total top-five bid/ask depth,
+- top-five depth imbalance,
+- coarse market mechanism state.
+
+The incremental microstructure lane should instead focus on what the recorder does not yet contain:
+1. same-slot normalization,
+2. weighted-mid proxy,
+3. provider trade-pressure proxy / inferred aggressor semantics,
+4. transaction rate,
+5. dynamic replenishment/resiliency,
+6. pressure-to-price response,
+7. persistence / flip states.
+
+### Recorder-frequency limitation
+`scripts/apply_v8_8_0.py` records only event states such as:
+- OPEN_BASELINE
+- FIRST_10M_COMPLETE
+- FIRST_15M_COMPLETE
+- FIRST_30M_COMPLETE
+- FORMAL_SIGNAL_OBSERVED
+
+That cadence is useful for execution snapshots but too sparse to reconstruct true event-level OFI or seconds-scale resiliency.
+
+Status: REDUNDANCY REMOVED; NEED DYNAMIC DATA ONLY FOR THE TRULY NEW FEATURES.
+
+---
+
+## MS-018 — Safe engineering boundary for prospective microstructure capture
+
+### Classification
+Reusing fields from the existing quote already fetched by Formal monitoring and adding downstream-only research calculations can potentially remain Class A **only if**:
+- decisionImpact=false,
+- no additional latency/fetch dependency is added before formal decisions/push,
+- failure is fail-open,
+- protected formal outputs are regression-identical.
+
+However, adding new Fugle `intraday/trades` / `intraday/volumes` calls directly inside the Formal monitor path can create shared-runtime latency/rate-limit/failure risk. That should be treated as Class B unless isolated.
+
+### Preferred architecture
+For true new data, prefer a separate research capture path:
+- isolated research endpoint / scheduled capture,
+- writes only research tables,
+- no dependency from Formal monitor/signals/push,
+- bounded symbol set,
+- explicit timestamps and data-source provenance,
+- fail-open relative to trading system,
+- coverage / truncation metadata.
+
+### Why not implement immediately
+The current task is knowledge acquisition and pre-registration. Implementing denser capture before the exact feature/cadence/cost contract is frozen would create avoidable Factor-Zoo and infrastructure risk.
+
+### Best next design question
+Determine the minimum cadence required to distinguish:
+- consumption,
+- replenishment,
+- persistence,
+- spread recovery,
+without attempting full exchange-grade tick reconstruction.
+
+Status: ARCHITECTURE DIRECTION DEFINED; NO FORMAL/RUNTIME CHANGE APPROVED OR MADE.
+
+---
+
+## Third synthesis — revised candidate set after redundancy audit
+
+Existing recorder already gives us:
+- spread,
+- top-five depth,
+- depth imbalance,
+- market mechanism flags,
+- opening gap / session average proxy.
+
+Therefore the genuinely novel research variables are now narrower:
+
+### Priority A — likely incremental
+- same-slot spread/depth normalization
+- tradePressureProxy
+- pressureToPriceResponse
+- weightedMidProxy displacement
+- transactionRate
+- replenishment / resiliency
+- persistence / pressure-no-progress state
+
+### Priority B — later
+- event-level true OFI
+- fitted microprice
+- queue survival / cancellation hazard
+- hidden-liquidity inference
+
+This is a better direction than simply adding more indicators: it explicitly removes fields V8.8.1 already has.
+
+## Exact next continuation after MS-018
+
+MS-019: Determine minimum prospective sampling cadence and storage burden for replenishment without affecting Formal runtime.
+MS-020: Study adverse selection / post-trade markout as an execution-quality label.
+MS-021: Study spread/depth normalization by Taiwan tick-size bands and thousand-dollar-stock pool.
+MS-022: Study whether price-limit proximity causes nonlinear depth/pressure behavior and requires a separate cohort.
+MS-023: Build a cross-lane redundancy matrix: microstructure vs price-volume vs K-line vs Residual RS vs volatility.
+MS-024: Freeze a first empirical test protocol before any new capture is implemented.
