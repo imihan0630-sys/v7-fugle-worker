@@ -1,0 +1,118 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-09-25 Asia/Taipei",
+  "purpose": "CA-108 point-in-time downstream denominator mechanics for market-cap-like and institutional-flow normalization. Research-only; not official market-cap reconstruction and not alpha inference.",
+  "decisionImpact": false,
+  "inferenceReady": false,
+  "formalCoreChanged": false,
+  "codeAudit": {
+    "currentWorkerPattern": "marketCapYi may fall back to sharesOutstanding * close / 1e8 when explicit marketCapYi is absent",
+    "replayRisk": "A historical price multiplied by a current or semantically mismatched share snapshot can create a look-ahead/denominator-vintage error.",
+    "codeChanged": false
+  },
+  "namingRule": "Values below are denominator-derived NOTIONAL_CAPITALIZATION, not exchange-certified official market capitalization unless the exact source methodology is independently proven.",
+  "flowFixture": {
+    "rawInstitutionNetShares": 100000,
+    "reason": "Fixed mechanics-only numerator isolates denominator effects. It is not a real institutional-flow observation and has no directional interpretation."
+  },
+  "cases": [
+    {
+      "symbol": "8454",
+      "name": "富邦媒",
+      "session": "2025-10-09",
+      "close": 258,
+      "denominatorScenarios": [
+        {
+          "label": "PRE_REGISTRATION_SHARE_BASE_COUNTERFACTUAL",
+          "denominatorType": "REGISTERED_ISSUED_SHARES",
+          "shares": 252357405,
+          "notionalCapitalizationYi": 651.0821049,
+          "normalizedInstitutionNetPct": 0.03962633868421654,
+          "admissibility": "NOT the registered state after 2025-09-22; retained only for sensitivity/replay-error demonstration"
+        },
+        {
+          "label": "POST_REGISTRATION_REGISTERED_ISSUED",
+          "denominatorType": "REGISTERED_ISSUED_SHARES",
+          "shares": 264975275,
+          "notionalCapitalizationYi": 683.6362095,
+          "normalizedInstitutionNetPct": 0.037739370211050824,
+          "admissibility": "EX_POST mechanics corroborated; point-in-time knownAt still requires archived vintage"
+        }
+      ],
+      "denominatorDifferencePct": 4.99999990093416,
+      "interpretation": [
+        "The same historical close multiplied by different share vintages changes the derived capitalization by ~5%.",
+        "The same 100,000-share institutional numerator changes from 0.039626% to 0.037739% of the denominator.",
+        "Raw institutional net shares themselves do not change."
+      ]
+    },
+    {
+      "symbol": "2465",
+      "name": "麗臺科技",
+      "session": "2025-11-18",
+      "close": 51.5,
+      "denominatorScenarios": [
+        {
+          "label": "THEN_REGISTERED_ISSUED",
+          "denominatorType": "REGISTERED_ISSUED_SHARES",
+          "shares": 83946031,
+          "notionalCapitalizationYi": 43.232205965,
+          "normalizedInstitutionNetPct": 0.11912415489899696,
+          "admissibility": "CORROBORATED for the pre-2026-01-06 registered-share state"
+        },
+        {
+          "label": "PUBLIC_TRADABLE_SUPPLY_SENSITIVITY",
+          "denominatorType": "EXCHANGE_LISTED_OR_TRADABLE_SHARES",
+          "shares": 68946031,
+          "notionalCapitalizationYi": 35.507205965,
+          "normalizedInstitutionNetPct": 0.14504098140181557,
+          "admissibility": "PARTIAL_CONFLICT / sensitivity only; not production verified"
+        },
+        {
+          "label": "LATER_REGISTERED_STATE",
+          "denominatorType": "REGISTERED_ISSUED_SHARES",
+          "shares": 93946031,
+          "notionalCapitalizationYi": 48.382205965,
+          "normalizedInstitutionNetPct": 0.10644409235340661,
+          "admissibility": "KNOWN LATER 2026-01-06 state; prohibited from 2025-11-18 point-in-time replay"
+        }
+      ],
+      "mechanics": {
+        "laterRegisteredVsThenRegisteredShareDifferencePct": 11.912415489899697,
+        "thenRegisteredVsPublicTradableSensitivityShareDifferencePct": 21.756147210272324
+      },
+      "interpretation": [
+        "Using the later 93,946,031 share state on 2025-11-18 would be a future-vintage leak.",
+        "Using public-tradable supply answers a different economic question from registered issued capital.",
+        "The same raw institutional net-share numerator can differ materially after normalization solely because the denominator semantic changes."
+      ]
+    }
+  ],
+  "institutionalFlowRules": [
+    "Preserve foreignNet/trustNet/dealerNet/institutionTotalNet raw share counts exactly as sourced.",
+    "Do not rescale raw net shares for pure SUPPLY_CHANGE.",
+    "A normalized flow feature must include denominatorType, denominatorValue, effectiveSession, knownAt and source provenance.",
+    "Buy-day streaks are sign/count semantics; do not silently convert them into turnover-normalized features.",
+    "Holding percentage and net trading flow are different objects. A holding percentage can change mechanically when the denominator changes with zero holder trading."
+  ],
+  "marketCapRules": [
+    "Historical fallback market cap may be computed only when the selected share denominator is semantically appropriate and point-in-time admissible.",
+    "Current share snapshots may not be backfilled into earlier prices.",
+    "Registered issued, listed/tradable and free-float capitalization are distinct objects.",
+    "Private-placement/payment-certificate treatment must be explicit.",
+    "If exact historical share vintage is missing, leave historical derived capitalization UNKNOWN rather than substitute a current value."
+  ],
+  "valuationRules": [
+    "EPS_WEIGHTED_AVERAGE_SHARES is not a daily trading denominator.",
+    "Retrospectively restated EPS denominators must not be reused to reconstruct historical daily turnover or market capitalization.",
+    "Historical P/E/P/B should prefer archived official valuation snapshots/methodology; do not synthesize an old valuation with a current share base to fill a gap."
+  ],
+  "antiInference": [
+    "Fixed 100,000-share flow is synthetic mechanics only.",
+    "No institutional direction/outcome inference.",
+    "No market-cap ranking or eligibility change.",
+    "No valuation threshold change.",
+    "No Worker.js modification."
+  ],
+  "conclusion": "Downstream denominator effects are mechanically material and can create future-vintage or semantic mismatches. Raw flows remain factual; normalized flows and derived capitalization require explicit point-in-time denominator contracts."
+}
