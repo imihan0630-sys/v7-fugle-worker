@@ -10554,3 +10554,2163 @@ Prefer:
 
 No single metric is enough.
 
+
+
+## DL-002ET — Dual Price Space: Morphology vs Tradable Reference Levels
+
+### Source semantics
+Fugle supports adjusted=true for daily/weekly/monthly historical candles.
+The adjusted series retroactively adjusts pre-corporate-action history while post-event prices remain on the current scale.
+
+### Core problem
+Different research questions need different price semantics.
+
+MORPHOLOGY / RETURN question:
+“How did the economic price path evolve without mechanical corporate-action jumps?”
+Use ADJUSTED price space.
+
+TRADABLE / BEHAVIORAL question:
+“What nominal price did traders actually see and place orders around at that time?”
+Use RAW / event-aware nominal price space.
+
+Do not mix them inside one distance calculation.
+
+### Two-space model
+For each bar store:
+RAW:
+- rawOpen/high/low/close
+
+ADJUSTED:
+- adjOpen/high/low/close
+
+CORPORATE ACTION:
+- actionType
+- exDate
+- adjustmentFactor / cash entitlement when source supports
+- source/provenance
+
+### Morphology calculations
+Use adjusted:
+- swing segmentation
+- return path
+- ATR/volatility for long topology
+- cup/W/VCP geometry
+- long-horizon return
+- gap detection only after excluding corporate-action mechanical gaps
+
+### Execution / current-plan calculations
+Use raw current tradable prices:
+- buyLow/high
+- stop
+- quote comparison
+- live pivot execution
+- tick distance
+- actual limit prices
+
+### Historical S/R requires bridging
+A historical raw resistance of NT$100 before a corporate action is not directly comparable with a post-action current price of NT$90.
+
+For cross-action comparison create:
+- historicalRawLevel
+- equivalentCurrentScaleLevel
+- conversionFactorKnownAt/afterAction
+- levelSpace = RAW_AT_TIME / CURRENT_EQUIVALENT / ADJUSTED_MORPHOLOGY
+
+Never compare old raw level directly to current raw price across an adjustment event.
+
+## DL-002EU — Behavioral Reference Price Across Corporate Actions
+
+### Competing considerations
+1. Investors experienced the old nominal price and may remember it.
+2. After cash dividends/splits/capital changes, rational comparison requires economic adjustment.
+3. Brokerage charts often display adjusted or unadjusted history depending settings, changing visual salience.
+
+### Research handling
+Do not assume one perfect “psychological” level.
+
+Maintain:
+NOMINAL_MEMORY_LEVEL:
+- historical raw observed price.
+
+ECONOMIC_EQUIVALENT_LEVEL:
+- corporate-action converted level on current price basis.
+
+ADJUSTED_CHART_LEVEL:
+- level on the adjusted morphology series.
+
+### Research question
+Which representation better explains future reactions after corporate actions?
+
+This is exploratory and likely needs sufficient post-action revisit cases.
+
+### No retrospective knowledge leak
+The conversion for a corporate action becomes valid only once the event terms are known.
+Historical pre-event decision snapshots cannot use a future corporate action.
+
+## DL-002EV — Corporate-Action Boundary Splits Pattern Episodes
+
+### Problem
+A multi-month pattern can span an ex-dividend/split/capital-reduction event.
+
+### Rule
+Adjusted morphology may preserve continuity, but event context must be explicit.
+
+Store:
+- patternCrossesCorporateAction
+- actionInsidePatternPhase
+- pre/post action raw-scale discontinuity
+- adjustedContinuityCheck
+
+### Pattern interpretation
+If corporate action occurs inside:
+- cup bottom
+- handle
+- W second bottom
+- VCP contraction
+the pattern may remain valid in adjusted morphology, but:
+- raw gap/candle labels are invalid around the event,
+- nominal S/R must be converted,
+- volume/event effects may be atypical.
+
+### Candlestick rule
+Bars immediately affected by ex-right/ex-dividend mechanics are excluded from normal gap/candlestick labels unless using an explicitly adjusted definition.
+
+## DL-002EW — Adjustment Integrity Tests
+
+### Data QA
+For every corporate-action boundary:
+1. raw series shows expected mechanical price discontinuity if applicable;
+2. adjusted series removes/reduces the mechanical discontinuity consistently;
+3. volume units remain consistent;
+4. no duplicate/missing trading date;
+5. pre/post return calculation uses the intended series.
+
+### Detector QA
+Run a synthetic test where:
+- identical economic price path contains a cash-dividend discontinuity in raw prices.
+Expected:
+- adjusted swing/pattern geometry stays stable;
+- raw gap detector flags CORPORATE_ACTION_GAP, not bearish breakdown;
+- current-equivalent zone conversion preserves economic level.
+
+### Status
+DUAL_PRICE_SPACE_REQUIRED for Pattern Shadow v1 data layer.
+No Formal live-price behavior changes.
+
+
+
+## DL-002EX — Pattern Shadow Sampling Frame / Selection-Bias Control
+
+### Critical question
+What population is Pattern Shadow trying to improve?
+
+Primary v1 objective:
+incremental optimization of the CURRENT selection funnel.
+
+Therefore v1 does not need to scan every listed stock with every expensive pattern detector.
+But it must not observe only winners/selected candidates.
+
+### Required cohorts
+Attach Pattern Shadow to the existing point-in-time archive:
+- SELECTED
+- QUALIFIED_NOT_SELECTED
+- NEAR_MISS
+- REJECTED_AFTER_BASE
+- BROAD_CONTROL
+
+### Why BROAD_CONTROL is mandatory
+If pattern features are computed only for SELECTED/Near-miss:
+- pattern prevalence is conditioned on current Formal filters;
+- false-positive/base-rate estimates are distorted;
+- “beautiful pattern” may look rare only because controls were never measured.
+
+### Scope interpretation
+v1 answers:
+“Within and around the current Formal funnel, does topology add incremental information?”
+
+It does NOT yet answer:
+“Could a completely independent pattern-first scanner replace the current funnel?”
+
+That second question would require a broader full-market sampling design and a new experiment family.
+
+### Deterministic control sampling
+If BROAD_CONTROL is sampled rather than exhaustive:
+- sampling must be deterministic/reproducible for a scan date;
+- sampling rule frozen before outcomes;
+- retain inclusion probability / sampling stratum if applicable;
+- do not choose controls because their future path looked useful.
+
+## DL-002EY — Immutable Pattern Snapshot Schema v0.1
+
+### Snapshot table concept
+pattern_shadow_snapshot
+- scan_date
+- symbol
+- formal_cohort
+- formal_pool
+- detector_version
+- data_through
+- history_start_date
+- raw_bar_count
+- adjusted_bar_count
+- corporate_action_status
+- market_regime
+- sector
+- price_tier
+- liquidity_tier
+- primitive_json
+- pattern_state_json
+- negative_morphology_json
+- confidence_json
+- missingness_json
+- created_at
+- decision_impact = false
+
+Primary key concept:
+(scan_date, symbol, detector_version)
+
+### Rule
+Original feature snapshot is immutable.
+If detector definition changes:
+new detector_version, new row/version.
+Do not rewrite old feature values with newer rules.
+
+### Outcome table
+pattern_shadow_outcome
+- scan_date
+- symbol
+- detector_version
+- horizon
+- mature_at
+- return
+- mfe
+- mae
+- stop_first
+- r01_state
+- target_state
+- outcome_data_quality
+- updated_at
+
+Outcomes append/update as horizons mature.
+Features do not mutate.
+
+## DL-002EZ — Structural Object Tables
+
+### Why separate objects
+One giant JSON makes auditing hard.
+For debugging/research preserve structural objects.
+
+SWING object:
+- symbol
+- as_of
+- scale
+- swing_id
+- type
+- pivot_at
+- confirmed_at
+- extreme_price_adjusted
+- equivalent_raw/current price where relevant
+- threshold_at_leg_start
+- provisional
+- source bars checksum/version
+
+ZONE object:
+- zone_id
+- zone_version
+- origin_type
+- center
+- lower/upper
+- level_space
+- created_at/effective_at
+- parent_zone_ids
+- constituent_anchor_ids
+- state
+- no_lookahead_verified
+
+PATTERN_EPISODE:
+- episode_id
+- family
+- first_observable_at
+- state
+- anchors
+- state_history
+- resolved_at
+- resolution_type
+
+### Storage trade-off
+Implementation may denormalize for cost/performance, but conceptual provenance must remain recoverable.
+
+## DL-002FA — Detector Versioning Contract
+
+### A detector version freezes
+- data semantics
+- swing thresholds/scales
+- zone clustering rule
+- pattern topology
+- motif definitions
+- confidence fields
+
+Example:
+DL002_PATTERN_V1_0
+
+### Version change required when
+- threshold definition changes,
+- pattern state definition changes,
+- zone merge rule changes,
+- data adjustment semantics change,
+- new information is allowed into the feature.
+
+### No version change required for
+- additional future outcomes,
+- bug-free report formatting,
+- documentation typo.
+
+### Bug fix
+If a detector bug changes historical feature values:
+create corrected version and preserve old version as INVALIDATED_BY_BUG.
+Do not silently rewrite evidence.
+
+## DL-002FB — Research Compute Budget / Staged Evaluation
+
+### Stage 1 cheap daily
+For existing cohorts:
+- extended OHLC fetch/cache
+- swings
+- zones
+- primitives
+- named patterns
+- maturity
+
+### Stage 2 conditional
+Only for relevant candidate states:
+- minute-data closing-auction diagnostics
+- event context
+- short/margin context
+- cost-basis proxy
+
+### Stage 3 prospective expensive
+Only around selected research trigger windows:
+- exact volume-at-price
+- repeated quote/order-book snapshots
+- trade-flow
+
+### Benefit
+Avoid spending expensive data/compute on features that have not proven incremental value.
+
+### Safety
+Research compute must never delay or block Formal scan/monitor.
+If research fails:
+Formal remains unaffected,
+research data quality = UNKNOWN / FAILED_FETCH.
+
+
+
+## DL-002FC — Extended Historical Data Acquisition Contract
+
+### Fugle source constraints verified
+Historical daily candles:
+- TWSE/TPEx listed-stock daily history available back to 2010.
+- single request interval must be strictly less than one year.
+- adjusted=true available for D/W/M.
+- historical intraday candles available from 2023-05-23.
+- rate limits vary by API plan and return HTTP 429 when exceeded.
+
+### Research requirement
+Pattern Shadow v1 needs roughly:
+- 252 trading days for long-horizon reference / base morphology,
+plus
+- warmup for lagged ATR / prior trend before the earliest pattern anchor.
+
+Therefore calendar coverage may exceed one API request even though 252 trading days is roughly one market year.
+
+### Fetch design
+Use deterministic chunks each < 1 year:
+- chunk boundaries fixed by date,
+- fetch ascending or normalize ordering after fetch,
+- merge by (symbol,date),
+- reject conflicting duplicate bars,
+- verify continuity against trading calendar where possible.
+
+### Required fields
+Explicitly request:
+- open
+- high
+- low
+- close
+- volume
+- turnover
+- change
+
+Fetch both:
+RAW adjusted=false
+ADJUSTED adjusted=true
+
+Do not depend on endpoint defaults.
+
+### Cache identity
+Key research cache by:
+- symbol
+- date
+- adjustedFlag
+- sourceVersion / fetchedAt
+
+Avoid coupling to live v7_history_cache.
+
+### Completeness
+Store:
+- requestedFrom
+- requestedTo
+- returnedFirstDate
+- returnedLastDate
+- barCount
+- duplicateCount
+- missingTradingDateCount
+- sourceStatus
+- chunkCount
+
+Insufficient history = explicit status, not empty/no-pattern.
+
+## DL-002FD — Rate-Limit / Failure Isolation
+
+### API reality
+Fugle rate limits depend on plan; exceeding them returns 429.
+
+### Research rule
+Do NOT assume a numeric rate limit from documentation unless account plan proves it.
+
+### Safe behavior
+- bounded concurrency
+- retry only transient/429 with backoff
+- cache successful historical chunks
+- no repeated re-fetch of immutable old chunks
+- resume from checkpoint
+- research fetch failure never blocks Formal scan/monitor
+
+### Data priority
+1. existing research cohorts / controls
+2. missing extended history only
+3. advanced intraday context conditionally
+
+No full-market brute-force historical download until capacity and benefit justify it.
+
+## DL-002FE — Point-in-Time Historical Stats Caveat
+
+### Fugle historical stats endpoint
+Provides current 52-week high/low for a requested symbol.
+
+### Important research limitation
+A current historical-stats response is NOT automatically a point-in-time 52-week high for an old scan date.
+
+For historical scan-date research:
+derive the 52-week high/low from bars available through that historical date.
+
+### Rule
+Never backfill today’s week52High/week52Low into an old snapshot.
+
+This preserves point-in-time integrity.
+
+## DL-002FF — Research Data Checksum / Reproducibility
+
+### Need
+External providers can correct historical data.
+A later re-fetch may differ from the bars originally used.
+
+### Snapshot provenance
+For each research calculation store:
+- source
+- fetchedAt
+- dataThrough
+- barRange
+- adjusted flag
+- deterministic checksum/hash of input bars where practical
+- detectorVersion
+
+### If source history changes
+Do not silently mix old feature snapshot with newly corrected bars.
+
+Possible statuses:
+ORIGINAL_SOURCE_SNAPSHOT
+RECOMPUTED_ON_CORRECTED_DATA
+
+Research reports should disclose which.
+
+
+
+## DL-002FG — Unified Swing-Zone Topology Graph
+
+### Motivation
+Separate implementations for:
+- VCP
+- cup/handle
+- W
+- flag/platform
+can duplicate the same swing/zone calculations and drift into inconsistent definitions.
+
+### Proposed representation
+Build ONE point-in-time structural graph per symbol/as-of date.
+
+NODES:
+SWING_HIGH
+SWING_LOW
+RESISTANCE_ZONE
+SUPPORT_ZONE
+ROUND_PRICE_ANCHOR
+VOLUME_PROFILE_NODE (prospective/context)
+EVENT_NODE (context, not price node)
+
+Each node stores:
+- id
+- type
+- price / zone bounds
+- pivotAt
+- confirmedAt
+- scale
+- confidence
+- provenance
+- provisional
+- levelSpace
+- dataQuality
+
+EDGES:
+UP_LEG
+DOWN_LEG
+RETEST
+RECLAIM
+BREAK
+ROLE_REVERSAL
+ZONE_APPROACH
+
+Each edge stores:
+- start/end
+- durationBars
+- amplitudePct
+- amplitudeATR
+- amplitudeTicks
+- volume/turnover stats
+- RS change
+- efficiency
+- volatility trajectory
+- firstObservableAt
+
+### Named patterns become graph queries
+W:
+LOW -> HIGH -> LOW with neckline zone at intervening HIGH.
+
+VCP:
+alternating HIGH/LOW edges with declining down-leg amplitudes and tightening structure near resistance.
+
+Cup:
+HIGH -> extended recovery structure -> LOW region -> recovery toward old HIGH, optional handle subgraph.
+
+Flag:
+strong UP_LEG -> shallow/compressing corrective subgraph -> resistance approach.
+
+### Benefit
+- one source of truth for swings/zones;
+- shared no-lookahead semantics;
+- easier pattern overlap analysis;
+- easier versioning;
+- less duplicate computation;
+- easier falsification.
+
+## DL-002FH — Partial Graph Matching = Pattern Maturity
+
+### Key insight
+A pattern does not suddenly appear only at completion.
+
+Pattern maturity can be represented by:
+how much of a frozen topology template is already observable.
+
+### Example W
+State graph:
+L1 confirmed
+-> N confirmed
+-> L2 forming
+-> L2 confirmed
+-> neckline approach
+-> breakout
+
+### Example VCP
+contraction1 confirmed
+-> contraction2 confirmed
+-> possible third/final leg
+-> pivot approach
+
+### Maturity output
+- requiredNodesObserved
+- requiredEdgesObserved
+- optionalStructureObserved
+- conflictingStructurePresent
+- provisionalDependencies
+- completionFractionDescriptive
+- nextExpectedStructuralEvent
+
+### Critical caution
+completionFraction is NOT success probability.
+
+### Why useful
+A graph-based maturity engine naturally supports:
+- pre-breakout watch,
+- no retroactive labeling,
+- episode identity,
+- state transitions.
+
+## DL-002FI — Graph Conflict / Invalidating Evidence
+
+### Positive template matching alone is dangerous
+A chart can partially match a W while simultaneously having:
+- major lower highs,
+- expanding downside volume,
+- older resistance overhead,
+- weakening sector state.
+
+### Graph stores conflict edges/flags
+- bearish lower-high chain
+- support break
+- volume distribution
+- failed reclaim
+- major-zone collision
+- regime deterioration
+
+### Pattern result
+Return BOTH:
+supportingEvidence[]
+conflictingEvidence[]
+
+No “pattern detected” without its contradictions.
+
+### Research test
+Does conflict-adjusted topology outperform pure fit quality?
+
+## DL-002FJ — Topology Graph Enables Pattern Deduplication
+
+### Overlap example
+A cup handle can contain a small VCP.
+A W can form the bottom of a cup.
+A platform can be the final tight area of a VCP.
+
+### Graph overlap fields
+- sharedNodeRatio
+- sharedEdgeRatio
+- sharedZoneRatio
+- sameEpisode
+- nestedPattern
+- parentPatternId
+
+### Rule
+If two named patterns share most structural objects:
+treat as NESTED / ALIAS evidence, not independent votes.
+
+### Future validation
+Compare:
+- named-label count
+vs
+- number of independent structural primitives/episodes.
+
+Hypothesis:
+independent structural evidence matters more than number of pattern names.
+
+## DL-002FK — Graph-Based Shape Similarity Later
+
+### Secondary future option
+Once topology graph is stable, shape similarity can compare:
+- node sequence
+- edge amplitudes/durations
+- zone arrangement
+rather than raw every-bar prices.
+
+Potential benefits:
+- lower dimensionality
+- better interpretability
+- less sensitivity to noisy bars
+
+Possible methods:
+- graph edit distance
+- sequence distance over swing legs
+- constrained DTW over edge features
+
+### Priority
+NOT v1.
+Rule-based graph queries first.
+Similarity only if it adds incremental evidence.
+
+
+
+## DL-002FL — Cup Roundness Without Eyeballing v0.2
+
+### Problem
+“U-shaped, not V-shaped” is too subjective for reproducible research.
+
+### Normalize cup segment
+Between left rim L and right recovery R:
+- x = normalized trading-time position [0,1]
+- y = (price - bottomReference) / (rimReference - bottomReference)
+where y≈0 near bottom and y≈1 near rim.
+
+Use adjusted close for path and confirmed swing extremes for anchors.
+
+### Interpretable roundness components
+BOTTOM_RESIDENCE
+- fraction of cup bars with y <= q, where q is a pre-registered geometric band.
+- a V tends to spend little time near the bottom.
+
+BOTTOM_WIDTH
+- normalized time between first and last entry into bottom band.
+
+DECLINE_RECOVERY_BALANCE
+- ratio / difference of L->B and B->R durations.
+
+TURN_SMOOTHNESS
+- number/magnitude of slope sign reversals around bottom after smoothing with a fixed, pre-registered local method.
+
+MAX_SINGLE_REVERSAL_SHARE
+- fraction of total recovery accomplished in the largest one/few bars immediately after B.
+- large value indicates sharp V recovery.
+
+MICRO_SWING_BOTTOM_STRUCTURE
+- number and amplitude of MICRO swings near bottom.
+
+### Roundness descriptor
+Do not force a single score initially.
+Store component vector.
+
+Optional descriptive classification:
+V_LIKE
+ROUND_BOTTOM
+ASYMMETRIC_U
+CHOPPY_BOTTOM
+UNKNOWN
+
+### Why no polynomial “perfect U” fit initially
+A quadratic fit can reward visually smooth but economically irrelevant curves and adds model-choice freedom.
+Use transparent path components first.
+Curve-template distance remains a secondary benchmark.
+
+## DL-002FM — W Trough Equivalence via Zones, Not Arbitrary Percentages
+
+### Problem
+“Second low within 3% of first low” is arbitrary across:
+- price tiers
+- volatility regimes
+- tick sizes.
+
+### Zone-based equivalence
+Construct a support uncertainty zone around L1 using:
+- tick minimum,
+- lagged ATR uncertainty,
+- structural source dispersion.
+
+Classify L2:
+HIGHER_LOW:
+- L2’s uncertainty zone clearly above L1 zone.
+
+EQUAL_ZONE:
+- L2 zone overlaps materially with L1 support zone.
+
+UNDERCUT:
+- L2 extreme penetrates below L1 zone.
+
+UNDERCUT_RECLAIM:
+- L2 penetrates below, then a later close re-enters/accepts the original support zone.
+
+DEEP_BREAK:
+- penetration materially exceeds zone and no timely reclaim observed.
+
+### Continuous fields remain
+- low2VsLow1Pct
+- low2VsLow1ATR
+- low2VsLow1Ticks
+- overlapRatio
+- penetrationDepth
+- reclaimBars
+
+Do not collapse research to categories only.
+
+### Benefit
+Tolerance adapts to market granularity/volatility without outcome-fitting one universal percent.
+
+## DL-002FN — Neckline as Intervening Structural Zone
+
+### W neckline
+Do not simply use one highest bar between L1/L2.
+
+Candidate anchors:
+- confirmed BASE swing highs between lows,
+- repeated local rejection highs,
+- round-price/major-zone context only as secondary evidence.
+
+### If one clear swing high
+neckline = its uncertainty zone.
+
+### If several nearby highs
+cluster them into a resistance zone using DL-002EA.
+
+### If highs are widely dispersed
+necklineAmbiguity = HIGH.
+Pattern fit confidence decreases.
+
+### Fields
+- necklineAnchorCount
+- necklineZoneWidth
+- necklineCenter
+- necklineAmbiguity
+- necklineScaleAgreement
+- distanceToNeckline
+
+## DL-002FO — Flag / Channel Boundary Fitting v0.2
+
+### Problem
+Drawing two trendlines by eye creates hindsight freedom.
+
+### Input
+Use confirmed swing highs/lows only inside the consolidation after pole.
+
+### Upper boundary
+Fit robust line to relevant confirmed swing highs.
+
+### Lower boundary
+Fit robust line to confirmed swing lows.
+
+Store:
+- upperSlope
+- lowerSlope
+- upperFitErrorATR
+- lowerFitErrorATR
+- contactCountUpper
+- contactCountLower
+- channelWidthStart/End
+- convergenceRate
+
+### Minimum evidence
+Two points mathematically define a line but provide no robustness.
+With only two contacts:
+boundaryConfidence = LOW.
+Three or more confirmed contacts / cluster evidence raises confidence.
+
+### Geometry
+FLAG_DOWN:
+- upper/lower slopes both negative and roughly parallel.
+
+PENNANT:
+- upper slope negative / lower slope positive or otherwise converging.
+
+PLATFORM:
+- both near flat within uncertainty.
+
+EXPANDING:
+- width grows over time.
+
+### Do not outcome-tune “parallel”
+Store slope difference continuously.
+Classification tolerances pre-registered geometrically.
+
+## DL-002FP — VCP Contractions via Swing-Zone Graph
+
+### More exact definition
+From a major/base resistance reference:
+identify sequential down legs:
+H1 -> L1
+H2 -> L2
+H3 -> L3 ...
+
+Each H/L must be chronological confirmed nodes.
+
+Contraction depth:
+D_i = (H_i - L_i)/H_i.
+
+Recovery:
+R_i = (H_{i+1} - L_i)/(H_i-L_i).
+
+Support progression:
+compare L_i zones, not only point lows.
+
+### Important alternative structures
+If H_i progressively declines too much:
+may be descending triangle / weak recovery, not healthy VCP.
+
+Therefore store:
+- highProgression
+- lowProgression
+- recoveryRatioSequence
+- resistanceConvergence
+
+### Constructive VCP hypothesis
+Not merely shrinking D_i.
+Potential geometry:
+- D_i declines,
+- lows rise/hold,
+- highs remain near pivot / recover strongly,
+- final range tightens,
+- supply/volume declines.
+
+### Weak pseudo-VCP
+Shrinking depth because:
+- every rebound is weaker,
+- highs trend sharply lower,
+- price drifts away from pivot.
+
+This must be separated from genuine tightening near resistance.
+
+### New field
+pivotCompressionQuality:
+interaction of
+- depth contraction
+- low progression
+- recovery quality
+- distance to pivot
+
+Store components before any composite score.
+
+
+
+## DL-002FX — Change-Point Detection: Online vs Hindsight Segmentation
+
+### Why relevant
+Change-point methods can identify shifts in:
+- return mean/trend
+- volatility
+- order-flow persistence
+- liquidity
+
+They may help define pattern phases or regime transitions.
+
+### Critical leakage risk
+OFFLINE change-point algorithms use observations after the candidate breakpoint to locate the breakpoint more precisely.
+
+If historical research labels the breakpoint at changeAt as though known then:
+LOOKAHEAD LEAKAGE.
+
+### Required semantics
+For every detected change:
+- changeAt: estimated location where regime changed
+- detectedAt: first timestamp the online algorithm had enough evidence to signal it
+- detectionDelay
+- posterior/confidence
+- variableChanged
+
+At decision date t:
+usable only if detectedAt <= t.
+
+### External prior
+Financial research explicitly motivates online rather than offline change-point detection for predictive/trading tasks.
+Recent Bayesian online methods have been applied to financial/economic regimes and order-flow/market-impact prediction.
+
+### Research role
+SECONDARY diagnostic, not v1 primary segmentation.
+
+Primary v1:
+confirmed swing topology.
+
+Possible later use:
+- volatility-regime transition
+- flow-regime transition
+- liquidity regime
+- validating phase boundaries independently of swings.
+
+## DL-002FY — Change-Point Detection Must Compete With Simpler States
+
+### Baselines
+- rolling volatility slope
+- current market regime
+- swing state
+- volume/turnover change
+- simple CUSUM-like descriptive changes
+
+Complex BOCPD/HMM/change-point model is justified only if it adds:
+- earlier reliable detection,
+- better failure/transition prediction,
+- stable OOS evidence.
+
+### Complexity risks
+- prior/hazard assumptions
+- parameter instability
+- false alarms
+- dependence-model choice
+- compute burden
+- difficult calibration with small samples
+
+### Rule
+Do not add BOCPD merely because it is sophisticated.
+
+## DL-002FZ — Offline Algorithms Are Allowed for Discovery, Not Historical Decisions
+
+### Permitted
+Offline segmentation may help:
+- discover candidate phase structures,
+- inspect historical examples,
+- generate hypotheses.
+
+### Not permitted
+Offline breakpoint may not be fed into an as-of-date selector at the breakpoint timestamp.
+
+To validate a discovered feature:
+translate to:
+- online detector,
+or
+- lagged/confirmed rule.
+
+### Generalization
+This rule applies to:
+- ZigZag
+- retrospective trendline fitting
+- regime labeling
+- support/resistance zone discovery
+- motif clustering
+- chart pattern annotation.
+
+Anything using future data must carry an explicit firstObservableAt.
+
+
+
+## DL-002GA — Institutional Flow Is Not Automatically Independent Confirmation
+
+### Taiwan evidence
+Taiwan institutional-investor research documents both:
+- informative institutional herding / future return differences,
+and
+- positive-feedback / momentum-like trading behavior.
+
+More recent Taiwan evidence also finds the effect of institutional herding varies by market state and herding intensity.
+
+### Research implication
+When both:
+- price pattern strengthens,
+- institutional buying increases,
+the signals may be:
+A. independent informed sponsorship,
+B. institutional reaction to the same prior price momentum,
+C. common response to an external event,
+D. herding/crowding.
+
+Therefore two observed signals do not automatically equal two independent pieces of evidence.
+
+### Lead-lag decomposition
+Store:
+- patternMaturityAtFlowStart
+- firstInstitutionalAccelerationAt
+- priceMomentumBeforeFlow
+- residualRSBeforeFlow
+- flowLeadsPatternDays
+- patternLeadsFlowDays
+- eventBeforeBoth
+- sectorFlowBeforeStockFlow
+
+### States
+FLOW_LEADS_PRICE_STRUCTURE
+- flow strengthens before price topology improves.
+
+COINCIDENT_CONFIRMATION
+- flow and price improve together.
+
+PRICE_LEADS_FLOW
+- pattern/price strengthens first; institutions enter later.
+
+LATE_INSTITUTIONAL_CHASE
+- flow accelerates only after extended breakout.
+
+### Hypothesis
+FLOW_LEADS_PRICE_STRUCTURE may contain more independent information than PRICE_LEADS_FLOW, but this must be tested.
+
+## DL-002GB — Residualize Institutional Flow Against Recent Price Trend
+
+### Goal
+Ask whether institutional flow contains information beyond its predictable relationship with recent price performance.
+
+### Research-only residual concept
+Model/condition flow using only point-in-time variables such as:
+- recent return
+- sector return
+- market return
+- turnover
+- event context
+- prior ownership if valid
+
+Then compare:
+RAW_FLOW
+vs
+UNEXPECTED_FLOW / residualized flow.
+
+### Caution
+Do not overfit a complex flow model with small sample.
+Begin with simple within-date / return-bucket conditioning.
+
+### Key question
+Does unexpected institutional demand during pattern maturation predict outcomes beyond:
+- pattern geometry,
+- momentum,
+- sector strength?
+
+If not, raw flow may be redundant confirmation.
+
+## DL-002GC — Institution Type Matters
+
+### Taiwan evidence
+Foreign investors, domestic funds/trusts and dealers can exhibit different:
+- information advantages,
+- herding patterns,
+- feedback behavior,
+- market-state sensitivity.
+
+### Research rule
+Do not aggregate all institutions into one “smart money” label.
+
+Retain:
+- foreign
+- investment trust
+- dealer
+- aligned/disagreed state
+
+### Pattern interactions
+- foreign leads, trust follows
+- trust leads in smaller domestic names
+- all aligned
+- foreign vs trust divergence
+- dealer-only move
+
+No type is assumed superior in every regime.
+
+## DL-002GD — Herding Intensity vs Breadth
+
+### Distinction
+CONCENTRATED_HERD:
+few institutions / high-intensity one-sided flow.
+
+BROAD_HERD:
+widespread institutional alignment.
+
+Taiwan 2025 evidence suggests herding impacts can differ with market state and intensity.
+
+### Research fields
+- institutionalAlignmentCount
+- flowConcentrationByType
+- flowIntensity
+- marketState
+- stockSize
+- turnover
+- sectorSynchrony
+
+### No production rule
+Existing “at least one side buying” Formal condition remains unchanged.
+This research only tests independence/timing.
+
+
+
+## DL-002GE — Last Trade vs Midquote Acceptance
+
+### Problem
+A last transaction above a pivot does not necessarily mean the market has broadly repriced above it.
+
+Possible case:
+- one buyer lifts the best ask above pivot;
+- last trade prints above;
+- best bid / midquote remain below;
+- next trades fall back.
+
+Daily/15m transaction candles can classify this as a close breakout even though quote acceptance is weak.
+
+### Prospective fields
+At trigger observations:
+- lastTrade
+- bestBid
+- bestAsk
+- midquote
+- spreadTicks
+- lastVsMidTicks
+- bidVsPivotTicks
+- askVsPivotTicks
+- midVsPivotTicks
+- lastVsPivotTicks
+- bidDepthAbove/nearPivot if representable
+- subsequentTradeAcceptance
+
+### Acceptance states
+TRADE_ONLY_BREAK
+- last > zone but mid/bid do not establish above.
+
+ASK_SIDE_BREAK
+- trades hit ask above zone, mid near/below zone.
+
+MIDQUOTE_ACCEPTED
+- midquote also above zone.
+
+BID_ACCEPTED
+- best bid above zone; stronger displayed-market acceptance.
+
+PERSISTENT_ACCEPTANCE
+- quote/trade state persists through a defined observation window.
+
+### No automatic ordering
+BID_ACCEPTED is intuitively stronger, but must be validated prospectively.
+Displayed book can cancel/replenish.
+
+## DL-002GF — Tick-Aware Breakout Materiality
+
+### TWSE current tick schedule
+For regular stocks:
+- <10: 0.01
+- 10–<50: 0.05
+- 50–<100: 0.10
+- 100–<500: 0.50
+- 500–<1000: 1.00
+- >=1000: 5.00
+
+### Consequence
+A percentage-only breakout threshold has different market granularity across price bands.
+
+### Store
+- breakoutDistancePct
+- breakoutDistanceATR
+- breakoutDistanceTicks
+- zoneClearanceTicks
+- spreadTicks
+- breakoutDistanceVsSpread
+
+### Materiality diagnostic
+ONE_TICK_CLEARANCE
+- breakout only one minimum tick beyond zone.
+
+MULTI_TICK_CLEARANCE
+- several ticks beyond.
+
+SPREAD_DOMINATED
+- breakout distance comparable to current bid-ask spread.
+
+### Thousand-stock relevance
+At NT$1,000+, one tick = NT$5, roughly 0.5% near 1000.
+Thus some seemingly small percentage differences are indivisible market increments, not continuous-price precision.
+
+### Research question
+Does multi-tick / spread-adjusted acceptance explain follow-through beyond raw percentage breakout?
+
+## DL-002GG — Trade-Price Candle vs Quote-Based Execution Evidence
+
+### Daily selection
+Historical daily candles remain transaction-price based.
+Do not attempt to replace them with unavailable historical quote series.
+
+### Prospective execution research
+Use quote-based context only after selection:
+- 15m candle = transaction path
+- quote/order-book = supplemental acceptance evidence
+
+### Comparison
+CANDLE_ONLY
+CANDLE_PLUS_SPREAD
+CANDLE_PLUS_MIDQUOTE
+CANDLE_PLUS_DYNAMIC_BOOK
+
+Measure whether extra data improves:
+- false signal rate
+- delay
+- missed moves
+- operational robustness
+
+### Simplicity gate
+If candle + spread captures most benefit, do not keep full order-book complexity.
+
+## DL-002GH — Microstructure Noise Around Zone Boundaries
+
+### Problem
+Near a support/resistance boundary, tiny price alternation can reflect:
+- bid-ask bounce,
+- tick discreteness,
+- sparse trades,
+not meaningful structural failure/reclaim.
+
+### Research tolerance
+Use:
+- tick count
+- spread
+- ATR
+- zone uncertainty
+
+before calling:
+BREAK / RECLAIM / RETEST_FAIL.
+
+### No hidden threshold tuning
+Store penetration continuously first.
+Classification tolerance frozen before outcomes.
+
+### Interaction
+This is especially important for:
+- thousand stocks
+- illiquid names
+- narrow VCP final areas
+- one-tick W undercuts
+- closing-auction breakouts.
+
+
+
+## DL-002GI — Pattern Quality vs Entry Delay / Remaining Upside
+
+### Problem
+A stricter pattern confirmation can:
+- reduce false positives,
+but also:
+- enter later,
+- increase entry price,
+- reduce distance to next resistance,
+- worsen reward/risk,
+- miss no-retest continuation.
+
+Therefore higher win rate is not necessarily better economic performance.
+
+### Required timing prices
+For each pattern episode:
+- scanClose
+- maturePreBreakoutPrice
+- firstBreakoutConfirmationPrice
+- retestConfirmationPrice
+- firstFormal15mActionablePrice when available
+- nextMajorResistanceAtEachTimestamp
+- structuralInvalidationAtEachTimestamp
+
+### Delay costs
+- maturityToBreakoutBars
+- breakoutToRetestBars
+- priceSlippageMaturityToBreakout
+- priceSlippageBreakoutToRetest
+- remainingRoomAtMaturity
+- remainingRoomAtConfirmation
+- rrAtMaturityResearch
+- rrAtConfirmationResearch
+
+These are research measurements, not new trading plans.
+
+### Core trade-off
+QUALITY_GAIN:
+- lower R01 failure
+- lower MAE
+- lower stop-first
+
+OPPORTUNITY_COST:
+- lower coverage
+- later entry
+- higher entry price
+- lower remaining upside
+- missed direct runners
+- more zero-pick / idle capital
+
+### Evaluation
+A confirmation rule is useful only if quality gain compensates for opportunity cost.
+
+## DL-002GJ — Expected Value Beats Win Rate
+
+### Do not optimize only
+- % positive D5
+- % target hit
+- pattern success rate
+
+### Need distribution
+Report:
+- median/mean forward return
+- downside tail
+- MFE/MAE
+- stop-first
+- target-first where applicable
+- payoff ratio
+- cost-adjusted expectancy
+- coverage
+
+### Simple descriptive expectancy
+For a frozen research entry concept:
+EV ≈ average realized forward return net of assumed cost,
+with tail/risk statistics alongside.
+
+Do not invent a probability model when sample is small.
+
+### Example
+Pattern A:
+60% wins but tiny upside / large failures.
+
+Pattern B:
+45% wins but much larger upside / controlled downside.
+
+A higher win rate alone cannot rank them.
+
+## DL-002GK — Pattern Confirmation Can Mechanically Worsen RR
+
+### Mechanism
+A fully confirmed breakout must move upward before entry.
+If target/major resistance does not move:
+reward shrinks.
+
+If structural invalidation remains near the old base:
+risk may stay similar or grow.
+
+### Research fields
+- confirmationMoveAlreadyConsumedPct
+- rewardRemainingPct
+- riskDistancePct
+- rrCompressionFromConfirmation
+- nearestResistanceChanged
+- stopReferenceChanged
+
+### Key comparison
+PRE_BREAKOUT_MATURITY
+vs
+BREAKOUT_CONFIRMATION
+vs
+RETEST_CONFIRMATION
+
+Question:
+At which state does incremental failure reduction stop compensating for RR compression?
+
+### Formal boundary
+No pre-breakout entry is authorized.
+This is research only and can eventually explain whether the current confirmation architecture leaves too much return on the table.
+
+## DL-002GL — Pattern Filter Must Report Capital-Use Impact
+
+### Because current system issue includes sparse signals
+Every candidate pattern filter must report:
+- candidatesBefore
+- candidatesAfter
+- selectedCoverageDelta
+- buyTriggeredCoverageDelta
+- zeroPickDelta
+- averagePlannedCapitalUseDelta
+- opportunityCostOfRejectedWinners
+
+### No quality-only promotion
+A filter that improves average D5 but cuts candidate flow by 80% may be economically worse for this system.
+
+### Conversely
+A maturity/watch layer could improve capital use without weakening Formal if it:
+- identifies near-ready structures for observation,
+- but does not auto-promote them.
+
+This remains Shadow until evidence and owner approval.
+
+
+
+## DL-002GM — Intraday Time-of-Day Volume Normalization
+
+### Current code baseline verified
+Worker buildBar computes:
+current completed intraday bar volume /
+average volume of the previous 5 intraday bars.
+
+This is simple and point-in-time safe, but it does not explicitly control for normal time-of-day volume seasonality.
+
+### Taiwan evidence
+TWSE studies document strong intraday seasonality:
+- trading volume/order flow tends to be high near the open and close (J/U/inverse-J descriptions depending sample/metric);
+- volatility and spreads also vary by time of day;
+- information and liquidity trading contribute differently across the session.
+
+### Research question
+Does a bar’s volume remain unusual AFTER controlling for its clock-time baseline?
+
+### Prospective/historical-minute fields
+For each 10m/15m slot:
+- barVolume
+- prev5BarVolumeRatio (current baseline)
+- sameSlotMedianVolume20d
+- sameSlotMeanVolume20d
+- timeOfDayVolumeRatio
+- timeOfDayVolumeZ
+- sessionProgressPct
+- openingWindow
+- closingWindow
+- closingAuctionBar
+
+### Point-in-time construction
+For date t, same-slot baseline may use only prior completed trading days < t.
+
+No current-day future bars.
+
+### Comparison
+PREV5_ONLY
+TIME_OF_DAY_ONLY
+PREV5_PLUS_TIME_OF_DAY
+
+Evaluate:
+- B breakout confirmation quality
+- A pullback “volume contraction”
+- R01 failure
+- BUY coverage
+- missed/noisy signals
+
+### Hypothesis
+A 1.3x previous-five-bars volume spike late in the day may be less exceptional if that slot is normally high-volume.
+Conversely, a modest absolute bar at midday may be highly abnormal relative to its quiet time slot.
+
+No direction assumed.
+
+## DL-002GN — Intraday Volatility / Spread Seasonality
+
+### Same issue beyond volume
+Time of day also affects:
+- volatility
+- spread
+- depth
+- information asymmetry
+
+### Research normalization
+For prospective microstructure:
+- spreadTicksVsSameSlot
+- rangeATRIntradayVsSameSlot
+- tradeCountVsSameSlot
+- depthVsSameSlot
+- aggressorFlowVsSameSlot
+
+### Why
+A “wide spread” at open may be normal.
+The same spread at midday may be abnormal.
+
+### Simplicity
+Only add a time-of-day normalization if it improves incremental execution diagnostics beyond current 15m fields.
+
+## DL-002GO — Opening and Closing Bars Are Special Contexts
+
+### Opening
+Overnight information is incorporated.
+Volume/volatility/information asymmetry can be high.
+
+### Closing
+Liquidity/overnight-risk, institutional and closing-auction effects can increase activity.
+The 13:30 official close includes the closing call mechanism.
+
+### Tags
+- OPENING_DISCOVERY
+- NORMAL_SESSION
+- LATE_SESSION
+- CLOSING_AUCTION
+
+### Rule
+Do not compare these bars as exchangeable observations without a session-phase tag.
+
+## DL-002GP — Current Intraday Volume Ratio Is a Baseline, Not Ground Truth
+
+### Research stance
+Do not modify Formal now.
+
+The existing previous-5-bar ratio has advantages:
+- easy
+- current-day adaptive
+- no historical intraday cache required
+- point-in-time
+
+Time-of-day normalized volume has advantages:
+- controls structural intraday seasonality.
+
+### Falsification
+If same-slot normalization does not improve:
+- false-breakout discrimination,
+- pullback-quality discrimination,
+- stability across session periods,
+then keep the simpler existing ratio.
+
+
+
+## DL-002GQ — Price Acceptance Is Duration + Location, Not One Close
+
+### Problem
+Two daily/15m breakout bars can have the same close:
+A. price spent most of the session above resistance.
+B. price stayed below all day and crossed only near the end.
+
+A close-only rule cannot distinguish them.
+
+### Modern historical minute opportunity
+From 2023-05-23 onward, minute candles allow research of intraday acceptance relative to a point-in-time known zone.
+
+### Acceptance fields
+For zone [L,U]:
+- fractionMinutesAboveU
+- fractionMinutesInsideZone
+- fractionMinutesBelowL
+- consecutiveMinutesAboveU
+- maxConsecutiveAbove
+- crossingCount
+- reentryCount
+- averageDistanceAboveU
+- maxDistanceAboveU
+- integratedPositiveDistance = sum(max(price-U,0) * time)
+- integratedNegativeDistance
+- firstBreakTime
+- finalAcceptanceState
+
+Use completed minute bars only.
+
+### OHLC choice
+Possible price representations:
+- minute close
+- minute typical/mid-like proxy from OHLC
+- exact trades prospectively
+
+Freeze one primary representation before outcome comparison.
+
+### Acceptance states
+TOUCH_ONLY
+TRANSIENT_BREAK
+PARTIAL_ACCEPTANCE
+SUSTAINED_ACCEPTANCE
+BREAK_AND_REENTRY
+LATE_AUCTION_ONLY
+
+### Research question
+Does sustained acceptance reduce R01 failure beyond:
+- daily close strength
+- upper shadow
+- breakout volume
+- 15m confirmation?
+
+If not, discard extra complexity.
+
+## DL-002GR — Zone Crossing Count Can Measure Churn
+
+### High crossing count
+Price oscillating repeatedly across zone can mean:
+- active price discovery / absorption,
+- indecision / whipsaw,
+- poor clean acceptance.
+
+### Pair crossing count with progression
+Constructive:
+- crossings decline over time,
+- closes migrate above,
+- lows rise,
+- sell volume falls.
+
+Adverse:
+- repeated symmetric crossings,
+- no net progress,
+- widening range,
+- high turnover.
+
+### Fields
+- zoneCrossingCount
+- crossingRatePerHour
+- netMigrationAcrossZone
+- postCrossHigherLow
+- effortResultAroundZone
+- turnoverPerNetProgress
+
+No raw crossing-count bullish sign.
+
+## DL-002GS — Area-Above-Zone vs Point Breakout
+
+### Concept
+Integrated distance-time above resistance combines:
+- how far price cleared it,
+- how long it stayed there.
+
+This may be more robust than “close > pivot by 0.2%”.
+
+### Normalize
+- by ATR
+- by ticks
+- by session duration
+
+Fields:
+- areaAboveZoneATRTime
+- areaBelowZoneATRTime
+- netAcceptanceArea
+
+### Caution
+This is an engineered feature.
+It must beat simpler:
+- close distance
+- time above
+before retained.
+
+## DL-002GT — Intraday Acceptance Is Execution Alpha
+
+### Boundary
+If minute acceptance becomes observable after the after-market scan:
+it cannot improve Selection Alpha for the prior scan.
+
+Use only:
+- entry timing
+- revalidation
+- false-breakout analysis
+- execution-quality study
+
+No backdating.
+
+
+
+## DL-002GU — Anchored VWAP as a Reference Benchmark, Not Magic Support
+
+### Distinguish three concepts
+1. GEOMETRIC_ZONE
+- repeated swing/price reaction structure.
+
+2. ANCHORED_VWAP
+- volume-weighted average transaction price since a chosen observable anchor.
+
+3. HOLDER_COST_BASIS_PROXY
+- estimate of surviving holders’ reference costs, incorporating turnover/survival assumptions.
+
+They are not interchangeable.
+
+### Why AVWAP may be useful
+It provides an observable average traded-price reference since:
+- breakout
+- major swing low/high
+- event announcement
+- start of pattern episode
+
+But it does NOT tell:
+- who still holds shares,
+- whether the average is support,
+- whether informed investors bought there.
+
+### Daily historical construction
+When daily turnover and volume are valid:
+AVWAP_from_anchor =
+sum(turnover from anchor..t) /
+sum(volume from anchor..t)
+
+Need unit checks.
+
+### Anchor-day ambiguity
+If the anchor is an intraday pivot on day d:
+daily AVWAP includes trades before the pivot on day d.
+
+Therefore:
+DAILY_ANCHOR_APPROX
+for historical daily-only reconstruction.
+
+From 2023-05-23 minute data:
+INTRADAY_ANCHOR_REFINED
+can begin after the actual observable intraday anchor when appropriate.
+
+### Candidate anchors
+- patternEpisodeStart
+- second W bottom confirmation
+- breakout confirmation
+- event date
+- major support reclaim
+- major gap/event bar
+
+Do not anchor arbitrarily at whichever date produces the best line.
+
+### Fields
+- avwapAnchorType
+- avwapAnchorAt
+- avwap
+- priceVsAVWAPPct
+- avwapSlope
+- pivotVsAVWAP
+- retestVsAVWAP
+- zoneOverlapWithAVWAP
+- avwapMethod
+- anchorPrecision
+
+## DL-002GV — AVWAP Must Compete With Simpler References
+
+### Benchmarks
+- MA20
+- actual geometric support zone
+- session average
+- estimated holder cost
+- prior breakout level
+
+### Key question
+Does AVWAP add any incremental explanation of:
+- retest hold
+- failure/reclaim
+- MFE/MAE
+after existing supports are controlled?
+
+### Overlap risk
+AVWAP can behave like another moving average with a special start date.
+If it adds no incremental value, classify REDUNDANT.
+
+## DL-002GW — Anchor Selection Is an Experiment Risk
+
+### Problem
+There are many plausible anchors.
+Choosing the best-looking anchor after observing future price is severe hindsight bias.
+
+### Pre-registered anchor hierarchy
+For each research question, freeze anchor source:
+- breakout study -> breakout confirmation timestamp
+- W study -> second-bottom confirmation / neckline break depending question
+- event study -> event first-known timestamp
+- base study -> pattern episode start
+
+### No arbitrary chart click
+Human-selected anchor not allowed in quantitative validation unless independently pre-specified.
+
+### Multiple anchors
+If several legitimate anchors exist:
+store all as descriptive references,
+but each materially different anchor hypothesis counts toward multiple testing.
+
+## DL-002GX — AVWAP Crossing Is Not Automatically a Signal
+
+### States
+ABOVE_AVWAP
+BELOW_AVWAP
+RECLAIM_AVWAP
+LOSE_AVWAP
+CHOP_AROUND_AVWAP
+
+### Context
+Crossing can reflect:
+- ordinary mean crossing,
+- event-cost reference,
+- strong trend,
+- noise.
+
+### Validation
+Test only within relevant parent patterns/episodes and against geometric zones.
+
+No Formal filter or entry rule.
+
+
+
+## DL-002GY — Structural Failure vs Executable Exit Risk
+
+### Distinguish three events
+PATTERN_INVALIDATION:
+structure is no longer valid.
+
+STOP_SIGNAL:
+current Formal/research stop condition is triggered.
+
+EXECUTABLE_EXIT:
+an actual tradable exit could occur at/near the assumed price.
+
+These are not identical.
+
+### Taiwan-specific risk
+With daily price limits and discrete ticks:
+- price can gap through a stop;
+- a stock can approach/lock at limit-down;
+- available bid liquidity can be poor;
+- modeled stop price may not be executable.
+
+### Research fields
+- invalidationAt
+- formalStopSignalAt
+- stopReferencePrice
+- nextTradableOpen
+- gapThroughStopPct
+- limitDownState
+- limitDownLockedProxy if observable
+- bidLiquidityAtStop prospective
+- realized/slippageProxy
+- daysUntilPriceTradesBackAboveStop
+- exitCensored
+
+### Daily-data semantics
+If daily high/low shows stop crossed:
+label STOP_TOUCHED_OR_CROSSED.
+Do not automatically label EXECUTED_AT_STOP.
+
+### Intraday historical refinement
+From 2023 minute data:
+estimate first trade/bar through stop and subsequent tradable prices.
+Still cannot guarantee user-specific fill without order-level execution data.
+
+## DL-002GZ — Pattern Failure Tail Risk
+
+### Average MAE can hide catastrophic failures
+Report:
+- median MAE
+- 90th / 95th percentile MAE
+- gap-through-stop frequency
+- limit-down involvement
+- consecutive down-limit / extreme-down days
+- time-to-liquidity-normalization
+
+### Context interactions
+Test whether severe failures are concentrated in:
+- retail leverage crowding
+- lottery/limit-hit names
+- dead liquidity
+- event-created patterns
+- weakening regime
+- high short-flow warning
+- failed local breakout into major resistance
+
+### Value
+A pattern filter may be worthwhile even if mean D5 improvement is modest, if it materially reduces left-tail failure severity.
+
+## DL-002HA — Target/Stop Same-Day Ambiguity Extended
+
+### Existing governance
+Same-day target and stop triggers with daily OHLC are already marked AMBIGUOUS_SAME_DAY.
+
+### Pattern extension
+Similarly ambiguous:
+- support undercut then reclaim same day,
+- breakout then failure same day,
+- high and low cross both zone boundaries.
+
+Daily OHLC cannot order those events.
+
+### Rule
+If event ordering matters:
+- use intraday source when historically available,
+or
+- mark AMBIGUOUS_INTRADAY_ORDER.
+
+Never assume favorable ordering.
+
+## DL-002HB — Price-Limit Censoring of MFE/MAE
+
+### Problem
+Observed daily maximum/minimum is bounded by price limits.
+A limit-up/down close can censor latent demand/supply.
+
+### Research tag
+- upsideCensoredByLimit
+- downsideCensoredByLimit
+
+### Interpretation
+- MFE at limit-up may understate latent upside pressure.
+- MAE at limit-down may understate latent downside pressure because trading cannot print lower that day.
+
+Do not treat limit-bound MFE/MAE as ordinary uncensored observations.
+
+### Future handling
+Descriptive censoring first.
+Do not fit complex censored models until sample warrants it.
+
+
+
+## DL-002HC — Model Complexity Ladder for Incremental Evidence
+
+### Principle
+The purpose is not to maximize backtest fit.
+It is to determine whether pattern/topology contains robust incremental information.
+
+### Level 0 — descriptive
+- same-date medians
+- pattern prevalence
+- transition tables
+- MFE/MAE distributions
+- failure rates
+
+### Level 1 — simple conditioned comparison
+- within-date demeaned outcomes
+- matched cohorts
+- one candidate feature vs frozen controls
+
+### Level 2 — regularized linear/logistic models
+Use only after sample supports:
+- ridge / simple penalization
+- limited pre-registered controls
+- date/group-aware validation
+
+Purpose:
+incremental association, not final trading model.
+
+### Level 3 — constrained nonlinear models
+Only if residual plots/evidence justify:
+- simple GAM / spline with low degrees of freedom
+- pre-specified interactions
+- monotonic constraints where mechanism genuinely supports them
+
+### Level 4 — tree/boosting exploratory benchmark
+Only after much larger prospective dataset.
+Use:
+- strict chronological/grouped validation
+- shallow models
+- feature count control
+- explainability / ablation
+
+### Level 5 — image/CNN/sequence deep models
+NOT PRIORITY for current sample.
+Modern literature shows they can extract nonlinear chart information, but sample/complexity and explainability burdens are high.
+
+### Promotion rule
+If a complex model wins in-sample but simple primitive models do not show stable OOS signal:
+classify UNSTABLE_COMPLEXITY, not breakthrough.
+
+## DL-002HD — No Random Row Train/Test Split
+
+### Why
+Random row split leaks shared information:
+- same scan date in train/test
+- same pattern episode on adjacent days
+- overlapping D5/D10 windows
+- same market regime segment
+
+### Required split hierarchy
+1. chronological
+2. grouped by scan date
+3. grouped/blocked by pattern episode where relevant
+4. purged for forward outcome overlap
+5. untouched final holdout
+
+### Cross-validation
+Use:
+- leave-one-date-out for early small samples
+- expanding/walk-forward windows later
+- never random K-fold across rows as primary evidence
+
+## DL-002HE — Feature Selection Must Stay Inside Training
+
+### Leakage risk
+If we examine all data to choose:
+- best feature
+- best threshold
+- best interaction
+then run holdout-looking regression,
+the holdout is already contaminated.
+
+### Rule
+All:
+- feature pruning
+- threshold choice
+- nonlinear shape choice
+must be decided from training/discovery only.
+
+Holdout answers one question:
+did the frozen idea persist?
+
+## DL-002HF — Interpretability Hierarchy
+
+### Preferred evidence explanation
+1. raw primitive
+2. conditional comparison
+3. simple model coefficient/effect curve
+4. named-pattern interpretation
+
+Avoid:
+“model says buy because SHAP.”
+
+### Why
+If we cannot explain whether edge comes from:
+- compression
+- support progress
+- RS
+- volume
+- regime
+then we cannot safely decide whether it duplicates Formal or creates new risk.
+
+## DL-002HG — Prediction vs Ranking vs Filtering Are Different Tasks
+
+### Prediction
+Estimate forward outcome distribution.
+
+### Ranking
+Order candidates by relative opportunity.
+
+### Filtering
+Reject clearly adverse candidates.
+
+A feature may be:
+- poor standalone predictor,
+- useful negative filter,
+- useful tiebreaker.
+
+### Research outputs
+For each candidate feature state intended role:
+PREDICTOR
+RANKER
+RISK_FILTER
+OBSERVABILITY_ONLY
+
+Do not force every useful variable into one score.
+
+### Relevance
+Failure motifs may be better as RISK_FILTER candidates.
+Pattern maturity may be better as OBSERVABILITY/RANKER.
+No role promotion without evidence.
+
+
+
+## DL-002HH — Institutional Ownership Level vs New Flow
+
+### Taiwan evidence
+Foreign institutional momentum behavior in Taiwan has been shown to be anchored by prior foreign ownership:
+- higher prior foreign ownership can strengthen momentum-style trading behavior,
+- but the anchoring effect does not necessarily improve momentum profitability and can hurt it in some cases.
+
+### Pattern implication
+Separate:
+OWNERSHIP_STOCK
+- already-held institutional exposure.
+
+NEW_FLOW
+- current buying/selling.
+
+A stock with:
+high ownership + continued buying
+is not automatically stronger evidence than:
+lower ownership + new flow acceleration.
+
+### Fields
+- foreignOwnershipPct
+- trustOwnership if valid
+- ownershipPercentile
+- ownershipChange
+- foreignNetFlow
+- flowRelativeToExistingOwnership
+- patternMaturityAtOwnershipChange
+- ownershipCrowdingState
+
+### States
+NEW_SPONSORSHIP
+- low/moderate prior ownership, improving flow.
+
+ESTABLISHED_SPONSORSHIP
+- high ownership, persistent flow.
+
+CROWDED_LONG_CANDIDATE
+- very high ownership + high attention/extension + little incremental price result.
+
+OWNERSHIP_DISTRIBUTION_WARNING
+- price strong while ownership/flow deteriorates.
+
+No direction is assumed without testing.
+
+## DL-002HI — Crowding Is Multidimensional
+
+### Potential long-side crowding proxies
+- margin financing
+- institutional ownership
+- institutional herd intensity
+- high turnover/attention
+- repeated limit-up / lottery signals
+- estimated holder gains
+- sector synchrony
+
+### Potential short-side crowding proxies
+- short-sale flow/balance
+- securities borrowing context
+- downside attention
+
+### Do not sum blindly
+These variables have different participants and meanings.
+Create a crowding VECTOR, not one arbitrary score.
+
+### Research questions
+1. Does bullish pattern failure severity increase when several long-crowding proxies align?
+2. Can high short crowding + strong acceptance produce different upside MFE (squeeze-like) behavior?
+3. Does crowding matter only in certain market regimes?
+
+### Multiple-testing restraint
+Only test mechanism-driven combinations.
+No exhaustive 2^N crowding-state search.
+
+## DL-002HJ — Positioning Change May Matter More Than Positioning Level
+
+### Analog to RS and turnover
+Static level:
+“How crowded is it?”
+
+Change:
+“Is crowding building or unwinding while the pattern matures?”
+
+Fields:
+- marginSlope
+- ownershipSlope
+- shortFlowSlope
+- turnoverSlope
+- crowdingAcceleration
+- patternPhaseAtCrowdingInflection
+
+### Hypothesis
+A transition from quiet to rapidly crowded near breakout may differ from a high but stable positioning state.
+
+Again: hypothesis, not signal.
+
