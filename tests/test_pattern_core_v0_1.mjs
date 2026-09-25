@@ -26,7 +26,7 @@ import {
   classifyRepeatedResistanceTests,
   buildPatternSnapshot,
   replayPatternSnapshot
-} from "../research/pattern_core_v0_1.mjs";
+} from "../research/pattern_core_v0_1.mjs";\nimport {\n  buildPatternCacheRecord,\n  comparePatternCacheRecords,\n  buildPatternObservability,\n  attachPatternQaMetrics\n} from "../research/pattern_observer_adapter_v0_1.mjs";
 
 function makeBars(closes, { startDay = 1, volume = 100, turnover = 2_000_000, tickPad = 0.2 } = {}) {
   return closes.map((close, i) => {
@@ -623,3 +623,94 @@ function scaled(bars, k) {
 }
 
 console.log("pattern core v0.1 C1-C8 and invariance tests passed");
+
+
+// Isolated Pattern research-cache adapter: Corporate Actions semantic spaces remain explicit,
+// Shadow parent provenance is immutable, and no Formal behavior is exposed.
+{
+  const bars = makeBars([100, 98, 96, 99, 101, 100, 102]);
+  const parent = buildShadowParentReference({
+    scanDate:"2026-09-25",
+    symbol:"1234",
+    parentSnapshot:{cohort:"NEAR_MISS",pool:"FORMAL_GENERAL",rank:4}
+  });
+  const commonProv = {
+    sourceId:"cross-lane-fixture",
+    payloadHash:"geom-v1",
+    pointInTimeEligible:true,
+    corporateActionSemanticsReady:true
+  };
+  const geometry = validatePatternSeriesEnvelope({
+    role:"GEOMETRY",
+    semanticSpace:"TECHNICAL_CONTINUITY",
+    bars,
+    provenance:commonProv
+  });
+  const raw = validatePatternSeriesEnvelope({
+    role:"RAW_EXECUTION",
+    semanticSpace:"RAW_EXECUTION",
+    bars,
+    provenance:{...commonProv,payloadHash:"raw-v1",requestedAdjustmentMode:false,returnedAdjustmentMode:false}
+  });
+  const snapshot = buildPatternSnapshot({bars,asOfDate:bars.at(-1).date,swingThresholdPct:0.03});
+  const record = buildPatternCacheRecord({
+    parentReference:parent,
+    geometryEnvelope:geometry,
+    rawExecutionEnvelope:raw,
+    detectorSnapshot:snapshot,
+    asOfDate:bars.at(-1).date
+  });
+  assert.equal(record.status,"VALID");
+  assert.equal(record.researchOnly,true);
+  assert.equal(record.decisionImpact,false);
+  assert.equal(record.formalCoreImpact,false);
+  assert.equal(record.shadowParentKey,"2026-09-25|1234");
+
+  const replayRecord = buildPatternCacheRecord({
+    parentReference:parent,
+    geometryEnvelope:geometry,
+    rawExecutionEnvelope:raw,
+    detectorSnapshot:snapshot,
+    asOfDate:bars.at(-1).date
+  });
+  assert.equal(comparePatternCacheRecords(record,replayRecord).status,"SAME_RECORD_EXACT");
+
+  const rawDrift = {...raw,payloadHash:"raw-v2"};
+  const drifted = buildPatternCacheRecord({
+    parentReference:parent,
+    geometryEnvelope:geometry,
+    rawExecutionEnvelope:rawDrift,
+    detectorSnapshot:snapshot,
+    asOfDate:bars.at(-1).date
+  });
+  assert.equal(comparePatternCacheRecords(record,drifted).status,"PROVENANCE_CONFLICT");
+
+  const coercedRaw = validatePatternSeriesEnvelope({
+    role:"RAW_EXECUTION",
+    semanticSpace:"RAW_EXECUTION",
+    bars,
+    provenance:{...commonProv,requestedAdjustmentMode:false,returnedAdjustmentMode:true}
+  });
+  const blocked = buildPatternCacheRecord({
+    parentReference:parent,
+    geometryEnvelope:geometry,
+    rawExecutionEnvelope:coercedRaw,
+    detectorSnapshot:snapshot,
+    asOfDate:bars.at(-1).date
+  });
+  assert.equal(blocked.status,"BLOCKED");
+  assert.equal(blocked.reason,"RAW_EXECUTION_SERIES_NOT_READY");
+
+  const qa1 = attachPatternQaMetrics(record,{prefixExact:true,replayExact:true,scaleAgreement:3,computeMs:5});
+  const qa2 = attachPatternQaMetrics(replayRecord,{prefixExact:true,replayExact:false,scaleAgreement:2,computeMs:7});
+  const obs = buildPatternObservability([qa1,qa2,blocked]);
+  assert.equal(obs.totalRecords,3);
+  assert.equal(obs.validRecords,2);
+  assert.equal(obs.blockedRecords,1);
+  assert.equal(obs.coverageRate,2/3);
+  assert.equal(obs.prefixExactRate,1);
+  assert.equal(obs.replayExactRate,0.5);
+  assert.equal(obs.scaleAgreementMedian,2.5);
+  assert.equal(obs.computeMsMedian,6);
+  assert.equal(obs.blockedReasons.RAW_EXECUTION_SERIES_NOT_READY,1);
+}
