@@ -1232,3 +1232,207 @@ If topology-aware W adds no incremental information over the crude split-window 
 DEFINITION_FROZEN_V0_1 after commit.
 No Formal change.
 
+
+
+## DL-002L — Platform / Bull Flag / Triangle Specification v0.1
+
+### Why separate these structures
+Current Formal has platformRange20Pct, priorHigh20, volume contraction and breakout checks, but these do not distinguish:
+- a flat horizontal base,
+- a bull flag after a sharp impulse,
+- a symmetrical triangle with converging highs/lows.
+
+These have different topology and should not be collapsed into one “consolidation” score.
+
+### A. Horizontal Platform / Rectangle
+
+#### Topology
+A platform candidate requires:
+- repeated resistance tests within a bounded horizontal zone,
+- repeated support tests within a bounded horizontal zone,
+- neither boundary showing a strong persistent slope,
+- internal range generally contracting or stable rather than expanding.
+
+Fields:
+- platformStartAt / platformEndAt
+- platformDurationBars
+- resistanceLevel
+- supportLevel
+- platformHeightPct
+- upperTouchCount
+- lowerTouchCount
+- resistanceDispersionPct
+- supportDispersionPct
+- upperSlope
+- lowerSlope
+- internalRangeSlope
+- volumeSlope
+- closeLocationWithinPlatform
+- pivotDistancePct
+
+Do not define a platform only by priorHigh20-priorLow20 width.
+Touch structure and boundary stability are the expected incremental topology.
+
+#### Maturity
+PLATFORM_FORMING -> PLATFORM_VALID -> PLATFORM_TIGHT -> PLATFORM_PIVOT_READY -> PLATFORM_BREAKOUT_CONFIRMED -> PLATFORM_FAILED
+
+### B. Bull Flag
+
+#### External anchor
+Taiwan-specific pattern-recognition research by Wang & Chan (Expert Systems with Applications, 2007) tested bull-flag template matching on the Taiwan Weighted Index and NASDAQ. The study supports formalizing the shape, but its index-level historical results do not prove current single-stock alpha.
+
+Modern practitioner descriptions commonly define:
+- a sharp preceding advance (“flagpole”),
+- short consolidation,
+- modest downward/sideways channel,
+- declining volume during consolidation,
+- breakout on stronger volume.
+
+#### Required topology
+1. FLAGPOLE:
+   - strong upward impulse over a limited number of bars.
+2. FLAG:
+   - shorter consolidation following the pole,
+   - upper and lower boundaries approximately parallel or mildly converging,
+   - flat-to-downward channel preferred for classical bull flag,
+   - consolidation should not erase most of the pole.
+3. BREAKOUT:
+   - close above flag resistance / channel boundary.
+
+Fields:
+- poleStartAt / poleEndAt
+- poleReturnPct
+- poleDurationBars
+- poleSlope
+- poleEfficiency = net advance / path length
+- poleVolumeRatio
+- flagStartAt / flagEndAt
+- flagDurationBars
+- flagDepthPct
+- flagDepthVsPole
+- flagUpperSlope
+- flagLowerSlope
+- flagParallelism
+- flagRangeCompression
+- flagAtrCompression
+- flagVolumeDryUp
+- breakoutLevel
+- breakoutVolumeRatio
+- throwbackOccurred
+- throwbackHeld
+
+#### Distinguish flag from generic pullback
+A normal A-line pullback can occur without a sharp prior impulse.
+A Bull Flag requires explicit pole geometry.
+Therefore poleReturnPct / poleEfficiency / poleDurationBars are NEW_TOPOLOGY relative to current A pullback logic.
+
+#### Maturity
+FLAGPOLE_COMPLETE -> FLAG_FORMING -> FLAG_VALID -> FLAG_TIGHT -> FLAG_PIVOT_READY -> FLAG_BREAKOUT_CONFIRMED -> FLAG_FAILED
+
+### C. Symmetrical Triangle
+
+#### External anchor
+Fidelity materials describe symmetrical triangles as:
+- downward-sloping upper trend line,
+- upward-sloping lower trend line,
+- multiple touches on both boundaries,
+- many false breakouts,
+- breakout confirmation required.
+
+#### Topology
+Using confirmed swings:
+- at least two descending swing highs,
+- at least two ascending swing lows,
+- fit upper and lower boundary lines using only confirmed points,
+- boundaries must converge forward rather than diverge.
+
+Fields:
+- triangleStartAt
+- triangleDurationBars
+- upperSlope
+- lowerSlope
+- upperTouchCount
+- lowerTouchCount
+- upperFitResidual
+- lowerFitResidual
+- apexDateProjected
+- apexDistanceBars
+- initialHeightPct
+- currentHeightPct
+- compressionRatio = currentHeight / initialHeight
+- volumeSlope
+- atrCompression
+- currentPositionWithinTriangle
+- breakoutDirection
+- breakoutVolumeRatio
+- falseBreakR01
+
+### Line-fitting discipline
+Do not fit boundaries using future points after the as-of date.
+For each as-of date:
+- only confirmed swings with confirmedAt <= asOfDate may enter the line fit,
+- projected apex is descriptive and can move as new confirmed swings arrive,
+- store line-fit version / asOfDate so historical fits are not silently rewritten.
+
+### Touch definition
+A “touch” should be volatility-normalized distance from the fitted boundary, not exact equality.
+Tolerance must be based on pre-registered ATR/price semantics, not optimized for returns.
+
+### Triangle vs Flag vs Platform classifier
+Use topology, not labels:
+- PLATFORM: |upperSlope| and |lowerSlope| near flat, boundaries roughly horizontal.
+- FLAG: both slopes similar direction / roughly parallel after a strong pole.
+- SYMMETRICAL_TRIANGLE: upperSlope < 0 and lowerSlope > 0 with convergence.
+- ASCENDING_TRIANGLE: upper boundary approximately flat, lower boundary rising.
+- DESCENDING_TRIANGLE: lower boundary approximately flat, upper boundary falling.
+
+v0.1 may store ascending/descending triangle as descriptive subclasses without creating separate trading rules.
+
+### Cross-pattern ambiguity
+One base can sometimes satisfy multiple visual labels.
+Do not force one winner.
+
+Store:
+- candidatePatternFamilies[]
+- familyConfidence[]
+- sharedSwingIds
+- topologyConflict flag
+
+If a structure is simultaneously a shallow flag and a small triangle, preserve both labels and later test whether either label adds anything beyond the shared geometric fields.
+
+### Failure / falsification
+- RANGE_EXPANSION: consolidation widens instead of tightens.
+- BOUNDARY_BREAK_WRONG_DIRECTION: breakout opposite expected continuation direction.
+- FALSE_BREAK_R01: reuse frozen breakout-failure outcome.
+- POLE_ERASED: flag retracement gives back most of prior impulse.
+- NO_VOLUME_DRYUP: descriptive warning only in v0.1.
+- LOW_TOUCH_COUNT: insufficient confirmed contacts to establish boundaries.
+
+### Redundancy map
+Current Formal already captures:
+- priorHigh20,
+- platformRange20Pct,
+- volume contraction,
+- strong close / upper shadow,
+- ret20,
+- ATR/volatility.
+
+Expected incremental topology:
+- pole geometry / efficiency,
+- parallel-channel structure,
+- confirmed boundary touches,
+- converging upper/lower lines,
+- line-fit residual / stability,
+- projected apex,
+- per-pattern maturity lifecycle.
+
+### Evidence status
+Bull Flag:
+- TIER_1/2 hybrid evidence due to explicit pattern-recognition research including Taiwan Weighted Index, but external validity to current Taiwan single stocks remains unproven.
+
+Triangles / Platforms:
+- researchable and widely defined, but direct Taiwan single-stock modern evidence is limited.
+- WORTH_SHADOW_RESEARCH only.
+
+No Formal change.
+
