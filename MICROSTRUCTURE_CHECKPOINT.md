@@ -1,8 +1,8 @@
 # Market Microstructure Checkpoint
 
 Updated: 2026-09-25 Asia/Taipei
-Current cursor: MS-001 through MS-018 complete.
-Next: MS-019.
+Current cursor: MS-001 through MS-024 complete.
+Next: MS-025.
 
 ## Durable conclusions
 
@@ -90,3 +90,22 @@ Fugle explicitly excludes the opening first trade from its inside/outside-volume
 Files:
 - MICROSTRUCTURE_RESEARCH.md
 - MICROSTRUCTURE_CHECKPOINT.md
+
+
+## MS-019 through MS-024 durable update
+
+- Dynamic replenishment/resiliency cannot be inferred from the current sparse open/10m/15m/30m/signal snapshots; prospective high-frequency/event-driven data are required.
+- Cadence pilot is frozen to compare 1s / 5s / 15s state-reconstruction fidelity without return outcomes; per regular 4.5h session this is 16,200 / 3,240 / 1,080 buckets per symbol.
+- Post-fill markout and implementation shortfall are only valid when genuine fills exist; otherwise use post-signal/post-pressure mid moves.
+- TWSE tick normalization is mandatory: stock ticks are NT$0.01 / 0.05 / 0.10 / 0.50 / 1 / 5 across the official price bands, making thousand-dollar stocks structurally distinct.
+- Price-limit proximity and volatility-interruption/trial states are separate nonlinear regimes, not automatic BAD observations.
+- Cross-lane redundancy matrix is frozen; existing spread/depth fields must be reused, and new variables need stable incremental value after K-line, price-volume, ATR/liquidity, Residual RS, sector, regime and overheat controls.
+- First empirical protocol is frozen prospectively. Primary horizons are +1m/+5m/+10m/+15m/+30m, 15m/30m MFE/MAE, breakout hold/failure and fill-quality outcomes only where fills are verified.
+- Next action is evidence collection from the existing recorder before any new runtime capture is proposed.
+
+## Revised exact next continuation
+
+- MS-025 quantify actual existing execution-recorder coverage by event/date.
+- MS-026 test whether existing spread/depth snapshots can answer a first baseline question with zero code.
+- MS-027 if coverage permits, pre-register/run zero-code baseline using existing fields.
+- MS-028 only if inadequate, prepare isolated research-capture proposal with cadence/storage/rate-limit budget.
