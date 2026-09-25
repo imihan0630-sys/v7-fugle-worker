@@ -9,6 +9,8 @@ export const RESEARCH_ONLY = true;
 export const DECISION_IMPACT = false;
 
 function finite(value) {
+  if (value === null || value === undefined) return null;
+  if (typeof value === "string" && value.trim() === "") return null;
   const x = Number(value);
   return Number.isFinite(x) ? x : null;
 }
