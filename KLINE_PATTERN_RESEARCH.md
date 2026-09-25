@@ -7447,3 +7447,120 @@ These are Execution Alpha features only.
 ### Redundancy
 Compare against existing 15m close/reversal/volume fields.
 If session-average context adds nothing, reject it.
+
+
+## DL-002BS — Entropy / Path Complexity as a Diagnostic, Not a Buy Signal
+
+### External evidence
+- Journal of Econometrics research finds small but significant nonlinear serial dependence in stock returns using entropy-based measures, while conditional profit predictability remains fragile.
+- Permutation-entropy research shows financial-market efficiency/predictability varies over time and market state.
+- Entropy can discriminate ordered versus random price dynamics, but low entropy alone does not imply a profitable direction.
+
+### Pattern use
+Use path complexity to characterize whether a pattern phase is:
+- orderly directional progression,
+- noisy churn,
+- mechanically constrained by ticks/price limits,
+- illiquid/stale.
+
+### Candidate fields
+- permutationEntropy20/60
+- directionalSymbolEntropy
+- returnSignEntropy
+- swingDirectionEntropy
+- entropyChangeFormationToMaturity
+- entropyChangePreBreakout
+- complexityVsLiquidity
+- complexityVsTickDominance
+
+### Hypotheses
+1. Healthy compression may show reduced local disorder while liquidity remains viable.
+2. Dead liquidity can also show low entropy; liquidity/tick controls are mandatory.
+3. Breakout preparation may involve lower path complexity followed by controlled expansion.
+4. Extremely low entropy after repeated limit hits may be mechanical, not predictive.
+
+### Redundancy
+Directly compare against:
+- directionalEfficiency
+- DL-001 Information Discreteness
+- volatility/range contraction
+- positiveDayRatio
+- liquidity/tick variables
+
+If entropy adds no independent information, discard it.
+
+### No directional assumption
+LOW_ENTROPY is not inherently bullish.
+HIGH_ENTROPY is not inherently bearish.
+Entropy is a complexity/state descriptor.
+
+## DL-002BT — Pattern State Transition / Hazard Research
+
+### Motivation
+The useful question may be:
+“How likely is a mature pattern to transition soon?”
+rather than only:
+“Does the pattern exist?”
+
+### State-duration fields
+- daysInCurrentState
+- daysSinceStructureValid
+- daysSinceMature
+- daysSincePivotReady
+- numberOfFailedTransitions
+- priorStateSequence
+- stateReentryCount
+
+### Transition events
+FORMING -> VALID
+VALID -> MATURE
+MATURE -> PIVOT_READY
+PIVOT_READY -> BREAKOUT
+PIVOT_READY -> INVALIDATED
+BREAKOUT -> RETEST
+RETEST -> RESUME
+RETEST -> FAIL
+FAIL -> RECLAIM
+
+### Research questions
+- Does breakout hazard rise then fall as a mature pattern ages?
+- Do repeated failed transitions signal absorption or staleness?
+- Does regime/RS/volume context shift transition rates?
+
+### Important caution
+A high breakout hazard is not automatically high expected return.
+Transition probability and post-transition payoff are different objects.
+
+### Validation
+Estimate only after sufficient prospective samples.
+Until then store durations/transitions descriptively.
+
+## DL-002BU — Measurement Uncertainty Around Pattern Levels
+
+### Problem
+A pivot/neckline/rim/zone is estimated from noisy discrete prices.
+Treating it as exact creates false precision.
+
+### Store uncertainty
+For each key level:
+- pointEstimate
+- lowerZone
+- upperZone
+- sourceCount
+- sourceDispersionTicks
+- sourceDispersionATR
+- scaleDispersion
+- confidenceClass
+
+### Consequence
+A close one tick above pointEstimate but still inside the uncertainty zone is not a clean structural break.
+
+### Research comparison
+POINT_LEVEL logic vs ZONE_ACCEPTANCE logic:
+- false-breakout rate
+- missed-breakout rate
+- retest behavior
+- execution delay
+
+No Formal threshold changes during research.
+
