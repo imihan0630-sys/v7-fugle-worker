@@ -81,4 +81,27 @@ function seq(prefix, days) { return days.map(d => prefix + String(d).padStart(2,
   assert.equal(result.expectedPriorDate,"2026-09-23");
 }
 
+// TPEx 5314 par-value change: official TPEx announcement states suspension 2025-03-20..03-28
+// and new shares resume trading on 2025-03-31. The pure calendar logic must be exchange-agnostic
+// once the source layer supplies the verified TPEx interval and TPEx market sessions.
+{
+  const market=[
+    "2025-03-17","2025-03-18","2025-03-19","2025-03-20","2025-03-21",
+    "2025-03-24","2025-03-25","2025-03-26","2025-03-27","2025-03-28"
+  ];
+  const result=validateSymbolHistoryFreshness({
+    historyDates:["2025-03-17","2025-03-18","2025-03-19"],
+    marketSessions:market,
+    targetDate:"2025-03-31",
+    requiredSessions:3,
+    suspensions:[{
+      start:"2025-03-20",end:"2025-03-28",quality:"VERIFIED",
+      source:"TPEx announcement 11400008901"
+    }]
+  });
+  assert.equal(result.usable,true);
+  assert.equal(result.expectedPriorDate,"2025-03-19");
+  assert.deepEqual(result.expectedSessions,["2025-03-17","2025-03-18","2025-03-19"]);
+}
+
 console.log("symbol-session calendar prototype tests passed");
