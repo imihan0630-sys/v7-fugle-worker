@@ -2525,4 +2525,172 @@ The late-stage volume interaction should be rejected if:
 - result depends on one bull-market cohort.
 
 Status: WORTH_INTERACTION_TEST / NO_SELL_OR_REDUCE_RULE.
+# PV-043 — Taiwan Auction-Aware 15m Semantics
+
+## Current market structure
+Both TWSE and TPEx mainboard use:
+- opening call auction;
+- continuous trading after the opening match through 13:25;
+- closing call auction from 13:25 to 13:30 (or delayed close in specified cases).
+
+Sources:
+- https://www.twse.com.tw/en/products/system/trading.html
+- https://www.tpex.org.tw/en-us/mainboard/trading/rules/system.html
+
+## Implication
+A 15m bar touching the open or close is not microstructurally identical to a pure continuous-trading midday bar.
+
+Same-slot RVOL already solves much of the clock-time baseline problem, but interpretation also needs a session-phase label:
+- `OPEN_AUCTION_MIXED`;
+- `CONTINUOUS`;
+- `CLOSE_AUCTION_MIXED`;
+- `UNKNOWN`.
+
+## Vendor-candle caution
+Do not assume whether a Fugle 15m timestamp denotes slot start/end or exactly how opening/closing auction prints are grouped without an empirical fixture test against known trade timestamps.
+
+Required test:
+- fetch a known trading day at 1m and 15m;
+- aggregate completed 1m volume into proposed 15m buckets;
+- verify the 15m provider bucket boundaries exactly before production semantics are frozen.
+
+## Positive interpretation
+High opening auction participation can represent overnight information incorporation; high closing participation can represent genuine institutional positioning.
+
+## Opposing interpretation
+Opening/closing auction concentration can also be benchmark, inventory, or auction-mechanics flow and need not predict same-direction continuation.
+
+Status: HIGH_PRIORITY_INTRADAY_SEMANTIC_GUARD.
+
+
+# PV-044 — Intraday Volatility Interruption (VI) Can Distort a 15m Bar
+
+## Current rule
+TWSE/TPEx continuous trading includes an intraday volatility interruption mechanism. When a potential execution price moves beyond the specified +/-3.5% reference range, matching can be postponed for two minutes and resume through call auction before returning to continuous trading.
+
+Sources:
+- https://www.twse.com.tw/en/products/system/trading.html
+- https://www.tpex.org.tw/zh-tw/mainboard/trading/rules/continuous.html
+
+## Why PV cares
+A 15m bar that contains:
+- normal continuous trading;
+- a two-minute interruption;
+- a reopening call auction
+can show abnormal volume/range/close-location for reasons partly caused by market structure.
+
+## Data limitation
+Historical OHLCV candles alone do not prove that a VI occurred.
+Do NOT infer VI from:
+- a two-minute low-volume patch;
+- a sudden jump;
+- a later volume burst.
+
+Those patterns are not unique to VI.
+
+## Guard
+Unless a reliable event source is captured:
+- keep `pvViState=UNKNOWN`;
+- include VI as a documented unobserved confounder;
+- if future real-time/event data expose VI explicitly, store it prospectively with source timestamp.
+
+Status: IMPORTANT_CONFOUNDER / DO_NOT_SYNTHESIZE_FROM_CANDLES.
+
+
+# PV-045 — Closing-Bar Volume Is Not Automatically Late-Day Confirmation
+
+## Mechanism
+Because 13:25-13:30 is a closing call-auction phase on TWSE/TPEx mainboard, the final 15m bar can contain accumulated closing-auction flow.
+
+Sources:
+- https://www.twse.com.tw/en/products/system/trading.html
+- https://www.tpex.org.tw/en-us/mainboard/trading/rules/system.html
+
+## Positive case
+Abnormally strong closing participation with a constructive close can represent durable demand and may improve next-session acceptance.
+
+## Opposing case
+Closing flow may reflect:
+- benchmark/auction execution;
+- inventory or end-of-day rebalancing;
+- forced execution;
+- broad market closing activity.
+Therefore a high final-bar RVOL is not equivalent to an intraday breakout surge.
+
+## Research rule
+- compare closing bar only with historical same closing slot;
+- keep `CLOSE_AUCTION_MIXED` phase;
+- evaluate next-session gap/acceptance separately;
+- do not award an automatic “strong close volume” bonus.
+
+Status: SAME_SLOT_REQUIRED / DIRECTION_NOT_ASSUMED.
+
+
+# PV-046 — Ex-Rights / Ex-Dividend Reference-Price Guard for Gap and Price-Response Features
+
+## Market rule
+TWSE opening auction reference prices are adjusted for ex-rights/ex-dividend events under exchange rules. Fugle historical daily `change` also documents that ex-dividend day change is calculated versus the adjusted previous reference, not simply the raw prior close.
+
+Sources:
+- https://twse-regulation.twse.com.tw/ENG/EN/law/DAT0202_print.aspx?FLCODE=fl007304&LCC=2&LCNOS=++54+++
+- https://developer.fugle.tw/docs/data/http-api/historical/candles/
+
+## Failure mode
+Naive:
+`open / rawPreviousClose - 1`
+can create a fake negative “overnight gap” on ex-dividend/ex-rights dates.
+
+That would contaminate:
+- PV-018 gap archetype;
+- effort-vs-result;
+- price-limit distance;
+- abnormal return;
+- Information Discreteness;
+- late-stage / rejection diagnostics.
+
+## Rule
+For event days:
+- use exchange-consistent adjusted reference price when available;
+- otherwise mark the gap/return-derived feature UNKNOWN / CORPORATE_ACTION_GUARD;
+- never silently substitute raw previous close.
+
+Price adjustment and volume adjustment are separate issues: an adjusted reference price does not prove pre/post corporate-action raw volume is comparable.
+
+Status: HIGH_PRIORITY_RETURN_SEMANTIC_GUARD.
+
+
+# PV-047 — Market-Universe Guard: TPEx Mainboard Is Compatible; Emerging Stock Board Is Not
+
+## Mainboard compatibility
+TWSE and TPEx mainboard both use opening/closing call auction and intraday continuous trading, so the same basic 15m PV state architecture is conceptually compatible.
+
+Source:
+- https://www.tpex.org.tw/web/service/sotck_info/comparison/market_comparison.php?l=en-us
+
+## Emerging Stock Board difference
+TPEx Emerging Stock Board is quote-driven / negotiated, trades 09:00-15:00, has no conventional opening/closing price in the same sense, and uses different trading mechanics.
+
+Sources:
+- https://www.tpex.org.tw/en-us/esb/trading/rules/overview.html
+- https://www.tpex.org.tw/en-us/about/company/faq.html
+
+## Rule
+PV Shadow v0.1 applies only to ordinary TWSE/TPEx listed mainboard equities that pass the existing universe rules.
+
+If an ESB / incompatible market type enters the data feed:
+- `pvGuardState=UNSUPPORTED_MARKET_STRUCTURE`;
+- do not compute same-slot/mainboard acceptance semantics;
+- do not coerce its volume units/session into the mainboard baseline.
+
+Status: UNIVERSE_BOUNDARY_DEFINED.
+
+
+# Batch synthesis after PV-047
+
+The Taiwan-specific 15m layer now needs two kinds of normalization:
+1. **statistical normalization** — same-slot RVOL / cumulative pace;
+2. **market-structure normalization** — auction phase, price-limit/corporate-action guards, unsupported-market guard, and awareness of unobserved VI.
+
+This strengthens the core conclusion:
+a 15m volume number is only meaningful after we know **when it occurred, under which matching mechanism, relative to what baseline, and whether price/reference semantics were structurally altered**.
 
