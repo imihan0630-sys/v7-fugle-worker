@@ -1046,3 +1046,189 @@ Therefore status remains:
 WORTH_SHADOW_RESEARCH / TIER_3_PRIOR.
 No Formal promotion implication.
 
+
+
+## DL-002K — Double-Bottom / W-Bottom Detection Specification v0.1
+
+### External anchors
+Fidelity technical-analysis material defines a double bottom as:
+- two successive troughs,
+- separated by an intervening peak,
+- troughs usually around a similar support level,
+- bullish confirmation only when price breaks above the intervening peak / resistance line.
+
+Bulkowski's practitioner literature similarly emphasizes that an unconfirmed double bottom is not yet a valid reversal pattern; confirmation is more important than exact equality of the troughs.
+
+Lo, Mamaysky & Wang include Double Bottom as one of the chart-pattern classes in systematic nonparametric pattern-recognition research, supporting the researchability of the topology without proving a fixed rule.
+
+### Research principle
+The current Formal proxy:
+- leftLow = minimum in one fixed subwindow,
+- rightLow = minimum in a later fixed subwindow,
+- rightFootHigher = rightLow > leftLow,
+- necklineProximityPct = close / priorHigh20,
+is NOT sufficient to define a true W-bottom.
+
+A topology-aware W requires:
+LOW1 -> confirmed intervening HIGH -> LOW2 -> neckline test / breakout.
+
+### Required topology
+Using confirmed BASE-scale swings:
+1. LOW1: confirmed swing low after a prior decline or damaged structure.
+2. MID_HIGH: confirmed swing high occurring after LOW1.
+3. LOW2: later confirmed swing low after MID_HIGH.
+4. necklinePrice = MID_HIGH structural price.
+5. neckline breakout can occur only after LOW2 is confirmed or the current leg is chronologically beyond LOW2.
+
+No fixed window may substitute for the intervening swing high when classifying the actual W topology.
+
+### Prior-trend context
+A classic reversal double-bottom should have something to reverse.
+Store:
+- priorTrendState
+- priorDeclinePct
+- priorDeclineBars
+- priorLowerHighCount
+- priorLowerLowCount
+- distanceBelowMA20 / MA60 at LOW1
+
+Do not hard-gate prior decline in v0.1 because the same W-like topology can also appear as a continuation/re-accumulation base. Instead classify:
+- REVERSAL_W
+- CONTINUATION_W
+and compare separately.
+
+### Geometry fields
+- low1Price / low1At / low1ConfirmedAt
+- midHighPrice / midHighAt / midHighConfirmedAt
+- low2Price / low2At / low2ConfirmedAt
+- troughDifferencePct = (low2Price-low1Price)/low1Price*100
+- troughSimilarityAbsPct = abs(troughDifferencePct)
+- bottomSpacingBars
+- necklinePrice
+- necklineHeightPct = (midHighPrice-mean(low1Price,low2Price))/mean(low1Price,low2Price)*100
+- low1ToMidHighBars
+- midHighToLow2Bars
+- timeSymmetryRatio
+- rightLegRecoveryPct
+- necklineDistancePct
+- scaleAgreement
+- confirmationLagBars
+
+### Three right-low variants
+Do not assume a higher right foot is best.
+
+Variant A — HIGHER_LOW_W
+- LOW2 > LOW1 by a positive normalized amount.
+
+Variant B — EQUAL_LOW_W
+- LOW2 approximately equals LOW1 inside a tolerance band.
+
+Variant C — UNDERCUT_RECLAIM_W
+- LOW2 trades below LOW1,
+- later closes back above the LOW1 support zone within a defined reclaim window,
+- the undercut/reclaim sequence must be recorded as its own morphology.
+
+Important:
+The tolerance and reclaim window must be pre-registered from volatility/ATR semantics before outcome analysis. Do not tune them to maximize return.
+
+### Volume fields
+- low1VolumeVs20
+- rallyVolumeToMidHigh
+- low2VolumeVs20
+- low2VsLow1VolumeRatio
+- secondBottomSellingDryUp
+- reclaimVolumeRatio
+- necklineBreakoutVolumeRatio
+
+Hypotheses to test, not assumptions:
+- LOW2 with lower selling volume may indicate supply exhaustion.
+- Reclaim with stronger volume may strengthen an undercut-reclaim variant.
+- Neckline breakout volume may improve confirmation quality.
+
+### Maturity lifecycle
+W_FORMING_LOW1
+- first confirmed low exists, no intervening high yet.
+
+W_MID_HIGH_CONFIRMED
+- LOW1 + MID_HIGH exist.
+
+W_SECOND_TEST_FORMING
+- price revisits prior support zone but LOW2 not confirmed.
+
+W_STRUCTURE_VALID
+- LOW1 -> MID_HIGH -> LOW2 confirmed.
+
+W_NECKLINE_APPROACH
+- valid W and current price recovering toward neckline.
+
+W_BREAKOUT_CONFIRMED
+- close above neckline; breakout diagnostics recorded.
+
+W_RETEST_CONFIRMING
+- after breakout, price retests neckline/support and holds.
+
+W_FAILED
+- structure invalidated before confirmation or R01 breakout failure after confirmation.
+
+### Failure labels
+- NO_DISTINCT_MID_HIGH: two lows exist but no meaningful intervening confirmed high.
+- SUPPORT_COLLAPSE: LOW2/next decline breaks structure without timely reclaim.
+- WEAK_RECOVERY: price repeatedly fails far below neckline.
+- NECKLINE_FALSE_BREAK: reuse R01 after breakout.
+- TOO_SHALLOW_TO_BE_REVERSAL: descriptive warning when prior decline/neckline height is very small.
+- TOO_EXTENDED_BEFORE_CONFIRMATION: price has already run materially beyond structural pivot before an actionable state.
+
+### Neckline definition
+Primary neckline = the confirmed MID_HIGH between LOW1 and LOW2.
+Do not use priorHigh20 as the actual neckline unless the two coincide.
+
+Store:
+- trueNeckline
+- priorHigh20
+- necklineVsPriorHigh20Pct
+- priorHigh60
+- necklineVsPriorHigh60Pct
+
+This directly measures whether current Formal breakout references are too local or accidentally approximate the true topology.
+
+### Adam/Eve shape descriptors
+Practitioner literature distinguishes narrow/spike-like troughs ("Adam") from broader/rounded troughs ("Eve").
+Do not use those labels as trading rules.
+Store morphology descriptors:
+- lowResidenceBars
+- troughCurvature
+- localWickiness
+- localATRCompression
+to test whether broad vs sharp troughs matter.
+
+### Confirmation discipline
+Two troughs are morphology, not a confirmed bullish signal.
+For research:
+- pre-breakout W maturity may be useful for watch-listing,
+- confirmation state requires neckline breakout,
+- actionable execution remains governed by existing system rules unless a future Formal change is explicitly approved.
+
+### Redundancy test
+Existing fields:
+- leftLow/rightLow
+- rightFootHigher
+- priorHigh20
+- supportDistance
+- trend / MA structure
+- volume contraction
+
+Expected new topology:
+- distinct confirmed LOW1-MID_HIGH-LOW2 sequence,
+- true neckline,
+- bottom spacing,
+- reversal vs continuation classification,
+- undercut/reclaim morphology,
+- per-leg volume behavior,
+- lifecycle state.
+
+If topology-aware W adds no incremental information over the crude split-window proxy, reject the added complexity.
+
+### Status
+DEFINITION_FROZEN_V0_1 after commit.
+No Formal change.
+
