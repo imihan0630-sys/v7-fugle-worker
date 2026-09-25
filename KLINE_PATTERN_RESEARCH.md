@@ -12102,3 +12102,131 @@ If same-slot normalization does not improve:
 - stability across session periods,
 then keep the simpler existing ratio.
 
+
+
+## DL-002GQ — Price Acceptance Is Duration + Location, Not One Close
+
+### Problem
+Two daily/15m breakout bars can have the same close:
+A. price spent most of the session above resistance.
+B. price stayed below all day and crossed only near the end.
+
+A close-only rule cannot distinguish them.
+
+### Modern historical minute opportunity
+From 2023-05-23 onward, minute candles allow research of intraday acceptance relative to a point-in-time known zone.
+
+### Acceptance fields
+For zone [L,U]:
+- fractionMinutesAboveU
+- fractionMinutesInsideZone
+- fractionMinutesBelowL
+- consecutiveMinutesAboveU
+- maxConsecutiveAbove
+- crossingCount
+- reentryCount
+- averageDistanceAboveU
+- maxDistanceAboveU
+- integratedPositiveDistance = sum(max(price-U,0) * time)
+- integratedNegativeDistance
+- firstBreakTime
+- finalAcceptanceState
+
+Use completed minute bars only.
+
+### OHLC choice
+Possible price representations:
+- minute close
+- minute typical/mid-like proxy from OHLC
+- exact trades prospectively
+
+Freeze one primary representation before outcome comparison.
+
+### Acceptance states
+TOUCH_ONLY
+TRANSIENT_BREAK
+PARTIAL_ACCEPTANCE
+SUSTAINED_ACCEPTANCE
+BREAK_AND_REENTRY
+LATE_AUCTION_ONLY
+
+### Research question
+Does sustained acceptance reduce R01 failure beyond:
+- daily close strength
+- upper shadow
+- breakout volume
+- 15m confirmation?
+
+If not, discard extra complexity.
+
+## DL-002GR — Zone Crossing Count Can Measure Churn
+
+### High crossing count
+Price oscillating repeatedly across zone can mean:
+- active price discovery / absorption,
+- indecision / whipsaw,
+- poor clean acceptance.
+
+### Pair crossing count with progression
+Constructive:
+- crossings decline over time,
+- closes migrate above,
+- lows rise,
+- sell volume falls.
+
+Adverse:
+- repeated symmetric crossings,
+- no net progress,
+- widening range,
+- high turnover.
+
+### Fields
+- zoneCrossingCount
+- crossingRatePerHour
+- netMigrationAcrossZone
+- postCrossHigherLow
+- effortResultAroundZone
+- turnoverPerNetProgress
+
+No raw crossing-count bullish sign.
+
+## DL-002GS — Area-Above-Zone vs Point Breakout
+
+### Concept
+Integrated distance-time above resistance combines:
+- how far price cleared it,
+- how long it stayed there.
+
+This may be more robust than “close > pivot by 0.2%”.
+
+### Normalize
+- by ATR
+- by ticks
+- by session duration
+
+Fields:
+- areaAboveZoneATRTime
+- areaBelowZoneATRTime
+- netAcceptanceArea
+
+### Caution
+This is an engineered feature.
+It must beat simpler:
+- close distance
+- time above
+before retained.
+
+## DL-002GT — Intraday Acceptance Is Execution Alpha
+
+### Boundary
+If minute acceptance becomes observable after the after-market scan:
+it cannot improve Selection Alpha for the prior scan.
+
+Use only:
+- entry timing
+- revalidation
+- false-breakout analysis
+- execution-quality study
+
+No backdating.
+
