@@ -1857,4 +1857,426 @@ The first engineering proposal should remain deliberately small:
 - validate the current 15m local-volume ratio against same-slot RVOL/cumulative pace;
 - capture outcome ledgers prospectively;
 - do not alter selection, BUY, maxChase, stop, capital, push, or ABF re-add behavior.
+# PV-033 — Risk Targets: Volume Can Be Useful Even When Direction Is Unclear
+
+## Research question
+PV-026 separated directional alpha from information-intensity / risk value. PV-033 defines the actual risk outcomes so the research does not accidentally judge every volume feature only by future return sign.
+
+## Academic anchor
+Trading volume is widely linked to volatility / information arrival. Taiwan 5-minute evidence finds a persistent volume-volatility relation, and microstructure models explicitly motivate lagged volume as information about future price variability.
+
+Sources:
+- https://doi.org/10.1016/S1044-0283(01)00023-0
+- https://www.cambridge.org/core/journals/journal-of-financial-and-quantitative-analysis/article/abs/trading-volume-and-information-revelation-in-stock-market/4EE7120A7541D10B580FC555DEEB1B77
+- https://doi.org/10.1002/for.2897
+
+## Outcome labels
+Feature snapshot remains immutable at observation time. Outcomes are computed only after the horizon completes.
+
+### Direction targets
+- D1 / D3 / D5 / D10 close-to-close return;
+- breakout-hold / false-break;
+- reacceleration / failed re-entry.
+
+### Excursion / risk targets
+For anchor price P0 at the observation timestamp:
+- `MFE_H = max(high_after_t..H / P0 - 1)`;
+- `MAE_H = min(low_after_t..H / P0 - 1)`;
+- `range_H = maxHigh / minLow - 1`;
+- ATR-normalized MFE / MAE / range using ATR known at t;
+- close-to-close realized volatility over the completed horizon where enough bars exist.
+
+### Existing-plan risk targets
+Only when a valid plan already existed at t:
+- `stopFirst_H`: planned stop touched before planned profit-check / target event;
+- `maxChaseAdverse_H`: entry/chase event followed by predefined adverse excursion;
+- `falseConfirm_H`: 15m confirmation followed by failed structural acceptance inside the frozen horizon.
+
+Do not invent a stop or target retrospectively for stocks that had none at t.
+
+## Positive use case
+A PV feature may have near-zero average directional return effect but still identify:
+- higher MAE;
+- larger realized range;
+- more stop-first events;
+- more false confirmations.
+That can be valuable later for confirmation/risk research.
+
+## Opposing case
+High expected volatility can also create high MFE and more opportunity. A “high-risk” label must not be automatically converted into avoidance or smaller size without separate utility / execution testing.
+
+## Required reporting
+Always report direction and risk separately:
+- return / hit-rate;
+- MFE;
+- MAE;
+- stop-first;
+- false-break;
+- coverage.
+
+Status: RISK_OUTCOME_SCHEMA_DEFINED / NO_RISK_RULE_CHANGE.
+
+
+# PV-034 — Daily Market / Sector Residual RVOL; Defer Full-Market 15m Residualization
+
+## Evidence
+Trading activity contains common components. Lo & Wang show turnover is well described by a multi-factor structure. Market-microstructure research also documents market- and industry-wide commonality in liquidity / order flow.
+
+Sources:
+- https://www.nber.org/papers/w7625
+- https://doi.org/10.1111/1475-6803.00035
+- https://doi.org/10.1016/S0304-405X(99)00057-4
+
+## Daily feasibility in the current system
+The current Worker already maintains full-market daily histories and sector group statistics. Therefore daily residual participation can be researched without a new full-market historical API layer.
+
+For each stock/date:
+1. compute own-history log RVOL:
+   `stockLogRvol = log(volume_t / median_or_mean_prior20_volume)`;
+2. compute market median `marketMedianLogRvol` across valid liquid equities for the same date;
+3. compute leave-one-out sector median `sectorMedianLogRvol` where sector sample is adequate;
+4. save, do not automatically score:
+   - `pvMarketResidualRvol = stockLogRvol - marketMedianLogRvol`;
+   - `pvSectorResidualRvol = stockLogRvol - sectorMedianLogRvol`.
+
+Use robust medians first. Small-sector / insufficient-coverage result = UNKNOWN.
+
+## Why leave-one-out matters
+The target stock should not mechanically help create the sector benchmark used to judge itself, especially in small sectors.
+
+## Positive interpretation
+A stock with 2x normal volume on a day when the market and its sector are normal may contain more stock-specific information/attention than a stock with 2x normal volume during a market-wide surge.
+
+## Opposing interpretation
+Theme-level volume is often exactly what the selector wants to capture. Residualizing against sector activity can remove genuine group confirmation. Therefore retain both:
+- raw RVOL / sector context;
+- residual RVOL.
+
+Residual RVOL is a contextual decomposition, not a superior replacement by assumption.
+
+## 15m feasibility decision
+Do NOT build full-market same-slot residual RVOL yet.
+Reason:
+- same-slot baselines require historical intraday data for each stock;
+- doing this across ~full market would materially expand storage/API/runtime;
+- current highest-value use is only the monitored/selected set;
+- market index intraday `volume` has different units (index volume can be traded value), so an index cannot be naively used as the stock-volume denominator.
+
+Fugle source semantics:
+- historical intraday bars available from 2023-05-23;
+- listed-stock intraday volume is in lots, daily volume is shares;
+- index intraday volume semantics differ from equity volume.
+
+Source:
+- https://developer.fugle.tw/docs/data/http-api/historical/candles/
+
+Status: DAILY_RESIDUAL_RVOL_FEASIBLE / FULL_MARKET_15M_DEFER.
+
+
+# PV-035 — Abnormal-Volume Freshness, Decay and Half-Life
+
+## Evidence
+Recent abnormal-trading-volume research finds that persistence in abnormal volume is associated with continued short-run drift, while abnormal volume gradually reverts toward its long-run mean and later return behavior can reverse. This supports treating “fresh shock,” “persistent wave,” and “decayed event” as different states.
+
+Source:
+- https://doi.org/10.1080/1351847X.2024.2303092
+
+## Important restraint
+The literature does NOT give us a universal “volume signal expires after N days” rule for Taiwan or our selector. Do not hard-code 3D/5D half-life from the paper.
+
+## Store continuous freshness variables first
+Daily:
+- `pvEventStartDate`;
+- `pvEventAgeTradingDays`;
+- `pvPeakRvol20`;
+- `pvDaysSincePeakRvol`;
+- `pvCurrentToPeakRvolRatio`;
+- `pvRvolSlope3` / `pvRvolSlope5`;
+- consecutive days above frozen abnormal-volume threshold/bucket.
+
+15m:
+- bars since current intraday RVOL event began;
+- bars since peak same-slot RVOL;
+- current / peak same-slot RVOL ratio;
+- cumulative-volume pace decay.
+
+## State concepts
+Only after definitions are frozen:
+- `FRESH_SHOCK`;
+- `PERSISTENT_WAVE`;
+- `DECAYING`;
+- `NORMALIZED`;
+- `UNKNOWN`.
+
+These are descriptive states. They are not bullish/bearish labels.
+
+## Positive interpretation
+Persistent abnormal volume plus structural acceptance can reflect continuing information diffusion / recognition.
+
+## Opposing interpretation
+Persistent high volume late in an extended move can be crowding / attention persistence. Falling price progress while volume remains high can indicate exhaustion risk rather than strength.
+
+## Validation
+Compare the same initial shock by later freshness trajectory:
+- FRESH->PERSISTENT;
+- FRESH->FAST_DECAY;
+- PERSISTENT->DECAY;
+with D1/D3/D5/D10, MFE/MAE, false-break and stop-first.
+
+Status: HIGH_VALUE_STATE_EXTENSION / NO_FIXED_EXPIRY_YET.
+
+
+# PV-036 — Information Discreteness / News Context: Interaction, not Double Counting
+
+## Evidence
+Information Discreteness (Frog-in-the-Pan) research argues that gradual, continuous price information receives less attention and is incorporated more slowly, while discrete price moves act as cognitive triggers and are incorporated faster. Related attention research shows individual investors disproportionately buy attention-grabbing stocks, including stocks in the news, with abnormal trading volume or extreme one-day returns.
+
+Sources:
+- https://doi.org/10.1016/j.jfineco.2021.10.011
+- https://doi.org/10.1093/rfs/hhm079
+
+Volume/volatility dynamics also differ between periods with identifiable public news and without it, so high volume cannot be assigned one universal information meaning.
+
+Source:
+- https://doi.org/10.1016/j.jbankfin.2006.11.019
+
+## System implication
+PV and Information Discreteness may partly measure the same latent attention/information-arrival episode.
+
+Therefore DO NOT create:
+`PV score + ID score + news score`
+as three independent additive rewards without redundancy testing.
+
+## Research interaction grid
+Record combinations such as:
+1. continuous-information / quiet-normal participation;
+2. continuous-information / abnormal participation;
+3. discrete-information / normal participation;
+4. discrete-information / extreme participation.
+
+Optional public-news context:
+- `PUBLIC_NEWS_KNOWN`;
+- `NO_PUBLIC_NEWS_FOUND`;
+- `NEWS_UNKNOWN`.
+
+“NO_PUBLIC_NEWS_FOUND” must never be treated as proof of no information event.
+
+## Hypotheses to falsify
+- discrete move + extreme volume may be faster information incorporation OR attention-driven overreaction; continuation is not guaranteed;
+- continuous move + moderate persistent volume may be gradual recognition OR simply low-salience drift;
+- no-news abnormal volume may represent private information OR overconfident/noise trading.
+
+## Engineering decision
+Initial PV Shadow implementation should not add a mandatory external-news dependency.
+Use already-available Information Discreteness / price path as a moderator. Add verified news context later only if source/provenance can be stored reliably.
+
+Status: INTERACTION_REQUIRED / ADDITIVE_DOUBLE_COUNTING_PROHIBITED.
+
+
+# PV-037 — Exact Research-Only Shadow Engineering Specification
+
+## Scope
+This is an engineering proposal only.
+It MUST NOT change:
+- A/B eligibility;
+- ranking / priority;
+- selected 3+3 pool;
+- BUY / ADD / REDUCE;
+- maxChase;
+- stop;
+- capital allocation;
+- push semantics;
+- ABF re-add.
+
+Every record carries `decisionImpact=false`.
+
+## A. Minimum feature set
+
+### Existing fields reused
+- volumeTodayVsPrev5;
+- volumeContraction5to20;
+- avgVolume20Lots;
+- avgAmount20;
+- dailyClosePosition;
+- dailyUpperShadowRatio;
+- lateStage / ret20;
+- sector / institutional context;
+- current 15m local previous-5-bar volumeRatio.
+
+### New daily research fields
+- pvDailyRvol20;
+- pvMarketResidualRvol;
+- pvSectorResidualRvol;
+- pvPersistenceState;
+- pvGuardState;
+- pvEventAgeTradingDays / pvDaysSincePeakRvol;
+- coverage + schemaVersion + source timestamp.
+
+### New 15m research fields
+- pvSlotRvol20;
+- pvCumvolPace20;
+- pvResponseState;
+- pvAcceptanceState;
+- pvPersistenceState;
+- pvGuardState;
+- slotHistoryCount;
+- completedBar;
+- source timestamp.
+
+## B. Storage proposal
+Prefer dedicated D1 tables so research data cannot mutate Formal plan objects.
+
+### `v7_pv_shadow_snapshots`
+Suggested columns:
+- snapshot_id TEXT PRIMARY KEY;
+- symbol TEXT NOT NULL;
+- market_date TEXT NOT NULL;
+- observed_at TEXT NOT NULL;
+- observation_type TEXT NOT NULL; -- AFTER_MARKET / INTRADAY_15M
+- schema_version TEXT NOT NULL;
+- event_key TEXT;
+- features_json TEXT NOT NULL;
+- context_json TEXT;
+- coverage_json TEXT;
+- source_json TEXT;
+- decision_impact INTEGER NOT NULL DEFAULT 0;
+- created_at TEXT NOT NULL.
+
+Unique logical identity:
+`symbol + observed_at + observation_type + schema_version`.
+
+### `v7_pv_outcomes`
+One row per snapshot x horizon:
+- snapshot_id TEXT NOT NULL;
+- horizon TEXT NOT NULL; -- D1/D3/D5/D10 or B1/B2/B4/B8 for completed 15m bars
+- completed_at TEXT;
+- direction_return REAL;
+- mfe REAL;
+- mae REAL;
+- range_atr REAL;
+- stop_first INTEGER;
+- false_break INTEGER;
+- acceptance_result TEXT;
+- outcome_complete INTEGER NOT NULL DEFAULT 0;
+- outcome_json TEXT;
+- PRIMARY KEY(snapshot_id,horizon).
+
+Outcomes never update the original feature snapshot.
+
+### `v7_pv_intraday_baselines`
+Cache only symbols that actually enter monitored/selected research scope:
+- symbol;
+- baseline_version;
+- valid_sessions;
+- last_market_date;
+- slot_stats_json;
+- corporate_action_reset_at;
+- updated_at.
+
+## C. API / runtime budget design
+### Daily layer
+Use existing full-market history cache for daily RVOL and daily residual-RVOL.
+Expected incremental historical market-data calls: zero for the daily PV fields if current cache coverage is valid.
+
+### 15m bootstrap
+For each newly monitored symbol lacking a baseline:
+- one historical 15m request covering enough calendar days to obtain >=20 valid sessions;
+- Fugle supports 15m historical bars and single query ranges under one year.
+
+Do NOT refetch 20 days of 15m history on every monitor cycle.
+
+### Baseline maintenance
+After bootstrap:
+- append completed current-session 15m bars to cache;
+- roll prior-session window;
+- rebuild after corporate-action guard/reset;
+- missing/failed refresh => UNKNOWN, never fallback to fake 1.0 RVOL.
+
+Current monitored pool is small, so selected-symbol baselines are preferred over full-market intraday baselines.
+
+Fugle documentation:
+- historical candles support 15m;
+- intraday history starts 2023-05-23;
+- intraday `average` is cumulative transaction average from open;
+- volume units differ by security/timeframe and must not be mixed raw across daily/intraday.
+
+Source:
+- https://developer.fugle.tw/docs/data/http-api/historical/candles/
+- https://developer.fugle.tw/docs/data/http-api/intraday/candles/
+
+## D. No-look-ahead invariants
+1. Intraday features use completed bars only.
+2. Same-slot median uses sessions strictly before marketDate.
+3. Cumulative-volume pace denominator uses historical cumulative volume only through the same clock slot.
+4. Full-day volume cannot enter a live 10:00/11:00/12:00 feature.
+5. Later RETEST / REACCELERATION updates create later snapshots/states; they do not rewrite the original BREAKOUT_ATTEMPT row.
+6. Outcome tables are joined only after horizon completion.
+7. Corporate-action reset prevents baseline mixing across incompatible share units/regimes.
+
+## E. Required tests before deployment
+### Unit tests
+- slot mapping around 09:00 / 13:30;
+- exactly 20 valid-session boundary;
+- missing / halted sessions excluded, not zero-filled;
+- listed-stock intraday lots vs daily shares not cross-divided;
+- completed-bar filter;
+- median / MAD edge cases;
+- zero/near-zero historical volume;
+- gap / price-limit guard state;
+- corporate-action reset;
+- leave-one-out sector median;
+- event-age / days-since-peak semantics.
+
+### Leakage tests
+Construct synthetic future-volume changes and prove a historical snapshot does not change.
+Construct later retest success/failure and prove prior BREAKOUT_ATTEMPT row stays byte-identical.
+
+### Formal-isolation tests
+For identical market inputs, enabling PV Shadow must produce identical:
+- selected symbols;
+- ranks;
+- plan prices;
+- BUY/ADD/REDUCE decisions;
+- capital allocation;
+- push events.
+
+Any difference = test failure.
+
+### Failure-mode tests
+- Fugle historical 404 / timeout;
+- insufficient history;
+- D1 write failure;
+- partial intraday data;
+- trading halt;
+- new listing;
+- corporate action.
+Expected behavior: research state UNKNOWN / logging warning; Formal path unchanged.
+
+## F. Rollout phases
+1. LOG_ONLY: compute/store fields; no evaluation claims.
+2. DATA_QA after first ~50 completed events: semantics/missingness only.
+3. EVIDENCE after predeclared minimum coverage from PV-024.
+4. COMPARE current local 15m volumeRatio vs slot-RVOL/cum-pace.
+5. Only if incremental value is stable, draft a separate Class C proposal.
+6. Owner approval required before any Formal change.
+
+Status: ENGINEERING_SPEC_READY / NOT_IMPLEMENTED / FORMAL_LOCKED.
+
+
+# Batch synthesis after PV-037
+
+The price-volume research has crossed an important boundary:
+- enough has been learned to define a small, reproducible Shadow recorder;
+- not enough has been learned to change Formal selection or execution.
+
+The highest-value near-term experiment is still narrow:
+**Does same-slot 15m relative volume + cumulative-volume pace explain false confirmations / no-follow-through better than the current previous-5-bar volume ratio?**
+
+The broader PV architecture remains:
+`participation -> price response -> acceptance -> persistence -> guard`,
+with:
+- direction and risk evaluated separately;
+- market/sector common activity treated as context;
+- Information Discreteness treated as an interaction/moderator;
+- outcomes stored separately from immutable as-of features.
 
