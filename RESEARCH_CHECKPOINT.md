@@ -1,7 +1,7 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-144.
-Updated: 2026-09-26 05:39 Asia/Taipei.
+Checkpoint sequence: B-146.
+Updated: 2026-09-26 06:41 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Detailed B-01..B-123 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
@@ -442,3 +442,17 @@ Updated: 2026-09-26 05:39 Asia/Taipei.
 - Bias/quality: no visible-row survivorship inference, no missing=0/BAD, no historical Shadow fabrication, no outcome-conditioned coverage definition, no new factor/window/threshold; R01-R08/I01-I07 unchanged.
 - 2026-09-24 BUY/NO-BUY remains UNKNOWN / DATA_QUALITY_BLOCKED.
 - Exact next continuation: if branch writes become available, materialize the frozen proposal/tests only (still no merge/deploy). Otherwise stop retrying the same blocked mutation and advance to the next unresolved canonical evidence priority that does not require Class-B production approval, while preserving this proposal contract and 2026-09-24 UNKNOWN.
+
+
+## B-146 — Supply-chain lead-lag lane opened after recorder Class-B write block (2026-09-26 06:41 Asia/Taipei)
+- Fresh-read governance/worklist/checkpoint/main; canonical start was B-145. The recorder exact-date completeness proposal remains frozen on branch `research/recorder-exact-date-completeness-proposal`; because branch materialization was safety-blocked and the checkpoint explicitly says not to retry the same mutation indefinitely, this run advanced to the next unresolved research priority that requires no Production approval.
+- Existing durable lane audit shows Fundamental Information Dynamics, Derivatives/Volatility, Portfolio Risk, Trading Frictions and Event Risk are already CONCEPT_COMPLETE/EVIDENCE_PENDING. No dedicated Supply-Chain Lead-Lag lane exists on main, despite it being a stated research priority. This is therefore the next genuinely under-studied lane rather than another factor variant.
+- New research question frozen: can point-in-time upstream/downstream information from customer/supplier/peer disclosures add stable forward information beyond sector RS, price-volume/K-line, monthly revenue/fundamentalScore, attention, regime and common macro shocks?
+- Positive mechanisms to test prospectively: upstream order/capacity/revenue shocks can precede downstream recognition; major-customer demand can propagate to suppliers; inventory/capex changes can transmit with economically meaningful lags.
+- Counter-mechanisms/falsification frozen at lane opening: common macro/AI-theme shocks can create spurious lead-lag; price may incorporate shared information before accounting disclosures; customer/supplier mappings change over time; diversified firms break one-chain narratives; disclosed customer concentration may be stale/coarse; contemporaneous correlation is not causal lead-lag.
+- PIT provenance requirement: every relationship edge needs `knownAt`, `effectiveFrom`, source, confidence and expiry/revalidation semantics. Current 2026 relationship maps must never be backfilled into earlier Shadow dates. Missing edge/data = UNKNOWN, not no-relationship/0.
+- Minimal evidence architecture proposed for research only: `SUPPLY_CHAIN_EDGE_VINTAGE` + event ledger + same-date peer/common-factor controls. Candidate outcomes are D1/D3/D5/D10 residual return, MFE/MAE and revenue/fundamental response; independent scan/event dates are the inference unit.
+- Redundancy order frozen before any alpha claim: existing sector/Residual RS -> market/industry regime -> price-volume/K-line -> own monthly revenue/fundamentalScore -> attention/event controls -> supply-chain candidate. Kill candidate if incremental effect disappears after these controls.
+- Bias/quality gates: no hand-picked famous AI/ABF winners; include negative/control edges and non-events; no future customer/supplier map leakage; no threshold/window sweep; no historical Shadow fabrication; no missing=BAD/0; transaction costs required before any tradable interpretation; date/industry clustering and coverage/zero-pick tracked.
+- Engineering classification: research concept/checkpoint only (Class A documentation); no runtime code, no new factor, no Worker/Production/PR promotion. Formal Core remains LOCKED. R01-R08/I01-I07 unchanged until evidence exists.
+- Exact next continuation: materialize a dedicated `SUPPLY_CHAIN_LEAD_LAG_RESEARCH.md` and checkpoint only if safe mutation is available; then SC-001 source/edge taxonomy, SC-002 Taiwan PIT relationship-source feasibility, SC-003 lag/falsification matrix, SC-004 minimal prospective schema. Do not perform outcome tests before PIT edge-vintage feasibility passes.
