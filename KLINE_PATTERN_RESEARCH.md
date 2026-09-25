@@ -4811,3 +4811,145 @@ This is the cleanest way to determine whether the new topology adds value or mer
 ### Status
 DEFINITION_FROZEN_V0_1 after commit.
 Research/Shadow only. No Formal change.
+
+
+## DL-002L — Flag / Pennant / Platform Continuation Topology v0.1
+
+### Goal
+Separate genuine continuation compression after an impulse from ordinary sideways noise or late-stage exhaustion.
+
+### Impulse / pole
+Identify a confirmed upward impulse preceding consolidation.
+Measure:
+- poleReturnPct
+- poleDurationDays
+- poleReturnPerDay
+- poleVolumeExpansion
+- poleATRExpansion
+- priorBaseBreakoutContext
+- residualRSDuringPole
+
+Do not require an arbitrary huge pole; retain continuous values.
+
+### Consolidation geometry
+From pole high to current/base end:
+- consolidationDepthPct
+- consolidationDurationDays
+- upperBoundarySlope
+- lowerBoundarySlope
+- rangeCompressionSlope
+- volumeDryUpSlope
+- downDayVolumeRatio
+- distanceToPoleHighPct
+- lowerBoundaryHigherLowRate
+
+Classify geometry descriptively:
+- FLAG_DOWN_CHANNEL
+- PENNANT_CONVERGING
+- FLAT_PLATFORM
+- EXPANDING_RANGE
+The last is a negative/control morphology, not a bullish named pattern.
+
+### Continuation quality hypotheses
+Potentially constructive:
+- impulse strength without late-stage overheat,
+- consolidation shallower than impulse,
+- declining volume during consolidation,
+- contracting range,
+- price remains relatively near the pole high,
+- selling-volume decay,
+- breakout with renewed range/volume expansion.
+
+Potentially adverse:
+- deep retracement,
+- expanding range,
+- repeated high-volume selloffs,
+- lower lows,
+- long stagnation that converts a continuation setup into a different base/regime,
+- breakout under older structural resistance.
+
+### Platform relationship to current Formal
+Current Formal already has platformRange20Pct and B breakout logic.
+Therefore a new “platform=true” variable is redundant.
+Incremental candidates are:
+- preceding impulse/pole quality,
+- boundary slopes,
+- contraction trajectory,
+- consolidation depth relative to pole,
+- selling-volume decay,
+- older-resistance conflict,
+- continuation lifecycle.
+
+### Lifecycle
+IMPULSE
+-> CONSOLIDATING
+-> COMPRESSION_VALID
+-> PIVOT_READY
+-> BREAKOUT_CONFIRMED
+-> RETEST_CONFIRMING
+-> FAILED
+
+### Failure
+Reuse R01 after breakout.
+Before breakout:
+- IMPULSE_ERASED
+- RANGE_EXPANSION
+- SELLING_VOLUME_EXPANSION
+- STRUCTURAL_LOWER_LOW
+- STALE_BASE
+
+No Formal change.
+
+## DL-002M — Pattern Confidence Is Not Pattern Score
+
+### Principle
+Do not create one opaque “K-line score” by summing VCP + cup + W + flag + candles.
+Many named patterns can describe the same underlying path and would double-count the same price/volume information.
+
+### Separate three dimensions
+1. FIT_CONFIDENCE:
+How well observed geometry matches the frozen pattern definition.
+2. STABILITY_CONFIDENCE:
+Whether the pattern persists across neighboring swing scales / small definition perturbations.
+3. INCREMENTAL_EVIDENCE:
+Whether the feature adds outcome information after controlling existing Formal and DL-001 variables.
+
+Only the third dimension can eventually justify a production-review proposal.
+
+### Pattern overlap graph
+Record overlap between pattern families:
+- VCP <-> platform/pennant
+- cup handle <-> VCP in handle
+- W bottom <-> cup bottom
+- flag <-> short platform
+- candlestick confirmation <-> daily close/wick quality
+
+For every candidate/date store all matching families rather than forcing one label.
+Later estimate whether one family contributes after conditioning on the others.
+
+### No double reward
+If a cup handle is also a VCP, that is not automatically “two bullish votes.”
+It may be one underlying compression phenomenon expressed through two taxonomies.
+
+### Negative-pattern controls
+Build explicit adverse morphology controls:
+- EXPANDING_VOLATILITY
+- LOWER_HIGH_LOWER_LOW
+- HIGH_VOLUME_DISTRIBUTION
+- FAILED_BREAKOUT_CLUSTER
+- LATE_STAGE_WIDE_LOOSE
+- V_SHAPED_UNSTABLE_RECOVERY
+
+Positive pattern research without negative controls risks merely selecting volatile winners after the fact.
+
+### Research implication
+The eventual Pattern Shadow output should look like a diagnostic vector, e.g.:
+patternFamiliesMatched
+maturityByFamily
+fitConfidenceByFamily
+stabilityByFamily
+adverseMorphologyFlags
+overlapCluster
+incrementalEvidenceStatus
+
+It should not output a production BUY score during the research phase.
