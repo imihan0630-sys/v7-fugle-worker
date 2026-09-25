@@ -329,6 +329,151 @@ export function detectSwingScaleFamily({
   };
 }
 
+export function researchTickSize(price) {
+  const p = finite(price);
+  if (!(p > 0)) return null;
+  if (p < 10) return 0.01;
+  if (p < 50) return 0.05;
+  if (p < 100) return 0.1;
+  if (p < 500) return 0.5;
+  if (p < 1000) return 1;
+  return 5;
+}
+
+function median(values) {
+  const xs = values.filter(Number.isFinite).sort((a, b) => a - b);
+  if (!xs.length) return null;
+  const mid = Math.floor(xs.length / 2);
+  return xs.length % 2 ? xs[mid] : (xs[mid - 1] + xs[mid]) / 2;
+}
+
+function zoneVersionFromAnchors({ anchors, scaleName, version, createdAt, atrAtCreation, atrWidthMultiple }) {
+  const prices = anchors.map(x => x.pivotPrice);
+  const center = median(prices);
+  const tick = researchTickSize(center);
+  const tickFloorWidth = tick === null ? 0 : 2 * tick;
+  const atrToleranceWidth = Number.isFinite(atrAtCreation) ? atrWidthMultiple * atrAtCreation : 0;
+  const constituentDispersionWidth = Math.max(...prices.map(x => Math.abs(x - center)));
+  const halfWidth = Math.max(tickFloorWidth, atrToleranceWidth, constituentDispersionWidth);
+  return {
+    zoneId: stableHash({
+      scaleName,
+      seed: anchors.slice(0, 2).map(x => [x.pivotAt, x.confirmedAt, x.pivotPrice])
+    }).slice(0, 20),
+    scaleName,
+    version,
+    createdAt,
+    center,
+    lower: center - halfWidth,
+    upper: center + halfWidth,
+    halfWidth,
+    widthComponents: {
+      tickFloorWidth,
+      atrToleranceWidth,
+      constituentDispersionWidth
+    },
+    touchCount: anchors.length,
+    anchorPivotDates: anchors.map(x => x.pivotAt),
+    anchorConfirmedDates: anchors.map(x => x.confirmedAt),
+    anchorPrices: prices,
+    immutable: true,
+    researchOnly: true,
+    decisionImpact: false
+  };
+}
+
+// Frozen-zone prototype from confirmed swing highs.
+// Compatibility is based on overlap of contemporaneous anchor tolerance with the
+// latest immutable zone version. Later touches create successor versions.
+export function buildFrozenResistanceZoneVersions({
+  bars,
+  swings,
+  asOfDate,
+  scaleName = "BASE",
+  lookbackSessions = 120,
+  atrPeriod = 20,
+  atrWidthMultiple = 0.25,
+  minTouches = 2
+} = {}) {
+  const validated = barsAsOf(bars, asOfDate);
+  if (!validated.usable) return { status: validated.status, reason: validated.reason, zones: [], versions: [] };
+  const series = validated.bars;
+  const indexByDate = new Map(series.map((x, i) => [x.date, i]));
+  const endIndex = series.length - 1;
+  const startIndex = Math.max(0, endIndex - Math.max(1, Number(lookbackSessions) || 120) + 1);
+
+  const highs = (Array.isArray(swings) ? swings : [])
+    .filter(x => x?.type === "HIGH" && x.confirmedAt <= asOfDate && indexByDate.has(x.pivotAt) && indexByDate.has(x.confirmedAt))
+    .filter(x => indexByDate.get(x.pivotAt) >= startIndex)
+    .map(x => ({ ...x, pivotPrice: Number(x.pivotPrice) }))
+    .filter(x => Number.isFinite(x.pivotPrice) && x.pivotPrice > 0)
+    .sort((a, b) => a.confirmedAt.localeCompare(b.confirmedAt) || a.pivotAt.localeCompare(b.pivotAt));
+
+  const candidates = [];
+  const versions = [];
+
+  for (const high of highs) {
+    const confirmedIndex = indexByDate.get(high.confirmedAt);
+    const atr = simpleAtrBeforeIndex(series, confirmedIndex, atrPeriod);
+    const tick = researchTickSize(high.pivotPrice);
+    if (!(atr > 0) || tick === null) continue;
+    const anchorHalfWidth = Math.max(2 * tick, atrWidthMultiple * atr);
+    const anchorLower = high.pivotPrice - anchorHalfWidth;
+    const anchorUpper = high.pivotPrice + anchorHalfWidth;
+
+    let chosen = null;
+    for (const candidate of candidates) {
+      const current = candidate.current;
+      const overlaps = anchorLower <= current.upper && anchorUpper >= current.lower;
+      if (!overlaps) continue;
+      const distance = Math.abs(high.pivotPrice - current.center);
+      if (!chosen || distance < chosen.distance) chosen = { candidate, distance };
+    }
+
+    if (!chosen) {
+      candidates.push({
+        anchors: [high],
+        current: {
+          center: high.pivotPrice,
+          lower: anchorLower,
+          upper: anchorUpper,
+          touchCount: 1
+        },
+        nextVersion: 1
+      });
+      continue;
+    }
+
+    const candidate = chosen.candidate;
+    candidate.anchors = [...candidate.anchors, high];
+    const next = zoneVersionFromAnchors({
+      anchors: candidate.anchors,
+      scaleName,
+      version: candidate.nextVersion,
+      createdAt: high.confirmedAt,
+      atrAtCreation: atr,
+      atrWidthMultiple
+    });
+    candidate.nextVersion += 1;
+    candidate.current = next;
+    if (next.touchCount >= minTouches) versions.push(next);
+  }
+
+  const latestByZone = new Map();
+  for (const version of versions) latestByZone.set(version.zoneId, version);
+  return {
+    status: "VALID",
+    reason: null,
+    scaleName,
+    lookbackSessions,
+    atrPeriod,
+    atrWidthMultiple,
+    minTouches,
+    zones: [...latestByZone.values()],
+    versions
+  };
+}
+
 export function buildResistanceZones(swings, {
   tolerancePct = 0.015,
   minTouches = 2
