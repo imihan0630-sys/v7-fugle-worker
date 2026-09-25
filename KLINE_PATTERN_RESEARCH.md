@@ -585,3 +585,45 @@ The RFE study explicitly removed ex-right/ex-dividend observations because adjus
 Candlestick lane remains DATA_BLOCKED for system-wide historical validation until historical OPEN and corporate-action-aware data are available.
 Definitions can be frozen now; performance testing must wait for data readiness.
 
+
+
+## DL-002G — Evidence Tiers by Pattern Family
+
+### Tier 1 — direct academic evidence that chart topology can contain information
+Strongest general evidence:
+- Lo, Mamaysky & Wang (Journal of Finance, 2000): automatic, systematic chart-pattern recognition using nonparametric kernel regression; several patterns including double-bottom/head-and-shoulders families showed conditional return distributions different from unconditional returns in U.S. stocks.
+- Wang & Chan (Expert Systems with Applications, 2007): bull-flag template matching tested on NASDAQ and Taiwan Weighted Index; better template fit was associated with better average returns, especially in TWI according to the reported results.
+
+Interpretation:
+There is credible support for researching topology/shape numerically. It does NOT prove every named chart pattern has alpha.
+
+### Tier 2 — Taiwan-specific candlestick evidence, but specification-sensitive
+- Multiple pre-2010 Taiwan studies find some candlestick information.
+- Results vary materially by pattern universe, trend definition, entry/exit method and corporate-action treatment.
+- This lane deserves testing, but requires strong pre-registration and modern-regime validation.
+
+### Tier 3 — popular practitioner patterns with weaker direct academic validation
+Cup-with-handle:
+- well-defined in technical-analysis/practitioner literature (prior trend, rounded cup, similar rim highs, shallow handle, breakout),
+- but direct peer-reviewed evidence on its standalone expectancy is much thinner than the evidence for generic pattern-recognition methods.
+- Use morphology as a research hypothesis, not a presumed profitable rule.
+
+VCP:
+- conceptually attractive because sequential volatility contraction + supply dry-up may encode tightening supply,
+- but direct academic validation of the named VCP formulation is weak/limited.
+- Its strongest justification for our system is mechanistic and incremental: current Formal has generic contraction but not a sequence of shrinking confirmed swing legs.
+
+### Research priority implication
+Priority should not equal popularity.
+Proposed evidence-weighted order:
+1. repaint-safe swing topology / double-bottom / flag-type continuation structures,
+2. VCP as a new-topology hypothesis,
+3. cup/handle as multi-month morphology hypothesis,
+4. candlestick sequences as contextual modifiers after data readiness,
+5. Sakata names as interpretability labels, not privileged factors.
+
+### Promotion discipline
+A Tier-3 pattern can still become valuable if prospective Taiwan Shadow evidence is strong and incremental.
+A Tier-1 pattern can still fail in the current Taiwan regime.
+External literature sets prior plausibility; our as-of-date prospective evidence decides whether a pattern deserves later Formal review.
+
