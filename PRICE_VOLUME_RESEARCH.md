@@ -6655,3 +6655,636 @@ into a stock PV score.
 Use them only to test whether the same stock PV state behaves differently under different market derivative states.
 
 Status: DERIVATIVES-PV OWNERSHIP FROZEN.
+
+# PV-118 — Unified Volume-Origin Taxonomy
+
+## Why a taxonomy is needed
+A high-RVOL observation answers only:
+“How much participation occurred relative to history?”
+
+It does not answer:
+“Why did the participation occur?”
+
+The same 3x RVOL can arise from very different mechanisms with different persistence and risk implications.
+
+## Canonical origin classes
+
+### O1 — STOCK_SPECIFIC_INFORMATION
+Examples:
+- earnings / revenue / material information;
+- company-specific order/customer/product news;
+- firm-specific regulatory/corporate event.
+
+Interpretation:
+potentially information-driven, but public-news coverage is incomplete and “no news found” is not evidence of no information.
+
+### O2 — DISCRETIONARY_DIRECTIONAL_FLOW
+Examples:
+- foreign cash-equity buying/selling;
+- investment-trust buying/selling;
+- dealer proprietary inventory decisions.
+
+Interpretation:
+participant appears to be making a directional cash-market allocation, but motive is still not directly observable.
+
+### O3 — MECHANICAL_HEDGE_FLOW
+Examples:
+- dealer warrant/option hedge;
+- single-stock derivative hedge;
+- inventory delta adjustment.
+
+Interpretation:
+real cash demand/supply can persist, but motive is mechanical risk management rather than necessarily fundamental conviction.
+
+### O4 — PASSIVE_BASKET_FLOW
+Examples:
+- index addition/deletion/weight change;
+- passive ETF/index tracking;
+- creation/redemption basket activity;
+- benchmark closing execution.
+
+Interpretation:
+common/basket demand rather than necessarily stock-specific information.
+
+### O5 — LEVERAGE_CROWDING_FLOW
+Examples:
+- margin financing build-up/unwind;
+- margin short build/cover;
+- actual SBL short-sale flow;
+- squeeze/deleveraging.
+
+Interpretation:
+describes leveraged positioning, disagreement and forced-flow risk.
+
+### O6 — MARKET_STRUCTURE_DISTORTION
+Examples:
+- disposition periodic auctions;
+- price-limit censoring;
+- volatility interruption/reopening;
+- opening/closing auction mixture;
+- corporate-action reference-price issues.
+
+Interpretation:
+observed volume/price timing is mechanically altered; clean PV comparability may be invalid.
+
+### O7 — COMMON_FACTOR_FLOW
+Examples:
+- broad market risk-on/off;
+- sector-wide activity;
+- index-derivative expiry/settlement;
+- macro shock.
+
+Interpretation:
+participation is real but may contain little stock-specific information.
+
+### O8 — LIQUIDITY_TRANSFER / NEGOTIATED_FLOW
+Examples:
+- block trade;
+- large ownership transfer;
+- negotiated after-hours trade.
+
+Interpretation:
+can contain information or temporary liquidity demand; do not infer one sign.
+
+### O9 — RETAIL_SHORT_HORIZON_ACTIVITY
+Examples:
+- odd-lot activity;
+- day trading;
+- high transaction-count churn.
+
+Interpretation:
+attention/short-horizon participation context, not automatically dumb-money or reversal.
+
+### O10 — UNKNOWN_OR_MIXED
+Default when several mechanisms are plausible or evidence is insufficient.
+
+## Multi-origin rule
+One observation may have multiple simultaneous origin tags.
+
+Example:
+an index-addition effective session may also have:
+- foreign directional flow;
+- passive basket flow;
+- dealer hedge flow;
+- broad market volume shock.
+
+Do not force one mutually exclusive cause.
+
+## Ownership
+Each specialized research lane owns its causal evidence:
+- PV: abnormal participation / price response / acceptance;
+- Institutional: cash investor-type flow;
+- Leverage/Shorting: financing / SBL;
+- Passive Flow: index/ETF events;
+- Derivatives: expiry/risk state;
+- Microstructure: auction/VI/order-book mechanics.
+
+PV consumes origin context; it does not duplicate every source model.
+
+Status: UNIFIED_VOLUME_ORIGIN_TAXONOMY_FROZEN.
+
+
+# PV-119 — Attribution Confidence: Never Claim Causality More Strongly Than the Evidence
+
+## Core rule
+An origin tag is not the same as a causal conclusion.
+
+The system must carry:
+- `originClass`
+- `attributionConfidence`
+- `evidenceType`
+- `evidenceTimestamp`
+- `coverageState`
+
+## Confidence levels
+
+### AC0 — UNKNOWN
+No reliable origin evidence.
+
+Allowed language:
+- “origin unknown”
+- “multiple mechanisms possible”
+
+### AC1 — CONTEXT_PRESENT
+A known event/regime overlaps the PV observation, but no direct flow amount links it to the stock move.
+
+Examples:
+- MSCI effective date;
+- derivatives expiry day;
+- attention status;
+- broad market shock.
+
+Allowed language:
+- “index-rebalance context present”
+- “expiry context present”
+
+Forbidden:
+- “the volume was caused by the rebalance.”
+
+### AC2 — DIRECT_RELATED_FLOW_OBSERVED
+A same-date, same-symbol official flow variable is observed.
+
+Examples:
+- dealer hedge net flow;
+- dealer proprietary net flow;
+- actual SBL short-sale flow;
+- official day-trading volume.
+
+Allowed language:
+- “dealer hedge flow was elevated alongside the volume event.”
+
+Still forbidden:
+- “dealer hedging caused X% of the volume”
+unless gross compatible flow attribution is directly measured.
+
+### AC3 — QUANTIFIED_CONTRIBUTOR
+A directly compatible gross flow/share can be quantified against the same-scope denominator.
+
+Examples only when source semantics genuinely match:
+- official day-trading volume / official total compatible volume;
+- directly reported block-trade volume / compatible total volume.
+
+Allowed language:
+- “at least/approximately X% of compatible reported activity was in category Y,”
+with provenance and scope caveats.
+
+### AC4 — CAUSAL_IDENTIFICATION
+Reserved for research designs with credible causal identification or direct tagged execution data.
+
+Not available from ordinary production market data in the current system.
+
+## Net-flow warning
+Net buy/sell is NOT gross participation share.
+
+For example:
+dealer hedge net +5,000 shares does not mean dealer hedge generated only 5,000 shares of turnover; gross buys and sells may be much larger.
+
+Therefore:
+- net flow supports AC2;
+- do not convert net/volume into a causal “share of volume” without validating the construct.
+
+## Multiple-origin output
+If several AC1/AC2 origins coexist:
+report:
+`MIXED_ORIGIN_CONTEXT`
+rather than selecting a winner.
+
+Status: ATTRIBUTION_CONFIDENCE_FROZEN / CAUSAL_OVERCLAIM_PROHIBITED.
+
+
+# PV-120 — Volume-Origin Source Readiness Matrix
+
+## Purpose
+Separate:
+- source exists;
+- source is integrated;
+- source is point-in-time safe;
+- source is historically available;
+- source is cheap enough to use.
+
+### Core PV 15m OHLCV
+Source: Fugle historical/live candles.
+Current integration: YES.
+Point-in-time: YES under completed-bar rules.
+Historical baseline: YES for documented modern window.
+Incremental live API cost: zero in v0.1 because existing Formal 15m frame is reused.
+Readiness: READY / DATA_QA.
+
+### Dealer proprietary vs hedge
+TWSE official data explicitly publish Dealers (Proprietary) and Dealers (Hedge); TWSE E-Shop daily investor detail is generated at 18:00 excluding block trades and 20:00 including block trades. Current Worker already fetches an official T86-style payload but stores combined dealerNet only.
+TPEx official institutional page likewise publishes proprietary, hedge and combined dealer flows.
+
+Sources:
+- TWSE investor daily detail production/data fields:
+  https://eshop.twse.com.tw/en/product/detail/6edec1b6e62345cb9f1244acbbcefae0
+- TPEx institutional daily page:
+  https://www.tpex.org.tw/web/stock/3insti/daily_trade/3itrade_hedge_result.php?l=zh-tw&o=htm
+
+Current integration:
+- payload available;
+- split fields not persisted by current Formal institution snapshot.
+
+Incremental API cost:
+expected zero if parsed from existing payload.
+
+Readiness:
+HIGH / BEST NEXT TIER2 CAPTURE CANDIDATE.
+
+### TWSE attention/disposition
+Official TWSE daily attention/disposition data exist; Data E-Shop production is 19:00. Current research layer already captures TWSE attention/disposition context.
+
+Source:
+https://eshop.twse.com.tw/en/product/detail/23b52f831197436b9ac497cec4a92bb0
+
+Readiness:
+READY AS RESEARCH CONTEXT.
+
+### TPEx attention/disposition
+Official TPEx public query pages exist:
+- attention history from 2002;
+- disposition history from 2003-era coverage.
+TPEx E-Data Shop produces attention/disposition files daily at 22:00.
+
+Sources:
+- https://www.tpex.org.tw/zh-tw/announce/market/attention.html
+- https://www.tpex.org.tw/zh-tw/announcement/mainboard/disposal.html
+- https://eshop.tpex.org.tw/en/product/detail/2c92e013922929930192b2923ce703fd
+
+Current production integration:
+NOT captured in V8.7.11 research layer; currently recorded as UNKNOWN_TPEX_*.
+
+Readiness:
+SOURCE_AVAILABLE / INTEGRATION_GAP.
+
+### TWSE actual short/SBL state
+TWSE Daily Short Sale Balances (TWT93U) production time is 23:30 and includes margin short and SBL short flows/balances/quotas.
+
+Source:
+https://eshop.twse.com.tw/en/product/detail/000000006e0bbe8d016f183dc3be033a
+
+Current scan:
+23:35, leaving a narrow nominal availability buffer.
+
+Current research integration:
+TWSE actual SBL-short evidence exists in V8.7.11 research layer.
+
+Readiness:
+SOURCE_READY / TIMING_FRAGILE / MUST FAIL OPEN.
+
+### TPEx margin/SBL state
+TPEx E-Data Shop Margin_SBL.csv production time: 22:00; history begins 2006-01-02.
+
+Source:
+https://eshop.tpex.org.tw/en/product/detail/2c92e013922929930192b293cae303ff
+
+Current V8.7.11 integration:
+TPEx SBL/margin still UNKNOWN/not captured.
+
+Readiness:
+SOURCE_EXISTS / INTEGRATION-LICENSING-ACCESS GAP.
+
+### Day-trading volume
+TWSE security-level day-trading statistics are generated at 20:00 and include day-trading volume and buy/sell values.
+
+Source:
+https://eshop.twse.com.tw/en/product/detail/0000000071aa258c01725a782bd4008f
+
+TPEx day-trading research remains source/finality-sensitive and should not be assumed symmetric without a verified comparable file.
+
+Readiness:
+TWSE SOURCE_READY / TPEx NEEDS PARITY AUDIT.
+
+### Daily transaction count
+TWSE daily quote data include transaction count and are generated multiple times after close.
+Existing daily-source family already makes daily count a low-cost research candidate.
+
+Source:
+https://eshop.twse.com.tw/en/product/detail/ef7b7785e2cb4793baca3644c8a74d4e
+
+Readiness:
+HIGH / LOW INCREMENTAL COST.
+
+### Block-trade origin
+Official market sources exist, but the current PV pipeline does not have a verified per-symbol block-share dataset joined point-in-time.
+
+Readiness:
+SOURCE FAMILY EXISTS / NOT INTEGRATED / MEDIUM PRIORITY.
+
+### Passive/index rebalance
+Existing Passive Flow lane has event clocks and partial constituent/AUM maps, but closing-auction-specific microdata remain missing.
+
+Readiness:
+EVENT CONTEXT PARTIAL / FLOW QUANTIFICATION DATA-GATED.
+
+### Derivatives expiry
+Official expiry/calendar and settlement mechanics are available.
+Stock-specific causal flow attribution usually is not.
+
+Readiness:
+CONTEXT READY / CAUSAL ORIGIN LOW CONFIDENCE.
+
+## Readiness categories
+- READY: integrated and point-in-time semantics frozen.
+- SOURCE_READY: authoritative source exists but production integration incomplete.
+- PARTIAL: event/source exists but key quantities missing.
+- DATA_GATED: needed data not currently available at required granularity.
+- UNKNOWN: source semantics unresolved.
+
+Status: SOURCE_READINESS_MATRIX_V1_FROZEN.
+
+
+# PV-121 — Residual RVOL and Origin Context Solve Different Problems
+
+## Definitions
+Raw RVOL asks:
+“Is this stock unusually active relative to itself?”
+
+Market/sector residual RVOL asks:
+“Is the stock unusually active relative to the common activity around it?”
+
+Origin context asks:
+“What mechanisms plausibly contributed to that activity?”
+
+They are complementary, not interchangeable.
+
+## Decision table
+
+### Raw high + residual high + no mechanical context
+Interpretation candidate:
+more stock-specific participation.
+
+Still not proof of private/fundamental information.
+
+### Raw high + residual low
+Interpretation:
+activity is largely common with market/sector.
+
+Possible causes:
+- macro event;
+- sector theme;
+- index/expiry flow.
+
+### Raw high + residual high + direct dealer-hedge AC2
+Interpretation:
+stock-specific abnormality exists, with dealer hedge flow observed.
+
+Do not subtract dealer net from volume; net flow is not gross turnover.
+
+### Raw high + residual low + index-effective AC1
+Interpretation:
+common/passive-flow explanation becomes more plausible.
+
+### Raw normal + residual high
+Possible when the whole market is abnormally quiet.
+Interpretation:
+stock is relatively active despite normal own-history volume.
+
+This can be informative and demonstrates why raw/residual views should coexist.
+
+## No double-count scoring
+Do not award:
++1 raw RVOL
++1 residual RVOL
++1 sector strength
++1 passive-flow context
+
+as if independent.
+
+Instead use a latent description:
+`PARTICIPATION_SPECIFICITY_STATE`
+
+Candidate states:
+- STOCK_SPECIFIC_ELEVATION
+- COMMON_ACTIVITY_ELEVATION
+- RELATIVE_RESILIENCE
+- MIXED
+- UNKNOWN
+
+No Formal score.
+
+Status: RAW_RESIDUAL_ORIGIN_ORTHOGONALITY_FROZEN.
+
+
+# PV-122 — PV-H005 Dealer Proprietary vs Hedge Capture/Test Protocol
+
+## Objective
+Test whether current combined dealerBuyDays mixes two materially different mechanisms:
+- directional dealer proprietary flow;
+- mechanical hedge flow.
+
+No Formal change.
+
+## Data capture
+For every official institution snapshot date/symbol, research schema should preserve:
+
+### Core
+- marketDate
+- symbol
+- sourceMarket
+- sourceEndpoint/sourceFamily
+- capturedAt
+- sourceDate
+- schemaVersion
+- decisionImpact=false
+
+### Dealer split
+- dealerProprietaryBuy
+- dealerProprietarySell
+- dealerProprietaryNet
+- dealerHedgeBuy
+- dealerHedgeSell
+- dealerHedgeNet
+- dealerCombinedBuy
+- dealerCombinedSell
+- dealerCombinedNet
+
+### Other institutional controls
+- foreignNet
+- trustNet
+- institutionTotalNet
+
+## Integrity tests
+1. numeric fields must be present; missing != 0.
+2. combined dealer net must reconcile to proprietary+hedge net within exact source semantics.
+3. source date must equal marketDate.
+4. market coverage TWSE/TPEx reported separately.
+5. duplicate symbol/date rejected.
+6. no backfill from future snapshots into earlier decision dates.
+
+## Derived research features
+- propBuyDays
+- hedgeBuyDays
+- combinedBuyDays
+- propSellDays
+- hedgeSellDays
+- propVsHedgeSignState:
+  - SAME_POSITIVE
+  - SAME_NEGATIVE
+  - PROP_BUY_HEDGE_SELL
+  - PROP_SELL_HEDGE_BUY
+  - MIXED_ZERO
+  - UNKNOWN
+- hedgeDominance:
+  descriptive only; use gross-compatible measures where available, not net/volume as causal share.
+
+## Primary comparison
+On existing selected/control cohorts:
+
+A. current combined dealer streak
+B. proprietary-only streak
+C. hedge-only streak
+D. foreign/trust only
+E. combined institutional rule with proprietary dealer substituted for combined dealer
+
+Do not alter actual Formal selection.
+
+## Outcomes
+- D1/D3/D5 return
+- MFE/MAE
+- structural false-confirmation
+- stop-first where applicable
+- selected-name scarcity counterfactual
+- capital-utilization counterfactual
+
+## Controls
+- scan date cluster
+- market
+- sector
+- liquidity
+- price tier
+- market regime
+- current PV acceptance/participation
+- passive-flow context
+- derivatives-expiry context
+- attention/disposition
+- leverage/short context where coverage allows.
+
+## Falsification
+PV-H005 fails promotion if:
+- proprietary-only does not add incremental information over combined;
+- hedge flow is equally/more predictive;
+- differences disappear after sector/regime/liquidity controls;
+- result is concentrated in warrant-heavy names only without broader stability;
+- replacing combined dealer flow materially worsens candidate scarcity/capital utilization;
+- TWSE/TPEx effects disagree under adequate coverage.
+
+## Governance
+Initial capture can be research-only with zero extra API calls if the existing payload is reused.
+Any change to Formal dealerBuyDays is Class C and requires separate owner approval after evidence.
+
+Status: PV-H005 PROTOCOL FROZEN / CAPTURE NOT YET IMPLEMENTED.
+
+
+# PV-123 — Correction to PV-111: TPEx Disposition Is an Integration Gap, Not a Source-Availability Gap
+
+PV-111 correctly identified that V8.7.11 currently records TPEx disposition/attention as UNKNOWN.
+
+However, official TPEx public sources do exist.
+
+Therefore the precise statement is:
+- **production research coverage gap**: YES;
+- **authoritative source absent**: NO.
+
+This matters because the remedy is data integration/provenance work, not abandoning TPEx parity.
+
+Current safe rule remains:
+UNKNOWN != NOT_DISPOSITION.
+
+Status: PV-111 QUALIFIED / SOURCE EXISTS.
+
+
+# PV-124 — Origin Attribution Should Usually Be a Set, Not a Single Label
+
+## Problem
+Market activity commonly has simultaneous mechanisms.
+
+Example:
+MSCI effective day + dealer hedge buying + high foreign cash buying + broad market rally.
+
+Selecting one “cause” destroys information and creates false certainty.
+
+## Representation
+Store:
+`originEvidence[]`
+
+Each item:
+- originClass
+- confidence
+- direction if directly observed
+- grossOrNet
+- source
+- asOf
+- scope
+- notes
+
+Then derive:
+- highestConfidence
+- originCount
+- hasMechanicalContext
+- hasStockSpecificFlowContext
+- hasMarketStructureDistortion
+- mixedOrigin=true/false
+
+## Prohibited field
+Do not create:
+`primaryCause = "ETF"`
+unless AC4 causal identification exists.
+
+## Human-facing output
+Preferred:
+“爆量同時出現：指數調整背景（AC1）、自營商避險買超（AC2）；無法判定單一主因。”
+
+Status: MULTI-EVIDENCE ORIGIN MODEL FROZEN.
+
+
+# PV-125 — Abstention Is a Valid Research Output
+
+## Principle
+A mature system should sometimes say:
+“we do not know what caused the volume.”
+
+This is better than forcing:
+- accumulation;
+- distribution;
+- smart money;
+- retail chase;
+- hedge flow.
+
+## Required abstention cases
+- conflicting AC2 flow directions;
+- only AC1 event context;
+- poor source coverage;
+- TPEx disposition unknown;
+- corporate-action/price-limit/auction confounders;
+- common-factor activity without stock-specific evidence.
+
+## Research benefit
+Abstention rate itself is measurable:
+- what fraction of high-RVOL events can be meaningfully decomposed?
+- does higher attribution confidence improve outcome interpretation?
+- do low-confidence events have noisier MFE/MAE?
+
+Potential future hypothesis:
+higher origin-attribution confidence improves explanatory stability, not necessarily directional alpha.
+
+Status: ABSTENTION_ALLOWED / FORCED_CAUSAL_LABELS_PROHIBITED.
