@@ -64,6 +64,62 @@ export function compareShadowParentReferences(a, b) {
   };
 }
 
+export function validatePatternSeriesEnvelope({
+  role,
+  semanticSpace,
+  bars,
+  provenance = {},
+  requireOpen = false
+} = {}) {
+  const normalizedRole = String(role || "");
+  const normalizedSpace = String(semanticSpace || "");
+  const sourceId = String(provenance?.sourceId || "");
+  const payloadHash = String(provenance?.payloadHash || "");
+
+  if (!["GEOMETRY", "RAW_EXECUTION"].includes(normalizedRole)) {
+    return { usable:false, status:"BLOCKED", reason:"SERIES_ROLE_UNKNOWN" };
+  }
+  if (!sourceId || !payloadHash) {
+    return { usable:false, status:"BLOCKED", reason:"SOURCE_PROVENANCE_INCOMPLETE" };
+  }
+  if (provenance?.pointInTimeEligible !== true) {
+    return { usable:false, status:"BLOCKED", reason:"POINT_IN_TIME_PROVENANCE_UNKNOWN" };
+  }
+
+  if (normalizedRole === "GEOMETRY" && normalizedSpace !== "TECHNICAL_CONTINUITY") {
+    return { usable:false, status:"BLOCKED", reason:"GEOMETRY_REQUIRES_TECHNICAL_CONTINUITY" };
+  }
+  if (normalizedRole === "RAW_EXECUTION" && normalizedSpace !== "RAW_EXECUTION") {
+    return { usable:false, status:"BLOCKED", reason:"EXECUTION_REQUIRES_RAW_EXECUTION" };
+  }
+
+  const requested = provenance?.requestedAdjustmentMode;
+  const returned = provenance?.returnedAdjustmentMode;
+  if (normalizedRole === "RAW_EXECUTION" &&
+      requested === false && returned === true) {
+    return { usable:false, status:"BLOCKED", reason:"ADJUSTMENT_MODE_MISMATCH" };
+  }
+
+  if (provenance?.corporateActionSemanticsReady !== true) {
+    return { usable:false, status:"BLOCKED", reason:"CORPORATE_ACTION_SEMANTICS_UNKNOWN" };
+  }
+
+  const barCheck = validatePatternBars({ bars, requireOpen });
+  if (!barCheck.usable) return barCheck;
+  return {
+    usable:true,
+    status:"VALID",
+    reason:null,
+    role:normalizedRole,
+    semanticSpace:normalizedSpace,
+    sourceId,
+    payloadHash,
+    pointInTimeEligible:true,
+    corporateActionSemanticsReady:true,
+    bars:barCheck.bars
+  };
+}
+
 export function validatePatternBars({ bars, requireOpen = false } = {}) {
   if (!Array.isArray(bars) || bars.length === 0) {
     return { usable: false, status: "BLOCKED", reason: "NO_BARS", bars: [] };
