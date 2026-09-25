@@ -253,3 +253,185 @@ Promotion requires:
 - no historical Shadow fabrication,
 - evidence of incremental value over the current Formal and Pattern Research feature set,
 - explicit owner approval for any Class C change.
+
+
+# PV-002 — Volume Dry-Up vs No Demand
+
+## Question
+When a stock pulls back on lower volume, is that constructive supply contraction or simply weak demand?
+
+## Evidence boundary
+There is no justification for treating “pullback + lower volume” as automatically bullish.
+The broader literature supports volume as information, but Lee & Swaminathan (2000) also show that the meaning of volume changes with return path and horizon. Taiwan evidence also shows high/low turnover relationships are horizon-dependent. Therefore this must be treated as a conditional state, not a one-bar slogan.
+
+## Constructive mechanism — supply dry-up
+A pullback can be constructive when:
+- the prior trend / relative strength remains intact;
+- price approaches an identified support or prior breakout level;
+- downside price progress becomes smaller while volume contracts;
+- range contracts and closes improve rather than repeatedly finishing at the low;
+- the stock remains liquid enough that “low volume” is not merely sparse trading;
+- sector / market context is not collapsing;
+- later demand reappears without requiring an excessive chase.
+
+Interpretation: fewer holders are willing to sell into the pullback, so less trading effort is required to stabilize price.
+
+## Opposing mechanism — no demand
+The same low-volume pullback can be weak when:
+- each rebound attempt occurs on equally low or lower volume;
+- closes deteriorate, support repeatedly fails, or price drifts down despite low volume;
+- the stock is structurally illiquid;
+- the sector is weakening and there is no relative-strength support;
+- price remains below broken support / neckline;
+- low volume follows a high-attention spike and reflects interest disappearing rather than supply drying up.
+
+Interpretation: sellers may not be aggressive, but buyers are absent too.
+
+## Research-only feature specification v0.1
+Define an as-of-date pullback segment from the latest confirmed local high / structural level.
+
+Candidate measurements:
+- `PULLBACK_VOLUME_RATIO`: mean/median volume during pullback divided by pre-pullback baseline.
+- `DOWN_BAR_VOLUME_RATIO`: volume on negative-return bars divided by baseline.
+- `PULLBACK_PRICE_SLOPE`: normalized decline per session.
+- `RANGE_CONTRACTION`: median true range in late pullback vs early pullback / ATR20.
+- `CLOSE_RECOVERY`: trend in close-location within the pullback.
+- `SUPPORT_HOLD_DISTANCE`: existing structure support distance / violation state.
+- `REBOUND_DEMAND_STATE`: prospective later state only; volume/price response when price attempts to turn up.
+- `LIQUIDITY_CONTEXT`: avgVolume20Lots, avgAmount20, spread/depth when available.
+- `SECTOR_RELATIVE_STATE`: current sector strength / residual RS context.
+
+### Candidate states
+- `SUPPLY_DRY_UP_CANDIDATE`: volume contracts + downside efficiency weakens + range contracts + support holds.
+- `NO_DEMAND_RISK`: volume contracts but price/close structure deteriorates or rebounds fail to attract participation.
+- `AMBIGUOUS_LOW_VOLUME`: evidence insufficient; remain UNKNOWN-like research state.
+
+No state is a Formal buy/sell signal.
+
+## Bias controls
+- Do not define the pullback endpoint with future reversal information.
+- A dry-up candidate must be detectable as-of-date.
+- Rebound demand is a later confirmation state, not retroactive proof that the earlier pullback “was” constructive.
+- Do not use low volume as positive evidence for stocks failing existing liquidity requirements.
+- Compare incremental value against current A-channel `volumeTodayVsPrev5`, `volumeContraction5to20`, support distance, ret20, ATR, sector strength and Pattern Maturity.
+- Test failures as aggressively as successes.
+
+## Program relevance
+The current A-channel already accepts volume contraction. PV-002 is potentially valuable only if it separates two cases currently merged by the same gate:
+1. true constructive contraction;
+2. weak participation / no-demand drift.
+
+Status: WORTH_SHADOW_RESEARCH. Any later A-channel gate/ranking change would be Class C.
+
+
+# PV-003 — Breakout Volume Quality Is Probably Nonlinear
+
+## Question
+Should the system continue treating larger breakout volume as monotonically better up to the current cap?
+
+## Evidence
+Supporting continuation:
+- Gervais, Kaniel & Mingelgrin (2001) document a short-horizon high-volume return premium.
+- Taiwan abnormal-volume studies also find predictive information in unusual volume.
+
+Counter-evidence:
+- Lee & Swaminathan (2000) find high-volume winners can reverse faster over longer horizons.
+- Huang, Heian & Zhang (2011) argue high-volume shocks can arise from different mechanisms. Their evidence shows high-volume premiums are weaker/inconsistent in Asian markets, and high-volume shocks associated with overconfidence can produce inferior returns. Their U.S. evidence also finds stronger high-volume premiums when institutional ownership rises.
+- Disagreement research shows elevated trading volume can arise from belief dispersion rather than one-sided informed demand.
+- Therefore an extreme-volume breakout can mean strong information incorporation, disagreement, attention, overconfidence, or climax. Volume magnitude alone cannot identify which mechanism dominates.
+
+Sources:
+https://doi.org/10.1111/j.1475-6803.2010.01283.x
+https://doi.org/10.1016/j.iref.2014.11.012
+https://doi.org/10.1257/jep.21.2.109
+https://doi.org/10.1093/rapstu/raab008
+
+## Existing system interaction
+Current B-channel:
+- requires `volumeTodayVsPrev5 >= 1.3`;
+- increases `setupQuality` as `volumeTodayVsPrev5` rises until a cap;
+- already adds close-position and upper-shadow information.
+
+This is better than raw volume alone, but still embeds an approximately monotonic assumption inside the accepted range.
+
+## Research design v0.1
+Do not immediately replace the 1.3 threshold.
+First estimate the prospective response curve.
+
+Use:
+- current `volumeTodayVsPrev5`;
+- RVOL_20;
+- log-volume z-score;
+- trade-value RVOL;
+- breakout distance;
+- close location;
+- body/range efficiency;
+- upper-shadow ratio;
+- gap size;
+- ret20 / maDistance / lateStage;
+- institutional net activity normalized by average volume;
+- sector breadth / sector volume;
+- Pattern Maturity and false-break structure.
+
+Research breakout volume in pre-registered buckets or a smooth monotonicity diagnostic:
+- below-normal;
+- ordinary;
+- moderate expansion;
+- high expansion;
+- extreme tail.
+
+Bucket boundaries should be fixed from historical distribution quantiles or a training sample before holdout outcomes are inspected, not hand-tuned after seeing returns.
+
+## Key competing hypotheses
+H1 — confirmation:
+moderate/high RVOL + strong close + efficient range expansion + sector/institutional participation -> better continuation.
+
+H2 — climax:
+extreme RVOL + late-stage extension + gap/upper rejection + poor price progress -> worse remaining upside / faster reversal.
+
+H3 — disagreement/absorption:
+extreme RVOL + little price progress is ambiguous; it may be distribution OR strong absorption. Direction should remain unresolved until subsequent acceptance/failure evidence.
+
+H4 — quiet breakout:
+a lower-volume breakout may still work when supply is unusually scarce, but it may also be fragile. This is where Pattern Maturity, liquidity and retest acceptance become critical.
+
+## Proposed research outputs
+- D1/D3/D5/D10 returns by RVOL bucket.
+- MFE/MAE and stop-first.
+- breakout acceptance / close-back-inside-base rate.
+- retest-hold rate.
+- performance conditional on lateStage and market regime.
+- incremental value after current close-position and upper-shadow rules.
+- same-date pair comparisons where possible to reduce market-date confounding.
+
+## Program relevance
+A credible result could eventually justify replacing the monotonic B setup-volume reward with a contextual/nonlinear volume-quality term.
+That would be Class C and cannot be promoted automatically.
+
+Status: HIGH_PRIORITY_SHADOW_RESEARCH.
+
+
+# PV-004 — Sequence-Level Effort vs Result: first specification
+
+## Why sequences matter
+A single bar with high volume and little price progress is directionally ambiguous.
+A sequence can separate some cases without pretending certainty.
+
+Prospective event grammar:
+- `HV_STRONG_PROGRESS`: abnormal volume + strong directional progress.
+- `HV_STALLED`: abnormal volume + weak progress / rejection.
+- `LV_HOLD`: low relative volume + support/base holds.
+- `LV_DRIFT`: low relative volume + persistent adverse drift.
+- `ACCEPTANCE`: later close(s) remain beyond the structural level.
+- `FAILURE`: later close returns inside / through the broken level.
+
+Research sequence examples:
+- HV_STRONG_PROGRESS -> LV_HOLD -> renewed progress: possible healthy breakout/retest sequence.
+- HV_STALLED -> repeated HV_STALLED -> FAILURE: possible distribution/exhaustion sequence.
+- LV_HOLD -> rising price efficiency before volume expansion: possible quiet accumulation / low-supply state.
+- LV_DRIFT -> weak rebound demand -> support break: no-demand sequence.
+
+Critical rule:
+later states may update the live research lifecycle, but cannot be used to rewrite what the system knew at the original timestamp.
+
+Status: SPECIFIED_FOR_SHADOW_DESIGN.
