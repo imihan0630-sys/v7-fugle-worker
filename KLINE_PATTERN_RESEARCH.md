@@ -9362,3 +9362,89 @@ If it merely reacts after price breaks, it is redundant for selection.
 ### No Formal implication
 Any real exclusion/filter based on short flow would require later evidence and explicit approval.
 
+
+
+## DL-002DQ — Hurst / Fractal-Dimension Triage
+
+### Evidence
+Taiwan market research documents multifractal/multiscaling properties in TAIEX and large Taiwan stocks.
+However, methodological literature strongly warns:
+- finite random samples can produce Hurst estimates above 0.5;
+- estimator choice materially changes H;
+- short-range dependence can be mistaken for long memory;
+- H != 0.5 is not by itself evidence of exploitable predictability or market inefficiency.
+
+### Current status
+LOW_PRIORITY_DIAGNOSTIC.
+
+Do not add:
+- H > 0.5 => trend buy,
+- H < 0.5 => mean reversion,
+as trading rules.
+
+### Possible research use
+Only if later needed as a descriptive regime/complexity measure:
+- hurstEstimate
+- estimatorType
+- windowLength
+- confidenceBand / simulated null
+- stabilityAcrossEstimators
+
+### Redundancy
+Likely overlaps:
+- entropy
+- directional efficiency
+- volatility regime
+- autocorrelation
+- market state
+- swing persistence
+
+Must prove incremental value before experiment budget.
+
+## DL-002DR — Multifractality Is a Market Property, Not Automatically a Stock Signal
+
+### Distinction
+Evidence that returns are multifractal means scaling behavior can vary by horizon.
+It does NOT imply a specific bullish/bearish forecast for one stock.
+
+### Potential relevance
+Could support:
+- multi-scale modeling,
+- caution against one fixed horizon,
+- nonlinear relationships between volatility and pattern geometry.
+
+These ideas are already captured by:
+- MICRO/BASE/MAJOR swings,
+- multi-timeframe coherence,
+- variable-length phase features.
+
+### Conclusion
+No separate multifractal feature engineering is justified yet.
+
+## DL-002DS — Complexity Budget Triage Update
+
+HIGH PRIORITY:
+- swing topology
+- pattern maturity
+- zone geometry
+- failure/reclaim
+- volatility contraction trajectory
+- holder cost/overhang
+- event/regime/sector/flow interactions
+
+MEDIUM / PROSPECTIVE:
+- exact price-by-volume
+- dynamic order-book/trade-flow
+- Wyckoff observable motifs
+- shape similarity
+
+LOW:
+- Hurst/fractal dimension
+- Fibonacci
+- Elliott labels
+- generic Ichimoku
+- Renko duplicate representation
+
+Reason:
+research complexity must compete for limited sample size and multiple-testing budget.
+
