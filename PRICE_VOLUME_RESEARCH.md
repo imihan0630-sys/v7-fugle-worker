@@ -5089,4 +5089,321 @@ No Worker.js implementation is made in this research step.
 The implementation should begin only after the owner explicitly chooses to move from research specification to Class-A Shadow logging.
 
 Status: READY_TO_PROPOSE_CLASS_A_SHADOW / NOT_READY_FOR_FORMAL_OPTIMIZATION.
+# PV-083 — Statistical Evaluation Unit and Dependence Handling
+
+## Problem
+PV Shadow will generate many snapshots, but snapshots are not independent observations:
+- multiple 15m bars can belong to one abnormal-volume episode;
+- the same symbol can contribute repeated events;
+- many symbols on one market date share the same macro/market shock;
+- sector names can move together.
+
+Treating raw snapshot count as independent N would overstate evidence.
+
+## Primary analysis units
+
+### Event-level
+Primary for shock/confirmation questions:
+- one `eventKey` = one abnormal-participation episode;
+- first eligible anchor snapshot represents the event for initial-shock comparisons;
+- later snapshots describe persistence/retest/reacceleration but do not increase independent event count one-for-one.
+
+### Snapshot-level
+Allowed for state-transition analysis only.
+Inference must account for nesting within event/symbol/date.
+
+## Dependence controls
+Preferred order:
+1. same-date matched descriptive comparisons;
+2. event-level aggregation;
+3. date-block bootstrap / resampling;
+4. where sample size supports it, cluster by market date and account for repeated symbol/event observations.
+
+Avoid ordinary iid standard errors on raw 15m rows.
+
+## Date contamination
+Train/validation or exploratory/confirmation splits must be by date blocks, not random rows.
+A single market day must never appear in both sides through different stocks.
+
+## Event concentration report
+Every result must show:
+- raw snapshot count;
+- unique event count;
+- unique symbol count;
+- unique market-date count;
+- largest date share of events;
+- largest sector share of events.
+
+A large raw N with few dates remains weak evidence.
+
+## Research basis
+White's Reality Check formalizes data-snooping risk when the same data are repeatedly used for model selection/inference.
+Harvey, Liu & Zhu show that factor discovery requires much stronger multiple-testing discipline than conventional single-test significance.
+
+Sources:
+- https://doi.org/10.1111/1468-0262.00152
+- https://www.nber.org/papers/w20592
+- https://doi.org/10.1093/rfs/hhv059
+
+Status: DEPENDENCE_GOVERNANCE_FROZEN.
+
+
+# PV-084 — Effect Size, Stability and Calibration before Significance
+
+## Principle
+A tiny but statistically significant PV effect may be economically useless.
+A large effect with huge uncertainty may be interesting but not ready.
+
+Report both.
+
+## Primary descriptive effect sizes
+
+For binary structural failure:
+- absolute percentage-point difference;
+- relative risk ratio;
+- event counts in numerator/denominator.
+
+For continuous outcomes:
+- median MFE difference;
+- median MAE difference;
+- median return difference;
+- quantile differences, especially adverse tail MAE.
+
+Do not rely only on means because event outcomes are heavy-tailed.
+
+## Nested model A->E reporting
+The first prospective experiment compares:
+A context
+B + local previous-5 volumeRatio
+C + pvSlotRvol20
+D + pvCumvolPace20
+E + response/acceptance/guard states.
+
+For each increment report:
+- incremental false-confirmation discrimination;
+- incremental MFE/MAE separation;
+- coverage loss;
+- calibration if a probability model is actually fit;
+- regime/session stability.
+
+## Probability-model metrics — only if model fitting is introduced
+Use:
+- Brier score;
+- calibration curve / calibration slope;
+- log loss;
+- ROC-AUC only as a secondary ranking metric.
+
+AUC alone can improve while probability calibration remains poor.
+
+## Stability table
+At each predeclared milestone show:
+- full sample;
+- BULL/MIXED/BEAR;
+- open/mid/late observed session;
+- A vs B channel;
+- liquid vs less-liquid eligible tiers.
+
+Do not call a feature stable if the sign changes materially in well-covered subgroups.
+
+## Minimum economic interpretation
+No fixed universal “must improve X%” is imposed before data exist.
+Instead classify:
+- NO_MATERIAL_SEPARATION;
+- PROMISING_BUT_UNCERTAIN;
+- STABLE_INCREMENTAL_SEPARATION.
+
+Thresholds for actual trading utility belong to PV-086 / owner decision, not post-hoc statistical tuning.
+
+Status: EFFECT_SIZE_FIRST / P_VALUE_NOT_ENOUGH.
+
+
+# PV-085 — Multiple-Testing and Model-Comparison Governance
+
+## Why this matters
+The PV lane has deliberately studied many hypotheses. Even if only a few are implemented, repeatedly testing thresholds/variants on the same outcomes can manufacture a winner.
+
+White (2000) addresses data snooping.
+Harvey, Liu & Zhu (2016) show conventional t-statistic hurdles are inadequate after large-scale factor searches.
+Bailey & Lopez de Prado's Deflated Sharpe Ratio similarly adjusts performance interpretation for selection bias / multiple trials and non-normality.
+
+Sources:
+- https://doi.org/10.1111/1468-0262.00152
+- https://doi.org/10.1093/rfs/hhv059
+- https://papers.ssrn.com/abstract=2460551
+
+## Freeze the primary family
+V0.1 primary model comparisons are only:
+- A -> B
+- B -> C
+- C -> D
+- D -> E
+
+Primary outcome family:
+- structural false/no-follow-through defined in PV-058;
+- MFE/MAE are co-primary descriptive risk outcomes, not alternative ways to fish for a winner.
+
+All other Tier-2 features are secondary/exploratory until separately preregistered.
+
+## No threshold tournament
+Do not test:
+1.2 / 1.25 / 1.3 / 1.35 / 1.4...
+and then report only the best.
+
+V0.1 thresholds are frozen from existing system/research semantics.
+
+If later data suggest a threshold is poor:
+- document the finding;
+- define PV_SHADOW_V0_2 before testing the new threshold prospectively.
+
+## Multiple-comparison reporting
+If formal inferential p-values are reported:
+- identify the family of tests;
+- use a multiple-testing-aware adjustment or bootstrap procedure;
+- report unadjusted and adjusted results transparently.
+
+But promotion does not depend on p-value alone.
+
+## Research ledger
+Maintain a durable tested-hypothesis ledger:
+- hypothesis ID;
+- schema version;
+- first test date;
+- outcomes examined;
+- result;
+- promoted/rejected/archived.
+
+Failed tests stay visible.
+
+Status: TESTING_FAMILY_FROZEN / WINNER_PICKING_PROHIBITED.
+
+
+# PV-086 — Practical Utility: Avoid False Confirmations without Killing Good Setups
+
+## Core problem
+A PV modifier can reduce bad entries simply by blocking nearly everything.
+That is not useful.
+
+Therefore any future modifier must measure both:
+- adverse events avoided;
+- valid opportunities lost.
+
+## Define retrospective research labels
+For evaluation only:
+- `VALID_FOLLOW_THROUGH`: structure holds and predefined positive-progress criteria occur within the frozen horizon;
+- `ADVERSE_CONFIRMATION`: false re-entry / zone loss / high adverse excursion under frozen labels;
+- `AMBIGUOUS_OUTCOME`: neither clearly resolves within horizon.
+
+These are outcome labels, not live states.
+
+## Candidate filter evaluation
+If a future PV state were hypothetically used as a warning/filter, report:
+- adverse confirmations flagged / total adverse confirmations;
+- valid follow-throughs also flagged / total valid follow-throughs;
+- precision of the warning;
+- coverage / abstention rate;
+- opportunity-retention rate;
+- median MFE lost by filtered valid cases;
+- median MAE avoided in filtered adverse cases.
+
+## Pareto view
+Do not collapse this immediately into one score.
+
+Show the trade-off:
+- more risk avoided;
+- more valid opportunities sacrificed.
+
+The owner can later decide whether that trade-off fits the strategy's purpose.
+
+## Capital-utilization interaction
+Because the current system already suffers from sparse BUY signals / idle capital, a future PV rule that reduces bad entries by suppressing many valid entries may worsen the larger system objective.
+
+Therefore promotion analysis must also report:
+- BUY frequency impact;
+- zero-pick / idle-capital impact;
+- average days capital remains unused;
+- whether filtered cases later become RE-ADD / valid opportunities.
+
+## Important distinction
+A useful **risk observer** may never deserve to become an **entry veto**.
+It can remain diagnostic or require extra confirmation instead.
+
+Status: UTILITY_FRAMEWORK_FROZEN / NO_SINGLE_SCORE_YET.
+
+
+# PV-087 — Observer -> Modifier Promotion Gates
+
+## Current state
+Every PV feature/state is Level-0 OBSERVER.
+
+## Earliest possible promotion target
+The first thing that could ever be considered for Modifier status is not a generic “volume score.”
+
+It is the narrow intraday hypothesis:
+**same-slot RVOL / cumulative pace provides incremental confirmation-risk information beyond the current local previous-5 volumeRatio.**
+
+## Minimum evidence gates before a Modifier proposal can even be drafted
+
+### Gate 1 — Data integrity
+Pass all PV-067 / PV-081 tests.
+No unresolved:
+- look-ahead;
+- unit mismatch;
+- baseline contamination;
+- snapshot mutation;
+- Formal-isolation failure.
+
+### Gate 2 — Coverage
+Pass PV-024 prospective evidence stage.
+No promotion from the first ~50 DATA_QA events.
+At least reach a predeclared evidence milestone with enough unique dates/events to avoid one-date dominance.
+
+The 100/250/500 milestones are review points, not automatic pass thresholds.
+
+### Gate 3 — Incremental value
+C/D/E must add information after:
+- existing Formal context;
+- current local volumeRatio;
+- pattern/trend/RS/sector/institution/overheat context where applicable.
+
+Standalone correlation is insufficient.
+
+### Gate 4 — Stability
+Direction/effect must not be driven by:
+- one regime;
+- one sector;
+- one time-of-day phase;
+- one short date cluster.
+
+If sign genuinely differs by regime, the future Modifier must be regime-conditional rather than universal.
+
+### Gate 5 — Utility
+Risk reduction must be weighed against valid-opportunity suppression and capital utilization.
+
+A rule that “improves win rate” by nearly eliminating BUYs fails.
+
+### Gate 6 — Simplicity
+Prefer the smallest rule that captures the stable effect.
+If pvSlotRvol20 alone explains it, do not add five interacting fields.
+
+### Gate 7 — Fresh confirmation sample
+After any candidate rule is designed from accumulated Shadow data:
+- freeze it;
+- test on a later untouched date block;
+- do not use the design sample as the final proof.
+
+## Failure-to-promote conditions
+Keep as Observer or archive if:
+- no incremental value;
+- unstable sign;
+- benefit disappears out of sample;
+- coverage/latency/data cost is poor;
+- duplicate with existing Formal feature;
+- utility trade-off is unfavorable;
+- requires many tuned thresholds/interactions.
+
+## Veto remains separate
+Even a successful Modifier does not automatically become a VETO.
+Veto-level predictive authority would require a separate owner-approved Class C proposal and substantially stronger evidence.
+
+Status: PROMOTION_GOVERNANCE_FROZEN / ALL_PV_REMAINS_OBSERVER.
 
