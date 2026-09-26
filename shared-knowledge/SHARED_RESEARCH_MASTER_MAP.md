@@ -32,6 +32,10 @@ Existing detailed research remains in its current files; this map indexes it rat
 17. News/event half-life and beneficiary/victim transmission
 18. Strategy-regime interaction research
 
+## Shared inventory
+
+- `shared-knowledge/SHARED_RESEARCH_INVENTORY.md` is the cross-system domain/tag inventory. It points to original evidence without relocating it.
+
 ## Existing canonical anchors
 
 The current System 1 research corpus is the initial evidence base. Important anchors include:
@@ -67,4 +71,6 @@ SYSTEM2_CONNECTED = true
 HISTORICAL_RELOCATION_REQUIRED = false
 FORMAL_CORE_CHANGED = false
 
-Next task: inventory existing research modules into reusable shared tags without rewriting or losing original evidence.
+Inventory task completed in `shared-knowledge/SHARED_RESEARCH_INVENTORY.md`.
+
+Next task: map reusable lanes to exact machine-readable fields, missing fields, PIT availability and candidate System 2 factor IDs.
