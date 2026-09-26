@@ -30,7 +30,7 @@ assert.match(selection,/b\.setupQuality - a\.setupQuality \|\| b\.sectorFlow - a
 
 console.log(JSON.stringify({
   ok:true,
-  version:"8.13.0-priority-score-provenance-shadow",
+  version:runtimeVersion,
   class:"A",
   priorityScoreProspectiveProvenance:true,
   formalScoreWeightsFrozen:true,
