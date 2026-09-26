@@ -480,7 +480,23 @@ function scaled(bars, k) {
     volume: 1,
     turnover: 10_000
   }));
-  const out = classifyDeadLiquidityTightBase({ bars, tickSize: 0.05, minHealthyTurnover: 1_000_000 });
+  const continuousOnly = classifyDeadLiquidityTightBase({ bars, tickSize: 0.05 });
+  assert.equal(continuousOnly.status, "VALID");
+  assert.equal(continuousOnly.geometricTightness, null);
+  assert.equal(continuousOnly.tickDominanceHigh, null);
+  assert.equal(continuousOnly.liquidityQualityLow, null);
+  assert.equal(continuousOnly.healthyCompressionConfidence, "UNKNOWN_THRESHOLD_CONFIG");
+  assert.ok(continuousOnly.rangePct < 0.01);
+  assert.ok(continuousOnly.medianTicks <= 1.5);
+  assert.equal(continuousOnly.medianTurnover, 10_000);
+
+  const out = classifyDeadLiquidityTightBase({
+    bars,
+    tickSize: 0.05,
+    tightRangeThresholdPct: 0.01,
+    tickDominanceThreshold: 1.5,
+    minHealthyTurnover: 1_000_000
+  });
   assert.equal(out.geometricTightness, true);
   assert.equal(out.tickDominanceHigh, true);
   assert.equal(out.liquidityQualityLow, true);
@@ -495,10 +511,21 @@ function scaled(bars, k) {
     currentClose: 101.5,
     majorTolerancePct: 0.01
   });
+  assert.equal(out.status, "VALID");
   assert.equal(out.localBreakout, true);
   assert.equal(out.majorZoneConflict, true);
   assert.equal(out.nestedConflictState, "LOCAL_BREAKOUT_BELOW_MAJOR_ZONE");
   assert.ok(out.availableAirPct > 0 && out.availableAirPct < 0.01);
+
+  const unknownTolerance = classifyNestedResistance({
+    localResistance: 100,
+    majorZoneCenter: 103,
+    currentClose: 101.5
+  });
+  assert.equal(unknownTolerance.status, "BLOCKED");
+  assert.equal(unknownTolerance.reason, "MAJOR_ZONE_TOLERANCE_NOT_PREREGISTERED");
+  assert.equal(unknownTolerance.majorZoneConflict, null);
+  assert.equal(unknownTolerance.nestedConflictState, "UNKNOWN");
 }
 
 // C7 event-created gap breakout: overnight and intraday pieces remain separate.
