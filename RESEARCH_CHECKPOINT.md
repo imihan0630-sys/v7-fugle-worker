@@ -1071,3 +1071,27 @@ Updated: 2026-09-27 05:02 Asia/Taipei.
 - Durable artifacts: PRIORITY_SCORE_CALIBRATION_RESEARCH.md commit 6f754c3f4a70990fc8cbdee2e555151796b56c47; machine artifact research/priority_score_overlap_graph_v0_1.json commit 6f6793d429ab5da195e7489513f80e3da357be61.
 - No outcome lookup, threshold sweep, Formal change, Production deploy or new FORMAL_OPTIMIZATION_CANDIDATE. Structural overlap is confirmed; empirical materiality remains UNKNOWN.
 - Exact next continuation: audit which overlap metrics are already prospectively observable from V8.13/V8.14/V8.15 snapshots without runtime changes, especially first-differing-comparator incidence and score saturation. Freeze a research-only replay spec that removes one duplicated layer at a time while preserving the identical admitted candidate set. If historical candidate-set completeness is insufficient, mark historical replay UNKNOWN and use prospective Shadow only. Continue automatically into institutional/fundamental overlap or another evidence-ready lane rather than tuning weights.
+
+
+## B-188 — Signal-grade asymmetry + whole-system influence-layer map (2026-09-27 Asia/Taipei)
+- Formal channel labels and signal grades are different objects despite both using A/B letters: channel A=pullback, channel B=breakout; signalLevel A/B/C is derived ONLY from setupQuality (>=80 / >=65 / otherwise C rejected).
+- Signal grade ignores institutional/fundamental/sector/market-RS/RR and market-consensus inputs directly. It is therefore supported semantically only as a setup-quality grade, not an overall candidate-quality grade.
+- Structural asymmetry is exact:
+  - A raw qualifying setupQuality spans ~38–82, then the grade>=65 rule creates an extra effective A eligibility gate.
+  - B raw qualifying setupQuality spans ~69.65–100, so a valid B setup structurally cannot become C under current formulas.
+  - A-grade for channel A requires volumeTodayVsPrev5<=0.9 AND |pullbackPct-7|+supportDistancePct<=0.667; if volume>0.9, A channel cannot reach signal A because max setupQuality is 74.
+- Machine artifact `research/signal_grade_channel_asymmetry_v0_1.json` freezes the above without outcome data.
+- Whole-system influence map now proves nominal 28/14/16/14/14/14 PriorityScore weights are NOT total decision influence:
+  - setup also controls channel existence, C rejection, later setup tie-break and capital via PriorityScore;
+  - sector also has a hard gate and later sectorFlow tie-break;
+  - RR also has RR>=2 hard gate and raw RR tie-break;
+  - fundamentals also have data-count/quality hard gates;
+  - institutions have a conditional >=70 gate for 10–30bn market-cap exception;
+  - RS also has raw relativeStrength tie-break;
+  - market consensus overlays +0..7 into PriorityScore and has its own later comparator.
+- Post-consensus PriorityScore then acts again as first ranking key and as proportional planned-capital weight. Layer count is structural exposure, NOT a pseudo-weight or proof of harmful double-counting.
+- Machine artifact `research/formal_influence_layer_map_v0_1.json` freezes the decision-path map.
+- Capital-utilization cross-check prevents duplicate research: prior durable work already proves 35% per-name cap is not redistributed, but the dominant open hypotheses are BUY conversion/untriggered first tranche, second-tranche reserve and cash-state attribution. Cap redistribution alone is not promoted as a new optimization.
+- Required prospective work: gate attrition by factor, within-qualified incremental value, actual tie-break incidence, score-to-capital calibration, signal-grade calibration within channel, and discordant grade-vs-PriorityScore cells.
+- No threshold, grade label, gate, weight, comparator or capital rule changed. No FORMAL_OPTIMIZATION_CANDIDATE.
+- Exact next: audit ATR/volatility multi-layer influence because current Formal applies a 1–10% ATR gate and also feeds ATR into A/B stop geometry, which can indirectly change RR and ranking.
