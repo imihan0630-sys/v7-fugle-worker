@@ -121,6 +121,11 @@ export function validatePatternSeriesEnvelope({
     ];
     volumeSemanticSpace=String(provenance?.volumeSemanticSpace||"");
     volumePrecisionClass=String(provenance?.volumePrecisionClass||"");
+    const volumeSourceId=String(provenance?.volumeSourceId||"");
+    const volumePayloadHash=String(provenance?.volumePayloadHash||"");
+    if (!volumeSourceId || !volumePayloadHash) {
+      return { usable:false, status:"BLOCKED", reason:"VOLUME_SOURCE_PROVENANCE_INCOMPLETE" };
+    }
     if (!volumeSpaces.includes(volumeSemanticSpace)) {
       return { usable:false, status:"BLOCKED", reason:"VOLUME_SEMANTIC_SPACE_UNKNOWN" };
     }
@@ -165,6 +170,8 @@ export function validatePatternSeriesEnvelope({
     volumeSemanticSpace,
     volumePrecisionClass,
     volumeExactShareCount,
+    volumeSourceId:requireVolume===true ? String(provenance?.volumeSourceId||"") : null,
+    volumePayloadHash:requireVolume===true ? String(provenance?.volumePayloadHash||"") : null,
     shareUnitComparable:requireVolume===true ? true : null,
     bars:barCheck.bars
   };
