@@ -1409,4 +1409,279 @@ Do not compare their average returns as if the only difference were PV state.
 
 Status:
 DAILY_OUTCOME_COHORT_HETEROGENEITY_FROZEN.
+# PVE-079 — Intraday Baseline Cache Is Mutable; Snapshot Ratios Are Frozen but Denominators Are Not
+
+## Baseline table behavior
+`v7_pv_intraday_baselines` keeps one mutable row per symbol.
+
+`pvWriteBaseline` overwrites:
+- valid_sessions;
+- last_market_date;
+- slot_stats_json;
+- updated_at.
+
+This is expected for a rolling cache.
+
+## Snapshot behavior
+A PV snapshot freezes:
+- pvSlotRvol20;
+- pvCumvolPace20;
+- range/progress derived fields;
+- baselineAsOfDate;
+- coverage counts.
+
+But it does NOT freeze:
+- slotVolumeMedian20;
+- cumulativeVolumeMedian20;
+- slotRangeMedian20;
+- the exact baseline session/date list used for that feature.
+
+## Consequence
+After the baseline cache rolls or is rebuilt:
+the exact denominator behind an old stored ratio may no longer be reconstructable from the current baseline table alone.
+
+The stored ratio remains immutable evidence of what v0.1 computed,
+but independent denominator replay requires:
+- archived source candles;
+or
+- a future baseline-receipt/fingerprint design.
+
+## Analysis rule
+Use old ratios as recorded values only when their row-level quality/provenance passes.
+
+Do not claim:
+“we independently reproduced the old baseline median”
+from today's mutable cache unless a matching baseline vintage is available.
+
+Status:
+SNAPSHOT_RATIO_FROZEN / BASELINE_DENOMINATOR_VINTAGE_NOT_FROZEN.
+
+
+# PVE-080 — Baseline Session Provenance Can Change by Merge Source
+
+## Merge semantics
+`pvMergeBaselineSessions(existing,incoming)` inserts:
+1. existing sessions;
+2. incoming sessions.
+
+A same-marketDate incoming session overwrites the existing session in the Map.
+
+## Potential source paths
+A baseline session may originate from:
+- historical Fugle 15m bootstrap;
+- prospectively rolled observed session at the final 13:00 slot.
+
+But `pvWriteBaseline` stores one baseline-level source label:
+`FUGLE_HISTORICAL_15M`.
+
+It does not preserve per-session source/vintage.
+
+## Implication
+If a later bootstrap is performed while validSessions<20, historical incoming data can replace an already rolled same-date session.
+
+This is not automatically wrong:
+historical and live candle values may legitimately agree.
+
+But it means:
+- per-session acquisition provenance is not auditable;
+- provider revisions cannot be distinguished from original live observation;
+- baseline cache is not an immutable point-in-time archive.
+
+## Future clean design
+Per-session baseline receipt should include:
+- marketDate;
+- source mode: LIVE_ROLL / HISTORICAL_BOOTSTRAP;
+- fetchedAt;
+- source fingerprint;
+- slot coverage fingerprint.
+
+v0.1 does not provide this.
+
+Status:
+BASELINE_SESSION_PROVENANCE_COARSE.
+
+
+# PVE-081 — “Session” in v0.1 Baseline Means Observable PV Window, Not Full Exchange Day
+
+## Current roll condition
+`pvRollObservedSession` rolls a session when the latest PV bar is slot 13:00.
+
+Current monitor does not capture the 13:15-start bar or closing-auction activity.
+
+## Historical normalization
+Historical sessions are also reduced to the same `PV_SHADOW_OBSERVABLE_SLOTS`.
+
+Therefore the design is internally aligned:
+both live and historical PV baselines describe the observable window.
+
+## Required terminology
+Use:
+`PV_OBSERVABLE_SESSION`
+or:
+`09:00_TO_13:00_START_SLOT_WINDOW`
+
+Do not describe baseline `lastMarketDate` as proving a complete full-market-day 15m record through the close.
+
+## Benefit
+This is not a defect for H001/H002:
+same-slot comparison is deliberately restricted to the current monitor's observable window.
+
+It becomes a defect only if someone later interprets:
+- cumulative pace as full-day volume pace;
+- baseline session as including close-auction activity.
+
+Status:
+OBSERVABLE_WINDOW_SEMANTICS_FROZEN.
+
+
+# PVE-082 — Bootstrap Skip Has a Stale-Baseline Freshness Defect
+
+## Source audit
+`pvBootstrapSymbol` currently returns early when:
+- schemaVersion matches;
+- validSessions >= 20.
+
+It does NOT test:
+- lastMarketDate recency;
+- expected prior symbol session;
+- days since last monitored session;
+- per-slot last valid date.
+
+## Failure scenario
+1. Symbol A is monitored and receives >=20 cached sessions.
+2. Symbol A leaves the Formal monitored cohort for weeks/months.
+3. Its PV baseline is not rolled while unmonitored.
+4. Symbol A later re-enters the Formal plan.
+5. after-market bootstrap sees validSessions>=20 and skips refresh.
+6. next-day pvSlotRvol20 can compare current volume against an old historical window rather than the most recent prior sessions.
+
+## Why this matters
+The meaning of “RVOL20” is:
+recent 20 prior valid comparable sessions.
+
+A baseline with 20 old sessions is not equivalent to the recent 20-session baseline.
+
+## Distinct from B-130
+This is:
+`PV_INTRADAY_BASELINE_FRESHNESS`
+
+B-130 is:
+`FORMAL_DAILY_HISTORY_FRESHNESS`.
+
+They are separate data chains and both require quality control.
+
+## Current evidence
+No post-enable live sample has yet demonstrated this scenario.
+The defect is source-code-proven and should be prospectively monitored.
+
+Status:
+PV_BASELINE_STALENESS_DEFECT_CONFIRMED_BY_CODE.
+
+
+# PVE-083 — H001/H002 Need a Baseline Freshness Overlay, Not Just >=20 Counts
+
+## New required quality dimension
+For each PV row derive:
+`baselineFreshnessState`.
+
+Candidate states:
+- CURRENT_EXPECTED_PRIOR_SESSION
+- RECENT_WITH_VERIFIED_SUSPENSION
+- STALE_BASELINE
+- PRIOR_SLOT_MISSING_PROVENANCE_UNKNOWN
+- UNKNOWN
+
+## Evidence
+Use:
+- snapshot.baselineAsOfDate;
+- marketDate;
+- official exchange sessions;
+- verified symbol-session suspension provenance;
+- field-specific slot/prefix validity.
+
+## Primary H001/H002 rule
+`slotHistoryCount>=20`
+is necessary but not sufficient.
+
+Also require:
+baselineAsOfDate consistent with the latest expected comparable prior session under the field's missing-session policy.
+
+## Important nuance
+Theory excludes legitimate missing/halted observations rather than zero-filling them.
+
+Therefore a one-session lag can be valid only when:
+- the missing slot/session is explicitly explained and allowed by the preregistered rule.
+
+Unknown data gaps do not earn the same exemption.
+
+Status:
+BASELINE_FRESHNESS_OVERLAY_REQUIRED.
+
+
+# PVE-084 — Bootstrap “skipped” Is Even Weaker Than Previously Classified
+
+PVE-044 established:
+`skipped + validSessions>=20`
+means CACHE_POPULATED, not feature-ready.
+
+PVE-082 adds:
+it does not prove the cache is recent.
+
+Therefore the hierarchy is:
+
+1. CACHE_POPULATED
+2. SLOT_COUNT_READY
+3. PREFIX/RANGE_COUNT_READY
+4. BASELINE_FRESHNESS_VERIFIED
+5. FIELD_READY
+
+A bootstrap receipt such as:
+`{skipped:true, validSessions:40}`
+cannot by itself establish any of levels 2~5.
+
+## First 9/29 bootstrap nuance
+For a truly empty new production baseline, the initial after-market bootstrap should fetch historical data and avoid this skip defect.
+
+But any symbol with a pre-existing cache must still be checked by `lastMarketDate`, not assumed clean.
+
+Status:
+BOOTSTRAP_SKIP_NOT_FRESHNESS_PROOF.
+
+
+# PVE-085 — Baseline Versioning Needs Content Identity, Not Only Schema Version
+
+## Current baseline version
+Baseline rows carry:
+- schemaVersion = PV_SHADOW_V0_1.
+
+That tells us the algorithm/schema family.
+
+It does not identify:
+- which 20 sessions;
+- which source revision;
+- which slot completeness;
+- which acquisition vintage.
+
+## Future evidence contract
+A stronger baseline receipt can include:
+- baselineContentFingerprint;
+- ordered marketDate list;
+- per-slot valid counts;
+- last comparable date;
+- source-vintage metadata.
+
+Snapshot can then store:
+- baselineContentFingerprint used at feature time.
+
+## Why
+Schema version answers:
+“How was the baseline supposed to be built?”
+
+Content fingerprint answers:
+“Which exact baseline was actually used?”
+
+Both are needed for independent reproducibility.
+
+Status:
+SCHEMA_VERSION_NOT_BASELINE_CONTENT_IDENTITY.
 
