@@ -853,3 +853,21 @@ Class A if research-only; Class C if later used in formal 15m confirmation.
 4. PVE-148 decompose scan fingerprints into timing versus semantic components.
 5. PVE-149 freeze 9/29 night evaluation order before outcomes.
 6. Continue falsification/data-quality research only.
+
+
+## Evidence progress — PVE-145 through PVE-149
+- PVE-145 verifies from current Cloudflare documentation that content/v2 and Worker Version read endpoints share the documented Workers read/write permission class. Because the current token succeeds on content/v2, version/etag access is expected without permission expansion, but remains NOT_EXECUTION_VERIFIED until actually called.
+- PVE-146 freezes explicit version/etag read-receipt classes and forbids treating unobserved/blocked identity as equality.
+- PVE-147 freezes Worker version id + script etag as primary identity, extracted-source hash as secondary reproducibility evidence, and raw content-response hash as transport diagnostics only.
+- PVE-148 freezes componentized Formal scan fingerprints so generatedAt/timing drift cannot masquerade as stock-plan/pipeline/config drift.
+- PVE-149 preregisters the first post-enable evaluation order: provenance -> safety -> market/operation -> acquisition -> baseline -> cohort -> feature QA -> outcomes.
+- Current Price-Volume evidence cursor: PVE-001 through PVE-149.
+- No token, permission, runtime, Worker, Formal, deployment or threshold change was made.
+
+## Revised exact continuation after PVE-149
+1. PVE-150 audit the exact 9/24 -> 9/29 after-market -> 9/30 cohort transition across holidays.
+2. PVE-151 freeze row-level clean/unclean/unknown cohort labels for that transition.
+3. PVE-152 freeze symbol-session freshness inputs needed for cohort rehabilitation.
+4. PVE-153 audit 3+3 pool displacement reconstructability.
+5. PVE-154 freeze pool-date integrity receipt.
+6. Keep all alpha/outcome inference blocked until preregistered gates mature.
