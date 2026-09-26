@@ -1,0 +1,101 @@
+{
+  "schemaVersion": "market-cap-floor-falsification-v0.1",
+  "researchDate": "2026-09-27",
+  "status": "SPEC_FROZEN_NOT_IMPLEMENTED",
+  "researchOnly": true,
+  "decisionImpact": false,
+  "formalCoreChanged": false,
+  "currentFormal": {
+    "hardFloorYi": 10,
+    "condition": "marketCapYi < 10 => reject('市值低於10億', false)",
+    "nextTier": "10<=marketCapYi<30 then additional avgVolume20Lots>=1.5*minLots and institutionalScore>=70",
+    "sourceSemantics": "marketCapYi may be explicit external enrichment or fallback sharesOutstanding*close/1e8; provenance is not serialized in current Shadow."
+  },
+  "structuralWitness": {
+    "identicalCandidateA": {
+      "marketCapYi": 9.99,
+      "outcome": "REJECT_BEFORE_LIQUIDITY_AND_LATER_QUALITY_GATES"
+    },
+    "identicalCandidateB": {
+      "marketCapYi": 10,
+      "assume": "avgVolume20Lots>=1.5*minLots and institutionalScore>=70",
+      "outcome": "MAY_CONTINUE_TO_LATER_FORMAL_GATES"
+    },
+    "conclusion": "10bn is a hard discontinuity independent of continuous liquidity/quality once the 10-30bn special conditions are otherwise met."
+  },
+  "externalEvidence": {
+    "taiwanSizeEffect2026": {
+      "citation": "Ko et al., Pacific-Basin Finance Journal 96 (2026), 103021, DOI 10.1016/j.pacfin.2025.103021",
+      "retainedFinding": "Taiwan size effect is weak/inconclusive unconditionally and time-varying; illiquidity and limit-hit frequency/limits-to-arbitrage explain important variation.",
+      "guard": "Does not imply microcaps should be admitted into this short-horizon selector."
+    },
+    "momentumReview2023": {
+      "citation": "Jegadeesh & Titman, Pacific-Basin Finance Journal 82 (2023), 102202, DOI 10.1016/j.pacfin.2023.102202",
+      "retainedFinding": "Taiwan momentum becomes more evident when small-cap and low-priced stocks are excluded.",
+      "guard": "Supports a plausible protective size/price filter but does not validate the exact NT$1bn market-cap cutoff."
+    },
+    "taiwanOtcLiquidity": {
+      "citation": "Common factors in liquidity: Evidence from Taiwan's OTC stock market",
+      "retainedFinding": "Smaller firms are more sensitive to market-wide liquidity changes and may have higher information asymmetry.",
+      "guard": "Size may proxy liquidity risk; incremental effect after direct liquidity controls remains the key question."
+    }
+  },
+  "shadowAudit": {
+    "BROAD_CONTROL": "Can incidentally sample <10bn names only if historyDays>=60, close>=10 and avgVolume20Lots>=minLots, but is capped at 6 per price pool and not cap-stratified.",
+    "REJECTED_AFTER_BASE": "Cannot capture because market-cap floor returns basePassed=false.",
+    "historyWarmup": "Ad-hoc chooseHistoryWarmupTargets excludes marketCapYi<10, but the main runHistorySeed/buildHistorySeedQueue does NOT apply a market-cap floor and can populate complete history for <10bn names. Therefore history starvation is not assumed.",
+    "currentSnapshotGap": "buildResearchSnapshot does not serialize marketCapYi or market-cap source/basis, so existing saved controls cannot measure continuous distance below the 10bn cutoff."
+  },
+  "proposedProspectiveCohort": {
+    "id": "MARKET_CAP_FLOOR_REJECTED_CONTROL",
+    "population": "marketCapYi<10, price>=10, history/source valid, with exact first rejection reason and no decision impact",
+    "requiredFields": [
+      "scanDate",
+      "symbol",
+      "market",
+      "marketCapYi",
+      "marketCapSourceType=EXPLICIT/SHARES_X_CLOSE/UNKNOWN",
+      "sharesOutstandingObservedAt/provenance when derived",
+      "avgVolume20Lots",
+      "avgAmount20",
+      "minLots",
+      "spread/depth coverage if valid",
+      "changePercent",
+      "official exact limit state when available",
+      "institutionalScore and decomposed components",
+      "chipConcentration",
+      "fundamental/valuation availability states",
+      "sector/market regime",
+      "ret20/ret60/ResidualRS",
+      "ATR",
+      "descriptive A/B technical checks only",
+      "fullFormalCounterfactual=false"
+    ]
+  },
+  "primaryQuestion": "Among stocks on common support for executable liquidity and other observable risk controls, does marketCapYi<10bn add independent downside/non-follow-through risk beyond liquidity, price, volatility, limit-hit and information-quality variables?",
+  "comparisons": [
+    "Continuous marketCapYi within <10bn where captured; do not immediately bucket/tune new cutoffs.",
+    "Matched <10bn versus 10-30bn stocks satisfying common liquidity/price/sector/regime controls.",
+    "Separate explicit market-cap source from sharesOutstanding*close-derived values.",
+    "Within-date D1/D3/D5/D10/D20, MFE, MAE, stop/no-follow-through proxies, later A/B setup incidence.",
+    "Execution/slippage/spread/depth and zero-pick/capital-utilization implications."
+  ],
+  "falsification": [
+    "If sub-10bn names remain materially worse after strong liquidity/execution/limit-state/information controls, retain the floor.",
+    "If apparent small-cap return premium is concentrated in illiquid/high-limit-hit names, reject floor relaxation for this selector.",
+    "If liquid sub-10bn names show stable OOS continuation/opportunity benefit without worse downside/cost and size adds no residual risk, surface a future floor-reformulation candidate.",
+    "If momentum quality improves merely by excluding small/low-priced stocks, treat the floor as potentially protective rather than redundant.",
+    "Do not threshold-sweep 8/5/3bn after outcomes.",
+    "Do not historically recompute market cap using current sharesOutstanding."
+  ],
+  "engineeringBoundary": {
+    "capture": "Potential Class A if only already-loaded marketCap/liquidity/context fields are serialized into isolated research storage with zero source calls and no Formal impact.",
+    "provenanceRepair": "Class B proposal-first if marketCap source/vintage requires shared enrichment or corporate-action denominator work.",
+    "formalFloorChange": "Class C owner approval required."
+  },
+  "optimizationBridge": {
+    "currentStatus": "FALSIFICATION_SPEC_READY / NOT_FORMAL_OPTIMIZATION_CANDIDATE",
+    "futureCandidate": "MARKET_CAP_ADMISSION_REFORMULATION",
+    "promotionPrerequisite": "Prospective matched/OOS evidence must show the 10bn floor is redundant after executable-liquidity and risk controls and that admission does not worsen downside/cost/zero-pick behavior."
+  }
+}
