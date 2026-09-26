@@ -1,6 +1,6 @@
 # Research Master Map — 台股交易決策監控系統
 
-Updated: 2026-09-26 17:59 Asia/Taipei
+Updated: 2026-09-26 18:10 Asia/Taipei
 Status: CANONICAL_RESEARCH_INDEX / RESEARCH_ONLY
 Formal Core: LOCKED
 
@@ -75,6 +75,7 @@ These are navigation anchors, not final maturity scores:
 - Execution Alpha: coverage-aware accounting exists; exact-date recorder completeness remains a Class-B gate and 2026-09-24 remains UNKNOWN.
 - Portfolio/Re-add: REDUCED_CONFIRMED -> recovery/re-add research exists; formal promotion remains locked.
 - Macro/Cross-market: PIT clocks/residualization/falsification are frozen; repository audit did not prove historical durable global receipts with sessionDate/knownAtTaipei/firstEligibleTaiwanDecision, so outcome testing is DATA_QUALITY_BLOCKED pending prospective receipts.
+- Breadth / rotation: V8.14 now preserves PIT sector-gate inputs/checks and a bounded SECTOR_GATE_REJECTED Shadow cohort. Existing market advancePct is explicitly Formal-normalized, not official whole-market breadth. Status WAITING_PROSPECTIVE; no gate threshold change is authorized.
 - Validation: R01-R08/I01-I07, purged holdout, date clustering, redundancy, costs, zero-pick and prospective Shadow controls are cross-cutting requirements.
 - PriorityScore calibration: Production patch-chain audit corrected the comparator to post-consensus PriorityScore first, RR second, marketConsensusScore third, then setup/sector/RS. V8.13 now prospectively preserves the full ranking provenance. Status WAITING_PROSPECTIVE; historical selected-only calibration is prohibited.
 
@@ -102,7 +103,7 @@ REGISTERED_MODULE_MATURITY = 47.0%
 RESEARCH_DEBT_UNITS = 10.6
 DATA_QUALITY_BLOCKED = 8
 DATA_SOURCE_BLOCKED = 3
-WAITING_PROSPECTIVE = 2
+WAITING_PROSPECTIVE = 3
 FORMAL_OPTIMIZATION_CANDIDATES = 1
 
 Important: 48.2% is the maturity of the currently reconciled 17 durable modules, NOT "48.8% of all stock-market knowledge". The inventory is still expanding and module splits must be independently falsifiable.
