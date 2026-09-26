@@ -825,3 +825,24 @@ YES for research infrastructure integrity: resolving the actual archive lineage 
 - First live-session QA has been fully preregistered before market outcomes.
 - Evidence Phase I is converged; next learning should consume actual 9/29/9/30 runtime receipts rather than invent more factors or tune rules.
 - No Formal/runtime change made.
+
+
+## Pattern Maturity continuation — DL-003L through DL-003T (long-cycle)
+- Pattern research completed a deliberately extended cycle rather than stopping after a single finding.
+- Named chart/candlestick labels are now formally governed as explainability metadata, not directional priors. Modern machine-chart evidence plus formal-definition ambiguity directly falsifies the assumption that textbook names carry a trustworthy one-sign return expectation.
+- Draft PR #103 expanded only isolated Class-A research code: two-day candlestick relational encoding, overnight/intraday decomposition, confirmed-boundary latent geometry, cup/bowl anchor geometry, impulse/consolidation geometry, continuous resistance-test progression and cross-family shared-anchor overlap diagnostics.
+- Latest validated research head: `2ba148d5a0aaaca6173b7ba4d1f8a9f24754e6b4`; V8 Repair `36205822887` SUCCESS; V8 Regression `36205822864` SUCCESS.
+- New durable contracts on main: `research/PATTERN_NAMED_LABEL_GOVERNANCE_V0_1.md` and `research/PATTERN_LATENT_GEOMETRY_V0_1.md`. Runtime readiness matrix was also updated to distinguish research OPEN availability from the current Formal history cache, which still discards OPEN.
+- Taiwan-specific falsification deepened: Bull-Flag evidence conflicts with broader Taiwan data-snooping/cost results; round-number order clustering is a real TWSE resistance confound; daily close location is context-dependent; daily candles must split overnight from intraday path.
+- Pattern maturity is positioned, if ever validated, as Selection/WATCH information first. It does not bypass current 15m execution, RR, maxChase, liquidity, capital or 3+3+3 architecture.
+- PR #103 remains Draft / unmerged / un-deployed and is already materially behind fast-moving main. Green detector CI is not merge readiness.
+- No forward Pattern outcomes inspected; no historical Shadow fabrication; Pattern alpha remains UNKNOWN; Formal Core LOCKED.
+
+### Exact next continuation point
+1. Freeze latent geometry v0.1 and stop catalog expansion.
+2. Continue outcome-blind source/semantic/adversarial real-data QA while Corporate Actions/runtime semantic gates remain unresolved.
+3. Require runtime-ready PIT RAW_EXECUTION + TECHNICAL_CONTINUITY + symbol-session + volume semantics before any Class-B Pattern observer proposal.
+4. Keep round-number proximity, close location, PV/volume, volatility and overheat as controls/confounds, not new Pattern scores.
+5. Prospective Pattern outcome inference waits for COMPLETE parent coverage and run receipts.
+6. When clean prospective evidence exists, run only PATTERN-RG1..RG4 plus frozen redundancy/date-cluster/holdout/cost gates.
+7. No R09 and no Formal change without owner approval.
