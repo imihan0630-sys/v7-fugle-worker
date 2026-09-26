@@ -15369,3 +15369,67 @@ Modern validation must therefore treat round-price proximity as a confound/contr
 
 ### Status
 IMPORTANT_NESTED_RESISTANCE_CONFOUND / CONTROL_WORTHY / NO FORMAL FACTOR.
+
+
+## DL-003T — Pattern Information Horizon Must Stay Separate from 15-Minute Execution
+
+### Evidence synthesis
+Modern chart-image research finds different predictive content across short/medium/long image horizons rather than one universal chart horizon.
+
+Taiwan candlestick evidence also shows that economic results depend materially on the holding/exit strategy, not merely on detecting the candle shape.
+
+Therefore:
+`pattern detected` is not equivalent to `buy now`.
+
+### Current-system fit
+The current architecture already separates:
+- after-market selection / candidate quality;
+- buy zone;
+- 15-minute execution confirmation;
+- FIRST / ADD / FULL;
+- later reduce/re-add logic.
+
+Pattern is therefore naturally a candidate for SELECTION / WATCH maturity research first.
+
+A mature W/VCP/Cup/Flag state could, in principle:
+- identify a high-quality setup before a classic B breakout;
+- explain which Near-miss candidates deserve continued observation;
+- improve candidate continuity when Formal selection is sparse.
+
+But it must NOT:
+- bypass the existing 15-minute BUY confirmation;
+- turn a forming pattern into an immediate order;
+- rescue a poor RR candidate;
+- ignore maxChase/overheat/liquidity;
+- automatically consume one of the 3+3+3 formal slots.
+
+### Future falsification matrix
+When prospective Pattern coverage exists, decompose two questions:
+
+SELECTION ALPHA
+- Does Pattern maturity distinguish better D1/D3/D5/D10/MFE/MAE outcomes within the same-date Shadow cohorts after current controls?
+
+EXECUTION ALPHA
+- Among Pattern-mature candidates, does the existing 15-minute execution layer improve entry price / avoid false breaks?
+- Does Pattern maturity increase BUY-trigger rate without worsening post-entry MAE/stop-first?
+- Do strong-looking patterns simply create more NO-BUY because price never retests or maxChase blocks entry?
+
+### Zero-selection / capital-utilization caution
+A tempting use is to fill otherwise empty capital with Pattern-mature Near-miss names.
+
+That is explicitly NOT authorized from morphology evidence alone.
+
+Required evidence would include:
+- same-date counterfactual comparison;
+- clean prospective parent coverage;
+- zero-selection frequency;
+- incremental candidates added;
+- false-signal / stop-first impact;
+- cost/slippage;
+- capital-utilization improvement without quality collapse;
+- holdout/regime robustness.
+
+### Status
+PATTERN_MATURITY = POTENTIAL_SELECTION/WATCH INFORMATION
+DIRECT_EXECUTION_ROLE = NOT SUPPORTED
+FORMAL/HYBRID SLOT CHANGE = NOT AUTHORIZED
