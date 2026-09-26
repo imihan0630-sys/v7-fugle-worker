@@ -173,7 +173,8 @@ export function classifyExecutionBenchmarkEligibility({
   benchmarkPrice,
   observedAt=null,
   quoteFresh=null,
-  marketMechanism="UNKNOWN"
+  marketMechanism="UNKNOWN",
+  preOpenOrderEligible=null
 }={}){
   const type=String(benchmarkType||"");
   const lot=String(lotType||"UNKNOWN");
@@ -205,12 +206,17 @@ export function classifyExecutionBenchmarkEligibility({
         benchmarkPrice:price,researchOnly:true,decisionImpact:false
       };
     }
-    return {
-      eligible:lot==="REGULAR_LOT",
-      status:lot==="REGULAR_LOT"?"ELIGIBLE":"BLOCKED",
-      reason:lot==="REGULAR_LOT"?null:"LOT_TYPE_UNKNOWN",
-      benchmarkPrice:price,researchOnly:true,decisionImpact:false
-    };
+    if(lot!=="REGULAR_LOT"){
+      return {eligible:false,status:"BLOCKED",reason:"LOT_TYPE_UNKNOWN",benchmarkPrice:price,researchOnly:true,decisionImpact:false};
+    }
+    if(preOpenOrderEligible!==true){
+      return {
+        eligible:false,status:"REFERENCE_ONLY",
+        reason:"OPEN_AUCTION_EXECUTABILITY_NOT_PROVEN",
+        benchmarkPrice:price,researchOnly:true,decisionImpact:false
+      };
+    }
+    return {eligible:true,status:"ELIGIBLE",reason:null,benchmarkPrice:price,lotType:lot,marketMechanism:"REGULAR_OPEN_AUCTION",researchOnly:true,decisionImpact:false};
   }
   if(type==="FIRST_ELIGIBLE_OBSERVED_QUOTE"){
     if(lot==="MIXED_LOT"){
