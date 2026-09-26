@@ -72,3 +72,12 @@ Official candidate EPS review now fetches the previous actual quarter for Q2/Q3 
 - New endpoint: V8 今日標的與交易計畫推送, id `01a0b909-9427-7fa9-810e-4c4383187ce9`, URL `https://api.3minapi.com/api/v1/data/cum6sm2952x3sz9gph52w`, deployed to production and independently accepted a production test POST (202).
 - Collaboration key `V8 Cloudflare Worker` exists with create+read. Never put its raw key in chat or GitHub. Current blocker is updating Cloudflare THREEMIN_API_URL, THREEMIN_VERIFY_URL and THREEMIN_API_TOKEN to the new endpoint/key through the normal protected settings path.
 - Free-plan endpoints are automatically deleted after 7 days. Do not call this a durable long-term repair unless the plan/storage design changes.
+
+
+## Shared-knowledge network continuity (2026-09-26)
+
+- Before substantive market research in any System 1 or System 2 chat, read `shared-knowledge/SHARED_RESEARCH_MASTER_MAP.md` and `shared-knowledge/SHARED_KNOWLEDGE_GOVERNANCE.md` before the system-specific master/checkpoint.
+- Reusable market knowledge is routed to Shared Knowledge; V8 runtime/Formal implementation stays System 1; System 2 strategy/performance implementation stays under `system2/`.
+- This centralized repository rule is the continuity mechanism; the owner does not need to manually re-instruct each existing chatroom.
+- Shared knowledge never self-promotes into V8 Formal Core. Existing Class B/C approval boundaries remain unchanged.
+- For System 2 continuity, read `system2/SYSTEM2_MASTER.md` and `system2/SYSTEM2_CHECKPOINT.md` after the Shared Master Map.

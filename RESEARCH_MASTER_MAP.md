@@ -133,3 +133,12 @@ Exact proposed Formal behavior change: data admission/repair only. Formal A/B de
 Remaining production risks: live suspicious-symbol incidence is UNKNOWN; extreme stale blast radius can exceed the existing seed window; official gap-proof storage/read integration is shared runtime; corporate-action price-continuity remains a separate lane.
 
 Owner approval is required before any Class-B Worker/runtime integration, merge or deployment.
+
+
+## Shared Knowledge network (2026-09-26)
+
+Cross-system reusable research is now indexed first by `shared-knowledge/SHARED_RESEARCH_MASTER_MAP.md` under `shared-knowledge/SHARED_KNOWLEDGE_GOVERNANCE.md`.
+
+This System 1 Master Map remains the canonical inventory/maturity dashboard for V8 research. Existing evidence files are not relocated. Reusable findings may be referenced by System 2 through the Shared Master Map; System 2-specific strategy/performance state lives under `system2/`.
+
+Read order for future research chats: Shared Master Map -> RESEARCH_ENGINEERING_GOVERNANCE.md -> this System 1 Master Map / RESEARCH_CHECKPOINT.md -> dedicated lane checkpoint.

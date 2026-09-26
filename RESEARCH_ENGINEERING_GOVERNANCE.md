@@ -164,3 +164,16 @@ A normal completed research cycle with no material new evidence may remain quiet
 **Research can evolve autonomously. Formal trading decisions cannot.**
 
 The purpose of autonomous research engineering is to improve evidence quality, falsification, observability and Shadow validation without silently changing the strategy that controls real selection, monitoring or trading.
+
+
+## Cross-system Shared Knowledge routing (2026-09-26)
+
+The repository now contains a canonical reusable knowledge layer:
+- `shared-knowledge/SHARED_RESEARCH_MASTER_MAP.md`
+- `shared-knowledge/SHARED_KNOWLEDGE_GOVERNANCE.md`
+
+Research read order is now: Shared Master Map -> this governance -> system-specific master/checkpoint -> dedicated evidence/checkpoint.
+
+New reusable market findings must be routed to Shared Knowledge while preserving their original detailed evidence files. System-specific implementation remains isolated. System 2 is defined under `system2/` and may consume shared evidence without changing V8 Formal behavior.
+
+This Shared Knowledge layer is Class A documentation/research infrastructure. It does not authorize any Formal Core, runtime, selection, monitoring, capital, signal or push change.
