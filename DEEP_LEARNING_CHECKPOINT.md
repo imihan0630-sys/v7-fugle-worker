@@ -390,6 +390,37 @@ Official price-limit context: FALSIFICATION_IN_PROGRESS / SPARSE_CONTROL_CANDIDA
 Formal Core unchanged.
 
 
+## DL-001C — Source/frequency gate / regime-dependent sparsity
+Run date: 2026-09-26 Asia/Taipei
+
+### Source-contract result
+- TWSE exact daily limit/reference research is feasible through official TWT84U; the official report is date-queryable historically. TWSE Data E-Shop T97 supplies a stronger archive product path from 2014-01-06.
+- TPEx exact daily limit classification is feasible through official S38 / STKT2QUOTESN.TXT marker semantics and the public date-queryable daily quote lane. Historical public reconciliation is not conflated with immutable first-known S38 bytes.
+- Current V8.7.1 heuristic `researchLimitState()` remains prohibited as authoritative DL-001 truth.
+
+### Outcome-free frequency sample
+Official TWSE MI_INDEX stock counts provide an event-frequency cross-check without using future returns:
+- 2026-09-24: 11 limit-up + 1 limit-down out of 1081 stock rows = 1.1101%.
+- 2026-09-23: 15 + 1 out of 1081 = 1.4801%.
+- 2026-09-04: 15 + 1 out of 1081 = 1.4801%.
+- 2026-06-30: 59 + 1 out of 1078 = 5.5659%.
+
+This falsifies a universal “too rare to matter” assumption. Price-limit events are sparse cross-sectionally on some dates but strongly regime/date dependent. It also falsifies any independence shortcut from a daily market hit rate to a 20-session per-symbol probability.
+
+### Research consequence
+- Frequency Gate = NOT_REJECTED_BUT_NOT_PROMOTED.
+- The relevant denominator is not the whole market alone. The after-market selector is momentum/quality conditioned, so candidate-level exposure to recent limit-hit sessions may differ materially.
+- Next evidence must therefore measure `limitHitCount20>0` on the exact prospective Shadow parent population, with cohort and regime stratification, before any forward-return analysis.
+- No return outcome was inspected in this gate.
+
+### Durable artifact
+`research/information_discreteness_source_frequency_receipt_v0_1.json`.
+
+### Optimization bridge status
+No `FORMAL_OPTIMIZATION_CANDIDATE` yet.
+The plausible eventual implementation, only if all later falsification gates pass, would be a conditional price-limit context/guard rather than a new additive Information Discreteness score.
+
+
 ## Exact next continuation point
 1. Do not resurrect canonical ID or ID_non_hit as standalone additive factors. Their broad path information is redundant; only exact price-limit count/direction remains potentially incremental.
 2. Next DL-001 step: bounded prospective source receipt / coverage test using official TWSE TWT84U and official TPEx daily limit state. Measure authoritative coverage and the frequency of windows with limitHitCount20>0 before looking at outcomes.
