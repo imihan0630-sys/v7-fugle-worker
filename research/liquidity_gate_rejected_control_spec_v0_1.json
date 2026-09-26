@@ -1,0 +1,137 @@
+{
+  "schemaVersion": "liquidity-gate-rejected-control-v0.1",
+  "researchDate": "2026-09-27",
+  "status": "SPEC_FROZEN_NOT_IMPLEMENTED",
+  "researchOnly": true,
+  "decisionImpact": false,
+  "formalCoreChanged": false,
+  "problemStatement": "Current Shadow cohorts systematically omit early Formal liquidity rejections, so the opportunity-cost and protection value of the liquidity gate cannot be falsified with existing cohort comparisons.",
+  "currentFormal": {
+    "basePriceMinimum": 10,
+    "minLots": {
+      "generalBelow1000": 1000,
+      "thousandPriceOrAbove": 300
+    },
+    "lowAverageVolumeException": {
+      "condition": "avgAmount20>=50000000 AND spreadPercent is observed <=0.5 AND (orderBookDepthGood===true OR depthScore>=80)",
+      "upstreamRepositoryStatus": "NO_REPOSITORY_CONSTRUCTION_FOUND; arbitrary external enrichment fields can flow through mergeEnrichment/buildMarketFeatures, so Production coverage remains UNKNOWN rather than proven absent."
+    },
+    "smallCap10to30Yi": {
+      "condition": "avgVolume20Lots>=1.5*minLots AND institutionalScore>=70",
+      "rejectionReason": "10至30億市值缺少強力特殊理由"
+    },
+    "midCap30to100Yi": {
+      "condition": "avgVolume20Lots>=1.2*minLots OR liquidityException passed",
+      "rejectionReason": "30至100億市值流動性要求未達"
+    },
+    "earlyRejectBasePassed": false
+  },
+  "existingShadowGap": {
+    "BROAD_CONTROL": "Requires avgVolume20Lots>=minLots, so it excludes low-liquidity names by construction.",
+    "REJECTED_AFTER_BASE": "Requires result.basePassed===true, but all three liquidity-admission rejection reasons return basePassed=false.",
+    "conclusion": "No existing standard Shadow cohort is an honest control for the early liquidity gate."
+  },
+  "proposedCohorts": [
+    {
+      "id": "LIQ_LOW_AVG_VOLUME_REJECTED",
+      "exactReason": "20日流動性不足",
+      "interpretation": "Failed primary average-volume threshold and did not prove the existing amount/spread/depth exception.",
+      "fullFormalCounterfactual": false
+    },
+    {
+      "id": "LIQ_SMALLCAP_SPECIAL_REASON_REJECTED",
+      "exactReason": "10至30億市值缺少強力特殊理由",
+      "interpretation": "Passed/excepted initial volume gate but failed stricter small-cap liquidity+institutional exception.",
+      "fullFormalCounterfactual": false
+    },
+    {
+      "id": "LIQ_MIDCAP_EXTRA_REQUIREMENT_REJECTED",
+      "exactReason": "30至100億市值流動性要求未達",
+      "interpretation": "Failed the stricter 1.2x volume requirement for sub-100bn market cap without an accepted liquidity exception.",
+      "fullFormalCounterfactual": false
+    },
+    {
+      "id": "LIQ_LOW_VOLUME_EXCEPTION_PASS",
+      "exactReason": null,
+      "interpretation": "Below primary minLots but passed the existing avgAmount/spread/depth exception; descriptive positive control only.",
+      "fullFormalCounterfactual": false
+    }
+  ],
+  "minimumReceiptFields": [
+    "scanDate",
+    "symbol",
+    "market",
+    "pricePool",
+    "close",
+    "marketCapYi",
+    "historyFreshness/sourceAdmission state",
+    "avgVolume20Lots",
+    "minLots",
+    "volumeThresholdRatio=avgVolume20Lots/minLots",
+    "avgAmount20",
+    "spreadPercent",
+    "orderBookDepthGood",
+    "depthScore",
+    "exceptionInputCoverageState = COMPLETE / PARTIAL / ABSENT / SOURCE_UNKNOWN",
+    "liquidityExceptionPass",
+    "institutionalScore plus frozen decomposed components",
+    "exactFormalRejectReason",
+    "sector/market/price-tier context",
+    "A/B technical checks computed descriptively only after the rejection for research; fullFormalCounterfactual=false",
+    "ATR/volatility20",
+    "ret20/ret60",
+    "Residual RS when valid",
+    "source/provenance flags",
+    "decisionImpact=false"
+  ],
+  "sampling": {
+    "primary": "Deterministic bounded sample per exact reject reason and price pool, plus total reject counts by reason.",
+    "preferredFuture": "If storage budget permits, retain the full early-liquidity-rejected population because gate prevalence can be large; otherwise report sampling fraction and never infer whole-universe opportunity loss from bounded rows.",
+    "noOutcomeSelectedSampling": true
+  },
+  "outcomes": [
+    "D1",
+    "D3",
+    "D5",
+    "D10",
+    "D20",
+    "MFE",
+    "MAE",
+    "next-session traded value/volume",
+    "where point-in-time executable evidence exists: spread/slippage/depth state",
+    "false/no-follow-through",
+    "later Formal re-entry incidence"
+  ],
+  "controls": [
+    "scanDate",
+    "price tier",
+    "market cap tier",
+    "sector",
+    "market regime",
+    "ATR/volatility",
+    "ret20/ret60",
+    "Residual RS",
+    "setup technical closeness",
+    "institutional state",
+    "fundamental/valuation availability",
+    "corporate actions/event risk"
+  ],
+  "falsification": [
+    "If rejected names have worse or no better opportunity paths after controls and/or materially worse executable-liquidity evidence, retain the gate.",
+    "If apparently attractive rejected names disappear after costs/slippage/depth controls, reject gate relaxation.",
+    "If a large, stable subset of rejected names has acceptable executable liquidity and superior MFE/return without worse MAE/stop/no-follow-through across independent dates/OOS, a gate reformulation may become a future Class-C optimization candidate.",
+    "Do not threshold-sweep 1000/300/1.2x/1.5x after seeing outcomes.",
+    "Do not interpret missing spread/depth as good liquidity.",
+    "Do not call a rejected row 'would have qualified otherwise'; later Formal gates remain unknown."
+  ],
+  "engineeringBoundary": {
+    "dailyRejectedCohortCapture": "Potential Class A if it only serializes already-computed featureRows/results to isolated research storage with zero new market calls and Formal invariants unchanged.",
+    "spreadDepthSourceRepair": "Class B proposal-first if proving/filling spread/depth requires shared enrichment, new market-data calls, monitoring, or shared runtime/schema changes.",
+    "formalGateChange": "Class C owner approval required."
+  },
+  "optimizationBridge": {
+    "currentStatus": "EVIDENCE_GAP_CAPTURE_CANDIDATE_NOT_FORMAL_OPTIMIZATION_CANDIDATE",
+    "futureCandidateName": "LIQUIDITY_ADMISSION_REFORMULATION",
+    "promotionPrerequisite": "Prospective rejected-control evidence must prove opportunity loss after execution-cost/liquidity controls, independent dates, regimes, price tiers and OOS, with no material downside or zero-pick degradation."
+  }
+}
