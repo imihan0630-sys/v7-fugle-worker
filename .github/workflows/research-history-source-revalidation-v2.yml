@@ -1,0 +1,26 @@
+name: Research History Source Revalidation V2
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - "research/history_source_revalidation_v2.mjs"
+      - "tests/test_history_source_revalidation_v2.mjs"
+      - "research/notes/HISTORY_SOURCE_REVALIDATION_V2.md"
+      - ".github/workflows/research-history-source-revalidation-v2.yml"
+permissions:
+  contents: read
+jobs:
+  falsification:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Syntax
+        run: |
+          node --check research/history_source_revalidation_v2.mjs
+          node --check tests/test_history_source_revalidation_v2.mjs
+      - name: Deterministic falsification matrix
+        run: node tests/test_history_source_revalidation_v2.mjs
