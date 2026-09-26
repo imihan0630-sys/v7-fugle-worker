@@ -330,3 +330,12 @@ They must not be erased once later clean data arrive.
 - H003/H004 remain more restrictive than H001/H002 because of known v0.1 state/Guard/outcome defects.
 - No hypothesis status is upgraded or rejected.
 - Formal Core remains LOCKED.
+
+
+## Hypothesis readiness after PVE-154
+- 2026-09-29 intraday H001/H002 rows are explicitly INHERITED_KNOWN_STALE_SELECTION and remain primary-inference excluded.
+- 2026-09-30 is the first potentially clean selection date for intraday evidence, not an automatically clean date.
+- Clean eligibility now requires both row-level symbol-session provenance and pool-date integrity.
+- Historical exact 3+3 displacement controls cannot be inferred from the current scan receipt; unknown controls must remain unknown rather than reconstructed with hindsight.
+- H001/H002/H003/H004 statuses remain evidence-gated; H006 unchanged.
+- Formal Core remains LOCKED.
