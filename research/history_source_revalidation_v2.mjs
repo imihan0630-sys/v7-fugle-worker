@@ -291,3 +291,34 @@ export function decideHistoryAdmissionV21({
     repaired:true,cached,fresh:reconciled
   };
 }
+
+
+// V2.2 operational-cost model. Research-only; no scheduler/runtime mutation.
+export function estimateHistoryRevalidationCost({
+  suspiciousSymbols=0,baselineProviderCalls=0,seedMinutes=60,batchPerMinute=6,
+  gapRequests=[],presenceLedgerKeys=[]
+}={}){
+  const suspicious=Math.max(0,Math.floor(Number(suspiciousSymbols)||0));
+  const baseline=Math.max(0,Math.floor(Number(baselineProviderCalls)||0));
+  const minutes=Math.max(1,Math.floor(Number(seedMinutes)||60));
+  const batch=Math.max(1,Math.floor(Number(batchPerMinute)||6));
+  const providerCapacity=minutes*batch;
+  const providerCallsRequired=baseline+suspicious;
+  const gapKeys=[...new Set((Array.isArray(gapRequests)?gapRequests:[])
+    .map(x=>String(x?.market||"")+":"+String(x?.date||""))
+    .filter(x=>/^(TWSE|TPEx):\d{4}-\d{2}-\d{2}$/.test(x)))];
+  const ledger=new Set(Array.isArray(presenceLedgerKeys)?presenceLedgerKeys.map(String):[]);
+  const officialGapNetworkCalls=gapKeys.filter(k=>!ledger.has(k)).length;
+  return {
+    providerCapacity,
+    baselineProviderCalls:baseline,
+    suspiciousSymbols:suspicious,
+    providerCallsRequired,
+    providerCallsWithinSeedWindow:providerCallsRequired<=providerCapacity,
+    providerOverflowCalls:Math.max(0,providerCallsRequired-providerCapacity),
+    uniqueGapDateMarketKeys:gapKeys.length,
+    officialGapNetworkCalls,
+    officialGapLedgerHits:gapKeys.length-officialGapNetworkCalls,
+    rule:"Never exceed bounded seed capacity by silently admitting stale history; overflow remains pending/UNKNOWN."
+  };
+}
