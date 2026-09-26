@@ -255,4 +255,224 @@ Do NOT promote to:
 Next evidence hinge:
 2026-09-29 trading session / after-market bootstrap,
 then 2026-09-30 clean-baseline candidate session.
+# PVE-007 — Admin Readback Can Verify After-Market PV, but Not Intraday Persistence
+
+## Intraday execution order
+V8.11 attaches a lightweight `result.pvShadow.session15` sidecar during analysis.
+
+The Formal live snapshot is then:
+1. built;
+2. written to `v7_live_state`;
+3. mirrored to KV.
+
+Only **after** Formal signal/push/live-state persistence completes does:
+`recordPvIntradayShadowSafe(...)`
+run.
+
+## Consequence
+`/api/live` can expose:
+- current result-level PV session15 sidecar;
+- bar/session extraction state.
+
+But it does NOT authoritatively prove:
+- v7_pv_shadow_snapshots insert success;
+- duplicate/mutation status;
+- outcome insert success;
+- baseline-table persistence.
+
+The top-level `live.pvShadow` returned by `runBackgroundMonitor` occurs after the stored live snapshot and is not necessarily present in `v7_live_state`.
+
+## After-market difference
+The after-market scan summary is constructed after:
+- bootstrapPvShadowBaselinesSafe;
+- recordPvDailyShadowSafe.
+
+Therefore `/api/scan/status` can expose:
+- pvShadow.enabled;
+- bootstrap requested/bootstrapped/results;
+- daily stored/outcomes/details;
+- zeroPvPushes/zeroPvActions;
+without direct D1 SELECT.
+
+## Evidence design
+Use:
+- scan/status for after-market bootstrap/daily runtime receipt;
+- live/result sidecar for bar-extraction/freshness context;
+- direct D1 read for row-level immutability/duplicate/outcome proof.
+
+Status:
+ADMIN_READBACK_PARTIAL / D1_REQUIRED_FOR_ROW_LEVEL_PROOF.
+
+# PVE-008 — D1 Read 403 Is a Least-Privilege Observability Decision Point
+
+## Observed fact
+The GitHub Actions QA token can read:
+- Worker settings;
+- deployed Worker content;
+- runtime admin endpoints.
+
+The same token receives HTTP 403 from the Cloudflare D1 query API.
+
+## Plausible classes of cause
+- token lacks D1 read permission;
+- token/account/database access scope does not cover the bound D1 resource;
+- another Cloudflare authorization mismatch.
+
+The current evidence does not distinguish these classes.
+
+## Important separation
+Worker runtime itself has a valid D1 binding and uses D1 successfully for:
+- live state;
+- cron records;
+- leases;
+- history cache.
+
+Therefore QA-token D1 403 is not evidence that the runtime D1 binding is broken.
+
+## Safe future options
+A. grant the existing QA automation least-privilege D1 read access;
+B. add a dedicated admin/read-only PV QA endpoint that queries D1 internally and returns sanitized aggregates;
+C. continue using only scan/live receipts and defer row-level QA.
+
+No option should require exposing raw secrets or mutating D1.
+
+Status:
+OBSERVABILITY_PERMISSION_GAP / RUNTIME_BINDING_NOT_IMPLICATED.
+
+# PVE-009 — 2026-09-29 / 2026-09-30 Outcome-Blind QA Plan
+
+## 2026-09-29 intraday
+Expected:
+- trading-day monitor resumes;
+- pvShadowEnabled remains true;
+- result-level session15 sidecar begins accumulating;
+- before baseline bootstrap, core normalized fields may be DATA_INSUFFICIENT;
+- no Formal behavior changes;
+- no extra ordinary live candle calls from PV helper.
+
+Pass criteria:
+- monitor runs succeed;
+- Formal fingerprints/behavior unchanged;
+- no PV exception propagates;
+- DATA_INSUFFICIENT is used instead of fabricated baseline values.
+
+This day is **not** H001/H002 evidence.
+
+## 2026-09-29 23:35 after-market
+Expected:
+- Formal scan executes rather than holiday-skip;
+- scanDate=2026-09-29;
+- scan.pvShadow.enabled=true;
+- bootstrap requested equals eligible Formal plan count;
+- each successful baseline has >=20 valid historical sessions;
+- daily decisionImpact=false;
+- zeroPvPushes=true;
+- zeroPvActions=true.
+
+If bootstrap partially fails:
+- Formal scan remains successful;
+- failed symbols remain research UNKNOWN;
+- no retry logic may change Formal plan.
+
+## 2026-09-30 intraday
+Earliest candidate clean session:
+- baseline from 9/29 after-market exists;
+- same-slot/range/cumulative baselines can reach >=20 prior valid sessions;
+- first H001/H002 DATA_QA-qualified intraday rows may appear.
+
+Still no alpha inference until:
+- clean cohort provenance;
+- sample/date floors;
+- row-level duplicate/fingerprint QA.
+
+Status:
+FIRST_TRADING_DAY_QA_PROTOCOL_FROZEN.
+
+# PVE-010 — Read-Only QA Script Needs Trading-Day-Aware After-Market Assertions
+
+## Current logic
+The QA script defines:
+`afterMarketWindow = taipeiTime >= "23:45"`
+
+Then, if PV is enabled, it asserts:
+`scan.scanDate === taipeiDate`.
+
+## Failure mode
+On an official holiday after 23:45:
+correct production behavior is:
+- no same-day scan;
+- prior valid scan remains.
+
+The QA script would incorrectly fail because it ignores trading-calendar state.
+
+## Correct semantics
+The strong same-day after-market assertions should require:
+`afterMarketWindow && isTradingDate(taipeiDate)`.
+
+On non-trading days:
+verify instead:
+- no fabricated same-day scan;
+- skip reason/trading calendar is consistent;
+- zero unwanted market calls where observable.
+
+Status:
+QA_FALSE_FAILURE_RISK_CONFIRMED / TEST_ONLY_DEFECT.
+
+# PVE-011 — Cron Audit Loses the Reason for SKIPPED Jobs
+
+## Current production path
+`runAfterMarketScan(...onlyIfMissing:true)` returns a `reason` for skip states such as:
+- NOT_TRADING_DAY;
+- ALREADY_SCANNED;
+- AFTER_MARKET_RUNNING.
+
+But `runScheduledWithAudit` writes:
+`detail: result?.status || null`.
+
+## Result
+A cron row can record:
+- status=SKIPPED;
+- skipped=1;
+- detail=null;
+while the actual runtime returned a useful reason.
+
+## Research impact
+Diagnosing expected holiday behavior required source-calendar inspection instead of the cron record itself.
+
+## Desired diagnostic semantics
+Preserve:
+`detail = result.status || result.reason || null`
+
+This is operational telemetry only.
+
+Do not infer market state from missing detail.
+
+Status:
+CRON_SKIP_REASON_TELEMETRY_GAP_CONFIRMED.
+
+# PVE-012 — PVE Evidence Provenance after Workflow Re-Run
+
+## Authority hierarchy used
+1. deployed runtime readback;
+2. GitHub Actions job log;
+3. production Worker source/patch semantics;
+4. research checkpoint.
+
+The evidence lane does not use:
+- screenshot-only claims;
+- inferred D1 row counts;
+- workflow green check alone.
+
+## Re-run method
+The existing successful read-only QA job was re-run through GitHub Actions.
+This avoided:
+- new browser login;
+- secret disclosure;
+- code change;
+- Cloudflare setting mutation.
+
+The re-run produced a new QA artifact and runtime receipt.
+
+Status:
+READ_ONLY_REPRODUCIBLE_EVIDENCE_PATH_CONFIRMED.
 
