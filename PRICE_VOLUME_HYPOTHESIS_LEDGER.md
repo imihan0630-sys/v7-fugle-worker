@@ -281,3 +281,15 @@ They must not be erased once later clean data arrive.
 - H006: DATA_QUALITY_BLOCKED pending authoritative execution-recorder coverage and exact signal-event mapping.
 - Baseline validSessions>=20 is not freshness proof; baselineAsOfDate/plan lineage must be evaluated.
 - No hypothesis has been upgraded to SUPPORTED or NOT_SUPPORTED.
+
+
+## Hypothesis readiness after PVE-127
+- H001/H002 remain unchanged: WAITING_POST_ENABLE_LIVE_ROWS + WAITING_BASELINE_FRESHNESS_PROOF + WAITING_CLEAN_COHORT_PROVENANCE + WAITING_AT_REST_QA.
+- PVE-121 strengthens the rule that `validSessions>=20` / QA `readyCount` is not field readiness.
+- PVE-122 means persisted-row absence cannot be used as proof of zero mutation conflicts; runtime retry/conflict telemetry is a separate evidence requirement.
+- PVE-123~124 require report-generation state and window denominators to be explicit before any evidence count is used.
+- PVE-125 requires PV runtime-receipt presence before interpreting pvScan decisionImpact/formalCoreImpact flags as observed evidence.
+- PVE-126 preserves measured zero versus unavailable/null as distinct evidence states.
+- PVE-127 prevents D1_DIRECT_READ_NOT_AUTHORIZED from being treated as an authoritative cause unless the underlying HTTP/error evidence actually supports authorization denial.
+- No H001~H006 hypothesis is upgraded, rejected or supported by these observability findings.
+- Formal Core remains LOCKED.
