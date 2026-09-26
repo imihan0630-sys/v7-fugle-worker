@@ -20,6 +20,7 @@ import {
   classifyVShape,
   classifyCorporateActionGap,
   classifyLimitBreakout,
+  taiwanStockPriceLimits,
   classifyDeadLiquidityTightBase,
   classifyNestedResistance,
   classifyEventGapBreakout,
@@ -378,16 +379,57 @@ function scaled(bars, k) {
 }
 
 // C4 limit-up breakout: acceptance remains unresolved on the constrained bar.
+// Taiwan stock limit prices must be rounded to legal ticks without exceeding +/-10%.
 {
+  const officialExample = taiwanStockPriceLimits({ referencePrice: 40.60, priceLimitPct: 0.10 });
+  assert.equal(officialExample.status, "VALID");
+  assert.equal(officialExample.limitUp, 44.65);
+  assert.equal(officialExample.limitDown, 36.55);
+
+  // Tick-bracket boundary: raw 10.989 cannot be quoted; legal limit-up is 10.95.
+  const boundary = taiwanStockPriceLimits({ referencePrice: 9.99, priceLimitPct: 0.10 });
+  assert.equal(boundary.limitUp, 10.95);
+  assert.equal(boundary.limitDown, 9);
+
+  // Real Taiwan witness shape from 2603 / 2021-05-18: ref 63.1 -> legal limit-up 69.4.
+  const evergreen = taiwanStockPriceLimits({ referencePrice: 63.1, priceLimitPct: 0.10 });
+  assert.equal(evergreen.limitUp, 69.4);
+  assert.equal(evergreen.limitDown, 56.8);
+
   const out = classifyLimitBreakout({
     priorResistance: 100,
     referencePrice: 100,
     bar: { open: 100, high: 110, low: 100, close: 110 },
     priceLimitPct: 0.10
   });
+  assert.equal(out.status, "VALID");
   assert.equal(out.localBreakout, true);
+  assert.equal(out.limitTouched, true);
+  assert.equal(out.closedAtLimitUp, true);
   assert.equal(out.priceLimitConstrained, true);
+  assert.equal(out.censoringState, "CLOSED_AT_LIMIT_UP");
   assert.equal(out.acceptanceState, "UNRESOLVED");
+
+  const touchedButReleased = classifyLimitBreakout({
+    priorResistance: 100,
+    referencePrice: 100,
+    bar: { open: 100, high: 110, low: 101, close: 107 }
+  });
+  assert.equal(touchedButReleased.limitTouched, true);
+  assert.equal(touchedButReleased.closedAtLimitUp, false);
+  assert.equal(touchedButReleased.priceLimitConstrained, false);
+  assert.equal(touchedButReleased.censoringState, "TOUCHED_LIMIT_UP_NOT_LOCKED_AT_CLOSE");
+  assert.equal(touchedButReleased.acceptanceState, "OBSERVABLE");
+
+  const noLimitUnknown = classifyLimitBreakout({
+    priorResistance: 100,
+    referencePrice: 100,
+    bar: { open: 100, high: 110, low: 100, close: 110 },
+    standardLimitApplies: null
+  });
+  assert.equal(noLimitUnknown.status, "BLOCKED");
+  assert.equal(noLimitUnknown.reason, "PRICE_LIMIT_RULE_UNKNOWN");
+  assert.equal(noLimitUnknown.acceptanceState, "UNKNOWN");
 }
 
 // C5 dead-liquidity tight base: tiny geometric range cannot become healthy compression by itself.
