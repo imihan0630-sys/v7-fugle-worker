@@ -6,7 +6,8 @@ import {
   buildExecutionAlphaComponents,
   compareExecutionPolicyToBenchmark,
   classifyExecutionBenchmarkEligibility,
-  decomposeBuyImplementationShortfall
+  decomposeBuyImplementationShortfall,
+  inferTaiwanLotType
 } from "../research/execution_alpha_coverage_v0_1.mjs";
 
 const workerPath=process.env.V7_TEST_WORKER_PATH || new URL("../Worker.js",import.meta.url).pathname;
@@ -147,6 +148,10 @@ console.log(JSON.stringify({
 
 // Execution benchmark must match Taiwan lot mechanism; selection close remains reference-only.
 {
+  assert.equal(inferTaiwanLotType(180),"ODD_LOT");
+  assert.equal(inferTaiwanLotType(2000),"REGULAR_LOT");
+  assert.equal(inferTaiwanLotType(1200),"MIXED_LOT");
+  assert.equal(inferTaiwanLotType(null),"UNKNOWN");
   const selectionRef=classifyExecutionBenchmarkEligibility({
     benchmarkType:"SELECTION_CLOSE_REFERENCE",lotType:"ODD_LOT",benchmarkPrice:100
   });
@@ -158,6 +163,12 @@ console.log(JSON.stringify({
   });
   assert.equal(oddAtRegularOpen.status,"MECHANISM_MISMATCH");
   assert.equal(oddAtRegularOpen.eligible,false);
+
+  const mixed=classifyExecutionBenchmarkEligibility({
+    benchmarkType:"FIRST_ELIGIBLE_OBSERVED_QUOTE",lotType:"MIXED_LOT",benchmarkPrice:101,
+    observedAt:"2026-09-30T09:10:05+08:00",quoteFresh:true,marketMechanism:"ODD_LOT_INTRADAY"
+  });
+  assert.equal(mixed.reason,"MIXED_LOT_REQUIRES_SEPARATE_REGULAR_AND_ODD_LOT_LEGS");
 
   const oddQuote=classifyExecutionBenchmarkEligibility({
     benchmarkType:"FIRST_ELIGIBLE_OBSERVED_QUOTE",
