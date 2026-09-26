@@ -836,4 +836,354 @@ Status:
 V0_1_RAW_VOLUME_EVIDENCE_PARTIALLY_SALVAGEABLE /
 H003_H004_HIGHER_GATED /
 FORMAL_UNCHANGED.
+# PVE-067 — Minimal Clean H001 Row Contract
+
+## Frozen H001 question
+Does same-slot `pvSlotRvol20` add incremental information beyond the existing Formal previous-5-bar 15m volume ratio?
+
+This is a raw-volume comparison, not a Guard/response-state test.
+
+## H001 row eligibility
+
+A v0.1 row may enter the first clean H001 descriptive sample only when all are true:
+
+### Identity / schema
+- observationType = INTRADAY_15M;
+- schemaVersion = PV_SHADOW_V0_1;
+- decisionImpact = false;
+- symbol/date/snapshotId valid.
+
+### Completed-bar / point-in-time
+- source.completedBar = true;
+- source.barStart = observedAt;
+- source.barEnd is valid;
+- sourceFetchedAt >= barEnd;
+- baselineAsOfDate < marketDate.
+
+### Common-support fields
+- `formalLocalVolumeRatio` finite;
+- `pvSlotRvol20` finite;
+- `slotHistoryCount >= 20`;
+- current slotKey is in the observable 15m slot universe.
+
+Because Formal previous-5 volume ratio does not exist with full five-bar support in the earliest session slots, the primary H001 common-support sample begins only where the existing Formal comparator is valid. Earlier slot-RVOL rows are coverage/descriptive-only, not part of the primary incremental comparison.
+
+### Current-session source continuity
+Exclude from clean common support when current-session evidence indicates a missing/interrupted required 15m sequence that makes the two comparator constructions use materially different prior support.
+
+This protects against PVE-036.
+
+### Market-structure provenance
+Primary clean analysis excludes or separately guards:
+- disposition periodic-auction sessions;
+- unsupported market structure;
+- unresolved corporate-action/reference-price regimes when they affect the outcome interpretation.
+
+For the raw volume metric relationship itself, price-censoring need not invalidate the measured slot volume, but outcome analysis must stratify/guard it.
+
+### Cohort quality
+Primary H001 inference additionally requires:
+- clean Formal selection/pool provenance;
+- no known stale-history selection lineage.
+
+9/29 fails this cohort condition even if feature rows are mechanically valid.
+
+## Comparator-bar provenance class
+v0.1 does not persist an explicit `formalFrame15LatestTime`.
+
+However code audit proves both:
+- Formal frame15;
+- PV session15
+are derived from the same fetched raw 15m response in the normal 15m refresh path.
+
+Therefore classify v0.1 rows as:
+`COMMON_SOURCE_CODE_INVARIANT`
+when all source/slot continuity conditions pass.
+
+Do not call them:
+`EXPLICIT_SAME_BAR_ID_VERIFIED`.
+
+That stronger class requires a future schema field.
+
+Status:
+H001_MINIMUM_ROW_CONTRACT_FROZEN.
+
+
+# PVE-068 — Minimal Clean H002 Row Contract
+
+## Frozen H002 question
+Does `pvCumvolPace20` add information beyond same-slot RVOL and the existing local previous-5 volume ratio?
+
+## Nested sample rule
+Primary H002 incremental comparison is a subset of H001 common support.
+
+Therefore every H002 row must first pass PVE-067.
+
+Additional requirements:
+- `pvCumvolPace20` finite;
+- `cumulativeHistoryCount >= 20`;
+- current-session prefix from 09:00 through the current slot is complete under verified provider slot semantics;
+- no MISSING_REQUIRED_SESSION_SLOT for the required prefix;
+- historical cumulative denominator comes from prior sessions only.
+
+## Why H002 is stricter
+Exact-slot volume can be valid even if another slot in a historical session is missing.
+
+Cumulative pace cannot safely use that session's prefix if an earlier slot is missing.
+
+Thus:
+H002 eligibility <= H001 eligibility.
+
+## What is not required
+H002 raw-volume analysis does not require:
+- valid rangeHistoryCount;
+- trusted pvResponseState;
+- trusted ILLIQUIDITY_WARNING;
+provided outcome/market-structure overlays are handled separately.
+
+## First descriptive use
+Before outcomes:
+compare:
+- H001 local ratio;
+- slot RVOL;
+- cumulative pace;
+on exactly the nested eligible H002 sample.
+
+Do not compare H001 and H002 performance using different hidden denominators without reporting the sample difference.
+
+Status:
+H002_NESTED_ROW_CONTRACT_FROZEN.
+
+
+# PVE-069 — Independence / Event Accounting without the Mixed Top-Level eventKey
+
+## Primary H001/H002 population
+H001/H002 are not restricted to high-RVOL events.
+Restricting only to high volume would recreate the selection/collider problem identified in PV-128.
+
+Therefore the primary dataset retains the full eligible RVOL range.
+
+## Dependence handling
+Multiple 15m observations from:
+- the same symbol;
+- the same session;
+- the same market date
+are not independent.
+
+Primary inference continues to use:
+- date-level aggregation / date-block resampling;
+- symbol/session clustering where model fitting is used.
+
+## Secondary abnormal-volume episode analysis
+When an abnormal participation episode is specifically studied:
+
+Do NOT group by the v0.1 top-level eventKey.
+
+Instead:
+- use nested persistence event key only when continuity is independently verified;
+OR
+- reconstruct a session-local analysis event from eligible ordered raw RVOL rows under the already-frozen 1.3/hysteresis semantics.
+
+Any reconstructed key is an **analysis overlay**, never a rewritten snapshot identity.
+
+Suggested overlay:
+`PVE:PERSISTENCE_SESSION:<date>:<symbol>:<firstEligibleBarStart>`.
+
+If row coverage is incomplete:
+episode grouping = UNKNOWN.
+
+## Acceptance-event studies
+Use:
+`context.pvAcceptanceDetail.eventKey`
+as the Acceptance family key, separately from participation persistence.
+
+## No pseudo-independent inflation
+A single snapshot may belong simultaneously to:
+- a participation episode;
+- an Acceptance episode.
+
+That does not create two independent market observations.
+
+Status:
+EVENT_FAMILIES_SEPARATED / DATE_DEPENDENCE_PRIMARY.
+
+
+# PVE-070 — Outcome Eligibility Is Field-Specific, Not One Boolean
+
+## Problem
+A row can have:
+- valid D1 return;
+- valid MFE/MAE;
+- ambiguous stopFirst;
+- guarded false-break semantics.
+
+One global `outcomeValid=true/false` would discard useful evidence or overstate bad fields.
+
+## Frozen field-level states
+
+### Direction / return
+- DIRECTION_VALID
+- DIRECTION_CA_UNRESOLVED
+- DIRECTION_SYMBOL_SESSION_CENSORED
+- DIRECTION_SOURCE_GAP
+- DIRECTION_NOT_MATURE
+
+### MFE / MAE
+- EXCURSION_VALID
+- EXCURSION_CA_UNRESOLVED
+- EXCURSION_SYMBOL_SESSION_CENSORED
+- EXCURSION_SOURCE_GAP
+- EXCURSION_NOT_MATURE
+
+### Structural failure / falseBreak
+- STRUCTURE_VALID
+- STRUCTURE_ACCEPTANCE_SEMANTICS_GUARDED
+- STRUCTURE_HORIZON_GAP
+- STRUCTURE_SESSION_END_CENSORED
+- STRUCTURE_NOT_MATURE
+
+### stopFirst
+- STOPFIRST_VALID_STOP_BEFORE_TARGET
+- STOPFIRST_VALID_TARGET_BEFORE_STOP
+- STOPFIRST_SAME_BAR_ORDER_AMBIGUOUS
+- STOPFIRST_NO_STOP_DEFINED
+- STOPFIRST_NOT_MATURE
+
+## Same-session B horizons
+`INCOMPLETE_SESSION_END` is a censored horizon, not a negative setup result.
+
+Exact B1/B2/B4 requires verified slot continuity.
+
+## Daily horizons
+Require symbol-session-aware continuity.
+
+If a legitimate suspension interrupts the market-session horizon:
+do not silently advance to the next available stock bar under the same D-label.
+Either:
+- censor the original market-session horizon;
+or
+- define a separate future symbol-session horizon under a new preregistered label.
+
+Status:
+FIELD_SPECIFIC_OUTCOME_QUALITY_FROZEN.
+
+
+# PVE-071 — Sample Accounting Receipt: No Silent Row Disappearance
+
+## Purpose
+Every report must explain how many potential observations were lost at each quality gate.
+
+## Frozen funnel
+
+1. RAW_SNAPSHOTS
+2. SCHEMA_V0_1
+3. DECISION_IMPACT_FALSE
+4. COMPLETED_SOURCE_BAR
+5. PIT_ELIGIBLE
+6. H001_COMMON_SUPPORT_FIELDS
+7. H001_SLOT_BASELINE_READY
+8. CURRENT_SESSION_CONTINUITY_PASS
+9. MARKET_STRUCTURE_PRIMARY_ELIGIBLE
+10. COHORT_PROVENANCE_CLEAN
+11. H001_PRIMARY_ELIGIBLE
+12. H002_CUMULATIVE_READY
+13. H002_PRIMARY_ELIGIBLE
+14. OUTCOME_MATURE_BY_FIELD
+
+## Required counts
+For every gate report:
+- rows entering;
+- rows passing;
+- rows failing;
+- rows UNKNOWN;
+- unique symbols;
+- unique market dates.
+
+## Exclusion reasons
+A row may carry multiple reason codes.
+
+Also assign one deterministic `primaryExclusionReason` using a preregistered precedence so totals reconcile.
+
+Example precedence:
+SOURCE_INVALID
+-> PIT_INVALID
+-> BASELINE_NOT_READY
+-> SESSION_CONTINUITY
+-> MARKET_STRUCTURE
+-> COHORT_PROVENANCE
+-> OUTCOME_NOT_MATURE.
+
+## Never drop nulls silently
+A regression/library default that removes null rows without a receipt is prohibited.
+
+## Denominator transparency
+H001 and H002 must show different denominators when H002 cumulative requirements remove rows.
+
+Status:
+SAMPLE_ACCOUNTING_RECEIPT_FROZEN.
+
+
+# PVE-072 — First H001/H002 Report Shape Frozen before Outcome Inspection
+
+## Part 1 — Data-quality / coverage
+Show:
+- raw snapshot count;
+- H001 eligible count;
+- H002 eligible count;
+- independent dates;
+- symbols;
+- session-phase distribution;
+- pool/channel distribution;
+- baseline count distributions;
+- source/PIT/cohort exclusion reasons.
+
+No return statistics yet.
+
+## Part 2 — Metric relationship
+On H001 common support:
+- distribution of formalLocalVolumeRatio;
+- distribution of pvSlotRvol20;
+- rank correlation;
+- disagreement matrix using frozen semantic bands;
+- same-date/symbol examples of large disagreement.
+
+On H002 nested support:
+- distribution of pvCumvolPace20;
+- relationship to slot RVOL;
+- identify one-slot spike vs persistent-session participation descriptively.
+
+Do not call one metric “better” here.
+
+## Part 3 — Pre-registered outcome comparison, only after maturity
+
+Frozen sequence:
+A. existing Formal/context baseline
+B. + formal local previous-5 volume ratio
+C. + pvSlotRvol20
+D. + pvCumvolPace20
+
+Report:
+- structural failure/no-follow-through where field-valid;
+- median MFE;
+- median MAE;
+- directionReturn where field-valid;
+- coverage loss from each stage.
+
+Use:
+- equal-date-weighted primary summaries;
+- count-weighted secondary summaries;
+- leave-one-date-out/date-block uncertainty when sample size permits.
+
+## Utility view
+If a hypothetical warning/filter is explored later:
+report adverse events captured **and** valid opportunities lost.
+
+No winner, threshold change or Formal proposal from the first descriptive report.
+
+## Multiple-testing rule
+H001/H002 frozen family only.
+No scanning dozens of alternative RVOL thresholds after results arrive.
+
+Status:
+FIRST_REPORT_PREREGISTERED / OUTCOME_BLIND_DESIGN.
 
