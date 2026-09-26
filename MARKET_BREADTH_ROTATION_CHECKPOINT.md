@@ -1,8 +1,8 @@
 # Market Breadth + Sector Rotation + Leadership Checkpoint
 
-Updated: 2026-09-25 Asia/Taipei
-Current cursor: BR-001 through BR-025 complete.
-Next: evidence accumulation; concept lane complete.
+Updated: 2026-09-26 Asia/Taipei
+Current cursor: BR-001 through BR-026 complete.
+Next: prospective evidence accumulation from the first valid post-V8.14 scan; no threshold tuning.
 
 ## Durable conclusions
 
@@ -70,3 +70,31 @@ BR-018: Decide whether existing official data permit zero-code/prospective snaps
 
 ## Next lane
 Open Fundamental Information Dynamics: distinguish fundamental level, change, surprise, revision and market price reaction.
+
+
+## BR-026 — Sector-gate provenance capture deployed; evidence accumulation starts prospectively
+
+- Production audit confirmed that pre-V8.14 evidence was insufficient to falsify the existing sector hard gate:
+  - `researchMarketContext.advancePct` was Formal-normalized breadth, not official whole-market breadth;
+  - Shadow snapshots lacked the actual gate inputs breadth / avgChange / amountVs20DayAverage;
+  - gate failure short-circuits `scoreCandidate()`, so rejected names do not have a valid full gate-bypassed Formal RR/eligibility result.
+- V8.14.0 `SECTOR_GATE_AUDIT_V0_1` now freezes the PIT gate inputs, each pass/fail check, combined state and exact 40% / -1% / 0.5 thresholds inside existing research-only Shadow snapshots.
+- Market breadth context now declares its universe explicitly as `TWSE_TPEX_COMBINED_FORMAL_NORMALIZED` and `officialWholeMarketBreadth=false`.
+- New bounded `SECTOR_GATE_REJECTED` cohort: exact existing sector-gate reject reason, deterministic A/B-closeness ordering, max 6 per pool per scan. This is not a full rejected-universe archive.
+- A/B technical context is recorded with `fullFormalCounterfactual=false`; it must not be interpreted as “would have been a Formal pick if the sector gate were removed.”
+- Deployment evidence: PR #111; merge `eb1ef7f1d86a8013c0fd58d97cdfaa7369f677e7`; PR Regression 36234970884 SUCCESS; PR Repair 36234970803 SUCCESS; main Regression 36235023368 SUCCESS; Cloudflare Deploy 36235023379 SUCCESS.
+- Formal sector gate, A/B logic, ranking, quotas, capital and all operation signals remain unchanged.
+
+### Frozen first evidence protocol
+- Start only with clean post-deploy PIT scans.
+- Minimum first descriptive review: >=20 independent clean scan dates with mature D1/D3/D5 outcomes.
+- Compare frozen gate-pass context versus bounded `SECTOR_GATE_REJECTED`.
+- Outcomes: D1/D3/D5 return, MFE, MAE, false-breakout / stop-risk where observable.
+- Stratify which component failed: breadth, avgChange, activity; preserve multi-failure rows.
+- Condition on A/B technical readiness, sector RS, Price-Volume, setup quality and market regime.
+- Inference unit = scan date; use date clustering / leave-one-date-out.
+- Do not sweep 40% / -1% / 0.5 for a prettier result.
+- Because the rejected cohort is bounded, do not estimate full-market opportunity loss from it.
+
+Status: `WAITING_PROSPECTIVE / NOT_OPTIMIZATION_READY`.
+First expected valid cohort: 2026-09-29, conditional on V8.12 history/source admission.
