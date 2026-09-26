@@ -173,3 +173,40 @@ Machine artifact:
 
 No normalization, reweighting or channel precedence change is authorized.
 Any such change would be Class C.
+
+
+## RR multi-layer influence structural audit
+
+Current deployed Formal uses reward/risk three times in different roles:
+
+1. **hard eligibility:** `RR >= 2`;
+2. **PriorityScore component:** `clamp(RR*20,0,100)*0.14`;
+3. **lexicographic tie-break:** raw `rewardPerRisk` is second after post-consensus PriorityScore.
+
+PriorityScore is rounded to one decimal before the deployed comparator.
+
+### Existing formula breakpoints
+
+- RR 2.0 -> 5.6 PriorityScore points;
+- RR 3.0 -> 8.4;
+- RR 4.0 -> 11.2;
+- RR 5.0 -> 14.0;
+- RR >5.0 -> additive RR contribution stays 14.0, but raw rewardPerRisk can still win a PriorityScore tie.
+
+Thus RR has confirmed multi-layer influence.
+This is not automatically erroneous: a risk/reward floor plus preference among otherwise similar candidates can be intentional.
+
+### Required falsification
+
+Do not ask merely whether “high RR is good.”
+Test:
+- how often raw RR actually resolves a rounded PriorityScore tie;
+- whether RR 2–3, 3–5 and >5 show monotonic improvement in target-first, MFE/MAE, stop-first and forward return;
+- whether theoretical reward distance is realized before stop/time horizon;
+- whether A/B channel stop-entry construction changes RR calibration;
+- whether removing only the raw RR tie-break in a research replay changes selected names and improves/worsens outcomes.
+
+Machine artifact:
+`research/rr_priority_structural_falsification_v0_1.json`.
+
+No RR gate, 14% weight, target construction or comparator change is authorized.
