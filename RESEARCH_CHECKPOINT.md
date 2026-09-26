@@ -1,7 +1,7 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-158.
-Updated: 2026-09-26 12:28 Asia/Taipei.
+Checkpoint sequence: B-159.
+Updated: 2026-09-26 12:35 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Detailed B-01..B-123 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
@@ -645,3 +645,18 @@ Updated: 2026-09-26 12:28 Asia/Taipei.
 - Optimization bridge: no candidate yet. A future change must beat the existing Formal institutional rule incrementally and survive source parity/passive-flow/redundancy/date-cluster/cost gates. Current status FALSIFICATION_IN_PROGRESS / DATA_FEASIBILITY_PARTIAL / NOT_OPTIMIZATION_READY.
 - Engineering: Class A research documentation only. Commits 201f5f18222e6e083c3dfbd07255e46247d98a53 and 3295037b999edfe59bc4090f4d6cffeef83a9c61. No Worker/Production/Formal/monitor/push change.
 - Exact next continuation: perform a bounded official-data feasibility audit for contiguous TWSE+TPEx actor-flow sessions using the existing institution sync/storage contract, without outcome lookup. If parity/continuity can be proven, freeze a prospective receipt schema and synthetic missing-session tests; if not, mark the exact market/source gap UNKNOWN/DATA_QUALITY_BLOCKED and move automatically to Macro/Cross-Market regime transmission. Do not create a new institutional score.
+
+
+## B-159 — Macro/Cross-Market transmission lane opened after institutional parity gate (2026-09-26 12:35 Asia/Taipei)
+- Continued automatically from B-158. Institutional/crowding outcome testing is parked until contiguous official-session parity is proven; no one-day flow was promoted into a multi-day signal.
+- Opened MACRO_CROSS_MARKET_RESEARCH.md and advanced MC-001..MC-011.
+- Core PIT clock rule: for Taiwan after-market scan t, prior U.S./Europe close and same-day Japan/Korea close can be known; the U.S. session occurring after Taiwan close is future information and cannot enter t after-market selection. Taiwan night futures after scan are likewise later information for t selection.
+- Calendar guard: foreignSessionClose -> knownAtTaipei -> firstEligibleTaiwanDecision. Foreign holidays remain STALE_NO_NEW_SESSION; Taiwan holidays require explicit accumulated-information windows, not calendar-day forward fill.
+- Candidate mechanisms separated: global equity/tech relative moves, Japan/Korea, FX/DXY, oil/rates and residual Taiwan sensitivity. Sector interaction is pre-registered; no uniform global-risk score.
+- Scheduled event presence, expectation, realized release and post-release market reaction are separate clocks. Realized CPI/Fed/NFP surprise cannot be used before release.
+- Falsification: date-shift placebo, Taiwan-only and sector baselines, remove largest global shocks, timezone/holiday audit, raw-vs-residual global feature, independent dates, and gap-vs-open-to-close decomposition.
+- Key anti-false-alpha rule: global effects must be residualized against Taiwan market/sector and existing stock RS/beta context before being interpreted as stock-selection information. Gap-only effects are execution/risk context, not necessarily ranking alpha.
+- Data gate: notification/radar text is not automatically a durable research dataset. Before outcomes, audit whether Global Radar observations are stored with source/session/knownAt provenance. If absent, define prospective receipt schema; no historical web reconstruction or fabricated Shadow.
+- Optimization bridge: possible context/tie-break/risk candidate only after incremental non-crisis independent-date evidence; blanket global veto is not authorized. Current status FALSIFICATION_IN_PROGRESS / NOT_OPTIMIZATION_READY.
+- Engineering: Class A research documentation only. Commits 81633f9eed9f1d25be4e5823b6e959b6867186f0 and c58dbcad9c8599bdf04532d706f7328706119334. No Worker/Production/Formal/monitor/push change.
+- Exact next continuation: audit repository/runtime research storage for durable global-market receipts with sessionDate/knownAt provenance. If absent, freeze a prospective Class-A receipt schema and synthetic timezone/holiday tests; if shared runtime capture is required, proposal-only. Then continue to remaining Master Map reconciliation/next evidence-ready lane without waiting for another prompt. Any finding that survives falsification and can improve after-market selection must be surfaced as FORMAL_OPTIMIZATION_CANDIDATE.
