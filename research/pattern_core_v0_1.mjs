@@ -1887,3 +1887,67 @@ export function analyzeImpulseConsolidationGeometry({
     decisionImpact:false
   };
 }
+
+
+// Continuous repeated-resistance progression. Touch count is deliberately unsigned.
+// The older binary C8 classifier remains for the frozen oracle; this function exposes
+// the underlying progression dimensions for later redundancy/falsification work.
+export function analyzeResistanceTestProgression(attempts = []) {
+  const rows=(Array.isArray(attempts)?attempts:[])
+    .map((x,i)=>({
+      index:i,
+      at:String(x?.at||x?.date||i),
+      low:finite(x?.low),
+      close:finite(x?.close),
+      resistance:finite(x?.resistance),
+      volume:finite(x?.volume),
+      turnover:finite(x?.turnover)
+    }));
+  if(rows.length<2 || rows.some(x=>x.low===null||x.close===null||!(x.resistance>0))){
+    return {status:"BLOCKED",reason:"RESISTANCE_TEST_INPUT_INCOMPLETE",researchOnly:true,decisionImpact:false};
+  }
+
+  const normalized=rows.map(x=>({
+    ...x,
+    lowDistancePct:(x.resistance-x.low)/x.resistance,
+    closeDistancePct:(x.resistance-x.close)/x.resistance
+  }));
+  const fitLow=simpleLinearFit(normalized.map(x=>({x:x.index,y:x.lowDistancePct})));
+  const fitClose=simpleLinearFit(normalized.map(x=>({x:x.index,y:x.closeDistancePct})));
+  const rejectionAbs=normalized.map(x=>Math.abs(x.closeDistancePct));
+  const firstRejection=rejectionAbs[0],lastRejection=rejectionAbs.at(-1);
+  const rejectionCompressionRatio=firstRejection>0?lastRejection/firstRejection:null;
+
+  let improvingLowPairs=0,improvingClosePairs=0;
+  for(let i=1;i<normalized.length;i+=1){
+    if(normalized[i].lowDistancePct<normalized[i-1].lowDistancePct) improvingLowPairs+=1;
+    if(normalized[i].closeDistancePct<normalized[i-1].closeDistancePct) improvingClosePairs+=1;
+  }
+  const pairCount=normalized.length-1;
+  const volumeFit=simpleLinearFit(
+    normalized.filter(x=>x.volume!==null&&x.volume>=0).map(x=>({x:x.index,y:x.volume}))
+  );
+  const turnoverFit=simpleLinearFit(
+    normalized.filter(x=>x.turnover!==null&&x.turnover>=0).map(x=>({x:x.index,y:x.turnover}))
+  );
+
+  return {
+    status:"VALID",
+    touchCount:normalized.length,
+    lowDistanceSlopePerTest:fitLow?.slope??null,
+    closeDistanceSlopePerTest:fitClose?.slope??null,
+    lowDistanceRmse:fitLow?.rmse??null,
+    closeDistanceRmse:fitClose?.rmse??null,
+    improvingLowPairRatio:pairCount?improvingLowPairs/pairCount:null,
+    improvingClosePairRatio:pairCount?improvingClosePairs/pairCount:null,
+    firstCloseDistancePct:normalized[0].closeDistancePct,
+    lastCloseDistancePct:normalized.at(-1).closeDistancePct,
+    rejectionCompressionRatio,
+    volumeSlopePerTest:volumeFit?.slope??null,
+    turnoverSlopePerTest:turnoverFit?.slope??null,
+    attempts:normalized,
+    definitionNote:"Continuous approach/rejection progression only; lower distance slopes can describe absorption but carry no ex-ante bullish sign.",
+    researchOnly:true,
+    decisionImpact:false
+  };
+}
