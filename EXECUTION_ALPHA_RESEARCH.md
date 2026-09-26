@@ -62,3 +62,28 @@ Next evidence program:
 2. Class-A research may define coverage-aware Execution Alpha diagnostics/tests on synthetic fixtures;
 3. prospective complete-coverage days should accumulate BUY and NO-BUY opportunity-cost cohorts once completeness is observable;
 4. no Formal Core change without later evidence and explicit strategy decision.
+
+
+## EA-008 — do not equate NO-BUY with loss
+A complete-coverage NO-BUY can have either sign:
+- MISSED_UPSIDE: the frozen benchmark path rises materially after the system abstains;
+- AVOIDANCE_BENEFIT: the frozen benchmark path falls materially after abstention;
+- NEUTRAL_OR_AMBIGUOUS: path/cost difference is small or mixed.
+
+Therefore a stricter entry policy can create value by avoiding bad selections even while lowering participation. Conversely, cheap observed BUY prices can coexist with poor total policy value if the system systematically misses strong winners.
+
+Report five dimensions separately before any composite:
+1. participation/BUY trigger rate on complete coverage;
+2. conditional entry-price improvement for observed BUY;
+3. post-entry path quality for BUY;
+4. missed-upside versus avoidance-benefit distribution for complete NO-BUY;
+5. capital-idle exposure/time and assumed cash benchmark.
+
+Do not optimize a weighted composite until these components mature independently.
+
+## EA-009 — selection/execution interaction
+Execution research must be stratified by frozen selection context rather than treating every plan as exchangeable: A/B channel, pool, scan date, regime, liquidity/price bucket and pre-existing plan quality fields where available. These are descriptive strata, not new thresholds.
+
+Key falsification question: does waiting improve weak/volatile selections by avoiding bad entries while unnecessarily suppressing high-quality momentum selections? If yes, the problem is interaction/heterogeneity rather than a universally too-strict or too-loose BUY rule.
+
+No subgroup may be promoted from a tiny date cluster. Report independent dates and UNKNOWN coverage for each stratum.
