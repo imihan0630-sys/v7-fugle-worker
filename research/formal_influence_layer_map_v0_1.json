@@ -1,0 +1,119 @@
+{
+  "schemaVersion": "formal-influence-layer-map-v0.1",
+  "researchDate": "2026-09-27",
+  "status": "STRUCTURAL_MAP_FROZEN",
+  "outcomeDataUsed": false,
+  "formalCoreChanged": false,
+  "warning": "Nominal PriorityScore weights are not total system influence weights because several components also act through gates, channel/grade eligibility, lexicographic tie-breaks, exceptions and score-proportional capital allocation.",
+  "layers": [
+    "pre-score hard/data/liquidity/event/valuation gates",
+    "A/B technical channel gate",
+    "RR hard gate",
+    "fundamental completeness/quality gate",
+    "sector hard gate",
+    "small-cap institutional exception gate",
+    "setup-quality signal-grade gate",
+    "PriorityScore weighted composite",
+    "market-consensus bonus overlay",
+    "lexicographic comparator",
+    "price-pool capacity cut",
+    "PriorityScore-proportional planned capital allocation"
+  ],
+  "components": [
+    {
+      "id": "SETUP_QUALITY",
+      "nominalPriorityWeight": 0.28,
+      "additionalInfluence": [
+        "A/B channel pass determines existence before score",
+        "signalLevel A/B/C solely derived from setupQuality; C rejected",
+        "deployed comparator position after priority/RR/consensus",
+        "capital via PriorityScore"
+      ],
+      "structuralRisk": "channel-scale asymmetry and 0.90/0.91 A-volume discontinuity"
+    },
+    {
+      "id": "SECTOR",
+      "nominalPriorityWeight": 0.14,
+      "additionalInfluence": [
+        "hard gate breadth>=40",
+        "hard gate avgChange>=-1",
+        "hard gate amountVs20DayAverage>=0.5",
+        "deployed sectorFlow tie-break",
+        "capital via PriorityScore"
+      ],
+      "structuralRisk": "breadth/avgChange repeated across gate+score; amount/maxSectorAmount size/denominator externality"
+    },
+    {
+      "id": "INSTITUTIONAL",
+      "nominalPriorityWeight": 0.16,
+      "additionalInfluence": [
+        "marketCap<30 exception requires avgVolume20Lots>=1.5*minLots AND institutionalScore>=70",
+        "capital via PriorityScore"
+      ],
+      "structuralRisk": "score component overlap/saturation; concentration semantic hybrid"
+    },
+    {
+      "id": "FUNDAMENTAL",
+      "nominalPriorityWeight": 0.14,
+      "additionalInfluence": [
+        "financialDataCount>=3 hard requirement",
+        "fundamentalScore>=25 hard requirement",
+        "upstream quarterly/valuation/announcement completeness gates",
+        "capital via PriorityScore"
+      ],
+      "structuralRisk": "coverage confounding, 120->100 saturation, horizon switching"
+    },
+    {
+      "id": "MARKET_RELATIVE_RS",
+      "nominalPriorityWeight": 0.14,
+      "additionalInfluence": [
+        "deployed final relativeStrength tie-break",
+        "capital via PriorityScore"
+      ],
+      "structuralRisk": "potential redundancy with ret20/setup/momentum; score saturation +/-25%"
+    },
+    {
+      "id": "REWARD_RISK",
+      "nominalPriorityWeight": 0.14,
+      "additionalInfluence": [
+        "RR>=2 hard gate",
+        "raw rewardPerRisk second deployed comparator",
+        "capital via PriorityScore"
+      ],
+      "structuralRisk": "triple-layer influence; additive saturation at RR>=5 while raw tie-break continues"
+    },
+    {
+      "id": "MARKET_CONSENSUS",
+      "nominalPriorityWeight": null,
+      "additionalInfluence": [
+        "post-score bonus +0..7 into PriorityScore",
+        "marketConsensusScore third deployed comparator",
+        "capital via boosted PriorityScore"
+      ],
+      "structuralRisk": "source independence provenance unresolved; score compression near 100"
+    }
+  ],
+  "semanticFindings": [
+    "The six nominal PriorityScore weights cannot be interpreted as the total relative importance of the six factors in Formal selection.",
+    "Setup, sector, RR and fundamental exert influence before the composite is even calculated.",
+    "RR, sector and RS can influence lexicographic ranking again after PriorityScore.",
+    "All PriorityScore-contained components can affect planned capital after selection because allocation is score-proportional.",
+    "Institutional score has an additional conditional gate in the 10-30bn market-cap exception.",
+    "Signal grade is not an overall-quality grade; it is setup-quality only."
+  ],
+  "empiricalQuestions": [
+    "What fraction of candidates is removed at each factor-linked gate by scanDate?",
+    "How often do tie-break layers actually decide selected order after rounded PriorityScore?",
+    "How much planned capital variance is attributable to each component versus candidate-count/deploy-ratio/caps?",
+    "Does any factor retain incremental outcome value after accounting for its own gate-conditioned population?",
+    "Are nominal PriorityScore weights directionally aligned with incremental OOS information, or mostly compensating for prior hard gates?"
+  ],
+  "guardrails": [
+    "Do not convert layer count into pseudo-weight or importance score.",
+    "Do not claim double-counting is harmful until outcome and selection-path materiality are measured.",
+    "Use gate-conditioned comparisons; rejected populations differ mechanically from scored populations.",
+    "Use scanDate as independent inference unit and preserve zero-pick/capacity effects.",
+    "Any simplification/reweighting/gate removal is Class C."
+  ],
+  "decision": "NOMINAL_WEIGHT_NOT_EQUAL_TOTAL_INFLUENCE_CONFIRMED / SYSTEM_LEVEL_CALIBRATION_REQUIRED / NO_FORMAL_CHANGE"
+}
