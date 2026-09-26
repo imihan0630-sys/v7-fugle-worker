@@ -3986,3 +3986,212 @@ FIRST_POST_ENABLE_EVALUATION_ORDER_PREREGISTERED.
 4. PVE-153: audit whether pool displacement can be reconstructed read-only for the 3+3 quota.
 5. PVE-154: freeze a pool-date integrity receipt so one stale candidate cannot silently contaminate QUALIFIED_NOT_SELECTED controls.
 6. Do not inspect outcomes or tune thresholds; Formal Core remains LOCKED.
+
+
+# PVE-150 — 2026-09-24 -> 09-29 -> 09-30 Cohort Transition Is Structurally Determined
+
+## Trading-calendar boundary
+The production calendar hard-codes:
+- 2026-09-25 as a market holiday;
+- 2026-09-28 as a market holiday.
+
+The after-market scheduled path calls `runAfterMarketScan(...,{onlyIfMissing:true})`.
+For a non-trading date it returns:
+`SKIPPED / NOT_TRADING_DAY`
+before producing a new selection.
+
+Weekend schedules are not ordinary Mon-Fri scan runs.
+
+## Plan persistence
+Intraday monitoring loads the current plan through:
+`loadStockConfig(env)`.
+
+A successful after-market scan saves the newly selected plans via:
+`saveStockConfig(..., "Phase 4.3 A/B Strategy Rebase After-market Scan", ...)`.
+
+Therefore, absent an independent manual plan mutation:
+
+### 2026-09-29 intraday
+Uses the last successfully saved Formal plan from 2026-09-24.
+
+This is the already-known stale-history cohort lineage.
+Its PV intraday rows are:
+`DATA_QA_ONLY / PRIMARY_COHORT_UNCLEAN`.
+
+### 2026-09-29 after-market
+A successful Formal scan can create/save the next plan.
+Only after Formal plan/push persistence does PV:
+- bootstrap baselines;
+- record daily shadow.
+
+### 2026-09-30 intraday
+Uses the 2026-09-29 saved plan if the after-market scan succeeded.
+
+This is the first session whose selection cohort can potentially be clean, but:
+- selection-time symbol-session history still needs proof;
+- new-symbol baseline may omit 9/29 under the previously identified T-1 bootstrap gap;
+- re-entered/skipped cache freshness remains row-specific.
+
+Status:
+FIRST_POST_ENABLE_COHORT_TRANSITION_FROZEN.
+
+
+# PVE-151 — Row-Level Cohort Lineage Labels Frozen
+
+Use one of these labels before H001/H002 eligibility:
+
+1. `INHERITED_KNOWN_STALE_SELECTION`
+   - example: 9/29 intraday rows inherited from 9/24.
+   - primary inference: excluded; DATA_QA only.
+
+2. `CONTINUING_FROM_PRIOR_MONITOR`
+   - symbol was monitored in the immediately prior valid session and remains selected.
+   - still requires clean selection-history and baseline freshness proof.
+
+3. `NEW_AFTER_MARKET_SELECTION`
+   - newly enters after the latest successful scan.
+   - baseline selection-day omission risk must be checked.
+
+4. `REENTERED_WITH_EXISTING_CACHE`
+   - not in prior monitor set, but baseline cache already exists.
+   - freshness UNKNOWN until baseline age/reset checks pass.
+
+5. `ZERO_PLAN_VALID`
+   - no Formal plan exists by valid selection outcome.
+   - zero PV opportunity is not recorder failure.
+
+6. `UNKNOWN_LINEAGE`
+   - old/new sets or timestamps cannot be reconstructed.
+
+Final research eligibility is separate:
+- CLEAN;
+- UNCLEAN;
+- UNKNOWN.
+
+A lineage class alone never implies CLEAN.
+
+Status:
+COHORT_LINEAGE_AND_ELIGIBILITY_SEPARATED.
+
+
+# PVE-152 — Symbol-Session Freshness Rehabilitation Inputs Frozen
+
+A row previously blocked by market-session-only freshness can be rehabilitated only from point-in-time evidence of:
+
+1. official exchange sessions for the relevant market/date range;
+2. symbol market/listing identity at that time;
+3. verified symbol-specific suspension/non-trading sessions;
+4. observed daily-history session dates actually used by Formal;
+5. latest expected comparable symbol session;
+6. unexplained missing expected sessions;
+7. corporate-action effective/reset dates relevant to price/history comparability;
+8. history source/capture vintage or immutable digest where available.
+
+Core equation:
+`EXPECTED_SYMBOL_SESSIONS = OFFICIAL_EXCHANGE_SESSIONS - VERIFIED_SYMBOL_SUSPENSION_SESSIONS`.
+
+Rules:
+- verified suspension can explain an otherwise missing bar;
+- unknown suspension provenance cannot;
+- unexplained missing expected sessions => fail-closed UNKNOWN/UNCLEAN according to the affected computation;
+- current corporate-action knowledge may not be backfilled as if known at selection time.
+
+Status:
+SYMBOL_SESSION_REHABILITATION_INPUTS_FROZEN.
+
+
+# PVE-153 — Exact 3+3 Pool Displacement Is Not Reconstructable from the Current Scan Receipt
+
+## What current code preserves
+The scan diagnostics preserve:
+- pool quotas;
+- selected counts;
+- unused slots;
+- aggregate eligibility/exclusion counts;
+- selected stocks;
+- thousand-stock selected shortlist;
+- a symbol/name EPS-review universe;
+- some near-miss diagnostics.
+
+## What exact displacement requires
+To answer:
+“if stale candidate X had been excluded, which candidate Y would have entered the 3-seat pool?”
+we need the complete point-in-time ordered qualified list for that pool, including:
+- rank tuple used by `rankFn`;
+- pool membership;
+- all candidates beyond the top-3 cutline;
+- history-quality provenance for each candidate.
+
+That complete ranked list is not persisted in the current scan receipt.
+
+## Consequence
+Exact counterfactual displacement for a historical pool-date is:
+`NOT_RECONSTRUCTABLE_FROM_CURRENT_RECEIPT`
+unless an independent immutable point-in-time candidate archive contains the full ranking inputs.
+
+Re-running today's code/data against historical dates is not an acceptable substitute unless all point-in-time inputs are frozen and version-matched.
+
+Status:
+POOL_DISPLACEMENT_COUNTERFACTUAL_CURRENTLY_UNKNOWN.
+
+
+# PVE-154 — Pool-Date Integrity Receipt Frozen
+
+A future research receipt for each scan date and pool should preserve:
+
+## Pool identity
+- scanDate;
+- pool = GENERAL / THOUSAND;
+- quota;
+- selection-rule/version identity.
+
+## Complete qualified ordering
+For every qualified candidate:
+- symbol;
+- pool membership basis / reference close;
+- full frozen `rankFn` tuple:
+  - rewardPerRisk;
+  - priorityScore;
+  - setupQuality;
+  - sectorFlow;
+  - relativeStrength;
+- deterministic tie-break state;
+- pool rank;
+- selected boolean;
+- cutline rank.
+
+## Data-quality overlay
+- selection-history quality;
+- symbol-session freshness state;
+- corporate-action/reset state;
+- point-in-time source provenance.
+
+## Counterfactual support
+Research may later derive:
+- first excluded clean candidate;
+- selected stale candidate;
+- potential displaced control.
+
+But the receipt itself does not alter Formal ranking or selection.
+
+## Integrity status
+A pool-date is `CLEAN_POOL_SELECTION` only if:
+- every selected candidate has clean selection provenance;
+- no unknown/stale candidate occupies a quota seat;
+- the full ordered qualified list needed for control construction is available.
+
+Otherwise:
+- `POOL_SELECTION_CONTAMINATED`; or
+- `POOL_SELECTION_INTEGRITY_UNKNOWN`.
+
+Status:
+POOL_DATE_INTEGRITY_RECEIPT_FROZEN.
+
+
+## Exact continuation after PVE-154
+1. PVE-155: audit whether any existing candidate-shadow/archive table already contains the complete per-pool ordered qualified list required by PVE-154, without conflating it with PV Shadow.
+2. PVE-156: if incomplete, freeze the minimum additive Class-A research schema for future pool-integrity evidence; do not implement yet.
+3. PVE-157: define clean-control construction for SELECTED vs QUALIFIED_NOT_SELECTED without collider leakage or post-outcome filtering.
+4. PVE-158: define date-level dependence/cluster handling when six selected rows share one market regime.
+5. PVE-159: freeze the minimum clean-date count and event-count reporting needed before the first descriptive H001/H002 outcome table.
+6. Formal Core remains LOCKED; no threshold/ranking/push change.
