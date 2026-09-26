@@ -1,0 +1,65 @@
+{
+  "schemaVersion": "PORTFOLIO_RISK_PRODUCTION_READONLY_RECEIPT_V0_1",
+  "observedAt": "2026-09-26T23:58:52+08:00",
+  "workflowRunId": 36253794425,
+  "jobId": 108436647824,
+  "endpoint": "/api/journal?days=730",
+  "readOnly": true,
+  "outcomeFieldsRead": false,
+  "recordedDays": 4,
+  "formalPlanRows": 4,
+  "recoveredRowsExcluded": 58,
+  "planDatesWithRows": 2,
+  "fullyReconstructablePlanDates": 2,
+  "incompletePlanDates": 0,
+  "zeroSelectedDays": 2,
+  "planDates": [
+    {
+      "scanDate": "2026-09-18",
+      "totalCapital": 200000,
+      "selectedCount": 3,
+      "planRows": 3,
+      "knownRiskSymbols": 3,
+      "plannedDeploymentNTD": 168000,
+      "deploymentRatioPct": 84,
+      "projectedHeatPctLow": 2.0221,
+      "projectedHeatPctHigh": 3.2417,
+      "effectiveCapitalNames": 2.9672,
+      "status": "今日選出 3 檔；非千金股 3/3、千金股 0/3；空缺不跨池補位"
+    },
+    {
+      "scanDate": "2026-09-21",
+      "totalCapital": 200000,
+      "selectedCount": 1,
+      "planRows": 1,
+      "knownRiskSymbols": 1,
+      "plannedDeploymentNTD": 70000,
+      "deploymentRatioPct": 35,
+      "projectedHeatPctLow": 0.5276,
+      "projectedHeatPctHigh": 1.307,
+      "effectiveCapitalNames": 1,
+      "status": "今日選出 1 檔"
+    }
+  ],
+  "zeroSelected": [
+    {
+      "scanDate": "2026-09-22",
+      "totalCapital": 200000,
+      "status": "今日0檔，維持現金"
+    },
+    {
+      "scanDate": "2026-09-23",
+      "totalCapital": 200000,
+      "status": "今日0檔，維持現金"
+    }
+  ],
+  "interpretation": "This receipt proves plan-level Tier-A risk geometry is reconstructable for the observed Production journal dates. It does not test returns or assert that higher heat/concentration is harmful.",
+  "blockedMetrics": [
+    "pairwiseCorrelation20",
+    "pairwiseCorrelation60",
+    "empiricalRiskCluster",
+    "shrinkageCovariance",
+    "marginalRiskContribution",
+    "downsideCorrelation"
+  ]
+}

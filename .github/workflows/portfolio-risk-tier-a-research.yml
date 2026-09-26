@@ -1,0 +1,33 @@
+name: Portfolio Risk Tier-A Research
+
+on:
+  pull_request:
+    paths:
+      - "research/portfolio_risk_tier_a_v0_1.mjs"
+      - "tests/test_portfolio_risk_tier_a_v0_1.mjs"
+      - "tests/test_portfolio_risk_reconstructability_v0_1.mjs"
+      - "tests/portfolio_risk_journal_readonly_audit.mjs"
+      - "research/portfolio_risk_reconstructability_v0_1.json"
+      - "PORTFOLIO_RISK_TIER_A_AUDIT.md"
+      - ".github/workflows/portfolio-risk-tier-a-research.yml"
+  workflow_dispatch:
+
+jobs:
+  tier-a-falsification:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Run Portfolio Risk Tier-A research tests
+        run: |
+          node tests/test_portfolio_risk_tier_a_v0_1.mjs
+          node tests/test_portfolio_risk_reconstructability_v0_1.mjs
+      - name: Read-only production journal coverage audit
+        env:
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+          V7_WORKER_ORIGIN: https://fugle-test.imihan0630.workers.dev
+        run: node tests/portfolio_risk_journal_readonly_audit.mjs
