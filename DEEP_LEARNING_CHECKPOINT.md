@@ -352,12 +352,51 @@ Research-only candidate, not yet coded:
 FALSIFICATION_IN_PROGRESS / RESEARCH_ONLY.
 Formal Core unchanged.
 
+## DL-001B — Authoritative price-limit source gate / incremental-content reduction
+Run date: 2026-09-26 Asia/Taipei
+
+### Source feasibility
+- Current V8.7.1 `researchLimitState()` is heuristic, using current OHLC versus prior close and approximate 8%/9.5% bands. It is not authoritative enough for DL-001 because Taiwan daily limits are tied to the session opening-auction reference price and have explicit exception regimes.
+- TWSE official public `TWT84U` exposes today's limit-up, opening-auction reference and limit-down prices plus prior-day context. This makes exact prospective TWSE capture feasible without reconstructing limits from prior close.
+- TPEx official EDIS S38 / `STKT2QUOTESN.TXT` defines the daily marker explicitly: '+' up, '^' limit-up, '-' down, 'v' limit-down, blank flat and 'X' non-comparable, and includes next-day reference/limit prices. TPEx also has a date-queryable official public historical daily surface already validated in the Corporate Actions lane.
+- Historical public reconciliation is not identical to immutable first-known archived bytes. For prospective research, raw source receipt/hash should be preserved. Missing archive/vintage evidence remains UNKNOWN.
+
+### Structural falsification
+Canonical ID is already redundant with ret20 sign + positive-day proportion (+ zero-day treatment).
+The Taiwan non-hit construction is formed by removing limit-hit days from the same positive/negative day-count path. Therefore, conditional on the existing canonical day-sign information, the only new degrees of freedom are the number and direction of official limit-hit sessions (and denominator handling).
+This means ID_non_hit should not be marketed as an independent broad gradual-path factor in this system.
+
+If a 20-day window contains zero official limit-hit sessions, the Taiwan modification contributes no price-limit-exclusion information. Such rows cannot establish incremental DL-001 value.
+
+### Literature counterevidence retained
+Lin et al. (2016) reports stronger earnings-momentum separation for ID_non_hit than standard ID, but its ID_hit measure itself had no discriminatory ability for earnings surprises. The sample also used the old +/-7% regime, while modern Taiwan has +/-10% limits and continuous intraday trading. Transportability to 2026 after-market stock selection is unproven.
+
+### Frozen v0.1 direction
+A new spec is now durable in `INFORMATION_DISCRETENESS_SHADOW_SPEC.md`.
+No additive score is proposed. The only v0.1 primitives worth prospective evidence are exact official limit-hit coverage/count/direction plus diagnostic canonical/non-hit imbalance.
+
+Primary candidate object:
+- `limitHitCount20`
+- `signedLimitHitBalance20`
+- `limitHitShare20`
+with NO_PRICE_LIMIT / UNKNOWN kept separate.
+
+No recency weighting, threshold sweep, nonlinear transform or Formal use.
+
+### Status
+Canonical ID: REJECTED_OR_REDUNDANT.
+ID_non_hit as standalone broad factor: REJECTED_OR_REDUNDANT pending any evidence to the contrary.
+Official price-limit context: FALSIFICATION_IN_PROGRESS / SPARSE_CONTROL_CANDIDATE.
+Formal Core unchanged.
+
+
 ## Exact next continuation point
-1. Do not implement plain canonical 20-day ID as a new factor; DL-001A shows it is mechanically redundant with ret20 sign + positiveDayRatio20 except for zero-return handling.
-2. Continue DL-001 with the Taiwan-specific non-limit-hit directional-imbalance hypothesis and explicit separate limit-hit context. First priority is to verify the current system's authoritative historical/as-of-date price-limit-state feasibility and exact zero/limit-day semantics before coding.
-3. Pre-register the redundancy test against positiveDayRatio20, ret20, volatility20, maxDrawdown20Pct, breakoutQualityResearch, Quiet/Attention and regime. If incremental value disappears, reject rather than tune.
-4. Independently continue the next highest-value external-learning question after DL-001, prioritizing an under-reconciled Master-Map domain rather than duplicating existing Residual RS, price-volume, pattern-maturity, microstructure, leverage/shorting, passive-flow or corporate-action lanes.
-5. Keep Formal Core（正式核心） unchanged unless later mature evidence passes governance and owner explicitly approves.
+1. Do not resurrect canonical ID or ID_non_hit as standalone additive factors. Their broad path information is redundant; only exact price-limit count/direction remains potentially incremental.
+2. Next DL-001 step: bounded prospective source receipt / coverage test using official TWSE TWT84U and official TPEx daily limit state. Measure authoritative coverage and the frequency of windows with limitHitCount20>0 before looking at outcomes.
+3. If limit-hit frequency/coverage is insufficient, reject DL-001 as too sparse for the after-market selector rather than adding complexity.
+4. Only if the source/frequency gate passes, test limitHitCount20 / signedLimitHitBalance20 incrementally against ret20, positiveDayRatio20, volatility20, maxDrawdown20Pct, breakoutQualityResearch, overheat, Quiet/Attention, sector/Residual RS, liquidity and regime.
+5. Independently continue the next highest-value under-reconciled Master-Map domain after the DL-001 source/frequency gate; avoid duplicating existing specialist lanes.
+6. Keep Formal Core unchanged unless mature evidence passes governance and owner explicitly approves.
 
 
 ## Parallel durable lane — Price-Volume Relationship（價量關係）
