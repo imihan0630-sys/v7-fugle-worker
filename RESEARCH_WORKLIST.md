@@ -1,6 +1,6 @@
 # 台股交易決策監控系統｜暫時研究工作清單
 
-更新：2026-09-20
+更新：2026-09-27
 
 ## 1. 正式選股研究資料層
 狀態：IMPLEMENTED（V8.7.1）
@@ -90,3 +90,26 @@ Shadow 後續結果：
 - 通過冗餘、交易成本、過度優化與 Baseline/Formal 增量檢查
 
 即使全部通過，系統也不會自動修改正式核心；仍需獨立版本、完整回歸測試與重要策略決策。
+
+
+## 7. 流動性門檻反證
+狀態：SPEC_FROZEN / EVIDENCE_GAP
+
+現有 Shadow cohort 無法反證早期流動性 admission：
+- BROAD_CONTROL 本身要求正式最低20日均量，因此排除低流動性股；
+- REJECTED_AFTER_BASE 只保留 basePassed=true，但三個流動性／小市值早期拒絕都回傳 basePassed=false；
+- 因此 `LIQUIDITY_REJECTED_CONTROL` 目前不存在。
+
+已凍結：
+- `LIQUIDITY_ADMISSION_RESEARCH.md`
+- `research/liquidity_gate_rejected_control_spec_v0_1.json`
+
+未來前瞻 cohort 必須區分：
+- LIQ_LOW_AVG_VOLUME_REJECTED
+- LIQ_SMALLCAP_SPECIAL_REASON_REJECTED
+- LIQ_MIDCAP_EXTRA_REQUIREMENT_REJECTED
+- LIQ_LOW_VOLUME_EXCEPTION_PASS
+
+Formal 低均量例外所讀取的 `spreadPercent/orderBookDepthGood/depthScore` 在 repo 內未找到上游建構，但 external enrichment 可透過任意 extra 欄位注入，因此 Production coverage = UNKNOWN，不可說例外一定失效，也不可假設已有效。
+
+第一階段只補證據，不調 1000/300 張、1.2x/1.5x 門檻。只有被拒絕 cohort 在成本／滑價／深度控制後仍穩定呈現更佳機會、且不惡化 MAE/stop/no-follow-through/zero-pick，才可提出 `LIQUIDITY_ADMISSION_REFORMULATION` 的 Class-C 正式優化候選。
