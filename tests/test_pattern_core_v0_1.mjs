@@ -1135,6 +1135,7 @@ console.log("pattern core v0.1 C1-C8 and invariance tests passed");
     bars,
     requireVolume:true,
     requireSymbolSession:true,
+    symbolSessionDates:bars.map(x=>x.date),
     provenance:common
   });
   const raw=validatePatternSeriesEnvelope({
@@ -1149,7 +1150,8 @@ console.log("pattern core v0.1 C1-C8 and invariance tests passed");
       symbolSessionSourceId:"ca-symbol-session-fixture",
       symbolSessionPayloadHash:"vol-session-v1"
     },
-    requireSymbolSession:true
+    requireSymbolSession:true,
+    symbolSessionDates:bars.map(x=>x.date)
   });
   const snapshot=buildPatternSnapshot({bars,asOfDate:bars.at(-1).date,swingThresholdPct:0.03});
   const a=buildPatternCacheRecord({
