@@ -63,3 +63,68 @@ Each strategy will eventually have regime gating. Examples:
 - risk-off may reduce aggressive strategy allocation.
 
 No regime gate is formal until validated.
+
+
+## Cross-strategy research hypothesis — SECTOR_LEADER_PRIORITY
+
+Status: OWNER-SUGGESTED / RESEARCH REQUIRED / NOT YET A FORMAL RULE
+
+Hypothesis:
+When an industry/sector thesis is bullish and company fundamentals/industry conditions are supportive, the sector's leading companies may deserve first-pass priority because they may attract institutional capital more readily and may express the industry thesis more efficiently than weaker followers.
+
+This must **not** be assumed true by narrative. It must be tested against counterexamples.
+
+### Leader definition must be multidimensional
+
+Do not define "leader" by market capitalization alone. Candidate leader dimensions include:
+- industry revenue / profit share;
+- pricing power;
+- technology/product leadership;
+- customer quality / market position;
+- liquidity / institutional investability;
+- institutional ownership / flow;
+- earnings revision leadership;
+- relative strength / price leadership;
+- balance-sheet/fundamental quality;
+- supply-chain importance.
+
+Different strategies may require different leader definitions.
+
+### Strategies where this may matter
+
+- INDUSTRY_TREND: leader-first screening may be a primary routing rule if validated.
+- SWING_GROWTH: prefer companies with both industry tailwind and superior earnings-revision sensitivity.
+- SHORT_MOMENTUM: price leader may differ from fundamental leader; do not conflate them.
+- INSTITUTIONAL_ACCUMULATION: institutional preference for liquidity/scale may favor leaders, but early accumulation can occur in second-tier names.
+
+### Mandatory counter-tests
+
+Compare leaders vs non-leaders / second-tier beneficiaries on:
+- D1/D3/D5/D10/D20 return;
+- MFE/MAE;
+- drawdown;
+- trigger rate;
+- institutional-flow persistence;
+- valuation premium;
+- late-stage/overextension frequency;
+- sector-cycle stage;
+- market regime;
+- industry concentration;
+- transaction costs/liquidity.
+
+Explicitly test whether leaders:
+- are already fully priced;
+- lag during early-cycle/high-beta catch-up;
+- underperform niche suppliers with higher earnings elasticity;
+- become crowded institutional holdings;
+- are less responsive to incremental industry upside due to diversified businesses.
+
+### Promotion rule
+
+Only promote leader-first priority into a live System 2 strategy after PIT-valid Shadow/OOS evidence shows incremental value versus:
+1. sector-wide ranking without leader preference;
+2. pure relative-strength ranking;
+3. pure fundamental ranking;
+4. valuation-adjusted beneficiary ranking.
+
+If evidence is mixed, use leader status as context rather than a hard priority.
