@@ -1,7 +1,7 @@
 # ChatGPT Project Migration — System 2
 
 Updated: 2026-09-26 Asia/Taipei
-Status: READY_FOR_UI_MIGRATION
+Status: COMPLETED
 
 ## Formal project name
 
@@ -44,7 +44,15 @@ Creating/moving the ChatGPT Project must not change:
 - BUY/ADD/REDUCE/SELL/STOP logic
 - signal/push/monitoring behavior
 
-## UI migration steps
+## UI migration result
+
+- New ChatGPT Project created: 台股多策略智慧選股平台
+- Project Instructions pasted and saved.
+- This design chat moved into the new Project.
+- Project memory remains at default and file-library access remains enabled as configured by the owner.
+- Continuation must use the canonical read order below and GitHub main as authority.
+
+## Historical UI migration steps
 
 1. In ChatGPT sidebar, choose **New project**.
 2. Name it **台股多策略智慧選股平台**.
