@@ -59,6 +59,7 @@ on:
       - "scripts/apply_v8_9_9.py"
       - "scripts/apply_v8_10_0.py"
       - "scripts/apply_v8_11_0.py"
+      - "scripts/apply_v8_12_0.py"
       - "RESEARCH_WORKLIST.md"
       - "research/**"
       - "data/v7_formal_scan_backfill.json"
@@ -249,6 +250,9 @@ jobs:
       - name: Apply V8.11.0 PV Shadow V0.1 LOG_ONLY
         run: python3 scripts/apply_v8_11_0.py
 
+      - name: Apply V8.12.0 history source revalidation V2.3
+        run: python3 scripts/apply_v8_12_0.py
+
       - name: Syntax check Worker.js
         run: |
           set -euo pipefail
@@ -258,7 +262,7 @@ jobs:
       - name: Validate V8.7.12 production contract
         run: |
           set -euo pipefail
-          grep -F 'const VERSION = "8.11.0-pv-shadow-v0.1-log-only";' Worker.js
+          grep -F 'const VERSION = "8.12.0-history-source-revalidation-v2-3";' Worker.js
           grep -F 'const PV_SHADOW_SCHEMA_VERSION = "PV_SHADOW_V0_1";' Worker.js
           grep -F 'CREATE TABLE IF NOT EXISTS v7_pv_shadow_snapshots' Worker.js
           grep -F 'CREATE TABLE IF NOT EXISTS v7_pv_outcomes' Worker.js
@@ -389,6 +393,7 @@ jobs:
           node tests/test_v8_9_9_staged_delivery.mjs
           node tests/test_v8_10_0_aideen_independent_pool.mjs
           node tests/test_v8_11_0_pv_shadow.mjs
+          node tests/test_v8_12_0_history_source_revalidation.mjs
           node tests/test_v8_9_0_three_pool_hybrid_shadow.mjs
           node tests/test_v8_9_1_three_pool_dashboard.mjs
           node tests/github_plan_mirror.mjs self-test
