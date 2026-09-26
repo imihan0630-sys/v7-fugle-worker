@@ -1902,4 +1902,347 @@ No date-level blanket “baseline ready” flag is valid.
 
 Status:
 FIRST_BASELINE_DATE_MUST_BE_ROW_SPECIFIC.
+# PVE-092 — Old-Monitor vs New-Plan Overlap Is Reconstructable from Existing Admin Readbacks
+
+## Existing endpoints
+`/api/live` returns the last persisted intraday live snapshot, including its result symbols.
+
+`/api/scan/status` returns the latest after-market summary, including the newly selected Formal `stocks`.
+
+The after-market scan does not overwrite the intraday live snapshot.
+
+## Therefore after the T scan
+Compute:
+- `intradaySymbolsT = live.results.symbol`
+- `nextPlanSymbols = scan.stocks.symbol`
+
+Classify:
+- CONTINUING_MONITORED_PLAN = intersection
+- NEW_AFTER_MARKET_SELECTION = nextPlan - intraday
+- DROPPED_AFTER_MARKET = intraday - nextPlan
+
+This is enough to identify the major PVE-087 baseline lineage class without direct D1.
+
+## Limitation
+The readback must itself be:
+- date/time matched;
+- not stale from an earlier day;
+- captured before a later intraday session overwrites live state.
+
+Status:
+PLAN_OVERLAP_ADMIN_READBACK_FEASIBLE.
+
+
+# PVE-093 — First-Day Baseline Lineage Classes
+
+For each next-plan symbol after scan T:
+
+## Class A — CONTINUING_MONITORED_PLAN
+Evidence:
+- symbol in T intraday live results;
+- symbol in new scan.stocks.
+
+Expected baseline path:
+T may have been live-rolled at 13:00-start completion.
+
+Still verify:
+- roll actually occurred;
+- bootstrap result;
+- next-day baselineAsOfDate.
+
+## Class B — NEW_AFTER_MARKET_SELECTION
+Evidence:
+- symbol not in T intraday results;
+- symbol in new scan.stocks.
+
+Expected v0.1 path:
+historical bootstrap through T-1 only.
+Thus current T session is omitted unless an older cache independently contains it, which is not expected for a genuinely new uncached symbol.
+
+## Class C — REENTERED_WITH_EXISTING_CACHE
+A new-plan symbol may have old PV cache from an earlier monitoring period.
+
+If bootstrap returns:
+`skipped=true, validSessions>=20`
+it may belong here.
+
+Freshness is not established by the skip receipt.
+
+## Class D — ZERO_PLAN
+No selected Formal stock.
+No baseline opportunity exists.
+
+## Class E — UNKNOWN_LINEAGE
+Live/scan dates mismatch or readback is incomplete.
+
+Status:
+FIRST_DAY_BASELINE_LINEAGE_FROZEN.
+
+
+# PVE-094 — Bootstrap Skip Receipt Hides the Most Important Freshness Field
+
+## Non-skipped result
+`pvBootstrapSymbol` returns:
+- symbol;
+- skipped=false;
+- stored;
+- validSessions;
+- lastMarketDate.
+
+## Skipped result
+When cache count>=20 it returns only:
+- symbol;
+- skipped=true;
+- validSessions.
+
+It omits:
+- lastMarketDate;
+- updatedAt;
+- baseline content/vintage.
+
+## Consequence
+The after-market scan receipt can directly assess recency for a newly bootstrapped symbol,
+but cannot assess recency for the symbol most likely to suffer PVE-082 stale-cache re-entry.
+
+## Evidence rule
+`skipped=true` =>
+`BASELINE_FRESHNESS_UNKNOWN_FROM_SCAN_RECEIPT`.
+
+Do not interpret as:
+`BASELINE_READY`.
+
+Next-day snapshot.baselineAsOfDate can partially recover this information.
+
+Status:
+SKIPPED_BOOTSTRAP_OBSERVABILITY_BLIND_SPOT.
+
+
+# PVE-095 — Baseline Freshness Age Must Use Expected Symbol Sessions
+
+## Calendar-day age is wrong
+A four-calendar-day lag across:
+- weekend;
+- official holiday
+may still be fully fresh.
+
+## Proposed measure
+For current observation date T:
+
+`missingRecentExpectedSessions =
+count(expected symbol sessions d where baselineAsOfDate < d < T)`.
+
+Interpretation:
+- 0 = baseline reaches the latest expected prior comparable session;
+- 1 = one expected recent session absent;
+- >1 = increasingly stale;
+- UNKNOWN if suspension provenance is unresolved.
+
+## Slot-specific nuance
+A symbol may trade on the prior session but the exact slot can be missing from provider data.
+
+Then:
+- session exists;
+- H001 slot freshness is not automatically valid.
+
+Reason code:
+`EXPECTED_SESSION_SLOT_MISSING_UNEXPLAINED`.
+
+Legitimate verified non-trading/suspension sessions do not count as missing.
+
+Status:
+BASELINE_AGE_IN_SYMBOL_SESSIONS_FROZEN.
+
+
+# PVE-096 — Exact 9/29 Night QA Receipt without D1 Direct Read
+
+After the successful 2026-09-29 after-market scan, collect read-only:
+
+## A. Cron
+- scheduled after-market row;
+- status;
+- Fugle calls;
+- scan completion timestamp.
+
+## B. /api/live
+- live snapshot market date / generatedAt;
+- prior intraday result symbols.
+
+## C. /api/scan/status
+- scanDate;
+- planDate;
+- selected stocks;
+- pipeline completion;
+- pvShadow.enabled;
+- pvShadow.bootstrap;
+- pvShadow.daily;
+- zeroPvPushes;
+- zeroPvActions.
+
+## D. Derive plan overlap
+Per PVE-092/093.
+
+## E. For each bootstrap result
+If non-skipped:
+- validSessions;
+- lastMarketDate.
+
+Classify:
+- current through T;
+- selection-day omitted;
+- insufficient count.
+
+If skipped:
+freshness remains UNKNOWN_FROM_RECEIPT.
+
+## F. Daily snapshot runtime
+Record:
+- stored;
+- outcomesStored;
+- per-symbol save result/errors.
+
+Do not equate runtime stored count with at-rest duplicate/fingerprint proof.
+
+## G. Formal safety
+Confirm:
+- plan/push pipeline completed independently;
+- PV errors, if any, did not change Formal status.
+
+Status:
+FIRST_AFTER_MARKET_EVIDENCE_RECEIPT_FROZEN.
+
+
+# PVE-097 — Non-Skipped Bootstrap Result Can Directly Reveal the Selection-Day Gap
+
+For a non-skipped 9/29 bootstrap result:
+
+### If lastMarketDate = 2026-09-29
+This implies the baseline merged an existing live-rolled 9/29 session.
+
+Likely:
+CONTINUING_MONITORED_PLAN.
+
+### If lastMarketDate < 2026-09-29
+For an ordinary non-suspended new plan symbol:
+the baseline is missing the selection-day session.
+
+On 2026-09-30:
+H001/H002 baseline freshness fails until separately refreshed/repaired.
+
+### If validSessions < 20
+Count readiness also fails.
+
+## Strong advantage
+This diagnosis uses the existing scan runtime receipt;
+it does not require D1 query permission.
+
+Status:
+NON_SKIPPED_BOOTSTRAP_FRESHNESS_OBSERVABLE.
+
+
+# PVE-098 — Daily Feature Validity and Daily Outcome Anchor Validity Can Diverge
+
+## Source audit
+If cached daily history lacks the current marketDate:
+- `daily.current = null`;
+- pvDailyRvol20 = null;
+- guard includes INVALID_SOURCE_DATA.
+
+But daily context uses:
+`anchorClose = daily.current.close || plan.formalClose`.
+
+If Formal plan has a valid `formalClose`:
+`anchorEligible=true`
+and future daily outcomes may later be finalized.
+
+## Interpretation
+The row can have:
+- invalid daily PV feature;
+- but a potentially valid frozen Formal plan anchor price.
+
+Therefore:
+feature quality != outcome-anchor quality.
+
+## Evidence rule
+Do not discard factual plan-path outcomes solely because pvDailyRvol20 was invalid.
+
+Likewise:
+do not treat a valid future outcome as proof the original daily PV feature was valid.
+
+Status:
+FEATURE_VALIDITY_OUTCOME_ANCHOR_VALIDITY_SEPARATED.
+
+
+# PVE-099 — Evidence Status immediately before the 9/29 Live Session
+
+## Proven
+- deployed V8.11 LOG_ONLY;
+- feature flag enabled;
+- decisionImpact=false;
+- Formal isolation at enable;
+- holiday skip/no fabrication;
+- zero ordinary live candle calls added by PV helper.
+
+## Code-proven v0.1 quality risks
+- D1 direct QA unauthorized;
+- Guard plumbing defects;
+- range/trueRange issues;
+- semantic fingerprint volatile sourceFetchedAt;
+- Acceptance drift;
+- persistence gap continuity;
+- mixed top-level eventKey;
+- daily outcome horizon/censoring semantics;
+- baseline cache freshness skip defect;
+- selection-day omission for newly selected plans.
+
+## Not yet observed prospectively post-enable
+- first real intraday snapshot on 9/29;
+- first after-market bootstrap;
+- first next-day baselineAsOfDate;
+- actual plan overlap;
+- at-rest duplicate/mutation counts.
+
+## Decision
+The evidence lane remains:
+`DATA_QA_PARTIAL / FALSIFICATION-FIRST`.
+
+No alpha inference is currently justified.
+
+Status:
+PRE_FIRST_SESSION_EVIDENCE_BASELINE_FROZEN.
+
+
+# PVE-100 — Evidence Phase I Convergence before First Live Trading-Day Sample
+
+## What PVE-001~100 has achieved
+Before the first eligible post-enable trading day, the research has:
+- verified deployment/activation;
+- separated runtime acknowledgement from at-rest proof;
+- documented D1 observability limits;
+- frozen H001/H002 clean-row contracts;
+- mapped H003/H004 higher-risk semantics;
+- classified outcome censoring/duplication;
+- identified persistence/eventKey issues;
+- audited baseline count, per-field coverage, vintage and freshness;
+- found the selection-day omission and stale-reentry baseline defects;
+- preregistered first-session receipts and first report.
+
+## What comes next
+The next information gain must come from actual 9/29 and 9/30 receipts.
+
+Priority:
+1. observe, do not tune;
+2. classify each row against frozen gates;
+3. preserve failures;
+4. do not repair v0.1 mid-sample unless a separate version/change is explicitly authorized.
+
+## No interpretation drift
+A result being inconvenient is not a reason to:
+- loosen slotHistoryCount;
+- redefine freshness;
+- move thresholds;
+- exclude a date post hoc;
+- change H001/H002 outcome family.
+
+Status:
+PVE_PHASE_I_PRELIVE_CONVERGED / WAIT_ACTUAL_POST_ENABLE_TRADING_DATA.
 
