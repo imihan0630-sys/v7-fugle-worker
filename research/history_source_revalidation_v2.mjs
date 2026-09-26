@@ -178,3 +178,116 @@ export function decideHistoryAdmission({
     repaired:true,cached,fresh
   };
 }
+
+
+// V2.1: fresh-provider bars are not trusted blindly.
+// Reconcile only the market-session dates that are absent from the fresh provider's
+// required rolling window against complete official raw daily rows, BEFORE Formal filters.
+
+export function buildOfficialSymbolGapReceipt({
+  market,date,symbol,rawRows,sourceStatus="COMPLETE",minimumRows
+}){
+  if(!["TWSE","TPEx"].includes(String(market||""))) return {status:"UNKNOWN",reason:"INVALID_MARKET"};
+  if(!validDate(date)||!/^[1-9][0-9]{3}$/.test(String(symbol||""))) return {status:"UNKNOWN",reason:"INVALID_RECEIPT_KEY"};
+  if(sourceStatus!=="COMPLETE") return {status:"UNKNOWN",reason:"OFFICIAL_SOURCE_INCOMPLETE",market,date,symbol};
+  if(!Array.isArray(rawRows)) return {status:"UNKNOWN",reason:"OFFICIAL_ROWS_NOT_ARRAY",market,date,symbol};
+  const symbols=rawRows.map(getSymbol).filter(s=>/^[1-9][0-9]{3}$/.test(s));
+  const unique=new Set(symbols);
+  if(unique.size!==symbols.length) return {status:"UNKNOWN",reason:"OFFICIAL_DUPLICATE_SYMBOL",market,date,symbol};
+  const floor=Number.isFinite(Number(minimumRows)) ? Math.max(1,Number(minimumRows)) : (market==="TWSE"?600:450);
+  if(unique.size<floor) return {
+    status:"UNKNOWN",reason:"OFFICIAL_MARKET_ROWCOUNT_INCOMPLETE",market,date,symbol,
+    observedRows:unique.size,minimumRows:floor
+  };
+  const traded=extractRawTradedSymbolPresence(rawRows).has(String(symbol));
+  return {
+    status:"COMPLETE",reason:null,market,date,symbol,traded,
+    observedRows:unique.size,minimumRows:floor,
+    semantics:"RAW_OFFICIAL_PRESENCE_BEFORE_FORMAL_FILTERS"
+  };
+}
+
+export function reconcileFreshProviderWithOfficialGaps({
+  history,marketDate,marketSessions,requiredPriorBars=60,adjustedRequested,
+  officialGapReceipts=[]
+}){
+  const fresh=validateFreshProviderHistory({history,marketDate,requiredPriorBars,adjustedRequested});
+  if(!fresh.usable) return {...fresh,reconciled:false};
+
+  const required=Math.max(1,Math.floor(Number(requiredPriorBars)||60));
+  const normalized=normalizedDates(history,marketDate,{allowTargetDate:true});
+  const prior=normalized.dates.filter(d=>d<marketDate);
+  const recentPrior=prior.slice(-required);
+  const earliest=recentPrior[0];
+  const providerSet=new Set(recentPrior);
+  const sessions=[...new Set((Array.isArray(marketSessions)?marketSessions:[])
+    .map(String).filter(validDate).filter(d=>d<marketDate && (!earliest || d>=earliest)))].sort();
+  if(!sessions.length) return {status:"UNKNOWN",usable:false,reconciled:false,reason:"MARKET_SESSION_PROOF_UNAVAILABLE"};
+
+  const gaps=sessions.filter(d=>!providerSet.has(d));
+  if(!gaps.length){
+    return {
+      ...fresh,status:"VALID_FRESH_PROVIDER_SERIES_RECONCILED",reconciled:true,
+      officialGapCount:0,verifiedNoTradeGaps:0
+    };
+  }
+
+  const byDate=new Map((Array.isArray(officialGapReceipts)?officialGapReceipts:[])
+    .filter(x=>x&&validDate(x.date)).map(x=>[String(x.date),x]));
+  let verifiedNoTradeGaps=0;
+  for(const gapDate of gaps){
+    const receipt=byDate.get(gapDate);
+    if(!receipt || receipt.status!=="COMPLETE"){
+      return {
+        status:"UNKNOWN",usable:false,reconciled:false,
+        reason:"OFFICIAL_GAP_PROOF_UNAVAILABLE",gapDate,
+        officialGapCount:gaps.length,verifiedNoTradeGaps
+      };
+    }
+    if(receipt.traded===true){
+      return {
+        status:"DATA_INCOMPLETE",usable:false,reconciled:false,
+        reason:"FRESH_PROVIDER_MISSING_OFFICIAL_BAR",gapDate,
+        officialGapCount:gaps.length,verifiedNoTradeGaps
+      };
+    }
+    if(receipt.traded!==false){
+      return {
+        status:"UNKNOWN",usable:false,reconciled:false,
+        reason:"OFFICIAL_GAP_PRESENCE_AMBIGUOUS",gapDate,
+        officialGapCount:gaps.length,verifiedNoTradeGaps
+      };
+    }
+    verifiedNoTradeGaps+=1;
+  }
+  return {
+    ...fresh,status:"VALID_FRESH_PROVIDER_SERIES_RECONCILED",reconciled:true,
+    officialGapCount:gaps.length,verifiedNoTradeGaps,
+    gapSemantics:"COMPLETE_OFFICIAL_SOURCE_CONFIRMED_NO_ACTUAL_TRADE"
+  };
+}
+
+export function decideHistoryAdmissionV21({
+  cachedHistory,freshHistory,marketDate,marketSessions,requiredPriorBars=60,
+  todayOfficialTraded=true,freshFetchStatus="NOT_ATTEMPTED",adjustedRequested,
+  officialGapReceipts=[]
+}){
+  if(todayOfficialTraded!==true){
+    return {status:"NOT_IN_TODAY_TRADED_UNIVERSE",usable:false,needsRefetch:false,reason:"NO_CURRENT_OFFICIAL_TRADED_BAR"};
+  }
+  const cached=assessCachedHistoryForRevalidation({history:cachedHistory,marketDate,marketSessions,requiredPriorBars});
+  if(cached.usable) return {status:"USE_CACHE_FAST_PATH",usable:true,source:"CACHE",cached};
+  if(freshFetchStatus!=="SUCCESS"){
+    return {status:"UNKNOWN",usable:false,source:null,reason:"FRESH_PROVIDER_REVALIDATION_FAILED",cached,freshFetchStatus};
+  }
+  const reconciled=reconcileFreshProviderWithOfficialGaps({
+    history:freshHistory,marketDate,marketSessions,requiredPriorBars,adjustedRequested,officialGapReceipts
+  });
+  if(!reconciled.usable){
+    return {status:reconciled.status,usable:false,source:null,reason:reconciled.reason,cached,fresh:reconciled};
+  }
+  return {
+    status:"USE_FRESH_PROVIDER_REPAIR_RECONCILED",usable:true,source:"FRESH_PROVIDER_RAW",
+    repaired:true,cached,fresh:reconciled
+  };
+}
