@@ -271,3 +271,13 @@ They must not be erased once later clean data arrive.
 - H004 realized direction/MFE/MAE can be field-salvaged only under symbol-session/corporate-action continuity; stopFirst is quarantined when within-bar order is ambiguous.
 - pvPersistenceState and top-level eventKey are not accepted as clean independence variables without continuity/event-family overlays.
 - No hypothesis status upgraded to SUPPORTED/NOT_SUPPORTED from these QA findings.
+
+## Hypothesis readiness after PVE-100
+- H001: WAITING_POST_ENABLE_LIVE_ROWS + WAITING_BASELINE_FRESHNESS_PROOF + WAITING_CLEAN_COHORT_PROVENANCE + WAITING_AT_REST_QA.
+- H002: same as H001 plus verified cumulative-prefix readiness.
+- H003: remains HIGHER_GATED because range/Guard/Acceptance semantics are not clean enough for primary evidence.
+- H004: direction/MFE/MAE can be field-salvaged only under outcome-specific continuity; stopFirst remains ambiguity-gated.
+- H005: PLANNED / implementation deferred behind core DATA_QA.
+- H006: DATA_QUALITY_BLOCKED pending authoritative execution-recorder coverage and exact signal-event mapping.
+- Baseline validSessions>=20 is not freshness proof; baselineAsOfDate/plan lineage must be evaluated.
+- No hypothesis has been upgraded to SUPPORTED or NOT_SUPPORTED.
