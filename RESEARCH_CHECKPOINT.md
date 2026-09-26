@@ -1170,3 +1170,15 @@ Updated: 2026-09-27 05:02 Asia/Taipei.
 - Future evidence must cross-tab proxy reject direction with exact official CLOSE_LIMIT_UP / CLOSE_LIMIT_DOWN / NON_HIT / NO_PRICE_LIMIT / NON_COMPARABLE_X / UNKNOWN, split next-open vs open-to-close and include execution/liquidity/event/corporate-action controls. Positive and negative extreme moves may never be pooled for directional inference.
 - `EXTREME_MOVE_ADMISSION_REFORMULATION` is NOT yet a FORMAL_OPTIMIZATION_CANDIDATE. Only prospective exact-state/OOS/cost/downside evidence can promote it; no 9.8 threshold or Formal behavior changed.
 - Exact next: audit the entire basePassed=false admission funnel against Shadow cohort coverage to identify which pre-score exclusions are strategy hypotheses versus data-quality/universe policies and which lack counterfactual evidence.
+
+
+## B-193 — Correction: liquidity Shadow coverage narrowed precisely (2026-09-27 Asia/Taipei)
+- Full early-admission funnel audit found B-190 used an overbroad phrase when describing BROAD_CONTROL coverage. Durable liquidity files are corrected; no Formal behavior was involved.
+- Exact corrected coverage:
+  - primary `20日流動性不足`: systematically absent from BROAD_CONTROL because BROAD_CONTROL itself requires avgVolume20Lots>=minLots;
+  - `10至30億市值缺少強力特殊理由`: can incidentally appear in BROAD_CONTROL when avgVolume20Lots>=minLots but 1.5x/institutional condition fails; exception-pass rows below minLots that later fail 1.5x remain absent;
+  - `30至100億市值流動性要求未達`: generally occurs between 1.0x and 1.2x minLots and can therefore appear incidentally in BROAD_CONTROL;
+  - all three remain absent from REJECTED_AFTER_BASE because each returns basePassed=false.
+- BROAD_CONTROL remains bounded to six rows per price pool and is not rejection-reason stratified, so incidental presence cannot establish prevalence or a clean gate-level counterfactual.
+- Correct research state: `PRIMARY_LOW_VOLUME_SYSTEMATIC_HOLE / SIZE_CONDITIONED_INCIDENTAL_BOUNDED_COVERAGE / DEDICATED_REASON_STRATIFIED_CONTROL_STILL_REQUIRED`.
+- `research/liquidity_gate_rejected_control_spec_v0_1.json`, `LIQUIDITY_ADMISSION_RESEARCH.md`, Worklist and Master Maps were corrected. No outcome conclusion or threshold proposal changed.
