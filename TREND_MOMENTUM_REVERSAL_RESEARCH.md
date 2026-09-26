@@ -110,6 +110,39 @@ Potential eventual form, only if mature evidence passes all gates:
 
 Any Formal ranking/eligibility impact would be Class C.
 
+## DL-003A.1 — Official-session continuity feasibility
+
+### Source audit
+Current base Worker already has official TWSE calendar machinery:
+- `loadTradingCalendar(env, year)` fetches the official TWSE holiday schedule and fails closed when the requested year is unavailable;
+- `isTradingDate(date)` uses the loaded official holiday set plus weekend logic;
+- `nextTradingDate(date)` walks to the next official session.
+
+Therefore R06 does NOT need a new calendar provider or a guessed weekday rule.
+
+### Current semantic defect
+`researchRegimePersistenceFromDays()` currently compares row i-1 to row i after sorting observed `trade_research_days` and increments `X->Y`.
+It does not prove `nextTradingDate(prev.scanDate) === current.scanDate`.
+
+Consequences:
+- a failed/missing scan can create a direct observed transition across an unknown gap;
+- apparent same-regime persistence across a gap can overstate the proven streak;
+- transition count is descriptive of adjacent stored observations, not yet an exact consecutive-session lifecycle.
+
+### Safe research design
+Before any candidate-outcome inference:
+1. load official calendar for all years touched;
+2. for each adjacent research row, require `nextTradingDate(prev.scanDate) === current.scanDate`;
+3. otherwise classify the edge `GAP_UNKNOWN` and do not extend a same-regime streak;
+4. preserve raw observed `from->to` separately for audit, but do not count it as a one-session transition;
+5. calendar unavailable => UNKNOWN, never assume weekday adjacency.
+
+### Engineering classification
+- A pure research-only implementation that changes only R06 diagnostics/readiness and cannot affect Formal outputs is a Class A candidate.
+- If implementation changes shared calendar fetching/caching/runtime behavior, reclassify as Class B proposal-first.
+- No implementation is required before the evidence schema is frozen; no Formal change.
+
+
 ## DL-003B — Momentum Gap falsification
 
 Taiwan evidence:
