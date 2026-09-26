@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-09-26T18:00:00+08:00",
+  "updatedAt": "2026-09-26T18:10:00+08:00",
   "status": "BASELINE_V0_2_PARTIAL_RECONCILIATION",
   "formalCore": "LOCKED",
   "authority": {
@@ -48,7 +48,7 @@
     "researchDebtUnits": 10.6,
     "dataQualityBlocked": 8,
     "dataSourceBlocked": 3,
-    "waitingProspective": 2,
+    "waitingProspective": 3,
     "formalOptimizationCandidates": 1
   },
   "rules": {
@@ -145,8 +145,8 @@
       "id": "BREADTH_ROTATION",
       "domain": "INDUSTRY_SECTOR_RESIDUAL_RS",
       "level": "L2",
-      "status": "EVIDENCE_PENDING",
-      "basis": "Dedicated breadth/rotation lane exists; empirical maturity pending."
+      "status": "WAITING_PROSPECTIVE",
+      "basis": "Concept lane and falsification protocol are frozen. V8.14.0 now prospectively records the exact current sector-gate inputs/checks plus a bounded SECTOR_GATE_REJECTED Shadow cohort and explicit breadth-universe provenance. No historical gate claim is allowed; first descriptive audit requires >=20 clean independent post-deploy scan dates with mature outcomes."
     },
     {
       "id": "SUPPLY_CHAIN_EVENT_LEAD_LAG",
