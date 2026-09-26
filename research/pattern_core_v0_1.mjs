@@ -71,7 +71,8 @@ export function validatePatternSeriesEnvelope({
   provenance = {},
   requireOpen = false,
   requireVolume = false,
-  requireSymbolSession = false
+  requireSymbolSession = false,
+  symbolSessionDates = null
 } = {}) {
   const normalizedRole = String(role || "");
   const normalizedSpace = String(semanticSpace || "");
@@ -116,6 +117,19 @@ export function validatePatternSeriesEnvelope({
     }
     if (!symbolSessionSourceId || !symbolSessionPayloadHash) {
       return { usable:false, status:"BLOCKED", reason:"SYMBOL_SESSION_PROVENANCE_INCOMPLETE" };
+    }
+    if (!Array.isArray(symbolSessionDates) || symbolSessionDates.length===0) {
+      return { usable:false, status:"BLOCKED", reason:"SYMBOL_SESSION_DATE_SET_MISSING" };
+    }
+    const sessionSet=new Set(symbolSessionDates.map(x=>String(x||"")));
+    const invalidSessionBar=(Array.isArray(bars)?bars:[]).find(x=>!sessionSet.has(String(x?.date||"")));
+    if (invalidSessionBar) {
+      return {
+        usable:false,
+        status:"BLOCKED",
+        reason:"NON_SYMBOL_SESSION_BAR_PRESENT",
+        offendingDate:String(invalidSessionBar?.date||"")
+      };
     }
   }
 
@@ -191,6 +205,12 @@ export function validatePatternSeriesEnvelope({
     volumeSourceId:requireVolume===true ? String(provenance?.volumeSourceId||"") : null,
     volumePayloadHash:requireVolume===true ? String(provenance?.volumePayloadHash||"") : null,
     shareUnitComparable:requireVolume===true ? true : null,
+    volumeSubLotRemainderRisk:requireVolume===true && volumeSemanticSpace==="RAW_LOT_VOLUME"
+      ? barCheck.bars.some(x=>Number(x.volume)===0 && Number(x.turnover)>0)
+      : null,
+    volumeMagnitudeReady:requireVolume===true
+      ? !(volumeSemanticSpace==="RAW_LOT_VOLUME" && barCheck.bars.some(x=>Number(x.volume)===0 && Number(x.turnover)>0))
+      : null,
     bars:barCheck.bars
   };
 }
