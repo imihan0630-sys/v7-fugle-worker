@@ -272,3 +272,51 @@ Machine artifact:
 `research/sector_rs_priority_structural_falsification_v0_1.json`.
 
 No sector gate/score, RS formula, 14% weights or comparator changes are authorized.
+
+
+## Signal-grade / channel asymmetry audit
+
+Formal uses the same letters for two different concepts:
+- strategy channel A = pullback;
+- strategy channel B = breakout;
+- signalLevel A/B/C = setup-quality grade.
+
+The grade is determined **only** by setupQuality:
+- A grade: >=80;
+- B grade: >=65;
+- C: <65 and rejected.
+
+Institutional, fundamental, sector, market-RS, RR and market-consensus inputs do not enter the grade directly.
+
+### Structural channel asymmetry
+
+A setup:
+`70 - 3*|pullbackPct-7| - 3*supportDistancePct + volumeBonus`.
+
+A raw pass can theoretically score ~38–82, but final grade eligibility requires >=65.
+Thus A has an additional effective gate after A.pass.
+
+For A to be A-grade:
+- volumeTodayVsPrev5 must be <=0.9, otherwise A max is only 74;
+- `|pullbackPct-7| + supportDistancePct <= 0.667`.
+
+This is an extremely narrow structural region.
+
+B setup:
+`55 + min(25,volumeRatio*8) + closePosition*20 - upperShadow*25`.
+
+At the B pass boundary itself, theoretical setupQuality is already ~69.65.
+Therefore a valid B setup cannot become C under the current formula; the >=65 grade gate is effectively redundant for B.
+
+### Interpretation firewall
+
+The letter grade is supported only as a **setup-quality label**.
+It is not currently an “overall candidate quality” grade because most PriorityScore dimensions are excluded from the grade formula.
+
+Prospective analysis must compare grades within channel first.
+Pooling A-channel A-grade with B-channel A-grade assumes a calibration that is not structurally established.
+
+Machine artifact:
+`research/signal_grade_channel_asymmetry_v0_1.json`.
+
+No grade threshold, eligibility or display-label change is authorized.
