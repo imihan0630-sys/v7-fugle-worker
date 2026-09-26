@@ -210,3 +210,65 @@ Machine artifact:
 `research/rr_priority_structural_falsification_v0_1.json`.
 
 No RR gate, 14% weight, target construction or comparator change is authorized.
+
+
+## Sector + market-RS multi-layer structural audit
+
+### Sector: gate + score + tie-break
+
+Current hard gate requires:
+- breadth >= 40%;
+- average daily change >= -1%;
+- amountVs20DayAverage >= 0.5.
+
+Current sector score is:
+`clamp(amount/maxSectorAmount*45 + breadth*0.3 + clamp(avgChange*5+15,0,25),0,100)`.
+
+The same score then contributes 14% of PriorityScore and `sectorFlow` remains the fifth deployed comparator.
+
+Important semantic result:
+- breadth and avgChange are used at both gate and score layers;
+- gate activity is relative to the sector's own 20-day amount;
+- score activity is absolute sector amount relative to the day's largest sector amount.
+
+Thus these are not one consistent “flow” object.
+
+### Cross-sector denominator externality
+
+Fixed example:
+- own amount=50, max sector amount=100, breadth=60, avgChange=+1 => sector score 60.5;
+- keep own amount/breadth/change identical, but another sector doubles the max denominator to 200 => score 49.25.
+
+The sector loses 11.25 score points without its own state weakening.
+At 14% weight this is 1.575 PriorityScore points.
+
+This may be intentional as a “where is absolute market attention concentrated?” measure, but it must not be described as own-sector flow strength without qualification.
+
+### Market-relative RS: score + tie-break
+
+Current RS:
+`ret20 - official TAIEX return20`.
+
+Priority component:
+`clamp(50 + RS*2,0,100)*0.14`.
+
+Therefore:
+- RS=0 contributes 7 PriorityScore points;
+- RS=+25 reaches the 14-point maximum;
+- RS<=-25 reaches zero.
+
+Raw `relativeStrength` also remains the sixth deployed comparator.
+
+This is a double-layer ordering influence and may overlap the same price-history information already present in setup/trend/overheat families.
+
+### Observability
+
+V8.14 prospectively preserves the exact sector hard-gate inputs/checks and a bounded rejected cohort.
+V8.13 preserves sectorFlow and relativeStrength in ranking provenance.
+
+However candidate snapshots do not freeze the exact sector absolute amount and the cross-sector maxAmount denominator, so exact retrospective attribution of the 45-point amount-share component is incomplete.
+
+Machine artifact:
+`research/sector_rs_priority_structural_falsification_v0_1.json`.
+
+No sector gate/score, RS formula, 14% weights or comparator changes are authorized.
