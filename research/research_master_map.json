@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-09-26T23:58:00+08:00",
+  "updatedAt": "2026-09-27T00:10:00+08:00",
   "status": "BASELINE_V0_2_PARTIAL_RECONCILIATION",
   "formalCore": "LOCKED",
   "authority": {
@@ -57,7 +57,7 @@
     "formalAutoPromotion": false,
     "independentInferenceUnitRequired": true
   },
-  "next": "Macro Phase-1 receipt spec is frozen; USD/TWD source gate is materially resolved but U.S./Asia provider/session capture remains unimplemented. Continue independently falsifiable structural audits while prospective post-9/29 evidence and concurrent version work mature.",
+  "next": "Use existing post-9/29 Shadow to measure setupQuality channel distributions, dual-pass incidence, A-volume cliff selection sensitivity and within/cross-channel outcome calibration before any Class-C score reformulation. Continue structural audits meanwhile.",
   "optimizationBridge": {
     "required": true,
     "autoPromoteFormal": false,
@@ -244,7 +244,7 @@
       "domain": "STATISTICAL_VALIDATION_PIT_SHADOW_OOS",
       "level": "L2",
       "status": "WAITING_PROSPECTIVE",
-      "basis": "Production patch-chain audit corrected comparator semantics: post-consensus priorityScore ranks first, raw rewardPerRisk second, marketConsensusScore third, then setup/sector/RS. V7.5.30 can add up to +7 after >=2-source consensus. V8.13.0 is now deployed and prospectively records the full PIT ranking context; first eligible post-deploy after-market cohort is expected 2026-09-29. Status remains WAITING_PROSPECTIVE / NOT_OPTIMIZATION_READY; no historical score backfill is allowed.",
+      "basis": "V8.13 prospectively preserves full ranking provenance. Structural audit now confirms setupQuality, the largest 28% base component, is not cross-channel calibrated by construction: qualifying A spans ~38–82 with an 8-point volume cliff at 0.90/0.91; qualifying B spans ~69.65–100 with continuous volume uplift; B has deterministic precedence on dual-pass. Existing Shadow already stores all required raw setup inputs/checks, so no new runtime capture is needed. Empirical materiality awaits clean post-9/29 cohorts.",
       "deployedVersion": "8.13.0-priority-score-provenance-shadow",
       "deployedAt": "2026-09-26T17:59:14+08:00",
       "firstProspectiveScanDate": "2026-09-29",
