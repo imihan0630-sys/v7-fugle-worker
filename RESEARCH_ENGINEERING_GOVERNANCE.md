@@ -16,6 +16,7 @@ GitHub/runtime evidence overrides remembered chat state.
 - Cloudflare Worker: `fugle-test`
 - Production monitor: `https://fugle-test.imihan0630.workers.dev/`
 - Before any change, read `REQUIREMENTS_30.md`, `AGENTS.md`, `PROJECT_HISTORY.md`, `VERSIONING.md`, and `RESEARCH_WORKLIST.md`.
+- For any research cycle or research-status question, also read `RESEARCH_MASTER_MAP.md`; its machine-readable companion is `research/research_master_map.json`. `RESEARCH_CHECKPOINT.md` remains the continuation cursor, while the Master Map is the cross-chat canonical inventory/maturity dashboard.
 - Always verify the actual production version/readback before deciding the current baseline. Do not assume a version from chat memory.
 
 ## Classification gate
