@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "0.1",
+  "updatedAt": "2026-09-26T10:14:00+08:00",
+  "status": "INVENTORY_RECONCILIATION_IN_PROGRESS",
+  "formalCore": "LOCKED",
+  "authority": {
+    "inventory": "RESEARCH_MASTER_MAP.md",
+    "cursor": "RESEARCH_CHECKPOINT.md",
+    "governance": "RESEARCH_ENGINEERING_GOVERNANCE.md"
+  },
+  "maturityScale": {
+    "L0": 0,
+    "L1": 0.2,
+    "L2": 0.4,
+    "L3": 0.6,
+    "L4": 0.8,
+    "L5": 1
+  },
+  "domains": [
+    "PRICE_KLINE_PATTERN",
+    "PRICE_VOLUME",
+    "TREND_MOMENTUM_REVERSAL",
+    "VOLATILITY_REGIME",
+    "MARKET_MICROSTRUCTURE",
+    "POSITIONING_INSTITUTIONS_MARGIN_SBL_CROWDING",
+    "FUNDAMENTALS_INFORMATION_DYNAMICS",
+    "INDUSTRY_SECTOR_RESIDUAL_RS",
+    "SUPPLY_CHAIN_LEAD_LAG",
+    "CORPORATE_ACTIONS_EVENT_RISK",
+    "DERIVATIVES",
+    "MACRO_CROSS_MARKET_REGIME",
+    "EXECUTION_ALPHA_TRADING_FRICTIONS",
+    "PORTFOLIO_CAPITAL_READD",
+    "STATISTICAL_VALIDATION_PIT_SHADOW_OOS"
+  ],
+  "aggregate": {
+    "domainCount": 15,
+    "moduleCount": null,
+    "maturityWeightedPct": null,
+    "countsByLevel": null,
+    "researchDebtUnits": null
+  },
+  "rules": {
+    "missing": "UNKNOWN",
+    "historicalShadowFabrication": false,
+    "formalAutoPromotion": false,
+    "independentInferenceUnitRequired": true
+  },
+  "next": "Enumerate dedicated research/checkpoint files; normalize modules; assign evidence-backed maturity/status; publish first auditable baseline."
+}
