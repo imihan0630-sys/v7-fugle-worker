@@ -1,7 +1,7 @@
 # System 2 Position & Exposure Management Architecture
 
 Updated: 2026-09-26 Asia/Taipei
-Status: OWNER-APPROVED ARCHITECTURE V0.1 / THRESHOLDS NOT YET FROZEN
+Status: OWNER-APPROVED ARCHITECTURE V0.1 / CORE FLOW APPROVED / THRESHOLDS NOT YET FROZEN
 
 ## Purpose
 
@@ -284,3 +284,20 @@ Likewise, a RE-ADD is not judged good merely because price later rises.
 This architecture is native to System 2.
 
 It may reuse Shared Knowledge from System 1 REDUCE/RE-ADD research, but it does not modify or depend on System 1's Formal position state machine.
+
+
+## Owner approval
+
+Owner explicitly approved the full position-management architecture on 2026-09-26.
+
+Approved concepts include:
+- actual holdings monitored outside candidate and active-entry caps;
+- actual exposure vs desired exposure;
+- HOLD / REDUCE / EXIT and ADD / RE-ADD / RESTORE as symmetric first-class actions;
+- fresh-entry chase logic must not be reused blindly for re-add;
+- prior reduce price and average cost are not automatic anti-buy anchors;
+- ADD_ON_STRENGTH, ADD_ON_PULLBACK, RE_ADD_AFTER_REDUCE and ADD_ON_NEW_INFORMATION are distinct action families;
+- unconditional averaging down is not an approved add mechanism;
+- every reduction should define recovery/re-add conditions;
+- hysteresis/no-trade logic is required to reduce whipsaw;
+- exact thresholds, tranche sizes and timing rules remain subject to prospective Shadow validation.
