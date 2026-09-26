@@ -691,3 +691,29 @@ Class A if research-only; Class C if later used in formal 15m confirmation.
 - Two QA diagnostic blind spots were identified without changing code: cron audit drops result.reason for SKIPPED runs, and the QA script's afterMarketWindow assertion is not trading-calendar aware and could false-fail on a holiday after 23:45.
 - Overall PVE-001 readiness = DATA_QA_PARTIAL, not DATA_QA_PASS and not alpha evidence.
 - Formal Core and PV_SHADOW_V0_1 unchanged.
+
+## Evidence progress — PVE-062 through PVE-075
+- PVE-062 confirms exact-date daily outcome lookup is conservative: missing expected dates return null rather than jumping to a later cached row. Stale history mainly censors outcome coverage.
+- PVE-063 freezes NEXT_SESSION and D1 as the same one-next-session numeric return/path endpoint for statistical purposes.
+- PVE-064 confirms rangeAtr is null in v0.1; no ATR-normalized outcome claim is allowed without a separate frozen computation.
+- PVE-065 identifies persistence gap provenance as missing: intraday persistence can cross sessions/holidays/outages without distinguishing expected versus missing observation gaps.
+- PVE-066 requires domain-specific event IDs. Top-level eventKey is acceptance.eventKey || persistence.eventKey and can split/conflate mechanisms; detailed acceptance/persistence IDs remain recoverable in context/features.
+- PVE-067 freezes first-two-session QA expectations: 9/29 cold-start/data-QA and 9/29 after-market cache/write receipt; 9/30 earliest possible baseline-ready day if bootstrap succeeds, still subject to cohort provenance.
+- PVE-068 freezes a field-level salvage matrix: raw OHLCV/slot RVOL/cumulative/local ratio may remain usable with clean provenance while range/Guard/acceptance/daily layers have stricter overlays.
+- PVE-069 replaces the vague question “does PV work?” with a narrow falsification sequence: slot RVOL -> cumulative pace -> response -> acceptance/guards -> risk outcomes.
+- PVE-070 states outcome existence is not feature eligibility; factual future paths can be stored for quarantined rows but primary analysis must join quality overlays.
+- PVE-071 separates rawSnapshotCount, dataQaEligibleObservationCount and hypothesisCleanEventCount so cold-start/invalid rows cannot inflate evidence milestones.
+- PVE-072 starts the 30-distinct-date maturity clock on clean evidence dates, not the enable date.
+- PVE-073 uses hypothesis-specific event denominators instead of the top-level union eventKey.
+- PVE-074 requires coverage/common-support tables before H001 performance comparisons.
+- PVE-075 freezes the boundary that research-side defects never justify modifying Formal A/B/ranking/BUY/capital/push without separate evidence and owner-approved governance.
+- No runtime code, Formal logic, permissions, token scope or deployment was changed.
+
+## Revised exact continuation after PVE-075
+1. PVE-076: audit whether the first 9/29 after-market runtime receipt can distinguish daily snapshot duplicate vs volatile-provenance mutation conflict and define exact interpretation.
+2. PVE-077: define a synthetic retry fixture contract that a future research-only schema must pass before version promotion.
+3. PVE-078: audit baseline session rolling/overwrite semantics when historical bootstrap and prospective 13:00 roll both contain the same market date.
+4. PVE-079: audit corporate-action/reset metadata migration semantics across baseline schema versions.
+5. PVE-080: freeze a v0.1 defect registry with severity, affected hypotheses and salvage policy.
+6. Keep outcome inference blocked until clean evidence prerequisites mature.
+7. Formal Core remains LOCKED.
