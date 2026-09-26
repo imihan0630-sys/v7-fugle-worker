@@ -1804,3 +1804,86 @@ export function analyzeCupGeometryFromAnchors({
     decisionImpact:false
   };
 }
+
+
+// Explicit-anchor impulse + consolidation geometry for flag/pennant research.
+// It does not decide whether the impulse is "strong enough" or the retracement "too deep".
+export function analyzeImpulseConsolidationGeometry({
+  bars,
+  asOfDate,
+  poleStartAt,
+  poleEndAt,
+  consolidationEndAt = null
+} = {}) {
+  const validated=barsAsOf(bars,asOfDate);
+  if(!validated.usable){
+    return {status:"BLOCKED",reason:validated.reason,researchOnly:true,decisionImpact:false};
+  }
+  const series=validated.bars;
+  const indexByDate=new Map(series.map((x,i)=>[x.date,i]));
+  const start=indexByDate.get(String(poleStartAt||""));
+  const poleEnd=indexByDate.get(String(poleEndAt||""));
+  const consEnd=consolidationEndAt
+    ?indexByDate.get(String(consolidationEndAt))
+    :series.length-1;
+  if(!Number.isInteger(start)||!Number.isInteger(poleEnd)||!Number.isInteger(consEnd)){
+    return {status:"BLOCKED",reason:"IMPULSE_ANCHOR_MISSING",researchOnly:true,decisionImpact:false};
+  }
+  if(!(start<poleEnd && poleEnd<consEnd)){
+    return {status:"BLOCKED",reason:"IMPULSE_ANCHOR_ORDER_INVALID",researchOnly:true,decisionImpact:false};
+  }
+  const pole=series.slice(start,poleEnd+1);
+  const cons=series.slice(poleEnd,consEnd+1);
+  const poleStart=Number(pole[0].close),poleFinish=Number(pole.at(-1).close);
+  if(!(poleStart>0&&poleFinish>0)){
+    return {status:"BLOCKED",reason:"IMPULSE_PRICE_INVALID",researchOnly:true,decisionImpact:false};
+  }
+  const poleReturnPct=poleFinish/poleStart-1;
+  let pathLength=0;
+  for(let i=1;i<pole.length;i+=1) pathLength+=Math.abs(Number(pole[i].close)-Number(pole[i-1].close));
+  const netMove=Math.abs(poleFinish-poleStart);
+  const polePathEfficiency=pathLength>0?netMove/pathLength:null;
+
+  const consHigh=Math.max(...cons.map(x=>Number(x.high)));
+  const consLow=Math.min(...cons.map(x=>Number(x.low)));
+  const consRange=consHigh-consLow;
+  const poleHigh=Math.max(...pole.map(x=>Number(x.high)));
+  const poleLow=Math.min(...pole.map(x=>Number(x.low)));
+  const poleRange=poleHigh-poleLow;
+  const consolidationDepthFromPoleEnd=poleFinish>0?(poleFinish-consLow)/poleFinish:null;
+  const consolidationRangeVsPoleRange=poleRange>0?consRange/poleRange:null;
+
+  const poleVol=medianFinite(pole.map(x=>finite(x.volume)));
+  const consVol=medianFinite(cons.map(x=>finite(x.volume)));
+  const consolidationVolumeVsPole=poleVol!==null&&poleVol>0&&consVol!==null?consVol/poleVol:null;
+  const poleTr=medianFinite(pole.map((_,j)=>barTrueRange(series,start+j)).filter(Number.isFinite));
+  const consTr=medianFinite(cons.map((_,j)=>barTrueRange(series,poleEnd+j)).filter(Number.isFinite));
+  const consolidationTrueRangeVsPole=poleTr!==null&&poleTr>0&&consTr!==null?consTr/poleTr:null;
+
+  const closeNow=Number(cons.at(-1).close);
+  const consolidationCloseRetracementOfPole=
+    Math.abs(poleFinish-poleStart)>0
+      ?(poleFinish-closeNow)/(poleFinish-poleStart)
+      :null;
+
+  return {
+    status:"VALID",
+    poleStartAt:series[start].date,
+    poleEndAt:series[poleEnd].date,
+    consolidationEndAt:series[consEnd].date,
+    poleDurationBars:poleEnd-start,
+    consolidationDurationBars:consEnd-poleEnd,
+    poleReturnPct,
+    polePathEfficiency,
+    poleRange,
+    consolidationRange:consRange,
+    consolidationDepthFromPoleEnd,
+    consolidationRangeVsPoleRange,
+    consolidationCloseRetracementOfPole,
+    consolidationVolumeVsPole,
+    consolidationTrueRangeVsPole,
+    definitionNote:"Continuous impulse/consolidation geometry only; no flag label, bullish sign, maturity cutoff or outcome-tuned threshold.",
+    researchOnly:true,
+    decisionImpact:false
+  };
+}
