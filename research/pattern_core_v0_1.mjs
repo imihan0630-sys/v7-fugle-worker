@@ -70,7 +70,8 @@ export function validatePatternSeriesEnvelope({
   bars,
   provenance = {},
   requireOpen = false,
-  requireVolume = false
+  requireVolume = false,
+  requireSymbolSession = false
 } = {}) {
   const normalizedRole = String(role || "");
   const normalizedSpace = String(semanticSpace || "");
@@ -103,6 +104,19 @@ export function validatePatternSeriesEnvelope({
 
   if (provenance?.corporateActionSemanticsReady !== true) {
     return { usable:false, status:"BLOCKED", reason:"CORPORATE_ACTION_SEMANTICS_UNKNOWN" };
+  }
+
+  let symbolSessionSourceId=null;
+  let symbolSessionPayloadHash=null;
+  if (requireSymbolSession === true) {
+    symbolSessionSourceId=String(provenance?.symbolSessionSourceId||"");
+    symbolSessionPayloadHash=String(provenance?.symbolSessionPayloadHash||"");
+    if (provenance?.symbolSessionReady !== true) {
+      return { usable:false, status:"BLOCKED", reason:"SYMBOL_SESSION_PROVENANCE_UNKNOWN" };
+    }
+    if (!symbolSessionSourceId || !symbolSessionPayloadHash) {
+      return { usable:false, status:"BLOCKED", reason:"SYMBOL_SESSION_PROVENANCE_INCOMPLETE" };
+    }
   }
 
   const barCheck = validatePatternBars({ bars, requireOpen });
@@ -166,6 +180,10 @@ export function validatePatternSeriesEnvelope({
     payloadHash,
     pointInTimeEligible:true,
     corporateActionSemanticsReady:true,
+    symbolSessionRequired:requireSymbolSession===true,
+    symbolSessionReady:requireSymbolSession===true ? true : null,
+    symbolSessionSourceId:requireSymbolSession===true ? symbolSessionSourceId : null,
+    symbolSessionPayloadHash:requireSymbolSession===true ? symbolSessionPayloadHash : null,
     volumeRequired:requireVolume===true,
     volumeSemanticSpace,
     volumePrecisionClass,
