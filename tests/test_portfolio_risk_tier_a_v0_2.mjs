@@ -3,6 +3,7 @@ import {
   deployedCapitalHHI,
   riskyNameHHIOnTotalCapital,
   heatIntensityOnDeployedCapital,
+  strategyRiskDecomposition,
   portfolioTierAV02
 } from "../research/portfolio_risk_tier_a_v0_2.mjs";
 
@@ -80,3 +81,17 @@ console.log(JSON.stringify({
   heatIntensityOnDeployedCapital:true,
   effectiveNamesStandaloneInterpretationFalsified:true
 }));
+
+
+{
+  const plans=[
+    {code:"A1",strategy:"A拉回承接",buyLow:99.5,buyHigh:101.8,stop:98,totalAllocation:50000},
+    {code:"B1",strategy:"B突破後承接",buyLow:99.5,buyHigh:101,stop:98.8,totalAllocation:50000}
+  ];
+  const rows=strategyRiskDecomposition(plans);
+  const a=rows.find(x=>x.strategy==="A");
+  const b=rows.find(x=>x.strategy==="B");
+  assert.equal(a.planCount,1);
+  assert.equal(b.planCount,1);
+  assert.ok(a.projectedStopRiskPctOfStrategyDeploymentHigh>b.projectedStopRiskPctOfStrategyDeploymentHigh);
+}
