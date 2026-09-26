@@ -3,9 +3,26 @@
 Updated: 2026-09-26
 Status: DESIGN V0.1
 
-## Separation
+## Separation and decision autonomy
 
-System 2 shares research knowledge and selected data infrastructure with System 1 but owns its strategy/scoring/performance state.
+System 2 shares reusable research knowledge and selected source/data experience with System 1, but its decision engine is fully independent.
+
+System 2 independently owns and executes its own:
+- universe/candidate discovery;
+- strategy activation;
+- stock selection;
+- ranking/scoring;
+- entry-zone / trigger / stop / target planning;
+- intraday confirmation/monitoring;
+- BUY / HOLD / REDUCE / EXIT / INVALIDATED semantics;
+- notification logic;
+- simulated positions and performance.
+
+System 2 decisions do **not** require System 1 / V8 approval, confirmation, A/B qualification, 15-minute Formal confirmation, Top6/3+3 eligibility or any other V8 rule.
+
+System 1 cannot veto, approve or rewrite a System 2 decision. Likewise, System 2 cannot alter System 1 Formal behavior.
+
+Shared Knowledge is the bridge between the systems; decision authority is not shared.
 
 No System 2 code may silently change V8 Formal Core.
 
