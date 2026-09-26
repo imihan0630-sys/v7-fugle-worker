@@ -83,3 +83,49 @@ Current project already has:
 Therefore realized-volatility research is feasible only on dates whose history continuity is proven. Implied-volatility research remains separate and must preserve TAIFEX source/session/rules-vintage provenance.
 
 Missing or stale history = UNKNOWN, never low volatility.
+
+
+## VR-009 — regime interaction must be conditional, not a universal penalty
+
+A stock-level volatility feature and a market-level volatility regime answer different questions.
+
+Pre-register interaction cells:
+- market vol LOW/NORMAL/HIGH x stock relative vol LOW/NORMAL/HIGH;
+- trend state positive/neutral/negative;
+- A versus B selection channel.
+
+Key falsification:
+- if high stock volatility is harmful only when market volatility is also high, a universal stock-vol penalty is over-broad;
+- if high relative volatility inside a calm market identifies genuine momentum leaders, a blanket penalty can destroy continuation alpha;
+- if high volatility only proxies lateStage/overheat, it is redundant.
+
+This makes heterogeneity an explicit test before any Formal proposal.
+
+## VR-010 — crisis contamination and base-rate guard
+
+Volatility research is especially vulnerable to a few extreme dates dominating averages.
+
+Every evidence table must report:
+- independent scan dates;
+- top-1/top-3 event-date contribution;
+- with/without extreme-market days;
+- median as well as mean;
+- sample count by A/B and market;
+- UNKNOWN/stale-history count.
+
+A candidate fails robustness if its sign or practical conclusion depends on a tiny crisis cluster.
+
+## VR-011 — PIT close-clock constraint
+
+The after-market selection scan occurs after Taiwan cash close, so same-session official OHLCV can be eligible only when the source publication/capture is known to precede the scan. Historical reconstruction must not assume that because a daily bar has date t it was already available at the exact decision clock.
+
+Prospective receipts should preserve sourceDate, capturedAt/knownAt and session-continuity proof. Historical bars without such provenance may support descriptive mechanics but cannot automatically become PIT Formal evidence.
+
+## VR-012 — relationship to derivatives lane
+
+TAIFEX VIX/IV can test whether forward-looking risk pricing adds information beyond realized volatility. Validation order is frozen:
+existing ATR/realized state -> trend/RS -> breadth/liquidity -> global context -> realized-vol change/shock -> TAIFEX implied candidate.
+
+If implied features add no incremental value, keep them descriptive. If realized shock adds no value beyond existing ATR/overheat, reject it.
+
+No new combined regime score is authorized.
