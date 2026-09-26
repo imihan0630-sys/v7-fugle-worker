@@ -767,3 +767,26 @@ YES for research infrastructure integrity: resolving the actual archive lineage 
 - H001 must report coverage/common support before predictive performance; H003/H004 retain higher evidence gates.
 - A field-level salvage policy prevents one research-label defect from unnecessarily destroying clean raw volume evidence.
 - No PV research finding in this sequence changes Formal Core.
+
+
+## Pattern Maturity continuation — DL-003H through DL-003J (2026-09-26 Asia/Taipei)
+- Pattern work continued from DL-003G without restarting earlier topics.
+- Stale Draft PR #102 was closed without merge/deploy; refreshed Draft PR #103 now contains the isolated Pattern research prototype on a newer main baseline.
+- PR #103 validated head `5847e294d1c5644d9ec1d34343400618b10973c9`: V8 Repair `36203275992` SUCCESS and V8 Regression `36203275970` SUCCESS.
+- New observer gates are executable: structural episode de-dup, 100% expected-parent attempt accounting, explicit BLOCKED reasons, provenance-conflict rejection, replay/prefix correctness gate.
+- New persistence design is durable in `research/PATTERN_OBSERVER_PERSISTENCE_V0_1.md`; shared-runtime persistence remains intentionally unwired.
+- Major-zone lifecycle is now causal/prefix-invariant and does not hard-code a post-break acceptance count.
+- External evidence synthesis changes the interpretation of resistance: repeated pre-break bounces can exhibit memory, while crossing salient barriers can accelerate; Taiwan 2025 historical-high evidence shows true breakouts can enter an underreaction/momentum regime. Therefore touch count can never be assigned one monotonic sign ex ante.
+- Taiwan price-limit literature supports C4's constrained-price-discovery state. A limit-constrained breakout can be a real breakout while acceptance remains unresolved; next-session overnight/intraday resolution is separately observable. Older 7%/call-auction evidence is not directly representative of 2026 10% continuous trading.
+- Live Fugle content audit materially resolves the raw OHLC research lane via `FCNT000002` for 8454/5314/2412, while falsifying naive field equivalence: provider `change/change_rate` are adjustment/reference-based on action dates and `refPrice` is not universally unit-comparable. Volume is lots.
+- Pattern still consumes Corporate Actions `TECHNICAL_CONTINUITY`; it does not infer continuity from future prices or provider change fields.
+- Runtime readiness matrix status: GO_ISOLATED_QA / NO_GO_RUNTIME. Remaining blockers are cross-lane semantic/runtime provenance, not detector mechanics.
+- No Pattern alpha/outcome test, no historical Shadow fabrication, no Formal change, no R09.
+
+### Exact next continuation point
+1. Keep PR #103 Draft; future engineering must reconcile/port against then-current main before any merge proposal.
+2. Continue offline Pattern/source falsification while Corporate Actions/runtime semantic gates remain unresolved.
+3. Require runtime-ready point-in-time RAW_EXECUTION + TECHNICAL_CONTINUITY + symbol-session + volume-semantic provenance before asking for Class-B observer wiring approval.
+4. No prospective outcome inference until complete Pattern parent coverage exists.
+5. When data gates clear, run only frozen PATTERN-RG1..RG4 and redundancy controls before adding pattern families/interactions.
+6. Formal Core remains LOCKED.
