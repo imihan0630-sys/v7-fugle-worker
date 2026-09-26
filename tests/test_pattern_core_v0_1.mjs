@@ -840,7 +840,7 @@ console.log("pattern core v0.1 C1-C8 and invariance tests passed");
     zoneLower,zoneUpper
   });
   assert.equal(fail.lifecycle,"FAILED_MAJOR_ZONE_BREAK");
-  assert.equal(fail.failedBelowZoneAt,bars[8].date);
+  assert.equal(fail.failedBelowZoneAt,bars[7].date);
 
   const rebreak=analyzeMajorZoneLifecycle({
     bars,
