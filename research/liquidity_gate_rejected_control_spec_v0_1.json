@@ -5,7 +5,7 @@
   "researchOnly": true,
   "decisionImpact": false,
   "formalCoreChanged": false,
-  "problemStatement": "Current Shadow cohorts systematically omit early Formal liquidity rejections, so the opportunity-cost and protection value of the liquidity gate cannot be falsified with existing cohort comparisons.",
+  "problemStatement": "Current Shadow lacks a dedicated, prevalence-aware liquidity-admission control. Primary low-average-volume rejects are systematically absent; size-conditioned liquidity rejects may appear only incidentally in bounded BROAD_CONTROL and cannot support clean gate-level inference.",
   "currentFormal": {
     "basePriceMinimum": 10,
     "minLots": {
@@ -27,34 +27,40 @@
     "earlyRejectBasePassed": false
   },
   "existingShadowGap": {
-    "BROAD_CONTROL": "Requires avgVolume20Lots>=minLots, so it excludes low-liquidity names by construction.",
-    "REJECTED_AFTER_BASE": "Requires result.basePassed===true, but all three liquidity-admission rejection reasons return basePassed=false.",
-    "conclusion": "No existing standard Shadow cohort is an honest control for the early liquidity gate."
+    "BROAD_CONTROL_PRIMARY_LOW_VOLUME": "Systematically excludes primary low-average-volume rejects because BROAD_CONTROL itself requires avgVolume20Lots>=minLots.",
+    "BROAD_CONTROL_SMALLCAP_SPECIAL": "May incidentally sample some 10-30bn special-reason rejects when avgVolume20Lots>=minLots, but is bounded/random and not stratified by this reason. Rows below minLots that passed the spread/depth exception but then fail the 1.5x small-cap rule remain excluded by BROAD_CONTROL.",
+    "BROAD_CONTROL_MIDCAP_EXTRA": "May incidentally sample 30-100bn rejects because this rejection generally occurs for avgVolume20Lots between 1.0x and 1.2x minLots; bounded/random sampling is not a dedicated cohort.",
+    "REJECTED_AFTER_BASE": "Cannot capture any of the three because each returns basePassed=false.",
+    "conclusion": "The primary low-volume rejection has a systematic Shadow hole. The size-conditioned rejection families have only incidental bounded BROAD_CONTROL coverage, not dedicated counterfactual cohorts or prevalence-complete evidence."
   },
   "proposedCohorts": [
     {
       "id": "LIQ_LOW_AVG_VOLUME_REJECTED",
       "exactReason": "20日流動性不足",
       "interpretation": "Failed primary average-volume threshold and did not prove the existing amount/spread/depth exception.",
-      "fullFormalCounterfactual": false
+      "fullFormalCounterfactual": false,
+      "existingCoverage": "SYSTEMATICALLY_ABSENT_FROM_BROAD_CONTROL"
     },
     {
       "id": "LIQ_SMALLCAP_SPECIAL_REASON_REJECTED",
       "exactReason": "10至30億市值缺少強力特殊理由",
       "interpretation": "Passed/excepted initial volume gate but failed stricter small-cap liquidity+institutional exception.",
-      "fullFormalCounterfactual": false
+      "fullFormalCounterfactual": false,
+      "existingCoverage": "INCIDENTAL_BOUNDED_BROAD_CONTROL_POSSIBLE"
     },
     {
       "id": "LIQ_MIDCAP_EXTRA_REQUIREMENT_REJECTED",
       "exactReason": "30至100億市值流動性要求未達",
       "interpretation": "Failed the stricter 1.2x volume requirement for sub-100bn market cap without an accepted liquidity exception.",
-      "fullFormalCounterfactual": false
+      "fullFormalCounterfactual": false,
+      "existingCoverage": "INCIDENTAL_BOUNDED_BROAD_CONTROL_POSSIBLE"
     },
     {
       "id": "LIQ_LOW_VOLUME_EXCEPTION_PASS",
       "exactReason": null,
       "interpretation": "Below primary minLots but passed the existing avgAmount/spread/depth exception; descriptive positive control only.",
-      "fullFormalCounterfactual": false
+      "fullFormalCounterfactual": false,
+      "existingCoverage": "DESCRIPTIVE_PASS_STATE_NOT_DEDICATED"
     }
   ],
   "minimumReceiptFields": [
