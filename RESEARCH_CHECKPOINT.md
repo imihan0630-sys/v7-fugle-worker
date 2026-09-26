@@ -718,3 +718,16 @@ Updated: 2026-09-26 12:49 Asia/Taipei.
 - Realized-vol outcomes require continuity-proven PIT histories; missing evidence remains UNKNOWN.
 - Master Map now has 19 modules; maturity 47.4%; research debt 10.0; DATA_QUALITY_BLOCKED 8; optimization candidates 1.
 - Exact next: reconcile the next unresolved independent module.
+
+
+## B-164 — PriorityScore calibration falsification (2026-09-26 17:13 Asia/Taipei)
+- Fresh-read start B-163. Formal priorityScore weights: setup 28%, sector 14%, institutional 16%, fundamental 14%, market-relative RS 14%, RR 14%.
+- Ranking uses rewardPerRisk first, then priorityScore/setup/sector/RS. Capital after selection is approximately priorityScore-proportional, subject to deployment ratios, 35% single-name cap and rounding. Score calibration therefore directly affects sizing.
+- Positive hypothesis: higher PIT score within frozen scan dates should monotonically improve forward return and/or MFE/MAE/stop outcomes enough to justify larger weights.
+- Countertests: non-monotone/inverted-U; date/sector/regime concentration; cap/rounding erases differences; RR dominates selection; component redundancy/double counting; high score worsens downside; benefit disappears after costs.
+- Inference unit is scanDate. Require within-date ranking/de-meaning, date-cluster/LODO, purged holdout, regime/industry strata, monotonicity/downside, and preregistered sizing comparisons: current-score vs equal-capital vs equal-planned-stop-risk.
+- Historical firewall: never recompute old score with current code and call it historical. Only PIT archived score with definition/version provenance is eligible; otherwise UNKNOWN.
+- Current Formal plan/trade-journal paths preserve score prospectively, but complete historical Shadow preservation of score plus comparator tuple was not proven. Status FALSIFICATION_IN_PROGRESS / DATA_QUALITY_BLOCKED / NOT_OPTIMIZATION_READY.
+- Optimization bridge is two-sided and Class C. Neither strengthening nor reducing score-based sizing is authorized before falsification/readiness gates pass.
+- Formal Core LOCKED; no runtime behavior changed.
+- Exact next: register PRIORITY_SCORE_CALIBRATION in Master Map; audit prospective archive start/version and mature independent scan dates with PIT score+allocation+outcomes; below readiness => WAITING_PROSPECTIVE.
