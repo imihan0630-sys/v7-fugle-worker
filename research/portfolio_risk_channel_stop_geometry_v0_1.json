@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "PORTFOLIO_RISK_CHANNEL_STOP_GEOMETRY_V0_1",
+  "updatedAt": "2026-09-27T05:01:00+08:00",
+  "researchOnly": true,
+  "decisionImpact": false,
+  "sourceAudit": {
+    "formalSource": "Worker.js scoreCandidate()",
+    "patchChainObservation": "Repository-wide search found the Formal A/B buy/stop formula constants only in Worker.js/snapshot, with no later scripts redefining those exact formulas on current main.",
+    "outcomeDataUsed": false
+  },
+  "channelA": {
+    "buyHighFormula": "support * 1.018",
+    "stopFormula": "min(support * 0.98, recentLow5Prev - ATR * 0.12)",
+    "deterministicStopUpperBoundRelativeToSupport": 0.98,
+    "minimumProjectedRiskPctAtBuyHigh": 3.7328,
+    "derivation": "(1.018 - 0.98) / 1.018",
+    "note": "Actual A stop risk can be larger when recentLow5Prev - 0.12*ATR lies below support*0.98."
+  },
+  "channelB": {
+    "buyHighFormula": "breakout * 1.01",
+    "stopFormula": "breakout - max(ATR * 0.65, breakout * 0.012)",
+    "deterministicStopUpperBoundRelativeToBreakout": 0.988,
+    "minimumProjectedRiskPctAtBuyHigh": 2.1782,
+    "derivation": "(1.01 - 0.988) / 1.01",
+    "note": "Actual B stop risk can be larger when 0.65*ATR exceeds 1.2% of breakout."
+  },
+  "deterministicFloorDifferencePctPoints": 1.5546,
+  "falsificationFinding": "Projected stop-risk intensity is mechanically channel-confounded before any market outcome is observed. A/B mix must therefore be controlled before interpreting portfolio heat differences as an independent risk signal.",
+  "nonClaims": [
+    "Does not prove A has worse realized risk than B.",
+    "Does not justify channel normalization.",
+    "Does not justify a portfolio heat threshold.",
+    "Does not alter Formal stop, entry, allocation, ADD/REDUCE or selection logic."
+  ]
+}
