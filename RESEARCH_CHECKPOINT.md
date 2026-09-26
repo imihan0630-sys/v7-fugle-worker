@@ -1109,3 +1109,29 @@ Updated: 2026-09-27 05:02 Asia/Taipei.
 - Existing Shadow preserves atrPercent/channel/RR and selected plan stop/target; exact counterfactual target/stop for all pre-plan rejects remains incomplete and must not be fabricated from mutable history.
 - No ATR gate, stop formula, RR gate/weight or channel rule change. No FORMAL_OPTIMIZATION_CANDIDATE.
 - Exact next: audit the 10–30bn small-cap exception because it labels institutionalScore>=70 as a strong special reason even though institutionalScore mixes actor flows/streaks with TDCC holder concentration.
+
+
+## B-190 — Liquidity admission gate Shadow gap / rejected-control protocol (2026-09-27 Asia/Taipei)
+- Fresh Formal path audit confirms liquidity admission is an early `basePassed=false` layer before quarterly/valuation/sector/A-B/RR logic:
+  - close<1000 => primary minLots=1000; close>=1000 => minLots=300;
+  - below minLots can pass only if avgAmount20>=NT$50m, spreadPercent is observed <=0.5%, and orderBookDepthGood=true or depthScore>=80;
+  - 10–30bn market cap additionally requires avgVolume20Lots>=1.5*minLots AND institutionalScore>=70;
+  - 30–100bn market cap additionally requires avgVolume20Lots>=1.2*minLots unless the low-volume exception passed.
+- Major evidence-design defect is confirmed:
+  - existing BROAD_CONTROL explicitly requires avgVolume20Lots>=minLots, so low-liquidity rejects are excluded by construction;
+  - existing REJECTED_AFTER_BASE keeps only result.basePassed===true, while all three liquidity-admission rejection paths return basePassed=false.
+  - Therefore no standard Shadow cohort currently provides an honest `LIQUIDITY_REJECTED_CONTROL`.
+- This means current research cannot distinguish protection value from opportunity cost of the liquidity gate. Candidate scarcity/idle capital alone is not evidence for relaxing the gate.
+- Formal low-volume exception provenance audit: exact fields `spreadPercent`, `orderBookDepthGood`, `depthScore` are read by scoreCandidate, but repository search finds no repository-side constructor/assignment for those exact fields. However `normalizeEnrichmentPayload -> mergeEnrichment(...extra) -> buildMarketFeatures(...stock)` permits arbitrary external enrichment fields to flow into Formal. Correct state is `REPO_UPSTREAM_NOT_PROVEN / EXTERNAL_INJECTION_FEASIBLE / PRODUCTION_COVERAGE_UNKNOWN`, not “dead exception.”
+- V8.8.1 research microstructure fields `spreadPct/bidDepth5/askDepth5/depthImbalance` have different names/timing and cannot be silently treated as the Formal exception inputs.
+- Frozen prospective cohorts:
+  - LIQ_LOW_AVG_VOLUME_REJECTED;
+  - LIQ_SMALLCAP_SPECIAL_REASON_REJECTED;
+  - LIQ_MIDCAP_EXTRA_REQUIREMENT_REJECTED;
+  - LIQ_LOW_VOLUME_EXCEPTION_PASS descriptive positive control.
+  Every rejected row must keep `fullFormalCounterfactual=false`; later A/B checks may be descriptive only because downstream Formal gates were never reached.
+- Required evidence: exact reject reason/count, continuous avgVolume20Lots/minLots distance, avgAmount20, exception-input presence/provenance, price/size/sector/regime/ATR/RS context, D1-D20/MFE/MAE and valid execution-cost/spread/depth evidence. Bounded sampling may describe outcomes but cannot estimate total opportunity loss without sampling fractions/full coverage.
+- Engineering boundary: rejected-cohort serialization can be a future Class-A candidate only if it reuses already-computed feature/result objects, makes zero new market calls and leaves Formal outputs invariant. Any shared enrichment/spread-depth source repair is Class B proposal-first. Gate reformulation is Class C.
+- Optimization bridge is deliberately conditional: `LIQUIDITY_ADMISSION_REFORMULATION` is NOT yet a FORMAL_OPTIMIZATION_CANDIDATE. It may be surfaced only if prospective rejected controls show stable opportunity loss after execution-cost/depth controls, independent dates, price/size/regime strata and OOS, without worse MAE/stop/no-follow-through/zero-pick behavior. If not, retain the current gate.
+- Durable files: `LIQUIDITY_ADMISSION_RESEARCH.md`, `research/liquidity_gate_rejected_control_spec_v0_1.json`, Worklist and Master Map cross-links. No Formal/runtime threshold or behavior changed.
+- Exact next: continue structural audit of the pre-score admission funnel and identify whether another high-prevalence early gate lacks a counterfactual cohort; do not threshold-sweep liquidity while evidence is absent.
