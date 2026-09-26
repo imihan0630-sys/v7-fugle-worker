@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-09-27T00:03:00+08:00",
+  "updatedAt": "2026-09-27T04:57:00+08:00",
   "status": "BASELINE_V0_2_PARTIAL_RECONCILIATION",
   "formalCore": "LOCKED",
   "authority": {
@@ -57,7 +57,7 @@
     "formalAutoPromotion": false,
     "independentInferenceUnitRequired": true
   },
-  "next": "Use clean post-9/29 Shadow for channel-calibrated setupQuality and RR multi-layer outcome tests. Before evidence, continue structural audits of remaining PriorityScore components; no weight/threshold tuning.",
+  "next": "Use clean prospective Shadow to test setup/RR/sector/RS monotonicity, tie-break incidence and outcome calibration before any Class-C reformulation. Continue outcome-independent structural mapping of score/rank/sizing interactions meanwhile.",
   "optimizationBridge": {
     "required": true,
     "autoPromoteFormal": false,
@@ -244,7 +244,7 @@
       "domain": "STATISTICAL_VALIDATION_PIT_SHADOW_OOS",
       "level": "L2",
       "status": "WAITING_PROSPECTIVE",
-      "basis": "V8.13 preserves full ranking provenance. Structural audits confirm two unresolved calibration risks in the largest ranking layers: (1) setupQuality is channel-scale-confounded by construction (A ~38–82 vs B ~69.65–100 plus A 0.90/0.91 volume cliff); (2) RR has triple influence via >=2 hard gate, 14% additive score from RR 2–5, and raw rewardPerRisk tie-break beyond rounded PriorityScore, with additive saturation above RR=5. Existing Shadow fields are sufficient for both tests; no runtime capture change needed.",
+      "basis": "V8.13 preserves full ranking provenance. Structural audits now confirm four unresolved calibration families: setupQuality is cross-channel scale-confounded (A ~38–82 vs B ~69.65–100 plus A 0.90/0.91 volume cliff); RR has gate+14% score+raw tie-break layering; sector has hard gate+14% score+later tie-break and its 45-point amount share is cross-sector max-denominator/sector-size sensitive; market-relative RS has 14% score+final tie-break and potential momentum redundancy. Existing Shadow is sufficient for setup/RR/RS and V8.14 sector-gate outcomes, but exact sector amount/maxAmount decomposition is not fully serialized. Empirical materiality awaits clean prospective evidence.",
       "deployedVersion": "8.13.0-priority-score-provenance-shadow",
       "deployedAt": "2026-09-26T17:59:14+08:00",
       "firstProspectiveScanDate": "2026-09-29",
