@@ -31,6 +31,7 @@ import {
   analyzeCupGeometryFromAnchors,
   analyzeImpulseConsolidationGeometry,
   analyzeResistanceTestProgression,
+  analyzeTaiwanRoundPriceProximity,
   buildPatternSnapshot,
   replayPatternSnapshot
 } from "../research/pattern_core_v0_1.mjs";
@@ -1254,4 +1255,36 @@ console.log("pattern core v0.1 C1-C8 and invariance tests passed");
   const wf=o.pairs.find(x=>new Set([x.familyA,x.familyB]).has("W")&&new Set([x.familyA,x.familyB]).has("FLAG"));
   assert.equal(wf.sharedAnchorCount,0);
   assert.equal(wf.jaccard,0);
+}
+
+
+// Taiwan round-price control is continuous, tick-aware and outcome-free.
+{
+  const p42=analyzeTaiwanRoundPriceProximity({structuralLevelPrice:42.13,currentClose:41.9});
+  assert.equal(p42.status,"VALID");
+  assert.equal(p42.structuralLevelTick,0.05);
+  assert.equal(p42.proximity.wholeNtd.nearestAnchor,42);
+  assert.equal(p42.proximity.evenNtd.nearestAnchor,42);
+  assert.equal(p42.proximity.fiveNtd.nearestAnchor,40);
+  assert.equal(p42.proximity.tenNtd.nearestAnchor,40);
+  assert.ok(Math.abs(p42.proximity.wholeNtd.distanceTicks-2.6)<1e-10);
+  assert.equal(p42.proximity.wholeNtd.mechanicallyCoarseGrid,false);
+  assert.equal(p42.directionalSign,"UNKNOWN");
+  assert.equal(p42.controlRole,"CONFOUND_CONTROL_ONLY");
+  assert.equal(p42.decisionImpact,false);
+
+  // At >=1000 the stock tick is NT$5. Whole-NTD and 5-NTD grids collapse to the legal quote grid.
+  // The control must flag that mechanical coarseness rather than calling every such level behavioral.
+  const p1003=analyzeTaiwanRoundPriceProximity({structuralLevelPrice:1003});
+  assert.equal(p1003.structuralLevelTick,5);
+  assert.equal(p1003.proximity.wholeNtd.nearestAnchor,1005);
+  assert.equal(p1003.proximity.fiveNtd.nearestAnchor,1005);
+  assert.equal(p1003.proximity.wholeNtd.mechanicallyCoarseGrid,true);
+  assert.equal(p1003.proximity.fiveNtd.mechanicallyCoarseGrid,true);
+  assert.equal(p1003.proximity.evenNtd.mechanicallyCoarseGrid,false);
+  assert.equal(p1003.proximity.tenNtd.mechanicallyCoarseGrid,false);
+
+  const blocked=analyzeTaiwanRoundPriceProximity({structuralLevelPrice:null});
+  assert.equal(blocked.status,"BLOCKED");
+  assert.equal(blocked.reason,"ROUND_PRICE_STRUCTURAL_LEVEL_INVALID");
 }
