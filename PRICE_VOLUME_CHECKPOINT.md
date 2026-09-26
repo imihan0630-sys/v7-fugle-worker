@@ -890,3 +890,25 @@ Class A if research-only; Class C if later used in formal 15m confirmation.
 4. PVE-158 define date-cluster/dependence handling.
 5. PVE-159 freeze minimum clean-date/event reporting before descriptive outcome tables.
 6. Continue evidence/falsification only.
+
+## Evidence progress — PVE-155 through PVE-159
+- PVE-155 audits the actual Candidate Shadow archive implementation. It is a bounded decision-boundary archive, not a complete pool-integrity receipt: all SELECTED rows are kept, but QUALIFIED_NOT_SELECTED / NEAR_MISS / REJECTED_AFTER_BASE / BROAD_CONTROL are capped at 6 per pool.
+- Formal rank order is rewardPerRisk -> priorityScore -> setupQuality -> sectorFlow -> relativeStrength. The existing snapshot cannot exactly reconstruct it because raw rewardPerRisk is reduced to rounded rewardRisk, priorityScore is omitted from buildResearchSnapshot(), and pre-sort ordinal is not persisted.
+- cohort_rank is not an absolute per-pool Formal rank. Nevertheless, the first six QNS rows retain within-pool post-cutline order, so bounded cutline salvage is possible; this is weaker than full historical pool integrity.
+- The current archive is mutable by scan_date because persistence deletes that date before reinserting/upserting. It is not automatically an immutable first-known selection receipt.
+- PVE-156 freezes a future additive Class-A pool-integrity receipt: full qualified list, no top-N truncation, exact comparator inputs, observed pool rank, pre-sort ordinal, cutline, selection/version identity, point-in-time quality overlay and semantic fingerprints. NOT_IMPLEMENTED.
+- PVE-157 freezes two pre-outcome controls: ALL_QNS and exact CUTLINE_NEXT. No post-outcome substitution/matching/filtering; an unclean or tie-ambiguous next row makes that boundary contrast unavailable.
+- PVE-158 sets scanDate as the primary dependence/cluster unit. Six rows on one day are not six independent market experiments. The first table is descriptive only; no naive row-level significance claims.
+- PVE-159 retains the already-existing 20 paired-date threshold as the first DESCRIPTIVE_READY floor, now explicitly requiring 20 CLEAN scan dates on common support. High row count cannot substitute for independent dates.
+- The first H001/H002 table remains A Formal -> B + prev5 volume ratio -> C + same-slot RVOL -> D + cumulative pace, with false-confirmation/MFE/MAE/opportunity-retention and no threshold tuning.
+- No H001~H006 status changed. Formal Core/runtime/ranking/threshold/capital/push behavior remains unchanged.
+
+## Revised exact continuation after PVE-159
+1. Do not expand methodology merely to create more PVE numbers; wait for the preregistered live information hinge unless a contradiction is discovered.
+2. 2026-09-29 intraday is DATA_QA-only under inherited 9/24 stale-selection lineage.
+3. 2026-09-29 after-market is the first post-enable ordinary selection/bootstrap receipt.
+4. 2026-09-30 intraday is the first potentially clean selection cohort, subject to symbol-session, baseline, at-rest and pool-integrity gates.
+5. Execute PVE-149 Gate 0->7 in order and keep outcome inspection last.
+6. PVE-156 schema remains proposal-only until owner-approved engineering work.
+7. Formal Core remains LOCKED.
+
