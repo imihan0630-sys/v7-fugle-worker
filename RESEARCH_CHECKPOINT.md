@@ -1,6 +1,6 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-151.
+Checkpoint sequence: B-152.
 Updated: 2026-09-26 09:17 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Detailed B-01..B-123 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
@@ -522,3 +522,15 @@ Updated: 2026-09-26 09:17 Asia/Taipei.
 - Bias/quality: no outcome lookup, no historical Shadow fabrication, no current-map backfill, no missing=no-edge/0, no entity guessing, no new lag/window/threshold/factor; R01-R08/I01-I07 unchanged.
 - Engineering: Class A documentation only. Dedicated research commit e2b68557b69219a7cf7e1e40c2f222c78d2cf59d. No Worker/Production/Formal/monitor/push change.
 - Exact next continuation: SC-006A perform one bounded interface-discovery pass against first-party TWSE/TPEx/MOPS assets/code/history for a stable machine-readable M25/equivalent query/download contract. If verified, implement only the isolated prospective research collector with targeted+regression/invariant checks; if not verified after the bounded pass, mark SOURCE_ACCESS_BLOCKED, preserve proposal, and advance to the next unresolved canonical research priority.
+
+
+## B-152 — SC-006A bounded machine-interface discovery closed SOURCE_ACCESS_BLOCKED (2026-09-26 09:17 Asia/Taipei)
+- Fresh-read governance/worklist/checkpoint/main; canonical start B-151. Concurrent Pattern commit aa5bdf5... was observed and not redone. Continued exact SC-006A only.
+- Bounded first-party discovery checked TWSE/TPEx/MOPS public materials plus repository evidence-ingestion paths. TWSE documents ezSearch as a free cross-market announcement search surface with category/date filters and announcement-time ordering; TPEx confirms item-25 >=10% major purchaser/supplier cessation semantics.
+- No stable documented first-party M25 JSON/CSV/OpenAPI contract with pagination and reproducible denominator semantics was verified. Direct human search availability is not treated as an API contract. TWSE separately documents historical/custom information-service products, increasing the risk of treating UI internals as a supported archival feed.
+- Repository falsification: the codebase already uses explicit supported first-party machine endpoints for TWSE monthly revenue/attention/disposition, TPEx monthly revenue, and TWSE RWD margin/SBL. No MOPS M25 machine fetch path or archived M25 contract exists to reuse. Therefore this is source-contract absence, not generic inability to ingest official APIs.
+- Decision: MAJOR_COUNTERPARTY_STOP_SOURCE_ACCESS = SOURCE_ACCESS_BLOCKED_FOR_AUTOMATED_CANONICAL_INGESTION. Preserve the frozen collector proposal but do not implement HTML scraping, hidden-endpoint coupling, or third-party canonical ingestion.
+- Supply-Chain lane status = EVENT_LANE_SEMANTICALLY_FEASIBLE / AUTOMATED_SOURCE_BLOCKED / COMPLETE_GRAPH_BLOCKED. Manual bounded official-event research remains possible with provenance, but absence cannot prove a complete denominator/no-event universe.
+- Bias/quality: no outcome/return/MFE/MAE lookup, no historical Shadow fabrication, no missing=no-edge/0, no current-map backfill, no entity guessing, no threshold/window/factor change. R01-R08/I01-I07 unchanged.
+- Engineering: Class A research documentation only. Dedicated commit 794b990ee4a85f352170343b532a22832481cb3f. No collector/runtime/Worker/Production/Formal/monitor/push change.
+- Exact next continuation: close Supply-Chain automated-source work until a documented official machine contract becomes available; advance to the next unresolved canonical priority, Execution Alpha. First re-read the latest recorder proposal/branch and current Production/readback evidence; do not infer BUY/NO-BUY from missing recorder rows. If exact-date completeness remains unresolved and Class-B implementation is still blocked/unapproved, research the next Execution Alpha evidence question that can be answered without changing shared runtime, preserving 2026-09-24 UNKNOWN.
