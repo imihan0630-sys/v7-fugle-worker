@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-09-26T22:58:00+08:00",
+  "updatedAt": "2026-09-26T23:06:00+08:00",
   "status": "BASELINE_V0_2_PARTIAL_RECONCILIATION",
   "formalCore": "LOCKED",
   "authority": {
@@ -146,7 +146,7 @@
       "domain": "FUNDAMENTALS_INFORMATION_DYNAMICS",
       "level": "L2",
       "status": "DATA_QUALITY_BLOCKED",
-      "basis": "Concept convergence; historical first-known vintage/consensus limitations gate stronger claims."
+      "basis": "Concept layer is mature, but clean event inference remains data-quality gated: current monthly-revenue evidence is CURRENT_SNAPSHOT_ONLY with firstKnownAt=null, so announcement-day/record-high-at-the-time states cannot be backfilled. Normal Formal enrichment already fetches full-market TWSE/TPEx monthly revenue, making future first-observed data-month receipts zero-extra-call feasible in principle, but shared parser/storage instrumentation is Class-B proposal-first. Record-high revenue interaction is falsification-ready, not optimization-ready."
     },
     {
       "id": "BREADTH_ROTATION",
