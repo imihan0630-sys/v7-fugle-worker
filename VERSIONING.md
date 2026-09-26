@@ -112,3 +112,18 @@
 - Runtime：`8.11.0-pv-shadow-v0.1-log-only`。
 - 本次新增獨立 Class-A 價量研究資料收集功能，未更動核心股池／選股架構，因此屬 V8 功能版本。
 - `PV_SHADOW_ENABLED=false` 為預設；啟用時仍為 `LOG_ONLY`、`decisionImpact=false`，不得影響 Formal Core、推播或操作。
+
+
+## 12. V8.12.0｜History Source Revalidation V2.3（2026-09-26）
+
+- Runtime：`8.12.0-history-source-revalidation-v2-3`。
+- 本次改變的是既有盤後歷史資料的 admission / repair 行為，不改股池與 A/B 核心架構，屬功能版本。
+- 只讓 freshness/source-validated 歷史進入 Formal 特徵；可疑資料重驗、UNKNOWN fail closed、合法 no-trade gap 保留。
+- Formal 排序、配額、門檻、資金與操作訊號規則均不變。
+
+## 13. V8.13.0｜PriorityScore Provenance Shadow（2026-09-26）
+
+- Runtime：`8.13.0-priority-score-provenance-shadow`。
+- 本次新增的是研究證據保存能力，屬功能版本；不改 Formal 選股核心、排序 comparator、資金配置公式或操作訊號。
+- 保存 Production 當下真正使用的排名 provenance：post-consensus PriorityScore、RR、market-consensus score/sources/bonus、setup/sector/RS 與版本標籤。
+- 目的為未來做 PIT / OOS PriorityScore 校準與反證，不代表目前分數權重已被驗證或需要修改。
