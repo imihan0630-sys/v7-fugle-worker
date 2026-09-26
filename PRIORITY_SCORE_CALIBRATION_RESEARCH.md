@@ -449,3 +449,24 @@ Therefore:
 Cross-reference:
 `research/notes/CAPITAL_UTILIZATION_REENTRY_FALSIFICATION_2026-09-22.md`
 and `PORTFOLIO_RISK_RESEARCH.md` PR-021/PR-022/PR-025.
+
+
+## ATR -> stop -> RR coupling
+
+PriorityScore RR calibration cannot be studied independently of stop construction.
+
+Formal ATR path:
+`ATR gate -> channel-specific stop -> RR gate -> RR score -> raw RR comparator -> score-proportional capital`.
+
+The coupling is stronger for B by construction because B stop uses `max(0.65*ATR,1.2% breakout)`.
+A stop may stay pinned to support*0.98 when structure geometry dominates.
+
+Therefore:
+- RR bands must be stratified by channel and ATR/stop-binding state;
+- a high RR can partly mean low measured volatility/narrow stop, not only large upside;
+- an apparent RR alpha may collapse after stop-distance/ATR controls;
+- an apparent ATR penalty may already be implemented indirectly through RR filtering.
+
+Cross-reference:
+`research/atr_rr_channel_coupling_v0_1.json`
+and `VOLATILITY_REGIME_RESEARCH.md` VR-018.
