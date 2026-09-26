@@ -421,6 +421,28 @@ No `FORMAL_OPTIMIZATION_CANDIDATE` yet.
 The plausible eventual implementation, only if all later falsification gates pass, would be a conditional price-limit context/guard rather than a new additive Information Discreteness score.
 
 
+## DL-003 — Trend / Momentum / Reversal lane initialized
+Run date: 2026-09-26 Asia/Taipei
+
+Dedicated durable files:
+- `TREND_MOMENTUM_REVERSAL_RESEARCH.md`
+- `TREND_MOMENTUM_REVERSAL_CHECKPOINT.md`
+
+### Current findings
+- Taiwan-specific evidence supports studying **market-state continuation versus transition**, not treating momentum as a monotonic past-return signal.
+- Existing R06 is only a partial implementation: it counts regime-label transitions across observed research dates, but does not yet attach as-of continuation/transition lifecycle state to each Shadow parent or compare candidate outcomes by that state.
+- Important falsification: adjacent observed research dates are not necessarily adjacent official trading sessions. A missing/failed scan can make a direct X->Y transition path unknowable. Future R06 semantics must distinguish TRANSITION from GAP_UNKNOWN.
+- Current Formal `scoreCandidate()` / `strategySetupState()` do not consume research regime or transition state; therefore this is potentially incremental, but unproven.
+- Taiwan-specific Momentum Gap evidence is negative; it is rejected from current research priority.
+- Taiwan Extreme Absolute Strength evidence is relevant, but the mechanism is highly overlapping with current Formal `lateStage` and research `overheatPenalty` / ATR controls. No new score is justified without incremental evidence.
+
+### Optimization bridge
+No FORMAL_OPTIMIZATION_CANDIDATE yet.
+The only plausible future form is a conditional transition-risk context/guard if prospective evidence proves worse follow-through / higher MAE / false-break risk during true consecutive-session regime transitions after controlling the regime level itself and existing momentum/overheat factors.
+
+Formal Core unchanged.
+
+
 ## Exact next continuation point
 1. Do not resurrect canonical ID or ID_non_hit as standalone additive factors. Their broad path information is redundant; only exact price-limit count/direction remains potentially incremental.
 2. Next DL-001 step: bounded prospective source receipt / coverage test using official TWSE TWT84U and official TPEx daily limit state. Measure authoritative coverage and the frequency of windows with limitHitCount20>0 before looking at outcomes.
