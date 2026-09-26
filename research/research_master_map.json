@@ -1,7 +1,7 @@
 {
-  "schemaVersion": "0.1",
-  "updatedAt": "2026-09-26T10:14:00+08:00",
-  "status": "INVENTORY_RECONCILIATION_IN_PROGRESS",
+  "schemaVersion": "0.2",
+  "updatedAt": "2026-09-26T10:18:00+08:00",
+  "status": "BASELINE_V0_2_PARTIAL_RECONCILIATION",
   "formalCore": "LOCKED",
   "authority": {
     "inventory": "RESEARCH_MASTER_MAP.md",
@@ -35,10 +35,21 @@
   ],
   "aggregate": {
     "domainCount": 15,
-    "moduleCount": null,
-    "maturityWeightedPct": null,
-    "countsByLevel": null,
-    "researchDebtUnits": null
+    "moduleCount": 16,
+    "maturityWeightedPct": 48.8,
+    "countsByLevel": {
+      "L0": 0,
+      "L1": 0,
+      "L2": 10,
+      "L3": 5,
+      "L4": 1,
+      "L5": 0
+    },
+    "researchDebtUnits": 8.2,
+    "dataQualityBlocked": 6,
+    "dataSourceBlocked": 3,
+    "waitingProspective": 1,
+    "formalOptimizationCandidates": 0
   },
   "rules": {
     "missing": "UNKNOWN",
@@ -46,5 +57,131 @@
     "formalAutoPromotion": false,
     "independentInferenceUnitRequired": true
   },
-  "next": "Enumerate dedicated research/checkpoint files; normalize modules; assign evidence-backed maturity/status; publish first auditable baseline."
+  "next": "Continue reconciliation for trend/momentum/reversal, volatility-regime, institutional/crowding, macro/cross-market and submodules; split modules only when evidence objectives are independently falsifiable; register optimization candidates only after mandatory bridge gates.",
+  "optimizationBridge": {
+    "required": true,
+    "autoPromoteFormal": false,
+    "statuses": [
+      "DISCOVERY",
+      "FALSIFICATION_IN_PROGRESS",
+      "EVIDENCE_READY",
+      "FORMAL_OPTIMIZATION_CANDIDATE",
+      "REJECTED_OR_REDUNDANT"
+    ]
+  },
+  "modules": [
+    {
+      "id": "PATTERN_GEOMETRY",
+      "domain": "PRICE_KLINE_PATTERN",
+      "level": "L3",
+      "status": "DATA_QUALITY_BLOCKED",
+      "basis": "Detector/source semantics substantially validated; prospective runtime/outcomes gated by PIT continuity/session/volume and complete coverage."
+    },
+    {
+      "id": "PRICE_VOLUME_CORE",
+      "domain": "PRICE_VOLUME",
+      "level": "L3",
+      "status": "WAITING_PROSPECTIVE",
+      "basis": "Large preregistered evidence/QA program; first potentially clean cohort begins after 2026-09-29 scan, outcome inference still blocked."
+    },
+    {
+      "id": "MICROSTRUCTURE_STATE",
+      "domain": "MARKET_MICROSTRUCTURE",
+      "level": "L2",
+      "status": "DATA_QUALITY_BLOCKED",
+      "basis": "Concept complete; dynamic evidence requires prospective complete recorder capture."
+    },
+    {
+      "id": "LEVERAGE_SHORTING",
+      "domain": "POSITIONING_INSTITUTIONS_MARGIN_SBL_CROWDING",
+      "level": "L2",
+      "status": "EVIDENCE_PENDING",
+      "basis": "Dedicated source/semantic research exists; empirical incremental evidence not yet mature."
+    },
+    {
+      "id": "FUNDAMENTAL_INFO_DYNAMICS",
+      "domain": "FUNDAMENTALS_INFORMATION_DYNAMICS",
+      "level": "L2",
+      "status": "DATA_QUALITY_BLOCKED",
+      "basis": "Concept convergence; historical first-known vintage/consensus limitations gate stronger claims."
+    },
+    {
+      "id": "BREADTH_ROTATION",
+      "domain": "INDUSTRY_SECTOR_RESIDUAL_RS",
+      "level": "L2",
+      "status": "EVIDENCE_PENDING",
+      "basis": "Dedicated breadth/rotation lane exists; empirical maturity pending."
+    },
+    {
+      "id": "SUPPLY_CHAIN_EVENT_LEAD_LAG",
+      "domain": "SUPPLY_CHAIN_LEAD_LAG",
+      "level": "L2",
+      "status": "DATA_SOURCE_BLOCKED",
+      "basis": "Event semantics feasible; automated canonical M25 source contract unavailable; complete graph blocked."
+    },
+    {
+      "id": "CORPORATE_ACTION_DENOMINATORS",
+      "domain": "CORPORATE_ACTIONS_EVENT_RISK",
+      "level": "L3",
+      "status": "DATA_SOURCE_BLOCKED",
+      "basis": "Extensive PIT semantic/lifecycle validation; exact TWSE listed/archive gates remain."
+    },
+    {
+      "id": "EVENT_RISK",
+      "domain": "CORPORATE_ACTIONS_EVENT_RISK",
+      "level": "L2",
+      "status": "DATA_QUALITY_BLOCKED",
+      "basis": "Concept/prospective protocol frozen; event intraday timestamps/opening/corporate-action provenance incomplete."
+    },
+    {
+      "id": "DERIVATIVES_CONTEXT",
+      "domain": "DERIVATIVES",
+      "level": "L2",
+      "status": "EVIDENCE_PENDING",
+      "basis": "Concept complete; official data feasible; empirical prospective evidence pending."
+    },
+    {
+      "id": "PASSIVE_FLOW_REBALANCING",
+      "domain": "MACRO_CROSS_MARKET_REGIME",
+      "level": "L2",
+      "status": "DATA_SOURCE_BLOCKED",
+      "basis": "Concept/source map complete; constituent/event-date AUM/auction evidence incomplete."
+    },
+    {
+      "id": "TRADING_FRICTIONS",
+      "domain": "EXECUTION_ALPHA_TRADING_FRICTIONS",
+      "level": "L3",
+      "status": "DATA_QUALITY_BLOCKED",
+      "basis": "Cost decomposition and falsification defined; actual fill/quote context incomplete."
+    },
+    {
+      "id": "EXECUTION_ALPHA",
+      "domain": "EXECUTION_ALPHA_TRADING_FRICTIONS",
+      "level": "L3",
+      "status": "DATA_QUALITY_BLOCKED",
+      "basis": "Coverage-aware accounting and signal-vs-fill firewall frozen; exact-date recorder and odd-lot execution provenance incomplete."
+    },
+    {
+      "id": "PORTFOLIO_RISK",
+      "domain": "PORTFOLIO_CAPITAL_READD",
+      "level": "L2",
+      "status": "EVIDENCE_PENDING",
+      "basis": "Dedicated portfolio-risk lane exists; optimization evidence not yet reconciled to L4/L5."
+    },
+    {
+      "id": "CAPITAL_READD",
+      "domain": "PORTFOLIO_CAPITAL_READD",
+      "level": "L2",
+      "status": "FALSIFICATION_IN_PROGRESS",
+      "basis": "Reduce/re-add mechanism and counterfactual concerns documented; prospective robust evidence pending."
+    },
+    {
+      "id": "VALIDATION_GOVERNANCE",
+      "domain": "STATISTICAL_VALIDATION_PIT_SHADOW_OOS",
+      "level": "L4",
+      "status": "CONTINUOUS",
+      "basis": "Prospective Shadow, purged holdout, date clustering, redundancy, costs, multiple-testing/readiness machinery implemented; validation remains continuous."
+    }
+  ],
+  "caveat": "Baseline v0.2 covers reconciled durable lanes visible in dedicated research/checkpoint files; it is not yet exhaustive of every submodule. Percent is an auditable registered-module maturity index, not percent of all possible stock-market knowledge."
 }
