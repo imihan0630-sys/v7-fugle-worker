@@ -130,3 +130,118 @@ export function compareExecutionPolicyToBenchmark(plans=[]){
     decisionImpact:false
   };
 }
+
+
+// v0.2 benchmark semantics: benchmark feasibility must match the actual Taiwan market mechanism.
+// This remains descriptive research accounting; it does not choose an order type or change BUY logic.
+export function classifyExecutionBenchmarkEligibility({
+  benchmarkType,
+  lotType="UNKNOWN",
+  benchmarkPrice,
+  observedAt=null,
+  quoteFresh=null,
+  marketMechanism="UNKNOWN"
+}={}){
+  const type=String(benchmarkType||"");
+  const lot=String(lotType||"UNKNOWN");
+  const price=finite(benchmarkPrice);
+  const mechanism=String(marketMechanism||"UNKNOWN");
+
+  if(price===null||!(price>0)){
+    return {eligible:false,status:"BLOCKED",reason:"BENCHMARK_PRICE_MISSING",researchOnly:true,decisionImpact:false};
+  }
+  if(type==="SELECTION_CLOSE_REFERENCE"){
+    return {
+      eligible:false,status:"REFERENCE_ONLY",
+      reason:"SELECTION_CLOSE_IS_DECISION_REFERENCE_NOT_ASSUMED_EXECUTABLE",
+      benchmarkPrice:price,researchOnly:true,decisionImpact:false
+    };
+  }
+  if(type==="NEXT_SESSION_REGULAR_OPEN"){
+    if(lot==="ODD_LOT"){
+      return {
+        eligible:false,status:"MECHANISM_MISMATCH",
+        reason:"REGULAR_OPEN_NOT_EXECUTABLE_ODD_LOT_BENCHMARK",
+        benchmarkPrice:price,researchOnly:true,decisionImpact:false
+      };
+    }
+    return {
+      eligible:lot==="REGULAR_LOT",
+      status:lot==="REGULAR_LOT"?"ELIGIBLE":"BLOCKED",
+      reason:lot==="REGULAR_LOT"?null:"LOT_TYPE_UNKNOWN",
+      benchmarkPrice:price,researchOnly:true,decisionImpact:false
+    };
+  }
+  if(type==="FIRST_ELIGIBLE_OBSERVED_QUOTE"){
+    if(!observedAt){
+      return {eligible:false,status:"BLOCKED",reason:"OBSERVED_AT_MISSING",benchmarkPrice:price,researchOnly:true,decisionImpact:false};
+    }
+    if(quoteFresh!==true){
+      return {eligible:false,status:"BLOCKED",reason:"QUOTE_FRESHNESS_UNPROVEN",benchmarkPrice:price,researchOnly:true,decisionImpact:false};
+    }
+    if(lot==="ODD_LOT" && mechanism!=="ODD_LOT_INTRADAY"){
+      return {eligible:false,status:"MECHANISM_MISMATCH",reason:"ODD_LOT_QUOTE_MECHANISM_MISMATCH",benchmarkPrice:price,researchOnly:true,decisionImpact:false};
+    }
+    if(lot==="REGULAR_LOT" && !["REGULAR_CONTINUOUS","REGULAR_OPEN_AUCTION"].includes(mechanism)){
+      return {eligible:false,status:"MECHANISM_MISMATCH",reason:"REGULAR_LOT_QUOTE_MECHANISM_MISMATCH",benchmarkPrice:price,researchOnly:true,decisionImpact:false};
+    }
+    if(lot==="UNKNOWN"){
+      return {eligible:false,status:"BLOCKED",reason:"LOT_TYPE_UNKNOWN",benchmarkPrice:price,researchOnly:true,decisionImpact:false};
+    }
+    return {eligible:true,status:"ELIGIBLE",reason:null,benchmarkPrice:price,observedAt,lotType:lot,marketMechanism:mechanism,researchOnly:true,decisionImpact:false};
+  }
+  return {eligible:false,status:"BLOCKED",reason:"BENCHMARK_TYPE_UNKNOWN",benchmarkPrice:price,researchOnly:true,decisionImpact:false};
+}
+
+// Full implementation-shortfall-style decomposition for a single intended BUY.
+// It is emitted only when the intended denominator and complete fill/non-fill state are known.
+// Positive cost means worse than immediate paper execution at the frozen decision benchmark.
+export function decomposeBuyImplementationShortfall({
+  intendedShares,
+  decisionPrice,
+  horizonPrice,
+  fills=[],
+  explicitCostNTD=0,
+  coverageComplete=false
+}={}){
+  const q=finite(intendedShares),p0=finite(decisionPrice),ph=finite(horizonPrice),fees=finite(explicitCostNTD);
+  if(coverageComplete!==true){
+    return {status:"DATA_QUALITY_BLOCKED",reason:"EXECUTION_COVERAGE_INCOMPLETE",researchOnly:true,decisionImpact:false};
+  }
+  if(!(q>0)||!(p0>0)||!(ph>0)||fees===null||fees<0){
+    return {status:"DATA_QUALITY_BLOCKED",reason:"IMPLEMENTATION_SHORTFALL_INPUT_INVALID",researchOnly:true,decisionImpact:false};
+  }
+  const clean=(Array.isArray(fills)?fills:[]).map(x=>({
+    shares:finite(x?.shares),price:finite(x?.price)
+  }));
+  if(clean.some(x=>!(x.shares>0)||!(x.price>0))){
+    return {status:"DATA_QUALITY_BLOCKED",reason:"FILL_INPUT_INVALID",researchOnly:true,decisionImpact:false};
+  }
+  const filledShares=clean.reduce((s,x)=>s+x.shares,0);
+  if(filledShares>q+1e-9){
+    return {status:"DATA_QUALITY_BLOCKED",reason:"FILLED_SHARES_EXCEED_INTENDED",researchOnly:true,decisionImpact:false};
+  }
+  const unfilledShares=q-filledShares;
+  const executionPriceCostNTD=clean.reduce((s,x)=>s+(x.price-p0)*x.shares,0);
+  const missedOpportunityCostNTD=(ph-p0)*unfilledShares;
+  const totalShortfallNTD=executionPriceCostNTD+missedOpportunityCostNTD+fees;
+  const decisionNotionalNTD=p0*q;
+  return {
+    status:"VALID",
+    intendedShares:q,
+    filledShares,
+    unfilledShares,
+    fillRate:filledShares/q,
+    decisionPrice:p0,
+    horizonPrice:ph,
+    decisionNotionalNTD,
+    executionPriceCostNTD,
+    missedOpportunityCostNTD,
+    explicitCostNTD:fees,
+    totalShortfallNTD,
+    totalShortfallBps:decisionNotionalNTD>0?totalShortfallNTD/decisionNotionalNTD*10000:null,
+    interpretation:"Positive shortfall is cost versus the frozen paper benchmark. Unfilled shares remain in the denominator and can create positive or negative opportunity cost.",
+    researchOnly:true,
+    decisionImpact:false
+  };
+}
