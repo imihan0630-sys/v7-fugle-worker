@@ -87,3 +87,57 @@ Possible future behavior:
 - only later, if strong evidence, a Formal condition adjustment.
 
 Current status: FALSIFICATION_IN_PROGRESS / NOT_OPTIMIZATION_READY.
+
+
+## IC-009 — persistence requires a trading-session continuity proof
+
+"Foreign bought 3 days in a row" is not valid from three rows unless those rows are the immediately preceding official trading sessions and each source is complete.
+
+Required receipt:
+- expectedSessions;
+- observedSessions;
+- missingSessions;
+- sourceMarket;
+- sourceDate/knownAt;
+- provider completeness;
+- actor field schema version.
+
+Any missing expected session => persistence UNKNOWN, not false and not zero.
+
+## IC-010 — reaction may be more informative than flow magnitude
+
+Institutional flow should be tested jointly with price response.
+
+Frozen descriptive cells:
+- BUY_FLOW + PRICE_UP = aligned demand;
+- BUY_FLOW + PRICE_FLAT/DOWN = possible absorption/distribution disagreement;
+- SELL_FLOW + PRICE_UP = possible resilient demand / passive sell absorption;
+- SELL_FLOW + PRICE_DOWN = aligned risk-off.
+
+These are hypotheses, not labels of motive. Motive remains UNKNOWN without evidence.
+
+Incremental test should ask whether flow-response interaction adds beyond price/volume alone. If not, reject the flow feature as redundant.
+
+## IC-011 — crowding has two-sided risk
+
+Persistent institutional ownership/flow can support continuation but can also create crowded-exit risk. Therefore crowding cannot be encoded as monotonic bullish evidence.
+
+Prospective targets must include:
+- continuation return;
+- downside MAE/drawdown;
+- liquidity deterioration;
+- reversal after flow cessation.
+
+A useful crowding feature may be a risk flag rather than a rank booster.
+
+## IC-012 — first evidence gate
+
+Before outcome testing:
+1. prove contiguous multi-session official actor-flow history for both TWSE and TPEx or explicitly stratify markets;
+2. preserve source schemas and PIT clocks;
+3. identify passive/index rebalance dates or mark contamination UNKNOWN;
+4. verify denominator provenance before any size-normalized flow.
+
+Until then, one-day official flows are descriptive evidence only.
+
+Status: DATA_FEASIBILITY_PARTIAL / MULTI_SESSION_PARITY_NOT_YET_PROVEN.
