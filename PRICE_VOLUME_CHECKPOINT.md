@@ -734,3 +734,24 @@ Class A if research-only; Class C if later used in formal 15m confirmation.
 5. PVE-071: define sample accounting receipts so excluded/unknown rows never disappear silently.
 6. PVE-072: define first descriptive H001/H002 report shape before outcome inspection.
 7. Continue evidence/falsification only; no threshold tuning or Formal promotion.
+
+## Evidence progress — PVE-067 through PVE-091
+- PVE-067 freezes the clean H001 row contract: completed/PIT-valid INTRADAY_15M v0.1 rows, finite Formal local prev5 ratio and pvSlotRvol20, slotHistoryCount>=20, common session support, field-level baseline freshness and clean cohort provenance. v0.1 comparator identity is COMMON_SOURCE_CODE_INVARIANT, not explicit same-bar-ID proof.
+- PVE-068 makes H002 a nested subset of H001 with finite pvCumvolPace20, cumulativeHistoryCount>=20 and complete current/historical slot prefixes.
+- PVE-069 separates independence/event accounting: H001/H002 keep the full RVOL distribution and use date-level dependence controls; secondary abnormal-volume events use verified persistence keys/session-local overlays, never the mixed top-level eventKey.
+- PVE-070 freezes field-specific outcome quality states. Direction/MFE/MAE, structural failure and stopFirst have separate validity/censoring/ambiguity states; outcomeComplete alone is not enough.
+- PVE-071 freezes a full sample-accounting funnel and explicit exclusion receipts; null rows may never disappear silently.
+- PVE-072 preregisters the first H001/H002 report before outcomes: QA/coverage first, metric relationship second, pre-frozen A->B->C->D outcome comparison only after maturity, no winner/threshold tuning.
+- PVE-073~078 audit outcome-table semantics: AFTER_MARKET and INTRADAY anchors differ; intraday daily MFE/MAE omit same-day remainder; NEXT_SESSION and D1 are numerically duplicate in v0.1; outcomeComplete=1 can mean session-end censoring; missing daily row has multiple possible causes; 45-day finalizer lookback can strand long-censored rows; daily plan and intraday acceptance anchors must be separate cohorts.
+- PVE-079~085 audit baseline provenance: snapshot ratios are frozen but exact baseline denominators/vintages are not; baseline cache is mutable, per-session source is coarse, and “session” means the PV observable 09:00~13:00-start window. Crucially, validSessions>=20 has no freshness check, so a re-entering symbol can reuse a months-old baseline. baselineAsOfDate allows partial stale-baseline quarantine; future baseline content fingerprinting is needed for exact replay.
+- PVE-086: bootstrap.ok only means no thrown error; it does not prove >=20 or field-ready coverage.
+- PVE-087~091 find a next-day baseline gap: after-market bootstrap for newly selected symbols fetches history only through T-1. If a symbol was not already monitored on selection date T, it has no live-rolled T session, so T+1 baseline can omit the immediately prior trading session. Freshness on T+1 depends on old/new plan overlap and baselineAsOfDate; 9/30 is only a row-specific candidate, not uniformly baseline-ready.
+- No code/runtime/Formal change made.
+
+## Revised exact continuation after PVE-091
+1. PVE-092: determine whether existing admin live/scan readbacks can reconstruct old-monitor vs new-plan overlap without D1.
+2. PVE-093: define row-level FIRST_DAY_BASELINE_LINEAGE classes using plan overlap + baselineAsOfDate.
+3. PVE-094: audit baseline refresh behavior when a cached symbol re-enters after a long monitoring gap.
+4. PVE-095: define baseline freshness age metrics in trading/symbol sessions, not calendar days.
+5. PVE-096: freeze first post-enable QA queries/receipts needed on 9/29 night and 9/30 intraday.
+6. Continue evidence/falsification; no production implementation or Formal promotion.
