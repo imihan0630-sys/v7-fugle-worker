@@ -143,6 +143,28 @@ export function inferTaiwanLotType(intendedShares){
   return "MIXED_LOT";
 }
 
+
+export function splitTaiwanExecutionLegs(intendedShares){
+  const q=finite(intendedShares);
+  if(q===null||q<=0||!Number.isInteger(q)){
+    return {status:"BLOCKED",reason:"INTENDED_SHARES_INVALID",researchOnly:true,decisionImpact:false};
+  }
+  const regularShares=Math.floor(q/1000)*1000;
+  const oddLotShares=q-regularShares;
+  return {
+    status:"VALID",
+    intendedShares:q,
+    regularShares,
+    oddLotShares,
+    requiresRegularLeg:regularShares>0,
+    requiresOddLotLeg:oddLotShares>0,
+    lotType:inferTaiwanLotType(q),
+    legCount:(regularShares>0?1:0)+(oddLotShares>0?1:0),
+    researchOnly:true,
+    decisionImpact:false
+  };
+}
+
 // v0.2 benchmark semantics: benchmark feasibility must match the actual Taiwan market mechanism.
 // This remains descriptive research accounting; it does not choose an order type or change BUY logic.
 export function classifyExecutionBenchmarkEligibility({
