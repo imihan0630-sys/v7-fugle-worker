@@ -15256,3 +15256,53 @@ No detector threshold may be selected on D1/D3/D5/D10/MFE/MAE.
 
 ### Status
 DETECTION_REPRODUCIBILITY_SUPPORTED / ECONOMIC_ALPHA_UNKNOWN / METHOD-SELECTION-ON-RETURNS PROHIBITED.
+
+
+## DL-003R — Taiwan Candle/Gaps Must Decompose Overnight and Intraday Components
+
+### Taiwan-specific evidence
+Recent Taiwan evidence on momentum explicitly separates:
+- overnight return = open / prior close - 1;
+- intraday return = close / open - 1.
+
+This distinction is especially meaningful in Taiwan because:
+- listed stocks do not trade continuously overnight;
+- the opening and closing prices are formed by call auction;
+- since 2020-03-23, the regular intraday session between the opening and closing auctions uses continuous trading.
+
+The study reports that intraday and overnight components can have materially different predictive behavior. Therefore a daily candle is not one homogeneous return object.
+
+### Pattern implication
+Two visually similar bullish daily candles can have different information paths:
+- large positive overnight gap + flat/weak intraday body;
+- flat open + strong intraday buying;
+- negative overnight gap + strong intraday reclaim.
+
+Those paths should not be collapsed into one candle-body label.
+
+### Isolated implementation update
+The two-day candlestick relational encoder now stores on TECHNICAL_CONTINUITY bars:
+- overnightReturn;
+- intradayReturn;
+- totalReturn;
+- the multiplicative return-decomposition identity.
+
+This is descriptive and point-in-time.
+It does not assign one component a better sign.
+
+For corporate-action boundaries, the overnight leg is meaningful only after the mechanical reset has been neutralized in TECHNICAL_CONTINUITY. Raw nominal gap across an ex-right/ex-dividend/par-value reset is not a market-generated overnight return.
+
+### Cross-lane reuse
+Do not create a second return-timing experiment.
+R05 already studies intraday vs overnight behavior.
+Pattern later consumes the same decomposition as context/control.
+
+### Falsification
+A candlestick label adds no incremental value if:
+- its apparent effect is fully explained by overnight/intraday return decomposition;
+- it collapses into close position / wick / gap / prior-trend variables;
+- it appears only around event or corporate-action boundaries;
+- it is driven by pre-2020 market structure.
+
+### Status
+TAIWAN_RETURN_PATH_DECOMPOSITION_REQUIRED / CANDLE LABEL SIGN UNKNOWN / NO NEW EXPERIMENT.
