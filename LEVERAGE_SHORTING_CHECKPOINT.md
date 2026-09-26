@@ -1,9 +1,9 @@
 # Leverage & Shorting Checkpoint
 
 Updated: 2026-09-25 Asia/Taipei
-Current cursor: LS-001 through LS-046 complete.
+Current cursor: LS-001 through LS-047 complete.
 Status: CONCEPT_COMPLETE / DATA_SPEC_COMPLETE / SOURCE_CONTRACT_PARTIAL.
-Next: LS-047 parser validation after official TPEx margin artifact/endpoint is available.
+Next: LS-048 only after an official TPEx margin UTF-8 CSV artifact or verified stable endpoint is available; then run a finalized-history backfill pilot without outcome testing.
 
 ## Durable conclusions
 
@@ -72,3 +72,17 @@ LS-047: validate TPEx margin parser only when an official artifact/endpoint is a
 LS-048: finalized-history backfill pilot with no outcome testing.
 LS-049: completeness/revision audit.
 LS-050: only after data gates pass, run pre-registered H1-H5 tests.
+
+
+## LS-047 — TPEx margin programmatic contract re-audit (2026-09-27 Asia/Taipei)
+
+- Re-checked only official TPEx sources; no outcome/return data were inspected.
+- Current official margin page and legacy official page both verify that BIG5 and UTF-8 CSV downloads exist. The legacy page redirects to the current `/zh-tw/mainboard/trading/margin-trading/transactions.html` page.
+- Official indexed HTML result `margin_bal_result.php?...&o=htm` remains machine-readable and reproduces the frozen field layout and lots (張) semantics on 2026-09-24.
+- Browser-rendered extraction exposes ordinary page/history/SBL links, but the BIG5/UTF-8 CSV controls are not exposed as stable anchor hrefs. Official-domain searches for a verified CSV request pattern returned no source-backed contract.
+- Direct generic web fetch of the current TPEx page returned HTTP 403. This is an access/source-contract limitation; it is not permission to infer hidden parameters or bypass protections.
+- Therefore `TPEX_MARGIN_DATA_PRODUCT_AND_UTF8_CSV_EXISTENCE = VERIFIED`, while `TPEX_MARGIN_PROGRAMMATIC_DOWNLOAD_CONTRACT = UNRESOLVED`.
+- Large automated cross-market backfill remains NO_GO. Safe route remains the LS-046 contract: ingest an official UTF-8 CSV artifact with source/date/downloadedAt/checksum/schema/parser metadata, or use a later documented/stable TPEx endpoint if one becomes verifiable.
+- Machine receipt: `research/leverage_shorting_ls047_tpex_margin_source_contract_receipt_v0_1.json`.
+- Lane status is more precisely `DATA_SOURCE_BLOCKED / OFFICIAL_ARTIFACT_OR_ENDPOINT_REQUIRED`; this is not a claim that the underlying margin data are unavailable.
+- No Worker/runtime/Formal change. No H1-H5 outcome test.
