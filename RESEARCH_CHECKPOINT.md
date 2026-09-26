@@ -548,3 +548,14 @@ Updated: 2026-09-26 09:17 Asia/Taipei.
 - Validated research head `c9e23b01907dbeca7a130236816d56ac8db8764b`; V8 Repair `36210097574` SUCCESS; V8 Regression `36210097500` SUCCESS.
 - PR #104 remains Draft / unmerged / un-deployed. Formal Core LOCKED. R01-R08 unchanged; no new factor/window/entry threshold.
 - Exact next continuation: keep exact-date recorder completeness Class-B proposal frozen/unpromoted; do not reconstruct 9/24. Until prospective complete-coverage dates exist, continue Execution Alpha research only on outcome-independent accounting, benchmark semantics, cost/slippage and opportunity-cost falsification. Do not create a composite policy score or alter 15m BUY rules. When complete coverage exists, first report the five components separately by independent scan date and frozen A/B/pool/regime/liquidity strata before any policy-value conclusion.
+
+
+## B-MAP-001 — Cross-chat Research Master Map established (2026-09-26 10:14 Asia/Taipei)
+- Owner approved a durable quantitative research inventory/maturity dashboard accessible to all research chatrooms; chat memory is explicitly non-canonical.
+- Created `RESEARCH_MASTER_MAP.md` on main as the human-readable canonical inventory/dashboard and `research/research_master_map.json` as its machine-readable companion.
+- Governance updated so every research cycle/status question reads the Master Map in addition to existing governance/worklist/checkpoint. Division of authority is explicit: RESEARCH_CHECKPOINT.md = exact continuation cursor; Master Map = global inventory/maturity dashboard; dedicated research files = evidence.
+- Registered 15 top-level domains and L0-L5 evidence maturity scale (0/20/40/60/80/100%). Aggregate completion percentage remains UNKNOWN until a repository-wide module reconciliation prevents double-counting sequential checkpoint IDs and unsupported precision.
+- Dashboard metrics frozen: module count, counts by L0-L5, weighted maturity %, researchDebtUnits, DATA_QUALITY_BLOCKED, DATA_SOURCE_BLOCKED, WAITING_PROSPECTIVE, REDUNDANT, FALSIFIED, independent dates and prospective samples.
+- Cross-chat update protocol: material research status changes update dedicated evidence + RESEARCH_CHECKPOINT + machine map; aggregate dashboard updates when counts change. Re-read SHAs before concurrent A/B writes.
+- Safety: this is Class-A research governance/documentation only. No Formal factor/threshold/ranking/capital/entry/monitor/push behavior changed. Formal Core remains LOCKED.
+- Exact next master-map continuation (parallel to the active research cursor, not replacing it): enumerate dedicated research/checkpoint files; normalize durable research modules; assign evidence-backed L0-L5/blocker states; publish first auditable baseline totals and research-debt figure. Do not invent a completion percentage before reconciliation.
