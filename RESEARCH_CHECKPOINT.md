@@ -1043,3 +1043,18 @@ Updated: 2026-09-26 22:14 Asia/Taipei.
 - Independence remains UNKNOWN for all sourceCount strata until immutable provenance exists. Any future outcome test must preserve B-184 controls and scanDate clustering.
 - No Formal change and no FORMAL_OPTIMIZATION_CANDIDATE. Status remains DATA_QUALITY_BLOCKED / FALSIFICATION_IN_PROGRESS / NOT_OPTIMIZATION_READY.
 - Exact next: locate/read only already-persisted V8.13 prospective Shadow/archive rows or existing research endpoint receipts, if available, and compute the frozen descriptive mechanics above without forward outcomes. If those rows are inaccessible or lack pre-consensus base score/rank/allocation fields, mark the metric UNKNOWN and move to the next lane with existing PIT evidence; do not reconstruct from current mutable state.
+
+
+## B-186 — Sector + market-RS PriorityScore structural falsification (2026-09-27 Asia/Taipei)
+- Fresh Formal decomposition confirms Sector uses three layers: hard gate (breadth>=40%, avgChange>=-1%, amountVs20DayAverage>=0.5), then sector.score contributes 14% of PriorityScore, then sectorFlow remains the fifth deployed comparator.
+- Sector score exact formula is `clamp(amount/maxSectorAmount*45 + breadth*0.3 + clamp(avgChange*5+15,0,25),0,100)`.
+- Structural overlap is confirmed: breadth and avgChange are used in the hard gate and again in the score. Activity semantics also differ by layer: gate uses own-sector amountVs20DayAverage, while score uses absolute current sector amount divided by the day's largest sector amount.
+- Fixed counterexample proves cross-sector denominator externality: own sector amount=50, breadth=60, avgChange=+1 scores 60.5 when maxSectorAmount=100 but 49.25 when an unrelated sector raises maxSectorAmount to 200, despite no change in the sector itself. This is an 11.25 sector-score / 1.575 PriorityScore-point shift.
+- Therefore `sectorFlow` is an activity/participation/relative-attention composite, not literal net capital flow and not pure own-sector strength.
+- Market-relative RS is `ret20 - TAIEX return20`; `clamp(50+RS*2,0,100)*0.14` enters PriorityScore and raw relativeStrength is the sixth deployed comparator. RS=0 still contributes 7 PriorityScore points; score saturates at <=-25% / >=+25%.
+- This confirms RS double-layer influence and potential redundancy with existing ret20/setup/overheat/momentum state; incremental value must be proven after those controls.
+- V8.14 already preserves exact sector hard-gate inputs/checks and bounded SECTOR_GATE_REJECTED cohorts; V8.13 preserves sectorFlow/relativeStrength comparator provenance. Exact candidate-level sector absolute amount/maxAmount denominator/stockCount is not fully frozen, so precise historical attribution of the 45-point amount-share component remains incomplete.
+- Frozen machine artifact `research/sector_rs_priority_structural_falsification_v0_1.json`; PriorityScore research file updated. No outcome data was used to define these risks.
+- Required prospective falsification: within-gate sector-score monotonicity; breadth/avgChange incremental value after gate pass; sector-size/member-count confounding; actual sectorFlow/RS tie-break incidence; RS incremental value after setup/ret20/Residual-RS/regime controls.
+- No sector gate, score, RS formula, weight, denominator or comparator change. Any Formal change is Class C with owner approval.
+- No FORMAL_OPTIMIZATION_CANDIDATE yet; structural risks are confirmed but empirical outcome materiality remains UNKNOWN.
