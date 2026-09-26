@@ -4195,3 +4195,283 @@ POOL_DATE_INTEGRITY_RECEIPT_FROZEN.
 4. PVE-158: define date-level dependence/cluster handling when six selected rows share one market regime.
 5. PVE-159: freeze the minimum clean-date count and event-count reporting needed before the first descriptive H001/H002 outcome table.
 6. Formal Core remains LOCKED; no threshold/ranking/push change.
+
+# PVE-155 — Existing Candidate Shadow Is a Bounded Cutline Archive, Not a Complete Pool-Integrity Receipt
+
+## Source audit
+Current build lineage defines `trade_research_shadow_candidates` in `scripts/apply_v8_7_2.py`.
+
+The table stores:
+- scan_date / symbol / cohort / cohort_rank / selected_flag / pool;
+- snapshot_json;
+- exclusion_reason;
+- created_at / updated_at.
+
+`buildShadowCandidateArchive()` preserves:
+- all SELECTED rows;
+- at most 6 QUALIFIED_NOT_SELECTED rows per GENERAL / THOUSAND pool;
+- at most 6 NEAR_MISS rows per pool;
+- at most 6 REJECTED_AFTER_BASE rows per pool;
+- at most 6 BROAD_CONTROL rows per pool.
+
+Therefore this archive is intentionally sampled around the decision boundary. It is not the complete qualified population required by PVE-154.
+
+## Rank reproducibility audit
+Formal `rankFn` is:
+1. rewardPerRisk descending;
+2. priorityScore descending;
+3. setupQuality descending;
+4. sectorFlow descending;
+5. relativeStrength descending.
+
+There is no explicit final symbol/id tie-break in the comparator.
+
+The Candidate Shadow snapshot is insufficient to recompute that exact tuple:
+- `rewardPerRisk` is raw in Formal ranking, but snapshot stores `rewardRisk` rounded to 2 decimals;
+- `priorityScore` participates in Formal ranking but is not persisted by `buildResearchSnapshot()`;
+- `setupQuality`, `sectorFlow`, and `relativeStrength` are retained, but not enough to reconstruct the missing tuple components;
+- pre-sort source ordinal is not persisted, so an exact comparator tie cannot be reconstructed from the archive alone.
+
+`cohort_rank` is also not an absolute pool rank:
+- SELECTED rank is assigned after the two Formal pools are merged and globally sorted;
+- QUALIFIED_NOT_SELECTED rows are first sliced per pool, then numbered across the concatenated GENERAL + THOUSAND sampled list.
+
+## Bounded salvage
+The archive is still useful.
+
+Because QUALIFIED_NOT_SELECTED rows are sorted by the same Formal comparator before the per-pool top-6 slice, their within-pool order preserves a bounded view of the first six post-cutline candidates.
+
+This can support a restricted statement such as:
+- “candidate X was among the first archived rows immediately outside the pool cutline”;
+- and, under no-rescoring / no-tie ambiguity, the first archived QNS row is a plausible one-seat displacement candidate.
+
+It cannot prove:
+- the complete qualified ordering;
+- absolute pool rank for every archived row;
+- complete candidate-set integrity;
+- exact tie resolution;
+- a clean historical 3+3 counterfactual.
+
+## Mutability limitation
+`persistShadowCandidateArchive()` deletes the existing scan_date rows before re-inserting/upserting the archive.
+
+Therefore current rows are not an immutable first-known receipt.
+A later rewrite of the same scan_date is structurally possible.
+
+Historical use must preserve:
+`CURRENT_ARCHIVE_STATE != IMMUTABLE_SELECTION_TIME_TRUTH`
+unless independent commit/runtime/receipt provenance proves otherwise.
+
+Status:
+BOUNDED_CUTLINE_SALVAGE / COMPLETE_POOL_INTEGRITY_NOT_AVAILABLE.
+
+
+# PVE-156 — Minimum Additive Class-A Pool-Integrity Schema Frozen
+
+No implementation is authorized in this step.
+The schema is research-only / additive / decisionImpact=false.
+
+## Receipt level
+A future immutable pool receipt needs:
+- schemaVersion;
+- scanDate;
+- pool = GENERAL / THOUSAND;
+- quota;
+- selectionRuleVersion;
+- Formal/Worker identity receipt;
+- scan generatedAt / capturedAt;
+- qualifiedCount;
+- selectedCount;
+- cutlineRank;
+- rankComparatorVersion or source digest;
+- receipt semantic fingerprint;
+- source provenance state.
+
+## Candidate level — every qualified candidate, no top-N truncation
+For each pool-date candidate:
+- symbol / name;
+- referenceClose and pool-membership basis;
+- preSortOrdinal;
+- observedPoolRank;
+- selectedFlag;
+- selectionState = SELECTED / QUALIFIED_NOT_SELECTED;
+- raw `rewardPerRisk` used by comparator;
+- exact stored `priorityScore` used by comparator;
+- raw `setupQuality` used by comparator;
+- exact `sectorFlow` used by comparator;
+- exact `relativeStrength` used by comparator;
+- comparatorTieState;
+- historyQuality;
+- symbolSessionFreshnessState;
+- corporateActionResetState;
+- point-in-time source / knownAt provenance;
+- candidate semantic fingerprint.
+
+## Why both observedPoolRank and preSortOrdinal are required
+The current comparator has no explicit last tie-break field.
+Future research must reproduce what actually happened without changing Formal ranking semantics.
+Persisting the observed rank plus pre-sort ordinal provides evidence for exact-tie lineage without inventing a new production tie-break.
+
+## Immutability contract
+Future Class-A research persistence should:
+- insert once;
+- verify semantic fingerprint on duplicate observation;
+- never DELETE-and-rebuild a historical pool-date as the normal path;
+- record conflicts separately;
+- never include future outcome fields in the selection-time receipt.
+
+Unknown provenance remains UNKNOWN; later knowledge is append-only annotation, not replacement of the selection-time record.
+
+Status:
+POOL_INTEGRITY_V0_1_SCHEMA_FROZEN / NOT_IMPLEMENTED.
+
+
+# PVE-157 — Clean SELECTED vs QUALIFIED_NOT_SELECTED Control Construction Frozen
+
+The objective is descriptive/falsification evidence, not a causal “selection treatment effect”.
+
+## Sampling frame
+For each clean pool-date:
+- sampling frame = the complete point-in-time qualified list before outcomes;
+- SELECTED = exact Formal selected rows;
+- QUALIFIED_NOT_SELECTED = exact rows beyond the Formal cutline;
+- pool and date must remain fixed.
+
+No row may enter or leave the control set because of later:
+- return;
+- MFE / MAE;
+- stop-first;
+- BUY trigger;
+- PV response / acceptance;
+- outcome availability beyond ordinary maturity rules.
+
+Conditioning on post-selection/common-effect variables can induce selection/collider bias; therefore control eligibility must be frozen from pre-outcome information only.
+
+## Two preregistered control views
+1. `ALL_QNS`
+   - all clean qualified-not-selected rows in the same pool-date.
+
+2. `CUTLINE_NEXT`
+   - the exact next ranked row immediately outside the cutline.
+   - if that row is UNCLEAN / UNKNOWN / tie-ambiguous, the boundary comparison for that pool-date is unavailable.
+   - do not substitute rank+2 merely because it is cleaner or has a mature/better outcome.
+
+## Additional guards
+- no post-outcome nearest-neighbour matching;
+- no replacement of missing outcomes with another control;
+- no filtering by future PV feature quality to construct the control identity;
+- H001/H002 common-support filtering occurs only after control identity is frozen and must be reported as coverage loss;
+- exact cutline ties without a frozen ordering receipt => CUTLINE_TIE_UNKNOWN.
+
+Method note:
+collider/selection-bias literature shows that conditioning on a common effect can create non-causal associations; this motivates the pre-outcome-only eligibility rule.
+
+Status:
+CONTROL_CONSTRUCTION_PREREGISTERED / NO_OUTCOME_INSPECTION.
+
+
+# PVE-158 — Date-Level Dependence and Cluster Handling Frozen
+
+Rows from the same scan date share:
+- market regime;
+- index shock;
+- liquidity environment;
+- sector rotation;
+- event calendar;
+- Formal model/version state.
+
+They are not treated as independent replications.
+
+## Primary aggregation
+1. compute row-level eligible outcomes/features;
+2. compute pool-date summaries;
+3. combine eligible pools into one scan-date summary with equal date weight;
+4. aggregate across scan dates.
+
+Primary sample size:
+`N_PRIMARY = CLEAN_SCAN_DATES`
+
+Secondary denominators must still report:
+- clean pool-dates;
+- eligible rows/events;
+- unique symbols;
+- recurrent-symbol count;
+- mature outcomes.
+
+A day with six selected stocks does not count as six independent market experiments.
+
+## Inference boundary
+The first H001/H002 table remains descriptive:
+- no row-level naive t-test;
+- no p-value-based promotion;
+- no “significant” label from many rows concentrated in few dates.
+
+If regression/inferential work is later justified, the default dependence unit is scanDate and cluster-aware uncertainty is required. Repeated symbols create a possible second dependence dimension, but multi-way inference is deferred until enough independent dates/clusters exist.
+
+Method note:
+Cameron & Miller (2015) document that within-cluster correlation can make default standard errors materially too small and that few clusters are a distinct inference problem. Abadie et al. (2017/2022) further frame clustering as a design question.
+
+Status:
+SCAN_DATE_CLUSTER_IS_PRIMARY / FIRST_TABLE_DESCRIPTIVE_ONLY.
+
+
+# PVE-159 — Minimum Clean-Date and Event Accounting before First H001/H002 Descriptive Table
+
+The existing research code already uses:
+`pairedDates >= 20 ? DESCRIPTIVE_READY : ACCUMULATING`
+
+To avoid inventing a new post-hoc threshold, retain 20 independent clean scan dates as the first descriptive-readiness floor.
+
+## Readiness rule
+`DESCRIPTIVE_READY` requires:
+- >=20 CLEAN scan dates for the exact comparison;
+- each included date passes the preregistered provenance/safety/acquisition/baseline/cohort gates;
+- common-support rows are identical across compared A/B/C/D specifications for the metric being compared;
+- each included selected-vs-control pool-date has at least one eligible selected row and one frozen eligible control where that contrast is reported;
+- outcome maturity is field-specific and reported explicitly.
+
+A large row count from fewer than 20 dates cannot substitute for 20 clean dates.
+
+## Mandatory denominators
+Every first table must show:
+- raw snapshots;
+- DATA_QA-eligible rows;
+- hypothesis-clean rows;
+- clean scan dates;
+- clean pool-dates;
+- unique symbols;
+- mature outcome rows for each horizon/field;
+- missing/blocked/unknown counts by reason;
+- H001/H002 common-support retention.
+
+## Frozen first comparison
+Only after readiness:
+A = Formal context
+B = A + previous-5 volume ratio
+C = B + same-slot RVOL
+D = C + cumulative volume pace
+
+Compare without threshold tuning:
+- false-confirmation;
+- MFE;
+- MAE;
+- opportunity retention.
+
+20 clean dates permits the first descriptive table only.
+It does not by itself promote H001/H002 to SUPPORTED or REJECTED.
+
+Status:
+FIRST_DESCRIPTIVE_FLOOR_FROZEN_20_CLEAN_DATES.
+
+
+## Exact continuation after PVE-159
+1. Stop additional pre-outcome methodology expansion unless a concrete contradiction is found.
+2. Preserve PVE-155 bounded-salvage semantics: current Candidate Shadow is useful near the cutline but cannot certify full pool integrity.
+3. Do not implement PVE-156 without the owner-approved research engineering path.
+4. The next Price-Volume information hinge is the first post-enable ordinary market sequence:
+   - 2026-09-29 intraday = DATA_QA-only inherited 9/24 cohort;
+   - 2026-09-29 after-market = first new selection/bootstrap receipt;
+   - 2026-09-30 intraday = first potentially clean selection cohort, subject to all gates.
+5. On that hinge, execute the already-preregistered PVE-149 order before looking at outcomes.
+6. H001~H004 remain evidence-gated; Formal Core remains LOCKED.
+
