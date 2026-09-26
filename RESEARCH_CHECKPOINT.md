@@ -1,6 +1,6 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-162.
+Checkpoint sequence: B-165.
 Updated: 2026-09-26 12:49 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Detailed B-01..B-123 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
@@ -731,3 +731,16 @@ Updated: 2026-09-26 12:49 Asia/Taipei.
 - Optimization bridge is two-sided and Class C. Neither strengthening nor reducing score-based sizing is authorized before falsification/readiness gates pass.
 - Formal Core LOCKED; no runtime behavior changed.
 - Exact next: register PRIORITY_SCORE_CALIBRATION in Master Map; audit prospective archive start/version and mature independent scan dates with PIT score+allocation+outcomes; below readiness => WAITING_PROSPECTIVE.
+
+
+## B-165 — HISTORY_SOURCE_REVALIDATION_V2.3 deployed (2026-09-26 17:40 Asia/Taipei)
+- Owner explicitly approved this Class-B optimization.
+- Production version: `8.12.0-history-source-revalidation-v2-3`; history seed schema: `full-market-v4-history-source-revalidation`.
+- Scope is data admission/repair only. A/B formulas, ranking, Top6/3+3, thresholds, capital, BUY/ADD/REDUCE, monitoring, signal and push logic were preserved.
+- Integration falsification found three compatibility issues before release: a stale patch anchor, an old test fixture that fabricated weekend bars, and an older Aideen test that hard-locked the runtime to V8.11. All were corrected without weakening Production history validation.
+- Final Regression run 36233428044 = SUCCESS: build, syntax/offline behavior, read-only production preflight and latest after-market diagnostic all passed.
+- Final Cloudflare Deploy run 36233428004 = SUCCESS: pre-deploy V8.11 Worker/Cron backup verified, version guard passed, code deploy passed, 23:35 Cron preserved, deployed version/configuration readback passed, rollback not triggered.
+- Runtime readback verified `8.12.0-history-source-revalidation-v2-3`; existing KV/D1 bindings and monitoring configuration were preserved.
+- V8.12 contract: Formal strategy markers frozen; source-admission guard present; missing official gap proof fails closed; raw official bar presence is evaluated before Formal filters.
+- Engineering status: `DEPLOYED_AWAITING_FIRST_LIVE_TRADING_DAY`. Deployment success proves integration, not trading alpha or realized return improvement.
+- First prospective live operational validation: 2026-09-29. Inspect the 17:00-17:59 history seed first, then the 23:35 after-market scan; measure usable/unusable histories, UNKNOWN reasons, verified no-trade gaps, provider refetches and any overflow. No outcome-driven threshold tuning.
