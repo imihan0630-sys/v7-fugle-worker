@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-09-26T23:55:00+08:00",
+  "updatedAt": "2026-09-27T00:15:00+08:00",
   "status": "BASELINE_V0_2_PARTIAL_RECONCILIATION",
   "formalCore": "LOCKED",
   "authority": {
@@ -208,8 +208,8 @@
       "id": "PORTFOLIO_RISK",
       "domain": "PORTFOLIO_CAPITAL_READD",
       "level": "L2",
-      "status": "EVIDENCE_PENDING",
-      "basis": "Dedicated portfolio-risk lane exists; optimization evidence not yet reconciled to L4/L5."
+      "status": "FALSIFICATION_IN_PROGRESS",
+      "basis": "Tier-A plan-risk geometry is PIT-reconstructable from exact Production trade-journal plan fields. Read-only Production audit found 2/2 plan dates fully reconstructable for projected heat/deployment/effectiveCapitalNames, with recovered/manual rows excluded. Historical correlation/cluster/covariance and actual-live heat remain PIT/event-coverage blocked, so module stays L2."
     },
     {
       "id": "CAPITAL_READD",
