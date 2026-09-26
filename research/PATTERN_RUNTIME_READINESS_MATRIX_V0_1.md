@@ -80,3 +80,34 @@ Until then, continue offline research and cross-lane source validation.
 
 ## Formal boundary
 No Pattern finding or engineering in this matrix changes A/B, ranking, 3+3+3, capital, monitoring, push, entry/add/reduce/sell/stop or Formal Core.
+
+
+## Update — 2026-09-26 extended Pattern QA
+
+Additional isolated gates now pass on Draft PR #103:
+- two-day candlestick relational morphology with OPEN-required / TECHNICAL_CONTINUITY guard;
+- confirmed boundary latent geometry for triangle/platform/flag families;
+- explicit confirmed-anchor cup/bowl geometry;
+- explicit impulse/consolidation geometry;
+- continuous repeated-resistance progression;
+- cross-family shared-anchor overlap diagnostics.
+
+Latest validated branch head for this update:
+`493b2627cbbfcade830ccc097b7d7e46d4e0be8a`
+
+CI:
+- V8 Repair run `36205621116`: SUCCESS
+- V8 Regression run `36205621129`: SUCCESS
+
+### OPEN readiness clarification
+
+The original live Formal history cache still discards historical OPEN and is therefore insufficient for historical candlestick research.
+
+However, the connected FCNT000002 research source does expose raw OPEN/HIGH/LOW/CLOSE over its supported horizon. Therefore:
+
+- historical OPEN — research source availability: MATERIAL_PASS;
+- historical OPEN — current Formal/live cache availability: FAIL/NOT_PRESENT;
+- candlestick research — isolated/offline feasibility: PASS with semantic guards;
+- candlestick production observer wiring: still NO_GO until runtime source/continuity/session semantics are approved.
+
+Do not solve the cache deficiency by synthesizing OPEN from close or another field.
