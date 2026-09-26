@@ -24,14 +24,14 @@ export function auditAllocationScores(scores,totalCapital=200000,{cap=0.35,round
   const rows=clean.map((score,index)=>{
     const scoreShare=score/sum;
     const rawRatio=deploy*scoreShare;
-    const cappedRatio=Math.min(cap,rawRatio);
-    const rawCapital=capital*cappedRatio;
+    const cappedRatioExact=Math.min(cap,rawRatio);
+    const rawCapital=capital*cappedRatioExact;
     const roundedCapital=Math.floor(rawCapital/roundingUnit)*roundingUnit;
     return {index,score:r(score,4),scoreShare:r(scoreShare,6),rawRatio:r(rawRatio,6),
-      capBound:rawRatio>cap+1e-12,cappedRatio:r(cappedRatio,6),
-      preRoundCapital:r(rawCapital,2),roundedCapital};
+      capBound:rawRatio>cap+1e-12,cappedRatio:r(cappedRatioExact,6),
+      cappedRatioExact,preRoundCapital:r(rawCapital,2),roundedCapital};
   });
-  const sumCapped=rows.reduce((s,x)=>s+x.cappedRatio,0);
+  const sumCapped=rows.reduce((s,x)=>s+x.cappedRatioExact,0);
   const roundedCapital=rows.reduce((s,x)=>s+x.roundedCapital,0);
   const nominalCapital=capital*deploy;
   const cappedCapital=capital*sumCapped;
