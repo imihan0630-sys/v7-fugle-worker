@@ -57,6 +57,13 @@ System 1/V8 may be used only as:
 
 V8 A/B, Top6/3+3, capital rules and live-state machine are never prerequisites for System 2 decisions.
 
+## Capacity rules
+
+- Global System 2 candidate/watch pool: max 12 unique symbols.
+- Per strategy ACTIVE_INTRADAY_MONITOR: max 3 symbols.
+- No forced filling.
+- One symbol may belong to multiple strategies; it counts once in the global candidate pool but remains separately tracked per strategy for monitoring and performance.
+
 ## Non-goals
 
 - Do not alter V8 Formal Core during System 2 bootstrap.
