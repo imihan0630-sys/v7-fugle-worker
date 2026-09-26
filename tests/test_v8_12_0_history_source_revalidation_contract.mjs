@@ -15,7 +15,10 @@ const required=[
   'MISSING_OFFICIAL_TRADED_BAR',
   'OFFICIAL_GAP_PROOF_UNAVAILABLE',
   'VALID_WITH_VERIFIED_NO_TRADE_GAPS',
-  'V7_HISTORY_PRESENCE:'
+  'V7_HISTORY_PRESENCE:',
+  '歷史日K回傳adjusted=true，拒絕與raw正式盤後資料混用',
+  'validation.reason==="INSUFFICIENT_PRIOR_BARS"',
+  'failed+=1;failedSymbols.push(item.symbol)'
 ];
 for(const marker of required) assert.ok(source.includes(marker),marker);
 
