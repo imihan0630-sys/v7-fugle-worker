@@ -62,6 +62,9 @@ Weights are not authoritative yet. Initial weights are hypotheses and must be va
 - `system2/SYSTEM2_PERFORMANCE_SPEC.md`
 - `system2/SYSTEM2_BRIDGE_FROM_V8.md`
 - `system2/SYSTEM2_CHECKPOINT.md`
+- `system2/SYSTEM2_DATA_SOURCE_MATRIX.md`
+- `system2/SYSTEM2_STORAGE_SCHEMA.md`
+- `system2/SYSTEM2_STRATEGY_PREREGISTRY.md`
 - `shared-knowledge/SHARED_RESEARCH_MASTER_MAP.md`
 
 ## Phase plan

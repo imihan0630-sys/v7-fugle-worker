@@ -1,7 +1,7 @@
 # System 2 Checkpoint
 
 Updated: 2026-09-26 Asia/Taipei
-Status: P0_BOOTSTRAP_IN_PROGRESS
+Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 
 ## Completed
 
@@ -11,6 +11,10 @@ Status: P0_BOOTSTRAP_IN_PROGRESS
 - System 1 <-> System 2 bridge defined.
 - Initial architecture, factor inventory, strategy catalog and performance spec defined.
 - V8 Formal Core remains untouched.
+- System 1 centralized Shared Knowledge read routing is active on main.
+- Initial System 2 data-source feasibility matrix completed.
+- Research-only storage schema designed with isolated `s2_` namespace.
+- First three Shadow strategy hypotheses preregistered before outcome tuning.
 
 ## Current design decisions
 
@@ -23,16 +27,13 @@ Status: P0_BOOTSTRAP_IN_PROGRESS
 
 ## Next tasks
 
-1. Connect System 1 research read order to the Shared Master Map.
-2. Inventory existing research into shared domain tags without relocating history.
-3. Build System 2 data-source/field feasibility matrix.
-4. Define factor-engine interfaces and PIT data contracts.
-5. Pre-register the first 3 strategy prototypes for Shadow:
-   - SHORT_MOMENTUM
-   - SWING_GROWTH
-   - INSTITUTIONAL/BLACK_HORSE accumulation (may split after falsification)
-6. Design System 2 storage schema for frozen decisions, simulated orders/fills and strategy performance.
-7. Only after data feasibility: implement research-only engine code.
+1. Inventory existing research into shared domain tags without relocating history.
+2. Audit Tier A/B source fields for exact machine-readable contracts and historical PIT availability.
+3. Define factor-engine TypeScript interfaces and normalization/UNKNOWN contracts.
+4. Define market-regime V0 inputs using Tier A data only.
+5. Define execution simulator assumptions for Taiwan fees/tax/slippage/gaps/limits.
+6. Implement the first research-only factor snapshot and decision archive behind an isolated System 2 path/table namespace.
+7. Start prospective Shadow accumulation for the preregistered strategies only after storage and PIT checks pass.
 
 ## Blockers
 
