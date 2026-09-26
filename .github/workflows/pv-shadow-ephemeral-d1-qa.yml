@@ -1,0 +1,296 @@
+name: PV Shadow Ephemeral D1 Read-Only QA
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pv-shadow-ephemeral-d1-readonly-qa
+  cancel-in-progress: false
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Query D1 through an isolated short-lived read-only Worker
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+        run: |
+          node <<'NODE'
+          import assert from "node:assert/strict";
+          import { createHash, randomBytes } from "node:crypto";
+          import { mkdir, writeFile } from "node:fs/promises";
+
+          const accountId = process.env.CLOUDFLARE_ACCOUNT_ID;
+          const apiToken = process.env.CLOUDFLARE_API_TOKEN;
+          const adminToken = process.env.V7_ADMIN_TOKEN;
+          assert.ok(accountId && apiToken && adminToken, "Required repository secrets are missing");
+
+          const cfOrigin = "https://api.cloudflare.com/client/v4";
+          const formalOrigin = "https://fugle-test.imihan0630.workers.dev";
+          const formalScript = "fugle-test";
+          const diagScript = `pv-shadow-d1-ro-${process.env.GITHUB_RUN_ID}`.toLowerCase();
+          const diagToken = randomBytes(32).toString("hex");
+          console.log(`::add-mask::${diagToken}`);
+          const cfHeaders = { authorization: `Bearer ${apiToken}`, accept: "application/json" };
+          const adminHeaders = { "x-admin-token": adminToken, accept: "application/json", "cache-control": "no-cache" };
+
+          async function responseJson(response, label) {
+            const text = await response.text();
+            let data;
+            try { data = JSON.parse(text); } catch { data = null; }
+            if (!response.ok || data?.success === false) {
+              throw new Error(`${label} HTTP ${response.status}: ${String(data?.errors?.[0]?.message || text).slice(0, 400)}`);
+            }
+            return data;
+          }
+
+          async function cf(path, options = {}) {
+            const response = await fetch(`${cfOrigin}/accounts/${accountId}${path}`, {
+              ...options,
+              headers: { ...cfHeaders, ...(options.headers || {}) },
+              signal: AbortSignal.timeout(45000)
+            });
+            return responseJson(response, path);
+          }
+
+          async function admin(path) {
+            return responseJson(await fetch(`${formalOrigin}${path}`, {
+              headers: adminHeaders,
+              signal: AbortSignal.timeout(45000)
+            }), path);
+          }
+
+          const workerSource = String.raw`
+          function canonicalize(value) {
+            if (Array.isArray(value)) return value.map(canonicalize);
+            if (value && typeof value === "object") {
+              return Object.fromEntries(Object.keys(value).sort().map(key => [key, canonicalize(value[key])]));
+            }
+            return value === undefined ? null : value;
+          }
+          async function sha256(value) {
+            const bytes = new TextEncoder().encode(typeof value === "string" ? value : JSON.stringify(canonicalize(value)));
+            const digest = await crypto.subtle.digest("SHA-256", bytes);
+            return [...new Uint8Array(digest)].map(byte => byte.toString(16).padStart(2, "0")).join("");
+          }
+          async function select(env, sql, params = []) {
+            if (!/^\s*(SELECT|WITH|PRAGMA)\b/i.test(sql)) throw new Error("READ_ONLY_SQL_REQUIRED");
+            if (/\b(INSERT|UPDATE|DELETE|REPLACE|CREATE|DROP|ALTER|VACUUM|ATTACH|DETACH)\b/i.test(sql)) throw new Error("MUTATING_SQL_REJECTED");
+            const result = await env.V7_DB.prepare(sql).bind(...params).all();
+            return result.results || [];
+          }
+          export default {
+            async fetch(request, env) {
+              if (request.headers.get("authorization") !== "Bearer " + env.DIAG_TOKEN) return new Response("Not found", { status: 404 });
+              if (request.method !== "GET") return new Response("Method not allowed", { status: 405 });
+              try {
+                const tables = await select(env, "SELECT name FROM sqlite_schema WHERE type='table' AND name IN ('v7_pv_shadow_snapshots','v7_pv_outcomes','v7_pv_intraday_baselines','v7_cron_runs','v7_live_state') ORDER BY name");
+                const [baselines, snapshotSummary, duplicates, snapshots, outcomes, recentCrons] = await Promise.all([
+                  select(env, "SELECT symbol,schema_version,valid_sessions,last_market_date,corporate_action_reset_at,updated_at FROM v7_pv_intraday_baselines ORDER BY symbol"),
+                  select(env, "SELECT market_date,observation_type,COUNT(*) AS row_count,COUNT(DISTINCT symbol) AS symbol_count,SUM(CASE WHEN decision_impact<>0 THEN 1 ELSE 0 END) AS nonzero_decision_impact,MIN(created_at) AS first_created_at,MAX(created_at) AS last_created_at FROM v7_pv_shadow_snapshots GROUP BY market_date,observation_type ORDER BY market_date,observation_type"),
+                  select(env, "SELECT COUNT(*) AS duplicate_groups,COALESCE(SUM(row_count-1),0) AS duplicate_rows FROM (SELECT symbol,observed_at,observation_type,COUNT(*) AS row_count FROM v7_pv_shadow_snapshots GROUP BY symbol,observed_at,observation_type HAVING COUNT(*)>1)"),
+                  select(env, "SELECT snapshot_id,symbol,market_date,observed_at,observation_type,schema_version,event_key,features_json,context_json,coverage_json,source_json,decision_impact FROM v7_pv_shadow_snapshots ORDER BY created_at DESC LIMIT 1000"),
+                  select(env, "SELECT snapshot_id,horizon,direction_return,mfe,mae,range_atr,stop_first,false_break,acceptance_result,outcome_complete,outcome_json FROM v7_pv_outcomes ORDER BY completed_at DESC LIMIT 2000"),
+                  select(env, "SELECT id,cron_expression,scheduled_at,started_at,finished_at,job_type,status,skipped,fugle_calls,error FROM v7_cron_runs ORDER BY id DESC LIMIT 40")
+                ]);
+                let snapshotFingerprintMismatches = 0;
+                const guardCounts = {};
+                for (const row of snapshots) {
+                  const features = JSON.parse(row.features_json || "{}");
+                  const context = JSON.parse(row.context_json || "{}");
+                  const coverage = JSON.parse(row.coverage_json || "{}");
+                  const source = JSON.parse(row.source_json || "{}");
+                  const stored = source.semanticFingerprint || null;
+                  delete source.semanticFingerprint;
+                  const calculated = await sha256({
+                    snapshotId: row.snapshot_id, schemaVersion: row.schema_version, symbol: row.symbol,
+                    marketDate: row.market_date, observedAt: row.observed_at, observationType: row.observation_type,
+                    eventKey: row.event_key, features, context, coverage, source, decisionImpact: false
+                  });
+                  if (stored !== calculated) snapshotFingerprintMismatches += 1;
+                  const guard = String(features.pvGuardState || "UNKNOWN");
+                  guardCounts[guard] = (guardCounts[guard] || 0) + 1;
+                }
+                let outcomeFingerprintMismatches = 0;
+                let outcomeDecisionImpactViolations = 0;
+                for (const row of outcomes) {
+                  const recorded = JSON.parse(row.outcome_json || "{}");
+                  const calculated = await sha256({
+                    snapshotId: row.snapshot_id, horizon: row.horizon, directionReturn: row.direction_return,
+                    mfe: row.mfe, mae: row.mae, rangeAtr: row.range_atr, stopFirst: row.stop_first,
+                    falseBreak: row.false_break, acceptanceResult: row.acceptance_result,
+                    outcomeComplete: row.outcome_complete
+                  });
+                  if (recorded.semanticFingerprint !== calculated) outcomeFingerprintMismatches += 1;
+                  if (recorded.decisionImpact !== false) outcomeDecisionImpactViolations += 1;
+                }
+                const symbolDigest = async symbol => (await sha256(String(symbol))).slice(0, 12);
+                const safeBaselines = [];
+                for (const row of baselines) safeBaselines.push({
+                  symbolDigest: await symbolDigest(row.symbol), schemaVersion: row.schema_version,
+                  validSessions: Number(row.valid_sessions), lastMarketDate: row.last_market_date, updatedAt: row.updated_at
+                });
+                return Response.json({
+                  readOnly: true,
+                  tables: tables.map(row => row.name),
+                  baseline: {
+                    rowCount: baselines.length,
+                    readyCount: baselines.filter(row => Number(row.valid_sessions) >= 20).length,
+                    minimumSessions: baselines.length ? Math.min(...baselines.map(row => Number(row.valid_sessions))) : null,
+                    maximumSessions: baselines.length ? Math.max(...baselines.map(row => Number(row.valid_sessions))) : null,
+                    rows: safeBaselines
+                  },
+                  snapshots: {
+                    summary: snapshotSummary,
+                    totalRows: snapshotSummary.reduce((sum, row) => sum + Number(row.row_count || 0), 0),
+                    duplicateGroups: Number(duplicates[0]?.duplicate_groups || 0),
+                    duplicateRows: Number(duplicates[0]?.duplicate_rows || 0),
+                    snapshotFingerprintMismatches,
+                    nonzeroDecisionImpact: snapshotSummary.reduce((sum, row) => sum + Number(row.nonzero_decision_impact || 0), 0),
+                    guardCounts
+                  },
+                  outcomes: { rowCount: outcomes.length, fingerprintMismatches: outcomeFingerprintMismatches, decisionImpactViolations: outcomeDecisionImpactViolations },
+                  recentCrons
+                });
+              } catch (error) {
+                return Response.json({ readOnly: true, error: String(error?.stack || error).slice(0, 1000) }, { status: 500 });
+              }
+            }
+          };
+          `;
+
+          let cleanup = { subdomainDisabled: false, scriptDeleted: false };
+          let report;
+          try {
+            const settings = (await cf(`/workers/scripts/${formalScript}/settings`)).result;
+            const bindings = Array.isArray(settings?.bindings) ? settings.bindings : [];
+            const d1 = bindings.find(binding => binding?.name === "V7_DB");
+            const pv = bindings.find(binding => binding?.name === "PV_SHADOW_ENABLED");
+            const databaseId = d1?.id || d1?.database_id;
+            assert.ok(databaseId, "Formal V7_DB binding is missing");
+            assert.equal(String(pv?.text ?? pv?.value ?? "").toLowerCase(), "true", "PV_SHADOW_ENABLED is not true");
+
+            const metadata = {
+              main_module: "worker.js",
+              bindings: [
+                { type: "d1", name: "V7_DB", id: databaseId },
+                { type: "plain_text", name: "DIAG_TOKEN", text: diagToken }
+              ]
+            };
+            const body = new FormData();
+            body.append("metadata", new Blob([JSON.stringify(metadata)], { type: "application/json" }), "metadata.json");
+            body.append("worker.js", new Blob([workerSource], { type: "application/javascript+module" }), "worker.js");
+            await cf(`/workers/scripts/${diagScript}`, { method: "PUT", body });
+            await cf(`/workers/scripts/${diagScript}/subdomain`, {
+              method: "POST",
+              headers: { "content-type": "application/json" },
+              body: JSON.stringify({ enabled: true })
+            });
+
+            const subdomain = (await cf("/workers/subdomain")).result?.subdomain;
+            assert.ok(subdomain, "Workers.dev account subdomain is unavailable");
+            const diagUrl = `https://${diagScript}.${subdomain}.workers.dev/`;
+            let d1Report;
+            for (let attempt = 1; attempt <= 8; attempt += 1) {
+              try {
+                d1Report = await responseJson(await fetch(diagUrl, {
+                  headers: { authorization: `Bearer ${diagToken}`, accept: "application/json" },
+                  signal: AbortSignal.timeout(45000)
+                }), "ephemeral D1 diagnostic");
+                break;
+              } catch (error) {
+                if (attempt === 8) throw error;
+                await new Promise(resolve => setTimeout(resolve, 1000));
+              }
+            }
+
+            const [runtime, config, scan, cron, live, activeContent] = await Promise.all([
+              responseJson(await fetch(`${formalOrigin}/api/version?pvD1Qa=${Date.now()}`, { headers: { accept: "application/json", "cache-control": "no-cache" } }), "runtime"),
+              admin("/api/config?pvD1Qa=1"), admin("/api/scan/status?pvD1Qa=1"), admin("/api/cron/status?pvD1Qa=1"), admin("/api/live?pvD1Qa=1"),
+              fetch(`${cfOrigin}/accounts/${accountId}/workers/scripts/${formalScript}/content/v2`, { headers: cfHeaders, signal: AbortSignal.timeout(45000) }).then(async response => {
+                assert.equal(response.ok, true, `Formal source read HTTP ${response.status}`);
+                return response.text();
+              })
+            ]);
+            const helperStart = activeContent.indexOf("function pvShadowEnabled");
+            const helperEnd = activeContent.indexOf("async function analyzeStockSmart", helperStart);
+            assert.ok(helperStart >= 0 && helperEnd > helperStart, "PV helper layer missing");
+            const ordinaryLiveCandleCallsAddedByPv = (activeContent.slice(helperStart, helperEnd).match(/fetchCandles\(/g) || []).length;
+            const pvScan = scan?.pvShadow || null;
+            const mutationConflicts = (pvScan?.daily?.details || []).filter(item => item?.save?.mutationConflict).length;
+            report = {
+              schemaVersion: "PV_SHADOW_EPHEMERAL_D1_READONLY_QA_V1",
+              generatedAt: new Date().toISOString(),
+              readOnly: true,
+              isolatedFromFormalWorker: true,
+              runtimeVersion: runtime.version,
+              pvShadowEnabled: true,
+              d1: d1Report,
+              telemetry: {
+                scanDate: scan?.scanDate || null,
+                pvPresent: Boolean(pvScan),
+                decisionImpact: pvScan?.decisionImpact ?? false,
+                formalCoreImpact: pvScan?.formalCoreImpact ?? false,
+                bootstrap: pvScan?.bootstrap || null,
+                daily: pvScan?.daily || null,
+                mutationConflicts,
+                zeroPvPushes: pvScan?.daily?.zeroPvPushes ?? null,
+                zeroPvActions: pvScan?.daily?.zeroPvActions ?? null,
+                latestCron: cron?.latest || cron?.latestRun || null,
+                ordinaryLiveCandleCallsAddedByPv,
+                latestLiveCalls: live?.fugleCallsThisRun || null,
+                latestLivePv: live?.pvShadow || null,
+                formalConfiguredSymbols: Array.isArray(config?.stocks) ? config.stocks.length : null
+              }
+            };
+            assert.equal(d1Report.readOnly, true);
+            assert.equal(d1Report.snapshots.duplicateRows, 0, "PV duplicate rows found");
+            assert.equal(d1Report.snapshots.snapshotFingerprintMismatches, 0, "PV snapshot fingerprint mismatch");
+            assert.equal(d1Report.snapshots.nonzeroDecisionImpact, 0, "PV decision impact violation");
+            assert.equal(d1Report.outcomes.fingerprintMismatches, 0, "PV outcome fingerprint mismatch");
+            assert.equal(d1Report.outcomes.decisionImpactViolations, 0, "PV outcome decision impact violation");
+            assert.equal(mutationConflicts, 0, "PV mutation conflict reported by telemetry");
+            assert.equal(ordinaryLiveCandleCallsAddedByPv, 0, "PV added ordinary live candle calls");
+          } finally {
+            try {
+              await cf(`/workers/scripts/${diagScript}/subdomain`, {
+                method: "POST",
+                headers: { "content-type": "application/json" },
+                body: JSON.stringify({ enabled: false })
+              });
+              cleanup.subdomainDisabled = true;
+            } catch (error) {
+              cleanup.subdomainDisableError = String(error?.message || error).slice(0, 300);
+            }
+            try {
+              await cf(`/workers/scripts/${diagScript}`, { method: "DELETE" });
+              cleanup.scriptDeleted = true;
+            } catch (error) {
+              cleanup.scriptDeleteError = String(error?.message || error).slice(0, 300);
+            }
+            if (report) report.cleanup = cleanup;
+            await mkdir("artifacts", { recursive: true });
+            await writeFile("artifacts/pv-shadow-ephemeral-d1-qa.json", JSON.stringify(report || { readOnly: true, cleanup }, null, 2));
+            console.log(JSON.stringify(report || { readOnly: true, cleanup }, null, 2));
+            assert.equal(cleanup.subdomainDisabled, true, "Ephemeral diagnostic subdomain cleanup failed");
+            assert.equal(cleanup.scriptDeleted, true, "Ephemeral diagnostic Worker cleanup failed");
+          }
+          NODE
+      - name: Preserve sanitized ephemeral D1 QA report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pv-shadow-ephemeral-d1-qa-${{ github.run_id }}
+          path: artifacts/pv-shadow-ephemeral-d1-qa.json
+          if-no-files-found: warn
+          retention-days: 30
