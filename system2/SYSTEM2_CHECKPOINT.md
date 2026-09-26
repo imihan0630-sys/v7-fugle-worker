@@ -19,6 +19,8 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 
 ## Current design decisions
 
+- Capacity rule approved: global System 2 candidate/watch pool max 12 unique symbols; each strategy max 3 ACTIVE_INTRADAY_MONITOR symbols; no forced filling; multi-strategy overlap counts once globally but remains strategy-specific for monitoring/performance.
+
 - Same overall website/platform can host multiple isolated engines.
 - System 2 is a multi-strategy discovery/selection platform, not a relaxed clone of V8.
 - Market/global regime is an upper-layer context.
