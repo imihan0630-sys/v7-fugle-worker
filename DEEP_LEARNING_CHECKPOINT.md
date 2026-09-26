@@ -790,3 +790,11 @@ YES for research infrastructure integrity: resolving the actual archive lineage 
 4. No prospective outcome inference until complete Pattern parent coverage exists.
 5. When data gates clear, run only frozen PATTERN-RG1..RG4 and redundancy controls before adding pattern families/interactions.
 6. Formal Core remains LOCKED.
+
+
+## Pattern Maturity continuation — DL-003K
+- New 2026 Taiwan market-microstructure evidence tightens Pattern portability: the 2020 continuous-trading reform improved liquidity/efficiency in modern evidence while separate evidence reports stronger retail behavioral biases after the reform.
+- Conclusion: do not assume improved market efficiency eliminates reference-point/Pattern behavior; do not assume retail behavior automatically creates alpha.
+- Primary Pattern evidence must be post-2020; older 7%/batch-auction evidence is mechanism/stress evidence only.
+- Keep existing PATTERN-RG1..RG4 only; marketStructureRegime is a control/stratifier, not a new factor zoo branch.
+- Formal Core unchanged.
