@@ -114,3 +114,27 @@ Shadow 後續結果：
 Formal 低均量例外所讀取的 `spreadPercent/orderBookDepthGood/depthScore` 在 repo 內未找到上游建構，但 external enrichment 可透過任意 extra 欄位注入，因此 Production coverage = UNKNOWN，不可說例外一定失效，也不可假設已有效。
 
 第一階段只補證據，不調 1000/300 張、1.2x/1.5x 門檻。只有被拒絕 cohort 在成本／滑價／深度控制後仍穩定呈現更佳機會、且不惡化 MAE/stop/no-follow-through/zero-pick，才可提出 `LIQUIDITY_ADMISSION_REFORMULATION` 的 Class-C 正式優化候選。
+
+
+## 8. Shadow 拒絕原因分層覆蓋
+狀態：STRUCTURAL_BIAS_CONFIRMED / REPAIR_SPEC_REQUIRED
+
+`REJECTED_AFTER_BASE` 目前將所有 basePassed=true 的 reject：
+1. 依 exclusion reason；
+2. 再依 symbol 排序；
+3. 最後每個價格池只留前6筆。
+
+因此不是「每個 reject reason 抽6筆」，而是某個排序靠前且樣本多的 reason 可以吃完整個 6 筆額度，其他 gate 當日即使大量發生也可能 0 筆。
+
+已凍結：
+`research/rejected_after_base_sampling_falsification_v0_1.json`
+
+最低修復證據需求：
+- 每日 exact reason × price pool 完整 reject count；
+- 每個 reason × pool 小型 deterministic sample；
+- 保留原始 first rejection reason，不做 gate-bypass 後假裝成 Formal counterfactual；
+- outcome 不得決定抽樣。
+
+Sector 已由 V8.14 的 SECTOR_GATE_REJECTED 部分解決；其他 fundamental / volatility / target / RR / signal-grade gate 仍受此 sampling bias。
+
+這是研究證據基礎設施候選，不是 Formal 選股優化。Formal gate 不因此改動。
