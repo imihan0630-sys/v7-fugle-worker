@@ -1,0 +1,71 @@
+{
+  "schemaVersion": "PORTFOLIO_RISK_RECONSTRUCTABILITY_V0_1",
+  "updatedAt": "2026-09-26T23:55:00+08:00",
+  "researchOnly": true,
+  "decisionImpact": false,
+  "sourceOfTruth": [
+    "scripts/apply_v8_5_0.py",
+    "scripts/apply_v8_5_2.py"
+  ],
+  "eligibleSource": "v8_trade_journal_days + v8_trade_journal_plans",
+  "excludedSources": [
+    {
+      "source": "v8_trade_journal_recovered",
+      "reason": "manual/project-chat recovery does not preserve totalAllocation/allocationRatio/totalCapital completely enough for portfolio-risk reconstruction"
+    },
+    {
+      "source": "current mutable history",
+      "reason": "cannot establish old synchronized decision-time correlation/cluster state"
+    }
+  ],
+  "fields": {
+    "day": [
+      "scan_date",
+      "selected_count",
+      "total_capital",
+      "status",
+      "diagnostics_json",
+      "created_at",
+      "updated_at"
+    ],
+    "plan": [
+      "scan_date",
+      "symbol",
+      "formal_close",
+      "buy_low",
+      "buy_high",
+      "stop",
+      "priority_score",
+      "reward_risk",
+      "allocation_ratio",
+      "total_allocation",
+      "first_shares",
+      "second_shares",
+      "total_shares",
+      "recorded_at"
+    ]
+  },
+  "reconstructableWithoutOutcomeData": [
+    "plannedDeploymentNTD",
+    "deploymentRatioPct",
+    "projectedStopRiskRangeByName",
+    "projectedPortfolioHeatRange",
+    "effectiveCapitalNames",
+    "nameCapitalConcentration",
+    "structuralReserveNTD",
+    "NO_ELIGIBLE_OPPORTUNITY_vs_DATA_OR_SIGNAL_BLOCKED when journal status/diagnostics semantics are complete"
+  ],
+  "conditionallyReconstructable": [
+    "sectorCapitalShare only where sector was preserved as PIT research snapshot/diagnostic provenance",
+    "actual live heat only if BUY/ADD/REDUCE/SELL event coverage is proven complete for that plan episode"
+  ],
+  "notHistoricallyReconstructableFromPlanJournalAlone": [
+    "pairwiseCorrelation20",
+    "pairwiseCorrelation60",
+    "empiricalRiskCluster",
+    "shrinkageCovariance",
+    "marginalRiskContribution",
+    "downsideCorrelation"
+  ],
+  "rule": "Historical plan-risk metrics may be reconstructed only from immutable plan-time fields. Correlation/covariance/cluster metrics require exact synchronized PIT history and remain UNKNOWN otherwise."
+}
