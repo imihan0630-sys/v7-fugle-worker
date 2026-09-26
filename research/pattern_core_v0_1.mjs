@@ -1680,7 +1680,7 @@ export function analyzeConfirmedBoundaryGeometry({
   }
   const projectedApexDistanceBars=projectedApexIndex===null?null:projectedApexIndex-lastIndex;
   const converging=Number.isFinite(compressionRatio) && compressionRatio<1 && endWidth>0;
-  const roughlyParallel=Math.abs(slopeDifference)/(center||1) < 1e-6;
+  const boundarySlopeDifferenceNorm=center>0?slopeDifference/center:null;
 
   return {
     status:"VALID",
@@ -1703,7 +1703,7 @@ export function analyzeConfirmedBoundaryGeometry({
     projectedApexIndex,
     projectedApexDistanceBars,
     converging,
-    roughlyParallel,
+    boundarySlopeDifferenceNorm,
     orientation:
       upperFit.slope<0 && lowerFit.slope>0 ? "CONVERGING_INWARD" :
       upperFit.slope<0 && lowerFit.slope<0 ? "BOTH_DOWN" :
