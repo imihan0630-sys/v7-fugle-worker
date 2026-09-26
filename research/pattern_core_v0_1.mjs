@@ -1454,3 +1454,144 @@ export function analyzeMajorZoneLifecycle({
     decisionImpact:false
   };
 }
+
+
+function candleBodyBounds(bar){
+  const open=finite(bar?.open),close=finite(bar?.close);
+  if(open===null || close===null) return null;
+  return {lower:Math.min(open,close),upper:Math.max(open,close),size:Math.abs(close-open)};
+}
+
+function candleShape(bar, atr=null){
+  const open=finite(bar?.open),high=finite(bar?.high),low=finite(bar?.low),close=finite(bar?.close);
+  if([open,high,low,close].some(x=>x===null)) return null;
+  const body=Math.abs(close-open);
+  const range=high-low;
+  const upperWick=high-Math.max(open,close);
+  const lowerWick=Math.min(open,close)-low;
+  return {
+    direction:close>open?"BULLISH":close<open?"BEARISH":"DOJI",
+    body,
+    range,
+    bodyAtrRatio:atr!==null && atr>0 ? body/atr : null,
+    rangeAtrRatio:atr!==null && atr>0 ? range/atr : null,
+    upperWickRatio:range>0?upperWick/range:null,
+    lowerWickRatio:range>0?lowerWick/range:null,
+    closeLocation:range>0?(close-low)/range:null
+  };
+}
+
+// Outcome-free two-day candlestick relational encoder.
+// These labels are morphology descriptors only; they are not trading signals and are
+// intentionally NOT claimed to reproduce any single historical paper's exact thresholds.
+export function analyzeTwoDayCandlestickMorphology({
+  bars,
+  asOfDate,
+  semanticSpace = "TECHNICAL_CONTINUITY",
+  priorTrendState = "UNKNOWN",
+  atrPeriod = 20,
+  corporateActionBoundary = false
+} = {}) {
+  if(String(semanticSpace||"")!=="TECHNICAL_CONTINUITY"){
+    return {
+      status:"BLOCKED",
+      reason:"TWO_DAY_CANDLE_REQUIRES_TECHNICAL_CONTINUITY",
+      researchOnly:true,
+      decisionImpact:false
+    };
+  }
+  const filtered=(Array.isArray(bars)?bars:[]).filter(x=>String(x?.date||"")<=String(asOfDate||"9999-12-31"));
+  const validated=validatePatternBars({bars:filtered,requireOpen:true});
+  if(!validated.usable){
+    return {
+      status:"BLOCKED",
+      reason:validated.reason,
+      researchOnly:true,
+      decisionImpact:false
+    };
+  }
+  const series=validated.bars;
+  if(series.length<2){
+    return {
+      status:"BLOCKED",
+      reason:"TWO_DAY_CANDLE_INSUFFICIENT_BARS",
+      researchOnly:true,
+      decisionImpact:false
+    };
+  }
+  const prev=series.at(-2),curr=series.at(-1);
+  const prevBody=candleBodyBounds(prev),currBody=candleBodyBounds(curr);
+  const currentIndex=series.length-1;
+  const atr=simpleAtrBeforeIndex(series,currentIndex,atrPeriod);
+  const prevShape=candleShape(prev,atr);
+  const currShape=candleShape(curr,atr);
+
+  const prevBearish=prev.close<prev.open;
+  const currBullish=curr.close>curr.open;
+  const prevBodySpan=prev.open-prev.close;
+  const midpoint=(prev.open+prev.close)/2;
+
+  const overlapLower=Math.max(prevBody.lower,currBody.lower);
+  const overlapUpper=Math.min(prevBody.upper,currBody.upper);
+  const overlap=Math.max(0,overlapUpper-overlapLower);
+  const bodyOverlapOfPrev=prevBody.size>0?overlap/prevBody.size:null;
+  const currentBodyToPrevBody=prevBody.size>0?currBody.size/prevBody.size:null;
+  const currentEngulfsPrev=currBody.lower<=prevBody.lower && currBody.upper>=prevBody.upper;
+  const currentInsidePrev=currBody.lower>=prevBody.lower && currBody.upper<=prevBody.upper;
+
+  const penetration=prevBearish && prevBodySpan>0
+    ? (curr.close-prev.close)/prevBodySpan
+    : null;
+
+  const bullishEngulfingBodyRelation=prevBearish && currBullish &&
+    curr.open<=prev.close && curr.close>=prev.open;
+  const bullishHaramiBodyRelation=prevBearish && currBullish &&
+    curr.open>=prev.close && curr.close<=prev.open;
+  const piercingBodyRelation=prevBearish && currBullish &&
+    curr.open<=prev.close && curr.close>midpoint && curr.close<prev.open;
+
+  const trend=String(priorTrendState||"UNKNOWN").toUpperCase();
+  const reversalContextCompatible=["DOWNTREND","DECLINE","BEARISH","DAMAGED"].includes(trend)
+    ? true
+    : ["UPTREND","ADVANCE","BULLISH"].includes(trend)
+      ? false
+      : null;
+
+  const labels=[];
+  if(bullishEngulfingBodyRelation) labels.push("BULLISH_ENGULFING_BODY_RELATION");
+  if(bullishHaramiBodyRelation) labels.push("BULLISH_HARAMI_BODY_RELATION");
+  if(piercingBodyRelation) labels.push("PIERCING_BODY_RELATION");
+
+  return {
+    status:"VALID",
+    semanticSpace:"TECHNICAL_CONTINUITY",
+    previousDate:prev.date,
+    currentDate:curr.date,
+    corporateActionBoundary:Boolean(corporateActionBoundary),
+    atr,
+    atrPeriod:Math.max(1,Math.floor(Number(atrPeriod)||20)),
+    previous:prevShape,
+    current:currShape,
+    prevBearish,
+    currentBullish:currBullish,
+    prevBodyMidpoint:midpoint,
+    currentBodyToPrevBody,
+    bodyOverlapOfPrev,
+    currentEngulfsPrev,
+    currentInsidePrev,
+    openVsPrevClosePct:prev.close>0?curr.open/prev.close-1:null,
+    closeVsPrevOpenPct:prev.open>0?curr.close/prev.open-1:null,
+    closePenetrationOfPrevBearBody:penetration,
+    bullishEngulfingBodyRelation,
+    bullishHaramiBodyRelation,
+    piercingBodyRelation,
+    namedMorphologyLabels:labels,
+    labelCount:labels.length,
+    labelAmbiguity:labels.length>1,
+    priorTrendState:trend,
+    reversalContextCompatible,
+    definitionNote:"Morphology-only body relations; no profitability, score, threshold optimization, or exact-paper replication claim.",
+    researchOnly:true,
+    decisionImpact:false
+  };
+}
