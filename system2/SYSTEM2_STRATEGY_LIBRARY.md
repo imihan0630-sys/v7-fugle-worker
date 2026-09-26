@@ -35,9 +35,25 @@ Examples to test:
 Must explicitly test false positives where institutions buy but price subsequently falls.
 
 ## INDUSTRY_TREND
-Primary: industry cycle, demand/supply, capacity, pricing, capital flow.
-Secondary: company fundamentals, leaders/laggards, valuation and technical entry.
-Requires thesis lifecycle and invalidation conditions.
+Primary: industry cycle, demand/supply, inventory, capacity, pricing, earnings sensitivity and capital flow.
+Secondary: company fundamentals, leader-vs-high-beta-beneficiary comparison, valuation and technical entry.
+Requires explicit cycle-stage, beneficiary/victim transmission, thesis lifecycle and invalidation conditions.
+
+Status: CORE LOGIC OWNER-APPROVED / THRESHOLDS NOT FROZEN.
+
+Owner-approved core:
+- determine industry cycle stage before stock selection;
+- distinguish fundamental cycle from price cycle;
+- map supply/demand/inventory/capacity/pricing through to company earnings;
+- compare sector leaders with higher-beta beneficiaries rather than assuming leaders always win;
+- treat sector-leader priority as a research hypothesis requiring falsification;
+- use technicals mainly for timing/risk rather than to replace the industry thesis;
+- support early-cycle entry, trend pullback and second-leg breakout setups;
+- support ADD_ON_NEW_INFORMATION when the industry thesis strengthens;
+- introduce CYCLE_PEAK_WARNING and INDUSTRY_THESIS_INVALIDATED states;
+- preserve multi-strategy attribution when INDUSTRY_TREND overlaps with other strategies.
+
+INDUSTRY_TREND core logic owner-approved on 2026-09-27.
 
 ## FUNDAMENTAL_GROWTH
 Primary: revenue/earnings/margin/cash-flow quality and acceleration.
