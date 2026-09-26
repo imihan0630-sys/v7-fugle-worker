@@ -115,6 +115,23 @@ Research findings remain research even when statistically promising. Follow the 
 
 No automated promotion from research to Formal Core exists.
 
+## Mandatory research-to-optimization bridge
+
+Research is not complete merely because knowledge was documented. When evidence identifies a potentially useful improvement to the after-market stock-selection system, the research lane MUST create and surface a `FORMAL_OPTIMIZATION_CANDIDATE` for owner review once the candidate has passed the applicable falsification/readiness gates.
+
+A candidate may be proposed only with auditable evidence covering, where applicable: positive mechanism/evidence; explicit counterevidence and alternative mechanisms; point-in-time/no-look-ahead validity; prospective Shadow/OOS or justified holdout evidence; independent-date/date-cluster robustness; market/regime/industry concentration; factor redundancy/incremental value over existing Formal controls; transaction-cost/slippage implications; candidate coverage and zero-pick risk; data-source/UNKNOWN semantics; and overfit/Factor-Zoo/multiple-testing controls.
+
+Candidate status vocabulary:
+- `DISCOVERY`: plausible mechanism, insufficient evidence.
+- `FALSIFICATION_IN_PROGRESS`: positive and negative tests active.
+- `EVIDENCE_READY`: applicable research gates passed; implementation effect still not authorized.
+- `FORMAL_OPTIMIZATION_CANDIDATE`: evidence-backed change worth explicit owner strategy review.
+- `REJECTED_OR_REDUNDANT`: falsified, non-incremental, too costly, too fragile, or otherwise not worth proposing.
+
+Every `FORMAL_OPTIMIZATION_CANDIDATE` must state exactly what Formal behavior would change, expected benefit, observed downside/failure modes, evidence sample/period/regimes, protected invariants, rollback plan, and whether the implementation is Class B or Class C. The agent MUST proactively notify the owner when such a candidate becomes eligible; it must not wait for the owner to ask.
+
+This bridge does NOT weaken Formal Core LOCKED. Class B/C changes still require explicit owner approval before merge/deploy/promotion. Research findings that have not passed falsification must never be presented as optimization-ready.
+
 ## Human-intervention boundary
 
 Do not ask the owner to open websites and paste code when connected tools and existing automation can complete the task.
