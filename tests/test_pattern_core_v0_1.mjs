@@ -25,6 +25,7 @@ import {
   classifyEventGapBreakout,
   classifyRepeatedResistanceTests,
   analyzeMajorZoneLifecycle,
+  analyzeTwoDayCandlestickMorphology,
   buildPatternSnapshot,
   replayPatternSnapshot
 } from "../research/pattern_core_v0_1.mjs";
@@ -858,4 +859,80 @@ console.log("pattern core v0.1 C1-C8 and invariance tests passed");
     zoneLower,zoneUpper
   });
   assert.deepEqual(firstReplay,first);
+}
+
+
+// Two-day candlestick research uses continuous relational features and morphology-only labels.
+// OPEN and TECHNICAL_CONTINUITY are mandatory; prior trend is context, not hidden label tuning.
+{
+  const warmup=Array.from({length:20},(_,i)=>({
+    date:"2026-03-"+String(i+1).padStart(2,"0"),
+    open:100+i*0.1,high:101+i*0.1,low:99+i*0.1,close:100.2+i*0.1,
+    volume:1000,turnover:2_000_000
+  }));
+  const engulfBars=[
+    ...warmup,
+    {date:"2026-03-21",open:105,high:105.5,low:101.5,close:102,volume:1100,turnover:2_000_000},
+    {date:"2026-03-22",open:101.5,high:106,low:101,close:105.5,volume:1200,turnover:2_000_000}
+  ];
+  const e=analyzeTwoDayCandlestickMorphology({
+    bars:engulfBars,asOfDate:"2026-03-22",priorTrendState:"DOWNTREND"
+  });
+  assert.equal(e.status,"VALID");
+  assert.equal(e.bullishEngulfingBodyRelation,true);
+  assert.equal(e.bullishHaramiBodyRelation,false);
+  assert.equal(e.piercingBodyRelation,false);
+  assert.equal(e.reversalContextCompatible,true);
+  assert.ok(e.currentBodyToPrevBody>1);
+  assert.equal(e.researchOnly,true);
+  assert.equal(e.decisionImpact,false);
+
+  const haramiBars=[
+    ...warmup,
+    {date:"2026-03-21",open:105,high:105.5,low:100.5,close:101,volume:1100,turnover:2_000_000},
+    {date:"2026-03-22",open:102,high:104.5,low:101.5,close:104,volume:900,turnover:2_000_000}
+  ];
+  const h=analyzeTwoDayCandlestickMorphology({
+    bars:haramiBars,asOfDate:"2026-03-22",priorTrendState:"UNKNOWN"
+  });
+  assert.equal(h.bullishHaramiBodyRelation,true);
+  assert.equal(h.reversalContextCompatible,null);
+
+  const piercingBars=[
+    ...warmup,
+    {date:"2026-03-21",open:105,high:105.5,low:100.5,close:101,volume:1100,turnover:2_000_000},
+    {date:"2026-03-22",open:100.5,high:104.5,low:100,close:103.5,volume:1200,turnover:2_000_000}
+  ];
+  const p=analyzeTwoDayCandlestickMorphology({
+    bars:piercingBars,asOfDate:"2026-03-22",priorTrendState:"DOWNTREND"
+  });
+  assert.equal(p.piercingBodyRelation,true);
+  assert.ok(p.closePenetrationOfPrevBearBody>0.5 && p.closePenetrationOfPrevBearBody<1);
+
+  // Price scaling leaves dimensionless morphology unchanged.
+  const pe=analyzeTwoDayCandlestickMorphology({
+    bars:scaled(engulfBars,10),asOfDate:"2026-03-22",priorTrendState:"DOWNTREND"
+  });
+  assert.equal(pe.bullishEngulfingBodyRelation,e.bullishEngulfingBodyRelation);
+  assert.ok(Math.abs(pe.currentBodyToPrevBody-e.currentBodyToPrevBody)<1e-12);
+  assert.ok(Math.abs(pe.bodyOverlapOfPrev-e.bodyOverlapOfPrev)<1e-12);
+
+  const rawBlocked=analyzeTwoDayCandlestickMorphology({
+    bars:engulfBars,asOfDate:"2026-03-22",semanticSpace:"RAW_EXECUTION"
+  });
+  assert.equal(rawBlocked.reason,"TWO_DAY_CANDLE_REQUIRES_TECHNICAL_CONTINUITY");
+
+  const missingOpen=engulfBars.map((x,i)=>i===engulfBars.length-1?{...x,open:null}:x);
+  const openBlocked=analyzeTwoDayCandlestickMorphology({
+    bars:missingOpen,asOfDate:"2026-03-22"
+  });
+  assert.equal(openBlocked.reason,"OPEN_MISSING");
+
+  // Corporate-action boundary is retained explicitly rather than erasing the observation.
+  // The caller is responsible for supplying already-validated TECHNICAL_CONTINUITY bars.
+  const ca=analyzeTwoDayCandlestickMorphology({
+    bars:engulfBars,asOfDate:"2026-03-22",corporateActionBoundary:true
+  });
+  assert.equal(ca.status,"VALID");
+  assert.equal(ca.corporateActionBoundary,true);
 }
