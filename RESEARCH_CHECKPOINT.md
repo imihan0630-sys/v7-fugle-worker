@@ -1,6 +1,6 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-187.
+Checkpoint sequence: B-191.
 Updated: 2026-09-27 05:02 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Detailed B-01..B-123 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
@@ -1135,3 +1135,21 @@ Updated: 2026-09-27 05:02 Asia/Taipei.
 - Optimization bridge is deliberately conditional: `LIQUIDITY_ADMISSION_REFORMULATION` is NOT yet a FORMAL_OPTIMIZATION_CANDIDATE. It may be surfaced only if prospective rejected controls show stable opportunity loss after execution-cost/depth controls, independent dates, price/size/regime strata and OOS, without worse MAE/stop/no-follow-through/zero-pick behavior. If not, retain the current gate.
 - Durable files: `LIQUIDITY_ADMISSION_RESEARCH.md`, `research/liquidity_gate_rejected_control_spec_v0_1.json`, Worklist and Master Map cross-links. No Formal/runtime threshold or behavior changed.
 - Exact next: continue structural audit of the pre-score admission funnel and identify whether another high-prevalence early gate lacks a counterfactual cohort; do not threshold-sweep liquidity while evidence is absent.
+
+
+## B-191 — Portfolio Risk Tier-A v0.2 deployment/concentration/channel decomposition (2026-09-27 Asia/Taipei)
+- Continued B-182 using only immutable plan-time journal fields and read-only Production journal access. No forward outcome fields were read; no Worker/runtime/Formal behavior changed.
+- PR #115 `Portfolio Risk Tier-A v0.2 decomposition` merged to main at `186a205aec8b40bfac2453309aaba7d3d2668351` after all three checks passed: Portfolio Risk Tier-A Research run 36271728940 SUCCESS, V8 Regression run 36271728934 SUCCESS, V8 Repair CI run 36271729017 SUCCESS.
+- Tier-A v0.2 separates three quantities that were previously easy to conflate:
+  1. deployment ratio / structural reserve;
+  2. concentration inside deployed risky capital (`deployedCapitalHHI`, `effectiveCapitalNames`);
+  3. total-account risky-name footprint `sum((allocation_i/totalCapital)^2)`, with cash not treated as another stock.
+- Production read-only evidence falsifies standalone `effectiveCapitalNames` interpretation. 2026-09-21 had one deployed name (effectiveCapitalNames=1) but only 35% deployment and total-capital risky-name HHI=0.1225. 2026-09-18 had effectiveCapitalNames=2.9672 but 84% deployment and higher total-capital risky-name HHI=0.2378.
+- Portfolio heat is now decomposed into deployment and stop-risk intensity on deployed capital. 2026-09-18 heat=2.0221%-3.2417% with deployed-capital stop-risk intensity=2.4073%-3.8592%; 2026-09-21 heat=0.5276%-1.3070% with intensity=1.5074%-3.7343%.
+- Formal A/B plan construction mechanically confounds stop-risk intensity. At the conservative buyHigh endpoint, deterministic minimum planned-risk floors are A=3.7328% and B=2.1782%, but live counterevidence prevents ordinal channel claims: 2026-09-18 B-only plans had high-end intensity 3.8592%, slightly above the 2026-09-21 A-only plan at 3.7342%. Channel must be controlled; A>B or B>A is not supported.
+- Capital-utilization semantics were also split. Formal nominal deployment targets remain 0/35/60/85% for 0/1/2/3+ names, with 35% per-name cap and NT$1,000 flooring; capped/rounded residual is not redistributed. On 2026-09-18 nominal target was 85%, actual 84%: 15% was designed structural reserve and 1%=NT$2,000 was allocation implementation shortfall. On 2026-09-21 target and actual were both 35%, so shortfall was zero.
+- Therefore "all cash = no opportunity / overly strict BUY logic" is structurally false. Future capital-utilization analysis must separate no eligible plan, nominal structural reserve, cap/rounding shortfall, pending-entry cash, post-reduction cash and data/signal-blocked cash.
+- Durable artifacts: `research/portfolio_risk_tier_a_v0_2.mjs`, `research/portfolio_risk_tier_a_history_v0_2_receipt_20260927.json`, `research/portfolio_risk_channel_stop_geometry_v0_1.json`, `research/portfolio_risk_deployment_geometry_v0_1.json`, dedicated tests/read-only audit and updated `PORTFOLIO_RISK_TIER_A_AUDIT.md`.
+- Only two non-zero plan dates are currently reconstructable. This is structural/reconstructability evidence, not a safe heat threshold, concentration cap, channel ranking or predictive result. PORTFOLIO_RISK remains L2 / FALSIFICATION_IN_PROGRESS.
+- Correlation20/60, empirical clusters, shrinkage covariance, marginal/component risk and downside correlation remain PIT_HISTORY_REQUIRED. Actual-live heat remains conditional on complete BUY/ADD/REDUCE/SELL event coverage.
+- No FORMAL_OPTIMIZATION_CANDIDATE. Exact next for this lane: audit trade-journal signal/event coverage read-only to determine whether actual-live position lifecycle can be reconstructed without inventing fills. If coverage is incomplete, mark actual-live heat UNKNOWN and keep plan-time Tier-A separate.
