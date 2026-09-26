@@ -191,9 +191,102 @@ This remains Class C if it can alter Formal selection/ranking/eligibility.
 
 ## Exact next continuation
 
-1. Audit official-session continuity feasibility for R06; do not treat adjacent observed research rows as consecutive sessions.
-2. Freeze a transition-state episode schema and expected-parent coverage accounting.
-3. Because prospective R06 evidence is still immature, do not inspect transition-conditioned forward outcomes prematurely.
-4. In parallel deepen market-level volatility/illiquidity as possible moderators, while checking the separate Volatility-Regime lane to avoid duplication.
-5. Keep momentum gap rejected.
-6. Audit Extreme Absolute Strength strictly as redundancy against existing lateStage/overheat, not as a new score.
+1. R06 official-session feasibility is already proven; retain GAP_UNKNOWN semantics and wait for enough clean transition dates before outcome interpretation.
+2. Momentum-rank persistency v0.1 is now specification-ready but not implemented. Do not reconstruct historical rank duration.
+3. After the active V8.15 lineage clears, consider a Class-A proposal for zero-extra-call prospective ret60 rank/universe receipt only if it can be kept completely research-only and Formal-invariant.
+4. The first future empirical question must condition on current ret60 rank; otherwise persistence is confounded with being a stronger winner.
+5. Control existing trend-consistency persistenceScoreResearch and Residual RS; if rank retention adds nothing, reject it rather than tune rank thresholds.
+6. Keep Momentum Gap rejected and Extreme Absolute Strength redundancy-high.
+7. Continue another independent under-reconciled research question while prospective evidence accumulates.
+
+
+## DL-003D — Momentum persistency construct audit
+
+### Literature construct
+Chen, Hsieh & Lee (2023) does not define persistency as a smoothness/trend-quality score.
+At each monthly formation date, stocks are ranked cross-sectionally by prior 3/6/9/12-month return; winners are the top 30% and losers the bottom 30%. Persistency is the duration for which a stock consecutively remains in its corresponding winner/loser group.
+
+For the six-month formation example, the paper reports only about 54.52% of winners remain winners in the next formation. Nonpersistent winner/loser groups exhibit strong reversal, while persistent groups exhibit stronger continuation. Those historical effect magnitudes are NOT portable thresholds for the current daily long-only system.
+
+### Existing-system construct
+Current `price.persistenceScoreResearch` is:
+- 35% positiveDayRatio20;
+- 25% fraction of ret5/ret10/ret20/ret60 that are positive;
+- 20% 20-day drawdown quality;
+- 20% close-above-MA20/MA60 quality.
+
+This is an own-price-path **trend consistency heuristic**.
+It is not cross-sectional winner/loser membership duration.
+
+Therefore:
+- do not cite `persistenceScoreResearch` as an implementation of Chen et al. 2023 persistence;
+- I02 remains the frozen test of this existing heuristic beyond Residual RS and must not be silently redefined;
+- a runtime rename is not justified merely for terminology; schema stability matters. In research interpretation, refer to it as “existing trend-consistency persistence heuristic” when ambiguity matters.
+
+Status:
+`CONSTRUCT_MISMATCH_CONFIRMED`.
+
+## DL-003E — canonical replication feasibility
+
+Current live price state retains roughly 65 sessions and directly computes ret60.
+This is enough to form a system-native point-in-time ~3-month cross-sectional return rank, but not the paper's 6/9/12-month canonical formation windows.
+
+More importantly, historical Shadow archives did not preserve full-universe point-in-time winner/loser ranks at every formation date.
+Current data must not be used to fabricate past rank-membership duration.
+
+Canonical historical replication status:
+`PIT_CROSS_SECTIONAL_HISTORY_BLOCKED / NOT_RECONSTRUCTED`.
+
+Prospective system-native feasibility:
+`MATERIAL_PASS_FOR_RET60_RANK_CAPTURE`.
+
+The current after-market featureRows already contain same-scan ret60 for source-valid histories before Formal A/B/fundamental/valuation/RR gates. A full-universe ret60 percentile can therefore be computed prospectively with zero extra market-data calls.
+
+## DL-003F — system-native prospective rank retention v0.1
+
+Durable machine spec:
+`research/momentum_rank_persistence_spec_v0_1.json`.
+
+V0.1 does not create a new additive score.
+
+Primary continuous primitive:
+- `momentumRankPct60` within the valid same-scan full feature universe.
+
+Required provenance:
+- universe count/coverage state;
+- source scan date;
+- exact previous consecutive clean scan date;
+- no forward fill.
+
+Literature-anchored top-30 membership is descriptive only.
+Retention duration may advance only across consecutive official market sessions with complete rank receipts.
+A missing/failed scan produces `GAP_UNKNOWN`, not EXITED.
+
+The key incremental test is stricter than “persistent winners outperform”:
+**after controlling the current ret60 rank level itself, does retained winner membership / rank stability add anything beyond Residual RS and the existing trend-consistency heuristic?**
+
+If not, the duration construct is rejected as redundant for this selector.
+
+## DL-003G — redundancy / universe-composition firewall
+
+Rank retention is not mechanically equivalent to the existing heuristic because cross-sectional rank can change while a stock's own price-path features remain similar.
+But it can still be economically redundant with:
+- raw ret60 / current rank level;
+- Residual RS;
+- sector rotation;
+- size/liquidity;
+- market regime;
+- Quiet/Attention;
+- overheat.
+
+Universe membership is itself a confound.
+Rank changes caused by listings, missing histories, suspensions or data-quality exclusions cannot be interpreted as economic momentum decay without recording the rank denominator and coverage state.
+
+Required outcomes:
+D1/D3/D5/D10/D20, MFE/MAE, stop-first, and false/no-follow-through.
+
+No outcome inspection or threshold search is authorized before prospective coverage exists.
+
+### Status
+`SPEC_FROZEN / PROSPECTIVE_ONLY / NOT_IMPLEMENTED / ALPHA_UNKNOWN / NOT_OPTIMIZATION_READY`.
+
