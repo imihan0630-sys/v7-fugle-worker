@@ -51,6 +51,8 @@ on:
       - "scripts/apply_v8_10_0.py"
       - "scripts/apply_v8_11_0.py"
       - "scripts/apply_v8_12_0.py"
+      - "scripts/rebase_v8_12_*.py"
+      - "scripts/apply_v8_13_0.py"
       - "RESEARCH_WORKLIST.md"
       - "research/**"
       - "data/v7_formal_scan_backfill.json"
@@ -233,8 +235,14 @@ jobs:
       - name: Apply V8.11.0 PV Shadow V0.1
         run: python3 scripts/apply_v8_11_0.py
 
+      - name: Rebase V8.12 compatibility fixtures
+        run: python3 scripts/rebase_v8_12_anchor.py
+
       - name: Apply V8.12.0 history source revalidation V2.3
         run: python3 scripts/apply_v8_12_0.py
+
+      - name: Apply V8.13.0 PriorityScore provenance shadow
+        run: python3 scripts/apply_v8_13_0.py
 
       - name: Syntax check Worker.js
         run: |
@@ -287,13 +295,14 @@ jobs:
           node tests/test_v8_10_0_aideen_independent_pool.mjs
           node tests/test_v8_11_0_pv_shadow.mjs
           node tests/test_v8_12_0_history_source_revalidation_contract.mjs
+          node tests/test_v8_13_0_priority_score_provenance.mjs
           node tests/test_v8_9_0_three_pool_hybrid_shadow.mjs
           node tests/test_v8_9_1_three_pool_dashboard.mjs
           node tests/github_plan_mirror.mjs self-test
 
       - name: Verify expected version
         run: |
-          grep -F 'const VERSION = "8.12.0-history-source-revalidation-v2-3";' Worker.js
+          grep -F 'const VERSION = "8.13.0-priority-score-provenance-shadow";' Worker.js
           grep -F 'CREATE TABLE IF NOT EXISTS trade_research_execution_snapshots' Worker.js
           grep -F 'RESEARCH_EXECUTION_RECORDER_FAIL_OPEN' Worker.js
           grep -F 'PURGED_FORWARD_HOLDOUT' Worker.js

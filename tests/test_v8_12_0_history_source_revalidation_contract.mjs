@@ -3,8 +3,14 @@ import {readFile} from "node:fs/promises";
 
 const source=await readFile(process.env.V7_TEST_WORKER_PATH || new URL("../Worker.js",import.meta.url).pathname,"utf8");
 
+const runtimeMatch=source.match(/const VERSION = "([^"]+)";/);
+assert.ok(runtimeMatch,"runtime version must be explicit");
+const runtimeVersion=runtimeMatch[1];
+const [major,minor,patch]=runtimeVersion.split(/[.-]/).slice(0,3).map(Number);
+assert.ok(Number.isFinite(major)&&Number.isFinite(minor)&&Number.isFinite(patch),"runtime semver must be parseable");
+assert.ok(major>8 || (major===8 && (minor>12 || (minor===12 && patch>=0))),"V8.12 contract requires runtime >= 8.12.0");
+
 const required=[
-  'const VERSION = "8.12.0-history-source-revalidation-v2-3";',
   'const HISTORY_SEED_SCHEMA = "full-market-v4-history-source-revalidation";',
   'const HISTORY_REVALIDATION_REQUIRED_PRIOR_BARS = 60;',
   'RAW_OFFICIAL_BAR_PRESENCE_BEFORE_FORMAL_FILTERS',
@@ -36,7 +42,7 @@ assert.ok(scan.includes("updateMarketState(previous, rows, enrichment, marketDat
 
 console.log(JSON.stringify({
   ok:true,
-  version:"8.12.0-history-source-revalidation-v2-3",
+  version:runtimeVersion,
   class:"B",
   formalStrategyMarkersFrozen:true,
   sourceAdmissionGuardPresent:true,
