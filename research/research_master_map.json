@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-09-27T05:14:00+08:00",
+  "updatedAt": "2026-09-27T05:24:00+08:00",
   "status": "BASELINE_V0_2_PARTIAL_RECONCILIATION",
   "formalCore": "LOCKED",
   "authority": {
@@ -111,7 +111,7 @@
       "domain": "PRICE_VOLUME",
       "level": "L3",
       "status": "WAITING_PROSPECTIVE",
-      "basis": "Large preregistered PV evidence/QA program awaits clean prospective cohorts after 2026-09-29. Separate Formal liquidity-admission audit now proves an evidence hole: BROAD_CONTROL requires the current minLots and REJECTED_AFTER_BASE requires basePassed=true, so early liquidity rejects are absent from standard Shadow. A prospective LIQUIDITY_REJECTED_CONTROL spec is frozen; no threshold relaxation is authorized."
+      "basis": "Large preregistered PV evidence/QA program awaits clean prospective cohorts after 2026-09-29. Formal liquidity-admission audit now proves a reason-specific evidence gap: BROAD_CONTROL systematically excludes primary below-minLots rejects, while size-conditioned liquidity rejects may appear only incidentally in bounded random controls; REJECTED_AFTER_BASE excludes all early basePassed=false families. A dedicated reason-stratified LIQUIDITY_REJECTED_CONTROL spec is frozen; no threshold relaxation is authorized."
     },
     {
       "id": "TREND_MOMENTUM_REVERSAL",
