@@ -78,6 +78,21 @@ Primary: event mechanism, beneficiary/victim transmission, market reaction and e
 Secondary: liquidity, technical structure, chips.
 Horizon determined by event persistence. One-off shocks are short-lived; structural supply/demand shifts may become swing/trend theses.
 
+Status: CORE LOGIC OWNER-APPROVED / THRESHOLDS NOT FROZEN.
+
+Owner-approved core:
+- events must be processed through source verification, firstKnownAt/availableAt timing, transmission mapping, company exposure and price-in assessment;
+- distinguish company, industry, supply, demand, policy, macro and corporate-action events;
+- preserve event half-life, expiry and invalidation;
+- do not equate news intensity with new information or economic materiality;
+- support event pullback and second-wave entry, not only immediate reaction;
+- allow event state to transition into persistent/structural industry trend when evidence accumulates;
+- let verified events affect POSITION_MONITOR（持股監控）, including recovery/re-add and risk-warning paths;
+- retain all verified non-winning events to control selection bias;
+- event dimensions remain separate until evidence justifies any combined score.
+
+EVENT_DRIVEN core logic owner-approved on 2026-09-27.
+
 ## VALUE_REVERSION
 Research-only hypothesis.
 Primary: valuation dislocation and fundamental durability.
