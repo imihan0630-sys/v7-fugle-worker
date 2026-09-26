@@ -302,3 +302,56 @@ export function buildPatternRunReceipt({
     formalCoreImpact:false
   };
 }
+
+
+export function analyzePatternEpisodeOverlap(episodes = []) {
+  const rows=(Array.isArray(episodes)?episodes:[])
+    .filter(x=>x?.status==="VALID"&&Array.isArray(x.anchorIds)&&x.anchorIds.length>0)
+    .map(x=>({
+      episodeKey:String(x.episodeKey||""),
+      patternFamily:String(x.patternFamily||""),
+      scale:String(x.scale||""),
+      anchorIds:[...new Set(x.anchorIds.map(v=>String(v||"")).filter(Boolean))].sort()
+    }))
+    .filter(x=>x.episodeKey);
+
+  const pairs=[];
+  for(let i=0;i<rows.length;i+=1){
+    for(let j=i+1;j<rows.length;j+=1){
+      const a=rows[i],b=rows[j];
+      const A=new Set(a.anchorIds),B=new Set(b.anchorIds);
+      const shared=[...A].filter(x=>B.has(x)).sort();
+      const union=new Set([...A,...B]);
+      const jaccard=union.size?shared.length/union.size:null;
+      const containmentA=A.size?shared.length/A.size:null;
+      const containmentB=B.size?shared.length/B.size:null;
+      pairs.push({
+        episodeKeyA:a.episodeKey,
+        episodeKeyB:b.episodeKey,
+        familyA:a.patternFamily,
+        familyB:b.patternFamily,
+        scaleA:a.scale,
+        scaleB:b.scale,
+        sharedAnchorCount:shared.length,
+        unionAnchorCount:union.size,
+        jaccard,
+        containmentA,
+        containmentB,
+        sharedAnchorIds:shared,
+        sameFamily:a.patternFamily===b.patternFamily,
+        sameScale:a.scale===b.scale
+      });
+    }
+  }
+
+  return {
+    status:"VALID",
+    episodeCount:rows.length,
+    pairCount:pairs.length,
+    pairs,
+    rule:"Overlap is descriptive shared-anchor geometry. No Jaccard/containment cutoff converts two labels into independent evidence.",
+    researchOnly:true,
+    decisionImpact:false,
+    formalCoreImpact:false
+  };
+}
