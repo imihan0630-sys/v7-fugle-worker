@@ -1003,3 +1003,16 @@ Updated: 2026-09-26 22:14 Asia/Taipei.
 - Durable artifacts: `PORTFOLIO_RISK_TIER_A_AUDIT.md`, `research/portfolio_risk_tier_a_v0_1.mjs`, `research/portfolio_risk_reconstructability_v0_1.json`, `research/portfolio_risk_production_readonly_receipt_20260926.json`, and dedicated tests/workflow.
 - Machine Master Map status changed `PORTFOLIO_RISK: EVIDENCE_PENDING -> FALSIFICATION_IN_PROGRESS`; level remains L2 because the broader covariance/cluster/live-event/outcome layer is not yet PIT-validated.
 - Optimization bridge: no FORMAL_OPTIMIZATION_CANDIDATE. Exact next is a descriptive, outcome-independent Tier-A history table from only fully reconstructable dates; later, once independent dates/outcomes mature, test whether heat/concentration adds downside information beyond sector/regime/volatility/PriorityScore. No outcome-based threshold search.
+
+
+## B-183 — Leverage/Shorting LS-047 source blocker narrowed without endpoint guessing (2026-09-27 Asia/Taipei)
+- Continued after Portfolio Risk B-182 using only official TPEx source verification; no forward returns/outcomes inspected.
+- Official TPEx current/legacy margin pages verify BIG5 + UTF-8 CSV availability and historical data; legacy URL redirects to current `transactions.html`.
+- Official indexed `margin_bal_result.php?...&o=htm` is machine-readable and reproduces the validated margin/short fields and lots unit for 2026-09-24.
+- Browser-rendered official page extraction exposed history/SBL/navigation links but did not expose a stable CSV href/request parameter contract. Official-domain searches did not produce a verified CSV request URL. Generic direct current-page fetch can return HTTP 403.
+- Therefore `TPEX_MARGIN_DATA_PRODUCT_AND_UTF8_CSV_EXISTENCE = VERIFIED` but `TPEX_MARGIN_PROGRAMMATIC_DOWNLOAD_CONTRACT = UNRESOLVED`.
+- Negative evidence is durable in `research/leverage_shorting_ls047_tpex_margin_source_contract_receipt_v0_1.json`; dedicated Leverage/Shorting files advanced through LS-047.
+- Safe path remains official artifact ingestion under LS-046 metadata/checksum/schema/parser contract, or later verification of a documented official endpoint. Hidden-URL guessing / access-control bypass remains prohibited.
+- Machine Master Map changes LEVERAGE_SHORTING from generic EVIDENCE_PENDING to precise DATA_SOURCE_BLOCKED; maturity stays L2. This is a source-contract blocker, not absence of TPEx margin data.
+- Large automated cross-market backfill remains NO_GO; no H1-H5 outcome tests and no Worker/runtime/Formal changes.
+- Exact continuation: if an official TPEx UTF-8 margin CSV artifact or documented endpoint becomes available, run LS-048 finalized-history pilot without outcomes, then LS-049 completeness/revision audit; otherwise move research effort to lanes that can advance with existing PIT evidence rather than repeatedly probing the blocked source.
