@@ -132,6 +132,17 @@ export function compareExecutionPolicyToBenchmark(plans=[]){
 }
 
 
+
+// Taiwan cash-equity plan quantity can imply a different execution venue/mechanism.
+// A non-1,000-share-multiple quantity is mixed unless the whole quantity is below 1,000.
+export function inferTaiwanLotType(intendedShares){
+  const q=finite(intendedShares);
+  if(q===null||q<=0||!Number.isInteger(q)) return "UNKNOWN";
+  if(q<1000) return "ODD_LOT";
+  if(q%1000===0) return "REGULAR_LOT";
+  return "MIXED_LOT";
+}
+
 // v0.2 benchmark semantics: benchmark feasibility must match the actual Taiwan market mechanism.
 // This remains descriptive research accounting; it does not choose an order type or change BUY logic.
 export function classifyExecutionBenchmarkEligibility({
@@ -158,6 +169,13 @@ export function classifyExecutionBenchmarkEligibility({
     };
   }
   if(type==="NEXT_SESSION_REGULAR_OPEN"){
+    if(lot==="MIXED_LOT"){
+      return {
+        eligible:false,status:"MECHANISM_MISMATCH",
+        reason:"MIXED_LOT_REQUIRES_SEPARATE_REGULAR_AND_ODD_LOT_LEGS",
+        benchmarkPrice:price,researchOnly:true,decisionImpact:false
+      };
+    }
     if(lot==="ODD_LOT"){
       return {
         eligible:false,status:"MECHANISM_MISMATCH",
@@ -173,6 +191,9 @@ export function classifyExecutionBenchmarkEligibility({
     };
   }
   if(type==="FIRST_ELIGIBLE_OBSERVED_QUOTE"){
+    if(lot==="MIXED_LOT"){
+      return {eligible:false,status:"MECHANISM_MISMATCH",reason:"MIXED_LOT_REQUIRES_SEPARATE_REGULAR_AND_ODD_LOT_LEGS",benchmarkPrice:price,researchOnly:true,decisionImpact:false};
+    }
     if(!observedAt){
       return {eligible:false,status:"BLOCKED",reason:"OBSERVED_AT_MISSING",benchmarkPrice:price,researchOnly:true,decisionImpact:false};
     }
