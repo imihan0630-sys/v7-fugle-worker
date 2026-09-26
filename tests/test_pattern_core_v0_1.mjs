@@ -166,9 +166,28 @@ function scaled(bars, k) {
     semanticSpace:"TECHNICAL_CONTINUITY",
     bars,
     requireVolume:true,
-    provenance:{...common,shareUnitComparable:true}
+    provenance:{
+      ...common,
+      volumeSourceId:"volume-source",
+      volumePayloadHash:"volume-payload-v1",
+      shareUnitComparable:true
+    }
   });
   assert.equal(noSemantic.reason,"VOLUME_SEMANTIC_SPACE_UNKNOWN");
+
+  const missingVolumeProvenance=validatePatternSeriesEnvelope({
+    role:"GEOMETRY",
+    semanticSpace:"TECHNICAL_CONTINUITY",
+    bars,
+    requireVolume:true,
+    provenance:{
+      ...common,
+      volumeSemanticSpace:"RAW_LOT_VOLUME",
+      volumePrecisionClass:"LOT_COUNT_WITH_UNKNOWN_SUBLOT_REMAINDER",
+      shareUnitComparable:true
+    }
+  });
+  assert.equal(missingVolumeProvenance.reason,"VOLUME_SOURCE_PROVENANCE_INCOMPLETE");
 
   const lotUnknownUnit=validatePatternSeriesEnvelope({
     role:"GEOMETRY",
@@ -177,6 +196,8 @@ function scaled(bars, k) {
     requireVolume:true,
     provenance:{
       ...common,
+      volumeSourceId:"volume-source",
+      volumePayloadHash:"volume-payload-v1",
       volumeSemanticSpace:"RAW_LOT_VOLUME",
       volumePrecisionClass:"LOT_COUNT_WITH_UNKNOWN_SUBLOT_REMAINDER",
       shareUnitComparable:false
@@ -191,6 +212,8 @@ function scaled(bars, k) {
     requireVolume:true,
     provenance:{
       ...common,
+      volumeSourceId:"volume-source",
+      volumePayloadHash:"volume-payload-v1",
       volumeSemanticSpace:"RAW_LOT_VOLUME",
       volumePrecisionClass:"LOT_COUNT_WITH_UNKNOWN_SUBLOT_REMAINDER",
       shareUnitComparable:true
@@ -223,6 +246,8 @@ function scaled(bars, k) {
     requireVolume:true,
     provenance:{
       ...common,
+      volumeSourceId:"volume-source",
+      volumePayloadHash:"volume-payload-v1",
       volumeSemanticSpace:"EXCHANGE_LISTED_SHARE_TURNOVER",
       volumePrecisionClass:"EXACT_SHARES",
       shareUnitComparable:true,
