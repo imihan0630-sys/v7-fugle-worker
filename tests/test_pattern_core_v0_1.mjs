@@ -40,7 +40,8 @@ import {
   attachPatternQaMetrics,
   buildPatternEpisodeReference,
   comparePatternEpisodeReferences,
-  buildPatternRunReceipt
+  buildPatternRunReceipt,
+  analyzePatternEpisodeOverlap
 } from "../research/pattern_observer_adapter_v0_1.mjs";
 
 function makeBars(closes, { startDay = 1, volume = 100, turnover = 2_000_000, tickPad = 0.2 } = {}) {
@@ -1116,4 +1117,32 @@ console.log("pattern core v0.1 C1-C8 and invariance tests passed");
 
   const blocked=analyzeResistanceTestProgression([{low:99,close:null,resistance:100}]);
   assert.equal(blocked.status,"BLOCKED");
+}
+
+
+// Cross-family episode overlap is measured from shared structural anchors, not double-counted as independent alpha.
+{
+  const w=buildPatternEpisodeReference({
+    symbol:"1234",detectorVersion:"PATTERN_CORE_V0_1",patternFamily:"W",
+    scale:"BASE",anchorIds:["L:01","H:02","L:03"],initialConfirmedAt:"2026-04-10"
+  });
+  const cup=buildPatternEpisodeReference({
+    symbol:"1234",detectorVersion:"PATTERN_CORE_V0_1",patternFamily:"CUP",
+    scale:"BASE",anchorIds:["H:00","L:01","H:02","L:03","H:04"],initialConfirmedAt:"2026-04-12"
+  });
+  const flag=buildPatternEpisodeReference({
+    symbol:"1234",detectorVersion:"PATTERN_CORE_V0_1",patternFamily:"FLAG",
+    scale:"MICRO",anchorIds:["H:10","L:11","H:12"],initialConfirmedAt:"2026-04-15"
+  });
+  const o=analyzePatternEpisodeOverlap([w,cup,flag]);
+  assert.equal(o.status,"VALID");
+  assert.equal(o.episodeCount,3);
+  assert.equal(o.pairCount,3);
+  const wc=o.pairs.find(x=>new Set([x.familyA,x.familyB]).has("W")&&new Set([x.familyA,x.familyB]).has("CUP"));
+  assert.equal(wc.sharedAnchorCount,3);
+  assert.ok(wc.jaccard>0);
+  assert.ok(wc.containmentA===1 || wc.containmentB===1);
+  const wf=o.pairs.find(x=>new Set([x.familyA,x.familyB]).has("W")&&new Set([x.familyA,x.familyB]).has("FLAG"));
+  assert.equal(wf.sharedAnchorCount,0);
+  assert.equal(wf.jaccard,0);
 }
