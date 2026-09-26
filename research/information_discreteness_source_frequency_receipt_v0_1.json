@@ -1,0 +1,113 @@
+{
+  "schemaVersion": "dl001-source-frequency-v0.1",
+  "updated": "2026-09-26 Asia/Taipei",
+  "status": "SOURCE_CONTRACT_MATERIAL_PASS_FREQUENCY_GATE_NOT_REJECTED",
+  "researchOnly": true,
+  "formalCoreChanged": false,
+  "hypothesis": "DL-001 Taiwan official price-limit context after canonical-ID redundancy falsification",
+  "sourceContracts": {
+    "TWSE": {
+      "exactDailyLimitReference": {
+        "source": "TWSE TWT84U 股價升降幅度",
+        "fields": [
+          "symbol",
+          "limitUp",
+          "openingAuctionReference",
+          "limitDown",
+          "previous reference/close context"
+        ],
+        "historicalDateQueryableWitnesses": [
+          "2022-08-15",
+          "2021-06-15",
+          "2020-12-14"
+        ],
+        "urlTemplate": "https://www.twse.com.tw/exchangeReport/TWT84U?date=YYYYMMDD&response=html&selectType=01",
+        "note": "Official report is date-queryable. Historical report is factual reconstruction evidence, but immutable first-known delivery vintage is not claimed."
+      },
+      "archiveProduct": {
+        "source": "TWSE Data E-Shop T97 漲跌幅度表檔",
+        "availableFrom": "2014-01-06",
+        "producedAt": "23:30 Asia/Taipei each trading day",
+        "note": "Archive/product path exists for exact limit/reference fields."
+      },
+      "marketSummary": {
+        "source": "TWSE MI_INDEX",
+        "note": "Official daily stock limit-up/limit-down counts provide an outcome-free event-frequency cross-check."
+      }
+    },
+    "TPEx": {
+      "exactDailyMarker": {
+        "source": "TPEx EDIS S38 / STKT2QUOTESN.TXT",
+        "markers": {
+          "+": "UP",
+          "^": "LIMIT_UP",
+          "-": "DOWN",
+          "v": "LIMIT_DOWN",
+          "blank": "FLAT",
+          "X": "NON_COMPARABLE"
+        },
+        "note": "Explicit official daily limit marker plus next-day reference/limit fields."
+      },
+      "publicHistorical": {
+        "source": "TPEx 上櫃股票每日收盤行情",
+        "urlTemplate": "https://www.tpex.org.tw/web/stock/aftertrading/otc_quotes_no1430/stk_wn1430_result.php?d=<ROC_DATE>&l=zh-tw&o=htm&s=0&se=EW",
+        "currentWitnessDate": "2026-09-24",
+        "note": "Official date-queryable reconciliation lane; immutable first-known S38 bytes are a stronger separate provenance gate."
+      }
+    }
+  },
+  "twseOutcomeFreeFrequencySample": [
+    {
+      "date": "2026-09-24",
+      "limitUpStocks": 11,
+      "limitDownStocks": 1,
+      "totalStockRows": 1081,
+      "limitHitStocks": 12,
+      "limitHitSharePct": 1.1101
+    },
+    {
+      "date": "2026-09-23",
+      "limitUpStocks": 15,
+      "limitDownStocks": 1,
+      "totalStockRows": 1081,
+      "limitHitStocks": 16,
+      "limitHitSharePct": 1.4801
+    },
+    {
+      "date": "2026-09-04",
+      "limitUpStocks": 15,
+      "limitDownStocks": 1,
+      "totalStockRows": 1081,
+      "limitHitStocks": 16,
+      "limitHitSharePct": 1.4801
+    },
+    {
+      "date": "2026-06-30",
+      "limitUpStocks": 59,
+      "limitDownStocks": 1,
+      "totalStockRows": 1078,
+      "limitHitStocks": 60,
+      "limitHitSharePct": 5.5659
+    }
+  ],
+  "interpretation": [
+    "The event is sparse cross-sectionally on ordinary sample days, but is not uniformly rare.",
+    "Frequency varies materially with market state; 2026-06-30 is a strong counterexample to a fixed sparse-rate assumption.",
+    "Do not extrapolate a 20-session probability from these daily cross-sectional rates because symbol persistence, sector clustering, selection conditioning and date dependence violate independence.",
+    "For a momentum-biased after-market selector, candidate-level exposure may be materially different from whole-market frequency and must be measured on the prospective Shadow parent population.",
+    "No return outcome was inspected for this gate."
+  ],
+  "decision": {
+    "canonicalId": "REJECTED_OR_REDUNDANT",
+    "idNonHitStandalone": "REJECTED_OR_REDUNDANT_AS_BROAD_FACTOR",
+    "officialPriceLimitContext": "FALSIFICATION_IN_PROGRESS",
+    "frequencyGate": "NOT_REJECTED_BUT_NOT_PROMOTED",
+    "formalOptimizationCandidate": false
+  },
+  "next": [
+    "Measure candidate-level limitHitCount20 frequency on prospective Shadow parents with exact official dual-exchange state.",
+    "Stratify by canonical market regime and cohort (SELECTED/QUALIFIED_NOT_SELECTED/NEAR_MISS/controls).",
+    "Do not inspect forward returns until source coverage and expected-parent accounting are complete.",
+    "If candidate-level nonzero frequency is too small for independent-date testing, reject DL-001 as operationally low-value."
+  ]
+}
