@@ -169,4 +169,9 @@ Draft PR: #104.
 Production baseline independently re-read before engineering:
 `8.11.0-pv-shadow-v0.1-log-only`, TEST_MODE=false, KV/D1 present.
 
-Status pending CI at the time of this note; Draft only / unmerged / un-deployed.
+Validated research head: `c9e23b01907dbeca7a130236816d56ac8db8764b`.
+CI:
+- V8 Repair `36210097574`: SUCCESS;
+- V8 Regression `36210097500`: SUCCESS.
+
+Draft PR #104 remains unmerged / un-deployed. Formal Core and production runtime are unchanged.
