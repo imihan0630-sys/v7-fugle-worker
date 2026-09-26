@@ -237,3 +237,57 @@ Before any return/outcome lookup:
 5. only then run incremental controls against R06 transition, stock ATR/volatility, regime, Residual RS, overheat and liquidity;
 6. report return and risk/path outcomes separately;
 7. do not propose a volatility throttle unless the effect survives crisis removal, PIT/OOS, date clustering, redundancy and coverage/zero-pick tests.
+
+
+## VR-018 — Formal ATR-to-RR channel coupling
+
+Current Formal does more with ATR than the simple 1–10% volatility gate suggests.
+
+Decision path:
+1. reject atrPercent <1 or >10;
+2. convert ATR% into price ATR;
+3. use ATR inside channel-specific stop construction;
+4. stop distance determines RR;
+5. RR<2 rejects;
+6. RR then contributes 14% of PriorityScore and raw RR remains a later comparator.
+
+Thus ATR has indirect multi-layer influence even though ATR is not itself a PriorityScore term.
+
+### Channel asymmetry
+
+A:
+`stop=min(support*0.98, structureLow-0.12*ATR)`.
+
+B:
+`stop=breakout-max(0.65*ATR, breakout*0.012)`.
+
+B has a 1.2% minimum stop floor; once 0.65*ATR exceeds that floor, further ATR increases directly widen risk and reduce RR for fixed entry/target.
+
+A can remain pinned to the 2% support stop over a wide ATR range when the structure low is near support, making its RR much less ATR-sensitive.
+
+### Fixed structural witness
+
+With B breakout=100, close=101, entry=100.3 and fixed target=110.3:
+- ATR 1% => stop 98.8, RR 6.67;
+- ATR 3% => stop 98.03, RR 4.41;
+- ATR 5% => stop 96.72, RR 2.79;
+- ATR 7% => RR 2.04;
+- ATR 8% => RR 1.80 => rejected by RR<2;
+- ATR 10% => RR 1.46.
+
+This is not an empirical distribution and does not imply the 8% threshold is universally meaningful. It proves only the structural coupling.
+
+Machine artifact:
+`research/atr_rr_channel_coupling_v0_1.json`.
+
+### Research consequence
+
+Volatility studies must separate:
+- explicit ATR gate effect;
+- stop-geometry effect;
+- RR gate effect;
+- RR rank/sizing effect.
+
+Otherwise an observed “high ATR underperforms among selected stocks” can be heavily selection-conditioned by the fact that many high-ATR B setups never survive to selection.
+
+No ATR/stop/RR change is authorized.
