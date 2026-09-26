@@ -1,0 +1,110 @@
+{
+  "schemaVersion": "rr-priority-structural-falsification-v0.1",
+  "researchDate": "2026-09-26",
+  "status": "STRUCTURAL_FALSIFICATION_FROZEN",
+  "outcomeDataUsed": false,
+  "formalCoreChanged": false,
+  "currentFormal": {
+    "hardGate": "rewardPerRisk >= 2",
+    "priorityComponent": "clamp(rewardPerRisk*20,0,100)*0.14",
+    "priorityScoreStoredPrecision": "rounded to 0.1 before deployed comparator",
+    "deployedComparator": [
+      "post-consensus priorityScore descending",
+      "raw rewardPerRisk descending",
+      "marketConsensusScore descending",
+      "setupQuality descending",
+      "sectorFlow descending",
+      "relativeStrength descending"
+    ],
+    "sizing": "selected allocation is approximately priorityScore-proportional, so RR also affects sizing through the 14% component."
+  },
+  "structuralFindings": [
+    "RR acts at three layers: eligibility gate, additive PriorityScore component, and raw tie-break after rounded post-consensus PriorityScore.",
+    "Within eligible range RR 2 to 5 contributes 5.6 to 14 PriorityScore points; the additive contribution saturates at RR=5.",
+    "Raw rewardPerRisk continues to differentiate candidates above RR=5 when PriorityScore ties, so RR influence does not fully saturate at 5.",
+    "Because PriorityScore is rounded to 0.1, raw RR tie-break can materially decide near-equal composite candidates.",
+    "A and B construct entry/stop differently, so RR distribution/comparability must be checked by channel rather than assumed identical.",
+    "A high modeled RR can arise from distant discrete resistance/target geometry; it is not itself proof that the target is likely to be reached."
+  ],
+  "cases": [
+    {
+      "rr": 2,
+      "hardEligible": true,
+      "rrScore0to100": 40,
+      "priorityContribution": 5.6000000000000005,
+      "saturatedInsidePriority": false,
+      "rawTieBreakStillDifferentiates": true
+    },
+    {
+      "rr": 2.5,
+      "hardEligible": true,
+      "rrScore0to100": 50,
+      "priorityContribution": 7.000000000000001,
+      "saturatedInsidePriority": false,
+      "rawTieBreakStillDifferentiates": true
+    },
+    {
+      "rr": 3,
+      "hardEligible": true,
+      "rrScore0to100": 60,
+      "priorityContribution": 8.4,
+      "saturatedInsidePriority": false,
+      "rawTieBreakStillDifferentiates": true
+    },
+    {
+      "rr": 4,
+      "hardEligible": true,
+      "rrScore0to100": 80,
+      "priorityContribution": 11.200000000000001,
+      "saturatedInsidePriority": false,
+      "rawTieBreakStillDifferentiates": true
+    },
+    {
+      "rr": 5,
+      "hardEligible": true,
+      "rrScore0to100": 100,
+      "priorityContribution": 14.000000000000002,
+      "saturatedInsidePriority": true,
+      "rawTieBreakStillDifferentiates": true
+    },
+    {
+      "rr": 6,
+      "hardEligible": true,
+      "rrScore0to100": 100,
+      "priorityContribution": 14.000000000000002,
+      "saturatedInsidePriority": true,
+      "rawTieBreakStillDifferentiates": true
+    },
+    {
+      "rr": 8,
+      "hardEligible": true,
+      "rrScore0to100": 100,
+      "priorityContribution": 14.000000000000002,
+      "saturatedInsidePriority": true,
+      "rawTieBreakStillDifferentiates": true
+    }
+  ],
+  "prospectiveTests": [
+    "RR distribution by channel, price pool, sector and scanDate.",
+    "Within-date monotonicity of RR vs D1/D3/D5/D10, MFE, MAE, stop-first and target-first.",
+    "Separate RR bands 2-3, 3-5, >5 without tuning boundaries beyond existing formula breakpoints.",
+    "Compare current triple-layer RR ordering against a research comparator that removes only the raw RR tie-break while keeping the existing score unchanged; do not deploy.",
+    "Measure how often raw RR actually resolves a rounded PriorityScore tie.",
+    "Measure selection changes attributable to RR component versus raw tie-break separately.",
+    "Channel-stratified calibration because A/B stop and entry construction differ.",
+    "Target-reach calibration: expected reward distance versus realized MFE before stop/time horizon."
+  ],
+  "falsification": [
+    "If higher RR predicts larger theoretical targets but not better target-first/MFE or produces worse MAE/stop-first, reject monotonic RR quality interpretation.",
+    "If the raw RR tie-break almost never resolves actual ties, classify duplicate influence as structurally real but practically immaterial.",
+    "If RR>5 adds no outcome value, do not extend additive score beyond current saturation merely because raw RR is larger.",
+    "If channel controls absorb RR effects, classify cross-channel RR comparison as channel-confounded.",
+    "No RR threshold/weight/target formula tuning before clean prospective evidence."
+  ],
+  "governance": {
+    "anyFormalGateWeightComparatorTargetChange": "CLASS_C_OWNER_APPROVAL_REQUIRED",
+    "currentAction": "RESEARCH_ONLY",
+    "existingShadowSufficient": true
+  },
+  "decision": "RR_MULTI_LAYER_INFLUENCE_CONFIRMED / EMPIRICAL_INCREMENTAL_VALUE_UNKNOWN / NO_FORMAL_CHANGE"
+}
