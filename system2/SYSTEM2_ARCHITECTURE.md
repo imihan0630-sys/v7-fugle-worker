@@ -123,3 +123,17 @@ This prevents duplicate symbols from wasting global candidate capacity while pre
 `DISCOVERED -> CANDIDATE/WATCH -> ACTIVE_INTRADAY_MONITOR -> strategy-specific trigger/fill/hold/exit`
 
 Promotion into ACTIVE_INTRADAY_MONITOR should favor candidates that are closest to a valid strategy-specific entry condition, not simply the highest raw score.
+
+## Candidate lifecycle and daily retention
+
+Owner-approved lifecycle rule:
+
+- The global 12-symbol candidate/watch pool is **persistent across days**. It is not cleared and rebuilt from zero every evening.
+- Every trading day after market close, System 2 must revalidate every existing candidate using the latest strategy-specific evidence.
+- A symbol is retained while at least one valid System 2 strategy thesis still gives it meaningful observation value.
+- A symbol is removed when its relevant thesis is invalidated or when new evidence makes it temporarily not worth monitoring, including material fundamental deterioration, material bearish event/catalyst reversal, strategy-specific technical invalidation, industry/regime deterioration, or other validated negative evidence.
+- Removal is strategy-aware: if one strategy thesis fails but another remains valid, the symbol may remain in the global pool under the surviving strategy membership.
+- Vacated slots may be filled by newly qualified candidates according to regime priority, strategy quality, entry readiness, multi-strategy confluence and concentration-risk context.
+- The 12-symbol limit is a maximum, never a quota.
+
+Daily revalidation must preserve the prior day's state and the exact RETAIN / REMOVE / ADD reason. Historical candidate states must not be rewritten after outcomes are known.
