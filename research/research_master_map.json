@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-09-26T13:13:00+08:00",
+  "updatedAt": "2026-09-26T17:39:54+08:00",
   "status": "BASELINE_V0_2_PARTIAL_RECONCILIATION",
   "formalCore": "LOCKED",
   "authority": {
@@ -84,9 +84,17 @@
           "corporate-action price continuity remains separate"
         ],
         "ownerApprovalRequired": true,
-        "merged": false,
-        "deployed": false,
-        "researchPr": 105
+        "merged": true,
+        "deployed": true,
+        "researchPr": 105,
+        "ownerApprovalGranted": true,
+        "ownerApprovalGrantedAt": "2026-09-26",
+        "implementationStatus": "DEPLOYED_AWAITING_FIRST_LIVE_TRADING_DAY",
+        "deployedVersion": "8.12.0-history-source-revalidation-v2-3",
+        "deployedAt": "2026-09-26T17:39:54+08:00",
+        "deploymentRunId": 36233428004,
+        "regressionRunId": 36233428044,
+        "firstLiveValidationDate": "2026-09-29"
       }
     ]
   },
