@@ -801,3 +801,18 @@ Updated: 2026-09-26 12:49 Asia/Taipei.
 - Positive hypothesis: the current sector gate removes fragile setups and improves downside/follow-through quality. Counter-hypothesis: one-day sector gate components are redundant or discard technically strong early-rotation cases. Neither is privileged.
 - Optimization bridge status: `BREADTH_ROTATION / SECTOR_GATE_AUDIT = WAITING_PROSPECTIVE / NOT_OPTIMIZATION_READY`. No change to 40% / -1% / 0.5 is authorized.
 - Exact next continuation: accumulate clean prospective V8.14 cohorts; do not tune thresholds. In parallel, continue an independent research lane that can advance without contaminating this holdout.
+
+
+## B-168 — Valuation lane opened from existing Formal relative-PE veto (2026-09-26 19:09 Asia/Taipei)
+- Fresh canonical read started from B-167 and Shared Knowledge; no Breadth/Rotation or PriorityScore retuning.
+- Opened VALUATION_RESEARCH.md via canonical commit be34ef77acf2d75f1cdf1f4bddf059b0e444069a and audited actual Production semantics. Formal already consumes official TWSE/TPEx daily PE/PB and rejects positive PE/sectorMedianPE > 2.5 unless quarterly revenue YoY or EPS YoY > 25%. No threshold sweep is authorized.
+- Positive mechanisms frozen: unsupported extreme relative valuation may flag expectation/crowding risk; quality/growth conditioning may distinguish expensive leadership; effect may appear in downside/MAE rather than mean return.
+- Countermechanisms frozen: high PE can correctly price leadership; low PE can be a value trap; depressed earnings inflate PE; >=3-peer median can be unstable; sector labels can mix business models; growth exception may duplicate fundamentals; valuation may duplicate overheat/RS; D1/D3/D5 may be too short.
+- Official semantics: missing/N/A PE remains UNKNOWN; PB cannot substitute for PE. Corporate-action timing is a denominator risk and must be provenance-controlled.
+- Frozen test: CURRENT_PASS vs exact VALUATION_REJECT_ONLY vs HIGH_REL_PE_WITH_GROWTH_EXCEPTION vs PE_UNKNOWN/PB_OBSERVED_PE_UNKNOWN; D1/D3/D5, MFE/MAE, stop/false-breakout, coverage/zero-pick; independent scanDate, within-date/LODO, sector/regime, crisis removal, costs.
+- Selection-bias firewall: selected rows cannot prove a veto. No historical reconstruction from today's valuation/denominator. Exact PIT rejected/pass cohort and upstream state are required.
+- Redundancy gate: control A/B, Price-Volume, sector RS/breadth, residual RS/trend, fundamentals/raw growth, liquidity/size, overheat/lateStage and RR.
+- Optimization bridge is symmetric: KEEP, RELAX/REMOVE or REFORMULATE. Any Formal valuation-gate change is Class C and requires owner approval after mandatory falsification/OOS/robustness gates. Current status FALSIFICATION_IN_PROGRESS / PIT_COHORT_AUDIT_REQUIRED / NOT_OPTIMIZATION_READY.
+- Engineering: Class A research documentation only. No Worker/runtime/Formal selection/ranking/threshold/capital/monitor/signal/push change.
+- Master Map/shared-inventory reconciliation was attempted after re-reading latest SHAs but mutation was safety-blocked; do not claim those files updated. Dedicated lane and this checkpoint are the durable source until a later safe reconciliation.
+- Exact next continuation: audit current Shadow/archive schema for exact PIT valuation pass/reject cohort provenance, including PE, PB, sectorMedianPE, peer count, growth-exception inputs, reject reason and upstream-state completeness. If incomplete, mark historical cohort UNKNOWN and freeze prospective Class-A receipt/cohort capture; do not backfill or tune thresholds. Then continue the next independent lane without waiting for valuation outcomes.
