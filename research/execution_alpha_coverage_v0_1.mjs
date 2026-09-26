@@ -245,11 +245,16 @@ export function decomposeBuyImplementationShortfall({
   horizonPrice,
   fills=[],
   explicitCostNTD=0,
-  coverageComplete=false
+  coverageComplete=false,
+  fillEvidenceQuality="UNKNOWN"
 }={}){
   const q=finite(intendedShares),p0=finite(decisionPrice),ph=finite(horizonPrice),fees=finite(explicitCostNTD);
+  const evidence=String(fillEvidenceQuality||"UNKNOWN");
   if(coverageComplete!==true){
     return {status:"DATA_QUALITY_BLOCKED",reason:"EXECUTION_COVERAGE_INCOMPLETE",researchOnly:true,decisionImpact:false};
+  }
+  if(!["ACTUAL","MODELED"].includes(evidence)){
+    return {status:"DATA_QUALITY_BLOCKED",reason:"FILL_EVIDENCE_QUALITY_UNSUPPORTED",fillEvidenceQuality:evidence,researchOnly:true,decisionImpact:false};
   }
   if(!(q>0)||!(p0>0)||!(ph>0)||fees===null||fees<0){
     return {status:"DATA_QUALITY_BLOCKED",reason:"IMPLEMENTATION_SHORTFALL_INPUT_INVALID",researchOnly:true,decisionImpact:false};
@@ -281,9 +286,10 @@ export function decomposeBuyImplementationShortfall({
     executionPriceCostNTD,
     missedOpportunityCostNTD,
     explicitCostNTD:fees,
+    fillEvidenceQuality:evidence,
     totalShortfallNTD,
     totalShortfallBps:decisionNotionalNTD>0?totalShortfallNTD/decisionNotionalNTD*10000:null,
-    interpretation:"Positive shortfall is cost versus the frozen paper benchmark. Unfilled shares remain in the denominator and can create positive or negative opportunity cost.",
+    interpretation:"Positive shortfall is cost versus the frozen paper benchmark. Unfilled shares remain in the denominator and can create positive or negative opportunity cost. FORMAL signal market price is not an ACTUAL fill.",
     researchOnly:true,
     decisionImpact:false
   };
