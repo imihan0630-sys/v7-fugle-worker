@@ -1,6 +1,6 @@
 # Research Master Map — 台股交易決策監控系統
 
-Updated: 2026-09-26 18:10 Asia/Taipei
+Updated: 2026-09-27 05:15 Asia/Taipei
 Status: CANONICAL_RESEARCH_INDEX / RESEARCH_ONLY
 Formal Core: LOCKED
 
@@ -73,7 +73,7 @@ These are navigation anchors, not final maturity scores:
 - Derivatives: concept research exists; source/session/contract/tenor/DTE provenance required before outcome claims.
 - Trading frictions: explicit/implicit cost decomposition exists; missing decision/fill/quote context remains UNKNOWN.
 - Execution Alpha: coverage-aware accounting exists; exact-date recorder completeness remains a Class-B gate and 2026-09-24 remains UNKNOWN.
-- Portfolio/Re-add: REDUCED_CONFIRMED -> recovery/re-add research exists; formal promotion remains locked.
+- Portfolio/Re-add: Portfolio Risk Tier-A v0.2 now separates deployment, within-deployed concentration, total-account risky-name HHI, stop-risk intensity, A/B channel geometry and nominal reserve versus cap/rounding shortfall using immutable plan-time journal data. Only two non-zero plan dates are reconstructable; actual-live heat still requires complete BUY/ADD/REDUCE/SELL event coverage. REDUCED_CONFIRMED -> recovery/re-add research remains separate and Formal promotion stays locked.
 - Macro/Cross-market: PIT clocks/residualization/falsification are frozen; repository audit did not prove historical durable global receipts with sessionDate/knownAtTaipei/firstEligibleTaiwanDecision, so outcome testing is DATA_QUALITY_BLOCKED pending prospective receipts.
 - Breadth / rotation: V8.14 now preserves PIT sector-gate inputs/checks and a bounded SECTOR_GATE_REJECTED Shadow cohort. Existing market advancePct is explicitly Formal-normalized, not official whole-market breadth. Status WAITING_PROSPECTIVE; no gate threshold change is authorized.
 - Validation: R01-R08/I01-I07, purged holdout, date clustering, redundancy, costs, zero-pick and prospective Shadow controls are cross-cutting requirements.
@@ -99,12 +99,12 @@ No chat may mark L4/L5 from retrospective narrative alone. No chat may turn UNKN
 
 MASTER_MAP_SCHEMA = V0.2
 INVENTORY_RECONCILIATION = PARTIAL_BASELINE_PUBLISHED
-REGISTERED_MODULES = 20
-L0/L1/L2/L3/L4/L5 = 0 / 0 / 14 / 5 / 1 / 0
-REGISTERED_MODULE_MATURITY = 47.0%
-RESEARCH_DEBT_UNITS = 10.6
+REGISTERED_MODULES = 21
+L0/L1/L2/L3/L4/L5 = 0 / 0 / 15 / 5 / 1 / 0
+REGISTERED_MODULE_MATURITY = 46.7%
+RESEARCH_DEBT_UNITS = 11.2
 DATA_QUALITY_BLOCKED = 8
-DATA_SOURCE_BLOCKED = 3
+DATA_SOURCE_BLOCKED = 4
 WAITING_PROSPECTIVE = 3
 FORMAL_OPTIMIZATION_CANDIDATES = 1
 
