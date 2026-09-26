@@ -1,0 +1,125 @@
+{
+  "schemaVersion": "macro-cross-market-receipt-v0.1",
+  "researchDate": "2026-09-26",
+  "status": "SPEC_FROZEN_NOT_IMPLEMENTED",
+  "researchOnly": true,
+  "decisionImpact": false,
+  "formalCoreChanged": false,
+  "decisionClock": {
+    "market": "Taiwan",
+    "scanTime": "18:10 Asia/Taipei",
+    "taiwanRegularClose": "13:30 Asia/Taipei"
+  },
+  "sourceFamilies": [
+    {
+      "id": "US_BROAD_PRIOR",
+      "role": "COMMON_GLOBAL_RISK_CONTROL",
+      "sourceStatus": "FEASIBLE_PROVIDER_CONTRACT_NOT_FROZEN",
+      "timing": "PRIOR_US_CASH_CLOSE_BEFORE_TAIWAN_OPEN",
+      "fields": [
+        "instrument",
+        "sourceSessionDate",
+        "close",
+        "return1d",
+        "capturedAt",
+        "knownAtTaipei",
+        "firstEligibleTaiwanDecision",
+        "sourceId",
+        "sourceVersion",
+        "staleFlag"
+      ],
+      "guard": "At 18:10 this information has already had a full Taiwan session to transmit; do not treat raw return as fresh after-market alpha."
+    },
+    {
+      "id": "US_TECH_SEMICON_PRIOR",
+      "role": "SECTOR_CONDITIONAL_GLOBAL_SHOCK",
+      "sourceStatus": "SOURCE_SELECTION_PARTIAL",
+      "timing": "PRIOR_US_CASH_CLOSE_BEFORE_TAIWAN_OPEN",
+      "fields": [
+        "instrument",
+        "sourceSessionDate",
+        "close",
+        "return1d",
+        "capturedAt",
+        "knownAtTaipei",
+        "firstEligibleTaiwanDecision",
+        "sourceId",
+        "sourceVersion",
+        "staleFlag"
+      ],
+      "guard": "Test after U.S. broad and Taiwan sector/Residual-RS controls."
+    },
+    {
+      "id": "CBC_NTDUSD_CLOSE",
+      "role": "FX_REGIME_CONTEXT",
+      "sourceStatus": "MATERIAL_PASS_PROSPECTIVE",
+      "source": "Central Bank of the Republic of China / Taipei Forex Inc.",
+      "publicationWindow": "16:00-17:00 Asia/Taipei business days",
+      "fields": [
+        "sourceDate",
+        "ntdPerUsd",
+        "return1d",
+        "capturedAt",
+        "firstEligibleTaiwanDecision",
+        "sourceId",
+        "staleFlag"
+      ],
+      "guard": "Increase means NTD depreciation; do not invert sign."
+    },
+    {
+      "id": "JAPAN_KOREA_DAILY_CLOSE",
+      "role": "ASIA_MIXED_WINDOW_CONTEXT",
+      "sourceStatus": "SOURCE_AND_SEMANTIC_PARTIAL",
+      "timing": "Foreign cash close 14:30 Taipei, one hour after Taiwan regular close.",
+      "fields": [
+        "market",
+        "instrument",
+        "sourceSessionDate",
+        "close",
+        "return1d",
+        "capturedAt",
+        "knownAtTaipei",
+        "windowSemantic"
+      ],
+      "requiredWindowSemantic": "ASIA_DAILY_MIXED_WINDOW",
+      "guard": "Cannot claim clean post-Taiwan-close leadership from daily close-to-close return."
+    }
+  ],
+  "derivedResearchQuestions": [
+    "Does prior U.S. broad return add information after Taiwan same-day market return/regime?",
+    "Does prior U.S. tech/semiconductor return add information after broad U.S., Taiwan sector and Residual RS?",
+    "Does same-day CBC NTD/USD change add incremental market/sector risk information?",
+    "When intraday Asian anchors later exist, does the 13:30 Taipei-to-foreign-close subwindow add next-session information?"
+  ],
+  "outcomes": [
+    "nextOpenGap",
+    "openToClose",
+    "D1",
+    "D3",
+    "D5",
+    "MFE",
+    "MAE"
+  ],
+  "controls": [
+    "TAIEX same-day return",
+    "market regime",
+    "sector return",
+    "Residual RS",
+    "breadth",
+    "liquidity",
+    "R06 transition when valid",
+    "market realized volatility when valid"
+  ],
+  "falsification": [
+    "crisis-date removal",
+    "scanDate clustered inference",
+    "leave-one-date-out",
+    "date-shift placebo",
+    "holiday/session mismatch audit",
+    "provider-version stability",
+    "stale/missing remains UNKNOWN"
+  ],
+  "noHistoricalBackfill": true,
+  "noScoreOrThreshold": true,
+  "governance": "Capture only; any effect on Formal selection/ranking/risk is Class C after evidence."
+}
