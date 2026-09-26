@@ -708,3 +708,13 @@ Updated: 2026-09-26 12:49 Asia/Taipei.
 - Master Map updated without adding a fake new knowledge domain/module: formalOptimizationCandidates 0 -> 1 and candidate registry now names HISTORY_SOURCE_REVALIDATION_V2_3. Human Master Map also surfaces the candidate. Durable main commits: 1a6d898f79d58ea009fac0f9bc9b9be797e9c7a3 (machine map) and 3802f6f5e473b65ec86d605aa38e187cc39dc81f (human map).
 - Formal Core remains LOCKED. No merge/deploy is authorized by this promotion.
 - Owner decision boundary: this candidate is now mature enough for explicit Class-B implementation/integration review. If owner approval is not given, keep PR #105 research-only and continue other research lanes; do not silently promote.
+
+
+## B-163 — Volatility-regime reconciliation (2026-09-26 13:13 Asia/Taipei)
+- Fresh-read start B-162.
+- Registered VOLATILITY_REGIME_CONTEXT at L2 / DATA_QUALITY_BLOCKED.
+- Required tests: LEVEL/CHANGE/SHOCK/IMPLIED separation; ATR/trend/breadth/liquidity redundancy; market-vol versus stock-vol interaction; crisis-date removal; independent dates; PIT close clocks; separate TAIFEX provenance.
+- Counterevidence: blanket high-vol penalties can suppress calm-market momentum leaders; volatility can duplicate lateStage/overheat; crisis clusters can create false effects. No volatility optimization is ready.
+- Realized-vol outcomes require continuity-proven PIT histories; missing evidence remains UNKNOWN.
+- Master Map now has 19 modules; maturity 47.4%; research debt 10.0; DATA_QUALITY_BLOCKED 8; optimization candidates 1.
+- Exact next: reconcile the next unresolved independent module.
