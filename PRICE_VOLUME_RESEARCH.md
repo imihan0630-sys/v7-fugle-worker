@@ -13418,3 +13418,187 @@ A failure of H003 does not erase a potentially useful H001.
 A failure of H001 can stop unnecessary complexity early.
 
 Status: NARROW_FALSIFIABLE_SEQUENCE_FROZEN.
+
+# PVE-070 — Outcome Existence Does Not Confer Feature Eligibility
+
+## Current finalizers
+Outcome writers operate when an anchor is eligible under their local anchor logic.
+
+They do not independently require:
+- pvGuardState=VALID;
+- clean cohort provenance;
+- daily-history freshness;
+- at-rest QA eligibility.
+
+## Why this is acceptable for audit
+A quarantined/invalid research snapshot can still have a factual future market path.
+
+Preserving that path is useful for:
+- defect postmortem;
+- later re-analysis;
+- production-behavior audit.
+
+## Analysis rule
+Never analyze `v7_pv_outcomes` alone.
+
+Every outcome must join back to:
+- immutable snapshot;
+- hypothesis-specific field quality;
+- cohort-quality overlay;
+- event/horizon continuity quality.
+
+Outcome row existence means:
+`MARKET_PATH_RECORDED`,
+not:
+`RESEARCH_ELIGIBLE`.
+
+Status: OUTCOME_ELIGIBILITY_JOIN_REQUIRED.
+
+
+# PVE-071 — Milestone Counts Must Separate QA Observations from Clean Evidence Events
+
+## Cold-start rows
+Rows from 2026-09-29 can be valuable for:
+- recorder mechanics;
+- null/UNKNOWN behavior;
+- no-look-ahead;
+- idempotency QA.
+
+They should count toward:
+`DATA_QA_OBSERVATIONS`.
+
+They do not count toward:
+`CLEAN_H001_H004_EVIDENCE_EVENTS`
+when cohort/baseline requirements fail.
+
+## Three counters
+Maintain separately:
+1. rawSnapshotCount
+2. dataQaEligibleObservationCount
+3. hypothesisCleanEventCount
+
+## Event-level milestones
+The frozen 100/250/500 evidence reviews should use:
+hypothesis-clean event/date units,
+not raw D1 row count.
+
+The first ~50 QA floor can use data-QA-eligible observations/events for recorder validation,
+but its composition must be reported.
+
+Status: MILESTONE_DENOMINATORS_SEPARATED.
+
+
+# PVE-072 — The “30 Distinct Dates” Clock Starts on Clean Evidence Dates, Not Enable Date
+
+## Problem
+A system can be enabled for weeks while:
+- baseline is cold;
+- cohort provenance is unknown;
+- source quality is blocked.
+
+Counting those calendar dates would falsely imply mature evidence.
+
+## Rule
+For H001-H004 maturity:
+`distinctCleanMarketDates`
+counts only dates with at least one hypothesis-eligible clean event/contrast.
+
+Also report:
+- enabledMarketDates;
+- recorderObservedDates;
+- cleanEvidenceDates.
+
+## Implication
+2026-09-29 can be an enabled/recorder-QA date without becoming H001/H002 clean evidence date.
+
+Status: CLEAN_DATE_CLOCK_FROZEN.
+
+
+# PVE-073 — Hypothesis-Specific Event Keys Must Drive Sample Counts
+
+## H001/H002
+Primary unit:
+- participation event / first qualifying observation under the frozen event definition;
+- use persistence-domain event identity when applicable.
+
+## H003
+Primary unit:
+- acceptance lifecycle event;
+- use acceptance-domain event identity.
+
+## H004
+Risk study can report:
+- snapshot-level descriptive outcomes;
+- event-level primary aggregation,
+with dependence controls.
+
+## Prohibition
+Do not use top-level union eventKey from PVE-066 as a universal count denominator.
+
+Otherwise the same market episode can:
+- split;
+- merge;
+- change IDs when acceptance state appears.
+
+Status: HYPOTHESIS_EVENT_DENOMINATOR_FROZEN.
+
+
+# PVE-074 — First Clean H001 Comparison Must Report Coverage before Performance
+
+## Required table before any outcome metric
+By slot:
+- total clean opportunities;
+- Formal local ratio available;
+- slot RVOL available;
+- common-support count;
+- cumulative pace available;
+- UNKNOWN/invalid reason counts.
+
+## Why
+If C appears “better” only because:
+- it exists earlier;
+- it has fewer missing values;
+that is an operational coverage advantage,
+not necessarily a conditional predictive advantage.
+
+## Then report performance
+On common support only:
+A context
+B + Formal local ratio
+C + slot RVOL
+D + cumulative pace.
+
+Separately report coverage expansion outside common support.
+
+Status: COVERAGE_BEFORE_PERFORMANCE_FROZEN.
+
+
+# PVE-075 — No v0.1 Defect Justifies Touching Formal Core
+
+## Findings so far
+v0.1 has research-side defects in:
+- Guard labels;
+- range baseline semantics;
+- acceptance replay fidelity;
+- retry fingerprinting;
+- knowledge-time naming;
+- outcome/path semantics.
+
+## Boundary
+None of these defects demonstrate that:
+- Formal A/B is wrong;
+- Formal volume ratio should be replaced;
+- BUY/ADD/REDUCE should change;
+- ranking/capital should change.
+
+They only affect the validity of the research sidecar's claims.
+
+## Correct response
+- annotate;
+- quarantine;
+- version future research fixes;
+- collect clean evidence.
+
+Formal remains the comparator/control system.
+
+Status: RESEARCH_DEFECTS_DO_NOT_IMPLY_FORMAL_CHANGE.
