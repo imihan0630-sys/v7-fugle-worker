@@ -180,3 +180,44 @@ Durable artifact:
 `research/portfolio_risk_channel_stop_geometry_v0_1.json`.
 
 No Formal entry, stop, RR, allocation, ADD/REDUCE or selection rule is changed.
+
+
+## PR-028 — Cash reserve must be split into design reserve versus allocation shortfall (2026-09-27)
+
+Formal allocation geometry is deterministic:
+- 0 selected => nominal deploy target 0%;
+- 1 selected => 35%;
+- 2 selected => 60%;
+- 3 or more selected => 85%;
+- each name is capped at 35%;
+- each allocation is floored to the nearest NT$1,000;
+- capped/rounded residual is not redistributed.
+
+Therefore actual cash after a plan is not one homogeneous state.
+
+Research decomposition:
+- `nominalStructuralReservePct = 100 - nominalDeployTargetPct`;
+- `allocationImplementationShortfallPct = max(0, nominalDeployTargetPct - actualDeploymentPct)`;
+- `actualReservePct = nominalStructuralReservePct + allocationImplementationShortfallPct` when actual deployment is not above target.
+
+Observed witness:
+- 2026-09-18 had 3 selected names, so nominal deployment target = 85%.
+- Actual planned deployment = 84%.
+- Therefore 15% of cash is intentional structural reserve, while 1% = NT$2,000 is additional allocation implementation shortfall.
+- 2026-09-21 had 1 selected name, target = 35%, actual = 35%, so implementation shortfall = 0.
+
+### Falsification implication
+
+The proposition "all uninvested cash reflects lack of eligible opportunities or overly strict BUY logic" is false even before outcome analysis. Some cash can be a deterministic consequence of position caps and rounding.
+
+Future capital-utilization studies must therefore separate:
+1. no eligible plan;
+2. intentional nominal structural reserve;
+3. cap/rounding implementation shortfall;
+4. pending-entry cash after a plan exists;
+5. post-reduction / data-blocked states where applicable.
+
+No redistribution rule or higher deployment target is proposed.
+
+Durable artifact:
+`research/portfolio_risk_deployment_geometry_v0_1.json`.
