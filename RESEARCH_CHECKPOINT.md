@@ -956,3 +956,20 @@ Updated: 2026-09-26 22:14 Asia/Taipei.
 - Durable files: MACRO_CROSS_MARKET_RESEARCH.md MC-016..MC-025, new MACRO_CROSS_MARKET_CHECKPOINT.md, machine spec research/macro_cross_market_receipt_spec_v0_1.json, and System2 source matrix update.
 - No historical backfill, no global score/veto/bonus, no Worker/runtime/Formal change. Status remains DATA_QUALITY_BLOCKED / NOT_OPTIMIZATION_READY with a materially narrower blocker.
 - Exact next: continue structural/redundancy audits in another lane while global receipts remain prospective-only; any future capture must preserve sessionDate/knownAt/firstEligibleDecision and stay isolated from Formal.
+
+
+## B-180 — setupQuality A/B channel-scale structural falsification (2026-09-27 Asia/Taipei)
+- Fresh Formal audit targets the largest pre-consensus PriorityScore component: setupQuality weight = 28%.
+- A and B use different formulas but feed one common numeric scale.
+  - A qualifying envelope: theoretical setupQuality ~38 to 82.
+  - B qualifying envelope: theoretical setupQuality ~69.65 to 100.
+- Therefore equal-looking “0–100” values are not proven cross-channel calibrated. B's 18-point higher ceiling can contribute up to 5.04 more PriorityScore points versus A solely from score-scale capacity.
+- A has a structural discontinuity: otherwise identical A candidates at volumeTodayVsPrev5 0.90 vs 0.91 receive +12 vs +4 volume contribution, an 8-point setupQuality jump = 2.24 PriorityScore points, while both can remain A-eligible.
+- B post-gate volume scoring is continuous from the >=1.3x hard threshold and rises until 3.125x, so A and B also differ in within-channel ranking mechanics.
+- Current channel assignment is deterministic: if B.pass then B, else if A.pass then A. No A/B quota was identified; final capacity quotas are price-pool based. Dual-pass frequency remains empirical and must be measured.
+- No inference that B is “wrongly favored” is made yet. If B's higher score range is justified by consistently better forward path/risk after controls, normalization should be rejected. If the difference disappears after channel identity or raw setup controls, classify raw cross-channel score as channel-confounded.
+- Crucially, no new capture is needed: existing Shadow already preserves strategy/channel, A/B check bits, pullbackPct, supportDistancePct, volumeTodayVsPrev5, volumeContraction5to20, dailyClosePosition, dailyUpperShadowRatio and setupQuality.
+- Frozen machine artifact: research/setup_quality_channel_falsification_v0_1.json. PRIORITY_SCORE_CALIBRATION_RESEARCH.md updated with the exact audit.
+- Prospective tests: channel score distributions; A/B/dual-pass incidence; within-channel monotonicity vs D1/D3/D5/MFE/MAE/stop/no-follow-through; raw score vs within-channel rank comparator; 0.90/0.91 cliff incidence; matched cross-channel outcome calibration.
+- No alternative formula, normalization, 28% weight change or channel precedence change. Any Formal change is Class C with owner approval after OOS/date-cluster/redundancy evidence.
+- No FORMAL_OPTIMIZATION_CANDIDATE yet; structural non-comparability risk is confirmed, outcome materiality UNKNOWN.
