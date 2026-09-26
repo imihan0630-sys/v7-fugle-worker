@@ -7,13 +7,13 @@ Production trading: NOT ENABLED
 
 ## Mission
 
-Build a separate multi-strategy stock-selection platform that finds more diverse, evidence-backed opportunities than the existing V8 high-selectivity monitoring system, while preserving independent risk controls and measurable strategy performance.
+Build a separate multi-strategy Taiwan-equity selection and monitoring platform that independently performs stock selection, entry/exit planning, intraday monitoring, notifications, simulated position management and performance learning, while preserving independent risk controls and measurable strategy performance.
 
 System 2 is not a loosened copy of V8.
 
 ## Core design
 
-Market environment -> strategy activation -> factor engines -> candidate ranking -> timing/state -> simulated execution -> performance attribution -> validated strategy versioning.
+Market environment -> strategy activation -> factor engines -> independent candidate ranking -> strategy-specific entry/exit plan -> intraday monitoring/notification -> simulated execution/position state -> performance attribution -> validated strategy versioning.
 
 ## Required dimensions
 
@@ -45,6 +45,17 @@ Market environment -> strategy activation -> factor engines -> candidate ranking
 8. VALUE_REVERSION (research lane; not assumed useful until validated)
 
 Weights are not authoritative yet. Initial weights are hypotheses and must be validated.
+
+## Decision authority
+
+System 2 is self-contained. It does not ask System 1 whether a stock may be selected or whether an entry/exit may trigger.
+
+System 1/V8 may be used only as:
+- a source of reusable validated market knowledge;
+- a source-contract/data-experience reference;
+- an independent comparison benchmark.
+
+V8 A/B, Top6/3+3, capital rules and live-state machine are never prerequisites for System 2 decisions.
 
 ## Non-goals
 
