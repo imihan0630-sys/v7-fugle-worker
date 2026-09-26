@@ -1083,3 +1083,108 @@ Candidate next lane priority:
 4. **Risk/portfolio construction beyond fixed position caps: correlation, marginal risk, drawdown clustering**
 
 Recommended next: Fundamental Information Dynamics, because current system uses fundamental quality but has not deeply separated **level, change, surprise, revision, and price reaction**.
+
+
+---
+
+## BR-026 — Sector-gate provenance capture deployed; evidence accumulation begins
+
+### Why this step was necessary
+The first empirical task is to falsify the **existing** sector hard gate before inventing new breadth thresholds.
+
+A source audit found two missing pieces:
+1. `researchMarketContext.advancePct` came from Formal-normalized daily rows, not official whole-market breadth.
+2. Existing Shadow rows did not retain the exact hard-gate inputs:
+   - sector breadth;
+   - sector average change;
+   - sector amount versus 20-day average.
+
+Therefore prior Shadow data cannot support a clean causal claim about whether the 40% / -1% / 0.5 gate helps or hurts.
+
+### V8.14 prospective provenance
+Runtime: `8.14.0-sector-gate-provenance-shadow`.
+
+Every prospective Shadow snapshot now stores:
+- exact gate input values;
+- each frozen gate check;
+- combined gate result with UNKNOWN preserved;
+- exact threshold/version identity;
+- point-in-time provenance;
+- A/B technical pass/missing state.
+
+The market-context snapshot also labels the actual universe:
+`TWSE_TPEX_COMBINED_FORMAL_NORMALIZED`.
+
+It explicitly states:
+`officialWholeMarketBreadth=false`.
+
+### New bounded counterevidence cohort
+`SECTOR_GATE_REJECTED` captures candidates whose exact current Formal rejection reason is:
+`產業廣度、漲幅或資金活躍度偏弱`.
+
+Sampling is bounded to 6 per pool per scan and deterministically ordered by A/B technical closeness.
+
+This design can support paired falsification, but **cannot** support:
+- exhaustive rejected-universe counts;
+- market-wide opportunity-loss totals;
+- claims that a recorded rejected row would otherwise have passed full Formal RR/basic/fundamental checks after the gate.
+
+The snapshot explicitly records:
+`fullFormalCounterfactual=false`.
+
+### Frozen hypotheses
+H0 / counter-hypothesis:
+The current one-day sector hard gate adds little incremental information after stock setup, Price-Volume, sector RS and market regime, or it excludes useful early-rotation setups.
+
+H1 / positive hypothesis:
+The current gate removes fragile setups and improves follow-through / downside characteristics after those controls.
+
+No direction is preferred.
+
+### Frozen first descriptive analysis
+Minimum:
+- >=20 clean independent scan dates;
+- only post-V8.14 PIT rows;
+- mature D1/D3/D5 outcomes.
+
+Compare:
+- current gate-pass context;
+- bounded `SECTOR_GATE_REJECTED`.
+
+Outcomes:
+- D1/D3/D5 return;
+- MFE;
+- MAE;
+- false-breakout / stop-risk where observable.
+
+Controls / strata:
+- scan date;
+- A vs B technical readiness;
+- sector RS;
+- setup quality;
+- Price-Volume state;
+- market regime;
+- which exact gate component failed.
+
+Robustness:
+- date-cluster inference;
+- leave-one-date-out;
+- no threshold sweep;
+- no current-industry backfill for historical claims;
+- costs only when translating evidence into a trading counterfactual.
+
+### Promotion boundary
+Even a descriptive difference after 20 dates is **not** enough to alter the 40% / -1% / 0.5 gate.
+
+Any future Formal change still requires:
+- positive + counterevidence;
+- incremental value after redundancy controls;
+- independent-date / regime robustness;
+- coverage and zero-pick impact;
+- transaction-cost relevance where applicable;
+- anti-overfit / holdout;
+- owner approval.
+
+Status: `WAITING_PROSPECTIVE / NOT_OPTIMIZATION_READY`.
+
+Formal Core unchanged.
