@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "LEVERAGE_SHORTING_LS047_TPEX_MARGIN_SOURCE_CONTRACT_V0_1",
+  "observedAt": "2026-09-27T00:02:00+08:00",
+  "researchOnly": true,
+  "decisionImpact": false,
+  "sourceAuthority": "Taipei Exchange (TPEx)",
+  "officialPages": [
+    "https://www.tpex.org.tw/zh-tw/mainboard/trading/margin-trading/transactions.html",
+    "https://www.tpex.org.tw/web/stock/margin_trading/margin_balance/margin_bal.php?l=zh-tw",
+    "https://www.tpex.org.tw/web/stock/margin_trading/margin_balance/margin_bal_result.php?l=zh-tw&o=htm"
+  ],
+  "verified": {
+    "legacyPageRedirectsToCurrentTransactionsPage": true,
+    "csvBig5Advertised": true,
+    "csvUtf8Advertised": true,
+    "historicalAvailabilitySinceROC96": true,
+    "resultHtmlMachineReadable": true,
+    "displayedFieldsAndLotsUnitReproducible": true,
+    "historyLinkExposed": true
+  },
+  "unresolved": {
+    "csvButtonStableHref": false,
+    "csvRequestParameterContract": false,
+    "downloadableUtf8CsvDirectUrl": false,
+    "historicalCsvProgrammaticDateContract": false
+  },
+  "observations": [
+    "Semantic browser extraction exposes official page links but does not expose the CSV controls as ordinary anchor hrefs.",
+    "Native web opening of the current TPEx transactions page returned HTTP 403, while indexed/renderer content remains readable.",
+    "Official HTML result page for 2026-09-24 is readable and confirms the frozen displayed field schema and lots unit.",
+    "Search for official-domain margin_bal_result CSV/o=csv patterns returned no verified result."
+  ],
+  "conclusion": "TPEX_MARGIN_DATA_PRODUCT_AND_UTF8_CSV_EXISTENCE_VERIFIED__PROGRAMMATIC_DOWNLOAD_CONTRACT_UNRESOLVED",
+  "gate": "LS047_BLOCKED_PENDING_OFFICIAL_ARTIFACT_OR_VERIFIED_ENDPOINT",
+  "prohibited": [
+    "guess hidden CSV URLs",
+    "hard-code inferred o=csv parameters",
+    "bypass TPEx access controls",
+    "large automated cross-market backfill"
+  ],
+  "safeNext": [
+    "ingest an official UTF-8 CSV artifact with source/date/checksum/schema/parser metadata when available",
+    "or validate a documented/stable official endpoint if TPEx exposes one"
+  ]
+}
