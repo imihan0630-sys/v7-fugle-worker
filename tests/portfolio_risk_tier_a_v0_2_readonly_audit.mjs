@@ -54,6 +54,10 @@ for(const [scanDate,datePlans] of [...byDate.entries()].sort()){
     projectedStopRiskPctOfDeployedCapitalLow:out.heatIntensityOnDeployedCapital.projectedStopRiskPctOfDeployedCapitalLow,
     projectedStopRiskPctOfDeployedCapitalHigh:out.heatIntensityOnDeployedCapital.projectedStopRiskPctOfDeployedCapitalHigh,
     strategyRiskDecomposition:out.strategyRiskDecomposition,
+    nominalDeployTargetPct:out.reserveDecomposition.nominalDeployTargetPct,
+    nominalStructuralReservePct:out.reserveDecomposition.nominalStructuralReservePct,
+    allocationImplementationShortfallPct:out.reserveDecomposition.allocationImplementationShortfallPct,
+    allocationImplementationShortfallNTD:out.reserveDecomposition.allocationImplementationShortfallNTD,
     cashState:out.cashState.state,
     status:String(day?.status||"")
   });
