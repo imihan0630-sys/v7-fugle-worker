@@ -1,5 +1,11 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
+import {
+  classifyExecutionPlanState,
+  buildExecutionAlphaAccounting,
+  buildExecutionAlphaComponents,
+  compareExecutionPolicyToBenchmark
+} from "../research/execution_alpha_coverage_v0_1.mjs";
 
 const workerPath=process.env.V7_TEST_WORKER_PATH || new URL("../Worker.js",import.meta.url).pathname;
 const source=await readFile(workerPath,"utf8");
@@ -85,6 +91,44 @@ const diagnostics=mod.buildShadowResearchDiagnostics([held,failed]);
 assert.equal(diagnostics.breakout.held3D,1);
 assert.equal(diagnostics.breakout.failedClose3D,1);
 assert.equal(diagnostics.intradayVsOvernight.n,2);
+
+// Coverage-aware Execution Alpha: missing recorder/monitor evidence is UNKNOWN, never NO_BUY.
+{
+  assert.equal(classifyExecutionPlanState({
+    mature:true,sourceFresh:true,recorderComplete:true,monitorComplete:true,
+    signalPersistenceKnown:true,buyObserved:true
+  }),"BUY_OBSERVED_COMPLETE_COVERAGE");
+  assert.equal(classifyExecutionPlanState({
+    mature:true,sourceFresh:true,recorderComplete:false,monitorComplete:true,
+    signalPersistenceKnown:true,buyObserved:false
+  }),"UNKNOWN_RECORDER_INCOMPLETE");
+
+  const plans=[
+    {state:"BUY_OBSERVED_COMPLETE_COVERAGE",benchmarkPrice:100,firstBuyPrice:98,postEntryD5Return:0.04,idleSessions:0},
+    {state:"NO_BUY_OBSERVED_COMPLETE_COVERAGE",benchmarkD5Return:0.08,benchmarkMfe:0.12,benchmarkMae:-0.02,idleSessions:5},
+    {state:"NO_BUY_OBSERVED_COMPLETE_COVERAGE",benchmarkD5Return:-0.06,benchmarkMfe:0.01,benchmarkMae:-0.09,idleSessions:5},
+    {state:"UNKNOWN_RECORDER_INCOMPLETE",idleSessions:null},
+    {state:"NOT_YET_MATURE",idleSessions:null}
+  ];
+  const a=buildExecutionAlphaAccounting(plans);
+  assert.equal(a.selectedPlans,5);
+  assert.equal(a.completeCoveragePlans,3);
+  assert.equal(a.buyObservedPlans,1);
+  assert.equal(a.noBuyObservedPlans,2);
+  assert.equal(a.unknownPlans,1);
+  assert.equal(a.notYetMaturePlans,1);
+  assert.ok(Math.abs(a.buyTriggerRateCompleteCoverageOnly-1/3)<1e-12);
+
+  const components=buildExecutionAlphaComponents(plans);
+  assert.ok(Math.abs(components.conditionalBuyEntry.meanEntryPriceImprovement-0.02)<1e-12);
+  // One missed winner and one avoided loser coexist; NO_BUY has no one-sign interpretation.
+  assert.ok(Math.abs(components.completeNoBuyOpportunityCost.meanBenchmarkD5Return-0.01)<1e-12);
+
+  const policy=compareExecutionPolicyToBenchmark(plans);
+  assert.equal(policy.status,"DESCRIPTIVE_ONLY");
+  assert.equal(policy.unconditionalExecutionAlpha,null);
+  assert.equal(policy.decisionImpact,false);
+}
 
 console.log(JSON.stringify({
   ok:true,
