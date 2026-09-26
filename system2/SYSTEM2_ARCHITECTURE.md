@@ -97,3 +97,29 @@ Every factor value should support:
 - factorVersion
 
 Historical backfills may not use information unavailable at the decision timestamp.
+
+
+## Candidate and intraday monitoring capacity
+
+Owner-approved capacity rules:
+
+- System 2 global candidate/watch pool: maximum **12 unique symbols**, aligned with the current System 1 dynamic watchlist capacity.
+- Each individual System 2 strategy may place at most **3 symbols** into ACTIVE_INTRADAY_MONITOR state at the same time.
+- These are maximums, not quotas. Never fill weak names merely to reach 12 or 3.
+- Candidate ranking remains strategy-specific; the global 12-symbol pool is a display/monitoring capacity layer, not a universal score.
+
+### Multi-strategy overlap
+
+When the same symbol qualifies under multiple strategies:
+- it consumes only **one** slot in the global 12-symbol candidate pool;
+- its strategy memberships are all preserved;
+- if promoted to active monitoring under multiple strategies, it consumes one active-monitor slot in each relevant strategy;
+- entry/exit state, notifications, simulated fills and performance attribution remain strategy-specific.
+
+This prevents duplicate symbols from wasting global candidate capacity while preserving independent strategy evidence.
+
+### Promotion path
+
+`DISCOVERED -> CANDIDATE/WATCH -> ACTIVE_INTRADAY_MONITOR -> strategy-specific trigger/fill/hold/exit`
+
+Promotion into ACTIVE_INTRADAY_MONITOR should favor candidates that are closest to a valid strategy-specific entry condition, not simply the highest raw score.
