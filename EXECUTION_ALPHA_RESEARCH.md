@@ -175,3 +175,174 @@ CI:
 - V8 Regression `36210097500`: SUCCESS.
 
 Draft PR #104 remains unmerged / un-deployed. Formal Core and production runtime are unchanged.
+
+
+## EA-012 — The benchmark must match the actual Taiwan execution mechanism
+
+Implementation shortfall literature is clear that delayed/partial execution and unfilled opportunity cost belong in execution quality; a cheaper fill among survivors is not enough.
+
+For this system, a second constraint is equally important:
+**the benchmark must be executable in the same market mechanism as the intended action.**
+
+Three benchmark classes are now separated:
+
+1. `SELECTION_CLOSE_REFERENCE`
+   - useful as the paper decision reference;
+   - not assumed executable;
+   - cannot be called an arrival fill benchmark.
+
+2. `NEXT_SESSION_REGULAR_OPEN`
+   - regular-lot opening-auction reference;
+   - only executable if the intended leg is regular-lot AND a pre-open order was actually eligible/submittable;
+   - otherwise reference-only.
+
+3. `FIRST_ELIGIBLE_OBSERVED_QUOTE`
+   - preferred execution benchmark when freshness and mechanism are verified;
+   - must match REGULAR versus ODD_LOT venue/mechanism.
+
+This prevents a benchmark from looking artificially good simply because it uses a price the strategy could not actually access.
+
+Status: BENCHMARK_EXECUTABILITY_GUARD FROZEN.
+
+
+## EA-013 — Taiwan odd-lot execution is a separate market-mechanism problem, not a rounding detail
+
+Current TWSE and TPEx rules separate intraday odd-lot trading from regular continuous trading.
+
+Current 2026 mechanism:
+- odd-lot unit = 1–999 shares;
+- orders accepted 09:00–13:30;
+- first odd-lot call auction at 09:10;
+- since 2024-12-02, matching occurs every 5 seconds;
+- odd-lot best-five / execution prices are disclosed separately;
+- an odd-lot volatility interruption can delay a match by two minutes.
+
+Official sources:
+- TWSE trading mechanism: https://www.twse.com.tw/en/products/system/trading.html
+- TPEx odd-lot rules: https://www.tpex.org.tw/en-us/mainboard/trading/rules/odd-lot.html
+
+Fugle's official REST contract independently supports `type=oddlot` on:
+- intraday quote;
+- ticker;
+- candles;
+- trades;
+- volumes.
+
+Source:
+https://developer.fugle.tw/docs/data/http-api/intraday/quote/
+
+### Current-system audit
+The current V8.8.1 recorder calls:
+`/stock/intraday/quote/{symbol}`
+without `type=oddlot`.
+
+Therefore its best bid/ask, depth, open and avgPrice describe the default regular-lot quote path, not a verified odd-lot execution path.
+
+This matters because the Formal capital engine produces integer-share recommendations. Existing tests contain examples such as:
+- firstShares=77;
+- firstShares=1273.
+
+Those are not one homogeneous regular-lot order:
+- 77 = pure ODD_LOT;
+- 1273 = 1000-share regular leg + 273-share odd-lot leg.
+
+A single regular-lot quote cannot be treated as the executable benchmark for the entire 1273-share recommendation.
+
+Status: CURRENT EXECUTION RECORDER = REGULAR-LOT CONTEXT ONLY FOR BENCHMARK PURPOSES / ODD-LOT EXECUTION ALPHA DATA-GATED.
+
+
+## EA-014 — Odd-lot and regular-lot prices are empirically non-identical
+
+A 2023 NTU study on 950 TWSE-listed firms using 2020-10-26 through 2022-12-16 intraday odd-lot data reports:
+- odd-lot liquidity increased materially after the new market opened;
+- high-price stocks had relatively strong odd-lot liquidity;
+- the 09:10 odd-lot opening price could differ systematically from the regular-lot opening price;
+- the sign of that odd-lot/regular-lot opening gap varied with regular-market/opening conditions.
+
+This directly falsifies the shortcut:
+`regular-lot price ≈ odd-lot executable price`.
+
+Important transportability limit:
+that thesis studies the old 3-minute odd-lot matching regime. TWSE shortened the interval to 5 seconds on 2024-12-02. The existence of a distinct mechanism/price path is relevant, but the old spread magnitude must not be transplanted into 2026.
+
+Sources:
+- NTU thesis DOI 10.6342/NTU202303876
+- TWSE 2024/2025 odd-lot market update.
+
+Status: MECHANISM DIFFERENCE SUPPORTED / 2026 EFFECT SIZE UNKNOWN.
+
+
+## EA-015 — Execution intent denominator is the action tranche, not automatically the full planned position
+
+The current Formal architecture separates:
+- FIRST = first tranche, normally 60% of allocated capital;
+- ADD = second tranche, normally 40%.
+
+Therefore FIRST execution quality must use the FIRST intended shares as its parent denominator.
+
+It is incorrect to treat second-tranche shares as "unfilled FIRST shares" merely because the full plan eventually targets a larger position.
+
+Required identity:
+- FIRST parent quantity = frozen firstShares at the FIRST decision;
+- ADD parent quantity = frozen secondShares / authorized ADD quantity at the ADD decision;
+- any later REDUCE / RE-ADD has its own action denominator.
+
+For a mixed-lot parent quantity, split:
+- regularShares = floor(q/1000)*1000;
+- oddLotShares = q mod 1000.
+
+The two legs require separate mechanism-aware execution evidence before aggregation.
+
+Status: ACTION-TRANCHE DENOMINATOR FROZEN.
+
+
+## EA-016 — Formal BUY signal price is not an actual fill
+
+Cross-lane Trading-Frictions research already proved that the trade journal stores formal signal market prices, not a broker fill ledger.
+
+Therefore:
+- persisted formal BUY = positive evidence that the strategy emitted BUY;
+- firstBuyPrice can remain a conditional SIGNAL-price timing diagnostic;
+- it cannot be silently upgraded to actual execution price;
+- actual implementation shortfall requires ACTUAL fill evidence;
+- a MODELED fill scenario must be labeled MODELED;
+- signal market price alone is unsupported as fill evidence.
+
+The isolated PR #104 helper now fails closed when fill evidence quality is not ACTUAL or explicitly MODELED.
+
+Status: SIGNAL-vs-FILL FIREWALL FROZEN.
+
+
+## EA-017 — Implementation-shortfall decomposition added without creating a policy score
+
+Draft PR #104 now contains a pure Class-A implementation-shortfall-style helper.
+
+For an intended BUY quantity Q, frozen decision benchmark P0, horizon price Ph, actual/modelled fills q_j at p_j and explicit cost C:
+
+- execution-price cost = sum[(p_j - P0) * q_j]
+- unfilled opportunity cost = (Ph - P0) * (Q - sum q_j)
+- total shortfall = execution-price cost + unfilled opportunity cost + C
+- bps denominator = P0 * Q
+
+Properties:
+- unfilled shares stay in the denominator;
+- missed winner can create positive opportunity cost;
+- avoided loser can create negative opportunity cost;
+- fill coverage must be complete;
+- fill evidence quality is explicit;
+- no composite Execution Alpha score is created.
+
+Latest branch head for this tranche: `5371e62dae80164bd0fdc5c8c10b8c0c2ce54a4e`.
+CI status must be checked independently before treating the engineering tranche as validated.
+
+### Consequence for the current research program
+Execution Alpha now has two independent completeness gates:
+1. event/date recorder completeness (BUY vs NO-BUY truth);
+2. execution-mechanism completeness (regular/odd/mixed-lot benchmark truth).
+
+Passing only one is insufficient.
+
+No historical 2026-09-24 BUY/NO-BUY reconstruction is authorized.
+No Formal BUY rule, share sizing, capital rule or push behavior changed.
+
+Status: EXECUTION BENCHMARK SEMANTICS DEEPENED / ODD-LOT PROVENANCE GAP FOUND / FORMAL CORE LOCKED.
