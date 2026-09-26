@@ -171,6 +171,16 @@ console.log(JSON.stringify({
   assert.equal(oddAtRegularOpen.status,"MECHANISM_MISMATCH");
   assert.equal(oddAtRegularOpen.eligible,false);
 
+  const regularOpenUnproven=classifyExecutionBenchmarkEligibility({
+    benchmarkType:"NEXT_SESSION_REGULAR_OPEN",lotType:"REGULAR_LOT",benchmarkPrice:101
+  });
+  assert.equal(regularOpenUnproven.status,"REFERENCE_ONLY");
+  assert.equal(regularOpenUnproven.reason,"OPEN_AUCTION_EXECUTABILITY_NOT_PROVEN");
+  const regularOpenProven=classifyExecutionBenchmarkEligibility({
+    benchmarkType:"NEXT_SESSION_REGULAR_OPEN",lotType:"REGULAR_LOT",benchmarkPrice:101,preOpenOrderEligible:true
+  });
+  assert.equal(regularOpenProven.status,"ELIGIBLE");
+
   const mixed=classifyExecutionBenchmarkEligibility({
     benchmarkType:"FIRST_ELIGIBLE_OBSERVED_QUOTE",lotType:"MIXED_LOT",benchmarkPrice:101,
     observedAt:"2026-09-30T09:10:05+08:00",quoteFresh:true,marketMechanism:"ODD_LOT_INTRADAY"
