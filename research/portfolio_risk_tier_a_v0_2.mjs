@@ -73,6 +73,39 @@ export function heatIntensityOnDeployedCapital(tierA={}){
   };
 }
 
+export function nominalDeployTargetPct(selectedCount){
+  const n=Math.max(0,Math.floor(Number(selectedCount)||0));
+  return n<=0?0:n===1?35:n===2?60:85;
+}
+
+export function decomposePlannedReserve({selectedCount,totalCapital,plannedDeploymentNTD}={}){
+  const total=num(totalCapital);
+  const planned=Math.max(0,num(plannedDeploymentNTD)||0);
+  if(!(total>0)) return {status:"UNKNOWN",reason:"TOTAL_CAPITAL_UNKNOWN"};
+  const targetPct=nominalDeployTargetPct(selectedCount);
+  const targetNTD=total*targetPct/100;
+  const actualDeploymentPct=round(planned/total*100,4);
+  const actualReserveNTD=Math.max(0,total-planned);
+  const nominalStructuralReserveNTD=Math.max(0,total-targetNTD);
+  const implementationShortfallNTD=Math.max(0,targetNTD-planned);
+  const aboveTargetNTD=Math.max(0,planned-targetNTD);
+  return {
+    status:aboveTargetNTD>0?"ABOVE_NOMINAL_TARGET":"READY",
+    nominalDeployTargetPct:round(targetPct,4),
+    nominalDeployTargetNTD:round(targetNTD,2),
+    actualDeploymentPct,
+    actualDeploymentNTD:round(planned,2),
+    nominalStructuralReservePct:round(100-targetPct,4),
+    nominalStructuralReserveNTD:round(nominalStructuralReserveNTD,2),
+    allocationImplementationShortfallPct:round(implementationShortfallNTD/total*100,4),
+    allocationImplementationShortfallNTD:round(implementationShortfallNTD,2),
+    actualReservePct:round(actualReserveNTD/total*100,4),
+    actualReserveNTD:round(actualReserveNTD,2),
+    aboveNominalTargetNTD:round(aboveTargetNTD,2),
+    semantics:"SEPARATE_INTENTIONAL_DEPLOYMENT_RESERVE_FROM_CAP_ROUNDING_ALLOCATION_SHORTFALL"
+  };
+}
+
 export function strategyRiskDecomposition(plans=[]){
   const groups=new Map();
   for(const plan of plans||[]){
@@ -105,6 +138,9 @@ export function portfolioTierAV02(plans=[],totalCapital,options={}){
   const within=deployedCapitalHHI(plans);
   const totalFootprint=riskyNameHHIOnTotalCapital(plans,totalCapital);
   const heatIntensity=heatIntensityOnDeployedCapital(base);
+  const reserveDecomposition=decomposePlannedReserve({
+    selectedCount:(plans||[]).length,totalCapital,plannedDeploymentNTD:base.plannedDeploymentNTD
+  });
   return {
     ...base,
     schemaVersion:"PORTFOLIO_RISK_TIER_A_V0_2",
@@ -118,6 +154,7 @@ export function portfolioTierAV02(plans=[],totalCapital,options={}){
     },
     heatIntensityOnDeployedCapital:heatIntensity,
     strategyRiskDecomposition:strategyRiskDecomposition(plans),
+    reserveDecomposition,
     decisionImpact:false,
     researchOnly:true
   };
