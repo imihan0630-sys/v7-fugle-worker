@@ -961,6 +961,62 @@ console.log("pattern core v0.1 C1-C8 and invariance tests passed");
 }
 
 
+// Volume provenance participates in Pattern cache identity even when price geometry is unchanged.
+{
+  const bars=makeBars([100,99,101,100,102],{volume:[100000,90000,110000,95000,120000]});
+  const parent=buildShadowParentReference({
+    scanDate:"2026-09-25",
+    symbol:"VOL1",
+    parentSnapshot:{cohort:"BROAD_CONTROL",pool:"FORMAL_GENERAL"}
+  });
+  const common={
+    sourceId:"price-continuity-v1",
+    payloadHash:"price-hash-v1",
+    pointInTimeEligible:true,
+    corporateActionSemanticsReady:true,
+    volumeSourceId:"exact-share-source",
+    volumePayloadHash:"volume-hash-v1",
+    volumeSemanticSpace:"RAW_SHARE_VOLUME",
+    volumePrecisionClass:"EXACT_SHARES",
+    shareUnitComparable:true
+  };
+  const geometry=validatePatternSeriesEnvelope({
+    role:"GEOMETRY",
+    semanticSpace:"TECHNICAL_CONTINUITY",
+    bars,
+    requireVolume:true,
+    provenance:common
+  });
+  const raw=validatePatternSeriesEnvelope({
+    role:"RAW_EXECUTION",
+    semanticSpace:"RAW_EXECUTION",
+    bars,
+    provenance:{
+      sourceId:"raw-price-v1",payloadHash:"raw-hash-v1",
+      pointInTimeEligible:true,corporateActionSemanticsReady:true,
+      requestedAdjustmentMode:false,returnedAdjustmentMode:false
+    }
+  });
+  const snapshot=buildPatternSnapshot({bars,asOfDate:bars.at(-1).date,swingThresholdPct:0.03});
+  const a=buildPatternCacheRecord({
+    parentReference:parent,geometryEnvelope:geometry,rawExecutionEnvelope:raw,
+    detectorSnapshot:snapshot,asOfDate:bars.at(-1).date
+  });
+  assert.equal(a.status,"VALID");
+  assert.equal(a.geometry.volume.semanticSpace,"RAW_SHARE_VOLUME");
+  assert.equal(a.geometry.volume.payloadHash,"volume-hash-v1");
+
+  const geometryVolumeDrift={...geometry,volumePayloadHash:"volume-hash-v2"};
+  const b=buildPatternCacheRecord({
+    parentReference:parent,geometryEnvelope:geometryVolumeDrift,rawExecutionEnvelope:raw,
+    detectorSnapshot:snapshot,asOfDate:bars.at(-1).date
+  });
+  const cmp=comparePatternCacheRecords(a,b);
+  assert.equal(cmp.status,"PROVENANCE_CONFLICT");
+  assert.equal(cmp.sameGeometry,true);
+  assert.equal(cmp.sameGeometryVolume,false);
+}
+
 // Episode identity and prospective run-receipt gates are outcome-free.
 {
   const a=buildPatternEpisodeReference({
