@@ -28,6 +28,7 @@ import {
   analyzeTwoDayCandlestickMorphology,
   analyzeConfirmedBoundaryGeometry,
   analyzeCupGeometryFromAnchors,
+  analyzeImpulseConsolidationGeometry,
   buildPatternSnapshot,
   replayPatternSnapshot
 } from "../research/pattern_core_v0_1.mjs";
@@ -1031,4 +1032,49 @@ console.log("pattern core v0.1 C1-C8 and invariance tests passed");
   });
   assert.equal(unconfirmed.status,"BLOCKED");
   assert.equal(unconfirmed.reason,"CUP_ANCHOR_UNCONFIRMED_OR_MISSING");
+}
+
+
+// Impulse/consolidation geometry is continuous and explicit-anchor; no flag threshold or bullish label.
+{
+  const closes=[100,102,105,109,114,120,119,118,117.5,118,119,120];
+  const volumes=[100,120,150,180,220,260,180,150,130,120,110,100];
+  const bars=makeBars(closes,{startDay:1,volume:volumes,tickPad:0.2});
+  const x=analyzeImpulseConsolidationGeometry({
+    bars,
+    asOfDate:bars.at(-1).date,
+    poleStartAt:bars[0].date,
+    poleEndAt:bars[5].date,
+    consolidationEndAt:bars.at(-1).date
+  });
+  assert.equal(x.status,"VALID");
+  assert.ok(x.poleReturnPct>0);
+  assert.ok(x.polePathEfficiency>0&&x.polePathEfficiency<=1);
+  assert.ok(x.consolidationDepthFromPoleEnd>=0);
+  assert.ok(x.consolidationRangeVsPoleRange>0);
+  assert.ok(x.consolidationVolumeVsPole<1);
+  assert.ok(x.consolidationTrueRangeVsPole<1);
+  assert.equal(x.researchOnly,true);
+  assert.equal(x.decisionImpact,false);
+
+  const xs=analyzeImpulseConsolidationGeometry({
+    bars:scaled(bars,10),
+    asOfDate:bars.at(-1).date,
+    poleStartAt:bars[0].date,
+    poleEndAt:bars[5].date,
+    consolidationEndAt:bars.at(-1).date
+  });
+  for(const key of [
+    "poleReturnPct","polePathEfficiency","consolidationDepthFromPoleEnd",
+    "consolidationRangeVsPoleRange","consolidationCloseRetracementOfPole",
+    "consolidationVolumeVsPole","consolidationTrueRangeVsPole"
+  ]){
+    assert.ok(Math.abs(xs[key]-x[key])<1e-12,key);
+  }
+
+  const blocked=analyzeImpulseConsolidationGeometry({
+    bars,asOfDate:bars.at(-1).date,
+    poleStartAt:bars[5].date,poleEndAt:bars[2].date,consolidationEndAt:bars.at(-1).date
+  });
+  assert.equal(blocked.reason,"IMPULSE_ANCHOR_ORDER_INVALID");
 }
