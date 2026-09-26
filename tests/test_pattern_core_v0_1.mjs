@@ -26,6 +26,8 @@ import {
   classifyRepeatedResistanceTests,
   analyzeMajorZoneLifecycle,
   analyzeTwoDayCandlestickMorphology,
+  analyzeConfirmedBoundaryGeometry,
+  analyzeCupGeometryFromAnchors,
   buildPatternSnapshot,
   replayPatternSnapshot
 } from "../research/pattern_core_v0_1.mjs";
@@ -935,4 +937,98 @@ console.log("pattern core v0.1 C1-C8 and invariance tests passed");
   });
   assert.equal(ca.status,"VALID");
   assert.equal(ca.corporateActionBoundary,true);
+}
+
+
+// Latent boundary geometry: confirmed swings only, continuous slopes/compression, no textbook direction score.
+{
+  const closes=[100,101,102,103,102,101,100,101,102,101,100,101,101.5,101,100.5,101,101.2];
+  const bars=makeBars(closes,{startDay:1,tickPad:0.1});
+  const swings=[
+    {type:"HIGH",pivotAt:bars[3].date,confirmedAt:bars[5].date,pivotPrice:104},
+    {type:"LOW", pivotAt:bars[6].date,confirmedAt:bars[7].date,pivotPrice:99},
+    {type:"HIGH",pivotAt:bars[8].date,confirmedAt:bars[10].date,pivotPrice:103},
+    {type:"LOW", pivotAt:bars[10].date,confirmedAt:bars[11].date,pivotPrice:99.8},
+    {type:"HIGH",pivotAt:bars[12].date,confirmedAt:bars[14].date,pivotPrice:102.2},
+    {type:"LOW", pivotAt:bars[14].date,confirmedAt:bars[15].date,pivotPrice:100.2}
+  ];
+  const g=analyzeConfirmedBoundaryGeometry({
+    bars,swings,asOfDate:bars.at(-1).date
+  });
+  assert.equal(g.status,"VALID");
+  assert.equal(g.readiness,"GEOMETRY_READY");
+  assert.equal(g.upperTouchCount,3);
+  assert.equal(g.lowerTouchCount,3);
+  assert.ok(g.upperSlope<0);
+  assert.ok(g.lowerSlope>0);
+  assert.equal(g.orientation,"CONVERGING_INWARD");
+  assert.equal(g.converging,true);
+  assert.ok(g.compressionRatio>0 && g.compressionRatio<1);
+  assert.equal(g.researchOnly,true);
+  assert.equal(g.decisionImpact,false);
+
+  const gs=analyzeConfirmedBoundaryGeometry({
+    bars:scaled(bars,10),
+    swings:swings.map(x=>({...x,pivotPrice:x.pivotPrice*10})),
+    asOfDate:bars.at(-1).date
+  });
+  assert.ok(Math.abs(gs.upperSlopeNorm-g.upperSlopeNorm)<1e-12);
+  assert.ok(Math.abs(gs.lowerSlopeNorm-g.lowerSlopeNorm)<1e-12);
+  assert.ok(Math.abs(gs.upperFitRmseNorm-g.upperFitRmseNorm)<1e-12);
+  assert.ok(Math.abs(gs.compressionRatio-g.compressionRatio)<1e-12);
+
+  // A future-confirmed anchor cannot leak into an earlier as-of fit.
+  const future=[...swings,{type:"HIGH",pivotAt:bars[16].date,confirmedAt:"2026-02-01",pivotPrice:101.5}];
+  const gf=analyzeConfirmedBoundaryGeometry({
+    bars,swings:future,asOfDate:bars.at(-1).date
+  });
+  assert.deepEqual(gf,g);
+
+  const prefix=analyzeConfirmedBoundaryGeometry({
+    bars:bars.slice(0,16),swings,asOfDate:bars[15].date
+  });
+  const asOf=analyzeConfirmedBoundaryGeometry({
+    bars,swings,asOfDate:bars[15].date
+  });
+  assert.deepEqual(prefix,asOf);
+}
+
+// Cup/bowl geometry is anchor-based and continuous; it does not inherit a bullish sign from the name.
+{
+  const closes=[110,112,114,116,118,120,116,111,106,102,99,97,96,96.5,97,98,100,103,106,109,112,115,117,119,118,117];
+  const bars=makeBars(closes,{startDay:1,tickPad:0.2});
+  const left={type:"HIGH",pivotAt:bars[5].date,confirmedAt:bars[7].date,pivotPrice:120.2};
+  const bottom={type:"LOW",pivotAt:bars[12].date,confirmedAt:bars[14].date,pivotPrice:95.8};
+  const right={type:"HIGH",pivotAt:bars[23].date,confirmedAt:bars[25].date,pivotPrice:119.2};
+  const cup=analyzeCupGeometryFromAnchors({
+    bars,asOfDate:bars[25].date,leftRim:left,bottom,rightRim:right
+  });
+  assert.equal(cup.status,"VALID");
+  assert.equal(cup.topology,"CONFIRMED_H_L_H_BOWL_CANDIDATE");
+  assert.ok(cup.cupDepthPct>0);
+  assert.ok(cup.rimDifferencePct>=0);
+  assert.ok(cup.rightSideRecoveryRatio>0.9);
+  assert.ok(cup.timeSymmetryRatio>0 && cup.timeSymmetryRatio<=1);
+  assert.ok(cup.bottomResidenceRatio>0);
+  assert.ok(Number.isFinite(cup.curvatureResidualRmse));
+  assert.equal(cup.researchOnly,true);
+  assert.equal(cup.decisionImpact,false);
+
+  const scaledCup=analyzeCupGeometryFromAnchors({
+    bars:scaled(bars,10),
+    asOfDate:bars[25].date,
+    leftRim:{...left,pivotPrice:left.pivotPrice*10},
+    bottom:{...bottom,pivotPrice:bottom.pivotPrice*10},
+    rightRim:{...right,pivotPrice:right.pivotPrice*10}
+  });
+  assert.ok(Math.abs(scaledCup.cupDepthPct-cup.cupDepthPct)<1e-12);
+  assert.ok(Math.abs(scaledCup.rimDifferencePct-cup.rimDifferencePct)<1e-12);
+  assert.ok(Math.abs(scaledCup.rightSideRecoveryRatio-cup.rightSideRecoveryRatio)<1e-12);
+  assert.ok(Math.abs(scaledCup.curvatureResidualRmse-cup.curvatureResidualRmse)<1e-12);
+
+  const unconfirmed=analyzeCupGeometryFromAnchors({
+    bars,asOfDate:bars[20].date,leftRim:left,bottom,rightRim:right
+  });
+  assert.equal(unconfirmed.status,"BLOCKED");
+  assert.equal(unconfirmed.reason,"CUP_ANCHOR_UNCONFIRMED_OR_MISSING");
 }
