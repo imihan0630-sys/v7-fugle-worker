@@ -300,3 +300,47 @@ export function decomposeBuyImplementationShortfall({
     decisionImpact:false
   };
 }
+
+
+export const EXECUTION_COVERAGE_MANIFEST_V1=Object.freeze({
+  parentRequired:["parentActionId","actionType","symbol","intendedShares","decisionKnownAt","coverageComplete"],
+  legRequired:["lotLeg","intendedShares","benchmarkType","benchmarkPrice","benchmarkObservedAt","quoteFresh","marketMechanism","finalState","fillEvidenceQuality"],
+  fillRequired:["parentActionId","lotLeg","fillShares","fillPrice","fillAt","evidenceQuality"],
+  lifecycleOptional:["submitAt","cancelAt","replaceAt","explicitCostNTD","horizonPrice"],
+  allowedFinalStates:["FINAL_FILLED","FINAL_PARTIAL","FINAL_UNFILLED"]
+});
+
+export function validateExecutionCoverageManifest(parent={}){
+  const miss=[];
+  for(const k of EXECUTION_COVERAGE_MANIFEST_V1.parentRequired){
+    if(parent?.[k]===null||parent?.[k]===undefined||parent?.[k]==="") miss.push("PARENT_"+k);
+  }
+  const legs=Array.isArray(parent?.legs)?parent.legs:[];
+  if(!legs.length) miss.push("LEGS_MISSING");
+  for(const [i,leg] of legs.entries()){
+    for(const k of EXECUTION_COVERAGE_MANIFEST_V1.legRequired){
+      if(leg?.[k]===null||leg?.[k]===undefined||leg?.[k]==="") miss.push("LEG"+i+"_"+k);
+    }
+  }
+  return {status:miss.length?"DATA_QUALITY_BLOCKED":"VALID",missing:miss,researchOnly:true,decisionImpact:false};
+}
+
+export function aggregateExecutionLegShortfalls(legs=[]){
+  const a=Array.isArray(legs)?legs:[];
+  if(!a.length) return {status:"DATA_QUALITY_BLOCKED",reason:"LEGS_MISSING",researchOnly:true,decisionImpact:false};
+  if(a.some(x=>x?.status!=="VALID")) return {status:"DATA_QUALITY_BLOCKED",reason:"REQUIRED_LEG_BLOCKED",blockedLegs:a.map((x,i)=>x?.status==="VALID"?null:i).filter(x=>x!==null),researchOnly:true,decisionImpact:false};
+  const notional=a.reduce((s,x)=>s+(finite(x.decisionNotionalNTD)||0),0);
+  if(!(notional>0)) return {status:"DATA_QUALITY_BLOCKED",reason:"DECISION_NOTIONAL_INVALID",researchOnly:true,decisionImpact:false};
+  const total=a.reduce((s,x)=>s+(finite(x.totalShortfallNTD)||0),0);
+  return {status:"VALID",legCount:a.length,decisionNotionalNTD:notional,totalShortfallNTD:total,totalShortfallBps:total/notional*10000,aggregation:"SUM_NTD_THEN_DIVIDE_BY_TOTAL_DECISION_NOTIONAL",researchOnly:true,decisionImpact:false};
+}
+
+export function validateParentActionLifecycle(events=[]){
+  const a=(Array.isArray(events)?events:[]).map(x=>String(x?.type||x||""));
+  if(!a.length||a[0]!=="INTENT") return {status:"DATA_QUALITY_BLOCKED",reason:"INTENT_MISSING_OR_NOT_FIRST",researchOnly:true,decisionImpact:false};
+  const finals=a.filter(x=>["FINAL_FILLED","FINAL_PARTIAL","FINAL_UNFILLED"].includes(x));
+  if(finals.length!==1||a[a.length-1]!==finals[0]) return {status:"DATA_QUALITY_BLOCKED",reason:"FINAL_STATE_NOT_UNIQUE_LAST",researchOnly:true,decisionImpact:false};
+  const bad=a.find(x=>!["INTENT","SUBMITTED","PARTIAL_FILL","CANCEL","REPLACE","FINAL_FILLED","FINAL_PARTIAL","FINAL_UNFILLED"].includes(x));
+  if(bad) return {status:"DATA_QUALITY_BLOCKED",reason:"UNKNOWN_LIFECYCLE_EVENT",event:bad,researchOnly:true,decisionImpact:false};
+  return {status:"VALID",finalState:finals[0],hasReplace:a.includes("REPLACE"),partialFillCount:a.filter(x=>x==="PARTIAL_FILL").length,researchOnly:true,decisionImpact:false};
+}
