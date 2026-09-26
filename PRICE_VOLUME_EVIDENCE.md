@@ -3391,3 +3391,213 @@ PRE_FIRST_SESSION_EVIDENCE_STATE_MATRIX_FROZEN.
 4. PVE-137: separate environment drift, market-state drift and code drift in QA comparisons.
 5. PVE-138: freeze what may be compared across non-trading reruns without accidentally treating time-dependent admin state as mutation.
 6. No runtime/Formal/token/permission/deployment change.
+
+
+# PVE-134 — Correction: PVE-126 Overstated the Current Zero-Collapse Defect
+
+## Re-inspection
+PVE-126 noted:
+`latestLiveReported: live.fugleCallsThisRun || null`
+and warned that a numeric zero would collapse to null.
+
+The preserved artifacts show the current runtime shape is an object:
+`{ quote: 0, candles: 0, total: 0, freePlanLimitPerMinute: 60 }`.
+
+An object is truthy in JavaScript even when all contained counters are zero.
+
+## Correction
+Therefore the current deployed schema DOES preserve the observed all-zero call receipt.
+
+The real issue is narrower:
+if `fugleCallsThisRun` ever changes schema to a numeric `0`, logical-OR would collapse it to null.
+
+PVE-126 is superseded for current-runtime interpretation by:
+`CURRENT_OBJECT_ZERO_RECEIPT_PRESERVED / TYPE_DEPENDENT_FUTURE_RISK`.
+
+Status:
+PVE_126_CURRENT_DEFECT_CLAIM_CORRECTED.
+
+
+# PVE-135 — Workflow Job Success and Research qaPass Are Independent Axes
+
+## Observed evidence
+For run 36144193465, the GitHub Actions job conclusion is:
+`success`.
+
+The emitted report simultaneously has:
+- `qaPass=false`;
+- `qaFailures=["D1_DIRECT_READ_NOT_AUTHORIZED"]`.
+
+Therefore:
+`WORKFLOW_SUCCESS != RESEARCH_QA_PASS`
+is directly observed.
+
+## Reverse direction
+The reverse divergence is structurally possible:
+the QA script could emit `qaPass=true`, then a later workflow/action step such as artifact upload or runner infrastructure could fail.
+
+That reverse case is not claimed as observed here.
+
+## State model
+Track independently:
+- workflow/job conclusion;
+- reportGenerated;
+- qaPass;
+- check-level PASS/FAIL/BLOCKED/UNKNOWN.
+
+Status:
+WORKFLOW_AND_QA_STATE_AXES_SEPARATED.
+
+
+# PVE-136 — Same Workflow Run Lineage Produced Different Runtime-State Artifacts
+
+## Compared artifacts
+Both artifacts belong to workflow run:
+`36144193465`
+and repository head:
+`262dc359bcb125845d093dead5036108622083af`.
+
+Older artifact:
+- artifact id 10868777263;
+- generated 2026-09-25T13:56:49.246Z;
+- activeContentSha256 = `d10ff4c13f95abb5910f7f06b7b05e9846c469913ac5fd7c911a25966d2e018c`.
+
+Newer artifact:
+- artifact id 10893170584;
+- generated 2026-09-25T23:55:40.623Z;
+- activeContentSha256 = `757056c146f880c12428e3151065c1c040f39adfbd94c5dfd4bcc3ca5d607e81`.
+
+Stable across both:
+- runtime.version;
+- PV enable/binding state;
+- D1 403 authorization block;
+- Formal config fingerprint;
+- live fingerprint;
+- qaPass=false / same D1 failure.
+
+Changed:
+- active Worker content hash;
+- scanFingerprintWithoutPv;
+- latest cron receipt;
+- report date/time.
+
+## Consequence
+A workflow run id/head SHA does not uniquely identify the external deployed Worker/admin state observed by a rerun.
+
+Artifact identity must include at least:
+- artifact id;
+- generatedAt;
+- repository head SHA;
+- activeContentSha256.
+
+Status:
+RERUN_ARTIFACT_RUNTIME_STATE_NOT_IMMUTABLE.
+
+
+# PVE-137 — Runtime Version String Is Not Sufficient Code Identity
+
+## Direct evidence
+Across the two PVE-136 artifacts:
+`runtime.version`
+remained:
+`8.11.0-pv-shadow-v0.1-log-only`.
+
+But:
+`activeContentSha256`
+changed.
+
+## Interpretation boundary
+The artifacts prove source-content drift under the same reported version string.
+
+They do NOT by themselves prove:
+- which source lines changed;
+- whether the change was PV-related;
+- whether Formal semantics changed.
+
+## Evidence rule
+For reproducible research, pin both:
+- human-readable runtime version;
+- exact active content hash.
+
+Version equality alone cannot establish executable-code equality.
+
+Status:
+VERSION_STRING_NOT_CODE_IDENTITY.
+
+
+# PVE-138 — scanFingerprintWithoutPv Drift Is Not Self-Explaining Semantic Drift
+
+## Source definition
+The QA script hashes:
+- scanDate;
+- generatedAt;
+- selectedCount;
+- totalCapital;
+- stocks;
+- pipeline;
+- config.
+
+The two artifacts show:
+- currentAfterMarketScanDate remained 2026-09-24;
+- configFingerprint remained unchanged;
+- scanFingerprintWithoutPv changed.
+
+## Limitation
+The sanitized artifact does not preserve the full Formal scan payload or sub-hashes.
+
+Therefore the changed scan fingerprint cannot be decomposed after the fact into:
+- volatile timestamp drift;
+- plan/stock drift;
+- pipeline drift;
+- config-in-scan drift.
+
+## Rule
+Do not interpret a changed whole-scan fingerprint as a Formal semantic mutation without component evidence.
+
+Future safe comparison should separate:
+- scanSemanticFingerprint excluding volatile timestamps;
+- scanTimingFingerprint;
+- stock-plan fingerprint;
+- pipeline fingerprint.
+
+Status:
+WHOLE_SCAN_FINGERPRINT_DRIFT_AMBIGUOUS.
+
+
+# PVE-139 — Safe Cross-Rerun Comparison Matrix Frozen
+
+For non-trading/pre-first-session reruns, compare fields by class:
+
+| Field class | Cross-rerun use |
+| --- | --- |
+| artifact id / generatedAt | provenance identity; expected to differ |
+| repository head SHA | workflow code provenance only |
+| runtime.version | descriptive label; insufficient for code identity |
+| activeContentSha256 | exact deployed source identity |
+| PV binding enabled/type | deployment-setting evidence |
+| D1 failure class/error | acquisition-path evidence |
+| configFingerprint | Formal config-state identity |
+| liveFingerprintWithoutPv | live-state identity only when the same live state is expected |
+| scanFingerprintWithoutPv | whole-scan drift detector only; semantic cause unresolved |
+| cron.latest | time-dependent operational receipt; expected to advance |
+| afterMarketWindow | report-time context; not an invariant |
+| qaPass | aggregate research state; must be interpreted with workflow conclusion and check-level causes |
+
+## Pre-9/29 rule
+A rerun that changes only expected dynamic fields is not a mutation event.
+
+A changed activeContentSha256 is CODE_DRIFT and must be provenance-pinned.
+
+A changed whole-scan fingerprint is SCAN_STATE_DRIFT_UNKNOWN until decomposed.
+
+Status:
+CROSS_RERUN_COMPARISON_MATRIX_FROZEN.
+
+
+## Exact continuation after PVE-139
+1. PVE-140: audit whether active Worker source drift can be mapped to an authorized deployment/commit lineage without changing runtime.
+2. PVE-141: determine whether the two artifacts' scan drift can be reconstructed from existing repository/admin receipts; if not, preserve UNKNOWN.
+3. PVE-142: define the minimum provenance tuple every post-enable PV observation/report must carry for reproducibility.
+4. PVE-143: separate workflow source commit, deployed Worker source and research-document commit as three independent lineage axes.
+5. PVE-144: freeze a no-hindsight provenance receipt template for 9/29 and 9/30.
+6. Continue data-quality/falsification only; no alpha threshold tuning or Formal promotion.
