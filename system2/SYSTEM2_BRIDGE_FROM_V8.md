@@ -39,9 +39,18 @@ PIT, UNKNOWN semantics, prospective Shadow, purged OOS, redundancy, costs, date 
 - production Cloudflare bindings/secrets;
 - V8 Formal optimization decisions.
 
-## System 2 output to V8
+## Decision-boundary rule
 
-Future integration may allow System 2 to publish research-only candidate sets that V8 can observe. Such output has zero Formal impact until a separately reviewed bridge is approved.
+The bridge is **not** an approval path.
+
+System 2 never sends a candidate to V8 for permission to select, enter, hold, reduce or exit. V8 A/B rules and V8 15-minute confirmation have zero authority over System 2 decisions.
+
+If a future comparison screen displays both systems side by side, that is observation/benchmarking only:
+- System 1 decision remains System 1;
+- System 2 decision remains System 2;
+- disagreement is preserved as research evidence rather than forced into one answer.
+
+Any future data exchange must preserve this independence.
 
 ## Known motivation
 
