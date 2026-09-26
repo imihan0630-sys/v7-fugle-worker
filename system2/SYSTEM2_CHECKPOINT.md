@@ -29,10 +29,10 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 ## Next tasks
 
 1. ✅ Inventory existing research into shared domain tags without relocating history — completed in `shared-knowledge/SHARED_RESEARCH_INVENTORY.md`.
-2. Audit Tier A/B source fields for exact machine-readable contracts and historical PIT availability.
-3. Define factor-engine TypeScript interfaces and normalization/UNKNOWN contracts.
-4. Define market-regime V0 inputs using Tier A data only.
-5. Define execution simulator assumptions for Taiwan fees/tax/slippage/gaps/limits.
+2. ✅ Audit Tier A/B source fields for exact machine-readable contracts and historical PIT availability — `system2/SYSTEM2_SOURCE_CONTRACT_AUDIT.md`.
+3. ✅ Define factor-engine TypeScript interfaces and normalization/UNKNOWN contracts — `system2/SYSTEM2_FACTOR_ENGINE_CONTRACT.md` + `system2/src/contracts.ts`.
+4. ✅ Define market-regime V0 inputs using Tier A / prospectively derivable fields only — `system2/SYSTEM2_MARKET_REGIME_V0.md`.
+5. ✅ Define execution simulator assumptions for Taiwan fees/tax/slippage/gaps/limits — `system2/SYSTEM2_EXECUTION_SIMULATOR_SPEC.md`.
 6. Implement the first research-only factor snapshot and decision archive behind an isolated System 2 path/table namespace.
 7. Start prospective Shadow accumulation for the preregistered strategies only after storage and PIT checks pass.
 
