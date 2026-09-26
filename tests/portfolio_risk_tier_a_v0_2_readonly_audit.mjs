@@ -24,7 +24,8 @@ for(const row of plans){
     totalAllocation:row?.total_allocation,
     allocationRatio:row?.allocation_ratio,
     priorityScore:row?.priority_score,
-    rewardRisk:row?.reward_risk
+    rewardRisk:row?.reward_risk,
+    strategy:row?.strategy
   });
 }
 const dayMap=new Map(days.map(x=>[String(x.scan_date||""),x]));
@@ -52,6 +53,7 @@ for(const [scanDate,datePlans] of [...byDate.entries()].sort()){
     projectedHeatPctHigh:out.projectedHeatPctHigh,
     projectedStopRiskPctOfDeployedCapitalLow:out.heatIntensityOnDeployedCapital.projectedStopRiskPctOfDeployedCapitalLow,
     projectedStopRiskPctOfDeployedCapitalHigh:out.heatIntensityOnDeployedCapital.projectedStopRiskPctOfDeployedCapitalHigh,
+    strategyRiskDecomposition:out.strategyRiskDecomposition,
     cashState:out.cashState.state,
     status:String(day?.status||"")
   });
