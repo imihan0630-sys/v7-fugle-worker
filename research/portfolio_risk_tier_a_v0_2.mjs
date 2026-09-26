@@ -3,7 +3,7 @@
 // Extends v0.1 by separating deployment from within-deployed concentration.
 // No Production/Formal behavior is imported or mutated.
 
-import {portfolioTierA} from "./portfolio_risk_tier_a_v0_1.mjs";
+import {portfolioTierA,projectedStopRisk} from "./portfolio_risk_tier_a_v0_1.mjs";
 
 function num(value){
   const n=Number(value);
@@ -73,6 +73,33 @@ export function heatIntensityOnDeployedCapital(tierA={}){
   };
 }
 
+export function strategyRiskDecomposition(plans=[]){
+  const groups=new Map();
+  for(const plan of plans||[]){
+    const raw=String(plan?.strategy||plan?.channel||plan?.mode||"UNKNOWN");
+    const strategy=/^A|拉回|PULLBACK/i.test(raw)?"A":(/^B|突破|MOMENTUM/i.test(raw)?"B":"UNKNOWN");
+    const allocation=allocationOf(plan)||0;
+    const risk=projectedStopRisk(plan);
+    const row=groups.get(strategy)||{strategy,planCount:0,plannedDeploymentNTD:0,knownRiskPlans:0,riskNTDLow:0,riskNTDHigh:0};
+    row.planCount+=1;
+    row.plannedDeploymentNTD+=allocation;
+    if(risk.ok){
+      row.knownRiskPlans+=1;
+      row.riskNTDLow+=risk.riskNTDLow;
+      row.riskNTDHigh+=risk.riskNTDHigh;
+    }
+    groups.set(strategy,row);
+  }
+  return [...groups.values()].map(row=>({
+    strategy:row.strategy,
+    planCount:row.planCount,
+    knownRiskPlans:row.knownRiskPlans,
+    plannedDeploymentNTD:round(row.plannedDeploymentNTD,2),
+    projectedStopRiskPctOfStrategyDeploymentLow:row.plannedDeploymentNTD>0?round(row.riskNTDLow/row.plannedDeploymentNTD*100,4):null,
+    projectedStopRiskPctOfStrategyDeploymentHigh:row.plannedDeploymentNTD>0?round(row.riskNTDHigh/row.plannedDeploymentNTD*100,4):null
+  })).sort((a,b)=>a.strategy.localeCompare(b.strategy));
+}
+
 export function portfolioTierAV02(plans=[],totalCapital,options={}){
   const base=portfolioTierA(plans,totalCapital,options);
   const within=deployedCapitalHHI(plans);
@@ -90,6 +117,7 @@ export function portfolioTierAV02(plans=[],totalCapital,options={}){
       rule:"Do not interpret effectiveCapitalNames without deployment ratio. One fully concentrated deployed sleeve can still be a smaller total-account risky footprint when most capital remains cash."
     },
     heatIntensityOnDeployedCapital:heatIntensity,
+    strategyRiskDecomposition:strategyRiskDecomposition(plans),
     decisionImpact:false,
     researchOnly:true
   };
