@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-09-26T17:58:00+08:00",
+  "updatedAt": "2026-09-26T18:00:00+08:00",
   "status": "BASELINE_V0_2_PARTIAL_RECONCILIATION",
   "formalCore": "LOCKED",
   "authority": {
@@ -237,7 +237,11 @@
       "domain": "STATISTICAL_VALIDATION_PIT_SHADOW_OOS",
       "level": "L2",
       "status": "WAITING_PROSPECTIVE",
-      "basis": "Formal Production patch-chain audit corrected comparator semantics: post-consensus priorityScore ranks first, raw rewardPerRisk second, marketConsensusScore third, then setup/sector/RS. V7.5.30 can add up to +7 to priorityScore after >=2-source consensus. Historical Shadow snapshots omitted priorityScore/consensus provenance; V8.13.0 prospectively records the full ranking context. Status remains WAITING_PROSPECTIVE; no valid historical calibration claim is allowed."
+      "basis": "Production patch-chain audit corrected comparator semantics: post-consensus priorityScore ranks first, raw rewardPerRisk second, marketConsensusScore third, then setup/sector/RS. V7.5.30 can add up to +7 after >=2-source consensus. V8.13.0 is now deployed and prospectively records the full PIT ranking context; first eligible post-deploy after-market cohort is expected 2026-09-29. Status remains WAITING_PROSPECTIVE / NOT_OPTIMIZATION_READY; no historical score backfill is allowed.",
+      "deployedVersion": "8.13.0-priority-score-provenance-shadow",
+      "deployedAt": "2026-09-26T17:59:14+08:00",
+      "firstProspectiveScanDate": "2026-09-29",
+      "formalCoreImpact": false
     }
   ],
   "caveat": "Baseline v0.2 covers reconciled durable lanes visible in dedicated research/checkpoint files; it is not yet exhaustive of every submodule. Percent is an auditable registered-module maturity index, not percent of all possible stock-market knowledge."
