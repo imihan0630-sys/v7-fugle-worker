@@ -63,6 +63,7 @@ No percentage is published until module inventory has been reconciled against de
 
 These are navigation anchors, not final maturity scores:
 - K-line/pattern: dedicated pattern research/checkpoints; prospective observer work exists, outcome maturity still evidence-dependent.
+- Trend / momentum / reversal: dedicated lane initialized in `TREND_MOMENTUM_REVERSAL_RESEARCH.md` / checkpoint. Regime-transition lifecycle is FALSIFICATION_IN_PROGRESS; Momentum Gap is Taiwan-negative/rejected; Extreme Absolute Strength has high redundancy with existing lateStage/overheat. Current R06 transition counting is not yet candidate-outcome evidence and adjacent observed research dates are not automatically consecutive official sessions.
 - Price-volume: PV/PVE program is actively advancing on main; latest status must be read from its dedicated checkpoint, never inferred from this summary.
 - Microstructure: concept/evidence work exists; recorder completeness and historical observability constraints remain relevant.
 - Fundamentals: information-dynamics research exists; PIT vintage semantics remain mandatory.
@@ -92,17 +93,17 @@ No chat may mark L4/L5 from retrospective narrative alone. No chat may turn UNKN
 
 MASTER_MAP_SCHEMA = V0.2
 INVENTORY_RECONCILIATION = PARTIAL_BASELINE_PUBLISHED
-REGISTERED_MODULES = 16
-L0/L1/L2/L3/L4/L5 = 0 / 0 / 10 / 5 / 1 / 0
-REGISTERED_MODULE_MATURITY = 48.8%
-RESEARCH_DEBT_UNITS = 8.2
+REGISTERED_MODULES = 17
+L0/L1/L2/L3/L4/L5 = 0 / 0 / 11 / 5 / 1 / 0
+REGISTERED_MODULE_MATURITY = 48.2%
+RESEARCH_DEBT_UNITS = 8.8
 DATA_QUALITY_BLOCKED = 6
 DATA_SOURCE_BLOCKED = 3
 WAITING_PROSPECTIVE = 1
 FORMAL_OPTIMIZATION_CANDIDATES = 0
 
-Important: 48.8% is the maturity of the currently reconciled 16 durable modules, NOT "48.8% of all stock-market knowledge". The inventory is still expanding and module splits must be independently falsifiable.
+Important: 48.2% is the maturity of the currently reconciled 17 durable modules, NOT "48.8% of all stock-market knowledge". The inventory is still expanding and module splits must be independently falsifiable.
 
 Optimization bridge is mandatory: once a research finding passes applicable positive+counterevidence, PIT/OOS, independent-date, regime, redundancy/incremental-value, cost, coverage/zero-pick and overfit gates and could improve after-market selection, it must be surfaced as a FORMAL_OPTIMIZATION_CANDIDATE for owner review. It may not self-promote to Formal.
 
-Next master-map task: continue reconciliation of remaining domains/submodules, especially trend/momentum/reversal, volatility-regime, institutional/crowding and macro/cross-market; do not inflate counts by treating sequential checkpoint IDs as separate modules.
+Next master-map task: continue reconciliation of remaining domains/submodules, especially volatility-regime, institutional/crowding and macro/cross-market; continue trend/momentum/reversal from its new dedicated lane; do not inflate counts by treating sequential checkpoint IDs as separate modules.
