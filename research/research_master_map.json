@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-09-26T22:20:00+08:00",
+  "updatedAt": "2026-09-26T22:35:00+08:00",
   "status": "BASELINE_V0_2_PARTIAL_RECONCILIATION",
   "formalCore": "LOCKED",
   "authority": {
@@ -35,17 +35,17 @@
   ],
   "aggregate": {
     "domainCount": 15,
-    "moduleCount": 20,
-    "maturityWeightedPct": 47,
+    "moduleCount": 21,
+    "maturityWeightedPct": 46.7,
     "countsByLevel": {
       "L0": 0,
       "L1": 0,
-      "L2": 14,
+      "L2": 15,
       "L3": 5,
       "L4": 1,
       "L5": 0
     },
-    "researchDebtUnits": 10.6,
+    "researchDebtUnits": 11.2,
     "dataQualityBlocked": 8,
     "dataSourceBlocked": 3,
     "waitingProspective": 3,
@@ -57,7 +57,7 @@
     "formalAutoPromotion": false,
     "independentInferenceUnitRequired": true
   },
-  "next": "Macro/Cross-Market historical receipts are DATA_QUALITY_BLOCKED; keep prospective receipt proposal isolated. Continue Master Map reconciliation to remaining independently falsifiable modules without fabricating history.",
+  "next": "Continue institutionalScore decomposition using existing prospective Shadow fields after clean post-9/29 coverage; preserve actor semantics prospectively only through proposal-governed shared-runtime changes. Continue remaining under-reconciled modules without fabricating history.",
   "optimizationBridge": {
     "required": true,
     "autoPromoteFormal": false,
@@ -126,6 +126,13 @@
       "level": "L2",
       "status": "DATA_QUALITY_BLOCKED",
       "basis": "Concept complete; dynamic evidence requires prospective complete recorder capture."
+    },
+    {
+      "id": "INSTITUTIONAL_CASH_FLOW_CROWDING",
+      "domain": "POSITIONING_INSTITUTIONS_MARGIN_SBL_CROWDING",
+      "level": "L2",
+      "status": "FALSIFICATION_IN_PROGRESS",
+      "basis": "Current Formal institutionalScore decomposition and deterministic overlap are frozen; 3-session aggregate TWSE+TPEx actor persistence is materially source-ready, while dealer prop/hedge and foreign-dealer semantics are collapsed by the current parser. Existing prospective Shadow fields are sufficient for score-decomposition falsification without new market-data calls."
     },
     {
       "id": "LEVERAGE_SHORTING",
