@@ -127,3 +127,37 @@ A Class-A prospective collector is justified only if it can be isolated from For
 
 ## Current conclusion
 SC-003 and SC-004 are definition-complete. Outcome testing remains NOT_AUTHORIZED_BY_EVIDENCE because PIT source coverage and identity resolution have not yet passed a bounded prospective feasibility sample. Next: SC-005 outcome-blind bounded source/identity coverage pilot across TWSE/TPEx and multiple industries; decide collector feasibility from coverage, not returns.
+
+
+## SC-005 / SC-006 — bounded event lane and collector gate
+
+### SC-005 result
+The outcome-blind bounded source pilot falsified periodic/issuer reports as a sufficient named historical graph source, but the official major-counterparty cessation event lane is materially better for one narrow event class. When issuers name the counterparty, the disclosure can carry a publication clock, concentration basis/percentage and a distinct cessation/effective clock. Anonymous disclosures remain identity UNKNOWN.
+
+Decision:
+- MAJOR_COUNTERPARTY_STOP official event lane = OPERATIONALLY_USABLE_FOR_BOUNDED_EVENT_RESEARCH.
+- Complete historical supply-chain graph = DATA_SOURCE_BLOCKED.
+- No-event from an incomplete universe means NO_OBSERVED_QUALIFYING_BREAK_EVENT only; it never means NO_EDGE.
+
+### SC-006 official-source / machine-interface gate
+Official TWSE material confirms MOPS ezSearch is a first-party search surface spanning listed/OTC companies, supports market/category/date filters, orders results by announcement time, and defines M25 as the major-customer/supplier business-cessation category. TPEx official material independently defines the >=10% principal purchaser/supplier cessation disclosure semantics.
+
+This is sufficient to establish a first-party discoverable source universe for the narrow event class, but not yet a stable machine-readable ingestion contract. Direct non-browser access to the documented ezSearch deep link currently redirects to the MOPS error surface in the research environment. No documented first-party JSON/CSV/API contract for M25 has yet been verified.
+
+Therefore collector status = PROPOSAL_READY / MACHINE_INTERFACE_UNVERIFIED. Do not implement a brittle UI scraper and do not fall back to third-party search as canonical ingestion.
+
+Minimal isolated Class-A prospective collector proposal, contingent on verifying a stable first-party machine interface:
+- ingest only official timestamped M25 / equivalent TWSE-TPEx major-counterparty cessation/change disclosures;
+- preserve raw source receipt/hash where permitted plus source URL/id, issuer market/symbol, publishedAt/knownAt, effectiveAt, counterparty raw name, identityResolution, concentrationPct/basis, source rule/category, capturedAt and pointInTimeEligible;
+- anonymous counterparty stays UNKNOWN; no entity guessing;
+- append-only event ledger plus explicit revision/supersession link; never rewrite knownAt backward;
+- coverage receipt counts eligible official events only when the official query denominator is reproducible; otherwise coverage denominator = UNKNOWN;
+- no historical Shadow backfill, no outcome lookup in feasibility collection, no Formal selection/ranking/monitor/capital/signal/push dependency.
+
+Implementation gate:
+1. verify a stable first-party machine-readable M25/equivalent query or downloadable response and its pagination/time semantics;
+2. prove TWSE/TPEx market coverage and reproducible denominator;
+3. targeted parser/provenance tests including named, anonymous, revision and malformed cases;
+4. only then isolated Class-A prospective implementation. If (1) fails, mark SOURCE_ACCESS_BLOCKED and move on rather than scraping UI.
+
+No alpha/outcome conclusion is authorized by SC-005/006.
