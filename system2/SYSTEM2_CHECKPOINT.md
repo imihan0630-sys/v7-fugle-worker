@@ -15,7 +15,7 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 - Initial System 2 data-source feasibility matrix completed.
 - Research-only storage schema designed with isolated `s2_` namespace.
 - First three Shadow strategy hypotheses preregistered before outcome tuning.
-- ChatGPT Project UI migration handoff prepared in `system2/CHATGPT_PROJECT_MIGRATION.md`.
+- ChatGPT Project created, instructions saved, and this design chat moved into the new Project; migration status recorded in `system2/CHATGPT_PROJECT_MIGRATION.md`.
 
 ## Current design decisions
 
@@ -38,5 +38,4 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 
 ## Blockers
 
-No protected blocker at bootstrap.
-ChatGPT Project creation/moving a chat is a UI/account action and is not performed by repository tooling.
+No protected blocker at current P1 stage.
