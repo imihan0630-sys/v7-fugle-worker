@@ -7,7 +7,8 @@ import {
   extractRawTradedSymbolPresence,
   buildOfficialSymbolGapReceipt,
   reconcileFreshProviderWithOfficialGaps,
-  decideHistoryAdmissionV21
+  decideHistoryAdmissionV21,
+  estimateHistoryRevalidationCost
 } from "../research/history_source_revalidation_v2.mjs";
 
 function weekdayDates(endExclusive,count,exclude=new Set()){
@@ -285,4 +286,54 @@ console.log(JSON.stringify({
   });
   assert.equal(out.usable,false);
   assert.equal(out.reason,"FRESH_PROVIDER_MISSING_OFFICIAL_BAR");
+}
+
+
+// V2.2: existing architecture gives a bounded provider-call envelope:
+// 60 seed minutes x 6 symbols/minute = 360 provider calls/day.
+{
+  const cost=estimateHistoryRevalidationCost({
+    suspiciousSymbols:120,baselineProviderCalls:30,seedMinutes:60,batchPerMinute:6,
+    gapRequests:[
+      {market:"TWSE",date:"2026-09-23"},
+      {market:"TWSE",date:"2026-09-23"},
+      {market:"TPEx",date:"2026-09-22"}
+    ]
+  });
+  assert.equal(cost.providerCapacity,360);
+  assert.equal(cost.providerCallsRequired,150);
+  assert.equal(cost.providerCallsWithinSeedWindow,true);
+  assert.equal(cost.uniqueGapDateMarketKeys,2);
+  assert.equal(cost.officialGapNetworkCalls,2);
+}
+
+// Duplicate symbol-gap checks must collapse to one full-market official call per exchange/date.
+{
+  const requests=Array.from({length:100},()=>({market:"TWSE",date:"2026-09-23"}));
+  const cost=estimateHistoryRevalidationCost({suspiciousSymbols:100,gapRequests:requests});
+  assert.equal(cost.uniqueGapDateMarketKeys,1);
+  assert.equal(cost.officialGapNetworkCalls,1);
+}
+
+// A prospective presence ledger can eliminate repeated official network calls for already-captured dates.
+{
+  const cost=estimateHistoryRevalidationCost({
+    suspiciousSymbols:10,
+    gapRequests:[
+      {market:"TWSE",date:"2026-09-23"},
+      {market:"TPEx",date:"2026-09-23"}
+    ],
+    presenceLedgerKeys:["TWSE:2026-09-23","TPEx:2026-09-23"]
+  });
+  assert.equal(cost.officialGapNetworkCalls,0);
+  assert.equal(cost.officialGapLedgerHits,2);
+}
+
+// Worst-case stale blast radius is explicitly not hidden.
+// 2,000 suspicious symbols cannot fit a one-hour 6/min seed window and must remain pending/UNKNOWN.
+{
+  const cost=estimateHistoryRevalidationCost({suspiciousSymbols:2000});
+  assert.equal(cost.providerCapacity,360);
+  assert.equal(cost.providerCallsWithinSeedWindow,false);
+  assert.equal(cost.providerOverflowCalls,1640);
 }
