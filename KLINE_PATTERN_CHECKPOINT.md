@@ -191,3 +191,14 @@ Durable research detail: main `KLINE_PATTERN_RESEARCH.md` commit `a245b486dc60f2
 6. Do not fabricate historical Pattern Shadow rows. Outcome joins remain blocked until prospective complete parent coverage exists.
 7. When runtime/data gates eventually clear, run only PATTERN-RG1..RG4 plus frozen redundancy controls and existing maturity/date/regime/holdout/cost gates.
 8. Do not create R09 or propose Formal optimization yet.
+
+
+## Continuation update — DL-003K
+- Modern Taiwan market-structure evidence now strengthens the regime-portability guard.
+- TWSE switched from frequent batch auctions to continuous intraday trading on 2020-03-23.
+- 2026 Journal of Financial Markets evidence finds the switch generally improved liquidity/price efficiency, especially for mid/small caps; separate 2026 Taiwan evidence finds stronger disposition/overconfidence behavior after continuous trading, especially in retail-heavy stocks.
+- These are not treated as a direct Pattern alpha claim. They imply that modern price discovery and retail behavioral feedback can coexist.
+- Primary evidence for 2026 Pattern decisions must therefore be post-2020 continuous-trading evidence. Pre-2020 7%/batch-auction studies remain mechanism/detector-stress evidence, not directly representative effect sizes.
+- Do not create a combinatorial new Pattern interaction family. Reuse PATTERN-RG1..RG4 and keep marketStructureRegime as a structural-era control.
+- C4 constrained-breakout evidence must eventually be prospective under the current 10% + continuous-trading regime.
+- Formal Core remains LOCKED; no new factor or threshold.
