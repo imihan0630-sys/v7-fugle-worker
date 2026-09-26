@@ -1,7 +1,7 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-152.
-Updated: 2026-09-26 09:17 Asia/Taipei.
+Checkpoint sequence: B-155.
+Updated: 2026-09-26 11:15 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Detailed B-01..B-123 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
@@ -588,3 +588,18 @@ Updated: 2026-09-26 09:17 Asia/Taipei.
 - Concurrent B-154 Execution Alpha progress was re-read and preserved before this write. Execution Alpha remains data-quality gated; it is not an optimization-ready Formal candidate.
 - Exact next master-map continuation (parallel governance task): reconcile remaining trend/momentum/reversal, volatility-regime, institutional/crowding, macro/cross-market and independently falsifiable submodules; avoid count inflation. Each lane must maintain optimization-candidate status under the mandatory bridge.
 - Canonical active research continuation remains B-154's Execution Alpha exact-next point unless a later concurrent checkpoint supersedes it.
+
+
+## B-155 — Execution Alpha lifecycle/aggregation falsification deepened (2026-09-26 11:15 Asia/Taipei)
+- Fresh-read governance/worklist/checkpoint/main and observed concurrent B-MAP-002 plus DL/PVE commits before continuing B-154 exact-next. No completed lane was restarted.
+- EA-018: mixed regular/odd-lot parent actions must aggregate NTD shortfall by decision-notional weight, not equal-weight leg percentages. Parent result is valid only when every required leg has mechanism-matched benchmark provenance and complete execution/non-execution coverage; a valid regular leg cannot impute a missing odd-lot leg.
+- EA-019: partial fill/cancel/replace requires parent-action lifecycle identity (INTENT -> SUBMITTED -> PARTIAL_FILL* -> CANCEL/REPLACE* -> FINAL_FILLED/FINAL_UNFILLED). Formal signal logs remain SIGNAL evidence, not broker fill evidence. Actual-fill implementation shortfall remains DATA_QUALITY_BLOCKED without order/fill lifecycle provenance.
+- EA-020: idle-capital opportunity cost cannot assume zero cash return or automatic redeployment. Stock opportunity path, cash benchmark, actual portfolio capacity/redeployment and capital utilization must remain separate scenarios/evidence.
+- EA-021 freezes the first falsifiable optimization bridge: do NOT jump to "loosen BUY". A Formal relaxation becomes a candidate only if complete-coverage MISSED_UPSIDE persistently exceeds AVOIDANCE_BENEFIT after costs while conditional BUY price improvement is insufficient, across independent dates/regimes and frozen A/B/pool/liquidity/lot strata. If avoidance offsets misses or effects cluster by strategy/regime, universal relaxation is rejected and interaction-specific research is required.
+- Positive evidence: existing Class-A diagnostic and implementation-shortfall decomposition can represent BUY, complete NO-BUY, UNKNOWN, unfilled opportunity cost and mechanism-aware lot legs without altering Formal behavior.
+- Counterevidence/limitations: exact-date BUY/NO-BUY completeness remains unobservable historically; odd-lot executable benchmark path is not recorded by current regular-lot recorder; actual broker fills/order lifecycle are absent; portfolio redeployment evidence is absent. Therefore no policy-value estimate or Formal optimization candidate is authorized yet.
+- Bias/quality: explicitly guards trigger survivorship, mechanism mismatch, partial-fill denominator error, equal-weight leg bias, idle-cash assumption, date/regime/strategy clustering, costs/slippage, multiple horizons and historical Shadow fabrication. 2026-09-24 remains UNKNOWN.
+- R01-R08/I01-I07: no Formal score/factor/threshold/ranking change; R02 semantics strengthened from conditional BUY timing toward coverage-aware execution policy decomposition. No new Formal factor.
+- Engineering classification: Class A research documentation only this tranche. Main research commit c757f3ec4862f7ab9b57ef04da113128b9d64e94. Existing Draft PR #104 remains unmerged/un-deployed; latest validated research head remains 5371e62dae80164bd0fdc5c8c10b8c0c2ce54a4e with prior Repair/Regression success. No Worker/Production/monitor/push change.
+- Optimization bridge status: Execution Alpha = FALSIFICATION_IN_PROGRESS / NOT_OPTIMIZATION_READY; FORMAL_OPTIMIZATION_CANDIDATE count unchanged.
+- Exact next continuation: continue long-batch outcome-independent Execution Alpha by specifying a prospective parent-action/lot-leg coverage manifest and synthetic aggregation/cancel-replace falsification tests on the isolated Class-A branch. Then audit whether existing prospective recorder fields can satisfy any manifest fields without shared-runtime change. Any missing shared-runtime evidence becomes a bounded Class-B proposal only, not Production promotion. After that, if still data-gated, move to the next unresolved research priority rather than tuning BUY from incomplete evidence.
