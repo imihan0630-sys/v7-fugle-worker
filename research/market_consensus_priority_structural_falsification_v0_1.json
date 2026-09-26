@@ -1,0 +1,93 @@
+{
+  "schemaVersion": "MARKET_CONSENSUS_PRIORITY_STRUCTURAL_FALSIFICATION_V0_1",
+  "updatedAt": "2026-09-27T00:04:00+08:00",
+  "formalCore": "LOCKED",
+  "researchOnly": true,
+  "decisionImpact": false,
+  "sourceOfTruth": "scripts/apply_v7_5_30.py",
+  "currentMechanics": {
+    "minimumIndependentSourcesForBonus": 2,
+    "bonusFormula": "sourceCount < 2 ? 0 : min(7,(sourceCount-1)*2)",
+    "consensusScoreFormula": "sourceCount < 2 ? 0 : min(100,20+sourceCount*15)",
+    "postConsensusPriority": "round(clamp(basePriorityScore+bonus,0,100),1)",
+    "formalComparator": [
+      "postConsensusPriorityScore",
+      "rewardPerRisk",
+      "marketConsensusScore",
+      "setupQuality",
+      "sectorFlow",
+      "relativeStrength"
+    ],
+    "capitalSizing": "allocateAndBuildPlans uses post-consensus priorityScore proportionally, subject to deployment ratio and 35% cap"
+  },
+  "fixedMapping": [
+    {
+      "sourceCount": 0,
+      "bonus": 0,
+      "marketConsensusScore": 0
+    },
+    {
+      "sourceCount": 1,
+      "bonus": 0,
+      "marketConsensusScore": 0
+    },
+    {
+      "sourceCount": 2,
+      "bonus": 2,
+      "marketConsensusScore": 50
+    },
+    {
+      "sourceCount": 3,
+      "bonus": 4,
+      "marketConsensusScore": 65
+    },
+    {
+      "sourceCount": 4,
+      "bonus": 6,
+      "marketConsensusScore": 80
+    },
+    {
+      "sourceCount": 5,
+      "bonus": 7,
+      "marketConsensusScore": 95
+    },
+    {
+      "sourceCount": 6,
+      "bonus": 7,
+      "marketConsensusScore": 100
+    }
+  ],
+  "structuralFindings": [
+    "Consensus can change the first comparator directly through the additive bonus.",
+    "The same post-consensus priorityScore also affects planned capital sizing.",
+    "marketConsensusScore is a separate third comparator only when post-consensus priorityScore and raw RR tie.",
+    "The base PriorityScore components already sum to 100 maximum before consensus; the external bonus can therefore increase score saturation/compression near 100.",
+    "A +7 consensus bonus is equivalent in absolute PriorityScore points to 25 setupQuality points at the 28% setup weight, or 50 points of any 14%-weighted base component.",
+    "SourceCount>=5 saturates the additive bonus at +7 while consensusScore can still rise from 95 to 100 at sourceCount 6; this distinction matters only in tie situations for the third comparator."
+  ],
+  "notYetKnown": [
+    "frequency of bonus application",
+    "frequency of priorityScore saturation caused by bonus",
+    "frequency marketConsensusScore actually resolves a priority+RR tie",
+    "incremental D1/D3/D5/MFE/MAE/stop value after base score, sector, price-volume and regime controls",
+    "whether sourceCount independence/quality is stable enough across dates"
+  ],
+  "falsificationProtocol": [
+    "compare pre-consensus base score versus post-consensus score within scanDate",
+    "measure rank changes caused only by bonus",
+    "measure planned-capital changes caused only by bonus with same candidate set",
+    "measure marketConsensusScore tie-break resolution frequency",
+    "test outcomes controlling for pre-consensus base score and raw RR",
+    "remove high-consensus dates one cluster at a time",
+    "separate sourceCount 2/3/4/5+ without tuning new thresholds",
+    "test saturation/score-compression and opportunity retention"
+  ],
+  "prohibited": [
+    "removing or strengthening consensus bonus before prospective evidence",
+    "changing source-count threshold",
+    "changing +7 cap",
+    "changing comparator order",
+    "changing allocation based on this structural audit alone"
+  ],
+  "status": "FALSIFICATION_IN_PROGRESS_NOT_OPTIMIZATION_READY"
+}
