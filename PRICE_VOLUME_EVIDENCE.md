@@ -3799,3 +3799,190 @@ NO_HINDSIGHT_FIRST_SESSION_PROVENANCE_RECEIPT_FROZEN.
 4. PVE-148: define a componentized scan fingerprint that separates generatedAt/timing from stocks/pipeline/config semantics.
 5. PVE-149: freeze the exact 9/29 night comparison order so runtime safety is evaluated before baseline/cohort readiness and before outcomes.
 6. Formal Core remains LOCKED; no production deployment or hypothesis promotion.
+
+
+# PVE-145 — Worker Versions/etag Uses the Same Documented Read Permission Class, but Current Token Access Is Not Yet Execution-Verified
+
+## Official permission comparison
+Cloudflare documents both:
+- `GET /accounts/{account_id}/workers/scripts/{script_name}/content/v2`;
+- `GET /accounts/{account_id}/workers/scripts/{script_name}/versions/{version_id}`
+
+as accepting at least one of:
+- Workers Tail Read;
+- Workers Scripts Write;
+- Workers Scripts Read.
+
+The existing QA token already succeeds on `content/v2`.
+
+## What this supports
+Without any requested permission expansion, version/etag retrieval is:
+`ACCESS_EXPECTED_UNDER_DOCUMENTED_PERMISSION_CLASS`.
+
+## What this does not prove
+The current artifact has never executed the versions endpoint.
+Therefore actual route/account/token behavior remains:
+`NOT_EXECUTION_VERIFIED`.
+
+No permission or token change is justified merely to close this observation gap.
+
+Status:
+VERSION_ETAG_ACCESS_EXPECTED_SAME_PERMISSION_CLASS / NOT_EXECUTION_VERIFIED.
+
+
+# PVE-146 — Version/etag Read Receipt Semantics Frozen
+
+If a future existing-token, read-only call is executed, the receipt should capture:
+
+- endpoint;
+- HTTP status;
+- read-only method GET;
+- version id;
+- version number;
+- version metadata.created_on / modified_on / source where available;
+- `resources.script.etag`;
+- `last_deployed_from` where available;
+- capture timestamp;
+- token-permission state = unchanged;
+- runtime mutation count = zero.
+
+Classification:
+- 2xx + version id + etag -> `VERSION_IDENTITY_OBSERVED`;
+- 401/403 -> `VERSION_IDENTITY_AUTHZ_BLOCKED`;
+- 404 -> `VERSION_IDENTITY_NOT_FOUND_OR_ROUTE_SCOPE`;
+- other transport/API error -> `VERSION_IDENTITY_QUERY_FAILED`;
+- no call performed -> `VERSION_IDENTITY_UNOBSERVED`.
+
+Do not map any blocked/unobserved class to code identity equality.
+
+Status:
+VERSION_ETAG_RECEIPT_CONTRACT_FROZEN.
+
+
+# PVE-147 — Extracted-Source Hash Is a Valid Secondary QA Proposal, Not a Replacement for Version Identity
+
+## Repository precedent
+Commit `262dc359...` already implements `extractWorkerSource()` in the enable workflow and uses it for before/after source-isolation hashing.
+
+That means the repo has a tested precedent for removing multipart response representation from the compared Worker source.
+
+## Future QA proposal
+A future read-only QA artifact may emit:
+- `workerVersionId`;
+- `workerVersionNumber`;
+- `workerScriptEtag`;
+- `extractedSourceSha256`;
+- `rawContentResponseSha256` only for diagnostics.
+
+Hierarchy:
+1. version id + script etag = primary deployed identity;
+2. extracted source hash = secondary content reproducibility;
+3. raw response hash = transport/representation diagnostic only.
+
+## Boundary
+This is an observability/schema proposal.
+No current QA/runtime/Worker code is changed in this research step.
+
+Status:
+EXTRACTED_SOURCE_HASH_SECONDARY_PROVENANCE_PROPOSAL_FROZEN.
+
+
+# PVE-148 — Componentized Formal Scan Fingerprint Contract Frozen
+
+The current whole-scan hash mixes timing and semantic state.
+A future read-only report should retain separate fingerprints:
+
+1. `scanTimingFingerprint`
+   - scanDate;
+   - generatedAt.
+
+2. `scanSelectionFingerprint`
+   - selectedCount;
+   - ordered stock/plan projection.
+   - preserve ranking order where ranking order itself is semantic.
+
+3. `scanPipelineFingerprint`
+   - pipeline only.
+
+4. `scanEmbeddedConfigFingerprint`
+   - scan.config only.
+
+5. `scanCapitalFingerprint`
+   - totalCapital and allocation-relevant scan summary only.
+
+6. `scanCompositeFingerprint`
+   - optional overall canonical hash over the five components.
+
+Interpretation:
+- timing-only drift != selection drift;
+- pipeline-only drift != stock-plan drift;
+- composite drift with unchanged components is impossible and becomes a QA defect;
+- missing component payload -> UNKNOWN, not equality.
+
+Status:
+COMPONENTIZED_SCAN_FINGERPRINT_CONTRACT_FROZEN.
+
+
+# PVE-149 — First Post-Enable Session Evaluation Order Frozen Before Outcomes
+
+For 2026-09-29 night and 2026-09-30 intraday, evaluate in this order:
+
+## Gate 0 — Provenance
+Pin QA artifact/head + deployed Worker identity receipt.
+If exact Worker version/etag is unobserved, preserve that limitation.
+
+## Gate 1 — Safety / Formal isolation
+Check:
+- PV flag enabled;
+- decisionImpact=false;
+- formalCoreImpact=false;
+- zero PV actions/pushes where runtime receipt exists;
+- PV hook remains after Formal;
+- no unauthorized runtime/config mutation.
+
+Failure here stops research-readiness escalation.
+
+## Gate 2 — Market/operation context
+Classify:
+- official trading session vs holiday;
+- cron/scan execution versus legitimate skip;
+- zero-plan semantics;
+- runtime receipt presence.
+
+## Gate 3 — Acquisition observability
+Classify:
+- D1 read available/blocked;
+- FULL_TABLE / WINDOWED_AT_REST / RUNTIME_RECEIPT scope;
+- measured zero versus not observed.
+
+## Gate 4 — Baseline lineage/readiness
+For each symbol:
+- continuing/new/re-entered lineage;
+- bootstrap result;
+- baselineAsOfDate/lastMarketDate;
+- field-specific history counts;
+- expected-symbol-session freshness;
+- reset compatibility.
+
+## Gate 5 — Cohort provenance
+Verify selection-time daily history and pool integrity.
+The known 9/24-derived 9/29 intraday cohort remains DATA_QA-only unless independently rehabilitated by valid provenance evidence.
+
+## Gate 6 — Feature QA
+Only now assess H001/H002 field eligibility/common support.
+H003/H004 remain under their stronger label/outcome gates.
+
+## Gate 7 — Outcomes
+Do not inspect outcome superiority, threshold choice or promotion until the preregistered evidence/maturity conditions are met.
+
+Status:
+FIRST_POST_ENABLE_EVALUATION_ORDER_PREREGISTERED.
+
+
+## Exact continuation after PVE-149
+1. PVE-150: audit the precise 2026-09-29 lineage transition from 9/24 plan -> 9/29 after-market selection -> 9/30 monitor, including holiday boundaries.
+2. PVE-151: define clean/unclean/unknown cohort labels for each side of that transition.
+3. PVE-152: freeze symbol-session freshness inputs needed to rehabilitate any cohort row.
+4. PVE-153: audit whether pool displacement can be reconstructed read-only for the 3+3 quota.
+5. PVE-154: freeze a pool-date integrity receipt so one stale candidate cannot silently contaminate QUALIFIED_NOT_SELECTED controls.
+6. Do not inspect outcomes or tune thresholds; Formal Core remains LOCKED.
