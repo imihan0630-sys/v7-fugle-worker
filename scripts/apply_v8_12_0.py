@@ -512,13 +512,17 @@ r'''async function fetchHistoryWarmup(targetRows, marketDate, env) {
         complete+=1;
         continue;
       }
-      if(item.bars.length>=20) history[item.symbol]=item.bars.slice(-MARKET_STATE_DAYS);
-      insufficient+=1;insufficientSymbols.push(item.symbol);
       reasons[validation.reason]=(reasons[validation.reason]||0)+1;
       if(samples.length<30) samples.push({
         symbol:item.symbol,market:item.market,status:validation.status,reason:validation.reason,
         gapDate:validation.gapDate||null,latestPriorDate:validation.latestPriorDate||validation.shape?.latestPriorDate||null
       });
+      if(validation.reason==="INSUFFICIENT_PRIOR_BARS" && item.bars.length<60) {
+        if(item.bars.length>=20) history[item.symbol]=item.bars.slice(-MARKET_STATE_DAYS);
+        insufficient+=1;insufficientSymbols.push(item.symbol);
+      } else {
+        failed+=1;failedSymbols.push(item.symbol);
+      }
     }
   }
   return {
