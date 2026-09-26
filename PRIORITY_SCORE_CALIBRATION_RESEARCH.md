@@ -320,3 +320,61 @@ Machine artifact:
 `research/signal_grade_channel_asymmetry_v0_1.json`.
 
 No grade threshold, eligibility or display-label change is authorized.
+
+
+## PriorityScore overlap graph — structural audit
+
+The deployed ordering is not a single independent-factor sum. Several concepts influence selection in multiple layers:
+
+| Concept | Hard gate / eligibility | PriorityScore | Lexicographic comparator | Confirmed overlap |
+|---|---|---|---|---|
+| setup | A/B pass + signalLevel >=B | setupQuality 28% | setupQuality 4th | YES |
+| RR | RR >=2 | rewardRisk 14% | raw RR 2nd | YES |
+| sector | breadth/change/activity gate | sectorFlow 14% | sectorFlow 5th | YES |
+| market RS | no standalone hard gate | relativeStrength 14% | raw RS 6th | YES |
+| consensus | source-count gate for bonus | post-score +0..7 overlay | consensusScore 3rd after RR tie | YES |
+| institutional | current Formal eligibility evidence | institutionalQuality 16% | no later tie-break found | partial |
+| fundamental | current Formal quality evidence + valuation interaction | fundamentalQuality 14% | no later tie-break found | partial |
+
+This graph is descriptive, not a defect claim. Multi-layer influence can be intentional when the layers encode different objectives.
+
+### PS-OVERLAP-001 — comparator influence is conditional
+
+A later comparator matters only when every earlier comparator ties. Therefore the existence of a tie-break does not prove material influence.
+
+Prospective metrics must measure:
+- first differing comparator frequency;
+- selected-name change under removal of one later comparator only;
+- score saturation/tie frequency after one-decimal rounding;
+- channel/pool/date strata.
+
+### PS-OVERLAP-002 — effective weight is not nominal weight
+
+The nominal 28/14/16/14/14/14 base weights cannot be interpreted as total influence because:
+- upstream gates truncate the candidate distribution;
+- score components can saturate;
+- the consensus overlay changes post-base score;
+- later tie-breakers reintroduce raw values.
+
+Therefore optimization must estimate marginal decision influence on the admitted candidate set, not compare nominal percentages.
+
+### PS-OVERLAP-003 — frozen counterfactual order
+
+To avoid Factor-Zoo tuning, test one structural layer at a time:
+1. current Formal baseline;
+2. remove only a duplicated later comparator while preserving its gate/score;
+3. remove only the duplicated score contribution while preserving its gate/comparator;
+4. only after those fixed ablations, consider any rescaling.
+
+Do not simultaneously change gate, weight and comparator and then attribute the result to one factor.
+
+### PS-OVERLAP-004 — optimization trigger
+
+A multi-layer concept becomes a FORMAL_OPTIMIZATION_CANDIDATE only if:
+- its duplicated layer has non-trivial prospective decision incidence;
+- ablation improves or preserves return/path quality with no material downside/coverage/zero-pick deterioration;
+- result survives independent dates, A/B and pool strata, regime, costs and redundancy controls;
+- effect is not dominated by one crisis/date/sector;
+- OOS/holdout direction agrees.
+
+Until then the overlap graph is a falsification map, not a recommendation to simplify Formal.
