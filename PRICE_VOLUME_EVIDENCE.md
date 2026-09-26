@@ -3001,3 +3001,212 @@ Recommended future summary:
 Status:
 MULTISCOPE_QA_REPORTING_FROZEN.
 
+
+
+# PVE-121 — baseline.readyCount Is a Coarse Session-Count Label, Not Field Readiness
+
+## Source audit
+The read-only QA report currently emits:
+`readyCount = baselines.filter(valid_sessions >= 20).length`.
+
+PVE-106/PVE-108/PVE-119 already proved that `validSessions` is only a retained session-object count. It does not prove:
+- exact-slot history count;
+- cumulative-prefix continuity;
+- range-history continuity;
+- baseline freshness;
+- corporate-action reset compatibility.
+
+## Consequence
+The field name `readyCount` overstates what was measured.
+
+For evidence interpretation, treat it as:
+`sessionCountGe20Rows`
+or:
+`COARSE_CONTAINER_COUNT_GE20`.
+
+It must never be used as `BASELINE_FIELD_READY`.
+
+Status:
+QA_READYCOUNT_LABEL_OVERSTATES_READINESS.
+
+
+# PVE-122 — mutationConflictAtRest=0 Is Hard-Coded, Not an At-Rest Conflict Measurement
+
+## Source audit
+The QA report currently emits:
+`mutationConflictAtRest: d1ReadAvailable ? 0 : null`.
+
+No D1 query derives that zero.
+
+The same report correctly notes that rejected conflicts are intentionally not persisted as rows and points to:
+`scan.pvShadow.daily.details`
+for mutation-conflict telemetry.
+
+## Consequence
+When D1 is readable, `mutationConflictAtRest=0` means only:
+“no persisted row-level field is being used here to represent rejected conflicts.”
+
+It does NOT prove:
+- no daily mutation conflict occurred historically;
+- no intraday retry conflict occurred;
+- no volatile-provenance-only conflict occurred.
+
+Runtime conflict telemetry and persisted-row integrity are separate evidence domains.
+
+Status:
+AT_REST_MUTATION_CONFLICT_ZERO_NOT_MEASURED.
+
+
+# PVE-123 — outcomeRows Is a Latest-2000 Window Size, Not Total Persisted Outcome Count
+
+## Source audit
+The QA script fetches outcomes using:
+`ORDER BY completed_at DESC LIMIT 2000`.
+
+The report then emits:
+`outcomeRows = outcomes.length`.
+
+Unlike snapshot `totalRows`, there is no full-table aggregate count for outcomes.
+
+## Consequence
+`outcomeRows=2000` must be interpreted as:
+`outcomeRowsCheckedWindow=2000`,
+not:
+“there are exactly 2000 persisted outcomes.”
+
+A future full-table outcome denominator requires an independent aggregate query.
+
+Status:
+OUTCOME_ROW_COUNT_IS_WINDOWED_NOT_TOTAL.
+
+
+# PVE-124 — qaPass Does Not Enumerate Hard-Assertion Failures
+
+## Source audit
+The script maintains a soft `qaFailures` array for conditions such as:
+- PV_SHADOW_ENABLED not true;
+- D1 read acquisition failure.
+
+But many checks use hard `assert`, including:
+- duplicate persisted rows;
+- nonzero decisionImpact;
+- fingerprint mismatch;
+- baseline schema/count/date checks;
+- after-market scan/runtime assertions.
+
+The JSON report and `qaPass` are written only after those assertions.
+
+## Consequence
+If a hard assertion throws:
+- the workflow step fails;
+- report generation may never reach the final write;
+- therefore no `qaPass=false` field is guaranteed to exist for that failure.
+
+So:
+`qaPass`
+is not a complete failure taxonomy.
+
+Interpretation must distinguish:
+1. REPORT_GENERATED + qaPass=true;
+2. REPORT_GENERATED + qaPass=false;
+3. SCRIPT_ABORTED_BEFORE_REPORT / workflow failure.
+
+Status:
+QAPASS_IS_NOT_TOTAL_FAILURE_ENUMERATION.
+
+
+# PVE-125 — Missing pvScan Can Be Rendered as False Formal-Impact Values
+
+## Source audit
+The report emits:
+`decisionImpact: pvScan?.decisionImpact ?? false`
+and:
+`formalCoreImpact: pvScan?.formalCoreImpact ?? false`.
+
+If `pvScan` is absent, both fields become `false`.
+
+By contrast, zeroPvPushes/zeroPvActions preserve absence as `null`.
+
+## Consequence
+A missing PV after-market runtime receipt can look identical to an observed:
+`decisionImpact=false / formalCoreImpact=false`
+receipt.
+
+The safe interpretation requires an explicit presence gate:
+`pvRuntimeReceiptPresent = Boolean(pvScan)`.
+
+Only when that is true may pvScan-level impact flags be treated as observed runtime evidence.
+
+Status:
+PVSCAN_ABSENCE_MUST_NOT_RENDER_AS_OBSERVED_PASS.
+
+
+# PVE-126 — Zero Live Fugle Calls Collapse to null in the Sanitized Artifact
+
+## Source audit
+The report emits:
+`latestLiveReported: live.fugleCallsThisRun || null`.
+
+JavaScript logical-OR converts a legitimate numeric zero to `null`.
+
+## Consequence
+A measured:
+`0 Fugle calls`
+cannot be distinguished from:
+“field absent/unavailable”
+through this artifact field.
+
+This matters especially for:
+- skipped/non-trading runs;
+- zero-opportunity diagnostics;
+- call-budget evidence.
+
+A future schema should preserve zero with nullish semantics:
+`live.fugleCallsThisRun ?? null`.
+
+Status:
+ZERO_CALL_RECEIPT_COLLAPSES_TO_NULL.
+
+
+# PVE-127 — D1 Error Classification Conflates Authorization, Schema and Query Failures
+
+## Source audit
+One broad `try/catch` wraps:
+- table discovery;
+- required-table assertions;
+- all D1 SELECT queries.
+
+Any thrown error enters the same catch, which sets:
+- `d1ReadAvailable=false`;
+- `D1_DIRECT_READ_NOT_AUTHORIZED`.
+
+## Counterexample
+The same label would be produced if:
+- a required table were missing;
+- a query failed for schema reasons;
+- a response shape violated an assertion;
+- authorization were actually denied.
+
+## Consequence
+Current evidence cannot infer:
+`AUTHORIZATION_DENIED`
+from that label alone without checking the captured error text.
+
+Future evidence should classify at least:
+- AUTHZ_DENIED;
+- SCHEMA_MISSING;
+- QUERY_FAILED;
+- ASSERTION_FAILED;
+- UNKNOWN_D1_READ_FAILURE.
+
+Status:
+D1_FAILURE_TAXONOMY_CURRENTLY_CONFLATED.
+
+
+## Exact continuation after PVE-127
+1. PVE-128: freeze a non-mutating D1 failure-classification contract using existing error text/status only.
+2. PVE-129: define an always-emitted sanitized QA envelope so hard failures remain observable without weakening workflow failure behavior.
+3. PVE-130: freeze exact evidence-field renames/metadata for coarse baseline counts, windowed outcome rows, runtime-receipt presence and mutation-conflict observability.
+4. PVE-131: audit whether any existing read-only admin surface retains historical intraday PV mutation-conflict telemetry; do not infer absence from persisted rows.
+5. PVE-132: produce the pre-9/29 QA interpretation matrix that separates measured zero, null/unobserved, UNKNOWN semantics and hard workflow failure.
+6. No runtime, Formal, threshold, token, permission or deployment change.
