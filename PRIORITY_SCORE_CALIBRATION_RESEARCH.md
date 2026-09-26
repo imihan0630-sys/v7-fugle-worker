@@ -8,7 +8,7 @@ Formal Core: LOCKED
 
 Does the existing Formal `priorityScore` contain incremental, monotonic information about forward outcomes that is strong enough to justify its current role in capital sizing after selection?
 
-Current Formal score weights are unchanged:
+The pre-consensus base score weights are unchanged:
 - setupQuality 28%
 - sector score 14%
 - institutional score 16%
@@ -16,12 +16,20 @@ Current Formal score weights are unchanged:
 - market-relative RS 14%
 - RR component 14%
 
-Formal ordering is also unchanged:
-1. raw `rewardPerRisk`
-2. `priorityScore`
-3. `setupQuality`
-4. `sectorFlow`
-5. `relativeStrength`
+Production source-of-truth audit found an important post-baseline overlay from V7.5.30:
+- market consensus requires at least 2 independent sources before adding a bonus;
+- the bonus is capped at +7 points;
+- the stored/ranked `priorityScore` is the base score after that consensus bonus is applied.
+
+Actual Production ordering after the patch chain is:
+1. post-consensus `priorityScore`
+2. raw `rewardPerRisk`
+3. `marketConsensusScore`
+4. `setupQuality`
+5. `sectorFlow`
+6. `relativeStrength`
+
+This corrects the earlier baseline-Worker reading that had RR first. The deploy patch chain, not root `Worker.js` alone, is authoritative for Formal runtime semantics.
 
 ## Positive hypothesis
 
@@ -65,13 +73,18 @@ The current Shadow archive is also bounded, especially `QUALIFIED_NOT_SELECTED` 
 ## V8.13.0 Class-A provenance patch
 
 V8.13.0 adds research-only prospective persistence inside existing research snapshots:
-- `priorityScore`;
+- post-consensus `priorityScore`;
 - raw `rewardPerRisk`;
 - rounded `rewardRisk`;
+- `marketConsensusScore`;
+- `marketConsensusSources`;
+- `marketConsensusBonus`;
 - `setupQuality`;
 - `sectorFlow`;
 - `relativeStrength`;
 - frozen definition/comparator labels.
+
+The base-score formula and the consensus overlay must be analyzed separately. A pretty final `priorityScore` result cannot be attributed to the 28/14/16/14/14/14 base weights unless the consensus contribution is controlled.
 
 No Formal formula, ranking, threshold, quota, capital, BUY/ADD/REDUCE, monitoring, signal or push behavior is changed.
 
@@ -88,11 +101,12 @@ Required comparisons:
 2. score rank vs MFE / MAE / stop-first;
 3. current score-proportional sizing vs equal-capital;
 4. current score-proportional sizing vs equal-planned-stop-risk;
-5. score effect controlling for raw rewardPerRisk;
-6. date-cluster / leave-one-date-out stability;
-7. sector and market-regime strata;
-8. common-support and coverage loss;
-9. transaction-cost sensitivity.
+5. score effect controlling for raw rewardPerRisk and market-consensus contribution;
+6. base-score components versus consensus bonus as separate explanatory layers;
+7. date-cluster / leave-one-date-out stability;
+8. sector and market-regime strata;
+9. common-support and coverage loss;
+10. transaction-cost sensitivity.
 
 No threshold or weight tuning is allowed before the frozen comparisons are mature.
 
