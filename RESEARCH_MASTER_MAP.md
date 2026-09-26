@@ -1,6 +1,6 @@
 # Research Master Map — 台股交易決策監控系統
 
-Updated: 2026-09-26 10:14 Asia/Taipei
+Updated: 2026-09-26 17:59 Asia/Taipei
 Status: CANONICAL_RESEARCH_INDEX / RESEARCH_ONLY
 Formal Core: LOCKED
 
@@ -76,6 +76,7 @@ These are navigation anchors, not final maturity scores:
 - Portfolio/Re-add: REDUCED_CONFIRMED -> recovery/re-add research exists; formal promotion remains locked.
 - Macro/Cross-market: PIT clocks/residualization/falsification are frozen; repository audit did not prove historical durable global receipts with sessionDate/knownAtTaipei/firstEligibleTaiwanDecision, so outcome testing is DATA_QUALITY_BLOCKED pending prospective receipts.
 - Validation: R01-R08/I01-I07, purged holdout, date clustering, redundancy, costs, zero-pick and prospective Shadow controls are cross-cutting requirements.
+- PriorityScore calibration: Production patch-chain audit corrected the comparator to post-consensus PriorityScore first, RR second, marketConsensusScore third, then setup/sector/RS. V8.13 now prospectively preserves the full ranking provenance. Status WAITING_PROSPECTIVE; historical selected-only calibration is prohibited.
 
 ## Cross-chatroom protocol
 
@@ -95,13 +96,13 @@ No chat may mark L4/L5 from retrospective narrative alone. No chat may turn UNKN
 
 MASTER_MAP_SCHEMA = V0.2
 INVENTORY_RECONCILIATION = PARTIAL_BASELINE_PUBLISHED
-REGISTERED_MODULES = 19
-L0/L1/L2/L3/L4/L5 = 0 / 0 / 13 / 5 / 1 / 0
-REGISTERED_MODULE_MATURITY = 47.4%
-RESEARCH_DEBT_UNITS = 10.0
+REGISTERED_MODULES = 20
+L0/L1/L2/L3/L4/L5 = 0 / 0 / 14 / 5 / 1 / 0
+REGISTERED_MODULE_MATURITY = 47.0%
+RESEARCH_DEBT_UNITS = 10.6
 DATA_QUALITY_BLOCKED = 8
 DATA_SOURCE_BLOCKED = 3
-WAITING_PROSPECTIVE = 1
+WAITING_PROSPECTIVE = 2
 FORMAL_OPTIMIZATION_CANDIDATES = 1
 
 Important: 48.2% is the maturity of the currently reconciled 17 durable modules, NOT "48.8% of all stock-market knowledge". The inventory is still expanding and module splits must be independently falsifiable.
@@ -114,7 +115,7 @@ Next master-map task: continue reconciliation of remaining domains/submodules, e
 ## Formal optimization candidates
 
 ### HISTORY_SOURCE_REVALIDATION_V2.3 — Class B
-Status: FORMAL_OPTIMIZATION_CANDIDATE / OWNER REVIEW REQUIRED / NOT MERGED / NOT DEPLOYED.
+Status: FORMAL_OPTIMIZATION_CANDIDATE / OWNER APPROVED / MERGED / DEPLOYED_AWAITING_FIRST_LIVE_TRADING_DAY.
 
 Purpose: prevent stale or source-incomplete daily history from silently entering after-market Formal feature construction while preserving legitimate symbol-specific no-trade/suspension gaps.
 
@@ -132,7 +133,7 @@ Exact proposed Formal behavior change: data admission/repair only. Formal A/B de
 
 Remaining production risks: live suspicious-symbol incidence is UNKNOWN; extreme stale blast radius can exceed the existing seed window; official gap-proof storage/read integration is shared runtime; corporate-action price-continuity remains a separate lane.
 
-Owner approval is required before any Class-B Worker/runtime integration, merge or deployment.
+Owner approval was granted and V8.12.0 was merged/deployed on 2026-09-26. First live operational validation remains 2026-09-29; deployment success is not trading-alpha proof.
 
 
 ## Shared Knowledge network (2026-09-26)
