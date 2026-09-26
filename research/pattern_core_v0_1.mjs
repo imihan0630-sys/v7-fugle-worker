@@ -1595,3 +1595,212 @@ export function analyzeTwoDayCandlestickMorphology({
     decisionImpact:false
   };
 }
+
+
+function simpleLinearFit(points = []) {
+  const xs=(Array.isArray(points)?points:[])
+    .map(p=>({x:Number(p?.x),y:Number(p?.y)}))
+    .filter(p=>Number.isFinite(p.x)&&Number.isFinite(p.y));
+  if(xs.length<2) return null;
+  const mx=xs.reduce((s,p)=>s+p.x,0)/xs.length;
+  const my=xs.reduce((s,p)=>s+p.y,0)/xs.length;
+  const denom=xs.reduce((s,p)=>s+(p.x-mx)*(p.x-mx),0);
+  if(!(denom>0)) return null;
+  const slope=xs.reduce((s,p)=>s+(p.x-mx)*(p.y-my),0)/denom;
+  const intercept=my-slope*mx;
+  const residuals=xs.map(p=>p.y-(intercept+slope*p.x));
+  const rmse=Math.sqrt(residuals.reduce((s,e)=>s+e*e,0)/xs.length);
+  return {slope,intercept,rmse,n:xs.length,xMean:mx,yMean:my};
+}
+
+// Outcome-free latent boundary geometry for platforms / flags / triangles.
+// It deliberately emits continuous geometry instead of assigning a textbook directional label.
+export function analyzeConfirmedBoundaryGeometry({
+  bars,
+  swings,
+  asOfDate,
+  minConfirmedTouchesPerSide = 2
+} = {}) {
+  const validated=barsAsOf(bars,asOfDate);
+  if(!validated.usable){
+    return {status:"BLOCKED",reason:validated.reason,researchOnly:true,decisionImpact:false};
+  }
+  const series=validated.bars;
+  const indexByDate=new Map(series.map((x,i)=>[x.date,i]));
+  const eligible=(Array.isArray(swings)?swings:[])
+    .filter(x=>String(x?.confirmedAt||"")<=String(asOfDate||"") && indexByDate.has(String(x?.pivotAt||"")))
+    .map(x=>({
+      type:String(x.type||""),
+      pivotAt:String(x.pivotAt||""),
+      confirmedAt:String(x.confirmedAt||""),
+      pivotPrice:finite(x.pivotPrice),
+      pivotIndex:indexByDate.get(String(x.pivotAt||""))
+    }))
+    .filter(x=>["HIGH","LOW"].includes(x.type)&&x.pivotPrice!==null&&Number.isInteger(x.pivotIndex));
+
+  const highs=eligible.filter(x=>x.type==="HIGH");
+  const lows=eligible.filter(x=>x.type==="LOW");
+  const minTouches=Math.max(2,Math.floor(Number(minConfirmedTouchesPerSide)||2));
+  if(highs.length<minTouches || lows.length<minTouches){
+    return {
+      status:"VALID",
+      readiness:"INSUFFICIENT_CONFIRMED_TOUCHES",
+      upperTouchCount:highs.length,
+      lowerTouchCount:lows.length,
+      researchOnly:true,
+      decisionImpact:false
+    };
+  }
+
+  const upperFit=simpleLinearFit(highs.map(x=>({x:x.pivotIndex,y:x.pivotPrice})));
+  const lowerFit=simpleLinearFit(lows.map(x=>({x:x.pivotIndex,y:x.pivotPrice})));
+  if(!upperFit || !lowerFit){
+    return {status:"BLOCKED",reason:"BOUNDARY_FIT_UNAVAILABLE",researchOnly:true,decisionImpact:false};
+  }
+
+  const firstIndex=Math.min(...eligible.map(x=>x.pivotIndex));
+  const lastIndex=Math.max(...eligible.map(x=>x.pivotIndex));
+  const upperAt=x=>upperFit.intercept+upperFit.slope*x;
+  const lowerAt=x=>lowerFit.intercept+lowerFit.slope*x;
+  const startUpper=upperAt(firstIndex),startLower=lowerAt(firstIndex);
+  const endUpper=upperAt(lastIndex),endLower=lowerAt(lastIndex);
+  const startWidth=startUpper-startLower;
+  const endWidth=endUpper-endLower;
+  const center=Math.abs((startUpper+startLower+endUpper+endLower)/4);
+  const upperSlopeNorm=center>0?upperFit.slope/center:null;
+  const lowerSlopeNorm=center>0?lowerFit.slope/center:null;
+  const upperRmseNorm=center>0?upperFit.rmse/center:null;
+  const lowerRmseNorm=center>0?lowerFit.rmse/center:null;
+  const compressionRatio=startWidth>0?endWidth/startWidth:null;
+  const slopeDifference=upperFit.slope-lowerFit.slope;
+  let projectedApexIndex=null;
+  if(Math.abs(slopeDifference)>1e-12){
+    const x=(lowerFit.intercept-upperFit.intercept)/slopeDifference;
+    if(Number.isFinite(x)) projectedApexIndex=x;
+  }
+  const projectedApexDistanceBars=projectedApexIndex===null?null:projectedApexIndex-lastIndex;
+  const converging=Number.isFinite(compressionRatio) && compressionRatio<1 && endWidth>0;
+  const roughlyParallel=Math.abs(slopeDifference)/(center||1) < 1e-6;
+
+  return {
+    status:"VALID",
+    readiness:"GEOMETRY_READY",
+    upperTouchCount:highs.length,
+    lowerTouchCount:lows.length,
+    firstAnchorAt:series[firstIndex]?.date||null,
+    lastAnchorAt:series[lastIndex]?.date||null,
+    upperSlope:upperFit.slope,
+    lowerSlope:lowerFit.slope,
+    upperSlopeNorm,
+    lowerSlopeNorm,
+    upperFitRmse:upperFit.rmse,
+    lowerFitRmse:lowerFit.rmse,
+    upperFitRmseNorm:upperRmseNorm,
+    lowerFitRmseNorm:lowerRmseNorm,
+    startWidth,
+    endWidth,
+    compressionRatio,
+    projectedApexIndex,
+    projectedApexDistanceBars,
+    converging,
+    roughlyParallel,
+    orientation:
+      upperFit.slope<0 && lowerFit.slope>0 ? "CONVERGING_INWARD" :
+      upperFit.slope<0 && lowerFit.slope<0 ? "BOTH_DOWN" :
+      upperFit.slope>0 && lowerFit.slope>0 ? "BOTH_UP" :
+      Math.abs(upperFit.slope)<1e-12 && Math.abs(lowerFit.slope)<1e-12 ? "FLAT" :
+      "MIXED_OR_FLAT",
+    confirmedAnchorIds:eligible.map(x=>x.type+":"+x.pivotAt+"@"+x.confirmedAt),
+    definitionNote:"Continuous confirmed-boundary geometry only; orientation is descriptive and carries no bullish/bearish score.",
+    researchOnly:true,
+    decisionImpact:false
+  };
+}
+
+// Anchor-based cup/bowl geometry. It measures a confirmed H-L-H structure but does not
+// declare it bullish, mature or tradable. The caller supplies confirmed anchors explicitly.
+export function analyzeCupGeometryFromAnchors({
+  bars,
+  asOfDate,
+  leftRim,
+  bottom,
+  rightRim,
+  bottomBandFraction = 0.20
+} = {}) {
+  const validated=barsAsOf(bars,asOfDate);
+  if(!validated.usable){
+    return {status:"BLOCKED",reason:validated.reason,researchOnly:true,decisionImpact:false};
+  }
+  const series=validated.bars;
+  const indexByDate=new Map(series.map((x,i)=>[x.date,i]));
+  const normalizeAnchor=(a,type)=>{
+    const pivotAt=String(a?.pivotAt||"");
+    const confirmedAt=String(a?.confirmedAt||"");
+    const price=finite(a?.pivotPrice);
+    const index=indexByDate.get(pivotAt);
+    if(!pivotAt || !confirmedAt || confirmedAt>String(asOfDate||"") || price===null || !Number.isInteger(index)){
+      return null;
+    }
+    return {type,pivotAt,confirmedAt,pivotPrice:price,pivotIndex:index};
+  };
+  const l=normalizeAnchor(leftRim,"HIGH");
+  const b=normalizeAnchor(bottom,"LOW");
+  const rr=normalizeAnchor(rightRim,"HIGH");
+  if(!l||!b||!rr) return {status:"BLOCKED",reason:"CUP_ANCHOR_UNCONFIRMED_OR_MISSING",researchOnly:true,decisionImpact:false};
+  if(!(l.pivotIndex<b.pivotIndex && b.pivotIndex<rr.pivotIndex)){
+    return {status:"BLOCKED",reason:"CUP_ANCHOR_ORDER_INVALID",researchOnly:true,decisionImpact:false};
+  }
+  const rimMean=(l.pivotPrice+rr.pivotPrice)/2;
+  if(!(rimMean>b.pivotPrice && rimMean>0)){
+    return {status:"BLOCKED",reason:"CUP_GEOMETRY_INVALID",researchOnly:true,decisionImpact:false};
+  }
+  const depth=(rimMean-b.pivotPrice)/rimMean;
+  const rimDifference=Math.abs(rr.pivotPrice-l.pivotPrice)/rimMean;
+  const leftBars=b.pivotIndex-l.pivotIndex;
+  const rightBars=rr.pivotIndex-b.pivotIndex;
+  const duration=rr.pivotIndex-l.pivotIndex;
+  const timeSymmetryRatio=Math.min(leftBars,rightBars)/Math.max(leftBars,rightBars);
+  const rightRecovery=(rr.pivotPrice-b.pivotPrice)/(l.pivotPrice-b.pivotPrice);
+  const segment=series.slice(l.pivotIndex,rr.pivotIndex+1);
+  const bandFrac=Math.min(0.49,Math.max(0.01,Number(bottomBandFraction)||0.20));
+  const bottomBandTop=b.pivotPrice+(rimMean-b.pivotPrice)*bandFrac;
+  const bottomResidenceBars=segment.filter(x=>Number(x.close)<=bottomBandTop).length;
+  const bottomResidenceRatio=segment.length?bottomResidenceBars/segment.length:null;
+
+  // Descriptive normalized parabola residual. No assumption that smaller is always better.
+  const normalized=segment.map((x,i)=>{
+    const t=duration>0?(i/duration)*2-1:0;
+    const p=(Number(x.close)-b.pivotPrice)/(rimMean-b.pivotPrice);
+    return {t,p};
+  });
+  const residuals=normalized.map(x=>x.p-(x.t*x.t));
+  const curvatureResidualRmse=residuals.length
+    ?Math.sqrt(residuals.reduce((s,e)=>s+e*e,0)/residuals.length)
+    :null;
+
+  return {
+    status:"VALID",
+    topology:"CONFIRMED_H_L_H_BOWL_CANDIDATE",
+    leftRimAt:l.pivotAt,
+    bottomAt:b.pivotAt,
+    rightRimAt:rr.pivotAt,
+    leftRimPrice:l.pivotPrice,
+    bottomPrice:b.pivotPrice,
+    rightRimPrice:rr.pivotPrice,
+    cupDurationBars:duration,
+    cupDepthPct:depth,
+    rimDifferencePct:rimDifference,
+    leftDeclineBars:leftBars,
+    rightRecoveryBars:rightBars,
+    timeSymmetryRatio,
+    rightSideRecoveryRatio:rightRecovery,
+    bottomBandFraction:bandFrac,
+    bottomResidenceBars,
+    bottomResidenceRatio,
+    curvatureResidualRmse,
+    anchorIds:[l,b,rr].map(x=>x.type+":"+x.pivotAt+"@"+x.confirmedAt),
+    definitionNote:"Anchor-based continuous bowl geometry only; no bullish sign, maturity threshold, or outcome-tuned roundness cutoff.",
+    researchOnly:true,
+    decisionImpact:false
+  };
+}
