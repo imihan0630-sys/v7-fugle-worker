@@ -58,3 +58,37 @@ Before any allocation change:
 
 Any redistribution of clipped capital changes actual Formal capital allocation and is Class C.
 No change is authorized by this structural audit.
+
+
+## Production read-only incidence — 2026-09-27
+
+Read-only run `36254917919` inspected only stored journal allocation fields; no outcome fields and no writes.
+
+Observed:
+- 4 Formal plan rows across 2 plan dates;
+- only 1 multi-name group;
+- 0/1 observed multi-name groups hit the 35% cap.
+
+2026-09-18:
+- 3 names;
+- allocation ratios 25.4%, 32.4%, 27.2%;
+- ratio sum = 85%;
+- planned NT$168,000 versus nominal NT$170,000.
+This is consistent with per-name NT$1,000 flooring, not cap clipping.
+
+2026-09-21:
+- 1 name at 35%;
+- this is the strategy's nominal one-name deployment ratio, not evidence of multi-name cap clipping.
+
+Therefore:
+- clip-and-cash is a real structural property of the formula;
+- it can create large reserves in deterministic counterexamples;
+- but it has **not yet been observed** in the available multi-name Production sample.
+
+Optimization status:
+`NOT_OPTIMIZATION_READY`.
+
+Do not redistribute clipped capital merely to increase utilization. Prospective incidence and risk-adjusted counterfactual outcomes are required first.
+
+Machine receipt:
+`research/capital_deployment_production_readonly_receipt_20260927.json`.
