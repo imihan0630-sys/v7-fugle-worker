@@ -2770,4 +2770,234 @@ Do not stretch it into:
 
 Status:
 QA_ARTIFACT_PURPOSE_BOUNDARY_FROZEN.
+# PVE-115 — Fingerprint QA Becomes Windowed after 1000/2000 Rows
+
+## Source audit
+If direct D1 read is authorized, the QA script loads:
+- latest 1000 PV snapshots;
+- latest 2000 PV outcomes.
+
+It recalculates semantic fingerprints only for those fetched rows.
+
+## Full-table checks
+Separately, the script uses aggregate SQL across the full snapshot table for:
+- duplicate semantic identity groups;
+- row counts by date/type;
+- nonzero decisionImpact counts.
+
+## Consequence
+Once total history exceeds the fetch limits:
+
+### Full-table conclusions remain possible
+- duplicate row count;
+- nonzero decisionImpact count;
+- snapshot count summaries.
+
+### Fingerprint conclusions become windowed
+- snapshotFingerprintMismatches=0
+means:
+“no mismatch among the latest <=1000 fetched snapshots.”
+
+- outcomeFingerprintMismatches=0
+means:
+“no mismatch among the latest <=2000 fetched outcomes.”
+
+They no longer prove all-history integrity.
+
+## Required report metadata
+Future QA should include:
+- fingerprintRowsChecked;
+- totalSnapshotRows;
+- fingerprintCoveragePct;
+- outcomeRowsChecked;
+- totalOutcomeRows / coverage where available.
+
+Status:
+FINGERPRINT_QA_WINDOWED_AT_SCALE.
+
+
+# PVE-116 — guardCounts Is Also a Latest-1000 Distribution, Not a Full-History Distribution
+
+## Source audit
+`guardCounts` is accumulated by iterating the fetched `snapshots` array.
+
+That array is:
+`ORDER BY created_at DESC LIMIT 1000`.
+
+## Consequence
+Before 1000 rows:
+guardCounts may represent the full snapshot population.
+
+After 1000 rows:
+it represents only the most recent window.
+
+## Risk
+A later report could mistakenly interpret:
+“10% DATA_INSUFFICIENT”
+as a full-history rate when it is actually a recent-window rate.
+
+## Rule
+Label:
+`guardCountsWindowedLatestN`
+or explicitly report the numerator/denominator/time span.
+
+Status:
+GUARD_DISTRIBUTION_WINDOW_MUST_BE_EXPLICIT.
+
+
+# PVE-117 — Enable-Time Formal Isolation and Read-Only Formal Fingerprints Are Different Evidence
+
+## Enable workflow — paired isolation evidence
+The enable workflow captures before enabling:
+- Worker source hash;
+- Formal config fingerprint;
+- Formal scan fingerprint;
+- binding shape.
+
+After enabling PV_SHADOW_ENABLED=true it re-reads them and asserts:
+- Worker source unchanged;
+- non-PV bindings unchanged;
+- Formal config fingerprint unchanged;
+- Formal scan fingerprint unchanged.
+
+If an assertion fails after patching the flag:
+the workflow attempts rollback.
+
+Therefore the 2026-09-25 enable receipt provides genuine:
+`ENABLE_TOGGLE_PAIRED_ISOLATION`
+for the observed state at activation.
+
+## Read-only QA — current-state evidence
+The later QA script computes current:
+- configFingerprint;
+- scanFingerprintWithoutPv;
+- liveFingerprintWithoutPv;
+- decisionImpact/formalCoreImpact metadata.
+
+But it does not:
+- turn PV off;
+- re-run Formal;
+- compare the same market inputs OFF vs ON.
+
+Therefore this is:
+`CURRENT_FORMAL_STATE_FINGERPRINT`,
+not a fresh paired counterfactual isolation test.
+
+## Combined interpretation
+Strong evidence currently consists of:
+1. implementation regression fixtures OFF vs ON;
+2. enable-time before/after state isolation;
+3. runtime decisionImpact=false / post-Formal hook ordering.
+
+Do not overstate each read-only QA run as a new OFF-vs-ON experiment.
+
+Status:
+FORMAL_ISOLATION_EVIDENCE_TYPES_SEPARATED.
+
+
+# PVE-118 — Enable-Time Isolation Did Not Exercise a Live Market Monitor Cycle
+
+## Enable workflow behavior
+The workflow changes only the Worker binding and immediately re-reads:
+- source;
+- config;
+- scan state.
+
+It does not wait for / trigger a normal live market monitor cycle under both OFF and ON states.
+
+## Therefore
+Enable-time paired isolation proves:
+the act of changing the flag did not mutate persisted Formal config/scan state.
+
+It does not by itself prove:
+a future market monitor calculation would be numerically identical OFF vs ON.
+
+## That stronger claim is supported separately by
+- deterministic regression/Formal-isolation tests;
+- code ordering;
+- prospective monitoring of Formal behavior.
+
+## Evidence language
+Use:
+“activation state isolation passed”
+not:
+“every future Formal market calculation was empirically A/B-tested live.”
+
+Status:
+ENABLE_ISOLATION_SCOPE_FROZEN.
+
+
+# PVE-119 — Current D1 Baseline Assertions Would Still Miss Staleness
+
+## Source audit
+If D1 becomes readable, current QA asserts for each baseline:
+- schema_version == PV_SHADOW_V0_1;
+- valid_sessions >= 20;
+- last_market_date < taipeiDate.
+
+## What this catches
+- wrong schema;
+- too few cached session objects;
+- current/future-session leakage.
+
+## What it does NOT catch
+- lastMarketDate weeks/months too old;
+- selection-day omission;
+- partial session objects;
+- per-slot/prefix/range insufficiency;
+- corporate-action reset mismatch.
+
+## Consequence
+Fixing D1 permission alone will not make the current QA baseline test sufficient.
+
+The QA logic itself needs the PVE-083/095/108 freshness and field-coverage semantics before it can claim:
+`BASELINE_FIELD_READY`.
+
+Status:
+D1_ACCESS_NECESSARY_NOT_SUFFICIENT.
+
+
+# PVE-120 — Future QA Must Label Full-Table, Windowed and Runtime Evidence Separately
+
+## Three scopes
+
+### FULL_TABLE
+Examples:
+- duplicate identity aggregate;
+- decisionImpact aggregate;
+- counts grouped by date/type.
+
+### WINDOWED_AT_REST
+Examples:
+- latest 1000 snapshot fingerprints;
+- latest 2000 outcome fingerprints;
+- recent guard distributions.
+
+### RUNTIME_RECEIPT
+Examples:
+- scan.pvShadow bootstrap/daily result;
+- zeroPvActions/Pushes;
+- live/cron admin state.
+
+## Reporting contract
+Every metric should carry:
+- evidenceScope;
+- rowsChecked / denominator;
+- time window;
+- source;
+- read authorization state.
+
+## Why
+A single `qaPass` Boolean cannot truthfully summarize these heterogeneous scopes.
+
+Recommended future summary:
+- safetyStatus;
+- runtimeStatus;
+- atRestAggregateStatus;
+- atRestFingerprintWindowStatus;
+- baselineFieldReadinessStatus;
+- cohortProvenanceStatus.
+
+Status:
+MULTISCOPE_QA_REPORTING_FROZEN.
 
