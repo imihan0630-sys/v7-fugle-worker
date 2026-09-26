@@ -57,6 +57,13 @@ System 1/V8 may be used only as:
 
 V8 A/B, Top6/3+3, capital rules and live-state machine are never prerequisites for System 2 decisions.
 
+## Position-management rules
+
+- Actual holdings are continuously monitored in a dedicated POSITION_MONITOR and do not consume candidate/entry-monitor caps.
+- Position decisions are symmetric: HOLD / REDUCE / EXIT and ADD / RE-ADD / RESTORE are all first-class actions.
+- Re-add after a prior reduction is not rejected solely because current price is above the reduce price.
+- Exact sizing/re-add thresholds remain research hypotheses until prospective validation.
+
 ## Capacity rules
 
 - Global System 2 candidate/watch pool: max 12 unique symbols.
@@ -84,6 +91,7 @@ V8 A/B, Top6/3+3, capital rules and live-state machine are never prerequisites f
 - `system2/SYSTEM2_STORAGE_SCHEMA.md`
 - `system2/SYSTEM2_STRATEGY_PREREGISTRY.md`
 - `system2/SYSTEM2_EXECUTION_SIMULATOR_SPEC.md`
+- `system2/SYSTEM2_POSITION_MANAGEMENT_ARCHITECTURE.md`
 - `system2/SYSTEM2_MARKET_REGIME_V0.md`
 - `system2/SYSTEM2_FACTOR_ENGINE_CONTRACT.md`
 - `system2/SYSTEM2_SOURCE_CONTRACT_AUDIT.md`
