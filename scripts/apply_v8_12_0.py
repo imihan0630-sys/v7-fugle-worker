@@ -312,10 +312,10 @@ replace_once(
 
 replace_once(
     '  enrichment.history = { ...cachedHistory, ...(enrichment.history || {}) };\n'
-    '  // Free Workers 每次只有很小的 CPU 預算；18:10 不再臨時額外暖機。',
+    '  // Free Workers 每次只有很小的 CPU 預算；23:35 不再臨時額外暖機。',
     '  enrichment.history = { ...cachedHistory, ...(enrichment.history || {}) };\n'
     '  const historyAdmission=await buildHistoryAdmissionMap(rows,enrichment.history,marketDate,env);\n'
-    '  // Free Workers 每次只有很小的 CPU 預算；18:10 不再臨時額外暖機。',
+    '  // Free Workers 每次只有很小的 CPU 預算；23:35 不再臨時額外暖機。',
     "after market history admission",
 )
 
