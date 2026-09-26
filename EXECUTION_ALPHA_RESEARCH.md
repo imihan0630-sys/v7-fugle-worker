@@ -87,3 +87,86 @@ Execution research must be stratified by frozen selection context rather than tr
 Key falsification question: does waiting improve weak/volatile selections by avoiding bad entries while unnecessarily suppressing high-quality momentum selections? If yes, the problem is interaction/heterogeneity rather than a universally too-strict or too-loose BUY rule.
 
 No subgroup may be promoted from a tiny date cluster. Report independent dates and UNKNOWN coverage for each stratum.
+
+
+## EA-010 — execution is an immediacy / price-improvement / non-execution trade-off
+
+External market-microstructure evidence strengthens the reason R02 cannot be interpreted from BUY rows alone.
+
+Limit-order research separates at least three components:
+1. price improvement when waiting succeeds;
+2. execution probability / time-to-execution;
+3. opportunity cost and adverse selection when waiting does not execute.
+
+Taiwan-specific order-choice evidence is consistent with this framework:
+- TWSE traders vary marketable-quote aggressiveness with transitory volatility, depth and investor type;
+- the 2015 Taiwan price-limit expansion study reports changes in aggressiveness, order duration/fill rate and market quality;
+- Taiwan order-execution-quality studies show aggressiveness is related to execution speed/quality and price movement.
+
+Therefore "formal BUY entered below selection close" is only the price-improvement leg of a larger execution policy.
+
+### Required accounting identity
+Every selected plan must remain in the denominator until it is explicitly classified as:
+- complete BUY;
+- complete NO-BUY;
+- a named UNKNOWN;
+- not yet mature.
+
+Conditional BUY price improvement can be positive while total waiting-policy value is poor if strong winners are disproportionately left unexecuted.
+
+Conversely, a lower trigger rate is not automatically bad if complete NO-BUY plans disproportionately avoid adverse paths.
+
+### No composite optimization yet
+Do not invent a weighted Execution Alpha score combining:
+- participation;
+- entry improvement;
+- post-entry path;
+- missed upside;
+- avoided downside;
+- idle cash.
+
+Each component must mature separately first.
+
+Status: EXECUTION_POLICY_DECOMPOSITION_SUPPORTED / COMPOSITE_VALUE_NOT_AUTHORIZED.
+
+
+## EA-011 — coverage-aware diagnostic v0.1 implemented in isolated Draft PR #104
+
+A fresh Class-A branch from current main now contains:
+`research/execution_alpha_coverage_v0_1.mjs`
+
+The module is pure research accounting only:
+- no Worker import;
+- no network;
+- no D1/storage write;
+- no monitoring/signal/push;
+- no Formal selection/ranking/capital impact.
+
+It implements the frozen EA-002 states and reports:
+- selected/mature/complete-coverage denominators;
+- BUY and NO-BUY counts;
+- named UNKNOWN counts;
+- complete-coverage BUY trigger rate;
+- UNKNOWN rate among mature plans;
+- conditional BUY entry-price improvement;
+- BUY post-entry D5 when supplied;
+- complete NO-BUY benchmark D5/MFE/MAE when supplied;
+- idle-session summary.
+
+The implementation intentionally returns `unconditionalExecutionAlpha:null`.
+No optimized composite policy-value estimator exists in v0.1.
+
+Synthetic falsification fixture includes:
+- one observed BUY with cheaper entry;
+- one NO-BUY missed winner;
+- one NO-BUY avoided loser;
+- one recorder-incomplete UNKNOWN;
+- one not-yet-mature plan.
+
+This proves the accounting can represent conflicting opportunity-cost signs without converting missing data to NO-BUY.
+
+Draft PR: #104.
+Production baseline independently re-read before engineering:
+`8.11.0-pv-shadow-v0.1-log-only`, TEST_MODE=false, KV/D1 present.
+
+Status pending CI at the time of this note; Draft only / unmerged / un-deployed.
