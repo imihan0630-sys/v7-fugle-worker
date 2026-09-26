@@ -1,6 +1,6 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-165.
+Checkpoint sequence: B-166.
 Updated: 2026-09-26 12:49 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Detailed B-01..B-123 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
@@ -744,3 +744,20 @@ Updated: 2026-09-26 12:49 Asia/Taipei.
 - V8.12 contract: Formal strategy markers frozen; source-admission guard present; missing official gap proof fails closed; raw official bar presence is evaluated before Formal filters.
 - Engineering status: `DEPLOYED_AWAITING_FIRST_LIVE_TRADING_DAY`. Deployment success proves integration, not trading alpha or realized return improvement.
 - First prospective live operational validation: 2026-09-29. Inspect the 17:00-17:59 history seed first, then the 23:35 after-market scan; measure usable/unusable histories, UNKNOWN reasons, verified no-trade gaps, provider refetches and any overflow. No outcome-driven threshold tuning.
+
+
+## B-166 — PriorityScore Production semantics corrected; V8.13 provenance deployed (2026-09-26 18:00 Asia/Taipei)
+- Continued B-164 by auditing the actual deterministic deployment patch chain rather than root `Worker.js` alone.
+- Important correction to B-164: the deployed Formal comparator is NOT rewardPerRisk-first. V7.5.30 changes the runtime order to post-consensus `priorityScore` first, raw `rewardPerRisk` second, `marketConsensusScore` third, then `setupQuality`, `sectorFlow`, `relativeStrength`. Root baseline Worker had stale pre-patch ordering and is not authoritative for deployed semantics.
+- V7.5.30 also overlays market consensus after hard eligibility: >=2 independent sources are required before bonus; bonus is capped at +7; the post-bonus `priorityScore` is what Formal ranking sees. Therefore future calibration must separate the base 28/14/16/14/14/14 score mechanism from the market-consensus contribution.
+- PIT audit confirmed selected Formal trade-journal rows preserve score/allocation fields, but existing research snapshots dropped PriorityScore. Historical Shadow score calibration would therefore be selection-biased and is prohibited; old scores may not be recomputed with current code and relabeled as historical PIT evidence.
+- V8.13.0 `8.13.0-priority-score-provenance-shadow` was implemented as Class A research-only provenance. Existing research snapshots now preserve post-consensus priorityScore, raw rewardPerRisk, rounded rewardRisk, marketConsensusScore, marketConsensusSources, marketConsensusBonus, setupQuality, sectorFlow, relativeStrength, and frozen definition/comparator identities.
+- No Formal formula, comparator, threshold, quota, capital allocation, BUY/ADD/REDUCE, monitoring, signal or push behavior was changed by V8.13.
+- PR #110 merged successfully. PR validation: V8 Regression run 36234321039 SUCCESS; V8 Repair CI run 36234321046 SUCCESS.
+- Production main validation: V8 Regression run 36234370697 SUCCESS; Cloudflare Deploy run 36234370701 SUCCESS.
+- Deploy guard evidence: V8.12 production backup verified; version guard accepted V8.12 -> V8.13; code deployment succeeded; 23:35 after-market Cron and existing configuration were preserved; deployed version readback observed `8.13.0-priority-score-provenance-shadow`; rollback was not triggered.
+- Production research readback also succeeded on expected V8.13 deployment. Existing Shadow remains only 62 rows / 2 archived dates with research integrity DATA_QUALITY_BLOCKED; no historical evidence was fabricated.
+- PRIORITY_SCORE_CALIBRATION is registered at L2 / WAITING_PROSPECTIVE / NOT_OPTIMIZATION_READY. It is NOT a FORMAL_OPTIMIZATION_CANDIDATE.
+- First valid prospective PriorityScore provenance can begin with the first post-deploy Formal/Shadow after-market scan, expected 2026-09-29. The first descriptive calibration table still requires >=20 clean independent scan dates plus mature outcomes; this threshold is only descriptive readiness, not Formal-promotion evidence.
+- Frozen future comparisons: within-date score rank vs D1/D3/D5/MFE/MAE/stop-first; current score-proportional sizing vs equal-capital vs equal-planned-stop-risk; control for raw RR and market-consensus contribution; base score vs consensus overlay; date-cluster/LODO; sector/regime strata; common-support/coverage; transaction-cost sensitivity.
+- Formal Core remains LOCKED. Neither strengthening nor weakening PriorityScore weights/sizing is authorized before falsification matures.
