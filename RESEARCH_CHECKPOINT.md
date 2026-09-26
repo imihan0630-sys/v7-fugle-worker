@@ -918,3 +918,16 @@ Updated: 2026-09-26 22:14 Asia/Taipei.
 - The smallest future system-native test is not “record-high revenue alpha” but `realized revenue growth state × pre-event run-up × pre-event institutional flow × immediate reaction`, with overheat, decomposed institution flow, sector/Residual RS, regime/volatility and overlapping disclosures as controls.
 - Durable Fundamental lane advanced to FD-035; exact source DOI and event-clock semantics are updated. `FUNDAMENTAL_INFO_DYNAMICS` remains L2 / DATA_QUALITY_BLOCKED for event inference, not because current revenue numbers are unavailable.
 - No Formal optimization candidate. Exact next high-value task is structural falsification of the current Formal `fundamentalScore` itself before proposing any new fundamental factor.
+
+
+## B-177 — Formal fundamentalScore structural falsification / observability gap (2026-09-26 Asia/Taipei)
+- Exact current formula audited before any outcome lookup. Nine possible components have maxima 30/10/15/15/15/15/10/5/5 = 120, then final score clamps at 100. Main Formal priority uses 14% fundamentalScore and rejects sufficiently observed candidates below 25; any formula change is Class C.
+- Score is additive across available components and not normalized by observed-component count or available maximum weight. Fixed synthetic witness: same illustrative company values score 47.5 with 3 visible fields, 86.5 with 6, and pre-clamp 101.5 => 100 with all 9. Structural coverage confounding is therefore confirmed; empirical harm remains unknown.
+- `scorePositive` gives half component credit at zero change. A fully observed profitable zero-growth synthetic state scores 67.5. Therefore fundamentalScore is a mixed LEVEL+CHANGE quality composite, not a growth/surprise score; interpretation is corrected rather than labeling this automatically defective.
+- `revenueMoM ?? revenueQoQ` creates an availability-driven horizon switch. Frozen witness with identical other fields scores 35 when monthly MoM=-20 is present versus 45 when MoM is missing and quarterly QoQ=+50 fills the slot.
+- Full max 120 creates structural score saturation/rank-compression risk. Actual saturation frequency must be measured prospectively; no alternative cap/weight is proposed.
+- Existing Shadow observability is incomplete for exact decomposition: current snapshot stores the total score and many raw fundamentals but not grossMarginYoY, operatingMarginYoY, component availability signature, pre-clamp score or availableWeightMax. Historical component attribution is therefore not exact.
+- Machine artifact `research/fundamental_score_structural_falsification_v0_1.json` freezes current formula and synthetic counterexamples without outcome data. Fundamental lane advanced through FD-043.
+- Correct empirical order: capture exact component/provenance -> measure availability/saturation -> test grouped primitives with scanDate clustering/OOS/redundancy controls -> only then consider a Class-C reformulation. Do not tune weights first.
+- A future zero-extra-call Shadow-only component-observability extension can qualify as Class A if it only serializes already-loaded values and Formal outputs remain invariant, but active V8.15 lineage is left untouched.
+- No FORMAL_OPTIMIZATION_CANDIDATE yet. The finding is structurally material but outcome impact is still UNKNOWN.
