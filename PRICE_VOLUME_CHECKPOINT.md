@@ -834,3 +834,22 @@ Class A if research-only; Class C if later used in formal 15m confirmation.
 4. PVE-143 separate workflow-source commit, deployed Worker source and research-document commit lineage.
 5. PVE-144 freeze the no-hindsight provenance receipt for 9/29 and 9/30.
 6. Formal Core remains LOCKED.
+
+
+## Evidence progress — PVE-140 through PVE-144
+- PVE-140 corrects the prior active-content interpretation. The QA artifacts hash raw `content/v2` response text, while commit 262dc359 explicitly added `extractWorkerSource()` to the enable workflow to remove multipart/binding-metadata representation before hashing source. QA did not inherit that extractor.
+- PVE-141 therefore downgrades the two differing QA `activeContentSha256` values to RAW_RESPONSE_HASH_DRIFT. They do not prove Worker code drift. The enable workflow's before/after extracted-source equality remains valid within its method.
+- PVE-142 freezes Cloudflare Worker version id/number + `resources.script.etag` as the preferred executable identity tuple; runtime VERSION remains a label and raw content/v2 hash is non-authoritative unless canonicalized.
+- PVE-143 freezes three independent lineages: research-document commit, QA workflow/artifact head, and external deployed Worker version/etag/runtime state.
+- PVE-144 preregisters the 9/29-9/30 no-hindsight provenance receipt before any outcome inspection.
+- PVE-137/PVE-139 statements treating QA raw activeContentSha256 as exact code identity are superseded by PVE-140~142.
+- Current Price-Volume evidence cursor: PVE-001 through PVE-144.
+- Formal Core/runtime/token/permission/deployment remain unchanged.
+
+## Revised exact continuation after PVE-144
+1. PVE-145 audit existing read-only access to Worker Versions/etag with no permission expansion.
+2. PVE-146 freeze version/etag receipt semantics or VERSION_IDENTITY_UNOBSERVED if blocked.
+3. PVE-147 audit extracted-source canonical hash as future QA observability only.
+4. PVE-148 decompose scan fingerprints into timing versus semantic components.
+5. PVE-149 freeze 9/29 night evaluation order before outcomes.
+6. Continue falsification/data-quality research only.
