@@ -846,3 +846,19 @@ YES for research infrastructure integrity: resolving the actual archive lineage 
 5. Prospective Pattern outcome inference waits for COMPLETE parent coverage and run receipts.
 6. When clean prospective evidence exists, run only PATTERN-RG1..RG4 plus frozen redundancy/date-cluster/holdout/cost gates.
 7. No R09 and no Formal change without owner approval.
+
+
+## Cross-lane update — Pattern source falsification + Execution Alpha coverage (2026-09-26 Asia/Taipei)
+- Pattern real-source QA found FCNT000002 can emit flat zero-amount pseudo-bars on verified suspension dates and can report zero lots with positive traded amount on sub-lot days. Symbol-session membership and volume precision are now explicit research gates; latest Pattern head `69aace54c8d7d7b5ea2f7609495e5dea5eb616c2` passed Repair/Regression.
+- A modern 5314 consecutive-limit-up witness confirms breakout acceptance may remain censored for multiple sessions; resolution waits for a later eligible unconstrained symbol-session.
+- Execution Alpha canonical work resumed after Supply-Chain source closure. Draft PR #104 implements Class-A coverage-aware accounting from a fresh main branch; latest head `c9e23b01907dbeca7a130236816d56ac8db8764b` passed Repair/Regression.
+- Execution evidence now explicitly separates participation, conditional BUY entry improvement, BUY path, complete NO-BUY opportunity cost and idle capital. Missing rows remain UNKNOWN; no composite score is authorized.
+- 2026-09-24 BUY/NO-BUY remains UNKNOWN. Exact-date recorder completeness still requires separate Class-B runtime approval before implementation.
+- No Production/Formal change; no R09.
+
+### Exact next continuation point
+1. Execution Alpha is the active canonical priority. Keep recorder exact-date Class-B proposal frozen until owner approval; do not reconstruct 9/24.
+2. Continue outcome-independent Execution Alpha benchmark/cost/opportunity-cost semantics and synthetic falsification only until prospective complete-coverage dates exist.
+3. When complete coverage exists, report the five Execution components separately by independent scan date and frozen A/B/pool/regime/liquidity strata; no composite optimization first.
+4. Pattern latent geometry stays frozen; only source/data-validity falsification continues until runtime semantic gates clear.
+5. Formal Core remains LOCKED.
