@@ -1,0 +1,126 @@
+{
+  "schemaVersion": "formal-early-admission-shadow-coverage-v0.1",
+  "researchDate": "2026-09-27",
+  "status": "STRUCTURAL_COVERAGE_MAP_FROZEN",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "archiveSemantics": {
+    "REJECTED_AFTER_BASE": "Only result.basePassed===true rows; cannot represent any early basePassed=false gate.",
+    "BROAD_CONTROL": "Deterministic hash sample, max 6 per GENERAL and THOUSAND price pool, requiring historyDays>=60, close>=10 and avgVolume20Lots>=price-tier minLots; it may incidentally include other early rejects that satisfy those three conditions.",
+    "implication": "Incidental BROAD_CONTROL presence is not a dedicated gate cohort and cannot establish gate prevalence or complete opportunity cost."
+  },
+  "gates": [
+    {
+      "order": 1,
+      "reason": "股價低於10元",
+      "condition": "close<10",
+      "type": "OWNER_FIXED_UNIVERSE_POLICY",
+      "featureUniverseCoverage": "SYSTEMATICALLY_REMOVED_UPSTREAM by normalizeMarketRow / marketRows filters",
+      "rejectedAfterBaseCoverage": "NONE",
+      "broadControlCoverage": "NONE",
+      "researchPriority": "DO_NOT_OPTIMIZE_UNLESS_OWNER_REOPENS_POLICY"
+    },
+    {
+      "order": 2,
+      "reason": "歷史資料未滿60日",
+      "condition": "historyDays<60",
+      "type": "DATA_INTEGRITY",
+      "featureUniverseCoverage": "feature may exist but BROAD_CONTROL excludes historyDays<60",
+      "rejectedAfterBaseCoverage": "NONE",
+      "broadControlCoverage": "NONE",
+      "researchPriority": "SOURCE_COMPLETENESS_ONLY; NOT A QUALITY-THRESHOLD RELAXATION TARGET"
+    },
+    {
+      "order": 3,
+      "reason": "缺真實大盤或同日期族群RS資料",
+      "condition": "marketReturn20 or sectorReturn20 missing",
+      "type": "DATA_QUALITY",
+      "featureUniverseCoverage": "PRESENT_WHEN_FEATURE_EXISTS",
+      "rejectedAfterBaseCoverage": "NONE",
+      "broadControlCoverage": "INCIDENTAL_BOUNDED_POSSIBLE if history/liquidity conditions pass",
+      "researchPriority": "FIX/VERIFY PROVENANCE; DO NOT IMPUTE NEUTRAL"
+    },
+    {
+      "order": 4,
+      "reason": "缺市值資料",
+      "condition": "marketCapYi null",
+      "type": "DATA_QUALITY",
+      "featureUniverseCoverage": "PRESENT_WHEN_FEATURE_EXISTS",
+      "rejectedAfterBaseCoverage": "NONE",
+      "broadControlCoverage": "INCIDENTAL_BOUNDED_POSSIBLE",
+      "researchPriority": "FIX/VERIFY SOURCE; DO NOT IMPUTE"
+    },
+    {
+      "order": 5,
+      "reason": "市值低於10億",
+      "condition": "marketCapYi<10",
+      "type": "STRATEGY_UNIVERSE_RISK_GATE",
+      "featureUniverseCoverage": "PRESENT",
+      "rejectedAfterBaseCoverage": "NONE",
+      "broadControlCoverage": "INCIDENTAL_BOUNDED_POSSIBLE if history/liquidity pass",
+      "researchPriority": "FALSIFIABLE_REDUNDANCY_QUESTION versus liquidity/execution controls; no current dedicated cohort"
+    },
+    {
+      "order": 6,
+      "reason": "單日走勢過度異常",
+      "condition": "abs(changePercent||0)>=9.8",
+      "type": "STRATEGY_EXTREME_MOVE_GATE",
+      "featureUniverseCoverage": "PRESENT",
+      "rejectedAfterBaseCoverage": "NONE",
+      "broadControlCoverage": "INCIDENTAL_BOUNDED_POSSIBLE if history/liquidity pass",
+      "researchPriority": "ACTIVE; exact official limit-state cross-tab frozen in extreme_daily_move_gate_falsification_v0_1"
+    },
+    {
+      "order": 7,
+      "reason": "20日流動性不足",
+      "condition": "avgVolume20Lots<minLots and exception fails",
+      "type": "STRATEGY_EXECUTION_RISK_GATE",
+      "featureUniverseCoverage": "PRESENT",
+      "rejectedAfterBaseCoverage": "NONE",
+      "broadControlCoverage": "SYSTEMATICALLY_ABSENT because BROAD_CONTROL requires avgVolume20Lots>=minLots",
+      "researchPriority": "HIGHEST EARLY-GATE SHADOW HOLE; dedicated prospective control required"
+    },
+    {
+      "order": 8,
+      "reason": "10至30億市值缺少強力特殊理由",
+      "condition": "marketCapYi<30 and not(avgVolume20Lots>=1.5*minLots and institutionalScore>=70)",
+      "type": "SIZE_LIQUIDITY_INSTITUTIONAL_COMPOSITE_GATE",
+      "featureUniverseCoverage": "PRESENT",
+      "rejectedAfterBaseCoverage": "NONE",
+      "broadControlCoverage": "INCIDENTAL_BOUNDED_PARTIAL; below-minLots exception-pass subset still absent",
+      "researchPriority": "JOIN LIQUIDITY ADMISSION CONTROL; institution semantic hybrid already audited"
+    },
+    {
+      "order": 9,
+      "reason": "30至100億市值流動性要求未達",
+      "condition": "marketCapYi<100 and avgVolume20Lots<1.2*minLots and no liquidityException",
+      "type": "SIZE_LIQUIDITY_COMPOSITE_GATE",
+      "featureUniverseCoverage": "PRESENT",
+      "rejectedAfterBaseCoverage": "NONE",
+      "broadControlCoverage": "INCIDENTAL_BOUNDED_POSSIBLE",
+      "researchPriority": "JOIN LIQUIDITY ADMISSION CONTROL"
+    },
+    {
+      "order": 10,
+      "reason": "缺集保持股集中度，不補假值",
+      "condition": "chipConcentration null",
+      "type": "DATA_QUALITY",
+      "featureUniverseCoverage": "PRESENT",
+      "rejectedAfterBaseCoverage": "NONE",
+      "broadControlCoverage": "INCIDENTAL_BOUNDED_POSSIBLE",
+      "researchPriority": "SOURCE COMPLETENESS; MISSING MUST REMAIN UNKNOWN"
+    }
+  ],
+  "conclusions": [
+    "REJECTED_AFTER_BASE is intentionally blind to every early admission gate.",
+    "BROAD_CONTROL is not a universal early-gate control because it preconditions on >=60 history, >=10 price and primary minLots liquidity.",
+    "The only complete systematic early-gate Shadow hole among strategy gates found here is the primary below-minLots rejection; other strategy gates have at best incidental bounded coverage.",
+    "Market-cap<10bn is the remaining standalone strategy-universe gate not yet given a dedicated falsification design.",
+    "Data-quality gates must not be treated as alpha/optimization thresholds."
+  ],
+  "next": [
+    "Freeze a market-cap<10bn redundancy/cost falsification spec before considering any size-floor change.",
+    "Do not build separate cohorts for missing-data gates as if they were trade opportunities; build completeness QA instead.",
+    "Prefer one future isolated early-admission audit receipt carrying exact first rejection reason and total counts, then dedicated sampling for high-value strategy gates, rather than proliferating ad-hoc cohorts."
+  ]
+}
