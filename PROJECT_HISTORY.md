@@ -445,3 +445,20 @@
 - PR Regression `36234321039`、Repair CI `36234321046` 均成功。
 - main Regression `36234370697`、Cloudflare Deploy `36234370701` 均成功；版本／設定 readback 通過，未觸發 rollback。
 - `PRIORITY_SCORE_CALIBRATION` 目前仍為 `WAITING_PROSPECTIVE / NOT_OPTIMIZATION_READY`；至少累積 20 個 clean independent scan dates 才做第一輪 descriptive calibration，且不得因此自動調權重。
+
+
+## 2026-09-26｜V8.14.0 Sector-Gate Provenance Shadow 正式上線
+
+- 正式 runtime：`8.14.0-sector-gate-provenance-shadow`。
+- 本次為 Class-A 研究證據功能，不修改 Formal sector gate、A/B、排序、3+3/Top6、資金、BUY/ADD/REDUCE、監控、訊號或推播。
+- 研究稽核先確認兩個缺口：
+  - 原 `researchMarketContext.advancePct` 是經 Formal normalizer 後的市場 breadth，不是官方全市場 breadth；
+  - 原 Shadow 未保存 sector gate 實際使用的 breadth / avgChange / amountVs20DayAverage，因此不能直接驗證 40% / -1% / 0.5 門檻。
+- V8.14 新增 `SECTOR_GATE_AUDIT_V0_1`，逐筆保存三項 gate 輸入、各條通過狀態、組合狀態、PIT/版本 provenance。
+- 新增 bounded `SECTOR_GATE_REJECTED` 研究 cohort，每池每次最多 6 筆，只供反證；不是完整被淘汰股全集。
+- 同時保存 A/B 技術狀態，但明確 `fullFormalCounterfactual=false`；不能宣稱這些股票「若拿掉 sector gate 就一定會入選」。
+- Market context 新增 universe 標籤 `TWSE_TPEX_COMBINED_FORMAL_NORMALIZED`，並明示 `officialWholeMarketBreadth=false`。
+- PR #111 合併 commit：`eb1ef7f1d86a8013c0fd58d97cdfaa7369f677e7`。
+- PR Regression `36234970884`、Repair CI `36234970803` 成功；main Regression `36235023368`、Cloudflare Deploy `36235023379` 成功。
+- 部署後版本／設定／23:35 Cron／research readback 均通過，未觸發 rollback，也未執行補選股、重送或交易動作。
+- Breadth/Rotation 狀態改為 `WAITING_PROSPECTIVE / NOT_OPTIMIZATION_READY`。預計自 2026-09-29 第一個有效盤後開始累積乾淨樣本；至少 20 個獨立 clean scan dates 才做第一輪 descriptive audit，禁止先調門檻。
