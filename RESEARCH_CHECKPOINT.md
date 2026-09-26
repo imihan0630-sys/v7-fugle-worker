@@ -1,7 +1,7 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-169.
-Updated: 2026-09-26 12:49 Asia/Taipei.
+Checkpoint sequence: B-170.
+Updated: 2026-09-26 22:10 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Detailed B-01..B-123 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
@@ -829,3 +829,16 @@ Updated: 2026-09-26 12:49 Asia/Taipei.
 - R01-R08/I01-I07: improves PIT, selection-bias, definition-drift and UNKNOWN controls; no new factor.
 - Status: FALSIFICATION_IN_PROGRESS / HISTORICAL_COHORT_UNKNOWN / PROSPECTIVE_RECEIPT_SPEC_FROZEN / NOT_OPTIMIZATION_READY. No Formal optimization candidate.
 - Exact next: fresh-read concurrent checkpoint; if still latest, implement receipt/cohort capture on isolated branch with synthetic tests and Formal-output invariants. If isolation requires shared runtime semantic change, stop at Class-B proposal. Do not tune 2.5/25 thresholds.
+
+
+## B-170 — V8.15 valuation provenance implementation prepared; Draft PR #112 (2026-09-26 22:10 Asia/Taipei)
+- Fresh-read canonical B-169 plus concurrent main commits before implementation. A later main Execution-Alpha research commit was observed; it does not supersede B-169 exact-next valuation task.
+- Implemented the frozen V8.15 valuation receipt/cohort contract on isolated branch research/valuation-provenance-v8-15 without changing Formal thresholds or scoreCandidate ordering.
+- Prospective Shadow snapshot now captures valuation audit fields already available at scan time: stock PE/PB, valuation provenance, sector positive-PE peer count, sector median PE, relative PE, quarterly revenue/EPS YoY, growth exception, gate evaluability/current-rule result, exact 2.5/25/3 thresholds and PB-non-substitution semantics.
+- Added bounded VALUATION_REJECTED research cohort for the exact existing reject reason. It is a falsification sample, not a complete rejected-universe denominator; fullFormalCounterfactual remains constrained by upstream/downstream ordering.
+- Added synthetic contract tests and wired V8.15 after V8.14 in both Regression and Repair-CI patch chains. Draft PR #112 opened at head 7dc9265441eab4b3b69fa0684a017249ee37ae6f; branch commits include 8d038ce1d26ba75a4585668adb3abc74784878cd, 287928b27c8bea48bdc5ce2d3f3a6fedd24d7912, 878e06af526b4cb14ad8f5f4a8da9a45476ab015 and 7dc9265441eab4b3b69fa0684a017249ee37ae6f.
+- PR creation succeeded, but workflow runs were not yet visible at immediate readback; CI status therefore UNKNOWN, not PASS. PR remains Draft/unmerged/un-deployed. No Production/Worker/Formal/monitor/push change.
+- Counterevidence/limitations preserved: historical exact valuation-reject cohort remains UNKNOWN; sector median depends on positive-PE peer composition; high PE can be justified growth leadership; low/negative PE is not cheap evidence; D1-D5 may be too short; valuation may duplicate growth/overheat/RS. No threshold tuning/outcome lookup performed.
+- Optimization bridge status: VALUATION = FALSIFICATION_IN_PROGRESS / PROSPECTIVE_INSTRUMENTATION_PREPARED / NOT_OPTIMIZATION_READY. FORMAL_OPTIMIZATION_CANDIDATE count unchanged.
+- R01-R08/I01-I07: improves PIT, selection-bias, UNKNOWN, definition-drift and future redundancy testing; no new Formal factor.
+- Exact next continuation: re-read latest main/checkpoint and PR #112 CI when available. If CI exposes implementation errors, repair safely on branch and rerun. If green, verify Formal-output invariants and keep the Class-A evidence capture isolated until governance permits promotion; do not alter 2.5/25 thresholds. In parallel, continue the next independent research lane rather than waiting for valuation outcomes.
