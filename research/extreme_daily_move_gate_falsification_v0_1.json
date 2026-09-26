@@ -1,0 +1,109 @@
+{
+  "schemaVersion": "extreme-daily-move-gate-falsification-v0.1",
+  "researchDate": "2026-09-27",
+  "status": "STRUCTURAL_FALSIFICATION_FROZEN",
+  "outcomeDataUsed": false,
+  "formalCoreChanged": false,
+  "formalGate": {
+    "condition": "abs(changePercent || 0) >= 9.8",
+    "rejectionReason": "單日走勢過度異常",
+    "basePassed": false,
+    "semanticName": "EXTREME_DAILY_RETURN_PROXY",
+    "notEquivalentTo": "OFFICIAL_PRICE_LIMIT_STATE"
+  },
+  "changePercentConstruction": {
+    "source": "normalizeMarketRow exchange close + change amount/sign",
+    "formula": "previousClose = close - signedChange; changePercent = signedChange/previousClose*100",
+    "nonComparableMarker": "If 漲跌(+/-) == X, change is set null; changePercent becomes null; Formal gate coerces null through (changePercent||0), so this gate itself treats the state as 0%.",
+    "guard": "This does not prove final eligibility because later corporate-action/history/data-quality gates remain."
+  },
+  "officialSemantics": {
+    "rule": "TWSE daily stock limit is +/-10% of the opening-auction reference price, then constrained to legal tick prices without exceeding the limit; listed common stocks may have no limit during specified first-five-day initial-listing periods.",
+    "currentRuleSource": "TWSE Operating Rules Articles 62-63, current rule page amended 2026-08-06",
+    "exampleSource": "TWSE Trading Mechanism Introduction: reference 40.60 -> theoretical up 44.66/down 36.54 -> legal limit-up 44.65 / limit-down 36.55",
+    "authoritativeResearchSources": [
+      "TWSE TWT84U",
+      "TPEx EDIS S38 / STKT2QUOTESN.TXT"
+    ]
+  },
+  "fixedLegalCounterexamples": [
+    {
+      "id": "TRUE_LIMIT_UP_PROXY_FALSE_NEGATIVE",
+      "referencePrice": 91.8,
+      "theoreticalTenPctPrice": 100.98,
+      "legalTickAtCandidatePrice": 0.5,
+      "officialLimitPrice": 100.5,
+      "actualReturnPct": 9.477124183,
+      "formalProxyReject": false,
+      "exactOfficialLimitState": "CLOSE_LIMIT_UP if close==100.50",
+      "derivation": "100.50 is the highest legal 0.50-tick quote <=100.98; 101.00 would exceed +10%."
+    },
+    {
+      "id": "TRUE_LIMIT_DOWN_PROXY_FALSE_NEGATIVE",
+      "referencePrice": 11.45,
+      "theoreticalMinusTenPctPrice": 10.305,
+      "legalTickAtCandidatePrice": 0.05,
+      "officialLimitPrice": 10.35,
+      "actualReturnPct": -9.6069869,
+      "formalProxyReject": false,
+      "exactOfficialLimitState": "CLOSE_LIMIT_DOWN if close==10.35",
+      "derivation": "10.35 is the lowest legal 0.05-tick quote >=10.305; 10.30 would exceed -10%."
+    },
+    {
+      "id": "NON_LIMIT_UP_PROXY_FALSE_POSITIVE_OFFICIAL_TWSE_EXAMPLE",
+      "referencePrice": 40.6,
+      "officialLimitPrice": 44.65,
+      "candidateClose": 44.6,
+      "legalTick": 0.05,
+      "actualReturnPct": 9.852216749,
+      "formalProxyReject": true,
+      "exactOfficialLimitState": "NON_HIT",
+      "derivation": "TWSE official example fixes limit-up at 44.65; 44.60 is a lower legal tick but abs(return)>=9.8."
+    },
+    {
+      "id": "NON_LIMIT_DOWN_PROXY_FALSE_POSITIVE_OFFICIAL_TWSE_EXAMPLE",
+      "referencePrice": 40.6,
+      "officialLimitPrice": 36.55,
+      "candidateClose": 36.6,
+      "legalTick": 0.05,
+      "actualReturnPct": -9.852216749,
+      "formalProxyReject": true,
+      "exactOfficialLimitState": "NON_HIT",
+      "derivation": "TWSE official example fixes limit-down at 36.55; 36.60 is a higher legal tick but abs(return)>=9.8."
+    }
+  ],
+  "shadowAudit": {
+    "REJECTED_AFTER_BASE": "Cannot capture this gate because it returns basePassed=false.",
+    "BROAD_CONTROL": "Can incidentally sample high-liquidity extreme-return names because it does not exclude abs(changePercent)>=9.8, but it is bounded to 6 per price pool and not stratified by this gate.",
+    "conclusion": "Dedicated gate evidence is sparse/incomplete rather than structurally impossible."
+  },
+  "prospectiveStates": [
+    "EXTREME_RETURN_PROXY_UP_REJECTED",
+    "EXTREME_RETURN_PROXY_DOWN_REJECTED",
+    "OFFICIAL_CLOSE_LIMIT_UP",
+    "OFFICIAL_CLOSE_LIMIT_DOWN",
+    "OFFICIAL_NON_HIT",
+    "NO_PRICE_LIMIT",
+    "NON_COMPARABLE_X",
+    "OFFICIAL_LIMIT_UNKNOWN"
+  ],
+  "requiredCrossTab": [
+    "proxyReject x officialLimitState",
+    "direction separated; never pool positive and negative extreme days for outcome inference",
+    "market/sector/regime/ATR/liquidity/event/corporate-action controls",
+    "next-open gap, open-to-close, D1/D3/D5, MFE/MAE, executable next-day limit/liquidity state",
+    "later re-entry into valid A/B setup"
+  ],
+  "falsification": [
+    "If proxy-only non-limit rejects have worse or non-executable next-day paths, retain the proxy despite semantic mismatch.",
+    "If exact limit-up rows excluded by the proxy are not materially different from matched non-limit extreme rows after controls, exact-state reformulation may add no value.",
+    "If exact positive extreme/limit-up rows show stable opportunity loss with acceptable execution/downside while negative extreme rows remain hazardous, only then consider an asymmetric admission reformulation.",
+    "Do not infer direction from limit state alone; delayed price discovery, queue/liquidity and event context remain controls.",
+    "Do not threshold-sweep 9.8 after outcomes."
+  ],
+  "optimizationBridge": {
+    "currentStatus": "STRUCTURAL_SEMANTIC_MISMATCH_CONFIRMED / NOT_FORMAL_OPTIMIZATION_CANDIDATE",
+    "futureCandidate": "EXTREME_MOVE_ADMISSION_REFORMULATION",
+    "ownerApprovalClass": "C"
+  }
+}
