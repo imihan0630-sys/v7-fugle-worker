@@ -484,3 +484,15 @@ Updated: 2026-09-26 06:41 Asia/Taipei.
 - Bias/quality: no outcome-conditioned lag choice, no future-edge leakage, no famous AI/ABF hand-picking, no historical Shadow fabrication, no missing=0/BAD, no factor/threshold promotion; R01-R08/I01-I07 unchanged.
 - Engineering: Class A research documentation only; no Worker.js, Production, Formal selection/ranking/capital/signal/push change.
 - Exact next continuation: SC-005 execute the outcome-blind bounded source/identity coverage pilot with a predeclared cross-exchange/cross-industry sample; classify VERIFIED_NAMED_EDGE / CONCENTRATION_ONLY / MANAGEMENT_CLAIM / UNKNOWN and record identity-resolution + knownAt/effectiveFrom coverage. Only if coverage is operationally usable may SC-006 specify an isolated Class-A prospective collector; otherwise mark lane DATA_SOURCE_BLOCKED and move on.
+
+
+## B-149 — SC-005 bounded source/identity pilot exposes named-edge gap (2026-09-26 08:14 Asia/Taipei)
+- Fresh-read governance/worklist/checkpoint/main; canonical start B-148. Concurrent A/main PVE/Pattern commits were observed and not redone.
+- Continued SC-005 outcome-blind with a bounded TWSE/TPEx, cross-industry official/issuer-source sample. No forward return, MFE/MAE or price reaction was inspected.
+- 2330 TSMC annual-report sample = CONCENTRATION_ONLY: customer concentration is disclosed but sampled counterparties are unnamed. Publication knownAt is recoverable; bilateral effectiveFrom/identity UNKNOWN.
+- 6214 SYSTEX annual-report sample = CONCENTRATION_ONLY: major supplier is anonymized as Company A (30% of 2025 purchases); no customer exceeded 10% of sales. Identity was not guessed. knownAt recoverable; effectiveFrom/identity UNKNOWN.
+- 5483 Sino-American Silicon Products TPEx issuer sample = MANAGEMENT_CLAIM/context only: sampled issuer material describes group/subsidiary exposure and customers generically but does not resolve a named external bilateral edge. publication clock recoverable; external identity/effectiveFrom UNKNOWN.
+- Tiny descriptive result: VERIFIED_NAMED_EDGE 0/3, CONCENTRATION_ONLY 2/3, MANAGEMENT_CLAIM 1/3. This is not a population estimate and does not mean no relationships exist; it falsifies sufficiency of the sampled periodic/issuer lane for a named historical graph.
+- Bias/quality: retained cross-exchange/cross-industry zero-yield; no famous-chain substitution, current-map backfill, anonymized identity inference, missing=no-edge/0, outcome conditioning or historical Shadow fabrication. R01-R08/I01-I07 unchanged.
+- Engineering: dedicated receipt/research-file writes were safety-blocked; no runtime/Production/Formal change.
+- Exact next continuation: SC-005B separately sample timestamped material-information >=10% counterparty cessation/event disclosures for named identity, knownAt and event/effective-clock completeness. If materially better, SC-006 may scope an isolated Class-A prospective event collector; otherwise mark Supply-Chain Lead-Lag DATA_SOURCE_BLOCKED and move on.
