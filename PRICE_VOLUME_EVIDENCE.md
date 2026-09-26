@@ -2302,4 +2302,275 @@ A result being inconvenient is not a reason to:
 
 Status:
 PVE_PHASE_I_PRELIVE_CONVERGED / WAIT_ACTUAL_POST_ENABLE_TRADING_DATA.
+# PVE-101 — Baseline Row Lifetime Is Unbounded Even Though Content Retention Is 80 Sessions
+
+## Source audit
+V8.11 freezes:
+`PV_SHADOW_BASELINE_KEEP_SESSIONS = 80`.
+
+Each baseline payload keeps only the most recent 80 session objects.
+
+However:
+- `v7_pv_intraday_baselines` has one row per symbol;
+- no DELETE / expiry / TTL path exists in the V8.11 patch.
+
+## Consequence
+A symbol that was monitored once can retain its baseline row indefinitely.
+
+Thus two different concepts must be separated:
+
+### Content retention
+At most 80 stored session objects.
+
+### Row freshness / lifetime
+Potentially unlimited until the symbol is updated again or the table is manually changed.
+
+A months-old row can still report:
+- validSessions=80;
+- schemaVersion=PV_SHADOW_V0_1.
+
+That does not make it recent.
+
+## Re-entry risk
+This materially strengthens PVE-082:
+the early-return condition `validSessions>=20` can keep a stale row alive through long periods outside monitoring.
+
+Status:
+BASELINE_ROW_PERSISTENCE_UNBOUNDED / CONTENT_CAPPED_80.
+
+
+# PVE-102 — Current-Day Self-Contamination Is Correctly Prevented
+
+## Source audit
+Within `recordPvIntradayShadowSafe`, the order is:
+
+1. `pvBuildIntradaySnapshot`
+2. `pvInsertSnapshotImmutable`
+3. `pvFinalizeSameSessionOutcomes`
+4. `pvRollObservedSession`
+
+The baseline used to calculate the current snapshot is therefore read before the current observed session is rolled into the baseline.
+
+## Consequence
+At the 13:00-start bar:
+- today's pvSlotRvol20 / cumulative pace are computed from prior baseline sessions;
+- only after the snapshot is frozen is today's observable session added to the cache.
+
+This avoids:
+- current-session denominator leakage;
+- self-normalization of the current observation.
+
+## Evidence meaning
+This is a positive no-look-ahead property of v0.1 and should be preserved in any future version.
+
+Status:
+CURRENT_SESSION_SELF_BASELINE_LEAKAGE_NOT_PRESENT.
+
+
+# PVE-103 — Plan Overlap Is a Baseline-Roll Opportunity, Not Proof the Roll Happened
+
+## Source audit
+`recordPvIntradayShadowSafe` skips a result entirely when:
+`!result.ok`
+or it belongs to the excluded AIDEEN pool.
+
+Only processed results can reach:
+`pvRollObservedSession`.
+
+## Consequence
+A symbol may be present in:
+- the day's monitored plan;
+- the 9/29 intraday live symbol set;
+yet still fail to roll its session if the result itself was not OK on the relevant 13:00 completion cycle.
+
+## Therefore
+PVE-092 overlap classification should be interpreted as:
+
+### CONTINUING_MONITORED_PLAN
+There was an **opportunity** for live T-session roll.
+
+It is not:
+`T_SESSION_ROLL_VERIFIED`.
+
+## Stronger proof
+Require one of:
+- non-skipped bootstrap result with lastMarketDate=T;
+- next-day snapshot baselineAsOfDate=T;
+- authoritative baseline D1 receipt.
+
+Status:
+PLAN_OVERLAP_OPPORTUNITY_NOT_ROLL_PROOF.
+
+
+# PVE-104 — A Partial Current Session Can Be Rolled into the Baseline
+
+## Source audit
+`pvExtractCompletedSession15` records:
+`MISSING_REQUIRED_SESSION_SLOT`
+when any expected slot before the latest bar is absent.
+
+But `pvRollObservedSession` checks only:
+`latest.slotKey === "13:00"`.
+
+It does NOT inspect:
+- session.coverageReasons;
+- MISSING_REQUIRED_SESSION_SLOT;
+- prefix completeness.
+
+## Consequence
+A session can:
+- miss an intermediate 15m slot;
+- still contain a 13:00 bar;
+- be written as one baseline session;
+- increment `validSessions`.
+
+## Field impact
+### Exact-slot volume
+A later H001 slot can still use this session if the exact target slot exists.
+
+### Cumulative pace
+For any slot after the missing bar, `cumulativeValid=false`, so it should not contribute to cumulativeHistoryCount.
+
+### Range
+Range semantics remain vulnerable to PVE-030:
+the normalized previous bar can span the missing interval.
+
+## Key distinction
+A session object being retained is not the same as:
+“full session valid for every PV field.”
+
+Status:
+PARTIAL_SESSION_BASELINE_ROLL_CONFIRMED.
+
+
+# PVE-105 — Baseline Field Windows Are Coupled to the Last 20 Exact-Slot Sessions
+
+## Source audit
+For target slot S:
+1. baseline selects sessions containing slot S;
+2. takes the latest 20 such rows;
+3. volume count uses those 20;
+4. range count filters those same 20;
+5. cumulative count filters those same 20 for `cumulativeValid=true`.
+
+It does NOT search farther back for additional range/cumulative-valid rows once the last 20 slot rows are chosen.
+
+## Consequence
+Example:
+- latest 20 sessions all have the target slot;
+- 3 of them have invalid cumulative prefix.
+
+Then:
+- slotHistoryCount=20;
+- cumulativeHistoryCount=17;
+- cumulative median unavailable.
+
+Even if sessions 21~23 in the past had valid cumulative prefixes, they are not used to “top up” the cumulative sample.
+
+## Interpretation
+This is conservative for H002:
+the cumulative comparison remains tied to the same recent slot-volume window rather than silently using an older, different 20-session support set.
+
+## Trade-off
+- positive: stronger recency/common-window consistency;
+- negative: H002 readiness can drop sharply after a few partial sessions.
+
+This is a design semantic, not automatically a bug.
+
+Status:
+FIELD_SUPPORT_WINDOW_COUPLED_TO_SLOT_WINDOW_FROZEN.
+
+
+# PVE-106 — validSessions Counts Session Objects, Including Partial Ones
+
+## Baseline write
+`valid_sessions = sessions.length`.
+
+No complete-session predicate is applied before this count.
+
+Because PVE-104 partial sessions can be rolled or historically normalized:
+`validSessions`
+can include session objects that are unusable for some slots/prefixes/ranges.
+
+## Evidence hierarchy reinforced
+Never interpret:
+`validSessions=80`
+as:
+- 80 valid 09:00 observations;
+- 80 valid 13:00 cumulative prefixes;
+- 80 full sessions.
+
+Only field-specific counts support field readiness.
+
+Status:
+VALIDSESSIONS_IS_CONTAINER_COUNT_NOT_FIELD_COUNT.
+
+
+# PVE-107 — Corporate-Action Reset Can Be Bypassed by the Bootstrap Early Return
+
+## Source audit
+`pvBootstrapSymbol` sequence:
+
+1. read existing cache;
+2. if schema matches and `validSessions>=20`, return skipped;
+3. only if not skipped, merge using:
+   `cache.corporateActionResetAt || plan.corporateActionResetAt || null`.
+
+## Consequence
+If:
+- an old cache already has >=20 session objects;
+- a newly selected plan carries a newer corporateActionResetAt;
+then the bootstrap returns before applying the new plan reset marker.
+
+Further, `pvBuildIntradaySnapshot` reads resetAt from the baseline cache itself.
+
+Thus a new plan-level reset cannot protect the next intraday feature unless the cache was first refreshed/reset through another path.
+
+## Current production relevance
+The present project does not yet have fully trusted corporate-action reset plumbing into every plan, so this path may be dormant or sparsely populated.
+
+But the early-return ordering is code-proven and would be unsafe once authoritative reset metadata is introduced.
+
+## Governance
+A future baseline refresh decision must evaluate:
+- schema;
+- freshness;
+- reset-version compatibility;
+before count-based skip.
+
+Status:
+BOOTSTRAP_EARLY_RETURN_CAN_BYPASS_NEW_RESET_METADATA.
+
+
+# PVE-108 — Baseline QA Receipt Must Separate Five Independent Properties
+
+A future authoritative receipt should never reduce baseline quality to one `ready` flag.
+
+For each symbol/observation, report separately:
+
+1. **ROW_EXISTS**
+   - baseline row present?
+
+2. **CONTENT_COUNT**
+   - session-object count / retention count.
+
+3. **FIELD_COVERAGE**
+   - slotHistoryCount;
+   - cumulativeHistoryCount;
+   - rangeHistoryCount.
+
+4. **FRESHNESS**
+   - baselineAsOfDate vs latest expected comparable session.
+
+5. **RESET_COMPATIBILITY**
+   - baseline corporateActionResetAt / reset provenance matches the current plan/event state.
+
+Optional sixth:
+6. **CONTENT_IDENTITY**
+   - baseline content fingerprint/vintage.
+
+Only the specific field analysis decides which combination is required.
+
+Status:
+BASELINE_MULTIAXIS_QA_CONTRACT_FROZEN.
 
