@@ -33,3 +33,16 @@ Every strategy must preserve frozen daily decisions and simulated execution/perf
 ## Execution style
 
 When safe and authorized, continue work through diagnosis, implementation, tests and writeback rather than stopping after reporting an error. Stop for MFA/secrets/new authorization or a material strategy/production decision.
+
+
+## Language / terminology
+
+When using English financial, technical, engineering or system terms in owner-facing responses, always append a clear Traditional Chinese meaning on first use, for example:
+- Risk-on（風險偏好）
+- Trigger（觸發條件／觸發價）
+- Shadow（影子模擬）
+- Thesis（投資邏輯／核心假設）
+- Position Monitor（持股監控）
+- Re-add（重新加碼／恢復部位）
+
+Do not leave unexplained English jargon or acronyms in owner-facing explanations.
