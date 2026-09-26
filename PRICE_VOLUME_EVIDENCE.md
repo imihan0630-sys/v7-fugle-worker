@@ -475,6 +475,63 @@ The re-run produced a new QA artifact and runtime receipt.
 
 Status:
 READ_ONLY_REPRODUCIBLE_EVIDENCE_PATH_CONFIRMED.
+# Imported Concurrent Evidence Index — PVE-013 through PVE-061
+
+The PVE-013~061 work was completed by a parallel research lane and persisted first into `PRICE_VOLUME_CHECKPOINT.md` / `DEEP_LEARNING_CHECKPOINT.md`.
+This index prevents false gaps in the evidence chronology; the checkpoint remains the detailed canonical record for those items.
+
+## PVE-013~020 — observability / runtime receipt semantics
+- scan/status PV values are runtime acknowledgements, not independent D1 at-rest verification;
+- intraday PV result is not persisted as a top-level LAST_MONITOR_KEY receipt;
+- generic Cron success does not imply recorder success;
+- evidence ladder frozen: ENABLED_ONLY -> RUNTIME_RECEIPT -> FEATURE_AT_REST_VERIFIED -> CLEAN_COHORT_VERIFIED -> OUTCOME_MATURE -> DESCRIPTIVE_EVIDENCE_READY;
+- 9/29 inherits stale 9/24 cohort lineage and is DATA_QA-only;
+- D1 403 is AT_REST_QA_UNAUTHORIZED, not evidence of zero rows.
+
+## PVE-021~028 — first session and Guard integrity
+- 9/29 cold-start and 9/30 earliest-possible baseline candidate semantics;
+- daily RVOL continuity is not proven by “last 20 available rows”;
+- v0.1 liquidity Guard reverses Formal thousand/general thresholds and checks liquidityException with the wrong type assumption;
+- corporate-action/gap/marketStructure plumbing is incomplete and VI is not actually observed;
+- price-censor uses previousClose rather than exchange-adjusted reference;
+- Guard-label correctness is a separate QA axis;
+- first evidence window is falsification-first, not win-rate-first.
+
+## PVE-029~036 — range semantics and H001 common support
+- historical 09:00 trueRange uses the last observable prior 13:00 bar while live 09:00 uses quote.previousClose;
+- missing intermediate historical slots can make range span more than one 15m interval;
+- H001/H002 raw-volume evidence is separable from H003 range/response defects;
+- Formal local previous-5 ratio and PV slot RVOL usually share the same current raw 15m source;
+- primary common support begins only where the Formal prev5 comparator exists;
+- missing-slot sessions can leave Formal local ratio numeric while PV session coverage is invalid.
+
+## PVE-037~044 — fingerprint and baseline-count semantics
+- snapshot semantic fingerprint incorrectly includes volatile sourceFetchedAt, so legitimate retries can create false mutation conflicts;
+- existing idempotency fixtures do not test a changing fetch timestamp;
+- outcome fingerprint is structurally cleaner because insertion timestamp is excluded;
+- mutation conflict must be classified as semantic vs volatile-provenance-only vs unknown;
+- baseline validSessions is session-object count, not proof all slots/prefix/range fields have 20 valid observations;
+- bootstrap skip at >=20 is CACHE_POPULATED only, not feature-ready.
+
+## PVE-045~055 — partial sessions, Acceptance drift and outcomes
+- partial sessions can support an exact-slot volume while failing cumulative/range readiness;
+- future readiness needs per-slot volume/prefix/range counts;
+- stored PV Acceptance is an approximation rather than exact Formal replay due rounding and an A lower-shadow bullish-condition drift;
+- 13:00 unresolved Acceptance is session-end censoring;
+- stopFirst can be path-order ambiguous;
+- B1/B2/B4 require verified slot continuity;
+- daily horizons require symbol-session-aware suspension handling;
+- H003/H004 have higher evidence gates than H001/H002.
+
+## PVE-056~061 — point-in-time timestamp semantics
+- intraday observedAt/Acceptance enteredAt are bar-start identity times, not feature-known times;
+- daily observedAt=13:30 is a session anchor, not the later after-market decision-known timestamp;
+- conservative featureKnownAt can be derived from sourceFetchedAt with barEnd checks;
+- sourceFetchedAt is useful PIT provenance but must not define semantic snapshot identity.
+
+Status:
+PVE_013_061_IMPORTED_INDEX / DETAILED_CANONICAL_TEXT_IN_CHECKPOINT.
+
 # PVE-062 — Daily Outcome Finalizer: Factual Path Fields vs Censored / Semantic Labels
 
 ## Source audit
