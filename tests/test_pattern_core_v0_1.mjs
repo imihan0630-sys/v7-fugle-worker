@@ -9,6 +9,7 @@ import {
   detectDirectionalChangeSwingsAtr,
   detectSwingScaleFamily,
   simpleAtrBeforeIndex,
+  researchTickSize,
   buildFrozenResistanceZoneVersions,
   buildResistanceZones,
   detectWFromSwings,
@@ -396,6 +397,22 @@ function scaled(bars, k) {
   const evergreen = taiwanStockPriceLimits({ referencePrice: 63.1, priceLimitPct: 0.10, standardLimitApplies:true, referencePriceComparable:true });
   assert.equal(evergreen.limitUp, 69.4);
   assert.equal(evergreen.limitDown, 56.8);
+
+  // Boundary sweep: legal limits never violate the raw +/-10% envelope and always lie on the active tick grid.
+  for (const ref of [9.09,9.99,10.01,45.45,49.99,50.01,90.91,99.99,100.1,454.6,499.9,500.1,909.1,999.9,1000.1,1818]) {
+    const q=taiwanStockPriceLimits({
+      referencePrice:ref,
+      standardLimitApplies:true,
+      referencePriceComparable:true
+    });
+    assert.equal(q.status,"VALID");
+    assert.ok(q.limitUp<=q.rawUpper+1e-9, "limitUp envelope "+ref);
+    assert.ok(q.limitDown>=q.rawLower-1e-9, "limitDown envelope "+ref);
+    for(const p of [q.limitUp,q.limitDown]){
+      const tick=researchTickSize(p);
+      assert.ok(Math.abs(p/tick-Math.round(p/tick))<1e-8, "legal tick "+ref+" "+p);
+    }
+  }
 
   const out = classifyLimitBreakout({
     priorResistance: 100,
@@ -1283,6 +1300,12 @@ console.log("pattern core v0.1 C1-C8 and invariance tests passed");
   assert.equal(p1003.proximity.fiveNtd.mechanicallyCoarseGrid,true);
   assert.equal(p1003.proximity.evenNtd.mechanicallyCoarseGrid,false);
   assert.equal(p1003.proximity.tenNtd.mechanicallyCoarseGrid,false);
+
+  // Unlike normalized shape geometry, a psychological NTD anchor is deliberately NOT scale invariant.
+  // Scaling 42.13 by 10 changes the relevant legal tick and the absolute NTD anchor lattice.
+  const p421=analyzeTaiwanRoundPriceProximity({structuralLevelPrice:421.3});
+  assert.equal(p421.structuralLevelTick,0.5);
+  assert.notEqual(p421.proximity.wholeNtd.distanceTicks,p42.proximity.wholeNtd.distanceTicks);
 
   const blocked=analyzeTaiwanRoundPriceProximity({structuralLevelPrice:null});
   assert.equal(blocked.status,"BLOCKED");
