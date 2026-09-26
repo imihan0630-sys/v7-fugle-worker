@@ -871,3 +871,22 @@ Class A if research-only; Class C if later used in formal 15m confirmation.
 4. PVE-153 audit 3+3 pool displacement reconstructability.
 5. PVE-154 freeze pool-date integrity receipt.
 6. Keep all alpha/outcome inference blocked until preregistered gates mature.
+
+
+## Evidence progress — PVE-150 through PVE-154
+- PVE-150 freezes the holiday/plan transition: 9/25 and 9/28 are configured non-trading days, so 9/29 intraday inherits the last saved 9/24 Formal plan; a successful 9/29 after-market scan can first create the plan monitored on 9/30.
+- 9/29 intraday is therefore DATA_QA-only under known stale 9/24 selection lineage. 9/30 is only the first potentially clean selection cohort and still has row-level baseline/cohort provenance gates.
+- PVE-151 separates lineage labels from final CLEAN/UNCLEAN/UNKNOWN research eligibility.
+- PVE-152 freezes the symbol-session rehabilitation inputs and retains fail-closed semantics for unexplained missing sessions.
+- PVE-153 finds exact 3+3 historical pool displacement cannot be reconstructed from the current scan receipt because the complete ordered qualified list/rank tuple beyond the cutline is not preserved.
+- PVE-154 freezes a future pool-date integrity receipt that can support selected vs displaced controls without changing Formal.
+- Current Price-Volume evidence cursor: PVE-001 through PVE-154.
+- Formal Core/runtime/token/permission/deployment remain unchanged.
+
+## Revised exact continuation after PVE-154
+1. PVE-155 audit existing Candidate Shadow/archive coverage against the full PVE-154 pool receipt.
+2. PVE-156 freeze a minimum additive research-only pool-integrity schema if current evidence is incomplete.
+3. PVE-157 freeze unbiased SELECTED vs QUALIFIED_NOT_SELECTED control construction.
+4. PVE-158 define date-cluster/dependence handling.
+5. PVE-159 freeze minimum clean-date/event reporting before descriptive outcome tables.
+6. Continue evidence/falsification only.
