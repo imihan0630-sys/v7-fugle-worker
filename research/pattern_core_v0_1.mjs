@@ -1581,6 +1581,13 @@ export function analyzeTwoDayCandlestickMorphology({
     currentInsidePrev,
     openVsPrevClosePct:prev.close>0?curr.open/prev.close-1:null,
     closeVsPrevOpenPct:prev.open>0?curr.close/prev.open-1:null,
+    overnightReturn:prev.close>0?curr.open/prev.close-1:null,
+    intradayReturn:curr.open>0?curr.close/curr.open-1:null,
+    totalReturn:prev.close>0?curr.close/prev.close-1:null,
+    returnDecompositionIdentity:
+      prev.close>0&&curr.open>0
+        ?(1+(curr.open/prev.close-1))*(1+(curr.close/curr.open-1))-1
+        :null,
     closePenetrationOfPrevBearBody:penetration,
     bullishEngulfingBodyRelation,
     bullishHaramiBodyRelation,
