@@ -59,3 +59,45 @@ A possible Formal optimization is not a blanket global risk veto.
 Only if a PIT global state robustly changes A/B selection downside/continuation after Taiwan/sector controls, across independent dates and non-crisis periods, can it become a context/tie-break/risk candidate.
 
 Current status: FALSIFICATION_IN_PROGRESS / NOT_OPTIMIZATION_READY.
+
+
+## MC-008 — weekend/holiday alignment is a first-class data problem
+
+Calendar-day lag is not trading-session lag. For every foreign market observation, map:
+foreignSessionClose -> knownAtTaipei -> first eligible Taiwan scan/session.
+
+If the foreign market was closed, do not forward-fill and call it a new signal. Preserve STALE_NO_NEW_SESSION. If Taiwan was closed, the accumulated foreign information window must be explicitly defined rather than silently using one calendar day.
+
+## MC-009 — gap versus full-session target
+
+Global information may be incorporated primarily at the Taiwan open.
+
+Therefore split:
+- next-open gap;
+- open-to-close return;
+- close-to-close return;
+- MAE/MFE.
+
+A feature that predicts the gap but has no open-to-close persistence may be useful for execution/risk context but not for after-market stock ranking.
+
+## MC-010 — residualization protects against false stock alpha
+
+For stock-level tests, first remove:
+- Taiwan market move;
+- sector move;
+- pre-existing stock beta/RS context where available.
+
+Then ask whether global state changes residual outcome or selection hit rate.
+
+Otherwise a U.S. tech rally followed by Taiwan electronics strength can be falsely counted as stock-picking alpha when it is common beta.
+
+## MC-011 — first data gate
+
+Before outcome tests, audit whether existing Global Radar evidence is durably stored with session/date/knownAt provenance. Notification text alone is not a research dataset.
+
+If historical/prospective receipts are absent, mark DATA_QUALITY_BLOCKED and define a prospective Class-A receipt schema rather than reconstructing global states from current web data.
+
+Minimal receipt:
+sourceMarket, instrument, sessionDate, close/value, currency/unit, source, capturedAt, knownAtTaipei, firstEligibleTaiwanDecision, staleFlag, revisionStatus.
+
+No historical Shadow fabrication.
