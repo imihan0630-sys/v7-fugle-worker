@@ -862,3 +862,22 @@ YES for research infrastructure integrity: resolving the actual archive lineage 
 3. When complete coverage exists, report the five Execution components separately by independent scan date and frozen A/B/pool/regime/liquidity strata; no composite optimization first.
 4. Pattern latent geometry stays frozen; only source/data-validity falsification continues until runtime semantic gates clear.
 5. Formal Core remains LOCKED.
+
+
+## Execution Alpha continuation — EA-012 through EA-017 (2026-09-26 Asia/Taipei)
+- Execution Alpha benchmark semantics now distinguish decision reference from executable price and regular-lot from odd-lot/mixed-lot mechanisms.
+- Current V8.8.1 recorder uses default regular-lot Fugle quote; official Fugle supports `type=oddlot`, but that path is not currently captured. Therefore odd-lot/mixed-lot execution benchmarking is DATA_GATED rather than approximated from regular-lot quotes.
+- Current Taiwan odd-lot mechanism is separate: 1–999 shares, first 09:10 match, 5-second call auctions since 2024-12-02. Older 3-minute Taiwan odd-lot evidence supports non-equivalent price/liquidity paths but not current effect magnitudes.
+- FIRST execution denominator is frozen `firstShares`; ADD/REDUCE/RE-ADD are separate action denominators. Mixed quantities such as 1273 require 1000 regular + 273 odd-lot research legs.
+- Formal signal market price is not actual fill evidence. Implementation shortfall retains unfilled opportunity cost and requires explicit ACTUAL/MODELED fill quality.
+- Draft PR #104 latest validated head `5371e62dae80164bd0fdc5c8c10b8c0c2ce54a4e`; Repair `36211167568` SUCCESS; Regression `36211167625` SUCCESS. Unmerged/un-deployed and already behind main.
+- Execution Alpha now has dual completeness gates: event/date completeness + execution-mechanism completeness. 9/24 remains UNKNOWN.
+- No Production/Formal change; no R09.
+
+### Exact next continuation point
+1. Keep recorder exact-date and odd-lot runtime capture as separate Class-B gaps; do not implement/promote without owner approval.
+2. Continue Class-A/outcome-independent Execution Alpha semantics: partial fills, cancel/replace, mixed-lot aggregation, cost/slippage and idle-capital opportunity-cost falsification.
+3. Never benchmark odd-lot/mixed-lot plans with regular-lot quotes alone.
+4. Prospective directional inference waits for complete event/date AND mechanism coverage.
+5. First evidence report keeps participation, conditional entry improvement, BUY path, NO-BUY opportunity cost and idle capital separate, stratified by independent date/A-B/pool/regime/liquidity/lot mechanism.
+6. No composite Execution Alpha score and no Formal 15m BUY change without later mature evidence + owner approval.
