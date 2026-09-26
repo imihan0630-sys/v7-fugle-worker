@@ -312,3 +312,12 @@ They must not be erased once later clean data arrive.
 - Whole-scan fingerprint drift is not automatically Formal semantic drift because timing and semantic fields are mixed in the hash.
 - No hypothesis status changes: H001/H002 remain gated by live rows, baseline freshness, clean cohort provenance and at-rest QA; H003/H004 remain higher-gated; H006 remains execution-data-quality gated.
 - Formal Core remains LOCKED.
+
+
+## Hypothesis readiness after PVE-144
+- PVE-140~142 correct a provenance overclaim: current QA `activeContentSha256` is a raw content/v2 response hash, not verified canonical executable identity.
+- The observed raw-hash drift across QA reruns does not support a claim of Worker code drift.
+- Future H001~H004 evidence must pin Worker version id/number + script etag when obtainable, plus QA artifact/head lineage.
+- This correction does not weaken the enable-time extracted-source before/after isolation receipt; it narrows only cross-run interpretation of the QA raw hash.
+- H001/H002/H003/H004/H006 readiness statuses remain unchanged and evidence-gated.
+- Formal Core remains LOCKED.
