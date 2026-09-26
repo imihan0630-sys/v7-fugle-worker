@@ -1,7 +1,7 @@
 # HISTORY_SOURCE_REVALIDATION_V2 — research-only falsification note
 
 Date: 2026-09-26 Asia/Taipei  
-Status: FALSIFICATION_IN_PROGRESS / CLASS-A PROTOTYPE  
+Status: FORMAL_OPTIMIZATION_CANDIDATE / CLASS-B IMPLEMENTATION REQUIRES OWNER APPROVAL  
 Formal Core: LOCKED / unchanged
 
 ## Question
@@ -127,3 +127,57 @@ This preserves the useful zero-call fast path even for previously verified suspe
 The receipt is factual bar-presence evidence, not a corporate-action-cause inference. Corporate-action technical-continuity adjustment remains a separate prerequisite when relevant.
 
 Status remains FALSIFICATION_IN_PROGRESS pending CI for V2.3 and production-observability/incidence evidence.
+
+
+## FORMAL_OPTIMIZATION_CANDIDATE — HISTORY_SOURCE_REVALIDATION_V2.3
+
+Candidate class: Class B shared-runtime/data-integrity change.  
+Promotion meaning: evidence-backed proposal worth explicit owner review; NOT authorization to merge or deploy.
+
+### Exact Formal behavior that would change
+- Formal after-market feature construction may use a symbol history only after freshness/source validation.
+- Suspicious cached history is revalidated from explicit raw provider history and official raw gap-presence evidence.
+- Stale/missing-provider histories become DATA_INCOMPLETE/UNKNOWN instead of entering A/B feature calculations.
+- Verified official no-trade gaps remain eligible and are reusable via gap receipts; they are not falsely rejected as stale.
+
+No A/B definition, factor weight, score, threshold, ranking comparator, 3+3 quota, capital, BUY/ADD/REDUCE, monitoring, signal or push rule changes.
+
+### Expected benefit
+- Prevent recurrence of B-130 class false eligibility caused by stale rolling history.
+- Avoid PR #100 class false rejection of legitimate TWSE/TPEx suspension/no-transaction gaps.
+- Make rolling MA/ATR/platform/volume features auditable against explicit raw-source semantics.
+
+### Counterevidence and failure modes retained
+- Historical/current suspicious-symbol incidence is still UNKNOWN because production D1 observability is incomplete.
+- Extreme blast radius can exceed the existing 360 provider-call/hour seed envelope; overflow must remain pending/UNKNOWN.
+- Official raw gap source failure cannot be converted to NO_TRADE.
+- Corporate-action price-continuity semantics are separate and are not solved by bar-presence validation.
+- Additional shared-runtime storage/read path for durable gap receipts creates operational complexity and requires regression/rollback evidence.
+
+### Falsification evidence
+- Real B-130 witness: stale history materially altered existing Formal technical eligibility.
+- TWSE 8422 and TPEx 5314: strict market-session continuity false-rejects legitimate symbol-session gaps.
+- Fresh-provider missing-bar counterexample: >=60 ordered fresh bars can still omit one official traded session; V2.1 rejects it.
+- Strategy-filter leakage counterexample: sub-NT$10 traded rows must remain bar-presence truth even though Formal later excludes them.
+- Provider failure, incomplete official receipt, duplicate/out-of-order/future bars and provider/calendar conflicts fail closed.
+- V2.3 proves verified no-trade gaps can be reused in the fast path instead of causing repeated provider refetches.
+- V2.2 cost stress preserves the 360-call one-hour seed envelope, deduplicates official gap calls by exchange/date, and exposes overflow rather than hiding it.
+
+### Executable CI
+- Research History Source Revalidation V2: repeated SUCCESS through V2.3.
+- V8 Regression Tests: SUCCESS.
+- V8 Repair CI: SUCCESS.
+- Draft PR #105 remains unmerged and un-deployed.
+
+### Protected invariants
+Formal formulas/ranking/quotas/capital/trading/monitoring/push are unchanged by the research prototype.
+A future Class-B implementation must prove the same frozen-output invariants on clean input and may change only data admission/repair outcomes where input integrity differs.
+
+### Rollback
+- Keep V2.3 implementation behind a dedicated Class-B branch/PR.
+- Preserve pre-change Worker/runtime version and history-seed schema.
+- Rollback by reverting the Class-B patch and restoring the previous schema/read path; do not reuse V2-produced UNKNOWN states as negative signals.
+
+### Owner decision boundary
+This candidate is now eligible to be proposed for Class-B implementation/integration testing.
+It is not Production-ready by status alone and must not be merged/deployed without explicit owner approval.
