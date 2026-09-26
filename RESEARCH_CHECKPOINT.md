@@ -1016,3 +1016,17 @@ Updated: 2026-09-26 22:14 Asia/Taipei.
 - Machine Master Map changes LEVERAGE_SHORTING from generic EVIDENCE_PENDING to precise DATA_SOURCE_BLOCKED; maturity stays L2. This is a source-contract blocker, not absence of TPEx margin data.
 - Large automated cross-market backfill remains NO_GO; no H1-H5 outcome tests and no Worker/runtime/Formal changes.
 - Exact continuation: if an official TPEx UTF-8 margin CSV artifact or documented endpoint becomes available, run LS-048 finalized-history pilot without outcomes, then LS-049 completeness/revision audit; otherwise move research effort to lanes that can advance with existing PIT evidence rather than repeatedly probing the blocked source.
+
+
+## B-184 — Market Consensus provenance/PIT falsification (2026-09-27 Asia/Taipei)
+- Continued from canonical B-183 plus latest main Market Consensus structural commit 970e046044a5717d3bc5311e2b56373b11669524; did not redo prior work.
+- Formal source audit confirms the claimed independent-source gate currently proves only distinct trimmed source-name strings inside one POST payload. It does not preserve/validate provider identity, independence group, evidence locator/hash, sourcePublishedAt or sourceAvailableAt.
+- Therefore marketConsensusSources>=2 is valid as system-observed source-name count, but true information-source independence remains UNKNOWN. This does not assert actual duplication; it establishes that independence is not auditable from current provenance.
+- Same-date V7_MARKET_CONSENSUS:{marketDate} is mutable for accepted recent-date POSTs. current KV state cannot be replayed as first-decision PIT truth. updatedAt is ingestion/write time, not source publication/availability time.
+- V8.13 archived sourceCount/bonus can support prospective outcome tests as observed-at-scan fields, but cannot support claims about independent-source consensus without additional immutable provenance.
+- Frozen alternative mechanisms/counterevidence: genuinely independent sources may still dominate in practice; sourceCount effects may instead proxy attention/coverage, syndicated reporting, sector/regime clustering, or overlap with sectorFlow/RS/news attention.
+- Minimum future receipt proposal: immutable receipt/version, providerIdentity, independenceGroup, evidence locator/hash, sourcePublishedAt, sourceAvailableAt, capturedAt, firstEligibleDecisionAt and revision lineage. Missing identity/clocks remain UNKNOWN; no current-web historical backfill.
+- Any shared ingestion/KV change is Class B proposal-first; bonus/source threshold/comparator/PriorityScore/sizing change is Class C. No runtime/Formal change made.
+- Falsification remains scanDate-clustered and controls pre-consensus PriorityScore, RR, sector, RS, price-volume, regime, attention, costs, coverage/zero-pick and multiple testing. Fixed sourceCount bands only; no threshold search.
+- Status: DATA_QUALITY_BLOCKED / FALSIFICATION_IN_PROGRESS / NOT_OPTIMIZATION_READY. No FORMAL_OPTIMIZATION_CANDIDATE.
+- Exact next: while provenance receipt is proposal-only, use existing V8.13 prospective archives to measure purely structural observed-sourceCount mechanics without interpreting independence: bonus application frequency, score saturation/compression, rank-change incidence, RR/consensus tie-break incidence and planned-capital sensitivity; preserve independence=UNKNOWN and do not inspect/tune thresholds from outcomes until provenance/readiness gates permit.
