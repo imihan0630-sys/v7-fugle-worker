@@ -1174,26 +1174,135 @@ export function classifyCorporateActionGap({
   };
 }
 
+function roundToPrecision(value, digits = 8) {
+  const m = 10 ** digits;
+  return Math.round((Number(value) + Number.EPSILON) * m) / m;
+}
+
+function floorToTaiwanStockTick(value) {
+  const x = finite(value);
+  if (!(x > 0)) return null;
+  const tick = researchTickSize(x);
+  if (!(tick > 0)) return null;
+  let candidate = Math.floor((x + 1e-12) / tick) * tick;
+  candidate = roundToPrecision(candidate);
+  // Price-bracket boundaries are legal prices shared by the adjacent grids.
+  // Re-evaluate at the candidate itself to guard against crossing a tick bracket.
+  const candidateTick = researchTickSize(candidate);
+  if (!(candidateTick > 0)) return null;
+  if (Math.abs(candidate / candidateTick - Math.round(candidate / candidateTick)) > 1e-8) {
+    candidate = Math.floor((candidate + 1e-12) / candidateTick) * candidateTick;
+  }
+  return roundToPrecision(candidate);
+}
+
+function ceilToTaiwanStockTick(value) {
+  const x = finite(value);
+  if (!(x > 0)) return null;
+  const tick = researchTickSize(x);
+  if (!(tick > 0)) return null;
+  let candidate = Math.ceil((x - 1e-12) / tick) * tick;
+  candidate = roundToPrecision(candidate);
+  const candidateTick = researchTickSize(candidate);
+  if (!(candidateTick > 0)) return null;
+  if (Math.abs(candidate / candidateTick - Math.round(candidate / candidateTick)) > 1e-8) {
+    candidate = Math.ceil((candidate - 1e-12) / candidateTick) * candidateTick;
+  }
+  return roundToPrecision(candidate);
+}
+
+// Standard Taiwan listed/OTC stock daily price-limit calculator.
+// TWSE's published example requires the computed +/- limit to ALSO be a legal tick:
+// limit-up is the highest legal quote not exceeding ref*(1+p);
+// limit-down is the lowest legal quote not below ref*(1-p).
+// Caller must separately prove that the security/session is actually subject to the
+// standard stock limit (e.g. not an IPO no-limit exception).
+export function taiwanStockPriceLimits({
+  referencePrice,
+  priceLimitPct = 0.10,
+  standardLimitApplies = true
+} = {}) {
+  const ref = finite(referencePrice);
+  const pct = finite(priceLimitPct);
+  if (!(ref > 0) || !(pct > 0 && pct < 1)) {
+    return { status:"BLOCKED", reason:"PRICE_LIMIT_INPUT_INVALID" };
+  }
+  if (standardLimitApplies !== true) {
+    return {
+      status:"BLOCKED",
+      reason:standardLimitApplies === false ? "STANDARD_PRICE_LIMIT_NOT_APPLICABLE" : "PRICE_LIMIT_RULE_UNKNOWN",
+      referencePrice:ref,
+      priceLimitPct:pct,
+      limitUp:null,
+      limitDown:null
+    };
+  }
+  const rawUpper = ref * (1 + pct);
+  const rawLower = ref * (1 - pct);
+  const limitUp = floorToTaiwanStockTick(rawUpper);
+  const limitDown = ceilToTaiwanStockTick(rawLower);
+  if (!(limitUp > 0) || !(limitDown > 0)) {
+    return { status:"BLOCKED", reason:"PRICE_LIMIT_TICK_RESOLUTION_FAILED" };
+  }
+  return {
+    status:"VALID",
+    referencePrice:ref,
+    priceLimitPct:pct,
+    rawUpper,
+    rawLower,
+    limitUp,
+    limitDown,
+    limitUpTick:researchTickSize(limitUp),
+    limitDownTick:researchTickSize(limitDown),
+    rule:"TWSE_TPEX_STOCK_STANDARD_LIMIT_WITH_LEGAL_TICK"
+  };
+}
+
 export function classifyLimitBreakout({
   priorResistance,
   referencePrice,
   bar,
   priceLimitPct = 0.10,
-  tolerancePct = 0.002
+  standardLimitApplies = true
 } = {}) {
-  const resistance = Number(priorResistance);
-  const ref = Number(referencePrice);
-  const close = Number(bar?.close);
-  const high = Number(bar?.high);
-  const localBreakout = Number.isFinite(close) && Number.isFinite(resistance) && close > resistance;
-  const limitPrice = ref * (1 + Number(priceLimitPct));
-  const priceLimitConstrained = Number.isFinite(limitPrice) && Number.isFinite(close) &&
-    Math.abs(close / limitPrice - 1) <= tolerancePct &&
-    Number.isFinite(high) && Math.abs(high / close - 1) <= tolerancePct;
+  const resistance = finite(priorResistance);
+  const close = finite(bar?.close);
+  const high = finite(bar?.high);
+  const limits = taiwanStockPriceLimits({ referencePrice, priceLimitPct, standardLimitApplies });
+  const localBreakout = close !== null && resistance !== null && close > resistance;
+
+  if (limits.status !== "VALID") {
+    return {
+      status:"BLOCKED",
+      reason:limits.reason,
+      localBreakout,
+      limitTouched:null,
+      closedAtLimitUp:null,
+      priceLimitConstrained:null,
+      acceptanceState:localBreakout ? "UNKNOWN" : "NO_BREAKOUT",
+      limits
+    };
+  }
+
+  const eps = Math.max(1e-9, (limits.limitUpTick || 0) * 1e-6);
+  const limitTouched = high !== null && high >= limits.limitUp - eps;
+  const closedAtLimitUp = close !== null && Math.abs(close - limits.limitUp) <= eps;
+  const priceLimitConstrained = limitTouched && closedAtLimitUp;
+  const censoringState = priceLimitConstrained
+    ? "CLOSED_AT_LIMIT_UP"
+    : limitTouched
+      ? "TOUCHED_LIMIT_UP_NOT_LOCKED_AT_CLOSE"
+      : "NO_LIMIT_TOUCH";
+
   return {
+    status:"VALID",
     localBreakout,
+    limitTouched,
+    closedAtLimitUp,
     priceLimitConstrained,
-    acceptanceState: localBreakout && priceLimitConstrained ? "UNRESOLVED" : (localBreakout ? "OBSERVABLE" : "NO_BREAKOUT")
+    censoringState,
+    acceptanceState:localBreakout && priceLimitConstrained ? "UNRESOLVED" : (localBreakout ? "OBSERVABLE" : "NO_BREAKOUT"),
+    limits
   };
 }
 
