@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-09-26T22:48:00+08:00",
+  "updatedAt": "2026-09-26T22:58:00+08:00",
   "status": "BASELINE_V0_2_PARTIAL_RECONCILIATION",
   "formalCore": "LOCKED",
   "authority": {
@@ -118,7 +118,7 @@
       "domain": "TREND_MOMENTUM_REVERSAL",
       "level": "L2",
       "status": "FALSIFICATION_IN_PROGRESS",
-      "basis": "Taiwan-specific regime-transition and rank-persistency mechanisms are frozen. Current persistenceScoreResearch is own-path trend consistency, not cross-sectional winner/loser duration. Prospective ret60 rank capture is zero-extra-call feasible but historical rank duration is not preserved; first incremental test must condition current rank, Residual RS and the existing heuristic. Momentum Gap rejected; Extreme Absolute Strength redundancy remains high."
+      "basis": "Regime-transition and prospective rank-persistency mechanisms are frozen. Existing persistenceScoreResearch is own-path trend consistency, not literature rank duration. Generic short-term reversal factor is rejected as redundant with A setup + 15m reversal confirmation; only pullback-origin context remains potentially incremental and is cross-lane/data-gated. Momentum Gap rejected; Extreme Absolute Strength redundancy high."
     },
     {
       "id": "MICROSTRUCTURE_STATE",
