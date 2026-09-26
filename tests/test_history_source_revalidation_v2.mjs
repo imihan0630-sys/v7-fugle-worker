@@ -8,7 +8,8 @@ import {
   buildOfficialSymbolGapReceipt,
   reconcileFreshProviderWithOfficialGaps,
   decideHistoryAdmissionV21,
-  estimateHistoryRevalidationCost
+  estimateHistoryRevalidationCost,
+  assessCachedHistoryWithOfficialGapLedger
 } from "../research/history_source_revalidation_v2.mjs";
 
 function weekdayDates(endExclusive,count,exclude=new Set()){
@@ -336,4 +337,70 @@ console.log(JSON.stringify({
   assert.equal(cost.providerCapacity,360);
   assert.equal(cost.providerCallsWithinSeedWindow,false);
   assert.equal(cost.providerOverflowCalls,1640);
+}
+
+
+// V2.3: a previously verified no-trade gap must become a reusable fast-path fact,
+// otherwise the same suspended symbol would be refetched every day for weeks.
+{
+  const market=weekdayDates("2025-11-17",61);
+  const gapDate=market.at(-1);
+  const cachedDates=market.filter(d=>d!==gapDate);
+  const receipt=buildOfficialSymbolGapReceipt({
+    market:"TWSE",date:gapDate,symbol:"8422",minimumRows:1,
+    rawRows:[{"證券代號":"2330","收盤價":"1000","成交股數":"1000","成交金額":"1000000","成交筆數":"1"}]
+  });
+  const out=assessCachedHistoryWithOfficialGapLedger({
+    history:bars(cachedDates),marketDate:"2025-11-17",marketSessions:market,
+    requiredPriorBars:60,officialGapReceipts:[receipt]
+  });
+  assert.equal(out.usable,true);
+  assert.equal(out.needsRefetch,false);
+  assert.equal(out.status,"CACHE_FAST_PATH_VALID_WITH_GAP_LEDGER");
+  assert.equal(out.explainedNoTradeGaps,1);
+}
+
+// Same shape without a complete receipt stays revalidation-needed, not silently valid.
+{
+  const market=weekdayDates("2025-11-17",61);
+  const gapDate=market.at(-1);
+  const cachedDates=market.filter(d=>d!==gapDate);
+  const out=assessCachedHistoryWithOfficialGapLedger({
+    history:bars(cachedDates),marketDate:"2025-11-17",marketSessions:market,
+    requiredPriorBars:60,officialGapReceipts:[]
+  });
+  assert.equal(out.usable,false);
+  assert.equal(out.needsRefetch,true);
+  assert.equal(out.reason,"UNPROVEN_MARKET_SESSION_GAP");
+}
+
+// A cached gap previously proven to contain an official traded bar can never be excused by the ledger.
+{
+  const market=weekdayDates("2026-09-24",61);
+  const gapDate=market[20];
+  const cachedDates=market.filter(d=>d!==gapDate);
+  const receipt=buildOfficialSymbolGapReceipt({
+    market:"TWSE",date:gapDate,symbol:"2006",minimumRows:1,
+    rawRows:[{"證券代號":"2006","收盤價":"82","成交股數":"2000","成交金額":"164000","成交筆數":"2"}]
+  });
+  const out=assessCachedHistoryWithOfficialGapLedger({
+    history:bars(cachedDates),marketDate:"2026-09-24",marketSessions:market,
+    requiredPriorBars:60,officialGapReceipts:[receipt]
+  });
+  assert.equal(out.usable,false);
+  assert.equal(out.reason,"CACHE_MISSING_OFFICIAL_BAR");
+}
+
+// Provider bar outside the supplied official market-session proof is a source/calendar conflict, not a valid fast path.
+{
+  const market=weekdayDates("2026-09-24",60);
+  const badDates=[...market.slice(1), "2026-09-20"]; // Sunday
+  badDates.sort();
+  const out=assessCachedHistoryWithOfficialGapLedger({
+    history:bars(badDates),marketDate:"2026-09-24",marketSessions:market,
+    requiredPriorBars:60,officialGapReceipts:[]
+  });
+  assert.equal(out.usable,false);
+  assert.equal(out.status,"UNKNOWN");
+  assert.equal(out.reason,"PROVIDER_BAR_OUTSIDE_MARKET_SESSION_PROOF");
 }
