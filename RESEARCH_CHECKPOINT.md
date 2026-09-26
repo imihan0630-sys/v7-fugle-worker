@@ -1,7 +1,7 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-155.
-Updated: 2026-09-26 11:15 Asia/Taipei.
+Checkpoint sequence: B-157.
+Updated: 2026-09-26 12:20 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Detailed B-01..B-123 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
@@ -614,3 +614,19 @@ Updated: 2026-09-26 11:15 Asia/Taipei.
 - Execution Alpha stays FALSIFICATION_IN_PROGRESS / DATA_QUALITY_BLOCKED / NOT_OPTIMIZATION_READY; no Formal optimization candidate. Formal Core LOCKED.
 - Direct contents writes for additional test/readiness artifacts were safety-blocked; no unsafe workaround or Production mutation used. Shared-runtime capture remains Class-B proposal-only.
 - Exact next: park data-gated Execution Alpha and advance after fresh checkpoint read to the next unresolved canonical priority, preferring unreconciled Master Map domains (volatility-regime, institutional/crowding, macro/cross-market) unless superseded. Keep EA-021 as future optimization falsification gate when prospective complete coverage exists.
+
+
+## B-157 — Volatility Regime lane opened and falsification protocol frozen (2026-09-26 12:20 Asia/Taipei)
+- Fresh-read canonical B-156, governance/worklist/Master Map/main. Execution Alpha was correctly parked DATA_QUALITY_BLOCKED; no incomplete BUY/NO-BUY inference was resumed.
+- Opened dedicated VOLATILITY_REGIME_RESEARCH.md and advanced VR-001..VR-012.
+- Core decomposition: volatility LEVEL, CHANGE/acceleration, SHOCK, IMPLIED and overnight/gap clocks are distinct mechanisms. High level != rising shock; implied risk != realized risk. Do not collapse into one score.
+- Redundancy gate: every candidate must add beyond existing ATR/realized-vol context, trend/residual RS, breadth/liquidity and overheat/lateStage. Monotone ATR/drawdown repackaging is REJECTED_OR_REDUNDANT.
+- Targets separated: D1/D3/D5 residual return, downside/MAE/drawdown, path violence/realized range, selection count/zero-pick and later execution participation when coverage exists. Volatility can be useful for risk without directional alpha.
+- Falsification frozen: date-shift placebo, within-regime shuffle, ATR-only baseline, market-return baseline, remove top crisis dates, independent-date/regime checks, TWSE/TPEx coverage asymmetry, PIT clock/source continuity. Missing/stale history remains UNKNOWN.
+- Interaction hypothesis frozen before outcomes: market-vol x stock-relative-vol x trend x A/B. Universal high-vol penalty is rejected if harm is conditional; calm-market high-relative-vol may instead identify momentum leadership. This protects against over-broad vetoes.
+- Crisis contamination guard requires independent dates, top-1/top-3 date contribution, with/without extremes, median+mean, A/B/market counts and UNKNOWN counts.
+- TAIFEX implied-vol candidates are downstream incremental tests after realized-vol/trend/breadth/global controls; no combined regime score.
+- Optimization bridge: possible future context/risk annotation or veto/throttle only if incremental downside/path evidence survives redundancy, crisis removal, PIT/OOS and independent dates. Current status FALSIFICATION_IN_PROGRESS / NOT_OPTIMIZATION_READY; no Formal candidate.
+- Engineering: Class A research documentation only. Commits cee2f847b055639fe928951d306ad46ff4811bc8 and 980fa3af83581b360b10299d919614707054ba3f. No Worker/Production/Formal/monitor/push change.
+- R01-R08/I01-I07: no new Formal factor; strengthens regime/redundancy/PIT controls and protects against Factor-Zoo volatility duplication.
+- Exact next continuation: continue long-batch Volatility Regime with a minimal research-only feature/receipt schema and synthetic redundancy/crisis-cluster falsification harness. Audit existing history/ATR fields and stale-history guard availability before using outcomes. If trustworthy multi-date PIT history is not available, mark evidence gate DATA_QUALITY_BLOCKED and move automatically to institutional/crowding research rather than tuning thresholds.
