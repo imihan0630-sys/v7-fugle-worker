@@ -155,3 +155,89 @@ Only after prospective/OOS, independent-date, regime, redundancy, cost and cover
 2. Measure coverage and limitHitCount20 frequency before any outcome test.
 3. Do not test return outcomes if the exact source/coverage gate is not complete.
 4. If frequency is sufficient, test signed limit-hit context incrementally; do not resurrect canonical ID as a separate score.
+
+
+## Formal admission cross-link — 9.8% extreme-return proxy
+
+The current Formal gate:
+`abs(changePercent || 0) >= 9.8 -> reject("單日走勢過度異常", false)`
+is NOT an authoritative price-limit classifier.
+
+### Exact rule mismatch
+
+TWSE current rules define stock limits from the session opening-auction reference price at +/-10%, then constrain the result to legal tick prices without exceeding the 10% boundary. Initial-listing/no-limit exceptions also exist.
+
+Therefore the legal limit state is a discrete reference-price/tick/rule object, not a fixed percentage threshold.
+
+### Frozen false-negative witnesses
+
+Using current TWSE tick rules:
+
+1. Reference 91.80:
+   - theoretical +10% = 100.98;
+   - price >=100 uses 0.50 tick;
+   - 101.00 would exceed +10%, so legal limit-up = 100.50;
+   - actual limit-up return = +9.4771%.
+   - Formal 9.8% proxy would NOT reject the exact limit-up close.
+
+2. Reference 11.45:
+   - theoretical -10% = 10.305;
+   - legal tick = 0.05;
+   - 10.30 would exceed -10%, so legal limit-down = 10.35;
+   - actual limit-down return = -9.6070%.
+   - Formal 9.8% proxy would NOT reject the exact limit-down close.
+
+### Frozen false-positive witnesses
+
+TWSE's own trading-mechanism example:
+- opening reference = 40.60;
+- official limit-up = 44.65;
+- official limit-down = 36.55.
+
+Thus:
+- legal close 44.60 = +9.8522% is NON_HIT but Formal proxy rejects;
+- legal close 36.60 = -9.8522% is NON_HIT but Formal proxy rejects.
+
+The proxy therefore has both:
+- exact-limit false negatives;
+- non-limit false positives.
+
+### Non-comparable X state
+
+`normalizeMarketRow()` maps exchange change marker `X` to change=null, hence changePercent=null.
+The Formal expression `Math.abs(changePercent || 0)` treats this gate input as 0.
+
+This does not mean X days become Formal candidates; other corporate-action/history/data-quality guards may reject them.
+It proves only that the 9.8% gate is not a complete abnormal-session classifier.
+
+### Shadow evidence status
+
+- REJECTED_AFTER_BASE cannot contain these early rejects because basePassed=false.
+- BROAD_CONTROL can incidentally contain them when liquidity requirements pass, but only bounded deterministic samples are kept and the cohort is not stratified for this gate.
+
+Status:
+`DEDICATED_GATE_EVIDENCE_SPARSE / NOT_ZERO_EVIDENCE`.
+
+### Research-only cross-tab
+
+Future evidence must separate:
+- EXTREME_RETURN_PROXY_UP_REJECTED;
+- EXTREME_RETURN_PROXY_DOWN_REJECTED;
+- OFFICIAL_CLOSE_LIMIT_UP;
+- OFFICIAL_CLOSE_LIMIT_DOWN;
+- OFFICIAL_NON_HIT;
+- NO_PRICE_LIMIT;
+- NON_COMPARABLE_X;
+- OFFICIAL_LIMIT_UNKNOWN.
+
+Never pool positive and negative extreme moves simply because both satisfy `abs(changePercent)>=9.8`.
+
+Primary question is not “are limit-up stocks good?”
+It is:
+**Does the coarse symmetric 9.8% admission proxy protect execution/downside better than an exact rule-aware state, or does it discard a stable subset of executable continuation opportunities?**
+
+Machine artifact:
+`research/extreme_daily_move_gate_falsification_v0_1.json`.
+
+No 9.8 threshold or Formal behavior is changed.
+A future `EXTREME_MOVE_ADMISSION_REFORMULATION` can only be surfaced after prospective exact-state/OOS/cost/downside evidence.
