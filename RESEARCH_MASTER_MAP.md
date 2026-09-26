@@ -73,6 +73,7 @@ These are navigation anchors, not final maturity scores:
 - Trading frictions: explicit/implicit cost decomposition exists; missing decision/fill/quote context remains UNKNOWN.
 - Execution Alpha: coverage-aware accounting exists; exact-date recorder completeness remains a Class-B gate and 2026-09-24 remains UNKNOWN.
 - Portfolio/Re-add: REDUCED_CONFIRMED -> recovery/re-add research exists; formal promotion remains locked.
+- Macro/Cross-market: PIT clocks/residualization/falsification are frozen; repository audit did not prove historical durable global receipts with sessionDate/knownAtTaipei/firstEligibleTaiwanDecision, so outcome testing is DATA_QUALITY_BLOCKED pending prospective receipts.
 - Validation: R01-R08/I01-I07, purged holdout, date clustering, redundancy, costs, zero-pick and prospective Shadow controls are cross-cutting requirements.
 
 ## Cross-chatroom protocol
@@ -93,11 +94,11 @@ No chat may mark L4/L5 from retrospective narrative alone. No chat may turn UNKN
 
 MASTER_MAP_SCHEMA = V0.2
 INVENTORY_RECONCILIATION = PARTIAL_BASELINE_PUBLISHED
-REGISTERED_MODULES = 17
-L0/L1/L2/L3/L4/L5 = 0 / 0 / 11 / 5 / 1 / 0
-REGISTERED_MODULE_MATURITY = 48.2%
-RESEARCH_DEBT_UNITS = 8.8
-DATA_QUALITY_BLOCKED = 6
+REGISTERED_MODULES = 18
+L0/L1/L2/L3/L4/L5 = 0 / 0 / 12 / 5 / 1 / 0
+REGISTERED_MODULE_MATURITY = 47.8%
+RESEARCH_DEBT_UNITS = 9.4
+DATA_QUALITY_BLOCKED = 7
 DATA_SOURCE_BLOCKED = 3
 WAITING_PROSPECTIVE = 1
 FORMAL_OPTIMIZATION_CANDIDATES = 0
