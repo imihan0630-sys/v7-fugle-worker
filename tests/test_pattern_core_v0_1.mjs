@@ -151,6 +151,87 @@ function scaled(bars, k) {
   assert.equal(unknownAction.reason, "CORPORATE_ACTION_SEMANTICS_UNKNOWN");
 }
 
+// Volume semantic firewall: exact shares, rounded lots and unit comparability stay distinct.
+{
+  const bars=makeBars([100,101,100.5],{volume:[188,187,300]});
+  const common={
+    sourceId:"volume-fixture",
+    payloadHash:"volume-v1",
+    pointInTimeEligible:true,
+    corporateActionSemanticsReady:true
+  };
+
+  const noSemantic=validatePatternSeriesEnvelope({
+    role:"GEOMETRY",
+    semanticSpace:"TECHNICAL_CONTINUITY",
+    bars,
+    requireVolume:true,
+    provenance:{...common,shareUnitComparable:true}
+  });
+  assert.equal(noSemantic.reason,"VOLUME_SEMANTIC_SPACE_UNKNOWN");
+
+  const lotUnknownUnit=validatePatternSeriesEnvelope({
+    role:"GEOMETRY",
+    semanticSpace:"TECHNICAL_CONTINUITY",
+    bars,
+    requireVolume:true,
+    provenance:{
+      ...common,
+      volumeSemanticSpace:"RAW_LOT_VOLUME",
+      volumePrecisionClass:"LOT_COUNT_WITH_UNKNOWN_SUBLOT_REMAINDER",
+      shareUnitComparable:false
+    }
+  });
+  assert.equal(lotUnknownUnit.reason,"VOLUME_SHARE_UNIT_COMPARABILITY_UNKNOWN");
+
+  const lotReady=validatePatternSeriesEnvelope({
+    role:"GEOMETRY",
+    semanticSpace:"TECHNICAL_CONTINUITY",
+    bars,
+    requireVolume:true,
+    provenance:{
+      ...common,
+      volumeSemanticSpace:"RAW_LOT_VOLUME",
+      volumePrecisionClass:"LOT_COUNT_WITH_UNKNOWN_SUBLOT_REMAINDER",
+      shareUnitComparable:true
+    }
+  });
+  assert.equal(lotReady.status,"VALID");
+  assert.equal(lotReady.volumeSemanticSpace,"RAW_LOT_VOLUME");
+  assert.equal(lotReady.volumeExactShareCount,false);
+
+  const exactReady=validatePatternSeriesEnvelope({
+    role:"GEOMETRY",
+    semanticSpace:"TECHNICAL_CONTINUITY",
+    bars:bars.map((x,i)=>({...x,volume:[188234,187586,300103][i]})),
+    requireVolume:true,
+    provenance:{
+      ...common,
+      payloadHash:"exact-share-v1",
+      volumeSemanticSpace:"RAW_SHARE_VOLUME",
+      volumePrecisionClass:"EXACT_SHARES",
+      shareUnitComparable:true
+    }
+  });
+  assert.equal(exactReady.status,"VALID");
+  assert.equal(exactReady.volumeExactShareCount,true);
+
+  const normalizedNoDenominator=validatePatternSeriesEnvelope({
+    role:"GEOMETRY",
+    semanticSpace:"TECHNICAL_CONTINUITY",
+    bars,
+    requireVolume:true,
+    provenance:{
+      ...common,
+      volumeSemanticSpace:"EXCHANGE_LISTED_SHARE_TURNOVER",
+      volumePrecisionClass:"EXACT_SHARES",
+      shareUnitComparable:true,
+      denominatorReady:false
+    }
+  });
+  assert.equal(normalizedNoDenominator.reason,"VOLUME_DENOMINATOR_NOT_READY");
+}
+
 // Data validator: duplicate, ordering and OPEN honesty.
 {
   const ok = makeBars([10, 11, 10.5]);
