@@ -14910,3 +14910,177 @@ Downgrade any Pattern claim if:
 ### Status
 MODERN_REGIME_PRIORITY_CONFIRMED / NO NEW FACTOR / NO NEW INTERACTION FAMILY.
 Formal Core remains LOCKED.
+
+
+## DL-003L — Textbook Pattern Names Fail as One-Sign Priors; Latent Geometry Gets Stronger Support
+
+### External evidence: Jiang, Kelly & Xiu (Journal of Finance, 2023)
+The image-CNN study "(Re-)Imag(in)ing Price Trends" is unusually useful for Pattern governance because it does not assume textbook chart labels are correct.
+
+Key design facts:
+- input images contain OHLC, moving-average and volume information;
+- 5/20/60-day histories are used to forecast 5/20/60-day return direction;
+- image scaling puts each stock history onto a comparable relative price/volume scale;
+- known trend/liquidity variables explain only a limited fraction of the CNN forecast variation, implying the learned representation is not merely a relabeling of ordinary momentum/reversal.
+
+Most important falsification for traditional named patterns:
+- the authors simulated 23 textbook chart patterns;
+- for 20-day images, 13/23 had a statistically meaningful directional association with the empirically trained CNN;
+- among those 13, 8 pointed in the OPPOSITE direction from conventional folk-wisdom sign.
+
+Examples from the paper's simulated-pattern appendix:
+- Cup with Handle: folk bullish, CNN mean up-probability 46.7% on 20-day images and 51.3% on 60-day images;
+- Rounding Bottom: folk bullish, 36.8% / 43.4%;
+- Head-and-Shoulders Top: folk bearish, 56.3% / 55.5%;
+- Triple Top: folk bearish, 62.0% / 60.3%;
+- Bullish Flag: folk bullish, 53.6% / 58.7%;
+- Ascending Triangle: folk bullish, 54.9% / 57.5%.
+
+These numbers are NOT ground truth and are not Taiwan estimates. They are a high-quality falsification of the assumption "named bullish pattern => positive expected return" and "named bearish pattern => negative expected return."
+
+### Architecture consequence
+This materially strengthens the already-frozen latent-geometry architecture:
+- named pattern labels = interpretability metadata;
+- latent relational geometry = quantitative research layer;
+- maturity/lifecycle = state;
+- predictive sign must be learned/tested prospectively, not inherited from textbooks.
+
+A named label may never receive a positive/negative score merely because its traditional name implies direction.
+
+### Scale dependence is part of the object
+The simulated pattern results often change materially between 20- and 60-day representations.
+Therefore:
+- patternFamily alone is under-specified;
+- scale and duration are part of pattern identity/context;
+- cross-scale agreement is evidence, not a required truth;
+- do not choose the scale that gives the best forward return after looking at outcomes.
+
+### Counterevidence / caution
+The CNN's simulated textbook-pattern exercise has important limits:
+- the patterns are stylized functional forms;
+- the model was trained on U.S. equities;
+- the experiment queries the CNN's learned relation, not realized post-pattern return directly;
+- volume and moving-average lines were excluded in the specific IA19 pattern simulation models;
+- a CNN probability is model evidence, not causal mechanism.
+
+Therefore the correct conclusion is NOT "Cup-with-Handle is bearish."
+The correct conclusion is: the textbook directional sign is not trustworthy enough to be a prior.
+
+### Current-system implication
+Formal A/B already contains actual trend/breakout/volume/overheat mechanics.
+Pattern's job is not to add a "Cup bonus" or "Head-and-Shoulders penalty."
+Its job is to preserve geometry/lifecycle information that may explain conditional success/failure after existing factors are controlled.
+
+Status: STRONG_SUPPORT_FOR_LATENT_GEOMETRY / STRONG_COUNTEREVIDENCE_TO_ONE-SIGN_LABELS / NO FORMAL SIGNAL.
+
+
+## DL-003M — Machine-Learned Charting: Independent Benchmark Candidate, Not a New Formal Model
+
+### Positive evidence
+Three modern evidence streams are now aligned:
+
+1. Jiang, Kelly & Xiu (Journal of Finance, 2023)
+- image-based price/volume patterns predict future return direction out of sample;
+- learned patterns are largely distinct from conventional momentum/reversal;
+- transfer across horizons and international markets is documented.
+
+2. Murray, Xia & Xiao (Journal of Financial Economics, 2024)
+- machine-learning forecasts using historical price performance strongly predict the cross-section of future stock returns;
+- nonlinearities/interactions are important;
+- predictive content is distinct from momentum, reversal and extant technical signals;
+- performance is reported as persistent across subperiods and among the largest 500 U.S. stocks.
+
+3. Min & Roh (Pacific-Basin Finance Journal, 2025)
+- provides an independent Korea OOS extension in a market where conventional momentum/technical rules have historically been weak;
+- 2003-2023 Korean sample;
+- long highest-forecast decile / short lowest-forecast decile reported average return 1.47% per month, t=3.22;
+- nonlinear interactions again matter.
+
+### Additional representation evidence
+Lin, Wang, Tsai & Hsu (Journal of Forecasting, 2026), with Taiwan-affiliated authors, compare line+volume, candlestick+volume and mixed images including MACD/RSI. On six firms, mixed images improve several 2-D deep-learning models across next-day/week/month forecasts.
+
+This is representation evidence only:
+- six firms is far too small for our cross-sectional Taiwan-stock promotion standard;
+- adding MACD/RSI prevents attribution to chart morphology alone;
+- price-prediction accuracy is not the same as implementable portfolio alpha.
+
+### Negative validation: why ML is deferred
+A powerful flexible model is also a powerful overfitting machine.
+
+Our current Pattern lane has:
+- very little clean prospective Shadow coverage;
+- unresolved runtime continuity/session provenance;
+- no mature Pattern outcomes;
+- many overlapping geometry families.
+
+Training an image model now would violate the evidence order and create a large hidden multiple-testing surface.
+
+### Future independent benchmark, only after data maturity
+If the Pattern data layer eventually becomes mature, an image/ML model may be useful as an INDEPENDENT BENCHMARK:
+- same PIT inputs as the transparent Pattern layer;
+- purged temporal training/validation/holdout;
+- fixed architecture before holdout;
+- no hyperparameter selection on final holdout;
+- costs and turnover reported;
+- compare incremental information against Formal + PV + transparent latent geometry;
+- no use of ML to retroactively tune named-pattern thresholds.
+
+The ML benchmark must not replace the transparent detector.
+Its first use would be falsification:
+"Does the handcrafted latent geometry leave systematic chart information on the table?"
+
+Status: FUTURE_INDEPENDENT_BENCHMARK_WORTHY / DATA_NOT_READY / DO_NOT_IMPLEMENT_NOW.
+
+
+## DL-003N — Candlestick Layer: Continuous Relational Encoding Before Named Labels
+
+### Taiwan evidence retained, with stronger limitations
+Older Taiwan evidence is real but pre-modern-regime:
+- Lu, Shiu & Liu (Review of Financial Economics, 2012) tested two-day bullish/bearish reversal strategies on Taiwan 50 components using 2002-2008 OHLC and found the three tested bullish reversal patterns profitable in their design, with OOS/bootstrap/market-condition robustness.
+- Lu (Pacific-Basin Finance Journal, 2014) used 1992-2009 Taiwan stocks and found four single-line patterns profitable after transaction costs with bootstrap/OOS/subsample checks.
+
+But these samples predate the 2020 continuous-trading regime and therefore cannot establish 2026 effect sizes.
+
+A later Lu, Chen & Hsu (Journal of Banking & Finance, 2015) study provides an important general falsification:
+- candlestick profitability can depend materially on HOLDING STRATEGY even when trend-definition variants are considered;
+- results survived their own data-snooping/cost checks only under some strategy definitions.
+
+Therefore a candlestick shape is not a self-contained trading rule.
+
+### Isolated research implementation
+Draft PR #103 now contains an outcome-free two-day relational encoder:
+- requires historical OPEN;
+- requires TECHNICAL_CONTINUITY semantic space;
+- stores body/range, ATR-normalized body/range, wick ratios and close location;
+- stores current-vs-previous body overlap/containment/engulfment;
+- stores opening relation, close penetration into previous bearish body and scale-invariant ratios;
+- adds descriptive morphology labels for bullish engulfing / harami / piercing body relations;
+- prior trend is kept as context, not hidden inside the shape definition;
+- corporate-action boundary is retained explicitly;
+- no profitability, score or exact-paper-replication claim.
+
+Tests include:
+- synthetic Engulfing / Harami / Piercing morphology;
+- OPEN-missing fail closed;
+- RAW_EXECUTION semantic-space rejection for cross-session morphology;
+- price-scale invariance;
+- explicit corporate-action-boundary retention.
+
+Validated research head: `5ad5626581539a80df374068fc2c0e1ab0427faa`.
+CI:
+- V8 Regression run `36204882051`: SUCCESS;
+- V8 Repair run `36204882048`: SUCCESS.
+
+### Research interpretation
+This turns candlestick names into a thin UI/taxonomy layer over continuous relational OHLC features.
+
+Later prospective validation must compare:
+1. raw relational feature vector;
+2. named morphology labels;
+3. prior-trend/location context;
+4. Formal/PV/overheat/regime controls.
+
+If a label adds nothing beyond its raw relations, keep the label only for explainability.
+
+### Status
+CANDLE_RELATIONAL_ENCODER_QA_PASS / MODERN_TAIWAN_ALPHA_UNKNOWN / NO FORMAL IMPACT.
