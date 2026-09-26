@@ -65,6 +65,7 @@ These are navigation anchors, not final maturity scores:
 - K-line/pattern: dedicated pattern research/checkpoints; prospective observer work exists, outcome maturity still evidence-dependent.
 - Trend / momentum / reversal: dedicated lane initialized in `TREND_MOMENTUM_REVERSAL_RESEARCH.md` / checkpoint. Regime-transition lifecycle is FALSIFICATION_IN_PROGRESS; Momentum Gap is Taiwan-negative/rejected; Extreme Absolute Strength has high redundancy with existing lateStage/overheat. Current R06 transition counting is not yet candidate-outcome evidence and adjacent observed research dates are not automatically consecutive official sessions.
 - Price-volume: PV/PVE program is actively advancing on main; latest status must be read from its dedicated checkpoint, never inferred from this summary.
+- Volatility-regime: level/change/shock and market×stock-vol interaction falsification are frozen; realized-vol evidence is gated by continuity-proven PIT history and implied-vol by separate TAIFEX provenance.
 - Microstructure: concept/evidence work exists; recorder completeness and historical observability constraints remain relevant.
 - Fundamentals: information-dynamics research exists; PIT vintage semantics remain mandatory.
 - Supply-chain: SC-001..SC-006A completed through source-contract feasibility; automated canonical M25 ingestion is SOURCE_ACCESS_BLOCKED; complete graph is blocked. Manual bounded official-event research remains possible.
@@ -94,11 +95,11 @@ No chat may mark L4/L5 from retrospective narrative alone. No chat may turn UNKN
 
 MASTER_MAP_SCHEMA = V0.2
 INVENTORY_RECONCILIATION = PARTIAL_BASELINE_PUBLISHED
-REGISTERED_MODULES = 18
-L0/L1/L2/L3/L4/L5 = 0 / 0 / 12 / 5 / 1 / 0
-REGISTERED_MODULE_MATURITY = 47.8%
-RESEARCH_DEBT_UNITS = 9.4
-DATA_QUALITY_BLOCKED = 7
+REGISTERED_MODULES = 19
+L0/L1/L2/L3/L4/L5 = 0 / 0 / 13 / 5 / 1 / 0
+REGISTERED_MODULE_MATURITY = 47.4%
+RESEARCH_DEBT_UNITS = 10.0
+DATA_QUALITY_BLOCKED = 8
 DATA_SOURCE_BLOCKED = 3
 WAITING_PROSPECTIVE = 1
 FORMAL_OPTIMIZATION_CANDIDATES = 1
