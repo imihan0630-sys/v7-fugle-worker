@@ -15084,3 +15084,51 @@ If a label adds nothing beyond its raw relations, keep the label only for explai
 
 ### Status
 CANDLE_RELATIONAL_ENCODER_QA_PASS / MODERN_TAIWAN_ALPHA_UNKNOWN / NO FORMAL IMPACT.
+
+
+## DL-003O — Close Location Is Context-Dependent; Do Not Globalize the Sign
+
+### Current-system audit
+The current Formal B setup explicitly requires:
+- dailyClosePosition >= 0.65;
+- dailyUpperShadowRatio <= 0.35;
+- breakout above priorHigh20;
+- volume expansion;
+- non-late-stage context.
+
+The B setup quality/ranking also rewards higher daily close position and penalizes upper shadow.
+
+Separately, research-only `breakoutQualityResearch` embeds dailyClosePosition, upper shadow, volume expansion and breakout distance.
+
+Therefore close location is already represented in both a formal BREAKOUT ACCEPTANCE context and a research quality context.
+
+### External counterevidence
+Modern image-based chart research provides a useful caution: a simple linear approximation to the learned chart signal places predictive weight on where the recent close sits relative to recent highs/lows, and some end-of-day reversal literature finds higher next-day returns after late-day price decreases / large high-to-close gaps.
+
+This does NOT directly contradict the Formal B rule because the conditioning sets differ:
+- B asks whether a stock that is ALREADY breaking priorHigh20 closes strongly enough to look accepted;
+- broad cross-sectional / image evidence asks whether recent relative price location forecasts future return on average;
+- a weak close after a pullback/reversal candidate can represent a different mechanism from a weak close on a breakout day.
+
+### Research conclusion
+`dailyClosePosition` cannot have one universal directional sign across all Pattern states.
+
+Preserve it as an existing control and interpret it conditional on lifecycle:
+- BREAKOUT / FIRST_BREAK: high close can mean acceptance;
+- FAILED_BREAK / rejection: low close can mean failed acceptance;
+- PULLBACK / reversal morphology: low close may instead encode short-term reversal potential or unresolved weakness;
+- EVENT / LIMIT-CONSTRAINED day: daily close can be mechanically constrained and requires separate state.
+
+### Governance consequence
+Do NOT:
+- remove or loosen Formal B strong-close logic from external generic evidence;
+- add a second close-location factor;
+- add a new R09;
+- search for a best cutoff by Pattern family.
+
+Later Pattern validation must control existing dailyClosePosition / upper shadow / breakoutQuality rather than rebrand them as new geometry.
+
+If lifecycle-conditioned geometry adds no information after those controls, reject the Pattern layer as redundant.
+
+### Status
+CONTEXTUAL-SIGN CAUTION / NO FORMAL CHANGE / NO NEW FACTOR.
