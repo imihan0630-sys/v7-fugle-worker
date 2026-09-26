@@ -15132,3 +15132,69 @@ If lifecycle-conditioned geometry adds no information after those controls, reje
 
 ### Status
 CONTEXTUAL-SIGN CAUTION / NO FORMAL CHANGE / NO NEW FACTOR.
+
+
+## DL-003P — Bull-Flag Evidence vs Taiwan Data-Snooping Counterevidence
+
+### Positive evidence
+Wang & Chan (Expert Systems with Applications, 2007) explicitly studied Bull-Flag trading-rule discovery using pattern recognition on both NASDAQ Composite and the Taiwan Weighted Index. Their reported experiments support the proposition that a formalized flag template can contain directional information in those historical index samples.
+
+This is more relevant to our Pattern lane than generic practitioner examples because:
+- the shape was computationally formalized;
+- Taiwan index data were included;
+- the research explicitly recognized data-snooping measurement concerns.
+
+### Strong counterevidence
+The broader Taiwan evidence is much less friendly to generic technical-rule profitability.
+
+Chen, Huang & Lai's Taiwan-specific data-snooping study (2011) applies White Reality Check / Hansen SPA style corrections plus non-synchronous-trading and transaction-cost adjustments to large technical-rule universes and concludes that economically exploitable technical-analysis profits do not survive in that Taiwan sample.
+
+A broader eight-Asian-market version reaches the same caution: data snooping, non-synchronous trading and transaction costs materially change apparent technical-rule performance.
+
+Sullivan-style technical-rule persistence evidence from other markets likewise shows that ex-ante selection of future winners is extremely difficult and small costs can erase apparent rule profits.
+
+### Reconciliation
+These findings are not logically inconsistent.
+
+A specific historical template can classify a shape and even show sample predictability while:
+- the broader technical-rule search suffers multiple-testing/selection bias;
+- index-level results may not transfer to individual stocks;
+- old Taiwan market microstructure differs from today's 10% continuous-trading regime;
+- a shape can carry information but still fail to produce net implementable alpha after turnover/execution.
+
+Therefore Bull Flag remains a DETECTION / GEOMETRY research object, not a presumed positive-return factor.
+
+### Current-system comparison
+Formal A already captures a pullback/consolidation after an existing uptrend without requiring an explicit pole.
+B captures breakout/volume/strong-close confirmation.
+
+The potentially incremental Bull-Flag object is therefore narrow:
+- explicit preceding impulse path efficiency;
+- impulse duration;
+- consolidation depth relative to pole;
+- consolidation range/ATR relation;
+- consolidation volume relative to pole;
+- confirmed channel/boundary geometry.
+
+If these variables do not add information beyond ret20, ATR, volume contraction, daily close position and A/B state, the Bull-Flag label is redundant.
+
+### Isolated implementation
+Draft PR #103 now contains:
+- `analyzeConfirmedBoundaryGeometry`: confirmed-swing upper/lower slopes, normalized fit error, width compression, projected apex distance and orientation; no textbook sign/score.
+- `analyzeCupGeometryFromAnchors`: explicit confirmed H-L-H bowl geometry, depth, rim difference, time symmetry, bottom residence and curvature residual; no bullish sign.
+- `analyzeImpulseConsolidationGeometry`: explicit pole return/path efficiency plus consolidation depth/range/volume/true-range relations; no flag cutoff.
+
+The tests verify:
+- confirmedAt / prefix discipline;
+- future-confirmed anchor exclusion;
+- price-scale invariance;
+- explicit anchor-order blocking;
+- no decisionImpact.
+
+Latest validated branch head before subsequent changes: `79df53ed4d6595806fcdc2f1a545d29d67e7beeb`.
+CI:
+- V8 Repair `36205355343`: SUCCESS;
+- V8 Regression `36205355380`: SUCCESS.
+
+### Status
+FLAG_GEOMETRY_RESEARCHABLE / NAMED-LABEL ALPHA UNKNOWN / STRONG SNOOPING-AND-COST CAUTION / NO FORMAL CHANGE.
