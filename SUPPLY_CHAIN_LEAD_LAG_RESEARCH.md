@@ -161,3 +161,22 @@ Implementation gate:
 4. only then isolated Class-A prospective implementation. If (1) fails, mark SOURCE_ACCESS_BLOCKED and move on rather than scraping UI.
 
 No alpha/outcome conclusion is authorized by SC-005/006.
+
+
+## SC-006A — bounded machine-interface discovery result
+
+A bounded first-party interface pass did not verify a stable documented machine-readable M25/equivalent ingestion contract.
+
+Evidence:
+- TWSE first-party materials document MOPS/ezSearch as a free cross-market announcement search surface with announcement category/date filters and announcement-time ordering.
+- The official MOPS landing surface exposes real-time material information, but the research pass did not identify a documented M25 JSON/CSV/OpenAPI endpoint with pagination and reproducible denominator semantics.
+- TWSE separately documents historical/custom information as information-service products. A free human search UI must not be reverse-engineered into an assumed supported archival API without an explicit contract.
+- Repository audit found existing supported first-party machine endpoints for other research evidence (TWSE OpenAPI monthly revenue/attention/disposition, TPEx OpenAPI monthly revenue, TWSE RWD margin/SBL), but no existing MOPS M25 fetch path or archived M25 machine contract to reuse.
+
+Decision:
+- MAJOR_COUNTERPARTY_STOP_SOURCE_ACCESS = SOURCE_ACCESS_BLOCKED_FOR_AUTOMATED_CANONICAL_INGESTION.
+- The semantic/event research remains valid and the collector proposal remains frozen, but implementation is deferred.
+- Do not scrape ezSearch HTML, discover hidden endpoints by brittle UI coupling, or promote third-party search to canonical evidence.
+- Human-readable official M25 evidence may still be used for bounded manual research with provenance, but absence cannot establish a complete denominator/no-event universe.
+
+This closes the SC-006 interface gate without an outcome test. Supply-Chain Lead-Lag remains EVENT_LANE_SEMANTICALLY_FEASIBLE / AUTOMATED_SOURCE_BLOCKED / COMPLETE_GRAPH_BLOCKED.
