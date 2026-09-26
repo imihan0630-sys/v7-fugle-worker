@@ -7,7 +7,8 @@ import {
   compareExecutionPolicyToBenchmark,
   classifyExecutionBenchmarkEligibility,
   decomposeBuyImplementationShortfall,
-  inferTaiwanLotType
+  inferTaiwanLotType,
+  splitTaiwanExecutionLegs
 } from "../research/execution_alpha_coverage_v0_1.mjs";
 
 const workerPath=process.env.V7_TEST_WORKER_PATH || new URL("../Worker.js",import.meta.url).pathname;
@@ -152,6 +153,12 @@ console.log(JSON.stringify({
   assert.equal(inferTaiwanLotType(2000),"REGULAR_LOT");
   assert.equal(inferTaiwanLotType(1200),"MIXED_LOT");
   assert.equal(inferTaiwanLotType(null),"UNKNOWN");
+  const legs=splitTaiwanExecutionLegs(1273);
+  assert.equal(legs.status,"VALID");
+  assert.equal(legs.regularShares,1000);
+  assert.equal(legs.oddLotShares,273);
+  assert.equal(legs.legCount,2);
+  assert.equal(legs.lotType,"MIXED_LOT");
   const selectionRef=classifyExecutionBenchmarkEligibility({
     benchmarkType:"SELECTION_CLOSE_REFERENCE",lotType:"ODD_LOT",benchmarkPrice:100
   });
