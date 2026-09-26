@@ -231,6 +231,8 @@ function scaled(bars, k) {
     provenance:{
       ...common,
       payloadHash:"exact-share-v1",
+      volumeSourceId:"exact-share-source",
+      volumePayloadHash:"exact-share-payload-v1",
       volumeSemanticSpace:"RAW_SHARE_VOLUME",
       volumePrecisionClass:"EXACT_SHARES",
       shareUnitComparable:true
