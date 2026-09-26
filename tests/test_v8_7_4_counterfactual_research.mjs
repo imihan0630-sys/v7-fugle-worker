@@ -197,7 +197,7 @@ console.log(JSON.stringify({
 {
   const x=decomposeBuyImplementationShortfall({
     intendedShares:1000,decisionPrice:100,horizonPrice:110,
-    fills:[{shares:600,price:101}],explicitCostNTD:100,coverageComplete:true
+    fills:[{shares:600,price:101}],explicitCostNTD:100,coverageComplete:true,fillEvidenceQuality:"ACTUAL"
   });
   assert.equal(x.status,"VALID");
   assert.equal(x.filledShares,600);
@@ -210,7 +210,7 @@ console.log(JSON.stringify({
   // Avoiding a loser creates negative opportunity cost; NO-BUY/non-fill is not one-sign bad.
   const avoided=decomposeBuyImplementationShortfall({
     intendedShares:1000,decisionPrice:100,horizonPrice:90,
-    fills:[],explicitCostNTD:0,coverageComplete:true
+    fills:[],explicitCostNTD:0,coverageComplete:true,fillEvidenceQuality:"ACTUAL"
   });
   assert.equal(avoided.status,"VALID");
   assert.ok(avoided.missedOpportunityCostNTD<0);
@@ -218,7 +218,14 @@ console.log(JSON.stringify({
 
   const blocked=decomposeBuyImplementationShortfall({
     intendedShares:1000,decisionPrice:100,horizonPrice:110,
-    fills:[],coverageComplete:false
+    fills:[],coverageComplete:false,fillEvidenceQuality:"ACTUAL"
   });
   assert.equal(blocked.status,"DATA_QUALITY_BLOCKED");
+
+  const signalOnly=decomposeBuyImplementationShortfall({
+    intendedShares:1000,decisionPrice:100,horizonPrice:110,
+    fills:[{shares:1000,price:99}],coverageComplete:true,fillEvidenceQuality:"FORMAL_SIGNAL_MARKET_PRICE"
+  });
+  assert.equal(signalOnly.status,"DATA_QUALITY_BLOCKED");
+  assert.equal(signalOnly.reason,"FILL_EVIDENCE_QUALITY_UNSUPPORTED");
 }
