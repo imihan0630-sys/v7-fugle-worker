@@ -588,3 +588,14 @@ Updated: 2026-09-26 09:17 Asia/Taipei.
 - Concurrent B-154 Execution Alpha progress was re-read and preserved before this write. Execution Alpha remains data-quality gated; it is not an optimization-ready Formal candidate.
 - Exact next master-map continuation (parallel governance task): reconcile remaining trend/momentum/reversal, volatility-regime, institutional/crowding, macro/cross-market and independently falsifiable submodules; avoid count inflation. Each lane must maintain optimization-candidate status under the mandatory bridge.
 - Canonical active research continuation remains B-154's Execution Alpha exact-next point unless a later concurrent checkpoint supersedes it.
+
+
+## B-155 — Execution Alpha evidence-accounting continuation (2026-09-26 11:14 Asia/Taipei)
+- Fresh-read canonical start B-154; concurrent A/PVE and DL work observed and not redone.
+- Multi-part execution evidence must retain one frozen parent denominator; replacement/cancellation records cannot duplicate intent or opportunity-cost denominators.
+- Mechanism-specific evidence stays separate until all required legs are complete. Incomplete coverage is UNKNOWN. Partial observation is neither complete participation nor complete non-participation.
+- External transaction-cost evidence supports whole-intent implementation-shortfall accounting including unfilled opportunity cost; fill-only price improvement can be survivor-conditioned.
+- Prospective parent/child lineage and mechanism-matched coverage are incomplete, so empirical policy value remains DATA_QUALITY_BLOCKED and optimization status is FALSIFICATION_IN_PROGRESS / NOT_READY.
+- R01-R08/I01-I07 preserved. No historical reconstruction, UNKNOWN coercion, composite score, factor/window/threshold change or Formal promotion.
+- Research-branch persistence was attempted but blocked by safety checks; no branch-write success claimed. Formal Core and Production unchanged.
+- Exact next continuation: falsify idle-capital accounting at portfolio level. Use one portfolio cash denominator across overlapping plans; distinguish deployable cash, reserved capital and action-specific unfilled capital; define the minimum prospective receipt needed to prevent double-charging the same idle cash. Monetary idle-alpha stays UNKNOWN when portfolio capital state is incomplete.
