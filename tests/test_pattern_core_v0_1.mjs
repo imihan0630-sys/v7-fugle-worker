@@ -695,6 +695,41 @@ function scaled(bars, k) {
   assert.equal(noLimitUnknown.acceptanceState, "UNKNOWN");
 }
 
+// Real-source modern Taiwan witness: 5314 closed at successive 10% limits on
+// 2025-09-03 through 2025-09-08. Acceptance stays unresolved on every
+// constrained session; the next calendar/session is not automatically confirmation.
+{
+  const seq=[
+    {date:"2025-09-03",referencePrice:80.8,bar:{open:80.8,high:88.8,low:80.4,close:88.8}},
+    {date:"2025-09-04",referencePrice:88.8,bar:{open:96.7,high:97.6,low:91.6,close:97.6}},
+    {date:"2025-09-05",referencePrice:97.6,bar:{open:101.5,high:107,low:100,close:107}},
+    {date:"2025-09-08",referencePrice:107,bar:{open:111.5,high:117.5,low:104,close:117.5}}
+  ];
+  for(const x of seq){
+    const z=classifyLimitBreakout({
+      priorResistance:80,
+      referencePrice:x.referencePrice,
+      bar:x.bar,
+      standardLimitApplies:true,
+      referencePriceComparable:true
+    });
+    assert.equal(z.status,"VALID",x.date);
+    assert.equal(z.localBreakout,true,x.date);
+    assert.equal(z.priceLimitConstrained,true,x.date);
+    assert.equal(z.acceptanceState,"UNRESOLVED",x.date);
+  }
+  const firstUnconstrained=classifyLimitBreakout({
+    priorResistance:80,
+    referencePrice:117.5,
+    bar:{open:118,high:123.5,low:112,close:113},
+    standardLimitApplies:true,
+    referencePriceComparable:true
+  });
+  assert.equal(firstUnconstrained.localBreakout,true);
+  assert.equal(firstUnconstrained.priceLimitConstrained,false);
+  assert.equal(firstUnconstrained.acceptanceState,"OBSERVABLE");
+}
+
 // C5 dead-liquidity tight base: tiny geometric range cannot become healthy compression by itself.
 {
   const closes = [50.00,50.05,50.00,50.05,50.00,50.05,50.00,50.05];
