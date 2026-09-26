@@ -1220,7 +1220,8 @@ function ceilToTaiwanStockTick(value) {
 export function taiwanStockPriceLimits({
   referencePrice,
   priceLimitPct = 0.10,
-  standardLimitApplies = true
+  standardLimitApplies = null,
+  referencePriceComparable = null
 } = {}) {
   const ref = finite(referencePrice);
   const pct = finite(priceLimitPct);
@@ -1231,6 +1232,16 @@ export function taiwanStockPriceLimits({
     return {
       status:"BLOCKED",
       reason:standardLimitApplies === false ? "STANDARD_PRICE_LIMIT_NOT_APPLICABLE" : "PRICE_LIMIT_RULE_UNKNOWN",
+      referencePrice:ref,
+      priceLimitPct:pct,
+      limitUp:null,
+      limitDown:null
+    };
+  }
+  if (referencePriceComparable !== true) {
+    return {
+      status:"BLOCKED",
+      reason:referencePriceComparable === false ? "REFERENCE_PRICE_UNIT_MISMATCH" : "REFERENCE_PRICE_COMPARABILITY_UNKNOWN",
       referencePrice:ref,
       priceLimitPct:pct,
       limitUp:null,
@@ -1263,12 +1274,18 @@ export function classifyLimitBreakout({
   referencePrice,
   bar,
   priceLimitPct = 0.10,
-  standardLimitApplies = true
+  standardLimitApplies = null,
+  referencePriceComparable = null
 } = {}) {
   const resistance = finite(priorResistance);
   const close = finite(bar?.close);
   const high = finite(bar?.high);
-  const limits = taiwanStockPriceLimits({ referencePrice, priceLimitPct, standardLimitApplies });
+  const limits = taiwanStockPriceLimits({
+    referencePrice,
+    priceLimitPct,
+    standardLimitApplies,
+    referencePriceComparable
+  });
   const localBreakout = close !== null && resistance !== null && close > resistance;
 
   if (limits.status !== "VALID") {
