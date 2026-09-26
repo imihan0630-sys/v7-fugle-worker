@@ -202,3 +202,42 @@ Durable research detail: main `KLINE_PATTERN_RESEARCH.md` commit `a245b486dc60f2
 - Do not create a combinatorial new Pattern interaction family. Reuse PATTERN-RG1..RG4 and keep marketStructureRegime as a structural-era control.
 - C4 constrained-breakout evidence must eventually be prospective under the current 10% + continuous-trading regime.
 - Formal Core remains LOCKED; no new factor or threshold.
+
+
+## Continuation update — DL-003L through DL-003T (long-cycle update)
+- This cycle deliberately continued for a full research tranche rather than stopping after one paper/test.
+- External evidence materially strengthens the named-label firewall. Jiang/Kelly/Xiu-style machine chart evidence shows that many textbook chart labels do not reliably preserve their conventional directional sign; formal classification literature independently shows there is no industry-wide unambiguous definition for many chart/candlestick patterns. Therefore named Pattern labels remain explainability metadata, not bullish/bearish priors.
+- Modern machine-chart evidence (Jiang/Kelly/Xiu; Murray/Xia/Xiao; Korea extension) supports the existence of nonlinear chart information distinct from simple momentum/reversal, but this does NOT justify implementing ML now. ML remains a future independent falsification benchmark after clean prospective Pattern data maturity.
+- Taiwan candlestick evidence remains historically positive for a small subset of patterns but is pre-2020; holding/exit design materially affects profitability. Pattern candle shape is therefore not a self-contained trading rule.
+- Draft PR #103 now has an outcome-free two-day candlestick relational encoder requiring OPEN + TECHNICAL_CONTINUITY. It stores ATR-normalized body/range, wick ratios, close location, overlap/containment/engulfment, penetration, prior-trend context, corporate-action-boundary flag, plus Taiwan-relevant overnight/intraday/total-return decomposition. Named Engulfing/Harami/Piercing labels are descriptive only.
+- Latent geometry expanded without return tuning:
+  - confirmed upper/lower boundary slopes, normalized fit error, width compression and projected apex for Platform/Flag/Triangle/Pennant families;
+  - explicit confirmed H-L-H Cup/bowl depth, rim difference, time symmetry, bottom residence and curvature residual;
+  - explicit impulse/consolidation pole return/path-efficiency plus consolidation depth/range/volume/true-range relations;
+  - continuous repeated-resistance progression (distance slopes, rejection compression, pairwise improvement, optional volume/turnover progression), while touchCount remains unsigned;
+  - cross-family shared-anchor overlap diagnostics to prevent W/Cup/Flag/etc. labels from being double-counted as independent evidence.
+- New main research contracts:
+  - `research/PATTERN_NAMED_LABEL_GOVERNANCE_V0_1.md`;
+  - `research/PATTERN_LATENT_GEOMETRY_V0_1.md`.
+- Taiwan-specific counterevidence strengthened:
+  - old Bull-Flag/TWI evidence supports formalized detection, while Taiwan Reality-Check/SPA work shows broad technical-rule profits can disappear after data-snooping, non-synchronous-trading and cost corrections;
+  - TWSE limit-order research documents round-price clustering and barrier behavior, so nested historical resistance must later control round-number/tick proximity rather than claiming the whole mechanism;
+  - close location has state-dependent meaning. Current Formal B explicitly requires closePosition>=0.65 and upperShadow<=0.35 in a breakout-acceptance context, while broader external reversal/chart evidence can assign different meaning to low close locations. This is not a Formal defect; it means Pattern must control existing close-location context rather than create a universal sign.
+- Pattern selection and execution roles are now explicitly separated. Pattern maturity may eventually be Selection/WATCH information, but there is no evidence to bypass the existing 15m execution layer, RR, maxChase, liquidity or 3+3+3 rules.
+- Latest isolated research head: `2ba148d5a0aaaca6173b7ba4d1f8a9f24754e6b4`.
+- CI on that head: V8 Repair `36205822887` SUCCESS; V8 Regression `36205822864` SUCCESS.
+- PR #103 remains Draft / unmerged / un-deployed. Current branch comparison shows it is already 56 commits behind rapidly advancing main; therefore green CI is NOT merge readiness and future promotion must re-port/reconcile onto then-current main.
+- No Pattern forward outcomes were inspected. No historical Shadow rows were fabricated. No R09. Formal Core remains LOCKED.
+
+### Current status
+`LATENT_GEOMETRY_V0_1_QA_PASS / NAMED_LABEL_SIGN_UNKNOWN / SOURCE_RESEARCH_FEASIBLE / PROSPECTIVE_RUNTIME_NO_GO / ALPHA_UNKNOWN`.
+
+### Updated exact next continuation point
+1. Treat latent-geometry v0.1 as frozen for now; stop adding named Pattern families merely to expand the catalog.
+2. Keep PR #103 Draft and do not merge/deploy. If a future runtime proposal becomes decision-ready, first re-port/reconcile the isolated research files/tests onto then-current main and rerun full protected-output regressions.
+3. Continue outcome-blind real-source/detector falsification: OPEN/TECHNICAL_CONTINUITY semantics, symbol-session/suspension handling, corporate-action boundaries, limit-constrained bars, low-liquidity cases and round-number resistance confounding.
+4. Do not add a round-number score. If studied later, pre-register a Taiwan tick-aware proximity control before outcomes.
+5. Preserve close location, volume and volatility as existing Formal/PV controls; Pattern must prove incremental geometry beyond them.
+6. No historical Pattern outcome inference. Prospective outcome joins require COMPLETE parent coverage/run receipts and point-in-time semantic readiness.
+7. If cross-lane RAW_EXECUTION + TECHNICAL_CONTINUITY + symbol-session + volume semantics become runtime-ready, then prepare a Class-B prospective observer-wiring proposal for owner approval; no merge/deploy before approval.
+8. Only after clean prospective dates exist, run frozen PATTERN-RG1..RG4 plus redundancy/date-cluster/holdout/cost gates. No R09 and no Formal optimization proposal before that evidence.
