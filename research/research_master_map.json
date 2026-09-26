@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-09-26T17:39:54+08:00",
+  "updatedAt": "2026-09-26T17:50:00+08:00",
   "status": "BASELINE_V0_2_PARTIAL_RECONCILIATION",
   "formalCore": "LOCKED",
   "authority": {
@@ -35,20 +35,20 @@
   ],
   "aggregate": {
     "domainCount": 15,
-    "moduleCount": 19,
-    "maturityWeightedPct": 47.4,
+    "moduleCount": 20,
+    "maturityWeightedPct": 47,
     "countsByLevel": {
       "L0": 0,
       "L1": 0,
-      "L2": 13,
+      "L2": 14,
       "L3": 5,
       "L4": 1,
       "L5": 0
     },
-    "researchDebtUnits": 10,
+    "researchDebtUnits": 10.6,
     "dataQualityBlocked": 8,
     "dataSourceBlocked": 3,
-    "waitingProspective": 1,
+    "waitingProspective": 2,
     "formalOptimizationCandidates": 1
   },
   "rules": {
@@ -231,6 +231,13 @@
       "level": "L2",
       "status": "DATA_QUALITY_BLOCKED",
       "basis": "Level/change/shock, crisis-removal, ATR-redundancy and market-stock volatility interaction falsification are frozen. Realized-vol evidence requires continuity-proven PIT histories; implied-vol remains separately provenance-gated."
+    },
+    {
+      "id": "PRIORITY_SCORE_CALIBRATION",
+      "domain": "STATISTICAL_VALIDATION_PIT_SHADOW_OOS",
+      "level": "L2",
+      "status": "WAITING_PROSPECTIVE",
+      "basis": "Formal score mechanism and countertests are frozen. Selected trade journal preserves score/allocation prospectively, but historical Shadow snapshots omitted priorityScore; V8.13.0 adds research-only PIT score provenance for future clean cohorts. No valid historical score-calibration claim is allowed."
     }
   ],
   "caveat": "Baseline v0.2 covers reconciled durable lanes visible in dedicated research/checkpoint files; it is not yet exhaustive of every submodule. Percent is an auditable registered-module maturity index, not percent of all possible stock-market knowledge."
