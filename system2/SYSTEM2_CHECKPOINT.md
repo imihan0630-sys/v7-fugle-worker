@@ -19,6 +19,14 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 
 ## Current design decisions
 
+- Exact re-add/sizing thresholds are not frozen and require prospective Shadow/falsification/cost validation.
+
+- Re-add is evaluated from current recovery evidence, thesis and reward/risk; prior reduce price or average cost cannot by itself label a valid restoration as chasing.
+
+- Exposure control must be symmetric: actual exposure is compared with desired exposure, supporting HOLD / REDUCE / EXIT as well as ADD / RE-ADD / RESTORE.
+
+- Position-management architecture approved: actual holdings are always monitored outside candidate/active-entry caps.
+
 - Candidate lifecycle approved: the 12-symbol pool persists across days; every post-close run revalidates each existing name, retains it while at least one strategy thesis still has observation value, removes it when the surviving thesis is invalidated/turns materially bearish, and fills vacancies with newly qualified names. State-change reasons must be frozen.
 
 - Capacity rule approved: global System 2 candidate/watch pool max 12 unique symbols; each strategy max 3 ACTIVE_INTRADAY_MONITOR symbols; no forced filling; multi-strategy overlap counts once globally but remains strategy-specific for monitoring/performance.
