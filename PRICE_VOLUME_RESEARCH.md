@@ -13162,3 +13162,259 @@ This overlay repairs analysis semantics.
 It does not change the immutable stored observedAt/enteredAt fields.
 
 Status: V0_1_POINT_IN_TIME_ANALYSIS_RECOVERABLE_WITH_OVERLAY.
+
+# PVE-062 — Stale Daily History Primarily Censors Exact-Date Outcomes Rather Than Jumping to a Later Date
+
+## Current daily-outcome lookup
+`pvFutureTradingRows`:
+- maps cached history by exact date;
+- advances using nextTradingDate;
+- requires a row on each expected market date;
+- returns null immediately when an expected date is missing.
+
+## Consequence
+A stale cache such as:
+09/11 -> 09/24
+does not cause the function to use 09/24 as the D1 row for 09/11.
+
+Instead:
+the missing expected next session causes outcome=null.
+
+## Interpretation
+History gaps primarily create:
+- delayed/missing outcome maturity;
+- coverage censoring.
+
+They do not automatically fabricate a later-date D1/D3 path under the audited code.
+
+## Caveat
+The market-calendar logic is still not symbol-session aware for legitimate suspensions (PVE-054).
+
+Status: EXACT_DATE_OUTCOME_LOOKUP_CONSERVATIVE_PASS.
+
+
+# PVE-063 — NEXT_SESSION and D1 Are Numerically Duplicate Return Horizons in v0.1
+
+## Current implementation
+For:
+- NEXT_SESSION;
+- D1,
+`count=1`.
+
+Both use the same next expected trading-session OHLC row.
+
+Their numeric fields:
+- directionReturn;
+- MFE;
+- MAE;
+- stopFirst;
+- falseBreak
+are therefore based on the same one-session path.
+
+Only the acceptanceResult label differs.
+
+## Statistical rule
+Do not treat NEXT_SESSION and D1 as two independent outcome hypotheses.
+
+Preferred reporting:
+- NEXT_OPEN: overnight opening gap;
+- NEXT_SESSION_CLOSE / D1: one next-session close/path outcome;
+- D3/D5/D10: longer horizons.
+
+Status: NEXT_SESSION_D1_DUPLICATE_ENDPOINT_FROZEN.
+
+
+# PVE-064 — ATR-Normalized Outcome Is Not Implemented in v0.1
+
+## Current builders
+Both same-session and daily outcome functions return:
+`rangeAtr:null`.
+
+## Consequence
+The research specification includes ATR-normalized risk/excursion concepts,
+but v0.1 prospective outcome rows do not currently provide them.
+
+## Rule
+H004 may use factual:
+- MFE;
+- MAE;
+- directionReturn;
+- falseBreak;
+with their own quality guards.
+
+It may not report:
+- ATR-normalized range/excursion evidence
+from v0.1 unless independently computed from a frozen, point-in-time valid ATR source under a separately declared analysis.
+
+Status: RANGE_ATR_OUTCOME_UNAVAILABLE_V0_1.
+
+
+# PVE-065 — Intraday Persistence Crosses Session Boundaries by Design but Lacks a Gap-Provenance Guard
+
+## Current state machine
+`pvReadLatestSnapshot` fetches the previous INTRADAY_15M snapshot before current observedAt, regardless of marketDate.
+
+`pvAdvancePersistence` does not receive marketDate/session-gap metadata.
+
+Therefore persistence can continue:
+- from prior session 13:00 to next session 09:00;
+- across weekends/holidays;
+- and, indistinguishably, across an unobserved outage/missing trading day.
+
+## Constructive interpretation
+Cross-session continuation can be meaningful:
+persistent abnormal participation may legitimately span trading days.
+
+## Problem
+The state machine cannot distinguish:
+- expected overnight/non-trading gap;
+- verified suspension;
+- recorder outage;
+- missing observation on an otherwise expected session.
+
+## Required overlay
+Persistence analysis needs:
+- previousKnownAt;
+- currentKnownAt;
+- expected intervening observation/session status;
+- gapReason:
+  - EXPECTED_OVERNIGHT
+  - HOLIDAY_WEEKEND
+  - VERIFIED_SUSPENSION
+  - RECORDER_GAP
+  - UNKNOWN.
+
+Unknown/recorder gaps should pause or quarantine event-continuity inference.
+
+Status: PERSISTENCE_GAP_PROVENANCE_MISSING.
+
+
+# PVE-066 — Top-Level eventKey Is a Convenience Union, Not the Canonical Event Unit
+
+## Current snapshot
+Top-level:
+`eventKey = acceptance.eventKey || persistence.eventKey || null`.
+
+Thus an acceptance event takes precedence once present.
+
+## Preserved detailed keys
+The snapshot still contains:
+- `features.pvPersistenceDetail.eventKey`;
+- `context.pvAcceptanceDetail.eventKey`.
+
+Therefore both latent event identities are recoverable.
+
+## Risk
+If analysts group only by top-level eventKey:
+one underlying volume wave can be split when acceptance begins,
+or acceptance and persistence concepts can be conflated.
+
+## Canonical analysis
+- H001/H002 participation-event analysis: use persistence event identity / first abnormal observation as frozen by hypothesis design.
+- H003 acceptance lifecycle: use acceptance event identity.
+- Joint analysis: retain both IDs; never force one “primary cause event.”
+
+Status: DOMAIN_SPECIFIC_EVENT_KEYS_REQUIRED.
+
+
+# PVE-067 — First-Session QA Receipt Must Report Expected Defects, Not Pretend Green/Red Simplicity
+
+## 2026-09-29 expected states
+
+### Intraday
+Expected:
+- enabled=true;
+- likely DATA_INSUFFICIENT for same-slot features before after-market bootstrap;
+- plan cohort inherited from quarantined 9/24 selection;
+- no alpha eligibility.
+
+QA questions:
+- completed-bar extraction correct;
+- no fabricated RVOL neutral value;
+- duplicate/mutation conflict cause classification;
+- Formal isolation remains intact.
+
+### After-market
+Expected runtime receipt:
+- bootstrap cache population;
+- daily write acknowledgement;
+- zero PV pushes/actions.
+
+But:
+- validSessions means cached session count, not all-slot readiness;
+- daily Guard does not prove history continuity;
+- at-rest D1 remains UNKNOWN if read authorization is unchanged.
+
+## 2026-09-30 expected states
+If 9/29 bootstrap succeeds:
+- same-slot/cumulative volume features may become technically ready;
+- range/Guard/Acceptance labels still carry known v0.1 defects;
+- cohort must come from independently verified 9/29 selection provenance to qualify for primary H001/H002.
+
+Status: FIRST_TWO_SESSION_QA_EXPECTATIONS_FROZEN.
+
+
+# PVE-068 — v0.1 Evidence Salvage Matrix
+
+## Usable with strong quality overlay
+Potentially salvageable:
+- source bar OHLCV;
+- pvSlotRvol20;
+- pvCumvolPace20;
+- Formal local rounded volumeRatio;
+- baselineAsOfDate;
+- slot/cumulative history counts;
+- MFE/MAE under exact horizon continuity;
+- immutable first-write row.
+
+## Usable only with additional guards
+- pvSlotRangeExpansion20;
+- pvSignedProgress20;
+- pvResponseState;
+- pvAcceptanceState;
+- pvPersistenceState;
+- price-censor/gap states;
+- liquidity Guard;
+- daily pvDailyRvol20;
+- daily outcomes.
+
+## Not available/authoritative in v0.1
+- true OFI/replenishment;
+- ATR-normalized outcome;
+- symbol-session-aware daily horizon;
+- exchange-reference-safe price-censor in all CA cases;
+- authoritative D1 at-rest proof under current 403;
+- exact Formal replay acceptance near threshold boundaries.
+
+## Principle
+A known defect in one derived label does not automatically destroy raw source fields with independent clean provenance.
+
+Status: V0_1_FIELD_LEVEL_SALVAGE_MATRIX_FROZEN.
+
+
+# PVE-069 — Evidence Phase Should Prefer Narrow Valid Questions over “Is PV Good?”
+
+## Bad question
+“Does PV Shadow work?”
+
+This mixes:
+- volume normalization;
+- response;
+- acceptance;
+- Guard labels;
+- outcome construction;
+- cohort provenance.
+
+## Better sequence
+1. Is exact-slot volume baseline reliable?
+2. Does slot RVOL add information over local prev5 on common support?
+3. Does cumulative pace add more?
+4. Only then: does range-normalized response add?
+5. Only then: do acceptance/Guard states add?
+6. Risk/outcome layers only after path/calendar quality is proven.
+
+## Benefit
+A failure of H003 does not erase a potentially useful H001.
+A failure of H001 can stop unnecessary complexity early.
+
+Status: NARROW_FALSIFIABLE_SEQUENCE_FROZEN.
