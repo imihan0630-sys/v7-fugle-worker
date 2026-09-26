@@ -777,3 +777,27 @@ Updated: 2026-09-26 12:49 Asia/Taipei.
 - Frozen comparisons: within-date score rank vs D1/D3/D5 return, MFE/MAE/stop-first; current score-proportional sizing vs equal-capital vs equal-planned-stop-risk; control for raw RR and market-consensus contribution; separate base-score components from consensus bonus; date-cluster/LODO; sector/regime strata; common support/coverage; transaction-cost sensitivity.
 - Optimization bridge status: `PRIORITY_SCORE_CALIBRATION = WAITING_PROSPECTIVE / NOT_OPTIMIZATION_READY`. No Class-C change to score weights, comparator order or capital sizing is authorized.
 - Exact next continuation: do not tune PriorityScore. Let V8.13 accumulate clean prospective PIT rows starting with the next valid after-market cohorts. In parallel, continue other independently falsifiable research modules; surface a new FORMAL_OPTIMIZATION_CANDIDATE only if mandatory positive+counterevidence and robustness gates are actually met.
+
+
+## B-167 — V8.14 Sector-Gate provenance deployed; Breadth/Rotation evidence accumulation begins prospectively (2026-09-26 Asia/Taipei)
+- Continued the Market Breadth / Sector Rotation lane from BR-025 and audited the actual research snapshots against the deployed Formal sector gate.
+- Two evidence gaps were found before any outcome claim:
+  1. existing `researchMarketContext.advancePct` is computed from Formal-normalized `todayRows`; it is NOT official whole-market breadth because non-common instruments and sub-NT$10 rows have already been filtered;
+  2. pre-V8.14 Shadow snapshots preserved sector score/rank/return context but did not persist the three actual Formal sector-gate inputs `breadth`, `avgChange`, `amountVs20DayAverage`. Therefore the frozen 40% / -1% / 0.5 gate could not be cleanly falsified from existing Shadow history.
+- A further causal limitation was preserved instead of hidden: `scoreCandidate()` short-circuits when the sector gate fails, so a sector-gate rejected row does not have a valid full Formal counterfactual RR/eligibility result. Existing `buildChannelDebug()` can safely preserve A/B technical state only. V8.14 therefore marks `fullFormalCounterfactual=false`.
+- V8.14.0 `8.14.0-sector-gate-provenance-shadow` was implemented/deployed as Class A research-only evidence capture:
+  - market breadth universe is now explicitly labeled `TWSE_TPEX_COMBINED_FORMAL_NORMALIZED`, with `officialWholeMarketBreadth=false`;
+  - each Shadow snapshot stores `SECTOR_GATE_AUDIT_V0_1` with PIT values for breadth / avgChange / amountVs20DayAverage, each frozen pass/fail check, combined pass and exact thresholds;
+  - each Shadow snapshot stores A/B technical pass/missing context without bypassing the sector gate;
+  - a bounded `SECTOR_GATE_REJECTED` cohort is archived for the exact existing reject reason, max 6 per pool per scan.
+- The bounded cohort is a falsification sample, NOT a complete rejected-universe receipt. It must not be used to estimate total market-wide opportunity loss or reject counts.
+- Formal sector gate remains exactly: breadth >=40%, avgChange >=-1%, amountVs20DayAverage >=0.5. Formal A/B, comparator, quotas, capital, BUY/ADD/REDUCE, monitoring, signals and push behavior remain unchanged.
+- PR #111 merged at `eb1ef7f1d86a8013c0fd58d97cdfaa7369f677e7`. PR Regression run 36234970884 SUCCESS; PR Repair CI run 36234970803 SUCCESS.
+- Production main Regression run 36235023368 SUCCESS; Cloudflare Deploy run 36235023379 SUCCESS. Build, syntax, Production contract, behavioral regression, backup, anti-downgrade, deploy, 23:35 Cron preservation, deployed-version/configuration readback and research-only counterfactual readback all passed; rollback was not triggered.
+- The first PR attempt exposed only an older V8.13 test that hard-locked the exact runtime version. It was corrected to a forward-compatible >=8.13 contract while retaining all V8.13 invariants; no Formal behavior was relaxed.
+- Breadth/Rotation module status advances from `EVIDENCE_PENDING` to `WAITING_PROSPECTIVE` at the same L2 maturity. This is evidence instrumentation, not an optimization candidate.
+- First eligible post-deploy sector-gate provenance cohort is expected on the next valid after-market scan (2026-09-29), conditional on V8.12 history admission and daily source completeness.
+- Frozen first descriptive audit requires >=20 clean independent scan dates with mature D1/D3/D5 outcomes. Compare current frozen gate-pass rows against bounded `SECTOR_GATE_REJECTED` rows on D1/D3/D5 return, MFE, MAE and false-breakout/stop-risk where observable; stratify which gate component failed and A/B technical readiness; control within scan date for sector RS, setup, Price-Volume and market regime; use date-cluster/LODO and no threshold sweep.
+- Positive hypothesis: the current sector gate removes fragile setups and improves downside/follow-through quality. Counter-hypothesis: one-day sector gate components are redundant or discard technically strong early-rotation cases. Neither is privileged.
+- Optimization bridge status: `BREADTH_ROTATION / SECTOR_GATE_AUDIT = WAITING_PROSPECTIVE / NOT_OPTIMIZATION_READY`. No change to 40% / -1% / 0.5 is authorized.
+- Exact next continuation: accumulate clean prospective V8.14 cohorts; do not tune thresholds. In parallel, continue an independent research lane that can advance without contaminating this holdout.
