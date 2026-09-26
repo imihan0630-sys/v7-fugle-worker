@@ -110,3 +110,20 @@ Still UNKNOWN:
 - exact production latency distribution under network retries.
 
 These require read-only production observability before EVIDENCE_READY. No production mutation is authorized by this note.
+
+
+## V2.3 reusable gap-ledger fast path
+
+Operational falsification found a repeat-cost problem in V2.1: a legitimate suspension/no-trade gap remains inside the rolling 60-actual-bar window for many sessions, so a strict market-session mismatch trigger would repeatedly refetch the same symbol.
+
+V2.3 therefore reuses COMPLETE official no-trade gap receipts during cache validation:
+- provider/cache gap + COMPLETE official traded=false => explained symbol-session gap; cache may remain fast-path valid;
+- provider/cache gap + COMPLETE official traded=true => CACHE_MISSING_OFFICIAL_BAR / refetch required;
+- no complete receipt => REVALIDATE;
+- provider bar outside official market-session proof => UNKNOWN source/calendar conflict.
+
+This preserves the useful zero-call fast path even for previously verified suspension/no-transaction windows and prevents repeated daily provider refetches solely because a legitimate gap has not yet rolled out of the 60-bar window.
+
+The receipt is factual bar-presence evidence, not a corporate-action-cause inference. Corporate-action technical-continuity adjustment remains a separate prerequisite when relevant.
+
+Status remains FALSIFICATION_IN_PROGRESS pending CI for V2.3 and production-observability/incidence evidence.
