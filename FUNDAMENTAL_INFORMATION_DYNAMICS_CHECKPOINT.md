@@ -1,10 +1,14 @@
 # Fundamental Information Dynamics Checkpoint
 
 Updated: 2026-09-25 Asia/Taipei
-Current cursor: FD-001 through FD-028 complete.
-Next: evidence accumulation; concept lane complete.
+Current cursor: FD-001 through FD-035 complete.
+Next: event-clock/vintage evidence accumulation; concept lane complete.
 
 ## Durable conclusions
+- Exact 2026 record-high revenue citation corrected to DOI 10.1016/j.frl.2026.109911. The event mechanism is horizon-dependent: short-term reversal can coexist with longer drift, especially conditional on pre-event run-up and institutional selling.
+- Current V8.7.11 revenue evidence is CURRENT_SNAPSHOT_ONLY with firstKnownAt=null and historicalHighStatus=UNKNOWN_REQUIRES_HISTORY; it cannot establish announcement day or record-high-at-the-time state.
+- The normal Formal enrichment already fetches full-market TWSE/TPEx monthly revenue, so future first-observed event receipts can potentially reuse the source with zero extra API calls; touching shared parser/storage remains Class-B proposal-first.
+- Conservative prospective event timing uses next official session after first clean after-market observation when exact filing time is unavailable; missed prior scans => OBSERVATION_DELAY_UNKNOWN.
 
 - Current Formal fundamentalScore uses realized fundamental LEVEL/CHANGE measures but no source-level surprise, consensus, revision or forecast fields.
 - Growth != surprise. Revenue YoY/MoM and EPS YoY are realized changes, not expectation errors.
