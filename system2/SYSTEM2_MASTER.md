@@ -65,6 +65,10 @@ Weights are not authoritative yet. Initial weights are hypotheses and must be va
 - `system2/SYSTEM2_DATA_SOURCE_MATRIX.md`
 - `system2/SYSTEM2_STORAGE_SCHEMA.md`
 - `system2/SYSTEM2_STRATEGY_PREREGISTRY.md`
+- `system2/SYSTEM2_EXECUTION_SIMULATOR_SPEC.md`
+- `system2/SYSTEM2_MARKET_REGIME_V0.md`
+- `system2/SYSTEM2_FACTOR_ENGINE_CONTRACT.md`
+- `system2/SYSTEM2_SOURCE_CONTRACT_AUDIT.md`
 - `shared-knowledge/SHARED_RESEARCH_MASTER_MAP.md`
 
 ## Phase plan
