@@ -3210,3 +3210,184 @@ D1_FAILURE_TAXONOMY_CURRENTLY_CONFLATED.
 4. PVE-131: audit whether any existing read-only admin surface retains historical intraday PV mutation-conflict telemetry; do not infer absence from persisted rows.
 5. PVE-132: produce the pre-9/29 QA interpretation matrix that separates measured zero, null/unobserved, UNKNOWN semantics and hard workflow failure.
 6. No runtime, Formal, threshold, token, permission or deployment change.
+
+
+# PVE-128 — Run 36144193465 Is Specifically AUTHZ_DENIED, Even Though the Generic Catch Is Broader
+
+## Direct workflow evidence
+The latest inspected `PV Shadow Class-A Read-Only QA` job for run:
+`36144193465`
+completed successfully as a workflow job and emitted a sanitized report.
+
+The report records:
+- `d1DirectReadAvailable=false`;
+- `d1DirectReadError="D1 SELECT HTTP 403: The given account is not valid or is not authorized to access this service"`;
+- `qaPass=false`;
+- `qaFailures=["D1_DIRECT_READ_NOT_AUTHORIZED"]`.
+
+## Interpretation
+PVE-127 remains the general code-audit conclusion:
+the broad catch can misclassify other D1 failures.
+
+But for this specific run, the captured HTTP 403/error body independently supports:
+`D1_FAILURE_CLASS=AUTHZ_DENIED`.
+
+Do not generalize that causal classification to future runs without inspecting their underlying error evidence.
+
+Status:
+RUN_36144193465_D1_AUTHZ_DENIED_VERIFIED.
+
+
+# PVE-129 — Future QA Needs an Always-Emitted Failure Envelope Without Weakening Hard-Fail Semantics
+
+## Problem
+PVE-124 showed that hard assertions can abort before the final JSON report is written.
+
+That creates an observability gap precisely when a severe invariant fails.
+
+## Frozen research-only design
+A future QA schema should separate:
+- `workflowConclusion`;
+- `reportGenerated`;
+- per-check `status` = PASS / FAIL / BLOCKED / UNKNOWN;
+- `failureClass`;
+- `failureMessageSanitized`;
+- `evidenceScope`;
+- `fatal`.
+
+The script may still exit non-zero after writing the sanitized report.
+
+Therefore:
+- observability is preserved;
+- workflow failure remains a failure;
+- no assertion is softened into success.
+
+Status:
+ALWAYS_EMITTED_FAILURE_ENVELOPE_DESIGN_FROZEN.
+
+
+# PVE-130 — QA Evidence Field-Scope Rename Contract Frozen
+
+To prevent later alpha analysis from consuming misleading labels, the following semantic renames are frozen for future report versions:
+
+| Current field | Evidence-safe meaning / replacement |
+| --- | --- |
+| baseline.readyCount | baseline.sessionContainerGe20Count |
+| snapshots.outcomeRows | outcomes.rowsCheckedWindow |
+| snapshots.snapshotFingerprintMismatches | snapshots.fingerprintMismatchesWindowed |
+| snapshots.outcomeFingerprintMismatches | outcomes.fingerprintMismatchesWindowed |
+| snapshots.guardCounts | snapshots.guardCountsWindowed |
+| snapshots.mutationConflictAtRest | remove as measured count; report persistence observability separately |
+| formalIsolation.decisionImpact | pvRuntimeReceipt.decisionImpact, only when receiptPresent=true |
+| formalIsolation.formalCoreImpact | pvRuntimeReceipt.formalCoreImpact, only when receiptPresent=true |
+| runtime.d1DirectReadAvailable | runtime.d1QueryPathAvailable plus failureClass |
+| calls.latestLiveReported | preserve numeric/object zero; never logical-OR zero into null |
+
+Required metadata:
+- evidenceScope;
+- rowsChecked;
+- denominator if known;
+- time/date window;
+- source;
+- authorization state;
+- receiptPresent.
+
+Status:
+QA_FIELD_SCOPE_NAMING_CONTRACT_FROZEN.
+
+
+# PVE-131 — Historical Intraday Mutation-Conflict Telemetry Is Not Recoverable from Current Read-Only Admin Surfaces
+
+## Existing evidence
+PVE-014 proved the persisted live/KV snapshot is written before the execution/PV recorder stage.
+
+Current read-only surfaces provide:
+- `/api/live`: live snapshot / LAST_MONITOR fallback;
+- `/api/cron/status`: generic execution metadata;
+- `/api/scan/status`: after-market scan receipt, including daily PV details when present.
+
+The QA artifact's mutation telemetry pointer:
+`scan.pvShadow.daily.details`
+is therefore an after-market daily path.
+
+## Consequence
+Current read-only admin surfaces do not provide an authoritative historical series of:
+- intraday PV snapshot save conflicts;
+- retry classifications;
+- volatile-provenance-only conflicts.
+
+Persisted rejected rows cannot fill that gap because rejected conflicts are intentionally not stored as successful rows.
+
+Therefore historical intraday mutation-conflict rate is:
+`UNOBSERVABLE_WITH_CURRENT_ADMIN_SURFACES`.
+
+No zero rate may be inferred.
+
+Status:
+INTRADAY_MUTATION_CONFLICT_HISTORY_UNOBSERVABLE.
+
+
+# PVE-132 — D1-Blocked Runs Render Some Empty Containers as False Zeros
+
+## Direct artifact evidence
+In run 36144193465:
+- `d1DirectReadAvailable=false`;
+- underlying D1 error is HTTP 403 authorization denial.
+
+Yet the report emits:
+- `baseline.rowCount=0`;
+- `baseline.readyCount=0`;
+- `baseline.symbols=[]`;
+- `snapshots.guardCounts={}`;
+- `calls.recentCronRuns=[]`.
+
+These values arise because the arrays were initialized empty before the D1 query attempt and are still serialized after the read is blocked.
+
+## Consequence
+For D1-dependent fields:
+- `0`, `[]`, and `{}` are not necessarily observed zeros/empties;
+- they can mean NOT_OBSERVED because the acquisition path failed.
+
+Every D1-derived container/count must be gated by:
+`d1QueryPathAvailable=true`.
+
+Otherwise report:
+`null` plus a failure class.
+
+Status:
+EMPTY_CONTAINER_IS_NOT_OBSERVED_ZERO.
+
+
+# PVE-133 — Pre-9/29 Evidence-State Matrix Frozen
+
+Before the first ordinary post-enable market session, evidence must use the following state semantics:
+
+| State | Meaning | Example |
+| --- | --- | --- |
+| MEASURED_ZERO | Source was available and measured value is zero | holiday/skipped cron `fugle_calls=0` from an observed cron receipt |
+| NOT_OBSERVED | Required source unavailable / field not acquired | D1 row counts under verified 403 |
+| ABSENT_RECEIPT | Runtime domain did not emit that receipt | `afterMarket=null` / no pvScan receipt |
+| UNKNOWN_SEMANTICS | Data exists but causal/quality interpretation unresolved | skipped-cache baseline freshness without lastMarketDate |
+| BLOCKED | Known prerequisite prevents the check | D1 at-rest QA under current token |
+| HARD_CHECK_FAILURE | QA invariant threw/failed | future assertion failure that must remain workflow-failing |
+| VERIFIED_PASS | Check executed on the stated scope and passed | active source hook ordering / enable flag observation |
+| VERIFIED_FAIL | Check executed on the stated scope and failed | explicit nonzero decisionImpact if ever observed |
+
+Rules:
+1. Never coerce NOT_OBSERVED or ABSENT_RECEIPT into zero/pass.
+2. Never promote UNKNOWN_SEMANTICS to clean evidence.
+3. Every count/distribution must carry its evidence scope.
+4. Workflow success is not equivalent to research-readiness pass.
+5. None of these states authorizes a Formal change.
+
+Status:
+PRE_FIRST_SESSION_EVIDENCE_STATE_MATRIX_FROZEN.
+
+
+## Exact continuation after PVE-133
+1. PVE-134: audit whether the current QA workflow/job conclusion can diverge from `qaPass` in both directions and freeze the state machine.
+2. PVE-135: inspect the earlier artifact from the same run/rerun lineage and test whether report fields are stable across reruns without new market data.
+3. PVE-136: define a deterministic artifact-to-artifact diff receipt for safety/runtime fields only.
+4. PVE-137: separate environment drift, market-state drift and code drift in QA comparisons.
+5. PVE-138: freeze what may be compared across non-trading reruns without accidentally treating time-dependent admin state as mutation.
+6. No runtime/Formal/token/permission/deployment change.
