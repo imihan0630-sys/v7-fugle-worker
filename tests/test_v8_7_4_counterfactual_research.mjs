@@ -4,7 +4,9 @@ import {
   classifyExecutionPlanState,
   buildExecutionAlphaAccounting,
   buildExecutionAlphaComponents,
-  compareExecutionPolicyToBenchmark
+  compareExecutionPolicyToBenchmark,
+  classifyExecutionBenchmarkEligibility,
+  decomposeBuyImplementationShortfall
 } from "../research/execution_alpha_coverage_v0_1.mjs";
 
 const workerPath=process.env.V7_TEST_WORKER_PATH || new URL("../Worker.js",import.meta.url).pathname;
@@ -141,3 +143,64 @@ console.log(JSON.stringify({
   regimePersistence:true,
   formalCoreImpact:false
 }));
+
+
+// Execution benchmark must match Taiwan lot mechanism; selection close remains reference-only.
+{
+  const selectionRef=classifyExecutionBenchmarkEligibility({
+    benchmarkType:"SELECTION_CLOSE_REFERENCE",lotType:"ODD_LOT",benchmarkPrice:100
+  });
+  assert.equal(selectionRef.status,"REFERENCE_ONLY");
+  assert.equal(selectionRef.eligible,false);
+
+  const oddAtRegularOpen=classifyExecutionBenchmarkEligibility({
+    benchmarkType:"NEXT_SESSION_REGULAR_OPEN",lotType:"ODD_LOT",benchmarkPrice:101
+  });
+  assert.equal(oddAtRegularOpen.status,"MECHANISM_MISMATCH");
+  assert.equal(oddAtRegularOpen.eligible,false);
+
+  const oddQuote=classifyExecutionBenchmarkEligibility({
+    benchmarkType:"FIRST_ELIGIBLE_OBSERVED_QUOTE",
+    lotType:"ODD_LOT",benchmarkPrice:101.2,observedAt:"2026-09-30T09:10:05+08:00",
+    quoteFresh:true,marketMechanism:"ODD_LOT_INTRADAY"
+  });
+  assert.equal(oddQuote.status,"ELIGIBLE");
+  assert.equal(oddQuote.eligible,true);
+
+  const stale=classifyExecutionBenchmarkEligibility({
+    benchmarkType:"FIRST_ELIGIBLE_OBSERVED_QUOTE",
+    lotType:"REGULAR_LOT",benchmarkPrice:101,observedAt:"2026-09-30T09:01:00+08:00",
+    quoteFresh:false,marketMechanism:"REGULAR_CONTINUOUS"
+  });
+  assert.equal(stale.reason,"QUOTE_FRESHNESS_UNPROVEN");
+}
+
+// Implementation shortfall keeps unfilled shares in the intended denominator.
+{
+  const x=decomposeBuyImplementationShortfall({
+    intendedShares:1000,decisionPrice:100,horizonPrice:110,
+    fills:[{shares:600,price:101}],explicitCostNTD:100,coverageComplete:true
+  });
+  assert.equal(x.status,"VALID");
+  assert.equal(x.filledShares,600);
+  assert.equal(x.unfilledShares,400);
+  assert.ok(Math.abs(x.executionPriceCostNTD-600)<1e-12);
+  assert.ok(Math.abs(x.missedOpportunityCostNTD-4000)<1e-12);
+  assert.ok(Math.abs(x.totalShortfallNTD-4700)<1e-12);
+  assert.ok(Math.abs(x.totalShortfallBps-470)<1e-12);
+
+  // Avoiding a loser creates negative opportunity cost; NO-BUY/non-fill is not one-sign bad.
+  const avoided=decomposeBuyImplementationShortfall({
+    intendedShares:1000,decisionPrice:100,horizonPrice:90,
+    fills:[],explicitCostNTD:0,coverageComplete:true
+  });
+  assert.equal(avoided.status,"VALID");
+  assert.ok(avoided.missedOpportunityCostNTD<0);
+  assert.ok(avoided.totalShortfallBps<0);
+
+  const blocked=decomposeBuyImplementationShortfall({
+    intendedShares:1000,decisionPrice:100,horizonPrice:110,
+    fills:[],coverageComplete:false
+  });
+  assert.equal(blocked.status,"DATA_QUALITY_BLOCKED");
+}
