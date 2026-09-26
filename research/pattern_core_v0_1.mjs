@@ -2142,3 +2142,106 @@ export function analyzeResistanceTestProgression(attempts = []) {
     decisionImpact:false
   };
 }
+
+
+function isLegalTaiwanStockQuote(price) {
+  const p=finite(price);
+  if(!(p>0)) return false;
+  const tick=researchTickSize(p);
+  if(!(tick>0)) return false;
+  return Math.abs(p/tick-Math.round(p/tick)) <= 1e-8;
+}
+
+function nearestLegalRoundAnchor(price, stepNtd) {
+  const p=finite(price);
+  const step=finite(stepNtd);
+  if(!(p>0&&step>0)) return null;
+  const base=Math.round(p/step);
+  let best=null;
+  // Search is deterministic and only enforces the current legal tick grid.
+  // It does not choose an anchor family from outcomes.
+  for(let offset=-64;offset<=64;offset+=1){
+    const k=base+offset;
+    if(k<=0) continue;
+    const anchor=roundToPrecision(k*step);
+    if(!isLegalTaiwanStockQuote(anchor)) continue;
+    const distance=Math.abs(anchor-p);
+    if(!best || distance<best.distance-1e-12 ||
+       (Math.abs(distance-best.distance)<=1e-12 && anchor<best.anchor)){
+      best={anchor,distance};
+    }
+  }
+  return best;
+}
+
+// Literature-grounded Taiwan round-price proximity control.
+// Pre-registered families: whole NT$, even NT$, 5 NT$, 10 NT$.
+// Output is continuous distance only; no "near round price" cutoff or directional sign.
+export function analyzeTaiwanRoundPriceProximity({
+  structuralLevelPrice,
+  currentClose = null
+} = {}) {
+  const level=finite(structuralLevelPrice);
+  if(!(level>0)){
+    return {
+      status:"BLOCKED",
+      reason:"ROUND_PRICE_STRUCTURAL_LEVEL_INVALID",
+      researchOnly:true,
+      decisionImpact:false
+    };
+  }
+  const levelTick=researchTickSize(level);
+  if(!(levelTick>0)){
+    return {
+      status:"BLOCKED",
+      reason:"ROUND_PRICE_TICK_UNKNOWN",
+      researchOnly:true,
+      decisionImpact:false
+    };
+  }
+  const families=[
+    ["wholeNtd",1],
+    ["evenNtd",2],
+    ["fiveNtd",5],
+    ["tenNtd",10]
+  ];
+  const proximity={};
+  for(const [name,step] of families){
+    const nearest=nearestLegalRoundAnchor(level,step);
+    if(!nearest){
+      proximity[name]={
+        anchorStepNtd:step,
+        nearestAnchor:null,
+        distanceAbs:null,
+        distancePct:null,
+        distanceTicks:null,
+        mechanicallyCoarseGrid:null
+      };
+      continue;
+    }
+    proximity[name]={
+      anchorStepNtd:step,
+      nearestAnchor:nearest.anchor,
+      distanceAbs:nearest.distance,
+      distancePct:nearest.distance/level,
+      distanceTicks:nearest.distance/levelTick,
+      mechanicallyCoarseGrid:
+        levelTick>=step && Math.abs(levelTick/step-Math.round(levelTick/step))<=1e-8
+    };
+  }
+  const close=finite(currentClose);
+  return {
+    status:"VALID",
+    structuralLevelPrice:level,
+    currentClose:close,
+    structuralLevelTick:levelTick,
+    currentCloseDistancePct:close!==null&&close>0?Math.abs(close-level)/level:null,
+    proximity,
+    primaryMetric:"DISTANCE_IN_LEGAL_TAIWAN_STOCK_TICKS",
+    directionalSign:"UNKNOWN",
+    controlRole:"CONFOUND_CONTROL_ONLY",
+    definitionNote:"No proximity cutoff, weight, winner grid or return sign is encoded. Anchor family comparisons are separate registered variants.",
+    researchOnly:true,
+    decisionImpact:false
+  };
+}
