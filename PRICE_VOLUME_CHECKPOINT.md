@@ -755,3 +755,18 @@ Class A if research-only; Class C if later used in formal 15m confirmation.
 4. PVE-095: define baseline freshness age metrics in trading/symbol sessions, not calendar days.
 5. PVE-096: freeze first post-enable QA queries/receipts needed on 9/29 night and 9/30 intraday.
 6. Continue evidence/falsification; no production implementation or Formal promotion.
+
+## Evidence progress — PVE-092 through PVE-100
+- PVE-092 confirms old intraday monitor set vs new after-market plan overlap can be reconstructed read-only from /api/live and /api/scan/status, provided date/timestamp freshness is checked.
+- PVE-093 freezes first-day baseline lineage classes: CONTINUING_MONITORED_PLAN / NEW_AFTER_MARKET_SELECTION / REENTERED_WITH_EXISTING_CACHE / ZERO_PLAN / UNKNOWN_LINEAGE.
+- PVE-094 finds bootstrap skip receipts omit lastMarketDate, so the very case most exposed to old-cache staleness is freshness-UNKNOWN from scan receipt alone.
+- PVE-095 defines baseline freshness age in expected symbol sessions, not calendar days; verified suspension is excluded while unexplained slot gaps remain quality failures.
+- PVE-096 preregisters the exact 9/29 night read-only receipt: cron + live old-symbol set + scan new-plan set + pvShadow bootstrap/daily + overlap-derived lineage + Formal safety.
+- PVE-097 notes a non-skipped bootstrap result can directly reveal selection-day omission through lastMarketDate without D1 access.
+- PVE-098 separates daily feature validity from frozen Formal anchor validity; a daily PV feature can be invalid while a formalClose-anchored market path remains separately usable.
+- PVE-099 freezes pre-first-session evidence state: runtime activation proven, but at-rest rows and post-enable live market observations not yet observed; all current findings are QA/falsification.
+- PVE-100 closes Evidence Phase I before the first post-enable trading-day sample. No thresholds, cohorts or outcome families may be changed because later evidence is inconvenient.
+- PRICE_VOLUME_EVIDENCE.md now includes a continuity index for concurrently completed PVE-013~061; their detailed canonical record remains in the checkpoints.
+- Current evidence cursor: PVE-001 through PVE-100.
+- Next information hinge is actual 2026-09-29 / 2026-09-30 prospective runtime evidence.
+- Formal Core remains LOCKED; no production code/runtime change made.
