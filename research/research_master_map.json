@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-09-26T12:50:00+08:00",
+  "updatedAt": "2026-09-26T12:49:00+08:00",
   "status": "BASELINE_V0_2_PARTIAL_RECONCILIATION",
   "formalCore": "LOCKED",
   "authority": {
@@ -49,7 +49,7 @@
     "dataQualityBlocked": 7,
     "dataSourceBlocked": 3,
     "waitingProspective": 1,
-    "formalOptimizationCandidates": 0
+    "formalOptimizationCandidates": 1
   },
   "rules": {
     "missing": "UNKNOWN",
@@ -67,6 +67,27 @@
       "EVIDENCE_READY",
       "FORMAL_OPTIMIZATION_CANDIDATE",
       "REJECTED_OR_REDUNDANT"
+    ],
+    "candidates": [
+      {
+        "id": "HISTORY_SOURCE_REVALIDATION_V2_3",
+        "status": "FORMAL_OPTIMIZATION_CANDIDATE",
+        "class": "B",
+        "scope": "AFTER_MARKET_HISTORY_DATA_INTEGRITY",
+        "exactBehaviorChange": "Only freshness/source-validated symbol histories may reach Formal after-market feature construction; suspicious histories are revalidated and unresolved evidence fails closed as UNKNOWN.",
+        "expectedBenefit": "Prevent stale-history false eligibility while avoiding false rejection of verified no-trade/suspension gaps.",
+        "evidence": "B-130 real stale-history eligibility impact; TWSE 8422 and TPEx 5314 counterexamples; fresh-provider missing-bar falsification; low-price presence guard; repeated CI success.",
+        "remainingRisks": [
+          "live suspicious-symbol incidence UNKNOWN",
+          "extreme stale blast radius can exceed 360 provider calls/hour",
+          "official gap-proof/source failures remain UNKNOWN",
+          "corporate-action price continuity remains separate"
+        ],
+        "ownerApprovalRequired": true,
+        "merged": false,
+        "deployed": false,
+        "researchPr": 105
+      }
     ]
   },
   "modules": [
