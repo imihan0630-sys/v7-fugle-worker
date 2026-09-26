@@ -1684,4 +1684,222 @@ Both are needed for independent reproducibility.
 
 Status:
 SCHEMA_VERSION_NOT_BASELINE_CONTENT_IDENTITY.
+# PVE-086 — Bootstrap Runtime ok Does Not Mean >=20 Ready Sessions
+
+## Source audit
+`bootstrapPvShadowBaselinesSafe` reports:
+`ok = results.every(x => !x.error)`.
+
+A successfully fetched/saved symbol with:
+- validSessions < 20
+still has no `error`.
+
+It is counted as:
+`bootstrapped`
+when it was fetched and saved.
+
+## Consequence
+Runtime receipt:
+- bootstrap.ok=true;
+- bootstrapped=N
+proves the bootstrap code path completed without thrown errors.
+
+It does NOT prove:
+- >=20 sessions;
+- per-slot >=20;
+- cumulative >=20;
+- range >=20;
+- baseline freshness.
+
+## QA terminology
+Use:
+- BOOTSTRAP_EXECUTION_OK
+separately from:
+- BASELINE_FIELD_READY.
+
+Status:
+BOOTSTRAP_OK_NOT_READINESS_FROZEN.
+
+
+# PVE-087 — After-Market Bootstrap Omits the Selection-Day Session for Newly Selected Symbols
+
+## Timing architecture
+The after-market scan on date T creates the Formal plan set used for the next trading session.
+
+V8.11 then calls:
+`bootstrapPvShadowBaselinesSafe(env, stocks, T)`
+on those newly selected Formal stocks.
+
+## Historical fetch window
+`pvBootstrapSymbol` fetches:
+from T-180 calendar days
+through:
+`T-1`.
+
+Thus the historical bootstrap explicitly excludes date T.
+
+## When date T is still present
+A symbol that was already monitored intraday on T may have had:
+`pvRollObservedSession`
+write the T observable session at the 13:00-start bar.
+
+The later bootstrap merges:
+- existing live-rolled T session;
+- historical sessions through T-1.
+
+This gives a fresh prior-session baseline for T+1.
+
+## Newly selected symbol problem
+If a symbol was NOT in the intraday monitored set on T but is newly selected after market on T:
+- it has no live-rolled T session;
+- historical bootstrap stops at T-1;
+- baseline for T+1 omits the immediately prior trading session T.
+
+## Concrete first-post-holiday implication
+For a new 2026-09-29 after-market selection:
+historical fetch ending 2026-09-28 effectively ends at the prior open session before the holiday block, likely 2026-09-24.
+
+Therefore a 2026-09-30 first intraday row can have a baseline that omits 2026-09-29.
+
+Status:
+NEW_SELECTION_SELECTION_DAY_BASELINE_GAP_CONFIRMED_BY_CODE.
+
+
+# PVE-088 — Baseline Freshness on T+1 Depends on Plan-Set Overlap
+
+Define:
+`PLAN_OVERLAP_T = symbol monitored intraday on selection date T AND selected again for T+1`.
+
+## Overlap symbol
+Likely path:
+- T session rolled from live data;
+- after-market bootstrap merges older history;
+- T+1 baseline can include T.
+
+Still requires all other field-quality checks.
+
+## New symbol
+Path:
+- no T live roll;
+- bootstrap fetch ends at T-1;
+- T+1 baseline latest date is stale by at least the selection session.
+
+## Re-entering symbol with old cache
+Additional risk from PVE-082:
+if old cache already has validSessions>=20, bootstrap may skip entirely even when much older.
+
+## Evidence requirement
+First H001/H002 report must stratify:
+- CONTINUING_MONITORED_PLAN
+- NEW_AFTER_MARKET_SELECTION
+- REENTERED_WITH_EXISTING_CACHE
+- UNKNOWN_LINEAGE.
+
+Do not assume a single bootstrap quality state across all selected names.
+
+Status:
+PLAN_OVERLAP_BASELINE_FRESHNESS_INTERACTION_FROZEN.
+
+
+# PVE-089 — baselineAsOfDate Can Quarantine the Selection-Day Gap
+
+## Existing stored field
+Every intraday snapshot stores:
+`coverage.baselineAsOfDate`.
+
+This gives an important v0.1 salvage path.
+
+## For date T+1
+Derive:
+`expectedLatestComparableSession`
+using:
+- exchange calendar;
+- verified symbol-session suspensions;
+- field-specific missing-slot rules.
+
+Then compare:
+`baselineAsOfDate`.
+
+## Example
+For a normal symbol on 2026-09-30:
+expected latest prior symbol session = 2026-09-29.
+
+If snapshot baselineAsOfDate = 2026-09-24:
+classify:
+`STALE_BASELINE_SELECTION_DAY_OMITTED`.
+
+## Limitation
+baselineAsOfDate is based on the last20 exact-slot row set.
+It does not freeze the entire date list or denominator.
+
+Therefore it can detect obvious staleness,
+but not prove full 20-session continuity by itself.
+
+Status:
+V0_1_STALE_BASELINE_DETECTION_PARTIALLY_SALVAGEABLE.
+
+
+# PVE-090 — Future Bootstrap Semantics Needed for Newly Selected Next-Day Plans
+
+## Desired semantic objective
+At T after market, prepare the baseline for T+1 using all prior comparable sessions available by then, including T if T is a completed eligible session.
+
+## Safe conceptual options
+
+### A. Historical fetch through T after close
+For newly selected symbols:
+fetch historical 15m through T once provider data availability is verified after market.
+
+### B. Capture a broader prospective control/eligible universe intraday
+Then T's live session may already exist before after-market selection.
+
+This is more expensive and changes research collection scope.
+
+### C. Hybrid
+Reuse live T session if available;
+otherwise fetch T historical after close.
+
+## Governance
+Any future change must:
+- preserve no-look-ahead;
+- verify provider T-day historical availability timing;
+- keep zero/controlled API budget;
+- version baseline semantics;
+- not modify Formal selection.
+
+No implementation is authorized here.
+
+Status:
+NEXT_DAY_BASELINE_SEMANTIC_FIX_REQUIRED_FOR_FUTURE_VERSION.
+
+
+# PVE-091 — 2026-09-30 Is Not Automatically a Uniform Baseline-Ready Session
+
+Earlier planning called 9/30 the first possible baseline-ready day.
+
+PVE-087/088 now refine that statement.
+
+## 9/30 eligibility classes
+
+### Potentially fresh
+Symbols monitored on 9/29 and retained in the 9/29 after-market plan,
+provided:
+- 9/29 session rolled;
+- bootstrap/merge succeeded;
+- per-slot counts/freshness pass.
+
+### Likely selection-day-gap
+Symbols newly selected after market on 9/29 and not monitored intraday on 9/29.
+
+### Potentially stale re-entry
+Symbols carrying a >=20-session old cache that causes bootstrap skip.
+
+## Conclusion
+9/30 remains the earliest **candidate date**,
+but row-level `baselineAsOfDate` and plan lineage decide eligibility.
+
+No date-level blanket “baseline ready” flag is valid.
+
+Status:
+FIRST_BASELINE_DATE_MUST_BE_ROW_SPECIFIC.
 
