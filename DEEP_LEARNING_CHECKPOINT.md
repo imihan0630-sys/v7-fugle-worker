@@ -310,11 +310,54 @@ No Formal Core change is approved or implied.
 5. Map each DL-002 feature against existing Formal research fields and remove duplicates before any coding proposal.
 6. Only after definitions are frozen, run prospective / historical-as-of-date Shadow validation. Do not inspect outcomes first and tune definitions afterward.
 
+## DL-001A — Canonical ID redundancy falsification / Taiwan price-limit residual path
+Run date: 2026-09-26 Asia/Taipei
+
+### Question
+Before implementing the canonical Information Discreteness (ID) metric as a new research feature, is it genuinely incremental to the system's existing ret20 + positiveDayRatio20 fields?
+
+### Source/evidence refresh
+- Da, Gurun & Warachka's canonical FIP/ID construction is sign(cumulative return) × (% negative days - % positive days) over the formation period.
+- Huang et al. (JFE 2022) reproduces the same construction explicitly.
+- Lin, Ko, Chen & Chu (Pacific-Basin Finance Journal 2016) provides Taiwan-specific evidence and reports that a modified non-limit-hit ID measure is more discriminating for Taiwan earnings momentum than standard ID; limit-hit days are treated as attention-grabbing discrete-information events.
+- Galvani (Finance Research Letters 2024) is retained as regime counterevidence: the FIP/ID relation is concentrated in UP markets and is not a universal state-independent law.
+
+### Redundancy falsification
+Let p = positive-day fraction, n = negative-day fraction, z = zero-return-day fraction and s = sign(cumulative return). Canonical ID = s × (n - p) = s × (1 - z - 2p).
+Therefore, when zero-return days are absent, canonical ID is exactly determined by cumulative-return sign plus positiveDayRatio. With rare zero-return days it remains near-mechanically determined by those fields plus z.
+The current research layer already stores ret20 and positiveDayRatio20. Therefore a plain 20-day canonical ID would mostly rename existing information rather than add an independent variable.
+
+### Decision
+- Standard 20-day canonical ID: REJECTED_OR_REDUNDANT as a standalone new factor unless later evidence shows a nontrivial zero-return/period-definition difference.
+- Do not add a duplicate ID score to Formal or Shadow merely because the literature labels it separately.
+- The Taiwan-specific residual hypothesis remains live: isolate gradual directional-day imbalance on non-limit-hit days and keep limit-hit events as a separate attention/discrete-event state.
+- This modified path must still prove incremental value beyond positiveDayRatio20, ret20, volatility20, maxDrawdown20Pct, breakoutQualityResearch, Quiet/Attention, gap/limit-state and regime.
+
+### Smallest pre-registered next feature
+Research-only candidate, not yet coded:
+1. idNonLimitDirectionalImbalance20 = sign(ret20) × (negNonLimitDays - posNonLimitDays) / validNonLimitDays.
+2. limitHitDayCount20 and limitHitDirection20 are separate context fields; they are NOT added into the continuous-information score.
+3. validNonLimitDays must exclude days whose authoritative exchange price-limit state cannot be established; missing limit-state evidence => UNKNOWN, not non-hit.
+4. No outcome-driven thresholding. The feature remains continuous; any bucket cutpoints must be frozen prospectively or use rank/quantile diagnostics that do not alter Formal behavior.
+5. Regime split is mandatory: BULL_BROAD / MIXED / BEAR_BROAD (or canonical system labels), because the external evidence is state-dependent.
+
+### Falsification / redundancy test
+- First test same-date partial/incremental association against positiveDayRatio20 and ret20.
+- Then add volatility20, maxDrawdown20Pct, breakoutQualityResearch, Quiet/Attention and price-limit context.
+- If the modified feature loses incremental value after those controls, classify REJECTED_OR_REDUNDANT.
+- If value appears only in one regime or one industry cluster, retain as conditional evidence, not universal alpha.
+- Do not infer causal investor inattention from the metric alone.
+
+### Status
+FALSIFICATION_IN_PROGRESS / RESEARCH_ONLY.
+Formal Core unchanged.
+
 ## Exact next continuation point
-1. Do not repeat the literature search above unless materially new evidence appears.
-2. Owner has approved continuing DL-001 research / Shadow validation. Define the smallest pre-registered Information Discreteness（資訊離散度） feature without tuning thresholds to outcomes; test redundancy and regime interaction before any formal optimization proposal.
-3. Independently continue the next highest-value external-learning question after DL-001, preferably one not already represented by Residual RS（殘差相對強弱）, Quiet/Attention, breakout quality, or overheat.
-4. Keep Formal Core（正式核心） unchanged unless later mature evidence passes governance and owner explicitly approves.
+1. Do not implement plain canonical 20-day ID as a new factor; DL-001A shows it is mechanically redundant with ret20 sign + positiveDayRatio20 except for zero-return handling.
+2. Continue DL-001 with the Taiwan-specific non-limit-hit directional-imbalance hypothesis and explicit separate limit-hit context. First priority is to verify the current system's authoritative historical/as-of-date price-limit-state feasibility and exact zero/limit-day semantics before coding.
+3. Pre-register the redundancy test against positiveDayRatio20, ret20, volatility20, maxDrawdown20Pct, breakoutQualityResearch, Quiet/Attention and regime. If incremental value disappears, reject rather than tune.
+4. Independently continue the next highest-value external-learning question after DL-001, prioritizing an under-reconciled Master-Map domain rather than duplicating existing Residual RS, price-volume, pattern-maturity, microstructure, leverage/shorting, passive-flow or corporate-action lanes.
+5. Keep Formal Core（正式核心） unchanged unless later mature evidence passes governance and owner explicitly approves.
 
 
 ## Parallel durable lane — Price-Volume Relationship（價量關係）
