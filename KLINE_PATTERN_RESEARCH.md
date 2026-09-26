@@ -15433,3 +15433,102 @@ Required evidence would include:
 PATTERN_MATURITY = POTENTIAL_SELECTION/WATCH INFORMATION
 DIRECT_EXECUTION_ROLE = NOT SUPPORTED
 FORMAL/HYBRID SLOT CHANGE = NOT AUTHORIZED
+
+
+## DL-003U — FCNT000002 Can Contain Non-Trading Pseudo-Bars; Symbol-Session Must Be Enforced, Not Merely Declared
+
+### Real-source falsification
+A fresh FCNT000002 audit on TPEx 5314 found flat OHLC rows with zero amount and zero lot volume on:
+- 2025-08-12;
+- 2025-10-14;
+- 2025-12-08;
+- 2026-05-13.
+
+Independent official TPEx evidence confirms at least the mechanism directly:
+- 5314 resumed trading on 2025-08-13, implying the preceding 2025-08-12 row is not an ordinary traded-session observation;
+- TPEx officially suspended 5314 from 2025-10-14;
+- TPEx officially suspended 5314 from 2026-05-13.
+
+FCNT000002 nevertheless represents these dates as flat OHLC with close/reference carried through and zero amount/volume.
+
+Therefore:
+"bar exists in provider history" != "symbol had a valid traded session."
+
+### Why this matters for Pattern
+If pseudo-bars are consumed as ordinary sessions they can corrupt:
+- pattern duration;
+- bottomResidenceBars;
+- contraction duration;
+- moving/ATR windows;
+- prefix/session counts;
+- zero-volume dry-up;
+- gap/resumption interpretation.
+
+A Boolean provenance flag saying symbolSessionReady is insufficient if the actual bar dates are never checked against the verified symbol-session set.
+
+### Isolated fix
+Draft PR #103 research envelope now requires the verified symbol-session date set whenever requireSymbolSession=true and fails closed if any provider bar lies outside that set.
+
+New failure state:
+`NON_SYMBOL_SESSION_BAR_PRESENT`
+
+The real 5314 2025-08-12 pseudo-bar is encoded as an adversarial witness.
+
+Latest validated branch head after this change:
+`69aace54c8d7d7b5ea2f7609495e5dea5eb616c2`
+
+CI:
+- V8 Repair `36210022595`: SUCCESS
+- V8 Regression `36210022603`: SUCCESS
+
+### Status
+PROVIDER_BAR_PRESENCE_NOT_SESSION_PROOF / SESSION-DATE MEMBERSHIP REQUIRED / NO FORMAL IMPACT.
+
+
+## DL-003V — Lot-Volume Precision and Consecutive Limit-Up Censoring Are Real Pattern Failure Modes
+
+### Sub-lot volume witness
+FCNT000002 on 5314 contains multiple 2021 rows where:
+- reported volume = 0 lots;
+- traded amount > 0;
+- OHLC is present.
+
+Example:
+2021-01-11: OHLC 6.69/6.69/6.69/6.69, reported volume 0, amount NT$2,098.
+
+This is consistent with the provider's lot-level volume precision being unable to represent a sub-lot remainder. Taiwan's market rules allow odd-lot trades below one 1,000-share regular trading unit, and modern intraday odd-lot trading supports 1-999 shares.
+
+Therefore:
+`volume=0 lots` cannot be interpreted as `no trading`.
+
+For volume-dependent Pattern states such as VCP dry-up, a zero-lot/positive-amount observation creates magnitude uncertainty.
+
+The isolated envelope now retains:
+- `volumeSubLotRemainderRisk`;
+- `volumeMagnitudeReady`.
+
+RAW_LOT_VOLUME remains a valid provenance class, but magnitude-dependent inference must not silently treat sub-lot activity as exact zero.
+
+### Consecutive limit-up witness
+5314 provides a modern post-2020 price-limit stress case:
+- 2025-09-03 close 88.8 from reference 80.8;
+- 2025-09-04 close 97.6 from reference 88.8;
+- 2025-09-05 close 107 from reference 97.6;
+- 2025-09-08 close 117.5 from reference 107.
+
+The isolated Taiwan limit-price function classifies each as a local breakout that remains price-limit-constrained / acceptance UNRESOLVED.
+
+2025-09-09 is the first session in this sequence where the close is not locked at limit-up, so acceptance becomes OBSERVABLE rather than mechanically censored.
+
+This strengthens C4:
+"check next session" is too crude.
+Correct rule:
+"wait until a later eligible unconstrained symbol-session observation."
+
+### External support and caution
+Current TWSE rules retain +/-10% stock limits and price-tier tick sizes. Older Taiwan price-limit research reports delayed price discovery / continuation after limit hits, but its 7% old-regime effect size is not transported into 2026.
+
+No directional alpha is inferred from this one real witness.
+
+### Status
+SUBLOT_VOLUME_PRECISION_GUARD_MATERIAL / MULTISESSION_LIMIT_CENSORING_CONFIRMED / NO ALPHA CLAIM / NO FORMAL CHANGE.
