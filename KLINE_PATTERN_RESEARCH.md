@@ -14793,3 +14793,65 @@ Reject incremental Pattern value if:
 MECHANISM_SUPPORTED / MODERN EFFECT SIZE UNKNOWN / PROSPECTIVE SHADOW ONLY.
 No Formal breakout, BUY, maxChase or limit-state rule is changed.
 Formal Core remains LOCKED.
+
+
+## DL-003J — FCNT000002 Raw-OHLC Field Audit: OHLC Is Raw, `change` Is Not a Raw-Return Field
+
+### Why this matters
+Pattern needs a trustworthy RAW_EXECUTION / raw-traded OHLC leg, but the earlier FCNT000154 connector route coerced `adjusted=false` into an adjusted response.
+
+A new direct content audit of Fugle `FCNT000002` (“近5年價量(交易用)”) materially narrows that blocker.
+
+### Real witnesses
+FCNT000002 preserves raw quoted OHLC across mechanical corporate-action resets:
+
+- TWSE 8454:
+  - 2025-08-20 close = 272
+  - 2025-08-21 open = 265, close = 261
+  - raw ex-right discontinuity is preserved.
+- TPEx 5314:
+  - 2025-03-19 close = 1390
+  - no rows on verified suspension dates 2025-03-20..03-28
+  - 2025-03-31 resume open = 69, close = 75.8
+  - the 20x par-value/unit reset is preserved in raw OHLC.
+- TWSE 2412:
+  - 2026-07-08 close = 139.5
+  - 2026-07-09 ex-dividend open = 134, close = 133.5
+  - the nominal cash-dividend reset is preserved.
+
+### Critical field-semantic falsification
+The same payload proves that `change` / `change_rate` are NOT raw nominal close-to-close arithmetic on corporate-action sessions.
+
+Examples:
+- 8454 2025-08-21: raw prior close 272 -> close 261, yet provider `change=+2`.
+- 5314 2025-03-31: raw prior close 1390 -> close 75.8, yet provider `change=+6.3`.
+- 2412 2026-07-09: raw prior close 139.5 -> close 133.5, yet provider `change=-1`.
+
+Therefore:
+- raw OHLC and provider daily-change semantics are different semantic objects;
+- Pattern must never derive raw-return/gap logic from provider `change` or `change_rate` on corporate-action dates;
+- `refPrice` also cannot be assumed to be a unit-comparable opening-reference field across a par-value/unit reset (5314 resume payload still reports old-unit 1390).
+
+### Volume unit
+FCNT000002 `volume` is in lots for ordinary Taiwan equities. Pattern/price-volume research must not silently mix it with share-based daily-history fields.
+
+### Suspension consequence
+5314 confirms that an absent daily bar inside a verified suspension window is not ordinary missing data.
+Expected Pattern sessions must consume symbol-session provenance (market sessions minus verified suspension sessions); otherwise prefix/replay coverage can falsely fail.
+
+### Revised raw-data contract
+For Pattern research, FCNT000002 is accepted as a strong raw-traded OHLC witness/source lane for the covered 5-year horizon, subject to:
+- exact source/provenance hash;
+- explicit lot-volume unit;
+- corporate-action registry / symbol-session guard;
+- no use of provider `change/change_rate` as raw return around action dates;
+- no use of provider `refPrice` as a universal exchange opening-reference substitute.
+
+TECHNICAL_CONTINUITY still comes from the Corporate Actions semantic layer. Pattern does not infer the adjustment from future prices.
+
+### Status
+- RAW OHLC source path: MATERIALLY RESOLVED for research via FCNT000002.
+- Raw daily-change/reference semantics across corporate actions: NOT universally interchangeable / guarded.
+- FCNT000154 adjusted=false connector path: still prohibited as trusted RAW.
+- Pattern runtime semantic wiring: still not ready because the Corporate Actions continuity registry remains research-side.
+- Formal Core unchanged.
