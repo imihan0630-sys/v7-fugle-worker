@@ -61,7 +61,12 @@ Each strategy defines:
 ### L7 Decision/Timing State
 Candidate, watch, entry-zone, trigger, hold, reduce/exit, thesis weakening/invalidated. This is separate from System 1's live state machine.
 
-### L8 Performance/Research
+### L8 Position / Exposure Management
+Dedicated monitoring for actual and simulated holdings. Actual holdings do not consume candidate/active-entry capacities. The engine compares actual exposure with desired exposure and supports symmetric HOLD / REDUCE / EXIT / ADD / RE-ADD / RESTORE paths. Re-add is evaluated from current thesis, structure and reward/risk rather than prior reduce price.
+
+Detailed contract: `system2/SYSTEM2_POSITION_MANAGEMENT_ARCHITECTURE.md`.
+
+### L9 Performance/Research
 Frozen decision snapshots, simulated fills, costs/slippage, outcomes, attribution, OOS and version comparison.
 
 ## Key principle: context-dependent interpretation
@@ -137,3 +142,12 @@ Owner-approved lifecycle rule:
 - The 12-symbol limit is a maximum, never a quota.
 
 Daily revalidation must preserve the prior day's state and the exact RETAIN / REMOVE / ADD reason. Historical candidate states must not be rewritten after outcomes are known.
+
+
+## Actual-holdings monitoring rule
+
+- Actual holdings are outside the 12-symbol candidate/watch capacity.
+- Actual holdings are outside the per-strategy 3-symbol ACTIVE_ENTRY_MONITOR capacity.
+- Existing positions are continuously monitored in POSITION_MONITOR until ownership is reconciled to zero.
+- Every holding cycle evaluates both downside reduction risk and upside ADD/RE-ADD opportunity.
+- A stock rising after reduction is not automatically classified as chasing; re-add uses current structure/thesis/RR and recovery evidence.
