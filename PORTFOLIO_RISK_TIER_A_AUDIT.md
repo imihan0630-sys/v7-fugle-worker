@@ -114,3 +114,40 @@ This is reconstructability evidence only. It does **not** show that 3.24% heat i
 
 Durable machine receipt:
 `research/portfolio_risk_production_readonly_receipt_20260926.json`.
+
+
+## PR-026 — Tier-A v0.2 separates deployment from concentration (2026-09-27)
+
+Production read-only run `36271287138` used only `/api/journal?days=730`; no outcome fields were read and no Production state was written.
+
+New descriptive quantities:
+- `deployedCapitalHHI`: concentration only inside the planned risky sleeve;
+- `riskyNameHHIOnTotalCapital = sum((allocation_i / totalCapital)^2)`: risky-name concentration measured against the full account, with cash excluded from the HHI sum;
+- `projectedStopRiskPctOfDeployedCapital`: projected heat divided by deployment ratio, isolating stop-distance intensity from how much capital is deployed.
+
+Observed fully reconstructable plan dates:
+- 2026-09-18: deployment 84%, reserve 16%, deployed HHI 0.337018, effectiveCapitalNames 2.9672, risky-name HHI on total capital 0.2378, heat 2.0221%-3.2417%, deployed-capital stop-risk intensity 2.4073%-3.8592%.
+- 2026-09-21: deployment 35%, reserve 65%, deployed HHI 1.0, effectiveCapitalNames 1.0, risky-name HHI on total capital 0.1225, heat 0.5276%-1.3070%, deployed-capital stop-risk intensity 1.5074%-3.7343%.
+- 2026-09-22 and 2026-09-23: deployment 0%, reserve 100%, cash state NO_ELIGIBLE_OPPORTUNITY.
+
+### Falsification result
+
+The proposition "lower effectiveCapitalNames necessarily means a more concentrated total account" is falsified by the observed plan geometry.
+
+2026-09-21 is maximally concentrated inside its deployed sleeve (one name; HHI=1) but only deploys 35% of total capital. Its risky-name HHI on total capital is 0.1225, below 2026-09-18's 0.2378 despite 2026-09-18 having almost three effective names.
+
+Therefore `effectiveCapitalNames` may not be interpreted alone. Portfolio Risk research must report at least:
+1. deployment ratio / structural reserve;
+2. within-deployed concentration;
+3. total-account risky-name concentration footprint.
+
+Likewise total projected heat cannot distinguish "more capital deployed" from "more stop risk per deployed dollar". Heat should be decomposed into deployment ratio and deployed-capital stop-risk intensity before any outcome study.
+
+### Important limit
+
+Only two non-zero plan dates are reconstructable today. The similarity of the high-end deployed-capital stop-risk intensity (3.8592% vs 3.7343%) is descriptive only and is not evidence of a stable risk target.
+
+No heat threshold, concentration cap, allocation rule, ADD gate or other Formal change is authorized.
+
+Durable receipt:
+`research/portfolio_risk_tier_a_history_v0_2_receipt_20260927.json`.
