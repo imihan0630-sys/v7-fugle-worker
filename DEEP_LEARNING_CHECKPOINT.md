@@ -807,3 +807,12 @@ YES for research infrastructure integrity: resolving the actual archive lineage 
 - v0.1 raw volume evidence remains partially salvageable despite Guard/response/Acceptance defects; H001/H002 have a lower evidence gate than H003/H004.
 - 9/29 remains recorder/data QA only; 9/30 is merely the earliest possible field-ready date, not automatic clean evidence.
 - No runtime/Formal modification made.
+
+## Price-Volume evidence update — PVE-067 through PVE-091
+- Current PV evidence cursor: PVE-001 through PVE-091.
+- Clean H001/H002 row contracts, nested sample structure, sample-accounting funnel and first-report shape are now frozen before outcomes.
+- Daily outcome table has important semantic duplication/censoring: NEXT_SESSION=D1 numerically in v0.1; AFTER_MARKET and INTRADAY anchors are different cohorts; outcomeComplete may mean censored rather than valid numeric outcome.
+- Baseline cache provenance/freshness is now a first-class quality axis. validSessions>=20 does not prove recency or per-slot readiness, and exact denominator vintage is not frozen in old snapshots.
+- New code-proven defect: after-market bootstrap fetches new selected symbols only through selectionDate-1. If the symbol was not already monitored on selection day, next-day baseline omits the immediately prior session. Re-entering symbols can also skip refresh solely because old cache count>=20.
+- Existing baselineAsOfDate provides a partial v0.1 quarantine path; 9/30 readiness must be row-specific.
+- No Formal/runtime change made.
