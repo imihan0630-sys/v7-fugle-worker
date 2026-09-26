@@ -1772,3 +1772,41 @@ LS-047: only after an official TPEx margin artifact/endpoint is available, valid
 LS-048: then run finalized-history backfill pilot with no outcome research.
 LS-049: audit completeness/revisions.
 LS-050: only then execute pre-registered H1-H5 evidence tests.
+
+
+---
+
+## LS-047 — TPEx margin source-contract negative verification
+
+A fresh official-source re-audit confirms the data product itself is not the blocker:
+
+- TPEx officially advertises both BIG5 and UTF-8 CSV downloads on the current 上櫃股票融資融券餘額 page.
+- The legacy official page redirects to the current page.
+- The official HTML result page remains machine-readable and confirms the validated displayed schema and lots unit.
+- Historical availability and the official history link remain visible.
+
+What is still not proven is the stable machine request contract for the CSV button:
+- no official stable CSV href was exposed in the rendered page links;
+- no official-domain search result verified the request parameter contract;
+- current direct generic web fetch can receive HTTP 403.
+
+Research rule:
+**CSV exists** is not equivalent to **stable programmatic endpoint verified**.
+
+Do not:
+- guess an `o=csv` pattern;
+- infer an undocumented date parameter;
+- bypass TPEx protection;
+- start large automated backfill.
+
+Safe continuation:
+1. accept an official downloaded UTF-8 CSV artifact under the LS-046 artifact metadata/checksum contract; or
+2. validate a documented TPEx endpoint if one becomes available.
+
+Machine receipt:
+`research/leverage_shorting_ls047_tpex_margin_source_contract_receipt_v0_1.json`.
+
+Status:
+`DATA_SOURCE_BLOCKED / OFFICIAL_ARTIFACT_OR_ENDPOINT_REQUIRED`.
+
+No outcome test and no Formal change.
