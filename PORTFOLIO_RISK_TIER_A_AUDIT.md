@@ -221,3 +221,22 @@ No redistribution rule or higher deployment target is proposed.
 
 Durable artifact:
 `research/portfolio_risk_deployment_geometry_v0_1.json`.
+
+
+### PR-027A — live channel counterexample
+
+The 2026-09-27 read-only audit adds an important counterexample to simplistic channel interpretation:
+- 2026-09-18 was B-only (3 plans) with high-end stop-risk intensity 3.8592% of deployed capital.
+- 2026-09-21 was A-only (1 plan) with high-end stop-risk intensity 3.7342%.
+
+Thus the deterministic A floor > B floor does not imply actual A plans always carry larger stop distance. The B ATR branch can produce larger realized plan geometry.
+
+Research rule: channel must be controlled, but no ordinal risk label A>B or B>A is allowed from formula floors.
+
+### PR-028A — live reserve decomposition
+
+The same read-only audit confirms:
+- 2026-09-18: nominal target 85%, actual 84%, nominal reserve 15%, additional implementation shortfall 1% = NT$2,000.
+- 2026-09-21: nominal target 35%, actual 35%, nominal reserve 65%, implementation shortfall 0.
+
+Therefore cash-utilization research must not aggregate all cash into one "unused" bucket.
