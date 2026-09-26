@@ -3,7 +3,7 @@ import {readFile} from "node:fs/promises";
 
 const source=await readFile(process.env.V7_TEST_WORKER_PATH || new URL("../Worker.js",import.meta.url).pathname,"utf8");
 
-assert.match(source,/const VERSION = "8\.14\.0-sector-gate-provenance-shadow";/);
+assert.match(source,/const VERSION = "8\.(?:14|1[5-9]|[2-9][0-9])\.0-[^"]+";/);
 
 const market=source.slice(source.indexOf("function buildResearchMarketContext"),source.indexOf("function buildResearchSnapshot"));
 assert.ok(market.includes('schemaVersion:"research-market-v2-sector-universe-provenance"'));
