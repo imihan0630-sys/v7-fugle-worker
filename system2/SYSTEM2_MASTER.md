@@ -70,6 +70,7 @@ Weights are not authoritative yet. Initial weights are hypotheses and must be va
 - `system2/SYSTEM2_FACTOR_ENGINE_CONTRACT.md`
 - `system2/SYSTEM2_SOURCE_CONTRACT_AUDIT.md`
 - `shared-knowledge/SHARED_RESEARCH_MASTER_MAP.md`
+- `system2/SYSTEM2_P1_IMPLEMENTATION_VERIFICATION.md`
 
 ## Phase plan
 
