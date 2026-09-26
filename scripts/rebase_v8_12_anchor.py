@@ -32,3 +32,4 @@ path.write_text(text.replace(old, new, 1), encoding="utf-8")
 print("Rebased V8.12 anchor onto current patch chain")
 
 import rebase_v8_12_test_fixture
+import rebase_v8_12_aideen_test
