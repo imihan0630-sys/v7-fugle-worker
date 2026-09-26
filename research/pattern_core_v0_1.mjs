@@ -69,7 +69,8 @@ export function validatePatternSeriesEnvelope({
   semanticSpace,
   bars,
   provenance = {},
-  requireOpen = false
+  requireOpen = false,
+  requireVolume = false
 } = {}) {
   const normalizedRole = String(role || "");
   const normalizedSpace = String(semanticSpace || "");
@@ -106,6 +107,50 @@ export function validatePatternSeriesEnvelope({
 
   const barCheck = validatePatternBars({ bars, requireOpen });
   if (!barCheck.usable) return barCheck;
+
+  let volumeSemanticSpace=null;
+  let volumePrecisionClass=null;
+  let volumeExactShareCount=null;
+  if (requireVolume === true) {
+    const volumeSpaces=[
+      "RAW_LOT_VOLUME",
+      "RAW_SHARE_VOLUME",
+      "REGISTERED_ISSUED_SHARE_TURNOVER",
+      "EXCHANGE_LISTED_SHARE_TURNOVER",
+      "FREE_FLOAT_TURNOVER"
+    ];
+    volumeSemanticSpace=String(provenance?.volumeSemanticSpace||"");
+    volumePrecisionClass=String(provenance?.volumePrecisionClass||"");
+    if (!volumeSpaces.includes(volumeSemanticSpace)) {
+      return { usable:false, status:"BLOCKED", reason:"VOLUME_SEMANTIC_SPACE_UNKNOWN" };
+    }
+    if (barCheck.bars.some(x=>!Number.isFinite(Number(x.volume)) || Number(x.volume)<0)) {
+      return { usable:false, status:"BLOCKED", reason:"VOLUME_DATA_INCOMPLETE" };
+    }
+    if (provenance?.shareUnitComparable !== true) {
+      return { usable:false, status:"BLOCKED", reason:"VOLUME_SHARE_UNIT_COMPARABILITY_UNKNOWN" };
+    }
+    if (volumeSemanticSpace === "RAW_SHARE_VOLUME") {
+      if (volumePrecisionClass !== "EXACT_SHARES") {
+        return { usable:false, status:"BLOCKED", reason:"RAW_SHARE_VOLUME_PRECISION_UNKNOWN" };
+      }
+      volumeExactShareCount=true;
+    } else if (volumeSemanticSpace === "RAW_LOT_VOLUME") {
+      if (volumePrecisionClass !== "LOT_COUNT_WITH_UNKNOWN_SUBLOT_REMAINDER") {
+        return { usable:false, status:"BLOCKED", reason:"RAW_LOT_VOLUME_PRECISION_UNKNOWN" };
+      }
+      volumeExactShareCount=false;
+    } else {
+      if (provenance?.denominatorReady !== true) {
+        return { usable:false, status:"BLOCKED", reason:"VOLUME_DENOMINATOR_NOT_READY" };
+      }
+      if (!volumePrecisionClass) {
+        return { usable:false, status:"BLOCKED", reason:"VOLUME_PRECISION_UNKNOWN" };
+      }
+      volumeExactShareCount=volumePrecisionClass==="EXACT_SHARES";
+    }
+  }
+
   return {
     usable:true,
     status:"VALID",
@@ -116,6 +161,11 @@ export function validatePatternSeriesEnvelope({
     payloadHash,
     pointInTimeEligible:true,
     corporateActionSemanticsReady:true,
+    volumeRequired:requireVolume===true,
+    volumeSemanticSpace,
+    volumePrecisionClass,
+    volumeExactShareCount,
+    shareUnitComparable:requireVolume===true ? true : null,
     bars:barCheck.bars
   };
 }
