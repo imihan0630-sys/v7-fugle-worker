@@ -116,7 +116,7 @@ assert.equal(first.schemaVersion, "S2_DECISION_V0_1");
 assert.equal(Object.isFrozen(first), true);
 assert.equal(Object.isFrozen(first.evaluation), true);
 
-assert.throws(
+await assert.rejects(
   () =>
     buildFrozenDecisionSnapshot({
       ...baseInput,
