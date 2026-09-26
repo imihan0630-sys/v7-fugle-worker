@@ -426,3 +426,26 @@ Machine artifact:
 `research/formal_influence_layer_map_v0_1.json`.
 
 No simplification or reweighting is authorized before prospective path-level evidence.
+
+
+## Capital-utilization cross-link
+
+Do not misdiagnose idle capital as a score-cap redistribution problem.
+
+Existing durable capital-utilization research already established:
+- 1 candidate -> 35% planned deployment;
+- 2 -> 60%;
+- 3+ -> 85%;
+- per-name 35% cap is not redistributed;
+- first tranche is 60% of planned name allocation.
+
+However the preregistered competing-hypothesis framework identifies untriggered first-tranche opportunity and second-tranche reserve as the more important idle-capital questions to falsify.
+
+Therefore:
+- score-proportional allocation and cap non-redistribution remain part of PriorityScore sizing calibration;
+- but “redistribute capped excess” is NOT a new optimization candidate by itself;
+- any capital-utilization change must be evaluated against selection quality, BUY conversion, drawdown avoided, opportunity cost and cash-state attribution.
+
+Cross-reference:
+`research/notes/CAPITAL_UTILIZATION_REENTRY_FALSIFICATION_2026-09-22.md`
+and `PORTFOLIO_RISK_RESEARCH.md` PR-021/PR-022/PR-025.
