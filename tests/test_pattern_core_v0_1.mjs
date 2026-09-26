@@ -891,6 +891,10 @@ console.log("pattern core v0.1 C1-C8 and invariance tests passed");
   assert.ok(e.currentBodyToPrevBody>1);
   assert.equal(e.researchOnly,true);
   assert.equal(e.decisionImpact,false);
+  assert.ok(Number.isFinite(e.overnightReturn));
+  assert.ok(Number.isFinite(e.intradayReturn));
+  assert.ok(Number.isFinite(e.totalReturn));
+  assert.ok(Math.abs(e.returnDecompositionIdentity-e.totalReturn)<1e-12);
 
   const haramiBars=[
     ...warmup,
