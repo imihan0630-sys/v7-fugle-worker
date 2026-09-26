@@ -1186,4 +1186,227 @@ No scanning dozens of alternative RVOL thresholds after results arrive.
 
 Status:
 FIRST_REPORT_PREREGISTERED / OUTCOME_BLIND_DESIGN.
+# PVE-073 — Daily Outcome Semantics Depend on Snapshot Observation Type
+
+## Source audit
+`pvFinalizeDailyOutcomes` queries all PV snapshots with `anchorEligible=true`.
+It does not restrict:
+- AFTER_MARKET only;
+- INTRADAY_15M only.
+
+Thus daily horizons can be attached to both snapshot families.
+
+## AFTER_MARKET anchor
+Anchor close is the current daily close (or Formal close fallback).
+
+Interpretation:
+- NEXT_OPEN ~= close-to-next-open, subject to corporate-action/reference-price comparability;
+- D1 ~= close-to-next-close;
+- D3/D5/D10 are close-anchored future daily horizons.
+
+## INTRADAY_15M anchor
+Anchor close is the accepted intraday 15m bar close.
+
+Then:
+- NEXT_OPEN = intraday-anchor-close -> next-session open;
+- D1 = intraday-anchor-close -> next-session close;
+- D3 etc. likewise begin from the intraday anchor price.
+
+These include price movement after the intraday anchor, but the daily outcome builder's MFE/MAE scans only future daily bars starting on the next market session.
+
+Therefore for INTRADAY anchors:
+- directionReturn spans anchor price to future close;
+- MFE/MAE omit the remainder of the anchor-day intraday path.
+
+They are factual next-session-bar excursions relative to the anchor,
+not a complete continuous event-to-horizon MFE/MAE path.
+
+## Analysis rule
+Never pool AFTER_MARKET and INTRADAY_15M D1/D3/D5/D10 as if the anchor semantics were identical.
+
+Always join outcomes back to the snapshot observationType.
+
+Status:
+OUTCOME_ANCHOR_TYPE_STRATIFICATION_REQUIRED.
+
+
+# PVE-074 — NEXT_SESSION and D1 Are Numerically Redundant in v0.1
+
+## Source audit
+For both:
+- NEXT_SESSION
+- D1
+
+`pvBuildDailyOutcome` sets future row count = 1.
+
+Both therefore use the same next market-session daily OHLC.
+
+For a given snapshot:
+- directionReturn is identical;
+- MFE is identical;
+- MAE is identical;
+- stopFirst path input is identical;
+- falseBreak path input is identical.
+
+Only acceptanceResult naming differs:
+- `<channel>_NEXT_SESSION`
+vs
+- `<channel>_DAILY_D1`.
+
+## Consequence
+Do not count NEXT_SESSION and D1 as:
+- two independent outcomes;
+- two confirming horizons;
+- two tests in a significance tally.
+
+For v0.1 evidence they are one numerical horizon family with two labels.
+
+## Reporting
+Prefer one canonical numerical horizon:
+`NEXT_SESSION/D1`
+and report duplicate storage as a schema-semantic fact.
+
+Status:
+NEXT_SESSION_D1_DUPLICATE_HORIZON_CONFIRMED.
+
+
+# PVE-075 — outcomeComplete=1 Can Mean Censored, Not Numerically Observed
+
+## Same-session finalizer
+When the session reaches the last observable 13:00-start bar and an anchor does not have enough future bars for B1/B2/B4, the builder returns:
+- outcomeComplete=1;
+- directionReturn=null;
+- MFE=null;
+- MAE=null;
+- acceptanceResult=INCOMPLETE_SESSION_END.
+
+## Interpretation
+`outcomeComplete=1` means:
+“the finalizer has reached a terminal state for this horizon.”
+
+It does NOT necessarily mean:
+“a valid numerical outcome was observed.”
+
+## Required maturity dimensions
+Separate:
+- FINALIZATION_COMPLETE
+- NUMERICAL_OUTCOME_OBSERVED
+- CENSORED_SESSION_END
+- PATH_ORDER_AMBIGUOUS
+- SOURCE_GAP
+- NOT_YET_MATURE
+
+## Sample accounting
+A query using only:
+`WHERE outcome_complete=1`
+will overstate usable outcome sample size.
+
+Status:
+FINALIZATION_STATUS_NOT_OUTCOME_VALIDITY_FROZEN.
+
+
+# PVE-076 — Missing Daily Outcome Row Is Ambiguous
+
+## Current daily finalizer behavior
+If `pvFutureTradingRows` cannot produce every requested future market-date row, `pvBuildDailyOutcome` returns null.
+
+No outcome row is inserted.
+
+## Absence can mean
+- horizon not mature yet;
+- legitimate symbol suspension;
+- stale/missing daily history;
+- source ingestion failure;
+- horizon beyond currently loaded cache;
+- corporate-action/data path issue.
+
+Therefore:
+“no D5 row”
+is not a single missingness mechanism.
+
+## Evidence rule
+Outcome maturity must be derived from:
+- current date / official market calendar;
+- expected symbol sessions;
+- source-history availability;
+- corporate-action provenance.
+
+Then classify missing outcome explicitly.
+
+Do not treat missing rows as:
+- zero;
+- failure;
+- random missingness.
+
+Status:
+OUTCOME_ROW_ABSENCE_NEEDS_CAUSAL_MISSINGNESS_CLASSIFICATION.
+
+
+# PVE-077 — 45-Day Finalizer Lookback Can Strand Long-Censored Snapshots
+
+## Source audit
+`pvFinalizeDailyOutcomes` only scans PV snapshots:
+`market_date >= currentMarketDate - 45 calendar days`.
+
+## Normal case
+For ordinary trading and D10, 45 calendar days is generous.
+
+## Edge case
+A symbol can have:
+- long suspension;
+- prolonged source outage;
+- unresolved history-quality gap.
+
+The snapshot can age beyond the 45-day scan window before the intended horizon becomes resolvable.
+
+Then the v0.1 finalizer will no longer revisit it.
+
+## Interpretation
+This is not a concern for normal D1/D3/D5/D10 maturity.
+It matters specifically for:
+- long censoring;
+- operational recovery;
+- post-hoc completeness accounting.
+
+## Evidence rule
+Do not interpret an old permanently missing outcome as market evidence.
+
+A future outcome-completeness process should track explicit pending/censored state rather than rely only on a rolling snapshot lookback.
+
+Status:
+LONG_CENSORING_FINALIZER_WINDOW_LIMIT_IDENTIFIED.
+
+
+# PVE-078 — Daily Plan Outcomes and Intraday Acceptance Outcomes Are Different Cohorts
+
+## AFTER_MARKET snapshot inclusion
+Daily snapshot:
+`anchorEligible = anchorClose !== null`.
+
+Thus essentially every valid recorded Formal plan can receive future daily outcomes.
+
+## INTRADAY snapshot inclusion
+Intraday anchorEligible is true only on the transition:
+- B_INITIAL_ACCEPTANCE;
+- A_REACCELERATION.
+
+Thus its daily outcomes describe a much narrower, execution-state-conditioned cohort.
+
+## Consequence
+A pooled D1/D3/D5 table would mix:
+- selected-plan path outcomes;
+- confirmed/reaccelerated intraday-event outcomes.
+
+That creates selection-conditioning differences before any PV metric is considered.
+
+## Required cohort labels
+At minimum:
+- PLAN_AFTER_MARKET_ANCHOR
+- INTRADAY_B_INITIAL_ACCEPTANCE_ANCHOR
+- INTRADAY_A_REACCELERATION_ANCHOR
+
+Do not compare their average returns as if the only difference were PV state.
+
+Status:
+DAILY_OUTCOME_COHORT_HETEROGENEITY_FROZEN.
 
