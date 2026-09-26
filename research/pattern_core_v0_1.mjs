@@ -1326,7 +1326,9 @@ export function classifyLimitBreakout({
 export function classifyDeadLiquidityTightBase({
   bars,
   tickSize,
-  minHealthyTurnover = 1_000_000
+  tightRangeThresholdPct = null,
+  tickDominanceThreshold = null,
+  minHealthyTurnover = null
 } = {}) {
   const validated = validatePatternBars({ bars });
   if (!validated.usable) return { status: validated.status, reason: validated.reason };
@@ -1335,25 +1337,51 @@ export function classifyDeadLiquidityTightBase({
   const closes = validated.bars.map(x => x.close);
   const center = closes.reduce((s, x) => s + x, 0) / closes.length;
   const rangePct = center > 0 ? (Math.max(...highs) - Math.min(...lows)) / center : Infinity;
-  const tick = Number(tickSize);
-  const barRangesInTicks = validated.bars.map(x => tick > 0 ? (x.high - x.low) / tick : Infinity);
-  const medianTicks = [...barRangesInTicks].sort((a, b) => a - b)[Math.floor(barRangesInTicks.length / 2)];
-  const turnovers = validated.bars.map(x => x.turnover).filter(Number.isFinite);
-  const medianTurnover = turnovers.length
-    ? [...turnovers].sort((a, b) => a - b)[Math.floor(turnovers.length / 2)]
+  const tick = finite(tickSize);
+  const barRangesInTicks = validated.bars.map(x => tick !== null && tick > 0 ? (x.high - x.low) / tick : null);
+  const medianTicks = medianFinite(barRangesInTicks);
+  const turnovers = validated.bars.map(x => finite(x.turnover)).filter(x => x !== null && x >= 0);
+  const medianTurnover = medianFinite(turnovers);
+
+  const tightThreshold = finite(tightRangeThresholdPct);
+  const tickThreshold = finite(tickDominanceThreshold);
+  const turnoverThreshold = finite(minHealthyTurnover);
+  const geometricTightness = tightThreshold !== null && tightThreshold > 0
+    ? rangePct <= tightThreshold
     : null;
-  const geometricTightness = rangePct <= 0.01;
-  const tickDominanceHigh = Number.isFinite(medianTicks) && medianTicks <= 1.5;
-  const liquidityQualityLow = medianTurnover === null || medianTurnover < minHealthyTurnover;
+  const tickDominanceHigh = tickThreshold !== null && tickThreshold > 0 && medianTicks !== null
+    ? medianTicks <= tickThreshold
+    : null;
+  const liquidityQualityLow = turnoverThreshold !== null && turnoverThreshold > 0 && medianTurnover !== null
+    ? medianTurnover < turnoverThreshold
+    : null;
+
+  const thresholdsReady = geometricTightness !== null &&
+    tickDominanceHigh !== null &&
+    liquidityQualityLow !== null;
+  const healthyCompressionConfidence = !thresholdsReady
+    ? "UNKNOWN_THRESHOLD_CONFIG"
+    : geometricTightness && (tickDominanceHigh || liquidityQualityLow)
+      ? "REDUCED_OR_UNKNOWN"
+      : "NORMAL";
+
   return {
     status: "VALID",
     geometricTightness,
     tickDominanceHigh,
     liquidityQualityLow,
-    healthyCompressionConfidence: geometricTightness && (tickDominanceHigh || liquidityQualityLow) ? "REDUCED_OR_UNKNOWN" : "NORMAL",
+    healthyCompressionConfidence,
     rangePct,
     medianTicks,
-    medianTurnover
+    medianTurnover,
+    thresholdConfig: {
+      tightRangeThresholdPct: tightThreshold,
+      tickDominanceThreshold: tickThreshold,
+      minHealthyTurnover: turnoverThreshold
+    },
+    definitionNote: "Continuous liquidity/tick geometry is primary. Boolean labels require explicit preregistered thresholds; missing thresholds remain UNKNOWN.",
+    researchOnly:true,
+    decisionImpact:false
   };
 }
 
@@ -1361,13 +1389,40 @@ export function classifyNestedResistance({
   localResistance,
   majorZoneCenter,
   currentClose,
-  majorTolerancePct = 0.01
+  majorTolerancePct = null
 } = {}) {
-  const local = Number(localResistance);
-  const major = Number(majorZoneCenter);
-  const close = Number(currentClose);
-  const lower = major * (1 - majorTolerancePct);
-  const upper = major * (1 + majorTolerancePct);
+  const local = finite(localResistance);
+  const major = finite(majorZoneCenter);
+  const close = finite(currentClose);
+  const tolerance = finite(majorTolerancePct);
+  if (!(local > 0 && major > 0 && close > 0)) {
+    return {
+      status:"BLOCKED",
+      reason:"NESTED_RESISTANCE_INPUT_INCOMPLETE",
+      localBreakout:null,
+      majorZoneConflict:null,
+      nestedConflictState:"UNKNOWN",
+      zoneRelation:"UNKNOWN",
+      availableAirPct:null,
+      researchOnly:true,
+      decisionImpact:false
+    };
+  }
+  if (!(tolerance !== null && tolerance > 0 && tolerance < 1)) {
+    return {
+      status:"BLOCKED",
+      reason:"MAJOR_ZONE_TOLERANCE_NOT_PREREGISTERED",
+      localBreakout:close > local,
+      majorZoneConflict:null,
+      nestedConflictState:"UNKNOWN",
+      zoneRelation:"UNKNOWN",
+      availableAirPct:null,
+      researchOnly:true,
+      decisionImpact:false
+    };
+  }
+  const lower = major * (1 - tolerance);
+  const upper = major * (1 + tolerance);
   const localBreakout = close > local;
   const availableAirPct = (lower - close) / close;
   const zoneRelation = close < lower ? "BELOW_ZONE" : close <= upper ? "INSIDE_ZONE" : "ABOVE_ZONE";
@@ -1380,12 +1435,15 @@ export function classifyNestedResistance({
         ? "LOCAL_BREAKOUT_INSIDE_MAJOR_ZONE"
         : "LOCAL_BREAKOUT_ABOVE_MAJOR_ZONE";
   return {
+    status:"VALID",
     localBreakout,
     majorZoneConflict,
     nestedConflictState,
     zoneRelation,
     availableAirPct,
-    majorZone: { center: major, lower, upper }
+    majorZone: { center: major, lower, upper, tolerancePct:tolerance },
+    researchOnly:true,
+    decisionImpact:false
   };
 }
 
