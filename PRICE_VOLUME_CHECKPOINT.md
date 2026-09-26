@@ -717,3 +717,20 @@ Class A if research-only; Class C if later used in formal 15m confirmation.
 5. PVE-080: freeze a v0.1 defect registry with severity, affected hypotheses and salvage policy.
 6. Keep outcome inference blocked until clean evidence prerequisites mature.
 7. Formal Core remains LOCKED.
+
+## Evidence progress — PVE-062 through PVE-066
+- PVE-062 audits daily outcome finalization. directionReturn/MFE/MAE/NEXT_OPEN are factual path fields only under verified symbol-session continuity and price comparability. Legitimate suspension/missing symbol bars censor the horizon; they are not zero/failure. AFTER_MARKET acceptanceResult is a frozen-plan threshold-path label, not proof of a live Acceptance lifecycle. stopFirst is unusable when stop and target are both touched in the same unresolved OHLC bar.
+- PVE-063 confirms persistence continuity is not constrained by same-session adjacency or next expected symbol session. Old intraday/daily persistence states can be resumed after overnight/unobserved gaps. Raw current RVOL is unaffected; pvPersistenceState/event continuity requires an adjacency overlay.
+- PVE-064 confirms top-level eventKey mixes two event families because it prefers acceptance.eventKey over persistence.eventKey. Existing nested keys are separately stored and can be salvaged analytically; top-level eventKey must not be the universal independence unit.
+- PVE-065 freezes first-session receipts for 9/29 and 9/30 with all known defect overlays. 9/29 is DATA_QA-only because of stale 9/24 cohort lineage and expected cold baseline. 9/30 is only the earliest possible field-ready date if 9/29 bootstrap succeeds; clean cohort provenance and at-rest proof remain separate gates.
+- PVE-066 freezes the v0.1 salvage matrix: H001 raw Formal local volume ratio vs pvSlotRvol20 and H002 cumulative pace are potentially salvageable under feature-specific coverage/common-support rules; H003/H004 state/Guard/outcome labels are much more heavily guarded. No defect here authorizes a Formal change.
+- Formal Core and runtime code unchanged.
+
+## Revised exact continuation after PVE-066
+1. PVE-067: freeze the minimal clean H001 row contract.
+2. PVE-068: freeze the minimal clean H002 row contract and nested sample relationship H002 subset of H001 where appropriate.
+3. PVE-069: define event/date de-duplication using separate persistence/acceptance keys without top-level eventKey.
+4. PVE-070: define field-specific outcome eligibility and censoring codes rather than one row-level outcome-valid Boolean.
+5. PVE-071: define sample accounting receipts so excluded/unknown rows never disappear silently.
+6. PVE-072: define first descriptive H001/H002 report shape before outcome inspection.
+7. Continue evidence/falsification only; no threshold tuning or Formal promotion.
