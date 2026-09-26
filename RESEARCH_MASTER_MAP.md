@@ -90,8 +90,19 @@ No chat may mark L4/L5 from retrospective narrative alone. No chat may turn UNKN
 
 ## Baseline build state
 
-MASTER_MAP_SCHEMA = V0.1
-INVENTORY_RECONCILIATION = IN_PROGRESS
-CANONICAL_PERCENT_COMPLETE = UNKNOWN
+MASTER_MAP_SCHEMA = V0.2
+INVENTORY_RECONCILIATION = PARTIAL_BASELINE_PUBLISHED
+REGISTERED_MODULES = 16
+L0/L1/L2/L3/L4/L5 = 0 / 0 / 10 / 5 / 1 / 0
+REGISTERED_MODULE_MATURITY = 48.8%
+RESEARCH_DEBT_UNITS = 8.2
+DATA_QUALITY_BLOCKED = 6
+DATA_SOURCE_BLOCKED = 3
+WAITING_PROSPECTIVE = 1
+FORMAL_OPTIMIZATION_CANDIDATES = 0
 
-Next master-map task: enumerate dedicated research/checkpoint files, normalize modules without double-counting sequential checkpoint IDs, assign evidence-backed L0-L5/status, then publish the first auditable baseline totals.
+Important: 48.8% is the maturity of the currently reconciled 16 durable modules, NOT "48.8% of all stock-market knowledge". The inventory is still expanding and module splits must be independently falsifiable.
+
+Optimization bridge is mandatory: once a research finding passes applicable positive+counterevidence, PIT/OOS, independent-date, regime, redundancy/incremental-value, cost, coverage/zero-pick and overfit gates and could improve after-market selection, it must be surfaced as a FORMAL_OPTIMIZATION_CANDIDATE for owner review. It may not self-promote to Formal.
+
+Next master-map task: continue reconciliation of remaining domains/submodules, especially trend/momentum/reversal, volatility-regime, institutional/crowding and macro/cross-market; do not inflate counts by treating sequential checkpoint IDs as separate modules.
