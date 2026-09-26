@@ -894,3 +894,14 @@ Updated: 2026-09-26 22:14 Asia/Taipei.
 - Cross-literature guard: later 2023 momentum review reports Taiwan momentum can appear after excluding small/low-priced stocks. Current Formal already applies low-price, market-cap and liquidity filters, so whole-market “Taiwan has no momentum” findings are not automatically representative of the selector population; this is a population-transportability issue, not evidence for changing gates.
 - No R09, no code/runtime change, no outcome inspection, no Formal optimization candidate.
 - Exact next: retain prospective-only rank spec until the active V8.15 lineage is resolved; any future capture must be Class A/zero-extra-call/Shadow-only/Formal-invariant. Continue another independent research question now.
+
+
+## B-175 — Generic short-term reversal rejected / A pullback-origin residual frozen (2026-09-26 Asia/Taipei)
+- Taiwan/external mechanism evidence supports temporary reversal after non-informational price pressure, but also continuation after information/news-driven high-activity moves; recent negative return alone is not a causal reversal signal.
+- Fresh Formal audit shows A after-market selection already requires intact MA20/MA60 trend, 2–15% pullback, <=4% support distance, non-expanding/contracting volume, intact structure and non-late-stage state.
+- Formal 15m A execution then rejects buy-zone failure and bearish >=1.3x volume, and requires zone hold, <=0.9x setup volume, reversalK/strong close, higher low and subsequent bullish turn-up. This is explicitly designed to avoid catching a falling knife.
+- Therefore a standalone Generic Short-Term Reversal factor is REJECTED_OR_REDUNDANT; adding one would double-count A's existing selection/execution logic.
+- The genuinely residual question is pullback origin/context: structural pullback vs event shock vs liquidity-pressure candidate vs deleveraging pressure vs common-market shock. This is moderator/diagnostic only, not a new score.
+- Microstructure firewall: lower shadow/high volume/rebound cannot prove liquidity/inventory reversal. Valid side pressure + depth/replenishment/price-response evidence is required; current sparse recorder cannot historically reconstruct all such states. Missing = UNKNOWN.
+- Future A-line optimization evidence, if any, must compare already-qualified A setups by valid origin context and show incremental benefit in BUY coverage/D1-D10/MFE/MAE/stop/no-follow-through/entry quality after controls. Gate relaxation that only increases trades but worsens risk/cost is rejected.
+- Durable Trend files updated DL-003H..DL-003J. No code/runtime/Formal change and no FORMAL_OPTIMIZATION_CANDIDATE.
