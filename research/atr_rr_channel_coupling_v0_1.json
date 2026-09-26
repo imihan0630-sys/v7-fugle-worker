@@ -1,0 +1,259 @@
+{
+  "schemaVersion": "atr-rr-channel-coupling-v0.1",
+  "researchDate": "2026-09-27",
+  "status": "STRUCTURAL_FALSIFICATION_FROZEN",
+  "outcomeDataUsed": false,
+  "formalCoreChanged": false,
+  "currentFormal": {
+    "atrGate": "1.0 <= atrPercent <= 10.0",
+    "A": {
+      "entry": "(support*0.995 + support*1.018)/2 = support*1.0065",
+      "stop": "min(support*0.98, recentLow5Prev_or_support - 0.12*ATR)"
+    },
+    "B": {
+      "entry": "breakout*1.003",
+      "stop": "breakout - max(0.65*ATR, breakout*0.012)"
+    },
+    "downstream": [
+      "target from nearestRealResistance",
+      "RR=(target-entry)/(entry-stop)",
+      "RR>=2 hard gate",
+      "RR contributes 14% PriorityScore up to RR=5",
+      "raw RR second comparator"
+    ]
+  },
+  "structuralFindings": [
+    "ATR has multi-layer influence even though it is not a direct PriorityScore term: hard volatility gate -> stop geometry -> RR hard gate -> RR score/tie-break.",
+    "The ATR-to-stop mapping is channel-specific; B stop is directly volatility-scaled above the 1.2% floor while A may be pinned by support/structure and much less ATR-sensitive.",
+    "For B, low ATR values below the stop-floor crossover can produce identical stop/RR; above the crossover, higher ATR monotonically widens risk and reduces RR for fixed entry/target.",
+    "Therefore high-ATR B candidates can be rejected by RR<2 before reaching ranking even when atrPercent itself remains within the allowed <=10% gate.",
+    "The same ATR% does not imply the same effective penalty in A and B, so volatility calibration must be channel-conditional."
+  ],
+  "fixedSyntheticGeometry": {
+    "B": {
+      "breakout": 100,
+      "close": 101,
+      "entry": 100.3,
+      "target": 110.3,
+      "note": "Only ATR% varies. This is a structural witness, not a claim about typical target distance.",
+      "cases": [
+        {
+          "atrPct": 1,
+          "stop": 98.8,
+          "risk": 1.5,
+          "rr": 6.667,
+          "rrPass": true
+        },
+        {
+          "atrPct": 1.5,
+          "stop": 98.8,
+          "risk": 1.5,
+          "rr": 6.667,
+          "rrPass": true
+        },
+        {
+          "atrPct": 2,
+          "stop": 98.687,
+          "risk": 1.613,
+          "rr": 6.2,
+          "rrPass": true
+        },
+        {
+          "atrPct": 3,
+          "stop": 98.0305,
+          "risk": 2.2695,
+          "rr": 4.406,
+          "rrPass": true
+        },
+        {
+          "atrPct": 5,
+          "stop": 96.7175,
+          "risk": 3.5825,
+          "rr": 2.791,
+          "rrPass": true
+        },
+        {
+          "atrPct": 7,
+          "stop": 95.4045,
+          "risk": 4.8955,
+          "rr": 2.043,
+          "rrPass": true
+        },
+        {
+          "atrPct": 8,
+          "stop": 94.748,
+          "risk": 5.552,
+          "rr": 1.801,
+          "rrPass": false
+        },
+        {
+          "atrPct": 10,
+          "stop": 93.435,
+          "risk": 6.865,
+          "rr": 1.457,
+          "rrPass": false
+        }
+      ],
+      "approximateRr2FailurePoint": "With this fixed +10 reward geometry, RR falls below 2 between ATR 7% and 8% despite the Formal ATR gate allowing up to 10%."
+    },
+    "A": {
+      "support": 100,
+      "close": 100,
+      "entry": 100.65,
+      "target": 110.65,
+      "note": "Only ATR% and fixed structureLow scenarios vary.",
+      "cases": [
+        {
+          "structureLow": 100,
+          "atrPct": 1,
+          "stop": 98,
+          "risk": 2.65,
+          "rr": 3.774,
+          "rrPass": true
+        },
+        {
+          "structureLow": 100,
+          "atrPct": 2,
+          "stop": 98,
+          "risk": 2.65,
+          "rr": 3.774,
+          "rrPass": true
+        },
+        {
+          "structureLow": 100,
+          "atrPct": 5,
+          "stop": 98,
+          "risk": 2.65,
+          "rr": 3.774,
+          "rrPass": true
+        },
+        {
+          "structureLow": 100,
+          "atrPct": 8,
+          "stop": 98,
+          "risk": 2.65,
+          "rr": 3.774,
+          "rrPass": true
+        },
+        {
+          "structureLow": 100,
+          "atrPct": 10,
+          "stop": 98,
+          "risk": 2.65,
+          "rr": 3.774,
+          "rrPass": true
+        },
+        {
+          "structureLow": 98,
+          "atrPct": 1,
+          "stop": 97.88,
+          "risk": 2.77,
+          "rr": 3.61,
+          "rrPass": true
+        },
+        {
+          "structureLow": 98,
+          "atrPct": 2,
+          "stop": 97.76,
+          "risk": 2.89,
+          "rr": 3.46,
+          "rrPass": true
+        },
+        {
+          "structureLow": 98,
+          "atrPct": 5,
+          "stop": 97.4,
+          "risk": 3.25,
+          "rr": 3.077,
+          "rrPass": true
+        },
+        {
+          "structureLow": 98,
+          "atrPct": 8,
+          "stop": 97.04,
+          "risk": 3.61,
+          "rr": 2.77,
+          "rrPass": true
+        },
+        {
+          "structureLow": 98,
+          "atrPct": 10,
+          "stop": 96.8,
+          "risk": 3.85,
+          "rr": 2.597,
+          "rrPass": true
+        },
+        {
+          "structureLow": 97,
+          "atrPct": 1,
+          "stop": 96.88,
+          "risk": 3.77,
+          "rr": 2.653,
+          "rrPass": true
+        },
+        {
+          "structureLow": 97,
+          "atrPct": 2,
+          "stop": 96.76,
+          "risk": 3.89,
+          "rr": 2.571,
+          "rrPass": true
+        },
+        {
+          "structureLow": 97,
+          "atrPct": 5,
+          "stop": 96.4,
+          "risk": 4.25,
+          "rr": 2.353,
+          "rrPass": true
+        },
+        {
+          "structureLow": 97,
+          "atrPct": 8,
+          "stop": 96.04,
+          "risk": 4.61,
+          "rr": 2.169,
+          "rrPass": true
+        },
+        {
+          "structureLow": 97,
+          "atrPct": 10,
+          "stop": 95.8,
+          "risk": 4.85,
+          "rr": 2.062,
+          "rrPass": true
+        }
+      ]
+    }
+  },
+  "prospectiveTests": [
+    "RR and rejection-rate curves versus atrPercent separately for A and B.",
+    "Fraction of technically valid A/B setups lost at ATR gate versus RR gate.",
+    "For B, estimate stop-floor-binding versus ATR-binding frequency.",
+    "For A, estimate support-stop-binding versus structureLow-ATR-binding frequency.",
+    "Within channel, compare forward MFE/MAE/stop-first after controlling setupQuality, target distance, liquidity, market regime and price tier.",
+    "Test whether ATR-related RR filtering improves downside enough to justify opportunity loss; do not optimize ATR thresholds first."
+  ],
+  "falsification": [
+    "If high-ATR B candidates rejected by RR have materially worse downside/path quality, the apparent double penalty may be protective rather than redundant.",
+    "If RR rejection mainly removes high-MFE winners without downside benefit, surface a future channel-specific reformulation candidate.",
+    "If channel-conditioned ATR adds no information after stop distance/RR itself, treat ATR's downstream effect as already fully represented by risk geometry.",
+    "Do not replace ATR gate with realized-vol regime or vice versa without incremental evidence."
+  ],
+  "observability": {
+    "existingShadow": [
+      "atrPercent",
+      "channel",
+      "rewardPerRisk/rewardRisk",
+      "entry/stop/target on plan rows",
+      "setupQuality",
+      "outcomes when mature"
+    ],
+    "missingForRejectedBeforePlan": "Exact target/stop counterfactual for all ATR/RR rejects may require bounded audit/replay; do not fabricate from mutable history."
+  },
+  "governance": {
+    "anyATRgateStopOrRRChange": "CLASS_C_OWNER_APPROVAL_REQUIRED",
+    "currentAction": "RESEARCH_ONLY"
+  },
+  "decision": "ATR_TO_RR_CHANNEL_COUPLING_CONFIRMED / B_CHANNEL_SENSITIVITY_HIGHER_BY_CONSTRUCTION / EMPIRICAL_VALUE_UNKNOWN / NO_FORMAL_CHANGE"
+}
