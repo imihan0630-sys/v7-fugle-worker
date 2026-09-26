@@ -346,3 +346,58 @@ No historical 2026-09-24 BUY/NO-BUY reconstruction is authorized.
 No Formal BUY rule, share sizing, capital rule or push behavior changed.
 
 Status: EXECUTION BENCHMARK SEMANTICS DEEPENED / ODD-LOT PROVENANCE GAP FOUND / FORMAL CORE LOCKED.
+
+
+## EA-018 — aggregation must be leg-aware and quantity-weighted
+
+A mixed-lot parent action cannot be scored by averaging regular-lot and odd-lot percentages equally.
+
+For a parent intended quantity Q with regular leg Qr and odd-lot leg Qo:
+- preserve each leg's own executable benchmark, fills, costs and unfilled opportunity cost;
+- aggregate parent shortfall in NTD first;
+- divide only once by the sum of leg decision notionals;
+- never average leg bps with equal weights unless their decision notionals are exactly equal.
+
+This prevents a small odd-lot residual from dominating a 1,000+ share regular leg, while still preventing the odd-lot leg from disappearing.
+
+Aggregation gate:
+- parent status VALID only if every required leg has mechanism-matched benchmark provenance and complete execution/non-execution coverage;
+- otherwise parent status DATA_QUALITY_BLOCKED with named blocked legs.
+- A valid regular leg cannot silently impute the missing odd-lot leg.
+
+## EA-019 — partial fill and cancel/replace are lifecycle states, not one fill
+
+Implementation shortfall must preserve the parent-action lifecycle:
+INTENT -> SUBMITTED -> PARTIAL_FILL* -> CANCEL/REPLACE* -> FINAL_FILLED or FINAL_UNFILLED.
+
+Required fields for later prospective evidence:
+parentActionId, actionType (FIRST/ADD/REDUCE/RE_ADD), intendedShares, lotLeg, decisionKnownAt, submitAt, fillAt, cancelAt, replaceAt, fillShares, fillPrice, explicitCost, evidenceQuality.
+
+A replacement order remains part of the same parent action unless Formal logic creates a new action. Summing fills without parent identity can double-count replaced quantity.
+
+Until broker/order lifecycle evidence exists, Formal signal logs remain SIGNAL evidence only and actual-fill implementation shortfall remains DATA_QUALITY_BLOCKED.
+
+## EA-020 — idle-capital cost must be benchmarked, not assumed zero
+
+A NO-BUY/partially unfilled action leaves capital available. Opportunity cost is therefore not simply the stock's later return.
+
+Prospective research must keep at least:
+- stock opportunity path from the frozen executable benchmark;
+- cash/idle benchmark return for the same horizon;
+- whether capital was actually available for another Formal plan;
+- portfolio capacity utilization.
+
+Do not assume idle cash earned 0 or that it was immediately redeployed. Both are scenarios until portfolio-level evidence exists.
+
+This matters to the system's core problem: a strict BUY policy can improve per-fill price while lowering total capital utilization. The two effects must be reported separately before any optimization proposal.
+
+## EA-021 — first optimization bridge question is now falsifiable
+
+The first possible Formal optimization is NOT "loosen BUY conditions".
+
+The research question is:
+Does the current waiting policy create a persistent excess of complete-coverage MISSED_UPSIDE relative to AVOIDANCE_BENEFIT after costs, while conditional BUY price improvement is too small to compensate, across independent dates/regimes and frozen A/B/pool/liquidity strata?
+
+Only if that survives counterevidence should a later FORMAL_OPTIMIZATION_CANDIDATE consider relaxing a specific entry gate. If avoidance benefit offsets missed upside, or results cluster by strategy/regime, a universal relaxation is rejected; interaction-specific research is required.
+
+Current status: FALSIFICATION_IN_PROGRESS / NOT_OPTIMIZATION_READY.
