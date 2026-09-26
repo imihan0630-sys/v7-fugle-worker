@@ -263,3 +263,11 @@ They must not be erased once later clean data arrive.
 - Evidence milestones now use separate counters: raw snapshots, DATA_QA-eligible observations and hypothesis-clean events. Distinct-date maturity counts clean evidence dates only.
 - H001 first comparison must report per-slot common-support/coverage before any predictive metric.
 - Current research-side defects do not imply any Formal Core change. All hypotheses remain OBSERVER/evidence-gated.
+
+## Hypothesis readiness after PVE-062~066
+- H001 remains WAITING_FIRST_CLEAN_COMMON_SUPPORT + WAITING_CLEAN_COHORT_PROVENANCE + WAITING_AT_REST_QA.
+- H002 inherits H001 gates and additionally requires cumulativeHistoryCount>=20 plus verified current-session prefix continuity.
+- H003 remains HIGHER_GATED because response/range/Guard and Acceptance semantics have known v0.1 defects.
+- H004 realized direction/MFE/MAE can be field-salvaged only under symbol-session/corporate-action continuity; stopFirst is quarantined when within-bar order is ambiguous.
+- pvPersistenceState and top-level eventKey are not accepted as clean independence variables without continuity/event-family overlays.
+- No hypothesis status upgraded to SUPPORTED/NOT_SUPPORTED from these QA findings.
