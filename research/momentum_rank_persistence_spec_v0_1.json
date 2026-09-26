@@ -1,0 +1,96 @@
+{
+  "schemaVersion": "momentum-rank-persistence-v0.1",
+  "updated": "2026-09-26 Asia/Taipei",
+  "status": "SPEC_FROZEN_PROSPECTIVE_ONLY_NOT_IMPLEMENTED",
+  "researchOnly": true,
+  "decisionImpact": false,
+  "formalCoreChanged": false,
+  "literatureAnchor": {
+    "paper": "Chen, Hsieh & Lee (2023), Revisiting the momentum effect in Taiwan: The role of persistency",
+    "doi": "10.1016/j.pacfin.2023.101943",
+    "canonicalDefinition": {
+      "rebalanceFrequency": "MONTHLY",
+      "formationMonths": [
+        3,
+        6,
+        9,
+        12
+      ],
+      "winnerCut": "TOP_30_PERCENT",
+      "loserCut": "BOTTOM_30_PERCENT",
+      "persistence": "CONSECUTIVE_MEMBERSHIP_DURATION_IN_ORIGINAL_WINNER_OR_LOSER_GROUP"
+    },
+    "transportabilityGuard": "Current system-native daily after-market design is not a canonical replication and must not inherit paper effect sizes."
+  },
+  "currentSystemAudit": {
+    "existingField": "price.persistenceScoreResearch",
+    "interpretationName": "trendConsistencyScoreResearch (conceptual alias only; no runtime/schema rename)",
+    "formula": "0.35*positiveDayRatio20 + 0.25*positiveHorizonPct(ret5,ret10,ret20,ret60>0) + 0.20*drawdownQuality20 + 0.20*MA20/MA60Quality",
+    "construct": "OWN_PRICE_PATH_CONSISTENCY",
+    "canonicalPersistencyEquivalent": false,
+    "currentIncrementalExperiment": "I02 tests existing persistenceScoreResearch beyond residualSectorRs20; do not silently redefine I02."
+  },
+  "prospectivePrimitive": {
+    "formationProxy": "ret60",
+    "reason": "Existing point-in-time feature approximates the literature's shortest 3-month formation horizon without adding a new price-history window.",
+    "universe": "All same-scan ordinary-stock feature rows with source-validated history and finite ret60 before Formal A/B/fundamental/valuation/RR gates.",
+    "fields": [
+      "momentumRankPct60",
+      "momentumRankUniverseCount60",
+      "momentumRankUniverseCoverageState",
+      "momentumRankSourceDate",
+      "momentumRankPreviousConsecutiveScanDate",
+      "momentumRankChange60",
+      "winnerTop30State60 (literature-anchored descriptive state only)",
+      "winnerTop30ConsecutiveCleanScans60",
+      "rankRetentionEdgeState = RETAINED / EXITED / ENTERED / NON_WINNER / GAP_UNKNOWN / UNKNOWN"
+    ],
+    "noOutcomeTunedThresholds": true,
+    "noHistoricalBackfill": true
+  },
+  "adjacency": {
+    "rule": "Retention duration may advance only if current and previous observations are consecutive official market sessions AND both clean full-universe rank receipts are complete.",
+    "missingScan": "GAP_UNKNOWN",
+    "missingUniverse": "UNKNOWN",
+    "noForwardFill": true
+  },
+  "controls": [
+    "current ret60/rank level",
+    "ret20",
+    "residualSectorRs20 and sector state",
+    "existing persistenceScoreResearch/trend consistency",
+    "market regime and validated R06 transition state",
+    "market realized volatility when prospectively available",
+    "stock ATR/volatility20",
+    "liquidity/market-cap/price tier",
+    "Quiet/Attention/turnover",
+    "overheat/lateStage",
+    "A/B channel and Shadow cohort"
+  ],
+  "outcomes": [
+    "D1",
+    "D3",
+    "D5",
+    "D10",
+    "D20",
+    "MFE",
+    "MAE",
+    "stopFirst",
+    "falseBreakout/noFollowThrough"
+  ],
+  "primaryIncrementalQuestion": "Conditional on current ret60 rank level, does RETAINED winner membership / rank stability add information beyond existing own-path trend consistency and Residual RS?",
+  "falsification": [
+    "If retention adds no value after current rank level/ret60, reject duration as redundant.",
+    "If effect is fully absorbed by residualSectorRs20 or existing persistenceScoreResearch, reject as redundant.",
+    "If only a few dates/sectors drive the result, classify fragile.",
+    "If missing clean scan dates are treated as exits, invalidate the study.",
+    "If full-universe membership changes materially drive rank changes, require universe-composition controls before interpretation.",
+    "If effect exists only after importing paper monthly thresholds/effect sizes into daily data, reject transportability."
+  ],
+  "governance": {
+    "noNewR09": true,
+    "existingI02Unchanged": true,
+    "runtimeCaptureIfLater": "Class A only if computed from already-loaded featureRows, stored only in Shadow/research context, zero external calls, decisionImpact=false, Formal invariants unchanged.",
+    "anyFormalUse": "Class C owner approval required."
+  }
+}
