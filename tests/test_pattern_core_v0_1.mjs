@@ -259,6 +259,42 @@ function scaled(bars, k) {
   assert.equal(normalizedNoDenominator.reason,"VOLUME_DENOMINATOR_NOT_READY");
 }
 
+// Symbol-session provenance is supplied by the CA lane; Pattern consumes the receipt and never derives a competing calendar.
+{
+  const bars=makeBars([100,101,100.5]);
+  const common={
+    sourceId:"session-fixture",
+    payloadHash:"price-v1",
+    pointInTimeEligible:true,
+    corporateActionSemanticsReady:true
+  };
+  const blocked=validatePatternSeriesEnvelope({
+    role:"GEOMETRY",
+    semanticSpace:"TECHNICAL_CONTINUITY",
+    bars,
+    requireSymbolSession:true,
+    provenance:common
+  });
+  assert.equal(blocked.status,"BLOCKED");
+  assert.equal(blocked.reason,"SYMBOL_SESSION_PROVENANCE_UNKNOWN");
+
+  const ready=validatePatternSeriesEnvelope({
+    role:"GEOMETRY",
+    semanticSpace:"TECHNICAL_CONTINUITY",
+    bars,
+    requireSymbolSession:true,
+    provenance:{
+      ...common,
+      symbolSessionReady:true,
+      symbolSessionSourceId:"ca-symbol-session-v1",
+      symbolSessionPayloadHash:"session-hash-v1"
+    }
+  });
+  assert.equal(ready.status,"VALID");
+  assert.equal(ready.symbolSessionReady,true);
+  assert.equal(ready.symbolSessionPayloadHash,"session-hash-v1");
+}
+
 // Data validator: duplicate, ordering and OPEN honesty.
 {
   const ok = makeBars([10, 11, 10.5]);
@@ -885,18 +921,23 @@ console.log("pattern core v0.1 C1-C8 and invariance tests passed");
     sourceId:"cross-lane-fixture",
     payloadHash:"geom-v1",
     pointInTimeEligible:true,
-    corporateActionSemanticsReady:true
+    corporateActionSemanticsReady:true,
+    symbolSessionReady:true,
+    symbolSessionSourceId:"ca-symbol-session-fixture",
+    symbolSessionPayloadHash:"session-receipt-v1"
   };
   const geometry = validatePatternSeriesEnvelope({
     role:"GEOMETRY",
     semanticSpace:"TECHNICAL_CONTINUITY",
     bars,
+    requireSymbolSession:true,
     provenance:commonProv
   });
   const raw = validatePatternSeriesEnvelope({
     role:"RAW_EXECUTION",
     semanticSpace:"RAW_EXECUTION",
     bars,
+    requireSymbolSession:true,
     provenance:{...commonProv,payloadHash:"raw-v1",requestedAdjustmentMode:false,returnedAdjustmentMode:false}
   });
   const snapshot = buildPatternSnapshot({bars,asOfDate:bars.at(-1).date,swingThresholdPct:0.03});
@@ -936,6 +977,7 @@ console.log("pattern core v0.1 C1-C8 and invariance tests passed");
     role:"RAW_EXECUTION",
     semanticSpace:"RAW_EXECUTION",
     bars,
+    requireSymbolSession:true,
     provenance:{...commonProv,requestedAdjustmentMode:false,returnedAdjustmentMode:true}
   });
   const blocked = buildPatternCacheRecord({
@@ -976,6 +1018,9 @@ console.log("pattern core v0.1 C1-C8 and invariance tests passed");
     payloadHash:"price-hash-v1",
     pointInTimeEligible:true,
     corporateActionSemanticsReady:true,
+    symbolSessionReady:true,
+    symbolSessionSourceId:"ca-symbol-session-fixture",
+    symbolSessionPayloadHash:"vol-session-v1",
     volumeSourceId:"exact-share-source",
     volumePayloadHash:"volume-hash-v1",
     volumeSemanticSpace:"RAW_SHARE_VOLUME",
@@ -987,6 +1032,7 @@ console.log("pattern core v0.1 C1-C8 and invariance tests passed");
     semanticSpace:"TECHNICAL_CONTINUITY",
     bars,
     requireVolume:true,
+    requireSymbolSession:true,
     provenance:common
   });
   const raw=validatePatternSeriesEnvelope({
@@ -996,8 +1042,12 @@ console.log("pattern core v0.1 C1-C8 and invariance tests passed");
     provenance:{
       sourceId:"raw-price-v1",payloadHash:"raw-hash-v1",
       pointInTimeEligible:true,corporateActionSemanticsReady:true,
-      requestedAdjustmentMode:false,returnedAdjustmentMode:false
-    }
+      requestedAdjustmentMode:false,returnedAdjustmentMode:false,
+      symbolSessionReady:true,
+      symbolSessionSourceId:"ca-symbol-session-fixture",
+      symbolSessionPayloadHash:"vol-session-v1"
+    },
+    requireSymbolSession:true
   });
   const snapshot=buildPatternSnapshot({bars,asOfDate:bars.at(-1).date,swingThresholdPct:0.03});
   const a=buildPatternCacheRecord({
@@ -1017,6 +1067,14 @@ console.log("pattern core v0.1 C1-C8 and invariance tests passed");
   assert.equal(cmp.status,"PROVENANCE_CONFLICT");
   assert.equal(cmp.sameGeometry,true);
   assert.equal(cmp.sameGeometryVolume,false);
+
+  const rawSessionDrift={...raw,symbolSessionPayloadHash:"vol-session-v2"};
+  const blockedSession=buildPatternCacheRecord({
+    parentReference:parent,geometryEnvelope:geometry,rawExecutionEnvelope:rawSessionDrift,
+    detectorSnapshot:snapshot,asOfDate:bars.at(-1).date
+  });
+  assert.equal(blockedSession.status,"BLOCKED");
+  assert.equal(blockedSession.reason,"SYMBOL_SESSION_PROVENANCE_CONFLICT");
 }
 
 // Episode identity and prospective run-receipt gates are outcome-free.
