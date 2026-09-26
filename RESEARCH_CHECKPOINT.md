@@ -986,3 +986,20 @@ Updated: 2026-09-26 22:14 Asia/Taipei.
 - Machine artifact: research/rr_priority_structural_falsification_v0_1.json; PRIORITY_SCORE_CALIBRATION_RESEARCH.md updated.
 - No RR gate/14% weight/target/stop/comparator change. Any Formal change is Class C and requires owner approval after prospective OOS/date-cluster/redundancy evidence.
 - No FORMAL_OPTIMIZATION_CANDIDATE yet; structural multi-layer influence confirmed, empirical materiality UNKNOWN.
+
+
+## B-182 — Portfolio Risk Tier-A PIT reconstructability validated (2026-09-27 00:02 Asia/Taipei)
+- Continued the Portfolio Risk lane without changing Worker/runtime/Formal behavior.
+- PR #113 `Research: Portfolio Risk Tier-A v0.1` merged to main after three green checks: Portfolio Risk Tier-A Research run 36253863310 SUCCESS, V8 Repair CI run 36253863262 SUCCESS, V8 Regression Tests run 36253863259 SUCCESS.
+- Pure Class-A prototype freezes projected plan-risk semantics from immutable plan-time fields only: buyLow/buyHigh risk range, projected portfolio heat, deployment ratio, effectiveCapitalNames, name/sector capital concentration, cash-state attribution, equal-capital and equal-planned-stop-risk research counterfactuals.
+- No hard heat threshold, cluster cap, allocation change or ADD/REDUCE rule is introduced.
+- Historical plan-risk reconstructability is materially proven for exact system-recorded Formal rows in `v8_trade_journal_days` + `v8_trade_journal_plans`: totalCapital, selectedCount/status/diagnostics, buyLow/buyHigh, stop, allocationRatio, totalAllocation, score/RR and planned shares are persisted at plan time.
+- Manual/recovered rows are excluded because they do not preserve the complete capital contract. Current mutable history is explicitly forbidden for reconstructing old correlation/cluster states.
+- Production read-only audit run 36253794425 read only `/api/journal?days=730`, did not read outcomes and made no writes. It observed 4 journal days, 4 Formal plan rows, 58 recovered rows excluded, 2 plan dates, 2/2 fully reconstructable plan dates, 0 incomplete plan dates and 2 zero-selection dates.
+- 2026-09-18: total capital NT$200,000; 3 plans; planned deployment NT$168,000 (84%); projected heat 2.0221%-3.2417%; effectiveCapitalNames 2.9672.
+- 2026-09-21: total capital NT$200,000; 1 plan; planned deployment NT$70,000 (35%); projected heat 0.5276%-1.3070%; effectiveCapitalNames 1.0000.
+- 2026-09-22 and 2026-09-23 were recorded as zero selected / cash. These observations are reconstructability evidence only, not evidence that any heat level is safe/unsafe or predictive.
+- Historical pairwise correlation20/60, empirical clusters, shrinkage covariance, marginal/component risk and downside correlation remain `PIT_HISTORY_REQUIRED`; plan journal alone cannot recover them. Actual-live heat remains conditional on complete BUY/ADD/REDUCE/SELL event coverage.
+- Durable artifacts: `PORTFOLIO_RISK_TIER_A_AUDIT.md`, `research/portfolio_risk_tier_a_v0_1.mjs`, `research/portfolio_risk_reconstructability_v0_1.json`, `research/portfolio_risk_production_readonly_receipt_20260926.json`, and dedicated tests/workflow.
+- Machine Master Map status changed `PORTFOLIO_RISK: EVIDENCE_PENDING -> FALSIFICATION_IN_PROGRESS`; level remains L2 because the broader covariance/cluster/live-event/outcome layer is not yet PIT-validated.
+- Optimization bridge: no FORMAL_OPTIMIZATION_CANDIDATE. Exact next is a descriptive, outcome-independent Tier-A history table from only fully reconstructable dates; later, once independent dates/outcomes mature, test whether heat/concentration adds downside information beyond sector/regime/volatility/PriorityScore. No outcome-based threshold search.
