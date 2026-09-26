@@ -151,3 +151,32 @@ No heat threshold, concentration cap, allocation rule, ADD gate or other Formal 
 
 Durable receipt:
 `research/portfolio_risk_tier_a_history_v0_2_receipt_20260927.json`.
+
+
+## PR-027 — Formal A/B stop geometry mechanically confounds heat intensity (2026-09-27)
+
+This is a formula audit only; no forward outcomes were inspected.
+
+Current Formal plan construction:
+- A: `buyHigh = support * 1.018`; `stop = min(support*0.98, recentLow5Prev - 0.12*ATR)`.
+- B: `buyHigh = breakout * 1.01`; `stop = breakout - max(0.65*ATR, 0.012*breakout)`.
+
+Therefore, at the conservative buyHigh endpoint:
+- A has a deterministic minimum projected stop-risk of `(1.018-0.98)/1.018 = 3.7328%`; actual risk can be larger when the structural-low branch sets the stop lower.
+- B has a deterministic minimum projected stop-risk of `(1.01-0.988)/1.01 = 2.1782%`; actual risk can be larger when the ATR branch dominates.
+- The deterministic floor difference is about 1.5546 percentage points before any realized market behavior is observed.
+
+### Falsification implication
+
+Portfolio heat / deployed-capital stop-risk intensity is mechanically affected by A/B channel mix. A raw cross-date comparison of heat that does not control channel can confuse plan-construction geometry with independent portfolio risk.
+
+This does **not** prove A has worse realized downside than B and does not justify channel normalization. The correct next empirical test, once enough plan dates/outcomes exist, is:
+1. channel-stratified planned stop-risk distributions;
+2. within-channel heat/intensity versus realized MAE/stop outcomes;
+3. cross-channel matched comparisons controlling volatility, regime and PriorityScore;
+4. only then assess whether portfolio heat adds information beyond deployment ratio + channel composition.
+
+Durable artifact:
+`research/portfolio_risk_channel_stop_geometry_v0_1.json`.
+
+No Formal entry, stop, RR, allocation, ADD/REDUCE or selection rule is changed.
