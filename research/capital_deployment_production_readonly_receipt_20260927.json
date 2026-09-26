@@ -1,0 +1,66 @@
+{
+  "schemaVersion": "CAPITAL_DEPLOYMENT_PRODUCTION_READONLY_RECEIPT_V0_1",
+  "observedAt": "2026-09-27T00:17:31+08:00",
+  "workflowRunId": 36254917919,
+  "jobId": 108439368470,
+  "endpoint": "/api/journal?days=730",
+  "readOnly": true,
+  "outcomeFieldsRead": false,
+  "formalPlanRows": 4,
+  "planDates": 2,
+  "multiNameGroups": 1,
+  "observedMultiNameCapBoundGroups": 0,
+  "rows": [
+    {
+      "scanDate": "2026-09-18",
+      "totalCapital": 200000,
+      "selectedCount": 3,
+      "pool": "LEGACY_COMBINED",
+      "sumAllocationRatioPct": 85,
+      "sumAllocation": 168000,
+      "multiNameCapBoundSymbols": [],
+      "plans": [
+        {
+          "symbol": "2006",
+          "priorityScore": 69.9,
+          "allocationRatioPct": 25.4,
+          "totalAllocation": 50000
+        },
+        {
+          "symbol": "3105",
+          "priorityScore": 89.4,
+          "allocationRatioPct": 32.4,
+          "totalAllocation": 64000
+        },
+        {
+          "symbol": "6133",
+          "priorityScore": 74.9,
+          "allocationRatioPct": 27.2,
+          "totalAllocation": 54000
+        }
+      ],
+      "interpretation": "Nominal 85% ratio was not cap-bound; NT$2,000 difference versus NT$170,000 nominal deployment is consistent with per-name NT$1,000 flooring."
+    },
+    {
+      "scanDate": "2026-09-21",
+      "totalCapital": 200000,
+      "selectedCount": 1,
+      "pool": "LEGACY_COMBINED",
+      "sumAllocationRatioPct": 35,
+      "sumAllocation": 70000,
+      "multiNameCapBoundSymbols": [],
+      "plans": [
+        {
+          "symbol": "3006",
+          "priorityScore": 66.3,
+          "allocationRatioPct": 35,
+          "totalAllocation": 70000
+        }
+      ],
+      "interpretation": "Single-name 35% is the nominal one-name deployment ratio and is not evidence of multi-name cap clipping."
+    }
+  ],
+  "conclusion": "STRUCTURAL_CAP_CLIPPING_EXISTS_IN_FORMULA_BUT_NOT_OBSERVED_IN_AVAILABLE_MULTI_NAME_PRODUCTION_SAMPLE",
+  "evidenceBoundary": "Only one historical multi-name group is available. This cannot estimate future cap-bound incidence or prove that cap redistribution would help.",
+  "optimizationStatus": "NOT_OPTIMIZATION_READY"
+}
