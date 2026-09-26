@@ -66,7 +66,15 @@ export function buildPatternCacheRecord({
     geometry: {
       semanticSpace: geometryEnvelope.semanticSpace,
       sourceId: geometryEnvelope.sourceId,
-      payloadHash: geometryEnvelope.payloadHash
+      payloadHash: geometryEnvelope.payloadHash,
+      volume: geometryEnvelope.volumeRequired === true ? {
+        semanticSpace: geometryEnvelope.volumeSemanticSpace,
+        precisionClass: geometryEnvelope.volumePrecisionClass,
+        exactShareCount: geometryEnvelope.volumeExactShareCount,
+        sourceId: geometryEnvelope.volumeSourceId,
+        payloadHash: geometryEnvelope.volumePayloadHash,
+        shareUnitComparable: geometryEnvelope.shareUnitComparable
+      } : null
     },
     rawExecution: {
       semanticSpace: rawExecutionEnvelope.semanticSpace,
@@ -101,14 +109,18 @@ export function comparePatternCacheRecords(a, b) {
   }
   const sameParent = a.parentSnapshotHash === b.parentSnapshotHash;
   const sameGeometry = a.geometry?.payloadHash === b.geometry?.payloadHash;
+  const sameGeometryVolume = (a.geometry?.volume?.payloadHash || null) === (b.geometry?.volume?.payloadHash || null) &&
+    (a.geometry?.volume?.semanticSpace || null) === (b.geometry?.volume?.semanticSpace || null) &&
+    (a.geometry?.volume?.precisionClass || null) === (b.geometry?.volume?.precisionClass || null);
   const sameRaw = a.rawExecution?.payloadHash === b.rawExecution?.payloadHash;
   const sameDetector = a.detectorSnapshotHash === b.detectorSnapshotHash;
-  const exact = sameParent && sameGeometry && sameRaw && sameDetector;
+  const exact = sameParent && sameGeometry && sameGeometryVolume && sameRaw && sameDetector;
   return {
     status: exact ? "SAME_RECORD_EXACT" : "PROVENANCE_CONFLICT",
     sameIdentity: true,
     sameParent,
     sameGeometry,
+    sameGeometryVolume,
     sameRaw,
     sameDetector,
     provenanceConflict: !exact,
