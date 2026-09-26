@@ -118,3 +118,58 @@ Status:
 `WAITING_PROSPECTIVE / NOT_OPTIMIZATION_READY`.
 
 V8.13.0 improves evidence quality only. It does not assert that the present PriorityScore is good, bad, too strong or too weak.
+
+
+## SetupQuality channel-scale structural audit
+
+The largest base PriorityScore weight is `setupQuality * 0.28`, but A and B do not share a calibrated scoring function.
+
+### A — pullback
+`clamp(70 - |pullbackPct-7|*3 - supportDistancePct*3 + (volumeTodayVsPrev5<=0.9 ? 12 : 4), 0, 100)`
+
+Within the actual A pass envelope:
+- theoretical qualifying minimum ≈ 38;
+- theoretical maximum = 82.
+
+### B — breakout
+`clamp(55 + min(25,volumeTodayVsPrev5*8) + dailyClosePosition*20 - dailyUpperShadowRatio*25,0,100)`
+
+Within the actual B pass envelope:
+- theoretical qualifying minimum ≈ 69.65;
+- theoretical maximum = 100.
+
+Thus the two scores are not on demonstrably comparable 0–100 scales.
+An 18-point ceiling gap equals 5.04 PriorityScore points at the current 28% weight.
+
+### A volume cliff
+
+For otherwise identical A setups:
+- volume ratio 0.90 => +12 setup points;
+- volume ratio 0.91 => +4 setup points.
+
+This 0.01 change can create an 8-point setup jump = 2.24 PriorityScore points while both candidates remain A-eligible.
+
+This is a structural discontinuity, not yet evidence of outcome harm.
+
+### Channel precedence
+
+Current Formal assigns:
+`B if B.pass; else A if A.pass`.
+
+No A/B quota was identified; final quotas are price-pool based.
+Actual dual-pass frequency must be measured prospectively.
+
+### Frozen research question
+
+Before changing any score:
+1. Is setupQuality monotonic within A?
+2. Is setupQuality monotonic within B?
+3. Are raw A and B setupQuality values cross-channel calibrated after outcome/risk controls?
+4. Does the A 0.90 volume cliff materially change ranking/selection?
+5. Does B's higher attainable score reflect genuine better path quality or only formula scale?
+
+Machine artifact:
+`research/setup_quality_channel_falsification_v0_1.json`.
+
+No normalization, reweighting or channel precedence change is authorized.
+Any such change would be Class C.
