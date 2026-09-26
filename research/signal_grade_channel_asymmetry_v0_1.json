@@ -1,0 +1,81 @@
+{
+  "schemaVersion": "signal-grade-channel-asymmetry-v0.1",
+  "researchDate": "2026-09-27",
+  "status": "STRUCTURAL_FALSIFICATION_FROZEN",
+  "outcomeDataUsed": false,
+  "formalCoreChanged": false,
+  "currentFormal": {
+    "gradeAThreshold": 80,
+    "gradeBThreshold": 65,
+    "gradeC": "setupQuality < 65 => rejected",
+    "gradeSource": "setupQuality only",
+    "ignoredForGrade": [
+      "priorityScore",
+      "institutionalScore",
+      "fundamentalScore",
+      "sectorScore",
+      "marketRelativeRS",
+      "rewardPerRisk"
+    ],
+    "channelAssignment": "B if B.pass; else A if A.pass"
+  },
+  "A": {
+    "setupFormula": "70 - 3*abs(pullbackPct-7) - 3*supportDistancePct + (volumeTodayVsPrev5<=0.9?12:4)",
+    "rawPassTheoreticalRange": [
+      38,
+      82
+    ],
+    "postGradeEligibleRange": [
+      65,
+      82
+    ],
+    "gradeACondition": {
+      "ifVolumeLe0_9": "abs(pullbackPct-7)+supportDistancePct <= 2/3",
+      "ifVolumeGt0_9": "IMPOSSIBLE because A max becomes 74"
+    },
+    "gradeBCondition": {
+      "ifVolumeLe0_9": "2/3 < abs(pullbackPct-7)+supportDistancePct <= 17/3",
+      "ifVolumeGt0_9": "abs(pullbackPct-7)+supportDistancePct <= 3"
+    },
+    "structuralMeaning": "A channel has a second hidden effective gate from signal-grade rejection beyond A.pass."
+  },
+  "B": {
+    "setupFormula": "55 + min(25,volumeTodayVsPrev5*8) + 20*dailyClosePosition - 25*dailyUpperShadowRatio",
+    "rawPassTheoreticalRange": [
+      69.65,
+      100
+    ],
+    "gradeCReachableAfterBPass": false,
+    "gradeACondition": "formula >=80; many valid combinations satisfy this",
+    "structuralMeaning": "B.pass itself already guarantees setupQuality above the B-grade threshold."
+  },
+  "structuralFindings": [
+    "Channel A/B and signal grade A/B are separate concepts with overlapping labels, creating semantic ambiguity.",
+    "Signal grade ignores five of the six base PriorityScore component families plus market-consensus bonus; it is a setup-quality grade, not an overall candidate-quality grade.",
+    "The >=65 grade gate is redundant for B but materially restrictive for A.",
+    "A-grade status is structurally much harder for A channel because A maximum is only 82; A-grade requires volumeTodayVsPrev5<=0.9 and combined pullback deviation plus support distance <=0.667 percentage points.",
+    "A candidate can have high PriorityScore because of fundamentals/institutions/sector/RS/RR but remain B-grade or be rejected if setupQuality<65.",
+    "A candidate can be A-grade on setup alone even if its other quality components are only minimally passing, because grade does not inspect them."
+  ],
+  "prospectiveTests": [
+    "Grade distribution by channel and scanDate.",
+    "Fraction of A.pass rows rejected solely because setupQuality<65.",
+    "Fraction of B.pass rows ever below 65; expected structural zero unless formula/input semantics differ.",
+    "Outcome calibration of grade A vs B within each channel separately.",
+    "PriorityScore distribution conditional on signal grade; test discordant cells such as high PriorityScore/B-grade and low PriorityScore/A-grade.",
+    "Capital allocation by grade to determine whether user-visible grade aligns with actual risk/capital exposure.",
+    "Do not pool channel A-grade and channel B-grade until within-channel calibration is established."
+  ],
+  "falsification": [
+    "If signal grade predicts path quality within both channels after controls, retain it as a setup-grade label even if not overall-quality grade.",
+    "If grade adds no value beyond raw setupQuality, treat letter grade as presentation only.",
+    "If cross-channel A/B grade comparisons are not calibrated, do not use the same letter as a cross-channel quality claim.",
+    "No threshold or label change before prospective evidence."
+  ],
+  "governance": {
+    "anyGradeThresholdOrEligibilityChange": "CLASS_C_OWNER_APPROVAL_REQUIRED",
+    "displayRenameOnly": "still requires product/semantic review because existing alerts/history use A/B labels",
+    "existingShadowSufficient": true
+  },
+  "decision": "CHANNEL_GRADE_ASYMMETRY_CONFIRMED / OVERALL_QUALITY_INTERPRETATION_NOT_SUPPORTED / OUTCOME_MATERIALITY_UNKNOWN / NO_FORMAL_CHANGE"
+}
