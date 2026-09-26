@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-09-27T00:02:00+08:00",
+  "updatedAt": "2026-09-27T00:03:00+08:00",
   "status": "BASELINE_V0_2_PARTIAL_RECONCILIATION",
   "formalCore": "LOCKED",
   "authority": {
@@ -47,7 +47,7 @@
     },
     "researchDebtUnits": 11.2,
     "dataQualityBlocked": 8,
-    "dataSourceBlocked": 3,
+    "dataSourceBlocked": 4,
     "waitingProspective": 3,
     "formalOptimizationCandidates": 1
   },
@@ -138,8 +138,8 @@
       "id": "LEVERAGE_SHORTING",
       "domain": "POSITIONING_INSTITUTIONS_MARGIN_SBL_CROWDING",
       "level": "L2",
-      "status": "EVIDENCE_PENDING",
-      "basis": "Dedicated source/semantic research exists; empirical incremental evidence not yet mature."
+      "status": "DATA_SOURCE_BLOCKED",
+      "basis": "TWSE margin/SBL and TPEx SBL contracts are validated; TPEx margin displayed schema/algebra and official UTF-8 CSV existence are verified, but the stable programmatic CSV request contract remains unresolved. Large automated cross-market backfill stays NO_GO; official artifact ingestion is the safe fallback. No H1-H5 outcomes have been tested."
     },
     {
       "id": "FUNDAMENTAL_INFO_DYNAMICS",
