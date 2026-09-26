@@ -5,12 +5,15 @@ Status: FALSIFICATION_IN_PROGRESS / RESEARCH_ONLY
 Formal Core: LOCKED
 
 ## Current cursor
+- DL-003H/J Generic short-term reversal: standalone factor rejected as redundant with A setup + 15m confirmation; genuine residual question is pullback-origin context, which is cross-lane/data-gated.
 - DL-003A Market-state continuation vs transition: mechanism and current-system gap defined.
 - DL-003B Momentum Gap: Taiwan-specific negative evidence => rejected from current research priority.
 - DL-003C Extreme Absolute Strength: Taiwan evidence positive, but high redundancy with existing lateStage/overheat; incremental test required.
 - DL-003D/F Momentum Persistency construct audit: existing persistenceScoreResearch is own-path trend consistency, not Chen-Hsieh-Lee cross-sectional rank duration. Prospective ret60 rank-retention spec frozen; no historical backfill.
 
 ## Durable findings
+- Generic short-term reversal is not a new factor candidate. Current A selection already requires healthy-trend pullback/support/volume/structure and 15m execution requires hold + volume contraction + reversal + higher low + turn-up. New reversal scoring would duplicate this architecture.
+- Liquidity-pressure reversal cannot be inferred from candles alone; true attribution belongs to Microstructure and requires valid side-pressure/depth/replenishment evidence. Missing evidence is UNKNOWN.
 - Rank-persistency construct mismatch is confirmed: Chen/Hsieh/Lee (2023) measures consecutive winner/loser portfolio membership; current persistenceScoreResearch is a weighted own-path trend-consistency heuristic.
 - The current full same-scan feature universe already has ret60 when 61 valid bars exist, so prospective ~3-month cross-sectional rank capture is technically feasible without extra market-data calls. Historical rank-duration is not preserved and remains UNKNOWN.
 - A system-native daily ret60 rank-retention design is not a canonical replication of the paper's monthly 3/6/9/12-month design; effect sizes and thresholds are not portable.
@@ -26,6 +29,8 @@ Formal Core: LOCKED
 ## Status vocabulary
 - Regime Transition Lifecycle: FALSIFICATION_IN_PROGRESS.
 - Momentum Gap: REJECTED_OR_REDUNDANT / TAIWAN_NEGATIVE_EVIDENCE.
+- Generic Short-Term Reversal Factor: REJECTED_OR_REDUNDANT.
+- Pullback Origin Attribution: DATA_GATED / MODERATOR_ONLY.
 - Extreme Absolute Strength: FALSIFICATION_IN_PROGRESS / REDUNDANCY_HIGH.
 - Rank Persistency: SPEC_FROZEN / PROSPECTIVE_ONLY / ALPHA_UNKNOWN.
 - FORMAL_OPTIMIZATION_CANDIDATE: NONE.
