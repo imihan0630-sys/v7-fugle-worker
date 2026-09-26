@@ -82,3 +82,31 @@ Additional falsification guards:
 - no Worker/runtime/D1/KV/Formal behavior changes.
 
 Status remains FALSIFICATION_IN_PROGRESS until executable CI passes for V2.1 and operational call-budget/integration/rollback evidence is quantified.
+
+
+## V2.2 bounded operational-cost model
+
+Known production architecture:
+- history seed window: 17:00-17:59 Taipei;
+- max warmup batch: 6 symbols per invocation;
+- therefore theoretical provider-call capacity inside the existing one-hour seed window is 60 x 6 = 360 symbol-history calls/day.
+
+V2.2 freezes these operational rules:
+1. healthy exact-continuity cache remains zero-call fast path;
+2. suspicious symbols reuse the existing seed queue/refetch path; no parallel emergency warmup;
+3. provider-call overflow remains pending/UNKNOWN and must never fall back to stale history;
+4. official gap verification is deduplicated by (exchange,date), because each official daily endpoint is market-wide;
+5. a future prospective raw-presence ledger can turn already-captured gap dates into local reads; shared runtime/storage implementation would be Class B and is not implemented here.
+
+Synthetic stress guards:
+- 120 suspicious + 30 baseline calls fits the 360-call envelope;
+- 100 symbols sharing one TWSE gap date require one official market-day lookup, not 100;
+- a complete presence ledger reduces network gap lookups for covered dates to zero;
+- a 2,000-symbol stale blast radius exceeds the one-hour capacity by 1,640 calls and must fail closed rather than silently use stale history.
+
+Still UNKNOWN:
+- current live suspicious-symbol incidence;
+- current distinct gap-date incidence;
+- exact production latency distribution under network retries.
+
+These require read-only production observability before EVIDENCE_READY. No production mutation is authorized by this note.
