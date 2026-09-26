@@ -1313,3 +1313,172 @@ Any effect on Formal ranking/eligibility is Class C and requires owner approval.
 
 Current status:
 `SOURCE_PRESENT / EVENT_CLOCK_DATA_GATED / RECORD_HIGH_HISTORY_GATED / FALSIFICATION_SPEC_READY`.
+
+
+## FD-036 — Formal fundamentalScore structural audit
+
+Current Formal formula is an additive 0–100 composite with nine possible components:
+
+1. monthly revenue YoY: max 30;
+2. monthly revenue MoM, falling back to quarterly revenue QoQ when MoM is missing: max 10;
+3. YTD revenue YoY: max 15;
+4. positive EPS level: 15 if EPS > 0, otherwise 0;
+5. gross-margin level: max 15;
+6. operating-margin level: max 15;
+7. EPS YoY: max 10;
+8. gross-margin YoY change: max 5;
+9. operating-margin YoY change: max 5.
+
+Full theoretical maximum = 120, then clamped to 100.
+
+The score is used materially:
+- main candidate priority weight = 14%;
+- main quality rejection when available fundamental count >= 3 and score < 25;
+- other research/Hybrid paths may apply additional thresholds.
+
+Any formula change is Class C.
+
+## FD-037 — availability-scale confounding
+
+The score is summed across whichever components are available.
+It is not normalized by:
+- number of observed components;
+- maximum available component weight;
+- source completeness signature.
+
+Only a minimum of three observed fields is required.
+
+Therefore two stocks with identical values on the same three observed fundamentals can receive very different score scales when one stock has additional valid fields.
+
+Frozen synthetic witness:
+- illustrative three-field state: 47.5 / theoretical available max 55;
+- same values plus three compatible fields: 86.5 / available max 100;
+- same values with all nine fields: pre-clamp 101.5 => score 100 / available max 120.
+
+This confirms a structural **coverage confound**.
+It does not prove empirical harm; the extra fields may contain useful information.
+But outcome studies must separate incremental information from the mechanical ability to accumulate more points.
+
+Status:
+`STRUCTURAL_COVERAGE_CONFOUND_CONFIRMED / EMPIRICAL_MATERIALITY_UNKNOWN`.
+
+## FD-038 — saturation and baseline semantics
+
+`scorePositive(value,maxScore) = clamp(maxScore/2 + 0.5*value,0,maxScore)`.
+
+Consequences:
+- revenue YoY reaches full 30 points at +30%;
+- YTD revenue YoY reaches full 15 at +15%;
+- EPS YoY reaches full 10 at +10%;
+- gross-/operating-margin YoY change reaches full 5 at +5 percentage points;
+- zero change receives half of the component maximum.
+
+Thus the score is NOT a pure growth score.
+It intentionally/implicitly mixes:
+- positive level/quality baseline;
+- realized change/growth.
+
+A fully observed, profitable, zero-growth synthetic state can score 67.5.
+A moderately negative-growth but profitable/margin-positive synthetic state can still score materially above zero.
+
+This is not automatically wrong: profitable stable firms may deserve quality credit.
+The research guard is semantic:
+do not interpret a high fundamentalScore as “high growth” or “positive surprise.”
+
+Saturation risk is structural because the nine maxima sum to 120.
+Prospective research must measure actual score=100 frequency and rank compression before any claim that 90 vs 100 represents materially different quality.
+
+## FD-039 — availability-dependent horizon switch
+
+One component is defined as:
+`revenueMoM ?? revenueQoQ`.
+
+Therefore the same score slot changes economic horizon based on source availability:
+- if monthly MoM exists, it scores monthly change;
+- if monthly MoM is missing, it may score quarterly QoQ.
+
+A frozen synthetic witness with identical other fields:
+- monthly MoM = -20%, quarterly QoQ = +50% => component uses MoM and total example score = 35;
+- monthly MoM missing, quarterly QoQ = +50% => same slot switches to QoQ and total example score = 45.
+
+This is an availability-dependent semantic switch, not a stable single factor.
+
+The switch may be operationally harmless if monthly MoM is always present for every eligible company/date, but that must be proven prospectively rather than assumed.
+
+## FD-040 — current Shadow observability is insufficient for exact decomposition
+
+Current research snapshot stores:
+- fundamentalScore;
+- revenueYoY / revenueMoM / revenueQuarterYoY / revenueQoQ / revenueYTDYoY;
+- EPS / EPS YoY;
+- gross margin / operating margin;
+- valuation fields.
+
+Repository audit finds no durable Shadow serialization of:
+- grossMarginYoY;
+- operatingMarginYoY;
+- exact component-availability signature;
+- pre-clamp fundamental score;
+- theoretical available component maximum.
+
+Because grossMarginYoY and operatingMarginYoY can contribute up to 10 combined points, the existing Shadow snapshot cannot always exactly reconstruct the Formal score from stored fields.
+
+Therefore:
+`FUNDAMENTAL_SCORE_COMPONENT_OBSERVABILITY = INCOMPLETE`.
+
+Do not infer which component drove historical score differences when those fields were not captured.
+
+## FD-041 — frozen structural-falsification artifact
+
+Machine-readable artifact:
+`research/fundamental_score_structural_falsification_v0_1.json`.
+
+It freezes:
+- exact current formula;
+- full theoretical max 120;
+- fixed missingness/saturation/horizon-switch synthetic witnesses;
+- no outcome data;
+- no alternative weights.
+
+This prevents later outcome-driven rewriting of the problem statement.
+
+## FD-042 — correct empirical order
+
+Before any Class-C reformulation:
+
+1. prospectively preserve exact score component values/availability and pre-clamp score;
+2. measure availability signatures and score saturation by scan date / market / industry / size;
+3. compare full score with grouped primitives:
+   - revenue growth;
+   - profitability level;
+   - EPS level/change;
+   - margin level/change;
+4. control current price/RS/overheat/liquidity/sector/regime/valuation;
+5. use scanDate as primary independent inference unit;
+6. test whether score predicts path quality after controlling coverage signature;
+7. if coverage signature explains apparent score advantage, classify current score as coverage-confounded;
+8. if one component group carries the stable increment, do not preserve all weights by inertia;
+9. only then may a Class-C reformulation candidate be surfaced for owner review.
+
+No weight search is allowed before the existing formula is falsified.
+
+## FD-043 — observability engineering boundary
+
+The minimum useful prospective research extension would preserve, alongside each clean Shadow parent:
+- all nine raw score inputs;
+- component availability bitmask/signature;
+- each component contribution;
+- preClampFundamentalScore;
+- fundamentalScore;
+- availableWeightMax;
+- scoreSaturated100;
+- revenueChangeHorizonUsed = MONTHLY_MOM / QUARTERLY_QOQ / UNKNOWN;
+- provenance / decisionImpact=false.
+
+If implemented only by copying already-available in-memory fields into the research snapshot, with zero source calls and no Formal behavior change, it can be a Class-A candidate.
+
+However V8.15 is currently occupied by the concurrent Valuation Provenance lane. Do not race the version lineage.
+
+Current status:
+`STRUCTURAL_FALSIFICATION_COMPLETE / OBSERVABILITY_GAP_CONFIRMED / ALPHA_UNKNOWN / NO_FORMAL_CHANGE`.
+
