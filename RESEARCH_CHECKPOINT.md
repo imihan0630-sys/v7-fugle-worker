@@ -1153,3 +1153,20 @@ Updated: 2026-09-27 05:02 Asia/Taipei.
 - Only two non-zero plan dates are currently reconstructable. This is structural/reconstructability evidence, not a safe heat threshold, concentration cap, channel ranking or predictive result. PORTFOLIO_RISK remains L2 / FALSIFICATION_IN_PROGRESS.
 - Correlation20/60, empirical clusters, shrinkage covariance, marginal/component risk and downside correlation remain PIT_HISTORY_REQUIRED. Actual-live heat remains conditional on complete BUY/ADD/REDUCE/SELL event coverage.
 - No FORMAL_OPTIMIZATION_CANDIDATE. Exact next for this lane: audit trade-journal signal/event coverage read-only to determine whether actual-live position lifecycle can be reconstructed without inventing fills. If coverage is incomplete, mark actual-live heat UNKNOWN and keep plan-time Tier-A separate.
+
+
+## B-192 — Formal 9.8% extreme-return gate is not exchange price-limit state (2026-09-27 Asia/Taipei)
+- Current Formal early gate is `abs(changePercent || 0)>=9.8 -> 單日走勢過度異常 / basePassed=false`. It must be interpreted as an EXTREME_DAILY_RETURN_PROXY, not an official limit-up/down classifier.
+- Current TWSE rules define daily stock limits from the opening-auction reference +/-10% and then legalize to the applicable tick without exceeding the boundary; some newly listed common-stock sessions have no limit. Exact state is therefore reference/tick/rule dependent.
+- Outcome-free legal counterexamples prove bidirectional semantic disagreement:
+  - reference 91.80 -> theoretical +10%=100.98; at price >=100 legal tick=0.50, so exact limit-up=100.50 = +9.4771%. Formal 9.8 proxy does NOT reject a true exact limit-up.
+  - reference 11.45 -> theoretical -10%=10.305; legal tick=0.05, so exact limit-down=10.35 = -9.6070%. Formal proxy does NOT reject a true exact limit-down.
+  - TWSE official example reference 40.60 gives exact limit-up=44.65 / limit-down=36.55. Legal non-limit closes 44.60 (+9.8522%) and 36.60 (-9.8522%) ARE rejected by the Formal 9.8 proxy.
+- Therefore the proxy has both exact-limit false negatives and non-limit false positives. This does not prove it is economically inferior: it may intentionally guard near-limit/extreme-day chase and liquidity risk.
+- `normalizeMarketRow` maps exchange marker X/non-comparable to change=null -> changePercent=null; this particular gate then treats `changePercent||0` as 0. Other corporate-action/history/data-quality guards may still reject; the finding is only that the 9.8 gate is not a complete abnormal-session classifier.
+- Shadow coverage is incomplete but not zero: REJECTED_AFTER_BASE cannot capture this gate because basePassed=false; BROAD_CONTROL may incidentally sample high-liquidity extreme-day names but is bounded to 6/pool and not stratified by the gate.
+- Existing DL-001 exact price-limit research remains the semantic owner. It already rejects approximate 9.5% heuristics as authoritative and validates TWSE TWT84U / TPEx S38 as prospective exact-state sources. No duplicate factor lane was created.
+- Frozen machine artifact `research/extreme_daily_move_gate_falsification_v0_1.json`; `INFORMATION_DISCRETENESS_SHADOW_SPEC.md` now cross-links the Formal gate.
+- Future evidence must cross-tab proxy reject direction with exact official CLOSE_LIMIT_UP / CLOSE_LIMIT_DOWN / NON_HIT / NO_PRICE_LIMIT / NON_COMPARABLE_X / UNKNOWN, split next-open vs open-to-close and include execution/liquidity/event/corporate-action controls. Positive and negative extreme moves may never be pooled for directional inference.
+- `EXTREME_MOVE_ADMISSION_REFORMULATION` is NOT yet a FORMAL_OPTIMIZATION_CANDIDATE. Only prospective exact-state/OOS/cost/downside evidence can promote it; no 9.8 threshold or Formal behavior changed.
+- Exact next: audit the entire basePassed=false admission funnel against Shadow cohort coverage to identify which pre-score exclusions are strategy hypotheses versus data-quality/universe policies and which lack counterfactual evidence.
