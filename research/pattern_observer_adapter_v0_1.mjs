@@ -47,6 +47,13 @@ export function buildPatternCacheRecord({
       rawExecutionEnvelope.semanticSpace !== "RAW_EXECUTION") {
     return blocked("RAW_EXECUTION_SERIES_NOT_READY", { shadowParentKey: parentReference.shadowParentKey });
   }
+  if (geometryEnvelope.symbolSessionReady !== true || rawExecutionEnvelope.symbolSessionReady !== true) {
+    return blocked("SYMBOL_SESSION_SERIES_NOT_READY", { shadowParentKey: parentReference.shadowParentKey });
+  }
+  if (!geometryEnvelope.symbolSessionPayloadHash ||
+      geometryEnvelope.symbolSessionPayloadHash !== rawExecutionEnvelope.symbolSessionPayloadHash) {
+    return blocked("SYMBOL_SESSION_PROVENANCE_CONFLICT", { shadowParentKey: parentReference.shadowParentKey });
+  }
   if (!detectorSnapshot || detectorSnapshot.status !== "VALID") {
     return blocked("DETECTOR_SNAPSHOT_NOT_READY", { shadowParentKey: parentReference.shadowParentKey });
   }
@@ -67,6 +74,10 @@ export function buildPatternCacheRecord({
       semanticSpace: geometryEnvelope.semanticSpace,
       sourceId: geometryEnvelope.sourceId,
       payloadHash: geometryEnvelope.payloadHash,
+      symbolSession: {
+        sourceId: geometryEnvelope.symbolSessionSourceId,
+        payloadHash: geometryEnvelope.symbolSessionPayloadHash
+      },
       volume: geometryEnvelope.volumeRequired === true ? {
         semanticSpace: geometryEnvelope.volumeSemanticSpace,
         precisionClass: geometryEnvelope.volumePrecisionClass,
@@ -79,7 +90,11 @@ export function buildPatternCacheRecord({
     rawExecution: {
       semanticSpace: rawExecutionEnvelope.semanticSpace,
       sourceId: rawExecutionEnvelope.sourceId,
-      payloadHash: rawExecutionEnvelope.payloadHash
+      payloadHash: rawExecutionEnvelope.payloadHash,
+      symbolSession: {
+        sourceId: rawExecutionEnvelope.symbolSessionSourceId,
+        payloadHash: rawExecutionEnvelope.symbolSessionPayloadHash
+      }
     },
     detectorSnapshotHash: detectorSnapshot.snapshotHash || stableObserverHash(detectorSnapshot),
     patternState: detectorSnapshot,
@@ -109,17 +124,21 @@ export function comparePatternCacheRecords(a, b) {
   }
   const sameParent = a.parentSnapshotHash === b.parentSnapshotHash;
   const sameGeometry = a.geometry?.payloadHash === b.geometry?.payloadHash;
+  const sameSymbolSession = (a.geometry?.symbolSession?.payloadHash || null) === (b.geometry?.symbolSession?.payloadHash || null) &&
+    (a.rawExecution?.symbolSession?.payloadHash || null) === (b.rawExecution?.symbolSession?.payloadHash || null) &&
+    (a.geometry?.symbolSession?.payloadHash || null) === (a.rawExecution?.symbolSession?.payloadHash || null);
   const sameGeometryVolume = (a.geometry?.volume?.payloadHash || null) === (b.geometry?.volume?.payloadHash || null) &&
     (a.geometry?.volume?.semanticSpace || null) === (b.geometry?.volume?.semanticSpace || null) &&
     (a.geometry?.volume?.precisionClass || null) === (b.geometry?.volume?.precisionClass || null);
   const sameRaw = a.rawExecution?.payloadHash === b.rawExecution?.payloadHash;
   const sameDetector = a.detectorSnapshotHash === b.detectorSnapshotHash;
-  const exact = sameParent && sameGeometry && sameGeometryVolume && sameRaw && sameDetector;
+  const exact = sameParent && sameGeometry && sameSymbolSession && sameGeometryVolume && sameRaw && sameDetector;
   return {
     status: exact ? "SAME_RECORD_EXACT" : "PROVENANCE_CONFLICT",
     sameIdentity: true,
     sameParent,
     sameGeometry,
+    sameSymbolSession,
     sameGeometryVolume,
     sameRaw,
     sameDetector,
