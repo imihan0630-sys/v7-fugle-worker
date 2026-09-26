@@ -973,3 +973,16 @@ Updated: 2026-09-26 22:14 Asia/Taipei.
 - Prospective tests: channel score distributions; A/B/dual-pass incidence; within-channel monotonicity vs D1/D3/D5/MFE/MAE/stop/no-follow-through; raw score vs within-channel rank comparator; 0.90/0.91 cliff incidence; matched cross-channel outcome calibration.
 - No alternative formula, normalization, 28% weight change or channel precedence change. Any Formal change is Class C with owner approval after OOS/date-cluster/redundancy evidence.
 - No FORMAL_OPTIMIZATION_CANDIDATE yet; structural non-comparability risk is confirmed, outcome materiality UNKNOWN.
+
+
+## B-181 — RR multi-layer PriorityScore structural falsification (2026-09-26 Asia/Taipei)
+- Formal RR influence is now decomposed exactly: (1) hard eligibility RR>=2; (2) additive `clamp(RR*20,0,100)*0.14` inside PriorityScore; (3) raw rewardPerRisk is the second deployed comparator after rounded post-consensus PriorityScore.
+- Existing additive breakpoints: RR2=5.6 PriorityScore points, RR3=8.4, RR4=11.2, RR5+=14.0. Above RR5 the additive component saturates, but raw RR can still resolve a PriorityScore tie.
+- Since PriorityScore is rounded to one decimal before the deployed comparator, raw RR can decide near-equal composites. RR therefore has confirmed multi-layer influence, not merely one 14% factor.
+- This is not called defective yet: gate + quality preference can be intentional. Empirical test must separate each layer and verify actual target/MFE/MAE/stop value.
+- A/B channel construction differs for entry/stop, so RR distribution and calibration must be channel-stratified rather than assumed commensurate.
+- Frozen tests: RR bands at existing formula breakpoints (2–3, 3–5, >5), tie-resolution incidence, target-first/MFE/MAE/stop-first, research replay removing only raw RR tie-break, and realized-MFE-versus-modeled-reward calibration.
+- Existing V8.13 Shadow already preserves raw rewardPerRisk, rounded rewardRisk, PriorityScore and comparator identity; no new capture or runtime patch is needed.
+- Machine artifact: research/rr_priority_structural_falsification_v0_1.json; PRIORITY_SCORE_CALIBRATION_RESEARCH.md updated.
+- No RR gate/14% weight/target/stop/comparator change. Any Formal change is Class C and requires owner approval after prospective OOS/date-cluster/redundancy evidence.
+- No FORMAL_OPTIMIZATION_CANDIDATE yet; structural multi-layer influence confirmed, empirical materiality UNKNOWN.
