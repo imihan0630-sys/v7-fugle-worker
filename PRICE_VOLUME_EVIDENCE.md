@@ -2573,4 +2573,201 @@ Only the specific field analysis decides which combination is required.
 
 Status:
 BASELINE_MULTIAXIS_QA_CONTRACT_FROZEN.
+# PVE-109 — Current Read-Only QA Artifact Cannot Reconstruct Plan Overlap
+
+## Source audit
+The QA script fetches:
+- /api/config
+- /api/scan/status
+- /api/cron/status
+- /api/live
+
+But the emitted JSON report does NOT persist:
+- live.results symbol list;
+- config.stocks symbol list;
+- scan.stocks symbol list.
+
+Instead it persists hashes such as:
+- configFingerprint;
+- scanFingerprintWithoutPv;
+- liveFingerprintWithoutPv.
+
+Hashes prove identity/stability only when compared to another known payload.
+They cannot be inverted to recover the symbol set.
+
+## Consequence
+PVE-092 remains true at the API layer:
+old-monitor vs new-plan overlap is reconstructable from the endpoints.
+
+But:
+the current sanitized QA artifact does not preserve enough information to calculate that overlap after the run.
+
+Status:
+OVERLAP_API_FEASIBLE / CURRENT_ARTIFACT_INSUFFICIENT.
+
+
+# PVE-110 — New After-Market Plan Symbols Are Partially Recoverable from PV Bootstrap Results
+
+## Existing artifact field
+When after-market PV runs:
+`scan.pvShadow.bootstrap.results`
+contains per-symbol bootstrap receipts.
+
+Therefore the new Formal plan symbol set is often indirectly visible as:
+the symbols in bootstrap results.
+
+## Limitations
+- If PV is disabled, this path is absent.
+- If the scan has zero Formal plans, results are empty by design.
+- This does not reveal the prior intraday monitored symbol set.
+- A bootstrap error still identifies the requested symbol, but not old-monitor overlap.
+
+## Use
+The artifact can answer:
+“which next-plan symbols had a bootstrap opportunity?”
+
+It cannot answer:
+“which of them were already monitored intraday?”
+
+Status:
+NEW_PLAN_SYMBOLS_PARTIALLY_OBSERVABLE / OVERLAP_STILL_UNRESOLVED.
+
+
+# PVE-111 — Current QA After-Market Assertion Can Overstate Baseline Readiness
+
+## Current test
+After 23:45, when PV is enabled, the QA script asserts:
+`pvScan.bootstrap.ok === true`.
+
+PVE-086 proved:
+bootstrap.ok only means no per-symbol thrown error.
+
+It does not require:
+- validSessions>=20;
+- lastMarketDate freshness;
+- per-slot/prefix/range readiness.
+
+When direct D1 is unavailable, the stronger baseline assertions are skipped.
+
+## Consequence
+A run can satisfy:
+- bootstrap.ok=true
+while every requested baseline is:
+- insufficient;
+- stale;
+- selection-day-gap;
+- skipped old cache.
+
+Thus:
+`after-market QA runtime pass`
+must not be labeled:
+`BASELINE_DATA_QA_PASS`.
+
+## Correct terminology
+Current artifact can establish:
+`BOOTSTRAP_EXECUTION_ACKNOWLEDGED`.
+
+Field readiness requires separate receipt.
+
+Status:
+QA_BOOTSTRAP_ASSERTION_TOO_WEAK_FOR_READINESS.
+
+
+# PVE-112 — D1 Permission Failure Masks All At-Rest Assertions as Null, Not Failures
+
+## Current script behavior
+When D1 SELECT throws:
+- d1ReadAvailable=false;
+- D1_DIRECT_READ_NOT_AUTHORIZED added to qaFailures;
+- baselines/snapshots/outcomes remain empty arrays.
+
+The report then uses null for:
+- totalRows;
+- duplicateGroups;
+- fingerprint mismatches;
+- outcomeRows;
+- nonzeroDecisionImpact;
+- mutationConflictAtRest.
+
+## Correct interpretation
+null = NOT_OBSERVED.
+
+It is not:
+- zero duplicates;
+- zero rows;
+- zero mismatches.
+
+## Reporting rule
+Any dashboard/report must preserve the distinction:
+- 0 = measured zero;
+- null = unavailable;
+- UNKNOWN = semantic classification not resolved.
+
+Status:
+NULL_IS_NOT_ZERO_FROZEN.
+
+
+# PVE-113 — Artifact Can Inspect Non-Skipped lastMarketDate but Not Skipped-Cache Freshness
+
+## Available
+The afterMarket section preserves:
+`pvScan.bootstrap`
+including per-symbol results.
+
+For non-skipped bootstrap:
+result includes:
+- validSessions;
+- lastMarketDate.
+
+This enables PVE-097 selection-day-gap diagnosis from the artifact.
+
+## Unavailable
+For skipped cache:
+result omits lastMarketDate by implementation.
+
+Therefore the artifact cannot distinguish:
+- fresh 40-session cache;
+- months-old 40-session cache.
+
+## Evidence priority on 9/29 night
+1. inspect every non-skipped result immediately;
+2. classify selection-day gap via lastMarketDate;
+3. classify skipped result as freshness UNKNOWN;
+4. wait for next-day snapshot.baselineAsOfDate / D1 evidence for skipped symbols.
+
+Status:
+ARTIFACT_FRESHNESS_PARTIAL_NOT_COMPLETE.
+
+
+# PVE-114 — Existing QA Artifact Is Good for Safety, Weak for Cohort Lineage
+
+## Strong evidence in current artifact
+- deployed version;
+- PV flag;
+- binding presence/type;
+- active code fingerprint;
+- Formal config/scan/live fingerprints;
+- decisionImpact/formalCoreImpact;
+- zeroPvPushes/zeroPvActions;
+- PV bootstrap runtime receipts;
+- daily PV runtime receipts;
+- latest cron/runtime metadata.
+
+## Weak/missing evidence
+- old intraday symbol set;
+- new scan stock list as explicit canonical array;
+- plan-overlap class;
+- per-row baseline freshness when skipped;
+- D1 at-rest row quality under current token;
+- exact cohort history provenance.
+
+## Conclusion
+Use current artifact primarily for:
+`SAFETY_AND_RUNTIME_RECEIPT`.
+
+Do not stretch it into:
+`CLEAN_RESEARCH_COHORT_RECEIPT`.
+
+Status:
+QA_ARTIFACT_PURPOSE_BOUNDARY_FROZEN.
 
