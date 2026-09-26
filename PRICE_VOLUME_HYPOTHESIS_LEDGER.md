@@ -321,3 +321,12 @@ They must not be erased once later clean data arrive.
 - This correction does not weaken the enable-time extracted-source before/after isolation receipt; it narrows only cross-run interpretation of the QA raw hash.
 - H001/H002/H003/H004/H006 readiness statuses remain unchanged and evidence-gated.
 - Formal Core remains LOCKED.
+
+
+## Hypothesis readiness after PVE-149
+- Worker version/etag is the preferred future deployed-code identity; actual version-endpoint access with the current token remains unexecuted, so existing artifacts retain a provenance limitation.
+- H001/H002 first-session interpretation is now preregistered to pass provenance, safety, acquisition, baseline and cohort gates before feature/outcome comparison.
+- 2026-09-29 intraday remains DATA_QA-only under its known 2026-09-24 plan lineage unless independent symbol-session provenance proves otherwise.
+- H003/H004 remain more restrictive than H001/H002 because of known v0.1 state/Guard/outcome defects.
+- No hypothesis status is upgraded or rejected.
+- Formal Core remains LOCKED.
