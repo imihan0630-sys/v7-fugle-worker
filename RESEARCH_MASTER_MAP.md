@@ -101,10 +101,34 @@ RESEARCH_DEBT_UNITS = 9.4
 DATA_QUALITY_BLOCKED = 7
 DATA_SOURCE_BLOCKED = 3
 WAITING_PROSPECTIVE = 1
-FORMAL_OPTIMIZATION_CANDIDATES = 0
+FORMAL_OPTIMIZATION_CANDIDATES = 1
 
 Important: 48.2% is the maturity of the currently reconciled 17 durable modules, NOT "48.8% of all stock-market knowledge". The inventory is still expanding and module splits must be independently falsifiable.
 
 Optimization bridge is mandatory: once a research finding passes applicable positive+counterevidence, PIT/OOS, independent-date, regime, redundancy/incremental-value, cost, coverage/zero-pick and overfit gates and could improve after-market selection, it must be surfaced as a FORMAL_OPTIMIZATION_CANDIDATE for owner review. It may not self-promote to Formal.
 
 Next master-map task: continue reconciliation of remaining domains/submodules, especially volatility-regime, institutional/crowding and macro/cross-market; continue trend/momentum/reversal from its new dedicated lane; do not inflate counts by treating sequential checkpoint IDs as separate modules.
+
+
+## Formal optimization candidates
+
+### HISTORY_SOURCE_REVALIDATION_V2.3 — Class B
+Status: FORMAL_OPTIMIZATION_CANDIDATE / OWNER REVIEW REQUIRED / NOT MERGED / NOT DEPLOYED.
+
+Purpose: prevent stale or source-incomplete daily history from silently entering after-market Formal feature construction while preserving legitimate symbol-specific no-trade/suspension gaps.
+
+Evidence basis:
+- B-130 real stale-history witness materially changed existing Formal technical eligibility;
+- strict market-session continuity was falsified by TWSE 8422 and TPEx 5314 legal gaps;
+- fresh-provider >=60-bar acceptance was falsified by an official-traded missing-bar counterexample;
+- sub-NT$10 traded rows are preserved as bar-presence truth before Formal filters;
+- provider/official-source ambiguity fails closed;
+- reusable official gap receipts avoid repeated refetch of the same legitimate gap;
+- bounded cost model exposes the current 360 provider-call/hour seed envelope and deduplicates official gap calls by exchange/date;
+- dedicated Research History Source Revalidation V2, V8 Regression and V8 Repair CI are green.
+
+Exact proposed Formal behavior change: data admission/repair only. Formal A/B definitions, ranking, quotas, thresholds, capital, BUY/ADD/REDUCE, monitoring, signals and push remain frozen.
+
+Remaining production risks: live suspicious-symbol incidence is UNKNOWN; extreme stale blast radius can exceed the existing seed window; official gap-proof storage/read integration is shared runtime; corporate-action price-continuity remains a separate lane.
+
+Owner approval is required before any Class-B Worker/runtime integration, merge or deployment.
