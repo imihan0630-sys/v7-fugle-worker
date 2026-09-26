@@ -1,7 +1,7 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-170.
-Updated: 2026-09-26 22:10 Asia/Taipei.
+Checkpoint sequence: B-171.
+Updated: 2026-09-26 22:14 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Detailed B-01..B-123 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
@@ -842,3 +842,11 @@ Updated: 2026-09-26 22:10 Asia/Taipei.
 - Optimization bridge status: VALUATION = FALSIFICATION_IN_PROGRESS / PROSPECTIVE_INSTRUMENTATION_PREPARED / NOT_OPTIMIZATION_READY. FORMAL_OPTIMIZATION_CANDIDATE count unchanged.
 - R01-R08/I01-I07: improves PIT, selection-bias, UNKNOWN, definition-drift and future redundancy testing; no new Formal factor.
 - Exact next continuation: re-read latest main/checkpoint and PR #112 CI when available. If CI exposes implementation errors, repair safely on branch and rerun. If green, verify Formal-output invariants and keep the Class-A evidence capture isolated until governance permits promotion; do not alter 2.5/25 thresholds. In parallel, continue the next independent research lane rather than waiting for valuation outcomes.
+
+
+## B-171 — PR #112 CI failure diagnosed and repaired on branch (2026-09-26 22:14 Asia/Taipei)
+- Continued B-170 immediately; fetched actual PR #112 workflow results instead of treating pending as success. Both V8 Repair CI run 36247523630 and V8 Regression run 36247523611 failed.
+- Root cause localized: V8.15 patch itself applied successfully, syntax passed, and failure occurred in Behavioral regression because the older V8.14 test hard-locked the exact runtime version `8.14.0-sector-gate-provenance-shadow`. This is the same class of forward-version test fragility previously seen at V8.13->V8.14, not evidence that Formal behavior changed.
+- Repaired only the stale V8.14 version assertion on branch to accept V8.14+ forward research versions while retaining all V8.14 sector-gate provenance, exact sector-gate rule and Formal ranking assertions. Repair commit 0ca163aa2860c25e4c76c59a93fdfe5c785c6981.
+- Important counterevidence: CI is NOT yet green after this repair; immediate workflow lookup returned no new runs yet. Status remains CI_REPAIR_PUSHED / VERIFICATION_PENDING. PR #112 stays Draft, unmerged, undeployed. No Production/Formal/monitor/push change.
+- Exact next continuation: fetch the new head workflow runs when registered; if failure remains, inspect exact failing step/log and repair only test/instrumentation defects without weakening Formal invariants. If green, verify PR diff and Formal-output invariants, then keep valuation threshold tuning frozen and continue another independent evidence-ready research lane.
