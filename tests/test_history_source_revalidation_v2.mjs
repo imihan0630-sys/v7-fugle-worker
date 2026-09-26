@@ -4,7 +4,10 @@ import {
   validateFreshProviderHistory,
   decideHistoryAdmission,
   buildFugleRawDailyUrl,
-  extractRawTradedSymbolPresence
+  extractRawTradedSymbolPresence,
+  buildOfficialSymbolGapReceipt,
+  reconcileFreshProviderWithOfficialGaps,
+  decideHistoryAdmissionV21
 } from "../research/history_source_revalidation_v2.mjs";
 
 function weekdayDates(endExclusive,count,exclude=new Set()){
@@ -181,3 +184,105 @@ console.log(JSON.stringify({
   rawAdjustedExplicit:false,
   lowPricePresenceFilterLeakGuarded:true
 }));
+
+
+// V2.1 counterexample: a fresh provider response can still be incomplete.
+// If the official raw daily source proves a trade on the missing session, reject the provider series.
+{
+  const market=weekdayDates("2026-09-24",61);
+  const missingDate=market[30];
+  const providerDates=market.filter(d=>d!==missingDate); // still 60 bars -> naive fresh validator would pass
+  assert.equal(providerDates.length,60);
+  assert.equal(validateFreshProviderHistory({
+    history:bars(providerDates),marketDate:"2026-09-24",requiredPriorBars:60,adjustedRequested:false
+  }).usable,true);
+  const receipt=buildOfficialSymbolGapReceipt({
+    market:"TWSE",date:missingDate,symbol:"2006",minimumRows:1,
+    rawRows:[{"證券代號":"2006","收盤價":"84","成交股數":"1000","成交金額":"84000","成交筆數":"1"}]
+  });
+  assert.equal(receipt.status,"COMPLETE");
+  assert.equal(receipt.traded,true);
+  const reconciled=reconcileFreshProviderWithOfficialGaps({
+    history:bars(providerDates),marketDate:"2026-09-24",marketSessions:market,
+    requiredPriorBars:60,adjustedRequested:false,officialGapReceipts:[receipt]
+  });
+  assert.equal(reconciled.usable,false);
+  assert.equal(reconciled.status,"DATA_INCOMPLETE");
+  assert.equal(reconciled.reason,"FRESH_PROVIDER_MISSING_OFFICIAL_BAR");
+  assert.equal(reconciled.gapDate,missingDate);
+}
+
+// Same calendar gap, opposite official evidence: complete official daily source shows no actual trade.
+// This is a legitimate symbol-session gap and must not be false-rejected.
+{
+  const market=weekdayDates("2025-11-17",61);
+  const missingDate=market.at(-1); // previous market session, intentionally absent for the symbol
+  const providerDates=market.filter(d=>d!==missingDate);
+  const receipt=buildOfficialSymbolGapReceipt({
+    market:"TWSE",date:missingDate,symbol:"8422",minimumRows:1,
+    rawRows:[{"證券代號":"2330","收盤價":"1000","成交股數":"1000","成交金額":"1000000","成交筆數":"1"}]
+  });
+  assert.equal(receipt.status,"COMPLETE");
+  assert.equal(receipt.traded,false);
+  const reconciled=reconcileFreshProviderWithOfficialGaps({
+    history:bars(providerDates),marketDate:"2025-11-17",marketSessions:market,
+    requiredPriorBars:60,adjustedRequested:false,officialGapReceipts:[receipt]
+  });
+  assert.equal(reconciled.usable,true);
+  assert.equal(reconciled.status,"VALID_FRESH_PROVIDER_SERIES_RECONCILED");
+  assert.equal(reconciled.verifiedNoTradeGaps,1);
+}
+
+// Missing/incomplete official proof must remain UNKNOWN rather than silently trusting provider gaps.
+{
+  const market=weekdayDates("2026-09-24",61);
+  const missingDate=market[25];
+  const providerDates=market.filter(d=>d!==missingDate);
+  const out=reconcileFreshProviderWithOfficialGaps({
+    history:bars(providerDates),marketDate:"2026-09-24",marketSessions:market,
+    requiredPriorBars:60,adjustedRequested:false,officialGapReceipts:[]
+  });
+  assert.equal(out.usable,false);
+  assert.equal(out.status,"UNKNOWN");
+  assert.equal(out.reason,"OFFICIAL_GAP_PROOF_UNAVAILABLE");
+}
+
+// Presence receipt completeness is independent of Formal price eligibility.
+// A sub-NT$10 traded ordinary stock is still an official bar.
+{
+  const receipt=buildOfficialSymbolGapReceipt({
+    market:"TWSE",date:"2021-02-22",symbol:"2007",minimumRows:1,
+    rawRows:[{"證券代號":"2007","收盤價":"8.80","成交股數":"1234000","成交金額":"10859200","成交筆數":"777"}]
+  });
+  assert.equal(receipt.status,"COMPLETE");
+  assert.equal(receipt.traded,true);
+}
+
+// Incomplete official market payload cannot prove absence.
+{
+  const receipt=buildOfficialSymbolGapReceipt({
+    market:"TPEx",date:"2025-03-20",symbol:"5314",minimumRows:2,
+    rawRows:[{"證券代號":"8299","收盤價":"100","成交股數":"1000","成交金額":"100000","成交筆數":"1"}]
+  });
+  assert.equal(receipt.status,"UNKNOWN");
+  assert.equal(receipt.reason,"OFFICIAL_MARKET_ROWCOUNT_INCOMPLETE");
+}
+
+// V2.1 admission requires official reconciliation when a fresh series still has market-session gaps.
+{
+  const market=weekdayDates("2026-09-24",61);
+  const missingDate=market[10];
+  const providerDates=market.filter(d=>d!==missingDate);
+  const receipt=buildOfficialSymbolGapReceipt({
+    market:"TWSE",date:missingDate,symbol:"2006",minimumRows:1,
+    rawRows:[{"證券代號":"2006","收盤價":"80","成交股數":"100","成交金額":"8000","成交筆數":"1"}]
+  });
+  const out=decideHistoryAdmissionV21({
+    cachedHistory:bars(weekdayDates("2026-09-14",60)),
+    freshHistory:bars(providerDates),marketDate:"2026-09-24",marketSessions:market,
+    requiredPriorBars:60,todayOfficialTraded:true,freshFetchStatus:"SUCCESS",
+    adjustedRequested:false,officialGapReceipts:[receipt]
+  });
+  assert.equal(out.usable,false);
+  assert.equal(out.reason,"FRESH_PROVIDER_MISSING_OFFICIAL_BAR");
+}
