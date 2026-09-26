@@ -3601,3 +3601,201 @@ CROSS_RERUN_COMPARISON_MATRIX_FROZEN.
 4. PVE-143: separate workflow source commit, deployed Worker source and research-document commit as three independent lineage axes.
 5. PVE-144: freeze a no-hindsight provenance receipt template for 9/29 and 9/30.
 6. Continue data-quality/falsification only; no alpha threshold tuning or Formal promotion.
+
+
+# PVE-140 — QA activeContentSha256 Is a Raw content/v2 Response Hash, Not Canonical Worker Source Identity
+
+## Repository proof
+The QA workflow head for the preserved artifacts is:
+`262dc359bcb125845d093dead5036108622083af`.
+
+That commit is titled:
+`ops: compare Worker source independent of binding metadata`.
+
+It adds `extractWorkerSource(content)` to the PV enable workflow specifically to:
+- detect multipart boundaries;
+- isolate the JavaScript part containing `const VERSION =`;
+- hash the extracted Worker source instead of the entire `content/v2` response.
+
+However, the current `tests/pv_shadow_readonly_qa.mjs` still hashes:
+`hash(activeContent)`
+where `activeContent` is the raw response text from:
+`GET /workers/scripts/fugle-test/content/v2`.
+
+## External API evidence
+Cloudflare documents `content/v2` as a binary Response surface, while Worker Versions expose:
+- unique version id;
+- sequential version number;
+- `resources.script.etag`, explicitly documented as hashed script content.
+
+Official references:
+- https://developers.cloudflare.com/api/resources/workers/subresources/scripts/subresources/content/methods/get/
+- https://developers.cloudflare.com/api/resources/workers/subresources/scripts/subresources/versions/
+- https://developers.cloudflare.com/api/resources/workers/subresources/scripts/subresources/versions/methods/get/
+
+## Consequence
+The QA field currently named:
+`activeContentSha256`
+must be interpreted as:
+`rawContentV2ResponseSha256`.
+
+A change in that field does NOT by itself prove executable/source code drift.
+
+PVE-137's earlier stronger statement is superseded to this extent.
+
+Status:
+RAW_CONTENT_RESPONSE_HASH_NOT_CANONICAL_SOURCE_IDENTITY.
+
+
+# PVE-141 — Enable Evidence and QA Raw Hashes Are Not Comparable on the Same Semantic Basis
+
+## Same repository head, different hash definitions
+At head `262dc359...`:
+
+### Enable workflow
+Hashes:
+`hash(extractWorkerSource(content))`.
+
+Observed during enable:
+- before = `1829cadb375d4fe1b2b7423f02a230ac75c8f8696f229be28c80a4d97f17dba0`;
+- after = same value.
+
+### Read-only QA
+Hashes:
+`hash(activeContent)`
+over the raw response text.
+
+Observed roughly one minute later:
+- `d10ff4c13f95abb5910f7f06b7b05e9846c469913ac5fd7c911a25966d2e018c`.
+
+A later rerun emitted:
+- `757056c146f880c12428e3151065c1c040f39adfbd94c5dfd4bcc3ca5d607e81`.
+
+## Correct interpretation
+These values are not an apples-to-apples source-hash series.
+
+The enable receipt still proves source isolation across the binding toggle using its extracted-source method.
+
+The two QA raw hashes prove only raw response representation drift between observations.
+
+They do not prove a Worker code deployment occurred between them.
+
+Status:
+ENABLE_SOURCE_HASH_VALID_WITHIN_METHOD / QA_RAW_HASH_CROSSRUN_CODE_DRIFT_UNPROVEN.
+
+
+# PVE-142 — Cloudflare Version ID + Script etag Is the Preferred Executable Identity Tuple
+
+## Official capability
+Cloudflare Worker Versions provide:
+- version `id`;
+- version `number`;
+- metadata timestamps/source;
+- `resources.script.etag` documented as hashed script content.
+
+The versions list returns latest first, and the version detail endpoint returns the script etag.
+
+## Frozen provenance preference
+For future PV evidence, executable identity should prefer:
+
+1. deployed Worker version id;
+2. Worker version number;
+3. script etag;
+4. runtime VERSION string as a descriptive label;
+5. optional extracted-source hash as a secondary reproducibility check.
+
+Raw `content/v2` response hash is not authoritative unless its representation is canonicalized first.
+
+## Current limitation
+The existing artifact does not preserve version id/number/script etag.
+
+Therefore old artifacts cannot be retroactively upgraded to exact executable identity from their raw hash alone.
+
+Status:
+WORKER_VERSION_ETAG_PROVENANCE_CONTRACT_FROZEN.
+
+
+# PVE-143 — Three Independent Lineage Axes Must Be Preserved
+
+Every prospective evidence receipt must distinguish:
+
+### A. Research-document lineage
+- commit containing PRICE_VOLUME_EVIDENCE / checkpoint / ledger state.
+
+### B. QA-code lineage
+- GitHub workflow run id;
+- workflow head SHA;
+- artifact id;
+- exact QA script/workflow version.
+
+### C. Deployed-runtime lineage
+- Cloudflare Worker version id/number;
+- script etag;
+- runtime VERSION label;
+- binding/config state relevant to the observation.
+
+These axes can advance independently.
+
+A research commit after an observation does not change the observed runtime.
+A workflow rerun at an old GitHub head can observe a newer external Worker.
+A runtime VERSION string can remain unchanged across non-code settings/version operations.
+
+Status:
+THREE_AXIS_PROVENANCE_MODEL_FROZEN.
+
+
+# PVE-144 — 9/29 and 9/30 No-Hindsight Provenance Receipt Frozen
+
+Before inspecting any return/MFE/MAE outcome, each 9/29 or 9/30 observation/report must preserve, when available:
+
+## Observation identity
+- marketDate;
+- symbol;
+- observationType;
+- observedAt/bar identity;
+- featureKnownAt/sourceFetchedAt;
+- schemaVersion.
+
+## QA lineage
+- workflow run id;
+- artifact id;
+- generatedAt;
+- GitHub head SHA.
+
+## Runtime lineage
+- Worker version id/number;
+- script etag;
+- runtime VERSION label;
+- PV_SHADOW_ENABLED state;
+- PV runtime receipt presence.
+
+## Data acquisition state
+- D1 query-path availability;
+- D1 failure class if blocked;
+- evidence scope = FULL_TABLE / WINDOWED_AT_REST / RUNTIME_RECEIPT;
+- rowsChecked/denominator where applicable.
+
+## Baseline/cohort lineage
+- plan old/new overlap class;
+- baselineAsOfDate / lastMarketDate when observable;
+- field-specific history counts;
+- expected-symbol-session freshness state;
+- corporate-action/reset compatibility;
+- clean-cohort provenance state.
+
+## Interpretation state
+- MEASURED_ZERO / NOT_OBSERVED / ABSENT_RECEIPT / UNKNOWN_SEMANTICS / BLOCKED / VERIFIED_PASS / VERIFIED_FAIL.
+
+No outcome field may be used to repair, redefine or waive these pre-outcome provenance gates.
+
+Status:
+NO_HINDSIGHT_FIRST_SESSION_PROVENANCE_RECEIPT_FROZEN.
+
+
+## Exact continuation after PVE-144
+1. PVE-145: audit whether the existing token/read-only paths can query Worker Versions/etag without any permission expansion or runtime mutation.
+2. PVE-146: if readable, define a Class-A version/etag receipt; if blocked, preserve VERSION_IDENTITY_UNOBSERVED and do not request broader permissions automatically.
+3. PVE-147: audit whether extracted-source hashing can be added to future QA as documentation/proposal without changing current runtime.
+4. PVE-148: define a componentized scan fingerprint that separates generatedAt/timing from stocks/pipeline/config semantics.
+5. PVE-149: freeze the exact 9/29 night comparison order so runtime safety is evaluated before baseline/cohort readiness and before outcomes.
+6. Formal Core remains LOCKED; no production deployment or hypothesis promotion.
