@@ -1,0 +1,144 @@
+{
+  "schemaVersion": "setup-quality-channel-falsification-v0.1",
+  "researchDate": "2026-09-26",
+  "status": "STRUCTURAL_FALSIFICATION_FROZEN",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "currentFormal": {
+    "priorityWeight": 0.28,
+    "channelPrecedence": "B if B.pass, else A if A.pass",
+    "channelQuota": "NONE_OBSERVED; selection quotas are price-pool based, not A/B based",
+    "A": {
+      "passBounds": {
+        "pullbackPct": [
+          2,
+          15
+        ],
+        "supportDistancePct": [
+          0,
+          4
+        ],
+        "volumeRule": "volumeTodayVsPrev5<=1.05 OR volumeContraction5to20<=0.95"
+      },
+      "formula": "clamp(70 - abs((pullbackPct||8)-7)*3 - (supportDistancePct||0)*3 + (volumeTodayVsPrev5<=0.9?12:4),0,100)",
+      "theoreticalQualifyingRange": [
+        38,
+        82
+      ]
+    },
+    "B": {
+      "passBounds": {
+        "volumeTodayVsPrev5Min": 1.3,
+        "dailyClosePositionMin": 0.65,
+        "dailyUpperShadowRatioMax": 0.35
+      },
+      "formula": "clamp(55 + min(25,volumeTodayVsPrev5*8) + dailyClosePosition*20 - dailyUpperShadowRatio*25,0,100)",
+      "theoreticalQualifyingRange": [
+        69.65,
+        100
+      ]
+    }
+  },
+  "structuralFindings": [
+    "A and B use different constructs and different attainable score scales but feed the same 28% PriorityScore component.",
+    "A's theoretical qualifying maximum is 82 while B can reach 100; the 18-point setup gap can contribute 5.04 PriorityScore points.",
+    "A has an 8-point discontinuity at volumeTodayVsPrev5 0.90/0.91, equal to 2.24 PriorityScore points, even when both states pass A.",
+    "B's volume contribution is continuous from the 1.3x hard-gate threshold and can increase until 3.125x, so post-gate ranking behavior differs structurally from A.",
+    "B channel has deterministic precedence when both channels pass; actual dual-pass frequency must be measured rather than assumed.",
+    "Cross-channel raw setupQuality cannot be presumed calibrated merely because both are clamped to 0-100."
+  ],
+  "syntheticCases": [
+    {
+      "id": "A_IDEAL",
+      "channel": "A",
+      "inputs": {
+        "pullbackPct": 7,
+        "supportDistancePct": 0,
+        "volumeTodayVsPrev5": 0.9
+      },
+      "setupQuality": 82
+    },
+    {
+      "id": "A_VOLUME_CLIFF_LEFT",
+      "channel": "A",
+      "inputs": {
+        "pullbackPct": 7,
+        "supportDistancePct": 0,
+        "volumeTodayVsPrev5": 0.9
+      },
+      "setupQuality": 82
+    },
+    {
+      "id": "A_VOLUME_CLIFF_RIGHT",
+      "channel": "A",
+      "inputs": {
+        "pullbackPct": 7,
+        "supportDistancePct": 0,
+        "volumeTodayVsPrev5": 0.91
+      },
+      "setupQuality": 74
+    },
+    {
+      "id": "A_PASS_BOUNDARY_WEAK",
+      "channel": "A",
+      "inputs": {
+        "pullbackPct": 15,
+        "supportDistancePct": 4,
+        "volumeTodayVsPrev5": 1
+      },
+      "setupQuality": 38
+    },
+    {
+      "id": "B_PASS_BOUNDARY_WEAK",
+      "channel": "B",
+      "inputs": {
+        "volumeTodayVsPrev5": 1.3,
+        "dailyClosePosition": 0.65,
+        "dailyUpperShadowRatio": 0.35
+      },
+      "setupQuality": 69.65
+    },
+    {
+      "id": "B_MID",
+      "channel": "B",
+      "inputs": {
+        "volumeTodayVsPrev5": 1.5,
+        "dailyClosePosition": 0.8,
+        "dailyUpperShadowRatio": 0.1
+      },
+      "setupQuality": 80.5
+    },
+    {
+      "id": "B_IDEAL",
+      "channel": "B",
+      "inputs": {
+        "volumeTodayVsPrev5": 3.125,
+        "dailyClosePosition": 1,
+        "dailyUpperShadowRatio": 0
+      },
+      "setupQuality": 100
+    }
+  ],
+  "prospectiveTests": [
+    "Distribution of setupQuality by channel and scanDate.",
+    "Frequency of A/B qualification, dual-pass, and final channel assignment.",
+    "Within-channel monotonicity of setupQuality vs D1/D3/D5/MFE/MAE/stop-first/no-follow-through.",
+    "Cross-channel raw-score calibration using matched/controlled candidates.",
+    "Compare raw setupQuality with within-channel percentile/rank as a research comparator only; do not change Formal.",
+    "Measure selection-mix sensitivity to the 0.90 A-volume cliff and B high-volume tail.",
+    "Control sector, price pool, liquidity, overheat, RR, institutional/fundamental score, Residual RS and market regime."
+  ],
+  "falsification": [
+    "If within-channel higher setupQuality has no stable outcome relation, reject the component's monotonic interpretation.",
+    "If raw cross-channel score differences disappear after channel identity, classify scale as channel-confounded.",
+    "If B's apparent advantage is fully explained by genuinely better outcomes after controls, do not normalize it merely for cosmetic symmetry.",
+    "If A 0.90/0.91 cliff has no material rank/selection incidence, treat the discontinuity as low practical importance.",
+    "No alternative formula/weight/normalization is allowed before prospective evidence."
+  ],
+  "governance": {
+    "anyFormalFormulaOrChannelPrecedenceChange": "CLASS_C_OWNER_APPROVAL_REQUIRED",
+    "currentAction": "RESEARCH_ONLY",
+    "noHistoricalRecomputeAsPIT": true
+  },
+  "decision": "CHANNEL_SCALE_NONCOMPARABILITY_RISK_CONFIRMED / EMPIRICAL_CALIBRATION_UNKNOWN / NO_FORMAL_CHANGE"
+}
