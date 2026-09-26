@@ -60,6 +60,19 @@ Primary: revenue/earnings/margin/cash-flow quality and acceleration.
 Secondary: industry, valuation, market interest and technical timing.
 A technically overbought condition should not erase company quality; it can lower timing attractiveness.
 
+New owner-approved research dimension:
+- CONTRACT_LIABILITY（合約負債） trend should be studied as a forward-visibility factor where the business model makes it economically meaningful.
+- Prefer changes/acceleration and normalized ratios over absolute amount.
+- Pair with revenue, margin, cash flow, industry cycle and contract quality; never treat rising contract liabilities alone as automatic bullish evidence.
+- NOT_APPLICABLE（不適用） is a valid state for industries where contract liabilities are structurally uninformative.
+
+Potential cross-strategy relevance:
+- SWING_GROWTH（波段成長策略）: early evidence of improving future revenue visibility;
+- INDUSTRY_TREND（產業趨勢策略）: project/capex-cycle confirmation for applicable industries;
+- FUNDAMENTAL_GROWTH（基本面成長策略）: growth quality / future-revenue visibility context.
+
+Exact factor weights and thresholds remain unfrozen pending PIT/Shadow/OOS validation.
+
 ## EVENT_DRIVEN
 Primary: event mechanism, beneficiary/victim transmission, market reaction and event half-life.
 Secondary: liquidity, technical structure, chips.
