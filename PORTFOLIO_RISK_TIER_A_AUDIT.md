@@ -90,3 +90,27 @@ No Formal capital rule, ADD gate, cluster cap or heat threshold is authorized.
 - `tests/test_portfolio_risk_tier_a_v0_1.mjs`
 
 The prototype is pure research code. It does not import or modify Worker.js.
+
+
+## Production read-only evidence — 2026-09-26
+
+Workflow run `36253794425` queried only the authorized read-only journal endpoint and did not read outcome fields.
+
+Observed:
+- 4 recorded formal journal days;
+- 4 Formal plan rows;
+- 58 recovered/manual rows excluded;
+- 2 dates with Formal plan rows;
+- both 2/2 plan dates fully reconstructable for Tier-A plan risk;
+- 0 incomplete plan dates;
+- 2 zero-selection days.
+
+Reconstructed plan-time geometry:
+- 2026-09-18: NT$200,000 capital, 3 plans, NT$168,000 planned deployment (84%), projected heat range 2.0221% to 3.2417%, effectiveCapitalNames 2.9672.
+- 2026-09-21: NT$200,000 capital, 1 plan, NT$70,000 planned deployment (35%), projected heat range 0.5276% to 1.3070%, effectiveCapitalNames 1.0000.
+- 2026-09-22 and 2026-09-23: zero selected with journal status `今日0檔，維持現金`.
+
+This is reconstructability evidence only. It does **not** show that 3.24% heat is high, low, safe or unsafe, and it does not establish any relationship between concentration and returns.
+
+Durable machine receipt:
+`research/portfolio_risk_production_readonly_receipt_20260926.json`.
