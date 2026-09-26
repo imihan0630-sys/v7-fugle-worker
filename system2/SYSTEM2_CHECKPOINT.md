@@ -28,7 +28,7 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 
 ## Next tasks
 
-1. Inventory existing research into shared domain tags without relocating history.
+1. ✅ Inventory existing research into shared domain tags without relocating history — completed in `shared-knowledge/SHARED_RESEARCH_INVENTORY.md`.
 2. Audit Tier A/B source fields for exact machine-readable contracts and historical PIT availability.
 3. Define factor-engine TypeScript interfaces and normalization/UNKNOWN contracts.
 4. Define market-regime V0 inputs using Tier A data only.
