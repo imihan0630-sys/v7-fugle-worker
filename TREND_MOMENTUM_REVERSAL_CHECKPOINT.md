@@ -10,6 +10,7 @@ Formal Core: LOCKED
 - DL-003C Extreme Absolute Strength: Taiwan evidence positive, but high redundancy with existing lateStage/overheat; incremental test required.
 
 ## Durable findings
+- Official-session continuity is technically feasible using existing Worker TWSE calendar machinery; no new provider is needed. Current R06 simply does not apply this proof yet.
 - Taiwan momentum is not safely modeled as monotonic past-return strength.
 - Historical Taiwan evidence reports positive momentum in market-state continuations and reversal in transitions, but that evidence is monthly and cannot be directly imported into the current daily selector.
 - Current R06 exists but primarily counts regime transitions; it does not yet attach causal as-of continuation/transition context to each Shadow parent and compare outcomes.
@@ -25,7 +26,7 @@ Formal Core: LOCKED
 - FORMAL_OPTIMIZATION_CANDIDATE: NONE.
 
 ## Exact next continuation
-1. Prove consecutive official-session semantics for prospective R06 dates.
+1. Consecutive-session source feasibility is proven. Next freeze/implement an isolated research-only adjacency classifier using the existing official calendar; do not alter shared calendar semantics.
 2. Define CONTINUATION / TRANSITION / GAP_UNKNOWN / UNKNOWN and sameRegimeStreakSessions without filling missing dates.
 3. Require outcome analysis to control current regime level; otherwise transition and regime are confounded.
 4. Wait for sufficient independent prospective transition dates before directional conclusion.
