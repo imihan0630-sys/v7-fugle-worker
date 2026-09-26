@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-09-26T10:18:00+08:00",
+  "updatedAt": "2026-09-26T11:30:00+08:00",
   "status": "BASELINE_V0_2_PARTIAL_RECONCILIATION",
   "formalCore": "LOCKED",
   "authority": {
@@ -35,17 +35,17 @@
   ],
   "aggregate": {
     "domainCount": 15,
-    "moduleCount": 16,
-    "maturityWeightedPct": 48.8,
+    "moduleCount": 17,
+    "maturityWeightedPct": 48.2,
     "countsByLevel": {
       "L0": 0,
       "L1": 0,
-      "L2": 10,
+      "L2": 11,
       "L3": 5,
       "L4": 1,
       "L5": 0
     },
-    "researchDebtUnits": 8.2,
+    "researchDebtUnits": 8.8,
     "dataQualityBlocked": 6,
     "dataSourceBlocked": 3,
     "waitingProspective": 1,
@@ -57,7 +57,7 @@
     "formalAutoPromotion": false,
     "independentInferenceUnitRequired": true
   },
-  "next": "Continue reconciliation for trend/momentum/reversal, volatility-regime, institutional/crowding, macro/cross-market and submodules; split modules only when evidence objectives are independently falsifiable; register optimization candidates only after mandatory bridge gates.",
+  "next": "Continue trend/momentum/reversal from dedicated lane; reconcile volatility-regime, institutional/crowding, macro/cross-market and remaining submodules; register optimization candidates only after mandatory bridge gates.",
   "optimizationBridge": {
     "required": true,
     "autoPromoteFormal": false,
@@ -83,6 +83,13 @@
       "level": "L3",
       "status": "WAITING_PROSPECTIVE",
       "basis": "Large preregistered evidence/QA program; first potentially clean cohort begins after 2026-09-29 scan, outcome inference still blocked."
+    },
+    {
+      "id": "TREND_MOMENTUM_REVERSAL",
+      "domain": "TREND_MOMENTUM_REVERSAL",
+      "level": "L2",
+      "status": "FALSIFICATION_IN_PROGRESS",
+      "basis": "Taiwan-specific continuation/transition mechanism and falsification defined; current R06 only counts observed transitions, exact consecutive-session candidate-level outcome evidence is not yet mature. Momentum Gap rejected; Extreme Absolute Strength redundancy with lateStage/overheat remains under test."
     },
     {
       "id": "MICROSTRUCTURE_STATE",
