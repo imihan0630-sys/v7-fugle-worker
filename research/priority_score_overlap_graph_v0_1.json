@@ -1,0 +1,76 @@
+{
+  "schemaVersion": "priority-score-overlap-v0.1",
+  "status": "STRUCTURAL_FALSIFICATION_ONLY",
+  "formalCoreChanged": false,
+  "concepts": [
+    {
+      "concept": "setup",
+      "gate": true,
+      "scoreWeight": 0.28,
+      "comparator": 4,
+      "risks": [
+        "channel-scale asymmetry",
+        "A volume cliff",
+        "grade eligibility overlap"
+      ]
+    },
+    {
+      "concept": "rewardRisk",
+      "gate": "RR>=2",
+      "scoreWeight": 0.14,
+      "comparator": 2,
+      "risks": [
+        "multi-layer influence",
+        "score saturation above RR=5"
+      ]
+    },
+    {
+      "concept": "sector",
+      "gate": "breadth/change/activity",
+      "scoreWeight": 0.14,
+      "comparator": 5,
+      "risks": [
+        "gate-score overlap",
+        "cross-sector maxAmount denominator externality"
+      ]
+    },
+    {
+      "concept": "marketRelativeRS",
+      "gate": false,
+      "scoreWeight": 0.14,
+      "comparator": 6,
+      "risks": [
+        "double-layer ordering",
+        "trend/ret20 redundancy"
+      ]
+    },
+    {
+      "concept": "marketConsensus",
+      "gate": "sourceCount>=2 for bonus",
+      "scoreOverlay": "0..7",
+      "comparator": 3,
+      "risks": [
+        "source independence UNKNOWN",
+        "score compression",
+        "attention/passive-flow confounding"
+      ]
+    }
+  ],
+  "fixedAblationOrder": [
+    "baseline",
+    "remove duplicated later comparator only",
+    "remove duplicated score contribution only",
+    "rescale only after fixed ablations"
+  ],
+  "promotionGates": [
+    "prospective decision incidence",
+    "independent dates",
+    "A/B and pool strata",
+    "regime",
+    "costs",
+    "coverage/zero-pick",
+    "redundancy",
+    "OOS direction agreement"
+  ],
+  "outcomeLookupUsed": false
+}
