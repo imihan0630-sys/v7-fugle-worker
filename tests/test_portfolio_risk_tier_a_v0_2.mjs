@@ -3,6 +3,8 @@ import {
   deployedCapitalHHI,
   riskyNameHHIOnTotalCapital,
   heatIntensityOnDeployedCapital,
+  nominalDeployTargetPct,
+  decomposePlannedReserve,
   strategyRiskDecomposition,
   portfolioTierAV02
 } from "../research/portfolio_risk_tier_a_v0_2.mjs";
@@ -94,4 +96,26 @@ console.log(JSON.stringify({
   assert.equal(a.planCount,1);
   assert.equal(b.planCount,1);
   assert.ok(a.projectedStopRiskPctOfStrategyDeploymentHigh>b.projectedStopRiskPctOfStrategyDeploymentHigh);
+}
+
+
+{
+  assert.equal(nominalDeployTargetPct(0),0);
+  assert.equal(nominalDeployTargetPct(1),35);
+  assert.equal(nominalDeployTargetPct(2),60);
+  assert.equal(nominalDeployTargetPct(3),85);
+  assert.equal(nominalDeployTargetPct(6),85);
+
+  const d=decomposePlannedReserve({selectedCount:3,totalCapital:200000,plannedDeploymentNTD:168000});
+  assert.equal(d.nominalDeployTargetPct,85);
+  assert.equal(d.actualDeploymentPct,84);
+  assert.equal(d.nominalStructuralReservePct,15);
+  assert.equal(d.allocationImplementationShortfallPct,1);
+  assert.equal(d.allocationImplementationShortfallNTD,2000);
+  assert.equal(d.actualReservePct,16);
+
+  const one=decomposePlannedReserve({selectedCount:1,totalCapital:200000,plannedDeploymentNTD:70000});
+  assert.equal(one.nominalDeployTargetPct,35);
+  assert.equal(one.allocationImplementationShortfallNTD,0);
+  assert.equal(one.nominalStructuralReservePct,65);
 }
