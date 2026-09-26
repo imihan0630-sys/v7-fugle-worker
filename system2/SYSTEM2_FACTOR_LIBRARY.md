@@ -15,7 +15,52 @@ US/global equities, rates, yield curve, USD, USD/TWD, oil, commodities, geopolit
 relative strength, breadth, turnover share, earnings revisions, cycle phase, demand/supply, inventory, capacity, utilization, product pricing, shortages/oversupply, policy and adoption.
 
 ### FUNDAMENTAL
-monthly revenue MoM/YoY and acceleration, quarterly revenue, EPS, gross/operating/net margins, cash flow, ROE/ROA, leverage, earnings quality and forward changes when PIT-valid.
+monthly revenue MoM/YoY and acceleration, quarterly revenue, EPS, gross/operating/net margins, cash flow, ROE/ROA, leverage, earnings quality, contract-liability trend, and forward changes when PIT-valid.
+
+#### CONTRACT_LIABILITY（合約負債） research factor
+
+Status: OWNER-REQUESTED / RESEARCH_REQUIRED / SOURCE_CONTRACT_NOT_READY.
+
+Rationale:
+Contract liabilities represent consideration received or receivable from customers for goods/services the company still owes. For business models with meaningful customer prepayments, project deposits, subscription/deferred-service obligations or advance procurement payments, the trend may provide information about future revenue visibility.
+
+Do **not** treat contract-liability growth as automatic future profit growth.
+
+Candidate raw fields:
+- contractLiabilityCurrent（流動合約負債）
+- contractLiabilityNonCurrent（非流動合約負債）
+- contractLiabilityTotal（合約負債合計）
+- availableAt / filingPublishedAt（可用時間／財報發布時間）
+- source / taxonomy provenance（來源／會計標籤來源）
+
+Candidate derived features:
+- QoQ change（季增率）
+- YoY change（年增率）
+- 2Q/3Q acceleration（連續季度加速度）
+- contractLiabilityTotal / TTM revenue（合約負債／近十二月營收）
+- contractLiabilityCurrent / contractLiabilityTotal（流動占比）
+- contract-liability growth minus revenue growth（合約負債成長相對營收成長差）
+- historical percentile within the same company when PIT-valid（公司自身歷史百分位）
+- peer-relative percentile only within comparable business models（可比商業模式同業百分位）
+
+Context / quality guards:
+- industry applicability: NOT_APPLICABLE is valid for firms where customer prepayments are immaterial;
+- high contract liabilities can reflect low-margin projects and do not guarantee profit;
+- changes may be seasonal or caused by contract terms, customer mix, reclassification, M&A, FX or timing;
+- examine gross/operating margin, cash flow, customer concentration, cancellation/refund terms and contract assets where available;
+- declining contract liabilities are not automatically bearish because prior balances may have converted into recognized revenue;
+- raw amount cannot be compared across industries without normalization.
+
+Research interactions to test:
+- contract-liability acceleration + revenue acceleration;
+- contract-liability acceleration + margin stability/improvement;
+- contract-liability acceleration + operating cash-flow support;
+- contract-liability acceleration + industry up-cycle;
+- contract-liability acceleration + sector-leader status;
+- contract-liability deterioration while revenue remains strong as a possible forward-warning interaction.
+
+PIT rule:
+Use only the balance-sheet amount and notes that were actually published by the decision timestamp. Do not backfill later restatements into earlier decisions without versioned provenance.
 
 ### VALUATION
 PE, forward PE, PEG, PB, EV/EBITDA, FCF yield, dividend yield when relevant, historical percentile, peer-relative valuation, valuation vs growth.
