@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-09-26T23:18:00+08:00",
+  "updatedAt": "2026-09-26T23:58:00+08:00",
   "status": "BASELINE_V0_2_PARTIAL_RECONCILIATION",
   "formalCore": "LOCKED",
   "authority": {
@@ -57,7 +57,7 @@
     "formalAutoPromotion": false,
     "independentInferenceUnitRequired": true
   },
-  "next": "Continue clean prospective evidence preparation without historical fabrication. Trend rank-persistency spec is frozen; institutional-score and volatility capture await post-9/29/next-version evidence. Reconcile another independently falsifiable research question.",
+  "next": "Macro Phase-1 receipt spec is frozen; USD/TWD source gate is materially resolved but U.S./Asia provider/session capture remains unimplemented. Continue independently falsifiable structural audits while prospective post-9/29 evidence and concurrent version work mature.",
   "optimizationBridge": {
     "required": true,
     "autoPromoteFormal": false,
@@ -230,7 +230,7 @@
       "domain": "MACRO_CROSS_MARKET_REGIME",
       "level": "L2",
       "status": "DATA_QUALITY_BLOCKED",
-      "basis": "PIT clocks, residualization and falsification frozen; repository audit did not prove durable historical global receipts with sessionDate/knownAtTaipei/firstEligibleTaiwanDecision. Prospective receipt required."
+      "basis": "PIT clocks, residualization and falsification are mature. Formal selector currently has no explicit global state. CBC same-day NTD/USD source is materially proven for prospective 18:10 capture; prior-U.S. broad data are provider-feasible but likely partially absorbed by Taiwan's same-day session and require redundancy testing; U.S. tech/semiconductor provider contract remains partial; Japan/Korea daily closes are mixed-window because they close ~1h after Taiwan. Prospective receipt spec frozen; no historical reconstruction or global score."
     },
     {
       "id": "VOLATILITY_REGIME_CONTEXT",
