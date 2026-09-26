@@ -15198,3 +15198,61 @@ CI:
 
 ### Status
 FLAG_GEOMETRY_RESEARCHABLE / NAMED-LABEL ALPHA UNKNOWN / STRONG SNOOPING-AND-COST CAUTION / NO FORMAL CHANGE.
+
+
+## DL-003Q — Detection Accuracy Is Not Economic Evidence; Segmentation Is Part of the Model
+
+### Formal-classification evidence
+The 2017 Information Sciences study formalizing 53 chart patterns is valuable for a different reason than return prediction:
+- it documents the lack of an industry-wide unambiguous standard for pattern definitions;
+- it converts natural-language descriptions into formal first-order-logic constraints;
+- it uses PIP segmentation and compares pattern-matching methods.
+
+The 2019 Applied Soft Computing candlestick formalization extends the same idea to 103 candlestick patterns and again emphasizes definition inconsistency.
+
+This supports computability, reproducibility and detector QA.
+It does NOT establish that accurately identifying a textbook label yields alpha.
+
+### Pattern-method consequence
+Segmentation is not a neutral preprocessing detail.
+
+Different:
+- Directional Change thresholds;
+- PIP compression;
+- local extrema rules;
+- DTW/template representations;
+- kernel smoothing;
+
+can produce different anchor sequences from the same price history.
+
+Therefore method disagreement must remain observability rather than be resolved by choosing whichever method later makes returns look best.
+
+Primary method remains frozen:
+confirmed Directional-Change-style swings + transparent topology.
+
+PIP/rule or one-sided-kernel outputs remain independent robustness views.
+DTW remains exploratory.
+ML remains deferred.
+
+### Current isolated geometry progression
+The research branch now covers three named-family gaps without assigning directional signs:
+1. boundary geometry for Platform/Flag/Triangle/Pennant families;
+2. explicit H-L-H bowl geometry for Cup-family candidates;
+3. explicit impulse/consolidation geometry for Flag-family candidates.
+
+The quantitative outputs are scale-normalized where possible and tested for price-scale invariance.
+
+### Economic-evidence firewall
+A detector can be:
+- reproducible;
+- prefix-invariant;
+- scale-stable;
+- accurate against a formal template;
+
+and still have zero economic value.
+
+Outcome validation begins only after prospective point-in-time coverage is clean.
+No detector threshold may be selected on D1/D3/D5/D10/MFE/MAE.
+
+### Status
+DETECTION_REPRODUCIBILITY_SUPPORTED / ECONOMIC_ALPHA_UNKNOWN / METHOD-SELECTION-ON-RETURNS PROHIBITED.
