@@ -795,3 +795,22 @@ Class A if research-only; Class C if later used in formal 15m confirmation.
 5. PVE-132: freeze the pre-9/29 interpretation matrix for zero/null/UNKNOWN/hard failure.
 6. Keep H001~H004 outcome inference blocked until prospective clean evidence prerequisites mature.
 7. Formal Core remains LOCKED.
+
+
+## Evidence progress — PVE-128 through PVE-133
+- PVE-128 verifies the current run 36144193465 D1 failure specifically as HTTP 403 AUTHZ_DENIED from the captured error body; PVE-127's broader catch-conflation warning remains valid for future runs.
+- PVE-129 freezes an always-emitted sanitized failure-envelope design that preserves hard workflow failure semantics instead of suppressing assertions.
+- PVE-130 freezes evidence-safe field naming/scope metadata so coarse counts, latest-N windows and receipt-dependent flags cannot masquerade as stronger evidence.
+- PVE-131 concludes historical intraday PV mutation-conflict telemetry is not reconstructable from the current read-only admin surfaces; no zero conflict rate may be inferred.
+- PVE-132 proves a blocked D1 path can serialize baseline rowCount/readyCount as 0 and other arrays/maps as empty even though they were not observed. D1-dependent zero/empty values require an acquisition-available gate.
+- PVE-133 freezes the pre-first-session evidence-state matrix: MEASURED_ZERO / NOT_OBSERVED / ABSENT_RECEIPT / UNKNOWN_SEMANTICS / BLOCKED / HARD_CHECK_FAILURE / VERIFIED_PASS / VERIFIED_FAIL.
+- Current Price-Volume evidence cursor: PVE-001 through PVE-133.
+- Formal Core, runtime code, token scope, permissions and deployment remain unchanged.
+
+## Revised exact continuation after PVE-133
+1. PVE-134 audit workflow conclusion versus qaPass state semantics.
+2. PVE-135 compare the two preserved artifacts/rerun lineage for run 36144193465 where possible.
+3. PVE-136 define deterministic safety/runtime artifact-diff receipts.
+4. PVE-137 separate code drift, environment drift and market/admin-state drift.
+5. PVE-138 freeze safe cross-rerun comparison fields before 9/29.
+6. Continue falsification/data-quality research only; no alpha outcome inference.
