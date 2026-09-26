@@ -94,9 +94,23 @@ Owner-approved core:
 EVENT_DRIVEN core logic owner-approved on 2026-09-27.
 
 ## VALUE_REVERSION
-Research-only hypothesis.
-Primary: valuation dislocation and fundamental durability.
-Requires proof that value factor is useful in the relevant Taiwan regimes and does not become a value trap.
+Status: CORE LOGIC OWNER-APPROVED AS RESEARCH-ONLY / PROMOTION NOT YET JUSTIFIED.
+
+Primary: valuation dislocation, fundamental durability, catalyst and reversal confirmation.
+
+Owner-approved core:
+- distinguish mispricing from genuine structural deterioration;
+- require an explicit discount reason rather than using low PE/PB alone;
+- prefer company-history and comparable-peer valuation context over raw cross-industry comparison;
+- require a plausible catalyst or repair path;
+- use industry-cycle context, especially for cyclicals where low PE can occur near earnings peaks;
+- use technical/price evidence to avoid blind falling-knife entries;
+- prohibit unconditional averaging down;
+- allow ADD_ON_NEW_INFORMATION（新資訊加碼） and ADD_ON_STRENGTH（轉強加碼） only after thesis/price confirmation;
+- support VALUE_THESIS_INVALIDATED（價值投資邏輯失效） when the assumed temporary problem proves structural;
+- keep VALUE_REVERSION research-only until it demonstrates incremental value over simple low-valuation and technical-rebound baselines.
+
+VALUE_REVERSION core logic owner-approved on 2026-09-27, but strategy promotion remains contingent on PIT/Shadow/OOS evidence.
 
 ## Strategy activation
 
