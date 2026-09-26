@@ -241,3 +241,20 @@ Durable research detail: main `KLINE_PATTERN_RESEARCH.md` commit `a245b486dc60f2
 6. No historical Pattern outcome inference. Prospective outcome joins require COMPLETE parent coverage/run receipts and point-in-time semantic readiness.
 7. If cross-lane RAW_EXECUTION + TECHNICAL_CONTINUITY + symbol-session + volume semantics become runtime-ready, then prepare a Class-B prospective observer-wiring proposal for owner approval; no merge/deploy before approval.
 8. Only after clean prospective dates exist, run frozen PATTERN-RG1..RG4 plus redundancy/date-cluster/holdout/cost gates. No R09 and no Formal optimization proposal before that evidence.
+
+
+## Continuation update — DL-003U through DL-003V
+- Real FCNT000002 falsification exposed a provider-history hazard: TPEx 5314 contains flat zero-amount/zero-volume pseudo-bars on verified suspension dates. Official TPEx evidence confirms 2025-10-14 and 2026-05-13 suspension, and 2025-08-13 resumption supports 2025-08-12 as a non-ordinary session. Provider bar presence is therefore not symbol-session proof.
+- Draft PR #103 now requires the actual verified symbol-session date set when `requireSymbolSession=true` and fails closed on `NON_SYMBOL_SESSION_BAR_PRESENT`. A Boolean provenance receipt alone is insufficient.
+- FCNT000002 also contains real low-liquidity 5314 rows with volume=0 lots but amount>0. Taiwan odd-lot rules permit sub-1,000-share trading, so zero lot-volume cannot mean zero trading. The isolated envelope now exposes `volumeSubLotRemainderRisk` and `volumeMagnitudeReady`; exact VCP/dry-up magnitude cannot silently use sub-lot activity as zero.
+- Modern 5314 2025-09-03 through 09-08 provides a real consecutive-limit-up stress witness. Each day remains localBreakout=true but priceLimitConstrained=true / acceptance UNRESOLVED; the first later unconstrained session becomes OBSERVABLE. C4 therefore resolves on the first eligible unconstrained symbol-session, not mechanically the next session.
+- Latest validated Pattern research head: `69aace54c8d7d7b5ea2f7609495e5dea5eb616c2`; V8 Repair `36210022595` SUCCESS; V8 Regression `36210022603` SUCCESS.
+- No Pattern outcomes, no historical Shadow fabrication, no R09, no Formal change.
+
+### Updated exact next continuation point
+1. Keep latent geometry v0.1 frozen; no family catalog expansion.
+2. Continue real-source falsification only where it can change data-validity semantics: no-trade vs suspension, corporate-action continuity, exact volume units, current-regime price-limit/session mechanics.
+3. Pattern runtime remains NO_GO until approved PIT RAW_EXECUTION + TECHNICAL_CONTINUITY + explicit symbol-session membership + fit-for-purpose volume semantics exist.
+4. Do not infer alpha from the 5314 witnesses; they are detector/data-quality stress cases.
+5. Prospective Pattern outcome work still waits for COMPLETE parent coverage/run receipts.
+6. Formal Core LOCKED.
