@@ -1,6 +1,6 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-166.
+Checkpoint sequence: B-169.
 Updated: 2026-09-26 12:49 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Detailed B-01..B-123 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
@@ -816,3 +816,16 @@ Updated: 2026-09-26 12:49 Asia/Taipei.
 - Engineering: Class A research documentation only. No Worker/runtime/Formal selection/ranking/threshold/capital/monitor/signal/push change.
 - Master Map/shared-inventory reconciliation was attempted after re-reading latest SHAs but mutation was safety-blocked; do not claim those files updated. Dedicated lane and this checkpoint are the durable source until a later safe reconciliation.
 - Exact next continuation: audit current Shadow/archive schema for exact PIT valuation pass/reject cohort provenance, including PE, PB, sectorMedianPE, peer count, growth-exception inputs, reject reason and upstream-state completeness. If incomplete, mark historical cohort UNKNOWN and freeze prospective Class-A receipt/cohort capture; do not backfill or tune thresholds. Then continue the next independent lane without waiting for valuation outcomes.
+
+
+## B-169 — Valuation provenance audit (2026-09-26 19:43 Asia/Taipei)
+- Continued B-168 after fresh canonical read; no outcome lookup or threshold tuning.
+- Audit: existing prospective snapshots preserve stock PE/PB and quarterly revenue/EPS growth; Shadow preserves exclusion reason/base/RR state. They do not preserve scan-time sector median PE, positive-PE peer denominator, explicit relative-PE/growth-exception state, or a dedicated exact valuation-reject cohort.
+- Historical exact valuation-reject classification is therefore UNKNOWN; current-code/current-fundamental reconstruction is prohibited.
+- Formal current rule verified: relative PE above 2.5 with neither quarterly revenue YoY nor EPS YoY above 25% rejects when stock and sector median PE are positive. PB cannot replace missing PE.
+- Isolated Class-A documentation branch research/valuation-provenance-v8-15 commit 947ca1ed69fa64fb0b993a4ec4708a926346c38b freezes prospective receipt/cohort/test contract. No runtime or Production change.
+- Required prospective fields: stock PE/PB and valuation provenance; sector median PE and positive-PE peer count; relative PE; raw growth inputs; growth exception; gate evaluability/current-rule result; exact thresholds; PIT completeness; upstream exclusion/base/RR state.
+- Frozen countertests: 2.51x without growth rejects; either growth input above 25% excepts; missing PE or valid median remains UNKNOWN; PB does not substitute; Formal outputs invariant; no historical backfill.
+- R01-R08/I01-I07: improves PIT, selection-bias, definition-drift and UNKNOWN controls; no new factor.
+- Status: FALSIFICATION_IN_PROGRESS / HISTORICAL_COHORT_UNKNOWN / PROSPECTIVE_RECEIPT_SPEC_FROZEN / NOT_OPTIMIZATION_READY. No Formal optimization candidate.
+- Exact next: fresh-read concurrent checkpoint; if still latest, implement receipt/cohort capture on isolated branch with synthetic tests and Formal-output invariants. If isolation requires shared runtime semantic change, stop at Class-B proposal. Do not tune 2.5/25 thresholds.
