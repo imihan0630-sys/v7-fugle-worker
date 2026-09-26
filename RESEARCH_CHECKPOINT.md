@@ -1095,3 +1095,17 @@ Updated: 2026-09-27 05:02 Asia/Taipei.
 - Required prospective work: gate attrition by factor, within-qualified incremental value, actual tie-break incidence, score-to-capital calibration, signal-grade calibration within channel, and discordant grade-vs-PriorityScore cells.
 - No threshold, grade label, gate, weight, comparator or capital rule changed. No FORMAL_OPTIMIZATION_CANDIDATE.
 - Exact next: audit ATR/volatility multi-layer influence because current Formal applies a 1–10% ATR gate and also feeds ATR into A/B stop geometry, which can indirectly change RR and ranking.
+
+
+## B-189 — ATR -> stop -> RR channel coupling structural falsification (2026-09-27 Asia/Taipei)
+- Fresh Formal audit confirms ATR has multi-layer influence despite not entering PriorityScore directly: atrPercent 1–10 hard gate -> channel-specific stop -> RR hard gate -> RR 14% score -> raw RR comparator -> score-proportional capital.
+- Stop semantics differ materially by channel:
+  - A: stop=min(support*0.98, structureLow-0.12*ATR);
+  - B: stop=breakout-max(0.65*ATR, breakout*0.012).
+- Fixed outcome-free witness with B breakout=100, close=101, entry=100.3 and target=110.3: ATR 1%=RR6.67; 3%=4.41; 5%=2.79; 7%=2.04; 8%=1.80 and therefore RR<2 reject; 10%=1.46. This does NOT establish a universal ATR threshold; it proves the coupling.
+- Equivalent A witnesses show much weaker or zero ATR sensitivity when support*0.98 is the binding stop, and only gradual RR decline when structureLow-0.12*ATR binds. Same ATR% therefore does not imply same effective selection penalty across A/B.
+- Research implication: ATR effect, stop-binding state, RR effect and channel must be decomposed. A high-RR effect may partly be a low-volatility/narrow-stop effect; a high-ATR penalty may already be implemented indirectly through RR.
+- Frozen machine artifact `research/atr_rr_channel_coupling_v0_1.json`; Volatility lane advanced VR-018 and PriorityScore research cross-linked.
+- Existing Shadow preserves atrPercent/channel/RR and selected plan stop/target; exact counterfactual target/stop for all pre-plan rejects remains incomplete and must not be fabricated from mutable history.
+- No ATR gate, stop formula, RR gate/weight or channel rule change. No FORMAL_OPTIMIZATION_CANDIDATE.
+- Exact next: audit the 10–30bn small-cap exception because it labels institutionalScore>=70 as a strong special reason even though institutionalScore mixes actor flows/streaks with TDCC holder concentration.
