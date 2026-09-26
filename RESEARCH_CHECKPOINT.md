@@ -1,7 +1,7 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-146.
-Updated: 2026-09-26 06:41 Asia/Taipei.
+Checkpoint sequence: B-151.
+Updated: 2026-09-26 09:17 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Detailed B-01..B-123 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
@@ -509,3 +509,16 @@ Updated: 2026-09-26 06:41 Asia/Taipei.
 - Bias/quality: search was outcome-blind; zero-yield/anonymized counterexample retained; no current-map backfill, no missing=no-edge/0, no historical Shadow fabrication, no price-conditioned sampling, no lag/window change. Event-date/source-family clustering remains mandatory; transaction costs remain required before tradable interpretation. R01-R08/I01-I07 unchanged.
 - Engineering: research/source feasibility only; no Worker/Production/Formal changes.
 - Exact next continuation: SC-006 specify an isolated Class-A prospective MAJOR_COUNTERPARTY_STOP collector limited to official timestamped cessation/change disclosures, with raw-source receipt, named/anonymous identity state, knownAt, effectiveAt, concentration basis/percentage and coverage diagnostics. It must not claim complete graph coverage and must not affect Formal selection/ranking/monitor/push. Before implementation, verify whether an official machine-readable TWSE/TPEx/MOPS source can be isolated; if only brittle third-party search is available, keep collector proposal-only and mark SOURCE_ACCESS_BLOCKED.
+
+
+## B-151 — SC-006 official-source collector gate frozen (2026-09-26 09:17 Asia/Taipei)
+- Fresh-read governance/worklist/checkpoint/main; canonical start B-150. Continued exact SC-006 point without reopening SC-001..005 or exhausted CA/recorder evidence lanes.
+- Official-source verification: TWSE first-party documentation identifies MOPS ezSearch as a cross-market announcement search surface with market/category/date filtering and announcement-time ordering, and explicitly identifies M25 as the major-customer/supplier business-cessation category. TPEx first-party material independently confirms the >=10% principal purchaser/supplier cessation semantics.
+- Positive conclusion: a first-party discoverable source universe exists for the narrow MAJOR_COUNTERPARTY_STOP event class. This materially improves over third-party search and supports a bounded prospective event-lane design.
+- Counterevidence/access finding: the documented ezSearch deep link redirects to the MOPS error surface under direct non-browser retrieval in the research environment, and no documented first-party JSON/CSV/API contract for M25 was verified this run. Official discoverability therefore does NOT equal stable machine ingestion.
+- SC-006 decision = PROPOSAL_READY / MACHINE_INTERFACE_UNVERIFIED. Do not implement brittle UI scraping and do not use third-party search as canonical ingestion.
+- Frozen isolated Class-A collector contract, conditional on stable first-party interface: official M25/equivalent events only; raw receipt/hash where permitted; issuer market/symbol; source id/url/category; publishedAt/knownAt; effectiveAt; raw counterparty; identityResolution; concentration pct/basis; capturedAt; PIT eligibility; append-only revision/supersession; anonymous identity=UNKNOWN. Coverage percentage only with reproducible official denominator.
+- Implementation gate: verify stable first-party machine-readable query/download + pagination/time semantics -> prove TWSE/TPEx coverage/reproducible denominator -> targeted named/anonymous/revision/malformed provenance tests -> only then isolated prospective Class-A implementation. Failure at interface gate => SOURCE_ACCESS_BLOCKED and move on, not UI scraping.
+- Bias/quality: no outcome lookup, no historical Shadow fabrication, no current-map backfill, no missing=no-edge/0, no entity guessing, no new lag/window/threshold/factor; R01-R08/I01-I07 unchanged.
+- Engineering: Class A documentation only. Dedicated research commit e2b68557b69219a7cf7e1e40c2f222c78d2cf59d. No Worker/Production/Formal/monitor/push change.
+- Exact next continuation: SC-006A perform one bounded interface-discovery pass against first-party TWSE/TPEx/MOPS assets/code/history for a stable machine-readable M25/equivalent query/download contract. If verified, implement only the isolated prospective research collector with targeted+regression/invariant checks; if not verified after the bounded pass, mark SOURCE_ACCESS_BLOCKED, preserve proposal, and advance to the next unresolved canonical research priority.
