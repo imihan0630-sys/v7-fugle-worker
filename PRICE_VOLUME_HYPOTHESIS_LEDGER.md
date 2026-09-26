@@ -293,3 +293,13 @@ They must not be erased once later clean data arrive.
 - PVE-127 prevents D1_DIRECT_READ_NOT_AUTHORIZED from being treated as an authoritative cause unless the underlying HTTP/error evidence actually supports authorization denial.
 - No H001~H006 hypothesis is upgraded, rejected or supported by these observability findings.
 - Formal Core remains LOCKED.
+
+
+## Hypothesis readiness after PVE-133
+- H001/H002 remain evidence-gated exactly as before; no prospective clean live evidence has matured.
+- The current run's D1 block is specifically AUTHZ_DENIED, but future D1 failures require independent cause classification.
+- Baseline rowCount=0 / readyCount=0 in a D1-blocked artifact is NOT_OBSERVED, not evidence of zero baselines.
+- Historical intraday mutation-conflict frequency remains unobservable from current read-only admin surfaces.
+- QA evidence must now preserve MEASURED_ZERO, NOT_OBSERVED, ABSENT_RECEIPT, UNKNOWN_SEMANTICS and BLOCKED as distinct states.
+- No H001~H006 hypothesis is supported/rejected by these QA-observability findings.
+- Formal Core remains LOCKED.
