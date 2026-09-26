@@ -1,7 +1,7 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-171.
-Updated: 2026-09-26 22:14 Asia/Taipei.
+Checkpoint sequence: B-187.
+Updated: 2026-09-27 05:02 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Detailed B-01..B-123 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
@@ -1058,3 +1058,16 @@ Updated: 2026-09-26 22:14 Asia/Taipei.
 - Required prospective falsification: within-gate sector-score monotonicity; breadth/avgChange incremental value after gate pass; sector-size/member-count confounding; actual sectorFlow/RS tie-break incidence; RS incremental value after setup/ret20/Residual-RS/regime controls.
 - No sector gate, score, RS formula, weight, denominator or comparator change. Any Formal change is Class C with owner approval.
 - No FORMAL_OPTIMIZATION_CANDIDATE yet; structural risks are confirmed but empirical outcome materiality remains UNKNOWN.
+
+
+## B-187 — V8.15 CI verified green + PriorityScore overlap graph frozen (2026-09-27 05:02 Asia/Taipei)
+- Fresh canonical read found concurrent research had advanced through B-186; continuation merged rather than overwriting newer work.
+- PR #112 repair verification completed: V8 Regression run 36247650523 SUCCESS and V8 Repair CI run 36247650539 SUCCESS at head 0ca163aa2860c25e4c76c59a93fdfe5c785c6981. The prior failures were therefore confirmed as stale V8.14 exact-version test fragility; V8.15 patch application and syntax had already passed. PR #112 remains OPEN/DRAFT/unmerged/undeployed, so no Production claim is made.
+- Continued B-186 structurally rather than waiting for prospective outcomes. Built a unified PriorityScore overlap graph across setup, RR, sector, market-RS and consensus.
+- Confirmed multi-layer architecture: setup has pass/grade + 28% score + 4th comparator; RR has >=2 gate +14% score + 2nd comparator; sector has hard gate +14% score + 5th comparator; market RS has 14% score + 6th comparator; consensus has source-count bonus gate/overlay + 3rd comparator. Institutional/fundamental remain partially layered but were not overclaimed.
+- Key falsification result: nominal weights 28/14/16/14/14/14 are not equivalent to total decision influence because upstream truncation, score saturation, one-decimal rounding, consensus overlay and lexicographic tie-breaks alter marginal influence. Existence of a comparator does not prove materiality because later comparators act only after earlier ties.
+- Frozen anti-overfit ablation order: baseline -> remove only duplicated later comparator -> remove only duplicated score contribution -> only then consider rescaling. Gate+weight+comparator may not be changed simultaneously and attributed to one factor.
+- Promotion gate frozen: any simplification/reweighting must show non-trivial prospective decision incidence and improve/preserve path/return without material downside, coverage or zero-pick harm across independent dates, A/B, pools, regimes, costs, redundancy and OOS direction.
+- Durable artifacts: PRIORITY_SCORE_CALIBRATION_RESEARCH.md commit 6f754c3f4a70990fc8cbdee2e555151796b56c47; machine artifact research/priority_score_overlap_graph_v0_1.json commit 6f6793d429ab5da195e7489513f80e3da357be61.
+- No outcome lookup, threshold sweep, Formal change, Production deploy or new FORMAL_OPTIMIZATION_CANDIDATE. Structural overlap is confirmed; empirical materiality remains UNKNOWN.
+- Exact next continuation: audit which overlap metrics are already prospectively observable from V8.13/V8.14/V8.15 snapshots without runtime changes, especially first-differing-comparator incidence and score saturation. Freeze a research-only replay spec that removes one duplicated layer at a time while preserving the identical admitted candidate set. If historical candidate-set completeness is insufficient, mark historical replay UNKNOWN and use prospective Shadow only. Continue automatically into institutional/fundamental overlap or another evidence-ready lane rather than tuning weights.
