@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-09-26T11:30:00+08:00",
+  "updatedAt": "2026-09-26T12:50:00+08:00",
   "status": "BASELINE_V0_2_PARTIAL_RECONCILIATION",
   "formalCore": "LOCKED",
   "authority": {
@@ -35,18 +35,18 @@
   ],
   "aggregate": {
     "domainCount": 15,
-    "moduleCount": 17,
-    "maturityWeightedPct": 48.2,
+    "moduleCount": 18,
+    "maturityWeightedPct": 47.8,
     "countsByLevel": {
       "L0": 0,
       "L1": 0,
-      "L2": 11,
+      "L2": 12,
       "L3": 5,
       "L4": 1,
       "L5": 0
     },
-    "researchDebtUnits": 8.8,
-    "dataQualityBlocked": 6,
+    "researchDebtUnits": 9.4,
+    "dataQualityBlocked": 7,
     "dataSourceBlocked": 3,
     "waitingProspective": 1,
     "formalOptimizationCandidates": 0
@@ -57,7 +57,7 @@
     "formalAutoPromotion": false,
     "independentInferenceUnitRequired": true
   },
-  "next": "Continue trend/momentum/reversal from dedicated lane; reconcile volatility-regime, institutional/crowding, macro/cross-market and remaining submodules; register optimization candidates only after mandatory bridge gates.",
+  "next": "Macro/Cross-Market historical receipts are DATA_QUALITY_BLOCKED; keep prospective receipt proposal isolated. Continue Master Map reconciliation to remaining independently falsifiable modules without fabricating history.",
   "optimizationBridge": {
     "required": true,
     "autoPromoteFormal": false,
@@ -188,6 +188,13 @@
       "level": "L4",
       "status": "CONTINUOUS",
       "basis": "Prospective Shadow, purged holdout, date clustering, redundancy, costs, multiple-testing/readiness machinery implemented; validation remains continuous."
+    },
+    {
+      "id": "MACRO_CROSS_MARKET_TRANSMISSION",
+      "domain": "MACRO_CROSS_MARKET_REGIME",
+      "level": "L2",
+      "status": "DATA_QUALITY_BLOCKED",
+      "basis": "PIT clocks, residualization and falsification frozen; repository audit did not prove durable historical global receipts with sessionDate/knownAtTaipei/firstEligibleTaiwanDecision. Prospective receipt required."
     }
   ],
   "caveat": "Baseline v0.2 covers reconciled durable lanes visible in dedicated research/checkpoint files; it is not yet exhaustive of every submodule. Percent is an auditable registered-module maturity index, not percent of all possible stock-market knowledge."
