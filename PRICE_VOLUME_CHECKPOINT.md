@@ -782,7 +782,7 @@ Class A if research-only; Class C if later used in formal 15m confirmation.
 - PVE-123: report `outcomeRows` is the latest-2000 fetched window size, not a full-table persisted-outcome count.
 - PVE-124: `qaPass` does not enumerate hard assertion failures because many assertions can abort before the JSON report is written.
 - PVE-125: when `pvScan` is absent, decisionImpact/formalCoreImpact default to false; receipt presence must gate interpretation.
-- PVE-126: `live.fugleCallsThisRun || null` collapses a legitimate measured zero to null.
+- PVE-126: initial audit flagged a possible logical-OR zero-collapse risk; PVE-134 later corrects current-runtime interpretation because the field is an object and all-zero counters are preserved.
 - PVE-127: one broad D1 catch conflates authorization denial with schema/query/assertion failures; current label alone is not an authoritative failure taxonomy.
 - These are research/observability semantics only. No Worker/runtime/Formal/token/permission/deployment change was made.
 - Current Price-Volume evidence cursor: PVE-001 through PVE-127.
@@ -814,3 +814,23 @@ Class A if research-only; Class C if later used in formal 15m confirmation.
 4. PVE-137 separate code drift, environment drift and market/admin-state drift.
 5. PVE-138 freeze safe cross-rerun comparison fields before 9/29.
 6. Continue falsification/data-quality research only; no alpha outcome inference.
+
+
+## Evidence progress — PVE-134 through PVE-139
+- PVE-134 corrects PVE-126: the current `live.fugleCallsThisRun` is an object, so an all-zero call object remains truthy and is preserved. The logical-OR risk is only type-dependent if that field ever becomes numeric zero.
+- PVE-135 directly observes workflow/job success while report `qaPass=false`; operational workflow success and research QA state are independent axes.
+- PVE-136 compares two artifacts from the same run 36144193465/head SHA and finds stable Formal config/live fingerprints but different active Worker content hashes, scan fingerprints and cron receipts.
+- PVE-137 freezes that runtime version equality is not executable-code identity; activeContentSha256 must be pinned.
+- PVE-138 freezes whole-scan fingerprint drift as semantically ambiguous because the hash mixes timing and semantic fields and the artifact lacks decomposable sub-hashes.
+- PVE-139 freezes a safe cross-rerun comparison matrix separating provenance, code identity, settings, Formal state and expected time-dependent receipts.
+- Current Price-Volume evidence cursor: PVE-001 through PVE-139.
+- PVE-126's current-runtime zero-collapse claim is superseded by PVE-134.
+- No Worker/runtime/Formal/token/permission/deployment change was made by this research.
+
+## Revised exact continuation after PVE-139
+1. PVE-140 audit active Worker source drift against authorized deployment/commit lineage.
+2. PVE-141 attempt bounded reconstruction of the observed scan-fingerprint drift; preserve UNKNOWN if component evidence is unavailable.
+3. PVE-142 freeze the minimum provenance tuple for every post-enable observation/report.
+4. PVE-143 separate workflow-source commit, deployed Worker source and research-document commit lineage.
+5. PVE-144 freeze the no-hindsight provenance receipt for 9/29 and 9/30.
+6. Formal Core remains LOCKED.
