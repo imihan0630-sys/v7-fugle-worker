@@ -288,7 +288,7 @@ A 2026 Finance Research Letters study of record-breaking monthly revenue announc
 
 Source:
 - Finance Research Letters (2026), Trading on record-breaking monthly revenue announcements
-- https://doi.org/10.1016/j.frl.2026.107833 (verify exact DOI from source before engineering citation if needed)
+- https://doi.org/10.1016/j.frl.2026.109911 (verify exact DOI from source before engineering citation if needed)
 
 ### Research lesson
 “Good monthly revenue” can coexist with:
@@ -1167,3 +1167,149 @@ Priority recommendation:
 - Taiwan futures/options-specific data and settlement mechanics.
 
 Do not interpret put/call or foreign futures positioning as a one-line bullish/bearish oracle; build positive and counter-mechanisms first.
+
+
+## FD-029 — record-high revenue evidence refresh / DOI correction
+
+Publisher evidence now resolves the exact citation:
+- Lai, Tsai, Lin & Lin (2026), Finance Research Letters, `Trading on record-breaking monthly revenue announcements`
+- DOI: `10.1016/j.frl.2026.109911`.
+
+The paper uses 12 years of one-second Taiwan intraday data and reports a horizon split:
+- record-high monthly revenue announcements can be followed by next-session opening strength and intraday reversal;
+- the short-term reversal is stronger after large pre-announcement run-ups;
+- pre-announcement institutional net selling strengthens the short-term reversal;
+- longer ~20-trading-day post-announcement returns are positive in the paper's design.
+
+The paper's record-high subset is highly salient and is NOT equivalent to arbitrary positive revenueYoY/MoM.
+
+Therefore:
+- do not turn “record-high revenue” into a universal bullish or bearish score;
+- the relevant research object is an event interaction: `fundamental news state × pre-event price run-up × institutional flow × immediate reaction × horizon`;
+- current Formal `fundamentalScore` weights realized growth/levels and does not prove this event timing effect.
+
+Historical return magnitudes from the paper are not imported into Formal thresholds.
+
+## FD-030 — current revenue Shadow cannot establish event time
+
+Fresh source audit of V8.7.11 external evidence:
+- official TWSE/TPEx current monthly-revenue snapshots are fetched;
+- rows preserve `dataMonth`, current/previous/last-year revenue, MoM, YoY and cumulative values;
+- `pointInTimeHistoryStatus = CURRENT_SNAPSHOT_ONLY`;
+- `firstKnownAt = null`;
+- policy explicitly states that `dataMonth` is report period, not proof of first market-known timestamp;
+- `historicalHighStatus = UNKNOWN_REQUIRES_HISTORY`.
+
+Therefore existing rows can support contemporaneous fundamental context, but they cannot cleanly identify:
+- announcement day;
+- pre-announcement return window;
+- announcement-day institution flow alignment;
+- next-session D1 reaction anchored to the release;
+- whether the value was a historical record at first publication.
+
+Status:
+`EVENT_CLOCK_NOT_PROVEN / HISTORICAL_RECORD_STATE_NOT_PROVEN`.
+
+Do not use current snapshot age or scanDate as a retroactive announcement timestamp.
+
+## FD-031 — zero-extra-call source opportunity exists, but runtime boundary is shared
+
+The normal after-market official enrichment already fetches full-market:
+- TWSE `t187ap05_L`;
+- TPEx `t187ap05_O`;
+
+before candidate selection.
+
+Thus a future first-observed revenue-vintage receipt does not inherently require an additional market-data API call.
+
+However the source payload is consumed inside the shared Formal enrichment path.
+Changing parser/output/storage semantics in that shared path is not treated as an autonomous Class-A research tweak.
+
+Engineering classification:
+`CLASS_B_PROPOSAL_FIRST`.
+
+No shared runtime change is authorized by this research note.
+
+## FD-032 — conservative prospective first-observed event clock
+
+If later approved, the smallest safe research receipt should store only a data-month transition observed from the already-fetched official full-market payload:
+
+- symbol / market;
+- source endpoint / source export date when available;
+- previousObservedDataMonth;
+- newObservedDataMonth;
+- firstObservedAt;
+- firstObservedScanDate;
+- revenue fields as first observed;
+- raw/payload semantic fingerprint or source receipt hash where feasible;
+- correction/revision state when the same dataMonth later changes;
+- pointInTimeEligible;
+- observationLagState.
+
+Conservative tradability rule:
+- when exact filing timestamp is unavailable, a newly observed dataMonth at the after-market scan may be used no earlier than the **next official trading session** for event-return attribution;
+- do not claim same-session attribution from an 18:10 observation;
+- if the system missed prior clean scans, mark `OBSERVATION_DELAY_UNKNOWN`; first observed is not assumed equal to first published.
+
+This deliberately sacrifices some event-timing precision to preserve no-look-ahead.
+
+## FD-033 — record-high classification requires vintage history
+
+A record-high monthly revenue state needs a historical sequence of revenue values that were valid at each first-known vintage.
+
+Current `previousRevenue` and `lastYearRevenue` fields are insufficient to prove an all-time/rolling historical record.
+
+Therefore:
+`RECORD_HIGH_REVENUE = UNKNOWN`
+until either:
+1. a validated historical first-known revenue archive exists, or
+2. enough prospective monthly vintages have accumulated under the frozen receipt contract.
+
+A current corrected historical series must not be used to fabricate past “record-high at the time” labels.
+
+## FD-034 — smallest immediately testable mechanism is not record-high
+
+Even before a long record-high history exists, a future clean prospective event clock could test a narrower mechanism without pretending to replicate the paper:
+
+`realized revenue growth state × pre-event run-up × pre-event institutional flow × immediate price reaction`.
+
+This is a NEW system-native hypothesis, not a replication of the record-high study.
+
+Required controls:
+- current fundamentalScore / EPS / margins;
+- ret20/ret60 / overheat / rank-persistency if available;
+- Residual RS / sector;
+- market regime / R06 transition / realized volatility;
+- liquidity / price tier;
+- institutional-score decomposed components rather than only its aggregate score;
+- official event overlap / other simultaneous disclosures.
+
+Primary outcome decomposition:
+- next-session overnight;
+- next-session intraday;
+- D3/D5/D10/D20;
+- MFE/MAE;
+- false/no-follow-through.
+
+Critical falsifications:
+- if overheat alone explains the short-term reversal, revenue-event interaction is redundant;
+- if institutional net-selling adds no value after its decomposed flow components, reject that interaction;
+- if no exact event clock exists, do not test event windows;
+- if long-horizon drift is confined to record-high events, do not generalize it to generic YoY growth.
+
+## FD-035 — optimization bridge
+
+No Formal optimization candidate exists.
+
+The plausible eventual system change, only after evidence, is a **fundamental-event reaction context/guard**, not “add more points for higher revenue growth.”
+
+A candidate would have to show that identical fundamentalScore stocks have materially different short-horizon risk / medium-horizon continuation depending on:
+- pre-event run-up;
+- institutional flow;
+- immediate reaction;
+- event age.
+
+Any effect on Formal ranking/eligibility is Class C and requires owner approval.
+
+Current status:
+`SOURCE_PRESENT / EVENT_CLOCK_DATA_GATED / RECORD_HIGH_HISTORY_GATED / FALSIFICATION_SPEC_READY`.
