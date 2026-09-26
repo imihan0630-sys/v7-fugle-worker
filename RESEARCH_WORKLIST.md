@@ -95,10 +95,11 @@ Shadow 後續結果：
 ## 7. 流動性門檻反證
 狀態：SPEC_FROZEN / EVIDENCE_GAP
 
-現有 Shadow cohort 無法反證早期流動性 admission：
-- BROAD_CONTROL 本身要求正式最低20日均量，因此排除低流動性股；
-- REJECTED_AFTER_BASE 只保留 basePassed=true，但三個流動性／小市值早期拒絕都回傳 basePassed=false；
-- 因此 `LIQUIDITY_REJECTED_CONTROL` 目前不存在。
+現有 Shadow cohort 無法乾淨反證早期流動性 admission：
+- BROAD_CONTROL 本身要求正式基本最低20日均量，因此**系統性排除 primary 低均量拒絕**；
+- 10～30億特殊理由不足、30～100億額外流動性不足若均量已達基本 minLots，仍可能被 BROAD_CONTROL 隨機抽到，但每池上限6檔且未依拒絕原因分層，不能估 prevalence 或當作專屬 counterfactual；
+- REJECTED_AFTER_BASE 只保留 basePassed=true，三類流動性早期拒絕都不會進此 cohort；
+- 因此目前仍沒有乾淨、原因分層、可估母體的 `LIQUIDITY_REJECTED_CONTROL`。
 
 已凍結：
 - `LIQUIDITY_ADMISSION_RESEARCH.md`
