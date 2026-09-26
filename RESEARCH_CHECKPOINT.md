@@ -1,6 +1,6 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-161.
+Checkpoint sequence: B-162.
 Updated: 2026-09-26 12:49 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Detailed B-01..B-123 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
@@ -690,3 +690,21 @@ Updated: 2026-09-26 12:49 Asia/Taipei.
 - Optimization bridge status: HISTORY_SOURCE_REVALIDATION_V2.1 = FALSIFICATION_IN_PROGRESS / STRONG_ENGINEERING_EVIDENCE / NOT_YET_FORMAL_OPTIMIZATION_CANDIDATE. Remaining gates before promotion: quantify suspicious-symbol/gap-date incidence and worst-case call budget; define source-completeness receipts and rollback/observability; prove integration against the live history-seed state machine; prove clean-input Formal output invariance; keep corporate-action price-continuity semantics separate.
 - Formal A/B definitions, ranking, 3+3/Top6, thresholds, capital, BUY/ADD/REDUCE, monitoring and push remain unchanged. PR #100 remains unsafe as a final market-session-only design and must not be promoted in that form. PR #105 remains Draft/unmerged/un-deployed.
 - Exact next continuation for this lane: build a bounded operational-cost/coverage model from the existing history seed batch/schedule, freeze a minimal gap-receipt storage/read contract without implementation, and stress worst-case stale/gap scenarios. Promote to `EVIDENCE_READY` only if the design remains bounded and fail-closed; surface `FORMAL_OPTIMIZATION_CANDIDATE` only after all applicable gates pass.
+
+
+## B-162 — First evidence-backed Formal optimization candidate registered: HISTORY_SOURCE_REVALIDATION_V2.3 (2026-09-26 12:49 Asia/Taipei)
+- Continued B-161 through bounded operational-cost and repeat-gap falsification without modifying Worker/Production/Formal Core.
+- V2.2 froze the existing seed envelope: 17:00-17:59, max 6 provider history fetches per minute => theoretical 360 provider calls in the one-hour seed window. Suspicious symbols must reuse the existing seed queue; no parallel emergency warmup. Overflow remains pending/UNKNOWN and may not fall back to stale history.
+- Official gap verification is deduplicated by (exchange,date). One full-market official date receipt can serve all suspicious symbols on that exchange/date. A prospective raw-presence ledger can reduce covered gap-date network calls to zero, but shared runtime/storage implementation is Class B proposal-first.
+- V2.3 falsified a repeated-cost failure mode in V2.1: a legitimate no-trade/suspension gap inside the rolling 60-actual-bar window would otherwise trigger provider refetch repeatedly until the gap rolled out. Reusable COMPLETE official traded=false gap receipts now permit cache fast-path validation without repeated refetch.
+- Gap-ledger semantics: COMPLETE official traded=false => explained no-trade gap; COMPLETE official traded=true => CACHE_MISSING_OFFICIAL_BAR / refetch; missing/incomplete receipt => REVALIDATE/UNKNOWN; provider bar outside market-session proof => UNKNOWN source/calendar conflict.
+- Synthetic cost tests retain explicit worst-case failure: 2,000 suspicious symbols exceed the one-hour provider envelope by 1,640 calls and must remain pending/UNKNOWN rather than silently enter selection.
+- Executable evidence for the latest V2.3 branch head is green: Research History Source Revalidation V2 run 36219439507 SUCCESS; V8 Repair run 36219439522 SUCCESS; V8 Regression run 36219439485 SUCCESS. Earlier V2.1 green runs are retained as prior evidence.
+- The research note on Draft PR #105 has been promoted to `FORMAL_OPTIMIZATION_CANDIDATE / CLASS-B IMPLEMENTATION REQUIRES OWNER APPROVAL`. PR #105 remains Draft, unmerged and un-deployed.
+- Exact proposed Formal behavior change is data admission/repair only: only freshness/source-validated histories may reach after-market feature construction; suspicious histories are revalidated; unresolved evidence fails closed; verified no-trade gaps remain eligible. No A/B definition, ranking, thresholds, Top6/3+3, capital, BUY/ADD/REDUCE, monitoring, signal or push logic changes.
+- Expected benefit: prevent B-130-class stale-history false eligibility while avoiding PR #100-class false rejection of legitimate TWSE/TPEx symbol gaps; improve auditability of MA/ATR/platform/volume features.
+- Retained downsides/unknowns: live suspicious-symbol incidence is UNKNOWN; severe blast radius can reduce same-day coverage; official gap-proof storage/read integration is shared runtime; corporate-action price continuity remains a separate prerequisite.
+- Rollback/protected invariants are frozen in the candidate note. A future Class-B implementation must prove clean-input Formal output invariance and may only change admission where data integrity differs.
+- Master Map updated without adding a fake new knowledge domain/module: formalOptimizationCandidates 0 -> 1 and candidate registry now names HISTORY_SOURCE_REVALIDATION_V2_3. Human Master Map also surfaces the candidate. Durable main commits: 1a6d898f79d58ea009fac0f9bc9b9be797e9c7a3 (machine map) and 3802f6f5e473b65ec86d605aa38e187cc39dc81f (human map).
+- Formal Core remains LOCKED. No merge/deploy is authorized by this promotion.
+- Owner decision boundary: this candidate is now mature enough for explicit Class-B implementation/integration review. If owner approval is not given, keep PR #105 research-only and continue other research lanes; do not silently promote.
