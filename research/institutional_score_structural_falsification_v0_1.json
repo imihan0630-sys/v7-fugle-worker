@@ -1,0 +1,175 @@
+{
+  "schemaVersion": "institutional-score-structural-falsification-v0.1",
+  "researchDate": "2026-09-26",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "formula": "clamp(8*foreignBuyDays + 10*trustBuyDays + 4*dealerBuyDays + 15*institutionsAligned + 6*currentBuy + clamp((institutionTotalNet/avgVolume20Shares)*25,0,25) + 0.15*chipConcentration,0,100)",
+  "currentOfficialStreakHorizonSessions": 3,
+  "facts": [
+    "currentBuy and institutionsAligned are deterministic nonlinear interactions of the same current actor signs already encoded when streakDays > 0 on a ready history.",
+    "chipConcentration is TDCC 400-lot-plus ownership concentration and explicitly is not institutional identity.",
+    "negative institutionTotalNet receives no negative contribution because netRatio is floored at zero.",
+    "score saturation is structurally possible before any empirical outcome is inspected."
+  ],
+  "cases": [
+    {
+      "id": "ALL3_1D_NO_NET_NO_CONC",
+      "input": {
+        "f": 1,
+        "t": 1,
+        "d": 1,
+        "synced": true,
+        "currentBuy": true,
+        "netRatio": 0,
+        "c": 0
+      },
+      "streakLinear": 22,
+      "consensusInteraction": 21,
+      "aggregateNetIntensity": 0,
+      "largeHolderConcentration": 0,
+      "preClamp": 43,
+      "score": 43,
+      "note": "All three current-day positive signs are represented in both streak terms and nonlinear consensus bonuses."
+    },
+    {
+      "id": "ALL3_3D_NO_NET_NO_CONC",
+      "input": {
+        "f": 3,
+        "t": 3,
+        "d": 3,
+        "synced": true,
+        "currentBuy": true,
+        "netRatio": 0,
+        "c": 0
+      },
+      "streakLinear": 66,
+      "consensusInteraction": 21,
+      "aggregateNetIntensity": 0,
+      "largeHolderConcentration": 0,
+      "preClamp": 87,
+      "score": 87,
+      "note": "Three-day synchronized streak reaches 87 before net intensity or concentration."
+    },
+    {
+      "id": "ALL3_3D_MODERATE_CONC_SMALL_NET",
+      "input": {
+        "f": 3,
+        "t": 3,
+        "d": 3,
+        "synced": true,
+        "currentBuy": true,
+        "netRatio": 0.22,
+        "c": 50
+      },
+      "streakLinear": 66,
+      "consensusInteraction": 21,
+      "aggregateNetIntensity": 5.5,
+      "largeHolderConcentration": 7.5,
+      "preClamp": 100,
+      "score": 100,
+      "note": "Moderate 50% large-holder concentration plus 0.22 ADV net flow saturates the score at 100."
+    },
+    {
+      "id": "ALL3_1D_FULL_ADV_NET_C50",
+      "input": {
+        "f": 1,
+        "t": 1,
+        "d": 1,
+        "synced": true,
+        "currentBuy": true,
+        "netRatio": 1,
+        "c": 50
+      },
+      "streakLinear": 22,
+      "consensusInteraction": 21,
+      "aggregateNetIntensity": 25,
+      "largeHolderConcentration": 7.5,
+      "preClamp": 75.5,
+      "score": 75.5,
+      "note": "One synchronized day plus one ADV aggregate net buy and 50% concentration yields >70, relevant to the small-cap exception threshold."
+    },
+    {
+      "id": "FOREIGN_3D_AGGREGATE_NET_NEGATIVE_C70",
+      "input": {
+        "f": 3,
+        "t": 0,
+        "d": 0,
+        "synced": false,
+        "currentBuy": true,
+        "netRatio": -0.25,
+        "c": 70
+      },
+      "streakLinear": 24,
+      "consensusInteraction": 6,
+      "aggregateNetIntensity": 0,
+      "largeHolderConcentration": 10.5,
+      "preClamp": 40.5,
+      "score": 40.5,
+      "note": "Aggregate net selling is clipped to zero rather than penalized; positive foreign streak plus concentration still produces a positive score."
+    },
+    {
+      "id": "TRUST_3D_ONLY_C80",
+      "input": {
+        "f": 0,
+        "t": 3,
+        "d": 0,
+        "synced": false,
+        "currentBuy": true,
+        "netRatio": 0,
+        "c": 80
+      },
+      "streakLinear": 30,
+      "consensusInteraction": 6,
+      "aggregateNetIntensity": 0,
+      "largeHolderConcentration": 12,
+      "preClamp": 48,
+      "score": 48,
+      "note": "Single-actor persistence plus ownership concentration can approach half-scale without aggregate net-intensity points."
+    },
+    {
+      "id": "ALL_SELL_C100",
+      "input": {
+        "f": 0,
+        "t": 0,
+        "d": 0,
+        "synced": false,
+        "currentBuy": false,
+        "netRatio": -1,
+        "c": 100
+      },
+      "streakLinear": 0,
+      "consensusInteraction": 0,
+      "aggregateNetIntensity": 0,
+      "largeHolderConcentration": 15,
+      "preClamp": 15,
+      "score": 15,
+      "note": "With every institutional flow component non-positive, 100% 400-lot-plus concentration alone still contributes 15 points."
+    },
+    {
+      "id": "ZERO_EVERYTHING",
+      "input": {
+        "f": 0,
+        "t": 0,
+        "d": 0,
+        "synced": false,
+        "currentBuy": false,
+        "netRatio": 0,
+        "c": 0
+      },
+      "streakLinear": 0,
+      "consensusInteraction": 0,
+      "aggregateNetIntensity": 0,
+      "largeHolderConcentration": 0,
+      "preClamp": 0,
+      "score": 0,
+      "note": "True zero baseline."
+    }
+  ],
+  "decision": "STRUCTURAL_NONINDEPENDENCE_CONFIRMED / EMPIRICAL_INCREMENTAL_VALUE_UNKNOWN / NO_FORMAL_CHANGE",
+  "next": [
+    "Measure component distributions and saturation frequency on clean prospective Shadow parents.",
+    "Test component incremental value with scanDate-clustered inference and current Formal controls.",
+    "Do not tune weights from these synthetic cases.",
+    "Treat actor split preservation as a separate shared-runtime proposal."
+  ]
+}
