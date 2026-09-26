@@ -216,3 +216,23 @@ This document and pure helper/test code are Class A research-only.
 Any D1 schema migration, Worker route, schedule, fetch path or production persistence wiring touches shared runtime/storage and must be reclassified under governance before merge/deploy.
 
 No production integration is authorized by this document.
+
+
+## 11. Raw-source field contract update — FCNT000002
+
+Live research audit on 2026-09-26 confirms Fugle `FCNT000002` preserves raw quoted OHLC across:
+- 8454 2025-08-21 stock-dividend ex-right reset;
+- 5314 2025-03-31 par-value/unit reset after verified suspension;
+- 2412 2026-07-09 cash-dividend reset.
+
+However, provider `change` / `change_rate` on these dates are not raw close-to-close arithmetic, and `refPrice` is not universally unit-comparable across a par-value reset.
+
+Therefore the adapter may consume FCNT000002 only under this field policy:
+- `open/high/low/close`: RAW traded OHLC candidate fields;
+- `volume`: lots, not shares;
+- `change/change_rate`: provider reference-adjusted semantics; prohibited as raw-return inputs on corporate-action windows;
+- `refPrice`: provenance field only unless exchange-reference semantics are independently verified for the event type.
+
+A missing bar during a VERIFIED symbol suspension is not ordinary source missingness.
+
+This resolves the raw OHLC lane for research materially, but does not make Corporate Actions `TECHNICAL_CONTINUITY` runtime-ready. Production observer wiring remains unapproved.
