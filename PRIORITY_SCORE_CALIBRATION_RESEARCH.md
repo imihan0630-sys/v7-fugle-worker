@@ -378,3 +378,51 @@ A multi-layer concept becomes a FORMAL_OPTIMIZATION_CANDIDATE only if:
 - OOS/holdout direction agrees.
 
 Until then the overlap graph is a falsification map, not a recommendation to simplify Formal.
+
+
+## Whole-system influence-layer map
+
+The nominal base PriorityScore weights are:
+- setup 28%;
+- sector 14%;
+- institutions 16%;
+- fundamentals 14%;
+- market-relative RS 14%;
+- RR 14%.
+
+These are **not** the total decision influence weights of the full Formal system.
+
+Several components also act outside the composite:
+- Setup: A/B technical qualification + signal-grade C rejection + later setup tie-break.
+- Sector: hard gate + score + sectorFlow tie-break.
+- RR: hard RR>=2 gate + score + raw RR tie-break.
+- Fundamentals: data-count and score-quality hard gates + upstream quarterly/valuation/announcement completeness.
+- Institutions: conditional >=70 requirement for the 10–30bn small-cap exception.
+- RS: score + final raw relativeStrength tie-break.
+- Market consensus: +0..7 overlay into PriorityScore + third comparator.
+
+Then post-consensus PriorityScore is:
+1. the first deployed ranking key;
+2. also used proportionally for planned capital allocation.
+
+Therefore “28/14/16/14/14/14” must not be read as a causal or total-importance decomposition.
+
+### Important methodological consequence
+
+Future calibration must condition on the **decision path**:
+- gate effects;
+- within-qualified score effects;
+- tie-break incidence;
+- selection-capacity effect;
+- capital-allocation effect.
+
+A factor can look weak among qualified rows because its hard gate already removed the lower tail.
+Conversely a factor can look strong because it is repeated at gate + score + tie-break.
+
+Do not turn “number of layers” into a pseudo-weight.
+Layering is structural exposure, not proof of excessive influence.
+
+Machine artifact:
+`research/formal_influence_layer_map_v0_1.json`.
+
+No simplification or reweighting is authorized before prospective path-level evidence.
