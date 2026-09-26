@@ -475,4 +475,365 @@ The re-run produced a new QA artifact and runtime receipt.
 
 Status:
 READ_ONLY_REPRODUCIBLE_EVIDENCE_PATH_CONFIRMED.
+# PVE-062 — Daily Outcome Finalizer: Factual Path Fields vs Censored / Semantic Labels
+
+## Source audit
+V8.11 `pvFinalizeDailyOutcomes` scans prior PV snapshots with `anchorEligible=true` and builds:
+- NEXT_OPEN
+- NEXT_SESSION
+- D1
+- D3
+- D5
+- D10
+
+It uses `pvFutureTradingRows`, which advances with the market-level `nextTradingDate()` calendar and requires a stock history row on every requested future market session.
+
+## A. Fields that can be factual under verified continuity
+When:
+- anchor price is valid/comparable;
+- every required future symbol session is present;
+- no incompatible corporate-action price discontinuity contaminates the horizon;
+
+then these are factual realized path summaries:
+- `directionReturn`
+- `mfe`
+- `mae`
+- NEXT_OPEN return
+
+They still require a point-in-time/symbol-session quality overlay before primary evidence use.
+
+## B. Symbol suspension creates censoring, not a zero/failure
+If the exchange is open but the symbol is legitimately suspended, `pvFutureTradingRows` looks for the market-session date, finds no symbol bar, and returns null for the entire horizon.
+
+Correct interpretation:
+`SYMBOL_SESSION_CENSORED_OR_MISSING`
+
+Not:
+- zero return;
+- false breakout;
+- failed setup.
+
+The current row alone cannot distinguish legitimate suspension from missing/stale source data; Corporate-Action/Symbol-Session provenance must do that.
+
+## C. Daily `acceptanceResult` is not always Acceptance-lifecycle truth
+After-market snapshots set:
+`anchorEligible = anchorClose !== null`
+for every recorded Formal plan.
+
+Therefore labels such as:
+- B_FAILED_REENTRY
+- A_FAILED_REENTRY
+- B_DAILY_D3
+- A_DAILY_D5
+on an AFTER_MARKET snapshot are better interpreted as:
+**frozen plan-level close-threshold path labels**,
+not proof that a prior intraday B/A acceptance event actually occurred.
+
+For intraday anchor snapshots that genuinely carry an acceptance transition, the interpretation is closer to the intended lifecycle, subject to PVE-049/050 drift.
+
+## D. `stopFirst` is only factual when path order is identifiable
+Daily bars are even coarser than 15m bars.
+
+If the first bar capable of resolving the contest touches both:
+- stop;
+- profitCheck;
+the order is unknowable from daily OHLC.
+
+Current code checks low<=stop before high>=profit and can label stopFirst=1 even when profit may have occurred first intraday.
+
+Thus current stored `stopFirst` is eligible only when a replay proves path order unambiguous across bars.
+
+Otherwise:
+`STOP_TARGET_ORDER_AMBIGUOUS`.
+
+## E. `rangeAtr`
+Current daily outcome builder stores `rangeAtr=null`.
+It must not be treated as missing-at-random measured ATR outcome.
+
+Status:
+DAILY_PATH_PARTIALLY_SALVAGEABLE / SYMBOL_SESSION_AND_PATH_ORDER_OVERLAY_REQUIRED.
+
+
+# PVE-063 — Persistence Continuity Can Cross Unobserved Gaps
+
+## Source audit
+For both intraday and after-market persistence, v0.1 obtains:
+the latest previous snapshot of the same observation type before the new observation.
+
+`pvAdvancePersistence` checks:
+- prior state;
+- current normalized participation;
+- comparable flag.
+
+It does NOT require:
+- same market date for INTRADAY_15M;
+- adjacent 15m slot;
+- previous expected symbol session for AFTER_MARKET;
+- bounded gap age.
+
+## Consequences
+
+### Intraday
+A symbol's last snapshot on one trading day can seed the next day's 09:00 persistence state.
+
+Worse, if a symbol leaves monitoring and returns days later, the older persistence state can be resumed.
+
+Possible false semantics:
+- PERSISTENT across an overnight gap;
+- REIGNITED after several unobserved days;
+- peakRvol/currentToPeak referencing a stale episode.
+
+### After-market
+If a stock is not present in the Formal plan cohort on intervening dates, no daily PV snapshot is stored for those dates.
+When it reappears, persistence can inherit the last observed selected-date state even though intervening daily RVOL was unobserved by the Shadow recorder.
+
+## Theory-vs-implementation distinction
+PV theory allowed missing/halted observations to **pause** an event only when missingness itself is known.
+
+Here, absence may mean:
+- not monitored/selected;
+- no snapshot opportunity;
+- data failure;
+- suspension.
+
+Those are not equivalent to one known missing comparable observation.
+
+## v0.1 evidence rule
+Use `pvPersistenceState` as clean evidence only when continuity is independently verified.
+
+Suggested overlay:
+- SAME_SESSION_ADJACENT_SLOT
+- NEXT_EXPECTED_SYMBOL_SESSION
+- OBSERVATION_GAP_UNVERIFIED
+- SUSPENSION_GAP_VERIFIED
+- NOT_APPLICABLE
+
+For primary intraday persistence evidence, prefer same-session adjacent-slot continuity.
+Cross-session persistence remains descriptive/guarded until explicitly specified.
+
+Status:
+PERSISTENCE_CONTINUITY_DEFECT_CONFIRMED / RAW_RVOL_UNAFFECTED.
+
+
+# PVE-064 — Top-Level eventKey Mixes Two Different Event Families
+
+## Source audit
+Intraday snapshot top-level identity uses:
+`eventKey = acceptance.eventKey || persistence.eventKey || null`.
+
+But both underlying event keys are also preserved:
+- `context.pvAcceptanceDetail.eventKey`
+- `features.pvPersistenceDetail.eventKey`
+
+## Problem
+Acceptance and abnormal-participation persistence are different event concepts.
+
+Example:
+1. a volume shock begins -> persistence event PVP:A;
+2. later the same wave triggers B_INITIAL_ACCEPTANCE -> acceptance event PVACC:B;
+3. top-level eventKey switches from PVP:A to PVACC:B because Acceptance has priority.
+
+If an analyst groups only by top-level eventKey:
+one economic/participation episode can be split into multiple apparent events.
+
+The reverse can also happen across session boundaries:
+Acceptance resets by marketDate, while Persistence currently can carry forward; top-level key can fall back to an old persistence event.
+
+## Correct v0.1 analysis
+Do NOT use top-level `eventKey` as a universal independence unit.
+
+Keep separate dimensions:
+- `persistenceEventKey` from nested persistence detail;
+- `acceptanceEventKey` from nested acceptance detail;
+- `snapshotId` for immutable observation identity.
+
+For H001/H002:
+event de-duplication should be based on the relevant participation-event definition, after persistence continuity is verified.
+
+For H003:
+acceptance lifecycle may use its own event family, subject to PVE-049/050.
+
+## Salvage
+Because both nested event keys remain stored, existing v0.1 rows can be reclassified analytically without rewriting snapshots.
+
+Status:
+TOP_LEVEL_EVENTKEY_NOT_UNIVERSAL / NESTED_KEYS_SALVAGEABLE.
+
+
+# PVE-065 — Exact First-Session QA Receipts for 2026-09-29 and 2026-09-30
+
+## Known calendar / lineage
+- 2026-09-25 holiday
+- 2026-09-26~27 weekend
+- 2026-09-28 holiday
+- 2026-09-29 first ordinary post-enable session
+
+The 9/29 intraday plan lineage derives from the recovered 9/24 Formal set, whose rolling-history selection provenance is known problematic from B-130.
+
+Therefore 9/29 is never a clean H001~H004 inference date even if recorder mechanics are perfect.
+
+## 2026-09-29 intraday receipt — recorder/data QA only
+
+Required observations:
+- normal INTRADAY_MONITOR cron success;
+- PV enabled;
+- no PV exception propagated into Formal;
+- zero extra ordinary live candle calls;
+- completed session15 sidecar has correct bar identities;
+- baseline-dependent fields remain UNKNOWN/DATA_INSUFFICIENT rather than neutral fabricated values while cold;
+- no claim of alpha;
+- cohort overlay = KNOWN_BAD_OR_UNVERIFIED_SELECTION_LINEAGE.
+
+Known v0.1 overlays:
+- ILLIQUIDITY_WARNING untrusted (PVE-024);
+- price-censor/corporate-action guard untrusted without external overlay (PVE-025/026);
+- response/range labels higher-risk (PVE-029/030);
+- snapshot mutation conflicts require volatile-provenance classification (PVE-037~042);
+- persistence continuity unverified unless same-session adjacent (PVE-063).
+
+## 2026-09-29 23:35 receipt — after-market runtime acknowledgement
+
+If Formal plans >0:
+require from `/api/scan/status`:
+- scanDate=2026-09-29;
+- pvShadow.enabled=true;
+- decisionImpact=false;
+- formalCoreImpact=false;
+- bootstrap.ok=true or explicit per-symbol fail-open errors;
+- bootstrap.requested = eligible Formal-plan opportunity count;
+- daily.zeroPvPushes=true;
+- daily.zeroPvActions=true;
+- no PV error changes Formal completion.
+
+Important:
+`validSessions>=20` is CACHE_POPULATED only, not feature-ready (PVE-043~048).
+
+If Formal plans = 0:
+zero requested bootstrap/snapshots can be correct:
+`ZERO_FORMAL_PLANS_VALID`.
+
+Do not call it recorder failure without an opportunity denominator.
+
+## 2026-09-30 intraday receipt — earliest baseline-ready candidate
+
+For H001/H002 field-level QA, require per-row:
+- exact current 15m bar provenance;
+- common support for Formal local previous-5 ratio and pvSlotRvol20;
+- `slotHistoryCount>=20`;
+- no invalid current-session coverage;
+- for H002 additionally `cumulativeHistoryCount>=20` and current cumulative continuity;
+- sourceFetchedAt >= barEnd for feature-known-time overlay;
+- no unresolved semantic mutation conflict.
+
+For H003 response evidence additionally:
+- `rangeHistoryCount>=20`;
+- 09:00 range-anchor issue excluded/overlaid;
+- Guard quality validated.
+
+Even if all feature gates pass:
+primary inference still requires clean 9/29 selection/cohort provenance.
+
+## At-rest proof limitation
+Because direct D1 SELECT remains unauthorized,
+runtime/admin receipts cannot alone promote a row to FEATURE_AT_REST_VERIFIED.
+
+Status:
+FIRST_SESSION_RECEIPT_V2_FROZEN / OUTCOME_BLIND.
+
+
+# PVE-066 — PV_SHADOW_V0_1 Evidence Salvage Matrix
+
+## A. Usable now / potentially usable with analysis overlays only
+
+### Raw immutable identity
+- snapshotId
+- symbol
+- marketDate
+- observationType
+- source bar identity fields
+
+Caveat:
+`observedAt` is bar/session identity, not feature-known time.
+
+### H001 core raw pair
+Potentially salvageable when common support is proven:
+- formalLocalVolumeRatio
+- pvSlotRvol20
+- slotHistoryCount
+- current slot/source bar provenance
+
+Known Guard/response-label defects do not automatically invalidate this raw-volume comparison.
+
+### H002 cumulative pace
+Potentially salvageable when:
+- cumulativeHistoryCount>=20;
+- current session has contiguous required slots;
+- same source/unit semantics pass.
+
+### Factual realized OHLC path
+Potentially salvageable:
+- directionReturn
+- MFE
+- MAE
+when symbol-session continuity and corporate-action price comparability are externally verified.
+
+### Nested event keys
+Stored nested:
+- persistence event key
+- acceptance event key
+can be separated offline.
+Do not use top-level eventKey as universal grouping.
+
+### Feature-known-time overlay
+Can be conservatively derived from:
+- sourceFetchedAt;
+- barEnd;
+without rewriting snapshots.
+
+## B. Guarded / descriptive only in v0.1
+
+- pvPersistenceState when observation adjacency is unverified;
+- pvAcceptanceState due rounding and A-branch semantic drift;
+- response/range state at 09:00 or gap-contaminated historical range cases;
+- after-market acceptanceResult as plan-threshold path label rather than true acceptance lifecycle;
+- validSessions as cache-populated indicator, not feature-readiness proof;
+- 13:00 EXPIRED_AMBIGUOUS because of session-end censoring.
+
+## C. Quarantine unless independently recomputed/overlaid
+
+- ILLIQUIDITY_WARNING;
+- corporate-action / price-censor Guard from raw previousClose;
+- VI guard;
+- marketStructure/disposition claims without authoritative upstream provenance;
+- stopFirst when stop and target order is OHLC-ambiguous;
+- daily horizons crossing symbol suspension without symbol-session provenance;
+- snapshot mutationConflict before determining whether difference is only volatile sourceFetchedAt;
+- FORMAL_SIGNAL_OBSERVED microstructure rows without same-symbol signal match.
+
+## D. Requires future schema/recorder change for clean prospective semantics
+
+- semantic fingerprint excluding volatile acquisition timestamp;
+- explicit formalFrame15LatestTime / exact comparator-bar identity;
+- explicit featureKnownAt;
+- persistence continuity policy / episode gap fields;
+- separate top-level persistenceEventKey and acceptanceEventKey;
+- corrected Guard plumbing/semantics;
+- full per-slot baseline readiness receipt if not otherwise queryable;
+- symbol-session-aware daily horizon finalization;
+- path-order-safe stop/target outcome state;
+- corrected Acceptance replay if H003 is pursued as Formal-semantic evidence.
+
+## E. Not a reason to change Formal
+Every defect above is in research Shadow/evidence semantics unless separately proven otherwise.
+
+No finding authorizes:
+- A/B rule changes;
+- BUY/ADD/REDUCE changes;
+- ranking/capital/stop changes;
+- push changes.
+
+Status:
+V0_1_RAW_VOLUME_EVIDENCE_PARTIALLY_SALVAGEABLE /
+H003_H004_HIGHER_GATED /
+FORMAL_UNCHANGED.
 
