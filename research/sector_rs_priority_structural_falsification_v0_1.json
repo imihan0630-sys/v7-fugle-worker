@@ -1,0 +1,167 @@
+{
+  "schemaVersion": "sector-rs-priority-structural-falsification-v0.1",
+  "researchDate": "2026-09-26",
+  "status": "STRUCTURAL_FALSIFICATION_FROZEN",
+  "outcomeDataUsed": false,
+  "formalCoreChanged": false,
+  "sector": {
+    "hardGate": "breadth>=40 AND avgChange>=-1 AND amountVs20DayAverage>=0.5",
+    "score": "clamp(amount/maxSectorAmount*45 + breadth*0.3 + clamp(avgChange*5+15,0,25),0,100)",
+    "priorityWeight": 0.14,
+    "deployedTieBreakPosition": 5,
+    "semanticGuard": "sectorFlow is activity/participation composite, not net capital flow",
+    "structuralFindings": [
+      "breadth and avgChange are used both in the hard gate and again inside sector.score",
+      "activity is represented by a relative-to-own-history gate (amountVs20DayAverage) but by absolute cross-sector amount share in the score",
+      "amount/maxSectorAmount introduces sector-size/composition bias and a cross-sector denominator externality",
+      "a sector's score can fall when another sector's amount rises even if its own amount/breadth/avgChange are unchanged",
+      "after passing the gate, sector.score still spans a wide theoretical range and then remains available as a later tie-break"
+    ]
+  },
+  "marketRelativeRS": {
+    "definition": "ret20 - official TAIEX return20",
+    "score": "clamp(50 + rs*2,0,100)",
+    "priorityWeight": 0.14,
+    "deployedTieBreakPosition": 6,
+    "structuralFindings": [
+      "RS influences ordering inside PriorityScore and again as the final deployed tie-break",
+      "zero market-relative performance contributes 50/100 to the component, i.e. 7 PriorityScore points",
+      "the component saturates at <=-25% and >=+25% relative return while raw relativeStrength can still differentiate ties outside/inside saturation depending on stored raw value",
+      "RS shares underlying price-history information with trend/setup/overheat families, so redundancy must be measured rather than presumed independent"
+    ]
+  },
+  "syntheticCases": {
+    "sector": [
+      {
+        "id": "PASS_BOUNDARY_SMALL_SECTOR",
+        "amount": 10,
+        "maxAmount": 100,
+        "breadth": 40,
+        "avgChange": -1,
+        "amountVs20DayAverage": 0.5,
+        "hardGatePass": true,
+        "sectorScore": 26.5,
+        "priorityContribution": 3.7100000000000004
+      },
+      {
+        "id": "SAME_SECTOR_BASE",
+        "amount": 50,
+        "maxAmount": 100,
+        "breadth": 60,
+        "avgChange": 1,
+        "amountVs20DayAverage": 1,
+        "hardGatePass": true,
+        "sectorScore": 60.5,
+        "priorityContribution": 8.47
+      },
+      {
+        "id": "SAME_SECTOR_OTHER_SECTOR_DOUBLES",
+        "amount": 50,
+        "maxAmount": 200,
+        "breadth": 60,
+        "avgChange": 1,
+        "amountVs20DayAverage": 1,
+        "hardGatePass": true,
+        "sectorScore": 49.25,
+        "priorityContribution": 6.8950000000000005
+      },
+      {
+        "id": "MAX_AMOUNT_HEALTHY",
+        "amount": 100,
+        "maxAmount": 100,
+        "breadth": 60,
+        "avgChange": 1,
+        "amountVs20DayAverage": 1,
+        "hardGatePass": true,
+        "sectorScore": 83,
+        "priorityContribution": 11.620000000000001
+      },
+      {
+        "id": "PERFECT",
+        "amount": 100,
+        "maxAmount": 100,
+        "breadth": 100,
+        "avgChange": 2,
+        "amountVs20DayAverage": 1,
+        "hardGatePass": true,
+        "sectorScore": 100,
+        "priorityContribution": 14.000000000000002
+      }
+    ],
+    "rs": [
+      {
+        "rsPct": -30,
+        "rsScore0to100": 0,
+        "priorityContribution": 0
+      },
+      {
+        "rsPct": -25,
+        "rsScore0to100": 0,
+        "priorityContribution": 0
+      },
+      {
+        "rsPct": -10,
+        "rsScore0to100": 30,
+        "priorityContribution": 4.2
+      },
+      {
+        "rsPct": 0,
+        "rsScore0to100": 50,
+        "priorityContribution": 7.000000000000001
+      },
+      {
+        "rsPct": 10,
+        "rsScore0to100": 70,
+        "priorityContribution": 9.8
+      },
+      {
+        "rsPct": 25,
+        "rsScore0to100": 100,
+        "priorityContribution": 14.000000000000002
+      },
+      {
+        "rsPct": 30,
+        "rsScore0to100": 100,
+        "priorityContribution": 14.000000000000002
+      }
+    ]
+  },
+  "observability": {
+    "existingProspective": [
+      "sector.score/sectorFlow",
+      "sector gate breadth",
+      "sector gate avgChange",
+      "sector gate amountVs20DayAverage",
+      "relativeStrength raw",
+      "priorityScore/comparator provenance"
+    ],
+    "missingForExactSectorScoreDecomposition": [
+      "sector absolute trade amount",
+      "cross-sector maxAmount denominator",
+      "sector stockCount/historicalCoverage in each candidate snapshot"
+    ],
+    "note": "Current V8.14 is sufficient for gate-outcome audit but not ideal for exact amount/maxAmount size-bias attribution on every candidate."
+  },
+  "prospectiveTests": [
+    "Sector gate component failure outcomes using V8.14 bounded rejected cohort.",
+    "Among gate passers, sector.score monotonicity versus D1/D3/D5/MFE/MAE by scanDate.",
+    "Estimate whether breadth/avgChange add incremental value inside sector.score after already conditioning gate pass.",
+    "Measure sector score by stockCount/sector size once exact denominator provenance is available.",
+    "Research replay replacing only the absolute amount-share component with no component is NOT authorized for tuning; first test current score components.",
+    "Measure how often sectorFlow and relativeStrength tie-breaks actually resolve post-Priority/RR/consensus/setup ties.",
+    "RS incremental test after ret20, setup, overheat, sector state and Residual RS controls."
+  ],
+  "falsification": [
+    "If sector.score has no within-gate incremental value, classify its post-gate weighting as redundant; do not alter gate yet.",
+    "If absolute amount share mainly proxies sector size/member count rather than outcomes, classify amount component as size-confounded.",
+    "If RS effect disappears after existing momentum/setup controls, classify it redundant.",
+    "If tie-break incidence is negligible, multi-layer influence may be structurally real but practically immaterial.",
+    "No weight/gate/denominator change before prospective OOS evidence."
+  ],
+  "governance": {
+    "anyFormalGateScoreComparatorChange": "CLASS_C_OWNER_APPROVAL_REQUIRED",
+    "currentAction": "RESEARCH_ONLY",
+    "noHistoricalBackfill": true
+  },
+  "decision": "SECTOR_MULTI_LAYER_AND_DENOMINATOR_RISK_CONFIRMED / RS_DOUBLE_LAYER_CONFIRMED / EMPIRICAL_MATERIALITY_UNKNOWN / NO_FORMAL_CHANGE"
+}
