@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "PORTFOLIO_RISK_DEPLOYMENT_GEOMETRY_V0_1",
+  "updatedAt": "2026-09-27T05:04:00+08:00",
+  "researchOnly": true,
+  "decisionImpact": false,
+  "sourceAudit": {
+    "formalSource": "Worker.js allocateAndBuildPlans()",
+    "laterPatchRedefinitionFound": false,
+    "outcomeDataUsed": false
+  },
+  "nominalDeployTargetsPct": {
+    "selected0": 0,
+    "selected1": 35,
+    "selected2": 60,
+    "selected3OrMore": 85
+  },
+  "allocationMechanics": {
+    "scoreWeightedBy": "priorityScore",
+    "perNameCapPct": 35,
+    "rounding": "floor each name to nearest NT$1,000",
+    "cappedExcessRedistributed": false
+  },
+  "decomposition": {
+    "actualReservePct": "100 - actualDeploymentPct",
+    "nominalStructuralReservePct": "100 - nominalDeployTargetPct",
+    "allocationImplementationShortfallPct": "max(0, nominalDeployTargetPct - actualDeploymentPct)"
+  },
+  "observedWitness": {
+    "scanDate": "2026-09-18",
+    "selectedCount": 3,
+    "nominalDeployTargetPct": 85,
+    "actualDeploymentPct": 84,
+    "nominalStructuralReservePct": 15,
+    "actualReservePct": 16,
+    "allocationImplementationShortfallPct": 1,
+    "allocationImplementationShortfallNTD": 2000
+  },
+  "interpretation": "Cash above the nominal structural reserve can arise mechanically from per-name caps and integer-thousand rounding. It must not automatically be labeled NO_ELIGIBLE_OPPORTUNITY or overly-strict selection.",
+  "nonClaims": [
+    "Does not prove deployment should be increased.",
+    "Does not authorize redistribution of capped excess.",
+    "Does not alter score weights, per-name cap, deploy ratio, or rounding."
+  ]
+}
