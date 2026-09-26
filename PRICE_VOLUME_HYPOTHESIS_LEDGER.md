@@ -339,3 +339,14 @@ They must not be erased once later clean data arrive.
 - Historical exact 3+3 displacement controls cannot be inferred from the current scan receipt; unknown controls must remain unknown rather than reconstructed with hindsight.
 - H001/H002/H003/H004 statuses remain evidence-gated; H006 unchanged.
 - Formal Core remains LOCKED.
+
+## Hypothesis readiness after PVE-159
+- H001/H002 remain WAITING_POST_ENABLE_LIVE_ROWS + WAITING_BASELINE_FRESHNESS_PROOF + WAITING_CLEAN_COHORT_PROVENANCE + WAITING_AT_REST_QA.
+- PVE-155 prevents the sampled Candidate Shadow archive from being misread as a complete 3+3 pool receipt. Its first six per-pool QNS rows may support bounded cutline diagnostics only.
+- A clean H001/H002 control cannot be selected using future return, MFE/MAE, BUY trigger, PV response/acceptance, or outcome availability. Control identity is frozen from pre-outcome pool membership/rank evidence.
+- The primary independent evidence count is CLEAN_SCAN_DATES, not stock rows. >=20 clean dates is only the first DESCRIPTIVE_READY floor and does not imply hypothesis support/rejection.
+- H003/H004 inherit these cohort/dependence gates plus their existing stronger Guard/response/outcome semantics restrictions.
+- H006 remains DATA_QUALITY_BLOCKED pending execution-recorder completeness and exact signal-event mapping.
+- No hypothesis is upgraded, rejected or supported by PVE-155~159.
+- Formal Core remains LOCKED.
+
