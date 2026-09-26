@@ -3,7 +3,7 @@ import {readFile} from "node:fs/promises";
 
 const workerPath=process.env.V7_TEST_WORKER_PATH || new URL("../Worker.js",import.meta.url).pathname;
 const source=await readFile(workerPath,"utf8");
-const exportTail="\nexport {historyStructuralShape,validateHistorySourceRevalidation,buildHistoryPresenceReceipt,updateMarketState,buildEligibleMarketFeature,buildMarketFeatures,strategySetupState,officialClosingUrl,isTradingDate,shiftDateString};\n";
+const exportTail="\nexport {historyStructuralShape,validateHistorySourceRevalidation,buildHistoryPresenceReceipt,updateMarketState,buildEligibleMarketFeature,buildMarketFeatures,strategySetupState,officialClosingUrl,isTradingDate,shiftDateString,fetchHistoricalDaily};\n";
 const api=await import("data:text/javascript;base64,"+Buffer.from(source+exportTail).toString("base64")+"#"+Date.now());
 
 assert.match(source,/const VERSION = "8\.12\.0-history-source-revalidation-v2-3";/);
@@ -12,6 +12,11 @@ assert.match(source,/adjusted=false&fields=open,high,low,close,volume,turnover,c
 assert.match(source,/\.map\(buildEligibleMarketFeature\)/);
 assert.match(source,/historySourceRevalidation=historyAdmission\.summary/);
 assert.match(source,/RAW_OFFICIAL_BAR_PRESENCE_BEFORE_FORMAL_FILTERS/);
+assert.match(source,/歷史日K回傳adjusted=true，拒絕與raw正式盤後資料混用/);
+const warmupSource=source.slice(source.indexOf("async function fetchHistoryWarmup"),source.indexOf("async function fetchHistoricalDaily"));
+assert.match(warmupSource,/validation\.reason==="INSUFFICIENT_PRIOR_BARS"/);
+assert.match(warmupSource,/else \{\s*failed\+=1;failedSymbols\.push\(item\.symbol\)/);
+
 
 function tradingDatesBefore(target,count){
   const out=[];
@@ -38,6 +43,20 @@ function receipt(market,date,tradedSymbols=[]){
     symbolCount:market==="TWSE"?700:500,tradedSymbols,complete:true,
     semantics:"RAW_OFFICIAL_BAR_PRESENCE_BEFORE_FORMAL_FILTERS"
   };
+}
+
+
+{
+  const originalFetch=globalThis.fetch;
+  globalThis.fetch=async()=>new Response(JSON.stringify({adjusted:true,data:[{date:"2026-09-23",open:100,high:101,low:99,close:100,volume:1000,turnover:100000}]}),{status:200,headers:{"content-type":"application/json"}});
+  try {
+    await assert.rejects(
+      api.fetchHistoricalDaily("2006","2026-09-01","2026-09-24",{FUGLE_API_KEY:"test"}),
+      /adjusted=true/
+    );
+  } finally {
+    globalThis.fetch=originalFetch;
+  }
 }
 
 const target="2026-09-24";
