@@ -770,3 +770,28 @@ Class A if research-only; Class C if later used in formal 15m confirmation.
 - Current evidence cursor: PVE-001 through PVE-100.
 - Next information hinge is actual 2026-09-29 / 2026-09-30 prospective runtime evidence.
 - Formal Core remains LOCKED; no production code/runtime change made.
+
+
+## Evidence progress — PVE-101 through PVE-127
+- Canonical detailed records are in `PRICE_VOLUME_EVIDENCE.md`.
+- PVE-101~108 deepen baseline semantics: observable-slot support, partial-session/container-count limits, corporate-action reset early-return risk and a multi-axis baseline QA contract.
+- PVE-109~114 prove the current sanitized QA artifact is strong for safety/runtime receipt but insufficient for plan-overlap/cohort-lineage reconstruction and skipped-cache freshness.
+- PVE-115~120 separate full-table, windowed-at-rest and runtime evidence; snapshot/outcome fingerprint checks and guard distributions are windowed at scale, current D1 baseline assertions remain insufficient for freshness, and current-state Formal fingerprints are not fresh OFF-vs-ON live experiments.
+- PVE-121: `baseline.readyCount` is only a coarse `validSessions>=20` container count and must not be read as field readiness.
+- PVE-122: `mutationConflictAtRest=0` is hard-coded when D1 is readable; it is not a historical mutation-conflict measurement.
+- PVE-123: report `outcomeRows` is the latest-2000 fetched window size, not a full-table persisted-outcome count.
+- PVE-124: `qaPass` does not enumerate hard assertion failures because many assertions can abort before the JSON report is written.
+- PVE-125: when `pvScan` is absent, decisionImpact/formalCoreImpact default to false; receipt presence must gate interpretation.
+- PVE-126: `live.fugleCallsThisRun || null` collapses a legitimate measured zero to null.
+- PVE-127: one broad D1 catch conflates authorization denial with schema/query/assertion failures; current label alone is not an authoritative failure taxonomy.
+- These are research/observability semantics only. No Worker/runtime/Formal/token/permission/deployment change was made.
+- Current Price-Volume evidence cursor: PVE-001 through PVE-127.
+
+## Revised exact continuation after PVE-127
+1. PVE-128: freeze non-mutating D1 failure classification from existing error/status evidence.
+2. PVE-129: design an always-emitted sanitized failure envelope while preserving workflow hard-fail semantics.
+3. PVE-130: freeze exact report-field naming/scope metadata corrections.
+4. PVE-131: audit existing read-only surfaces for historical intraday mutation-conflict telemetry.
+5. PVE-132: freeze the pre-9/29 interpretation matrix for zero/null/UNKNOWN/hard failure.
+6. Keep H001~H004 outcome inference blocked until prospective clean evidence prerequisites mature.
+7. Formal Core remains LOCKED.
