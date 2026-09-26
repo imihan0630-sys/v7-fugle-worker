@@ -14855,3 +14855,58 @@ TECHNICAL_CONTINUITY still comes from the Corporate Actions semantic layer. Patt
 - FCNT000154 adjusted=false connector path: still prohibited as trusted RAW.
 - Pattern runtime semantic wiring: still not ready because the Corporate Actions continuity registry remains research-side.
 - Formal Core unchanged.
+
+
+## DL-003K — Post-2020 Continuous-Trading Regime: Modern Taiwan Evidence Tightens Portability Rules
+
+### New modern-regime evidence
+Taiwan's intraday mechanism changed from frequent 5-second batch auctions to continuous trading on 2020-03-23.
+
+A 2026 Journal of Financial Markets study (Lee, Riccó & Wang, “Frequent batch auctions vs. continuous trading: Evidence from Taiwan”) exploits this market-wide switch and reports that continuous trading improved liquidity and price efficiency overall, especially for mid/small-cap stocks, while changing the distribution of trading gains/losses across faster investors and individuals.
+
+A separate 2026 study on Taiwan's trading-mechanism reform reports that disposition-effect and overconfidence measures increased after continuous trading, with stronger effects among stocks that had heavier retail participation before the reform.
+
+### Why this is important for Pattern
+The two findings are not contradictory:
+- faster continuous price discovery can reduce some stale-price / batch-auction artifacts;
+- faster feedback can simultaneously amplify retail behavioral responses.
+
+Therefore “post-2020 market is more efficient” does NOT imply “chart/reference-point effects must vanish,” and “retail behavior increased” does NOT imply every technical pattern gained alpha.
+
+The correct implication is stricter regime portability.
+
+### Frozen portability rule
+Primary Pattern evidence for 2026 decisions must come from the post-2020 continuous-trading regime.
+
+Pre-2020 evidence may:
+- motivate mechanism hypotheses;
+- validate detector mechanics;
+- provide adversarial stress cases.
+
+It may NOT be pooled blindly as directly representative effect-size evidence.
+
+### Interaction governance
+Do not add a new combinatorial “continuous trading x every pattern x size x retail” experiment family.
+
+Reuse the four already-frozen PATTERN-RG1..RG4 interactions and include `marketStructureRegime` as a structural-era control/stratifier.
+
+Firm size / retail participation may be reported as secondary heterogeneity only after the primary pre-registered tests have enough independent modern dates.
+
+### Price-limit consequence
+Classic Taiwan price-limit evidence from the 7%/batch-auction era is mechanism evidence only.
+For C4 / constrained breakout, modern prospective evidence must be collected under:
+- 10% daily price limits;
+- continuous intraday trading;
+- current tick rules;
+- current execution/liquidity conditions.
+
+### Falsification
+Downgrade any Pattern claim if:
+- it is driven mainly by pre-2020 observations;
+- sign/effect changes materially after 2020;
+- size/retail splits are introduced only after seeing favorable returns;
+- current Formal/PV/attention/regime controls explain the apparent effect.
+
+### Status
+MODERN_REGIME_PRIORITY_CONFIRMED / NO NEW FACTOR / NO NEW INTERACTION FAMILY.
+Formal Core remains LOCKED.
