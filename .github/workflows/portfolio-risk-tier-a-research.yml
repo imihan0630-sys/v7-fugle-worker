@@ -5,6 +5,8 @@ on:
     paths:
       - "research/portfolio_risk_tier_a_v0_1.mjs"
       - "tests/test_portfolio_risk_tier_a_v0_1.mjs"
+      - "tests/test_portfolio_risk_reconstructability_v0_1.mjs"
+      - "research/portfolio_risk_reconstructability_v0_1.json"
       - "PORTFOLIO_RISK_TIER_A_AUDIT.md"
       - ".github/workflows/portfolio-risk-tier-a-research.yml"
   workflow_dispatch:
@@ -19,5 +21,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
-      - name: Run Portfolio Risk Tier-A research test
-        run: node tests/test_portfolio_risk_tier_a_v0_1.mjs
+      - name: Run Portfolio Risk Tier-A research tests
+        run: |
+          node tests/test_portfolio_risk_tier_a_v0_1.mjs
+          node tests/test_portfolio_risk_reconstructability_v0_1.mjs
