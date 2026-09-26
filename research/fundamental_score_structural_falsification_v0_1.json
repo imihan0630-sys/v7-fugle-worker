@@ -1,0 +1,381 @@
+{
+  "schemaVersion": "fundamental-score-structural-falsification-v0.1",
+  "researchDate": "2026-09-26",
+  "outcomeDataUsed": false,
+  "formalCoreChanged": false,
+  "formula": {
+    "revenueYoY": "scorePositive(value,30) = clamp(15 + 0.5*value,0,30)",
+    "revenueMoMOrQoQ": "clamp(5 + 0.5*(revenueMoM ?? revenueQoQ),0,10)",
+    "revenueYTDYoY": "scorePositive(value,15)",
+    "epsPositive": "15 if EPS>0 else 0",
+    "grossMargin": "clamp(grossMargin/50*15,0,15)",
+    "operatingMargin": "clamp(operatingMargin/25*15,0,15)",
+    "epsYoY": "scorePositive(value,10)",
+    "grossMarginYoY": "scorePositive(value,5)",
+    "operatingMarginYoY": "scorePositive(value,5)",
+    "final": "if >=3 components, clamp(sum,0,100), else 0"
+  },
+  "theoreticalFullMax": 120,
+  "structuralFindings": [
+    "The score is additive across available fields and is not normalized by the number or maximum weight of available components.",
+    "Therefore source completeness can change score scale even when overlapping observed fundamentals are identical.",
+    "The full component maximum is 120, so score saturation at 100 is structurally possible.",
+    "scorePositive gives half of each component's maximum at exactly zero change; this confirms an intentional/implicit baseline-quality interpretation, not a pure growth score.",
+    "The revenueMoM ?? revenueQoQ slot changes economic horizon when monthly MoM is missing, creating availability-dependent semantics.",
+    "EPS-positive level and EPS YoY change, margin levels and margin YoY changes are level/change pairs; they may be useful jointly but their incremental contribution must be tested rather than assumed independent."
+  ],
+  "cases": [
+    {
+      "id": "SAME_COMPANY_ONLY_3_FIELDS",
+      "input": {
+        "revenueYoY": 20,
+        "revenueMoM": 5,
+        "eps": 5
+      },
+      "note": "Same illustrative company quality with only three score fields visible; score ceiling is structurally much lower.",
+      "componentCount": 3,
+      "components": [
+        {
+          "key": "revenueYoY",
+          "value": 25,
+          "max": 30
+        },
+        {
+          "key": "revenueMoM",
+          "value": 7.5,
+          "max": 10
+        },
+        {
+          "key": "epsPositive",
+          "value": 15,
+          "max": 15
+        }
+      ],
+      "preClamp": 47.5,
+      "score": 47.5,
+      "theoreticalAvailableMax": 55
+    },
+    {
+      "id": "SAME_COMPANY_6_FIELDS",
+      "input": {
+        "revenueYoY": 20,
+        "revenueMoM": 5,
+        "revenueYTDYoY": 20,
+        "eps": 5,
+        "grossMargin": 40,
+        "operatingMargin": 20
+      },
+      "note": "Adding otherwise consistent level/growth fields raises score without changing the already-observed three fields.",
+      "componentCount": 6,
+      "components": [
+        {
+          "key": "revenueYoY",
+          "value": 25,
+          "max": 30
+        },
+        {
+          "key": "revenueMoM",
+          "value": 7.5,
+          "max": 10
+        },
+        {
+          "key": "revenueYTDYoY",
+          "value": 15,
+          "max": 15
+        },
+        {
+          "key": "epsPositive",
+          "value": 15,
+          "max": 15
+        },
+        {
+          "key": "grossMargin",
+          "value": 12,
+          "max": 15
+        },
+        {
+          "key": "operatingMargin",
+          "value": 12,
+          "max": 15
+        }
+      ],
+      "preClamp": 86.5,
+      "score": 86.5,
+      "theoreticalAvailableMax": 100
+    },
+    {
+      "id": "SAME_COMPANY_ALL_9_FIELDS",
+      "input": {
+        "revenueYoY": 20,
+        "revenueMoM": 5,
+        "revenueQoQ": 20,
+        "revenueYTDYoY": 20,
+        "eps": 5,
+        "grossMargin": 40,
+        "operatingMargin": 20,
+        "epsYoY": 20,
+        "grossMarginYoY": 0,
+        "operatingMarginYoY": 0
+      },
+      "note": "Full field availability saturates at 100 in this plausible positive-quality example.",
+      "componentCount": 9,
+      "components": [
+        {
+          "key": "revenueYoY",
+          "value": 25,
+          "max": 30
+        },
+        {
+          "key": "revenueMoM",
+          "value": 7.5,
+          "max": 10
+        },
+        {
+          "key": "revenueYTDYoY",
+          "value": 15,
+          "max": 15
+        },
+        {
+          "key": "epsPositive",
+          "value": 15,
+          "max": 15
+        },
+        {
+          "key": "grossMargin",
+          "value": 12,
+          "max": 15
+        },
+        {
+          "key": "operatingMargin",
+          "value": 12,
+          "max": 15
+        },
+        {
+          "key": "epsYoY",
+          "value": 10,
+          "max": 10
+        },
+        {
+          "key": "grossMarginYoY",
+          "value": 2.5,
+          "max": 5
+        },
+        {
+          "key": "operatingMarginYoY",
+          "value": 2.5,
+          "max": 5
+        }
+      ],
+      "preClamp": 101.5,
+      "score": 100,
+      "theoreticalAvailableMax": 120
+    },
+    {
+      "id": "ZERO_GROWTH_PROFITABLE",
+      "input": {
+        "revenueYoY": 0,
+        "revenueMoM": 0,
+        "revenueYTDYoY": 0,
+        "eps": 2,
+        "grossMargin": 30,
+        "operatingMargin": 10,
+        "epsYoY": 0,
+        "grossMarginYoY": 0,
+        "operatingMarginYoY": 0
+      },
+      "note": "Zero growth still receives half-credit from every scorePositive term plus profitability/margin-level points; this confirms the score mixes LEVEL and CHANGE rather than representing growth only.",
+      "componentCount": 9,
+      "components": [
+        {
+          "key": "revenueYoY",
+          "value": 15,
+          "max": 30
+        },
+        {
+          "key": "revenueMoM",
+          "value": 5,
+          "max": 10
+        },
+        {
+          "key": "revenueYTDYoY",
+          "value": 7.5,
+          "max": 15
+        },
+        {
+          "key": "epsPositive",
+          "value": 15,
+          "max": 15
+        },
+        {
+          "key": "grossMargin",
+          "value": 9,
+          "max": 15
+        },
+        {
+          "key": "operatingMargin",
+          "value": 6,
+          "max": 15
+        },
+        {
+          "key": "epsYoY",
+          "value": 5,
+          "max": 10
+        },
+        {
+          "key": "grossMarginYoY",
+          "value": 2.5,
+          "max": 5
+        },
+        {
+          "key": "operatingMarginYoY",
+          "value": 2.5,
+          "max": 5
+        }
+      ],
+      "preClamp": 67.5,
+      "score": 67.5,
+      "theoreticalAvailableMax": 120
+    },
+    {
+      "id": "NEGATIVE_GROWTH_BUT_PROFITABLE",
+      "input": {
+        "revenueYoY": -10,
+        "revenueMoM": -5,
+        "revenueYTDYoY": -5,
+        "eps": 2,
+        "grossMargin": 35,
+        "operatingMargin": 12,
+        "epsYoY": -5,
+        "grossMarginYoY": -2,
+        "operatingMarginYoY": -2
+      },
+      "note": "Moderately negative growth can still produce a nontrivial quality score because margin/profitability levels and half-base scorePositive design remain positive.",
+      "componentCount": 9,
+      "components": [
+        {
+          "key": "revenueYoY",
+          "value": 10,
+          "max": 30
+        },
+        {
+          "key": "revenueMoM",
+          "value": 2.5,
+          "max": 10
+        },
+        {
+          "key": "revenueYTDYoY",
+          "value": 5,
+          "max": 15
+        },
+        {
+          "key": "epsPositive",
+          "value": 15,
+          "max": 15
+        },
+        {
+          "key": "grossMargin",
+          "value": 10.5,
+          "max": 15
+        },
+        {
+          "key": "operatingMargin",
+          "value": 7.199999999999999,
+          "max": 15
+        },
+        {
+          "key": "epsYoY",
+          "value": 2.5,
+          "max": 10
+        },
+        {
+          "key": "grossMarginYoY",
+          "value": 1.5,
+          "max": 5
+        },
+        {
+          "key": "operatingMarginYoY",
+          "value": 1.5,
+          "max": 5
+        }
+      ],
+      "preClamp": 55.7,
+      "score": 55.7,
+      "theoreticalAvailableMax": 120
+    },
+    {
+      "id": "MONTHLY_MOM_PRESENT",
+      "input": {
+        "revenueYoY": 10,
+        "revenueMoM": -20,
+        "revenueQoQ": 50,
+        "eps": 3
+      },
+      "note": "When monthly MoM exists, quarterly QoQ fallback is ignored in this component even if quarterly QoQ is much stronger.",
+      "componentCount": 3,
+      "components": [
+        {
+          "key": "revenueYoY",
+          "value": 20,
+          "max": 30
+        },
+        {
+          "key": "revenueMoM",
+          "value": 0,
+          "max": 10
+        },
+        {
+          "key": "epsPositive",
+          "value": 15,
+          "max": 15
+        }
+      ],
+      "preClamp": 35,
+      "score": 35,
+      "theoreticalAvailableMax": 55
+    },
+    {
+      "id": "MONTHLY_MOM_MISSING_QOQ_FALLBACK",
+      "input": {
+        "revenueYoY": 10,
+        "revenueMoM": null,
+        "revenueQoQ": 50,
+        "eps": 3
+      },
+      "note": "When monthly MoM is missing, the same score slot switches semantic horizon to quarterly QoQ.",
+      "componentCount": 3,
+      "components": [
+        {
+          "key": "revenueYoY",
+          "value": 20,
+          "max": 30
+        },
+        {
+          "key": "revenueQoQ_fallback",
+          "value": 10,
+          "max": 10
+        },
+        {
+          "key": "epsPositive",
+          "value": 15,
+          "max": 15
+        }
+      ],
+      "preClamp": 45,
+      "score": 45,
+      "theoreticalAvailableMax": 55
+    }
+  ],
+  "governance": {
+    "formalMateriality": "fundamentalScore contributes 14% of main priorityScore and is also subject to a >=25 main-quality gate; other Shadow/Hybrid logic may use additional thresholds.",
+    "anyFormulaChange": "CLASS_C_OWNER_APPROVAL_REQUIRED",
+    "currentTask": "STRUCTURAL_FALSIFICATION_ONLY"
+  },
+  "next": [
+    "Measure component availability patterns and score saturation on clean prospective Shadow parents.",
+    "Report score by availability signature before outcome analysis.",
+    "Test full score against raw component groups (revenue growth, profitability level, margin change, EPS change) with scan-date clustered inference.",
+    "If score differences are primarily availability differences, classify the score as coverage-confounded and surface a Class-C reformulation candidate only after OOS evidence.",
+    "Do not tune alternative weights or normalization using outcome data before the existing formula is falsified."
+  ],
+  "decision": "STRUCTURAL_COVERAGE_CONFOUND_AND_SATURATION_RISK_CONFIRMED / EMPIRICAL_MATERIALITY_UNKNOWN / NO_FORMAL_CHANGE"
+}
