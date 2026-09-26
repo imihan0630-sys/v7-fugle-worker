@@ -757,3 +757,13 @@ YES for research infrastructure integrity: resolving the actual archive lineage 
 - stopFirst path order is unknowable from a bar that touches both stop and target; daily outcomes also need symbol-session-aware handling for suspensions.
 - v0.1 observedAt/enteredAt are market bar identity times, not feature-known times. Existing sourceFetchedAt/barEnd fields allow a conservative point-in-time overlay without mutating snapshots.
 - No production change was made; evidence-first/falsification-first governance remains active.
+
+## Price-Volume evidence update — PVE-062 through PVE-075
+- Current PV evidence cursor: PVE-001 through PVE-075; theory PV-001 through PV-200 complete.
+- Daily outcome exact-date lookup fails closed on missing dates rather than jumping to later history; NEXT_SESSION and D1 are duplicate one-session numeric endpoints.
+- rangeAtr is unavailable in current v0.1 outcomes. Same-bar stop/target ordering and symbol-session suspensions remain separately guarded.
+- Persistence event continuity lacks explicit expected-gap versus recorder-gap provenance; top-level eventKey is not the canonical event unit for all hypotheses.
+- Evidence milestones now distinguish raw rows, DATA_QA observations, hypothesis-clean events and clean market dates.
+- H001 must report coverage/common support before predictive performance; H003/H004 retain higher evidence gates.
+- A field-level salvage policy prevents one research-label defect from unnecessarily destroying clean raw volume evidence.
+- No PV research finding in this sequence changes Formal Core.
