@@ -996,6 +996,7 @@ console.log("pattern core v0.1 C1-C8 and invariance tests passed");
     semanticSpace:"TECHNICAL_CONTINUITY",
     bars,
     requireSymbolSession:true,
+    symbolSessionDates:bars.map(x=>x.date),
     provenance:commonProv
   });
   const raw = validatePatternSeriesEnvelope({
@@ -1003,6 +1004,7 @@ console.log("pattern core v0.1 C1-C8 and invariance tests passed");
     semanticSpace:"RAW_EXECUTION",
     bars,
     requireSymbolSession:true,
+    symbolSessionDates:bars.map(x=>x.date),
     provenance:{...commonProv,payloadHash:"raw-v1",requestedAdjustmentMode:false,returnedAdjustmentMode:false}
   });
   const snapshot = buildPatternSnapshot({bars,asOfDate:bars.at(-1).date,swingThresholdPct:0.03});
