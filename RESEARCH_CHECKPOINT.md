@@ -1,7 +1,7 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-157.
-Updated: 2026-09-26 12:20 Asia/Taipei.
+Checkpoint sequence: B-158.
+Updated: 2026-09-26 12:28 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Detailed B-01..B-123 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
@@ -630,3 +630,18 @@ Updated: 2026-09-26 12:20 Asia/Taipei.
 - Engineering: Class A research documentation only. Commits cee2f847b055639fe928951d306ad46ff4811bc8 and 980fa3af83581b360b10299d919614707054ba3f. No Worker/Production/Formal/monitor/push change.
 - R01-R08/I01-I07: no new Formal factor; strengthens regime/redundancy/PIT controls and protects against Factor-Zoo volatility duplication.
 - Exact next continuation: continue long-batch Volatility Regime with a minimal research-only feature/receipt schema and synthetic redundancy/crisis-cluster falsification harness. Audit existing history/ATR fields and stale-history guard availability before using outcomes. If trustworthy multi-date PIT history is not available, mark evidence gate DATA_QUALITY_BLOCKED and move automatically to institutional/crowding research rather than tuning thresholds.
+
+
+## B-158 — Institutional/Crowding lane opened after volatility data-gate audit (2026-09-26 12:28 Asia/Taipei)
+- Continued beyond B-157 without waiting for another user prompt. Existing outcome helper can compute post-scan paths, but historical D1 bar continuity remains subject to the known stale-history/session gate; therefore Volatility Regime outcome testing was not started from unproven history. No threshold tuning performed.
+- Opened INSTITUTIONAL_CROWDING_RESEARCH.md and advanced IC-001..IC-012.
+- Mechanism separation frozen: foreign/trust/dealer, margin, SBL and derivatives exposure are not interchangeable; FLOW vs POSITION/STOCK are separate. Motive (conviction/hedge/passive/arbitrage) remains UNKNOWN unless evidenced.
+- Existing official-data audit found useful infrastructure but incomplete parity: TWSE/TPEx institutional sync exists; TWSE margin/SBL research exists; TPEx SBL remains UNKNOWN in V8.7.11; one-day SBL explicitly cannot masquerade as 5/20/60-day flow.
+- Persistence guard: N-day consecutive buying/selling requires immediately preceding official trading sessions plus source completeness. Missing session => UNKNOWN, never false/0.
+- Frozen candidate mechanisms: persistent same-actor flow, actor divergence, price-flow divergence, crowding/exit risk, margin/SBL pressure, and joint cash-futures exposure. No universal foreign-buy threshold.
+- Redundancy order requires price trend/residual RS, volume/liquidity, existing Formal institutional condition and regime/breadth before a new institutional candidate. If flow adds nothing beyond price-volume or existing rule, reject as redundant.
+- Counterevidence controls: actor shuffle, date-shift placebo, passive/index-rebalance contamination, TWSE-vs-TPEx stratification, crisis-date removal, size/liquidity normalization provenance and independent-date aggregation.
+- New key hypothesis: price reaction to institutional flow may be more informative than raw flow magnitude; BUY+DOWN or SELL+UP are disagreement/resilience states, not inferred motives. Crowding is explicitly two-sided and may predict downside/reversal rather than continuation.
+- Optimization bridge: no candidate yet. A future change must beat the existing Formal institutional rule incrementally and survive source parity/passive-flow/redundancy/date-cluster/cost gates. Current status FALSIFICATION_IN_PROGRESS / DATA_FEASIBILITY_PARTIAL / NOT_OPTIMIZATION_READY.
+- Engineering: Class A research documentation only. Commits 201f5f18222e6e083c3dfbd07255e46247d98a53 and 3295037b999edfe59bc4090f4d6cffeef83a9c61. No Worker/Production/Formal/monitor/push change.
+- Exact next continuation: perform a bounded official-data feasibility audit for contiguous TWSE+TPEx actor-flow sessions using the existing institution sync/storage contract, without outcome lookup. If parity/continuity can be proven, freeze a prospective receipt schema and synthetic missing-session tests; if not, mark the exact market/source gap UNKNOWN/DATA_QUALITY_BLOCKED and move automatically to Macro/Cross-Market regime transmission. Do not create a new institutional score.
