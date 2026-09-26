@@ -29,6 +29,7 @@ import {
   analyzeConfirmedBoundaryGeometry,
   analyzeCupGeometryFromAnchors,
   analyzeImpulseConsolidationGeometry,
+  analyzeResistanceTestProgression,
   buildPatternSnapshot,
   replayPatternSnapshot
 } from "../research/pattern_core_v0_1.mjs";
@@ -1077,4 +1078,42 @@ console.log("pattern core v0.1 C1-C8 and invariance tests passed");
     poleStartAt:bars[5].date,poleEndAt:bars[2].date,consolidationEndAt:bars.at(-1).date
   });
   assert.equal(blocked.reason,"IMPULSE_ANCHOR_ORDER_INVALID");
+}
+
+
+// Repeated resistance tests expose continuous progression; touch count alone is unsigned.
+{
+  const absorption=[
+    {at:"t1",low:96,close:98,resistance:100,volume:100},
+    {at:"t2",low:97,close:99,resistance:100,volume:110},
+    {at:"t3",low:98.5,close:99.7,resistance:100,volume:120}
+  ];
+  const barrier=[
+    {at:"t1",low:96,close:98,resistance:100,volume:100},
+    {at:"t2",low:95.8,close:97.9,resistance:100,volume:110},
+    {at:"t3",low:96.1,close:98.0,resistance:100,volume:120}
+  ];
+  const a=analyzeResistanceTestProgression(absorption);
+  const b=analyzeResistanceTestProgression(barrier);
+  assert.equal(a.status,"VALID");
+  assert.equal(a.touchCount,b.touchCount);
+  assert.ok(a.lowDistanceSlopePerTest<0);
+  assert.ok(a.closeDistanceSlopePerTest<0);
+  assert.ok(a.rejectionCompressionRatio<1);
+  assert.ok(a.improvingLowPairRatio>b.improvingLowPairRatio);
+  assert.ok(a.improvingClosePairRatio>b.improvingClosePairRatio);
+
+  const as=analyzeResistanceTestProgression(absorption.map(x=>({
+    ...x,low:x.low*10,close:x.close*10,resistance:x.resistance*10
+  })));
+  for(const key of [
+    "lowDistanceSlopePerTest","closeDistanceSlopePerTest",
+    "improvingLowPairRatio","improvingClosePairRatio",
+    "firstCloseDistancePct","lastCloseDistancePct","rejectionCompressionRatio"
+  ]){
+    assert.ok(Math.abs(as[key]-a[key])<1e-12,key);
+  }
+
+  const blocked=analyzeResistanceTestProgression([{low:99,close:null,resistance:100}]);
+  assert.equal(blocked.status,"BLOCKED");
 }
