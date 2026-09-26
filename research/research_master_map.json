@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-09-27T04:57:00+08:00",
+  "updatedAt": "2026-09-27T05:06:00+08:00",
   "status": "BASELINE_V0_2_PARTIAL_RECONCILIATION",
   "formalCore": "LOCKED",
   "authority": {
@@ -209,7 +209,7 @@
       "domain": "PORTFOLIO_CAPITAL_READD",
       "level": "L2",
       "status": "FALSIFICATION_IN_PROGRESS",
-      "basis": "Tier-A plan-risk geometry is PIT-reconstructable from exact Production trade-journal plan fields. Read-only Production audit found 2/2 plan dates fully reconstructable for projected heat/deployment/effectiveCapitalNames, with recovered/manual rows excluded. Historical correlation/cluster/covariance and actual-live heat remain PIT/event-coverage blocked, so module stays L2."
+      "basis": "Tier-A PIT reconstruction now separates deployment, within-deployed concentration, total-capital risky-name HHI, stop-risk intensity, channel geometry, and nominal reserve versus cap/rounding shortfall. Production read-only evidence has 2 non-zero plan dates only; correlation/cluster/live-event/outcome incrementality remain immature, so L2 is retained and no threshold/cap change is authorized."
     },
     {
       "id": "CAPITAL_READD",

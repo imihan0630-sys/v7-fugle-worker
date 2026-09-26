@@ -1,0 +1,112 @@
+{
+  "schemaVersion": "PORTFOLIO_RISK_TIER_A_HISTORY_V0_2",
+  "observedAt": "2026-09-27T05:04:15+08:00",
+  "workflowRunId": 36271656050,
+  "jobId": 108486642370,
+  "endpoint": "/api/journal?days=730",
+  "readOnly": true,
+  "outcomeFieldsRead": false,
+  "decisionImpact": false,
+  "recordedDays": 4,
+  "formalPlanRows": 4,
+  "recoveredRowsExcluded": 58,
+  "fullyReconstructablePlanDates": 2,
+  "planDates": [
+    {
+      "scanDate": "2026-09-18",
+      "totalCapital": 200000,
+      "selectedCount": 3,
+      "planRows": 3,
+      "knownRiskSymbols": 3,
+      "plannedDeploymentNTD": 168000,
+      "deploymentRatioPct": 84,
+      "structuralReservePct": 16,
+      "deployedCapitalHHI": 0.337018,
+      "effectiveCapitalNames": 2.9672,
+      "riskyNameHHIOnTotalCapital": 0.2378,
+      "projectedHeatPctLow": 2.0221,
+      "projectedHeatPctHigh": 3.2417,
+      "projectedStopRiskPctOfDeployedCapitalLow": 2.4073,
+      "projectedStopRiskPctOfDeployedCapitalHigh": 3.8592,
+      "strategyRiskDecomposition": [
+        {
+          "strategy": "B",
+          "planCount": 3,
+          "knownRiskPlans": 3,
+          "plannedDeploymentNTD": 168000,
+          "projectedStopRiskPctOfStrategyDeploymentLow": 2.4073,
+          "projectedStopRiskPctOfStrategyDeploymentHigh": 3.8592
+        }
+      ],
+      "nominalDeployTargetPct": 85,
+      "nominalStructuralReservePct": 15,
+      "allocationImplementationShortfallPct": 1,
+      "allocationImplementationShortfallNTD": 2000,
+      "cashState": "PENDING_ENTRY",
+      "status": "今日選出 3 檔；非千金股 3/3、千金股 0/3；空缺不跨池補位"
+    },
+    {
+      "scanDate": "2026-09-21",
+      "totalCapital": 200000,
+      "selectedCount": 1,
+      "planRows": 1,
+      "knownRiskSymbols": 1,
+      "plannedDeploymentNTD": 70000,
+      "deploymentRatioPct": 35,
+      "structuralReservePct": 65,
+      "deployedCapitalHHI": 1,
+      "effectiveCapitalNames": 1,
+      "riskyNameHHIOnTotalCapital": 0.1225,
+      "projectedHeatPctLow": 0.5276,
+      "projectedHeatPctHigh": 1.307,
+      "projectedStopRiskPctOfDeployedCapitalLow": 1.5074,
+      "projectedStopRiskPctOfDeployedCapitalHigh": 3.7343,
+      "strategyRiskDecomposition": [
+        {
+          "strategy": "A",
+          "planCount": 1,
+          "knownRiskPlans": 1,
+          "plannedDeploymentNTD": 70000,
+          "projectedStopRiskPctOfStrategyDeploymentLow": 1.5075,
+          "projectedStopRiskPctOfStrategyDeploymentHigh": 3.7342
+        }
+      ],
+      "nominalDeployTargetPct": 35,
+      "nominalStructuralReservePct": 65,
+      "allocationImplementationShortfallPct": 0,
+      "allocationImplementationShortfallNTD": 0,
+      "cashState": "PENDING_ENTRY",
+      "status": "今日選出 1 檔"
+    }
+  ],
+  "zeroSelected": [
+    {
+      "scanDate": "2026-09-23",
+      "totalCapital": 200000,
+      "selectedCount": 0,
+      "deploymentRatioPct": 0,
+      "structuralReservePct": 100,
+      "riskyNameHHIOnTotalCapital": 0,
+      "cashState": "NO_ELIGIBLE_OPPORTUNITY",
+      "status": "今日0檔，維持現金"
+    },
+    {
+      "scanDate": "2026-09-22",
+      "totalCapital": 200000,
+      "selectedCount": 0,
+      "deploymentRatioPct": 0,
+      "structuralReservePct": 100,
+      "riskyNameHHIOnTotalCapital": 0,
+      "cashState": "NO_ELIGIBLE_OPPORTUNITY",
+      "status": "今日0檔，維持現金"
+    }
+  ],
+  "structuralFindings": [
+    "effectiveCapitalNames alone can reverse the apparent total-account concentration ordering when deployment ratios differ",
+    "2026-09-21 has lower riskyNameHHIOnTotalCapital than 2026-09-18 despite effectiveCapitalNames=1 versus 2.9672",
+    "projectedHeat must be decomposed into deployment ratio and projected stop-risk intensity on deployed capital",
+    "Formal A/B plan geometry mechanically affects stop-risk intensity, but the observed B-only 2026-09-18 high-end intensity (3.8592%) exceeded the A-only 2026-09-21 value (3.7342%); deterministic floors do not rank realized plan risk by channel",
+    "2026-09-18 nominal deploy target was 85% but actual deployment was 84%, leaving a 1%/NT$2,000 allocation implementation shortfall beyond the 15% designed structural reserve"
+  ],
+  "interpretation": "Outcome-independent plan-time geometry only. Two non-zero plan dates are insufficient for risk thresholds, channel ranking, or predictive claims."
+}
