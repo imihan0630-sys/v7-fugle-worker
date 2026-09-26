@@ -75,7 +75,6 @@ jobs:
           python3 scripts/apply_v8_9_9.py
           python3 scripts/apply_v8_10_0.py
           python3 scripts/apply_v8_11_0.py
-          python3 scripts/rebase_v8_12_anchor.py
           python3 scripts/apply_v8_12_0.py
           # V8.9.3 Hybrid WATCH regression contract
       - name: Syntax and offline behavior regression
