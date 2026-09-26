@@ -381,18 +381,18 @@ function scaled(bars, k) {
 // C4 limit-up breakout: acceptance remains unresolved on the constrained bar.
 // Taiwan stock limit prices must be rounded to legal ticks without exceeding +/-10%.
 {
-  const officialExample = taiwanStockPriceLimits({ referencePrice: 40.60, priceLimitPct: 0.10 });
+  const officialExample = taiwanStockPriceLimits({ referencePrice: 40.60, priceLimitPct: 0.10, standardLimitApplies:true, referencePriceComparable:true });
   assert.equal(officialExample.status, "VALID");
   assert.equal(officialExample.limitUp, 44.65);
   assert.equal(officialExample.limitDown, 36.55);
 
   // Tick-bracket boundary: raw 10.989 cannot be quoted; legal limit-up is 10.95.
-  const boundary = taiwanStockPriceLimits({ referencePrice: 9.99, priceLimitPct: 0.10 });
+  const boundary = taiwanStockPriceLimits({ referencePrice: 9.99, priceLimitPct: 0.10, standardLimitApplies:true, referencePriceComparable:true });
   assert.equal(boundary.limitUp, 10.95);
   assert.equal(boundary.limitDown, 9);
 
   // Real Taiwan witness shape from 2603 / 2021-05-18: ref 63.1 -> legal limit-up 69.4.
-  const evergreen = taiwanStockPriceLimits({ referencePrice: 63.1, priceLimitPct: 0.10 });
+  const evergreen = taiwanStockPriceLimits({ referencePrice: 63.1, priceLimitPct: 0.10, standardLimitApplies:true, referencePriceComparable:true });
   assert.equal(evergreen.limitUp, 69.4);
   assert.equal(evergreen.limitDown, 56.8);
 
@@ -400,7 +400,9 @@ function scaled(bars, k) {
     priorResistance: 100,
     referencePrice: 100,
     bar: { open: 100, high: 110, low: 100, close: 110 },
-    priceLimitPct: 0.10
+    priceLimitPct: 0.10,
+    standardLimitApplies:true,
+    referencePriceComparable:true
   });
   assert.equal(out.status, "VALID");
   assert.equal(out.localBreakout, true);
@@ -413,7 +415,9 @@ function scaled(bars, k) {
   const touchedButReleased = classifyLimitBreakout({
     priorResistance: 100,
     referencePrice: 100,
-    bar: { open: 100, high: 110, low: 101, close: 107 }
+    bar: { open: 100, high: 110, low: 101, close: 107 },
+    standardLimitApplies:true,
+    referencePriceComparable:true
   });
   assert.equal(touchedButReleased.limitTouched, true);
   assert.equal(touchedButReleased.closedAtLimitUp, false);
@@ -421,11 +425,43 @@ function scaled(bars, k) {
   assert.equal(touchedButReleased.censoringState, "TOUCHED_LIMIT_UP_NOT_LOCKED_AT_CLOSE");
   assert.equal(touchedButReleased.acceptanceState, "OBSERVABLE");
 
+  const refMismatch = classifyLimitBreakout({
+    priorResistance: 69,
+    referencePrice: 1390,
+    bar: { open:69, high:76.4, low:69, close:75.8 },
+    standardLimitApplies:true,
+    referencePriceComparable:false
+  });
+  assert.equal(refMismatch.status,"BLOCKED");
+  assert.equal(refMismatch.reason,"REFERENCE_PRICE_UNIT_MISMATCH");
+  assert.equal(refMismatch.acceptanceState,"UNKNOWN");
+
+  // 5314 2025-03-31 par-value reset witness: provider refPrice=1390 is not unit-comparable
+  // with raw traded prices near 69-76.4. The continuity-compatible 1390/20=69.5 reference
+  // yields the exact legal limit-up 76.4, which was touched but not the closing price.
+  const centuryLimits = taiwanStockPriceLimits({
+    referencePrice:69.5,
+    standardLimitApplies:true,
+    referencePriceComparable:true
+  });
+  assert.equal(centuryLimits.limitUp,76.4);
+  const century = classifyLimitBreakout({
+    priorResistance:69,
+    referencePrice:69.5,
+    bar:{open:69,high:76.4,low:69,close:75.8},
+    standardLimitApplies:true,
+    referencePriceComparable:true
+  });
+  assert.equal(century.limitTouched,true);
+  assert.equal(century.closedAtLimitUp,false);
+  assert.equal(century.censoringState,"TOUCHED_LIMIT_UP_NOT_LOCKED_AT_CLOSE");
+
   const noLimitUnknown = classifyLimitBreakout({
     priorResistance: 100,
     referencePrice: 100,
     bar: { open: 100, high: 110, low: 100, close: 110 },
-    standardLimitApplies: null
+    standardLimitApplies: null,
+    referencePriceComparable:true
   });
   assert.equal(noLimitUnknown.status, "BLOCKED");
   assert.equal(noLimitUnknown.reason, "PRICE_LIMIT_RULE_UNKNOWN");
