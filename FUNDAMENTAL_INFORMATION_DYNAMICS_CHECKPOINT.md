@@ -1,10 +1,15 @@
 # Fundamental Information Dynamics Checkpoint
 
 Updated: 2026-09-25 Asia/Taipei
-Current cursor: FD-001 through FD-035 complete.
+Current cursor: FD-001 through FD-043 complete.
 Next: event-clock/vintage evidence accumulation; concept lane complete.
 
 ## Durable conclusions
+- fundamentalScore structural audit is frozen: nine possible components sum to a theoretical 120 before clamping to 100; component availability is not normalized, so score scale is coverage-sensitive.
+- scorePositive gives half-credit at zero change; fundamentalScore is a mixed level/change quality composite, not a pure growth or surprise score.
+- revenueMoM ?? revenueQoQ creates an availability-dependent monthly-versus-quarterly horizon switch.
+- Existing Shadow snapshots do not serialize grossMarginYoY/operatingMarginYoY or component availability/pre-clamp state, so exact historical score decomposition is incomplete.
+- Machine artifact `research/fundamental_score_structural_falsification_v0_1.json` freezes fixed synthetic counterexamples before outcomes.
 - Exact 2026 record-high revenue citation corrected to DOI 10.1016/j.frl.2026.109911. The event mechanism is horizon-dependent: short-term reversal can coexist with longer drift, especially conditional on pre-event run-up and institutional selling.
 - Current V8.7.11 revenue evidence is CURRENT_SNAPSHOT_ONLY with firstKnownAt=null and historicalHighStatus=UNKNOWN_REQUIRES_HISTORY; it cannot establish announcement day or record-high-at-the-time state.
 - The normal Formal enrichment already fetches full-market TWSE/TPEx monthly revenue, so future first-observed event receipts can potentially reuse the source with zero extra API calls; touching shared parser/storage remains Class-B proposal-first.
