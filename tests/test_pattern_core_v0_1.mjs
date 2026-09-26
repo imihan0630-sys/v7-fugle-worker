@@ -222,6 +222,33 @@ function scaled(bars, k) {
   assert.equal(lotReady.status,"VALID");
   assert.equal(lotReady.volumeSemanticSpace,"RAW_LOT_VOLUME");
   assert.equal(lotReady.volumeExactShareCount,false);
+  assert.equal(lotReady.volumeSubLotRemainderRisk,false);
+  assert.equal(lotReady.volumeMagnitudeReady,true);
+
+  // FCNT000002 can report volume=0 lots while amount>0 on sub-lot trading.
+  // Such a row is not "zero trading" and cannot support exact dry-up magnitude.
+  const subLotBars=[
+    {date:"2021-01-08",open:6.32,high:6.69,low:6.26,close:6.69,volume:101,turnover:642428},
+    {date:"2021-01-11",open:6.69,high:6.69,low:6.69,close:6.69,volume:0,turnover:2098},
+    {date:"2021-01-12",open:6.23,high:6.53,low:6.23,close:6.53,volume:14,turnover:91832}
+  ];
+  const subLot=validatePatternSeriesEnvelope({
+    role:"GEOMETRY",
+    semanticSpace:"TECHNICAL_CONTINUITY",
+    bars:subLotBars,
+    requireVolume:true,
+    provenance:{
+      ...common,
+      volumeSourceId:"FCNT000002",
+      volumePayloadHash:"5314-sublot-witness",
+      volumeSemanticSpace:"RAW_LOT_VOLUME",
+      volumePrecisionClass:"LOT_COUNT_WITH_UNKNOWN_SUBLOT_REMAINDER",
+      shareUnitComparable:true
+    }
+  });
+  assert.equal(subLot.status,"VALID");
+  assert.equal(subLot.volumeSubLotRemainderRisk,true);
+  assert.equal(subLot.volumeMagnitudeReady,false);
 
   const exactReady=validatePatternSeriesEnvelope({
     role:"GEOMETRY",
@@ -278,7 +305,7 @@ function scaled(bars, k) {
   assert.equal(blocked.status,"BLOCKED");
   assert.equal(blocked.reason,"SYMBOL_SESSION_PROVENANCE_UNKNOWN");
 
-  const ready=validatePatternSeriesEnvelope({
+  const missingDates=validatePatternSeriesEnvelope({
     role:"GEOMETRY",
     semanticSpace:"TECHNICAL_CONTINUITY",
     bars,
@@ -290,9 +317,47 @@ function scaled(bars, k) {
       symbolSessionPayloadHash:"session-hash-v1"
     }
   });
+  assert.equal(missingDates.reason,"SYMBOL_SESSION_DATE_SET_MISSING");
+
+  const ready=validatePatternSeriesEnvelope({
+    role:"GEOMETRY",
+    semanticSpace:"TECHNICAL_CONTINUITY",
+    bars,
+    requireSymbolSession:true,
+    symbolSessionDates:bars.map(x=>x.date),
+    provenance:{
+      ...common,
+      symbolSessionReady:true,
+      symbolSessionSourceId:"ca-symbol-session-v1",
+      symbolSessionPayloadHash:"session-hash-v1"
+    }
+  });
   assert.equal(ready.status,"VALID");
   assert.equal(ready.symbolSessionReady,true);
   assert.equal(ready.symbolSessionPayloadHash,"session-hash-v1");
+
+  // Real-source failure mode observed on FCNT000002: a suspended date can appear as a
+  // flat OHLC zero-amount pseudo-bar. A verified symbol-session set must reject it.
+  const pseudoSuspension=[
+    {date:"2025-08-11",open:78.1,high:82.1,low:77.5,close:80.4,volume:17148,turnover:1380049743},
+    {date:"2025-08-12",open:80.4,high:80.4,low:80.4,close:80.4,volume:0,turnover:0},
+    {date:"2025-08-13",open:85.9,high:88.3,low:82.1,close:82.7,volume:35313,turnover:3018248354}
+  ];
+  const pseudoBlocked=validatePatternSeriesEnvelope({
+    role:"GEOMETRY",
+    semanticSpace:"TECHNICAL_CONTINUITY",
+    bars:pseudoSuspension,
+    requireSymbolSession:true,
+    symbolSessionDates:["2025-08-11","2025-08-13"],
+    provenance:{
+      ...common,
+      symbolSessionReady:true,
+      symbolSessionSourceId:"official-session-witness",
+      symbolSessionPayloadHash:"5314-2025-08"
+    }
+  });
+  assert.equal(pseudoBlocked.reason,"NON_SYMBOL_SESSION_BAR_PRESENT");
+  assert.equal(pseudoBlocked.offendingDate,"2025-08-12");
 }
 
 // Data validator: duplicate, ordering and OPEN honesty.
