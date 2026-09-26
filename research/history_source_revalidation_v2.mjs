@@ -322,3 +322,68 @@ export function estimateHistoryRevalidationCost({
     rule:"Never exceed bounded seed capacity by silently admitting stale history; overflow remains pending/UNKNOWN."
   };
 }
+
+
+// V2.3: reuse previously verified official no-trade gap receipts in the cache fast path.
+// This prevents a legitimate suspension/no-transaction gap from forcing a provider refetch
+// every day until the gap rolls out of the 60-actual-bar window.
+export function assessCachedHistoryWithOfficialGapLedger({
+  history,marketDate,marketSessions,requiredPriorBars=60,officialGapReceipts=[]
+}){
+  const required=Math.max(1,Math.floor(Number(requiredPriorBars)||60));
+  if(!validDate(marketDate)) return {status:"UNKNOWN",usable:false,needsRefetch:true,reason:"INVALID_MARKET_DATE"};
+  const normalized=normalizedDates(history,marketDate,{allowTargetDate:true});
+  if(!normalized.ok) return {status:"REVALIDATE",usable:false,needsRefetch:true,reason:normalized.reason};
+
+  const prior=normalized.dates.filter(d=>d<marketDate);
+  if(prior.length<required) return {
+    status:"REVALIDATE",usable:false,needsRefetch:true,reason:"INSUFFICIENT_PRIOR_BARS",
+    observedPriorBars:prior.length,requiredPriorBars:required
+  };
+  const recentPrior=prior.slice(-required);
+  const earliest=recentPrior[0];
+  const providerSet=new Set(recentPrior);
+  const sessions=[...new Set((Array.isArray(marketSessions)?marketSessions:[])
+    .map(String).filter(validDate).filter(d=>d<marketDate && d>=earliest))].sort();
+  if(!sessions.length) return {status:"UNKNOWN",usable:false,needsRefetch:true,reason:"MARKET_SESSION_PROOF_UNAVAILABLE"};
+
+  const sessionSet=new Set(sessions);
+  const nonMarketBar=recentPrior.find(d=>!sessionSet.has(d));
+  if(nonMarketBar) return {
+    status:"UNKNOWN",usable:false,needsRefetch:true,
+    reason:"PROVIDER_BAR_OUTSIDE_MARKET_SESSION_PROOF",barDate:nonMarketBar
+  };
+
+  const byDate=new Map((Array.isArray(officialGapReceipts)?officialGapReceipts:[])
+    .filter(x=>x&&validDate(x.date)).map(x=>[String(x.date),x]));
+  const gaps=sessions.filter(d=>!providerSet.has(d));
+  let explainedNoTradeGaps=0;
+  for(const gapDate of gaps){
+    const receipt=byDate.get(gapDate);
+    if(!receipt || receipt.status!=="COMPLETE"){
+      return {
+        status:"REVALIDATE",usable:false,needsRefetch:true,
+        reason:"UNPROVEN_MARKET_SESSION_GAP",gapDate,explainedNoTradeGaps
+      };
+    }
+    if(receipt.traded===true){
+      return {
+        status:"REVALIDATE",usable:false,needsRefetch:true,
+        reason:"CACHE_MISSING_OFFICIAL_BAR",gapDate,explainedNoTradeGaps
+      };
+    }
+    if(receipt.traded!==false){
+      return {
+        status:"UNKNOWN",usable:false,needsRefetch:true,
+        reason:"OFFICIAL_GAP_PRESENCE_AMBIGUOUS",gapDate,explainedNoTradeGaps
+      };
+    }
+    explainedNoTradeGaps+=1;
+  }
+
+  return {
+    status:"CACHE_FAST_PATH_VALID_WITH_GAP_LEDGER",usable:true,needsRefetch:false,
+    reason:null,requiredPriorBars:required,latestPriorDate:recentPrior.at(-1),
+    explainedNoTradeGaps,gapLedgerFastPath:true
+  };
+}
