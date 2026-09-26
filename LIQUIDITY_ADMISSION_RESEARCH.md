@@ -23,15 +23,22 @@ These rejection paths occur before quarterly/valuation/sector/A-B/RR gates and r
 ## LQ-002 — Existing Shadow has a liquidity-selection-bias hole
 
 Current BROAD_CONTROL explicitly requires avgVolume20Lots >= minLots.
-Therefore it cannot represent stocks rejected by the primary liquidity gate.
 
-Current REJECTED_AFTER_BASE requires `result.basePassed===true`.
-The three liquidity-admission rejection reasons all return `basePassed=false`.
+Therefore:
+- `20日流動性不足` rows that fail the primary minLots rule are systematically absent from BROAD_CONTROL;
+- `10至30億市值缺少強力特殊理由` rows can be sampled by BROAD_CONTROL when their volume is already >=minLots but they fail the 1.5x/institutional condition; exception-pass rows below minLots that then fail the 1.5x rule remain excluded;
+- `30至100億市值流動性要求未達` rows generally lie between 1.0x and 1.2x minLots and therefore can be sampled by BROAD_CONTROL.
+
+Current REJECTED_AFTER_BASE still cannot capture any of these families because all return `basePassed=false`.
 
 Conclusion:
-`LIQUIDITY_REJECTED_CONTROL = ABSENT` in the existing standard Shadow design.
+- primary low-volume rejection has a **systematic Shadow hole**;
+- size-conditioned rejection families have only **incidental bounded BROAD_CONTROL coverage**, not dedicated/prevalence-complete counterfactual evidence.
 
-This is materially important because the gate can remove a large part of the universe; without a rejected cohort, the system cannot tell whether the gate is protecting against poor/execution-hostile names or discarding useful opportunities.
+The corrected problem is therefore not “all liquidity rejects disappear.”
+It is: **no existing cohort provides a clean, reason-stratified, prevalence-aware liquidity-admission counterfactual.**
+
+This is materially important because the gate can remove a large part of the universe; bounded random controls cannot quantify the protection/opportunity cost of each exact rejection reason.
 
 ## LQ-003 — Low-volume exception input provenance is not proven
 
@@ -129,3 +136,20 @@ It becomes a FORMAL_OPTIMIZATION_CANDIDATE only if prospective rejected-control 
 If rejected names are worse, hard to execute, or the apparent benefit disappears after costs, retain the current gate.
 
 No Formal threshold or runtime behavior changed.
+
+
+## LQ-008 — correction to Shadow coverage
+
+A later full-funnel audit corrected one overbroad statement in LQ-002/B-190.
+
+`BROAD_CONTROL` requires only the base minLots:
+- it completely misses primary low-volume rejects below minLots;
+- but it can incidentally sample small-cap special-reason rejects that are >=minLots;
+- and it can incidentally sample 30–100bn 1.0x–1.2x minLots rejects.
+
+Because BROAD_CONTROL is capped at six rows per price pool and is not stratified by rejection reason, this incidental coverage is insufficient for prevalence or clean gate-level falsification.
+
+The dedicated LIQUIDITY_REJECTED_CONTROL proposal remains justified, but its rationale is now narrower and exact.
+
+Status:
+`PRIMARY_LOW_VOLUME_SYSTEMATIC_HOLE / SIZE_CONDITIONED_INCIDENTAL_COVERAGE / DEDICATED_CONTROL_STILL_REQUIRED`.
