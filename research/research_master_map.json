@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-09-26T23:06:00+08:00",
+  "updatedAt": "2026-09-26T23:18:00+08:00",
   "status": "BASELINE_V0_2_PARTIAL_RECONCILIATION",
   "formalCore": "LOCKED",
   "authority": {
@@ -146,7 +146,7 @@
       "domain": "FUNDAMENTALS_INFORMATION_DYNAMICS",
       "level": "L2",
       "status": "DATA_QUALITY_BLOCKED",
-      "basis": "Concept layer is mature, but clean event inference remains data-quality gated: current monthly-revenue evidence is CURRENT_SNAPSHOT_ONLY with firstKnownAt=null, so announcement-day/record-high-at-the-time states cannot be backfilled. Normal Formal enrichment already fetches full-market TWSE/TPEx monthly revenue, making future first-observed data-month receipts zero-extra-call feasible in principle, but shared parser/storage instrumentation is Class-B proposal-first. Record-high revenue interaction is falsification-ready, not optimization-ready."
+      "basis": "Concept layer plus current Formal-score structural falsification are mature: event clock remains current-snapshot/first-known-vintage gated; fundamentalScore has confirmed availability-scale confounding, 120->100 saturation risk and monthly-MoM/quarterly-QoQ horizon switching. Existing Shadow observability cannot exactly reconstruct all score components because margin-YoY inputs/availability signature are not serialized. Prospective component observability is the next evidence prerequisite; no score change is authorized."
     },
     {
       "id": "BREADTH_ROTATION",
