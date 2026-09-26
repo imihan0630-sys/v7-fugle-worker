@@ -799,3 +799,90 @@ First questions:
 - tax asymmetry for same-day versus non-day-trade stock sales;
 - high-price and odd-lot minimum-fee effects;
 - when a theoretically better allocation is not worth trading into.
+
+
+---
+
+## PR-025 — Tier-A plan-risk reconstructability validated against Production journal
+
+### What is now proven
+A Class-A research prototype and a live read-only Production journal audit have moved the Tier-A subset beyond concept-only status.
+
+Durable artifacts:
+- `research/portfolio_risk_tier_a_v0_1.mjs`
+- `tests/test_portfolio_risk_tier_a_v0_1.mjs`
+- `research/portfolio_risk_reconstructability_v0_1.json`
+- `tests/test_portfolio_risk_reconstructability_v0_1.mjs`
+- `research/portfolio_risk_production_readonly_receipt_20260926.json`
+- PR #113, merged to main after Portfolio Risk research CI + V8 Repair + V8 Regression all passed.
+
+### Historical reconstruction boundary
+For exact system-recorded Formal plans in `v8_trade_journal_days` + `v8_trade_journal_plans`, the following are plan-time fields and can support historical Tier-A reconstruction without future outcomes:
+- totalCapital;
+- selectedCount/status/diagnostics;
+- buyLow / buyHigh;
+- stop;
+- allocationRatio;
+- totalAllocation;
+- priorityScore / rewardRisk;
+- first/second/total planned shares.
+
+Therefore the following are valid reconstructable plan-time diagnostics when required fields are intact:
+- plannedDeploymentNTD;
+- deploymentRatioPct;
+- projected stop-risk range by name;
+- projected portfolio heat range;
+- effectiveCapitalNames;
+- name capital concentration;
+- structural reserve.
+
+Recovered/manual rows are excluded because they do not preserve the complete capital-allocation contract.
+
+### Production read-only receipt
+Run `36253794425` read only `/api/journal?days=730`; outcome fields were not read.
+
+Observed:
+- 4 recorded Formal journal days;
+- 4 Formal plan rows;
+- 58 recovered/manual rows excluded;
+- 2 dates with plan rows;
+- 2/2 plan dates fully reconstructable;
+- 0 incomplete plan dates;
+- 2 zero-selection dates.
+
+Plan-risk geometry:
+- 2026-09-18: capital NT$200,000; 3 plans; NT$168,000 planned deployment (84%); projected heat 2.0221%–3.2417%; effectiveCapitalNames 2.9672.
+- 2026-09-21: capital NT$200,000; 1 plan; NT$70,000 planned deployment (35%); projected heat 0.5276%–1.3070%; effectiveCapitalNames 1.0000.
+- 2026-09-22 and 2026-09-23: zero selected; journal status = `今日0檔，維持現金`.
+
+These numbers prove reconstructability only. They do not establish any safe heat threshold or relationship with returns.
+
+### Semantics frozen
+For an unfilled plan:
+- projected stop risk is a range using buyLow and buyHigh;
+- buyHigh risk is the conservative endpoint for equal-planned-stop-risk diagnostics;
+- it is not actual loss and not guaranteed maximum loss.
+
+No folklore heat threshold is allowed.
+
+### What remains PIT-blocked
+Plan journal alone cannot reconstruct historical:
+- pairwise correlation20/60;
+- empirical clusters;
+- shrinkage covariance;
+- marginal/component risk contribution;
+- downside correlation.
+
+Current mutable history may not be used to invent those old states.
+
+Actual-live heat also remains conditional on complete BUY/ADD/REDUCE/SELL event coverage.
+
+### Lane state
+`PORTFOLIO_RISK = FALSIFICATION_IN_PROGRESS / TIER_A_PIT_RECONSTRUCTABLE`.
+
+Keep overall maturity at L2 for now because the broader risk layer (correlation/cluster/live-event completeness and outcome incrementality) is not yet validated.
+
+No Formal allocation, ADD, REDUCE, stop, cluster cap or heat threshold change is authorized.
+
+### Exact next
+Use only fully reconstructable plan dates to build a descriptive, outcome-independent historical Tier-A table first. Then, after enough independent dates/outcomes mature, test whether heat/concentration adds incremental downside information beyond sector/regime/volatility/PriorityScore. Correlation/cluster tests wait for exact PIT synchronized-history provenance.
