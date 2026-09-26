@@ -1,7 +1,7 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-159.
-Updated: 2026-09-26 12:35 Asia/Taipei.
+Checkpoint sequence: B-161.
+Updated: 2026-09-26 12:49 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Detailed B-01..B-123 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
@@ -675,3 +675,18 @@ Updated: 2026-09-26 12:35 Asia/Taipei.
 - R01-R08/I01-I07: explicitly strengthens look-ahead, market-source, holiday/timezone, crisis/date-cluster, redundancy and UNKNOWN controls; no historical Shadow fabrication and no outcome lookup.
 - Engineering: Class A documentation/reconciliation only. No Worker/Production/Formal selection/ranking/capital/monitor/push change. Formal Core LOCKED.
 - Exact next continuation: keep Macro outcome testing parked until prospective PIT receipts exist. Continue Master Map reconciliation to the next independently falsifiable unresolved module(s), prioritizing domains not yet separately registered rather than splitting checkpoint IDs. Audit whether any evidence-ready lane can advance without new shared-runtime data; if none, define prospective research-only evidence contracts and mark precise blockers. Any finding surviving mandatory falsification and capable of improving after-market selection must be surfaced as FORMAL_OPTIMIZATION_CANDIDATE.
+
+
+## B-161 — HISTORY_SOURCE_REVALIDATION_V2.1 falsification strengthened (2026-09-26 12:49 Asia/Taipei)
+- Continued the owner-requested after-market optimization bridge from the B-130 stale-history defect without changing Formal Core.
+- Draft research PR #105 `Research: history source revalidation v2 falsification` is Class-A research only. Branch `research/history-source-revalidation-v2-20260926`; latest research head observed `9f9eb83109cfadb865296f314b92118cc6d3bf38`.
+- Initial V2 falsified PR #100's strict market-session continuity as a final admission rule: TWSE 8422 and TPEx 5314 verified suspension/no-trade gaps can be legitimate. Market-session mismatch is therefore only a suspicion/refetch trigger, not automatic rejection.
+- V2 also freezes explicit Fugle historical `adjusted=false`, fail-closed provider failure, raw bar-presence semantics before Formal price/security filters, and the B-130 repair path. A sub-NT$10 traded row remains real bar presence and cannot be erased by `MIN_CLOSE_PRICE`.
+- New V2.1 counterexample: a freshly fetched provider series can still contain >=60 ordered bars while silently missing one recent official traded session; naive fresh-response acceptance would shift the rolling window and can alter MA/ATR/platform/volume features.
+- V2.1 adds bounded official-gap reconciliation. For market-session dates missing from the fresh provider's required rolling window, a COMPLETE official raw daily receipt is required. Official traded row present => `FRESH_PROVIDER_MISSING_OFFICIAL_BAR` / DATA_INCOMPLETE. Complete official source with no actual traded row => legitimate symbol-session gap. Missing/incomplete official source => UNKNOWN. No stale fallback.
+- Operational cost direction is bounded: healthy exact-continuity caches remain zero-call fast path; suspicious symbols need one provider refetch; official gap checks can be deduplicated by (exchange,date) because each official daily endpoint is market-wide, not per-symbol. A future prospective compact raw-presence ledger could reduce repeated gap calls, but any shared runtime/storage implementation is Class B proposal-first.
+- Executable evidence: Research History Source Revalidation V2 run 36219186997 SUCCESS; V8 Regression run 36219187015 SUCCESS; V8 Repair run 36219186930 SUCCESS. Dedicated falsification tests include B-130 stale repair, TWSE/TPEx legal-gap false-reject avoidance, provider failure fail-closed, explicit raw price semantics, low-price presence guard, fresh-provider missing-official-bar rejection, legitimate no-trade acceptance, and incomplete-official-proof UNKNOWN.
+- Historical OPEN omission from cached warmup was separately checked and is not currently a proven Formal defect: existing Formal upper-shadow logic uses the target day's official OPEN appended by updateMarketState; rolling MA/ATR/platform/volume features do not require prior-day OPEN. Status for that proposed issue = REJECTED_OR_REDUNDANT.
+- Optimization bridge status: HISTORY_SOURCE_REVALIDATION_V2.1 = FALSIFICATION_IN_PROGRESS / STRONG_ENGINEERING_EVIDENCE / NOT_YET_FORMAL_OPTIMIZATION_CANDIDATE. Remaining gates before promotion: quantify suspicious-symbol/gap-date incidence and worst-case call budget; define source-completeness receipts and rollback/observability; prove integration against the live history-seed state machine; prove clean-input Formal output invariance; keep corporate-action price-continuity semantics separate.
+- Formal A/B definitions, ranking, 3+3/Top6, thresholds, capital, BUY/ADD/REDUCE, monitoring and push remain unchanged. PR #100 remains unsafe as a final market-session-only design and must not be promoted in that form. PR #105 remains Draft/unmerged/un-deployed.
+- Exact next continuation for this lane: build a bounded operational-cost/coverage model from the existing history seed batch/schedule, freeze a minimal gap-receipt storage/read contract without implementation, and stress worst-case stale/gap scenarios. Promote to `EVIDENCE_READY` only if the design remains bounded and fail-closed; surface `FORMAL_OPTIMIZATION_CANDIDATE` only after all applicable gates pass.
