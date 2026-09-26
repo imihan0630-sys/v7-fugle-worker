@@ -15,6 +15,7 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 - Initial System 2 data-source feasibility matrix completed.
 - Research-only storage schema designed with isolated `s2_` namespace.
 - First three Shadow strategy hypotheses preregistered before outcome tuning.
+- ChatGPT Project UI migration handoff prepared in `system2/CHATGPT_PROJECT_MIGRATION.md`.
 
 ## Current design decisions
 
