@@ -26,8 +26,8 @@ Map each System 2 factor family to a source/availability/PIT risk before impleme
 | Company announcements/material info | Existing V8 official announcement evidence | PROVEN_CURRENT | event knownAt timestamp, duplicate narratives | event |
 | General news | No canonical structured source fixed yet | SOURCE_NEEDED | licensing, entity resolution, publication/update timestamps | event/catalyst |
 | Oil / commodities | Public/global sources to be selected | SOURCE_NEEDED | market timezone, futures contract/roll, receipt time | global/macro |
-| FX / USD/TWD / DXY | Public/global sources to be selected | SOURCE_NEEDED | timezone and market-close alignment | global/macro |
-| US/global indexes | Public/global sources to be selected | SOURCE_NEEDED | Taiwan decision-clock alignment | global regime |
+| FX / USD/TWD / DXY | CBC official NT$/US$ same-day close identified for USD/TWD; DXY source still to be selected | USD_TWD_PROSPECTIVE_SOURCE_PROVEN / DXY_SOURCE_NEEDED | CBC publishes business-day close around 16:00-17:00 Taipei; exact receipt timestamp/history still must be preserved | global/macro |
+| US/global indexes | FRED demonstrates prior-session S&P 500 / NASDAQ close feasibility; live provider contract for full desired set still not frozen | PARTIAL_FEASIBLE / PROVIDER_CONTRACT_NEEDED | prior U.S. close is known before Taiwan opens and may be redundant by 18:10; SOX/JP/KR/provider terms and session provenance remain | global regime |
 | Rates/macro releases | Official sources preferred | SOURCE_NEEDED | release timestamp/revisions/surprise definition | macro |
 | Supply/demand/inventory/capacity | Official/company/industry sources by sector | RESEARCH_BY_DOMAIN | heterogeneous units/frequency, narrative vs hard data | industry cycle |
 | Commodity/rare-element transmission | Event + supply-chain graph | RESEARCH_BY_DOMAIN | beneficiary/victim mapping and pass-through uncertainty | event/industry |
@@ -71,3 +71,12 @@ Map each System 2 factor family to a source/availability/PIT risk before impleme
 ## Immediate engineering implication
 
 The first Shadow prototype should preferentially use Tier A fields, while Tier B/C lanes continue research. This allows System 2 to begin accumulating honest forward data without waiting for every future factor.
+
+
+## 2026-09-26 macro/cross-market source-clock refinement
+
+- CBC NT$/US$ interbank closing rate is a materially feasible same-day official source for the 18:10 Taiwan after-market decision; it is published on business days around 16:00-17:00 Taipei.
+- FRED DEXTAUS is not the preferred same-day operational FX source because H.10 daily observations are released in weekly updates and represent New York noon rates.
+- Prior U.S. cash close is technically available before Taiwan opens, but at the 18:10 decision clock its incremental value must be tested after the Taiwan opening/full-session response.
+- Japan/Korea daily close is a mixed-window observation because both markets close about one hour after Taiwan regular trading. Daily return cannot be labeled a pure post-Taiwan-close signal.
+- Global Radar display coverage and System 2 research eligibility are intentionally different: a datum may be useful for monitoring while still lacking the PIT/source contract required for model research.
