@@ -111,3 +111,71 @@ However, the connected FCNT000002 research source does expose raw OPEN/HIGH/LOW/
 - candlestick production observer wiring: still NO_GO until runtime source/continuity/session semantics are approved.
 
 Do not solve the cache deficiency by synthesizing OPEN from close or another field.
+
+
+## Update — 2026-09-26 raw runtime path audit
+
+A direct audit of current `Worker.js` materially narrows the RAW/OPEN/volume blocker.
+
+### What the current Worker already requests
+`fetchHistoricalDaily()` calls Fugle:
+`/marketdata/v1.0/stock/historical/candles/{symbol}`
+with:
+- timeframe=D;
+- fields=open,high,low,close,volume,turnover,change;
+- no `adjusted=true` parameter.
+
+Fugle's current Historical Candles contract states:
+- `adjusted=true` is the explicit switch for adjusted price history;
+- daily stock `volume` is in SHARES, whereas intraday candle volume for regular-lot stocks is in LOTS;
+- corporate-action-day `change` can use an adjusted prior-close basis even when OHLC is raw.
+
+Therefore the direct historical endpoint already has the ingredients for:
+- RAW traded daily OPEN/HIGH/LOW/CLOSE;
+- exact daily executed-share volume;
+- without asking for provider back-adjusted prices.
+
+### Current code loss
+The current mapper intentionally returns only:
+- date;
+- close;
+- high;
+- low;
+- volumeShares;
+- tradeValue.
+
+It requests `open` but drops it before writing the history cache.
+
+This means the historical-OPEN blocker is no longer a source-availability problem.
+It is a shared-runtime field-retention issue.
+
+That issue does NOT affect the current Formal logic materially because Formal history was not designed around historical OPEN, but it blocks candlestick/overnight Pattern research if Pattern tries to reuse the cache.
+
+### Volume clarification
+The existing D1 history path names daily historical `volume` as `volumeShares`, consistent with Fugle's official daily-volume unit contract.
+
+This is stronger than the FCNT000002 research surface, where volume is exposed in lots and loses sub-lot residuals.
+
+However:
+- UNIT_SCALE corporate actions still break cross-window raw-share comparability;
+- supply changes still require explicit denominator semantics if turnover-normalized interpretation is wanted;
+- raw executed-share volume and normalized turnover remain different spaces.
+
+### Price-limit / reference-price clarification
+Pattern's isolated C4 helper now fails closed unless:
+- the ordinary standard stock limit is known to apply;
+- the reference price is unit-comparable to the traded quote scale.
+
+This is necessary because 5314 2025-03-31 proves a provider reference field can remain on a pre-conversion unit scale while raw traded prices resume on the new unit scale.
+
+### Readiness impact
+Update the effective interpretation of the gates:
+
+- RAW daily OHLC runtime source: SOURCE_READY / CURRENT_CACHE_LOSSES_OPEN.
+- Daily exact share volume source: SOURCE_READY / CA_COMPARABILITY_GUARDS_STILL_REQUIRED.
+- Historical OPEN cache: ENGINEERING_BLOCKED, not provider blocked.
+- TECHNICAL_CONTINUITY runtime path: still BLOCKED.
+- Symbol-session completeness: still PARTIAL.
+- Production Pattern observer: still NO_GO.
+
+This does not authorize changing the shared Worker mapper. Retaining OPEN in production history is Class B because it changes shared runtime/storage and must be proposed only when the remaining cross-lane gates are decision-ready.
