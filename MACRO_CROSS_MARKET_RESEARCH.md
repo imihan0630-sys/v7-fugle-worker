@@ -101,3 +101,58 @@ Minimal receipt:
 sourceMarket, instrument, sessionDate, close/value, currency/unit, source, capturedAt, knownAtTaipei, firstEligibleTaiwanDecision, staleFlag, revisionStatus.
 
 No historical Shadow fabrication.
+
+
+## MC-012 — repository provenance audit: historical global receipts are not proven
+
+Bounded repository search for Global Radar, DXY, NASDAQ and sessionDate/knownAt found research/notification references but no durable historical global-market observation table/receipt whose rows independently prove source sessionDate, capturedAt/knownAtTaipei and firstEligibleTaiwanDecision.
+
+This is a provenance result, not a claim that no global data ever existed outside the repository. Existing notification text must not be reverse-engineered into historical features.
+
+Status: HISTORICAL_GLOBAL_RECEIPT = DATA_QUALITY_BLOCKED / UNKNOWN.
+
+## MC-013 — prospective global receipt contract
+
+A research-only prospective receipt may contain:
+- receiptId
+- sourceMarket
+- instrumentId / instrumentType
+- sourceSessionDate
+- sourceTimezone
+- observedCloseOrValue
+- unit / currency
+- sourceId / sourceUrl
+- sourcePublishedAt when applicable
+- capturedAt
+- knownAtTaipei
+- firstEligibleTaiwanDecision
+- staleFlag
+- staleReason
+- revisionStatus
+- sourceQuality
+- pointInTimeEligible
+- missingReason
+
+Calendar/session mapping is explicit. A receipt is not PIT-eligible merely because it was fetched before an outcome test.
+
+## MC-014 — synthetic timezone/holiday falsification matrix
+
+Required tests before outcome use:
+1. prior U.S. close before Taiwan scan => eligible;
+2. U.S. session that occurs after Taiwan scan => FUTURE / ineligible;
+3. Japan/Korea same-day close captured before scan => eligible;
+4. foreign holiday => STALE_NO_NEW_SESSION, not a fresh zero-return observation;
+5. Taiwan holiday with multiple intervening foreign sessions => ACCUMULATED_WINDOW_REQUIRED, not silent one-day forward fill;
+6. macro release after Taiwan scan => future for that scan;
+7. revised macro value => original vintage retained; revision cannot overwrite historical knownAt;
+8. capture failure => UNKNOWN, not neutral/zero;
+9. DST/session-time shift => use source exchange session/timezone, not fixed UTC assumptions;
+10. source disagreement => preserve both/provenance or UNKNOWN; do not choose the ex-post convenient value.
+
+## MC-015 — implementation classification
+
+A standalone research receipt writer/storage isolated from Formal selection is Class A only if it does not change shared runtime paths/scheduling/storage relied on by Formal. If durable capture requires shared Cron, shared D1 schema, common fetch routing or production scheduling, it becomes Class B proposal-first.
+
+No historical backfill from current web values is authorized. No outcome lookup is needed to establish this data gate.
+
+Optimization status remains FALSIFICATION_IN_PROGRESS / DATA_QUALITY_BLOCKED / NOT_OPTIMIZATION_READY. A future global context candidate must still prove incremental value beyond Taiwan market, sector, RS/beta and regime controls and survive non-crisis/date-cluster tests.
