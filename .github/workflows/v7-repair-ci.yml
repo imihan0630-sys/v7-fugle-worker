@@ -194,6 +194,48 @@ jobs:
       - name: Apply V8.8.1 execution source coverage
         run: python3 scripts/apply_v8_8_1.py
 
+      - name: Apply V8.8.2 zero-selection push guard
+        run: python3 scripts/apply_v8_8_2.py
+
+      - name: Apply V8.9.0 three-pool Hybrid Shadow
+        run: python3 scripts/apply_v8_9_0.py
+
+      - name: Apply V8.9.1 three-pool dashboard
+        run: python3 scripts/apply_v8_9_1.py
+
+      - name: Apply V8.9.2 three-pool daily push
+        run: python3 scripts/apply_v8_9_2.py
+
+      - name: Apply V8.9.3 Hybrid WATCH state machine
+        run: python3 scripts/apply_v8_9_3.py
+
+      - name: Apply V8.9.4 Hybrid WATCH consensus refinement
+        run: python3 scripts/apply_v8_9_4.py
+
+      - name: Apply V8.9.5 Hybrid WATCH directional consensus
+        run: python3 scripts/apply_v8_9_5.py
+
+      - name: Apply V8.9.6 Hybrid WATCH audit
+        run: python3 scripts/apply_v8_9_6.py
+
+      - name: Apply V8.9.7 recovery hardening
+        run: python3 scripts/apply_v8_9_7.py
+
+      - name: Apply V8.9.8 staged recovery
+        run: python3 scripts/apply_v8_9_8.py
+
+      - name: Apply V8.9.9 staged delivery
+        run: python3 scripts/apply_v8_9_9.py
+
+      - name: Apply V8.10.0 independent Aideen pool
+        run: python3 scripts/apply_v8_10_0.py
+
+      - name: Apply V8.11.0 PV Shadow V0.1
+        run: python3 scripts/apply_v8_11_0.py
+
+      - name: Apply V8.12.0 history source revalidation V2.3
+        run: python3 scripts/apply_v8_12_0.py
+
       - name: Syntax check Worker.js
         run: |
           cp Worker.js /tmp/Worker.mjs
@@ -238,11 +280,20 @@ jobs:
           node tests/test_v8_7_13_daily_mobile_alert.mjs
           node tests/test_v8_8_0_execution_recorder.mjs
           node tests/test_v8_8_1_execution_coverage.mjs
+          node tests/test_v8_8_2_zero_selection_push.mjs
+          node tests/test_v8_9_7_recovery_hardening.mjs
+          node tests/test_v8_9_8_staged_recovery.mjs
+          node tests/test_v8_9_9_staged_delivery.mjs
+          node tests/test_v8_10_0_aideen_independent_pool.mjs
+          node tests/test_v8_11_0_pv_shadow.mjs
+          node tests/test_v8_12_0_history_source_revalidation_contract.mjs
+          node tests/test_v8_9_0_three_pool_hybrid_shadow.mjs
+          node tests/test_v8_9_1_three_pool_dashboard.mjs
           node tests/github_plan_mirror.mjs self-test
 
       - name: Verify expected version
         run: |
-          grep -F 'const VERSION = "8.8.1-execution-coverage";' Worker.js
+          grep -F 'const VERSION = "8.12.0-history-source-revalidation-v2-3";' Worker.js
           grep -F 'CREATE TABLE IF NOT EXISTS trade_research_execution_snapshots' Worker.js
           grep -F 'RESEARCH_EXECUTION_RECORDER_FAIL_OPEN' Worker.js
           grep -F 'PURGED_FORWARD_HOLDOUT' Worker.js
