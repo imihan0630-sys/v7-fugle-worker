@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-09-27T05:06:00+08:00",
+  "updatedAt": "2026-09-27T05:14:00+08:00",
   "status": "BASELINE_V0_2_PARTIAL_RECONCILIATION",
   "formalCore": "LOCKED",
   "authority": {
@@ -57,7 +57,7 @@
     "formalAutoPromotion": false,
     "independentInferenceUnitRequired": true
   },
-  "next": "Use clean prospective Shadow to test setup/RR/sector/RS monotonicity, tie-break incidence and outcome calibration before any Class-C reformulation. Continue outcome-independent structural mapping of score/rank/sizing interactions meanwhile.",
+  "next": "Liquidity admission evidence gap is now explicit: capture exact early liquidity-reject cohorts and exception-input coverage prospectively before any 1000/300-lot gate reformulation. In parallel continue outcome-independent gate/score audits; no Formal threshold tuning.",
   "optimizationBridge": {
     "required": true,
     "autoPromoteFormal": false,
@@ -111,7 +111,7 @@
       "domain": "PRICE_VOLUME",
       "level": "L3",
       "status": "WAITING_PROSPECTIVE",
-      "basis": "Large preregistered evidence/QA program; first potentially clean cohort begins after 2026-09-29 scan, outcome inference still blocked."
+      "basis": "Large preregistered PV evidence/QA program awaits clean prospective cohorts after 2026-09-29. Separate Formal liquidity-admission audit now proves an evidence hole: BROAD_CONTROL requires the current minLots and REJECTED_AFTER_BASE requires basePassed=true, so early liquidity rejects are absent from standard Shadow. A prospective LIQUIDITY_REJECTED_CONTROL spec is frozen; no threshold relaxation is authorized."
     },
     {
       "id": "TREND_MOMENTUM_REVERSAL",
@@ -195,7 +195,7 @@
       "domain": "EXECUTION_ALPHA_TRADING_FRICTIONS",
       "level": "L3",
       "status": "DATA_QUALITY_BLOCKED",
-      "basis": "Cost decomposition and falsification defined; actual fill/quote context incomplete."
+      "basis": "Cost decomposition and falsification defined; actual fill/quote context incomplete. Liquidity-admission research now requires executable spread/slippage/depth evidence before any gate-relaxation interpretation; Formal exception reads spreadPercent/orderBookDepthGood/depthScore but repository-side upstream construction is not found, while external enrichment injection remains feasible, so Production coverage is UNKNOWN."
     },
     {
       "id": "EXECUTION_ALPHA",
