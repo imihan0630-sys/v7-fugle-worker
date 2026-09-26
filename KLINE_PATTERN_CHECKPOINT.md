@@ -161,3 +161,33 @@ Durable research detail: main `KLINE_PATTERN_RESEARCH.md` commit `a245b486dc60f2
 6. After enough prospective complete dates exist, run only preregistered PATTERN-RG1..RG4 and frozen redundancy controls.
 7. Distinguish major-zone lifecycle states (approach / first break / accepted / failed) from current R01/local breakout without changing Formal logic.
 8. Do not create R09 or propose Formal optimization until maturity/date/regime/holdout/cost gates are met.
+
+
+## Continuation update — DL-003H through DL-003J
+- Older Draft PR #102 is CLOSED / NOT MERGED / NOT DEPLOYED. It was superseded because it fell far behind main.
+- New Draft PR #103 uses branch `research/class-a-pattern-shadow-v0-2-20260926`, refreshed from a much newer main baseline. It remains research-only and unmerged.
+- Latest validated PR #103 head in this update: `5847e294d1c5644d9ec1d34343400618b10973c9`.
+- CI on that head: V8 Repair `36203275992` SUCCESS; V8 Regression `36203275970` SUCCESS.
+- The branch now includes outcome-free observer episode identity and run-receipt gates. Every expected Shadow parent must resolve exactly once to VALID or explicit BLOCKED; silent missing, duplicate parent, provenance conflict, replay mismatch or prefix mismatch blocks outcome joining.
+- `research/PATTERN_OBSERVER_PERSISTENCE_V0_1.md` freezes the proposed immutable parent/snapshot/run contract. No production D1 migration/API wiring is authorized.
+- A causal major-zone lifecycle primitive is executable and prefix-invariant: BELOW/APPROACH -> FIRST_BREAK -> HOLDING_ABOVE -> REENTERED -> FAILED, with break/reentry counts and above-zone close streak. No fixed acceptance bar-count is tuned.
+- External evidence now supports a state-dependent resistance interpretation rather than a one-sign touch-count score: pre-break barrier memory can coexist with faster movement after a true cross; Taiwan 2025 historical-high evidence strengthens the post-break momentum side. Touch count remains unsigned/descriptive.
+- Taiwan price-limit evidence supports preserving `localBreakout=true` while labeling a limit-constrained bar `UNRESOLVED`; classic Taiwan studies show magnet/delayed-price-discovery/overnight-vs-intraday effects, but modern 10% continuous-trading transportability must be tested separately.
+- Fugle `FCNT000002` is materially validated as a raw-traded OHLC research source through real 8454, 5314 and 2412 corporate-action witnesses. It preserves raw nominal resets and verified suspension gaps.
+- Critical field guard: FCNT000002 `change/change_rate` are not raw close-to-close arithmetic on corporate-action sessions, and `refPrice` is not a universal unit-comparable opening reference. Pattern raw-return/gap logic must not use those fields blindly.
+- FCNT000002 volume is lots, not shares.
+- `research/PATTERN_RUNTIME_READINESS_MATRIX_V0_1.md` freezes current overall state: GO_ISOLATED_QA / NO_GO_RUNTIME. Detector mechanics are no longer the primary blocker; production-grade TECHNICAL_CONTINUITY, symbol-session provenance, supply/unit-change volume semantics and shared-runtime wiring remain unresolved cross-lane dependencies.
+- No Pattern forward outcomes were inspected; no parameter was tuned to returns; no R09; Formal Core remains LOCKED.
+
+### Current status
+`ISOLATED_DETECTOR_AND_OBSERVER_QA_PASS / RAW_OHLC_RESEARCH_PATH_MATERIAL_PASS / RUNTIME_SEMANTIC_PATH_BLOCKED / ALPHA_UNKNOWN`.
+
+### Updated exact next continuation point
+1. Keep Draft PR #103 unmerged/un-deployed. Before any future merge proposal, port/reconcile onto then-current main because other research lanes advance main rapidly.
+2. Do not request Pattern runtime wiring yet. First require an approved point-in-time runtime path for RAW_EXECUTION + TECHNICAL_CONTINUITY, verified symbol-session completeness and fail-closed unit/supply-change volume semantics.
+3. Continue Pattern learning offline: strengthen real-witness source QA and lifecycle falsification without adding outcome-tuned thresholds.
+4. Keep touchCount unsigned; preserve repeated-test progression and major-zone lifecycle as continuous/as-of descriptors.
+5. Keep limit-constrained structural breakouts separate from ordinary acceptance; modern 10%-continuous-trading evidence must be prospective/modern-regime.
+6. Do not fabricate historical Pattern Shadow rows. Outcome joins remain blocked until prospective complete parent coverage exists.
+7. When runtime/data gates eventually clear, run only PATTERN-RG1..RG4 plus frozen redundancy controls and existing maturity/date/regime/holdout/cost gates.
+8. Do not create R09 or propose Formal optimization yet.
