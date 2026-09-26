@@ -798,3 +798,12 @@ YES for research infrastructure integrity: resolving the actual archive lineage 
 - Primary Pattern evidence must be post-2020; older 7%/batch-auction evidence is mechanism/stress evidence only.
 - Keep existing PATTERN-RG1..RG4 only; marketStructureRegime is a control/stratifier, not a new factor zoo branch.
 - Formal Core unchanged.
+
+## Price-Volume evidence update — PVE-062 through PVE-066
+- Current PV evidence cursor: PVE-001 through PVE-066.
+- Daily realized return/MFE/MAE can be salvaged only with symbol-session and corporate-action comparability; missing expected market-date bars are censoring until provenance explains them.
+- Persistence events can currently bridge unobserved gaps, so pvPersistenceState is not a clean event-continuity variable without adjacency validation.
+- Top-level eventKey conflates Acceptance and Participation event families; nested event keys must be used separately.
+- v0.1 raw volume evidence remains partially salvageable despite Guard/response/Acceptance defects; H001/H002 have a lower evidence gate than H003/H004.
+- 9/29 remains recorder/data QA only; 9/30 is merely the earliest possible field-ready date, not automatic clean evidence.
+- No runtime/Formal modification made.
