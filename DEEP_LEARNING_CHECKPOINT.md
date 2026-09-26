@@ -1016,3 +1016,19 @@ YES for research infrastructure integrity: resolving the actual archive lineage 
 4. Prospective directional inference waits for complete event/date AND mechanism coverage.
 5. First evidence report keeps participation, conditional entry improvement, BUY path, NO-BUY opportunity cost and idle capital separate, stratified by independent date/A-B/pool/regime/liquidity/lot mechanism.
 6. No composite Execution Alpha score and no Formal 15m BUY change without later mature evidence + owner approval.
+
+
+## Execution Alpha continuation — EA-018 through EA-024 (2026-09-26 Asia/Taipei)
+- Continued active Execution Alpha lane outcome-independently: partial fills, cancel/replace, mixed-lot aggregation, explicit costs/slippage and idle-capital opportunity cost. No 9/24 reconstruction and no Formal tuning.
+- TWSE current rules confirm ordinary stocks use 1,000-share regular lots; sub-1,000 shares are odd lots, with intraday odd-lot first match 09:10 and 5-second call auctions. Mixed quantities therefore require mechanism-specific legs rather than one regular-lot benchmark.
+- TWSE current guidance confirms broker commissions are broker-specific; research must distinguish ACTUAL_FEE from MODELED_FEE. Seller tax and any day-trading treatment must be applied by actual transaction semantics, not assumed globally.
+- 2026 passive-execution research supports an explicit trade-off among fill probability, adverse selection, impact and non-execution opportunity cost; external coefficients are not portable to Taiwan/Formal rules.
+- Frozen semantics: preserve parent intendedQty/decisionTimestamp/decisionPrice/side/plan identity; child fillTimestamp/fillQty/fillPrice/mechanism/evidence-quality; keep filledQty and unfilledQty separate; never renormalize evaluation onto completed shares only.
+- Cancel/replace attempts remain one parent execution chain and one clustered observation; replacements cannot inflate sample size. Price improvement and delay/non-execution opportunity cost are separate components.
+- Mixed ordinary-stock quantity Q: regularQty=floor(Q/1000)*1000 and oddLotQty=Q-regularQty; aggregate only after mechanism-specific evaluation and by intended-share weights.
+- Counterevidence: non-execution can be beneficial if price later falls; higher fill rate is not monotonically better because aggression can worsen spread/impact/adverse selection. Opportunity cost therefore needs frozen horizons and can have either sign.
+- Bias controls: complete fills alone are an invalid denominator; timestamps are PIT anchors; child fills/replacements cluster under parent decision/date; no tactic/offset sweep; missing exact-date or odd-lot evidence stays UNKNOWN.
+- Incremental value is measurement/provenance discipline, not a new stock-selection factor. Current exact-date recorder completeness and odd-lot capture remain separate Class-B gaps.
+- Status: WORTH_SHADOW_RESEARCH / METHODOLOGY_FROZEN_FOR_SYNTHETIC_FALSIFICATION. No FORMAL_OPTIMIZATION_CANDIDATE; no runtime/Formal change.
+- Engineering: Class A for documentation/synthetic fixtures/offline aggregation; Class B for new exact-date recorder fields, odd-lot capture or shared runtime persistence; Class C for any Formal 15m BUY/entry/sizing/action change.
+- Exact next continuation: freeze implementation-shortfall sign conventions/equations; build synthetic adversarial fixtures for 0%, 25/75%, cancel favorable/adverse, regular-only, odd-lot-only and mixed chains; audit current recorder schema for parentDecisionId/intendedQty/child fills/cancel reason/ACTUAL-vs-MODELED provenance; keep missing fields UNKNOWN; prospective inference waits for complete event/date plus mechanism coverage; Formal Core remains LOCKED.
