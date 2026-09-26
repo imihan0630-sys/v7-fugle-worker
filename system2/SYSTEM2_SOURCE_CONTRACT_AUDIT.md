@@ -304,6 +304,40 @@ Required for safe historical technical/pattern factors:
 Rule:
 - corporate-action discontinuities must never become false breakout/gap/pattern evidence.
 
+## B7 — contract liabilities / customer prepayments
+
+State: SOURCE_EXTENSION_REQUIRED + TIER_B_PIT_AUDIT.
+
+The repository currently has no normalized `contractLiabilityCurrent`, `contractLiabilityNonCurrent` or `contractLiabilityTotal` field in the audited System 2 / V8 contracts.
+
+Accounting source concept is valid, but System 2 must not score the factor until a canonical filing/taxonomy extraction is frozen.
+
+Required source contract:
+- financialYear / financialQuarter;
+- contractLiabilityCurrent;
+- contractLiabilityNonCurrent where disclosed;
+- contractLiabilityTotal;
+- filingPublishedAt / availableAt;
+- source filing ID / taxonomy tag;
+- restatement/version marker;
+- unit / currency;
+- semantic readiness flag.
+
+Required data-quality checks:
+- current vs non-current classification consistency;
+- taxonomy/tag changes across years;
+- restatement handling;
+- industry/business-model applicability;
+- distinguish contract liabilities from contract assets and ordinary payables;
+- no assumption that all contract liabilities are cancellable/non-cancellable backlog.
+
+System 2 use after source readiness:
+- FUNDAMENTAL_GROWTH（基本面成長策略） forward-visibility research;
+- SWING_GROWTH（波段成長策略） expectation/acceleration context;
+- INDUSTRY_TREND（產業趨勢策略） project-cycle context where economically appropriate.
+
+Historical testing remains blocked until publication-time vintages are proven.
+
 ## C — not yet canonical for System 2
 
 State: TIER_C_SOURCE_REQUIRED.
