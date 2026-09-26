@@ -54,3 +54,31 @@ This prototype still needs:
 - explicit separation from the corporate-action price-continuity problem.
 
 No Worker.js/runtime/D1/KV/selection/ranking/threshold/capital/monitor/push behavior is changed by this branch.
+
+
+## V2.1 gap-reconciliation strengthening
+
+The first Class-A prototype falsified PR #100's strict market-session continuity as a final admission rule, but it still trusted a fresh Fugle response too quickly.
+
+New counterexample:
+- a provider can return 60 ordered/raw bars and still omit one recent official traded session;
+- a naive "fresh response + >=60 bars" test would accept that shifted window and silently change rolling features.
+
+V2.1 therefore adds a bounded official-gap reconciliation rule:
+1. fresh provider response must still be explicit `adjusted=false`;
+2. compare the provider's required rolling window against official market sessions;
+3. inspect only market-session dates absent from the provider window;
+4. for each gap, require a COMPLETE official raw daily presence receipt built before Formal eligibility filters;
+5. official traded row present => `FRESH_PROVIDER_MISSING_OFFICIAL_BAR` / reject;
+6. complete official source with no actual traded row => legitimate symbol-session gap;
+7. missing/incomplete official source => UNKNOWN / fail closed.
+
+This design does not need to infer why the symbol did not trade. Corporate-action cause and price-continuity semantics remain separate lanes.
+
+Additional falsification guards:
+- sub-NT$10 historical traded rows remain presence=true;
+- incomplete official market row counts cannot prove absence;
+- provider failure and official-gap proof failure never fall back to suspicious cache;
+- no Worker/runtime/D1/KV/Formal behavior changes.
+
+Status remains FALSIFICATION_IN_PROGRESS until executable CI passes for V2.1 and operational call-budget/integration/rollback evidence is quantified.
