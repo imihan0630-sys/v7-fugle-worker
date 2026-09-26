@@ -539,6 +539,12 @@ r'''async function fetchHistoryWarmup(targetRows, marketDate, env) {
 )
 
 replace_once(
+    '  const payload = await response.json();\n  const rows = Array.isArray(payload?.data) ? payload.data : [];',
+    '  const payload = await response.json();\n  if(payload?.adjusted===true) throw new Error(\`${symbol} 歷史日K回傳adjusted=true，拒絕與raw正式盤後資料混用\`);\n  const rows = Array.isArray(payload?.data) ? payload.data : [];',
+    "reject unexpected adjusted history",
+)
+
+replace_once(
     '&timeframe=D&fields=open,high,low,close,volume,turnover,change&sort=asc',
     '&timeframe=D&adjusted=false&fields=open,high,low,close,volume,turnover,change&sort=asc',
     "explicit raw Fugle daily semantics",
