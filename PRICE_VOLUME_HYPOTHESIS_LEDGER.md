@@ -303,3 +303,12 @@ They must not be erased once later clean data arrive.
 - QA evidence must now preserve MEASURED_ZERO, NOT_OBSERVED, ABSENT_RECEIPT, UNKNOWN_SEMANTICS and BLOCKED as distinct states.
 - No H001~H006 hypothesis is supported/rejected by these QA-observability findings.
 - Formal Core remains LOCKED.
+
+
+## Hypothesis readiness after PVE-139
+- PVE-134 supersedes the current-runtime interpretation of PVE-126: all-zero Fugle call objects are preserved in the present schema.
+- Workflow conclusion, qaPass and check-level readiness are independent and must not be collapsed.
+- Same runtime.version does not prove the same deployed executable; H001~H004 prospective evidence must pin activeContentSha256/report provenance.
+- Whole-scan fingerprint drift is not automatically Formal semantic drift because timing and semantic fields are mixed in the hash.
+- No hypothesis status changes: H001/H002 remain gated by live rows, baseline freshness, clean cohort provenance and at-rest QA; H003/H004 remain higher-gated; H006 remains execution-data-quality gated.
+- Formal Core remains LOCKED.
