@@ -25,6 +25,7 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 - Strategy weights/floors are context-specific and not fixed yet.
 - Daily outputs must be frozen and performance-tracked.
 - Shared knowledge is reusable; system-specific decision logic remains isolated.
+- System 2 decision authority is fully independent: System 1/V8 cannot approve, reject or gate System 2 selection, entry, exit, monitoring or notifications.
 
 ## Next tasks
 
