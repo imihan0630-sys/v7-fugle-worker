@@ -1,0 +1,64 @@
+{
+  "schemaVersion": "rejected-after-base-sampling-falsification-v0.1",
+  "researchDate": "2026-09-27",
+  "status": "STRUCTURAL_SAMPLING_BIAS_CONFIRMED",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "currentImplementation": {
+    "eligiblePopulation": "basePoolDiagnostics rows not scored and not near-miss; scoreCandidate result ok!=true && basePassed==true",
+    "ordering": "sort by exclusion reason localeCompare, then symbol",
+    "sampling": "byPool(baseCandidates,6) => first 6 GENERAL + first 6 THOUSAND across ALL remaining reasons",
+    "persistence": "exclusion_reason is stored per row",
+    "summaryAPI": "readShadowCandidateSummary groups only scan_date/cohort/pool, not exclusion_reason"
+  },
+  "fixedSyntheticWitness": {
+    "pool": "GENERAL",
+    "rows": [
+      "6+ rows of REASON_A sorted before REASON_B",
+      "6+ rows of REASON_B"
+    ],
+    "result": "first-six slicing can preserve only REASON_A and zero REASON_B despite both being present in the rejected population",
+    "conclusion": "Coverage by reject reason is not guaranteed and depends on reason ordering and within-reason symbol ordering."
+  },
+  "affectedReasonFamilies": [
+    "季度財報、估值或公告資料不足",
+    "官方公告重大風險事件",
+    "估值風險過高",
+    "A/B setup not formed (partly separately represented by NEAR_MISS)",
+    "基本面資料不足",
+    "基本面品質不足",
+    "波動品質不合格",
+    "無可驗證實質壓力",
+    "RR<2",
+    "signal setupQuality<65"
+  ],
+  "alreadyPartiallyRemediated": [
+    "sector gate: V8.14 dedicated SECTOR_GATE_REJECTED cohort",
+    "A/B technical closeness: NEAR_MISS dedicated path exists, though semantics differ from full rejection-reason prevalence"
+  ],
+  "risks": [
+    "A rejection reason can appear absent from Shadow even when prevalent in Formal rejects.",
+    "Outcome comparisons across REJECTED_AFTER_BASE reasons are not prevalence-representative.",
+    "The bounded sample cannot estimate opportunity cost of a gate without denominator counts.",
+    "Reason ordering creates deterministic—not random—coverage differences.",
+    "Summary API hides exclusion-reason counts even for rows that were retained."
+  ],
+  "minimumEvidenceRepair": {
+    "exactCounts": "Persist total rejection count by exact reason and price pool for every clean scan.",
+    "stratifiedSample": "For each exact reason x price pool, retain a small deterministic sample with a globally bounded safety cap.",
+    "fullPopulationPriority": [
+      "RR<2",
+      "fundamental/data gates where storage affordable",
+      "volatility gate",
+      "signal-grade C"
+    ],
+    "preserve": "first rejection reason under unchanged production order; do not re-run with gates bypassed and label as Formal counterfactual.",
+    "noOutcomeSelectedSampling": true
+  },
+  "governance": {
+    "researchOnlyRepair": "Potential Class A if it uses already-computed scoreCandidate results/featureRows, isolated research storage, bounded rows, zero new market calls and no Formal/monitor/push behavior changes.",
+    "schemaOrSharedRuntimeRisk": "If new D1 shared schema/scheduling materially affects production runtime, reclassify Class B proposal-first.",
+    "formalGateChanges": "Class C"
+  },
+  "decision": "REASON_SELECTION_BIAS_CONFIRMED / RESEARCH_EVIDENCE_REPAIR_WARRANTED / NO_FORMAL_CHANGE"
+}
