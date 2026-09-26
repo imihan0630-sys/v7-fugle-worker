@@ -1,0 +1,23 @@
+name: Portfolio Risk Tier-A Research
+
+on:
+  pull_request:
+    paths:
+      - "research/portfolio_risk_tier_a_v0_1.mjs"
+      - "tests/test_portfolio_risk_tier_a_v0_1.mjs"
+      - "PORTFOLIO_RISK_TIER_A_AUDIT.md"
+      - ".github/workflows/portfolio-risk-tier-a-research.yml"
+  workflow_dispatch:
+
+jobs:
+  tier-a-falsification:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Run Portfolio Risk Tier-A research test
+        run: node tests/test_portfolio_risk_tier_a_v0_1.mjs
