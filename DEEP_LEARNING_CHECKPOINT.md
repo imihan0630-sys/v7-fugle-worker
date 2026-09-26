@@ -816,3 +816,12 @@ YES for research infrastructure integrity: resolving the actual archive lineage 
 - New code-proven defect: after-market bootstrap fetches new selected symbols only through selectionDate-1. If the symbol was not already monitored on selection day, next-day baseline omits the immediately prior session. Re-entering symbols can also skip refresh solely because old cache count>=20.
 - Existing baselineAsOfDate provides a partial v0.1 quarantine path; 9/30 readiness must be row-specific.
 - No Formal/runtime change made.
+
+## Price-Volume evidence update — PVE-092 through PVE-100
+- Current PV evidence cursor is PVE-001 through PVE-100; theory remains PV-001 through PV-200.
+- Existing admin endpoints can classify old monitored vs new after-market plan overlap, enabling baseline-lineage QA without D1.
+- Baseline freshness is row-specific and plan-lineage dependent. Newly selected T-day symbols can omit T from the T+1 baseline because after-market historical bootstrap ends at T-1; re-entering symbols can skip refresh solely on old validSessions>=20.
+- Non-skipped bootstrap lastMarketDate can expose the selection-day gap; skipped receipts cannot prove freshness.
+- First live-session QA has been fully preregistered before market outcomes.
+- Evidence Phase I is converged; next learning should consume actual 9/29/9/30 runtime receipts rather than invent more factors or tune rules.
+- No Formal/runtime change made.
