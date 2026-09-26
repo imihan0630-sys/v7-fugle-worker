@@ -15306,3 +15306,66 @@ A candlestick label adds no incremental value if:
 
 ### Status
 TAIWAN_RETURN_PATH_DECOMPOSITION_REQUIRED / CANDLE LABEL SIGN UNKNOWN / NO NEW EXPERIMENT.
+
+
+## DL-003S — Structural Resistance vs Round-Number Order Clustering: A Taiwan-Specific Confound
+
+### New Taiwan microstructure evidence
+Taiwan has direct limit-order evidence that price clustering is not just a visual-chart artifact.
+
+Chiao (Financial Review, 2009) studies comprehensive TWSE limit-order data and reports:
+- order prices cluster at round/even prices;
+- clustering can create excess depth;
+- round-price depth can behave like support/resistance barriers that are harder to penetrate;
+- some traders strategically step ahead of congested round-price queues.
+
+Lien, Hung & Hung (Journal of Empirical Finance, 2019) independently document ubiquitous order-price and order-size clustering on TWSE, with variation by risk/volatility and investor behavior.
+
+This is unusually relevant to our nested-resistance research because an old structural high can coincide with a psychologically salient / liquidity-clustered round price.
+
+### Confounding mechanism
+Suppose a frozen MAJOR resistance zone is near NT$100, 500 or 1000.
+
+An observed:
+- rejection before the zone;
+- repeated tests;
+- acceleration after the break;
+
+may reflect a mixture of:
+1. historical-price anchoring / memory;
+2. actual limit-order depth clustering near a round price;
+3. stop-loss / breakout orders beyond that price;
+4. current momentum / volume pressure.
+
+Therefore historical-zone geometry cannot automatically claim the mechanism.
+
+### Required future control
+For nested-resistance evidence, retain a separate point-in-time control for distance to a pre-registered round-price grid expressed in Taiwan ticks.
+
+Do NOT:
+- hard-code one universal NT$5/10/100 interval across all price levels;
+- treat round-number proximity as bullish/bearish by itself;
+- add it as R09;
+- choose the round unit after seeing Pattern outcomes.
+
+The grid must respect Taiwan price-level/tick conventions and be frozen before outcomes.
+
+### Interaction with repeated-test progression
+This strengthens the decision to keep touchCount unsigned.
+
+The continuous progression fields:
+- lowDistanceSlopePerTest;
+- closeDistanceSlopePerTest;
+- rejectionCompressionRatio;
+- volume/turnover progression;
+
+can distinguish how price approaches the barrier, while round-price proximity is a separate microstructure control.
+
+### Counterevidence / portability
+The older direct Taiwan order-book studies predate the 2020 continuous-trading reform.
+The existence of clustering is well supported, but the 2026 barrier magnitude is UNKNOWN.
+
+Modern validation must therefore treat round-price proximity as a confound/control, not a fixed penalty.
+
+### Status
+IMPORTANT_NESTED_RESISTANCE_CONFOUND / CONTROL_WORTHY / NO FORMAL FACTOR.
