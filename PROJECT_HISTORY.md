@@ -415,3 +415,33 @@
 - PV 盤中與盤後工作均排在 Formal 狀態、計畫與推播持久化之後，錯誤 fail-open，且不產生 PV 推播或操作。
 - 新增 T1–T18 deterministic fixtures、獨立 `NEXT_OPEN`/`NEXT_SESSION` 結果與 CI patch-chain 驗證；完整 44 項回歸通過。
 - Formal Core、A/B/stop、排序、資金、既有 local volumeRatio 與正式決策語義均未修改。
+
+
+## 2026-09-26｜V8.12.0 HISTORY_SOURCE_REVALIDATION_V2.3 正式上線
+
+- 正式 runtime：`8.12.0-history-source-revalidation-v2-3`。
+- 本次屬 Class-B 資料完整性優化，使用者已明確批准實作與部署。
+- 目的：避免 stale / source-incomplete 日K歷史資料進入盤後 Formal 特徵，同時避免把合法停牌／無交易日誤判為資料缺口。
+- 可疑歷史會重驗；官方缺口證據不足時 fail closed 為 UNKNOWN；已驗證合法 no-trade gap 仍可使用。
+- A/B 定義、Formal 排序、3+3/Top6、門檻、資金、BUY/ADD/REDUCE、監控、訊號與推播邏輯均未改。
+- 正式 Regression run `36233428044` 成功；Cloudflare Deploy run `36233428004` 成功；23:35 盤後 Cron 與原設定均保留。
+- 第一個 live operational validation 日期：2026-09-29。部署成功只代表整合正確，不代表已證明交易報酬改善。
+
+## 2026-09-26｜V8.13.0 PriorityScore provenance shadow 正式上線
+
+- 正式 runtime：`8.13.0-priority-score-provenance-shadow`。
+- 本次是 Class-A 研究資料功能，不改 Formal 選股／排序／資金／訊號／推播。
+- Production patch-chain 稽核修正一項重要認知：正式排序不是 baseline `Worker.js` 顯示的 RR-first；V7.5.30 後實際 comparator 為：
+  1. post-consensus `priorityScore`
+  2. `rewardPerRisk`
+  3. `marketConsensusScore`
+  4. `setupQuality`
+  5. `sectorFlow`
+  6. `relativeStrength`
+- 市場共識至少 2 個獨立來源才加分，bonus 最高 +7；因此研究時必須分開「base score」與「consensus bonus」。
+- V8.13 prospectively 保存完整 PIT ranking provenance：PriorityScore、RR、market consensus score/sources/bonus、setup、sector、RS 與 definition/comparator version。
+- 歷史 Shadow 未保存這些完整 PIT 欄位，所以禁止拿 selected-only 舊資料或用現行程式重算舊分數冒充歷史校準。
+- PR #110 合併 commit：`da9209b52093885d0d2a1903c644e18fe31e7016`。
+- PR Regression `36234321039`、Repair CI `36234321046` 均成功。
+- main Regression `36234370697`、Cloudflare Deploy `36234370701` 均成功；版本／設定 readback 通過，未觸發 rollback。
+- `PRIORITY_SCORE_CALIBRATION` 目前仍為 `WAITING_PROSPECTIVE / NOT_OPTIMIZATION_READY`；至少累積 20 個 clean independent scan dates 才做第一輪 descriptive calibration，且不得因此自動調權重。
