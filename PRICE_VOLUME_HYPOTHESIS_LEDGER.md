@@ -253,3 +253,13 @@ They must not be erased once later clean data arrive.
 - H006: remains DATA_QUALITY_BLOCKED pending recorder coverage and exact signal-event mapping.
 - Runtime activation evidence does not count as hypothesis support.
 - Non-trading-day no-fabrication is a system QA pass, not a market-signal result.
+
+## Evidence denominator/readiness refinement after PVE-062~075
+- Outcome rows are market-path records, not automatic research-eligibility receipts. Every outcome must join back to snapshot quality, cohort provenance and horizon/path-quality overlays.
+- NEXT_SESSION and D1 are numerically duplicate one-session endpoints in v0.1 and are never treated as independent hypotheses.
+- rangeAtr is not implemented in v0.1; H004 cannot claim ATR-normalized outcome evidence from current prospective rows.
+- Persistence can cross sessions by design but lacks explicit gap provenance; outage/missing-session continuity must be quarantined separately from expected overnight/holiday gaps.
+- H001/H002 event counts use participation-domain event identity; H003 uses acceptance-domain identity. The top-level union eventKey is not a universal denominator.
+- Evidence milestones now use separate counters: raw snapshots, DATA_QA-eligible observations and hypothesis-clean events. Distinct-date maturity counts clean evidence dates only.
+- H001 first comparison must report per-slot common-support/coverage before any predictive metric.
+- Current research-side defects do not imply any Formal Core change. All hypotheses remain OBSERVER/evidence-gated.
