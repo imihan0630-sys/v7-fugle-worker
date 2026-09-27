@@ -49,10 +49,12 @@
       "guard": "This is a lifecycle/notification semantics finding, not proof of a missed or bad trade."
     },
     {
-      "id": "CHANNEL_EARLIEST_CONFIRMATION_ASYMMETRY",
-      "A": "A BUY requires previous bar with finite volumeRatio<=0.9 plus latest higher-low/turn-up. Earliest finite previous-volume candidate implies latest seventh 15m bar, completing about 10:45.",
-      "B": "B can first have a finite breakout volumeRatio on sixth 15m bar completing about 10:30; a later retest is normally required because same-bar volume conditions conflict.",
-      "interpretation": "There is a structural timing asymmetry. Do not infer which is better without coverage/outcome analysis."
+      "id": "COMMON_EARLIEST_FORMAL_BUY_BOUNDARY",
+      "construction": "Formal previous-five same-session 15m volumeRatio is null for the first five completed bars. B cannot confirm breakout until bar 6 (~10:30), and same-bar breakout+retest BUY is impossible because >=1.3 and <=1.1 volume conditions conflict. A needs bar 6 as the previous finite-volume acceptance bar plus bar 7 turn-up.",
+      "A": "Earliest theoretical BUY is bar 7, completing about 10:45.",
+      "B": "Earliest theoretical breakout confirmation is bar 6 (~10:30); earliest distinct retest BUY is bar 7, completing about 10:45.",
+      "interpretation": "Both channels share an approximate first-105-minutes no-BUY structural window under normal 15m timing. Channel logic differs inside that window, but earliest theoretical Formal BUY is not materially asymmetric.",
+      "caveat": "This is source-level timing geometry, not proof that every market day/provider returns identical bucket boundaries."
     }
   ],
   "volumeSemantics": {
@@ -88,5 +90,8 @@
       "EARLY_SESSION_BREAKOUT_CONFIRMATION_REFORMULATION",
       "B_FAILURE_REACTIVATION_LIFECYCLE_REFORMULATION"
     ]
-  }
+  },
+  "conclusions": [
+    "The early-session restriction is a shared Formal BUY timing boundary rather than an A-vs-B earliest-BUY asymmetry; both channels are structurally unable to issue their first theoretical 15m BUY before roughly 10:45 under the current previous-five-bar volume construction."
+  ]
 }
