@@ -72,7 +72,10 @@
     "pseudoBarsForbidden": true,
     "constrainedSessionsSeparateStratum": true,
     "localIndicatorCorporateActionAdjustmentAllowed": false,
-    "missingFactorDefaultOneAllowed": false
+    "missingFactorDefaultOneAllowed": false,
+    "priceLimitContractVersion": "technical-indicator-taiwan-price-limit-v0.1",
+    "priceLimitProvenanceRequired": true,
+    "limitLockedInferenceFromDailyOhlcAllowed": false
   },
   "formulaVersions": {
     "kd": "TAI_KD_RSV9_K3_D3_INIT50_V0_1",
@@ -144,6 +147,14 @@
       "REPLAY_EXACT",
       "DIRTY",
       "QA_FAIL"
+    ],
+    "priceDiscovery": [
+      "UNCONSTRAINED_OBSERVED",
+      "CONSTRAINED_UPPER",
+      "CONSTRAINED_LOWER",
+      "CONSTRAINED_BOTH",
+      "NO_LIMIT_SPECIAL",
+      "UNKNOWN"
     ]
   },
   "prohibitedFields": [
@@ -167,7 +178,8 @@
     "stateLineageValid",
     "replayExact",
     "prefixInvariant",
-    "commonSupportEligible"
+    "commonSupportEligible",
+    "priceLimitProvenanceResolved"
   ],
   "notes": [
     "A computed number is not automatically inference-ready.",
@@ -178,7 +190,9 @@
     "RAW_HISTORY_ADMISSION_PASS is not TECHNICAL_CONTINUITY_CERTIFIED.",
     "Corporate-action and suspension semantics are referenced through continuityReceiptId; the indicator lane must not duplicate the shared adjustment engine.",
     "Indicator continuity certification is memory-class specific; a generic wait-N-bars repair is prohibited.",
-    "The MECHANICAL_RESET_2_TO_1 fixture demonstrates that raw corporate-action boundaries can pin RSI at 0 and drive ADX toward extreme values even when the economic path is flat."
+    "The MECHANICAL_RESET_2_TO_1 fixture demonstrates that raw corporate-action boundaries can pin RSI at 0 and drive ADX toward extreme values even when the economic path is flat.",
+    "A boundary-touching row is valid observed data but belongs to a constrained price-discovery stratum.",
+    "CLOSE_AT_UPPER/LOWER must not be relabeled LIMIT_LOCKED from daily OHLC alone."
   ],
   "crossLaneReceipts": {
     "required": [
@@ -186,7 +200,9 @@
       "continuityReceiptId",
       "symbolSessionContractVersion",
       "continuityEngineVersion",
-      "continuityTransformHash"
+      "continuityTransformHash",
+      "priceLimitContractVersion",
+      "priceLimitProvenanceReceiptId"
     ],
     "continuityFieldsNotDuplicated": [
       "perEventTechnicalPriceFactorDerivation",
