@@ -16963,3 +16963,201 @@ unless prospective Taiwan evidence later proves incremental value.
 
 ### Practical benefit
 This keeps the model simpler and avoids multiplying pattern thresholds with arbitrary retracement ratios.
+
+
+## DL-003BG — Popular Technical Schools: Decompose Mechanisms, Do Not Import Narratives Whole
+
+### Principle
+A named technical-analysis school can contain useful primitives without its full narrative being empirically validated.
+
+Research should ask:
+- which observable price/volume structures are falsifiable?
+- which parts are subjective labels or causal stories?
+- do those primitives add information beyond existing DL-002/DL-003 features?
+
+## DL-003BH — Wyckoff: Primitive Mapping, Not a Standalone Score
+
+### Literature position
+Wyckoff remains influential practitioner methodology centered on supply/demand, accumulation/distribution, trading ranges, springs/upthrusts and phase interpretation.
+Academic-style direct large-sample evidence on the full named method is much thinner than for generic chart recognition or the fresh Taiwan HS study.
+
+### Map to existing primitives
+ACCUMULATION RANGE:
+- support zone
+- resistance zone
+- turnover/churn
+- range compression/expansion
+- informed-flow trajectory
+- repeated-test progression.
+
+SPRING:
+- support undercut
+- rapid reclaim
+- low/high volume context
+- subsequent tightness / higher low.
+
+UPTHRUST:
+- resistance break/poke
+- poor acceptance
+- fast re-entry
+- rejection volume.
+
+MARKUP:
+- accepted breakout
+- higher-low progression
+- RS / sector confirmation.
+
+DISTRIBUTION:
+- high turnover without price progress
+- repeated rejection
+- weakening RS
+- adverse flow divergence
+- late-stage expansion.
+
+### Decision
+Do NOT create:
+- WYCKOFF_SCORE
+- ACCUMULATION=true as an independent bullish vote
+- “smart money present” from price-volume story alone.
+
+Instead test whether the measurable spring/upthrust/churn primitives add value.
+
+### Strong overlap
+Wyckoff concepts overlap heavily with:
+- DL-002R trap/re-entry mechanics,
+- DL-002S negative morphology,
+- DL-003AH base turnover,
+- DL-003AK churn×compression,
+- support/resistance zones.
+
+Status:
+INTERPRETABILITY_TAXONOMY / HIGH_REDUNDANCY_RISK / NO SEPARATE FACTOR.
+
+## DL-003BI — Elliott Wave: Subjectivity Risk Dominates Current Priority
+
+### Evidence review
+There are empirical and thesis-level studies attempting to formalize Elliott-wave ideas, including Taiwan work and a Nikkei fractal interpretation.
+Some modified rule systems report positive results in limited samples.
+
+However the central methodological problem is repeatedly acknowledged:
+- wave counts are ambiguous;
+- multiple valid degree labels can coexist;
+- subwaves can be re-labeled as later data arrive;
+- Fibonacci-ratio conventions add more discretionary parameters.
+
+### Research position
+Do NOT attempt full Elliott 1-2-3-4-5 / A-B-C labeling in the initial Pattern Shadow.
+
+### Retainable primitives
+From wave-style thinking retain only objective components already represented:
+- impulse vs correction legs,
+- alternating swing sequence,
+- extension vs contraction,
+- multi-scale nesting,
+- retracement depth,
+- trend persistence.
+
+### Why
+These primitives are testable without deciding “this is wave 3 of primary degree.”
+
+### Future revisit gate
+Only revisit full Elliott labels if:
+- a fully mechanical, repaint-safe wave-count algorithm is specified;
+- competing counts are retained rather than one hindsight-selected path;
+- independent holdout evidence shows value beyond swing primitives;
+- Fibonacci special-ratio assumptions remain separately falsified.
+
+Status:
+LOW_PRIORITY / SUBJECTIVITY_HIGH / PRIMITIVES_ALREADY_CAPTURED.
+
+## DL-003BJ — Pattern Recognition Accuracy Is Not Trading Alpha
+
+### Evidence
+Formal chart-pattern classification research can successfully identify dozens of named patterns using logical rules, templates, Euclidean distance and DTW.
+
+That proves:
+“the geometry can be detected.”
+
+It does NOT prove:
+“detected geometry predicts profitable returns.”
+
+### Required separation
+DETECTION METRICS:
+- precision/recall against labeled pattern examples;
+- rule/template agreement;
+- stability under perturbation.
+
+ECONOMIC METRICS:
+- future return;
+- MFE/MAE;
+- failure rate;
+- transaction-cost-adjusted outcome;
+- incremental value vs baseline.
+
+### Rule
+Never promote a detector because it has high pattern-recognition accuracy alone.
+
+## DL-003BK — Triangle / Wedge Labels Need Failure-Aware Validation
+
+### Practitioner counterevidence
+Even commonly bullish ascending-triangle formations can experience frequent throwbacks and failed upward breakouts in practitioner pattern databases.
+
+### Research implication
+Do not assign directional meaning from the geometric label alone.
+
+For triangles/wedges store:
+- upperBoundarySlope
+- lowerBoundarySlope
+- convergenceRate
+- touchProgression
+- rangeCompression
+- volume/turnover trajectory
+- breakoutDirection
+- throwback/reentry
+- major-zone conflict.
+
+### Named classes
+ASCENDING_TRIANGLE
+DESCENDING_TRIANGLE
+SYMMETRIC_TRIANGLE
+RISING_WEDGE
+FALLING_WEDGE
+
+are interpretability labels over boundary geometry.
+
+### Economic question
+Does boundary-slope geometry add anything beyond:
+- compression,
+- higher/lower lows,
+- trend context,
+- pivot zones,
+- current Formal B breakout?
+
+If not, collapse triangles/wedges into the simpler primitives.
+
+## DL-003BL — Popular-Pattern Research Priority After Triage
+
+HIGH PRIORITY:
+- inverse HS / HS-bottom (fresh Taiwan-specific evidence)
+- true W / undercut-reclaim
+- sequence compression / VCP primitive
+- support-resistance acceptance/failure
+- local-vs-major breakout conflict.
+
+MEDIUM:
+- cup/handle morphology
+- flag/triangle boundary geometry
+- phase-specific turnover/flow
+- 52-week anchor interaction.
+
+LOW / DIAGNOSTIC:
+- full Elliott-wave labels
+- full Wyckoff phase score
+- Fibonacci special ratios
+- entropy/Hurst/fractal labels.
+
+This prioritization is based on:
+- direct evidence quality,
+- measurability,
+- incremental-information potential,
+- redundancy/subjectivity risk.
