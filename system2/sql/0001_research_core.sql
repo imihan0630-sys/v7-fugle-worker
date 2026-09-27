@@ -1,6 +1,6 @@
--- System 2 research-only storage schema V0.3.
+-- System 2 research-only storage schema V0.4.
 -- DESIGN/TEST ONLY. DO NOT apply to the V8 production D1 database without Class-B review.
--- V0.1/V0.2 were never deployed; V0.3 keeps daily symbol bundles and adds explicit Shadow decision-state metadata.
+-- V0.1 through V0.3 were never deployed; V0.4 keeps the isolated s2_ namespace and adds the full P1 Shadow/ranking/provenance receipt set.
 
 CREATE TABLE IF NOT EXISTS s2_strategy_versions (
   strategy_id TEXT NOT NULL,
