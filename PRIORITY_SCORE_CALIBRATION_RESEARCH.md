@@ -499,3 +499,63 @@ Research consequence:
 - keep the real cross-channel issue: A and B setupQuality scales remain structurally different and still require within-channel / cross-channel calibration.
 
 Machine artifact `research/setup_quality_channel_falsification_v0_1.json` updated accordingly.
+
+
+## PR-037 — prospective sizing attribution needs shared Shadow↔journal generation identity (2026-09-27)
+
+A pre-9/29 evidence-chain audit checked whether V8.13 PriorityScore provenance can be safely joined to Portfolio Risk trade-journal plans for future sizing calibration.
+
+### What is already good
+
+V8.13 prospectively freezes inside the research snapshot:
+- post-consensus PriorityScore;
+- raw rewardPerRisk / rewardRisk;
+- consensus score/source-count/bonus;
+- setupQuality;
+- sectorFlow;
+- relativeStrength;
+- definition and comparator versions;
+- point-in-time observation semantics.
+
+Shadow capture is prospective and explicitly marks capturedAtSelection / shadowOnly / noForwardFill.
+
+Therefore **within-Shadow** ranking/component calibration can continue under the existing prospective protocol.
+
+### Cross-store identity gap
+
+The Shadow D1 schema is keyed by:
+`PRIMARY KEY(scan_date, symbol)`.
+
+The snapshot has scanDate and symbol, but no shared immutable:
+- scanGeneration;
+- planInstanceId; or
+- decision fingerprint also persisted on the trade-journal plan row.
+
+The trade journal is the immutable plan-time source for allocation, buy zone and stop geometry used by Portfolio Risk.
+
+Thus `scanDate + symbol` equality proves same nominal date/name, but does not prove the Shadow score provenance and journal allocation came from the **same decision generation** after same-day reruns, partial failures or asymmetric overwrites.
+
+This is the same class of evidence-chain problem already recognized by VALIDATION_GOVERNANCE for generation-uncertified joins.
+
+### Safe firewall
+
+Allowed:
+- prospective PriorityScore analysis entirely inside a generation-coherent Shadow record set, subject to existing coverage/cohort controls.
+
+Guarded:
+- score-proportional sizing attribution that joins V8.13 Shadow provenance to journal allocation/stop rows.
+
+Forbidden for Formal promotion:
+- treating `scanDate|symbol` as sufficient shared-generation proof.
+
+A future Class-B evidence proposal may add one shared immutable scan-generation / decision fingerprint to both stores with mismatch fail-closed readback. No such persistence change is made here.
+
+This finding does **not** change Formal behavior and does not invalidate PR-033/034, which deterministically replay the allocation from the immutable journal itself. It specifically constrains future attribution of those allocations to richer V8.13 score-component provenance across stores.
+
+Durable artifact:
+`research/portfolio_risk_shadow_journal_generation_alignment_v0_1.json`.
+
+Status:
+`CROSS_STORE_GENERATION_ALIGNMENT_UNCERTIFIED / WITHIN_SHADOW_RESEARCH_CONTINUES / SIZING_PROMOTION_GUARDED`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
