@@ -355,6 +355,34 @@ HARD_INVALIDATION:
 - FUNDAMENTAL_BREAKOUT（基本面確認後突破）
 - VALUATION_RESET_ENTRY（估值消化後重新進場）
 
+### Quality-growth dimensions to research
+- growthPersistence（成長持續性）: revenue/EPS growth level is insufficient; test persistence and acceleration/deceleration separately;
+- marginQuality（利潤率品質）: gross/operating margin trend and stability;
+- cashConversion（現金轉換）: operating cash flow and FCF（自由現金流） support versus accounting earnings;
+- workingCapitalQuality（營運資金品質）: inventory / receivables rising faster than revenue can be a warning rather than hidden growth;
+- capitalEfficiency（資本效率）: ROE / ROIC（股東權益報酬率／投入資本報酬率） where source semantics are reliable;
+- balanceSheetQuality（資產負債表品質）: leverage, liquidity and refinancing fragility;
+- growthDurability（成長耐久性）: product/customer/geography/channel concentration, competitive position and recurrence of growth drivers;
+- capitalAllocation（資本配置）: dilution, aggressive capex, M&A quality and shareholder-return policy as context;
+- contractLiabilityTrend（合約負債趨勢） only where economically applicable and source-ready.
+
+### Distinguish growth from accounting optics
+Potential WARNING / falsification cases:
+- low-base YoY growth;
+- one-off disposal / tax / FX gains;
+- EPS growth driven mainly by buybacks or share-count changes;
+- revenue growth with deteriorating margins/cash conversion;
+- inventory/receivables expanding materially faster than sales;
+- capex-led growth with no evidence of returns;
+- cyclical peak earnings misclassified as structural growth;
+- customer concentration or product obsolescence risk;
+- acquisition-driven growth with unclear organic contribution.
+
+### Strategy boundary vs SWING_GROWTH
+FUNDAMENTAL_GROWTH（基本面成長） asks whether the company can compound high-quality growth over multiple quarters.
+SWING_GROWTH（波段成長） asks whether market expectations are currently being revised/repriced.
+One stock may qualify for both, but the shared evidence must not be double-counted.
+
 ### Position actions
 ADD_ON_NEW_INFORMATION / ADD_ON_PULLBACK / ADD_ON_STRENGTH.
 THESIS_WEAKENING（投資邏輯轉弱） is distinct from full invalidation.
