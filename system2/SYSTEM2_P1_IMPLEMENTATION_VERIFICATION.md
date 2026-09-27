@@ -392,3 +392,18 @@ Cloudflare read-only audit evidence:
 Safety conclusion:
 the current token must not be treated as D1-capable and the System 2 implementation must not fall back to V8 production D1.
 The exact remaining blocker is a dedicated D1-authorized Cloudflare token/secret.
+
+
+## Dedicated System2 D1 token verification (2026-09-27)
+
+Status: PASS / READ-ONLY AUDIT / NO CLOUD MUTATION.
+
+After `SYSTEM2_CLOUDFLARE_API_TOKEN` was configured:
+- account-owned token verify endpoint: HTTP 200;
+- D1 list: HTTP 200;
+- Workers Scripts list: HTTP 200;
+- exact `system2-research` D1 not found;
+- exact `system2-shadow-research` Worker not found;
+- provisioning is therefore required before prospective Shadow persistence.
+
+The initial post-secret audit incorrectly used `/user/tokens/verify` against an account-owned token. That produced a false authentication failure while resource reads were already succeeding. The workflow was corrected to `/accounts/{account_id}/tokens/verify`, preserving all isolation and permission checks.
