@@ -1,6 +1,6 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-198.
+Checkpoint sequence: B-200.
 Updated: 2026-09-27 08:30 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Detailed B-01..B-123 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
@@ -1285,3 +1285,18 @@ Updated: 2026-09-27 08:30 Asia/Taipei.
 - Durable artifact: `research/rr_target_null_separation_v0_1.json` commit `73134aa687c89357a589e4a402ab297b71ae22ba`.
 - No forward outcome lookup, Formal/runtime/Production change or FORMAL_OPTIMIZATION_CANDIDATE.
 - Exact next: after reason-stratified Shadow/version-line reconciliation, prospectively serialize the three separated cohorts and measure date-clustered incidence/outcomes. In parallel continue the post-base audit into fundamental-quality/setup-grade gates without tuning thresholds.
+
+
+## B-200 — Confirmed Fill Ledger v0.2 bootstrap / PIT semantics validated (2026-09-27 08:45 Asia/Taipei)
+- Continued B-198 exact next after preserving concurrent B-199 Target/RR research.
+- Further falsification found v0.1 could not safely bootstrap positions that already existed when execution-ledger capture begins. Example: 100 shares already held, first ledger-era action REDUCE 40. Without an opening-state receipt, sharesBefore=100 has no append-only provenance.
+- v0.2 separates `POSITION_BASELINE` from `FILL`. A baseline records observed account+symbol shares/cost at ledger start and is explicitly NOT a trade: it has no action, fillPrice, filledShares or sharesBefore and contributes nothing to return/turnover/slippage attribution.
+- Pre-baseline execution history remains UNKNOWN. A FILL may start without baseline only for a clean zero->BUY transition with sharesBefore=0. First observed ADD/REDUCE/SELL requires a valid baseline.
+- `effectiveAt` and `confirmedAt` are separate. Later corrections are append-only and affect an as-known research view only after the correction's confirmedAt; they do not rewrite earlier PIT knowledge.
+- `accountKey` is mandatory so same-symbol positions across accounts are not silently mixed.
+- Safe implementation conclusion: existing mutable `/api/positions` saves must NOT auto-generate historical fill events. A future Production implementation needs a separate append-only execution/baseline ledger; /api/positions may remain a current snapshot/read model.
+- Repository search found no broker execution/order/fill connector in current scripts. Existing market-data/Fugle quote paths are not broker execution evidence.
+- PR #120 CI all passed: Portfolio Risk Tier-A Research run 36283315443 SUCCESS; V8 Repair run 36283315415 SUCCESS; V8 Regression run 36283315425 SUCCESS. PR #120 merged at `cbf00ccd4fba6760e23cb836092ad8842e41929b`.
+- Durable artifacts: `research/confirmed_fill_ledger_v0_2.mjs`, `tests/test_confirmed_fill_ledger_v0_2.mjs`, `research/confirmed_fill_ledger_spec_v0_2.json`.
+- Status: `CONFIRMED_FILL_LEDGER_V0_2 = DESIGN_READY / CLASS_B_PROPOSAL_FIRST / NOT_IMPLEMENTED`. No Worker/runtime/Formal behavior changed and no FORMAL_OPTIMIZATION_CANDIDATE.
+- Exact next: freeze the minimal Class-B Production proposal (additive D1 schema, append-only API, idempotency/conflict semantics, transaction/position-head checks, rollback and read-model isolation). Proposal only; implementation requires explicit owner approval.
