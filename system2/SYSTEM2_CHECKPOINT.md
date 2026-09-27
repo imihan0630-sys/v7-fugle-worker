@@ -19,6 +19,19 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 
 ## Current design decisions
 
+- Decision Clock（決策時間點）dependency readiness integrity was hardened before the first prospective trading-date sample. PR #191 merged as `7f0ebda907d008ce3c3d944b252a9c4e13ac7799`: B2 contract V0.2 cannot become READY before 13:30 Asia/Taipei close finality, undated daily rows cannot be assigned to the target date, and classified-join coverage must meet the existing TWSE 600 / TPEx 450 market-wide minimums.
+
+- A5/B2 dependency polling now records explicit `READY / NOT_READY / SOURCE_ERROR / INVALID_PAYLOAD / NOT_APPLICABLE` states. Precision bracketing uses only an explicit `NOT_READY -> READY` transition; `SOURCE_ERROR` can never masquerade as NOT_READY. Dependency-family transport is isolated so a B2 transport error does not erase a valid A5 observation. PR #191 pre-merge System2 Research CI `36351189831` PASS (55 test files, syntax, 26-table SQLite schema, production-isolation guard) and V8 Regression `36351189836` PASS; post-merge System2 Research CI `36351252363` PASS.
+
+- Decision Clock A5 Boundary Integrity（A5 邊界完整性）V0.1 merged before the first prospective trading-date sample in commit `59c7104194857111626cbb0ee07752deec75fe58` via PR #194. Same-session candidate time is still determined only by A1 TWSE + A1 TPEx + B2; A5 remains periodic but must have been prospectively READY no later than the computed candidate timestamp.
+
+- Daily evidence now records `evidenceSemanticsVersion=S2_DECISION_CLOCK_DAILY_EVIDENCE_SEMANTICS_V0_2_1`, `sameSessionClockReady`, `a5ObservedAtDecisionBoundary`, `a5AvailableByCandidate`, and `candidateTimestamp`. A5 observed after the candidate leaves the same-session candidate visible diagnostically but forces `requiredReady=false` and `precisionEligible=false`.
+
+- Aggregation preserves `a5BoundaryFailureDates`; owner review exposes them and adds `A5_NOT_AVAILABLE_BY_CANDIDATE`. PR #194 pre-merge System2 Research CI `36351576948` PASS (55 test files) and V8 Regression `36351576944` PASS; post-merge System2 Research CI `36351630013` PASS and V8 Regression `36351629962` PASS.
+
+- Prospective Decision Clock promotion-grade trading-date count remains 0. Earliest ordinary eligible prospective date remains 2026-09-29. All readiness/finality/provenance hardening above was frozen before that first sample; no historical observation or outcome data was used.
+
+
 - Decision Clock（決策時間點）Collector Provenance（擷取器來源證明）V0.3 merged to main in commit `84b7e40c2c6ee8f2294b65e16383925f2990b443` via PR #169 before the first prospective trading-date evidence. Promotion-grade scheduled artifacts now use `S2_DECISION_CLOCK_DAILY_BUNDLE_V0_3`; the embedded readiness evidence remains `S2_DECISION_CLOCK_DAILY_EVIDENCE_V0_2`.
 
 - Every V0.3 scheduled bundle freezes GitHub workflow run ID, run attempt, workflow SHA/ref, plus a deterministic SHA-256 collector-contract fingerprint over the preregistered 13-file collection contract. Aggregation fails closed if embedded run provenance does not match the GitHub Actions metadata from which the artifact was downloaded.
