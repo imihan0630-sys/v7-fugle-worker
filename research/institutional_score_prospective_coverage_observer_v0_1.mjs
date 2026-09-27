@@ -123,6 +123,12 @@ export function summarizeInstitutionalCoverage(records=[]){
     schemaVersion:"institutional-score-prospective-coverage-observer-v0.1",
     rows,
     byDate,
+    denominator:{
+      persistedFullFormalScanScope:"SELECTED_PLAN_ROWS_ONLY_UNDER_CURRENT_STORAGE_WIRING",
+      fullScanPopulationPrevalenceIdentifiable:false,
+      boundedShadowMayNotRepairDenominator:true,
+      interpretation:"Coverage and component frequencies computed from current persisted FULL_FORMAL_SCAN rows are selected-conditioned unless a separately certified complete same-scan parent is supplied."
+    },
     guards:{
       unitOfIndependence:"scanDate",
       outcomesUsed:false,
