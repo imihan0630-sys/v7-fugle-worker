@@ -24,6 +24,9 @@ export function buildDecisionClockReviewPacket(aggregation) {
   if (aggregation.collectorContractConsistent !== true) {
     blockers.push("COLLECTOR_CONTRACT_DRIFT");
   }
+  if ((aggregation.a5BoundaryFailureDates || []).length > 0) {
+    blockers.push("A5_NOT_AVAILABLE_BY_CANDIDATE");
+  }
   if (readiness.status !== "FREEZE_ELIGIBLE") {
     blockers.push("READINESS_NOT_FREEZE_ELIGIBLE");
   }
@@ -55,6 +58,9 @@ export function buildDecisionClockReviewPacket(aggregation) {
     collectorContractConsistencyVersion: aggregation.collectorContractConsistencyVersion || null,
     collectorContractFingerprints: aggregation.collectorContractFingerprints || [],
     collectorContractConsistent: aggregation.collectorContractConsistent === true,
+    a5BoundaryIntegrityVersion: aggregation.a5BoundaryIntegrityVersion || null,
+    a5BoundaryFailureDates: aggregation.a5BoundaryFailureDates || [],
+    a5BoundaryFailureCount: (aggregation.a5BoundaryFailureDates || []).length,
     independentTradingDates: readiness.independentTradingDates,
     completeTradingDates: readiness.completeTradingDates,
     precisionEligibleDates: readiness.precisionEligibleDates,
