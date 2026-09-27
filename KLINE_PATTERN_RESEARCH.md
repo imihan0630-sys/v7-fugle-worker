@@ -15705,3 +15705,173 @@ Use same frozen outcomes:
 ### Promotion discipline
 A visually appealing volume node is not enough.
 If volume-at-price does not beat or add to plain structural zones, reject it despite chart popularity.
+
+
+## DL-003AA — Pattern × Industry Synchronization: Timing, Not Another Sector Score
+
+### Taiwan evidence
+Taiwan research documents industry momentum / industry-return autocorrelation in at least some industry states, and finds turnover/fund transfer related to that persistence.
+Taiwan lead-lag research also reports:
+- large firms can lead small firms within the same industry;
+- intra-industry lead-lag can be stronger than inter-industry lead-lag;
+- institutional ownership, turnover and sales can contribute to lead-lag after size controls.
+
+### Existing-system overlap
+Current Formal already uses industry context:
+- same-day sector breadth,
+- average sector change,
+- sector trading-amount activity,
+- sector quality/ranking concepts in the broader research layer.
+
+Therefore:
+“industry strong = bullish” is already represented and must not be re-added.
+
+### Incremental question
+Does the TEMPORAL synchronization of pattern maturation across peers add information?
+
+### Phase-synchronization fields
+For a stock at date t:
+- peerPatternMatureShare
+- peerPivotReadyShare
+- peerBreakoutConfirmedShare
+- peerFailureShare
+- peerCompressionShare
+- peerRSImprovingShare
+- peerBreadthSlopeDuringPattern
+- daysFromSectorLeaderBreakout
+- daysFromPeerMedianMaturity
+- stockPatternPhaseVsPeerMedianPhase
+
+### States
+EARLY_LEADER:
+- stock matures before most peers.
+
+SYNCHRONIZED_LEADER:
+- stock and sector leaders mature together.
+
+LATE_FOLLOWER:
+- many peers already broke out before stock reaches pivot.
+
+ISOLATED_SETUP:
+- stock matures without peer structural confirmation.
+
+SECTOR_ROLLOVER_DIVERGENCE:
+- stock still looks constructive while peer patterns/failure rate deteriorate.
+
+### Research hypotheses
+H1 early/synchronized leaders may have better remaining upside than late followers.
+H2 late followers may be more exposed to sector-exhaustion / crowdedness.
+H3 isolated setups may be either undiscovered alpha or false positives; test rather than assume.
+H4 peer failure rate may be more informative than simple same-day breadth.
+
+### Redundancy
+Control for:
+- existing sector breadth,
+- average sector return,
+- sector amount activity,
+- stock Residual RS,
+- market regime.
+
+If phase synchronization adds no incremental information, reject it.
+
+### Point-in-time requirement
+Peer pattern states must be reconstructed as-of the same historical date.
+Do not use today’s known winners to define the historical peer set.
+
+## DL-003AB — Leader-Lag Pattern Diffusion v0.1
+
+### Mechanism prior
+Taiwan intra-industry evidence supports information diffusion / lead-lag:
+larger or more information-rich firms can adjust before smaller peers.
+
+### Pattern research question
+Can pattern-state changes in industry leaders precede similar changes in lagging peers?
+
+### Leader definitions
+Do NOT choose leaders by future returns.
+Pre-register point-in-time leader proxies:
+- market-cap rank within industry,
+- turnover/value rank,
+- institutional ownership/attention proxy if valid,
+- industry revenue scale if point-in-time available.
+
+### Fields
+- leaderMaturityShare
+- leaderBreakoutShare
+- leaderFailureShare
+- leaderRSChange
+- lagDaysLeaderToStock
+- stockIsLeader
+- stockIsFollower
+- leaderStateTransitionBeforeStock
+
+### Falsification
+Compare against:
+- simple sector return/breadth,
+- market-cap effects,
+- stock’s own pattern maturity.
+
+If “leader breakout” is only a proxy for sector up-day strength, reject it.
+
+### Risk
+Industry definitions can be broad and economically heterogeneous.
+A stock may belong to a supply chain whose economically relevant peers sit in different exchange industry codes.
+
+Therefore industry-label synchronization and supply-chain synchronization should be separate research lanes.
+
+## DL-003AC — Supply-Chain Pattern Propagation Is Distinct from Industry Breadth
+
+### External prior
+Research documents return spillovers from U.S. leading technology firms to Taiwanese suppliers and Taiwan indices, demonstrating that economically linked firms can transmit information across formal industry boundaries.
+
+### Research question
+For Taiwan technology/supply-chain names, does an upstream/downstream leader’s structural state improve interpretation of the target stock’s pattern?
+
+### Candidate states
+LEAD_FIRM_BREAKOUT_TARGET_FORMING
+LEAD_FIRM_FAIL_TARGET_MATURE
+CHAIN_SYNCHRONIZED
+CHAIN_DIVERGENCE
+
+### Required safeguards
+- supply-chain link must be sourced point-in-time or from a durable mapping whose historical validity is known;
+- no hand-built after-the-fact peer selection from future winners;
+- distinguish international overnight information from Taiwan intraday response;
+- control target’s own sector/momentum/RS.
+
+### Status
+MECHANISM_PLAUSIBLE / DATA_MAPPING_DEPENDENT / SHADOW_ONLY.
+
+## DL-003AD — Sector Exhaustion vs Breadth Expansion
+
+### Problem
+High breadth can mean broad healthy participation, but near the end of a move it can also reflect late-cycle crowding.
+
+### Candidate dynamics
+HEALTHY_BROADENING:
+- more peers mature/break out over time,
+- leader failures remain low,
+- peer RS dispersion narrows constructively,
+- sector turnover rises without widespread climax/rejection.
+
+LATE_CROWDING:
+- many peers already extended,
+- new breakouts are increasingly late followers,
+- failure/reentry rate rises,
+- upper-wick/high-volume rejection increases.
+
+### Research variables
+- newMatureCount5d
+- newBreakoutCount5d
+- peerFailureRate5d
+- peerLateStageShare
+- peerClimaxShare
+- sectorBreadthSlope
+- sectorTurnoverShock
+- leaderVsFollowerOutcomeGap
+
+### Why this could matter
+Current sector score is mostly contemporaneous.
+A lifecycle view may distinguish “sector getting healthier” from “sector already crowded.”
+
+No Formal use is authorized.
