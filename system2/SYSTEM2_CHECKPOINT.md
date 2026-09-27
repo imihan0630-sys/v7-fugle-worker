@@ -19,6 +19,14 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 
 ## Current design decisions
 
+- Review-packet integration verification PASS: System2 Research CI run `36325049835`, job `108636106573`.
+
+- Read-only readiness aggregation now emits the review state automatically; `OWNER_REVIEW_ELIGIBLE` still keeps exact clock, Worker Cron and capture unauthorized.
+
+- The future owner-review packet is outcome-free: it must disclose the full included-date list, worst required-source upper bound, 15-minute safety buffer, candidate Taipei time, duplicate/manual artifact counts and any coverage blockers. No nicer clock may be substituted after observing outcomes.
+
+- Decision Clock（決策時間點）owner-review packet V0.1 is preregistered before evidence maturity. It cannot become `OWNER_REVIEW_ELIGIBLE` until deterministic artifact selection, complete trading-day coverage, `FREEZE_ELIGIBLE`, >=20 independent dates and all-precise evidence are simultaneously true.
+
 - No historical or retrospective arrival evidence was substituted. Earliest ordinary prospective evidence date remains 2026-09-29; the system must wait for real same-day scheduled artifacts to accumulate.
 
 - Aggregation end-to-end fixture + guard verification PASS. System2 Research CI run `36324912254`, job `108635698802`: SUCCESS.
