@@ -1,0 +1,58 @@
+{
+  "schemaVersion": "base-admission-funnel-v0.1",
+  "formalCoreChanged": false,
+  "outcomeLookupUsed": false,
+  "orderedRejects": [
+    [
+      "PRICE_LT10",
+      "UNIVERSE_POLICY"
+    ],
+    [
+      "HISTORY_LT60",
+      "DATA_READINESS"
+    ],
+    [
+      "MISSING_MARKET_OR_SECTOR_RS",
+      "DATA_READINESS"
+    ],
+    [
+      "MISSING_MARKET_CAP",
+      "DATA_READINESS"
+    ],
+    [
+      "MARKET_CAP_LT1BN",
+      "UNIVERSE_POLICY"
+    ],
+    [
+      "EXTREME_MOVE_9_8",
+      "MARKET_STATE_PROXY"
+    ],
+    [
+      "LOW_20D_VOLUME",
+      "EXECUTABILITY_POLICY_HYPOTHESIS"
+    ],
+    [
+      "SMALLCAP_SPECIAL_REASON",
+      "EXECUTABILITY_POLICY_HYPOTHESIS"
+    ],
+    [
+      "MIDCAP_EXTRA_LIQUIDITY",
+      "EXECUTABILITY_POLICY_HYPOTHESIS"
+    ],
+    [
+      "MISSING_CHIP_CONCENTRATION",
+      "DATA_READINESS"
+    ]
+  ],
+  "standardRejectedAfterBaseCoverage": "NONE_BY_CONSTRUCTION",
+  "broadControlCoverage": "NOT_COMPLETE_REASON_STRATIFIED_LEDGER",
+  "requiredReasonReceipt": [
+    "eligibleBeforeReasonCount",
+    "rejectedByReasonCount",
+    "archivedRejectedCount",
+    "samplingRule",
+    "samplingFraction",
+    "unknownCount"
+  ],
+  "optimizationReady": false
+}
