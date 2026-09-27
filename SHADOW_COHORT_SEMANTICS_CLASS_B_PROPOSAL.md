@@ -345,3 +345,38 @@ A quality blocker must not globally block unrelated experiments; guards are mapp
 
 Machine guard:
 `research/readiness_quality_gate_falsification_v0_1.json`.
+
+
+## Population-scope compatibility for promotion evidence
+
+The existing factor study and factor-redundancy diagnostics consume `trade_research_snapshots`, which is populated from Formal selected plans.
+
+Therefore `FULL_FORMAL_SCAN` means a source-complete selected snapshot, not full candidate-universe coverage.
+
+The replacement evidence architecture must tag every analysis with:
+- `populationScope`;
+- `targetChangeLayer`;
+- `estimandVersion`;
+- `independentUnit`;
+- `qualityGuardVersion`.
+
+Allowed scope mapping:
+
+| Target change layer | Minimum compatible population |
+| --- | --- |
+| ADMISSION_GATE | full gate-evaluable denominator + PASS/FAIL/UNKNOWN/NOT_EVALUABLE states |
+| RANKING | full qualified/admitted pool + QNS/cutline + comparator provenance |
+| EXECUTION | selected plans + complete trigger/no-trigger/fill/no-fill denominator |
+| CAPITAL | confirmed fill + actual position lifecycle |
+| DESCRIPTIVE_SELECTED_ONLY | current selected snapshots only; never generic Formal promotion |
+
+Current `factorStudyFromSnapshots` must be treated as `DESCRIPTIVE_SELECTED_ONLY` / ranking-hypothesis generation.
+
+Its V8.7.3 `PURGED_FORWARD_HOLDOUT` remains valid and should be retained, but purged OOS does not cure population-scope mismatch.
+
+Current factor spread is also pooled across stock rows inside train/holdout. A future promotion-grade ranking study must use a date-cluster-aware estimand or the full qualified pool when selected-per-date support is too thin.
+
+Machine guards:
+- `research/factor_promotion_population_scope_falsification_v0_1.json`
+- `research/factor_study_date_weighting_falsification_v0_1.json`
+- `research/factor_redundancy_selection_conditioning_falsification_v0_1.json`
