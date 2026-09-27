@@ -131,6 +131,54 @@ One immutable run-level completeness receipt per strategy / decision clock.
 Purpose:
 prove that a Shadow run did not silently preserve only selected/winning symbols. Every base-universe symbol must be frozen as excluded or every eligible symbol must have an evaluation/accounting state.
 
+### s2_strategy_overlap_receipts
+Immutable descriptive redundancy receipt for a pair of strategy contracts.
+
+- receipt_id
+- experiment_id
+- experiment_version
+- market_date
+- decision_timestamp
+- strategy_a_json
+- strategy_b_json
+- shared_core_families_json
+- distinct_core_a_json
+- distinct_core_b_json
+- shared_all_families_json
+- diagnostics_json
+- independent_same_clock_validity
+- naive_strategy_count_bonus_allowed
+- overlap_priority_effect_authorized
+- research_state
+- overlap_hash
+- captured_at
+- schema_version
+
+### s2_candidate_concentration_receipts
+Immutable concentration measurement for one global candidate-pool snapshot.
+
+- receipt_id
+- experiment_id
+- experiment_version
+- market_date
+- decision_timestamp
+- classification_version
+- global_count
+- known_industry_count
+- unknown_industry_count
+- known_industry_coverage
+- unknown_industry_symbols_json
+- industry_rows_json
+- largest_industry_json
+- industry_hhi_known_only
+- strategy_membership_counts_json
+- multi_strategy_symbol_count
+- effect_authorization_json
+- warnings_json
+- concentration_hash
+- captured_at
+- schema_version
+
 ### s2_rank05_displacement_receipts
 Immutable incumbent-vs-challenger Shadow comparison receipt.
 
