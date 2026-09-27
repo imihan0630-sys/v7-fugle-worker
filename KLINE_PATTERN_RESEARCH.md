@@ -21156,3 +21156,76 @@ Pattern consumes the verified conversion result and must not invent a separate a
 ### 7. Status
 This tightens the remaining VOLUME semantic blocker.
 Pattern runtime remains NO_GO; alpha UNKNOWN; Formal Core unchanged.
+
+## DL-003Z — Pattern Parent Provenance Reconciliation (2026-09-27)
+
+### New cross-lane falsification
+Later global research has proven that legacy trade_research_shadow_candidates is not promotion-grade immutable parent evidence.
+
+Known limitations:
+- primary key scan_date + symbol;
+- one mutually exclusive cohort field;
+- bounded REJECTED_AFTER_BASE sampling;
+- same-date DELETE then row-by-row INSERT/UPSERT rewrite;
+- no immutable generation / semantic fingerprint parent;
+- one-symbol used-set can cause research memberships to displace one another;
+- bounded reader with LIMIT 5000, no pagination, no truncation flag and potential partial-date loss.
+
+### Consequence for Pattern observer design
+The frozen Pattern persistence contract's parent_snapshot_hash is necessary but not sufficient if the parent population itself can be rewritten or incompletely read.
+
+Pattern must distinguish two evidence grades:
+
+LEGACY_PARENT_QA:
+- existing Shadow archive may be used for detector/data QA and non-promotion descriptive work when exact captured parent hash is preserved;
+- cannot claim complete historical cohort population merely from current archive readback.
+
+IMMUTABLE_PARENT_REQUIRED:
+- prospective promotion-grade Pattern evidence must attach to the future immutable per-symbol decision-state receipt/generation architecture;
+- Pattern child must reference parentDecisionReceiptId + captureGeneration + semantic fingerprint;
+- overlapping Pattern memberships cannot mutate/displace the parent decision state.
+
+### Parent population completeness
+A Pattern run receipt may declare COMPLETE only if its expected parent population came from a completeness-proven generation.
+
+Forbidden:
+- derive expectedParentCount from a reader known to be truncated;
+- treat LIMIT 5000 return as complete;
+- accept a partial date;
+- silently ignore symbols omitted by bounded legacy cohort sampling.
+
+Required parent receipt fields:
+- decisionGenerationId;
+- scanDate;
+- expectedSymbolCount;
+- persistedSymbolCount;
+- completeDate;
+- comparator/formal-version identity;
+- source semantic fingerprint;
+- parentDecisionReceiptId per symbol;
+- capturedAt;
+- completenessStatus.
+
+### Pattern child identity revision
+Future promotion-grade child key should include:
+- parentDecisionReceiptId;
+- captureGeneration;
+- symbol;
+- asOfDate;
+- detectorVersion;
+- semanticContractVersion.
+
+Natural scan_date+symbol remains descriptive compatibility only, not sufficient immutable identity.
+
+### Historical limitation
+Do not retrofit immutable parent status onto legacy Shadow rows.
+Historical rows remain LEGACY_MUTABLE_ARCHIVE unless independent first-known generation evidence exists.
+
+### Governance
+This is an architecture/provenance finding only.
+Implementing immutable shared-runtime persistence is Class B proposal-first.
+No runtime implementation is authorized by this note.
+
+### Status
+PATTERN_PARENT_PROVENANCE = LEGACY_QA_OK / PROMOTION_GRADE_BLOCKED.
+Pattern alpha remains UNKNOWN; Formal Core unchanged.
