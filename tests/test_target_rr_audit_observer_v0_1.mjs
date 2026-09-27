@@ -122,3 +122,64 @@ console.log(JSON.stringify({
   externalTargetProvenanceUnknownPreserved:true,
   formalDecisionImpact:false
 }));
+
+
+// Independent test-local mirror of current Formal target selection.
+// Purpose: prevent the research observer from drifting away from Worker semantics.
+function formalNearestTargetMirror(f,entry){
+  const levels=[];
+  const add=value=>{const n=Number(value);if(Number.isFinite(n)&&n>entry*1.01) levels.push(n);};
+  add(f.targetPrice);add(f.priorHigh20);add(f.priorHigh60);
+  const hs=Array.isArray(f.history)?f.history.slice(0,-1):[];
+  for(let i=2;i<hs.length-2;i+=1){
+    const h=Number(hs[i]?.high);
+    if(!Number.isFinite(h)||h<=entry*1.01) continue;
+    const p1=Number(hs[i-1]?.high),p2=Number(hs[i-2]?.high),n1=Number(hs[i+1]?.high),n2=Number(hs[i+2]?.high);
+    if([p1,p2,n1,n2].some(x=>!Number.isFinite(x))) continue;
+    if(h>=p1&&h>=p2&&h>=n1&&h>=n2) levels.push(h);
+  }
+  return levels.length?Math.min(...levels):null;
+}
+
+{
+  const fixtures=[
+    baseB(),
+    baseB({targetPrice:115}),
+    baseB({priorHigh60:120,targetPrice:103}),
+    baseB({priorHigh60:120,targetPrice:null})
+  ];
+  for(const f of fixtures){
+    const a=buildTargetRrAudit(f,{channel:"B",formalResult:{ok:true}});
+    assert.equal(
+      a.resistance.selectedTarget,
+      formalNearestTargetMirror(f,a.geometry.entry),
+      "research observer target must equal current Formal target selection"
+    );
+  }
+}
+
+// Strict 1% equality is excluded because Formal uses > entry*1.01, not >=.
+{
+  const f=baseB({priorHigh20:100,priorHigh60:101.303,targetPrice:null});
+  const a=buildTargetRrAudit(f,{channel:"B",formalResult:{ok:false,reason:R.TARGET_NULL_REASON}});
+  assert.ok(Math.abs(a.resistance.thresholdPrice-101.303)<1e-9);
+  const h60=a.resistance.candidates.find(x=>x.source==="PRIOR_HIGH60");
+  assert.equal(h60.eligible,false);
+}
+
+// Missing channel geometry remains UNKNOWN and cannot be re-labeled TARGET_NULL.
+{
+  const a=buildTargetRrAudit(baseB(),{channel:null,formalResult:{ok:false,reason:R.TARGET_NULL_REASON}});
+  assert.equal(a.status,"UNKNOWN");
+  assert.equal(a.geometry.reason,"CHANNEL_NOT_A_OR_B");
+}
+
+// Missing target-price provenance remains UNKNOWN even if the value participates in Formal geometry.
+{
+  const a=buildTargetRrAudit(baseB({targetPrice:115,targetPriceSource:null,targetPriceAsOf:null,targetPriceCapturedAt:null}),{
+    channel:"B",formalResult:{ok:true}
+  });
+  assert.equal(a.targetPrice.present,true);
+  assert.equal(a.targetPrice.provenanceState,"UNKNOWN");
+  assert.equal(a.resistance.selectedTarget,115);
+}
