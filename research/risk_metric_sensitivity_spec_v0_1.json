@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "RISK_METRIC_SENSITIVITY_V0_1",
+  "observedAt": "2026-09-28T05:24:00+08:00",
+  "purpose": "Falsify whether the Portfolio Risk concentration conclusion depends on HHI as the chosen inequality metric.",
+  "metrics": {
+    "HHI": "sum of squared normalized projected-risk contribution shares",
+    "GINI": "pairwise absolute-difference Gini on projected-risk contributions",
+    "CV": "population standard deviation / mean of projected-risk contributions",
+    "MAX_SHARE": "largest projected-risk contribution share",
+    "MAX_MIN": "largest / smallest positive projected-risk contribution"
+  },
+  "references": [
+    "BUY_LOW",
+    "MIDPOINT",
+    "BUY_HIGH"
+  ],
+  "search": "Exhaustive legal NT$1,000-grid allocation states under same names, same deployment and 35% per-name cap.",
+  "falsification": "If direction changes materially across metrics (for example current <= equal-capital on several non-HHI measures), downgrade the structural conclusion as metric-sensitive.",
+  "guardrails": [
+    "metric-specific global optima may differ and are not live recommendations",
+    "all metrics operate on plan-time projected risk, not realized loss",
+    "one reconstructable multi-name date remains a sample limitation"
+  ],
+  "status": "METRIC_SENSITIVITY_PROTOCOL_READY / PRODUCTION_AUDIT_PENDING",
+  "formalCoreImpact": false
+}
