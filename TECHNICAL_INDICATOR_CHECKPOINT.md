@@ -1458,3 +1458,139 @@ Formal Core remains LOCKED.
 - 7864b17c411ecb3ea5770e151c12277294831c5f — contamination receipt.
 - 6ae15eb8da000844e9ab61d1c7b252fbe83c4872 — continuity contamination regression test.
 - 616b37d6b94bc4e50ff482215710c9e6b5b42955 — per-indicator continuity certification added to Snapshot v0.2 proposal.
+
+
+## Continuation update — TI-351 through TI-366
+
+### Taiwan price-limit / constrained-session semantics — TI-351..TI-360
+- Current TWSE official rule verification:
+  ordinary stocks generally trade within +/-10% of the auction reference price at market opening.
+- Qualifying newly listed TWSE common stocks have no ordinary price fluctuation limit for the first five trading days; specified transfer/relisting cases follow their own rule.
+- TPEx official materials likewise confirm the ordinary +/-10% daily-reference regime and explicitly retain an initial-listing no-limit period with specified exceptions.
+- Therefore limit provenance is symbol/date/regime specific.
+- Do NOT universally derive legal limit prices as priorClose * 1.10 / 0.90.
+- Ex-right/ex-dividend and other special-reference sessions require the official/verified session reference. TWSE TWT49U explicitly exposes ex-right/ex-dividend reference price, Limit Up, Limit Down, opening reference and auction reference.
+- Frozen limit-regime states:
+  STANDARD_LIMIT_REGIME;
+  NO_LIMIT_INITIAL_LISTING;
+  SPECIAL_REFERENCE_LIMIT_REGIME;
+  OTHER_OFFICIAL_LIMIT_REGIME;
+  UNKNOWN_LIMIT_REGIME.
+- Frozen observed boundary states:
+  NOT_TOUCHED;
+  UPPER_TOUCHED;
+  LOWER_TOUCHED;
+  CLOSE_AT_UPPER;
+  CLOSE_AT_LOWER;
+  BOTH_BOUNDARIES_TOUCHED;
+  ONE_PRICE_AT_BOUNDARY;
+  UNKNOWN_BOUNDARY_RELATION.
+- PRICE_LIMIT_REGIME_PRESENT does not mean price discovery is constrained.
+- Binding/censoring begins when the verified boundary is actually touched/binds.
+- CLOSE_AT_UPPER/LOWER is NOT LIMIT_LOCKED.
+- ONE_PRICE_AT_BOUNDARY is still insufficient to prove unfilled queue persistence from daily OHLC alone.
+- LIMIT_LOCKED label is prohibited without order-book/event evidence.
+- Boundary-touching data remain factual VALID observations but move to a CONSTRAINED interpretation stratum rather than INVALID/BLOCKED.
+- No-limit initial-listing sessions are SPECIAL_SESSION, not ordinary unconstrained historical data; no synthetic pre-listing history may be invented for indicator warm-up.
+- Required future per-bar provenance includes:
+  limitRegime,
+  auctionReferencePrice,
+  upper/lowerLimit,
+  limitSource/ruleVersion,
+  boundaryRelation,
+  high/low/close-at-limit flags,
+  onePriceAtBoundary,
+  priceDiscoveryState.
+- Window summaries preserve constrained counts rather than dropping extreme sessions.
+- Indicator-specific consequences:
+  KD range extrema can be boundary-censored;
+  RSI observed close-return magnitude can be capped;
+  MACD may observe a capped staircase rather than free latent slope;
+  ADX H/L/TR/DM inputs are directly censorable;
+  Bollinger observes capped close dispersion.
+- New durable artifacts:
+  research/TECHNICAL_INDICATOR_TAIWAN_PRICE_LIMIT_V0_1.md
+  research/technical_indicator_taiwan_price_limit_v0_1.json
+- Continuity handoff and Snapshot v0.2 proposal now carry price-limit provenance and explicitly prohibit LIMIT_LOCKED inference from daily OHLC.
+
+### Price-limit non-identifiability — TI-361..TI-366
+- A structural identification firewall is frozen:
+  different latent supply/demand states can map to the same boundary-capped observed OHLC.
+- If two latent states produce identical observed OHLC, every deterministic OHLC technical indicator is necessarily identical:
+  KD, RSI, MACD, ADX/DMI, Bollinger and any other deterministic OHLC transform.
+- This is not correlation; it is a many-to-one observation map.
+- Repeated upper/lower-bound sessions may demonstrate persistent observed directional pressure but cannot identify:
+  latent unconstrained clearing price,
+  unfilled queue size,
+  queue persistence,
+  cancellation/replenishment,
+  aggressive order imbalance.
+- Prohibited daily-OHLC claims:
+  latent return = X;
+  excess-demand magnitude;
+  locked buying pressure;
+  queue strength;
+  true breakout distance beyond the legal limit.
+- Allowed:
+  observed boundary touch;
+  observed capped path;
+  numerical indicator state on observed prices;
+  separate constrained stratum.
+- Cross-sectional ranking hazard:
+  two stocks can have the same technical state at the upper boundary while hidden queue/intensity differs materially.
+- Any future attempt to distinguish latent intensity must consume genuinely different information from Microstructure / Price-Volume:
+  order-book queue,
+  trade-event flow,
+  touch timing,
+  reopen/uncross behavior,
+  next-session acceptance.
+- Multiple indicators computed from the same capped path cannot receive a "confluence" bonus for hidden pressure.
+- New durable artifacts:
+  research/TECHNICAL_INDICATOR_PRICE_LIMIT_NONIDENTIFIABILITY_V0_1.md
+  research/technical_indicator_price_limit_nonidentifiability_v0_1.json
+
+### Current lane status
+
+PRIMARY_THEORY_DECOMPOSITION = COMPLETE_V0_1
+ISOLATED_FORMULA_MECHANICS = MATERIAL_PASS
+CONTINUITY_HANDOFF_CONTRACT = FROZEN_V0_1
+INDICATOR_MEMORY_CERTIFICATION = FROZEN
+TAIWAN_PRICE_LIMIT_CONTRACT = FROZEN_V0_1
+PRICE_LIMIT_NONIDENTIFIABILITY = FROZEN
+RAW_HISTORY_ADMISSION = MATERIAL_PASS
+TECHNICAL_CONTINUITY_RUNTIME = BLOCKED
+PRICE_LIMIT_RUNTIME_PROVENANCE = NOT_CERTIFIED
+SYMBOL_SESSION_RUNTIME_COMPLETENESS = PARTIAL
+SNAPSHOT_V0_2 = PROPOSAL_ONLY / CONTINUITY_AND_LIMIT_LINKED
+PROSPECTIVE_TECHNICAL_OBSERVER = NO_GO
+OUTCOME_INFERENCE = NO_GO
+FORMAL_OPTIMIZATION_CANDIDATE = NONE
+Formal Core remains LOCKED.
+
+### Updated exact next continuation point
+
+1. Do not expand named indicators.
+2. Continue data-semantic readiness.
+3. Next high-value target:
+   define the exact prospective Technical Indicator observer readiness gate that combines:
+   parent decision lineage,
+   raw-history admission,
+   symbol-session completeness,
+   TECHNICAL_CONTINUITY receipt,
+   price-limit provenance,
+   formula/state lineage,
+   100% attempt accounting.
+4. Distinguish DATA_READY from INFERENCE_READY and from ALPHA_MATURE.
+5. Do not implement runtime persistence or new D1 schema without governance/owner approval.
+6. No historical Shadow fabrication.
+7. No outcome inference before complete prospective receipts.
+8. Formal Core remains unchanged.
+
+## Latest durable research commits
+
+- 4e26e6b85796a10b28a1b3be29d58d6eb509dcc0 — Taiwan price-limit technical semantics.
+- 5ee0f99b3e7ac2227d80b6d0a44b335b4c237039 — machine-readable Taiwan price-limit contract.
+- 44cf01542220d46f513685ecea3297f8bb2b41d7 — price-limit provenance added to continuity handoff.
+- c564c028986f58f284c11165170eeec0b5a4d107 — price-limit provenance added to Snapshot v0.2 proposal.
+- 2aabd4be85418a07e7f6ed95f88a6e18f9da4eaf — price-limit non-identifiability firewall.
+- a19ff2d7b32801fe2bf88c76ae6fe4233cbda3d9 — machine-readable non-identifiability contract.
