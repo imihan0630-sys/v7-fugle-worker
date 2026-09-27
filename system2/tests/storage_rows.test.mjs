@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { toShadowDecisionRow, toShadowRunRow, toCapacityRunRow } from "../runtime/storage_rows.mjs";
+import { toShadowDecisionRow, toShadowRunRow, toCapacityRunRow, toStrategyOrderingRow } from "../runtime/storage_rows.mjs";
 
 const decisionRow = toShadowDecisionRow(
   {
@@ -101,5 +101,28 @@ assert.equal(capacityRow.global_max, 12);
 assert.equal(capacityRow.per_strategy_max, 3);
 assert.equal(capacityRow.capacity_hash, "cap-hash");
 assert.equal(JSON.parse(capacityRow.counts_json).globalCount, 1);
+
+const orderingRow = toStrategyOrderingRow({
+  orderingReceiptId: "ORD1",
+  marketDate: "2026-09-27",
+  decisionTimestamp: "2026-09-27T07:30:00Z",
+  purpose: "GLOBAL_ADMISSION",
+  strategyId: "SHORT_MOMENTUM",
+  strategyVersion: "V0.1-CONTRACT",
+  orderingPolicyId: "SM-ORDER-RESEARCH-BASELINE",
+  orderingPolicyVersion: "0.1",
+  candidateCount: 2,
+  orderedCandidates: [
+    { ordinal: 1, symbol: "2330" },
+    { ordinal: 2, symbol: "3008" },
+  ],
+  orderingHash: "ord-hash",
+  capturedAt: "2026-09-27T07:31:00Z",
+  schemaVersion: "S2_STRATEGY_ORDERING_V0_1",
+});
+
+assert.equal(orderingRow.candidate_count, 2);
+assert.equal(orderingRow.ordering_hash, "ord-hash");
+assert.equal(JSON.parse(orderingRow.ordered_candidates_json)[1].symbol, "3008");
 
 console.log("System2 storage row serializer tests passed");
