@@ -21,6 +21,29 @@ function bundle(marketDate, {
 }
 
 const result = aggregateDecisionClockEvidence({
+  scheduledRunCoverage: [
+    {
+      marketDate: "2026-09-28",
+      runId: "100",
+      expectedTradingDay: false,
+      artifactPresent: false,
+      runConclusion: "success",
+    },
+    {
+      marketDate: "2026-09-29",
+      runId: "200",
+      expectedTradingDay: true,
+      artifactPresent: true,
+      runConclusion: "success",
+    },
+    {
+      marketDate: "2026-09-30",
+      runId: "300",
+      expectedTradingDay: true,
+      artifactPresent: true,
+      runConclusion: "success",
+    },
+  ],
   candidates: [
     {
       runId: "200",
@@ -73,9 +96,30 @@ assert.equal(result.duplicateScheduledArtifacts[0].excludedRunId, "201");
 assert.equal(result.manualDiagnosticArtifacts[0].runId, "202");
 assert.equal(result.readiness.independentTradingDates, 2);
 assert.equal(result.readiness.status, "INSUFFICIENT_DATES");
-assert.equal(result.artifactCoverageAudited, false);
+assert.equal(result.artifactCoverageAudited, true);
+assert.equal(result.promotionCoverageComplete, true);
+assert.equal(result.promotionReadinessStatus, "INSUFFICIENT_DATES");
+assert.equal(result.nonTradingScheduledRuns.length, 1);
+assert.equal(result.tradingDayArtifactGaps.length, 0);
 assert.equal(result.exactDecisionClockAuthorized, false);
 assert.equal(result.cronAuthorized, false);
 assert.equal(result.captureEnabled, false);
+
+const gap = aggregateDecisionClockEvidence({
+  scheduledRunCoverage: [
+    {
+      marketDate: "2026-10-01",
+      runId: "400",
+      expectedTradingDay: true,
+      artifactPresent: false,
+      runConclusion: "failure",
+    },
+  ],
+  candidates: [],
+});
+assert.equal(gap.artifactCoverageAudited, true);
+assert.equal(gap.promotionCoverageComplete, false);
+assert.equal(gap.promotionReadinessStatus, "SCHEDULED_TRADING_DAY_ARTIFACT_GAPS");
+assert.equal(gap.tradingDayArtifactGaps[0].marketDate, "2026-10-01");
 
 console.log("System2 decision-clock evidence aggregation tests passed");
