@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "FORMAL_GATE_OVERLAP_OBSERVER_SPEC_V0_2",
+  "researchDate": "2026-09-27",
+  "status": "CLASS_A_CORRECTIVE_OBSERVER",
+  "supersedesForFutureCounts": "formal-gate-overlap-observer-spec-v0.1",
+  "formalCoreChanged": false,
+  "decisionImpact": false,
+  "marketCalls": 0,
+  "persistence": false,
+  "rules": [
+    "null/undefined/empty numeric values are UNKNOWN, never Number-coerced to zero.",
+    "Explicit observed numeric zero remains zero.",
+    "financialBasis mirrors Formal truthiness because current producer stores a descriptive non-empty string.",
+    "When announcementsVerified=true, absent officialAnnouncements is an empty list under the exact Formal default.",
+    "UNKNOWN and NOT_EVALUABLE remain excluded from failure denominators.",
+    "Original Formal first failure/result remain preserved and observer output cannot alter selection."
+  ],
+  "empiricalMigrationRule": "Future scarcity/overlap counts must record observerVersion. V0.1 empirical counts using null-bearing rows are guarded until recomputed under v0.2. Do not mutate historical raw receipts.",
+  "optimizationStatus": "EVIDENCE_CORRECTION_ONLY"
+}
