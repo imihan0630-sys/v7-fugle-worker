@@ -18003,3 +18003,137 @@ Sequence:
 
 ### Goal
 Use modern ML evidence to motivate careful interaction testing, not to bypass falsification.
+
+
+## DL-003CJ — Evidence Provenance Ladder for Pattern Research
+
+### Why needed
+Pattern literature ranges from:
+- peer-reviewed large-sample Taiwan evidence,
+- older peer-reviewed foreign evidence,
+- master's theses,
+- practitioner books,
+- websites/educational material.
+
+They should not carry equal prior weight.
+
+### Provenance labels
+A_TW_PEER_REVIEWED_DIRECT
+- peer-reviewed Taiwan equity evidence directly testing relevant pattern/mechanism.
+
+B_TW_ACADEMIC_INDIRECT
+- Taiwan peer-reviewed evidence on related mechanism (momentum, price-volume, anchoring, microstructure).
+
+C_TW_THESIS_OR_FUTURES
+- Taiwan thesis/futures evidence; useful for hypotheses and counterevidence, lower external-validity weight.
+
+D_GLOBAL_PEER_REVIEWED
+- strong non-Taiwan evidence; useful mechanism prior, requires Taiwan transportability test.
+
+E_PRACTITIONER_FORMALIZED
+- books/practitioner databases with explicit definitions/statistics; useful for detector design, not enough for alpha claims.
+
+F_EDUCATIONAL_OR_ANECTODAL
+- use only to identify vocabulary/claims to test, never as evidence of profitability.
+
+### Rule
+A low-provenance claim can motivate a feature definition.
+It cannot override contradictory higher-provenance or modern prospective evidence.
+
+### Examples
+- 2026 Pacific-Basin Taiwan HS paper: A_TW_PEER_REVIEWED_DIRECT.
+- 2014 Pacific-Basin Taiwan candlestick paper: A_TW_PEER_REVIEWED_DIRECT but old-regime / survivorship caveat.
+- 2026 NCCU tail price-volume thesis: C_TW_THESIS_OR_FUTURES despite recency.
+- 2024 JFE Charting by Machines: D_GLOBAL_PEER_REVIEWED.
+- Bulkowski-style pattern statistics: E_PRACTITIONER_FORMALIZED.
+- general chart websites: F.
+
+## DL-003CK — Old Taiwan Candlestick Evidence Has a Survivorship/Data-Continuity Caveat
+
+### Evidence detail
+The 2014 Pacific-Basin Finance Journal candlestick study:
+- uses Taiwan component stocks from 1992-2009;
+- removes stocks without unbroken price data over the entire sample;
+- resulting sample contains 151 stocks.
+
+### Bias concern
+Requiring complete uninterrupted historical data can exclude:
+- delisted firms,
+- firms with incomplete histories,
+- listing changes,
+which may introduce survivorship/data-availability selection.
+
+This does not invalidate the paper's robustness exercises, but it lowers direct transportability to a full historical universe.
+
+### Pattern implication
+Our validation must use contemporaneous historical universe membership and preserve delisted/failed firms when source data permits.
+
+### General lesson
+Bootstrap/OOS robustness does not automatically solve universe-construction bias.
+
+## DL-003CL — Research Evidence Must Carry Two Dates
+
+### Required provenance
+For every cited study store conceptually:
+- publicationDate
+- sampleEndDate
+
+### Why
+A paper published in 2026 may use data ending in 2018.
+A paper published in 2020 may use data ending before major market reforms.
+
+### Current key examples
+- 2026 Taiwan HS paper: published 2026, sample ends 2018.
+- 2020 extreme-absolute-strength Taiwan paper: sample largely through 2018.
+- 2014 candlestick paper: sample through 2009.
+
+### Implication
+Fresh publication improves methodological relevance but does not guarantee modern-market sample relevance.
+
+## DL-003CM — Current Research Priority After Evidence Reconciliation
+
+### Tier P1: highest-value modern Pattern questions
+1. Sequence compression vs current Formal B.
+2. True W / undercut-reclaim vs current rightFootHigher proxy.
+3. IHS-bottom vs W, with head extremeness and independent turning-point confirmation.
+4. False-break / reentry / acceptance lifecycle.
+5. Local vs major resistance-zone conflict.
+
+### Tier P2: context with plausible incremental value
+6. Turnover state × pattern phase × return-tail state.
+7. Pattern maturity × RS/sector synchronization.
+8. time-to-event / staleness.
+9. 52w high/low + salience/recency after long-history data exists.
+10. event-driven vs endogenous maturation.
+
+### Tier P3: data-expansion research
+11. historical candlestick sequences once OPEN retained.
+12. long cup/handle morphology.
+13. true price-level volume / VWAP only with suitable source.
+
+### Deprioritized
+- Fibonacci ratios.
+- full Elliott labeling.
+- full Wyckoff score.
+- entropy/Hurst.
+- unconstrained shape ML.
+
+### Why
+This ordering balances:
+- Taiwan-specific evidence quality,
+- direct relation to current system,
+- incremental-information potential,
+- data readiness,
+- overfit/redundancy risk.
+
+## Latest exact continuation point — 2026-09-27
+1. Continue from DL-003CM, not from earlier DL-002 continuation markers.
+2. Deepen P1 questions before expanding the pattern catalog.
+3. Next high-value research:
+   a. formalize a point-in-time Bry-Boschan-style independent turning-point filter and compare it conceptually with Directional Change;
+   b. refine IHS-bottom vs W nested definitions without tuning thresholds;
+   c. examine support/resistance zone acceptance using modern post-2020 Taiwan microstructure evidence;
+   d. define the minimum clean historical data envelope needed for P-SHADOW-01/02/03.
+4. Keep R01-R08 frozen; do not create R09 until definitions/data are ready.
+5. Do not implement Formal changes. Pattern Shadow remains research-only.
+6. Any future implementation should start from P0 minimal feature set, not the full research catalog.
