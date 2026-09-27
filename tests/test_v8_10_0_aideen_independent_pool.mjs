@@ -3,7 +3,8 @@ import fs from "node:fs";
 
 const source=fs.readFileSync(process.env.V7_TEST_WORKER_PATH||"Worker.js","utf8");
 
-assert.match(source,/const VERSION = "8\.11\.0-pv-shadow-v0\.1-log-only";/);
+const version=source.match(/const VERSION = "(\d+)\.(\d+)\.(\d+)[^"]*";/)?.slice(1,4).map(Number);
+assert.ok(version && version[0]===8 && (version[1]>10 || (version[1]===10 && version[2]>=0)),"Aideen contract must survive V8.10+ successors");
 assert.match(source,/const AIDEEN_POOL_ID = "AIDEEN_APP";/);
 assert.match(source,/const AIDEEN_MAX_STOCKS = 5;/);
 assert.match(source,/const AIDEEN_KV_KEY = "V10_AIDEEN_APP_POOL";/);

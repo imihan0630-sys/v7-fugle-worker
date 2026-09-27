@@ -311,18 +311,10 @@ replace_once(
 )
 
 replace_once(
-    '  enrichment.history = { ...cachedHistory, ...(enrichment.history || {}) };\n'
-    '  // Free Workers 每次只有很小的 CPU 預算；18:10 不再臨時額外暖機。',
-    '  enrichment.history = { ...cachedHistory, ...(enrichment.history || {}) };\n'
-    '  const historyAdmission=await buildHistoryAdmissionMap(rows,enrichment.history,marketDate,env);\n'
-    '  // Free Workers 每次只有很小的 CPU 預算；18:10 不再臨時額外暖機。',
-    "after market history admission",
-)
-
-replace_once(
     '  const marketState = updateMarketState(previous, rows, enrichment, marketDate);',
+    '  const historyAdmission=await buildHistoryAdmissionMap(rows,enrichment.history,marketDate,env);\n'
     '  const marketState = updateMarketState(previous, rows, enrichment, marketDate,historyAdmission);',
-    "market state admission input",
+    "after market history admission and state input",
 )
 
 replace_once(
@@ -512,13 +504,17 @@ r'''async function fetchHistoryWarmup(targetRows, marketDate, env) {
         complete+=1;
         continue;
       }
-      if(item.bars.length>=20) history[item.symbol]=item.bars.slice(-MARKET_STATE_DAYS);
-      insufficient+=1;insufficientSymbols.push(item.symbol);
       reasons[validation.reason]=(reasons[validation.reason]||0)+1;
       if(samples.length<30) samples.push({
         symbol:item.symbol,market:item.market,status:validation.status,reason:validation.reason,
         gapDate:validation.gapDate||null,latestPriorDate:validation.latestPriorDate||validation.shape?.latestPriorDate||null
       });
+      if(validation.reason==="INSUFFICIENT_PRIOR_BARS" && item.bars.length<60) {
+        if(item.bars.length>=20) history[item.symbol]=item.bars.slice(-MARKET_STATE_DAYS);
+        insufficient+=1;insufficientSymbols.push(item.symbol);
+      } else {
+        failed+=1;failedSymbols.push(item.symbol);
+      }
     }
   }
   return {
@@ -532,6 +528,17 @@ r'''async function fetchHistoryWarmup(targetRows, marketDate, env) {
   };
 }''',
     "warmup source revalidation",
+)
+
+replace_once(
+    '  if (!response.ok) throw new Error(\`${symbol} 歷史日K API錯誤 ${response.status}: ${await response.text()}\`);\n'
+    '  const payload = await response.json();\n'
+    '  const rows = Array.isArray(payload?.data) ? payload.data : [];',
+    '  if (!response.ok) throw new Error(\`${symbol} 歷史日K API錯誤 ${response.status}: ${await response.text()}\`);\n'
+    '  const payload = await response.json();\n'
+    '  if(payload?.adjusted===true) throw new Error(\`${symbol} 歷史日K回傳adjusted=true，拒絕與raw正式盤後資料混用\`);\n'
+    '  const rows = Array.isArray(payload?.data) ? payload.data : [];',
+    "reject unexpected adjusted historical response",
 )
 
 replace_once(
