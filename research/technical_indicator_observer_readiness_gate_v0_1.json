@@ -1,0 +1,167 @@
+{
+  "schemaVersion": "technical-indicator-observer-readiness-v0.1",
+  "updated": "2026-09-28 Asia/Taipei",
+  "researchOnly": true,
+  "runtimeImplemented": false,
+  "decisionImpact": false,
+  "formalCore": "LOCKED",
+  "levels": [
+    {
+      "id": "R0_FORMULA_QA_READY",
+      "requires": [
+        "FORMULA_VERSION",
+        "DETERMINISTIC_ORACLE",
+        "REPLAY",
+        "PREFIX_WHERE_APPLICABLE",
+        "EDGE_SEMANTICS"
+      ]
+    },
+    {
+      "id": "R1_SOURCE_READY",
+      "requires": [
+        "PARENT_IDENTITY",
+        "RAW_HISTORY_ADMISSION",
+        "SYMBOL_SESSION_COMPLETE",
+        "TECHNICAL_CONTINUITY_RECEIPT",
+        "PRICE_LIMIT_PROVENANCE",
+        "FORMULA_STATE_LINEAGE",
+        "PIT_TIMING"
+      ]
+    },
+    {
+      "id": "R2_CAPTURE_COMPLETE",
+      "requires": [
+        "EXACT_PARENT_KEYSET",
+        "100_PERCENT_ATTEMPT_ACCOUNTING",
+        "ZERO_MISSING",
+        "ZERO_PROVENANCE_CONFLICT",
+        "COMPLETE_RUN_RECEIPT"
+      ]
+    },
+    {
+      "id": "R3_DESCRIPTIVE_READY",
+      "requires": [
+        "R2",
+        "INDEPENDENT_DATES",
+        "BLOCKED_UNKNOWN_CONSTRAINED_RATES",
+        "COMMON_SUPPORT",
+        "VERSION_STABILITY"
+      ]
+    },
+    {
+      "id": "R4_OUTCOME_JOIN_READY",
+      "requires": [
+        "R3",
+        "OUTCOME_PROVENANCE",
+        "EXACT_KEYSET_JOIN",
+        "NO_READER_TRUNCATION",
+        "FORWARD_ONLY_OUTCOMES",
+        "PREREGISTERED_EXPERIMENT"
+      ]
+    },
+    {
+      "id": "R5_INCREMENTAL_INFERENCE_READY",
+      "requires": [
+        "R4",
+        "MATURE_PROSPECTIVE_SAMPLE",
+        "BASE_CONTROLS",
+        "REDUNDANCY_RESIDUALIZATION",
+        "DATE_CLUSTER_ROBUSTNESS",
+        "REGIME_SPLITS",
+        "COSTS",
+        "MULTIPLE_TESTING",
+        "PURGED_HOLDOUT_WHERE_APPLICABLE"
+      ]
+    },
+    {
+      "id": "R6_FORMAL_REVIEW_ELIGIBLE",
+      "requires": [
+        "D5_N_GE_60",
+        "PROSPECTIVE_COMPLETE_GE_30",
+        "INDEPENDENT_SCAN_DATES_GE_15",
+        "YEARS_GE_2",
+        "REGIMES_GE_2",
+        "PURGED_TRAIN_DATES_GE_10",
+        "HOLDOUT_DATES_GE_5",
+        "TRAIN_HOLDOUT_DIRECTION_CONSISTENT",
+        "COVERAGE_ZERO_PICK_SAFE",
+        "REDUNDANCY_COST_OVERFIT_INCREMENTAL_PASS"
+      ]
+    }
+  ],
+  "attemptStatuses": [
+    "VALID_OBSERVABLE",
+    "VALID_CONSTRAINED",
+    "BLOCKED_SOURCE",
+    "BLOCKED_CONTINUITY",
+    "BLOCKED_FORMULA_STATE",
+    "UNKNOWN_PROVENANCE"
+  ],
+  "completeRunRequiredFields": [
+    "observerVersion",
+    "scanDate",
+    "captureGeneration",
+    "parentKeysetHash",
+    "expectedParentCount",
+    "attemptedParentCount",
+    "validObservableCount",
+    "validConstrainedCount",
+    "blockedCount",
+    "unknownCount",
+    "missingCount",
+    "provenanceConflictCount",
+    "continuityReceiptMissingCount",
+    "limitProvenanceUnknownCount",
+    "replayCheckedCount",
+    "replayFailureCount",
+    "prefixCheckedCount",
+    "prefixFailureCount",
+    "formulaVersionCounts",
+    "stateLineageVersionCounts",
+    "startedAt",
+    "finishedAt",
+    "runStatus"
+  ],
+  "currentPrimaryQueue": {
+    "KD_VS_RSI": {
+      "R0": "MATERIAL_PASS",
+      "R1": "BLOCKED_RUNTIME_CONTINUITY_PARENT"
+    },
+    "MACD_VS_DIRECT_TREND": {
+      "R0": "MATERIAL_PASS",
+      "R1": "BLOCKED_RUNTIME_CONTINUITY_PARENT"
+    },
+    "ADX_VS_TREND_QUALITY": {
+      "R0": "MATERIAL_PASS",
+      "R1": "BLOCKED_RUNTIME_CONTINUITY_LIMIT_PARENT"
+    },
+    "BBW_VS_ATR_VCP": {
+      "R0": "MATERIAL_PASS_BBANDS",
+      "R1": "BLOCKED_RUNTIME_CONTINUITY_LIMIT_PARENT",
+      "R5": "ALSO_BLOCKED_PATTERN_COMMON_SUPPORT"
+    }
+  },
+  "currentLane": {
+    "highestReached": "R0_FORMULA_QA_READY",
+    "R1": "NO_GO",
+    "R2": "NOT_STARTED",
+    "R3": "NOT_STARTED",
+    "R4": "NO_GO",
+    "R5": "NO_GO",
+    "R6": "NO"
+  },
+  "rules": [
+    "DATA_READY_NOT_EQUAL_INFERENCE_READY",
+    "INFERENCE_READY_NOT_EQUAL_ALPHA_MATURE",
+    "ALPHA_MATURE_NOT_EQUAL_AUTOMATIC_FORMAL_CHANGE",
+    "UNKNOWN_REMAINS_IN_DENOMINATOR",
+    "CONSTRAINED_RETAINED_SEPARATE_STRATUM",
+    "VERSION_CHANGE_SPLITS_LINEAGE_UNLESS_COMPATIBILITY_PROVEN",
+    "NO_HISTORICAL_PROSPECTIVE_CLOCK_FABRICATION"
+  ],
+  "engineering": {
+    "isolatedPureResearch": "CLASS_A",
+    "sharedD1WorkerScheduleContinuity": "CLASS_B_PROPOSAL_FIRST",
+    "formalDecisionBehavior": "CLASS_C_OWNER_APPROVAL"
+  }
+}
