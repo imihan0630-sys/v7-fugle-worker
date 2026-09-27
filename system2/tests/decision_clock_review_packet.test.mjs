@@ -10,7 +10,7 @@ function aggregation({
 } = {}) {
   return {
     aggregationVersion: "S2_DECISION_CLOCK_EVIDENCE_AGGREGATION_V0_1",
-    promotionPolicy: "EARLIEST_SCHEDULED_ARTIFACT_PER_MARKET_DATE",
+    promotionPolicy: "EARLIEST_ATTEMPT_ONE_SCHEDULED_ARTIFACT_PER_MARKET_DATE",
     artifactCoverageAudited: true,
     promotionCoverageComplete: coverage,
     tradingDayArtifactGaps: Array.from({ length: gapCount }, (_, i) => ({
