@@ -35,6 +35,12 @@ Every strategy must preserve frozen daily decisions and simulated execution/perf
 When safe and authorized, continue work through diagnosis, implementation, tests and writeback rather than stopping after reporting an error. Stop for MFA/secrets/new authorization or a material strategy/production decision.
 
 
+## Research suggestion handling
+
+Treat every newly proposed factor, rule or interpretation as a hypothesis.
+Evaluate: mechanism, counterexamples/failure modes, redundancy with existing factors, PIT/quantifiability, and incremental value.
+Reject or omit ideas that do not survive those checks; promising but unproven ideas remain research-only.
+
 ## Language / terminology
 
 When using English financial, technical, engineering or system terms in owner-facing responses, always append a clear Traditional Chinese meaning on first use, for example:
