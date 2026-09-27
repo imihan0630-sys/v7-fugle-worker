@@ -2614,3 +2614,61 @@ Status:
 `ENTRY_REFERENCE_ARTIFACT_FALSIFIED / STRUCTURAL_CONCLUSION_STRENGTHENED / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-061 — separate stop-geometry concentration from PriorityScore sizing increment (2026-09-28)
+
+PR-033 through PR-060 show that current PriorityScore sizing compounds with heterogeneous stop distance. PR-061 adds an important anti-overclaim decomposition.
+
+Equal-capital is used as a **descriptive bridge**, not a causal counterfactual claim.
+
+For a selected set of N names:
+
+`current HHI - 1/N = (equal-capital HHI - 1/N) + (current HHI - equal-capital HHI)`.
+
+The first term describes concentration already present when capital is neutral across names but stop distances differ.
+
+The second term is the incremental concentration associated with the current PriorityScore capital tilt on the same names.
+
+A second bridge uses the exhaustive feasible grid minimum:
+
+`current HHI - global-min HHI = (equal-capital HHI - global-min HHI) + (current HHI - equal-capital HHI)`.
+
+### Governance firewall
+
+These components are algebraically exact but **not statistically independent and not causal factor attribution**.
+
+Therefore future reporting must not say:
+`PriorityScore causes all observed risk concentration`.
+
+The correct statement is:
+`stop geometry already creates unequal projected-risk contributions under equal capital; current PriorityScore sizing adds an additional concentration increment on the observed date.`
+
+Executable decomposition:
+`research/risk_concentration_bridge_v0_1.mjs`.
+
+Audit:
+`tests/risk_concentration_bridge_audit_v0_1.mjs`.
+
+Status:
+`GEOMETRY_AND_SIZING_COMPONENTS_SEPARATED / ECONOMIC_VALUE_UNKNOWN`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+### PR-061 Production bridge result
+
+Using the PR-060 2026-09-18 reference sensitivity:
+
+- BUY_LOW theoretical excess: stop-geometry bridge 67.175577%, current sizing increment 32.824423%.
+- MIDPOINT theoretical excess: stop-geometry bridge 58.263081%, current sizing increment 41.736919%.
+- BUY_HIGH theoretical excess: stop-geometry bridge 51.305446%, current sizing increment 48.694554%.
+
+Relative to the exhaustive feasible grid minimum:
+- BUY_LOW: equal-capital-to-min gap 60.615721%, sizing increment 39.384279%;
+- MIDPOINT: 54.992623% / 45.007377%;
+- BUY_HIGH: 50.110389% / 49.889611%.
+
+These percentages are an **algebraic bridge only**. They are not causal shares and must not be interpreted as independent variance decomposition.
+
+The result corrects any one-sided reading of earlier PRs: heterogeneous stop geometry is already a material source of concentration under neutral capital, and PriorityScore sizing adds a separate incremental concentration on top.
