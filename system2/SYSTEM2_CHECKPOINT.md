@@ -19,6 +19,12 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 
 ## Current design decisions
 
+- Ranking experiment receipts implemented: baseline/challenger policy hashes, common-support symbols, candidate-set equality and rank deltas are frozen before outcomes; outcomeAttached=false at preregistration. Research-only storage/serializer added.
+
+- RANK-02 challenger verification PASS. EntryReadiness cannot change StrategyValidity, cannot make non-proximate names active-monitor eligible, and is tested only as incremental ordering information beyond RANK-01.
+
+- RANK-02 EntryReadiness（進場準備度） experiment preregistered before outcomes: Global Admission challenger keeps Pareto tier primary then tests binary PROXIMATE vs NON_PROXIMATE; Active Monitor challenger keeps Pareto tier primary then tests BUY_ELIGIBLE > ACTIVE_ENTRY_MONITOR > NEAR_ENTRY as a hypothesis, not a fact.
+
 - Cross-strategy scarcity gate implemented: if eligible new symbols exceed remaining global vacancies and no versioned global priority policy exists, allocation fails closed as GLOBAL_PRIORITY_UNRESOLVED and retains incumbents only. This prevents accidental strategy-iteration/symbol-order selection. Verification PASS.
 
 - RANK-01 neutral tie handling uses deterministic hash only to make within-Pareto-tier machine order reproducible; within-tier ordinal is explicitly not an economic superiority claim. Verification PASS.
