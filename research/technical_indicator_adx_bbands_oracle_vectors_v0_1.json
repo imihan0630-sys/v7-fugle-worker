@@ -1,0 +1,135 @@
+{
+  "schemaVersion": "technical-indicator-adx-bbands-oracle-v0.1",
+  "updated": "2026-09-28 Asia/Taipei",
+  "researchOnly": true,
+  "decisionImpact": false,
+  "formalCore": "LOCKED",
+  "purpose": "Deterministic outcome-blind numeric oracle vectors for future isolated implementation QA. These are mechanics fixtures, not alpha evidence.",
+  "formulaVersions": {
+    "adx": "WILDER_ADX14_TALIB_STYLE_NO_ROUNDING_V0_1",
+    "bbands": "BBANDS_CLOSE_SMA20_POPSTD20_K2_V0_1"
+  },
+  "adxFixtures": [
+    {
+      "id": "MIRRORED_MONOTONIC_UP",
+      "generation": "40 bars; close=100+i; high=close+1; low=close-1",
+      "expected": {
+        "firstAdxIndex": 27,
+        "adxAt27": 100,
+        "finalAdx": 100,
+        "plusDIAt27": 50,
+        "minusDIAt27": 0
+      }
+    },
+    {
+      "id": "MIRRORED_MONOTONIC_DOWN",
+      "generation": "40 bars; close=139-i; high=close+1; low=close-1",
+      "expected": {
+        "firstAdxIndex": 27,
+        "adxAt27": 100,
+        "finalAdx": 100,
+        "plusDIAt27": 0,
+        "minusDIAt27": 50
+      }
+    },
+    {
+      "id": "FLAT_ZERO_RANGE",
+      "generation": "40 bars; high=low=close=100",
+      "expected": {
+        "firstAdxIndex": 27,
+        "adxAt27": 0,
+        "finalAdx": 0,
+        "zeroDirectionBehavior": "DETERMINISTIC_ZERO_OR_PRIOR_ZERO"
+      }
+    },
+    {
+      "id": "EQUAL_OUTSIDE_EXPANSION",
+      "generation": "40 bars; close=100; high=101+i; low=99-i",
+      "expected": {
+        "tieRule": "+DM1=0 and -DM1=0 on equal positive expansion",
+        "adxAt27": 0,
+        "finalAdx": 0,
+        "plusDIAt27": 0,
+        "minusDIAt27": 0
+      }
+    },
+    {
+      "id": "GAP_TRUE_RANGE",
+      "generation": "bar0 H=L=C=100; bar1 H=110.5 L=109.5 C=110",
+      "expected": {
+        "trAtBar1": 10.5
+      }
+    },
+    {
+      "id": "PRICE_SCALE_MULTIPLICATION",
+      "generation": "Multiply MIRRORED_MONOTONIC_UP all OHLC by 10",
+      "expected": {
+        "maxAbsAdxDifference": 0,
+        "invariantFields": [
+          "plusDI",
+          "minusDI",
+          "DX",
+          "ADX"
+        ]
+      }
+    }
+  ],
+  "bollingerFixtures": [
+    {
+      "id": "CONSTANT_CLOSE",
+      "generation": "20 closes all 100",
+      "expected": {
+        "sma20": 100,
+        "sigma20Population": 0,
+        "upper": 100,
+        "lower": 100,
+        "bandWidthRatio": 0,
+        "bandWidthPct": 0,
+        "percentB": null,
+        "percentBReason": "ZERO_BAND_WIDTH_UNDEFINED_LOCATION"
+      }
+    },
+    {
+      "id": "SEQUENCE_101_TO_120",
+      "generation": "20 closes = 101,102,...,120",
+      "expected": {
+        "sma20": 110.5,
+        "sigma20Population": 5.766281297335398,
+        "sigma20SampleComparator": 5.916079783099616,
+        "upper": 122.0325625946708,
+        "lower": 98.9674374053292,
+        "bandWidthRatio": 0.20873416460942612,
+        "bandWidthPct": 20.87341646094261,
+        "percentB": 0.911877235523957
+      }
+    },
+    {
+      "id": "MULTIPLICATIVE_SCALE_X10",
+      "generation": "SEQUENCE_101_TO_120 multiplied by 10",
+      "expected": {
+        "bandWidthRatio": 0.20873416460942623,
+        "bandWidthPct": 20.87341646094262,
+        "percentB": 0.9118772355239569,
+        "invariance": "bandWidthRatio and percentB unchanged within floating tolerance"
+      }
+    },
+    {
+      "id": "POSITIVE_ADDITIVE_SHIFT_PLUS100",
+      "generation": "SEQUENCE_101_TO_120 plus 100",
+      "expected": {
+        "sma20": 210.5,
+        "sigma20Population": 5.766281297335398,
+        "bandWidthRatio": 0.10957304127953248,
+        "bandWidthPct": 10.957304127953247,
+        "percentB": 0.911877235523957,
+        "interpretation": "percentB affine-invariant; relative bandwidth changes because SMA denominator shifts"
+      }
+    }
+  ],
+  "validationRules": [
+    "NO_OUTCOME_INFERENCE",
+    "NO_THRESHOLD_OPTIMIZATION",
+    "COMPARE_WITHIN_DECLARED_FLOAT_TOLERANCE",
+    "CORPORATE_ACTION_AND_PRICE_LIMIT_FIXTURES_REMAIN_SEMANTIC_STATE_TESTS_NOT_NUMERIC_ORACLES"
+  ]
+}
