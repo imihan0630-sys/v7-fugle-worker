@@ -96,3 +96,34 @@ Incremental SQLite syntax check for the new `s2_shadow_runs` table and extended 
 
 Important:
 The code is still not scheduled or connected to physical System 2 persistence. No production D1 migration/deployment was performed.
+
+
+## Candidate capacity / ranking infrastructure verification (2026-09-27)
+
+Status: PASS / RESEARCH-ONLY / NO RANKING FORMULA FROZEN / NOT DEPLOYED.
+
+Implemented:
+- `SYSTEM2_CANDIDATE_CAPACITY_CONTRACT_V0_1.md`;
+- `SYSTEM2_RANKING_RESEARCH_PLAN_V0_1.md`;
+- `runtime/candidate_capacity.mjs`;
+- `runtime/candidate_capacity_receipt.mjs`;
+- `runtime/strategy_ordering_receipt.mjs`;
+- extended storage serializers;
+- research-only `s2_strategy_ordering_receipts` and `s2_capacity_runs`.
+
+Verified:
+- global max-12 mechanics;
+- multi-strategy overlap consumes one global symbol slot;
+- the same overlap can consume one active-monitor slot inside each relevant strategy;
+- per-strategy active-monitor max-3 mechanics;
+- no forced filling with WAIT / TOO_EXTENDED / ineligible names;
+- retained-pool overflow fails closed instead of silently evicting a valid incumbent;
+- qualified capacity overflow stays distinct from strategy rejection;
+- strategy ordering receipt rejects duplicate symbols and preserves exact ordinals/policy versions;
+- candidate-capacity receipt is deterministic under identical inputs;
+- storage serializers preserve ordering/capacity metadata;
+- incremental SQLite syntax validation for `s2_shadow_runs`, `s2_strategy_ordering_receipts`, and `s2_capacity_runs`: PASS.
+
+Important:
+The allocator does not calculate a universal score. It only consumes an already-versioned ordering sequence and enforces capacity.
+The actual strategy-local ranking formula and global displacement policy remain research questions.
