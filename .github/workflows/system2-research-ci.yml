@@ -1,0 +1,92 @@
+name: System2 Research CI
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "system2/**"
+      - ".github/workflows/system2-research-ci.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-research-ci
+  cancel-in-progress: false
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Run System2 research-only tests
+        shell: bash
+        run: |
+          set -euo pipefail
+          count=0
+          for test_file in system2/tests/*.test.mjs; do
+            echo "::group::$test_file"
+            node "$test_file"
+            echo "::endgroup::"
+            count=$((count + 1))
+          done
+          test "$count" -gt 0
+          echo "Executed $count System2 test files"
+
+      - name: Validate System2 research SQL in SQLite
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import sqlite3
+          from pathlib import Path
+
+          path = Path("system2/sql/0001_research_core.sql")
+          sql = path.read_text(encoding="utf-8")
+          con = sqlite3.connect(":memory:")
+          try:
+              con.executescript(sql)
+              tables = {
+                  row[0]
+                  for row in con.execute(
+                      "SELECT name FROM sqlite_schema WHERE type='table' AND name LIKE 's2_%'"
+                  )
+              }
+              required = {
+                  "s2_decisions",
+                  "s2_shadow_runs",
+                  "s2_strategy_ordering_receipts",
+                  "s2_capacity_runs",
+                  "s2_candidate_lifecycle_receipts",
+                  "s2_candidate_reentry_receipts",
+                  "s2_ranking_experiment_receipts",
+                  "s2_rank05_displacement_receipts",
+                  "s2_strategy_overlap_receipts",
+                  "s2_candidate_concentration_receipts",
+                  "s2_source_session_receipts",
+                  "s2_shadow_run_fingerprints",
+              }
+              missing = sorted(required - tables)
+              if missing:
+                  raise SystemExit(f"missing expected System2 tables: {missing}")
+              print(f"SQLite schema PASS; System2 tables={len(tables)}")
+          finally:
+              con.close()
+          PY
+
+      - name: Production isolation guard
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(sed -n '1p' wrangler.toml)" = 'name = "fugle-test"'
+          ! grep -R --line-number --exclude='*.md' --exclude='*.test.mjs'             -E 'V7_DB|STOCKS_KV|fugle-test\.imihan0630\.workers\.dev'             system2/runtime system2/sql system2/src
+          echo "Production isolation guard PASS"
