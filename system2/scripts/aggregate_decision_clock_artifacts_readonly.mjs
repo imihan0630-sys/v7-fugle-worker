@@ -4,6 +4,7 @@ import { join, dirname, resolve } from "node:path";
 import { execFileSync } from "node:child_process";
 import { aggregateDecisionClockEvidence } from "../runtime/decision_clock_evidence_aggregation.mjs";
 import { probeTwseTradingDate } from "../runtime/twse_trading_calendar_readonly.mjs";
+import { buildDecisionClockReviewPacket } from "../runtime/decision_clock_review_packet.mjs";
 
 function parseArgs(argv) {
   const out = {};
@@ -184,12 +185,15 @@ export async function aggregateFromGithubArtifacts({
       workflowFile,
     });
 
+    const reviewPacket = buildDecisionClockReviewPacket(aggregation);
+
     const report = {
       reportVersion: "S2_DECISION_CLOCK_ARTIFACT_REPORT_V0_1",
       repository,
       workflowFile,
       generatedAt: new Date().toISOString(),
       aggregation,
+      reviewPacket,
       safety: {
         githubReadOnly: true,
         officialCalendarGetOnly: true,
@@ -229,6 +233,7 @@ async function main() {
     artifactCoverageAudited: a.artifactCoverageAudited,
     promotionCoverageComplete: a.promotionCoverageComplete,
     tradingDayArtifactGapCount: a.tradingDayArtifactGaps.length,
+    reviewState: report.reviewPacket.reviewState,
     exactDecisionClockAuthorized: false,
     cronAuthorized: false,
     externalMutationPerformed: false,
