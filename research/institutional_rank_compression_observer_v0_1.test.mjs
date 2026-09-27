@@ -76,16 +76,6 @@ const base={
   assert.equal(out.byDate,null);
 }
 
-console.log(JSON.stringify({
-  ok:true,
-  currentDayVsPersistenceSeparated:true,
-  nonlinearDirectionOverlapMeasured:true,
-  ownershipSeparated:true,
-  saturationPairFlatteningMeasured:true,
-  outcomesUsed:false
-},null,2));
-
-
 {
   const g=enumerateInstitutionalStreakGeometry();
   assert.equal(g.stateCount,64);
@@ -96,3 +86,14 @@ console.log(JSON.stringify({
   assert.ok(g.collisionScoreCount>0);
   assert.equal(g.interpretation.prevalenceClaimed,false);
 }
+
+
+console.log(JSON.stringify({
+  ok:true,
+  currentDayVsPersistenceSeparated:true,
+  nonlinearDirectionOverlapMeasured:true,
+  ownershipSeparated:true,
+  saturationPairFlatteningMeasured:true,
+  streakStateSpaceFrozen:true,
+  outcomesUsed:false
+},null,2));
