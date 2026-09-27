@@ -1,0 +1,21 @@
+name: Formal Gate Replay Research
+
+on:
+  pull_request:
+    paths:
+      - "research/formal_gate_replay_v0_1.mjs"
+      - "tests/test_formal_gate_replay_v0_1.mjs"
+      - "research/formal_gate_replay_spec_v0_1.json"
+      - ".github/workflows/research-formal-gate-replay.yml"
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Run formal gate replay falsification tests
+        run: node tests/test_formal_gate_replay_v0_1.mjs
