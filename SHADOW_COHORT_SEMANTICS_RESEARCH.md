@@ -147,3 +147,33 @@ Until control estimand is frozen:
 - older BROAD_CONTROL rows should not be silently rewritten.
 
 A versioned membership/quality overlay is the safe correction path.
+
+
+## SC-009 — Class-A semantic sampler prototype had its own ordering bias
+
+A source audit of the already-validated `shadow_semantic_classifier_v0_1` found that semantic classification and denominator freezing were correct, but the convenience sampler was weaker than the frozen sampling contract:
+
+`sampleMembership()` filtered a membership globally, sorted by symbol lexicographically, then applied one global cap.
+
+That is deterministic, but it is not sufficient for the intended evidence design:
+- a global cap can starve GENERAL or THOUSAND;
+- symbol ordering gives systematic sampling priority to earlier IDs;
+- CHANNEL_NEAR_MISS cannot preserve `pool × nearestChannel × checkPattern`.
+
+Repository search found the legacy helper used only by its own Class-A test, not Production.
+
+A backward-compatible `sampleMembershipV2()` research prototype now:
+- freezes the semantic population first;
+- permits only preregistered outcome-free strata (`pool`, `nearestChannel`, `checkPattern`);
+- uses deterministic hash order within each stratum;
+- records semantic population count, sampled count, cap and sampling fraction;
+- requires all three strata for `CHANNEL_NEAR_MISS`;
+- rejects arbitrary/outcome-like stratum keys.
+
+The old helper is retained for backward-compatibility/falsification evidence; it must not be treated as the future promotion-grade sampler.
+
+Machine artifact:
+`research/shadow_semantic_sampler_falsification_v0_1.json`.
+
+Status:
+`LEGACY_PROTOTYPE_SAMPLER_BIAS_CONFIRMED / V0_2_CLASS_A_REPAIR_READY / CLASS_B_PERSISTENCE_UNCHANGED / FORMAL_UNCHANGED`.
