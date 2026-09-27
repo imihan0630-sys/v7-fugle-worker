@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "BUY_SIGNAL_QUANTITY_RECONSTRUCTION_V0_1",
+  "observedAt": "2026-09-27T23:16:00+08:00",
+  "source": "V8.5 v8_trade_journal_signals + current buildPushPayload semantics",
+  "proof": {
+    "persistedInputs": [
+      "event_id",
+      "signal_type=BUY",
+      "occurred_at",
+      "symbol",
+      "market_price",
+      "signal_amount"
+    ],
+    "runtimeFormula": "suggestedShares = sharesFor(signal.amount,currentPrice) = floor(signal.amount/currentPrice)",
+    "equality": "signal journal market_price stores result.currentPrice; signal_amount stores signal.amount before push"
+  },
+  "positiveConsequence": "For a durable positive BUY row with complete fields, live signal-side suggestedShares is exactly reconstructable.",
+  "caveats": [
+    "signal journal signal_shares itself is not the live recomputed suggestedShares",
+    "reconstructed suggestedShares is not a broker order acknowledgement",
+    "does not prove fill, fill price, fill probability, partial fill, fees, or slippage",
+    "absence of BUY row still cannot prove NO_BUY"
+  ],
+  "status": "POSITIVE_BUY_SIGNAL_QUANTITY_RECONSTRUCTABLE / FILL_EVIDENCE_STILL_SEPARATE",
+  "formalCoreImpact": false
+}

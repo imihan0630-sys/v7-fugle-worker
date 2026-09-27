@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "SIGNAL_PATH_RETURN_SEMANTICS_V0_1",
+  "observedAt": "2026-09-27T23:19:00+08:00",
+  "sourceFunction": "journalTradeStats",
+  "currentDefinition": {
+    "entry": "first persisted BUY signal with non-null market_price",
+    "exit": "first persisted SELL or STOP_LOSS signal after BUY with non-null market_price",
+    "return": "(exitSignalPrice-entrySignalPrice)/entrySignalPrice",
+    "completedPopulation": "only plans with both qualifying BUY and later SELL/STOP_LOSS signal",
+    "openTrades": "excluded from win/loss/flat and averageReturnPct",
+    "addReduce": "preserved as events but ignored by main return formula",
+    "costs": "not included",
+    "fills": "not included"
+  },
+  "semanticClassification": {
+    "validName": "SIGNAL_PATH_ROUND_TRIP_RETURN",
+    "invalidNames": [
+      "realized return",
+      "broker P&L",
+      "execution P&L",
+      "sizing P&L"
+    ],
+    "winRateMeaning": "conditional win rate among signal-path episodes that have already emitted a qualifying terminal SELL/STOP_LOSS signal",
+    "censoring": "OPEN episodes are right-censored and excluded; metric can change mechanically as open episodes later terminate"
+  },
+  "sizingConsequence": [
+    "cannot validate PriorityScore allocation economics because allocation amount/shares do not enter the return formula",
+    "cannot validate realized capital efficiency because fills/costs/partial executions are absent",
+    "cannot treat current winRate as unbiased all-plan success probability without handling BUY-row coverage and open-episode censoring"
+  ],
+  "safeUse": [
+    "descriptive signal lifecycle diagnostic",
+    "positive BUY-to-terminal-signal directional path analysis when positive rows exist",
+    "comparison only with explicit signal-path terminology and censoring/coverage caveats"
+  ],
+  "status": "SIGNAL_PATH_METRIC_ONLY / REALIZED_PNL_NOT_PROVEN / SIZING_VALIDATION_FORBIDDEN",
+  "formalCoreImpact": false
+}
