@@ -5,7 +5,7 @@ function snapshot(){
   return {
     sourceCompleteness:"FULL_FORMAL_SCAN",scanDate:"2026-09-29",symbol:"2330",
     institution:{
-      score:51.5,
+      score:50.51,
       foreignBuyDays:1,trustBuyDays:1,dealerBuyDays:1,
       foreignNet:100,trustNet:100,dealerNet:100,
       institutionTotalNet:300,
@@ -37,7 +37,7 @@ function snapshot(){
 {
   const s=snapshot();
   s.institution.foreignNet=null;
-  s.institution.score=35.5;
+  s.institution.score=35.51;
   const x=classifyInstitutionalScoreSnapshot({
     snapshot:s,
     streakEvidence:{sameGeneration:true,ready:true,institutionHistoryDays:3}
