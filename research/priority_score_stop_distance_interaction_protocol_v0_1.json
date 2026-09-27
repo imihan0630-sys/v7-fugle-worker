@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "PRIORITY_SCORE_STOP_DISTANCE_INTERACTION_PROTOCOL_V0_1",
+  "preregisteredAt": "2026-09-27T21:08:00+08:00",
+  "question": "Does post-consensus PriorityScore systematically align with wider conservative planned stop distance, thereby amplifying projected stop-risk under score-proportional sizing?",
+  "unit": "generation-certified selected name within scan date",
+  "primaryMetrics": [
+    "within-date Spearman(priorityScore, conservativeStopRiskPct)",
+    "within-date covariance(scoreShare, stopRiskPct)",
+    "current projected-risk HHI minus equal-capital projected-risk HHI",
+    "share of multi-selected dates where highest-score name also has widest stopRiskPct"
+  ],
+  "falsificationDirections": {
+    "amplification": "positive score-stop association and current risk concentration above equal-capital across independent dates",
+    "neutralization": "association centered near zero and no stable excess risk concentration",
+    "naturalOffset": "negative score-stop association and current risk concentration at/below equal-capital"
+  },
+  "mandatoryStrata": [
+    "A vs B channel",
+    "selected-count 2 vs 3+",
+    "market regime",
+    "pool/price tier when available"
+  ],
+  "controls": [
+    "same planned deployment",
+    "same selected names",
+    "same stop geometry",
+    "generation-certified FULL_FORMAL_SCAN only",
+    "date-clustered inference",
+    "leave-one-date-out"
+  ],
+  "forbidden": [
+    "pool all names across dates and call cross-sectional correlation causal",
+    "tune thresholds from 2026-09-18",
+    "interpret planned stop-risk as realized loss",
+    "infer factor-level cause from final PriorityScore"
+  ],
+  "minimumEvidence": "multiple independent multi-selected dates; no optimization candidacy from one date",
+  "currentWitness": {
+    "date": "2026-09-18",
+    "direction": "AMPLIFICATION_WITNESS_ONLY",
+    "highestScoreSymbol": "3105",
+    "widestStopRiskSymbol": "3105"
+  },
+  "status": "INTERACTION_PROTOCOL_PREREGISTERED / INDEPENDENT_DATES_PENDING",
+  "formalCoreImpact": false
+}
