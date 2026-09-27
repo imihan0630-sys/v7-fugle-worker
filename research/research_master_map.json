@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-09-27T20:25:49+08:00",
+  "updatedAt": "2026-09-27T20:29:00+08:00",
   "status": "BASELINE_V0_2_PARTIAL_RECONCILIATION",
   "formalCore": "LOCKED",
   "authority": {
@@ -209,7 +209,7 @@
       "domain": "PORTFOLIO_CAPITAL_READD",
       "level": "L2",
       "status": "FALSIFICATION_IN_PROGRESS",
-      "basis": "Plan-time Tier-A risk is reconstructable while historical actual-live holdings/heat remain blocked. PR-033/034 confirm on the only reconstructable multi-name date that PriorityScore-proportional sizing × heterogeneous stop distance increases projected stop-risk concentration, independent of the 35% cap. PR-035 adds required counterevidence: current sizing also has higher immutable RR-based plan-time reward-space proxy than equal-capital and same-deployment 35%-cap equal-risk, so the structural tradeoff is two-sided rather than pure excess risk. RR proxy is not expected/realized return; economic dominance remains UNKNOWN with one multi-name date. L2 FALSIFICATION_IN_PROGRESS; no allocation change authorized."
+      "basis": "Plan-time Tier-A risk is reconstructable while historical actual-live holdings/heat remain blocked. PR-033/034 confirm on the only reconstructable multi-name date that PriorityScore-proportional sizing × heterogeneous stop distance increases projected stop-risk concentration, independent of the 35% cap. PR-035 found higher RR-based reward-space proxy under current sizing, but PR-036 downgrades that result to endogenous structural consistency because RR already enters Formal via hard gate + 14% PriorityScore component + later comparator. RR does not fully determine allocation ordering (6133 RR > 3105 while PriorityScore/allocation reverse), but the proxy is not independent alpha evidence. Economic dominance remains UNKNOWN with one multi-name date and no outcomes. L2 FALSIFICATION_IN_PROGRESS; no allocation change authorized."
     },
     {
       "id": "CAPITAL_READD",

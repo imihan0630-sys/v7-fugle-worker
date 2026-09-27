@@ -1380,3 +1380,48 @@ Status:
 `TWO_SIDED_STRUCTURAL_TRADEOFF_CONFIRMED / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-036 — correction: PR-035 RR proxy is endogenous, not independent alpha evidence (2026-09-27)
+
+A redundancy/circularity audit was run immediately after PR-035.
+
+Current Formal already uses RR in three layers:
+1. hard eligibility: RR >= 2;
+2. PriorityScore: `clamp(RR*20,0,100)*0.14`;
+3. later raw rewardPerRisk comparator after post-consensus PriorityScore.
+
+Therefore the PR-035 diagnostic `projectedStopRisk × RR` is **not statistically independent of the allocation rule being evaluated**, because allocation is proportional to a PriorityScore that already contains RR.
+
+For the 2026-09-18 plans, the RR contribution to PriorityScore is:
+- 2006: RR 3.04 -> 8.512 score points;
+- 3105: RR 3.71 -> 10.388;
+- 6133: RR 3.89 -> 10.892.
+
+The circularity is only partial, not total:
+- 6133 has the highest RR and largest RR score contribution;
+- 3105 nevertheless has the highest final PriorityScore and receives the largest current allocation.
+
+So RR alone does not explain the allocation ordering. Other PriorityScore dimensions materially reverse the 3105-vs-6133 RR ordering.
+
+### Corrected interpretation
+
+PR-035 remains numerically valid as a **plan-time structural consistency diagnostic**:
+current sizing has a higher RR-based reward-space proxy on this date.
+
+It must **not** be used as independent evidence that the additional planned risk is economically compensated, because part of that relationship is designed into PriorityScore itself.
+
+The stronger phrase “reward compensation” is therefore downgraded to:
+`endogenous ex-ante reward-space alignment`.
+
+Independent economic evidence still requires prospective realized outcomes with raw RR and market-consensus contribution controlled, frozen current/equal-capital/capped-equal-risk counterfactuals, independent dates, date clustering/LODO, channel/regime controls and costs.
+
+This correction strengthens the governance firewall: neither PR-034's lower risk concentration nor PR-035's higher RR proxy is allowed to win by construction.
+
+Durable receipt:
+`research/portfolio_risk_rr_proxy_endogeneity_receipt_20260927.json`.
+
+Status:
+`PR035_INTERPRETATION_DOWNGRADED_TO_ENDOGENOUS_CONSISTENCY / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.

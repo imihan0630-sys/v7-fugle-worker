@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "PORTFOLIO_RISK_RR_PROXY_ENDOGENEITY_AUDIT_V0_1",
+  "observedAt": "2026-09-27T20:29:00+08:00",
+  "scope": "Interpretation audit of PR-035; no new outcomes.",
+  "structuralFact": {
+    "priorityScoreRRLayer": "clamp(RR*20,0,100)*0.14",
+    "rrHardGate": "RR >= 2",
+    "rrLaterComparator": "raw rewardPerRisk after post-consensus priorityScore tie",
+    "consequence": "RR-based reward proxy is not independent of the allocation rule because RR is already an input to PriorityScore and later ordering."
+  },
+  "date20260918": [
+    {
+      "symbol": "2006",
+      "rr": 3.04,
+      "rrPriorityContribution": 8.512,
+      "priorityScore": 69.9
+    },
+    {
+      "symbol": "3105",
+      "rr": 3.71,
+      "rrPriorityContribution": 10.388,
+      "priorityScore": 89.4
+    },
+    {
+      "symbol": "6133",
+      "rr": 3.89,
+      "rrPriorityContribution": 10.892,
+      "priorityScore": 74.9
+    }
+  ],
+  "partialNotTotalCircularity": {
+    "evidence": "6133 has higher RR and RR score contribution than 3105, yet lower final PriorityScore and lower current allocation. Therefore RR does not determine the allocation ordering by itself.",
+    "implication": "PR-035 remains a valid description of plan geometry, but cannot independently validate the economic merit of PriorityScore sizing."
+  },
+  "correctedInterpretation": {
+    "previousStrongReading": "Current sizing receives independent ex-ante reward compensation for its additional planned risk.",
+    "safeReading": "Current sizing is structurally aligned with a higher RR-based reward-space proxy on 2026-09-18, but that alignment is partly endogenous because RR participates in the sizing score. It is a consistency diagnostic, not independent alpha evidence.",
+    "requiredIndependentTest": "Prospective realized outcomes controlling for raw RR and consensus contribution, plus fixed allocation counterfactuals and date-cluster/LODO."
+  },
+  "status": "PR035_INTERPRETATION_DOWNGRADED_TO_ENDOGENOUS_CONSISTENCY / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY",
+  "formalCoreImpact": false
+}
