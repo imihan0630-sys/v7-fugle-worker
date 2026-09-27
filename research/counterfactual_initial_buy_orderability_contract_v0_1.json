@@ -1,6 +1,6 @@
 {
   "schemaVersion": "COUNTERFACTUAL_INITIAL_BUY_ORDERABILITY_V0_1",
-  "observedAt": "2026-09-27T21:43:00+08:00",
+  "observedAt": "2026-09-27T21:18:16+08:00",
   "sourceSemantics": {
     "planPreview": "allocateAndBuildPlans computes firstShares with sharesFor(firstAmount,buyHigh)",
     "livePush": "buildPushPayload recomputes suggestedShares for BUY/ADD as sharesFor(signal.amount,currentPrice)",
@@ -23,5 +23,6 @@
     "ADD execution"
   ],
   "status": "ORDERABILITY_GATE_READY / FILL_MODEL_STILL_BLOCKED",
-  "formalCoreImpact": false
+  "formalCoreImpact": false,
+  "timestampProvenance": "Corrected to GitHub PR creation time; do not use prior manually estimated clock value as evidence ordering."
 }
