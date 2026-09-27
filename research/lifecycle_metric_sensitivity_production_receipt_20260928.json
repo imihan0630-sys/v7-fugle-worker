@@ -1,0 +1,67 @@
+{
+  "schemaVersion": "LIFECYCLE_METRIC_SENSITIVITY_PRODUCTION_RECEIPT_V0_1",
+  "observedAt": "2026-09-28T05:53:49+08:00",
+  "timestampProvenance": "GitHub Actions Portfolio Risk Tier-A Research run 36353326188 / job 108716060944",
+  "workflowRunId": 36353326188,
+  "jobId": 108716060944,
+  "readOnly": true,
+  "productionWrites": false,
+  "decisionImpact": false,
+  "scanDate": "2026-09-18",
+  "selectedCount": 3,
+  "feasibleStates": 946,
+  "stages": [
+    "FIRST",
+    "ADD",
+    "FULL"
+  ],
+  "metrics": [
+    "HHI",
+    "GINI",
+    "CV",
+    "MAX_SHARE",
+    "MAX_MIN"
+  ],
+  "directionalAgreement": {
+    "totalComparisons": 15,
+    "currentMoreConcentratedThanEqualCapital": 15,
+    "currentAboveMetricSpecificGlobalMinimum": 15
+  },
+  "hhi": {
+    "FIRST": {
+      "current": 0.3769514595,
+      "equalCapital": 0.3551615396,
+      "globalMin": 0.3343161104
+    },
+    "ADD": {
+      "current": 0.3763426432,
+      "equalCapital": 0.3557339695,
+      "globalMin": 0.3342266703
+    },
+    "FULL": {
+      "current": 0.3767077818,
+      "equalCapital": 0.3553897407,
+      "globalMin": 0.3342785411
+    }
+  },
+  "metricStageGlobalOptimum": {
+    "commonAcrossAll15": true,
+    "allocationNTD": {
+      "2006": 70000,
+      "3105": 42000,
+      "6133": 56000
+    }
+  },
+  "falsification": {
+    "rejectedClaim": "The structural concentration survives stage tests only because HHI was used, or survives metric tests only because FULL exposure was used.",
+    "result": "Rejected. All 15 lifecycle-stage × concentration-metric cells preserve the direction current > equal-capital and current > metric-specific global minimum."
+  },
+  "nuance": "The common 70/42/56 optimum is specific to buyHigh plan-preview semantics; PR-060 shows exact optima move when the entry reference changes.",
+  "limits": [
+    "one reconstructable multi-name date",
+    "plan-preview geometry only",
+    "no execution/outcome utility"
+  ],
+  "status": "LIFECYCLE_X_METRIC_ARTIFACT_FALSIFIED / 15_OF_15_DIRECTIONAL_AGREEMENT / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY",
+  "formalCoreImpact": false
+}
