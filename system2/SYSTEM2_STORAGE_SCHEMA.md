@@ -131,6 +131,37 @@ One immutable run-level completeness receipt per strategy / decision clock.
 Purpose:
 prove that a Shadow run did not silently preserve only selected/winning symbols. Every base-universe symbol must be frozen as excluded or every eligible symbol must have an evaluation/accounting state.
 
+### s2_ranking_experiment_receipts
+Immutable baseline-vs-challenger ordering comparison before outcomes are attached.
+
+- experiment_receipt_id
+- experiment_id
+- experiment_version
+- hypothesis_id
+- market_date
+- decision_timestamp
+- purpose
+- strategy_id
+- strategy_version
+- baseline_policy_id
+- baseline_policy_version
+- baseline_ordering_hash
+- challenger_policy_id
+- challenger_policy_version
+- challenger_ordering_hash
+- same_candidate_set
+- common_support_symbols_json
+- baseline_only_symbols_json
+- challenger_only_symbols_json
+- rank_deltas_json
+- outcome_attached
+- experiment_hash
+- captured_at
+- schema_version
+
+Purpose:
+preserve prospective common-support ranking comparisons without letting later outcomes redefine the candidate set.
+
 ### s2_candidate_lifecycle_receipts
 Immutable state-transition receipts for persistent candidate episodes.
 
