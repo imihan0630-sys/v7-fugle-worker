@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-09-27T08:37:00+08:00",
+  "updatedAt": "2026-09-27T08:45:00+08:00",
   "status": "BASELINE_V0_2_PARTIAL_RECONCILIATION",
   "formalCore": "LOCKED",
   "authority": {
@@ -209,7 +209,7 @@
       "domain": "PORTFOLIO_CAPITAL_READD",
       "level": "L2",
       "status": "FALSIFICATION_IN_PROGRESS",
-      "basis": "Plan-time Tier-A reconstruction is validated. Production audit proves historical actual-live holdings/heat are blocked because signal events are not confirmed fills and /api/positions is a mutable snapshot. Confirmed Fill Ledger v0.1 now freezes an append-only execution-evidence contract with BUY/ADD/REDUCE/SELL transition and correction invariants; research design is ready, but any Production D1/API/broker wiring is Class-B proposal-first and NOT implemented. Correlation/cluster/outcome incrementality remain immature; L2 retained."
+      "basis": "Plan-time Tier-A reconstruction is validated. Historical actual-live holdings/heat remain blocked because signals are not fills and /api/positions is mutable. Confirmed Fill Ledger v0.2 now resolves ledger-start bootstrapping by separating non-trade POSITION_BASELINE from FILL evidence, freezes effectiveAt/confirmedAt PIT correction semantics and account scope, and prohibits auto-converting position snapshots into executions. Design is Class-B proposal-first and NOT implemented. L2 retained; no allocation/risk threshold change authorized."
     },
     {
       "id": "CAPITAL_READD",
