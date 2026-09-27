@@ -7,6 +7,10 @@ on:
         description: "Type CREATE_SYSTEM2_ISOLATED_D1 to create/reuse the isolated System2 D1 and apply schema"
         required: true
         type: string
+  push:
+    branches: [main]
+    paths:
+      - "system2/approvals/CREATE_SYSTEM2_ISOLATED_D1_2026-09-27.md"
 
 permissions:
   contents: read
@@ -20,22 +24,27 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     environment: system2-research
+    env:
+      EFFECTIVE_CONFIRM: ${{ github.event_name == 'workflow_dispatch' && inputs.confirm || 'CREATE_SYSTEM2_ISOLATED_D1' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v5
 
       - name: Guard explicit confirmation
-        env:
-          CONFIRM: ${{ inputs.confirm }}
+        shell: bash
         run: |
           set -euo pipefail
-          test "$CONFIRM" = "CREATE_SYSTEM2_ISOLATED_D1"
+          test "$EFFECTIVE_CONFIRM" = "CREATE_SYSTEM2_ISOLATED_D1"
+          if [ "$GITHUB_EVENT_NAME" = "push" ]; then
+            test -f system2/approvals/CREATE_SYSTEM2_ISOLATED_D1_2026-09-27.md
+            grep -qx 'APPROVAL=CREATE_SYSTEM2_ISOLATED_D1' system2/approvals/CREATE_SYSTEM2_ISOLATED_D1_2026-09-27.md
+          fi
 
       - name: Create or reuse isolated System2 D1, apply schema and verify write/read
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
-          SYSTEM2_CONFIRM: ${{ inputs.confirm }}
+          SYSTEM2_CONFIRM: ${{ env.EFFECTIVE_CONFIRM }}
         run: node system2/deploy/provision_system2_d1.mjs
 
       - name: Confirm production configuration was not edited
