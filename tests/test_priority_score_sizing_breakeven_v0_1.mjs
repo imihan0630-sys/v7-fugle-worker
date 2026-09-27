@@ -2,9 +2,9 @@ import assert from "node:assert/strict";
 import {allocationTiltBreakEven} from "../research/priority_score_sizing_breakeven_v0_1.mjs";
 
 const current=[
- {code:"2006",totalAllocation:50000},
- {code:"3105",totalAllocation:64000},
- {code:"6133",totalAllocation:54000}
+ {code:"2006",totalAllocation:50000,conservativeStopRiskPct:2.6167},
+ {code:"3105",totalAllocation:64000,conservativeStopRiskPct:5.0021},
+ {code:"6133",totalAllocation:54000,conservativeStopRiskPct:3.6357}
 ];
 const equal=[
  {symbol:"2006",allocation:56000},
@@ -20,6 +20,8 @@ assert.equal(x.transferredCapitalNTD,8000);
 assert.equal(x.realizedTiltSpreadPct,0);
 assert.equal(x.grossIncrementalPnlNTD,0);
 assert.equal(x.costStatus,"UNKNOWN");
+assert.equal(x.projectedRiskStatus,"KNOWN");
+assert.ok(x.incrementalProjectedRiskNTD>0);
 
 x=allocationTiltBreakEven(current,equal,[
  {symbol:"2006",returnPct:4},{symbol:"3105",returnPct:8},{symbol:"6133",returnPct:0}
