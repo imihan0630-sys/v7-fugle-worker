@@ -291,3 +291,45 @@ Volatility studies must separate:
 Otherwise an observed “high ATR underperforms among selected stocks” can be heavily selection-conditioned by the fact that many high-ATR B setups never survive to selection.
 
 No ATR/stop/RR change is authorized.
+
+
+## VR-019 — Cross-lane handoff from Technical Indicators: OHLC range estimators
+
+The Technical Indicator lane audited Parkinson / Garman-Klass / Rogers-Satchell / Yang-Zhang as one VOLATILITY/RISK family rather than four technical votes.
+
+Key retained finding:
+- Yang-Zhang is not algebraically redundant with current stock close-to-close volatility20 or ATR because it explicitly separates overnight Close->Open variance, Open->Close variance and Rogers-Satchell intraday OHLC range geometry.
+- Parkinson/GK/RS remain robustness/decomposition comparators only.
+- first common-horizon system-native comparator is YZ20, not a parameter sweep and not XQ's 14-day default.
+- no directional sign is assumed; first questions concern MAE/range/stop-first/gap risk and volatility composition.
+
+### Current data feasibility
+
+Fresh repository audit materially improves source feasibility:
+- current history persists open/high/low/close;
+- V8.12 history-source revalidation explicitly requests open/high/low/close from historical source.
+
+But current normalization can synthesize missing OHLC values, including open fallback to close. Yang-Zhang cannot distinguish an observed Open from an imputed Open unless origin provenance is persisted.
+
+Therefore:
+- RAW_OHLC_SOURCE_FEASIBILITY = MATERIAL_PASS;
+- PER_BAR_OBSERVED_OHLC_PROVENANCE = NOT_PROVEN;
+- YZ_RUNTIME_INFERENCE_READY = NO.
+
+### Cross-lane semantic requirement
+
+Yang-Zhang must consume canonical TECHNICAL_CONTINUITY across corporate-action boundaries. Raw ex-right/ex-dividend resets must not become overnight volatility, while residual non-mechanical gaps remain market information.
+
+Verified suspension/no-trade dates are absent observations, not zero-volatility bars.
+
+Price-limit-constrained sessions remain valid realized OHLC observations but must be stratified as constrained price discovery; truncated range cannot be interpreted as low latent pressure.
+
+### Frozen research artifact
+
+- research/TECHNICAL_INDICATOR_RANGE_VOLATILITY_V0_1.md
+- research/technical_indicator_range_volatility_fixtures_v0_1.json
+
+Fixtures freeze:
+same close/different range; same current OHLC/different previous close; gap-only flat intraday; missing-open fallback; corporate-action reset; suspension; consecutive price limit; price-scale invariance; same ATR/different risk composition.
+
+No outcome inspection and no volatility throttle is authorized.
