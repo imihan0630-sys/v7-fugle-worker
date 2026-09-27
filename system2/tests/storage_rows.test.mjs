@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { toShadowDecisionRow, toShadowRunRow } from "../runtime/storage_rows.mjs";
+import { toShadowDecisionRow, toShadowRunRow, toCapacityRunRow } from "../runtime/storage_rows.mjs";
 
 const decisionRow = toShadowDecisionRow(
   {
@@ -72,5 +72,34 @@ const runRow = toShadowRunRow({
 assert.equal(runRow.run_state, "COMPLETE");
 assert.equal(runRow.completion_rate, 1);
 assert.deepEqual(JSON.parse(runRow.unaccounted_symbols_json), []);
+
+const capacityRow = toCapacityRunRow({
+  capacityRunId: "CAP1",
+  marketDate: "2026-09-27",
+  decisionTimestamp: "2026-09-27T07:30:00Z",
+  capturedAt: "2026-09-27T07:31:00Z",
+  globalMax: 12,
+  perStrategyMax: 3,
+  orderingPolicyId: "FIXTURE_PREORDERED",
+  orderingPolicyVersion: "0.1",
+  retained: [],
+  removed: [],
+  admittedNew: [{ symbol: "2330" }],
+  capacityOverflow: [],
+  globalPool: [{ symbol: "2330" }],
+  globalCount: 1,
+  vacancyCount: 11,
+  activeAssignments: { SHORT_MOMENTUM: [{ symbol: "2330" }] },
+  activeNonAssignments: {},
+  activeCountByStrategy: { SHORT_MOMENTUM: 1 },
+  symbolStrategyCounts: { "2330": 1 },
+  capacityHash: "cap-hash",
+  schemaVersion: "S2_CAPACITY_V0_1",
+});
+
+assert.equal(capacityRow.global_max, 12);
+assert.equal(capacityRow.per_strategy_max, 3);
+assert.equal(capacityRow.capacity_hash, "cap-hash");
+assert.equal(JSON.parse(capacityRow.counts_json).globalCount, 1);
 
 console.log("System2 storage row serializer tests passed");
