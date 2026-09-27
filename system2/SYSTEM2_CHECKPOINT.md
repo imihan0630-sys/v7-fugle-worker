@@ -19,6 +19,16 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 
 ## Current design decisions
 
+- Next cloud-runtime boundary is explicit owner authorization to create/deploy the isolated `system2-shadow-research` Worker for smoke/health validation. Cron activation remains a separate later authorization after source-latency measurement and decision-clock freeze.
+
+- Repository verification PASS after capture-runtime work: GitHub Actions run `36312760393`, job `108601721057`; tests, module syntax, SQLite schema and production-isolation guard all PASS.
+
+- Prospective capture plan freezes source expectations without imputing gaps: SHORT_MOMENTUM requires A1 daily OHLCV/derived fields; SWING_GROWTH requires A5 quarterly financials plus a prospective B2 industry-thesis snapshot. Missing required evidence remains INCOMPLETE.
+
+- Separate `system2-shadow-research` Worker skeleton is implemented but NOT DEPLOYED. Deployment template defaults to `workers_dev=false`, no routes, no Cron, and `SYSTEM2_CAPTURE_ENABLED=false`; scheduled capture fails closed until source adapters and exact decision-clock semantics are ready.
+
+- Prospective Shadow capture contract V0.1 implemented repository-side: first stage is AFTER_CLOSE_DECISION_CAPTURE only for SHORT_MOMENTUM and SWING_GROWTH Limited Shadow lanes; intraday, notifications, outcomes and historical backfill remain off.
+
 - Physical isolated persistence blocker is RESOLVED. Next phase is repository-side design of a separate System 2 prospective Shadow capture Worker/scheduler; actual Worker/Cron creation/deployment remains a new-runtime authorization boundary.
 
 - The temporary push-based provisioning authorization path was disarmed after successful creation/replay. The provisioning workflow is manual-only again.
@@ -220,7 +230,8 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 7. ✅ Complete repository-side isolated persistence/provenance preparation — source session, full-universe accounting, run fingerprint, persistence batch/executor, research CI and isolated deployment template are complete.
 8. ✅ Dedicated D1 token installed and verified with account-owned token endpoint.
 9. ✅ Isolated `system2-research` D1 created, schema V0.5 applied, 26 tables verified, write/read and replay reuse checks PASS; production unchanged.
-10. ⏳ Design a separate System 2 prospective Shadow capture Worker/scheduler against `SYSTEM2_DB`. Repository-side design may continue; actual Worker/Cron deployment requires explicit owner authorization.
+10. ✅ Repository-side prospective Shadow capture Worker/scheduler contract implemented and CI-verified; Worker remains undeployed and capture-disabled.
+11. ⏳ Explicit owner authorization required for isolated `system2-shadow-research` Worker smoke deployment (no routes, no Cron, capture disabled). Cron activation remains a separate later gate.
 
 ## Current boundary
 
