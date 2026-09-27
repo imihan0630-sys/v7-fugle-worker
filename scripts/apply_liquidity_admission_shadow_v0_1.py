@@ -208,6 +208,32 @@ replace_once(
 )
 
 replace_once(
+'''  byPool(controls,6,x=>x).forEach((f,index)=>add(f,scoreCandidate(f,sectorFor(f)),"BROAD_CONTROL",index+1,false));
+
+  return {''',
+'''  byPool(controls,6,x=>x).forEach((f,index)=>add(f,scoreCandidate(f,sectorFor(f)),"BROAD_CONTROL",index+1,false));
+
+  const liquidityAdmissionPopulationReceipt={
+    schemaVersion:"liquidity-admission-population-receipt-v0.1",
+    scanDate:String(scanDate),
+    populationCounts:liquidityRejected.populationCounts,
+    exceptionPassCounts:liquidityRejected.exceptionPassCounts,
+    exceptionInputCoverageCounts:liquidityRejected.exceptionInputCoverageCounts,
+    belowPrimaryMinTotal:liquidityRejected.belowPrimaryMinTotal,
+    belowPrimaryMinExceptionInputCoverageCounts:liquidityRejected.belowPrimaryMinExceptionInputCoverageCounts,
+    belowPrimaryMinFailureReasonCounts:liquidityRejected.belowPrimaryMinFailureReasonCounts,
+    outcomeSelected:false,decisionImpact:false,
+    denominatorScope:"CURRENT_FEATURE_ROWS"
+  };
+  for(const entry of out) {
+    entry.snapshot.liquidityAdmissionPopulationReceipt=liquidityAdmissionPopulationReceipt;
+  }
+
+  return {''',
+"persist per-date liquidity denominator receipt"
+)
+
+replace_once(
 '''      generatedCounts: scan.shadowArchive?.counts || {},''',
 '''      generatedCounts: scan.shadowArchive?.counts || {},
       liquidityAdmissionResearch: scan.shadowArchive?.liquidityAdmissionResearch || null,''',
