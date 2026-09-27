@@ -1,0 +1,73 @@
+{
+  "schemaVersion": "0.1",
+  "createdAt": "2026-09-27T12:05:00+08:00",
+  "status": "PARTIAL_CLASS_A_FEASIBILITY_PROVEN",
+  "objective": "Separate pure semantic computation from shared runtime/persistence changes.",
+  "currentInMemoryObjects": {
+    "featureRows": "post-feature rows available inside selectTomorrowCandidates; Production V8.12 additionally gates history admission before feature construction",
+    "scored": "complete Formal-ok list before 3+3 truncation; after V7.5.30 Production scoring path includes market-consensus overlay before ranking",
+    "basePoolDiagnostics": "legacy structure stores only rows whose scoreCandidate result had basePassed=true",
+    "nearMisses": "legacy diagnostics are sorted and truncated to top 12 before buildShadowCandidateArchive receives them",
+    "selected": "final 3+3 selected list",
+    "sectorStats": "same-date sector context",
+    "rankFn": "Formal comparator available in-memory"
+  },
+  "classAComputableWithoutNewMarketCalls": [
+    "complete per-pool rank for all Formal-ok rows from full scored list",
+    "FORMAL_SELECTED and FORMAL_QUALIFIED_NOT_SELECTED membership",
+    "multi-label memberships rather than legacy one-symbol-one-cohort used-set behavior",
+    "complete qualified population denominators before sample caps",
+    "independent BROAD_MARKET_FRAME_ELIGIBLE population within already-admitted featureRows",
+    "deterministic sampling after population freeze without changing denominators",
+    "semantic counts and comparator-version metadata"
+  ],
+  "notFullyRecoverableFromCurrentPostFeatureArguments": [
+    "V8.12 DATA_READINESS_FAILURE symbols that were blocked before featureRows",
+    "UNIVERSE_POLICY_EXCLUDED instruments removed before normalized todayRows/featureRows",
+    "first-known exact decision-state provenance for legacy re-scored BROAD_CONTROL rows",
+    "complete CHANNEL_NEAR_MISS population when only already-truncated diagnostics.nearMisses is passed",
+    "immutable generation identity linking Shadow, external evidence and outcomes"
+  ],
+  "minimalFutureCaptureBoundaries": [
+    {
+      "layer": "POST_SCORE_PRE_SAMPLE",
+      "change": "freeze one actual per-symbol decision-state receipt after the real selector scoring/consensus path and before cohort sampling",
+      "dataCallsAdded": 0,
+      "pureComputation": "Class A feasible",
+      "persistence": "Class B if wired into shared D1/runtime"
+    },
+    {
+      "layer": "HISTORY_ADMISSION",
+      "change": "carry existing V8.12 history admission status/reason into research receipt",
+      "dataCallsAdded": 0,
+      "pureComputation": "Class A feasible if passed as input",
+      "persistence": "Class B if shared schema/runtime is modified"
+    },
+    {
+      "layer": "UNIVERSE_NORMALIZATION",
+      "change": "emit additive exclusion receipts before normalizeMarketRow drops policy-excluded instruments",
+      "dataCallsAdded": 0,
+      "pureComputation": "not available from current post-feature objects",
+      "persistence": "Class B proposal-first due shared ingestion/runtime touch"
+    }
+  ],
+  "persistenceBoundary": {
+    "class": "B",
+    "reasons": [
+      "new additive D1 tables / generation receipts",
+      "immutable insert-once semantics and provenance-conflict handling",
+      "cross-table parent linkage",
+      "pagination/keyset completeness",
+      "expected-vs-persisted completeness QA"
+    ]
+  },
+  "prototype": {
+    "path": "research/shadow_semantic_classifier_v0_1.mjs",
+    "test": "tests/test_shadow_semantic_classifier_v0_1.mjs",
+    "formalCoreImpact": false,
+    "decisionImpact": false,
+    "marketCalls": 0
+  },
+  "optimizationReady": false,
+  "formalCoreImpact": false
+}
