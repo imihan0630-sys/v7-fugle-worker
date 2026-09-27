@@ -508,3 +508,70 @@ Read-only state audit `36314678044` / job `108607025869`:
 - no mutation.
 
 The one-shot push trigger was disarmed after completion.
+
+
+## Decision-clock evidence V0.2 and prospective collectors (2026-09-27)
+
+Status: IMPLEMENTATION PASS / SCHEDULED READ-ONLY EVIDENCE COLLECTION ARMED / WORKER CAPTURE STILL OFF.
+
+Implemented:
+- `SYSTEM2_SOURCE_ARRIVAL_LATENCY_AND_DECISION_CLOCK_V0_2.md`;
+- `SYSTEM2_SOURCE_ARRIVAL_MEASUREMENT_VERIFICATION_V0_2.md`;
+- `runtime/a5_filing_vintage_observer.mjs`;
+- `runtime/b2_industry_snapshot_observer.mjs`;
+- `runtime/required_dependency_probes.mjs`;
+- `runtime/decision_clock_dependency_ledger.mjs`;
+- `runtime/decision_clock_daily_evidence.mjs`;
+- `runtime/decision_clock_readiness_v0_2.mjs`;
+- `runtime/twse_trading_calendar_readonly.mjs`;
+- `scripts/measure_required_dependency_series_readonly.mjs`;
+- `scripts/check_twse_trading_day_readonly.mjs`;
+- `scripts/build_decision_clock_daily_bundle.mjs`;
+- `.github/workflows/system2-prospective-clock-evidence-readonly.yml`.
+
+A5 semantics:
+- official TWSE/TPEx EPS + profitability;
+- prospective first-observed market-wide vintage;
+- exact company filing/publication timestamp remains unproven;
+- historical pre-observer publication timing remains UNKNOWN.
+
+B2 semantics:
+- official current profile classification + same-date TWSE/TPEx close;
+- descriptive industry breadth/participation only;
+- no strategy thesis direction or score;
+- no current-classification historical backfill.
+
+Non-trading real-source smoke:
+- run `36323358775`, job `108631337257`: PASS;
+- A5 `OBSERVED_COVERAGE_PASS`;
+- B2 `DERIVED_SNAPSHOT_INCOMPLETE` as expected on a non-trading date;
+- all transport OK;
+- prospective evidence eligible=false;
+- no-mutation guard PASS.
+
+Scheduled research evidence collection:
+- intended start 13:25 Asia/Taipei weekdays;
+- official TWSE calendar is authoritative;
+- A1 and A5/B2 polling run in parallel;
+- 5-minute bounded intervals;
+- artifacts only, no D1 write;
+- no Cloudflare secret;
+- no Worker call;
+- no System1 runtime;
+- this is NOT the System2 Worker Cron.
+
+Precision firewall:
+- READY without prior NOT_READY cannot claim <=5-minute timing;
+- B2 is now an explicit same-session clock constraint;
+- A5 must be observed at the decision boundary but is not treated as a same-session close publication;
+- exact clock/Cron authorization stays false.
+
+CI:
+- System2 Research CI run `36324105323`, job `108633421570`: PASS;
+- V8 regression run `36324056669`, job `108633282565`: PASS for the workflow-only repository change.
+- An earlier guard-test failure was caused by a self-referential prohibited-string grep in the workflow; it was corrected by invoking the static guard directly. No PIT/source/safety rule was relaxed.
+
+Current prospective V0.2 trading-date evidence count: 0.
+Earliest ordinary eligible session: 2026-09-29; 2026-09-28 is an official TWSE holiday.
+
+System2 Worker state remains capture=false / Cron=0.
