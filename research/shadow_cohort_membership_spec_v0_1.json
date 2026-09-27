@@ -1,0 +1,219 @@
+{
+  "schemaVersion": "shadow-cohort-membership-v0.1",
+  "researchDate": "2026-09-27",
+  "status": "DESIGN_READY_CLASS_B_PROPOSAL_FIRST_NOT_IMPLEMENTED",
+  "formalCoreChanged": false,
+  "purpose": "Repair research cohort semantics without changing Formal selection, while reusing PVE-156 for complete qualified-pool integrity.",
+  "invariants": [
+    "Formal scoreCandidate order and outputs unchanged",
+    "Formal selected symbols/order/3+3 quota/capital/monitor/signals/push unchanged",
+    "No new market-data calls",
+    "No future outcomes in selection-time receipts",
+    "UNKNOWN never coerced to FAIL/BAD",
+    "Historical rows are never silently rewritten"
+  ],
+  "architecture": {
+    "poolIntegrity": {
+      "owner": "PVE-156 / PRICE_VOLUME_EVIDENCE.md",
+      "role": "Immutable complete per-pool ordered qualified list and exact cutline evidence.",
+      "comparatorVersion": "Persist scan-date rankComparatorVersion; current V7.5.30+ = PRIORITY_RR_CONSENSUS_SETUP_SECTOR_RS_7_5_30.",
+      "noDuplication": true
+    },
+    "populationReceipt": {
+      "proposedTable": "trade_research_population_receipts",
+      "primaryKey": [
+        "scan_date",
+        "receipt_type",
+        "pool",
+        "schema_version"
+      ],
+      "semantics": "Immutable denominator / sampling-frame receipt; insert-once, duplicate fingerprint must match or conflict.",
+      "fields": [
+        "scan_date",
+        "receipt_type",
+        "pool",
+        "schema_version",
+        "formal_worker_version",
+        "selection_rule_version",
+        "rank_comparator_version",
+        "generated_at",
+        "captured_at",
+        "population_count",
+        "counts_json",
+        "coverage_json",
+        "source_quality_state",
+        "semantic_fingerprint",
+        "created_at"
+      ],
+      "exampleReceiptTypes": [
+        "FIRST_FAILURE_COUNTS",
+        "LIQUIDITY_ADMISSION_COUNTS",
+        "SETUP_FIRST_FAILURE_COUNTS",
+        "BROAD_MARKET_FRAME_COUNTS",
+        "CONTROL_MEMBERSHIP_COUNTS"
+      ]
+    },
+    "membershipOverlay": {
+      "proposedTable": "trade_research_candidate_memberships",
+      "primaryKey": [
+        "scan_date",
+        "symbol",
+        "membership_type",
+        "membership_version"
+      ],
+      "semantics": "One symbol can carry multiple research memberships without replacing its Formal-state identity.",
+      "fields": [
+        "scan_date",
+        "symbol",
+        "pool",
+        "formal_state",
+        "first_failure_reason",
+        "membership_type",
+        "membership_version",
+        "membership_rank",
+        "sampling_key",
+        "sampling_fraction",
+        "sampling_frame_id",
+        "outcome_selected",
+        "decision_impact",
+        "parent_snapshot_hash",
+        "semantic_fingerprint",
+        "created_at"
+      ],
+      "membershipTypes": [
+        "SELECTED",
+        "QUALIFIED_NOT_SELECTED",
+        "SETUP_FIRST_FAILURE",
+        "DOWNSTREAM_FIRST_FAILURE",
+        "LIQUIDITY_FIRST_FAILURE",
+        "INDEPENDENT_BROAD_MARKET_CONTROL",
+        "RESIDUAL_CONTROL",
+        "SECTOR_GATE_REJECTED",
+        "VALUATION_REJECTED"
+      ],
+      "rules": [
+        "Formal-state membership and control membership may overlap.",
+        "INDEPENDENT_BROAD_MARKET_CONTROL is sampled from a frozen frame before focal cohort sample caps.",
+        "RESIDUAL_CONTROL, if used, is mutually exclusive by full semantic classification and is a different estimand.",
+        "Never use `used` from prior bounded samples to define the independent broad-market frame.",
+        "A membership row is not a trade signal and cannot alter monitoring."
+      ]
+    },
+    "qualityOverlay": {
+      "proposedTable": "trade_research_cohort_quality_overlays",
+      "role": "Append-only later QA findings for immutable historical memberships/snapshots.",
+      "primaryKey": [
+        "scan_date",
+        "symbol",
+        "membership_type",
+        "quality_rule_id",
+        "observed_at"
+      ],
+      "states": [
+        "VALID",
+        "COHORT_SEMANTIC_CONTAMINATION",
+        "SOURCE_QUALITY_BLOCKED",
+        "PROVENANCE_CONFLICT",
+        "UNKNOWN"
+      ],
+      "rules": [
+        "Never UPDATE historical evidence to hide original capture.",
+        "Later-discovered quality information is an append-only annotation.",
+        "Outcome reports must filter/report quality overlays explicitly."
+      ]
+    }
+  },
+  "formalStateContract": {
+    "states": [
+      "SELECTED",
+      "QUALIFIED_NOT_SELECTED",
+      "FIRST_FAILURE_BASE_FALSE",
+      "FIRST_FAILURE_BASE_TRUE",
+      "UNKNOWN"
+    ],
+    "firstFailureMeaning": "First observed failing gate under the exact scan-date Formal gate order; not marginal gate effect.",
+    "gateOverlapObserver": "Separate PASS/FAIL/UNKNOWN/NOT_EVALUABLE research overlay; never substitute for Formal state."
+  },
+  "controlEstimands": {
+    "independentBroadMarket": {
+      "id": "INDEPENDENT_BROAD_MARKET_CONTROL",
+      "samplingFrame": "Frozen eligible frame defined before focal cohort sample truncation.",
+      "overlappingMembershipAllowed": true,
+      "use": "Selection Alpha against a broad baseline.",
+      "requiredReport": [
+        "frameCount",
+        "sampleCount",
+        "samplingFraction",
+        "pool/date strata",
+        "membership overlap matrix"
+      ]
+    },
+    "residual": {
+      "id": "RESIDUAL_CONTROL",
+      "samplingFrame": "Explicit rows outside all preregistered focal semantic populations.",
+      "overlappingMembershipAllowed": false,
+      "use": "Contrast against non-focal residual population.",
+      "requiredReport": [
+        "frameCount",
+        "sampleCount",
+        "excludedPopulationCounts"
+      ]
+    }
+  },
+  "nearMissRepair": {
+    "currentProblem": [
+      "nearScore=6-missingCount",
+      "Hamming distance ignores threshold distance",
+      "global top12 before pool sampling"
+    ],
+    "futureReceipt": [
+      "A/B check bitmasks",
+      "failedACount",
+      "failedBCount",
+      "nearestChannel",
+      "raw threshold margins",
+      "pool/channel/check-pattern population counts",
+      "sampling_fraction"
+    ],
+    "sampling": "Stratify by pool × nearestChannel × failed-check-pattern before deterministic hash; no outcome-based distance score."
+  },
+  "rejectionRepair": {
+    "currentProblem": "Old generic REJECTED_AFTER_BASE reason starvation and first-failure attribution.",
+    "rules": [
+      "Persist exact firstFailureCount by reason×pool.",
+      "Sample within exact reason×pool.",
+      "Name counts `firstFailureCount`, never marginal gate contribution.",
+      "Use gate-overlap observer for overlap; never subtract first-fail count from zero-pick as counterfactual."
+    ]
+  },
+  "historicalMigration": {
+    "mutateOldRows": false,
+    "approach": "Versioned membership/quality overlay only where state can be proven from immutable PIT snapshot; otherwise UNKNOWN.",
+    "preV813Comparator": "Exact current-comparator replay is UNKNOWN where priority/consensus provenance was not frozen.",
+    "currentArchiveMutability": "Existing trade_research_shadow_candidates may be rewritten by scan_date; do not call it immutable first-known truth."
+  },
+  "acceptanceTests": [
+    "Changing focal cohort sample cap cannot change INDEPENDENT_BROAD_MARKET_CONTROL membership for a frozen frame/date/seed.",
+    "Same symbol can have primary Formal-state membership plus independent broad-control membership.",
+    "Reason A abundance cannot starve Reason B sample.",
+    "firstFailureCount changes under synthetic gate-order swap while all-fail overlap stays invariant; report semantics must distinguish them.",
+    "Near-miss A/B pool/channel strata cannot be starved by an earlier global top-N.",
+    "Duplicate immutable receipt with same fingerprint is idempotent; different payload/fingerprint is conflict, never overwrite.",
+    "Formal frozen fixture selected symbols/order/plans/capital/signals are byte-equivalent before/after research capture.",
+    "Zero new market-data calls.",
+    "UNKNOWN stays UNKNOWN."
+  ],
+  "governance": {
+    "classification": "CLASS_B_PROPOSAL_FIRST",
+    "reason": "Additive D1 schema and membership read/write paths touch shared Production storage/runtime even though decisionImpact=false.",
+    "implementationAllowed": false,
+    "ownerApprovalRequired": true,
+    "deploymentAllowed": false,
+    "versionLineGuard": "Do not implement while V8.15 PR #112 and current draft research branches are unresolved without explicit lineage reconciliation."
+  },
+  "optimizationRelevance": {
+    "directFormalOptimization": false,
+    "role": "Evidence-quality prerequisite. It may invalidate/strengthen later Selection Alpha and gate-relaxation findings but is not itself an alpha improvement.",
+    "formalOptimizationCandidate": false
+  }
+}
