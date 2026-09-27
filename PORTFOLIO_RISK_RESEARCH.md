@@ -3031,3 +3031,34 @@ Status:
 `LIFECYCLE_X_METRIC_ARTIFACT_FALSIFIED / 15_OF_15_DIRECTIONAL_AGREEMENT / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-067 — one-grid local allocation falsification (2026-09-28)
+
+The exhaustive global searches show current sizing is not the concentration minimum. PR-067 asks a stricter and more local question:
+
+`Is the current allocation at least a local concentration optimum on the Formal NT$1,000 grid?`
+
+Starting from the observed current allocation, enumerate every legal directed transfer of exactly NT$1,000 from one selected name to another while preserving:
+- same selected names;
+- same total planned deployment;
+- 35% per-name cap;
+- positive per-name allocation.
+
+Each one-step neighbor is evaluated across 15 cells:
+- FIRST / ADD / FULL;
+- HHI / Gini / CV / maximum risk share / max-min.
+
+A neighbor `weakly dominates current` only if it improves at least one cell and worsens none.
+
+This deliberately avoids relying on a distant global optimum. If a one-grid move already dominates current, the structural concentration has a local downhill direction.
+
+Artifacts:
+`research/local_grid_reallocation_v0_1.mjs`;
+`research/local_grid_reallocation_spec_v0_1.json`;
+`tests/portfolio_risk_local_grid_reallocation_readonly_audit.mjs`.
+
+Status:
+`LOCAL_NEIGHBORHOOD_PROTOCOL_READY / PRODUCTION_AUDIT_PENDING`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
