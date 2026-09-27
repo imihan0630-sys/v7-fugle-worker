@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import {sizingQuantizationCascade,signalSideShareResidual} from "../research/sizing_quantization_cascade_v0_1.mjs";
+import {sizingQuantizationCascade,signalSideShareResidual,quantizedComparatorPreview} from "../research/sizing_quantization_cascade_v0_1.mjs";
 
 const one=sizingQuantizationCascade([{
  symbol:"3006",priorityScore:66.3,totalAllocation:70000,buyHigh:287.08,firstShares:146,secondShares:97,stop:276.36
@@ -38,3 +38,18 @@ assert.equal(sizingQuantizationCascade([{symbol:"A",priorityScore:1,totalAllocat
 assert.equal(signalSideShareResidual({amount:1000,price:333,suggestedShares:2}).status,"SHARE_RECONSTRUCTION_MISMATCH");
 
 console.log(JSON.stringify({ok:true,contract:"continuous score allocation -> NT$1000 floor -> 60/40 tranche -> integer-share floor; all output remains preview/signal geometry, not fills",productionWitness:"3006: plan preview first 146 shares at 287.08 leaves NT$86.32; live BUY 148 at 282.5 leaves NT$190; residual is non-monotonic in price due integer floor"},null,2));
+
+const qeq=quantizedComparatorPreview([
+ {symbol:"2006",buyHigh:84.84,stop:82.62},
+ {symbol:"3105",buyHigh:496.92,stop:472.06},
+ {symbol:"6133",buyHigh:25.45,stop:24.52}
+],[
+ {symbol:"2006",allocation:56000},
+ {symbol:"3105",allocation:56000},
+ {symbol:"6133",allocation:56000}
+]);
+assert.equal(qeq.status,"READY");
+assert.equal(qeq.allocationTotalNTD,168000);
+assert.equal(qeq.previewSuggestedNotionalNTD,167639.44);
+assert.equal(qeq.shareFloorResidualNTD,360.56);
+assert.ok(qeq.previewProjectedStopRiskHHI<0.36);
