@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "immutable-d1-persistence-publication-v0.1",
+  "updated": "2026-09-28 Asia/Taipei",
+  "researchOnly": true,
+  "runtimeImplemented": false,
+  "formalCore": "LOCKED",
+  "immutableWrite": {
+    "absent": "INSERT",
+    "sameIdentitySameFingerprint": "EXACT_DUPLICATE_NO_OP",
+    "sameIdentityDifferentFingerprint": "PROVENANCE_CONFLICT",
+    "updateExistingImmutableRow": false
+  },
+  "publication": {
+    "formalGeneration": {
+      "stageRows": "DECISION_PARENTS",
+      "certification": [
+        "EXPECTED_COUNT_MATCH",
+        "PARENT_KEYSET_HASH_MATCH",
+        "DECISION_SET_HASH_MATCH",
+        "ZERO_PROVENANCE_CONFLICT"
+      ],
+      "publishMarker": "IMMUTABLE_FINAL_GENERATION_RECEIPT"
+    },
+    "observer": {
+      "stageRows": "GENERIC_EVIDENCE_CHILDREN",
+      "certification": [
+        "ROOT_ATTEMPT_COUNT_MATCH",
+        "ROOT_KEYSET_HASH_MATCH",
+        "ZERO_MISSING",
+        "ZERO_PROVENANCE_CONFLICT",
+        "ZERO_QA_FAILURE"
+      ],
+      "publishMarker": "IMMUTABLE_FINAL_OBSERVER_RUN_RECEIPT"
+    }
+  },
+  "readerFirewall": [
+    "IGNORE_PARENT_ROWS_WITHOUT_FINAL_GENERATION_RECEIPT",
+    "IGNORE_CHILD_ROWS_FOR_INFERENCE_WITHOUT_FINAL_OBSERVER_RUN_RECEIPT",
+    "NO_LATEST_ROW_WINS",
+    "NO_CROSS_GENERATION_MIXING"
+  ],
+  "d1WritePattern": {
+    "insert": "INSERT_ON_CONFLICT_DO_NOTHING",
+    "verify": "READ_STORED_FINGERPRINT_IN_SAME_FIRST_PRIMARY_SESSION",
+    "immutableUpsert": "PROHIBITED",
+    "batch": "BOUNDED_TRANSACTIONAL_CHUNKS",
+    "chunkSize": "UNFROZEN"
+  },
+  "foreignKeys": {
+    "childToParent": "RECOMMENDED_ON_DELETE_RESTRICT",
+    "cascadeDelete": "PROHIBITED_FOR_IMMUTABLE_RESEARCH_EVIDENCE"
+  },
+  "failureIsolation": {
+    "parentPartial": "UNPUBLISHED_NO_FINAL_GENERATION_RECEIPT",
+    "observerPartial": "UNPUBLISHED_NO_FINAL_OBSERVER_RECEIPT",
+    "researchFailureChangesFormal": false
+  },
+  "ownerApprovalRequested": false,
+  "formalOptimizationCandidate": false
+}
