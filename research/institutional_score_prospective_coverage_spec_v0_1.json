@@ -1,0 +1,66 @@
+{
+  "id": "institutional_score_prospective_coverage_v0_1",
+  "status": "SPEC_FROZEN",
+  "researchOnly": true,
+  "decisionImpact": false,
+  "purpose": "Coverage-only prospective diagnostic for the existing Formal institutionalScore decomposition. No outcomes, threshold/weight search, or Formal changes.",
+  "eligibleParent": {
+    "sourceCompleteness": "FULL_FORMAL_SCAN",
+    "capturedAtSelection": true,
+    "historicalReconstructionAllowed": false,
+    "unitOfIndependence": "scanDate"
+  },
+  "storedInputs": [
+    "institution.score",
+    "institution.foreignBuyDays",
+    "institution.trustBuyDays",
+    "institution.dealerBuyDays",
+    "institution.foreignNet",
+    "institution.trustNet",
+    "institution.dealerNet",
+    "institution.institutionTotalNet",
+    "institution.chipConcentration",
+    "volume.avgVolume20Lots"
+  ],
+  "derivedOnlyWhenInputsObserved": {
+    "currentBuy": "foreignNet>0 || trustNet>0 || dealerNet>0",
+    "institutionsAligned": "foreignNet>0 && trustNet>0 && dealerNet>0",
+    "adv20Shares": "avgVolume20Lots*1000",
+    "streakLinearContribution": "8*foreignBuyDays + 10*trustBuyDays + 4*dealerBuyDays",
+    "consensusInteractionContribution": "15*institutionsAligned + 6*currentBuy",
+    "aggregateNetIntensityContribution": "clamp((institutionTotalNet/adv20Shares)*25,0,25)",
+    "largeHolderConcentrationContribution": "0.15*chipConcentration",
+    "preClampInstitutionalScore": "sum of the four contribution groups",
+    "scoreSaturated100": "preClampInstitutionalScore>=100"
+  },
+  "failClosedEvidenceStates": {
+    "CLEAN": "FULL_FORMAL_SCAN and all raw nets, aggregate net, chip concentration, positive ADV denominator and streak values are observed; recomputed score matches stored score within numeric tolerance.",
+    "FORMAL_REPRODUCIBLE_BUT_SOURCE_INCOMPLETE": "stored Formal score may be reproducible under deployed zero/fallback semantics, but one or more raw evidence inputs needed for economic interpretation are absent.",
+    "UNKNOWN_INPUT": "required decomposition input is null/nonfinite or ADV denominator is nonpositive.",
+    "SCORE_MISMATCH": "recomputed score does not match stored institution.score; treat as generation/schema/provenance conflict, not an economic observation."
+  },
+  "metricsByIndependentScanDate": [
+    "eligibleRows",
+    "cleanRows",
+    "unknownInputRows",
+    "scoreMismatchRows",
+    "saturatedRowsAmongClean",
+    "actorSignDivergenceRowsAmongClean",
+    "aggregateNetNegativeButAnyActorPositiveRowsAmongClean",
+    "ownershipContributionShare distribution among clean nonzero-preClamp rows"
+  ],
+  "criticalCaveat": "research-snapshot-v1 stores buy-day streaks with journalInteger(value)||0, so the persisted zero cannot by itself distinguish a true zero-day streak from a missing source value. FULL_FORMAL_SCAN proves prospective selection-time capture but does not embed the institution-history readiness receipt or institutionHistoryDays in the snapshot. Therefore actor-streak source completeness is not self-authenticating from the snapshot alone.",
+  "biasGuards": [
+    "No D1/D3/D5/D10/D20/MFE/MAE or other outcome fields may be read in this coverage phase.",
+    "No historical Shadow reconstruction or present-day backfill.",
+    "Do not treat missing raw nets as zero for actor-divergence research semantics.",
+    "Report scanDate-level coverage and date concentration; do not treat rows as independent dates.",
+    "No threshold/weight sweep and no alternative institutionalScore formula."
+  ],
+  "engineeringBoundary": {
+    "pureOfflineObserverOverExistingSnapshots": "Class A",
+    "adding institutionHistoryDays/readiness receipt or raw-source lineage to shared snapshot/runtime persistence": "Class B proposal-first",
+    "changing institutionalScore formula/weight/priority": "Class C owner decision"
+  },
+  "optimizationStatus": "NOT_OPTIMIZATION_READY"
+}
