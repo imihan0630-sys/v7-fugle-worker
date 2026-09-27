@@ -52,6 +52,14 @@ for(const s of buys){
     eventId:s.event_id,tradeDate:s.trade_date,planScanDate:scanDate,symbol:String(s.symbol||""),
     occurredAt:s.occurred_at,marketPrice:Number(s.market_price),signalAmount:Number(s.signal_amount),
     reconstruction:q,currentPlanLinked,
+    planPreview:{
+      buyHigh:plan?Number(plan.buy_high):null,
+      storedFirstShares:plan?Number(plan.first_shares):null,
+      recomputedPreviewShares:(plan&&Number.isFinite(Number(plan.buy_high))&&Number(plan.buy_high)>0&&Number.isFinite(Number(s.signal_amount)))
+        ?Math.floor(Number(s.signal_amount)/Number(plan.buy_high)):null,
+      liveMinusStoredFirstShares:(plan&&Number.isFinite(Number(plan.first_shares))&&q?.reconstructable)
+        ?q.suggestedShares-Number(plan.first_shares):null
+    },
     planSelectedCount:datePlans.length,
     daySelectedCount:day?Number(day.selected_count):null,
     planCountMatchesDay:day?Number(day.selected_count)===datePlans.length:null,
@@ -73,6 +81,7 @@ const output={
   planLinkedBuyRows:positive.filter(x=>x.currentPlanLinked).length,
   multiNamePositiveBuyRows:positive.filter(x=>x.planSelectedCount>=2).length,
   equalCapitalOrderableRows:positive.filter(x=>x.equalCapitalOrderability?.status==="ORDERABLE").length,
+  previewShareDriftRows:positive.filter(x=>Number.isFinite(x.planPreview?.liveMinusStoredFirstShares)&&x.planPreview.liveMinusStoredFirstShares!==0).length,
   positiveTerminalExitRows:exits.length,
   buys:positive,
   terminalSignalRows:exits.map(s=>({
@@ -80,6 +89,6 @@ const output={
     signalType:s.signal_type,occurredAt:s.occurred_at,marketPrice:Number(s.market_price),
     semantics:"POSITIVE_TERMINAL_SIGNAL_PRICE_NOT_BROKER_FILL"
   })),
-  interpretation:"Positive-row production audit only. BUY presence can support exact signal-price/amount/suggestedShares reconstruction. Missing rows remain UNKNOWN. SELL/STOP rows are terminal signal-price evidence only."
+  interpretation:"Positive-row production audit only. BUY presence can support exact signal-price/amount/suggestedShares reconstruction. Plan first_shares is preview-at-plan-price and may differ from live suggestedShares recomputed at trigger price. Missing rows remain UNKNOWN. SELL/STOP rows are terminal signal-price evidence only."
 };
 console.log(JSON.stringify(output,null,2));
