@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "RISK_CONCENTRATION_BRIDGE_PRODUCTION_V0_1",
+  "observedAt": "2026-09-28T05:20:00+08:00",
+  "source": "PR-060 Production receipt, 2026-09-18",
+  "selectedCount": 3,
+  "modes": {
+    "BUY_LOW": {
+      "currentHHI": 0.4252711642,
+      "equalCapitalHHI": 0.3950931017,
+      "globalMinHHI": 0.3486465228
+    },
+    "MIDPOINT": {
+      "currentHHI": 0.3934504209,
+      "equalCapitalHHI": 0.3683594007,
+      "globalMinHHI": 0.3377017368
+    },
+    "BUY_HIGH": {
+      "currentHHI": 0.3772380854,
+      "equalCapitalHHI": 0.3558588621,
+      "globalMinHHI": 0.3343850287
+    }
+  },
+  "interpretation": "Equal-capital already exhibits stop-geometry concentration; PriorityScore sizing adds a separate incremental HHI. The decomposition is descriptive/algebraic and must not be called causal factor attribution.",
+  "status": "GEOMETRY_AND_SIZING_COMPONENTS_SEPARATED / ECONOMIC_VALUE_UNKNOWN",
+  "formalCoreImpact": false
+}
