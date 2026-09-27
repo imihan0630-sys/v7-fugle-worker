@@ -1,0 +1,126 @@
+{
+  "schemaVersion": "RISK_METRIC_SENSITIVITY_PRODUCTION_RECEIPT_V0_1",
+  "observedAt": "2026-09-28T05:26:00+08:00",
+  "timestampProvenance": "GitHub Actions Portfolio Risk Tier-A Research run 36351672635 / job 108711424760",
+  "workflowRunId": 36351672635,
+  "jobId": 108711424760,
+  "readOnly": true,
+  "productionWrites": false,
+  "decisionImpact": false,
+  "scanDate": "2026-09-18",
+  "selectedCount": 3,
+  "gridNTD": 1000,
+  "perNameCapPct": 35,
+  "metrics": [
+    "HHI",
+    "GINI",
+    "CV",
+    "MAX_SHARE",
+    "MAX_MIN"
+  ],
+  "references": [
+    "BUY_LOW",
+    "MIDPOINT",
+    "BUY_HIGH"
+  ],
+  "directionalAgreement": {
+    "totalComparisons": 15,
+    "currentMoreConcentratedThanEqualCapital": 15,
+    "currentAboveMetricSpecificGlobalMinimum": 15
+  },
+  "metricOptima": {
+    "BUY_LOW": {
+      "HHI": {
+        "2006": 70000,
+        "3105": 36000,
+        "6133": 62000
+      },
+      "CV": {
+        "2006": 70000,
+        "3105": 36000,
+        "6133": 62000
+      },
+      "GINI": {
+        "2006": 70000,
+        "3105": 37000,
+        "6133": 61000
+      },
+      "MAX_SHARE": {
+        "2006": 70000,
+        "3105": 37000,
+        "6133": 61000
+      },
+      "MAX_MIN": {
+        "2006": 70000,
+        "3105": 37000,
+        "6133": 61000
+      }
+    },
+    "MIDPOINT": {
+      "HHI": {
+        "2006": 70000,
+        "3105": 39000,
+        "6133": 59000
+      },
+      "CV": {
+        "2006": 70000,
+        "3105": 39000,
+        "6133": 59000
+      },
+      "GINI": {
+        "2006": 70000,
+        "3105": 40000,
+        "6133": 58000
+      },
+      "MAX_SHARE": {
+        "2006": 70000,
+        "3105": 40000,
+        "6133": 58000
+      },
+      "MAX_MIN": {
+        "2006": 70000,
+        "3105": 40000,
+        "6133": 58000
+      }
+    },
+    "BUY_HIGH": {
+      "HHI": {
+        "2006": 70000,
+        "3105": 41000,
+        "6133": 57000
+      },
+      "CV": {
+        "2006": 70000,
+        "3105": 41000,
+        "6133": 57000
+      },
+      "GINI": {
+        "2006": 70000,
+        "3105": 41000,
+        "6133": 57000
+      },
+      "MAX_SHARE": {
+        "2006": 70000,
+        "3105": 41000,
+        "6133": 57000
+      },
+      "MAX_MIN": {
+        "2006": 70000,
+        "3105": 41000,
+        "6133": 57000
+      }
+    }
+  },
+  "falsification": {
+    "rejectedClaim": "The 2026-09-18 structural concentration finding is an HHI-specific artifact.",
+    "result": "Rejected. All five heterogeneous concentration metrics agree directionally under buyLow, midpoint and buyHigh: current exceeds equal-capital and the metric-specific global minimum.",
+    "nuance": "Exact risk-minimizing allocations are metric-sensitive at buyLow/midpoint, so no single structural optimum should be treated as uniquely canonical across objective definitions."
+  },
+  "limits": [
+    "one reconstructable multi-name date",
+    "plan-time projected risk only",
+    "metric optima are diagnostics, not live sizing recommendations"
+  ],
+  "status": "HHI_ARTIFACT_FALSIFIED / METRIC_DIRECTION_ROBUST / OPTIMUM_OBJECTIVE_SENSITIVE / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY",
+  "formalCoreImpact": false
+}
