@@ -105,9 +105,33 @@ x=classifyPlanDayNoBuyCoverage({
 assert.equal(x.noBuyEligible,false);
 assert.notEqual(x.status,"COMPLETE_NO_BUY");
 
+
+
+// Generic V8.8 SIGNAL context is not a symbol-level BUY.
+const genericKey=date+"|"+symbol+"|FORMAL_SIGNAL_OBSERVED|SIGNAL";
+const generic=completeReceipts.map(r=>structuredClone(r));
+generic[101]=receipt(101,{expectedEventKeys:[genericKey],attemptedCount:1,newlyStoredCount:1});
+x=classifyPlanDayNoBuyCoverage({
+ tradeDate:date,planSymbol:symbol,expectedScheduledTimes:schedule,
+ runReceipts:generic,exactDateRows:rows([openKey,genericKey]),positiveBuySignals:[]
+});
+assert.equal(x.status,"COMPLETE_NO_BUY");
+assert.equal(x.noBuyEligible,true);
+
+// Cross-symbol signalId inside this symbol's expected key is an attribution error, not NO-BUY evidence.
+const mismatchKey=date+"|"+symbol+"|FORMAL_SIGNAL_OBSERVED|"+date+":2006:NONE:BUY:episode-1";
+const mismatch=completeReceipts.map(r=>structuredClone(r));
+mismatch[102]=receipt(102,{expectedEventKeys:[mismatchKey],attemptedCount:1,newlyStoredCount:1});
+x=classifyPlanDayNoBuyCoverage({
+ tradeDate:date,planSymbol:symbol,expectedScheduledTimes:schedule,
+ runReceipts:mismatch,exactDateRows:rows([openKey,mismatchKey]),positiveBuySignals:[]
+});
+assert.equal(x.noBuyEligible,false);
+assert.ok(x.reasons.includes("SIGNAL_ID_SYMBOL_OR_SHAPE_MISMATCH"));
+
 console.log(JSON.stringify({
  ok:true,
  version:"EXECUTION_RECORDER_EXACT_DATE_COMPLETENESS_PROPOSAL_V0_2",
- cases:9,
+ cases:11,
  invariant:"missing BUY is NO-BUY only after exact-date row completeness + all 265 run receipts + per-symbol success + expected-event-key reconciliation"
 },null,2));
