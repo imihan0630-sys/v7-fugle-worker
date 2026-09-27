@@ -19,6 +19,8 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 
 ## Current design decisions
 
+- StrategyContract（策略契約）machine-readable design phase started: `system2/SYSTEM2_STRATEGY_CONTRACT_V0.md` plus new research-only TypeScript interfaces separate evidence-family roles, data readiness, strategy validity and entry readiness. Only owner-approved strategy identities may be marked approved; IA/FG remain review-pending and Black Horse remains a research lane. No numeric weights/thresholds or System 1 behavior changed.
+
 - ROA（資產報酬率）review completed: retain as FUNDAMENTAL_GROWTH（基本面成長） research candidate in SUPPORTIVE（加強） / QUALITY_CHECK（品質檢查） role, not a required hard gate. Test level/trend/peer/self-history context and redundancy versus ROE/ROIC, gross-profitability-to-assets and asset turnover before any score. Industry capital intensity/accounting asset structure are mandatory controls.
 
 - Discussion proposals are hypotheses, not conclusions: every suggested factor/rule must be independently checked for counterevidence, failure modes, redundancy and incremental value. Ideas that add no value should be rejected or omitted rather than justified into the system.
