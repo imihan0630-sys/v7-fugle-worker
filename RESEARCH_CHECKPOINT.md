@@ -1,7 +1,7 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-231.
-Updated: 2026-09-27 23:07 Asia/Taipei.
+Checkpoint sequence: B-232.
+Updated: 2026-09-27 23:14 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Detailed B-01..B-123 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
@@ -1809,3 +1809,14 @@ Updated: 2026-09-27 23:07 Asia/Taipei.
 - Durable artifact: `research/extreme_move_proxy_prospective_denominator_v0_1.json`, commit `8ef6b7a1d8a9a5eb1d9464e6033767271e61e216`.
 - Status: `EXTREME_GATE_REACH_DENOMINATOR_FROZEN / MISSING_FORMAL_COERCION_SEPARATED / OFFICIAL_STATE_COVERAGE_REQUIRED / OUTCOMES_CLOSED / FORMAL_UNCHANGED`. No FORMAL_OPTIMIZATION_CANDIDATE.
 - Exact next: audit whether the TWSE/TPEx exact official limit-state source contract already has an isolated capture helper/receipt in any research lane. If not, do not duplicate web/source integration here; freeze source dependency and move to the remaining standalone strategy-universe admission gate `marketCapYi<10bn`, testing its redundancy with liquidity/execution controls without proposing universe expansion.
+
+## B-232 — exact official limit-state source semantics already owned elsewhere; System1 blocker is same-generation lineage, not source discovery (2026-09-27 Asia/Taipei)
+- Continued B-231 exact-next and audited existing DL-001 / Corporate Actions work before creating any new source lane.
+- TWSE TWT84U exact limit/reference semantics and date-queryable contract are already material-pass in `research/information_discreteness_source_frequency_receipt_v0_1.json`; TWSE T97 provides a stronger archive/product path. TPEx S38 / STKT2QUOTESN exact marker semantics are also already frozen, and the Corporate Actions lane has independently validated an isolated S38 parser/test on a draft research branch.
+- Therefore scarcity research must NOT duplicate TWSE/TPEx source semantics, parser discovery or whole-market frequency research. Existing DL-001 owner remains canonical.
+- The unresolved object for EXTREME_MOVE is narrower: a promotion-grade same-generation join between the System1 gate-6 parent/keyset and exact official symbol-session states with requested/returned keyset coverage, source timing/hash and UNKNOWN semantics. That prospective lineage is not currently proven.
+- Existing outcome-free frequency witnesses show official limit hits are sparse on many dates but not uniformly rare; whole-market cross-sectional frequency cannot be transported to the momentum/quality-conditioned System1 candidate population.
+- Historical date-queryable official data can reconcile factual state but may not be used to manufacture immutable first-known System1 decision evidence.
+- Durable artifact: `research/extreme_move_official_source_dependency_v0_1.json`, commit `a1788231765ec44f76aa3b1a2591d640589dd5a8`.
+- Status: `SOURCE_SEMANTICS_READY / SYSTEM1_PROSPECTIVE_LINEAGE_NOT_READY / NO_DUPLICATE_INTEGRATION / OUTCOMES_CLOSED / FORMAL_UNCHANGED`. No FORMAL_OPTIMIZATION_CANDIDATE.
+- Exact next: move to the remaining standalone early strategy-universe gate `marketCapYi<10bn`. Audit whether its protection is structurally distinct from the later liquidity/size-conditioned rules or substantially nested/redundant. Freeze a prospective falsification contract using market-cap distance, liquidity/execution controls and explicit universe-policy semantics; do not propose lowering the 10bn floor and do not inspect outcomes yet.
