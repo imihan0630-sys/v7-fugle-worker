@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "FORMAL_GATE_OVERLAP_OBSERVER_SPEC_V0_3",
+  "researchDate": "2026-09-27",
+  "supersedesForNewCounts": "formal_gate_overlap_observer_v0_2 valuation semantics only",
+  "preserves": [
+    "strict null/undefined/empty numeric handling",
+    "financialBasis truthiness",
+    "verified announcement source + missing per-symbol array => empty set"
+  ],
+  "valuationRepair": {
+    "oldBug": "relative PE>2.5 with epsYoY null was UNKNOWN",
+    "deployedTruth": "epsYoY null does not earn >25 growth exception; if revenueQuarterYoY<=25 the current Formal veto rejects",
+    "upstreamGuard": "revenueQuarterYoY missing remains UNKNOWN because the earlier FINANCIAL_SOURCE_COMPLETENESS gate should have blocked Formal reach"
+  },
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false
+}
