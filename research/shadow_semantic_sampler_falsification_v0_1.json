@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "SHADOW_SEMANTIC_SAMPLER_FALSIFICATION_V0_1",
+  "researchDate": "2026-09-27",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "finding": {
+    "legacyFunction": "sampleMembership(population,membership,cap)",
+    "legacyRule": "filter global membership -> lexicographic symbol sort -> global slice(0,cap)",
+    "defects": [
+      "A global cap can starve one price pool even when both pools have eligible rows.",
+      "Lexicographic symbol order is deterministic but not a defensible randomized/outcome-free sampling frame; lower/earlier symbol IDs receive systematic priority.",
+      "CHANNEL_NEAR_MISS cannot satisfy the preregistered pool x nearestChannel x failed-check-pattern frame through the legacy API."
+    ],
+    "scope": "Research prototype only; no Production/Worker usage found outside its test."
+  },
+  "repair": {
+    "api": "sampleMembershipV2",
+    "properties": [
+      "semantic memberships and denominators remain frozen before sampling",
+      "explicit preregistered safe strata",
+      "deterministic hash ordering within strata",
+      "input-order invariant",
+      "per-stratum population/sample counts and sampling fraction",
+      "CHANNEL_NEAR_MISS requires pool x nearestChannel x checkPattern"
+    ],
+    "safeStrata": [
+      "pool",
+      "nearestChannel",
+      "checkPattern"
+    ],
+    "noOutcomeStrata": true
+  },
+  "nonClaims": [
+    "Does not authorize Class-B persistence.",
+    "Does not change current legacy Shadow archive.",
+    "Does not make historical bounded cohorts promotion-grade.",
+    "Does not imply any Formal threshold, ranking, quota or capital change."
+  ],
+  "status": "LEGACY_PROTOTYPE_SAMPLER_BIAS_CONFIRMED / V0_2_CLASS_A_REPAIR_READY / FORMAL_UNCHANGED"
+}
