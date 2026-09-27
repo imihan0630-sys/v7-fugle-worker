@@ -62,13 +62,14 @@ TR1 = max(
 
 ## TI-291 — Wilder smoothing semantics
 
-Initial period sums:
-- TR14 = sum of initial eligible TR1 values;
-- +DM14 = sum of initial eligible +DM1 values;
-- -DM14 = sum of initial eligible -DM1 values.
+TA-Lib-style initialization:
+- seed prevTR / prev+DM / prev-DM using the first period-1 one-bar transitions;
+- for each of the next period bars, apply one Wilder update first:
+  S_t = S_(t-1) - S_(t-1)/14 + x_t;
+- compute one DX after that update;
+- the first ADX is the arithmetic mean of those first 14 DX slots.
 
-Subsequent smoothing:
-S_t = S_(t-1) - S_(t-1)/14 + x_t.
+This is not identical to simply summing 14 DM observations once and then beginning DX calculations.
 
 Then:
 +DI14 = 100 * (+DM14 / TR14)
@@ -82,10 +83,12 @@ DX14 =
 when the denominator is positive.
 
 Zero-denominator behavior must be deterministic and versioned.
-System-native v0.1 adopts a TA-Lib-style deterministic rule:
-- first undefined zero-direction DX state resolves to 0;
-- later zero-direction state may carry the last valid DX for recursion continuity.
-The exact executable fixture must validate this behavior before parity claims.
+TA-Lib-style baseline:
+- if smoothed TR is zero, no valid DI/DX update is applied;
+- if (+DI + -DI) is effectively zero, no valid DX update is applied;
+- during first-ADX accumulation, such a slot contributes nothing to sumDX but the first ADX still divides by period;
+- after first ADX exists, an invalid DX slot leaves prior ADX unchanged rather than smoothing ADX toward zero.
+The executable fixture must validate this behavior before parity claims.
 
 ## TI-292 — First ADX output / lookback
 
