@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "INITIAL_BUY_TRIGGER_ALLOCATION_INVARIANCE_V0_1",
+  "observedAt": "2026-09-27T21:36:00+08:00",
+  "scope": "Initial BUY eligibility/timing only while positionStage=NONE",
+  "sourceAudit": {
+    "functions": [
+      "evaluatePullback",
+      "evaluateMomentum",
+      "evaluateStop",
+      "evaluateProfit",
+      "buildFinalDecision",
+      "applyPlanValidity",
+      "analyzeStockSmart"
+    ],
+    "forbiddenSizingFields": [
+      "allocationRatio",
+      "totalAllocation",
+      "firstAmount",
+      "firstShares",
+      "secondAmount",
+      "secondShares",
+      "priorityScore"
+    ],
+    "result": "No forbidden sizing fields are referenced in the upstream BUY decision chain."
+  },
+  "operationSignalAudit": {
+    "eligibilityPredicate": "result.finalDecision.level == buy AND (maxChase absent OR currentPrice <= maxChase) AND positionStage == NONE",
+    "sizingFieldsInEligibility": false,
+    "sizingFieldsAfterEligibility": [
+      "firstAmount",
+      "firstShares"
+    ],
+    "meaning": "Sizing changes BUY amount/shares after trigger, not whether the initial BUY signal is emitted."
+  },
+  "allowedCounterfactualUse": [
+    "Use the same observed initial BUY signal timestamp as trigger evidence for current vs alternative allocation sizing when plan non-sizing fields, market data, code version and generation are identical.",
+    "Use PLAN_INVALIDATED/no-BUY as common pre-entry outcome when the same non-sizing plan and market data apply."
+  ],
+  "notCertified": [
+    "Fill price invariance",
+    "Fill probability invariance",
+    "Slippage invariance",
+    "Orderability when counterfactual shares round to zero",
+    "ADD lifecycle invariance after first execution",
+    "REDUCE/SELL realized P&L invariance"
+  ],
+  "executionImplication": "Execution-clock sizing research may share first-BUY trigger timing, but must independently reconstruct comparator amount/shares and execution costs/fills.",
+  "status": "INITIAL_BUY_TRIGGER_STRUCTURALLY_ALLOCATION_INVARIANT / EXECUTION_NOT_INVARIANT",
+  "formalCoreImpact": false
+}
