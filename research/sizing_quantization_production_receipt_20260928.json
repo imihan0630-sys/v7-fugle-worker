@@ -1,0 +1,61 @@
+{
+  "schemaVersion": "SIZING_QUANTIZATION_PRODUCTION_RECEIPT_V0_1",
+  "observedAt": "2026-09-28T00:01:28+08:00",
+  "timestampProvenance": "GitHub Actions Portfolio Risk Tier-A Research run 36331652461 / job 108654620345",
+  "workflowRunId": 36331652461,
+  "jobId": 108654620345,
+  "readOnly": true,
+  "productionWrites": false,
+  "decisionImpact": false,
+  "scanDate": "2026-09-18",
+  "current": {
+    "nominalDeployTargetNTD": 170000,
+    "continuousCappedAllocationNTD": 170000,
+    "plannedAllocationNTD": 168000,
+    "planPreviewSuggestedNotionalNTD": 167471.13,
+    "thousandFloorShortfallNTD": 2000,
+    "shareFloorResidualNTD": 528.87,
+    "totalNominalToPreviewShortfallNTD": 2528.87,
+    "previewUtilizationPctOfPlanned": 99.685196,
+    "previewUtilizationPctOfNominalTarget": 98.512429,
+    "plannedProjectedStopRiskNTD": 6483.4291,
+    "previewProjectedStopRiskNTD": 6459.97,
+    "plannedProjectedStopRiskHHI": 0.37723809,
+    "previewProjectedStopRiskHHI": 0.37670778,
+    "hhiAttenuationAbs": -0.00053031,
+    "hhiAttenuationPctRelativeToPlanned": -0.140577
+  },
+  "quantizedEqualCapital": {
+    "samePlannedDeploymentNTD": 168000,
+    "previewSuggestedNotionalNTD": 167639.44,
+    "shareFloorResidualNTD": 360.56,
+    "previewProjectedStopRiskNTD": 6295.52,
+    "previewProjectedStopRiskHHI": 0.35538974,
+    "currentMinusComparatorPreviewRiskNTD": 164.45,
+    "currentMinusComparatorPreviewRiskHHI": 0.02131804,
+    "currentHhiPremiumPctVsComparator": 5.9985
+  },
+  "shareQuantizedContinuousCappedEqualRisk": {
+    "samePlannedDeploymentNTD": 168000,
+    "allocationSemantics": "Continuous 35%-cap equal-risk allocation from PR-034; no NT$1,000 allocation grid applied, but 60/40 tranche and integer-share preview flooring applied.",
+    "previewSuggestedNotionalNTD": 167366.69,
+    "shareFloorResidualNTD": 633.31,
+    "previewProjectedStopRiskNTD": 5939.27,
+    "previewProjectedStopRiskHHI": 0.33428138,
+    "currentMinusComparatorPreviewRiskNTD": 520.7,
+    "currentMinusComparatorPreviewRiskHHI": 0.0424264,
+    "currentHhiPremiumPctVsComparator": 12.6918
+  },
+  "falsification": {
+    "rejectedExplanation": "The PR-033/034 current-sizing risk concentration is primarily an artifact of integer-share flooring / price-level quantization.",
+    "evidence": "Applying the same plan-preview share flooring slightly attenuates current HHI, but current remains materially more concentrated than quantized equal-capital and share-quantized continuous capped-equal-risk on 2026-09-18.",
+    "limits": [
+      "Only one reconstructable multi-name date.",
+      "Plan-preview buyHigh notional is not actual order or fill.",
+      "The capped equal-risk allocation is still continuous at the allocation layer; a separate NT$1,000 grid-constrained comparator is needed for an executable-like structural test.",
+      "No economic/outcome superiority is established."
+    ]
+  },
+  "status": "SHARE_QUANTIZATION_EXPLANATION_FALSIFIED_ON_WITNESS / GRID_EQUAL_RISK_NEXT / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY",
+  "formalCoreImpact": false
+}
