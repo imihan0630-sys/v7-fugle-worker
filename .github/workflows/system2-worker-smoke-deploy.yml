@@ -42,7 +42,7 @@ jobs:
             grep -qx 'APPROVAL=DEPLOY_SYSTEM2_WORKER_SMOKE' system2/approvals/DEPLOY_SYSTEM2_WORKER_SMOKE_2026-09-27.md
           fi
 
-      - name: Resolve isolated D1 and verify Worker absent
+      - name: Resolve isolated D1 and inspect recoverable Worker state
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
@@ -58,6 +58,7 @@ jobs:
           const workerName=process.env.WORKER_NAME;
           const dbName=process.env.DB_NAME;
           if(!accountId||!d1Token||!workersToken) throw new Error("required Cloudflare credentials are missing");
+
           const origin="https://api.cloudflare.com/client/v4";
           async function get(path,token){
             const r=await fetch(origin+path,{headers:{authorization:`Bearer ${token}`,accept:"application/json"},signal:AbortSignal.timeout(45000)});
@@ -65,6 +66,7 @@ jobs:
             if(!r.ok||d?.success===false) throw new Error(`GET ${path.replace(accountId,"<account>")} HTTP ${r.status}: ${d?.errors?.[0]?.message||t.slice(0,300)}`);
             return d;
           }
+
           const d1=await get(`/accounts/${accountId}/d1/database?per_page=100`,d1Token);
           const matches=(d1.result||[]).filter(x=>x?.name===dbName);
           if(matches.length!==1) throw new Error(`expected exactly one isolated D1 named ${dbName}; found ${matches.length}`);
@@ -73,10 +75,23 @@ jobs:
 
           const workers=await get(`/accounts/${accountId}/workers/scripts`,workersToken);
           const existing=(workers.result||[]).filter(x=>x?.id===workerName);
-          if(existing.length!==0) throw new Error(`${workerName} already exists; refusing first-create smoke workflow`);
+          if(existing.length>1) throw new Error("duplicate System2 Worker resource detected");
 
-          fs.appendFileSync(process.env.GITHUB_ENV,`SYSTEM2_DB_ID=${dbId}\n`);
-          console.log(JSON.stringify({databaseName:dbName,databaseResolved:true,workerAbsent:true}));
+          let recovery=false;
+          if(existing.length===1){
+            recovery=true;
+            const settings=await get(`/accounts/${accountId}/workers/scripts/${workerName}/settings`,workersToken);
+            const bindings=settings?.result?.bindings||[];
+            const bound=bindings.find(x=>x?.name==="SYSTEM2_DB");
+            if(!bound) throw new Error("existing System2 Worker lacks SYSTEM2_DB binding");
+            const vars=Object.fromEntries(bindings.filter(x=>x?.type==="plain_text").map(x=>[x.name,x.text]));
+            if(vars.SYSTEM2_CAPTURE_ENABLED!=="false") throw new Error("existing System2 Worker is not capture-disabled");
+            const schedules=await get(`/accounts/${accountId}/workers/scripts/${workerName}/schedules`,workersToken);
+            if(Array.isArray(schedules?.result)&&schedules.result.length!==0) throw new Error("existing System2 Worker unexpectedly has Cron schedules");
+          }
+
+          fs.appendFileSync(process.env.GITHUB_ENV,`SYSTEM2_DB_ID=${dbId}\nSYSTEM2_WORKER_RECOVERY=${recovery}\n`);
+          console.log(JSON.stringify({databaseName:dbName,databaseResolved:true,workerRecovery:recovery}));
           NODE
 
       - name: Build smoke Wrangler config
@@ -106,7 +121,7 @@ jobs:
           ! grep -Eq '(^|[[:space:]])(route|routes|crons)[[:space:]]*=' wrangler.system2.smoke.toml
           grep -F 'SYSTEM2_CAPTURE_ENABLED = "false"' wrangler.system2.smoke.toml
 
-      - name: Deploy isolated Worker with temporary Version URL
+      - name: Upload smoke version and obtain Version URL
         id: deploy
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
@@ -114,14 +129,30 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          npm exec --yes wrangler@4.135.0 -- deploy --config wrangler.system2.smoke.toml --message "System2 isolated smoke deploy ${GITHUB_SHA}" 2>&1 | tee /tmp/system2-smoke-deploy.log
+          npm exec --yes wrangler@4.135.0 -- versions upload --config wrangler.system2.smoke.toml --preview-alias smoke 2>&1 | tee /tmp/system2-smoke-upload.log
 
-          VERSION_URL=$(grep -Eo 'https://[A-Za-z0-9._-]+\.workers\.dev' /tmp/system2-smoke-deploy.log | head -n 1 || true)
+          VERSION_URL=$(grep -Eo 'https://[A-Za-z0-9._-]+\.workers\.dev' /tmp/system2-smoke-upload.log | head -n 1 || true)
           if [ -z "$VERSION_URL" ]; then
-            echo "Wrangler output did not expose a Version URL; refusing to claim runtime smoke verification."
+            VERSION_URL=$(node <<'NODE'
+          const accountId=process.env.CLOUDFLARE_ACCOUNT_ID;
+          const token=process.env.CLOUDFLARE_API_TOKEN;
+          const r=await fetch(`https://api.cloudflare.com/client/v4/accounts/${accountId}/workers/subdomain`,{
+            headers:{authorization:`Bearer ${token}`,accept:"application/json"},
+            signal:AbortSignal.timeout(45000)
+          });
+          const d=await r.json();
+          if(!r.ok||d?.success===false||!d?.result?.subdomain) process.exit(2);
+          process.stdout.write(`https://smoke-${process.env.WORKER_NAME}.${d.result.subdomain}.workers.dev`);
+          NODE
+          ) || true
+          fi
+
+          if [ -z "$VERSION_URL" ]; then
+            echo "No Version URL could be resolved; refusing to claim runtime smoke verification."
             exit 1
           fi
           echo "version_url=$VERSION_URL" >> "$GITHUB_OUTPUT"
+          echo "Resolved smoke Version URL host without exposing credentials."
 
       - name: Smoke health through Version URL
         env:
@@ -155,7 +186,7 @@ jobs:
           throw last||new Error("health smoke failed");
           NODE
 
-      - name: Verify deployed bindings and no schedules
+      - name: Verify bindings, workers.dev state and no schedules
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           WORKERS_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -176,19 +207,23 @@ jobs:
           const settings=await get(`/accounts/${accountId}/workers/scripts/${name}/settings`);
           const bindings=settings?.result?.bindings||[];
           const d1=bindings.find(x=>x?.name==="SYSTEM2_DB");
-          if(!d1) throw new Error("SYSTEM2_DB binding missing from deployed Worker");
+          if(!d1) throw new Error("SYSTEM2_DB binding missing from Worker");
           const vars=Object.fromEntries(bindings.filter(x=>x?.type==="plain_text").map(x=>[x.name,x.text]));
-          if(vars.SYSTEM2_CAPTURE_ENABLED!=="false") throw new Error("deployed capture flag is not false");
+          if(vars.SYSTEM2_CAPTURE_ENABLED!=="false") throw new Error("capture flag is not false");
 
           const schedules=await get(`/accounts/${accountId}/workers/scripts/${name}/schedules`);
           if(Array.isArray(schedules?.result)&&schedules.result.length!==0) throw new Error("Cron schedules unexpectedly exist");
+
+          const subdomain=await get(`/accounts/${accountId}/workers/scripts/${name}/subdomain`);
+          if(subdomain?.result?.enabled!==false) throw new Error("workers.dev production subdomain must remain disabled");
 
           console.log(JSON.stringify({
             worker:name,
             system2DbBinding:true,
             captureEnabled:false,
-            scheduleCount:Array.isArray(schedules?.result)?schedules.result.length:null,
-            bindingTypes:bindings.map(x=>({name:x.name,type:x.type}))
+            workersDevEnabled:subdomain?.result?.enabled,
+            previewsEnabled:subdomain?.result?.previews_enabled,
+            scheduleCount:Array.isArray(schedules?.result)?schedules.result.length:null
           }));
           NODE
 
@@ -202,8 +237,7 @@ jobs:
           python3 - <<'PY'
           from pathlib import Path
           p=Path("wrangler.system2.smoke.toml")
-          s=p.read_text()
-          s=s.replace("preview_urls = true","preview_urls = false")
+          s=p.read_text().replace("preview_urls = true","preview_urls = false")
           p.write_text(s)
           PY
           npm exec --yes wrangler@4.135.0 -- deploy --config wrangler.system2.smoke.toml --message "System2 smoke lock-down ${GITHUB_SHA}"
@@ -231,16 +265,21 @@ jobs:
           }
           const scripts=await get(`/accounts/${accountId}/workers/scripts`);
           const exact=(scripts.result||[]).filter(x=>x?.id===name);
-          if(exact.length!==1) throw new Error("isolated System2 Worker not present exactly once after deploy");
+          if(exact.length!==1) throw new Error("isolated System2 Worker not present exactly once after smoke");
 
           const schedules=await get(`/accounts/${accountId}/workers/scripts/${name}/schedules`);
           if(Array.isArray(schedules?.result)&&schedules.result.length!==0) throw new Error("Cron schedules unexpectedly exist after lock-down");
+
+          const subdomain=await get(`/accounts/${accountId}/workers/scripts/${name}/subdomain`);
+          if(subdomain?.result?.enabled!==false) throw new Error("workers.dev must remain disabled after lock-down");
+          if(subdomain?.result?.previews_enabled!==false) throw new Error("Version/Preview URLs must be disabled after smoke");
+
           console.log(JSON.stringify({
             result:"PASS",
             worker:name,
             workerExists:true,
-            workersDevExpected:false,
-            previewUrlsExpected:false,
+            workersDevEnabled:false,
+            previewUrlsEnabled:false,
             captureEnabled:false,
             cronCount:Array.isArray(schedules?.result)?schedules.result.length:null,
             system1WorkerChanged:false
@@ -254,7 +293,7 @@ jobs:
           git diff --exit-code -- wrangler.toml Worker.js
           echo "System1 production files unchanged PASS"
 
-      - name: Roll back first-create Worker if smoke fails
+      - name: Roll back isolated Worker if smoke fails
         if: ${{ failure() && steps.deploy.outcome == 'success' }}
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
@@ -263,4 +302,4 @@ jobs:
         run: |
           set -euo pipefail
           npm exec --yes wrangler@4.135.0 -- delete --name "$WORKER_NAME" --force || true
-          echo "Attempted rollback deletion of first-create System2 Worker"
+          echo "Attempted rollback deletion of System2 smoke Worker"
