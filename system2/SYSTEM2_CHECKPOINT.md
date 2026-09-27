@@ -19,6 +19,10 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 
 ## Current design decisions
 
+- Strategy-identity phase started. `system2/SYSTEM2_STRATEGY_IDENTITY_CARDS.md` Draft V0.1 created with unified PRIMARY / REQUIRED / SUPPORTIVE / CONTEXT_ONLY / HARD_INVALIDATION roles, setup/entry/add/reduce/exit semantics, intraday roles and falsification notes for all eight strategy families. Owner-approved statuses are preserved; previously discussed-but-not-explicitly-approved strategies remain OWNER REVIEW PENDING.
+
+- CONFLUENCE_ENGINE（共振引擎）core logic owner-approved: aggregate within evidence families before cross-family confluence; prohibit majority voting and duplicate-counting; preserve hard invalidation/conflict states; separate FACTOR_CONFLUENCE（因子共振） from MULTI_STRATEGY_CONFLUENCE（多策略共振）. Numeric weights/floors/caps/interactions remain unfrozen.
+
 - SYSTEM2_CONFLUENCE_ENGINE.md Design Draft V0.1 created for owner review: factor-family aggregation before cross-family confluence, no indicator majority voting, explicit redundancy controls, preregistered interaction terms, and separation of FACTOR_CONFLUENCE（因子共振） from MULTI_STRATEGY_CONFLUENCE（多策略共振）.
 
 - Volume-baseline research direction owner-approved: retain relativeVolume5/20/60（日級5/20/60日相對量）, prev5IntradayBarRatio（前5根盤中K棒量比）, sameSlotRVOL（同時段相對量） and cumulativeVolumePace（累積成交量進度） as separate research comparators. No comparator is assumed superior before common-support redundancy/Shadow/OOS validation.
