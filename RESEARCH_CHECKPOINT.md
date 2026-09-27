@@ -1385,3 +1385,16 @@ Updated: 2026-09-27 08:30 Asia/Taipei.
 - Draft PR #117 and #121 received dependency comments so green CI cannot be misread as complete Shadow-framework repair: #117 solves reason-starvation, #121 solves liquidity evidence capture; neither solves first-failure causal attribution or BROAD_CONTROL control-estimand ambiguity.
 - Research conclusion: the next highest-value evidence improvement is not another trading factor. It is a **versioned Shadow semantic/membership repair** that freezes denominators and control estimands before Selection Alpha or gate-relaxation outcomes are interpreted.
 - No FORMAL_OPTIMIZATION_CANDIDATE is created from these evidence-infrastructure findings; they are prerequisites for trustworthy falsification.
+
+
+## B-205 — Post-base gate overlap observer semantics frozen (2026-09-27 11:12 Asia/Taipei)
+- Fresh canonical start was B-204. Formal Core remained LOCKED; no prior A/B completed research was repeated.
+- Source audit of current scoreCandidate() confirms post-base fail-fast order: financial/valuation readiness -> announcement risk -> valuation-growth -> sector state -> A/B setup -> fundamental count/quality -> ATR quality -> target geometry -> RR>=2 -> signal grade. The stored exclusion reason is therefore only the first observed failure, not marginal gate contribution.
+- Frozen research-only observer contract uses four states per gate: PASS / FAIL / UNKNOWN / NOT_EVALUABLE. UNKNOWN is never BAD/0. Downstream gates that logically require an upstream construct become NOT_EVALUABLE when that prerequisite does not exist.
+- Anti-confounding: TARGET_NULL remains distinct from LOW_RR; target-null cannot be encoded as RR=0. fundamentalCount<3 does not imply fundamentalQuality FAIL.
+- Observer preserves Formal firstFailureReason separately and reports per-gate denominators plus pairwise evaluable denominators. It may not infer causal gate importance, selected-count gain from removing a gate, or bypass a gate and label the result Formal.
+- PIT firewall: no later-known targetPrice/fundamental/announcement data, no historical Shadow fabrication, missing provenance remains UNKNOWN, and scanDate is the independent inference unit. R01-R08/I01-I07 and all bias/cost/redundancy controls remain mandatory.
+- Durable spec: research/post_base_gate_overlap_observer_v0_1.json. Direct main ref update was blocked by connector safety after Git object creation; work is preserved on a research branch without force/overwrite.
+- Governance: spec/documentation is Class A. Shared D1/runtime persistence remains under SHADOW_COHORT_SEMANTICS_CLASS_B_PROPOSAL and requires owner approval; no runtime implementation attempted.
+- No FORMAL_OPTIMIZATION_CANDIDATE.
+- Exact next: audit which observer gate states are computable strictly from already-present same-scan immutable fields with zero extra market calls; produce an evaluability matrix separating UNKNOWN from NOT_EVALUABLE. Do not implement shared persistence while Class-B Shadow membership proposal is unapproved. Preserve PVE-156 as sole full qualified-pool/cutline receipt design.
