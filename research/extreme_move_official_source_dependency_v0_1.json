@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "EXTREME_MOVE_OFFICIAL_SOURCE_DEPENDENCY_V0_1",
+  "updatedAtTaipei": "2026-09-27",
+  "researchOnly": true,
+  "outcomeDataUsed": false,
+  "decisionImpact": false,
+  "formalCoreChanged": false,
+  "semanticOwner": "DL-001 / INFORMATION_DISCRETENESS_SHADOW_SPEC.md",
+  "existingSourceWork": {
+    "TWSE": {
+      "contract": "TWT84U exact daily limit/reference fields are source-contract material-pass and date-queryable.",
+      "archive": "T97 archive/product path exists from 2014-01-06.",
+      "prospectiveSameGenerationCapture": "NOT_CURRENTLY_PROVEN_IN_SYSTEM1_EXTREME_GATE_EVIDENCE"
+    },
+    "TPEx": {
+      "contract": "EDIS S38 / STKT2QUOTESN.TXT explicit daily markers and reference/limit semantics are source-contract ready.",
+      "parserResearch": "Corporate Actions lane has already validated an isolated S38 parser/test on a draft research branch.",
+      "archiveBytes": "Historical immutable first-known S38 archive remains distinct from public historical reconciliation.",
+      "prospectiveSameGenerationCapture": "NOT_CURRENTLY_PROVEN_IN_SYSTEM1_EXTREME_GATE_EVIDENCE"
+    }
+  },
+  "frequencyPrior": {
+    "source": "research/information_discreteness_source_frequency_receipt_v0_1.json",
+    "conclusion": "Official limit-hit context is sparse on many dates but not uniformly rare; whole-market daily frequency is not candidate-level frequency.",
+    "noOutcomeUsed": true
+  },
+  "nonDuplicationDecision": [
+    "Do not build another TWSE/TPEx source semantics lane in scarcity research.",
+    "Reuse DL-001 source contracts and Corporate Actions parser semantics.",
+    "The missing object is not source knowledge; it is same-generation parent/keyset capture and coverage lineage for the System1 admission estimand.",
+    "Any shared production capture/persistence remains proposal-first under existing governance."
+  ],
+  "currentBlocker": "SYSTEM1_EXTREME_GATE_PARENT_X_OFFICIAL_STATE_SAME_GENERATION_CAPTURE_NOT_PROVEN",
+  "historicalRule": "Public date-queryable official data may support factual reconciliation but do not manufacture immutable first-known System1 decision evidence.",
+  "formalOptimizationCandidate": false,
+  "status": "SOURCE_SEMANTICS_READY / SYSTEM1_PROSPECTIVE_LINEAGE_NOT_READY / NO_DUPLICATE_INTEGRATION / FORMAL_UNCHANGED"
+}
