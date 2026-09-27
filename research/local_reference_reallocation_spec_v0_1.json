@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "LOCAL_REFERENCE_REALLOCATION_V0_1",
+  "observedAt": "2026-09-28T06:04:00+08:00",
+  "purpose": "Test whether the one-grid local downhill direction away from current sizing is specific to buyHigh.",
+  "references": [
+    "BUY_LOW",
+    "MIDPOINT",
+    "BUY_HIGH"
+  ],
+  "metrics": [
+    "HHI",
+    "GINI",
+    "CV",
+    "MAX_SHARE",
+    "MAX_MIN"
+  ],
+  "neighborhood": "All legal directed NT$1,000 transfers, fixed selected names/deployment, 35% cap.",
+  "semantics": "Pre-share allocation×stop-distance concentration only; no share-floor, order, fill or return inference.",
+  "falsification": "If the PR-067 dominating moves cease to dominate across references, downgrade the local gradient as buyHigh-specific.",
+  "status": "LOCAL_REFERENCE_PROTOCOL_READY / PRODUCTION_AUDIT_PENDING",
+  "formalCoreImpact": false
+}

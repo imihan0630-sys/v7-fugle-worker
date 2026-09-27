@@ -1,0 +1,121 @@
+{
+  "schemaVersion": "LOCAL_REFERENCE_REALLOCATION_PRODUCTION_RECEIPT_V0_1",
+  "observedAt": "2026-09-28T06:06:03+08:00",
+  "timestampProvenance": "GitHub Actions Portfolio Risk Tier-A Research run 36354034940 / job 108718063297",
+  "workflowRunId": 36354034940,
+  "jobId": 108718063297,
+  "readOnly": true,
+  "productionWrites": false,
+  "decisionImpact": false,
+  "scanDate": "2026-09-18",
+  "currentAllocationNTD": {
+    "2006": 50000,
+    "3105": 64000,
+    "6133": 54000
+  },
+  "gridNTD": 1000,
+  "references": [
+    "BUY_LOW",
+    "MIDPOINT",
+    "BUY_HIGH"
+  ],
+  "metrics": [
+    "HHI",
+    "GINI",
+    "CV",
+    "MAX_SHARE",
+    "MAX_MIN"
+  ],
+  "totalCellsPerMove": 15,
+  "legalOneStepMoves": 6,
+  "currentParetoLocalOptimumAcrossReferences": false,
+  "dominatingMoves": [
+    {
+      "from": "3105",
+      "to": "2006",
+      "allocationNTD": {
+        "2006": 51000,
+        "3105": 63000,
+        "6133": 54000
+      },
+      "improvedCells": 15,
+      "worsenedCells": 0,
+      "strictlyImprovesAll": true,
+      "deltas": {
+        "BUY_LOW": {
+          "HHI": -0.0040551571,
+          "GINI": -0.006127032,
+          "CV": -0.0117128161,
+          "MAX_SHARE": -0.0054777463,
+          "MAX_MIN": -0.1389789575
+        },
+        "MIDPOINT": {
+          "HHI": -0.0035727758,
+          "GINI": -0.0068055848,
+          "CV": -0.0128126431,
+          "MAX_SHARE": -0.0057912042,
+          "MAX_MIN": -0.1016254748
+        },
+        "BUY_HIGH": {
+          "HHI": -0.0031682315,
+          "GINI": -0.0071445948,
+          "CV": -0.0133397455,
+          "MAX_SHARE": -0.0059205859,
+          "MAX_MIN": -0.0854726175
+        }
+      }
+    },
+    {
+      "from": "3105",
+      "to": "6133",
+      "allocationNTD": {
+        "2006": 50000,
+        "3105": 63000,
+        "6133": 55000
+      },
+      "improvedCells": 15,
+      "worsenedCells": 0,
+      "strictlyImprovesAll": true,
+      "deltas": {
+        "BUY_LOW": {
+          "HHI": -0.0038278501,
+          "GINI": -0.0049427154,
+          "CV": -0.0110492086,
+          "MAX_SHARE": -0.0069289721,
+          "MAX_MIN": -0.0621747968
+        },
+        "MIDPOINT": {
+          "HHI": -0.0030350787,
+          "GINI": -0.0048500771,
+          "CV": -0.0108590007,
+          "MAX_SHARE": -0.0068112636,
+          "MAX_MIN": -0.0454640282
+        },
+        "BUY_HIGH": {
+          "HHI": -0.0025419697,
+          "GINI": -0.0047491054,
+          "CV": -0.0106628279,
+          "MAX_SHARE": -0.0067030303,
+          "MAX_MIN": -0.03823775
+        }
+      }
+    }
+  ],
+  "oppositeDirection": {
+    "from2006To3105": {
+      "improvedCells": 0,
+      "worsenedCells": 15
+    },
+    "from6133To3105": {
+      "improvedCells": 0,
+      "worsenedCells": 15
+    }
+  },
+  "falsification": {
+    "rejectedClaim": "The local downhill concentration direction away from 3105 is specific to the conservative buyHigh reference.",
+    "result": "Rejected. Both NT$1,000 transfers out of 3105 strictly improve all 15 buyLow/midpoint/buyHigh × concentration-metric cells; reverse transfers into 3105 worsen all 15."
+  },
+  "guardrail": "This is pre-share structural risk geometry, not economic dominance. No allocation change is authorized without independent prospective outcome evidence.",
+  "status": "LOCAL_DIRECTION_REFERENCE_ROBUST / TWO_STRICTLY_DOMINATING_ONE_GRID_MOVES / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY",
+  "formalCoreImpact": false
+}

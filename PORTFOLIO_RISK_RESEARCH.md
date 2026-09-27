@@ -3125,3 +3125,64 @@ Status:
 `CURRENT_NOT_LOCAL_CONCENTRATION_OPTIMUM / TWO_STRICTLY_DOMINATING_ONE_GRID_MOVES / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-068 — local one-grid direction across entry references (2026-09-28)
+
+PR-067 found two NT$1,000 moves out of 3105 that improve all 15 FIRST/ADD/FULL × concentration-metric cells under buyHigh plan-preview semantics.
+
+PR-068 asks whether that local downhill direction is itself a buyHigh artifact.
+
+For each legal one-grid transfer, evaluate pre-share projected-risk concentration under:
+- buyLow;
+- midpoint;
+- buyHigh;
+
+using:
+- HHI;
+- Gini;
+- CV;
+- maximum risk share;
+- max/min.
+
+That creates 15 reference × metric cells per move.
+
+A move dominates only if it improves at least one cell and worsens none. The key falsification is whether the PR-067 moves away from 3105 lose their dominance under lower entry references.
+
+This layer intentionally removes share-floor effects to isolate `allocation × stop-distance` geometry.
+
+Artifacts:
+`research/local_reference_reallocation_v0_1.mjs`;
+`research/local_reference_reallocation_spec_v0_1.json`;
+`tests/portfolio_risk_local_reference_reallocation_readonly_audit.mjs`.
+
+Status:
+`LOCAL_REFERENCE_PROTOCOL_READY / PRODUCTION_AUDIT_PENDING`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-068 Production result — local downhill direction survives all entry references
+
+Read-only Production run `36354034940` / job `108718063297` tested all six legal NT$1,000 moves on 2026-09-18 across:
+- buyLow, midpoint, buyHigh;
+- HHI, Gini, CV, maximum risk share, max/min.
+
+Two one-grid moves again strictly dominate current in all 15 reference × metric cells:
+
+1. `3105 -> 2006`: 15 improved / 0 worsened.
+2. `3105 -> 6133`: 15 improved / 0 worsened.
+
+The reverse transfers into 3105 from either name worsen all 15 cells.
+
+Therefore the local result from PR-067 is not a buyHigh artifact. The pre-share `allocation × stop-distance` geometry itself has a robust local downhill direction away from 3105 across the entire frozen buy zone.
+
+This remains structural evidence only. It does not prove reducing the highest-PriorityScore name improves returns.
+
+Durable receipt:
+`research/local_reference_reallocation_production_receipt_20260928.json`.
+
+Status:
+`LOCAL_DIRECTION_REFERENCE_ROBUST / TWO_STRICTLY_DOMINATING_ONE_GRID_MOVES / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
