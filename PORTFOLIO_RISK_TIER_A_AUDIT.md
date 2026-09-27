@@ -889,3 +889,67 @@ Status:
 `SHARE_QUANTIZATION_EXPLANATION_FALSIFIED_ON_WITNESS / GRID_EQUAL_RISK_NEXT / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-058 — NT$1,000-grid equal-risk counterfactual survives full plan-preview quantization (2026-09-28)
+
+PR-057 showed that integer-share flooring does not explain away the 2026-09-18 PriorityScore risk-concentration witness. PR-058 removes the last major structural idealization from the equal-risk comparator: continuous allocation amounts.
+
+### Frozen grid method
+
+Constraints:
+- same three selected names;
+- same NT$168,000 current planned deployment;
+- same 35% per-name cap;
+- NT$1,000 allocation grid;
+- same buyHigh-to-stop conservative risk definition.
+
+Starting from the continuous capped equal-risk target, each allocation is floored to the NT$1,000 grid. Residual NT$1,000 units are then assigned deterministically to the eligible name that minimizes squared projected-risk-space error to the continuous target.
+
+On 2026-09-18 this yields:
+- 2006 = NT$70,000;
+- 3105 = NT$41,000;
+- 6133 = NT$57,000.
+
+No outcome is used to choose those amounts.
+
+### Before share flooring
+
+Grid equal-risk:
+- projected stop-risk = NT$5,965.732;
+- HHI = 0.33438488;
+- max/min projected-risk ratio = 1.137143.
+
+### After the same 60/40 + integer-share preview flooring
+
+Grid equal-risk:
+- preview suggested notional = NT$167,697.54;
+- share-floor residual = NT$302.46;
+- preview projected stop-risk = NT$5,951.36;
+- preview risk HHI = 0.33434138.
+
+Current PriorityScore sizing:
+- preview suggested notional = NT$167,471.13;
+- preview projected stop-risk = NT$6,459.97;
+- preview risk HHI = 0.37670778.
+
+Therefore current minus grid equal-risk is:
+- +NT$508.61 projected stop-risk;
+- +0.04236640 risk HHI;
+- HHI is ~12.67% higher relative to the grid comparator.
+
+Critically, the grid comparator actually carries **NT$226.41 more plan-preview suggested notional** than current, yet still has materially lower projected stop-risk and concentration.
+
+So two counter-explanations are rejected on this witness:
+1. equal-risk only looks better because its allocations were continuous/non-executable;
+2. equal-risk only looks safer because it leaves more cash unused after share flooring.
+
+This materially strengthens the structural finding, but it still does not prove equal-risk sizing has better realized returns.
+
+Durable receipt:
+`research/grid_equal_risk_production_receipt_20260928.json`.
+
+Status:
+`GRID_AND_SHARE_QUANTIZATION_COUNTEREVIDENCE_SURVIVES / STRUCTURAL_RISK_CONCENTRATION_STRENGTHENED / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.

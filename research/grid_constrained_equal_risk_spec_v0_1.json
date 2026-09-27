@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "GRID_CONSTRAINED_EQUAL_RISK_V0_1",
+  "preregisteredAt": "2026-09-28T00:08:00+08:00",
+  "purpose": "Remove the remaining continuous-allocation idealization from the 35%-cap equal planned-stop-risk structural comparator.",
+  "constraints": [
+    "same selected names",
+    "same current total planned deployment",
+    "same 35% per-name cap",
+    "NT$1,000 allocation grid",
+    "same conservative buyHigh-to-stop risk definition"
+  ],
+  "method": "Start from the continuous capped equal-risk target, floor each allocation to the NT$1,000 grid, then assign residual NT$1,000 units one at a time to the eligible name that minimizes squared projected-risk-space distance to the continuous target. Ties break by symbol.",
+  "postAllocationQuantization": "Apply the same 60/40 tranche split and integer-share flooring at buyHigh for plan-preview comparison.",
+  "forbidden": [
+    "do not call this a live allocator",
+    "do not change Formal sizing",
+    "do not infer economic superiority from lower structural risk",
+    "do not use actual outcomes to choose the grid assignment"
+  ],
+  "status": "GRID_COMPARATOR_PREREGISTERED / PRODUCTION_STRUCTURAL_AUDIT_PENDING",
+  "formalCoreImpact": false
+}
