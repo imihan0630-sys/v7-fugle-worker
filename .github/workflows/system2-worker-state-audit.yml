@@ -1,0 +1,106 @@
+name: System2 Worker State Audit
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/system2-worker-state-audit.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-worker-state-audit
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      WORKER_NAME: system2-shadow-research
+      DB_NAME: system2-research
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Read-only Worker and D1 isolation audit
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+          WORKERS_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          node <<'NODE'
+          const accountId=process.env.CLOUDFLARE_ACCOUNT_ID;
+          const d1Token=process.env.SYSTEM2_CLOUDFLARE_API_TOKEN;
+          const workersToken=process.env.WORKERS_API_TOKEN;
+          const name=process.env.WORKER_NAME;
+          const dbName=process.env.DB_NAME;
+          const origin="https://api.cloudflare.com/client/v4";
+
+          async function get(path,token){
+            const r=await fetch(origin+path,{
+              method:"GET",
+              headers:{authorization:`Bearer ${token}`,accept:"application/json"},
+              signal:AbortSignal.timeout(45000)
+            });
+            const text=await r.text(); let data=null; try{data=JSON.parse(text)}catch{}
+            if(!r.ok||data?.success===false){
+              throw new Error(`GET ${path.replace(accountId,"<account>")} HTTP ${r.status}: ${data?.errors?.[0]?.message||text.slice(0,300)}`);
+            }
+            return data;
+          }
+
+          const d1List=await get(`/accounts/${accountId}/d1/database?per_page=100`,d1Token);
+          const dbs=(d1List.result||[]).filter(x=>x?.name===dbName);
+          if(dbs.length!==1) throw new Error(`expected exactly one ${dbName} D1; found ${dbs.length}`);
+          const dbId=dbs[0].uuid||dbs[0].id;
+
+          const scripts=await get(`/accounts/${accountId}/workers/scripts`,workersToken);
+          const exact=(scripts.result||[]).filter(x=>x?.id===name);
+          if(exact.length!==1) throw new Error(`expected exactly one ${name} Worker; found ${exact.length}`);
+
+          const settings=await get(`/accounts/${accountId}/workers/scripts/${name}/settings`,workersToken);
+          const bindings=settings?.result?.bindings||[];
+          const d1Binding=bindings.find(x=>x?.name==="SYSTEM2_DB");
+          if(!d1Binding) throw new Error("SYSTEM2_DB binding missing");
+          const boundId=d1Binding.id||d1Binding.database_id||d1Binding.databaseId||null;
+          if(boundId && boundId!==dbId) throw new Error("SYSTEM2_DB binding points to the wrong D1");
+
+          const vars=Object.fromEntries(
+            bindings.filter(x=>x?.type==="plain_text").map(x=>[x.name,x.text])
+          );
+          if(vars.SYSTEM2_CAPTURE_ENABLED!=="false") throw new Error("SYSTEM2_CAPTURE_ENABLED must remain false");
+          if(vars.SYSTEM2_CAPTURE_MODE!=="LIMITED_PROSPECTIVE_SHADOW") throw new Error("unexpected capture mode");
+          if(vars.SYSTEM2_CAPTURE_CONTRACT_VERSION!=="0.1") throw new Error("unexpected capture contract version");
+
+          const schedulesEnvelope=await get(`/accounts/${accountId}/workers/scripts/${name}/schedules`,workersToken);
+          const schedules=schedulesEnvelope?.result?.schedules;
+          if(!Array.isArray(schedules)) throw new Error("Cron schedule response shape is unexpected");
+          if(schedules.length!==0) throw new Error(`expected zero Cron schedules; found ${schedules.length}`);
+
+          const subdomain=await get(`/accounts/${accountId}/workers/scripts/${name}/subdomain`,workersToken);
+          if(subdomain?.result?.enabled!==false) throw new Error("workers.dev must be disabled");
+          if(subdomain?.result?.previews_enabled!==false) throw new Error("Preview/Version URLs must be disabled");
+
+          console.log(JSON.stringify({
+            result:"PASS",
+            worker:name,
+            d1Database:dbName,
+            system2DbBinding:true,
+            captureEnabled:false,
+            captureMode:vars.SYSTEM2_CAPTURE_MODE,
+            cronCount:schedules.length,
+            workersDevEnabled:false,
+            previewUrlsEnabled:false,
+            system1WorkerUsed:false,
+            mutationPerformed:false
+          },null,2));
+          NODE
+
+      - name: Confirm audit workflow contains no mutation
+        run: |
+          set -euo pipefail
+          ! grep -Eiq 'method:"(POST|PUT|PATCH|DELETE)"|wrangler[[:space:]]+(deploy|delete)|d1[[:space:]]+create'             .github/workflows/system2-worker-state-audit.yml
+          echo "Read-only Worker audit mutation guard PASS"
