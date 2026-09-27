@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "FORMAL_GATE_OVERLAP_OBSERVER_V0_1_FALSIFICATION",
+  "researchDate": "2026-09-27",
+  "class": "A_RESEARCH_ONLY",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "status": "V0_1_NOT_SAFE_FOR_NULL_BEARING_OR_CANONICAL_FINANCIAL_ANNOUNCEMENT_ROWS",
+  "v0_1Defects": [
+    {
+      "id": "NUMERIC_NULL_COERCION",
+      "code": "Number(value) without null/empty guard",
+      "fact": "Number(null)=0 and Number(\"\")=0",
+      "consequences": [
+        "PRICE_FLOOR/HISTORY_60D/MARKET_CAP_FLOOR/ATR can turn missing numeric evidence into FAIL rather than UNKNOWN.",
+        "RS_CONTEXT and DAILY_ABNORMALITY can turn missing values into observed zero and potentially PASS.",
+        "CHIP_CONCENTRATION_PRESENT can turn explicit null concentration into 0 and PASS.",
+        "fundamentalCount/rewardPerRisk/setupQuality nulls can be converted to 0 and misclassified as FAIL."
+      ]
+    },
+    {
+      "id": "FINANCIAL_BASIS_TYPE_MISMATCH",
+      "productionFormal": "scoreCandidate uses JavaScript truthiness: !f.financialBasis",
+      "productionProducer": "deriveQuarterlyFinancials emits a non-empty descriptive string financialBasis",
+      "v0_1Observer": "bool(feature.financialBasis) accepts only literal true/false",
+      "consequence": "Canonical valid financial rows can become FINANCIAL_SOURCE_COMPLETENESS UNKNOWN in v0.1."
+    },
+    {
+      "id": "ANNOUNCEMENT_EMPTY_SET_MISMATCH",
+      "productionFormal": "(f.officialAnnouncements || [])",
+      "productionMerge": "announcementsVerified is set globally from validated sources; symbols with zero matching announcements commonly have no per-symbol array",
+      "v0_1Observer": "requires Array.isArray(feature.officialAnnouncements)",
+      "consequence": "Verified zero-event symbols can become ANNOUNCEMENT_RISK UNKNOWN in v0.1 even though Formal treats them as an empty list."
+    }
+  ],
+  "v0_2Repairs": [
+    "finite() now treats null/undefined/empty string as UNKNOWN before numeric conversion, matching Worker.toNumber missing semantics.",
+    "financialBasis uses exact JavaScript truthiness once present rather than boolean-only typing.",
+    "verified announcement source plus missing per-symbol array is interpreted as an empty event list, matching Formal default semantics."
+  ],
+  "evidenceImpact": [
+    "Any v0.1 overlap/denominator result built from explicit null-bearing rows is not promotion-grade until recomputed with v0.2 or equivalent corrected semantics.",
+    "Artifacts that only define methodology remain valid, but empirical counts derived from v0.1 need versioned observer provenance.",
+    "Do not backfill historical rows with guessed non-null values."
+  ],
+  "decision": "V0_1_SEMANTIC_BUG_CONFIRMED / V0_2_REQUIRED_FOR_FUTURE_SCARCITY_COUNTS / FORMAL_UNCHANGED / NO_FORMAL_OPTIMIZATION_CANDIDATE"
+}
