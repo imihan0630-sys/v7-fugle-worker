@@ -14,6 +14,7 @@
     "ADD-only preview does not assume FIRST filled, ADD trigger occurred, or ADD filled"
   ],
   "falsification": "If current ADD-only concentration no longer exceeds equal-capital/global minimum, downgrade the structural conclusion as tranche-stage sensitive.",
-  "status": "ADD_TRANCHE_PROTOCOL_READY / PRODUCTION_AUDIT_PENDING",
-  "formalCoreImpact": false
+  "status": "ADD_TRANCHE_CONCENTRATION_SURVIVES / TRANCHE_STAGE_REVERSAL_FALSIFIED / ECONOMIC_VALUE_UNKNOWN",
+  "formalCoreImpact": false,
+  "productionReceipt": "research/add_tranche_risk_production_receipt_20260928.json"
 }
