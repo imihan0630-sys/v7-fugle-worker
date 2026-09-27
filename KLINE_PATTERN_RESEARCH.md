@@ -20659,3 +20659,126 @@ Therefore:
 ### Strongest future design
 Prospective Pattern Shadow should snapshot raw + adjusted inputs on the day so later re-fetch revisions can be detected.
 
+
+
+## DL-002DM — Temporal Stability / Edge-Decay Governance
+
+### Conflicting high-quality evidence
+Evidence on technical predictability is not one-directional:
+
+NEGATIVE / caution:
+- A true fresh-data out-of-sample study of classic technical rules finds little/no predictive ability when exact historically successful rules are carried forward, strongly warning about sample-selection/data-mining bias.
+- Asian-market data-snooping studies using Reality Check / SPA show many apparent technical profits weaken after correcting multiple testing, non-synchronous trading and costs.
+- Rule profitability can be episodic and decay over time.
+
+POSITIVE / modern:
+- 2023 Global Finance Journal evidence finds a set of technical indicators retains cross-sectional return information after standard controls.
+- 2024 JFE “Charting by machines” finds nonlinear price-path information distinct from standard momentum/reversal/technical signals.
+- Some literature finds useful technical information shifts across frequency rather than disappearing entirely.
+
+### DL-002 conclusion
+Never ask:
+“Does technical analysis work?”
+
+Ask:
+“Does this frozen morphology feature have incremental value in this market, timeframe and regime, now?”
+
+### Temporal-stability reports
+For each mature candidate feature:
+- effectByYear
+- effectByRegime
+- effectByRollingWindow
+- effectByMarketStructureEra
+- recentHalfVsOlderHalf
+- prospectiveVsHistoricalReplay
+- detectorVersionStability
+
+### Edge-decay states
+STABLE
+RECENTLY_STABLE
+DECAYING
+REGIME_SPECIFIC
+UNSTABLE
+INSUFFICIENT_DATA
+
+These are research labels only.
+
+### Promotion requirement
+A candidate with strong old-history evidence but weak recent/prospective evidence cannot be proposed for Formal promotion merely because full-sample average is positive.
+
+## DL-002DN — Frequency Migration: Daily Selection vs Intraday Execution
+
+### External prior
+Some studies find daily technical-rule performance decays while higher-frequency variants remain informative; other modern work emphasizes high-frequency intraday structure.
+
+### Project relevance
+Current architecture already separates:
+- daily selection,
+- 15m formal execution,
+- 10m auxiliary.
+
+This is an advantage.
+
+### Research question
+If a daily pattern is mature but its standalone D5 edge is modest, can it still improve:
+- which intraday setups deserve monitoring,
+- how 15m confirmation is interpreted,
+without becoming a daily hard gate?
+
+### Candidate architecture
+DAILY_MORPHOLOGY:
+context / structural map.
+
+15M_EXECUTION:
+entry acceptance / retest / failure.
+
+Do not collapse daily and 15m into one opaque score.
+
+### Tests
+1. daily pattern alone,
+2. 15m execution alone within historical eligible plans,
+3. daily pattern × 15m execution interaction.
+
+### Interpretation
+If interaction is strong but daily main effect is weak:
+pattern may be an execution-context enhancer rather than a selector.
+
+This is useful because it avoids unnecessarily narrowing Formal after-market selection.
+
+## DL-002DO — Historical Replay vs Prospective Evidence Weight
+
+### Evidence hierarchy
+Highest for current optimization:
+1. prospective Pattern Shadow under frozen definitions,
+2. untouched chronological holdout,
+3. historical as-of-date replay with clean PIT data,
+4. older external literature,
+5. practitioner examples/anecdotes.
+
+### Rule
+Large historical replay N does not outweigh a contradictory prospective sample automatically.
+
+### Reconciliation
+If historical replay positive but prospective weak:
+status = NOT_REPLICATED / WAITING_MORE_DATA.
+
+If prospective positive but historical mixed:
+investigate regime/frequency differences before promotion.
+
+## DL-002DP — Modern Evidence Does Not Rescue Poorly Specified Old Patterns
+
+### Principle
+“Charting by machines works” cannot be used as blanket proof that:
+- cup-with-handle,
+- VCP,
+- Sakata,
+- any chosen named pattern,
+works.
+
+Modern ML evidence supports existence of nonlinear price-path information.
+Each named pattern still requires its own incremental validation.
+
+### Reverse implication
+If a named pattern fails, that does NOT prove all price-path information is useless.
+Its primitives or other nonlinear geometry may still contain information.
+
