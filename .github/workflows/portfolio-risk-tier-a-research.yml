@@ -51,6 +51,9 @@ on:
       - "research/linked_fill_friction_v0_1.mjs"
       - "research/linked_fill_friction_semantics_v0_1.json"
       - "tests/test_linked_fill_friction_v0_1.mjs"
+      - "research/net_execution_sizing_evidence_ladder_v0_1.mjs"
+      - "research/net_execution_sizing_evidence_ladder_spec_v0_1.json"
+      - "tests/test_net_execution_sizing_evidence_ladder_v0_1.mjs"
       - "tests/test_portfolio_risk_reconstructability_v0_1.mjs"
       - "tests/portfolio_risk_journal_readonly_audit.mjs"
       - "research/portfolio_risk_reconstructability_v0_1.json"
@@ -88,6 +91,7 @@ jobs:
           node tests/test_confirmed_fill_ledger_class_b_proposal_v0_1.mjs
           node tests/test_execution_attribution_linkage_v0_1.mjs
           node tests/test_linked_fill_friction_v0_1.mjs
+          node tests/test_net_execution_sizing_evidence_ladder_v0_1.mjs
       - name: Read-only production journal coverage audit
         env:
           V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
