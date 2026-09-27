@@ -1,0 +1,65 @@
+{
+  "schemaVersion": "institution-source-schema-hardening-v0.1",
+  "researchDate": "2026-09-27",
+  "status": "CLASS_B_PROPOSAL_FIRST_NOT_IMPLEMENTED",
+  "currentState": {
+    "twseValidation": "Checks exact required field names used by parser.",
+    "tpexValidation": "Checks table.data exists, fields length==24, fields[0]=='代號', fields[23]=='三大法人買賣超股數合計', and numeric indexes 10/13/22/23.",
+    "tpexParser": "foreignNet=row[10], trustNet=row[13], dealerNet=row[22], total=row[23].",
+    "unitParity": "Materially verified as raw share counts on both TWSE and TPEx."
+  },
+  "structuralRisk": {
+    "type": "SCHEMA_DRIFT_SILENT_MISPARSE",
+    "condition": "TPEx could reorder/rename an interior actor column while preserving 24 fields plus first/last sentinel.",
+    "currentBehavior": "Validator could accept the table and parser would continue reading fixed indexes.",
+    "consequence": "Formal institutional flow/streak/score could be corrupted without an explicit source-schema failure."
+  },
+  "firstPartyEvidence": {
+    "currentHtmlOrder": [
+      "代號",
+      "名稱",
+      "外資及陸資(不含外資自營商): buy/sell/net",
+      "外資自營商: buy/sell/net",
+      "外資及陸資 aggregate: buy/sell/net",
+      "投信: buy/sell/net",
+      "自營商(自行買賣): buy/sell/net",
+      "自營商(避險): buy/sell/net",
+      "自營商 aggregate: buy/sell/net",
+      "三大法人買賣超股數合計"
+    ],
+    "parserIndexMeaning": {
+      "10": "外資及陸資 aggregate net shares",
+      "13": "投信 net shares",
+      "22": "自營商 aggregate net shares",
+      "23": "三大法人 net shares total"
+    },
+    "exactJsonFieldStrings": "NOT_FROZEN_YET; must be captured from official JSON fixture before implementation."
+  },
+  "hardeningProposal": {
+    "beforeImplementation": [
+      "Capture one or more official TPEx JSON fixtures with date/source URL and immutable hash.",
+      "Freeze all 24 field strings and their indexes; do not infer them from HTML labels.",
+      "Add schema fingerprint/version to source receipt."
+    ],
+    "validator": [
+      "Require exact actor indexes/field semantics or an explicitly versioned accepted schema.",
+      "Fail closed on unknown interior reorder/rename rather than guessing fixed indexes.",
+      "Retain numeric consistency total == foreign+trust+dealer after parse.",
+      "Record source schema fingerprint in institution snapshot provenance."
+    ],
+    "tests": [
+      "Known official fixture passes.",
+      "Swap index10 and index13 => validation must fail.",
+      "Rename index22 while preserving length/first/last => validation must fail.",
+      "Total arithmetic mismatch => validation fails.",
+      "Formal frozen output unchanged on known-valid fixture."
+    ]
+  },
+  "governance": {
+    "classification": "CLASS_B_PROPOSAL_FIRST",
+    "reason": "Institution parser/validation is shared source ingestion used by Formal selection; hardening can fail scans if upstream schema changes.",
+    "implementationAuthorized": false,
+    "formalFormulaChange": false
+  },
+  "decision": "CURRENT_UNIT_SEMANTICS_PASS / FUTURE_SCHEMA_DRIFT_GUARD_INCOMPLETE / NO_RUNTIME_CHANGE"
+}
