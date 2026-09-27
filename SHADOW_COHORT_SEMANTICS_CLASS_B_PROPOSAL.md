@@ -506,3 +506,30 @@ Machine feasibility receipt:
 - target/null/RR/formula/comparator changes = Class C owner approval.
 
 No Production implementation is authorized by this section.
+
+
+### TargetPrice source-state observability
+
+Target/RR child evidence cannot interpret `targetPrice=null` as a geometry fact unless the custom-source state is known.
+
+Current runtime permits `targetPrice` only through generic custom enrichment (`V7_ENRICHMENT_JSON` / `V7_ENRICHMENT_API_URL`) but does not durably report whether that source was configured, fetched successfully, or supplied PIT-provenanced target prices.
+
+Any Class-B immutable decision-state implementation that captures Target/RR evidence must therefore also persist a secret-safe source-state receipt:
+- customConfigured;
+- customMode = JSON / API / NONE;
+- customFetchStatus = SUCCESS / FAILED / NOT_CONFIGURED;
+- customStockCount;
+- targetPriceObservedCount;
+- targetPricePITProvenanceCompleteCount;
+- targetPricePITProvenanceUnknownCount;
+- capturedAt / scanDate;
+- bounded non-secret error class when failed.
+
+Per-symbol targetPrice evidence must preserve raw value, source, asOf, capturedAt and PIT-eligibility state when available.
+
+Do not expose enrichment URL/token credentials.
+Do not make custom source mandatory merely to improve research evidence.
+Do not reinterpret a source failure as targetPrice absence.
+
+Machine audit:
+`research/target_price_injection_provenance_audit_v0_1.json`.
