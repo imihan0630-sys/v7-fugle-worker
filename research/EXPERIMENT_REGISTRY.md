@@ -14,6 +14,13 @@
 - 反證：兩組 D5/D10 報酬、MFE/MAE 無穩定差異，或差異只存在單一 Regime/產業。
 - 禁止：看到結果後改成 2 日、5 日或改用最低價判定，除非另立新 experiment ID。
 
+### R01 v1.1 — Equal-date Breakout Path contrast
+- PREREGISTERED before mature outcome interpretation; R01 v1.0 raw-row HELD/FAILED summaries remain descriptive.
+- Primary effect: for each clean scanDate containing both HELD_3D and FAILED_CLOSE_WITHIN_3D mature D5 rows, compute `mean(HELD D5)-mean(FAILED D5)`; aggregate scanDate deltas with equal date weight.
+- Dates missing either side are UNKNOWN for the paired contrast; do not zero-fill or borrow another date.
+- Raw HELD/FAILED row means may still be shown as path summaries but cannot support Formal promotion.
+- Machine guard: `research/cross_section_date_weighting_audit_v0_1.json`.
+
 ## R02 Selection Alpha vs Execution Alpha
 - Selection Alpha：同一選股日 SELECTED 平均後續報酬減同日對照組平均後續報酬，再跨日彙總。
 - Execution Alpha：首次正式 BUY 實際價相對選股日收盤價的價格改善；正值代表實際等待到較低價。
@@ -66,6 +73,13 @@
 - 假說：台股個股動能的有效成分可能主要出現在盤中而非隔夜，兩者不可混成單一日報酬。
 - 反證：兩者差異不穩定、樣本太少、或只由跳空極端值造成。
 - 後續：累積足夠樣本後再研究多日 overnight/intraday compounding；不得先挑最有利窗口。
+
+### R05 v1.1 — Equal-date Intraday-minus-Overnight contrast
+- PREREGISTERED before mature outcome interpretation; R05 v1.0 row-pooled component summaries remain descriptive.
+- Primary effect: within each clean scanDate, compute the mean of each stock's `intradayPct-overnightPct`; then aggregate scanDate means equally.
+- Overnight and intraday component-level row distributions remain descriptive diagnostics.
+- No change to D1 definitions or timing windows.
+- Machine guard: `research/cross_section_date_weighting_audit_v0_1.json`.
 
 ## R06 Market Regime Transition
 - 固定資料：trade_research_days.market_json.regime 的前瞻正式序列。
