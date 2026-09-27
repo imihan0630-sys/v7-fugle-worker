@@ -360,7 +360,7 @@ HARD_INVALIDATION:
 - marginQuality（利潤率品質）: gross/operating margin trend and stability;
 - cashConversion（現金轉換）: operating cash flow and FCF（自由現金流） support versus accounting earnings;
 - workingCapitalQuality（營運資金品質）: inventory / receivables rising faster than revenue can be a warning rather than hidden growth;
-- capitalEfficiency（資本效率）: ROE / ROIC（股東權益報酬率／投入資本報酬率） where source semantics are reliable;
+- capitalEfficiency（資本效率）: ROE / ROIC（股東權益報酬率／投入資本報酬率） where source semantics are reliable; ROA（資產報酬率） is retained as SUPPORTIVE（加強） / QUALITY_CHECK（品質檢查） research, emphasizing level + trend + peer/self-history comparison rather than a universal cutoff; test redundancy against ROE/ROIC and gross-profitability/asset-turnover measures before scoring;
 - balanceSheetQuality（資產負債表品質）: leverage, liquidity and refinancing fragility;
 - growthDurability（成長耐久性）: product/customer/geography/channel concentration, competitive position and recurrence of growth drivers;
 - capitalAllocation（資本配置）: dilution, aggressive capex, M&A quality and shareholder-return policy as context;
