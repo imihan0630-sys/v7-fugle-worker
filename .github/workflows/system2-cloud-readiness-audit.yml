@@ -1,0 +1,123 @@
+name: System2 Cloud Readiness Audit
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/system2-cloud-readiness-audit.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-cloud-readiness-audit
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Read-only Cloudflare capability and isolation audit
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          node <<'NODE'
+          import assert from "node:assert/strict";
+          import { createHash } from "node:crypto";
+
+          const accountId = process.env.CLOUDFLARE_ACCOUNT_ID;
+          const apiToken = process.env.CLOUDFLARE_API_TOKEN;
+          assert.ok(accountId, "CLOUDFLARE_ACCOUNT_ID repository secret is missing");
+          assert.ok(apiToken, "CLOUDFLARE_API_TOKEN repository secret is missing");
+
+          const origin = "https://api.cloudflare.com/client/v4";
+          const headers = {
+            authorization: `Bearer ${apiToken}`,
+            accept: "application/json",
+          };
+
+          function digest(value) {
+            return createHash("sha256").update(String(value)).digest("hex").slice(0, 12);
+          }
+
+          async function cf(path) {
+            const response = await fetch(`${origin}/accounts/${accountId}${path}`, {
+              method: "GET",
+              headers,
+              signal: AbortSignal.timeout(45000),
+            });
+            const text = await response.text();
+            let data = null;
+            try { data = JSON.parse(text); } catch {}
+            if (!response.ok || data?.success === false) {
+              const message = data?.errors?.[0]?.message || text;
+              throw new Error(`${path} HTTP ${response.status}: ${String(message).slice(0, 400)}`);
+            }
+            return data;
+          }
+
+          const [d1Response, workerResponse] = await Promise.all([
+            cf("/d1/database?per_page=100"),
+            cf("/workers/scripts"),
+          ]);
+
+          const databases = Array.isArray(d1Response?.result) ? d1Response.result : [];
+          const scripts = Array.isArray(workerResponse?.result) ? workerResponse.result : [];
+
+          const targetDbName = "system2-research";
+          const targetWorkerName = "system2-shadow-research";
+          const targetDatabases = databases.filter((x) => x?.name === targetDbName);
+          const targetWorkers = scripts.filter((x) => x?.id === targetWorkerName);
+
+          const system2NamedDatabases = databases
+            .filter((x) => /system2|system-2/i.test(String(x?.name || "")))
+            .map((x) => ({
+              name: x.name,
+              idDigest: x.uuid || x.id ? digest(x.uuid || x.id) : null,
+            }));
+
+          const system2NamedWorkers = scripts
+            .filter((x) => /system2|system-2/i.test(String(x?.id || "")))
+            .map((x) => ({ name: x.id }));
+
+          console.log(JSON.stringify({
+            readOnly: true,
+            accountCapability: {
+              listD1Databases: true,
+              listWorkerScripts: true,
+            },
+            d1: {
+              totalVisible: databases.length,
+              exactTargetExists: targetDatabases.length === 1,
+              exactTargetCount: targetDatabases.length,
+              exactTargetIdDigest:
+                targetDatabases.length === 1
+                  ? digest(targetDatabases[0].uuid || targetDatabases[0].id || targetDbName)
+                  : null,
+              system2NamedDatabases,
+            },
+            worker: {
+              totalVisible: scripts.length,
+              exactTargetExists: targetWorkers.length === 1,
+              exactTargetCount: targetWorkers.length,
+              system2NamedWorkers,
+            },
+            decision: targetDatabases.length > 1 || targetWorkers.length > 1
+              ? "AMBIGUOUS_DUPLICATE_RESOURCE"
+              : targetDatabases.length === 1
+                ? "DATABASE_EXISTS_AUDIT_BEFORE_MIGRATION"
+                : "DATABASE_NOT_FOUND_PROVISIONING_REQUIRED",
+          }, null, 2));
+          NODE
+
+      - name: Confirm no deployment or mutation command exists
+        run: |
+          set -euo pipefail
+          ! grep -Eiq '(^|[^[:alnum:]_])(POST|PUT|PATCH|DELETE)([^[:alnum:]_]|$)|wrangler[[:space:]]+deploy|d1[[:space:]]+create|workers/scripts/.+--data'             .github/workflows/system2-cloud-readiness-audit.yml
+          echo "Read-only workflow mutation guard PASS"
