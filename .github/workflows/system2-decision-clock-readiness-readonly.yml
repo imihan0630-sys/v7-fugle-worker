@@ -61,6 +61,8 @@ jobs:
             "- Collector contract consistent: "+(a.collectorContractConsistent===true),
             "- Collector contract fingerprints: "+JSON.stringify(a.collectorContractFingerprints||[]),
             "- A5 candidate-boundary failure dates: "+JSON.stringify(a.a5BoundaryFailureDates||[]),
+            "- Rerun diagnostic artifacts: "+(a.rerunDiagnosticArtifactCount||0),
+            "- Attempt-one anchor invariant: "+(r.reviewPacket.attemptOneAnchorInvariant===true),
             "- Research candidate Taipei time: "+(d.candidateTaipeiTime||"—"),
             "- Owner review state: "+r.reviewPacket.reviewState,
             "- Exact Decision Clock authorized: false",
