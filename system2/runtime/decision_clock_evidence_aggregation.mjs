@@ -173,8 +173,9 @@ export function aggregateDecisionClockEvidence({
 
   return deepFreeze({
     aggregationVersion: "S2_DECISION_CLOCK_EVIDENCE_AGGREGATION_V0_1",
+    attemptOneProvenanceVersion: "S2_DECISION_CLOCK_ATTEMPT_ONE_PROVENANCE_V0_4",
     workflowFile: requiredText(workflowFile, "workflowFile"),
-    promotionPolicy: "EARLIEST_SCHEDULED_ARTIFACT_PER_MARKET_DATE",
+    promotionPolicy: "EARLIEST_ATTEMPT_ONE_SCHEDULED_ARTIFACT_PER_MARKET_DATE",
     candidateArtifactCount: rows.length,
     scheduledArtifactCount: scheduledAll.length,
     promotionEligibleScheduledArtifactCount: scheduled.length,
