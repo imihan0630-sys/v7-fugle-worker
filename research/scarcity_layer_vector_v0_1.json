@@ -1,0 +1,212 @@
+{
+  "schemaVersion": "SCARCITY_LAYER_VECTOR_V0_1",
+  "updatedAtTaipei": "2026-09-27",
+  "researchOnly": true,
+  "outcomeDataUsed": false,
+  "decisionImpact": false,
+  "formalCoreChanged": false,
+  "purpose": "Represent simultaneous selection/capital scarcity states without collapsing them into fail-fast firstFailure counts or one idle-capital cause.",
+  "existingClassABuildingBlocks": [
+    "research/formal_gate_overlap_observer_v0_1.mjs",
+    "research/formal_gate_replay_v0_1.mjs",
+    "research/shadow_semantic_classifier_v0_1.mjs",
+    "research/post_grade_quota_scarcity_accounting_v0_1.json",
+    "research/formal_pool_capital_scarcity_geometry_v0_1.json"
+  ],
+  "candidateVectorContract": {
+    "identity": [
+      "scanDate",
+      "symbol",
+      "pool",
+      "decisionGeneration/provenance when available"
+    ],
+    "formalObserved": [
+      "formalResult.ok",
+      "formalResult.firstFailure",
+      "formalResult.basePassed",
+      "formalResult.rrPassed"
+    ],
+    "gateStateVector": {
+      "source": "formal_gate_overlap_observer_v0_1",
+      "states": [
+        "PASS",
+        "FAIL",
+        "UNKNOWN",
+        "NOT_EVALUABLE"
+      ],
+      "requiredGateOrder": [
+        "PRICE_FLOOR",
+        "HISTORY_60D",
+        "RS_CONTEXT",
+        "MARKET_CAP_FLOOR",
+        "DAILY_ABNORMALITY",
+        "LIQUIDITY",
+        "SMALL_CAP_SPECIAL",
+        "MID_CAP_LIQUIDITY",
+        "CHIP_CONCENTRATION_PRESENT",
+        "FINANCIAL_SOURCE_COMPLETENESS",
+        "ANNOUNCEMENT_RISK",
+        "VALUATION_RELATIVE_RISK",
+        "SECTOR_GATE",
+        "AB_SETUP",
+        "FUNDAMENTAL_COMPONENT_COUNT",
+        "FUNDAMENTAL_QUALITY",
+        "ATR_QUALITY",
+        "TARGET_AVAILABLE",
+        "REWARD_RISK",
+        "FINAL_SIGNAL_GRADE"
+      ],
+      "derivedSets": [
+        "observedFailGates",
+        "unknownGates",
+        "dependentNotEvaluableGates",
+        "clearOrSafeSkipGates"
+      ]
+    },
+    "semanticState": [
+      "formalQualifiedPreQuota",
+      "formalPoolRank",
+      "selectedFlag",
+      "quotaDisplacedFlag"
+    ],
+    "poolState": [
+      "qualifiedCount",
+      "selectedCount",
+      "quotaState",
+      "unusedSlots",
+      "crossPoolStrandingState"
+    ],
+    "capitalState": [
+      "nominalDeployTargetPct",
+      "plannedDeploymentNTD if selected plan complete",
+      "allocationImplementationShortfall",
+      "structuralReserve"
+    ],
+    "downstreamState": [
+      "planConstructionState",
+      "monitorCoverageState",
+      "buySignalState",
+      "confirmedFillState"
+    ]
+  },
+  "interpretationRules": [
+    "firstFailure is FIRST_OBSERVED_FAILURE_UNDER_CURRENT_ORDER only.",
+    "observedFailGates are simultaneous observable blockers, not marginal effects and not additive causal contributions.",
+    "UNKNOWN is not PASS and not FAIL.",
+    "NOT_EVALUABLE caused by unmet prerequisites must not be converted to FAIL; preregistered safe not-applicable states may be treated as clear only by the replay helper.",
+    "A later observed FAIL does not mean production Formal reached that gate; it is a research overlay from same-scan inputs.",
+    "formalQualifiedPreQuota is the complete pre-quota eligibility state; quota displacement applies only after formalOk=true.",
+    "selectedCount=3 is right-censored for qualifiedCount unless the complete pre-cut population is positively retained.",
+    "Capital reserve, pending-entry/no-BUY, and actual-fill cash are downstream layers and cannot be attributed to a gate solely from selection counts."
+  ],
+  "singleGateCounterfactualBoundary": {
+    "helper": "formal_gate_replay_v0_1",
+    "strongestOutcomeIndependentState": "ALL_OTHER_OBSERVED_GATES_CLEAR",
+    "meaning": "For an observed failed gate, all other currently observed gate states are clear under the frozen observer/replay contract.",
+    "nonMeaning": [
+      "not a recovered Formal candidate",
+      "not proof that ranking/quota selection would admit the symbol",
+      "not proof of an added BUY or fill",
+      "not gate marginal alpha",
+      "not authorization to remove the gate"
+    ],
+    "unresolvedStates": [
+      "PRIOR_STATE_UNKNOWN",
+      "PRIOR_STATE_NOT_EVALUABLE",
+      "NEXT_STATE_UNKNOWN",
+      "NEXT_STATE_NOT_EVALUABLE"
+    ]
+  },
+  "falsificationExample": {
+    "rows": [
+      {
+        "symbol": "X",
+        "observedFails": [
+          "LIQUIDITY",
+          "AB_SETUP"
+        ],
+        "formalFirstFailure": "LIQUIDITY"
+      },
+      {
+        "symbol": "Y",
+        "observedFails": [
+          "LIQUIDITY"
+        ],
+        "formalFirstFailure": "LIQUIDITY"
+      },
+      {
+        "symbol": "Z",
+        "observedFails": [
+          "AB_SETUP"
+        ],
+        "formalFirstFailure": "AB_SETUP"
+      }
+    ],
+    "failFastCounts": {
+      "LIQUIDITY": 2,
+      "AB_SETUP": 1
+    },
+    "overlapCounts": {
+      "LIQUIDITY": 2,
+      "AB_SETUP": 2
+    },
+    "conclusion": "Fail-fast counts understate simultaneous setup failure in X, while overlap counts still do not say removing AB_SETUP or LIQUIDITY would add that many selected names."
+  },
+  "scarcityLayers": [
+    {
+      "id": "GATE_OBSERVED_BLOCKERS",
+      "unit": "symbol",
+      "evidence": "gateStateVector",
+      "causalStatus": "DESCRIPTIVE_BLOCKER_OVERLAP"
+    },
+    {
+      "id": "UNIQUE_OBSERVED_CLEAR_UNDER_SINGLE_REMOVAL",
+      "unit": "symbol x removedGate",
+      "evidence": "formal_gate_replay_v0_1",
+      "causalStatus": "COUNTERFACTUAL_GATE_STATE_ONLY"
+    },
+    {
+      "id": "POST_GRADE_QUOTA",
+      "unit": "pool",
+      "evidence": "complete qualified population",
+      "causalStatus": "STRUCTURAL_SELECTION_DISPLACEMENT"
+    },
+    {
+      "id": "RING_FENCE_CAPITAL",
+      "unit": "Formal pool pair",
+      "evidence": "selectedCount geometry",
+      "causalStatus": "STRUCTURAL_CAPITAL_ACCOUNTING"
+    },
+    {
+      "id": "PLAN_CONSTRUCTION",
+      "unit": "selected symbol",
+      "evidence": "strict positive same-generation plan receipt",
+      "causalStatus": "POSITIVE_SUBSET_ONLY"
+    },
+    {
+      "id": "INTRADAY_NO_BUY",
+      "unit": "plan session",
+      "evidence": "exhaustive monitor-run denominator",
+      "causalStatus": "CURRENTLY_COVERAGE_BLOCKED"
+    },
+    {
+      "id": "ACTUAL_FILL",
+      "unit": "execution",
+      "evidence": "broker-confirmed append-only fill receipt",
+      "causalStatus": "CURRENTLY_UNKNOWN_HISTORICALLY"
+    }
+  ],
+  "promotionFirewall": [
+    "No gate is a FORMAL_OPTIMIZATION_CANDIDATE from overlap/replay counts alone.",
+    "Before any gate relaxation, require prospective same-generation coverage, outcomes, costs, regime/pool/channel/liquidity controls, zero-pick impact, OOS/holdout and redundancy tests.",
+    "Quota/ring-fence/capital behavior changes remain Class C.",
+    "Persistence/shared runtime wiring remains Class B proposal-first."
+  ],
+  "implementationAssessment": {
+    "pureOfflineVectorFromExistingObservers": "CLASS_A_FEASIBLE",
+    "newD1PersistenceOrRuntimeWiring": "CLASS_B_PROPOSAL_FIRST",
+    "formalGateOrQuotaOrCapitalChange": "CLASS_C_OWNER_APPROVAL"
+  },
+  "formalOptimizationCandidate": false,
+  "status": "MULTI_CAUSE_SCARCITY_CONTRACT_FROZEN / FIRST_FAILURE_NOT_MARGINAL / FORMAL_UNCHANGED"
+}
