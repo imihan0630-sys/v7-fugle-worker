@@ -1,0 +1,65 @@
+{
+  "schemaVersion": "factor-promotion-population-scope-falsification-v0.1",
+  "researchDate": "2026-09-27",
+  "status": "SELECTED_ONLY_PROMOTION_SCOPE_MISMATCH_CONFIRMED",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "currentPipeline": {
+    "snapshotPopulation": "trade_research_snapshots persisted from Formal selected plan/journal rows",
+    "fullFormalScanMeaning": "FULL_FORMAL_SCAN means PIT/source completeness of a selected snapshot, not full candidate-universe coverage",
+    "factorStudy": "factorStudyFromSnapshots joins selected snapshots to selected path outcomes",
+    "validation": "V8.7.3 PURGED_FORWARD_HOLDOUT correctly purges overlapping D+N train labels",
+    "promotionGate": "researchPromotionGate can return candidateFactors/promotionEligible based on selected-only factor spreads"
+  },
+  "estimandActuallySupported": [
+    "Within current Formal-selected names, do higher/lower values of a factor associate with different future paths?",
+    "Could the factor be useful as a ranking/refinement diagnostic among already-selected names, subject to other quality guards?"
+  ],
+  "estimandsNotSupported": [
+    "Does this factor improve admission from the full qualified candidate pool?",
+    "Should a hard gate be relaxed/tightened?",
+    "Would adding the factor recover valuable rejected names?",
+    "Is the factor redundant/nonredundant in the full admitted or market universe?",
+    "How would candidate coverage or zero-pick rate change?"
+  ],
+  "fixedBoundaryWitness": {
+    "selectedPopulation": [
+      {
+        "factor": "HIGH",
+        "futureReturnPct": 4
+      },
+      {
+        "factor": "LOW",
+        "futureReturnPct": 0
+      }
+    ],
+    "rejectedBoundaryPopulation": [
+      {
+        "factor": "HIGH",
+        "futureReturnPct": -8
+      },
+      {
+        "factor": "LOW",
+        "futureReturnPct": 3
+      }
+    ],
+    "selectedOnlyInference": "HIGH appears beneficial",
+    "admissionInference": "Unknown/opposite once rejected-boundary population is included",
+    "conclusion": "Selected-only monotonicity does not identify upstream admission value."
+  },
+  "safeRepair": [
+    "Persist explicit populationScope on every factor study and candidateFactor.",
+    "Rename current estimand SELECTED_WITHIN_SELECTION_FACTOR_STUDY.",
+    "A selected-only candidateFactor may at most motivate a ranking/refinement research proposal, not a gate/admission proposal.",
+    "Ranking-change research must next use complete qualified/QNS pool-integrity receipts and frozen comparator provenance to measure actual displacement near the cutline.",
+    "Gate-change research must use the gate-specific rejected population with full denominator and outcome-quality receipts.",
+    "Any proposed Formal change declares target layer: ADMISSION_GATE / RANKING / EXECUTION / CAPITAL. Evidence population must match target layer.",
+    "Purged holdout remains required and is not weakened by this correction."
+  ],
+  "governance": {
+    "currentPromotionLabel": "Too broad if interpreted as generic Formal-core upgrade eligibility.",
+    "correctedLabel": "SELECTED_RANKING_HYPOTHESIS_ELIGIBLE_FOR_FURTHER_RESEARCH only after other quality guards pass.",
+    "formalChange": "Still Class C and owner-approved only after matched population evidence."
+  },
+  "decision": "SELECTED_ONLY_FACTOR_SIGNAL_CANNOT_JUSTIFY_GENERIC_FORMAL_CORE_CHANGE / POPULATION_SCOPE_MUST_MATCH_CHANGE_LAYER / NO_FORMAL_CHANGE"
+}
