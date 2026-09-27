@@ -1,0 +1,36 @@
+name: ATR Quality Gate Semantics Research
+
+on:
+  push:
+    paths:
+      - "research/atr_quality_source_observer_v0_1.mjs"
+      - "research/atr_quality_source_semantic_falsification_v0_1.json"
+      - "research/formal_gate_overlap_observer_v0_4.mjs"
+      - "research/formal_gate_overlap_observer_spec_v0_4.json"
+      - "tests/test_atr_quality_source_observer_v0_1.mjs"
+      - "tests/test_formal_gate_overlap_observer_v0_4.mjs"
+      - "ATR_QUALITY_GATE_RESEARCH.md"
+      - "ATR_QUALITY_CAPTURE_CLASS_B_PROPOSAL.md"
+      - ".github/workflows/atr-quality-gate-research.yml"
+  pull_request:
+    paths:
+      - "research/atr_quality_source_observer_v0_1.mjs"
+      - "research/atr_quality_source_semantic_falsification_v0_1.json"
+      - "research/formal_gate_overlap_observer_v0_4.mjs"
+      - "research/formal_gate_overlap_observer_spec_v0_4.json"
+      - "tests/test_atr_quality_source_observer_v0_1.mjs"
+      - "tests/test_formal_gate_overlap_observer_v0_4.mjs"
+      - "ATR_QUALITY_GATE_RESEARCH.md"
+      - "ATR_QUALITY_CAPTURE_CLASS_B_PROPOSAL.md"
+      - ".github/workflows/atr-quality-gate-research.yml"
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node tests/test_atr_quality_source_observer_v0_1.mjs
+      - run: node tests/test_formal_gate_overlap_observer_v0_4.mjs

@@ -1,0 +1,53 @@
+{
+  "schemaVersion": "ATR_QUALITY_SOURCE_SEMANTIC_FALSIFICATION_V0_1",
+  "researchDate": "2026-09-27",
+  "class": "A_RESEARCH_ONLY",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "currentFormal": {
+    "gate": "(atrPercent||0) >= 1.0 && <= 10",
+    "producer": "buildMarketFeatures: atr20 = average(last20 true ranges); atrPercent = atr20 && close ? atr20/close*100 : null",
+    "downstreamCoupling": "The same atrPercent is converted back to ATR price units and enters stop construction; stop then enters reward/risk."
+  },
+  "sourcePath": {
+    "historyRevalidation": "V8.12 validates symbol-session date presence/freshness and verified no-trade gaps, not numeric high/low completeness.",
+    "providerRequest": "Patch-chain runtime explicitly requests adjusted=false open/high/low/close/volume/turnover/change.",
+    "normalization": "fetchHistoricalDaily maps high and low with marketNumber; missing/-- becomes null.",
+    "provenanceGap": "No per-bar persisted origin flag distinguishes observed numeric high/low from null/missing/fallback semantics at feature time.",
+    "officialDocumentation": "Fugle Historical Candles documents data.high/data.low as number when those fields are requested; examples are numeric. Documentation does not explicitly guarantee null/error impossibility for every returned bar.",
+    "nullStateClassification": "DEFENSIVE_SOURCE_CONTRACT_VIOLATION_OR_PROVIDER_PARSE_ERROR / NOT_CLAIMED_NORMAL_STATE"
+  },
+  "structuralFindings": [
+    "ATR true range uses raw item.high/item.low, not the highs/lows arrays that elsewhere fall back to close.",
+    "In JavaScript arithmetic, null high/low is coerced to 0. With prevClose around 100, a null high or low can generate a true range near 100 rather than an unknown/fallback range.",
+    "Two null-H/L bars in a 20-bar window with otherwise 2-point ranges at close=100 produce deployed ATR%=11.8 and an upper-gate rejection; an explicit close-fallback diagnostic comparator is 1.8% and passes.",
+    "Undefined or invalid non-null high/low instead yields NaN range; average() filters nonfinite values, silently shrinking the effective ATR range denominator.",
+    "atr20=0 becomes atrPercent=null because of atr20&&close; deployed Formal then coerces null through (atrPercent||0) and rejects on the lower bound.",
+    "formal_gate_overlap_observer_v0_3 is therefore not exact for ATR missingness: it labels missing atrPercent UNKNOWN although deployed Formal rejects it."
+  ],
+  "counterevidenceAndLimits": [
+    "Official Fugle docs type high/low as number, so null-H/L should not be presented as a documented normal source state; the guard is defensive unless prospective receipts observe the condition.",
+    "The official historical request asks for high/low and normal market sessions are expected to supply them; no live-production frequency of missing H/L has yet been established.",
+    "A structural counterexample proves a correctness vulnerability, not that current candidate results have been affected.",
+    "ATR itself already has dedicated volatility/risk research; this artifact does not claim the 1%/10% thresholds are economically wrong.",
+    "Corporate-action raw/continuity semantics are a separate known source issue and are not re-litigated here."
+  ],
+  "optimizationBridge": {
+    "currentStatus": "FALSIFICATION_IN_PROGRESS",
+    "futureCandidate": "ATR_OHLC_NUMERIC_ADMISSION_GUARD",
+    "requiredBeforeCandidate": [
+      "positive live/prospective evidence of null/missing H/L incidence or an authoritative source-contract reason the state can occur",
+      "same-generation affected-symbol receipt showing current ATR distortion / decision impact",
+      "countercheck that clean complete-OHLC rows are decision-identical",
+      "fail-closed behavior, zero extra market calls and rollback proof"
+    ],
+    "proposedClassIfEligible": "B_DATA_QUALITY_GUARD_OWNER_APPROVAL",
+    "notThresholdChange": true
+  },
+  "exactNext": [
+    "Freeze prospective per-bar ATR source-quality receipt: last20 high/low observed flags, finite-range count, deployed ATR, source/admission version and exact Formal result.",
+    "Audit historical cache/write paths for whether null H/L rows have ever been persisted in existing clean receipts without manufacturing historical first-known evidence.",
+    "Do not change ATR bounds or stop/RR formulas."
+  ],
+  "decision": "ATR_RAW_RANGE_NULL_COERCION_CONFIRMED / NONFINITE_RANGE_DENOMINATOR_SHRINK_CONFIRMED / HISTORY_DATE_ADMISSION_NE_OHLC_NUMERIC_ADMISSION / V0_4_GATE_OBSERVER_REQUIRED / LIVE_INCIDENCE_UNKNOWN / NOT_YET_FORMAL_OPTIMIZATION_CANDIDATE"
+}

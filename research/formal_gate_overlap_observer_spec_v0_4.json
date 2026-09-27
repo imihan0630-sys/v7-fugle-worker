@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "FORMAL_GATE_OVERLAP_OBSERVER_SPEC_V0_4",
+  "researchDate": "2026-09-27",
+  "supersedesForNewCounts": "v0.3 ATR semantics only",
+  "preserves": [
+    "v0.2 strict null numeric semantics for evidence",
+    "financialBasis truthiness",
+    "verified empty announcement-set semantics",
+    "v0.3 valuation missing-EPS deployed decision semantics"
+  ],
+  "atrRepair": {
+    "oldObserverState": "missing atrPercent => UNKNOWN",
+    "deployedTruth": "Formal uses (atrPercent||0); missing/null/NaN behaves as 0 and fails lower 1% bound",
+    "researchSeparation": "Decision state is FAIL while atrEvidenceObserved=false preserves missingness provenance"
+  },
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false
+}
