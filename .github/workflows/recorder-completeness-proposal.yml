@@ -1,0 +1,23 @@
+name: Recorder Completeness Proposal CI
+
+on:
+  pull_request:
+    paths:
+      - "research/execution_recorder_exact_date_completeness_proposal_v0_1.json"
+      - "research/execution_recorder_exact_date_completeness_proposal_v0_2.json"
+      - "research/execution_recorder_exact_date_completeness_v0_1.mjs"
+      - "research/execution_recorder_exact_date_completeness_v0_2.mjs"
+      - "tests/test_execution_recorder_exact_date_completeness_v0_2.mjs"
+      - "RECORDER_EXACT_DATE_COMPLETENESS_PROPOSAL_CHECKPOINT.md"
+      - ".github/workflows/recorder-completeness-proposal.yml"
+
+jobs:
+  proposal-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Validate frozen Class-B proposal contract
+        run: node tests/test_execution_recorder_exact_date_completeness_v0_2.mjs
