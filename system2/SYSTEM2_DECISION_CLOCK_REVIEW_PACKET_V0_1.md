@@ -13,7 +13,7 @@ The review format is defined before observing the 20-date result so the final pr
 
 A clock-freeze review packet becomes `OWNER_REVIEW_ELIGIBLE` only when all are true:
 
-- artifact aggregation uses the promotion policy `EARLIEST_SCHEDULED_ARTIFACT_PER_MARKET_DATE`;
+- artifact aggregation uses the promotion policy `EARLIEST_ATTEMPT_ONE_SCHEDULED_ARTIFACT_PER_MARKET_DATE`;
 - scheduled-run coverage has been audited across the full preregistered prospective date window, not merely dates that happened to produce runs/artifacts;
 - the first scheduled run, attempt 1 only, for each market date is the immutable coverage anchor;
 - `promotionCoverageComplete=true`;
