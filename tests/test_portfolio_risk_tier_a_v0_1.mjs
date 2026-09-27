@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import {
   projectedStopRisk,effectiveCapitalNames,sectorCapitalShares,classifyProjectedCashState,
-  equalCapitalCounterfactual,equalPlannedStopRiskCounterfactual,portfolioTierA
+  equalCapitalCounterfactual,equalPlannedStopRiskCounterfactual,cappedEqualPlannedStopRiskCounterfactual,portfolioTierA
 } from "../research/portfolio_risk_tier_a_v0_1.mjs";
 
 const plans=[
@@ -63,6 +63,15 @@ const plans=[
 }
 
 {
+  const e=cappedEqualPlannedStopRiskCounterfactual(plans,200000,{perNameCapPct:35});
+  assert.equal(e.status,"READY");
+  assert.ok(Math.abs(e.totalAllocation-100000)<0.02);
+  assert.ok(e.allocations.every(x=>x.allocation<=70000.01));
+  assert.equal(e.continuousDiagnostic,true);
+  assert.equal(e.formalRoundingApplied,false);
+}
+
+{
   const out=portfolioTierA(plans,200000);
   assert.equal(out.researchOnly,true);
   assert.equal(out.decisionImpact,false);
@@ -86,5 +95,6 @@ console.log(JSON.stringify({
   sectorCapitalShare:true,
   equalCapitalCounterfactual:true,
   equalPlannedStopRiskCounterfactual:true,
+  cappedEqualPlannedStopRiskCounterfactual:true,
   correlationAndClusterFailClosedWithoutPITHistory:true
 }));

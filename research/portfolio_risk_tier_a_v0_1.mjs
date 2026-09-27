@@ -149,6 +149,75 @@ export function equalPlannedStopRiskCounterfactual(plans=[],totalCapital) {
   };
 }
 
+
+export function cappedEqualPlannedStopRiskCounterfactual(plans=[],totalCapital,{perNameCapPct=35}={}) {
+  const capital=positive(totalCapital);
+  const current=(plans||[]).reduce((s,p)=>s+(positive(p?.totalAllocation)||0),0);
+  const capPct=num(perNameCapPct);
+  if(!(capital>0) || !(current>0) || !(capPct>0)) {
+    return {status:"UNKNOWN",reason:"INSUFFICIENT_CAPITAL_OR_CAP"};
+  }
+  const valid=[];
+  for(const plan of plans||[]) {
+    const r=projectedStopRisk(plan);
+    if(!r.ok) return {status:"UNKNOWN",reason:"INCOMPLETE_RISK_INPUTS",symbol:r.symbol,riskReason:r.reason};
+    const riskFrac=r.riskPctHigh/100;
+    if(!(riskFrac>0)) return {status:"UNKNOWN",reason:"INVALID_RISK_FRACTION",symbol:r.symbol};
+    valid.push({plan,riskFrac});
+  }
+  if(!valid.length) return {status:"UNKNOWN",reason:"NO_VALID_PLANS"};
+  const capNTD=capital*capPct/100;
+  const capacity=capNTD*valid.length;
+  if(current>capacity+1e-6) {
+    return {status:"INFEASIBLE",reason:"CURRENT_DEPLOYMENT_EXCEEDS_CAPACITY",currentDeploymentNTD:round(current,2),capacityNTD:round(capacity,2)};
+  }
+
+  // Water-filling in projected-risk space:
+  // allocation_i = min(capNTD, commonRiskBudget / riskFrac_i)
+  // Choose commonRiskBudget so total allocation equals current planned deployment.
+  let lo=0;
+  let hi=Math.max(...valid.map(x=>x.riskFrac*capNTD),1);
+  const sumAt=budget=>valid.reduce((s,x)=>s+Math.min(capNTD,budget/x.riskFrac),0);
+  while(sumAt(hi)<current) hi*=2;
+  for(let i=0;i<100;i++){
+    const mid=(lo+hi)/2;
+    if(sumAt(mid)<current) lo=mid;
+    else hi=mid;
+  }
+  const allocations=valid.map(x=>Math.min(capNTD,hi/x.riskFrac));
+  const scale=current/allocations.reduce((a,b)=>a+b,0);
+  const normalized=allocations.map(v=>Math.min(capNTD,v*scale));
+  // Numerical correction is only used if floating-point residue remains and spare cap exists.
+  let residue=current-normalized.reduce((a,b)=>a+b,0);
+  if(Math.abs(residue)>1e-6){
+    for(let i=0;i<normalized.length && residue>1e-6;i++){
+      const room=capNTD-normalized[i];
+      const add=Math.min(room,residue);
+      normalized[i]+=add;
+      residue-=add;
+    }
+  }
+  const rows=valid.map((x,i)=>({
+    symbol:symbolOf(x.plan),
+    allocation:round(normalized[i],2),
+    stopRiskPctHigh:round(x.riskFrac*100,4),
+    projectedRiskNTD:round(normalized[i]*x.riskFrac,2),
+    capBinding:Math.abs(normalized[i]-capNTD)<0.01
+  }));
+  return {
+    status:"READY",
+    samePlannedDeployment:true,
+    perNameCapPct:round(capPct,4),
+    perNameCapNTD:round(capNTD,2),
+    continuousDiagnostic:true,
+    formalRoundingApplied:false,
+    allocations:rows,
+    totalAllocation:round(rows.reduce((s,x)=>s+x.allocation,0),2),
+    capBindingSymbols:rows.filter(x=>x.capBinding).map(x=>x.symbol),
+    note:"Research-only continuous cap-constrained equal planned-stop-risk comparator. Preserves current total planned deployment and current per-name capital cap; does not apply Formal NT$1,000 flooring or change live allocation."
+  };
+}
+
 export function portfolioTierA(plans=[],totalCapital,{sectorBySymbol={},dataStatus="COMPLETE"}={}) {
   const total=positive(totalCapital);
   const riskRows=(plans||[]).map(projectedStopRisk);
@@ -179,7 +248,8 @@ export function portfolioTierA(plans=[],totalCapital,{sectorBySymbol={},dataStat
     cashState:classifyProjectedCashState({selectedCount:(plans||[]).length,totalCapital:total,totalPlannedAllocation:planned,dataStatus}),
     counterfactuals:{
       equalCapital:equalCapitalCounterfactual(plans,total),
-      equalPlannedStopRisk:equalPlannedStopRiskCounterfactual(plans,total)
+      equalPlannedStopRisk:equalPlannedStopRiskCounterfactual(plans,total),
+      cappedEqualPlannedStopRisk:cappedEqualPlannedStopRiskCounterfactual(plans,total)
     },
     correlation20Status:"PIT_HISTORY_REQUIRED",
     correlation60Status:"PIT_HISTORY_REQUIRED",

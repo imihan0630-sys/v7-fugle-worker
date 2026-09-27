@@ -1,5 +1,5 @@
 import {portfolioTierAV02} from "../research/portfolio_risk_tier_a_v0_2.mjs";
-import {projectedStopRisk} from "../research/portfolio_risk_tier_a_v0_1.mjs";
+import {projectedStopRisk,cappedEqualPlannedStopRiskCounterfactual} from "../research/portfolio_risk_tier_a_v0_1.mjs";
 
 const token=String(process.env.V7_ADMIN_TOKEN||"").trim();
 const origin=String(process.env.V7_WORKER_ORIGIN||"https://fugle-test.imihan0630.workers.dev").replace(/\/$/,"");
@@ -62,6 +62,8 @@ for(const [scanDate,datePlans] of [...byDate.entries()].sort()){
   const currentDeployment=n(out.plannedDeploymentNTD)||0;
   const equalCapitalMap=mapAllocations(out?.counterfactuals?.equalCapital);
   const equalRiskMap=mapAllocations(out?.counterfactuals?.equalPlannedStopRisk);
+  const cappedRiskCf=cappedEqualPlannedStopRiskCounterfactual(datePlans,totalCapital,{perNameCapPct:35});
+  const cappedRiskMap=mapAllocations(cappedRiskCf);
 
   const planDetails=datePlans.map(plan=>{
     const risk=projectedStopRisk(plan);
@@ -69,10 +71,12 @@ for(const [scanDate,datePlans] of [...byDate.entries()].sort()){
     const currentAllocation=n(plan?.totalAllocation);
     const equalCapitalAllocation=equalCapitalMap.get(symbol)??null;
     const equalRiskAllocation=equalRiskMap.get(symbol)??null;
+    const cappedRiskAllocation=cappedRiskMap.get(symbol)??null;
     const riskFracHigh=risk?.ok?n(risk.riskPctHigh)/100:null;
     const currentRiskNTD=(riskFracHigh!==null && currentAllocation!==null)?currentAllocation*riskFracHigh:null;
     const equalCapitalRiskNTD=(riskFracHigh!==null && equalCapitalAllocation!==null)?equalCapitalAllocation*riskFracHigh:null;
     const equalRiskRiskNTD=(riskFracHigh!==null && equalRiskAllocation!==null)?equalRiskAllocation*riskFracHigh:null;
+    const cappedRiskRiskNTD=(riskFracHigh!==null && cappedRiskAllocation!==null)?cappedRiskAllocation*riskFracHigh:null;
     return {
       symbol,
       strategy:String(plan?.strategy||""),
@@ -89,14 +93,19 @@ for(const [scanDate,datePlans] of [...byDate.entries()].sort()){
       equalCapitalProjectedRiskNTD:equalCapitalRiskNTD!==null?round(equalCapitalRiskNTD,2):null,
       equalPlannedStopRiskAllocationNTD:equalRiskAllocation,
       equalPlannedStopRiskProjectedRiskNTD:equalRiskRiskNTD!==null?round(equalRiskRiskNTD,2):null,
+      cappedEqualPlannedStopRiskAllocationNTD:cappedRiskAllocation,
+      cappedEqualPlannedStopRiskProjectedRiskNTD:cappedRiskRiskNTD!==null?round(cappedRiskRiskNTD,2):null,
+      cappedEqualPlannedStopRiskCapBinding:(cappedRiskCf?.allocations||[]).find(x=>String(x.symbol)===symbol)?.capBinding??null,
       shiftCurrentToEqualCapitalNTD:(currentAllocation!==null&&equalCapitalAllocation!==null)?round(equalCapitalAllocation-currentAllocation,2):null,
-      shiftCurrentToEqualRiskNTD:(currentAllocation!==null&&equalRiskAllocation!==null)?round(equalRiskAllocation-currentAllocation,2):null
+      shiftCurrentToEqualRiskNTD:(currentAllocation!==null&&equalRiskAllocation!==null)?round(equalRiskAllocation-currentAllocation,2):null,
+      shiftCurrentToCappedEqualRiskNTD:(currentAllocation!==null&&cappedRiskAllocation!==null)?round(cappedRiskAllocation-currentAllocation,2):null
     };
   });
 
   const currentRisk=planDetails.map(x=>x.currentProjectedRiskNTD).filter(Number.isFinite);
   const equalCapitalRisk=planDetails.map(x=>x.equalCapitalProjectedRiskNTD).filter(Number.isFinite);
   const equalRiskRisk=planDetails.map(x=>x.equalPlannedStopRiskProjectedRiskNTD).filter(Number.isFinite);
+  const cappedRiskRisk=planDetails.map(x=>x.cappedEqualPlannedStopRiskProjectedRiskNTD).filter(Number.isFinite);
   const maxMinRatio=xs=>{
     const v=xs.filter(Number.isFinite).filter(x=>x>0);
     if(v.length<2) return null;
@@ -128,15 +137,19 @@ for(const [scanDate,datePlans] of [...byDate.entries()].sort()){
     cashState:out.cashState.state,
     counterfactualStatus:{
       equalCapital:out?.counterfactuals?.equalCapital?.status||"UNKNOWN",
-      equalPlannedStopRisk:out?.counterfactuals?.equalPlannedStopRisk?.status||"UNKNOWN"
+      equalPlannedStopRisk:out?.counterfactuals?.equalPlannedStopRisk?.status||"UNKNOWN",
+      cappedEqualPlannedStopRisk:cappedRiskCf?.status||"UNKNOWN"
     },
     structuralRiskDispersion:{
       currentProjectedRiskHHI:hhi(currentRisk),
       equalCapitalProjectedRiskHHI:hhi(equalCapitalRisk),
       equalPlannedStopRiskProjectedRiskHHI:hhi(equalRiskRisk),
+      cappedEqualPlannedStopRiskProjectedRiskHHI:hhi(cappedRiskRisk),
       currentMaxToMinProjectedRiskRatio:maxMinRatio(currentRisk),
       equalCapitalMaxToMinProjectedRiskRatio:maxMinRatio(equalCapitalRisk),
       equalPlannedStopRiskMaxToMinProjectedRiskRatio:maxMinRatio(equalRiskRisk),
+      cappedEqualPlannedStopRiskMaxToMinProjectedRiskRatio:maxMinRatio(cappedRiskRisk),
+      cappedEqualRiskCapBindingSymbols:cappedRiskCf?.capBindingSymbols||[],
       semantics:"OUTCOME_INDEPENDENT_CONSERVATIVE_BUYHIGH_PROJECTED_STOP_RISK_DISTRIBUTION"
     },
     planDetails,
@@ -168,5 +181,5 @@ console.log(JSON.stringify({
   fullyReconstructablePlanDates:fullyReconstructable.length,
   planDates:fullyReconstructable,
   zeroSelected,
-  interpretation:"Outcome-independent plan-time structural counterfactual. Compares current allocation with equal-capital and unconstrained equal-planned-stop-risk using the same planned deployment. No returns are read; no allocator is promoted."
+  interpretation:"Outcome-independent plan-time structural counterfactual. Compares current allocation with equal-capital, unconstrained equal-planned-stop-risk, and a 35%-cap-constrained continuous equal-risk comparator using the same planned deployment. No returns are read; no allocator is promoted."
 },null,2));
