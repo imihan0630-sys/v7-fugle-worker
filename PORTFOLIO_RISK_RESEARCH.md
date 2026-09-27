@@ -1236,3 +1236,82 @@ Status:
 `FALSIFICATION_IN_PROGRESS / STRUCTURAL_RISK_CONCENTRATION_CONFIRMED / OUTCOME_MATERIALITY_UNKNOWN / NOT_OPTIMIZATION_READY`.
 
 No Formal allocation, PriorityScore, stop, BUY/ADD/REDUCE/SELL, monitoring or push rule changed.
+
+
+## PR-034 — 35% cap does not explain the observed score × stop-risk concentration (2026-09-27)
+
+PR-033 established that the 2026-09-18 current allocation concentrated conservative planned stop-risk more than equal capital. A stronger counterfactual was required because the unconstrained equal-risk diagnostic allocated 37.51% of total capital to 2006 and therefore violated the current 35% per-name cap.
+
+A new Class-A comparator now keeps:
+- the same NT$168,000 planned deployment;
+- the same NT$200,000 total capital;
+- the current 35% / NT$70,000 per-name cap;
+- the same conservative buyHigh planned-stop-risk definition.
+
+It does not read outcomes and does not change Formal allocation.
+
+### Deterministic replay of the current allocator
+
+For 2026-09-18:
+- PriorityScores = 69.9 / 89.4 / 74.9;
+- score total = 234.2;
+- 3 selected names imply the current 85% nominal deploy target = NT$170,000;
+- score-proportional continuous allocations are approximately NT$50,738.68 / NT$64,893.25 / NT$54,368.06;
+- all are below the NT$70,000 per-name cap;
+- flooring each to NT$1,000 reproduces the immutable journal exactly: NT$50,000 / NT$64,000 / NT$54,000;
+- the remaining NT$2,000 is the previously identified allocation implementation shortfall.
+
+Therefore the current 2026-09-18 allocation did **not** have a binding 35% cap. The observed concentration is mechanically attributable to PriorityScore proportional weighting plus heterogeneous stop distance, with only a small flooring residue.
+
+### Cap-constrained equal-risk counterfactual
+
+Continuous same-deployment solution under the current 35% cap:
+- 2006 = NT$70,000, cap binding;
+- 3105 = NT$41,366.71;
+- 6133 = NT$56,633.29.
+
+Conservative projected stop-risk contribution:
+- 2006 = NT$1,831.69;
+- 3105 = NT$2,069.49;
+- 6133 = NT$2,069.49.
+
+Structural comparison:
+- current projected-risk HHI = 0.377238;
+- cap-constrained equal-risk HHI = 0.334391;
+- reduction = 11.36%;
+- current max/min projected-risk ratio = 2.4472x;
+- cap-constrained comparator = 1.1298x;
+- reduction = 53.83%;
+- current high-end projected risk = NT$6,483.41 / 3.2417% of total capital;
+- cap-constrained comparator = NT$5,970.67 / 2.9853%;
+- difference = -NT$512.74 / -0.2564 percentage points, or about -7.91%.
+
+### Falsification result
+
+Two simpler explanations are rejected for this observed date:
+1. the current concentration was mainly caused by the 35% cap;
+2. the concentration advantage of equal-risk disappears once the 35% cap is enforced.
+
+Neither is supported by the deterministic replay.
+
+The surviving structural mechanism is:
+`PriorityScore proportional sizing × heterogeneous planned stop distance`.
+
+On 2026-09-18, 3105 simultaneously had the highest PriorityScore and the widest conservative planned stop distance, so it received the largest capital allocation and an even larger share of projected stop-risk.
+
+### Counterevidence and limits
+
+This is still **not** an economic optimization result:
+- there is only one reconstructable multi-name date;
+- the capped comparator is continuous and does not yet impose the Formal NT$1,000 flooring;
+- no returns, MFE, MAE, stop-first, fills, costs or realized drawdowns were read;
+- lower risk concentration can reduce exposure to the best opportunity if PriorityScore contains genuine alpha;
+- current score weights therefore must be tested against outcome-aware but pre-registered counterfactuals before any capital rule can change.
+
+Durable receipt:
+`research/portfolio_risk_cap_constrained_equal_risk_receipt_20260927.json`.
+
+Status:
+`STRUCTURAL_MECHANISM_CONFIRMED / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core remains unchanged.
