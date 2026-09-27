@@ -32,6 +32,17 @@
       "purpose": "one-gate transition accounting without outcomes, threshold tuning or recovered-candidate claims",
       "marketCalls": 0,
       "d1Writes": 0
+    },
+    {
+      "id": "TARGET_RR_AUDIT_OBSERVER_V0_1",
+      "files": [
+        "research/target_rr_audit_observer_v0_1.mjs",
+        "tests/test_target_rr_audit_observer_v0_1.mjs",
+        "research/target_rr_audit_observer_spec_v0_1.json"
+      ],
+      "purpose": "separate TARGET_NULL / LOW_RR / FINAL_GRADE / RR_PASS and preserve target-source ambiguity/provenance under channel-specific Formal geometry",
+      "marketCalls": 0,
+      "d1Writes": 0
     }
   ],
   "storageAudit": {
@@ -70,7 +81,8 @@
         "gate-overlap states",
         "one-gate transition summaries",
         "external evidence references",
-        "future outcome-quality references"
+        "future outcome-quality references",
+        "target/RR geometry and resistance-source provenance"
       ]
     }
   },
@@ -101,5 +113,15 @@
   ],
   "optimizationReady": false,
   "formalCoreImpact": false,
-  "decisionImpact": false
+  "decisionImpact": false,
+  "targetRrPersistence": {
+    "feasibilityReceipt": "research/target_rr_persistence_feasibility_v0_1.json",
+    "classAObserverValidated": true,
+    "legacySingleCohortSafe": false,
+    "overlappingMembershipRequired": true,
+    "immutableParentRequired": true,
+    "targetPriceProvenanceMayRemainUnknown": true,
+    "classBProposal": "SHADOW_COHORT_SEMANTICS_CLASS_B_PROPOSAL.md",
+    "optimizationReady": false
+  }
 }
