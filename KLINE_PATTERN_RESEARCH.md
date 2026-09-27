@@ -21457,3 +21457,166 @@ Round-price coincidence may strengthen zone provenance, but predictive value mus
 
 ### Status
 MECHANISM_SUPPORTED / ALPHA_UNKNOWN.
+
+
+## DL-004F — Support/Resistance Predictive Value vs Tradable Alpha (2026-09-27)
+
+### External falsification
+An empirical study using two decades of adjusted NYSE/NASDAQ daily prices found locally constructed horizontal support/resistance levels could help identify trend interruptions, but did not generate excess returns versus simple buy-and-hold.
+
+### Implication
+A structurally meaningful level can be useful without creating standalone alpha.
+
+For Pattern research:
+- support/resistance zones may improve state description,
+- they may improve risk placement / failure detection,
+- but they must not be assumed to increase expected return by themselves.
+
+### Evaluation split
+STRUCTURAL_USEFULNESS:
+- bounce/rejection probability,
+- failure localization,
+- stop/retest interpretation,
+- role-reversal state.
+
+ALPHA_USEFULNESS:
+- incremental D5/D10,
+- MFE/MAE,
+- R01 failure reduction,
+- transaction-cost-adjusted improvement.
+
+A zone feature can pass the first and fail the second.
+
+### Engineering consequence
+Even if zones prove structurally useful, they should enter Formal ranking only if alpha/reliability evidence survives the existing maturity gate.
+No change now.
+
+## DL-004G — Sector Persistence Must Be Conditional, Not Global (2026-09-27)
+
+### Taiwan evidence
+Fu & Kang (2009) report that industry momentum in Taiwan is not uniformly visible across all industries; it appears more strongly in industries with positive autocorrelation, and turnover/fund-transfer behavior helps explain persistence.
+
+### Pattern implication
+“Sector confirmation” should not be one universal binary flag.
+
+### Conditional context
+For each sector/date estimate research-only:
+- sectorReturnAutocorrState
+- sectorTurnoverPersistence
+- sectorMomentumPersistenceState
+- sectorBreadthPersistence
+- sectorFailurePersistence
+
+### Hypothesis
+A stock pattern inside a sector with currently positive persistence may benefit more from peer confirmation than the same pattern in a mean-reverting sector.
+
+### Counter-hypothesis
+Strong sector autocorrelation can be regime-specific and unstable; using long historical autocorrelation may lag turning points.
+
+### Guard
+Use rolling/as-of-date estimates only.
+Do not label a sector “persistent” from full-sample future data.
+
+## DL-004H — Lead/Lag Inside Sector and Supply Chain (2026-09-27)
+
+### Question
+When several related stocks form similar structures, who leads and who follows?
+
+### Research objects
+- firstPatternMaturityDate among peers
+- firstBreakoutDate
+- peerMedianMaturityDate
+- leaderLagDays
+- leaderRS
+- leaderTurnoverAcceleration
+- followerEntryRoom
+- peerFailureBeforeStockTrigger
+
+### States
+TRUE_LEADER:
+- matures/breaks early with strong RS and peers later confirm.
+
+EARLY_FALSE_LEADER:
+- matures first but peers fail to confirm and stock later fails.
+
+HEALTHY_FOLLOWER:
+- peers confirm first, stock still has adequate room and is not overextended.
+
+LATE_FOLLOWER:
+- peers already extended while stock only reaches pivot.
+
+### Research question
+Does lead/lag position explain outcome after controlling own pattern quality and sector state?
+
+### Supply-chain extension
+For linked upstream/downstream firms, keep lead/lag descriptive unless relationship is point-in-time verified.
+Do not infer supply-chain causality from price co-movement alone.
+
+## DL-004I — Complexity/Entropy Is a Diagnostic, Not a Shortcut to Predictability (2026-09-27)
+
+### External evidence
+Entropy research detects nonlinear serial dependence in returns but finds conditional predictive profitability fragile across model choices and periods.
+
+### Pattern implication
+If entropy/complexity looks statistically interesting but does not improve stable out-of-sample outcomes, reject it.
+
+### Required evidence ladder
+1. distributional dependence exists;
+2. effect survives liquidity/regime controls;
+3. effect adds to frozen primitives;
+4. effect survives independent dates/holdout;
+5. economic magnitude exceeds costs.
+
+Failing any stage prevents promotion.
+
+### Specific falsification
+If falling entropy during pattern maturation merely tracks falling ATR, lower reversal count or dead liquidity, classify REDUNDANT.
+
+## DL-004J — Confluence Is Not the Sum of Indicators (2026-09-27)
+
+### Common mistake
+Technical systems often “confirm” a setup by stacking:
+- pivot,
+- round number,
+- volume node,
+- MA,
+- sector strength,
+- RS,
+- volume,
+- pattern label.
+
+Many are correlated manifestations of the same underlying process.
+
+### Confluence framework
+For each apparent confirmation, tag provenance primitive:
+- PRICE_GEOMETRY
+- LIQUIDITY
+- ORDER_CLUSTERING
+- FLOW
+- SECTOR
+- REGIME
+- EVENT
+- EXECUTION_ACCEPTANCE
+
+Count unique provenance families, not raw indicator count.
+
+### Example
+Cup rim + priorHigh20 + round price:
+- cup rim/priorHigh20 may both be PRICE_GEOMETRY,
+- round price is ORDER_CLUSTERING.
+This is closer to 2 independent evidence families, not 3.
+
+### Research variable
+- rawConfluenceCount
+- independentProvenanceCount
+- dominantProvenanceShare
+- confluenceDiversity
+
+### Hypothesis
+Diverse independent provenance may be more informative than many correlated confirmations.
+
+### Counter-hypothesis
+Even diverse confluence may simply select already-obvious crowded trades and reduce early-entry advantage.
+
+Test prospectively.
+
