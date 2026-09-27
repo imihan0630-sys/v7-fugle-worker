@@ -26,4 +26,6 @@ Acceptance guards:
 - no change to institutionalScore, PriorityScore, eligibility, ranking, quota, capital, monitoring or signals;
 - duplicate generation or timestamp mismatch fails research quality closed.
 
+For selected-row provenance, these fields can be added to the existing research snapshot contract. For full-scan prevalence, do not create a competing cohort store: extend/reuse the existing complete-population / pool-integrity receipt owner when that Class-B work is approved.
+
 Shared snapshot/runtime persistence is Class B and requires owner approval. Institutional score formula or weight changes remain Class C.
