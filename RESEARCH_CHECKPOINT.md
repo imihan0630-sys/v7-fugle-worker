@@ -2133,3 +2133,27 @@ Updated: 2026-09-27 23:38 Asia/Taipei.
 - PR #209 CI is green: Institutional Actor Total Research `36354262825` SUCCESS; V8 Regression `36354262829` SUCCESS; V8 Repair `36354262831` SUCCESS.
 - Status: `ACTOR_TOTAL_CONFLICT_TAXONOMY_READY / LOWER_UPPER_NET_CLIPPING_EXACT / SOURCE_SUM_INVARIANT_FAIL_CLOSED / FULL_SCAN_PREVALENCE_UNKNOWN / ECONOMIC_INCREMENTAL_VALUE_UNKNOWN / OUTCOMES_CLOSED / FORMAL_UNCHANGED`. No `FORMAL_OPTIMIZATION_CANDIDATE`.
 - Exact next: move to a nonblocked richer-actor source question. Audit zero-extra-API feasibility and semantic readiness for dealer proprietary vs dealer hedge (and foreign-main vs foreign-dealer where meaningful), using current official TWSE/TPEx payload contracts. Freeze only source-preservation / research-snapshot requirements; do not change current aggregate institutionalScore or reconstruct historical split from aggregate D1 snapshots.
+
+
+## B-253 — richer institutional actor splits are source-available but destroyed before durable snapshots; zero-extra-API capture feasibility frozen (2026-09-28 Asia/Taipei)
+- Continued exactly from B-252. No outcomes, historical reconstruction, threshold/weight search, runtime/storage change, deployment or Formal modification.
+- Fresh current-source audit confirms the existing official institution fetches already carry richer actor semantics before normalization:
+  - TWSE parser explicitly reads `foreignMain` and `foreignDealer` separately, then collapses them into `foreignNet = foreignMain + foreignDealer`.
+  - TPEx `dailyTrade` source contract exposes foreign-main / foreign-dealer subgroups and dealer proprietary / dealer hedge triplets before aggregate foreign/dealer columns; B-251's semantic arithmetic witness already validates the aggregate identities.
+  - Therefore richer actor research requires **zero additional exchange API calls** at source-fetch time.
+- Critical persistence falsification: `parseTwseInstitutionPayload()`, `parseTpexInstitutionPayload()` and then `writeInstitutionSnapshot()` preserve only `foreignNet`, `trustNet`, `dealerNet`, and `institutionTotalNet`. The richer split is irreversibly discarded before `v7_institution_snapshots.snapshot_json`.
+- Consequence: current D1 institution history and downstream research snapshots cannot reconstruct dealer proprietary vs hedge or foreign-main vs foreign-dealer exactly. Historical split recovery from aggregate rows is forbidden and remains UNKNOWN.
+- The semantic value is nontrivial but not yet directional evidence: dealer proprietary trading and hedge activity can reflect different mechanisms, while foreign-dealer activity is economically distinct from foreign-main investor flow. Current `dealerNet` and `foreignNet` must therefore remain described as aggregates, not pure conviction measures.
+- Cross-market caveat from B-251 remains important: in 12,823 comparable sampled TPEx rows (2018-12-28..2026-09-24), foreign-dealer subgroup was identically zero. That strongly limits near-term incremental information from TPEx foreign-dealer split and is counterevidence against prioritizing that split as a scoring factor. It does **not** justify hard-coding zero or assuming future invariance.
+- Minimum prospective preservation contract is frozen, source-only and outcome-blind:
+  - `foreignMainNet`, `foreignDealerNet`;
+  - `dealerProprietaryNet`, `dealerHedgeNet`;
+  - aggregate `foreignNet`, `dealerNet`, `trustNet`, `institutionTotalNet`;
+  - source market/date, source-contract/schema fingerprint, capturedAt/availableAt when available, and arithmetic invariants proving split->aggregate consistency.
+- Any future split field must remain UNKNOWN when the source contract cannot prove it; missing split data must never be filled from aggregate totals or current-day assumptions.
+- Engineering classification: preserving extra fields inside the shared parser / `v7_institution_snapshots` is Class B proposal-first because the same ingestion/storage path feeds Formal institution-history readiness. A fully isolated parallel research collector could be Class A, but would duplicate the same official calls and is not justified while a zero-extra-call shared preservation proposal exists.
+- No implementation is authorized in this turn. No new factor definition or experiment count is introduced; this is source-preservation readiness only.
+- R01-R08/I01-I07: no outcome increment. This reduces future actor-semantic ambiguity for institutional/crowding falsification but does not alter any mature research conclusion.
+- Bias/robustness checks: no look-ahead, no historical split fabrication, no absence-as-zero, no market-source unit rescaling, no outcome-conditioned capture, and no inference from selected-only prevalence.
+- Status: `RICH_ACTOR_SOURCE_AVAILABLE / ZERO_EXTRA_API_FEASIBLE / CURRENT_D1_SPLIT_PERSISTENCE_ABSENT / HISTORICAL_SPLIT_UNKNOWN / TPEX_FOREIGN_DEALER_INCREMENTALITY_COUNTEREVIDENCE / CLASS_B_PRESERVATION_PROPOSAL_FROZEN / FORMAL_UNCHANGED`. No `FORMAL_OPTIMIZATION_CANDIDATE`.
+- Exact next: stay outcome-blind and audit whether richer dealer split can be preserved **without altering existing aggregate values/readiness semantics** by defining a sidecar/additive schema proposal with invariant tests and rollback. Do not implement shared runtime without owner approval. In parallel, continue a nonblocked source-semantic question: distinguish aggregate flow persistence from ownership concentration and passive/index-flow contamination using only already-preserved provenance; do not tune institutionalScore.
