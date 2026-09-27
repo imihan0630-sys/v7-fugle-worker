@@ -16451,3 +16451,123 @@ A high breakout rate does not automatically mean high expectancy.
 A lower breakout rate with much larger favorable excursion may still be economically relevant.
 
 No production scoring formula is implied.
+
+
+## DL-003AT — Classic Trading-Range Breakout Evidence Shows Time Decay in Taiwan
+
+### Taiwan evidence
+Taiwan/Asian technical-rule studies historically find predictive power for moving-average and trading-range-breakout rules in earlier samples.
+
+A Taiwan study covering 1975-2007 reports:
+- buy signals generally outperform sell signals;
+- predictive power is stronger in 1975-1985 and 1986-1996;
+- effectiveness becomes weaker in 1997-2007;
+- the authors link weakening effectiveness to market reform/liberalization and improved efficiency.
+
+### Research implication
+Old technical-analysis profitability is not transportable by default to 2026.
+
+Historical literature is useful for:
+- mechanism plausibility,
+- candidate rule definitions,
+- known failure modes.
+
+It is not sufficient for:
+- 2026 threshold choice,
+- expected return magnitude,
+- Formal promotion.
+
+### Modern validation priority
+For 2026 relevance, emphasize:
+- post-2015 10% price-limit regime,
+- post-2020 continuous-trading regime,
+- current liquidity/tick structure,
+- prospective Pattern Shadow dates.
+
+## DL-003AU — Plain Breakout vs Compression-Before-Breakout Is a Core Falsification
+
+### Current Formal B
+Current B already captures a simple modern breakout concept:
+- trend context,
+- close above priorHigh20,
+- volume expansion,
+- strong close,
+- upper-shadow control,
+- not-late filter.
+
+### Pattern question
+Does a pre-breakout contraction topology add anything beyond this existing B rule?
+
+### Comparison groups
+BASIC_B:
+- passes current B.
+
+B_PLUS_GENERIC_COMPRESSION:
+- passes B + low volatility / volume contraction.
+
+B_PLUS_SEQUENCE_COMPRESSION:
+- passes B + non-overlapping shrinking swing legs / VCP primitive.
+
+B_PLUS_FULL_MATURITY:
+- passes B + mature topology / zone / support progression.
+
+### Outcomes
+- R01 failure
+- D1/D3/D5/D10
+- MFE/MAE
+- stop-first
+- breakout acceptance
+- retest/no-retest opportunity cost
+
+### Decision logic
+If B_PLUS_SEQUENCE_COMPRESSION does not outperform BASIC_B after controls:
+- VCP may be decorative/redundant.
+
+If generic compression performs as well as full VCP:
+- keep the simpler generic primitive.
+
+If full maturity adds stable incremental value:
+- then a Pattern Shadow candidate is justified for formal review later.
+
+### High value
+This is one of the cleanest direct tests against the actual current system, because it asks whether the new pattern research improves an already-existing breakout gate rather than comparing against a weak strawman.
+
+## DL-003AV — Breakout Without Compression Is a Necessary Control
+
+### Reason
+If research only studies successful VCP/cup/flag breakouts, it cannot tell whether compression mattered or whether all strong breakouts do well.
+
+Required control:
+- breakouts with no meaningful pre-breakout compression,
+matched on:
+- date
+- liquidity
+- price tier
+- trend
+- ret20/ret60
+- sector
+- breakout volume
+- distance to major resistance.
+
+### Outcome
+Estimate the incremental contribution of compression/topology itself.
+
+## DL-003AW — Compression Without Breakout Is Also a Necessary Control
+
+### Reason
+Many beautiful compressions never resolve upward.
+
+Track:
+- mature compression that breaks down,
+- mature compression that remains unresolved,
+- mature compression that breaks out,
+- compression invalidated before trigger.
+
+### Research value
+Prevents survivorship bias from only studying patterns that eventually triggered.
+
+### Time-to-event link
+Use DL-003AP competing-risk framework:
+MATURE -> BREAKOUT / INVALIDATION / CENSOR.
+
+This is essential before claiming “tightness predicts breakout.”
