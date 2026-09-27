@@ -226,3 +226,20 @@ Verified:
 Important:
 No RANK-03 confluence bonus/order was implemented.
 This is deliberate: component redundancy/incremental value must be tested before confluence may influence ranking.
+
+
+## RANK-04 regime readiness verification (2026-09-27)
+
+Status: READINESS GATE PASS / REGIME PRIORITY CHALLENGER NOT ACTIVATED.
+
+Implemented:
+- `SYSTEM2_RANK04_REGIME_PRIORITY_EXPERIMENT_V0_1.md`;
+- `runtime/rank04_regime_readiness.mjs`.
+
+Verified:
+- SHORT_MOMENTUM requires TAIEX trend + breadth + sector rotation + volatility to be KNOWN before a RANK-04 challenger is eligible;
+- SWING_GROWTH requires TAIEX trend + sector rotation + volatility; breadth is not silently made universal;
+- TPEx candidates fail closed when TPEx regime state is UNKNOWN; TAIEX cannot substitute for TPEx;
+- missing regime inputs produce REGIME_INCOMPLETE, not a neutral/negative score.
+
+No regime ranking bonus, activation weight or Risk-on/Risk-off gate was implemented.
