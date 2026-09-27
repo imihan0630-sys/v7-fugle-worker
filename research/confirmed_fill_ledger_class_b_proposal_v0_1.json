@@ -1,0 +1,77 @@
+{
+  "schemaVersion": "CONFIRMED_FILL_LEDGER_CLASS_B_PROPOSAL_V0_1",
+  "status": "PROPOSAL_READY_OWNER_APPROVAL_REQUIRED_NOT_IMPLEMENTED",
+  "basedOn": "CONFIRMED_FILL_LEDGER_V0_2_1",
+  "formalDecisionImpact": false,
+  "tables": {
+    "events": {
+      "name": "v8_confirmed_execution_events",
+      "appendOnly": true,
+      "uniqueKeys": [
+        "ledger_event_id",
+        "source+source_record_id"
+      ],
+      "updateAllowed": false,
+      "deleteAllowed": false
+    },
+    "heads": {
+      "name": "v8_execution_position_heads",
+      "evidence": false,
+      "rebuildable": true,
+      "healthStates": [
+        "HEALTHY",
+        "RECONCILIATION_REQUIRED",
+        "UNKNOWN"
+      ]
+    }
+  },
+  "endpoints": [
+    {
+      "method": "POST",
+      "path": "/api/execution-ledger/validate",
+      "writes": false
+    },
+    {
+      "method": "POST",
+      "path": "/api/execution-ledger/events",
+      "writes": true,
+      "featureFlagRequired": true
+    },
+    {
+      "method": "GET",
+      "path": "/api/execution-ledger/events",
+      "writes": false
+    },
+    {
+      "method": "GET",
+      "path": "/api/execution-ledger/health",
+      "writes": false
+    }
+  ],
+  "prohibitions": [
+    "no automatic /api/positions -> fill conversion",
+    "no signal -> fill conversion",
+    "no market quote -> execution confirmation",
+    "no UPDATE/DELETE correction",
+    "no Formal read dependency in Phase A",
+    "no historical backfill from suggested shares"
+  ],
+  "idempotency": {
+    "exactEventSameHash": "READBACK_NO_NEW_ROW",
+    "eventIdDifferentHash": "HTTP_409",
+    "sourceRecordSameHash": "READBACK_NO_NEW_ROW",
+    "sourceRecordDifferentHash": "HTTP_409"
+  },
+  "concurrency": {
+    "expectedHeadEventIdRequired": true,
+    "mismatch": "HTTP_409",
+    "transactionSemanticsMustBeProvenBeforeDeploy": true
+  },
+  "rollback": {
+    "additiveSchema": true,
+    "disableWriteFlag": true,
+    "preserveEvidenceRows": true,
+    "formalSystemIndependent": true
+  },
+  "approval": "EXPLICIT_OWNER_APPROVAL_REQUIRED"
+}

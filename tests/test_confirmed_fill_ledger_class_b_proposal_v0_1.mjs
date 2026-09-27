@@ -1,0 +1,22 @@
+import assert from "node:assert/strict";
+import {readFile} from "node:fs/promises";
+
+const spec=JSON.parse(await readFile(new URL("../research/confirmed_fill_ledger_class_b_proposal_v0_1.json",import.meta.url),"utf8"));
+assert.equal(spec.formalDecisionImpact,false);
+assert.equal(spec.basedOn,"CONFIRMED_FILL_LEDGER_V0_2_1");
+assert.equal(spec.tables.events.appendOnly,true);
+assert.equal(spec.tables.events.updateAllowed,false);
+assert.equal(spec.tables.events.deleteAllowed,false);
+assert.equal(spec.tables.heads.evidence,false);
+assert.equal(spec.tables.heads.rebuildable,true);
+assert.equal(spec.concurrency.expectedHeadEventIdRequired,true);
+assert.equal(spec.concurrency.transactionSemanticsMustBeProvenBeforeDeploy,true);
+assert.ok(spec.prohibitions.includes("no automatic /api/positions -> fill conversion"));
+assert.ok(spec.prohibitions.includes("no signal -> fill conversion"));
+assert.ok(spec.prohibitions.includes("no market quote -> execution confirmation"));
+assert.ok(spec.prohibitions.includes("no Formal read dependency in Phase A"));
+assert.equal(spec.rollback.preserveEvidenceRows,true);
+assert.equal(spec.approval,"EXPLICIT_OWNER_APPROVAL_REQUIRED");
+const write=spec.endpoints.find(x=>x.method==="POST"&&x.path==="/api/execution-ledger/events");
+assert.equal(write.featureFlagRequired,true);
+console.log(JSON.stringify({ok:true,class:"B_PROPOSAL_ONLY",formalDecisionImpact:false,ownerApprovalRequired:true,implementation:false}));
