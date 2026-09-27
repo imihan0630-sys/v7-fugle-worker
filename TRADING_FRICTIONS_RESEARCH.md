@@ -603,3 +603,55 @@ First topics:
 - event-risk interaction with FIRST/ADD/FULL and portfolio heat;
 - positive and counter evidence;
 - point-in-time event calendar and no-look-ahead provenance.
+
+
+## PR-047 — exact historical BUY trigger payload is not durably preserved (2026-09-27)
+
+A source-level provenance audit separates current operational signal state from historical execution evidence.
+
+Current runtime has four relevant stores:
+- `v7_signal_delivery_state`: authoritative lease/dedupe state, one mutable `snapshot_json` per state key;
+- `v7_live_state`: singleton `id=1`, overwritten every monitor run;
+- `V7_LAST_MONITOR_RUN`: overwritten KV mirror with 2-day TTL;
+- `v7_cron_runs`: append-only run metadata, but `detail` stores only the run status text.
+
+For a real push, the delivery state briefly persists:
+`signalId / episode / RESERVED / reservedAt`
+before calling the receiver.
+
+On successful delivery, that pending record is deleted. The surviving state retains episode/fired/bar-time style dedupe information, but not the successful BUY payload's:
+- currentPrice;
+- suggestedAmount;
+- suggestedShares;
+- exact delivery result payload.
+
+The KV signal-state mirror expires after 7 days and is not an immutable signal-event ledger.
+
+### Reconstruction shortcut rejected
+
+`lastEntrySignalBarTime + historical 15m candle = exact BUY trigger price`
+
+is rejected.
+
+`lastEntrySignalBarTime` identifies the formal 15m bar. `buildPushPayload.currentPrice` comes from the contemporaneous quote at signal processing time. The quote can differ from the completed bar close, so candle reconstruction is context only, not exact trigger-price evidence.
+
+### Safe evidence boundary
+
+Current state can support:
+- dedupe/episode existence;
+- recent operational debugging;
+- bar-time context.
+
+It cannot support promotion-grade historical trigger-price attribution after the exact payload is gone.
+
+Signal price also remains separate from broker fill evidence.
+
+Artifacts:
+- `research/signal_trigger_provenance_audit_v0_1.json`
+- `research/signal_trigger_provenance_classifier_v0_1.mjs`
+- `tests/test_signal_trigger_provenance_v0_1.mjs`
+
+Status:
+`SIGNAL_EPISODE_EVIDENCE_EXISTS / EXACT_HISTORICAL_TRIGGER_PAYLOAD_NOT_DURABLE / EXECUTION_PROVENANCE_BLOCKED`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
