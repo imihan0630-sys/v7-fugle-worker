@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "immutable-decision-state-parent-v0.2",
+  "schemaVersion": "immutable-decision-state-parent-v0.3",
   "updated": "2026-09-28 Asia/Taipei",
   "researchOnly": true,
   "runtimeImplemented": false,
@@ -94,7 +94,9 @@
     "OLD_PARENT_NEVER_REINTERPRETED_WITH_NEW_COMPARATOR",
     "PARENT_ID_EXCLUDES_SEMANTIC_FINGERPRINT",
     "SAME_PARENT_ID_SAME_FINGERPRINT_IDEMPOTENT",
-    "SAME_PARENT_ID_DIFFERENT_FINGERPRINT_PROVENANCE_CONFLICT"
+    "SAME_PARENT_ID_DIFFERENT_FINGERPRINT_PROVENANCE_CONFLICT",
+    "EXACT_DUPLICATE_NEVER_UPDATES_FIRST_CAPTURE_TIMESTAMPS",
+    "NESTED_DECISION_PAYLOAD_IMMUTABLE_IN_MEMORY"
   ],
   "sameScanOrder": [
     "SOURCE_NORMALIZATION",
@@ -114,5 +116,16 @@
   },
   "identityHashRule": "parentDecisionReceiptId = HASH(IDENTITY_TUPLE_ONLY)",
   "semanticFingerprintRule": "semanticFingerprint = HASH(IMMUTABLE_DECISION_PAYLOAD_SEPARATELY)",
-  "conflictRule": "SAME_PARENT_ID + DIFFERENT_SEMANTIC_FINGERPRINT => PROVENANCE_CONFLICT"
+  "conflictRule": "SAME_PARENT_ID + DIFFERENT_SEMANTIC_FINGERPRINT => PROVENANCE_CONFLICT",
+  "firstKnownPersistenceRule": "SAME_PARENT_ID_SAME_FINGERPRINT_IS_NO_OP; DO_NOT_UPDATE_FIRST_CAPTURE_TIMESTAMPS",
+  "prototype": {
+    "module": "research/immutable_decision_state_parent_v0_1.mjs",
+    "test": "research/test_immutable_decision_state_parent_v0_1.mjs",
+    "validation": "PASS_ISOLATED_V8",
+    "noMarketCalls": true,
+    "noD1Writes": true,
+    "noScoreCandidateRerun": true,
+    "deepFreeze": true,
+    "productionHashAlgorithmFrozen": false
+  }
 }
