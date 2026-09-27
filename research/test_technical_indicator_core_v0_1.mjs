@@ -4,6 +4,8 @@ import {
   computeKD,
   computeRSI,
   computeMACD,
+  computeADX,
+  computeBollingerBands,
   buildIndicatorSnapshot,
 } from "./technical_indicator_core_v0_1.mjs";
 
@@ -119,9 +121,127 @@ assert.deepEqual(
   "replay must be exact"
 );
 
+
+
+const approx = (actual, expected, tolerance = 1e-10, message = "") => {
+  assert.ok(
+    Math.abs(Number(actual) - Number(expected)) <= tolerance,
+    (message ? message + ": " : "") + "expected " + expected + ", got " + actual,
+  );
+};
+
+// ADX14 deterministic oracle checks.
+const adxUpBars = Array.from({ length: 40 }, (_, i) => strictBar(100 + i, {
+  high: 101 + i,
+  low: 99 + i,
+}));
+const adxDownBars = Array.from({ length: 40 }, (_, i) => strictBar(139 - i, {
+  high: 140 - i,
+  low: 138 - i,
+}));
+const adxFlatBars = Array.from({ length: 40 }, () => strictBar(100, { high: 100, low: 100 }));
+const adxEqualOutsideBars = Array.from({ length: 40 }, (_, i) => strictBar(100, {
+  high: 101 + i,
+  low: 99 - i,
+}));
+
+const adxUp = computeADX(adxUpBars);
+const adxDown = computeADX(adxDownBars);
+const adxFlat = computeADX(adxFlatBars);
+const adxEqualOutside = computeADX(adxEqualOutsideBars);
+
+assert.equal(adxUp.firstOutputIndex, 27);
+approx(adxUp.values[27].adx, 100, 1e-12, "ADX monotonic-up first value");
+approx(adxUp.values.at(-1).adx, 100, 1e-12, "ADX monotonic-up final");
+approx(adxUp.values[27].plusDI, 50, 1e-12, "ADX monotonic-up +DI");
+approx(adxUp.values[27].minusDI, 0, 1e-12, "ADX monotonic-up -DI");
+
+approx(adxDown.values[27].adx, 100, 1e-12, "ADX monotonic-down first value");
+approx(adxDown.values.at(-1).adx, 100, 1e-12, "ADX monotonic-down final");
+approx(adxDown.values[27].plusDI, 0, 1e-12, "ADX monotonic-down +DI");
+approx(adxDown.values[27].minusDI, 50, 1e-12, "ADX monotonic-down -DI");
+
+approx(adxFlat.values[27].adx, 0, 1e-12, "ADX flat first value");
+approx(adxFlat.values.at(-1).adx, 0, 1e-12, "ADX flat final");
+approx(adxEqualOutside.values[27].plusDI, 0, 1e-12, "ADX equal expansion +DI");
+approx(adxEqualOutside.values[27].minusDI, 0, 1e-12, "ADX equal expansion -DI");
+approx(adxEqualOutside.values[27].adx, 0, 1e-12, "ADX equal expansion");
+
+const gapBars = [
+  strictBar(100, { high: 100, low: 100 }),
+  strictBar(110, { high: 110.5, low: 109.5 }),
+];
+approx(computeADX(gapBars).values[1].tr, 10.5, 1e-12, "ADX true-range gap fixture");
+
+const adxUpScaled = computeADX(adxUpBars.map(row => ({
+  ...row,
+  open: Number(row.open) * 10,
+  high: Number(row.high) * 10,
+  low: Number(row.low) * 10,
+  close: Number(row.close) * 10,
+})));
+for (let i = 27; i < adxUp.values.length; i += 1) {
+  approx(adxUpScaled.values[i].plusDI, adxUp.values[i].plusDI, 1e-10, "ADX +DI scale invariance " + i);
+  approx(adxUpScaled.values[i].minusDI, adxUp.values[i].minusDI, 1e-10, "ADX -DI scale invariance " + i);
+  approx(adxUpScaled.values[i].adx, adxUp.values[i].adx, 1e-10, "ADX scale invariance " + i);
+}
+
+// Bollinger20x2 deterministic oracle checks.
+const bbFlat = computeBollingerBands(Array.from({ length: 20 }, () => strictBar(100))).values.at(-1);
+approx(bbFlat.middle, 100, 1e-12, "BB flat SMA");
+approx(bbFlat.sigma, 0, 1e-12, "BB flat sigma");
+approx(bbFlat.bandWidthRatio, 0, 1e-12, "BB flat width");
+assert.equal(bbFlat.percentB, null);
+assert.equal(bbFlat.percentBReason, "ZERO_BAND_WIDTH_UNDEFINED_LOCATION");
+
+const bbSeqBars = Array.from({ length: 20 }, (_, i) => strictBar(101 + i));
+const bbSeq = computeBollingerBands(bbSeqBars).values.at(-1);
+approx(bbSeq.middle, 110.5, 1e-12, "BB sequence SMA");
+approx(bbSeq.sigma, 5.766281297335398, 1e-12, "BB population sigma");
+approx(bbSeq.upper, 122.0325625946708, 1e-12, "BB upper");
+approx(bbSeq.lower, 98.9674374053292, 1e-12, "BB lower");
+approx(bbSeq.bandWidthRatio, 0.20873416460942612, 1e-12, "BB width ratio");
+approx(bbSeq.bandWidthPct, 20.87341646094261, 1e-12, "BB width pct");
+approx(bbSeq.percentB, 0.911877235523957, 1e-12, "BB percentB");
+
+const bbScaled = computeBollingerBands(bbSeqBars.map(row => ({
+  ...row,
+  open: Number(row.open) * 10,
+  high: Number(row.high) * 10,
+  low: Number(row.low) * 10,
+  close: Number(row.close) * 10,
+}))).values.at(-1);
+approx(bbScaled.bandWidthRatio, bbSeq.bandWidthRatio, 1e-12, "BB scale width invariance");
+approx(bbScaled.percentB, bbSeq.percentB, 1e-12, "BB scale %B invariance");
+
+const bbShifted = computeBollingerBands(bbSeqBars.map(row => ({
+  ...row,
+  open: Number(row.open) + 100,
+  high: Number(row.high) + 100,
+  low: Number(row.low) + 100,
+  close: Number(row.close) + 100,
+}))).values.at(-1);
+approx(bbShifted.middle, 210.5, 1e-12, "BB additive-shift SMA");
+approx(bbShifted.sigma, bbSeq.sigma, 1e-12, "BB additive-shift sigma");
+approx(bbShifted.bandWidthRatio, 0.10957304127953248, 1e-12, "BB additive-shift width");
+approx(bbShifted.percentB, bbSeq.percentB, 1e-12, "BB additive-shift %B");
+
+// Prefix invariance for newly implemented indicators.
+const fullADX = computeADX(adxUpBars).values;
+for (let end = 28; end <= adxUpBars.length; end += 1) {
+  assert.deepEqual(computeADX(adxUpBars.slice(0, end)).values.at(-1), fullADX[end - 1], "ADX prefix mismatch at " + end);
+}
+const bbLongBars = Array.from({ length: 40 }, (_, i) => strictBar(100 + i * 0.7 + Math.sin(i / 3)));
+const fullBB = computeBollingerBands(bbLongBars).values;
+for (let end = 20; end <= bbLongBars.length; end += 1) {
+  assert.deepEqual(computeBollingerBands(bbLongBars.slice(0, end)).values.at(-1), fullBB[end - 1], "Bollinger prefix mismatch at " + end);
+}
+
 assert.equal(TECHNICAL_INDICATOR_FORMULA_VERSION.kd, "TAI_KD_RSV9_K3_D3_INIT50_V0_1");
 assert.equal(TECHNICAL_INDICATOR_FORMULA_VERSION.rsi, "WILDER_RSI14_SMA_SEED_V0_1");
 assert.equal(TECHNICAL_INDICATOR_FORMULA_VERSION.macd, "EMA12_26_SIGNAL9_FIRST_CLOSE_SEED_V0_1");
+assert.equal(TECHNICAL_INDICATOR_FORMULA_VERSION.adx, "WILDER_ADX14_TALIB_STYLE_NO_ROUNDING_V0_1");
+assert.equal(TECHNICAL_INDICATOR_FORMULA_VERSION.bbands, "BBANDS_CLOSE_SMA20_POPSTD20_K2_V0_1");
 
 console.log(JSON.stringify({
   ok: true,
@@ -129,5 +249,7 @@ console.log(JSON.stringify({
   monotonicUp: { kd: upKD, rsi: upRSI },
   breakout: breakoutSnapshot,
   constrainedInterpretation: constrained.interpretationState,
+  adxOracle: { first: adxUp.values[27], final: adxUp.values.at(-1) },
+  bbandsOracle: bbSeq,
   prefixReplay: "PASS",
 }));
