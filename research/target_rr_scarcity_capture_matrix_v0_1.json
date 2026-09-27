@@ -1,0 +1,75 @@
+{
+  "schemaVersion": "target-rr-scarcity-capture-matrix-v0.1",
+  "researchDate": "2026-09-27",
+  "status": "PRE_OUTCOME_STRUCTURAL_AUDIT",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "scarcityStates": [
+    {
+      "state": "TARGET_NULL",
+      "formalFirstFailure": "上方無可驗證實質壓力，無法計算真實RR",
+      "countableFromFirstFailure": true,
+      "marginalGateEffectKnown": false,
+      "exactCauseAttributionFromLegacyShadow": false,
+      "reason": "Legacy Shadow does not freeze targetPrice provenance, full resistance candidates, selected-target source, dated pivot geometry, or exact entry/stop on rejected rows."
+    },
+    {
+      "state": "LOW_RR",
+      "formalFirstFailure": "預期RR低於2比1",
+      "countableFromFirstFailure": true,
+      "marginalGateEffectKnown": false,
+      "exactRrValueFromLegacyRejectedRow": false,
+      "targetSourceAttributionFromLegacyShadow": false
+    },
+    {
+      "state": "FINAL_GRADE_REJECTED",
+      "formalFirstFailure": "策略品質低於B級，不列入推薦",
+      "countableFromFirstFailure": true,
+      "marginalGateEffectKnown": false,
+      "setupQualityReconstructability": "Prospective V8.13 ranking provenance helps only when the rejected row is actually captured."
+    }
+  ],
+  "provenanceMatrix": {
+    "targetPriceRaw": "same-scan feature only; not frozen in legacy research snapshot",
+    "targetPriceSource": "UNKNOWN; no canonical repo producer/source contract found",
+    "targetPriceAsOfKnownAt": "UNKNOWN",
+    "priorHigh20": "same-scan feature; not frozen as explicit target provenance in legacy snapshot",
+    "priorHigh60": "same-scan feature; not frozen in legacy research snapshot",
+    "localPivotCandidates": "requires same-scan history; not frozen in legacy snapshot",
+    "selectedTarget": "available for Formal-passed plan rows; generally absent for target-null/low-RR rejected rows",
+    "selectedTargetSource": "NOT_CAPTURED",
+    "entryStopForRejected": "NOT_DURABLY_CAPTURED",
+    "rewardPerRiskForRejected": "first-failure family identifies LOW_RR, but exact raw RR is not durable for rejected rows",
+    "onePercentExcludedLevels": "NOT_CAPTURED"
+  },
+  "safeInterpretation": [
+    "TARGET_NULL is an ordered first-failure count, not recovered-candidate count if the target gate were removed.",
+    "LOW_RR is distinct from TARGET_NULL; target-null must never be coerced to RR=0.",
+    "FINAL_GRADE_REJECTED is downstream of RR pass and must not be pooled with LOW_RR.",
+    "Source-specific target conclusions require same-scan feature/history capture or a future immutable decision-state receipt.",
+    "A row can be formally target-null under observed inputs while the economic explanation remains UNKNOWN because targetPrice source/coverage is unproven."
+  ],
+  "isolatedObserver": {
+    "module": "research/target_rr_scarcity_observer_v0_1.mjs",
+    "dataCalls": 0,
+    "d1Writes": 0,
+    "formalIntegration": false,
+    "purpose": "Exact same-scan geometry mirror and scarcity-state decomposition before outcomes."
+  },
+  "futureCaptureMinimum": [
+    "scanDate/symbol/rule+comparator version",
+    "upstream gate observed-pass receipt",
+    "channel",
+    "entry/stop",
+    "targetPrice raw + source + source asOf/knownAt/capturedAt",
+    "priorHigh20/priorHigh60",
+    "dated local pivot candidates",
+    "all candidate levels with >1% eligibility state",
+    "selected target + all tied sources",
+    "target-null reason",
+    "raw rewardPerRisk",
+    "setupQuality/final grade",
+    "parent semantic fingerprint/generation"
+  ],
+  "decision": "TARGET_NULL_LOW_RR_GRADE_SCARCITY_SEPARABLE_PRE_OUTCOME / SOURCE_ATTRIBUTION_CAPTURE_GAP_CONFIRMED / NO_FORMAL_CHANGE"
+}
