@@ -256,3 +256,29 @@ Do not recompute a partial scoring path merely because the symbol is later sampl
 
 Acceptance test:
 for any symbol present in the actual same-date scored list, every attached research membership must resolve to an identical post-consensus ranking tuple.
+
+
+## Reader completeness / pagination
+
+The current counterfactual reader is also capacity-bounded:
+`ORDER BY scan_date ASC, cohort ASC, cohort_rank ASC LIMIT 5000`.
+
+It has:
+- no pagination;
+- no total-row precheck;
+- no truncation flag;
+- no protection against partial-date reads.
+
+As research cohorts expand, a requested 90/120-day window can exceed 5000 rows. Because ordering is oldest-first, newest prospective evidence is the first to disappear.
+
+Machine witness:
+`research/shadow_reader_capacity_falsification_v0_1.json`.
+
+Any replacement reader must:
+- paginate to complete the requested keyspace;
+- preserve whole-date completeness or mark `PARTIAL_DATE`;
+- return requested/returned date and row coverage;
+- fail promotion-grade inference when truncated;
+- join evidence overlays against the exact same parent keyset.
+
+Do not fix this by only increasing the hard-coded limit.
