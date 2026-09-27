@@ -100,6 +100,31 @@ CREATE TABLE IF NOT EXISTS s2_shadow_runs (
 CREATE INDEX IF NOT EXISTS idx_s2_shadow_run_strategy_date
   ON s2_shadow_runs (strategy_id, strategy_version, market_date);
 
+
+CREATE TABLE IF NOT EXISTS s2_capacity_runs (
+  capacity_run_id TEXT PRIMARY KEY,
+  market_date TEXT NOT NULL,
+  decision_timestamp TEXT NOT NULL,
+  global_max INTEGER NOT NULL,
+  per_strategy_max INTEGER NOT NULL,
+  ordering_policy_id TEXT NOT NULL,
+  ordering_policy_version TEXT NOT NULL,
+  retained_json TEXT NOT NULL,
+  removed_json TEXT NOT NULL,
+  admitted_new_json TEXT NOT NULL,
+  capacity_overflow_json TEXT NOT NULL,
+  global_pool_json TEXT NOT NULL,
+  active_assignments_json TEXT NOT NULL,
+  active_non_assignments_json TEXT NOT NULL,
+  counts_json TEXT NOT NULL,
+  capacity_hash TEXT NOT NULL UNIQUE,
+  captured_at TEXT NOT NULL,
+  schema_version TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_s2_capacity_run_date
+  ON s2_capacity_runs (market_date, decision_timestamp);
+
 CREATE TABLE IF NOT EXISTS s2_decisions (
   decision_id TEXT PRIMARY KEY,
   factor_snapshot_id TEXT NOT NULL,
