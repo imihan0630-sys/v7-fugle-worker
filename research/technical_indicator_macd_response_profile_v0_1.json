@@ -1,0 +1,109 @@
+{
+  "schemaVersion": "technical-indicator-macd-response-profile-v0.1",
+  "updated": "2026-09-28 Asia/Taipei",
+  "researchOnly": true,
+  "outcomeBlind": true,
+  "decisionImpact": false,
+  "formulaVersion": "EMA12_26_SIGNAL9_FIRST_CLOSE_SEED_V0_1",
+  "fixtures": {
+    "F1_CONSTANT": {
+      "histFlips": 0,
+      "difFlips": 0,
+      "final": {
+        "dif": 0,
+        "histogram": 0
+      }
+    },
+    "F2_STEP_UP": {
+      "firstHistPositive": 40,
+      "firstHistNegativeAfterStep": 54,
+      "peakHistogram": {
+        "index": 43,
+        "value": 1.2158215871137161
+      },
+      "peakDIF": {
+        "index": 48,
+        "value": 2.7789545396104245
+      },
+      "bar60": {
+        "dif": 1.687030466885659,
+        "histogram": -0.3386643699965237
+      }
+    },
+    "F3_STEP_DOWN": {
+      "mirrorOf": "F2_STEP_UP"
+    },
+    "F4_LINEAR_UP": {
+      "histFlips": 0,
+      "final": {
+        "dif": 3.4857028870135593,
+        "histogram": 0.0067169434711042975
+      }
+    },
+    "F5_LINEAR_DOWN": {
+      "mirrorOf": "F4_LINEAR_UP"
+    },
+    "F6_SLOPE_ACCELERATION": {
+      "bar39Histogram": 0.05443431539411847,
+      "peakHistogram": {
+        "index": 52,
+        "value": 0.6075220906558885
+      },
+      "finalDIF": 5.26213984065879
+    },
+    "F7_V_REVERSAL": {
+      "firstHistogramPositive": 42,
+      "firstDIFPositive": 55,
+      "leadBars": 13,
+      "bar45": {
+        "dif": -4.591497645607433,
+        "histogram": 0.9700077806687757
+      }
+    },
+    "F8_CHOPPY_ZERO_DRIFT": {
+      "histFlips": 46,
+      "difFlips": 40
+    },
+    "F9_TREND_PLUS_NOISE": {
+      "histFlips": 14,
+      "difFlips": 0
+    },
+    "F10_SINGLE_GAP_SHOCK": {
+      "shockBar": 40,
+      "firstHistogramNegative": 44,
+      "firstDIFNegative": 49,
+      "bar40": {
+        "dif": 0.7977207977207854,
+        "histogram": 0.6381766381766283
+      }
+    },
+    "F11_FALSE_BREAK_ONE_BAR": {
+      "shockAmplitude": 5,
+      "timingMatchesF10": true,
+      "bar40": {
+        "dif": 0.3988603988604069,
+        "histogram": 0.3190883190883255
+      }
+    },
+    "F12_LIMIT_CONSTRAINED_STAIR_STEP": {
+      "interpretation": "VALID_BUT_CONSTRAINED",
+      "peakHistogram": {
+        "index": 44,
+        "value": 5.713899043464224
+      },
+      "peakDIF": {
+        "index": 48,
+        "value": 16.20074177270962
+      },
+      "bar60": {
+        "dif": 10.0007012715308,
+        "histogram": -1.977435998425987
+      }
+    }
+  },
+  "prohibited": [
+    "NO_ALPHA_INFERENCE",
+    "NO_BUY_SELL_LABEL",
+    "NO_THRESHOLD_OPTIMIZATION"
+  ]
+}
