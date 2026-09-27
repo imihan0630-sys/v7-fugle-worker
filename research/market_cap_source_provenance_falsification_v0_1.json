@@ -1,0 +1,113 @@
+{
+  "schemaVersion": "market-cap-source-provenance-falsification-v0.1",
+  "researchDate": "2026-09-27",
+  "status": "STRUCTURAL_SOURCE_IDENTITY_GAP_CONFIRMED",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "currentFormalPath": {
+    "officialProfile": {
+      "outputs": [
+        "market",
+        "industry",
+        "sharesOutstanding",
+        "other profile/fundamental fields"
+      ],
+      "explicitMarketCapYiProduced": false,
+      "tpexRowEvidence": "Official TPEx mopsfin_t187ap03_O currently exposes Date + IssueShares in every row.",
+      "twseFallbackEvidence": "MOPS t187ap03_L CSV fallback is explicitly parsed with 出表日期 and 已發行普通股數 or equivalent fields by current tests/source contract."
+    },
+    "customMerge": {
+      "order": "stocks starts from official.stocks; custom extra is merged with {...base,...extra}; only market is forced back to official market when known.",
+      "canOverride": [
+        "sharesOutstanding",
+        "marketCapYi",
+        "marketCap100m",
+        "市值_億",
+        "and other enrichment fields"
+      ],
+      "customPayloadProvenance": "normalizeEnrichmentPayload keeps stocks/history/available only; payload-level meta/asOf is not preserved."
+    },
+    "marketCapCalculation": {
+      "explicitPriority": "toNumber(extra.marketCapYi ?? extra.marketCap100m ?? extra['市值_億'])",
+      "fallback": "sharesOutstanding * same-day close / 1e8",
+      "sourceIdentityStored": false
+    }
+  },
+  "possibleLiveSourceStates": [
+    {
+      "id": "CUSTOM_EXPLICIT_MARKET_CAP",
+      "condition": "custom stock overrides/sets marketCapYi, marketCap100m or 市值_億",
+      "valueMeaning": "opaque explicit market-cap value from custom enrichment",
+      "provenanceToday": "not serialized as source/asOf"
+    },
+    {
+      "id": "CUSTOM_SHARES_X_CLOSE",
+      "condition": "custom stock overrides official sharesOutstanding but no explicit market cap",
+      "valueMeaning": "custom sharesOutstanding × same-day close",
+      "provenanceToday": "not serialized as source/asOf"
+    },
+    {
+      "id": "OFFICIAL_SHARES_X_CLOSE",
+      "condition": "no custom explicit market cap and no custom shares override",
+      "valueMeaning": "official profile sharesOutstanding × same-day close",
+      "provenanceToday": "profile source/date not carried into normalized stock or Shadow"
+    },
+    {
+      "id": "UNKNOWN",
+      "condition": "marketCapYi present but source path cannot be proven from persisted evidence",
+      "valueMeaning": "do not infer source ex post"
+    }
+  ],
+  "structuralRisks": [
+    "Two numerically equal marketCapYi values can have different source/vintage semantics but become indistinguishable after merge.",
+    "Custom enrichment can override official sharesOutstanding because only market classification is protected from override.",
+    "Official profile fallback validates exportDate but sourceMeta currently drops exportDate from the returned meta.",
+    "Official profile OpenAPI row date is not propagated to per-stock sharesOutstanding provenance.",
+    "customAvailable is a coarse global flag; it does not prove which symbols/fields were overridden.",
+    "Historical denominator/vintage correctness is a separate Corporate Actions problem; this artifact does not duplicate that lane."
+  ],
+  "thresholdMateriality": {
+    "formalBoundariesYi": [
+      10,
+      30,
+      100
+    ],
+    "note": "Source/vintage disagreement near these hard boundaries can change early Formal path even when all later logic is unchanged.",
+    "noCurrentFlipClaim": true
+  },
+  "minimumProspectiveProvenance": {
+    "fields": [
+      "marketCapYi",
+      "marketCapSourceType = CUSTOM_EXPLICIT / CUSTOM_SHARES_X_CLOSE / OFFICIAL_SHARES_X_CLOSE / UNKNOWN",
+      "marketCapSourceId",
+      "marketCapSourceDate",
+      "marketCapCapturedAt",
+      "marketCapPointInTimeEligible",
+      "sharesOutstanding",
+      "sharesSourceType = CUSTOM / OFFICIAL_TWSE_PROFILE / OFFICIAL_TPEX_PROFILE / UNKNOWN",
+      "sharesSourceDate",
+      "sharesCapturedAt",
+      "closeDate",
+      "explicitMarketCapRaw when used",
+      "customFieldOverrideFlags = marketCap / sharesOutstanding",
+      "sourceQualityState"
+    ],
+    "zeroExtraMarketCallsPreferred": true,
+    "missing": "UNKNOWN, never infer official simply because official profile was available"
+  },
+  "falsification": [
+    "First measure live source-state prevalence prospectively; do not assume custom explicit marketCap is used in Production.",
+    "If all clean prospective rows are OFFICIAL_SHARES_X_CLOSE with source-date proof, custom-source ambiguity is practically inactive but observability still matters.",
+    "If custom overrides occur, compare explicit/custom-derived values with same-date official-share-derived notional cap only as QA; do not silently replace Formal input.",
+    "Near 10/30/100bn boundaries, measure source-path disagreements before any market-cap floor conclusion.",
+    "Corporate-action/share-vintage mismatches remain governed by the existing denominator source contract; do not reconstruct old shares from current profile.",
+    "No market-cap threshold tuning before source identity is frozen."
+  ],
+  "engineeringBoundary": {
+    "researchCapture": "Potential Class A only if source identity is derived from already-loaded official/custom objects and serialized solely to research evidence with zero new calls and no Formal mutation.",
+    "mergePrecedenceOrOverridePolicy": "Class B proposal-first because it changes shared enrichment semantics.",
+    "sharesVintageRepair": "Corporate Action lane / Class B as already governed.",
+    "marketCapGateChange": "Class C owner approval required."
+  },
+  "decision": "LIVE_MARKET_CAP_SOURCE_IDENTITY_NOT_PRESERVED / OFFICIAL_ZERO_EXTRA_CALL_PROVENANCE_AVAILABLE_IN_PART / NO_FORMAL_CHANGE"
+}
