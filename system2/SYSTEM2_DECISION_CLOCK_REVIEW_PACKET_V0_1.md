@@ -20,6 +20,7 @@ A clock-freeze review packet becomes `OWNER_REVIEW_ELIGIBLE` only when all are t
 - no official trading-day artifact gap exists;
 - Collector Provenance（擷取器來源證明）V0.3 is valid for every promotion-grade scheduled artifact;
 - `collectorContractConsistent=true` and exactly one collector-contract fingerprint represents the selected promotion-grade sample;
+- no selected date appears in `a5BoundaryFailureDates`; A5 must have been prospectively READY no later than that date's computed candidate boundary;
 - V0.2 readiness status is `FREEZE_ELIGIBLE`;
 - at least 20 independent trading dates are included;
 - all included dates are precision eligible.
@@ -51,6 +52,8 @@ The owner-facing review packet must include:
 - complete collector-contract fingerprint list;
 - `collectorContractConsistent` state;
 - any `COLLECTOR_CONTRACT_DRIFT` blocker;
+- A5 boundary-integrity version, failure count and full failure-date list;
+- any `A5_NOT_AVAILABLE_BY_CANDIDATE` blocker;
 - explicit safety state.
 
 No performance/outcome statistic belongs in this clock-selection packet. The clock is chosen from source availability and data completeness, not from which time produced better stock returns.
