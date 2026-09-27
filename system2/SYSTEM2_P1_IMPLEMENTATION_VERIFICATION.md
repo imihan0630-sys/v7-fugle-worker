@@ -205,3 +205,24 @@ Verified:
 - ranking-experiment storage serializer preserves outcomeAttached=false at preregistration time.
 
 No claim of ranking alpha is made.
+
+
+## RANK-03 confluence gate verification (2026-09-27)
+
+Status: INTERACTION RECEIPT PASS / RANKING CHALLENGER INTENTIONALLY NOT ACTIVATED.
+
+Implemented:
+- `SYSTEM2_RANK03_CONFLUENCE_EXPERIMENT_V0_1.md`;
+- `runtime/interaction_observation.mjs`;
+- extended InteractionObservation research contract.
+
+Verified:
+- interaction state derives from component factor availability/PIT state;
+- a PIT-ineligible component prevents the interaction from being KNOWN;
+- non-KNOWN interaction forces confluenceState=INDETERMINATE;
+- redundancyState=NOT_TESTED does not permit ranking use;
+- only state=KNOWN + determinate confluence + CONTROLLED_FOR_RESEARCH sets rankingEligible=true.
+
+Important:
+No RANK-03 confluence bonus/order was implemented.
+This is deliberate: component redundancy/incremental value must be tested before confluence may influence ranking.
