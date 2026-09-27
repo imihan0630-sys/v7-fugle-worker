@@ -1,0 +1,120 @@
+{
+  "schemaVersion": "EXTREME_MOVE_PROXY_PROSPECTIVE_DENOMINATOR_V0_1",
+  "updatedAtTaipei": "2026-09-27",
+  "researchOnly": true,
+  "outcomeDataUsed": false,
+  "decisionImpact": false,
+  "formalCoreChanged": false,
+  "currentFormal": {
+    "order": 6,
+    "productionCondition": "Math.abs(f.changePercent || 0) >= 9.8",
+    "rejectReason": "單日走勢過度異常",
+    "basePassed": false,
+    "semanticName": "EXTREME_DAILY_RETURN_PROXY",
+    "notEquivalentTo": "OFFICIAL_PRICE_LIMIT_STATE"
+  },
+  "upstreamFormalReach": {
+    "requiredClearBeforeExtreme": [
+      "close>=10",
+      "historyDays>=60",
+      "marketReturn20 observed",
+      "sectorReturn20 observed",
+      "marketCapYi observed",
+      "marketCapYi>=10"
+    ],
+    "denominator": "Rows in CURRENT_FEATURE_ROWS whose earlier Formal admission gates are positively clear under the same scan generation.",
+    "excludedFromDenominator": [
+      "earlier FAIL",
+      "earlier UNKNOWN",
+      "generation/source-quality UNKNOWN"
+    ],
+    "reason": "Raw all-feature prevalence and production firstFailure counts answer different questions. The strategy incidence denominator for gate 6 is the exact rows that positively reach gate 6."
+  },
+  "currentGateState": {
+    "observedNumericPass": "changePercent finite and abs(changePercent)<9.8",
+    "observedProxyRejectUp": "changePercent finite and >=9.8",
+    "observedProxyRejectDown": "changePercent finite and <=-9.8",
+    "missingChangePercent": "RESEARCH_UNKNOWN_FORMAL_COERCED_NON_REJECT",
+    "missingSemantics": "Production's `||0` means this gate does not reject missing changePercent, but research must not relabel missing as a true 0% return or observed PASS."
+  },
+  "exactOfficialStateLayer": {
+    "states": [
+      "OFFICIAL_CLOSE_LIMIT_UP",
+      "OFFICIAL_CLOSE_LIMIT_DOWN",
+      "OFFICIAL_NON_HIT",
+      "NO_PRICE_LIMIT",
+      "NON_COMPARABLE_X",
+      "OFFICIAL_LIMIT_UNKNOWN"
+    ],
+    "preferredProspectiveSources": [
+      "TWSE TWT84U opening-auction reference / limit prices",
+      "TPEx official daily quote/limit marker source as frozen in INFORMATION_DISCRETENESS_SHADOW_SPEC.md"
+    ],
+    "requirement": "Official state is a separate evidence layer joined by exact symbol-session with source timestamp/hash/coverage. Approximate return threshold may not manufacture an official state."
+  },
+  "crossTabRequired": [
+    "UP_PROXY_REJECT x official state",
+    "DOWN_PROXY_REJECT x official state",
+    "numeric proxy pass x official state",
+    "missing changePercent / non-comparable state kept separate"
+  ],
+  "cleanDateAcceptance": {
+    "proxyParent": [
+      "same-generation feature parent positively complete",
+      "history/source quality accepted",
+      "earlier gate reach denominator explicit by pool",
+      "finite-change vs missing-change counts explicit",
+      "UP and DOWN proxy reject counts explicit",
+      "bounded sample fraction or full rejected population count explicit"
+    ],
+    "officialState": [
+      "requested exchange-date source receipt complete",
+      "every sampled/required parent key receives official state or explicit OFFICIAL_LIMIT_UNKNOWN",
+      "NO_PRICE_LIMIT and NON_COMPARABLE_X are not folded into NON_HIT",
+      "source coverage counts reconcile to requested keyset",
+      "no future outcome fields in selection-time receipt"
+    ],
+    "label": "EXTREME_MOVE_PARENT_AND_OFFICIAL_STATE_CLEAN",
+    "otherwise": "EXTREME_MOVE_EVIDENCE_UNKNOWN_NO_OUTCOME_JOIN"
+  },
+  "estimatorGuard": {
+    "primaryIncidence": [
+      "formalReachProxyRejectRateUp = UP reject / finite-change formal-reach denominator",
+      "formalReachProxyRejectRateDown = DOWN reject / finite-change formal-reach denominator",
+      "missingChangeCoverage = missing changePercent / total positively upstream-reached rows"
+    ],
+    "semanticMismatch": [
+      "proxyFalsePositive = proxy reject + official NON_HIT",
+      "proxyFalseNegative = numeric proxy pass + official CLOSE_LIMIT_UP/DOWN",
+      "report direction separately"
+    ],
+    "forbidden": [
+      "pool UP and DOWN for return inference",
+      "treat missing changePercent as 0%",
+      "treat official UNKNOWN as NON_HIT",
+      "use BROAD_CONTROL sample as gate prevalence denominator",
+      "threshold-sweep 9.8 after outcomes"
+    ]
+  },
+  "evidenceState": {
+    "structuralMismatchAlreadyConfirmed": true,
+    "dedicatedProspectiveProxyDenominator": "NOT_YET_PERSISTED_PROMOTION_GRADE",
+    "officialRuleAwareProspectiveReceipt": "SPECIFIED_BUT_NOT_CURRENTLY_PROVEN_LIVE",
+    "historicalBackfillAllowed": false,
+    "outcomesAllowedNow": false
+  },
+  "optimizationBridge": {
+    "candidateName": "EXTREME_MOVE_ADMISSION_REFORMULATION",
+    "currentStatus": "NOT_FORMAL_OPTIMIZATION_CANDIDATE",
+    "promotionRequires": [
+      "clean prospective parent+official-state dates",
+      "independent date support",
+      "execution/liquidity/event/corporate-action controls",
+      "D1/D3/D5/MFE/MAE/stop/no-follow-through after coverage gate",
+      "OOS/holdout and regime robustness",
+      "no material downside/cost/zero-pick degradation"
+    ],
+    "classIfFormalChanged": "C_OWNER_APPROVAL"
+  },
+  "status": "EXTREME_GATE_REACH_DENOMINATOR_FROZEN / MISSING_FORMAL_COERCION_SEPARATED / OFFICIAL_STATE_COVERAGE_REQUIRED / FORMAL_UNCHANGED"
+}
