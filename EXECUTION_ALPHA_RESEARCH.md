@@ -505,3 +505,91 @@ Potential future Formal candidates are conditional only:
 
 Both remain NOT_OPTIMIZATION_READY.
 Any Formal BUY chronology/volume change is Class C.
+
+## PR-047 — correction: V8 trade journal preserves positive BUY signal price, but not complete execution denominator (2026-09-27)
+
+A source-level provenance audit initially focused on the mutable V7 delivery-state layer. A mandatory patch-chain counter-audit found stronger existing evidence in V8.5 and corrected the conclusion before merge.
+
+### Positive formal BUY evidence already exists
+
+V8.5 creates `v8_trade_journal_signals` with:
+- event_id primary key;
+- trade_date / plan_scan_date;
+- occurred_at;
+- symbol / signal_type;
+- market_price;
+- signal_amount;
+- signal_shares;
+- episode;
+- plan_json / event_json.
+
+`recordTradeJournalSignal()` is called immediately after the episode-specific signalId is created and **before** phone/webhook delivery.
+
+For a persisted BUY row:
+- `market_price = result.currentPrice`;
+- therefore the row is strong positive evidence that the Formal BUY signal occurred at that recorded signal price and time.
+
+This is a SIGNAL price, not a broker fill.
+
+### Three remaining provenance gaps
+
+1. **Absence is not NO-BUY evidence.**
+   Signal-journal write failure only logs a warning; Formal signal/push processing can continue. Therefore a missing BUY row is UNKNOWN unless independent plan-level monitor/recorder completeness is proven.
+
+2. **signal_shares is not the live push suggestedShares.**
+   Journal `signal_shares` uses `signal.shares`, which for BUY comes from the precomputed plan firstShares. The live push later recomputes suggestedShares from signal amount and contemporaneous currentPrice. Counterfactual orderability must therefore recompute shares rather than copying journal signal_shares.
+
+3. **Bulk reader completeness is not certified.**
+   `/api/journal` reads at most 6000 signal rows for up to 365 days and exposes no truncation flag. `/api/journal/health` exposes a signal count but not an expected per-plan monitor denominator.
+
+### Other stores remain operational state
+
+- `v7_signal_delivery_state` is mutable lease/dedupe state; accepted pending delivery is removed.
+- `v7_live_state` is the latest singleton monitor snapshot.
+- `V7_LAST_MONITOR_RUN` is an overwritten two-day KV mirror.
+- `v7_cron_runs.detail` stores run-status text, not per-plan monitor coverage.
+
+### Evidence boundary
+
+Allowed:
+- a persisted V8 BUY row may be used as exact positive Formal signal-price/time evidence.
+
+Not allowed:
+- infer NO-BUY from row absence;
+- treat signal_shares as exact live push shares;
+- treat signal market_price as broker fill;
+- treat a LIMIT-bounded bulk reader as complete historical denominator evidence.
+
+Artifacts:
+- `research/signal_trigger_provenance_audit_v0_1.json`
+- `research/signal_trigger_provenance_classifier_v0_1.mjs`
+- `tests/test_signal_trigger_provenance_v0_1.mjs`
+
+Status:
+`POSITIVE_BUY_SIGNAL_PRICE_DURABLE / NO_BUY_DENOMINATOR_UNCERTIFIED / LIVE_SUGGESTED_SHARES_NOT_PERSISTED / FILL_EVIDENCE_SEPARATE`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+### PR-047 addendum — V8.8 execution Shadow does not close the NO-BUY denominator
+
+V8.8.0 adds `trade_research_execution_snapshots`, but its event clock is milestone-based:
+- OPEN_BASELINE;
+- FIRST_10M_COMPLETE;
+- FIRST_15M_COMPLETE;
+- FIRST_30M_COMPLETE;
+- FORMAL_SIGNAL_OBSERVED.
+
+It is not an every-monitor-tick recorder and it has no explicit end-of-session `NO_BUY_EOD` terminal event.
+
+Additional limits:
+- only `result.ok` rows are written;
+- recorder failure is deliberately fail-open;
+- reader is newest-first `LIMIT 500`, returning only `recent.slice(0,80)`.
+
+Therefore V8.8 supplies valuable execution-context snapshots but still cannot turn:
+`no persisted BUY row`
+into:
+`proven complete NO-BUY day`.
+
+A complete NO-BUY needs a separate positive completeness witness or terminal no-entry state. Missing remains UNKNOWN.
