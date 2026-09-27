@@ -18673,3 +18673,160 @@ Bearish mirrors are most useful initially as:
 - reduce/revalidation research,
 not as automatic short signals.
 
+
+
+## DL-002BT — Decision-Rule Sensitivity vs Pattern Predictive Content
+
+### Lesson from the 2026 Taiwan HS paper
+Pattern recognition and trading implementation are separate layers.
+The study shows realized performance changes materially with:
+- target multiple,
+- historical price-extremeness threshold,
+- turning-point confirmation filter.
+
+Therefore a chart pattern can contain directional information while a specific trading rule built on it performs poorly, or vice versa.
+
+### DL-002 separation
+PATTERN_CONTENT:
+- geometry / topology / context available at pattern date.
+
+DECISION_RULE:
+- entry condition,
+- target,
+- stop,
+- holding period,
+- retest requirement.
+
+### Research rule
+Do not use execution-rule profitability as the only evidence that a pattern is informative.
+First test:
+- conditional forward returns,
+- MFE/MAE,
+- R01,
+- same-date matched controls.
+
+Only later test how existing execution logic interacts with the pattern.
+
+### Multiple-testing control
+Decision-rule parameter grids are sensitivity analysis, not optimization tournaments.
+Do not promote the best cell from a grid without family-level multiplicity accounting.
+
+## DL-002BU — Head-and-Shoulders Integrated Without Expanding the Hypothesis Zoo
+
+### Decision
+Do NOT create a new H8 merely because new HS evidence appeared.
+
+Broaden existing primary H2 from:
+“true W neckline topology adds beyond rightFootHigher/priorHigh20”
+
+to:
+“confirmed multi-trough reversal topology (W / inverse-HS family) adds beyond split-window low proxies and local resistance proxies.”
+
+### Reason
+W and inverse-HS share the same latent primitives:
+- multiple troughs,
+- intervening neckline resistance,
+- recovery asymmetry,
+- support progression,
+- historical extremeness,
+- breakout acceptance.
+
+Treating them as separate independent alpha factors would risk double counting.
+
+### Subfamily labels
+- DOUBLE_BOTTOM
+- INVERSE_HEAD_SHOULDERS
+- MULTI_TROUGH_OTHER
+
+Subfamily may explain heterogeneity, but primary experiment family remains one reversal-topology hypothesis.
+
+## DL-002BV — Volume-at-Price / Cost-Zone Data Semantics
+
+### Critical distinction
+VWAP is a transaction/execution benchmark: the average transaction price weighted by traded volume.
+It is NOT the same thing as:
+- current shareholder cost basis,
+- institutional cost,
+- trapped-holder inventory,
+- a full volume-at-price distribution.
+
+Academic VWAP literature primarily treats VWAP as an execution benchmark and models trade-price/volume dynamics, not as a direct ownership-cost estimator.
+
+### Current daily-data limitation
+The live historical cache has daily OHLC and total volume/turnover, not every transaction price and its volume.
+From one daily bar:
+- total volume is known,
+- high/low/close are known,
+- but volume distribution across prices inside the bar is unknown.
+
+Therefore a true historical volume profile cannot be reconstructed from daily bars without additional assumptions.
+
+### Forbidden research shortcut
+Do NOT distribute daily volume uniformly across high-low bins and call it “volume profile” or “holder cost.”
+That would manufacture information.
+
+### What can be computed honestly
+DAILY_APPROX_VWAP proxy:
+- turnover / volume when units/source semantics are verified.
+
+ANCHORED_VOLUME_WEIGHTED_PRICE proxy:
+- cumulative tradeValue / cumulative volume from a point-in-time anchor.
+
+These are valid weighted-average transaction-price proxies, but must be labeled APPROX_VWAP / ANCHORED_AVG_PRICE, not COST_BASIS.
+
+### True volume-at-price requirement
+Need intraday/tick trades or reliable price-by-volume distribution:
+- price
+- traded volume at price
+- timestamp
+- corporate-action handling
+- point-in-time provenance.
+
+### Research use if available
+Possible zone fields:
+- highVolumeNode
+- lowVolumeNode
+- volumeProfilePOC
+- valueAreaBounds
+- distanceToHighVolumeNode
+
+But these remain DATA_BLOCKED until suitable source exists.
+
+## DL-002BW — Anchored VWAP as Context, Not Magic Support
+
+### Potential use
+Anchor a cumulative VWAP-like average from:
+- major swing low,
+- major breakout,
+- event date,
+- beginning of pattern.
+
+Store:
+- anchoredAvgPrice
+- priceVsAnchoredAvgPct
+- priceVsAnchoredAvgATR
+- anchorType
+- anchorDate
+
+### Hypothesis
+An anchored weighted-average price can summarize the average transaction price since a structurally meaningful event.
+
+### Caution
+This does not prove:
+- who owns the stock now,
+- where institutions bought,
+- that the line is support.
+
+Role as support/resistance must be validated the same way as any other zone:
+touch -> response -> acceptance/failure.
+
+### Redundancy
+Compare against:
+- MA20/MA60,
+- swing support,
+- zone geometry,
+- standard price return,
+- turnover.
+
+If anchored VWAP adds nothing, reject it.
+
