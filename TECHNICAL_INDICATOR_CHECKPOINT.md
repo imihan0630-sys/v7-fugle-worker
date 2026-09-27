@@ -695,3 +695,70 @@ FORMAL_OPTIMIZATION_CANDIDATE = NONE
 
 - 97fa943b3683afe22a17d87b9d4436807b5fd34c — minimal semantic information basis v0.1.
 - d0e11268cb3718f0f99514d93a3091bed777fce2 — machine-readable semantic basis registry v0.1.
+
+
+## Continuation update — TI-181 through TI-200
+
+- System 2 audit confirms the conceptual architecture is already aligned with anti-double-counting: technical indicators are auxiliary, majority voting is rejected, and evidence families should aggregate before cross-family confluence.
+- The remaining risk is engineering enforcement: current prose does not yet require every technical evidence item to carry machine-readable B1-B8 basis provenance, transform class, canonical primitive identity and redundancy-group identity.
+- A research-only System 2 technical semantic-provenance contract is frozen with fields for ownerFamily, semanticBasisIds, transformClass, canonicalPrimitiveIds, redundancyGroupId, parentEvidenceIds, interactionHypothesisId, directScoreEligible, formulaVersion, asOf/availableAt and dataQualityState.
+- Exact aliases/rescalings must be non-scoreable; nested transforms default to comparator/explanation; within-basis fields must aggregate before technical-family confluence; cross-basis composites cannot silently score both components and the composite without explicit interaction accounting.
+- System 2 layer mapping is frozen:
+  - T1 Trend Structure -> B1/B4/B5
+  - T2 Structural Levels -> B2
+  - T3 Pattern Topology -> geometry/lifecycle consuming B1/B2/B5/B6/B7
+  - T4 Pattern Lifecycle -> context/lifecycle
+  - T5 Candlestick/Sakata -> B7
+  - T6 Indicator Auxiliary -> B1/B2/B3/B4/B5/B6/B8
+  - T7 Volatility/Compression -> B6
+  - T8 Multi-timeframe -> horizon/context operator
+  - T9 Failure/False-break -> context/lifecycle
+- No current System 2 scoring bug is claimed. The finding is a preventable future implementation risk.
+- New durable artifacts:
+  - research/SYSTEM2_TECHNICAL_SEMANTIC_BASIS_AUDIT_V0_1.md
+  - research/system2_technical_semantic_provenance_contract_v0_1.json
+
+- A separate lag-noise/response audit is frozen for filter-like indicators. "Lower lag" is not accepted as incremental information.
+- Average sample age is not the same as turning-point detection delay. A filter can reduce one lag metric while worsening smoothness/noise behavior.
+- V0.1 filter diagnostics are outcome-blind: step response, ramp/trend response, V-reversal response, noise sensitivity, shock sensitivity, state-flip count, response50/90, transition timing, output variance, shock decay, prefix invariance and replay exactness.
+- SMA/EMA/MACD/low-lag MA variants are treated as filter engineering inside B4 unless a genuinely new semantic input is introduced.
+- MACD histogram may react before a signal-line crossover because it measures DIF relative to a smoother; this does not imply future information.
+- KD-vs-RSI future work must separate semantic-input difference (B2 range location vs B3 signed-return balance) from smoothing/latency difference.
+- ADX future work must measure stability versus confirmation delay, not return separation alone.
+- DEMA/TEMA/HMA/zero-lag variants are excluded from the primary outcome queue by default.
+- Twelve outcome-blind response fixtures F1-F12 are frozen: constant, step up/down, linear up/down, slope acceleration, V reversal, choppy zero-drift, trend+noise, gap shock, one-bar false break, and limit-constrained stair-step.
+- New durable artifacts:
+  - research/TECHNICAL_INDICATOR_LAG_NOISE_RESPONSE_V0_1.md
+  - research/technical_indicator_response_profile_v0_1.json
+- No outcomes inspected, no threshold/parameter optimization, no runtime wiring, no FORMAL_OPTIMIZATION_CANDIDATE.
+- Formal Core remains LOCKED.
+
+### Updated current status
+
+MINIMAL_SEMANTIC_BASIS_V0_1 = FROZEN
+SYSTEM2_TECHNICAL_PRINCIPLES = ALIGNED
+SYSTEM2_MACHINE_BASIS_PROVENANCE = SPEC_FROZEN_NOT_IMPLEMENTED
+FILTER_RESPONSE_AUDIT_V0_1 = FROZEN
+LOW_LAG_VARIANTS = SAME_BASIS_UNLESS_NEW_INPUT_PROVEN
+PRIMARY_DIRECTIONAL_QUEUE = UNCHANGED
+FORMAL_OPTIMIZATION_CANDIDATE = NONE
+
+### Updated exact next continuation point
+
+1. Keep catalog expansion stopped.
+2. No System 2 runtime/weight/threshold change from the semantic-basis audit.
+3. When future technical aggregation engineering begins, require the frozen semantic-provenance contract before numeric scoring.
+4. When the isolated technical-indicator core is next extended, execute F1-F12 response fixtures before market outcomes.
+5. Primary empirical queue remains:
+   KD-vs-RSI -> MACD-vs-direct-trend -> ADX-vs-direct-trend-quality -> BBW-vs-ATR/realized-vol/VCP.
+6. For each primary comparison, distinguish semantic incremental value from mere filter-response differences.
+7. Secondary residual order remains EXTREME_RECENCY_20 -> PATH_EFFICIENCY_10 -> returnVelocityShift5v20 -> one Price-Volume compact comparator.
+8. Yang-Zhang remains VOLATILITY/RISK-owned.
+9. Formal Core remains unchanged.
+
+## Latest durable research commits
+
+- e80bf0566526c22838c8d9d8ff9fa3af6553b213 — System 2 technical semantic-basis audit.
+- b3688e62b6b181c3d76347ac84dc3c8c96dda02a — System 2 semantic-provenance contract v0.1.
+- cbabdf422b30b00772340f1f34c1ff4e124987f4 — lag-noise/filter-response audit.
+- 0e4985cb81af091faf4e887beb0c7b0ec157fec7 — filter response-profile contract v0.1.
