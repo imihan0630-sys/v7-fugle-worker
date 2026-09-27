@@ -442,3 +442,67 @@ The flexible legacy `snapshot_json` column is not an acceptable shortcut for pro
 Canonical feasibility receipt:
 `research/formal_gate_evidence_persistence_feasibility_v0_1.json`.
 
+
+
+## Target / RR evidence child
+
+The validated Class-A `TARGET_RR_AUDIT_OBSERVER_V0_1` is now an additional semantic child of the future immutable per-symbol decision-state receipt.
+
+Validated CI:
+- Target RR Audit Research run `36297985878` SUCCESS;
+- V8 Repair CI run `36297985820` SUCCESS;
+- V8 Regression Tests run `36297985929` SUCCESS;
+- PR #130 merged at `9ce2e60883fbce7065f748bd700ea74bc7d35e0d`.
+
+The observer separates:
+- TARGET_NULL_REJECTED;
+- LOW_RR_REJECTED;
+- FINAL_GRADE_REJECTED_AFTER_RR_PASS;
+- RR_PASSED_FORMAL_OK;
+- NOT_EVALUABLE_UNDER_FORMAL_ORDER.
+
+It also preserves a source-attribution guard that Formal itself does not need:
+when multiple eligible resistance sources share the same minimum price, research must retain every matching `selectedTargetSource` and mark the attribution ambiguous. It may not invent one source.
+
+### Minimum child payload
+
+A Target/RR evidence child should reference the immutable parent receipt and preserve at least:
+- scanDate / symbol / parentDecisionReceiptId / captureGeneration;
+- channel / Formal stage / original first failure;
+- entry / stop / risk / stop-binding state;
+- raw targetPrice plus source / asOf / capturedAt / PIT-eligibility state;
+- priorHigh20 / priorHigh60;
+- dated local-pivot candidates;
+- all resistance candidates after the existing >1% eligibility rule;
+- selected target;
+- all matching selectedTargetSources;
+- selectedSourceAmbiguous;
+- targetNull;
+- reward / rewardPerRisk / current RR threshold;
+- observer-vs-Formal stage consistency.
+
+### Why legacy Shadow is insufficient
+
+Do not add these states by creating another mutually exclusive legacy cohort.
+
+Current `trade_research_shadow_candidates`:
+- has primary key `scan_date + symbol`;
+- has only one cohort field;
+- uses a `used` set, so later research memberships can displace one another;
+- bounds generic REJECTED_AFTER_BASE rows;
+- rewrites a scan date via DELETE then row-by-row INSERT/UPSERT;
+- has no immutable generation/semantic-fingerprint parent.
+
+Therefore Target/RR durable capture belongs to the same overlapping-membership / immutable-parent Class-B architecture proposed in this document.
+
+Machine feasibility receipt:
+`research/target_rr_persistence_feasibility_v0_1.json`.
+
+### Governance
+
+- pure Target/RR observer computation = validated Class A;
+- shared Worker wiring / immutable D1 persistence = Class B proposal-first;
+- targetPrice source-contract repair = Class B if shared enrichment/source behavior changes;
+- target/null/RR/formula/comparator changes = Class C owner approval.
+
+No Production implementation is authorized by this section.
