@@ -1,0 +1,81 @@
+{
+  "schemaVersion": "TARGET_PRICE_INJECTION_PROVENANCE_AUDIT_V0_1",
+  "researchDate": "2026-09-27",
+  "status": "SOURCE_CONTRACT_UNKNOWN_LIVE_COVERAGE_UNOBSERVABLE",
+  "outcomeDataUsed": false,
+  "formalCoreChanged": false,
+  "repositoryAudit": {
+    "formalConsumer": "nearestRealResistance reads f.targetPrice before priorHigh20/priorHigh60/local pivots and applies the same > entry*1.01 eligibility rule.",
+    "officialProducerFound": false,
+    "repoTargetPriceProducerFound": false,
+    "customInjectionPaths": [
+      "V7_ENRICHMENT_JSON",
+      "V7_ENRICHMENT_API_URL"
+    ],
+    "normalizationBehavior": "normalizeEnrichmentPayload preserves each custom stock item as-is, so targetPrice and arbitrary companion fields can pass through if supplied.",
+    "marketConsensusIsNotProducer": true,
+    "marketConsensusNote": "data/market-consensus.json may mention analyst target prices in human-readable basis text, but V7.5.30 only applies source-count consensus bonus and does not map target-price numbers into f.targetPrice."
+  },
+  "sourceFailureSemantics": {
+    "apiFetchFailure": "caught; custom becomes empty and after-market scan continues with official enrichment",
+    "possibleFormalConsequence": "If targetPrice is actually supplied only by custom enrichment, a source failure can remove that resistance candidate and change TARGET/LOW_RR/TARGET_NULL state without changing Formal code.",
+    "liveUseProven": false,
+    "classification": "POTENTIAL_SOURCE_AVAILABILITY_COUPLING_NOT_YET_PRODUCTION_DEFECT"
+  },
+  "observabilityAudit": {
+    "apiVersionReportsCustomEnrichmentConfigured": false,
+    "apiVersionReportsCustomEnrichmentReady": false,
+    "scanSummaryPersistsCustomAvailable": false,
+    "scanSummaryPersistsCustomFetchError": false,
+    "scanSummaryPersistsTargetPriceCount": false,
+    "scanSummaryPersistsTargetPriceProvenanceCoverage": false,
+    "scanSummaryDoesPersist": [
+      "enrichmentAvailable",
+      "enrichmentStocks",
+      "officialSources"
+    ],
+    "whyInsufficient": "official enrichment alone can make enrichmentAvailable=true and enrichmentStocks nonzero; those fields cannot prove custom source success or targetPrice coverage."
+  },
+  "productionInference": {
+    "customSourceConfigured": "UNKNOWN",
+    "customSourceSucceededOnHistoricalScans": "UNKNOWN",
+    "targetPriceLiveCoverage": "UNKNOWN",
+    "targetPriceSourceIdentity": "UNKNOWN",
+    "targetPriceAsOfKnownAt": "UNKNOWN",
+    "safeStatement": "The runtime can consume targetPrice if a custom enrichment source provides it, but current durable evidence does not prove whether Production currently receives it or with what provenance."
+  },
+  "minimumProspectiveObservabilityContract": {
+    "secretSafeFields": [
+      "customConfigured:boolean",
+      "customMode:JSON|API|NONE",
+      "customFetchStatus:SUCCESS|FAILED|NOT_CONFIGURED",
+      "customFetchErrorClassOrNull",
+      "customStockCount",
+      "targetPriceObservedCount",
+      "targetPricePITProvenanceCompleteCount",
+      "targetPricePITProvenanceUnknownCount",
+      "capturedAt",
+      "scanDate"
+    ],
+    "perSymbolWhenTargetPricePresent": [
+      "targetPriceRaw",
+      "targetPriceSource",
+      "targetPriceAsOf",
+      "targetPriceCapturedAt",
+      "targetPricePointInTimeEligible"
+    ],
+    "neverExpose": [
+      "V7_ENRICHMENT_API_URL if secret-bearing",
+      "V7_ENRICHMENT_API_TOKEN",
+      "raw credentials"
+    ]
+  },
+  "governance": {
+    "isolatedSourceAudit": "CLASS_A",
+    "sharedRuntimeObservabilityCapture": "CLASS_B_PROPOSAL_FIRST",
+    "changingFailurePolicyOrMakingCustomSourceMandatory": "CLASS_B_OR_C_DEPENDING_ON_FORMAL_EFFECT",
+    "changingTargetOrRrRules": "CLASS_C_OWNER_APPROVAL",
+    "optimizationReady": false
+  },
+  "next": "Use prospective source-state receipts before attributing target-null or RR scarcity to geometry. Until then, targetPrice coverage/source-quality remains UNKNOWN."
+}
