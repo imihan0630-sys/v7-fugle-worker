@@ -257,3 +257,24 @@ Status:
 
 Exact next:
 once CI validates this tranche, freeze the minimum prospective A/B evidence receipt needed for later D1/D3/D5/D10/D20/MFE/MAE analysis: same-generation parent completeness, setup-reach state, exact Formal masks, raw grouped margins, source warnings, sample fraction and outcome-join key. Persistence remains Class B proposal-first; do not implement shared storage without approval.
+
+
+## NM-012 — minimum prospective A/B evidence receipt frozen
+
+The A/B lane has now reached its shared-persistence boundary.
+
+New research-only design artifacts:
+- `research/ab_setup_evidence_receipt_spec_v0_1.json`;
+- `AB_SETUP_EVIDENCE_RECEIPT_CLASS_B_PROPOSAL.md`.
+
+The design deliberately reuses the existing immutable decision-state / population receipt / overlapping membership architecture. It does not create a second Shadow database model.
+
+The frozen selection-time parent is outcome-free and must preserve same-generation setup reach, exact Formal masks, grouped raw margins, support-source provenance, quality warnings, full population counts before sampling, and sample fractions as a separate overlay. Future D1/D3/D5/D10/D20/MFE/MAE children join only by immutable parent identity/generation.
+
+Pure computation remains Class A. Shared Worker/D1 capture is Class B and is **not implemented** without owner approval. Any A/B rule change remains Class C.
+
+Status:
+`AB_SETUP_EVIDENCE_RECEIPT_DESIGN_READY / CLASS_B_BOUNDARY_REACHED / OUTCOMES_CLOSED / FORMAL_UNCHANGED`.
+
+Exact next:
+park A/B shared persistence at the owner-approval boundary. Reconcile this PR against latest main/CI, write the canonical checkpoint, then continue to the next nonblocked scarcity layer without inspecting A/B forward outcomes prematurely.
