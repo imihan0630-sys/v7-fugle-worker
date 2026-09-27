@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "factor-specific-date-coverage-falsification-v0.1",
+  "researchDate": "2026-09-27",
+  "status": "FACTOR_LEVEL_INDEPENDENT_DATE_GATE_MISSING",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "currentPromotionLogic": {
+    "studyLevel": [
+      "sampleCount >= 60",
+      "distinctScanDates >= 15",
+      "distinctYears >= 2",
+      ">=2 regimes",
+      "purged trainDates >= 10",
+      "holdoutDates >= 5"
+    ],
+    "factorCandidateLevel": [
+      "direction != CONTEXT",
+      "train.n >= 20",
+      "holdout.n >= 10",
+      "train.spreadPct > 0",
+      "holdout.spreadPct > 0"
+    ],
+    "missingFactorLevelChecks": [
+      "train independent scan dates",
+      "holdout independent scan dates",
+      "factor-specific years/regimes",
+      "factor-specific missingness concentration"
+    ]
+  },
+  "fixedSyntheticWitness": {
+    "overallStudy": {
+      "distinctScanDates": 20,
+      "distinctYears": 2,
+      "regimes": [
+        "R1",
+        "R2"
+      ],
+      "sampleCount": 100
+    },
+    "factorX": {
+      "observedTrainRows": 20,
+      "observedTrainDates": 4,
+      "observedHoldoutRows": 10,
+      "observedHoldoutDates": 2,
+      "trainSpreadPct": 1.2,
+      "holdoutSpreadPct": 0.8
+    },
+    "currentCandidateFactorEligibility": true,
+    "problem": "30 stock rows from only six independent dates can satisfy factor-level n thresholds while overall study-level date coverage comes from other factors/rows."
+  },
+  "implications": [
+    "Overall study breadth cannot substitute for factor-specific breadth when feature missingness differs by factor.",
+    "A factor with sparse source coverage can appear promotion-eligible based on clustered rows.",
+    "This is especially relevant for externally enriched or newly introduced factors whose availability is not uniform."
+  ],
+  "safeSuccessorRule": {
+    "noThresholdTuningNow": true,
+    "requirement": "Every promotion candidate reports factor-specific train/holdout independentScanDates, years, regimes and missingness/coverage by date.",
+    "interpretation": "Until minimum independent-date requirements are preregistered for the factor family, candidateFactor status must remain COVERAGE_INCOMPLETE rather than promotion-eligible.",
+    "preferredInference": "Date-level effect estimates first; row count is secondary coverage only."
+  },
+  "decision": "GLOBAL_STUDY_DATE_COUNT_CANNOT_CERTIFY_FACTOR_SPECIFIC_COVERAGE / CANDIDATE_FACTOR_DATE_SUPPORT_REQUIRED / NO_FORMAL_CHANGE"
+}
