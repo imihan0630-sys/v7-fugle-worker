@@ -1,0 +1,64 @@
+{
+  "schemaVersion": "0.1",
+  "createdAt": "2026-09-27T11:55:00+08:00",
+  "status": "FALSIFICATION_CONFIRMED",
+  "independentInferenceUnit": "scanDate",
+  "scope": "R01-R08 current research estimands",
+  "findings": [
+    {
+      "experiment": "R01",
+      "current": "HELD_3D/FAILED_CLOSE_WITHIN_3D D5 summaries pool stock rows across dates",
+      "risk": "dates with more eligible rows receive more weight",
+      "promotionStatus": "DESCRIPTIVE_ONLY_UNTIL_EQUAL_DATE",
+      "successor": "R01 v1.1: per scanDate HELD mean minus FAILED mean, equal-weight dates"
+    },
+    {
+      "experiment": "R02",
+      "current": "primary comparator computes same-date SELECTED-control delta before cross-date aggregation",
+      "risk": "date weighting itself is acceptable; pool/cohort/outcome-provenance guards remain",
+      "promotionStatus": "DATE_WEIGHTING_OK_OTHER_GUARDS_ACTIVE"
+    },
+    {
+      "experiment": "R03",
+      "current": "sector persistence/regime transition is inherently day-level",
+      "risk": null,
+      "promotionStatus": "DATE_UNIT_OK"
+    },
+    {
+      "experiment": "R04",
+      "current": "within-date median split but final HIGH/LOW stats pool stock rows across dates",
+      "risk": "classification is date-local but estimand is row-weighted",
+      "promotionStatus": "V1_0_DESCRIPTIVE_ONLY",
+      "successor": "R04 v1.1 already preregistered: per-date HIGH mean minus LOW mean, equal-weight dates"
+    },
+    {
+      "experiment": "R05",
+      "current": "overnight/intraday and intraday-minus-overnight stats pool stock rows across dates",
+      "risk": "dates with more rows receive more weight",
+      "promotionStatus": "DESCRIPTIVE_ONLY_UNTIL_EQUAL_DATE",
+      "successor": "R05 v1.1: per-date mean intraday-minus-overnight, equal-weight dates; component summaries remain descriptive"
+    },
+    {
+      "experiment": "R06",
+      "current": "market regime transitions are day-level",
+      "risk": null,
+      "promotionStatus": "DATE_UNIT_OK"
+    },
+    {
+      "experiment": "R07",
+      "current": "within-date 2x2 median split but final group stats pool stock rows across dates",
+      "risk": "classification is date-local but group means are row-weighted",
+      "promotionStatus": "V1_0_DESCRIPTIVE_ONLY",
+      "successor": "R07 v1.1 already preregistered: per-date Quiet Strength minus Attention Strength, equal-weight dates"
+    },
+    {
+      "experiment": "R08",
+      "current": "primary paired estimand computes within-date Quiet-Attention delta then aggregates dates",
+      "risk": "byEngine raw-row means remain row-weighted summaries only",
+      "promotionStatus": "PAIRED_PRIMARY_DATE_WEIGHTING_OK_BYENGINE_DESCRIPTIVE"
+    }
+  ],
+  "rule": "No row-pooled cross-date mean may support Formal promotion when scanDate is the declared independent inference unit. Equal-date successor definitions must be frozen before mature outcome interpretation.",
+  "formalCoreImpact": false,
+  "decisionImpact": false
+}
