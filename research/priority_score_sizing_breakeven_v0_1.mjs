@@ -21,7 +21,8 @@ export function allocationTiltBreakEven(currentPlans=[],comparatorAllocations=[]
     if(!symbol||current===null||comparator===null||ret===null) {
       return {status:"UNKNOWN",reason:"INCOMPLETE_PLAN_COMPARATOR_OR_OUTCOME",symbol:symbol||null};
     }
-    rows.push({symbol,currentAllocationNTD:current,comparatorAllocationNTD:comparator,returnPct:ret,tiltNTD:current-comparator});
+    const stopRiskPct=n(p?.conservativeStopRiskPct??p?.stopRiskPctHigh);
+    rows.push({symbol,currentAllocationNTD:current,comparatorAllocationNTD:comparator,returnPct:ret,tiltNTD:current-comparator,stopRiskPct});
   }
   if(rows.length<2) return {status:"INSUFFICIENT_CROSS_NAME_SAMPLE",rows:[]};
 
@@ -43,6 +44,10 @@ export function allocationTiltBreakEven(currentPlans=[],comparatorAllocations=[]
   const negReturn=neg.reduce((s,x)=>s+Math.abs(x.tiltNTD)*x.returnPct,0)/transferredNeg;
   const grossSpread=posReturn-negReturn;
   const grossIncrementalPnl=rows.reduce((s,x)=>s+x.tiltNTD*x.returnPct/100,0);
+  const allRiskKnown=rows.every(x=>x.stopRiskPct!==null&&x.stopRiskPct>=0);
+  const currentProjectedRisk=allRiskKnown?rows.reduce((s,x)=>s+x.currentAllocationNTD*x.stopRiskPct/100,0):null;
+  const comparatorProjectedRisk=allRiskKnown?rows.reduce((s,x)=>s+x.comparatorAllocationNTD*x.stopRiskPct/100,0):null;
+  const incrementalProjectedRisk=allRiskKnown?currentProjectedRisk-comparatorProjectedRisk:null;
 
   const cost=n(incrementalCostNTD);
   const costKnown=cost!==null&&cost>=0;
@@ -65,6 +70,11 @@ export function allocationTiltBreakEven(currentPlans=[],comparatorAllocations=[]
     realizedTiltSpreadPct:round(grossSpread,6),
     grossBreakEvenSpreadPct:0,
     grossIncrementalPnlNTD:round(grossIncrementalPnl,2),
+    currentProjectedRiskNTD:allRiskKnown?round(currentProjectedRisk,2):null,
+    comparatorProjectedRiskNTD:allRiskKnown?round(comparatorProjectedRisk,2):null,
+    incrementalProjectedRiskNTD:allRiskKnown?round(incrementalProjectedRisk,2):null,
+    grossIncrementalPnlPerExtraProjectedRisk:(allRiskKnown&&incrementalProjectedRisk>0)?round(grossIncrementalPnl/incrementalProjectedRisk,6):null,
+    projectedRiskStatus:allRiskKnown?"KNOWN":"UNKNOWN",
     incrementalCostNTD:costKnown?round(cost,2):null,
     costAdjustedBreakEvenSpreadPct:costKnown?round(costBreakEvenSpread,6):null,
     netIncrementalPnlNTD:costKnown?round(netIncrementalPnl,2):null,
@@ -72,6 +82,6 @@ export function allocationTiltBreakEven(currentPlans=[],comparatorAllocations=[]
     costStatus:costKnown?"KNOWN":"UNKNOWN",
     rows:rows.map(x=>({...x,tiltNTD:round(x.tiltNTD,2)})),
     identity:"grossIncrementalPnl = transferredCapital * (positiveTiltWeightedReturn - negativeTiltWeightedReturn)",
-    interpretation:"Current sizing beats the comparator gross only when capital tilted upward earns a higher realized return than capital tilted downward. Cost-adjusted dominance is UNKNOWN unless incremental cost difference is explicitly supplied."
+    interpretation:"Current sizing beats the comparator gross only when capital tilted upward earns a higher realized return than capital tilted downward. If stop-risk inputs are complete, incremental realized P&L per extra projected plan-risk is reported descriptively without imposing an arbitrary minimum ratio. Cost-adjusted dominance is UNKNOWN unless incremental cost difference is explicitly supplied."
   };
 }
