@@ -80,6 +80,10 @@ on:
       - "research/risk_concentration_bridge_production_receipt_20260928.json"
       - "tests/test_risk_concentration_bridge_v0_1.mjs"
       - "tests/risk_concentration_bridge_audit_v0_1.mjs"
+      - "research/first_tranche_risk_concentration_v0_1.mjs"
+      - "research/first_tranche_risk_concentration_spec_v0_1.json"
+      - "tests/test_first_tranche_risk_concentration_v0_1.mjs"
+      - "tests/portfolio_risk_first_tranche_readonly_audit.mjs"
       - "research/risk_metric_sensitivity_v0_1.mjs"
       - "research/risk_metric_sensitivity_spec_v0_1.json"
       - "tests/test_risk_metric_sensitivity_v0_1.mjs"
@@ -137,6 +141,7 @@ jobs:
           node tests/test_entry_reference_risk_sensitivity_v0_1.mjs
           node tests/test_risk_concentration_bridge_v0_1.mjs
           node tests/risk_concentration_bridge_audit_v0_1.mjs
+          node tests/test_first_tranche_risk_concentration_v0_1.mjs
           node tests/test_risk_metric_sensitivity_v0_1.mjs
           node tests/test_score_cap_reserve_v0_1.mjs
       - name: Read-only production journal coverage audit
@@ -152,5 +157,6 @@ jobs:
           node tests/portfolio_risk_grid_equal_risk_readonly_audit.mjs
           node tests/portfolio_risk_exhaustive_grid_optima_readonly_audit.mjs
           node tests/portfolio_risk_entry_reference_sensitivity_readonly_audit.mjs
+          node tests/portfolio_risk_first_tranche_readonly_audit.mjs
           node tests/portfolio_risk_metric_sensitivity_readonly_audit.mjs
           node tests/portfolio_risk_score_cap_reserve_readonly_audit.mjs
