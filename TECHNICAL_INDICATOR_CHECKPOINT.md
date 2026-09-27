@@ -818,3 +818,128 @@ FORMAL_OPTIMIZATION_CANDIDATE = NONE
 - bfbe724f3acf7504acc269d74433584b554e8d27 — multi-timeframe / temporal aggregation audit v0.1.
 - 77e1d300f87798934cd0e7ae17f566111623d6d6 — machine-readable multi-timeframe technical evidence contract v0.1.
 - 3a1e334e328d572dae096fc119a01e1db0896efb — checkpoint through TI-200.
+
+
+## Continuation update — TI-211 through TI-274
+
+### KD vs RSI — TI-211..TI-225
+- KD and RSI are proven non-equivalent semantic transforms:
+  - KD/RSV consumes rolling High/Low range location (B2);
+  - RSI consumes Wilder-smoothed close-to-close gain/loss balance (B3).
+- Outcome-blind witness A fixes the entire Close path and changes only High/Low geometry:
+  RSI14 stays exactly 76.5323885110 while final K changes ~87.27 -> ~66.84.
+- Outcome-blind witness B finds two OHLC paths with similar final K/D (~52.51/46.51 vs ~53.38/47.23) but RSI14 ~27.85 vs ~70.93.
+- Therefore neither indicator is an algebraic substitute for the other.
+- Naive Taiwan KD9-3-3 vs RSI14 comparison mixes semantic difference, horizon difference and smoothing/latency difference.
+- Frozen two-track design:
+  MARKET_CONVENTION = KD9-3-3 vs RSI14;
+  SEMANTIC_ISOLATION = raw 14-bar range position vs RSI14.
+- KD must itself be split into RSV primitive versus K/D smoothing memory.
+- Formula readiness is separated from seed stability.
+- Current MARKET_STATE_DAYS=65:
+  KD seed influence is effectively negligible;
+  locally reseeded RSI14 retains ~2.459% linear seed-state weight in avgGain/loss state at the final bar.
+  This is not a claim of 2.459% RSI numeric error.
+- <1% RSI seed-state weight requires about 78 closes under Wilder alpha=1/14.
+- Future state construction must explicitly choose CONTINUOUS_STATE, DEEP_HISTORY_RECOMPUTE or FIXED_LOCAL_WINDOW_FORMULA.
+- Technical-indicator runtime snapshot persistence is not currently implemented outside isolated research core/tests.
+- New artifacts:
+  research/TECHNICAL_INDICATOR_KD_RSI_DECOMPOSITION_V0_1.md
+  research/technical_indicator_kd_rsi_fixtures_v0_1.json
+  research/technical_indicator_seed_stability_contract_v0_1.json
+
+### MACD vs direct trend — TI-226..TI-240
+- DIF = EMA12-EMA26, so MACD zero-line state is exactly EMA12/26 alignment.
+- Histogram = DIF-Signal, so MACD signal crossover state is exactly Histogram sign.
+- These aliases cannot score separately.
+- Raw DIF/Histogram magnitudes are price-scale dependent; normalized percent representations remain primary.
+- MACD is a nested filtered-trend/transition family; the only plausible residual is transition timing/curvature after direct trend controls.
+- At 65 bars under first-close EMA seeding, EMA26 seed-state weight is ~0.726%, below the current 1% research tolerance.
+- Future MACD inference must compare normalized DIF/Histogram transition against ret5/10/20/60, MA/EMA slopes/alignment, trendPersistence, returnVelocityShift and Pattern lifecycle.
+- New artifact:
+  research/TECHNICAL_INDICATOR_MACD_DIRECT_TREND_V0_1.md
+
+### ADX vs direct trend quality — TI-241..TI-252
+- ADX is directionless by construction because DX uses abs(+DI - -DI).
+- High ADX can describe strong uptrend or strong downtrend; high ADX is not bullish.
+- DI dominance is direction; ADX is strength. They share the same H/L/TR information family and are not independent cross-family votes.
+- ADX is not an exact alias of close-path efficiency because DMI uses High/Low progression and gap-aware True Range.
+- The unresolved hypothesis is whether this H/L/TR trend-quality information adds beyond HH/HL/LH/LL, trendPersistence, pathEfficiency, MA slope, returns and ATR.
+- ADX multi-stage smoothing requires stability-versus-confirmation-delay diagnostics, not return separation alone.
+- Taiwan ADX evidence remains combined-strategy evidence, not isolated incremental alpha.
+- New artifact:
+  research/TECHNICAL_INDICATOR_ADX_DIRECT_TREND_QUALITY_V0_1.md
+
+### Bollinger Width vs ATR/VCP — TI-253..TI-264
+- Conventional BBW = 2*k*sigma(Close)/SMA(Close); with k=2, BBW=4*sigma/SMA.
+- %B is an affine transform of standardized MA distance under an identical formula version and cannot score independently from that same primitive.
+- BBW uses dispersion of Close price levels; it is not identical to close-to-close return volatility.
+- BBW is not ATR:
+  clustered closes + wide intraday ranges can yield low BBW/high ATR;
+  smooth trending closes + tight daily ranges can yield wider BBW/modest ATR.
+- BBW squeeze is not VCP by definition because VCP retains swing/range topology, contraction legs, higher-low geometry and lifecycle.
+- Taiwan 50 evidence rejects upper-band-touch = automatic SELL; upper-band events supported momentum/long interpretation in the 2007-2016 sample.
+- Formula-version metadata must preserve center type, std definition, lookback, multiplier and continuity space.
+- New artifact:
+  research/TECHNICAL_INDICATOR_BOLLINGER_ATR_VCP_V0_1.md
+
+### Primary queue readiness — TI-265..TI-274
+- All four primary theory decompositions are sufficiently mature to stop catalog/theory expansion.
+- Current queue readiness:
+  KD_vs_RSI =
+    THEORY_PASS / FIXTURE_PASS / SEED_MODE_UNRESOLVED /
+    PROSPECTIVE_NOT_COLLECTED / OUTCOME_NO_GO.
+  MACD_vs_DIRECT_TREND =
+    THEORY_PASS / EXACT_ALIAS_MAP_PASS / MECHANICS_PARTIAL /
+    PROSPECTIVE_NOT_COLLECTED / OUTCOME_NO_GO.
+  ADX_vs_TREND_QUALITY =
+    THEORY_PASS / CORE_NOT_IMPLEMENTED /
+    PROSPECTIVE_NOT_COLLECTED / OUTCOME_NO_GO.
+  BBW_vs_ATR_VCP =
+    THEORY_PASS / FORMULA_VERSION_PARTIAL / CORE_NOT_IMPLEMENTED /
+    PATTERN_RUNTIME_BLOCKED / OUTCOME_NO_GO.
+- Current 65-day cache is adequate for KD and MACD seed decay under frozen formulas but not below a 1% locally-reseeded RSI14 state tolerance.
+- Existing repository research code proves deeper historical fetch capability is technically possible, but zero-extra-call ordinary observer availability is NOT proven.
+- No technical-indicator prospective evidence clock currently exists under the new semantic/seed contracts.
+- Historical Shadow rows must not be fabricated.
+- Frozen future evidence gate order:
+  source/continuity/session -> parent coverage -> formula replay/prefix ->
+  seed-state consistency -> common support -> redundancy ->
+  descriptive independent-date outcomes -> incremental value ->
+  OOS/regime/liquidity/cost/overfit.
+- Minimal future observer proposal is research-only and contains no score/rank/BUY/SELL/capital field.
+- New artifacts:
+  research/TECHNICAL_INDICATOR_PRIMARY_QUEUE_READINESS_V0_1.md
+  research/technical_indicator_primary_queue_readiness_v0_1.json
+
+### Current lane status
+
+PRIMARY_THEORY_DECOMPOSITION = COMPLETE_V0_1
+INDICATOR_CATALOG_EXPANSION = STOPPED
+PROSPECTIVE_TECHNICAL_OBSERVER = NOT_IMPLEMENTED
+OUTCOME_INFERENCE = NO_GO
+FORMAL_OPTIMIZATION_CANDIDATE = NONE
+Formal Core remains LOCKED.
+
+### Exact next continuation point
+
+1. Do not invent more technical indicators.
+2. Freeze one prospective technical-observer source/state construction proposal, especially RSI seed semantics.
+3. Isolated mechanics priority:
+   - execute response-profile fixtures for MACD;
+   - implement/QA research-only ADX14 and BBW20x2 mechanics before any outcome join.
+4. Preserve stateConstructionMode and formulaVersion on every future row.
+5. No outcome inference until complete prospective parent coverage exists.
+6. No Worker/Formal/ranking/threshold/capital/monitor/push change from this research.
+7. Formal Core remains unchanged.
+
+## Latest durable research commits
+
+- 67cd9eee0322788df358b06bacd496b39c432a18 — KD vs RSI semantic decomposition.
+- 29b8e42fc10df1d2df08ef2ae25ee9f0fa8b75ea — KD/RSI semantic isolation fixtures.
+- b95bd6cd66167df93d2b4b4be4d4d7a8879bce04 — seed-stability contract.
+- 951e9e0a382b6e00c43f13e6ab80de0f55b8d886 — MACD vs direct trend.
+- df3c803c1ce8f8294030edefa80abcd0b94e7744 — ADX vs direct trend quality.
+- 3a48559fe05af5d0f4939996b6275d4fc519b31a — Bollinger vs ATR/VCP.
+- 10b5a45ea943190fea76efdece5c5fafa966bdcf — primary queue readiness.
+- aa497120cd7d7c9a60899a4fe10ec812a487e8ef — machine-readable readiness matrix.
