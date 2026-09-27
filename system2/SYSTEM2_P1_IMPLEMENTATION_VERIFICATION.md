@@ -432,3 +432,40 @@ Replay:
 - production isolation PASS.
 
 The temporary push authorization trigger was removed after completion.
+
+
+## Prospective Shadow capture runtime preparation (2026-09-27)
+
+Status: PASS / REPOSITORY-ONLY / WORKER NOT DEPLOYED / CRON NOT ARMED.
+
+Implemented:
+- `SYSTEM2_PROSPECTIVE_SHADOW_CAPTURE_CONTRACT_V0_1.md`;
+- `runtime/prospective_capture_plan.mjs`;
+- `deploy/worker_core.mjs`;
+- `deploy/worker.mjs`;
+- hardened `deploy/wrangler.system2.example.toml`.
+
+V0.1 capture scope:
+- AFTER_CLOSE_DECISION_CAPTURE only;
+- SHORT_MOMENTUM + SWING_GROWTH Limited Shadow lanes;
+- no intraday execution;
+- no notifications;
+- no outcome joining;
+- no historical backfill;
+- no exact Cron frozen yet.
+
+Fail-closed runtime:
+- `workers_dev=false` in deployment template;
+- no routes;
+- no Cron triggers;
+- `SYSTEM2_CAPTURE_ENABLED=false` by default;
+- even if capture-enabled is requested, scheduled capture remains disallowed until source adapters and exact decision-clock semantics are configured.
+
+Verification:
+- GitHub Actions run `36312760393`, job `108601721057`: SUCCESS;
+- research-only tests PASS;
+- deployment/runtime module syntax PASS;
+- SQLite schema verification PASS;
+- production-isolation guard PASS.
+
+No Worker or Cron cloud resource was created.
