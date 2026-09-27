@@ -54,6 +54,7 @@ on:
       - "scripts/rebase_v8_12_*.py"
       - "scripts/apply_v8_13_0.py"
       - "scripts/apply_v8_14_0.py"
+      - "scripts/apply_liquidity_admission_shadow_v0_1.py"
       - "RESEARCH_WORKLIST.md"
       - "research/**"
       - "data/v7_formal_scan_backfill.json"
@@ -248,6 +249,9 @@ jobs:
       - name: Apply V8.14.0 sector-gate provenance shadow
         run: python3 scripts/apply_v8_14_0.py
 
+      - name: Apply liquidity admission Shadow prototype
+        run: python3 scripts/apply_liquidity_admission_shadow_v0_1.py
+
       - name: Syntax check Worker.js
         run: |
           cp Worker.js /tmp/Worker.mjs
@@ -301,6 +305,7 @@ jobs:
           node tests/test_v8_12_0_history_source_revalidation_contract.mjs
           node tests/test_v8_13_0_priority_score_provenance.mjs
           node tests/test_v8_14_0_sector_gate_provenance.mjs
+          node tests/test_liquidity_admission_shadow_v0_1.mjs
           node tests/test_v8_9_0_three_pool_hybrid_shadow.mjs
           node tests/test_v8_9_1_three_pool_dashboard.mjs
           node tests/github_plan_mirror.mjs self-test
