@@ -1,0 +1,73 @@
+{
+  "schemaVersion": "PORTFOLIO_RISK_POOL_DENOMINATOR_TRANSITION_V0_1",
+  "updatedAtTaipei": "2026-09-27",
+  "researchOnly": true,
+  "outcomeDataUsed": false,
+  "decisionImpact": false,
+  "formalCoreChanged": false,
+  "architectureBoundary": {
+    "commit": "05cc3efd889476a44685c0a07df87f2048547eee",
+    "commitTitle": "Deploy V8.9.0 three-pool Hybrid Shadow",
+    "committedAtTaipei": "2026-09-23T21:54:24+08:00",
+    "preV89": "FORMAL_GENERAL and FORMAL_THOUSAND selected rows were combined and allocateAndBuildPlans() was called once against the single totalCapital.",
+    "postV89": "FORMAL_GENERAL and FORMAL_THOUSAND are each independently passed to allocateAndBuildPlans(..., STRATEGY_POOL_CAPITAL=200000); Hybrid is a separate shadow-only 200000 pool."
+  },
+  "storageAudit": {
+    "daySchema": "v8_trade_journal_days retains one row per scan_date and one total_capital field.",
+    "planSchema": "v8_trade_journal_plans has no top-level strategy_pool field; full stock object including post-V8.9 strategyPool is stored only inside plan_json.",
+    "writer": "recordTradeJournalDay(scanDate, stocks, totalCapital, ...) persists the concatenated Formal stocks list under the single day totalCapital.",
+    "postV89PatchAudit": "V8.9.x/V8.10 scripts add strategyPool elsewhere but do not revise v8_trade_journal_days/plans schema or recordTradeJournalDay semantics.",
+    "runtimeCapitalInput": "runAfterMarketScanCore derives totalCapital from stored config / V7_TOTAL_CAPITAL / default; V8.9 saveStockConfig uses STRATEGY_POOL_CAPITAL=200000, so the compatibility totalCapital remains a per-pool-sized value while Formal plan allocation is independently performed in two pools.",
+    "publicJournalReader": "/api/journal does not SELECT plan_json and exposes no strategyPool, so current public/protected journal readback cannot reliably separate post-V8.9 plan rows by Formal pool."
+  },
+  "semanticFinding": {
+    "status": "POST_V8_9_DENOMINATOR_INCOMPATIBILITY_CONFIRMED",
+    "statement": "After the V8.9 architecture boundary, a day-level total_capital=200000 cannot be used as the denominator for the concatenated FORMAL_GENERAL + FORMAL_THOUSAND plan set. Research must either compute each pool separately with 200000 or, for a consolidated Formal-strategy view, use the sum of both Formal ring-fenced pool capitals (400000) while keeping Hybrid shadow separate.",
+    "preV89Receipts": "Existing 2026-09-18 and 2026-09-21 Tier-A receipts predate the V8.9 deployment and are not invalidated by this finding.",
+    "unknownRule": "Post-V8.9 rows lacking positively exposed pool identity are denominator-UNKNOWN for pooled Tier-A metrics; do not infer pool from historical current code unless exact plan-time evidence is available."
+  },
+  "adversarialFixtures": [
+    {
+      "case": "ONE_NAME_EACH_FORMAL_POOL",
+      "generalPlanned": 70000,
+      "thousandPlanned": 70000,
+      "correctPerPool": "35% General; 35% Thousand",
+      "correctConsolidatedFormal": "140000 / 400000 = 35%",
+      "legacySingleDayDenominatorMisread": "140000 / 200000 = 70%",
+      "falsifies": "Treating day.total_capital as a combined post-V8.9 Formal denominator."
+    },
+    {
+      "case": "THREE_NAMES_GENERAL_ZERO_THOUSAND",
+      "generalNominalPlanned": 170000,
+      "thousandNominalPlanned": 0,
+      "correctPerPool": "85% General; 0% Thousand",
+      "correctConsolidatedFormal": "170000 / 400000 = 42.5%",
+      "legacySingleDayDenominatorMisread": "170000 / 200000 = 85%",
+      "note": "85% remains valid only as the active General-pool deployment ratio, not as consolidated two-Formal-pool deployment."
+    },
+    {
+      "case": "THREE_NAMES_EACH_FORMAL_POOL",
+      "generalNominalPlanned": 170000,
+      "thousandNominalPlanned": 170000,
+      "correctPerPool": "85% each",
+      "correctConsolidatedFormal": "340000 / 400000 = 85%",
+      "legacySingleDayDenominatorMisread": "340000 / 200000 = 170%",
+      "falsifies": "Any pooled metric that can exceed 100% solely because the denominator still carries one pool's 200000."
+    }
+  ],
+  "impactOnResearch": [
+    "Post-V8.9 deploymentRatioPct computed from combined journal plans / day.total_capital is not promotion-grade.",
+    "Post-V8.9 projectedHeatPct and riskyNameHHIOnTotalCapital have the same denominator-version risk when Formal pools are combined.",
+    "Within-deployed-capital concentration metrics that normalize only by summed planned deployment can remain algebraically computable, but pool aggregation still changes the estimand and must be labeled.",
+    "Gate/quota scarcity, plan reserve, intraday NO-BUY, and realized fills remain separate layers."
+  ],
+  "minimalEvidenceRepair": {
+    "engineeringClass": "B_PROPOSAL_FIRST",
+    "preferred": "Expose immutable plan-time strategyPool/poolCapital (or read existing archived v9_strategy_pool_plans) with exact-date completeness and version/generation metadata.",
+    "acceptableResearchReader": "A protected exact-date reader may expose existing plan_json.strategyPool plus pool capital and counts without adding new market-data calls or changing Formal behavior.",
+    "noHistoricalGuessing": true,
+    "noBackfillFromCurrentCode": true
+  },
+  "formalOptimizationCandidate": false,
+  "status": "STRUCTURAL_EVIDENCE_DENOMINATOR_BUG / RESEARCH_READER_OR_SCHEMA_REPAIR_NEEDED / FORMAL_TRADING_UNCHANGED"
+}
