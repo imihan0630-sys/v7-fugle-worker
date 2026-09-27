@@ -1,0 +1,88 @@
+{
+  "schemaVersion": "r02-pool-matching-falsification-v0.1",
+  "researchDate": "2026-09-27",
+  "status": "POOL_COMPOSITION_CONFOUND_CONFIRMED",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "currentR02": {
+    "method": "For each scanDate, mean(SELECTED returns) - mean(comparator returns), then aggregate date deltas.",
+    "comparatorFamilies": [
+      "BROAD_CONTROL",
+      "QUALIFIED_NOT_SELECTED",
+      "NEAR_MISS",
+      "REJECTED_AFTER_BASE"
+    ],
+    "poolMatching": false,
+    "dateMatching": true
+  },
+  "structuralReason": {
+    "formalArchitecture": "GENERAL and THOUSAND are independent 3-slot pools with no cross-fill.",
+    "liquidityThresholds": {
+      "GENERAL_minLots20": 1000,
+      "THOUSAND_minLots20": 300
+    },
+    "implication": "Price-pool membership is an explicit selection-stratum and execution/liquidity regime; same-date matching alone does not equalize pool composition."
+  },
+  "fixedSyntheticWitness": {
+    "scanDate": "SYNTHETIC_DATE",
+    "selected": [
+      {
+        "pool": "THOUSAND",
+        "returnPct": 5
+      }
+    ],
+    "comparator": [
+      {
+        "pool": "THOUSAND",
+        "returnPct": 4
+      },
+      {
+        "pool": "GENERAL",
+        "returnPct": -2
+      },
+      {
+        "pool": "GENERAL",
+        "returnPct": -2
+      },
+      {
+        "pool": "GENERAL",
+        "returnPct": -2
+      }
+    ],
+    "currentPooledR02": {
+      "comparatorMean": -0.5,
+      "selectionAlphaPct": 5.5
+    },
+    "samePoolContrast": {
+      "comparatorMean": 4,
+      "selectionAlphaPct": 1
+    },
+    "conclusion": "Pooled same-date R02 can attribute price-pool composition differences to Selection Alpha."
+  },
+  "preferredPromotionGradeEstimand": {
+    "name": "R02_POOL_MATCHED_V1_1",
+    "unit": "scanDate × pricePool",
+    "algorithm": [
+      "For each scanDate and pool separately, compute comparator mean only if both SELECTED and comparator rows are available and quality-clean.",
+      "For each selected row, compare its return with the same-date same-pool comparator mean; equivalently weight each pool delta by selected count in that pool.",
+      "Aggregate first within date using actual selected-count weights, then aggregate across independent dates with equal-date primary weighting.",
+      "Report GENERAL and THOUSAND strata separately in addition to consolidated pool-matched result.",
+      "Do not substitute a comparator from the other pool when same-pool support is absent; mark that date/pool comparison unavailable."
+    ],
+    "whySelectedCountWeight": "Preserves the actual Formal selected pool composition while removing comparator pool-composition confounding.",
+    "secondarySensitivity": [
+      "equal-pool weighting on dates where both pools are represented",
+      "GENERAL-only",
+      "THOUSAND-only"
+    ]
+  },
+  "guardrails": [
+    "R02 v1.0 pooled result remains historical/descriptive and is not deleted.",
+    "R02_POOL_MATCHED_V1_1 is frozen before mature prospective outcomes are inspected.",
+    "Cohort-quality guards still apply; pool matching does not repair BROAD_CONTROL/NEAR_MISS/rejection semantics.",
+    "Same-pool support is mandatory; missing comparator support is UNKNOWN, not cross-filled.",
+    "Do not add industry/channel matching until separately preregistered; avoid endless matching degrees of freedom.",
+    "scanDate remains the primary independent inference unit."
+  ],
+  "decision": "R02_V1_POOLED_IS_POOL_CONFOUNDED / PROMOTION_GRADE_R02_REQUIRES_DATE_X_POOL_MATCHING / NO_FORMAL_CHANGE"
+}
