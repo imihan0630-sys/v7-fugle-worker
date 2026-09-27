@@ -155,3 +155,22 @@ Formal `scoreCandidate()` 為順序式 fail-fast；現有 exclusion_reason 只�
 `research/first_failure_attribution_falsification_v0_1.json`
 
 下一階段若要比較 gate 真正重疊，需做 research-only PASS/FAIL/UNKNOWN overlap observer；不可用關閉 gate 後的結果冒充 Formal。
+
+
+## 10. Shadow cohort membership 統一修復
+狀態：DESIGN_READY / CLASS_B_PROPOSAL_FIRST / NOT_IMPLEMENTED
+
+已凍結：
+- `SHADOW_COHORT_SEMANTICS_CLASS_B_PROPOSAL.md`
+- `research/shadow_cohort_membership_spec_v0_1.json`
+
+核心設計：
+- PVE-156 繼續唯一負責完整 qualified pool / cutline integrity，不重複造 schema；
+- population receipt 保存不可變 denominator / sampling frame；
+- membership overlay 允許同一 symbol/date 同時具有 Formal state 與獨立 Broad Market Control membership；
+- quality overlay 用 append-only 方式標記歷史 cohort contamination / provenance conflict / UNKNOWN；
+- first-failure count 與 gate-overlap 分離；
+- Near-miss 改為 pool × nearestChannel × failed-check-pattern 的前瞻研究取樣語意；
+- Broad Market Control 與 Residual Control 必須明確選擇不同 estimand，不再維持 quota-conditioned hybrid。
+
+因需新增 additive D1 schema / shared research persistence，實作保守歸 Class B；現在只做 proposal，未取得 owner approval 前不得實作／部署。
