@@ -1,7 +1,7 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-232.
-Updated: 2026-09-27 23:14 Asia/Taipei.
+Checkpoint sequence: B-233.
+Updated: 2026-09-27 23:27 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Detailed B-01..B-123 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
@@ -1820,3 +1820,17 @@ Updated: 2026-09-27 23:14 Asia/Taipei.
 - Durable artifact: `research/extreme_move_official_source_dependency_v0_1.json`, commit `a1788231765ec44f76aa3b1a2591d640589dd5a8`.
 - Status: `SOURCE_SEMANTICS_READY / SYSTEM1_PROSPECTIVE_LINEAGE_NOT_READY / NO_DUPLICATE_INTEGRATION / OUTCOMES_CLOSED / FORMAL_UNCHANGED`. No FORMAL_OPTIMIZATION_CANDIDATE.
 - Exact next: move to the remaining standalone early strategy-universe gate `marketCapYi<10bn`. Audit whether its protection is structurally distinct from the later liquidity/size-conditioned rules or substantially nested/redundant. Freeze a prospective falsification contract using market-cap distance, liquidity/execution controls and explicit universe-policy semantics; do not propose lowering the 10bn floor and do not inspect outcomes yet.
+
+## B-233 — market-cap source classification must occur pre-merge; pure Class-A replay helper frozen (2026-09-27 Asia/Taipei)
+- Continued B-232 exact-next but did not duplicate the already-complete market-cap floor falsification lane (`MARKET_CAP_ADMISSION_RESEARCH.md`, `market_cap_floor_falsification_v0_1.json`, `market_cap_source_provenance_falsification_v0_1.json`).
+- Fresh Worker audit confirms source identity is irrecoverably flattened by the current shared path: `fetchEnrichment()` starts from official stocks, spreads custom extra over them, and only re-protects market classification. `mergeEnrichment()` later sees only the flattened stock.
+- Official source dates are available upstream but not retained in the usable per-symbol evidence: TPEx profile rows expose `Date`; TWSE/MOPS CSV fallback validates `exportDate`; current `sourceMeta` keeps ok/rowCount/error/fallback/originalError but drops the profile date identity. Custom `normalizeEnrichmentPayload()` likewise drops payload-level meta/asOf.
+- Added isolated `research/market_cap_source_classifier_v0_1.mjs` (commit `25709960fa774e0fea01040c74f87bb4750712cf`) plus adversarial fixture `tests/test_market_cap_source_classifier_v0_1.mjs` (commit `499af66d2816752530c1d3f638d78ab767e6539f`). No Worker/runtime/storage/Formal path changed.
+- The classifier deliberately mirrors current raw-nullish-before-numeric semantics. Structural counterexample: custom `marketCapYi='N/A'` shadows a valid lower `marketCap100m` alias; `toNumber()` then fails and current code falls through to shares x close. Likewise comma-formatted custom shares are invalid because mergeEnrichment uses `toNumber`, not `marketNumber`.
+- A custom `sharesOutstanding:null` spread-overwrite may remove the official normalized shares value; research must not silently recover it from the pre-merge official object when reproducing the actual Formal input.
+- Source type and source-date/PIT certification are separated. The helper can structurally classify CUSTOM_EXPLICIT, CUSTOM_SHARES_X_CLOSE or OFFICIAL_SHARES_X_CLOSE when given separate pre-merge objects, but missing source date remains UNKNOWN.
+- The test fixture exists but no automatic workflow was observed for the main commit, so status is `TEST_FIXTURE_CREATED / CI_EXECUTION_NOT_YET_OBSERVED`; it is not represented as CI-PASS.
+- Durable validation artifact: `research/market_cap_source_classifier_validation_v0_1.json`, commit `5cc8969f4a971a50881e524206081296a04b7204`.
+- Separate note: PR #121 research-only liquidity branch head `a60cfe9133a0614cc8b7eed16e4ad964a4b1147d` passed both V8 Regression (`36324141457`) and V8 Repair (`36324141550`). It remains Draft and currently mergeable=false against the rapidly advancing main; no rebase/merge/deploy was attempted.
+- Status: `MARKET_CAP_PREMERGE_SOURCE_IDENTITY_REQUIRED / CLASS_A_CLASSIFIER_FROZEN / SOURCE_DATE_LINEAGE_UNKNOWN / FORMAL_UNCHANGED`. No FORMAL_OPTIMIZATION_CANDIDATE.
+- Exact next: freeze the smallest Class-B prospective capture proposal for market-cap source identity/date using already-loaded official/custom objects and zero new market calls. Do not implement it without owner approval. Then leave the blocked market-cap lane and move to the next nonblocked scarcity layer: A/B setup admission, reusing the already-falsified NEAR_MISS count-only cohort and the gate-overlap observer rather than changing setup thresholds.
