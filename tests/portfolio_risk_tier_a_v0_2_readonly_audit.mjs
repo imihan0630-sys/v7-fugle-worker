@@ -1,4 +1,5 @@
 import {portfolioTierAV02} from "../research/portfolio_risk_tier_a_v0_2.mjs";
+import {projectedStopRisk} from "../research/portfolio_risk_tier_a_v0_1.mjs";
 
 const token=String(process.env.V7_ADMIN_TOKEN||"").trim();
 const origin=String(process.env.V7_WORKER_ORIGIN||"https://fugle-test.imihan0630.workers.dev").replace(/\/$/,"");
@@ -11,6 +12,27 @@ if(!res.ok) throw new Error("journal HTTP "+res.status+": "+String(data?.error||
 const days=Array.isArray(data?.days)?data.days:[];
 const plans=Array.isArray(data?.planRows)?data.planRows:[];
 const recovered=Array.isArray(data?.recoveredRows)?data.recoveredRows:[];
+
+function n(v){
+  const x=Number(v);
+  return Number.isFinite(x)?x:null;
+}
+function round(v,d=4){
+  if(!Number.isFinite(v)) return null;
+  const p=10**d;
+  return Math.round(v*p)/p;
+}
+function hhi(values=[]){
+  const xs=values.map(Number).filter(Number.isFinite).filter(x=>x>=0);
+  const total=xs.reduce((a,b)=>a+b,0);
+  if(!(total>0)) return null;
+  return round(xs.reduce((s,x)=>s+(x/total)**2,0),6);
+}
+function mapAllocations(cf){
+  const m=new Map();
+  for(const row of cf?.allocations||[]) m.set(String(row?.symbol||""),n(row?.allocation));
+  return m;
+}
 
 const byDate=new Map();
 for(const row of plans){
@@ -36,6 +58,51 @@ for(const [scanDate,datePlans] of [...byDate.entries()].sort()){
   const selectedCount=Number(day?.selected_count);
   const selectedCountMatches=Number.isFinite(selectedCount) && selectedCount===datePlans.length;
   const out=portfolioTierAV02(datePlans,totalCapital,{dataStatus:"COMPLETE"});
+
+  const currentDeployment=n(out.plannedDeploymentNTD)||0;
+  const equalCapitalMap=mapAllocations(out?.counterfactuals?.equalCapital);
+  const equalRiskMap=mapAllocations(out?.counterfactuals?.equalPlannedStopRisk);
+
+  const planDetails=datePlans.map(plan=>{
+    const risk=projectedStopRisk(plan);
+    const symbol=String(plan?.code||"");
+    const currentAllocation=n(plan?.totalAllocation);
+    const equalCapitalAllocation=equalCapitalMap.get(symbol)??null;
+    const equalRiskAllocation=equalRiskMap.get(symbol)??null;
+    const riskFracHigh=risk?.ok?n(risk.riskPctHigh)/100:null;
+    const currentRiskNTD=(riskFracHigh!==null && currentAllocation!==null)?currentAllocation*riskFracHigh:null;
+    const equalCapitalRiskNTD=(riskFracHigh!==null && equalCapitalAllocation!==null)?equalCapitalAllocation*riskFracHigh:null;
+    const equalRiskRiskNTD=(riskFracHigh!==null && equalRiskAllocation!==null)?equalRiskAllocation*riskFracHigh:null;
+    return {
+      symbol,
+      strategy:String(plan?.strategy||""),
+      priorityScore:n(plan?.priorityScore),
+      rewardRisk:n(plan?.rewardRisk),
+      buyLow:n(plan?.buyLow),
+      buyHigh:n(plan?.buyHigh),
+      stop:n(plan?.stop),
+      conservativeStopRiskPct:risk?.ok?n(risk.riskPctHigh):null,
+      currentAllocationNTD:currentAllocation,
+      currentShareOfDeploymentPct:(currentAllocation!==null&&currentDeployment>0)?round(currentAllocation/currentDeployment*100,4):null,
+      currentProjectedRiskNTD:currentRiskNTD!==null?round(currentRiskNTD,2):null,
+      equalCapitalAllocationNTD:equalCapitalAllocation,
+      equalCapitalProjectedRiskNTD:equalCapitalRiskNTD!==null?round(equalCapitalRiskNTD,2):null,
+      equalPlannedStopRiskAllocationNTD:equalRiskAllocation,
+      equalPlannedStopRiskProjectedRiskNTD:equalRiskRiskNTD!==null?round(equalRiskRiskNTD,2):null,
+      shiftCurrentToEqualCapitalNTD:(currentAllocation!==null&&equalCapitalAllocation!==null)?round(equalCapitalAllocation-currentAllocation,2):null,
+      shiftCurrentToEqualRiskNTD:(currentAllocation!==null&&equalRiskAllocation!==null)?round(equalRiskAllocation-currentAllocation,2):null
+    };
+  });
+
+  const currentRisk=planDetails.map(x=>x.currentProjectedRiskNTD).filter(Number.isFinite);
+  const equalCapitalRisk=planDetails.map(x=>x.equalCapitalProjectedRiskNTD).filter(Number.isFinite);
+  const equalRiskRisk=planDetails.map(x=>x.equalPlannedStopRiskProjectedRiskNTD).filter(Number.isFinite);
+  const maxMinRatio=xs=>{
+    const v=xs.filter(Number.isFinite).filter(x=>x>0);
+    if(v.length<2) return null;
+    return round(Math.max(...v)/Math.min(...v),4);
+  };
+
   rows.push({
     scanDate,
     totalCapital:Number.isFinite(totalCapital)?totalCapital:null,
@@ -59,6 +126,20 @@ for(const [scanDate,datePlans] of [...byDate.entries()].sort()){
     allocationImplementationShortfallPct:out.reserveDecomposition.allocationImplementationShortfallPct,
     allocationImplementationShortfallNTD:out.reserveDecomposition.allocationImplementationShortfallNTD,
     cashState:out.cashState.state,
+    counterfactualStatus:{
+      equalCapital:out?.counterfactuals?.equalCapital?.status||"UNKNOWN",
+      equalPlannedStopRisk:out?.counterfactuals?.equalPlannedStopRisk?.status||"UNKNOWN"
+    },
+    structuralRiskDispersion:{
+      currentProjectedRiskHHI:hhi(currentRisk),
+      equalCapitalProjectedRiskHHI:hhi(equalCapitalRisk),
+      equalPlannedStopRiskProjectedRiskHHI:hhi(equalRiskRisk),
+      currentMaxToMinProjectedRiskRatio:maxMinRatio(currentRisk),
+      equalCapitalMaxToMinProjectedRiskRatio:maxMinRatio(equalCapitalRisk),
+      equalPlannedStopRiskMaxToMinProjectedRiskRatio:maxMinRatio(equalRiskRisk),
+      semantics:"OUTCOME_INDEPENDENT_CONSERVATIVE_BUYHIGH_PROJECTED_STOP_RISK_DISTRIBUTION"
+    },
+    planDetails,
     status:String(day?.status||"")
   });
 }
@@ -76,7 +157,7 @@ const zeroSelected=days.filter(d=>Number(d?.selected_count)===0).map(d=>({
 
 console.log(JSON.stringify({
   ok:true,
-  schemaVersion:"PORTFOLIO_RISK_TIER_A_HISTORY_V0_2",
+  schemaVersion:"PORTFOLIO_RISK_TIER_A_HISTORY_V0_3_STRUCTURAL_COUNTERFACTUAL",
   readOnly:true,
   outcomeFieldsRead:false,
   decisionImpact:false,
@@ -87,5 +168,5 @@ console.log(JSON.stringify({
   fullyReconstructablePlanDates:fullyReconstructable.length,
   planDates:fullyReconstructable,
   zeroSelected,
-  interpretation:"Descriptive plan-time risk geometry only. No return/outcome fields were read. Do not infer safe heat/concentration thresholds."
+  interpretation:"Outcome-independent plan-time structural counterfactual. Compares current allocation with equal-capital and unconstrained equal-planned-stop-risk using the same planned deployment. No returns are read; no allocator is promoted."
 },null,2));
