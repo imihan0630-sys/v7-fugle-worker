@@ -30,8 +30,7 @@ for(const [field,gate] of [
   ["close","PRICE_FLOOR"],
   ["historyDays","HISTORY_60D"],
   ["marketCapYi","MARKET_CAP_FLOOR"],
-  ["chipConcentration","CHIP_CONCENTRATION_PRESENT"],
-  ["atrPercent","ATR_QUALITY"]
+  ["chipConcentration","CHIP_CONCENTRATION_PRESENT"]
 ]){
   for(const missing of [null,""]){
     const feature={...goodFeature,[field]:missing};
