@@ -1,0 +1,30 @@
+name: Target RR Scarcity Research
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - "research/target_rr_scarcity_observer_v0_1.mjs"
+      - "research/target_rr_scarcity_capture_matrix_v0_1.json"
+      - "tests/test_target_rr_scarcity_observer_v0_1.mjs"
+      - ".github/workflows/target-rr-scarcity-research.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  falsification:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run target RR scarcity falsification
+        run: node tests/test_target_rr_scarcity_observer_v0_1.mjs
+      - name: Assert research-only boundary
+        run: |
+          grep -F 'formalCoreImpact:false' research/target_rr_scarcity_observer_v0_1.mjs
+          grep -F '"formalCoreChanged": false' research/target_rr_scarcity_capture_matrix_v0_1.json
+          grep -F '"outcomeDataUsed": false' research/target_rr_scarcity_capture_matrix_v0_1.json
