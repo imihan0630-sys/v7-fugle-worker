@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "external_evidence_keyset_alignment_falsification_v0.1",
+  "researchDate": "2026-09-27",
+  "formalCoreChanged": false,
+  "status": "GENERATION_LINEAGE_GAP_CONFIRMED",
+  "structuralEvidence": [
+    "Shadow archive is keyed/persisted by scan_date rows and can be delete-and-rewritten on same-date rerun.",
+    "External evidence collection consumes the current scan.shadowArchive rows, then external evidence persistence also deletes same scan_date and upserts by (scan_date,symbol).",
+    "Outcome reader joins external evidence to Shadow by scanDate|symbol.",
+    "The shared key proves only current-row alignment; it does not prove both records belong to the same immutable first-known scan generation or decision-state receipt.",
+    "A same-date rerun/retry can therefore replace both sides without preserving which evidence was available to the original decision generation."
+  ],
+  "counterEvidence": [
+    "Using scanDate|symbol avoids obvious cross-date/cross-symbol joins.",
+    "Provider capturedAt/sourceDate fields improve source timing observability.",
+    "These protections do not solve generation identity or mutable same-date replacement."
+  ],
+  "requiredContract": [
+    "immutable scanGenerationId / decisionReceiptId on Shadow population receipt",
+    "external evidence child rows reference the exact parent generation/decision receipt",
+    "firstKnownAt/capturedAt and sourceAvailableAt retained",
+    "reruns append a new generation instead of replacing prior evidence",
+    "reader selects an explicit as-known generation and reports orphan/mismatch counts",
+    "no promotion-grade join when parent generation is UNKNOWN"
+  ],
+  "inferenceRule": "scanDate|symbol-only joins remain DESCRIPTIVE_ONLY for PIT promotion claims until generation lineage is certified.",
+  "optimizationBridge": "No Formal optimization candidate; evidence provenance repair only."
+}
