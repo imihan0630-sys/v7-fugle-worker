@@ -131,6 +131,26 @@ One immutable run-level completeness receipt per strategy / decision clock.
 Purpose:
 prove that a Shadow run did not silently preserve only selected/winning symbols. Every base-universe symbol must be frozen as excluded or every eligible symbol must have an evaluation/accounting state.
 
+### s2_strategy_ordering_receipts
+Immutable receipt of strategy-local ordering supplied to the capacity layer.
+
+- ordering_receipt_id
+- market_date
+- decision_timestamp
+- purpose: GLOBAL_ADMISSION / ACTIVE_INTRADAY_MONITOR
+- strategy_id
+- strategy_version
+- ordering_policy_id
+- ordering_policy_version
+- candidate_count
+- ordered_candidates_json
+- ordering_hash
+- captured_at
+- schema_version
+
+Purpose:
+preserve exactly which strategy-local order was supplied without pretending that different strategy ranks are numerically comparable.
+
 ### s2_capacity_runs
 One immutable capacity-allocation receipt per candidate-pool decision clock.
 
