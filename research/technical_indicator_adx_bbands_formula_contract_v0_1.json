@@ -1,0 +1,72 @@
+{
+  "schemaVersion": "technical-indicator-adx-bbands-formula-parity-v0.1",
+  "updated": "2026-09-28 Asia/Taipei",
+  "researchOnly": true,
+  "decisionImpact": false,
+  "formalCore": "LOCKED",
+  "adx14": {
+    "formulaVersion": "WILDER_ADX14_TALIB_STYLE_NO_ROUNDING_V0_1",
+    "period": 14,
+    "unstablePeriod": 0,
+    "integerRounding": false,
+    "lookbackPositions": 27,
+    "firstOutputInputBars": 28,
+    "dmTieRule": "BOTH_ZERO",
+    "trFormula": "max(high-low,abs(high-prevClose),abs(low-prevClose))",
+    "smoothing": "WILDER_SUM_THEN_S_MINUS_S_DIV_N_PLUS_X",
+    "firstAdx": "MEAN_FIRST_14_VALID_DX",
+    "subsequentAdx": "((prevADX*13)+DX)/14",
+    "semanticRole": "TREND_STRENGTH_DIRECTIONLESS",
+    "requires": [
+      "OBSERVED_HIGH_LOW_CLOSE",
+      "TECHNICAL_CONTINUITY",
+      "SYMBOL_SESSION",
+      "STATE_LINEAGE"
+    ]
+  },
+  "bbands20x2": {
+    "formulaVersion": "BBANDS_CLOSE_SMA20_POPSTD20_K2_V0_1",
+    "input": "CLOSE",
+    "period": 20,
+    "center": "SMA",
+    "stdDefinition": "POPULATION_DIVIDE_BY_N",
+    "kUpper": 2,
+    "kLower": 2,
+    "firstOutputInputBars": 20,
+    "bandWidthRatio": "(upper-lower)/middle",
+    "bandWidthPct": "100*bandWidthRatio",
+    "percentB": "(close-lower)/(upper-lower)",
+    "zeroWidthPercentB": "NULL",
+    "semanticRole": "CLOSE_LEVEL_DISPERSION_AND_STANDARDIZED_LOCATION",
+    "requires": [
+      "TECHNICAL_CONTINUITY",
+      "SYMBOL_SESSION"
+    ]
+  },
+  "fixtureIds": [
+    "ADX_MIRRORED_MONOTONIC_UP_DOWN",
+    "ADX_FLAT_ZERO_RANGE",
+    "ADX_INSIDE_BARS",
+    "ADX_EQUAL_OUTSIDE_EXPANSION",
+    "ADX_GAP_SMALL_INTRADAY_RANGE",
+    "ADX_ONE_LARGE_WICK",
+    "ADX_PRICE_SCALE_MULTIPLICATION",
+    "ADX_CORPORATE_ACTION_RESET",
+    "ADX_PRICE_LIMIT_STAIRCASE",
+    "BB_CONSTANT_CLOSE",
+    "BB_PRICE_SCALE_MULTIPLICATION",
+    "BB_POSITIVE_AFFINE_SHIFT",
+    "BB_SAME_CLOSE_WIDE_INTRADAY_RANGE",
+    "BB_SMOOTH_TREND_TIGHT_RANGE",
+    "BB_SAMPLE_VS_POPULATION_STD",
+    "BB_CORPORATE_ACTION_RESET",
+    "BB_PRICE_LIMIT_STAIRCASE"
+  ],
+  "prohibitions": [
+    "NO_ADX_BULLISH_DIRECTION",
+    "NO_OPTIMIZED_ADX_THRESHOLD",
+    "NO_PERCENT_B_ZERO_WIDTH_COERCION",
+    "NO_PLATFORM_PARITY_CLAIM_WITHOUT_MATCHING_FORMULA",
+    "NO_RUNTIME_WIRING"
+  ]
+}
