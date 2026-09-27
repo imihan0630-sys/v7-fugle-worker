@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "formal-funnel-historical-usage-audit-v0.1",
+  "auditedAt": "2026-09-27T11:37:00+08:00",
+  "formalCoreChanged": false,
+  "sourceTerms": [
+    "baseEligible",
+    "rrEligible",
+    "conditionDistribution",
+    "diagnostics.exclusions"
+  ],
+  "repoSearchResult": {
+    "executableReferences": "Worker.js and legacy snapshot only",
+    "researchReferences": "canonical checkpoint semantics and scoped admission docs; no separate current research artifact found treating these exact counters as additive independent gate effects",
+    "semanticOverreachFoundInCurrentResearchAssets": false
+  },
+  "safeInterpretation": {
+    "baseEligible": "EARLY_BASE_ADMITTED_BEFORE_DOWNSTREAM_PRECISION_GATES",
+    "rrEligible": "PASSED_ALL_THROUGH_RR_BEFORE_FINAL_SIGNAL_GRADE",
+    "conditionDistribution": "EARLY_BASE_COHORT_PATTERN_DIAGNOSTIC",
+    "exclusions": "FIRST_FAILURE_UNDER_FORMAL_ORDER_COUNTS"
+  },
+  "forbiddenInference": [
+    "baseEligible - rrEligible equals RR-gate loss",
+    "exclusion count equals marginal gate contribution",
+    "conditionDistribution equals sequential setup-gate population",
+    "top-level plus thousandStockPool counts are additive"
+  ],
+  "legacyNarrativeRisk": "Older chat summaries or external prose may have used shorthand funnel language; unless backed by a versioned receipt, reinterpret as descriptive only rather than silently converting to causal evidence.",
+  "outcomeLookupUsed": false,
+  "optimizationReady": false
+}
