@@ -131,6 +131,48 @@ One immutable run-level completeness receipt per strategy / decision clock.
 Purpose:
 prove that a Shadow run did not silently preserve only selected/winning symbols. Every base-universe symbol must be frozen as excluded or every eligible symbol must have an evaluation/accounting state.
 
+### s2_source_session_receipts
+Immutable source-availability receipt for one decision clock.
+
+- receipt_id
+- market_date
+- decision_timestamp
+- source_session_state
+- required_blockers_json
+- optional_gaps_json
+- source_rows_json
+- extra_observed_sources_json
+- expected_source_count
+- observed_source_count
+- outcome_join_source_eligible
+- source_session_hash
+- captured_at
+- schema_version
+
+### s2_shadow_run_fingerprints
+Immutable join key linking source/session/accounting/decision/ranking/capacity/lifecycle provenance.
+
+- fingerprint_id
+- market_date
+- decision_timestamp
+- strategy_id
+- strategy_version
+- shadow_spec_id
+- universe_version
+- source_session_hash
+- shadow_accounting_hash
+- decision_hashes_json
+- ordering_hashes_json
+- ranking_experiment_hashes_json
+- capacity_hash
+- lifecycle_hashes_json
+- run_fingerprint_state
+- blockers_json
+- outcome_join_eligible
+- run_fingerprint_hash
+- captured_at
+- schema_version
+
 ### s2_strategy_overlap_receipts
 Immutable descriptive redundancy receipt for a pair of strategy contracts.
 
