@@ -58,3 +58,62 @@ Until such coverage is positively observable:
 - actual fill remains a separate Confirmed Fill Ledger problem
 
 Formal Core unchanged. No FORMAL_OPTIMIZATION_CANDIDATE.
+
+
+## PR-048 — positive BUY signal can reconstruct live suggestedShares exactly (2026-09-27)
+
+PR-047 established that a persisted V8.5 BUY signal row is strong positive evidence of the formal BUY signal's `market_price` and `occurred_at`.
+
+PR-048 closes the next signal-side quantity question.
+
+Current runtime:
+`buildPushPayload` recomputes BUY `suggestedShares` as:
+
+`sharesFor(signal.amount, result.currentPrice) = floor(signal.amount / currentPrice)`.
+
+V8.5 signal journal persists, from that same signal occurrence:
+- `signal_amount = signal.amount`;
+- `market_price = result.currentPrice`.
+
+Therefore, for a complete positive BUY row:
+
+`live suggestedShares = floor(signal_amount / market_price)`
+
+is exactly reconstructable after the fact.
+
+This is stronger than the stored `signal_shares`, which is the plan/signal quantity and must not be treated as the live recomputed quantity.
+
+### Evidence boundary
+
+Certified:
+- positive formal BUY event identity;
+- signal timestamp;
+- signal market price;
+- signal amount;
+- exact live signal-side suggestedShares;
+- whether the suggested quantity is at least one share.
+
+Still not certified:
+- broker order acknowledgement;
+- actual fill;
+- fill price;
+- fill probability;
+- partial fill;
+- fees;
+- slippage;
+- complete NO-BUY denominator.
+
+Thus the execution evidence ladder is now:
+
+`selected plan -> formal BUY trigger -> exact signal price -> exact signal amount -> exact suggestedShares -> [broker fill gap]`.
+
+Executable reconstruction:
+`research/buy_signal_quantity_reconstruction_v0_1.mjs`.
+
+Contract:
+`research/buy_signal_quantity_reconstruction_contract_v0_1.json`.
+
+Status:
+`POSITIVE_BUY_SIGNAL_QUANTITY_RECONSTRUCTABLE / FILL_EVIDENCE_STILL_SEPARATE`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
