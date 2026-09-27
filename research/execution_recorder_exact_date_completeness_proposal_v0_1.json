@@ -1,0 +1,62 @@
+{
+  "schemaVersion": "EXECUTION_RECORDER_EXACT_DATE_COMPLETENESS_PROPOSAL_V0_1",
+  "origin": "B-145 frozen 2026-09-26 before outcome interpretation",
+  "engineeringClass": "B_PROPOSAL_FIRST",
+  "productionRuntimeChanged": false,
+  "purpose": "Make NO-BUY denominator observable without changing Formal selection, monitoring eligibility, signals, push, capital or trading rules.",
+  "rowCompletenessContract": {
+    "required": [
+      "requestedTradeDate",
+      "totalMatchingRows",
+      "returnedRows",
+      "hasMore",
+      "truncated",
+      "nextCursor",
+      "perEventCounts",
+      "perSymbolCounts"
+    ],
+    "queryRule": "trade_date = requestedTradeDate, not trade_date >= fromDate",
+    "pagination": "deterministic stable keyset/cursor; totalMatchingRows measured before page truncation",
+    "states": [
+      "COMPLETE",
+      "INCOMPLETE",
+      "UNKNOWN"
+    ],
+    "noRowsRule": "zero returned rows alone is UNKNOWN unless expected-event completeness positively proves zero expected rows"
+  },
+  "expectedEventCompletenessContract": {
+    "persistedRunReceiptRequired": true,
+    "fields": [
+      "tradeDate",
+      "scheduledTime",
+      "runId",
+      "expectedEventTypes",
+      "expectedSymbols",
+      "attemptedCount",
+      "storedCount",
+      "skippedCount",
+      "failOpen",
+      "errorClass",
+      "recordedAt"
+    ],
+    "rules": [
+      "Cron/monitor SUCCESS is not recorder SUCCESS.",
+      "failOpen=true cannot produce COMPLETE.",
+      "An expected symbol omitted because result.ok=false must be counted/skipped with a named reason; it cannot disappear.",
+      "NO_EVENT is valid only when the complete run receipt proves zero expected events.",
+      "Receipt and rows must refer to the same tradeDate/runId clock."
+    ]
+  },
+  "protectedInvariants": [
+    "Formal selected symbols/order unchanged",
+    "A/B definitions and thresholds unchanged",
+    "3+3 pool/quota unchanged",
+    "capital allocation unchanged",
+    "BUY/ADD/REDUCE/SELL/STOP logic unchanged",
+    "monitor eligibility unchanged",
+    "push eligibility/payload unchanged"
+  ],
+  "promotion": "DO_NOT_MERGE_OR_DEPLOY_RUNTIME_IMPLEMENTATION_WITHOUT_OWNER_APPROVAL",
+  "status": "CONTRACT_MATERIALIZED / RUNTIME_IMPLEMENTATION_NOT_AUTHORIZED",
+  "formalCoreImpact": false
+}
