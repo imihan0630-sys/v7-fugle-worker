@@ -1,0 +1,29 @@
+name: Sector Gate Denominator Semantics Research
+
+on:
+  push:
+    paths:
+      - "research/sector_gate_denominator_observer_v0_1.mjs"
+      - "research/sector_gate_denominator_falsification_v0_1.json"
+      - "tests/test_sector_gate_denominator_observer_v0_1.mjs"
+      - "SECTOR_GATE_DENOMINATOR_RESEARCH.md"
+      - "SECTOR_GATE_DENOMINATOR_CAPTURE_CLASS_B_PROPOSAL.md"
+      - ".github/workflows/sector-gate-denominator-research.yml"
+  pull_request:
+    paths:
+      - "research/sector_gate_denominator_observer_v0_1.mjs"
+      - "research/sector_gate_denominator_falsification_v0_1.json"
+      - "tests/test_sector_gate_denominator_observer_v0_1.mjs"
+      - "SECTOR_GATE_DENOMINATOR_RESEARCH.md"
+      - "SECTOR_GATE_DENOMINATOR_CAPTURE_CLASS_B_PROPOSAL.md"
+      - ".github/workflows/sector-gate-denominator-research.yml"
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node tests/test_sector_gate_denominator_observer_v0_1.mjs
