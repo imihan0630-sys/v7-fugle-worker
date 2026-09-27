@@ -71,7 +71,7 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p system2/artifacts
-          node system2/scripts/measure_source_arrival_readonly.mjs             --market-date "$MARKET_DATE"             --attempts 30             --interval-seconds 300             --expected-trading-day true             --stop-when-daily-gate-ready true             --output "system2/artifacts/source-arrival-${MARKET_DATE}.json"
+          node system2/scripts/measure_source_arrival_readonly.mjs             --market-date "$MARKET_DATE"             --attempts 30             --interval-seconds 300             --expected-trading-day true             --stop-when-daily-gate-ready true             --required-daily-only true             --output "system2/artifacts/source-arrival-${MARKET_DATE}.json"
 
       - name: Upload A1 prospective artifact
         uses: actions/upload-artifact@v4

@@ -14,16 +14,62 @@ assert.match(officialSourceUrl("A3_TPEX_INSTITUTION_FLOW", marketDate), /115%2F0
 const twseRows = Array.from({ length: 600 }, (_, index) => ({
   Date: "1150928",
   Code: String(1000 + index),
+  ClosingPrice: String(100 + index / 10),
 }));
 const parsedTwse = parseOfficialSourcePayload("A1_TWSE_DAILY_CLOSE", twseRows, marketDate);
-assert.deepEqual(parsedTwse, { schemaValid: true, payloadDate: marketDate, recordCount: 600 });
+assert.equal(parsedTwse.schemaValid, true);
+assert.equal(parsedTwse.payloadDate, marketDate);
+assert.equal(parsedTwse.recordCount, 600);
+assert.equal(parsedTwse.validationVersion, "S2_A1_DAILY_CLOSE_VALIDATION_V0_2");
+assert.deepEqual(parsedTwse.coverageDiagnostics, {
+  targetDateOrdinaryRowCount: 600,
+  targetDateUniqueOrdinarySymbolCount: 600,
+  usableCloseUniqueSymbolCount: 600,
+  duplicateTargetSymbolRowCount: 0,
+  undatedOrdinaryRowCount: 0,
+});
 
 const tpexRows = Array.from({ length: 450 }, (_, index) => ({
   Date: "1150928",
   SecuritiesCompanyCode: String(2000 + index),
+  Close: String(50 + index / 10),
 }));
 const parsedTpex = parseOfficialSourcePayload("A1_TPEX_DAILY_CLOSE", tpexRows, marketDate);
-assert.deepEqual(parsedTpex, { schemaValid: true, payloadDate: marketDate, recordCount: 450 });
+assert.equal(parsedTpex.schemaValid, true);
+assert.equal(parsedTpex.payloadDate, marketDate);
+assert.equal(parsedTpex.recordCount, 450);
+assert.equal(parsedTpex.validationVersion, "S2_A1_DAILY_CLOSE_VALIDATION_V0_2");
+assert.equal(parsedTpex.coverageDiagnostics.usableCloseUniqueSymbolCount, 450);
+
+
+const duplicateTwse = parseOfficialSourcePayload(
+  "A1_TWSE_DAILY_CLOSE",
+  [...twseRows, { ...twseRows[0] }],
+  marketDate,
+);
+assert.equal(duplicateTwse.schemaValid, false);
+assert.equal(duplicateTwse.coverageDiagnostics.duplicateTargetSymbolRowCount, 1);
+assert.equal(duplicateTwse.recordCount, 600);
+
+const undatedTwse = parseOfficialSourcePayload(
+  "A1_TWSE_DAILY_CLOSE",
+  twseRows.map(({ Date, ...row }) => row),
+  marketDate,
+);
+assert.equal(undatedTwse.schemaValid, false);
+assert.equal(undatedTwse.payloadDate, null);
+assert.equal(undatedTwse.recordCount, 0);
+assert.equal(undatedTwse.coverageDiagnostics.undatedOrdinaryRowCount, 600);
+
+const missingCloseTwse = parseOfficialSourcePayload(
+  "A1_TWSE_DAILY_CLOSE",
+  twseRows.map(({ ClosingPrice, ...row }) => row),
+  marketDate,
+);
+assert.equal(missingCloseTwse.schemaValid, true);
+assert.equal(missingCloseTwse.payloadDate, marketDate);
+assert.equal(missingCloseTwse.recordCount, 0);
+assert.equal(missingCloseTwse.coverageDiagnostics.usableCloseUniqueSymbolCount, 0);
 
 const taiex = parseOfficialSourcePayload("A2_TAIEX_CLOSE", {
   stat: "OK",
@@ -71,7 +117,44 @@ const ready = await probeOfficialSource({
 });
 assert.equal(requestOptions.method, "GET");
 assert.equal(ready.state, "READY");
+assert.equal(ready.validationVersion, "S2_A1_DAILY_CLOSE_VALIDATION_V0_2");
+assert.equal(ready.coverageDiagnostics.targetDateUniqueOrdinarySymbolCount, 600);
+assert.equal(ready.coverageDiagnostics.usableCloseUniqueSymbolCount, 600);
 assert.equal(ready.externalMutationPerformed, false);
+
+const duplicateNow = [
+  new Date("2026-09-28T06:02:00Z"),
+  new Date("2026-09-28T06:02:01Z"),
+];
+const duplicateProbe = await probeOfficialSource({
+  sourceId: "A1_TWSE_DAILY_CLOSE",
+  marketDate,
+  fetchImpl: async () => ({
+    ok: true,
+    status: 200,
+    async json() { return [...twseRows, { ...twseRows[0] }]; },
+  }),
+  now: () => duplicateNow.shift(),
+});
+assert.equal(duplicateProbe.state, "INVALID_PAYLOAD");
+assert.equal(duplicateProbe.coverageDiagnostics.duplicateTargetSymbolRowCount, 1);
+
+const missingCloseNow = [
+  new Date("2026-09-28T06:03:00Z"),
+  new Date("2026-09-28T06:03:01Z"),
+];
+const missingCloseProbe = await probeOfficialSource({
+  sourceId: "A1_TWSE_DAILY_CLOSE",
+  marketDate,
+  fetchImpl: async () => ({
+    ok: true,
+    status: 200,
+    async json() { return twseRows.map(({ ClosingPrice, ...row }) => row); },
+  }),
+  now: () => missingCloseNow.shift(),
+});
+assert.equal(missingCloseProbe.state, "INVALID_PAYLOAD");
+assert.equal(missingCloseProbe.reason, "COVERAGE_BELOW_CONTRACT_MINIMUM");
 
 const errorNow = [
   new Date("2026-09-28T06:10:00Z"),

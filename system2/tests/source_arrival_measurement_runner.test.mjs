@@ -8,6 +8,7 @@ import {
 const marketDate = "2026-09-29";
 let probeCall = 0;
 let waitCall = 0;
+const requestedSourceIds = [];
 
 function receipt(sourceId, observedAt, payloadDate) {
   return buildSourceProbeReceipt({
@@ -24,8 +25,9 @@ function receipt(sourceId, observedAt, payloadDate) {
   });
 }
 
-const probe = async () => {
+const probe = async ({ sourceIds } = {}) => {
   probeCall += 1;
+  requestedSourceIds.push(sourceIds ? [...sourceIds] : null);
   const observedAt = probeCall === 1
     ? "2026-09-29T05:35:00Z"
     : "2026-09-29T05:40:00Z";
@@ -49,6 +51,7 @@ const report = await runReadOnlySourceArrivalMeasurement({
   intervalSeconds: 300,
   expectedTradingDay: true,
   stopWhenDailyGateReady: true,
+  requiredDailyOnly: true,
   probe,
   now,
   wait: async () => { waitCall += 1; },
@@ -56,6 +59,15 @@ const report = await runReadOnlySourceArrivalMeasurement({
 
 assert.equal(probeCall, 2);
 assert.equal(waitCall, 1);
+assert.deepEqual(requestedSourceIds, [
+  ["A1_TWSE_DAILY_CLOSE", "A1_TPEX_DAILY_CLOSE"],
+  ["A1_TWSE_DAILY_CLOSE", "A1_TPEX_DAILY_CLOSE"],
+]);
+assert.equal(report.collectionScope, "REQUIRED_DAILY_CLOCK_SOURCES_ONLY");
+assert.deepEqual(report.requestedSourceIds, [
+  "A1_TWSE_DAILY_CLOSE",
+  "A1_TPEX_DAILY_CLOSE",
+]);
 assert.equal(report.measurement.dailyGateComplete, true);
 assert.equal(
   report.measurement.sourceSummaries.find((x) => x.sourceId === "A1_TWSE_DAILY_CLOSE")

@@ -5,7 +5,9 @@ import {
 } from "./source_arrival_latency.mjs";
 
 const DEFAULT_TIMEOUT_MS = 30_000;
-const USER_AGENT = "System2-ReadOnly-Source-Arrival/0.1";
+const USER_AGENT = "System2-ReadOnly-Source-Arrival/0.2";
+
+export const A1_DAILY_CLOSE_VALIDATION_VERSION = "S2_A1_DAILY_CLOSE_VALIDATION_V0_2";
 
 function rocDate(marketDate) {
   const [year, month, day] = marketDate.split("-").map(Number);
@@ -43,6 +45,13 @@ function ordinarySymbol(value) {
   return /^[1-9][0-9]{3}$/.test(String(value || "").trim());
 }
 
+function numericPrice(value) {
+  const raw = String(value ?? "").replaceAll(",", "").trim();
+  if (!raw || raw === "--" || raw === "---" || raw.toUpperCase() === "N/A") return null;
+  const n = Number(raw.replace(/^\+/, ""));
+  return Number.isFinite(n) && n > 0 ? n : null;
+}
+
 function parseArrayRows(payload, marketDate, symbolField) {
   if (!Array.isArray(payload)) return { schemaValid: false, payloadDate: null, recordCount: null };
   const dates = new Set(payload.map((row) => normalizeOfficialDate(row?.Date)).filter(Boolean));
@@ -54,13 +63,85 @@ function parseArrayRows(payload, marketDate, symbolField) {
   return { schemaValid: true, payloadDate, recordCount: rows.length };
 }
 
+function parseA1DailyCloseRows(payload, marketDate, symbolField, closeFields) {
+  if (!Array.isArray(payload)) {
+    return {
+      schemaValid: false,
+      payloadDate: null,
+      recordCount: null,
+      validationVersion: A1_DAILY_CLOSE_VALIDATION_VERSION,
+      coverageDiagnostics: null,
+    };
+  }
+
+  const datedOrdinaryRows = [];
+  const targetRows = [];
+  const dates = new Set();
+  let undatedOrdinaryRowCount = 0;
+
+  for (const row of payload) {
+    const symbol = String(row?.[symbolField] ?? "").trim();
+    if (!ordinarySymbol(symbol)) continue;
+    const rowDate = normalizeOfficialDate(row?.Date);
+    if (!rowDate) {
+      undatedOrdinaryRowCount += 1;
+      continue;
+    }
+    dates.add(rowDate);
+    datedOrdinaryRows.push({ row, symbol, rowDate });
+    if (rowDate === marketDate) targetRows.push({ row, symbol });
+  }
+
+  const uniqueSymbols = new Set();
+  const usableCloseSymbols = new Set();
+  let duplicateTargetSymbolRowCount = 0;
+  for (const { row, symbol } of targetRows) {
+    if (uniqueSymbols.has(symbol)) duplicateTargetSymbolRowCount += 1;
+    uniqueSymbols.add(symbol);
+    const closeValue = closeFields
+      .map((field) => row?.[field])
+      .find((value) => value !== undefined && value !== null && String(value).trim() !== "");
+    if (numericPrice(closeValue) !== null) usableCloseSymbols.add(symbol);
+  }
+
+  const payloadDate = targetRows.length > 0
+    ? marketDate
+    : [...dates].sort().at(-1) || null;
+  const hasDateSchema = payload.length === 0 || datedOrdinaryRows.length > 0;
+  const schemaValid = hasDateSchema && duplicateTargetSymbolRowCount === 0;
+
+  return {
+    schemaValid,
+    payloadDate,
+    recordCount: usableCloseSymbols.size,
+    validationVersion: A1_DAILY_CLOSE_VALIDATION_VERSION,
+    coverageDiagnostics: {
+      targetDateOrdinaryRowCount: targetRows.length,
+      targetDateUniqueOrdinarySymbolCount: uniqueSymbols.size,
+      usableCloseUniqueSymbolCount: usableCloseSymbols.size,
+      duplicateTargetSymbolRowCount,
+      undatedOrdinaryRowCount,
+    },
+  };
+}
+
 export function parseOfficialSourcePayload(sourceId, payload, marketDate) {
   if (!SOURCE_ARRIVAL_REGISTRY_V0_1[sourceId]) throw new Error(`unknown sourceId: ${sourceId}`);
   if (sourceId === "A1_TWSE_DAILY_CLOSE") {
-    return parseArrayRows(payload, marketDate, "Code");
+    return parseA1DailyCloseRows(
+      payload,
+      marketDate,
+      "Code",
+      ["ClosingPrice", "Close", "收盤價"],
+    );
   }
   if (sourceId === "A1_TPEX_DAILY_CLOSE") {
-    return parseArrayRows(payload, marketDate, "SecuritiesCompanyCode");
+    return parseA1DailyCloseRows(
+      payload,
+      marketDate,
+      "SecuritiesCompanyCode",
+      ["Close", "ClosingPrice", "收盤"],
+    );
   }
   if (sourceId === "A6_TPEX_VALUATION") {
     return parseArrayRows(payload, marketDate, "SecuritiesCompanyCode");
@@ -177,6 +258,8 @@ export async function probeOfficialSource({
     schemaValid: result.transportOk && result.errorCode !== "NON_JSON_RESPONSE" && parsed.schemaValid,
     payloadDate: parsed.payloadDate,
     recordCount: parsed.recordCount,
+    validationVersion: parsed.validationVersion || null,
+    coverageDiagnostics: parsed.coverageDiagnostics || null,
     errorCode: result.errorCode,
   });
 }
