@@ -96,6 +96,42 @@ async function downloadArtifactJson(archiveUrl, token, tempRoot, artifactId) {
   return JSON.parse(jsonText);
 }
 
+async function getWorkflowRunAttempt({
+  apiBase,
+  repo,
+  run,
+  attempt,
+  token,
+  cache,
+}) {
+  const attemptNumber = Number(attempt);
+  if (!Number.isInteger(attemptNumber) || attemptNumber < 1) {
+    throw new Error("workflow run attempt must be a positive integer");
+  }
+  const key = String(run.id) + ":" + attemptNumber;
+  if (cache.has(key)) return cache.get(key);
+
+  let value;
+  if (Number(run.run_attempt || 1) === attemptNumber) {
+    value = run;
+  } else {
+    value = await githubJson(
+      apiBase + "/repos/" + repo + "/actions/runs/" + run.id
+        + "/attempts/" + attemptNumber,
+      token,
+    );
+  }
+  if (String(value?.id) !== String(run.id)) {
+    throw new Error("workflow attempt run-id mismatch for run " + run.id);
+  }
+  if (Number(value?.run_attempt || 1) !== attemptNumber) {
+    throw new Error("workflow attempt metadata mismatch for run " + run.id
+      + " attempt " + attemptNumber);
+  }
+  cache.set(key, value);
+  return value;
+}
+
 async function listWorkflowRuns({ apiBase, repo, workflowFile, token }) {
   const runs = [];
   for (let page = 1; page <= 10; page += 1) {
@@ -131,9 +167,9 @@ export async function aggregateFromGithubArtifacts({
 
     const candidates = [];
     const coverageByDate = new Map();
+    const attemptMetadataCache = new Map();
 
     for (const run of relevantRuns) {
-      const runDate = taipeiDate(run.created_at);
       const artifactsData = await githubJson(
         apiBase + "/repos/" + repository + "/actions/runs/" + run.id + "/artifacts?per_page=100",
         auth,
@@ -142,18 +178,21 @@ export async function aggregateFromGithubArtifacts({
       const dailyArtifacts = artifacts
         .filter((a) => !a?.expired && String(a?.name || "").startsWith("system2-decision-clock-daily-"));
 
-      if (run.event === "schedule" && !coverageByDate.has(runDate)) {
-        coverageByDate.set(runDate, {
-          marketDate: runDate,
-          runId: String(run.id),
-          runAttempt: Number(run.run_attempt || 1),
-          runCreatedAt: run.created_at || null,
-          runConclusion: run.conclusion || null,
-          dailyArtifactCount: dailyArtifacts.length,
-          artifactPresent: dailyArtifacts.length === 1,
+      let attemptOne = null;
+      let attemptOneRunDate = null;
+      if (run.event === "schedule") {
+        attemptOne = await getWorkflowRunAttempt({
+          apiBase,
+          repo: repository,
+          run,
+          attempt: 1,
+          token: auth,
+          cache: attemptMetadataCache,
         });
+        attemptOneRunDate = taipeiDate(attemptOne.created_at);
       }
 
+      let attemptOneDailyArtifactCount = 0;
       for (const artifact of dailyArtifacts) {
         const bundle = await downloadArtifactJson(
           artifact.archive_download_url,
@@ -161,19 +200,52 @@ export async function aggregateFromGithubArtifacts({
           tempRoot,
           artifact.id,
         );
-        if (run.event === "schedule" && bundle.marketDate !== runDate) {
-          throw new Error("scheduled run/bundle Taiwan-date mismatch: run " + run.id + "=" + runDate
+
+        const embeddedAttempt = Number(
+          bundle?.collectorProvenance?.workflowRunAttempt
+            ?? run.run_attempt
+            ?? 1,
+        );
+        const attemptMeta = await getWorkflowRunAttempt({
+          apiBase,
+          repo: repository,
+          run,
+          attempt: embeddedAttempt,
+          token: auth,
+          cache: attemptMetadataCache,
+        });
+        const artifactRunDate = taipeiDate(attemptMeta.created_at);
+
+        if (run.event === "schedule" && bundle.marketDate !== artifactRunDate) {
+          throw new Error("scheduled run/bundle Taiwan-date mismatch: run " + run.id
+            + " attempt " + embeddedAttempt + "=" + artifactRunDate
             + ", bundle=" + bundle.marketDate);
         }
+        if (run.event === "schedule" && embeddedAttempt === 1) {
+          attemptOneDailyArtifactCount += 1;
+        }
+
         candidates.push({
           runId: String(run.id),
-          runAttempt: Number(run.run_attempt || 1),
-          runHeadSha: String(run.head_sha || ""),
+          runAttempt: embeddedAttempt,
+          runHeadSha: String(attemptMeta.head_sha || ""),
           eventName: run.event,
-          runCreatedAt: run.created_at,
+          runCreatedAt: attemptMeta.created_at,
           artifactId: String(artifact.id),
           artifactName: artifact.name,
           bundle,
+        });
+      }
+
+      if (run.event === "schedule" && !coverageByDate.has(attemptOneRunDate)) {
+        coverageByDate.set(attemptOneRunDate, {
+          marketDate: attemptOneRunDate,
+          runId: String(run.id),
+          runAttempt: 1,
+          runCreatedAt: attemptOne.created_at || null,
+          runConclusion: attemptOne.conclusion || null,
+          dailyArtifactCount: attemptOneDailyArtifactCount,
+          artifactPresent: attemptOneDailyArtifactCount === 1,
         });
       }
     }
@@ -244,6 +316,7 @@ export async function aggregateFromGithubArtifacts({
         failureClassCounts: coverageFailureClassCounts,
         tradingDayGapDates,
         laterScheduledRunsCannotRepairAnchor: true,
+        laterRerunAttemptsCannotRepairOrInvalidateAttemptOne: true,
       },
       collectorIntegrity: {
         version: aggregation.collectorContractConsistencyVersion,
@@ -293,6 +366,7 @@ async function main() {
     reviewState: report.reviewPacket.reviewState,
     collectorContractConsistent: report.aggregation.collectorContractConsistent,
     collectorContractFingerprints: report.aggregation.collectorContractFingerprints,
+    rerunDiagnosticArtifactCount: report.aggregation.rerunDiagnosticArtifactCount,
     exactDecisionClockAuthorized: false,
     cronAuthorized: false,
     externalMutationPerformed: false,
