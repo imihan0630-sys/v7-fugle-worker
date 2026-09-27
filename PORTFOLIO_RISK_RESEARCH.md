@@ -3062,3 +3062,66 @@ Status:
 `LOCAL_NEIGHBORHOOD_PROTOCOL_READY / PRODUCTION_AUDIT_PENDING`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-067 Production result — current sizing is not a one-grid local concentration optimum
+
+Read-only Production run `36353663428` / job `108717034051` evaluated all six legal directed NT$1,000 transfers around the 2026-09-18 current allocation:
+
+`50k / 64k / 54k`.
+
+Across the 15 FIRST/ADD/FULL × concentration-metric cells, two one-step moves strictly dominate current:
+
+### 3105 -> 2006
+
+New allocation:
+`51k / 63k / 54k`.
+
+Result:
+- improved cells = 15;
+- worsened cells = 0.
+
+FULL deltas versus current:
+- HHI = -0.0031753015;
+- Gini = -0.0072141368;
+- CV = -0.0134547140;
+- max risk share = -0.0059580253;
+- max/min = -0.0860813875.
+
+### 3105 -> 6133
+
+New allocation:
+`50k / 63k / 55k`.
+
+Result:
+- improved cells = 15;
+- worsened cells = 0.
+
+FULL deltas:
+- HHI = -0.0025063406;
+- Gini = -0.0047377054;
+- CV = -0.0105771343;
+- max risk share = -0.0066849619;
+- max/min = -0.0380891095.
+
+The reverse-direction transfers into 3105 from either 2006 or 6133 worsen all 15 cells.
+
+Therefore:
+`current allocation is a Pareto local concentration optimum`
+is rejected.
+
+This is stronger than the distant-global-optimum evidence because concentration can be reduced by the smallest permitted NT$1,000 move.
+
+### Critical limit
+
+This is **not** an allocation recommendation.
+
+3105 has the highest PriorityScore on the witness. A local risk-concentration improvement can still destroy expected return if that score contains genuine prospective alpha. Economic sizing dominance remains untested.
+
+Durable receipt:
+`research/local_grid_reallocation_production_receipt_20260928.json`.
+
+Status:
+`CURRENT_NOT_LOCAL_CONCENTRATION_OPTIMUM / TWO_STRICTLY_DOMINATING_ONE_GRID_MOVES / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
