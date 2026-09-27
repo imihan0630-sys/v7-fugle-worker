@@ -21101,3 +21101,58 @@ Missing reliable mechanism provenance => GUARD/UNKNOWN, not NORMAL_MARKET.
 ### 9. Outcome-blind status
 This resolves part of the symbol-session source design but does not make Pattern runtime-ready.
 Alpha remains UNKNOWN; no outcome inspection; no Formal change.
+
+## DL-003Y — Trading-Unit / Volume-Unit Provenance (2026-09-27)
+
+### 1. Ordinary-stock rule is broad but not a sufficient historical adapter contract
+Current TWSE rules state ordinary listed stocks are generally 1 trading unit = 1,000 shares.
+Current TPEx mainboard rules likewise state ordinary securities are generally 1,000 shares/units per trading unit, with stated exceptions.
+
+However, TPEx market-data technical specifications explicitly carry a trading-unit field and document that a value such as 500 means one trading unit represents 500 shares.
+
+Therefore:
+- market rules support 1,000 as the common case;
+- source metadata proves that trading unit is still a first-class data field;
+- a research adapter must not hard-code 1,000 as a timeless universal conversion rule.
+
+### 2. Fugle ticker metadata does not expose tradingUnit
+Fugle intraday/ticker documents exchange, market, securityType, reference/limit prices and other attributes, but no tradingUnit field.
+
+Therefore Fugle ticker alone cannot establish point-in-time lot-to-share conversion.
+
+### 3. Required volume contract
+For every volume-bearing source, persist:
+- volumeRaw;
+- volumeUnit: SHARES | LOTS | UNKNOWN;
+- sharesPerTradingUnit;
+- sharesPerTradingUnitSource;
+- sharesPerTradingUnitAsOf;
+- volumeSharesComparable;
+- conversionConfidence;
+- subLotRemainderRisk;
+- sourceId.
+
+### 4. Conversion rule
+LOTS -> SHARES conversion is allowed only when sharesPerTradingUnit is verified for the security/date/mechanism.
+
+If unverified:
+- retain raw lots;
+- set volumeSharesComparable = UNKNOWN;
+- block any Pattern statistic that requires cross-date/share-magnitude comparability;
+- allow price-only geometry to continue when other semantics are valid.
+
+### 5. Odd-lot/sub-lot handling
+A regular-lot source can report zero lots even when positive traded amount exists through sub-lot/odd-lot activity.
+
+Therefore:
+- zero regular-lot volume != zero trading;
+- do not classify such a bar as perfect volume dry-up;
+- preserve amount/odd-lot evidence and set subLotRemainderRisk.
+
+### 6. Cross-lane ownership
+Trading-unit/corporate-action semantics should be sourced from the Corporate Actions / market-data semantics lanes.
+Pattern consumes the verified conversion result and must not invent a separate adjustment/unit engine.
+
+### 7. Status
+This tightens the remaining VOLUME semantic blocker.
+Pattern runtime remains NO_GO; alpha UNKNOWN; Formal Core unchanged.
