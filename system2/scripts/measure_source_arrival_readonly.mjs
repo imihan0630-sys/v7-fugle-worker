@@ -2,6 +2,8 @@ import { mkdir, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
+  REQUIRED_DAILY_CLOCK_SOURCES_V0_1,
+  SOURCE_PROBE_STATE,
   assessDecisionClockReadiness,
   buildSourceArrivalMeasurement,
 } from "../runtime/source_arrival_latency.mjs";
@@ -39,6 +41,7 @@ export async function runReadOnlySourceArrivalMeasurement({
   attempts = 1,
   intervalSeconds = 300,
   expectedTradingDay = true,
+  stopWhenDailyGateReady = false,
   outputPath,
   probe = probeOfficialSources,
   now = () => new Date(),
@@ -54,11 +57,18 @@ export async function runReadOnlySourceArrivalMeasurement({
     throw new Error("intervalSeconds must be an integer from 60 to 900");
   }
   if (typeof expectedTradingDay !== "boolean") throw new Error("expectedTradingDay must be boolean");
+  if (typeof stopWhenDailyGateReady !== "boolean") {
+    throw new Error("stopWhenDailyGateReady must be boolean");
+  }
 
   const startedAt = now().toISOString();
   const receipts = [];
   for (let attempt = 0; attempt < attempts; attempt += 1) {
     receipts.push(...await probe({ marketDate }));
+    const requiredReady = REQUIRED_DAILY_CLOCK_SOURCES_V0_1.every((sourceId) =>
+      receipts.some((receipt) =>
+        receipt.sourceId === sourceId && receipt.state === SOURCE_PROBE_STATE.READY));
+    if (stopWhenDailyGateReady && requiredReady) break;
     if (attempt + 1 < attempts) await wait(intervalSeconds * 1000);
   }
   const createdAt = now().toISOString();
@@ -106,6 +116,9 @@ async function main() {
     attempts,
     intervalSeconds,
     expectedTradingDay,
+    stopWhenDailyGateReady: String(
+      args["stop-when-daily-gate-ready"] || "false",
+    ).toLowerCase() === "true",
     outputPath: args.output,
   });
   console.log(JSON.stringify({
