@@ -518,3 +518,75 @@ Status:
 `CONFIRMED_FILL_LEDGER_V0_2_1 = DESIGN_READY / CLASS_B_PROPOSAL_FIRST / NOT_IMPLEMENTED`.
 
 Exact next: run deterministic CI, then use v0.2.1—not v0.2—as the only base for the Class-B Production implementation proposal.
+
+
+## PR-033 — PriorityScore allocation can amplify conservative planned-stop-risk concentration (2026-09-27)
+
+A Class-A read-only extension of the existing Portfolio Risk journal audit compared the current Formal allocation with two outcome-independent diagnostics while keeping the same total planned deployment:
+- equal capital;
+- unconstrained equal planned-stop-risk using the conservative buyHigh stop-risk percentage.
+
+No return, MFE, MAE, fill, realized P/L or future outcome field was read. Production was not written.
+
+### Production witness
+
+Portfolio Risk Tier-A Research run `36314784619`, job `108607322138`, read only `/api/journal?days=730`.
+
+The only fully reconstructable multi-name plan date is 2026-09-18:
+- total planned deployment = NT$168,000;
+- all 3 plans are B-channel;
+- current projected-risk HHI = 0.377238;
+- equal-capital projected-risk HHI = 0.355859;
+- equal-planned-stop-risk projected-risk HHI = 0.333333;
+- current max/min projected-risk contribution ratio = 2.4472x;
+- equal-capital ratio = 1.9119x;
+- equal-planned-stop-risk ratio = 1.0000x.
+
+Plan-level conservative buyHigh geometry:
+- 2006: PriorityScore 69.9; planned stop-risk 2.6167%; current allocation NT$50,000; projected risk NT$1,308.35.
+- 3105: PriorityScore 89.4; planned stop-risk 5.0028%; current allocation NT$64,000; projected risk NT$3,201.79.
+- 6133: PriorityScore 74.9; planned stop-risk 3.6542%; current allocation NT$54,000; projected risk NT$1,973.27.
+
+The current allocator therefore gave the largest capital weight to the same plan that had the widest conservative stop distance. Capital weighting and stop geometry compounded rather than offsetting each other on this date.
+
+Equal-capital would use NT$56,000 each and reduce projected-risk concentration, but would still leave different risk contributions because stop distances differ.
+
+The unconstrained equal-planned-stop-risk diagnostic would allocate approximately:
+- 2006: NT$75,029.23;
+- 3105: NT$39,243.82;
+- 6133: NT$53,726.94;
+producing approximately NT$1,963.29 projected risk per name.
+
+This is deliberately **not executable evidence**: 2006 would receive about 37.51% of total capital, above the current 35% per-name cap. It also ignores actual fills, lot/rounding effects and future outcomes.
+
+2026-09-21 has only one A-channel plan (3006), so current/equal-capital/equal-risk are mechanically identical and provide no cross-name allocation test.
+
+### Falsification result
+
+Rejected structural proposition:
+`PriorityScore-weighted capital is mechanically risk-neutral with respect to planned stop geometry.`
+
+Observed counterexample:
+on 2026-09-18, the highest-score name also had the widest planned stop and therefore absorbed the largest projected stop-risk contribution.
+
+This does **not** prove PriorityScore sizing is economically harmful, nor that equal-risk sizing is superior. It establishes only that current conviction weighting can amplify plan-risk concentration when score and stop distance align.
+
+### Required future economic test
+
+Once enough independent fully reconstructable plan dates and clean outcomes exist, compare current allocation against frozen counterfactuals using:
+- D1/D3/D5 and MFE/MAE;
+- stop-first / downside clustering;
+- date-cluster and leave-one-date-out inference;
+- A/B channel, volatility, market regime and PriorityScore controls;
+- transaction/slippage feasibility;
+- a cap-constrained executable equal-risk comparator separately from the current unconstrained diagnostic.
+
+Do not tune a heat threshold or sizing formula from the 2026-09-18 witness.
+
+Durable receipt:
+`research/portfolio_risk_tier_a_history_v0_3_receipt_20260927.json`.
+
+Status:
+`FALSIFICATION_IN_PROGRESS / STRUCTURAL_RISK_CONCENTRATION_CONFIRMED / OUTCOME_MATERIALITY_UNKNOWN / NOT_OPTIMIZATION_READY`.
+
+No Formal allocation, PriorityScore, stop, BUY/ADD/REDUCE/SELL, monitoring or push rule changed.
