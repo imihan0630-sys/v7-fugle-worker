@@ -55,6 +55,7 @@ jobs:
             "- Readiness status: "+d.status,
             "- Promotion readiness status: "+a.promotionReadinessStatus,
             "- Research candidate Taipei time: "+(d.candidateTaipeiTime||"—"),
+            "- Owner review state: "+r.reviewPacket.reviewState,
             "- Exact Decision Clock authorized: false",
             "- Worker Cron authorized: false",
             "- Worker capture enabled: false",
