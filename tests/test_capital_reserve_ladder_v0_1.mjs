@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import fs from "node:fs";
 import {planReserveLadder,initialBuySignalBudgetSnapshot,theoreticalFirstStageCapitalCeiling} from "../research/capital_reserve_ladder_v0_1.mjs";
 
 const p918=[
@@ -35,5 +36,9 @@ assert.equal(theoreticalFirstStageCapitalCeiling(1).nominalInitialStagePct,21);
 assert.equal(theoreticalFirstStageCapitalCeiling(2).nominalInitialStagePct,36);
 assert.equal(theoreticalFirstStageCapitalCeiling(3).nominalInitialStagePct,51);
 assert.equal(theoreticalFirstStageCapitalCeiling(6).nominalInitialStagePct,51);
+
+const worker=fs.readFileSync("Worker.js","utf8");
+assert.ok(worker.includes("const firstAmount = Math.round(totalAllocation * 0.6);"),"Formal first-tranche ratio changed; reserve audit reconstruction requires re-audit");
+assert.ok(worker.includes("const secondAmount = totalAllocation - firstAmount;"),"Formal second-tranche remainder rule changed; reserve audit reconstruction requires re-audit");
 
 console.log(JSON.stringify({ok:true,plan918:"30k strategic + 0 cap + 2k grid + 528.87 preview-share residual = 32,528.87 plan-preview reserve",signal3006:"42k first budget -> 148 shares at 282.5 = 41,810 suggested notional + 190 signal residual; 28k remains staged for ADD",firstStageCeilingsPct:{one:21,two:36,threePlus:51}},null,2));
