@@ -1,0 +1,82 @@
+{
+  "schemaVersion": "SIZING_EXPOSURE_BREAK_EVEN_V0_1",
+  "preregisteredAt": "2026-09-28T00:25:00+08:00",
+  "purpose": "Freeze economic break-even equations separately for planned allocation and share-quantized plan-preview exposure before prospective outcomes are observed.",
+  "identity": "incrementalPaperPnL = sum((currentExposure_i-comparatorExposure_i)*R_i) + (currentCash-comparatorCash)*R_cash",
+  "layers": {
+    "plannedPreShareGlobal": {
+      "currentNTD": {
+        "2006": 50000,
+        "3105": 64000,
+        "6133": 54000
+      },
+      "comparatorNTD": {
+        "2006": 70000,
+        "3105": 41000,
+        "6133": 57000
+      },
+      "cashDeltaNTD": 0,
+      "breakEven": "R_3105 > 0.8695652174*R_2006 + 0.1304347826*R_6133",
+      "meaning": "Current planned sizing adds paper-path value over the unique pre-share global grid optimum only if 3105's fixed-horizon path return beats that tilt-weighted alternative."
+    },
+    "plannedPostShareObjectiveAllocation": {
+      "currentNTD": {
+        "2006": 50000,
+        "3105": 64000,
+        "6133": 54000
+      },
+      "comparatorNTD": {
+        "2006": 70000,
+        "3105": 42000,
+        "6133": 56000
+      },
+      "cashDeltaNTD": 0,
+      "breakEven": "R_3105 > 0.9090909091*R_2006 + 0.0909090909*R_6133"
+    },
+    "previewPreShareGlobal": {
+      "budgetNTD": 168000,
+      "currentPreviewNTD": {
+        "2006": 49885.92,
+        "3105": 63605.76,
+        "6133": 53979.45
+      },
+      "comparatorPreviewNTD": {
+        "2006": 69993,
+        "3105": 40747.44,
+        "6133": 56957.1
+      },
+      "currentCashNTD": 528.87,
+      "comparatorCashNTD": 302.46,
+      "cashDeltaNTD": 226.41,
+      "breakEven": "R_3105 > 0.8796394486*R_2006 + 0.1302654788*R_6133 - 0.0099049274*R_cash"
+    },
+    "previewPostShareGlobal": {
+      "budgetNTD": 168000,
+      "currentPreviewNTD": {
+        "2006": 49885.92,
+        "3105": 63605.76,
+        "6133": 53979.45
+      },
+      "comparatorPreviewNTD": {
+        "2006": 69993,
+        "3105": 41244.36,
+        "6133": 55990
+      },
+      "currentCashNTD": 528.87,
+      "comparatorCashNTD": 772.64,
+      "cashDeltaNTD": -243.77,
+      "breakEven": "R_3105 > 0.8991869919*R_2006 + 0.0899116334*R_6133 + 0.0109013747*R_cash"
+    }
+  },
+  "outcomeClock": "R_i must use the same pre-registered fixed-cohort D1/D3/D5 selection-path horizon for all selected names. No BUY/fill conditioning in this paper-path equation.",
+  "cashRule": "Cash is explicit. A zero-cash-return simplification may be reported only as a paper baseline; execution/economic analysis must use evidenced cash treatment where material.",
+  "forbidden": [
+    "do not read 2026-09-18 outcomes to validate these equations",
+    "do not mix planned-allocation exposure with plan-preview share exposure",
+    "do not call paper-path break-even realized P&L",
+    "do not select the comparator after seeing future returns",
+    "do not promote either comparator from one date"
+  ],
+  "status": "LAYERED_BREAK_EVEN_PREREGISTERED / OUTCOMES_UNREAD / ECONOMIC_VALUE_PENDING",
+  "formalCoreImpact": false
+}
