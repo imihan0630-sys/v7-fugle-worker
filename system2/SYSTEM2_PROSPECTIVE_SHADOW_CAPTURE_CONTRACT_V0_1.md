@@ -206,3 +206,18 @@ V0.1 measurement is manual and read-only. It adds no schedule, does not write D1
 does not call System 1/V8, and cannot freeze a clock from retrospective evidence.
 Current clock status remains `UNFROZEN / BLOCKED_DEPENDENCIES` because A5 filing-vintage
 and B2 derived industry-thesis arrival observers are not yet complete.
+
+
+## Decision-clock evidence collection extension
+
+A separate GitHub Actions Research Schedule（GitHub Actions研究排程） now collects read-only source-arrival evidence under `SYSTEM2_SOURCE_ARRIVAL_LATENCY_AND_DECISION_CLOCK_V0_2.md`.
+
+This schedule:
+- is not the System 2 Worker Cron（Worker自動排程）;
+- calls no System 2 Worker;
+- writes no D1;
+- uses no Cloudflare secret;
+- cannot arm `SYSTEM2_CAPTURE_ENABLED`;
+- exists only to accumulate prospective timing evidence.
+
+The isolated Worker remains inert: capture disabled and Cron count 0.
