@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "TARGET_RR_AUDIT_OBSERVER_SPEC_V0_1",
+  "status": "CLASS_A_PROTOTYPE_FROZEN",
+  "outcomeDataUsed": false,
+  "formalCoreChanged": false,
+  "purpose": "Separate TARGET_NULL, LOW_RR, RR_PASS and FINAL_GRADE while preserving resistance-source provenance before any outcome analysis.",
+  "states": [
+    "TARGET_NULL_REJECTED",
+    "LOW_RR_REJECTED",
+    "FINAL_GRADE_REJECTED_AFTER_RR_PASS",
+    "RR_PASSED_FORMAL_OK",
+    "NOT_EVALUABLE_UNDER_FORMAL_ORDER"
+  ],
+  "sourceAmbiguityRule": "If multiple eligible resistance candidates equal the selected minimum price, preserve all selectedTargetSources and set selectedSourceAmbiguous=true; never invent a unique source.",
+  "targetPriceRule": "Presence is distinct from PIT provenance. Missing source/asOf/capturedAt/PIT eligibility remains UNKNOWN.",
+  "prohibitions": [
+    "no outcome lookup",
+    "no threshold sweep",
+    "no targetPrice historical backfill",
+    "no target-null to RR=0 coercion",
+    "no Formal decision/ranking/capital changes"
+  ],
+  "exactNext": "Run deterministic CI. If semantics pass, audit zero-call runtime persistence feasibility against existing V8.14 Shadow; shared source repair remains Class B and target/RR rule changes remain Class C."
+}
