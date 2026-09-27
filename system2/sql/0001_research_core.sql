@@ -101,6 +101,26 @@ CREATE INDEX IF NOT EXISTS idx_s2_shadow_run_strategy_date
   ON s2_shadow_runs (strategy_id, strategy_version, market_date);
 
 
+
+CREATE TABLE IF NOT EXISTS s2_strategy_ordering_receipts (
+  ordering_receipt_id TEXT PRIMARY KEY,
+  market_date TEXT NOT NULL,
+  decision_timestamp TEXT NOT NULL,
+  purpose TEXT NOT NULL,
+  strategy_id TEXT NOT NULL,
+  strategy_version TEXT NOT NULL,
+  ordering_policy_id TEXT NOT NULL,
+  ordering_policy_version TEXT NOT NULL,
+  candidate_count INTEGER NOT NULL,
+  ordered_candidates_json TEXT NOT NULL,
+  ordering_hash TEXT NOT NULL UNIQUE,
+  captured_at TEXT NOT NULL,
+  schema_version TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_s2_ordering_strategy_date
+  ON s2_strategy_ordering_receipts (strategy_id, strategy_version, market_date, purpose);
+
 CREATE TABLE IF NOT EXISTS s2_capacity_runs (
   capacity_run_id TEXT PRIMARY KEY,
   market_date TEXT NOT NULL,
