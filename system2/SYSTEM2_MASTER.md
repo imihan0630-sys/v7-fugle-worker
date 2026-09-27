@@ -94,6 +94,8 @@ V8 A/B, Top6/3+3, capital rules and live-state machine are never prerequisites f
 - `system2/SYSTEM2_POSITION_MANAGEMENT_ARCHITECTURE.md`
 - `system2/SYSTEM2_MARKET_REGIME_V0.md`
 - `system2/SYSTEM2_FACTOR_ENGINE_CONTRACT.md`
+- `system2/SYSTEM2_STRATEGY_CONTRACT_V0.md`
+- `system2/SYSTEM2_STRATEGY_SOURCE_READINESS_V0.md`
 - `system2/SYSTEM2_SOURCE_CONTRACT_AUDIT.md`
 - `shared-knowledge/SHARED_RESEARCH_MASTER_MAP.md`
 - `system2/SYSTEM2_P1_IMPLEMENTATION_VERIFICATION.md`
