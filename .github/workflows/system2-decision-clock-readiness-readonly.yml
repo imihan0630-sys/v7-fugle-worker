@@ -2,7 +2,7 @@ name: System2 Decision Clock Readiness Read-only
 
 on:
   schedule:
-    - cron: "30 8 * * 1-5"
+    - cron: "30 0 * * *"
   workflow_dispatch:
 
 permissions:
@@ -56,6 +56,10 @@ jobs:
             "- Promotion readiness status: "+a.promotionReadinessStatus,
             "- Coverage integrity: "+(r.coverageIntegrity?.version||"—"),
             "- Coverage window: "+(r.coverageIntegrity?.coverageStartDate||"—")+" → "+(r.coverageIntegrity?.coverageThroughDate||"—"),
+            "- Coverage finalization: "+(r.coverageFinalization?.version||"—"),
+            "- Finalization lag (calendar days): "+(r.coverageFinalization?.lagCalendarDays??"—"),
+            "- Pending unfinalized runs: "+(r.coverageFinalization?.pendingUnfinalizedRuns?.length||0),
+            "- Pending unfinalized artifacts: "+(r.coverageFinalization?.pendingUnfinalizedArtifacts?.length||0),
             "- Coverage failure classes: "+JSON.stringify(r.coverageIntegrity?.failureClassCounts||{}),
             "- Immutable first scheduled run anchor: "+(r.coverageIntegrity?.laterScheduledRunsCannotRepairAnchor===true),
             "- Collector contract consistent: "+(a.collectorContractConsistent===true),

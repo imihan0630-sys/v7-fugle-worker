@@ -38,6 +38,13 @@ function taipeiDate(iso) {
   return get("year") + "-" + get("month") + "-" + get("day");
 }
 
+export function previousTaipeiCalendarDate(iso = new Date().toISOString()) {
+  const current = taipeiDate(iso);
+  const noonUtc = new Date(current + "T12:00:00Z");
+  noonUtc.setUTCDate(noonUtc.getUTCDate() - 1);
+  return noonUtc.toISOString().slice(0, 10);
+}
+
 function inclusiveDates(startDate, endDate) {
   if (!startDate || !endDate || startDate > endDate) return [];
   const out = [];
@@ -153,7 +160,7 @@ export async function aggregateFromGithubArtifacts({
   outputPath = null,
   probeTradingDate = probeTwseTradingDate,
   coverageStartDate = "2026-09-29",
-  coverageThroughDate = taipeiDate(new Date().toISOString()),
+  coverageThroughDate = previousTaipeiCalendarDate(),
 } = {}) {
   const repository = requiredText(repo, "repo");
   const auth = requiredText(token, "token");
@@ -168,6 +175,9 @@ export async function aggregateFromGithubArtifacts({
     const candidates = [];
     const coverageByDate = new Map();
     const attemptMetadataCache = new Map();
+    const pendingUnfinalizedRuns = [];
+    const pendingUnfinalizedArtifacts = [];
+    const preCoverageWindowRuns = [];
 
     for (const run of relevantRuns) {
       const artifactsData = await githubJson(
@@ -190,6 +200,42 @@ export async function aggregateFromGithubArtifacts({
           cache: attemptMetadataCache,
         });
         attemptOneRunDate = taipeiDate(attemptOne.created_at);
+      }
+
+      const runAnchorDate = run.event === "schedule"
+        ? attemptOneRunDate
+        : taipeiDate(run.created_at);
+
+      if (runAnchorDate < coverageStartDate) {
+        preCoverageWindowRuns.push({
+          runId: String(run.id),
+          eventName: run.event,
+          runAttempt: Number(run.run_attempt || 1),
+          anchorMarketDate: runAnchorDate,
+          dailyArtifactCount: dailyArtifacts.length,
+        });
+        continue;
+      }
+
+      if (runAnchorDate > coverageThroughDate) {
+        pendingUnfinalizedRuns.push({
+          runId: String(run.id),
+          eventName: run.event,
+          runAttempt: Number(run.run_attempt || 1),
+          anchorMarketDate: runAnchorDate,
+          runConclusion: run.conclusion || null,
+          dailyArtifactCount: dailyArtifacts.length,
+        });
+        for (const artifact of dailyArtifacts) {
+          pendingUnfinalizedArtifacts.push({
+            runId: String(run.id),
+            eventName: run.event,
+            anchorMarketDate: runAnchorDate,
+            artifactId: String(artifact.id),
+            artifactName: String(artifact.name || ""),
+          });
+        }
+        continue;
       }
 
       let attemptOneDailyArtifactCount = 0;
@@ -299,6 +345,10 @@ export async function aggregateFromGithubArtifacts({
       collectorContractConsistencyVersion: aggregation.collectorContractConsistencyVersion,
       collectorContractFingerprints: aggregation.collectorContractFingerprints,
       collectorContractConsistent: aggregation.collectorContractConsistent,
+      coverageFinalizationVersion: "S2_DECISION_CLOCK_COVERAGE_FINALIZATION_V0_3",
+      coverageFinalizationLagCalendarDays: 1,
+      pendingUnfinalizedRunCount: pendingUnfinalizedRuns.length,
+      pendingUnfinalizedArtifactCount: pendingUnfinalizedArtifacts.length,
     });
 
     const report = {
@@ -317,6 +367,18 @@ export async function aggregateFromGithubArtifacts({
         tradingDayGapDates,
         laterScheduledRunsCannotRepairAnchor: true,
         laterRerunAttemptsCannotRepairOrInvalidateAttemptOne: true,
+      },
+      coverageFinalization: {
+        version: "S2_DECISION_CLOCK_COVERAGE_FINALIZATION_V0_3",
+        lagCalendarDays: 1,
+        coverageStartDate,
+        coverageThroughDate,
+        currentTaipeiDate: taipeiDate(new Date().toISOString()),
+        pendingUnfinalizedRuns,
+        pendingUnfinalizedArtifacts,
+        preCoverageWindowRunCount: preCoverageWindowRuns.length,
+        currentOrFutureDatesCannotCreateFinalizedGaps: true,
+        currentOrFutureArtifactsCannotEnterReadiness: true,
       },
       collectorIntegrity: {
         version: aggregation.collectorContractConsistencyVersion,
@@ -352,6 +414,8 @@ async function main() {
     repo: args.repo || process.env.GITHUB_REPOSITORY,
     token: process.env.GITHUB_TOKEN,
     outputPath: args.output,
+    coverageStartDate: args["coverage-start-date"] || "2026-09-29",
+    coverageThroughDate: args["coverage-through-date"] || previousTaipeiCalendarDate(),
   });
   const a = report.aggregation;
   console.log(JSON.stringify({
@@ -367,6 +431,9 @@ async function main() {
     collectorContractConsistent: report.aggregation.collectorContractConsistent,
     collectorContractFingerprints: report.aggregation.collectorContractFingerprints,
     rerunDiagnosticArtifactCount: report.aggregation.rerunDiagnosticArtifactCount,
+    coverageThroughDate: report.coverageFinalization.coverageThroughDate,
+    pendingUnfinalizedRunCount: report.coverageFinalization.pendingUnfinalizedRuns.length,
+    pendingUnfinalizedArtifactCount: report.coverageFinalization.pendingUnfinalizedArtifacts.length,
     exactDecisionClockAuthorized: false,
     cronAuthorized: false,
     externalMutationPerformed: false,

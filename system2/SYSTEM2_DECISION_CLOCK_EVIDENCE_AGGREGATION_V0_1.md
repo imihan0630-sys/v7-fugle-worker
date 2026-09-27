@@ -97,6 +97,14 @@ The daily evidence first computes the candidate from A1 TWSE + A1 TPEx + B2, the
 
 Aggregation preserves `a5BoundaryFailureDates`; the owner-review packet exposes them explicitly and blocks with `A5_NOT_AVAILABLE_BY_CANDIDATE`.
 
+## Coverage Finalization V0.3
+
+The promotion-grade denominator is finalized with a one-calendar-day lag. By default, aggregation audits only through the previous Taipei calendar date.
+
+Artifacts/runs whose market date is later than `coverageThroughDate` are pending diagnostics only and cannot enter readiness or create a finalized gap. Pending artifacts are not downloaded for readiness evaluation.
+
+The read-only readiness workflow runs at 08:30 Asia/Taipei every calendar day, auditing the previous date through the official TWSE trading-calendar gate. Prospective capture remains same-day; only aggregation is delayed.
+
 ## Readiness calculation
 
 The selected promotion-grade daily evidence rows are passed unchanged to:
