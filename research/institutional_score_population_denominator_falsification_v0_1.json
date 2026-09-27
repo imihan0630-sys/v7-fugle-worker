@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "INSTITUTIONAL_SCORE_POPULATION_DENOMINATOR_FALSIFICATION_V0_1",
+  "researchDate": "2026-09-28",
+  "class": "A_RESEARCH_ONLY",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "findings": [
+    "buildResearchSnapshot() creates FULL_FORMAL_SCAN by default, but the current durable trade_research_snapshots path receives it through selected plan researchSnapshot persistence.",
+    "Non-selected research candidates use buildResearchSnapshot too, then explicitly overwrite sourceCompleteness to SHADOW_PROSPECTIVE before writing trade_research_shadow_candidates.",
+    "The Shadow archive is bounded: QUALIFIED_NOT_SELECTED / NEAR_MISS / REJECTED_AFTER_BASE / BROAD_CONTROL are capped per pool, so it is not a complete Formal-scan denominator.",
+    "Therefore FULL_FORMAL_SCAN in current persisted trade_research_snapshots describes row-level feature completeness, not complete scan-population coverage.",
+    "Institutional score saturation/divergence frequencies from persisted FULL_FORMAL_SCAN are selected-conditioned. Full-scan prevalence remains unidentified from current persistence."
+  ],
+  "safeUses": [
+    "stored-vs-recomputed institutionalScore consistency for selected rows",
+    "selected-row source completeness coverage",
+    "selected-conditioned descriptive component composition by scanDate"
+  ],
+  "prohibitedUses": [
+    "full Formal-scan institutionalScore saturation prevalence",
+    "full candidate-universe actor divergence prevalence",
+    "incremental value or causal effect of institutionalScore from selected-only rows",
+    "repairing the denominator by unioning bounded Shadow with selected rows"
+  ],
+  "engineeringBoundary": {
+    "completeInMemoryObserver": "CLASS_A",
+    "immutableCompletePopulationPersistence": "CLASS_B_PROPOSAL_FIRST",
+    "institutionalScoreFormulaOrRankingChange": "CLASS_C_OWNER_APPROVAL"
+  },
+  "decision": "FULL_FORMAL_SCAN_LABEL_NE_COMPLETE_POPULATION / PERSISTED_DENOMINATOR_SELECTED_CONDITIONED / BOUNDED_SHADOW_CANNOT_REPAIR / FULL_SCAN_PREVALENCE_UNKNOWN"
+}
