@@ -19,6 +19,16 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 
 ## Current design decisions
 
+- Next phase is source-arrival latency measurement + after-close decision-clock freeze. Cron activation remains a separate explicit owner authorization boundary.
+
+- The temporary push-based Worker smoke authorization trigger was disarmed. The Worker is now an inert isolated runtime resource; it is not scheduled and cannot begin prospective capture.
+
+- Post-smoke lock-down verified read-only in run `36314678044`, job `108607025869`: `system2-shadow-research` exists exactly once, `SYSTEM2_DB` binding present, capture=false, Cron count=0, workers.dev=false, Preview/Version URLs=false, and no mutation performed.
+
+- The first smoke attempt `36314452669` correctly stopped because `wrangler deploy` with `workers_dev=false` and no traffic target did not expose a Version URL. This was diagnosed and recovered with a temporary Version URL; no security gate was weakened.
+
+- Owner explicitly authorized isolated Worker Smoke Test（冒煙測試）. Recovery run `36314596516`, job `108606794301` verified `/health` against the real `system2-research` D1: schema `0.5`, `CAPTURE_DISABLED`, scheduled capture blocked, and System 1 runtime not used.
+
 - Next cloud-runtime boundary is explicit owner authorization to create/deploy the isolated `system2-shadow-research` Worker for smoke/health validation. Cron activation remains a separate later authorization after source-latency measurement and decision-clock freeze.
 
 - Repository verification PASS after capture-runtime work: GitHub Actions run `36312760393`, job `108601721057`; tests, module syntax, SQLite schema and production-isolation guard all PASS.
@@ -231,7 +241,8 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 8. ✅ Dedicated D1 token installed and verified with account-owned token endpoint.
 9. ✅ Isolated `system2-research` D1 created, schema V0.5 applied, 26 tables verified, write/read and replay reuse checks PASS; production unchanged.
 10. ✅ Repository-side prospective Shadow capture Worker/scheduler contract implemented and CI-verified; Worker remains undeployed and capture-disabled.
-11. ⏳ Explicit owner authorization required for isolated `system2-shadow-research` Worker smoke deployment (no routes, no Cron, capture disabled). Cron activation remains a separate later gate.
+11. ✅ Isolated `system2-shadow-research` Worker smoke deployment verified against `SYSTEM2_DB`; capture remains disabled, workers.dev/Preview URLs are off, Cron count is 0, and System 1 is unchanged.
+12. ⏳ Measure prospective source arrival latency and freeze the first after-close decision clock; Cron activation remains a separate explicit owner gate.
 
 ## Current boundary
 
