@@ -1,4 +1,4 @@
-import {sizingQuantizationCascade} from "../research/sizing_quantization_cascade_v0_1.mjs";
+import {sizingQuantizationCascade,quantizedComparatorPreview} from "../research/sizing_quantization_cascade_v0_1.mjs";
 
 const token=String(process.env.V7_ADMIN_TOKEN||"").trim();
 const origin=String(process.env.V7_WORKER_ORIGIN||"https://fugle-test.imihan0630.workers.dev").replace(/\/$/,"");
@@ -31,7 +31,16 @@ for(const [scanDate,datePlans] of [...byDate.entries()].sort()){
   const day=dayMap.get(scanDate)||{};
   const totalCapital=Number(day.total_capital);
   const out=sizingQuantizationCascade(datePlans,totalCapital);
-  rows.push({scanDate,selectedCount:Number(day.selected_count),status:String(day.status||""),quantization:out});
+  let equalCapitalQuantized=null;
+  if(out?.status==="READY"&&datePlans.length>=2){
+    const sameDeployment=out.plannedAllocationNTD;
+    const equalAllocation=sameDeployment/datePlans.length;
+    equalCapitalQuantized=quantizedComparatorPreview(
+      datePlans,
+      datePlans.map(p=>({symbol:p.symbol,allocation:equalAllocation}))
+    );
+  }
+  rows.push({scanDate,selectedCount:Number(day.selected_count),status:String(day.status||""),quantization:out,equalCapitalQuantized});
 }
 
 const ready=rows.filter(x=>x.quantization?.status==="READY");
@@ -53,6 +62,23 @@ const summary=ready.map(x=>({
   previewMinusPlannedRiskHHI:x.quantization.previewMinusPlannedRiskHHI,
   plannedProjectedStopRiskNTD:x.quantization.plannedProjectedStopRiskNTD,
   previewProjectedStopRiskNTD:x.quantization.previewProjectedStopRiskNTD,
+  quantizedEqualCapital:x.equalCapitalQuantized?{
+    status:x.equalCapitalQuantized.status,
+    allocationTotalNTD:x.equalCapitalQuantized.allocationTotalNTD,
+    previewSuggestedNotionalNTD:x.equalCapitalQuantized.previewSuggestedNotionalNTD,
+    shareFloorResidualNTD:x.equalCapitalQuantized.shareFloorResidualNTD,
+    previewProjectedStopRiskNTD:x.equalCapitalQuantized.previewProjectedStopRiskNTD,
+    previewProjectedStopRiskHHI:x.equalCapitalQuantized.previewProjectedStopRiskHHI,
+    currentMinusEqualCapitalPreviewRiskHHI:
+      (Number.isFinite(x.quantization.previewProjectedStopRiskHHI)&&Number.isFinite(x.equalCapitalQuantized.previewProjectedStopRiskHHI))
+        ? Number((x.quantization.previewProjectedStopRiskHHI-x.equalCapitalQuantized.previewProjectedStopRiskHHI).toFixed(8))
+        : null,
+    currentMinusEqualCapitalShareFloorResidualNTD:
+      (Number.isFinite(x.quantization.shareFloorResidualNTD)&&Number.isFinite(x.equalCapitalQuantized.shareFloorResidualNTD))
+        ? Number((x.quantization.shareFloorResidualNTD-x.equalCapitalQuantized.shareFloorResidualNTD).toFixed(4))
+        : null,
+    rows:x.equalCapitalQuantized.rows
+  }:null,
   details:x.quantization.details
 }));
 
