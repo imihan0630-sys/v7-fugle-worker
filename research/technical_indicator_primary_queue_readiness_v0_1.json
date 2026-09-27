@@ -1,0 +1,96 @@
+{
+  "schemaVersion": "technical-indicator-primary-queue-readiness-v0.1",
+  "updated": "2026-09-27 Asia/Taipei",
+  "researchOnly": true,
+  "decisionImpact": false,
+  "formalCore": "LOCKED",
+  "marketStateDays": 65,
+  "queue": [
+    {
+      "id": "KD_VS_RSI",
+      "theory": "PASS",
+      "formulaCore": "PASS",
+      "fixtures": "PASS",
+      "sourceSemantics": "PARTIAL_BLOCKED",
+      "seedState": "UNRESOLVED",
+      "prospectiveCapture": "NOT_IMPLEMENTED",
+      "outcomeReadiness": "NO_GO",
+      "blockers": [
+        "STATE_CONSTRUCTION_MODE",
+        "TECHNICAL_CONTINUITY",
+        "PROSPECTIVE_PARENT_COVERAGE"
+      ],
+      "notes": [
+        "KD seed stable at 65 bars",
+        "RSI14 local reseed retains ~2.459% seeded-average weight at 65 closes"
+      ]
+    },
+    {
+      "id": "MACD_VS_DIRECT_TREND",
+      "theory": "PASS",
+      "exactAliasMap": "PASS",
+      "formulaCore": "PASS",
+      "responseFixtures": "SPEC_ONLY",
+      "sourceSemantics": "PARTIAL_BLOCKED",
+      "seedState": "MATERIAL_PASS_AT_65_BARS",
+      "prospectiveCapture": "NOT_IMPLEMENTED",
+      "outcomeReadiness": "NO_GO",
+      "blockers": [
+        "RESPONSE_FIXTURE_EXECUTION",
+        "TECHNICAL_CONTINUITY",
+        "PROSPECTIVE_PARENT_COVERAGE"
+      ]
+    },
+    {
+      "id": "ADX_VS_TREND_QUALITY",
+      "theory": "PASS",
+      "formulaCore": "NOT_IMPLEMENTED",
+      "responseFixtures": "SPEC_ONLY",
+      "sourceSemantics": "PARTIAL_BLOCKED",
+      "prospectiveCapture": "NOT_IMPLEMENTED",
+      "outcomeReadiness": "NO_GO",
+      "blockers": [
+        "ISOLATED_ADX_FORMULA_QA",
+        "OHLC_CONTINUITY",
+        "CONSTRAINED_SESSION_SEMANTICS",
+        "PROSPECTIVE_PARENT_COVERAGE"
+      ]
+    },
+    {
+      "id": "BBW_VS_ATR_VCP",
+      "theory": "PASS",
+      "formulaCore": "NOT_IMPLEMENTED",
+      "formulaVersion": "PARTIAL",
+      "responseFixtures": "SPEC_ONLY",
+      "patternComparator": "SPEC_READY_RUNTIME_BLOCKED",
+      "prospectiveCapture": "NOT_IMPLEMENTED",
+      "outcomeReadiness": "NO_GO",
+      "blockers": [
+        "STD_DEFINITION",
+        "ISOLATED_BBW_FORMULA_QA",
+        "TECHNICAL_CONTINUITY",
+        "PATTERN_RUNTIME_SEMANTICS",
+        "PROSPECTIVE_PARENT_COVERAGE"
+      ]
+    }
+  ],
+  "futureGateOrder": [
+    "SOURCE_CONTINUITY_SESSION_VALIDITY",
+    "PARENT_COVERAGE_UNIQUENESS",
+    "FORMULA_PARITY_REPLAY_PREFIX",
+    "SEED_STATE_CONSISTENCY",
+    "COMMON_SUPPORT_COVERAGE",
+    "MECHANICAL_REDUNDANCY",
+    "DESCRIPTIVE_OUTCOMES_BY_INDEPENDENT_DATE",
+    "INCREMENTAL_VALUE",
+    "OOS_REGIME_LIQUIDITY_COST_OVERFIT"
+  ],
+  "prohibited": [
+    "HISTORICAL_SHADOW_FABRICATION",
+    "INDICATOR_SCORE_PROMOTION",
+    "FORMAL_CORE_CHANGE",
+    "RANKING_CHANGE",
+    "CAPITAL_CHANGE",
+    "THRESHOLD_TUNING_BEFORE_EVIDENCE"
+  ]
+}
