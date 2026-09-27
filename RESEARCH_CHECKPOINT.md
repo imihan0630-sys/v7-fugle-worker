@@ -1,6 +1,6 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-194.
+Checkpoint sequence: B-195.
 Updated: 2026-09-27 08:30 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Detailed B-01..B-123 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
@@ -1195,3 +1195,17 @@ Updated: 2026-09-27 08:30 Asia/Taipei.
 - Durable artifacts: BASE_ADMISSION_FUNNEL_RESEARCH.md commit 884a8f139f99047612a16572d33a42086833b10b; research/base_admission_funnel_v0_1.json commit a69d693e660a6d9c5f4c22a35e9f2d4f028cf5dd.
 - No outcomes, threshold sweep, Formal/runtime/Production change or FORMAL_OPTIMIZATION_CANDIDATE. Status COUNTERFACTUAL_COVERAGE_GAP_CONFIRMED / FALSIFICATION_IN_PROGRESS / NOT_OPTIMIZATION_READY.
 - Exact next continuation: audit whether current full-scan in-memory diagnostics already contain enough rows/reasons to persist per-reason counts and bounded strategy-hypothesis rejects with zero extra market calls. If yes, prepare a Class-A prospective instrumentation design/branch with Formal-output invariant tests; if serialization requires shared runtime or changes scan behavior, downgrade to Class-B proposal-first. Continue independently into the next evidence-ready admission/technical-structure lane rather than tuning thresholds.
+
+
+## B-195 — Portfolio Risk actual-live lifecycle falsification (2026-09-27 08:31 Asia/Taipei)
+- Continued B-191 exact next after fresh canonical read through B-194. No forward outcomes were used and no Worker/runtime/Formal state was changed.
+- Source-contract audit confirmed `v8_trade_journal_signals` is a monitor/signal-event ledger. Its `signal_shares` and `market_price` are advisory/observed fields, not broker-confirmed executions. The journal response has no append-only confirmed-fill contract with fill id/price/shares/position before-after/average cost after.
+- `/api/positions` is a mutable current-position reconciliation snapshot. It can describe current holdings when actualShares/averageCost/firstEntryConfirmedAt are complete, but it does not preserve the historical sequence of BUY/ADD/REDUCE/SELL fills.
+- Class-A Production read-only audit PR #116 used only `/api/journal?days=365` and `/api/positions`. Workflow run 36282609086 SUCCESS; V8 Repair run 36282609096 SUCCESS; V8 Regression run 36282609109 SUCCESS.
+- Production witness at 2026-09-27T00:29:03Z: 4 recorded journal days, 4 Formal plan rows, 1 signal row (BUY), 1 ownership-changing signal with suggested shares and observed market price, zero explicit confirmed-fill fields, 2 current position rows, 0 current holdings, 0 complete current holding snapshots.
+- Falsification result: `actualLiveLifecycleHistorical=false` and `actualLiveHeatHistorical=false`. This is a contract-level block, not merely a small-sample warning.
+- Permanent firewall: never treat signal_shares as filled shares; never treat signal market_price as execution price; never roll current actualShares backward through time; never infer ADD/REDUCE quantities from plan shares without confirmed execution.
+- Plan-time Tier-A remains valid where immutable plan fields exist: projected heat, deployment ratio, concentration decomposition, projected stop-risk intensity and reserve decomposition.
+- PR #116 merged at `eddd5a70e4580d3797588a5f5d0339dafe25d6f7`. Durable artifacts: `research/portfolio_risk_live_lifecycle_contract_v0_1.json`, `tests/portfolio_risk_live_lifecycle_readonly_audit.mjs`, `research/portfolio_risk_live_lifecycle_production_readonly_receipt_20260927.json`.
+- Lane state: `PORTFOLIO_RISK = FALSIFICATION_IN_PROGRESS / PLAN_TIME_TIER_A_RECONSTRUCTABLE / ACTUAL_LIVE_HISTORY_BLOCKED`. L2 retained. No allocation/ADD/REDUCE/stop/monitor/push change and no FORMAL_OPTIMIZATION_CANDIDATE.
+- Exact next: freeze a research-only append-only confirmed-fill ledger contract with position-transition invariants and reconciliation semantics. Any shared Production storage/API implementation is Class B proposal-first. Do not implement it into Production merely because the research schema exists.
