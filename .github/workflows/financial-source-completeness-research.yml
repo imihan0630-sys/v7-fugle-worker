@@ -5,6 +5,10 @@ on:
     paths:
       - "research/financial_source_completeness_readiness_observer_v0_1.mjs"
       - "research/financial_source_completeness_structural_falsification_v0_1.json"
+      - "research/financial_source_merge_provenance_observer_v0_1.mjs"
+      - "research/financial_source_merge_provenance_falsification_v0_1.json"
+      - "tests/test_financial_source_merge_provenance_observer_v0_1.mjs"
+      - "FINANCIAL_SOURCE_COMPLETENESS_CAPTURE_CLASS_B_PROPOSAL.md"
       - "tests/test_financial_source_completeness_readiness_observer_v0_1.mjs"
       - "FINANCIAL_SOURCE_COMPLETENESS_RESEARCH.md"
       - ".github/workflows/financial-source-completeness-research.yml"
@@ -25,3 +29,4 @@ jobs:
         with:
           node-version: 22
       - run: node tests/test_financial_source_completeness_readiness_observer_v0_1.mjs
+      - run: node tests/test_financial_source_merge_provenance_observer_v0_1.mjs
