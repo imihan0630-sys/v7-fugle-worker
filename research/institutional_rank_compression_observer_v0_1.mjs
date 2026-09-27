@@ -186,3 +186,60 @@ export function summarizeInstitutionalRankCompression({
     formalCoreImpact:false
   };
 }
+
+
+export function enumerateInstitutionalStreakGeometry(){
+  const states=[];
+  for(let foreignBuyDays=0;foreignBuyDays<=3;foreignBuyDays+=1){
+    for(let trustBuyDays=0;trustBuyDays<=3;trustBuyDays+=1){
+      for(let dealerBuyDays=0;dealerBuyDays<=3;dealerBuyDays+=1){
+        const currentDayDirectionBase=
+          (foreignBuyDays>0?actorWeights.foreign:0)+
+          (trustBuyDays>0?actorWeights.trust:0)+
+          (dealerBuyDays>0?actorWeights.dealer:0);
+        const persistenceBeyondDay1=
+          Math.max(0,foreignBuyDays-1)*actorWeights.foreign+
+          Math.max(0,trustBuyDays-1)*actorWeights.trust+
+          Math.max(0,dealerBuyDays-1)*actorWeights.dealer;
+        const currentBuy=foreignBuyDays>0||trustBuyDays>0||dealerBuyDays>0;
+        const aligned=foreignBuyDays>0&&trustBuyDays>0&&dealerBuyDays>0;
+        const nonlinearCurrentDirectionBonus=(aligned?15:0)+(currentBuy?6:0);
+        const streakInteractionPoints=currentDayDirectionBase+persistenceBeyondDay1+nonlinearCurrentDirectionBonus;
+        states.push({
+          foreignBuyDays,trustBuyDays,dealerBuyDays,
+          currentDayDirectionBase,persistenceBeyondDay1,
+          nonlinearCurrentDirectionBonus,streakInteractionPoints,
+          clearsSmallCapInstitutional70WithoutNetOrOwnership:streakInteractionPoints>=70
+        });
+      }
+    }
+  }
+  const groups=new Map();
+  for(const state of states){
+    const key=String(state.streakInteractionPoints);
+    const arr=groups.get(key)||[];
+    arr.push(state);
+    groups.set(key,arr);
+  }
+  const collisions=[...groups.entries()]
+    .filter(([,arr])=>arr.length>1)
+    .map(([score,arr])=>({score:Number(score),stateCount:arr.length,states:arr}))
+    .sort((a,b)=>a.score-b.score);
+  return {
+    schemaVersion:"institutional-streak-geometry-v0.1",
+    stateCount:states.length,
+    uniqueScoreCount:groups.size,
+    collisionScoreCount:collisions.length,
+    maxCollisionSize:collisions.length?Math.max(...collisions.map(x=>x.stateCount)):1,
+    maxStreakInteractionPoints:Math.max(...states.map(x=>x.streakInteractionPoints)),
+    statesAtOrAbove70:states.filter(x=>x.clearsSmallCapInstitutional70WithoutNetOrOwnership).length,
+    scoresAtOrAbove70:[...new Set(states.filter(x=>x.clearsSmallCapInstitutional70WithoutNetOrOwnership).map(x=>x.streakInteractionPoints))].sort((a,b)=>a-b),
+    states,collisions,
+    interpretation:{
+      structuralOnly:true,
+      prevalenceClaimed:false,
+      collisionsAreWeightedScoreStateCompressionNotEvidenceOfHarm:true,
+      netIntensityAndOwnershipExcluded:true
+    }
+  };
+}
