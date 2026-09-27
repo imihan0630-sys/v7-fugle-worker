@@ -173,3 +173,18 @@ Prepared guarded path:
 - no production Worker/root Wrangler/Cron change.
 
 See `SYSTEM2_CLOUD_PERSISTENCE_READINESS_V0_1.md`.
+
+
+## Physical provisioning completed
+
+Completed on 2026-09-27:
+- separate D1 `system2-research` created;
+- schema V0.5 applied;
+- 26 `s2_` tables verified;
+- write/read sentinel PASS;
+- replay provisioning reused the same database and preserved the same database ID digest;
+- production D1/Worker/Cron remained untouched.
+
+Physical persistence blocker is therefore RESOLVED.
+
+The next boundary is a separate System 2 capture Worker/schedule. Repository-side design may continue, but cloud Worker/Cron deployment requires explicit authorization because it creates new runtime behavior.
