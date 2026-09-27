@@ -53,6 +53,16 @@ The new observer can report by independent scanDate:
 
 No outcome fields are read. No historical reconstruction is allowed.
 
+## Finding 4 — FULL_FORMAL_SCAN is row-completeness, not a complete persisted scan population
+
+Current durable `trade_research_snapshots` receives FULL_FORMAL_SCAN through selected-plan persistence.
+
+Non-selected research rows are written separately as `SHADOW_PROSPECTIVE`, and those cohorts are bounded.
+
+Therefore current persisted FULL_FORMAL_SCAN statistics are **selected-conditioned**. They can audit replay/source coverage of selected rows, but cannot estimate the full candidate-scan saturation/divergence frequency.
+
+Do not union bounded Shadow with selected rows and call it a complete denominator.
+
 ## Engineering boundary
 
 Pure replay/classification is Class A.
