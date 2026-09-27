@@ -351,3 +351,43 @@ Status:
 `FILL_FRICTION_MEASURABLE_IF_LINKED / ORDER_FILL_RATE_BLOCKED`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-056 — ADD trigger is allocation-invariant only conditional on independently proven FIRST state (2026-09-27)
+
+A source audit of the second-entry path shows that ADD eligibility itself does not read:
+- PriorityScore;
+- allocationRatio;
+- totalAllocation;
+- secondAmount;
+- secondShares.
+
+The ADD branch is entered only after the common price/K-line decision reaches `buy`, the maxChase guard passes, and `positionStage === FIRST`.
+
+Only after that eligibility is satisfied are `secondAmount` and `secondShares` attached to the ADD signal.
+
+### Critical condition
+
+This is **conditional invariance**, not unconditional invariance.
+
+A counterfactual allocator may reuse the observed ADD trigger timestamp only when both execution paths have independently and validly reached FIRST.
+
+The current path's FIRST state must never be copied into the comparator by assumption.
+
+Thus full two-stage execution research requires:
+1. independently orderable comparator FIRST;
+2. attributed/valid first-fill state for the comparator execution model;
+3. then shared ADD trigger timing under identical non-sizing plan/code/market-data conditions;
+4. comparator secondAmount/secondShares recomputed separately;
+5. fill/slippage/cost evidence handled separately.
+
+Artifact:
+`research/add_trigger_conditional_invariance_v0_1.json`.
+
+Test:
+`tests/test_add_trigger_conditional_invariance_v0_1.mjs`.
+
+Status:
+`ADD_TRIGGER_CONDITIONALLY_ALLOCATION_INVARIANT / FIRST_STATE_EXECUTION_GATED`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
