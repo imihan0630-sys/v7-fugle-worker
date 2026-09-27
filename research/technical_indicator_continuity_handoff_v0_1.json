@@ -32,7 +32,10 @@
     "unresolvedMissingSessions",
     "unresolvedRelevantEvents",
     "pseudoBarsRejected",
-    "priceLimitConstrainedBars"
+    "priceLimitConstrainedBars",
+    "constrainedBarCount",
+    "noLimitSpecialCount",
+    "unknownLimitRegimeCount"
   ],
   "invariants": [
     "EXPECTED_ELIGIBLE = MARKET_SESSIONS - VERIFIED_SYMBOL_SUSPENSIONS",
@@ -42,7 +45,10 @@
     "FUTURE_EFFECTIVE_EVENTS_EXCLUDED",
     "LATER_EVENT_REVISIONS_MUST_NOT_BACKFILL_EARLIER_ASOF",
     "ONLY_MECHANICAL_RESET_IS_NEUTRALIZED",
-    "RESIDUAL_NON_MECHANICAL_GAP_IS_PRESERVED"
+    "RESIDUAL_NON_MECHANICAL_GAP_IS_PRESERVED",
+    "SPECIAL_REFERENCE_LIMITS_MUST_USE_OFFICIAL_OR_VERIFIED_SESSION_REFERENCE",
+    "BOUNDARY_TOUCH_RETAINS_VALID_OBSERVATION_BUT_MARKS_CONSTRAINED_PRICE_DISCOVERY",
+    "LIMIT_LOCKED_CANNOT_BE_INFERRED_FROM_DAILY_OHLC_ONLY"
   ],
   "relevantEventFields": [
     "eventKey",
@@ -73,7 +79,15 @@
     "technicalContinuity",
     "corporateActionContinuityResolved",
     "priceLimitConstrained",
-    "sourceBarHash"
+    "sourceBarHash",
+    "limitRegime",
+    "auctionReferencePrice",
+    "upperLimit",
+    "lowerLimit",
+    "boundaryRelation",
+    "priceDiscoveryState",
+    "limitRuleVersion",
+    "limitSource"
   ],
   "status": [
     "VALID",
@@ -105,6 +119,7 @@
     "continuityResearchSemantics": "FROZEN_SHARED",
     "continuityRuntime": "BLOCKED",
     "symbolSessionRuntimeCompleteness": "PARTIAL",
-    "prospectiveTechnicalObserver": "NO_GO"
+    "prospectiveTechnicalObserver": "NO_GO",
+    "priceLimitProvenance": "CONTRACT_FROZEN_RUNTIME_NOT_CERTIFIED"
   }
 }
