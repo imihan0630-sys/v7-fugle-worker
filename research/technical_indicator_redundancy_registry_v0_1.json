@@ -299,6 +299,208 @@
         "EMA_HIGH_LOW_RANGE",
         "ROC"
       ]
+    },
+    {
+      "id": "BIAS",
+      "owner": "TECHNICAL_STRUCTURE",
+      "family": "MA_DISTANCE",
+      "status": "REJECTED_OR_REDUNDANT",
+      "aliasOf": "MA_DISTANCE_PCT",
+      "relation": "ALGEBRAIC_IDENTITY_WHEN_MA_HORIZON_AND_METHOD_MATCH"
+    },
+    {
+      "id": "BIAS_DIFF",
+      "owner": "TECHNICAL_STRUCTURE",
+      "family": "MA_DISTANCE",
+      "status": "REJECTED_OR_REDUNDANT",
+      "derivedFrom": [
+        "BIAS_SHORT",
+        "BIAS_LONG"
+      ]
+    },
+    {
+      "id": "PSY20",
+      "owner": "TREND_MOMENTUM",
+      "family": "POSITIVE_DAY_RATIO",
+      "status": "REJECTED_OR_REDUNDANT",
+      "aliasOf": "POSITIVE_DAY_RATIO20",
+      "relation": "ALGEBRAIC_IDENTITY_ON_COMPLETE_20_RETURN_WINDOW"
+    },
+    {
+      "id": "MO",
+      "owner": "TREND_MOMENTUM",
+      "family": "RETURN",
+      "status": "REJECTED_OR_REDUNDANT",
+      "aliasOf": "RET_N",
+      "relation": "AFFINE_TRANSFORM"
+    },
+    {
+      "id": "IFT_RSI",
+      "owner": "TECHNICAL_INDICATOR",
+      "family": "SIGNED_RETURN_BALANCE",
+      "status": "REPRESENTATION_ONLY",
+      "derivedFrom": [
+        "RSI",
+        "WMA",
+        "INVERSE_FISHER"
+      ]
+    },
+    {
+      "id": "QQE",
+      "owner": "TECHNICAL_INDICATOR",
+      "family": "SIGNED_RETURN_BALANCE",
+      "status": "NESTED_RSI_PATH_STATE",
+      "derivedFrom": [
+        "RSI",
+        "EMA",
+        "RSI_DOMAIN_VOLATILITY",
+        "TRAILING_STATE"
+      ]
+    },
+    {
+      "id": "SUPERTREND",
+      "owner": "POSITION_MANAGEMENT",
+      "family": "ATR_TRAILING_STATE",
+      "status": "ROLE_MISMATCH_FOR_SELECTION",
+      "derivedFrom": [
+        "PRICE_CENTER",
+        "ATR",
+        "PATH_STATE"
+      ]
+    },
+    {
+      "id": "CHANDELIER_EXIT",
+      "owner": "POSITION_MANAGEMENT",
+      "family": "ATR_TRAILING_STOP",
+      "status": "COMPARATOR_ONLY",
+      "derivedFrom": [
+        "ROLLING_EXTREME",
+        "ATR",
+        "MULTIPLIER"
+      ]
+    },
+    {
+      "id": "DEMA",
+      "owner": "TECHNICAL_INDICATOR",
+      "family": "MOVING_AVERAGE_FILTER",
+      "status": "FILTER_COMPARATOR_ONLY"
+    },
+    {
+      "id": "TEMA",
+      "owner": "TECHNICAL_INDICATOR",
+      "family": "MOVING_AVERAGE_FILTER",
+      "status": "FILTER_COMPARATOR_ONLY"
+    },
+    {
+      "id": "HMA",
+      "owner": "TECHNICAL_INDICATOR",
+      "family": "MOVING_AVERAGE_FILTER",
+      "status": "FILTER_COMPARATOR_ONLY"
+    },
+    {
+      "id": "KAMA_LINE",
+      "owner": "TECHNICAL_INDICATOR",
+      "family": "MOVING_AVERAGE_FILTER",
+      "status": "FILTER_COMPARATOR_ONLY"
+    },
+    {
+      "id": "SCHAFF_TREND_CYCLE",
+      "owner": "TECHNICAL_INDICATOR",
+      "family": "FILTERED_TREND_TRANSITION",
+      "status": "LOW_PRIORITY_REDUNDANT",
+      "derivedFrom": [
+        "MACD",
+        "STOCHASTIC_NORMALIZATION",
+        "SMOOTHING"
+      ]
+    },
+    {
+      "id": "PATH_EFFICIENCY_10",
+      "owner": "TREND_MOMENTUM",
+      "family": "PATH_EFFICIENCY",
+      "status": "LOW_PRIORITY_WORTH_FALSIFICATION",
+      "derivedFrom": [
+        "NET_10_BAR_DISPLACEMENT",
+        "SUM_ABS_10_BAR_CHANGES"
+      ]
+    },
+    {
+      "id": "FORCE_INDEX",
+      "owner": "PRICE_VOLUME",
+      "family": "PRICE_VOLUME_RESPONSE",
+      "status": "COMPARATOR_ONLY"
+    },
+    {
+      "id": "EMV",
+      "owner": "PRICE_VOLUME",
+      "family": "LIQUIDITY_PRICE_RESPONSE",
+      "status": "COMPARATOR_ONLY"
+    },
+    {
+      "id": "VPT",
+      "owner": "PRICE_VOLUME",
+      "family": "RETURN_WEIGHTED_VOLUME",
+      "status": "PRICE_VOLUME_ONLY",
+      "hazards": [
+        "CUMULATIVE_START",
+        "VOLUME_UNIT"
+      ]
+    },
+    {
+      "id": "VR",
+      "owner": "PRICE_VOLUME",
+      "family": "SIGNED_VOLUME",
+      "status": "COMPARATOR_ONLY",
+      "notes": "Near-coordinate transform of up/down signed-volume balance; flat-day convention matters."
+    },
+    {
+      "id": "PVI_NVI",
+      "owner": "PRICE_VOLUME",
+      "family": "CONDITIONAL_RETURN_BY_VOLUME_CHANGE",
+      "status": "COMPARATOR_ONLY",
+      "hazards": [
+        "CUMULATIVE_START",
+        "CAUSAL_NARRATIVE"
+      ]
+    },
+    {
+      "id": "KST",
+      "owner": "TREND_MOMENTUM",
+      "family": "MULTI_HORIZON_RETURN",
+      "status": "LOW_PRIORITY_REDUNDANT",
+      "derivedFrom": [
+        "SMOOTHED_ROC12",
+        "SMOOTHED_ROC20",
+        "SMOOTHED_ROC30",
+        "SMOOTHED_ROC40"
+      ]
+    },
+    {
+      "id": "MASS_INDEX",
+      "owner": "VOLATILITY_RISK",
+      "family": "RANGE_VOLATILITY",
+      "status": "COMPARATOR_ONLY"
+    },
+    {
+      "id": "RVI_XQ_RELATIVE_VOLATILITY",
+      "owner": "TECHNICAL_INDICATOR",
+      "family": "SIGNED_VOLATILITY_BALANCE",
+      "status": "LOW_PRIORITY_REDUNDANT",
+      "hazards": [
+        "RVI_ACRONYM_AMBIGUITY"
+      ]
+    },
+    {
+      "id": "ELDER_RAY",
+      "owner": "TECHNICAL_STRUCTURE",
+      "family": "MA_RANGE_LOCATION",
+      "status": "LOW_PRIORITY_REDUNDANT"
+    },
+    {
+      "id": "STARC",
+      "owner": "TECHNICAL_STRUCTURE",
+      "family": "TREND_VOLATILITY_ENVELOPE",
+      "status": "REJECTED_OR_REDUNDANT"
     }
   ],
   "outcomeInferenceQueue": [
@@ -306,10 +508,12 @@
     "MACD_VS_DIRECT_TREND",
     "ADX_VS_DIRECT_TREND_QUALITY",
     "BOLLINGER_WIDTH_VS_ATR_REALIZED_VOL_VCP",
-    "EXTREME_RECENCY_20_AFTER_PRIMARY_GATES"
+    "EXTREME_RECENCY_20_AFTER_PRIMARY_GATES",
+    "PATH_EFFICIENCY_10_AFTER_PRIMARY_AND_RECENCY_GATES"
   ],
   "deferredResidualQuestions": [
     "EXTREME_RECENCY_20",
+    "PATH_EFFICIENCY_10",
     "RETURN_VELOCITY_SHIFT_5V20",
     "SIGNED_VOLUME_BALANCE20_OR_CMF_INCREMENTAL_VALUE_AFTER_PRICE_VOLUME"
   ]
