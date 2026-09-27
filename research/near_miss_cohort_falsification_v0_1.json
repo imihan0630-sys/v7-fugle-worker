@@ -1,0 +1,102 @@
+{
+  "schemaVersion": "near-miss-cohort-falsification-v0.1",
+  "researchDate": "2026-09-27",
+  "status": "STRUCTURAL_COHORT_BIAS_CONFIRMED",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "currentSemantics": {
+    "entryCondition": "A row becomes diagnostics.nearMisses only when its FIRST Formal rejection reason is exactly A/B setup not formed.",
+    "prerequisiteMeaning": "It has already survived every earlier ordered gate through sector admission.",
+    "channelChecks": {
+      "A": 6,
+      "B": 6
+    },
+    "missingCount": "min(number of failed A checks, number of failed B checks)",
+    "nearScore": "max(6-failedA,6-failedB)",
+    "diagnosticTruncation": "global sort by missingCount asc, nearScore desc, then slice first 12 BEFORE Shadow archive receives symbols",
+    "archiveTruncation": "archive then sorts those surviving near symbols and keeps at most 6 per price pool"
+  },
+  "algebraicFinding": {
+    "identity": "Because both A and B have exactly 6 checks, nearScore = 6 - missingCount.",
+    "consequence": "The second sort key nearScore is mathematically redundant with missingCount and cannot break ties."
+  },
+  "fixedSyntheticWitnesses": [
+    {
+      "id": "DISTANCE_BLIND_B_VOLUME",
+      "commonPassedChecks": [
+        "trend",
+        "breakout",
+        "strongClose",
+        "upperShadow",
+        "notLate"
+      ],
+      "candidate1": {
+        "volumeTodayVsPrev5": 1.29,
+        "threshold": 1.3,
+        "failedChecks": 1,
+        "missingCount": 1,
+        "nearScore": 5
+      },
+      "candidate2": {
+        "volumeTodayVsPrev5": 0.1,
+        "threshold": 1.3,
+        "failedChecks": 1,
+        "missingCount": 1,
+        "nearScore": 5
+      },
+      "conclusion": "A 0.01 miss and 1.20 miss are identical under current near-miss ranking."
+    },
+    {
+      "id": "GLOBAL_TOP12_POOL_STARVATION",
+      "setup": "Suppose >=12 GENERAL setup-first-fail rows appear before equally-ranked THOUSAND rows in stable input order.",
+      "consequence": "diagnostics.nearMisses.slice(0,12) can remove all THOUSAND near misses before the archive's per-pool byPool(near,6) logic ever sees them.",
+      "conclusion": "The later per-pool cap does not repair the earlier global truncation."
+    },
+    {
+      "id": "CHANNEL_IDENTITY_COLLAPSE",
+      "candidateA": "A is 1 failed check away while B fails 6",
+      "candidateB": "B is 1 failed check away while A fails 6",
+      "result": "Both missingCount=1 / nearScore=5.",
+      "conclusion": "Ranking does not distinguish which strategy channel is actually near."
+    }
+  ],
+  "interpretationGuard": [
+    "Current NEAR_MISS is not 'all stocks close to Formal selection'. It is a bounded subset of setup-first-failure rows after all earlier gates.",
+    "NEAR_MISS performance cannot be generalized to liquidity, valuation, sector, RR or signal-grade near failures.",
+    "missingCount is a Hamming-distance count over heterogeneous checks, not an economic or geometric distance to threshold.",
+    "nearScore must not be treated as an independent quality score because it is an affine transform of missingCount.",
+    "Absence of a price-pool/channel from NEAR_MISS may reflect global top-12 truncation rather than no near setups."
+  ],
+  "preferredResearchRepair": {
+    "firstStep": "Keep current Formal and current cohort immutable; add full per-date setup-first-failure counts by price pool and nearest channel before outcome analysis.",
+    "requiredFields": [
+      "scanDate",
+      "symbol",
+      "pool",
+      "A.check bitmask",
+      "B.check bitmask",
+      "failedACount",
+      "failedBCount",
+      "nearestChannel=A/B/TIE",
+      "raw threshold margins: pullback lower/upper distance, support distance margin, A volume margins, structure margin, trend margins where continuous",
+      "B breakoutPctOverThreshold, B volumeMarginTo1_3, closePositionMarginTo0_65, upperShadowMarginTo0_35, ret20MarginTo30",
+      "globalPopulationCount by pool/channel/check-pattern",
+      "sampling fraction",
+      "outcomeSelected=false",
+      "decisionImpact=false"
+    ],
+    "rankingForResearchSample": "If storage must be bounded, stratify by pool × nearestChannel × failed-check-pattern first; only then use deterministic hashing. Do not rank by outcome or a tuned composite distance.",
+    "distanceUse": "Continuous margins are descriptive until normalization is preregistered. Do not collapse heterogeneous margins into one score before evidence."
+  },
+  "falsification": [
+    "If existing bounded NEAR_MISS already achieves stable pool/channel/check-pattern coverage on prospective dates, cohort repair may be practically low value.",
+    "If outcomes do not differ between one-check near rows and farther multi-check setup rejects after same-date controls, 'near' may be a weak research concept.",
+    "If continuous margin adds no information beyond failed-check pattern, reject a distance score rather than tune it.",
+    "Do not relax A/B thresholds based on NEAR_MISS returns until cohort coverage and distance semantics are repaired."
+  ],
+  "governance": {
+    "researchReceipt": "Potential Class A if computed from already-loaded strategySetupState/debug data, isolated Shadow output, zero new market calls and no Formal effect.",
+    "thresholdChange": "Class C owner approval after prospective OOS evidence."
+  },
+  "decision": "NEAR_SCORE_REDUNDANT / THRESHOLD_DISTANCE_BLIND / GLOBAL_TRUNCATION_CAN_BIAS_POOL_COVERAGE / NO_FORMAL_CHANGE"
+}
