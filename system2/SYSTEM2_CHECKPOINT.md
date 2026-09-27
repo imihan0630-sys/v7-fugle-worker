@@ -19,6 +19,14 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 
 ## Current design decisions
 
+- Always-on Shadow accumulation remains NOT ACTIVE. Physical blocker remains isolated System 2 persistence + scheduled capture; do not attach to V8 production D1/runtime without Class B review.
+
+- Storage design advanced to V0.3 (still research-only / not deployed) to persist strategy_validity, entry_readiness, source_readiness, shadow_spec_id and evaluation_mode without collapsing non-selected states.
+
+- Limited Shadow decision builder implemented and verification passed: VALID+BUY_ELIGIBLE => SELECTED; missing REQUIRED evidence => INCOMPLETE+BLOCKED and still archived; VALID+TOO_EXTENDED => WATCH; source-blocked strategy cannot create a Limited Shadow decision. This verifies state semantics, not alpha.
+
+- First two Limited Shadow（有限影子模擬） specs preregistered before outcome tuning: S2-SM-LS-001 and S2-SG-LS-001. V0.1 freezes no numeric rank/score/weight/threshold; rank and totalScore remain NULL.
+
 - Machine-readable strategy source-readiness receipts implemented and verified. Current receipt states: SHORT_MOMENTUM=SOURCE_LIMITED, SWING_GROWTH=SOURCE_LIMITED, INDUSTRY_TREND=SOURCE_BLOCKED, EVENT_DRIVEN=SOURCE_BLOCKED, VALUE_REVERSION=SOURCE_LIMITED. These states describe source feasibility only and do not authorize weights/thresholds or live behavior.
 
 - Research suggestion handling is now persisted in `system2/CHATGPT_PROJECT_INSTRUCTIONS.md`: every newly proposed factor/rule is a hypothesis and must pass mechanism, counterexample/failure-mode, redundancy, PIT/quantifiability and incremental-value checks; unsupported ideas are rejected or omitted.
