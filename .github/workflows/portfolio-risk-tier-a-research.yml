@@ -31,6 +31,7 @@ on:
       - "tests/test_portfolio_risk_tier_a_v0_2.mjs"
       - "tests/portfolio_risk_tier_a_v0_2_readonly_audit.mjs"
       - "tests/portfolio_risk_live_lifecycle_readonly_audit.mjs"
+      - "tests/portfolio_risk_positive_signal_readonly_audit.mjs"
       - "research/portfolio_risk_live_lifecycle_contract_v0_1.json"
       - "research/confirmed_fill_ledger_v0_1.mjs"
       - "research/confirmed_fill_ledger_spec_v0_1.json"
@@ -87,3 +88,4 @@ jobs:
           node tests/portfolio_risk_journal_readonly_audit.mjs
           node tests/portfolio_risk_tier_a_v0_2_readonly_audit.mjs
           node tests/portfolio_risk_live_lifecycle_readonly_audit.mjs
+          node tests/portfolio_risk_positive_signal_readonly_audit.mjs

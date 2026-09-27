@@ -1986,3 +1986,69 @@ Status:
 `POSITIVE_BUY_SIGNAL_QUANTITY_RECONSTRUCTABLE / FILL_EVIDENCE_STILL_SEPARATE`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-050 — Production positive-signal audit: one BUY, no sizing identification yet (2026-09-27)
+
+Read-only Production audit run:
+- workflow run: `36329306700`;
+- job: `108648065662`;
+- endpoint: `/api/journal?days=365`;
+- no Production writes.
+
+Observed durable signal rows:
+- total signals = 1;
+- BUY = 1;
+- terminal SELL/STOP_LOSS = 0.
+
+The positive BUY is:
+- symbol: 3006;
+- plan scan date: 2026-09-21;
+- trade date: 2026-09-22;
+- signal time: 2026-09-22 11:31:33 Taipei;
+- signal market price: 282.5;
+- signal amount: NT$42,000;
+- exact reconstructed live suggestedShares: 148;
+- plan linkage: positive;
+- selected-count on the plan date: 1.
+
+### What this real row establishes
+
+It validates the PR-047/048 positive-event evidence chain against Production:
+`selected plan -> BUY signal event -> exact signal price -> exact amount -> exact suggestedShares`.
+
+### What it cannot establish
+
+The 2026-09-21 plan date contains only one selected name.
+Therefore current / equal-capital / equal-risk allocation comparisons are identical and this row is **non-identifying for sizing**.
+
+There is no terminal SELL/STOP_LOSS signal row yet, so no completed signal-path round trip exists.
+
+There is still no broker-confirmed fill ledger, so no realized P&L exists in the research evidence.
+
+The signal reader remains bounded at LIMIT 6000 with no truncation flag; missing BUY rows remain UNKNOWN rather than NO-BUY.
+
+Durable receipt:
+`research/positive_signal_production_audit_receipt_20260927.json`.
+
+Status:
+`ONE_POSITIVE_BUY_CONFIRMED / SINGLE_NAME_NONIDENTIFYING_FOR_SIZING / NO_TERMINAL_SIGNAL / REALIZED_PNL_BLOCKED`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+### PR-050 addendum — Production plan-preview vs live suggested-share drift
+
+For the same 3006 BUY:
+- plan buyHigh = 287.08;
+- stored plan firstShares = 146;
+- recomputing NT$42,000 / 287.08 also gives 146;
+- live BUY trigger price = 282.5;
+- live suggestedShares = 148.
+
+So the observed Production row confirms the designed semantic split:
+`plan firstShares = preview at plan price`,
+while
+`live suggestedShares = recomputed at observed trigger price`.
+
+The +2 shares are not a fill claim. They prove only that plan preview quantity must not substitute for live signal-side quantity in execution research.
