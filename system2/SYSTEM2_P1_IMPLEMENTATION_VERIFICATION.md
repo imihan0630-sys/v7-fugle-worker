@@ -127,3 +127,25 @@ Verified:
 Important:
 The allocator does not calculate a universal score. It only consumes an already-versioned ordering sequence and enforces capacity.
 The actual strategy-local ranking formula and global displacement policy remain research questions.
+
+
+## Candidate lifecycle verification (2026-09-27)
+
+Status: PASS / RESEARCH-ONLY / NOT DEPLOYED.
+
+Implemented:
+- `SYSTEM2_CANDIDATE_LIFECYCLE_CONTRACT_V0_1.md`;
+- `runtime/candidate_lifecycle.mjs`;
+- lifecycle/re-entry tests;
+- research-only lifecycle/re-entry storage tables.
+
+Verified:
+- one failed strategy membership does not force global symbol removal when another membership retains observation value;
+- a pool state cannot survive when no membership has observation value;
+- SIM_FILLED（模擬成交） transitions into POSITION_MONITOR（持股監控）, which is outside candidate capacity;
+- terminal candidate episodes cannot be silently reopened;
+- re-entry requires a new candidateEpisodeId;
+- lifecycle/re-entry receipts are immutable/hashable;
+- incremental SQLite syntax validation for the lifecycle/re-entry tables: PASS.
+
+No strategy-specific invalidation threshold was invented; those remain versioned strategy semantics.
