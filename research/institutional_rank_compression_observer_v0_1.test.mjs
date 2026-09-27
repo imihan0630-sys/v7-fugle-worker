@@ -1,7 +1,8 @@
 import assert from "node:assert/strict";
 import {
   decomposeInstitutionalOverlap,
-  summarizeInstitutionalRankCompression
+  summarizeInstitutionalRankCompression,
+  enumerateInstitutionalStreakGeometry
 } from "./institutional_rank_compression_observer_v0_1.mjs";
 
 const base={
@@ -83,3 +84,15 @@ console.log(JSON.stringify({
   saturationPairFlatteningMeasured:true,
   outcomesUsed:false
 },null,2));
+
+
+{
+  const g=enumerateInstitutionalStreakGeometry();
+  assert.equal(g.stateCount,64);
+  assert.equal(g.uniqueScoreCount,41);
+  assert.equal(g.maxStreakInteractionPoints,87);
+  assert.equal(g.statesAtOrAbove70,9);
+  assert.deepEqual(g.scoresAtOrAbove70,[71,73,75,77,79,83,87]);
+  assert.ok(g.collisionScoreCount>0);
+  assert.equal(g.interpretation.prevalenceClaimed,false);
+}
