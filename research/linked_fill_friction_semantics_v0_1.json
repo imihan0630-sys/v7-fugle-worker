@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "LINKED_FILL_FRICTION_SEMANTICS_V0_1",
+  "observedAt": "2026-09-27T23:34:00+08:00",
+  "measurableWithSignalPlusConfirmedFill": [
+    "signal-to-fill effective latency",
+    "fill-confirmation lag",
+    "side-aware signal-price vs fill-price slippage",
+    "confirmed filled shares"
+  ],
+  "notMeasurableWithoutOrderSubmissionEvidence": [
+    "whether an order was actually submitted",
+    "submitted order quantity",
+    "fill probability",
+    "partial-fill fraction",
+    "cancel/replace path",
+    "queue position or order-book impact"
+  ],
+  "adverseSlippageDefinition": {
+    "BUY_ADD": "(fillPrice-signalPrice)/signalPrice*10000",
+    "SELL_REDUCE": "(signalPrice-fillPrice)/signalPrice*10000",
+    "sign": "positive = adverse; negative = favorable"
+  },
+  "requiredFutureOrderEvidence": [
+    "stable order id",
+    "submittedAt",
+    "submitted side/action",
+    "submitted shares",
+    "submitted order type/limit price if applicable",
+    "broker acknowledgement/status history",
+    "stable linkage to signalEventId and fills"
+  ],
+  "proposalBoundary": "Confirmed Fill Ledger can support fill-level friction once implemented; fill probability/partial-fill research requires a separate broker/order receipt layer and must not be inferred from signal suggestedShares.",
+  "status": "FILL_FRICTION_MEASURABLE_IF_LINKED / ORDER_FILL_RATE_BLOCKED",
+  "formalCoreImpact": false
+}

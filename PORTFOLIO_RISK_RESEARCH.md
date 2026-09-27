@@ -2086,3 +2086,51 @@ Status:
 `ATTRIBUTION_CLASSIFIER_READY / CLASS_B_LEDGER_PROPOSAL_NEEDS_RESEARCH_ELIGIBILITY_ADDENDUM`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-052 — linked fill friction is measurable; fill-rate/partial-fill is not (2026-09-27)
+
+After PR-051 separates ledger validity from signal attribution, PR-052 freezes the next execution boundary.
+
+For a positively linked signal + confirmed fill pair, research can measure:
+- signal occurrence -> fill effective time latency;
+- fill effective time -> confirmation time lag;
+- side-aware signal-price vs fill-price slippage;
+- confirmed filled shares.
+
+Adverse slippage is defined as:
+- BUY/ADD: `(fillPrice - signalPrice) / signalPrice`;
+- SELL/REDUCE: `(signalPrice - fillPrice) / signalPrice`.
+
+Positive means adverse; negative means favorable.
+
+### Critical non-identifiability
+
+Filled shares alone do **not** identify:
+- whether an order was actually submitted;
+- submitted order quantity;
+- fill probability;
+- partial-fill fraction;
+- cancel/replace path.
+
+A system suggestion of 148 shares followed by a confirmed 100-share fill does not prove a 100/148 partial fill. The user may have intentionally submitted only 100 shares.
+
+Therefore fill-rate research requires a separate broker/order receipt layer with:
+- stable order id;
+- submittedAt;
+- side/action;
+- submitted shares;
+- order type/limit price where relevant;
+- broker acknowledgement/status history;
+- stable linkage to signalEventId and fill events.
+
+The Confirmed Fill Ledger remains sufficient for actual position state and, when signal-linked, signal-to-fill slippage/latency. It is not sufficient for order fill-rate inference.
+
+Artifacts:
+`research/linked_fill_friction_v0_1.mjs`;
+`research/linked_fill_friction_semantics_v0_1.json`.
+
+Status:
+`FILL_FRICTION_MEASURABLE_IF_LINKED / ORDER_FILL_RATE_BLOCKED`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
