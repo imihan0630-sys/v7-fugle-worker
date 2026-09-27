@@ -1465,3 +1465,35 @@ Status:
 `CAP_RESERVE_MECHANISM_PROVEN / HISTORICAL_OCCURRENCE_NOT_OBSERVED / PROSPECTIVE_WATCH_ONLY / ECONOMIC_VALUE_UNKNOWN`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-064 — FIRST-tranche risk concentration test (2026-09-28)
+
+The existing structural evidence uses the full planned allocation, but actual live exposure may stop after FIRST and never reach ADD.
+
+PR-064 tests whether the concentration finding survives when risk is restricted to the Formal 60% FIRST tranche.
+
+For each multi-name date:
+- FIRST amount = round(totalAllocation × 0.60);
+- FIRST preview shares = floor(FIRST amount / buyHigh);
+- FIRST projected stop-risk = FIRST preview notional × conservative stop-risk fraction.
+
+The audit compares:
+1. current PriorityScore sizing;
+2. same-deployment equal capital;
+3. the exhaustive NT$1,000-grid allocation with minimum FIRST-preview risk HHI under the same 35% cap.
+
+The falsification target is lifecycle-stage sensitivity:
+if current FIRST risk is no longer more concentrated than equal-capital/global minimum, the earlier full-plan conclusion must be downgraded.
+
+This remains plan-preview geometry only. It does not assert a BUY trigger, submitted order, fill or realized exposure.
+
+Artifacts:
+`research/first_tranche_risk_concentration_v0_1.mjs`;
+`research/first_tranche_risk_concentration_spec_v0_1.json`;
+`tests/portfolio_risk_first_tranche_readonly_audit.mjs`.
+
+Status:
+`FIRST_TRANCHE_PROTOCOL_READY / PRODUCTION_AUDIT_PENDING`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
