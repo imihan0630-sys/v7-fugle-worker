@@ -112,6 +112,8 @@ async function main() {
     marketDate: bundle.marketDate,
     requiredReady: bundle.evidence.requiredReady,
     precisionEligible: bundle.evidence.precisionEligible,
+    a5AvailableByCandidate: bundle.evidence.a5AvailableByCandidate,
+    candidateTimestamp: bundle.evidence.candidateTimestamp,
     candidateTaipeiTime: bundle.evidence.candidateTaipeiTime,
     collectorContractFingerprint: bundle.collectorProvenance.collectorContractFingerprint,
     workflowSha: bundle.collectorProvenance.workflowSha,
