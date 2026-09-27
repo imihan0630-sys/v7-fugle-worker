@@ -1,7 +1,7 @@
 {
   "schemaVersion": "broad-control-cohort-contamination-falsification-v0.1",
   "researchDate": "2026-09-27",
-  "status": "STRUCTURAL_CONTROL_CONTAMINATION_CONFIRMED",
+  "status": "STRUCTURAL_CONTROL_SEMANTIC_AMBIGUITY_CONFIRMED",
   "formalCoreChanged": false,
   "outcomeDataUsed": false,
   "currentArchiveOrder": [
@@ -12,12 +12,12 @@
     "BROAD_CONTROL -> any feature row not in used and meeting history/price/primary-liquidity filters"
   ],
   "structuralBug": {
-    "rootCause": "used tracks serialized sample membership, not semantic population membership.",
+    "rootCause": "BROAD_CONTROL sampling is conditioned on prior bounded serialization through `used`: rows sampled into earlier cohorts are excluded, while semantically identical rows not sampled into those cohorts remain eligible.",
     "consequences": [
-      "Unsampled QUALIFIED_NOT_SELECTED rows remain eligible for BROAD_CONTROL.",
-      "Unsampled setup-first-failure rows can remain eligible for BROAD_CONTROL.",
-      "Unsampled basePassed=true rejected rows can remain eligible for BROAD_CONTROL.",
-      "Thus BROAD_CONTROL can contain rows whose true Formal state belongs to another cohort."
+      "BROAD_CONTROL is not an independent sample from the full broad eligible universe.",
+      "BROAD_CONTROL is not a clean mutually-exclusive residual population either, because unsampled qualified/near/rejected rows can enter.",
+      "Its latent mixture depends on earlier cohort caps and sampling outcomes.",
+      "Changing a prior cohort cap can change BROAD_CONTROL composition even if the underlying market population is unchanged."
     ]
   },
   "fixedSyntheticWitnesses": [
@@ -44,34 +44,45 @@
     }
   ],
   "interpretationImpact": [
-    "BROAD_CONTROL is currently a residual unsampled pool, not a guaranteed semantic ordinary/control population.",
-    "Selected-vs-BROAD_CONTROL outcome differences can be attenuated or distorted by Formal-qualified/rejected contamination.",
-    "BROAD_CONTROL cohort counts cannot be interpreted as disjoint population counts.",
-    "Deterministic hashing remains outcome-free but does not cure semantic contamination."
+    "The current BROAD_CONTROL label is semantically ambiguous: it is a quota-conditioned residual mixture.",
+    "Selected-vs-BROAD_CONTROL contrasts may depend on arbitrary upstream Shadow sampling caps, not only market behavior.",
+    "A qualified/rejected row entering BROAD_CONTROL is not intrinsically wrong if the intended comparator is an independent broad-market sample; what is wrong is selectively excluding only the rows from that latent state that happened to be sampled earlier.",
+    "Current single primary cohort field does not preserve overlapping memberships, so a row cannot simultaneously be represented as e.g. QUALIFIED_NOT_SELECTED and BROAD_MARKET_CONTROL."
   ],
   "safeRepair": {
-    "principle": "Classify semantic state for every feature row first; sample within disjoint semantic populations second.",
-    "minimumExclusionFromBroadControl": [
-      "all scored/ok=true symbols whether sampled or not",
-      "all setup-first-failure symbols whether sampled or not",
-      "all basePassed=true downstream-rejected symbols whether sampled or not",
-      "all dedicated early-reject cohorts when a dedicated control is intended",
-      "selected symbols"
-    ],
-    "alternative": "Define BROAD_CONTROL explicitly as rows whose scoreCandidate result is neither ok nor in any dedicated comparison population, with a frozen eligibility contract. Do not use sample membership as semantic membership.",
-    "denominator": "Persist full semantic population counts by scanDate/pool before bounded sampling.",
-    "noOutcomeSelection": true
+    "principle": "Choose and freeze one control estimand instead of mixing two semantics.",
+    "optionA_independentBroadMarketControl": {
+      "estimand": "Random/deterministic outcome-free sample from a frozen broad eligible universe, independent of focal cohort sampling.",
+      "requirement": [
+        "Sampling frame defined before SELECTED/QUALIFIED/NEAR/REJECTED sampling.",
+        "A symbol may have both a primary Formal-state label and broad-control membership.",
+        "Persist membership flags/array or separate control-membership table because (scan_date,symbol) single-cohort storage cannot represent overlap cleanly.",
+        "Do not remove a symbol from broad-control eligibility merely because it was sampled into another research cohort."
+      ],
+      "preferredFor": "Selection Alpha vs broad market baseline"
+    },
+    "optionB_mutuallyExclusiveResidualControl": {
+      "estimand": "Rows that are explicitly outside all focal semantic populations under a frozen rule.",
+      "requirement": [
+        "Classify semantic state for every row first.",
+        "Exclude full populations, not sampled rows only.",
+        "Rename to RESIDUAL_CONTROL because it is not a broad-market sample."
+      ],
+      "preferredFor": "Specific contrast against 'other' non-focal rows"
+    },
+    "forbiddenHybrid": "Current pattern: exclude earlier sampled members but retain unsampled members of the same latent population."
   },
   "falsification": [
-    "Measure historical/prospective contamination rate by re-running scoreCandidate on stored BROAD_CONTROL PIT snapshots only where source-complete; if zero prospectively after a repair, verify with tests rather than assume.",
-    "If prior BROAD_CONTROL contains ok=true rows, those dates are contaminated for Selected-vs-BROAD_CONTROL inference and must be flagged/quarantined rather than silently relabeled.",
-    "If contamination is negligible prospectively because population sizes are always below caps, repair may have low empirical impact but semantic correctness still matters.",
-    "Do not retroactively move immutable rows between cohorts without a versioned quality overlay."
+    "Measure how much BROAD_CONTROL composition changes when only earlier Shadow sample caps are changed in a research replay; underlying feature universe and Formal decisions must stay fixed.",
+    "If composition/outcomes are stable to cap changes, practical distortion may be low even though semantics remain ambiguous.",
+    "If broad-market control is the intended estimand, compare an independently sampled membership overlay against the current quota-conditioned control on identical dates.",
+    "If residual control is intended, classify all PIT rows first and prove mutually-exclusive population counts.",
+    "Do not silently relabel historical rows; use a versioned quality/membership overlay."
   ],
   "governance": {
     "researchArchiveRepair": "Potential Class A if only Shadow classification/sampling changes, no market calls, no Formal mutation, and frozen Formal outputs remain identical.",
     "historicalRepair": "Append-only/versioned quality overlay; never mutate old snapshots to hide original capture.",
     "formalImpact": "NONE unless someone later tries to use the research conclusion to change gates; such changes remain Class C."
   },
-  "decision": "BROAD_CONTROL_SEMANTIC_CONTAMINATION_CONFIRMED / RESEARCH_FIREWALL_REPAIR_WARRANTED / NO_FORMAL_CHANGE"
+  "decision": "BROAD_CONTROL_QUOTA_CONDITIONED_MIXTURE_CONFIRMED / CONTROL_ESTIMAND_MUST_BE_FROZEN / NO_FORMAL_CHANGE"
 }
