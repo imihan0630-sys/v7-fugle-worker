@@ -95,16 +95,24 @@ jobs:
               if (request.method !== "GET") return new Response("Method not allowed", { status: 405 });
               try {
                 const tables = await select(env, "SELECT name FROM sqlite_schema WHERE type='table' AND name IN ('v7_pv_shadow_snapshots','v7_pv_outcomes','v7_pv_intraday_baselines','v7_cron_runs','v7_live_state') ORDER BY name");
-                const [baselines, snapshotSummary, duplicates, snapshots, outcomes, recentCrons] = await Promise.all([
-                  select(env, "SELECT symbol,schema_version,valid_sessions,last_market_date,corporate_action_reset_at,updated_at FROM v7_pv_intraday_baselines ORDER BY symbol"),
+                const [baselines, snapshotSummary, duplicates, snapshots, outcomes, recentCrons, snapshotColumns, outcomeColumns, baselineColumns, snapshotIndexes, outcomeIndexes] = await Promise.all([
+                  select(env, "SELECT symbol,schema_version,valid_sessions,last_market_date,slot_stats_json,corporate_action_reset_at,updated_at FROM v7_pv_intraday_baselines ORDER BY symbol"),
                   select(env, "SELECT market_date,observation_type,COUNT(*) AS row_count,COUNT(DISTINCT symbol) AS symbol_count,SUM(CASE WHEN decision_impact<>0 THEN 1 ELSE 0 END) AS nonzero_decision_impact,MIN(created_at) AS first_created_at,MAX(created_at) AS last_created_at FROM v7_pv_shadow_snapshots GROUP BY market_date,observation_type ORDER BY market_date,observation_type"),
                   select(env, "SELECT COUNT(*) AS duplicate_groups,COALESCE(SUM(row_count-1),0) AS duplicate_rows FROM (SELECT symbol,observed_at,observation_type,COUNT(*) AS row_count FROM v7_pv_shadow_snapshots GROUP BY symbol,observed_at,observation_type HAVING COUNT(*)>1)"),
                   select(env, "SELECT snapshot_id,symbol,market_date,observed_at,observation_type,schema_version,event_key,features_json,context_json,coverage_json,source_json,decision_impact FROM v7_pv_shadow_snapshots ORDER BY created_at DESC LIMIT 1000"),
                   select(env, "SELECT snapshot_id,horizon,direction_return,mfe,mae,range_atr,stop_first,false_break,acceptance_result,outcome_complete,outcome_json FROM v7_pv_outcomes ORDER BY completed_at DESC LIMIT 2000"),
-                  select(env, "SELECT id,cron_expression,scheduled_at,started_at,finished_at,job_type,status,skipped,fugle_calls,error FROM v7_cron_runs ORDER BY id DESC LIMIT 40")
+                  select(env, "SELECT id,cron_expression,scheduled_at,started_at,finished_at,job_type,status,skipped,fugle_calls,error FROM v7_cron_runs ORDER BY id DESC LIMIT 40"),
+                  select(env, "PRAGMA table_info('v7_pv_shadow_snapshots')"),
+                  select(env, "PRAGMA table_info('v7_pv_outcomes')"),
+                  select(env, "PRAGMA table_info('v7_pv_intraday_baselines')"),
+                  select(env, "PRAGMA index_list('v7_pv_shadow_snapshots')"),
+                  select(env, "PRAGMA index_list('v7_pv_outcomes')")
                 ]);
                 let snapshotFingerprintMismatches = 0;
                 const guardCounts = {};
+                const guardFlagCounts = {};
+                const interpretabilityCounts = {};
+                let unknownCoercionSuspects = 0;
                 for (const row of snapshots) {
                   const features = JSON.parse(row.features_json || "{}");
                   const context = JSON.parse(row.context_json || "{}");
@@ -120,6 +128,15 @@ jobs:
                   if (stored !== calculated) snapshotFingerprintMismatches += 1;
                   const guard = String(features.pvGuardState || "UNKNOWN");
                   guardCounts[guard] = (guardCounts[guard] || 0) + 1;
+                  for (const flag of Array.isArray(features.pvGuardFlags) ? features.pvGuardFlags : []) {
+                    const key = String(flag || "UNKNOWN");
+                    guardFlagCounts[key] = (guardFlagCounts[key] || 0) + 1;
+                  }
+                  const interpretability = String(features.pvInterpretability || "UNKNOWN");
+                  interpretabilityCounts[interpretability] = (interpretabilityCounts[interpretability] || 0) + 1;
+                  for (const key of ["pvResponseState", "pvAcceptanceState", "pvPersistenceState"]) {
+                    if (features[key] === 0 || features[key] === 1 || features[key] === false || features[key] === true) unknownCoercionSuspects += 1;
+                  }
                 }
                 let outcomeFingerprintMismatches = 0;
                 let outcomeDecisionImpactViolations = 0;
@@ -135,17 +152,46 @@ jobs:
                   if (recorded.decisionImpact !== false) outcomeDecisionImpactViolations += 1;
                 }
                 const symbolDigest = async symbol => (await sha256(String(symbol))).slice(0, 12);
+                const observableSlots = ["09:00","09:15","09:30","09:45","10:00","10:15","10:30","10:45","11:00","11:15","11:30","11:45","12:00","12:15","12:30","12:45","13:00"];
                 const safeBaselines = [];
-                for (const row of baselines) safeBaselines.push({
-                  symbolDigest: await symbolDigest(row.symbol), schemaVersion: row.schema_version,
-                  validSessions: Number(row.valid_sessions), lastMarketDate: row.last_market_date, updatedAt: row.updated_at
-                });
+                for (const row of baselines) {
+                  let payload = {};
+                  try { payload = JSON.parse(row.slot_stats_json || "{}"); } catch {}
+                  const sessions = Array.isArray(payload.sessions) ? payload.sessions : [];
+                  const slotCoverage = {};
+                  for (const slot of observableSlots) {
+                    const bars = sessions.map(session => (session?.bars || []).find(bar => bar?.slotKey === slot)).filter(Boolean);
+                    slotCoverage[slot] = {
+                      volume: bars.filter(bar => Number.isFinite(Number(bar.volume)) && Number(bar.volume) >= 0).length,
+                      range: bars.filter(bar => Number(bar.trueRange) > 0).length,
+                      cumulative: bars.filter(bar => bar.cumulativeValid === true && Number(bar.cumulativeVolume) > 0).length
+                    };
+                  }
+                  const coverageValues = Object.values(slotCoverage);
+                  safeBaselines.push({
+                    symbolDigest: await symbolDigest(row.symbol), schemaVersion: row.schema_version,
+                    validSessions: Number(row.valid_sessions), lastMarketDate: row.last_market_date, updatedAt: row.updated_at,
+                    minimumSlotVolumeHistory: Math.min(...coverageValues.map(item => item.volume)),
+                    minimumSlotRangeHistory: Math.min(...coverageValues.map(item => item.range)),
+                    minimumSlotCumulativeHistory: Math.min(...coverageValues.map(item => item.cumulative)),
+                    allSlotsReady: coverageValues.every(item => item.volume >= 20 && item.range >= 20 && item.cumulative >= 20),
+                    slotCoverage
+                  });
+                }
                 return Response.json({
                   readOnly: true,
                   tables: tables.map(row => row.name),
+                  schema: {
+                    snapshotPrimaryKey: snapshotColumns.filter(row => Number(row.pk) > 0).sort((a, b) => Number(a.pk) - Number(b.pk)).map(row => row.name),
+                    outcomePrimaryKey: outcomeColumns.filter(row => Number(row.pk) > 0).sort((a, b) => Number(a.pk) - Number(b.pk)).map(row => row.name),
+                    baselinePrimaryKey: baselineColumns.filter(row => Number(row.pk) > 0).sort((a, b) => Number(a.pk) - Number(b.pk)).map(row => row.name),
+                    snapshotIndexes: snapshotIndexes.map(row => ({ name: row.name, unique: Number(row.unique) === 1 })),
+                    outcomeIndexes: outcomeIndexes.map(row => ({ name: row.name, unique: Number(row.unique) === 1 }))
+                  },
                   baseline: {
                     rowCount: baselines.length,
                     readyCount: baselines.filter(row => Number(row.valid_sessions) >= 20).length,
+                    allSlotsReadyCount: safeBaselines.filter(row => row.allSlotsReady).length,
                     minimumSessions: baselines.length ? Math.min(...baselines.map(row => Number(row.valid_sessions))) : null,
                     maximumSessions: baselines.length ? Math.max(...baselines.map(row => Number(row.valid_sessions))) : null,
                     rows: safeBaselines
@@ -157,9 +203,20 @@ jobs:
                     duplicateRows: Number(duplicates[0]?.duplicate_rows || 0),
                     snapshotFingerprintMismatches,
                     nonzeroDecisionImpact: snapshotSummary.reduce((sum, row) => sum + Number(row.nonzero_decision_impact || 0), 0),
-                    guardCounts
+                    guardCounts,
+                    guardFlagCounts,
+                    interpretabilityCounts,
+                    unknownCoercionSuspects,
+                    fingerprintAuditRows: snapshots.length,
+                    fingerprintAuditTruncated: snapshots.length >= 1000
                   },
-                  outcomes: { rowCount: outcomes.length, fingerprintMismatches: outcomeFingerprintMismatches, decisionImpactViolations: outcomeDecisionImpactViolations },
+                  outcomes: {
+                    rowCount: outcomes.length,
+                    auditedRows: outcomes.length,
+                    fingerprintAuditTruncated: outcomes.length >= 2000,
+                    fingerprintMismatches: outcomeFingerprintMismatches,
+                    decisionImpactViolations: outcomeDecisionImpactViolations
+                  },
                   recentCrons
                 });
               } catch (error) {
@@ -226,10 +283,33 @@ jobs:
             const helperEnd = activeContent.indexOf("async function analyzeStockSmart", helperStart);
             assert.ok(helperStart >= 0 && helperEnd > helperStart, "PV helper layer missing");
             const ordinaryLiveCandleCallsAddedByPv = (activeContent.slice(helperStart, helperEnd).match(/fetchCandles\(/g) || []).length;
+            const formalPersistenceHook = activeContent.indexOf("await writeLiveSnapshot(env, snapshot)");
+            const formalSignalHook = activeContent.indexOf("processSignalState(result");
+            const intradayPvHook = activeContent.lastIndexOf("const pvShadow = await recordPvIntradayShadowSafe");
+            const dailyBootstrapHook = activeContent.lastIndexOf("pvShadowBootstrap=await bootstrapPvShadowBaselinesSafe");
+            const dailySnapshotHook = activeContent.lastIndexOf("pvShadowDaily=await recordPvDailyShadowSafe");
+            const sourceAttestation = {
+              activeContentSha256: createHash("sha256").update(activeContent).digest("hex"),
+              pvEnabledHelperPresent: helperStart >= 0,
+              intradayRecorderPresent: activeContent.includes("async function recordPvIntradayShadowSafe"),
+              dailyRecorderPresent: activeContent.includes("async function recordPvDailyShadowSafe"),
+              formalPersistenceAnchorPresent: formalPersistenceHook >= 0,
+              formalSignalAnchorPresent: formalSignalHook >= 0,
+              intradayHookPresent: intradayPvHook >= 0,
+              intradayHookAfterFormalPersistence: intradayPvHook > formalPersistenceHook && intradayPvHook > formalSignalHook,
+              dailyBootstrapHookPresent: dailyBootstrapHook >= 0,
+              dailySnapshotHookPresent: dailySnapshotHook >= 0,
+              formalMutationMethodsUsedByDiagnostic: false
+            };
             const pvScan = scan?.pvShadow || null;
-            const mutationConflicts = (pvScan?.daily?.details || []).filter(item => item?.save?.mutationConflict).length;
+            const dailyDetails = pvScan?.daily?.details || [];
+            const dailyMutationConflicts = dailyDetails.filter(item => item?.save?.mutationConflict).length;
+            const dailyDuplicateAttempts = dailyDetails.filter(item => item?.save?.duplicate).length;
+            const livePv = live?.pvShadow || null;
+            const intradayMutationConflicts = Number(livePv?.mutationConflicts || 0);
+            const intradayDuplicateAttempts = Number(livePv?.duplicates || 0);
             report = {
-              schemaVersion: "PV_SHADOW_EPHEMERAL_D1_READONLY_QA_V1",
+              schemaVersion: "PV_SHADOW_EPHEMERAL_D1_READONLY_QA_V2",
               generatedAt: new Date().toISOString(),
               readOnly: true,
               isolatedFromFormalWorker: true,
@@ -243,14 +323,20 @@ jobs:
                 formalCoreImpact: pvScan?.formalCoreImpact ?? false,
                 bootstrap: pvScan?.bootstrap || null,
                 daily: pvScan?.daily || null,
-                mutationConflicts,
+                dailyMutationConflicts,
+                dailyDuplicateAttempts,
+                intradayMutationConflicts,
+                intradayDuplicateAttempts,
                 zeroPvPushes: pvScan?.daily?.zeroPvPushes ?? null,
                 zeroPvActions: pvScan?.daily?.zeroPvActions ?? null,
+                intradayZeroPvPushes: livePv?.zeroPvPushes ?? null,
+                intradayZeroPvActions: livePv?.zeroPvActions ?? null,
                 latestCron: cron?.latest || cron?.latestRun || null,
                 ordinaryLiveCandleCallsAddedByPv,
                 latestLiveCalls: live?.fugleCallsThisRun || null,
                 latestLivePv: live?.pvShadow || null,
-                formalConfiguredSymbols: Array.isArray(config?.stocks) ? config.stocks.length : null
+                formalConfiguredSymbols: Array.isArray(config?.stocks) ? config.stocks.length : null,
+                sourceAttestation
               }
             };
             assert.equal(d1Report.readOnly, true);
@@ -259,8 +345,21 @@ jobs:
             assert.equal(d1Report.snapshots.nonzeroDecisionImpact, 0, "PV decision impact violation");
             assert.equal(d1Report.outcomes.fingerprintMismatches, 0, "PV outcome fingerprint mismatch");
             assert.equal(d1Report.outcomes.decisionImpactViolations, 0, "PV outcome decision impact violation");
-            assert.equal(mutationConflicts, 0, "PV mutation conflict reported by telemetry");
+            assert.equal(d1Report.snapshots.unknownCoercionSuspects, 0, "PV UNKNOWN state was coerced to a boolean/numeric value");
+            assert.deepEqual(d1Report.schema.snapshotPrimaryKey, ["snapshot_id"], "Unexpected PV snapshot primary key");
+            assert.deepEqual(d1Report.schema.outcomePrimaryKey, ["snapshot_id", "horizon"], "Unexpected PV outcome primary key");
+            assert.deepEqual(d1Report.schema.baselinePrimaryKey, ["symbol"], "Unexpected PV baseline primary key");
+            assert.equal(dailyMutationConflicts, 0, "PV daily mutation conflict reported by telemetry");
+            assert.equal(intradayMutationConflicts, 0, "PV intraday mutation conflict reported by telemetry");
             assert.equal(ordinaryLiveCandleCallsAddedByPv, 0, "PV added ordinary live candle calls");
+            assert.equal(sourceAttestation.intradayRecorderPresent, true, "PV intraday recorder missing from deployed source");
+            assert.equal(sourceAttestation.dailyRecorderPresent, true, "PV daily recorder missing from deployed source");
+            assert.equal(sourceAttestation.formalPersistenceAnchorPresent, true, "Formal live-state persistence anchor missing from deployed source");
+            assert.equal(sourceAttestation.formalSignalAnchorPresent, true, "Formal signal-processing anchor missing from deployed source");
+            assert.equal(sourceAttestation.intradayHookPresent, true, "PV intraday call hook missing from deployed source");
+            assert.equal(sourceAttestation.intradayHookAfterFormalPersistence, true, "PV intraday hook is missing or precedes Formal persistence");
+            assert.equal(sourceAttestation.dailyBootstrapHookPresent, true, "PV baseline bootstrap hook missing from deployed source");
+            assert.equal(sourceAttestation.dailySnapshotHookPresent, true, "PV daily snapshot hook missing from deployed source");
           } finally {
             try {
               await cf(`/workers/scripts/${diagScript}/subdomain`, {
