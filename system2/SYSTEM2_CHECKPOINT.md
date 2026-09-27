@@ -19,6 +19,8 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 
 ## Current design decisions
 
+- Discussion proposals are hypotheses, not conclusions: every suggested factor/rule must be independently checked for counterevidence, failure modes, redundancy and incremental value. Ideas that add no value should be rejected or omitted rather than justified into the system.
+
 - Owner explicitly requires an anti-agreement rule: do not accept a proposed factor/idea just because the owner suggested it. Every suggestion must receive mechanism + counterevidence + redundancy/incremental-value review, and may be rejected, downgraded to research-only/context-only, or accepted only when evidence justifies it. Do not manufacture reasons to keep weak ideas.
 
 - FUNDAMENTAL_GROWTH（基本面成長）identity review advanced: quality-growth dimensions now explicitly include growth persistence/acceleration, margin quality, cash conversion/FCF, working-capital quality, ROE/ROIC where reliable, balance-sheet fragility, growth durability/customer concentration and capital allocation. Contract liabilities remain context-specific. Status remains OWNER REVIEW PENDING until explicit approval.
