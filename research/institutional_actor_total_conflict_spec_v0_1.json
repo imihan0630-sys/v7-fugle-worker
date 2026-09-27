@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "INSTITUTIONAL_ACTOR_TOTAL_CONFLICT_SPEC_V0_1",
+  "researchDate": "2026-09-28",
+  "class": "A_RESEARCH_ONLY",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "exactFormalGeometry": {
+    "currentBuy": "any(foreignNet,trustNet,dealerNet)>0 => +6",
+    "institutionsAligned": "all three actor nets >0 => +15",
+    "netIntensity": "25 * clamp(max(institutionTotalNet/ADVshares,0),0,1)",
+    "sourceInvariant": "foreignNet+trustNet+dealerNet == institutionTotalNet"
+  },
+  "classes": [
+    "ALL_POSITIVE_ALIGNED",
+    "MIXED_ACTORS_TOTAL_POSITIVE",
+    "MIXED_ACTORS_TOTAL_ZERO",
+    "MIXED_ACTORS_TOTAL_NEGATIVE",
+    "NO_POSITIVE_TOTAL_ZERO",
+    "NO_POSITIVE_TOTAL_NEGATIVE"
+  ],
+  "clipping": {
+    "lower": "institutionTotalNet<=0 => aggregateNetIntensity=0 regardless of negative magnitude",
+    "upper": "institutionTotalNet>=ADV => aggregateNetIntensity=25 regardless of positive excess magnitude"
+  },
+  "semanticInterpretation": [
+    "currentBuy is actor-sign information; aggregateNetIntensity is clipped total-magnitude information. They are related but not interchangeable.",
+    "MIXED_ACTORS_TOTAL_NEGATIVE/ZERO preserves +6 any-positive information while the aggregate magnitude component contributes zero.",
+    "ALL_POSITIVE_ALIGNED necessarily has positive aggregate total when source arithmetic is valid.",
+    "Clipping is a deliberate score geometry; structural compression alone is not evidence to remove it."
+  ],
+  "denominatorGuard": "Complete clean same-scan parent required for prevalence. Selected-only FULL_FORMAL_SCAN and bounded Shadow cannot estimate full-scan class rates.",
+  "decision": "ACTOR_TOTAL_CONFLICT_TAXONOMY_READY / LOWER_UPPER_NET_CLIPPING_EXACT / ECONOMIC_VALUE_UNKNOWN / NOT_FORMAL_OPTIMIZATION_CANDIDATE"
+}
