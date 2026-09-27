@@ -9,12 +9,37 @@ const SHADOW_FORMAL_COMPARATOR_KEYS=[
   "setupQuality","sectorFlow","relativeStrength"
 ];
 
-function compareDecisionState(a,b) {
+function comparatorOnlyDelta(a,b) {
   for(const key of SHADOW_FORMAL_COMPARATOR_KEYS) {
     const delta=numberOr(b?.ranking?.[key])-numberOr(a?.ranking?.[key]);
     if(Math.abs(delta)>1e-12) return delta;
   }
-  return String(a?.symbol||"").localeCompare(String(b?.symbol||""));
+  return 0;
+}
+
+function validPreSortOrdinal(row){
+  const raw=row?.preSortOrdinal;
+  if(raw===null||raw===undefined||raw==="") return null;
+  const n=Number(raw);
+  return Number.isInteger(n)&&n>=0?n:null;
+}
+
+function rankingInputsComplete(row){
+  return SHADOW_FORMAL_COMPARATOR_KEYS.every(key=>{
+    const raw=row?.ranking?.[key];
+    return raw!==null&&raw!==undefined&&raw!==""&&Number.isFinite(Number(raw));
+  });
+}
+
+function compareDecisionState(a,b) {
+  const delta=comparatorOnlyDelta(a,b);
+  if(Math.abs(delta)>1e-12) return delta;
+  const ao=validPreSortOrdinal(a),bo=validPreSortOrdinal(b);
+  if(ao!==null&&bo!==null&&ao!==bo) return ao-bo;
+  // Current Formal comparator has no symbol fallback. Returning zero preserves
+  // input order under stable sort, but that order is not replay-certifiable
+  // after persistence unless preSortOrdinal/tie lineage is captured.
+  return 0;
 }
 
 function semanticMemberships(state) {
@@ -43,13 +68,45 @@ export function classifyShadowSemanticPopulation({scanDate,decisionStates=[]}={}
       symbol,
       pool,
       memberships:semanticMemberships(state),
-      formalPoolRank:null
+      observedPoolRank:null,
+      formalPoolRank:null,
+      rankCertification:null,
+      tieGroupSize:null
     });
   }
 
   for(const pool of SHADOW_SEMANTIC_POOLS) {
     const ranked=rows.filter(row=>row.pool===pool && row.formalOk===true).sort(compareDecisionState);
-    ranked.forEach((row,index)=>{row.formalPoolRank=index+1;});
+    ranked.forEach((row,index)=>{row.observedPoolRank=index+1;});
+
+    let start=0;
+    while(start<ranked.length){
+      let end=start+1;
+      while(end<ranked.length && comparatorOnlyDelta(ranked[start],ranked[end])===0) end+=1;
+      const group=ranked.slice(start,end);
+      const tieGroupSize=group.length;
+      const ordinals=group.map(validPreSortOrdinal);
+      const ordinalSet=new Set(ordinals.filter(v=>v!==null));
+      const completeInputs=group.every(rankingInputsComplete);
+      const tieLineageCertified=tieGroupSize===1 || (
+        ordinals.every(v=>v!==null) && ordinalSet.size===tieGroupSize
+      );
+
+      for(const row of group){
+        row.tieGroupSize=tieGroupSize;
+        if(!completeInputs){
+          row.rankCertification="RANKING_INPUT_INCOMPLETE";
+          row.formalPoolRank=null;
+        }else if(!tieLineageCertified){
+          row.rankCertification="TIE_LINEAGE_UNKNOWN";
+          row.formalPoolRank=null;
+        }else{
+          row.rankCertification="CERTIFIED";
+          row.formalPoolRank=row.observedPoolRank;
+        }
+      }
+      start=end;
+    }
   }
 
   const byMembership={},byPool={};
@@ -60,12 +117,19 @@ export function classifyShadowSemanticPopulation({scanDate,decisionStates=[]}={}
     }
   }
 
+  const rankQuality={CERTIFIED:0,TIE_LINEAGE_UNKNOWN:0,RANKING_INPUT_INCOMPLETE:0,NOT_FORMAL_OK:0};
+  for(const row of rows){
+    if(row.formalOk!==true) rankQuality.NOT_FORMAL_OK+=1;
+    else if(row.rankCertification in rankQuality) rankQuality[row.rankCertification]+=1;
+  }
+
   return {
     schemaVersion:"shadow-semantic-classifier-v0.1",
     scanDate:String(scanDate||""),
     rows,
-    counts:{total:rows.length,byMembership,byPool},
+    counts:{total:rows.length,byMembership,byPool,rankQuality},
     comparatorVersion:"PRIORITY_RR_CONSENSUS_SETUP_SECTOR_RS_7_5_30",
+    tieLineagePolicy:"Formal comparator has no symbol fallback. Exact comparator ties require unique preSortOrdinal to certify replay rank; otherwise formalPoolRank is UNKNOWN/null.",
     researchOnly:true,
     decisionImpact:false,
     formalCoreImpact:false
