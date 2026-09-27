@@ -67,7 +67,11 @@ jobs:
             };
           }
 
-          const tokenVerify = await requestJson(`${origin}/user/tokens/verify`);
+          const tokenVerify = await requestJson(
+            dedicatedToken
+              ? `${origin}/accounts/${accountId}/tokens/verify`
+              : `${origin}/user/tokens/verify`,
+          );
           const workers = await requestJson(`${origin}/accounts/${accountId}/workers/scripts`);
           const d1 = await requestJson(`${origin}/accounts/${accountId}/d1/database?per_page=100`);
 
@@ -151,4 +155,4 @@ jobs:
           ! grep -Eiq 'wrangler[[:space:]]+deploy|d1[[:space:]]+create|method:[[:space:]]*"(POST|PUT|PATCH|DELETE)"'             .github/workflows/system2-cloud-readiness-audit.yml
           echo "Read-only workflow mutation guard PASS"
 
-# Secret refresh trigger 2026-09-27T18:16+08:00
+# Account-token verify endpoint fix 2026-09-27T18:18+08:00
