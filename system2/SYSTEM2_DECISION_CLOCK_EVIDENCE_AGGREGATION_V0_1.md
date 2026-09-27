@@ -67,7 +67,9 @@ Coverage Integrity V0.2 now distinguishes:
 
 The coverage window is generated independently from the observed artifact list, beginning at the preregistered first eligible prospective date (2026-09-29). This prevents a trading date with no scheduled run at all from disappearing from the denominator.
 
-The first scheduled run observed for a Taiwan market date, attempt 1 only, is an immutable daily anchor for coverage. A later scheduled rerun may remain diagnostic evidence, but it cannot repair an earlier failed/missing anchor or make that date promotion-grade after the fact.
+The first scheduled run observed for a Taiwan market date, attempt 1 only, is an immutable daily anchor for coverage. If GitHub later re-runs the same workflow run ID, the aggregator resolves the dedicated attempt-one metadata and uses only attempt-one bundles for promotion-grade selection. Later attempts remain diagnostic only.
+
+A later rerun cannot repair an earlier failed/missing attempt-one anchor, cannot replace attempt one with a more favorable latency result, and cannot invalidate a previously valid attempt-one artifact merely because the run's latest attempt number changed.
 
 The wrapper reports:
 - `artifactCoverageAudited`;
@@ -76,7 +78,9 @@ The wrapper reports:
 - `nonTradingScheduledRuns`;
 - `coverageIntegrity.failureClassCounts`;
 - `coverageIntegrity.tradingDayGapDates`;
-- `coverageIntegrity.laterScheduledRunsCannotRepairAnchor=true`.
+- `coverageIntegrity.laterScheduledRunsCannotRepairAnchor=true`;
+- `coverageIntegrity.laterRerunAttemptsCannotRepairOrInvalidateAttemptOne=true`;
+- `rerunDiagnosticArtifactCount` and `rerunDiagnosticArtifacts`.
 
 A missing bundle on an official trading day blocks promotion-grade readiness as
 `SCHEDULED_TRADING_DAY_ARTIFACT_GAPS`.
