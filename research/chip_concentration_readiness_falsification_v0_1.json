@@ -43,5 +43,25 @@
     "No threshold or required/optional policy change from structural evidence alone."
   ],
   "observer": "research/chip_concentration_readiness_observer_v0_1.mjs",
-  "decision": "CHIP_GATE_IS_DATA_READINESS_GATE / SYMBOL_COVERAGE_GAP_POSSIBLE / HISTORICAL_PIT_AVAILABILITY_NOT_PROVEN / PROSPECTIVE_CAPTURE_WARRANTED / NOT_FORMAL_OPTIMIZATION_CANDIDATE"
+  "decision": "CHIP_GATE_IS_DATA_READINESS_GATE / GLOBAL_READY_NE_SYMBOL_COMPLETE / RAW_OMISSION_REASON_LOST_AFTER_VALIDATION / HISTORICAL_PIT_AVAILABILITY_NOT_PROVEN / PROSPECTIVE_CAPTURE_WARRANTED / NOT_FORMAL_OPTIMIZATION_CANDIDATE",
+  "rawIngestLossModes": {
+    "productionSilentPerSymbolOmission": [
+      "parts.size !== 17",
+      "grade-17 total ratio is not 100 within tolerance",
+      "grade-17 total shares is nonpositive"
+    ],
+    "productionDatasetFatalExamples": [
+      "duplicate grade within symbol",
+      "mixed TDCC row dates",
+      "invalid grade/date/value",
+      "grades 1..16 ratio sum outside tolerance",
+      "ratio400 > 100.01"
+    ],
+    "persistenceProblem": "Validated snapshot retains only accepted stocks. A later missing symbol cannot distinguish NO_SOURCE_ROWS from silently omitted incomplete/invalid total-row groups unless raw-ingest diagnostics were frozen prospectively."
+  },
+  "observers": [
+    "research/chip_concentration_readiness_observer_v0_1.mjs::classifyTdccSnapshot",
+    "research/chip_concentration_readiness_observer_v0_1.mjs::observeChipConcentrationReadiness",
+    "research/chip_concentration_readiness_observer_v0_1.mjs::classifyTdccRawSymbolCoverage"
+  ]
 }
