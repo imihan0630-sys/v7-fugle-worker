@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "cross_sectional_equal_date_weighting_falsification_v0.1",
+  "researchDate": "2026-09-27",
+  "formalCoreChanged": false,
+  "outcomeLookupPerformed": false,
+  "status": "STRUCTURAL_WEIGHTING_BIAS_CONFIRMED",
+  "findings": {
+    "incrementalI01I07": {
+      "current": "within-scan-date demean, then pooled row-level partial correlation; leave-one-date-out sensitivity",
+      "defect": "demeaning removes date-level location effects but does not equalize scanDate influence; dates with more usable rows receive more weight",
+      "implication": "LODO detects single-date sensitivity but is not an equal-date estimator",
+      "promotionStatus": "DESCRIPTIVE_ONLY_UNTIL_EQUAL_DATE_ESTIMAND"
+    },
+    "R04": {
+      "current": "readiness counts mature D5 rows and independent dates; residual-RS diagnostics rely on pooled row metrics after within-date split",
+      "defect": "row-count maturity plus pooled summaries can overweight high-row dates",
+      "promotionStatus": "DESCRIPTIVE_ONLY_UNTIL_EQUAL_DATE_ESTIMAND"
+    },
+    "R07": {
+      "current": "within-date median split, then group returns pooled across all assigned stock rows",
+      "defect": "classification is date-local but outcome aggregation is row-weighted across dates",
+      "promotionStatus": "DESCRIPTIVE_ONLY_UNTIL_EQUAL_DATE_ESTIMAND"
+    },
+    "R08": {
+      "current": "within-date median split; paired horizon delta = mean(quiet within date)-mean(attention within date), then metric stats across date deltas",
+      "result": "core paired estimator already equal-date by construction",
+      "caveat": "byEngine pooled summaries and regime counts remain descriptive row-weighted context; promotion should rely on paired date-level estimator plus regime/date robustness",
+      "promotionStatus": "CORE_PAIRED_ESTIMAND_STRUCTURALLY_OK_BUT_OTHER_EVIDENCE_FIREWALLS_REMAIN"
+    }
+  },
+  "falsification": [
+    "If equal-date estimates agree in sign/magnitude with pooled estimates across mature dates/regimes, weighting concern is reduced but not assumed away.",
+    "If pooled result disappears/reverses under equal-date aggregation, pooled result is date-composition artifact.",
+    "LODO stability alone cannot validate equal weighting.",
+    "Do not tune minimum rows/date or weighting exponent after outcomes."
+  ],
+  "requiredSuccessor": [
+    "Freeze per-scanDate contrast statistic before cross-date aggregation.",
+    "Each eligible scanDate contributes one primary statistic regardless of stock count.",
+    "Preserve row-weighted result only as secondary descriptive diagnostic.",
+    "Require minimum eligible dates and report date coverage/row-count dispersion.",
+    "Use purged/OOS/regime/cost/redundancy gates before any Formal proposal."
+  ],
+  "optimizationBridge": "No FORMAL_OPTIMIZATION_CANDIDATE; this is evidence-method repair."
+}
