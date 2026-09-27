@@ -1,7 +1,7 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-227.
-Updated: 2026-09-27 22:26 Asia/Taipei.
+Checkpoint sequence: B-228.
+Updated: 2026-09-27 22:34 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Detailed B-01..B-123 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
@@ -1761,3 +1761,15 @@ Updated: 2026-09-27 22:26 Asia/Taipei.
 - Engineering: pure offline vector computation from existing observers = Class A feasible; persistence/runtime wiring = Class B proposal-first; gate/quota/capital change = Class C. No FORMAL_OPTIMIZATION_CANDIDATE.
 - Status: `MULTI_CAUSE_SCARCITY_CONTRACT_FROZEN / FIRST_FAILURE_NOT_MARGINAL / NO_BUY_COVERAGE_BLOCKED / FORMAL_UNCHANGED`.
 - Exact next: test the vector contract against the existing observer/replay test fixtures and formal gate dependency semantics. Identify which gates are independently observable versus prerequisite-dependent, and freeze a gate-family denominator matrix so future empirical scarcity rates never divide UNKNOWN/NOT_EVALUABLE rows into the wrong denominator. Do not add runtime wiring.
+
+## B-228 — gate scarcity denominator matrix prevents UNKNOWN/dependency rows from contaminating fail rates (2026-09-27 Asia/Taipei)
+- Continued B-227 exact-next against the existing gate observer/replay semantics and test fixtures. Outcomes closed; runtime/Formal unchanged.
+- Five denominator families are now frozen: observer population (coverage only), evaluable (PASS+FAIL), applicable (semantic condition actually applies), Formal-reach (all prior gates clear and current gate evaluable/applicable), and overlap (current gate evaluable/applicable regardless of earlier observed failures).
+- UNKNOWN and prerequisite-driven NOT_EVALUABLE are excluded from fail-rate denominators and reported separately. Zero denominator is UNKNOWN/NO_DENOMINATOR, never coerced to 0% fail.
+- Dependency guards verified from existing tests: AB_SETUP fail makes TARGET_AVAILABLE not evaluable, which makes RR and FINAL_SIGNAL_GRADE not evaluable; fundamentalCount<3 makes FUNDAMENTAL_COMPONENT_COUNT fail while FUNDAMENTAL_QUALITY is NOT_EVALUABLE. These rows must not be double-counted as downstream failures.
+- Conditional applicability is explicit: low-volume LIQUIDITY may be UNKNOWN when exception inputs are missing; SMALL_CAP/MID_CAP rules depend on market-cap bands; valuation with no positive TTM PE is a safe not-applicable skip, not valuation failure.
+- Raw firstFailureCount remains order-dependent; observedFailCount is overlap only; `ALL_OTHER_OBSERVED_GATES_CLEAR` from single-removal replay is still not recovered Selected. Marginal selected effect remains UNKNOWN without same-PIT selection/ranking/quota replay.
+- Minimum future report per gate now requires pass/fail/unknown/notEvaluable, evaluable coverage, applicable denominator/fail rate, Formal-reach denominator/fail rate, overlap denominator/fail rate, observer/formal-order version and complete scan-generation provenance.
+- Durable artifact: `research/scarcity_gate_denominator_matrix_v0_1.json`, commit `6b94d1a5cf5e68fc8bd09a30fd9df7378879a068`.
+- Status: `GATE_DENOMINATOR_SEMANTICS_FROZEN / OBSERVABILITY_NOT_CAUSALITY / FIRST_FAILURE_NOT_MARGINAL / FORMAL_UNCHANGED`. No FORMAL_OPTIMIZATION_CANDIDATE.
+- Exact next: audit whether the full inputs required by the gate-overlap observer are already retained on any clean same-generation full-population source. Reuse the existing gate-overlap persistence feasibility work; do not duplicate it. If full historical coverage is not source-ready, identify the smallest prospective cohort that can be evaluated without runtime writes, then return to Liquidity Admission Shadow PR #121 and quantify which liquidity fields are source-ready versus capture-only. No historical reconstruction.
