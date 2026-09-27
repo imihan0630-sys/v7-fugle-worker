@@ -5,6 +5,9 @@ on:
     paths:
       - "research/shadow_semantic_classifier_v0_1.mjs"
       - "tests/test_shadow_semantic_classifier_v0_1.mjs"
+      - "tests/test_shadow_semantic_sampler_v0_2.mjs"
+      - "research/shadow_semantic_sampler_falsification_v0_1.json"
+      - "SHADOW_COHORT_SEMANTICS_RESEARCH.md"
       - ".github/workflows/research-shadow-semantic-classifier.yml"
   workflow_dispatch:
 
