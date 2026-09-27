@@ -18,6 +18,25 @@ Secondary: chips, technical timing, market regime, valuation.
 Horizon: weeks to months.
 Focus: improving earnings trajectory before/while market reprices it.
 
+Status: CORE LOGIC OWNER-APPROVED / THRESHOLDS NOT FROZEN.
+
+Owner-approved core:
+- target earnings-repricing rather than simply the companies with the highest reported growth;
+- distinguish growth level from growth acceleration/deceleration;
+- evaluate earnings quality through margins, cash flow, inventory/receivables and recurring operating evidence;
+- require a credible catalyst/industry/company mechanism that can transmit into future earnings;
+- enforce PIT（時點正確性） / availableAt semantics so later financial results cannot be backfilled into earlier decisions;
+- explicitly guard cyclical-peak traps;
+- use valuation as contextual reward/risk rather than "low PE is always better";
+- use CONTRACT_LIABILITY（合約負債） only where economically meaningful and only with revenue/margin/cash-flow quality checks;
+- treat technical/K-line indicators mainly as timing/entry-quality evidence, never as proof of future growth;
+- support GROWTH_BREAKOUT（成長突破）, GROWTH_PULLBACK（成長股回檔） and EARLY_GROWTH_INFLECTION（成長轉折早期） setups;
+- support ADD_ON_NEW_INFORMATION（新資訊確認後加碼）, ADD_ON_PULLBACK（回檔加碼） and ADD_ON_STRENGTH（轉強加碼）;
+- distinguish THESIS_WEAKENING（投資邏輯轉弱） from full THESIS_INVALIDATED（投資邏輯失效）;
+- keep SWING_GROWTH distinct from FUNDAMENTAL_GROWTH: repricing/expectation revision vs persistent high-quality compounding.
+
+SWING_GROWTH core logic owner-approved on 2026-09-27.
+
 ## INSTITUTIONAL_ACCUMULATION
 Primary: institutional flow persistence/quality, ownership concentration trend.
 Secondary: price-volume absorption, industry/fundamental support, market regime.
