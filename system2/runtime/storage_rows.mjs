@@ -65,3 +65,34 @@ export function toShadowRunRow(receipt) {
     captured_at: requiredText(receipt.capturedAt, "capturedAt"),
   });
 }
+
+
+export function toCapacityRunRow(receipt) {
+  if (!receipt || typeof receipt !== "object") throw new Error("receipt is required");
+
+  return Object.freeze({
+    capacity_run_id: requiredText(receipt.capacityRunId, "capacityRunId"),
+    market_date: requiredText(receipt.marketDate, "marketDate"),
+    decision_timestamp: requiredText(receipt.decisionTimestamp, "decisionTimestamp"),
+    global_max: Number(receipt.globalMax),
+    per_strategy_max: Number(receipt.perStrategyMax),
+    ordering_policy_id: requiredText(receipt.orderingPolicyId, "orderingPolicyId"),
+    ordering_policy_version: requiredText(receipt.orderingPolicyVersion, "orderingPolicyVersion"),
+    retained_json: json(receipt.retained || []),
+    removed_json: json(receipt.removed || []),
+    admitted_new_json: json(receipt.admittedNew || []),
+    capacity_overflow_json: json(receipt.capacityOverflow || []),
+    global_pool_json: json(receipt.globalPool || []),
+    active_assignments_json: json(receipt.activeAssignments || {}),
+    active_non_assignments_json: json(receipt.activeNonAssignments || {}),
+    counts_json: json({
+      globalCount: receipt.globalCount,
+      vacancyCount: receipt.vacancyCount,
+      activeCountByStrategy: receipt.activeCountByStrategy || {},
+      symbolStrategyCounts: receipt.symbolStrategyCounts || {},
+    }),
+    capacity_hash: requiredText(receipt.capacityHash, "capacityHash"),
+    captured_at: requiredText(receipt.capturedAt, "capturedAt"),
+    schema_version: requiredText(receipt.schemaVersion, "schemaVersion"),
+  });
+}
