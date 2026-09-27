@@ -1298,3 +1298,163 @@ Formal Core remains LOCKED.
 - 1b7ef2c1db6fee2c33c8d62607d6ddcfe7f96c7e — machine-readable MACD response receipt.
 - 41a82a7064ad6ecb6f98ddc1e986f1d09e651b4f — MACD response mechanics test.
 - 1bd426389763653ece68937a537b279921391312 — isolated technical-indicator QA receipt.
+
+
+## Continuation update — TI-328 through TI-350
+
+### Shared TECHNICAL_CONTINUITY handoff — TI-328..TI-341
+- V8.12 RAW_HISTORY_ADMISSION and TECHNICAL_CONTINUITY_CERTIFICATION are formally separated.
+- V8.12 materially validates raw daily-history freshness/source admission and requires historyFreshness.usable===true before Formal market-feature construction, but this does NOT certify corporate-action continuity, PIT action-vintage correctness or symbol-specific suspension completeness.
+- Future Technical Indicator inference requires both:
+  RAW_HISTORY_ADMISSION_PASS
+  AND
+  TECHNICAL_CONTINUITY_CERTIFIED.
+- Expected eligible symbol sessions are:
+  official market sessions minus VERIFIED symbol-specific suspension/non-trading sessions.
+- Verified suspension absence is not missing-source data; unverified missing bars remain UNKNOWN/MISSING; pseudo-bars are prohibited from indicator input.
+- Continuity transformation may use only corporate-action event versions known by the target decision timestamp. Later corrections must not backfill earlier as-of states.
+- Relevant event window:
+  cleanHistoryStartDate < effectiveDate <= asOfDate.
+- Every relevant price-reset event requires a verified, positive technicalPriceFactor. Missing factor remains BLOCKED/UNKNOWN; factor=1 is never a missing-data default.
+- TECHNICAL_CONTINUITY neutralizes only the verified mechanical reset. Residual non-mechanical market gaps remain real information and must be preserved for ATR/ADX/gap/Pattern research.
+- Semantic spaces remain separate:
+  RAW_EXECUTION,
+  TECHNICAL_CONTINUITY,
+  PRICE_INDEX_COMPARABLE,
+  TOTAL_RETURN_COMPARABLE.
+- Future continuityReceiptId binds:
+  symbol/asOf/window,
+  source/raw-admission identity,
+  symbol-session/session-calendar versions,
+  continuity-engine version,
+  corporate-action registry version,
+  continuity transform hash.
+- Coverage receipt includes market sessions, verified symbol suspensions, expected eligible sessions, raw/continuity bars, transformed bars, unresolved missing sessions/events, rejected pseudo-bars and price-limit-constrained bars.
+- VALID requires zero unresolved missing sessions/events and exact eligible date-set reconciliation.
+- Every transformed event preserves eventKey/action family/stage/version/knownAt/effectiveDate/technicalPriceFactor/source/quality/reference/transform/conflict/unknown provenance.
+- Technical Indicator snapshots reference this canonical continuity receipt. The indicator lane must not derive a second corporate-action factor or suspension calendar.
+- Recursive indicators additionally require canonical replay lineage; a valid continuity window alone is not enough to certify recursive state.
+- Parent lineage remains:
+  parentDecisionReceiptId,
+  or scanDate+symbol+parentSnapshotHash+captureGeneration.
+- Observation identity therefore joins:
+  parent decision state
+  x continuityReceiptId
+  x formulaVersion/stateLineageId.
+- Current readiness:
+  RAW_HISTORY_ADMISSION = MATERIAL_PASS;
+  TECHNICAL_CONTINUITY research semantics = FROZEN_SHARED;
+  TECHNICAL_CONTINUITY runtime = BLOCKED;
+  symbol-session runtime completeness = PARTIAL;
+  prospective Technical Indicator observer = NO_GO.
+- New durable artifacts:
+  research/TECHNICAL_INDICATOR_CONTINUITY_HANDOFF_V0_1.md
+  research/technical_indicator_continuity_handoff_v0_1.json
+- Snapshot v0.2 proposal now explicitly references continuityReceiptId/rawHistoryAdmissionReceiptId rather than duplicating Corporate Actions transform logic.
+- Snapshot v0.2 also prohibits local indicator corporate-action adjustment and missing-factor default-one behavior.
+
+### Corporate-action contamination falsification — TI-342..TI-350
+- A deterministic known-truth synthetic witness was executed:
+  economic path is perfectly flat;
+  raw quoted path mechanically resets 100 -> 50 at index50;
+  TECHNICAL_CONTINUITY comparator is flat at 50 for the entire history.
+- Continuity comparator remains neutral:
+  KD K/D=50/50;
+  RSI14=50;
+  MACD DIF/Histogram=0;
+  ADX +DI/-DI/ADX=0;
+  Bollinger BandWidth=0 and %B=NULL.
+
+- Raw KD:
+  reset offset0 K=33.6569579288 / D=44.5523193096;
+  offset5 K=5.2752140850 / D=13.8838946822;
+  offset19 K=49.6368599928 / D=48.2236185329;
+  offset40 K=49.9999271956 / D=49.9991342300.
+  Rolling-range contamination clears finitely, but K/D recursive memory remains.
+
+- Raw RSI14:
+  reset offset0 = 0;
+  remains exactly 0 through offsets 1/5/8/9/13/19/20/30/40/49 on the flat post-reset path.
+  Mechanism:
+  one false loss enters avgLoss, avgGain remains exactly zero, so Wilder RSI stays pinned at 0 even as avgLoss decays.
+  This decisively rejects "the bad return naturally washes out after 14 bars."
+
+- Raw MACD:
+  event DIF=-3.9886039886 / Histogram=-3.1908831909;
+  offset13 DIF=-12.2006805651 / Histogram=-0.0195817678;
+  offset19 DIF=-8.9574780438 / Histogram=+1.5943266031;
+  offset40 DIF=-2.0780474733 / Histogram=+0.8731575901;
+  offset49 DIF=-1.0542735222 / Histogram=+0.4718087252.
+  Economic truth is flat; the apparent negative trend plus later positive Histogram is only filter recovery from a mechanical scale shift.
+
+- Raw ADX produces the strongest falsification:
+  event -DI=64.8150795106 / ADX=7.1428571429;
+  offset5 ADX=35.8950007012;
+  offset13 ADX=64.5664689780;
+  offset19 ADX=77.2853351868;
+  offset30 ADX=89.9474830170;
+  offset40 ADX=95.2089800225;
+  offset49 ADX=97.5409586514,
+  while economic price remains flat and +DI remains zero.
+- Mechanism:
+  with only one directional side non-zero, DX can remain near 100 even while the absolute DI magnitude decays. ADX therefore smooths toward an extreme trend-strength reading.
+- This is a DMI normalization consequence, not an implementation defect.
+- It proves high ADX alone cannot distinguish genuine persistent trend strength from residual one-sided directional memory after a large mechanical shock.
+
+- Raw Bollinger20:
+  event BandWidthPct=44.7066558312;
+  offset5=107.8253104695;
+  offset13=141.0023290756;
+  offset19=0 exactly once the 20-close window contains only post-reset bars.
+  Finite-window contamination is therefore structurally different from recursive-state contamination.
+
+- Indicator-specific continuity certification is now frozen:
+  KD = HYBRID_FINITE_RANGE_PLUS_RECURSIVE;
+  RSI = RECURSIVE_IIR_NONLINEAR_RATIO;
+  MACD = CASCADED_RECURSIVE_FILTER;
+  ADX = CASCADED_RECURSIVE_DIRECTIONAL_RATIO;
+  BBANDS = FINITE_WINDOW.
+- Generic elapsed-calendar-day or wait-N-bars repair is rejected.
+- Snapshot v0.2 proposal now carries per-indicator memory/certification requirements.
+- Synthetic continuity regression test PASS in isolated V8 execution.
+- New durable artifacts:
+  research/TECHNICAL_INDICATOR_CA_CONTAMINATION_MATRIX_V0_1.md
+  research/technical_indicator_ca_contamination_v0_1.json
+  research/test_technical_indicator_ca_contamination_v0_1.mjs
+
+### Current lane status
+
+PRIMARY_THEORY_DECOMPOSITION = COMPLETE_V0_1
+ISOLATED_FORMULA_MECHANICS = MATERIAL_PASS
+CONTINUITY_HANDOFF_CONTRACT = FROZEN_V0_1
+INDICATOR_MEMORY_CERTIFICATION = FROZEN
+RAW_HISTORY_ADMISSION = MATERIAL_PASS
+TECHNICAL_CONTINUITY_RUNTIME = BLOCKED
+SYMBOL_SESSION_RUNTIME_COMPLETENESS = PARTIAL
+SNAPSHOT_V0_2 = PROPOSAL_ONLY / CONTINUITY_LINKED
+PROSPECTIVE_TECHNICAL_OBSERVER = NO_GO
+OUTCOME_INFERENCE = NO_GO
+FORMAL_OPTIMIZATION_CANDIDATE = NONE
+Formal Core remains LOCKED.
+
+### Updated exact next continuation point
+
+1. Do not expand named indicators.
+2. Continue data-semantic readiness rather than alpha testing.
+3. Next high-value target:
+   price-limit / constrained-session semantics for KD/RSI/MACD/ADX/Bollinger in Taiwan, because a continuity-valid bar can still reflect censored price discovery.
+4. Verify current Taiwan exchange price-limit exceptions/IPO/no-limit/reopening semantics from official sources before freezing the constrained-session contract.
+5. Preserve CONSTRAINED as distinct from INVALID/BLOCKED.
+6. Do not arm a prospective Technical Indicator observer until TECHNICAL_CONTINUITY runtime + symbol-session provenance + immutable parent lineage are ready.
+7. No historical Shadow fabrication and no outcome join.
+8. Formal Core remains unchanged.
+
+## Latest durable research commits
+
+- ae7c61cbe9d451fda444ce573e8e60e97d49f47e — Technical Indicator continuity handoff specification.
+- dcccc8bedbc1ffb59f99085f1bfba84bbfc553cb — machine-readable continuity handoff contract.
+- 41f19703edc2d9cc38c4e403b981166475826c13 — Snapshot v0.2 linked to continuity receipt.
+- d5057449cd53de63fd2b0835334fcb9441452735 — corporate-action contamination matrix.
+- 7864b17c411ecb3ea5770e151c12277294831c5f — contamination receipt.
+- 6ae15eb8da000844e9ab61d1c7b252fbe83c4872 — continuity contamination regression test.
+- 616b37d6b94bc4e50ff482215710c9e6b5b42955 — per-indicator continuity certification added to Snapshot v0.2 proposal.
