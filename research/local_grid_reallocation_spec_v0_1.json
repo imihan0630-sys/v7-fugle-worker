@@ -11,6 +11,7 @@
     "buyHigh plan-preview shares, not fills",
     "do not promote a neighboring allocation without prospective economic evidence"
   ],
-  "status": "LOCAL_NEIGHBORHOOD_PROTOCOL_READY / PRODUCTION_AUDIT_PENDING",
-  "formalCoreImpact": false
+  "status": "CURRENT_NOT_LOCAL_CONCENTRATION_OPTIMUM / TWO_STRICTLY_DOMINATING_ONE_GRID_MOVES / ECONOMIC_VALUE_UNKNOWN",
+  "formalCoreImpact": false,
+  "productionReceipt": "research/local_grid_reallocation_production_receipt_20260928.json"
 }
