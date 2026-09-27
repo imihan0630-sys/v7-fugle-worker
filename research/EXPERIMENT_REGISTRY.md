@@ -20,6 +20,9 @@
 - 對照組：BROAD_CONTROL、QUALIFIED_NOT_SELECTED、NEAR_MISS、REJECTED_AFTER_BASE 分開報告，不混成一組。
 - 反證：Selection Alpha 不穩定、Execution Alpha 只是少數極端值，或兩者只在單一市場狀態成立。
 - 禁止：把未觸發 BUY 的股票當成 0% Execution Alpha。
+- **2026-09-27 cohort-quality guard**：BROAD_CONTROL 現行為受前置 Shadow 抽樣 cap 影響的 quota-conditioned mixture；NEAR_MISS 的 nearScore 與 missingCount 完全冗餘，且 global top-12 truncation 可能造成 pool/channel coverage bias；REJECTED_AFTER_BASE 的 reason sampling 亦已確認舊版 reason-starvation。
+- 因此在 cohort semantics / membership overlay 修復且 prospective QA 通過前，R02 對 BROAD_CONTROL、NEAR_MISS、REJECTED_AFTER_BASE 的結果只能標記 **COHORT_QUALITY_GUARDED / DESCRIPTIVE_ONLY**，不得作為 Formal promotion 證據。QUALIFIED_NOT_SELECTED 仍須另外報 sampling fraction/容量 cap。
+- Durable guards：`research/broad_control_cohort_contamination_falsification_v0_1.json`、`research/near_miss_cohort_falsification_v0_1.json`、`research/rejected_after_base_sampling_falsification_v0_1.json`、`research/first_failure_attribution_falsification_v0_1.json`。
 
 ## R03 產業輪動與 Persistence
 - 假說：強勢產業 Top5 的連續留榜與市場 Regime transition 可能影響個股動能延續。
