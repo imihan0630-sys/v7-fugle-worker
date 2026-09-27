@@ -1,4 +1,5 @@
 import {sizingQuantizationCascade,quantizedComparatorPreview} from "../research/sizing_quantization_cascade_v0_1.mjs";
+import {cappedEqualPlannedStopRiskCounterfactual} from "../research/portfolio_risk_tier_a_v0_1.mjs";
 
 const token=String(process.env.V7_ADMIN_TOKEN||"").trim();
 const origin=String(process.env.V7_WORKER_ORIGIN||"https://fugle-test.imihan0630.workers.dev").replace(/\/$/,"");
@@ -19,6 +20,7 @@ for(const p of plans){
     symbol:String(p.symbol||""),
     priorityScore:p.priority_score,
     totalAllocation:p.total_allocation,
+    buyLow:p.buy_low,
     buyHigh:p.buy_high,
     firstShares:p.first_shares,
     secondShares:p.second_shares,
@@ -32,6 +34,7 @@ for(const [scanDate,datePlans] of [...byDate.entries()].sort()){
   const totalCapital=Number(day.total_capital);
   const out=sizingQuantizationCascade(datePlans,totalCapital);
   let equalCapitalQuantized=null;
+  let cappedEqualRiskQuantized=null;
   if(out?.status==="READY"&&datePlans.length>=2){
     const sameDeployment=out.plannedAllocationNTD;
     const equalAllocation=sameDeployment/datePlans.length;
@@ -39,8 +42,16 @@ for(const [scanDate,datePlans] of [...byDate.entries()].sort()){
       datePlans,
       datePlans.map(p=>({symbol:p.symbol,allocation:equalAllocation}))
     );
+    const capped=cappedEqualPlannedStopRiskCounterfactual(
+      datePlans.map(p=>({code:p.symbol,buyLow:p.buyLow,buyHigh:p.buyHigh,stop:p.stop,totalAllocation:p.totalAllocation})),
+      totalCapital,
+      {perNameCapPct:35}
+    );
+    if(capped?.status==="READY"){
+      cappedEqualRiskQuantized=quantizedComparatorPreview(datePlans,capped.allocations);
+    }
   }
-  rows.push({scanDate,selectedCount:Number(day.selected_count),status:String(day.status||""),quantization:out,equalCapitalQuantized});
+  rows.push({scanDate,selectedCount:Number(day.selected_count),status:String(day.status||""),quantization:out,equalCapitalQuantized,cappedEqualRiskQuantized});
 }
 
 const ready=rows.filter(x=>x.quantization?.status==="READY");
@@ -78,6 +89,23 @@ const summary=ready.map(x=>({
         ? Number((x.quantization.shareFloorResidualNTD-x.equalCapitalQuantized.shareFloorResidualNTD).toFixed(4))
         : null,
     rows:x.equalCapitalQuantized.rows
+  }:null,
+  quantizedCappedEqualRisk:x.cappedEqualRiskQuantized?{
+    status:x.cappedEqualRiskQuantized.status,
+    allocationTotalNTD:x.cappedEqualRiskQuantized.allocationTotalNTD,
+    previewSuggestedNotionalNTD:x.cappedEqualRiskQuantized.previewSuggestedNotionalNTD,
+    shareFloorResidualNTD:x.cappedEqualRiskQuantized.shareFloorResidualNTD,
+    previewProjectedStopRiskNTD:x.cappedEqualRiskQuantized.previewProjectedStopRiskNTD,
+    previewProjectedStopRiskHHI:x.cappedEqualRiskQuantized.previewProjectedStopRiskHHI,
+    currentMinusCappedEqualRiskPreviewRiskHHI:
+      (Number.isFinite(x.quantization.previewProjectedStopRiskHHI)&&Number.isFinite(x.cappedEqualRiskQuantized.previewProjectedStopRiskHHI))
+        ? Number((x.quantization.previewProjectedStopRiskHHI-x.cappedEqualRiskQuantized.previewProjectedStopRiskHHI).toFixed(8))
+        : null,
+    currentMinusCappedEqualRiskPreviewRiskNTD:
+      (Number.isFinite(x.quantization.previewProjectedStopRiskNTD)&&Number.isFinite(x.cappedEqualRiskQuantized.previewProjectedStopRiskNTD))
+        ? Number((x.quantization.previewProjectedStopRiskNTD-x.cappedEqualRiskQuantized.previewProjectedStopRiskNTD).toFixed(4))
+        : null,
+    rows:x.cappedEqualRiskQuantized.rows
   }:null,
   details:x.quantization.details
 }));
