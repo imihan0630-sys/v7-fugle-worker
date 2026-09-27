@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "SCORE_CAP_RESERVE_V0_1",
+  "observedAt": "2026-09-28T05:31:00+08:00",
+  "purpose": "Quantify implicit extra cash reserve created when score-proportional raw weight exceeds the 35% per-name cap and clipped weight is not redistributed.",
+  "thresholds": {
+    "oneSelected": "raw ratio equals 35%; cap does not create extra reserve",
+    "twoSelected": "cap binds when one name holds >58.333333% of total selected score weight",
+    "threeOrMoreSelected": "cap binds when one name holds >41.176471% of total selected score weight"
+  },
+  "accounting": [
+    "nominal deployment target from selected-count rule",
+    "cap-induced reserve from clipped raw ratios",
+    "NT$1,000 flooring reserve",
+    "total planned deployment shortfall"
+  ],
+  "guardrails": [
+    "cap-induced reserve may be intentional risk control; not labeled a bug",
+    "no redistribution rule is proposed",
+    "historical non-binding does not establish future non-binding",
+    "economic effect requires future outcome and opportunity-cost evidence"
+  ],
+  "status": "CAP_RESERVE_MECHANISM_PROVEN / HISTORICAL_OCCURRENCE_NOT_OBSERVED / PROSPECTIVE_WATCH_ONLY",
+  "formalCoreImpact": false,
+  "productionReceipt": "research/score_cap_reserve_production_receipt_20260928.json"
+}

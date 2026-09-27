@@ -2741,3 +2741,83 @@ Status:
 `HHI_ARTIFACT_FALSIFIED / METRIC_DIRECTION_ROBUST / OPTIMUM_OBJECTIVE_SENSITIVE / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-063 — per-name cap creates a separate non-redistributed reserve channel (2026-09-28)
+
+Source audit of `allocateAndBuildPlans()` confirms the sequence:
+
+`rawRatio = deployRatio × scoreShare`
+
+then
+
+`ratio = min(35%, rawRatio)`
+
+then each name is independently floored to NT$1,000.
+
+There is no second redistribution pass for clipped score weight.
+
+Therefore the selected-count deployment ratio is an **upper target**, not a guaranteed planned deployment.
+
+Cap-binding score-share thresholds:
+- 1 selected: raw ratio is exactly 35%; no extra cap reserve;
+- 2 selected: one name binds above 58.333333% of selected score weight;
+- 3–6 selected: one name binds above 41.176471%.
+
+A deterministic hypothetical shows the mechanism:
+scores 100/50/50 with NT$200,000 capital and 3 selected names imply an 85% nominal target (NT$170,000), but the top name is clipped from 42.5% to 35%. The clipped score weight creates NT$15,000 cap-induced reserve; NT$1,000 floors add another NT$1,000 reserve, leaving NT$154,000 planned.
+
+This is not automatically a defect. It may be desirable risk control. The research question is whether this implicit extra cash materially contributes to under-deployment and whether the forgone exposure is economically justified.
+
+Artifacts:
+`research/score_cap_reserve_v0_1.mjs`;
+`research/score_cap_reserve_spec_v0_1.json`;
+`tests/portfolio_risk_score_cap_reserve_readonly_audit.mjs`.
+
+Status:
+`CAP_RESERVE_MECHANISM_PROVEN / PRODUCTION_OCCURRENCE_PENDING`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-063 Production result — cap mechanism did not cause observed historical underdeployment
+
+Read-only Production run `36352049564` / job `108712476115` checked both reconstructable plan dates.
+
+### 2026-09-18
+
+- selected names = 3;
+- nominal deploy target = 85% × NT$200,000 = NT$170,000;
+- highest score share = 3105 at 38.172502%;
+- cap-binding threshold for 3+ names = 41.176471%;
+- cap-binding symbols = none;
+- cap-induced reserve = NT$0;
+- planned allocation after NT$1,000 floors = NT$168,000;
+- floor reserve = NT$2,000;
+- designed strategic reserve = NT$30,000;
+- remaining cash after plan = NT$32,000.
+
+Therefore the extra NT$2,000 under the nominal 85% deployment target came entirely from NT$1,000 flooring, not the 35% cap.
+
+### 2026-09-21
+
+- selected names = 1;
+- nominal deploy target = 35% = NT$70,000;
+- raw ratio = cap = 35%;
+- cap-induced reserve = NT$0;
+- floor reserve = NT$0;
+- remaining cash = NT$130,000, entirely the designed 65% strategic reserve.
+
+The historical hypothesis
+`current observed planned underdeployment was caused by non-redistributed cap clipping`
+is rejected for the available dates.
+
+The structural mechanism remains valid prospectively: if selected score concentration crosses the cap-binding threshold, clipped mass is not redistributed and will become extra reserve.
+
+Durable receipt:
+`research/score_cap_reserve_production_receipt_20260928.json`.
+
+Status:
+`CAP_RESERVE_MECHANISM_PROVEN / HISTORICAL_OCCURRENCE_NOT_OBSERVED / PROSPECTIVE_WATCH_ONLY / ECONOMIC_VALUE_UNKNOWN`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
