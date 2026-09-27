@@ -110,3 +110,35 @@ Status:
 `SIGNAL_PATH_METRIC_ONLY / REALIZED_PNL_NOT_PROVEN / SIZING_VALIDATION_FORBIDDEN`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-048 — positive BUY signal can reconstruct live suggestedShares exactly (2026-09-27)
+
+PR-047 established that a persisted V8.5 BUY signal row is strong positive evidence of the formal BUY signal's `market_price` and `occurred_at`.
+
+Current runtime `buildPushPayload` recomputes BUY `suggestedShares` as:
+`floor(signal.amount / result.currentPrice)`.
+
+V8.5 signal journal persists from that same event:
+- `signal_amount = signal.amount`;
+- `market_price = result.currentPrice`.
+
+Therefore a complete positive BUY row exactly reconstructs:
+`live suggestedShares = floor(signal_amount / market_price)`.
+
+This is signal-side quantity only, not broker execution.
+
+Certified:
+event identity, timestamp, signal price, signal amount, exact signal-side suggestedShares and one-share orderability.
+
+Not certified:
+broker order acknowledgement, actual fill, fill price/probability, partial fill, fees, slippage, or NO-BUY absence.
+
+Artifacts:
+`research/buy_signal_quantity_reconstruction_v0_1.mjs`;
+`research/buy_signal_quantity_reconstruction_contract_v0_1.json`.
+
+Status:
+`POSITIVE_BUY_SIGNAL_QUANTITY_RECONSTRUCTABLE / FILL_EVIDENCE_STILL_SEPARATE`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
