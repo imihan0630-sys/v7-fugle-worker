@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "technical-indicator-shared-parent-child-feasibility-v0.4",
+  "schemaVersion": "technical-indicator-shared-parent-child-feasibility-v0.5",
   "updated": "2026-09-28 Asia/Taipei",
   "researchOnly": true,
   "runtimeImplemented": false,
@@ -170,7 +170,7 @@
     "observer_wall_ms"
   ],
   "status": {
-    "sharedEvidenceChildSchema": "DESIGN_COMPATIBLE_V0_4",
+    "sharedEvidenceChildSchema": "DESIGN_COMPATIBLE_V0_5",
     "classBImplementation": "PREMATURE",
     "ownerApprovalRequested": false,
     "formalOptimizationCandidate": false,
@@ -217,5 +217,24 @@
       "SHARED_LIMIT_RULE_SET"
     ],
     "sourceRevisionRule": "Later source revisions do not overwrite decision-time child evidence; preserve revisions in source receipts or append-only quality overlays."
+  },
+  "publicationModel": {
+    "formalGeneration": {
+      "tableConcept": "trade_research_generation_receipts",
+      "rule": "INSERT_ONCE_ONLY_AFTER_PARENT_KEYSET_AND_DECISION_SET_VERIFY",
+      "immutable": true,
+      "researchCompletionIncluded": false
+    },
+    "operationalEvents": {
+      "tableConcept": "trade_research_run_events",
+      "appendOnly": true,
+      "inferenceAuthority": false
+    },
+    "observerFinalReceipt": {
+      "tableConcept": "trade_research_observer_run_receipts",
+      "rule": "INSERT_ONCE_ONLY_AFTER_ROOT_ATTEMPT_KEYSET_MATCHES_EXPECTED",
+      "immutable": true
+    },
+    "visibilityRule": "PARENT_ROWS_WITHOUT_FINAL_GENERATION_RECEIPT_AND_CHILD_ROWS_WITHOUT_FINAL_OBSERVER_RECEIPT_ARE_UNPUBLISHED_FOR_INFERENCE"
   }
 }
