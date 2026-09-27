@@ -1,0 +1,77 @@
+{
+  "schemaVersion": "broad-control-cohort-contamination-falsification-v0.1",
+  "researchDate": "2026-09-27",
+  "status": "STRUCTURAL_CONTROL_CONTAMINATION_CONFIRMED",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "currentArchiveOrder": [
+    "SELECTED -> all selected symbols marked used",
+    "QUALIFIED_NOT_SELECTED -> only sampled up to 6/pool marked used",
+    "NEAR_MISS -> only diagnostics top12, then sampled up to 6/pool marked used",
+    "REJECTED_AFTER_BASE -> only sampled up to 6/pool marked used",
+    "BROAD_CONTROL -> any feature row not in used and meeting history/price/primary-liquidity filters"
+  ],
+  "structuralBug": {
+    "rootCause": "used tracks serialized sample membership, not semantic population membership.",
+    "consequences": [
+      "Unsampled QUALIFIED_NOT_SELECTED rows remain eligible for BROAD_CONTROL.",
+      "Unsampled setup-first-failure rows can remain eligible for BROAD_CONTROL.",
+      "Unsampled basePassed=true rejected rows can remain eligible for BROAD_CONTROL.",
+      "Thus BROAD_CONTROL can contain rows whose true Formal state belongs to another cohort."
+    ]
+  },
+  "fixedSyntheticWitnesses": [
+    {
+      "id": "QUALIFIED_SPILLOVER",
+      "setup": "10 GENERAL rows pass scoreCandidate, 3 selected. QUALIFIED_NOT_SELECTED sampler keeps only 6 of remaining 7.",
+      "consequence": "The seventh true qualified row is not in used and can be selected into BROAD_CONTROL if it meets history/price/minLots filters.",
+      "expectedSemanticState": "QUALIFIED_NOT_SELECTED",
+      "possibleStoredState": "BROAD_CONTROL"
+    },
+    {
+      "id": "REJECTED_SPILLOVER",
+      "setup": "20 GENERAL basePassed=true rows fail the same downstream gate; old REJECTED_AFTER_BASE keeps only first 6.",
+      "consequence": "14 unsampled rejected rows are not in used and can be hash-sampled into BROAD_CONTROL.",
+      "expectedSemanticState": "REJECTED_AFTER_BASE",
+      "possibleStoredState": "BROAD_CONTROL"
+    },
+    {
+      "id": "NEAR_MISS_SPILLOVER",
+      "setup": "More setup-first-failure rows exist than diagnostics top12/per-pool archive limits.",
+      "consequence": "Rows not represented by nearSymbols/used can enter BROAD_CONTROL despite being technical near/setup rejects.",
+      "expectedSemanticState": "SETUP_FIRST_FAILURE",
+      "possibleStoredState": "BROAD_CONTROL"
+    }
+  ],
+  "interpretationImpact": [
+    "BROAD_CONTROL is currently a residual unsampled pool, not a guaranteed semantic ordinary/control population.",
+    "Selected-vs-BROAD_CONTROL outcome differences can be attenuated or distorted by Formal-qualified/rejected contamination.",
+    "BROAD_CONTROL cohort counts cannot be interpreted as disjoint population counts.",
+    "Deterministic hashing remains outcome-free but does not cure semantic contamination."
+  ],
+  "safeRepair": {
+    "principle": "Classify semantic state for every feature row first; sample within disjoint semantic populations second.",
+    "minimumExclusionFromBroadControl": [
+      "all scored/ok=true symbols whether sampled or not",
+      "all setup-first-failure symbols whether sampled or not",
+      "all basePassed=true downstream-rejected symbols whether sampled or not",
+      "all dedicated early-reject cohorts when a dedicated control is intended",
+      "selected symbols"
+    ],
+    "alternative": "Define BROAD_CONTROL explicitly as rows whose scoreCandidate result is neither ok nor in any dedicated comparison population, with a frozen eligibility contract. Do not use sample membership as semantic membership.",
+    "denominator": "Persist full semantic population counts by scanDate/pool before bounded sampling.",
+    "noOutcomeSelection": true
+  },
+  "falsification": [
+    "Measure historical/prospective contamination rate by re-running scoreCandidate on stored BROAD_CONTROL PIT snapshots only where source-complete; if zero prospectively after a repair, verify with tests rather than assume.",
+    "If prior BROAD_CONTROL contains ok=true rows, those dates are contaminated for Selected-vs-BROAD_CONTROL inference and must be flagged/quarantined rather than silently relabeled.",
+    "If contamination is negligible prospectively because population sizes are always below caps, repair may have low empirical impact but semantic correctness still matters.",
+    "Do not retroactively move immutable rows between cohorts without a versioned quality overlay."
+  ],
+  "governance": {
+    "researchArchiveRepair": "Potential Class A if only Shadow classification/sampling changes, no market calls, no Formal mutation, and frozen Formal outputs remain identical.",
+    "historicalRepair": "Append-only/versioned quality overlay; never mutate old snapshots to hide original capture.",
+    "formalImpact": "NONE unless someone later tries to use the research conclusion to change gates; such changes remain Class C."
+  },
+  "decision": "BROAD_CONTROL_SEMANTIC_CONTAMINATION_CONFIRMED / RESEARCH_FIREWALL_REPAIR_WARRANTED / NO_FORMAL_CHANGE"
+}
