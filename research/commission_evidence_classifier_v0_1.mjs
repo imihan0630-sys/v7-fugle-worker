@@ -22,10 +22,17 @@ export function classifyCommissionEvidence(raw={}){
   const minimum=n(raw.brokerMinimumCommissionNTD);
   const scheduleSource=text(raw.scheduleSource);
   const notional=n(raw.executedNotionalNTD);
+  const calculationMethod=text(raw.calculationMethod);
+  const roundingPolicy=text(raw.roundingPolicy);
+  const executionChannel=text(raw.executionChannel);
   const scheduleVerified=["BROKER_CONTRACT","BROKER_PUBLISHED_SCHEDULE","VERIFIED_EXTERNAL"].includes(scheduleSource);
+  const methodReady=calculationMethod==="MAX_RATE_MINIMUM"&&["ROUND","FLOOR","CEIL","NONE"].includes(roundingPolicy)&&Boolean(executionChannel);
 
-  if(scheduleVerified&&rate!==null&&rate>=0&&minimum!==null&&minimum>=0&&notional!==null&&notional>=0){
-    const percentageFee=notional*rate;
+  if(scheduleVerified&&methodReady&&rate!==null&&rate>=0&&minimum!==null&&minimum>=0&&notional!==null&&notional>=0){
+    const rawPercentage=notional*rate;
+    const percentageFee=roundingPolicy==="ROUND"?Math.round(rawPercentage):
+      roundingPolicy==="FLOOR"?Math.floor(rawPercentage):
+      roundingPolicy==="CEIL"?Math.ceil(rawPercentage):rawPercentage;
     const modeled=Math.max(percentageFee,minimum);
     return {
       status:"MODELED",
@@ -34,8 +41,11 @@ export function classifyCommissionEvidence(raw={}){
       source:scheduleSource,
       brokerCommissionRate:rate,
       brokerMinimumCommissionNTD:minimum,
+      calculationMethod,
+      roundingPolicy,
+      executionChannel,
       percentageFeeNTD:percentageFee,
-      reason:"Broker-specific verified schedule applied to executed notional; not an actual charged-fee receipt."
+      reason:"Broker-specific verified rate, minimum, calculation/rounding method and execution channel applied to executed notional; not an actual charged-fee receipt."
     };
   }
 
@@ -44,6 +54,6 @@ export function classifyCommissionEvidence(raw={}){
     commissionNTD:null,
     modeled:false,
     source:null,
-    reason:"No actual charged commission and no complete verified broker-specific rate+minimum schedule."
+    reason:"No actual charged commission and no complete verified broker-specific rate+minimum+calculation/rounding+execution-channel schedule."
   };
 }
