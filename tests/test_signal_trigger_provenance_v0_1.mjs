@@ -45,6 +45,22 @@ const writerPos=patch.indexOf("const journalEvent=await recordTradeJournalSignal
 const sendPos=patch.indexOf("const outcome = await sendPush(payload, env)",writerPos);
 assert.ok(writerPos>=0&&sendPos>writerPos,"signal journal must be written before push for current evidence semantics");
 
+
+const execPatch=fs.readFileSync("scripts/apply_v8_8_0.py","utf8");
+for(const token of [
+ "CREATE TABLE IF NOT EXISTS trade_research_execution_snapshots",
+ 'events.push("OPEN_BASELINE")',
+ 'events.push("FIRST_10M_COMPLETE")',
+ 'events.push("FIRST_15M_COMPLETE")',
+ 'events.push("FIRST_30M_COMPLETE")',
+ 'events.push("FORMAL_SIGNAL_OBSERVED")',
+ "if(!result?.ok || !result?.symbol) continue",
+ "RESEARCH_EXECUTION_RECORDER_FAIL_OPEN",
+ "ORDER BY trade_date DESC,observed_at DESC LIMIT 500",
+ "recent:rows.slice(0,80)"
+]) assert.ok(execPatch.includes(token),"V8.8 execution-recorder contract changed: "+token);
+assert.equal(execPatch.includes("NO_BUY_EOD"),false,"explicit terminal NO_BUY event now exists; PR-047 must be re-audited");
+
 console.log(JSON.stringify({
  ok:true,
  correction:"positive V8 trade-journal BUY row is exact formal signal-price evidence; absence remains UNKNOWN without completeness",
