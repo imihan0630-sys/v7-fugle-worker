@@ -103,6 +103,39 @@ CREATE INDEX IF NOT EXISTS idx_s2_shadow_run_strategy_date
 
 
 
+
+CREATE TABLE IF NOT EXISTS s2_ranking_experiment_receipts (
+  experiment_receipt_id TEXT PRIMARY KEY,
+  experiment_id TEXT NOT NULL,
+  experiment_version TEXT NOT NULL,
+  hypothesis_id TEXT NOT NULL,
+  market_date TEXT NOT NULL,
+  decision_timestamp TEXT NOT NULL,
+  purpose TEXT NOT NULL,
+  strategy_id TEXT NOT NULL,
+  strategy_version TEXT NOT NULL,
+  baseline_policy_id TEXT NOT NULL,
+  baseline_policy_version TEXT NOT NULL,
+  baseline_ordering_hash TEXT NOT NULL,
+  challenger_policy_id TEXT NOT NULL,
+  challenger_policy_version TEXT NOT NULL,
+  challenger_ordering_hash TEXT NOT NULL,
+  same_candidate_set INTEGER NOT NULL,
+  common_support_symbols_json TEXT NOT NULL,
+  baseline_only_symbols_json TEXT NOT NULL,
+  challenger_only_symbols_json TEXT NOT NULL,
+  rank_deltas_json TEXT NOT NULL,
+  outcome_attached INTEGER NOT NULL,
+  experiment_hash TEXT NOT NULL UNIQUE,
+  captured_at TEXT NOT NULL,
+  schema_version TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_s2_ranking_experiment_strategy_date
+  ON s2_ranking_experiment_receipts (
+    experiment_id, experiment_version, strategy_id, strategy_version, market_date
+  );
+
 CREATE TABLE IF NOT EXISTS s2_candidate_lifecycle_receipts (
   lifecycle_receipt_id TEXT PRIMARY KEY,
   candidate_episode_id TEXT NOT NULL,
