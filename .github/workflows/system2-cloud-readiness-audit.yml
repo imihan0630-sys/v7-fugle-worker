@@ -150,3 +150,5 @@ jobs:
           set -euo pipefail
           ! grep -Eiq 'wrangler[[:space:]]+deploy|d1[[:space:]]+create|method:[[:space:]]*"(POST|PUT|PATCH|DELETE)"'             .github/workflows/system2-cloud-readiness-audit.yml
           echo "Read-only workflow mutation guard PASS"
+
+# Secret refresh trigger 2026-09-27T18:16+08:00
