@@ -1,0 +1,67 @@
+{
+  "schemaVersion": "GRID_EQUAL_RISK_PRODUCTION_RECEIPT_V0_1",
+  "observedAt": "2026-09-28T00:09:21+08:00",
+  "timestampProvenance": "GitHub Actions Portfolio Risk Tier-A Research run 36332136682 / job 108655985276",
+  "workflowRunId": 36332136682,
+  "jobId": 108655985276,
+  "readOnly": true,
+  "productionWrites": false,
+  "decisionImpact": false,
+  "scanDate": "2026-09-18",
+  "current": {
+    "plannedAllocationNTD": 168000,
+    "previewSuggestedNotionalNTD": 167471.13,
+    "previewProjectedStopRiskNTD": 6459.97,
+    "previewProjectedStopRiskHHI": 0.37670778
+  },
+  "gridEqualRisk": {
+    "gridNTD": 1000,
+    "perNameCapPct": 35,
+    "samePlannedDeploymentNTD": 168000,
+    "allocations": [
+      {
+        "symbol": "2006",
+        "allocationNTD": 70000
+      },
+      {
+        "symbol": "3105",
+        "allocationNTD": 41000
+      },
+      {
+        "symbol": "6133",
+        "allocationNTD": 57000
+      }
+    ],
+    "projectedRiskNTDBeforeShareFloor": 5965.732,
+    "projectedRiskHHIBeforeShareFloor": 0.33438488,
+    "maxToMinProjectedRiskRatioBeforeShareFloor": 1.137143,
+    "previewSuggestedNotionalNTD": 167697.54,
+    "shareFloorResidualNTD": 302.46,
+    "previewProjectedStopRiskNTD": 5951.36,
+    "previewProjectedStopRiskHHI": 0.33434138
+  },
+  "deltas": {
+    "currentMinusGridPreviewRiskNTD": 508.61,
+    "currentMinusGridPreviewRiskPctVsGrid": 8.5461,
+    "currentMinusGridPreviewRiskHHI": 0.0423664,
+    "currentHhiPremiumPctVsGrid": 12.6716,
+    "gridMinusCurrentPreviewSuggestedNotionalNTD": 226.41,
+    "gridPreviewNotionalPremiumPctVsCurrent": 0.1352
+  },
+  "falsification": {
+    "rejectedExplanations": [
+      "The equal-risk structural advantage disappears once allocations are forced onto the Formal NT$1,000 grid.",
+      "The lower equal-risk projected risk is merely caused by leaving more cash undeployed after integer-share flooring."
+    ],
+    "evidence": "The NT$1,000-grid comparator preserves the same NT$168,000 planned deployment and 35% cap. After identical 60/40 and share flooring it still has materially lower risk HHI and projected stop-risk, while its preview suggested notional is slightly higher than current.",
+    "limits": [
+      "One reconstructable multi-name date only.",
+      "Plan-preview suggested notional is not an actual order/fill.",
+      "The comparator is a research allocation counterfactual, not a live sizing recommendation.",
+      "No realized outcome or economic dominance is established."
+    ]
+  },
+  "validationNote": "Initial Tier-A CI failure came from an invalid synthetic test fixture with stop == buyLow. The production risk helper was not weakened; the fixture was corrected to valid entry geometry and all Tier-A/Regression/Repair checks then passed.",
+  "status": "GRID_AND_SHARE_QUANTIZATION_COUNTEREVIDENCE_SURVIVES / STRUCTURAL_RISK_CONCENTRATION_STRENGTHENED / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY",
+  "formalCoreImpact": false
+}
