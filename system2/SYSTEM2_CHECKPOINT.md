@@ -19,6 +19,17 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 
 ## Current design decisions
 
+- Decision Clock（決策時間點）Coverage Integrity（證據覆蓋完整性）V0.2 merged to main in commit `04cd1436931101b2ae8bc0f87d9295de24bd6105` via PR #166. Coverage is now generated from the full preregistered prospective date window beginning 2026-09-29 rather than only dates that happened to produce runs/artifacts.
+
+- The first scheduled run, attempt 1 only, is the immutable daily coverage anchor. Later scheduled runs or GitHub Actions rerun attempts cannot repair an earlier failed/missing anchor or convert that date into promotion-grade evidence.
+
+- Coverage failure classification is explicit: `NO_COMPLETED_SCHEDULED_RUN`, `SCHEDULED_RUN_NOT_SUCCESS`, `SCHEDULED_RUN_RERUN_ATTEMPT`, `DAILY_ARTIFACT_MISSING`, and `DAILY_ARTIFACT_COUNT_INVALID`. Official non-trading days remain legitimate skips rather than failures.
+
+- The Decision Clock owner-review packet now carries the coverage-integrity extension version, audited start/through dates, failure-class counts and trading-day gap dates. Any such gap continues to block `OWNER_REVIEW_ELIGIBLE`; exact clock, Worker Cron and capture remain unauthorized.
+
+- PR-time System2 Research CI is now active for `system2/**` changes. Pre-merge verification on PR #166: System2 Research CI run `36327997480` PASS (52 test files, syntax, 26-table SQLite schema and production-isolation guard); V8 Regression run `36327997477` PASS. Post-merge verification: System2 Research CI run `36328161415` PASS; V8 Regression run `36328161546` PASS.
+
+
 - Review-packet integration verification PASS: System2 Research CI run `36325049835`, job `108636106573`.
 
 - Read-only readiness aggregation now emits the review state automatically; `OWNER_REVIEW_ELIGIBLE` still keeps exact clock, Worker Cron and capture unauthorized.
