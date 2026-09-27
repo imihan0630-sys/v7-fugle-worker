@@ -1,0 +1,59 @@
+{
+  "schemaVersion": "formal-gate-single-removal-replay-spec-v0.1",
+  "researchDate": "2026-09-27",
+  "status": "CLASS_A_PROTOTYPE",
+  "estimand": "Observed one-gate removal transition on frozen same-scan gate states, not selection/outcome effect.",
+  "gateOrder": [
+    "PRICE_FLOOR",
+    "HISTORY_60D",
+    "RS_CONTEXT",
+    "MARKET_CAP_FLOOR",
+    "DAILY_ABNORMALITY",
+    "LIQUIDITY",
+    "SMALL_CAP_SPECIAL",
+    "MID_CAP_LIQUIDITY",
+    "CHIP_CONCENTRATION_PRESENT",
+    "FINANCIAL_SOURCE_COMPLETENESS",
+    "ANNOUNCEMENT_RISK",
+    "VALUATION_RELATIVE_RISK",
+    "SECTOR_GATE",
+    "AB_SETUP",
+    "FUNDAMENTAL_COMPONENT_COUNT",
+    "FUNDAMENTAL_QUALITY",
+    "ATR_QUALITY",
+    "TARGET_AVAILABLE",
+    "REWARD_RISK",
+    "FINAL_SIGNAL_GRADE"
+  ],
+  "transitionRules": {
+    "removedGateNotFail": "REMOVED_GATE_NOT_OBSERVED_FAIL",
+    "priorObservedFail": "EARLIER_OBSERVED_FAIL",
+    "priorUnknown": "PRIOR_STATE_UNKNOWN",
+    "priorDependentNotEvaluable": "PRIOR_STATE_NOT_EVALUABLE",
+    "nextObservedFail": "NEXT_OBSERVED_FAIL only if every gate between removed and next failure is PASS or safe-not-applicable",
+    "nextUnknown": "NEXT_STATE_UNKNOWN",
+    "nextDependentNotEvaluable": "NEXT_STATE_NOT_EVALUABLE",
+    "allOtherClear": "ALL_OTHER_OBSERVED_GATES_CLEAR"
+  },
+  "safeNotApplicable": [
+    "NOT_APPLICABLE_CAP_GTE_30",
+    "NOT_APPLICABLE_CAP_GTE_100",
+    "NO_POSITIVE_TTM_PE"
+  ],
+  "crucialLimits": [
+    "ALL_OTHER_OBSERVED_GATES_CLEAR is not a recovered Formal candidate.",
+    "No ranking, 3+3 quota, capital, execution, cost or outcome replay is performed.",
+    "Removing a prerequisite gate cannot manufacture downstream channel/target/RR geometry.",
+    "UNKNOWN remains unresolved and never becomes PASS or FAIL.",
+    "Only one gate is removed per replay; no multi-gate tuning.",
+    "No threshold sweep and no outcome lookup."
+  ],
+  "engineering": {
+    "marketCalls": 0,
+    "d1Writes": 0,
+    "workerIntegration": false,
+    "class": "A research-only",
+    "formalCoreImpact": false,
+    "decisionImpact": false
+  }
+}
