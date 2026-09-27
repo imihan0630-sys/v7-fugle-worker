@@ -1,0 +1,105 @@
+name: System2 Required Dependency Read-only Measurement
+
+on:
+  workflow_dispatch:
+    inputs:
+      market_date:
+        description: "Target Taiwan market date (YYYY-MM-DD)"
+        required: true
+        type: string
+      expected_trading_day:
+        description: "Whether target is expected to be a trading day"
+        required: true
+        default: true
+        type: boolean
+  push:
+    branches: [main]
+    paths:
+      - "system2/smoke/REQUIRED_DEPENDENCY_READONLY_SMOKE_2026-09-27.md"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-required-dependency-readonly
+  cancel-in-progress: false
+
+jobs:
+  observe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Resolve bounded read-only inputs
+        shell: bash
+        env:
+          INPUT_MARKET_DATE: ${{ inputs.market_date }}
+          INPUT_EXPECTED_TRADING_DAY: ${{ inputs.expected_trading_day }}
+        run: |
+          set -euo pipefail
+          if [ "$GITHUB_EVENT_NAME" = "push" ]; then
+            MARKET_DATE="$(TZ=Asia/Taipei date +%F)"
+            EXPECTED_TRADING_DAY="false"
+          else
+            MARKET_DATE="$INPUT_MARKET_DATE"
+            EXPECTED_TRADING_DAY="$INPUT_EXPECTED_TRADING_DAY"
+          fi
+          [[ "$MARKET_DATE" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}$ ]]
+          case "$EXPECTED_TRADING_DAY" in true|false) ;; *) exit 1 ;; esac
+          echo "MARKET_DATE=$MARKET_DATE" >> "$GITHUB_ENV"
+          echo "EXPECTED_TRADING_DAY=$EXPECTED_TRADING_DAY" >> "$GITHUB_ENV"
+
+      - name: Observe A5 filing vintage and B2 derived industry snapshot
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p system2/artifacts
+          node system2/scripts/measure_required_dependencies_readonly.mjs \
+            --market-date "$MARKET_DATE" \
+            --expected-trading-day "$EXPECTED_TRADING_DAY" \
+            --output "system2/artifacts/required-dependencies-${MARKET_DATE}.json"
+
+      - name: Publish concise dependency summary
+        shell: bash
+        run: |
+          node - <<'NODE'
+          const fs=require("node:fs");
+          const path=`system2/artifacts/required-dependencies-${process.env.MARKET_DATE}.json`;
+          const report=JSON.parse(fs.readFileSync(path,"utf8"));
+          const lines=[
+            "## System 2 required-dependency read-only observation",
+            "",
+            `- Market date: ${report.marketDate}`,
+            `- Expected trading day: ${report.expectedTradingDay}`,
+            `- Same Taipei date: ${report.sameTaipeiDate}`,
+            `- All transport OK: ${report.allTransportOk}`,
+            `- A5 state: ${report.a5.state}`,
+            `- A5 coverage eligible: ${report.a5.dependencyCoverageEligible}`,
+            `- B2 state: ${report.b2.state}`,
+            `- B2 coverage eligible: ${report.b2.dependencyCoverageEligible}`,
+            `- Prospective decision-clock evidence eligible: ${report.prospectiveEvidenceEligible}`,
+            "- D1 written: false",
+            "- Worker mutated: false",
+            "- Cron mutation: false",
+            "- System 1 runtime used: false",
+          ];
+          fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY,lines.join("\n")+"\n");
+          NODE
+
+      - name: Upload immutable observation artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: system2-required-dependencies-${{ github.run_id }}
+          path: system2/artifacts/required-dependencies-*.json
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Reassert no-mutation boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -Eiq 'wrangler[[:space:]]+(deploy|delete)|d1[[:space:]]+(create|execute)|SYSTEM2_CAPTURE_ENABLED[[:space:]]*=[[:space:]]*true' .github/workflows/system2-required-dependency-readonly.yml
+          ! grep -Eiq 'method:[[:space:]]*["'"'"'](POST|PUT|PATCH|DELETE)["'"'"']' system2/runtime/required_dependency_probes.mjs
+          echo "Required-dependency read-only boundary PASS"
