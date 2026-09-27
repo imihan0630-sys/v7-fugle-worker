@@ -142,3 +142,21 @@ Durable guards：
 - `research/factor_promotion_population_scope_falsification_v0_1.json`
 - `research/factor_study_date_weighting_falsification_v0_1.json`
 - `research/factor_redundancy_selection_conditioning_falsification_v0_1.json`
+
+
+### Factor-specific coverage guard
+整體 study 的 15 個獨立 scan dates 不得替某一個 factor 代打 coverage。
+
+現行 candidateFactor 只看 train/holdout row count 與 spread 方向；新因子若只在少數日期有值，仍可能靠同日多股票湊足 row count。
+
+任何 factor promotion evidence 必須另報：
+- factor-specific train / holdout independent scan dates；
+- factor-specific years / regimes；
+- missingness by date / pool / cohort；
+- date-level effect stability。
+
+在這些 coverage 未證明前：
+`FACTOR_SPECIFIC_COVERAGE_INCOMPLETE`。
+
+Guard：
+`research/factor_specific_date_coverage_falsification_v0_1.json`.
