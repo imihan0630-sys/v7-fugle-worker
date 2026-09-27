@@ -18950,3 +18950,108 @@ while controlling market regime and event context.
 
 No production sector-timing rule is approved.
 
+
+
+## DL-002CA — Path Complexity / Entropy as Diagnostic, Not Alpha
+
+### External evidence
+Information-theoretic research finds financial returns can contain nonlinear serial dependence and time-varying regularity.
+However:
+- Maasoumi & Racine (Journal of Econometrics, 2002) find small nonlinear dependence but fragile evidence of superior conditional predictability/profitability.
+- Approximate/Sample Entropy studies show market regularity changes across regimes/turbulence.
+- Higher-frequency data can exhibit different predictability than daily data.
+
+### Research interpretation
+Low entropy / high regularity does NOT mean bullish.
+It means the recent path is more structured/repetitive.
+
+High entropy / irregularity does NOT mean bearish.
+It means geometry is noisier / less stable.
+
+### Proposed descriptive fields
+- returnSignEntropy
+- rangeStateEntropy
+- swingDirectionEntropy
+- phaseEntropy
+- entropyChangeIntoMaturity
+- entropyChangeAtBreakout
+- intradayEntropy15mResearch
+- dailyVsIntradayEntropyGap
+
+### Pattern hypotheses
+VCP / handle:
+- constructive tightening may reduce path irregularity into maturity.
+
+Wide-loose / distribution:
+- irregularity may remain high or rise.
+
+Regime transition:
+- entropy behavior may change around state changes, but sign is empirical.
+
+### Critical safeguards
+1. Do not rank stocks merely because entropy is low.
+2. Compare entropy after controlling ATR/volatility; entropy and volatility are not identical.
+3. Use enough observations for estimator stability.
+4. Different entropy definitions are separate experiments.
+5. Do not scan many entropy estimators and keep the best-performing one.
+
+### Relation to existing DL-002
+Entropy is a possible diagnostic for:
+- geometry stability,
+- wide-loose vs organized path,
+- state transition,
+not a replacement for explicit swing topology.
+
+If it adds no information beyond:
+- reversal count,
+- efficiency ratio,
+- volatility,
+- Information Discreteness,
+reject it as redundant.
+
+## DL-002CB — Simplicity vs Complexity: Two Different Questions
+
+### Important distinction
+MODEL_COMPLEXITY:
+How many parameters/features the predictive model uses.
+
+PATH_COMPLEXITY:
+How irregular the observed price path is.
+
+Research showing complex ML models can improve return prediction does NOT imply complex/noisy chart paths are better.
+
+### DL-002 principle
+Keep the detector/model as simple as possible for a given evidence level, while allowing the observed path to be objectively complex.
+
+Do not confuse:
+“complex model may capture nonlinear relations”
+with
+“more complicated pattern deserves higher score.”
+
+## DL-002CC — Intraday Regularity as Execution Research Only
+
+### External prior
+Information-theoretic studies find data frequency materially affects measured predictability; some intraday series show greater predictability than daily series.
+
+### Project implication
+Potentially study entropy/regularity on completed 15m bars around:
+- breakout,
+- retest,
+- reclaim,
+- failure.
+
+Possible states:
+- ORGANIZED_TREND_15M
+- CHOPPY_RETEST_15M
+- DISORDER_INCREASE
+- ORDER_RESTORATION
+
+### Boundary
+This belongs to Execution Alpha only.
+It cannot be used to improve the apparent Selection Alpha of the prior daily scan.
+
+### Current priority
+LOWER than explicit 15m price/volume/retest geometry because entropy estimators add complexity and can be unstable in short windows.
+
+Status: EXPLORATORY_LOW_PRIORITY.
+
