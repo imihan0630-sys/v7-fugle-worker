@@ -1,0 +1,89 @@
+{
+  "schemaVersion": "PORTFOLIO_RISK_TIER_A_HISTORY_V0_3_STRUCTURAL_COUNTERFACTUAL",
+  "observedAt": "2026-09-27T19:09:06+08:00",
+  "workflowRunId": 36314784619,
+  "jobId": 108607322138,
+  "sourceEndpoint": "/api/journal?days=730",
+  "readOnly": true,
+  "outcomeFieldsRead": false,
+  "decisionImpact": false,
+  "formalPlanRows": 4,
+  "fullyReconstructablePlanDates": 2,
+  "multiNameCounterfactualDates": 1,
+  "keyFinding": {
+    "scanDate": "2026-09-18",
+    "plannedDeploymentNTD": 168000,
+    "currentProjectedRiskHHI": 0.377238,
+    "equalCapitalProjectedRiskHHI": 0.355859,
+    "equalPlannedStopRiskProjectedRiskHHI": 0.333333,
+    "currentMaxToMinProjectedRiskRatio": 2.4472,
+    "equalCapitalMaxToMinProjectedRiskRatio": 1.9119,
+    "equalPlannedStopRiskMaxToMinProjectedRiskRatio": 1,
+    "interpretation": "On the only reconstructable multi-name date, current PriorityScore-weighted capital concentrated conservative buyHigh projected stop risk more than equal-capital. This is a structural observation, not an outcome claim."
+  },
+  "plans": [
+    {
+      "symbol": "2006",
+      "strategy": "B",
+      "priorityScore": 69.9,
+      "rewardRisk": 3.04,
+      "conservativeStopRiskPct": 2.6167,
+      "currentAllocationNTD": 50000,
+      "currentProjectedRiskNTD": 1308.35,
+      "equalCapitalAllocationNTD": 56000,
+      "equalCapitalProjectedRiskNTD": 1465.35,
+      "equalPlannedStopRiskAllocationNTD": 75029.23,
+      "equalPlannedStopRiskProjectedRiskNTD": 1963.29
+    },
+    {
+      "symbol": "3105",
+      "strategy": "B",
+      "priorityScore": 89.4,
+      "rewardRisk": 3.71,
+      "conservativeStopRiskPct": 5.0028,
+      "currentAllocationNTD": 64000,
+      "currentProjectedRiskNTD": 3201.79,
+      "equalCapitalAllocationNTD": 56000,
+      "equalCapitalProjectedRiskNTD": 2801.57,
+      "equalPlannedStopRiskAllocationNTD": 39243.82,
+      "equalPlannedStopRiskProjectedRiskNTD": 1963.29
+    },
+    {
+      "symbol": "6133",
+      "strategy": "B",
+      "priorityScore": 74.9,
+      "rewardRisk": 3.89,
+      "conservativeStopRiskPct": 3.6542,
+      "currentAllocationNTD": 54000,
+      "currentProjectedRiskNTD": 1973.27,
+      "equalCapitalAllocationNTD": 56000,
+      "equalCapitalProjectedRiskNTD": 2046.35,
+      "equalPlannedStopRiskAllocationNTD": 53726.94,
+      "equalPlannedStopRiskProjectedRiskNTD": 1963.29
+    },
+    {
+      "symbol": "3006",
+      "scanDate": "2026-09-21",
+      "strategy": "A",
+      "priorityScore": 66.3,
+      "rewardRisk": 3.43,
+      "conservativeStopRiskPct": 3.7342,
+      "currentAllocationNTD": 70000,
+      "currentProjectedRiskNTD": 2613.94,
+      "note": "Single-name date; all three allocation schemes are identical."
+    }
+  ],
+  "falsification": {
+    "propositionRejected": "PriorityScore-weighted allocation is mechanically risk-neutral with respect to planned stop geometry.",
+    "observedMechanism": "On 2026-09-18, the highest PriorityScore name (3105) also had the widest conservative planned stop distance, so score-weighted capital and stop distance compounded into the largest projected risk contribution.",
+    "counterevidenceAndLimits": [
+      "Only one reconstructable multi-name date exists; no predictive or OOS inference is allowed.",
+      "Equal-planned-stop-risk is an unconstrained diagnostic and would allocate 75029.23 NTD to 2006, 37.51% of total capital, above the current 35% per-name cap.",
+      "No return, MFE, MAE, stop-first, fill or realized drawdown data were used.",
+      "The observation does not prove equal-risk sizing improves returns or drawdowns.",
+      "A/B channel, volatility, regime, PriorityScore and transaction/execution constraints remain required controls."
+    ]
+  },
+  "status": "FALSIFICATION_IN_PROGRESS / STRUCTURAL_RISK_CONCENTRATION_CONFIRMED / OUTCOME_MATERIALITY_UNKNOWN / NOT_OPTIMIZATION_READY",
+  "formalCoreImpact": false
+}
