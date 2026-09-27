@@ -1,6 +1,6 @@
 {
   "schemaVersion": "PRIORITY_SCORE_SIZING_BREAKEVEN_PROTOCOL_V0_1",
-  "preregisteredAt": "2026-09-27T21:18:00+08:00",
+  "preregisteredAt": "2026-09-27T21:03:23+08:00",
   "purpose": "Test whether post-selection PriorityScore sizing creates enough realized edge to justify its allocation tilt, without changing selected names.",
   "primaryComparator": "SAME_SELECTED_NAMES / SAME_PLANNED_DEPLOYMENT / EQUAL_CAPITAL",
   "secondaryComparator": "SAME_SELECTED_NAMES / SAME_PLANNED_DEPLOYMENT / 35%-CAP-CONSTRAINED_EQUAL_PLANNED_STOP_RISK",
@@ -61,5 +61,6 @@
     "use": "algebra witness only; no outcome was read"
   },
   "status": "BREAKEVEN_PROTOCOL_PREREGISTERED / OUTCOMES_PENDING / NOT_OPTIMIZATION_READY",
-  "formalCoreImpact": false
+  "formalCoreImpact": false,
+  "timestampProvenance": "Corrected to GitHub PR creation time; do not use prior manually estimated clock value as evidence ordering."
 }
