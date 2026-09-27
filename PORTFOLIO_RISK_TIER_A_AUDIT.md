@@ -1488,3 +1488,37 @@ Status:
 `LIFECYCLE_METRIC_PROTOCOL_READY / PRODUCTION_AUDIT_PENDING`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-066 Production result — 15/15 lifecycle × metric cells preserve the direction
+
+Read-only Production run `36353326188` / job `108716060944` evaluated 2026-09-18 across:
+- FIRST, ADD, FULL;
+- HHI, Gini, CV, maximum risk share, max/min;
+- all 946 legal NT$1,000 allocation states per stage.
+
+Directional agreement:
+- current > equal-capital concentration = **15/15**;
+- current > metric-specific global minimum = **15/15**.
+
+HHI summary:
+- FIRST: current 0.3769514595 / equal 0.3551615396 / global min 0.3343161104;
+- ADD: current 0.3763426432 / equal 0.3557339695 / global min 0.3342266703;
+- FULL: current 0.3767077818 / equal 0.3553897407 / global min 0.3342785411.
+
+Under buyHigh plan-preview semantics, all 15 stage-metric cells have the same unique global-min allocation:
+`70k / 42k / 56k`.
+
+That convergence is strong structural evidence for this witness, but it is not universal: PR-060 already shows the exact optimum moves when buyLow/midpoint are used instead of buyHigh.
+
+Therefore both compound counter-hypotheses are rejected:
+- stage robustness is not merely an HHI artifact;
+- metric robustness is not merely a FULL-position artifact.
+
+Durable receipt:
+`research/lifecycle_metric_sensitivity_production_receipt_20260928.json`.
+
+Status:
+`LIFECYCLE_X_METRIC_ARTIFACT_FALSIFIED / 15_OF_15_DIRECTIONAL_AGREEMENT / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
