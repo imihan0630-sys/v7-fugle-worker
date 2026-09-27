@@ -21993,3 +21993,146 @@ from
 - “最後一棒” late catch-up.
 
 But it remains Shadow research until prospective evidence passes governance.
+
+
+## DL-004U — Same-Date Matched-Control Design for Pattern Alpha (2026-09-27)
+
+### Goal
+Separate pattern information from market-day effects.
+
+### Why same-date matching matters
+If all selected patterns occur during a strong market week, raw forward return overstates pattern-specific value.
+
+### Matching dimensions
+For each pattern-strong stock, match controls from the same scan date on:
+- market/pool
+- price tier
+- liquidity tier
+- sector where sample permits
+- ret20 / ret60
+- ATR / volatility
+- Residual RS
+- market/sector regime
+- Formal cohort class
+
+### Comparison hierarchy
+1. unmatched raw;
+2. same-date matched;
+3. same-date + sector matched;
+4. partial/residual model;
+5. purged holdout.
+
+### Interpretation
+Only effects that remain directionally stable across increasingly strict controls are candidates for genuine incremental Pattern information.
+
+## DL-004V — Cross-Sectional Ranking vs Absolute Pattern Thresholds (2026-09-27)
+
+### Question
+Should Pattern research eventually use fixed thresholds or relative same-day ranking?
+
+### Risks of fixed thresholds
+A “tight” 4% base can mean something different across volatility regimes.
+
+### Risks of cross-sectional ranking
+Ranking can force a best stock even when all setups are poor, conflicting with the system’s no-force-fill principle.
+
+### Research design
+Compare:
+ABSOLUTE_STATE:
+- fixed geometry definitions / maturity state.
+
+RELATIVE_QUALITY:
+- percentile/rank among same-day eligible universe.
+
+HYBRID:
+- absolute minimum state first, rank only among valid cases.
+
+### Guard
+No forced selection.
+A day can have zero Pattern-valid stocks.
+
+### Hypothesis
+Hybrid may preserve regime adaptivity without turning every day into a contest that must produce winners.
+
+## DL-004W — Economic Significance Before Statistical Significance (2026-09-27)
+
+### Problem
+A tiny average D5 improvement can be statistically significant in a large sample but useless after:
+- spread,
+- slippage,
+- delayed 15m entry,
+- missed no-retest winners,
+- stop execution.
+
+### Required outputs
+- gross D1/D3/D5/D10
+- net after conservative round-trip cost assumptions
+- entry-delay adjusted return
+- MFE/MAE change
+- stop-first change
+- coverage change
+- capital-utilization change
+
+### Practical criterion
+A candidate should improve either:
+- expectancy,
+- tail/risk behavior,
+- or capital utilization,
+without unacceptable deterioration elsewhere.
+
+### No one-metric promotion
+Higher win rate with much worse average loss is not improvement.
+Lower false-breakout rate with severe missed-winner cost is not automatically improvement.
+
+## DL-004X — Pattern Filters Can Worsen Idle-Capital Problem (2026-09-27)
+
+### Context
+Current research problem includes sparse BUY signals / idle capital.
+
+### Implication
+A new failure filter can look excellent on selected trades while reducing usable opportunities too aggressively.
+
+### Required counterfactual
+For every proposed Pattern exclusion:
+- how many historical/prospective candidates removed?
+- how many losers avoided?
+- how many winners lost?
+- change in selection coverage?
+- change in BUY-trigger coverage?
+- change in deployed-capital days?
+- replacement opportunity quality?
+
+### Coverage metrics
+- candidateRetentionRate
+- buyOpportunityRetentionRate
+- avoidedFailureCount
+- missedWinnerCount
+- netMFEContribution
+- idleCapitalDaysDelta
+
+### Rule
+Pattern research must optimize decision quality AND opportunity preservation, not only precision.
+
+## DL-004Y — Pattern Features for Ranking vs Hard Gates (2026-09-27)
+
+### Research distinction
+A useful feature does not automatically belong as a hard rejection rule.
+
+Possible future roles:
+1. HARD_GATE — strongest governance burden.
+2. SOFT_RISK_PENALTY.
+3. TIE_BREAKER.
+4. SHADOW_WARNING only.
+5. EXECUTION_REVALIDATION context.
+
+### Evidence burden
+Hard gate requires evidence that failure risk is strong/stable enough to justify missed opportunities.
+Tie-breaker/diagnostic requires less invasive evidence but still must be incremental.
+
+### Likely initial landing zone
+If Pattern evidence matures, the safest first proposal may be:
+- research-only warning,
+- or tie-break/risk context,
+rather than rewriting A/B definitions.
+
+No production change is proposed now.
