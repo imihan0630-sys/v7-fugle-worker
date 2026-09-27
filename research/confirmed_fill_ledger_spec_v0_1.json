@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "CONFIRMED_FILL_LEDGER_V0_1",
+  "status": "DESIGN_READY_CLASS_B_PROPOSAL_FIRST_NOT_IMPLEMENTED",
+  "researchOnly": true,
+  "decisionImpact": false,
+  "purpose": "Provide append-only confirmed execution evidence so historical actual positions and actual-live portfolio heat can be reconstructed without treating signal suggestions as fills.",
+  "requiredEventFields": [
+    "executionEventId",
+    "source",
+    "sourceRecordId",
+    "symbol",
+    "planScanDate",
+    "action",
+    "occurredAt",
+    "confirmedAt",
+    "fillPrice",
+    "filledShares",
+    "sharesBefore",
+    "sharesAfter",
+    "averageCostAfter",
+    "reconciliationStatus"
+  ],
+  "optionalLinks": [
+    "signalEventId",
+    "planDate",
+    "brokerOrderId",
+    "reason"
+  ],
+  "actions": ["BUY","ADD","REDUCE","SELL"],
+  "sources": ["BROKER_IMPORT","MANUAL_CONFIRMED","VERIFIED_EXTERNAL"],
+  "invariants": [
+    "signalEventId must never substitute for executionEventId",
+    "BUY/ADD sharesAfter = sharesBefore + filledShares",
+    "REDUCE/SELL sharesAfter = sharesBefore - filledShares",
+    "REDUCE must leave sharesAfter > 0",
+    "SELL must close to sharesAfter = 0",
+    "cross-event sharesBefore must equal prior confirmed sharesAfter for the same symbol",
+    "corrections append a new event and reference a prior event; prior execution evidence is never overwritten",
+    "current mutable position snapshots do not backfill missing historical execution events",
+    "missing confirmed fills remain UNKNOWN"
+  ],
+  "nonGoals": [
+    "generate trading signals",
+    "change BUY/ADD/REDUCE/SELL rules",
+    "auto-assume broker fills",
+    "reconstruct pre-ledger history from suggested shares",
+    "change Formal allocation or stops"
+  ],
+  "implementationBoundary": "Any shared Production D1/API/storage wiring is Class B proposal-first and requires explicit owner approval. The research schema/test harness alone is Class A."
+}
