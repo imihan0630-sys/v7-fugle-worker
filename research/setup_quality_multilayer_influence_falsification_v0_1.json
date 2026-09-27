@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "setup_quality_multilayer_influence_falsification_v0.1",
+  "researchDate": "2026-09-27",
+  "status": "STRUCTURAL_MULTILAYER_INFLUENCE_CONFIRMED",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "formalLayers": [
+    {
+      "layer": "CHANNEL_EXISTENCE",
+      "effect": "A.pass/B.pass defines eligible setup geometry before setupQuality grade"
+    },
+    {
+      "layer": "FINAL_SIGNAL_GRADE",
+      "effect": "setupQuality<65 rejects after RR; structurally active for A, redundant after valid B.pass"
+    },
+    {
+      "layer": "PRIORITY_SCORE",
+      "effect": "setupQuality contributes 28% of base PriorityScore"
+    },
+    {
+      "layer": "RANK_TIEBREAK",
+      "effect": "deployed comparator later uses raw setupQuality after post-consensus priorityScore, raw RR and marketConsensusScore"
+    }
+  ],
+  "asymmetryInteraction": {
+    "A": "qualifying raw setupQuality theoretical range 38..82; grade truncates to 65..82 before ranking",
+    "B": "qualifying raw setupQuality theoretical range 69.65..100; grade does not truncate valid B.pass",
+    "implication": "same setupQuality construct has different admission truncation and attainable scale by channel before it also influences score/ranking"
+  },
+  "nonClaims": [
+    "This does not prove erroneous double counting.",
+    "This does not prove A should receive a lower threshold or score normalization.",
+    "Repeated use may be justified if setup quality has stable incremental outcome value at each decision layer."
+  ],
+  "requiredTests": [
+    "Prospectively measure channel x scanDate population at A/B pass, RR pass, grade pass and qualified rank.",
+    "Estimate rank displacement attributable to setupQuality while holding other comparator inputs fixed or matched.",
+    "Test within-channel setupQuality monotonicity and incremental value beyond sector/institution/fundamental/RS/RR.",
+    "Test cross-channel calibration only after immutable complete population receipts exist.",
+    "Use equal-date primary aggregation and report price-pool/regime/industry concentration.",
+    "Negative control: valid B.pass followed by grade<65 should be zero; nonzero indicates data/definition regression."
+  ],
+  "optimizationBridge": "No FORMAL_OPTIMIZATION_CANDIDATE. A future SETUP_QUALITY_INFLUENCE_REFORMULATION is Class C and requires prospective prevalence, displacement, outcome, redundancy, cost and zero-pick evidence."
+}
