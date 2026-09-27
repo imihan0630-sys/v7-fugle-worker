@@ -64,3 +64,35 @@ Choose/prepare isolated physical System 2 persistence and capture path, then sta
 Preferred design: separate System 2 D1/database binding if practical, even if UI/site remains shared.
 
 Any integration that touches V8 production storage/runtime is Class B and requires owner review before deployment.
+
+
+## Limited Shadow extension verification (2026-09-27)
+
+Status: PASS / RESEARCH-ONLY / NOT DEPLOYED.
+
+Added after the original P1 core verification:
+- StrategyContract（策略契約） validator and owner-approved registry;
+- StrategyValidity（策略有效性） / EntryReadiness（進場準備度） evaluator;
+- source-readiness receipts;
+- S2-SM-LS-001 and S2-SG-LS-001 Limited Shadow preregistry;
+- Limited Shadow decision builder;
+- family-assessment receipts with REQUIRED-factor PIT checks;
+- full-universe Shadow run completeness receipts;
+- storage row serializers;
+- storage design V0.3 + `s2_shadow_runs`.
+
+Verified research-only invariants:
+- no numeric score/weight/threshold frozen;
+- REQUIRED UNKNOWN fails closed;
+- hard invalidation outranks supportive evidence;
+- valid-but-overextended remains WATCH;
+- BUY_ELIGIBLE is now correctly preserved as QUALIFIED_NOT_SELECTED until a separate ranking/capacity layer enforces global max-12 / per-strategy max-3;
+- incomplete/source-gap records are preserved;
+- run receipt detects silent universe omissions;
+- family receipt refuses to treat PIT-ineligible REQUIRED inputs as KNOWN;
+- storage serializers preserve null rank/score and explicit validity/readiness/source states.
+
+Incremental SQLite syntax check for the new `s2_shadow_runs` table and extended `s2_decisions` columns: PASS.
+
+Important:
+The code is still not scheduled or connected to physical System 2 persistence. No production D1 migration/deployment was performed.
