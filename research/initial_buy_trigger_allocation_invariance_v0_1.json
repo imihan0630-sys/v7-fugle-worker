@@ -1,6 +1,6 @@
 {
   "schemaVersion": "INITIAL_BUY_TRIGGER_ALLOCATION_INVARIANCE_V0_1",
-  "observedAt": "2026-09-27T21:36:00+08:00",
+  "observedAt": "2026-09-27T21:14:52+08:00",
   "scope": "Initial BUY eligibility/timing only while positionStage=NONE",
   "sourceAudit": {
     "functions": [
@@ -46,5 +46,6 @@
   ],
   "executionImplication": "Execution-clock sizing research may share first-BUY trigger timing, but must independently reconstruct comparator amount/shares and execution costs/fills.",
   "status": "INITIAL_BUY_TRIGGER_STRUCTURALLY_ALLOCATION_INVARIANT / EXECUTION_NOT_INVARIANT",
-  "formalCoreImpact": false
+  "formalCoreImpact": false,
+  "timestampProvenance": "Corrected to GitHub PR creation time; do not use prior manually estimated clock value as evidence ordering."
 }
