@@ -1,0 +1,15 @@
+import assert from "node:assert/strict";
+import {decomposeInstitutionalScore,summarizeInstitutionalScore} from "./institutional_score_decomposition_observer_v0_1.mjs";
+const base={foreignBuyDays:3,trustBuyDays:3,dealerBuyDays:3,institutionTotalNet:220000,avgVolume20Lots:1000,chipConcentration:50};
+let x=decomposeInstitutionalScore(base);
+assert.equal(x.streakLinear,66); assert.equal(x.consensusInteraction,21);
+assert.equal(x.aggregateNetIntensity,5.5); assert.equal(x.largeHolderConcentration,7.5);
+assert.equal(x.preClamp,100); assert.equal(x.score,100); assert.equal(x.scoreSaturated100,true);
+x=decomposeInstitutionalScore({foreignBuyDays:3,trustBuyDays:0,dealerBuyDays:0,institutionTotalNet:-250000,avgVolume20Lots:1000,chipConcentration:70});
+assert.equal(x.aggregateNetIntensity,0); assert.equal(x.aggregateNetNegativeButAnyActorPositive,true);
+assert.equal(x.score,40.5);
+assert.equal(decomposeInstitutionalScore({...base,chipConcentration:null}).state,"UNKNOWN_INCOMPLETE_INPUT");
+assert.equal(decomposeInstitutionalScore({...base,avgVolume20Lots:0}).state,"UNKNOWN_INCOMPLETE_INPUT");
+const s=summarizeInstitutionalScore([base,{...base,chipConcentration:null}]);
+assert.deepEqual([s.rows,s.observed,s.unknown,s.saturated],[2,1,1,1]);
+console.log("institutional_score_decomposition_observer_v0_1: PASS");
