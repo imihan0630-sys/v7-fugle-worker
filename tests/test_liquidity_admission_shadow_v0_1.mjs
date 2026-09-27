@@ -41,6 +41,9 @@ assert.equal(lowAudit.minLots,1000);
 assert.equal(lowAudit.belowPrimaryMin,true);
 assert.equal(lowAudit.exceptionInputCoverage,"ABSENT");
 assert.equal(lowAudit.liquidityExceptionPass,false);
+assert.ok(lowAudit.exceptionFailureReasons.includes("SPREAD_MISSING"));
+assert.ok(lowAudit.exceptionFailureReasons.includes("DEPTH_EVIDENCE_MISSING"));
+assert.equal(lowAudit.formalMissingnessEffect,"MISSING_EXCEPTION_INPUTS_CAUSE_FORMAL_EXCEPTION_FAILURE");
 
 const exception=base("1102",{avgVolume20Lots:500,avgAmount20:60000000,spreadPercent:.2,orderBookDepthGood:true,marketCapYi:200});
 const exAudit=mod.buildLiquidityAdmissionResearchAudit(exception);
@@ -59,6 +62,11 @@ assert.equal(res.populationCounts.LIQ_LOW_AVG_VOLUME_REJECTED.THOUSAND,1);
 assert.equal(res.populationCounts.LIQ_SMALLCAP_SPECIAL_REASON_REJECTED.GENERAL,1);
 assert.equal(res.populationCounts.LIQ_MIDCAP_EXTRA_REQUIREMENT_REJECTED.GENERAL,1);
 assert.equal(res.exceptionPassCounts.GENERAL,1);
+assert.equal(res.belowPrimaryMinTotal,3);
+assert.equal(res.belowPrimaryMinExceptionInputCoverageCounts.ABSENT,2);
+assert.equal(res.belowPrimaryMinExceptionInputCoverageCounts.COMPLETE,1);
+assert.equal(res.belowPrimaryMinFailureReasonCounts.SPREAD_MISSING,2);
+assert.equal(res.belowPrimaryMinFailureReasonCounts.DEPTH_EVIDENCE_MISSING,2);
 assert.ok(res.samples.some(x=>x.cohort==="LIQ_LOW_AVG_VOLUME_REJECTED"&&x.f.symbol==="1101"));
 assert.ok(res.samples.some(x=>x.cohort==="LIQ_SMALLCAP_SPECIAL_REASON_REJECTED"&&x.f.symbol==="1103"));
 assert.ok(res.samples.some(x=>x.cohort==="LIQ_MIDCAP_EXTRA_REQUIREMENT_REJECTED"&&x.f.symbol==="1104"));
@@ -75,5 +83,7 @@ console.log(JSON.stringify({
   populationCounts:res.populationCounts,
   exceptionPassCounts:res.exceptionPassCounts,
   exceptionInputCoverageCounts:res.exceptionInputCoverageCounts,
+  belowPrimaryMinExceptionInputCoverageCounts:res.belowPrimaryMinExceptionInputCoverageCounts,
+  belowPrimaryMinFailureReasonCounts:res.belowPrimaryMinFailureReasonCounts,
   samples:res.samples.map(x=>({cohort:x.cohort,pool:x.pool,symbol:x.f.symbol,population:x.reasonPopulationCount}))
 },null,2));
