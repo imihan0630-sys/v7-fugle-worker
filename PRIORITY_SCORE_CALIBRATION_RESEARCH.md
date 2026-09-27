@@ -1352,3 +1352,36 @@ Status:
 `METRIC_SENSITIVITY_PROTOCOL_READY / PRODUCTION_AUDIT_PENDING`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-062 Production result — concentration direction survives five metrics
+
+Read-only Production run `36351672635` / job `108711424760` evaluated:
+- 3 entry references: buyLow, midpoint, buyHigh;
+- 5 concentration metrics: HHI, Gini, CV, maximum contribution share, max/min;
+- all 946 legal NT$1,000-grid states per reference.
+
+Directional result:
+- current > equal-capital concentration: **15 / 15** metric-reference combinations;
+- current > metric-specific global minimum: **15 / 15**.
+
+The exact global optimum is objective-sensitive:
+- buyLow: HHI/CV -> 70/36/62; Gini/MAX_SHARE/MAX_MIN -> 70/37/61;
+- midpoint: HHI/CV -> 70/39/59; Gini/MAX_SHARE/MAX_MIN -> 70/40/58;
+- buyHigh: all five metrics -> 70/41/57.
+
+Therefore the counter-hypothesis
+`the concentration result is only an HHI artifact`
+is rejected on the 2026-09-18 witness.
+
+At the same time, the optimum differences reinforce a governance constraint:
+**there is no single objective-free “correct” risk-minimizing allocation.**
+Exact comparator allocation depends on reference price, integer grid and concentration objective.
+
+Durable receipt:
+`research/risk_metric_sensitivity_production_receipt_20260928.json`.
+
+Status:
+`HHI_ARTIFACT_FALSIFIED / METRIC_DIRECTION_ROBUST / OPTIMUM_OBJECTIVE_SENSITIVE / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
