@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-09-27T08:52:00+08:00",
+  "updatedAt": "2026-09-27T09:30:00+08:00",
   "status": "BASELINE_V0_2_PARTIAL_RECONCILIATION",
   "formalCore": "LOCKED",
   "authority": {
@@ -57,7 +57,7 @@
     "formalAutoPromotion": false,
     "independentInferenceUnitRequired": true
   },
-  "next": "Liquidity admission evidence gap is now explicit: capture exact early liquidity-reject cohorts and exception-input coverage prospectively before any 1000/300-lot gate reformulation. In parallel continue outcome-independent gate/score audits; no Formal threshold tuning.",
+  "next": "Shadow cohort semantics Class-B proposal is frozen and awaits owner approval/version-line reconciliation; do not use guarded control cohorts for Formal promotion. Continue outcome-independent structural audits while prospective post-9/29 data accumulates.",
   "optimizationBridge": {
     "required": true,
     "autoPromoteFormal": false,
@@ -223,7 +223,7 @@
       "domain": "STATISTICAL_VALIDATION_PIT_SHADOW_OOS",
       "level": "L4",
       "status": "CONTINUOUS",
-      "basis": "Prospective Shadow, purged holdout, date clustering, redundancy, costs, multiple-testing/readiness machinery implemented; validation remains continuous."
+      "basis": "Prospective Shadow, purged holdout, date clustering, redundancy, costs and multiple-testing machinery are implemented, but a 2026-09-27 cohort-semantics audit found reason-starvation, fail-fast first-failure attribution, Near-miss Hamming/truncation bias and BROAD_CONTROL quota-conditioned membership ambiguity. R02 controls are DESCRIPTIVE_ONLY until membership/denominator QA is repaired. Unified additive membership/population/quality-overlay Class-B proposal is design-ready but not implemented."
     },
     {
       "id": "MACRO_CROSS_MARKET_TRANSMISSION",
