@@ -19,6 +19,12 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 
 ## Current design decisions
 
+- Cross-strategy scarcity gate implemented: if eligible new symbols exceed remaining global vacancies and no versioned global priority policy exists, allocation fails closed as GLOBAL_PRIORITY_UNRESOLVED and retains incumbents only. This prevents accidental strategy-iteration/symbol-order selection. Verification PASS.
+
+- RANK-01 neutral tie handling uses deterministic hash only to make within-Pareto-tier machine order reproducible; within-tier ordinal is explicitly not an economic superiority claim. Verification PASS.
+
+- RANK-01 strategy-local baseline preregistered and implemented for SHORT_MOMENTUM and SWING_GROWTH using Pareto dominance（帕累托支配） across small approved evidence-family sets; no weighted sum, total score or outcome tuning. Missing ranking inputs remain unranked rather than receiving a fake low rank.
+
 - Research-only storage design now includes candidate lifecycle/re-entry receipts; incremental SQLite syntax validation passed. No strategy-specific invalidation threshold or live behavior was changed.
 
 - Candidate lifecycle verification PASS: a surviving strategy membership can retain a symbol; no surviving observation-value membership fails closed for pool states; SIM_FILLED -> POSITION_MONITOR separation works; terminal episodes cannot reopen; re-entry requires a new candidateEpisodeId.
@@ -49,7 +55,7 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 
 - Storage design advanced to V0.3 (still research-only / not deployed) to persist strategy_validity, entry_readiness, source_readiness, shadow_spec_id and evaluation_mode without collapsing non-selected states.
 
-- Limited Shadow decision builder implemented and verification passed: VALID+BUY_ELIGIBLE => SELECTED; missing REQUIRED evidence => INCOMPLETE+BLOCKED and still archived; VALID+TOO_EXTENDED => WATCH; source-blocked strategy cannot create a Limited Shadow decision. This verifies state semantics, not alpha.
+- Limited Shadow decision builder implemented and verification passed: VALID+BUY_ELIGIBLE => QUALIFIED_NOT_SELECTED until ranking/capacity completes; missing REQUIRED evidence => INCOMPLETE+BLOCKED and still archived; VALID+TOO_EXTENDED => WATCH; source-blocked strategy cannot create a Limited Shadow decision. This verifies state semantics, not alpha.
 
 - First two Limited Shadow（有限影子模擬） specs preregistered before outcome tuning: S2-SM-LS-001 and S2-SG-LS-001. V0.1 freezes no numeric rank/score/weight/threshold; rank and totalScore remain NULL.
 
