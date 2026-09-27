@@ -17,7 +17,7 @@ Purpose: index reusable research without relocating or duplicating the original 
 
 | Shared tag | Main evidence / checkpoint anchors | Current durable status | Reuse note |
 |---|---|---|---|
-| SHARED:KLINE_PATTERN | `KLINE_PATTERN_CHECKPOINT.md`, `KLINE_PATTERN_RESEARCH.md`, `research/PATTERN_*.md` | ACTIVE / multi-stage topology and lifecycle research | Reusable pattern geometry, maturity, false-break, multi-timeframe and ambiguity semantics. Do not copy V8 Formal thresholds. |
+| SHARED:KLINE_PATTERN | `KLINE_PATTERN_CHECKPOINT.md`, `KLINE_PATTERN_RESEARCH.md`, `research/PATTERN_*.md`, `TARGET_RESISTANCE_RR_RESEARCH.md` | ACTIVE / multi-stage topology and lifecycle research | Reusable pattern/resistance knowledge is lifecycle- and scale-aware: a single nearest local pivot is not semantically identical to a validated major zone, and post-break new-high states may differ from pre-break overhead resistance. V8 target/RR thresholds remain SYSTEM1_IMPL and must not be copied. |
 | SHARED:PRICE_VOLUME | `PRICE_VOLUME_CHECKPOINT.md`, `PRICE_VOLUME_RESEARCH.md`, `PRICE_VOLUME_EVIDENCE.md`, `PRICE_VOLUME_HYPOTHESIS_LEDGER.md` | ACTIVE / FALSIFICATION + SHADOW design | Reusable RVOL, effort-vs-result, volume dry-up, climax, same-slot normalization and interaction research. |
 | SHARED:TREND_MOMENTUM_REVERSAL | `TREND_MOMENTUM_REVERSAL_CHECKPOINT.md`, `TREND_MOMENTUM_REVERSAL_RESEARCH.md` | FALSIFICATION_IN_PROGRESS | Regime-continuation/transition knowledge reusable. Momentum Gap currently negative/rejected; extreme strength has redundancy risk. |
 | SHARED:VOLATILITY_REGIME | `VOLATILITY_REGIME_RESEARCH.md` | RESEARCH / evidence-gated | Reusable realized-vol/regime logic; maintain PIT continuity constraints. |
