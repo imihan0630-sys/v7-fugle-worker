@@ -1,7 +1,7 @@
 {
   "schemaVersion": "formal-gate-overlap-observer-spec-v0.1",
   "researchDate": "2026-09-27",
-  "status": "CLASS_A_PROTOTYPE",
+  "status": "CLASS_A_PROTOTYPE_WITH_ONE_GATE_REPLAY",
   "purpose": "Observe simultaneous gate states on frozen same-scan inputs without changing fail-fast Formal behavior.",
   "states": {
     "PASS": "All required same-scan evidence is present and the frozen gate condition passes.",
@@ -52,5 +52,36 @@
     "Treating target-null as RR=0",
     "Changing Formal result from observer output",
     "Outcome-tuned gate definitions"
-  ]
+  ],
+  "oneGateReplay": {
+    "outcomes": [
+      "NEXT_FAILURE",
+      "REPLAY_ACCEPTED",
+      "COUNTERFACTUAL_UNRESOLVED"
+    ],
+    "rule": "Remove exactly one gate. Scan remaining gates in frozen Formal order. UNKNOWN/NOT_EVALUABLE before a resolvable result blocks exact next-failure/acceptance attribution.",
+    "acceptedCondition": "Every remaining observed gate PASS.",
+    "nextFailureCondition": "Every earlier remaining gate PASS and then an observed FAIL.",
+    "unresolvedCondition": "Any earlier UNKNOWN or NOT_EVALUABLE.",
+    "prohibited": [
+      "first-failure count as recovered-candidate count",
+      "multi-gate removal attributed to one gate",
+      "research replay relabeled Formal-selected"
+    ]
+  },
+  "history60dReachability": {
+    "status": "NORMAL_PROVIDER_PATH_STRUCTURALLY_DOMINATED / EXTERNAL_OR_MALFORMED_PATH_DEFENSIVE",
+    "evidence": [
+      "V8.12 historyStructuralShape requires at least 60 prior bar dates before feature admission.",
+      "Current Fugle fetchHistoricalDaily filters null-close bars before they enter the normal cache path.",
+      "updateMarketState appends the current scan-date bar after admission, so the normal provider path has at least 61 close-valid rows at feature construction.",
+      "normalizeEnrichmentPayload still accepts payload.history overrides without equivalent value-schema validation, so absolute unreachability is not proven."
+    ],
+    "interpretation": "Do not use HISTORY_60D first-failure prevalence as a normal post-V8.12 strategy-scarcity mechanism. Retain it as defensive data-integrity coverage."
+  },
+  "legacyDiagnosticsBoundary": {
+    "persistence": "v8_trade_journal_days.diagnostics_json is durable by scan_date but ON CONFLICT(scan_date) DO UPDATE, so it is latest same-date stored state, not immutable first-known evidence.",
+    "reader": "Current multi-day /api/journal reader omits diagnostics_json; detailed historical diagnostics exist in D1 but are not exposed by that reader.",
+    "conclusion": "DATA_EXISTS / FIRST_KNOWN_PROVENANCE_NOT_IMMUTABLE / HISTORICAL_MULTI_DAY_READ_CONTRACT_MISSING"
+  }
 }
