@@ -1,7 +1,7 @@
 # System 2 Cloud Persistence Readiness V0.1
 
 Updated: 2026-09-27 Asia/Taipei
-Status: REPOSITORY READY / D1 TOKEN VERIFIED / ISOLATED DATABASE NOT YET CREATED / NO PRODUCTION CHANGE
+Status: ISOLATED D1 CREATED AND VERIFIED / SCHEMA V0.5 APPLIED / NO PRODUCTION CHANGE
 
 ## Purpose
 
@@ -140,3 +140,50 @@ This correction did not weaken any permission check; it aligned the verification
 
 Current blocker:
 not permission. The remaining step is explicit authorization to create the new isolated `system2-research` D1 and apply schema V0.5.
+
+
+## Physical isolated D1 creation result
+
+Owner explicitly authorized creation of the isolated System 2 D1 on 2026-09-27.
+
+Guarded provisioning:
+- workflow run `36312415771`, job `108600779602`;
+- result: PASS;
+- database: `system2-research`;
+- database ID digest: `9768891c9583`;
+- created: true;
+- schema version: 0.5;
+- `s2_` table count: 26;
+- required tables present: true;
+- write/read sentinel: PASS;
+- production database used: false;
+- production Worker changed: false;
+- production Cron changed: false;
+- production configuration isolation: PASS.
+
+Replay verification:
+- workflow run `36312460524`, job `108600904592`;
+- result: PASS;
+- database ID digest unchanged: `9768891c9583`;
+- created: false;
+- reused existing: true;
+- schema version: 0.5;
+- table count: 26;
+- write/read sentinel: PASS;
+- production isolation: PASS.
+
+The temporary push-based authorization trigger was disarmed after successful provisioning. The guarded workflow remains manual-only.
+
+## Current boundary after D1 creation
+
+Physical isolated persistence is now available.
+
+Still NOT authorized/deployed:
+- public System 2 Worker;
+- scheduled Cron capture;
+- live recommendations;
+- System 1/V8 shared persistence;
+- production-route changes.
+
+Next safe repository-side task:
+prepare the separate prospective Shadow capture Worker and scheduler contract against `SYSTEM2_DB`, then require explicit owner authorization before creating/deploying the Worker/Cron resource.
