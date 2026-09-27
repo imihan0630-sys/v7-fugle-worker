@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "POSITIVE_SIGNAL_PRODUCTION_AUDIT_RECEIPT_V0_1",
+  "observedAt": "2026-09-27T23:22:55+08:00",
+  "timestampProvenance": "GitHub Actions Portfolio Risk Tier-A Research run 36329306700 / job 108648065662",
+  "workflowRunId": 36329306700,
+  "jobId": 108648065662,
+  "readOnly": true,
+  "productionWrites": false,
+  "decisionImpact": false,
+  "sourceEndpoint": "/api/journal?days=365",
+  "readerCaveat": "Signal reader is bounded LIMIT 6000 with no truncation flag. Absence is not NO-BUY evidence.",
+  "counts": {
+    "totalSignalRows": 1,
+    "positiveBuyRows": 1,
+    "reconstructableBuyRows": 1,
+    "planLinkedBuyRows": 1,
+    "multiNamePositiveBuyRows": 0,
+    "positiveTerminalExitRows": 0
+  },
+  "positiveBuy": {
+    "eventId": "2026-09-22:3006:NONE:BUY:episode-1",
+    "symbol": "3006",
+    "tradeDate": "2026-09-22",
+    "planScanDate": "2026-09-21",
+    "occurredAtUtc": "2026-09-22T03:31:33.149Z",
+    "occurredAtTaipei": "2026-09-22T11:31:33.149+08:00",
+    "marketPrice": 282.5,
+    "signalAmountNTD": 42000,
+    "reconstructedSuggestedShares": 148,
+    "orderable": true,
+    "currentPlanLinked": true,
+    "selectedCount": 1
+  },
+  "inference": {
+    "proven": [
+      "one durable positive formal BUY signal exists",
+      "signal price, amount and suggestedShares are reconstructable",
+      "the BUY links to the immutable 2026-09-21 selected plan"
+    ],
+    "notIdentified": [
+      "PriorityScore sizing edge: the date has only one selected name, so all same-name allocation comparators collapse",
+      "BUY trigger rate: missing signal rows cannot certify NO-BUY",
+      "signal-path completed return: no terminal SELL/STOP_LOSS row exists",
+      "realized P&L: no broker-confirmed fill ledger"
+    ]
+  },
+  "status": "ONE_POSITIVE_BUY_CONFIRMED / SINGLE_NAME_NONIDENTIFYING_FOR_SIZING / NO_TERMINAL_SIGNAL / REALIZED_PNL_BLOCKED",
+  "formalCoreImpact": false
+}
