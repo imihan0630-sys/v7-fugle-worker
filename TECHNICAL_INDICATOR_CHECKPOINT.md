@@ -324,3 +324,44 @@ ROLE_SEPARATED:
 - 934dd242db9d1a35c547a4423949489526fb8ba2 — technical-indicator Factor-Zoo redundancy audit v0.1.
 - 38efacfbeb4478f745a75b9f020f832aaf359e20 — machine-readable technical-indicator redundancy registry v0.1.
 - 0d72d03c38d852937216358bc8154349ab4e5848 — ATR / ROC / OBV redundancy falsification v0.1.
+
+
+## Continuation update — TI-046 through TI-050
+
+- Standard ROC level remains rejected as a duplicate of existing retN. Instead, exactly one residual return-transition descriptor is preregistered before outcomes:
+  - g5 = ln(C_t / C_(t-5)) / 5
+  - g20 = ln(C_t / C_(t-20)) / 20
+  - returnVelocityShift5v20 = g5 - g20
+- returnVelocityShift5v20 describes short-horizon return velocity versus a medium-horizon baseline. It is not a BUY/SELL sign and must later control ret5/10/20/60, MACD histogram slope, MA-slope change, trendPersistence, Pattern lifecycle, overheat and regime.
+- No 3v10/5v10/10v20/20v60 grid or parameter sweep is allowed before the 5v20 baseline is falsified.
+- Raw cumulative OBV is not cross-sectionally convenient because its level depends on arbitrary starting history and can retain one-off volume shocks. A bounded V0.1 comparator is frozen instead:
+  signedVolumeBalance20 = sum(sign(close_i-close_(i-1))*volume_i) / sum(volume_i), range [-1,+1].
+- signedVolumeBalance20 represents close-signed volume balance only. It is NOT CVD, true order flow, aggressive-buy volume or institutional accumulation.
+- signedVolumeBalance20 remains PRICE_VOLUME-owned and must later be compared with RVOL, turnover, price response, close location, effort-vs-result and acceptance/rejection lifecycle.
+- Volume-unit, trading-unit, sub-lot, symbol-session, pseudo-bar and corporate-action/session semantics are mandatory first-order guards for signedVolumeBalance20.
+- Both residual descriptors are preregistered outcome-blind in research/TECHNICAL_INDICATOR_RESIDUAL_DESCRIPTORS_V0_1.md.
+- No forward outcomes inspected, no threshold optimization, no runtime wiring and no FORMAL_OPTIMIZATION_CANDIDATE.
+- Formal Core remains LOCKED.
+
+### Updated current status
+
+RETURN_VELOCITY_SHIFT_5V20 = SPEC_FROZEN / OUTCOME_UNTESTED / REDUNDANCY_HIGH
+
+SIGNED_VOLUME_BALANCE20 = SPEC_FROZEN / PRICE_VOLUME_OWNED / DATA_SEMANTICS_SENSITIVE / OUTCOME_UNTESTED
+
+FORMAL_OPTIMIZATION_CANDIDATE = NONE
+
+### Updated exact next continuation point
+
+1. Preserve returnVelocityShift5v20 and signedVolumeBalance20 as the only V0.1 residual ROC/OBV-style descriptors; do not proliferate parameter variants.
+2. Do not wire either descriptor into Worker.js, Formal selection, System 2 scoring or monitoring.
+3. Primary empirical priority remains:
+   KD-vs-RSI -> MACD-vs-direct-trend -> ADX-vs-direct-trend-quality -> BBW-vs-ATR/realized-vol/VCP.
+4. Only after those primary redundancy gates resolve may returnVelocityShift5v20 or signedVolumeBalance20 consume an outcome-testing budget.
+5. signedVolumeBalance20 must prove value beyond the richer Price-Volume engine; returnVelocityShift5v20 must prove value beyond direct return-path and trend-transition features.
+6. Future snapshot extension requires formulaVersion, provenance, continuity/session guards and complete prospective parent coverage.
+7. Formal Core remains unchanged.
+
+## Latest durable research commit
+
+- 5284845710e05d756b894071da62e2ffad05cf86 — preregistered residual return-velocity and signed-volume descriptors v0.1.
