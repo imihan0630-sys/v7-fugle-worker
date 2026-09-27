@@ -113,3 +113,32 @@ It does not prove:
 - no delete-then-partial-insert failure.
 
 Promotion-grade evidence requires immutable generation/fingerprint receipts plus expected-vs-persisted denominator checks.
+
+
+## 九、變更層級與證據母體一致性
+
+任何研究結果在形成優化候選前，必須先聲明預計改動層級：
+
+- `ADMISSION_GATE`：基礎／流動性／資料品質／產業／A/B／基本面／ATR／Target／RR／Grade 等資格門；
+- `RANKING`：已通過資格後的 PriorityScore、tie-break、pool cutline；
+- `EXECUTION`：買區、15分K確認、FIRST/ADD、追價、滑價與成交；
+- `CAPITAL`：配置、風險預算、REDUCE/RE-ADD、持倉集中。
+
+證據母體必須與變更層級一致：
+
+- Selected-only factor study 只能回答「已入選股內部的異質性／排序假說」，不能證明 Admission gate 應放寬或收緊；
+- Ranking 優化至少需要完整 Qualified / QNS / cutline provenance，不能只看 Selected；
+- Admission 優化必須包含該 gate 的完整 denominator、PASS/FAIL/UNKNOWN overlap 與被拒母體；
+- Execution 優化需要 trigger／fill／未成交 denominator 與可執行價證據；
+- Capital 優化需要可信 actual-fill/position lifecycle，不得拿 signal 當 fill。
+
+若研究母體與擬議改動層級不一致：
+`POPULATION_SCOPE_MISMATCH`，不得成為 Formal optimization promotion evidence。
+
+現行 `factorStudyFromSnapshots()` 與 `researchFactorRedundancy()` 主要是 Formal Selected 條件母體。
+其結果仍可作研究警訊／排序假說，但不得被描述為全候選母體效果。
+
+Durable guards：
+- `research/factor_promotion_population_scope_falsification_v0_1.json`
+- `research/factor_study_date_weighting_falsification_v0_1.json`
+- `research/factor_redundancy_selection_conditioning_falsification_v0_1.json`
