@@ -20187,3 +20187,158 @@ Later optimization review should show:
 - zero-pick impact,
 - complexity cost.
 
+
+
+## DL-002DA — Bearish Pattern Asymmetry / Shorting-Flow Context
+
+### Taiwan evidence
+Taiwan research shows:
+- short-selling constraints can impair price efficiency in specific settings,
+- shorting flows contain incremental predictive information for future returns,
+- historical regulatory design creates asymmetry between positive and negative information incorporation.
+
+### Interpretation boundary
+This is a plausible market-structure mechanism for bullish/bearish pattern asymmetry.
+It does NOT prove that short-sale rules cause HS-bottom patterns to outperform HS tops.
+
+### Project use
+Because the current system is long-oriented:
+bearish topology should first serve as:
+- avoidance,
+- failure precursor,
+- reduce/revalidation context.
+
+Do not auto-create short signals.
+
+### Research fields
+Where point-in-time short-flow evidence is available:
+- shortFlow5/20/60
+- shortFlowAcceleration
+- shortFlowPercentile
+- shortFlowDuringPatternMaturity
+- shortFlowOnFailedBreakout
+- shortFlowDivergenceFromPrice
+
+### Hypotheses
+- bullish-looking pattern + rising informed short flow may have higher failure risk,
+- failed breakout + persistent short flow may behave differently from failure without short-flow confirmation,
+- bullish reversal at extreme low + declining short pressure may differ from reversal with increasing short pressure.
+
+### Existing evidence boundary
+Current project external short evidence distinguishes real shorting flow from generic securities lending.
+Preserve source semantics; missing = UNKNOWN.
+
+## DL-002DB — Episode-Aware Purged Walk-Forward Validation
+
+### Why existing purging must be extended for pattern episodes
+The project already purges training observations whose D+N outcome window crosses into holdout.
+Pattern research adds another dependence:
+- the same episode can span training and holdout dates.
+
+### Split rule
+A pattern episode must belong to one side of a validation boundary.
+
+If:
+- episode starts in training,
+- but remains active/matures/breaks out in holdout,
+then do not allow different daily snapshots of that episode to appear on both sides.
+
+### Purge unit
+Purge based on:
+max(
+  forwardOutcomeHorizon,
+  episodeOverlap,
+  detectorConfirmationLag
+)
+
+### Walk-forward sequence
+For each fold:
+1. discovery/training period,
+2. purge/embargo boundary,
+3. untouched validation/holdout period,
+4. advance chronologically.
+
+Never random-shuffle stock-day rows.
+
+### Parameter discipline
+Geometry definitions frozen before holdout.
+If a parameter is tuned within training:
+- it must be selected inside nested training only,
+- holdout remains untouched,
+- tuning family counts toward multiple testing.
+
+### Group integrity
+Keep together:
+- same patternEpisodeId,
+- same event cluster where practical,
+- overlapping parent/child episode family.
+
+### Reports
+- train unique dates/episodes
+- purged rows/episodes
+- holdout unique dates/episodes
+- overlap check = zero
+- horizon used
+- detector version
+
+## DL-002DC — Rare-Pattern Evaluation: Base Rate Matters
+
+### Problem
+Some mature patterns may be rare.
+Accuracy can be meaningless:
+if only 5% of candidates succeed under a definition, a trivial model can look accurate by predicting “no event.”
+
+### Metrics for pattern presence/value
+- prevalence
+- conditional success/failure rate
+- lift vs matched base rate
+- risk difference
+- odds/risk ratio where appropriate
+- precision / recall for breakout/failure events
+- PR-AUC for rare binary outcomes if modeling
+- calibration by confidence bucket
+- coverage-adjusted utility
+
+### Trading-oriented outcomes remain primary
+Do not replace:
+- D1/D3/D5/D10
+- MFE/MAE
+- R01
+- stop-first
+with classification metrics.
+
+### Confidence calibration
+If geometryFitConfidence increases from low -> medium -> high:
+outcomes should improve monotonically/stably if the confidence measure has predictive meaning.
+
+Otherwise:
+confidence is only shape-fit, not useful ranking information.
+
+## DL-002DD — Statistical vs Economic Significance
+
+### Rule
+A tiny stable return difference can be statistically significant but economically irrelevant after:
+- spread,
+- slippage,
+- turnover,
+- opportunity cost.
+
+A larger raw difference can also be unreliable if driven by few dates.
+
+### Report both
+STATISTICAL:
+- date/episode robust uncertainty,
+- holdout direction,
+- multiple-testing adjusted evidence.
+
+ECONOMIC:
+- D5/D10 difference,
+- MFE/MAE shift,
+- stop-first reduction,
+- turnover/cost,
+- additional eligible candidates,
+- zero-pick/capital-utilization impact.
+
+### Formal-review relevance
+Only evidence that is both robust and economically meaningful can become an optimization candidate.
+
