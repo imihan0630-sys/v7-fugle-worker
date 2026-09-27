@@ -21843,3 +21843,153 @@ FORMAL_CORE_STATUS = UNCHANGED.
    e. retest opportunity-cost cohort.
 4. Use current existing outcomes and cohorts; do not create R09 until features/data are frozen and ready.
 5. Keep Formal Core locked.
+
+
+## DL-004P — Momentum Life-Cycle Context for Pattern Maturity (2026-09-27)
+
+### Taiwan evidence
+Taiwan research on the Momentum Life Cycle reports that an “early momentum” portfolio (past winners with relatively lower trading volume) was more profitable/reliable than a late-momentum construction in the tested sample.
+
+### Important counter-evidence
+Later international work revisiting the Momentum Life Cycle argues that volume-based stage identification can be partly spurious and that alternative characteristics may classify early/late momentum better.
+
+### Pattern implication
+“Low-volume winner = early stage” is NOT a universal rule.
+However, the early-vs-late concept remains useful as a research question.
+
+### Pattern-stage variables
+- patternMaturityAge
+- priorRunup
+- turnoverExpansionFromBase
+- volumeShockTiming
+- RSStage
+- sectorCrowding
+- limitHitCount
+- failedPivotAttempts
+- distanceFromMajorBase
+- remainingResistanceRoom
+
+### Hypotheses
+EARLY_STRUCTURAL:
+- maturing topology, improving RS, moderate participation, large remaining room.
+
+LATE_ATTENTION:
+- mature/extended topology, high turnover shock, crowded peer breakouts, repeated limit-up/attention events, little remaining room.
+
+### Redundancy
+Must be tested against current overheat/lateStage controls, Attention/Quiet research and DL-001.
+If stage variables simply reproduce existing overheat, reject them.
+
+## DL-004Q — Persistency Is More Important Than Raw Momentum in Taiwan (2026-09-27)
+
+### External evidence
+Pacific-Basin Finance Journal (2023) revisits Taiwan momentum and reports that high turnover among conventional winner/loser portfolios helps attenuate standard momentum, while a persistency-based momentum strategy shows significant intermediate-term profitability.
+
+### Pattern implication
+A one-day or one-leg surge is less interesting than persistent structure.
+
+### Research fields
+- positiveStructureDayRatio
+- persistenceOfHigherLows
+- persistenceOfRSImprovement
+- persistenceOfSectorConfirmation
+- persistenceOfFlow
+- singleShockContribution
+- largestMoveShareOfPatternReturn
+
+### Link to existing work
+This directly reinforces:
+- DL-001 gradual/discrete path,
+- VCP multi-leg topology,
+- phase-specific flow persistence,
+- avoidance of one-day event/volume shocks.
+
+### Key falsification
+If persistence metrics add no information beyond DL-001 + Residual RS + current trend variables, do not keep a new persistence score.
+
+## DL-004R — Residual Momentum vs Raw Price Momentum as Pattern Context (2026-09-27)
+
+### Evidence
+Cross-Asian evidence including Taiwan reports residual momentum to be more consistent than conventional price momentum in the studied markets.
+
+### Existing overlap
+Residual RS / Residual Momentum is already an active research lane.
+Therefore Pattern should consume it rather than recreate it.
+
+### Incremental question
+Does residual-strength trajectory during pattern maturation explain outcomes beyond raw chart geometry?
+
+### Interaction states
+GEOMETRY_STRONG_RESIDUAL_STRONG
+GEOMETRY_STRONG_RESIDUAL_WEAK
+GEOMETRY_WEAK_RESIDUAL_STRONG
+BOTH_WEAK
+
+### Hypothesis
+A mature pattern with improving residual strength may reflect stock-specific demand rather than market/sector beta.
+
+### Counter-hypothesis
+Residual-strength improvement may already be captured by existing selector quality and sector-neutral research.
+
+### Rule
+No duplicate Residual Momentum score inside Pattern.
+
+## DL-004S — Sector/Factor Momentum Attribution Before Calling It “Pattern Alpha” (2026-09-27)
+
+### New Taiwan evidence
+A 2026 Taiwan master’s thesis studies whether factor momentum can explain short-term industry momentum over 2005-2024.
+
+### Research implication
+When many “good patterns” cluster in one industry/factor regime, their apparent success may be driven by common factor continuation rather than pattern geometry.
+
+### Attribution ladder
+For any Pattern cohort outcome compare:
+1. raw return;
+2. market-adjusted;
+3. sector-adjusted;
+4. residual/factor-adjusted where point-in-time model is valid.
+
+### Question
+Does pattern maturity predict residual outcome after common factor/sector continuation is removed?
+
+### Why this matters
+Without attribution, a wave of AI-server or ABF names breaking out together could make every chart detector look brilliant even if it only rediscovered the hot sector.
+
+### No causal overclaim
+Factor-adjusted performance remains model-dependent; report model/version and never call residual return “pure pattern causality.”
+
+## DL-004T — Early Leader vs Late Follower: Joint Stage Framework (2026-09-27)
+
+### Combine prior findings
+Use:
+- stock pattern maturity,
+- sector pattern breadth,
+- sector turnover persistence,
+- Residual RS trajectory,
+- overheat/attention,
+- remaining resistance room.
+
+### Four-stage context
+EARLY_LEADER:
+stock matures first; residual RS improves; sector begins to strengthen.
+
+CONFIRMED_LEADER:
+stock already broke/held; sector breadth confirms; still adequate room.
+
+HEALTHY_FOLLOWER:
+sector confirms first; stock maturing with non-extended path.
+
+LATE_CROWD_FOLLOWER:
+sector/peers already extended; stock arrives late with high attention/turnover and limited room.
+
+### Key test
+Same-date/sector matched comparisons.
+Do not infer one stage is best until outcomes mature.
+
+### Practical relevance
+This framework may eventually distinguish:
+- “主流補漲” that still has room,
+from
+- “最後一棒” late catch-up.
+
+But it remains Shadow research until prospective evidence passes governance.
