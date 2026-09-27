@@ -1,0 +1,64 @@
+{
+  "schemaVersion": "PORTFOLIO_RISK_FIRST_PROSPECTIVE_QA_PROTOCOL_V0_1",
+  "preregisteredAt": "2026-09-27T20:50:00+08:00",
+  "firstEligibleScanDate": "2026-09-29",
+  "purpose": "Pre-register what the first prospective V8.13+ selected sample can and cannot establish before observing it.",
+  "cases": {
+    "zeroSelected": {
+      "allowed": [
+        "verify journal zero-selection completeness",
+        "verify no fabricated selected-generation row",
+        "verify reserve/no-opportunity classification"
+      ],
+      "forbidden": [
+        "infer sizing quality",
+        "infer PriorityScore calibration",
+        "infer stop-risk concentration"
+      ]
+    },
+    "oneSelected": {
+      "allowed": [
+        "run selected-generation classifier",
+        "verify V8.13 provenance completeness",
+        "reconstruct planned stop-risk and deployment"
+      ],
+      "forbidden": [
+        "compare cross-name risk concentration",
+        "compare current vs equal-capital/equal-risk economically",
+        "infer score monotonicity"
+      ]
+    },
+    "multiSelected": {
+      "allowed": [
+        "run selected-generation classifier per selected row",
+        "reconstruct current/equal-capital/capped-equal-risk plan-time counterfactuals",
+        "measure score×stop structural concentration"
+      ],
+      "forbidden": [
+        "claim economic superiority from same-day plan geometry",
+        "use immature D1/D3/D5 as completed outcomes",
+        "promote sizing change"
+      ]
+    }
+  },
+  "maturity": {
+    "D1": "only after one subsequent trading day closes",
+    "D3": "only after three subsequent trading days close",
+    "D5": "only after five subsequent trading days close",
+    "MFE_MAE": "same horizon maturity; no future bars",
+    "economicComparisonMinimum": "multiple independent scan dates; date-cluster/LODO and costs required before optimization candidacy"
+  },
+  "provenance": {
+    "selectedGeneration": "must pass PR-039 classifier",
+    "partialReconstruction": "excluded from prospective calibration",
+    "nonSelectedShadow": "remains generation-guarded for cross-store sizing attribution"
+  },
+  "antiCherryPick": [
+    "report every eligible scan date including zero-selection",
+    "do not drop losing/failed-generation dates",
+    "freeze comparator definitions before outcomes",
+    "do not change maturity horizon after seeing results"
+  ],
+  "status": "PROTOCOL_PREREGISTERED / AWAITING_FIRST_ELIGIBLE_SCAN",
+  "formalCoreImpact": false
+}
