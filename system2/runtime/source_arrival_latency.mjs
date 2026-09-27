@@ -108,6 +108,8 @@ export function buildSourceProbeReceipt({
   schemaValid,
   payloadDate = null,
   recordCount = null,
+  validationVersion = null,
+  coverageDiagnostics = null,
   errorCode = null,
   endpointClass = "OFFICIAL_PUBLIC_GET",
 } = {}) {
@@ -165,6 +167,10 @@ export function buildSourceProbeReceipt({
     payloadDate,
     recordCount: count,
     minimumRecordCount: source.minimumRecordCount,
+    validationVersion: validationVersion || null,
+    coverageDiagnostics: coverageDiagnostics && typeof coverageDiagnostics === "object"
+      ? { ...coverageDiagnostics }
+      : null,
     errorCode: errorCode || null,
     availableAtSemantics: "FIRST_OBSERVED_READY_UPPER_BOUND_NOT_PUBLISH_TIME",
     prospectiveSameDateEligible: taipeiDateFromTimestamp(seenAt) === date,
