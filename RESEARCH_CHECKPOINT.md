@@ -1,7 +1,7 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-233.
-Updated: 2026-09-27 23:27 Asia/Taipei.
+Checkpoint sequence: B-234.
+Updated: 2026-09-27 23:38 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Detailed B-01..B-123 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
@@ -1834,3 +1834,12 @@ Updated: 2026-09-27 23:27 Asia/Taipei.
 - Separate note: PR #121 research-only liquidity branch head `a60cfe9133a0614cc8b7eed16e4ad964a4b1147d` passed both V8 Regression (`36324141457`) and V8 Repair (`36324141550`). It remains Draft and currently mergeable=false against the rapidly advancing main; no rebase/merge/deploy was attempted.
 - Status: `MARKET_CAP_PREMERGE_SOURCE_IDENTITY_REQUIRED / CLASS_A_CLASSIFIER_FROZEN / SOURCE_DATE_LINEAGE_UNKNOWN / FORMAL_UNCHANGED`. No FORMAL_OPTIMIZATION_CANDIDATE.
 - Exact next: freeze the smallest Class-B prospective capture proposal for market-cap source identity/date using already-loaded official/custom objects and zero new market calls. Do not implement it without owner approval. Then leave the blocked market-cap lane and move to the next nonblocked scarcity layer: A/B setup admission, reusing the already-falsified NEAR_MISS count-only cohort and the gate-overlap observer rather than changing setup thresholds.
+
+## B-234 — market-cap source capture parked at proposal boundary (2026-09-27 Asia/Taipei)
+- Continued B-233 only far enough to freeze the blocked engineering boundary. `MARKET_CAP_SOURCE_CAPTURE_CLASS_B_PROPOSAL.md` defines a zero-extra-call additive receipt from already-loaded pre-merge official/custom objects; commit `9691fd4e5ea2122ab07998f30bccb4029e5af567`.
+- Receipt preserves the exact Formal marketCapYi input plus source type/field/id/date, share source/date, close date, override flags, raw alias/numeric conversion state, alias shadowing, source-quality/PIT state, parent scan generation and completeness counts.
+- Source identity never substitutes for source-date proof. Dropped official/custom dates remain UNKNOWN; no historical reconstruction.
+- Proposal requires immutable/additive generation semantics, parent/capture reconciliation, zero new network calls, exact Formal-value equality checks and no-decision-diff tests before implementation.
+- Shared scan/enrichment/persistence wiring is Class B owner-approval work. No implementation, merge-precedence repair or deployment was performed. Threshold/strategy changes remain Class C.
+- Status: `MARKET_CAP_SOURCE_CAPTURE_CLASS_B_PROPOSAL_READY / OWNER_APPROVAL_REQUIRED / MARKET_CAP_LANE_PARKED / FORMAL_UNCHANGED`. No FORMAL_OPTIMIZATION_CANDIDATE.
+- Exact next: move immediately to A/B setup scarcity. Re-read `NEAR_MISS_COHORT_RESEARCH.md`, `research/channel_stage_denominator_spec_v0_1.json`, current setup/debug semantics and setup-specific artifacts. Do not tune thresholds; determine exact AB_SETUP Formal-reach and which distance metrics are nonredundant.
