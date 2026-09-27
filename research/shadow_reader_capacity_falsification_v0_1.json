@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "shadow-reader-capacity-falsification-v0.1",
+  "researchDate": "2026-09-27",
+  "status": "SILENT_READER_TRUNCATION_RISK_CONFIRMED",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "currentReader": {
+    "function": "readShadowCounterfactualResearch",
+    "requestedWindowDaysDefault": 90,
+    "requestedWindowDaysMax": 120,
+    "queryOrder": "scan_date ASC, cohort ASC, cohort_rank ASC",
+    "hardLimitRows": 5000,
+    "pagination": false,
+    "totalCountPrecheck": false,
+    "truncationFlag": false
+  },
+  "currentV814BoundedCohorts": {
+    "SELECTED_maxPerScan": 6,
+    "QUALIFIED_NOT_SELECTED_maxPerScan": 12,
+    "NEAR_MISS_maxPerScan": 12,
+    "SECTOR_GATE_REJECTED_maxPerScan": 12,
+    "REJECTED_AFTER_BASE_maxPerScan": 12,
+    "BROAD_CONTROL_maxPerScan": 12,
+    "theoreticalMaxPerScan": 66,
+    "note": "Actual used-set overlap can reduce rows; this is a capacity bound, not an observed daily count."
+  },
+  "growthPressure": [
+    "V8.15 valuation-specific cohort adds another dedicated research family.",
+    "Reason-stratified reject repair increases bounded samples by reason×pool.",
+    "Liquidity-admission prototype adds multiple early-reject reason×pool samples.",
+    "Future membership overlays may increase research rows without changing Formal."
+  ],
+  "failureMode": {
+    "trigger": "Rows in requested window exceed 5000.",
+    "becauseOrderAscending": "Oldest rows are returned first; newest scan dates are silently omitted.",
+    "reportBehavior": "archivedRows/outcomeRows only describe returned rows; no field says the requested window was truncated.",
+    "consequence": "Prospective recent evidence can disappear while the report still looks complete."
+  },
+  "fixedSyntheticWitness": {
+    "requestedRows": 5200,
+    "returnedRows": 5000,
+    "omittedRows": 200,
+    "order": "oldest-first",
+    "result": "The omitted 200 are at the newest end of the requested date range unless ties/order interactions intervene.",
+    "detectionByCurrentPayload": false
+  },
+  "requiredRepair": [
+    "Use keyset/date pagination or a date-scoped loop; do not rely on one fixed 5000-row query.",
+    "Return requestedFromDate, earliestReturnedDate, latestReturnedDate, totalEligibleRows, returnedRows, truncated boolean.",
+    "Prefer complete-date atomic pagination: never include only part of a scanDate without explicit PARTIAL_DATE state.",
+    "Join external evidence with the same complete parent keyset, not a separately truncated 5000-row universe.",
+    "Promotion-grade reports fail closed to DATA_QUALITY_BLOCKED when truncation/partial-date state is nonzero.",
+    "Do not solve by merely raising 5000 to another magic constant."
+  ],
+  "decision": "FIXED_5000_ASC_READER_NOT_FUTURE_PROOF / NEWEST_PROSPECTIVE_ROWS_CAN_BE_SILENTLY_DROPPED / READER_PAGINATION_REQUIRED / NO_FORMAL_CHANGE"
+}
