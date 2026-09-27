@@ -2114,3 +2114,22 @@ Updated: 2026-09-27 23:38 Asia/Taipei.
 - Engineering boundary unchanged: research validator/witnesses are Class A; production parser/validator hardening remains Class B proposal-first because an unknown upstream schema can fail a Formal scan. Formula/score changes are unrelated Class C work.
 - Status: `CURRENT_TPEX_SAMPLE_HEALTHY / EXACT_FIELD_VECTOR_ALONE_FALSIFIED_AS_SEMANTIC_GUARD / ARITHMETIC_SCHEMA_FINGERPRINT_VALIDATED / FOREIGN_DEALER_NONZERO_COMPATIBILITY_RISK_DORMANT / OUTCOMES_CLOSED / FORMAL_UNCHANGED`. No `FORMAL_OPTIMIZATION_CANDIDATE`.
 - Exact next: return to the other B-250 nonblocked institutional semantic question. Freeze outcome-blind aggregate-net clipping / actor-total conflict classes under the exact current score formula. Distinguish mixed-sign actor conflict with total<=0, mixed-sign total>0, all-positive alignment, and all-nonpositive states; separate sign information from net-intensity magnitude. Do not tune weights or inspect outcomes.
+
+
+## B-252 — institutional actor-total conflict taxonomy and lower/upper net-intensity clipping frozen (2026-09-28 Asia/Taipei)
+- Continued B-251 exact-next without outcomes, threshold/weight search, runtime/storage changes or deployment.
+- Draft PR #209 adds pure Class-A `research/institutional_actor_total_conflict_observer_v0_1.mjs` and adversarial tests.
+- Exact current Formal flow geometry is separated into two information families:
+  - actor-direction interactions: +6 if any of foreign/trust/dealer is currently positive; +15 if all three are positive;
+  - aggregate-magnitude term: `25 * clamp(max(institutionTotalNet/ADVshares,0),0,1)`.
+- Six structural actor/aggregate states are frozen: `ALL_POSITIVE_ALIGNED`, `MIXED_ACTORS_TOTAL_POSITIVE`, `MIXED_ACTORS_TOTAL_ZERO`, `MIXED_ACTORS_TOTAL_NEGATIVE`, `NO_POSITIVE_TOTAL_ZERO`, `NO_POSITIVE_TOTAL_NEGATIVE`.
+- Important non-monotonic composite state: a row can have at least one positive actor while aggregate total is zero/negative. It then retains the +6 `currentBuy` interaction but receives 0 aggregate-intensity points. This is exact current formula behavior, not a claim that the signal is good or bad.
+- Lower clipping is explicit: every `institutionTotalNet<=0` maps to 0 aggregate-intensity points regardless of how negative the total is. Negative magnitude is retained only as a research diagnostic in ADV units.
+- Upper clipping is explicit: every `institutionTotalNet>=1*ADV` maps to 25 aggregate-intensity points regardless of how far above 1 ADV the flow is. Positive excess is retained only as a research diagnostic.
+- Source arithmetic invariant is mandatory before classification: `foreignNet+trustNet+dealerNet == institutionTotalNet`. Mismatch is `INVARIANT_VIOLATION / ACTOR_SUM_NE_INSTITUTION_TOTAL`, never an economic conflict class.
+- Fixed tests cover mixed-positive/negative-total, mixed-positive/positive-total, all-positive alignment, 1-vs-2 ADV upper clipping, zero-vs--2 ADV lower clipping, source mismatch and complete-parent summary semantics.
+- Full-scan prevalence remains unavailable from selected-only FULL_FORMAL_SCAN persistence and bounded Shadow. The summarizer fails closed unless `completeCleanParent=true`; scanDate remains the independent unit.
+- Draft PR #209 `Research: institutional actor-total conflict / net clipping` head `b472e55fedd4b7609628e6e5a36168f26c2c2174`.
+- PR #209 CI is green: Institutional Actor Total Research `36354262825` SUCCESS; V8 Regression `36354262829` SUCCESS; V8 Repair `36354262831` SUCCESS.
+- Status: `ACTOR_TOTAL_CONFLICT_TAXONOMY_READY / LOWER_UPPER_NET_CLIPPING_EXACT / SOURCE_SUM_INVARIANT_FAIL_CLOSED / FULL_SCAN_PREVALENCE_UNKNOWN / ECONOMIC_INCREMENTAL_VALUE_UNKNOWN / OUTCOMES_CLOSED / FORMAL_UNCHANGED`. No `FORMAL_OPTIMIZATION_CANDIDATE`.
+- Exact next: move to a nonblocked richer-actor source question. Audit zero-extra-API feasibility and semantic readiness for dealer proprietary vs dealer hedge (and foreign-main vs foreign-dealer where meaningful), using current official TWSE/TPEx payload contracts. Freeze only source-preservation / research-snapshot requirements; do not change current aggregate institutionalScore or reconstruct historical split from aggregate D1 snapshots.
