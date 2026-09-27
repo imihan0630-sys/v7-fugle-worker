@@ -1,0 +1,23 @@
+name: Target RR Audit Research
+
+on:
+  pull_request:
+    paths:
+      - "research/target_rr_audit_observer_v0_1.mjs"
+      - "research/target_rr_audit_observer_spec_v0_1.json"
+      - "tests/test_target_rr_audit_observer_v0_1.mjs"
+      - ".github/workflows/target-rr-audit-research.yml"
+  workflow_dispatch:
+
+jobs:
+  target-rr-audit:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Run target/RR audit observer falsification
+        run: node tests/test_target_rr_audit_observer_v0_1.mjs
