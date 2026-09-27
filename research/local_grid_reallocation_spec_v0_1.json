@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "LOCAL_GRID_REALLOCATION_V0_1",
+  "observedAt": "2026-09-28T05:57:00+08:00",
+  "purpose": "Test whether the current allocation is even a one-grid local concentration optimum before considering large counterfactual reallocations.",
+  "neighborhood": "All legal directed NT$1,000 transfers from one selected name to another, fixed total deployment, 35% per-name cap.",
+  "cells": "FIRST/ADD/FULL × HHI/GINI/CV/MAX_SHARE/MAX_MIN = 15",
+  "falsification": "If no one-step move weakly dominates current across the 15 cells, current retains local structural defensibility even if distant global minima exist. If one or more moves improve without worsening any cell, current is not a Pareto local optimum for projected-risk concentration.",
+  "guardrails": [
+    "lower projected-risk concentration is not expected-return evidence",
+    "one-date plan geometry only",
+    "buyHigh plan-preview shares, not fills",
+    "do not promote a neighboring allocation without prospective economic evidence"
+  ],
+  "status": "CURRENT_NOT_LOCAL_CONCENTRATION_OPTIMUM / TWO_STRICTLY_DOMINATING_ONE_GRID_MOVES / ECONOMIC_VALUE_UNKNOWN",
+  "formalCoreImpact": false,
+  "productionReceipt": "research/local_grid_reallocation_production_receipt_20260928.json"
+}

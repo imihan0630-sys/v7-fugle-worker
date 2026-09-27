@@ -1,0 +1,93 @@
+{
+  "schemaVersion": "LOCAL_GRID_REALLOCATION_PRODUCTION_RECEIPT_V0_1",
+  "observedAt": "2026-09-28T05:59:41+08:00",
+  "timestampProvenance": "GitHub Actions Portfolio Risk Tier-A Research run 36353663428 / job 108717034051",
+  "workflowRunId": 36353663428,
+  "jobId": 108717034051,
+  "readOnly": true,
+  "productionWrites": false,
+  "decisionImpact": false,
+  "scanDate": "2026-09-18",
+  "currentAllocationNTD": {
+    "2006": 50000,
+    "3105": 64000,
+    "6133": 54000
+  },
+  "gridNTD": 1000,
+  "legalOneStepMoves": 6,
+  "stageMetricCells": 15,
+  "currentParetoLocalOptimum": false,
+  "dominatingMoves": [
+    {
+      "from": "3105",
+      "to": "2006",
+      "allocationNTD": {
+        "2006": 51000,
+        "3105": 63000,
+        "6133": 54000
+      },
+      "improvedCells": 15,
+      "worsenedCells": 0,
+      "strictlyImprovesAll": true,
+      "fullDeltas": {
+        "HHI": -0.0031753015,
+        "GINI": -0.0072141368,
+        "CV": -0.013454714,
+        "MAX_SHARE": -0.0059580253,
+        "MAX_MIN": -0.0860813875
+      }
+    },
+    {
+      "from": "3105",
+      "to": "6133",
+      "allocationNTD": {
+        "2006": 50000,
+        "3105": 63000,
+        "6133": 55000
+      },
+      "improvedCells": 15,
+      "worsenedCells": 0,
+      "strictlyImprovesAll": true,
+      "fullDeltas": {
+        "HHI": -0.0025063406,
+        "GINI": -0.0047377054,
+        "CV": -0.0105771343,
+        "MAX_SHARE": -0.0066849619,
+        "MAX_MIN": -0.0380891095
+      }
+    }
+  ],
+  "oppositeDirection": {
+    "into3105From2006": {
+      "improvedCells": 0,
+      "worsenedCells": 15
+    },
+    "into3105From6133": {
+      "improvedCells": 0,
+      "worsenedCells": 15
+    }
+  },
+  "mixedMoves": [
+    {
+      "from": "6133",
+      "to": "2006",
+      "improvedCells": 12,
+      "worsenedCells": 3,
+      "worsenedMetricFamily": "MAX_SHARE across FIRST/ADD/FULL"
+    },
+    {
+      "from": "2006",
+      "to": "6133",
+      "improvedCells": 3,
+      "worsenedCells": 12,
+      "improvedMetricFamily": "MAX_SHARE across FIRST/ADD/FULL"
+    }
+  ],
+  "falsification": {
+    "rejectedClaim": "Current 50k/64k/54k is at least a one-grid Pareto local optimum for projected-risk concentration, and only large reallocations can reduce the structural imbalance.",
+    "result": "Rejected. Two single-grid transfers out of 3105 strictly improve all 15 lifecycle×metric cells."
+  },
+  "guardrail": "Local concentration dominance is not economic dominance. PriorityScore may contain alpha that compensates for the extra projected risk; no allocation change is authorized.",
+  "status": "CURRENT_NOT_LOCAL_CONCENTRATION_OPTIMUM / TWO_STRICTLY_DOMINATING_ONE_GRID_MOVES / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY",
+  "formalCoreImpact": false
+}
