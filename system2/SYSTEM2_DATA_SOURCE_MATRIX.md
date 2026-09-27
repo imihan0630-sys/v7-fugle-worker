@@ -1,6 +1,6 @@
 # System 2 Data Source Feasibility Matrix
 
-Updated: 2026-09-26 Asia/Taipei
+Updated: 2026-09-27 Asia/Taipei
 Status: P1 INITIAL FEASIBILITY V0.1
 
 ## Purpose
@@ -71,6 +71,15 @@ Map each System 2 factor family to a source/availability/PIT risk before impleme
 ## Immediate engineering implication
 
 The first Shadow prototype should preferentially use Tier A fields, while Tier B/C lanes continue research. This allows System 2 to begin accumulating honest forward data without waiting for every future factor.
+
+## Arrival-latency measurement status (2026-09-27)
+
+- A1 TWSE/TPEx close, A2 TAIEX, A3 TWSE/TPEx institutions and A6 TWSE/TPEx valuation now have repository-side GET-only probe adapters.
+- The adapters measure first-observed readiness bounds, not exact publication timestamps.
+- Only same-Taipei-date prospective observations may enter latency statistics.
+- A5 quarterly financials require publication-event/vintage measurement rather than a daily same-session clock.
+- B2 industry-thesis state remains a derived prospective observer gap.
+- No decision clock is frozen; no capture or Cron is active.
 
 
 ## 2026-09-26 macro/cross-market source-clock refinement

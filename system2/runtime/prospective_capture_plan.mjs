@@ -70,6 +70,8 @@ export function buildProspectiveCapturePlan({
     notificationsEnabled: false,
     historicalBackfillAllowed: false,
     exactCronFrozen: false,
+    decisionClockState: "UNFROZEN_BLOCKED_DEPENDENCIES",
+    sourceArrivalMeasurementContractVersion: "0.1",
     persistenceBinding: "SYSTEM2_DB",
     requiredSchemaVersion: "0.5",
     createdAt: assertTimestamp(createdAt, "createdAt"),

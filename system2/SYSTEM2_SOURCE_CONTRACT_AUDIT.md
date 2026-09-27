@@ -1,6 +1,6 @@
 # System 2 Tier A/B Source Contract Audit
 
-Updated: 2026-09-26 Asia/Taipei
+Updated: 2026-09-27 Asia/Taipei
 Status: P1 SOURCE CONTRACT AUDIT V0.1
 Scope: research-only; no V8 runtime/Formal change
 
@@ -380,3 +380,16 @@ The safe first implementation boundary is:
 3. preserve availableAt/source/UNKNOWN on every record;
 4. keep Tier B historical tests blocked until continuity/vintage evidence is proven;
 5. keep all System 2 decision/performance storage isolated from V8 live state.
+
+## Source-arrival measurement contract V0.1
+
+`SYSTEM2_SOURCE_ARRIVAL_LATENCY_AND_DECISION_CLOCK_V0_1.md` now freezes a
+prospective read-only measurement boundary for A1/A2/A3/A6 official sources.
+
+Important semantics:
+- first observed READY is an arrival upper bound, not an official publication timestamp;
+- after-the-fact historical retrieval is not latency evidence;
+- source error is distinct from NOT_READY;
+- both TWSE and TPEx A1 daily close coverage are required for the full-universe daily gate;
+- A5 quarterly filing vintages and B2 derived industry-thesis snapshots remain separate blockers;
+- no exact Decision Clock or Cron is authorized by the measurement contract.

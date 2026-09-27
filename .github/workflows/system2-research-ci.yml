@@ -46,7 +46,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          for module in system2/runtime/*.mjs system2/deploy/*.mjs; do
+          for module in system2/runtime/*.mjs system2/deploy/*.mjs system2/scripts/*.mjs; do
             node --check "$module"
           done
           echo "System2 module syntax PASS"
@@ -99,5 +99,5 @@ jobs:
         run: |
           set -euo pipefail
           test "$(sed -n '1p' wrangler.toml)" = 'name = "fugle-test"'
-          ! grep -R --line-number --exclude='*.md' --exclude='*.test.mjs'             -E 'V7_DB|STOCKS_KV|fugle-test\.imihan0630\.workers\.dev'             system2/runtime system2/sql system2/src
+          ! grep -R --line-number --exclude='*.md' --exclude='*.test.mjs'             -E 'V7_DB|STOCKS_KV|fugle-test\.imihan0630\.workers\.dev'             system2/runtime system2/scripts system2/sql system2/src
           echo "Production isolation guard PASS"

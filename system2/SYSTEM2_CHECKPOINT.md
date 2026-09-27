@@ -1,6 +1,6 @@
 # System 2 Checkpoint
 
-Updated: 2026-09-26 Asia/Taipei
+Updated: 2026-09-27 Asia/Taipei
 Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 
 ## Completed
@@ -18,6 +18,16 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 - ChatGPT Project created, instructions saved, and this design chat moved into the new Project; migration status recorded in `system2/CHATGPT_PROJECT_MIGRATION.md`.
 
 ## Current design decisions
+
+- Source Arrival Latency（資料來源到達延遲）/ Decision Clock（決策時間點）measurement contract V0.1 is implemented repository-side. Exact clock remains UNFROZEN; capture remains disabled; Cron remains 0.
+
+- The read-only measurement workflow is manual `workflow_dispatch` only. It uses official GET endpoints, stores only a GitHub Actions artifact/summary, has no Cloudflare secret, does not write D1/KV, and does not call System 1/V8.
+
+- Prospective latency evidence must be observed on the same Taipei market date. Later historical retrieval cannot be relabeled as arrival evidence. First observed READY is an upper bound, not a publication timestamp; SOURCE_ERROR is not NOT_READY.
+
+- Decision-clock preregistration requires 10 complete independent trading dates for provisional eligibility and 20 for freeze eligibility, both A1 TWSE/TPEx daily gates complete, <=5-minute observation intervals, and a 15-minute rounded safety buffer. Eligibility never auto-authorizes a clock or Cron.
+
+- Full decision-clock freeze remains blocked by two explicitly preserved dependencies: A5 quarterly filing-vintage/publication-event measurement and B2 prospective derived industry-thesis snapshot measurement.
 
 - Next phase is source-arrival latency measurement + after-close decision-clock freeze. Cron activation remains a separate explicit owner authorization boundary.
 
@@ -242,8 +252,10 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 9. ✅ Isolated `system2-research` D1 created, schema V0.5 applied, 26 tables verified, write/read and replay reuse checks PASS; production unchanged.
 10. ✅ Repository-side prospective Shadow capture Worker/scheduler contract implemented and CI-verified; Worker remains undeployed and capture-disabled.
 11. ✅ Isolated `system2-shadow-research` Worker smoke deployment verified against `SYSTEM2_DB`; capture remains disabled, workers.dev/Preview URLs are off, Cron count is 0, and System 1 is unchanged.
-12. ⏳ Measure prospective source arrival latency and freeze the first after-close decision clock; Cron activation remains a separate explicit owner gate.
+12. ✅ Source-arrival/decision-clock measurement contract, tests and manual read-only workflow implemented repository-side; no clock/Cron activated.
+13. ⏳ Collect same-day prospective measurements on independent trading dates and implement A5 filing-vintage + B2 derived-industry-snapshot observers.
+14. ⏳ After evidence gates pass, propose the first exact after-close decision clock for explicit owner review. Cron activation remains a separate later explicit owner gate.
 
 ## Current boundary
 
-Research/design/code prototype is not blocked. Prospective always-on Shadow accumulation now requires an isolated physical persistence + scheduled capture path. Preferred architecture is a separate System 2 D1/database binding. No production-shared storage change is authorized or needed for the completed P1 prototype.
+Research/design/code prototype is not blocked. Isolated D1 and inert Worker already exist, but prospective always-on Shadow accumulation remains intentionally inactive. The immediate evidence boundary is same-day source-arrival measurement plus A5/B2 observer completion. No exact Decision Clock is frozen; capture is false; Worker Cron is 0; no production-shared storage or System 1/V8 change is authorized or needed.

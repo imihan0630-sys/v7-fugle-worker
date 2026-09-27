@@ -198,3 +198,11 @@ Before any Cron activation:
 2. freeze the first after-close decision clock;
 3. verify source-session completeness at that clock;
 4. require a separate explicit owner authorization to arm scheduled capture.
+
+Repository measurement contract:
+`SYSTEM2_SOURCE_ARRIVAL_LATENCY_AND_DECISION_CLOCK_V0_1.md`
+
+V0.1 measurement is manual and read-only. It adds no schedule, does not write D1,
+does not call System 1/V8, and cannot freeze a clock from retrospective evidence.
+Current clock status remains `UNFROZEN / BLOCKED_DEPENDENCIES` because A5 filing-vintage
+and B2 derived industry-thesis arrival observers are not yet complete.

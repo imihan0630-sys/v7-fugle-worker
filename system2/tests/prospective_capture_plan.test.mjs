@@ -18,6 +18,8 @@ assert.equal(plan.outcomeJoinEnabled, false);
 assert.equal(plan.notificationsEnabled, false);
 assert.equal(plan.historicalBackfillAllowed, false);
 assert.equal(plan.exactCronFrozen, false);
+assert.equal(plan.decisionClockState, "UNFROZEN_BLOCKED_DEPENDENCIES");
+assert.equal(plan.sourceArrivalMeasurementContractVersion, "0.1");
 assert.equal(plan.persistenceBinding, "SYSTEM2_DB");
 assert.equal(plan.requiredSchemaVersion, "0.5");
 assert.deepEqual(

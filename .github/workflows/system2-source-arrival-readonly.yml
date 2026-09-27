@@ -1,0 +1,116 @@
+name: System2 Source Arrival Read-only Measurement
+
+on:
+  workflow_dispatch:
+    inputs:
+      market_date:
+        description: "Target Taiwan market date (YYYY-MM-DD)"
+        required: true
+        type: string
+      attempts:
+        description: "Number of bounded read-only probes (1-48)"
+        required: true
+        default: "1"
+        type: string
+      interval_seconds:
+        description: "Seconds between probes (60-900)"
+        required: true
+        default: "300"
+        type: string
+      expected_trading_day:
+        description: "Whether the target is expected to be a trading day"
+        required: true
+        default: true
+        type: boolean
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-source-arrival-readonly-${{ inputs.market_date }}
+  cancel-in-progress: false
+
+jobs:
+  measure:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Validate read-only measurement inputs
+        env:
+          MARKET_DATE: ${{ inputs.market_date }}
+          ATTEMPTS: ${{ inputs.attempts }}
+          INTERVAL_SECONDS: ${{ inputs.interval_seconds }}
+        run: |
+          node -e '
+            const date=process.env.MARKET_DATE;
+            const attempts=Number(process.env.ATTEMPTS);
+            const interval=Number(process.env.INTERVAL_SECONDS);
+            if(!/^\d{4}-\d{2}-\d{2}$/.test(date)) throw new Error("market_date must be YYYY-MM-DD");
+            if(!Number.isInteger(attempts)||attempts<1||attempts>48) throw new Error("attempts out of range");
+            if(!Number.isInteger(interval)||interval<60||interval>900) throw new Error("interval_seconds out of range");
+          '
+
+      - name: Probe official sources with GET only
+        env:
+          MARKET_DATE: ${{ inputs.market_date }}
+          ATTEMPTS: ${{ inputs.attempts }}
+          INTERVAL_SECONDS: ${{ inputs.interval_seconds }}
+          EXPECTED_TRADING_DAY: ${{ inputs.expected_trading_day }}
+        run: |
+          mkdir -p system2/artifacts
+          node system2/scripts/measure_source_arrival_readonly.mjs \
+            --market-date "$MARKET_DATE" \
+            --attempts "$ATTEMPTS" \
+            --interval-seconds "$INTERVAL_SECONDS" \
+            --expected-trading-day "$EXPECTED_TRADING_DAY" \
+            --output "system2/artifacts/source-arrival-${MARKET_DATE}.json"
+
+      - name: Publish concise measurement summary
+        env:
+          MARKET_DATE: ${{ inputs.market_date }}
+        run: |
+          node - <<'NODE'
+          const fs=require("node:fs");
+          const path=`system2/artifacts/source-arrival-${process.env.MARKET_DATE}.json`;
+          const report=JSON.parse(fs.readFileSync(path,"utf8"));
+          const lines=[
+            "## System 2 source-arrival read-only measurement",
+            "",
+            `- Market date: ${report.measurement.marketDate}`,
+            `- Required daily gate complete: ${report.measurement.dailyGateComplete}`,
+            `- Decision-clock status: ${report.decisionClockAssessment.status}`,
+            "- Exact decision clock frozen: false",
+            "- Capture arm requested: false",
+            "- Cron mutation performed: false",
+            "- System 1 runtime used: false",
+            "",
+            "| Source | First ready | Upper bound min after close | States |",
+            "|---|---:|---:|---|",
+            ...report.measurement.sourceSummaries.map(x=>
+              `| ${x.sourceId} | ${x.firstReadyAt||"—"} | ${x.latencyUpperBoundMinutes??"—"} | ${x.statesObserved.join(", ")||"—"} |`),
+          ];
+          fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY,`${lines.join("\n")}\n`);
+          NODE
+
+      - name: Upload immutable run artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: system2-source-arrival-${{ inputs.market_date }}-${{ github.run_id }}
+          path: system2/artifacts/source-arrival-${{ inputs.market_date }}.json
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Reassert safety boundary
+        run: |
+          test ! -f system2/artifacts/.mutation
+          ! grep -Eiq 'wrangler[[:space:]]+(deploy|delete)|d1[[:space:]]+(create|execute)|SYSTEM2_CAPTURE_ENABLED[[:space:]]*=[[:space:]]*true' \
+            .github/workflows/system2-source-arrival-readonly.yml
+          echo "Read-only boundary PASS: no Worker/D1 mutation, no capture arm, no Cron"
