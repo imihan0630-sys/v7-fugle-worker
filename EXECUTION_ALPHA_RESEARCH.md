@@ -401,3 +401,105 @@ Does the current waiting policy create a persistent excess of complete-coverage 
 Only if that survives counterevidence should a later FORMAL_OPTIMIZATION_CANDIDATE consider relaxing a specific entry gate. If avoidance benefit offsets missed upside, or results cluster by strategy/regime, a universal relaxation is rejected; interaction-specific research is required.
 
 Current status: FALSIFICATION_IN_PROGRESS / NOT_OPTIMIZATION_READY.
+
+
+## EA-022 — Formal B chronology audit: one suspected defect was falsified, two structural lifecycle issues remain
+
+A source-level audit of current `evaluateMomentum()` produced an important negative result first:
+
+### Same-bar breakout + retest concern is falsified
+
+A B breakout-confirming bar requires:
+- close >= breakout*1.003;
+- finite `volumeRatio>=1.3`;
+- strong close;
+- upper shadow <0.45.
+
+A B retest BUY on the latest bar requires:
+- retest-zone overlap;
+- close >= breakout*0.997;
+- `volumeRatio===null OR <=1.1`;
+- bullish reversal/strong close;
+- upper shadow <0.45.
+
+Because breakout confirmation requires finite ratio >=1.3, the same latest bar cannot also satisfy the <=1.1 retest-volume rule.
+
+Therefore do **not** claim that current Formal B buys on a single bar that simultaneously creates the breakout and retest.
+
+### Confirmed early-session breakout blind window
+
+Formal intraday `volumeRatio` is current 15m volume divided by the previous five completed same-session 15m bars.
+
+For the first five 15m bars, `volumeRatio=null`.
+
+Thus bars starting:
+- 09:00
+- 09:15
+- 09:30
+- 09:45
+- 10:00
+
+can never themselves satisfy Formal B breakout confirmation.
+
+The first finite Formal ratio occurs on the sixth bar:
+- starts 10:15;
+- completes 10:30.
+
+An early breakout can therefore become Formal-confirmed only if a later qualifying breakout bar appears.
+
+This can lower BUY participation, but opening/early-session noise is a plausible protective explanation.
+No relaxation is inferred.
+
+### Confirmed failed-reentry resurrection
+
+`evaluateMomentum()` searches the rolling recent 12 bars for any qualifying breakout.
+Its failure test examines the current latest bar only.
+
+Outcome-free sequence:
+1. earlier bar confirms B breakout;
+2. later bar closes below breakout*0.995 / retest floor and Formal returns risk with text `B取消`;
+3. a subsequent bar recovers into the retest zone and satisfies retest BUY conditions;
+4. the old breakout bar can still make `breakoutConfirmed=true`;
+5. the intervening failure is not persisted by `evaluateMomentum()`, so the recovered bar can become BUY without a fresh post-failure breakout.
+
+This is reinforced by operation-state semantics:
+`evaluateOperationSignals()` creates `PLAN_INVALIDATED` for stop-risk while NONE-stage, but a momentum15 risk state alone does not durably cancel the plan.
+
+Independent Shadow comparator already exists:
+V8.11 `pvAdvanceAcceptance()` moves a failed B lifecycle to `B_FAILED_REENTRY` and does not reactivate it inside that event lifecycle.
+
+Do not treat the PV state machine as automatic Formal truth; it is a chronology comparator.
+
+## EA-023 — timing asymmetry and the correct optimization question
+
+A requires:
+- previous bar has entered/held the zone;
+- previous finite volumeRatio<=0.9;
+- previous reversal/strong close;
+- latest higher low;
+- latest bullish turn-up.
+
+Because the previous bar itself needs five earlier bars for a finite volume ratio, the earliest theoretical Formal A BUY is around the seventh completed 15m bar (~10:45).
+
+B can first obtain a finite breakout-volume test on the sixth completed 15m bar (~10:30), though a later retest is normally required because breakout/retest volume thresholds are mutually exclusive.
+
+This is a structural timing asymmetry, not evidence that A is too strict or B too loose.
+
+The Execution Alpha bridge must now separate:
+- early-breakout blindness;
+- normal wait-for-retest;
+- maxChase/no-retest;
+- failed-reentry resurrection;
+- ordinary complete-coverage NO-BUY.
+
+Do not combine all NO-BUY into one “strict BUY” bucket.
+
+Machine artifact:
+`research/formal_buy_lifecycle_falsification_v0_1.json`.
+
+Potential future Formal candidates are conditional only:
+- EARLY_SESSION_BREAKOUT_CONFIRMATION_REFORMULATION;
+- B_FAILURE_REACTIVATION_LIFECYCLE_REFORMULATION.
+
+Both remain NOT_OPTIMIZATION_READY.
+Any Formal BUY chronology/volume change is Class C.
