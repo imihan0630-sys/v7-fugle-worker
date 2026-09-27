@@ -841,3 +841,59 @@ Status:
 `SEMANTIC_CORRECTION_FROZEN / PAPER_EDGE_READY / EXECUTION_EDGE_BLOCKED`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-045 — initial BUY trigger is structurally allocation-invariant; execution is not (2026-09-27)
+
+A source-level audit traced the complete initial-entry path:
+`evaluatePullback/evaluateMomentum -> evaluateStop/evaluateProfit -> buildFinalDecision -> applyPlanValidity -> evaluateOperationSignals`.
+
+Across the upstream decision chain, the following sizing fields are absent:
+- allocationRatio;
+- totalAllocation;
+- firstAmount / firstShares;
+- secondAmount / secondShares;
+- PriorityScore.
+
+For an unheld name (`positionStage=NONE`), initial BUY eligibility is currently:
+
+`finalDecision == buy`
+AND
+`maxChase is absent OR currentPrice <= maxChase`.
+
+Only after that predicate passes does the signal payload attach:
+`firstAmount` and `firstShares`.
+
+### Research consequence
+
+For current vs alternative sizing rules that preserve the same selected name and all non-sizing plan fields, the same observed **initial BUY signal timestamp** can be used as common trigger evidence, provided:
+- the plan/research generation is certified;
+- the Worker trigger contract/version is the same;
+- the same market data are used.
+
+This materially reduces one execution-clock uncertainty.
+
+### What is NOT invariant
+
+The finding does not certify:
+- identical fill price;
+- identical fill probability;
+- identical slippage;
+- orderability if a counterfactual allocation rounds to zero shares;
+- ADD lifecycle after first execution;
+- later REDUCE/SELL realized economics.
+
+Therefore an alternative allocator may share the initial trigger event, but its amount, shares, cash left idle and execution friction still require separate reconstruction.
+
+A source-contract test is added so any future introduction of PriorityScore/allocation fields into initial BUY eligibility fails Tier-A CI instead of silently changing the counterfactual assumption.
+
+Artifact:
+`research/initial_buy_trigger_allocation_invariance_v0_1.json`.
+
+Test:
+`tests/test_initial_buy_trigger_allocation_invariance_v0_1.mjs`.
+
+Status:
+`INITIAL_BUY_TRIGGER_STRUCTURALLY_ALLOCATION_INVARIANT / EXECUTION_NOT_INVARIANT`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
