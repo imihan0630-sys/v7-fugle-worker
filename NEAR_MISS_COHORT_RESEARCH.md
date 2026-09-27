@@ -102,3 +102,42 @@ Only after clean prospective cohort coverage may we ask:
 Any A/B threshold change remains Class C.
 
 No Formal behavior changed.
+
+
+## NM-007 — raw setup-margin observer closes the Class-A observability gap
+
+A pure Class-A observer now freezes the exact current A/B check shape without changing Formal:
+`research/ab_setup_margin_observer_v0_1.mjs`.
+
+It emits:
+- A/B six-bit check masks;
+- failed A/B counts;
+- nearest channel or tie based only on failed-check count;
+- raw margins to the current thresholds;
+- separate sub-margins for OR/composite checks;
+- source-semantics warnings instead of silently converting missing/zero values.
+
+Two structural details are now explicit.
+
+First, A volume is an OR gate:
+`volumeTodayVsPrev5 <= 1.05 OR volumeContraction5to20 <= 0.95`.
+A single normalized volume distance would destroy that logic, so none is introduced.
+
+Second, under the current `buildMarketFeatures` definition
+`lateStage = ret20 > 35 OR maDistance20Pct > 25`,
+B additionally requires `ret20 <= 30`.
+Therefore the ret20>35 arm is non-binding inside B notLate; with coherent raw features B notLate reduces to ret20<=30 plus maDistance20Pct<=25. This is a structural redundancy observation only, not threshold evidence.
+
+The observer also exposes JavaScript truthiness edge cases:
+- A uses `(toNumber(volumeTodayVsPrev5)||999)`, so exact zero becomes 999 on that arm;
+- B upper-shadow uses `(toNumber(dailyUpperShadowRatio)||0)`, so a truly missing value would become zero/pass, although normal buildMarketFeatures should produce the field.
+
+These are provenance/edge semantics to measure prospectively, not reasons to alter Formal.
+
+The observer summary remains descriptive unless paired with a separately proven sequential setup-reached population. It must not be used to reinterpret the old bounded global top-12 NEAR_MISS as a complete denominator.
+
+Status:
+`RAW_SETUP_MARGIN_OBSERVABILITY_READY / NO_COMPOSITE_DISTANCE / COHORT_PERSISTENCE_NOT_IMPLEMENTED / FORMAL_UNCHANGED`.
+
+Exact next:
+pair the raw-margin observer with the existing channel-stage denominator observer on prospective same-scan evidence; measure coverage and check-pattern populations only after sequential setup reach is proven. Persistence of full populations remains Class B proposal-first.
