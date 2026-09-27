@@ -1692,3 +1692,87 @@ Formal Core remains LOCKED.
 
 - 2ca646bf3b5b84fc62aded0979eb7d46ec5d542b — Technical Indicator observer readiness gate.
 - 275db2d59b8f79dfcc82bf93803a97a26b938fd8 — machine-readable Technical Indicator observer readiness matrix.
+
+
+## Continuation update — TI-379 through TI-390
+
+### Class-B implementation impact audit — TI-379..TI-390
+- A bounded production-impact audit was completed before asking for any owner approval.
+- Legacy trade_research_shadow_candidates is explicitly rejected as a promotion-grade Technical Indicator parent because it:
+  - uses PRIMARY KEY(scan_date,symbol);
+  - DELETEs a scan date before rewriting;
+  - inserts/upserts rows individually;
+  - stores one mutually exclusive cohort;
+  - lacks immutable captureGeneration / semantic-fingerprint parentage.
+- The legacy builder also uses a used set, so research memberships are mutually exclusive in the captured row model.
+- Current legacy theoretical maximum per scan date is:
+  SELECTED<=6
+  + QUALIFIED_NOT_SELECTED<=12
+  + NEAR_MISS<=12
+  + REJECTED_AFTER_BASE<=12
+  + BROAD_CONTROL<=12
+  = <=54 distinct rows/date.
+- This <=54 is only a current-archive reference and must NOT be used to size the future immutable parent, which may preserve a much larger pre-sampling population.
+- Technical Indicator should reuse the unified immutable per-symbol decision-state parent architecture rather than create a second parent universe.
+- Preferred future shape:
+  parent = shared immutable decision-state receipt;
+  child = Technical Indicator evidence keyed by parentDecisionReceiptId/captureGeneration/observerVersion/formula bundle/asOf;
+  run = one observer run receipt per scanDate/generation.
+- Storage preference:
+  reuse a generic immutable evidence-child table if the shared architecture supplies one.
+  Only if no generic child exists should Technical Indicator propose dedicated snapshot/run tables.
+- Formula computation itself can potentially add zero steady-state market-data calls if shared continuity history and replay-certified state already exist.
+- But:
+  bootstrap source-call delta = UNKNOWN;
+  TECHNICAL_CONTINUITY runtime call/source delta = dependency-owned and not yet proven zero.
+- Do not add per-indicator provider fetches.
+- Arithmetic cost is not the main risk; likely costs are history/source loading, continuity transformation, immutable persistence and large parent keyset I/O.
+- Recursive state cache may reduce steady-state work to O(1) per new bar, but remains a cache only. Canonical replay lineage remains authority and dirty-state rebuild is mandatory.
+- Future observer must run after protected Formal decision state is frozen/persisted and be fail-open:
+  no selection/order/plan/capital/monitor/signal/push effect.
+- Initial eventual scope should be AFTER_MARKET only; no intraday Technical Indicator persistence before daily evidence exists.
+- A technically minimal child is feasible, but a Class-B implementation proposal is PREMATURE because:
+  1. immutable decision-state parent/captureGeneration architecture is not implemented;
+  2. production TECHNICAL_CONTINUITY handoff remains blocked;
+  3. runtime-complete symbol-session/price-limit provenance is not certified;
+  4. real-parent-scale D1 write/latency impact is unknown.
+- Therefore no owner approval is requested yet.
+- Prefer one consolidated shared research-infrastructure proposal later rather than separate Pattern/Technical migrations where possible.
+- New durable artifacts:
+  research/TECHNICAL_INDICATOR_CLASS_B_IMPACT_AUDIT_V0_1.md
+  research/technical_indicator_class_b_impact_audit_v0_1.json
+
+### Current lane status
+
+TECHNICAL_INDICATOR_FORMULA_QA = R0_MATERIAL_PASS
+TECHNICAL_INDICATOR_SOURCE_RUNTIME = BELOW_R1
+CLASS_B_TECHNICAL_CHILD_FEASIBILITY = MATERIAL
+CLASS_B_IMPLEMENTATION_PROPOSAL = PREMATURE
+IMMUTABLE_PARENT_DEPENDENCY = BLOCKED_NOT_IMPLEMENTED
+TECHNICAL_CONTINUITY_RUNTIME = BLOCKED
+PRICE_LIMIT_SYMBOL_SESSION_RUNTIME = NOT_CERTIFIED
+PROSPECTIVE_TECHNICAL_CAPTURE = NOT_STARTED
+OUTCOME_JOIN = NO_GO
+INCREMENTAL_INFERENCE = NO_GO
+FORMAL_REVIEW_ELIGIBILITY = NO
+FORMAL_OPTIMIZATION_CANDIDATE = NONE
+Formal Core remains LOCKED.
+
+### Updated exact next continuation point
+
+1. Do not return to named-indicator expansion.
+2. Continue bounded infrastructure feasibility only.
+3. Reconcile Technical Indicator with the unified immutable Shadow parent proposal:
+   - exact future parent scope;
+   - whether a generic evidence-child schema can serve Pattern + Technical + other research children;
+   - expected real row/write volume;
+   - same-scan already-loaded history reuse;
+   - continuity runtime source/call cost.
+4. Avoid Technical-specific D1 implementation until that shared architecture is resolved.
+5. Only when dependencies are materially ready should one consolidated Class-B research-infrastructure proposal be surfaced to the owner for approval.
+6. No historical Shadow fabrication, no outcomes, no Formal changes.
+
+## Latest durable research commits
+
+- 461247f36c23fc0bd84134d3e9ba50650c60bb3c — Technical Indicator Class-B implementation impact audit.
+- 898f0d90a6696b600e090fe4211938577b4fb0e5 — machine-readable Technical Indicator impact receipt.
