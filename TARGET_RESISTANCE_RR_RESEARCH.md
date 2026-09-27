@@ -260,3 +260,81 @@ Minimum prospective source-state contract is frozen in:
 `research/target_price_injection_provenance_audit_v0_1.json`.
 
 Shared runtime observability capture is Class B proposal-first. Target/RR rule changes remain Class C.
+
+
+## TRR-009 — candidate-scarcity decomposition before outcomes
+
+The post-setup scarcity layer must be split into three distinct ordered-funnel states:
+
+1. `TARGET_NULL`
+   - Formal first failure: 上方無可驗證實質壓力，無法計算真實RR.
+   - RR is undefined. Never encode this as RR=0.
+
+2. `LOW_RR`
+   - Target exists.
+   - Positive risk geometry exists.
+   - Formal RR is below 2.
+
+3. `FINAL_GRADE_REJECTED`
+   - Target exists.
+   - RR has already passed.
+   - setupQuality is below B-grade threshold.
+
+These first-failure families can be counted separately without outcomes.
+They still do **not** identify marginal gate contribution because Formal is fail-fast.
+
+### Canonical observer
+
+Use:
+`research/target_rr_audit_observer_v0_1.mjs`
+
+The observer:
+- derives the same A/B entry-stop geometry;
+- enumerates targetPrice / priorHigh20 / priorHigh60 / dated 5-bar pivot candidates;
+- applies the exact strict `value > entry*1.01` rule;
+- preserves source ties instead of inventing a unique source;
+- computes RR only when target and positive risk exist;
+- checks whether targetPrice provenance is complete or UNKNOWN;
+- makes zero market calls and writes nothing.
+
+Additional falsification now requires an independent test-local mirror of Formal target selection so observer semantics cannot silently drift away from Worker behavior.
+
+### What legacy Shadow still cannot tell us
+
+A historical first-failure label can separate TARGET_NULL from LOW_RR, but it cannot reliably explain **why** target was null or which source determined a rejected target.
+
+Legacy rejected-row evidence does not durably freeze:
+- entry/stop;
+- targetPrice raw/source/asOf/knownAt;
+- priorHigh20/priorHigh60 as target provenance;
+- full dated local-pivot set;
+- levels excluded by the 1% band;
+- selected target source(s);
+- exact rejected-row raw RR.
+
+Therefore these explanations remain unavailable from legacy Shadow:
+- genuine blue-sky/new-high geometry;
+- missing/unavailable external targetPrice;
+- targetPrice present but below eligibility band;
+- local minor pivot compressing RR;
+- sub-1% overhead ignored while a farther target inflates RR.
+
+Machine matrix:
+`research/target_rr_scarcity_capture_matrix_v0_1.json`.
+
+### Research consequence
+
+Candidate-scarcity reporting may say:
+- how many first failures are TARGET_NULL;
+- how many are LOW_RR;
+- how many are FINAL_GRADE_REJECTED.
+
+It may **not** yet say:
+- removing target-null would recover N candidates;
+- targetPrice absence caused N rejects;
+- B new-high setups are being wrongly rejected at rate X;
+- RR<2 is too strict.
+
+Those require prospective immutable parent denominators, exact target provenance, mature outcomes, costs and OOS falsification.
+
+No target, 1% band, RR or grade rule is changed.
