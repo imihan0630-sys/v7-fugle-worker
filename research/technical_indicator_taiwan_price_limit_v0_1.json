@@ -1,0 +1,74 @@
+{
+  "schemaVersion": "technical-indicator-taiwan-price-limit-v0.1",
+  "updated": "2026-09-28 Asia/Taipei",
+  "researchOnly": true,
+  "decisionImpact": false,
+  "formalCore": "LOCKED",
+  "regimeStates": [
+    "STANDARD_LIMIT_REGIME",
+    "NO_LIMIT_INITIAL_LISTING",
+    "SPECIAL_REFERENCE_LIMIT_REGIME",
+    "OTHER_OFFICIAL_LIMIT_REGIME",
+    "UNKNOWN_LIMIT_REGIME"
+  ],
+  "boundaryStates": [
+    "NOT_TOUCHED",
+    "UPPER_TOUCHED",
+    "LOWER_TOUCHED",
+    "CLOSE_AT_UPPER",
+    "CLOSE_AT_LOWER",
+    "BOTH_BOUNDARIES_TOUCHED",
+    "ONE_PRICE_AT_BOUNDARY",
+    "UNKNOWN_BOUNDARY_RELATION"
+  ],
+  "priceDiscoveryStates": [
+    "UNCONSTRAINED_OBSERVED",
+    "CONSTRAINED_UPPER",
+    "CONSTRAINED_LOWER",
+    "CONSTRAINED_BOTH",
+    "NO_LIMIT_SPECIAL",
+    "UNKNOWN"
+  ],
+  "requiredBarFields": [
+    "limitRegime",
+    "auctionReferencePrice",
+    "upperLimit",
+    "lowerLimit",
+    "limitSource",
+    "limitRuleVersion",
+    "boundaryRelation",
+    "highAtUpperLimit",
+    "lowAtLowerLimit",
+    "closeAtUpperLimit",
+    "closeAtLowerLimit",
+    "onePriceAtBoundary",
+    "priceDiscoveryState"
+  ],
+  "windowFields": [
+    "constrainedBarCount",
+    "upperConstrainedCount",
+    "lowerConstrainedCount",
+    "noLimitSpecialCount",
+    "latestConstrainedDate",
+    "constrainedBarsInsidePrimaryWindow"
+  ],
+  "rules": [
+    "PRICE_LIMIT_REGIME_PRESENT_DOES_NOT_MEAN_BINDING",
+    "NOT_TOUCHED_IS_ORDINARY_OBSERVED_GEOMETRY",
+    "BOUNDARY_TOUCH_IS_CENSORED_PRICE_DISCOVERY",
+    "CONSTRAINED_IS_VALID_DATA_NOT_INVALID_DATA",
+    "NO_LIMIT_INITIAL_LISTING_IS_SPECIAL_NOT_NORMAL",
+    "LIMIT_LOCKED_LABEL_PROHIBITED_FROM_DAILY_OHLC_ONLY",
+    "SPECIAL_DAY_LIMITS_REQUIRE_OFFICIAL_REFERENCE_PROVENANCE",
+    "DO_NOT_DERIVE_ALL_LIMITS_AS_PRIOR_CLOSE_PLUS_MINUS_10PCT",
+    "TICK_ROUNDING_MUST_FOLLOW_OFFICIAL_SESSION_CONTRACT",
+    "CONSTRAINED_ROWS_RETAINED_AS_SEPARATE_STRATUM"
+  ],
+  "indicatorInterpretation": {
+    "KD": "Range extrema may be boundary-censored.",
+    "RSI": "Observed close-return magnitude may be capped.",
+    "MACD": "Observed filtered slope may be a capped staircase.",
+    "ADX": "H/L/TR and directional movement may be directly censored.",
+    "BBANDS": "Observed close dispersion can differ from latent unconstrained dispersion."
+  }
+}
