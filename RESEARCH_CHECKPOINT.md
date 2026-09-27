@@ -1,6 +1,6 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-200.
+Checkpoint sequence: B-201.
 Updated: 2026-09-27 08:30 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Detailed B-01..B-123 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
@@ -1300,3 +1300,15 @@ Updated: 2026-09-27 08:30 Asia/Taipei.
 - Durable artifacts: `research/confirmed_fill_ledger_v0_2.mjs`, `tests/test_confirmed_fill_ledger_v0_2.mjs`, `research/confirmed_fill_ledger_spec_v0_2.json`.
 - Status: `CONFIRMED_FILL_LEDGER_V0_2 = DESIGN_READY / CLASS_B_PROPOSAL_FIRST / NOT_IMPLEMENTED`. No Worker/runtime/Formal behavior changed and no FORMAL_OPTIMIZATION_CANDIDATE.
 - Exact next: freeze the minimal Class-B Production proposal (additive D1 schema, append-only API, idempotency/conflict semantics, transaction/position-head checks, rollback and read-model isolation). Proposal only; implementation requires explicit owner approval.
+
+
+## B-201 — Confirmed Fill Ledger v0.2.1 provenance self-correction (2026-09-27 08:49 Asia/Taipei)
+- Class-B proposal preparation falsified one omission in v0.2 before Production design: when splitting POSITION_BASELINE from FILL, v0.2 accidentally dropped v0.1's stable `planScanDate` requirement for fills.
+- v0.2.1 restores exact plan provenance: every FILL requires `planScanDate`; POSITION_BASELINE may omit it because a pre-existing holding can predate monitored plans.
+- v0.2.1 also requires `ledgerEpochId` on every event and materializes state by `accountKey|symbol|ledgerEpochId`. This prevents a later coverage restart/baseline from being mixed with a previous ledger epoch.
+- Existing protections remain: baseline is not a trade; zero->BUY may start without baseline; ADD/REDUCE/SELL need prior same-epoch state; effectiveAt and confirmedAt remain separate; correction is append-only and PIT-aware.
+- This correction was made before any Production proposal or implementation. v0.2 is superseded as an implementation base; only v0.2.1 may feed a future Class-B proposal.
+- PR #122 validation all passed: Portfolio Risk Tier-A Research run 36283539781 SUCCESS; V8 Repair run 36283539774 SUCCESS; V8 Regression run 36283539805 SUCCESS. PR #122 merged at `3e771a0f5e34c7716c49d13fb1beb24cfc2b7510`.
+- Durable artifacts: `research/confirmed_fill_ledger_v0_2_1.mjs`, `tests/test_confirmed_fill_ledger_v0_2_1.mjs`, `research/confirmed_fill_ledger_spec_v0_2_1.json`.
+- Status: `CONFIRMED_FILL_LEDGER_V0_2_1 = DESIGN_READY / CLASS_B_PROPOSAL_FIRST / NOT_IMPLEMENTED`. No Worker/runtime/Formal behavior changed.
+- Exact next: build the Production proposal from v0.2.1 with additive D1 storage, no-update/no-delete application semantics, idempotent source receipts, explicit head/version checks, read-model isolation, feature flag and rollback. Do not implement without owner approval.
