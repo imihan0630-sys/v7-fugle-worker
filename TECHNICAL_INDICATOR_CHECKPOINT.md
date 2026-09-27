@@ -762,3 +762,59 @@ FORMAL_OPTIMIZATION_CANDIDATE = NONE
 - b3688e62b6b181c3d76347ac84dc3c8c96dda02a — System 2 semantic-provenance contract v0.1.
 - cbabdf422b30b00772340f1f34c1ff4e124987f4 — lag-noise/filter-response audit.
 - 0e4985cb81af091faf4e887beb0c7b0ec157fec7 — filter response-profile contract v0.1.
+
+
+## Continuation update — TI-201 through TI-210
+
+- Multi-timeframe technical evidence is now explicitly treated as hierarchical context, not independent vote counting.
+- Weekly, daily, 15m and 5m bars are aggregations of the same underlying transaction path; agreement across them can reuse the same event/path information.
+- Required provenance now includes timeframe, sessionRule, lookbackBars, effectiveClockHorizon and barCompletionState. A parameter such as RSI14 without timeframe is semantically incomplete.
+- Partial higher-timeframe bars are a distinct causal state from completed bars. A Wednesday as-of weekly bar may be causally available but cannot silently be pooled with completed-week semantics.
+- Five overlap classes are frozen:
+  SAME_EVENT_DUPLICATE,
+  NESTED_HORIZON,
+  SHARED_COMPONENT,
+  DISTINCT_HORIZON_CONTEXT,
+  DISTINCT_SESSION_INFORMATION.
+- Only DISTINCT_HORIZON_CONTEXT and DISTINCT_SESSION_INFORMATION begin with a plausible incremental-information prior.
+- Preferred hierarchy remains:
+  weekly = major trend/large structure;
+  daily = selection/principal setup;
+  15m = transition/acceptance/execution confirmation;
+  5m = execution detail/early observation where allowed.
+- "weekly bullish + daily bullish + 15m bullish" therefore does NOT equal three bullish votes.
+- Overlapping-window dependence is an explicit statistical guard. Recent 2026 evidence shows overlapping return construction can inflate measured time-series momentum strength by mechanically accumulating autocorrelation; overlapping feature windows likewise cannot inflate independent sample counts.
+- Bar-boundary sensitivity is explicit: different aggregation can hide/reveal breakout-rejection paths, change high/low extrema and create extra oscillator crosses.
+- No timeframe/bar-size optimization is allowed after outcome inspection.
+- Future weekly incremental-value research must beat equivalent daily long-horizon controls (priorHigh60/majorStructuralHigh, MA60/120, ret60, major-zone lifecycle).
+- Intraday incremental value is execution/acceptance focused, not another daily selection vote.
+- New durable artifacts:
+  - research/TECHNICAL_INDICATOR_MULTITIMEFRAME_AGGREGATION_V0_1.md
+  - research/technical_indicator_multitimeframe_contract_v0_1.json
+- No outcomes inspected, no runtime wiring, no FORMAL_OPTIMIZATION_CANDIDATE.
+- Formal Core remains LOCKED.
+
+### Updated current status
+
+MULTI_TIMEFRAME_V0_1 = FROZEN
+TIMEFRAME_AGREEMENT = HIERARCHICAL_CONTEXT_NOT_VOTE_COUNT
+OVERLAPPING_SAMPLE_INFLATION = EXPLICIT_GUARD
+PARTIAL_HIGHER_TIMEFRAME = DISTINCT_CAUSAL_STATE
+FORMAL_OPTIMIZATION_CANDIDATE = NONE
+
+### Updated exact next continuation point
+
+1. Keep indicator catalog expansion stopped.
+2. Integrate semantic basis + response profile + multi-timeframe provenance as the full research identity for technical evidence.
+3. Before any market outcome inference, distinguish semantic incremental value, filter-response difference and timeframe-aggregation difference.
+4. Primary empirical queue remains unchanged:
+   KD-vs-RSI -> MACD-vs-direct-trend -> ADX-vs-direct-trend-quality -> BBW-vs-ATR/realized-vol/VCP.
+5. Weekly evidence must beat equivalent daily long-horizon structural controls; intraday evidence is execution/acceptance first.
+6. Preserve independent-date/episode inference; overlapping windows/timeframes do not create additional independent samples.
+7. Formal Core remains unchanged.
+
+## Latest durable research commits
+
+- bfbe724f3acf7504acc269d74433584b554e8d27 — multi-timeframe / temporal aggregation audit v0.1.
+- 77e1d300f87798934cd0e7ae17f566111623d6d6 — machine-readable multi-timeframe technical evidence contract v0.1.
+- 3a1e334e328d572dae096fc119a01e1db0896efb — checkpoint through TI-200.
