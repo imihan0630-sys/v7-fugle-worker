@@ -1,6 +1,6 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-195.
+Checkpoint sequence: B-198.
 Updated: 2026-09-27 08:30 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Detailed B-01..B-123 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
@@ -1253,3 +1253,22 @@ Updated: 2026-09-27 08:30 Asia/Taipei.
 - Future evidence capture should preserve targetPrice raw/source/asOf/PIT state, priorHigh20/60, dated pivots, eligible-level set, selected target/source, target-null state and RR. No historical targetPrice backfill from later-known information.
 - Status: `STRUCTURAL_PROVENANCE_RISK_CONFIRMED / EVIDENCE_CAPTURE_WARRANTED / NOT_FORMAL_OPTIMIZATION_CANDIDATE`. Any target/null/RR formula change is Class C; no Formal behavior changed.
 - Exact next: continue post-base gate audit with RR<2 vs target-null separated, then fundamental-quality and setup-grade gates after reason-stratified Shadow evidence is available. Do not pool target-source failure with genuine low-RR geometry.
+
+
+## B-198 — Confirmed Fill Ledger v0.1 research contract validated (2026-09-27 08:37 Asia/Taipei)
+- Continued B-195 exact next without changing Worker/runtime/Formal behavior.
+- Confirmed Fill Ledger v0.1 freezes the minimum append-only execution-evidence contract required before historical actual-live position size/heat can be reconstructed.
+- Signal and execution identities are explicitly separated: `signalEventId` may link to a fill, but may never substitute for `executionEventId`. A strategy BUY signal that was never filled remains a signal only.
+- Required execution evidence: executionEventId, source, sourceRecordId, symbol, planScanDate, action, occurredAt, confirmedAt, fillPrice, filledShares, sharesBefore, sharesAfter, averageCostAfter and reconciliationStatus.
+- Position invariants: BUY/ADD after=before+filled; REDUCE/SELL after=before-filled; REDUCE must leave >0 shares; SELL must close to 0; next confirmed event's sharesBefore must equal prior sharesAfter for the same symbol.
+- Correction semantics are append-only: a corrected receipt appends a new CORRECTED event pointing at `correctsExecutionEventId`; prior execution evidence is never mutated/deleted.
+- Sources are explicit and quality-bearing: BROKER_IMPORT, MANUAL_CONFIRMED, VERIFIED_EXTERNAL. Future better sources do not retroactively validate older signal-only periods.
+- Synthetic falsification covers valid BUY->ADD->REDUCE->SELL sequence, signal/execution ID collision, invalid position arithmetic, REDUCE-to-zero, incomplete SELL, cross-event chain break and invalid correction target.
+- PR #118 was superseded because concurrent checkpoint work advanced main; PR #119 rebased the identical research contract onto newer main and preserved all concurrent research.
+- Final PR #119 CI: Portfolio Risk Tier-A Research run 36283027515 SUCCESS; V8 Repair CI run 36283027513 SUCCESS; V8 Regression Tests run 36283027521 SUCCESS. PR #119 merged at `50386ae7fb53f62b34892a3170c269b843b4aeb8`.
+- Durable artifacts: `research/confirmed_fill_ledger_v0_1.mjs`, `tests/test_confirmed_fill_ledger_v0_1.mjs`, `research/confirmed_fill_ledger_spec_v0_1.json`.
+- Status: `CONFIRMED_FILL_LEDGER_V0_1 = DESIGN_READY / CLASS_B_PROPOSAL_FIRST / NOT_IMPLEMENTED`.
+- Engineering boundary: research schema/tests are Class A; any shared Production D1 table, write API, broker import, reconciliation UI or runtime wiring is Class B and requires explicit owner approval. This design does not generate signals and does not change Formal allocation/stops/BUY/ADD/REDUCE/SELL.
+- Portfolio Risk remains L2 / FALSIFICATION_IN_PROGRESS / ACTUAL_LIVE_HISTORY_BLOCKED until separately approved Production fill capture exists and accumulates prospective confirmed receipts.
+- No FORMAL_OPTIMIZATION_CANDIDATE is created from this evidence-infrastructure design alone.
+- Exact next: audit the minimal safe Production implementation path, especially whether existing manual `/api/positions` reconciliation can append confirmed execution evidence without conflating snapshots with fills, and whether an external broker/verified source is required for trustworthy automatic capture. Proposal only; do not implement without owner approval.
