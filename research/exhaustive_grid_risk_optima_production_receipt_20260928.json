@@ -1,0 +1,81 @@
+{
+  "schemaVersion": "EXHAUSTIVE_GRID_RISK_OPTIMA_PRODUCTION_RECEIPT_V0_1",
+  "observedAt": "2026-09-28T00:18:27+08:00",
+  "timestampProvenance": "GitHub Actions Portfolio Risk Tier-A Research run 36332732132 / job 108657660287",
+  "workflowRunId": 36332732132,
+  "jobId": 108657660287,
+  "readOnly": true,
+  "productionWrites": false,
+  "decisionImpact": false,
+  "scanDate": "2026-09-18",
+  "searchSpace": {
+    "feasibleStatesEnumerated": 946,
+    "sameSelectedNames": true,
+    "samePlannedDeploymentNTD": 168000,
+    "perNameCapPct": 35,
+    "gridNTD": 1000,
+    "minUnitsPerName": 1,
+    "exhaustive": true
+  },
+  "current": {
+    "allocationsNTD": {
+      "2006": 50000,
+      "3105": 64000,
+      "6133": 54000
+    },
+    "previewSuggestedNotionalNTD": 167471.13,
+    "previewProjectedStopRiskNTD": 6459.97,
+    "previewProjectedStopRiskHHI": 0.37670778
+  },
+  "preShareGlobalOptimum": {
+    "unique": true,
+    "allocationsNTD": {
+      "2006": 70000,
+      "3105": 41000,
+      "6133": 57000
+    },
+    "projectedStopRiskNTD": 5965.732,
+    "projectedStopRiskHHI": 0.3343848759,
+    "maxToMinProjectedRiskRatio": 1.13714329,
+    "postShareWhenSameAllocation": {
+      "previewSuggestedNotionalNTD": 167697.54,
+      "projectedStopRiskNTD": 5951.3461,
+      "projectedStopRiskHHI": 0.334341227,
+      "maxToMinProjectedRiskRatio": 1.13640108
+    }
+  },
+  "postShareGlobalOptimum": {
+    "unique": true,
+    "allocationsNTD": {
+      "2006": 70000,
+      "3105": 42000,
+      "6133": 56000
+    },
+    "preShareProjectedStopRiskNTD": 5979.218,
+    "preShareProjectedStopRiskHHI": 0.334468108,
+    "previewSuggestedNotionalNTD": 167227.36,
+    "shareFloorResidualNTD": 772.64,
+    "previewProjectedStopRiskNTD": 5940.8663,
+    "previewProjectedStopRiskHHI": 0.3342784042,
+    "maxToMinProjectedRiskRatio": 1.1265985
+  },
+  "currentMinusPostShareGlobalOptimum": {
+    "projectedStopRiskNTD": 519.1037,
+    "riskHHI": 0.0424293758,
+    "previewSuggestedNotionalNTD": 243.77
+  },
+  "falsification": {
+    "rejectedClaim": "The exact NT$1,000 equal-risk allocation is invariant to whether integer-share plan-preview quantization is included in the objective.",
+    "result": "False. The unique pre-share optimum is 70/41/57, while the unique post-share optimum is 70/42/56.",
+    "survivingClaim": "The structural conclusion is robust: both exact optima are materially less concentrated than current 50/64/54.",
+    "cashDragNuance": "The post-share HHI optimum uses NT$243.77 less preview notional than current, so it cannot alone falsify cash-drag. That falsification remains supported by the pre-share-global 70/41/57 allocation, whose post-share preview notional is NT$226.41 above current while risk concentration remains much lower."
+  },
+  "limits": [
+    "Only one reconstructable multi-name date.",
+    "Objectives are structural projected-risk metrics, not realized utility.",
+    "Plan-preview share flooring is not broker execution.",
+    "Exact optimum selection is not a live sizing recommendation."
+  ],
+  "status": "DISCRETE_OBJECTIVE_SENSITIVITY_CONFIRMED / UNIQUE_OPTIMA_BY_SEMANTIC / STRUCTURAL_CONCLUSION_ROBUST / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY",
+  "formalCoreImpact": false
+}

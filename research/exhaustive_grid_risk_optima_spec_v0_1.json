@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "EXHAUSTIVE_GRID_RISK_OPTIMA_V0_1",
+  "preregisteredAt": "2026-09-28T00:15:00+08:00",
+  "purpose": "Test global optimality and objective sensitivity of the NT$1,000-grid equal-risk structural comparator without using outcomes.",
+  "searchSpace": {
+    "sameSelectedNames": true,
+    "sameCurrentPlannedDeployment": true,
+    "perNameCapPct": 35,
+    "gridNTD": 1000,
+    "minUnitsPerName": 1,
+    "stateSpace": "exhaustive bounded enumeration; no sampling",
+    "maxStates": 2000000
+  },
+  "objectives": {
+    "preShare": [
+      "min projected-stop-risk HHI",
+      "min max/min projected-risk ratio"
+    ],
+    "postShare": [
+      "min plan-preview projected-stop-risk HHI after 60/40 + integer-share floor",
+      "min post-share max/min projected-risk ratio"
+    ]
+  },
+  "interpretationRule": "The exact allocation is allowed to differ between PRE_SHARE and POST_SHARE objectives. If both optima remain materially less concentrated than current, the structural conclusion is robust while the exact comparator allocation is quantization/objective-sensitive.",
+  "forbidden": [
+    "do not use realized outcomes to select objective or allocation",
+    "do not call the optimum a recommended live allocator",
+    "do not collapse PRE_SHARE and POST_SHARE into one undocumented objective",
+    "do not infer economic superiority from structural concentration alone"
+  ],
+  "status": "EXHAUSTIVE_GRID_PROTOCOL_FROZEN / PRODUCTION_AUDIT_PENDING",
+  "formalCoreImpact": false
+}
