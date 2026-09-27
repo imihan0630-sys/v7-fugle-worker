@@ -62,6 +62,23 @@ Research interactions to test:
 PIT rule:
 Use only the balance-sheet amount and notes that were actually published by the decision timestamp. Do not backfill later restatements into earlier decisions without versioned provenance.
 
+#### PROFITABILITY_EFFICIENCY_METRICS（獲利與資產效率指標）
+
+Status: RESEARCH_REQUIRED / NO_SINGLE_METRIC_PRIORITY FROZEN.
+
+Candidate metrics:
+- ROA（資產報酬率）: net income / assets; useful as an asset-efficiency and leverage-resistant quality cross-check, but accounting-asset composition and industry capital intensity can distort comparisons.
+- ROE（股東權益報酬率）: shareholder-capital profitability; can be inflated by leverage or a small equity base.
+- ROIC（投入資本報酬率）: operating return on invested capital; conceptually attractive for capital-efficiency research but source/definition consistency must be proven.
+- grossProfitToAssets（毛利／總資產）: candidate gross-profitability measure with established cross-sectional research precedent.
+- assetTurnover（資產週轉率）: sales generated per unit of asset base; candidate operating-efficiency decomposition.
+
+Research rule:
+Do not score ROA, ROE and ROIC independently as three positive votes by default. Test level, trend and peer/self-history context, then run redundancy and incremental-value checks.
+ROA is initially SUPPORTIVE（加強） / QUALITY_CHECK（品質檢查）, not REQUIRED（必要）.
+A high ROE with weak ROA can be a leverage/accounting-structure warning, but is not automatically negative.
+Sector/industry comparability is mandatory before cross-sectional interpretation.
+
 ### VALUATION
 PE, forward PE, PEG, PB, EV/EBITDA, FCF yield, dividend yield when relevant, historical percentile, peer-relative valuation, valuation vs growth.
 
