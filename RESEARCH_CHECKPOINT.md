@@ -1,7 +1,7 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-223.
-Updated: 2026-09-27 21:42 Asia/Taipei.
+Checkpoint sequence: B-224.
+Updated: 2026-09-27 22:03 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Detailed B-01..B-123 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
@@ -1711,3 +1711,17 @@ Updated: 2026-09-27 21:42 Asia/Taipei.
 - Engineering boundary: existing offline classifier = Class A; exposing new shared protected runtime/API fields = Class B owner approval; sizing/ranking changes = Class C.
 - Status: `SELECTED_GENERATION_STORAGE_SOURCE_READY / CLASS_A_CLASSIFIER_READY / LIVE_COVERAGE_READER_BLOCKED / OUTCOMES_CLOSED / FORMAL_UNCHANGED`. No FORMAL_OPTIMIZATION_CANDIDATE.
 - Exact next: move to selection-time structural capital-utilization scarcity without using returns or assuming fills. On only positively complete/system-recorded plan dates, audit planned deployment as a function of selected count, pool composition and 35% single-name cap; separate intentional cash reserve from quota/gate scarcity and from unobserved intraday no-BUY. Reuse existing Portfolio Risk capital-allocation research and do not duplicate its sizing/cost studies.
+
+## B-224 — V8.9 ring-fenced Formal pools create a post-version Portfolio Risk denominator boundary (2026-09-27 Asia/Taipei)
+- Continued B-223 exact-next and reused existing Portfolio Risk PR-028 rather than repeating the already-frozen 35/60/85 deployment-reserve geometry.
+- Architecture boundary verified at commit `05cc3efd889476a44685c0a07df87f2048547eee` (`Deploy V8.9.0 three-pool Hybrid Shadow`, 2026-09-23 21:54:24 Asia/Taipei). From V8.9 onward, FORMAL_GENERAL and FORMAL_THOUSAND are independently allocated by `allocateAndBuildPlans(..., STRATEGY_POOL_CAPITAL=200000)`; Hybrid has its own 200000 but remains Shadow-only.
+- Legacy V8.5 trade journal still has one `v8_trade_journal_days` row per date with one `total_capital`; `v8_trade_journal_plans` has no top-level strategy_pool field. Post-V8.9 `strategyPool` is retained only inside stored `plan_json`.
+- V8.9.x/V8.10 patch audit found no journal schema/writer repair. `recordTradeJournalDay(scanDate,stocks,totalCapital,...)` still receives the concatenated Formal plan list plus a compatibility `totalCapital` whose scale remains one pool's 200000.
+- `/api/journal` does not SELECT `plan_json` and exposes no strategyPool. Therefore current protected journal readback cannot safely split post-V8.9 plan rows into FORMAL_GENERAL versus FORMAL_THOUSAND for Tier-A pool-aware denominators.
+- Structural falsification: after V8.9, combined Formal planned capital must not be divided by the journal's single 200000. Example: one 70000 plan in each Formal pool is 35% per pool and 35% on a consolidated 400000 Formal-strategy denominator, but the legacy day denominator would report 70%. Three 170000 pools on both sides would mechanically appear as 170% if misread against 200000.
+- Existing Tier-A receipts for 2026-09-18 and 2026-09-21 predate the V8.9 deployment and are NOT invalidated. This is a prospective/version-boundary evidence issue, not a retroactive error claim.
+- Post-V8.9 pooled `deploymentRatioPct`, `projectedHeatPct`, and total-capital risky-name HHI are not promotion-grade unless pool identity/capital is positively recovered from plan-time evidence. Within-deployed normalization can remain algebraically computable but the estimand must state whether it is per-pool or cross-pool.
+- Durable artifact: `research/portfolio_risk_pool_denominator_transition_v0_1.json`, commit `e531db3e2abf9e128291800f6034354b104ea910`.
+- Engineering boundary: reader/schema exposure of plan-time pool identity/capital is Class B proposal-first. No Formal capital, allocation, quota, ranking, monitoring or signal behavior changed. No FORMAL_OPTIMIZATION_CANDIDATE.
+- Status: `POST_V8_9_DENOMINATOR_INCOMPATIBILITY_CONFIRMED / PRE_V8_9_RECEIPTS_RETAINED / POST_V8_9_POOL_AWARE_READER_REQUIRED / OUTCOMES_CLOSED / FORMAL_UNCHANGED`.
+- Exact next: audit whether the existing `v9_strategy_pool_plans` archive already provides an exact-date, immutable-enough, read-accessible Class-A source for post-V8.9 per-pool plan-risk denominators. Check generation/version identity, completeness, mutation/rerun semantics, reader pagination and whether its plan_json preserves the same Formal plan object. If source-ready but reader-blocked, freeze the smallest Class-B read proposal and move on; do not add persistence or recompute old pools from current code.
