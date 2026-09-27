@@ -38,5 +38,22 @@
     "threshold": 70,
     "semantics": "For marketCap 10-30bn, institutionalScore>=70 participates in the special-reason gate together with 1.5x liquidity. Score compression above 100 cannot change whether 70 is passed.",
     "implication": "Measure >=70 occupancy separately from saturation. Do not claim score-cap compression is itself a small-cap-admission defect."
+  },
+  "streakStateSpace": {
+    "actorDays": "foreign/trust/dealer each in {0,1,2,3}",
+    "theoreticalStates": 64,
+    "uniqueStreakPlusInteractionScores": 41,
+    "maximumPointsBeforeNetIntensityOrOwnership": 87,
+    "statesAtOrAbove70BeforeNetIntensityOrOwnership": 9,
+    "distinctScoresAtOrAbove70": [
+      71,
+      73,
+      75,
+      77,
+      79,
+      83,
+      87
+    ],
+    "interpretation": "Different multi-actor persistence states can map to the same weighted score before any 100 clamp. This is structural state compression, not evidence that the mapping is economically inferior."
   }
 }
