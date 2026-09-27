@@ -1,0 +1,136 @@
+{
+  "schemaVersion": "LIQUIDITY_ADMISSION_FIELD_READINESS_V0_1",
+  "updatedAtTaipei": "2026-09-27",
+  "researchOnly": true,
+  "outcomeDataUsed": false,
+  "decisionImpact": false,
+  "formalCoreChanged": false,
+  "sourceBranchAudit": {
+    "pullRequest": 121,
+    "branch": "research/liquidity-admission-shadow-v0-1-20260927",
+    "head": "5c0842d197999eefa82f2a0b0069679a5f6ea070",
+    "draft": true,
+    "deployed": false,
+    "currentPrototypeScope": "branch-only Class-A research prototype after V8.14; no version bump; no new market calls; no Formal change",
+    "currentBaseLineage": "PR head was created from an older main lineage and must be reconciled before any future implementation/deploy decision; this audit does not rebase or deploy it."
+  },
+  "fullGateOverlapPersistence": {
+    "source": "research/formal_gate_evidence_persistence_feasibility_v0_1.json",
+    "pureObserverComputation": "VALIDATED_CLASS_A_ZERO_MARKET_CALLS_ZERO_D1_WRITES",
+    "historicalFullPopulationPromotionGradePersistence": "NOT_AVAILABLE",
+    "legacyShadow": "Mutable same-date archive; bounded/single-cohort identity; not an immutable full-population parent.",
+    "implication": "Historical gate-overlap scarcity rates cannot be reconstructed from legacy bounded Shadow rows. Missing full-population states remain UNKNOWN."
+  },
+  "liquidityFieldReadiness": [
+    {
+      "field": "close",
+      "readiness": "SOURCE_READY_CURRENT_FEATURE_ROW",
+      "provenance": "normalized market row carried into buildMarketFeatures",
+      "role": "price-pool split"
+    },
+    {
+      "field": "minLots",
+      "readiness": "DETERMINISTIC_RULE_READY",
+      "provenance": "close<1000 =>1000 lots; close>=1000 =>300 lots",
+      "role": "primary liquidity threshold"
+    },
+    {
+      "field": "avgVolume20Lots",
+      "readiness": "DERIVED_SOURCE_READY_WHEN_HISTORY_ADMITTED",
+      "provenance": "buildMarketFeatures: average(last20 volumes)/1000",
+      "role": "primary threshold + size-conditioned thresholds"
+    },
+    {
+      "field": "avgAmount20",
+      "readiness": "DERIVED_SOURCE_READY_WHEN_HISTORY_ADMITTED",
+      "provenance": "buildMarketFeatures: average(last20 amounts)",
+      "role": "low-volume exception amount condition"
+    },
+    {
+      "field": "marketCapYi",
+      "readiness": "FORMAL_INPUT_READY_WHEN_OBSERVED",
+      "provenance": "current feature row / enrichment path; missing market cap is already an explicit early data-readiness failure",
+      "role": "small/mid-cap applicability"
+    },
+    {
+      "field": "institutionalScore",
+      "readiness": "DERIVED_SOURCE_READY_FROM_CURRENT_LOADED_INSTITUTIONAL_FIELDS_WHEN_OBSERVED",
+      "provenance": "institutionalScore(f) from existing foreign/trust/dealer/net-flow features",
+      "role": "10-30bn special-reason gate"
+    },
+    {
+      "field": "spreadPercent",
+      "readiness": "CAPTURE_ONLY_IF_PRESENT_PRODUCTION_COVERAGE_UNKNOWN",
+      "provenance": "no repository-side producer/assignment proven for exact Formal field; arbitrary external enrichment injection is feasible",
+      "role": "low-volume exception"
+    },
+    {
+      "field": "orderBookDepthGood",
+      "readiness": "CAPTURE_ONLY_IF_PRESENT_PRODUCTION_COVERAGE_UNKNOWN",
+      "provenance": "no repository-side producer/assignment proven for exact Formal field; arbitrary external enrichment injection is feasible",
+      "role": "low-volume exception"
+    },
+    {
+      "field": "depthScore",
+      "readiness": "CAPTURE_ONLY_IF_PRESENT_PRODUCTION_COVERAGE_UNKNOWN",
+      "provenance": "no repository-side producer/assignment proven for exact Formal field; arbitrary external enrichment injection is feasible",
+      "role": "low-volume exception"
+    }
+  ],
+  "pr121ProspectiveCapabilities": {
+    "denominatorScope": "CURRENT_FEATURE_ROWS",
+    "exactReasonPopulationCounts": [
+      "LIQ_LOW_AVG_VOLUME_REJECTED",
+      "LIQ_SMALLCAP_SPECIAL_REASON_REJECTED",
+      "LIQ_MIDCAP_EXTRA_REQUIREMENT_REJECTED"
+    ],
+    "boundedSample": "up to 6 per exact reason x GENERAL/THOUSAND using deterministic hash",
+    "coverageCounts": [
+      "exceptionInputCoverageCounts COMPLETE/PARTIAL/ABSENT",
+      "belowPrimaryMinTotal",
+      "belowPrimaryMinExceptionInputCoverageCounts",
+      "belowPrimaryMinFailureReasonCounts",
+      "exceptionPassCounts"
+    ],
+    "rowAudit": [
+      "avgVolume20Lots",
+      "minLots",
+      "volumeThresholdRatio",
+      "avgAmount20",
+      "spreadPercent",
+      "orderBookDepthGood",
+      "depthScore",
+      "exceptionInputCoverage",
+      "liquidityExceptionPass",
+      "exceptionFailureReasons",
+      "marketCapYi",
+      "institutionalScore",
+      "smallCapSpecialPass",
+      "midCapExtraPass"
+    ],
+    "missingnessGuard": "Below minLots with missing spread/depth evidence records missingness explicitly; it is not labeled bad liquidity.",
+    "downstreamGuard": "fullFormalCounterfactual=false for early rejects"
+  },
+  "limitations": [
+    "PR #121 is Draft and not deployed; its prospective receipts are design/test evidence, not Production observations.",
+    "Population counts are exact only within CURRENT_FEATURE_ROWS, not the whole exchange universe before history/data admission.",
+    "The prototype serializes exact counts plus bounded rejected rows, not immutable full per-symbol admission decision states.",
+    "Attaching the same population receipt to mutable legacy Shadow snapshots does not create immutable generation provenance.",
+    "Spread/depth coverage statistics will quantify field presence only after clean prospective runs; they do not prove the external source is economically valid or PIT-safe.",
+    "No outcomes may be joined until parent generation/source completeness and date coverage are positively established."
+  ],
+  "smallestSafeNextEvidence": {
+    "withoutSharedRuntimeWrites": "Use existing Class-A branch computation/tests to validate deterministic population-count and missingness semantics only.",
+    "productionProspectiveCoverage": "Requires owner-approved Class-B immutable/read-complete capture if promotion-grade live denominators are needed.",
+    "noHistoricalBackfill": true,
+    "noThresholdSweep": true
+  },
+  "classification": {
+    "deterministicHistoryDerivedLiquidityFields": "SOURCE_READY",
+    "exactFormalSpreadDepthFields": "PRODUCTION_COVERAGE_UNKNOWN",
+    "pr121EvidenceCapture": "EVIDENCE_GAP_CAPTURE_CANDIDATE_NOT_FORMAL_OPTIMIZATION",
+    "gateOverlapHistoricalFullPopulation": "UNKNOWN_NOT_RECONSTRUCTABLE",
+    "formalOptimizationCandidate": false
+  },
+  "status": "LIQUIDITY_FIELD_READINESS_SPLIT_FROZEN / PR121_CAPTURE_SEMANTICS_VALIDATED_DESIGN_ONLY / FORMAL_UNCHANGED"
+}
