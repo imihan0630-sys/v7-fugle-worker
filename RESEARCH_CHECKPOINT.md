@@ -1597,3 +1597,25 @@ Updated: 2026-09-27 11:38 Asia/Taipei.
 - Status: `CURRENT_SUMMARY_INSUFFICIENT / CHANNEL_STAGE_DENOMINATOR_CLASS_A_VALIDATED / SIGNAL_GRADE_MONITOR_ORDER_INFLUENCE_CONFIRMED / OUTCOME_MATERIALITY_UNKNOWN / FORMAL_UNCHANGED`.
 - Persistence/runtime wiring of complete denominators remains Class B proposal-first; no such wiring was implemented.
 - Exact next: separate post-grade scarcity from gate scarcity. Audit complete-qualified population vs 3+3 selected population by price pool under the deployed comparator, quantify what existing evidence can and cannot say about quota/cutline displacement, and reuse existing Price-Volume pool-integrity/quota research rather than duplicating it. Keep outcomes closed until denominator and comparator-version provenance are clean.
+
+
+## B-217 — post-grade quota scarcity separated from gate scarcity; full historical displacement remains UNKNOWN (2026-09-27 14:58 Asia/Taipei)
+- Continued B-216 exact-next after fresh canonical read. Reused PVE-153..159 and existing price-pool quota research; did not duplicate the full-pool receipt design and did not inspect outcomes.
+- Formal semantics confirmed: scoreCandidate ok=true is the fully-qualified pre-quota population; deployed independent GENERAL/THOUSAND pools each truncate the ranked qualified list to three seats; no cross-pool backfill.
+- Important diagnostic correction: finalGeneralSelected/finalThousandSelected are post-cut selected counts, not complete qualified denominators. A displayed 3/3 is right-censored for qualifiedCount: it proves qualifiedCount>=3 but cannot distinguish exactly 3 from 4, 10 or more. A displayed 0/3, 1/3 or 2/3 does identify the same-scan qualifiedCount for that pool, assuming the diagnostic derives from the complete scored list.
+- Frozen scarcity taxonomy:
+  - GATE_LIMITED: qualifiedCount<3; unused seat reflects insufficient fully-qualified candidates, not quota displacement.
+  - EXACTLY_FILLED: qualifiedCount=3.
+  - QUOTA_BINDING: qualifiedCount>3; rank4+ rows are fully qualified but quota-displaced, never gate-rejected.
+  - CROSS_POOL_STRANDING: one pool qualifiedCount<3 while the opposite pool qualifiedCount>3; an unused seat coexists with at least one qualified opposite-pool displacement because cross-pool backfill is forbidden.
+  - UNKNOWN_HISTORICAL: complete denominator/comparator/generation lineage unavailable.
+- Current bounded QUALIFIED_NOT_SELECTED Shadow can salvage near-cutline evidence only. It cannot certify complete qualifiedCount, full rank4+ population or historical cross-pool-stranding prevalence. Pre-V8.13 exact comparator replay is additionally incomplete where post-consensus provenance is missing.
+- Repository audit found no implemented immutable PVE-156 pool-integrity table/receipt. PVE-156 remains explicitly NOT_IMPLEMENTED. Therefore historical quota opportunity frequency and full displacement opportunity cost remain UNKNOWN; no current-code historical recomputation may be relabeled PIT.
+- Same-scan feasibility is better than historical persistence: the after-market selector already has complete scored/Formal-ok rows and selected symbols in memory, and the research semantic classifier can rank complete Formal-ok decision states. qualifiedCount, quotaBinding, rank4+ QNS, crossPoolStranding and CUTLINE_NEXT are computable with zero new market calls.
+- Pure computation/tests against already-loaded complete decision states can be Class A. Durable immutable scan/runtime/D1 persistence remains Class B proposal-first. Any quota/backfill change is Class C.
+- Durable artifacts:
+  - research/post_grade_quota_scarcity_accounting_v0_1.json — commit 05b765829e24fa6a8d3674314f31ba888cbac436.
+  - research/quota_scarcity_observer_feasibility_v0_1.json — commit 6891482a59e9feb50ba76b73c014f5707ef637fe.
+- Counterevidence remains active: independent 3+3 may be justified by liquidity, price-level/capital granularity, concentration and execution risk. Mechanical displacement alone is not evidence that cross-pool flexibility improves outcomes.
+- PRICE_POOL_QUOTA_REFORMULATION remains NOT_OPTIMIZATION_READY. No FORMAL_OPTIMIZATION_CANDIDATE and no Formal/runtime behavior changed.
+- Exact next: move one layer downstream from selection scarcity to actionable-opportunity scarcity. Audit whether fully selected plans can still fail to become actionable BUY because of plan construction / buy-zone / freshness / 15-minute confirmation / maxChase sequencing, and separate SELECTED_BUT_NO_BUY causes using existing prospective execution/monitor receipts. Reuse Execution Alpha and BUY funnel research; do not infer no-BUY from absence unless exact-date lifecycle completeness is proven. Preserve FIRST/ADD/REDUCE/RE-ADD state semantics and keep actual fills UNKNOWN without trusted broker lifecycle.
