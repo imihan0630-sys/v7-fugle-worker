@@ -47,7 +47,20 @@ A future coverage audit must distinguish:
 - artifact upload failure;
 - no run.
 
-Until that coverage audit is present, aggregation can report V0.2 statistical readiness but cannot by itself authorize the exact clock.
+The aggregation layer now accepts a separate scheduled-run coverage audit. Each scheduled run is classified with the official TWSE trading-day gate and whether a promotion-grade daily bundle exists.
+
+The wrapper reports:
+- `artifactCoverageAudited`;
+- `promotionCoverageComplete`;
+- `tradingDayArtifactGaps`;
+- `nonTradingScheduledRuns`.
+
+A missing bundle on an official trading day blocks promotion-grade readiness as
+`SCHEDULED_TRADING_DAY_ARTIFACT_GAPS`.
+
+A missing bundle on an official non-trading day is a legitimate skip.
+
+Even complete coverage still does not authorize the exact clock.
 
 ## Readiness calculation
 
