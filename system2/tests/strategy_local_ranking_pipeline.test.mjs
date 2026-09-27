@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { buildRank01OrderingReceipt } from "../runtime/strategy_local_ranking_pipeline.mjs";
+import { buildRank01OrderingReceipt, buildRank02OrderingReceipt } from "../runtime/strategy_local_ranking_pipeline.mjs";
 
 const fam = (thesisState) => ({ observationState: "KNOWN", thesisState });
 
@@ -46,4 +46,14 @@ assert.equal(result.orderingReceipt.candidateCount, 2);
 assert.equal(result.orderingReceipt.orderedCandidates[0].strategyLocalRank, 1);
 assert.equal(result.ranking.noNumericScore, true);
 
-console.log("System2 RANK-01 ordering pipeline tests passed");
+const rank02 = await buildRank02OrderingReceipt({
+  orderingReceiptId: "ORD-RANK02-1",
+  purpose: "GLOBAL_ADMISSION",
+  baselineRanking: result.ranking,
+  capturedAt: "2026-09-27T07:32:00Z",
+});
+
+assert.equal(rank02.orderingReceipt.orderingPolicyId, "SHORT_MOMENTUM-RANK02-ENTRY-PROXIMITY");
+assert.equal(rank02.orderingReceipt.candidateCount, 2);
+
+console.log("System2 RANK-01/RANK-02 ordering pipeline tests passed");
