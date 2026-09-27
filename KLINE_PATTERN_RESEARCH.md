@@ -18316,3 +18316,186 @@ enough to offset:
 - lower BUY trigger rate?
 
 No confirmation method is “better” without charging this lag.
+
+
+## DL-003CS — Minimum Clean Data Envelope for First Pattern Shadow
+
+### Goal
+Define the smallest clean dataset needed to test P-SHADOW-01/02/03 without changing the Formal pipeline.
+
+### Two history tiers
+CORE_PATTERN_120:
+- target >=120 valid symbol trading sessions before each as-of date.
+- purpose: P0 swing/compression/W/reclaim/zone research with enough context around the existing 60-day structure.
+- 120 is a research data envelope, not a profitability-tuned threshold.
+
+LONG_ANCHOR_300:
+- target >=300 valid symbol trading sessions.
+- purpose: 252-session high/low anchors + buffer, longer bases, historical extremeness.
+- not required for first P0 tests.
+
+### Per-bar minimum schema
+IDENTITY
+- symbol
+- date
+- market
+
+RAW EXECUTABLE PRICE
+- rawOpen
+- rawHigh
+- rawLow
+- rawClose
+
+MORPHOLOGY PRICE
+- adjustedOpen
+- adjustedHigh
+- adjustedLow
+- adjustedClose
+- adjustmentFactor/provenance if available
+
+ACTIVITY
+- volumeShares with precision flag
+- tradeValue
+- lot/sub-lot uncertainty flag
+
+SESSION
+- validSymbolSession
+- suspension/resumption tag
+- limitState
+- tickSize/reference-price context when available
+
+CORPORATE ACTION
+- exRightDividend/capitalAction tag
+- adjustmentKnownAt/source provenance
+
+PROVENANCE
+- source
+- fetchedAt
+- dataAvailableAt
+- dataQualityFlags
+
+### P0 required vs optional
+Required for P-SHADOW-01/02/03:
+- adjusted H/L/C
+- raw H/L/C
+- valid session dates
+- volume/value
+- session/limit/corporate-action quality
+- >=CORE_PATTERN history.
+
+Strongly preferred:
+- OPEN retained now even if first tests do not use candles, so later research does not require another schema migration.
+
+Optional later:
+- point-in-time shares outstanding
+- true price-level volume
+- external attention/supply-chain mapping.
+
+## DL-003CT — Raw Levels and Adjusted Geometry Must Coexist
+
+### Reason
+Adjusted prices are useful for:
+- historical topology,
+- returns,
+- swing continuity,
+- corporate-action-safe percentiles.
+
+Raw prices are needed for:
+- actual executable pivot/buy/stop levels,
+- tick sizes,
+- daily limit prices,
+- real current quote comparison.
+
+### Rule
+Never mix an adjusted historical pivot with a raw current quote without an explicit conversion.
+
+Store:
+- geometrySeries = ADJUSTED
+- executableSeries = RAW
+- adjustmentFactorAtAsOf
+
+### Pattern snapshot
+Every key level should identify its coordinate system:
+- adjustedPivot
+- rawEquivalentPivot
+- conversionAsOfDate.
+
+This avoids silent price-space mismatch.
+
+## DL-003CU — Symbol-Session Cleanliness Is a Hard Research Gate
+
+### Evidence already observed
+Provider history can contain flat zero-volume pseudo-bars on suspension dates.
+Sub-lot activity can appear as zero lots with positive turnover.
+
+### Hard gate
+Before swing/pattern calculation:
+- remove/reject non-symbol-session pseudo-bars according to verified historical session membership;
+- do not equate volume=0 lots with no trading when amount>0;
+- preserve suspension gaps as events, not normal quiet bars.
+
+### Consequence
+Pattern duration must count:
+VALID SYMBOL TRADING SESSIONS,
+not provider row count.
+
+### Affected features
+- swing duration
+- cup/W age
+- contraction count/duration
+- volume dry-up
+- ATR
+- time-to-event
+- confirmation lag.
+
+## DL-003CV — Pattern Snapshot Must Be Immutable at Selection Time
+
+### Original snapshot fields
+- scanDate
+- dataThroughDate
+- firstObservableAt
+- detector versions
+- input history hash/version
+- primitive values
+- named labels
+- zones/pivots
+- provisional states
+- data-quality flags.
+
+### Outcome fields
+Must live in a later outcome/update record or append-only extension:
+- Dn
+- MFE/MAE
+- breakout/retest/failure
+- later regime.
+
+Do not recompute the original pattern with future bars and overwrite its historical state.
+
+## DL-003CW — Research Readiness Gate for P-SHADOW-01/02/03
+
+P-SHADOW-01 Sequence Compression:
+READY only if
+- CORE_PATTERN history complete,
+- adjusted morphology ready,
+- symbol-session clean,
+- DC swing detector point-in-time verified.
+
+P-SHADOW-02 True W:
+same requirements +
+- actual intervening neckline can be confirmed as-of date.
+
+P-SHADOW-03 Undercut-Reclaim:
+same requirements +
+- support zone existed before undercut,
+- reclaim state timestamp preserved.
+
+### Not required yet
+- historical OPEN for these three core tests;
+- 252-day anchor;
+- true volume profile;
+- Bry-Boschan second detector.
+
+Independent BB can be added as a later quality-filter experiment after P0 baseline exists.
+
+### Rationale
+This lets the first prospective Pattern evidence accumulate sooner while keeping the initial experiment small and auditable.
