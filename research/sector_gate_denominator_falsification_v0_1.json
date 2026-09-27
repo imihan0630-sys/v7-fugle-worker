@@ -1,0 +1,61 @@
+{
+  "schemaVersion": "SECTOR_GATE_DENOMINATOR_FALSIFICATION_V0_1",
+  "researchDate": "2026-09-27",
+  "class": "A_RESEARCH_ONLY",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "currentFormal": "breadth>=40 && avgChange>=-1 && amountVs20DayAverage>=0.5, with nonfinite breadth/avgChange rejected",
+  "producer": "buildTodaySectorStats(todayRows, featureRows)",
+  "findings": [
+    "The three gate inputs do not share one denominator.",
+    "breadth denominator is every industry todayRow; (changePercent||0)>0 means missing/NaN change is treated as non-advance.",
+    "avgChange denominator is only finite changePercent rows; average of an empty finite set returns 0.",
+    "amountVs20DayAverage denominator/numerator use only rows whose matched feature has historyDays>=20.",
+    "The activity subset does not separately require avgAmount20 to be observed/positive before membership; missing avgAmount20 contributes 0 to the denominator while tradeValue can still contribute to the numerator.",
+    "All three deployed sector statistics include the candidate itself; sectorReturn20 earlier in the pipeline is different and explicitly excludes the candidate from its peer return average.",
+    "Old PR #111 preserves final gate values/pass state but not the mixed denominator counts, missingness composition or candidate self-contribution needed for a promotion-grade falsification."
+  ],
+  "fixedCounterexamples": [
+    {
+      "id": "MISSING_CHANGE_DENOMINATOR_SPLIT",
+      "rows": [
+        "+1%",
+        "-1%",
+        "missing",
+        "missing"
+      ],
+      "deployedBreadth": "25% because missing rows stay in denominator as non-advance",
+      "observedOnlyBreadth": "50%",
+      "avgChange": "0% from the two observed rows only"
+    },
+    {
+      "id": "CANDIDATE_SELF_INFLUENCE",
+      "rows": [
+        "candidate +4%",
+        "peer +0.1%",
+        "peer -2%",
+        "peer -2%"
+      ],
+      "deployed": "breadth 50%, avgChange 0.025%, amount ratio 1 => pass",
+      "leaveOneOut": "breadth 33.3%, avgChange -1.3% => fail",
+      "interpretation": "Self inclusion can mechanically alter current gate state. This does not prove leave-one-out is superior."
+    },
+    {
+      "id": "ACTIVITY_BASELINE_MISSING",
+      "historyReadyRows": 2,
+      "avgAmount20ObservedRows": 1,
+      "consequence": "A history-ready row with missing avgAmount20 can add current tradeValue without adding baseline amount, inflating the activity ratio."
+    }
+  ],
+  "denominatorRules": [
+    "Future receipts must report stockCount, changeObserved/missing counts, breadth denominator, avgChange denominator, activityReady count, avgAmount20 observed/positive counts and candidate contribution.",
+    "Deployed inclusive sector state remains the decision truth; leave-one-out is a research counterfactual only.",
+    "Do not infer sector gate marginal value from bounded SECTOR_GATE_REJECTED Shadow or firstFailure counts."
+  ],
+  "exactNext": [
+    "Freeze prospective same-generation sector denominator receipt with the deployed inclusive values plus denominator composition.",
+    "Audit whether avgAmount20 is guaranteed non-null whenever historyDays>=20 under the active history builder; if not, preserve the missing-baseline state explicitly.",
+    "Only after clean prospective dates mature compare sector-gate rejects versus upstream-clear passes; no threshold sweep."
+  ],
+  "decision": "SECTOR_GATE_MIXED_DENOMINATORS_CONFIRMED / CANDIDATE_SELF_INCLUSION_CONFIRMED / ACTIVITY_BASELINE_MEMBERSHIP_WEAKER_THAN_VALUE_READINESS / PR111_INSUFFICIENT_FOR_DENOMINATOR_CAUSAL_AUDIT / FORMAL_UNCHANGED / NOT_FORMAL_OPTIMIZATION_CANDIDATE"
+}
