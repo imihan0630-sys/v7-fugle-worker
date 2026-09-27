@@ -1,0 +1,70 @@
+{
+  "schemaVersion": "ANNOUNCEMENT_RISK_READINESS_FALSIFICATION_V0_1",
+  "researchDate": "2026-09-27",
+  "class": "A_RESEARCH_ONLY",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "gate": "ANNOUNCEMENT_RISK",
+  "currentFormal": {
+    "prerequisite": "announcementsVerified===true is required by the preceding FINANCIAL_SOURCE_COMPLETENESS bundle",
+    "expression": "(officialAnnouncements || []).some(title => /停止交易|重大損失|重整|退票|財報不實/.test(title))",
+    "lookback": "ANNOUNCEMENTS validator retains rows with announcementDate in [scanDate-30 calendar days, scanDate]",
+    "sourceEndpoints": [
+      "TWSE t187ap04_L",
+      "TPEx mopsfin_t187ap04_O"
+    ],
+    "storedCoverageText": "本次官方重大訊息清單，非全面新聞或全部歷史訂單"
+  },
+  "sourceReadinessFindings": [
+    "The sync script fetches both public endpoints and requires HTTP success before POSTing quality data.",
+    "The Worker validator itself receives payload arrays through the trusted quality-data ingestion boundary; endpoint strings are validated but the server does not independently fetch those URLs.",
+    "ANNOUNCEMENTS has no minimum event-count or per-market row-count acceptance floor. Two empty arrays are structurally compatible with sourcesVerified=true and count=0.",
+    "Zero events can be legitimate, so empty payload is not automatically a source failure. The evidence problem is that the persisted snapshot does not preserve transport status/body hashes/raw per-market counts needed to distinguish a witnessed empty official response from a merely trusted empty injection later.",
+    "sourcesVerified is scan-global and is assigned to every stock; it is not per-symbol coverage.",
+    "Existing quality snapshot storage is mutable by marketDate and readQualitySnapshot returns snapshot JSON rather than an immutable first-known ingestion receipt."
+  ],
+  "lexicalGateFalsification": {
+    "representation": "literal title substring regex only; no negation, resolution state, category id or semantic classifier",
+    "fixedCounterexamples": [
+      {
+        "title": "澄清：本公司並無重大損失",
+        "formalMatch": true,
+        "issue": "negation-blind potential false positive"
+      },
+      {
+        "title": "重整計畫執行完畢，恢復正常營運",
+        "formalMatch": true,
+        "issue": "resolution-state-blind potential false positive"
+      },
+      {
+        "title": "本公司股票自明日起停止買賣",
+        "formalMatch": false,
+        "issue": "synonym/paraphrase potential false negative"
+      },
+      {
+        "title": "財務報告涉有不實",
+        "formalMatch": false,
+        "issue": "lexical-variant potential false negative"
+      }
+    ],
+    "interpretation": "These counterexamples prove representation incompleteness, not economic harm. Current veto may still protect against severe events and must not be relaxed without PIT/OOS outcome evidence."
+  },
+  "denominator": {
+    "formalReach": "Only symbols that positively clear all prior Formal gates through FINANCIAL_SOURCE_COMPLETENESS and for which ANNOUNCEMENT_RISK is evaluable.",
+    "eventRiskFail": "At least one retained 30-day officialAnnouncements title matches the exact deployed regex.",
+    "emptySetPass": "Verified source plus no matching retained per-symbol event rows is Formal PASS under current semantics.",
+    "unknown": "Snapshot/source lineage incomplete, observer version mismatch, or parent Formal reach not positively established."
+  },
+  "evidenceBoundary": [
+    "Historical outcome inference remains closed where first-known source/ingestion lineage is not immutable.",
+    "Do not infer gate marginal value from first-failure counts.",
+    "Do not broaden or narrow regex from synthetic examples alone.",
+    "Do not equate 30-day presence with unresolved risk; event resolution is not encoded."
+  ],
+  "exactNext": [
+    "Freeze a prospective announcement receipt with source fetch time/status/hash, raw TWSE/TPEx row counts, retained 30-day count, per-symbol event ids/titles/dates, parent generation and exact deployed regex version.",
+    "Keep lexical-match state separate from event semantic category/resolution state.",
+    "Only after CLEAN prospective dates mature compare matched-veto versus upstream-clear nonmatched controls with event severity and market/regime controls."
+  ],
+  "decision": "ANNOUNCEMENT_SOURCE_VERIFICATION_IS_SCAN_GLOBAL / VERIFIED_EMPTY_LACKS_PERSISTED_TRANSPORT_WITNESS / TITLE_REGEX_SEMANTICALLY_INCOMPLETE / HISTORICAL_PIT_NOT_CERTIFIED / PROSPECTIVE_CAPTURE_WARRANTED / FORMAL_UNCHANGED / NOT_FORMAL_OPTIMIZATION_CANDIDATE"
+}
