@@ -2821,3 +2821,75 @@ Status:
 `CAP_RESERVE_MECHANISM_PROVEN / HISTORICAL_OCCURRENCE_NOT_OBSERVED / PROSPECTIVE_WATCH_ONLY / ECONOMIC_VALUE_UNKNOWN`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-064 — FIRST-tranche risk concentration test (2026-09-28)
+
+The existing structural evidence uses the full planned allocation, but actual live exposure may stop after FIRST and never reach ADD.
+
+PR-064 tests whether the concentration finding survives when risk is restricted to the Formal 60% FIRST tranche.
+
+For each multi-name date:
+- FIRST amount = round(totalAllocation × 0.60);
+- FIRST preview shares = floor(FIRST amount / buyHigh);
+- FIRST projected stop-risk = FIRST preview notional × conservative stop-risk fraction.
+
+The audit compares:
+1. current PriorityScore sizing;
+2. same-deployment equal capital;
+3. the exhaustive NT$1,000-grid allocation with minimum FIRST-preview risk HHI under the same 35% cap.
+
+The falsification target is lifecycle-stage sensitivity:
+if current FIRST risk is no longer more concentrated than equal-capital/global minimum, the earlier full-plan conclusion must be downgraded.
+
+This remains plan-preview geometry only. It does not assert a BUY trigger, submitted order, fill or realized exposure.
+
+Artifacts:
+`research/first_tranche_risk_concentration_v0_1.mjs`;
+`research/first_tranche_risk_concentration_spec_v0_1.json`;
+`tests/portfolio_risk_first_tranche_readonly_audit.mjs`.
+
+Status:
+`FIRST_TRANCHE_PROTOCOL_READY / PRODUCTION_AUDIT_PENDING`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-064 Production result — concentration survives in FIRST-only exposure
+
+Read-only Production run `36352649582` / job `108714150360` tested 2026-09-18 using only the Formal 60% FIRST tranche.
+
+Current PriorityScore sizing:
+- FIRST preview notional = NT$100,609.21;
+- FIRST projected stop-risk = NT$3,881.77;
+- FIRST HHI = 0.3769514595;
+- FIRST max/min risk = 2.44266646.
+
+Equal-capital:
+- FIRST preview notional = NT$100,484.28;
+- FIRST HHI = 0.3551615396.
+
+Exhaustive 946-state FIRST-only minimum:
+- allocation = 70k / 42k / 56k;
+- FIRST HHI = 0.3343161104.
+
+Thus:
+- current − equal FIRST HHI = +0.0217899199;
+- current − global-min FIRST HHI = +0.0426353491.
+
+Current FIRST-only HHI is also slightly **higher** than current full-plan preview HHI:
+0.3769514595 vs 0.3767077818, delta +0.0002436776.
+
+Therefore the counter-hypothesis
+`the concentration only appears when the full 60%+40% planned position is counted`
+is rejected on the available multi-name witness.
+
+This remains plan-preview geometry, not realized exposure.
+
+Durable receipt:
+`research/first_tranche_risk_production_receipt_20260928.json`.
+
+Status:
+`FIRST_TRANCHE_CONCENTRATION_SURVIVES / LIFECYCLE_STAGE_ARTIFACT_FALSIFIED / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.

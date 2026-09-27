@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "FIRST_TRANCHE_RISK_PRODUCTION_RECEIPT_V0_1",
+  "observedAt": "2026-09-28T05:41:46+08:00",
+  "timestampProvenance": "GitHub Actions Portfolio Risk Tier-A Research run 36352649582 / job 108714150360",
+  "workflowRunId": 36352649582,
+  "jobId": 108714150360,
+  "readOnly": true,
+  "productionWrites": false,
+  "decisionImpact": false,
+  "scanDate": "2026-09-18",
+  "selectedCount": 3,
+  "firstTrancheRatio": 0.6,
+  "currentDeploymentNTD": 168000,
+  "current": {
+    "firstProjectedRiskNTD": 3881.77,
+    "firstProjectedRiskHHI": 0.3769514595,
+    "firstMaxMinProjectedRisk": 2.44266646,
+    "firstPreviewNotionalNTD": 100609.21,
+    "fullProjectedRiskHHI": 0.3767077818,
+    "firstMinusFullHHI": 0.0002436776
+  },
+  "equalCapital": {
+    "firstProjectedRiskNTD": 3772.34,
+    "firstProjectedRiskHHI": 0.3551615396,
+    "firstMaxMinProjectedRisk": 1.89464464,
+    "firstPreviewNotionalNTD": 100484.28
+  },
+  "exhaustiveGrid": {
+    "feasibleStates": 946,
+    "minHHI": 0.3343161104,
+    "uniqueOptimum": true,
+    "optimumAllocationNTD": {
+      "2006": 70000,
+      "3105": 42000,
+      "6133": 56000
+    }
+  },
+  "falsification": {
+    "rejectedClaim": "The full-plan structural concentration disappears when exposure is restricted to the 60% FIRST tranche.",
+    "result": "Rejected. Current FIRST-preview risk remains more concentrated than equal-capital and the exhaustive grid minimum, and its HHI is slightly higher than current full-plan preview HHI."
+  },
+  "limits": [
+    "one reconstructable multi-name date",
+    "plan-preview shares at buyHigh, not fills",
+    "economic value unknown"
+  ],
+  "status": "FIRST_TRANCHE_CONCENTRATION_SURVIVES / LIFECYCLE_STAGE_ARTIFACT_FALSIFIED / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY",
+  "formalCoreImpact": false
+}
