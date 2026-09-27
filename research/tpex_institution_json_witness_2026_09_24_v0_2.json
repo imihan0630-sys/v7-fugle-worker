@@ -1,0 +1,105 @@
+{
+  "schemaVersion": "TPEX_INSTITUTION_JSON_WITNESS_V0_2",
+  "researchDate": "2026-09-28",
+  "source": {
+    "authority": "Taipei Exchange (TPEx)",
+    "url": "https://www.tpex.org.tw/www/zh-tw/insti/dailyTrade?type=Daily&sect=EW&date=115%2F09%2F24&id=&response=json",
+    "payloadDate": "20260924",
+    "tableDate": "115/09/24",
+    "stat": "ok",
+    "template": "/template/insti/dailyTrade",
+    "fetchedLive": true,
+    "rawPayloadSha256": "aede9aa9dbf4dff72a05b241a4e6cff2a3d2d32e5851a7a3b3de726ead18ea99"
+  },
+  "shape": {
+    "topLevelColumnNum": 25,
+    "tableColumnNum": 25,
+    "fieldCount": 24,
+    "totalCount": 896,
+    "rowCount": 896,
+    "fields": [
+      "代號",
+      "名稱",
+      "買進股數",
+      "賣出股數",
+      "買賣超股數",
+      "買進股數",
+      "賣出股數",
+      "買賣超股數",
+      "買進股數",
+      "賣出股數",
+      "買賣超股數",
+      "買進股數",
+      "賣出股數",
+      "買賣超股數",
+      "買進股數",
+      "賣出股數",
+      "買賣超股數",
+      "買進股數",
+      "賣出股數",
+      "買賣超股數",
+      "買進股數",
+      "賣出股數",
+      "買賣超股數",
+      "三大法人買賣超股數合計"
+    ]
+  },
+  "criticalFinding": {
+    "repeatedGenericFields": true,
+    "explanation": "JSON fields identify only code/name plus repeated buy/sell/net labels. Institutional group headers shown in the HTML table are not represented in the 24-field string vector, so exact fields-array matching alone cannot detect every whole-group reorder."
+  },
+  "semanticArithmetic": {
+    "groupNetIdentityStarts": [
+      2,
+      5,
+      8,
+      11,
+      14,
+      17,
+      20
+    ],
+    "foreignAggregate": {
+      "buy": "row[8] == row[2] + row[5]",
+      "sell": "row[9] == row[3] + row[6]",
+      "net": "row[10] == row[4] + row[7]"
+    },
+    "dealerAggregate": {
+      "buy": "row[20] == row[14] + row[17]",
+      "sell": "row[21] == row[15] + row[18]",
+      "net": "row[22] == row[16] + row[19]"
+    },
+    "officialTotal": "row[23] == row[4] + row[13] + row[22]",
+    "currentParserConsistency": "current parser uses row[10]+row[13]+row[22]; on this fixture it also matches because foreign-dealer subgroup is identically zero"
+  },
+  "observed": {
+    "foreignDealerNonzeroRows": 0,
+    "mismatchCounts": {
+      "groupNet": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "foreignAggregateBuy": 0,
+      "foreignAggregateSell": 0,
+      "foreignAggregateNet": 0,
+      "dealerAggregateBuy": 0,
+      "dealerAggregateSell": 0,
+      "dealerAggregateNet": 0,
+      "officialTotal": 0,
+      "currentParserTotal": 0
+    }
+  },
+  "interpretation": [
+    "Current 2026-09-24 fixture passes all arithmetic identities.",
+    "No current production misparse is demonstrated.",
+    "Exact field-string fingerprinting is insufficient by itself because triplet labels repeat.",
+    "A future guard should combine shape/source identity with cross-column arithmetic invariants and fail closed on semantic inconsistency.",
+    "The official total relation should be tracked separately from the current row[10] foreign aggregate assumption; current equality is observationally weak while the foreign-dealer subgroup is all zero."
+  ],
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false
+}
