@@ -243,3 +243,60 @@ Verified:
 - missing regime inputs produce REGIME_INCOMPLETE, not a neutral/negative score.
 
 No regime ranking bonus, activation weight or Risk-on/Risk-off gate was implemented.
+
+
+## RANK-05 incumbent replacement shadow verification (2026-09-27)
+
+Status: PASS / SHADOW COMPARISON ONLY / NO LIVE DISPLACEMENT.
+
+Implemented:
+- `SYSTEM2_RANK05_INCUMBENT_REPLACEMENT_EXPERIMENT_V0_1.md`;
+- `runtime/rank05_displacement_shadow.mjs`;
+- research-only `s2_rank05_displacement_receipts` design + serializer.
+
+Verified:
+- same-strategy challenger with strictly better RANK-01 Pareto tier can be labeled SHADOW_DISPLACEMENT_COMPARISON eligible;
+- same-tier neutral-hash ordering cannot justify replacement;
+- multi-strategy incumbent/challenger pairs are blocked in V0.1 to avoid overlap-confounding;
+- cross-strategy/version-mismatch pairs are not displacement-eligible;
+- action remains SHADOW_COMPARE_ONLY and outcomeAttached=false;
+- incumbent candidate age is recorded but does not create an arbitrary age penalty.
+
+Current real research baseline remains RETAIN_VALID_INCUMBENT.
+
+
+## RANK-06 multi-strategy overlap verification (2026-09-27)
+
+Status: PASS / DESCRIPTIVE OVERLAP ONLY / NO PRIORITY BONUS.
+
+Implemented:
+- `SYSTEM2_RANK06_MULTI_STRATEGY_OVERLAP_EXPERIMENT_V0_1.md`;
+- `runtime/strategy_overlap_receipt.mjs`;
+- research-only overlap storage/serializer.
+
+Verified:
+- PRIMARY/REQUIRED core-family overlap and distinct-family sets are preserved;
+- SWING_GROWTH vs INDUSTRY_TREND correctly exposes shared INDUSTRY_THESIS plus distinct FUNDAMENTAL_QUALITY on Swing Growth;
+- overlap ratios are diagnostics only;
+- naive strategy-count bonus remains explicitly unauthorized;
+- same-clock dual validity is recorded separately from overlap structure.
+
+No global admission, active-monitor or exposure bonus was implemented.
+
+
+## RANK-07 concentration measurement verification (2026-09-27)
+
+Status: PASS / MEASUREMENT ONLY / NO HARD CAP.
+
+Implemented:
+- `SYSTEM2_RANK07_CONCENTRATION_EXPERIMENT_V0_1.md`;
+- `runtime/candidate_concentration_receipt.mjs`;
+- research-only concentration storage/serializer.
+
+Verified:
+- industry concentration, known-industry coverage and known-only HHI are measurable;
+- UNKNOWN industry classification remains UNKNOWN and is not coerced into an "Other" industry;
+- multi-strategy membership counts remain separate from unique-symbol count;
+- concentration admission/eviction/sizing effects are explicitly unauthorized.
+
+Size concentration remains source-blocked until PIT-safe size/market-cap semantics exist.
