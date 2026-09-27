@@ -1,0 +1,52 @@
+{
+  "schemaVersion": "MARKET_CAP_SOURCE_CLASSIFIER_VALIDATION_V0_1",
+  "updatedAtTaipei": "2026-09-27",
+  "researchOnly": true,
+  "outcomeDataUsed": false,
+  "decisionImpact": false,
+  "formalCoreChanged": false,
+  "sourceFiles": [
+    "research/market_cap_source_classifier_v0_1.mjs",
+    "tests/test_market_cap_source_classifier_v0_1.mjs"
+  ],
+  "commits": {
+    "helper": "25709960fa774e0fea01040c74f87bb4750712cf",
+    "test": "499af66d2816752530c1d3f638d78ab767e6539f"
+  },
+  "structuralFinding": {
+    "preMergeRequired": true,
+    "reason": "fetchEnrichment flattens official and custom with object spread and later mergeEnrichment receives only the flattened stock. Source identity cannot be reliably reconstructed post-merge.",
+    "currentOfficialDateLoss": "TPEx profile row Date and TWSE/MOPS fallback exportDate exist upstream, but current official stock/sourceMeta path does not retain per-symbol profile source date in the merged stock evidence.",
+    "currentCustomDateLoss": "normalizeEnrichmentPayload keeps stocks/history/available and drops payload-level meta/asOf."
+  },
+  "classifierSemantics": [
+    "Mirror raw nullish alias selection before numeric conversion exactly as current mergeEnrichment.",
+    "CUSTOM explicit market-cap field wins when the selected raw alias converts numerically.",
+    "Otherwise selected shares source x same-day close is used when numeric/nonzero.",
+    "Custom field presence can overwrite official shares; null/invalid overwrite must not silently recover official value.",
+    "Missing source date/PIT witness remains UNKNOWN even if source type can be structurally identified."
+  ],
+  "adversarialCases": [
+    "CUSTOM_EXPLICIT_MARKET_CAP wins over official shares.",
+    "CUSTOM_SHARES_X_CLOSE overrides official shares.",
+    "OFFICIAL_SHARES_X_CLOSE only when no custom override and positive official source evidence may separately certify date/PIT.",
+    "custom sharesOutstanding=null overwrites official sharesOutstanding and can make market cap unavailable.",
+    "custom marketCapYi='N/A' is non-nullish, so it shadows a lower marketCap100m alias; toNumber fails and the code falls to shares x close instead.",
+    "comma-formatted custom shares such as '1,000,000' are invalid under current toNumber because mergeEnrichment does not use marketNumber there."
+  ],
+  "testExecution": {
+    "fixtureCreated": true,
+    "automaticWorkflowOnMainCommit": false,
+    "ciExecutionObserved": false,
+    "status": "NOT_YET_EXECUTED_BY_CI",
+    "nonClaim": "Do not call the helper validated-by-CI until an executable run is observed."
+  },
+  "implementationBoundary": {
+    "pureClassifier": "Class A isolated research",
+    "runtimeCaptureOfSeparateOfficialCustomObjectsOrSourceDate": "Class B proposal-first if wired into shared scan/runtime/storage",
+    "mergePrecedenceChange": "Class B or higher; not authorized",
+    "marketCapThresholdChange": "Class C owner approval"
+  },
+  "formalOptimizationCandidate": false,
+  "status": "SOURCE_PATH_CLASSIFIER_FROZEN / PREMERGE_PROVENANCE_REQUIRED / DATE_LINEAGE_UNKNOWN / FORMAL_UNCHANGED"
+}
