@@ -571,3 +571,27 @@ Status:
 `POSITIVE_BUY_SIGNAL_PRICE_DURABLE / NO_BUY_DENOMINATOR_UNCERTIFIED / LIVE_SUGGESTED_SHARES_NOT_PERSISTED / FILL_EVIDENCE_SEPARATE`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+### PR-047 addendum — V8.8 execution Shadow does not close the NO-BUY denominator
+
+V8.8.0 adds `trade_research_execution_snapshots`, but its event clock is milestone-based:
+- OPEN_BASELINE;
+- FIRST_10M_COMPLETE;
+- FIRST_15M_COMPLETE;
+- FIRST_30M_COMPLETE;
+- FORMAL_SIGNAL_OBSERVED.
+
+It is not an every-monitor-tick recorder and it has no explicit end-of-session `NO_BUY_EOD` terminal event.
+
+Additional limits:
+- only `result.ok` rows are written;
+- recorder failure is deliberately fail-open;
+- reader is newest-first `LIMIT 500`, returning only `recent.slice(0,80)`.
+
+Therefore V8.8 supplies valuable execution-context snapshots but still cannot turn:
+`no persisted BUY row`
+into:
+`proven complete NO-BUY day`.
+
+A complete NO-BUY needs a separate positive completeness witness or terminal no-entry state. Missing remains UNKNOWN.
