@@ -1,7 +1,7 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-210.
-Updated: 2026-09-27 11:30 Asia/Taipei.
+Checkpoint sequence: B-211.
+Updated: 2026-09-27 11:38 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Detailed B-01..B-123 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
@@ -1490,3 +1490,15 @@ Updated: 2026-09-27 11:30 Asia/Taipei.
 - Earlier cross-sectional audit also froze that R01/R04/R05/R07 raw-row cross-date means are descriptive only under scanDate-as-independent-unit; R08 paired date-level estimator survives. R01/R05 equal-date successors were preregistered. Existing more-complete external-evidence parent-keyset guard remains canonical; a redundant generation-alignment receipt created during this pass was removed rather than inflating research debt.
 - No outcome lookup, threshold tuning, score/quota/capital change or FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
 - Exact next: audit historical/research uses of `baseEligible`, `rrEligible`, exclusion counts and conditionDistribution for semantic overreach. Any claim that treats those counters as independent gate effects or additive funnel losses must be corrected/descriptive-only. Then continue candidate-scarcity research only with explicit stage denominators and immutable semantic receipts.
+
+
+## B-211 — Historical funnel-counter usage audit closed without false correction (2026-09-27 11:38 Asia/Taipei)
+- Fresh canonical had already advanced through B-210 and completed the B-205 Class-A semantic-classifier feasibility/prototype with green CI; that work was incorporated and not repeated.
+- Audited repository research assets for exact uses of baseEligible, rrEligible, conditionDistribution and diagnostics.exclusions. Search found executable references in Worker/legacy snapshot plus the new canonical semantic documentation; no separate current research artifact was found that treats these exact counters as additive independent gate effects or causal recovered-candidate estimates.
+- Therefore no historical research file was rewritten merely to manufacture a correction. This is a negative audit result: current repository evidence does not justify claiming a live semantic-overreach defect for these exact counters beyond the risks already frozen in B-209/B-210.
+- Safe aliases remain: baseEligible = EARLY_BASE_ADMITTED_BEFORE_DOWNSTREAM_PRECISION_GATES; rrEligible = PASSED_ALL_THROUGH_RR_BEFORE_FINAL_SIGNAL_GRADE; conditionDistribution = EARLY_BASE_COHORT_PATTERN_DIAGNOSTIC; exclusions = FIRST_FAILURE_UNDER_FORMAL_ORDER_COUNTS.
+- Explicitly forbidden inference remains: baseEligible-rrEligible is not RR-gate loss; exclusion count is not marginal gate contribution; conditionDistribution is not the sequential setup-gate population; top-level + thousandStockPool counters are not additive because thousand is already included in top-level.
+- Older chat summaries/external prose using shorthand funnel language are not silently promoted into causal evidence. Without a versioned receipt they remain descriptive-only/UNKNOWN for marginal gate effect.
+- Durable machine audit: research/formal_funnel_historical_usage_audit_v0_1.json commit 989bdf9231a1760aae1449f0ff3702c2f0ff2b16.
+- No outcome lookup, threshold/quota/ranking/capital change, Worker/runtime/Production change or FORMAL_OPTIMIZATION_CANDIDATE.
+- Exact next continuation: candidate-scarcity research should now use the B-210 semantic classifier plus explicit stage denominators. Audit the next structural scarcity layer that is observable pre-outcome: quantify which Formal stages can be represented as PASS/FAIL/UNKNOWN/NOT_EVALUABLE from immutable same-scan inputs without interpreting first-failure counts causally. Freeze one-gate-at-a-time replay semantics and transition accounting; do not inspect outcomes or tune thresholds. If a prospective receipt/storage dependency is required, keep computation Class A and storage Class B proposal-first.
