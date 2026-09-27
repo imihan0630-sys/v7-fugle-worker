@@ -18,10 +18,28 @@ function isPlainObject(value) {
   return proto === Object.prototype || proto === null;
 }
 
+function assertValidUnicodeString(text, path="$") {
+  for (let i=0;i<text.length;i+=1) {
+    const cu=text.charCodeAt(i);
+    if (cu>=0xD800 && cu<=0xDBFF) {
+      if (i+1>=text.length) throw new Error("LONE_HIGH_SURROGATE:" + path);
+      const next=text.charCodeAt(i+1);
+      if (next<0xDC00 || next>0xDFFF) throw new Error("LONE_HIGH_SURROGATE:" + path);
+      i+=1;
+      continue;
+    }
+    if (cu>=0xDC00 && cu<=0xDFFF) throw new Error("LONE_LOW_SURROGATE:" + path);
+  }
+}
+
 function assertSupported(value, path="$") {
   if (value === null) return;
   const type=typeof value;
-  if (type === "string" || type === "boolean") return;
+  if (type === "string") {
+    assertValidUnicodeString(value,path);
+    return;
+  }
+  if (type === "boolean") return;
   if (type === "number") {
     if (!Number.isFinite(value)) throw new Error("NON_FINITE_NUMBER:" + path);
     return;
@@ -41,6 +59,7 @@ function assertSupported(value, path="$") {
 
   if (!isPlainObject(value)) throw new Error("NON_PLAIN_OBJECT_NOT_ALLOWED:" + path);
   for (const key of Object.keys(value)) {
+    assertValidUnicodeString(key,path + ".<key>");
     assertSupported(value[key],path + "." + key);
   }
 }
