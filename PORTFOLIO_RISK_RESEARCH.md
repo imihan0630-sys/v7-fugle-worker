@@ -3125,3 +3125,38 @@ Status:
 `CURRENT_NOT_LOCAL_CONCENTRATION_OPTIMUM / TWO_STRICTLY_DOMINATING_ONE_GRID_MOVES / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-068 — local one-grid direction across entry references (2026-09-28)
+
+PR-067 found two NT$1,000 moves out of 3105 that improve all 15 FIRST/ADD/FULL × concentration-metric cells under buyHigh plan-preview semantics.
+
+PR-068 asks whether that local downhill direction is itself a buyHigh artifact.
+
+For each legal one-grid transfer, evaluate pre-share projected-risk concentration under:
+- buyLow;
+- midpoint;
+- buyHigh;
+
+using:
+- HHI;
+- Gini;
+- CV;
+- maximum risk share;
+- max/min.
+
+That creates 15 reference × metric cells per move.
+
+A move dominates only if it improves at least one cell and worsens none. The key falsification is whether the PR-067 moves away from 3105 lose their dominance under lower entry references.
+
+This layer intentionally removes share-floor effects to isolate `allocation × stop-distance` geometry.
+
+Artifacts:
+`research/local_reference_reallocation_v0_1.mjs`;
+`research/local_reference_reallocation_spec_v0_1.json`;
+`tests/portfolio_risk_local_reference_reallocation_readonly_audit.mjs`.
+
+Status:
+`LOCAL_REFERENCE_PROTOCOL_READY / PRODUCTION_AUDIT_PENDING`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
