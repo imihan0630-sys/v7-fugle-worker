@@ -61,6 +61,10 @@ const result = buildDecisionClockDailyEvidence({
   dependencySeriesReport,
   createdAt: "2026-09-29T05:46:00Z",
 });
+assert.equal(result.evidenceSemanticsVersion, "S2_DECISION_CLOCK_DAILY_EVIDENCE_SEMANTICS_V0_2_1");
+assert.equal(result.sameSessionClockReady, true);
+assert.equal(result.a5AvailableByCandidate, true);
+assert.equal(result.candidateTimestamp, "2026-09-29T06:00:00.000Z");
 assert.equal(result.requiredReady, true);
 assert.equal(result.precisionEligible, true);
 assert.equal(result.worstObservedRequiredUpperBoundMinutes, 15);
@@ -85,5 +89,48 @@ const imprecise = buildDecisionClockDailyEvidence({
 });
 assert.equal(imprecise.requiredReady, true);
 assert.equal(imprecise.precisionEligible, false);
+
+
+const lateA5 = buildDecisionClockDailyEvidence({
+  evidenceId: "E3",
+  sourceArrivalReport,
+  dependencySeriesReport: {
+    ...dependencySeriesReport,
+    dependencySummaries: dependencySeriesReport.dependencySummaries.map((x) =>
+      x.dependency === "A5_QUARTERLY_FINANCIALS"
+        ? {
+            ...x,
+            firstReadyAt: "2026-09-29T06:10:00Z",
+          }
+        : x),
+  },
+  createdAt: "2026-09-29T06:11:00Z",
+});
+assert.equal(lateA5.sameSessionClockReady, true);
+assert.equal(lateA5.candidateTaipeiTime, "14:00");
+assert.equal(lateA5.candidateTimestamp, "2026-09-29T06:00:00.000Z");
+assert.equal(lateA5.a5ObservedAtDecisionBoundary, "2026-09-29T06:10:00Z");
+assert.equal(lateA5.a5AvailableByCandidate, false);
+assert.equal(lateA5.requiredReady, false);
+assert.equal(lateA5.precisionEligible, false);
+assert.equal(lateA5.worstObservedRequiredUpperBoundMinutes, 15);
+
+const exactBoundaryA5 = buildDecisionClockDailyEvidence({
+  evidenceId: "E4",
+  sourceArrivalReport,
+  dependencySeriesReport: {
+    ...dependencySeriesReport,
+    dependencySummaries: dependencySeriesReport.dependencySummaries.map((x) =>
+      x.dependency === "A5_QUARTERLY_FINANCIALS"
+        ? {
+            ...x,
+            firstReadyAt: "2026-09-29T06:00:00Z",
+          }
+        : x),
+  },
+  createdAt: "2026-09-29T06:01:00Z",
+});
+assert.equal(exactBoundaryA5.a5AvailableByCandidate, true);
+assert.equal(exactBoundaryA5.requiredReady, true);
 
 console.log("System2 daily decision-clock evidence tests passed");
