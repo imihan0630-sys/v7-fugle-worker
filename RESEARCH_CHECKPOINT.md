@@ -1,7 +1,7 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-202.
-Updated: 2026-09-27 08:30 Asia/Taipei.
+Checkpoint sequence: B-205.
+Updated: 2026-09-27 11:30 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Detailed B-01..B-123 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
@@ -1399,3 +1399,19 @@ Updated: 2026-09-27 08:30 Asia/Taipei.
 - Draft PR #117 remains a reason-starvation repair only; Draft PR #121 remains a liquidity-admission evidence-capture prototype only. Both now carry comments warning that they do not solve first-failure attribution or BROAD_CONTROL semantics.
 - Status: `SHADOW_EVIDENCE_SEMANTICS_RISK_CONFIRMED / R02_PROMOTION_GUARDED / FORMAL_CORE_UNCHANGED`.
 - Exact next: audit whether the Shadow persistence layer can overwrite same-date first-known evidence on rerun/retry and whether this can silently change cohort membership/provenance. If confirmed, design an append-only/versioned receipt or provenance overlay before using same-date replay for promotion-grade inference.
+
+
+## B-205 — Shadow semantic membership repair contract frozen; evidence firewall unified (2026-09-27 11:30 Asia/Taipei)
+- Fresh-read canonical had advanced through B-204; B-202 fill-ledger implementation remains parked at explicit Class-B owner-approval boundary and was not touched.
+- Continued B-204 highest-value evidence issue rather than adding another factor. Source audit confirms the core defect is estimand construction: current single primary cohort + bounded sampling cannot represent semantic membership and independent control membership simultaneously.
+- Frozen a versioned multi-label semantic layer before sampling: FORMAL_SELECTED, FORMAL_QUALIFIED_NOT_SELECTED, DOWNSTREAM_FIRST_FAILURE, BASE_FIRST_FAILURE, CHANNEL_NEAR_MISS, DATA_READINESS_FAILURE, UNIVERSE_POLICY_EXCLUDED, BROAD_MARKET_FRAME_ELIGIBLE, UNKNOWN_SEMANTIC_STATE.
+- Two control estimands are now explicitly incompatible and must never be hybridized: BROAD_MARKET_CONTROL = independently frozen broad frame, overlap with focal Formal-state membership allowed but recorded; RESIDUAL_CONTROL = complete semantic classification first, then exclude full focal populations before sampling.
+- Denominator-before-sample contract frozen per scanDate/pool: semanticPopulationCount, broadFrameCount, residualFrameCount, unknownSemanticCount, sampledCount, sampleCap, samplingRuleVersion. Missing complete classification => denominator UNKNOWN and opportunity-cost inference blocked.
+- First-failure firewall strengthened: fail-fast reason is firstFailureUnderFormalOrder, never marginal/unique gate contribution. Any future one-gate ablation must record accepted-set delta AND next-failure transition from immutable same-scan inputs.
+- NEAR_MISS repair requirement frozen: preserve failed A/B check IDs plus continuous threshold distances and pre-truncation pool/channel counts; missingCount alone is not distance and global top-12 cannot estimate prevalence.
+- Unified the same repair with B-203 3+3 research: complete Formal-qualified per-pool list/ranks, comparatorVersion, selectedFlag and tie/preSort lineage are required before full quota opportunity-cost inference. Bounded QNS remains cutline evidence only.
+- Promotion firewall: historical Selected/BROAD_CONTROL and NearMiss/BROAD_CONTROL remain DESCRIPTIVE_ONLY under current ambiguous semantics; rejected-gate opportunity cost requires certified reason denominators; 3+3 displacement requires complete pool integrity. No contaminated cohort may promote a Formal optimization.
+- Engineering classification frozen: a pure post-feature/pre-outcome classifier can be Class A only if it reuses existing in-memory feature/result objects, makes zero new market calls, writes additive research storage only and has no Formal read dependency. Shared scan-flow/persistence replacement/runtime dependency => Class B proposal-first.
+- Durable artifacts: SHADOW_SEMANTIC_MEMBERSHIP_REPAIR_SPEC.md commit 52753a3e612b32ea2e74b69f7a738af07fd823da; research/shadow_semantic_membership_repair_v0_1.json commit ab5b4374438d189337ffc78e1b350eb0d8a19fc7.
+- No outcome lookup, threshold sweep, Worker/runtime/Production/Formal change or FORMAL_OPTIMIZATION_CANDIDATE. This is evidence infrastructure required before trustworthy gate/quota/Selection-Alpha conclusions.
+- Exact next continuation: perform a bounded source-level feasibility audit of current after-market in-memory objects to determine whether complete semantic counts and complete per-pool qualified ranks can be generated after scoreCandidate without extra market calls and without changing Formal ordering. If yes, prepare isolated Class-A prototype + invariant tests; if current persistence key/schema cannot express multi-label membership without shared runtime change, split pure computation (Class A) from storage proposal (Class B) and stop only the Class-B implementation. Then continue automatically into an independent research lane while prospective clean cohorts accumulate.
