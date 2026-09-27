@@ -119,3 +119,25 @@ assert.deepEqual(AB_SETUP_MARGIN_CHECK_ORDER.B,["trend","breakout","volume","str
 }
 
 console.log(JSON.stringify({ok:true,rawMargins:true,bitmasks:true,noCompositeDistance:true,formalCoreImpact:false},null,2));
+
+
+// Strong-close algebraically dominates upper-shadow under coherent OHLC geometry.
+// Therefore strongClose=true with upperShadow=false is structurally impossible.
+{
+  for(let high=1;high<=10;high+=1){
+    const low=0,range=high-low;
+    for(let open=0;open<=high;open+=0.5){
+      for(let close=0;close<=high;close+=0.5){
+        const closePos=(close-low)/range;
+        const upper=(high-Math.max(open,close))/range;
+        assert.ok(upper<=1-closePos+1e-12);
+        if(closePos>=0.65) assert.ok(upper<=0.35+1e-12);
+        if(upper>0.35+1e-12) assert.ok(closePos<0.65);
+      }
+    }
+  }
+  // Zero-range branch from buildMarketFeatures: strongClose fails while upperShadow passes.
+  const closePos=0.5,upper=0;
+  assert.equal(closePos>=0.65,false);
+  assert.equal(upper<=0.35,true);
+}
