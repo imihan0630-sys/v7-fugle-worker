@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "institutional-ownership-cadence-pit-audit-v0.1",
+  "researchDate": "2026-09-28",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "question": "Can TDCC 400-lot-plus ownership concentration be interpreted as same-cadence institutional evidence inside institutionalScore?",
+  "evidence": [
+    "Formal institutionalScore adds 0.15*chipConcentration (max 15) alongside daily/3-session institutional flow terms.",
+    "TDCC parser defines chipConcentration as 400-lot-plus holding ratio and explicitly states weekly data; not main-force or institutional identity.",
+    "Parser preserves chipAsOfDate and chipDefinition upstream and rejects TDCC rows older than 14 calendar days for the scan date.",
+    "After-market scan requires a TDCC quality snapshot for marketDate and merges its per-symbol fields before Formal scoring.",
+    "Prospective trade research snapshot serialization preserves chipConcentration but does not preserve chipAsOfDate/chipDefinition, so the row cannot self-authenticate ownership vintage/cadence."
+  ],
+  "falsification": [
+    "A weekly ownership level is not a daily institutional-flow observation and must not be described as same-day institutional conviction.",
+    "Repeated daily use of an unchanged weekly level does not create new independent evidence; outcome inference must cluster/deduplicate by TDCC vintage when studying this component.",
+    "400-lot-plus holders are identity-agnostic; passive/index/institutional/strategic/other large holders cannot be separated from chipConcentration alone.",
+    "No outcome evidence was inspected, so usefulness or sign of the ownership component remains UNKNOWN."
+  ],
+  "safeResearchContract": {
+    "ownershipFamily": "OWNERSHIP_STOCK_SLOW",
+    "flowFamily": "INSTITUTION_FLOW_FAST",
+    "requiredForOwnershipPIT": [
+      "chipConcentration",
+      "chipAsOfDate",
+      "chipDefinition",
+      "scanDate"
+    ],
+    "cadenceRule": "Do not count multiple scanDates sharing one chipAsOfDate as independent ownership-vintage observations.",
+    "missingVintage": "UNKNOWN_PROVENANCE",
+    "passiveIndexContamination": "UNKNOWN_UNIDENTIFIABLE_FROM_TDCC_BRACKET"
+  },
+  "engineering": {
+    "classA": "Research-only cadence/PIT classifier or observer over rows that already carry chipAsOfDate.",
+    "classB": "Adding chipAsOfDate/chipDefinition to shared prospective research persistence/runtime serialization if no isolated path exists.",
+    "classC": "Any change to institutionalScore ownership weight/sign or Formal interpretation."
+  },
+  "status": "OWNERSHIP_FLOW_CADENCE_MISMATCH_CONFIRMED / UPSTREAM_VINTAGE_EXISTS / DOWNSTREAM_RESEARCH_ROW_VINTAGE_ABSENT / PASSIVE_INDEX_IDENTITY_UNKNOWN / OUTCOMES_CLOSED / FORMAL_UNCHANGED",
+  "exactNext": "Audit whether an existing research-only quality snapshot or same-generation join can attach TDCC asOfDate to prospective research rows without shared-runtime persistence changes. If yes, define a Class-A ownership-vintage deduplication observer. If not, freeze a minimal Class-B provenance-preservation proposal. Then audit passive/index contamination observability from already-preserved fields; do not infer motives from TDCC brackets."
+}
