@@ -1,6 +1,10 @@
 import { deepFreeze } from "./factor_snapshot.mjs";
 import { rankStrategyLocalBaseline } from "./strategy_local_ranking_baseline.mjs";
 import { buildStrategyOrderingReceipt } from "./strategy_ordering_receipt.mjs";
+import {
+  rankGlobalAdmissionWithEntryProximity,
+  rankActiveMonitorWithEntryReadiness,
+} from "./strategy_local_ranking_entry_readiness.mjs";
 
 export async function buildRank01OrderingReceipt({
   orderingReceiptId,
@@ -56,5 +60,55 @@ export async function buildRank01OrderingReceipt({
     ranking,
     orderingReceipt: receipt,
     unranked: ranking.unranked,
+  });
+}
+
+
+export async function buildRank02OrderingReceipt({
+  orderingReceiptId,
+  purpose,
+  baselineRanking,
+  capturedAt,
+} = {}) {
+  if (!baselineRanking || typeof baselineRanking !== "object") {
+    throw new Error("baselineRanking is required");
+  }
+
+  let challenger;
+  if (purpose === "GLOBAL_ADMISSION") {
+    challenger = rankGlobalAdmissionWithEntryProximity(baselineRanking);
+  } else if (purpose === "ACTIVE_INTRADAY_MONITOR") {
+    challenger = rankActiveMonitorWithEntryReadiness(baselineRanking);
+  } else {
+    throw new Error(`unsupported RANK-02 purpose: ${purpose}`);
+  }
+
+  const receipt = await buildStrategyOrderingReceipt({
+    orderingReceiptId,
+    marketDate: challenger.marketDate,
+    decisionTimestamp: challenger.decisionTimestamp,
+    purpose,
+    strategyId: challenger.strategyId,
+    strategyVersion: challenger.strategyVersion,
+    orderingPolicyId: challenger.orderingPolicyId,
+    orderingPolicyVersion: challenger.orderingPolicyVersion,
+    orderedCandidates: challenger.ranked.map((row) => ({
+      symbol: row.symbol,
+      decisionId: row.decisionId,
+      strategyId: row.strategyId || challenger.strategyId,
+      strategyVersion: row.strategyVersion || challenger.strategyVersion,
+      strategyValidity: row.strategyValidity || "VALID",
+      entryReadiness: row.entryReadiness,
+      strategyLocalRank: row.strategyLocalRank,
+      strategyLocalRankVersion: row.strategyLocalRankVersion,
+      reasonCodes: row.reasonCodes || [],
+      warnings: row.warnings || [],
+    })),
+    capturedAt,
+  });
+
+  return deepFreeze({
+    challenger,
+    orderingReceipt: receipt,
   });
 }
