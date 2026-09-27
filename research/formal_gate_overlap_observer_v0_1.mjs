@@ -232,3 +232,138 @@ export function observeFormalGateOverlap({
     formalCoreImpact:false
   };
 }
+
+
+export const FORMAL_GATE_OBSERVER_ORDER=Object.freeze([
+  "PRICE_FLOOR",
+  "HISTORY_60D",
+  "RS_CONTEXT",
+  "MARKET_CAP_FLOOR",
+  "DAILY_ABNORMALITY",
+  "LIQUIDITY",
+  "SMALL_CAP_SPECIAL",
+  "MID_CAP_LIQUIDITY",
+  "CHIP_CONCENTRATION_PRESENT",
+  "FINANCIAL_SOURCE_COMPLETENESS",
+  "ANNOUNCEMENT_RISK",
+  "VALUATION_RELATIVE_RISK",
+  "SECTOR_GATE",
+  "AB_SETUP",
+  "FUNDAMENTAL_COMPONENT_COUNT",
+  "FUNDAMENTAL_QUALITY",
+  "ATR_QUALITY",
+  "TARGET_AVAILABLE",
+  "REWARD_RISK",
+  "FINAL_SIGNAL_GRADE"
+]);
+
+export function replayOneGateRemoval(observer,removeGateId){
+  const gates=observer?.gates||{};
+  const removeId=String(removeGateId||"");
+  if(!FORMAL_GATE_OBSERVER_ORDER.includes(removeId)) throw new Error("unknown-remove-gate:"+removeId);
+  if(!gates[removeId]) throw new Error("observer-missing-remove-gate:"+removeId);
+
+  for(const gateId of FORMAL_GATE_OBSERVER_ORDER){
+    if(gateId===removeId) continue;
+    const row=gates[gateId];
+    if(!row){
+      return {
+        schemaVersion:"formal-one-gate-replay-v0.1",
+        removedGateId:removeId,
+        removedOriginalState:gates[removeId]?.status||null,
+        result:"COUNTERFACTUAL_UNRESOLVED",
+        blockerGateId:gateId,
+        blockerState:"UNKNOWN",
+        nextFailureGateId:null,
+        acceptedDelta:null,
+        reason:"GATE_RECEIPT_MISSING",
+        researchOnly:true,decisionImpact:false,formalCoreImpact:false
+      };
+    }
+    if(row.status===GATE_STATE.UNKNOWN||row.status===GATE_STATE.NOT_EVALUABLE){
+      const laterKnownFail=FORMAL_GATE_OBSERVER_ORDER
+        .slice(FORMAL_GATE_OBSERVER_ORDER.indexOf(gateId)+1)
+        .filter(id=>id!==removeId)
+        .find(id=>gates[id]?.status===GATE_STATE.FAIL)||null;
+      return {
+        schemaVersion:"formal-one-gate-replay-v0.1",
+        removedGateId:removeId,
+        removedOriginalState:gates[removeId]?.status||null,
+        result:"COUNTERFACTUAL_UNRESOLVED",
+        blockerGateId:gateId,
+        blockerState:row.status,
+        laterKnownFailGateId:laterKnownFail,
+        nextFailureGateId:null,
+        acceptedDelta:null,
+        reason:"UNRESOLVED_GATE_PRECEDES_EXACT_REPLAY_RESULT",
+        researchOnly:true,decisionImpact:false,formalCoreImpact:false
+      };
+    }
+    if(row.status===GATE_STATE.FAIL){
+      return {
+        schemaVersion:"formal-one-gate-replay-v0.1",
+        removedGateId:removeId,
+        removedOriginalState:gates[removeId]?.status||null,
+        result:"NEXT_FAILURE",
+        blockerGateId:null,
+        blockerState:null,
+        nextFailureGateId:gateId,
+        acceptedDelta:0,
+        reason:"NEXT_OBSERVED_FAIL_UNDER_FROZEN_GATE_ORDER",
+        researchOnly:true,decisionImpact:false,formalCoreImpact:false
+      };
+    }
+  }
+  return {
+    schemaVersion:"formal-one-gate-replay-v0.1",
+    removedGateId:removeId,
+    removedOriginalState:gates[removeId]?.status||null,
+    result:"REPLAY_ACCEPTED",
+    blockerGateId:null,
+    blockerState:null,
+    nextFailureGateId:null,
+    acceptedDelta:1,
+    reason:"ALL_OTHER_OBSERVED_GATES_PASS",
+    researchOnly:true,decisionImpact:false,formalCoreImpact:false,
+    warning:"Research counterfactual only; never relabel as Formal-selected."
+  };
+}
+
+export function replayObservedFailGates(observer){
+  const gates=observer?.gates||{};
+  const rows=[];
+  for(const gateId of FORMAL_GATE_OBSERVER_ORDER){
+    if(gates[gateId]?.status!==GATE_STATE.FAIL) continue;
+    rows.push(replayOneGateRemoval(observer,gateId));
+  }
+  return {
+    schemaVersion:"formal-one-gate-replay-set-v0.1",
+    originalFormalResult:observer?.formalResult||null,
+    replayCount:rows.length,
+    rows,
+    rule:"One gate removed at a time. UNKNOWN/NOT_EVALUABLE blocks exact accepted-set and next-failure attribution.",
+    researchOnly:true,decisionImpact:false,formalCoreImpact:false
+  };
+}
+
+export function summarizeGateOverlapObservers(observers=[]){
+  const byGate=Object.fromEntries(FORMAL_GATE_OBSERVER_ORDER.map(id=>[
+    id,{PASS:0,FAIL:0,UNKNOWN:0,NOT_EVALUABLE:0,total:0}
+  ]));
+  let rows=0;
+  for(const observer of Array.isArray(observers)?observers:[]){
+    rows+=1;
+    for(const gateId of FORMAL_GATE_OBSERVER_ORDER){
+      const status=observer?.gates?.[gateId]?.status;
+      if(!GATE_STATE[status]) continue;
+      byGate[gateId][status]+=1;
+      byGate[gateId].total+=1;
+    }
+  }
+  return {
+    schemaVersion:"formal-gate-overlap-summary-v0.1",
+    rows,byGate,
+    rule:"Per-gate FAIL prevalence overlaps across gates. Counts are not additive and are not marginal gate contribution.",
+    researchOnly:true,decisionImpact:false,formalCoreImpact:false
+  };
+}
