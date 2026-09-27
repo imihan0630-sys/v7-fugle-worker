@@ -20,7 +20,12 @@ function makeBundle(marketDate, upper, runId, workflowSha, fingerprint = "collec
     evidence: {
       evidenceId: "E-" + marketDate,
       evidenceVersion: "S2_DECISION_CLOCK_DAILY_EVIDENCE_V0_2",
+      evidenceSemanticsVersion: "S2_DECISION_CLOCK_DAILY_EVIDENCE_SEMANTICS_V0_2_1",
       marketDate,
+      sameSessionClockReady: true,
+      a5ObservedAtDecisionBoundary: marketDate + "T05:30:00Z",
+      a5AvailableByCandidate: true,
+      candidateTimestamp: marketDate + "T06:00:00Z",
       requiredReady: true,
       precisionEligible: true,
       worstObservedRequiredUpperBoundMinutes: upper,
@@ -136,6 +141,7 @@ try {
     assert.equal(report.aggregation.manualDiagnosticArtifactCount, 1);
     assert.equal(report.aggregation.promotionCoverageComplete, true);
     assert.equal(report.aggregation.tradingDayArtifactGaps.length, 0);
+    assert.deepEqual(report.aggregation.a5BoundaryFailureDates, []);
     assert.equal(report.aggregation.collectorContractConsistent, true);
     assert.deepEqual(report.aggregation.collectorContractFingerprints, ["collector-fp-A"]);
     assert.equal(report.coverageIntegrity.tradingDayGapDates.length, 0);
@@ -150,6 +156,7 @@ try {
     assert.equal(report.reviewPacket.laterScheduledRunsCannotRepairAnchor, true);
     assert.equal(report.reviewPacket.collectorContractConsistent, true);
     assert.deepEqual(report.reviewPacket.collectorContractFingerprints, ["collector-fp-A"]);
+    assert.deepEqual(report.reviewPacket.a5BoundaryFailureDates, []);
     assert.equal(report.reviewPacket.exactDecisionClockAuthorized, false);
     assert.equal(report.safety.system2D1Written, false);
     assert.equal(report.safety.system2WorkerCronMutated, false);

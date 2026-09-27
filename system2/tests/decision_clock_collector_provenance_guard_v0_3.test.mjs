@@ -29,7 +29,12 @@ function candidate({
       evidence: {
         evidenceId: "E-1",
         evidenceVersion: "S2_DECISION_CLOCK_DAILY_EVIDENCE_V0_2",
+        evidenceSemanticsVersion: "S2_DECISION_CLOCK_DAILY_EVIDENCE_SEMANTICS_V0_2_1",
         marketDate: "2026-09-29",
+        sameSessionClockReady: true,
+        a5ObservedAtDecisionBoundary: "2026-09-29T05:30:00Z",
+        a5AvailableByCandidate: true,
+        candidateTimestamp: "2026-09-29T06:00:00Z",
         requiredReady: true,
         precisionEligible: true,
         worstObservedRequiredUpperBoundMinutes: 15,

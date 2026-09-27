@@ -29,6 +29,13 @@ function timeFromMinutesAfterClose(minutes) {
   return `${String(hour).padStart(2, "0")}:${String(minute).padStart(2, "0")}`;
 }
 
+function timestampFromMinutesAfterClose(marketDate, minutes) {
+  if (!Number.isFinite(minutes)) return null;
+  const close = Date.parse(`${marketDate}T13:30:00+08:00`);
+  if (!Number.isFinite(close)) return null;
+  return new Date(close + minutes * 60_000).toISOString();
+}
+
 export function buildDecisionClockDailyEvidence({
   evidenceId,
   sourceArrivalReport,
@@ -90,10 +97,39 @@ export function buildDecisionClockDailyEvidence({
     },
   ];
 
-  const requiredReady =
+  const sameSessionClockReady =
     measurement.dailyGateComplete === true
-    && dependencySeriesReport.dependencyCoverage?.[A5_DEPENDENCY] === true
     && dependencySeriesReport.dependencyCoverage?.[B2_DEPENDENCY] === true;
+
+  const upperBounds = clockRows
+    .map((row) => row.latencyUpperBoundMinutes)
+    .filter(Number.isFinite);
+  const worstUpperBound =
+    sameSessionClockReady && upperBounds.length === clockRows.length
+      ? Math.max(...upperBounds)
+      : null;
+  const candidateMinutesAfterClose = Number.isFinite(worstUpperBound)
+    ? roundUpFive(worstUpperBound + safetyBufferMinutes)
+    : null;
+  const candidateTimestamp = timestampFromMinutesAfterClose(
+    marketDate,
+    candidateMinutesAfterClose,
+  );
+
+  const a5ObservedAt = a5?.firstReadyAt || null;
+  const a5CoverageObserved =
+    dependencySeriesReport.dependencyCoverage?.[A5_DEPENDENCY] === true
+    && a5?.readyObserved === true
+    && Boolean(a5ObservedAt);
+  const a5AvailableByCandidate = Boolean(
+    a5CoverageObserved
+    && candidateTimestamp
+    && Date.parse(a5ObservedAt) <= Date.parse(candidateTimestamp)
+  );
+
+  const requiredReady =
+    sameSessionClockReady
+    && a5AvailableByCandidate === true;
 
   const precisionEligible = requiredReady && clockRows.every((row) =>
     row.readyObserved === true
@@ -101,16 +137,6 @@ export function buildDecisionClockDailyEvidence({
     && Number.isFinite(row.observationIntervalMinutes)
     && row.observationIntervalMinutes <= maximumObservationIntervalMinutes
   );
-
-  const upperBounds = clockRows
-    .map((row) => row.latencyUpperBoundMinutes)
-    .filter(Number.isFinite);
-  const worstUpperBound = requiredReady && upperBounds.length === clockRows.length
-    ? Math.max(...upperBounds)
-    : null;
-  const candidateMinutesAfterClose = Number.isFinite(worstUpperBound)
-    ? roundUpFive(worstUpperBound + safetyBufferMinutes)
-    : null;
 
   return deepFreeze({
     evidenceId: requiredText(evidenceId, "evidenceId"),
@@ -124,7 +150,11 @@ export function buildDecisionClockDailyEvidence({
       [B2_DEPENDENCY]:
         dependencySeriesReport.dependencyCoverage?.[B2_DEPENDENCY] === true,
     },
-    a5ObservedAtDecisionBoundary: a5?.firstReadyAt || null,
+    evidenceSemanticsVersion: "S2_DECISION_CLOCK_DAILY_EVIDENCE_SEMANTICS_V0_2_1",
+    sameSessionClockReady,
+    a5ObservedAtDecisionBoundary: a5ObservedAt,
+    a5AvailableByCandidate,
+    candidateTimestamp,
     clockConstraintRows: clockRows,
     requiredReady,
     precisionEligible,

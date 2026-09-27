@@ -28,6 +28,7 @@ Decision-clock evidence:
 - `runtime/decision_clock_daily_evidence.mjs`;
 - `runtime/decision_clock_readiness_v0_2.mjs`;
 - `scripts/build_decision_clock_daily_bundle.mjs`;
+- daily evidence semantics V0.2.1 requires A5 to be prospectively READY no later than the computed same-session candidate boundary; A5 remains periodic and does not itself set the same-session latency maximum;
 - `runtime/decision_clock_collector_contract_v0_3.mjs` for Collector Provenance（擷取器來源證明）and stable collector-contract fingerprinting.
 
 Measurement controls:

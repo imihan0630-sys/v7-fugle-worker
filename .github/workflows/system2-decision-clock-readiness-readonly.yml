@@ -60,6 +60,7 @@ jobs:
             "- Immutable first scheduled run anchor: "+(r.coverageIntegrity?.laterScheduledRunsCannotRepairAnchor===true),
             "- Collector contract consistent: "+(a.collectorContractConsistent===true),
             "- Collector contract fingerprints: "+JSON.stringify(a.collectorContractFingerprints||[]),
+            "- A5 candidate-boundary failure dates: "+JSON.stringify(a.a5BoundaryFailureDates||[]),
             "- Research candidate Taipei time: "+(d.candidateTaipeiTime||"—"),
             "- Owner review state: "+r.reviewPacket.reviewState,
             "- Exact Decision Clock authorized: false",

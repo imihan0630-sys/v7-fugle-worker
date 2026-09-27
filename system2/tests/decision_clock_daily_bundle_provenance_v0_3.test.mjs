@@ -84,6 +84,9 @@ try {
   assert.equal(bundle.collectorProvenance.workflowSha, workflowSha);
   assert.match(bundle.collectorProvenance.collectorContractFingerprint, /^[0-9a-f]{64}$/);
   assert.ok(bundle.collectorProvenance.collectorContractFiles.length >= 10);
+  assert.equal(bundle.evidence.evidenceSemanticsVersion, "S2_DECISION_CLOCK_DAILY_EVIDENCE_SEMANTICS_V0_2_1");
+  assert.equal(bundle.evidence.a5AvailableByCandidate, true);
+  assert.equal(bundle.evidence.candidateTimestamp, "2026-09-29T06:00:00.000Z");
   assert.equal(bundle.evidence.requiredReady, true);
   assert.equal(bundle.evidence.precisionEligible, true);
 } finally {
