@@ -129,6 +129,9 @@ export function aggregateDecisionClockEvidence({
     selected.map((x) => x.collectorContractFingerprint).filter(Boolean),
   )].sort();
   const collectorContractConsistent = collectorContractFingerprints.length <= 1;
+  const a5BoundaryFailureDates = selected
+    .filter((x) => x.bundle.evidence.a5AvailableByCandidate !== true)
+    .map((x) => x.marketDate);
 
   const coverageRows = scheduledRunCoverage.map((row, index) => {
     if (!row || typeof row !== "object") {
@@ -180,8 +183,13 @@ export function aggregateDecisionClockEvidence({
       runCreatedAt: x.runCreatedAt,
       artifactId: x.artifactId,
       artifactName: x.artifactName,
+      evidenceSemanticsVersion: x.bundle.evidence.evidenceSemanticsVersion || null,
       requiredReady: x.bundle.evidence.requiredReady,
       precisionEligible: x.bundle.evidence.precisionEligible,
+      sameSessionClockReady: x.bundle.evidence.sameSessionClockReady === true,
+      a5ObservedAtDecisionBoundary: x.bundle.evidence.a5ObservedAtDecisionBoundary || null,
+      a5AvailableByCandidate: x.bundle.evidence.a5AvailableByCandidate === true,
+      candidateTimestamp: x.bundle.evidence.candidateTimestamp || null,
       candidateTaipeiTime: x.bundle.evidence.candidateTaipeiTime,
       collectorContractFingerprint: x.collectorContractFingerprint,
       workflowSha: x.workflowSha,
@@ -204,6 +212,8 @@ export function aggregateDecisionClockEvidence({
     collectorContractConsistencyVersion: "S2_DECISION_CLOCK_COLLECTOR_CONSISTENCY_V0_3",
     collectorContractFingerprints,
     collectorContractConsistent,
+    a5BoundaryIntegrityVersion: "S2_DECISION_CLOCK_A5_BOUNDARY_INTEGRITY_V0_1",
+    a5BoundaryFailureDates,
     artifactCoverageAudited,
     promotionCoverageComplete,
     promotionReadinessStatus,
