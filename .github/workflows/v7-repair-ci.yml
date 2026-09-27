@@ -248,6 +248,9 @@ jobs:
       - name: Apply V8.14.0 sector-gate provenance shadow
         run: python3 scripts/apply_v8_14_0.py
 
+      - name: Apply reject-reason stratified Shadow prototype
+        run: python3 scripts/apply_reject_reason_stratified_shadow.py
+
       - name: Syntax check Worker.js
         run: |
           cp Worker.js /tmp/Worker.mjs
