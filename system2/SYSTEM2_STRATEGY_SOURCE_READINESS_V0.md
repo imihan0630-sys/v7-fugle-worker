@@ -202,3 +202,20 @@ Prohibited:
 2. Build an evaluator that separates StrategyValidity（策略有效性） from EntryReadiness（進場準備度） and fails closed on missing REQUIRED evidence.
 3. Implement first limited Shadow contracts only for strategies whose source map allows an honest version.
 4. Preserve all blocked/incomplete evaluations so zero-pick and source-gap days remain visible.
+
+
+## 2026-09-27 prospective-source upgrade
+
+System 2 now has dedicated read-only observers for the two dependencies that previously blocked decision-clock evidence:
+
+- A5_QUARTERLY_FINANCIALS: official market-wide filing-vintage observation with explicit first-observed semantics;
+- B2_INDUSTRY_THESIS_PROSPECTIVE: same-day derived industry breadth/participation snapshot from official profile + close data.
+
+Impact on source readiness:
+
+- SHORT_MOMENTUM remains LIMITED_SHADOW_ELIGIBLE under its preregistered restricted contract.
+- SWING_GROWTH has materially improved prospective source readiness because A5 and a descriptive B2 observer now exist.
+- This does NOT make the eventual full SWING_GROWTH strategy source-complete: forward expectations, precise catalysts, richer industry-cycle mechanisms and historical publication vintages remain incomplete.
+- B2 descriptive industry breadth is not a substitute for a full INDUSTRY_TREND cycle thesis.
+
+The first honest trading-date evidence from these observers is still pending. 2026-09-27 was a non-trading smoke and 2026-09-28 is an official holiday.
