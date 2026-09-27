@@ -230,3 +230,30 @@ Status:
 
 Exact next:
 audit which raw A/B margins are genuinely independent enough for future outcome modeling. Preserve nested/composite groups separately, especially B candle-close geometry, A support-source/fallback state, A volume OR branches and B trend OR branches. Do not fit weights or inspect outcomes.
+
+
+## NM-011 — raw-margin independence taxonomy frozen
+
+The next research layer now separates simple thresholds from composite/dependent geometry instead of treating every failed boolean as one independent unit.
+
+Key groups:
+- A trend = multi-constraint conjunction;
+- A pullback = two-sided 2–15% band;
+- A volume = OR-composite with two separate margins;
+- A support/structure = source-conditioned geometry, now carrying `supportSources/supportMode`;
+- A notLate = ret20 and MA20-distance axes;
+- B trend = conjunction plus a three-way OR branch;
+- B breakout and volume = simple thresholds;
+- B strongClose + upperShadow = one nested candle-close geometry for research-distance purposes, while preserving both Formal bits exactly;
+- B notLate = effective ret20<=30 plus MA20-distance<=25 axes.
+
+A support-specific structural detail is now observable: when support comes from the normal filtered-candidate path, the eligibility bound `support<=close*1.015` already implies the structure clause `close>=support*0.985`. The clause can still bind on MA20 fallback, so support source cannot be discarded.
+
+Machine artifact:
+`research/ab_setup_margin_independence_taxonomy_v0_1.json`.
+
+Status:
+`RAW_MARGIN_GROUPS_FROZEN / SUPPORT_SOURCE_PROVENANCE_READY / NO_COMPOSITE_DISTANCE / FORMAL_UNCHANGED`.
+
+Exact next:
+once CI validates this tranche, freeze the minimum prospective A/B evidence receipt needed for later D1/D3/D5/D10/D20/MFE/MAE analysis: same-generation parent completeness, setup-reach state, exact Formal masks, raw grouped margins, source warnings, sample fraction and outcome-join key. Persistence remains Class B proposal-first; do not implement shared storage without approval.
