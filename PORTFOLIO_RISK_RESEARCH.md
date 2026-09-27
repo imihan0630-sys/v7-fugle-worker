@@ -2307,3 +2307,39 @@ Status:
 `ADD_TRIGGER_CONDITIONALLY_ALLOCATION_INVARIANT / FIRST_STATE_EXECUTION_GATED`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-057 — exit triggers are allocation-invariant only conditional on independently valid open-position state (2026-09-27)
+
+Source audit covers STOP_LOSS, SELL, REDUCE and PROFIT_CHECK.
+
+Trigger predicates depend on:
+- open-position existence;
+- stop/sell/reduce/profit plan thresholds;
+- current price / completed 15m state;
+- bearish/volume confirmation where required.
+
+They do not use PriorityScore or planned/current allocation amounts to decide whether the signal is emitted.
+
+ActualShares/heldAmount/heldShares are used to populate the action quantity after the trigger condition is established.
+
+### Counterfactual rule
+
+Current and alternative allocators may share an observed exit/reduce/profit-check trigger timestamp only when both paths independently have a valid open position at that time.
+
+The comparator may not inherit current position existence by assumption.
+
+Action quantities are path-specific:
+- SELL/STOP amount/shares depend on that path's holdings;
+- REDUCE quantity depends on that path's holdings;
+- after REDUCE, later state paths may diverge and must be tracked independently.
+
+Thus the signal skeleton is conditionally reusable, while execution quantities and post-action state are not.
+
+Artifact:
+`research/exit_trigger_conditional_invariance_v0_1.json`.
+
+Status:
+`EXIT_TRIGGERS_CONDITIONALLY_ALLOCATION_INVARIANT / POSITION_STATE_EXECUTION_GATED`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.

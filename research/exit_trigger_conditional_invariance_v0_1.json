@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "EXIT_TRIGGER_CONDITIONAL_ALLOCATION_INVARIANCE_V0_1",
+  "scope": "STOP_LOSS / SELL / REDUCE / PROFIT_CHECK signal eligibility/timing conditional on both current and comparator paths having a valid open position.",
+  "sourceAudit": {
+    "commonStateGate": "hasPosition = positionStage !== NONE",
+    "stopLoss": "stop.level == risk; quantity fields only populate heldAmount/heldShares after position existence",
+    "sell": "hasPosition && sellBelow threshold && latest15 close condition",
+    "reduce": "hasPosition && reduceAt reached && latest15 bearish && volumeRatio >= 1.3",
+    "profitCheck": "hasPosition && profit.level == profit",
+    "sizingFieldsNotInTrigger": [
+      "priorityScore",
+      "allocationRatio",
+      "totalAllocation",
+      "firstAmount",
+      "firstShares",
+      "secondAmount",
+      "secondShares",
+      "actualShares"
+    ],
+    "postTriggerQuantityFields": [
+      "actualShares",
+      "heldAmount",
+      "heldShares"
+    ]
+  },
+  "necessaryPrecondition": [
+    "both allocator paths independently have a valid open position at the event time",
+    "same non-sizing plan fields, code version and market data",
+    "state/lifecycle provenance must not be copied from current path into comparator"
+  ],
+  "consequence": "Conditional on open-position state existing in both paths, signal timing for STOP_LOSS/SELL/REDUCE/PROFIT_CHECK may share the observed trigger clock; action quantity must be recomputed from each path's own holdings.",
+  "caveats": [
+    "A comparator with no fill/open position cannot inherit current exit signals.",
+    "REDUCE quantity differs with holdings even when trigger time is shared.",
+    "After a REDUCE, later state paths can diverge and must be independently tracked.",
+    "This does not certify broker fill timing/price."
+  ],
+  "status": "EXIT_TRIGGERS_CONDITIONALLY_ALLOCATION_INVARIANT / POSITION_STATE_EXECUTION_GATED",
+  "formalCoreImpact": false
+}

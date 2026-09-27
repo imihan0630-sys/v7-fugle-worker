@@ -62,6 +62,8 @@ on:
       - "tests/test_commission_evidence_classifier_v0_1.mjs"
       - "research/add_trigger_conditional_invariance_v0_1.json"
       - "tests/test_add_trigger_conditional_invariance_v0_1.mjs"
+      - "research/exit_trigger_conditional_invariance_v0_1.json"
+      - "tests/test_exit_trigger_conditional_invariance_v0_1.mjs"
       - "tests/test_portfolio_risk_reconstructability_v0_1.mjs"
       - "tests/portfolio_risk_journal_readonly_audit.mjs"
       - "research/portfolio_risk_reconstructability_v0_1.json"
@@ -103,6 +105,7 @@ jobs:
           node tests/test_transaction_tax_evidence_classifier_v0_1.mjs
           node tests/test_commission_evidence_classifier_v0_1.mjs
           node tests/test_add_trigger_conditional_invariance_v0_1.mjs
+          node tests/test_exit_trigger_conditional_invariance_v0_1.mjs
       - name: Read-only production journal coverage audit
         env:
           V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
