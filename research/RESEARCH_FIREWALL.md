@@ -1,6 +1,6 @@
 # 台股交易決策監控系統｜研究防火牆
 
-更新：2026-09-20
+更新：2026-09-27
 
 目的：允許研究與學習持續擴張，但防止知識堆疊造成過度擬合、選股過度收縮、訊號稀少、風格偏誤或正式績效惡化。
 
@@ -79,3 +79,20 @@
 > 新知識可以持續增加；正式規則不能無限制增加。
 
 > 正式系統的目標不是條件最多，而是用最少、可驗證、可解釋的有效規則，穩定找到值得交易的股票。
+
+
+## 八、Shadow cohort 語意防火牆
+Shadow cohort 名稱不是天然正確，必須同時保存 sampling frame、denominator、membership 與 quality state。
+
+已確認的限制：
+- `REJECTED_AFTER_BASE` 舊版會因 reason 排序＋每池前6筆造成 reason-starvation；
+- exclusion reason 是固定 gate 順序下的 **first failure**，不是某 gate 的 marginal effect；
+- `NEAR_MISS` 的 `nearScore = 6 - missingCount`，沒有額外排序資訊，且 global top-12 在 per-pool sample 之前發生；
+- `BROAD_CONTROL` 會因前面 bounded cohort 是否「剛好被抽中」而改變可抽母體，是 quota-conditioned mixture，既非凍結的獨立 broad-market sample，也非明確互斥 residual control。
+
+研究規則：
+1. 未通過 cohort-quality QA 的 paired-control 結果只能 `DESCRIPTIVE_ONLY`；
+2. 不得用 firstFailureCount 直接估計移除 gate 後會增加多少候選；
+3. Broad-market control 若要獨立估計，必須允許 primary Formal-state 與 control membership 同時存在，或用獨立 membership table/overlay；
+4. 歷史錯誤 cohort 不直接覆寫，使用 versioned quality/membership overlay；
+5. cohort cap、抽樣與 membership 規則本身都必須版本化，並做 cap-sensitivity。
