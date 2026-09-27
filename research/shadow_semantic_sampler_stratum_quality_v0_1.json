@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "SHADOW_SEMANTIC_SAMPLER_STRATUM_QUALITY_V0_1",
+  "researchDate": "2026-09-27",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "finding": {
+    "priorV2": "Required CHANNEL_NEAR_MISS stratum key names but safeStratum converted missing/invalid values to literal UNKNOWN and sampled them normally.",
+    "risk": "Evidence insufficiency could masquerade as a valid deterministic stratum with sampling fractions, contaminating prospective cohort interpretation.",
+    "affectedFrames": [
+      "CHANNEL_NEAR_MISS pool x nearestChannel x checkPattern",
+      "any V2 membership using pool stratification with pool=UNKNOWN"
+    ]
+  },
+  "repair": {
+    "denominator": "semanticPopulationCount retains every semantic member, including rows with unusable strata.",
+    "validFrame": "Only rows whose required stratum values pass registered value contracts enter hash sampling.",
+    "invalidRows": "Reported separately with field-level reasons and never sampled.",
+    "frameState": "samplingFrameComplete=false whenever invalidStratumCount>0.",
+    "contracts": {
+      "pool": [
+        "GENERAL",
+        "THOUSAND"
+      ],
+      "nearestChannel": [
+        "A",
+        "B",
+        "TIE"
+      ],
+      "checkPattern": "A:[01]{6}|B:[01]{6}"
+    }
+  },
+  "inferenceGuard": [
+    "samplingFrameComplete=false blocks promotion-grade opportunity-cost interpretation for that receipt.",
+    "Invalid rows are not dropped from the semantic denominator.",
+    "UNKNOWN is not converted to a valid PASS/FAIL or sampled control state.",
+    "No threshold, quota, ranking, capital or Formal behavior changes."
+  ],
+  "status": "UNKNOWN_STRATUM_SAMPLING_BIAS_CONFIRMED / DENOMINATOR_PRESERVED / INVALID_STRATA_EXCLUDED / FORMAL_UNCHANGED"
+}
