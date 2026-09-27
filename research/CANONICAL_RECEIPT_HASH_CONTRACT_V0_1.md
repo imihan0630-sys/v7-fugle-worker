@@ -245,3 +245,31 @@ Formal Core remains LOCKED.
 4. Test equivalent UTC offsets => identical parent ID.
 5. Test Unicode composed/decomposed strings remain distinct.
 6. Keep zero market calls / zero D1 writes.
+
+
+## JCS Unicode hardening — TI-450
+
+RFC 8785 explicitly requires invalid Unicode data such as lone surrogates to terminate canonicalization with an error.
+
+The first prototype relied on JSON.stringify for string emission but did not yet reject lone surrogate code units.
+
+This gap was found before runtime use.
+
+V0.1 implementation is hardened to validate:
+- every string value;
+- every object property name.
+
+Rejected:
+- lone high surrogate;
+- lone low surrogate.
+
+Valid surrogate pairs such as emoji remain accepted.
+
+RFC-compatible number serialization edge vectors were also added:
+333333333.33333329 -> 333333333.3333333
+1E30 -> 1e+30
+4.50 -> 4.5
+2e-3 -> 0.002
+1e-27 -> 1e-27
+
+This keeps the project canonicalizer aligned with ECMAScript/V8 number serialization required by JCS.
