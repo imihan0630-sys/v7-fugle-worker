@@ -1,9 +1,9 @@
 {
   "schemaVersion": "POSITIVE_SIGNAL_PRODUCTION_AUDIT_RECEIPT_V0_1",
-  "observedAt": "2026-09-27T23:22:55+08:00",
-  "timestampProvenance": "GitHub Actions Portfolio Risk Tier-A Research run 36329306700 / job 108648065662",
-  "workflowRunId": 36329306700,
-  "jobId": 108648065662,
+  "observedAt": "2026-09-27T23:25:30+08:00",
+  "timestampProvenance": "GitHub Actions Portfolio Risk Tier-A Research rerun 36329472542 / job 108648529535",
+  "workflowRunId": 36329472542,
+  "jobId": 108648529535,
   "readOnly": true,
   "productionWrites": false,
   "decisionImpact": false,
@@ -15,7 +15,8 @@
     "reconstructableBuyRows": 1,
     "planLinkedBuyRows": 1,
     "multiNamePositiveBuyRows": 0,
-    "positiveTerminalExitRows": 0
+    "positiveTerminalExitRows": 0,
+    "previewShareDriftRows": 1
   },
   "positiveBuy": {
     "eventId": "2026-09-22:3006:NONE:BUY:episode-1",
@@ -29,19 +30,28 @@
     "reconstructedSuggestedShares": 148,
     "orderable": true,
     "currentPlanLinked": true,
-    "selectedCount": 1
+    "selectedCount": 1,
+    "planPreview": {
+      "buyHigh": 287.08,
+      "storedFirstShares": 146,
+      "recomputedPreviewShares": 146,
+      "liveSuggestedShares": 148,
+      "liveMinusStoredFirstShares": 2
+    }
   },
   "inference": {
     "proven": [
       "one durable positive formal BUY signal exists",
       "signal price, amount and suggestedShares are reconstructable",
-      "the BUY links to the immutable 2026-09-21 selected plan"
+      "the BUY links to the immutable 2026-09-21 selected plan",
+      "Production demonstrates plan-preview share count can differ from live trigger-price suggestedShares: 146 preview vs 148 live for 3006."
     ],
     "notIdentified": [
       "PriorityScore sizing edge: the date has only one selected name, so all same-name allocation comparators collapse",
       "BUY trigger rate: missing signal rows cannot certify NO-BUY",
       "signal-path completed return: no terminal SELL/STOP_LOSS row exists",
-      "realized P&L: no broker-confirmed fill ledger"
+      "realized P&L: no broker-confirmed fill ledger",
+      "The +2-share drift is a signal-side quantity difference, not evidence of a broker fill."
     ]
   },
   "status": "ONE_POSITIVE_BUY_CONFIRMED / SINGLE_NAME_NONIDENTIFYING_FOR_SIZING / NO_TERMINAL_SIGNAL / REALIZED_PNL_BLOCKED",
