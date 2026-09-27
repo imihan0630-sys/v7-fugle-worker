@@ -1,0 +1,82 @@
+{
+  "schemaVersion": "target-rr-scarcity-capture-matrix-v0.1",
+  "researchDate": "2026-09-27",
+  "status": "PRE_OUTCOME_STRUCTURAL_AUDIT",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "canonicalObserver": "research/target_rr_audit_observer_v0_1.mjs",
+  "scarcityStates": [
+    {
+      "state": "TARGET_NULL",
+      "formalFirstFailure": "上方無可驗證實質壓力，無法計算真實RR",
+      "countableFromFirstFailure": true,
+      "marginalGateEffectKnown": false,
+      "exactCauseAttributionFromLegacyShadow": false
+    },
+    {
+      "state": "LOW_RR",
+      "formalFirstFailure": "預期RR低於2比1",
+      "countableFromFirstFailure": true,
+      "marginalGateEffectKnown": false,
+      "exactRrValueFromLegacyRejectedRow": false,
+      "targetSourceAttributionFromLegacyShadow": false
+    },
+    {
+      "state": "FINAL_GRADE_REJECTED",
+      "formalFirstFailure": "策略品質低於B級，不列入推薦",
+      "countableFromFirstFailure": true,
+      "marginalGateEffectKnown": false,
+      "prerequisite": "TARGET_FOUND_AND_RR_PASSED"
+    }
+  ],
+  "legacyCaptureSufficiency": {
+    "targetNullVsLowRrVsGradeFamily": "YES_AS_FIRST_FAILURE_FAMILIES",
+    "exactTargetNullCause": "NO",
+    "exactRejectedEntryStop": "NO",
+    "exactRejectedRewardPerRisk": "NO",
+    "targetPriceRaw": "NOT_DURABLY_FROZEN",
+    "targetPriceSourceAsOfKnownAt": "UNKNOWN",
+    "priorHigh20AsTargetProvenance": "NOT_DURABLY_FROZEN",
+    "priorHigh60AsTargetProvenance": "NOT_DURABLY_FROZEN",
+    "localPivotCandidates": "NOT_DURABLY_FROZEN",
+    "onePercentExcludedLevels": "NOT_DURABLY_FROZEN",
+    "selectedTargetSource": "NOT_CAPTURED",
+    "BNewHighVsMissingExternalTargetAttribution": "NOT_IDENTIFIABLE_FROM_LEGACY_SHADOW"
+  },
+  "sameScanObserverCapability": {
+    "entryStopDerivation": true,
+    "resistanceCandidateEnumeration": true,
+    "strictOnePercentEligibility": true,
+    "localFiveBarPivots": true,
+    "sourceTiePreservation": true,
+    "targetPriceProvenanceCompletenessCheck": true,
+    "dataCalls": 0,
+    "persistenceWrites": 0,
+    "formalDecisionImpact": false
+  },
+  "safeInterpretation": [
+    "TARGET_NULL, LOW_RR and FINAL_GRADE_REJECTED must remain separate scarcity states.",
+    "TARGET_NULL must never be coerced to RR=0.",
+    "First-failure counts are ordered-funnel prevalence, not marginal gate contribution.",
+    "A formal TARGET_NULL is observable under the scan's inputs, while its economic/source cause can remain UNKNOWN.",
+    "Source-specific or blue-sky-breakout claims require same-scan candidate-level provenance, not later reconstruction from mutable history.",
+    "No target/RR/grade threshold change is justified by this pre-outcome decomposition."
+  ],
+  "prospectiveMinimumReceipt": [
+    "immutable parent scanDate/symbol/generation/semantic fingerprint",
+    "ruleVersion/comparatorVersion",
+    "upstream gate state receipt",
+    "channel",
+    "entry/stop/stopBinding",
+    "targetPrice raw/source/asOf/knownAt/capturedAt/PIT eligibility",
+    "priorHigh20/priorHigh60",
+    "dated local pivot candidate set",
+    "all candidate levels and >entry*1.01 eligibility",
+    "selected target and all tied selected sources",
+    "targetNull",
+    "raw reward/risk/rewardPerRisk",
+    "setupQuality/final signal grade",
+    "original Formal first failure"
+  ],
+  "decision": "TARGET_NULL_LOW_RR_FINAL_GRADE_SEPARABLE_PRE_OUTCOME / CAUSE_ATTRIBUTION_CAPTURE_GAP_CONFIRMED / NO_FORMAL_CHANGE"
+}
