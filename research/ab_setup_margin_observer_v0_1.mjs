@@ -72,7 +72,7 @@ function exactState(f){
   return {
     metrics:{support,recentHigh,pullbackPct,supportDistancePct},
     A:{checks:{trend:trendA,pullback:pullbackOK,nearSupport,volume:volumeA,structure:structureA,notLate},pass:trendA&&pullbackOK&&nearSupport&&volumeA&&structureA&&notLate},
-    B:{checks:{trend:trendB,breakout:breakoutB,volume:volumeB,strongClose:strongCloseB,upperShadow:upperShadowB,notLate:notLateB},pass:trendB&&breakoutB&&volumeB&&strongCloseB&&upperShadowB&&notLate:notLateB},
+    B:{checks:{trend:trendB,breakout:breakoutB,volume:volumeB,strongClose:strongCloseB,upperShadow:upperShadowB,notLate:notLateB},pass:trendB&&breakoutB&&volumeB&&strongCloseB&&upperShadowB&&notLateB},
     effective:{aVolumeTodayEffective,aVolumeContractionEffective,bVolumeEffective,bClosePositionEffective,bUpperShadowEffective,bRet20Effective}
   };
 }
