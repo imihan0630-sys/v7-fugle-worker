@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "PRIORITY_SCORE_SIZING_TWO_CLOCK_PROTOCOL_V0_2",
+  "supersedesInterpretation": "PRIORITY_SCORE_SIZING_BREAKEVEN_PROTOCOL_V0_1 terminology that called formal-close fixed-horizon allocation-weighted results realized P&L",
+  "preregisteredAt": "2026-09-27T21:28:00+08:00",
+  "clocks": {
+    "selectionPath": {
+      "estimand": "PAPER_PATH_SIZING_EDGE",
+      "population": "all generation-certified selected names on identifying multi-name dates",
+      "entryReference": "formal selection close only as a common research baseline",
+      "horizons": [
+        "D1",
+        "D3",
+        "D5"
+      ],
+      "formula": "sum((currentAllocation-comparatorAllocation)*fixedHorizonPathReturn)",
+      "meaning": "tests whether capital tilt points toward names with better subsequent paths",
+      "forbiddenMeaning": [
+        "realized P&L",
+        "executable P&L",
+        "actual deployed capital return"
+      ]
+    },
+    "execution": {
+      "estimand": "REALIZED_OR_EXECUTABLE_SIZING_EDGE",
+      "prerequisites": [
+        "Confirmed Fill Ledger Class-B implementation with planScanDate + ledgerEpoch coverage",
+        "proof that BUY trigger timing/eligibility is allocator-invariant or explicit counterfactual trigger model",
+        "counterfactual share sizing under the comparator",
+        "fees, tax, odd-lot/minimum-fee and slippage treatment",
+        "untriggered planned capital treated as cash, not as if invested"
+      ],
+      "status": "BLOCKED_BY_CONFIRMED_FILL_LEDGER_NOT_IMPLEMENTED"
+    }
+  },
+  "relationship": "Selection-path evidence may show predictive score ordering but cannot by itself establish deployable economic value. Execution evidence answers realized capital efficiency but is conditional on trigger/fill coverage. Both are required before sizing promotion.",
+  "triggerBiasCorrection": "BUY-only is not a substitute for the all-selected predictive estimand. For realized allocation economics, BUY/fill conditioning is necessary, but it becomes a separate execution-clock estimand and requires coverage/invariance checks rather than being mixed with the selection-path cohort.",
+  "costRule": "Costs belong to the execution clock. Do not subtract guessed trading costs from a formal-close paper-path edge and call the result realized net P&L.",
+  "status": "SEMANTIC_CORRECTION_FROZEN / PAPER_EDGE_READY / EXECUTION_EDGE_BLOCKED",
+  "formalCoreImpact": false
+}
