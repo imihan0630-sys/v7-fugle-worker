@@ -4149,12 +4149,15 @@ A future research receipt for each scan date and pool should preserve:
 For every qualified candidate:
 - symbol;
 - pool membership basis / reference close;
-- full frozen `rankFn` tuple:
-  - rewardPerRisk;
-  - priorityScore;
+- full frozen `rankFn` tuple **for the scan-date comparator version**;
+- for deployed V7.5.30+ / current V8.14 lineage this is:
+  - post-consensus priorityScore;
+  - raw rewardPerRisk;
+  - marketConsensusScore;
   - setupQuality;
   - sectorFlow;
   - relativeStrength;
+- persist `rankComparatorVersion` (current: `PRIORITY_RR_CONSENSUS_SETUP_SECTOR_RS_7_5_30`) rather than assuming one tuple applies to every historical lineage;
 - deterministic tie-break state;
 - pool rank;
 - selected boolean;
@@ -4475,3 +4478,16 @@ FIRST_DESCRIPTIVE_FLOOR_FROZEN_20_CLEAN_DATES.
 5. On that hinge, execute the already-preregistered PVE-149 order before looking at outcomes.
 6. H001~H004 remain evidence-gated; Formal Core remains LOCKED.
 
+
+
+## PVE-155 comparator correction — 2026-09-27
+
+The old PVE-155 RR-first comparator description reflected an earlier/base Worker lineage and is not the deployed V7.5.30+ ordering.
+
+Current/deployed comparator:
+`post-consensus priorityScore -> rewardPerRisk -> marketConsensusScore -> setupQuality -> sectorFlow -> relativeStrength`.
+
+V8.13 prospectively freezes these fields and comparatorVersion.
+Pre-V8.13 Shadow rows do not gain exact comparator replay merely because the current formula is known; missing PIT ranking provenance remains UNKNOWN.
+
+Any QNS / CUTLINE_NEXT / pool-displacement study must join the comparator version that was valid on the selection date.
