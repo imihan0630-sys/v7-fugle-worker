@@ -18,6 +18,9 @@ function aggregation({
     })),
     duplicateScheduledArtifacts: [],
     manualDiagnosticArtifactCount: 0,
+    collectorContractConsistencyVersion: "S2_DECISION_CLOCK_COLLECTOR_CONSISTENCY_V0_3",
+    collectorContractFingerprints: ["collector-fp-A"],
+    collectorContractConsistent: true,
     readiness: {
       assessmentVersion: "S2_DECISION_CLOCK_READINESS_V0_2",
       status,
@@ -64,5 +67,22 @@ assert.equal(eligible.candidateTaipeiTime, "14:05");
 assert.equal(eligible.outcomeDataUsedForClockSelection, false);
 assert.equal(eligible.exactDecisionClockAuthorized, false);
 assert.equal(eligible.workerCronAuthorized, false);
+
+
+const driftBlocked = buildDecisionClockReviewPacket({
+  ...aggregation({
+    status: "FREEZE_ELIGIBLE",
+    dates: 20,
+    allPrecise: true,
+    coverage: false,
+    gapCount: 0,
+  }),
+  promotionCoverageComplete: false,
+  collectorContractFingerprints: ["collector-fp-A", "collector-fp-B"],
+  collectorContractConsistent: false,
+});
+assert.equal(driftBlocked.reviewState, "BLOCKED");
+assert.ok(driftBlocked.blockers.includes("COLLECTOR_CONTRACT_DRIFT"));
+assert.equal(driftBlocked.collectorContractConsistent, false);
 
 console.log("System2 decision-clock review packet tests passed");

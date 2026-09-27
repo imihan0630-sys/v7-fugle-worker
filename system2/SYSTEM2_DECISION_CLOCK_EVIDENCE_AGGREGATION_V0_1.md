@@ -21,6 +21,22 @@ For each Taiwan market date:
 
 This is a provenance rule, not an alpha rule.
 
+## Collector Provenance V0.3
+
+Promotion-grade scheduled evidence must use `S2_DECISION_CLOCK_DAILY_BUNDLE_V0_3` and carry Collector Provenance（擷取器來源證明）V0.3.
+
+The artifact's embedded GitHub workflow run ID, run attempt and workflow SHA must match the GitHub Actions run metadata from which the artifact was downloaded. Any mismatch fails closed.
+
+The underlying daily evidence object remains `S2_DECISION_CLOCK_DAILY_EVIDENCE_V0_2`; V0.3 changes the immutable bundle envelope/provenance, not the already-preregistered readiness math.
+
+Legacy V0.2 bundles may remain manual/diagnostic evidence only. They are not promotion-grade scheduled evidence.
+
+Each promotion-grade selected date also carries a deterministic collector-contract fingerprint over the preregistered source parsing, polling, dependency-observer, calendar-gate, workflow and bundle-construction files. All selected dates used toward the same readiness gate must have one identical fingerprint.
+
+If more than one collector fingerprint is observed, aggregation returns `collectorContractConsistent=false` and blocks promotion as `COLLECTOR_CONTRACT_DRIFT`. The aggregator may not pick the most favorable fingerprint, silently discard inconvenient dates, or pool incompatible collector contracts to reach the 10-date/20-date gates.
+
+A material collector change after evidence begins requires a separately documented/preregistered evidence epoch or contract version. V0.3 does not automatically reset the sample or choose a preferred version.
+
 ## Why earliest scheduled artifact
 
 A best-result selection policy would create hidden look-ahead/cherry-picking:

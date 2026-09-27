@@ -2,6 +2,18 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { buildDecisionClockDailyEvidence } from "../runtime/decision_clock_daily_evidence.mjs";
+import { DECISION_CLOCK_COLLECTOR_PROVENANCE_VERSION, computeDecisionClockCollectorContractFingerprint } from "../runtime/decision_clock_collector_contract_v0_3.mjs";
+
+function requiredText(value, field) {
+  if (typeof value !== "string" || !value.trim()) throw new Error(field + " is required");
+  return value.trim();
+}
+
+function positiveInteger(value, field) {
+  const n = Number(value);
+  if (!Number.isInteger(n) || n < 1) throw new Error(field + " must be positive integer");
+  return n;
+}
 
 function parseArgs(argv) {
   const out = {};
@@ -21,6 +33,12 @@ export async function buildDecisionClockDailyBundle({
   dependencySeriesPath,
   outputPath,
   createdAt = new Date().toISOString(),
+  repository,
+  workflowRunId,
+  workflowRunAttempt,
+  workflowSha,
+  workflowRef,
+  rootDir = process.cwd(),
 } = {}) {
   const sourceArrivalReport = JSON.parse(
     await readFile(resolve(sourceArrivalPath), "utf8"),
@@ -29,6 +47,11 @@ export async function buildDecisionClockDailyBundle({
     await readFile(resolve(dependencySeriesPath), "utf8"),
   );
   const marketDate = sourceArrivalReport?.measurement?.marketDate;
+  const contract = await computeDecisionClockCollectorContractFingerprint({ rootDir });
+  const runId = requiredText(String(workflowRunId || ""), "workflowRunId");
+  const runAttempt = positiveInteger(workflowRunAttempt, "workflowRunAttempt");
+  const sha = requiredText(workflowSha, "workflowSha");
+  if (!/^[0-9a-f]{40}$/i.test(sha)) throw new Error("workflowSha must be 40-hex commit SHA");
   const evidence = buildDecisionClockDailyEvidence({
     evidenceId: `S2-DC-DAY-${marketDate}`,
     sourceArrivalReport,
@@ -37,9 +60,21 @@ export async function buildDecisionClockDailyBundle({
   });
 
   const bundle = {
-    bundleVersion: "S2_DECISION_CLOCK_DAILY_BUNDLE_V0_2",
+    bundleVersion: "S2_DECISION_CLOCK_DAILY_BUNDLE_V0_3",
     marketDate,
     evidence,
+    collectorProvenance: {
+      provenanceVersion: DECISION_CLOCK_COLLECTOR_PROVENANCE_VERSION,
+      repository: requiredText(repository, "repository"),
+      workflowRunId: runId,
+      workflowRunAttempt: runAttempt,
+      workflowSha: sha.toLowerCase(),
+      workflowRef: requiredText(workflowRef, "workflowRef"),
+      collectorContractVersion: contract.contractVersion,
+      collectorContractFingerprint: contract.fingerprint,
+      fingerprintAlgorithm: contract.fingerprintAlgorithm,
+      collectorContractFiles: contract.files,
+    },
     sourceArrivalReport,
     dependencySeriesReport,
     safety: {
@@ -66,6 +101,11 @@ async function main() {
     sourceArrivalPath: args["source-arrival"],
     dependencySeriesPath: args["dependency-series"],
     outputPath: args.output,
+    repository: args.repository,
+    workflowRunId: args["workflow-run-id"],
+    workflowRunAttempt: args["workflow-run-attempt"],
+    workflowSha: args["workflow-sha"],
+    workflowRef: args["workflow-ref"],
   });
   console.log(JSON.stringify({
     result: "PASS",
@@ -73,6 +113,8 @@ async function main() {
     requiredReady: bundle.evidence.requiredReady,
     precisionEligible: bundle.evidence.precisionEligible,
     candidateTaipeiTime: bundle.evidence.candidateTaipeiTime,
+    collectorContractFingerprint: bundle.collectorProvenance.collectorContractFingerprint,
+    workflowSha: bundle.collectorProvenance.workflowSha,
     exactDecisionClockAuthorized: false,
     cronAuthorized: false,
     externalMutationPerformed: false,

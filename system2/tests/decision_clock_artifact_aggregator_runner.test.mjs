@@ -6,10 +6,17 @@ import { join } from "node:path";
 import { execFileSync } from "node:child_process";
 import { aggregateFromGithubArtifacts } from "../scripts/aggregate_decision_clock_artifacts_readonly.mjs";
 
-function makeBundle(marketDate, upper) {
+function makeBundle(marketDate, upper, runId, workflowSha, fingerprint = "collector-fp-A") {
   return {
-    bundleVersion: "S2_DECISION_CLOCK_DAILY_BUNDLE_V0_2",
+    bundleVersion: "S2_DECISION_CLOCK_DAILY_BUNDLE_V0_3",
     marketDate,
+    collectorProvenance: {
+      provenanceVersion: "S2_DECISION_CLOCK_COLLECTOR_PROVENANCE_V0_3",
+      workflowRunId: String(runId),
+      workflowRunAttempt: 1,
+      workflowSha,
+      collectorContractFingerprint: fingerprint,
+    },
     evidence: {
       evidenceId: "E-" + marketDate,
       evidenceVersion: "S2_DECISION_CLOCK_DAILY_EVIDENCE_V0_2",
@@ -31,8 +38,8 @@ try {
     return await readFile(zipPath);
   }
 
-  const zipScheduled = await zipBundle("scheduled", makeBundle("2026-09-29", 20));
-  const zipManual = await zipBundle("manual", makeBundle("2026-09-29", 1));
+  const zipScheduled = await zipBundle("scheduled", makeBundle("2026-09-29", 20, "200", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"));
+  const zipManual = await zipBundle("manual", makeBundle("2026-09-29", 1, "201", "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"));
 
   let baseUrl = "";
   const server = createServer((req, res) => {
@@ -47,6 +54,7 @@ try {
             event: "schedule",
             created_at: "2026-09-29T05:25:00Z",
             run_attempt: 1,
+            head_sha: "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
             conclusion: "success",
           },
           {
@@ -54,6 +62,7 @@ try {
             event: "workflow_dispatch",
             created_at: "2026-09-29T05:20:00Z",
             run_attempt: 1,
+            head_sha: "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
             conclusion: "success",
           },
         ],
@@ -127,6 +136,8 @@ try {
     assert.equal(report.aggregation.manualDiagnosticArtifactCount, 1);
     assert.equal(report.aggregation.promotionCoverageComplete, true);
     assert.equal(report.aggregation.tradingDayArtifactGaps.length, 0);
+    assert.equal(report.aggregation.collectorContractConsistent, true);
+    assert.deepEqual(report.aggregation.collectorContractFingerprints, ["collector-fp-A"]);
     assert.equal(report.coverageIntegrity.tradingDayGapDates.length, 0);
     assert.equal(report.coverageIntegrity.rows[0].runId, "200");
     assert.equal(report.coverageIntegrity.rows[0].promotionCoverageEligible, true);
@@ -137,6 +148,8 @@ try {
     assert.equal(report.reviewPacket.coverageIntegrityExtensionVersion, "S2_DECISION_CLOCK_COVERAGE_INTEGRITY_V0_2");
     assert.deepEqual(report.reviewPacket.tradingDayGapDates, []);
     assert.equal(report.reviewPacket.laterScheduledRunsCannotRepairAnchor, true);
+    assert.equal(report.reviewPacket.collectorContractConsistent, true);
+    assert.deepEqual(report.reviewPacket.collectorContractFingerprints, ["collector-fp-A"]);
     assert.equal(report.reviewPacket.exactDecisionClockAuthorized, false);
     assert.equal(report.safety.system2D1Written, false);
     assert.equal(report.safety.system2WorkerCronMutated, false);

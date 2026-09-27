@@ -136,10 +136,15 @@ jobs:
       - name: Build immutable daily clock-evidence bundle
         env:
           MARKET_DATE: ${{ needs.calendar.outputs.market_date }}
+          COLLECTOR_REPOSITORY: ${{ github.repository }}
+          COLLECTOR_RUN_ID: ${{ github.run_id }}
+          COLLECTOR_RUN_ATTEMPT: ${{ github.run_attempt }}
+          COLLECTOR_SHA: ${{ github.sha }}
+          COLLECTOR_WORKFLOW_REF: ${{ github.workflow_ref }}
         shell: bash
         run: |
           set -euo pipefail
-          node system2/scripts/build_decision_clock_daily_bundle.mjs             --source-arrival "system2/artifacts/a1/source-arrival-${MARKET_DATE}.json"             --dependency-series "system2/artifacts/dependencies/required-dependency-series-${MARKET_DATE}.json"             --output "system2/artifacts/decision-clock-daily-${MARKET_DATE}.json"
+          node system2/scripts/build_decision_clock_daily_bundle.mjs             --source-arrival "system2/artifacts/a1/source-arrival-${MARKET_DATE}.json"             --dependency-series "system2/artifacts/dependencies/required-dependency-series-${MARKET_DATE}.json"             --output "system2/artifacts/decision-clock-daily-${MARKET_DATE}.json"             --repository "$COLLECTOR_REPOSITORY"             --workflow-run-id "$COLLECTOR_RUN_ID"             --workflow-run-attempt "$COLLECTOR_RUN_ATTEMPT"             --workflow-sha "$COLLECTOR_SHA"             --workflow-ref "$COLLECTOR_WORKFLOW_REF"
 
       - name: Publish evidence summary
         env:
@@ -159,6 +164,8 @@ jobs:
             `- Precision eligible: ${e.precisionEligible}`,
             `- Worst required upper bound minutes after close: ${e.worstObservedRequiredUpperBoundMinutes ?? "—"}`,
             `- Research candidate time: ${e.candidateTaipeiTime ?? "—"}`,
+            `- Collector contract fingerprint: ${b.collectorProvenance?.collectorContractFingerprint ?? "—"}`,
+            `- Workflow SHA: ${b.collectorProvenance?.workflowSha ?? "—"}`,
             "- Authorized decision clock: false",
             "- System2 Worker capture enabled: false",
             "- System2 Worker Cron changed: false",

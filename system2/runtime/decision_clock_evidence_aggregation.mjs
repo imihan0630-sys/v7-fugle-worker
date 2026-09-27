@@ -8,9 +8,21 @@ function requiredText(value, field) {
 
 function normalizeCandidate(raw, index) {
   if (!raw || typeof raw !== "object") throw new Error(`candidates[${index}] is required`);
+  const runId = requiredText(String(raw.runId), `candidates[${index}].runId`);
+  const eventName = requiredText(raw.eventName, `candidates[${index}].eventName`);
+  const runAttempt = Number.isInteger(raw.runAttempt) && raw.runAttempt > 0 ? raw.runAttempt : 1;
+  const runCreatedAt = new Date(requiredText(raw.runCreatedAt, `candidates[${index}].runCreatedAt`));
+  if (!Number.isFinite(runCreatedAt.getTime())) {
+    throw new Error(`candidates[${index}].runCreatedAt must be timestamp`);
+  }
+
   const bundle = raw.bundle;
-  if (!bundle || bundle.bundleVersion !== "S2_DECISION_CLOCK_DAILY_BUNDLE_V0_2") {
-    throw new Error(`candidates[${index}].bundle must be V0.2 daily bundle`);
+  const scheduled = eventName === "schedule";
+  const v03 = bundle?.bundleVersion === "S2_DECISION_CLOCK_DAILY_BUNDLE_V0_3";
+  const legacyManual = eventName !== "schedule"
+    && bundle?.bundleVersion === "S2_DECISION_CLOCK_DAILY_BUNDLE_V0_2";
+  if (!v03 && !legacyManual) {
+    throw new Error(`candidates[${index}].bundle must be V0.3 for scheduled evidence`);
   }
   if (!bundle.evidence || bundle.evidence.evidenceVersion !== "S2_DECISION_CLOCK_DAILY_EVIDENCE_V0_2") {
     throw new Error(`candidates[${index}].bundle.evidence must be V0.2 daily evidence`);
@@ -19,21 +31,45 @@ function normalizeCandidate(raw, index) {
     throw new Error(`candidates[${index}] marketDate mismatch`);
   }
 
-  const runId = requiredText(String(raw.runId), `candidates[${index}].runId`);
-  const eventName = requiredText(raw.eventName, `candidates[${index}].eventName`);
-  const runCreatedAt = new Date(requiredText(raw.runCreatedAt, `candidates[${index}].runCreatedAt`));
-  if (!Number.isFinite(runCreatedAt.getTime())) {
-    throw new Error(`candidates[${index}].runCreatedAt must be timestamp`);
+  let collectorProvenance = null;
+  let collectorContractFingerprint = null;
+  let workflowSha = null;
+  if (v03) {
+    collectorProvenance = bundle.collectorProvenance;
+    if (!collectorProvenance
+      || collectorProvenance.provenanceVersion !== "S2_DECISION_CLOCK_COLLECTOR_PROVENANCE_V0_3") {
+      throw new Error(`candidates[${index}] collector provenance V0.3 is required`);
+    }
+    if (String(collectorProvenance.workflowRunId) !== runId) {
+      throw new Error(`candidates[${index}] workflowRunId provenance mismatch`);
+    }
+    if (Number(collectorProvenance.workflowRunAttempt) !== runAttempt) {
+      throw new Error(`candidates[${index}] workflowRunAttempt provenance mismatch`);
+    }
+    const runHeadSha = requiredText(raw.runHeadSha, `candidates[${index}].runHeadSha`).toLowerCase();
+    workflowSha = requiredText(collectorProvenance.workflowSha, `candidates[${index}].workflowSha`).toLowerCase();
+    if (workflowSha !== runHeadSha) {
+      throw new Error(`candidates[${index}] workflowSha provenance mismatch`);
+    }
+    collectorContractFingerprint = requiredText(
+      collectorProvenance.collectorContractFingerprint,
+      `candidates[${index}].collectorContractFingerprint`,
+    );
+  } else if (scheduled) {
+    throw new Error(`candidates[${index}] scheduled evidence cannot use legacy bundle`);
   }
 
   return {
     runId,
-    runAttempt: Number.isInteger(raw.runAttempt) && raw.runAttempt > 0 ? raw.runAttempt : 1,
+    runAttempt,
     eventName,
     runCreatedAt: runCreatedAt.toISOString(),
     artifactId: raw.artifactId ? String(raw.artifactId) : null,
     artifactName: raw.artifactName ? String(raw.artifactName) : null,
     marketDate: bundle.marketDate,
+    collectorContractFingerprint,
+    workflowSha,
+    collectorProvenance,
     bundle,
   };
 }
@@ -89,6 +125,10 @@ export function aggregateDecisionClockEvidence({
   const readiness = assessDecisionClockReadinessV02({
     dailyEvidence: selected.map((x) => x.bundle.evidence),
   });
+  const collectorContractFingerprints = [...new Set(
+    selected.map((x) => x.collectorContractFingerprint).filter(Boolean),
+  )].sort();
+  const collectorContractConsistent = collectorContractFingerprints.length <= 1;
 
   const coverageRows = scheduledRunCoverage.map((row, index) => {
     if (!row || typeof row !== "object") {
@@ -115,11 +155,14 @@ export function aggregateDecisionClockEvidence({
   );
   const artifactCoverageAudited = coverageRows.length > 0;
   const promotionCoverageComplete =
-    artifactCoverageAudited && tradingDayArtifactGaps.length === 0;
+    artifactCoverageAudited
+    && tradingDayArtifactGaps.length === 0
+    && collectorContractConsistent;
 
   let promotionReadinessStatus = readiness.status;
   if (!artifactCoverageAudited) promotionReadinessStatus = "COVERAGE_UNAUDITED";
-  else if (!promotionCoverageComplete) promotionReadinessStatus = "SCHEDULED_TRADING_DAY_ARTIFACT_GAPS";
+  else if (tradingDayArtifactGaps.length > 0) promotionReadinessStatus = "SCHEDULED_TRADING_DAY_ARTIFACT_GAPS";
+  else if (!collectorContractConsistent) promotionReadinessStatus = "COLLECTOR_CONTRACT_DRIFT";
 
   return deepFreeze({
     aggregationVersion: "S2_DECISION_CLOCK_EVIDENCE_AGGREGATION_V0_1",
@@ -140,6 +183,8 @@ export function aggregateDecisionClockEvidence({
       requiredReady: x.bundle.evidence.requiredReady,
       precisionEligible: x.bundle.evidence.precisionEligible,
       candidateTaipeiTime: x.bundle.evidence.candidateTaipeiTime,
+      collectorContractFingerprint: x.collectorContractFingerprint,
+      workflowSha: x.workflowSha,
     })),
     duplicateScheduledArtifacts: duplicateScheduled,
     manualDiagnosticArtifacts: manualDiagnostics.map((x) => ({
@@ -149,11 +194,16 @@ export function aggregateDecisionClockEvidence({
       runCreatedAt: x.runCreatedAt,
       artifactId: x.artifactId,
       artifactName: x.artifactName,
+      collectorContractFingerprint: x.collectorContractFingerprint,
+      workflowSha: x.workflowSha,
     })),
     readiness,
     scheduledRunCoverage: coverageRows,
     tradingDayArtifactGaps,
     nonTradingScheduledRuns,
+    collectorContractConsistencyVersion: "S2_DECISION_CLOCK_COLLECTOR_CONSISTENCY_V0_3",
+    collectorContractFingerprints,
+    collectorContractConsistent,
     artifactCoverageAudited,
     promotionCoverageComplete,
     promotionReadinessStatus,

@@ -18,6 +18,8 @@ A clock-freeze review packet becomes `OWNER_REVIEW_ELIGIBLE` only when all are t
 - the first scheduled run, attempt 1 only, for each market date is the immutable coverage anchor;
 - `promotionCoverageComplete=true`;
 - no official trading-day artifact gap exists;
+- Collector Provenance（擷取器來源證明）V0.3 is valid for every promotion-grade scheduled artifact;
+- `collectorContractConsistent=true` and exactly one collector-contract fingerprint represents the selected promotion-grade sample;
 - V0.2 readiness status is `FREEZE_ELIGIBLE`;
 - at least 20 independent trading dates are included;
 - all included dates are precision eligible.
@@ -45,6 +47,10 @@ The owner-facing review packet must include:
 - failure-class counts;
 - trading-day gap dates;
 - explicit statement that later scheduled runs or rerun attempts cannot repair the immutable first-run/first-attempt anchor;
+- collector-contract consistency version;
+- complete collector-contract fingerprint list;
+- `collectorContractConsistent` state;
+- any `COLLECTOR_CONTRACT_DRIFT` blocker;
 - explicit safety state.
 
 No performance/outcome statistic belongs in this clock-selection packet. The clock is chosen from source availability and data completeness, not from which time produced better stock returns.
@@ -75,3 +81,5 @@ worst required-source upper bound
 + round up to the next 5 minutes.
 
 No manual "nicer" time may replace it after observing the sample.
+
+The same anti-selection-bias rule applies to collector versions: if the prospective sample contains multiple collector fingerprints, the packet is blocked. It may not choose whichever collector version produces the earlier/later or otherwise more convenient candidate time. A new evidence epoch, if ever needed, must be preregistered separately before combining or restarting evidence.

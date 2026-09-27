@@ -21,6 +21,9 @@ export function buildDecisionClockReviewPacket(aggregation) {
   if ((aggregation.tradingDayArtifactGaps || []).length > 0) {
     blockers.push("TRADING_DAY_ARTIFACT_GAPS");
   }
+  if (aggregation.collectorContractConsistent !== true) {
+    blockers.push("COLLECTOR_CONTRACT_DRIFT");
+  }
   if (readiness.status !== "FREEZE_ELIGIBLE") {
     blockers.push("READINESS_NOT_FREEZE_ELIGIBLE");
   }
@@ -49,6 +52,9 @@ export function buildDecisionClockReviewPacket(aggregation) {
     tradingDayArtifactGapCount: (aggregation.tradingDayArtifactGaps || []).length,
     duplicateScheduledArtifactCount: (aggregation.duplicateScheduledArtifacts || []).length,
     manualDiagnosticArtifactCount: aggregation.manualDiagnosticArtifactCount,
+    collectorContractConsistencyVersion: aggregation.collectorContractConsistencyVersion || null,
+    collectorContractFingerprints: aggregation.collectorContractFingerprints || [],
+    collectorContractConsistent: aggregation.collectorContractConsistent === true,
     independentTradingDates: readiness.independentTradingDates,
     completeTradingDates: readiness.completeTradingDates,
     precisionEligibleDates: readiness.precisionEligibleDates,
