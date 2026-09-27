@@ -416,3 +416,80 @@ No Formal or Production behavior changed.
 ### Exact next
 
 Run the research CI and falsification fixtures. If they pass, record the contract as evidence-infrastructure-ready but keep actual-live Portfolio Risk blocked until a separately approved Production fill-capture implementation exists and has prospective real receipts.
+
+
+## PR-031 — Confirmed Fill Ledger v0.2 bootstrap / PIT correction semantics (2026-09-27)
+
+Further falsification found that v0.1 was insufficient for a portfolio that already has a position when execution-ledger capture begins.
+
+Example:
+- account already holds 100 shares before ledger start;
+- first new event is a 40-share REDUCE.
+
+Without a ledger-era opening-state receipt, `sharesBefore=100` has no append-only evidence source. Using the mutable current `/api/positions` snapshot as if it were a historical BUY would fabricate execution history.
+
+### v0.2 separates two evidence kinds
+
+**POSITION_BASELINE**
+- observed account+symbol holding state at ledger start;
+- contains sharesAfter and averageCostAfter;
+- explicitly is **not a trade**;
+- has no action/fillPrice/filledShares/sharesBefore;
+- cannot contribute to return, turnover, fee or slippage attribution;
+- pre-baseline execution history remains UNKNOWN.
+
+**FILL**
+- confirmed execution evidence;
+- BUY / ADD / REDUCE / SELL;
+- retains the v0.1 position arithmetic and append-only correction rules.
+
+### Bootstrap rule
+
+A FILL may start a ledger without a baseline only when:
+- action = BUY;
+- sharesBefore = 0.
+
+If the first observed fill is ADD / REDUCE / SELL, a valid POSITION_BASELINE is required first.
+
+This prevents a current holding snapshot from being silently transformed into an invented historical entry.
+
+### Point-in-time correction semantics
+
+v0.2 separates:
+- `effectiveAt`: when the holding/fill economically occurred;
+- `confirmedAt`: when the system first knew the evidence.
+
+A later correction:
+- is appended;
+- references the earlier event;
+- affects an as-known view only after the correction's `confirmedAt`;
+- must not rewrite what the research system could have known before that time.
+
+This preserves PIT auditability.
+
+### Account scope
+
+`accountKey` is mandatory. The same symbol held in separate accounts must not be silently merged before an explicit portfolio aggregation layer.
+
+### Safe implementation conclusion
+
+Do **not** automatically turn an existing `/api/positions` save into a FILL event.
+
+The minimum safe Production architecture, if later approved, is:
+1. keep `/api/positions` as current snapshot/read model;
+2. create a separate append-only execution/baseline ledger;
+3. require explicit baseline establishment for pre-existing holdings;
+4. require explicit confirmed fill submissions/imports after ledger start;
+5. derive current position from ledger where coverage is complete, but never backfill older fills from the snapshot;
+6. preserve source/provenance and PIT confirmation time.
+
+Automatic broker ingestion would be stronger than manual confirmation when available, but current repository audit proves no broker execution/order/fill connector in the existing scripts. Market-data/Fugle quote data is not broker execution evidence.
+
+Status:
+`CONFIRMED_FILL_LEDGER_V0_2 = DESIGN_READY / CLASS_B_PROPOSAL_FIRST / NOT_IMPLEMENTED`.
+
+No Worker/runtime/Formal decision behavior changed.
+
+### Exact next
+
+Run deterministic CI. If v0.2 survives, freeze a Class-B implementation proposal with D1 schema/API/idempotency/rollback/read-model boundaries. Do not implement/merge/deploy that Production infrastructure without explicit owner approval.
