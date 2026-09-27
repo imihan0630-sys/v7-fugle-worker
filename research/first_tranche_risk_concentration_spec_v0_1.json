@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "FIRST_TRANCHE_RISK_CONCENTRATION_V0_1",
+  "observedAt": "2026-09-28T05:22:00+08:00",
+  "purpose": "Test whether full-plan projected-risk concentration survives when exposure is restricted to the 60% FIRST tranche before any ADD.",
+  "comparison": [
+    "current Formal FIRST plan-preview risk",
+    "same-deployment equal-capital FIRST plan-preview risk",
+    "exhaustive NT$1,000-grid minimum FIRST plan-preview HHI under 35% per-name cap"
+  ],
+  "semantics": [
+    "FIRST amount uses round(totalAllocation*0.60)",
+    "FIRST shares use floor(firstAmount/buyHigh)",
+    "FIRST preview notional is not a BUY trigger, order, fill or realized exposure",
+    "the first-only test is relevant because a live path may remain in FIRST and never reach ADD"
+  ],
+  "falsification": "If current FIRST concentration no longer exceeds equal-capital/global minimum, downgrade the full-plan structural finding as lifecycle-stage sensitive.",
+  "status": "FIRST_TRANCHE_PROTOCOL_READY / PRODUCTION_AUDIT_PENDING",
+  "formalCoreImpact": false
+}
