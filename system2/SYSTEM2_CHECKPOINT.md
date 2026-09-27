@@ -19,6 +19,16 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 
 ## Current design decisions
 
+- No historical or retrospective arrival evidence was substituted. Earliest ordinary prospective evidence date remains 2026-09-29; the system must wait for real same-day scheduled artifacts to accumulate.
+
+- Aggregation end-to-end fixture + guard verification PASS. System2 Research CI run `36324912254`, job `108635698802`: SUCCESS.
+
+- A separate read-only readiness workflow now aggregates GitHub Actions artifacts at 16:30 Asia/Taipei on weekdays using only `github.token` with `actions: read`; it uses no Cloudflare secret, performs no D1/Worker/Cron mutation, and cannot authorize an exact clock.
+
+- Scheduled-run coverage audit is now explicit: official non-trading-day no-bundle runs are legitimate skips, while an official trading-day scheduled run without a daily bundle becomes `SCHEDULED_TRADING_DAY_ARTIFACT_GAPS` and blocks promotion-grade readiness.
+
+- Decision Clock（決策時間點）artifact aggregation V0.1 implemented and verified. Promotion-grade readiness uses only scheduled prospective daily bundles; manual runs are diagnostics only; same-date scheduled duplicates use the earliest scheduled run deterministically, preventing favorable rerun cherry-picking.
+
 - Prospective V0.2 trading-date evidence count remains 0. 2026-09-28 is an official TWSE holiday; earliest ordinary prospective trading session is 2026-09-29.
 
 - System2 Research CI run `36324105323`, job `108633421570` PASS after V0.2 code/guard correction; V8 regression run `36324056669`, job `108633282565` PASS. Engineering pass is not source-latency evidence or strategy alpha evidence.
@@ -274,7 +284,7 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 11. ✅ Isolated `system2-shadow-research` Worker smoke deployment verified against `SYSTEM2_DB`; capture remains disabled, workers.dev/Preview URLs are off, Cron count is 0, and System 1 is unchanged.
 12. ✅ Source-arrival/decision-clock measurement contract, tests and manual read-only workflow implemented repository-side; no clock/Cron activated.
 13. ✅ Implement A5 filing-vintage + B2 derived-industry-snapshot observers, independent TWSE trading-calendar gate, V0.2 daily evidence bundle/readiness contracts, and isolated read-only scheduled research collection.
-14. ⏳ Accumulate same-day V0.2 evidence on independent official trading dates. 10 complete dates may reach PROVISIONAL_ELIGIBLE; 20 complete precise dates may reach FREEZE_ELIGIBLE. No retrospective substitution.
+14. ⏳ Accumulate same-day V0.2 evidence on independent official trading dates. Artifact aggregation/coverage audit is now automated read-only with deterministic anti-cherry-picking selection. 10 complete dates may reach PROVISIONAL_ELIGIBLE; 20 complete precise dates may reach FREEZE_ELIGIBLE. No retrospective substitution.
 15. ⏳ After evidence gates pass, propose the first exact after-close Decision Clock（決策時間點） for explicit owner review. System2 Worker Cron activation remains a separate later explicit owner gate.
 
 ## Current boundary
