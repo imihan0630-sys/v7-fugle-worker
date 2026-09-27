@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "SIGNAL_TRIGGER_PROVENANCE_AUDIT_V0_1",
+  "scope": "Initial BUY signal historical provenance for execution-clock sizing research",
+  "currentRuntimeFindings": {
+    "v7SignalDeliveryState": {
+      "role": "authoritative dedupe/lease current state",
+      "key": "state_key",
+      "storageShape": "single mutable snapshot_json per signal-state key",
+      "retainsOnSuccess": [
+        "tradeDate",
+        "active/fired sets",
+        "positionStage",
+        "episode counters",
+        "lastEntrySignalBarTime"
+      ],
+      "reservationBeforeSend": [
+        "signalId",
+        "episode",
+        "status",
+        "reservedAt"
+      ],
+      "reservationAfterSuccess": "deleted from pendingDeliveries",
+      "historicalAppendOnly": false,
+      "exactSuccessfulPayloadRetained": false
+    },
+    "v7LiveState": {
+      "role": "latest monitor snapshot",
+      "primaryKey": "id=1",
+      "behavior": "overwritten each monitor run",
+      "historicalAppendOnly": false
+    },
+    "lastMonitorKv": {
+      "role": "latest monitor mirror",
+      "behavior": "single overwritten KV value",
+      "expiration": "2 days",
+      "historicalAppendOnly": false
+    },
+    "cronRuns": {
+      "role": "append-only cron run metadata",
+      "detail": "result.status text only",
+      "notificationsPersisted": false
+    },
+    "signalStateKvMirror": {
+      "expiration": "7 days",
+      "role": "mirror of current signal state; not immutable signal history"
+    }
+  },
+  "reconstructionFalsification": {
+    "shortcut": "lastEntrySignalBarTime + historical 15m candle can reconstruct exact BUY trigger price",
+    "result": "REJECTED",
+    "reason": "lastEntrySignalBarTime is the formal 15m bar time, while buildPushPayload.currentPrice comes from the contemporaneous quote; the quote can differ from the completed 15m close and the successful payload is not durably retained."
+  },
+  "safeInterpretation": {
+    "currentState": "May support dedupe/episode existence and recent operational debugging.",
+    "historicalTriggerPrice": "UNKNOWN unless an exact durable payload/event record is available.",
+    "fillEvidence": "Always separate; signal price is not a fill."
+  },
+  "status": "SIGNAL_EPISODE_EVIDENCE_EXISTS / EXACT_HISTORICAL_TRIGGER_PAYLOAD_NOT_DURABLE / EXECUTION_PROVENANCE_BLOCKED",
+  "formalCoreImpact": false
+}
