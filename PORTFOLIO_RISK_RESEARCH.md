@@ -3160,3 +3160,29 @@ Status:
 `LOCAL_REFERENCE_PROTOCOL_READY / PRODUCTION_AUDIT_PENDING`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-068 Production result — local downhill direction survives all entry references
+
+Read-only Production run `36354034940` / job `108718063297` tested all six legal NT$1,000 moves on 2026-09-18 across:
+- buyLow, midpoint, buyHigh;
+- HHI, Gini, CV, maximum risk share, max/min.
+
+Two one-grid moves again strictly dominate current in all 15 reference × metric cells:
+
+1. `3105 -> 2006`: 15 improved / 0 worsened.
+2. `3105 -> 6133`: 15 improved / 0 worsened.
+
+The reverse transfers into 3105 from either name worsen all 15 cells.
+
+Therefore the local result from PR-067 is not a buyHigh artifact. The pre-share `allocation × stop-distance` geometry itself has a robust local downhill direction away from 3105 across the entire frozen buy zone.
+
+This remains structural evidence only. It does not prove reducing the highest-PriorityScore name improves returns.
+
+Durable receipt:
+`research/local_reference_reallocation_production_receipt_20260928.json`.
+
+Status:
+`LOCAL_DIRECTION_REFERENCE_ROBUST / TWO_STRICTLY_DOMINATING_ONE_GRID_MOVES / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
