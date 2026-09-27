@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-09-27T05:24:00+08:00",
+  "updatedAt": "2026-09-27T08:31:00+08:00",
   "status": "BASELINE_V0_2_PARTIAL_RECONCILIATION",
   "formalCore": "LOCKED",
   "authority": {
@@ -209,7 +209,7 @@
       "domain": "PORTFOLIO_CAPITAL_READD",
       "level": "L2",
       "status": "FALSIFICATION_IN_PROGRESS",
-      "basis": "Tier-A PIT reconstruction now separates deployment, within-deployed concentration, total-capital risky-name HHI, stop-risk intensity, channel geometry, and nominal reserve versus cap/rounding shortfall. Production read-only evidence has 2 non-zero plan dates only; correlation/cluster/live-event/outcome incrementality remain immature, so L2 is retained and no threshold/cap change is authorized."
+      "basis": "Plan-time Tier-A reconstruction is validated for immutable plan fields and now decomposes deployment, concentration, total-account risky-name footprint, stop-risk intensity, channel geometry and reserve shortfall. Production read-only lifecycle audit proves historical actual-live holdings/heat are NOT reconstructable from current receipts: trade-journal signals are advisory rather than confirmed fills, and /api/positions is a mutable current snapshot. Correlation/cluster/outcome incrementality also remain immature. L2 retained; no threshold/cap/allocation change authorized."
     },
     {
       "id": "CAPITAL_READD",
