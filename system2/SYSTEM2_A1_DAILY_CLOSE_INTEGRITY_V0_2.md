@@ -35,6 +35,17 @@ Existing required market-wide minimums are unchanged:
 
 These are integrity rules, not optimized thresholds.
 
+## Prospective polling scope
+
+The scheduled Decision Clock collector now passes `--required-daily-only true`.
+
+That scheduled lane polls only:
+
+- `A1_TWSE_DAILY_CLOSE`;
+- `A1_TPEX_DAILY_CLOSE`.
+
+A2/A3/A6 remain registered research/context sources, but their optional/context availability cannot add HTTP load or transport failure surface to the required A1 clock loop. The manual source-arrival research runner may still observe the wider registry when explicitly used outside this scheduled promotion-grade lane.
+
 ## Receipt diagnostics
 
 A1 probe receipts preserve:
