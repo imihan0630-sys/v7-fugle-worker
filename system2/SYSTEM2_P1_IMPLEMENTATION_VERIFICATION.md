@@ -364,3 +364,31 @@ Persistence batch invariants verified:
 Important:
 No separate Cloudflare D1 database has been created yet.
 No production binding, root Wrangler configuration, production Worker, route or Cron was changed.
+
+
+## Physical D1 readiness and permission audit (2026-09-27)
+
+Status: REPOSITORY PREPARATION PASS / CLOUD D1 PERMISSION BLOCKED / NO PRODUCTION CHANGE.
+
+Added:
+- research schema V0.5 with `s2_schema_meta` and `s2_infrastructure_checks`;
+- `deploy/d1_admin_core.mjs` + unit tests;
+- `deploy/provision_system2_d1.mjs`;
+- manual-only `.github/workflows/system2-isolated-d1-provision.yml`;
+- `SYSTEM2_CLOUD_PERSISTENCE_READINESS_V0_1.md`.
+
+System2 Research CI was extended to:
+- run syntax checks for runtime/deploy modules;
+- require infrastructure/schema metadata tables in SQLite validation.
+
+Cloudflare read-only audit evidence:
+- run `36305698372`, job `108581802799`;
+- legacy token verification HTTP 200;
+- Workers Scripts list HTTP 200;
+- D1 list HTTP 401 Authentication error;
+- dedicated System2 D1 token secret absent;
+- therefore physical D1 existence remains UNKNOWN.
+
+Safety conclusion:
+the current token must not be treated as D1-capable and the System 2 implementation must not fall back to V8 production D1.
+The exact remaining blocker is a dedicated D1-authorized Cloudflare token/secret.
