@@ -1,0 +1,127 @@
+{
+  "schemaVersion": "first-failure-attribution-falsification-v0.1",
+  "researchDate": "2026-09-27",
+  "status": "STRUCTURAL_ATTRIBUTION_BIAS_CONFIRMED",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "currentFormalSemantics": {
+    "mechanism": "scoreCandidate returns immediately at the first failing gate in fixed source order.",
+    "exclusionReasonMeaning": "FIRST_OBSERVED_FAILURE_UNDER_CURRENT_ORDER",
+    "notEquivalentTo": [
+      "all failed gates",
+      "marginal causal contribution of that gate",
+      "number of stocks uniquely excluded by that gate",
+      "counterfactual selected count if that gate were removed"
+    ]
+  },
+  "fixedSyntheticWitness": {
+    "candidates": [
+      {
+        "id": "X",
+        "gateA": false,
+        "gateB": false
+      },
+      {
+        "id": "Y",
+        "gateA": false,
+        "gateB": true
+      },
+      {
+        "id": "Z",
+        "gateA": true,
+        "gateB": false
+      }
+    ],
+    "order_A_then_B": {
+      "firstFailureCounts": {
+        "A": 2,
+        "B": 1
+      },
+      "accepted": 0
+    },
+    "order_B_then_A": {
+      "firstFailureCounts": {
+        "A": 1,
+        "B": 2
+      },
+      "accepted": 0
+    },
+    "conclusion": "Gate-order reversal changes reason prevalence while the accepted set is unchanged. Therefore first-failure counts are order-dependent attribution, not gate importance."
+  },
+  "currentOrderFamilies": [
+    "price floor",
+    "history completeness",
+    "market/sector RS completeness",
+    "market-cap completeness",
+    "market-cap floor",
+    "extreme daily return",
+    "primary liquidity / exception",
+    "10-30bn special reason",
+    "30-100bn liquidity",
+    "chip concentration completeness",
+    "quarterly/valuation/announcement completeness",
+    "official event risk",
+    "valuation risk",
+    "sector gate",
+    "A/B setup",
+    "fundamental count",
+    "fundamental quality",
+    "ATR quality",
+    "target availability",
+    "RR>=2",
+    "signal grade>=B"
+  ],
+  "interpretationRules": [
+    "Reason counts must be labeled firstFailureCount, never gateRejectCount without qualification.",
+    "A zero firstFailureCount does not prove a gate never fails; upstream gates may mask it.",
+    "A large firstFailureCount does not prove the gate is the dominant source of candidate scarcity; many rows may fail later gates too.",
+    "Moving a gate earlier can raise its first-failure count without changing any eventual accepted row.",
+    "Outcome studies on one first-failure cohort estimate outcomes of that ordered-funnel subgroup, not the effect of removing the gate."
+  ],
+  "gateOverlapObserverSpec": {
+    "purpose": "Measure observable PASS/FAIL/UNKNOWN overlap without altering Formal order or pretending bypassed rows are Formal candidates.",
+    "statePerGate": "PASS / FAIL / UNKNOWN / NOT_EVALUABLE",
+    "requirements": [
+      "Use the same point-in-time feature row consumed by the scan.",
+      "No new market-data calls.",
+      "No imputation of missing fields.",
+      "Later gate can be evaluated only when all of its own required inputs and prerequisite derived geometry are valid.",
+      "Do not call an observed later PASS a counterfactual Formal pass; upstream rejection still stands.",
+      "Preserve current firstFailureReason separately.",
+      "Persist exact gate definition/version."
+    ],
+    "priorityGates": [
+      "LIQUIDITY_PRIMARY",
+      "MARKET_CAP_10BN",
+      "EXTREME_DAILY_MOVE",
+      "SECTOR",
+      "A_B_SETUP",
+      "FUNDAMENTAL_COUNT",
+      "FUNDAMENTAL_QUALITY",
+      "ATR_1_10",
+      "TARGET_AVAILABLE",
+      "RR_2",
+      "SIGNAL_GRADE_B"
+    ]
+  },
+  "usefulMetrics": [
+    "firstFailureCount by gate/date/pool",
+    "observableFailCount by gate/date/pool",
+    "uniqueFailOnlyCount among fully evaluable gate subset",
+    "multiFailPattern frequency",
+    "conditional next-failure transition after each first failure, descriptive only",
+    "selected/zero-pick sensitivity only via preregistered research replay, never by simple count subtraction"
+  ],
+  "falsification": [
+    "If observableFailCount nearly equals firstFailureCount for a gate across clean dates, upstream masking is small and first-fail prevalence may be a reasonable descriptive proxy.",
+    "If multi-fail overlap is high, do not prioritize gate relaxation using first-failure counts.",
+    "Any gate-removal replay must preserve all other rules exactly and remain research-only; it is not evidence by itself without outcomes/costs/OOS.",
+    "Data-quality gates stay UNKNOWN when inputs are missing and must not be treated as strategy failures."
+  ],
+  "governance": {
+    "observerCapture": "Potential Class A only if computed from already-loaded scan inputs, isolated research output, bounded cost, no Formal mutation.",
+    "sharedRuntimeOrSchemaImpact": "Class B proposal-first if material.",
+    "gateOrderOrGateRemoval": "Class C owner approval required."
+  },
+  "decision": "FIRST_FAILURE_COUNTS_ORDER_DEPENDENT / MARGINAL_GATE_IMPORTANCE_UNKNOWN / OVERLAP_OBSERVER_WARRANTED / NO_FORMAL_CHANGE"
+}
