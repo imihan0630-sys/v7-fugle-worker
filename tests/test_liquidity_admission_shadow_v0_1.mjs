@@ -1,3 +1,4 @@
+import {explicitLiquidityReasonMatrix,sampleLiquidityExceptionPass} from "../research/liquidity_admission_control_sampler_v0_1.mjs";
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 
@@ -58,6 +59,23 @@ const thousandLow=base("3001",{close:1200,marketCapYi:200,avgVolume20Lots:250});
 const features=[low,small,mid,thousandLow,exception];
 const res=mod.buildLiquidityAdmissionRejectedResearch(features,()=>sector,"2026-09-27");
 
+const explicit=explicitLiquidityReasonMatrix(res.populationCounts);
+assert.equal(explicit.LIQ_LOW_AVG_VOLUME_REJECTED.GENERAL,1);
+assert.equal(explicit.LIQ_LOW_AVG_VOLUME_REJECTED.THOUSAND,1);
+assert.equal(explicit.LIQ_SMALLCAP_SPECIAL_REASON_REJECTED.THOUSAND,0,"unobserved preregistered reason x pool must be explicit zero");
+assert.equal(explicit.LIQ_MIDCAP_EXTRA_REQUIREMENT_REJECTED.THOUSAND,0);
+
+const independentPassRows=features.map(f=>{
+  const a=mod.buildLiquidityAdmissionResearchAudit(f);
+  return {symbol:f.symbol,pool:Number(f.close)>=1000?"THOUSAND":"GENERAL",belowPrimaryMin:a.belowPrimaryMin,liquidityExceptionPass:a.liquidityExceptionPass};
+});
+const passSample=sampleLiquidityExceptionPass(independentPassRows,{scanDate:"2026-09-27",capPerPool:6});
+assert.equal(passSample.semanticPopulationCount,1);
+assert.equal(passSample.sampledCount,1);
+assert.equal(passSample.rows[0].symbol,"1102");
+assert.equal(passSample.rows[0].membership,"LIQ_LOW_VOLUME_EXCEPTION_PASS");
+assert.equal(passSample.rows[0].sampleMembershipMeta.populationCount,1);
+
 assert.equal(res.populationCounts.LIQ_LOW_AVG_VOLUME_REJECTED.GENERAL,1);
 assert.equal(res.populationCounts.LIQ_LOW_AVG_VOLUME_REJECTED.THOUSAND,1);
 assert.equal(res.populationCounts.LIQ_SMALLCAP_SPECIAL_REASON_REJECTED.GENERAL,1);
@@ -76,6 +94,9 @@ assert.equal(res.outcomeSelected,false);
 assert.equal(res.decisionImpact,false);
 
 const reversed=mod.buildLiquidityAdmissionRejectedResearch([...features].reverse(),()=>sector,"2026-09-27");
+const reversePassRows=[...independentPassRows].reverse();
+const reversePassSample=sampleLiquidityExceptionPass(reversePassRows,{scanDate:"2026-09-27",capPerPool:6});
+assert.deepEqual(passSample.rows.map(x=>x.symbol),reversePassSample.rows.map(x=>x.symbol),"exception-pass sample must be input-order invariant");
 const key=x=>x.cohort+"|"+x.pool+"|"+x.f.symbol;
 assert.deepEqual(res.samples.map(key),reversed.samples.map(key),"liquidity samples must be deterministic and input-order independent");
 
@@ -86,5 +107,7 @@ console.log(JSON.stringify({
   exceptionInputCoverageCounts:res.exceptionInputCoverageCounts,
   belowPrimaryMinExceptionInputCoverageCounts:res.belowPrimaryMinExceptionInputCoverageCounts,
   belowPrimaryMinFailureReasonCounts:res.belowPrimaryMinFailureReasonCounts,
+  explicitReasonMatrix:explicit,
+  exceptionPassSample:{population:passSample.semanticPopulationCount,sampled:passSample.sampledCount,symbols:passSample.rows.map(x=>x.symbol)},
   samples:res.samples.map(x=>({cohort:x.cohort,pool:x.pool,symbol:x.f.symbol,population:x.reasonPopulationCount}))
 },null,2));
