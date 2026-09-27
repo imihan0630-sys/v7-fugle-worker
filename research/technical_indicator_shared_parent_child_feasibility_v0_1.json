@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "technical-indicator-shared-parent-child-feasibility-v0.3",
+  "schemaVersion": "technical-indicator-shared-parent-child-feasibility-v0.4",
   "updated": "2026-09-28 Asia/Taipei",
   "researchOnly": true,
   "runtimeImplemented": false,
@@ -65,7 +65,14 @@
       "VALID",
       "UNKNOWN",
       "BLOCKED"
-    ]
+    ],
+    "parentAttemptRule": {
+      "rootKey": "ROOT",
+      "requirement": "Every expected parent gets exactly one ROOT evidence row for each observer/evidence-family run.",
+      "singleObjectFamilies": "ROOT row is both attempt accounting and evidence payload.",
+      "multiObjectFamilies": "ROOT row carries attempt/status summary; additional deterministic evidence_item_key rows carry episodes/items.",
+      "reason": "100% parent attempt accounting must not depend on how many domain objects a parent emits."
+    }
   },
   "genericObserverRun": {
     "proposedTable": "trade_research_observer_runs",
@@ -96,8 +103,12 @@
       "finished_at",
       "run_status",
       "summary_json",
-      "semantic_fingerprint"
-    ]
+      "semantic_fingerprint",
+      "expected_parent_keyset_hash",
+      "attempted_parent_keyset_hash",
+      "decision_set_hash"
+    ],
+    "keysetRule": "COMPLETE requires attempted ROOT parent keyset hash == expected immutable parent keyset hash, not merely equal counts."
   },
   "technicalAttemptStatuses": [
     "VALID_OBSERVABLE",
@@ -159,7 +170,7 @@
     "observer_wall_ms"
   ],
   "status": {
-    "sharedEvidenceChildSchema": "DESIGN_COMPATIBLE_V0_3",
+    "sharedEvidenceChildSchema": "DESIGN_COMPATIBLE_V0_4",
     "classBImplementation": "PREMATURE",
     "ownerApprovalRequested": false,
     "formalOptimizationCandidate": false,
