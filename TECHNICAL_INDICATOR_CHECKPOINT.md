@@ -1594,3 +1594,101 @@ Formal Core remains LOCKED.
 - c564c028986f58f284c11165170eeec0b5a4d107 — price-limit provenance added to Snapshot v0.2 proposal.
 - 2aabd4be85418a07e7f6ed95f88a6e18f9da4eaf — price-limit non-identifiability firewall.
 - a19ff2d7b32801fe2bf88c76ae6fe4233cbda3d9 — machine-readable non-identifiability contract.
+
+
+## Continuation update — TI-367 through TI-378
+
+### Prospective observer readiness gate — TI-367..TI-378
+- A seven-level readiness model is frozen so "formula works", "data exists", "can inspect outcomes", "incremental value proven", and "Formal review eligible" cannot be conflated.
+- R0_FORMULA_QA_READY:
+  formulaVersion + deterministic oracle + replay/prefix + edge semantics.
+- R1_SOURCE_READY:
+  immutable parent identity + raw-history admission + complete symbol-session coverage + TECHNICAL_CONTINUITY receipt + price-limit provenance + formula/state lineage + PIT timing.
+- R2_CAPTURE_COMPLETE:
+  exact parent keyset + 100% attempt accounting + zero missing parents + zero provenance conflicts + COMPLETE run receipt.
+- R3_DESCRIPTIVE_READY:
+  complete independent-date prospective coverage, quantified blocked/unknown/constrained rates, stable version/common support.
+- R4_OUTCOME_JOIN_READY:
+  valid outcome provenance, exact keyset join, no partial-date truncation, forward-only outcomes, preregistered experiment, constrained/special-listing strata preserved.
+- R5_INCREMENTAL_INFERENCE_READY:
+  mature prospective sample, BASE controls, redundancy residualization, date-cluster robustness, regime/industry/liquidity splits, costs, multiple-testing and purged holdout where applicable.
+- R6_FORMAL_REVIEW_ELIGIBLE:
+  reuses project maturity gates:
+  D5 mature N>=60;
+  prospective complete snapshots>=30;
+  independent Formal scan dates>=15;
+  >=2 years;
+  >=2 regimes;
+  purged training scan dates>=10;
+  holdout>=5 Formal scan dates;
+  train/holdout direction consistent;
+  candidate coverage/zero-pick safe;
+  redundancy/cost/overfit/Baseline-vs-Formal incremental checks pass.
+- R6 is only eligibility to surface a FORMAL_OPTIMIZATION_CANDIDATE. It never authorizes automatic Formal changes.
+- Readiness is per research question, not per indicator display name.
+- Every expected parent must produce exactly one attempt status:
+  VALID_OBSERVABLE,
+  VALID_CONSTRAINED,
+  BLOCKED_SOURCE,
+  BLOCKED_CONTINUITY,
+  BLOCKED_FORMULA_STATE,
+  UNKNOWN_PROVENANCE.
+- Blocked/unknown parents remain in the denominator; silent dropping is prohibited.
+- COMPLETE run receipt requires exact generation/keyset accounting, 100% attempts, zero missing/provenance conflicts, and no replay/prefix correctness failure.
+- DATA_READY != INFERENCE_READY != ALPHA_MATURE.
+- Version changes split evidence unless exact compatibility is separately proven:
+  formula,
+  continuity engine,
+  corporate-action registry when transformed history changes,
+  symbol-session contract,
+  price-limit contract,
+  state-construction version.
+- Prospective clock begins only when immutable parent lineage + armed observer + persisted source/continuity/limit/state contracts + complete run receipts are live.
+- Existing historical bars, isolated formula implementation date or reconstructed legacy Shadow rows do not start the prospective evidence clock.
+- Engineering classification remains:
+  pure isolated formula/readiness computation = Class A;
+  shared D1/Worker/schedule/continuity wiring = Class B proposal-first;
+  Formal decision behavior = Class C owner approval.
+- Current primary queue:
+  KD_vs_RSI R0=MATERIAL_PASS / R1=BLOCKED;
+  MACD_vs_DIRECT_TREND R0=MATERIAL_PASS / R1=BLOCKED;
+  ADX_vs_TREND_QUALITY R0=MATERIAL_PASS / R1=BLOCKED;
+  BBW_vs_ATR_VCP R0=MATERIAL_PASS for Bollinger / R1=BLOCKED, with later R5 additionally requiring common-support Pattern/VCP evidence.
+- No primary Technical Indicator question is currently R4 or R5 ready.
+- New durable artifacts:
+  research/TECHNICAL_INDICATOR_OBSERVER_READINESS_GATE_V0_1.md
+  research/technical_indicator_observer_readiness_gate_v0_1.json
+
+### Current lane status
+
+TECHNICAL_INDICATOR_FORMULA_QA = R0_MATERIAL_PASS
+TECHNICAL_INDICATOR_SOURCE_RUNTIME = BELOW_R1
+TECHNICAL_INDICATOR_CAPTURE = NOT_STARTED
+DESCRIPTIVE_PROSPECTIVE_EVIDENCE = NOT_STARTED
+OUTCOME_JOIN = NO_GO
+INCREMENTAL_INFERENCE = NO_GO
+FORMAL_REVIEW_ELIGIBILITY = NO
+FORMAL_OPTIMIZATION_CANDIDATE = NONE
+Formal Core remains LOCKED.
+
+### Updated exact next continuation point
+
+1. Do not expand named indicators.
+2. Continue isolated source/semantic QA while shared runtime dependencies remain blocked.
+3. The next implementation step, if pursued, is not Class A anymore:
+   immutable parent-linked Technical Indicator persistence/observer wiring plus shared continuity consumption is Class B proposal-first.
+4. Before any Class-B proposal is recommended for owner approval, first finish a bounded implementation-impact audit:
+   schema/storage writes,
+   provider-call delta,
+   scan latency/memory,
+   failure isolation/fail-open behavior,
+   exact parent keyset integration,
+   compatibility with the proposed shared Shadow cohort architecture.
+5. No runtime change/merge/deploy without explicit owner approval.
+6. No historical Shadow fabrication or outcome inference.
+7. Formal Core remains unchanged.
+
+## Latest durable research commits
+
+- 2ca646bf3b5b84fc62aded0979eb7d46ec5d542b — Technical Indicator observer readiness gate.
+- 275db2d59b8f79dfcc82bf93803a97a26b938fd8 — machine-readable Technical Indicator observer readiness matrix.
