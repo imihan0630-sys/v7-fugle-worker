@@ -90,6 +90,7 @@ V8 A/B, Top6/3+3, capital rules and live-state machine are never prerequisites f
 - `system2/SYSTEM2_DATA_SOURCE_MATRIX.md`
 - `system2/SYSTEM2_STORAGE_SCHEMA.md`
 - `system2/SYSTEM2_STRATEGY_PREREGISTRY.md`
+- `system2/SYSTEM2_LIMITED_SHADOW_PREREGISTRY_V0_1.md`
 - `system2/SYSTEM2_EXECUTION_SIMULATOR_SPEC.md`
 - `system2/SYSTEM2_POSITION_MANAGEMENT_ARCHITECTURE.md`
 - `system2/SYSTEM2_MARKET_REGIME_V0.md`
