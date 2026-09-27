@@ -1,7 +1,7 @@
 # System 2 Prospective Shadow Capture Contract V0.1
 
 Updated: 2026-09-27 Asia/Taipei
-Status: REPOSITORY DESIGN / PHYSICAL D1 READY / WORKER AND CRON NOT DEPLOYED
+Status: WORKER SMOKE VERIFIED / CAPTURE DISABLED / CRON NOT DEPLOYED
 
 ## Purpose
 
@@ -146,3 +146,55 @@ It must not expose secrets, raw token values or production-System1 state.
 Repository-side capture design is authorized as normal System 2 engineering.
 
 Cloud Worker creation and Cron activation are separate cloud-runtime actions and are not performed in V0.1 without explicit owner authorization.
+
+
+## Worker smoke result
+
+Owner explicitly authorized an isolated Worker Smoke Test（冒煙測試） on 2026-09-27.
+
+Initial attempt:
+- GitHub Actions run `36314452669`, job `108606394382`;
+- Wrangler uploaded the Worker version and bound `SYSTEM2_DB`, but with `workers_dev=false` and no traffic target the normal deploy output did not expose a Version URL;
+- the workflow correctly refused to claim a health pass;
+- this was diagnosed as a smoke-test transport issue, not a D1/Worker-binding failure.
+
+Recovery:
+- GitHub Actions run `36314596516`, job `108606794301`;
+- used a temporary Version URL for the same isolated Worker version;
+- `/health` returned PASS with:
+  - service `system2-shadow-research`;
+  - mode `RESEARCH_ONLY`;
+  - database binding `SYSTEM2_DB`;
+  - schema version `0.5`;
+  - capture state `CAPTURE_DISABLED`;
+  - scheduled capture allowed = false;
+  - System 1 runtime used = false.
+
+After the smoke check:
+- Version/Preview URLs were disabled again;
+- workers.dev remained disabled;
+- capture remained disabled;
+- no Cron was added;
+- root `wrangler.toml` and `Worker.js` remained unchanged.
+
+Independent read-only post-smoke audit:
+- run `36314678044`, job `108607025869`;
+- Worker exists exactly once;
+- `SYSTEM2_DB` binding present;
+- `SYSTEM2_CAPTURE_ENABLED=false`;
+- Cron count = 0;
+- workers.dev enabled = false;
+- Preview/Version URLs enabled = false;
+- mutation performed = false.
+
+The temporary push-based smoke authorization trigger was disarmed after success.
+
+## Next boundary
+
+The Worker resource now exists and is safely inert.
+
+Before any Cron activation:
+1. collect prospective source-arrival latency evidence;
+2. freeze the first after-close decision clock;
+3. verify source-session completeness at that clock;
+4. require a separate explicit owner authorization to arm scheduled capture.
