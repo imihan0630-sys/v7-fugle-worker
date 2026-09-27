@@ -19,6 +19,14 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 
 ## Current design decisions
 
+- Research storage design advanced to V0.4 and remains NOT DEPLOYED. Physical prospective Shadow accumulation is now blocked by isolated cloud resource provisioning rather than missing repository-side audit/persistence semantics.
+
+- Deterministic persistence batch planner + isolated executor implemented and verified: whitelist `s2_` tables only, run fingerprint last, identical replay idempotent, same identity/different immutable payload => IMMUTABLE_CONFLICT fail-closed, non-isolated binding rejected, and decision-time batches do not accept outcome rows.
+
+- Isolated persistence plan V0.1 completed: future physical target is a separate System2 service/database with binding `SYSTEM2_DB`; no production database/KV/Worker/Cron fallback is allowed. Example Wrangler config contains placeholders only and is not deployed.
+
+- System2 Research CI（研究持續整合） is active for `system2/**` only. Initial run exposed a RANK-03 test-fixture provenance omission; the PIT gate was NOT weakened. Fixture fixed, then GitHub Actions run 36301289399 passed all 26 System2 tests, in-memory SQLite schema validation (24 `s2_` tables), and the production-isolation guard.
+
 - All pre-persistence audit tasks listed in `SYSTEM2_LIMITED_SHADOW_VERIFICATION_V0_1.md` are now complete. Remaining operational blocker is isolated physical System 2 persistence + scheduled capture; no V8 production storage/runtime has been touched.
 
 - Shadow Run Fingerprint（執行批次指紋） implemented and verified: source-session hash + full-universe accounting + decision/order/experiment/capacity/lifecycle hashes are frozen into a deterministic run identity; outcomes may join only when provenance/accounting are complete.
@@ -183,7 +191,8 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 4. ✅ Define market-regime V0 inputs using Tier A / prospectively derivable fields only — `system2/SYSTEM2_MARKET_REGIME_V0.md`.
 5. ✅ Define execution simulator assumptions for Taiwan fees/tax/slippage/gaps/limits — `system2/SYSTEM2_EXECUTION_SIMULATOR_SPEC.md`.
 6. ✅ Implement first research-only factor snapshot + frozen decision archive + isolated `s2_` schema prototype. Node/SQLite verification recorded in `system2/SYSTEM2_P1_IMPLEMENTATION_VERIFICATION.md`.
-7. ⏳ Start prospective Shadow accumulation after an isolated physical System 2 persistence/capture path is provisioned; do not attach the prototype schema to V8 production D1 by default.
+7. ✅ Complete repository-side isolated persistence/provenance preparation — source session, full-universe accounting, run fingerprint, persistence batch/executor, research CI and isolated deployment template are complete.
+8. ⏳ Provision a physically separate System 2 database/service, apply V0.4 schema there, verify write/read/replay integrity, then enable prospective scheduled Shadow capture. Never fall back to System 1 production persistence.
 
 ## Current boundary
 
