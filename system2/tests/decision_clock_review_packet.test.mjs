@@ -10,13 +10,14 @@ function aggregation({
 } = {}) {
   return {
     aggregationVersion: "S2_DECISION_CLOCK_EVIDENCE_AGGREGATION_V0_1",
-    promotionPolicy: "EARLIEST_SCHEDULED_ARTIFACT_PER_MARKET_DATE",
+    promotionPolicy: "EARLIEST_ATTEMPT_ONE_SCHEDULED_ARTIFACT_PER_MARKET_DATE",
     artifactCoverageAudited: true,
     promotionCoverageComplete: coverage,
     tradingDayArtifactGaps: Array.from({ length: gapCount }, (_, i) => ({
       marketDate: "2026-10-" + String(i + 1).padStart(2, "0"),
     })),
     duplicateScheduledArtifacts: [],
+    rerunDiagnosticArtifactCount: 0,
     manualDiagnosticArtifactCount: 0,
     collectorContractConsistencyVersion: "S2_DECISION_CLOCK_COLLECTOR_CONSISTENCY_V0_3",
     collectorContractFingerprints: ["collector-fp-A"],
@@ -46,6 +47,10 @@ assert.equal(accumulating.reviewState, "ACCUMULATING");
 assert.ok(accumulating.blockers.includes("READINESS_NOT_FREEZE_ELIGIBLE"));
 assert.equal(accumulating.exactDecisionClockAuthorized, false);
 assert.equal(accumulating.workerCronAuthorized, false);
+assert.equal(accumulating.rerunDiagnosticArtifactCount, 0);
+assert.equal(accumulating.attemptOneAnchorInvariant, true);
+assert.equal(accumulating.laterRerunAttemptsCanRepairAttemptOne, false);
+assert.equal(accumulating.laterRerunAttemptsCanInvalidateValidAttemptOne, false);
 
 const blocked = buildDecisionClockReviewPacket(aggregation({
   status: "FREEZE_ELIGIBLE",

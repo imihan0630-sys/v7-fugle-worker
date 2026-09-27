@@ -50,10 +50,12 @@ export function buildDecisionClockReviewPacket(aggregation) {
     packetVersion: "S2_DECISION_CLOCK_OWNER_REVIEW_PACKET_V0_1",
     reviewState,
     artifactSelectionPolicy: aggregation.promotionPolicy,
+    attemptOneProvenanceVersion: aggregation.attemptOneProvenanceVersion || null,
     artifactCoverageAudited: aggregation.artifactCoverageAudited,
     promotionCoverageComplete: aggregation.promotionCoverageComplete,
     tradingDayArtifactGapCount: (aggregation.tradingDayArtifactGaps || []).length,
     duplicateScheduledArtifactCount: (aggregation.duplicateScheduledArtifacts || []).length,
+    rerunDiagnosticArtifactCount: aggregation.rerunDiagnosticArtifactCount || 0,
     manualDiagnosticArtifactCount: aggregation.manualDiagnosticArtifactCount,
     collectorContractConsistencyVersion: aggregation.collectorContractConsistencyVersion || null,
     collectorContractFingerprints: aggregation.collectorContractFingerprints || [],
@@ -77,6 +79,9 @@ export function buildDecisionClockReviewPacket(aggregation) {
     workerCronAuthorized: false,
     captureEnabled: false,
     system1RuntimeUsed: false,
+    attemptOneAnchorInvariant: true,
+    laterRerunAttemptsCanRepairAttemptOne: false,
+    laterRerunAttemptsCanInvalidateValidAttemptOne: false,
     outcomeDataUsedForClockSelection: false,
   });
 }

@@ -13,7 +13,7 @@ The review format is defined before observing the 20-date result so the final pr
 
 A clock-freeze review packet becomes `OWNER_REVIEW_ELIGIBLE` only when all are true:
 
-- artifact aggregation uses the promotion policy `EARLIEST_SCHEDULED_ARTIFACT_PER_MARKET_DATE`;
+- artifact aggregation uses the promotion policy `EARLIEST_ATTEMPT_ONE_SCHEDULED_ARTIFACT_PER_MARKET_DATE`;
 - scheduled-run coverage has been audited across the full preregistered prospective date window, not merely dates that happened to produce runs/artifacts;
 - the first scheduled run, attempt 1 only, for each market date is the immutable coverage anchor;
 - `promotionCoverageComplete=true`;
@@ -48,6 +48,9 @@ The owner-facing review packet must include:
 - failure-class counts;
 - trading-day gap dates;
 - explicit statement that later scheduled runs or rerun attempts cannot repair the immutable first-run/first-attempt anchor;
+- rerun diagnostic artifact count;
+- `attemptOneAnchorInvariant=true`;
+- explicit statements that later reruns can neither repair a failed attempt one nor invalidate a valid attempt one;
 - collector-contract consistency version;
 - complete collector-contract fingerprint list;
 - `collectorContractConsistent` state;
