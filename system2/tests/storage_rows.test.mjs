@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { toShadowDecisionRow, toShadowRunRow, toCapacityRunRow, toStrategyOrderingRow } from "../runtime/storage_rows.mjs";
+import { toShadowDecisionRow, toShadowRunRow, toCapacityRunRow, toStrategyOrderingRow, toRankingExperimentRow } from "../runtime/storage_rows.mjs";
 
 const decisionRow = toShadowDecisionRow(
   {
@@ -124,5 +124,36 @@ const orderingRow = toStrategyOrderingRow({
 assert.equal(orderingRow.candidate_count, 2);
 assert.equal(orderingRow.ordering_hash, "ord-hash");
 assert.equal(JSON.parse(orderingRow.ordered_candidates_json)[1].symbol, "3008");
+
+const rankingExperimentRow = toRankingExperimentRow({
+  experimentReceiptId: "RX1",
+  experimentId: "RANK-02",
+  experimentVersion: "0.1",
+  hypothesisId: "ENTRY_READINESS_INCREMENT",
+  marketDate: "2026-09-27",
+  decisionTimestamp: "2026-09-27T07:30:00Z",
+  purpose: "GLOBAL_ADMISSION",
+  strategyId: "SHORT_MOMENTUM",
+  strategyVersion: "V0.1-CONTRACT",
+  baselinePolicyId: "SM-PARETO-BASELINE",
+  baselinePolicyVersion: "0.1",
+  baselineOrderingHash: "base-hash",
+  challengerPolicyId: "SHORT_MOMENTUM-RANK02-ENTRY-PROXIMITY",
+  challengerPolicyVersion: "0.1",
+  challengerOrderingHash: "challenger-hash",
+  sameCandidateSet: true,
+  commonSupportSymbols: ["2330", "3008"],
+  baselineOnlySymbols: [],
+  challengerOnlySymbols: [],
+  rankDeltas: [{ symbol: "2330", baselineRank: 1, challengerRank: 2, delta: -1 }],
+  outcomeAttached: false,
+  experimentHash: "experiment-hash",
+  capturedAt: "2026-09-27T07:32:00Z",
+  schemaVersion: "S2_RANKING_EXPERIMENT_V0_1",
+});
+
+assert.equal(rankingExperimentRow.same_candidate_set, 1);
+assert.equal(rankingExperimentRow.outcome_attached, 0);
+assert.equal(JSON.parse(rankingExperimentRow.common_support_symbols_json).length, 2);
 
 console.log("System2 storage row serializer tests passed");
