@@ -21229,3 +21229,231 @@ No runtime implementation is authorized by this note.
 ### Status
 PATTERN_PARENT_PROVENANCE = LEGACY_QA_OK / PROMOTION_GRADE_BLOCKED.
 Pattern alpha remains UNKNOWN; Formal Core unchanged.
+
+
+## DL-004A — Volume-at-Price / Cost-Zone Research Boundary (2026-09-27)
+
+### Question
+Can historical trading concentration by price improve support/resistance interpretation beyond swing zones and round-number clustering?
+
+### Evidence
+Practitioner Volume Profile tools are explicitly reactive: they show where trading activity previously concentrated by price. This is useful as structural context, but not itself forward-looking proof.
+Taiwan empirical evidence provides a stronger microstructure prior: limit-order prices cluster at integer/round prices, clustering can create price barriers, and investor types differ in clustering behavior. This supports “price zones with concentrated participation” as a plausible mechanism.
+
+### Critical data limitation
+Daily OHLCV is insufficient to reconstruct a true historical volume-at-price distribution.
+Allocating each day’s entire volume uniformly across high-low, or assigning all volume to close/VWAP, would fabricate microstructure.
+
+Therefore:
+- TRUE_VOLUME_PROFILE requires intraday trade/price-distribution data or exchange-grade volume-at-price evidence.
+- DAILY_APPROX_PROFILE is allowed only as a clearly labeled weak proxy and cannot be treated as true cost basis.
+- If intraday history is unavailable, Pattern research should prefer confirmed swing/round-price zones over invented volume nodes.
+
+### Research objects if reliable data later exists
+- pointOfControlPrice
+- highVolumeNodes[]
+- lowVolumeNodes[]
+- valueAreaLow / valueAreaHigh
+- nodeAge
+- nodeTurnover
+- currentPriceVsNode
+- patternPivotCoincidesWithHVN
+- breakoutIntoLVN
+- retestAtHVN
+- nodeMigrationOverTime
+
+### Hypotheses
+1. Breakout into a low-volume area may move faster because less historical inventory is concentrated overhead.
+2. A high-volume node may behave as acceptance/fair-value area rather than always support/resistance.
+3. Pattern pivot overlapping a round-price + swing-zone + historical high-volume node may be structurally stronger, but this is a confluence hypothesis, not a guaranteed barrier.
+4. A node’s meaning may flip only after price acceptance/retest; role reversal must remain state-based per DL-002BH.
+
+### Anti-storytelling rule
+Do not call a high-volume node “institutional cost” unless actual investor-position/cost data supports that statement.
+Volume at price = historical traded activity, not verified current holder cost.
+
+### Status
+RESEARCHABLE_WITH_DATA_LIMITATION.
+No Formal change.
+
+## DL-004B — Sector/Industry Synchronization as Pattern Context (2026-09-27)
+
+### Taiwan evidence
+Peer-reviewed Taiwan evidence finds industry momentum can be hidden in industries with positive return autocorrelation, and turnover/fund transfer helps explain that persistence.
+Other Taiwan studies show industry-momentum evidence is sample- and horizon-dependent, so sector strength cannot be assumed universally persistent.
+
+### Existing overlap
+Current research already has:
+- sector score / breadth,
+- Residual RS,
+- sector persistence,
+- supply-chain research lanes.
+
+Therefore generic “strong sector = plus” is redundant.
+
+### Incremental question
+Does the timing of peer/industry pattern maturation relative to the stock’s own pattern matter?
+
+### Fields
+- sectorPatternBreadth
+- sectorMaturePatternShare
+- peerBreakoutShare5d
+- peerFailureShare5d
+- sectorCompressionShare
+- sectorRSChangeDuringPattern
+- leaderLagState
+- stockVsSectorPatternLeadDays
+- supplyChainPatternLeadLag
+- sectorTurnoverPersistence
+
+### States
+LEADER_EARLY:
+- stock pattern matures before sector peers, while sector evidence is improving but not yet broad.
+
+BROAD_CONFIRMATION:
+- multiple peers mature/break out within a narrow time window.
+
+LATE_CROWD:
+- sector already widely extended/broken out before stock reaches pivot.
+
+ISOLATED_STOCK:
+- stock pattern matures while sector peers weaken/fail.
+
+### Competing hypotheses
+H1 Broad confirmation improves follow-through.
+H2 Early leaders outperform because broad confirmation arrives too late.
+H3 Late-crowd setups carry overheat/attention risk.
+H4 Isolated strength may be idiosyncratic alpha or simply fragile noise.
+
+Do not assume H1 wins.
+
+### Same-date controls
+Compare stocks within the same sector/date:
+- early leader vs late follower;
+- broad-confirmed vs isolated;
+- peer success vs peer failure context.
+
+### Redundancy
+Test after controlling sector score, Residual RS, market regime and stock pattern maturity.
+
+### Status
+WORTH_SHADOW_RESEARCH.
+
+## DL-004C — Pattern Complexity / Entropy Without Mysticism (2026-09-27)
+
+### External prior
+Entropy research finds nonlinear dependence can exist in stock returns while economically exploitable conditional predictability remains fragile.
+This is a useful warning: “complex-looking path” and “predictable/profitable path” are not synonyms.
+
+### Question
+Does path complexity itself distinguish organized accumulation from noisy/random-looking bases?
+
+### Candidate diagnostics
+- returnSignEntropy
+- swingDirectionEntropy
+- transitionEntropy
+- compressionEntropyChange
+- pathPermutationEntropy
+- rangeStateEntropy
+- volumeStateEntropy
+- motifDiversity
+- reversalDensity
+
+### Mechanism interpretation
+LOW complexity can mean:
+- clean trend / organized progression;
+or
+- dead liquidity / mechanically constrained movement.
+
+HIGH complexity can mean:
+- healthy two-sided price discovery;
+or
+- unstable churn/distribution.
+
+Therefore entropy must be conditioned on liquidity, RS, volume and regime.
+
+### Pattern-phase use
+Compare entropy from:
+- PHASE_1 formation
+to
+- PHASE_3 trigger zone.
+
+Hypothesis:
+Constructive maturation may show falling range/swing complexity while maintaining liquidity and RS.
+But if entropy falls because trading dies, classify DEAD_LIQUIDITY instead.
+
+### Relation to existing research
+Must test redundancy against:
+- DL-001 Information Discreteness,
+- Directional Efficiency,
+- volatility/ATR,
+- reversal count,
+- positive-day ratio.
+
+If entropy adds no conditional information, reject it.
+
+### No black-box promotion
+Entropy is a diagnostic primitive, not a “smart money score.”
+
+## DL-004D — Complexity Can Help Models, But Pattern Governance Still Prefers Parsimony (2026-09-27)
+
+### Evidence tension
+Modern return-prediction research shows flexible/high-dimensional models can outperform simple models in some settings.
+At the same time, technical-analysis evidence and factor-zoo research warn that unconstrained complexity creates severe data-snooping and instability.
+
+### Reconciliation
+Model complexity and hypothesis complexity are different.
+
+Allowed:
+- a flexible model that combines a small, pre-specified set of economically meaningful primitives under strict holdout.
+
+Not allowed:
+- hundreds of hand-crafted pattern thresholds selected by best historical D5 outcome.
+
+### Governance rule
+The research layer may later test nonlinear combinations of the frozen primitive set, but:
+- primitive definitions remain stable;
+- training/holdout dates are separated;
+- no post-hoc feature generation from holdout failures;
+- variable importance/stability must be reported;
+- simple benchmark remains mandatory.
+
+### Benchmark stack
+B0 existing Formal research fields only.
+B1 + frozen DL-002/004 primitives.
+B2 nonlinear model over same frozen primitives.
+
+A nonlinear model is only interesting if B2 improves untouched holdout versus B1, not merely in-sample.
+
+## DL-004E — Price Clustering as Structural Zone Provenance, Not a Score (2026-09-27)
+
+### Taiwan evidence
+TWSE limit-order studies find:
+- price clustering at integer/even/0/5-ending prices;
+- clustering differs by investor type and order aggressiveness;
+- nonmarketable orders cluster more;
+- price clustering can create actual price barriers;
+- strategic order placement/front-running appears around clustered prices.
+
+### Pattern implication
+A swing pivot near a salient round/tick price may have a plausible order-book mechanism behind repeated reactions.
+
+### Required fields
+- zoneRoundnessClass
+- distanceToNearestClusterPriceTicks
+- repeatedClusteredTouchCount
+- clusterBreakAcceptance
+- frontRunSideProximity
+- clusterCoincidesWithSwingZone
+- clusterCoincidesWithPatternPivot
+
+### Critical caution
+The clustering studies use limit-order data.
+Daily OHLC alone cannot reproduce order-book depth or identify front-running.
+Therefore daily Pattern Shadow can tag round-price coincidence, but must not claim actual current queued depth.
+
+### Hypothesis
+Round-price coincidence may strengthen zone provenance, but predictive value must be demonstrated prospectively after swing-zone and tick-size controls.
+
+### Status
+MECHANISM_SUPPORTED / ALPHA_UNKNOWN.
