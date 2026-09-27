@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "quota_scarcity_observer_feasibility_v0.1",
+  "researchDate": "2026-09-27",
+  "status": "PURE_CLASS_A_COMPUTABLE_PERSISTENCE_CLASS_B",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "inMemoryInputsAlreadyAvailable": [
+    "complete same-scan scored/Formal-ok rows before 3+3 truncation",
+    "selected symbols after independent GENERAL/THOUSAND quota",
+    "deployed comparator inputs in current decision states",
+    "price-pool membership basis"
+  ],
+  "computableWithoutNewMarketCalls": [
+    "qualifiedCount by pool",
+    "selectedCount and unusedSlots by pool",
+    "quotaBinding flag qualifiedCount>3",
+    "complete rank4+ FORMAL_QUALIFIED_NOT_SELECTED population",
+    "crossPoolStranding: one pool qualifiedCount<3 and opposite pool qualifiedCount>3",
+    "observedPoolRank and cutline-next under versioned comparator"
+  ],
+  "historicalLimits": [
+    "bounded legacy QNS does not certify complete qualifiedCount",
+    "pre-V8.13 rows can lack exact post-consensus comparator provenance",
+    "same-date mutable legacy Shadow is not immutable first-known truth",
+    "historical quota opportunity frequency remains UNKNOWN where full pool receipt is absent"
+  ],
+  "engineeringBoundary": {
+    "pureObserverAndTests": "CLASS_A",
+    "isolatedDocumentation": "CLASS_A",
+    "sharedScanWiringOrD1Persistence": "CLASS_B_PROPOSAL_FIRST",
+    "quotaOrBackfillRuleChange": "CLASS_C_OWNER_APPROVAL"
+  },
+  "noDuplication": "PVE-156 remains canonical owner of the immutable full-pool receipt schema. This artifact only maps scarcity-accounting feasibility to that existing contract.",
+  "exactNext": [
+    "Audit whether any current immutable research receipt already persists full scored pre-quota population; if none, do not invent historical coverage.",
+    "Freeze a pure quota-scarcity summarizer against complete decision states only if it adds a new invariant not already supplied by shadow_semantic_classifier.",
+    "Keep outcomes closed until prospective immutable full-pool receipts exist."
+  ]
+}
