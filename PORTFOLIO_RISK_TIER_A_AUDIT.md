@@ -1312,3 +1312,51 @@ Status:
 `CAP_RESERVE_MECHANISM_PROVEN / HISTORICAL_OCCURRENCE_NOT_OBSERVED / PROSPECTIVE_WATCH_ONLY / ECONOMIC_VALUE_UNKNOWN`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-064 — capital reserve ladder: do not collapse every unused dollar into “idle cash” (2026-09-28)
+
+The system has multiple economically different reasons why modeled capital is not represented by shares.
+
+PR-064 freezes a seven-layer taxonomy:
+
+1. **DESIGNED_STRATEGIC_RESERVE** — capital intentionally outside the selected-count nominal deployment rule:
+   - 1 selected -> 65% reserve;
+   - 2 selected -> 40% reserve;
+   - 3+ selected -> 15% reserve.
+2. **CAP_INDUCED_RESERVE** — extra reserve from non-redistributed 35% clipping.
+3. **THOUSAND_FLOOR_RESERVE** — loss from NT$1,000 plan flooring.
+4. **PLAN_PREVIEW_SHARE_RESIDUAL** — integer-share residual at plan buyHigh; preview only.
+5. **STAGED_FUTURE_ADD_BUDGET** — second-tranche budget still waiting for conditional ADD after an initial BUY signal.
+6. **LIVE_SIGNAL_SHARE_RESIDUAL** — signal amount not represented by signal-side suggested shares at trigger price.
+7. **ORDER_FILL_CASH** — actual unsubmitted/unfilled/partial-fill cash; UNKNOWN without order/fill evidence.
+
+### Structural first-stage ceiling
+
+Formal after-market plans split each allocation 60/40.
+
+Before cap/floor/share effects, the nominal maximum represented by the **first tranche** is therefore:
+- 1 selected: 35% × 60% = **21% of total capital**;
+- 2 selected: 60% × 60% = **36%**;
+- 3+ selected: 85% × 60% = **51%**.
+
+The remaining selected-plan capital is deliberately staged for a later ADD condition.
+
+This matters for capital-utilization research: low initial deployment after a valid BUY is not automatically evidence that the selector or monitor “failed to use cash.” A large portion may be deliberate selected-count reserve or staged second-entry budget.
+
+### Evidence firewall
+
+Plan reserve is not broker cash.
+A BUY signal is not a fill.
+Missing signals do not prove no trigger under incomplete recorder coverage.
+Actual idle cash requires execution/account evidence.
+
+Artifacts:
+`research/capital_reserve_ladder_v0_1.mjs`;
+`research/capital_reserve_ladder_spec_v0_1.json`;
+`tests/portfolio_risk_capital_reserve_ladder_readonly_audit.mjs`.
+
+Status:
+`RESERVE_TAXONOMY_FROZEN / PRODUCTION_AUDIT_PENDING`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.

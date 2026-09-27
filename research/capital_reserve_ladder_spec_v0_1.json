@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "CAPITAL_RESERVE_LADDER_V0_1",
+  "observedAt": "2026-09-28T05:38:00+08:00",
+  "purpose": "Prevent all unused capital from being collapsed into one 'idle cash' bucket.",
+  "layers": [
+    {
+      "id": "DESIGNED_STRATEGIC_RESERVE",
+      "meaning": "Capital intentionally outside selected-count nominal deploy ratio: 65% for 1 name, 40% for 2, 15% for 3+."
+    },
+    {
+      "id": "CAP_INDUCED_RESERVE",
+      "meaning": "Extra reserve when raw score-proportional ratio is clipped at 35% and clipped mass is not redistributed."
+    },
+    {
+      "id": "THOUSAND_FLOOR_RESERVE",
+      "meaning": "Continuous capped allocation lost to NT$1,000 plan flooring."
+    },
+    {
+      "id": "PLAN_PREVIEW_SHARE_RESIDUAL",
+      "meaning": "Plan budget not represented by integer preview shares at buyHigh; not a broker cash fact."
+    },
+    {
+      "id": "STAGED_FUTURE_ADD_BUDGET",
+      "meaning": "At a positive initial BUY signal, the second-tranche plan budget remains reserved for conditional ADD; this is staged budget, not a proven missed trade."
+    },
+    {
+      "id": "LIVE_SIGNAL_SHARE_RESIDUAL",
+      "meaning": "Signal amount minus signal-side suggested-share notional at the observed trigger price; not fill cash."
+    },
+    {
+      "id": "ORDER_FILL_CASH",
+      "meaning": "Actual unsubmitted/unfilled/partially filled cash. UNKNOWN without order/fill evidence."
+    }
+  ],
+  "theoreticalNominalFirstStageCeilingsPct": {
+    "oneSelected": 21,
+    "twoSelected": 36,
+    "threeOrMoreSelected": 51
+  },
+  "guardrails": [
+    "plan reserve is not account cash",
+    "BUY signal does not itself deploy cash",
+    "missing BUY/ADD signal rows do not prove no trigger under incomplete recorder coverage",
+    "actual idle cash requires broker/order/fill or reconciled account evidence",
+    "no reserve layer is automatically classified as good or bad"
+  ],
+  "status": "RESERVE_TAXONOMY_FROZEN / PRODUCTION_AUDIT_PENDING",
+  "formalCoreImpact": false
+}
