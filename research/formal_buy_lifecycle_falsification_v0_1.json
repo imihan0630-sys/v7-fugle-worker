@@ -1,0 +1,92 @@
+{
+  "schemaVersion": "formal-buy-lifecycle-falsification-v0.1",
+  "researchDate": "2026-09-27",
+  "status": "STRUCTURAL_FALSIFICATION_FROZEN",
+  "outcomeDataUsed": false,
+  "formalCoreChanged": false,
+  "scope": "Intraday Formal FIRST-entry semantics only; no claim that looser or stricter BUY is economically superior.",
+  "currentFormal": {
+    "A": "evaluatePullback(frame15,plan)",
+    "B": "evaluateMomentum(frame15,plan,'15分K')",
+    "officialConfirmation": "15m; 10m is auxiliary",
+    "BBreakoutConfirmed": "any bar in latest 12 completed bars with close>=breakout*1.003, volumeRatio>=1.3, strongClose, upperShadowRatio<0.45",
+    "BRetestBuy": "latest bar touches [buyLow,buyHigh], closes>=breakout*0.997, volumeRatio null OR <=1.1, bullish and reversalK/strongClose, upperShadowRatio<0.45",
+    "BFailure": "latest close<retestLow => risk text '突破後回測失守承接區，B取消'",
+    "planFirstCondition": "先確認有效突破；不追第一段，等待回測突破價/承接區守住，完整15分K再轉強才第一筆"
+  },
+  "falsifiedConcerns": [
+    {
+      "concern": "Formal B can use the exact same 15m bar as both breakout-confirmation and retest BUY.",
+      "result": "FALSIFIED_BY_MUTUALLY_EXCLUSIVE_VOLUME_CONDITIONS",
+      "reason": "A breakout-confirming latest bar requires volumeRatio>=1.3, while a retest BUY on latest requires volumeRatio<=1.1 when finite. Breakout requires finite volumeRatio, so null cannot bridge the conflict.",
+      "consequence": "Do not report same-bar breakout+retest as a defect."
+    }
+  ],
+  "confirmedFindings": [
+    {
+      "id": "EARLY_BREAKOUT_BLIND_WINDOW",
+      "construction": "buildBar volumeRatio is current bar volume divided by previous five completed same-session bars; index<5 => volumeRatio=null.",
+      "exactTiming": "The first 15m bar with finite Formal volumeRatio is the sixth bar, starting 10:15 and completing 10:30. Bars starting 09:00,09:15,09:30,09:45,10:00 can never satisfy B breakout confirmation on their own.",
+      "formalEffect": "An early breakout before 10:30 can contribute high/close attempts but cannot be a breakoutConfirmed bar unless a later qualifying breakout bar occurs.",
+      "direction": "Can reduce participation/BUY opportunity; may also protect against opening-auction/early-session noise. Economic value UNKNOWN."
+    },
+    {
+      "id": "FAILED_REENTRY_RESURRECTION",
+      "construction": "evaluateMomentum is stateless across lifecycle except the rolling recent-bar window. breakoutConfirmed scans any qualifying bar in recent 12; failure checks only the current latest bar.",
+      "fixedWitness": [
+        "bar1: valid breakout-confirmation remains inside recent[]",
+        "bar2: close < breakout*0.995 or <retestLow => Formal returns risk/'B取消', while stop remains unbroken",
+        "bar3: recovers into retest zone, closes>=breakout*0.997, volumeRatio<=1.1, bullish+turn-up, no long upper shadow"
+      ],
+      "formalEffect": "On bar3, old bar1 still makes breakoutConfirmed=true. Because bar2 failure is not persisted, bar3 can return BUY without a fresh qualifying breakout after the failure.",
+      "comparator": "V8.11 PV Shadow acceptance lifecycle transitions to B_FAILED_REENTRY and has no reactivation transition from that terminal state in pvAdvanceAcceptance.",
+      "direction": "Can increase participation after a prior invalidation. Whether recovery should require fresh breakout is a strategy/lifecycle question; Formal change would be Class C."
+    },
+    {
+      "id": "MOMENTUM_CANCEL_NOT_DURABLE_OPERATION_STATE",
+      "construction": "buildFinalDecision can emit risk from momentum15, but evaluateOperationSignals emits PLAN_INVALIDATED only when stop.level==='risk'. It does not persistently cancel a NONE-stage plan merely because momentum15 text says 'B取消'.",
+      "formalEffect": "A B failure can be visible as current monitor risk yet not mutate plan lifecycle; later stateless recomputation may re-qualify.",
+      "guard": "This is a lifecycle/notification semantics finding, not proof of a missed or bad trade."
+    },
+    {
+      "id": "CHANNEL_EARLIEST_CONFIRMATION_ASYMMETRY",
+      "A": "A BUY requires previous bar with finite volumeRatio<=0.9 plus latest higher-low/turn-up. Earliest finite previous-volume candidate implies latest seventh 15m bar, completing about 10:45.",
+      "B": "B can first have a finite breakout volumeRatio on sixth 15m bar completing about 10:30; a later retest is normally required because same-bar volume conditions conflict.",
+      "interpretation": "There is a structural timing asymmetry. Do not infer which is better without coverage/outcome analysis."
+    }
+  ],
+  "volumeSemantics": {
+    "currentFormal": "same-session previous-five-bar ratio, rounded to two decimals",
+    "knownResearchComparator": "V8.11 PV Shadow same-slot RVOL + cumulative pace",
+    "existingResearchStatus": "Price-Volume lane already preregisters current previous-five ratio versus same-slot RVOL; do not duplicate threshold search.",
+    "openingRisk": "First 09:00 15m bar mixes opening auction/early continuous state in PV research; early-session blindness may be protective, not automatically a defect."
+  },
+  "prospectiveTests": [
+    "Count selected B plans whose first meaningful breakout attempt/close occurs before Formal volumeRatio becomes available.",
+    "Among complete-coverage B plans, classify EARLY_BREAKOUT_ONLY, LATER_RECONFIRMED, NO_BREAKOUT, FORMAL_BUY.",
+    "Count episodes with a qualifying breakout, then intervening Formal B failure, then later Formal BUY without a fresh post-failure breakout.",
+    "Use V8.11 acceptance state history as an independent chronology comparator, but do not silently treat its stricter B_REACCELERATION state as Formal truth.",
+    "Compare missed-upside versus avoidance-benefit for early-breakout-only NO-BUY plans after costs/coverage controls.",
+    "Compare post-failure resurrection BUY paths versus fresh-breakout-after-failure paths separately.",
+    "Stratify by A/B, time-of-day, opening gap, slot RVOL, liquidity, regime and maxChase."
+  ],
+  "falsification": [
+    "If early breakouts before 10:30 have materially worse false-break/MAE/execution outcomes, retain the blind window or treat it as protective.",
+    "If early-breakout-only plans show stable OOS missed-upside with acceptable risk and same-slot evidence resolves opening noise, a future time-of-day/volume-baseline reformulation may become a candidate.",
+    "If post-failure resurrection BUY performs as well or better than requiring a fresh breakout, terminal cancellation may be unnecessarily strict.",
+    "If resurrection BUY is materially worse or semantically inconsistent with intended cancellation, surface a future lifecycle correction candidate.",
+    "No BUY threshold/window may be tuned from retrospective winners."
+  ],
+  "engineeringBoundary": {
+    "researchCapture": "Class A if only existing Formal/PV state is compared and persisted research-only with no signal impact.",
+    "recorderCompleteness": "Class B proposal-first if exact-date exhaustive monitor capture requires shared runtime/storage changes.",
+    "formalBUYChronologyOrVolumeRule": "Class C owner approval required."
+  },
+  "optimizationBridge": {
+    "currentStatus": "STRUCTURAL_LIFECYCLE_FINDINGS_CONFIRMED / ECONOMIC_MATERIALITY_UNKNOWN / NOT_FORMAL_OPTIMIZATION_CANDIDATE",
+    "possibleFutureCandidates": [
+      "EARLY_SESSION_BREAKOUT_CONFIRMATION_REFORMULATION",
+      "B_FAILURE_REACTIVATION_LIFECYCLE_REFORMULATION"
+    ]
+  }
+}
