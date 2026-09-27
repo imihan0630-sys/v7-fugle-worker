@@ -1197,3 +1197,38 @@ Status:
 `DISCRETE_OBJECTIVE_SENSITIVITY_CONFIRMED / UNIQUE_OPTIMA_BY_SEMANTIC / STRUCTURAL_CONCLUSION_ROBUST / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-060 — stop-risk entry-reference sensitivity test (2026-09-28)
+
+The current Portfolio Risk structural result uses `buyHigh` as the conservative planned entry reference.
+
+PR-060 tests a direct counter-hypothesis:
+
+`The observed 2026-09-18 risk concentration is only an artifact of choosing buyHigh.`
+
+For every reconstructable multi-name date, projected stop-risk is recomputed under three frozen references:
+- BUY_LOW;
+- MIDPOINT = (buyLow + buyHigh) / 2;
+- BUY_HIGH.
+
+For each reference, the audit compares:
+1. current PriorityScore-proportional allocation;
+2. same-deployment equal capital;
+3. exhaustive NT$1,000-grid global minimum HHI under the same 35% per-name cap.
+
+The grid search uses the same selected names and same planned deployment. No realized price/fill is assumed.
+
+Interpretation is pre-registered:
+- if current remains more concentrated than equal-capital and the global grid minimum across all three references, the structural conclusion survives reference-price falsification;
+- if the gap disappears or reverses at BUY_LOW/MIDPOINT, the earlier conclusion must be downgraded as reference-sensitive.
+
+Artifacts:
+`research/entry_reference_risk_sensitivity_v0_1.mjs`;
+`research/entry_reference_risk_sensitivity_spec_v0_1.json`;
+`tests/portfolio_risk_entry_reference_sensitivity_readonly_audit.mjs`.
+
+Status:
+`REFERENCE_SENSITIVITY_PROTOCOL_READY / PRODUCTION_AUDIT_PENDING`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
