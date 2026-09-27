@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "FINANCIAL_SOURCE_MERGE_PROVENANCE_FALSIFICATION_V0_1",
+  "researchDate": "2026-09-27",
+  "class": "A_RESEARCH_ONLY",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "finding": "CANONICAL_SOURCE_MEMBERSHIP_AND_FORMAL_MERGED_FIELD_COMPLETENESS_ARE_NOT_IDENTICAL_ESTIMANDS",
+  "verifiedRepositorySemantics": [
+    "normalizeEnrichmentPayload preserves custom per-stock objects as supplied while dropping payload-level provenance metadata.",
+    "fetchEnrichment merges custom stock fields over its earlier enrichment object; mergeEnrichment spreads arbitrary extra fields into market rows.",
+    "runAfterMarketScan later overlays TDCC/FINANCIAL/VALUATION/ANNOUNCEMENTS per-symbol objects only when those objects have the symbol.",
+    "announcementsVerified is then assigned globally from announcements.sourcesVerified===true.",
+    "Therefore a missing canonical FINANCIAL or VALUATION symbol entry does not itself clear same-named fields already present on the row."
+  ],
+  "structuralCounterexample": {
+    "preQualityMergedRow": {
+      "quarterRevenue": 100,
+      "financialBasis": "alternate source",
+      "revenueQoQ": 5,
+      "revenueQuarterYoY": 12,
+      "valuationObserved": true,
+      "priceBookRatio": 2
+    },
+    "officialFinancialSymbolEntry": "ABSENT",
+    "officialValuationSymbolEntry": "ABSENT",
+    "announcementsSnapshot": "PRESENT_AND_SOURCES_VERIFIED",
+    "postOverlayConsequence": "No FINANCIAL/VALUATION symbol object exists to overwrite or clear the pre-existing fields; announcementsVerified becomes true globally.",
+    "formalConsequence": "The bundled Formal field-completeness expression can pass even though current canonical FINANCIAL/VALUATION symbol membership is absent.",
+    "interpretation": "This proves technical feasibility only. It does not prove live production prevalence or that alternate fields are invalid."
+  },
+  "estimands": {
+    "canonicalSourceCompleteness": "Current official FINANCIAL symbol entry complete + current official VALUATION symbol entry complete + announcement sources verified.",
+    "formalMergedFieldCompleteness": "The exact seven required fields as seen by scoreCandidate after all merges.",
+    "requiredSeparation": "Report both. Do not use canonical source-missing rate as a direct estimate of Formal reject rate."
+  },
+  "invariant": {
+    "statement": "On current overlay order, canonical source complete should imply merged Formal field complete for this gate.",
+    "violationMeaning": "Version/order/observer mismatch or later mutation; investigate before using the row."
+  },
+  "pitGuard": "Neither current mutable quality snapshots nor custom enrichment path proves immutable first-known historical provenance. Historical outcome inference remains closed.",
+  "exactNext": [
+    "Freeze prospective dual-state capture: pre-quality field presence, official FINANCIAL/VALUATION symbol membership, announcement source verification, post-overlay exact Formal fields, parent generation/fingerprint.",
+    "Require immutable same-generation capture before estimating FIELD_PASS_SOURCE_GAP frequency.",
+    "Do not clear alternate fields or change Formal merge precedence without Class-C approval."
+  ],
+  "decision": "SOURCE_MEMBERSHIP_NE_FORMAL_FIELD_COMPLETENESS / MIXED_OR_ALTERNATE_FIELD_PASS_TECHNICALLY_FEASIBLE / LIVE_PREVALENCE_UNKNOWN / PROSPECTIVE_DUAL_STATE_CAPTURE_WARRANTED / FORMAL_UNCHANGED / NOT_FORMAL_OPTIMIZATION_CANDIDATE"
+}
