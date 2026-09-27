@@ -1,7 +1,7 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-225.
-Updated: 2026-09-27 22:11 Asia/Taipei.
+Checkpoint sequence: B-226.
+Updated: 2026-09-27 22:19 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Detailed B-01..B-123 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
@@ -1736,3 +1736,16 @@ Updated: 2026-09-27 22:11 Asia/Taipei.
 - Durable artifact: `research/strategy_pool_archive_generation_audit_v0_1.json`, commit `047f4ca23158e87639bac9228a1c2cad417eb970`.
 - Status: `POOL_ARCHIVE_SOURCE_READY / SAME_DATE_MUTABLE / GENERATION_UNCERTIFIED / OUTCOME_CLEAN_READER_ABSENT / FORMAL_UNCHANGED`. No FORMAL_OPTIMIZATION_CANDIDATE.
 - Exact next: build the outcome-independent per-pool capital-scarcity geometry implied by the owner-approved ring fence and B-217 quota taxonomy. Separate per-pool selected-count reserve, cross-pool stranding, cap/rounding shortfall, downstream pending-entry/no-BUY and actual-fill unknown. This is algebraic Class-A research only; do not infer that higher utilization is better and do not change capital rules.
+
+## B-226 — per-pool capital scarcity geometry separates gate, quota, ring-fence and downstream cash (2026-09-27 Asia/Taipei)
+- Continued B-225 exact-next as algebraic Class-A research only; no outcomes, no runtime change. Reused B-217 quota taxonomy and Portfolio Risk PR-028 reserve decomposition rather than creating competing definitions.
+- V8.9+ Formal strategy accounting has two independent 200k pools. Per pool nominal deployment is selectedCount 0/1/2/3 => 0%/35%/60%/85%; per-name 35% cap and NT$1000 flooring can only reduce actual planned allocation below that nominal target because capped/rounded excess is not redistributed.
+- Consolidated two-Formal-pool nominal deployment is the capital-weighted combination over 400k Formal strategy capital, not the sum of percentages. Deterministic matrix for GENERAL/THOUSAND selected counts 0..3 is frozen in the artifact.
+- High-value counterexample: GENERAL=3, THOUSAND=0 means 85% deployment inside General but only 42.5% across the two ring-fenced Formal strategy pools. GENERAL=1, THOUSAND=1 is 35% consolidated, not 70%. GENERAL=3, THOUSAND=3 is still only 85% nominal, leaving a 15% design reserve before cap/rounding and before BUY/fill uncertainty.
+- Scarcity layers are now explicitly separated: upstream qualified/gate scarcity; post-grade quota displacement; ring-fence stranding; cap/rounding implementation shortfall; plan-exists pending-entry/NO-BUY uncertainty; and broker-confirmed realized-fill cash. These layers must not be collapsed into one `idle capital` metric.
+- B-217 linkage preserved: selectedCount<3 identifies qualifiedCount under a complete same-generation scored list; selectedCount=3 is right-censored (qualifiedCount>=3) and cannot distinguish EXACTLY_FILLED vs QUOTA_BINDING without the full pre-cut denominator. CROSS_POOL_STRANDING requires underfilled one side plus >3 qualified on the other, not merely asymmetric selected counts.
+- First-tranche arithmetic 0/21/36/51% per pool for selectedCount 0/1/2/3 is only deploy-ratio × 60%; it is not observed exposure or fill evidence.
+- Counterevidence remains active: ring-fencing, reserve and per-name caps may protect liquidity/concentration/execution risk. Higher utilization is not a stand-alone objective and no relaxation is implied.
+- Durable artifact: `research/formal_pool_capital_scarcity_geometry_v0_1.json`, commit `f06651f672305c23293e5fc10980ac5822933e1a`.
+- Status: `STRUCTURAL_SCARCITY_DECOMPOSITION_FROZEN / CAUSAL_GATE_VALUE_UNKNOWN / NO_BUY_STILL_DATA_BLOCKED / ACTUAL_FILL_UNKNOWN / FORMAL_UNCHANGED`. No FORMAL_OPTIMIZATION_CANDIDATE.
+- Exact next: return upstream to the first nonblocked scarcity cause and identify which admission/setup/RR/grade/quota states can be assigned on the same scan without first-failure bias. Reuse the existing formal gate-overlap observer and B-217 quota accounting. Freeze an outcome-independent `SCARCITY_LAYER_VECTOR` contract that can carry multiple simultaneous causes per symbol/pool, rather than one fail-fast exclusion reason. Do not persist or change runtime; first prove the classifier can be computed from existing Class-A decision-state helpers.
