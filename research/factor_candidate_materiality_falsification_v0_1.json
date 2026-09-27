@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "factor-candidate-materiality-falsification-v0.1",
+  "researchDate": "2026-09-27",
+  "status": "SIGN_CONSISTENCY_NOT_MATERIALITY_CONFIRMED",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "currentFactorCandidateCondition": {
+    "trainRowsMin": 20,
+    "holdoutRowsMin": 10,
+    "trainSpreadPctRule": ">0",
+    "holdoutSpreadPctRule": ">0",
+    "minimumEffectMagnitude": null,
+    "candidateSpecificSelectionDisplacement": false,
+    "candidateSpecificCoverageImpact": false,
+    "candidateSpecificCostedIncrementalEffect": false
+  },
+  "fixedSyntheticWitness": {
+    "factorTiny": {
+      "trainSpreadPct": 0.01,
+      "holdoutSpreadPct": 0.01
+    },
+    "factorLarge": {
+      "trainSpreadPct": 3,
+      "holdoutSpreadPct": 3
+    },
+    "currentSignGate": "Both pass the direction test if row-count and global study gates are otherwise satisfied.",
+    "conclusion": "The current candidateFactors list encodes directional persistence, not economic/statistical materiality."
+  },
+  "whyGlobalCostStressDoesNotCloseGap": [
+    "researchCostStress applies fixed costs to absolute SELECTED D5 returns, not the incremental effect of adding/removing a specific factor.",
+    "A ranking factor can change selected names/turnover even when the baseline selected portfolio has positive gross returns.",
+    "Factor-specific net value requires an exact counterfactual selection/ranking comparison and applicable friction model."
+  ],
+  "requiredBridgeBeforeFormalOptimizationCandidate": [
+    "Specify target change layer and exact formula/removal/addition.",
+    "Replay on the same immutable qualified/admission population with every other rule frozen.",
+    "Measure selected-name displacement, pool composition, coverage and zero-pick effects.",
+    "Compare D1/D3/D5/D10/D20, MFE/MAE/stop/false-break as relevant.",
+    "Report equal-date primary effect and leave-one-date stability.",
+    "Test redundancy/incremental effect against existing factor stack.",
+    "Apply preregistered modeled friction; use verified fills when applicable.",
+    "Reject or retain the simpler baseline if incremental effect is economically trivial/fragile."
+  ],
+  "namingGuard": {
+    "currentCandidateFactors": "DIRECTIONALLY_PERSISTENT_RESEARCH_FACTORS",
+    "forbiddenInterpretation": "FORMAL_OPTIMIZATION_CANDIDATE"
+  },
+  "decision": "POSITIVE_TRAIN_AND_HOLDOUT_SPREAD_ONLY_ADVANCES_FALSIFICATION / MATERIALITY_AND_COUNTERFACTUAL_DISPLACEMENT_STILL_UNKNOWN / NO_FORMAL_CHANGE"
+}
