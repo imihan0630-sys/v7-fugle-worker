@@ -107,6 +107,8 @@ const result = aggregateDecisionClockEvidence({
 assert.equal(result.promotionPolicy, "EARLIEST_SCHEDULED_ARTIFACT_PER_MARKET_DATE");
 assert.equal(result.candidateArtifactCount, 4);
 assert.equal(result.scheduledArtifactCount, 3);
+assert.equal(result.promotionEligibleScheduledArtifactCount, 3);
+assert.equal(result.rerunDiagnosticArtifactCount, 0);
 assert.equal(result.manualDiagnosticArtifactCount, 1);
 assert.equal(result.promotionGradeDateCount, 2);
 assert.deepEqual(result.promotionGradeMarketDates, ["2026-09-29", "2026-09-30"]);
