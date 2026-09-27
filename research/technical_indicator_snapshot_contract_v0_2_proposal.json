@@ -1,0 +1,167 @@
+{
+  "schemaVersion": "TECHNICAL_INDICATOR_SNAPSHOT_CONTRACT_V0_2_PROPOSAL",
+  "updated": "2026-09-28 Asia/Taipei",
+  "status": "RESEARCH_ONLY_PROPOSAL",
+  "decisionImpact": false,
+  "formalCoreImpact": "NONE",
+  "historicalShadowFabricationAllowed": false,
+  "runtimeImplemented": false,
+  "parentIdentity": {
+    "preferred": [
+      "parentDecisionReceiptId"
+    ],
+    "fallbackComposite": [
+      "scanDate",
+      "symbol",
+      "parentSnapshotHash",
+      "captureGeneration"
+    ],
+    "cohortRankIdentity": false
+  },
+  "timing": {
+    "asOfRequired": true,
+    "availableAtRequired": true,
+    "pointInTimeOnly": true
+  },
+  "semanticIdentity": {
+    "semanticBasisIdsRequired": true,
+    "transformClassRequired": true,
+    "canonicalPrimitiveIdsRequired": true,
+    "redundancyGroupIdRequired": true,
+    "timeframeRequired": true,
+    "effectiveClockHorizonRequired": true
+  },
+  "stateConstruction": {
+    "authoritativeMode": "CANONICAL_REPLAY_LINEAGE",
+    "rolling65BarReseedPrimaryInferenceAllowed": false,
+    "required": [
+      "stateLineageId",
+      "stateConstructionVersion",
+      "initializationAnchorDate",
+      "initializationMethod",
+      "cleanHistoryStartDate",
+      "eligibleBarsFromAnchorToAsOf",
+      "sourceHistoryHash",
+      "continuityTransformHash",
+      "seedInfluenceBound",
+      "replayCertificationState"
+    ],
+    "formulaReadiness": [
+      "WARMUP_INCOMPLETE",
+      "FIRST_CALCULABLE",
+      "READY"
+    ],
+    "seedStability": [
+      "UNASSESSED",
+      "SEED_SENSITIVE",
+      "WITHIN_DECLARED_BOUND"
+    ]
+  },
+  "sourceContract": {
+    "primaryInferencePriceSpace": "TECHNICAL_CONTINUITY",
+    "rawExecutionAllowedForMechanicsOnly": true,
+    "symbolSessionVerifiedRequired": true,
+    "corporateActionContinuityResolvedRequired": true,
+    "pseudoBarsForbidden": true,
+    "constrainedSessionsSeparateStratum": true
+  },
+  "formulaVersions": {
+    "kd": "TAI_KD_RSV9_K3_D3_INIT50_V0_1",
+    "rsi": "WILDER_RSI14_SMA_SEED_V0_1",
+    "macd": "EMA12_26_SIGNAL9_FIRST_CLOSE_SEED_V0_1",
+    "adx": "WILDER_ADX14_TALIB_STYLE_NO_ROUNDING_V0_1",
+    "bbands": "BBANDS_CLOSE_SMA20_POPSTD20_K2_V0_1"
+  },
+  "indicatorPayload": {
+    "kd": [
+      "rsv",
+      "k",
+      "d",
+      "kMinusD"
+    ],
+    "semanticIsolation": [
+      "rangePosition14"
+    ],
+    "rsi": [
+      "value",
+      "avgGain",
+      "avgLoss",
+      "slope"
+    ],
+    "macd": [
+      "ema12",
+      "ema26",
+      "difPct",
+      "histogramPct",
+      "difSlope",
+      "histogramSlope"
+    ],
+    "adx": [
+      "tr14Smoothed",
+      "plusDM14Smoothed",
+      "minusDM14Smoothed",
+      "plusDI14",
+      "minusDI14",
+      "diSpread",
+      "dx14",
+      "adx14",
+      "adxSlope"
+    ],
+    "bbands": [
+      "sma20",
+      "sigma20",
+      "upper",
+      "lower",
+      "bandWidthRatio",
+      "bandWidthPct",
+      "percentB",
+      "stdDefinition"
+    ]
+  },
+  "qualityStates": {
+    "dataQuality": [
+      "VALID",
+      "BLOCKED",
+      "UNKNOWN"
+    ],
+    "interpretation": [
+      "OBSERVABLE",
+      "CONSTRAINED",
+      "BLOCKED",
+      "UNKNOWN"
+    ],
+    "replay": [
+      "UNVERIFIED",
+      "REPLAY_EXACT",
+      "DIRTY",
+      "QA_FAIL"
+    ]
+  },
+  "prohibitedFields": [
+    "buySignal",
+    "sellSignal",
+    "directionScore",
+    "capitalAllocation",
+    "formalRank",
+    "indicatorMajorityVote",
+    "optimizedThresholdState"
+  ],
+  "outcomeJoinGates": [
+    "parentRunComplete",
+    "parentUnique",
+    "pointInTimeProvenanceValid",
+    "technicalContinuityValid",
+    "formulaReady",
+    "stateLineageValid",
+    "replayExact",
+    "prefixInvariant",
+    "commonSupportEligible"
+  ],
+  "notes": [
+    "A computed number is not automatically inference-ready.",
+    "FIRST_CALCULABLE is not SEED_STABLE.",
+    "Exact aliases cannot receive independent score.",
+    "CONSTRAINED observations must remain a separate preregistered stratum.",
+    "This proposal does not authorize runtime persistence."
+  ]
+}
