@@ -186,7 +186,8 @@ SUPPORTIVE:
 - TDCC concentration trend where timing is valid.
 
 CONTEXT_ONLY:
-- technical oscillators except for entry timing.
+- technical oscillators except for entry timing;
+- STATE_OWNED_BANK_FLOW（公股行庫資金流） initially as a regime/flow-attribution modifier only. Public-bank support buying must not be mistaken for ordinary informed institutional accumulation, and later public-bank selling after a rebound must not automatically invalidate an otherwise intact industry/company/chip thesis. Source/motive semantics must be validated first.
 
 HARD_INVALIDATION:
 - sustained chip reversal;
