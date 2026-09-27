@@ -371,3 +371,30 @@ Remaining semantic issues are unchanged:
 - dealer proprietary vs hedge are collapsed;
 - flow is not holdings;
 - actor effect remains regime/state dependent.
+
+
+## IC-022 — TPEx parser schema-drift hardening
+
+Current unit/actor order is materially consistent with the official TPEx table, so no current flow rescaling is required.
+
+A separate reliability gap remains:
+- parser consumes fixed positions 10/13/22/23;
+- validator requires 24 fields plus only field[0] and field[23] sentinels;
+- interior actor columns are not individually schema-asserted.
+
+Therefore a future interior reorder could be accepted while changing actor meaning.
+
+This is a **source-contract robustness risk**, not evidence of current bad data.
+
+Frozen proposal:
+`research/institution_source_schema_hardening_v0_1.json`.
+
+Before implementation:
+1. capture official JSON fixture(s);
+2. freeze exact 24-field strings/order and semantic fingerprint;
+3. validate actor indexes explicitly;
+4. fail closed on unrecognized schema;
+5. preserve total arithmetic consistency.
+
+Because the parser is shared Formal ingestion, implementation is Class B proposal-first.
+No runtime/parser change is authorized here.
