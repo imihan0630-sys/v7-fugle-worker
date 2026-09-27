@@ -113,6 +113,8 @@ try {
       token: "fixture-token",
       apiBase: baseUrl,
       outputPath,
+      coverageStartDate: "2026-09-29",
+      coverageThroughDate: "2026-09-29",
       probeTradingDate: async ({ marketDate }) => ({
         marketDate,
         state: "READY",
@@ -125,9 +127,16 @@ try {
     assert.equal(report.aggregation.manualDiagnosticArtifactCount, 1);
     assert.equal(report.aggregation.promotionCoverageComplete, true);
     assert.equal(report.aggregation.tradingDayArtifactGaps.length, 0);
+    assert.equal(report.coverageIntegrity.tradingDayGapDates.length, 0);
+    assert.equal(report.coverageIntegrity.rows[0].runId, "200");
+    assert.equal(report.coverageIntegrity.rows[0].promotionCoverageEligible, true);
+    assert.equal(report.coverageIntegrity.laterScheduledRunsCannotRepairAnchor, true);
     assert.equal(report.aggregation.readiness.independentTradingDates, 1);
     assert.equal(report.aggregation.exactDecisionClockAuthorized, false);
     assert.equal(report.reviewPacket.reviewState, "ACCUMULATING");
+    assert.equal(report.reviewPacket.coverageIntegrityExtensionVersion, "S2_DECISION_CLOCK_COVERAGE_INTEGRITY_V0_2");
+    assert.deepEqual(report.reviewPacket.tradingDayGapDates, []);
+    assert.equal(report.reviewPacket.laterScheduledRunsCannotRepairAnchor, true);
     assert.equal(report.reviewPacket.exactDecisionClockAuthorized, false);
     assert.equal(report.safety.system2D1Written, false);
     assert.equal(report.safety.system2WorkerCronMutated, false);

@@ -5,6 +5,7 @@ import { execFileSync } from "node:child_process";
 import { aggregateDecisionClockEvidence } from "../runtime/decision_clock_evidence_aggregation.mjs";
 import { probeTwseTradingDate } from "../runtime/twse_trading_calendar_readonly.mjs";
 import { buildDecisionClockReviewPacket } from "../runtime/decision_clock_review_packet.mjs";
+import { classifyDecisionClockCoverageRowV02, summarizeDecisionClockCoverageFailuresV02 } from "../runtime/decision_clock_coverage_integrity_v0_2.mjs";
 
 function parseArgs(argv) {
   const out = {};
@@ -35,6 +36,18 @@ function taipeiDate(iso) {
   }).formatToParts(d);
   const get = (type) => parts.find((x) => x.type === type)?.value;
   return get("year") + "-" + get("month") + "-" + get("day");
+}
+
+function inclusiveDates(startDate, endDate) {
+  if (!startDate || !endDate || startDate > endDate) return [];
+  const out = [];
+  let cursor = new Date(startDate + "T00:00:00Z");
+  const stop = new Date(endDate + "T00:00:00Z");
+  while (cursor <= stop) {
+    out.push(cursor.toISOString().slice(0, 10));
+    cursor = new Date(cursor.getTime() + 86400000);
+  }
+  return out;
 }
 
 async function githubJson(url, token) {
@@ -103,6 +116,8 @@ export async function aggregateFromGithubArtifacts({
   apiBase = "https://api.github.com",
   outputPath = null,
   probeTradingDate = probeTwseTradingDate,
+  coverageStartDate = "2026-09-29",
+  coverageThroughDate = taipeiDate(new Date().toISOString()),
 } = {}) {
   const repository = requiredText(repo, "repo");
   const auth = requiredText(token, "token");
@@ -127,18 +142,16 @@ export async function aggregateFromGithubArtifacts({
       const dailyArtifacts = artifacts
         .filter((a) => !a?.expired && String(a?.name || "").startsWith("system2-decision-clock-daily-"));
 
-      if (run.event === "schedule") {
-        if (!coverageByDate.has(runDate)) {
-          coverageByDate.set(runDate, {
-            marketDate: runDate,
-            runId: String(run.id),
-            runConclusion: run.conclusion || null,
-            artifactPresent: dailyArtifacts.length > 0,
-          });
-        } else {
-          const prior = coverageByDate.get(runDate);
-          prior.artifactPresent = prior.artifactPresent || dailyArtifacts.length > 0;
-        }
+      if (run.event === "schedule" && !coverageByDate.has(runDate)) {
+        coverageByDate.set(runDate, {
+          marketDate: runDate,
+          runId: String(run.id),
+          runAttempt: Number(run.run_attempt || 1),
+          runCreatedAt: run.created_at || null,
+          runConclusion: run.conclusion || null,
+          dailyArtifactCount: dailyArtifacts.length,
+          artifactPresent: dailyArtifacts.length === 1,
+        });
       }
 
       for (const artifact of dailyArtifacts) {
@@ -164,18 +177,30 @@ export async function aggregateFromGithubArtifacts({
       }
     }
 
+    const integrityCoverageRows = [];
     const scheduledRunCoverage = [];
-    for (const row of [...coverageByDate.values()].sort((a, b) => a.marketDate.localeCompare(b.marketDate))) {
-      const calendar = await probeTradingDate({ marketDate: row.marketDate });
+    for (const marketDate of inclusiveDates(coverageStartDate, coverageThroughDate)) {
+      const calendar = await probeTradingDate({ marketDate });
       if (calendar.state !== "READY" || typeof calendar.expectedTradingDay !== "boolean") {
-        throw new Error("official trading-calendar coverage audit failed for " + row.marketDate + ": " + calendar.state);
+        throw new Error("official trading-calendar coverage audit failed for " + marketDate + ": " + calendar.state);
       }
-      scheduledRunCoverage.push({
-        marketDate: row.marketDate,
-        runId: row.runId,
+      const run = coverageByDate.get(marketDate) || null;
+      const integrityRow = classifyDecisionClockCoverageRowV02({
+        marketDate,
         expectedTradingDay: calendar.expectedTradingDay,
-        artifactPresent: row.artifactPresent,
-        runConclusion: row.runConclusion,
+        runId: run?.runId || null,
+        runAttempt: run?.runAttempt || null,
+        runCreatedAt: run?.runCreatedAt || null,
+        runConclusion: run?.runConclusion || null,
+        dailyArtifactCount: run?.dailyArtifactCount || 0,
+      });
+      integrityCoverageRows.push(integrityRow);
+      scheduledRunCoverage.push({
+        marketDate,
+        runId: integrityRow.runId || ("MISSING:" + marketDate),
+        expectedTradingDay: integrityRow.expectedTradingDay,
+        artifactPresent: integrityRow.promotionCoverageEligible === true && integrityRow.dailyArtifactCount === 1,
+        runConclusion: integrityRow.runConclusion || "missing",
       });
     }
 
@@ -185,7 +210,20 @@ export async function aggregateFromGithubArtifacts({
       workflowFile,
     });
 
-    const reviewPacket = buildDecisionClockReviewPacket(aggregation);
+    const baseReviewPacket = buildDecisionClockReviewPacket(aggregation);
+    const coverageFailureClassCounts = summarizeDecisionClockCoverageFailuresV02(integrityCoverageRows);
+    const tradingDayGapDates = integrityCoverageRows
+      .filter((x) => x.expectedTradingDay === true && x.promotionCoverageEligible !== true)
+      .map((x) => x.marketDate);
+    const reviewPacket = Object.freeze({
+      ...baseReviewPacket,
+      coverageIntegrityExtensionVersion: "S2_DECISION_CLOCK_COVERAGE_INTEGRITY_V0_2",
+      coverageStartDate,
+      coverageThroughDate,
+      coverageFailureClassCounts,
+      tradingDayGapDates,
+      laterScheduledRunsCannotRepairAnchor: true,
+    });
 
     const report = {
       reportVersion: "S2_DECISION_CLOCK_ARTIFACT_REPORT_V0_1",
@@ -194,6 +232,15 @@ export async function aggregateFromGithubArtifacts({
       generatedAt: new Date().toISOString(),
       aggregation,
       reviewPacket,
+      coverageIntegrity: {
+        version: "S2_DECISION_CLOCK_COVERAGE_INTEGRITY_V0_2",
+        coverageStartDate,
+        coverageThroughDate,
+        rows: integrityCoverageRows,
+        failureClassCounts: coverageFailureClassCounts,
+        tradingDayGapDates,
+        laterScheduledRunsCannotRepairAnchor: true,
+      },
       safety: {
         githubReadOnly: true,
         officialCalendarGetOnly: true,
