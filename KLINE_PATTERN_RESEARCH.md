@@ -18499,3 +18499,177 @@ Independent BB can be added as a later quality-filter experiment after P0 baseli
 
 ### Rationale
 This lets the first prospective Pattern evidence accumulate sooner while keeping the initial experiment small and auditable.
+
+
+## DL-002BP — 2026 Taiwan Head-and-Shoulders Evidence: Direct Modern Pattern Validation
+
+### New high-value evidence
+Chen et al., Pacific-Basin Finance Journal (available online 2026-09-21), “Head-and-shoulders patterns in the Taiwan stock market: A comprehensive analysis of predictive ability, profitability, and decision making factors.”
+
+This is unusually relevant because it:
+- studies Taiwan listed + OTC equities,
+- uses mechanical pattern detection rather than eyeballing,
+- evaluates head-and-shoulders top and bottom separately,
+- examines implementation/decision parameters,
+- uses Bry-Boschan turning-point confirmation,
+- reports multiple-testing controls,
+- includes transaction-cost sensitivity,
+- uses dividend/right-adjusted closing prices,
+- and explicitly distinguishes event-level evidence from a claim of fully risk-adjusted portfolio alpha.
+
+### Main findings to retain
+1. HS bottom patterns show stronger and more persistent directional information than HS top patterns.
+2. Bottom-pattern performance is stronger when the detected “head” occurs in a more extreme low-price region of the stock’s own historical distribution.
+3. Strict Bry-Boschan turning-point alignment improves average event-level results and pattern-identification quality.
+4. Decision-rule choices materially affect realized trading performance.
+5. Multiple-testing and transaction-cost checks do not eliminate the core bottom-pattern evidence.
+6. Intermediate Bry-Boschan filters do not improve performance monotonically, so “more filtering” is not automatically better.
+
+### Why this changes DL-002
+Until now, W/double-bottom and general reversal topology had stronger direct support than head-and-shoulders in our lane.
+This 2026 Taiwan paper raises mechanically confirmed inverse-head-and-shoulders / multi-trough reversal topology to a higher research priority.
+
+### Important limitation
+The sample spans 1986-2018 and therefore crosses:
+- old 7% vs current 10% price-limit regimes,
+- pre- vs post-continuous-trading regimes.
+The study is strong evidence that the pattern family deserves Taiwan-specific research, not proof that the exact historical event returns transport unchanged to 2026.
+
+### New pattern family
+Add:
+INVERSE_HEAD_SHOULDERS / HS_BOTTOM
+HEAD_SHOULDERS_TOP
+
+But treat them as topology built from confirmed swings, not image labels.
+
+### Bottom topology anchors
+LS = left shoulder low
+H = head low (lower than shoulders)
+RS = right shoulder low
+N1/N2 = neckline swing highs between troughs
+
+Core fields:
+- leftShoulderPrice
+- headPrice
+- rightShoulderPrice
+- leftShoulderDepthFromNeckline
+- headDepthFromNeckline
+- rightShoulderDepthFromNeckline
+- shoulderSymmetryPct
+- necklineSlope
+- necklineDispersion
+- headExtremenessPercentile
+- durationLeft / durationRight
+- BryBoschanAlignment
+- swingScaleAgreement
+- volume/RS/event/regime context
+
+### Top topology mirror
+Use the same geometry with highs/neckline troughs.
+Do NOT assume symmetric predictive power because the Taiwan evidence shows bottom/top asymmetry.
+
+### Status
+WORTH_SHADOW_RESEARCH.
+No Formal Core change.
+
+## DL-002BQ — Independent Turning-Point Confirmation
+
+### New mechanism
+The 2026 Taiwan HS paper finds strict Bry-Boschan alignment improves pattern quality.
+This independently supports our DL-002H principle that pattern anchors should be confirmed by an objective turning-point detector rather than chosen only to make the named pattern fit.
+
+### Proposed research comparison
+Detector 1:
+ATR-normalized Directional Change (DL-002H).
+
+Detector 2:
+Bry-Boschan-style local turning-point confirmation.
+
+Detector 3:
+agreement between both.
+
+Store:
+- dcConfirmed
+- bbConfirmed
+- confirmationAgreement
+- pivotDateDifference
+- pivotPriceDifference
+- detectorConflictReason
+
+### Research question
+Does independent agreement improve:
+- pattern stability,
+- D5/MFE,
+- R01 failure rate,
+after controlling geometry fit?
+
+### Critical caution
+The Taiwan paper reports the strictest BB alignment performs better, but intermediate filters do not improve monotonically.
+Therefore:
+- do not assume “more confirmation = better,”
+- pre-register the comparison,
+- treat detector agreement as a robustness diagnostic until prospective evidence exists.
+
+## DL-002BR — Historical Price Extremeness as Pattern Context
+
+### New direct Taiwan evidence
+HS-bottom profitability in the 2026 paper is stronger when the pattern head occurs at a more extreme low percentile relative to that stock’s own history.
+
+### Proposed field
+historicalPricePercentileAsOf:
+- percentile of current/pattern-extreme adjusted price using only history known as of that date.
+
+Pattern-specific:
+- headPricePercentile
+- firstBottomPercentile
+- secondBottomPercentile
+- cupBottomPercentile
+- breakoutPricePercentile
+
+### Mechanism hypotheses
+REVERSAL_EXTREMENESS:
+A reversal pattern formed at an unusually depressed historical price region may contain stronger reversal information.
+
+LATE_STAGE_EXTREMENESS:
+A bullish continuation breakout at an extremely high percentile may instead reflect extension/crowding.
+
+Thus percentile extremeness must interact with pattern family; it is not universally bullish or bearish.
+
+### Relation to existing fields
+Potential overlap:
+- ret60
+- drawdown
+- overheat
+- priorHigh60/low60
+
+Incremental test required:
+Does long-history percentile add information beyond these shorter-horizon measures?
+
+### Point-in-time rule
+Use only historical prices available before/as of the pattern date.
+Never calculate percentile relative to the full future sample.
+
+## DL-002BS — Pattern Direction Asymmetry
+
+### New evidence
+The Taiwan HS study finds bottoms materially stronger than tops.
+Candlestick literature in Taiwan also often reports bullish and bearish pattern performance asymmetrically.
+
+### Research implication
+Do not build “mirror-image” rules and assume equal information.
+
+For each pattern family track:
+- bullishVersionEvidence
+- bearishVersionEvidence
+- sampleCount
+- effectDirection
+- regime dependence
+
+### Current project implication
+Because the trading system is primarily a long-selection engine, bullish reversal/continuation structures have direct relevance.
+Bearish mirrors are most useful initially as:
+- avoidance/risk diagnostics,
+- failure-state detection,
+- reduce/revalidation research,
+not as automatic short signals.
+
