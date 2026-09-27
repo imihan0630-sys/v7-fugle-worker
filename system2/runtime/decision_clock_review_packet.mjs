@@ -54,6 +54,7 @@ export function buildDecisionClockReviewPacket(aggregation) {
     promotionCoverageComplete: aggregation.promotionCoverageComplete,
     tradingDayArtifactGapCount: (aggregation.tradingDayArtifactGaps || []).length,
     duplicateScheduledArtifactCount: (aggregation.duplicateScheduledArtifacts || []).length,
+    rerunDiagnosticArtifactCount: aggregation.rerunDiagnosticArtifactCount || 0,
     manualDiagnosticArtifactCount: aggregation.manualDiagnosticArtifactCount,
     collectorContractConsistencyVersion: aggregation.collectorContractConsistencyVersion || null,
     collectorContractFingerprints: aggregation.collectorContractFingerprints || [],
@@ -77,6 +78,9 @@ export function buildDecisionClockReviewPacket(aggregation) {
     workerCronAuthorized: false,
     captureEnabled: false,
     system1RuntimeUsed: false,
+    attemptOneAnchorInvariant: true,
+    laterRerunAttemptsCanRepairAttemptOne: false,
+    laterRerunAttemptsCanInvalidateValidAttemptOne: false,
     outcomeDataUsedForClockSelection: false,
   });
 }
