@@ -160,6 +160,22 @@ Restrictions:
 - publication time / first-eligible decision date must be recorded for historical use;
 - do not invent growth percentages for zero/negative comparison bases.
 
+### A5 prospective observer upgrade — 2026-09-27
+
+Implemented System 2 read-only observer:
+- `runtime/a5_filing_vintage_observer.mjs`;
+- TWSE/TPEx official EPS + profitability endpoints;
+- market-wide symbol/vintage consistency checks;
+- first-observed `observedAt` provenance.
+
+Validated semantics:
+- prospective market-wide quarterly vintage observation is now implementable;
+- exact company filing timestamp is NOT proven;
+- exact official publication timestamp is NOT inferred;
+- historical pre-observer publication vintages remain UNKNOWN.
+
+Non-trading smoke on 2026-09-27 returned `OBSERVED_COVERAGE_PASS` for A5 with all transport OK, but it contributes zero trading-date decision-clock evidence.
+
 ## A6 — valuation PE/PB
 
 State: TIER_A_CURRENT; historical daily archive TIER_B_PIT_AUDIT.
@@ -245,6 +261,22 @@ Existing V8 sector fields such as breadth, avgChange and amountVs20DayAverage ar
 System 2 rule:
 - first build prospective frozen breadth/sector snapshots with explicit universe definitions;
 - do not historical-backfill sector state using today's industry classification without vintage control.
+
+### B2 prospective observer upgrade — 2026-09-27
+
+Implemented System 2 read-only derived observer:
+- `runtime/b2_industry_snapshot_observer.mjs`;
+- official TWSE/TPEx company-profile classification;
+- official same-date TWSE/TPEx close rows;
+- deterministic industry member count / up-down-flat breadth / net breadth share and available price-value summaries.
+
+Boundaries:
+- current profile classification is prospectively observed and never backfilled into historical dates;
+- the observer does NOT assign an INDUSTRY_TREND thesis direction;
+- the observer does NOT create a strategy score;
+- a same-date trading-session close is required for dependency eligibility.
+
+The 2026-09-27 non-trading smoke correctly returned `DERIVED_SNAPSHOT_INCOMPLETE`; this is expected behavior, not evidence of source failure.
 
 ## B3 — margin / short / SBL
 
