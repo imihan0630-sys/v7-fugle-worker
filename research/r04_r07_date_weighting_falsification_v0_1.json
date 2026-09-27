@@ -1,0 +1,75 @@
+{
+  "schemaVersion": "r04-r07-date-weighting-falsification-v0.1",
+  "researchDate": "2026-09-27",
+  "status": "WITHIN_DATE_CLASSIFICATION_CROSS_DATE_ROW_WEIGHTING_CONFIRMED",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "governanceBaseline": {
+    "independentUnit": "scanDate",
+    "existingRule": "Same-date stock rows are clustered samples, not independent experiments.",
+    "incrementalContrastCoverage": "V8.7.8 leave-one-date-out applies to I01-I07 partial-correlation contrasts, not automatically to R04/R07 grouped return summaries."
+  },
+  "currentImplementations": {
+    "R04": {
+      "helper": "researchDailyMedianStudy",
+      "classification": "Within each scanDate, median split into HIGH/LOW.",
+      "aggregation": "Each stock return is appended into a global HIGH or LOW array across all dates, then counterfactualMetricStats is computed on raw rows.",
+      "problem": "Dates with more usable Shadow rows receive more weight."
+    },
+    "R07": {
+      "helper": "researchQuietAttentionStudy",
+      "classification": "Within each scanDate, medians split residual strength and attention into four quadrants.",
+      "aggregation": "Each stock D5 return is appended into global quadrant arrays, then raw-row statistics are computed.",
+      "problem": "Date contribution is proportional to number of qualifying rows/quadrant assignments."
+    },
+    "R08": {
+      "helper": "researchTwoEngineStudy",
+      "primaryPaired": "For each date and horizon, mean(QUIET)-mean(ATTENTION) is computed first; those date deltas are aggregated.",
+      "primaryDateWeighting": "CORRECT_FOR_DECLARED_PAIRED_ESTIMAND",
+      "secondaryByEngine": "byEngine return/MFE/MAE summaries are raw-row weighted and therefore descriptive only.",
+      "conclusion": "Do not downgrade R08 paired solely for this date-weighting issue; other cohort/outcome-provenance guards still apply."
+    }
+  },
+  "fixedSyntheticWitness": {
+    "group": "HIGH",
+    "dateA": {
+      "rows": 20,
+      "meanReturnPct": 1
+    },
+    "dateB": {
+      "rows": 2,
+      "meanReturnPct": -5
+    },
+    "currentRawRowMeanPct": 0.45,
+    "equalDateMeanPct": -2,
+    "exactRawCalculation": "(20*1 + 2*(-5))/22 = 0.4545%",
+    "exactEqualDateCalculation": "(1 + (-5))/2 = -2%",
+    "conclusion": "Unequal row counts can reverse the sign of the cross-date grouped mean even though each scanDate should be one independent unit."
+  },
+  "promotionGradeSuccessors": {
+    "R04_V1_1": {
+      "classification": "Keep the frozen within-date median split.",
+      "primary": "For each clean date with both HIGH and LOW, compute mean(HIGH D5)-mean(LOW D5); aggregate date deltas with equal date weight.",
+      "secondary": "Report equal-date HIGH mean and equal-date LOW mean separately; raw-row means may remain descriptive.",
+      "noNewThreshold": true
+    },
+    "R07_V1_1": {
+      "classification": "Keep the frozen within-date residual-strength/attention median split.",
+      "primary": "For each clean date with both QUIET_STRENGTH and ATTENTION_STRENGTH, compute their mean D5 difference; aggregate equally by date.",
+      "secondary": "Four-quadrant equal-date group means and coverage; raw-row quadrant means remain descriptive.",
+      "noNewThreshold": true
+    },
+    "R08": {
+      "primary": "Retain existing paired date-delta implementation for D5/D10/D20.",
+      "guard": "Treat byEngine raw-row summaries as descriptive context, not the primary effect estimate."
+    }
+  },
+  "readinessGuard": [
+    "Having >=60 rows and >=15 dates is coverage readiness, not proof the displayed raw-row mean respects the scanDate inference unit.",
+    "R04/R07 directional interpretation must use date-level contrasts before promotion-grade review.",
+    "Dates lacking both compared groups do not receive a fabricated zero or cross-date substitute.",
+    "Do not add industry/channel matching in this repair; that would create new degrees of freedom and requires separate preregistration.",
+    "All existing cohort-quality and outcome-provenance guards remain upstream prerequisites."
+  ],
+  "decision": "R04_R07_RAW_ROW_SUMMARIES_DESCRIPTIVE_ONLY / DATE_LEVEL_CONTRAST_REQUIRED / R08_PAIRED_DATE_WEIGHTING_RETAINED / NO_FORMAL_CHANGE"
+}
