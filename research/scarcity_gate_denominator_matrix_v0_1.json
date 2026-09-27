@@ -1,0 +1,251 @@
+{
+  "schemaVersion": "SCARCITY_GATE_DENOMINATOR_MATRIX_V0_1",
+  "updatedAtTaipei": "2026-09-27",
+  "researchOnly": true,
+  "outcomeDataUsed": false,
+  "decisionImpact": false,
+  "formalCoreChanged": false,
+  "sourceObserver": "research/formal_gate_overlap_observer_v0_1.mjs",
+  "sourceReplay": "research/formal_gate_replay_v0_1.mjs",
+  "why": "Gate scarcity rates are invalid if UNKNOWN or prerequisite-driven NOT_EVALUABLE rows are silently counted as failures or if overlap-observable rows are confused with rows that Formal would actually reach.",
+  "denominatorFamilies": {
+    "observerPopulation": {
+      "definition": "All rows with a same-scan gate observer receipt.",
+      "use": "Coverage accounting only.",
+      "forbiddenUse": "Do not compute gate harshness as FAIL / all rows without separately reporting UNKNOWN/NOT_EVALUABLE/applicability."
+    },
+    "evaluableDenominator": {
+      "definition": "Current gate status is PASS or FAIL.",
+      "metric": "evaluableFailRate = FAIL / (PASS + FAIL)",
+      "caveat": "May include explicit PASS states that mean not-applicable/automatically clear; use applicableDenominator for semantic gate severity."
+    },
+    "applicableDenominator": {
+      "definition": "Rows where the gate condition actually applies and is evaluable. Exclude semantic not-applicable clear states and prerequisite-driven NOT_EVALUABLE.",
+      "metric": "applicableFailRate = FAIL / (applicable PASS + FAIL)",
+      "caveat": "Applicability rules are gate-specific and versioned."
+    },
+    "formalReachDenominator": {
+      "definition": "All earlier Formal gates are CLEAR (PASS or preregistered safe skip) and the current gate is evaluable/applicable.",
+      "metric": "formalReachFailRate = current FAIL / formalReachDenominator",
+      "use": "Sequential incidence under current Formal gate order.",
+      "caveat": "Still not marginal effect of removing the gate."
+    },
+    "overlapDenominator": {
+      "definition": "Current gate is evaluable/applicable regardless of earlier observed fails.",
+      "metric": "overlapFailRate among same-scan observable rows",
+      "use": "Simultaneous blocker structure and co-failure matrix.",
+      "caveat": "A row may never have reached this gate in production Formal."
+    }
+  },
+  "stateAccounting": {
+    "PASS": "Clear for the observer; may need not-applicable reason check for applicable-rate denominator.",
+    "FAIL": "Observed blocker for that gate.",
+    "UNKNOWN": "Evidence/readiness missing; excluded from fail-rate denominators and reported separately.",
+    "NOT_EVALUABLE": "Gate cannot be semantically evaluated under captured prerequisites; excluded from fail-rate denominators.",
+    "safeNotApplicableExamples": [
+      "SMALL_CAP_SPECIAL: marketCap>=30 is PASS with NOT_APPLICABLE_CAP_GTE_30",
+      "MID_CAP_LIQUIDITY: marketCap>=100 is PASS with NOT_APPLICABLE_CAP_GTE_100",
+      "VALUATION_RELATIVE_RISK: NO_POSITIVE_TTM_PE is NOT_EVALUABLE but replay treats it as a safe skip"
+    ]
+  },
+  "gateMatrix": [
+    {
+      "id": "PRICE_FLOOR",
+      "directPrerequisites": [],
+      "kind": "DIRECT",
+      "inputContract": "close"
+    },
+    {
+      "id": "HISTORY_60D",
+      "directPrerequisites": [],
+      "kind": "DIRECT",
+      "inputContract": "historyDays"
+    },
+    {
+      "id": "RS_CONTEXT",
+      "directPrerequisites": [],
+      "kind": "DIRECT_READINESS",
+      "inputContract": "marketReturn20 + sectorReturn20"
+    },
+    {
+      "id": "MARKET_CAP_FLOOR",
+      "directPrerequisites": [],
+      "kind": "DIRECT",
+      "inputContract": "marketCapYi"
+    },
+    {
+      "id": "DAILY_ABNORMALITY",
+      "directPrerequisites": [],
+      "kind": "DIRECT",
+      "inputContract": "changePercent"
+    },
+    {
+      "id": "LIQUIDITY",
+      "directPrerequisites": [],
+      "kind": "CONDITIONAL_INPUT",
+      "inputContract": "avgVolume20Lots; low-volume exception needs avgAmount20/spread/depth"
+    },
+    {
+      "id": "SMALL_CAP_SPECIAL",
+      "directPrerequisites": [
+        "MARKET_CAP_FLOOR"
+      ],
+      "kind": "CONDITIONAL_APPLICABILITY",
+      "inputContract": "marketCap 10-30 requires volume + institutionalScore; >=30 is clear/not-applicable"
+    },
+    {
+      "id": "MID_CAP_LIQUIDITY",
+      "directPrerequisites": [
+        "MARKET_CAP_FLOOR",
+        "LIQUIDITY_EXCEPTION_STATE"
+      ],
+      "kind": "CONDITIONAL_APPLICABILITY",
+      "inputContract": "marketCap <100; may reuse liquidity exception"
+    },
+    {
+      "id": "CHIP_CONCENTRATION_PRESENT",
+      "directPrerequisites": [],
+      "kind": "DIRECT_READINESS",
+      "inputContract": "chipConcentration"
+    },
+    {
+      "id": "FINANCIAL_SOURCE_COMPLETENESS",
+      "directPrerequisites": [],
+      "kind": "DIRECT_READINESS",
+      "inputContract": "quarter/valuation/announcement source fields"
+    },
+    {
+      "id": "ANNOUNCEMENT_RISK",
+      "directPrerequisites": [],
+      "kind": "SOURCE_CONDITIONAL",
+      "inputContract": "announcementsVerified + officialAnnouncements"
+    },
+    {
+      "id": "VALUATION_RELATIVE_RISK",
+      "directPrerequisites": [],
+      "kind": "CONDITIONAL_APPLICABILITY",
+      "inputContract": "positive PE + positive sector median; high relative PE needs growth context"
+    },
+    {
+      "id": "SECTOR_GATE",
+      "directPrerequisites": [],
+      "kind": "DIRECT",
+      "inputContract": "breadth + avgChange + amountVs20DayAverage"
+    },
+    {
+      "id": "AB_SETUP",
+      "directPrerequisites": [],
+      "kind": "DIRECT_DERIVED",
+      "inputContract": "setupState.A.pass or setupState.B.pass"
+    },
+    {
+      "id": "FUNDAMENTAL_COMPONENT_COUNT",
+      "directPrerequisites": [],
+      "kind": "DIRECT_DERIVED",
+      "inputContract": "fundamentalCount"
+    },
+    {
+      "id": "FUNDAMENTAL_QUALITY",
+      "directPrerequisites": [
+        "FUNDAMENTAL_COMPONENT_COUNT"
+      ],
+      "kind": "PREREQUISITE_DEPENDENT",
+      "inputContract": "count>=3 then fundamentalScore"
+    },
+    {
+      "id": "ATR_QUALITY",
+      "directPrerequisites": [],
+      "kind": "DIRECT",
+      "inputContract": "atrPercent"
+    },
+    {
+      "id": "TARGET_AVAILABLE",
+      "directPrerequisites": [
+        "AB_SETUP"
+      ],
+      "kind": "PREREQUISITE_DEPENDENT",
+      "inputContract": "formal channel must exist; targetState FOUND/NONE"
+    },
+    {
+      "id": "REWARD_RISK",
+      "directPrerequisites": [
+        "TARGET_AVAILABLE"
+      ],
+      "kind": "PREREQUISITE_DEPENDENT",
+      "inputContract": "target available + rewardPerRisk"
+    },
+    {
+      "id": "FINAL_SIGNAL_GRADE",
+      "directPrerequisites": [
+        "REWARD_RISK"
+      ],
+      "kind": "PREREQUISITE_DEPENDENT",
+      "inputContract": "RR passed + setupQuality"
+    }
+  ],
+  "dependencyExamples": [
+    {
+      "chain": [
+        "AB_SETUP",
+        "TARGET_AVAILABLE",
+        "REWARD_RISK",
+        "FINAL_SIGNAL_GRADE"
+      ],
+      "rule": "AB_SETUP FAIL => TARGET_AVAILABLE NOT_EVALUABLE => REWARD_RISK NOT_EVALUABLE => FINAL_SIGNAL_GRADE NOT_EVALUABLE. Only AB_SETUP is an observed fail in this dependency path unless separate same-scan evidence makes later gates evaluable under their own contract."
+    },
+    {
+      "chain": [
+        "FUNDAMENTAL_COMPONENT_COUNT",
+        "FUNDAMENTAL_QUALITY"
+      ],
+      "rule": "count<3 => component-count FAIL and quality NOT_EVALUABLE; do not count the row as both fundamental-count fail and fundamental-quality fail."
+    },
+    {
+      "chain": [
+        "LIQUIDITY",
+        "SMALL_CAP_SPECIAL",
+        "MID_CAP_LIQUIDITY"
+      ],
+      "rule": "Low-volume rows can require exception inputs; missing exception evidence remains UNKNOWN, not FAIL. Size-conditioned gates have their own applicability and must not inherit the liquidity fail denominator mechanically."
+    }
+  ],
+  "reportingMinimum": {
+    "perGate": [
+      "observerRows",
+      "pass",
+      "fail",
+      "unknown",
+      "notEvaluable",
+      "evaluableCoveragePct",
+      "applicableRows",
+      "applicableFailRatePct",
+      "formalReachRows",
+      "formalReachFailRatePct",
+      "overlapRows",
+      "overlapFailRatePct"
+    ],
+    "coFailure": "pairwise/multi-gate observed FAIL combinations reported separately from firstFailureCount",
+    "provenance": "gate observer version + Formal gate-order version + scan generation/coverage",
+    "zeroRule": "No denominator of zero may be coerced to 0% fail; report UNKNOWN/NO_DENOMINATOR."
+  },
+  "firstFailureFirewall": {
+    "firstFailureCount": "Order-dependent production attribution only.",
+    "observedFailCount": "Same-scan overlap count, not marginal contribution.",
+    "uniqueObservedClear": "Single-removal replay state, not recovered Selected.",
+    "marginalSelectedEffect": "UNKNOWN until a valid same-PIT counterfactual selection/ranking/quota replay is preregistered and validated."
+  },
+  "falsificationTargets": [
+    "Any report where FUNDAMENTAL_COMPONENT_COUNT fail also increments FUNDAMENTAL_QUALITY fail solely because score is unavailable is invalid.",
+    "Any report where TARGET_AVAILABLE fail/not-evaluable is also treated as RR fail is invalid.",
+    "Any gate comparison that ranks gates by raw fail counts without coverage/applicability/formal-reach denominators is not promotion-grade.",
+    "Any UNKNOWN-as-FAIL conversion violates the existing observer tests."
+  ],
+  "implementationAssessment": {
+    "currentObserverFixturesSupportContract": true,
+    "runtimePersistenceNeededForPureOfflineMatrix": false,
+    "prospectiveFullPopulationPersistence": "Class B proposal-first if needed for production coverage",
+    "formalChange": "None"
+  },
+  "formalOptimizationCandidate": false,
+  "status": "GATE_DENOMINATOR_SEMANTICS_FROZEN / OBSERVABILITY_NOT_CAUSALITY / FORMAL_UNCHANGED"
+}
