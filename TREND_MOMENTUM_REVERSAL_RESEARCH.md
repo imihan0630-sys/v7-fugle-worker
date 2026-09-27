@@ -404,3 +404,66 @@ Falsification:
 ### Status
 `GENERIC_REVERSAL_REJECTED_OR_REDUNDANT / ORIGIN_ATTRIBUTION_DATA_GATED / NO_FORMAL_CHANGE`.
 
+
+
+## DL-003C.1 — Formal late-stage / Research overheat structural overlap
+
+Outcome-free formula audit now separates three distinct layers:
+
+### Formal A late-stage guard
+`lateStage = ret20>35 OR maDistance20Pct>25`
+and A requires `lateStage !== true`.
+
+### Formal B late-stage guard
+B requires:
+`lateStage !== true AND ret20<=30`.
+
+Therefore `30 < ret20 <= 35`, with MA20 distance <=25, is a structurally A-possible / B-forbidden zone.
+
+### Research overheat gradient
+`overheatPenaltyResearch =
+max(0,ret20-20)*1.6
++ max(0,maDistance20Pct-12)*2.2
++ max(0,atrPercent-6)*5
++ max(0,abs(gapPct)-4)*4`,
+clamped 0..100.
+
+This starts earlier than the Formal hard bounds and also includes ATR/gap dimensions.
+
+### Structural conclusion
+
+`overheatPenaltyResearch` is NOT mechanically identical to `lateStage`.
+It can be positive inside the Formal-admitted region and can respond to ATR/gap states not encoded by lateStage.
+
+However a new generic Extreme Absolute Strength factor built from the same return / MA-distance / volatility dimensions would add a fourth representation of substantially the same mechanism.
+
+Decision:
+`NEW_GENERIC_EXTREME_STRENGTH_FACTOR = REJECTED_OR_REDUNDANT`.
+
+The mechanism remains valuable only as a falsification of the **existing** hard boundaries and continuous research gradient.
+
+Machine artifact:
+`research/late_stage_overheat_channel_overlap_v0_1.json`.
+
+## DL-003C.2 — correct optimization question
+
+Do NOT ask:
+“what new extreme-strength score should be added?”
+
+Ask:
+1. Does the current continuous overheat gradient add incremental path/risk information inside the already-admitted population?
+2. Does B's special `ret20<=30` boundary protect enough downside/false-break risk to justify the opportunity cost of excluding B-like 30–35% 20-day winners?
+3. Does the shared `ret20>35 or MA20-distance>25` lateStage hard veto retain incremental protection after ATR, liquidity, regime, Price-Volume and setup-lifecycle controls?
+
+No threshold sweep is allowed.
+
+The B 30–35% question is channel-specific.
+It must not be pooled with A because Formal itself treats the same ret20 zone differently.
+
+Opportunity-cost evidence around rejected setup boundaries remains cohort-quality gated until the Near-miss / Shadow membership repair is prospective and clean.
+
+### Updated status
+- Extreme Absolute Strength as a **new factor**: `REJECTED_OR_REDUNDANT`.
+- Existing lateStage/B-ret20 boundary value: `FALSIFICATION_IN_PROGRESS`.
+- Existing overheatPenaltyResearch incremental value: `FALSIFICATION_IN_PROGRESS`.
+- Formal Core unchanged.
