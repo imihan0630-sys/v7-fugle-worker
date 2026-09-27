@@ -37,6 +37,19 @@
         69.65,
         100
       ]
+    },
+    "channelMutualExclusivity": {
+      "status": "PROVEN_BY_DEFINITION",
+      "proof": [
+        "recentHigh10 = max previous 10 session highs",
+        "priorHigh20 = max previous 20 session highs",
+        "therefore priorHigh20 >= recentHigh10",
+        "B pass requires close >= priorHigh20*1.002 >= recentHigh10*1.002",
+        "A pullbackPct = (recentHigh10-close)/recentHigh10*100, so under B pass pullbackPct <= -0.2%",
+        "A pass requires pullbackPct between +2% and +15%",
+        "therefore A.pass AND B.pass is impossible when inputs follow current definitions"
+      ],
+      "consequence": "The code-level B-before-A assignment has no practical precedence effect under current definitions. Dual-pass incidence should be structural zero; any observed dual-pass indicates data/definition regression."
     }
   },
   "structuralFindings": [
@@ -44,7 +57,7 @@
     "A's theoretical qualifying maximum is 82 while B can reach 100; the 18-point setup gap can contribute 5.04 PriorityScore points.",
     "A has an 8-point discontinuity at volumeTodayVsPrev5 0.90/0.91, equal to 2.24 PriorityScore points, even when both states pass A.",
     "B's volume contribution is continuous from the 1.3x hard-gate threshold and can increase until 3.125x, so post-gate ranking behavior differs structurally from A.",
-    "B channel has deterministic precedence when both channels pass; actual dual-pass frequency must be measured rather than assumed.",
+    "Although code checks B before A, current A/B geometry is mathematically mutually exclusive; the precedence branch cannot decide between two simultaneously passing channels under valid definitions.",
     "Cross-channel raw setupQuality cannot be presumed calibrated merely because both are clamped to 0-100."
   ],
   "syntheticCases": [
@@ -120,8 +133,8 @@
     }
   ],
   "prospectiveTests": [
+    "Invariant QA: A.pass && B.pass must always be false; any violation is a definition/data regression, not a market observation.",
     "Distribution of setupQuality by channel and scanDate.",
-    "Frequency of A/B qualification, dual-pass, and final channel assignment.",
     "Within-channel monotonicity of setupQuality vs D1/D3/D5/MFE/MAE/stop-first/no-follow-through.",
     "Cross-channel raw-score calibration using matched/controlled candidates.",
     "Compare raw setupQuality with within-channel percentile/rank as a research comparator only; do not change Formal.",
@@ -133,7 +146,8 @@
     "If raw cross-channel score differences disappear after channel identity, classify scale as channel-confounded.",
     "If B's apparent advantage is fully explained by genuinely better outcomes after controls, do not normalize it merely for cosmetic symmetry.",
     "If A 0.90/0.91 cliff has no material rank/selection incidence, treat the discontinuity as low practical importance.",
-    "No alternative formula/weight/normalization is allowed before prospective evidence."
+    "No alternative formula/weight/normalization is allowed before prospective evidence.",
+    "If future code changes recentHigh10/priorHigh20/pullback/breakout definitions, re-prove mutual exclusivity before relying on this invariant."
   ],
   "governance": {
     "anyFormalFormulaOrChannelPrecedenceChange": "CLASS_C_OWNER_APPROVAL_REQUIRED",
