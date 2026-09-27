@@ -62,5 +62,12 @@
     "adding institutionHistoryDays/readiness receipt or raw-source lineage to shared snapshot/runtime persistence": "Class B proposal-first",
     "changing institutionalScore formula/weight/priority": "Class C owner decision"
   },
-  "optimizationStatus": "NOT_OPTIMIZATION_READY"
+  "optimizationStatus": "NOT_OPTIMIZATION_READY",
+  "persistedPopulationCaveat": {
+    "currentTradeResearchSnapshots": "FULL_FORMAL_SCAN rows are attached to selected plans under current persistence wiring.",
+    "shadowPopulation": "Non-selected research rows are stored separately as SHADOW_PROSPECTIVE and bounded by cohort/pool caps.",
+    "implication": "Current persisted FULL_FORMAL_SCAN rows can support selected-conditioned coverage/replay diagnostics only. They cannot estimate complete Formal-scan saturation/divergence prevalence.",
+    "historicalRepair": "Bounded Shadow must not be unioned with selected rows and relabeled a complete population.",
+    "fullPopulationNeed": "Use a certified complete same-scan in-memory parent or future immutable full-population receipt before full-scan prevalence claims."
+  }
 }
