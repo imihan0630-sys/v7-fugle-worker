@@ -16,3 +16,5 @@ Explicitly not authorized by this record:
 - enabling scheduled Shadow capture.
 
 This file is a one-shot audit marker for the guarded provisioning workflow.
+
+REPLAY_VERIFICATION=REQUESTED
