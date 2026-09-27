@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { toShadowDecisionRow, toShadowRunRow, toCapacityRunRow, toStrategyOrderingRow, toRankingExperimentRow, toRank05DisplacementRow } from "../runtime/storage_rows.mjs";
+import { toShadowDecisionRow, toShadowRunRow, toCapacityRunRow, toStrategyOrderingRow, toRankingExperimentRow, toRank05DisplacementRow, toStrategyOverlapRow, toCandidateConcentrationRow } from "../runtime/storage_rows.mjs";
 
 const decisionRow = toShadowDecisionRow(
   {
@@ -184,5 +184,59 @@ const rank05Row = toRank05DisplacementRow({
 assert.equal(rank05Row.incumbent_pool_sessions, 4);
 assert.equal(rank05Row.shadow_displacement_eligible, 1);
 assert.equal(rank05Row.outcome_attached, 0);
+
+const overlapRow = toStrategyOverlapRow({
+  receiptId: "O1",
+  experimentId: "RANK-06",
+  experimentVersion: "0.1",
+  marketDate: "2026-09-27",
+  decisionTimestamp: "2026-09-27T07:30:00Z",
+  strategyA: { strategyId: "SHORT_MOMENTUM" },
+  strategyB: { strategyId: "SWING_GROWTH" },
+  sharedCoreFamilies: [],
+  distinctCoreFamiliesA: ["TECHNICAL_STRUCTURE"],
+  distinctCoreFamiliesB: ["INDUSTRY_THESIS"],
+  sharedAllFamilies: ["FUNDAMENTAL_QUALITY"],
+  diagnostics: { coreJaccard: 0 },
+  independentSameClockValidity: true,
+  naiveStrategyCountBonusAllowed: false,
+  overlapPriorityEffectAuthorized: false,
+  researchState: "OVERLAP_MEASURED_NOT_VALIDATED",
+  overlapHash: "overlap-hash",
+  capturedAt: "2026-09-27T07:31:00Z",
+  schemaVersion: "S2_STRATEGY_OVERLAP_V0_1",
+});
+
+assert.equal(overlapRow.independent_same_clock_validity, 1);
+assert.equal(overlapRow.naive_strategy_count_bonus_allowed, 0);
+
+const concentrationRow = toCandidateConcentrationRow({
+  receiptId: "C1",
+  experimentId: "RANK-07",
+  experimentVersion: "0.1",
+  marketDate: "2026-09-27",
+  decisionTimestamp: "2026-09-27T07:30:00Z",
+  classificationVersion: "IND-V0",
+  globalCount: 4,
+  knownIndustryCount: 3,
+  unknownIndustryCount: 1,
+  knownIndustryCoverage: 0.75,
+  unknownIndustrySymbols: ["D"],
+  industryRows: [{ industryKey: "SEMICONDUCTOR", count: 2 }],
+  largestIndustry: { industryKey: "SEMICONDUCTOR", count: 2 },
+  industryHhiKnownOnly: 5/9,
+  strategyMembershipCounts: { SHORT_MOMENTUM: 2, SWING_GROWTH: 3 },
+  multiStrategySymbolCount: 1,
+  concentrationAdmissionEffectAuthorized: false,
+  concentrationEvictionEffectAuthorized: false,
+  concentrationSizingEffectAuthorized: false,
+  warnings: ["INDUSTRY_CLASSIFICATION_INCOMPLETE"],
+  concentrationHash: "concentration-hash",
+  capturedAt: "2026-09-27T07:31:00Z",
+  schemaVersion: "S2_CANDIDATE_CONCENTRATION_V0_1",
+});
+
+assert.equal(concentrationRow.known_industry_coverage, 0.75);
+assert.equal(JSON.parse(concentrationRow.effect_authorization_json).admission, false);
 
 console.log("System2 storage row serializer tests passed");
