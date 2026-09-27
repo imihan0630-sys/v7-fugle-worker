@@ -1,6 +1,6 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-234.
+Checkpoint sequence: B-235.
 Updated: 2026-09-27 23:38 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Detailed B-01..B-123 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
@@ -1843,3 +1843,21 @@ Updated: 2026-09-27 23:38 Asia/Taipei.
 - Shared scan/enrichment/persistence wiring is Class B owner-approval work. No implementation, merge-precedence repair or deployment was performed. Threshold/strategy changes remain Class C.
 - Status: `MARKET_CAP_SOURCE_CAPTURE_CLASS_B_PROPOSAL_READY / OWNER_APPROVAL_REQUIRED / MARKET_CAP_LANE_PARKED / FORMAL_UNCHANGED`. No FORMAL_OPTIMIZATION_CANDIDATE.
 - Exact next: move immediately to A/B setup scarcity. Re-read `NEAR_MISS_COHORT_RESEARCH.md`, `research/channel_stage_denominator_spec_v0_1.json`, current setup/debug semantics and setup-specific artifacts. Do not tune thresholds; determine exact AB_SETUP Formal-reach and which distance metrics are nonredundant.
+
+
+## B-235 — A/B setup scarcity geometry repaired in Class-A research; prospective persistence parked at Class-B boundary (2026-09-27 Asia/Taipei)
+- Continued B-234 exact-next on Draft PR #146 without outcome lookup, threshold tuning, Formal/runtime/storage change or deployment. Latest validated research head: `c98cbccdc57c4d70795cbc3326dbebfb66f960b9`.
+- PR #146 CI is green at that head: A-B Setup Margin Research `36326324235` SUCCESS; V8 Repair `36326324359` SUCCESS; V8 Regression `36326324271` SUCCESS.
+- Exact sequential setup population is now fail-closed: only rows with every prior Formal gate positively clear and both A/B failing become `SETUP_FIRST_FAILURE`; raw A/B geometry from `PRE_SETUP_NOT_REACHED` cannot contaminate the setup-reject denominator; dual-pass rows preserve B precedence.
+- Raw-margin observer preserves exact A/B six-bit masks, failed counts, raw threshold margins, OR/composite branches and source/truthiness warnings. No normalized composite setup distance is introduced.
+- New structural falsification: under current OHLC-derived definitions, `dailyUpperShadowRatio <= 1 - dailyClosePosition`. Therefore B `strongClose: closePosition>=0.65` mathematically implies `upperShadow<=0.35`. A coherent row can never have strongClose=true and upperShadow=false; 16/64 raw B bit patterns are structurally impossible. The upper-shadow boolean adds no independent B admission constraint after strongClose, although the continuous upper-shadow value still enters B setupQuality/ranking and is not globally irrelevant.
+- Existing B notLate redundancy is retained: `lateStage=(ret20>35 OR maDistance20Pct>25)` plus B `ret20<=30` makes the ret20>35 lateStage arm non-binding; effective B notLate raw axes are ret20<=30 and maDistance20Pct<=25.
+- New A support provenance: `supportSources/supportMode` distinguishes normal `FILTERED_CANDIDATE` from `MA20_FALLBACK`. On the filtered path, support eligibility `support<=close*1.015` already implies `close>=support*0.98522...`, so the A structure clause `close>=support*0.985` is conditionally redundant; it can still bind on MA20 fallback. Future margin interpretation must retain support source/fallback state.
+- Frozen margin taxonomy now separates simple thresholds, two-sided bands, OR-composites, conjunctions, nested candle geometry and source-conditioned constraints. Exact Formal masks remain provenance only; failed-check Hamming count is not an independent-dimensional/economic distance.
+- Population-before-sample helper now counts complete `scanDate x pool x nearestChannel x exactCheckPattern` populations before deterministic bounded sampling. Semantic membership and sample membership are separate; duplicate parent keys, incomplete strata or incomplete parent frame fail quality closed to UNKNOWN. Absent cells are zero only on a positively complete CLEAN frame.
+- Durable branch artifacts: `research/ab_setup_redundancy_falsification_v0_1.json`, `research/ab_setup_sampling_frame_v0_1.mjs`, `research/ab_setup_sampling_frame_spec_v0_1.json`, `research/ab_setup_margin_independence_taxonomy_v0_1.json`, plus adversarial tests and NM-009..NM-011 documentation.
+- Minimum prospective A/B receipt is now frozen in `research/ab_setup_evidence_receipt_spec_v0_1.json` and `AB_SETUP_EVIDENCE_RECEIPT_CLASS_B_PROPOSAL.md`. It reuses the existing immutable decision-state/population-receipt/overlapping-membership architecture rather than creating a second Shadow model. Selection-time parent stays outcome-free; future D1/D3/D5/D10/D20/MFE/MAE joins must reference the immutable parent generation.
+- Shared Worker/D1 capture remains Class B owner-approval work and was **not implemented**. Any A/B threshold/channel/precedence change remains Class C. No `FORMAL_OPTIMIZATION_CANDIDATE` exists yet.
+- Branch lineage warning: PR #146 is materially diverged from fast-moving main (observed ahead 25 / behind 131 from merge base `d0e558899a016107c10c0734b28936c9cfb42df3`). Green CI proves the isolated branch artifacts, not merge/deploy readiness; no rebase/merge/deploy attempted.
+- Status: `AB_SETUP_SEQUENTIAL_DENOMINATOR_READY / HAMMING_INDEPENDENCE_FALSE / POPULATION_BEFORE_SAMPLE_READY / EVIDENCE_RECEIPT_DESIGN_READY / CLASS_B_BOUNDARY_REACHED / OUTCOMES_CLOSED / FORMAL_UNCHANGED`.
+- Exact next: park A/B shared persistence at the owner-approval boundary. Do not revisit already-complete B-215/B-216 signal-grade structural work or B-214 Target/RR work. Continue the next nonblocked scarcity question only after fresh artifact audit, prioritizing an unclosed gate or quota/cutline opportunity-cost layer rather than duplicating existing lanes. Preserve prospective/OOS and immutable-parent requirements before any outcome inference.
