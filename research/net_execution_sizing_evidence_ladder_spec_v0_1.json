@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "NET_EXECUTION_SIZING_EVIDENCE_LADDER_V0_1",
+  "purpose": "Cross-link Portfolio Risk sizing claims to existing Trading Frictions evidence semantics without inventing a new cost model.",
+  "prerequisites": [
+    "generation-certified selected cohort",
+    "positive durable Formal BUY signal",
+    "counterfactual orderability at shared trigger",
+    "confirmed fill positively attributed to durable signal",
+    "same selected names and planned deployment for comparator",
+    "counterfactual execution rule frozen",
+    "untriggered planned capital explicitly remains cash",
+    "attributed terminal fill OR predeclared fixed execution horizon with valid mark"
+  ],
+  "costLayers": {
+    "commission": "ACTUAL / PARTIAL_ACTUAL / MODELED / UNKNOWN; account-specific; UNKNOWN never zero",
+    "tax": "ACTUAL / PARTIAL_ACTUAL / MODELED / UNKNOWN; trade class/date must support the rate",
+    "slippage": "ACTUAL when signal-linked confirmed fill supplies price/time; otherwise MODELED only under a predeclared scenario or UNKNOWN"
+  },
+  "claimTiers": [
+    "NOT_EXECUTION_ELIGIBLE",
+    "GROSS_EXECUTION_SIZING_EDGE_ELIGIBLE",
+    "NET_EXPLICIT_SIZING_EDGE_ELIGIBLE",
+    "NET_ALL_IN_SIZING_EDGE_ELIGIBLE"
+  ],
+  "namingFirewall": [
+    "Any modeled component prevents ACTUAL_NET_EXECUTION label.",
+    "Missing commission prevents NET_EXPLICIT and NET_ALL_IN labels.",
+    "Missing slippage may still permit NET_EXPLICIT if commission and tax are evidenced/modelled, but not NET_ALL_IN.",
+    "No order receipt is required merely for linked fill slippage; it is required for fill-probability/partial-fill claims."
+  ],
+  "currentProductionAssessment": {
+    "positiveBuySignal": true,
+    "multiNameSizingIdentification": false,
+    "confirmedFillLedgerImplemented": false,
+    "strongestCurrentClaim": "NOT_EXECUTION_ELIGIBLE"
+  },
+  "status": "EVIDENCE_LADDER_FROZEN / CURRENT_PRODUCTION_NOT_EXECUTION_ELIGIBLE",
+  "formalCoreImpact": false
+}
