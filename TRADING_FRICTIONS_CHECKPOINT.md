@@ -30,3 +30,60 @@ Next: Event Risk, Gap Risk & Overnight Information.
 
 Open new durable lane: Event Risk, Gap Risk & Overnight Information.
 Start with overnight gap decomposition, event windows, gap-through-stop risk, Taiwan price-limit carryover/multi-day exit constraints, weekend/holiday information accumulation, interaction with FIRST/ADD/FULL and portfolio heat, and point-in-time event provenance.
+
+
+## PR-053 — net execution sizing evidence ladder cross-links Trading Frictions (2026-09-27)
+
+Portfolio Risk must not invent a separate transaction-cost model. PR-053 reuses the existing Trading Frictions evidence hierarchy and turns it into a fail-closed claim-eligibility ladder.
+
+A sizing sample can reach execution economics only after all non-cost prerequisites are positively established:
+- selected-generation certification;
+- positive durable Formal BUY signal;
+- counterfactual orderability at the shared initial trigger;
+- confirmed fill positively attributed back to the durable signal;
+- same selected names and same planned deployment across allocator comparators;
+- counterfactual execution rule frozen;
+- untriggered planned capital explicitly remains cash;
+- attributed terminal fill or a predeclared fixed execution horizon with valid mark.
+
+Claim tiers are:
+1. NOT_EXECUTION_ELIGIBLE;
+2. GROSS_EXECUTION_SIZING_EDGE_ELIGIBLE;
+3. NET_EXPLICIT_SIZING_EDGE_ELIGIBLE;
+4. NET_ALL_IN_SIZING_EDGE_ELIGIBLE.
+
+### Cost evidence remains component-wise
+
+Commission, tax and slippage each retain:
+`ACTUAL / PARTIAL_ACTUAL / MODELED / UNKNOWN`.
+
+Rules:
+- UNKNOWN commission is never zero;
+- modeled commission/tax is never labeled ACTUAL;
+- missing commission blocks NET_EXPLICIT and NET_ALL_IN;
+- missing slippage may still allow NET_EXPLICIT when commission/tax are sufficiently specified, but blocks NET_ALL_IN;
+- any modeled component prevents the label `ACTUAL_NET_EXECUTION`.
+
+This deliberately separates:
+`Can the arithmetic be computed?`
+from
+`How strong is the evidence behind the computed net result?`
+
+### Current Production classification
+
+Current Production has one durable positive BUY for 3006, but:
+- its plan date is single-name and therefore non-identifying for allocator comparison;
+- Confirmed Fill Ledger is not implemented;
+- no attributed terminal fill exists.
+
+So the strongest current sizing claim remains:
+`NOT_EXECUTION_ELIGIBLE`.
+
+Artifacts:
+`research/net_execution_sizing_evidence_ladder_v0_1.mjs`;
+`research/net_execution_sizing_evidence_ladder_spec_v0_1.json`.
+
+Status:
+`EVIDENCE_LADDER_FROZEN / CURRENT_PRODUCTION_NOT_EXECUTION_ELIGIBLE`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
