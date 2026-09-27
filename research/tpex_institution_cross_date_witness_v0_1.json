@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "TPEX_INSTITUTION_CROSS_DATE_WITNESS_V0_1",
+  "researchDate": "2026-09-28",
+  "source": "Official TPEx dailyTrade JSON endpoint via live browser fetch",
+  "comparableDates": [
+    "2026-09-24",
+    "2026-08-31",
+    "2026-07-31",
+    "2026-06-30",
+    "2026-05-29",
+    "2026-04-30",
+    "2026-03-31",
+    "2026-02-26",
+    "2025-12-31",
+    "2024-12-31",
+    "2023-12-29",
+    "2022-12-30",
+    "2021-12-30",
+    "2020-12-31",
+    "2019-12-31",
+    "2018-12-28"
+  ],
+  "comparableRows": 12823,
+  "results": {
+    "fieldCount24OnAllComparableDates": true,
+    "foreignDealerNonzeroRows": 0,
+    "foreignAggregateArithmeticMismatchRows": 0,
+    "dealerAggregateArithmeticMismatchRows": 0,
+    "officialTotalArithmeticMismatchRows": 0,
+    "currentParserTotalMismatchRows": 0
+  },
+  "legacyRouteNotes": [
+    "2017-12-29, 2016-12-30 and 2015-12-31 requests did not expose the current comparable 24-field table through this endpoint shape and were excluded from the comparable denominator."
+  ],
+  "interpretation": [
+    "The current fixed-index parser is not shown to be wrong on the 16 sampled comparable dates.",
+    "The foreign-dealer subgroup is observationally degenerate at zero across this sample, so equality between row[10] foreign aggregate and row[4] foreign-main net does not validate their semantic interchangeability.",
+    "Schema hardening should target future drift and semantic ambiguity, not claim current historical corruption."
+  ],
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false
+}

@@ -1,0 +1,31 @@
+name: TPEx Institution Schema Research
+
+on:
+  push:
+    paths:
+      - "research/tpex_institution_semantic_validator_v0_1.mjs"
+      - "research/tpex_institution_semantic_validator_v0_1.test.mjs"
+      - "research/tpex_institution_json_witness_2026_09_24_v0_2.json"
+      - "research/tpex_institution_cross_date_witness_v0_1.json"
+      - "research/institution_source_schema_hardening_falsification_v0_2.json"
+      - "TPEX_INSTITUTION_SOURCE_SCHEMA_RESEARCH.md"
+      - ".github/workflows/tpex-institution-schema-research.yml"
+  pull_request:
+    paths:
+      - "research/tpex_institution_semantic_validator_v0_1.mjs"
+      - "research/tpex_institution_semantic_validator_v0_1.test.mjs"
+      - "research/tpex_institution_json_witness_2026_09_24_v0_2.json"
+      - "research/tpex_institution_cross_date_witness_v0_1.json"
+      - "research/institution_source_schema_hardening_falsification_v0_2.json"
+      - "TPEX_INSTITUTION_SOURCE_SCHEMA_RESEARCH.md"
+      - ".github/workflows/tpex-institution-schema-research.yml"
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node research/tpex_institution_semantic_validator_v0_1.test.mjs
