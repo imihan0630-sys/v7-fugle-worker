@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "selected_plan_construction_persistence_audit_v0.1",
+  "researchDate": "2026-09-27",
+  "status": "PLAN_CONSTRUCTION_OBSERVABLE_RUNTIME_PLAN_IDENTITY_GAP",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "scope": "Formal SELECTED plan construction/persistence before next-session monitoring",
+  "findings": [
+    "allocateAndBuildPlans constructs planDate=nextTradingDate(scanDate) and plan fields including buyLow,buyHigh,breakout,maxChase,stop plus channel-derived mode.",
+    "Successful after-market flow saves operational plans to STOCK_CONFIG_V7; intraday monitor later loads current operational state via loadStockConfig(env).",
+    "v8_trade_journal_plans is a durable plan-time ledger for system-recorded Formal plans and preserves plan_date,strategy,buy_low,buy_high,breakout,max_chase,stop and allocation/risk fields.",
+    "Therefore a system-recorded SELECTED row with a complete journal plan can positively establish PLAN_CONSTRUCTED at scan time.",
+    "However the immutable journal row and mutable operational KV do not currently expose a common immutable plan instance/hash/generation proving that every later monitor run consumed exactly that same plan instance."
+  ],
+  "safeStates": {
+    "PLAN_CONSTRUCTED_COMPLETE": "system-recorded Formal journal row exists and required plan fields are complete/valid for the selected symbol/date",
+    "PLAN_CONSTRUCTION_INCOMPLETE": "system-recorded Formal selected denominator is proven but its journal plan is absent or required fields invalid, subject to complete journal-day evidence",
+    "RUNTIME_PLAN_MATCHED": "requires positive immutable identity/version/hash linking monitor-consumed plan to constructed plan; not generally proven by current sources",
+    "RUNTIME_PLAN_UNKNOWN": "journal plan exists but exact monitor-consumed instance cannot be proven"
+  },
+  "requiredPlanFields": [
+    "scanDate",
+    "planDate",
+    "symbol",
+    "strategy/channel semantic",
+    "buyLow",
+    "buyHigh",
+    "stop",
+    "maxChase"
+  ],
+  "provenanceGap": [
+    "Operational STOCK_CONFIG_V7 is mutable/current-state storage.",
+    "Trade journal is historical plan-time evidence.",
+    "Matching only symbol+scanDate/planDate/values is descriptive corroboration, not an immutable shared identity if either surface can be rewritten/recovered.",
+    "Recovered/manual rows must not be treated as equivalent to exact system-recorded Formal plans."
+  ],
+  "falsification": [
+    "Do not infer monitor failure merely because runtime plan identity is UNKNOWN.",
+    "Do not infer plan construction failure from missing historical convenience readback unless the journal-day denominator is complete.",
+    "Do not use current KV to reconstruct historical plan state.",
+    "Do not use future outcomes in plan-validity classification."
+  ],
+  "engineeringBoundary": {
+    "offlineCompletenessClassifierOverImmutableJournal": "CLASS_A",
+    "additivePlanIdentityHashOrImmutableRuntimeConsumptionReceipt": "CLASS_B_PROPOSAL_FIRST",
+    "planConstructionOrMonitoringBehaviorChange": "CLASS_C"
+  },
+  "optimizationBridge": "This is evidence/provenance repair, not a BUY-rule optimization. It can isolate plan-construction scarcity from monitoring scarcity once denominator completeness is proven."
+}
