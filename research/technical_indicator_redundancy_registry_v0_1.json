@@ -1,0 +1,170 @@
+{
+  "schemaVersion": "technical-indicator-redundancy-v0.1",
+  "updated": "2026-09-27 Asia/Taipei",
+  "researchOnly": true,
+  "decisionImpact": false,
+  "formalCore": "LOCKED",
+  "rules": {
+    "independentVoteDefault": false,
+    "exactDuplicateCannotScoreTwice": true,
+    "nestedTransformRequiresIncrementalEvidence": true,
+    "crossFamilyOwnershipRequired": true
+  },
+  "indicators": [
+    {
+      "id": "KD_STOCHASTIC",
+      "owner": "TECHNICAL_INDICATOR",
+      "family": "RANGE_LOCATION_OSCILLATOR",
+      "status": "PRIMARY_RESEARCH",
+      "notes": "KD/RSV range-location transform; compare residual value vs RSI/direct range location."
+    },
+    {
+      "id": "WILLIAMS_R",
+      "owner": "TECHNICAL_INDICATOR",
+      "family": "RANGE_LOCATION_OSCILLATOR",
+      "status": "REJECTED_OR_REDUNDANT",
+      "aliasOf": "FAST_STOCHASTIC_PERCENT_K",
+      "relation": "LINEAR_RESCALING"
+    },
+    {
+      "id": "RSI",
+      "owner": "TECHNICAL_INDICATOR",
+      "family": "SIGNED_RETURN_BALANCE",
+      "status": "PRIMARY_RESEARCH"
+    },
+    {
+      "id": "STOCH_RSI",
+      "owner": "TECHNICAL_INDICATOR",
+      "family": "SIGNED_RETURN_BALANCE",
+      "status": "LOW_PRIORITY_REDUNDANT",
+      "derivedFrom": [
+        "RSI",
+        "STOCHASTIC_NORMALIZATION"
+      ]
+    },
+    {
+      "id": "MACD",
+      "owner": "TECHNICAL_INDICATOR",
+      "family": "FILTERED_TREND_TRANSITION",
+      "status": "PRIMARY_RESEARCH",
+      "redundancyControls": [
+        "MA_SLOPE",
+        "MA_ALIGNMENT",
+        "RETURNS",
+        "TREND_PERSISTENCE"
+      ]
+    },
+    {
+      "id": "ADX_DMI",
+      "owner": "TECHNICAL_INDICATOR",
+      "family": "DIRECTIONAL_TREND_STRENGTH",
+      "status": "PRIMARY_RESEARCH",
+      "notes": "ADX directionless; test against direct trend-quality."
+    },
+    {
+      "id": "ATR",
+      "owner": "VOLATILITY_RISK",
+      "family": "TRUE_RANGE_VOLATILITY",
+      "status": "RISK_NORMALIZER",
+      "independentDirectionalVote": false
+    },
+    {
+      "id": "BOLLINGER",
+      "owner": "TECHNICAL_INDICATOR",
+      "family": "CLOSE_DISPERSION_ENVELOPE",
+      "status": "PRIMARY_RESEARCH",
+      "redundancyControls": [
+        "ATR",
+        "REALIZED_VOL",
+        "RANGE_COMPRESSION",
+        "VCP"
+      ]
+    },
+    {
+      "id": "ROC",
+      "owner": "TREND_MOMENTUM",
+      "family": "RETURN",
+      "status": "REJECTED_OR_REDUNDANT",
+      "aliasOf": "RET_N",
+      "relation": "ALGEBRAIC_IDENTITY"
+    },
+    {
+      "id": "MOMENTUM_ABSOLUTE",
+      "owner": "TREND_MOMENTUM",
+      "family": "RETURN",
+      "status": "REJECTED_AS_CROSS_SECTIONAL_LEVEL",
+      "notes": "Price-unit dependent; normalized form collapses to ROC/return."
+    },
+    {
+      "id": "ROC_ACCELERATION",
+      "owner": "TREND_MOMENTUM",
+      "family": "RETURN_TRANSITION",
+      "status": "RESEARCH_HYPOTHESIS"
+    },
+    {
+      "id": "OBV",
+      "owner": "PRICE_VOLUME",
+      "family": "SIGNED_VOLUME",
+      "status": "COMPARATOR_ONLY"
+    },
+    {
+      "id": "MFI",
+      "owner": "PRICE_VOLUME",
+      "family": "SIGNED_VOLUME_VALUE",
+      "status": "COMPARATOR_ONLY"
+    },
+    {
+      "id": "CCI",
+      "owner": "TECHNICAL_INDICATOR",
+      "family": "STANDARDIZED_PRICE_DEVIATION",
+      "status": "LOW_PRIORITY_REDUNDANCY_HIGH"
+    },
+    {
+      "id": "KELTNER_CHANNEL",
+      "owner": "TECHNICAL_STRUCTURE",
+      "family": "TREND_VOLATILITY_ENVELOPE",
+      "status": "REJECTED_OR_REDUNDANT"
+    },
+    {
+      "id": "DONCHIAN_CHANNEL",
+      "owner": "TECHNICAL_STRUCTURE",
+      "family": "ROLLING_HIGH_LOW_BREAKOUT",
+      "status": "REJECTED_OR_REDUNDANT"
+    },
+    {
+      "id": "PARABOLIC_SAR",
+      "owner": "POSITION_MANAGEMENT",
+      "family": "TRAILING_STOP",
+      "status": "ROLE_MISMATCH_FOR_SELECTION"
+    },
+    {
+      "id": "ICHIMOKU",
+      "owner": "TECHNICAL_STRUCTURE",
+      "family": "MULTI_HORIZON_RANGE_MIDPOINT",
+      "status": "EXPLANATION_ONLY_BY_DEFAULT",
+      "hazards": [
+        "PLOT_COORDINATE_VS_ASOF_TIME"
+      ]
+    },
+    {
+      "id": "HEIKIN_ASHI",
+      "owner": "VISUALIZATION",
+      "family": "SYNTHETIC_CANDLE_SMOOTHING",
+      "status": "VISUALIZATION_ONLY",
+      "hazards": [
+        "SYNTHETIC_PRICE_NOT_EXECUTABLE",
+        "GAP_OBSCURATION"
+      ]
+    }
+  ],
+  "outcomeInferenceQueue": [
+    "KD_VS_RSI",
+    "MACD_VS_DIRECT_TREND",
+    "ADX_VS_DIRECT_TREND_QUALITY",
+    "BOLLINGER_WIDTH_VS_ATR_REALIZED_VOL_VCP"
+  ],
+  "deferredResidualQuestions": [
+    "ROC_ACCELERATION",
+    "OBV_OR_MFI_INCREMENTAL_VALUE_AFTER_PRICE_VOLUME"
+  ]
+}
