@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "0.1",
+  "createdAt": "2026-09-27T11:55:00+08:00",
+  "status": "GENERATION_ALIGNMENT_NOT_PROVEN",
+  "sourceAudit": {
+    "collection": "collectResearchExternalEvidence(scan.shadowArchive) uses the same in-memory archive generation",
+    "shadowPersistence": "persistShadowCandidateArchive is a separate write path and legacy persistence can delete scan_date then insert rows non-atomically",
+    "externalPersistence": "persistResearchExternalEvidence separately deletes scan_date then inserts/upserts rows",
+    "join": "counterfactual reader attaches by scanDate|symbol only",
+    "generationIdPresent": false,
+    "sharedFingerprintPresent": false,
+    "atomicCrossTableCommit": false
+  },
+  "counterexamples": [
+    "Shadow persistence fails or becomes partial after delete, while external evidence still persists from full in-memory archive.",
+    "Same-date rerun replaces one or both tables without a shared generation identifier; scanDate|symbol equality does not prove same decision-state generation.",
+    "Reader LIMIT 5000/truncation and legacy mutable archive can yield asymmetric keysets without an explicit alignment diagnostic."
+  ],
+  "allowedUse": "context / descriptive coverage only when matched key exists",
+  "prohibitedUse": "promotion-grade incremental evidence unless generation/keyset alignment is certified",
+  "repairContract": [
+    "shared immutable generation_id or decision_state_fingerprint on Shadow and external evidence",
+    "expected row/keyset counts per generation",
+    "persisted keyset checksum/fingerprint",
+    "explicit missing/extra key counts",
+    "reader reports aligned/missing/external-only/shadow-only counts and truncation",
+    "legacy rows without generation proof remain LEGACY_MUTABLE_ARCHIVE / descriptive only"
+  ],
+  "implementationClass": "Class B if shared persistence/schema/runtime is changed; pure offline audit is Class A",
+  "formalCoreImpact": false,
+  "decisionImpact": false
+}
