@@ -1,0 +1,65 @@
+{
+  "schemaVersion": "PRIORITY_SCORE_SIZING_BREAKEVEN_PROTOCOL_V0_1",
+  "preregisteredAt": "2026-09-27T21:18:00+08:00",
+  "purpose": "Test whether post-selection PriorityScore sizing creates enough realized edge to justify its allocation tilt, without changing selected names.",
+  "primaryComparator": "SAME_SELECTED_NAMES / SAME_PLANNED_DEPLOYMENT / EQUAL_CAPITAL",
+  "secondaryComparator": "SAME_SELECTED_NAMES / SAME_PLANNED_DEPLOYMENT / 35%-CAP-CONSTRAINED_EQUAL_PLANNED_STOP_RISK",
+  "primaryEstimand": {
+    "name": "GROSS_SIZING_ALPHA",
+    "formula": "sum_i((currentAllocation_i - comparatorAllocation_i) * horizonReturn_i)",
+    "equivalentIdentity": "transferredCapital * (positiveTiltWeightedReturn - negativeTiltWeightedReturn)",
+    "grossBreakEven": "positiveTiltWeightedReturn == negativeTiltWeightedReturn"
+  },
+  "costPolicy": {
+    "rule": "Cost-adjusted dominance remains UNKNOWN unless the incremental cost difference between sizing rules is explicitly measured or conservatively bounded.",
+    "reason": "Same total deployment makes linear entry notional cost similar, but exit notional, minimum commissions, odd-lot effects and slippage can differ. Do not silently set incremental cost to zero."
+  },
+  "riskPolicy": {
+    "metric": "grossIncrementalPnlNTD / incrementalProjectedPlanRiskNTD when current projected risk exceeds comparator",
+    "interpretation": "descriptive only; no arbitrary minimum ratio is predeclared",
+    "dominanceCases": [
+      "If gross sizing alpha > 0 and incremental projected risk <= 0, current sizing is weakly dominant on this horizon before unmeasured costs, but still not promotion-grade by itself.",
+      "If gross sizing alpha <= 0 and incremental projected risk > 0, current sizing is dominated on this horizon before unmeasured costs.",
+      "If both alpha and risk rise, tradeoff remains unresolved and requires cross-date risk-adjusted evidence.",
+      "If both alpha and risk fall, tradeoff remains favorable structurally but still requires robustness/cost evidence."
+    ]
+  },
+  "outcomeClock": {
+    "primary": "formal selection close -> D1/D3/D5 fixed-horizon returns on the same selected cohort",
+    "secondary": "BUY-triggered execution P&L only as an execution estimand",
+    "warning": "Do not replace selected-cohort sizing analysis with BUY-only outcomes; BUY triggering can induce post-selection sample bias."
+  },
+  "requiredEvidence": [
+    "generation-certified FULL_FORMAL_SCAN selected rows",
+    "same selected names across current and comparator",
+    "same planned deployment",
+    "all eligible scan dates retained including zero/one-name dates as non-identifying cases",
+    "multiple independent multi-selected dates",
+    "date-clustered inference and leave-one-date-out",
+    "A/B channel and market-regime strata",
+    "D1/D3/D5 direction consistency",
+    "MFE/MAE and stop-first/downside clustering",
+    "cost/slippage sensitivity"
+  ],
+  "forbidden": [
+    "infer sizing alpha from one 2026-09-18 witness",
+    "change comparator after seeing outcomes",
+    "use only winners or BUY-triggered rows",
+    "treat projected stop-risk as realized loss",
+    "set incremental transaction cost to zero without evidence",
+    "pick a subjective required PnL-per-risk threshold after seeing data"
+  ],
+  "witnessIdentity": {
+    "date": "2026-09-18",
+    "comparator": "equal capital NT$56,000 per name",
+    "currentTiltNTD": {
+      "2006": -6000,
+      "3105": 8000,
+      "6133": -2000
+    },
+    "grossBreakEvenEquation": "R_3105 = 0.75*R_2006 + 0.25*R_6133",
+    "use": "algebra witness only; no outcome was read"
+  },
+  "status": "BREAKEVEN_PROTOCOL_PREREGISTERED / OUTCOMES_PENDING / NOT_OPTIMIZATION_READY",
+  "formalCoreImpact": false
+}

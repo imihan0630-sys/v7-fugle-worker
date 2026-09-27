@@ -1669,3 +1669,76 @@ Status:
 `INTERACTION_PROTOCOL_PREREGISTERED / INDEPENDENT_DATES_PENDING`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-043 — post-selection sizing break-even / opportunity-cost framework pre-registered (2026-09-27)
+
+PR-041 established that PriorityScore creates a second exposure channel through post-selection capital sizing. PR-043 freezes the economic break-even algebra **before** prospective outcomes mature.
+
+### Primary comparator
+
+Use the same selected names and the same total planned deployment, but replace current PriorityScore-proportional sizing with equal capital.
+
+This isolates sizing from selection.
+
+For any horizon:
+
+`gross sizing alpha = Σ[(current allocation - comparator allocation) × realized return]`.
+
+Because the allocation tilts sum to approximately zero under same deployment, this is exactly:
+
+`transferred capital × (return of capital tilted up - return of capital tilted down)`.
+
+Therefore the gross break-even condition needs no subjective threshold:
+
+`positive-tilt weighted return = negative-tilt weighted return`.
+
+### 2026-09-18 algebra witness
+
+Equal capital is NT$56,000/name.
+
+Current minus equal-capital tilt:
+- 2006 = -NT$6,000;
+- 3105 = +NT$8,000;
+- 6133 = -NT$2,000.
+
+Hence current sizing has positive gross incremental P&L only if:
+
+`R_3105 > 0.75 × R_2006 + 0.25 × R_6133`.
+
+No 2026-09-18 outcome is read or inferred. This is algebra only.
+
+### Projected-risk link
+
+If conservative planned stop-risk inputs are complete, also report:
+- current projected plan-risk;
+- comparator projected plan-risk;
+- incremental projected plan-risk;
+- gross incremental P&L / extra projected plan-risk when the risk delta is positive.
+
+No arbitrary “required P&L per risk” cutoff is introduced. The ratio is descriptive until independent dates establish a stable distribution.
+
+### Cost firewall
+
+Cost-adjusted dominance remains UNKNOWN unless the **incremental cost difference** between the sizing rules is explicitly measured or conservatively bounded.
+
+Same total deployment may make linear entry notional costs similar, but minimum commissions, odd-lot effects, exit notional and slippage can still differ. Incremental cost must not silently be set to zero.
+
+### Outcome-clock firewall
+
+The primary sizing estimand is fixed-cohort:
+`formal selection close -> D1/D3/D5`
+on the same selected names.
+
+BUY-triggered trade P&L is secondary execution evidence only. Restricting the primary comparison to BUY-triggered rows can create post-selection trigger bias and is forbidden.
+
+Executable algebra:
+`research/priority_score_sizing_breakeven_v0_1.mjs`.
+
+Protocol:
+`research/priority_score_sizing_breakeven_protocol_v0_1.json`.
+
+Status:
+`BREAKEVEN_PROTOCOL_PREREGISTERED / OUTCOMES_PENDING / NOT_OPTIMIZATION_READY`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
