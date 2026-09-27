@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { toShadowDecisionRow, toShadowRunRow, toCapacityRunRow, toStrategyOrderingRow, toRankingExperimentRow } from "../runtime/storage_rows.mjs";
+import { toShadowDecisionRow, toShadowRunRow, toCapacityRunRow, toStrategyOrderingRow, toRankingExperimentRow, toRank05DisplacementRow } from "../runtime/storage_rows.mjs";
 
 const decisionRow = toShadowDecisionRow(
   {
@@ -155,5 +155,34 @@ const rankingExperimentRow = toRankingExperimentRow({
 assert.equal(rankingExperimentRow.same_candidate_set, 1);
 assert.equal(rankingExperimentRow.outcome_attached, 0);
 assert.equal(JSON.parse(rankingExperimentRow.common_support_symbols_json).length, 2);
+
+const rank05Row = toRank05DisplacementRow({
+  receiptId: "R05-1",
+  experimentId: "RANK-05",
+  experimentVersion: "0.1",
+  marketDate: "2026-09-27",
+  decisionTimestamp: "2026-09-27T07:30:00Z",
+  incumbent: {
+    symbol: "2330",
+    candidateEpisodeId: "E1",
+    candidatePoolSessions: 4,
+    memberships: [],
+  },
+  challenger: {
+    symbol: "3008",
+    memberships: [],
+  },
+  classification: "CHALLENGER_STRICTLY_BETTER_TIER",
+  shadowDisplacementEligible: true,
+  action: "SHADOW_COMPARE_ONLY",
+  outcomeAttached: false,
+  receiptHash: "rank05-hash",
+  capturedAt: "2026-09-27T07:31:00Z",
+  schemaVersion: "S2_RANK05_DISPLACEMENT_V0_1",
+});
+
+assert.equal(rank05Row.incumbent_pool_sessions, 4);
+assert.equal(rank05Row.shadow_displacement_eligible, 1);
+assert.equal(rank05Row.outcome_attached, 0);
 
 console.log("System2 storage row serializer tests passed");
