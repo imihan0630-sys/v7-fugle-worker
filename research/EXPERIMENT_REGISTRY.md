@@ -54,6 +54,13 @@
 - 反證：HIGH/LOW 在 OOS、不同 Regime、不同年份無方向一致性，或與既有趨勢/突破品質高度冗餘。
 - 禁止：Residual RS 與既有 RS 因子重複加權計票。
 
+### R04 v1.1 — Equal-date Residual RS contrast
+- PREREGISTERED before mature outcome interpretation; R04 v1.0 remains historical/descriptive.
+- Keep the same within-date Residual RS median split.
+- Primary effect: for each clean scanDate with both HIGH and LOW, compute `mean(HIGH D5)-mean(LOW D5)`; then aggregate date deltas with equal scanDate weight.
+- Raw stock-row HIGH/LOW means may be shown only as descriptive path summaries.
+- No new threshold or factor definition.
+
 ## R05 盤中動能 vs 隔夜動能
 - 固定分解：下一交易日 Overnight = next open / scan close - 1；Intraday = next close / next open - 1。
 - 假說：台股個股動能的有效成分可能主要出現在盤中而非隔夜，兩者不可混成單一日報酬。
@@ -73,6 +80,13 @@
 - 反證：Quiet Strength 未優於 Attention Strength，或結果只存在極少數日期。
 - 禁止：事後改成 1.5x、1.8x、2.0x 等固定倍量門檻追求漂亮結果；新門檻必須另立 experiment ID。
 
+### R07 v1.1 — Equal-date Quiet vs Attention contrast
+- PREREGISTERED before mature outcome interpretation; R07 v1.0 raw-row group means remain descriptive.
+- Keep the same within-date Residual RS and volumeTodayVsPrev5 median split.
+- Primary effect: for each clean scanDate with both QUIET_STRENGTH and ATTENTION_STRENGTH, compute same-date mean difference and aggregate dates equally.
+- Four-quadrant summaries must report equal-date means/coverage; no missing-group zero fill or cross-date substitution.
+- Machine guard: `research/r04_r07_date_weighting_falsification_v0_1.json`.
+
 ## R08 Two-Engine Momentum
 - 目的：檢驗同樣是強勢股，Quiet Underreaction 與 Attention Continuation 是否具有不同的後續路徑與 Regime 敏感度。
 - 固定分類：沿用 R07，同一選股日以 residualSectorRs20 與 volumeTodayVsPrev5 的橫截面中位數切分；強勢且低相對量＝QUIET_UNDERREACTION_PROXY，強勢且高相對量＝ATTENTION_CONTINUATION_PROXY。
@@ -80,6 +94,8 @@
 - 外部證據：月營收、融資融券、官方注意/處置只作 context / falsification metadata，不參與 R08 分類，不加分。
 - 反證：兩引擎沒有穩定路徑差異、差異只由少數選股日或單一 Regime 驅動，或被 Residual RS / Breakout Quality 等既有因子完全解釋。
 - 禁止：事後尋找 1.5x / 1.8x / 2.0x 量能、任意 RS 門檻或不同持有窗口來挑最好看的版本；任何新切法另立 experiment/version。
+
+- **R08 date-weighting clarification**：現行 `researchTwoEngineStudy().paired` 已先做同日 Quiet−Attention 差再跨日統計，保留為 primary paired estimand；`byEngine` 的 raw-row 平均僅作描述，不作主要 effect estimate。其他 cohort/outcome provenance guards 照常適用。
 
 ## Evidence Readiness Matrix
 - V8.7.10 對 R01–R08 使用既有治理門檻顯示研究成熟度，不新增選股條件。
