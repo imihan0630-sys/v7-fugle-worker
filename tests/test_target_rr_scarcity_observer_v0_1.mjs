@@ -90,3 +90,63 @@ const history=(points)=>{
 }
 
 console.log(JSON.stringify({ok:true,targetNullSeparated:true,lowRrSeparated:true,gradeSeparated:true,sourceTiesPreserved:true,formalCoreImpact:false},null,2));
+
+
+// Exact Formal nearestRealResistance mirror for equivalence falsification.
+function formalNearestMirror(f,entry){
+  const levels=[];
+  const add=value=>{const n=Number(value);if(Number.isFinite(n)&&n>entry*1.01) levels.push(n);};
+  add(f.targetPrice);add(f.priorHigh20);add(f.priorHigh60);
+  const hs=Array.isArray(f.history)?f.history.slice(0,-1):[];
+  for(let i=2;i<hs.length-2;i+=1){
+    const h=Number(hs[i]?.high);
+    if(!Number.isFinite(h)||h<=entry*1.01) continue;
+    const p1=Number(hs[i-1]?.high),p2=Number(hs[i-2]?.high),n1=Number(hs[i+1]?.high),n2=Number(hs[i+2]?.high);
+    if([p1,p2,n1,n2].some(x=>!Number.isFinite(x))) continue;
+    if(h>=p1&&h>=p2&&h>=n1&&h>=n2) levels.push(h);
+  }
+  return levels.length?Math.min(...levels):null;
+}
+
+{
+  const fixtures=[
+    {entry:100,f:{targetPrice:null,priorHigh20:100,priorHigh60:101,history:history([98,99,100,99,98])}},
+    {entry:100,f:{targetPrice:115,priorHigh20:100,priorHigh60:101,history:history([98,99,100,99,98])}},
+    {entry:100,f:{targetPrice:105,priorHigh20:100,priorHigh60:120,history:history([99,100,102,100,99])}},
+    {entry:100,f:{targetPrice:null,priorHigh20:100,priorHigh60:120,history:history([99,100,100.8,100,99])}},
+    {entry:100.3,f:{targetPrice:null,priorHigh20:100,priorHigh60:100.2,history:history([98,99,100.2,99,98])}}
+  ];
+  for(const x of fixtures){
+    const observed=auditTargetResistanceGeometry({feature:x.f,entry:x.entry}).selectedTarget;
+    assert.equal(observed,formalNearestMirror(x.f,x.entry),"research geometry must exactly match current Formal target selection");
+  }
+}
+
+// Strict 1% boundary: equality is excluded because Formal uses >, not >=.
+{
+  const g=auditTargetResistanceGeometry({feature:{priorHigh60:101,history:history([98,99,100,99,98])},entry:100});
+  assert.equal(g.selectedTarget,null);
+  assert.ok(g.excludedByOnePercentBand.some(x=>x.source==="PRIOR_HIGH_60"&&x.price===101));
+}
+
+// Non-positive risk is separate invalid geometry, never LOW_RR.
+{
+  const g=auditTargetResistanceGeometry({feature:{priorHigh60:120,history:history([98,99,100,99,98])},entry:100});
+  const s=classifyTargetRrGradeScarcity({geometry:g,stop:100,setupQuality:75,upstreamFormalGatesObservedPass:true});
+  assert.equal(s.state,"RISK_NONPOSITIVE_OR_INVALID");
+}
+
+// RR pass with missing setup-quality remains unknown.
+{
+  const g=auditTargetResistanceGeometry({feature:{priorHigh60:120,history:history([98,99,100,99,98])},entry:100});
+  const s=classifyTargetRrGradeScarcity({geometry:g,stop:95,setupQuality:null,upstreamFormalGatesObservedPass:true});
+  assert.equal(s.state,"RR_PASSED_GRADE_UNKNOWN");
+}
+
+// Missing entry cannot be coerced into target-null.
+{
+  const g=auditTargetResistanceGeometry({feature:{priorHigh60:120,history:history([98,99,100,99,98])},entry:null});
+  assert.equal(g.status,"ENTRY_UNKNOWN");
+  const s=classifyTargetRrGradeScarcity({geometry:g,stop:95,setupQuality:75,upstreamFormalGatesObservedPass:true});
+  assert.equal(s.state,"GEOMETRY_UNKNOWN");
+}
