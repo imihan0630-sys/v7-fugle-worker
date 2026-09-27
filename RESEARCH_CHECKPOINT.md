@@ -1,7 +1,7 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-229.
-Updated: 2026-09-27 22:45 Asia/Taipei.
+Checkpoint sequence: B-230.
+Updated: 2026-09-27 22:54 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Detailed B-01..B-123 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
@@ -1785,3 +1785,15 @@ Updated: 2026-09-27 22:45 Asia/Taipei.
 - Durable artifact: `research/liquidity_admission_field_readiness_v0_1.json`, commit `7b6f9e62a940a54f9ddf603d38245696a93342f7`.
 - Status: `GATE_OVERLAP_FULL_HISTORY_NOT_RECONSTRUCTABLE / LIQ_HISTORY_DERIVED_FIELDS_SOURCE_READY / SPREAD_DEPTH_PRODUCTION_COVERAGE_UNKNOWN / PR121_DESIGN_ONLY / FORMAL_UNCHANGED`. No FORMAL_OPTIMIZATION_CANDIDATE.
 - Exact next: use PR #121's frozen denominator/missingness semantics to define the first prospective liquidity coverage acceptance gate before any return outcome joins. Specify which scan dates are CLEAN versus UNKNOWN based on parent feature-universe completeness, history freshness, exact reason counts, spread/depth presence accounting and sample fractions. Then audit whether `LIQ_LOW_VOLUME_EXCEPTION_PASS` is actually represented by the prototype denominator even though it is not a dedicated sampled cohort. Do not inspect D1+ outcomes yet.
+
+## B-230 — prospective Liquidity parent-coverage gate frozen; exception-pass positive-control sample gap confirmed (2026-09-27 Asia/Taipei)
+- Continued B-229 exact-next without outcome inspection. A CLEAN/UNKNOWN acceptance contract is now frozen before any future D1/D3/D5/D10/D20/MFE/MAE join.
+- CLEAN requires a positively completed same-generation parent scan, reconciled CURRENT_FEATURE_ROWS denominator, active history/source-admission completeness, explicit exact-reason x pool population cells, exception-pass counts, below-min coverage reconciliation, deterministic sample fractions and spread/depth presence accounting. Infrastructure/recovery/generation ambiguity blocks the date as UNKNOWN.
+- Important schema gap in PR #121: `populationCounts` is lazily created only when a reject reason occurs. A missing preregistered reason key is therefore not yet a promotion-grade explicit zero. Future receipt must either emit all reason x pool zero cells or version an unambiguous omission-as-zero rule.
+- Frozen spec mismatch confirmed: `research/liquidity_gate_rejected_control_spec_v0_1.json` defines `LIQ_LOW_VOLUME_EXCEPTION_PASS` as a descriptive positive control, but PR #121 only records aggregate `exceptionPassCounts`. Its sampled `exactReasons` array contains only the three rejected cohorts; no dedicated per-symbol exception-pass sample exists.
+- Do not repair this by blindly adding exception-pass rows to legacy Shadow. Legacy rows are mutually exclusive through `used`; such a patch could steal Formal/QNS membership or condition the positive control on whether another bounded sample already used the symbol, recreating the quota-conditioned control bias.
+- Safe design if a positive control is needed: independently sample the frozen below-min + exception-pass frame with overlapping membership/sidecar semantics. Pure computation is Class A; durable shared overlapping persistence remains Class B proposal-first.
+- `exceptionInputCoverage=COMPLETE` only means the fields were present; it does not prove the spread/depth source is PIT-valid, source-authentic or economically executable. Coverage quality and execution value remain separate.
+- Durable artifact: `research/liquidity_prospective_coverage_acceptance_v0_1.json`, commit `83bb54720407f37832900ab095d34d88f31b8146`.
+- Status: `LIQUIDITY_PARENT_ACCEPTANCE_FROZEN / EXCEPTION_PASS_CONTROL_SAMPLE_GAP_CONFIRMED / ZERO_CELL_SCHEMA_GAP_CONFIRMED / OUTCOMES_CLOSED / FORMAL_UNCHANGED`. No FORMAL_OPTIMIZATION_CANDIDATE.
+- Exact next: determine whether PR #121 can be strengthened in isolated Class-A research space without touching legacy mutually-exclusive Shadow membership: build a pure independent `LIQ_LOW_VOLUME_EXCEPTION_PASS` sampler and explicit zero-filled reason matrix as a standalone helper/test fixture. If validated, keep it research-only and do not wire/deploy. Then continue to the next admission-scarcity evidence hole, `EXTREME_MOVE_PROXY_REJECTED`, using the same denominator/coverage discipline.
