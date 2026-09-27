@@ -13,7 +13,9 @@
     "historyRevalidation": "V8.12 validates symbol-session date presence/freshness and verified no-trade gaps, not numeric high/low completeness.",
     "providerRequest": "Patch-chain runtime explicitly requests adjusted=false open/high/low/close/volume/turnover/change.",
     "normalization": "fetchHistoricalDaily maps high and low with marketNumber; missing/-- becomes null.",
-    "provenanceGap": "No per-bar persisted origin flag distinguishes observed numeric high/low from null/missing/fallback semantics at feature time."
+    "provenanceGap": "No per-bar persisted origin flag distinguishes observed numeric high/low from null/missing/fallback semantics at feature time.",
+    "officialDocumentation": "Fugle Historical Candles documents data.high/data.low as number when those fields are requested; examples are numeric. Documentation does not explicitly guarantee null/error impossibility for every returned bar.",
+    "nullStateClassification": "DEFENSIVE_SOURCE_CONTRACT_VIOLATION_OR_PROVIDER_PARSE_ERROR / NOT_CLAIMED_NORMAL_STATE"
   },
   "structuralFindings": [
     "ATR true range uses raw item.high/item.low, not the highs/lows arrays that elsewhere fall back to close.",
@@ -24,6 +26,7 @@
     "formal_gate_overlap_observer_v0_3 is therefore not exact for ATR missingness: it labels missing atrPercent UNKNOWN although deployed Formal rejects it."
   ],
   "counterevidenceAndLimits": [
+    "Official Fugle docs type high/low as number, so null-H/L should not be presented as a documented normal source state; the guard is defensive unless prospective receipts observe the condition.",
     "The official historical request asks for high/low and normal market sessions are expected to supply them; no live-production frequency of missing H/L has yet been established.",
     "A structural counterexample proves a correctness vulnerability, not that current candidate results have been affected.",
     "ATR itself already has dedicated volatility/risk research; this artifact does not claim the 1%/10% thresholds are economically wrong.",
