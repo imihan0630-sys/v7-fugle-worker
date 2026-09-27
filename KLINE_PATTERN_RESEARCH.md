@@ -17504,3 +17504,148 @@ Every Pattern research table should eventually show:
 - PROSPECTIVE_2026_PLUS
 
 A feature that works only in old regimes should not be promoted for current Formal review.
+
+
+## DL-003BV — Taiwan Futures Pattern Evidence Provides a Direct Counterweight to the 2026 HS Study
+
+### Taiwan futures evidence
+A 2009 NCCU study builds an automated kernel-regression pattern-recognition system for Taiwan futures settlement prices and tests ten chart-pattern families.
+
+Reported results:
+- the most frequently occurring patterns are not necessarily informative;
+- head-and-shoulders top/bottom occur often but are not the most robust informative families in that sample;
+- rectangle/inverse-rectangle and double-top/double-bottom patterns show persistent information over roughly two weeks after recognition;
+- kernel-regression smoothing materially changes the frequency of detected patterns;
+- HS significance is more sensitive to smoothing, while rectangle and double-top/bottom information is more stable.
+
+### Why this matters
+This directly cautions against interpreting the fresh 2026 Taiwan-stock HS result as universal.
+
+Differences include:
+- stock vs futures market;
+- daily stock closing prices vs futures settlement series;
+- sample era;
+- detector definition;
+- smoothing/turning-point procedure;
+- outcome/decision rules.
+
+### Research conclusion
+Pattern efficacy is detector- and market-dependent.
+
+The correct question is not:
+“Does head-and-shoulders work?”
+
+It is:
+“Does a frozen, point-in-time HS-bottom topology add robust information in the current Taiwan stock universe after controlling detector choice and baseline features?”
+
+## DL-003BW — Pattern Frequency Is Not Pattern Information
+
+### Evidence
+The Taiwan futures study explicitly finds frequently occurring patterns need not be informative.
+
+### Research metric separation
+For each detector report:
+- detectionFrequency
+- validDataCoverage
+- outcomeInformation
+- economicEffect
+- incrementalEffect.
+
+### Warning
+A pattern that appears often can look practically attractive but have zero predictive value.
+A rare pattern can have large conditional effects but be operationally irrelevant.
+
+### Pattern utility requires both
+- enough prospective coverage,
+- stable incremental effect.
+
+This also matters for current zero-selection / capital-utilization concerns:
+a very rare high-quality pattern cannot solve idle capital by itself.
+
+## DL-003BX — Detector Smoothing Sensitivity Is a Core Robustness Test
+
+### Evidence
+Taiwan futures results show changing kernel-regression smoothing changes pattern occurrence and can affect HS informativeness.
+
+### Generalization
+Any pattern detector has an implicit smoothness parameter:
+- directional-change threshold,
+- local-extrema window,
+- kernel bandwidth,
+- DTW warping,
+- zone width,
+- minimum swing amplitude.
+
+### Required stability report
+For every Pattern family:
+- detection count across neighboring pre-registered scales;
+- Jaccard overlap of detected stock-dates;
+- pivot-date dispersion;
+- state agreement;
+- outcome direction across scales.
+
+### Stability interpretation
+ROBUST:
+- similar topology detected across adjacent sensible scales.
+
+FRAGILE:
+- pattern appears/disappears from a tiny threshold change.
+
+### Rule
+Do not pick the scale with the best future return.
+Scale sensitivity itself is evidence.
+
+## DL-003BY — W/Double-Bottom Receives Independent Taiwan-Specific Support, with Portability Limits
+
+### Evidence
+- 2009 Taiwan futures pattern-recognition evidence reports double-bottom/top among the more persistently informative pattern families.
+- An older Taiwan futures thesis using a defined W-bottom strategy over 2007-2010 reports positive returns relative to buy-and-hold in its tested design.
+
+### Cautions
+- these are futures, not individual stocks;
+- samples are old;
+- execution/friction differs;
+- strategy definitions can differ from our true-W topology;
+- one thesis is not high-grade production evidence.
+
+### Research implication
+W/double-bottom remains a high-priority morphology family, but its value must be tested in modern Taiwan stocks.
+
+### Best falsification
+Current proxy rightFootHigher
+vs
+true two-trough W
+vs
+inverse HS
+vs
+undercut-reclaim motif
+under the same modern prospective sample.
+
+## DL-003BZ — Cross-Study Disagreement Is a Feature, Not a Problem to Hide
+
+### Evidence map
+Fresh 2026 Taiwan stocks:
+- HS bottom strong/robust conditionally.
+
+Older Taiwan futures:
+- HS less stable/informative under some detector settings;
+- double-bottom/rectangle more robust.
+
+Older Taiwan candlestick studies:
+- some patterns survive costs/OOS;
+- other specifications find traditional labels less robust.
+
+### Research principle
+When studies disagree:
+1. identify market/instrument;
+2. identify period/regime;
+3. identify detector;
+4. identify trend/context definition;
+5. identify outcome/holding rule;
+6. identify transaction-cost treatment;
+7. identify multiple-testing control.
+
+Do not average conflicting conclusions into a vague “technical analysis works.”
+
+### Goal
+Our Pattern Shadow should be designed specifically to discover WHICH definition is stable in the current system, not to confirm a preselected textbook belief.
