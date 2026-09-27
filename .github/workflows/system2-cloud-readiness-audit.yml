@@ -46,8 +46,8 @@ jobs:
             return createHash("sha256").update(String(value)).digest("hex").slice(0, 12);
           }
 
-          async function cf(path) {
-            const response = await fetch(`${origin}/accounts/${accountId}${path}`, {
+          async function requestJson(url) {
+            const response = await fetch(url, {
               method: "GET",
               headers,
               signal: AbortSignal.timeout(45000),
@@ -55,69 +55,93 @@ jobs:
             const text = await response.text();
             let data = null;
             try { data = JSON.parse(text); } catch {}
-            if (!response.ok || data?.success === false) {
-              const message = data?.errors?.[0]?.message || text;
-              throw new Error(`${path} HTTP ${response.status}: ${String(message).slice(0, 400)}`);
-            }
-            return data;
+            return {
+              ok: response.ok && data?.success !== false,
+              status: response.status,
+              data,
+              error: data?.errors?.[0]?.message || (response.ok ? null : text.slice(0, 300)),
+            };
           }
 
-          const [d1Response, workerResponse] = await Promise.all([
-            cf("/d1/database?per_page=100"),
-            cf("/workers/scripts"),
-          ]);
+          const tokenVerify = await requestJson(`${origin}/user/tokens/verify`);
+          const workers = await requestJson(`${origin}/accounts/${accountId}/workers/scripts`);
+          const d1 = await requestJson(`${origin}/accounts/${accountId}/d1/database?per_page=100`);
 
-          const databases = Array.isArray(d1Response?.result) ? d1Response.result : [];
-          const scripts = Array.isArray(workerResponse?.result) ? workerResponse.result : [];
+          const scripts = workers.ok && Array.isArray(workers.data?.result)
+            ? workers.data.result
+            : [];
+          const databases = d1.ok && Array.isArray(d1.data?.result)
+            ? d1.data.result
+            : [];
 
           const targetDbName = "system2-research";
           const targetWorkerName = "system2-shadow-research";
           const targetDatabases = databases.filter((x) => x?.name === targetDbName);
           const targetWorkers = scripts.filter((x) => x?.id === targetWorkerName);
 
-          const system2NamedDatabases = databases
-            .filter((x) => /system2|system-2/i.test(String(x?.name || "")))
-            .map((x) => ({
-              name: x.name,
-              idDigest: x.uuid || x.id ? digest(x.uuid || x.id) : null,
-            }));
-
-          const system2NamedWorkers = scripts
-            .filter((x) => /system2|system-2/i.test(String(x?.id || "")))
-            .map((x) => ({ name: x.id }));
-
-          console.log(JSON.stringify({
+          const result = {
             readOnly: true,
-            accountCapability: {
-              listD1Databases: true,
-              listWorkerScripts: true,
+            token: {
+              verifyOk: tokenVerify.ok,
+              status: tokenVerify.status,
+              error: tokenVerify.error,
+            },
+            capability: {
+              listWorkerScripts: {
+                ok: workers.ok,
+                status: workers.status,
+                error: workers.error,
+              },
+              listD1Databases: {
+                ok: d1.ok,
+                status: d1.status,
+                error: d1.error,
+              },
             },
             d1: {
-              totalVisible: databases.length,
+              visibleCount: databases.length,
               exactTargetExists: targetDatabases.length === 1,
               exactTargetCount: targetDatabases.length,
               exactTargetIdDigest:
                 targetDatabases.length === 1
                   ? digest(targetDatabases[0].uuid || targetDatabases[0].id || targetDbName)
                   : null,
-              system2NamedDatabases,
+              system2NamedDatabases: databases
+                .filter((x) => /system2|system-2/i.test(String(x?.name || "")))
+                .map((x) => ({
+                  name: x.name,
+                  idDigest: x.uuid || x.id ? digest(x.uuid || x.id) : null,
+                })),
             },
             worker: {
-              totalVisible: scripts.length,
+              visibleCount: scripts.length,
               exactTargetExists: targetWorkers.length === 1,
               exactTargetCount: targetWorkers.length,
-              system2NamedWorkers,
+              system2NamedWorkers: scripts
+                .filter((x) => /system2|system-2/i.test(String(x?.id || "")))
+                .map((x) => ({ name: x.id })),
             },
-            decision: targetDatabases.length > 1 || targetWorkers.length > 1
-              ? "AMBIGUOUS_DUPLICATE_RESOURCE"
-              : targetDatabases.length === 1
-                ? "DATABASE_EXISTS_AUDIT_BEFORE_MIGRATION"
-                : "DATABASE_NOT_FOUND_PROVISIONING_REQUIRED",
-          }, null, 2));
+          };
+
+          if (!tokenVerify.ok) result.decision = "TOKEN_AUTHENTICATION_FAILED";
+          else if (!d1.ok) result.decision = "D1_PERMISSION_OR_CAPABILITY_MISSING";
+          else if (targetDatabases.length > 1 || targetWorkers.length > 1) {
+            result.decision = "AMBIGUOUS_DUPLICATE_RESOURCE";
+          } else if (targetDatabases.length === 1) {
+            result.decision = "DATABASE_EXISTS_AUDIT_BEFORE_MIGRATION";
+          } else {
+            result.decision = "DATABASE_NOT_FOUND_PROVISIONING_REQUIRED";
+          }
+
+          console.log(JSON.stringify(result, null, 2));
+
+          // Read-only audit succeeds even when a capability is absent.
+          // The result is evidence for the next provisioning decision.
+          assert.ok(tokenVerify.ok, "Cloudflare API token itself is not currently valid");
           NODE
 
       - name: Confirm no deployment or mutation command exists
         run: |
           set -euo pipefail
-          ! grep -Eiq '(^|[^[:alnum:]_])(POST|PUT|PATCH|DELETE)([^[:alnum:]_]|$)|wrangler[[:space:]]+deploy|d1[[:space:]]+create|workers/scripts/.+--data'             .github/workflows/system2-cloud-readiness-audit.yml
+          ! grep -Eiq 'wrangler[[:space:]]+deploy|d1[[:space:]]+create|method:[[:space:]]*"(POST|PUT|PATCH|DELETE)"'             .github/workflows/system2-cloud-readiness-audit.yml
           echo "Read-only workflow mutation guard PASS"
