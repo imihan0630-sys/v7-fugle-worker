@@ -1,5 +1,15 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
+import {
+  classifyExecutionPlanState,
+  buildExecutionAlphaAccounting,
+  buildExecutionAlphaComponents,
+  compareExecutionPolicyToBenchmark,
+  classifyExecutionBenchmarkEligibility,
+  decomposeBuyImplementationShortfall,
+  inferTaiwanLotType,
+  splitTaiwanExecutionLegs
+} from "../research/execution_alpha_coverage_v0_1.mjs";
 
 const workerPath=process.env.V7_TEST_WORKER_PATH || new URL("../Worker.js",import.meta.url).pathname;
 const source=await readFile(workerPath,"utf8");
@@ -86,6 +96,44 @@ assert.equal(diagnostics.breakout.held3D,1);
 assert.equal(diagnostics.breakout.failedClose3D,1);
 assert.equal(diagnostics.intradayVsOvernight.n,2);
 
+// Coverage-aware Execution Alpha: missing recorder/monitor evidence is UNKNOWN, never NO_BUY.
+{
+  assert.equal(classifyExecutionPlanState({
+    mature:true,sourceFresh:true,recorderComplete:true,monitorComplete:true,
+    signalPersistenceKnown:true,buyObserved:true
+  }),"BUY_OBSERVED_COMPLETE_COVERAGE");
+  assert.equal(classifyExecutionPlanState({
+    mature:true,sourceFresh:true,recorderComplete:false,monitorComplete:true,
+    signalPersistenceKnown:true,buyObserved:false
+  }),"UNKNOWN_RECORDER_INCOMPLETE");
+
+  const plans=[
+    {state:"BUY_OBSERVED_COMPLETE_COVERAGE",benchmarkPrice:100,firstBuyPrice:98,postEntryD5Return:0.04,idleSessions:0},
+    {state:"NO_BUY_OBSERVED_COMPLETE_COVERAGE",benchmarkD5Return:0.08,benchmarkMfe:0.12,benchmarkMae:-0.02,idleSessions:5},
+    {state:"NO_BUY_OBSERVED_COMPLETE_COVERAGE",benchmarkD5Return:-0.06,benchmarkMfe:0.01,benchmarkMae:-0.09,idleSessions:5},
+    {state:"UNKNOWN_RECORDER_INCOMPLETE",idleSessions:null},
+    {state:"NOT_YET_MATURE",idleSessions:null}
+  ];
+  const a=buildExecutionAlphaAccounting(plans);
+  assert.equal(a.selectedPlans,5);
+  assert.equal(a.completeCoveragePlans,3);
+  assert.equal(a.buyObservedPlans,1);
+  assert.equal(a.noBuyObservedPlans,2);
+  assert.equal(a.unknownPlans,1);
+  assert.equal(a.notYetMaturePlans,1);
+  assert.ok(Math.abs(a.buyTriggerRateCompleteCoverageOnly-1/3)<1e-12);
+
+  const components=buildExecutionAlphaComponents(plans);
+  assert.ok(Math.abs(components.conditionalBuyEntry.meanEntryPriceImprovement-0.02)<1e-12);
+  // One missed winner and one avoided loser coexist; NO_BUY has no one-sign interpretation.
+  assert.ok(Math.abs(components.completeNoBuyOpportunityCost.meanBenchmarkD5Return-0.01)<1e-12);
+
+  const policy=compareExecutionPolicyToBenchmark(plans);
+  assert.equal(policy.status,"DESCRIPTIVE_ONLY");
+  assert.equal(policy.unconditionalExecutionAlpha,null);
+  assert.equal(policy.decisionImpact,false);
+}
+
 console.log(JSON.stringify({
   ok:true,
   version:"8.7.4-counterfactual-research",
@@ -97,3 +145,97 @@ console.log(JSON.stringify({
   regimePersistence:true,
   formalCoreImpact:false
 }));
+
+
+// Execution benchmark must match Taiwan lot mechanism; selection close remains reference-only.
+{
+  assert.equal(inferTaiwanLotType(180),"ODD_LOT");
+  assert.equal(inferTaiwanLotType(2000),"REGULAR_LOT");
+  assert.equal(inferTaiwanLotType(1200),"MIXED_LOT");
+  assert.equal(inferTaiwanLotType(null),"UNKNOWN");
+  const legs=splitTaiwanExecutionLegs(1273);
+  assert.equal(legs.status,"VALID");
+  assert.equal(legs.regularShares,1000);
+  assert.equal(legs.oddLotShares,273);
+  assert.equal(legs.legCount,2);
+  assert.equal(legs.lotType,"MIXED_LOT");
+  const selectionRef=classifyExecutionBenchmarkEligibility({
+    benchmarkType:"SELECTION_CLOSE_REFERENCE",lotType:"ODD_LOT",benchmarkPrice:100
+  });
+  assert.equal(selectionRef.status,"REFERENCE_ONLY");
+  assert.equal(selectionRef.eligible,false);
+
+  const oddAtRegularOpen=classifyExecutionBenchmarkEligibility({
+    benchmarkType:"NEXT_SESSION_REGULAR_OPEN",lotType:"ODD_LOT",benchmarkPrice:101
+  });
+  assert.equal(oddAtRegularOpen.status,"MECHANISM_MISMATCH");
+  assert.equal(oddAtRegularOpen.eligible,false);
+
+  const regularOpenUnproven=classifyExecutionBenchmarkEligibility({
+    benchmarkType:"NEXT_SESSION_REGULAR_OPEN",lotType:"REGULAR_LOT",benchmarkPrice:101
+  });
+  assert.equal(regularOpenUnproven.status,"REFERENCE_ONLY");
+  assert.equal(regularOpenUnproven.reason,"OPEN_AUCTION_EXECUTABILITY_NOT_PROVEN");
+  const regularOpenProven=classifyExecutionBenchmarkEligibility({
+    benchmarkType:"NEXT_SESSION_REGULAR_OPEN",lotType:"REGULAR_LOT",benchmarkPrice:101,preOpenOrderEligible:true
+  });
+  assert.equal(regularOpenProven.status,"ELIGIBLE");
+
+  const mixed=classifyExecutionBenchmarkEligibility({
+    benchmarkType:"FIRST_ELIGIBLE_OBSERVED_QUOTE",lotType:"MIXED_LOT",benchmarkPrice:101,
+    observedAt:"2026-09-30T09:10:05+08:00",quoteFresh:true,marketMechanism:"ODD_LOT_INTRADAY"
+  });
+  assert.equal(mixed.reason,"MIXED_LOT_REQUIRES_SEPARATE_REGULAR_AND_ODD_LOT_LEGS");
+
+  const oddQuote=classifyExecutionBenchmarkEligibility({
+    benchmarkType:"FIRST_ELIGIBLE_OBSERVED_QUOTE",
+    lotType:"ODD_LOT",benchmarkPrice:101.2,observedAt:"2026-09-30T09:10:05+08:00",
+    quoteFresh:true,marketMechanism:"ODD_LOT_INTRADAY"
+  });
+  assert.equal(oddQuote.status,"ELIGIBLE");
+  assert.equal(oddQuote.eligible,true);
+
+  const stale=classifyExecutionBenchmarkEligibility({
+    benchmarkType:"FIRST_ELIGIBLE_OBSERVED_QUOTE",
+    lotType:"REGULAR_LOT",benchmarkPrice:101,observedAt:"2026-09-30T09:01:00+08:00",
+    quoteFresh:false,marketMechanism:"REGULAR_CONTINUOUS"
+  });
+  assert.equal(stale.reason,"QUOTE_FRESHNESS_UNPROVEN");
+}
+
+// Implementation shortfall keeps unfilled shares in the intended denominator.
+{
+  const x=decomposeBuyImplementationShortfall({
+    intendedShares:1000,decisionPrice:100,horizonPrice:110,
+    fills:[{shares:600,price:101}],explicitCostNTD:100,coverageComplete:true,fillEvidenceQuality:"ACTUAL"
+  });
+  assert.equal(x.status,"VALID");
+  assert.equal(x.filledShares,600);
+  assert.equal(x.unfilledShares,400);
+  assert.ok(Math.abs(x.executionPriceCostNTD-600)<1e-12);
+  assert.ok(Math.abs(x.missedOpportunityCostNTD-4000)<1e-12);
+  assert.ok(Math.abs(x.totalShortfallNTD-4700)<1e-12);
+  assert.ok(Math.abs(x.totalShortfallBps-470)<1e-12);
+
+  // Avoiding a loser creates negative opportunity cost; NO-BUY/non-fill is not one-sign bad.
+  const avoided=decomposeBuyImplementationShortfall({
+    intendedShares:1000,decisionPrice:100,horizonPrice:90,
+    fills:[],explicitCostNTD:0,coverageComplete:true,fillEvidenceQuality:"ACTUAL"
+  });
+  assert.equal(avoided.status,"VALID");
+  assert.ok(avoided.missedOpportunityCostNTD<0);
+  assert.ok(avoided.totalShortfallBps<0);
+
+  const blocked=decomposeBuyImplementationShortfall({
+    intendedShares:1000,decisionPrice:100,horizonPrice:110,
+    fills:[],coverageComplete:false,fillEvidenceQuality:"ACTUAL"
+  });
+  assert.equal(blocked.status,"DATA_QUALITY_BLOCKED");
+
+  const signalOnly=decomposeBuyImplementationShortfall({
+    intendedShares:1000,decisionPrice:100,horizonPrice:110,
+    fills:[{shares:1000,price:99}],coverageComplete:true,fillEvidenceQuality:"FORMAL_SIGNAL_MARKET_PRICE"
+  });
+  assert.equal(signalOnly.status,"DATA_QUALITY_BLOCKED");
+  assert.equal(signalOnly.reason,"FILL_EVIDENCE_QUALITY_UNSUPPORTED");
+}
