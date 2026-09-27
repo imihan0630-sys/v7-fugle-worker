@@ -1,7 +1,7 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-230.
-Updated: 2026-09-27 22:54 Asia/Taipei.
+Checkpoint sequence: B-231.
+Updated: 2026-09-27 23:07 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Detailed B-01..B-123 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
@@ -1797,3 +1797,15 @@ Updated: 2026-09-27 22:54 Asia/Taipei.
 - Durable artifact: `research/liquidity_prospective_coverage_acceptance_v0_1.json`, commit `83bb54720407f37832900ab095d34d88f31b8146`.
 - Status: `LIQUIDITY_PARENT_ACCEPTANCE_FROZEN / EXCEPTION_PASS_CONTROL_SAMPLE_GAP_CONFIRMED / ZERO_CELL_SCHEMA_GAP_CONFIRMED / OUTCOMES_CLOSED / FORMAL_UNCHANGED`. No FORMAL_OPTIMIZATION_CANDIDATE.
 - Exact next: determine whether PR #121 can be strengthened in isolated Class-A research space without touching legacy mutually-exclusive Shadow membership: build a pure independent `LIQ_LOW_VOLUME_EXCEPTION_PASS` sampler and explicit zero-filled reason matrix as a standalone helper/test fixture. If validated, keep it research-only and do not wire/deploy. Then continue to the next admission-scarcity evidence hole, `EXTREME_MOVE_PROXY_REJECTED`, using the same denominator/coverage discipline.
+
+## B-231 — EXTREME_MOVE_PROXY formal-reach denominator and official-state coverage gate frozen (2026-09-27 Asia/Taipei)
+- Continued B-230 exact-next into the highest-priority remaining admission evidence hole without outcomes. Existing B-192 structural falsification remains authoritative: Formal `abs(changePercent||0)>=9.8` is an EXTREME_DAILY_RETURN_PROXY, not official exchange limit state; fixed legal counterexamples prove both false-positive and false-negative classification versus exact limit prices.
+- New denominator contract separates raw feature prevalence from sequential Formal incidence. Gate-6 Formal-reach denominator requires all earlier admission states positively clear on the same generation: price>=10, history>=60, market/sector RS observed, market cap observed and >=10bn. Earlier FAIL/UNKNOWN rows are excluded from gate-incidence denominator.
+- Missing-change semantic guard is now explicit: Production's `changePercent||0` means this gate does not reject a missing changePercent, but research classifies it `RESEARCH_UNKNOWN_FORMAL_COERCED_NON_REJECT`. It must never be called an observed 0% return or a true gate PASS.
+- Proxy rejection is direction-split into UP >=+9.8 and DOWN <=-9.8. Future return/path inference may never pool them simply because the absolute-value gate is symmetric.
+- Official-state evidence remains a separate source layer: CLOSE_LIMIT_UP, CLOSE_LIMIT_DOWN, NON_HIT, NO_PRICE_LIMIT, NON_COMPARABLE_X, OFFICIAL_LIMIT_UNKNOWN. Exact symbol-session source receipts/keyset coverage are required before semantic false-positive/false-negative outcome analysis.
+- CLEAN future date requires: same-generation complete feature parent; history/source acceptance; explicit Formal-reach and finite/missing change counts; UP/DOWN proxy reject counts; sample fraction/full count; complete official requested-keyset reconciliation; no future outcomes in parent receipt. Otherwise outcome join is blocked as UNKNOWN.
+- BROAD_CONTROL remains unusable as a prevalence denominator because it is bounded/incidental. REJECTED_AFTER_BASE remains structurally blind because this is basePassed=false.
+- Durable artifact: `research/extreme_move_proxy_prospective_denominator_v0_1.json`, commit `8ef6b7a1d8a9a5eb1d9464e6033767271e61e216`.
+- Status: `EXTREME_GATE_REACH_DENOMINATOR_FROZEN / MISSING_FORMAL_COERCION_SEPARATED / OFFICIAL_STATE_COVERAGE_REQUIRED / OUTCOMES_CLOSED / FORMAL_UNCHANGED`. No FORMAL_OPTIMIZATION_CANDIDATE.
+- Exact next: audit whether the TWSE/TPEx exact official limit-state source contract already has an isolated capture helper/receipt in any research lane. If not, do not duplicate web/source integration here; freeze source dependency and move to the remaining standalone strategy-universe admission gate `marketCapYi<10bn`, testing its redundancy with liquidity/execution controls without proposing universe expansion.
