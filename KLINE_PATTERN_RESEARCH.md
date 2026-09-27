@@ -19680,3 +19680,106 @@ reject the pattern as non-incremental.
 If both fundamental and pattern layers remain informative:
 preserve layered architecture rather than forcing one to replace the other.
 
+
+
+## DL-002CQ — Measured-Move Targets vs Real Resistance
+
+### Practitioner convention
+Many chart patterns use “measured move” targets:
+- W / inverse-HS: neckline plus pattern height,
+- cup: breakout level plus cup depth,
+- flag: breakout plus some fraction/full pole height,
+- rectangle/triangle: breakout plus base height.
+
+The 2026 Taiwan HS study also shows realized results are sensitive to the profit-target multiple.
+
+### Current-system comparison
+Current Formal uses nearestRealResistance() to estimate target/RR from observable resistance levels rather than blindly applying textbook measured moves.
+
+### Research question
+Does a pattern measured target contain useful information beyond real-resistance targeting?
+
+Store:
+- measuredTarget1x
+- measuredTarget05x
+- patternHeightPct
+- nearestRealResistance
+- targetConflictPct
+- measuredTargetAboveResistance
+- realizedMFEToMeasuredTarget
+- realizedMFEToResistance
+
+### Critical rule
+Measured target is NOT allowed to replace real resistance in Formal RR during research.
+
+### Conflict states
+MEASURED_BELOW_REAL_RESISTANCE
+MEASURED_NEAR_REAL_RESISTANCE
+MEASURED_ABOVE_REAL_RESISTANCE
+NO_VERIFIABLE_REAL_RESISTANCE
+
+### Hypothesis
+If measured targets systematically overstate reachable upside when major resistance intervenes, the current real-resistance approach is safer.
+
+If measured targets add predictive information after resistance controls, they may be useful as a secondary research descriptor.
+
+## DL-002CR — Pattern Invalidation Level vs Existing Stop Logic
+
+### Pattern-specific invalidation examples
+VCP:
+- final contraction / key structural trough failure.
+
+Cup handle:
+- handle structural low / deeper cup deterioration.
+
+W / inverse-HS:
+- second bottom/right shoulder/head structure failure depending stage.
+
+Flag/triangle:
+- lower boundary / last confirmed higher low.
+
+### Current Formal stop
+Formal stop is based on current A/B support/breakout + ATR logic.
+
+### Research comparison
+Store:
+- formalStop
+- patternInvalidationLevel
+- distanceFormalStopPct
+- distancePatternStopPct
+- whichStopIsTighter
+- stopFirstFormal
+- stopFirstPatternCounterfactual
+- MFEAfterPatternStop
+- MFEAfterFormalStop
+
+### Important boundary
+This is counterfactual research only.
+Do not change actual Formal stops automatically.
+
+### Goal
+Determine whether topology supplies a cleaner invalidation point or merely creates tighter stops and more whipsaw.
+
+## DL-002CS — Pattern Geometry Must Not Manufacture RR
+
+### Risk
+A flexible pattern detector could:
+1. choose a convenient neckline/pivot,
+2. derive an optimistic measured target,
+3. produce an apparently attractive RR,
+creating circular selection bias.
+
+### Safeguards
+- pivot/neckline must be frozen before target calculation,
+- target formula frozen before outcomes,
+- real resistance independently calculated,
+- no choosing among multiple targets based on whichever gives RR >= 2,
+- candidate failing Formal RR remains failed during research.
+
+### Research output
+Pattern RR can be stored as:
+- descriptivePatternRR
+- formalRR
+- rrDifference
+but decisionImpact=false.
+
