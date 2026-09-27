@@ -18830,3 +18830,123 @@ Compare against:
 
 If anchored VWAP adds nothing, reject it.
 
+
+
+## DL-002BX — Sector Synchronization Beyond One-Day Sector Strength
+
+### Taiwan evidence
+Fu & Kang (2009) find Taiwan industry momentum is heterogeneous:
+- positive-autocorrelation industries show stronger momentum,
+- negative-autocorrelation industries can show reversal,
+- industry turnover helps explain the positive autocorrelation / transfer-of-funds mechanism.
+
+Other Taiwan studies also document persistent industry momentum in some horizons and evidence consistent with an industry momentum life cycle.
+
+### Current-system overlap
+Current Formal sector gate already uses:
+- sector breadth,
+- average daily change,
+- sector trade-value activity vs 20-day average,
+and sector score contributes to ranking.
+
+Therefore DL-002 must NOT add a duplicate “sector strong today” variable.
+
+### Incremental question
+Does the DIRECTION and PERSISTENCE of sector participation during pattern maturation add information beyond today's sector score?
+
+### Pattern-phase sector fields
+- sectorReturnAtPatternStart
+- sectorReturnAtMaturity
+- sectorReturnSlope
+- sectorBreadthAtStart
+- sectorBreadthAtMaturity
+- sectorBreadthSlope
+- sectorTurnoverRatioAtStart
+- sectorTurnoverRatioAtMaturity
+- sectorTurnoverSlope
+- sectorLeaderCount
+- sectorNewHighBreadth
+- sectorPatternMaturityBreadth
+- stockVsSectorLeadLag
+- sectorAutocorrelationStateResearch
+
+### Synchronization states
+SECTOR_LEADING_STOCK_FOLLOWING
+- sector strengthens before stock pattern trigger.
+
+STOCK_LEADING_SECTOR_CONFIRMING
+- stock matures first, sector breadth/turnover later improves.
+
+ISOLATED_STOCK
+- stock pattern matures without sector confirmation.
+
+SECTOR_DIVERGENCE
+- stock reaches pivot while sector breadth/turnover deteriorates.
+
+### Key hypothesis
+A pattern may have higher continuation quality when:
+- stock geometry matures,
+- sector breadth improves,
+- sector turnover/participation persists,
+rather than when only the individual stock is strong.
+
+But this must be tested after controlling the existing sector hard gate and ranking score.
+
+## DL-002BY — Sector Momentum Life-Cycle Context
+
+### External prior
+Taiwan research on industry momentum life cycle reports an “early momentum” style (past winners with lower trading volume) outperforming a late-momentum style in its tested sample.
+
+### Research interpretation
+This is consistent with a possible distinction:
+EARLY_SECTOR_ROTATION
+- price leadership emerges before broad/high-volume crowding.
+
+MATURE_SECTOR_ROTATION
+- breadth and turnover broaden while trend persists.
+
+LATE_CROWDED_SECTOR
+- high turnover/attention after large prior gains.
+
+### Pattern interaction
+A stock-level VCP/cup/flag may mean different things depending on sector phase.
+
+Candidate fields:
+- sectorReturn20/60
+- sectorTurnover20Trend
+- sectorBreadthTrend
+- sectorAttentionProxy
+- sectorPhaseState
+- stockPatternPhaseVsSectorPhase
+
+### Redundancy
+Current overheat / Quiet-Attention / sector-strength research already covers parts of this idea.
+Only phase alignment that adds incremental value may survive.
+
+## DL-002BZ — Sector Diffusion / Lead-Lag, Not Just Same-Day Correlation
+
+### Question
+Does strength diffuse across related stocks over several days rather than appearing simultaneously?
+
+### Research fields
+- daysFromSectorLeaderBreakoutToStockMaturity
+- daysFromStockMaturityToSectorBreadthExpansion
+- leaderReturnBeforeStockTrigger
+- peerBreakoutCountPrior5
+- peerFailureCountPrior5
+- sectorDispersion
+- sectorCorrelationState
+
+### Mechanism
+If industry information diffuses gradually, leaders can move first and peers follow.
+If all peers surge simultaneously after a crowded catalyst, apparent “confirmation” may actually be late attention.
+
+### Test
+Compare:
+- leader-first diffusion,
+- broad simultaneous surge,
+- isolated stock,
+while controlling market regime and event context.
+
+No production sector-timing rule is approved.
+
