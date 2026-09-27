@@ -470,3 +470,32 @@ Therefore:
 Cross-reference:
 `research/atr_rr_channel_coupling_v0_1.json`
 and `VOLATILITY_REGIME_RESEARCH.md` VR-018.
+
+
+### Channel-precedence correction — mutual exclusivity proven (2026-09-27)
+
+Earlier setup-quality notes said dual-pass frequency should be measured prospectively.
+
+That is unnecessary under the current definitions.
+
+Proof:
+1. `recentHigh10` is the maximum high of the previous 10 sessions.
+2. `priorHigh20` is the maximum high of the previous 20 sessions.
+3. Therefore `priorHigh20 >= recentHigh10`.
+4. B requires `close >= priorHigh20 * 1.002`, hence `close >= recentHigh10 * 1.002`.
+5. A pullback is `(recentHigh10-close)/recentHigh10*100`; under B pass this is <= -0.2%.
+6. A requires pullback between +2% and +15%.
+
+Therefore:
+`A.pass && B.pass = impossible`
+under the current definitions and valid inputs.
+
+The code branch `if (B.pass) ... else if (A.pass) ...` is not a channel-precedence bias today.
+It is merely defensive ordering.
+
+Research consequence:
+- remove dual-pass frequency from outcome research;
+- convert it into an invariant test: any observed dual pass means code/data semantics changed or are inconsistent;
+- keep the real cross-channel issue: A and B setupQuality scales remain structurally different and still require within-channel / cross-channel calibration.
+
+Machine artifact `research/setup_quality_channel_falsification_v0_1.json` updated accordingly.
