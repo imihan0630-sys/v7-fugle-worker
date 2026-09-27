@@ -1026,3 +1026,82 @@ Status:
 `DISCRETE_OBJECTIVE_SENSITIVITY_CONFIRMED / UNIQUE_OPTIMA_BY_SEMANTIC / STRUCTURAL_CONCLUSION_ROBUST / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-060 — stop-risk entry-reference sensitivity test (2026-09-28)
+
+The current Portfolio Risk structural result uses `buyHigh` as the conservative planned entry reference.
+
+PR-060 tests a direct counter-hypothesis:
+
+`The observed 2026-09-18 risk concentration is only an artifact of choosing buyHigh.`
+
+For every reconstructable multi-name date, projected stop-risk is recomputed under three frozen references:
+- BUY_LOW;
+- MIDPOINT = (buyLow + buyHigh) / 2;
+- BUY_HIGH.
+
+For each reference, the audit compares:
+1. current PriorityScore-proportional allocation;
+2. same-deployment equal capital;
+3. exhaustive NT$1,000-grid global minimum HHI under the same 35% per-name cap.
+
+The grid search uses the same selected names and same planned deployment. No realized price/fill is assumed.
+
+Interpretation is pre-registered:
+- if current remains more concentrated than equal-capital and the global grid minimum across all three references, the structural conclusion survives reference-price falsification;
+- if the gap disappears or reverses at BUY_LOW/MIDPOINT, the earlier conclusion must be downgraded as reference-sensitive.
+
+Artifacts:
+`research/entry_reference_risk_sensitivity_v0_1.mjs`;
+`research/entry_reference_risk_sensitivity_spec_v0_1.json`;
+`tests/portfolio_risk_entry_reference_sensitivity_readonly_audit.mjs`.
+
+Status:
+`REFERENCE_SENSITIVITY_PROTOCOL_READY / PRODUCTION_AUDIT_PENDING`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-060 Production result — buyHigh reference does not create the concentration finding
+
+Read-only Production run `36350840822` / job `108709088620` tested the only reconstructable multi-name date, 2026-09-18, under three entry references.
+
+### BUY_LOW
+
+Current HHI = 0.4252711642.  
+Equal-capital HHI = 0.3950931017.  
+Exhaustive NT$1,000-grid minimum HHI = 0.3486465228.
+
+### MIDPOINT
+
+Current HHI = 0.3934504209.  
+Equal-capital HHI = 0.3683594007.  
+Exhaustive grid minimum HHI = 0.3377017368.
+
+### BUY_HIGH
+
+Current HHI = 0.3772380854.  
+Equal-capital HHI = 0.3558588621.  
+Exhaustive grid minimum HHI = 0.3343850287.
+
+3105 is the widest stop-risk name under every reference:
+- buyLow: 3.570699%;
+- midpoint: 4.292115%;
+- buyHigh: 5.002817%.
+
+The key counter-hypothesis is therefore rejected:
+
+`The structural concentration exists only because risk was measured from conservative buyHigh.`
+
+In fact the current-minus-equal-capital HHI gap is **largest at buyLow** (0.0301780625) and **smallest at buyHigh** (0.0213792233). Conservative buyHigh does not exaggerate the witness; on this date it attenuates the relative concentration gap.
+
+The exact risk-minimizing grid allocation moves with the reference price (70/36/62 at buyLow, 70/39/59 at midpoint, 70/41/57 at buyHigh), so the exact comparator remains model-sensitive. The direction of the structural conclusion does not.
+
+Durable receipt:
+`research/entry_reference_risk_sensitivity_production_receipt_20260928.json`.
+
+Status:
+`ENTRY_REFERENCE_ARTIFACT_FALSIFIED / STRUCTURAL_CONCLUSION_STRENGTHENED / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
