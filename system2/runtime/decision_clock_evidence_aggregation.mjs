@@ -95,9 +95,13 @@ export function aggregateDecisionClockEvidence({
     .filter((x) => x.eventName !== "schedule")
     .sort((a, b) => a.marketDate.localeCompare(b.marketDate) || compareProvenance(a, b));
 
-  const scheduled = rows
+  const scheduledAll = rows
     .filter((x) => x.eventName === "schedule")
     .sort((a, b) => a.marketDate.localeCompare(b.marketDate) || compareProvenance(a, b));
+  const rerunDiagnostics = scheduledAll
+    .filter((x) => x.runAttempt !== 1);
+  const scheduled = scheduledAll
+    .filter((x) => x.runAttempt === 1);
 
   const byDate = new Map();
   for (const row of scheduled) {
@@ -172,7 +176,9 @@ export function aggregateDecisionClockEvidence({
     workflowFile: requiredText(workflowFile, "workflowFile"),
     promotionPolicy: "EARLIEST_SCHEDULED_ARTIFACT_PER_MARKET_DATE",
     candidateArtifactCount: rows.length,
-    scheduledArtifactCount: scheduled.length,
+    scheduledArtifactCount: scheduledAll.length,
+    promotionEligibleScheduledArtifactCount: scheduled.length,
+    rerunDiagnosticArtifactCount: rerunDiagnostics.length,
     manualDiagnosticArtifactCount: manualDiagnostics.length,
     promotionGradeDateCount: selected.length,
     promotionGradeMarketDates: selected.map((x) => x.marketDate),
@@ -195,6 +201,17 @@ export function aggregateDecisionClockEvidence({
       workflowSha: x.workflowSha,
     })),
     duplicateScheduledArtifacts: duplicateScheduled,
+    rerunDiagnosticArtifacts: rerunDiagnostics.map((x) => ({
+      marketDate: x.marketDate,
+      runId: x.runId,
+      runAttempt: x.runAttempt,
+      runCreatedAt: x.runCreatedAt,
+      artifactId: x.artifactId,
+      artifactName: x.artifactName,
+      collectorContractFingerprint: x.collectorContractFingerprint,
+      workflowSha: x.workflowSha,
+      reason: "RERUN_ATTEMPT_DIAGNOSTIC_ONLY",
+    })),
     manualDiagnosticArtifacts: manualDiagnostics.map((x) => ({
       marketDate: x.marketDate,
       runId: x.runId,
