@@ -19,6 +19,7 @@
     "historical non-binding does not establish future non-binding",
     "economic effect requires future outcome and opportunity-cost evidence"
   ],
-  "status": "CAP_RESERVE_MECHANISM_PROVEN / PRODUCTION_OCCURRENCE_PENDING",
-  "formalCoreImpact": false
+  "status": "CAP_RESERVE_MECHANISM_PROVEN / HISTORICAL_OCCURRENCE_NOT_OBSERVED / PROSPECTIVE_WATCH_ONLY",
+  "formalCoreImpact": false,
+  "productionReceipt": "research/score_cap_reserve_production_receipt_20260928.json"
 }
