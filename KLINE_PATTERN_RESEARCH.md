@@ -21020,3 +21020,84 @@ Do not create a new Pattern-owned corporate-action engine.
 OUTCOME_BLIND_SOURCE_QA_PROGRESS.
 Pattern alpha remains UNKNOWN.
 Formal Core unchanged.
+
+## DL-003X — Symbol-Session Provenance / Exchange-Mechanism Boundary (2026-09-27)
+
+### 1. Market trading date is not symbol-session eligibility
+A valid TWSE/TPEx market trading date does not prove one security had an ordinary tradable session.
+
+Pattern/PV/Execution must distinguish:
+- MARKET_OPEN_DATE: exchange calendar open;
+- SYMBOL_SESSION_ELIGIBLE: the security was eligible to trade in the relevant mechanism/time interval;
+- SYMBOL_SUSPENDED: official suspension/stop;
+- SYMBOL_RESUMED_SPECIAL: resumed under special collection/matching mechanics;
+- SESSION_DELAYED_OPEN;
+- SESSION_DELAYED_CLOSE;
+- SESSION_VOLATILITY_INTERRUPTION;
+- SESSION_PROVENANCE_UNKNOWN.
+
+### 2. TWSE historical suspension source
+TWSE official historical Suspended Securities query explicitly states data is available from 2011-10-03.
+
+Implication:
+- for strict TWSE symbol-session provenance, dates before 2011-10-03 are not automatically covered by that historical source;
+- 2010 through 2011-10-02 Pattern studies must be marked SESSION_HISTORY_COVERAGE_LIMITED unless another authoritative source closes the gap;
+- provider candle presence/absence cannot substitute for official session membership.
+
+### 3. TPEx historical suspension/resumption source
+TPEx official historical halt page exposes security code/name plus suspension date/time and resumption date/time.
+
+Use it as an official TPEx symbol-session evidence source where date coverage is available.
+Do not infer unverified earliest coverage; store sourceCoverageStart = UNKNOWN until independently established.
+
+### 4. Mid-session resumption is not an ordinary continuous session
+TWSE official rules state that after a security resumes ordinary trading, orders are first collected and the first match occurs 30 minutes later by call auction before continuous trading resumes.
+
+Therefore a resumption-day intraday bar can mix:
+- no-trade suspension interval;
+- reopening order-collection interval;
+- reopening call-auction print;
+- later continuous trading.
+
+It must not be compared blindly with an ordinary same-clock-time 15m baseline.
+
+### 5. Security-specific delayed open/close
+Modern TWSE/TPEx price-stability rules can delay one security's opening by 2 minutes when pre-open simulated-price instability or qualifying cancellation/modification conditions trigger.
+Closing can also be delayed to 13:33 under the closing stability rule.
+
+Thus:
+- expectedFirstRegularMatchAt is security/session specific;
+- expectedCloseAt can be 13:30 or 13:33;
+- absence of a 09:00 print is not automatically missing data;
+- a closing bar that extends through delayed close cannot be treated as a standard fixed-duration bar without a guard.
+
+### 6. Cross-lane ownership
+Pattern does NOT own intraday auction/VI/session-normalization logic.
+
+Canonical responsibilities:
+- Price-Volume lane: same-slot RVOL, cumulative pace, pvSessionPhase, pvGuardState, AUCTION_MIXED/PRICE_CENSORED interpretation;
+- Microstructure lane: continuous-vs-auction/volatility-interruption mechanics and execution-state semantics;
+- Pattern lane: consume verified session/guard semantics and block geometry/volume interpretation when required.
+
+### 7. Pattern daily-bar behavior
+For daily morphology:
+- a verified full-session suspension date is not a zero-range/zero-volume candle;
+- provider pseudo-bars on suspended dates must be removed/blocked from continuity geometry;
+- observed-trading-bar duration counts eligible trading observations, not calendar days;
+- resumption/corporate-action boundaries require TECHNICAL_CONTINUITY provenance.
+
+### 8. Pattern intraday behavior
+If Pattern later consumes intraday execution context, each bar needs at minimum:
+- symbolSessionState;
+- firstTradeAt / lastTradeAt when available;
+- sessionPhase;
+- auctionMixed;
+- volatilityInterruptionState;
+- barDurationActual;
+- sessionProvenanceSource.
+
+Missing reliable mechanism provenance => GUARD/UNKNOWN, not NORMAL_MARKET.
+
+### 9. Outcome-blind status
+This resolves part of the symbol-session source design but does not make Pattern runtime-ready.
+Alpha remains UNKNOWN; no outcome inspection; no Formal change.
