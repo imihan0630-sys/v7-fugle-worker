@@ -1,0 +1,117 @@
+{
+  "schemaVersion": "TARGET_RR_PERSISTENCE_FEASIBILITY_V0_1",
+  "researchDate": "2026-09-27",
+  "status": "CLASS_A_OBSERVER_VALIDATED_LEGACY_SHADOW_INADEQUATE_CLASS_B_PARENT_RECEIPT_REQUIRED",
+  "outcomeDataUsed": false,
+  "formalCoreChanged": false,
+  "productionRuntimeChanged": false,
+  "validatedObserver": {
+    "id": "TARGET_RR_AUDIT_OBSERVER_V0_1",
+    "files": [
+      "research/target_rr_audit_observer_v0_1.mjs",
+      "tests/test_target_rr_audit_observer_v0_1.mjs",
+      "research/target_rr_audit_observer_spec_v0_1.json"
+    ],
+    "pr": 130,
+    "mergeCommit": "9ce2e60883fbce7065f748bd700ea74bc7d35e0d",
+    "ci": {
+      "specializedRun": 36297985878,
+      "repairRun": 36297985820,
+      "regressionRun": 36297985929
+    },
+    "marketCalls": 0,
+    "d1Writes": 0,
+    "decisionImpact": false,
+    "semantics": [
+      "TARGET_NULL remains separate from LOW_RR",
+      "FINAL_GRADE after RR pass remains separate from RR rejection",
+      "channel-specific Formal entry/stop geometry is required",
+      "equal minimum resistance prices preserve multiple selectedTargetSources and SOURCE_AMBIGUOUS",
+      "targetPrice presence does not imply complete PIT provenance"
+    ]
+  },
+  "sameScanFeasibility": {
+    "availableWithoutNewMarketCalls": [
+      "feature row after V8.12 history admission",
+      "basePoolDiagnostics f + sector context",
+      "actual scoreCandidate first-failure result",
+      "A/B channel state when reached",
+      "close/ATR/support/priorHigh20/priorHigh60/history needed for Formal target geometry",
+      "targetPrice raw value when present on feature row",
+      "historical pivot date/value candidates from same-scan retained history"
+    ],
+    "unresolvedOrNotGuaranteed": [
+      "targetPriceSource",
+      "targetPriceAsOf",
+      "targetPriceCapturedAt",
+      "targetPricePointInTimeEligible",
+      "immutable first-known capture generation",
+      "promotion-grade parent linkage"
+    ]
+  },
+  "legacyShadowBlockers": {
+    "table": "trade_research_shadow_candidates",
+    "primaryKey": [
+      "scan_date",
+      "symbol"
+    ],
+    "singleCohortColumn": true,
+    "oneSymbolOneSavedCohortViaUsedSet": true,
+    "boundedRejectedAfterBase": "max 6 per pool after reason sort; target/RR reason coverage is not guaranteed",
+    "sameDateMutableRewrite": "DELETE scan_date then row-by-row INSERT/UPSERT",
+    "immutableGeneration": false,
+    "semanticFingerprintParent": false,
+    "conclusion": "DO_NOT_ADD_TARGET_RR_AS_ANOTHER_LEGACY_SINGLE_COHORT_OR_CALL_IT_PROMOTION_GRADE"
+  },
+  "requiredArchitecture": {
+    "parent": "immutable per-symbol decision-state receipt before bounded research sampling",
+    "reuseProposal": "SHADOW_COHORT_SEMANTICS_CLASS_B_PROPOSAL.md",
+    "targetRrChildMinimumFields": [
+      "scanDate",
+      "symbol",
+      "parentDecisionReceiptId",
+      "captureGeneration",
+      "channel",
+      "formalStage",
+      "firstFailure",
+      "entry",
+      "stop",
+      "risk",
+      "stopBinding",
+      "targetPriceRaw",
+      "targetPriceSource",
+      "targetPriceAsOf",
+      "targetPriceCapturedAt",
+      "targetPricePointInTimeEligible",
+      "priorHigh20",
+      "priorHigh60",
+      "datedPivotCandidates",
+      "eligibleResistanceCandidatesAfter1PctFilter",
+      "selectedTarget",
+      "selectedTargetSources",
+      "selectedSourceAmbiguous",
+      "targetNull",
+      "reward",
+      "rewardPerRisk",
+      "rrThreshold",
+      "stageConsistent"
+    ],
+    "membershipsMayOverlap": true,
+    "oldLegacyRowsRewritten": false
+  },
+  "governance": {
+    "pureObserver": "CLASS_A_VALIDATED",
+    "sharedWorkerWiringAndImmutablePersistence": "CLASS_B_PROPOSAL_FIRST",
+    "targetPriceSourceContractRepair": "CLASS_B_PROPOSAL_FIRST_IF_SHARED_ENRICHMENT_CHANGES",
+    "targetFormulaNullGateRrThresholdOrComparatorChange": "CLASS_C_OWNER_APPROVAL",
+    "optimizationReady": false
+  },
+  "prohibited": [
+    "Do not coerce TARGET_NULL to RR=0.",
+    "Do not infer a unique selected target source when multiple sources share the same minimum price.",
+    "Do not backfill old targetPrice provenance from later-known data.",
+    "Do not let a new target/RR cohort steal legacy Near-miss/Sector-gate/Rejected samples.",
+    "Do not call legacy mutable snapshot_json a complete evidence repair."
+  ],
+  "exactNext": "Audit targetPrice production injection/source coverage. If no stable producer/provenance contract is proven, keep source fields UNKNOWN. Durable target/RR child persistence waits for owner-approved shared immutable decision-state infrastructure."
+}
