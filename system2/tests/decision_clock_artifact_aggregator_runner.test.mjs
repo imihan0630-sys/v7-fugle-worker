@@ -127,6 +127,8 @@ try {
     assert.equal(report.aggregation.tradingDayArtifactGaps.length, 0);
     assert.equal(report.aggregation.readiness.independentTradingDates, 1);
     assert.equal(report.aggregation.exactDecisionClockAuthorized, false);
+    assert.equal(report.reviewPacket.reviewState, "ACCUMULATING");
+    assert.equal(report.reviewPacket.exactDecisionClockAuthorized, false);
     assert.equal(report.safety.system2D1Written, false);
     assert.equal(report.safety.system2WorkerCronMutated, false);
 
