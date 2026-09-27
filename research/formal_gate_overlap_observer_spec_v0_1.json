@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "formal-gate-overlap-observer-spec-v0.1",
+  "researchDate": "2026-09-27",
+  "status": "CLASS_A_PROTOTYPE",
+  "purpose": "Observe simultaneous gate states on frozen same-scan inputs without changing fail-fast Formal behavior.",
+  "states": {
+    "PASS": "All required same-scan evidence is present and the frozen gate condition passes.",
+    "FAIL": "All required same-scan evidence is present and the frozen gate condition fails.",
+    "UNKNOWN": "Required evidence/provenance is missing or incomplete; never coerce to FAIL.",
+    "NOT_EVALUABLE": "A conditional gate has no valid prerequisite state, e.g. RR when no target/channel exists."
+  },
+  "design": {
+    "formulas": "Observer consumes exact derived values from the decision path where possible rather than rebuilding a second scoring engine.",
+    "formalResult": "Original ok/reason/basePassed/rrPassed is preserved separately.",
+    "marketCalls": 0,
+    "persistence": false,
+    "formalCoreImpact": false,
+    "decisionImpact": false
+  },
+  "durableSnapshotAudit": {
+    "directlyObservable": [
+      "close",
+      "market/sector return context",
+      "avgVolume20Lots",
+      "avgAmount20",
+      "chipConcentration",
+      "ATR",
+      "A/B checks",
+      "post-V8.14 sector gate provenance",
+      "post-V8.13 ranking provenance"
+    ],
+    "captureGaps": [
+      "explicit historyDays/history-admission reason receipt",
+      "marketCapYi",
+      "spread/depth liquidity-exception inputs",
+      "financialBasis/valuationObserved/announcementsVerified source flags",
+      "official announcement titles",
+      "sectorMedianPe",
+      "all 9 fundamental-count components",
+      "target/resistance source geometry",
+      "rejected-row entry/stop/target/RR decision state"
+    ],
+    "conclusion": "Existing durable snapshot alone is insufficient for full gate-overlap inference; missing fields remain CAPTURE_GAP/UNKNOWN."
+  },
+  "implementationBoundary": {
+    "classA": "Pure in-memory/offline observer + deterministic tests; zero new market calls; no Formal dependency.",
+    "classB": "Persisting complete overlap receipts, earlier universe/history-admission receipts, immutable generation linkage or shared runtime schema."
+  },
+  "prohibited": [
+    "Using FAIL counts as marginal gate contribution",
+    "Treating UNKNOWN as FAIL",
+    "Treating target-null as RR=0",
+    "Changing Formal result from observer output",
+    "Outcome-tuned gate definitions"
+  ]
+}
