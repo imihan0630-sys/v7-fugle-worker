@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "shadow-semantic-membership-v0.1",
+  "formalCoreChanged": false,
+  "outcomeLookupUsed": false,
+  "memberships": [
+    "FORMAL_SELECTED",
+    "FORMAL_QUALIFIED_NOT_SELECTED",
+    "DOWNSTREAM_FIRST_FAILURE",
+    "BASE_FIRST_FAILURE",
+    "CHANNEL_NEAR_MISS",
+    "DATA_READINESS_FAILURE",
+    "UNIVERSE_POLICY_EXCLUDED",
+    "BROAD_MARKET_FRAME_ELIGIBLE",
+    "UNKNOWN_SEMANTIC_STATE"
+  ],
+  "controlEstimands": {
+    "BROAD_MARKET_CONTROL": "independent frame; overlapping semantic membership allowed and recorded",
+    "RESIDUAL_CONTROL": "complete semantic classification first; excludes full focal populations"
+  },
+  "requiredDenominators": [
+    "semanticPopulationCount",
+    "broadFrameCount",
+    "residualFrameCount",
+    "unknownSemanticCount",
+    "sampledCount",
+    "sampleCap",
+    "samplingRuleVersion"
+  ],
+  "firewalls": {
+    "firstFailureNotMarginalContribution": true,
+    "nearMissMissingCountNotDistance": true,
+    "boundedQnsNotCompletePool": true,
+    "historicalContaminatedControlsDescriptiveOnly": true
+  },
+  "classAEligibility": [
+    "reuse in-memory feature/result objects",
+    "zero new market calls",
+    "additive research storage only",
+    "no Formal read dependency"
+  ],
+  "optimizationReady": false
+}
