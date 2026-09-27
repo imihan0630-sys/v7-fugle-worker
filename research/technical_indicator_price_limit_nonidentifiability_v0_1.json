@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "technical-indicator-price-limit-nonidentifiability-v0.1",
+  "updated": "2026-09-28 Asia/Taipei",
+  "researchOnly": true,
+  "decisionImpact": false,
+  "formalCore": "LOCKED",
+  "theorem": "Different latent price-clearing states can map to the same boundary-capped observed OHLC; deterministic OHLC indicators therefore cannot recover latent intensity.",
+  "appliesTo": [
+    "KD",
+    "RSI",
+    "MACD",
+    "ADX_DMI",
+    "BBANDS",
+    "ANY_DETERMINISTIC_OHLC_TRANSFORM"
+  ],
+  "allowed": [
+    "OBSERVED_BOUNDARY_TOUCH",
+    "OBSERVED_CONSTRAINED_PATH",
+    "NUMERIC_INDICATOR_ON_OBSERVED_PATH",
+    "SEPARATE_CONSTRAINED_STRATUM"
+  ],
+  "prohibited": [
+    "LATENT_PRICE_IMPUTATION",
+    "EXCESS_DEMAND_MAGNITUDE_FROM_DAILY_OHLC",
+    "LIMIT_LOCK_QUEUE_STRENGTH_FROM_DAILY_OHLC",
+    "TRUE_BREAKOUT_DISTANCE_BEYOND_LIMIT",
+    "MULTI_INDICATOR_BONUS_FROM_SAME_CAPPED_PATH"
+  ],
+  "externalInformationNeededForIntensity": [
+    "ORDER_BOOK_QUEUE",
+    "TRADE_EVENT_FLOW",
+    "LIMIT_TOUCH_TIMING",
+    "REOPEN_OR_UNCROSS_BEHAVIOR",
+    "NEXT_SESSION_ACCEPTANCE"
+  ]
+}
