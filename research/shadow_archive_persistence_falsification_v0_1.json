@@ -1,0 +1,93 @@
+{
+  "schemaVersion": "shadow-archive-persistence-falsification-v0.1",
+  "researchDate": "2026-09-27",
+  "status": "MUTABLE_NONATOMIC_ARCHIVE_RISK_CONFIRMED",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "currentPersistence": {
+    "table": "trade_research_shadow_candidates",
+    "identity": "PRIMARY KEY(scan_date,symbol) in current archive lineage",
+    "sequence": [
+      "DELETE all rows for archive.scanDate",
+      "loop rows",
+      "await one INSERT ... ON CONFLICT UPDATE per row"
+    ],
+    "explicitTransactionOrBatchFound": false,
+    "callerBehavior": "Research write is fail-open; exceptions are caught into shadowArchiveSave error and Formal continues.",
+    "sameDateRerun": "A later persistence for the same scan_date replaces the earlier captured archive; first-known generation/fingerprint is not retained."
+  },
+  "failureModes": [
+    {
+      "id": "RERUN_MUTATION",
+      "witness": "Same scan_date A is saved, later rerun produces archive B. DELETE(A-date)+insert(B) removes A evidence.",
+      "impact": "Current table cannot prove first-known cohort membership/provenance for that date."
+    },
+    {
+      "id": "DELETE_THEN_PARTIAL_INSERT",
+      "witness": "Existing complete date is deleted; insert loop succeeds for early rows then throws before all rows are written.",
+      "impact": "A complete prior archive can become a partial archive. No explicit transaction/batch was found around the sequence."
+    },
+    {
+      "id": "INTEGRITY_FALSE_HEALTHY",
+      "witness": {
+        "formalDay": {
+          "selected_count": 1
+        },
+        "persistedRows": [
+          {
+            "cohort": "SELECTED",
+            "count": 1
+          },
+          {
+            "cohort": "BROAD_CONTROL",
+            "count": 1
+          }
+        ],
+        "omittedExpectedFamilies": [
+          "QUALIFIED_NOT_SELECTED",
+          "NEAR_MISS",
+          "REJECTED_AFTER_BASE or dedicated cohorts"
+        ]
+      },
+      "currentIntegrityResult": "HEALTHY is possible because current governance checks only total>0, SELECTED count equality and BROAD_CONTROL presence.",
+      "impact": "HEALTHY means minimum archive presence, not complete expected population/sample receipt."
+    },
+    {
+      "id": "ZERO_SELECTED_PARTIAL_PASS",
+      "witness": {
+        "formalDay": {
+          "selected_count": 0
+        },
+        "persistedRows": [
+          {
+            "cohort": "BROAD_CONTROL",
+            "count": 1
+          }
+        ]
+      },
+      "currentIntegrityResult": "HEALTHY is possible even if every other expected research population/sample failed to persist.",
+      "impact": "Zero-pick dates are particularly vulnerable to false completeness if only a broad-control row remains."
+    }
+  ],
+  "interpretationGuard": [
+    "Existing shadow integrity status must be read as MINIMUM_PRESENCE_HEALTH, not archive completeness.",
+    "Current created_at/updated_at cannot reconstruct a deleted prior same-date generation.",
+    "A successful current read does not prove no earlier partial/mutating write occurred.",
+    "Do not use same-date replay as promotion-grade first-known evidence without immutable generation/fingerprint receipts."
+  ],
+  "requiredRepair": [
+    "Never delete first-known evidence before durable replacement is validated.",
+    "Use insert-once immutable receipt generations with semantic fingerprint; same identity/same fingerprint idempotent, different fingerprint PROVENANCE_CONFLICT.",
+    "Persist expected row/population denominator receipt before or atomically with membership rows.",
+    "A completeness receipt must compare expected vs persisted counts by receipt/membership family and pool, not only SELECTED/BROAD_CONTROL presence.",
+    "Record capture generation / captured_at / formal worker version / comparator version / source quality state.",
+    "Historical current-table rows remain legacy mutable evidence and require LEGACY_MUTABLE_ARCHIVE quality state; do not silently promote them to immutable."
+  ],
+  "governance": {
+    "implementationClass": "CLASS_B_PROPOSAL_FIRST",
+    "reason": "Requires shared D1 persistence/schema/runtime changes.",
+    "formalDecisionImpact": false,
+    "ownerApprovalRequired": true
+  },
+  "decision": "CURRENT_SHADOW_NOT_FIRST_KNOWN_IMMUTABLE / PARTIAL_WRITE_CAN_EVADE_CURRENT_HEALTH_CHECK / CLASS_B_REPAIR_REQUIRED / NO_FORMAL_CHANGE"
+}
