@@ -104,7 +104,7 @@ const result = aggregateDecisionClockEvidence({
   ],
 });
 
-assert.equal(result.promotionPolicy, "EARLIEST_SCHEDULED_ARTIFACT_PER_MARKET_DATE");
+assert.equal(result.promotionPolicy, "EARLIEST_ATTEMPT_ONE_SCHEDULED_ARTIFACT_PER_MARKET_DATE");
 assert.equal(result.candidateArtifactCount, 4);
 assert.equal(result.scheduledArtifactCount, 3);
 assert.equal(result.promotionEligibleScheduledArtifactCount, 3);
