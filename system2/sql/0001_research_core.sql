@@ -102,6 +102,42 @@ CREATE INDEX IF NOT EXISTS idx_s2_shadow_run_strategy_date
 
 
 
+
+CREATE TABLE IF NOT EXISTS s2_candidate_lifecycle_receipts (
+  lifecycle_receipt_id TEXT PRIMARY KEY,
+  candidate_episode_id TEXT NOT NULL,
+  symbol TEXT NOT NULL,
+  market_date TEXT NOT NULL,
+  transition_timestamp TEXT NOT NULL,
+  from_state TEXT NOT NULL,
+  to_state TEXT NOT NULL,
+  memberships_json TEXT NOT NULL,
+  reason_codes_json TEXT NOT NULL,
+  evidence_refs_json TEXT NOT NULL,
+  capacity_eligible INTEGER NOT NULL,
+  position_monitor INTEGER NOT NULL,
+  lifecycle_hash TEXT NOT NULL UNIQUE,
+  schema_version TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_s2_candidate_lifecycle_episode
+  ON s2_candidate_lifecycle_receipts (candidate_episode_id, transition_timestamp);
+
+CREATE TABLE IF NOT EXISTS s2_candidate_reentry_receipts (
+  reentry_receipt_id TEXT PRIMARY KEY,
+  symbol TEXT NOT NULL,
+  previous_episode_id TEXT NOT NULL,
+  new_episode_id TEXT NOT NULL,
+  requalified_decision_id TEXT NOT NULL,
+  reentry_timestamp TEXT NOT NULL,
+  reason_codes_json TEXT NOT NULL,
+  reentry_hash TEXT NOT NULL UNIQUE,
+  schema_version TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_s2_candidate_reentry_symbol
+  ON s2_candidate_reentry_receipts (symbol, reentry_timestamp);
+
 CREATE TABLE IF NOT EXISTS s2_strategy_ordering_receipts (
   ordering_receipt_id TEXT PRIMARY KEY,
   market_date TEXT NOT NULL,
