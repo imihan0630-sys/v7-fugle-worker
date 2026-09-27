@@ -1,8 +1,10 @@
 import assert from "node:assert/strict";
+import { webcrypto } from "node:crypto";
 import {
   canonicalJson,
   classifyActualFormalState,
   buildImmutableDecisionStateParent,
+  buildSha256ImmutableDecisionStateParent,
   compareImmutableParent,
 } from "./immutable_decision_state_parent_v0_1.mjs";
 
@@ -179,3 +181,25 @@ console.log(JSON.stringify({
   conflict:compareImmutableParent(selected,changedPayload).status,
   generation:compareImmutableParent(selected,nextGeneration).status,
 }));
+
+
+const shaParentA = await buildSha256ImmutableDecisionStateParent({
+  ...base,
+  decisionCutoffAt:"2026-09-29T16:00:00+08:00",
+  actualDecision:selectedDecision,
+},webcrypto);
+const shaParentB = await buildSha256ImmutableDecisionStateParent({
+  ...base,
+  decisionCutoffAt:"2026-09-29T08:00:00Z",
+  capturedAt:"2026-09-29T08:00:01Z",
+  createdAt:"2026-09-29T08:00:02Z",
+  actualDecision:selectedDecision,
+},webcrypto);
+
+assert.equal(shaParentA.parentDecisionReceiptId,shaParentB.parentDecisionReceiptId);
+assert.equal(shaParentA.semanticFingerprint,shaParentB.semanticFingerprint);
+assert.equal(shaParentA.decisionCutoffAt,"2026-09-29T08:00:00.000Z");
+assert.equal(shaParentA.capturedAt,"2026-09-29T08:00:01.000Z");
+assert.match(shaParentA.parentDecisionReceiptId,/^[0-9a-f]{64}$/);
+assert.match(shaParentA.semanticFingerprint,/^[0-9a-f]{64}$/);
+assert.equal(shaParentA.hashAlgorithmVersion,"SHA256_UTF8_V0_1");
