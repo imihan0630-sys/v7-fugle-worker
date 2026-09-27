@@ -19314,3 +19314,111 @@ A weighted “failure score” would create many free parameters and make post-h
 9. Pre-register failure precursor groups F1-F5 without combining them into a score.
 10. Keep primary hypothesis budget compact; every new named pattern should map into an existing latent/topology family where possible.
 11. Formal Core remains LOCKED. No ranking, thresholds, capital, execution, monitoring or push changes without mature evidence + explicit owner approval.
+
+
+## DL-002CI — Bry-Boschan Is Backward-Looking: Confirmation Delay Must Be Explicit
+
+### Critical methodological issue
+Bry-Boschan-style turning-point detection identifies local peaks/troughs using surrounding observations and duration/censoring rules.
+Modern applications explicitly note that confirming a turning point at time t requires future observations after t.
+
+Therefore a Bry-Boschan turning point has at least two dates:
+- pivotAt: date of the local extreme,
+- confirmedAt: later date when enough future observations exist to confirm it.
+
+### Implication for the 2026 Taiwan HS evidence
+The finding that strict BB alignment improves HS event performance is valuable as a pattern-quality result.
+It does NOT justify using ex-post BB labels as if the turning points were known on pivotAt.
+
+### DL-002 implementation rule
+For any BB-style detector:
+- store pivotAt,
+- store confirmedAt,
+- store confirmationLagBars,
+- selection-time usage allowed only if confirmedAt <= scanDate.
+
+### Two-sided filter prohibition
+Any smoothing/filter that uses future observations around date t is allowed only for:
+- ex-post descriptive labeling,
+- never for a historical as-of-date predictor.
+
+If a BB implementation uses two-sided windows/filters, its signal date is the confirmation date, not the historical pivot date.
+
+### Comparison with Directional Change
+Directional Change:
+- confirms after a threshold reversal,
+- naturally provides event confirmation time.
+
+Bry-Boschan:
+- confirms local extrema via surrounding-window/duration logic,
+- may provide cleaner topology but also later confirmation.
+
+Research should compare:
+- quality gain,
+- confirmation delay,
+- missed early-entry opportunity.
+
+### New outcome
+TURNING_POINT_QUALITY_VS_LATENCY:
+Does cleaner turning-point confirmation improve false-pattern filtering enough to offset later observability?
+
+This is directly relevant to Pattern Maturity design.
+
+## DL-002CJ — Detection Latency as a First-Class Cost
+
+### Problem
+A detector can look excellent in an ex-post chart but become useless if it confirms too late.
+
+### Fields
+- pivotToConfirmBars
+- patternStartToMaturityBars
+- maturityToPivotReadyBars
+- pivotReadyToBreakoutBars
+- percentOfMoveElapsedAtConfirmation
+- priceDistanceFromPivotAtConfirmation
+- remainingUpsideProxyAtConfirmation
+
+### Compare detectors
+For DC, BB, and rule-shape agreement:
+- false-pattern rate,
+- confirmation lag,
+- MFE remaining after confirmation,
+- entry-zone reach,
+- missed-breakout rate.
+
+### Principle
+The best detector is not the one with the cleanest historical chart.
+It is the detector with the best tradeoff between:
+- topology quality,
+- timeliness,
+- incremental outcome information.
+
+## DL-002CK — Historical Extremeness Must Be Point-in-Time and Horizon-Aware
+
+### 2026 Taiwan HS paper
+The head percentile measures how extreme the detected head is relative to the stock’s own historical price distribution available before/at detection.
+
+### Research design
+Store multiple pre-registered horizons rather than one full-history number:
+- percentile252
+- percentile504
+- percentileAllAvailable
+
+Reason:
+- all-history percentile can be dominated by ancient price regimes,
+- 1y/2y percentiles may better represent current economic regime,
+- but choosing the best horizon after outcomes would be data snooping.
+
+### Corporate-action rule
+Use adjusted morphology prices for historical percentile continuity.
+Retain raw price separately for actual executable levels.
+
+### New interaction
+For reversal families:
+- low historical percentile may strengthen reversal context.
+
+For continuation families:
+- very high percentile may mean either leadership or late-stage extension.
+
+Therefore percentile is family-dependent context, not a universal quality score.
+
