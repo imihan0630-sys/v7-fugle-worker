@@ -85,6 +85,14 @@ A missing bundle on an official non-trading day is a legitimate skip.
 
 Even complete coverage still does not authorize the exact clock.
 
+## A5 candidate-boundary integrity
+
+A5_QUARTERLY_FINANCIALS remains a periodic required dependency rather than a same-session latency constraint.
+
+The daily evidence first computes the candidate from A1 TWSE + A1 TPEx + B2, then requires A5 `firstReadyAt <= candidateTimestamp`. If A5 is first observed later, the date stays visible but `requiredReady=false` and cannot count toward readiness.
+
+Aggregation preserves `a5BoundaryFailureDates`; the owner-review packet exposes them explicitly and blocks with `A5_NOT_AVAILABLE_BY_CANDIDATE`.
+
 ## Readiness calculation
 
 The selected promotion-grade daily evidence rows are passed unchanged to:
