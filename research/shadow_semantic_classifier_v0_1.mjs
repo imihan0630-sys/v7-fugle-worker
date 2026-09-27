@@ -76,8 +76,23 @@ export function classifyShadowSemanticPopulation({scanDate,decisionStates=[]}={}
   }
 
   for(const pool of SHADOW_SEMANTIC_POOLS) {
-    const ranked=rows.filter(row=>row.pool===pool && row.formalOk===true).sort(compareDecisionState);
+    const poolRows=rows.filter(row=>row.pool===pool && row.formalOk===true);
+    const poolInputsComplete=poolRows.every(rankingInputsComplete);
+    const ranked=poolRows.slice().sort(compareDecisionState);
     ranked.forEach((row,index)=>{row.observedPoolRank=index+1;});
+
+    // Exact absolute pool ranks are a joint property. If even one Formal-qualified
+    // competitor has an incomplete comparator tuple, its unknown value can move
+    // ahead of otherwise complete rows. Therefore no row in that pool may claim
+    // an exact formalPoolRank until the whole qualified pool is comparator-complete.
+    if(!poolInputsComplete){
+      for(const row of ranked){
+        row.rankCertification="POOL_RANK_INPUT_INCOMPLETE";
+        row.formalPoolRank=null;
+        row.tieGroupSize=null;
+      }
+      continue;
+    }
 
     let start=0;
     while(start<ranked.length){
@@ -87,17 +102,13 @@ export function classifyShadowSemanticPopulation({scanDate,decisionStates=[]}={}
       const tieGroupSize=group.length;
       const ordinals=group.map(validPreSortOrdinal);
       const ordinalSet=new Set(ordinals.filter(v=>v!==null));
-      const completeInputs=group.every(rankingInputsComplete);
       const tieLineageCertified=tieGroupSize===1 || (
         ordinals.every(v=>v!==null) && ordinalSet.size===tieGroupSize
       );
 
       for(const row of group){
         row.tieGroupSize=tieGroupSize;
-        if(!completeInputs){
-          row.rankCertification="RANKING_INPUT_INCOMPLETE";
-          row.formalPoolRank=null;
-        }else if(!tieLineageCertified){
+        if(!tieLineageCertified){
           row.rankCertification="TIE_LINEAGE_UNKNOWN";
           row.formalPoolRank=null;
         }else{
@@ -117,7 +128,7 @@ export function classifyShadowSemanticPopulation({scanDate,decisionStates=[]}={}
     }
   }
 
-  const rankQuality={CERTIFIED:0,TIE_LINEAGE_UNKNOWN:0,RANKING_INPUT_INCOMPLETE:0,NOT_FORMAL_OK:0};
+  const rankQuality={CERTIFIED:0,TIE_LINEAGE_UNKNOWN:0,POOL_RANK_INPUT_INCOMPLETE:0,NOT_FORMAL_OK:0};
   for(const row of rows){
     if(row.formalOk!==true) rankQuality.NOT_FORMAL_OK+=1;
     else if(row.rankCertification in rankQuality) rankQuality[row.rankCertification]+=1;
@@ -129,7 +140,7 @@ export function classifyShadowSemanticPopulation({scanDate,decisionStates=[]}={}
     rows,
     counts:{total:rows.length,byMembership,byPool,rankQuality},
     comparatorVersion:"PRIORITY_RR_CONSENSUS_SETUP_SECTOR_RS_7_5_30",
-    tieLineagePolicy:"Formal comparator has no symbol fallback. Exact comparator ties require unique preSortOrdinal to certify replay rank; otherwise formalPoolRank is UNKNOWN/null.",
+    tieLineagePolicy:"Exact pool rank requires comparator-complete qualified pool. Formal comparator has no symbol fallback; exact comparator ties additionally require unique preSortOrdinal. Otherwise formalPoolRank is UNKNOWN/null.",
     researchOnly:true,
     decisionImpact:false,
     formalCoreImpact:false
