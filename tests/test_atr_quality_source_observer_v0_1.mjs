@@ -33,7 +33,7 @@ function bars(n=65){
   assert.equal(o.deployed.atrPercent,11.8);
   assert.equal(o.deployed.upperFail,true);
   const cf=compareAtrToCloseFallback(h);
-  assert.equal(cf.atrPercent,1.8);
+  assert.ok(Math.abs(cf.atrPercent-1.8)<1e-12);
   assert.equal(cf.pass,true);
 }
 
