@@ -185,8 +185,4 @@ jobs:
         uses: actions/checkout@v5
 
       - name: Reassert isolated research schedule
-        shell: bash
-        run: |
-          set -euo pipefail
-          ! grep -Eiq 'CLOUDFLARE|SYSTEM2_DB|wrangler[[:space:]]+(deploy|delete)|d1[[:space:]]+(create|execute)|SYSTEM2_CAPTURE_ENABLED[[:space:]]*=[[:space:]]*true|fugle-test|V7_DB|STOCKS_KV'             .github/workflows/system2-prospective-clock-evidence-readonly.yml
-          echo "Scheduled research measurement isolation PASS"
+        run: node system2/tests/prospective_clock_schedule_guard.test.mjs
