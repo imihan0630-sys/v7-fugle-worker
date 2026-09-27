@@ -5,6 +5,9 @@ on:
     paths:
       - "research/shadow_semantic_classifier_v0_1.mjs"
       - "tests/test_shadow_semantic_classifier_v0_1.mjs"
+      - "tests/test_shadow_semantic_sampler_v0_2.mjs"
+      - "tests/test_shadow_semantic_sampler_stratum_quality_v0_3.mjs"
+      - "research/shadow_semantic_sampler_stratum_quality_v0_1.json"
       - ".github/workflows/research-shadow-semantic-classifier.yml"
   workflow_dispatch:
 
@@ -17,4 +20,4 @@ jobs:
         with:
           node-version: "20"
       - name: Run research-only semantic classifier tests
-        run: node tests/test_shadow_semantic_classifier_v0_1.mjs
+        run: node tests/test_shadow_semantic_classifier_v0_1.mjs && node tests/test_shadow_semantic_sampler_v0_2.mjs && node tests/test_shadow_semantic_sampler_stratum_quality_v0_3.mjs
