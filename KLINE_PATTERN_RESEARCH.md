@@ -20782,3 +20782,160 @@ Each named pattern still requires its own incremental validation.
 If a named pattern fails, that does NOT prove all price-path information is useless.
 Its primitives or other nonlinear geometry may still contain information.
 
+
+
+## DL-002DQ — Formal 15m Volume Baseline Creates an Early-Session Observability Gate
+
+### Direct source-code finding
+Current buildBar(frame) computes 15m/10m volumeRatio only when five PRIOR bars exist:
+- index >= 5,
+- avg5Volume = previous 5 bars,
+- volumeRatio = current volume / avg5Volume.
+
+Current B breakout confirmation requires:
+- close >= breakout*1.003,
+- volumeRatio != null,
+- volumeRatio >= 1.3,
+- strongClose,
+- upperShadowRatio < 0.45.
+
+Therefore the first five completed bars of the day can never satisfy the Formal B breakout-volume condition because volumeRatio is null.
+
+### Timing implication for 15m
+Assuming normal 09:00 session-aligned 15m bars:
+- bars 1-5 cannot have 5-bar baseline,
+- bar 6 is the first bar with volumeRatio.
+
+This creates an explicit early-session observability/eligibility delay for B breakout confirmation.
+
+A pullback A can be delayed further because the BUY path uses:
+- previous bar volumeRatio <= 0.9,
+- then latest higher-low/turn-up confirmation.
+
+### Why this may matter
+Taiwan intraday research documents strong time-of-day seasonality:
+- opening volume/volatility is unusually high,
+- informative trading is concentrated near open in older samples.
+
+Thus the first usable trailing-5 baseline can itself contain high opening volume, potentially making a later-morning 1.3x “attack volume” threshold harder to reach.
+
+### This is NOT yet a flaw conclusion
+Possible benefits:
+- naturally filters noisy opening bursts,
+- requires enough intraday history before acting,
+- may reduce false breakouts.
+
+Possible costs:
+- misses strong early breakouts,
+- contributes to sparse BUY signals,
+- trailing-5 baseline has time-of-day composition bias.
+
+Both must be measured.
+
+### Status
+HIGH_PRIORITY_EXECUTION_RESEARCH_CANDIDATE.
+No Formal change.
+
+## DL-002DR — Intraday Time-of-Day Normalized Volume Research
+
+### Problem
+Raw trailing-5 volume ratio compares a bar with the immediately preceding 75 minutes (for 15m), but intraday expected volume is not stationary across the session.
+
+### Alternative research baselines
+Do NOT replace Formal baseline.
+Replay alternatives descriptively:
+
+A. CURRENT_TRAILING5
+- existing Formal definition.
+
+B. SAME_SLOT_HISTORY
+- current 15m volume / median or mean volume for the same clock-time slot over prior N trading days.
+
+C. INTRADAY_PARTICIPATION
+- current cumulative/slot volume relative to stock-specific historical participation curve.
+
+D. HYBRID
+- trailing-5 abnormality + same-slot abnormality.
+
+### Pre-registration
+Use a small fixed family, not many N values.
+Candidate history windows can be frozen before outcomes, e.g.:
+- 20 prior trading days as primary,
+- 60 as robustness,
+not outcome-optimized.
+
+### Fields
+- trailing5VolumeRatio
+- sameSlotVolumeRatio20
+- sameSlotVolumeRatio60
+- timeOfDayExpectedVolume
+- volumeSurpriseSameSlot
+- barSlotIndex
+- minutesFromOpen
+
+### Key questions
+1. How often does existing B reject an otherwise qualifying breakout solely because trailing5 volume <1.3?
+2. Are those rejected bars abnormal vs same-time historical baseline?
+3. Does same-slot normalization improve R01/D5/MFE without increasing false breakouts?
+4. Does it materially increase BUY coverage?
+5. Are effects concentrated in early session?
+
+### Formal-change gate
+Any actual modification to the >=1.3 rule/baseline is Class C and requires owner approval after mature evidence.
+
+## DL-002DS — Early Breakout Opportunity-Cost Cohort
+
+### Cohort
+Historical/as-of plans where price makes first valid pivot/breakout attempt before Formal 15m volumeRatio becomes available.
+
+Classify:
+EARLY_BREAKOUT_CONTINUES
+- never gives Formal later retest entry yet produces large MFE.
+
+EARLY_BREAKOUT_RETESTS_LATER
+- early move later returns and Formal can enter.
+
+EARLY_BREAKOUT_FAILS
+- opening/early move reverses.
+
+EARLY_BREAKOUT_NEUTRAL
+
+### Outcomes
+- firstBreakoutTime
+- firstFormalVolumeAvailableTime
+- MFE before Formal eligibility
+- MAE
+- laterRetestAvailable
+- eventualFormalReplaySignal
+- D1/D3/D5
+- R01
+
+### Research purpose
+Quantify the exact tradeoff:
+opening-noise protection vs missed early continuation.
+
+This directly relates to the current BUY-sparsity research funnel.
+
+## DL-002DT — Current Pullback-A Intraday Volume Delay
+
+### Current rule path
+A BUY can require:
+- previous entered buy zone,
+- previous held,
+- previous volumeRatio <= 0.9,
+- previous reversal/strong close,
+- latest higher low,
+- latest turn-up.
+
+Because previous volumeRatio needs its own 5 prior bars, a fully qualified A sequence cannot generally occur in the earliest bars.
+
+### Research questions
+- earliest possible A BUY by clock time under current data construction,
+- distribution of actual/counterfactual A signal time,
+- missed early reversal MFE,
+- false signals avoided by waiting.
+
+### No assumption
+Later confirmation may be desirable.
+The issue is to measure, not loosen.
+
