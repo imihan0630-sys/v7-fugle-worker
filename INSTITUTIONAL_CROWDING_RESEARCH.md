@@ -318,3 +318,56 @@ They do, however, strongly falsify a naive assumption that institutional/crowdin
 6. Treat TDCC concentration separately from institutional cash flow in interpretation.
 7. Prepare a separate Class-B proposal only if preserving dealer proprietary/hedge and foreign-dealer splits prospectively is justified; do not modify the shared parser autonomously.
 8. Only after robust incremental evidence may a Class-C institutionalScore reformulation be surfaced to the owner. No weight tuning before that.
+
+
+## IC-021 — TWSE/TPEx institutional-flow unit parity verified
+
+Fresh parser + first-party exchange audit closes one potential cross-market unit risk.
+
+### TWSE
+Current parser reads fields explicitly named:
+- 外陸資買賣超**股數**(不含外資自營商);
+- 外資自營商買賣超**股數**;
+- 投信買賣超**股數**;
+- 自營商買賣超**股數**;
+- 三大法人買賣超**股數**.
+
+### TPEx
+Current `dailyTrade` 24-column table structure is:
+- indexes 8/9/10 = 外資及陸資 aggregate buy / sell / net **股數**;
+- indexes 11/12/13 = 投信 buy / sell / net **股數**;
+- indexes 20/21/22 = 自營商 aggregate buy / sell / net **股數**;
+- index 23 = 三大法人買賣超**股數合計**.
+
+Current parser uses exactly:
+- foreignNet = row[10];
+- trustNet = row[13];
+- dealerNet = row[22];
+- institutionTotalNet = row[23].
+
+The existing validation also requires:
+`foreignNet + trustNet + dealerNet == institutionTotalNet`
+for every normalized stock.
+
+### Score denominator compatibility
+
+Formal net-intensity component divides:
+`institutionTotalNet / (avgVolume20Lots * 1000)`.
+
+Since:
+- institutionTotalNet is raw shares;
+- avgVolume20Lots is lots and ×1000 converts to shares;
+
+the ratio is shares / shares on both TWSE and TPEx.
+
+Decision:
+`INSTITUTION_FLOW_UNIT_PARITY = MATERIAL_PASS`.
+
+Do NOT create a market-specific 1000x correction.
+Any observed TWSE/TPEx institutional-score difference must be investigated through actor composition, liquidity/size, source coverage or market structure rather than assumed unit mismatch.
+
+Remaining semantic issues are unchanged:
+- foreign-main vs foreign-dealer are collapsed;
+- dealer proprietary vs hedge are collapsed;
+- flow is not holdings;
+- actor effect remains regime/state dependent.
