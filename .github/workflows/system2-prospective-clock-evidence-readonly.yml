@@ -1,0 +1,192 @@
+name: System2 Prospective Clock Evidence Read-only
+
+on:
+  schedule:
+    - cron: "25 5 * * 1-5"
+  workflow_dispatch:
+    inputs:
+      market_date:
+        description: "Same-day Taiwan market date only (YYYY-MM-DD); blank = today Asia/Taipei"
+        required: false
+        default: ""
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-prospective-clock-evidence
+  cancel-in-progress: false
+
+jobs:
+  calendar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      market_date: ${{ steps.date.outputs.market_date }}
+      expected_trading_day: ${{ steps.calendar.outputs.expected_trading_day }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Resolve same-Taipei-date only
+        id: date
+        env:
+          INPUT_MARKET_DATE: ${{ inputs.market_date }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          TODAY="$(TZ=Asia/Taipei date +%F)"
+          MARKET_DATE="${INPUT_MARKET_DATE:-$TODAY}"
+          test "$MARKET_DATE" = "$TODAY"
+          echo "market_date=$MARKET_DATE" >> "$GITHUB_OUTPUT"
+
+      - name: Official TWSE trading-day gate
+        id: calendar
+        shell: bash
+        env:
+          MARKET_DATE: ${{ steps.date.outputs.market_date }}
+        run: |
+          set -euo pipefail
+          node system2/scripts/check_twse_trading_day_readonly.mjs             --market-date "$MARKET_DATE"
+
+  daily_arrival:
+    needs: calendar
+    if: ${{ needs.calendar.outputs.expected_trading_day == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Poll A1 daily-gate sources prospectively
+        env:
+          MARKET_DATE: ${{ needs.calendar.outputs.market_date }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p system2/artifacts
+          node system2/scripts/measure_source_arrival_readonly.mjs             --market-date "$MARKET_DATE"             --attempts 30             --interval-seconds 300             --expected-trading-day true             --stop-when-daily-gate-ready true             --output "system2/artifacts/source-arrival-${MARKET_DATE}.json"
+
+      - name: Upload A1 prospective artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: system2-a1-arrival-${{ needs.calendar.outputs.market_date }}-${{ github.run_id }}
+          path: system2/artifacts/source-arrival-*.json
+          if-no-files-found: error
+          retention-days: 90
+
+  required_dependencies:
+    needs: calendar
+    if: ${{ needs.calendar.outputs.expected_trading_day == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Poll A5 and B2 dependency observers prospectively
+        env:
+          MARKET_DATE: ${{ needs.calendar.outputs.market_date }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p system2/artifacts
+          node system2/scripts/measure_required_dependency_series_readonly.mjs             --market-date "$MARKET_DATE"             --expected-trading-day true             --attempts 30             --interval-seconds 300             --output "system2/artifacts/required-dependency-series-${MARKET_DATE}.json"
+
+      - name: Upload A5/B2 prospective artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: system2-required-dependencies-${{ needs.calendar.outputs.market_date }}-${{ github.run_id }}
+          path: system2/artifacts/required-dependency-series-*.json
+          if-no-files-found: error
+          retention-days: 90
+
+  bundle:
+    needs: [calendar, daily_arrival, required_dependencies]
+    if: ${{ needs.calendar.outputs.expected_trading_day == 'true' && needs.daily_arrival.result == 'success' && needs.required_dependencies.result == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Download A1 artifact
+        uses: actions/download-artifact@v5
+        with:
+          name: system2-a1-arrival-${{ needs.calendar.outputs.market_date }}-${{ github.run_id }}
+          path: system2/artifacts/a1
+
+      - name: Download A5/B2 artifact
+        uses: actions/download-artifact@v5
+        with:
+          name: system2-required-dependencies-${{ needs.calendar.outputs.market_date }}-${{ github.run_id }}
+          path: system2/artifacts/dependencies
+
+      - name: Build immutable daily clock-evidence bundle
+        env:
+          MARKET_DATE: ${{ needs.calendar.outputs.market_date }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          node system2/scripts/build_decision_clock_daily_bundle.mjs             --source-arrival "system2/artifacts/a1/source-arrival-${MARKET_DATE}.json"             --dependency-series "system2/artifacts/dependencies/required-dependency-series-${MARKET_DATE}.json"             --output "system2/artifacts/decision-clock-daily-${MARKET_DATE}.json"
+
+      - name: Publish evidence summary
+        env:
+          MARKET_DATE: ${{ needs.calendar.outputs.market_date }}
+        shell: bash
+        run: |
+          node - <<'NODE'
+          const fs=require("node:fs");
+          const p=`system2/artifacts/decision-clock-daily-${process.env.MARKET_DATE}.json`;
+          const b=JSON.parse(fs.readFileSync(p,"utf8"));
+          const e=b.evidence;
+          const lines=[
+            "## System 2 prospective decision-clock evidence",
+            "",
+            `- Market date: ${e.marketDate}`,
+            `- Required evidence ready: ${e.requiredReady}`,
+            `- Precision eligible: ${e.precisionEligible}`,
+            `- Worst required upper bound minutes after close: ${e.worstObservedRequiredUpperBoundMinutes ?? "—"}`,
+            `- Research candidate time: ${e.candidateTaipeiTime ?? "—"}`,
+            "- Authorized decision clock: false",
+            "- System2 Worker capture enabled: false",
+            "- System2 Worker Cron changed: false",
+            "- System1 runtime used: false",
+          ];
+          fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY,lines.join("\n")+"\n");
+          NODE
+
+      - name: Upload immutable daily evidence bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: system2-decision-clock-daily-${{ needs.calendar.outputs.market_date }}-${{ github.run_id }}
+          path: system2/artifacts/decision-clock-daily-*.json
+          if-no-files-found: error
+          retention-days: 90
+
+  safety:
+    needs: calendar
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Reassert isolated research schedule
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -Eiq 'CLOUDFLARE|SYSTEM2_DB|wrangler[[:space:]]+(deploy|delete)|d1[[:space:]]+(create|execute)|SYSTEM2_CAPTURE_ENABLED[[:space:]]*=[[:space:]]*true|fugle-test|V7_DB|STOCKS_KV'             .github/workflows/system2-prospective-clock-evidence-readonly.yml
+          echo "Scheduled research measurement isolation PASS"
