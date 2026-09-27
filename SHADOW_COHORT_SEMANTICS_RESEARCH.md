@@ -147,3 +147,30 @@ Until control estimand is frozen:
 - older BROAD_CONTROL rows should not be silently rewritten.
 
 A versioned membership/quality overlay is the safe correction path.
+
+
+## SC-SAMPLE-002 — UNKNOWN stratum is not a valid sampling bucket
+
+The v0.2 sampler correctly moved sampling after semantic population freeze, but its first implementation still converted missing stratum values to the literal string `UNKNOWN` and sampled that bucket.
+
+That is not promotion-grade semantics. Missing `pool`, `nearestChannel` or `checkPattern` is evidence insufficiency, not a valid research stratum.
+
+The Class-A sampler now preserves two quantities separately:
+- `semanticPopulationCount`: every semantic member, including unresolved strata;
+- `validStratumPopulationCount`: only rows whose preregistered stratum values are valid.
+
+Invalid rows:
+- remain visible in `invalidStratumRows`;
+- carry field-level reasons;
+- are excluded from hash sampling;
+- force `samplingFrameComplete=false`.
+
+For Near-miss the valid contracts are:
+`pool ∈ {GENERAL, THOUSAND}`,
+`nearestChannel ∈ {A, B, TIE}`,
+and `checkPattern = A:[01]{6}|B:[01]{6}`.
+
+This prevents UNKNOWN from being silently converted into a sampled cohort while still preserving the full denominator.
+
+Status:
+`UNKNOWN_STRATUM_SAMPLING_BIAS_CONFIRMED / FRAME_COMPLETENESS_FAIL_CLOSED / FORMAL_UNCHANGED`.
