@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "PORTFOLIO_RISK_SHADOW_JOURNAL_GENERATION_ALIGNMENT_V0_1",
+  "observedAt": "2026-09-27T20:33:00+08:00",
+  "evidence": {
+    "researchSnapshotIdentity": [
+      "scanDate",
+      "symbol",
+      "schemaVersion",
+      "ranking definition/comparator versions"
+    ],
+    "shadowPersistenceKey": "PRIMARY KEY(scan_date,symbol)",
+    "shadowProvenance": [
+      "capturedAtSelection",
+      "shadowOnly",
+      "noForwardFill"
+    ],
+    "missingSharedImmutableIdentity": [
+      "scanGeneration",
+      "planInstanceId",
+      "decisionFingerprint shared with trade journal"
+    ],
+    "tradeJournalRole": "immutable plan-time allocation/stop ledger used by Portfolio Risk Tier-A reconstruction"
+  },
+  "risk": "A same-date rerun or asymmetric write/update can leave Shadow score provenance and journal allocation rows with matching scanDate+symbol but no cryptographic/immutable proof they came from the same decision generation.",
+  "safeScope": {
+    "allowed": "Within-Shadow prospective PriorityScore ranking/component analysis that does not require journal allocation join, subject to its existing cohort/coverage rules.",
+    "guarded": "Cross Shadow↔trade-journal sizing attribution and any promotion claim that depends on score provenance being the exact generator of the persisted allocation.",
+    "forbidden": "Treat scanDate+symbol equality alone as shared-generation proof for Formal promotion."
+  },
+  "engineering": {
+    "classA": "Document/classify generation certainty using existing fields.",
+    "classBProposal": "Add a shared immutable scan generation / decision fingerprint to both research snapshot and journal plan persistence, with exact-date readback and mismatch fail-closed.",
+    "classC": "No Formal decision behavior change is implied or authorized."
+  },
+  "status": "CROSS_STORE_GENERATION_ALIGNMENT_UNCERTIFIED / WITHIN_SHADOW_RESEARCH_CONTINUES / SIZING_PROMOTION_GUARDED",
+  "formalCoreImpact": false
+}
