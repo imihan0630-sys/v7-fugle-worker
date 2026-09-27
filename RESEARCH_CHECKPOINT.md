@@ -1458,3 +1458,15 @@ Updated: 2026-09-27 11:30 Asia/Taipei.
 - Research firewall and Class-B evidence proposal were extended with population-scope compatibility and materiality boundaries. No existing purged holdout, multiple-testing or anti-overfit protections were weakened.
 - Status: `PROMOTION_LABELS_OVERSTATE_CURRENT_ESTIMANDS / EVIDENCE_SCOPE_GUARDS_FROZEN / FORMAL_CORE_UNCHANGED`.
 - Exact next: audit the Formal funnel diagnostics (`baseEligible`, `rrEligible`, condition distributions and exclusion counts) against the actual fail-fast semantics. Freeze explicit denominator/transition names so candidate-scarcity research does not treat stage counters as independent or complete gate effects.
+
+
+## B-209 — Formal funnel diagnostic semantics (2026-09-27 12:10 Asia/Taipei)
+- Continued from B-208. Concurrent main commits had already completed the requested funnel audit, so they were incorporated rather than repeated.
+- baseEligible is the count crossing the early admission boundary through chip-data availability; it is not an independent all-base-gates pass count. rrEligible is conditional on surviving every intervening gate and RR>=2; it is not an independently evaluated RR pass count.
+- conditionDistribution describes A/B technical checks inside the basePassed population, not only rows that actually reached the setup gate in Formal order.
+- Top-level diagnostics include all price levels, including thousand stocks. thousandStockPool is a subset report evaluated again; the two reports are not additive. generalTop is quota-capped and is not the full GENERAL qualified denominator.
+- Durable main evidence: research/formal_funnel_counter_semantics_falsification_v0_1.json at 15551e2600aee4b47ff43a3479480e2c3120a954, with semantic follow-ups 0fac925add12f4318b798139c92a787b377582af and 3859d0c03bfbd7c48919c857a599415aafeb7a92.
+- Existing readiness-quality evidence was also incorporated: coverage readiness, evidence-quality eligibility and promotion eligibility must remain separate; unresolved quality is UNKNOWN and blocks only affected experiment interpretation.
+- Gate-overlap successor is frozen conceptually as PASS/FAIL/UNKNOWN/NOT_EVALUABLE on same-scan data, preserving original Formal result and first failure. Missing data never becomes FAIL. Target unavailable is not RR=0; RR is not evaluable until channel, target, entry and stop are valid. Fundamental quality is not evaluable when the required component count is insufficient.
+- No Formal behavior, threshold, ranking, quota, capital, monitoring, signal or push rule changed. No outcome lookup and no optimization candidate.
+- Exact next: audit whether each overlap input is already present in the immutable same-scan semantic/decision receipt. Missing provenance becomes CAPTURE_GAP/UNKNOWN. If complete with zero new market calls, prepare isolated Class-A observer tests; shared persistence/runtime work remains Class-B proposal-first.
