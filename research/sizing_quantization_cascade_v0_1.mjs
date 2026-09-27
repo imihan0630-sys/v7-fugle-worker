@@ -16,7 +16,8 @@ export function sizingQuantizationCascade(plans=[],totalCapital,opts={}){
     totalAllocation:n(p?.totalAllocation??p?.total_allocation),
     buyHigh:n(p?.buyHigh??p?.buy_high),
     firstShares:n(p?.firstShares??p?.first_shares),
-    secondShares:n(p?.secondShares??p?.second_shares)
+    secondShares:n(p?.secondShares??p?.second_shares),
+    stop:n(p?.stop)
   }));
   if(!rows.length||rows.some(x=>!x.symbol||x.priorityScore===null||x.priorityScore<=0||x.totalAllocation===null||x.totalAllocation<0||x.buyHigh===null||x.buyHigh<=0||!Number.isInteger(x.firstShares)||x.firstShares<0||!Number.isInteger(x.secondShares)||x.secondShares<0)){
     return {status:"UNKNOWN",reason:"INCOMPLETE_PLAN_GEOMETRY"};
@@ -61,7 +62,10 @@ export function sizingQuantizationCascade(plans=[],totalCapital,opts={}){
       previewSuggestedNotionalNTD:round(previewSuggestedNotional,4),
       shareFloorResidualNTD:round(shareFloorResidual,4),
       shareFloorResidualPctOfPlanned:x.totalAllocation>0?round(shareFloorResidual/x.totalAllocation*100,6):null,
-      continuousToPreviewShortfallNTD:round(continuousAllocation-previewSuggestedNotional,4)
+      continuousToPreviewShortfallNTD:round(continuousAllocation-previewSuggestedNotional,4),
+      conservativeStopRiskPct:(x.stop!==null&&x.stop>0&&x.stop<x.buyHigh)?round((x.buyHigh-x.stop)/x.buyHigh*100,6):null,
+      plannedProjectedStopRiskNTD:(x.stop!==null&&x.stop>0&&x.stop<x.buyHigh)?round(x.totalAllocation*((x.buyHigh-x.stop)/x.buyHigh),4):null,
+      previewProjectedStopRiskNTD:(x.stop!==null&&x.stop>0&&x.stop<x.buyHigh)?round(previewSuggestedNotional*((x.buyHigh-x.stop)/x.buyHigh),4):null
     });
   }
 
@@ -73,6 +77,9 @@ export function sizingQuantizationCascade(plans=[],totalCapital,opts={}){
   const continuousCapped=details.reduce((s,x)=>s+x.continuousAllocationNTD,0);
   const planned=details.reduce((s,x)=>s+x.plannedAllocationNTD,0);
   const preview=details.reduce((s,x)=>s+x.previewSuggestedNotionalNTD,0);
+  const plannedRisk=details.map(x=>x.plannedProjectedStopRiskNTD).filter(Number.isFinite);
+  const previewRisk=details.map(x=>x.previewProjectedStopRiskNTD).filter(Number.isFinite);
+  const hhi=xs=>{const total=xs.reduce((a,b)=>a+b,0);return total>0?round(xs.reduce((s,x)=>s+(x/total)**2,0),8):null;};
 
   return {
     status:"READY",researchOnly:true,decisionImpact:false,
@@ -87,6 +94,11 @@ export function sizingQuantizationCascade(plans=[],totalCapital,opts={}){
     totalNominalToPreviewShortfallNTD:round(nominalDeployTarget-preview,4),
     previewUtilizationPctOfPlanned:planned>0?round(preview/planned*100,6):null,
     previewUtilizationPctOfNominalTarget:nominalDeployTarget>0?round(preview/nominalDeployTarget*100,6):null,
+    plannedProjectedStopRiskHHI:plannedRisk.length===details.length?hhi(plannedRisk):null,
+    previewProjectedStopRiskHHI:previewRisk.length===details.length?hhi(previewRisk):null,
+    previewMinusPlannedRiskHHI:(plannedRisk.length===details.length&&previewRisk.length===details.length)?round(hhi(previewRisk)-hhi(plannedRisk),8):null,
+    plannedProjectedStopRiskNTD:plannedRisk.length===details.length?round(plannedRisk.reduce((a,b)=>a+b,0),4):null,
+    previewProjectedStopRiskNTD:previewRisk.length===details.length?round(previewRisk.reduce((a,b)=>a+b,0),4):null,
     details,
     semantics:"PLAN_PREVIEW_GEOMETRY_ONLY. buyHigh share-floor notional is not actual order/fill/deployed capital."
   };
