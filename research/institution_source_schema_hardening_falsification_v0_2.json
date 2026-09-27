@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "INSTITUTION_SOURCE_SCHEMA_HARDENING_FALSIFICATION_V0_2",
+  "researchDate": "2026-09-28",
+  "class": "A_RESEARCH_ONLY",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "priorProposalCorrection": [
+    "Freezing all 24 JSON field strings is insufficient as the primary semantic fingerprint because the official JSON repeats generic buy/sell/net labels and omits the institutional group headers shown in HTML.",
+    "Whole-triplet interior reorder can therefore preserve the exact fields vector."
+  ],
+  "currentOfficialWitness": {
+    "date": "2026-09-24",
+    "rowCount": 896,
+    "rawPayloadSha256": "aede9aa9dbf4dff72a05b241a4e6cff2a3d2d32e5851a7a3b3de726ead18ea99",
+    "semanticArithmeticMismatches": 0,
+    "foreignDealerNonzeroRows": 0
+  },
+  "strongerSemanticFingerprint": [
+    "each seven triplets must satisfy net=buy-sell",
+    "foreign aggregate triplet 8..10 must equal triplets 2..4 + 5..7",
+    "dealer aggregate triplet 20..22 must equal triplets 14..16 + 17..19",
+    "official total row[23] must equal row[4] + row[13] + row[22]",
+    "source/date/status/shape and exact generic field vector remain additional guards"
+  ],
+  "currentParserCompatibilityRisk": [
+    "Current TPEx parser defines foreignNet=row[10] (foreign aggregate).",
+    "Official total semantics use foreign-main/excluding-foreign-dealer row[4] + trust row[13] + dealer aggregate row[22].",
+    "Across 12,823 comparable sampled rows from 2018-2026, the foreign-dealer subgroup is identically zero, so both totals coincide and no production defect is evidenced.",
+    "A synthetic semantically valid row with nonzero foreign-dealer subgroup demonstrates that the current parser-total invariant would fail closed, creating a dormant source-compatibility risk rather than silent corruption."
+  ],
+  "decision": "CURRENT_SAMPLE_PASSES / EXACT_FIELDS_ALONE_FALSIFIED_AS_SCHEMA_GUARD / ARITHMETIC_SEMANTIC_FINGERPRINT_FEASIBLE / FOREIGN_DEALER_NONZERO_COMPATIBILITY_RISK_DORMANT / NO_RUNTIME_CHANGE / NOT_FORMAL_OPTIMIZATION_CANDIDATE"
+}
