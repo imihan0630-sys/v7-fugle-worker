@@ -575,3 +575,34 @@ Current prospective V0.2 trading-date evidence count: 0.
 Earliest ordinary eligible session: 2026-09-29; 2026-09-28 is an official TWSE holiday.
 
 System2 Worker state remains capture=false / Cron=0.
+
+
+## Decision-clock artifact aggregation verification (2026-09-27)
+
+Status: PASS / RESEARCH-ONLY / NO CLOCK AUTHORIZATION / NO WORKER CRON.
+
+Implemented:
+- `SYSTEM2_DECISION_CLOCK_EVIDENCE_AGGREGATION_V0_1.md`;
+- `runtime/decision_clock_evidence_aggregation.mjs`;
+- `scripts/aggregate_decision_clock_artifacts_readonly.mjs`;
+- `.github/workflows/system2-decision-clock-readiness-readonly.yml`;
+- aggregation and workflow-guard tests.
+
+Anti-cherry-picking policy:
+- only scheduled prospective artifacts may contribute to readiness;
+- manual workflow_dispatch artifacts are diagnostics only;
+- if multiple scheduled artifacts exist for one market date, the earliest scheduled run is selected deterministically before inspecting evidence quality;
+- later reruns cannot replace an earlier scheduled artifact because they look more favorable.
+
+Coverage audit:
+- every scheduled-run date is checked against the official TWSE trading-day calendar;
+- official non-trading-day runs without bundles are legitimate skips;
+- an official trading-day scheduled run without a daily bundle becomes `SCHEDULED_TRADING_DAY_ARTIFACT_GAPS` and blocks promotion-grade readiness;
+- aggregation never writes D1 or mutates Worker/Cron.
+
+Verification:
+- initial CI failure was a self-referential workflow-guard fixture: the workflow contained the literal forbidden System1 names only inside its own grep guard. The guard was corrected without weakening runtime isolation;
+- end-to-end local HTTP/ZIP artifact fixture verifies GitHub-run discovery, artifact download, scheduled/manual provenance separation, calendar coverage injection, deterministic selection and report persistence;
+- System2 Research CI run `36324912254`, job `108635698802`: SUCCESS.
+
+No prospective trading-date evidence has been fabricated. Earliest ordinary prospective session remains 2026-09-29.
