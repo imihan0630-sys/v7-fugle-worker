@@ -1,0 +1,445 @@
+{
+  "schemaVersion": "technical-indicator-semantic-basis-v0.1",
+  "updated": "2026-09-27 Asia/Taipei",
+  "researchOnly": true,
+  "decisionImpact": false,
+  "formalCore": "LOCKED",
+  "basis": [
+    {
+      "id": "B1",
+      "name": "RETURN_DISPLACEMENT",
+      "question": "How far has price moved over a stated horizon?",
+      "canonical": [
+        "ret5",
+        "ret10",
+        "ret20",
+        "ret60",
+        "logReturnN"
+      ]
+    },
+    {
+      "id": "B2",
+      "name": "RANGE_LOCATION_EXTREME_RECENCY",
+      "question": "Where is price relative to recent extremes, and how recent were those extremes?",
+      "canonical": [
+        "rollingRangeCloseLocation",
+        "distanceToPriorHighLow",
+        "extremeRecency"
+      ]
+    },
+    {
+      "id": "B3",
+      "name": "SIGNED_RETURN_PATH_BALANCE",
+      "question": "How asymmetric is the recent sequence of gains versus losses?",
+      "canonical": [
+        "smoothedGainLossBalance",
+        "positiveDayRatio",
+        "rsiLikeBalance"
+      ]
+    },
+    {
+      "id": "B4",
+      "name": "FILTERED_TREND_TRANSITION",
+      "question": "What does the path look like after smoothing/filtering, and is filtered trend changing?",
+      "canonical": [
+        "maSlope",
+        "emaSpread",
+        "filteredSlopeChange",
+        "trendCrossState"
+      ]
+    },
+    {
+      "id": "B5",
+      "name": "PATH_EFFICIENCY_TREND_PERSISTENCE",
+      "question": "How directly and persistently did price travel?",
+      "canonical": [
+        "directionalEfficiency",
+        "trendPersistence",
+        "swingProgression",
+        "choppinessTrendiness"
+      ]
+    },
+    {
+      "id": "B6",
+      "name": "VOLATILITY_MAGNITUDE_COMPOSITION",
+      "question": "How variable is price and where does that variability arise?",
+      "canonical": [
+        "volatility20",
+        "atrPct",
+        "bandWidth",
+        "rangeCompression",
+        "yangZhangComponents"
+      ]
+    },
+    {
+      "id": "B7",
+      "name": "OHLC_GAP_CANDLE_GEOMETRY",
+      "question": "How did the session occupy its OHLC envelope and what discontinuity occurred across sessions?",
+      "canonical": [
+        "openCloseReturn",
+        "overnightGap",
+        "wickRatios",
+        "closeLocation",
+        "bodyOverlap",
+        "gapSize"
+      ]
+    },
+    {
+      "id": "B8",
+      "name": "PARTICIPATION_VOLUME",
+      "question": "How much trading participation occurred relative to baseline?",
+      "canonical": [
+        "volume",
+        "turnoverValue",
+        "rvol",
+        "sameSlotRvol",
+        "cumulativeVolumePace",
+        "volumePersistence"
+      ]
+    }
+  ],
+  "relationTypes": [
+    "EXACT_ALIAS",
+    "LINEAR_OR_MONOTONE_RESCALING",
+    "NESTED_TRANSFORM",
+    "WITHIN_BASIS_COMPOSITE",
+    "CROSS_BASIS_COMPOSITE",
+    "ROLE_MISMATCH",
+    "VISUALIZATION_ONLY",
+    "POTENTIAL_DISTINCT_RESIDUAL"
+  ],
+  "indicatorMap": [
+    {
+      "id": "ROC",
+      "basis": [
+        "B1"
+      ],
+      "relation": "EXACT_ALIAS",
+      "aliasOf": "retN",
+      "status": "REJECTED_OR_REDUNDANT"
+    },
+    {
+      "id": "MOMENTUM_NORMALIZED",
+      "basis": [
+        "B1"
+      ],
+      "relation": "LINEAR_OR_MONOTONE_RESCALING",
+      "aliasOf": "retN",
+      "status": "REJECTED_OR_REDUNDANT"
+    },
+    {
+      "id": "KD_STOCHASTIC",
+      "basis": [
+        "B2"
+      ],
+      "relation": "WITHIN_BASIS_COMPOSITE",
+      "status": "PRIMARY_RESEARCH"
+    },
+    {
+      "id": "WILLIAMS_R",
+      "basis": [
+        "B2"
+      ],
+      "relation": "LINEAR_OR_MONOTONE_RESCALING",
+      "aliasOf": "FAST_STOCHASTIC_PERCENT_K",
+      "status": "REJECTED_OR_REDUNDANT"
+    },
+    {
+      "id": "AROON",
+      "basis": [
+        "B2"
+      ],
+      "relation": "WITHIN_BASIS_COMPOSITE",
+      "status": "SECONDARY_COMPARATOR"
+    },
+    {
+      "id": "RSI",
+      "basis": [
+        "B3"
+      ],
+      "relation": "WITHIN_BASIS_COMPOSITE",
+      "status": "PRIMARY_RESEARCH"
+    },
+    {
+      "id": "STOCH_RSI",
+      "basis": [
+        "B2",
+        "B3"
+      ],
+      "relation": "NESTED_TRANSFORM",
+      "status": "LOW_PRIORITY_REDUNDANT"
+    },
+    {
+      "id": "MA_EMA",
+      "basis": [
+        "B4"
+      ],
+      "relation": "WITHIN_BASIS_COMPOSITE",
+      "status": "SYSTEM_NATIVE_PRIMITIVE"
+    },
+    {
+      "id": "MACD",
+      "basis": [
+        "B4"
+      ],
+      "relation": "WITHIN_BASIS_COMPOSITE",
+      "status": "PRIMARY_RESEARCH"
+    },
+    {
+      "id": "PPO",
+      "basis": [
+        "B4"
+      ],
+      "relation": "NESTED_TRANSFORM",
+      "status": "REDUNDANCY_HIGH"
+    },
+    {
+      "id": "TRIX",
+      "basis": [
+        "B4"
+      ],
+      "relation": "NESTED_TRANSFORM",
+      "status": "REDUNDANCY_HIGH"
+    },
+    {
+      "id": "KST",
+      "basis": [
+        "B1",
+        "B4"
+      ],
+      "relation": "NESTED_TRANSFORM",
+      "status": "REDUNDANCY_VERY_HIGH"
+    },
+    {
+      "id": "ADX_DMI",
+      "basis": [
+        "B5",
+        "B6"
+      ],
+      "relation": "CROSS_BASIS_COMPOSITE",
+      "status": "PRIMARY_RESEARCH"
+    },
+    {
+      "id": "EFFICIENCY_RATIO",
+      "basis": [
+        "B5"
+      ],
+      "relation": "WITHIN_BASIS_COMPOSITE",
+      "status": "SECONDARY_RESIDUAL"
+    },
+    {
+      "id": "VHF_CHOPPINESS_RWI",
+      "basis": [
+        "B5",
+        "B6"
+      ],
+      "relation": "WITHIN_BASIS_COMPOSITE",
+      "status": "REDUNDANCY_HIGH"
+    },
+    {
+      "id": "ATR",
+      "basis": [
+        "B6"
+      ],
+      "relation": "WITHIN_BASIS_COMPOSITE",
+      "status": "RISK_NORMALIZER"
+    },
+    {
+      "id": "BOLLINGER_WIDTH",
+      "basis": [
+        "B6"
+      ],
+      "relation": "WITHIN_BASIS_COMPOSITE",
+      "status": "PRIMARY_RESEARCH"
+    },
+    {
+      "id": "PARKINSON_GK_RS_YZ",
+      "basis": [
+        "B6",
+        "B7"
+      ],
+      "relation": "CROSS_BASIS_COMPOSITE",
+      "status": "VOLATILITY_RISK_OWNED"
+    },
+    {
+      "id": "KELTNER_CHANNEL",
+      "basis": [
+        "B4",
+        "B6"
+      ],
+      "relation": "CROSS_BASIS_COMPOSITE",
+      "status": "REJECTED_OR_REDUNDANT_AS_NEW_FAMILY"
+    },
+    {
+      "id": "DONCHIAN_CHANNEL",
+      "basis": [
+        "B2"
+      ],
+      "relation": "WITHIN_BASIS_COMPOSITE",
+      "status": "REJECTED_OR_REDUNDANT_AS_NEW_FACTOR"
+    },
+    {
+      "id": "CCI",
+      "basis": [
+        "B4",
+        "B6",
+        "B7"
+      ],
+      "relation": "CROSS_BASIS_COMPOSITE",
+      "status": "LOW_PRIORITY_REDUNDANCY_HIGH"
+    },
+    {
+      "id": "CANDLESTICK_SAKATA",
+      "basis": [
+        "B7"
+      ],
+      "relation": "WITHIN_BASIS_COMPOSITE",
+      "status": "PATTERN_CANDLE_OWNED"
+    },
+    {
+      "id": "AR_BR_IMI",
+      "basis": [
+        "B7",
+        "B3"
+      ],
+      "relation": "CROSS_BASIS_COMPOSITE",
+      "status": "LOW_PRIORITY_COMPARATOR"
+    },
+    {
+      "id": "OBV",
+      "basis": [
+        "B1",
+        "B8"
+      ],
+      "relation": "CROSS_BASIS_COMPOSITE",
+      "status": "PRICE_VOLUME_COMPARATOR_ONLY"
+    },
+    {
+      "id": "MFI",
+      "basis": [
+        "B3",
+        "B7",
+        "B8"
+      ],
+      "relation": "CROSS_BASIS_COMPOSITE",
+      "status": "PRICE_VOLUME_COMPARATOR_ONLY"
+    },
+    {
+      "id": "KLINGER",
+      "basis": [
+        "B4",
+        "B7",
+        "B8"
+      ],
+      "relation": "CROSS_BASIS_COMPOSITE",
+      "status": "PRICE_VOLUME_OWNED_REDUNDANCY_HIGH"
+    },
+    {
+      "id": "VOLUME_OSCILLATOR",
+      "basis": [
+        "B8"
+      ],
+      "relation": "WITHIN_BASIS_COMPOSITE",
+      "status": "REJECTED_OR_REDUNDANT"
+    },
+    {
+      "id": "VW_MACD",
+      "basis": [
+        "B4",
+        "B8"
+      ],
+      "relation": "CROSS_BASIS_COMPOSITE",
+      "status": "COMPARATOR_ONLY"
+    },
+    {
+      "id": "PARABOLIC_SAR",
+      "basis": [
+        "B4",
+        "B5",
+        "B6"
+      ],
+      "relation": "ROLE_MISMATCH",
+      "status": "POSITION_MANAGEMENT_ONLY"
+    },
+    {
+      "id": "ICHIMOKU",
+      "basis": [
+        "B2",
+        "B4"
+      ],
+      "relation": "CROSS_BASIS_COMPOSITE",
+      "status": "EXPLANATION_ONLY_BY_DEFAULT"
+    },
+    {
+      "id": "HEIKIN_ASHI",
+      "basis": [
+        "B7",
+        "B4"
+      ],
+      "relation": "VISUALIZATION_ONLY",
+      "status": "VISUALIZATION_ONLY"
+    },
+    {
+      "id": "RETURN_VELOCITY_SHIFT_5V20",
+      "basis": [
+        "B1",
+        "B4"
+      ],
+      "relation": "POTENTIAL_DISTINCT_RESIDUAL",
+      "status": "PREREGISTERED_OUTCOME_UNTESTED"
+    },
+    {
+      "id": "EXTREME_RECENCY_20",
+      "basis": [
+        "B2"
+      ],
+      "relation": "POTENTIAL_DISTINCT_RESIDUAL",
+      "status": "SECONDARY_RESIDUAL"
+    },
+    {
+      "id": "PATH_EFFICIENCY_10",
+      "basis": [
+        "B5"
+      ],
+      "relation": "POTENTIAL_DISTINCT_RESIDUAL",
+      "status": "SECONDARY_RESIDUAL"
+    },
+    {
+      "id": "SIGNED_VOLUME_BALANCE20",
+      "basis": [
+        "B1",
+        "B8"
+      ],
+      "relation": "POTENTIAL_DISTINCT_RESIDUAL",
+      "status": "PRICE_VOLUME_OWNED_OUTCOME_UNTESTED"
+    }
+  ],
+  "contextOutsideBasis": [
+    "MARKET_REGIME",
+    "SECTOR_REGIME",
+    "LIQUIDITY",
+    "CORPORATE_ACTION_STATE",
+    "SYMBOL_SESSION_VALIDITY",
+    "PRICE_LIMIT_CONSTRAINT",
+    "PATTERN_LIFECYCLE",
+    "BREAKOUT_ACCEPTANCE_REJECTION",
+    "EVENT_CONTEXT"
+  ],
+  "admissionRules": [
+    "FORMULA_PROVENANCE_REQUIRED",
+    "BASIS_DECOMPOSITION_REQUIRED",
+    "EXACT_ALIAS_REJECT_BEFORE_OUTCOME",
+    "NESTED_TRANSFORM_LOW_PRIORITY_UNLESS_NEW_MECHANISM",
+    "COMPOSITE_REQUIRES_PREREGISTERED_INTERACTION_HYPOTHESIS",
+    "OWNER_REQUIRED",
+    "INCREMENTAL_VALUE_CONTROLS_REQUIRED",
+    "PIT_DATA_FEASIBILITY_REQUIRED",
+    "PROSPECTIVE_EVIDENCE_BUDGET_REQUIRED"
+  ],
+  "primaryEmpiricalQueue": [
+    "KD_VS_RSI",
+    "MACD_VS_DIRECT_TREND",
+    "ADX_VS_DIRECT_TREND_QUALITY",
+    "BOLLINGER_WIDTH_VS_ATR_REALIZED_VOL_VCP"
+  ]
+}
