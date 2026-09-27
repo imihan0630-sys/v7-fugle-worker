@@ -64,7 +64,7 @@ async function d1Query(databaseId, sql, params = []) {
   return rows.flatMap((x) => Array.isArray(x?.results) ? x.results : []);
 }
 
-const tokenVerify = await requestJson(`${origin}/user/tokens/verify`);
+const tokenVerify = await requestJson(`${origin}/accounts/${accountId}/tokens/verify`);
 assert.equal(tokenVerify?.success, true, "dedicated System2 Cloudflare token is invalid");
 
 const listed = await cfAccount("/d1/database?per_page=100");
