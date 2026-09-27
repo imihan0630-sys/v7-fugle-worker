@@ -1568,3 +1568,44 @@ Status:
 `ADD_TRANCHE_PROTOCOL_READY / PRODUCTION_AUDIT_PENDING`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-065 Production result — concentration also survives ADD-only preview
+
+Read-only Production run `36352942937` / job `108714975039` tested 2026-09-18 using only the Formal ADD tranche.
+
+Current PriorityScore sizing:
+- ADD preview notional = NT$66,861.92;
+- ADD projected stop-risk = NT$2,578.20;
+- ADD HHI = 0.3763426432;
+- ADD max/min risk = 2.43024727.
+
+Equal-capital:
+- ADD preview notional = NT$67,155.16;
+- ADD HHI = 0.3557339695.
+
+Exhaustive 946-state ADD-only minimum:
+- allocation = 70k / 42k / 56k;
+- ADD HHI = 0.3342266703.
+
+Thus:
+- current − equal ADD HHI = +0.0206086737;
+- current − global-min ADD HHI = +0.0421159729.
+
+ADD-only HHI is slightly below current full-plan preview HHI:
+0.3763426432 vs 0.3767077818, delta -0.0003651386.
+
+Combined with PR-064, the concentration direction now survives:
+- FIRST-only;
+- ADD-only;
+- FULL preview.
+
+The stage changes the exact HHI slightly but does not reverse the structural result.
+
+Durable receipt:
+`research/add_tranche_risk_production_receipt_20260928.json`.
+
+Status:
+`ADD_TRANCHE_CONCENTRATION_SURVIVES / TRANCHE_STAGE_REVERSAL_FALSIFIED / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
