@@ -250,6 +250,11 @@ export interface StrategyEvaluation {
   readonly missingRequiredFactors: readonly string[];
   readonly thesis?: string;
   readonly invalidationConditions: readonly string[];
+  readonly strategyValidity?: StrategyValidityState;
+  readonly entryReadiness?: EntryReadinessState;
+  readonly sourceReadiness?: "SOURCE_READY" | "SOURCE_LIMITED" | "SOURCE_BLOCKED";
+  readonly shadowSpecId?: string;
+  readonly evaluationMode?: "LIMITED_PROSPECTIVE_SHADOW" | "FULL_SHADOW" | "RESEARCH_REPLAY";
   readonly decisionHash: string;
 }
 
