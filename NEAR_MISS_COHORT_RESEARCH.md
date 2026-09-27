@@ -171,3 +171,37 @@ Status:
 
 Exact next:
 once CI is green, freeze the prospective sampling frame contract: full per-date population counts by pool × nearestChannel × checkPattern must be computed before any bounded sample; sample membership must be separate from semantic membership. Do not implement shared D1 persistence without owner approval.
+
+
+## NM-009 — B candle-shape Hamming dimension is structurally redundant
+
+Fresh algebraic falsification found that the current B `upperShadow` boolean is not an independent pass/fail dimension once `strongClose` passes.
+
+Current feature definitions for positive daily range are:
+- `dailyClosePosition=(close-low)/(high-low)`;
+- `dailyUpperShadowRatio=(high-max(open,close))/(high-low)`.
+
+Because `max(open,close)>=close`, it follows that:
+`dailyUpperShadowRatio <= 1-dailyClosePosition`.
+
+Therefore the existing B thresholds imply:
+`dailyClosePosition>=0.65 => dailyUpperShadowRatio<=0.35`.
+
+Consequences:
+- coherent OHLC data can never produce `strongClose=true, upperShadow=false`;
+- `upperShadow` can never be the only missing B check;
+- 16 of the 64 raw six-bit B masks are structurally impossible;
+- a weak close can fail both booleans and be counted as two Hamming misses even though they share one nested candle-close geometry.
+
+This matters for research distance, not Formal behavior. The six-bit mask remains valuable as exact provenance, but failed-check count must not be treated as six independent dimensions.
+
+A second conditional overlap was also frozen: when `chooseDailySupport` selects one of its filtered candidates, the filter `support<=close*1.015` already implies `close>=support*0.98522...`, so the structure clause `close>=support*0.985` is automatically satisfied. That clause can still bind when the function falls back to unfiltered MA20. Future research therefore needs `supportSource/fallback` provenance before treating the structure margin as independent.
+
+Machine artifact:
+`research/ab_setup_redundancy_falsification_v0_1.json`.
+
+Status:
+`B_CANDLE_DIMENSION_REDUNDANCY_CONFIRMED / HAMMING_DISTANCE_INDEPENDENCE_FALSE / A_SUPPORT_SOURCE_NEEDED / FORMAL_UNCHANGED`.
+
+Exact next:
+freeze a prospective setup sampling-frame contract that counts the complete sequential `SETUP_FIRST_FAILURE` population before sampling, keeps semantic membership separate from sample membership, and preserves exact masks/raw margins without creating a new composite distance.
