@@ -42,7 +42,7 @@ for(const token of [
 ]) assert.ok(patch.includes(token),"V8 signal-journal contract changed: "+token);
 
 const writerPos=patch.indexOf("const journalEvent=await recordTradeJournalSignal");
-const sendPos=patch.indexOf("const outcome = await sendPush(payload, env)");
+const sendPos=patch.indexOf("const outcome = await sendPush(payload, env)",writerPos);
 assert.ok(writerPos>=0&&sendPos>writerPos,"signal journal must be written before push for current evidence semantics");
 
 console.log(JSON.stringify({
