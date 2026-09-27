@@ -118,6 +118,25 @@ foreign/trust/dealer flow, consecutive buying/selling, flow as % turnover, TDCC 
 ### CAPITAL_FLOW
 stock/sector traded value share, capital-flow persistence, concentration, flow acceleration, diffusion/breadth and leadership changes.
 
+#### STATE_OWNED_BANK_FLOW（公股行庫資金流） research factor
+
+Status: OWNER-OBSERVED / RESEARCH_REQUIRED / AUXILIARY_CONTEXT_ONLY / SOURCE_CONTRACT_NOT_READY.
+
+Research purpose:
+- identify possible countercyclical/stabilization flow during broad market stress;
+- distinguish state-owned-bank flow from ordinary institutional conviction;
+- test whether later state-owned-bank selling after a rebound is often normalization/profit-taking rather than company-thesis deterioration.
+
+Initial role:
+CONTEXT_ONLY（僅脈絡） / WARNING_MODIFIER（警告修正） for INSTITUTIONAL_ACCUMULATION（法人累積） and MARKET_REGIME（市場環境）.
+Do not merge into ordinary three-institution score.
+
+Core guard:
+State-owned-bank broker flow does not prove government/National Financial Stabilization Fund beneficial ownership or intent. PUBLIC_FLOW_SUPPORTIVE / PUBLIC_FLOW_COUNTERCYCLICAL / PUBLIC_FLOW_NORMALIZATION_SELL / PUBLIC_FLOW_ALIGNED_SELL / PUBLIC_FLOW_DIVERGENCE are descriptive states only.
+
+Dedicated research contract:
+`system2/SYSTEM2_STATE_OWNED_BANK_FLOW_RESEARCH.md`.
+
 ### EVENT_CATALYST
 material news, new product/capacity/customer certification/orders, shortages, price hikes/cuts, regulation/policy, M&A/corporate actions and event half-life.
 
