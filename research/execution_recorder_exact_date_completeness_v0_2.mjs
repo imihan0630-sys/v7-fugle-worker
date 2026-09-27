@@ -5,6 +5,23 @@ function txt(v){return String(v??"").trim()}
 function arr(v){return Array.isArray(v)?v:[]}
 function uniq(xs){return [...new Set(xs)]}
 
+function classifySerializedExpectedEventKey(key,planSymbol){
+  const parts=txt(key).split("|");
+  if(parts.length<4) return {valid:false,buy:false,reason:"EVENT_KEY_UNPARSABLE"};
+  const outerSymbol=parts[1],eventType=parts[2],inner=parts.slice(3).filter(Boolean);
+  if(outerSymbol!==planSymbol) return {valid:false,buy:false,reason:"EVENT_KEY_OUTER_SYMBOL_MISMATCH"};
+  if(eventType!=="FORMAL_SIGNAL_OBSERVED") return {valid:true,buy:false};
+  if(inner.length===1&&inner[0]==="SIGNAL") return {valid:true,buy:false,genericContext:true};
+  if(!inner.length) return {valid:false,buy:false,reason:"FORMAL_SIGNAL_KEY_EMPTY"};
+  let buy=false;
+  for(const id of inner){
+    const p=id.split(":");
+    if(p.length<5||p[1]!==planSymbol) return {valid:false,buy:false,reason:"SIGNAL_ID_SYMBOL_OR_SHAPE_MISMATCH"};
+    if(p[3]==="BUY") buy=true;
+  }
+  return {valid:true,buy};
+}
+
 export function classifyPlanDayNoBuyCoverage({
   tradeDate,
   planSymbol,
@@ -70,7 +87,9 @@ export function classifyPlanDayNoBuyCoverage({
     const receiptKeys=uniq(arr(r?.expectedEventKeys).map(txt).filter(Boolean));
     for(const k of receiptKeys){
       expectedKeys.push(k);
-      if(k.includes(":BUY:")||k.endsWith("|BUY")||k.includes("|BUY|")) expectedBuy=true;
+      const attribution=classifySerializedExpectedEventKey(k,symbol);
+      if(!attribution.valid){coverageFailure=true;reasons.push(attribution.reason);}
+      if(attribution.buy) expectedBuy=true;
     }
 
     const attempted=Number(r?.attemptedCount);
