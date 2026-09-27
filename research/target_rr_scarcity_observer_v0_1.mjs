@@ -123,6 +123,7 @@ export function classifyTargetRrGradeScarcity({
     return {
       schemaVersion:"target-rr-grade-scarcity-v0.1",
       state:"TARGET_NULL",reward:null,risk,rewardRisk:null,
+      selectedTargetSources:[],
       targetNullReason:geometry?.targetNullReason||"UNKNOWN",
       upstreamFormalGatesObservedPass:Boolean(upstreamFormalGatesObservedPass),
       interpretation:"RR is undefined. Do not coerce TARGET_NULL to RR=0.",
@@ -135,6 +136,7 @@ export function classifyTargetRrGradeScarcity({
     return {
       schemaVersion:"target-rr-grade-scarcity-v0.1",
       state:"LOW_RR",reward,risk,rewardRisk:rr,target,
+      selectedTargetSources:Array.isArray(geometry?.selectedTargetSources)?geometry.selectedTargetSources:[],
       threshold:Number(minRewardRisk),
       upstreamFormalGatesObservedPass:Boolean(upstreamFormalGatesObservedPass),
       researchOnly:true,decisionImpact:false,formalCoreImpact:false
@@ -145,6 +147,7 @@ export function classifyTargetRrGradeScarcity({
     return {
       schemaVersion:"target-rr-grade-scarcity-v0.1",
       state:"RR_PASSED_GRADE_UNKNOWN",reward,risk,rewardRisk:rr,target,
+      selectedTargetSources:Array.isArray(geometry?.selectedTargetSources)?geometry.selectedTargetSources:[],
       upstreamFormalGatesObservedPass:Boolean(upstreamFormalGatesObservedPass),
       researchOnly:true,decisionImpact:false,formalCoreImpact:false
     };
@@ -153,6 +156,7 @@ export function classifyTargetRrGradeScarcity({
     return {
       schemaVersion:"target-rr-grade-scarcity-v0.1",
       state:"FINAL_GRADE_REJECTED",reward,risk,rewardRisk:rr,target,
+      selectedTargetSources:Array.isArray(geometry?.selectedTargetSources)?geometry.selectedTargetSources:[],
       setupQuality:quality,gradeThreshold:Number(signalGradeBMin),
       upstreamFormalGatesObservedPass:Boolean(upstreamFormalGatesObservedPass),
       researchOnly:true,decisionImpact:false,formalCoreImpact:false
@@ -161,6 +165,7 @@ export function classifyTargetRrGradeScarcity({
   return {
     schemaVersion:"target-rr-grade-scarcity-v0.1",
     state:"TARGET_RR_GRADE_PASS",reward,risk,rewardRisk:rr,target,
+      selectedTargetSources:Array.isArray(geometry?.selectedTargetSources)?geometry.selectedTargetSources:[],
     setupQuality:quality,gradeThreshold:Number(signalGradeBMin),
     upstreamFormalGatesObservedPass:Boolean(upstreamFormalGatesObservedPass),
     warning:upstreamFormalGatesObservedPass
