@@ -37,7 +37,7 @@ No numeric weight/threshold is frozen in V0.1. Missing data remains UNKNOWN（�
 
 ## S2-SM — SHORT_MOMENTUM（短線動能）
 
-Status: DESIGN DISCUSSED / OWNER REVIEW PENDING / PREREGISTERED SHADOW HYPOTHESIS EXISTS.
+Status: CORE LOGIC OWNER-APPROVED / THRESHOLDS NOT FROZEN / PREREGISTERED SHADOW HYPOTHESIS EXISTS.
 
 ### Profit mechanism
 Capture short-horizon continuation or reacceleration when market/sector participation, technical structure and price-volume acceptance align before the move becomes late-stage.
@@ -92,6 +92,11 @@ High. 15-minute structure is likely the main confirmation layer; 5-minute may su
 
 ### Main traps
 Late-stage blow-off, false breakout, isolated stock strength, climax volume, chasing extension, and redundant technical indicators.
+
+### Anti-deception / non-uniqueness rule
+Technical/K-line/chart patterns are never a sole entry/exit authority.
+A visually clean pattern may arise from ordinary crowd behavior, liquidity mechanics, strategic order placement or deliberate attempts by large participants to influence short-horizon price appearance; OHLCV alone cannot prove actor intent.
+Therefore SHORT_MOMENTUM requires cross-checks from price-volume acceptance, market/sector context, risk/reward and—where available—chips/flow/events before promotion to an actionable entry state.
 
 ---
 
