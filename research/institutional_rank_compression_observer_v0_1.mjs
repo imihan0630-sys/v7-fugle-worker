@@ -164,7 +164,10 @@ export function summarizeInstitutionalRankCompression({
       maxFormalScoreTieSize:tiedGroups.length?Math.max(...tiedGroups.map(x=>x.length)):1,
       sameSessionDirectionPointsTotal:clean.reduce((s,x)=>s+x.analysis.components.sameSessionDirectionPoints,0),
       persistenceBeyondDay1PointsTotal:clean.reduce((s,x)=>s+x.analysis.components.persistenceBeyondDay1,0),
-      ownershipConcentrationPointsTotal:clean.reduce((s,x)=>s+x.analysis.components.ownershipConcentration,0)
+      ownershipConcentrationPointsTotal:clean.reduce((s,x)=>s+x.analysis.components.ownershipConcentration,0),
+      smallCapExceptionEligibleScoreRows:clean.filter(x=>x.analysis.formalScore>=70).length,
+      smallCapExceptionThresholdBoundary:70,
+      saturatedAmongSmallCapScoreEligible:clean.filter(x=>x.analysis.formalScore>=70&&x.analysis.saturation.saturated).length
     };
   }
 
