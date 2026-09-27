@@ -14,7 +14,8 @@ The review format is defined before observing the 20-date result so the final pr
 A clock-freeze review packet becomes `OWNER_REVIEW_ELIGIBLE` only when all are true:
 
 - artifact aggregation uses the promotion policy `EARLIEST_SCHEDULED_ARTIFACT_PER_MARKET_DATE`;
-- scheduled-run coverage has been audited;
+- scheduled-run coverage has been audited across the full preregistered prospective date window, not merely dates that happened to produce runs/artifacts;
+- the first scheduled run, attempt 1 only, for each market date is the immutable coverage anchor;
 - `promotionCoverageComplete=true`;
 - no official trading-day artifact gap exists;
 - V0.2 readiness status is `FREEZE_ELIGIBLE`;
@@ -39,6 +40,11 @@ The owner-facing review packet must include:
 - manual diagnostic artifact count;
 - artifact-selection policy;
 - coverage-audit state;
+- Coverage Integrity（證據覆蓋完整性）extension version;
+- audited coverage start/through dates;
+- failure-class counts;
+- trading-day gap dates;
+- explicit statement that later scheduled runs or rerun attempts cannot repair the immutable first-run/first-attempt anchor;
 - explicit safety state.
 
 No performance/outcome statistic belongs in this clock-selection packet. The clock is chosen from source availability and data completeness, not from which time produced better stock returns.

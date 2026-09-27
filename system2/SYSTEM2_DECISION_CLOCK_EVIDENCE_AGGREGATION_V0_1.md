@@ -41,19 +41,26 @@ Therefore the aggregation receipt separately reports:
 - duplicate same-date scheduled artifacts;
 - dates represented by promotion-grade bundles.
 
-A future coverage audit must distinguish:
+Coverage Integrity V0.2 now distinguishes:
 - official non-trading day;
-- scheduled workflow failure;
-- artifact upload failure;
-- no run.
+- no completed scheduled run;
+- scheduled run not successful;
+- scheduled rerun attempt (run_attempt > 1), which is diagnostic only and cannot become promotion-grade;
+- successful scheduled run with no daily artifact;
+- successful scheduled run with an invalid daily-artifact count.
 
-The aggregation layer now accepts a separate scheduled-run coverage audit. Each scheduled run is classified with the official TWSE trading-day gate and whether a promotion-grade daily bundle exists.
+The coverage window is generated independently from the observed artifact list, beginning at the preregistered first eligible prospective date (2026-09-29). This prevents a trading date with no scheduled run at all from disappearing from the denominator.
+
+The first scheduled run observed for a Taiwan market date, attempt 1 only, is an immutable daily anchor for coverage. A later scheduled rerun may remain diagnostic evidence, but it cannot repair an earlier failed/missing anchor or make that date promotion-grade after the fact.
 
 The wrapper reports:
 - `artifactCoverageAudited`;
 - `promotionCoverageComplete`;
 - `tradingDayArtifactGaps`;
-- `nonTradingScheduledRuns`.
+- `nonTradingScheduledRuns`;
+- `coverageIntegrity.failureClassCounts`;
+- `coverageIntegrity.tradingDayGapDates`;
+- `coverageIntegrity.laterScheduledRunsCannotRepairAnchor=true`.
 
 A missing bundle on an official trading day blocks promotion-grade readiness as
 `SCHEDULED_TRADING_DAY_ARTIFACT_GAPS`.
