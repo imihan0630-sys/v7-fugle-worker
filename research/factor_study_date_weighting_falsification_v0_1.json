@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "factor-study-date-weighting-falsification-v0.1",
+  "researchDate": "2026-09-27",
+  "status": "CROSS_DATE_ROW_WEIGHTING_AND_LEVEL_MIXING_CONFIRMED",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "currentFactorStudy": {
+    "split": "Dates are split chronologically and V8.7.3 purges train dates whose D+N outcomes overlap first holdout date.",
+    "factorBucket": "Within each train/holdout subset, all stock rows are globally sorted by factor x; bottom/top thirds are selected across dates.",
+    "outcomeAggregation": "Mean y across stock rows in each third.",
+    "dateWeighting": "Implicitly proportional to number of selected factor-observed rows from each date.",
+    "withinDateNormalization": false
+  },
+  "fixedSyntheticWitness": {
+    "dateA": {
+      "selectedRows": 6,
+      "factorLevel": "all relatively high due market-wide regime shift",
+      "meanReturnPct": 1
+    },
+    "dateB": {
+      "selectedRows": 1,
+      "factorLevel": "relatively low",
+      "meanReturnPct": -5
+    },
+    "issue": "A global cross-date factor sort can make factor level proxy date/regime and gives date A six times row weight.",
+    "independentUnitRule": "scanDate is the declared primary inference unit."
+  },
+  "confounds": [
+    "Variable selected count by date changes date weight.",
+    "Market/regime shifts in factor levels can create cross-date high/low separation unrelated to within-date stock ranking.",
+    "Selected-only truncation further conditions factor distributions."
+  ],
+  "preferredSuccessor": {
+    "name": "SELECTED_WITHIN_DATE_FACTOR_RANKING_V1_1",
+    "preregistration": [
+      "Keep chronological purged forward holdout.",
+      "Within each clean scanDate, compute factor percentile/rank only among eligible selected rows with the factor.",
+      "Primary date statistic compares within-date high vs low only where minimum within-date support is preregistered.",
+      "Aggregate date-level effects with equal date weight.",
+      "Report coverage loss explicitly; do not fabricate a contrast on dates with too few selected names.",
+      "Secondary pooled-row view may remain descriptive."
+    ],
+    "limitation": "Because Formal selects at most six rows, within-selected per-date ranking can be data-thin. If support is insufficient, do not lower minimums post hoc; move ranking validation to full qualified pool receipts."
+  },
+  "decision": "PURGED_OOS_VALIDATION_RETAINED / FACTOR_SPREAD_ESTIMATOR_STILL_DATE_CLUSTER_CONFOUNDED / DATE_LEVEL_OR_QUALIFIED_POOL_SUCCESSOR_REQUIRED / NO_FORMAL_CHANGE"
+}
