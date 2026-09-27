@@ -48,6 +48,9 @@ The owner-facing review packet must include:
 - failure-class counts;
 - trading-day gap dates;
 - explicit statement that later scheduled runs or rerun attempts cannot repair the immutable first-run/first-attempt anchor;
+- rerun diagnostic artifact count;
+- `attemptOneAnchorInvariant=true`;
+- explicit statements that later reruns can neither repair a failed attempt one nor invalidate a valid attempt one;
 - collector-contract consistency version;
 - complete collector-contract fingerprint list;
 - `collectorContractConsistent` state;
