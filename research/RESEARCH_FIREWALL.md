@@ -96,3 +96,20 @@ Shadow cohort 名稱不是天然正確，必須同時保存 sampling frame、den
 3. Broad-market control 若要獨立估計，必須允許 primary Formal-state 與 control membership 同時存在，或用獨立 membership table/overlay；
 4. 歷史錯誤 cohort 不直接覆寫，使用 versioned quality/membership overlay；
 5. cohort cap、抽樣與 membership 規則本身都必須版本化，並做 cap-sensitivity。
+
+
+### Shadow persistence health guard
+Legacy Candidate Shadow uses same-date DELETE + row-by-row reinsertion and is mutable on rerun.
+
+Therefore current `HEALTHY` integrity status is only **minimum-presence health**:
+- archive exists;
+- SELECTED count matches Formal;
+- BROAD_CONTROL exists.
+
+It does not prove:
+- full cohort-family persistence;
+- first-known immutability;
+- no same-date rewrite;
+- no delete-then-partial-insert failure.
+
+Promotion-grade evidence requires immutable generation/fingerprint receipts plus expected-vs-persisted denominator checks.
