@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "price-pool-quota-falsification-v0.1",
+  "researchDate": "2026-09-27",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "status": "DISCOVERY_FALSIFICATION_SPEC_FROZEN",
+  "currentFormal": {
+    "boundary": "formalClose >= 1000 => THOUSAND; <1000 => GENERAL",
+    "quotaPerPool": 3,
+    "totalMaximum": 6,
+    "crossPoolBackfill": false,
+    "observedDiagnostics": [
+      "finalGeneralSelected",
+      "finalThousandSelected",
+      "unusedGeneralSlots",
+      "unusedThousandSlots"
+    ]
+  },
+  "structuralFindings": [
+    "Quota is independent by price pool; unused capacity in one pool is intentionally not transferred to the other.",
+    "Therefore Top6 capacity can be below six even when the opposite pool has more than three eligible names.",
+    "This proves a mechanical opportunity-cost channel but does not prove the rule is harmful; diversification, liquidity, execution and concentration may justify the constraint.",
+    "Existing bounded QUALIFIED_NOT_SELECTED rows may preserve near-cutline evidence but cannot by themselves certify the complete eligible pool on historical dates."
+  ],
+  "preregisteredQuestions": [
+    "How often does one pool have unused slots while the other has >3 qualified candidates?",
+    "On those dates, what are the frozen Formal ranks/scores of displaced rank-4+ candidates versus selected names?",
+    "After scanDate clustering, do displaced candidates have better D1/D3/D5/MFE/MAE without worse stop/no-follow-through/cost outcomes?",
+    "Does any apparent benefit survive liquidity, price level, sector concentration, volatility, market regime and transaction-cost controls?",
+    "Does cross-pool flexibility materially worsen thousand-name concentration, capital granularity or zero-pick/coverage risk?"
+  ],
+  "negativeControls": [
+    "Dates where both pools have >=3 qualified names: no unused-slot counterfactual exists.",
+    "Dates where opposite pool has <=3 qualified names: no displacement opportunity exists.",
+    "Compare only candidates that were actually Formal-qualified under the same scan; never bypass a gate to manufacture a fourth candidate.",
+    "Use scanDate as the independent inference unit; multiple symbols on one date are not independent discoveries."
+  ],
+  "antiBias": [
+    "No quota threshold sweep (1+5,2+4,4+2,etc.) before the frozen 3+3 counterfactual is measured.",
+    "No historical Shadow fabrication or current-code recomputation relabeled as PIT evidence.",
+    "Missing complete-pool provenance remains UNKNOWN, not no-opportunity.",
+    "Do not select dates based on future returns.",
+    "Control multiple testing, date clustering, market/source bias, costs, coverage and zero-pick."
+  ],
+  "evidenceNeeded": [
+    "immutable scanDate/pool qualified denominator",
+    "complete qualified candidate list or integrity-certified rank/cutline receipt",
+    "exact deployed comparator tuple and rank",
+    "selected flag and quota state",
+    "unused slot counts",
+    "PIT factor/source quality",
+    "forward outcomes only after maturity gates"
+  ],
+  "optimizationBridge": {
+    "current": "NOT_OPTIMIZATION_READY",
+    "candidateName": "PRICE_POOL_QUOTA_REFORMULATION",
+    "classIfFormalChange": "C",
+    "promotionRule": "Only if prospective/OOS evidence shows stable incremental benefit after concentration/liquidity/cost/regime controls and does not worsen coverage/zero-pick/risk."
+  }
+}
