@@ -19,6 +19,19 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 
 ## Current design decisions
 
+- Decision Clock（決策時間點）Collector Provenance（擷取器來源證明）V0.3 merged to main in commit `84b7e40c2c6ee8f2294b65e16383925f2990b443` via PR #169 before the first prospective trading-date evidence. Promotion-grade scheduled artifacts now use `S2_DECISION_CLOCK_DAILY_BUNDLE_V0_3`; the embedded readiness evidence remains `S2_DECISION_CLOCK_DAILY_EVIDENCE_V0_2`.
+
+- Every V0.3 scheduled bundle freezes GitHub workflow run ID, run attempt, workflow SHA/ref, plus a deterministic SHA-256 collector-contract fingerprint over the preregistered 13-file collection contract. Aggregation fails closed if embedded run provenance does not match the GitHub Actions metadata from which the artifact was downloaded.
+
+- Promotion-grade dates must share exactly one collector-contract fingerprint. Mixed fingerprints set `collectorContractConsistent=false`, block promotion as `COLLECTOR_CONTRACT_DRIFT`, and cannot be pooled to reach the 10-date or 20-date readiness gates. The system may not cherry-pick a preferred collector version or silently reset the sample after seeing outcomes.
+
+- A material collector change after prospective evidence begins requires a separately documented/preregistered evidence epoch or contract version. Historical dates under another fingerprint remain auditable but are not silently mixed into the active freeze sample.
+
+- PR #169 final-head verification PASS before merge: System2 Research CI run `36328899840` executed 55 test files, module syntax, 26-table SQLite schema and production-isolation guard successfully; V8 Regression run `36328899818` PASS. Post-merge verification also PASS: System2 Research CI run `36328997508`; V8 Regression run `36328997525`.
+
+- Prospective Decision Clock promotion-grade trading-date count remains 0. First ordinary eligible prospective date remains 2026-09-29. Collector Provenance V0.3 and Coverage Integrity V0.2 are now frozen before that first sample arrives; no retrospective substitution was used.
+
+
 - Decision Clock（決策時間點）Coverage Integrity（證據覆蓋完整性）V0.2 merged to main in commit `04cd1436931101b2ae8bc0f87d9295de24bd6105` via PR #166. Coverage is now generated from the full preregistered prospective date window beginning 2026-09-29 rather than only dates that happened to produce runs/artifacts.
 
 - The first scheduled run, attempt 1 only, is the immutable daily coverage anchor. Later scheduled runs or GitHub Actions rerun attempts cannot repair an earlier failed/missing anchor or convert that date into promotion-grade evidence.
