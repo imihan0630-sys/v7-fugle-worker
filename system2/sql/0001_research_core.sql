@@ -106,6 +106,53 @@ CREATE INDEX IF NOT EXISTS idx_s2_shadow_run_strategy_date
 
 
 
+
+CREATE TABLE IF NOT EXISTS s2_source_session_receipts (
+  receipt_id TEXT PRIMARY KEY,
+  market_date TEXT NOT NULL,
+  decision_timestamp TEXT NOT NULL,
+  source_session_state TEXT NOT NULL,
+  required_blockers_json TEXT NOT NULL,
+  optional_gaps_json TEXT NOT NULL,
+  source_rows_json TEXT NOT NULL,
+  extra_observed_sources_json TEXT NOT NULL,
+  expected_source_count INTEGER NOT NULL,
+  observed_source_count INTEGER NOT NULL,
+  outcome_join_source_eligible INTEGER NOT NULL,
+  source_session_hash TEXT NOT NULL UNIQUE,
+  captured_at TEXT NOT NULL,
+  schema_version TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_s2_source_session_date
+  ON s2_source_session_receipts (market_date, decision_timestamp);
+
+CREATE TABLE IF NOT EXISTS s2_shadow_run_fingerprints (
+  fingerprint_id TEXT PRIMARY KEY,
+  market_date TEXT NOT NULL,
+  decision_timestamp TEXT NOT NULL,
+  strategy_id TEXT NOT NULL,
+  strategy_version TEXT NOT NULL,
+  shadow_spec_id TEXT NOT NULL,
+  universe_version TEXT NOT NULL,
+  source_session_hash TEXT NOT NULL,
+  shadow_accounting_hash TEXT NOT NULL,
+  decision_hashes_json TEXT NOT NULL,
+  ordering_hashes_json TEXT NOT NULL,
+  ranking_experiment_hashes_json TEXT NOT NULL,
+  capacity_hash TEXT,
+  lifecycle_hashes_json TEXT NOT NULL,
+  run_fingerprint_state TEXT NOT NULL,
+  blockers_json TEXT NOT NULL,
+  outcome_join_eligible INTEGER NOT NULL,
+  run_fingerprint_hash TEXT NOT NULL UNIQUE,
+  captured_at TEXT NOT NULL,
+  schema_version TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_s2_shadow_run_fingerprint_strategy_date
+  ON s2_shadow_run_fingerprints (strategy_id, strategy_version, market_date);
+
 CREATE TABLE IF NOT EXISTS s2_strategy_overlap_receipts (
   receipt_id TEXT PRIMARY KEY,
   experiment_id TEXT NOT NULL,
