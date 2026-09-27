@@ -49,7 +49,7 @@ const validAssessment = buildStrategyStateAssessment(
     entryReadiness: "BUY_ELIGIBLE",
   },
 );
-assert.equal(mapAssessmentToDecisionState(validAssessment), "SELECTED");
+assert.equal(mapAssessmentToDecisionState(validAssessment), "QUALIFIED_NOT_SELECTED");
 
 const smSpec = LIMITED_SHADOW_SPECS_V0_1.find(
   (x) => x.strategyId === "SHORT_MOMENTUM",
@@ -90,7 +90,7 @@ const base = {
 };
 
 const selected = await buildLimitedShadowDecisionSnapshot(base);
-assert.equal(selected.evaluation.state, "SELECTED");
+assert.equal(selected.evaluation.state, "QUALIFIED_NOT_SELECTED");
 assert.equal(selected.evaluation.strategyValidity, "VALID");
 assert.equal(selected.evaluation.entryReadiness, "BUY_ELIGIBLE");
 assert.equal(selected.evaluation.totalScore, null);
