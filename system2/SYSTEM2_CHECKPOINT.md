@@ -19,6 +19,8 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 
 ## Current design decisions
 
+- TECHNICAL_INDICATOR_AUXILIARY_LAYER（技術指標輔助層） explicitly added under the System 2 technical engine. Core support includes KD（KD隨機指標）, MACD（指數平滑異同移動平均線）, RSI（相對強弱指標）, ATR（平均真實波幅）, MA/EMA（移動平均線／指數移動平均線）, DMI/ADX（趨向指標／平均趨向指數）, Bollinger Bands（布林通道） and ROC/Momentum（變動率／動能指標）. These are auxiliary/context signals, not standalone BUY/SELL rules, and must pass redundancy/PIT/Shadow/OOS checks.
+
 - Design gap explicitly opened: System 2 has referenced TECHNICAL / KLINE_PATTERN（技術面／K線型態） across strategies, and Shared Knowledge already contains active K-line/pattern research, but a dedicated System 2 TECHNICAL_STRUCTURE_ENGINE（技術結構引擎） has not yet been fully specified. Before freezing strategy identity cards, define candlestick signals, chart-pattern topology, support/resistance, trend/volatility structure, Fibonacci confluence, pattern lifecycle/confirmation/failure, and strategy-specific consumption rules. This is a shared module, not automatically a standalone strategy.
 
 - VALUE_REVERSION（價值回歸策略）core logic owner-approved as research-only: distinguish mispricing from structural deterioration, require discount reason + catalyst/repair path + valuation context + reversal confirmation, prohibit blind averaging down, and retain VALUE_THESIS_INVALIDATED（價值投資邏輯失效）. Promotion remains blocked pending PIT/Shadow/OOS evidence versus simple low-valuation/rebound baselines.
