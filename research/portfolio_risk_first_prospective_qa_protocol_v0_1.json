@@ -1,6 +1,6 @@
 {
   "schemaVersion": "PORTFOLIO_RISK_FIRST_PROSPECTIVE_QA_PROTOCOL_V0_1",
-  "preregisteredAt": "2026-09-27T20:50:00+08:00",
+  "preregisteredAt": "2026-09-27T20:48:42+08:00",
   "firstEligibleScanDate": "2026-09-29",
   "purpose": "Pre-register what the first prospective V8.13+ selected sample can and cannot establish before observing it.",
   "cases": {
@@ -60,5 +60,6 @@
     "do not change maturity horizon after seeing results"
   ],
   "status": "PROTOCOL_PREREGISTERED / AWAITING_FIRST_ELIGIBLE_SCAN",
-  "formalCoreImpact": false
+  "formalCoreImpact": false,
+  "timestampProvenance": "Corrected to GitHub PR creation time; do not use prior manually estimated clock value as evidence ordering."
 }
