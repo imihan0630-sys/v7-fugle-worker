@@ -265,3 +265,62 @@ FORMAL_OPTIMIZATION_CANDIDATE = NONE
 ## Latest durable research commit
 
 - 0d72d03c38d852937216358bc8154349ab4e5848 — ATR / ROC / OBV redundancy falsification v0.1.
+
+
+## Continuation update — TI-036 through TI-045
+
+- A formal Factor-Zoo redundancy audit is now frozen before any new prospective indicator capture.
+- Williams %R is an exact linear rescaling of Fast Stochastic %K; it is REJECTED_OR_REDUNDANT as a new factor and needs no separate outcome study.
+- StochRSI is a nested Stochastic transform of RSI. It may alter sensitivity/event frequency but introduces no new source family and is LOW_PRIORITY_REDUNDANT.
+- CCI is Typical-Price distance from its moving center normalized by Mean Deviation; it overlaps MA-distance, standardized-location and volatility/extension features and is LOW_PRIORITY / REDUNDANCY_HIGH.
+- MFI is an RSI-like positive/negative TypicalPrice*Volume ratio and is assigned to PRICE_VOLUME ownership as a comparator only.
+- Keltner Channel is a deterministic trend-center + range/volatility envelope and is REJECTED_OR_REDUNDANT as a new information family.
+- Donchian Channel is a rolling highest-high/lowest-low wrapper. Existing priorHigh/priorLow/structural-breakout logic already owns this information; it is REJECTED_OR_REDUNDANT as a new factor.
+- Parabolic SAR is a path-dependent trailing-stop system with sideways whipsaw risk; it is a POSITION_MANAGEMENT research concept, not a stock-selection vote.
+- Ichimoku is a multi-horizon rolling high/low midpoint + trend/support-resistance composite. It begins with high redundancy and an explicit PIT/display-coordinate hazard because forward/backward plotting positions are not information-availability timestamps.
+- Heikin-Ashi is a synthetic OHLC visualization/smoothing transform. Synthetic prices are not executable prices and can obscure gaps; status VISUALIZATION_ONLY.
+- New durable artifact: research/TECHNICAL_INDICATOR_FACTOR_ZOO_AUDIT_V0_1.md.
+- New machine-readable anti-double-counting artifact: research/technical_indicator_redundancy_registry_v0_1.json.
+- No new indicator family was promoted to the primary inference queue.
+- No forward outcomes inspected, no threshold sweep, no runtime wiring, no FORMAL_OPTIMIZATION_CANDIDATE.
+- Formal Core remains LOCKED.
+
+### Factor-Zoo triage
+
+REJECTED_OR_REDUNDANT:
+- Williams %R
+- ROC level
+- normalized Momentum level
+- Keltner Channel as an independent family
+- Donchian Channel as an independent factor
+
+LOW_PRIORITY_REDUNDANCY_HIGH:
+- StochRSI
+- CCI
+
+PRICE_VOLUME_COMPARATOR_ONLY:
+- OBV
+- MFI
+
+ROLE_SEPARATED:
+- ATR -> volatility/risk normalization
+- Parabolic SAR -> position/trailing-stop research
+- Ichimoku -> structural explanation by default
+- Heikin-Ashi -> visualization only
+
+### Updated exact next continuation point
+
+1. Use research/technical_indicator_redundancy_registry_v0_1.json as the anti-double-counting authority for new technical-indicator proposals.
+2. Do not allocate prospective Shadow coverage to algebraic aliases or deterministic wrappers.
+3. Keep the primary empirical queue unchanged:
+   KD vs RSI -> MACD vs direct trend -> ADX vs direct trend quality -> Bollinger width vs ATR/realized-vol/VCP.
+4. In parallel, freeze only one minimal ROC-acceleration descriptor and one normalized signed-volume comparator, but do not inspect outcomes yet.
+5. Any future MFI/OBV study remains under Price-Volume governance and must use explicit volume-unit/session provenance.
+6. Any future Parabolic-SAR/Supertrend/Chandelier work belongs to Position Management and must be compared against existing stop/reduce/re-add mechanics, not selection alpha.
+7. Formal Core remains unchanged.
+
+## Latest durable research commits
+
+- 934dd242db9d1a35c547a4423949489526fb8ba2 — technical-indicator Factor-Zoo redundancy audit v0.1.
+- 38efacfbeb4478f745a75b9f020f832aaf359e20 — machine-readable technical-indicator redundancy registry v0.1.
+- 0d72d03c38d852937216358bc8154349ab4e5848 — ATR / ROC / OBV redundancy falsification v0.1.
