@@ -16571,3 +16571,295 @@ Use DL-003AP competing-risk framework:
 MATURE -> BREAKOUT / INVALIDATION / CENSOR.
 
 This is essential before claiming “tightness predicts breakout.”
+
+
+## DL-003AX — Fresh 2026 Taiwan Head-and-Shoulders Evidence
+
+### New direct Taiwan evidence
+Chen, Liao, Liao, Lin, Yang & Lin, Pacific-Basin Finance Journal (available online 2026-09-21), mechanically detect head-and-shoulders (HS) patterns across TWSE and TPEx stocks using TEJ data from 1986-01-04 to 2018-03-02.
+
+Key findings:
+- decision rules materially affect observed HS trading performance;
+- HS BOTTOM patterns provide stronger and more persistent predictive/profitability evidence than HS TOP patterns;
+- HS-bottom performance strengthens when the detected head lies in a more extreme low-price region of the stock's own historical price distribution;
+- strict Bry-Boschan turning-point alignment improves average event-level success and ROI;
+- the strictest reported alignment (BB:5) performs better than unfiltered detections, but intermediate filters are not monotonically better;
+- results are reported with Bonferroni and Benjamini-Hochberg multiple-testing adjustments, risk-normalized event measures and transaction-cost sensitivity.
+
+The authors explicitly caution that this is event-level mechanism-consistent evidence, not direct proof of sentiment, friction mechanisms or fully risk-adjusted calendar-time alpha.
+
+### Research significance
+This is unusually high-value evidence for DL-002/DL-003 because it is:
+- Taiwan-specific;
+- mechanically detected rather than hand-drawn;
+- explicit about decision-rule sensitivity;
+- explicit about multiple-testing and costs;
+- directly relevant to reversal topology.
+
+### Immediate implication
+Inverse head-and-shoulders (HS bottom) is worth adding to the research taxonomy.
+
+But it must NOT become an independent positive vote by default because it overlaps heavily with:
+- W/double-bottom topology;
+- undercut-and-reclaim;
+- three-trough support progression;
+- neckline breakout;
+- long-horizon price extremeness.
+
+Status:
+STRONG_TAIWAN_SPECIFIC_PRIOR / WORTH_SHADOW_RESEARCH / NO FORMAL CHANGE.
+
+## DL-003AY — Inverse Head-and-Shoulders Topology v0.1
+
+### Structure
+Use repaint-safe confirmed swings.
+
+Anchors:
+S1 = left-shoulder confirmed swing low
+N1 = first intervening confirmed swing high
+H = head confirmed swing low
+N2 = second intervening confirmed swing high
+S2 = right-shoulder confirmed swing low
+NL = neckline zone/line from N1 and N2
+
+Chronology:
+S1 < N1 < H < N2 < S2.
+
+Minimum morphology:
+- H is lower than S1 and S2;
+- N1/N2 are meaningful confirmed highs;
+- S2 does not create a lower structural low than H;
+- breakout/approach is evaluated relative to a neckline region, not an arbitrary horizontal constant.
+
+### Fields
+- leftShoulderPrice
+- headPrice
+- rightShoulderPrice
+- shoulderPriceDiffPct
+- headDepthVsLeftPct
+- headDepthVsRightPct
+- shoulderTimeAsymmetry
+- neckline1
+- neckline2
+- necklineSlope
+- necklineZoneLower/Upper
+- headToNecklineDepthPct
+- rightShoulderToNecklineDistance
+- headPricePercentile
+- headPricePercentileLookback
+- headHistoricalExtremeness
+- rightShoulderVolumeContext
+- necklineBreakoutVolumeContext
+- swingScaleAgreement
+- independentTurningPointAgreement
+
+### Maturity states
+IHS_FORMING
+-> IHS_HEAD_CONFIRMED
+-> IHS_RIGHT_SHOULDER_FORMING
+-> IHS_STRUCTURE_VALID
+-> IHS_NECKLINE_READY
+-> IHS_BREAKOUT_CONFIRMED
+-> IHS_RETESTING
+-> IHS_ACCEPTED
+-> FAILED
+
+### No textbook symmetry hard gate
+Shoulder price/time symmetry is stored continuously.
+Do not assume the most symmetric pattern is the most profitable.
+
+### Neckline slope
+Do not force a horizontal neckline.
+Store the N1-N2 slope and test whether slope carries incremental information.
+
+### Failure states
+- RIGHT_SHOULDER_BREAKS_HEAD
+- NECKLINE_REJECTION
+- RIGHT_SHOULDER_DISTRIBUTION
+- BREAKOUT_FAST_REENTRY
+- R01_BREAKOUT_FAILURE
+
+### Role in long-only research
+HS bottom is the primary positive/reversal candidate.
+HS top belongs primarily in adverse morphology / exit-risk research, not as an automatic short signal.
+
+## DL-003AZ — W vs Inverse-HS Nested Falsification
+
+### Core problem
+A W-bottom and inverse-HS can describe similar underlying reversals.
+
+W:
+low -> rebound high -> second low -> neckline break.
+
+Inverse-HS:
+shoulder low -> high -> deeper head -> high -> right shoulder low -> neckline break.
+
+Therefore the named IHS label may add nothing beyond richer W/support primitives.
+
+### Nested models
+M0:
+current Formal / existing W proxies.
+
+M1:
+true W topology:
+- two confirmed troughs
+- actual intervening neckline.
+
+M2:
+three-trough IHS topology:
+- S1/H/S2
+- neckline N1/N2.
+
+M3:
+W/IHS primitives + head historical extremeness.
+
+M4:
+M3 + independent turning-point agreement.
+
+### Tests
+Within same-date cohorts:
+- W but not IHS;
+- IHS but not simple W;
+- both;
+- neither.
+
+Outcomes:
+- D1/D3/D5/D10/D20
+- MFE/MAE
+- R01
+- stop-first
+- time-to-breakout
+- invalidation hazard.
+
+### Decision
+If IHS does not beat W primitives after controls:
+retain IHS only as an interpretability label.
+
+If head extremeness adds but the three-trough label does not:
+retain extremeness primitive, reject named pattern as redundant.
+
+If independent turning-point agreement adds robustly:
+retain the agreement diagnostic, not necessarily the entire named pattern.
+
+## DL-003BA — Historical Price Extremeness as a New Primitive Candidate
+
+### Evidence from fresh Taiwan HS study
+HS-bottom performance improves when the head occurs in a more extreme low-price region of the stock's own historical distribution.
+
+This differs from:
+- short-horizon ret20/ret60;
+- support distance;
+- 52-week-high proximity;
+- pattern depth alone.
+
+### Candidate fields
+- closePercentile252
+- headPercentile252
+- closePercentileAllAvailableHistory
+- headPercentileAllAvailableHistory
+- percentileDistanceFromMedian
+- percentileRecoverySinceHead
+- headPercentileVsLeftShoulder
+- headPercentileVsRightShoulder
+
+### Data caution
+“All historical prices” creates listing-age comparability issues.
+Prefer pre-registered horizons such as 252/504 valid sessions plus a separate all-available diagnostic.
+
+### Corporate actions
+Use adjusted prices for historical-percentile morphology.
+Raw nominal price history across splits/capital actions can create false extremeness.
+
+### Falsification
+Compare extremeness against:
+- maxDrawdown
+- ret60/ret120
+- 52-week-low/high distance
+- volatility
+- regime
+- W/IHS depth.
+
+If percentile extremeness simply restates drawdown, reject it.
+
+## DL-003BB — Independent Turning-Point Confirmation: Directional Change vs Bry-Boschan-Style Filter
+
+### New evidence
+The fresh Taiwan HS paper reports improved event-level outcomes when HS key points also align with independently detected Bry-Boschan turning points.
+
+This supports a general principle:
+a pattern detector should not define its own pivots and then congratulate itself for matching them.
+
+### Research design
+Primary swing detector:
+- current repaint-safe Directional Change / ATR-normalized confirmed swings.
+
+Independent filter:
+- a Bry-Boschan-style turning-point procedure implemented with explicit point-in-time semantics.
+
+### Critical anti-lookahead warning
+Classic Bry-Boschan peak/trough labeling often relies on observations around a local extremum.
+In a historical/live decision framework:
+- the turning point may occur at pivotAt;
+- it only becomes knowable later at confirmedAt/firstObservableAt.
+
+Never backdate the filter to the extremum date.
+
+### Agreement fields
+- dcPivotMatched
+- bbPivotMatched
+- dcBbAgreementCount
+- keyPointAgreementRatio
+- dcBbDateDispersion
+- dcBbPriceDispersion
+- independentConfirmationStrength
+
+### Test
+Compare:
+- DC-only pattern;
+- BB-style-only pattern;
+- both agree;
+- disagree.
+
+If agreement improves outcomes and stability, it can be a useful Pattern Shadow quality diagnostic.
+
+If one detector systematically lags without adding quality, keep the simpler one.
+
+### Do not copy BB:5 blindly
+The paper's strictest BB:5 criterion is evidence that stricter alignment can filter noise in that sample.
+It is NOT approval to hard-code “5” into our system.
+Reproduce the mechanism, then pre-register a minimal non-tuned comparison.
+
+## DL-003BC — HS Top as Adverse Morphology, Not an Automatic Short Signal
+
+### Evidence
+The Taiwan 2026 study reports HS-top evidence is weaker/less persistent than HS-bottom evidence.
+
+### Long-only system role
+Use HS top as:
+- adverse morphology;
+- distribution / late-stage warning;
+- possible reason to lower confidence in bullish structures;
+- exit/reduce research context.
+
+Do NOT infer:
+- automatic short trade;
+- sell signal;
+- Formal exclusion.
+
+### Candidate fields
+- hsTopFit
+- topHeadExtremeness
+- necklineBreakdownState
+- distributionVolumeContext
+- overlapWithLateStage
+- overlapWithMajorResistance
+- topFailure/reclaim state
+
+### Incremental question
+Does HS-top morphology explain future downside/failure beyond:
+- lateStage
+- upper-shadow rejection
+- high-volume distribution
+- major resistance
+- overheat?
+If not, reject it as redundant.
