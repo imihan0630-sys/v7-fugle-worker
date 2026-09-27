@@ -1315,3 +1315,68 @@ Status:
 `STRUCTURAL_MECHANISM_CONFIRMED / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core remains unchanged.
+
+
+## PR-035 — risk concentration has ex-ante reward-space counterevidence (2026-09-27)
+
+PR-033/034 proved that 2026-09-18 PriorityScore-proportional sizing concentrated conservative planned stop-risk and that the effect was not caused by the 35% cap. PR-035 tests the required opposite explanation before considering any sizing change:
+
+`Does the additional planned risk buy any additional plan-time reward geometry?`
+
+The read-only Tier-A audit now computes a deliberately narrow proxy:
+`plannedRewardProxyNTD = conservative buyHigh projectedStopRiskNTD × immutable plan-time rewardRisk`.
+
+This is **not expected return and not realized return**. It only measures the reward-space implied by the frozen plan geometry.
+
+### 2026-09-18 comparison
+
+Current PriorityScore allocation:
+- projected risk = NT$6,483.41;
+- RR-based planned reward proxy = NT$23,532.04;
+- proxy reward / projected risk = 3.6296.
+
+Equal capital:
+- projected risk = NT$6,313.27;
+- planned reward proxy = NT$22,808.80;
+- proxy reward / projected risk = 3.6128.
+
+Same-deployment 35%-cap constrained equal planned-stop-risk:
+- projected risk = NT$5,970.67;
+- planned reward proxy = NT$21,296.49;
+- proxy reward / projected risk = 3.5669.
+
+Current minus equal capital:
+- +NT$170.14 projected risk;
+- +NT$723.24 reward-space proxy;
+- marginal proxy reward/risk = 4.2509.
+
+Current minus capped equal-risk:
+- +NT$512.74 projected risk;
+- +NT$2,235.55 reward-space proxy;
+- marginal proxy reward/risk = 4.36.
+
+Therefore a stronger one-sided claim is falsified:
+`current PriorityScore sizing only adds planned risk and receives no plan-time reward-space compensation`.
+
+The 2026-09-18 plan geometry shows compensation in the RR-based proxy.
+
+### Important counterevidence against overinterpreting this result
+
+This does not validate current sizing economically.
+
+6133 has the highest raw RR at 3.89, versus 3105 at 3.71 and 2006 at 3.04, yet 3105 receives the highest PriorityScore and largest current allocation. Current sizing is therefore not simply maximizing raw RR. PriorityScore is intentionally combining other setup/sector/RS/consensus/fundamental dimensions, and the realized incremental value of those dimensions is exactly what the prospective PriorityScore calibration lane still has to prove.
+
+The correct state is now a two-sided tradeoff:
+- current sizing has a confirmed planned-risk concentration cost;
+- current sizing also has confirmed plan-time RR reward-space counterevidence;
+- realized economic dominance of current vs equal-capital vs capped equal-risk remains UNKNOWN.
+
+Only independent prospective outcomes can resolve the tradeoff. Required future comparison remains D1/D3/D5, MFE/MAE, stop-first/downside clustering, costs, A/B/channel/regime controls, date clustering and LODO.
+
+Durable receipt:
+`research/portfolio_risk_ex_ante_reward_proxy_receipt_20260927.json`.
+
+Status:
+`TWO_SIDED_STRUCTURAL_TRADEOFF_CONFIRMED / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.

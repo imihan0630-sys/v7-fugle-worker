@@ -1,0 +1,79 @@
+{
+  "schemaVersion": "PORTFOLIO_RISK_EX_ANTE_REWARD_PROXY_V0_1",
+  "observedAt": "2026-09-27T20:25:49+08:00",
+  "workflowRunId": 36318943452,
+  "jobId": 108618899215,
+  "scanDate": "2026-09-18",
+  "readOnly": true,
+  "outcomeFieldsRead": false,
+  "decisionImpact": false,
+  "semantics": "RR multiplied by conservative buyHigh projected stop-risk is a plan-time reward-space proxy only. It is neither expected return nor realized return.",
+  "comparators": {
+    "current": {
+      "projectedRiskNTD": 6483.41,
+      "plannedRewardProxyNTD": 23532.04,
+      "proxyRewardPerProjectedRisk": 3.6296
+    },
+    "equalCapital": {
+      "projectedRiskNTD": 6313.27,
+      "plannedRewardProxyNTD": 22808.8,
+      "proxyRewardPerProjectedRisk": 3.6128
+    },
+    "cappedEqualPlannedStopRisk": {
+      "projectedRiskNTD": 5970.67,
+      "plannedRewardProxyNTD": 21296.49,
+      "proxyRewardPerProjectedRisk": 3.5669
+    }
+  },
+  "marginal": {
+    "currentMinusEqualCapital": {
+      "projectedRiskNTD": 170.14,
+      "plannedRewardProxyNTD": 723.24,
+      "marginalProxyRewardPerRisk": 4.2509
+    },
+    "currentMinusCappedEqualRisk": {
+      "projectedRiskNTD": 512.74,
+      "plannedRewardProxyNTD": 2235.55,
+      "marginalProxyRewardPerRisk": 4.36
+    }
+  },
+  "planLevel": [
+    {
+      "symbol": "2006",
+      "priorityScore": 69.9,
+      "rewardRisk": 3.04,
+      "currentAllocationNTD": 50000,
+      "currentProjectedRiskNTD": 1308.35,
+      "currentPlannedRewardProxyNTD": 3977.38
+    },
+    {
+      "symbol": "3105",
+      "priorityScore": 89.4,
+      "rewardRisk": 3.71,
+      "currentAllocationNTD": 64000,
+      "currentProjectedRiskNTD": 3201.79,
+      "currentPlannedRewardProxyNTD": 11878.65
+    },
+    {
+      "symbol": "6133",
+      "priorityScore": 74.9,
+      "rewardRisk": 3.89,
+      "currentAllocationNTD": 54000,
+      "currentProjectedRiskNTD": 1973.27,
+      "currentPlannedRewardProxyNTD": 7676.01
+    }
+  ],
+  "falsification": {
+    "rejectedStrongClaim": "The observed PriorityScore sizing concentration adds planned risk without any compensating plan-time reward geometry.",
+    "result": "Counterevidence exists: current sizing has both higher planned risk and higher RR-based reward-space proxy than equal-capital and capped equal-risk on 2026-09-18.",
+    "importantCounterpoint": "6133 has the highest raw RR (3.89) but not the highest PriorityScore or allocation, so current sizing is not simply an RR maximizer; PriorityScore encodes other dimensions whose realized value remains unproven.",
+    "limits": [
+      "One reconstructable multi-name date only.",
+      "RR is a plan geometry metric, not a calibrated expected return.",
+      "No outcomes/fills/costs were read.",
+      "Higher ex-ante reward proxy does not establish superior realized risk-adjusted performance."
+    ]
+  },
+  "status": "TWO_SIDED_STRUCTURAL_TRADEOFF_CONFIRMED / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY",
+  "formalCoreImpact": false
+}
