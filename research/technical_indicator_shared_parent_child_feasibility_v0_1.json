@@ -1,0 +1,134 @@
+{
+  "schemaVersion": "technical-indicator-shared-parent-child-feasibility-v0.1",
+  "updated": "2026-09-28 Asia/Taipei",
+  "researchOnly": true,
+  "runtimeImplemented": false,
+  "formalCore": "LOCKED",
+  "populationModel": {
+    "scanPopulationReceipt": {
+      "scope": "FORMAL_NORMALIZED_TODAY_ROWS",
+      "purpose": "Daily denominator including pre-parent history admission blocked/unknown states."
+    },
+    "decisionStateParent": {
+      "scope": "ALL_HISTORY_ADMITTED_FEATURE_ROWS_EVALUATED_BY_SAME_SCAN_FORMAL_DECISION_PATH",
+      "excludes": "ROWS_NOT_ADMITTED_TO_FEATURE_EVALUATION_REMAIN_IN_SCAN_POPULATION_DENOMINATOR",
+      "selectedOnly": false
+    }
+  },
+  "genericEvidenceChild": {
+    "proposedTable": "trade_research_evidence_children",
+    "primaryKey": [
+      "parent_decision_receipt_id",
+      "capture_generation",
+      "evidence_family",
+      "evidence_version",
+      "as_of"
+    ],
+    "fields": [
+      "parent_decision_receipt_id",
+      "capture_generation",
+      "evidence_family",
+      "evidence_version",
+      "as_of",
+      "status",
+      "semantic_fingerprint",
+      "payload_hash",
+      "source_receipt_refs_json",
+      "payload_json",
+      "created_at"
+    ],
+    "immutable": true,
+    "sameIdentityDifferentFingerprint": "PROVENANCE_CONFLICT"
+  },
+  "genericObserverRun": {
+    "proposedTable": "trade_research_observer_runs",
+    "primaryKey": [
+      "scan_date",
+      "capture_generation",
+      "evidence_family",
+      "observer_version"
+    ],
+    "fields": [
+      "parent_keyset_hash",
+      "expected_parent_count",
+      "attempted_parent_count",
+      "valid_count",
+      "constrained_count",
+      "blocked_count",
+      "unknown_count",
+      "missing_count",
+      "provenance_conflict_count",
+      "qa_failure_count",
+      "started_at",
+      "finished_at",
+      "run_status",
+      "summary_json",
+      "semantic_fingerprint"
+    ]
+  },
+  "technicalAttemptStatuses": [
+    "VALID_OBSERVABLE",
+    "VALID_CONSTRAINED",
+    "BLOCKED_SOURCE",
+    "BLOCKED_CONTINUITY",
+    "BLOCKED_FORMULA_STATE",
+    "UNKNOWN_PROVENANCE"
+  ],
+  "storageRule": "REFERENCE_SHARED_RECEIPTS_BY_ID_OR_HASH_DO_NOT_DUPLICATE_LARGE_SOURCE_PAYLOADS",
+  "d1SizingScenarios": {
+    "tradingDaysPerYear": 250,
+    "payloadOnlyMBPerYear": {
+      "parents500": {
+        "kb0_75": 91.6,
+        "kb1_5": 183.1,
+        "kb3_0": 366.2
+      },
+      "parents1000": {
+        "kb0_75": 183.1,
+        "kb1_5": 366.2,
+        "kb3_0": 732.4
+      },
+      "parents2000": {
+        "kb0_75": 366.2,
+        "kb1_5": 732.4,
+        "kb3_0": 1464.8
+      }
+    },
+    "note": "Excludes indexes/SQLite overhead and shared parent/run tables."
+  },
+  "d1OfficialLimitsObserved": {
+    "docsAsOf": "2026-09-28",
+    "freeMaxDatabaseMB": 500,
+    "paidMaxDatabaseGB": 10,
+    "freeRowsWrittenPerDay": 100000,
+    "paidIncludedRowsWrittenPerMonth": 50000000,
+    "maxRowOrStringBlobBytes": 2000000,
+    "rowsPerTable": "UNLIMITED_SUBJECT_TO_DATABASE_STORAGE"
+  },
+  "writeStrategy": {
+    "preferred": "D1_BATCH_PREPARED_STATEMENTS",
+    "legacyDeleteRewriteRejected": true,
+    "batchSizeFrozen": false
+  },
+  "requiredProspectiveSizingMetrics": [
+    "parent_count_min",
+    "parent_count_median",
+    "parent_count_p95",
+    "parent_count_max",
+    "market_split",
+    "pool_split",
+    "source_blocked_ratio",
+    "serialized_child_bytes_avg",
+    "serialized_child_bytes_max",
+    "d1_rows_written",
+    "d1_rows_read",
+    "observer_cpu_ms",
+    "observer_wall_ms"
+  ],
+  "status": {
+    "sharedEvidenceChildSchema": "DESIGN_TO_BE_CROSS_LANE_RECONCILED",
+    "classBImplementation": "PREMATURE",
+    "ownerApprovalRequested": false,
+    "formalOptimizationCandidate": false
+  }
+}
