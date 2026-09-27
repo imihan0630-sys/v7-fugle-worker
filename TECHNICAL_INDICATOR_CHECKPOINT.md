@@ -1130,3 +1130,171 @@ Formal Core remains LOCKED.
 
 - c5fe98c7b1a3c3d1c04212767589ec28fcd99a64 — formula-provenance parity extended through ADX/Bollinger.
 - b919478454b040fdff70b7c36801cf12c7ee96f2 — ADX/Bollinger deterministic numeric oracle vectors.
+
+
+## Continuation update — TI-313 through TI-327
+
+### ADX/Bollinger isolated implementation and QA — TI-313..TI-318
+- Before implementation, TA-Lib source revalidation found one material specification simplification that needed correction:
+  ADX initialization is not simply "sum 14 DM/TR values, then start DX".
+- Correct TA-Lib-style order is now frozen:
+  1. seed smoothed TR/+DM/-DM from the first period-1 one-bar transitions;
+  2. for each of the next period bars, apply one Wilder update;
+  3. compute one DX after that update;
+  4. first ADX = sumDX / period.
+- Zero-direction semantics were also tightened:
+  if smoothed TR is zero or DI sum is effectively zero, no valid DX update is applied;
+  during first-ADX accumulation the slot contributes nothing to sumDX but denominator remains period;
+  after first ADX exists, an invalid DX slot leaves ADX unchanged rather than smoothing toward zero.
+- This correction was made BEFORE isolated core implementation.
+- Corrected durable contracts:
+  research/TECHNICAL_INDICATOR_ADX_BBANDS_FORMULA_PARITY_V0_1.md
+  research/technical_indicator_adx_bbands_formula_contract_v0_1.json
+
+- research/technical_indicator_core_v0_1.mjs now implements research-only:
+  computeADX()
+  computeBollingerBands()
+- Formula versions added:
+  WILDER_ADX14_TALIB_STYLE_NO_ROUNDING_V0_1
+  BBANDS_CLOSE_SMA20_POPSTD20_K2_V0_1
+- Worker.js, runtime storage, schedules and Formal decision paths were not touched.
+
+- ADX deterministic oracle PASS:
+  - first output index 27 / 28 eligible bars;
+  - monotonic up ADX=100 with +DI=50 / -DI=0;
+  - mirrored down ADX=100 with +DI=0 / -DI=50;
+  - flat zero-range ADX=0;
+  - equal outside expansion tie -> both DM=0 and ADX=0;
+  - gap fixture TR=10.5;
+  - multiplicative price scaling preserves DI/DX/ADX.
+- Bollinger deterministic oracle PASS:
+  20 closes 101..120:
+  - SMA20=110.5;
+  - population sigma=5.766281297335398;
+  - upper=122.0325625946708;
+  - lower=98.9674374053292;
+  - BandWidthPct=20.87341646094261;
+  - %B=0.911877235523957.
+- Flat band:
+  BBW=0 and %B=NULL, preserving ZERO_BAND_WIDTH_UNDEFINED_LOCATION.
+- Multiplicative scale preserves relative BandWidth/%B.
+- Positive additive shift preserves %B but changes relative BandWidth denominator as specified.
+
+- A stronger non-monotonic ADX oracle was added because monotonic paths can hide initialization mistakes.
+- ASYMMETRIC_WAVE_REFERENCE:
+  deterministic 50-bar non-symmetric OHLC path.
+- Independent Python transcription of the corrected TA-Lib source-order semantics matched the JS isolated core at indices 14/20/27/28/35/49 within floating precision.
+- Key index27 oracle:
+  trSmoothed=34.646000230548495;
+  +DMSmoothed=12.692588044888245;
+  -DMSmoothed=7.095548052704646;
+  +DI=36.63507464188256;
+  -DI=20.480136250903424;
+  DX=28.284826648551533;
+  first ADX=24.06246596876735.
+- Index28 ADX=24.74112347980112.
+- Index49 ADX=30.109005583147688.
+- This fixture specifically guards against period-vs-period-1 ADX seed alignment regressions.
+
+- Full isolated technical-indicator research test execution PASS:
+  existing KD/RSI/MACD;
+  strict semantic blocking;
+  price-limit constrained interpretation;
+  replay;
+  prefix invariance;
+  new ADX/Bollinger numeric oracles;
+  ADX/Bollinger prefix invariance.
+- Validation mode:
+  exact GitHub source fetched and executed in an isolated V8 evaluator with only ES-module import/export wrappers removed.
+- No pull-request-triggered GitHub workflow run was observed for these default-branch research commits, so repository CI PASS is NOT claimed.
+- New durable QA receipt:
+  research/technical_indicator_isolated_qa_receipt_v0_1.json
+
+### MACD F1-F12 response profile — TI-319..TI-327
+- The frozen lag/noise mechanics suite was executed against:
+  EMA12_26_SIGNAL9_FIRST_CLOSE_SEED_V0_1.
+- F1 constant:
+  DIF/Signal/Histogram remain zero; no flips.
+- F2 positive step:
+  Histogram peaks earlier than DIF.
+  Histogram first turns negative at bar54 while DIF remains positive; at bar60 DIF=+1.6870304669 and Histogram=-0.3386643700.
+  Therefore negative Histogram does not mean negative trend direction.
+- F3 negative step is the sign mirror.
+- F4 clean linear uptrend:
+  final DIF=+3.4857028870 while Histogram approaches zero (~+0.0067169435), with zero Histogram sign flips.
+  Persistent trend can coexist with near-zero Histogram.
+- F5 clean linear downtrend is the sign mirror.
+- F6 slope acceleration:
+  Histogram rises materially after slope acceleration and peaks around bar52 at 0.6075220907.
+  This supports transition/filtered-speed-change semantics, not directional alpha.
+- F7 V reversal:
+  first Histogram > 0 at bar42;
+  first DIF > 0 at bar55;
+  Histogram leads DIF zero-cross by 13 bars.
+  At bar45 DIF=-4.5914976456 while Histogram=+0.9700077807.
+  Thus Histogram positive can mean "downtrend is improving/decelerating" while filtered trend remains negative.
+- F8 choppy zero-drift:
+  Histogram sign flips=46;
+  DIF sign flips=40.
+- F9 trend+noise:
+  Histogram flips=14 versus 0 on the clean rising ramp, while DIF remains positive in the measured warm region.
+  Faster transition state has materially higher noise sensitivity.
+- F10 one-bar +10 shock:
+  shock bar DIF=+0.7977207977 / Histogram=+0.6381766382;
+  Histogram turns negative by bar44;
+  DIF turns negative by bar49 even though price already returned to the unchanged baseline.
+  Filter-state ringing/decay can create post-shock sign reversals without a durable trend.
+- F11 +5 one-bar shock preserves the same timing at approximately half amplitude, confirming linear filter scaling.
+- F12 limit-like staircase:
+  large positive DIF/Histogram appears during step-ups;
+  later Histogram turns negative while DIF remains strongly positive.
+  MACD formula alone cannot distinguish unconstrained discovery from price-limit-constrained state; external constraint guard remains mandatory.
+- MACD F1-F12 research test PASS in isolated V8 execution.
+- New durable artifacts:
+  research/TECHNICAL_INDICATOR_MACD_RESPONSE_PROFILE_V0_1.md
+  research/technical_indicator_macd_response_profile_v0_1.json
+  research/test_technical_indicator_macd_response_v0_1.mjs
+
+### Current lane status
+
+PRIMARY_THEORY_DECOMPOSITION = COMPLETE_V0_1
+OBSERVER_STATE_CONSTRUCTION = DESIGN_FROZEN_RUNTIME_NO_GO
+ADX14_FORMULA = FROZEN
+ADX14_ISOLATED_CORE = QA_PASS
+BBANDS20X2_FORMULA = FROZEN
+BBANDS20X2_ISOLATED_CORE = QA_PASS
+MACD_RESPONSE_F1_F12 = QA_PASS
+SNAPSHOT_V0_2 = PROPOSAL_ONLY
+TECHNICAL_CONTINUITY_RUNTIME = BLOCKED
+PROSPECTIVE_TECHNICAL_OBSERVER = NO_GO
+OUTCOME_INFERENCE = NO_GO
+FORMAL_OPTIMIZATION_CANDIDATE = NONE
+Formal Core remains LOCKED.
+
+### Updated exact next continuation point
+
+1. Do not expand named indicators.
+2. Isolated formula/mechanics blockers for KD/RSI/MACD/ADX/Bollinger are now materially reduced.
+3. Next high-value research target is DATA-SEMANTIC READINESS:
+   - reconcile TECHNICAL_CONTINUITY handoff with Corporate Actions lane;
+   - define exact symbol-session/continuity receipt consumable by the future Technical Indicator observer;
+   - preserve exact parent lineage/captureGeneration.
+4. Do not implement production observer persistence until the shared continuity/runtime dependency is ready and governance allows it.
+5. No historical Shadow fabrication.
+6. Once continuity + parent lineage are runtime-ready, begin prospective-only Technical Indicator capture before any outcome inference.
+7. MACD future alpha question is specifically transition residual value after direct trend controls and false-turn/noise burden, not crossover/Histogram-sign voting.
+8. ADX future alpha question is H/L/TR trend-quality residual beyond pathEfficiency/trendPersistence, not "high ADX bullish".
+9. Bollinger future alpha question is Close-level dispersion residual beyond ATR/realized-vol/VCP, not "band touch" rules.
+10. Formal Core remains unchanged.
+
+## Latest durable research commits
+
+- 313a97952f4c28fcb73d4a9b770929dfb4b5b140 — correct TA-Lib ADX initialization prose.
+- 2a43fff338da362d047631ef31f6e4cdba3b1e58 — correct machine-readable ADX formula contract.
+- 9182d878da178cde14dc4a8a0111b430f76672ad — isolated ADX/Bollinger core implementation.
+- 6fe11d7c7ad9ceeb7ae9ffb352b51d0d71ae707f — hardened ADX/Bollinger core tests with asymmetric oracle.
+- 423ede78d6868340acff05a00496d6f09bb38378 — asymmetric ADX initialization oracle.
+- 4625a68a085a75380787dbcef242707c43d0506f — MACD F1-F12 response-profile analysis.
+- 1b7ef2c1db6fee2c33c8d62607d6ddcfe7f96c7e — machine-readable MACD response receipt.
+- 41a82a7064ad6ecb6f98ddc1e986f1d09e651b4f — MACD response mechanics test.
+- 1bd426389763653ece68937a537b279921391312 — isolated technical-indicator QA receipt.
