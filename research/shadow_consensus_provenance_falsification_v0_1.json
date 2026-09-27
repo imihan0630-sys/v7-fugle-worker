@@ -1,0 +1,61 @@
+{
+  "schemaVersion": "shadow-consensus-provenance-falsification-v0.1",
+  "researchDate": "2026-09-27",
+  "status": "SHADOW_DECISION_STATE_MISMATCH_CONFIRMED",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "deployedFormalPath": {
+    "base": "scoreCandidate(f,sector)",
+    "overlay": "applyMarketConsensus(base, consensus)",
+    "effect": "For ok candidates only, consensus with >=2 sources adds 0..7 points to priorityScore and records marketConsensusScore/Sources/Bonus.",
+    "comparator": "post-consensus priorityScore -> rewardPerRisk -> marketConsensusScore -> setupQuality -> sectorFlow -> relativeStrength"
+  },
+  "shadowPath": {
+    "selected": "Receives selected item derived from post-consensus scored list.",
+    "qualifiedNotSelected": "Receives post-consensus item from scored list.",
+    "nearMiss": "Re-runs bare scoreCandidate; result is rejected, so consensus would not have been applied in Formal either.",
+    "rejectedAfterBase": "Re-runs bare scoreCandidate; result is rejected, so consensus would not have been applied in Formal either.",
+    "broadControl": "Re-runs bare scoreCandidate for every sampled control."
+  },
+  "structuralMismatch": {
+    "trigger": "A Formal-ok symbol is not serialized into SELECTED/QNS because of bounded sampling, remains BROAD_CONTROL-eligible under current used-set semantics, and is selected by broad-control hash.",
+    "result": "The symbol's BROAD_CONTROL snapshot is built from bare scoreCandidate instead of its actual same-date post-consensus scored item.",
+    "corruptedResearchFields": [
+      "ranking.priorityScore can be base score rather than deployed post-consensus score",
+      "ranking.marketConsensusScore can be null/0 instead of observed value",
+      "ranking.marketConsensusSources can be 0 instead of observed count",
+      "ranking.marketConsensusBonus can be 0 instead of observed bonus",
+      "ranking provenance label claims FORMAL_PRIORITY_SCORE_BASE_V1_PLUS_MARKET_CONSENSUS_7_5_30 even though the item did not receive the overlay"
+    ]
+  },
+  "fixedSyntheticWitness": {
+    "basePriorityScore": 70,
+    "consensusSourceCount": 4,
+    "formula": "bonus=min(7,(sourceCount-1)*2)=6",
+    "deployedFormalPriorityScore": 76,
+    "broadControlRecomputedPriorityScore": 70,
+    "differencePoints": 6,
+    "conclusion": "Same PIT feature row can carry different ranking provenance solely because Shadow re-runs the pre-consensus scorer after cohort sampling."
+  },
+  "scopeGuard": [
+    "This does not alter Formal selected names; it is a research snapshot fidelity defect.",
+    "Rejected rows are not affected by missing consensus overlay because applyMarketConsensus returns rejected results unchanged.",
+    "The defect is concentrated in Formal-ok symbols that spill from bounded QNS into BROAD_CONTROL under current quota-conditioned semantics.",
+    "Historical prevalence is UNKNOWN until rows are classified with adequate PIT consensus provenance."
+  ],
+  "requiredRepair": [
+    "Freeze one decision-state object per symbol from the actual selector path before bounded research sampling.",
+    "Research membership must reference that immutable decision-state object/hash rather than re-running a different scoring path.",
+    "If independent broad-market control includes a Formal-ok symbol, preserve its true post-consensus Formal state plus separate control membership.",
+    "Persist both formal_state and research_membership; do not infer Formal state from the sampled cohort label.",
+    "Add invariant test: for every same-date symbol present in actual scored list, any research membership snapshot must match post-consensus ranking tuple exactly.",
+    "If the formal decision-state object is unavailable, ranking provenance is UNKNOWN rather than recomputed with a partial path."
+  ],
+  "governance": {
+    "implementationClass": "CLASS_B_PROPOSAL_FIRST",
+    "formalDecisionImpact": false,
+    "ownerApprovalRequired": true,
+    "noThresholdChange": true
+  },
+  "decision": "FORMAL_OK_BROAD_CONTROL_ROWS_CAN_HAVE_PRECONSENSUS_SHADOW_RANKING / DECISION_STATE_RECEIPT_REQUIRED / NO_FORMAL_CHANGE"
+}
