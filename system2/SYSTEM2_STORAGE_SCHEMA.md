@@ -131,6 +131,37 @@ One immutable run-level completeness receipt per strategy / decision clock.
 Purpose:
 prove that a Shadow run did not silently preserve only selected/winning symbols. Every base-universe symbol must be frozen as excluded or every eligible symbol must have an evaluation/accounting state.
 
+### s2_candidate_lifecycle_receipts
+Immutable state-transition receipts for persistent candidate episodes.
+
+- lifecycle_receipt_id
+- candidate_episode_id
+- symbol
+- market_date
+- transition_timestamp
+- from_state
+- to_state
+- memberships_json
+- reason_codes_json
+- evidence_refs_json
+- capacity_eligible
+- position_monitor
+- lifecycle_hash
+- schema_version
+
+### s2_candidate_reentry_receipts
+Links a terminal prior candidate episode to a newly qualified episode without rewriting history.
+
+- reentry_receipt_id
+- symbol
+- previous_episode_id
+- new_episode_id
+- requalified_decision_id
+- reentry_timestamp
+- reason_codes_json
+- reentry_hash
+- schema_version
+
 ### s2_strategy_ordering_receipts
 Immutable receipt of strategy-local ordering supplied to the capacity layer.
 
