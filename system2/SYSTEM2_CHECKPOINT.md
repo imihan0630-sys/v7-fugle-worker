@@ -19,6 +19,14 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 
 ## Current design decisions
 
+- The permission/secret blocker is resolved. Remaining boundary is explicit authorization to CREATE the isolated `system2-research` D1 and apply schema V0.5 via the guarded manual provisioning path.
+
+- Post-secret audit bug diagnosed and corrected: `/user/tokens/verify` was wrong for the newly created account-owned token; `/accounts/{account_id}/tokens/verify` is now used. Resource permissions were already valid; no security gate was weakened.
+
+- Read-only D1 audit confirms the exact isolated target `system2-research` does not currently exist among visible databases; provisioning is required. `system2-shadow-research` Worker also does not exist. No cloud mutation has occurred yet.
+
+- Dedicated `SYSTEM2_CLOUDFLARE_API_TOKEN` is now installed and verified with the correct account-owned-token endpoint. Read-only audit run `36312108492`, job `108599936927`: token verify HTTP 200, D1 list HTTP 200, Workers list HTTP 200.
+
 - V0.5 repository verification PASS: GitHub Actions run `36305786450`, job `108582061023`; 27 System 2 test files PASS, runtime/deploy syntax PASS, SQLite creates 26 `s2_` tables, and production-isolation guard PASS.
 
 - Current genuine blocker is NEW D1 ACCOUNT PERMISSION/SECRET. Existing production Workers token must not be broadened or the production D1 reused as a shortcut. See `SYSTEM2_CLOUD_PERSISTENCE_READINESS_V0_1.md`.
