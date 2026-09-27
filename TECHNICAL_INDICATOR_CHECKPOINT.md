@@ -186,3 +186,38 @@ FORMULA_CORE_EXECUTABLE / SYNTHETIC_QA_PASS_ISOLATED / SNAPSHOT_CONTRACT_FROZEN 
 4. Await/accumulate prospective complete parents before TI-005/TI-006 outcome inference.
 5. In parallel, theory/falsification work may proceed on ADX versus trend-quality and Bollinger width versus ATR/VCP, but no outcome search or score promotion before the primary redundancy lane resolves.
 6. Formal Core unchanged.
+
+
+## Continuation update — TI-019 through TI-026
+
+- ADX/DMI mechanism decomposition is frozen. ADX is a directionless trend-strength descriptor derived from directional movement normalized by True Range; high ADX is not bullish by itself.
+- ADX begins with a high redundancy prior versus MA slope/alignment, trendPersistence, HH/HL/LH/LL progression, direct returns, directional efficiency and ATR-normalized trend quality.
+- First ADX inference must test incremental value after those direct controls. ADX level and ADX slope are separate hypotheses; conventional 20/25/40 thresholds are not assumed universal and no threshold sweep is allowed.
+- Taiwan-specific ADX alpha evidence is currently weak. A 2019 NCU thesis supports feasibility in a combined fundamental/MA/ADX strategy but not standalone incremental value. A 2026 Taiwan practitioner backtest is retained only as a current-regime counterexample showing that high ADX alone can also select strong downtrends.
+- Bollinger Band Width is decomposed as rolling close dispersion relative to SMA; %B is standardized price location. BBW therefore has a high redundancy prior versus realized volatility, ATR%, range compression and VCP/Platform geometry.
+- BBW and ATR are related but not identical: BBW uses dispersion of closes; ATR includes high-low range and gaps. This difference is the primary plausible incremental-information channel.
+- Taiwan 50 evidence from Ni et al. (2020) remains an important sign-firewall witness: upper-band events supported a momentum/long interpretation in that sample, directly rejecting upper-band-touch = automatic SELL.
+- A 2025 NCU Taiwan-index-futures Bollinger+ATR thesis supports practical joint use but is not directly portable to stock-selection incremental value.
+- Frozen falsification order: KD-vs-RSI -> MACD-vs-direct-trend -> ADX-vs-direct-trend-quality -> BBW-vs-ATR/realized-vol/range-compression/VCP.
+- New outcome-blind research contract: `research/TECHNICAL_INDICATOR_ADX_BOLLINGER_V0_1.md`.
+- No forward outcomes inspected, no threshold optimization, no runtime wiring, no FORMAL_OPTIMIZATION_CANDIDATE.
+- Formal Core remains LOCKED.
+
+### Updated current status
+
+FORMULA_CORE_EXECUTABLE / SYNTHETIC_QA_PASS_ISOLATED / SNAPSHOT_CONTRACT_FROZEN / DIVERGENCE_SPEC_FROZEN / ADX_BOLLINGER_FALSIFICATION_SPEC_FROZEN / OUTCOME_INFERENCE_NOT_STARTED / FORMAL_LOCKED
+
+### Updated exact next continuation point
+
+1. Extend the isolated research core with Wilder DMI/ADX14 and conventional Bollinger20x2; do not touch Worker.js.
+2. Add deterministic adversarial fixtures for ADX directionlessness and ATR-vs-BBW disagreement.
+3. Require prefix invariance and replay exactness.
+4. Add DMI/ADX/Bollinger raw components to a versioned research snapshot only after schema review.
+5. Keep all current work outcome-blind until prospective parent coverage is complete.
+6. Preserve inference order: TI-005 KD-vs-RSI, TI-006 MACD-vs-trend, then ADX and Bollinger redundancy.
+7. No fixed textbook threshold promotion and no multi-indicator majority voting.
+8. Formal Core unchanged.
+
+## Latest durable research commit
+
+- `6c596db1775a507edc1fb5df125d15644947f4d2` — ADX / Bollinger redundancy falsification v0.1.
