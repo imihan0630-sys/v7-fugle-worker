@@ -19,6 +19,14 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 
 ## Current design decisions
 
+- Current genuine blocker is NEW D1 ACCOUNT PERMISSION/SECRET. Existing production Workers token must not be broadened or the production D1 reused as a shortcut. See `SYSTEM2_CLOUD_PERSISTENCE_READINESS_V0_1.md`.
+
+- Guarded manual isolated-D1 workflow prepared: `.github/workflows/system2-isolated-d1-provision.yml` requires exact confirmation `CREATE_SYSTEM2_ISOLATED_D1` and dedicated secret `SYSTEM2_CLOUDFLARE_API_TOKEN`; target is only `system2-research`. It creates/reuses the isolated D1, applies V0.5, verifies required tables, and performs write/read sentinel validation without touching production Worker/root Wrangler/Cron.
+
+- Research schema advanced to V0.5 with `s2_schema_meta` and append-only `s2_infrastructure_checks` for physical persistence verification. Still NOT DEPLOYED.
+
+- Physical Cloudflare readiness audit completed read-only: current legacy token is valid and can list Worker scripts, but D1 database listing returns HTTP 401. Because D1 list permission is missing, `system2-research` database existence is UNKNOWN, not absent.
+
 - Research storage design advanced to V0.4 and remains NOT DEPLOYED. Physical prospective Shadow accumulation is now blocked by isolated cloud resource provisioning rather than missing repository-side audit/persistence semantics.
 
 - Deterministic persistence batch planner + isolated executor implemented and verified: whitelist `s2_` tables only, run fingerprint last, identical replay idempotent, same identity/different immutable payload => IMMUTABLE_CONFLICT fail-closed, non-isolated binding rejected, and decision-time batches do not accept outcome rows.
@@ -192,7 +200,8 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 5. ✅ Define execution simulator assumptions for Taiwan fees/tax/slippage/gaps/limits — `system2/SYSTEM2_EXECUTION_SIMULATOR_SPEC.md`.
 6. ✅ Implement first research-only factor snapshot + frozen decision archive + isolated `s2_` schema prototype. Node/SQLite verification recorded in `system2/SYSTEM2_P1_IMPLEMENTATION_VERIFICATION.md`.
 7. ✅ Complete repository-side isolated persistence/provenance preparation — source session, full-universe accounting, run fingerprint, persistence batch/executor, research CI and isolated deployment template are complete.
-8. ⏳ Provision a physically separate System 2 database/service, apply V0.4 schema there, verify write/read/replay integrity, then enable prospective scheduled Shadow capture. Never fall back to System 1 production persistence.
+8. ⏳ Human permission boundary: configure a dedicated Cloudflare token/secret with D1 write/edit capability as `SYSTEM2_CLOUDFLARE_API_TOKEN`. Current legacy Workers token is valid but D1 list returns HTTP 401.
+9. ⏳ After the dedicated token exists, re-run read-only audit, run the guarded isolated-D1 workflow, apply V0.5, verify write/read integrity, then design prospective scheduled Shadow capture. Never fall back to System 1 production persistence.
 
 ## Current boundary
 
