@@ -70,6 +70,8 @@ function snapshot(){
   assert.equal(out.byDate["2026-09-29"].eligibleRows,2);
   assert.equal(out.byDate["2026-09-29"].cleanRows,1);
   assert.equal(out.byDate["2026-09-29"].streakProvenanceUncertifiedRows,1);
+  assert.equal(out.denominator.fullScanPopulationPrevalenceIdentifiable,false);
+  assert.equal(out.denominator.persistedFullFormalScanScope,"SELECTED_PLAN_ROWS_ONLY_UNDER_CURRENT_STORAGE_WIRING");
 }
 
 console.log(JSON.stringify({
