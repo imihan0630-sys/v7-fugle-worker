@@ -1269,3 +1269,46 @@ Status:
 `CAP_RESERVE_MECHANISM_PROVEN / PRODUCTION_OCCURRENCE_PENDING`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-063 Production result — cap mechanism did not cause observed historical underdeployment
+
+Read-only Production run `36352049564` / job `108712476115` checked both reconstructable plan dates.
+
+### 2026-09-18
+
+- selected names = 3;
+- nominal deploy target = 85% × NT$200,000 = NT$170,000;
+- highest score share = 3105 at 38.172502%;
+- cap-binding threshold for 3+ names = 41.176471%;
+- cap-binding symbols = none;
+- cap-induced reserve = NT$0;
+- planned allocation after NT$1,000 floors = NT$168,000;
+- floor reserve = NT$2,000;
+- designed strategic reserve = NT$30,000;
+- remaining cash after plan = NT$32,000.
+
+Therefore the extra NT$2,000 under the nominal 85% deployment target came entirely from NT$1,000 flooring, not the 35% cap.
+
+### 2026-09-21
+
+- selected names = 1;
+- nominal deploy target = 35% = NT$70,000;
+- raw ratio = cap = 35%;
+- cap-induced reserve = NT$0;
+- floor reserve = NT$0;
+- remaining cash = NT$130,000, entirely the designed 65% strategic reserve.
+
+The historical hypothesis
+`current observed planned underdeployment was caused by non-redistributed cap clipping`
+is rejected for the available dates.
+
+The structural mechanism remains valid prospectively: if selected score concentration crosses the cap-binding threshold, clipped mass is not redistributed and will become extra reserve.
+
+Durable receipt:
+`research/score_cap_reserve_production_receipt_20260928.json`.
+
+Status:
+`CAP_RESERVE_MECHANISM_PROVEN / HISTORICAL_OCCURRENCE_NOT_OBSERVED / PROSPECTIVE_WATCH_ONLY / ECONOMIC_VALUE_UNKNOWN`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
