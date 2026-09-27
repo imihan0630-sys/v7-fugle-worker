@@ -13,6 +13,7 @@ for(const marker of [
   "LIQ_SMALLCAP_SPECIAL_REASON_REJECTED",
   "LIQ_MIDCAP_EXTRA_REQUIREMENT_REJECTED",
   "liquidityAdmissionResearch",
+  "liquidityAdmissionPopulationReceipt",
   "fullFormalCounterfactual:false"
 ]) assert.ok(source.includes(marker),marker);
 
