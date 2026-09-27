@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "LIFECYCLE_METRIC_SENSITIVITY_V0_1",
+  "observedAt": "2026-09-28T05:52:00+08:00",
+  "purpose": "Cross-falsify lifecycle-stage and concentration-metric dependence of the 2026-09-18 structural risk result.",
+  "stages": [
+    "FIRST",
+    "ADD",
+    "FULL"
+  ],
+  "metrics": [
+    "HHI",
+    "GINI",
+    "CV",
+    "MAX_SHARE",
+    "MAX_MIN"
+  ],
+  "search": "Exhaustive legal NT$1,000-grid allocations under same names, same deployment and 35% per-name cap.",
+  "falsification": "If current ceases to exceed equal-capital/global minimum in multiple stage-metric cells, downgrade lifecycle robustness.",
+  "guardrails": [
+    "all stages are plan-preview buyHigh geometry, not realized execution",
+    "FIRST and ADD are evaluated separately even though ADD requires FIRST state in live execution",
+    "metric-specific global optima may differ and are not live recommendations",
+    "one reconstructable multi-name date remains the sample limit"
+  ],
+  "status": "LIFECYCLE_METRIC_PROTOCOL_READY / PRODUCTION_AUDIT_PENDING",
+  "formalCoreImpact": false
+}
