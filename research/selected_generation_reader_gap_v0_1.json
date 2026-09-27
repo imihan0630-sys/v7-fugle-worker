@@ -1,0 +1,75 @@
+{
+  "schemaVersion": "selected-generation-reader-gap-v0.1",
+  "researchedAtTaipei": "2026-09-27",
+  "scope": "research-only / outcomes-closed / Formal Core unchanged",
+  "question": "Can existing production read surfaces certify plan.recorded_at === selected research snapshot.updated_at with FULL_FORMAL_SCAN and V8.13 ranking provenance, without adding persistence or widening shared runtime APIs?",
+  "sourceFindings": [
+    {
+      "source": "scripts/apply_v8_5_0.py",
+      "finding": "The protected /api/journal path exposes v8_trade_journal_plans.recorded_at with plan rows."
+    },
+    {
+      "source": "scripts/apply_v8_7_0.py",
+      "finding": "Internal readResearchSnapshots() reads trade_research_snapshots.updated_at and snapshot_json from first-primary D1."
+    },
+    {
+      "source": "scripts/apply_v8_7_0.py + later dashboard patches",
+      "finding": "The protected /api/research/dashboard consumes readResearchSnapshots() internally but does not expose raw snapshot rows/timestamps needed for a strict external same-generation join."
+    },
+    {
+      "source": "research/portfolio_risk_selected_generation_classifier_v0_1.mjs",
+      "finding": "A fail-closed Class-A same-generation classifier already exists on main and requires exact scan_date+symbol, writer timestamp equality, FULL_FORMAL_SCAN, PriorityScore/comparator provenance and journal completeness."
+    }
+  ],
+  "falsification": {
+    "attemptedAlternative": "Use /api/journal plus /api/research/dashboard without runtime changes.",
+    "result": "FALSIFIED",
+    "reason": "The journal side exposes plan recorded_at, but the dashboard side withholds raw selected snapshot updated_at/snapshot_json. The two positive witnesses cannot be paired externally from current protected read surfaces.",
+    "importantNonClaim": "This is not evidence that stored selected generations are incomplete; it is a read-surface observability gap."
+  },
+  "currentSafeStates": {
+    "storageCapability": "SOURCE_READY",
+    "classifierCapability": "CLASS_A_READY",
+    "externalLiveCoverageMeasurement": "BLOCKED_BY_READER_SURFACE",
+    "missingOrMismatchSemantics": "UNKNOWN_NOT_BAD",
+    "outcomeUse": "CLOSED"
+  },
+  "minimalClassBReaderProposal": {
+    "purpose": "Expose existing selected-generation evidence without adding persistence or changing Formal decisions.",
+    "endpointShape": "protected research-only exact-date/keyset reader or equivalent bounded extension",
+    "requiredFields": [
+      "scan_date",
+      "symbol",
+      "plan.recorded_at",
+      "selectedSnapshot.updated_at",
+      "selectedSnapshot.sourceCompleteness",
+      "priorityScoreDefinitionVersion",
+      "rankingComparatorVersion",
+      "postConsensusPriorityScore",
+      "rewardPerRisk",
+      "marketConsensusBonus",
+      "journal selected_count",
+      "journal plan_count"
+    ],
+    "coverageMetadata": [
+      "requested scan date/keyset",
+      "total matching plan rows",
+      "total matching selected snapshot rows",
+      "returned rows",
+      "missing-side counts",
+      "truncated/hasMore",
+      "pagination cursor or whole-keyset completeness flag"
+    ],
+    "constraints": [
+      "zero new market-data calls",
+      "zero new persistence",
+      "no mutation/backfill/reconstruction",
+      "no Formal/ranking/quota/capital/monitor/signal/push behavior change",
+      "fail closed on absence/mismatch/provenance gap",
+      "authorization equivalent to existing protected research/journal routes"
+    ],
+    "engineeringClass": "B_PROPOSAL_FIRST_OWNER_APPROVAL_REQUIRED"
+  },
+  "status": "EXISTING_STORAGE_SUFFICIENT_BUT_CURRENT_READ_SURFACES_INSUFFICIENT",
+  "formalOptimizationCandidate": false
+}
