@@ -407,3 +407,28 @@ After `SYSTEM2_CLOUDFLARE_API_TOKEN` was configured:
 - provisioning is therefore required before prospective Shadow persistence.
 
 The initial post-secret audit incorrectly used `/user/tokens/verify` against an account-owned token. That produced a false authentication failure while resource reads were already succeeding. The workflow was corrected to `/accounts/{account_id}/tokens/verify`, preserving all isolation and permission checks.
+
+
+## Physical System2 D1 provisioning verification (2026-09-27)
+
+Status: PASS / ISOLATED D1 CREATED / PRODUCTION UNCHANGED.
+
+First provisioning:
+- run `36312415771`, job `108600779602`;
+- `system2-research` created;
+- database ID digest `9768891c9583`;
+- schema V0.5;
+- 26 `s2_` tables;
+- required tables PASS;
+- write/read sentinel PASS;
+- production database/Worker/Cron unchanged.
+
+Replay:
+- run `36312460524`, job `108600904592`;
+- same database ID digest;
+- created=false;
+- reusedExisting=true;
+- schema/table/write-read verification PASS;
+- production isolation PASS.
+
+The temporary push authorization trigger was removed after completion.
