@@ -97,4 +97,15 @@ assert.equal(historical.prospectiveEvidenceEligible, false);
 assert.equal(historical.dependencyCoverage.A5_QUARTERLY_FINANCIALS, false);
 assert.equal(historical.dependencyCoverage.B2_INDUSTRY_THESIS_PROSPECTIVE, false);
 
+const weekend = await probeRequiredDependencyObservers({
+  marketDate: "2026-09-28",
+  expectedTradingDay: false,
+  fetchImpl,
+  now: () => new Date("2026-09-28T06:10:00Z"),
+});
+assert.equal(weekend.expectedTradingDay, false);
+assert.equal(weekend.prospectiveEvidenceEligible, false);
+assert.equal(weekend.dependencyCoverage.A5_QUARTERLY_FINANCIALS, false);
+assert.equal(weekend.dependencyCoverage.B2_INDUSTRY_THESIS_PROSPECTIVE, false);
+
 console.log("System2 required dependency probes tests passed");
