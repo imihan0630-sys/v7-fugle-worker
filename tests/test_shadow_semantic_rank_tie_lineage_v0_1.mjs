@@ -69,23 +69,33 @@ function pop(states){
   assert.equal(p.counts.rankQuality.CERTIFIED,2);
 }
 
-// Missing comparator inputs fail closed even when ordering happens to be unique.
+// Missing comparator input contaminates the exact ABSOLUTE rank of the whole pool:
+ // the unknown competitor could outrank a currently complete row.
 {
   const bad={...R};
   delete bad.relativeStrength;
   const p=pop([
     {symbol:"1001",pool:"GENERAL",formalOk:true,ranking:{...R,priorityScore:81}},
-    {symbol:"1002",pool:"GENERAL",formalOk:true,ranking:bad}
+    {symbol:"1002",pool:"GENERAL",formalOk:true,ranking:bad},
+    {symbol:"9001",pool:"THOUSAND",formalOk:true,ranking:{...R,priorityScore:88}}
   ]);
-  assert.equal(p.rows.find(x=>x.symbol==="1002").formalPoolRank,null);
-  assert.equal(p.rows.find(x=>x.symbol==="1002").rankCertification,"RANKING_INPUT_INCOMPLETE");
+  for(const symbol of ["1001","1002"]){
+    const row=p.rows.find(x=>x.symbol===symbol);
+    assert.equal(row.formalPoolRank,null);
+    assert.equal(row.rankCertification,"POOL_RANK_INPUT_INCOMPLETE");
+  }
+  // Contamination is pool-local; a clean independent pool remains certifiable.
+  const thousand=p.rows.find(x=>x.symbol==="9001");
+  assert.equal(thousand.formalPoolRank,1);
+  assert.equal(thousand.rankCertification,"CERTIFIED");
+  assert.equal(p.counts.rankQuality.POOL_RANK_INPUT_INCOMPLETE,2);
 }
 
 console.log(JSON.stringify({
   ok:true,
   symbolFallbackRemoved:true,
   exactTieRequiresPreSortOrdinal:true,
-  missingComparatorFailsClosed:true,
+  missingComparatorContaminatesWholePool:true,
   nonTieBackwardCompatible:true,
   formalCoreImpact:false
 },null,2));
