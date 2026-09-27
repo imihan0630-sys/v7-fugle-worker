@@ -1,0 +1,186 @@
+{
+  "schemaVersion": "system2-technical-semantic-provenance-v0.1",
+  "updated": "2026-09-27 Asia/Taipei",
+  "researchOnly": true,
+  "decisionImpact": false,
+  "runtimeImplemented": false,
+  "formalCore": "LOCKED",
+  "requiredFields": [
+    "evidenceId",
+    "ownerFamily",
+    "semanticBasisIds",
+    "transformClass",
+    "canonicalPrimitiveIds",
+    "redundancyGroupId",
+    "parentEvidenceIds",
+    "directScoreEligible",
+    "explanationOnly",
+    "formulaVersion",
+    "asOf",
+    "availableAt",
+    "dataQualityState"
+  ],
+  "allowedTransformClass": [
+    "PRIMITIVE",
+    "EXACT_ALIAS",
+    "LINEAR_OR_MONOTONE_RESCALING",
+    "NESTED_TRANSFORM",
+    "WITHIN_BASIS_COMPOSITE",
+    "CROSS_BASIS_COMPOSITE",
+    "CONTEXT_MODIFIER",
+    "LIFECYCLE_STATE",
+    "VISUALIZATION_ONLY"
+  ],
+  "validationRules": [
+    {
+      "id": "R1_ALIAS_NO_SCORE",
+      "if": {
+        "transformClass": [
+          "EXACT_ALIAS",
+          "LINEAR_OR_MONOTONE_RESCALING"
+        ]
+      },
+      "then": {
+        "directScoreEligible": false
+      }
+    },
+    {
+      "id": "R2_VISUALIZATION_NO_SCORE",
+      "if": {
+        "transformClass": [
+          "VISUALIZATION_ONLY"
+        ]
+      },
+      "then": {
+        "directScoreEligible": false
+      }
+    },
+    {
+      "id": "R3_PRICE_VOLUME_OWNER",
+      "if": {
+        "ownerFamily": [
+          "PRICE_VOLUME"
+        ]
+      },
+      "then": {
+        "cannotIndependentlyScoreInside": "TECHNICAL_STRUCTURE"
+      }
+    },
+    {
+      "id": "R4_DUPLICATE_CANONICAL_PRIMITIVE",
+      "condition": "No two directScoreEligible evidence items may claim the same canonicalPrimitiveId inside one strategy decision without an explicit residualization/interaction policy."
+    },
+    {
+      "id": "R5_NESTED_TRANSFORM_DEFAULT",
+      "condition": "Nested transforms default to comparator/explanation only until incremental residual value is proven."
+    },
+    {
+      "id": "R6_INTERACTION_COMPONENT_ACCOUNTING",
+      "condition": "A scored cross-basis interaction must define whether component contributions are replaced, capped, or residualized; silent triple counting is invalid."
+    },
+    {
+      "id": "R7_CONTEXT_NOT_VOTE",
+      "condition": "Context/guard/lifecycle states alter interpretation/eligibility and are not independent technical votes by default."
+    }
+  ],
+  "system2LayerMap": {
+    "T1_TREND_STRUCTURE": [
+      "B1",
+      "B4",
+      "B5"
+    ],
+    "T2_STRUCTURAL_LEVELS": [
+      "B2"
+    ],
+    "T3_PATTERN_TOPOLOGY": [
+      "B1",
+      "B2",
+      "B5",
+      "B6",
+      "B7"
+    ],
+    "T4_PATTERN_LIFECYCLE": [
+      "CONTEXT_LIFECYCLE"
+    ],
+    "T5_CANDLESTICK_SAKATA": [
+      "B7"
+    ],
+    "T6_TECHNICAL_INDICATOR_AUXILIARY": [
+      "B1",
+      "B2",
+      "B3",
+      "B4",
+      "B5",
+      "B6",
+      "B8"
+    ],
+    "T7_VOLATILITY_COMPRESSION": [
+      "B6"
+    ],
+    "T8_MULTI_TIMEFRAME": [
+      "HORIZON_CONTEXT_OPERATOR"
+    ],
+    "T9_FAILURE_FALSE_BREAK": [
+      "CONTEXT_LIFECYCLE"
+    ]
+  },
+  "indicatorExamples": {
+    "KD": {
+      "basis": [
+        "B2"
+      ],
+      "transformClass": "WITHIN_BASIS_COMPOSITE"
+    },
+    "RSI": {
+      "basis": [
+        "B3"
+      ],
+      "transformClass": "WITHIN_BASIS_COMPOSITE"
+    },
+    "MACD": {
+      "basis": [
+        "B4"
+      ],
+      "transformClass": "WITHIN_BASIS_COMPOSITE"
+    },
+    "ATR": {
+      "basis": [
+        "B6"
+      ],
+      "transformClass": "WITHIN_BASIS_COMPOSITE",
+      "role": "RISK_CONTEXT"
+    },
+    "DMI_ADX": {
+      "basis": [
+        "B5",
+        "B6"
+      ],
+      "transformClass": "CROSS_BASIS_COMPOSITE"
+    },
+    "BOLLINGER": {
+      "basis": [
+        "B6",
+        "B4"
+      ],
+      "transformClass": "CROSS_BASIS_COMPOSITE"
+    },
+    "ROC": {
+      "basis": [
+        "B1"
+      ],
+      "transformClass": "EXACT_ALIAS",
+      "canonicalPrimitiveIds": [
+        "RET_N"
+      ],
+      "directScoreEligible": false
+    },
+    "OBV": {
+      "basis": [
+        "B1",
+        "B8"
+      ],
+      "transformClass": "CROSS_BASIS_COMPOSITE",
+      "ownerFamily": "PRICE_VOLUME"
+    }
+  }
+}
