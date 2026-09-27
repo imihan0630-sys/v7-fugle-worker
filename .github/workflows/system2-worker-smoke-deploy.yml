@@ -1,0 +1,266 @@
+name: System2 Worker Smoke Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: "Type DEPLOY_SYSTEM2_WORKER_SMOKE"
+        required: true
+        type: string
+  push:
+    branches: [main]
+    paths:
+      - "system2/approvals/DEPLOY_SYSTEM2_WORKER_SMOKE_2026-09-27.md"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-worker-smoke-deploy
+  cancel-in-progress: false
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment: system2-research
+    env:
+      WORKER_NAME: system2-shadow-research
+      DB_NAME: system2-research
+      EFFECTIVE_CONFIRM: ${{ github.event_name == 'workflow_dispatch' && inputs.confirm || 'DEPLOY_SYSTEM2_WORKER_SMOKE' }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Guard explicit authorization
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$EFFECTIVE_CONFIRM" = "DEPLOY_SYSTEM2_WORKER_SMOKE"
+          if [ "$GITHUB_EVENT_NAME" = "push" ]; then
+            test -f system2/approvals/DEPLOY_SYSTEM2_WORKER_SMOKE_2026-09-27.md
+            grep -qx 'APPROVAL=DEPLOY_SYSTEM2_WORKER_SMOKE' system2/approvals/DEPLOY_SYSTEM2_WORKER_SMOKE_2026-09-27.md
+          fi
+
+      - name: Resolve isolated D1 and verify Worker absent
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+          WORKERS_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          node <<'NODE'
+          import fs from "node:fs";
+          const accountId=process.env.CLOUDFLARE_ACCOUNT_ID;
+          const d1Token=process.env.SYSTEM2_CLOUDFLARE_API_TOKEN;
+          const workersToken=process.env.WORKERS_API_TOKEN;
+          const workerName=process.env.WORKER_NAME;
+          const dbName=process.env.DB_NAME;
+          if(!accountId||!d1Token||!workersToken) throw new Error("required Cloudflare credentials are missing");
+          const origin="https://api.cloudflare.com/client/v4";
+          async function get(path,token){
+            const r=await fetch(origin+path,{headers:{authorization:`Bearer ${token}`,accept:"application/json"},signal:AbortSignal.timeout(45000)});
+            const t=await r.text(); let d=null; try{d=JSON.parse(t)}catch{}
+            if(!r.ok||d?.success===false) throw new Error(`GET ${path.replace(accountId,"<account>")} HTTP ${r.status}: ${d?.errors?.[0]?.message||t.slice(0,300)}`);
+            return d;
+          }
+          const d1=await get(`/accounts/${accountId}/d1/database?per_page=100`,d1Token);
+          const matches=(d1.result||[]).filter(x=>x?.name===dbName);
+          if(matches.length!==1) throw new Error(`expected exactly one isolated D1 named ${dbName}; found ${matches.length}`);
+          const dbId=matches[0].uuid||matches[0].id;
+          if(!dbId) throw new Error("isolated D1 id missing");
+
+          const workers=await get(`/accounts/${accountId}/workers/scripts`,workersToken);
+          const existing=(workers.result||[]).filter(x=>x?.id===workerName);
+          if(existing.length!==0) throw new Error(`${workerName} already exists; refusing first-create smoke workflow`);
+
+          fs.appendFileSync(process.env.GITHUB_ENV,`SYSTEM2_DB_ID=${dbId}\n`);
+          console.log(JSON.stringify({databaseName:dbName,databaseResolved:true,workerAbsent:true}));
+          NODE
+
+      - name: Build smoke Wrangler config
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat > wrangler.system2.smoke.toml <<EOF
+          name = "$WORKER_NAME"
+          main = "system2/deploy/worker.mjs"
+          compatibility_date = "2026-09-01"
+          workers_dev = false
+          preview_urls = true
+
+          [[d1_databases]]
+          binding = "SYSTEM2_DB"
+          database_name = "$DB_NAME"
+          database_id = "$SYSTEM2_DB_ID"
+
+          [vars]
+          SYSTEM2_CAPTURE_ENABLED = "false"
+          SYSTEM2_CAPTURE_MODE = "LIMITED_PROSPECTIVE_SHADOW"
+          SYSTEM2_CAPTURE_CONTRACT_VERSION = "0.1"
+          EOF
+
+          grep -F 'workers_dev = false' wrangler.system2.smoke.toml
+          grep -F 'preview_urls = true' wrangler.system2.smoke.toml
+          ! grep -Eq '(^|[[:space:]])(route|routes|crons)[[:space:]]*=' wrangler.system2.smoke.toml
+          grep -F 'SYSTEM2_CAPTURE_ENABLED = "false"' wrangler.system2.smoke.toml
+
+      - name: Deploy isolated Worker with temporary Version URL
+        id: deploy
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm exec --yes wrangler@4.135.0 -- deploy --config wrangler.system2.smoke.toml --message "System2 isolated smoke deploy ${GITHUB_SHA}" 2>&1 | tee /tmp/system2-smoke-deploy.log
+
+          VERSION_URL=$(grep -Eo 'https://[A-Za-z0-9._-]+\.workers\.dev' /tmp/system2-smoke-deploy.log | head -n 1 || true)
+          if [ -z "$VERSION_URL" ]; then
+            echo "Wrangler output did not expose a Version URL; refusing to claim runtime smoke verification."
+            exit 1
+          fi
+          echo "version_url=$VERSION_URL" >> "$GITHUB_OUTPUT"
+
+      - name: Smoke health through Version URL
+        env:
+          VERSION_URL: ${{ steps.deploy.outputs.version_url }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          node <<'NODE'
+          const url=process.env.VERSION_URL.replace(/\/$/,"")+"/health";
+          let last=null;
+          for(let i=1;i<=12;i++){
+            try{
+              const r=await fetch(url,{headers:{accept:"application/json"},signal:AbortSignal.timeout(15000)});
+              const text=await r.text();
+              if(r.ok){
+                const data=JSON.parse(text);
+                if(data.service!=="system2-shadow-research") throw new Error("wrong service");
+                if(data.mode!=="RESEARCH_ONLY") throw new Error("wrong runtime mode");
+                if(data.databaseBinding!=="SYSTEM2_DB") throw new Error("wrong D1 binding");
+                if(data.schemaVersion!=="0.5") throw new Error("wrong D1 schema version");
+                if(data.captureState!=="CAPTURE_DISABLED") throw new Error("capture must be disabled");
+                if(data.scheduledCaptureAllowed!==false) throw new Error("scheduled capture must remain blocked");
+                if(data.system1RuntimeUsed!==false) throw new Error("System1 runtime isolation failed");
+                console.log(JSON.stringify({health:"PASS",...data}));
+                process.exit(0);
+              }
+              last=new Error(`HTTP ${r.status}: ${text.slice(0,300)}`);
+            }catch(e){last=e}
+            await new Promise(r=>setTimeout(r,3000));
+          }
+          throw last||new Error("health smoke failed");
+          NODE
+
+      - name: Verify deployed bindings and no schedules
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          WORKERS_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          node <<'NODE'
+          const accountId=process.env.CLOUDFLARE_ACCOUNT_ID;
+          const token=process.env.WORKERS_API_TOKEN;
+          const name=process.env.WORKER_NAME;
+          const origin="https://api.cloudflare.com/client/v4";
+          async function get(path){
+            const r=await fetch(origin+path,{headers:{authorization:`Bearer ${token}`,accept:"application/json"},signal:AbortSignal.timeout(45000)});
+            const t=await r.text(); let d=null; try{d=JSON.parse(t)}catch{}
+            if(!r.ok||d?.success===false) throw new Error(`GET ${path.replace(accountId,"<account>")} HTTP ${r.status}: ${d?.errors?.[0]?.message||t.slice(0,300)}`);
+            return d;
+          }
+          const settings=await get(`/accounts/${accountId}/workers/scripts/${name}/settings`);
+          const bindings=settings?.result?.bindings||[];
+          const d1=bindings.find(x=>x?.name==="SYSTEM2_DB");
+          if(!d1) throw new Error("SYSTEM2_DB binding missing from deployed Worker");
+          const vars=Object.fromEntries(bindings.filter(x=>x?.type==="plain_text").map(x=>[x.name,x.text]));
+          if(vars.SYSTEM2_CAPTURE_ENABLED!=="false") throw new Error("deployed capture flag is not false");
+
+          const schedules=await get(`/accounts/${accountId}/workers/scripts/${name}/schedules`);
+          if(Array.isArray(schedules?.result)&&schedules.result.length!==0) throw new Error("Cron schedules unexpectedly exist");
+
+          console.log(JSON.stringify({
+            worker:name,
+            system2DbBinding:true,
+            captureEnabled:false,
+            scheduleCount:Array.isArray(schedules?.result)?schedules.result.length:null,
+            bindingTypes:bindings.map(x=>({name:x.name,type:x.type}))
+          }));
+          NODE
+
+      - name: Lock Version URLs after successful smoke
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path("wrangler.system2.smoke.toml")
+          s=p.read_text()
+          s=s.replace("preview_urls = true","preview_urls = false")
+          p.write_text(s)
+          PY
+          npm exec --yes wrangler@4.135.0 -- deploy --config wrangler.system2.smoke.toml --message "System2 smoke lock-down ${GITHUB_SHA}"
+          grep -F 'workers_dev = false' wrangler.system2.smoke.toml
+          grep -F 'preview_urls = false' wrangler.system2.smoke.toml
+          grep -F 'SYSTEM2_CAPTURE_ENABLED = "false"' wrangler.system2.smoke.toml
+
+      - name: Final cloud isolation verification
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          WORKERS_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          node <<'NODE'
+          const accountId=process.env.CLOUDFLARE_ACCOUNT_ID;
+          const token=process.env.WORKERS_API_TOKEN;
+          const name=process.env.WORKER_NAME;
+          const origin="https://api.cloudflare.com/client/v4";
+          async function get(path){
+            const r=await fetch(origin+path,{headers:{authorization:`Bearer ${token}`,accept:"application/json"},signal:AbortSignal.timeout(45000)});
+            const t=await r.text(); let d=null; try{d=JSON.parse(t)}catch{}
+            if(!r.ok||d?.success===false) throw new Error(`GET ${path.replace(accountId,"<account>")} HTTP ${r.status}: ${d?.errors?.[0]?.message||t.slice(0,300)}`);
+            return d;
+          }
+          const scripts=await get(`/accounts/${accountId}/workers/scripts`);
+          const exact=(scripts.result||[]).filter(x=>x?.id===name);
+          if(exact.length!==1) throw new Error("isolated System2 Worker not present exactly once after deploy");
+
+          const schedules=await get(`/accounts/${accountId}/workers/scripts/${name}/schedules`);
+          if(Array.isArray(schedules?.result)&&schedules.result.length!==0) throw new Error("Cron schedules unexpectedly exist after lock-down");
+          console.log(JSON.stringify({
+            result:"PASS",
+            worker:name,
+            workerExists:true,
+            workersDevExpected:false,
+            previewUrlsExpected:false,
+            captureEnabled:false,
+            cronCount:Array.isArray(schedules?.result)?schedules.result.length:null,
+            system1WorkerChanged:false
+          }));
+          NODE
+
+      - name: Confirm production files unchanged
+        run: |
+          set -euo pipefail
+          test "$(sed -n '1p' wrangler.toml)" = 'name = "fugle-test"'
+          git diff --exit-code -- wrangler.toml Worker.js
+          echo "System1 production files unchanged PASS"
+
+      - name: Roll back first-create Worker if smoke fails
+        if: ${{ failure() && steps.deploy.outcome == 'success' }}
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          npm exec --yes wrangler@4.135.0 -- delete --name "$WORKER_NAME" --force || true
+          echo "Attempted rollback deletion of first-create System2 Worker"
