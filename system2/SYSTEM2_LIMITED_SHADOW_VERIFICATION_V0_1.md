@@ -78,7 +78,20 @@ If the only available implementation path touches V8 production runtime/storage,
 Before persistence deployment:
 1. define factor-family assessment receipts that make the provenance from raw factor observations -> family state explicit;
 2. define full-market capture completeness accounting so every stock is either evaluated or has a frozen reason why it was not;
-3. define source-session receipt and run-level fingerprint;
-4. then connect the recorder to isolated persistence when available.
+3. ✅ define source-session receipt and run-level fingerprint — completed in `SYSTEM2_SHADOW_RUN_PROVENANCE_V0_1.md`, `runtime/shadow_source_session_receipt.mjs` and `runtime/shadow_run_fingerprint.mjs`;
+4. next connect the recorder to isolated persistence when available.
 
 This keeps the future Shadow archive auditable and prevents selected-only survivorship.
+
+
+## Provenance extension
+
+Completed after the initial Limited Shadow verification:
+- Source Session Receipt（資料來源批次收據） freezes required/optional source presence, state, availableAt/capturedAt, PIT eligibility and payload/semantic provenance.
+- Required missing/stale/invalid/PIT-ineligible/future-known sources fail closed.
+- Run Fingerprint（執行批次指紋） links source-session hash, full-universe accounting, decision hashes, ordering/experiment hashes, capacity and lifecycle provenance.
+- Outcome joining is eligible only when both source session and full-universe accounting are complete.
+- Serializer/storage design added research-only.
+
+This closes the previously listed pre-persistence provenance tasks.
+The remaining blocker is physical isolated System 2 persistence + scheduled capture, not missing audit semantics.
