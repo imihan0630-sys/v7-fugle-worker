@@ -1,0 +1,21 @@
+name: Target Resistance Provenance Research
+
+on:
+  pull_request:
+    paths:
+      - "research/target_resistance_provenance_receipt_v0_1.mjs"
+      - "tests/test_target_resistance_provenance_receipt_v0_1.mjs"
+      - "research/target_resistance_provenance_receipt_spec_v0_1.json"
+      - ".github/workflows/research-target-resistance-provenance.yml"
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Run target resistance provenance tests
+        run: node tests/test_target_resistance_provenance_receipt_v0_1.mjs
