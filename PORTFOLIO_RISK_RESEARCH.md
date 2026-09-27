@@ -1577,3 +1577,27 @@ Status:
 `CLASSIFIER_READY / PRODUCTION_READER_DEFERRED / FIRST_PROSPECTIVE_LIVE_QA_PENDING`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-040 — first prospective Portfolio Risk QA protocol pre-registered (2026-09-27)
+
+Before observing the first eligible 2026-09-29+ V8.13 selected sample, the interpretation rules are frozen.
+
+- Zero selected: useful for journal/no-opportunity completeness only; says nothing about sizing quality.
+- One selected: may certify generation/provenance and reconstruct its planned risk, but cannot identify cross-name concentration or compare allocators.
+- Multiple selected: may run current vs equal-capital vs capped-equal-risk **plan-time structural** comparisons, but same-day geometry cannot establish economic superiority.
+
+Outcome maturity is also fixed:
+D1/D3/D5 become usable only after 1/3/5 subsequent trading sessions have closed. MFE/MAE obey the same no-future-bar horizon rule.
+
+Every eligible date, including zero-selection and failed-generation dates, must be retained. No dropping inconvenient dates and no changing comparator/horizon definitions after outcomes are seen.
+
+Any economic sizing conclusion still requires multiple independent scan dates, costs, date clustering and LODO. A single attractive prospective date cannot create a FORMAL_OPTIMIZATION_CANDIDATE.
+
+Artifact:
+`research/portfolio_risk_first_prospective_qa_protocol_v0_1.json`.
+
+Status:
+`PROTOCOL_PREREGISTERED / AWAITING_FIRST_ELIGIBLE_SCAN`.
+
+Formal Core unchanged.
