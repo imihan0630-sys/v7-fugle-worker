@@ -105,3 +105,92 @@ Promotion requires evidence that:
 If small size remains independently hazardous or apparent premium is confined to illiquid/high-limit-hit names, retain the floor.
 
 No Formal change.
+
+
+## MCAP-008 — live market-cap source identity audit
+
+Fresh source-path audit separates current-value availability from provenance.
+
+### Official path
+
+`fetchOfficialEnrichment()` currently produces `sharesOutstanding`, not `marketCapYi`.
+
+TPEx official `mopsfin_t187ap03_O` rows directly expose:
+- `Date`;
+- `IssueShares`.
+
+The official CSV fallback path also validates an `exportDate` from `出表日期`.
+
+Thus official share-count date/provenance exists at the source layer.
+
+### Custom merge path
+
+`fetchEnrichment()` starts from official stock data and then merges custom:
+`{...base, ...extra}`.
+
+Only official `market` classification is explicitly protected afterward.
+
+Therefore custom can override:
+- `sharesOutstanding`;
+- `marketCapYi`;
+- `marketCap100m`;
+- `市值_億`.
+
+`normalizeEnrichmentPayload()` retains only stocks/history/available and drops payload-level metadata/asOf semantics.
+
+### Final market-cap path
+
+`mergeEnrichment()` uses:
+1. explicit `marketCapYi / marketCap100m / 市值_億` if present;
+2. otherwise `sharesOutstanding * current close / 1e8`.
+
+Current row/Shadow does not preserve which branch produced the value.
+
+Therefore current `marketCapYi` has at least three possible live semantics:
+- CUSTOM_EXPLICIT_MARKET_CAP;
+- CUSTOM_SHARES_X_CLOSE;
+- OFFICIAL_SHARES_X_CLOSE.
+
+If persisted evidence cannot prove the path:
+`marketCapSourceType = UNKNOWN`.
+
+Do not infer official origin merely because the official profile source was also fetched.
+
+## MCAP-009 — source metadata is available but discarded
+
+Current official CSV fallback validates `exportDate` before accepting rows, but `sourceMeta` does not retain that exportDate.
+
+The current TPEx OpenAPI row itself exposes `Date`, but normalized stock output keeps only `IssueShares -> sharesOutstanding` and drops the date.
+
+This means a prospective provenance capture can be implemented with **zero additional market-data calls** for the official path:
+carry source/date identity already present in the loaded payload.
+
+This is an observability opportunity, not approval to change Formal inputs.
+
+## MCAP-010 — source identity vs denominator vintage
+
+Keep two questions separate.
+
+**Source identity question**
+- Which live branch produced today's marketCapYi?
+- Was it custom explicit, custom share-derived or official share-derived?
+
+**Denominator vintage question**
+- Was that share count the correct effective/known-at denominator across a corporate action?
+
+The second question remains owned by Corporate Actions / denominator-vintage research.
+This lane must not reimplement it.
+
+Machine artifact:
+`research/market_cap_source_provenance_falsification_v0_1.json`.
+
+## MCAP-011 — correct next evidence
+
+Before testing the 10bn floor:
+1. preserve marketCap source type and share-count source/date prospectively;
+2. measure actual Production source-path prevalence;
+3. inspect only source-path disagreements near 10/30/100bn as QA;
+4. retain current Formal input unchanged;
+5. then run size-floor opportunity/downside tests on source-proven clean rows.
+
+No threshold or merge precedence change is authorized.
