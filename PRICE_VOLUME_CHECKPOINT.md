@@ -912,3 +912,30 @@ Class A if research-only; Class C if later used in formal 15m confirmation.
 6. PVE-156 schema remains proposal-only until owner-approved engineering work.
 7. Formal Core remains LOCKED.
 
+
+
+## Correction — PVE-155 comparator lineage (2026-09-27)
+
+PVE-155's sentence stating Formal rank order as:
+`rewardPerRisk -> priorityScore -> setupQuality -> sectorFlow -> relativeStrength`
+is stale relative to the deployed deterministic patch chain.
+
+Fresh patch-chain audit confirms:
+- base Worker / earlier lineage used an RR-first comparator;
+- V7.5.30 changed deployed Formal ordering to:
+  1. post-consensus `priorityScore`;
+  2. raw `rewardPerRisk`;
+  3. `marketConsensusScore`;
+  4. `setupQuality`;
+  5. `sectorFlow`;
+  6. `relativeStrength`;
+- V8.13 did NOT change that ordering; it prospectively persisted the exact inputs and labels the comparator:
+  `PRIORITY_RR_CONSENSUS_SETUP_SECTOR_RS_7_5_30`.
+
+Therefore:
+- PVE-155's historical observation that the old Shadow archive could not fully reconstruct Formal cutline remains valid in spirit;
+- its exact comparator sequence must not be reused for V7.5.30+ QNS/cutline replay;
+- all prospective pool-integrity/cutline receipts must persist `rankComparatorVersion` and use the comparator valid for that scan date/version;
+- pre-V8.13 snapshots lacking post-consensus priority/consensus provenance remain insufficient for exact deployed comparator replay and must stay UNKNOWN rather than being recomputed from today's logic.
+
+This is a research-document correction only. Formal runtime/order is unchanged.
