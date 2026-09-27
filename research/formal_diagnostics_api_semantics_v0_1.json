@@ -1,0 +1,76 @@
+{
+  "schemaVersion": "formal-diagnostics-api-semantics-v0.1",
+  "researchDate": "2026-09-27",
+  "status": "LEGACY_NAMES_REQUIRE_SEMANTIC_ALIAS",
+  "formalCoreChanged": false,
+  "runtimeChanged": false,
+  "outcomeLookupUsed": false,
+  "legacyFields": {
+    "scanned": {
+      "safeAlias": "FORMAL_NORMALIZED_TODAY_ROWS",
+      "meaning": "todayRows entering selector after Formal normalization/universe filtering; not raw exchange listings",
+      "additiveFunnelStage": true
+    },
+    "with60Days": {
+      "safeAlias": "HISTORY_ADMITTED_FEATURE_ROWS_WITH_AT_LEAST_60_BARS",
+      "meaning": "rows present in featureRows whose historyDays>=60; denominator is not raw listings and can be affected by prior history-admission/data-quality logic",
+      "additiveFunnelStage": false
+    },
+    "missingEnrichment": {
+      "safeAlias": "HISTORY_ADMITTED_FEATURE_ROWS_MISSING_MARKET_CAP",
+      "meaning": "featureRows with marketCapYi null; this is a data-readiness diagnostic, not poor-stock quality",
+      "additiveFunnelStage": false
+    },
+    "baseEligible": {
+      "safeAlias": "EARLY_BASE_ADMITTED_BEFORE_DOWNSTREAM_PRECISION_GATES",
+      "meaning": "scoreCandidate returned basePassed=true, which also includes downstream rejects after the early admission layer",
+      "additiveFunnelStage": true
+    },
+    "rrEligible": {
+      "safeAlias": "PASSED_ALL_THROUGH_RR_BEFORE_FINAL_SIGNAL_GRADE",
+      "meaning": "rrPassed=true; all preceding gates through RR passed, but final signal-grade C can still reject",
+      "additiveFunnelStage": true
+    },
+    "channelCounts": {
+      "safeAlias": "FULLY_QUALIFIED_PRE_QUOTA_BY_CHANNEL",
+      "meaning": "scoreCandidate ok=true rows before final 3+3 pool quota; top-level already covers both price pools",
+      "additiveFunnelStage": true
+    },
+    "exclusions": {
+      "safeAlias": "FIRST_FAILURE_UNDER_FORMAL_ORDER_COUNTS",
+      "meaning": "one first-failure reason per evaluated row under current fail-fast gate order",
+      "additiveFunnelStage": false,
+      "forbiddenInterpretations": [
+        "independent gate failure count",
+        "marginal gate effect",
+        "recovered candidates if gate removed"
+      ]
+    },
+    "conditionDistribution": {
+      "safeAlias": "EARLY_BASE_COHORT_PATTERN_DIAGNOSTIC",
+      "meaning": "A/B check distribution recomputed on all basePassed rows, including rows already first-failed at earlier downstream precision gates",
+      "additiveFunnelStage": false,
+      "forbiddenInterpretations": [
+        "sequential Formal funnel",
+        "causal A/B gate loss",
+        "candidate recovery estimate"
+      ]
+    },
+    "thousandStockPool": {
+      "safeAlias": "THOUSAND_SUBSET_REDIAGNOSTIC",
+      "meaning": "rerun diagnostics on close>=1000 subset; top-level already includes these rows",
+      "additiveFunnelStage": false,
+      "forbiddenInterpretations": [
+        "add to top-level counts"
+      ]
+    }
+  },
+  "invariants": [
+    "Within one evaluated featureRows set: fullyQualified <= rrEligible <= baseEligible <= featureRows.",
+    "Top-level counts include GENERAL and THOUSAND; adding thousandStockPool counts double-counts THOUSAND.",
+    "DATA_READINESS missingness remains UNKNOWN/data-quality state, never BAD.",
+    "Only explicitly nested stage counts may be used for funnel conversion rates."
+  ],
+  "compatibilityRule": "Do not rename Production JSON fields without a separate compatibility review. Research/reporting layers should attach aliases/semanticVersion instead.",
+  "decision": "SEMANTIC_GUARD_REQUIRED / NO_FORMAL_CHANGE"
+}
