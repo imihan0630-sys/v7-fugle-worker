@@ -21,7 +21,8 @@ for(const p of plans){
     totalAllocation:p.total_allocation,
     buyHigh:p.buy_high,
     firstShares:p.first_shares,
-    secondShares:p.second_shares
+    secondShares:p.second_shares,
+    stop:p.stop
   });
 }
 
@@ -47,6 +48,11 @@ const summary=ready.map(x=>({
   totalNominalToPreviewShortfallNTD:x.quantization.totalNominalToPreviewShortfallNTD,
   previewUtilizationPctOfPlanned:x.quantization.previewUtilizationPctOfPlanned,
   previewUtilizationPctOfNominalTarget:x.quantization.previewUtilizationPctOfNominalTarget,
+  plannedProjectedStopRiskHHI:x.quantization.plannedProjectedStopRiskHHI,
+  previewProjectedStopRiskHHI:x.quantization.previewProjectedStopRiskHHI,
+  previewMinusPlannedRiskHHI:x.quantization.previewMinusPlannedRiskHHI,
+  plannedProjectedStopRiskNTD:x.quantization.plannedProjectedStopRiskNTD,
+  previewProjectedStopRiskNTD:x.quantization.previewProjectedStopRiskNTD,
   details:x.quantization.details
 }));
 
