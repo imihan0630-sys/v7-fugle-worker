@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "research-readiness-firewall-composition-audit-v0.1",
+  "researchDate": "2026-09-27",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "status": "FAIL_OPEN_COMPOSITION_RISK_CONFIRMED",
+  "finding": "Current Evidence Readiness Matrix blocks all experiments only when shadowIntegrity.status is exactly RESEARCH_DATA_GAP. Count thresholds can otherwise yield DESCRIPTIVE_READY while newer evidence firewalls are UNKNOWN/BLOCKED because those states are not inputs to researchEvidenceReadinessMatrix.",
+  "notComposedIntoMatrix": [
+    "immutable Shadow generation/decision receipt lineage",
+    "legacy same-date mutable/non-atomic archive status",
+    "reader LIMIT 5000 truncation/completeness",
+    "outcome session-spacing and corporate-action quality",
+    "pool-matched R02 v1.1 requirement",
+    "equal-date weighting firewall for R01/R04/R05/R07 and I01-I07",
+    "target/resistance provenance for target/RR studies",
+    "external-evidence parent-generation alignment",
+    "market/source/vintage coverage beyond simple external row/date counts",
+    "purged forward holdout",
+    "transaction-cost stress",
+    "factor redundancy/incremental diagnostics"
+  ],
+  "separateGovernanceMaturity": {
+    "positive": "researchGovernanceMaturity separately checks legacy promotion gate, full snapshots/dates/years/regimes, Shadow D5 count, regime days, exact RESEARCH_DATA_GAP, redundancy REVIEW_REQUIRED and cost sample count; cluster wrapper can block fragile mature incremental contrasts.",
+    "gap": "It also does not consume the newer lineage, reader-completeness, outcome-CA/session, equal-date, target-provenance or pool-matching firewalls. UNKNOWN statuses are not universally fail-closed."
+  },
+  "risk": "DESCRIPTIVE_READY currently means only that the experiment-specific count checks passed under the legacy integrity flag. It must not be interpreted as evidence-quality-ready or promotion-ready.",
+  "requiredFailClosedContract": [
+    "Separate COUNT_READY from EVIDENCE_QUALITY_READY.",
+    "Every experiment declares required firewalls and accepted states.",
+    "UNKNOWN/BLOCKED required firewall => EVIDENCE_QUALITY_BLOCKED, never READY.",
+    "Promotion eligibility is logical AND of count maturity, PIT/generation lineage, population/cohort integrity, outcome quality, reader completeness, estimator/date weighting, source coverage, purge/OOS, cost, redundancy/incremental and regime/coverage requirements applicable to that experiment.",
+    "R08 may use its paired equal-date estimator; row-weighted byEngine remains descriptive.",
+    "No generic global flag may certify experiment-specific target provenance or pool matching."
+  ],
+  "engineering": {
+    "classification": "CLASS_A_SPEC_ONLY_NOW",
+    "implementationBoundary": "Changing dashboard/readiness computation in Worker/shared runtime is Class B proposal-first unless isolated research-only module with no Formal dependency is proven.",
+    "formalRuleChange": "NONE"
+  },
+  "optimizationStatus": "NOT_FORMAL_OPTIMIZATION_CANDIDATE",
+  "exactNext": "Map R01-R08/I01-I07 to an explicit required-firewall matrix with per-experiment applicability and fail-closed accepted states. Then audit whether an isolated Class-A readiness composer can be tested without Worker/runtime integration; if yes prepare prototype/tests only, otherwise freeze Class-B proposal."
+}
