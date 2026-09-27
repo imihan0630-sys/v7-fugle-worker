@@ -86,3 +86,34 @@ Potential Class A only if implemented as isolated research serialization on alre
 If D1/schema/write-volume/runtime behavior becomes material, reclassify Class B proposal-first.
 
 No Formal optimization is contained in this proposal.
+
+
+## First-failure attribution guard
+
+The repaired counts remain counts of the **first rejection reason under the current Formal order**.
+
+They are NOT:
+- all failed gates;
+- marginal gate contribution;
+- unique rejection count;
+- estimated selected-count increase if a gate were removed.
+
+Outcome-free witness:
+- X fails A and B;
+- Y fails A only;
+- Z fails B only.
+
+Order A->B gives first-failure counts A=2/B=1.
+Order B->A gives A=1/B=2.
+Accepted set is unchanged.
+
+Therefore any API/report produced by the repair must name the denominator `firstFailureCount` (or equally explicit wording), not generic `gateRejectCount`.
+
+Machine guard:
+`research/first_failure_attribution_falsification_v0_1.json`.
+
+A future gate-overlap observer may record PASS/FAIL/UNKNOWN for independently evaluable gates on the same PIT scan row, but:
+- it must preserve the original first failure;
+- it must not bypass gates and call the result Formal;
+- missing inputs remain UNKNOWN;
+- later PASS does not imply the row would have been selected.
