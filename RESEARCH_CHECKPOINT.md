@@ -1,7 +1,7 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-214.
-Updated: 2026-09-27 11:38 Asia/Taipei.
+Checkpoint sequence: B-219.
+Updated: 2026-09-27 17:10 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Detailed B-01..B-123 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
@@ -1635,3 +1635,20 @@ Updated: 2026-09-27 11:38 Asia/Taipei.
 - Counterevidence remains active: early-session blindness, retest waiting and maxChase may provide avoidance benefit; higher participation is not automatically better. Economic test must compare MISSED_UPSIDE vs AVOIDANCE_BENEFIT net of costs and idle-capital benchmark across independent dates/regimes/channels.
 - Status: SELECTED_TO_BUY_STRUCTURE_FROZEN / NO_BUY_DENOMINATOR_DATA_QUALITY_BLOCKED / OUTCOME_MATERIALITY_UNKNOWN / NOT_OPTIMIZATION_READY / FORMAL_UNCHANGED. No FORMAL_OPTIMIZATION_CANDIDATE.
 - Exact next: audit whether LAST_MONITOR_KEY / Cron audit / signal-state episode data can jointly provide any certified subset of complete plan-day monitor coverage without new persistence. If a strict certified subset exists, define a Class-A completeness classifier and measure coverage only (no outcomes yet). If not, freeze the minimal Class-B monitor-run receipt proposal and move to the next nonblocked scarcity layer rather than inferring NO-BUY from absence.
+
+
+## B-219 — existing monitor receipts cannot certify complete plan-day NO-BUY coverage (2026-09-27 Asia/Taipei)
+- Continued B-218 exact-next after fresh governance/worklist/checkpoint read and repository-wide source search. Outcomes remained closed; no Formal/runtime behavior changed.
+- Audited the three candidate evidence families jointly: LAST_MONITOR_KEY, Cron audit, and per-symbol signal-state episodes/pending deliveries.
+- LAST_MONITOR_KEY is only the latest monitoring snapshot. It can positively prove that one monitor observation occurred and expose its then-current results, but it is overwritten by later runs and is not an immutable plan-day run ledger. It cannot prove all expected runs occurred or that a selected symbol remained present for the full session.
+- Cron audit proves scheduled job executions/status only within its retained/read surface. Generic INTRADAY_MONITOR success is batch-level evidence; it does not certify per-symbol plan membership, quote/15m freshness, finalDecision/action, or absence of a BUY for every expected run. Existing /api/cron/status exposes only latest/recent bounded runs, not a complete exact-date expected-vs-actual schedule receipt.
+- Signal-state episodes/pendingDeliveries are positive signal/delivery state. Their absence cannot prove the monitor ran successfully without BUY; they are not a negative-evidence ledger. A signal episode can corroborate BUY_SIGNAL_OBSERVED when same-symbol identity is proven, but cannot certify NO_BUY_COMPLETE.
+- Joint intersection does not repair the missing denominator: latest snapshot + bounded batch Cron success + no signal episode still leaves observationally equivalent monitor gaps, symbol-membership gaps, stale-data skips, and true policy no-BUY. Therefore there is no strict existing plan-day subset that can be certified as exhaustive NO_BUY solely from these three receipts.
+- Existing execution-recorder milestone rows do not close the gap either: they are event/milestone sampled rather than per-run, and FORMAL_SIGNAL_OBSERVED has known batch-scope ambiguity unless independently same-symbol matched.
+- Safe classification remains: positive same-symbol signal evidence => BUY_SIGNAL_OBSERVED; otherwise NO_BUY_COMPLETE is unavailable without exhaustive run/membership evidence and must remain NO_BUY_UNKNOWN_COVERAGE. ACTUAL_FILL remains UNKNOWN without trusted broker/order lifecycle.
+- Minimal Class-B proposal is now frozen conceptually: immutable monitor-run receipt keyed by tradeDate/runId with scheduledAt/start/end/status/version/generation, expected-run identity, per-run selected-plan membership, symbol observation status, quote/15m freshness, finalDecision/action/maxChase block state, same-symbol signal IDs, plus explicit session-finalization comparing expected vs actual runs. Reader requires exact-date total/count/pagination/truncation metadata. No write/runtime implementation was made.
+- Bias/falsification controls: no absence-as-zero, no historical intraday reconstruction, no daily-K substitution for 15m, no outcome-conditioned cause labels, no threshold tuning, no fabricated Shadow. This finding blocks causal idle-capital attribution but does not prove the current entry filters are beneficial or harmful.
+- R01-R08/I01-I07: no new mature outcome/intervention evidence. Execution Alpha causal NO-BUY decomposition remains DATA_QUALITY_BLOCKED; positive BUY observations remain usable subject to their own provenance.
+- Engineering classification: this audit is Class A evidence-only. Exhaustive shared monitor-run persistence is Class B proposal-first. Entry/freshness/maxChase/signal/push changes remain Class C.
+- Status: EXISTING_RECEIPTS_INSUFFICIENT_FOR_EXHAUSTIVE_NO_BUY / NO_STRICT_CERTIFIED_SUBSET / CLASS_B_MONITOR_RUN_RECEIPT_REQUIRED / OUTCOMES_CLOSED / FORMAL_UNCHANGED. No FORMAL_OPTIMIZATION_CANDIDATE.
+- Exact next: move to the next nonblocked scarcity layer without inferring NO-BUY frequency. Audit selected-plan construction validity and persistence before intraday monitoring: determine whether every SELECTED symbol receives an immutable next-session plan with buyLow/buyHigh/stop/maxChase/channel/planDate and whether plan construction/persistence failures are separately observable from monitor failures. Reuse existing plan/recommendation receipts; keep outcomes closed and actual fills UNKNOWN.
