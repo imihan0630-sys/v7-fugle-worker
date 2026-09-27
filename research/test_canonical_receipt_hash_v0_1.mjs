@@ -38,6 +38,16 @@ const decomposed="e\u0301";
 assert.notEqual(composed,decomposed);
 assert.notEqual(canonicalJcsJson({s:composed}),canonicalJcsJson({s:decomposed}));
 
+assert.throws(()=>canonicalJcsJson({s:"\uD800"}),/LONE_HIGH_SURROGATE/);
+assert.throws(()=>canonicalJcsJson({s:"\uDEAD"}),/LONE_LOW_SURROGATE/);
+const badKey={}; badKey["\uD800"]=1;
+assert.throws(()=>canonicalJcsJson(badKey),/LONE_HIGH_SURROGATE/);
+
+assert.equal(
+  canonicalJcsJson({numbers:[333333333.33333329,1E30,4.50,2e-3,1e-27]}),
+  '{"numbers":[333333333.3333333,1e+30,4.5,0.002,1e-27]}'
+);
+
 const vector='{"a":1,"b":2}';
 assert.equal(
   createHash("sha256").update(RECEIPT_HASH_CONTRACT.domains.PARENT_ID + vector,"utf8").digest("hex"),
