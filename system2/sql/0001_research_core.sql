@@ -75,6 +75,31 @@ CREATE UNIQUE INDEX IF NOT EXISTS idx_s2_symbol_bundle_unique
 CREATE INDEX IF NOT EXISTS idx_s2_symbol_date
   ON s2_symbol_factor_snapshots (symbol, market_date);
 
+
+CREATE TABLE IF NOT EXISTS s2_shadow_runs (
+  run_id TEXT PRIMARY KEY,
+  market_date TEXT NOT NULL,
+  decision_timestamp TEXT NOT NULL,
+  strategy_id TEXT NOT NULL,
+  strategy_version TEXT NOT NULL,
+  shadow_spec_id TEXT NOT NULL,
+  universe_version TEXT NOT NULL,
+  run_state TEXT NOT NULL,
+  base_universe_count INTEGER NOT NULL,
+  excluded_count INTEGER NOT NULL,
+  eligible_count INTEGER NOT NULL,
+  accounted_count INTEGER NOT NULL,
+  completion_rate REAL NOT NULL,
+  state_counts_json TEXT NOT NULL,
+  unaccounted_symbols_json TEXT NOT NULL,
+  symbol_accounts_json TEXT NOT NULL,
+  warnings_json TEXT NOT NULL,
+  captured_at TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_s2_shadow_run_strategy_date
+  ON s2_shadow_runs (strategy_id, strategy_version, market_date);
+
 CREATE TABLE IF NOT EXISTS s2_decisions (
   decision_id TEXT PRIMARY KEY,
   factor_snapshot_id TEXT NOT NULL,
