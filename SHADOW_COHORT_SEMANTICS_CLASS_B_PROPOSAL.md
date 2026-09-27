@@ -282,3 +282,66 @@ Any replacement reader must:
 - join evidence overlays against the exact same parent keyset.
 
 Do not fix this by only increasing the hard-coded limit.
+
+
+## External-evidence parent linkage
+
+Legacy `trade_research_external_evidence` has the same mutable date/symbol identity problem:
+- capture is generated from in-memory Shadow rows;
+- Shadow and external evidence persist separately;
+- external evidence also uses same-date DELETE + row-by-row INSERT/UPSERT;
+- evidence rows do not store immutable parent snapshot hash / parent generation.
+
+Readers then independently query:
+- parent Shadow: date + cohort/rank, `LIMIT 5000`;
+- external evidence: date + symbol, `LIMIT 5000`.
+
+When a hard limit cuts through one date, the two different secondary sort orders can return different symbol subsets.
+
+Required:
+- external evidence receipt references parentDecisionReceiptId / parentSnapshotHash / captureGeneration;
+- evidence is read by the exact complete parent keyset, not a separately truncated date-range query;
+- expected parent/evidence counts are reconciled;
+- missing join reason is explicit rather than a generic null.
+
+Machine guard:
+`research/external_evidence_parent_keyset_falsification_v0_1.json`.
+
+## Canonical market identity
+
+V8.7.11 currently derives `sourceMarket` from which monthly-revenue map contains the symbol.
+
+But the Formal normalized row already knows market identity (`row.market`) and preserves it through enrichment.
+That canonical exchange identity is dropped before the external-evidence collector.
+
+This couples unrelated evidence availability:
+a known TWSE symbol missing from monthly revenue can become `UNKNOWN_MARKET`, which then makes margin / SBL / attention / disposition UNKNOWN too.
+
+Required:
+- persist canonical TWSE/TPEX market from Formal normalized input in the decision-state receipt;
+- use it to route market-specific evidence;
+- preserve evidence-source market separately;
+- source mismatch => provenance conflict, not identity replacement;
+- provider/symbol missing affects only that evidence family.
+
+Machine guard:
+`research/external_evidence_market_identity_falsification_v0_1.json`.
+
+## Research Readiness quality overlay
+
+Current V8.7.10 Readiness Matrix is primarily a coverage/count maturity matrix.
+Its global quality blocker only fires when legacy `shadowIntegrity.status === RESEARCH_DATA_GAP`.
+
+Newly confirmed evidence-quality blockers are not yet machine inputs, so high row/date counts can still produce `DESCRIPTIVE_READY` or `ALL_DESCRIPTIVE_READY`.
+
+Do not change the old sample thresholds based on outcomes.
+
+Instead separate:
+1. `coverageReadiness` — existing frozen row/date thresholds;
+2. `evidenceQualityEligibility` — immutable parent, cohort semantics, pool matching, outcome quality, reader completeness and experiment-specific estimator validity;
+3. `promotionEligibility` — existing stricter OOS/cost/redundancy/governance layer.
+
+A quality blocker must not globally block unrelated experiments; guards are mapped by experiment.
+
+Machine guard:
+`research/readiness_quality_gate_falsification_v0_1.json`.
