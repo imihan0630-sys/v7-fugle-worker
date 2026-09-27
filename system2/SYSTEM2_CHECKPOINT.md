@@ -19,6 +19,25 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 
 ## Current design decisions
 
+- Decision Clock（決策時間點）Attempt-One Provenance（第一次執行來源證明）V0.4 merged to main in commit `9d576aaabe22e33c96f6c9e9178af333009bc61b` via PR #197. GitHub Actions reruns that share a run ID can no longer replace attempt-one metadata: only `run_attempt=1` is promotion-grade; later attempts are `RERUN_ATTEMPT_DIAGNOSTIC_ONLY` and can neither repair an attempt-one failure nor invalidate a valid attempt-one artifact.
+
+- PR #197 pre-merge verification PASS: System2 Research CI `36352092488`; V8 Regression `36352092607`. Post-merge verification PASS: System2 Research CI `36352192438`; V8 Regression `36352192374`. System1/V8 Formal Core remained untouched.
+
+- A1 Daily Close Integrity（A1 每日收盤完整性）V0.2 merged to main in commit `d612c46c76d414da9608cbf6b135c4773d6bab46` via PR #198. Required A1 TWSE/TPEx READY now counts unique target-date ordinary symbols with usable positive close values; duplicate target-date symbols invalidate the payload; undated rows never count toward the target date. Existing market-wide minimums remain TWSE 600 / TPEx 450.
+
+- The scheduled prospective A1 polling loop now uses `--required-daily-only true`, so promotion-grade 5-minute polling queries only `A1_TWSE_DAILY_CLOSE` and `A1_TPEX_DAILY_CLOSE`. Optional/context A2/A3/A6 sources remain available for separate research but cannot add transport-failure surface to the required Decision Clock gate.
+
+- PR #198 final-head verification PASS: System2 Research CI `36352504523` executed 56 System2 test files, 26-table SQLite schema and production-isolation guard; V8 Regression `36352504457` PASS. Post-merge verification PASS: System2 Research CI `36352557593`; V8 Regression `36352557626`.
+
+- Decision Clock Coverage Finalization（覆蓋最終化）V0.3 merged to main in commit `3d1460894fc14ff05edecc2f05a6e8a809f9dd49` via PR #202. Promotion-grade coverage now finalizes with a one-calendar-day lag: by default `coverageThroughDate` is the previous Taipei calendar date. Current/future-date runs and artifacts are pending diagnostics only, cannot create finalized gaps, and cannot enter readiness early.
+
+- The read-only readiness aggregation schedule is now 08:30 Asia/Taipei every calendar day (`cron: "30 0 * * *"`). This audits the previous date after the prospective collector window is safely over, while the official TWSE trading-calendar gate still distinguishes trading days from weekends/holidays. Friday evidence can therefore be finalized on Saturday rather than waiting until Monday.
+
+- PR #202 was rebased onto the then-latest main with no file overlap, rerun on the rebased head, and verified before merge: System2 Research CI `36357413919` PASS; V8 Regression `36357413917` PASS. Post-merge verification PASS: System2 Research CI `36357465388` executed 57 System2 test files, 26-table SQLite schema and production-isolation guard; V8 Regression `36357465389` PASS.
+
+- Prospective Decision Clock promotion-grade trading-date count remains 0. Earliest ordinary eligible prospective trading date remains 2026-09-29. Coverage Integrity V0.2, Collector Provenance V0.3, A5 Boundary Integrity V0.1, Attempt-One Provenance V0.4, A1 Daily Close Integrity V0.2 and Coverage Finalization V0.3 are now frozen before the first sample. Exact Decision Clock authorization, System2 Worker Cron authorization and capture remain false.
+
+
 - Decision Clock（決策時間點）dependency readiness integrity was hardened before the first prospective trading-date sample. PR #191 merged as `7f0ebda907d008ce3c3d944b252a9c4e13ac7799`: B2 contract V0.2 cannot become READY before 13:30 Asia/Taipei close finality, undated daily rows cannot be assigned to the target date, and classified-join coverage must meet the existing TWSE 600 / TPEx 450 market-wide minimums.
 
 - A5/B2 dependency polling now records explicit `READY / NOT_READY / SOURCE_ERROR / INVALID_PAYLOAD / NOT_APPLICABLE` states. Precision bracketing uses only an explicit `NOT_READY -> READY` transition; `SOURCE_ERROR` can never masquerade as NOT_READY. Dependency-family transport is isolated so a B2 transport error does not erase a valid A5 observation. PR #191 pre-merge System2 Research CI `36351189831` PASS (55 test files, syntax, 26-table SQLite schema, production-isolation guard) and V8 Regression `36351189836` PASS; post-merge System2 Research CI `36351252363` PASS.
