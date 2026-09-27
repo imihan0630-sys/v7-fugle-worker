@@ -122,3 +122,36 @@ empirical scarcity counts.
 `SEVEN_CHECKS_COLLAPSE_TO_TWO_PER_SYMBOL_SOURCE_BUNDLES_PLUS_ONE_SCAN_GLOBAL_ANNOUNCEMENT_STATE / GLOBAL_READY_NE_SYMBOL_COMPLETE / PROSPECTIVE_DENOMINATOR_WARRANTED / FORMAL_UNCHANGED`.
 
 No `FORMAL_OPTIMIZATION_CANDIDATE` exists.
+
+## FSC-002 — canonical source membership is not identical to Formal merged-field completeness
+
+Fresh merge-path falsification found a second estimand that must stay separate from the PR's original official-source membership observer.
+
+Before quality overlays, the enrichment path can already carry arbitrary per-stock fields. During the after-market quality merge, FINANCIAL and VALUATION objects only overwrite a row when their `stocks[symbol]` entry exists. A missing official symbol entry does not clear same-named fields that were already present. ANNOUNCEMENTS verification is still assigned globally afterward.
+
+Therefore this state is technically representable:
+
+- official FINANCIAL symbol entry absent;
+- official VALUATION symbol entry absent;
+- merged row already has all six required financial/valuation fields;
+- ANNOUNCEMENTS sources are verified;
+- the Formal bundled field gate passes.
+
+This is **not** evidence that Production currently relies on such alternate fields. Live prevalence and source provenance are UNKNOWN. It proves only that canonical official-source missingness cannot be substituted for the Formal first-failure rate.
+
+Two estimands are now frozen:
+
+1. `canonicalSourceCompleteness`;
+2. `formalMergedFieldCompleteness`.
+
+Machine artifacts:
+- `research/financial_source_merge_provenance_falsification_v0_1.json`;
+- `research/financial_source_merge_provenance_observer_v0_1.mjs`;
+- `tests/test_financial_source_merge_provenance_observer_v0_1.mjs`.
+
+The minimum prospective dual-state receipt is frozen in `FINANCIAL_SOURCE_COMPLETENESS_CAPTURE_CLASS_B_PROPOSAL.md`. Shared runtime/D1 wiring remains Class B and was not implemented.
+
+Updated decision:
+`SEVEN_CHECKS_COLLAPSE_TO_TWO_CANONICAL_SOURCE_BUNDLES_PLUS_ONE_SCAN_GLOBAL_ANNOUNCEMENT_STATE / CANONICAL_SOURCE_MEMBERSHIP_NE_FORMAL_MERGED_FIELD_COMPLETENESS / ALTERNATE_FIELD_PASS_TECHNICALLY_FEASIBLE / LIVE_PREVALENCE_UNKNOWN / CLASS_B_CAPTURE_PROPOSAL_READY / FORMAL_UNCHANGED`.
+
+No `FORMAL_OPTIMIZATION_CANDIDATE` exists.
