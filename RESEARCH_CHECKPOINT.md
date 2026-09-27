@@ -1231,3 +1231,25 @@ Updated: 2026-09-27 08:30 Asia/Taipei.
 - Production remains `8.14.0-sector-gate-provenance-shadow`; no merge/deploy was performed because V8.15 is already occupied by concurrent Valuation Provenance PR #112. PR #117 intentionally remains Draft pending version-line reconciliation.
 - No Formal A/B rule, score, threshold, rank, 3+3/Top6, capital, BUY/ADD/REDUCE, monitoring, signal or push behavior changed.
 - Exact next: audit the `nearestRealResistance -> target -> RR` provenance chain. Current source reads optional `targetPrice` plus priorHigh20/priorHigh60/pivot highs, while repository-side production of `targetPrice` is not proven and the selected target-source identity is not preserved in Shadow.
+
+
+## B-197 — Target / resistance / RR provenance and geometry falsification (2026-09-27 Asia/Taipei)
+- Fresh Formal audit: `nearestRealResistance(f,entry)` pools optional `targetPrice`, priorHigh20, priorHigh60 and historical two-left/two-right local pivot highs; only levels strictly >entry*1.01 qualify; the minimum eligible price becomes target. target=null rejects before RR; then target feeds RR>=2, RR 14% PriorityScore, raw RR comparator and eventual capital.
+- Repository-wide audit finds `targetPrice` read but no repository-side Formal producer/assignment. External enrichment can inject arbitrary fields through `normalizeEnrichmentPayload -> mergeEnrichment(...extra) -> buildMarketFeatures(...stock)`. Correct state: `REPO_PRODUCER_NOT_FOUND / EXTERNAL_INJECTION_FEASIBLE / PRODUCTION_COVERAGE_UNKNOWN`. No analyst-target semantics, source, asOf/knownAt or PIT safety may be assumed.
+- Fixed outcome-free eligibility flips prove targetPrice is materially capable:
+  - entry100/stop95, no historical level >101 => target=null reject; same technical geometry + targetPrice115 => target115, RR3.
+  - historical resistance120 => RR4; add nearer targetPrice105 => target105, RR1 reject.
+  - farther targetPrice130 leaves historical120 as target and does nothing.
+- B-channel structural dependency is stronger: B entry=priorHigh20*1.003, so priorHigh20 can never be a target. If a breakout is also at/above prior60-session highs/pivots, all retained historical targets are <=breakout<entry*1.01. Without qualifying targetPrice, a genuine new-high B setup becomes target-null and is rejected. This is a structural tension, not evidence that new-high breakouts should be admitted.
+- Local-pivot semantics are also coarse: a pivot needs only high>=two prior highs and >=two following highs; no prominence, touch count, age, volume, ATR-normalized importance, zone width or MICRO/BASE/MAJOR hierarchy is encoded.
+- Opposing counterexamples prevent one-sided relaxation:
+  - entry100/stop95, local pivot102 + major resistance120 => nearest target102, RR0.4 reject; a minimally-defined local pivot can dominate the major level.
+  - overhead100.8 + priorHigh60=120 => <=1% overhead is ignored, target120, RR4 pass; the fixed 1% band can also make RR optimistic.
+  - only 100.8/100.9 overhead => both ignored, target=null reject.
+- Therefore the 1% eligibility band is neither uniformly conservative nor permissive; future study must audit both false-conservative and false-optimistic geometry.
+- Current Shadow does not freeze raw targetPrice provenance, all eligible levels, selectedTargetSource, historical target date or target-null decomposition, so later outcomes cannot answer attribution cleanly.
+- Pattern lane is the independent robustness comparator: it already freezes repeated-resistance progression, major-zone lifecycle and scale hierarchy, and explicitly avoids a hard available-air veto before evidence. No Pattern output was substituted into Formal.
+- Durable files: `research/target_resistance_rr_provenance_falsification_v0_1.json`, `TARGET_RESISTANCE_RR_RESEARCH.md`; Shared Knowledge inventory cross-linked the reusable resistance-lifecycle semantics while keeping V8 target/RR thresholds SYSTEM1_IMPL.
+- Future evidence capture should preserve targetPrice raw/source/asOf/PIT state, priorHigh20/60, dated pivots, eligible-level set, selected target/source, target-null state and RR. No historical targetPrice backfill from later-known information.
+- Status: `STRUCTURAL_PROVENANCE_RISK_CONFIRMED / EVIDENCE_CAPTURE_WARRANTED / NOT_FORMAL_OPTIMIZATION_CANDIDATE`. Any target/null/RR formula change is Class C; no Formal behavior changed.
+- Exact next: continue post-base gate audit with RR<2 vs target-null separated, then fundamental-quality and setup-grade gates after reason-stratified Shadow evidence is available. Do not pool target-source failure with genuine low-RR geometry.
