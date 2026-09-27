@@ -221,3 +221,47 @@ FORMULA_CORE_EXECUTABLE / SYNTHETIC_QA_PASS_ISOLATED / SNAPSHOT_CONTRACT_FROZEN 
 ## Latest durable research commit
 
 - `6c596db1775a507edc1fb5df125d15644947f4d2` — ADX / Bollinger redundancy falsification v0.1.
+
+
+## Continuation update — TI-027 through TI-035
+
+- ATR is frozen as a volatility/risk-normalization descriptor, not a directional BUY/SELL factor. Current Formal already couples atrPercent into admission, stop geometry and reward/risk; a separate ATR score would risk structural double counting.
+- Taiwan 2025 index-futures Bollinger+ATR evidence supports volatility/risk-management use but is not direct stock-selection alpha evidence.
+- A 2026 Taiwan momentum study covering 1993-2025 finds volatility-scaled momentum variants outperform conventional variants in its design. This strengthens the case for volatility management, not raw ATR directionality.
+- Standard ROC_N is algebraically identical to the equivalent N-period percentage return: ROC_N = 100*(C_t/C_(t-N)-1). Since current research/Formal already preserves ret5/ret10/ret20/ret60, ROC level is REJECTED_OR_REDUNDANT_AS_NEW_FACTOR.
+- Raw absolute Momentum_N = C_t-C_(t-N) is price-unit dependent; once normalized it collapses to ROC/return geometry.
+- The only residual ROC/Momentum hypothesis retained is acceleration/deceleration/transition geometry, which must prove incremental value beyond direct multi-horizon returns, MACD histogram slope, MA-slope change, Pattern lifecycle and regime state.
+- Taiwan momentum evidence is explicitly state-dependent: market continuation vs transition, intraday vs overnight origin, turnover/liquidity and volatility context can flip the sign. Generic ROC thresholds therefore have low portability.
+- OBV is frozen under PRICE_VOLUME ownership, not as an independent technical vote. It is cumulative signed volume and starts with a high redundancy prior versus RVOL, same-slot/cumulative pace, price response, close location, effort-vs-result and acceptance/rejection lifecycle.
+- Older Taiwan evidence found KD+OBV could outperform KD alone in some samples, so signed-volume information is not dismissed outright. However these studies do not establish incremental value beyond the richer current Price-Volume engine.
+- OBV requires stricter data semantics than KD/RSI/MACD because volume magnitude is first-order: shares/lots, sub-lot activity, trading-unit changes, suspension/no-trade pseudo-bars and session provenance are mandatory gates.
+- New outcome-blind research contract: research/TECHNICAL_INDICATOR_ATR_ROC_OBV_V0_1.md.
+- No forward outcomes inspected, no threshold optimization, no runtime wiring, no FORMAL_OPTIMIZATION_CANDIDATE.
+- Formal Core remains LOCKED.
+
+### Updated current status
+
+ATR = RISK_NORMALIZER_CONFIRMED_ROLE / DIRECTIONAL_ALPHA_UNPROVEN / FORMAL_COUPLING_HIGH
+
+ROC_LEVEL = REJECTED_OR_REDUNDANT_AS_NEW_FACTOR
+
+ROC_ACCELERATION = RESEARCH_HYPOTHESIS / REDUNDANCY_HIGH / ALPHA_UNKNOWN
+
+OBV = PRICE_VOLUME_COMPARATOR_ONLY / REDUNDANCY_HIGH / DATA_SEMANTICS_SENSITIVE / ALPHA_UNKNOWN
+
+FORMAL_OPTIMIZATION_CANDIDATE = NONE
+
+### Updated exact next continuation point
+
+1. Do not add ROC level to the indicator core as a separate factor; map equivalent ROC horizons to existing retN fields.
+2. Freeze at most one minimal return-acceleration descriptor before outcomes; no ROC lookback sweep.
+3. Keep ATR in volatility/risk normalization and explicitly control the existing ATR->stop->RR path in any future selection-alpha study.
+4. Keep OBV under Price-Volume ownership and define a normalized signed-volume comparator before any outcome work.
+5. OBV divergence must reuse the repaint-safe Pattern pivot chronology.
+6. Continue the already-frozen primary inference order: KD-vs-RSI -> MACD-vs-trend -> ADX-vs-trend-quality -> BBW-vs-ATR/VCP.
+7. Only after those primary redundancy gates resolve should ROC acceleration or OBV incremental-value inference begin.
+8. Formal Core remains unchanged.
+
+## Latest durable research commit
+
+- 0d72d03c38d852937216358bc8154349ab4e5848 — ATR / ROC / OBV redundancy falsification v0.1.
