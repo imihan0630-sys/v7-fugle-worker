@@ -41,12 +41,16 @@ Required immutable identity inputs:
 - rankComparatorVersion;
 - parentSchemaVersion.
 
-parentDecisionReceiptId is a deterministic hash of the complete identity tuple plus semantic fingerprint.
+parentDecisionReceiptId is a deterministic hash of the identity tuple ONLY.
+
+semanticFingerprint is computed separately from the immutable decision payload.
 
 Rules:
-- same identity + same semantic fingerprint = idempotent;
-- same identity + different fingerprint = PROVENANCE_CONFLICT;
-- same scanDate/symbol with a new captureGeneration is a new generation, never an overwrite.
+- same parentDecisionReceiptId + same semanticFingerprint = idempotent;
+- same parentDecisionReceiptId + different semanticFingerprint = PROVENANCE_CONFLICT;
+- same scanDate/symbol with a new captureGeneration produces a different parentDecisionReceiptId and is a new generation, never an overwrite.
+
+Do not include semanticFingerprint inside parentDecisionReceiptId; otherwise conflicting payloads can evade same-identity collision detection by receiving different IDs.
 
 ## TI-424 — Minimum parent fields
 
@@ -297,3 +301,22 @@ Formal Core remains LOCKED.
    - no current-code recomputation.
 4. Keep prototype zero market calls / zero D1 writes.
 5. Do not implement Worker/D1 persistence.
+
+
+## Identity correction note — TI-436
+
+During executable-prototype preparation, the initial receipt-ID formula was falsified.
+
+Rejected:
+parentDecisionReceiptId = hash(identity + semanticFingerprint).
+
+Reason:
+a conflicting payload changes the semantic fingerprint and therefore changes the ID, weakening direct same-identity conflict detection.
+
+Frozen correction:
+- parentDecisionReceiptId = hash(identity tuple only);
+- semanticFingerprint = hash(immutable decision payload);
+- identical ID + identical fingerprint = idempotent;
+- identical ID + different fingerprint = PROVENANCE_CONFLICT.
+
+This correction occurred before any runtime persistence implementation.
