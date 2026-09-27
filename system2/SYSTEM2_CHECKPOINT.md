@@ -19,6 +19,24 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 
 ## Current design decisions
 
+- Prospective V0.2 trading-date evidence count remains 0. 2026-09-28 is an official TWSE holiday; earliest ordinary prospective trading session is 2026-09-29.
+
+- System2 Research CI run `36324105323`, job `108633421570` PASS after V0.2 code/guard correction; V8 regression run `36324056669`, job `108633282565` PASS. Engineering pass is not source-latency evidence or strategy alpha evidence.
+
+- V0.2 readiness remains 10 independent complete dates => at most PROVISIONAL_ELIGIBLE; 20 complete precise dates => may become FREEZE_ELIGIBLE. Exact Decision Clock/Cron authorization remain false pending owner review.
+
+- V0.2 precision rule: a required same-session source needs prior NOT_READY -> READY within <=5 minutes. If scheduling is delayed and the first probe is already READY, that date is availability evidence but `precisionEligible=false`.
+
+- A dedicated GitHub Actions Research Schedule（GitHub Actions研究排程） is now armed at intended 13:25 Asia/Taipei weekdays for read-only evidence collection. Official TWSE calendar gates trading dates; actual probe timestamps are authoritative. This is NOT the System2 Worker Cron and cannot arm capture.
+
+- Decision-clock evidence contract advanced to V0.2: same-session clock constraints are A1 TWSE close + A1 TPEx close + B2 derived snapshot; A5 must be prospectively observed before the boundary but is periodic rather than a same-session close latency constraint.
+
+- A5/B2 real-source non-trading smoke PASS in run `36323358775`, job `108631337257`: all transport OK; A5 `OBSERVED_COVERAGE_PASS`; B2 `DERIVED_SNAPSHOT_INCOMPLETE` as expected without a same-date trading close; prospective evidence eligible=false; no mutation.
+
+- B2_INDUSTRY_THESIS_PROSPECTIVE（前瞻產業狀態） observer implemented: official current company profiles + same-date TWSE/TPEx close produce descriptive industry breadth/participation snapshots. It assigns no industry thesis direction/strategy score and never backfills today's classification into history.
+
+- A5_QUARTERLY_FINANCIALS（季度財務） prospective observer implemented: official TWSE/TPEx EPS + profitability, market-wide quarterly-vintage coverage, first-observed provenance; exact company filing/publication timestamp remains unproven and historical pre-observer vintage timing remains UNKNOWN.
+
 - Source-arrival measurement repository verification PASS on GitHub: System2 Research CI run `36321299702`, job `108625521377`; automatically triggered V8 Regression run `36321299718` also PASS. No Worker deploy/D1 provisioning/capture-arm/Cron workflow ran.
 
 - Source Arrival Latency（資料來源到達延遲）/ Decision Clock（決策時間點）measurement contract V0.1 is implemented repository-side. Exact clock remains UNFROZEN; capture remains disabled; Cron remains 0.
@@ -255,9 +273,10 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 10. ✅ Repository-side prospective Shadow capture Worker/scheduler contract implemented and CI-verified; Worker remains undeployed and capture-disabled.
 11. ✅ Isolated `system2-shadow-research` Worker smoke deployment verified against `SYSTEM2_DB`; capture remains disabled, workers.dev/Preview URLs are off, Cron count is 0, and System 1 is unchanged.
 12. ✅ Source-arrival/decision-clock measurement contract, tests and manual read-only workflow implemented repository-side; no clock/Cron activated.
-13. ⏳ Collect same-day prospective measurements on independent trading dates and implement A5 filing-vintage + B2 derived-industry-snapshot observers.
-14. ⏳ After evidence gates pass, propose the first exact after-close decision clock for explicit owner review. Cron activation remains a separate later explicit owner gate.
+13. ✅ Implement A5 filing-vintage + B2 derived-industry-snapshot observers, independent TWSE trading-calendar gate, V0.2 daily evidence bundle/readiness contracts, and isolated read-only scheduled research collection.
+14. ⏳ Accumulate same-day V0.2 evidence on independent official trading dates. 10 complete dates may reach PROVISIONAL_ELIGIBLE; 20 complete precise dates may reach FREEZE_ELIGIBLE. No retrospective substitution.
+15. ⏳ After evidence gates pass, propose the first exact after-close Decision Clock（決策時間點） for explicit owner review. System2 Worker Cron activation remains a separate later explicit owner gate.
 
 ## Current boundary
 
-Research/design/code prototype is not blocked. Isolated D1 and inert Worker already exist, but prospective always-on Shadow accumulation remains intentionally inactive. The immediate evidence boundary is same-day source-arrival measurement plus A5/B2 observer completion. No exact Decision Clock is frozen; capture is false; Worker Cron is 0; no production-shared storage or System 1/V8 change is authorized or needed.
+Research/design/code prototype is not blocked. Isolated D1 and inert Worker already exist, but prospective always-on Shadow accumulation remains intentionally inactive. A5/B2 observer engineering is complete; the immediate boundary is accumulation of independent same-day V0.2 evidence beginning no earlier than the 2026-09-29 official session. No exact Decision Clock is frozen; capture is false; Worker Cron is 0. The GitHub Actions research schedule is read-only evidence collection and is not the Worker Cron. No production-shared storage or System 1/V8 change is authorized or needed.
