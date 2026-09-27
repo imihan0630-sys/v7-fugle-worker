@@ -41,9 +41,14 @@ for(const token of [
  "FROM v8_trade_journal_signals WHERE trade_date>=?1 ORDER BY occurred_at ASC LIMIT 6000"
 ]) assert.ok(patch.includes(token),"V8 signal-journal contract changed: "+token);
 
-const writerPos=patch.indexOf("const journalEvent=await recordTradeJournalSignal");
-const sendPos=patch.indexOf("const outcome = await sendPush(payload, env)",writerPos);
-assert.ok(writerPos>=0&&sendPos>writerPos,"signal journal must be written before push for current evidence semantics");
+const baseSignalIdPos=base.indexOf('payload.signalId += `:episode-${episode}`;');
+const baseSendPos=base.indexOf("const outcome = await sendPush(payload, env)",baseSignalIdPos);
+assert.ok(baseSignalIdPos>=0&&baseSendPos>baseSignalIdPos,"base signalId anchor must precede push");
+const patchAnchor="'''    payload.signalId += `:episode-${episode}`;'''";
+const patchWriter="'''    payload.signalId += `:episode-${episode}`;\n    const journalEvent=await recordTradeJournalSignal";
+assert.ok(patch.includes(patchAnchor),"V8.5 replacement anchor changed; re-audit writer ordering");
+assert.ok(patch.includes(patchWriter),"V8.5 writer must be inserted immediately after signalId anchor");
+assert.ok(patch.includes('"record signal occurrence before push"'),"V8.5 replacement label changed; re-audit ordering");
 
 
 const execPatch=fs.readFileSync("scripts/apply_v8_8_0.py","utf8");
