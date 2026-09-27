@@ -1,0 +1,57 @@
+{
+  "schemaVersion": "AB_SETUP_REDUNDANCY_FALSIFICATION_V0_1",
+  "researchDate": "2026-09-27",
+  "class": "A_RESEARCH_ONLY",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "sourceContract": "Current main buildMarketFeatures() + strategySetupState() semantics as audited at main 859d2ef2691564afc6ee863bdf62755d3ef25544.",
+  "findings": {
+    "bStrongCloseDominatesUpperShadow": {
+      "status": "STRUCTURAL_REDUNDANCY_CONFIRMED",
+      "definitions": {
+        "dailyClosePosition": "(close-low)/(high-low) when range>0; else 0.5",
+        "dailyUpperShadowRatio": "(high-max(open,close))/(high-low) when range>0; else 0"
+      },
+      "proof": [
+        "max(open,close) >= close",
+        "therefore high-max(open,close) <= high-close",
+        "divide by positive range: upperShadowRatio <= (high-close)/range = 1-dailyClosePosition",
+        "if dailyClosePosition >= 0.65 then upperShadowRatio <= 0.35"
+      ],
+      "zeroRangeEdge": "When high=low, current features set closePosition=0.5 and upperShadow=0; strongClose fails, so upperShadow still cannot be the sole blocker after strongClose passes.",
+      "implication": [
+        "A coherent row can never have B strongClose=true and upperShadow=false.",
+        "upperShadow can never be the only failed B check.",
+        "Treating strongClose and upperShadow as two independent Hamming dimensions inflates setup distance when candle-close geometry is weak.",
+        "Formal behavior is unchanged; this is a research-distance/redundancy finding only."
+      ],
+      "feasibleMaskConsequence": "With B mask order trend,breakout,volume,strongClose,upperShadow,notLate, all masks containing strongClose=1 and upperShadow=0 are structurally impossible under coherent OHLC features (16 of 64 raw bit patterns)."
+    },
+    "bNotLateRet20Branch": {
+      "status": "STRUCTURAL_REDUNDANCY_CONFIRMED",
+      "proof": "lateStage=(ret20>35 OR maDistance20Pct>25) while B also requires ret20<=30; therefore the ret20>35 arm of lateStage cannot be the binding reason once ret20<=30 passes. Under coherent features B notLate reduces to ret20<=30 AND maDistance20Pct<=25."
+    },
+    "aSupportStructureConditionalOverlap": {
+      "status": "CONDITIONAL_REDUNDANCY_REQUIRES_SUPPORT_SOURCE",
+      "proof": "When chooseDailySupport selects a filtered candidate, candidate<=close*1.015 implies close/candidate>=1/1.015≈0.98522, which already satisfies structure close>=support*0.985. The clause can still bind on the unfiltered ma20 fallback.",
+      "implication": "Future research observer should preserve supportSource and fallback state before interpreting close-vs-support structure margin as independent evidence."
+    }
+  },
+  "distancePolicy": {
+    "keepFormalSixBitMasks": "YES_FOR_PROVENANCE_ONLY",
+    "doNotUseRawHammingAsEconomicDistance": true,
+    "noCompositeDistance": true,
+    "futureResearchGroups": [
+      "B candle-close geometry: strongClose primary inequality; upperShadow retained as nested descriptive shape, not an independent distance dimension.",
+      "B notLate: ret20<=30 and maDistance20Pct<=25 as separate raw margins.",
+      "A support geometry: support distance plus priorLow structure, with supportSource/fallback provenance.",
+      "A volume: preserve both OR-branch margins; no averaging."
+    ]
+  },
+  "falsificationConditions": [
+    "If production dailyClosePosition or dailyUpperShadowRatio are sourced from non-OHLC external fields rather than buildMarketFeatures, dominance must be revalidated for those rows.",
+    "If future code changes either threshold away from the exact complementary 0.65/0.35 pair, the algebraic implication may no longer hold.",
+    "If support selection semantics change, the A conditional-overlap finding must be revalidated."
+  ],
+  "decision": "B_STRONG_CLOSE_DOMINATES_UPPER_SHADOW_CONFIRMED / B_HAMMING_DIMENSION_INFLATION_CONFIRMED / A_SUPPORT_SOURCE_REQUIRED / NO_FORMAL_CHANGE / NOT_FORMAL_OPTIMIZATION_CANDIDATE"
+}
