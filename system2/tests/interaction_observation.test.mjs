@@ -58,6 +58,7 @@ assert.equal(controlled.rankingEligible, true);
 const notTested = buildInteractionObservationReceipt({
   ...controlled,
   interactionReceiptId: "I2",
+  factorObservations: [tech, pv],
   redundancyState: "NOT_TESTED",
 });
 assert.equal(notTested.state, "KNOWN");
