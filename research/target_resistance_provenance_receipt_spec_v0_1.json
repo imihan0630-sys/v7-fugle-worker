@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "target-resistance-provenance-receipt-spec-v0.1",
+  "researchDate": "2026-09-27",
+  "status": "CLASS_A_PROTOTYPE",
+  "purpose": "Prospectively explain exactly which already-loaded resistance level caused TARGET_NULL / LOW_RR / RR_PASS without changing the Formal target rule.",
+  "mirrorsFormal": [
+    "targetPrice if numeric and > entry*1.01",
+    "priorHigh20 if > entry*1.01",
+    "priorHigh60 if > entry*1.01",
+    "historical 2-left/2-right pivot highs if > entry*1.01",
+    "minimum eligible price wins"
+  ],
+  "additionalResearchProvenance": [
+    "all candidate levels including <=1% excluded levels",
+    "pivot date/value",
+    "selected source or MULTIPLE_EQUAL_LEVELS",
+    "targetPrice source/asOf/capturedAt/PIT eligibility when available",
+    "whether Formal selected an external target whose PIT provenance is unproven",
+    "TARGET_NULL vs LOW_RR vs RR_PASS state"
+  ],
+  "semanticFirewalls": [
+    "TARGET_NULL => RR undefined/null, never zero",
+    "targetPrice with unknown provenance remains visible exactly as Formal used it; research must not silently drop it",
+    "receipt does not claim target source quality merely because the price was selected",
+    "equal-priced sources are MULTIPLE_EQUAL_LEVELS unless uniquely identifiable",
+    "no historical targetPrice backfill",
+    "no threshold or source-priority change"
+  ],
+  "engineering": {
+    "marketCalls": 0,
+    "d1Writes": 0,
+    "workerIntegration": false,
+    "class": "A research-only",
+    "futurePersistence": "Class B proposal-first if wired into shared runtime/D1",
+    "targetRuleChange": "Class C owner approval",
+    "formalCoreImpact": false
+  }
+}
