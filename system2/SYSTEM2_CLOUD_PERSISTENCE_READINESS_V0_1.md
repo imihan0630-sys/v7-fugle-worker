@@ -102,3 +102,13 @@ Do NOT:
 3. verify schema/write/read evidence;
 4. freeze database-ID digest and schema receipt in checkpoint;
 5. only then design a separate scheduled prospective Shadow capture service.
+
+
+## Research CI verification after V0.5
+
+GitHub Actions run `36305786450`, job `108582061023`:
+- 27 System 2 test files: PASS;
+- System 2 runtime/deploy module syntax: PASS;
+- SQLite schema V0.5: PASS;
+- 26 `s2_` tables created in the verification database;
+- production-isolation guard: PASS.
