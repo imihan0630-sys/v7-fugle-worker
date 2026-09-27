@@ -1163,3 +1163,39 @@ Relative to the exhaustive feasible grid minimum:
 These percentages are an **algebraic bridge only**. They are not causal shares and must not be interpreted as independent variance decomposition.
 
 The result corrects any one-sided reading of earlier PRs: heterogeneous stop geometry is already a material source of concentration under neutral capital, and PriorityScore sizing adds a separate incremental concentration on top.
+
+
+## PR-062 — concentration-metric sensitivity falsification (2026-09-28)
+
+PR-033 through PR-061 rely heavily on HHI to summarize projected stop-risk concentration.
+
+PR-062 tests the counter-hypothesis:
+
+`The structural conclusion is an artifact of HHI itself.`
+
+Five metrics are evaluated on the same projected-risk contribution vectors:
+- HHI;
+- Gini;
+- coefficient of variation;
+- maximum contribution share;
+- max/min positive contribution ratio.
+
+For every metric and every entry reference (buyLow, midpoint, buyHigh), the Production audit compares:
+1. current PriorityScore sizing;
+2. equal capital;
+3. the exhaustive global minimum over all legal NT$1,000-grid states under the same deployment and 35% cap.
+
+The exact optimal allocation is allowed to differ by metric. Agreement of exact optima is **not** required.
+
+The falsification target is directional:
+if several non-HHI metrics no longer show current as more concentrated than equal capital/global minima, the HHI-based structural claim must be downgraded.
+
+Artifacts:
+`research/risk_metric_sensitivity_v0_1.mjs`;
+`research/risk_metric_sensitivity_spec_v0_1.json`;
+`tests/portfolio_risk_metric_sensitivity_readonly_audit.mjs`.
+
+Status:
+`METRIC_SENSITIVITY_PROTOCOL_READY / PRODUCTION_AUDIT_PENDING`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
