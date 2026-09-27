@@ -43,6 +43,37 @@ Candidate outputs:
 
 Never coerce unavailable same-slot history to neutral.
 
+## P1A — Multi-horizon Volume Baseline Research（多時間尺度量能基準研究）
+
+Owner-approved research direction:
+Do not assume one volume comparator is universally superior. Preserve and test several baselines because they answer different questions.
+
+Baselines to compare:
+- relativeVolume5（5日相對量）: recent day-level trading heat;
+- relativeVolume20（20日相對量）: medium-term normal activity;
+- relativeVolume60（60日相對量）: longer-term activation from dormancy;
+- prev5IntradayBarRatio（前5根盤中K棒量比）: very-short-term acceleration;
+- sameSlotRVOL（同時段相對量）: whether the current intraday slot is unusually active versus historical same-clock slots;
+- cumulativeVolumePace（累積成交量進度）: whether today's cumulative participation is ahead/behind the historical pace at the same clock time.
+
+Interpretation rule:
+- daily 5/20/60 baselines and intraday time-normalized baselines are complementary, not substitutes by assumption;
+- an incomplete trading day must not be interpreted as low volume merely because current cumulative volume is below a full-day historical average;
+- conversely, current cumulative volume exceeding a recent full-day average early in the session can be a strong activity signal;
+- same-slot normalization controls intraday seasonality but may itself be noisy or stale during regime shifts, event days, structural liquidity changes, suspensions, corporate actions or changing stock popularity;
+- 5-day averages are responsive but can be distorted by one recent volume shock;
+- 20/60-day averages are more stable but slower to adapt.
+
+Required falsification:
+Compare these baselines on common-support observations and identical symbol/date/time cohorts.
+Primary research questions:
+1. Does sameSlotRVOL add incremental information beyond relativeVolume5/20 and prev5IntradayBarRatio?
+2. Does cumulativeVolumePace add incremental information beyond sameSlotRVOL?
+3. Does relativeVolume5 add short-horizon responsiveness beyond relativeVolume20/60 without materially increasing false signals?
+4. Do different strategies benefit from different volume baselines?
+
+Do not combine all baselines into one score before redundancy testing.
+
 ## P2 — Price Response to Participation（價格對量能反應）
 
 Candidate outputs:
@@ -284,6 +315,6 @@ Before formal System 2 strategy weighting:
 
 ## Current status
 
-DESIGN_DRAFT_V0_1 / OWNER REVIEW PENDING.
+DESIGN_DRAFT_V0_1 / CORE LOGIC OWNER-APPROVED / THRESHOLDS NOT FROZEN.
 No thresholds or strategy weights are frozen.
 No System 1 Formal behavior is changed.
