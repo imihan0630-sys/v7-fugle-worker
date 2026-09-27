@@ -1,0 +1,51 @@
+{
+  "schemaVersion": "external-evidence-parent-keyset-falsification-v0.1",
+  "researchDate": "2026-09-27",
+  "status": "PARENT_EVIDENCE_KEYSET_AND_MUTABILITY_RISK_CONFIRMED",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "capturePath": {
+    "parent": "scan.shadowArchive in-memory rows",
+    "evidence": "collectResearchExternalEvidenceV8711(scan.shadowArchive)",
+    "persistenceOrder": "Shadow archive save attempted first; external evidence collection/persistence attempted separately afterward.",
+    "evidenceTableIdentity": "PRIMARY KEY(scan_date,symbol)",
+    "evidencePersistence": "DELETE scan_date then row-by-row INSERT/UPSERT",
+    "transactionOrBatchFound": false,
+    "parentFingerprintStoredInEvidence": false,
+    "parentGenerationStoredInEvidence": false
+  },
+  "failureModes": [
+    {
+      "id": "SEPARATE_WRITE_PARTIALITY",
+      "witness": "Shadow persistence can fail/partially write while evidence collection still uses the complete in-memory archive and evidence persistence may succeed, or vice versa.",
+      "consequence": "Evidence rows and durable parent rows can have different keysets for the same scan_date."
+    },
+    {
+      "id": "SAME_DATE_RERUN_REASSOCIATION",
+      "witness": "Both parent and evidence tables are mutable by (scan_date,symbol); rerun can overwrite each independently without parent snapshot hash/generation.",
+      "consequence": "A later evidence row can appear joined to the same date/symbol even if the underlying parent cohort/snapshot generation changed."
+    },
+    {
+      "id": "INDEPENDENT_LIMIT_BOUNDARY",
+      "parentReader": "ORDER BY scan_date ASC, cohort ASC, cohort_rank ASC LIMIT 5000",
+      "evidenceReader": "ORDER BY scan_date ASC, symbol ASC LIMIT 5000",
+      "witness": "When 5000 cuts through a scanDate, different secondary sort orders can retain different symbol subsets on that boundary date.",
+      "consequence": "Returned parents and returned evidence can disagree even when both tables were originally one-to-one."
+    }
+  ],
+  "currentMissingHandling": {
+    "join": "outcome.externalEvidence = evidenceMap.get(scanDate|symbol) || null",
+    "missingAsBad": false,
+    "good": "Missing evidence becomes null rather than false/bad.",
+    "remainingProblem": "Null does not distinguish no capture, partial write, rerun lineage mismatch, reader truncation, parse failure or provider unavailability."
+  },
+  "requiredRepair": [
+    "Every external-evidence receipt references immutable parentDecisionReceiptId or parentSnapshotHash plus captureGeneration.",
+    "Parent and evidence readers use one complete parent keyset; evidence is fetched/joined by that exact keyset, not an independently truncated date-range query.",
+    "Persist expectedEvidenceParentCount and actualEvidenceReceiptCount by generation/date.",
+    "Same parent + same evidence fingerprint is idempotent; same identity + different evidence fingerprint must create a new version/receipt or provenance conflict, not overwrite first-known.",
+    "Expose missingJoinReason: NOT_CAPTURED / PARTIAL_WRITE / PARENT_GENERATION_MISMATCH / READER_TRUNCATED / PARSE_ERROR / PROVIDER_UNKNOWN.",
+    "Promotion-grade evidence requires complete parent-generation alignment; otherwise external context is UNKNOWN."
+  ],
+  "decision": "EXTERNAL_EVIDENCE_NOT_IMMUTABLY_BOUND_TO_PARENT / INDEPENDENT_5000_READERS_CAN_MISALIGN / CLASS_B_RECEIPT_LINKAGE_REQUIRED / NO_FORMAL_CHANGE"
+}
