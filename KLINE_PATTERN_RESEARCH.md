@@ -16171,3 +16171,157 @@ Use executable-liquidity checks from DL-002AA.
 This 2D state may be more interpretable than a single volume-contraction threshold and directly tests why some VCPs fail despite apparent dry-up.
 
 No Formal use is approved.
+
+
+## DL-003AL — 52-Week High / Historical High as Psychological Anchor Context
+
+### Taiwan-specific evidence
+Direct Taiwan evidence exists for the 52-week-high effect and its behavioral interpretation.
+
+Hao, Chu, Ho & Ko (International Review of Economics & Finance, 2016) find:
+- 52-week-high information contains predictive content in Taiwan;
+- anchoring and recency channels can coexist;
+- profitability is time-varying / regime-sensitive;
+- unconditional results are mixed rather than universally strong.
+
+A 2024 Pacific-Basin Finance Journal paper further reports that salience interacts with the Taiwan 52-week-high anomaly:
+- extremely salient upside states can weaken the 52-week-high effect;
+- salient downside states can strengthen it;
+- the interaction is stronger under certain arbitrage-limit / sentiment conditions.
+
+### Why this matters to Pattern research
+Current structural research uses:
+- priorHigh20
+- priorHigh60
+- pattern-specific rim/neckline/pivot.
+
+A 52-week high is a different object:
+- much longer-horizon behavioral anchor,
+- not necessarily identical to the nearest structural resistance,
+- potentially salient to investors even if no recent swing topology exists there.
+
+### Candidate fields
+- high252
+- distanceToHigh252Pct
+- distanceToHigh252ATR
+- distanceToHigh252Ticks
+- dateHigh252
+- daysSinceHigh252
+- high252RecencyRank
+- high252ZoneOverlapWithPatternPivot
+- high252ZoneOverlapWithRoundPrice
+- high252BreakoutState
+- historicalHighDistance if valid long history exists
+
+### Interaction states
+PATTERN_PIVOT_BELOW_52W_HIGH
+PATTERN_PIVOT_AT_52W_HIGH
+LOCAL_BREAKOUT_INTO_52W_ANCHOR
+BREAKOUT_CLEARS_52W_ANCHOR
+PATTERN_MATURE_FAR_BELOW_52W_HIGH
+
+### Core hypothesis
+A daily B breakout above priorHigh20 may have materially different follow-through depending on whether:
+- it also clears the 52-week anchor,
+- it breaks only a local level but remains below the 52-week high,
+- the 52-week high was reached recently vs long ago.
+
+### Important counter-evidence
+Taiwan results are not stable across all periods/states.
+The effect is behaviorally plausible but regime/salience dependent.
+
+Therefore:
+- do not hard-code “near 52W high = bullish”;
+- do not replace structural resistance with the 52W high;
+- test it as an independent context/control.
+
+### Data requirement
+Current ~60-120 day research histories are insufficient.
+Need at least ~252 valid traded sessions before the as-of date, with corporate-action-adjusted morphology and point-in-time universe controls.
+
+Status:
+WORTH_SHADOW_RESEARCH / LONG_HORIZON_DATA_REQUIRED / NO FORMAL CHANGE.
+
+## DL-003AM — 52-Week High Recency Is Distinct from Distance
+
+### Key distinction
+Two stocks can both trade 2% below their 52-week high:
+- Stock A made the high 5 days ago.
+- Stock B made the high 200 days ago.
+
+Taiwan evidence suggests recency may carry separate behavioral information.
+
+### Fields
+- high252Distance
+- daysSinceHigh252
+- recentHighIndicator
+- highAgeBucket for descriptive reporting only
+- localPatternAge
+- high252VsPatternStartTiming
+
+### Pattern hypotheses
+1. Recent 52W high + shallow constructive base:
+   possible continuation / short digestion.
+
+2. Ancient 52W high + long recovery base:
+   may represent major overhead anchor / long repair process.
+
+3. Local breakout near old 52W high:
+   resistance/anchoring conflict may be stronger.
+
+Do not set day-bucket thresholds from outcome optimization.
+
+## DL-003AN — Salience Can Oppose the 52-Week-High Signal
+
+### Taiwan evidence
+2024 Taiwan research indicates extreme salient payoffs can materially alter the 52-week-high effect.
+
+### Research translation
+Near-high context should be paired with salience/attention state:
+- extreme upside day frequency
+- extreme downside day frequency
+- limit-hit attention
+- abnormal turnover
+- event catalyst
+- Quiet/Attention status
+
+### Candidate interaction
+QUIET_NEAR_52W_HIGH
+SALIENT_UPSIDE_NEAR_52W_HIGH
+SALIENT_DOWNSIDE_NEAR_52W_HIGH
+EVENT_DRIVEN_NEAR_52W_HIGH
+
+### Why useful
+This may explain why “near high = strength” sometimes fails:
+the same price anchor can coexist with different investor-attention / overreaction states.
+
+### Redundancy control
+Must be tested against:
+- overheat
+- attention
+- ret20/ret60
+- breakout quality
+- pattern maturity.
+
+## DL-003AO — Long-Horizon Anchor vs Structural Zone Falsification
+
+### Test hierarchy
+M0 current local structure:
+- priorHigh20 / priorHigh60.
+
+M1 swing/pattern structural zones.
+
+M2 52-week high distance/recency.
+
+M3 M1 + M2.
+
+### Question
+Does 52W anchor add information after true structural zones are known?
+
+Possible outcomes:
+- M2 adds: behavioral anchor is distinct.
+- M2 vanishes after M1: 52W effect is mostly structural resistance.
+- M1 vanishes after M2: simpler anchor captures the useful information.
+- both survive: topology + behavioral anchor are complementary.
+
+This is a high-value falsification because it can prevent adding redundant long-horizon resistance features.
