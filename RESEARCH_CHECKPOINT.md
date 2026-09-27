@@ -1,7 +1,7 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-228.
-Updated: 2026-09-27 22:34 Asia/Taipei.
+Checkpoint sequence: B-229.
+Updated: 2026-09-27 22:45 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Detailed B-01..B-123 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
@@ -1773,3 +1773,15 @@ Updated: 2026-09-27 22:34 Asia/Taipei.
 - Durable artifact: `research/scarcity_gate_denominator_matrix_v0_1.json`, commit `6b94d1a5cf5e68fc8bd09a30fd9df7378879a068`.
 - Status: `GATE_DENOMINATOR_SEMANTICS_FROZEN / OBSERVABILITY_NOT_CAUSALITY / FIRST_FAILURE_NOT_MARGINAL / FORMAL_UNCHANGED`. No FORMAL_OPTIMIZATION_CANDIDATE.
 - Exact next: audit whether the full inputs required by the gate-overlap observer are already retained on any clean same-generation full-population source. Reuse the existing gate-overlap persistence feasibility work; do not duplicate it. If full historical coverage is not source-ready, identify the smallest prospective cohort that can be evaluated without runtime writes, then return to Liquidity Admission Shadow PR #121 and quantify which liquidity fields are source-ready versus capture-only. No historical reconstruction.
+
+## B-229 — full historical gate-overlap persistence remains unavailable; Liquidity fields split into source-ready vs capture-only (2026-09-27 Asia/Taipei)
+- Continued B-228 exact-next and reused `research/formal_gate_evidence_persistence_feasibility_v0_1.json` rather than redesigning persistence. Its current verdict remains authoritative: semantic/gate/replay computation is validated Class A with zero market calls/D1 writes, while immutable same-generation full-population persistence is still Class B proposal-first.
+- Legacy `trade_research_shadow_candidates` is not a promotion-grade full-population parent: same-date mutable rewrite, single cohort identity, bounded samples and no immutable decision-generation/fingerprint. Historical gate-overlap scarcity rates therefore remain UNKNOWN where full same-scan states were not captured; no backfill/re-score from current code.
+- Fresh PR #121 audit at head `5c0842d197999eefa82f2a0b0069679a5f6ea070` confirms a useful field-quality split. `avgVolume20Lots` and `avgAmount20` are deterministically derived by current `buildMarketFeatures` from admitted history; `minLots` is deterministic from the price tier; institutionalScore is derived from already-loaded institutional features when present.
+- In contrast, exact Formal exception fields `spreadPercent`, `orderBookDepthGood`, `depthScore` still have no proven repository-side producer. Generic external enrichment can inject them, so correct state is `CAPTURE_ONLY_IF_PRESENT / EXTERNAL_INJECTION_FEASIBLE / PRODUCTION_COVERAGE_UNKNOWN`, not dead and not proven live.
+- PR #121's Class-A prototype computes exact reject-reason counts over `CURRENT_FEATURE_ROWS`, deterministic max-6 samples per exact reason x GENERAL/THOUSAND, exception-input COMPLETE/PARTIAL/ABSENT coverage, below-min missing-reason counts, exception-pass counts and per-row liquidity audit. Early rejects are explicitly `fullFormalCounterfactual=false`.
+- Denominator scope guard: `CURRENT_FEATURE_ROWS` is after upstream history/data admission, not the whole exchange universe. Its exact counts must not be interpreted as exchange-wide liquidity-gate prevalence.
+- PR #121 remains Draft/not deployed, so these are design/test capabilities rather than live prospective observations. The branch also sits on an older main lineage and must be reconciled before any future implementation/deploy decision; no rebase/deploy was performed here.
+- Durable artifact: `research/liquidity_admission_field_readiness_v0_1.json`, commit `7b6f9e62a940a54f9ddf603d38245696a93342f7`.
+- Status: `GATE_OVERLAP_FULL_HISTORY_NOT_RECONSTRUCTABLE / LIQ_HISTORY_DERIVED_FIELDS_SOURCE_READY / SPREAD_DEPTH_PRODUCTION_COVERAGE_UNKNOWN / PR121_DESIGN_ONLY / FORMAL_UNCHANGED`. No FORMAL_OPTIMIZATION_CANDIDATE.
+- Exact next: use PR #121's frozen denominator/missingness semantics to define the first prospective liquidity coverage acceptance gate before any return outcome joins. Specify which scan dates are CLEAN versus UNKNOWN based on parent feature-universe completeness, history freshness, exact reason counts, spread/depth presence accounting and sample fractions. Then audit whether `LIQ_LOW_VOLUME_EXCEPTION_PASS` is actually represented by the prototype denominator even though it is not a dedicated sampled cohort. Do not inspect D1+ outcomes yet.
