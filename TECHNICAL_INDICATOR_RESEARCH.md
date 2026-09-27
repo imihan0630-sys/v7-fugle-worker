@@ -392,3 +392,148 @@ The second question has weak relevance to the actual system and high strategy-mi
 - Chong, T. T.-L., Ng, W.-K., & Liew, V. K.-S. (2014), "Revisiting the Performance of MACD and RSI Oscillators", Journal of Risk and Financial Management 7(1), 1-12. Cross-market evidence only; not Taiwan-portable.
 - Li, Y. (2025), "Operator Analysis of MACD", arXiv:2509.21326. Used only for mathematical interpretation, not alpha evidence.
 - Taiwan-market convention check: common local KD implementation uses RSV9 with recursive 1/3 smoothing for K and D; exact platform formula remains a required provenance field.
+
+
+## TI-011 — Outcome-blind synthetic mechanism fixtures
+
+A deterministic synthetic stress pack was evaluated before any forward-return study. These fixtures test indicator mechanics only; they do not provide alpha evidence.
+
+### Scenarios exercised
+
+- monotonic uptrend;
+- monotonic downtrend;
+- oscillating range;
+- clean breakout;
+- false breakout;
+- V reversal;
+- trend with short pullback;
+- gap-and-hold;
+- spike-and-revert.
+
+### Mechanistic findings
+
+1. **Extreme oscillator values can be persistent trend states.**
+   - In a monotonic uptrend, the frozen KD9-3-3 implementation can remain at or near 100 while Wilder RSI14 reaches 100.
+   - In a clean breakout and strong V-reversal fixture, both KD and RSI can remain very high while price continues to advance.
+   - Therefore "overbought" is not mechanically equivalent to "reversal due."
+
+2. **Time-scale conflict is expected rather than exceptional.**
+   - In the trend-with-pullback fixture, short-horizon return can turn negative while RSI/KD remain elevated and MACD remains positive because the slower filters still encode the preceding uptrend.
+   - This is a useful adversarial case for any future indicator-voting design: contradictory valid signals must become a state/conflict description, not a forced majority vote.
+
+3. **KD and RSI can disagree without either being wrong.**
+   - A spike-and-revert path can leave K very high while RSI is only moderate because KD measures close location inside a rolling high-low envelope whereas RSI measures smoothed close-to-close gain/loss balance.
+   - This supports studying residual information but does not prove either family adds alpha.
+
+4. **MACD has a strong mechanical overlap with trend filters.**
+   - Across synthetic trend/breakout paths, MACD and MA20-slope states move together strongly.
+   - Transition windows are where disagreement appears most often, consistent with smoothing/lag rather than independent information.
+
+### Consequence
+
+Synthetic fixtures strengthen the redundancy and sign-firewall priors. They justify executable QA tests, not promotion or scoring.
+
+## TI-012 — Real-source descriptive redundancy witnesses
+
+An outcome-blind, non-random descriptive audit was run on Fugle historical daily candles using FCNT000154, adjusted=true, for 2026-06-01 through 2026-09-24.
+
+Stress/example symbols:
+- 2330
+- 5314
+- 2006
+- 4977
+
+Each series contained 82 returned daily bars in this audit window.
+
+Important limitations:
+- these four names are not a representative cross-section;
+- the sample was selected for source/mechanism inspection, not inference;
+- no D1/D3/D5/D10/MFE/MAE outcomes were joined;
+- no threshold or parameter was selected from these results.
+
+### Descriptive same-window correlations
+
+| Symbol | corr(K9, RSI14) | corr(MACD DIF, MA20 5-day slope) |
+|---|---:|---:|
+| 2330 | 0.669 | 0.875 |
+| 5314 | 0.771 | 0.988 |
+| 2006 | 0.831 | 0.900 |
+| 4977 | 0.771 | 0.976 |
+
+Interpretation:
+- KD and RSI are materially related but leave visible disagreement states.
+- MACD DIF versus MA20 slope is extremely overlapping in several of these windows, strengthening the preregistered high-redundancy prior.
+- These values are descriptive witnesses only. They must not be pooled or generalized into a population claim.
+
+### Concrete disagreement witnesses
+
+#### 2006
+- 2026-07-31: K about 89 while RSI about 69.
+- 2026-08-05: K about 84 while RSI about 66.
+- 2026-08-11: K about 86 while RSI about 70.
+- Multiple 2026-09-04 through 2026-09-16 observations had positive MACD DIF while the five-day MA20 slope was negative.
+
+This shows that KD can enter a high zone earlier/differently than RSI, while MACD may retain a positive slow-trend state after the medium trend slope has already softened.
+
+#### 4977
+- 2026-08-11 through 2026-08-13: K remained above 80 while RSI was only about 53-57 and MACD DIF remained negative.
+- 2026-08-14: MA20 slope had turned positive while MACD DIF remained negative.
+
+This is a clean phase-lag witness: different filters can disagree around a transition without implying that one is a direct trading signal.
+
+#### 5314
+- 2026-08-11 through 2026-08-17: K was roughly 88-94 while RSI ranged only around 53-69.
+- 2026-09-01 through 2026-09-10: RSI remained above 70 on several dates after K had already fallen below 80.
+- 2026-09-23 and 2026-09-24: K was near 9 and MA20 slope was negative while MACD DIF was still positive.
+
+This is especially useful because 5314 also contains a modern price-limit-constrained sequence; the disagreement is therefore a stress case, not a clean alpha example.
+
+### Research implication
+
+The next empirical question is not whether one indicator "looks better." It is whether a residualized indicator state explains incremental variation among comparable candidates after direct-price/trend/Pattern/Price-Volume controls.
+
+## TI-013 — Price-limit / constrained-price-discovery firewall
+
+The 5314 2026 stress path provides a concrete modern Taiwan witness:
+- several sessions in August display flat open=high=low=close at sequentially higher levels consistent with price-limit-constrained trading;
+- later sessions reverse sharply;
+- oscillator values can remain extreme while ordinary two-sided price discovery is constrained.
+
+This makes ordinary overbought/oversold interpretation unsafe during constrained price discovery.
+
+### Frozen rule
+
+Technical Indicator research must consume, not re-invent, canonical session/constraint semantics from Pattern / Microstructure / Corporate-Actions lanes.
+
+Required context fields before directional interpretation:
+- symbol-session validity;
+- priceLimitConstrained;
+- volatility-interruption / auction state where relevant;
+- suspension/no-trade state;
+- corporate-action continuity space;
+- data-quality/provenance.
+
+When price discovery is constrained:
+- K/RSI extremes remain descriptive;
+- MACD/MA lag remains descriptive;
+- crossover/touch events cannot be promoted as ordinary unconstrained signals;
+- acceptance remains UNRESOLVED until canonical market/session logic says the state is observable.
+
+### New status after TI-011..TI-013
+
+FORMULA_BASELINE_FROZEN / SYNTHETIC_MECHANISM_PRIORS_PASS / REAL_SOURCE_REDUNDANCY_PRIOR_STRENGTHENED / LIMIT_CONSTRAINT_GUARD_REQUIRED / NO_OUTCOME_INFERENCE / FORMAL_LOCKED
+
+No FORMAL_OPTIMIZATION_CANDIDATE exists from these sections.
+
+## Updated exact next continuation point
+
+1. Convert KD9-3-3, RSI14 and MACD12-26-9 into an isolated executable Class-A research module with explicit formulaVersion and initialization semantics.
+2. Convert the synthetic scenarios into deterministic executable fixtures with expected state assertions.
+3. Add prefix-invariance and replay-exactness tests.
+4. Add data-quality fixtures for suspension pseudo-bars, corporate-action discontinuity and price-limit-constrained sequences. These fixtures must fail closed or carry explicit constraint state rather than fabricate ordinary candles.
+5. Freeze a research-only prospective snapshot contract containing raw indicator components, formulaVersion, source, adjusted/raw continuity space, session/constraint provenance and dataQualityState.
+6. Do not join forward outcomes until prospective parent coverage is complete and the research snapshot can be reproduced exactly as-of date.
+7. First inference remains TI-005 KD-vs-RSI using equal-date residualized controls.
+8. Second inference remains TI-006 MACD-vs-direct-trend.
+9. ADX and Bollinger/ATR/VCP redundancy remain next only after TI-005/TI-006 mechanics and prospective coverage are clean.
+10. Formal Core remains unchanged.
