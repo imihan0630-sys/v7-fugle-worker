@@ -1,0 +1,29 @@
+name: Capital Deployment Cap Audit
+
+on:
+  pull_request:
+    paths:
+      - "research/capital_deployment_cap_audit_v0_1.mjs"
+      - "tests/test_capital_deployment_cap_audit_v0_1.mjs"
+      - "tests/capital_deployment_journal_readonly_audit.mjs"
+      - "CAPITAL_DEPLOYMENT_CAP_AUDIT.md"
+      - ".github/workflows/capital-deployment-cap-audit.yml"
+  workflow_dispatch:
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Structural allocation falsification
+        run: node tests/test_capital_deployment_cap_audit_v0_1.mjs
+      - name: Read-only Production journal allocation audit
+        env:
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+          V7_WORKER_ORIGIN: https://fugle-test.imihan0630.workers.dev
+        run: node tests/capital_deployment_journal_readonly_audit.mjs
