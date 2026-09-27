@@ -322,3 +322,45 @@ Verified:
 - storage serializers preserve the join-eligibility and provenance hashes.
 
 No daily schedule, physical D1 or live runtime was changed.
+
+
+## System2 research CI and isolated persistence preparation (2026-09-27)
+
+Status: PASS / REPOSITORY-ONLY / NO CLOUD RESOURCE CREATED / NOT DEPLOYED.
+
+Implemented:
+- `.github/workflows/system2-research-ci.yml`;
+- `SYSTEM2_ISOLATED_PERSISTENCE_PLAN_V0_1.md`;
+- `runtime/persistence_batch.mjs`;
+- `runtime/persistence_executor.mjs`;
+- `deploy/wrangler.system2.example.toml`.
+
+Research CI boundary:
+- triggers only for `system2/**` or its own workflow file;
+- does not deploy Worker code;
+- uses no Cloudflare secret;
+- runs all System2 Node tests;
+- executes the research SQL in in-memory SQLite;
+- checks that System2 runtime/sql/src contain no production database/KV/runtime references.
+
+CI diagnostic history:
+- first observed run on commit `39d746f835b19e357dc73c4c620db13f53ccaab0` failed in the RANK-03 interaction test fixture because a derived receipt was reused without re-supplying its raw factor observations;
+- the failure was diagnosed as a test-fixture provenance omission, not a reason to weaken the PIT gate;
+- fixed in commit `75968279b4beb26a48d3bd6f5c5a926857081317`;
+- GitHub Actions run `36301289399`, job `108569280780`: SUCCESS;
+- 26 System2 test files: PASS;
+- SQLite research schema: PASS, 24 `s2_` tables;
+- production-isolation guard: PASS.
+
+Persistence batch invariants verified:
+- binding contract is `SYSTEM2_DB` only;
+- only explicitly whitelisted `s2_` tables are accepted;
+- run fingerprint is persisted last;
+- duplicate identical records are idempotent;
+- same identity + different immutable payload => `IMMUTABLE_CONFLICT` and fails closed;
+- decision-time persistence batch excludes outcome rows;
+- executor accepts an isolated prepare()/batch() database adapter and rejects a different binding name.
+
+Important:
+No separate Cloudflare D1 database has been created yet.
+No production binding, root Wrangler configuration, production Worker, route or Cron was changed.
