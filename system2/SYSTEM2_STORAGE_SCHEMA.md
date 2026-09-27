@@ -131,6 +131,31 @@ One immutable run-level completeness receipt per strategy / decision clock.
 Purpose:
 prove that a Shadow run did not silently preserve only selected/winning symbols. Every base-universe symbol must be frozen as excluded or every eligible symbol must have an evaluation/accounting state.
 
+### s2_rank05_displacement_receipts
+Immutable incumbent-vs-challenger Shadow comparison receipt.
+
+- receipt_id
+- experiment_id
+- experiment_version
+- market_date
+- decision_timestamp
+- incumbent_symbol
+- incumbent_episode_id
+- incumbent_pool_sessions
+- incumbent_json
+- challenger_symbol
+- challenger_json
+- classification
+- shadow_displacement_eligible
+- action
+- outcome_attached
+- receipt_hash
+- captured_at
+- schema_version
+
+Purpose:
+measure stale-pool opportunity cost without actually evicting valid incumbents before evidence supports a displacement policy.
+
 ### s2_ranking_experiment_receipts
 Immutable baseline-vs-challenger ordering comparison before outcomes are attached.
 
