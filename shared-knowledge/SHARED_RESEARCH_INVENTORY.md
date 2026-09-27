@@ -1,6 +1,6 @@
 # Shared Research Inventory
 
-Updated: 2026-09-26 Asia/Taipei
+Updated: 2026-09-27 Asia/Taipei
 Status: CANONICAL_CROSS_SYSTEM_INVENTORY V0.1
 Purpose: index reusable research without relocating or duplicating the original evidence.
 
@@ -19,7 +19,7 @@ Purpose: index reusable research without relocating or duplicating the original 
 |---|---|---|---|
 | SHARED:KLINE_PATTERN | `KLINE_PATTERN_CHECKPOINT.md`, `KLINE_PATTERN_RESEARCH.md`, `research/PATTERN_*.md`, `TARGET_RESISTANCE_RR_RESEARCH.md` | ACTIVE / multi-stage topology and lifecycle research | Reusable pattern/resistance knowledge is lifecycle- and scale-aware: a single nearest local pivot is not semantically identical to a validated major zone, and post-break new-high states may differ from pre-break overhead resistance. V8 target/RR thresholds remain SYSTEM1_IMPL and must not be copied. |
 | SHARED:PRICE_VOLUME | `PRICE_VOLUME_CHECKPOINT.md`, `PRICE_VOLUME_RESEARCH.md`, `PRICE_VOLUME_EVIDENCE.md`, `PRICE_VOLUME_HYPOTHESIS_LEDGER.md` | ACTIVE / FALSIFICATION + SHADOW design | Reusable RVOL, effort-vs-result, volume dry-up, climax, same-slot normalization and interaction research. |
-| SHARED:TREND_MOMENTUM_REVERSAL | `TREND_MOMENTUM_REVERSAL_CHECKPOINT.md`, `TREND_MOMENTUM_REVERSAL_RESEARCH.md` | FALSIFICATION_IN_PROGRESS | Regime-continuation/transition knowledge reusable. Momentum Gap currently negative/rejected; extreme strength has redundancy risk. |
+| SHARED:TREND_MOMENTUM_REVERSAL | `TREND_MOMENTUM_REVERSAL_CHECKPOINT.md`, `TREND_MOMENTUM_REVERSAL_RESEARCH.md` | FALSIFICATION_IN_PROGRESS | Regime-continuation/transition knowledge reusable. Momentum Gap currently negative/rejected; extreme strength has redundancy risk. |\n| SHARED:TECHNICAL_INDICATORS | `TECHNICAL_INDICATOR_CHECKPOINT.md`, `TECHNICAL_INDICATOR_RESEARCH.md`, `research/technical_indicator_core_v0_1.mjs` | FALSIFICATION_IN_PROGRESS / FORMULA QA PASS ISOLATED | Reusable KD/RSI/MACD/ADX/Bollinger/ROC methodology. Price-derived indicators are not independent votes; current priority is redundancy/incremental-value testing and continuity-safe provenance, not score accumulation. |
 | SHARED:VOLATILITY_REGIME | `VOLATILITY_REGIME_RESEARCH.md` | RESEARCH / evidence-gated | Reusable realized-vol/regime logic; maintain PIT continuity constraints. |
 | SHARED:MARKET_BREADTH_ROTATION | `MARKET_BREADTH_ROTATION_CHECKPOINT.md`, `MARKET_BREADTH_ROTATION_RESEARCH.md` | CONCEPT_COMPLETE / EVIDENCE_PENDING | Strong System 2 input for market regime, participation, sector rotation and leadership lifecycle. Existing V8 sector hard-gate values remain SYSTEM1_IMPL. |
 | SHARED:MICROSTRUCTURE | `MICROSTRUCTURE_CHECKPOINT.md`, `MICROSTRUCTURE_RESEARCH.md`, `MICROSTRUCTURE_COLLECTOR_PROPOSAL.md` | CONCEPT_COMPLETE / EVIDENCE_PENDING | Reusable spread/depth/pressure/price-response concepts; true OFI cannot be reconstructed from candles. |

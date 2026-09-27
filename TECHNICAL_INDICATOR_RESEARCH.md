@@ -537,3 +537,174 @@ No FORMAL_OPTIMIZATION_CANDIDATE exists from these sections.
 8. Second inference remains TI-006 MACD-vs-direct-trend.
 9. ADX and Bollinger/ATR/VCP redundancy remain next only after TI-005/TI-006 mechanics and prospective coverage are clean.
 10. Formal Core remains unchanged.
+
+
+## TI-014 — Existing-history source readiness and zero-extra-call boundary
+
+A direct repository audit materially narrows the data requirement for KD / RSI / MACD.
+
+### Current System 1 history facts
+
+- Current V8.12 history-source revalidation uses fetchHistoricalDaily and explicitly requests daily adjusted=false historical candles.
+- The current Formal history path already retains the high / low / close fields needed by KD and the close field needed by RSI / MACD.
+- The ordinary live cache horizon of about 65 bars is sufficient for the frozen first-pass baselines:
+  - KD9 requires 9 bars;
+  - RSI14 requires 15 closes for the first Wilder value;
+  - MACD12/26/9 uses a 34-bar conservative warm-up under the frozen research implementation.
+- Therefore the three first-pass indicators do not justify extra ordinary market-data calls merely to obtain more history.
+
+### What is still not ready
+
+The existing Formal history is a RAW price path. The shared Corporate Actions lane has separately frozen TECHNICAL_CONTINUITY semantics, but production/runtime TECHNICAL_CONTINUITY remains blocked.
+
+Therefore:
+
+- raw Formal history can support formula mechanics;
+- it cannot be silently treated as corporate-action-neutral technical history across an unresolved event boundary;
+- FCNT000154 adjusted=true may be used for isolated descriptive research only when its semantic space is declared;
+- adjusted=true research values must not be mixed with raw Formal price features as though they were identical observations;
+- the connected FCNT000154 adjusted=false path remains unsuitable as proof of RAW parity because prior audits observed requested false but returned metadata true.
+
+### Indicator-specific blocker decomposition
+
+KD:
+- needs high / low / close;
+- does not need OPEN;
+- does not need volume;
+- history length is already adequate;
+- corporate-action continuity and symbol-session validity remain the semantic blockers.
+
+RSI:
+- needs close only;
+- does not need OPEN or volume;
+- history length is already adequate;
+- corporate-action continuity and symbol-session validity remain the semantic blockers.
+
+MACD:
+- needs close only;
+- does not need OPEN or volume;
+- history length is already adequate;
+- corporate-action continuity and cross-price-scale interpretation remain blockers.
+
+This yields the source-readiness state:
+
+ZERO_EXTRA_MARKET_CALL_FEASIBLE_CONDITIONALLY / RAW_HISTORY_AVAILABLE / TECHNICAL_CONTINUITY_RUNTIME_BLOCKED
+
+No Worker wiring is authorized by this finding.
+
+## TI-015 — Affine/scaling invariance map and cross-sectional comparability
+
+A useful way to separate genuine indicator information from price-unit artifacts is to ask how each indicator changes under a uniform positive affine transform:
+
+P'_t = a * P_t + b, with a > 0 and the same a,b over the complete lookback.
+
+This is a mathematical invariance exercise, not an alpha test.
+
+### KD / Stochastic
+
+RSV uses (C-L)/(H-L).
+
+Under the same positive affine transform:
+- numerator becomes a(C-L);
+- denominator becomes a(H-L);
+- the ratio is unchanged.
+
+Therefore RSV, K and D are invariant to a uniform positive affine transform.
+
+Important limitation:
+A corporate action creates a piecewise transformation around the event boundary, not one uniform transform over the full rolling window. Raw event jumps can therefore still contaminate KD.
+
+### RSI
+
+Close-to-close differences transform as:
+
+Delta P' = a * Delta P
+
+The additive b cancels. Average gains and average losses both scale by a, so their ratio is unchanged.
+
+Therefore Wilder RSI is invariant to a uniform positive affine transform.
+
+Again, a piecewise corporate-action discontinuity violates the assumption and can create artificial gain/loss observations.
+
+### MACD
+
+EMA is linear under a uniform affine transform:
+
+EMA(P') = a * EMA(P) + b
+
+The additive b cancels when fast and slow EMAs are subtracted:
+
+DIF' = a * DIF
+
+The signal line and histogram likewise scale by a.
+
+Consequences:
+- sign / zero-line / crossover state is invariant to a uniform positive scale factor;
+- raw DIF and raw histogram magnitudes are NOT cross-sectionally comparable across different stock price scales;
+- a NT$2 absolute DIF does not represent the same economic distance for a NT$20 stock and a NT$2,000 stock.
+
+Frozen first cross-sectional research normalization:
+- macdDifPct = 100 * DIF / close;
+- macdHistogramPct = 100 * histogram / close.
+
+ATR-normalized MACD may be examined later only as a robustness comparator because it introduces an additional volatility transform and may simply duplicate ATR/trend information.
+
+### Related indicators
+
+ROC:
+- invariant to a uniform multiplicative scale;
+- not generally invariant to an additive translation;
+- contaminated by a piecewise corporate-action jump.
+
+ATR:
+- absolute ATR scales with price units;
+- ATR% is invariant to a uniform multiplicative scale;
+- raw corporate-action discontinuities can create false true-range shocks.
+
+Bollinger Bands:
+- percent-B style location is invariant to a uniform positive affine transform;
+- absolute band width is price-unit dependent;
+- relative bandwidth is scale-safe under uniform multiplication but still requires continuity across event boundaries.
+
+DMI / ADX:
+- dimensionless directional ratios are largely scale-free under a uniform multiplicative transform;
+- raw corporate-action jumps can still create false directional movement and true-range spikes.
+
+### Research consequence
+
+The indicator lane must separate:
+1. dimensionless state;
+2. price-unit-dependent magnitude;
+3. continuity-boundary contamination.
+
+This is another reason not to pool raw indicator values into one cross-sectional score.
+
+## TI-016 — Evidence conflict: indicator stacking is not automatically stronger
+
+Additional Taiwan and cross-market evidence strengthens the anti-voting rule.
+
+### Taiwan evidence conflict
+
+Taiwan thesis evidence is mixed:
+- a 2009-2014 all-listed/OTC study reported stronger sample-period results for RSI and MACD while KD was weakest;
+- a 2007-2017 random-stock study reported significant RSI excess-return evidence and meaningful industry heterogeneity;
+- a Taiwan index study using long historical data through 2010 found that some optimized MACD/RSI rules could beat buy-and-hold in subsets, but overall the strategies did not significantly dominate buy-and-hold;
+- a Taiwan Mid-Cap 100 study testing KD/MACD/Bollinger combinations reported that combining indicators did not automatically improve performance.
+
+These are mostly graduate-thesis-level or older-period results. They are useful as conflicting evidence, not current production coefficients.
+
+### Cross-market evidence
+
+Peer-reviewed cross-market MACD/RSI evidence also varies by market, supporting market-specific rather than universal profitability.
+
+A 2020 stochastic-oscillator study on DJ30 / FTSE100 / SSE50 found that persistent overbought states could behave more like momentum over longer horizons while oversold states could support short-horizon contrarian behavior. It is not Taiwan evidence, but it independently contradicts the universal mapping overbought = sell.
+
+### Frozen implication
+
+- Do not count KD + RSI + MACD agreement as three independent bullish/bearish votes.
+- First aggregate or residualize within the price-derived indicator family.
+- Require incremental value beyond raw returns, trend, Pattern, Price-Volume and regime context.
+- Conflicting valid indicators should create a diagnostic state, not a forced score.
+- Historical positive studies remain hypotheses under the post-2015 / post-2020 Taiwan market structure.
+
+No FORMAL_OPTIMIZATION_CANDIDATE is created by this evidence.
