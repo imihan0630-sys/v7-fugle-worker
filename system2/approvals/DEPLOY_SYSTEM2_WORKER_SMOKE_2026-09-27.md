@@ -13,3 +13,5 @@ Authorized scope:
 - after smoke, disable Version URLs and leave workers.dev disabled.
 
 This is a one-shot authorization marker.
+
+RETRY_AFTER_VERSION_URL_FIX=REQUESTED
