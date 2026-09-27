@@ -85,6 +85,30 @@ Planned scope:
 
 Patterns are not universally bullish/bearish. Meaning must depend on location, trend, volume, market/industry regime and strategy context.
 
+#### TECHNICAL_INDICATOR_AUXILIARY_LAYER（技術指標輔助層）
+
+Purpose:
+Traditional technical indicators are retained as auxiliary/context signals, not standalone BUY/SELL truth. They are derived from price/volume and therefore require redundancy controls against trend, pattern and price-volume features.
+
+Core indicator families to support:
+- KD / Stochastic Oscillator（KD隨機指標）: K、D values, crossovers, overbought/oversold zone, divergence and persistence; avoid treating low KD as automatic buy or high KD as automatic sell.
+- MACD（指數平滑異同移動平均線）: DIF（快慢均線差）、DEA/Signal（訊號線）、Histogram（柱狀體）, zero-line location, crossover, slope, histogram expansion/contraction and divergence.
+- RSI（相對強弱指標）: level, slope, overbought/oversold context, bullish/bearish divergence and failure swings where defined.
+- ATR（平均真實波幅）: absolute/percentage volatility, stop-distance context, extension/overheat normalization and volatility expansion/contraction.
+- MA / EMA（移動平均線／指數移動平均線）: structure, slope, convergence/divergence, support/resistance interaction and distance/extension.
+- DMI / ADX（趨向指標／平均趨向指數）: trend-direction and trend-strength context; do not infer direction from ADX alone.
+- Bollinger Bands（布林通道）: band width, squeeze/expansion, location within bands and breakout context; band touch is not an automatic reversal signal.
+- ROC / Momentum（變動率／動能指標）: rate-of-change context and acceleration/deceleration; must control redundancy with ret20/ret60 and relative-strength features.
+- OBV（能量潮） or similar cumulative price-volume indicators may be researched only as PRICE_VOLUME（價量） context and must be tested for incremental value versus direct volume/turnover features.
+
+Required semantics:
+- raw indicator values are descriptive;
+- crossover / overbought / oversold labels are not universal directional rules;
+- divergence must be defined algorithmically and tested prospectively;
+- indicator state must be interpreted with trend, structural level, pattern lifecycle, price-volume and market/industry regime;
+- multiple indicators built from the same price series must not be independently double-counted;
+- exact lookbacks/parameters remain research hypotheses until Shadow/PIT/OOS validation.
+
 ### PRICE_VOLUME
 price-up/volume-up, price-up/volume-down, price-down/volume-up, price-down/volume-down, breakout volume, pullback volume contraction, climax volume, low-base accumulation, relative volume 5/20/60, turnover, volume persistence, divergence.
 
