@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-09-27T21:43:00+08:00",
+  "updatedAt": "2026-09-27T21:20:16+08:00",
   "status": "BASELINE_V0_2_PARTIAL_RECONCILIATION",
   "formalCore": "LOCKED",
   "authority": {
@@ -251,5 +251,6 @@
       "formalCoreImpact": false
     }
   ],
-  "caveat": "Baseline v0.2 covers reconciled durable lanes visible in dedicated research/checkpoint files; it is not yet exhaustive of every submodule. Percent is an auditable registered-module maturity index, not percent of all possible stock-market knowledge."
+  "caveat": "Baseline v0.2 covers reconciled durable lanes visible in dedicated research/checkpoint files; it is not yet exhaustive of every submodule. Percent is an auditable registered-module maturity index, not percent of all possible stock-market knowledge.",
+  "timestampIntegrityNote": "2026-09-27: corrected several manually estimated research artifact timestamps to verifiable GitHub PR creation times; evidence ordering must use repository timestamps rather than hand-entered clock estimates."
 }

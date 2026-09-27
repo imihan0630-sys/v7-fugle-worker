@@ -1,7 +1,7 @@
 {
   "schemaVersion": "PRIORITY_SCORE_SIZING_TWO_CLOCK_PROTOCOL_V0_2",
   "supersedesInterpretation": "PRIORITY_SCORE_SIZING_BREAKEVEN_PROTOCOL_V0_1 terminology that called formal-close fixed-horizon allocation-weighted results realized P&L",
-  "preregisteredAt": "2026-09-27T21:28:00+08:00",
+  "preregisteredAt": "2026-09-27T21:12:20+08:00",
   "clocks": {
     "selectionPath": {
       "estimand": "PAPER_PATH_SIZING_EDGE",
@@ -36,5 +36,6 @@
   "triggerBiasCorrection": "BUY-only is not a substitute for the all-selected predictive estimand. For realized allocation economics, BUY/fill conditioning is necessary, but it becomes a separate execution-clock estimand and requires coverage/invariance checks rather than being mixed with the selection-path cohort.",
   "costRule": "Costs belong to the execution clock. Do not subtract guessed trading costs from a formal-close paper-path edge and call the result realized net P&L.",
   "status": "SEMANTIC_CORRECTION_FROZEN / PAPER_EDGE_READY / EXECUTION_EDGE_BLOCKED",
-  "formalCoreImpact": false
+  "formalCoreImpact": false,
+  "timestampProvenance": "Corrected to GitHub PR creation time; do not use prior manually estimated clock value as evidence ordering."
 }

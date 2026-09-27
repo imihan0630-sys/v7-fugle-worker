@@ -1,6 +1,6 @@
 {
   "schemaVersion": "PRIORITY_SCORE_SIZING_MULTIPLIER_STRUCTURAL_V0_1",
-  "observedAt": "2026-09-27T21:02:00+08:00",
+  "observedAt": "2026-09-27T20:52:13+08:00",
   "hypothesis": "PriorityScore's influence ends at ranking/selection.",
   "falsification": "False structurally: after selection, PriorityScore also drives proportional planned capital, so score differences can create a second exposure channel.",
   "witnessDate": "2026-09-18",
@@ -37,5 +37,6 @@
   ],
   "prospectiveRequirement": "On generation-certified multi-selected dates, decompose selection incidence separately from post-selection sizing tilt; never add them as if independent.",
   "status": "SECOND_EXPOSURE_CHANNEL_CONFIRMED / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY",
-  "formalCoreImpact": false
+  "formalCoreImpact": false,
+  "timestampProvenance": "Corrected to GitHub PR creation time; do not use prior manually estimated clock value as evidence ordering."
 }
