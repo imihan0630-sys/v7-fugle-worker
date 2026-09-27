@@ -943,3 +943,104 @@ Formal Core remains LOCKED.
 - 3a48559fe05af5d0f4939996b6275d4fc519b31a — Bollinger vs ATR/VCP.
 - 10b5a45ea943190fea76efdece5c5fafa966bdcf — primary queue readiness.
 - aa497120cd7d7c9a60899a4fe10ec812a487e8ef — machine-readable readiness matrix.
+
+
+## Continuation update — TI-275 through TI-300
+
+### Prospective observer state construction — TI-275..TI-288
+- A moving 65-bar daily re-seed is rejected as the authoritative inference semantics for recursive indicators.
+- Preferred authority is CANONICAL_REPLAY_LINEAGE.
+- Persisted recursive state may exist only as an efficiency cache and is inference-eligible only when it reproduces the same canonical lineage.
+- stateLineageId is conceptually tied to symbol + formulaVersion + continuitySpaceVersion + sourceFamilyVersion + sessionCalendarVersion + initializationAnchor + stateConstructionVersion.
+- Any formula/source/continuity/session/anchor change creates a new lineage; do not silently continue prior state.
+- Allowed construction modes:
+  FULL_REPLAY_FROM_LINEAGE_ANCHOR;
+  TRUSTED_PRIOR_STATE;
+  LOCAL_WINDOW_BOOTSTRAP_QA_ONLY.
+- Prospective rows may be retained while seed-sensitive for recorder QA, but ordinary alpha inference requires declared seed/replay state.
+- Recursive state repair is replay-based: mark DIRTY, rebuild causally and hash-check. Do not patch only the current value and do not wait an arbitrary N bars.
+- Technical Indicator primary inference consumes shared TECHNICAL_CONTINUITY only. RAW_EXECUTION remains mechanics/execution-reference only.
+- TECHNICAL_CONTINUITY production/runtime is still blocked, therefore Technical Indicator observer runtime remains NO_GO.
+- Observer must attach to the existing prospective Shadow population, not create a second universe. Latest cross-lane lineage preference is parentDecisionReceiptId or scanDate+symbol+parentSnapshotHash+captureGeneration.
+- COMPLETE run means every expected parent resolves to VALID or explicit BLOCKED; missing parents or replay/provenance mismatches block inference.
+- Existing deeper history-fetch capability does not itself authorize scheduled provider pulls or D1 expansion.
+- ZERO_EXTRA_CALL_FORMULA_FEASIBILITY != ZERO_EXTRA_CALL_INFERENCE_READINESS.
+- New durable artifacts:
+  research/TECHNICAL_INDICATOR_OBSERVER_STATE_CONSTRUCTION_V0_1.md
+  research/technical_indicator_observer_state_contract_v0_1.json
+
+### ADX14 exact formula parity — TI-289..TI-295
+- Frozen formulaVersion:
+  WILDER_ADX14_TALIB_STYLE_NO_ROUNDING_V0_1.
+- +DM/-DM winner rule and equal outside-expansion tie -> both zero are frozen.
+- TR = max(H-L, |H-prevClose|, |L-prevClose|).
+- Wilder smoothing uses initial sums then S = S - S/14 + x.
+- DX = 100*abs(+DI-(-DI))/(+DI+(-DI)); first ADX is mean of first 14 valid DX, then Wilder-smoothed.
+- TA-Lib-style baseline uses no integer rounding and no extra unstable-period extension.
+- Lookback reference for period14 is 27 positions; first output is at zero-based index27, requiring 28 eligible OHLC bars.
+- FIRST_CALCULABLE is not seed-stable. ADX remains a cascaded recursive state requiring canonical replay lineage.
+- Output payload should preserve smoothed TR/+DM/-DM, DI, DX, ADX and lineage/quality metadata.
+- No ADX bullish direction or optimized threshold state is permitted.
+- Adversarial fixtures frozen conceptually: mirrored up/down, flat zero-range, inside bars, equal outside expansion, gap, large wick, price-scale, corporate action and price-limit staircase.
+
+### Bollinger20x2 exact formula parity — TI-296..TI-300
+- Frozen formulaVersion:
+  BBANDS_CLOSE_SMA20_POPSTD20_K2_V0_1.
+- Center = SMA20 Close.
+- Standard deviation = population variance convention, divide by N=20.
+- Upper/lower = SMA20 +/- 2*sigma20.
+- bandWidthRatio=(upper-lower)/middle; bandWidthPct=100*ratio.
+- %B=(close-lower)/(upper-lower) only when width>0.
+- Flat zero-width %B is NULL / ZERO_BAND_WIDTH_UNDEFINED_LOCATION; no coercion to 0/0.5/1.
+- Bollinger is finite-window: first calculable with 20 eligible closes and no recursive seed after exact window is known.
+- Formula parity still requires exact symbol sessions, TECHNICAL_CONTINUITY and std-definition/version identity.
+- Adversarial fixtures frozen: constant close, multiplicative scale, additive affine shift, same-close/wide-range, smooth trend/tight-range, sample-vs-population std mismatch, corporate action and price-limit staircase.
+- New durable artifacts:
+  research/TECHNICAL_INDICATOR_ADX_BBANDS_FORMULA_PARITY_V0_1.md
+  research/technical_indicator_adx_bbands_formula_contract_v0_1.json
+
+### Snapshot contract v0.2 proposal
+- New proposal adds:
+  semantic basis provenance;
+  transform/canonical primitive/redundancy identity;
+  timeframe/effective horizon;
+  canonical replay lineage;
+  initialization/seed/replay fields;
+  ADX/BBands formula versions;
+  exact parent lineage;
+  constrained-session separation.
+- New artifact:
+  research/technical_indicator_snapshot_contract_v0_2_proposal.json
+- Proposal only. No runtime persistence/schema/schedule/provider-call authorization.
+
+### Current lane status
+
+PRIMARY_THEORY_DECOMPOSITION = COMPLETE_V0_1
+OBSERVER_STATE_CONSTRUCTION = DESIGN_FROZEN_RUNTIME_NO_GO
+ADX14_FORMULA = SPEC_FROZEN_CORE_NOT_IMPLEMENTED
+BBANDS20X2_FORMULA = SPEC_FROZEN_CORE_NOT_IMPLEMENTED
+SNAPSHOT_V0_2 = PROPOSAL_ONLY
+OUTCOME_INFERENCE = NO_GO
+FORMAL_OPTIMIZATION_CANDIDATE = NONE
+Formal Core remains LOCKED.
+
+### Updated exact next continuation point
+
+1. Do not expand the indicator catalog.
+2. Next isolated mechanics step:
+   - implement research-only ADX14 and Bollinger20x2 in the isolated technical core;
+   - execute the frozen adversarial fixtures;
+   - extend MACD response-profile F1-F12 QA.
+3. Keep all code isolated under research/; do not touch Worker.js.
+4. Runtime observer remains NO_GO until shared TECHNICAL_CONTINUITY and exact parent-lineage governance are runtime-ready.
+5. Any D1 schema/persistence/schedule/provider-pull implementation remains governance-gated.
+6. No outcome join before COMPLETE prospective receipts.
+7. Formal Core remains unchanged.
+
+## Latest durable research commits
+
+- 3ab7121b6867909da3e30f0b0c1e74890f8f4918 — observer state-construction design.
+- b32d4d4284e281110412fb1d6e56a8ba61a641de — observer state machine contract.
+- 52ec90e1b31236670a3a316c922d0beed950e47d — ADX/Bollinger formula parity specification.
+- 5574b454bfa3d2b4143a892e235adb28ba188e2d — machine-readable ADX/Bollinger formula contract.
+- 1d663637915ead6d86cdccb5776f87f0ffaaa405 — Technical Indicator snapshot contract v0.2 proposal.
