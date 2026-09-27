@@ -20518,3 +20518,144 @@ Differences must be investigated before large-scale replay.
 - barCount
 - reconciliationStatus
 
+
+
+## DL-002DI — Rounding-Bottom / Saucer Counterevidence
+
+### Important falsification evidence
+Zapranis & Tsinaslanidis (Expert Systems with Applications, 2012) developed a rigorous rule-based detector for rounding bottoms (saucers) and resistance levels in U.S. tech stocks.
+
+Their reported results:
+- simple resistance levels outperformed saucer patterns,
+- statistically significant excess returns appeared only in earlier subperiods,
+- the saucer edge declined or disappeared in more recent portions of their sample.
+
+### Research implication
+Do not grant “rounded cup / saucer shape” an intrinsic premium merely because it is visually appealing.
+
+For DL-002 cup research, test in this order:
+1. resistance/rim structure,
+2. right-side recovery,
+3. handle/compression,
+4. only then bottom roundness.
+
+### Falsification criterion
+If bottomRoundnessScore adds no incremental outcome information after:
+- rim/zone geometry,
+- recovery path,
+- duration,
+- volatility,
+- handle state,
+then roundness is REDUNDANT / INTERPRETABILITY_ONLY.
+
+### Time-decay warning
+Even a historically documented pattern can decay.
+Any positive result must survive:
+- later subperiod,
+- modern Taiwan regime,
+- prospective Shadow.
+
+## DL-002DJ — Detector Perturbation / Jitter Robustness v0.1
+
+### Goal
+A meaningful pattern should not disappear because one historical bar shifts by one tick or one pivot moves by one day, unless that move truly changes topology.
+
+### Perturbation tests
+Without using forward returns, perturb inputs within market-plausible bounds:
+- +/- 1 tick on selected pivot prices,
+- +/- small fraction of lagged ATR,
+- shift a confirmed pivot date by one bar where ties/near-ties exist,
+- remove one non-anchor bar,
+- vary adjacent swing scale (MICRO/BASE/MAJOR).
+
+### Robustness fields
+- patternSurvivalRate
+- stateSurvivalRate
+- pivotDispersionUnderPerturbation
+- zoneDispersionUnderPerturbation
+- maturityDispersion
+- familyLabelStability
+- latentPrimitiveStability
+
+### Interpretation
+HIGH_ROBUSTNESS:
+same core topology survives small perturbations.
+
+BOUNDARY_CASE:
+pattern classification flips under small changes.
+
+### Rule
+Boundary cases remain valid observations but carry lower geometry stability.
+Do not silently move thresholds to rescue them.
+
+### No outcome tuning
+Perturbation magnitude is based on tick/ATR mechanics, not chosen by future performance.
+
+## DL-002DK — Missing Bars / Suspensions / Calendar Gaps
+
+### Problem
+Stock-specific trading suspension or missing source bars creates a difference between:
+- calendar duration,
+- observed trading-bar duration.
+
+A 30-calendar-day handle with 10 missing trading days is not equivalent to 30 actively traded sessions.
+
+### Fields
+- observedTradingBars
+- calendarDays
+- missingExpectedBars
+- maxCalendarGapDays
+- suspensionOrMissingDataFlag
+- continuityStatus
+
+### Pattern-duration rule
+Primary morphology duration uses observed completed trading bars.
+Also retain calendar duration/gaps as context.
+
+### Data-quality states
+COMPLETE
+KNOWN_SUSPENSION
+SOURCE_MISSING
+UNKNOWN_GAP
+
+Known suspension should not be interpreted as low-volume compression.
+
+### Maturity effect
+A pattern spanning a long suspension may require:
+- post-resumption revalidation,
+rather than carrying pre-suspension maturity forward unchanged.
+
+### Formal impact
+None. Research integrity only.
+
+## DL-002DL — Adjusted/Raw Price Duality and Vintage Safety
+
+### Purpose
+Use adjusted series for continuous morphology while preserving raw prices for executable levels.
+
+### Storage
+For each bar:
+- rawOpen/High/Low/Close
+- adjustedOpen/High/Low/Close
+- adjustmentFlag
+- fetchedAt
+- corporateActionTag if known
+
+### Derived-level rule
+Morphology level:
+- computed on adjusted series.
+
+Execution/reference level:
+- mapped/stored in raw nominal price terms for that historical date.
+
+### Vintage warning
+Vendor-adjusted history may be revised after later corporate actions.
+Therefore:
+- never claim that a retrospectively downloaded adjusted nominal price was the literal number traders saw then,
+- use raw series for literal historical traded prices,
+- use adjusted series for scale-consistent shape/returns,
+- record fetch vintage.
+
+### Strongest future design
+Prospective Pattern Shadow should snapshot raw + adjusted inputs on the day so later re-fetch revisions can be detected.
+
