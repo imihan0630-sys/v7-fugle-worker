@@ -19422,3 +19422,177 @@ For continuation families:
 
 Therefore percentile is family-dependent context, not a universal quality score.
 
+
+
+## DL-002CL — Triangle / Wedge Boundary Geometry v0.1
+
+### Motivation
+Formal chart-pattern literature shows that named patterns can be specified as relationships among extracted turning points.
+Rather than adding dozens of names, DL-002 represents triangle/wedge families through boundary geometry.
+
+### Boundary construction
+Use confirmed swing highs/lows within the candidate consolidation.
+
+Upper boundary:
+- fit through recent confirmed swing highs.
+
+Lower boundary:
+- fit through recent confirmed swing lows.
+
+Store:
+- upperSlopePctPerBar
+- lowerSlopePctPerBar
+- upperSlopeATRPerBar
+- lowerSlopeATRPerBar
+- upperFitError
+- lowerFitError
+- boundaryConvergenceRate
+- estimatedApexBars
+- upperTouchCount
+- lowerTouchCount
+- alternatingTouchQuality
+- rangeCompressionSlope
+
+### Descriptive labels
+SYMMETRICAL_TRIANGLE:
+- upper boundary slopes down,
+- lower boundary slopes up,
+- range converges.
+
+ASCENDING_TRIANGLE:
+- upper boundary approximately flat,
+- lower boundary rises.
+
+DESCENDING_TRIANGLE:
+- lower boundary approximately flat,
+- upper boundary falls.
+
+RISING_WEDGE:
+- both boundaries rise,
+- lower slope exceeds upper slope enough to converge.
+
+FALLING_WEDGE:
+- both boundaries fall,
+- upper/lower geometry converges in the opposite configuration.
+
+EXPANDING_STRUCTURE:
+- boundaries diverge; adverse/control morphology.
+
+### Do not hard-code “bullish pattern names”
+Ascending triangle is not automatically bullish.
+Falling wedge is not automatically bullish.
+Direction comes from:
+- breakout/acceptance,
+- prior trend,
+- regime/sector context,
+- evidence.
+
+### Fit quality
+A boundary based on two arbitrary points is too easy to manufacture.
+Store:
+- confirmedTouchCount,
+- fit residual,
+- scale stability,
+- whether a provisional last leg is used.
+
+### Convergence quality
+Measure:
+- startWidthATR
+- currentWidthATR
+- widthShrinkRatio
+- convergenceHalfLife
+- apexDistanceBars
+
+Do not assume “closer to apex is always better.”
+Very late apex approach may represent stale compression.
+
+### Relationship to existing primitives
+Triangles/wedges mostly decompose into:
+- COMPRESSION,
+- SUPPORT,
+- RESISTANCE,
+- TIME,
+- ACCEPTANCE.
+
+Named labels are interpretability views unless they add incremental evidence.
+
+## DL-002CM — Formal Pattern Taxonomy as Constraint Grammar
+
+### External evidence
+Wan & Si (Information Sciences, 2017) formally specify 53 chart patterns and group them into five structural categories.
+A central motivation is that practitioner definitions are ambiguous and inconsistent.
+
+### DL-002 principle
+Represent patterns as a constraint grammar over:
+- confirmed points,
+- boundary relationships,
+- duration,
+- amplitude,
+- curvature,
+- candle relations.
+
+### Proposed grammar primitives
+POINT:
+- confirmed high/low
+
+RELATION:
+- higher / lower / approximately equal
+
+BOUNDARY:
+- flat / rising / falling / converging / diverging
+
+CURVE:
+- rounded / V-shaped / asymmetric
+
+SEQUENCE:
+- alternating / repeated / contracting
+
+CONTEXT:
+- prior trend / regime / event / sector
+
+TRIGGER:
+- breakout / reclaim / retest / failure
+
+### Benefit
+New pattern names can be mapped to existing primitives without inventing new scoring dimensions.
+
+### Example
+Inverse HS:
+LOW1 -> lower HEAD -> higher LOW3
+with two neckline highs and breakout/acceptance.
+
+Ascending triangle:
+multiple highs near resistance zone + rising confirmed lows + narrowing width.
+
+VCP:
+alternating swings with declining amplitude and supply contraction near pivot.
+
+### Engineering implication
+If a future detector is built, encode reusable primitive functions first.
+Do not build one separate bespoke function for every named pattern.
+
+## DL-002CN — Pattern Ambiguity Is a Feature, Not an Error
+
+### Problem
+One price path may satisfy:
+- ascending triangle,
+- VCP,
+- platform,
+- cup handle,
+at the same time.
+
+Forcing exactly one class creates artificial certainty.
+
+### Research output
+multiLabelPatterns[]
+patternOverlapCluster
+sharedPrimitiveCount
+uniquePrimitiveByPattern
+classificationAmbiguity
+
+### Hypothesis
+Low ambiguity may indicate a clean textbook topology,
+but high ambiguity could simply reflect that multiple labels describe the same strong compression.
+
+Therefore classification ambiguity itself must not be treated as bad until tested.
+
