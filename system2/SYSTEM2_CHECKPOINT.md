@@ -19,6 +19,12 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 
 ## Current design decisions
 
+- All pre-persistence audit tasks listed in `SYSTEM2_LIMITED_SHADOW_VERIFICATION_V0_1.md` are now complete. Remaining operational blocker is isolated physical System 2 persistence + scheduled capture; no V8 production storage/runtime has been touched.
+
+- Shadow Run Fingerprint（執行批次指紋） implemented and verified: source-session hash + full-universe accounting + decision/order/experiment/capacity/lifecycle hashes are frozen into a deterministic run identity; outcomes may join only when provenance/accounting are complete.
+
+- Shadow Source Session Receipt（資料來源批次收據） implemented and verified: REQUIRED missing/stale/invalid/PIT-ineligible/future-known sources fail closed; OPTIONAL/CONTEXT gaps remain explicit without becoming zero/negative evidence.
+
 - Ranking research infrastructure now spans RANK-01 baseline, RANK-02 EntryReadiness challenger, RANK-03 confluence gate, RANK-04 regime-readiness gate, RANK-05 retention/replacement Shadow comparison, RANK-06 strategy-overlap redundancy measurement, and RANK-07 concentration measurement. None of RANK-03 through RANK-07 currently changes actual candidate ordering or capacity policy.
 
 - RANK-07 concentration experiment preregistered as measurement-only. Industry counts/coverage/known-only HHI and strategy-membership concentration are recorded; UNKNOWN industry stays UNKNOWN; no industry/strategy hard cap, eviction or sizing effect is authorized. Verification PASS.
