@@ -470,7 +470,7 @@ V8.11 `pvAdvanceAcceptance()` moves a failed B lifecycle to `B_FAILED_REENTRY` a
 
 Do not treat the PV state machine as automatic Formal truth; it is a chronology comparator.
 
-## EA-023 — timing asymmetry and the correct optimization question
+## EA-023 — shared early-session BUY boundary and the correct optimization question
 
 A requires:
 - previous bar has entered/held the zone;
@@ -481,9 +481,11 @@ A requires:
 
 Because the previous bar itself needs five earlier bars for a finite volume ratio, the earliest theoretical Formal A BUY is around the seventh completed 15m bar (~10:45).
 
-B can first obtain a finite breakout-volume test on the sixth completed 15m bar (~10:30), though a later retest is normally required because breakout/retest volume thresholds are mutually exclusive.
+B can first obtain a finite breakout-volume test on the sixth completed 15m bar (~10:30). Because the same bar cannot also pass the <=1.1 retest-volume condition, the earliest theoretical B retest BUY is the following seventh completed bar (~10:45).
 
-This is a structural timing asymmetry, not evidence that A is too strict or B too loose.
+Therefore both A and B share an approximate first-105-minutes no-BUY boundary under the current previous-five-bar volume construction.
+
+This is an early-session participation constraint, not an A-vs-B earliest-BUY asymmetry and not evidence that the rule should be loosened.
 
 The Execution Alpha bridge must now separate:
 - early-breakout blindness;
