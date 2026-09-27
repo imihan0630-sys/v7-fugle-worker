@@ -96,6 +96,10 @@ on:
       - "research/local_grid_reallocation_spec_v0_1.json"
       - "tests/test_local_grid_reallocation_v0_1.mjs"
       - "tests/portfolio_risk_local_grid_reallocation_readonly_audit.mjs"
+      - "research/local_reference_reallocation_v0_1.mjs"
+      - "research/local_reference_reallocation_spec_v0_1.json"
+      - "tests/test_local_reference_reallocation_v0_1.mjs"
+      - "tests/portfolio_risk_local_reference_reallocation_readonly_audit.mjs"
       - "research/risk_metric_sensitivity_v0_1.mjs"
       - "research/risk_metric_sensitivity_spec_v0_1.json"
       - "tests/test_risk_metric_sensitivity_v0_1.mjs"
@@ -157,6 +161,7 @@ jobs:
           node tests/test_add_tranche_risk_concentration_v0_1.mjs
           node tests/test_lifecycle_metric_sensitivity_v0_1.mjs
           node tests/test_local_grid_reallocation_v0_1.mjs
+          node tests/test_local_reference_reallocation_v0_1.mjs
           node tests/test_risk_metric_sensitivity_v0_1.mjs
           node tests/test_score_cap_reserve_v0_1.mjs
       - name: Read-only production journal coverage audit
@@ -176,5 +181,6 @@ jobs:
           node tests/portfolio_risk_add_tranche_readonly_audit.mjs
           node tests/portfolio_risk_lifecycle_metric_sensitivity_readonly_audit.mjs
           node tests/portfolio_risk_local_grid_reallocation_readonly_audit.mjs
+          node tests/portfolio_risk_local_reference_reallocation_readonly_audit.mjs
           node tests/portfolio_risk_metric_sensitivity_readonly_audit.mjs
           node tests/portfolio_risk_score_cap_reserve_readonly_audit.mjs
