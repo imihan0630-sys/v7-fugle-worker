@@ -2222,3 +2222,48 @@ Status:
 `TAX_CLASS_PROVENANCE_FAIL_CLOSED / RATE_LOOKUP_SEPARATE`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-055 — commission provenance requires complete broker schedule semantics (2026-09-27)
+
+Trading Frictions already rejects a universal commission assumption. PR-055 converts that rule into a fail-closed classifier for Portfolio Risk sizing research.
+
+Evidence hierarchy:
+- ACTUAL: charged commission directly evidenced by broker statement/import or verified external record;
+- MODELED: broker-specific schedule is complete enough to reproduce the fee;
+- UNKNOWN: anything less.
+
+A MODELED fee requires all of:
+- broker-specific rate;
+- broker-specific minimum commission;
+- verified calculation method;
+- verified rounding policy;
+- applicable execution channel;
+- executed notional;
+- verified schedule source.
+
+The initial weaker idea that `rate + minimum` alone is sufficient was explicitly rejected before merge. It can be wrong when rounding, odd-lot/channel exceptions, promotions or other schedule mechanics differ.
+
+For the currently implemented model, only the positively verified method:
+`MAX_RATE_MINIMUM`
+is accepted, with an explicit ROUND/FLOOR/CEIL/NONE policy.
+
+### Sizing consequence
+
+Alternative sizing can cross minimum-fee kinks, so equal total portfolio deployment does not imply equal incremental commission.
+
+Forbidden:
+- infer the owner's negotiated rate from a market reference threshold;
+- invent a universal minimum;
+- use planned/signal notional as ACTUAL executed notional;
+- label modeled fees ACTUAL;
+- convert UNKNOWN commission to zero.
+
+Artifacts:
+`research/commission_evidence_classifier_v0_1.mjs`;
+`research/commission_evidence_classifier_spec_v0_1.json`.
+
+Status:
+`COMMISSION_PROVENANCE_FAIL_CLOSED / COMPLETE_BROKER_SCHEDULE_REQUIRED`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
