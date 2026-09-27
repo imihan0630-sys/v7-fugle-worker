@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "ADD_TRANCHE_RISK_PRODUCTION_RECEIPT_V0_1",
+  "observedAt": "2026-09-28T05:47:32+08:00",
+  "timestampProvenance": "GitHub Actions Portfolio Risk Tier-A Research run 36352942937 / job 108714975039",
+  "workflowRunId": 36352942937,
+  "jobId": 108714975039,
+  "readOnly": true,
+  "productionWrites": false,
+  "decisionImpact": false,
+  "scanDate": "2026-09-18",
+  "selectedCount": 3,
+  "secondTrancheRatio": 0.4,
+  "currentDeploymentNTD": 168000,
+  "current": {
+    "addProjectedRiskNTD": 2578.2,
+    "addProjectedRiskHHI": 0.3763426432,
+    "addMaxMinProjectedRisk": 2.43024727,
+    "addPreviewNotionalNTD": 66861.92,
+    "fullProjectedRiskHHI": 0.3767077818,
+    "addMinusFullHHI": -0.0003651386
+  },
+  "equalCapital": {
+    "addProjectedRiskNTD": 2523.18,
+    "addProjectedRiskHHI": 0.3557339695,
+    "addMaxMinProjectedRisk": 1.90878378,
+    "addPreviewNotionalNTD": 67155.16
+  },
+  "exhaustiveGrid": {
+    "feasibleStates": 946,
+    "minHHI": 0.3342266703,
+    "uniqueOptimum": true,
+    "optimumAllocationNTD": {
+      "2006": 70000,
+      "3105": 42000,
+      "6133": 56000
+    }
+  },
+  "falsification": {
+    "rejectedClaim": "The structural concentration disappears or reverses in the smaller 40% ADD tranche because integer-share quantization differs.",
+    "result": "Rejected. Current ADD-preview risk remains more concentrated than equal-capital and the exhaustive grid minimum."
+  },
+  "limits": [
+    "one reconstructable multi-name date",
+    "plan-preview ADD geometry only",
+    "does not assume FIRST fill, ADD trigger or ADD fill",
+    "economic value unknown"
+  ],
+  "status": "ADD_TRANCHE_CONCENTRATION_SURVIVES / TRANCHE_STAGE_REVERSAL_FALSIFIED / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY",
+  "formalCoreImpact": false
+}

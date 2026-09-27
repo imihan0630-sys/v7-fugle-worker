@@ -1384,3 +1384,75 @@ Status:
 `FIRST_TRANCHE_CONCENTRATION_SURVIVES / LIFECYCLE_STAGE_ARTIFACT_FALSIFIED / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-065 — ADD-tranche risk concentration test (2026-09-28)
+
+PR-064 showed the structural concentration survives in FIRST-only preview exposure. PR-065 tests the complementary Formal 40% ADD tranche.
+
+For each multi-name date:
+- FIRST amount = round(totalAllocation × 0.60);
+- ADD amount = totalAllocation − FIRST amount;
+- ADD preview shares = floor(ADD amount / buyHigh);
+- ADD projected stop-risk = ADD preview notional × conservative stop-risk fraction.
+
+The audit compares:
+1. current PriorityScore sizing;
+2. same-deployment equal capital;
+3. exhaustive NT$1,000-grid minimum ADD-preview HHI under the same 35% cap.
+
+This is intentionally independent of execution state. It does **not** assume FIRST was filled or that ADD ever triggered.
+
+The counter-hypothesis is:
+`the concentration direction is specific to FIRST/full-plan and reverses or disappears in the smaller ADD tranche because share quantization differs.`
+
+Artifacts:
+`research/add_tranche_risk_concentration_v0_1.mjs`;
+`research/add_tranche_risk_concentration_spec_v0_1.json`;
+`tests/portfolio_risk_add_tranche_readonly_audit.mjs`.
+
+Status:
+`ADD_TRANCHE_PROTOCOL_READY / PRODUCTION_AUDIT_PENDING`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-065 Production result — concentration also survives ADD-only preview
+
+Read-only Production run `36352942937` / job `108714975039` tested 2026-09-18 using only the Formal ADD tranche.
+
+Current PriorityScore sizing:
+- ADD preview notional = NT$66,861.92;
+- ADD projected stop-risk = NT$2,578.20;
+- ADD HHI = 0.3763426432;
+- ADD max/min risk = 2.43024727.
+
+Equal-capital:
+- ADD preview notional = NT$67,155.16;
+- ADD HHI = 0.3557339695.
+
+Exhaustive 946-state ADD-only minimum:
+- allocation = 70k / 42k / 56k;
+- ADD HHI = 0.3342266703.
+
+Thus:
+- current − equal ADD HHI = +0.0206086737;
+- current − global-min ADD HHI = +0.0421159729.
+
+ADD-only HHI is slightly below current full-plan preview HHI:
+0.3763426432 vs 0.3767077818, delta -0.0003651386.
+
+Combined with PR-064, the concentration direction now survives:
+- FIRST-only;
+- ADD-only;
+- FULL preview.
+
+The stage changes the exact HHI slightly but does not reverse the structural result.
+
+Durable receipt:
+`research/add_tranche_risk_production_receipt_20260928.json`.
+
+Status:
+`ADD_TRANCHE_CONCENTRATION_SURVIVES / TRANCHE_STAGE_REVERSAL_FALSIFIED / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
