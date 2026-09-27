@@ -149,3 +149,33 @@ Verified:
 - incremental SQLite syntax validation for the lifecycle/re-entry tables: PASS.
 
 No strategy-specific invalidation threshold was invented; those remain versioned strategy semantics.
+
+
+## RANK-01 strategy-local baseline verification (2026-09-27)
+
+Status: PASS / RESEARCH-ONLY / NO OUTCOME TUNING / NOT DEPLOYED.
+
+Implemented:
+- `SYSTEM2_STRATEGY_LOCAL_RANKING_BASELINES_V0_1.md`;
+- `runtime/strategy_local_ranking_baseline.mjs`;
+- `runtime/strategy_local_ranking_pipeline.mjs`;
+- `runtime/candidate_capacity_priority_gate.mjs`.
+
+Baseline design:
+- SHORT_MOMENTUM: TECHNICAL_STRUCTURE + PRICE_VOLUME + RISK_FRICTION;
+- SWING_GROWTH: FUNDAMENTAL_QUALITY + INDUSTRY_THESIS;
+- Pareto dominance only; no family weights or summed total score;
+- EntryReadiness, Regime and Confluence deliberately excluded for later incremental tests;
+- incomplete family inputs remain unranked;
+- deterministic neutral hash breaks within-tier machine ties without claiming economic superiority.
+
+Verified:
+- Pareto dominance creates expected tiers;
+- cross-family tradeoffs can remain in the same non-dominated tier;
+- missing/UNKNOWN baseline-family input => RANKING_INPUT_INCOMPLETE;
+- identical inputs produce deterministic within-tier order;
+- strategy ordering receipt integration preserves policy/version;
+- when global slots are scarce and no cross-strategy global policy exists, allocation fails closed as GLOBAL_PRIORITY_UNRESOLVED instead of using accidental input order;
+- if all new candidates fit, all may be admitted without cross-strategy ranking.
+
+No production/runtime deployment occurred.
