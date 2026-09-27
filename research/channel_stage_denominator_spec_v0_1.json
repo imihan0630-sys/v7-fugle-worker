@@ -1,7 +1,7 @@
 {
   "schemaVersion": "channel-stage-denominator-spec-v0.1",
   "researchDate": "2026-09-27",
-  "status": "CLASS_A_OBSERVER_PROTOTYPE",
+  "status": "CLASS_A_OBSERVER_PROTOTYPE_CORRECTED",
   "formalCoreChanged": false,
   "outcomeDataUsed": false,
   "problem": "Current diagnostics.baseEligible/rrEligible/channelCounts/conditionDistribution cannot identify A/B sequential scarcity from setup-pass through RR and final grade.",
@@ -17,9 +17,9 @@
     "rawSetupDiagnostics": [
       "rawAPass",
       "rawBPass",
-      "dualPass"
+      "dualPassInvariant"
     ],
-    "formalChannelAssignment": "Only after every ordered gate before AB_SETUP is clear; B precedence on dual-pass rows.",
+    "formalChannelAssignment": "Only after every ordered gate before AB_SETUP is clear and exactly one valid setup passes. Current A/B definitions are mathematically mutually exclusive; production B-before-A ordering is defensive only.",
     "stages": [
       "FORMAL_CHANNEL_ASSIGNED",
       "POST_SETUP_PRECISION_PASS (fundamental count + fundamental quality + ATR)",
@@ -37,8 +37,8 @@
     ]
   },
   "negativeControls": [
+    "A.pass && B.pass must be structural zero under current recentHigh10/priorHigh20/pullback/breakout definitions; any dual pass is quarantined as a provenance/definition regression.",
     "A raw setup pass blocked by an earlier sector/data gate must not enter the sequential A_SETUP_PASS denominator.",
-    "Dual A+B pass is assigned to B because current Formal precedence is B then A.",
     "A valid B-assigned row that reaches RR_PASS should never FINAL_GRADE_FAIL under current setupQuality formula/threshold; nonzero incidence flags provenance/version/observer mismatch.",
     "FORMAL_OK without observed FINAL_GRADE_PASS is an invariant violation.",
     "SELECTED without FORMAL_OK is an invariant violation."
@@ -56,7 +56,8 @@
     "The direct phrase A_SETUP_PASS -> RR_PASS is shorthand only; fundamental/ATR/target gates intervene and must remain explicit in the receipt.",
     "Stage counts measure where observed rows leave the current ordered funnel; they do not estimate outcomes or recovered selections under relaxed rules.",
     "Use complete same-scan row observers, not bounded Shadow samples, for denominators.",
-    "Price-pool and channel dimensions must be preserved; do not add top-level and thousand subset counters."
+    "Price-pool and channel dimensions must be preserved; do not add top-level and thousand subset counters.",
+    "Rows with structural invariant violations are counted in QA but excluded from stage denominators."
   ],
   "exactNext": [
     "Validate synthetic stage accounting and B-grade negative control in CI.",
