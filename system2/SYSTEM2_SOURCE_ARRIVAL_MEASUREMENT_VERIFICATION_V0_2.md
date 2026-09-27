@@ -39,6 +39,10 @@ Measurement controls:
 - source-arrival polling can stop after both A1 required daily gates become READY;
 - A5/B2 bounded polling series stops after same-date dependency evidence becomes eligible.
 
+## Coverage finalization
+
+Readiness aggregation is finalized with a one-calendar-day lag and runs at 08:30 Asia/Taipei every calendar day. The current Taiwan date is diagnostic/pending only; it cannot enter the finalized denominator until the next calendar day. This removes races between delayed GitHub scheduling / bounded polling and same-day readiness aggregation.
+
 ## V0.2 research schedule
 
 Workflow:

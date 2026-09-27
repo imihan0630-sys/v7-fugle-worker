@@ -43,6 +43,9 @@ The owner-facing review packet must include:
 - manual diagnostic artifact count;
 - artifact-selection policy;
 - coverage-audit state;
+- coverage-finalization version and one-calendar-day lag;
+- finalized coverage start/through dates;
+- pending unfinalized run/artifact counts;
 - Coverage Integrity（證據覆蓋完整性）extension version;
 - audited coverage start/through dates;
 - failure-class counts;
