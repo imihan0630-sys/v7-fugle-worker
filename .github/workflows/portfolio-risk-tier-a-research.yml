@@ -5,6 +5,8 @@ on:
     paths:
       - "research/portfolio_risk_tier_a_v0_1.mjs"
       - "research/portfolio_risk_tier_a_v0_2.mjs"
+      - "research/portfolio_risk_selected_generation_classifier_v0_1.mjs"
+      - "tests/portfolio_risk_selected_generation_classifier_v0_1.test.mjs"
       - "tests/test_portfolio_risk_tier_a_v0_1.mjs"
       - "tests/test_portfolio_risk_tier_a_v0_2.mjs"
       - "tests/portfolio_risk_tier_a_v0_2_readonly_audit.mjs"
@@ -43,6 +45,7 @@ jobs:
         run: |
           node tests/test_portfolio_risk_tier_a_v0_1.mjs
           node tests/test_portfolio_risk_tier_a_v0_2.mjs
+          node tests/portfolio_risk_selected_generation_classifier_v0_1.test.mjs
           node tests/test_portfolio_risk_reconstructability_v0_1.mjs
           node tests/test_confirmed_fill_ledger_v0_1.mjs
           node tests/test_confirmed_fill_ledger_v0_2.mjs
