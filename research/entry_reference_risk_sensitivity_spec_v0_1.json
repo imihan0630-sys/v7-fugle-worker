@@ -22,6 +22,7 @@
     "no returns, fills, MFE/MAE or costs are used",
     "exact grid optimum is not a live sizing recommendation"
   ],
-  "status": "REFERENCE_SENSITIVITY_PROTOCOL_READY / PRODUCTION_AUDIT_PENDING",
-  "formalCoreImpact": false
+  "status": "ENTRY_REFERENCE_ARTIFACT_FALSIFIED / STRUCTURAL_CONCLUSION_STRENGTHENED / ECONOMIC_VALUE_UNKNOWN",
+  "formalCoreImpact": false,
+  "productionReceipt": "research/entry_reference_risk_sensitivity_production_receipt_20260928.json"
 }
