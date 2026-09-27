@@ -1,7 +1,7 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-224.
-Updated: 2026-09-27 22:03 Asia/Taipei.
+Checkpoint sequence: B-225.
+Updated: 2026-09-27 22:11 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Detailed B-01..B-123 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
@@ -1725,3 +1725,14 @@ Updated: 2026-09-27 22:03 Asia/Taipei.
 - Engineering boundary: reader/schema exposure of plan-time pool identity/capital is Class B proposal-first. No Formal capital, allocation, quota, ranking, monitoring or signal behavior changed. No FORMAL_OPTIMIZATION_CANDIDATE.
 - Status: `POST_V8_9_DENOMINATOR_INCOMPATIBILITY_CONFIRMED / PRE_V8_9_RECEIPTS_RETAINED / POST_V8_9_POOL_AWARE_READER_REQUIRED / OUTCOMES_CLOSED / FORMAL_UNCHANGED`.
 - Exact next: audit whether the existing `v9_strategy_pool_plans` archive already provides an exact-date, immutable-enough, read-accessible Class-A source for post-V8.9 per-pool plan-risk denominators. Check generation/version identity, completeness, mutation/rerun semantics, reader pagination and whether its plan_json preserves the same Formal plan object. If source-ready but reader-blocked, freeze the smallest Class-B read proposal and move on; do not add persistence or recompute old pools from current code.
+
+## B-225 — v9 strategy-pool archive is pool-source-ready but not immutable-generation-certified (2026-09-27 Asia/Taipei)
+- Continued B-224 exact-next without reading outcomes. The existing `v9_strategy_pool_plans` table positively carries `scan_date + pool_id + symbol`, per-row `capital=STRATEGY_POOL_CAPITAL`, and full `plan_json`; therefore post-V8.9 pool identity and per-pool capital are source-available without new market-data persistence.
+- Promotion-grade lineage is not established. `archiveStrategyPools()` DELETEs each same-date+pool population and reinserts it using a fresh timestamp; the table has no immutable scan-generation id, worker definition hash or parent decision-state id.
+- The mutability concern is real rather than theoretical: V8.9.8 staged historical recovery can call `archiveStrategyPools(env,date,...)` for FORMAL_GENERAL, FORMAL_THOUSAND and Hybrid on a historical date, replacing/recreating rows under the same primary keys.
+- Existing `readThreePoolSelectionPerformance()` is not an outcomes-closed provenance reader. It reads the pool archive and then joins history to calculate D1/D3/D5/latest return. Its response also lacks exact-date expected/returned counts, truncation/hasMore and generation-completeness metadata.
+- Safe conclusion: pool-aware plan-time data are SOURCE_READY, but immutable generation certification and clean exact-date coverage remain NOT_READY. Positively observed rows may support descriptive plan-time geometry with explicit caveats; absence or lineage ambiguity remains UNKNOWN.
+- The smallest Class-B repair is read-only, not new persistence: expose exact-date/keyset pool rows with pool capital, full plan-time plan evidence and count/truncation metadata, without history/outcome joins. This still does not erase same-date generation mutability; a strict lineage witness would need separate positive provenance.
+- Durable artifact: `research/strategy_pool_archive_generation_audit_v0_1.json`, commit `047f4ca23158e87639bac9228a1c2cad417eb970`.
+- Status: `POOL_ARCHIVE_SOURCE_READY / SAME_DATE_MUTABLE / GENERATION_UNCERTIFIED / OUTCOME_CLEAN_READER_ABSENT / FORMAL_UNCHANGED`. No FORMAL_OPTIMIZATION_CANDIDATE.
+- Exact next: build the outcome-independent per-pool capital-scarcity geometry implied by the owner-approved ring fence and B-217 quota taxonomy. Separate per-pool selected-count reserve, cross-pool stranding, cap/rounding shortfall, downstream pending-entry/no-BUY and actual-fill unknown. This is algebraic Class-A research only; do not infer that higher utilization is better and do not change capital rules.
