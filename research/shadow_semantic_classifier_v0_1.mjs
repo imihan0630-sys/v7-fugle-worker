@@ -93,12 +93,27 @@ function stableHash32(text){
 
 const SAFE_STRATUM_KEYS=new Set(["pool","nearestChannel","checkPattern"]);
 
+function stratumValueQuality(row,key){
+  if(!SAFE_STRATUM_KEYS.has(key)) return {ok:false,value:null,reason:"UNREGISTERED_KEY"};
+  const raw=row?.[key];
+  if(raw===null||raw===undefined||raw==="") return {ok:false,value:null,reason:"MISSING"};
+  const value=String(raw);
+  if(key==="pool" && !["GENERAL","THOUSAND"].includes(value)) return {ok:false,value,reason:"INVALID_POOL"};
+  if(key==="nearestChannel" && !["A","B","TIE"].includes(value)) return {ok:false,value,reason:"INVALID_NEAREST_CHANNEL"};
+  if(key==="checkPattern" && !/^A:[01]{6}\\|B:[01]{6}$/.test(value)) return {ok:false,value,reason:"INVALID_CHECK_PATTERN"};
+  return {ok:true,value,reason:null};
+}
+
 function safeStratum(row,keys){
-  return keys.map(key=>{
+  const parts=[];
+  const issues=[];
+  for(const key of keys){
     if(!SAFE_STRATUM_KEYS.has(key)) throw new Error("unsafe-or-unregistered-stratum-key:"+key);
-    const value=String(row?.[key]??"UNKNOWN");
-    return key+"="+value;
-  }).join("|");
+    const q=stratumValueQuality(row,key);
+    if(!q.ok) issues.push({key,reason:q.reason,value:q.value});
+    else parts.push(key+"="+q.value);
+  }
+  return {ok:issues.length===0,stratum:issues.length?null:parts.join("|"),issues};
 }
 
 /**
@@ -130,11 +145,20 @@ export function sampleMembershipV2(population,membership,{
     .filter(row=>Array.isArray(row.memberships)&&row.memberships.includes(membership));
 
   const buckets=new Map();
+  const invalidStratumRows=[];
   for(const row of eligible){
-    const stratum=safeStratum(row,keys);
-    const arr=buckets.get(stratum)||[];
+    const q=safeStratum(row,keys);
+    if(!q.ok){
+      invalidStratumRows.push({
+        symbol:String(row?.symbol||""),
+        pool:String(row?.pool||"UNKNOWN"),
+        issues:q.issues
+      });
+      continue;
+    }
+    const arr=buckets.get(q.stratum)||[];
     arr.push(row);
-    buckets.set(stratum,arr);
+    buckets.set(q.stratum,arr);
   }
 
   const scanDate=String(population?.scanDate||"");
@@ -166,10 +190,14 @@ export function sampleMembershipV2(population,membership,{
     stratumKeys:keys,
     samplingRuleVersion,
     semanticPopulationCount:eligible.length,
+    validStratumPopulationCount:eligible.length-invalidStratumRows.length,
+    invalidStratumCount:invalidStratumRows.length,
+    invalidStratumRows,
+    samplingFrameComplete:invalidStratumRows.length===0,
     sampledCount:sampledRows.length,
     rows:sampledRows,
     strata,
-    policy:"Semantic membership and denominators are frozen before sampling. Hash order is outcome-free and input-order invariant. CHANNEL_NEAR_MISS must stratify by pool x nearestChannel x checkPattern.",
+    policy:"Semantic membership denominator includes every member. Rows with invalid required stratum values remain in the denominator but are excluded from sampling and make samplingFrameComplete=false. Hash order is outcome-free and input-order invariant. CHANNEL_NEAR_MISS must use valid pool x nearestChannel x checkPattern.",
     researchOnly:true,decisionImpact:false,formalCoreImpact:false
   };
 }
