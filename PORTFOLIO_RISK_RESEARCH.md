@@ -2191,3 +2191,34 @@ Status:
 `EVIDENCE_LADDER_FROZEN / CURRENT_PRODUCTION_NOT_EXECUTION_ELIGIBLE`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-054 — transaction-tax class must be positively evidenced (2026-09-27)
+
+Portfolio Risk reuses Trading Frictions tax semantics and adds a fail-closed provenance classifier.
+
+Evidence hierarchy:
+- ACTUAL: broker statement/import or verified external record directly reports the tax amount;
+- MODELED verified day-trade eligible: actual same-account, same-symbol, same-day buy+sell fills **plus** independently verified reduced-tax eligibility;
+- MODELED ordinary stock sale: Taiwan stock sell fill plus positively false reduced-tax eligibility;
+- UNKNOWN: eligibility/class is not positively evidenced.
+
+The classifier deliberately does **not** contain a hard-coded tax rate. A modeled class still needs a date-valid official/broker rate source before tax NTD can be calculated.
+
+Forbidden shortcuts:
+- same-day BUY+SELL signals -> day-trade tax;
+- same-day fills alone -> reduced tax;
+- current legal rate applied backward without date validation;
+- modeled tax labeled ACTUAL;
+- UNKNOWN silently defaulted to ordinary or reduced rate.
+
+This matters for sizing research because allocator changes can alter executed quantities while tax class is a separate transaction fact. Tax uncertainty must not be hidden inside a generic transaction-cost percentage.
+
+Artifacts:
+`research/transaction_tax_evidence_classifier_v0_1.mjs`;
+`research/transaction_tax_evidence_classifier_spec_v0_1.json`.
+
+Status:
+`TAX_CLASS_PROVENANCE_FAIL_CLOSED / RATE_LOOKUP_SEPARATE`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
