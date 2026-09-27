@@ -551,3 +551,40 @@ Secondary only after primary gates:
 - 54585e2ae3b94fb54e254689e4f0fcf77adc755f — pathEfficiency10 specification.
 - 4a190ee9d06ce0a130f01b69a8509f43af9b7a01 — Taiwan legacy Price-Volume indicator audit.
 - eb88938973a3d65293e60b9d32b7730f64ec9a68 — extended redundancy registry.
+
+
+## Continuation update — TI-137 through TI-151
+
+- VHF is classified as a PATH_EFFICIENCY robustness comparator: its denominator is total absolute close-path length, shared conceptually with KAMA Efficiency Ratio/pathEfficiency10; the numerator uses window max-close minus min-close instead of endpoint displacement.
+- Choppy/Noise-style indicators are alternative directional-progress-versus-total-movement coordinates and remain path-efficiency/range robustness comparators, not independent factors.
+- Random Walk Indicator is directional high/low excursion normalized by volatility and is assigned as an ADX/DMI/ATR trend-quality comparator.
+- Coppock is a smoothed multi-horizon ROC bundle and is redundancy-very-high versus returns/KST/filter families.
+- IMI is an RSI-like oscillator on open-to-close candle-body movement. It may encode intraday body information distinct from close-to-close RSI, but direct open-to-close/overnight-intraday primitives and candlestick geometry outrank the named indicator. Status low-priority comparator.
+- BW Market Facilitation Index is range per unit volume and is PRICE_VOLUME liquidity/effort-vs-result geometry.
+- Klinger/KO is signed-volume plus trend/filter logic and is PRICE_VOLUME-owned nested filtering.
+- Volume-weighted MACD is a trend x volume interaction comparator, not a second MACD vote.
+- Volume Oscillator is redundant with Price-Volume volume acceleration/RVOL/persistence families.
+- Published XQ AR = sum(High-Open)/sum(Open-Low), an open-anchored range-asymmetry summary. BR = sum(High-PrevClose)/sum(abs(PrevClose-Low)), a previous-close-anchored gap/range asymmetry summary. Both are OHLC geometry comparators, not directly measured psychology.
+- XQ ACC is momentum applied again to MTM and is assigned to the already-frozen return-acceleration family.
+- XQ public Q-indicator contract currently exposes price-change/smoothing/noise-smoothing parameters without enough exact reproducible formula semantics for promotion-grade parity. Status FORMULA_CONTRACT_INCOMPLETE; outcome/scoring blocked.
+- XQ TechScore is documented as a 14-indicator composite. It is retained only as an EXTERNAL COMPOSITE BENCHMARK because many included components are correlated transforms already mapped into the same families. Raw majority-vote architecture remains rejected as the default.
+- Redundancy registry extended through VHF/Choppy/Noise/RWI/Coppock/IMI/BW-MFI/Klinger/VW-MACD/AR/BR/ACC/Q/TechScore.
+- New durable artifact:
+  research/TECHNICAL_INDICATOR_TRENDINESS_SENTIMENT_COMPOSITE_AUDIT_V0_1.md
+- No new high-priority primitive emerged. Existing empirical priority remains unchanged.
+- No outcomes inspected, no threshold optimization, no FORMAL_OPTIMIZATION_CANDIDATE.
+- Formal Core remains LOCKED.
+
+### Updated exact next continuation point
+
+1. Stop catalog expansion unless a candidate exposes a genuinely new information primitive.
+2. Next high-value theory audit: OHLC range-based volatility estimators (Yang-Zhang / Rogers-Satchell / Parkinson / Garman-Klass) versus current close-to-close volatility20 + ATR, because overnight/intraday decomposition may be a genuinely distinct risk dimension.
+3. Treat those estimators as VOLATILITY/RISK research first, not directional alpha.
+4. Require OPEN and TECHNICAL_CONTINUITY plus session/corporate-action semantics before inference.
+5. Keep primary directional indicator queue unchanged.
+6. Formal Core remains unchanged.
+
+## Latest durable research commits
+
+- bf3204a146857936f3325a0f863a7a87320cc780 — trendiness/sentiment/composite indicator audit.
+- adc809cd8888de531645e5d9e0e3172b97076673 — redundancy registry extension for TI-137..TI-151.
