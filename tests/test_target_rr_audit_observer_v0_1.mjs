@@ -159,12 +159,20 @@ function formalNearestTargetMirror(f,entry){
 }
 
 // Strict 1% equality is excluded because Formal uses > entry*1.01, not >=.
+// Build the exact boundary with the same JS operations to avoid decimal-literal FP artifacts.
 {
-  const f=baseB({priorHigh20:100,priorHigh60:101.303,targetPrice:null});
+  const entry=100*1.003;
+  const exactBoundary=entry*1.01;
+  const f=baseB({priorHigh20:100,priorHigh60:exactBoundary,targetPrice:null});
   const a=buildTargetRrAudit(f,{channel:"B",formalResult:{ok:false,reason:R.TARGET_NULL_REASON}});
-  assert.ok(Math.abs(a.resistance.thresholdPrice-101.303)<1e-9);
+  assert.equal(a.resistance.thresholdPrice,exactBoundary);
   const h60=a.resistance.candidates.find(x=>x.source==="PRIOR_HIGH60");
   assert.equal(h60.eligible,false);
+
+  const fAbove=baseB({priorHigh20:100,priorHigh60:exactBoundary+Number.EPSILON*128,targetPrice:null});
+  const aAbove=buildTargetRrAudit(fAbove,{channel:"B",formalResult:{ok:true}});
+  const h60Above=aAbove.resistance.candidates.find(x=>x.source==="PRIOR_HIGH60");
+  assert.equal(h60Above.eligible,true);
 }
 
 // Missing channel geometry remains UNKNOWN and cannot be re-labeled TARGET_NULL.
