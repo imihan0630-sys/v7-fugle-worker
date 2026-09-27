@@ -953,3 +953,76 @@ Status:
 `GRID_AND_SHARE_QUANTIZATION_COUNTEREVIDENCE_SURVIVES / STRUCTURAL_RISK_CONCENTRATION_STRENGTHENED / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-059 — exhaustive grid search: exact optimum shifts after share quantization (2026-09-28)
+
+The NT$1,000-grid structural search was upgraded from a target-following construction to **complete enumeration**.
+
+For 2026-09-18, under:
+- the same three selected names;
+- the same NT$168,000 planned deployment;
+- the same 35% per-name cap;
+- at least one NT$1,000 unit per selected name;
+
+there are exactly **946 feasible grid states**, and all were evaluated.
+
+### PRE_SHARE objective
+
+Before 60/40 tranche and integer-share flooring, the unique minimum-HHI and unique minimum-max/min allocation are both:
+
+- 2006 = NT$70,000;
+- 3105 = NT$41,000;
+- 6133 = NT$57,000.
+
+Projected risk:
+- total = NT$5,965.732;
+- HHI = 0.3343848759;
+- max/min = 1.13714329.
+
+This independently verifies the PR-058 70/41/57 grid allocation as the **global pre-share optimum**, not merely a heuristic near the continuous target.
+
+### POST_SHARE objective
+
+After applying the exact same:
+- 60/40 tranche split;
+- integer-share floor at buyHigh;
+
+the unique minimum-HHI and minimum-max/min allocation both shift to:
+
+- 2006 = NT$70,000;
+- 3105 = NT$42,000;
+- 6133 = NT$56,000.
+
+Its plan-preview geometry:
+- suggested notional = NT$167,227.36;
+- projected stop-risk = NT$5,940.8663;
+- HHI = 0.3342784042;
+- max/min = 1.1265985.
+
+Current PriorityScore sizing remains:
+- 50k / 64k / 54k;
+- preview projected stop-risk = NT$6,459.97;
+- HHI = 0.37670778.
+
+Thus the exact minimizing allocation is **objective/quantization-sensitive by one NT$1,000 unit**, but the conclusion that current sizing is materially more concentrated survives either semantic definition.
+
+### Important cash-drag nuance
+
+The post-share HHI optimum has NT$243.77 less preview suggested notional than current, so that optimum alone cannot prove its lower risk is independent of cash drag.
+
+The separate PRE_SHARE-global optimum 70/41/57 still supplies that counterexample:
+after the same share flooring it carries NT$167,697.54 preview notional, **NT$226.41 more than current**, while retaining much lower projected-risk concentration.
+
+Therefore:
+- exact comparator allocation is not invariant across structural objectives;
+- the structural concentration finding is robust;
+- the earlier cash-drag falsification remains supported by a distinct comparator.
+
+Durable receipt:
+`research/exhaustive_grid_risk_optima_production_receipt_20260928.json`.
+
+Status:
+`DISCRETE_OBJECTIVE_SENSITIVITY_CONFIRMED / UNIQUE_OPTIMA_BY_SEMANTIC / STRUCTURAL_CONCLUSION_ROBUST / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
