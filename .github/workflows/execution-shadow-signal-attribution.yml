@@ -1,0 +1,21 @@
+name: Execution Shadow Signal Attribution CI
+
+on:
+  pull_request:
+    paths:
+      - "research/execution_shadow_signal_attribution_v0_1.mjs"
+      - "research/execution_shadow_signal_attribution_audit_v0_1.json"
+      - "tests/test_execution_shadow_signal_attribution_v0_1.mjs"
+      - "EXECUTION_SHADOW_SIGNAL_ATTRIBUTION_CHECKPOINT.md"
+      - ".github/workflows/execution-shadow-signal-attribution.yml"
+
+jobs:
+  attribution-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Verify symbol-level signal attribution contract
+        run: node tests/test_execution_shadow_signal_attribution_v0_1.mjs

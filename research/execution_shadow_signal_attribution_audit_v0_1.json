@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "EXECUTION_SHADOW_SIGNAL_ATTRIBUTION_AUDIT_V0_1",
+  "source": "scripts/apply_v8_8_0.py",
+  "structuralFinding": {
+    "globalTrigger": "executionResearchEventTypes adds FORMAL_SIGNAL_OBSERVED when notifications.length > 0 at the whole-monitor-run level.",
+    "writeLoop": "recordProspectiveExecutionShadow then loops the FORMAL_SIGNAL_OBSERVED event across every result.ok symbol.",
+    "perSymbolEventKey": "For each result it filters notifications by symbol; when none match, eventKey falls back to literal SIGNAL.",
+    "consequence": "event_type=FORMAL_SIGNAL_OBSERVED alone is not positive evidence that that row's symbol had a Formal signal."
+  },
+  "safeAttribution": {
+    "positive": "Require a non-generic event_key containing parseable signalId(s) whose embedded symbol equals the row symbol.",
+    "generic": "event_key=SIGNAL is cross-symbol context only.",
+    "mismatch": "signalId symbol mismatch is fail-closed.",
+    "preferredPositivePriceSource": "V8.5 v8_trade_journal_signals for exact positive formal signal occurrence/market_price."
+  },
+  "impact": "Research-observability semantics only; Formal signals/push/selection are unaffected.",
+  "status": "CROSS_SYMBOL_CONTEXT_CONTAMINATION_CONFIRMED / FAIL_CLOSED_ATTRIBUTION_REQUIRED",
+  "formalCoreImpact": false
+}
