@@ -186,6 +186,25 @@ for (let i = 27; i < adxUp.values.length; i += 1) {
   approx(adxUpScaled.values[i].adx, adxUp.values[i].adx, 1e-10, "ADX scale invariance " + i);
 }
 
+
+const asymmetricWaveBars = Array.from({ length: 50 }, (_, i) => {
+  const close = 100 + 0.35 * i + 3 * Math.sin(i * 0.71) + 1.2 * Math.sin(i * 0.17);
+  return strictBar(close, {
+    high: close + 0.8 + (i % 4) * 0.17,
+    low: close - 0.7 - (i % 5) * 0.11,
+  });
+});
+const asymmetricADX = computeADX(asymmetricWaveBars).values;
+approx(asymmetricADX[27].trSmoothed, 34.646000230548495, 1e-10, "ADX asymmetric TR14");
+approx(asymmetricADX[27].plusDMSmoothed, 12.692588044888245, 1e-10, "ADX asymmetric +DM14");
+approx(asymmetricADX[27].minusDMSmoothed, 7.095548052704646, 1e-10, "ADX asymmetric -DM14");
+approx(asymmetricADX[27].plusDI, 36.63507464188256, 1e-10, "ADX asymmetric +DI");
+approx(asymmetricADX[27].minusDI, 20.480136250903424, 1e-10, "ADX asymmetric -DI");
+approx(asymmetricADX[27].dx, 28.284826648551533, 1e-10, "ADX asymmetric DX");
+approx(asymmetricADX[27].adx, 24.06246596876735, 1e-10, "ADX asymmetric first ADX");
+approx(asymmetricADX[28].adx, 24.74112347980112, 1e-10, "ADX asymmetric second ADX");
+approx(asymmetricADX[49].adx, 30.109005583147688, 1e-10, "ADX asymmetric final ADX");
+
 // Bollinger20x2 deterministic oracle checks.
 const bbFlat = computeBollingerBands(Array.from({ length: 20 }, () => strictBar(100))).values.at(-1);
 approx(bbFlat.middle, 100, 1e-12, "BB flat SMA");
