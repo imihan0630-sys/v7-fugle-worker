@@ -1,0 +1,27 @@
+name: Chip Concentration Readiness Research
+
+on:
+  push:
+    paths:
+      - "research/chip_concentration_readiness_observer_v0_1.mjs"
+      - "research/chip_concentration_readiness_falsification_v0_1.json"
+      - "tests/test_chip_concentration_readiness_observer_v0_1.mjs"
+      - "CHIP_CONCENTRATION_READINESS_RESEARCH.md"
+      - ".github/workflows/chip-concentration-readiness-research.yml"
+  pull_request:
+    paths:
+      - "research/chip_concentration_readiness_observer_v0_1.mjs"
+      - "research/chip_concentration_readiness_falsification_v0_1.json"
+      - "tests/test_chip_concentration_readiness_observer_v0_1.mjs"
+      - "CHIP_CONCENTRATION_READINESS_RESEARCH.md"
+      - ".github/workflows/chip-concentration-readiness-research.yml"
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node tests/test_chip_concentration_readiness_observer_v0_1.mjs
