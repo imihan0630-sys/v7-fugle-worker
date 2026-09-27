@@ -14,6 +14,7 @@
     "the first-only test is relevant because a live path may remain in FIRST and never reach ADD"
   ],
   "falsification": "If current FIRST concentration no longer exceeds equal-capital/global minimum, downgrade the full-plan structural finding as lifecycle-stage sensitive.",
-  "status": "FIRST_TRANCHE_PROTOCOL_READY / PRODUCTION_AUDIT_PENDING",
-  "formalCoreImpact": false
+  "status": "FIRST_TRANCHE_CONCENTRATION_SURVIVES / LIFECYCLE_STAGE_ARTIFACT_FALSIFIED / ECONOMIC_VALUE_UNKNOWN",
+  "formalCoreImpact": false,
+  "productionReceipt": "research/first_tranche_risk_production_receipt_20260928.json"
 }
