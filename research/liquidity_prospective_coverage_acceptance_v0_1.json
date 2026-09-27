@@ -1,0 +1,59 @@
+{
+  "schemaVersion": "LIQUIDITY_PROSPECTIVE_COVERAGE_ACCEPTANCE_V0_1",
+  "updatedAtTaipei": "2026-09-27",
+  "researchOnly": true,
+  "outcomeDataUsed": false,
+  "decisionImpact": false,
+  "formalCoreChanged": false,
+  "sourcePrototype": {
+    "pr": 121,
+    "head": "5c0842d197999eefa82f2a0b0069679a5f6ea070",
+    "denominatorScope": "CURRENT_FEATURE_ROWS",
+    "deployed": false
+  },
+  "cleanDateAcceptance": {
+    "required": [
+      "A positively completed same-generation Formal/feature scan; infrastructure failure or staged/recovered scan without parent-generation proof is UNKNOWN.",
+      "Parent feature-universe row count is explicit and reconciles to the sum of exceptionInputCoverage COMPLETE+PARTIAL+ABSENT.",
+      "History/source admission for the parent CURRENT_FEATURE_ROWS is positively complete under the active history-source revalidation contract; stale/unknown parent history blocks the date.",
+      "All three exact reject-reason x price-pool population cells are explicit, including zero cells; omitted keys must not be silently interpreted as zero unless the schema explicitly defines that convention.",
+      "exceptionPassCounts GENERAL/THOUSAND are explicit.",
+      "belowPrimaryMinTotal reconciles with COMPLETE+PARTIAL+ABSENT below-min coverage cells.",
+      "Every bounded reject cohort reports population count, sample count, deterministic sampling rule/version and sampling fraction.",
+      "Spread/depth field presence is reported as coverage, not interpreted as executable quality; missing spread/depth remains missingness evidence.",
+      "No D1/D3/D5/D10/D20/MFE/MAE is joined until the selection-time parent/denominator receipt is accepted CLEAN."
+    ],
+    "blockedStates": [
+      "PARENT_SCAN_INCOMPLETE_OR_GENERATION_UNKNOWN",
+      "HISTORY_SOURCE_QUALITY_UNKNOWN",
+      "FEATURE_ROW_DENOMINATOR_UNRECONCILED",
+      "REJECT_REASON_ZERO_CELL_AMBIGUOUS",
+      "SAMPLE_FRACTION_UNKNOWN",
+      "SPREAD_DEPTH_PRESENCE_ACCOUNTING_MISSING",
+      "LEGACY_MUTABLE_PARENT_ONLY"
+    ],
+    "cleanLabel": "LIQ_ADMISSION_PARENT_CLEAN_FOR_FUTURE_OUTCOME_JOIN",
+    "unknownLabel": "LIQ_ADMISSION_PARENT_UNKNOWN_NO_OUTCOME_JOIN"
+  },
+  "exceptionPassPositiveControlAudit": {
+    "frozenSpec": "research/liquidity_gate_rejected_control_spec_v0_1.json lists LIQ_LOW_VOLUME_EXCEPTION_PASS as a descriptive positive control.",
+    "currentPR121Implementation": "Counts liquidityExceptionPass by GENERAL/THOUSAND in exceptionPassCounts, but exactReasons and samples contain only the three rejected cohorts.",
+    "dedicatedPerSymbolPassSamplePresent": false,
+    "implication": "The prototype can measure aggregate exception-pass incidence but cannot currently form a dedicated per-symbol matched positive-control sample for later path/cost comparisons.",
+    "whyNotPatchIntoLegacyRowsBlindly": "Legacy Shadow uses a single cohort plus `used`; adding exception-pass rows there can either steal another semantic membership or become conditioned on whether the symbol was sampled elsewhere. That would recreate the quota-conditioned membership problem already falsified for BROAD_CONTROL.",
+    "safeRepairDirection": "If a positive-control sample is needed, sample it independently from the frozen below-min+exception-pass frame using an overlapping membership/sidecar structure, not the legacy mutually-exclusive `rows` cohort slot.",
+    "engineeringBoundary": "Pure independent sample computation is Class A; durable overlapping membership/shared persistence is Class B proposal-first."
+  },
+  "additionalPrototypeGap": {
+    "rejectPopulationZeroCells": "populationCounts is lazily initialized only when a reason is observed. A clean promotion-grade receipt should carry explicit zero values for every preregistered reason x pool or explicitly version the omission-as-zero convention.",
+    "currentInterpretation": "Until repaired/contracted, missing reason key is schema ambiguity rather than a promotion-grade observed zero."
+  },
+  "outcomeFirewall": [
+    "Do not compare rejected vs exception-pass outcomes on a date that fails parent acceptance.",
+    "Do not treat exceptionInputCoverage COMPLETE as proof spread/depth source is PIT-valid or economically reliable.",
+    "Do not choose lot/amount/spread/depth thresholds after seeing outcomes.",
+    "Use scanDate as the independent unit; bounded rows do not create independent denominator dates."
+  ],
+  "formalOptimizationCandidate": false,
+  "status": "PROSPECTIVE_LIQUIDITY_PARENT_ACCEPTANCE_FROZEN / EXCEPTION_PASS_CONTROL_SAMPLE_GAP_CONFIRMED / ZERO_CELL_SCHEMA_GAP_CONFIRMED / FORMAL_UNCHANGED"
+}
