@@ -283,6 +283,21 @@ jobs:
             const helperEnd = activeContent.indexOf("async function analyzeStockSmart", helperStart);
             assert.ok(helperStart >= 0 && helperEnd > helperStart, "PV helper layer missing");
             const ordinaryLiveCandleCallsAddedByPv = (activeContent.slice(helperStart, helperEnd).match(/fetchCandles\(/g) || []).length;
+            const formalPersistenceHook = activeContent.lastIndexOf("await writeLiveSnapshot(env, snapshot)");
+            const formalSignalHook = activeContent.lastIndexOf("processSignalState(result");
+            const intradayPvHook = activeContent.lastIndexOf("const pvShadow = await recordPvIntradayShadowSafe");
+            const dailyBootstrapHook = activeContent.lastIndexOf("pvShadowBootstrap=await bootstrapPvShadowBaselinesSafe");
+            const dailySnapshotHook = activeContent.lastIndexOf("pvShadowDaily=await recordPvDailyShadowSafe");
+            const sourceAttestation = {
+              activeContentSha256: createHash("sha256").update(activeContent).digest("hex"),
+              pvEnabledHelperPresent: helperStart >= 0,
+              intradayRecorderPresent: activeContent.includes("async function recordPvIntradayShadowSafe"),
+              dailyRecorderPresent: activeContent.includes("async function recordPvDailyShadowSafe"),
+              intradayHookAfterFormalPersistence: intradayPvHook > formalPersistenceHook && intradayPvHook > formalSignalHook,
+              dailyBootstrapHookPresent: dailyBootstrapHook >= 0,
+              dailySnapshotHookPresent: dailySnapshotHook >= 0,
+              formalMutationMethodsUsedByDiagnostic: false
+            };
             const pvScan = scan?.pvShadow || null;
             const dailyDetails = pvScan?.daily?.details || [];
             const dailyMutationConflicts = dailyDetails.filter(item => item?.save?.mutationConflict).length;
@@ -317,7 +332,8 @@ jobs:
                 ordinaryLiveCandleCallsAddedByPv,
                 latestLiveCalls: live?.fugleCallsThisRun || null,
                 latestLivePv: live?.pvShadow || null,
-                formalConfiguredSymbols: Array.isArray(config?.stocks) ? config.stocks.length : null
+                formalConfiguredSymbols: Array.isArray(config?.stocks) ? config.stocks.length : null,
+                sourceAttestation
               }
             };
             assert.equal(d1Report.readOnly, true);
@@ -333,6 +349,11 @@ jobs:
             assert.equal(dailyMutationConflicts, 0, "PV daily mutation conflict reported by telemetry");
             assert.equal(intradayMutationConflicts, 0, "PV intraday mutation conflict reported by telemetry");
             assert.equal(ordinaryLiveCandleCallsAddedByPv, 0, "PV added ordinary live candle calls");
+            assert.equal(sourceAttestation.intradayRecorderPresent, true, "PV intraday recorder missing from deployed source");
+            assert.equal(sourceAttestation.dailyRecorderPresent, true, "PV daily recorder missing from deployed source");
+            assert.equal(sourceAttestation.intradayHookAfterFormalPersistence, true, "PV intraday hook is missing or precedes Formal persistence");
+            assert.equal(sourceAttestation.dailyBootstrapHookPresent, true, "PV baseline bootstrap hook missing from deployed source");
+            assert.equal(sourceAttestation.dailySnapshotHookPresent, true, "PV daily snapshot hook missing from deployed source");
           } finally {
             try {
               await cf(`/workers/scripts/${diagScript}/subdomain`, {
