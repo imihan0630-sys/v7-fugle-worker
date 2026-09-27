@@ -21620,3 +21620,226 @@ Even diverse confluence may simply select already-obvious crowded trades and red
 
 Test prospectively.
 
+
+
+## DL-004K — Pattern Shadow Minimum Viable Research Schema (2026-09-27)
+
+### Goal
+Define the smallest isolated research schema that can accumulate prospective Pattern evidence without touching Formal behavior.
+
+### Parent identity
+Promotion-grade rows require immutable parent decision provenance:
+- parentDecisionReceiptId
+- captureGeneration
+- scanDate
+- symbol
+- parentCohort
+- parentCompletenessStatus
+- formalVersion
+- sourceSemanticFingerprint
+
+Legacy mutable Shadow archive may be used only for QA/descriptive work, not promotion-grade evidence.
+
+### Pattern snapshot identity
+Primary identity proposal:
+(parentDecisionReceiptId, detectorVersion, semanticContractVersion)
+
+Additional:
+- asOfDate
+- capturedAt
+- dataThroughDate
+- historyStartDate
+- barCount
+- sourceCoverage
+
+### Primitive payload
+Store compact fields, not huge duplicated chart JSON:
+- swingSummary
+- zoneSummary
+- compressionSummary
+- supportProgressSummary
+- resistanceSummary
+- recoveryShapeSummary
+- flowSummary
+- timeSummary
+- acceptanceSummary
+- regime/event/sector context
+- data-quality flags
+
+### Named-label payload
+- matchedFamilies[]
+- maturityByFamily
+- fitConfidence
+- stabilityConfidence
+- adverseMorphologyFlags
+- motifStates
+
+### Outcome payload
+Append-only or separate child table:
+- D1/D3/D5/D10/D20
+- MFE/MAE
+- R01
+- stopFirst
+- breakoutLifecycle
+- retestLifecycle
+- reclaimLifecycle
+
+Original selection-time snapshot must never be overwritten by future outcomes.
+
+### Isolation
+No Pattern field is read by:
+- formal candidate eligibility,
+- formal score/ranking,
+- capital,
+- buy/add/reduce/sell/stop,
+- monitoring eligibility,
+- push.
+
+This is the central Class-A isolation invariant.
+
+## DL-004L — Pattern Research Data-Readiness Matrix (2026-09-27)
+
+### Purpose
+Avoid pretending a detector is ready when required semantics/data are absent.
+
+### Components
+SWING_GEOMETRY:
+- requires adjusted OHLC, completed bars, corporate-action semantics.
+Status: BLOCKED until research-grade adjusted/open-preserving history is verified.
+
+CANDLESTICK:
+- requires historical OPEN + corporate-action handling.
+Status: BLOCKED.
+
+LONG_BASE:
+- requires > current live ~65-bar horizon.
+Status: BLOCKED in live cache; feasible in separate research history.
+
+VOLUME_CONTEXT:
+- requires verified volume units/trading-unit provenance and odd-lot semantics.
+Status: PARTIALLY_BLOCKED.
+
+SECTOR_CONTEXT:
+- requires point-in-time industry mapping and complete peer population.
+Status: READY only where provenance is complete.
+
+EVENT_CONTEXT:
+- requires first-known event timestamps.
+Status: READY only for sources with point-in-time availability metadata.
+
+ZONE/ROUND_PRICE:
+- price-only round/tick zone feasible from verified adjusted/raw prices.
+- true volume-at-price is BLOCKED without intraday distribution data.
+
+PATTERN_ALPHA:
+- requires prospective immutable parent evidence + mature outcomes.
+Status: BLOCKED/ACCUMULATING.
+
+### Rule
+A detector with missing prerequisite semantics cannot emit FALSE.
+It emits UNKNOWN / DATA_BLOCKED.
+
+## DL-004M — Failure-Mode Prioritization for Practical Value (2026-09-27)
+
+### Why prioritize failure filters
+The current system’s central problem is sparse BUY/idle capital, so blindly tightening every gate could worsen utilization.
+Positive pattern additions risk more Factor-Zoo complexity.
+
+A research-only failure diagnostic may be more useful if it:
+- identifies obvious false-breakout conditions,
+- does not reject healthy no-retest winners indiscriminately,
+- explains R01 failures incrementally.
+
+### Highest-value failure questions
+F1 local breakout directly into major resistance zone.
+F2 breakout volume shock + poor close + no follow-through.
+F3 pattern tightness caused by dead liquidity.
+F4 RS/sector deterioration during apparent maturity.
+F5 repeated high-volume pivot rejection.
+F6 price-limit/corporate-action distortion masquerading as clean geometry.
+F7 event-created breakout after extreme pre-event runup.
+F8 15m retest rule opportunity cost: false-breakout avoidance vs missed immediate continuation.
+
+### Guard
+A failure diagnostic is not an exclusion rule until:
+- effect is prospective,
+- incremental,
+- stable across dates/regimes,
+- coverage/zero-pick impact acceptable.
+
+## DL-004N — Candidate Optimization Handoff Criteria for Pattern Research (2026-09-27)
+
+A future FORMAL_OPTIMIZATION_CANDIDATE may be proposed only when all are true:
+1. definition frozen before outcome inspection;
+2. data semantics READY;
+3. immutable prospective parent snapshots available;
+4. mature outcome count passes existing gate;
+5. independent scan-date count passes;
+6. at least two regimes / years as required by governance;
+7. purged holdout direction agrees with training;
+8. incremental value survives current Formal fields + DL-001 + overlapping DL-002 primitives;
+9. transaction cost / slippage relevance checked;
+10. coverage and zero-pick impact measured;
+11. no single date/sector dominates;
+12. simpler baseline cannot explain result.
+
+### Proposal must state
+- exact feature/change,
+- mechanism,
+- evidence,
+- counter-evidence,
+- expected benefit,
+- missed-opportunity cost,
+- coverage impact,
+- engineering Class,
+- rollback/test plan.
+
+Passing this gate only permits a proposal to the owner, not automatic Formal modification.
+
+## DL-004O — Current Pattern Research Conclusion After Deep Dive (2026-09-27)
+
+### What remains most promising
+1. topology-aware swing sequence instead of additional moving-average rules;
+2. local-vs-major resistance conflict;
+3. true W neckline vs crude split-window rightFootHigher;
+4. VCP sequential contraction vs generic low volatility;
+5. late-stage / failed-breakout morphology;
+6. pattern maturity × RS/sector change;
+7. execution trade-off around retest vs no-retest continuation;
+8. phase-local motifs near trigger zones.
+
+### What is lower priority / likely redundant
+- extra moving-average crosses,
+- generic volume-confirmation score,
+- raw “right foot higher” duplicate,
+- generic platform flag,
+- raw pattern-name count,
+- unconditioned support/resistance touch count,
+- round-number proximity by itself,
+- entropy by itself.
+
+### What is blocked by data semantics
+- historical candlestick/Sakata validation,
+- true volume-at-price/cost profile,
+- multi-month adjusted topology using current live cache,
+- promotion-grade historical Pattern evidence from legacy mutable parent archive.
+
+### Current stance
+The deep-dive has NOT produced enough evidence to change Formal Core.
+It has materially improved the research specification and falsification plan.
+
+PATTERN_RESEARCH_STATUS = SPECIFICATION_MATURE / DATA_AND_PROSPECTIVE_EVIDENCE_NOT_YET_MATURE.
+FORMAL_CORE_STATUS = UNCHANGED.
+
+## Exact continuation point — 2026-09-27
+
+1. Do not restart named-pattern definitions. They are already decomposed and versioned.
+2. Next research priority is data-semantic readiness + prospective Pattern Shadow evidence architecture, not inventing more pattern names.
+3. First empirical priorities once data is ready:
+   a. VCP sequential topology vs generic contraction;
+   b. true W neckline vs current proxy;
+   c. local-vs-major resistance conflict;
+   d. failure-context features for existing B breakouts;
+   e. retest opportunity-cost cohort.
+4. Use current existing outcomes and cohorts; do not create R09 until features/data are frozen and ready.
+5. Keep Formal Core locked.
