@@ -17161,3 +17161,162 @@ This prioritization is based on:
 - measurability,
 - incremental-information potential,
 - redundancy/subjectivity risk.
+
+
+## DL-003BM — Fresh HS Evidence Has a Modern-Regime Portability Limit
+
+### Important correction
+The 2026 Pacific-Basin Finance Journal HS paper is NEWLY PUBLISHED, but its underlying Taiwan sample runs from 1986-01-04 to 2018-03-02.
+
+Therefore:
+- it includes the 2015 shift from 7% to 10% daily limits only in the last part of the sample;
+- it does NOT include the post-2020 continuous-trading regime;
+- it does not directly establish 2026 effect magnitude.
+
+### Consequence
+Treat the paper as:
+- strong Taiwan-specific morphology evidence;
+- strong evidence for HS-bottom asymmetry, price-extremeness and independent turning-point filtering;
+- NOT direct post-2020 production evidence.
+
+### Validation requirement
+Any HS-bottom candidate must still be tested separately in:
+- post-2015 10% limit data;
+- post-2020 continuous-trading data;
+- prospective 2026 Pattern Shadow.
+
+### Why this matters
+Publication date != sample date.
+Research provenance must store both.
+
+## DL-003BN — Taiwan Price-Volume Relation Is Tail-Asymmetric and State-Dependent
+
+### Fresh Taiwan evidence
+A 2026 NCCU thesis, “Tail-Asymmetric Price-Volume Effect in Taiwan Stock Market,” uses quantile-based methods and reports:
+
+- volume and returns are broadly positively associated, consistent with price-volume co-movement in rising states;
+- support for the traditional “price down + volume down” relation is limited;
+- turnover captures tail states more clearly;
+- low-return quantiles show price declines with INCREASED trading activity;
+- high-return quantiles show price-volume co-movement;
+- the price-volume relationship is nonlinear and state-dependent.
+
+### Pattern implication
+Do not universalize:
+“pullback volume contraction = healthy.”
+
+It can still be useful locally, but its meaning depends on:
+- return state,
+- pattern phase,
+- turnover,
+- support/zone context,
+- liquidity,
+- whether selling pressure is extreme.
+
+### Research fields
+- returnQuantileContext (research-side, same-date distribution)
+- turnoverQuantileContext
+- downLegTurnoverShock
+- upLegTurnoverShock
+- downLegVolumeVsStateMedian
+- upLegVolumeVsStateMedian
+- phasePriceVolumeState
+
+### Candidate states
+UP_PRICE_UP_ACTIVITY
+DOWN_PRICE_UP_ACTIVITY
+DOWN_PRICE_DOWN_ACTIVITY
+UP_PRICE_DOWN_ACTIVITY
+
+### Pattern interpretations to TEST
+UP_PRICE_UP_ACTIVITY:
+- trend participation / breakout demand,
+- or climax if extended.
+
+DOWN_PRICE_UP_ACTIVITY:
+- active distribution / capitulation / forced selling,
+- potentially constructive only if followed by reclaim/absorption.
+
+DOWN_PRICE_DOWN_ACTIVITY:
+- possible supply dry-up,
+- but also dead liquidity.
+
+UP_PRICE_DOWN_ACTIVITY:
+- possible low-supply advance,
+- but may lack sponsorship.
+
+### Key consequence for VCP
+A valid VCP detector should not require all pullback/down legs to show monotonically falling raw volume.
+
+Better:
+- store volume/turnover trajectory,
+- distinguish late down-leg activity spikes,
+- test whether a final capitulation/reclaim can coexist with later successful contraction.
+
+### Key consequence for W/IHS
+A deep head/second bottom with elevated turnover may be:
+- destructive selling,
+- or capitulation followed by reversal.
+
+The subsequent reclaim / right-shoulder behavior is necessary to disambiguate.
+
+## DL-003BO — Turnover May Be More Informative than Raw Volume in Tail States
+
+### Evidence
+The 2026 Taiwan quantile study reports turnover captures extreme return states more clearly than raw volume.
+
+### Research implication
+For Pattern phases, retain both:
+- raw volume,
+- turnover / trading activity normalized by shares or market context.
+
+### Point-in-time caveat
+True turnover rate requires point-in-time shares outstanding.
+When unavailable:
+- use traded-value / market-scale proxies;
+- mark exact turnover-rate UNKNOWN.
+
+### Direct falsification
+Compare:
+M0 raw volume ratios
+M1 turnover/context ratios
+M2 both
+
+within:
+- VCP down legs,
+- W/IHS bottom phase,
+- breakout,
+- failed breakout,
+- retest.
+
+If turnover adds nothing, do not keep both.
+
+## DL-003BP — “Capitulation Then Reclaim” Becomes a Distinct Reversal Motif Candidate
+
+### Mechanism
+The Taiwan tail evidence makes a high-activity decline incompatible with a simplistic rule that “good bottoms always form on shrinking volume.”
+
+### Motif
+CAPITULATION_RECLAIM:
+1. price enters an extreme low/support region;
+2. downside return is large / tail-like;
+3. turnover/activity expands;
+4. price subsequently reclaims the broken/nearby support zone;
+5. follow-up range/turnover stabilizes or tightens.
+
+### Compare against
+DISTRIBUTION_CONTINUATION:
+1. downside tail + activity expansion;
+2. no prompt reclaim;
+3. lower-low continuation.
+
+### Relevance
+This can complement:
+- W undercut-and-reclaim,
+- IHS extreme head,
+- Wyckoff-like spring primitive,
+without adopting those narratives as causal truth.
+
+### Priority
+WORTH_SHADOW_RESEARCH as a local reversal motif.
+No Formal entry rule.
