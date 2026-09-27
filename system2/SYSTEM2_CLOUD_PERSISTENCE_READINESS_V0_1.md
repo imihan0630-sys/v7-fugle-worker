@@ -1,7 +1,7 @@
 # System 2 Cloud Persistence Readiness V0.1
 
 Updated: 2026-09-27 Asia/Taipei
-Status: REPOSITORY READY / PHYSICAL D1 BLOCKED BY D1 TOKEN PERMISSION / NO PRODUCTION CHANGE
+Status: REPOSITORY READY / D1 TOKEN VERIFIED / ISOLATED DATABASE NOT YET CREATED / NO PRODUCTION CHANGE
 
 ## Purpose
 
@@ -112,3 +112,31 @@ GitHub Actions run `36305786450`, job `108582061023`:
 - SQLite schema V0.5: PASS;
 - 26 `s2_` tables created in the verification database;
 - production-isolation guard: PASS.
+
+
+## Dedicated token verification after secret installation
+
+After the repository secret `SYSTEM2_CLOUDFLARE_API_TOKEN` was added, the read-only audit was rerun.
+
+Audit run:
+- GitHub Actions run: `36312108492`
+- job: `108599936927`
+- token source: `SYSTEM2_DEDICATED`
+
+Result:
+- Account API token verification: HTTP 200 / PASS;
+- D1 database listing: HTTP 200 / PASS;
+- Workers Scripts listing: HTTP 200 / PASS;
+- visible D1 database count: 1;
+- exact target `system2-research`: not present;
+- exact target `system2-shadow-research` Worker: not present;
+- decision: `DATABASE_NOT_FOUND_PROVISIONING_REQUIRED`.
+
+Important correction:
+the first post-secret audit used the user-token verification endpoint and therefore returned HTTP 401 even though the same dedicated token successfully accessed D1/Workers resources. The audit was corrected to use the account-owned token verification endpoint:
+`GET /accounts/{account_id}/tokens/verify`.
+
+This correction did not weaken any permission check; it aligned the verification endpoint with the account-owned token type.
+
+Current blocker:
+not permission. The remaining step is explicit authorization to create the new isolated `system2-research` D1 and apply schema V0.5.
