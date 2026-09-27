@@ -501,6 +501,116 @@
       "owner": "TECHNICAL_STRUCTURE",
       "family": "TREND_VOLATILITY_ENVELOPE",
       "status": "REJECTED_OR_REDUNDANT"
+    },
+    {
+      "id": "VHF",
+      "owner": "TREND_MOMENTUM",
+      "family": "PATH_EFFICIENCY",
+      "status": "ROBUSTNESS_COMPARATOR",
+      "notes": "Range numerator / total absolute close-path denominator; compare only against PATH_EFFICIENCY_10."
+    },
+    {
+      "id": "CHOPPY_TRENDINESS",
+      "owner": "TREND_MOMENTUM",
+      "family": "PATH_EFFICIENCY",
+      "status": "LOW_PRIORITY_COMPARATOR"
+    },
+    {
+      "id": "NOISE_RATIO",
+      "owner": "TREND_MOMENTUM",
+      "family": "PATH_EFFICIENCY",
+      "status": "LOW_PRIORITY_COMPARATOR"
+    },
+    {
+      "id": "RWI",
+      "owner": "TECHNICAL_INDICATOR",
+      "family": "DIRECTIONAL_TREND_STRENGTH",
+      "status": "ROBUSTNESS_COMPARATOR",
+      "redundancyControls": [
+        "ADX_DMI",
+        "ATR",
+        "TREND_PERSISTENCE",
+        "STRUCTURAL_EXCURSION"
+      ]
+    },
+    {
+      "id": "COPPOCK",
+      "owner": "TREND_MOMENTUM",
+      "family": "MULTI_HORIZON_RETURN",
+      "status": "LOW_PRIORITY_REDUNDANT"
+    },
+    {
+      "id": "IMI",
+      "owner": "TECHNICAL_INDICATOR",
+      "family": "CANDLE_BODY_MOMENTUM",
+      "status": "LOW_PRIORITY_COMPARATOR",
+      "redundancyControls": [
+        "OPEN_TO_CLOSE_RETURN",
+        "CANDLE_BODY_GEOMETRY",
+        "OVERNIGHT_INTRADAY_DECOMPOSITION"
+      ]
+    },
+    {
+      "id": "BW_MFI",
+      "owner": "PRICE_VOLUME",
+      "family": "LIQUIDITY_PRICE_RESPONSE",
+      "status": "COMPARATOR_ONLY",
+      "notes": "Range per volume; effort-vs-result/liquidity geometry."
+    },
+    {
+      "id": "KLINGER_KO",
+      "owner": "PRICE_VOLUME",
+      "family": "SIGNED_VOLUME_FILTER",
+      "status": "NESTED_PRICE_VOLUME_FILTER"
+    },
+    {
+      "id": "VW_MACD",
+      "owner": "PRICE_VOLUME",
+      "family": "TREND_VOLUME_INTERACTION",
+      "status": "CROSS_FAMILY_COMPARATOR_ONLY"
+    },
+    {
+      "id": "VOLUME_OSCILLATOR",
+      "owner": "PRICE_VOLUME",
+      "family": "VOLUME_ACCELERATION",
+      "status": "REJECTED_OR_REDUNDANT_AS_NEW_FACTOR"
+    },
+    {
+      "id": "AR",
+      "owner": "TECHNICAL_STRUCTURE",
+      "family": "OPEN_ANCHORED_RANGE_ASYMMETRY",
+      "status": "LOW_PRIORITY_REDUNDANT"
+    },
+    {
+      "id": "BR",
+      "owner": "TECHNICAL_STRUCTURE",
+      "family": "PREVCLOSE_ANCHORED_RANGE_ASYMMETRY",
+      "status": "LOW_PRIORITY_REDUNDANT"
+    },
+    {
+      "id": "ACC",
+      "owner": "TREND_MOMENTUM",
+      "family": "RETURN_TRANSITION",
+      "status": "RETURN_ACCELERATION_ALIAS_FAMILY"
+    },
+    {
+      "id": "Q_INDICATOR",
+      "owner": "TECHNICAL_INDICATOR",
+      "family": "UNKNOWN_FORMULA",
+      "status": "FORMULA_CONTRACT_INCOMPLETE",
+      "hazards": [
+        "NON_REPRODUCIBLE_FROM_PUBLIC_CONTRACT"
+      ]
+    },
+    {
+      "id": "TECHSCORE_XQ",
+      "owner": "EXTERNAL_BENCHMARK",
+      "family": "COMPOSITE",
+      "status": "EXTERNAL_COMPOSITE_BENCHMARK_ONLY",
+      "hazards": [
+        "CORRELATED_COMPONENT_VOTING",
+        "DOUBLE_COUNTING"
+      ]
     }
   ],
   "outcomeInferenceQueue": [
