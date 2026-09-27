@@ -1,7 +1,7 @@
 # System 2 Confluence Engine
 
 Updated: 2026-09-27 Asia/Taipei
-Status: DESIGN DRAFT V0.1 / OWNER REVIEW PENDING / RESEARCH-ONLY
+Status: DESIGN V0.1 / CORE LOGIC OWNER-APPROVED / RESEARCH-ONLY / THRESHOLDS NOT FROZEN
 
 ## Purpose
 
@@ -200,5 +200,5 @@ Do not produce a universal cross-strategy total score from these fields.
 
 ## Current status
 
-DESIGN_DRAFT_V0_1 / OWNER REVIEW PENDING.
-No strategy weight, threshold, floor, cap, veto or interaction is formal yet.
+DESIGN_V0_1 / CORE LOGIC OWNER-APPROVED / THRESHOLDS NOT FROZEN.
+No strategy weight, threshold, floor, cap, veto or interaction is numerically frozen yet.
