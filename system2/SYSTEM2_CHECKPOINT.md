@@ -19,6 +19,10 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 
 ## Current design decisions
 
+- Machine-readable strategy source-readiness receipts implemented and verified. Current receipt states: SHORT_MOMENTUM=SOURCE_LIMITED, SWING_GROWTH=SOURCE_LIMITED, INDUSTRY_TREND=SOURCE_BLOCKED, EVENT_DRIVEN=SOURCE_BLOCKED, VALUE_REVERSION=SOURCE_LIMITED. These states describe source feasibility only and do not authorize weights/thresholds or live behavior.
+
+- Research suggestion handling is now persisted in `system2/CHATGPT_PROJECT_INSTRUCTIONS.md`: every newly proposed factor/rule is a hypothesis and must pass mechanism, counterexample/failure-mode, redundancy, PIT/quantifiability and incremental-value checks; unsupported ideas are rejected or omitted.
+
 - Contract/evaluator verification passed in-tool: five contract registry entries validated, immutable contracts confirmed, numeric-scoring guard passed, REQUIRED-UNKNOWN fail-closed passed, hard-invalidation precedence passed, and conflict downgrade passed.
 
 - Generic StrategyValidity（策略有效性） / EntryReadiness（進場準備度） evaluator implemented research-only. REQUIRED evidence missing => INCOMPLETE + BLOCKED; hard invalidation => INVALIDATED + BLOCKED; adverse PRIMARY evidence can yield WEAKENING; valid contradictory evidence can downgrade BUY_ELIGIBLE to CONFLICT instead of forcing a directional decision.
