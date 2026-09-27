@@ -1,0 +1,153 @@
+{
+  "schemaVersion": "target-resistance-rr-provenance-falsification-v0.1",
+  "researchDate": "2026-09-27",
+  "status": "STRUCTURAL_PROVENANCE_RISK_FROZEN",
+  "outcomeDataUsed": false,
+  "formalCoreChanged": false,
+  "formalPath": {
+    "targetFunction": "nearestRealResistance(f, entry)",
+    "eligibleSources": [
+      "targetPrice if numeric and > entry*1.01",
+      "priorHigh20 if > entry*1.01",
+      "priorHigh60 if > entry*1.01",
+      "historical 2-left/2-right pivot highs if > entry*1.01"
+    ],
+    "selector": "minimum eligible level",
+    "nullBehavior": "target===null => reject('上方無可驗證實質壓力，無法計算真實RR', basePassed=true)",
+    "downstream": "target -> reward -> RR -> RR>=2 gate -> RR 14% PriorityScore -> raw RR comparator"
+  },
+  "provenanceAudit": {
+    "targetPriceRepositoryProducer": "NOT_FOUND",
+    "targetPriceExternalInjection": "FEASIBLE via normalizeEnrichmentPayload -> mergeEnrichment(...extra) -> updateMarketState/buildMarketFeatures(...stock)",
+    "productionCoverage": "UNKNOWN",
+    "sourceTimestampOrKnownAtGuard": "NOT_FOUND for targetPrice",
+    "selectedTargetSourceFrozenInCurrentShadow": false,
+    "allCandidateResistanceLevelsFrozenInCurrentShadow": false,
+    "interpretation": "Do not call targetPrice absent or analyst-derived; its semantic/source/live coverage is unproven."
+  },
+  "channelSpecificStructure": {
+    "B": {
+      "entry": "priorHigh20 * 1.003",
+      "consequence": "priorHigh20 can never qualify as target because it is below entry, let alone >entry*1.01",
+      "sixtyDayHighWitness": "If the breakout reference is also at/above every prior ~60-session high/pivot, then priorHigh60 and all retained-history pivots are <= breakout < entry*1.01. With targetPrice missing/nonqualifying, target is null and the candidate is rejected before RR.",
+      "tension": "A valid B breakout into new-high territory may become more dependent on optional external targetPrice than a breakout below an older overhead resistance."
+    },
+    "A": {
+      "entry": "support * 1.0065",
+      "consequence": "Historical highs are often above entry and can provide target without targetPrice; dependence is generally less structural but still possible."
+    }
+  },
+  "fixedSyntheticWitnesses": [
+    {
+      "id": "NULL_TO_PASS_BY_EXTERNAL_TARGET",
+      "entry": 100,
+      "stop": 95,
+      "targetPrice": null,
+      "priorHigh20": 100,
+      "priorHigh60": 101,
+      "pivotHighMax": 101,
+      "selectedTarget": null,
+      "formalResult": "TARGET_NULL_REJECT"
+    },
+    {
+      "id": "SAME_TECHNICAL_GEOMETRY_EXTERNAL_TARGET_RESCUES",
+      "entry": 100,
+      "stop": 95,
+      "targetPrice": 115,
+      "priorHigh20": 100,
+      "priorHigh60": 101,
+      "pivotHighMax": 101,
+      "selectedTarget": 115,
+      "rr": 3,
+      "formalResult": "RR_PASS_ASSUMING_ALL_PRIOR_GATES_PASS"
+    },
+    {
+      "id": "HISTORICAL_RESISTANCE_ONLY",
+      "entry": 100,
+      "stop": 95,
+      "targetPrice": null,
+      "priorHigh20": 120,
+      "priorHigh60": 120,
+      "pivotHighMax": 120,
+      "selectedTarget": 120,
+      "rr": 4,
+      "formalResult": "RR_PASS"
+    },
+    {
+      "id": "CLOSER_EXTERNAL_TARGET_COMPRESSES_RR",
+      "entry": 100,
+      "stop": 95,
+      "targetPrice": 105,
+      "priorHigh20": 120,
+      "priorHigh60": 120,
+      "pivotHighMax": 120,
+      "selectedTarget": 105,
+      "rr": 1,
+      "formalResult": "RR_LT_2_REJECT"
+    },
+    {
+      "id": "FAR_EXTERNAL_TARGET_NO_EFFECT",
+      "entry": 100,
+      "stop": 95,
+      "targetPrice": 130,
+      "priorHigh20": 120,
+      "priorHigh60": 120,
+      "pivotHighMax": 120,
+      "selectedTarget": 120,
+      "rr": 4,
+      "formalResult": "RR_PASS"
+    }
+  ],
+  "conclusions": [
+    "targetPrice is not a harmless annotation; if present it can rescue a target-null candidate or become the nearest level and compress RR enough to reject.",
+    "The same technical price history can therefore change Formal eligibility solely with targetPrice presence/value.",
+    "B new-high breakouts are especially exposed because priorHigh20 is structurally unusable as a target and new-high geometry can eliminate priorHigh60/pivots too.",
+    "Current Shadow cannot later attribute RR/target-null outcomes to the source level that actually determined target.",
+    "This is a provenance/observability risk, not evidence that the current target rule is economically inferior."
+  ],
+  "prospectiveCapture": {
+    "minimumFields": [
+      "scanDate",
+      "symbol",
+      "channel",
+      "entry",
+      "stop",
+      "targetPriceRaw",
+      "targetPriceSource",
+      "targetPriceAsOf",
+      "targetPriceCapturedAt",
+      "targetPricePointInTimeEligible",
+      "priorHigh20",
+      "priorHigh60",
+      "pivotHighCandidates with date/value",
+      "eligibleResistanceLevels after >entry*1.01 filter",
+      "selectedTarget",
+      "selectedTargetSource",
+      "selectedTargetDate if historical",
+      "targetNull",
+      "rewardPerRisk",
+      "exactFormalRejectReason",
+      "sourceCompleteness/UNKNOWN semantics"
+    ],
+    "noNewMarketCallsPreferred": true,
+    "failOpenResearchOnly": true,
+    "fullFormalCounterfactualForRejected": false
+  },
+  "falsification": [
+    "First measure targetPrice field coverage/provenance prospectively; if effectively absent, analyze the rule as a pure historical-resistance target gate rather than inventing external-target semantics.",
+    "Compare target-null B new-high breakouts with matched B breakouts having overhead resistance, controlling setup quality, ATR/stop, liquidity, sector/regime, RS and overheat.",
+    "If target-null rejects have worse/no-better path quality or materially worse execution/downside, the gate may be protective.",
+    "If target-null new-high B setups show stable superior continuation without worse MAE/cost across independent dates/OOS, only then surface a target/admission reformulation candidate.",
+    "If targetPrice-present rows differ materially by source/provider/vintage, do not pool them.",
+    "Never backfill historical targetPrice from current analyst targets or later-known information."
+  ],
+  "engineeringBoundary": {
+    "provenanceCapture": "Potential Class A only if existing already-loaded values/levels are serialized to isolated Shadow with zero new source calls and no Formal impact.",
+    "targetPriceSourceRepair": "Class B proposal-first if shared enrichment/provider/source contracts must change.",
+    "targetFormulaOrNullGateChange": "Class C owner approval required."
+  },
+  "optimizationBridge": {
+    "currentStatus": "STRUCTURAL_PROVENANCE_RISK_CONFIRMED / EVIDENCE_CAPTURE_WARRANTED / NOT_FORMAL_OPTIMIZATION_CANDIDATE",
+    "futureCandidate": "TARGET_RESISTANCE_ADMISSION_REFORMULATION"
+  }
+}
