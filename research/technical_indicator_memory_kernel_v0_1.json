@@ -1,0 +1,174 @@
+{
+  "schemaVersion": "technical-indicator-memory-kernel-v0.1",
+  "updated": "2026-09-27 Asia/Taipei",
+  "researchOnly": true,
+  "decisionImpact": false,
+  "formalCore": "LOCKED",
+  "classes": {
+    "FINITE_WINDOW": "Direct arithmetic contamination ends after the bad observation exits the eligible-session window.",
+    "RECURSIVE_IIR": "State error decays geometrically but does not become exactly zero after a fixed number of bars.",
+    "CUMULATIVE": "Absolute level retains historical shocks until recomputed/rebased/windowed.",
+    "PATH_STATE": "A bad event can alter later state transitions; contamination is not described by one geometric decay."
+  },
+  "indicators": [
+    {
+      "id": "SMA20",
+      "memoryClass": "FINITE_WINDOW",
+      "windowEligibleBars": 20
+    },
+    {
+      "id": "BOLLINGER20",
+      "memoryClass": "FINITE_WINDOW",
+      "windowEligibleBars": 20
+    },
+    {
+      "id": "EXTREME_RECENCY_20",
+      "memoryClass": "FINITE_WINDOW",
+      "windowEligibleBars": 20
+    },
+    {
+      "id": "DONCHIAN20",
+      "memoryClass": "FINITE_WINDOW",
+      "windowEligibleBars": 20
+    },
+    {
+      "id": "CMF21",
+      "memoryClass": "FINITE_WINDOW",
+      "windowEligibleBars": 21,
+      "dataGuards": [
+        "VOLUME_UNIT",
+        "SYMBOL_SESSION"
+      ]
+    },
+    {
+      "id": "EMA9",
+      "memoryClass": "RECURSIVE_IIR",
+      "lambda": 0.8,
+      "stateErrorHalfLifeEligibleBars": 3.1063
+    },
+    {
+      "id": "EMA12",
+      "memoryClass": "RECURSIVE_IIR",
+      "lambda": 0.8461538461538461,
+      "stateErrorHalfLifeEligibleBars": 4.1492
+    },
+    {
+      "id": "EMA18",
+      "memoryClass": "RECURSIVE_IIR",
+      "lambda": 0.8947368421052632,
+      "stateErrorHalfLifeEligibleBars": 6.2319
+    },
+    {
+      "id": "EMA20",
+      "memoryClass": "RECURSIVE_IIR",
+      "lambda": 0.9047619047619048,
+      "stateErrorHalfLifeEligibleBars": 6.9257
+    },
+    {
+      "id": "EMA26",
+      "memoryClass": "RECURSIVE_IIR",
+      "lambda": 0.9259259259259259,
+      "stateErrorHalfLifeEligibleBars": 9.0065
+    },
+    {
+      "id": "WILDER14",
+      "memoryClass": "RECURSIVE_IIR",
+      "lambda": 0.9285714285714286,
+      "stateErrorHalfLifeEligibleBars": 9.3532
+    },
+    {
+      "id": "KD_K_RECURSIVE",
+      "memoryClass": "RECURSIVE_IIR",
+      "lambda": 0.6666666666666666,
+      "stateErrorHalfLifeEligibleBars": 1.7095,
+      "notes": "This is the K-state decay only; RSV input window and D cascade add separate memory."
+    },
+    {
+      "id": "KD_D_RECURSIVE",
+      "memoryClass": "RECURSIVE_IIR",
+      "notes": "Cascade of K and D recursion; do not infer full contamination horizon from one-stage half-life."
+    },
+    {
+      "id": "RSI14_WILDER",
+      "memoryClass": "RECURSIVE_IIR",
+      "notes": "Nonlinear ratio of two Wilder-smoothed states."
+    },
+    {
+      "id": "ATR14_WILDER",
+      "memoryClass": "RECURSIVE_IIR"
+    },
+    {
+      "id": "DMI_ADX14",
+      "memoryClass": "RECURSIVE_IIR",
+      "notes": "Nested Wilder smoothing plus nonlinear DI/DX transformation."
+    },
+    {
+      "id": "MACD_12_26_9",
+      "memoryClass": "RECURSIVE_IIR",
+      "notes": "Multi-pole EMA system; slowest component asymptotically important; exact contamination path requires replay."
+    },
+    {
+      "id": "PPO_12_26",
+      "memoryClass": "RECURSIVE_IIR",
+      "notes": "Normalized MACD family."
+    },
+    {
+      "id": "TRIX",
+      "memoryClass": "RECURSIVE_IIR",
+      "notes": "Triple EMA cascade then ROC; effective memory exceeds one EMA stage."
+    },
+    {
+      "id": "TSI",
+      "memoryClass": "RECURSIVE_IIR",
+      "notes": "Double-smoothed signed and absolute price-change states."
+    },
+    {
+      "id": "OBV_RAW",
+      "memoryClass": "CUMULATIVE",
+      "dataGuards": [
+        "VOLUME_UNIT",
+        "SYMBOL_SESSION",
+        "CORPORATE_ACTION_CONTINUITY"
+      ]
+    },
+    {
+      "id": "ADL_RAW",
+      "memoryClass": "CUMULATIVE",
+      "dataGuards": [
+        "VOLUME_UNIT",
+        "SYMBOL_SESSION"
+      ]
+    },
+    {
+      "id": "SIGNED_VOLUME_BALANCE20",
+      "memoryClass": "FINITE_WINDOW",
+      "windowEligibleBars": 20,
+      "dataGuards": [
+        "VOLUME_UNIT",
+        "SYMBOL_SESSION",
+        "SUB_LOT_SEMANTICS"
+      ]
+    },
+    {
+      "id": "PARABOLIC_SAR",
+      "memoryClass": "PATH_STATE",
+      "notes": "Extreme-point/acceleration/reversal state can alter future path."
+    },
+    {
+      "id": "HEIKIN_ASHI_OPEN",
+      "memoryClass": "RECURSIVE_IIR",
+      "notes": "Synthetic open recursively depends on prior Heikin-Ashi state; visualization only."
+    }
+  ],
+  "certificationRules": {
+    "FINITE_WINDOW": "Use exact clean eligible-session window with canonical continuity semantics.",
+    "RECURSIVE_IIR": "Prefer full recomputation from corrected history or trusted prior state; arbitrary wait-N is insufficient.",
+    "CUMULATIVE": "Recompute/rebase or use bounded windowed representation.",
+    "PATH_STATE": "Replay state machine from trusted pre-boundary state or complete corrected history."
+  },
+  "prohibitedUses": [
+    "Do not convert half-life diagnostics into production thresholds.",
+    "Do not declare state clean merely because one half-life or one nominal lookback elapsed.",
+    "Do not count suspension calendar days as eligible bars."
+  ]
+}
