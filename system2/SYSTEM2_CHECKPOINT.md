@@ -19,6 +19,8 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 
 ## Current design decisions
 
+- Owner-observed STATE_OWNED_BANK_FLOW（公股行庫資金流） hypothesis accepted for research as AUXILIARY_CONTEXT_ONLY（輔助脈絡） / WARNING_MODIFIER（警告修正）, not as a buy/sell factor. Research focus: countercyclical support during market stress and later normalization selling after rebounds. Public-bank broker flow is not assumed identical to government/National Financial Stabilization Fund activity or informed conviction; current System 2 has no canonical source contract, so source/member-code/PIT validation is required before scoring.
+
 - SWING_GROWTH（波段成長）strategy identity core logic owner-approved: focus on earnings repricing/acceleration, earnings quality, PIT-valid catalysts and industry/company transmission; technical/K-line evidence is timing support rather than proof of growth; THESIS_WEAKENING（投資邏輯轉弱） is distinct from THESIS_INVALIDATED（投資邏輯失效）. Exact thresholds/weights remain unfrozen.
 
 - Technical-pattern intent firewall added: OHLCV can describe pattern/price behavior but cannot prove whether a large participant intentionally created or manipulated the pattern. Strategic trading/manipulation is treated as a possible mechanism/counterexample, not an inferred fact.
