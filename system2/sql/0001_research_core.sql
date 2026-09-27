@@ -1,6 +1,36 @@
--- System 2 research-only storage schema V0.4.
+-- System 2 research-only storage schema V0.5.
 -- DESIGN/TEST ONLY. DO NOT apply to the V8 production D1 database without Class-B review.
--- V0.1 through V0.3 were never deployed; V0.4 keeps the isolated s2_ namespace and adds the full P1 Shadow/ranking/provenance receipt set.
+-- V0.1 through V0.4 were never deployed; V0.5 adds isolated schema metadata and infrastructure verification receipts before first physical provisioning.
+
+
+CREATE TABLE IF NOT EXISTS s2_schema_meta (
+  schema_key TEXT PRIMARY KEY,
+  schema_value TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+);
+
+INSERT INTO s2_schema_meta (schema_key, schema_value, updated_at)
+VALUES ('schema_version', '0.5', '2026-09-27T08:15:00Z')
+ON CONFLICT(schema_key) DO UPDATE SET
+  schema_value = excluded.schema_value,
+  updated_at = excluded.updated_at;
+
+CREATE TABLE IF NOT EXISTS s2_infrastructure_checks (
+  check_id TEXT PRIMARY KEY,
+  check_type TEXT NOT NULL,
+  check_timestamp TEXT NOT NULL,
+  environment TEXT NOT NULL,
+  binding_name TEXT NOT NULL,
+  schema_version TEXT NOT NULL,
+  expected_payload_json TEXT NOT NULL,
+  observed_payload_json TEXT,
+  status TEXT NOT NULL,
+  check_hash TEXT NOT NULL UNIQUE,
+  notes TEXT
+);
+
+CREATE INDEX IF NOT EXISTS idx_s2_infrastructure_checks_time
+  ON s2_infrastructure_checks (check_timestamp, check_type);
 
 CREATE TABLE IF NOT EXISTS s2_strategy_versions (
   strategy_id TEXT NOT NULL,
