@@ -33,10 +33,10 @@ function baseB(overrides={}){
 }
 
 {
-  const a=buildTargetRrAudit(baseB({priorHigh60:120,targetPrice:105}),{
+  const a=buildTargetRrAudit(baseB({priorHigh60:120,targetPrice:103}),{
     channel:"B",formalResult:{ok:false,reason:R.LOW_RR_REASON}
   });
-  assert.equal(a.resistance.selectedTarget,105);
+  assert.equal(a.resistance.selectedTarget,103);
   assert.equal(a.rr.state,"LOW_RR");
   assert.equal(a.stageConsistent,true);
 }
