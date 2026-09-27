@@ -1,0 +1,67 @@
+{
+  "schemaVersion": "technical-indicator-seed-stability-v0.1",
+  "updated": "2026-09-27 Asia/Taipei",
+  "researchOnly": true,
+  "decisionImpact": false,
+  "runtimeImplemented": false,
+  "formalCore": "LOCKED",
+  "distinction": {
+    "formulaReadiness": "Can the formula emit its first mathematically defined value?",
+    "seedStability": "Has recursive initialization influence decayed below a declared tolerance?"
+  },
+  "indicators": {
+    "KD_9_3_3": {
+      "formulaVersion": "TAI_KD_RSV9_K3_D3_INIT50_V0_1",
+      "firstCalculableBars": 9,
+      "recursion": {
+        "kSeedWeight": "(2/3)^m",
+        "combinedEqualKDSeedPerturbationWeight": "(2/3)^m*(1+m/3)"
+      },
+      "approximateToleranceBars": {
+        "combinedSeedUnder1Pct": 24
+      },
+      "current65BarCacheAssessment": "SEED_INFLUENCE_EFFECTIVELY_NEGLIGIBLE"
+    },
+    "RSI_14": {
+      "formulaVersion": "WILDER_RSI14_SMA_SEED_V0_1",
+      "firstCalculableCloses": 15,
+      "recursion": {
+        "seededAverageWeight": "(13/14)^m"
+      },
+      "approximateToleranceTotalCloses": {
+        "seedUnder5Pct": 56,
+        "seedUnder2Pct": 68,
+        "seedUnder1Pct": 78,
+        "seedUnder0_5Pct": 87,
+        "seedUnder0_1Pct": 109
+      },
+      "current65BarCache": {
+        "postSeedUpdates": 50,
+        "seededAverageWeightApprox": 0.024590413485997123,
+        "interpretation": "Seed-state weight only; not a claim of 2.459% RSI numeric error."
+      }
+    }
+  },
+  "allowedStateConstructionModes": [
+    "CONTINUOUS_STATE",
+    "DEEP_HISTORY_RECOMPUTE",
+    "FIXED_LOCAL_WINDOW_FORMULA"
+  ],
+  "requiredMetadata": [
+    "inputStartDate",
+    "inputBarCount",
+    "seedMethod",
+    "recursiveUpdatesAfterSeed",
+    "seedInfluenceBound",
+    "seedTolerance",
+    "stateConstructionMode",
+    "formulaVersion"
+  ],
+  "rules": [
+    "FIRST_CALCULABLE_DOES_NOT_EQUAL_SEED_STABLE",
+    "DO_NOT_MIX_STATE_CONSTRUCTION_MODES_IN_ONE_INFERENCE_COHORT",
+    "PLATFORM_PARITY_REQUIRES_MATCHING_SEED_AND_HISTORY_SEMANTICS",
+    "NO_RUNTIME_WIRING_BEFORE_STATE_CONSTRUCTION_MODE_IS_FROZEN",
+    "NO_FORMAL_CHANGE_FROM_THIS_CONTRACT"
+  ]
+}
