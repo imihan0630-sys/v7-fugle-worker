@@ -72,6 +72,29 @@
           "ADX"
         ]
       }
+    },
+    {
+      "id": "ASYMMETRIC_WAVE_REFERENCE",
+      "generation": "50 bars; close=100+0.35*i+3*sin(0.71*i)+1.2*sin(0.17*i); high=close+0.8+(i%4)*0.17; low=close-0.7-(i%5)*0.11",
+      "purpose": "Detect TA-Lib period-1 seed + pre-DX Wilder-update alignment errors that monotonic fixtures can hide.",
+      "expected": {
+        "index27": {
+          "trSmoothed": 34.646000230548495,
+          "plusDMSmoothed": 12.692588044888245,
+          "minusDMSmoothed": 7.095548052704646,
+          "plusDI": 36.63507464188256,
+          "minusDI": 20.480136250903424,
+          "dx": 28.284826648551533,
+          "adx": 24.06246596876735
+        },
+        "index28": {
+          "adx": 24.74112347980112
+        },
+        "index49": {
+          "adx": 30.109005583147688
+        }
+      },
+      "reference": "Independent Python transcription of the frozen TA-Lib source-order semantics matched the JS isolated core within floating tolerance."
     }
   ],
   "bollingerFixtures": [
