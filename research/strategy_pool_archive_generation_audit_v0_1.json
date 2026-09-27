@@ -1,0 +1,83 @@
+{
+  "schemaVersion": "STRATEGY_POOL_ARCHIVE_GENERATION_AUDIT_V0_1",
+  "updatedAtTaipei": "2026-09-27",
+  "researchOnly": true,
+  "outcomeDataUsed": false,
+  "formalCoreChanged": false,
+  "question": "Can existing v9_strategy_pool_plans support post-V8.9 pool-aware Portfolio Risk denominators without new persistence?",
+  "positiveCapabilities": [
+    "Rows carry scan_date + pool_id + symbol as primary identity.",
+    "Each row stores capital=STRATEGY_POOL_CAPITAL and full plan_json, so pool-aware planned allocation/stop geometry is source-available.",
+    "FORMAL_GENERAL, FORMAL_THOUSAND and HYBRID_THOUSAND_SHADOW are stored separately; Hybrid can be excluded from Formal aggregation.",
+    "The source is already read by readThreePoolSelectionPerformance()."
+  ],
+  "falsificationAndQualityGaps": [
+    {
+      "issue": "SAME_DATE_MUTABILITY",
+      "evidence": "archiveStrategyPools() DELETEs all rows for scan_date+pool_id, then reinserts them with a new now timestamp.",
+      "consequence": "The table stores the latest archived state for a date/pool, not an immutable sequence of generations."
+    },
+    {
+      "issue": "NO_GENERATION_OR_VERSION_IDENTITY",
+      "evidence": "Schema fields are scan_date,pool_id,symbol,name,reference_close,capital,plan_json,created_at,updated_at; no immutable scan generation/worker definition hash/comparator version parent exists at table level.",
+      "consequence": "A later same-date rerun cannot be distinguished as the same decision generation solely from the primary key."
+    },
+    {
+      "issue": "RECOVERY_CAN_REWRITE_HISTORICAL_DATE",
+      "evidence": "V8.9.8 staged historical recovery calls archiveStrategyPools(env,date,...) for FORMAL_GENERAL/FORMAL_THOUSAND/HYBRID.",
+      "consequence": "Archive rows can be recreated/replaced by recovery workflows, so current row presence does not prove original after-market writer lineage."
+    },
+    {
+      "issue": "EXISTING_READER_IS_OUTCOME_MIXED",
+      "evidence": "readThreePoolSelectionPerformance() reads the plan archive and then joins current history to calculate D1/D3/D5/latest returns.",
+      "consequence": "It is not an outcomes-closed evidence surface for provenance/denominator certification."
+    },
+    {
+      "issue": "READER_COMPLETENESS_METADATA_MISSING",
+      "evidence": "The performance reader uses one broad SELECT and returns rows/byPool without exact-date total counts, expected pool counts, truncation/hasMore or immutable generation receipt.",
+      "consequence": "Source code shows accessibility, but not promotion-grade exact-date completeness."
+    }
+  ],
+  "classification": {
+    "sourceAvailability": "POOL_ID_AND_CAPITAL_SOURCE_READY",
+    "immutableGenerationCertification": "NOT_READY",
+    "existingReaderForOutcomeClosedCoverage": "NOT_READY",
+    "safeUse": "DESCRIPTIVE_ONLY_WHEN_EXACT_ROWS_ARE_POSITIVELY_OBSERVED_AND_ESTIMAND_IS_EXPLICIT",
+    "missingOrLineageMismatch": "UNKNOWN_NOT_BAD"
+  },
+  "noLookaheadRule": "Do not use /api/strategy-pool-performance D1/D3/D5/latest outcome fields to certify plan-time provenance. A future plan-only reader must expose only plan-time data and completeness metadata.",
+  "minimalClassBReaderProposal": {
+    "purpose": "Expose existing v9_strategy_pool_plans plan-time evidence without new persistence or market-data calls.",
+    "inputs": [
+      "exact scan_date or bounded keyset cursor"
+    ],
+    "fields": [
+      "scan_date",
+      "pool_id",
+      "symbol",
+      "capital",
+      "reference_close",
+      "plan_json",
+      "created_at",
+      "updated_at"
+    ],
+    "completeness": [
+      "expected configured Formal pools",
+      "row count per pool",
+      "returned count per pool",
+      "truncated/hasMore",
+      "reader as-of timestamp"
+    ],
+    "guards": [
+      "exclude outcome/history joins",
+      "exclude Hybrid from Formal aggregate unless explicitly requested",
+      "no backfill",
+      "no mutation",
+      "no recomputation from current code"
+    ],
+    "limitation": "Reader alone does not create immutable generation identity; same-date mutability remains a provenance caveat unless a positive cross-store witness can certify lineage.",
+    "engineeringClass": "B_PROPOSAL_FIRST"
+  },
+  "formalOptimizationCandidate": false,
+  "status": "POOL_ARCHIVE_SOURCE_READY / GENERATION_MUTABLE / OUTCOME_CLEAN_READER_ABSENT / FORMAL_UNCHANGED"
+}
