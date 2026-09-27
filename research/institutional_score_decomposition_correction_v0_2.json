@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "INSTITUTIONAL_SCORE_DECOMPOSITION_CORRECTION_V0_2",
+  "researchDate": "2026-09-28",
+  "class": "A_RESEARCH_ONLY",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "supersedesResearchObserverOnly": "institutional_score_decomposition_observer_v0_1.mjs",
+  "findings": [
+    "The v0.1 research observer derived currentBuy from streakDays>0 and institutionsAligned from all three streakDays>0.",
+    "Current Formal does not do that. currentBuy is derived from current-day foreignNet/trustNet/dealerNet signs; institutionsAligned is a feature boolean whose current producer is foreignNet>0 && trustNet>0 && dealerNet>0.",
+    "FULL_FORMAL_SCAN preserves current-day foreignNet/trustNet/dealerNet, so currentBuy and current-producer institutionsAligned are reconstructable from the snapshot.",
+    "FULL_FORMAL_SCAN also preserves institutionTotalNet, chipConcentration, avgVolume20Lots and the persisted buy-day values, so the stored Formal score can be replayed.",
+    "However the persisted buy-day fields use journalInteger(value)||0, losing the distinction between true zero-day streak and missing raw streak source. Snapshot-only source completeness is therefore not self-authenticating."
+  ],
+  "decision": "V0_1_INTERACTION_DECOMPOSITION_SEMANTICALLY_STALE / V0_2_USES_CURRENT_NET_SIGNS / FORMAL_SCORE_REPLAY_SOURCE_READY / CLEAN_STREAK_PROVENANCE_NOT_SELF_CONTAINED"
+}
