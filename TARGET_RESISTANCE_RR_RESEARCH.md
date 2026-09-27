@@ -227,3 +227,36 @@ Future analysis should ask whether the current nearest-single-level target adds 
 - Pattern lifecycle state.
 
 No target rule change is authorized.
+
+
+## TargetPrice Production injection provenance audit — 2026-09-27
+
+Repository audit found no official or repository-owned producer that assigns `targetPrice`.
+
+The only proven injection paths are the generic custom enrichment inputs:
+- `V7_ENRICHMENT_JSON`;
+- `V7_ENRICHMENT_API_URL`.
+
+`normalizeEnrichmentPayload()` preserves custom stock objects as-is, so `targetPrice` can reach Formal if an external custom source supplies it. This proves technical feasibility, not live coverage or provenance.
+
+Important negative findings:
+- `/api/version` does not expose custom-enrichment configured/readiness state;
+- persisted after-market summary does not store `customAvailable`, custom fetch failure, targetPrice coverage or targetPrice provenance coverage;
+- generic `enrichmentAvailable` / `enrichmentStocks` can be true from official data alone and cannot prove custom success;
+- market-consensus narrative may mention analyst target prices, but the V7.5.30 consensus path does not map those numbers into `f.targetPrice`.
+
+Custom API failure is currently caught and converted to an empty custom payload while Formal scan continues. If Production actually depends on custom `targetPrice`, this could change target/RR state. But live dependency is not proven, so this is classified as:
+`POTENTIAL_SOURCE_AVAILABILITY_COUPLING / NOT_YET_PRODUCTION_DEFECT`.
+
+Safe current states:
+- live custom-source configuration = UNKNOWN;
+- targetPrice live coverage = UNKNOWN;
+- targetPrice source identity = UNKNOWN;
+- targetPrice asOf / knownAt = UNKNOWN.
+
+Do not convert any of those UNKNOWNs to zero/absent.
+
+Minimum prospective source-state contract is frozen in:
+`research/target_price_injection_provenance_audit_v0_1.json`.
+
+Shared runtime observability capture is Class B proposal-first. Target/RR rule changes remain Class C.
