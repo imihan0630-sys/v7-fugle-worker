@@ -16863,3 +16863,103 @@ Does HS-top morphology explain future downside/failure beyond:
 - major resistance
 - overheat?
 If not, reject it as redundant.
+
+
+## DL-003BD — Fibonacci Retracement: Special Ratios Not Supported by Strong Empirical Evidence
+
+### External counter-evidence
+Tsinaslanidis, Guijarro & Voukelatos, Expert Systems with Applications (2021/2022), develop an algorithmic method to identify Fibonacci retracement support/resistance zones across three major equity markets.
+
+Their reported conclusions are directly cautionary:
+- prices are about as likely to bounce at Fibonacci levels as at non-Fibonacci levels;
+- a trading rule based on Fibonacci levels does not outperform randomly selected non-Fibonacci levels;
+- wider zones mechanically increase observed bounce probability;
+- trading performance remains poor irrespective of zone width.
+
+### Research implication
+The useful object may be:
+“price revisits a support/resistance REGION”
+not:
+“38.2%, 50%, or 61.8% is intrinsically special.”
+
+### Decision
+Do NOT include Fibonacci ratios in the first Pattern Shadow feature set.
+
+Status:
+SPECIAL_FIB_RATIOS = REJECTED_AS_PRIVILEGED_LEVELS_FOR_NOW.
+SUPPORT_RESISTANCE_ZONE_GEOMETRY = RETAINED.
+
+### Why this is valuable
+It prevents the research from adding arbitrary sacred ratios on top of:
+- swing zones,
+- ATR/tick tolerances,
+- retracement depth,
+- support progression.
+
+### If ever revisited
+Only test Fibonacci as a labeled subset of generic retracement zones:
+- Fib zone vs matched non-Fib zone;
+- identical width;
+- same trend / volatility / liquidity / date.
+
+If no difference, keep generic retracement depth only.
+
+## DL-003BE — Zone Width Can Create Apparent “Accuracy”
+
+### Important finding
+The Fibonacci study reports wider zones increase bounce probability.
+
+This is partly mechanical:
+a wider target region is easier for price to touch and “bounce from.”
+
+### Generalization
+This is not only a Fibonacci problem.
+Any support/resistance detector can inflate apparent hit rate by widening its zone.
+
+### Required metric discipline
+When evaluating zones, report:
+- zoneWidthPct
+- zoneWidthATR
+- zoneWidthTicks
+- touchProbability
+- holdProbability conditional on touch
+- falseTouchRate
+- postTouchMFE/MAE
+
+Do not compare two zone methods with different average widths using raw bounce rate.
+
+### Normalized evaluation
+Possible metrics:
+- bounce probability per unit zone width;
+- matched-width comparison;
+- same-tolerance comparison;
+- economic outcome after transaction cost/slippage.
+
+### Research impact
+This becomes a universal falsification control for:
+- swing zones,
+- neckline zones,
+- cup rims,
+- 52-week-high zones,
+- round-number regions,
+- any future volume-profile regions.
+
+## DL-003BF — Retracement Depth Is Continuous; Fibonacci Labels Are Optional Metadata
+
+### Retain
+- retracementDepthPct
+- retracementDepthVsATR
+- retracementDepthVsPriorImpulse
+- support-zone overlap
+- time-to-retrace
+- volume/turnover during retrace.
+
+### Drop as privileged assumptions
+- “38.2% = healthy”
+- “50% = important”
+- “61.8% = strongest”
+
+unless prospective Taiwan evidence later proves incremental value.
+
+### Practical benefit
+This keeps the model simpler and avoids multiplying pattern thresholds with arbitrary retracement ratios.
