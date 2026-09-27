@@ -1,0 +1,23 @@
+name: Signal Grade Channel Research
+
+on:
+  pull_request:
+    paths:
+      - "research/signal_grade_channel_observer_v0_1.mjs"
+      - "research/signal_grade_channel_observer_spec_v0_1.json"
+      - "tests/test_signal_grade_channel_observer_v0_1.mjs"
+      - ".github/workflows/signal-grade-channel-research.yml"
+  workflow_dispatch:
+
+jobs:
+  structural-grade:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Run channel/signal-grade structural falsification
+        run: node tests/test_signal_grade_channel_observer_v0_1.mjs
