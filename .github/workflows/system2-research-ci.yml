@@ -42,6 +42,15 @@ jobs:
           test "$count" -gt 0
           echo "Executed $count System2 test files"
 
+      - name: Syntax-check System2 runtime and deployment modules
+        shell: bash
+        run: |
+          set -euo pipefail
+          for module in system2/runtime/*.mjs system2/deploy/*.mjs; do
+            node --check "$module"
+          done
+          echo "System2 module syntax PASS"
+
       - name: Validate System2 research SQL in SQLite
         shell: bash
         run: |
@@ -62,6 +71,8 @@ jobs:
                   )
               }
               required = {
+                  "s2_schema_meta",
+                  "s2_infrastructure_checks",
                   "s2_decisions",
                   "s2_shadow_runs",
                   "s2_strategy_ordering_receipts",
