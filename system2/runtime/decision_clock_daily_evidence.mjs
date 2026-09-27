@@ -121,10 +121,11 @@ export function buildDecisionClockDailyEvidence({
     dependencySeriesReport.dependencyCoverage?.[A5_DEPENDENCY] === true
     && a5?.readyObserved === true
     && Boolean(a5ObservedAt);
-  const a5AvailableByCandidate =
+  const a5AvailableByCandidate = Boolean(
     a5CoverageObserved
     && candidateTimestamp
-    && Date.parse(a5ObservedAt) <= Date.parse(candidateTimestamp);
+    && Date.parse(a5ObservedAt) <= Date.parse(candidateTimestamp)
+  );
 
   const requiredReady =
     sameSessionClockReady
