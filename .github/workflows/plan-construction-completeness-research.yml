@@ -1,0 +1,24 @@
+name: Plan Construction Completeness Research
+
+on:
+  pull_request:
+    paths:
+      - "research/plan_construction_completeness_classifier_v0_1.mjs"
+      - "research/plan_construction_completeness_contract_v0_1.json"
+      - "tests/test_plan_construction_completeness_classifier_v0_1.mjs"
+      - ".github/workflows/plan-construction-completeness-research.yml"
+      - "RESEARCH_CHECKPOINT.md"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  classifier:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: node tests/test_plan_construction_completeness_classifier_v0_1.mjs
