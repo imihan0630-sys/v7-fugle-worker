@@ -1,0 +1,21 @@
+# System 2 isolated research deployment EXAMPLE ONLY.
+# This file is not the repository root wrangler config and is not deployed by current production workflows.
+# Replace placeholders only after a separate System 2 D1 resource exists.
+
+name = "system2-shadow-research"
+main = "system2/deploy/worker.mjs"
+compatibility_date = "2026-09-01"
+
+[[d1_databases]]
+binding = "SYSTEM2_DB"
+database_name = "system2-research"
+database_id = "REPLACE_WITH_SEPARATE_SYSTEM2_DATABASE_ID"
+migrations_dir = "system2/sql"
+
+# Intentionally absent in V0.1:
+# - routes
+# - workers_dev override
+# - cron triggers
+# - production service bindings
+# - KV bindings
+# - production database bindings
