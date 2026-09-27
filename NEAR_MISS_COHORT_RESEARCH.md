@@ -205,3 +205,28 @@ Status:
 
 Exact next:
 freeze a prospective setup sampling-frame contract that counts the complete sequential `SETUP_FIRST_FAILURE` population before sampling, keeps semantic membership separate from sample membership, and preserves exact masks/raw margins without creating a new composite distance.
+
+
+## NM-010 — population-before-sample contract frozen
+
+A pure Class-A sampling-frame helper now enforces the research order that the legacy NEAR_MISS path violated:
+
+1. classify the complete same-date sequential population;
+2. count every `SETUP_FIRST_FAILURE` by `scanDate × pool × nearestChannel × exactCheckPattern`;
+3. only then apply deterministic bounded sampling inside each stratum;
+4. retain sample membership as a separate overlay from semantic membership.
+
+Files:
+- `research/ab_setup_sampling_frame_v0_1.mjs`;
+- `research/ab_setup_sampling_frame_spec_v0_1.json`;
+- `tests/test_ab_setup_sampling_frame_v0_1.mjs`.
+
+The helper fails promotion quality closed on duplicate parent keys, incomplete strata or incomplete parent coverage. An absent stratum is a true zero only when the complete parent frame is explicitly CLEAN; otherwise it remains UNKNOWN.
+
+The existing six-bit masks are preserved exactly for provenance even though NM-009 proved some dimensions are dependent. No corrected/composite distance is invented here.
+
+Status:
+`POPULATION_BEFORE_SAMPLE_READY / REASON_POOL_STARVATION_BLOCKED / SEMANTIC_VS_SAMPLE_MEMBERSHIP_SEPARATED / PERSISTENCE_NOT_IMPLEMENTED / FORMAL_UNCHANGED`.
+
+Exact next:
+audit which raw A/B margins are genuinely independent enough for future outcome modeling. Preserve nested/composite groups separately, especially B candle-close geometry, A support-source/fallback state, A volume OR branches and B trend OR branches. Do not fit weights or inspect outcomes.
