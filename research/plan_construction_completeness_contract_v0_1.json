@@ -1,0 +1,71 @@
+{
+  "schemaVersion": "PLAN_CONSTRUCTION_COMPLETENESS_CONTRACT_V0_1",
+  "researchOnly": true,
+  "decisionImpact": false,
+  "formalCoreImpact": false,
+  "question": "Can the strict positive plan-construction subset be certified prospectively from existing read surfaces without new runtime persistence?",
+  "sourceAudit": {
+    "writer": "recordTradeJournalDay() uses one ISO now value for v8_trade_journal_days.updated_at, every v8_trade_journal_plans.recorded_at, and returned journal.recordedAt.",
+    "scanEmbedding": "V8.5 patch inserts the returned journal object into the same after-market scan summary before LAST_SCAN_KEY persistence.",
+    "currentReadSurfaces": [
+      "/api/scan/status -> latest mutable scan summary including embedded journal receipt",
+      "/api/journal/health?date=YYYY-MM-DD -> exact-date selected_count/planCount/updatedAt",
+      "/api/journal?days=N -> plan rows including recorded_at"
+    ],
+    "mutationGuards": [
+      "A later same-date rerun rewrites journal timestamps; if LAST_SCAN was not rewritten too, timestamp mismatch fails closed.",
+      "journal/backfill-latest rewrites D1 journal but does not refresh embedded scan.journal, so mismatch fails closed.",
+      "staged historical recovery inherits a simulated dry-run journal receipt and therefore cannot enter the certified subset."
+    ]
+  },
+  "conclusion": {
+    "strictCurrentGenerationSubset": "YES",
+    "historicalAllGenerationCoverage": "NO",
+    "crossStoreShadowJournalGenerationIdentity": "NO",
+    "interpretation": "recordedAt is a contemporaneous same-write lineage token for the currently accessible scan generation, not an immutable generation identifier or cryptographic decision fingerprint."
+  },
+  "certifiedStates": {
+    "PLAN_CONSTRUCTION_COMPLETE_CURRENT_GENERATION": [
+      "formal non-dry-run scan",
+      "embedded journal stored=true and verified=true",
+      "embedded scanDate/selectedCount match scan",
+      "journalHealth.updatedAt equals embedded journal.recordedAt",
+      "health selectedCount and planCount equal scan.selectedCount",
+      "all exact-date plan rows surfaced and recorded_at equals the same token",
+      "symbols and required plan values match scan.stocks"
+    ],
+    "ZERO_SELECTION_COMPLETE_CURRENT_GENERATION": [
+      "same lineage checks",
+      "scan selectedCount=0",
+      "health selectedCount=0 and planCount=0",
+      "no exact-date plan rows"
+    ],
+    "PLAN_CONSTRUCTION_INCOMPLETE_OBSERVED": [
+      "same-run embedded journal stored/verified false",
+      "same-generation positive count mismatch",
+      "same-generation required field/value mismatch"
+    ],
+    "PLAN_CONSTRUCTION_UNKNOWN": [
+      "missing/simulated embedded receipt",
+      "generation timestamp mismatch",
+      "bounded reader incomplete",
+      "missing exact-date health or lineage",
+      "historical generation no longer represented by LAST_SCAN"
+    ]
+  },
+  "safeUse": {
+    "allowed": "Prospective coverage-only classification of the latest accessible Formal scan generation; no returns, BUY outcomes or threshold tuning.",
+    "forbidden": [
+      "Treating scanDate+symbol alone as generation identity",
+      "Backfilling historical completeness from current KV",
+      "Treating UNKNOWN as failure or zero",
+      "Using this scan↔journal linkage to certify Shadow↔journal cross-store identity"
+    ]
+  },
+  "engineering": {
+    "classA": "Offline/read-only classifier over existing receipts.",
+    "classBStillNeeded": "Immutable multi-generation archival identity if historical all-generation reconstruction or cross-store joins are required.",
+    "classC": "No selection, sizing, threshold, quota, monitoring or trade behavior change."
+  },
+  "status": "STRICT_CURRENT_GENERATION_SUBSET_CERTIFIABLE / HISTORICAL_ALL_GENERATIONS_UNKNOWN / CROSS_STORE_IDENTITY_UNRESOLVED / FORMAL_UNCHANGED"
+}
