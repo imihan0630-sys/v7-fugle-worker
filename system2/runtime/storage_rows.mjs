@@ -238,3 +238,50 @@ export function toCandidateConcentrationRow(receipt) {
     schema_version: requiredText(receipt.schemaVersion, "schemaVersion"),
   });
 }
+
+
+export function toSourceSessionRow(receipt) {
+  if (!receipt || typeof receipt !== "object") throw new Error("receipt is required");
+  return Object.freeze({
+    receipt_id: requiredText(receipt.receiptId, "receiptId"),
+    market_date: requiredText(receipt.marketDate, "marketDate"),
+    decision_timestamp: requiredText(receipt.decisionTimestamp, "decisionTimestamp"),
+    source_session_state: requiredText(receipt.sourceSessionState, "sourceSessionState"),
+    required_blockers_json: json(receipt.requiredBlockers || []),
+    optional_gaps_json: json(receipt.optionalGaps || []),
+    source_rows_json: json(receipt.sourceRows || []),
+    extra_observed_sources_json: json(receipt.extraObservedSources || []),
+    expected_source_count: Number(receipt.expectedSourceCount),
+    observed_source_count: Number(receipt.observedSourceCount),
+    outcome_join_source_eligible: receipt.outcomeJoinSourceEligible ? 1 : 0,
+    source_session_hash: requiredText(receipt.sourceSessionHash, "sourceSessionHash"),
+    captured_at: requiredText(receipt.capturedAt, "capturedAt"),
+    schema_version: requiredText(receipt.schemaVersion, "schemaVersion"),
+  });
+}
+
+export function toShadowRunFingerprintRow(receipt) {
+  if (!receipt || typeof receipt !== "object") throw new Error("receipt is required");
+  return Object.freeze({
+    fingerprint_id: requiredText(receipt.fingerprintId, "fingerprintId"),
+    market_date: requiredText(receipt.marketDate, "marketDate"),
+    decision_timestamp: requiredText(receipt.decisionTimestamp, "decisionTimestamp"),
+    strategy_id: requiredText(receipt.strategyId, "strategyId"),
+    strategy_version: requiredText(receipt.strategyVersion, "strategyVersion"),
+    shadow_spec_id: requiredText(receipt.shadowSpecId, "shadowSpecId"),
+    universe_version: requiredText(receipt.universeVersion, "universeVersion"),
+    source_session_hash: requiredText(receipt.sourceSessionHash, "sourceSessionHash"),
+    shadow_accounting_hash: requiredText(receipt.shadowAccountingHash, "shadowAccountingHash"),
+    decision_hashes_json: json(receipt.decisionHashes || []),
+    ordering_hashes_json: json(receipt.orderingHashes || []),
+    ranking_experiment_hashes_json: json(receipt.rankingExperimentHashes || []),
+    capacity_hash: receipt.capacityHash || null,
+    lifecycle_hashes_json: json(receipt.lifecycleHashes || []),
+    run_fingerprint_state: requiredText(receipt.runFingerprintState, "runFingerprintState"),
+    blockers_json: json(receipt.blockers || []),
+    outcome_join_eligible: receipt.outcomeJoinEligible ? 1 : 0,
+    run_fingerprint_hash: requiredText(receipt.runFingerprintHash, "runFingerprintHash"),
+    captured_at: requiredText(receipt.capturedAt, "capturedAt"),
+    schema_version: requiredText(receipt.schemaVersion, "schemaVersion"),
+  });
+}
