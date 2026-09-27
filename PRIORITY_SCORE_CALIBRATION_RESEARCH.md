@@ -604,3 +604,50 @@ Corrected status:
 `SELECTED_GENERATION_WITNESS_SOURCE_READY / READER_PATH_PENDING / NONSELECTED_SHADOW_STILL_GUARDED`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-039 — fail-closed selected-generation classifier frozen before prospective data (2026-09-27)
+
+PR-038 established that existing storage contains a same-writer generation witness for selected plans. PR-039 converts that contract into an executable **research-only pure classifier** before any 2026-09-29 prospective rows exist.
+
+Positive certification requires all of:
+- exact scan_date;
+- exact symbol;
+- plan recorded_at exactly equals selected research snapshot updated_at;
+- sourceCompleteness = FULL_FORMAL_SCAN;
+- required V8.13 PriorityScore/ranking provenance present;
+- journal selected_count exactly equals plan_count.
+
+The test suite explicitly fails closed on:
+- date mismatch;
+- symbol mismatch;
+- timestamp mismatch;
+- PARTIAL_CURRENT_SCAN_RECONSTRUCTION;
+- missing ranking provenance;
+- journal completeness mismatch.
+
+### Reader audit
+
+Existing Production storage is already sufficient in principle:
+- /api/journal exposes plan recorded_at;
+- internal readResearchSnapshots reads trade_research_snapshots.updated_at + snapshot_json from first-primary D1.
+
+However /api/research/dashboard intentionally does not expose raw snapshot rows/timestamps. Therefore an external research script cannot currently pair both witnesses without widening a Production API.
+
+No API is widened now.
+
+Reason:
+there are not yet prospective 2026-09-29 selected V8.13 rows to justify adding another Production surface. The classifier is frozen first; after the first prospective row exists, the least-invasive reader path can be evaluated against a real row rather than speculative plumbing.
+
+This is a governance improvement: evidence requirements are pre-registered before seeing the prospective outcome/sample.
+
+Artifact:
+`research/portfolio_risk_selected_generation_classifier_v0_1.mjs`.
+
+Receipt:
+`research/portfolio_risk_selected_generation_classifier_receipt_20260927.json`.
+
+Status:
+`CLASSIFIER_READY / PRODUCTION_READER_DEFERRED / FIRST_PROSPECTIVE_LIVE_QA_PENDING`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.

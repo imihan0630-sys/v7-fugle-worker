@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "PORTFOLIO_RISK_SELECTED_GENERATION_CLASSIFIER_V0_1",
+  "observedAt": "2026-09-27T20:43:00+08:00",
+  "decision": "Implement classifier as research-only pure function first; do not widen Production API before prospective data exists.",
+  "positiveRequirements": [
+    "scan_date exact match",
+    "symbol exact match",
+    "plan.recorded_at exact equals selected snapshot.updated_at",
+    "FULL_FORMAL_SCAN",
+    "V8.13 ranking provenance present",
+    "journal selected_count equals plan_count"
+  ],
+  "negativeTests": [
+    "date mismatch",
+    "symbol mismatch",
+    "timestamp mismatch",
+    "partial reconstruction",
+    "missing provenance",
+    "journal count mismatch"
+  ],
+  "readerAudit": {
+    "existingJournalApi": "exposes plan recorded_at",
+    "existingResearchInternalReader": "readResearchSnapshots already reads snapshot updated_at and snapshot_json from first-primary D1",
+    "existingResearchDashboardApi": "does not expose raw snapshot rows/timestamps",
+    "conclusion": "Storage and internal reader are sufficient in principle, but no external read-only audit can currently pair both timestamps without widening an API. Defer surface expansion until prospective selected rows exist."
+  },
+  "status": "CLASSIFIER_READY / PRODUCTION_READER_DEFERRED / FIRST_PROSPECTIVE_LIVE_QA_PENDING",
+  "formalCoreImpact": false
+}
