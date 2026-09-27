@@ -269,3 +269,37 @@ Implementation can improve future research quality and enable actual-live Portfo
 
 Status:
 `CLASS_B_PRODUCTION_PROPOSAL_READY / OWNER_APPROVAL_REQUIRED / NOT_IMPLEMENTED`.
+
+
+## PR-051 — ledger-valid fill is not automatically sizing-attributable (2026-09-27)
+
+The Confirmed Fill Ledger v0.2.1 correctly keeps `signalEventId` optional for general holdings evidence. That is necessary because baselines and externally/manual-originated fills may not have a Formal signal.
+
+However, Portfolio Risk execution research needs a stricter second-layer classifier.
+
+A fill is `ATTRIBUTION_ELIGIBLE` only when:
+- `fill.signalEventId` exactly matches a durable signal event;
+- action is compatible with signal type;
+- symbol matches;
+- planScanDate matches;
+- fill effectiveAt is not earlier than signal occurredAt.
+
+A ledger-valid fill without signalEventId is now explicitly:
+`UNATTRIBUTED_EXECUTION`.
+
+It may still update actual holdings, but it is excluded from:
+- PriorityScore sizing realized-edge analysis;
+- signal-to-fill slippage attribution;
+- trigger-to-fill latency attribution.
+
+This preserves a clean distinction:
+`position accounting evidence != strategy-attribution evidence`.
+
+Artifacts:
+`research/execution_attribution_linkage_v0_1.mjs`;
+`research/execution_attribution_linkage_spec_v0_1.json`.
+
+Status:
+`ATTRIBUTION_CLASSIFIER_READY / CLASS_B_LEDGER_PROPOSAL_NEEDS_RESEARCH_ELIGIBILITY_ADDENDUM`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
