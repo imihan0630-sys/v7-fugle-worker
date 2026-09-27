@@ -1,0 +1,27 @@
+name: Financial Source Completeness Research
+
+on:
+  push:
+    paths:
+      - "research/financial_source_completeness_readiness_observer_v0_1.mjs"
+      - "research/financial_source_completeness_structural_falsification_v0_1.json"
+      - "tests/test_financial_source_completeness_readiness_observer_v0_1.mjs"
+      - "FINANCIAL_SOURCE_COMPLETENESS_RESEARCH.md"
+      - ".github/workflows/financial-source-completeness-research.yml"
+  pull_request:
+    paths:
+      - "research/financial_source_completeness_readiness_observer_v0_1.mjs"
+      - "research/financial_source_completeness_structural_falsification_v0_1.json"
+      - "tests/test_financial_source_completeness_readiness_observer_v0_1.mjs"
+      - "FINANCIAL_SOURCE_COMPLETENESS_RESEARCH.md"
+      - ".github/workflows/financial-source-completeness-research.yml"
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node tests/test_financial_source_completeness_readiness_observer_v0_1.mjs
