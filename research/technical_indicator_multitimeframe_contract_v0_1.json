@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "technical-indicator-multitimeframe-v0.1",
+  "updated": "2026-09-27 Asia/Taipei",
+  "researchOnly": true,
+  "decisionImpact": false,
+  "formalCore": "LOCKED",
+  "identityFields": [
+    "indicatorId",
+    "formulaVersion",
+    "timeframe",
+    "sessionRule",
+    "lookbackBars",
+    "effectiveClockHorizon",
+    "barCompletionState",
+    "sourceBarsThrough",
+    "asOf",
+    "availableAt",
+    "sessionCalendarVersion",
+    "continuityState"
+  ],
+  "alignmentStates": [
+    "ALIGNED",
+    "MIXED",
+    "CONFLICT",
+    "UNKNOWN"
+  ],
+  "barCompletionStates": [
+    "COMPLETED_HIGHER_TIMEFRAME_BAR",
+    "PARTIAL_ASOF_HIGHER_TIMEFRAME_BAR",
+    "NOT_APPLICABLE"
+  ],
+  "overlapClasses": [
+    "SAME_EVENT_DUPLICATE",
+    "NESTED_HORIZON",
+    "SHARED_COMPONENT",
+    "DISTINCT_HORIZON_CONTEXT",
+    "DISTINCT_SESSION_INFORMATION",
+    "UNKNOWN"
+  ],
+  "rules": [
+    "TIMEFRAME_AGREEMENT_IS_NOT_VOTE_COUNT",
+    "SHARED_EVENT_IDS_REQUIRED_WHEN_SAME_EVENT_REUSED",
+    "PARTIAL_AND_COMPLETED_HIGHER_TIMEFRAME_STATES_MUST_NOT_BE_POOLED",
+    "EFFECTIVE_CLOCK_HORIZON_REQUIRED",
+    "NO_BAR_SIZE_OPTIMIZATION_AFTER_OUTCOMES",
+    "OVERLAPPING_WINDOWS_DO_NOT_INCREASE_INDEPENDENT_SAMPLE_COUNT",
+    "WEEKLY_CONTEXT_MUST_BEAT_EQUIVALENT_DAILY_LONG_HORIZON_CONTROLS",
+    "INTRADAY_INCREMENTAL_VALUE_IS_EXECUTION_ACCEPTANCE_FIRST"
+  ],
+  "roleHierarchy": {
+    "WEEKLY": "MAJOR_TREND_STRUCTURE_CONTEXT",
+    "DAILY": "SELECTION_AND_PRINCIPAL_SETUP",
+    "M15": "TRANSITION_ACCEPTANCE_EXECUTION_CONFIRMATION",
+    "M5": "EXECUTION_DETAIL_OR_EARLY_OBSERVATION_WHEN_ALLOWED"
+  }
+}
