@@ -42,6 +42,7 @@ export async function runReadOnlySourceArrivalMeasurement({
   intervalSeconds = 300,
   expectedTradingDay = true,
   stopWhenDailyGateReady = false,
+  requiredDailyOnly = false,
   outputPath,
   probe = probeOfficialSources,
   now = () => new Date(),
@@ -60,11 +61,19 @@ export async function runReadOnlySourceArrivalMeasurement({
   if (typeof stopWhenDailyGateReady !== "boolean") {
     throw new Error("stopWhenDailyGateReady must be boolean");
   }
+  if (typeof requiredDailyOnly !== "boolean") {
+    throw new Error("requiredDailyOnly must be boolean");
+  }
 
   const startedAt = now().toISOString();
   const receipts = [];
   for (let attempt = 0; attempt < attempts; attempt += 1) {
-    receipts.push(...await probe({ marketDate }));
+    receipts.push(...await probe({
+      marketDate,
+      ...(requiredDailyOnly
+        ? { sourceIds: REQUIRED_DAILY_CLOCK_SOURCES_V0_1 }
+        : {}),
+    }));
     const requiredReady = REQUIRED_DAILY_CLOCK_SOURCES_V0_1.every((sourceId) =>
       receipts.some((receipt) =>
         receipt.sourceId === sourceId && receipt.state === SOURCE_PROBE_STATE.READY));
@@ -87,6 +96,12 @@ export async function runReadOnlySourceArrivalMeasurement({
     completedAt: createdAt,
     measurement,
     decisionClockAssessment,
+    collectionScope: requiredDailyOnly
+      ? "REQUIRED_DAILY_CLOCK_SOURCES_ONLY"
+      : "ALL_REGISTERED_SOURCES",
+    requestedSourceIds: requiredDailyOnly
+      ? [...REQUIRED_DAILY_CLOCK_SOURCES_V0_1]
+      : null,
     safety: {
       httpMethods: ["GET"],
       system2D1Written: false,
@@ -119,6 +134,9 @@ async function main() {
     stopWhenDailyGateReady: String(
       args["stop-when-daily-gate-ready"] || "false",
     ).toLowerCase() === "true",
+    requiredDailyOnly: String(
+      args["required-daily-only"] || "false",
+    ).toLowerCase() === "true",
     outputPath: args.output,
   });
   console.log(JSON.stringify({
@@ -126,6 +144,8 @@ async function main() {
     reportVersion: report.reportVersion,
     marketDate: report.measurement.marketDate,
     dailyGateComplete: report.measurement.dailyGateComplete,
+    collectionScope: report.collectionScope,
+    requestedSourceIds: report.requestedSourceIds,
     decisionClockStatus: report.decisionClockAssessment.status,
     decisionClockFrozen: false,
     captureArmRequested: false,
