@@ -7,30 +7,37 @@ assert.equal(x.commissionNTD,20);
 
 x=classifyCommissionEvidence({
  brokerCommissionRate:0.001425,brokerMinimumCommissionNTD:20,
- scheduleSource:"BROKER_CONTRACT",executedNotionalNTD:10000
+ scheduleSource:"BROKER_CONTRACT",calculationMethod:"MAX_RATE_MINIMUM",roundingPolicy:"NONE",executionChannel:"INTRADAY_ODD_LOT",executedNotionalNTD:10000
 });
 assert.equal(x.status,"MODELED");
 assert.equal(x.commissionNTD,20);
 
 x=classifyCommissionEvidence({
  brokerCommissionRate:0.001425,brokerMinimumCommissionNTD:20,
- scheduleSource:"BROKER_CONTRACT",executedNotionalNTD:100000
+ scheduleSource:"BROKER_CONTRACT",calculationMethod:"MAX_RATE_MINIMUM",roundingPolicy:"NONE",executionChannel:"INTRADAY_ODD_LOT",executedNotionalNTD:100000
 });
 assert.equal(x.status,"MODELED");
 assert.equal(x.commissionNTD,142.5);
 
 x=classifyCommissionEvidence({
  brokerCommissionRate:0.001425,brokerMinimumCommissionNTD:20,
+ calculationMethod:"MAX_RATE_MINIMUM",roundingPolicy:"NONE",executionChannel:"INTRADAY_ODD_LOT",
  executedNotionalNTD:100000
 });
 assert.equal(x.status,"UNKNOWN");
 
 x=classifyCommissionEvidence({
- brokerCommissionRate:0.001425,scheduleSource:"BROKER_CONTRACT",executedNotionalNTD:100000
+ brokerCommissionRate:0.001425,scheduleSource:"BROKER_CONTRACT",calculationMethod:"MAX_RATE_MINIMUM",roundingPolicy:"NONE",executionChannel:"INTRADAY_ODD_LOT",executedNotionalNTD:100000
 });
 assert.equal(x.status,"UNKNOWN");
 
 x=classifyCommissionEvidence({executedNotionalNTD:100000});
 assert.equal(x.status,"UNKNOWN");
 
-console.log(JSON.stringify({ok:true,cases:6,rule:"actual charged fee outranks broker-specific modeled schedule; missing schedule/minimum stays UNKNOWN"},null,2));
+x=classifyCommissionEvidence({
+ brokerCommissionRate:0.001425,brokerMinimumCommissionNTD:20,
+ scheduleSource:"BROKER_CONTRACT",executedNotionalNTD:100000
+});
+assert.equal(x.status,"UNKNOWN");
+
+console.log(JSON.stringify({ok:true,cases:7,rule:"actual charged fee outranks broker-specific modeled schedule; missing schedule/minimum stays UNKNOWN"},null,2));
