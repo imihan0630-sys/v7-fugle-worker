@@ -1,0 +1,90 @@
+{
+  "schemaVersion": "PORTFOLIO_RISK_CAP_CONSTRAINED_EQUAL_RISK_V0_1",
+  "observedAt": "2026-09-27T19:17:30+08:00",
+  "workflowRunId": 36315235397,
+  "jobId": 108608582934,
+  "readOnly": true,
+  "outcomeFieldsRead": false,
+  "decisionImpact": false,
+  "formalGeometry": {
+    "totalCapital": 200000,
+    "selectedCount": 3,
+    "nominalDeployRatioPct": 85,
+    "nominalDeployTargetNTD": 170000,
+    "perNameCapPct": 35,
+    "perNameCapNTD": 70000,
+    "floorToNTD": 1000
+  },
+  "scanDate": "2026-09-18",
+  "priorityScores": {
+    "2006": 69.9,
+    "3105": 89.4,
+    "6133": 74.9
+  },
+  "deterministicCurrentAllocationReplay": {
+    "scoreTotal": 234.2,
+    "continuousBeforeFloorNTD": {
+      "2006": 50738.68,
+      "3105": 64893.25,
+      "6133": 54368.06
+    },
+    "capBindingSymbols": [],
+    "flooredFormalAllocationNTD": {
+      "2006": 50000,
+      "3105": 64000,
+      "6133": 54000
+    },
+    "plannedDeploymentNTD": 168000,
+    "allocationImplementationShortfallNTD": 2000,
+    "exactlyMatchesJournal": true
+  },
+  "current": {
+    "projectedRiskHHI": 0.377238,
+    "maxToMinProjectedRiskRatio": 2.4472,
+    "highEndProjectedRiskNTD": 6483.41,
+    "highEndProjectedHeatPctOfTotalCapital": 3.2417
+  },
+  "capConstrainedEqualPlannedStopRiskContinuous": {
+    "samePlannedDeployment": true,
+    "plannedDeploymentNTD": 168000,
+    "perNameCapPct": 35,
+    "allocationsNTD": {
+      "2006": 70000,
+      "3105": 41366.71,
+      "6133": 56633.29
+    },
+    "capBindingSymbols": [
+      "2006"
+    ],
+    "projectedRiskNTD": {
+      "2006": 1831.69,
+      "3105": 2069.49,
+      "6133": 2069.49
+    },
+    "projectedRiskHHI": 0.334391,
+    "maxToMinProjectedRiskRatio": 1.1298,
+    "highEndProjectedRiskNTD": 5970.67,
+    "highEndProjectedHeatPctOfTotalCapital": 2.9853
+  },
+  "structuralDelta": {
+    "riskHHIReductionPct": 11.3581,
+    "maxMinRiskRatioReductionPct": 53.833,
+    "highEndProjectedRiskReductionPct": 7.9085,
+    "highEndProjectedHeatReductionPctPoints": 0.2564
+  },
+  "falsification": {
+    "rejectedExplanations": [
+      "The 2026-09-18 current risk concentration is mainly caused by the 35% per-name cap.",
+      "The concentration difference disappears once an equal-risk comparator obeys the current 35% cap."
+    ],
+    "survivingMechanism": "The exact journal allocations are reproduced by PriorityScore proportional sizing plus NT$1,000 flooring, with no current cap binding. Because the highest-score plan also had the widest conservative stop distance, capital weight and stop distance compounded.",
+    "limits": [
+      "Only one reconstructable multi-name date exists.",
+      "The cap-constrained comparator is continuous and does not apply Formal NT$1,000 flooring.",
+      "No future returns, MFE, MAE, stop-first, fills or realized drawdowns were used.",
+      "Lower planned-risk concentration does not prove better economic outcomes; PriorityScore may encode opportunity quality that risk equalization discards."
+    ]
+  },
+  "status": "STRUCTURAL_MECHANISM_CONFIRMED / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY",
+  "formalCoreImpact": false
+}
