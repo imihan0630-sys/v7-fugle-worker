@@ -1197,3 +1197,88 @@ Status:
 `DISCRETE_OBJECTIVE_SENSITIVITY_CONFIRMED / UNIQUE_OPTIMA_BY_SEMANTIC / STRUCTURAL_CONCLUSION_ROBUST / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-060 — break-even equations are now frozen by exposure layer (2026-09-28)
+
+PR-059 proved that the exact low-concentration comparator changes when share quantization enters the structural objective. PR-060 therefore prevents a second form of semantic drift: **the return break-even equation must use the same exposure layer as the comparator being tested.**
+
+The general identity is:
+
+`incremental paper P&L = Σ[(current exposure - comparator exposure) × fixed-cohort return] + cashDelta × cashReturn`.
+
+No 2026-09-18 return is read.
+
+### Planned-allocation layer
+
+Current:
+`50k / 64k / 54k`.
+
+Against the unique PRE_SHARE grid optimum:
+`70k / 41k / 57k`.
+
+Current beats that comparator on a fixed horizon only if:
+
+`R_3105 > (20/23) R_2006 + (3/23) R_6133`
+
+or:
+
+`R_3105 > 0.8695652174 R_2006 + 0.1304347826 R_6133`.
+
+Against the allocation underlying the POST_SHARE optimum:
+`70k / 42k / 56k`.
+
+Break-even becomes:
+
+`R_3105 > (20/22) R_2006 + (2/22) R_6133`
+
+or:
+
+`R_3105 > 0.9090909091 R_2006 + 0.0909090909 R_6133`.
+
+So even before outcomes, the required incremental edge is visibly comparator-sensitive.
+
+### Plan-preview share-exposure layer
+
+Share flooring changes total invested preview notional, so cash must be explicit.
+
+Current preview exposures:
+- 2006 = NT$49,885.92;
+- 3105 = NT$63,605.76;
+- 6133 = NT$53,979.45;
+- residual cash within the NT$168,000 planned budget = NT$528.87.
+
+Against the PRE_SHARE-global comparator after share flooring:
+- break-even:
+  `R_3105 > 0.8796394486 R_2006 + 0.1302654788 R_6133 - 0.0099049274 R_cash`.
+
+Against the POST_SHARE-global comparator:
+- break-even:
+  `R_3105 > 0.8991869919 R_2006 + 0.0899116334 R_6133 + 0.0109013747 R_cash`.
+
+The sign flips because current has:
+- more residual cash than the PRE_SHARE-global preview comparator;
+- less residual cash than the POST_SHARE-global preview comparator.
+
+This is exactly why cash cannot be silently dropped when share-floor exposure is the estimand.
+
+### Outcome firewall
+
+These equations are pre-registered algebra only.
+
+When prospective outcomes mature:
+- every R_i must come from the same formal-selection fixed-cohort D1/D3/D5 clock;
+- no BUY-only conditioning;
+- no fill assumption;
+- no switching between planned and preview exposure after seeing returns.
+
+Artifact:
+`research/sizing_exposure_breakeven_v0_1.mjs`.
+
+Protocol:
+`research/sizing_exposure_breakeven_spec_v0_1.json`.
+
+Status:
+`LAYERED_BREAK_EVEN_PREREGISTERED / OUTCOMES_UNREAD / ECONOMIC_VALUE_PENDING`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
