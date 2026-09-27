@@ -19,6 +19,14 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 
 ## Current design decisions
 
+- Physical isolated persistence blocker is RESOLVED. Next phase is repository-side design of a separate System 2 prospective Shadow capture Worker/scheduler; actual Worker/Cron creation/deployment remains a new-runtime authorization boundary.
+
+- The temporary push-based provisioning authorization path was disarmed after successful creation/replay. The provisioning workflow is manual-only again.
+
+- Physical replay verification PASS: run `36312460524`, job `108600904592` reused the existing `system2-research` database (`created=false`, `reusedExisting=true`) with the same database ID digest `9768891c9583`, schema V0.5, 26 tables and write/read PASS.
+
+- Owner explicitly authorized creation of the isolated System 2 D1. Guarded run `36312415771`, job `108600779602` created `system2-research`; database ID digest `9768891c9583`; schema V0.5; 26 `s2_` tables; required-table and write/read verification PASS; production database/Worker/Cron unchanged.
+
 - The permission/secret blocker is resolved. Remaining boundary is explicit authorization to CREATE the isolated `system2-research` D1 and apply schema V0.5 via the guarded manual provisioning path.
 
 - Post-secret audit bug diagnosed and corrected: `/user/tokens/verify` was wrong for the newly created account-owned token; `/accounts/{account_id}/tokens/verify` is now used. Resource permissions were already valid; no security gate was weakened.
@@ -210,8 +218,9 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 5. ✅ Define execution simulator assumptions for Taiwan fees/tax/slippage/gaps/limits — `system2/SYSTEM2_EXECUTION_SIMULATOR_SPEC.md`.
 6. ✅ Implement first research-only factor snapshot + frozen decision archive + isolated `s2_` schema prototype. Node/SQLite verification recorded in `system2/SYSTEM2_P1_IMPLEMENTATION_VERIFICATION.md`.
 7. ✅ Complete repository-side isolated persistence/provenance preparation — source session, full-universe accounting, run fingerprint, persistence batch/executor, research CI and isolated deployment template are complete.
-8. ⏳ Human permission boundary: configure a dedicated Cloudflare token/secret with D1 write/edit capability as `SYSTEM2_CLOUDFLARE_API_TOKEN`. Current legacy Workers token is valid but D1 list returns HTTP 401.
-9. ⏳ After the dedicated token exists, re-run read-only audit, run the guarded isolated-D1 workflow, apply V0.5, verify write/read integrity, then design prospective scheduled Shadow capture. Never fall back to System 1 production persistence.
+8. ✅ Dedicated D1 token installed and verified with account-owned token endpoint.
+9. ✅ Isolated `system2-research` D1 created, schema V0.5 applied, 26 tables verified, write/read and replay reuse checks PASS; production unchanged.
+10. ⏳ Design a separate System 2 prospective Shadow capture Worker/scheduler against `SYSTEM2_DB`. Repository-side design may continue; actual Worker/Cron deployment requires explicit owner authorization.
 
 ## Current boundary
 
