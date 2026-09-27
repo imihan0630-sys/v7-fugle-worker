@@ -1,7 +1,7 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-219.
-Updated: 2026-09-27 17:10 Asia/Taipei.
+Checkpoint sequence: B-223.
+Updated: 2026-09-27 21:42 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Detailed B-01..B-123 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
@@ -1698,3 +1698,16 @@ Updated: 2026-09-27 17:10 Asia/Taipei.
 - Durable evidence already on main: research/portfolio_risk_selected_generation_witness_v0_1.json at commit d0e558899a016107c10c0734b28936c9cfb42df3. No FORMAL_OPTIMIZATION_CANDIDATE.
 - Status: SELECTED_GENERATION_WITNESS_SOURCE_READY / READER_PATH_PENDING / NONSELECTED_SHADOW_STILL_GUARDED / FORMAL_UNCHANGED.
 - Exact next: audit existing research/read APIs for a zero-new-persistence path that can expose exact-date selected trade_research_snapshots.updated_at plus FULL_FORMAL_SCAN and V8.13 provenance alongside journal plan recorded_at. If an isolated read-only path already exists, define/test a Class-A strict-positive generation classifier and measure coverage only, outcomes closed. If exposing it requires shared API/runtime changes, freeze a Class-B reader proposal and move to the next nonblocked prospective research layer; do not weaken the equality/provenance guards.
+
+## B-223 — selected-generation storage is source-ready but current protected read surfaces cannot certify live coverage (2026-09-27 Asia/Taipei)
+- Continued B-222 exact-next after fresh latest-main/source reconciliation. Outcomes remained closed; Formal/runtime behavior unchanged.
+- Existing storage is sufficient in principle for a strict positive selected-generation witness: `/api/journal` exposes `v8_trade_journal_plans.recorded_at`, while internal `readResearchSnapshots()` reads `trade_research_snapshots.updated_at` plus `snapshot_json` from first-primary D1.
+- The fail-closed Class-A `research/portfolio_risk_selected_generation_classifier_v0_1.mjs` already exists on main and requires exact scan_date+symbol, plan/snapshot timestamp equality, FULL_FORMAL_SCAN, required PriorityScore/comparator provenance and verified journal count completeness. This was reused rather than duplicated.
+- Zero-new-persistence live coverage is nevertheless not externally measurable from current protected surfaces: `/api/research/dashboard` consumes snapshot rows internally but does not expose the raw selected snapshot `updated_at` / provenance rowset required to pair with `/api/journal` plan timestamps.
+- Therefore the B-222 alternative that an existing isolated read path might already be sufficient is falsified. This is a reader observability gap, not evidence that stored selected generations are incomplete.
+- Minimal fix remains Class B proposal-first: a protected research-only exact-date/keyset reader (or bounded equivalent extension) exposing the existing plan/snapshot witness plus requested/returned keyset counts and pagination/truncation completeness. It must add zero persistence and zero market-data calls and must not alter Formal/ranking/quota/capital/monitor/signal/push behavior.
+- Missing row, timestamp mismatch, provenance gap, or incomplete keyset remains UNKNOWN, never BAD/0. No historical reconstruction/backfill and no outcome lookup were used.
+- Durable artifact: `research/selected_generation_reader_gap_v0_1.json`, commit `36f9d423570e859fb84e0a82a6be7fb74e3228c6`.
+- Engineering boundary: existing offline classifier = Class A; exposing new shared protected runtime/API fields = Class B owner approval; sizing/ranking changes = Class C.
+- Status: `SELECTED_GENERATION_STORAGE_SOURCE_READY / CLASS_A_CLASSIFIER_READY / LIVE_COVERAGE_READER_BLOCKED / OUTCOMES_CLOSED / FORMAL_UNCHANGED`. No FORMAL_OPTIMIZATION_CANDIDATE.
+- Exact next: move to selection-time structural capital-utilization scarcity without using returns or assuming fills. On only positively complete/system-recorded plan dates, audit planned deployment as a function of selected count, pool composition and 35% single-name cap; separate intentional cash reserve from quota/gate scarcity and from unobserved intraday no-BUY. Reuse existing Portfolio Risk capital-allocation research and do not duplicate its sizing/cost studies.
