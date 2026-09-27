@@ -11,10 +11,17 @@ const days=Array.isArray(data?.days)?data.days:[],plans=Array.isArray(data?.plan
 const dayMap=new Map(days.map(d=>[String(d.scan_date||""),d])),byDate=new Map();
 for(const p of plans){
  const d=String(p.scan_date||""); if(!byDate.has(d)) byDate.set(d,[]);
+ const allocation=Number(p.total_allocation);
+ const rawFirst=Number(p.first_amount), rawSecond=Number(p.second_amount);
+ const hasStoredAmounts=Number.isFinite(rawFirst)&&Number.isFinite(rawSecond);
+ const reconstructedFirst=Number.isFinite(allocation)?Math.round(allocation*0.6):null;
+ const reconstructedSecond=Number.isFinite(allocation)&&reconstructedFirst!==null?allocation-reconstructedFirst:null;
  byDate.get(d).push({
   symbol:String(p.symbol||""),priorityScore:p.priority_score,totalAllocation:p.total_allocation,
   buyHigh:p.buy_high,firstShares:p.first_shares,secondShares:p.second_shares,
-  firstAmount:p.first_amount,secondAmount:p.second_amount
+  firstAmount:hasStoredAmounts?rawFirst:reconstructedFirst,
+  secondAmount:hasStoredAmounts?rawSecond:reconstructedSecond,
+  trancheAmountProvenance:hasStoredAmounts?"STORED":"FORMAL_60_40_RECONSTRUCTED"
  });
 }
 const dates=[];
@@ -27,11 +34,16 @@ for(const s of signals.filter(x=>String(x?.signal_type||"").toUpperCase()==="BUY
  const scanDate=String(s.plan_scan_date||""),ps=byDate.get(scanDate)||[];
  const plan=ps.find(p=>p.symbol===String(s.symbol||""));
  if(!plan) continue;
+ const snapshot=initialBuySignalBudgetSnapshot(plan,{
+   symbol:String(s.symbol||""),signalType:"BUY",signalAmount:s.signal_amount,marketPrice:s.market_price
+  });
  positiveInitialBuys.push({
   eventId:s.event_id,planScanDate:scanDate,occurredAt:s.occurred_at,symbol:String(s.symbol||""),
-  snapshot:initialBuySignalBudgetSnapshot(plan,{
-   symbol:String(s.symbol||""),signalType:"BUY",signalAmount:s.signal_amount,marketPrice:s.market_price
-  })
+  trancheAmountProvenance:plan.trancheAmountProvenance,
+  formalTrancheReconstructionAccepted:plan.trancheAmountProvenance==="STORED"||snapshot.signalAmountMatchesFirstTranche===true,
+  snapshot:(plan.trancheAmountProvenance==="STORED"||snapshot.signalAmountMatchesFirstTranche===true)
+    ?snapshot
+    :{status:"UNKNOWN",reason:"FORMAL_60_40_RECONSTRUCTION_NOT_CONFIRMED_BY_SIGNAL_AMOUNT"}
  });
 }
 console.log(JSON.stringify({
@@ -44,7 +56,7 @@ console.log(JSON.stringify({
  positiveInitialBuys,
  evidenceBoundary:{
   planReserve:"modeled from Formal plan geometry",
-  signalBudget:"positive durable BUY events only",
+  signalBudget:"positive durable BUY events only; missing plan tranche amounts may be reconstructed from frozen Formal 60/40 only when the positive signal amount exactly confirms the reconstructed first tranche",
   actualBrokerCash:"UNKNOWN",
   absentSignals:"UNKNOWN_NOT_NO_TRIGGER",
   fills:"UNKNOWN_WITHOUT_CONFIRMED_FILL_LEDGER"
