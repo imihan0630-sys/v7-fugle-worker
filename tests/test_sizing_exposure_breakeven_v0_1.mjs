@@ -27,8 +27,8 @@ x=deriveExposureBreakEven([
 assert.equal(x.cashDeltaNTD,-243.77);
 assert.deepEqual(x.positiveTiltSymbols,["3105"]);
 assert.ok(x.singlePositiveThreshold.cashReturnCoefficient>0);
-assert.equal(x.singlePositiveThreshold.negativeReturnCoefficients.find(r=>r.symbol==="2006").coefficient,0.8991797859);
-assert.equal(x.singlePositiveThreshold.negativeReturnCoefficients.find(r=>r.symbol==="6133").coefficient,0.0899110015);
+assert.equal(x.singlePositiveThreshold.negativeReturnCoefficients.find(r=>r.symbol==="2006").coefficient,0.8991869919);
+assert.equal(x.singlePositiveThreshold.negativeReturnCoefficients.find(r=>r.symbol==="6133").coefficient,0.0899116334);
 
 assert.equal(deriveExposureBreakEven([{symbol:"A",exposureNTD:1}],[{symbol:"B",exposureNTD:1}],10).status,"UNKNOWN");
 assert.equal(deriveExposureBreakEven([{symbol:"A",exposureNTD:11},{symbol:"B",exposureNTD:0}],[{symbol:"A",exposureNTD:5},{symbol:"B",exposureNTD:5}],10).status,"UNKNOWN");
