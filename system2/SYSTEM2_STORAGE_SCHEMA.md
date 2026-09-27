@@ -131,6 +131,31 @@ One immutable run-level completeness receipt per strategy / decision clock.
 Purpose:
 prove that a Shadow run did not silently preserve only selected/winning symbols. Every base-universe symbol must be frozen as excluded or every eligible symbol must have an evaluation/accounting state.
 
+### s2_capacity_runs
+One immutable capacity-allocation receipt per candidate-pool decision clock.
+
+- capacity_run_id
+- market_date
+- decision_timestamp
+- global_max
+- per_strategy_max
+- ordering_policy_id
+- ordering_policy_version
+- retained_json
+- removed_json
+- admitted_new_json
+- capacity_overflow_json
+- global_pool_json
+- active_assignments_json
+- active_non_assignments_json
+- counts_json
+- capacity_hash
+- captured_at
+- schema_version
+
+Purpose:
+audit the max-12 global pool, max-3 per-strategy active-monitor rules, multi-strategy overlap handling, and valid-but-overflow state without introducing a universal cross-strategy score.
+
 ### s2_decisions
 - decision_id
 - factor_snapshot_id
