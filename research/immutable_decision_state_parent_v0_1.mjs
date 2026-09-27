@@ -22,28 +22,8 @@ function assertText(value, field) {
   return text;
 }
 
-function canonicalValue(value) {
-  if (value === null) return null;
-  if (value === undefined) throw new Error("UNDEFINED_NOT_ALLOWED");
-  if (typeof value === "number") {
-    if (!Number.isFinite(value)) throw new Error("NON_FINITE_NUMBER");
-    return value;
-  }
-  if (typeof value === "string" || typeof value === "boolean") return value;
-  if (Array.isArray(value)) return value.map(canonicalValue);
-  if (typeof value === "object") {
-    const out = {};
-    for (const key of Object.keys(value).sort()) {
-      if (value[key] === undefined) throw new Error("UNDEFINED_NOT_ALLOWED:" + key);
-      out[key] = canonicalValue(value[key]);
-    }
-    return out;
-  }
-  throw new Error("UNSUPPORTED_CANONICAL_TYPE");
-}
-
 export function canonicalJson(value) {
-  return JSON.stringify(canonicalValue(value));
+  return canonicalJcsJson(value);
 }
 
 export function classifyActualFormalState(actualDecision) {
@@ -174,7 +154,7 @@ function finalizePreparedParent(prepared, hashes) {
     historyAdmissionReceiptId: semanticPayload.historyAdmissionReceiptId,
     sourceQualityState: semanticPayload.sourceQualityState,
     sourceSemanticFingerprint: semanticPayload.sourceSemanticFingerprint,
-    formalState,
+    formalState: semanticPayload.formalState,
     firstFailureReason: semanticPayload.firstFailureReason,
     basePassed: semanticPayload.basePassed,
     rrPassed: semanticPayload.rrPassed,
@@ -182,7 +162,7 @@ function finalizePreparedParent(prepared, hashes) {
     channel: semanticPayload.channel,
     signalLevel: semanticPayload.signalLevel,
     selectedFlag: semanticPayload.selectedFlag,
-    ranking,
+    ranking: semanticPayload.ranking,
     formalInputHash: semanticPayload.formalInputHash,
     formalResultHash: semanticPayload.formalResultHash,
     rankingTupleHash: hashes.rankingTupleHash,
