@@ -147,3 +147,45 @@ Until control estimand is frozen:
 - older BROAD_CONTROL rows should not be silently rewritten.
 
 A versioned membership/quality overlay is the safe correction path.
+
+
+## SC-TIE-001 — semantic classifier must not invent a symbol tie-break
+
+The deployed Formal comparator has no final symbol tie-break. When all six comparator fields tie, it returns zero and JavaScript stable sort preserves the original pre-sort order.
+
+The Class-A semantic prototype previously diverged from that behavior by adding:
+`String(a.symbol).localeCompare(String(b.symbol))`.
+
+That made the prototype deterministic, but not Formal-exact. Two genuinely tied qualified rows could be reordered by ticker and assigned a fabricated exact `formalPoolRank`.
+
+Repair is fail-closed:
+- non-tied complete comparator rows remain `CERTIFIED`;
+- a full tie with unique `preSortOrdinal` is `CERTIFIED`;
+- a full tie without unique tie lineage keeps only `observedPoolRank`, while `formalPoolRank=null` and `rankCertification=TIE_LINEAGE_UNKNOWN`;
+- incomplete comparator inputs similarly set `formalPoolRank=null`.
+
+This aligns the executable prototype with the already-frozen SR-007 / PVE-156 requirement for pre-sort ordinal and exact tie lineage.
+
+Machine artifact:
+`research/shadow_semantic_rank_tie_lineage_falsification_v0_1.json`.
+
+Status:
+`PROTOTYPE_SYMBOL_TIEBREAK_FALSIFIED / EXACT_TIE_LINEAGE_FAIL_CLOSED / FORMAL_UNCHANGED`.
+
+
+### SC-TIE-002 — comparator completeness is pool-level, not row-level
+
+A second falsification tightens SC-TIE-001.
+
+Absolute pool rank is a **joint** estimand. If any Formal-qualified competitor in the same price pool is missing one comparator input, that competitor's true position is unknown and can shift the ranks of otherwise complete rows.
+
+Therefore:
+- one incomplete qualified row makes exact `formalPoolRank` UNKNOWN for **all** qualified rows in that pool;
+- those rows are tagged `POOL_RANK_INPUT_INCOMPLETE`;
+- another independent price pool with complete inputs remains certifiable;
+- descriptive `observedPoolRank` may still be shown, but cannot be promoted to Formal-exact rank.
+
+This prevents a subtle false-certification where only the incomplete row was nulled while its complete peers retained exact-looking ranks.
+
+Status:
+`POOL_LEVEL_RANK_INTEGRITY_FAIL_CLOSED / FORMAL_UNCHANGED`.

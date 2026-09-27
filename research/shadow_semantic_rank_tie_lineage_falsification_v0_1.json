@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "SHADOW_SEMANTIC_RANK_TIE_LINEAGE_FALSIFICATION_V0_1",
+  "researchDate": "2026-09-27",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "sourceFinding": {
+    "productionComparator": "post-consensus priorityScore -> raw rewardPerRisk -> marketConsensusScore -> setupQuality -> sectorFlow -> relativeStrength -> return 0 on full tie",
+    "productionTieSemantics": "stable sort preserves pre-sort input order on an exact comparator tie",
+    "prototypeBefore": "same six keys, then lexicographic symbol fallback",
+    "contradiction": "Prototype could reorder a true Formal full tie and report a fabricated exact formalPoolRank."
+  },
+  "alreadyFrozenDesignRequirement": "SHADOW_SEMANTIC_MEMBERSHIP_REPAIR_SPEC SR-007 and PRICE_VOLUME_EVIDENCE require exact tie lineage/preSortOrdinal.",
+  "repair": {
+    "fullTie": "Use unique preSortOrdinal when available; otherwise preserve observed stable input order only as observedPoolRank but set formalPoolRank=null and rankCertification=TIE_LINEAGE_UNKNOWN.",
+    "missingComparatorInput": "formalPoolRank=null and rankCertification=RANKING_INPUT_INCOMPLETE.",
+    "nonTie": "remains CERTIFIED without requiring preSortOrdinal.",
+    "poolIntegrity": "If any Formal-qualified row in a price pool lacks any comparator input, exact absolute rank is uncertified for every qualified row in that pool; all formalPoolRank values become null with POOL_RANK_INPUT_INCOMPLETE. Independent clean pools remain certifiable."
+  },
+  "implications": [
+    "Exact pool rank is a joint estimand: a single unknown competitor can invalidate the absolute rank of otherwise complete peers.",
+    "The earlier Class-A claim of complete per-pool Formal rank needs the qualifier: complete only for non-ties or ties with certified preSortOrdinal.",
+    "No historical row should be retroactively assigned exact tie rank from symbol order.",
+    "Cutline research must fail closed when the cutline intersects an uncertified full comparator tie."
+  ],
+  "status": "PROTOTYPE_SYMBOL_TIEBREAK_FALSIFIED / POOL_LEVEL_COMPARATOR_COMPLETENESS_REQUIRED / TIE_LINEAGE_FAIL_CLOSED / FORMAL_UNCHANGED"
+}
