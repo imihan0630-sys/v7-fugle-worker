@@ -118,3 +118,52 @@ export function signalSideShareResidual({amount,price,suggestedShares}={}){
     semantics:"SIGNAL_SIDE_SUGGESTED_NOTIONAL_ONLY; NOT BROKER EXECUTED NOTIONAL"
   };
 }
+
+
+export function quantizedComparatorPreview(plans=[],allocations=[]){
+  const allocMap=new Map((allocations||[]).map(x=>[sym(x?.symbol??x?.code),n(x?.allocation??x?.totalAllocation)]));
+  const rows=[];
+  for(const p of plans||[]){
+    const symbol=sym(p?.symbol??p?.code);
+    const allocation=n(allocMap.get(symbol));
+    const buyHigh=n(p?.buyHigh??p?.buy_high);
+    const stop=n(p?.stop);
+    if(!symbol||allocation===null||allocation<0||buyHigh===null||buyHigh<=0){
+      return {status:"UNKNOWN",reason:"INCOMPLETE_COMPARATOR_GEOMETRY",symbol:symbol||null};
+    }
+    const firstAmount=Math.round(allocation*0.6);
+    const secondAmount=allocation-firstAmount;
+    const firstShares=Math.floor(firstAmount/buyHigh);
+    const secondShares=Math.floor(secondAmount/buyHigh);
+    const previewNotional=(firstShares+secondShares)*buyHigh;
+    const residual=allocation-previewNotional;
+    const riskPct=(stop!==null&&stop>0&&stop<buyHigh)?(buyHigh-stop)/buyHigh:null;
+    rows.push({
+      symbol,
+      comparatorAllocationNTD:round(allocation,4),
+      firstAmountNTD:firstAmount,
+      secondAmountNTD:secondAmount,
+      firstShares,
+      secondShares,
+      previewSuggestedNotionalNTD:round(previewNotional,4),
+      shareFloorResidualNTD:round(residual,4),
+      shareFloorResidualPctOfAllocation:allocation>0?round(residual/allocation*100,6):null,
+      conservativeStopRiskPct:riskPct!==null?round(riskPct*100,6):null,
+      previewProjectedStopRiskNTD:riskPct!==null?round(previewNotional*riskPct,4):null
+    });
+  }
+  const risks=rows.map(x=>x.previewProjectedStopRiskNTD).filter(Number.isFinite);
+  const hhi=xs=>{const total=xs.reduce((a,b)=>a+b,0);return total>0?round(xs.reduce((s,x)=>s+(x/total)**2,0),8):null;};
+  return {
+    status:"READY",
+    researchOnly:true,
+    decisionImpact:false,
+    allocationTotalNTD:round(rows.reduce((s,x)=>s+x.comparatorAllocationNTD,0),4),
+    previewSuggestedNotionalNTD:round(rows.reduce((s,x)=>s+x.previewSuggestedNotionalNTD,0),4),
+    shareFloorResidualNTD:round(rows.reduce((s,x)=>s+x.shareFloorResidualNTD,0),4),
+    previewProjectedStopRiskNTD:risks.length===rows.length?round(risks.reduce((a,b)=>a+b,0),4):null,
+    previewProjectedStopRiskHHI:risks.length===rows.length?hhi(risks):null,
+    rows,
+    semantics:"COMPARATOR_PLAN_PREVIEW_GEOMETRY_ONLY; same 60/40 tranche and integer-share floor applied to comparator allocation. Not fills."
+  };
+}
