@@ -15532,3 +15532,176 @@ No directional alpha is inferred from this one real witness.
 
 ### Status
 SUBLOT_VOLUME_PRECISION_GUARD_MATERIAL / MULTISESSION_LIMIT_CENSORING_CONFIRMED / NO ALPHA CLAIM / NO FORMAL CHANGE.
+
+
+## DL-003W — Volume-at-Price / Cost-Zone Research: Data Boundary First
+
+### Core distinction
+Time-series volume and price-level volume are different objects.
+
+Daily OHLCV tells us:
+- total volume for the day,
+- daily high/low/open/close.
+
+It does NOT tell us:
+- how much volume traded at each price inside the daily range,
+- true Point of Control,
+- true High/Low Volume Nodes,
+- investor-specific cost basis.
+
+Therefore a daily-bar Volume Profile created by evenly distributing volume across the high-low range, allocating all volume to typical price, or using close*volume is a model assumption, not observed market evidence.
+
+### Research rule
+Never label an OHLCV-derived approximation as “true volume profile.”
+
+Use provenance classes:
+- TRUE_PRICE_LEVEL_VOLUME: transaction/tick/bucketed traded-volume-by-price data.
+- INTRADAY_APPROX_PROFILE: intraday bars allocated to bar prices.
+- DAILY_VWAP_PROXY: daily typical/close-price volume-weighted proxy.
+- UNAVAILABLE.
+
+### Why this matters
+False precision in volume-at-price can manufacture apparent:
+- support nodes,
+- resistance nodes,
+- cost bases,
+- “trapped holder” zones.
+
+Those apparent levels may be artifacts of the allocation assumption.
+
+### Taiwan relevance
+Taiwan order-price clustering evidence shows real depth can cluster near salient prices, so a price-level distribution could be meaningful if observed directly.
+But this strengthens the need for true price-level data; daily OHLCV cannot recover order-book/transaction clustering faithfully.
+
+### Status
+PRICE_LEVEL_VOLUME_RESEARCH = DATA_DEPENDENT.
+Do not infer true POC/HVN/LVN from current daily history cache.
+
+## DL-003X — Anchored VWAP: Benchmark First, Support Hypothesis Second
+
+### External evidence
+VWAP is well established in academic/industry literature as an execution benchmark for large institutional orders.
+Research on VWAP execution studies market impact, transaction costs, volume dynamics, and benchmark tracking.
+This is strong evidence that VWAP represents a market-weighted execution-price benchmark.
+
+It is NOT equivalent evidence that VWAP is inherently predictive support/resistance.
+
+### Research hypothesis
+An anchored average traded-price proxy may help describe whether price is:
+- accepted above a recent event/base average,
+- revisiting a concentrated post-event cost region,
+- extended far above recent average transaction prices.
+
+### Candidate anchors
+Anchors must be frozen by an event known at the time:
+- patternStartConfirmedAt
+- breakoutConfirmedAt
+- eventAnnouncementDate
+- majorSwingLowConfirmedAt
+- majorSwingHighConfirmedAt
+- firstLimitUnconstrainedSession after a limit-hit sequence
+
+Do NOT choose the anchor after seeing which one later acted as support.
+
+### Daily proxy
+If only daily bars are available:
+proxyVWAP = sum(typicalPrice_t * volume_t) / sum(volume_t),
+where typicalPrice is a pre-registered bar approximation.
+
+This must be named DAILY_VWAP_PROXY, not true intraday VWAP.
+
+### Fields
+- anchorType
+- anchorDate
+- anchorKnownAt
+- anchoredVwapProxy
+- distanceToAnchoredVwapPct
+- distanceToAnchoredVwapATR
+- distanceToAnchoredVwapTicks
+- closesAboveAnchoredVwapRatio
+- firstCrossBelow
+- reclaimBars
+- slopeAnchoredVwap
+- anchorVolumeCoverage
+
+### Falsification
+Test whether Anchored VWAP proxy adds anything after:
+- MA20/MA60
+- support zones
+- pattern pivots
+- turnover/volume
+- path efficiency
+- Residual RS.
+
+If it is just another smoothed trend level, reject as redundant.
+
+### No production implication
+Research only. No anchored-VWAP support rule is approved.
+
+## DL-003Y — Investor Cost Basis Is Not Observable from Aggregate Daily Bars
+
+### Taiwan disposition-effect evidence
+Taiwan investor-level research documents a strong disposition effect:
+aggregate investors are much more likely to realize gains than losses, while behavior differs by investor type.
+
+This supports the plausibility of reference-price/cost-basis effects in aggregate behavior.
+
+However:
+- an individual investor’s purchase cost is not observed from OHLCV,
+- aggregate volume-weighted prices mix buyers and sellers,
+- shares can change hands repeatedly,
+- institutional and retail behavior differ.
+
+Therefore:
+“large historical volume at NT$100 = everyone’s cost is NT$100”
+is not defensible.
+
+### Research-safe language
+Use:
+- traded-price concentration,
+- turnover-weighted reference region,
+- anchored average transaction-price proxy.
+
+Do NOT call it:
+- exact market cost,
+- trapped-holder cost,
+- average shareholder cost,
+unless a validated holdings/cost dataset actually supports that definition.
+
+### Potential interaction
+A historical high-volume region below current price may still be a useful structural reference, but its mechanism could be:
+- anchoring,
+- order clustering,
+- prior price discovery,
+- inventory/cost reference,
+not necessarily “trapped holders.”
+
+## DL-003Z — Volume Profile Must Be Compared to Plain Structural Zones
+
+### Key question
+If true/intraday price-level volume becomes available, does it improve over simple swing-based support/resistance zones?
+
+### Required comparison
+Baseline:
+- confirmed swing zones
+- priorHigh20/priorHigh60
+- cup/W/VCP structural pivots
+- round-price control
+
+Incremental:
+- POC / high-volume nodes
+- low-volume nodes
+- profile value-area boundaries
+- anchored VWAP
+
+### Outcomes
+Use same frozen outcomes:
+- R01
+- D1/D3/D5/D10
+- MFE/MAE
+- retest hold/fail
+- breakout follow-through
+
+### Promotion discipline
+A visually appealing volume node is not enough.
+If volume-at-price does not beat or add to plain structural zones, reject it despite chart popularity.
