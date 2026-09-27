@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "ENTRY_REFERENCE_RISK_SENSITIVITY_V0_1",
+  "observedAt": "2026-09-28T05:09:00+08:00",
+  "purpose": "Falsify whether the 2026-09-18 PriorityScore sizing concentration exists only because projected stop-risk uses conservative buyHigh as the entry reference.",
+  "references": [
+    "BUY_LOW",
+    "MIDPOINT",
+    "BUY_HIGH"
+  ],
+  "frozenComparisons": [
+    "current PriorityScore allocation",
+    "same-deployment equal capital",
+    "exhaustive NT$1,000-grid global minimum HHI under 35% per-name cap"
+  ],
+  "interpretation": [
+    "BUY_LOW/MIDPOINT/BUY_HIGH are plan-time hypothetical references inside the frozen buy zone, not realized fill prices.",
+    "A surviving concentration gap across all three references strengthens structural robustness.",
+    "A sign reversal or disappearance at BUY_LOW/MIDPOINT would downgrade the current structural claim to reference-sensitive."
+  ],
+  "limits": [
+    "only one reconstructable multi-name date currently exists",
+    "no returns, fills, MFE/MAE or costs are used",
+    "exact grid optimum is not a live sizing recommendation"
+  ],
+  "status": "ENTRY_REFERENCE_ARTIFACT_FALSIFIED / STRUCTURAL_CONCLUSION_STRENGTHENED / ECONOMIC_VALUE_UNKNOWN",
+  "formalCoreImpact": false,
+  "productionReceipt": "research/entry_reference_risk_sensitivity_production_receipt_20260928.json"
+}
