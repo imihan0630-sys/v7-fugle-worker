@@ -13,12 +13,14 @@
   "repair": {
     "fullTie": "Use unique preSortOrdinal when available; otherwise preserve observed stable input order only as observedPoolRank but set formalPoolRank=null and rankCertification=TIE_LINEAGE_UNKNOWN.",
     "missingComparatorInput": "formalPoolRank=null and rankCertification=RANKING_INPUT_INCOMPLETE.",
-    "nonTie": "remains CERTIFIED without requiring preSortOrdinal."
+    "nonTie": "remains CERTIFIED without requiring preSortOrdinal.",
+    "poolIntegrity": "If any Formal-qualified row in a price pool lacks any comparator input, exact absolute rank is uncertified for every qualified row in that pool; all formalPoolRank values become null with POOL_RANK_INPUT_INCOMPLETE. Independent clean pools remain certifiable."
   },
   "implications": [
+    "Exact pool rank is a joint estimand: a single unknown competitor can invalidate the absolute rank of otherwise complete peers.",
     "The earlier Class-A claim of complete per-pool Formal rank needs the qualifier: complete only for non-ties or ties with certified preSortOrdinal.",
     "No historical row should be retroactively assigned exact tie rank from symbol order.",
     "Cutline research must fail closed when the cutline intersects an uncertified full comparator tie."
   ],
-  "status": "PROTOTYPE_SYMBOL_TIEBREAK_FALSIFIED / TIE_LINEAGE_FAIL_CLOSED / FORMAL_UNCHANGED"
+  "status": "PROTOTYPE_SYMBOL_TIEBREAK_FALSIFIED / POOL_LEVEL_COMPARATOR_COMPLETENESS_REQUIRED / TIE_LINEAGE_FAIL_CLOSED / FORMAL_UNCHANGED"
 }
