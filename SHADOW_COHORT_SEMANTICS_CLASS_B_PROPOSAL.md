@@ -1,0 +1,182 @@
+# Shadow Cohort Semantics / Membership — Class-B Production Proposal
+
+Updated: 2026-09-27 Asia/Taipei  
+Status: DESIGN_READY / OWNER_APPROVAL_REQUIRED / NOT_IMPLEMENTED  
+Formal Core: LOCKED
+
+## Why this proposal exists
+
+The current Candidate Shadow archive remains useful, but recent falsification found four independent evidence-quality limitations:
+
+1. `REJECTED_AFTER_BASE` old sampling can starve later rejection reasons.
+2. `exclusion_reason` is a fail-fast **first failure**, not marginal gate contribution.
+3. `NEAR_MISS` uses redundant `nearScore = 6 - missingCount`, ignores threshold distance, and globally truncates before pool sampling.
+4. `BROAD_CONTROL` is quota-conditioned by prior sampled membership: sampled focal rows are excluded while unsampled rows from the same latent population remain eligible.
+
+These can bias Selection Alpha or gate-relaxation research even though Formal trading behavior is untouched.
+
+## Design principle
+
+Separate three concepts that the current single `cohort` column partially conflates:
+
+- **Formal state**: what the production selector actually did.
+- **Research membership**: which comparison/sample frames a row belongs to.
+- **Quality state**: whether later QA considers the captured evidence usable.
+
+A symbol may legitimately have one Formal state and multiple research memberships.
+
+## Reuse, do not duplicate
+
+Complete qualified-list / cutline evidence remains owned by PVE-156.
+
+This proposal does not create another pool-integrity design.
+It references the PVE-156 immutable full qualified receipt and current comparator-version contract.
+
+Current deployed comparator lineage:
+`PRIORITY_RR_CONSENSUS_SETUP_SECTOR_RS_7_5_30`.
+
+## Proposed additive storage
+
+### 1. Population receipts
+
+`trade_research_population_receipts`
+
+Purpose:
+immutable per-date/pool denominators and sampling frames.
+
+Examples:
+- firstFailureCount by exact reason;
+- liquidity-admission counts;
+- setup-first-failure pool/channel/check-pattern counts;
+- broad-market control frame counts.
+
+Insert once.
+Same identity + same semantic fingerprint = idempotent.
+Same identity + different fingerprint = provenance conflict, never overwrite.
+
+### 2. Candidate membership overlay
+
+`trade_research_candidate_memberships`
+
+Allows overlapping research identities such as:
+- Formal state = QUALIFIED_NOT_SELECTED;
+- membership = INDEPENDENT_BROAD_MARKET_CONTROL.
+
+This is required if Broad Market Control is truly independent.
+
+A mutually-exclusive `RESIDUAL_CONTROL` remains possible, but it is a different estimand and must be named separately.
+
+### 3. Cohort quality overlay
+
+`trade_research_cohort_quality_overlays`
+
+Append-only QA states:
+- VALID;
+- COHORT_SEMANTIC_CONTAMINATION;
+- SOURCE_QUALITY_BLOCKED;
+- PROVENANCE_CONFLICT;
+- UNKNOWN.
+
+Historical Shadow rows are never silently rewritten.
+
+## Broad-control fork must be explicit
+
+### Option A — INDEPENDENT_BROAD_MARKET_CONTROL
+
+Use when the question is:
+“Do Selected names outperform a broad eligible market baseline?”
+
+Rules:
+- freeze sampling frame before focal sample caps;
+- deterministic outcome-free sample;
+- overlapping membership allowed;
+- report membership overlap matrix.
+
+### Option B — RESIDUAL_CONTROL
+
+Use when the question is:
+“Do focal cohorts outperform rows outside all focal populations?”
+
+Rules:
+- classify all PIT rows first;
+- remove full focal semantic populations;
+- sample the residual;
+- do not call it broad market.
+
+The existing hybrid is not retained as the long-run research contract.
+
+## First-failure guard
+
+All exclusion counts are `firstFailureCount`.
+
+They are not:
+- all-fail counts;
+- unique gate contribution;
+- expected candidate increase if a gate is removed.
+
+A separate PASS/FAIL/UNKNOWN/NOT_EVALUABLE gate-overlap observer can be research-only, but it never bypasses Formal.
+
+## Near-miss repair
+
+Do not change A/B thresholds.
+
+Prospective evidence should preserve:
+- A/B bitmasks;
+- failed counts;
+- nearest channel;
+- raw margins to current thresholds;
+- pool/channel/check-pattern denominators.
+
+Sampling:
+`pool × nearestChannel × failed-check-pattern` then deterministic hash.
+
+No outcome-tuned single “near distance score” is introduced.
+
+## Historical handling
+
+Pre-existing `trade_research_shadow_candidates` remains the historical capture record.
+
+Do not mutate it to make the past look clean.
+
+Later knowledge is attached through membership/quality overlays only where PIT state is provable.
+Otherwise mark UNKNOWN.
+
+Pre-V8.13 exact current-comparator replay remains unavailable when ranking provenance was not frozen.
+
+## Acceptance matrix
+
+Before any Production implementation could merge:
+
+- no Formal candidate/ordering change;
+- no 3+3/Top6 change;
+- no capital/entry/stop/monitor/signal/push change;
+- zero new market-data calls;
+- independent Broad Control unchanged when focal sample caps change;
+- overlapping membership supported;
+- reason starvation impossible under per-reason sampling;
+- first-failure semantics explicit;
+- Near-miss pool/channel starvation removed;
+- immutable receipt idempotency/conflict tests pass;
+- old Shadow rows remain unchanged;
+- full Regression + Repair CI pass.
+
+## Governance
+
+Because the clean design requires additive D1 tables and shared research persistence paths, classify implementation conservatively as **Class B proposal-first**.
+
+No implementation or deploy is authorized by this document.
+
+PR #117 and #121 remain useful validated prototypes for two subproblems, but neither should be interpreted as the complete cohort-semantics repair.
+
+## Optimization status
+
+This is evidence infrastructure, not a `FORMAL_OPTIMIZATION_CANDIDATE`.
+
+Its value is to prevent false promotion of:
+- liquidity relaxation;
+- A/B threshold changes;
+- RR/target changes;
+- factor reweighting;
+- Selection Alpha conclusions
+
+that might otherwise be artifacts of cohort sampling/semantics.
