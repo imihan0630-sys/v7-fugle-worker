@@ -1,6 +1,6 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-213.
+Checkpoint sequence: B-214.
 Updated: 2026-09-27 11:38 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Detailed B-01..B-123 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
@@ -1537,3 +1537,16 @@ Updated: 2026-09-27 11:38 Asia/Taipei.
 - Engineering boundary: pure observer = validated Class A; shared Worker wiring / immutable D1 persistence = Class B proposal-first; targetPrice shared-source repair = Class B if source/enrichment contracts change; target/null/RR/formula/comparator changes = Class C owner approval.
 - No V8.15 Production implementation was made. No new FORMAL_OPTIMIZATION_CANDIDATE. Current status = `TARGET_RR_SEMANTICS_VALIDATED / PERSISTENCE_CLASS_B_BLOCKED / OUTCOME_VALUE_UNKNOWN`.
 - Exact next continuation: audit Production targetPrice injection/source coverage and provenance. If no stable source contract is proven, retain source/asOf/knownAt as UNKNOWN; do not call targetPrice absent and do not backfill it historically. Continue pre-outcome scarcity research without changing target/RR rules.
+
+
+## B-214 — targetPrice injection/source provenance audited; live coverage remains UNKNOWN (2026-09-27 Asia/Taipei)
+- Continued B-213 without outcome lookup or Formal/runtime behavior changes.
+- Repository/source audit found no official or repo-owned producer that assigns `targetPrice`. The only proven injection paths are generic custom enrichment: `V7_ENRICHMENT_JSON` and `V7_ENRICHMENT_API_URL`.
+- `normalizeEnrichmentPayload()` preserves custom stock items as-is, so targetPrice can technically reach Formal when supplied externally. This proves injection feasibility only.
+- Market-consensus data is not a targetPrice producer. Its human-readable `basis` can mention broker target prices, but V7.5.30 only converts source-count consensus into score bonus and never maps a price into `f.targetPrice`.
+- Runtime observability is insufficient: `/api/version` does not expose custom-enrichment configured/readiness state; persisted after-market summary does not retain `customAvailable`, custom fetch error, targetPrice coverage or targetPrice PIT-provenance coverage. `enrichmentAvailable` and `enrichmentStocks` can be satisfied by official enrichment and therefore cannot prove custom-source success.
+- Custom enrichment API failure is caught and converted to an empty custom payload while scan continues. If Production actually relies on custom targetPrice, source failure could change target/RR state. Because live dependency is not proven, classify this as `POTENTIAL_SOURCE_AVAILABILITY_COUPLING / NOT_YET_PRODUCTION_DEFECT`.
+- Safe current states: live custom source configuration=UNKNOWN; targetPrice live coverage=UNKNOWN; source identity=UNKNOWN; asOf/knownAt=UNKNOWN. Do not convert UNKNOWN to zero/absent.
+- Durable audit: `research/target_price_injection_provenance_audit_v0_1.json`. `TARGET_RESISTANCE_RR_RESEARCH.md` and `SHADOW_COHORT_SEMANTICS_CLASS_B_PROPOSAL.md` now freeze the minimum secret-safe source-state receipt required before target-null scarcity can be attributed purely to geometry.
+- Shared runtime source-state capture remains Class B proposal-first; changing custom-source failure policy or target/RR rules is not authorized.
+- No new FORMAL_OPTIMIZATION_CANDIDATE. Exact next: continue the remaining pre-outcome scarcity layer at FINAL_GRADE. Audit channel-specific setupQuality formulas and common A/B grade thresholds for structural asymmetry, while preserving the existing final-grade gate and using no outcomes.
