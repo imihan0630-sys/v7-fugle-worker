@@ -97,6 +97,7 @@ System 2 use:
 - interaction tests with price response and ownership concentration.
 
 Semantic restrictions:
+- TWSE/TPEx unit parity is materially verified: normalized foreignNet / trustNet / dealerNet / institutionTotalNet are raw **share counts** on both markets; normalization by avgVolume20Lots*1000 is shares/shares;
 - raw net shares are FLOW, not holdings;
 - current foreignNet semantics may be broader than the decomposition desired by new research;
 - future System 2 capture should preserve foreign-main vs foreign-dealer separately when official source semantics allow;
