@@ -155,16 +155,162 @@
         "SYNTHETIC_PRICE_NOT_EXECUTABLE",
         "GAP_OBSCURATION"
       ]
+    },
+    {
+      "id": "PPO",
+      "owner": "TECHNICAL_INDICATOR",
+      "family": "FILTERED_TREND_TRANSITION",
+      "status": "MACD_NORMALIZATION_COMPARATOR",
+      "derivedFrom": [
+        "FAST_MA",
+        "SLOW_MA"
+      ],
+      "notes": "Scale-normalized MA spread; not independent from MACD family."
+    },
+    {
+      "id": "APO",
+      "owner": "TECHNICAL_INDICATOR",
+      "family": "FILTERED_TREND_TRANSITION",
+      "status": "REJECTED_AS_INDEPENDENT_CROSS_SECTIONAL_FACTOR",
+      "notes": "Absolute MA spread; price-scale dependent."
+    },
+    {
+      "id": "CMO",
+      "owner": "TECHNICAL_INDICATOR",
+      "family": "SIGNED_RETURN_BALANCE",
+      "status": "REJECTED_OR_REDUNDANT",
+      "aliasOf": "RSI_FAMILY",
+      "relation": "AFFINE_EQUIVALENT_WHEN_SMOOTHING_KERNEL_MATCHES"
+    },
+    {
+      "id": "TSI",
+      "owner": "TECHNICAL_INDICATOR",
+      "family": "SIGNED_RETURN_BALANCE",
+      "status": "LOW_PRIORITY_REDUNDANT",
+      "derivedFrom": [
+        "DOUBLE_SMOOTHED_SIGNED_RETURN",
+        "DOUBLE_SMOOTHED_ABS_RETURN"
+      ]
+    },
+    {
+      "id": "TRIX",
+      "owner": "TECHNICAL_INDICATOR",
+      "family": "FILTERED_TREND_TRANSITION",
+      "status": "FILTER_ROBUSTNESS_COMPARATOR_ONLY",
+      "derivedFrom": [
+        "TRIPLE_EMA",
+        "ONE_PERIOD_ROC"
+      ]
+    },
+    {
+      "id": "AWESOME_OSCILLATOR",
+      "owner": "TECHNICAL_INDICATOR",
+      "family": "FILTERED_TREND_TRANSITION",
+      "status": "REJECTED_AS_NEW_INFORMATION_FAMILY",
+      "derivedFrom": [
+        "SMA_FAST_MEDIAN_PRICE",
+        "SMA_SLOW_MEDIAN_PRICE"
+      ]
+    },
+    {
+      "id": "DPO",
+      "owner": "CYCLE_RESEARCH",
+      "family": "DISPLACED_CYCLE_FILTER",
+      "status": "ROLE_MISMATCH_FOR_CURRENT_SELECTION",
+      "hazards": [
+        "PLOT_COORDINATE_VS_ASOF_TIME",
+        "PARAMETER_TUNING"
+      ]
+    },
+    {
+      "id": "AROON",
+      "owner": "TECHNICAL_STRUCTURE",
+      "family": "STRUCTURAL_RECENCY",
+      "status": "NAMED_SIGNAL_NOT_PROMOTED",
+      "residualPrimitive": "EXTREME_RECENCY_20"
+    },
+    {
+      "id": "EXTREME_RECENCY_20",
+      "owner": "TECHNICAL_STRUCTURE",
+      "family": "STRUCTURAL_RECENCY",
+      "status": "WORTH_FALSIFICATION",
+      "fields": [
+        "daysSinceHigh20",
+        "daysSinceLow20"
+      ],
+      "notes": "Uses existing 20-session structural window; most recent equal extreme wins."
+    },
+    {
+      "id": "VORTEX",
+      "owner": "TECHNICAL_INDICATOR",
+      "family": "DIRECTIONAL_TREND_STRENGTH",
+      "status": "DMI_ROBUSTNESS_COMPARATOR",
+      "redundancyControls": [
+        "DMI",
+        "ADX",
+        "ATR",
+        "TREND_PERSISTENCE"
+      ]
+    },
+    {
+      "id": "ULTIMATE_OSCILLATOR",
+      "owner": "TECHNICAL_INDICATOR",
+      "family": "RANGE_LOCATION_OSCILLATOR",
+      "status": "LOW_PRIORITY_REDUNDANT",
+      "derivedFrom": [
+        "BUYING_PRESSURE",
+        "TRUE_RANGE",
+        "MULTI_HORIZON_WEIGHTING"
+      ]
+    },
+    {
+      "id": "CMF",
+      "owner": "PRICE_VOLUME",
+      "family": "CLOSE_LOCATION_WEIGHTED_VOLUME",
+      "status": "COMPARATOR_ONLY",
+      "notes": "More information-preserving than OBV because it retains within-bar close location; still PV-owned."
+    },
+    {
+      "id": "ADL",
+      "owner": "PRICE_VOLUME",
+      "family": "CLOSE_LOCATION_WEIGHTED_VOLUME",
+      "status": "PRICE_VOLUME_ONLY",
+      "hazards": [
+        "ARBITRARY_CUMULATIVE_START",
+        "PERMANENT_SHOCK_MEMORY"
+      ]
+    },
+    {
+      "id": "CHAIKIN_OSCILLATOR",
+      "owner": "PRICE_VOLUME",
+      "family": "CLOSE_LOCATION_WEIGHTED_VOLUME",
+      "status": "NESTED_PRICE_VOLUME_FILTER",
+      "derivedFrom": [
+        "ADL",
+        "MACD_FILTER"
+      ]
+    },
+    {
+      "id": "CHAIKIN_VOLATILITY",
+      "owner": "VOLATILITY_RISK",
+      "family": "RANGE_ACCELERATION",
+      "status": "REJECTED_OR_REDUNDANT_AS_NEW_FACTOR",
+      "derivedFrom": [
+        "EMA_HIGH_LOW_RANGE",
+        "ROC"
+      ]
     }
   ],
   "outcomeInferenceQueue": [
     "KD_VS_RSI",
     "MACD_VS_DIRECT_TREND",
     "ADX_VS_DIRECT_TREND_QUALITY",
-    "BOLLINGER_WIDTH_VS_ATR_REALIZED_VOL_VCP"
+    "BOLLINGER_WIDTH_VS_ATR_REALIZED_VOL_VCP",
+    "EXTREME_RECENCY_20_AFTER_PRIMARY_GATES"
   ],
   "deferredResidualQuestions": [
-    "ROC_ACCELERATION",
-    "OBV_OR_MFI_INCREMENTAL_VALUE_AFTER_PRICE_VOLUME"
+    "EXTREME_RECENCY_20",
+    "RETURN_VELOCITY_SHIFT_5V20",
+    "SIGNED_VOLUME_BALANCE20_OR_CMF_INCREMENTAL_VALUE_AFTER_PRICE_VOLUME"
   ]
 }
