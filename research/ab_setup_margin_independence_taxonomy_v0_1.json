@@ -1,0 +1,107 @@
+{
+  "schemaVersion": "AB_SETUP_MARGIN_INDEPENDENCE_TAXONOMY_V0_1",
+  "researchDate": "2026-09-27",
+  "class": "A_RESEARCH_ONLY",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "purpose": "Prevent future A/B scarcity modeling from treating dependent, OR-composite, two-sided and provenance-conditioned margins as interchangeable independent dimensions.",
+  "A": {
+    "trend": {
+      "type": "MULTI_CONSTRAINT_CONJUNCTION",
+      "margins": [
+        "ma20-0.995*ma60",
+        "close-0.97*ma20",
+        "1.005*ma20-prevMa20"
+      ],
+      "policy": "Keep separately; no Euclidean sum."
+    },
+    "pullback": {
+      "type": "TWO_SIDED_BAND",
+      "margins": [
+        "pullbackPct-2",
+        "15-pullbackPct"
+      ],
+      "policy": "Retain lower/upper boundary distances separately."
+    },
+    "nearSupport": {
+      "type": "SUPPORT_SOURCE_DEPENDENT_ABSOLUTE_DISTANCE",
+      "margins": [
+        "4-supportDistancePct"
+      ],
+      "policy": "Interpret only with supportSources/supportMode."
+    },
+    "volume": {
+      "type": "OR_COMPOSITE",
+      "margins": [
+        "1.05-volumeTodayVsPrev5",
+        "0.95-volumeContraction5to20"
+      ],
+      "policy": "Preserve both branches and which branch passes; no average."
+    },
+    "structure": {
+      "type": "MIXED_CONSTRAINT_WITH_CONDITIONAL_REDUNDANCY",
+      "margins": [
+        "close-0.985*support",
+        "todayLow-priorLow20"
+      ],
+      "policy": "When supportMode=FILTERED_CANDIDATE, close>=0.985*support is structurally guaranteed by support eligibility and is not independent. On MA20_FALLBACK it may bind. todayLow-priorLow20 remains distinct."
+    },
+    "notLate": {
+      "type": "DERIVED_TWO_AXIS_UPPER_BOUND",
+      "margins": [
+        "35-ret20",
+        "25-maDistance20Pct"
+      ],
+      "policy": "Keep both raw axes; lateStage is their OR fail-state."
+    }
+  },
+  "B": {
+    "trend": {
+      "type": "CONJUNCTION_PLUS_OR_BRANCH",
+      "margins": [
+        "ma20-0.99*ma60",
+        "bullishStack",
+        "justTurnBullish",
+        "close-ma10"
+      ],
+      "policy": "Record which OR branch establishes trend; no single distance."
+    },
+    "breakout": {
+      "type": "SIMPLE_THRESHOLD",
+      "margins": [
+        "close-1.002*priorHigh20"
+      ]
+    },
+    "volume": {
+      "type": "SIMPLE_THRESHOLD",
+      "margins": [
+        "volumeTodayVsPrev5-1.3"
+      ]
+    },
+    "candleCloseGeometry": {
+      "type": "NESTED_CONSTRAINT_GROUP",
+      "members": [
+        "dailyClosePosition>=0.65",
+        "dailyUpperShadowRatio<=0.35"
+      ],
+      "proof": "upperShadowRatio<=1-dailyClosePosition, so strongClose pass implies upperShadow pass under coherent OHLC.",
+      "policy": "Preserve both Formal booleans for provenance, but do not count them as independent research-distance dimensions."
+    },
+    "notLate": {
+      "type": "DERIVED_TWO_AXIS_UPPER_BOUND_WITH_DOMINATED_BRANCH",
+      "margins": [
+        "30-ret20",
+        "25-maDistance20Pct"
+      ],
+      "policy": "ret20<=30 dominates the ret20>35 lateStage arm; retain ret20<=30 and maDistance<=25 as the effective raw axes."
+    }
+  },
+  "modelingGuardrails": [
+    "No fitted weights before prospective CLEAN population coverage.",
+    "No single normalized distance until scale choice is preregistered and redundancy is tested.",
+    "Exact Formal bitmasks remain immutable provenance even where dimensions are dependent.",
+    "Unknown/missing source state never receives a zero margin.",
+    "Outcome models must cluster by scan date and control regime/sector/liquidity/ATR before any threshold discussion."
+  ],
+  "decision": "RAW_MARGIN_GROUPS_FROZEN / DEPENDENT_DIMENSIONS_IDENTIFIED / SUPPORT_SOURCE_PROVENANCE_ADDED / NO_FORMAL_CHANGE / NOT_FORMAL_OPTIMIZATION_CANDIDATE"
+}
