@@ -1,0 +1,110 @@
+{
+  "schemaVersion": "formal-funnel-counter-semantics-falsification-v0.1",
+  "researchDate": "2026-09-27",
+  "status": "FUNNEL_STAGE_COUNTER_SEMANTICS_AMBIGUOUS_FOR_CAUSAL_ATTRIBUTION",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "currentCounters": {
+    "scanned": "todayRows.length",
+    "with60Days": "featureRows with historyDays>=60",
+    "baseEligible": "count of scoreCandidate results with basePassed===true",
+    "rrEligible": "count of scoreCandidate results with rrPassed===true",
+    "channelCounts": "count of final scoreCandidate ok results by A/B channel",
+    "exclusions": "first failure reason under fail-fast gate order",
+    "conditionDistribution": "A/B check distribution over basePoolDiagnostics = every feature row whose final result has basePassed===true"
+  },
+  "exactBasePassedBoundary": {
+    "basePassedFalseThrough": [
+      "price<10",
+      "history<60",
+      "missing market/sector RS",
+      "missing market cap",
+      "market cap<10bn",
+      "abs daily change>=9.8%",
+      "primary liquidity reject",
+      "10-30bn special-reason reject",
+      "30-100bn extra-liquidity reject",
+      "missing chip concentration"
+    ],
+    "basePassedTrueBeginsAt": [
+      "quarterly/valuation/announcement completeness reject",
+      "official event-risk reject",
+      "valuation-risk reject",
+      "sector gate reject",
+      "A/B setup reject",
+      "fundamental count/quality reject",
+      "ATR reject",
+      "target-null reject",
+      "RR<2 reject",
+      "signal grade C reject",
+      "fully qualified"
+    ],
+    "semanticRename": "EARLY_ADMISSION_PASSED_THROUGH_CHIP_DATA"
+  },
+  "exactRrPassedBoundary": {
+    "rrPassedTrueFor": [
+      "fully qualified ok rows",
+      "signal-grade-C reject after RR already passed"
+    ],
+    "rrPassedFalseFor": [
+      "every rejection before RR evaluation",
+      "target-null",
+      "RR<2"
+    ],
+    "semanticRename": "SURVIVED_ALL_PRIOR_GATES_AND_RR_GE_2",
+    "notEquivalentTo": "number that pass RR if RR were independently evaluated"
+  },
+  "keyFalsification": {
+    "statement": "baseEligible -> rrEligible is not an RR funnel step.",
+    "why": "Between those flags lie financial/data completeness, event risk, valuation, sector, setup, fundamental quality, ATR, target availability and RR.",
+    "consequence": "The difference baseEligible - rrEligible cannot be attributed to RR, target, or any single gate."
+  },
+  "conditionDistributionScope": {
+    "denominator": "basePassed=true rows",
+    "computes": "A/B technical check pass/fail directly for all denominator rows",
+    "doesNotRequire": [
+      "financial completeness pass",
+      "event-risk pass",
+      "valuation pass",
+      "sector gate pass"
+    ],
+    "consequence": "A.fullPass/B.fullPass counts are technical-state prevalence inside the early-admitted population, not counts of rows that actually reached the A/B gate in Formal order."
+  },
+  "poolSemantics": {
+    "topLevelDiagnostics": "The first selector loop runs over all featureRows, including >=1000 THOUSAND names.",
+    "thousandStockPool": "Then THOUSAND rows are evaluated again for a dedicated sub-report.",
+    "consequence": "Top-level baseEligible/rrEligible/channelCounts/exclusions are COMBINED-universe diagnostics, not GENERAL-only diagnostics. THOUSAND sub-report is a subset, not an additive separate denominator.",
+    "generalQualifiedNotDirectlyCounted": "generalTop.length is capped selected count, not total GENERAL fully-qualified count."
+  },
+  "historicalInterpretationGuard": [
+    "Do not interpret baseEligible 513 -> rrEligible 9 as RR removing 504 names.",
+    "Do not interpret A.fullPass+B.fullPass as rows that reached the setup gate.",
+    "Do not add top-level diagnostic counts to thousandStockPool counts; that double-counts THOUSAND names.",
+    "Do not infer GENERAL qualified population from generalTop/generalCandidates because it is quota-capped."
+  ],
+  "requiredFunnelReceipt": {
+    "states": [
+      "FEATURE_ROW",
+      "EARLY_PRICE_HISTORY_RS_CAP_PASS",
+      "LIQUIDITY_SIZE_CHIP_PASS",
+      "FINANCIAL_DATA_COMPLETE",
+      "EVENT_RISK_PASS",
+      "VALUATION_PASS",
+      "SECTOR_GATE_PASS",
+      "SETUP_A_PASS",
+      "SETUP_B_PASS",
+      "FUNDAMENTAL_QUALITY_PASS",
+      "ATR_PASS",
+      "TARGET_AVAILABLE",
+      "RR_GE_2",
+      "SIGNAL_GRADE_GE_B",
+      "FULLY_QUALIFIED",
+      "SELECTED_BY_POOL_QUOTA"
+    ],
+    "perRow": "PASS / FAIL / UNKNOWN / NOT_EVALUATED for independently evaluable states, plus firstFailureReason",
+    "denominators": "exact count by scanDate × pricePool × state",
+    "transitions": "ordered reached/pass/fail counts separate from independently observable gate states",
+    "noCausalShortcut": true
+  },
+  "decision": "CURRENT_COUNTERS_ARE_COARSE_CHECKPOINTS_NOT_SINGLE_GATE_EFFECTS / CANDIDATE_SCARCITY_ATTRIBUTION_REQUIRES_STAGE_RECEIPT / NO_FORMAL_CHANGE"
+}
