@@ -1,60 +1,45 @@
 {
-  "schemaVersion": "SIGNAL_TRIGGER_PROVENANCE_AUDIT_V0_1",
-  "scope": "Initial BUY signal historical provenance for execution-clock sizing research",
-  "currentRuntimeFindings": {
-    "v7SignalDeliveryState": {
-      "role": "authoritative dedupe/lease current state",
-      "key": "state_key",
-      "storageShape": "single mutable snapshot_json per signal-state key",
-      "retainsOnSuccess": [
-        "tradeDate",
-        "active/fired sets",
-        "positionStage",
-        "episode counters",
-        "lastEntrySignalBarTime"
-      ],
-      "reservationBeforeSend": [
-        "signalId",
-        "episode",
-        "status",
-        "reservedAt"
-      ],
-      "reservationAfterSuccess": "deleted from pendingDeliveries",
-      "historicalAppendOnly": false,
-      "exactSuccessfulPayloadRetained": false
-    },
-    "v7LiveState": {
-      "role": "latest monitor snapshot",
-      "primaryKey": "id=1",
-      "behavior": "overwritten each monitor run",
-      "historicalAppendOnly": false
-    },
-    "lastMonitorKv": {
-      "role": "latest monitor mirror",
-      "behavior": "single overwritten KV value",
-      "expiration": "2 days",
-      "historicalAppendOnly": false
-    },
-    "cronRuns": {
-      "role": "append-only cron run metadata",
-      "detail": "result.status text only",
-      "notificationsPersisted": false
-    },
-    "signalStateKvMirror": {
-      "expiration": "7 days",
-      "role": "mirror of current signal state; not immutable signal history"
-    }
+  "schemaVersion": "SIGNAL_TRIGGER_PROVENANCE_AUDIT_V0_2",
+  "scope": "Initial BUY signal provenance for execution-clock sizing research",
+  "correction": "V8.5 patch-chain already provides an append-like v8_trade_journal_signals table. The original v0.1 conclusion that exact formal trigger price was not durable was too broad.",
+  "v8TradeJournalSignals": {
+    "key": "event_id PRIMARY KEY",
+    "writer": "recordTradeJournalSignal",
+    "writeOrder": "called immediately after episode-specific signalId is built, before push suppression/reservation/send",
+    "persistence": "INSERT OR IGNORE",
+    "positiveFields": [
+      "trade_date",
+      "plan_scan_date",
+      "occurred_at",
+      "symbol",
+      "signal_type",
+      "market_price",
+      "signal_amount",
+      "signal_shares",
+      "episode",
+      "plan_json",
+      "event_json"
+    ],
+    "marketPriceSemantics": "result.currentPrice at formal signal occurrence; valid as formal SIGNAL price, not fill price",
+    "signalSharesSemantics": "signal.shares from operationSignal / plan; for BUY this is precomputed plan firstShares, not buildPushPayload suggestedShares recomputed at currentPrice",
+    "deliverySemantics": "row existence proves signal occurrence, not push acceptance",
+    "failureSemantics": "write failure logs warning and signal/push can continue; absence cannot prove no signal",
+    "readbackSemantics": "/api/journal reads up to 6000 signal rows for <=365 days with no truncation flag; bulk absence/completeness is not guaranteed",
+    "healthSemantics": "/api/journal/health exposes signalCount but does not establish expected per-plan monitor completeness"
   },
-  "reconstructionFalsification": {
-    "shortcut": "lastEntrySignalBarTime + historical 15m candle can reconstruct exact BUY trigger price",
-    "result": "REJECTED",
-    "reason": "lastEntrySignalBarTime is the formal 15m bar time, while buildPushPayload.currentPrice comes from the contemporaneous quote; the quote can differ from the completed 15m close and the successful payload is not durably retained."
+  "otherStores": {
+    "v7SignalDeliveryState": "authoritative mutable lease/dedupe state; successful pending delivery record is removed",
+    "v7LiveState": "singleton latest monitor snapshot, overwritten",
+    "lastMonitorKv": "single overwritten latest monitor mirror with 2-day TTL",
+    "cronRuns": "append-only run metadata but detail stores status text, not per-plan result coverage"
   },
-  "safeInterpretation": {
-    "currentState": "May support dedupe/episode existence and recent operational debugging.",
-    "historicalTriggerPrice": "UNKNOWN unless an exact durable payload/event record is available.",
-    "fillEvidence": "Always separate; signal price is not a fill."
+  "evidenceBoundary": {
+    "positiveBuyRow": "STRONG POSITIVE evidence that formal BUY occurred at persisted market_price/occurred_at.",
+    "missingBuyRow": "UNKNOWN unless independent plan-level monitor/recorder completeness is proven.",
+    "barReconstruction": "context only; 15m bar time/close cannot substitute for the contemporaneous quote market_price.",
+    "signalShares": "not exact live suggestedShares; counterfactual orderability must recompute shares using observed market_price.",
+    "fills": "separate ACTUAL/MODELED fill evidence required."
   },
-  "status": "SIGNAL_EPISODE_EVIDENCE_EXISTS / EXACT_HISTORICAL_TRIGGER_PAYLOAD_NOT_DURABLE / EXECUTION_PROVENANCE_BLOCKED",
+  "status": "POSITIVE_BUY_SIGNAL_PRICE_DURABLE / NO_BUY_DENOMINATOR_UNCERTIFIED / LIVE_SUGGESTED_SHARES_NOT_PERSISTED / FILL_EVIDENCE_SEPARATE",
   "formalCoreImpact": false
 }
