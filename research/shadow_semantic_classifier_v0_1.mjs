@@ -80,3 +80,96 @@ export function sampleMembership(population,membership,cap=6) {
     .sort((a,b)=>String(a.symbol).localeCompare(String(b.symbol)))
     .slice(0,safeCap);
 }
+
+
+function stableHash32(text){
+  let h=2166136261>>>0;
+  for(const ch of String(text)){
+    h^=ch.codePointAt(0);
+    h=Math.imul(h,16777619)>>>0;
+  }
+  return h>>>0;
+}
+
+const SAFE_STRATUM_KEYS=new Set(["pool","nearestChannel","checkPattern"]);
+
+function safeStratum(row,keys){
+  return keys.map(key=>{
+    if(!SAFE_STRATUM_KEYS.has(key)) throw new Error("unsafe-or-unregistered-stratum-key:"+key);
+    const value=String(row?.[key]??"UNKNOWN");
+    return key+"="+value;
+  }).join("|");
+}
+
+/**
+ * Promotion-grade research sampler prototype.
+ * Semantic population must already be frozen. This function samples membership rows only;
+ * it never changes memberships or denominators.
+ *
+ * Allowed preregistered strata are deliberately narrow and outcome-free:
+ * pool, nearestChannel, checkPattern.
+ */
+export function sampleMembershipV2(population,membership,{
+  capPerStratum=6,
+  stratumKeys=["pool"],
+  samplingRuleVersion="SEMANTIC_STRATIFIED_HASH_V0_2"
+}={}){
+  const safeCap=Math.max(0,Math.floor(Number(capPerStratum)||0));
+  const keys=Array.isArray(stratumKeys)?stratumKeys.map(String):["pool"];
+  if(!keys.length) throw new Error("empty-stratum-keys");
+  for(const key of keys) if(!SAFE_STRATUM_KEYS.has(key)) throw new Error("unsafe-or-unregistered-stratum-key:"+key);
+
+  if(membership==="CHANNEL_NEAR_MISS"){
+    const required=["pool","nearestChannel","checkPattern"];
+    if(required.some(key=>!keys.includes(key))) {
+      throw new Error("channel-near-miss-requires-pool-nearestChannel-checkPattern-strata");
+    }
+  }
+
+  const eligible=(population?.rows||[])
+    .filter(row=>Array.isArray(row.memberships)&&row.memberships.includes(membership));
+
+  const buckets=new Map();
+  for(const row of eligible){
+    const stratum=safeStratum(row,keys);
+    const arr=buckets.get(stratum)||[];
+    arr.push(row);
+    buckets.set(stratum,arr);
+  }
+
+  const scanDate=String(population?.scanDate||"");
+  const strata=[];
+  const sampledRows=[];
+  for(const stratum of [...buckets.keys()].sort()){
+    const rows=buckets.get(stratum).slice();
+    rows.sort((a,b)=>{
+      const ah=stableHash32([samplingRuleVersion,scanDate,membership,stratum,a.symbol].join("|"));
+      const bh=stableHash32([samplingRuleVersion,scanDate,membership,stratum,b.symbol].join("|"));
+      return ah-bh || String(a.symbol).localeCompare(String(b.symbol));
+    });
+    const sampled=rows.slice(0,safeCap);
+    sampledRows.push(...sampled.map(row=>({...row,sampleMembershipMeta:{
+      membership,stratum,samplingRuleVersion,semanticPopulationCount:rows.length,
+      sampledCount:sampled.length,capPerStratum:safeCap,
+      samplingFraction:rows.length?sampled.length/rows.length:0
+    }})));
+    strata.push({
+      stratum,semanticPopulationCount:rows.length,sampledCount:sampled.length,
+      capPerStratum:safeCap,samplingFraction:rows.length?sampled.length/rows.length:0
+    });
+  }
+
+  return {
+    schemaVersion:"shadow-membership-sample-v0.2",
+    scanDate,
+    membership,
+    stratumKeys:keys,
+    samplingRuleVersion,
+    semanticPopulationCount:eligible.length,
+    sampledCount:sampledRows.length,
+    rows:sampledRows,
+    strata,
+    policy:"Semantic membership and denominators are frozen before sampling. Hash order is outcome-free and input-order invariant. CHANNEL_NEAR_MISS must stratify by pool x nearestChannel x checkPattern.",
+    researchOnly:true,decisionImpact:false,formalCoreImpact:false
+  };
+}
