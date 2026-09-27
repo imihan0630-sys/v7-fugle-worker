@@ -1,0 +1,71 @@
+{
+  "schemaVersion": "EXECUTION_RECORDER_EXACT_DATE_COMPLETENESS_PROPOSAL_V0_2",
+  "supersedes": "V0_1 count-only interpretation on the same proposal branch",
+  "refinementReason": "Current recorder uses INSERT OR IGNORE and milestone event windows span multiple scheduled minutes. attemptedCount > storedCount can be legitimate idempotent replay, so count equality alone cannot define completeness.",
+  "engineeringClass": "B_PROPOSAL_FIRST",
+  "productionRuntimeChanged": false,
+  "goal": "Permit a plan-day NO-BUY classification only when every scheduled monitor opportunity and every expected recorder event is positively accounted for.",
+  "dayRunCoverage": {
+    "monitorWindowTaipei": "09:00 through 13:24 inclusive on a trading day",
+    "nominalExpectedRuns": 265,
+    "requiredFields": [
+      "requestedTradeDate",
+      "expectedScheduledTimes",
+      "runReceipts",
+      "missingScheduledTimes",
+      "completeRunCoverage"
+    ],
+    "rule": "A missing scheduled run receipt is a monitor/recorder gap. It remains UNKNOWN/INCOMPLETE, never NO_BUY."
+  },
+  "runReceipt": {
+    "requiredFields": [
+      "tradeDate",
+      "scheduledTime",
+      "runId",
+      "expectedSymbols",
+      "symbolStatuses",
+      "expectedEventKeys",
+      "attemptedCount",
+      "newlyStoredCount",
+      "alreadyPresentVerifiedCount",
+      "failedCount",
+      "skippedByReason",
+      "failOpen",
+      "errorClass",
+      "recordedAt"
+    ],
+    "symbolRule": "Every plan symbol expected to be monitored must have a status for that run. result.ok=false is a coverage failure for NO-BUY inference.",
+    "idempotencyRule": "ALREADY_PRESENT_VERIFIED is acceptable only when the exact expected event key is present in the exact-date row set.",
+    "failOpenRule": "Any failOpen/errorClass/failedCount > 0 makes the affected run non-complete."
+  },
+  "rowContract": {
+    "query": "trade_date = requestedTradeDate",
+    "requiredMetadata": [
+      "totalMatchingRows",
+      "returnedRows",
+      "hasMore",
+      "truncated",
+      "nextCursor",
+      "paginationComplete",
+      "eventKeys",
+      "perEventCounts",
+      "perSymbolCounts"
+    ],
+    "rule": "All pages must be consumed or an equivalent bounded exact-date full set must be positively proven. LIMIT-only readers are UNKNOWN."
+  },
+  "signalSemantics": {
+    "buyPositive": "A V8 trade-journal BUY row already proves positive Formal BUY signal price/time.",
+    "noBuy": "A plan-day may be classified COMPLETE_NO_BUY only when all 265 expected runs are covered for that plan, no run has result/error gaps, and no expected/persisted Formal BUY event exists.",
+    "planInvalidated": "PLAN_INVALIDATED is an observed abstention episode, not a terminal day state; later recovery can still produce BUY under current state machine.",
+    "fill": "NO-BUY completeness says nothing about broker fills."
+  },
+  "protectedInvariants": [
+    "No Formal A/B/ranking/threshold change",
+    "No 3+3 quota change",
+    "No capital/allocation change",
+    "No BUY/ADD/REDUCE/SELL/STOP logic change",
+    "No monitor or push eligibility change"
+  ],
+  "status": "V0_2_CONTRACT_FROZEN / CLASS_B_RUNTIME_NOT_AUTHORIZED",
+  "formalCoreImpact": false
+}
