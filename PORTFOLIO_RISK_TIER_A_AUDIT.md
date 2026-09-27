@@ -1456,3 +1456,35 @@ Status:
 `ADD_TRANCHE_CONCENTRATION_SURVIVES / TRANCHE_STAGE_REVERSAL_FALSIFIED / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-066 — lifecycle × concentration-metric sensitivity (2026-09-28)
+
+PR-062 established metric robustness for full planned exposure, while PR-064/065 established HHI robustness for FIRST and ADD separately.
+
+PR-066 crosses both dimensions:
+
+- lifecycle stages: FIRST, ADD, FULL;
+- metrics: HHI, Gini, CV, maximum contribution share, max/min.
+
+For every stage-metric cell, Production compares:
+1. current PriorityScore sizing;
+2. equal capital;
+3. metric-specific exhaustive NT$1,000-grid global minimum under the same deployment and 35% cap.
+
+This creates 15 directional falsification cells.
+
+The purpose is to prevent a compound artifact:
+`the conclusion appears robust by stage only because HHI was used, or robust by metric only because FULL exposure was used.`
+
+Exact global optima are allowed to differ. Direction is the falsification target.
+
+Artifacts:
+`research/lifecycle_metric_sensitivity_v0_1.mjs`;
+`research/lifecycle_metric_sensitivity_spec_v0_1.json`;
+`tests/portfolio_risk_lifecycle_metric_sensitivity_readonly_audit.mjs`.
+
+Status:
+`LIFECYCLE_METRIC_PROTOCOL_READY / PRODUCTION_AUDIT_PENDING`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
