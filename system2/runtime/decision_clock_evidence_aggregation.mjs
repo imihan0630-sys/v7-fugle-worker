@@ -46,9 +46,13 @@ function compareProvenance(a, b) {
 
 export function aggregateDecisionClockEvidence({
   candidates = [],
+  scheduledRunCoverage = [],
   workflowFile = "system2-prospective-clock-evidence-readonly.yml",
 } = {}) {
   if (!Array.isArray(candidates)) throw new Error("candidates must be an array");
+  if (!Array.isArray(scheduledRunCoverage)) {
+    throw new Error("scheduledRunCoverage must be an array");
+  }
 
   const rows = candidates.map(normalizeCandidate);
   const manualDiagnostics = rows
@@ -86,6 +90,37 @@ export function aggregateDecisionClockEvidence({
     dailyEvidence: selected.map((x) => x.bundle.evidence),
   });
 
+  const coverageRows = scheduledRunCoverage.map((row, index) => {
+    if (!row || typeof row !== "object") {
+      throw new Error(`scheduledRunCoverage[${index}] is required`);
+    }
+    const marketDate = requiredText(row.marketDate, `scheduledRunCoverage[${index}].marketDate`);
+    if (typeof row.expectedTradingDay !== "boolean") {
+      throw new Error(`scheduledRunCoverage[${index}].expectedTradingDay must be boolean`);
+    }
+    return {
+      marketDate,
+      runId: requiredText(String(row.runId), `scheduledRunCoverage[${index}].runId`),
+      expectedTradingDay: row.expectedTradingDay,
+      artifactPresent: row.artifactPresent === true,
+      runConclusion: row.runConclusion ? String(row.runConclusion) : null,
+    };
+  });
+
+  const tradingDayArtifactGaps = coverageRows.filter(
+    (x) => x.expectedTradingDay === true && x.artifactPresent !== true,
+  );
+  const nonTradingScheduledRuns = coverageRows.filter(
+    (x) => x.expectedTradingDay === false,
+  );
+  const artifactCoverageAudited = coverageRows.length > 0;
+  const promotionCoverageComplete =
+    artifactCoverageAudited && tradingDayArtifactGaps.length === 0;
+
+  let promotionReadinessStatus = readiness.status;
+  if (!artifactCoverageAudited) promotionReadinessStatus = "COVERAGE_UNAUDITED";
+  else if (!promotionCoverageComplete) promotionReadinessStatus = "SCHEDULED_TRADING_DAY_ARTIFACT_GAPS";
+
   return deepFreeze({
     aggregationVersion: "S2_DECISION_CLOCK_EVIDENCE_AGGREGATION_V0_1",
     workflowFile: requiredText(workflowFile, "workflowFile"),
@@ -116,7 +151,12 @@ export function aggregateDecisionClockEvidence({
       artifactName: x.artifactName,
     })),
     readiness,
-    artifactCoverageAudited: false,
+    scheduledRunCoverage: coverageRows,
+    tradingDayArtifactGaps,
+    nonTradingScheduledRuns,
+    artifactCoverageAudited,
+    promotionCoverageComplete,
+    promotionReadinessStatus,
     exactDecisionClockAuthorized: false,
     cronAuthorized: false,
     captureEnabled: false,
