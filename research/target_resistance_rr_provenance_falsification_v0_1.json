@@ -96,6 +96,73 @@
       "selectedTarget": 120,
       "rr": 4,
       "formalResult": "RR_PASS"
+    },
+    {
+      "id": "MINOR_LOCAL_PIVOT_DOMINATES_MAJOR_RESISTANCE",
+      "entry": 100,
+      "stop": 95,
+      "candidateLevels": [
+        {
+          "source": "LOCAL_5BAR_PIVOT",
+          "value": 102
+        },
+        {
+          "source": "PRIOR_HIGH60",
+          "value": 120
+        }
+      ],
+      "selectedTarget": {
+        "source": "LOCAL_5BAR_PIVOT",
+        "value": 102
+      },
+      "rr": 0.4,
+      "formalResult": "RR_LT_2_REJECT",
+      "structuralMeaning": "A minimally-defined local pivot can dominate a much larger historical resistance solely because it is nearer."
+    },
+    {
+      "id": "SUB1PCT_OVERHEAD_IGNORED_TARGET_INFLATION",
+      "entry": 100,
+      "stop": 95,
+      "candidateLevels": [
+        {
+          "source": "LOCAL_5BAR_PIVOT",
+          "value": 100.8
+        },
+        {
+          "source": "PRIOR_HIGH60",
+          "value": 120
+        }
+      ],
+      "ignoredLevel": {
+        "source": "LOCAL_5BAR_PIVOT",
+        "value": 100.8,
+        "reason": "<=entry*1.01"
+      },
+      "selectedTarget": {
+        "source": "PRIOR_HIGH60",
+        "value": 120
+      },
+      "rr": 4,
+      "formalResult": "RR_PASS",
+      "structuralMeaning": "The 1% eligibility band can ignore nearby overhead geometry and select a much farther target, increasing computed RR."
+    },
+    {
+      "id": "ONLY_SUB1PCT_OVERHEAD_TARGET_NULL",
+      "entry": 100,
+      "stop": 95,
+      "candidateLevels": [
+        {
+          "source": "LOCAL_5BAR_PIVOT",
+          "value": 100.8
+        },
+        {
+          "source": "PRIOR_HIGH60",
+          "value": 100.9
+        }
+      ],
+      "selectedTarget": null,
+      "formalResult": "TARGET_NULL_REJECT",
+      "structuralMeaning": "The same 1% band can also convert existing nearby overhead levels into target-null when no farther eligible level exists."
     }
   ],
   "conclusions": [
@@ -103,7 +170,10 @@
     "The same technical price history can therefore change Formal eligibility solely with targetPrice presence/value.",
     "B new-high breakouts are especially exposed because priorHigh20 is structurally unusable as a target and new-high geometry can eliminate priorHigh60/pivots too.",
     "Current Shadow cannot later attribute RR/target-null outcomes to the source level that actually determined target.",
-    "This is a provenance/observability risk, not evidence that the current target rule is economically inferior."
+    "This is a provenance/observability risk, not evidence that the current target rule is economically inferior.",
+    "The function name nearestRealResistance overstates its current semantics: a minimally-defined 5-bar local pivot has no encoded prominence/touch/zone-strength distinction from major historical highs.",
+    "The fixed >1% target eligibility band is directionally ambiguous: it can ignore nearby resistance and inflate RR when a farther level exists, or produce target-null when no farther level exists.",
+    "These opposing witnesses prohibit a one-sided 'relax target gate' interpretation; future evidence must test both false-conservative and false-optimistic target geometry."
   ],
   "prospectiveCapture": {
     "minimumFields": [
@@ -127,7 +197,8 @@
       "targetNull",
       "rewardPerRisk",
       "exactFormalRejectReason",
-      "sourceCompleteness/UNKNOWN semantics"
+      "sourceCompleteness/UNKNOWN semantics",
+      "for every historical resistance: source type/date, distancePct, ATR-normalized distance, local pivot prominence proxy, touch/zone membership when causally available"
     ],
     "noNewMarketCallsPreferred": true,
     "failOpenResearchOnly": true,
@@ -139,7 +210,9 @@
     "If target-null rejects have worse/no-better path quality or materially worse execution/downside, the gate may be protective.",
     "If target-null new-high B setups show stable superior continuation without worse MAE/cost across independent dates/OOS, only then surface a target/admission reformulation candidate.",
     "If targetPrice-present rows differ materially by source/provider/vintage, do not pool them.",
-    "Never backfill historical targetPrice from current analyst targets or later-known information."
+    "Never backfill historical targetPrice from current analyst targets or later-known information.",
+    "Compare current nearest eligible 5-bar pivot target with frozen major-zone/available-air descriptors from the Pattern lane; do not assume either representation is superior.",
+    "Audit cases where ignored <=1% overhead exists but current RR passes using a farther target; these are potential optimistic-RR witnesses, not only missed-opportunity cases."
   ],
   "engineeringBoundary": {
     "provenanceCapture": "Potential Class A only if existing already-loaded values/levels are serialized to isolated Shadow with zero new source calls and no Formal impact.",
@@ -149,5 +222,10 @@
   "optimizationBridge": {
     "currentStatus": "STRUCTURAL_PROVENANCE_RISK_CONFIRMED / EVIDENCE_CAPTURE_WARRANTED / NOT_FORMAL_OPTIMIZATION_CANDIDATE",
     "futureCandidate": "TARGET_RESISTANCE_ADMISSION_REFORMULATION"
+  },
+  "formalResistanceSemantics": {
+    "localPivotDefinition": "A historical high h is a pivot when h>=two previous highs and h>=two next highs; no minimum prominence, touch count, age, volume confirmation, ATR normalization or zone width is required.",
+    "selectionRule": "All eligible sources are pooled and the minimum price > entry*1.01 wins.",
+    "onePercentDeadZone": "Any candidate resistance <= entry*1.01 is ignored entirely."
   }
 }
