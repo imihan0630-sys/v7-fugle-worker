@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "signal_grade_shadow_sufficiency_falsification_v0.1",
+  "researchDate": "2026-09-27",
+  "status": "EXISTING_SHADOW_SUFFICIENCY_REJECTED",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "inheritedStructuralFacts": {
+    "B": "B.pass theoretical minimum setupQuality=69.65, therefore FINAL_SIGNAL_GRADE >=65 is structurally redundant after valid B.pass.",
+    "A": "A.pass theoretical setupQuality range includes values below65, therefore FINAL_SIGNAL_GRADE is an additional effective A-channel admission gate."
+  },
+  "falsifiedClaim": "research/signal_grade_channel_asymmetry_v0_1.json governance.existingShadowSufficient=true",
+  "reasons": [
+    "FINAL_GRADE rejects enter generic REJECTED_AFTER_BASE rather than a complete dedicated grade-reject denominator.",
+    "REJECTED_AFTER_BASE shares six rows per price pool across all rejection reasons and is ordered by reason then symbol, so reason starvation is possible.",
+    "first-failure semantics prevent generic reject counts from measuring independent gate contribution.",
+    "legacy Shadow is same-date mutable, generation-less and not an immutable first-known decision receipt.",
+    "therefore historical incidence, prevalence and opportunity cost of A-channel grade rejection are not identifiable from current Shadow."
+  ],
+  "safeInference": {
+    "structuralAsymmetry": "CONFIRMED",
+    "livePrevalence": "UNKNOWN",
+    "historicalOpportunityCost": "UNKNOWN",
+    "outcomeBenefitOfGate": "UNKNOWN",
+    "optimizationReadiness": "NOT_READY"
+  },
+  "prospectiveMinimum": [
+    "complete denominator by scanDate x pricePool x channel for A.pass/B.pass",
+    "count RR-passed rows reaching FINAL_SIGNAL_GRADE",
+    "complete PASS/FAIL/UNKNOWN grade state, not bounded reason sample",
+    "immutable decision generation/receipt lineage",
+    "setupQuality and exact channel formula/version",
+    "preserve priorityScore/RR/sector/institution/fundamental/RS controls",
+    "equal-date primary aggregation for cross-date inference",
+    "outcomes only after population receipt is frozen"
+  ],
+  "falsificationPlan": [
+    "If A grade-rejected rows have worse controlled forward path/MAE/stop/no-follow-through than A grade-passed rows across dates/regimes/cost controls, asymmetry may be economically justified.",
+    "If rejected A rows are comparable or better after controls and gate materially drives zero-pick/candidate scarcity, SIGNAL_GRADE_CHANNEL_REFORMULATION may become a Class-C candidate.",
+    "B channel is a negative-control sanity check: grade<65 after valid B.pass should be structural zero; any occurrence signals definition/data regression.",
+    "Do not tune 65/80 thresholds from outcomes before preregistration."
+  ],
+  "optimizationBridge": "No FORMAL_OPTIMIZATION_CANDIDATE yet; prevalence/outcome materiality are not identified."
+}
