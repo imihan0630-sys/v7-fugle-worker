@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "PORTFOLIO_RISK_LIVE_LIFECYCLE_CONTRACT_V0_1",
+  "researchOnly": true,
+  "decisionImpact": false,
+  "question": "Can historical actual-live position size and portfolio heat be reconstructed from existing Production receipts without inventing fills?",
+  "sourceContracts": {
+    "tradeJournalSignals": {
+      "fields": [
+        "event_id",
+        "trade_date",
+        "plan_scan_date",
+        "plan_date",
+        "occurred_at",
+        "symbol",
+        "signal_type",
+        "position_stage",
+        "market_price",
+        "signal_amount",
+        "signal_shares",
+        "episode",
+        "reason",
+        "instruction"
+      ],
+      "semantics": "monitor/signal event ledger; signal_shares and market_price are advisory/observed, not broker-confirmed executions"
+    },
+    "positionReconciliation": {
+      "fields": [
+        "positionStage",
+        "actualShares",
+        "averageCost",
+        "firstEntryConfirmedAt"
+      ],
+      "semantics": "mutable current-position snapshot; latest reconciliation audit overwrites a single KV receipt and is not an append-only fill history"
+    }
+  },
+  "minimumHistoricalExecutionLedger": [
+    "confirmed execution id",
+    "confirmed fill timestamp",
+    "confirmed fill price",
+    "confirmed shares",
+    "action/side",
+    "shares before",
+    "shares after",
+    "average cost after",
+    "plan linkage",
+    "provenance/reconciliation quality"
+  ],
+  "falsificationRule": "If any historical actual-live heat calculation substitutes suggested shares/price or current mutable position state for missing confirmed fills, reject it as fabricated.",
+  "formalImpact": "NONE"
+}

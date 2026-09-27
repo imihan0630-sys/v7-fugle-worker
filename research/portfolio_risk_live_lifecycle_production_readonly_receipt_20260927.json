@@ -1,0 +1,62 @@
+{
+  "schemaVersion": "PORTFOLIO_RISK_LIVE_LIFECYCLE_PRODUCTION_READONLY_RECEIPT_V0_1",
+  "observedAt": "2026-09-27T00:29:03.472Z",
+  "workflowRunId": 36282609086,
+  "jobId": 108517212915,
+  "readOnly": true,
+  "productionWrites": false,
+  "endpoints": [
+    "/api/journal?days=365",
+    "/api/positions"
+  ],
+  "journal": {
+    "recordedDays": 4,
+    "plans": 4,
+    "signals": 1,
+    "signalTypeCounts": {
+      "BUY": 1
+    },
+    "ownershipSignals": 1,
+    "ownershipSignalsWithSuggestedShares": 1,
+    "ownershipSignalsWithMarketPrice": 1,
+    "explicitConfirmedFillFieldsPresent": [],
+    "responseFieldKeys": [
+      "episode",
+      "event_id",
+      "instruction",
+      "market_price",
+      "name",
+      "occurred_at",
+      "occurred_at_taipei",
+      "plan_date",
+      "plan_scan_date",
+      "position_stage",
+      "push_eligible",
+      "reason",
+      "signal_amount",
+      "signal_label",
+      "signal_shares",
+      "signal_type",
+      "symbol",
+      "trade_date"
+    ]
+  },
+  "currentPositions": {
+    "rows": 2,
+    "holdings": 0,
+    "holdingsWithCompleteCurrentSnapshot": 0,
+    "snapshotOnly": true
+  },
+  "reconstructability": {
+    "actualLiveLifecycleHistorical": false,
+    "actualLiveHeatHistorical": false,
+    "currentSnapshotCanDescribeNow": false,
+    "reasons": [
+      "NO_APPEND_ONLY_CONFIRMED_FILL_LEDGER_IN_CURRENT_JOURNAL_CONTRACT",
+      "SIGNAL_EVENTS_ARE_NOT_EXECUTION_CONFIRMATIONS",
+      "CURRENT_POSITION_RECONCILIATION_IS_MUTABLE_SNAPSHOT_NOT_EVENT_HISTORY",
+      "REDUCE_OR_ADD_HISTORY_CANNOT_BE_INFERRED_FROM_CURRENT_SHARES_WITHOUT_CONFIRMED_FILL_SEQUENCE"
+    ]
+  },
+  "interpretation": "Production read-only evidence confirms that current receipts support plan-time Tier-A risk but do not support historical actual-live position lifecycle reconstruction. Suggested signal shares/observed prices must not be treated as confirmed fills."
+}

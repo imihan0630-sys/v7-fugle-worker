@@ -886,3 +886,79 @@ No Formal allocation, ADD, REDUCE, stop, cluster cap or heat threshold change is
 
 ### Exact next
 Use only fully reconstructable plan dates to build a descriptive, outcome-independent historical Tier-A table first. Then, after enough independent dates/outcomes mature, test whether heat/concentration adds incremental downside information beyond sector/regime/volatility/PriorityScore. Correlation/cluster tests wait for exact PIT synchronized-history provenance.
+
+
+## PR-029 — Actual-live lifecycle is not historically reconstructable from current receipts (2026-09-27)
+
+This result combines source-contract audit with a Production read-only check. No outcome fields were used and no Production state was written.
+
+### Source-contract result
+The current trade-journal signal ledger stores monitor/action events such as:
+- signal type;
+- signal observation price;
+- suggested amount/shares;
+- position stage;
+- episode and reason.
+
+These are not broker-confirmed execution receipts. In particular, current journal rows do not carry an append-only execution contract with:
+- confirmed fill id;
+- confirmed fill timestamp;
+- confirmed fill price;
+- confirmed filled shares;
+- shares before/after;
+- average cost after;
+- reconciliation provenance.
+
+The current `/api/positions` path is a mutable reconciliation snapshot. It can describe current holdings when manually supplied, but it does not preserve an append-only sequence of historical fills or position transitions.
+
+### Production read-only witness
+Workflow run `36282609086`, job `108517212915` read only:
+- `/api/journal?days=365`;
+- `/api/positions`.
+
+Observed:
+- 4 recorded journal days;
+- 4 Formal plan rows;
+- 1 signal row, type BUY;
+- that BUY row has suggested shares and a market observation price;
+- 0 explicit confirmed-fill fields in the journal response contract;
+- 2 current position rows, 0 current holdings, 0 complete holding snapshots.
+
+Therefore:
+- `actualLiveLifecycleHistorical = false`;
+- `actualLiveHeatHistorical = false`.
+
+### Falsification rule
+Never reconstruct historical actual holdings by:
+- treating `signal_shares` as filled shares;
+- treating signal `market_price` as execution price;
+- rolling current `actualShares` backward through time;
+- inferring ADD/REDUCE quantities from plan shares when no confirmed execution exists.
+
+Any such reconstruction is fabricated and must be rejected.
+
+### What remains valid
+Plan-time Tier-A metrics remain valid where immutable plan fields are complete:
+- projected heat;
+- deployment ratio;
+- concentration decomposition;
+- projected stop-risk intensity;
+- reserve decomposition.
+
+Current actual-position snapshots may describe **now** only when `actualShares + averageCost + firstEntryConfirmedAt` are complete. They still do not prove the historical path that produced the snapshot.
+
+### Engineering boundary
+A future append-only confirmed-fill ledger would be an evidence/infrastructure improvement, not an automatic trading-rule change. It must remain separate from signal generation and cannot silently reinterpret historical suggestions as executions.
+
+Durable artifacts:
+- `research/portfolio_risk_live_lifecycle_contract_v0_1.json`;
+- `tests/portfolio_risk_live_lifecycle_readonly_audit.mjs`;
+- `research/portfolio_risk_live_lifecycle_production_readonly_receipt_20260927.json`.
+
+Lane status remains:
+`PORTFOLIO_RISK = FALSIFICATION_IN_PROGRESS / PLAN_TIME_TIER_A_RECONSTRUCTABLE / ACTUAL_LIVE_HISTORY_BLOCKED`.
+
+No Formal allocation, ADD/REDUCE, stop, monitoring, push or execution behavior changed.
+
+### Exact next
+Do not invent live-position history. Continue prospective evidence design for an append-only confirmed-fill/reconciliation ledger only if it can be isolated without changing Formal decisions. In parallel, continue outcome-independent plan-risk decomposition and wait for enough independent plan dates before testing whether Tier-A metrics add downside information beyond channel, volatility, PriorityScore and regime.
