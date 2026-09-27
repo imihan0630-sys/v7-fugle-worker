@@ -1,6 +1,6 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-201.
+Checkpoint sequence: B-202.
 Updated: 2026-09-27 08:30 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Detailed B-01..B-123 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
@@ -1312,3 +1312,21 @@ Updated: 2026-09-27 08:30 Asia/Taipei.
 - Durable artifacts: `research/confirmed_fill_ledger_v0_2_1.mjs`, `tests/test_confirmed_fill_ledger_v0_2_1.mjs`, `research/confirmed_fill_ledger_spec_v0_2_1.json`.
 - Status: `CONFIRMED_FILL_LEDGER_V0_2_1 = DESIGN_READY / CLASS_B_PROPOSAL_FIRST / NOT_IMPLEMENTED`. No Worker/runtime/Formal behavior changed.
 - Exact next: build the Production proposal from v0.2.1 with additive D1 storage, no-update/no-delete application semantics, idempotent source receipts, explicit head/version checks, read-model isolation, feature flag and rollback. Do not implement without owner approval.
+
+
+## B-202 — Confirmed Fill Ledger Class-B Production proposal ready; implementation intentionally stopped at approval boundary (2026-09-27 08:52 Asia/Taipei)
+- Built the minimal Production proposal only after v0.2.1 survived bootstrap/PIT/provenance falsification. No Production implementation was performed.
+- Proposed storage is additive: immutable evidence table `v8_confirmed_execution_events` plus rebuildable derived head cache `v8_execution_position_heads`. Existing journal/positions tables are not replaced.
+- Event evidence remains append-only. Corrections insert new rows; application UPDATE/DELETE of execution evidence is prohibited. The derived head is explicitly not evidence and can be rebuilt.
+- Proposed API is separate from `/api/positions`: validation-only POST, append-only event POST behind a dedicated write feature flag, read-only events GET and health GET.
+- Idempotency is frozen: same event/source receipt + same canonical payload => readback/no new row; same identity + different payload => conflict, never mutation.
+- Concurrency guard requires `expectedHeadEventId`; stale predecessor => conflict/refetch/reconcile. Exact D1 atomic event+head transaction semantics must be proven before deploy.
+- Correction replay that breaks downstream shares-before/after sets `RECONCILIATION_REQUIRED`; downstream receipts are never silently rewritten.
+- Strict isolation remains: no signal->fill conversion, no /api/positions->fill conversion, no quote/candle->execution confirmation, and no Formal read dependency in Phase A.
+- Rollback design is low-risk: additive schema remains, write flag can disable capture, Worker code can roll back independently, captured evidence is not deleted, Formal selection/monitoring continues independently.
+- Acceptance matrix requires baseline/reduce, zero->BUY, no-baseline rejection, planScanDate, epoch/account isolation, idempotency conflict, stale-head conflict, PIT correction, reconciliation-required, zero writes from /api/positions and signal generation, and Formal-output invariance.
+- PR #123 validation all passed: Portfolio Risk Tier-A Research run 36283713896 SUCCESS; V8 Repair CI run 36283713965 SUCCESS; V8 Regression Tests run 36283713944 SUCCESS. PR #123 merged at `147566fccc0fce3327f71460b18c1c9b09c37418`.
+- Durable proposal: `CONFIRMED_FILL_LEDGER_CLASS_B_PROPOSAL.md`, `research/confirmed_fill_ledger_class_b_proposal_v0_1.json`, `tests/test_confirmed_fill_ledger_class_b_proposal_v0_1.mjs`.
+- Status: `CLASS_B_PRODUCTION_PROPOSAL_READY / OWNER_APPROVAL_REQUIRED / NOT_IMPLEMENTED`.
+- This is evidence infrastructure, not a FORMAL_OPTIMIZATION_CANDIDATE by itself. Expected value is enabling trustworthy actual-live Portfolio Risk, Trading Frictions and REDUCE/RE-ADD studies; no claim of improved stock-selection returns is made.
+- This is the intentional stop boundary for implementation: any D1/API/runtime deployment requires explicit owner approval.
