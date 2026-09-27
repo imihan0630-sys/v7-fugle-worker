@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "cost-stress-gate-semantics-falsification-v0.1",
+  "researchDate": "2026-09-27",
+  "status": "COST_COVERAGE_NOT_COST_ROBUSTNESS_CONFIRMED",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "currentImplementation": {
+    "function": "researchCostStress",
+    "population": "SELECTED rows with finite D5 return",
+    "scenariosRoundTripBps": [
+      30,
+      60,
+      100
+    ],
+    "calculation": "netReturn = gross D5 return - frictionPct",
+    "status": "DESCRIPTIVE_READY if selectedD5Samples>=30 regardless of scenario economics",
+    "governanceBlocker": "researchGovernanceMaturity blocks only when selectedD5Samples<30.",
+    "scenarioOutcomeUsedForEligibility": false
+  },
+  "fixedSyntheticWitness": {
+    "selectedD5Samples": 30,
+    "hypotheticalScenarioResults": [
+      {
+        "roundTripBps": 30,
+        "avgNetPct": -2
+      },
+      {
+        "roundTripBps": 60,
+        "avgNetPct": -2.3
+      },
+      {
+        "roundTripBps": 100,
+        "avgNetPct": -2.7
+      }
+    ],
+    "currentCostStressStatus": "DESCRIPTIVE_READY",
+    "currentGovernanceCostBlocker": false,
+    "conclusion": "Sufficient sample count can satisfy the cost-related governance check even when every displayed stress scenario is economically adverse."
+  },
+  "scopeProblems": [
+    "It is an equal-stock selected-name D5 stress, not portfolio-capital-weighted realized trading cost.",
+    "It uses signal/selection-date outcome returns rather than verified fills/turnover.",
+    "It tests absolute selected returns, not candidate-specific incremental alpha after costs.",
+    "Current generic outcome provenance guards also apply to the D5 returns feeding this stress."
+  ],
+  "safeInterpretation": [
+    "selectedD5Samples>=30 = COST_STRESS_COVERAGE_READY only.",
+    "The 30/60/100bps table is descriptive sensitivity, not proof of cost robustness.",
+    "A future Formal optimization candidate must evaluate its own incremental effect under a preregistered, evidence-backed friction model.",
+    "Do not invent a new universal pass threshold from these outcomes."
+  ],
+  "requiredRepair": [
+    "Separate costCoverageState from costEconomicState.",
+    "Until Trading Frictions provides an evidence-backed applicable cost model, costEconomicState is UNKNOWN for promotion purposes.",
+    "When a candidate is proposed, freeze the relevant turnover/execution assumptions before outcome comparison.",
+    "Use verified fill/turnover where available; label modeled vs actual costs separately.",
+    "Governance must not treat sample-count sufficiency as completion of the cost-economics requirement."
+  ],
+  "decision": "COST_STRESS_SAMPLE_GATE_ONLY / COST_ECONOMIC_ROBUSTNESS_NOT_MACHINE_GATED / PROMOTION_COST_CHECK_INCOMPLETE / NO_FORMAL_CHANGE"
+}
