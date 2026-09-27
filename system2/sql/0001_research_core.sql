@@ -105,6 +105,59 @@ CREATE INDEX IF NOT EXISTS idx_s2_shadow_run_strategy_date
 
 
 
+
+CREATE TABLE IF NOT EXISTS s2_strategy_overlap_receipts (
+  receipt_id TEXT PRIMARY KEY,
+  experiment_id TEXT NOT NULL,
+  experiment_version TEXT NOT NULL,
+  market_date TEXT NOT NULL,
+  decision_timestamp TEXT NOT NULL,
+  strategy_a_json TEXT NOT NULL,
+  strategy_b_json TEXT NOT NULL,
+  shared_core_families_json TEXT NOT NULL,
+  distinct_core_a_json TEXT NOT NULL,
+  distinct_core_b_json TEXT NOT NULL,
+  shared_all_families_json TEXT NOT NULL,
+  diagnostics_json TEXT NOT NULL,
+  independent_same_clock_validity INTEGER NOT NULL,
+  naive_strategy_count_bonus_allowed INTEGER NOT NULL,
+  overlap_priority_effect_authorized INTEGER NOT NULL,
+  research_state TEXT NOT NULL,
+  overlap_hash TEXT NOT NULL UNIQUE,
+  captured_at TEXT NOT NULL,
+  schema_version TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_s2_strategy_overlap_date
+  ON s2_strategy_overlap_receipts (market_date, decision_timestamp);
+
+CREATE TABLE IF NOT EXISTS s2_candidate_concentration_receipts (
+  receipt_id TEXT PRIMARY KEY,
+  experiment_id TEXT NOT NULL,
+  experiment_version TEXT NOT NULL,
+  market_date TEXT NOT NULL,
+  decision_timestamp TEXT NOT NULL,
+  classification_version TEXT NOT NULL,
+  global_count INTEGER NOT NULL,
+  known_industry_count INTEGER NOT NULL,
+  unknown_industry_count INTEGER NOT NULL,
+  known_industry_coverage REAL NOT NULL,
+  unknown_industry_symbols_json TEXT NOT NULL,
+  industry_rows_json TEXT NOT NULL,
+  largest_industry_json TEXT NOT NULL,
+  industry_hhi_known_only REAL,
+  strategy_membership_counts_json TEXT NOT NULL,
+  multi_strategy_symbol_count INTEGER NOT NULL,
+  effect_authorization_json TEXT NOT NULL,
+  warnings_json TEXT NOT NULL,
+  concentration_hash TEXT NOT NULL UNIQUE,
+  captured_at TEXT NOT NULL,
+  schema_version TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_s2_candidate_concentration_date
+  ON s2_candidate_concentration_receipts (market_date, decision_timestamp);
+
 CREATE TABLE IF NOT EXISTS s2_rank05_displacement_receipts (
   receipt_id TEXT PRIMARY KEY,
   experiment_id TEXT NOT NULL,
