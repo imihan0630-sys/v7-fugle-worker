@@ -19,6 +19,12 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 
 ## Current design decisions
 
+- This is an explicit evidence-first stop: BREAKOUT_ACCEPTANCE_CONFLUENCE and GROWTH_REPRICING_CONFLUENCE remain candidate interactions, not bonuses. No confluence ranking effect has been assumed.
+
+- Interaction observation receipt implemented and verified: PIT-ineligible/missing components prevent KNOWN state; non-KNOWN forces INDETERMINATE; redundancyState=NOT_TESTED is not ranking-eligible; only KNOWN + determinate + CONTROLLED_FOR_RESEARCH can become research ranking-eligible.
+
+- RANK-03 CONFLUENCE（共振） research question preregistered, but ranking challenger intentionally NOT ACTIVATED. A confluence interaction may not receive ranking priority before PIT-valid component receipt + redundancy control exists.
+
 - Ranking experiment receipts implemented: baseline/challenger policy hashes, common-support symbols, candidate-set equality and rank deltas are frozen before outcomes; outcomeAttached=false at preregistration. Research-only storage/serializer added.
 
 - RANK-02 challenger verification PASS. EntryReadiness cannot change StrategyValidity, cannot make non-proximate names active-monitor eligible, and is tested only as incremental ordering information beyond RANK-01.
