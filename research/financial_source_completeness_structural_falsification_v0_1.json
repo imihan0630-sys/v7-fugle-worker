@@ -1,0 +1,48 @@
+{
+  "schemaVersion": "FINANCIAL_SOURCE_COMPLETENESS_STRUCTURAL_FALSIFICATION_V0_1",
+  "researchDate": "2026-09-27",
+  "class": "A_RESEARCH_ONLY",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "gate": "FINANCIAL_SOURCE_COMPLETENESS",
+  "formalExpression": "!(quarterRevenue>0) || !financialBasis || revenueQoQ missing || revenueQuarterYoY missing || valuationObserved!==true || priceBookRatio missing || announcementsVerified!==true",
+  "scanLevelPrerequisite": "runAfterMarketScan aborts before scoring when FINANCIAL, VALUATION or ANNOUNCEMENTS quality snapshot is absent.",
+  "canonicalProducerDependencies": {
+    "financial": {
+      "producer": "deriveQuarterlyFinancials()",
+      "facts": [
+        "A stock is emitted only when latest, previous and same-quarter-last-year single-quarter revenue reconstructions all exist.",
+        "subtractQuarter() returns only when reconstructed quarter revenue is >0.",
+        "Given positive latest/previous/last-year revenue, revenueQoQ and revenueQuarterYoY are finite growth values.",
+        "Every emitted stock receives a non-empty financialBasis descriptive string."
+      ],
+      "consequence": "For current canonical FINANCIAL.stocks rows, quarterRevenue>0 + financialBasis truthy + revenueQoQ observed + revenueQuarterYoY observed are a single producer-integrity bundle rather than four independent readiness dimensions."
+    },
+    "valuation": {
+      "producer": "validateOfficialQualityData(VALUATION)",
+      "facts": [
+        "Rows with null/negative PB are rejected at validation.",
+        "Every emitted valuation stock receives valuationObserved=true and numeric priceBookRatio."
+      ],
+      "consequence": "For current canonical VALUATION.stocks rows, valuationObserved and priceBookRatio-observed collapse to one symbol-membership/integrity bundle."
+    },
+    "announcements": {
+      "producer": "validateOfficialQualityData(ANNOUNCEMENTS) + runAfterMarketScan merge",
+      "facts": [
+        "Successful validation returns sourcesVerified=true.",
+        "runAfterMarketScan assigns announcementsVerified=announcements.sourcesVerified===true to every market row.",
+        "A symbol with no matching announcement need not have an officialAnnouncements array; Formal treats missing array as []."
+      ],
+      "consequence": "On the current canonical validated path, announcementsVerified is a scan-global source state, not a per-symbol completeness dimension; after a successful current-version validated announcement snapshot it is structurally true."
+    }
+  },
+  "denominatorImplications": [
+    "Seven textual subconditions must not be counted as seven independent scarcity causes.",
+    "A promotion-grade per-symbol denominator needs exact pre-gate reach plus same-generation FINANCIAL and VALUATION symbol membership.",
+    "Global dataset count thresholds do not prove every same-day market symbol is covered.",
+    "A whole missing FINANCIAL/VALUATION/ANNOUNCEMENTS snapshot is a scan-level abort and must not be mixed with per-symbol completeness rejects."
+  ],
+  "observerVersionGuard": "Use formal_gate_overlap_observer_v0_2 or equivalent corrected null/truthiness semantics. V0.1 is not safe for empirical counts.",
+  "historicalPITGuard": "Existing mutable quality snapshots do not preserve immutable firstKnownAt. Current structural conclusions do not authorize historical outcome inference.",
+  "decision": "SEVEN_CHECKS_COLLAPSE_TO_TWO_PER_SYMBOL_SOURCE_BUNDLES_PLUS_ONE_SCAN_GLOBAL_ANNOUNCEMENT_STATE / GLOBAL_READY_NE_SYMBOL_COMPLETE / PROSPECTIVE_DENOMINATOR_WARRANTED / FORMAL_UNCHANGED / NOT_FORMAL_OPTIMIZATION_CANDIDATE"
+}
