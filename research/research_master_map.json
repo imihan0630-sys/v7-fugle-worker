@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-09-27T08:45:00+08:00",
+  "updatedAt": "2026-09-27T08:52:00+08:00",
   "status": "BASELINE_V0_2_PARTIAL_RECONCILIATION",
   "formalCore": "LOCKED",
   "authority": {
@@ -209,7 +209,7 @@
       "domain": "PORTFOLIO_CAPITAL_READD",
       "level": "L2",
       "status": "FALSIFICATION_IN_PROGRESS",
-      "basis": "Plan-time Tier-A reconstruction is validated. Historical actual-live holdings/heat remain blocked because signals are not fills and /api/positions is mutable. Confirmed Fill Ledger v0.2 now resolves ledger-start bootstrapping by separating non-trade POSITION_BASELINE from FILL evidence, freezes effectiveAt/confirmedAt PIT correction semantics and account scope, and prohibits auto-converting position snapshots into executions. Design is Class-B proposal-first and NOT implemented. L2 retained; no allocation/risk threshold change authorized."
+      "basis": "Plan-time Tier-A risk is reconstructable; historical actual-live holdings/heat remain blocked under current Production receipts. Confirmed Fill Ledger v0.2.1 is the surviving research contract: baseline vs fill separation, account+epoch scope, required planScanDate on FILL, PIT effectiveAt/confirmedAt and append-only corrections. A minimal additive D1/API Class-B Production proposal is now validated and ready for owner review, but NOT implemented. Phase A would be evidence-only with no Formal read dependency. L2 retained; no risk threshold/allocation change authorized."
     },
     {
       "id": "CAPITAL_READD",
