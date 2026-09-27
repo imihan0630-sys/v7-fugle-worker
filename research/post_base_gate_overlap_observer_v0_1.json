@@ -1,0 +1,30 @@
+{
+  "schemaVersion": "0.1",
+  "id": "POST_BASE_GATE_OVERLAP_OBSERVER",
+  "updated": "2026-09-27T11:12:00+08:00",
+  "status": "SPEC_FROZEN_NOT_IMPLEMENTED",
+  "governanceClass": "A_DOCUMENTATION_ONLY",
+  "formalCore": "LOCKED_UNCHANGED",
+  "purpose": "Measure overlap among independently evaluable post-base gates without treating fail-fast firstFailureCount as marginal gate contribution.",
+  "states": ["PASS","FAIL","UNKNOWN","NOT_EVALUABLE"],
+  "rules": {
+    "preserveFormalFirstFailure": true,
+    "noGateBypassAsFormal": true,
+    "noHistoricalShadowFabrication": true,
+    "unknownNeverBadOrZero": true,
+    "independentInferenceUnit": "scanDate"
+  },
+  "gateOrder": ["FINANCIAL_READINESS","MAJOR_ANNOUNCEMENT_RISK","VALUATION_GROWTH","SECTOR_STATE","SETUP_AB","FUNDAMENTAL_COUNT","FUNDAMENTAL_QUALITY","ATR_QUALITY","TARGET_GEOMETRY","RR_2X","SIGNAL_GRADE"],
+  "criticalSemantics": {
+    "FUNDAMENTAL_QUALITY": "NOT_EVALUABLE when fundamentalCount<3; otherwise PASS iff fundamentalScore>=25",
+    "TARGET_GEOMETRY": "NOT_EVALUABLE unless setup/channel and entry/stop geometry are evaluable; missing PIT target provenance remains UNKNOWN",
+    "RR_2X": "NOT_EVALUABLE unless target geometry is PASS; target-null is not RR=0",
+    "SIGNAL_GRADE": "NOT_EVALUABLE unless setup/channel is evaluable"
+  },
+  "receipts": ["scanDate","symbol","pricePool","formalFirstFailureReason","gateDefinitionVersion","perGateState","unknownReason","sourceCompletenessFlags"],
+  "reporting": ["per-gate PASS/FAIL/UNKNOWN/NOT_EVALUABLE denominators","pairwise evaluable denominator","pairwise overlap","firstFailureCount separately"],
+  "forbiddenInference": ["causal gate contribution","selected-count gain from removing a gate","outcome-selected sampling","later-known data backfill"],
+  "biasControls": ["selection bias","look-ahead","data snooping","market-source bias","Factor Zoo","overfitting","coverage","zero-pick","transaction costs","date clustering","factor redundancy"],
+  "implementationBoundary": "Any shared D1/runtime persistence remains governed by SHADOW_COHORT_SEMANTICS_CLASS_B_PROPOSAL and requires owner approval.",
+  "optimizationBridge": "Evidence infrastructure only; no FORMAL_OPTIMIZATION_CANDIDATE."
+}
