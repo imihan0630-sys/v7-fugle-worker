@@ -1,0 +1,61 @@
+{
+  "schemaVersion": "SIGNAL_TRIGGER_PROVENANCE_AUDIT_V0_2",
+  "scope": "Initial BUY signal provenance for execution-clock sizing research",
+  "correction": "V8.5 patch-chain already provides an append-like v8_trade_journal_signals table. The original v0.1 conclusion that exact formal trigger price was not durable was too broad.",
+  "v8TradeJournalSignals": {
+    "key": "event_id PRIMARY KEY",
+    "writer": "recordTradeJournalSignal",
+    "writeOrder": "called immediately after episode-specific signalId is built, before push suppression/reservation/send",
+    "persistence": "INSERT OR IGNORE",
+    "positiveFields": [
+      "trade_date",
+      "plan_scan_date",
+      "occurred_at",
+      "symbol",
+      "signal_type",
+      "market_price",
+      "signal_amount",
+      "signal_shares",
+      "episode",
+      "plan_json",
+      "event_json"
+    ],
+    "marketPriceSemantics": "result.currentPrice at formal signal occurrence; valid as formal SIGNAL price, not fill price",
+    "signalSharesSemantics": "signal.shares from operationSignal / plan; for BUY this is precomputed plan firstShares, not buildPushPayload suggestedShares recomputed at currentPrice",
+    "deliverySemantics": "row existence proves signal occurrence, not push acceptance",
+    "failureSemantics": "write failure logs warning and signal/push can continue; absence cannot prove no signal",
+    "readbackSemantics": "/api/journal reads up to 6000 signal rows for <=365 days with no truncation flag; bulk absence/completeness is not guaranteed",
+    "healthSemantics": "/api/journal/health exposes signalCount but does not establish expected per-plan monitor completeness"
+  },
+  "otherStores": {
+    "v7SignalDeliveryState": "authoritative mutable lease/dedupe state; successful pending delivery record is removed",
+    "v7LiveState": "singleton latest monitor snapshot, overwritten",
+    "lastMonitorKv": "single overwritten latest monitor mirror with 2-day TTL",
+    "cronRuns": "append-only run metadata but detail stores status text, not per-plan result coverage"
+  },
+  "evidenceBoundary": {
+    "positiveBuyRow": "STRONG POSITIVE evidence that formal BUY occurred at persisted market_price/occurred_at.",
+    "missingBuyRow": "UNKNOWN unless independent plan-level monitor/recorder completeness is proven.",
+    "barReconstruction": "context only; 15m bar time/close cannot substitute for the contemporaneous quote market_price.",
+    "signalShares": "not exact live suggestedShares; counterfactual orderability must recompute shares using observed market_price.",
+    "fills": "separate ACTUAL/MODELED fill evidence required.",
+    "completeNoBuy": "BLOCKED: requires plan-level monitor completeness or an explicit terminal no-entry event with recorder coverage proof."
+  },
+  "status": "POSITIVE_BUY_SIGNAL_PRICE_DURABLE / V8_EXECUTION_CONTEXT_PARTIAL / NO_BUY_DENOMINATOR_UNCERTIFIED / FILL_EVIDENCE_SEPARATE",
+  "formalCoreImpact": false,
+  "v8ExecutionShadow": {
+    "table": "trade_research_execution_snapshots",
+    "eventTypes": [
+      "OPEN_BASELINE",
+      "FIRST_10M_COMPLETE",
+      "FIRST_15M_COMPLETE",
+      "FIRST_30M_COMPLETE",
+      "FORMAL_SIGNAL_OBSERVED"
+    ],
+    "coverageSemantics": "milestone/signal snapshots only; not every monitor tick and no explicit EOD NO_BUY terminal event",
+    "rowEligibility": "only result.ok rows are recorded",
+    "failureSemantics": "RESEARCH_EXECUTION_RECORDER_FAIL_OPEN; recorder failure cannot change Formal monitoring/signals",
+    "reader": "max 120 days, ORDER BY newest first, LIMIT 500; API returns recent rows slice(0,80)",
+    "noBuyConsequence": "Cannot prove whole-session per-plan monitor completeness or NO-BUY from absence of FORMAL_SIGNAL_OBSERVED."
+  }
+}
