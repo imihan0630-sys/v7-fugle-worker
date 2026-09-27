@@ -469,3 +469,42 @@ Verification:
 - production-isolation guard PASS.
 
 No Worker or Cron cloud resource was created.
+
+
+## Isolated System2 Worker smoke verification (2026-09-27)
+
+Status: PASS / WORKER EXISTS / CAPTURE DISABLED / CRON ABSENT / SYSTEM1 UNCHANGED.
+
+Authorized scope:
+- Worker `system2-shadow-research`;
+- D1 `system2-research` bound as `SYSTEM2_DB`;
+- health/read-only smoke only;
+- no Cron;
+- no production route;
+- capture disabled.
+
+Initial run `36314452669` / job `108606394382`:
+- Worker version and binding were created successfully;
+- no traffic target existed, so ordinary `wrangler deploy` exposed no Version URL;
+- workflow refused a false-positive health claim.
+
+Recovery run `36314596516` / job `108606794301`:
+- temporary Version URL used only for health verification;
+- health PASS against real D1 schema V0.5;
+- capture state = CAPTURE_DISABLED;
+- scheduledCaptureAllowed=false;
+- System1 runtime used=false;
+- Version URLs disabled again after test;
+- workers.dev remained disabled;
+- production files unchanged.
+
+Read-only state audit `36314678044` / job `108607025869`:
+- Worker exactly once;
+- correct D1 binding;
+- capture false;
+- Cron count 0;
+- workers.dev false;
+- Preview URLs false;
+- no mutation.
+
+The one-shot push trigger was disarmed after completion.
