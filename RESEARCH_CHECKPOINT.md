@@ -1272,3 +1272,16 @@ Updated: 2026-09-27 08:30 Asia/Taipei.
 - Portfolio Risk remains L2 / FALSIFICATION_IN_PROGRESS / ACTUAL_LIVE_HISTORY_BLOCKED until separately approved Production fill capture exists and accumulates prospective confirmed receipts.
 - No FORMAL_OPTIMIZATION_CANDIDATE is created from this evidence-infrastructure design alone.
 - Exact next: audit the minimal safe Production implementation path, especially whether existing manual `/api/positions` reconciliation can append confirmed execution evidence without conflating snapshots with fills, and whether an external broker/verified source is required for trustworthy automatic capture. Proposal only; do not implement without owner approval.
+
+
+## B-199 — Target-null vs low-RR semantic separation protocol frozen (2026-09-27 08:42 Asia/Taipei)
+- Fresh canonical read found B-198 as latest cursor; B-197 target/resistance/RR exact-next was continued without overwriting B-198's independent Portfolio Risk lane.
+- Formal source audit confirms two distinct post-plan rejection states: `target===null` rejects before RR exists; only when a target exists is `RR=(target-entry)/(entry-stop)` computed and `RR<2` evaluated.
+- Therefore TARGET_NULL is not a low-RR observation. Its RR is undefined/UNKNOWN and must never be coerced to 0 or pooled into the RR<2 cohort. Pooling would confound target-source/provenance/geometry failure with genuine unfavorable reward-to-risk geometry.
+- Frozen prospective cohorts: TARGET_NULL_REJECTED, LOW_RR_REJECTED and RR_PASSED_POSITIVE_CONTROL. Required receipt preserves channel, entry/stop/risk, raw targetPrice provenance/PIT state, priorHigh20/60, dated pivots, eligible resistance set, selected target/source, reward/RR and exact reason×pool denominator/sample metadata.
+- Pre-registered falsification asks whether target-null and low-RR independently add path/downside information after channel, ATR/stop-binding, liquidity, sector/regime and existing-score controls; whether B new-high structures are structurally concentrated in target-null; and whether optional targetPrice or coarse pivots/1% eligibility band materially flip status.
+- Anti-bias firewall: no later-known targetPrice backfill; UNKNOWN remains UNKNOWN; scanDate is clustering unit; preserve first rejection reason; no RR/1% threshold sweep before prospective maturity; transaction cost, coverage, zero-pick, redundancy and OOS gates remain mandatory.
+- Engineering classification is CONDITIONAL_CLASS_A only for zero-extra-call serialization of already-computed same-scan evidence with Formal-output invariants. Shared enrichment/storage/runtime changes are Class B; any target/RR rule change is Class C.
+- Durable artifact: `research/rr_target_null_separation_v0_1.json` commit `73134aa687c89357a589e4a402ab297b71ae22ba`.
+- No forward outcome lookup, Formal/runtime/Production change or FORMAL_OPTIMIZATION_CANDIDATE.
+- Exact next: after reason-stratified Shadow/version-line reconciliation, prospectively serialize the three separated cohorts and measure date-clustered incidence/outcomes. In parallel continue the post-base audit into fundamental-quality/setup-grade gates without tuning thresholds.
