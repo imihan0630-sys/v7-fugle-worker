@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "technical-indicator-shared-parent-child-feasibility-v0.5",
+  "schemaVersion": "technical-indicator-shared-parent-child-feasibility-v0.6",
   "updated": "2026-09-28 Asia/Taipei",
   "researchOnly": true,
   "runtimeImplemented": false,
@@ -23,7 +23,8 @@
       "evidence_family",
       "evidence_item_key",
       "observer_version",
-      "as_of"
+      "as_of_kind",
+      "as_of_key"
     ],
     "fields": [
       "parent_decision_receipt_id",
@@ -32,8 +33,10 @@
       "evidence_item_key",
       "observer_version",
       "semantic_contract_version",
-      "as_of",
+      "as_of_kind",
+      "as_of_key",
       "available_at",
+      "available_at_precision",
       "captured_at",
       "point_in_time_state",
       "status",
@@ -56,10 +59,13 @@
     ],
     "itemKeyRule": "ROOT for single-object observers; deterministic episode/item identity for multi-object observers such as Pattern.",
     "timingSemantics": {
-      "as_of": "Time the evidence state describes.",
-      "available_at": "Earliest decision time at which the evidence was legitimately usable.",
-      "captured_at": "Time the collector actually observed/froze the evidence.",
-      "created_at": "Persistence write time; never substitute for available_at."
+      "as_of_kind": "SESSION_DATE | INSTANT | CALENDAR_MONTH | CALENDAR_QUARTER; new kinds require schema-version extension.",
+      "as_of_key": "Family-canonical value matching as_of_kind.",
+      "available_at": "Canonical UTC instant or YYYY-MM-DD depending available_at_precision; null when UNKNOWN.",
+      "available_at_precision": "INSTANT | DATE_ONLY | UNKNOWN.",
+      "captured_at": "Exact UTC instant when collector observed/froze evidence.",
+      "created_at": "Persistence write instant; never source availability.",
+      "sameDayDateOnlyRule": "DATE_ONLY availability cannot prove same-day before-cutoff availability; PIT remains UNKNOWN unless a separate precise source receipt resolves it."
     },
     "pointInTimeStates": [
       "VALID",
@@ -170,7 +176,7 @@
     "observer_wall_ms"
   ],
   "status": {
-    "sharedEvidenceChildSchema": "DESIGN_COMPATIBLE_V0_5",
+    "sharedEvidenceChildSchema": "DESIGN_COMPATIBLE_V0_6",
     "classBImplementation": "PREMATURE",
     "ownerApprovalRequested": false,
     "formalOptimizationCandidate": false,
