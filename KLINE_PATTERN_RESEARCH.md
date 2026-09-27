@@ -18137,3 +18137,182 @@ This ordering balances:
 4. Keep R01-R08 frozen; do not create R09 until definitions/data are ready.
 5. Do not implement Formal changes. Pattern Shadow remains research-only.
 6. Any future implementation should start from P0 minimal feature set, not the full research catalog.
+
+
+## DL-003CN — Point-in-Time Bry-Boschan-Style Turning-Point Filter v0.1
+
+### Purpose
+Create an INDEPENDENT turning-point filter to test whether Pattern key points are objectively supported outside the Directional-Change detector.
+
+### Classical BB essence
+Bry-Boschan-style procedures generally:
+1. identify local peaks/troughs by comparing a point with surrounding observations;
+2. enforce peak/trough alternation;
+3. impose minimum phase/cycle-duration rules;
+4. apply censoring/end-point rules.
+
+### Fundamental live-data issue
+A local trough at date t defined by being lower than K observations AFTER t is not knowable at t.
+
+Earliest window-based recognition:
+windowConfirmedAt >= t + K completed bars.
+
+Therefore:
+pivotAt != firstObservableAt.
+
+### Required timestamps
+For each BB-style candidate:
+- pivotAt
+- windowConfirmedAt
+- alternationConfirmedAt
+- durationRuleConfirmedAt
+- firstObservableAt = max(all required confirmation timestamps)
+- invalidatedAt if later provisional logic removes it
+
+Historical research may use the point only when:
+firstObservableAt <= asOfDate.
+
+### Sequential implementation concept
+At each completed daily bar T:
+1. only inspect candidate date T-K for K-sided local-extremum confirmation;
+2. add it to a provisional chronological candidate list;
+3. enforce alternation using only information available by T;
+4. apply pre-registered minimum phase rules;
+5. mark accepted/rejected candidate state;
+6. never backdate availability to pivotAt.
+
+### Same-type consecutive candidates
+If two peaks appear before a confirmed trough:
+- keep a provisional same-side competition;
+- the more extreme peak may replace the earlier provisional one;
+- neither gets historical decision eligibility before the sequence rules are satisfied.
+
+This prevents retrospective “best peak” selection.
+
+### End-of-series problem
+Classic historical BB can censor points near the end because future observations are unavailable.
+For live research:
+- most recent candidate remains PROVISIONAL;
+- absence of a final confirmed pivot is not failure;
+- no end-of-series future censoring may be applied retroactively.
+
+## DL-003CO — Directional Change vs BB-Style Detectors Have Different Biases
+
+### Directional Change (DC)
+Strengths:
+- confirmation is event-driven by reversal amplitude;
+- naturally carries pivotAt and confirmedAt;
+- volatility-normalized version adapts across stocks.
+
+Weaknesses:
+- threshold choice controls the entire swing hierarchy;
+- volatile stocks may have longer confirmation lag;
+- ATR normalization can inherit gap/corporate-action issues.
+
+### BB-style local extrema
+Strengths:
+- structurally independent from reversal-amplitude threshold;
+- simple local high/low definition;
+- useful as a falsification/confirmation layer.
+
+Weaknesses:
+- requires future K bars before recognition;
+- window K controls sensitivity;
+- may identify economically tiny oscillations unless duration/amplitude rules filter them;
+- classic censoring rules were designed for business-cycle dating, not stock entries.
+
+### Research role
+DC = primary swing chronology.
+BB-style = independent confirmation/stability diagnostic.
+
+Do not average them into one opaque detector.
+
+## DL-003CP — Independent Turning-Point Agreement Must Earn Its Complexity
+
+### Groups
+DC_ONLY
+BB_ONLY
+DC_AND_BB_AGREE
+DC_BB_DISAGREE
+
+### Pattern-level comparison
+For W / IHS / VCP / flag:
+- keyPointAgreementRatio
+- pivotDateDispersion
+- pivotPriceDispersion
+- maturityDateDelay caused by independent filter.
+
+### Outcomes
+- D1/D3/D5/D10
+- MFE/MAE
+- R01
+- invalidation hazard
+- time-to-breakout
+- candidate coverage.
+
+### Trade-off
+Independent confirmation can improve quality while:
+- delaying detection,
+- reducing coverage,
+- worsening entry price,
+- increasing no-trade cases.
+
+Therefore evaluate:
+QUALITY_GAIN minus CONFIRMATION_DELAY/OPPORTUNITY_COST.
+
+### Fresh Taiwan connection
+The 2026 HS paper finds strict independent turning-point alignment improves HS-bottom event outcomes.
+Our research must test whether that remains true when the filter is implemented point-in-time and its confirmation lag is charged.
+
+## DL-003CQ — Do Not Import Business-Cycle BB Duration Rules into Daily Stocks
+
+### Critical caution
+Classic Bry-Boschan rules such as:
+- 5/6 month local windows,
+- minimum 6-month phases,
+- 15-month cycles,
+were designed for macro/business-cycle dating.
+
+They are not justified for daily stock-pattern detection.
+
+### Research rule
+Use BB philosophy:
+- local extrema,
+- alternation,
+- persistence,
+not its macro calendar constants.
+
+Any daily-stock K/minimum-phase specification must be:
+- declared before outcomes;
+- justified by scale/microstructure;
+- counted as detector definition;
+- tested for stability, not optimized for returns.
+
+### Relation to fresh BB:5 finding
+The fresh Taiwan HS paper's strict BB:5 result is evidence for independent-filter value in that design.
+It is not evidence that our daily detector must hard-code 5 without replicating the exact meaning and timing semantics.
+
+## DL-003CR — Turning-Point Confirmation Delay Becomes an Explicit Cost Variable
+
+### Fields
+- dcConfirmationLagBars
+- bbConfirmationLagBars
+- combinedConfirmationLagBars
+- priceMoveDuringConfirmationPct
+- priceMoveDuringConfirmationATR
+- missedPivotRoomPct
+- candidateLostToMaxChase if execution context later tested.
+
+### Why
+A statistically cleaner pattern that becomes knowable only after most of the move is gone may not be useful to the trading system.
+
+### Research question
+Does independent confirmation improve:
+- failure rate,
+- MAE,
+enough to offset:
+- later observation,
+- reduced remaining upside,
+- lower BUY trigger rate?
+
+No confirmation method is “better” without charging this lag.
