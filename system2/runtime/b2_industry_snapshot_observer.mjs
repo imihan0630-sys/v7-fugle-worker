@@ -1,7 +1,7 @@
 import { deepFreeze } from "./factor_snapshot.mjs";
 import { sha256Hex } from "./decision_archive.mjs";
 
-export const B2_INDUSTRY_SNAPSHOT_CONTRACT_VERSION = "0.1";
+export const B2_INDUSTRY_SNAPSHOT_CONTRACT_VERSION = "0.2";
 
 export const B2_OFFICIAL_ENDPOINTS_V0_1 = deepFreeze({
   TWSE_PROFILE: "https://openapi.twse.com.tw/v1/opendata/t187ap03_L",
@@ -79,15 +79,36 @@ export function parseIndustryProfiles(rows, market) {
 }
 
 export function parseIndustryDailyRows(rows, market, marketDate) {
-  if (!Array.isArray(rows)) return { market, state: "INVALID_PAYLOAD", rows: {} };
+  if (!Array.isArray(rows)) {
+    return {
+      market,
+      state: "INVALID_PAYLOAD",
+      payloadDate: null,
+      validDatedOrdinarySymbolCount: 0,
+      undatedOrdinarySymbolCount: 0,
+      rows: {},
+    };
+  }
+
   const out = {};
+  const payloadDates = [];
+  let validDatedOrdinarySymbolCount = 0;
+  let undatedOrdinarySymbolCount = 0;
+
   for (const row of rows) {
     const symbol = String(pick(row, [
       "Code", "SecuritiesCompanyCode", "證券代號", "股票代號",
     ]) || "").trim();
     if (!ordinarySymbol(symbol)) continue;
+
     const rowDate = normalizeDate(pick(row, ["Date", "日期", "資料日期"]));
-    if (rowDate && rowDate !== marketDate) continue;
+    if (!rowDate) {
+      undatedOrdinarySymbolCount += 1;
+      continue;
+    }
+    validDatedOrdinarySymbolCount += 1;
+    payloadDates.push(rowDate);
+    if (rowDate !== marketDate) continue;
 
     const changePercent = numberValue(pick(row, [
       "ChangePercent", "ChangeRate", "漲跌幅", "漲跌幅(%)",
@@ -113,9 +134,22 @@ export function parseIndustryDailyRows(rows, market, marketDate) {
       ])),
     };
   }
+
+  const targetDateCount = Object.keys(out).length;
+  const payloadDate = targetDateCount > 0
+    ? marketDate
+    : [...new Set(payloadDates)].sort().at(-1) || null;
+
+  let state = "INVALID_PAYLOAD";
+  if (targetDateCount > 0) state = "TARGET_DATE_OBSERVED";
+  else if (validDatedOrdinarySymbolCount > 0) state = "TARGET_DATE_NOT_OBSERVED";
+
   return {
     market,
-    state: Object.keys(out).length ? "OBSERVED" : "INVALID_PAYLOAD",
+    state,
+    payloadDate,
+    validDatedOrdinarySymbolCount,
+    undatedOrdinarySymbolCount,
     rows: out,
   };
 }
@@ -130,10 +164,20 @@ function buildMarketSummary(market, daily, profile) {
   return {
     market,
     minimumRecordCount: minimum,
+    dailyState: daily.state,
+    dailyPayloadDate: daily.payloadDate || null,
     dailyOrdinarySymbolCount: dailyRows.length,
+    validDatedOrdinarySymbolCount: daily.validDatedOrdinarySymbolCount ?? 0,
+    undatedOrdinarySymbolCount: daily.undatedOrdinarySymbolCount ?? 0,
+    profileState: profile.state,
     classifiedJoinedCount: joined.length,
     classificationCoverageRate: dailyRows.length ? joined.length / dailyRows.length : 0,
-    dailyCoveragePass: dailyRows.length >= minimum,
+    dailyCoveragePass:
+      daily.state === "TARGET_DATE_OBSERVED"
+      && dailyRows.length >= minimum,
+    classificationCoveragePass:
+      profile.state === "OBSERVED"
+      && joined.length >= minimum,
   };
 }
 
@@ -229,7 +273,39 @@ export async function buildB2IndustrySnapshotReceipt({
   ];
   const industries = aggregateIndustries(marketDate, pairs);
   const dailyCoveragePass = marketSummaries.every((x) => x.dailyCoveragePass);
-  const hasClassification = marketSummaries.every((x) => x.classifiedJoinedCount > 0);
+  const classificationCoveragePass = marketSummaries.every(
+    (x) => x.classificationCoveragePass,
+  );
+  const sameTaipeiDate = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Asia/Taipei",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(new Date(seenAt)) === marketDate;
+  const marketCloseTimestamp = new Date(`${marketDate}T13:30:00+08:00`).toISOString();
+  const marketCloseFinalityReached =
+    sameTaipeiDate && Date.parse(seenAt) >= Date.parse(marketCloseTimestamp);
+  const dailyPayloadInvalid = marketSummaries.some(
+    (x) => x.dailyState === "INVALID_PAYLOAD",
+  );
+  const targetDateObserved = marketSummaries.every(
+    (x) => x.dailyState === "TARGET_DATE_OBSERVED",
+  );
+
+  let availabilityState = "INVALID_PAYLOAD";
+  if (!sameTaipeiDate) {
+    availabilityState = "NOT_APPLICABLE";
+  } else if (!marketCloseFinalityReached) {
+    availabilityState = "NOT_READY";
+  } else if (dailyPayloadInvalid) {
+    availabilityState = "INVALID_PAYLOAD";
+  } else if (!targetDateObserved || !dailyCoveragePass) {
+    availabilityState = "NOT_READY";
+  } else if (!classificationCoveragePass) {
+    availabilityState = "INVALID_PAYLOAD";
+  } else {
+    availabilityState = "READY";
+  }
 
   const base = {
     receiptId: requiredText(receiptId, "receiptId"),
@@ -237,21 +313,29 @@ export async function buildB2IndustrySnapshotReceipt({
     contractVersion: B2_INDUSTRY_SNAPSHOT_CONTRACT_VERSION,
     marketDate,
     observedAt: seenAt,
+    sameTaipeiDate,
+    marketCloseTimestamp,
+    marketCloseFinalityReached,
     endpointClass: "OFFICIAL_PUBLIC_GET_PLUS_DETERMINISTIC_DERIVATION",
     endpoints: B2_OFFICIAL_ENDPOINTS_V0_1,
     marketSummaries,
     industries,
+    availabilityState,
     state:
-      dailyCoveragePass && hasClassification
+      availabilityState === "READY"
         ? "DERIVED_SNAPSHOT_OBSERVED"
-        : "DERIVED_SNAPSHOT_INCOMPLETE",
+        : availabilityState === "NOT_READY"
+          ? "DERIVED_SNAPSHOT_NOT_READY"
+          : availabilityState === "NOT_APPLICABLE"
+            ? "DERIVED_SNAPSHOT_OUTSIDE_MARKET_DATE"
+            : "DERIVED_SNAPSHOT_INCOMPLETE",
     classificationVintageSemantics:
       "PROFILE_FIRST_OBSERVED_PROSPECTIVELY_NO_HISTORICAL_BACKFILL",
     thesisDirectionAssigned: false,
     strategyScoreAssigned: false,
-    dependencyCoverageEligible: dailyCoveragePass && hasClassification,
+    dependencyCoverageEligible: availabilityState === "READY",
     externalMutationPerformed: false,
-    schemaVersion: "S2_B2_INDUSTRY_SNAPSHOT_RECEIPT_V0_1",
+    schemaVersion: "S2_B2_INDUSTRY_SNAPSHOT_RECEIPT_V0_2",
   };
   const receiptHash = await sha256Hex(base);
   return deepFreeze({ ...base, receiptHash });
