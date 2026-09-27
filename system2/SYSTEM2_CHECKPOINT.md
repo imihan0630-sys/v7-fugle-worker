@@ -19,6 +19,12 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 
 ## Current design decisions
 
+- RANK-04 missing fields produce REGIME_INCOMPLETE rather than neutral/negative evidence. This preserves the source-first rule and leaves the ranking challenger blocked until prospective coverage is adequate.
+
+- RANK-04 readiness gate implemented and verified: SHORT_MOMENTUM requires TAIEX trend+breadth+sector rotation+volatility; SWING_GROWTH requires trend+sector rotation+volatility; TPEx candidates additionally fail closed if TPEx regime state is UNKNOWN. TAIEX is never used as a TPEx proxy.
+
+- RANK-04 Market Regime（市場環境） priority research preregistered, but no regime ranking bonus/activation weight is active. Current source incompleteness makes any universal Risk-on/Risk-off score premature.
+
 - This is an explicit evidence-first stop: BREAKOUT_ACCEPTANCE_CONFLUENCE and GROWTH_REPRICING_CONFLUENCE remain candidate interactions, not bonuses. No confluence ranking effect has been assumed.
 
 - Interaction observation receipt implemented and verified: PIT-ineligible/missing components prevent KNOWN state; non-KNOWN forces INDETERMINATE; redundancyState=NOT_TESTED is not ranking-eligible; only KNOWN + determinate + CONTROLLED_FOR_RESEARCH can become research ranking-eligible.
