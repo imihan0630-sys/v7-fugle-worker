@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "immutable-decision-state-parent-prototype-qa-v0.1",
+  "updated": "2026-09-28 Asia/Taipei",
+  "researchOnly": true,
+  "outcomeBlind": true,
+  "formalCore": "LOCKED",
+  "moduleCommit": "93f52529ef624b6cd375eba7e0019a8a55d544ea",
+  "testCommit": "2404720c4468c9b64fbadf7e70df2cd30a058330",
+  "execution": "ISOLATED_V8_PASS",
+  "assertions": [
+    "CANONICAL_KEY_ORDER_STABLE",
+    "SELECTED_STATE",
+    "QUALIFIED_NOT_SELECTED_STATE",
+    "FIRST_FAILURE_BASE_FALSE_STATE",
+    "FIRST_FAILURE_BASE_TRUE_STATE",
+    "SAME_IDENTITY_SAME_PAYLOAD_IDEMPOTENT",
+    "SAME_IDENTITY_CHANGED_PAYLOAD_PROVENANCE_CONFLICT",
+    "NEW_CAPTURE_GENERATION_NEW_ID",
+    "NEW_COMPARATOR_VERSION_NEW_ID",
+    "QUALIFIED_RANKING_TUPLE_INCOMPLETE_FAILS_CLOSED",
+    "SELECTED_REQUIRES_FORMAL_OK",
+    "NESTED_RANKING_DEEP_FROZEN"
+  ],
+  "sourceGuards": {
+    "marketCalls": 0,
+    "d1Writes": 0,
+    "scoreCandidateCalls": 0
+  },
+  "persistenceBoundary": "NO_RUNTIME_PERSISTENCE_IMPLEMENTED",
+  "productionHashAlgorithm": "UNFROZEN"
+}
