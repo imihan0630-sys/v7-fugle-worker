@@ -25,7 +25,7 @@ export const LIMITED_SHADOW_SPECS_V0_1 = deepFreeze([
     strategyVersion: SHORT_MOMENTUM_CONTRACT_V0_1.strategyVersion,
     mode: "LIMITED_PROSPECTIVE_SHADOW",
     sourceReadiness: SHORT_MOMENTUM_SOURCE.sourceReadiness,
-    allowSelectionWhenAssessmentValid: true,
+    selectionLayerEnabled: false,
     rankEnabled: false,
     totalScoreEnabled: false,
     notes: [
@@ -40,7 +40,7 @@ export const LIMITED_SHADOW_SPECS_V0_1 = deepFreeze([
     strategyVersion: SWING_GROWTH_CONTRACT_V0_1.strategyVersion,
     mode: "LIMITED_PROSPECTIVE_SHADOW",
     sourceReadiness: SWING_GROWTH_SOURCE.sourceReadiness,
-    allowSelectionWhenAssessmentValid: true,
+    selectionLayerEnabled: false,
     rankEnabled: false,
     totalScoreEnabled: false,
     notes: [
@@ -66,7 +66,7 @@ export function mapAssessmentToDecisionState(assessment) {
     assessment.strategyValidity === "VALID" &&
     assessment.entryReadiness === "BUY_ELIGIBLE"
   ) {
-    return "SELECTED";
+    return "QUALIFIED_NOT_SELECTED";
   }
 
   return "WATCH";
@@ -111,8 +111,8 @@ export async function buildLimitedShadowDecisionSnapshot({
   }
 
   const state = mapAssessmentToDecisionState(assessment);
-  if (state === "SELECTED" && shadowSpec.allowSelectionWhenAssessmentValid !== true) {
-    throw new Error("shadow spec does not allow selection");
+  if (state === "SELECTED" && shadowSpec.selectionLayerEnabled !== true) {
+    throw new Error("shadow spec does not allow final selection before capacity/ranking");
   }
 
   const missingRequiredFactors = (assessment.missingRequiredEvidence || []).map(
