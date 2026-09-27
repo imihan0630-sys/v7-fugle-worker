@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "external-evidence-market-identity-falsification-v0.1",
+  "researchDate": "2026-09-27",
+  "status": "MARKET_IDENTITY_COUPLED_TO_REVENUE_COVERAGE_CONFIRMED",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "upstreamTruth": {
+    "formalNormalizedRow": "Official/current normalized row already carries market identity as row.market.",
+    "propagation": "Enrichment merge explicitly preserves market: row.market.",
+    "researchSnapshotGap": "buildResearchSnapshot does not persist this exchange/market identity as a dedicated symbol-market provenance field."
+  },
+  "currentV8711": {
+    "marketIdentityDerivation": "sourceMarket = researchMergeRevenueEvidenceV8711(...).sourceMarket",
+    "ifFoundInTwseRevenue": "TWSE",
+    "ifFoundInTpexRevenue": "TPEX",
+    "ifBoth": "AMBIGUOUS",
+    "ifMissingFromBothWithProvidersAvailable": "UNKNOWN",
+    "ifProviderUnavailable": "UNKNOWN"
+  },
+  "couplingImpact": [
+    "Market identity becomes dependent on monthly-revenue evidence availability rather than the already-known trading-market provenance.",
+    "A TWSE symbol missing from the monthly-revenue map becomes UNKNOWN_MARKET for margin/SBL/attention/disposition even when its exchange was known upstream.",
+    "A TPEX symbol with missing revenue likewise loses an independently known market identity.",
+    "Revenue-source coverage can therefore mechanically reduce other evidence-family coverage."
+  ],
+  "counterexample": {
+    "formalRow": {
+      "symbol": "S",
+      "market": "TWSE"
+    },
+    "twseRevenueProvider": "AVAILABLE",
+    "tpexRevenueProvider": "AVAILABLE",
+    "revenueMapsContainSymbol": false,
+    "currentV8711SourceMarket": "UNKNOWN",
+    "downstream": {
+      "margin": "UNKNOWN_MARKET",
+      "sblShort": "UNKNOWN_MARKET",
+      "officialAttention": "UNKNOWN_MARKET",
+      "disposition": "UNKNOWN_MARKET"
+    },
+    "conclusion": "Known market identity is lost solely because an unrelated evidence family lacks the symbol."
+  },
+  "safeRepair": [
+    "Persist canonical sourceMarket/exchange from the Formal normalized row in the per-symbol decision-state receipt before research evidence collection.",
+    "External evidence collectors consume canonical sourceMarket; they never infer exchange from revenue presence.",
+    "Revenue record sourceMarket is retained separately as evidenceSourceMarket and checked against canonical sourceMarket.",
+    "Mismatch canonicalMarket vs evidenceSourceMarket => PROVENANCE_CONFLICT/AMBIGUOUS_SOURCE, not overwrite canonical identity.",
+    "Provider missing or symbol missing remains evidence-family UNKNOWN only; it must not erase market identity."
+  ],
+  "governance": {
+    "researchSchemaChange": "Part of Class-B immutable decision-state / evidence receipt proposal.",
+    "formalSelectionImpact": false,
+    "thresholdsChanged": false
+  },
+  "decision": "CANONICAL_MARKET_KNOWN_UPSTREAM_BUT_DROPPED / REVENUE_COVERAGE_SHOULD_NOT_DEFINE_EXCHANGE / DECOUPLE_MARKET_IDENTITY / NO_FORMAL_CHANGE"
+}
