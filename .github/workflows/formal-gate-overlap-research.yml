@@ -1,0 +1,25 @@
+name: Formal Gate Overlap Research
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "research/formal_gate_overlap_observer_v0_1.mjs"
+      - "research/formal_gate_overlap_observer_spec_v0_1.json"
+      - "tests/test_formal_gate_overlap_observer_v0_1.mjs"
+      - ".github/workflows/formal-gate-overlap-research.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Validate formal gate-overlap observer
+        run: node tests/test_formal_gate_overlap_observer_v0_1.mjs
