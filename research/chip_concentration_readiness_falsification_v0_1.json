@@ -1,0 +1,67 @@
+{
+  "schemaVersion": "CHIP_CONCENTRATION_READINESS_FALSIFICATION_V0_1",
+  "researchDate": "2026-09-27",
+  "class": "A_RESEARCH_ONLY",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "currentFormalFacts": [
+    "The entire after-market scan aborts if no TDCC quality snapshot exists for marketDate.",
+    "If the global TDCC snapshot exists but a reached symbol has no numeric chipConcentration, scoreCandidate rejects with 缺集保持股集中度，不補假值.",
+    "TDCC validation accepts one weekly asOfDate not after scanDate and no more than 14 calendar days old.",
+    "TDCC validation requires at least 1500 complete symbol records globally, but does not require every same-day market row to exist in the TDCC stock map.",
+    "quality-status reports dataset existence/count/asOfDate; it does not report per-symbol coverage.",
+    "v7_quality_snapshots is same-key UPSERT mutable, and readQualitySnapshot returns only snapshot_json rather than updated_at/first-known lineage."
+  ],
+  "officialSourceSemantics": {
+    "sourceUrl": "https://opendata.tdcc.com.tw/getOD.ashx?id=1-5",
+    "officialExplanationUrl": "https://www.tdcc.com.tw/portal/zh/smWeb/qryStock",
+    "cadence": "WEEKLY",
+    "economicTimestampMeaning": "TDCC states current data are compiled from each account's balance after the last business day of each week.",
+    "availabilityTime": "NOT_PROVEN_BY_CURRENT_RECEIPT"
+  },
+  "falsifiedAssumptions": [
+    "A globally ready TDCC snapshot does not prove every Formal market symbol has chipConcentration.",
+    "chipAsOfDate<=scanDate does not prove the dataset was publicly available before the 18:10 decision cutoff on that historical scan date.",
+    "A missing chipConcentration reject is not an economic low-concentration signal; it is a missing-data rejection.",
+    "Legacy same-date quality snapshot presence is not immutable first-known PIT evidence because the row can be overwritten."
+  ],
+  "requiredProspectiveDenominator": [
+    "same-generation market symbol keyset",
+    "pre-chip Formal reach state",
+    "TDCC snapshot asOfDate",
+    "firstKnownAt/collectedAt and decision cutoff",
+    "global requested/validated symbol counts",
+    "per-symbol covered/absent/invalid states",
+    "GENERAL/THOUSAND pool counts",
+    "semantic fingerprint and immutable parent generation"
+  ],
+  "promotionGuard": [
+    "No D1+ outcome comparison unless PIT availability before decision cutoff is proven.",
+    "No treating a missing symbol as concentration=0.",
+    "No using global count>=1500 as full per-symbol coverage.",
+    "No historical overwrite/backfill to manufacture first-known coverage.",
+    "No threshold or required/optional policy change from structural evidence alone."
+  ],
+  "observer": "research/chip_concentration_readiness_observer_v0_1.mjs",
+  "decision": "CHIP_GATE_IS_DATA_READINESS_GATE / GLOBAL_READY_NE_SYMBOL_COMPLETE / RAW_OMISSION_REASON_LOST_AFTER_VALIDATION / HISTORICAL_PIT_AVAILABILITY_NOT_PROVEN / PROSPECTIVE_CAPTURE_WARRANTED / NOT_FORMAL_OPTIMIZATION_CANDIDATE",
+  "rawIngestLossModes": {
+    "productionSilentPerSymbolOmission": [
+      "parts.size !== 17",
+      "grade-17 total ratio is not 100 within tolerance",
+      "grade-17 total shares is nonpositive"
+    ],
+    "productionDatasetFatalExamples": [
+      "duplicate grade within symbol",
+      "mixed TDCC row dates",
+      "invalid grade/date/value",
+      "grades 1..16 ratio sum outside tolerance",
+      "ratio400 > 100.01"
+    ],
+    "persistenceProblem": "Validated snapshot retains only accepted stocks. A later missing symbol cannot distinguish NO_SOURCE_ROWS from silently omitted incomplete/invalid total-row groups unless raw-ingest diagnostics were frozen prospectively."
+  },
+  "observers": [
+    "research/chip_concentration_readiness_observer_v0_1.mjs::classifyTdccSnapshot",
+    "research/chip_concentration_readiness_observer_v0_1.mjs::observeChipConcentrationReadiness",
+    "research/chip_concentration_readiness_observer_v0_1.mjs::classifyTdccRawSymbolCoverage"
+  ]
+}
