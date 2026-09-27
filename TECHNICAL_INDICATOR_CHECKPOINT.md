@@ -588,3 +588,46 @@ Secondary only after primary gates:
 
 - bf3204a146857936f3325a0f863a7a87320cc780 — trendiness/sentiment/composite indicator audit.
 - adc809cd8888de531645e5d9e0e3172b97076673 — redundancy registry extension for TI-137..TI-151.
+
+
+## Continuation update — TI-152 through TI-165
+
+- OHLC range-based volatility estimators were audited as one VOLATILITY/RISK family, not additional directional technical votes.
+- Parkinson20 uses high-low range only and is overnight-gap blind; Garman-Klass20 uses same-session OHLC but not previous-close gap; Rogers-Satchell20 is drift-robust intraday OHLC geometry and remains a Yang-Zhang component/robustness comparator.
+- Yang-Zhang explicitly separates previous-close->open overnight variance, open->close variance and Rogers-Satchell intraday range contribution. It is therefore not algebraically redundant with current close-to-close volatility20 or ATR%.
+- One common system-native baseline is frozen: YANG_ZHANG_20, because current comparator volatility20 already uses a 20-session horizon. XQ's current 14-day default is a platform default, not an optimization result.
+- XQ YZVolatility platform parity remains UNKNOWN because the public interface does not fully prove academic component/denominator/initialization/missing-session semantics.
+- Fresh repository audit materially upgrades raw OHLC feasibility: current history stores open/high/low/close and V8.12 history-source revalidation requests those fields.
+- Critical falsification: current normalization can synthesize missing Open/High/Low with Close fallback. Such numerically complete rows are invalid for YZ unless per-bar OHLC origin proves OBSERVED_VALIDATED.
+- TECHNICAL_CONTINUITY is first-order: raw corporate-action resets cannot enter overnight variance; verified suspensions are absent observations; residual market gaps remain information.
+- Taiwan price-limit-constrained sessions require a separate constrained stratum because observed H/L can be censored by the exchange boundary.
+- Proposed future research receipt preserves YZ total variance plus overnight/open-close/RS components, observed-OHLC coverage, fallback count, limit-constrained count and provenance rather than only one final scalar.
+- Optional overnightVarianceShare20 is diagnostic risk-composition evidence, not a score.
+- Machine-readable adversarial fixtures frozen in research/technical_indicator_range_volatility_fixtures_v0_1.json.
+- Ownership handed to VOLATILITY_REGIME; Technical Indicator lane will not create a competing volatility taxonomy.
+- Redundancy registry extended with Parkinson/GK/RS/YZ and overnight-variance-share families.
+- No outcomes inspected, no runtime wiring, no directional threshold and no FORMAL_OPTIMIZATION_CANDIDATE.
+- Formal Core remains LOCKED.
+
+### Updated current status
+
+YANG_ZHANG_20 = WORTH_VOLATILITY_FALSIFICATION / SOURCE_FEASIBLE / PROVENANCE_GATED / OUTCOME_UNTESTED
+OVERNIGHT_VARIANCE_SHARE20 = DIAGNOSTIC_HYPOTHESIS
+CURRENT_CACHE_YZ_INFERENCE = NO_GO_UNTIL_OBSERVED_OHLC_PLUS_TECHNICAL_CONTINUITY
+DIRECTIONAL_ALPHA = NOT_ASSUMED
+
+### Updated exact next continuation point
+
+1. Technical-indicator catalog expansion remains stopped unless a genuinely distinct primitive appears.
+2. Reconcile remaining technical research into a minimal information-basis map: which primitive dimensions actually span the indicator families after all alias/nested-transform pruning.
+3. Keep primary empirical queue unchanged: KD-vs-RSI -> MACD-vs-trend -> ADX-vs-trend-quality -> BBW-vs-ATR/VCP.
+4. Secondary residual order remains EXTREME_RECENCY_20 -> PATH_EFFICIENCY_10 -> returnVelocityShift5v20 -> one Price-Volume compact comparator; Yang-Zhang is evaluated separately by VOLATILITY/RISK.
+5. No runtime implementation before source provenance / continuity / prospective coverage gates.
+6. Formal Core remains unchanged.
+
+## Latest durable research commits
+
+- 898c8eb90069cd7ae2ed626f87a194bb5c2e531f — OHLC range-volatility/Yang-Zhang audit.
+- 92a522a3ae0c45d50d1c9368c5fc720f4fab8a08 — range-volatility adversarial fixtures.
+- 7e180e2b303124e0311a0ac1cd918fc87962a1a8 — redundancy registry volatility-family handoff.
+- a4878bb37f8276ffba57217f34d9752deba1b6ec — VOLATILITY_REGIME cross-lane Yang-Zhang handoff.
