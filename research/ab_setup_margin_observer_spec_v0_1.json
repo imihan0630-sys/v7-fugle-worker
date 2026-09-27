@@ -1,0 +1,57 @@
+{
+  "schemaVersion": "AB_SETUP_MARGIN_OBSERVER_SPEC_V0_1",
+  "researchDate": "2026-09-27",
+  "class": "A_RESEARCH_ONLY",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "purpose": "Close the gap between the already-falsified boolean NEAR_MISS Hamming count and the raw distance-to-current-threshold evidence required for future setup-scarcity research.",
+  "sourceContract": {
+    "function": "strategySetupState(f)",
+    "A": [
+      "trend",
+      "pullback",
+      "nearSupport",
+      "volume",
+      "structure",
+      "notLate"
+    ],
+    "B": [
+      "trend",
+      "breakout",
+      "volume",
+      "strongClose",
+      "upperShadow",
+      "notLate"
+    ],
+    "precedence": "B if B.pass, else A if A.pass",
+    "currentNearMissLimitation": "global top-12 after redundant missingCount/nearScore ranking"
+  },
+  "outputs": [
+    "A/B exact check booleans and six-bit masks",
+    "failedACount / failedBCount",
+    "nearestChannel=A/B/TIE based only on failed-check count",
+    "raw continuous margins to every decomposable current threshold",
+    "separate sub-margins for OR/composite checks",
+    "Formal truthiness/provenance warnings",
+    "pool x nearest-channel x check-pattern descriptive summary"
+  ],
+  "structuralFindings": {
+    "aVolumeOrGate": "A volume is volumeTodayVsPrev5<=1.05 OR volumeContraction5to20<=0.95; no single raw distance is semantically valid.",
+    "bNotLateRedundancy": "With buildMarketFeatures lateStage=(ret20>35 OR maDistance20Pct>25), B's additional ret20<=30 makes the ret20>35 lateStage arm non-binding. Under coherent raw features, B notLate is ret20<=30 AND maDistance20Pct<=25.",
+    "aVolumeZeroTruthiness": "Formal `(toNumber(volumeTodayVsPrev5)||999)` maps exact zero to sentinel 999. Observer exposes raw and effective values instead of hiding this edge case.",
+    "missingUpperShadowTruthiness": "Formal `(toNumber(dailyUpperShadowRatio)||0)` maps missing to zero/pass, but valid buildMarketFeatures normally computes this field. Observer warns if missing rather than treating it as clean evidence."
+  },
+  "nonClaims": [
+    "No threshold is relaxed or recommended.",
+    "nearestChannel is Hamming-only, not geometric/economic distance.",
+    "No normalized composite distance score is created.",
+    "Pattern counts are not sequential setup-first-failure denominators unless caller separately proves earlier Formal gates were cleared.",
+    "No outcome, return, MFE/MAE, BUY or selection-alpha data are used."
+  ],
+  "nextEvidence": [
+    "Pair this observer with channel_stage_denominator_observer on prospective same-scan rows.",
+    "If owner later approves Class-B persistence, save full setup-first-failure population counts before bounded sampling.",
+    "Only after clean prospective dates test whether raw margin adds information beyond check identity and whether any check has stable protection/opportunity-cost value."
+  ],
+  "status": "RAW_SETUP_MARGIN_OBSERVABILITY_READY / COHORT_PERSISTENCE_NOT_IMPLEMENTED / NO_FORMAL_CHANGE"
+}
