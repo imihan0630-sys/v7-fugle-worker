@@ -141,3 +141,33 @@ Status:
 
 Exact next:
 pair the raw-margin observer with the existing channel-stage denominator observer on prospective same-scan evidence; measure coverage and check-pattern populations only after sequential setup reach is proven. Persistence of full populations remains Class B proposal-first.
+
+
+## NM-008 — sequential-population bridge prevents raw-geometry denominator leakage
+
+The raw-margin observer alone is deliberately insufficient for causal/scarcity interpretation.
+
+New pure bridge:
+`research/ab_setup_sequential_population_observer_v0_1.mjs`.
+
+It requires agreement between:
+1. the existing channel-stage sequential observer; and
+2. the new A/B raw-margin observer.
+
+Classification is fail-closed:
+- `SETUP_FIRST_FAILURE`: all earlier ordered gates are clear, AB_SETUP is actually reached, and both A/B fail;
+- `SETUP_PASS`: AB_SETUP is reached and passes, preserving B precedence on dual-pass rows;
+- `PRE_SETUP_NOT_REACHED`: an earlier gate blocked the row even if raw A/B geometry looks close;
+- `UNKNOWN`: key mismatch, observer disagreement or unresolved setup state.
+
+Only `SETUP_FIRST_FAILURE` may enter the setup-reject denominator.
+
+This directly prevents the old `conditionDistribution` problem from recurring: a row can have attractive A/B geometry in the broader early-admitted population while never having reached the setup gate under Formal fail-fast order.
+
+No market call, persistence, outcome lookup or Formal integration is added.
+
+Status:
+`SEQUENTIAL_SETUP_POPULATION_CLASSIFIER_READY / RAW_GEOMETRY_LEAKAGE_FAIL_CLOSED / PERSISTENCE_STILL_CLASS_B / FORMAL_UNCHANGED`.
+
+Exact next:
+once CI is green, freeze the prospective sampling frame contract: full per-date population counts by pool × nearestChannel × checkPattern must be computed before any bounded sample; sample membership must be separate from semantic membership. Do not implement shared D1 persistence without owner approval.
