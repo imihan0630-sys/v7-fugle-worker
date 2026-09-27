@@ -21,6 +21,7 @@ Shared research evidence is inherited from the K-line / pattern / price-volume /
 6. Price-volume remains a separate engine and interacts with technical structure.
 7. Missing, stale or semantically invalid data remains UNKNOWN（未知）.
 8. Exact thresholds/lookbacks/weights remain research hypotheses pending PIT（時點正確性）/Shadow（影子模擬）/OOS（樣本外） validation.
+9. A chart/K-line pattern may reflect crowd behavior, liquidity effects, strategic trading or deliberate short-horizon price-shaping by large participants; OHLCV alone cannot identify intent. Therefore pattern appearance can never serve as the sole entry/exit authority and must be cross-validated with other evidence families.
 
 ## Module layers
 
