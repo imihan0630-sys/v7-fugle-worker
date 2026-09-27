@@ -155,3 +155,75 @@ Promotion requires prospective/OOS evidence that target-null or source-specific 
 Any target formula, null-gate, RR threshold or source-priority change is Class C and requires owner approval.
 
 No Formal behavior changed.
+
+
+## TRR-008 — local-pivot / 1% band counterfactuals
+
+The current function name `nearestRealResistance` is stronger than the encoded semantics.
+
+A historical pivot needs only:
+- its high >= two previous highs;
+- its high >= two next highs;
+- price > entry*1.01.
+
+There is no encoded:
+- prominence;
+- number of prior tests;
+- rejection strength;
+- age/recency weighting;
+- volume confirmation;
+- ATR-normalized importance;
+- zone width;
+- major/base/micro hierarchy.
+
+All eligible levels then compete only by price; the nearest wins.
+
+### Opposing fixed witnesses
+
+Entry=100, stop=95.
+
+**Minor-pivot conservative witness**
+- local 5-bar pivot =102;
+- priorHigh60=120.
+- target=102 because it is nearer.
+- RR=(102-100)/5=0.4 -> rejected.
+
+A minimally-defined local pivot can therefore dominate the major historical level.
+
+**Sub-1% optimistic witness**
+- local overhead high=100.8;
+- priorHigh60=120.
+- 100.8 is ignored because it is not >101.
+- target=120.
+- RR=4 -> passes.
+
+So the same 1% rule can ignore nearby overhead structure and inflate target/RR.
+
+**Sub-1% target-null witness**
+- overhead levels 100.8 and 100.9 only.
+- both are ignored.
+- target=null -> rejected.
+
+Thus the 1% rule is not simply conservative or permissive.
+Its effect depends on whether a farther qualifying level exists.
+
+### Cross-lane implication
+
+Pattern research already freezes:
+- repeated-resistance progression;
+- major-zone lifecycle;
+- MICRO/BASE/MAJOR hierarchy;
+- available-air style geometry;
+- no hard major-zone veto before prospective evidence.
+
+That lane is the correct independent robustness comparator.
+Do not silently substitute Pattern zones into Formal RR.
+
+Future analysis should ask whether the current nearest-single-level target adds useful downside protection beyond:
+- major-zone distance;
+- local breakout state;
+- ATR/stop;
+- existing priorHigh20/priorHigh60;
+- Pattern lifecycle state.
+
+No target rule change is authorized.
