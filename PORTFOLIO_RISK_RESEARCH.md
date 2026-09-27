@@ -1904,46 +1904,60 @@ Status:
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
 
 
-## PR-047 — exact historical BUY trigger payload is not durably preserved (2026-09-27)
 
-A source-level provenance audit separates current operational signal state from historical execution evidence.
+## PR-047 — correction: V8 trade journal preserves positive BUY signal price, but not complete execution denominator (2026-09-27)
 
-Current runtime has four relevant stores:
-- `v7_signal_delivery_state`: authoritative lease/dedupe state, one mutable `snapshot_json` per state key;
-- `v7_live_state`: singleton `id=1`, overwritten every monitor run;
-- `V7_LAST_MONITOR_RUN`: overwritten KV mirror with 2-day TTL;
-- `v7_cron_runs`: append-only run metadata, but `detail` stores only the run status text.
+A source-level provenance audit initially focused on the mutable V7 delivery-state layer. A mandatory patch-chain counter-audit found stronger existing evidence in V8.5 and corrected the conclusion before merge.
 
-For a real push, the delivery state briefly persists:
-`signalId / episode / RESERVED / reservedAt`
-before calling the receiver.
+### Positive formal BUY evidence already exists
 
-On successful delivery, that pending record is deleted. The surviving state retains episode/fired/bar-time style dedupe information, but not the successful BUY payload's:
-- currentPrice;
-- suggestedAmount;
-- suggestedShares;
-- exact delivery result payload.
+V8.5 creates `v8_trade_journal_signals` with:
+- event_id primary key;
+- trade_date / plan_scan_date;
+- occurred_at;
+- symbol / signal_type;
+- market_price;
+- signal_amount;
+- signal_shares;
+- episode;
+- plan_json / event_json.
 
-The KV signal-state mirror expires after 7 days and is not an immutable signal-event ledger.
+`recordTradeJournalSignal()` is called immediately after the episode-specific signalId is created and **before** phone/webhook delivery.
 
-### Reconstruction shortcut rejected
+For a persisted BUY row:
+- `market_price = result.currentPrice`;
+- therefore the row is strong positive evidence that the Formal BUY signal occurred at that recorded signal price and time.
 
-`lastEntrySignalBarTime + historical 15m candle = exact BUY trigger price`
+This is a SIGNAL price, not a broker fill.
 
-is rejected.
+### Three remaining provenance gaps
 
-`lastEntrySignalBarTime` identifies the formal 15m bar. `buildPushPayload.currentPrice` comes from the contemporaneous quote at signal processing time. The quote can differ from the completed bar close, so candle reconstruction is context only, not exact trigger-price evidence.
+1. **Absence is not NO-BUY evidence.**
+   Signal-journal write failure only logs a warning; Formal signal/push processing can continue. Therefore a missing BUY row is UNKNOWN unless independent plan-level monitor/recorder completeness is proven.
 
-### Safe evidence boundary
+2. **signal_shares is not the live push suggestedShares.**
+   Journal `signal_shares` uses `signal.shares`, which for BUY comes from the precomputed plan firstShares. The live push later recomputes suggestedShares from signal amount and contemporaneous currentPrice. Counterfactual orderability must therefore recompute shares rather than copying journal signal_shares.
 
-Current state can support:
-- dedupe/episode existence;
-- recent operational debugging;
-- bar-time context.
+3. **Bulk reader completeness is not certified.**
+   `/api/journal` reads at most 6000 signal rows for up to 365 days and exposes no truncation flag. `/api/journal/health` exposes a signal count but not an expected per-plan monitor denominator.
 
-It cannot support promotion-grade historical trigger-price attribution after the exact payload is gone.
+### Other stores remain operational state
 
-Signal price also remains separate from broker fill evidence.
+- `v7_signal_delivery_state` is mutable lease/dedupe state; accepted pending delivery is removed.
+- `v7_live_state` is the latest singleton monitor snapshot.
+- `V7_LAST_MONITOR_RUN` is an overwritten two-day KV mirror.
+- `v7_cron_runs.detail` stores run-status text, not per-plan monitor coverage.
+
+### Evidence boundary
+
+Allowed:
+- a persisted V8 BUY row may be used as exact positive Formal signal-price/time evidence.
+
+Not allowed:
+- infer NO-BUY from row absence;
+- treat signal_shares as exact live push shares;
+- treat signal market_price as broker fill;
+- treat a LIMIT-bounded bulk reader as complete historical denominator evidence.
 
 Artifacts:
 - `research/signal_trigger_provenance_audit_v0_1.json`
@@ -1951,6 +1965,6 @@ Artifacts:
 - `tests/test_signal_trigger_provenance_v0_1.mjs`
 
 Status:
-`SIGNAL_EPISODE_EVIDENCE_EXISTS / EXACT_HISTORICAL_TRIGGER_PAYLOAD_NOT_DURABLE / EXECUTION_PROVENANCE_BLOCKED`.
+`POSITIVE_BUY_SIGNAL_PRICE_DURABLE / NO_BUY_DENOMINATOR_UNCERTIFIED / LIVE_SUGGESTED_SHARES_NOT_PERSISTED / FILL_EVIDENCE_SEPARATE`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
