@@ -38,7 +38,7 @@ But `historyStructuralShape()` inspects dates, not whether high/low are numeric.
 
 `fetchHistoricalDaily()` normalizes high/low through `marketNumber()`, so null/empty/`--` becomes null.
 
-Thus a symbol can be history-date-usable while an ATR bar's range inputs are not numerically observed.
+Thus a symbol can be history-date-usable while an ATR bar's range inputs are not numerically observed. Current Fugle Historical Candles documentation types requested data.high/data.low as number and examples return numeric OHLC, but the documented schema does not provide a promotion-grade guarantee about null/error behavior for every requested bar. Missing/null H/L is therefore treated here as defensive source-contract violation/error handling, not as a claimed normal provider state.
 
 ## AQ-004 — The ATR range path does not use the apparent close fallback
 
