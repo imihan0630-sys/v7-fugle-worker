@@ -13,6 +13,9 @@ on:
       - "tests/test_priority_score_sizing_edge_v0_2.mjs"
       - "research/initial_buy_trigger_allocation_invariance_v0_1.json"
       - "tests/test_initial_buy_trigger_allocation_invariance_v0_1.mjs"
+      - "research/counterfactual_initial_buy_orderability_v0_1.mjs"
+      - "tests/test_counterfactual_initial_buy_orderability_v0_1.mjs"
+      - "research/counterfactual_initial_buy_orderability_contract_v0_1.json"
       - "tests/test_priority_score_sizing_influence_v0_1.mjs"
       - "tests/portfolio_risk_selected_generation_classifier_v0_1.test.mjs"
       - "tests/test_portfolio_risk_tier_a_v0_1.mjs"
@@ -58,6 +61,7 @@ jobs:
           node tests/test_priority_score_sizing_breakeven_v0_1.mjs
           node tests/test_priority_score_sizing_edge_v0_2.mjs
           node tests/test_initial_buy_trigger_allocation_invariance_v0_1.mjs
+          node tests/test_counterfactual_initial_buy_orderability_v0_1.mjs
           node tests/test_portfolio_risk_reconstructability_v0_1.mjs
           node tests/test_confirmed_fill_ledger_v0_1.mjs
           node tests/test_confirmed_fill_ledger_v0_2.mjs
