@@ -90,9 +90,7 @@ export function classifyPlanDayNoBuyCoverage({
       const count=Number(countRaw||0);
       if(!(count>0)) continue;
       skipTotal+=count;
-      if(reason!=="ALREADY_PRESENT_VERIFIED"){
-        coverageFailure=true;reasons.push("NON_IDEMPOTENT_SKIP_"+reason);
-      }
+      coverageFailure=true;reasons.push("RUN_SKIPPED_"+reason);
     }
     if(Number.isInteger(attempted)&&Number.isInteger(newlyStored)&&Number.isInteger(alreadyPresent)&&Number.isInteger(failedCount) &&
        newlyStored+alreadyPresent+failedCount+skipTotal!==attempted){
