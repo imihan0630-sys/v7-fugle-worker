@@ -75,6 +75,12 @@ function normalizedRanking(actualDecision) {
   return out;
 }
 
+function deepFreeze(value) {
+  if (!value || typeof value !== "object" || Object.isFrozen(value)) return value;
+  for (const child of Object.values(value)) deepFreeze(child);
+  return Object.freeze(value);
+}
+
 export function buildImmutableDecisionStateParent(input, hashFn) {
   if (typeof hashFn !== "function") throw new Error("HASH_FUNCTION_REQUIRED");
 
@@ -133,7 +139,7 @@ export function buildImmutableDecisionStateParent(input, hashFn) {
   const semanticFingerprint = hashFn(canonicalJson(semanticPayload));
   const parentDecisionReceiptId = hashFn(canonicalJson(identity));
 
-  return Object.freeze({
+  return deepFreeze({
     parentDecisionReceiptId,
     parentSchemaVersion: identity.parentSchemaVersion,
     scanDate: identity.scanDate,
