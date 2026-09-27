@@ -141,3 +141,17 @@ console.log(JSON.stringify({ok:true,rawMargins:true,bitmasks:true,noCompositeDis
   assert.equal(closePos>=0.65,false);
   assert.equal(upper<=0.35,true);
 }
+
+
+// Support-source provenance distinguishes filtered candidate from MA20 fallback.
+{
+  const normal=observeABSetupMargins(base());
+  assert.equal(normal.A.rawMargins.structure.supportMode,"FILTERED_CANDIDATE");
+  assert.equal(normal.A.rawMargins.structure.filteredCandidateCloseClauseStructurallyClear,true);
+  assert.ok(normal.A.rawMargins.structure.closeMinus0_985Support>=0);
+
+  const fallback=observeABSetupMargins(base({close:100,ma10:120,ma20:110,rightLow:130,recentLow5Prev:125}));
+  assert.equal(fallback.A.rawMargins.structure.supportMode,"MA20_FALLBACK");
+  assert.equal(fallback.A.rawMargins.structure.filteredCandidateCloseClauseStructurallyClear,false);
+  assert.ok(fallback.A.rawMargins.structure.closeMinus0_985Support<0);
+}
