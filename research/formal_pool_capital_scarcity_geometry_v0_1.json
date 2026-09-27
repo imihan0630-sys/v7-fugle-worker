@@ -1,0 +1,269 @@
+{
+  "schemaVersion": "FORMAL_POOL_CAPITAL_SCARCITY_GEOMETRY_V0_1",
+  "updatedAtTaipei": "2026-09-27",
+  "scope": "V8.9+ owner-approved FORMAL_GENERAL + FORMAL_THOUSAND ring-fenced strategy accounting; Hybrid excluded because Shadow-only",
+  "researchOnly": true,
+  "outcomeDataUsed": false,
+  "decisionImpact": false,
+  "inputs": {
+    "poolCapitalNTD": 200000,
+    "formalPools": [
+      "FORMAL_GENERAL",
+      "FORMAL_THOUSAND"
+    ],
+    "quotaPerPool": 3,
+    "crossPoolBackfill": false,
+    "nominalDeployRatioBySelectedCount": {
+      "0": 0,
+      "1": 0.35,
+      "2": 0.6,
+      "3": 0.85
+    },
+    "firstTrancheShareOfEachPlan": 0.6,
+    "perNameCapPct": 35,
+    "allocationRoundingNTD": 1000,
+    "cappedExcessRedistributed": false
+  },
+  "linkageToB217": {
+    "sourceArtifact": "research/post_grade_quota_scarcity_accounting_v0_1.json",
+    "gateLimited": "qualifiedCount<3; selectedCount=qualifiedCount and unused seats are upstream qualification scarcity.",
+    "exactlyFilled": "qualifiedCount=3; no unused seat and no displaced rank4+.",
+    "quotaBinding": "qualifiedCount>3; selectedCount remains 3 and rank4+ qualified names are displaced.",
+    "crossPoolStranding": "one pool qualifiedCount<3 while the opposite pool qualifiedCount>3; unused seat coexists with opposite-pool qualified displacement.",
+    "rightCensoring": "selectedCount=3 alone proves only qualifiedCount>=3, so quota state is UNKNOWN without a complete pre-cut denominator."
+  },
+  "decompositionLayers": [
+    {
+      "layer": "UPSTREAM_GATE_OR_UNIVERSE_SCARCITY",
+      "observableCondition": "qualifiedCount<3 when complete same-generation pre-cut population exists",
+      "capitalMeaning": "Selected-count geometry leaves 100% / 65% / 40% nominal reserve in that pool for 0 / 1 / 2 selected names.",
+      "nonClaim": "Does not prove the gates are too strict."
+    },
+    {
+      "layer": "POST_GRADE_QUOTA_SCARCITY",
+      "observableCondition": "qualifiedCount>3",
+      "capitalMeaning": "Pool still has selectedCount=3 and nominal 85% deploy target; quota changes which names are admitted, not the current nominal deploy target.",
+      "nonClaim": "Displaced rank4+ does not imply more capital should be deployed."
+    },
+    {
+      "layer": "RING_FENCE_STRANDING",
+      "observableCondition": "one Formal pool underfilled while the other cannot transfer names/capital across pool boundary",
+      "capitalMeaning": "Consolidated Formal-strategy deployment can remain far below 85% even when the opposite pool is full.",
+      "nonClaim": "Ring-fencing may protect liquidity/price-level/concentration and is not shown harmful."
+    },
+    {
+      "layer": "ALLOCATION_IMPLEMENTATION_SHORTFALL",
+      "observableCondition": "actual planned allocation sum below the selected-count nominal target because of 35% cap and NT$1000 flooring",
+      "capitalMeaning": "Additional planned cash beyond the nominal structural reserve.",
+      "source": "research/portfolio_risk_deployment_geometry_v0_1.json"
+    },
+    {
+      "layer": "PENDING_ENTRY_OR_NO_BUY",
+      "observableCondition": "plan exists but intraday activation/execution not fully observed",
+      "capitalMeaning": "Downstream cash is not attributable from selected-count geometry.",
+      "guard": "B-218/B-219: exhaustive NO-BUY denominator remains unavailable."
+    },
+    {
+      "layer": "REALIZED_FILL_CASH",
+      "observableCondition": "broker-confirmed fill ledger",
+      "capitalMeaning": "Actual deployed cash.",
+      "guard": "Absent trusted fill lifecycle => UNKNOWN."
+    }
+  ],
+  "deterministicMatrix": [
+    {
+      "generalSelected": 0,
+      "thousandSelected": 0,
+      "generalNominalDeploymentNTD": 0,
+      "thousandNominalDeploymentNTD": 0,
+      "combinedFormalNominalDeploymentNTD": 0,
+      "combinedFormalStrategyCapitalNTD": 400000,
+      "combinedFormalNominalDeploymentPct": 0,
+      "combinedFormalStructuralReservePct": 100
+    },
+    {
+      "generalSelected": 0,
+      "thousandSelected": 1,
+      "generalNominalDeploymentNTD": 0,
+      "thousandNominalDeploymentNTD": 70000,
+      "combinedFormalNominalDeploymentNTD": 70000,
+      "combinedFormalStrategyCapitalNTD": 400000,
+      "combinedFormalNominalDeploymentPct": 17.5,
+      "combinedFormalStructuralReservePct": 82.5
+    },
+    {
+      "generalSelected": 0,
+      "thousandSelected": 2,
+      "generalNominalDeploymentNTD": 0,
+      "thousandNominalDeploymentNTD": 120000,
+      "combinedFormalNominalDeploymentNTD": 120000,
+      "combinedFormalStrategyCapitalNTD": 400000,
+      "combinedFormalNominalDeploymentPct": 30,
+      "combinedFormalStructuralReservePct": 70
+    },
+    {
+      "generalSelected": 0,
+      "thousandSelected": 3,
+      "generalNominalDeploymentNTD": 0,
+      "thousandNominalDeploymentNTD": 170000,
+      "combinedFormalNominalDeploymentNTD": 170000,
+      "combinedFormalStrategyCapitalNTD": 400000,
+      "combinedFormalNominalDeploymentPct": 42.5,
+      "combinedFormalStructuralReservePct": 57.5
+    },
+    {
+      "generalSelected": 1,
+      "thousandSelected": 0,
+      "generalNominalDeploymentNTD": 70000,
+      "thousandNominalDeploymentNTD": 0,
+      "combinedFormalNominalDeploymentNTD": 70000,
+      "combinedFormalStrategyCapitalNTD": 400000,
+      "combinedFormalNominalDeploymentPct": 17.5,
+      "combinedFormalStructuralReservePct": 82.5
+    },
+    {
+      "generalSelected": 1,
+      "thousandSelected": 1,
+      "generalNominalDeploymentNTD": 70000,
+      "thousandNominalDeploymentNTD": 70000,
+      "combinedFormalNominalDeploymentNTD": 140000,
+      "combinedFormalStrategyCapitalNTD": 400000,
+      "combinedFormalNominalDeploymentPct": 35,
+      "combinedFormalStructuralReservePct": 65
+    },
+    {
+      "generalSelected": 1,
+      "thousandSelected": 2,
+      "generalNominalDeploymentNTD": 70000,
+      "thousandNominalDeploymentNTD": 120000,
+      "combinedFormalNominalDeploymentNTD": 190000,
+      "combinedFormalStrategyCapitalNTD": 400000,
+      "combinedFormalNominalDeploymentPct": 47.5,
+      "combinedFormalStructuralReservePct": 52.5
+    },
+    {
+      "generalSelected": 1,
+      "thousandSelected": 3,
+      "generalNominalDeploymentNTD": 70000,
+      "thousandNominalDeploymentNTD": 170000,
+      "combinedFormalNominalDeploymentNTD": 240000,
+      "combinedFormalStrategyCapitalNTD": 400000,
+      "combinedFormalNominalDeploymentPct": 60,
+      "combinedFormalStructuralReservePct": 40
+    },
+    {
+      "generalSelected": 2,
+      "thousandSelected": 0,
+      "generalNominalDeploymentNTD": 120000,
+      "thousandNominalDeploymentNTD": 0,
+      "combinedFormalNominalDeploymentNTD": 120000,
+      "combinedFormalStrategyCapitalNTD": 400000,
+      "combinedFormalNominalDeploymentPct": 30,
+      "combinedFormalStructuralReservePct": 70
+    },
+    {
+      "generalSelected": 2,
+      "thousandSelected": 1,
+      "generalNominalDeploymentNTD": 120000,
+      "thousandNominalDeploymentNTD": 70000,
+      "combinedFormalNominalDeploymentNTD": 190000,
+      "combinedFormalStrategyCapitalNTD": 400000,
+      "combinedFormalNominalDeploymentPct": 47.5,
+      "combinedFormalStructuralReservePct": 52.5
+    },
+    {
+      "generalSelected": 2,
+      "thousandSelected": 2,
+      "generalNominalDeploymentNTD": 120000,
+      "thousandNominalDeploymentNTD": 120000,
+      "combinedFormalNominalDeploymentNTD": 240000,
+      "combinedFormalStrategyCapitalNTD": 400000,
+      "combinedFormalNominalDeploymentPct": 60,
+      "combinedFormalStructuralReservePct": 40
+    },
+    {
+      "generalSelected": 2,
+      "thousandSelected": 3,
+      "generalNominalDeploymentNTD": 120000,
+      "thousandNominalDeploymentNTD": 170000,
+      "combinedFormalNominalDeploymentNTD": 290000,
+      "combinedFormalStrategyCapitalNTD": 400000,
+      "combinedFormalNominalDeploymentPct": 72.5,
+      "combinedFormalStructuralReservePct": 27.5
+    },
+    {
+      "generalSelected": 3,
+      "thousandSelected": 0,
+      "generalNominalDeploymentNTD": 170000,
+      "thousandNominalDeploymentNTD": 0,
+      "combinedFormalNominalDeploymentNTD": 170000,
+      "combinedFormalStrategyCapitalNTD": 400000,
+      "combinedFormalNominalDeploymentPct": 42.5,
+      "combinedFormalStructuralReservePct": 57.5
+    },
+    {
+      "generalSelected": 3,
+      "thousandSelected": 1,
+      "generalNominalDeploymentNTD": 170000,
+      "thousandNominalDeploymentNTD": 70000,
+      "combinedFormalNominalDeploymentNTD": 240000,
+      "combinedFormalStrategyCapitalNTD": 400000,
+      "combinedFormalNominalDeploymentPct": 60,
+      "combinedFormalStructuralReservePct": 40
+    },
+    {
+      "generalSelected": 3,
+      "thousandSelected": 2,
+      "generalNominalDeploymentNTD": 170000,
+      "thousandNominalDeploymentNTD": 120000,
+      "combinedFormalNominalDeploymentNTD": 290000,
+      "combinedFormalStrategyCapitalNTD": 400000,
+      "combinedFormalNominalDeploymentPct": 72.5,
+      "combinedFormalStructuralReservePct": 27.5
+    },
+    {
+      "generalSelected": 3,
+      "thousandSelected": 3,
+      "generalNominalDeploymentNTD": 170000,
+      "thousandNominalDeploymentNTD": 170000,
+      "combinedFormalNominalDeploymentNTD": 340000,
+      "combinedFormalStrategyCapitalNTD": 400000,
+      "combinedFormalNominalDeploymentPct": 85,
+      "combinedFormalStructuralReservePct": 15
+    }
+  ],
+  "highValueCounterexamples": [
+    {
+      "state": "GENERAL=3, THOUSAND=0",
+      "result": "General is nominally 85% deployed inside its own 200k pool, but consolidated two-Formal-pool nominal deployment is only 42.5% of 400k strategy capital.",
+      "implication": "A 'full' pool does not imply high consolidated utilization when the opposite ring-fenced pool is empty."
+    },
+    {
+      "state": "GENERAL=1, THOUSAND=1",
+      "result": "Each pool nominally deploys 35%; consolidated Formal nominal deployment is also 35%, not 70%.",
+      "implication": "Pool percentages cannot be arithmetically added without their capital denominators."
+    },
+    {
+      "state": "GENERAL=3, THOUSAND=3",
+      "result": "Even both quotas filled imply nominal deployment 340k/400k=85%, leaving a 15% design reserve before cap/rounding and before any BUY/fill uncertainty.",
+      "implication": "100% capital utilization is not the current Formal design target."
+    }
+  ],
+  "firstTrancheClarification": {
+    "perPoolNominalFirstTrancheIfAllFirstEntriesActivatedAndFilled": {
+      "selected0": "0%",
+      "selected1": "21%",
+      "selected2": "36%",
+      "selected3": "51%"
+    },
+    "guard": "These are plan-size arithmetic only (deploy ratio × 60%). They are not observed exposure and must not be called fills."
+  },
+  "optimizationFirewall": [
+    "Higher utilization is not automatically better.",
+    "Do not relax gates, quota, ring fence, cap, rounding, BUY confirmation or maxChase from this algebra alone.",
+    "Any capital/quota behavior change is Class C and requires owner approval after prospective/OOS/cost/risk evidence.",
+    "Cause attribution requires the correct same-generation qualified denominator; selectedCount=3 is right-censored."
+  ],
+  "formalOptimizationCandidate": false,
+  "status": "STRUCTURAL_SCARCITY_DECOMPOSITION_FROZEN / OUTCOME_VALUE_UNKNOWN / FORMAL_UNCHANGED"
+}
