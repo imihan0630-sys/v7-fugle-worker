@@ -283,8 +283,8 @@ jobs:
             const helperEnd = activeContent.indexOf("async function analyzeStockSmart", helperStart);
             assert.ok(helperStart >= 0 && helperEnd > helperStart, "PV helper layer missing");
             const ordinaryLiveCandleCallsAddedByPv = (activeContent.slice(helperStart, helperEnd).match(/fetchCandles\(/g) || []).length;
-            const formalPersistenceHook = activeContent.lastIndexOf("await writeLiveSnapshot(env, snapshot)");
-            const formalSignalHook = activeContent.lastIndexOf("processSignalState(result");
+            const formalPersistenceHook = activeContent.indexOf("await writeLiveSnapshot(env, snapshot)");
+            const formalSignalHook = activeContent.indexOf("processSignalState(result");
             const intradayPvHook = activeContent.lastIndexOf("const pvShadow = await recordPvIntradayShadowSafe");
             const dailyBootstrapHook = activeContent.lastIndexOf("pvShadowBootstrap=await bootstrapPvShadowBaselinesSafe");
             const dailySnapshotHook = activeContent.lastIndexOf("pvShadowDaily=await recordPvDailyShadowSafe");
@@ -293,6 +293,9 @@ jobs:
               pvEnabledHelperPresent: helperStart >= 0,
               intradayRecorderPresent: activeContent.includes("async function recordPvIntradayShadowSafe"),
               dailyRecorderPresent: activeContent.includes("async function recordPvDailyShadowSafe"),
+              formalPersistenceAnchorPresent: formalPersistenceHook >= 0,
+              formalSignalAnchorPresent: formalSignalHook >= 0,
+              intradayHookPresent: intradayPvHook >= 0,
               intradayHookAfterFormalPersistence: intradayPvHook > formalPersistenceHook && intradayPvHook > formalSignalHook,
               dailyBootstrapHookPresent: dailyBootstrapHook >= 0,
               dailySnapshotHookPresent: dailySnapshotHook >= 0,
@@ -351,6 +354,9 @@ jobs:
             assert.equal(ordinaryLiveCandleCallsAddedByPv, 0, "PV added ordinary live candle calls");
             assert.equal(sourceAttestation.intradayRecorderPresent, true, "PV intraday recorder missing from deployed source");
             assert.equal(sourceAttestation.dailyRecorderPresent, true, "PV daily recorder missing from deployed source");
+            assert.equal(sourceAttestation.formalPersistenceAnchorPresent, true, "Formal live-state persistence anchor missing from deployed source");
+            assert.equal(sourceAttestation.formalSignalAnchorPresent, true, "Formal signal-processing anchor missing from deployed source");
+            assert.equal(sourceAttestation.intradayHookPresent, true, "PV intraday call hook missing from deployed source");
             assert.equal(sourceAttestation.intradayHookAfterFormalPersistence, true, "PV intraday hook is missing or precedes Formal persistence");
             assert.equal(sourceAttestation.dailyBootstrapHookPresent, true, "PV baseline bootstrap hook missing from deployed source");
             assert.equal(sourceAttestation.dailySnapshotHookPresent, true, "PV daily snapshot hook missing from deployed source");
