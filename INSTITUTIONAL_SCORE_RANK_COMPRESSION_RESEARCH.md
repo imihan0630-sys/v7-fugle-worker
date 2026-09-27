@@ -28,4 +28,6 @@ This is **institutional-component compression only**. It does not claim final Fo
 
 A complete clean same-scan parent is mandatory. Current selected-only FULL_FORMAL_SCAN persistence and bounded Shadow cannot estimate full-scan frequency.
 
+The 10–30bn special-reason path uses institutionalScore >=70 together with 1.5x liquidity. That threshold is a separate eligibility effect: compression at the 100 cap does not alter whether a row already above 70 clears that condition. Report >=70 occupancy separately from score saturation.
+
 No weight, gate, threshold or formula change is proposed.
