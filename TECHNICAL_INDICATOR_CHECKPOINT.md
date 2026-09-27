@@ -1044,3 +1044,89 @@ Formal Core remains LOCKED.
 - 52ec90e1b31236670a3a316c922d0beed950e47d — ADX/Bollinger formula parity specification.
 - 5574b454bfa3d2b4143a892e235adb28ba188e2d — machine-readable ADX/Bollinger formula contract.
 - 1d663637915ead6d86cdccb5776f87f0ffaaa405 — Technical Indicator snapshot contract v0.2 proposal.
+
+
+## Continuation update — TI-301 through TI-312
+
+### Cross-platform parity extension — TI-301..TI-307
+- Existing formula-provenance audit already established that identical display labels do not imply numeric parity.
+- ADX14 parity tuple now explicitly includes:
+  +DM/-DM tie rule, TR definition, initial summation window, Wilder smoothing, DI/DX zero-denominator handling, first-ADX initialization, integer rounding, unstable period, output-start and session/continuity semantics.
+- Internal ADX baseline:
+  WILDER_ADX14_TALIB_STYLE_NO_ROUNDING_V0_1.
+- TA-Lib-style mathematical alignment is MATERIAL, but exact external-platform P2 parity remains UNKNOWN until identical history and edge-case semantics are proven.
+- Practitioner guidance that ADX may need very deep history for stable cross-platform values is retained as a parity warning, not converted into a universal production warm-up threshold.
+- Bollinger parity tuple now explicitly includes:
+  input series, center MA type, period, variance divisor, band multiplier, missing/session handling, zero-width %B behavior, BandWidth scaling and continuity space.
+- Internal Bollinger baseline:
+  BBANDS_CLOSE_SMA20_POPSTD20_K2_V0_1.
+- TA-Lib population-variance convention is the internal numeric reference. Platforms using sample standard deviation can differ even when both display "20,2".
+- Fidelity/public family descriptions materially align on SMA + standard-deviation bands and BandWidth formula but do not by themselves prove variance-divisor/zero-width/rounding parity.
+- External chart disagreement triage order is frozen:
+  input series -> continuity/adjustment -> session inclusion -> periods -> smoothing/center -> seed -> output start -> variance/zero/tie rules -> rounding -> implementation defect.
+- Formula parity remains QA/robustness evidence only, never alpha evidence.
+- Canonical provenance file extended:
+  research/TECHNICAL_INDICATOR_FORMULA_PROVENANCE_V0_1.md
+
+### Numeric mechanics oracle — TI-308..TI-312
+- Deterministic, outcome-blind numeric oracle vectors are frozen for future isolated ADX/Bollinger implementation QA.
+- ADX mirrored monotonic fixtures:
+  40-bar monotonic up with H=C+1/L=C-1:
+    first ADX at index27 = 100;
+    final ADX = 100;
+    +DI27=50; -DI27=0.
+  Symmetric monotonic down:
+    first/final ADX=100;
+    +DI27=0; -DI27=50.
+- Flat zero-range 40-bar fixture:
+  first/final ADX=0.
+- Equal outside expansion fixture:
+  equal positive high/low expansion invokes tie rule, both DM=0, ADX remains 0.
+- Gap fixture:
+  prior H=L=C=100 then H=110.5/L=109.5/C=110 => TR=10.5.
+- Multiplying the monotonic-up OHLC path by 10 leaves +DI/-DI/DX/ADX unchanged exactly under the oracle arithmetic.
+- Bollinger 20-close sequence 101..120:
+  SMA20=110.5;
+  population sigma=5.766281297335398;
+  sample-sigma comparator=5.916079783099616;
+  upper=122.0325625946708;
+  lower=98.9674374053292;
+  BandWidthPct=20.87341646094261;
+  %B=0.911877235523957.
+- Flat 20-close=100 fixture:
+  sigma=0;
+  BandWidth=0;
+  %B=NULL.
+- x10 multiplicative price scaling leaves BandWidth ratio/%B unchanged within floating tolerance.
+- +100 additive shift leaves %B unchanged but changes relative BandWidth because the SMA denominator shifts.
+- New durable oracle:
+  research/technical_indicator_adx_bbands_oracle_vectors_v0_1.json
+- These are formula-mechanics fixtures only; no forward market outcome or threshold was used.
+
+### Current lane status
+
+PRIMARY_THEORY_DECOMPOSITION = COMPLETE_V0_1
+OBSERVER_STATE_CONSTRUCTION = DESIGN_FROZEN_RUNTIME_NO_GO
+FORMULA_PROVENANCE_PARITY = EXTENDED_THROUGH_ADX_BBANDS
+ADX14_NUMERIC_ORACLE = FROZEN
+BBANDS20X2_NUMERIC_ORACLE = FROZEN
+ISOLATED_ADX_BBANDS_CORE = NOT_IMPLEMENTED
+SNAPSHOT_V0_2 = PROPOSAL_ONLY
+OUTCOME_INFERENCE = NO_GO
+FORMAL_OPTIMIZATION_CANDIDATE = NONE
+Formal Core remains LOCKED.
+
+### Updated exact next continuation point
+
+1. Stop further named-indicator expansion.
+2. Next research-only engineering target is isolated core implementation of ADX14 and BBANDS20x2 against the frozen numeric oracle.
+3. MACD response-profile F1-F12 mechanics remain the next non-outcome QA after ADX/BBands.
+4. No runtime observer wiring until TECHNICAL_CONTINUITY + exact parent lineage + governance approval.
+5. Do not infer alpha from oracle/mechanics tests.
+6. No Formal/ranking/threshold/capital/monitor/push change.
+7. Formal Core remains unchanged.
+
+## Latest durable research commits
+
+- c5fe98c7b1a3c3d1c04212767589ec28fcd99a64 — formula-provenance parity extended through ADX/Bollinger.
+- b919478454b040fdff70b7c36801cf12c7ee96f2 — ADX/Bollinger deterministic numeric oracle vectors.
