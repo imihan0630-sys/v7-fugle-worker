@@ -300,3 +300,25 @@ Verified:
 - concentration admission/eviction/sizing effects are explicitly unauthorized.
 
 Size concentration remains source-blocked until PIT-safe size/market-cap semantics exist.
+
+
+## Shadow source-session and run-fingerprint verification (2026-09-27)
+
+Status: PASS / RESEARCH-ONLY / NOT DEPLOYED.
+
+Implemented:
+- `SYSTEM2_SHADOW_RUN_PROVENANCE_V0_1.md`;
+- `runtime/shadow_source_session_receipt.mjs`;
+- `runtime/shadow_run_fingerprint.mjs`;
+- source-session and run-fingerprint storage serializers/tables.
+
+Verified:
+- REQUIRED source missing => SOURCE_SESSION_INCOMPLETE;
+- OPTIONAL source gap is preserved but does not block when REQUIRED sources are ready;
+- PIT future-availability violation blocks the source session;
+- run fingerprint canonicalizes hash arrays so irrelevant input ordering is deterministic;
+- complete source session + complete universe accounting => outcomeJoinEligible=true;
+- incomplete source session or run accounting => RUN_FINGERPRINT_INCOMPLETE + outcomeJoinEligible=false;
+- storage serializers preserve the join-eligibility and provenance hashes.
+
+No daily schedule, physical D1 or live runtime was changed.
