@@ -40,6 +40,21 @@ The capacity layer itself only:
 
 It must not create a total score from heterogeneous strategies.
 
+## Scarcity fail-closed rule
+
+Until a versioned global cross-strategy priority policy exists, the system must not use arbitrary concatenation order to choose among multiple new qualified symbols competing for fewer remaining global slots.
+
+If:
+- eligible new unique symbols > current vacancies; and
+- no global priority policy/version is supplied,
+
+the capacity layer returns:
+`GLOBAL_PRIORITY_UNRESOLVED（全域優先序未解）`
+
+and performs retention only. Competing new names are deferred and preserved for research; none is silently selected by symbol order, strategy iteration order or implementation accident.
+
+If all eligible new names fit within the remaining vacancies, no global priority comparison is required and all may be admitted.
+
 ## Global pool allocation
 
 Order of operations:
