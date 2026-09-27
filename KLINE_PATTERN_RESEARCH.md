@@ -17879,3 +17879,127 @@ At minimum:
 - no excessive zero-pick deterioration.
 
 Only then may a concrete optimization proposal be written for owner review.
+
+
+## DL-003CF — Technical vs Fundamental Information Has a Horizon Division of Labor
+
+### Recent broad evidence
+Cakici & Zaremba (2025), using machine-learning comparisons across major developed equity markets, report:
+- technical/market data predicts returns better at shorter horizons;
+- technical strategies generate higher turnover;
+- accounting information is relatively more useful at longer horizons and supports lower-cost implementation;
+- technical and accounting information retain independent predictive content.
+
+This is not Taiwan-specific, but it is a strong architectural prior.
+
+### Architecture implication for our system
+Pattern maturity should be researched primarily as:
+- short-horizon selection quality,
+- watch/revalidation state,
+- breakout/reversal context,
+- execution-adjacent information.
+
+It should NOT replace:
+- fundamental quality,
+- revenue/earnings evidence,
+- valuation risk,
+- sector quality.
+
+### Why this fits current Formal
+Current system already combines:
+- technical A/B setup,
+- fundamental/quality gates,
+- institutional/sector evidence,
+- 15m execution.
+
+DL-002/DL-003 should test incremental technical structure inside that architecture, not redesign it into a pure chart system.
+
+## DL-003CG — Short-Horizon Technical Edge Must Pay for Higher Turnover
+
+### Evidence prior
+The 2025 technical-vs-accounting study emphasizes a cost:
+technical signals tend to imply higher turnover.
+
+### Pattern implication
+A Pattern feature can improve D3/D5 prediction but still be economically useless if it:
+- increases candidate churn,
+- creates frequent state flips,
+- causes more re-selection,
+- increases missed/late entries,
+- raises transaction costs/slippage.
+
+### Required operational metrics
+In addition to return metrics:
+- patternStateFlipRate
+- candidateChurnRate
+- averageDaysInWatch
+- signalsPerStockMonth
+- reentry/reselectionCount
+- impliedRoundTrips
+- costAdjustedD5/D10
+- noTradeRate
+- missedWinnerRate
+
+### Stability requirement
+Prefer a slightly weaker predictive feature with:
+- stable state,
+- lower churn,
+over a hypersensitive feature that changes daily.
+
+## DL-003CH — Pattern Information Should Be Additive, Not a Substitute for Fundamentals
+
+### Test
+Within matched stocks/date:
+M0 Formal baseline.
+M1 Pattern primitives.
+M2 Formal + Pattern.
+
+If M2 improves over M0 while M1 alone is unstable:
+Pattern is an additive technical layer, which is acceptable.
+
+If M1 appears strong but M2 adds nothing:
+Pattern may simply repackage information already selected by fundamentals/sector/quality.
+
+### Long-horizon outcomes
+For D20 and beyond, explicitly compare whether:
+- Pattern effect decays,
+- fundamental effect persists,
+- interaction matters.
+
+### No production inference
+This is research architecture only.
+Formal fundamental gates remain unchanged.
+
+## DL-003CI — Nonlinear Technical Information Supports Interaction Research, But Not Black-Box Promotion
+
+### Modern evidence
+“Charting by machines” (Journal of Financial Economics, 2024) finds:
+- historical price paths strongly predict cross-sectional future returns in its sample;
+- the forecasting function contains nonlinearities and interactions;
+- information is distinct from standard momentum/reversal/extant technical signals;
+- out-of-sample performance remains meaningful.
+
+### Research relevance
+This supports our decision not to limit Pattern work to:
+- one linear score,
+- one MA cross,
+- one fixed retracement.
+
+Potential value may lie in interactions:
+- compression × support progression,
+- maturity × RS change,
+- breakout × major-zone room,
+- extremeness × reclaim,
+- turnover state × return state.
+
+### Governance caution
+Nonlinearity is not permission for unconstrained machine learning.
+
+Sequence:
+1. validate interpretable primitives;
+2. test pre-registered interactions;
+3. only later compare a regularized nonlinear model;
+4. require untouched OOS and interpretability diagnostics.
+
+### Goal
+Use modern ML evidence to motivate careful interaction testing, not to bypass falsification.
