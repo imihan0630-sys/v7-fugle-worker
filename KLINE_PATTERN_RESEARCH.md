@@ -17320,3 +17320,187 @@ without adopting those narratives as causal truth.
 ### Priority
 WORTH_SHADOW_RESEARCH as a local reversal motif.
 No Formal entry rule.
+
+
+## DL-003BQ — Taiwan Turnover Evidence Is Horizon- and Regime-Dependent
+
+### Evidence conflict
+Taiwan evidence does NOT support a universal rule such as:
+“high turnover kills momentum”
+or
+“high turnover confirms momentum.”
+
+Different studies, horizons and regimes produce different relations.
+
+1. Intermediate-horizon evidence:
+Lin et al. (Pacific-Basin Finance Journal, 2020) show stocks with extreme absolute past strength are highly volatile and weaken standard intermediate-term momentum. Removing the most extreme absolute-strength stocks improves momentum robustness.
+
+2. Post-2015 short-horizon evidence:
+A 2022 NTU study of Taiwan stocks through 2021 reports:
+- before the 2015 price-limit widening, short-horizon behavior is more reversal-like on average;
+- after the 2015 widening to +/-10%, short-term momentum becomes positive on average;
+- within the post-change sample, high-turnover groups show stronger short-term momentum while low-turnover groups show reversal-like performance.
+
+### Interpretation
+These are not necessarily contradictory because they differ in:
+- horizon;
+- market regime;
+- extreme-return conditioning;
+- portfolio construction;
+- turnover definition.
+
+### Pattern consequence
+Turnover must be modeled as contextual:
+turnover × phase × return state × horizon × regime.
+
+Do NOT encode:
+- high turnover = distribution,
+- low turnover = accumulation,
+as universal labels.
+
+### Research matrix
+For each pattern phase:
+- low / medium / high turnover context;
+- short-horizon D1-D5 outcomes;
+- medium D10-D20 outcomes;
+- tail-return state;
+- post-2015/post-2020 regime.
+
+### Key test
+A late turnover surge after a long extension may be adverse,
+while high turnover during an early breakout in the modern regime may reflect valid information incorporation.
+
+Only the joint state can distinguish them.
+
+## DL-003BR — Extreme Strength Is Not the Same as Healthy Pattern Maturity
+
+### Taiwan evidence
+2020 Taiwan evidence finds the most extreme absolute winners/losers are highly volatile and can attenuate intermediate-term momentum.
+
+### Pattern implication
+A visually strong pattern near a pivot should distinguish:
+- structured maturity,
+from
+- extreme absolute-strength / volatility state.
+
+### Fields
+- absoluteStrengthPercentile
+- volatilityPercentile
+- patternMaturity
+- distanceFromPivot
+- extensionFromMA20/60
+- high252Distance
+- tailReturnState
+
+### Falsification
+Compare:
+MATURE_NOT_EXTREME
+MATURE_EXTREME
+NO_PATTERN_EXTREME
+NO_PATTERN_NOT_EXTREME
+
+Question:
+Does pattern structure rescue extreme strength, or do extreme volatile names remain fragile despite a pretty setup?
+
+### Relation to existing Formal
+Current lateStage / overheat already addresses part of this.
+Any new extremeness field must beat those controls.
+
+## DL-003BS — 52-Week High Evidence in Taiwan Is Conditional, Not Universal
+
+### Evidence synthesis
+Taiwan evidence on 52-week highs is mixed/conditional:
+
+- A 2013 Taiwan thesis using 1981-2010 common stocks reports conventional price momentum and 52-week-high momentum strategies were not profitable in its design, while a 5-year-low contrarian strategy showed excess return.
+- Hao et al. (International Review of Economics & Finance, 2016) find 52-week-high information contains both anchoring and recency information, but profitability is weakened by negative January returns and the recency channel behaves differently.
+- Lin (Pacific-Basin Finance Journal, 2024) shows salience materially alters the 52-week-high effect: extreme salient upside states weaken it, while salient downside states can strengthen it.
+
+### Consequence
+DL-003AL must remain a context variable, not a bullish factor.
+
+### Pattern tests
+Do not ask only:
+“distance to 52W high.”
+
+Ask jointly:
+- distance,
+- recency,
+- salience,
+- pattern maturity,
+- market regime,
+- turnover/attention,
+- structural-zone overlap.
+
+### 52-week low also matters
+Taiwan analyst-anchor research finds both 52-week highs and lows influence recommendation revisions and recency effects.
+
+Therefore add:
+- low252
+- distanceToLow252
+- daysSinceLow252
+- low252Recency
+as contextual variables for W/IHS/extreme-bottom research.
+
+### No contradiction resolution by cherry-picking
+The correct conclusion is:
+anchor effects are state-dependent and design-sensitive.
+
+## DL-003BT — Long-Horizon Low Anchor vs HS Head Extremeness
+
+### Fresh connection
+The 2026 HS-bottom paper finds stronger results when the head is at an extreme historical low-price percentile.
+
+This can overlap with:
+- 52-week-low proximity,
+- 5-year-low context,
+- max drawdown,
+- historical percentile.
+
+### Nested falsification
+M0:
+W/IHS topology only.
+
+M1:
++ head percentile.
+
+M2:
++ 52-week-low distance/recency.
+
+M3:
++ longer-horizon low anchor (if valid data).
+
+M4:
+all + volatility/extreme-strength controls.
+
+### Goal
+Identify whether “extreme head” is:
+- a distinct nonlinear reversal context,
+or merely another way of saying “near long-term low.”
+
+### Data requirement
+This requires >252 sessions and preferably longer valid adjusted history.
+Current live history cache cannot answer it.
+
+## DL-003BU — Modern-Regime Priority Overrides Historical-Average Comfort
+
+### Principle
+When Taiwan evidence conflicts across eras, current structural regime gets higher validation priority.
+
+Primary current-regime layers:
+1. post-2015 +/-10% price limit;
+2. post-2020 continuous trading;
+3. prospective 2026 Pattern Shadow.
+
+Older evidence remains:
+- mechanism prior,
+- stress/regime comparison,
+not current effect-size estimate.
+
+### Reporting
+Every Pattern research table should eventually show:
+- FULL_HISTORY
+- POST_2015
+- POST_2020
+- PROSPECTIVE_2026_PLUS
+
+A feature that works only in old regimes should not be promoted for current Formal review.
