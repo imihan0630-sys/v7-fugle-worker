@@ -1,0 +1,137 @@
+{
+  "schemaVersion": "technical-indicator-ca-contamination-v0.1",
+  "updated": "2026-09-28 Asia/Taipei",
+  "researchOnly": true,
+  "outcomeBlind": true,
+  "decisionImpact": false,
+  "formalCore": "LOCKED",
+  "fixture": {
+    "id": "MECHANICAL_RESET_2_TO_1_FLAT_ECONOMIC_PATH",
+    "eventIndex": 50,
+    "bars": 100,
+    "raw": {
+      "preEvent": {
+        "close": 100,
+        "high": 101,
+        "low": 99
+      },
+      "postEvent": {
+        "close": 50,
+        "high": 50.5,
+        "low": 49.5
+      }
+    },
+    "technicalContinuity": {
+      "allBars": {
+        "close": 50,
+        "high": 50.5,
+        "low": 49.5
+      }
+    }
+  },
+  "continuityExpected": {
+    "kd": {
+      "k": 50,
+      "d": 50
+    },
+    "rsi14": 50,
+    "macd": {
+      "dif": 0,
+      "histogram": 0
+    },
+    "adx14": {
+      "plusDI": 0,
+      "minusDI": 0,
+      "adx": 0
+    },
+    "bbands20x2": {
+      "bandWidthPct": 0,
+      "percentB": null
+    }
+  },
+  "rawSelectedOffsets": {
+    "0": {
+      "k": 33.65695792880258,
+      "d": 44.552319309600854,
+      "rsi": 0,
+      "dif": -3.988603988603998,
+      "hist": -3.1908831908831985,
+      "minusDI": 64.81507951055602,
+      "adx": 7.142857142857143,
+      "bbw": 44.7066558311864
+    },
+    "5": {
+      "k": 5.275214084994737,
+      "d": 13.883894682168679,
+      "rsi": 0,
+      "dif": -13.157216564463354,
+      "hist": -5.32474623094857,
+      "minusDI": 59.89085614347872,
+      "adx": 35.89500070123843,
+      "bbw": 107.8253104695492
+    },
+    "13": {
+      "k": 45.86360835503873,
+      "d": 38.038688141451416,
+      "rsi": 0,
+      "dif": -12.20068056511225,
+      "hist": -0.019581767776912784,
+      "minusDI": 49.96995285960654,
+      "adx": 64.56646897801411,
+      "bbw": 141.0023290755643
+    },
+    "19": {
+      "k": 49.636859992760584,
+      "d": 48.223618532918834,
+      "rsi": 0,
+      "dif": -8.95747804383415,
+      "hist": 1.5943266030726786,
+      "minusDI": 41.386968138886196,
+      "adx": 77.28533518682949,
+      "bbw": 0
+    },
+    "30": {
+      "k": 49.99580173113387,
+      "d": 49.96406956592199,
+      "rsi": 0,
+      "dif": -4.319029467347107,
+      "hist": 1.522433459897127,
+      "minusDI": 25.82267890892774,
+      "adx": 89.94748301695618,
+      "bbw": 0
+    },
+    "40": {
+      "k": 49.99992719559484,
+      "d": 49.99913422995206,
+      "rsi": 0,
+      "dif": -2.0780474732667287,
+      "hist": 0.8731575901461905,
+      "minusDI": 14.833145763255562,
+      "adx": 95.20898002252079,
+      "bbw": 0
+    },
+    "49": {
+      "k": 49.99999810619033,
+      "d": 49.99997179790523,
+      "rsi": 0,
+      "dif": -1.054273522222033,
+      "hist": 0.4718087251786882,
+      "minusDI": 8.375175112269018,
+      "adx": 97.5409586514003,
+      "bbw": 0
+    }
+  },
+  "certificationClass": {
+    "KD": "HYBRID_FINITE_RANGE_PLUS_RECURSIVE",
+    "RSI": "RECURSIVE_IIR_NONLINEAR_RATIO",
+    "MACD": "CASCADED_RECURSIVE_FILTER",
+    "ADX": "CASCADED_RECURSIVE_DIRECTIONAL_RATIO",
+    "BBANDS": "FINITE_WINDOW"
+  },
+  "conclusions": [
+    "GENERIC_WAIT_N_BARS_REPAIR_REJECTED",
+    "TECHNICAL_CONTINUITY_FIRST_ORDER_VALIDITY_REQUIREMENT",
+    "RECURSIVE_INDICATORS_REQUIRE_REPLAY_CERTIFICATION",
+    "FINITE_WINDOW_INDICATORS_CAN_CERTIFY_FROM_EXACT_CLEAN_WINDOW"
+  ]
+}
