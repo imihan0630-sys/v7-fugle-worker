@@ -1,9 +1,9 @@
 # System 2 Storage Schema
 
-V0.4 adds the ranking-research, candidate-lifecycle, source-session, run-fingerprint and isolated-persistence provenance structures created during P1. The schema remains research-only and has never been applied to the System 1 production database.
+V0.5 adds the ranking-research, candidate-lifecycle, source-session, run-fingerprint, isolated-persistence provenance, schema metadata and infrastructure verification structures created during P1. The schema remains research-only and has never been applied to the System 1 production database.
 
 Updated: 2026-09-26
-Status: DESIGN V0.4 / RESEARCH-ONLY / NOT DEPLOYED
+Status: DESIGN V0.5 / RESEARCH-ONLY / NOT DEPLOYED
 
 ## Goals
 
