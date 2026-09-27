@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "PRIORITY_SCORE_SIZING_MULTIPLIER_STRUCTURAL_V0_1",
+  "observedAt": "2026-09-27T21:02:00+08:00",
+  "hypothesis": "PriorityScore's influence ends at ranking/selection.",
+  "falsification": "False structurally: after selection, PriorityScore also drives proportional planned capital, so score differences can create a second exposure channel.",
+  "witnessDate": "2026-09-18",
+  "witness": {
+    "plans": [
+      {
+        "symbol": "2006",
+        "priorityScore": 69.9,
+        "allocationNTD": 50000,
+        "stopRiskPctHigh": 2.6167
+      },
+      {
+        "symbol": "3105",
+        "priorityScore": 89.4,
+        "allocationNTD": 64000,
+        "stopRiskPctHigh": 5.0021
+      },
+      {
+        "symbol": "6133",
+        "priorityScore": 74.9,
+        "allocationNTD": 54000,
+        "stopRiskPctHigh": 3.6357
+      }
+    ],
+    "sameDeploymentEqualCapitalNTD": 56000,
+    "interpretation": "3105 receives +NT$8,000 vs equal capital because of post-selection score-proportional sizing; because it also has the widest stop-risk fraction, the sizing tilt adds projected stop-risk relative to equal capital."
+  },
+  "limits": [
+    "does not attribute the score difference to any one factor",
+    "does not measure selection counterfactual",
+    "does not prove harm or benefit",
+    "single multi-name historical witness",
+    "rounding residual exists"
+  ],
+  "prospectiveRequirement": "On generation-certified multi-selected dates, decompose selection incidence separately from post-selection sizing tilt; never add them as if independent.",
+  "status": "SECOND_EXPOSURE_CHANNEL_CONFIRMED / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY",
+  "formalCoreImpact": false
+}

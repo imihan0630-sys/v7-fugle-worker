@@ -1601,3 +1601,40 @@ Status:
 `PROTOCOL_PREREGISTERED / AWAITING_FIRST_ELIGIBLE_SCAN`.
 
 Formal Core unchanged.
+
+
+## PR-041 — PriorityScore has a second exposure channel after selection (2026-09-27)
+
+A structural hypothesis was falsified:
+
+`PriorityScore influence ends when ranking/selection is complete.`
+
+It does not. After a name is selected, the same post-consensus PriorityScore also drives proportional planned capital. Therefore PriorityScore has at least two distinct decision-path exposures:
+1. ranking/selection exposure;
+2. post-selection sizing exposure.
+
+On the immutable 2026-09-18 three-name journal, equal capital at the same NT$168,000 deployment is NT$56,000/name. Current planned capital is:
+- 2006: NT$50,000;
+- 3105: NT$64,000;
+- 6133: NT$54,000.
+
+Thus 3105 receives a +NT$8,000 sizing tilt versus equal capital. Because 3105 also has the widest conservative planned stop fraction, that positive sizing tilt increases its projected stop-risk contribution relative to equal capital.
+
+This does **not** mean the extra exposure is harmful. It may be justified if the higher PriorityScore contains genuine prospective alpha.
+
+It also does not permit factor-level attribution: setup, RR, sector, institutions, fundamentals, RS and consensus all contribute to the final score, some through multiple layers. The correct future decomposition is therefore:
+
+`factor/gate effect -> ranking/selection incidence -> selected score -> sizing tilt -> realized outcome`.
+
+Selection influence and sizing influence must be reported separately and must not be added as though statistically independent.
+
+Machine artifact:
+`research/priority_score_sizing_multiplier_structural_v0_1.json`.
+
+Executable decomposition:
+`research/priority_score_sizing_influence_v0_1.mjs`.
+
+Status:
+`SECOND_EXPOSURE_CHANNEL_CONFIRMED / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
