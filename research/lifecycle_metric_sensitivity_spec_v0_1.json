@@ -22,6 +22,7 @@
     "metric-specific global optima may differ and are not live recommendations",
     "one reconstructable multi-name date remains the sample limit"
   ],
-  "status": "LIFECYCLE_METRIC_PROTOCOL_READY / PRODUCTION_AUDIT_PENDING",
-  "formalCoreImpact": false
+  "status": "LIFECYCLE_X_METRIC_ARTIFACT_FALSIFIED / 15_OF_15_DIRECTIONAL_AGREEMENT / ECONOMIC_VALUE_UNKNOWN",
+  "formalCoreImpact": false,
+  "productionReceipt": "research/lifecycle_metric_sensitivity_production_receipt_20260928.json"
 }
