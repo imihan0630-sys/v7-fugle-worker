@@ -1,0 +1,79 @@
+{
+  "schemaVersion": "r02-outcome-provenance-falsification-v0.1",
+  "researchDate": "2026-09-27",
+  "status": "OUTCOME_PROVENANCE_GAP_CONFIRMED",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "currentOutcomePath": {
+    "source": "v7_history_cache.history_json",
+    "barSelection": "bars with date > scanDate, sorted ascending, then first 1/3/5/10/20 available bars",
+    "historySourceRevalidationConsumed": false,
+    "verifiedSuspensionGapConsumed": false,
+    "corporateActionContinuityConsumed": false,
+    "adjustedPriceContinuity": false,
+    "currentHistorySemantics": "V8.12 fetchHistoricalDaily explicitly requests adjusted=false raw daily candles."
+  },
+  "asymmetry": {
+    "formalSelection": "V8.12 requires historyFreshness.usable===true before buildMarketFeatures reaches Formal selection.",
+    "researchOutcome": "R02/counterfactual reader bypasses that admission receipt and reads raw history_json directly.",
+    "conclusion": "Selection-time history is provenance-gated, but generic future outcome bars are not equivalently provenance-gated."
+  },
+  "fixedSyntheticWitnesses": [
+    {
+      "id": "UNKNOWN_MISSING_BAR_STRETCH",
+      "scanDate": "T0",
+      "expectedExchangeSessions": [
+        "T1",
+        "T2",
+        "T3"
+      ],
+      "cachedFutureBars": [
+        "T2",
+        "T3"
+      ],
+      "currentD1": "T2",
+      "ambiguity": [
+        "If T1 was a verified symbol suspension/no-trade day, T2 may be the first valid symbol session.",
+        "If T1 was a stale/missing cache bar while the symbol traded, T2 is not valid D1."
+      ],
+      "result": "Identical cached bars produce different horizon semantics depending on missing-bar provenance, which current R02 does not read."
+    },
+    {
+      "id": "RAW_SPLIT_DISCONTINUITY",
+      "scanCloseRaw": 100,
+      "corporateAction": "2-for-1 split between scan and next observed bar",
+      "nextRawClose": 50,
+      "currentReturnPct": -50,
+      "economicInterpretation": "Near-flat pre/post split value before ordinary market movement; raw price ratio is not comparable.",
+      "result": "Corporate-action continuity must be validated before D1/D3/D5 return/MFE/MAE."
+    }
+  ],
+  "cashDistributionPolicy": {
+    "state": "MUST_BE_EXPLICIT",
+    "note": "Cash dividend ex-date is not the same as split/capital-reduction discontinuity. Research must preregister whether the outcome is raw price return or shareholder total return; do not silently mix."
+  },
+  "requiredOutcomeQualityStates": [
+    "VALID_CONTIGUOUS_SYMBOL_SESSIONS",
+    "VALID_VERIFIED_SUSPENSION_GAPS",
+    "CORPORATE_ACTION_ADJUSTED_OR_CONTINUITY_PROVEN",
+    "INCOMPLETE_FUTURE_HORIZON",
+    "UNKNOWN_GAP_REASON",
+    "CORPORATE_ACTION_CONTINUITY_UNKNOWN",
+    "HISTORY_SOURCE_BLOCKED"
+  ],
+  "preferredReuse": {
+    "symbolSessionOwner": "Existing Corporate Action / symbol-session quality semantics and V8.12 history-source revalidation.",
+    "corporateActionOwner": "Existing Corporate Actions lane; do not create a second adjustment taxonomy in R02.",
+    "priceVolumeOwner": "Existing PV quality-overlay pattern for later-discovered source/event defects.",
+    "rule": "R02 consumes versioned quality receipts; it does not independently infer suspensions or corporate actions from price shapes."
+  },
+  "R02Guard": [
+    "Only rows with horizon-specific VALID outcome quality enter promotion-grade Selection Alpha.",
+    "Do not use next-available-bar slicing when an intervening expected symbol session is unexplained.",
+    "MFE/MAE require the same continuity quality as endpoint return.",
+    "Breakout HELD_3D/FAILED_CLOSE_WITHIN_3D requires verified first three expected symbol sessions; unknown gaps => outcome UNKNOWN.",
+    "Coverage must report excluded/unknown counts by reason and cohort/pool/date.",
+    "Historical rows may be descriptive only when exact gap/corporate-action provenance is unavailable."
+  ],
+  "decision": "GENERIC_R02_OUTCOMES_BYPASS_HISTORY_AND_CA_QUALITY / PROMOTION_GRADE_OUTCOMES_REQUIRE_VERSIONED_QUALITY_OVERLAY / NO_FORMAL_CHANGE"
+}
