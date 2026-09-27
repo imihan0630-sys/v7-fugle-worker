@@ -1,0 +1,83 @@
+name: System2 Decision Clock Readiness Read-only
+
+on:
+  schedule:
+    - cron: "30 8 * * 1-5"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: system2-decision-clock-readiness-readonly
+  cancel-in-progress: true
+
+jobs:
+  aggregate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Aggregate prospective clock artifacts without mutation
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p system2/artifacts
+          node system2/scripts/aggregate_decision_clock_artifacts_readonly.mjs \
+            --repo "$GITHUB_REPOSITORY" \
+            --output system2/artifacts/decision-clock-readiness-latest.json
+
+      - name: Publish readiness summary
+        shell: bash
+        run: |
+          node - <<'NODE'
+          const fs=require("node:fs");
+          const r=JSON.parse(fs.readFileSync("system2/artifacts/decision-clock-readiness-latest.json","utf8"));
+          const a=r.aggregation;
+          const d=a.readiness;
+          const lines=[
+            "## System 2 Decision Clock evidence readiness",
+            "",
+            "- Promotion-grade dates: "+a.promotionGradeDateCount,
+            "- Artifact coverage audited: "+a.artifactCoverageAudited,
+            "- Promotion coverage complete: "+a.promotionCoverageComplete,
+            "- Trading-day artifact gaps: "+a.tradingDayArtifactGaps.length,
+            "- Readiness status: "+d.status,
+            "- Promotion readiness status: "+a.promotionReadinessStatus,
+            "- Research candidate Taipei time: "+(d.candidateTaipeiTime||"—"),
+            "- Exact Decision Clock authorized: false",
+            "- Worker Cron authorized: false",
+            "- Worker capture enabled: false",
+            "- System 1 runtime used: false",
+          ];
+          fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY,lines.join("\n")+"\n");
+          NODE
+
+      - name: Upload aggregation receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: system2-decision-clock-readiness-${{ github.run_id }}
+          path: system2/artifacts/decision-clock-readiness-latest.json
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Reassert read-only boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -Eiq 'secrets\.|wrangler[[:space:]]+(deploy|delete)|d1[[:space:]]+(create|execute)|SYSTEM2_CAPTURE_ENABLED[[:space:]]*=[[:space:]]*true' \
+            .github/workflows/system2-decision-clock-readiness-readonly.yml
+          ! grep -Eiq 'fugle-test|V7_DB|STOCKS_KV' \
+            .github/workflows/system2-decision-clock-readiness-readonly.yml \
+            system2/scripts/aggregate_decision_clock_artifacts_readonly.mjs
+          echo "Decision Clock aggregation read-only boundary PASS"
