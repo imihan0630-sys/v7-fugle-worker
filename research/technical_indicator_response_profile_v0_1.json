@@ -1,0 +1,73 @@
+{
+  "schemaVersion": "technical-indicator-response-profile-v0.1",
+  "updated": "2026-09-27 Asia/Taipei",
+  "researchOnly": true,
+  "decisionImpact": false,
+  "formalCore": "LOCKED",
+  "purpose": "Outcome-blind mechanical response diagnostics for filter-like technical indicators. Speed is not treated as alpha.",
+  "requiredIdentity": [
+    "indicatorId",
+    "formulaVersion",
+    "semanticBasisIds",
+    "lookbackParameters",
+    "smoothingParameters",
+    "transformClass",
+    "responseProfileVersion"
+  ],
+  "fixtures": [
+    "F1_CONSTANT",
+    "F2_STEP_UP",
+    "F3_STEP_DOWN",
+    "F4_LINEAR_UP",
+    "F5_LINEAR_DOWN",
+    "F6_SLOPE_ACCELERATION",
+    "F7_V_REVERSAL",
+    "F8_CHOPPY_ZERO_DRIFT",
+    "F9_TREND_PLUS_NOISE",
+    "F10_SINGLE_GAP_SHOCK",
+    "F11_FALSE_BREAK_ONE_BAR",
+    "F12_LIMIT_CONSTRAINED_STAIR_STEP"
+  ],
+  "metrics": [
+    "firstValidAt",
+    "warmupBars",
+    "response50Bars",
+    "response90Bars",
+    "firstStateTransitionBar",
+    "stateFlipCount",
+    "outputVarianceOnNoise",
+    "maxShockDistortion",
+    "shockDecayBars",
+    "prefixInvariant",
+    "replayExact"
+  ],
+  "rules": [
+    "LOWER_DELAY_ALONE_IS_NOT_BETTER",
+    "COMPARE_DELAY_WITH_NOISE_AND_FALSE_TRANSITIONS",
+    "SAME_BASIS_DIFFERENT_FILTER_IS_NOT_INDEPENDENT_EVIDENCE",
+    "NO_MARKET_OUTCOMES_IN_MECHANICAL_FIXTURES",
+    "CAUSAL_INPUTS_ONLY",
+    "PARAMETER_SWEEP_PROHIBITED_BEFORE_BASELINE_QA"
+  ],
+  "currentPriorityApplications": [
+    {
+      "comparison": "KD_VS_RSI",
+      "requirement": "Separate semantic-input difference (B2 vs B3) from smoothing/latency difference."
+    },
+    {
+      "comparison": "MACD_VS_DIRECT_TREND",
+      "requirement": "Report transition delay and false-transition/noise diagnostics."
+    },
+    {
+      "comparison": "ADX_VS_DIRECT_TREND_QUALITY",
+      "requirement": "Report state stability versus confirmation delay."
+    }
+  ],
+  "excludedFromPrimaryOutcomeQueue": [
+    "DEMA",
+    "TEMA",
+    "HMA",
+    "ZERO_LAG_EMA",
+    "LOW_LAG_MA_VARIANTS"
+  ]
+}
