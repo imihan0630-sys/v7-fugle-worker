@@ -1,0 +1,80 @@
+{
+  "schemaVersion": "signal-grade-downstream-usage-audit-v0.1",
+  "researchDate": "2026-09-27",
+  "status": "STRUCTURAL_USAGE_AUDIT",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "formalSignalGrade": {
+    "source": "setupQuality only",
+    "thresholds": {
+      "A": 80,
+      "B": 65,
+      "C": "<65 rejected"
+    },
+    "distinctFromChannel": true
+  },
+  "confirmedDecisionInfluence": [
+    {
+      "layer": "FINAL_ELIGIBILITY",
+      "mechanism": "signalLevel C is rejected after RR pass",
+      "causal": true
+    },
+    {
+      "layer": "PRIORITY_SCORE_INDIRECT",
+      "mechanism": "The underlying setupQuality contributes 28% of base PriorityScore; signalLevel label itself is not the numeric score term.",
+      "causal": true
+    },
+    {
+      "layer": "FORMAL_COMPARATOR_INDIRECT",
+      "mechanism": "Raw setupQuality is a later comparator; signalLevel label itself is not the comparator.",
+      "causal": true
+    },
+    {
+      "layer": "CAPITAL_INDIRECT",
+      "mechanism": "Allocation is score-proportional with caps; setupQuality influences priorityScore, but signalLevel label is not read by allocation formula.",
+      "causal": true
+    },
+    {
+      "layer": "INTRADAY_MONITOR_ORDER",
+      "mechanism": "compareResults sorts first by live action state, then plan.signalLevel A>B>C, then priorityScore, RR, sectorFlow, RS.",
+      "causal": true,
+      "effect": "Display/processing order among monitored names with equal live action state."
+    }
+  ],
+  "noDirectUseFound": [
+    {
+      "layer": "BUY_ADD_TRIGGER",
+      "basis": "evaluatePullback/evaluateMomentum/buildFinalDecision/evaluateOperationSignals use plan mode/channel, price zones, K-bars, maxChase, positionStage and risk/profit conditions; no Formal plan.signalLevel conditional found.",
+      "conclusion": "NO_DIRECT_SIGNAL_LEVEL_GATE_FOUND"
+    },
+    {
+      "layer": "STOP_SELL_REDUCE",
+      "basis": "evaluateStop/evaluateOperationSignals use stop, sellBelow, reduceAt, price/K-volume and actual position state; no Formal signalLevel conditional found.",
+      "conclusion": "NO_DIRECT_SIGNAL_LEVEL_GATE_FOUND"
+    },
+    {
+      "layer": "ALLOCATION",
+      "basis": "allocateAndBuildPlans weights selected candidates by priorityScore and max position ratio; no signalLevel term.",
+      "conclusion": "NO_DIRECT_LABEL_WEIGHT_FOUND"
+    },
+    {
+      "layer": "PHONE_PUSH_ELIGIBILITY",
+      "basis": "shouldPhonePushSignal is keyed by signal type; processSignalState operates on evaluateOperationSignals output. No Formal signalLevel push-enable condition found.",
+      "conclusion": "NO_DIRECT_LABEL_GATE_FOUND"
+    }
+  ],
+  "operationalNuance": {
+    "notificationSequence": "runBackgroundMonitor sorts results with compareResults before sequential processSignalState calls. Therefore signalLevel can affect relative notification processing/order when finalDecision action weight ties.",
+    "signalExistence": "No evidence found that Formal signalLevel A versus B changes whether BUY/ADD/REDUCE/SELL/STOP_LOSS conditions are satisfied after the plan exists.",
+    "monitorGrade": "buildMonitorStatus A/B/C is a separate live action urgency grade and must not be confused with plan.signalLevel A/B/C."
+  },
+  "nonFormalNamespaces": [
+    "Hybrid defines its own signalLevel thresholds and C rejection; do not use Hybrid semantics as evidence for Formal.",
+    "Aideen derives its own signalLevel from aideenScore; do not conflate with Formal setupQuality grade."
+  ],
+  "falsification": [
+    "Any future patch adding signalLevel to evaluateOperationSignals, entry confirmation, allocation, push eligibility or position sizing invalidates this audit and requires a new version.",
+    "Monitor-order materiality is operational, not selection-alpha evidence; test only if notification/attention sequencing becomes a research question."
+  ],
+  "decision": "FORMAL_SIGNAL_GRADE_HAS_DIRECT_ELIGIBILITY_AND_MONITOR_ORDER_USE / NO_DIRECT_BUY_ADD_OR_ALLOCATION_LABEL_GATE_FOUND / UNDERLYING_SETUPQUALITY_HAS_MULTILAYER_INFLUENCE / NO_FORMAL_CHANGE"
+}

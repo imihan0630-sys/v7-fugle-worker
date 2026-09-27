@@ -1,0 +1,35 @@
+name: Channel Stage Denominator Research
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main]
+    paths:
+      - "research/channel_stage_denominator_observer_v0_1.mjs"
+      - "research/channel_stage_denominator_spec_v0_1.json"
+      - "research/signal_grade_downstream_usage_audit_v0_1.json"
+      - "tests/test_channel_stage_denominator_observer_v0_1.mjs"
+      - "tests/test_signal_grade_downstream_usage_audit_v0_1.mjs"
+      - ".github/workflows/channel-stage-denominator-research.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  falsification:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Run channel-stage denominator tests
+        run: node tests/test_channel_stage_denominator_observer_v0_1.mjs
+      - name: Run signal-grade downstream usage tests
+        run: node tests/test_signal_grade_downstream_usage_audit_v0_1.mjs
+      - name: Verify research-only boundaries
+        run: |
+          grep -F '"formalCoreChanged": false' research/channel_stage_denominator_spec_v0_1.json
+          grep -F '"outcomeDataUsed": false' research/channel_stage_denominator_spec_v0_1.json
+          grep -F '"formalCoreChanged": false' research/signal_grade_downstream_usage_audit_v0_1.json
+          grep -F '"outcomeDataUsed": false' research/signal_grade_downstream_usage_audit_v0_1.json

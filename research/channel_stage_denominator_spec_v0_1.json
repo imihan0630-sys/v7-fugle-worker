@@ -1,0 +1,68 @@
+{
+  "schemaVersion": "channel-stage-denominator-spec-v0.1",
+  "researchDate": "2026-09-27",
+  "status": "CLASS_A_OBSERVER_PROTOTYPE",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "problem": "Current diagnostics.baseEligible/rrEligible/channelCounts/conditionDistribution cannot identify A/B sequential scarcity from setup-pass through RR and final grade.",
+  "currentCounterLimits": {
+    "baseEligible": "aggregate early-admission count; includes both price pools and many later failures",
+    "rrEligible": "aggregate count that survived all intervening gates through RR; not split by channel",
+    "channelCounts": "only final scoreCandidate ok rows by channel; already after final-grade gate",
+    "conditionDistribution": "recomputed setup checks over basePassed population; rows need not have reached Formal setup gate",
+    "thousandStockPool": "subset re-evaluation of THOUSAND and overlaps top-level counts; not additive"
+  },
+  "sequentialReceipt": {
+    "unit": "scanDate x symbol x pricePool",
+    "rawSetupDiagnostics": [
+      "rawAPass",
+      "rawBPass",
+      "dualPass"
+    ],
+    "formalChannelAssignment": "Only after every ordered gate before AB_SETUP is clear; B precedence on dual-pass rows.",
+    "stages": [
+      "FORMAL_CHANNEL_ASSIGNED",
+      "POST_SETUP_PRECISION_PASS (fundamental count + fundamental quality + ATR)",
+      "TARGET_PASS",
+      "RR_PASS",
+      "FINAL_GRADE_PASS",
+      "FORMAL_QUALIFIED",
+      "SELECTED"
+    ],
+    "unknownRule": "UNKNOWN and dependent NOT_EVALUABLE never count as PASS or FAIL.",
+    "safeNotApplicable": [
+      "NOT_APPLICABLE_CAP_GTE_30",
+      "NOT_APPLICABLE_CAP_GTE_100",
+      "NO_POSITIVE_TTM_PE"
+    ]
+  },
+  "negativeControls": [
+    "A raw setup pass blocked by an earlier sector/data gate must not enter the sequential A_SETUP_PASS denominator.",
+    "Dual A+B pass is assigned to B because current Formal precedence is B then A.",
+    "A valid B-assigned row that reaches RR_PASS should never FINAL_GRADE_FAIL under current setupQuality formula/threshold; nonzero incidence flags provenance/version/observer mismatch.",
+    "FORMAL_OK without observed FINAL_GRADE_PASS is an invariant violation.",
+    "SELECTED without FORMAL_OK is an invariant violation."
+  ],
+  "engineering": {
+    "pureObserver": "research/channel_stage_denominator_observer_v0_1.mjs",
+    "marketCalls": 0,
+    "persistenceWrites": 0,
+    "formalIntegration": false,
+    "classA": "Pure computation/tests/spec only.",
+    "classB": "Any shared runtime/D1 persistence, scan-summary serialization or scheduling.",
+    "classC": "Any setup, RR, grade, channel precedence, ranking or quota change."
+  },
+  "interpretation": [
+    "The direct phrase A_SETUP_PASS -> RR_PASS is shorthand only; fundamental/ATR/target gates intervene and must remain explicit in the receipt.",
+    "Stage counts measure where observed rows leave the current ordered funnel; they do not estimate outcomes or recovered selections under relaxed rules.",
+    "Use complete same-scan row observers, not bounded Shadow samples, for denominators.",
+    "Price-pool and channel dimensions must be preserved; do not add top-level and thousand subset counters."
+  ],
+  "exactNext": [
+    "Validate synthetic stage accounting and B-grade negative control in CI.",
+    "Audit downstream signalLevel use after eligibility.",
+    "If prospective persistence is needed, prepare a Class-B additive receipt proposal; do not wire runtime without owner approval.",
+    "Only after clean prospective dates mature, test A grade-rejected opportunity cost versus matched A grade-pass controls."
+  ],
+  "decision": "CURRENT_SUMMARY_INSUFFICIENT / COMPLETE_CHANNEL_STAGE_DENOMINATOR_COMPUTABLE_FROM_ALREADY_OBSERVED_ROW_STATES / PERSISTENCE_CLASS_B / NO_FORMAL_CHANGE"
+}
