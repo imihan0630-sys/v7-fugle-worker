@@ -1,0 +1,93 @@
+{
+  "schemaVersion": "technical-indicator-isolated-qa-receipt-v0.1",
+  "updated": "2026-09-28 Asia/Taipei",
+  "researchOnly": true,
+  "decisionImpact": false,
+  "formalCore": "LOCKED",
+  "scope": [
+    "ADX14 isolated implementation",
+    "Bollinger20x2 isolated implementation",
+    "ADX/Bollinger deterministic oracle QA",
+    "MACD F1-F12 lag-noise mechanics QA"
+  ],
+  "sourceCorrections": {
+    "adxInitializationCorrection": {
+      "status": "CORRECTED_BEFORE_CORE_IMPLEMENTATION",
+      "issue": "Earlier prose simplified the seed as an initial period sum.",
+      "correctedSemantics": "TA-Lib-style: accumulate period-1 transitions, then Wilder-update before each of the first period DX slots; first ADX=sumDX/period.",
+      "zeroDirection": "No valid DX update when TR or DI-sum is zero/effectively zero; later ADX carries prior value.",
+      "commits": [
+        "313a97952f4c28fcb73d4a9b770929dfb4b5b140",
+        "2a43fff338da362d047631ef31f6e4cdba3b1e58"
+      ]
+    }
+  },
+  "implementation": {
+    "coreCommit": "9182d878da178cde14dc4a8a0111b430f76672ad",
+    "coreBlobSha": "f30cdcdd58fbe640cc80690e60e2644a94f52c87",
+    "testCommits": [
+      "b80c67dbf6e2412f23cfe2c82fadaff9b2e9a686",
+      "6fe11d7c7ad9ceeb7ae9ffb352b51d0d71ae707f"
+    ],
+    "adxOracleCommit": "423ede78d6868340acff05a00496d6f09bb38378",
+    "macdResponseCommits": [
+      "4625a68a085a75380787dbcef242707c43d0506f",
+      "1b7ef2c1db6fee2c33c8d62607d6ddcfe7f96c7e",
+      "41a82a7064ad6ecb6f98ddc1e986f1d09e651b4f"
+    ]
+  },
+  "validation": {
+    "officialGithubWorkflowObserved": false,
+    "reason": "No pull-request-triggered workflow run was returned for these default-branch research commits.",
+    "isolatedV8Execution": {
+      "technicalIndicatorCoreFullTest": "PASS",
+      "macdResponseF1F12Test": "PASS",
+      "executionMode": "Fetched exact GitHub source, removed ES-module import/export wrappers only, executed assertions in isolated V8.",
+      "alphaOutcomesUsed": false
+    },
+    "independentADXReference": {
+      "status": "PASS",
+      "method": "Independent Python transcription of frozen TA-Lib source-order semantics.",
+      "matchedIndices": [
+        14,
+        20,
+        27,
+        28,
+        35,
+        49
+      ],
+      "tolerance": "floating precision",
+      "nontrivialFixture": "ASYMMETRIC_WAVE_REFERENCE"
+    }
+  },
+  "passedAssertions": [
+    "ADX first output index 27 / 28 eligible bars",
+    "ADX monotonic up/down mirror strength with DI direction swap",
+    "ADX flat and equal-expansion zero-direction controls",
+    "ADX gap True Range",
+    "ADX multiplicative scale invariance",
+    "ADX asymmetric initialization oracle",
+    "ADX prefix invariance",
+    "Bollinger SMA20 population sigma oracle",
+    "Bollinger zero-width percentB null policy",
+    "Bollinger multiplicative scale invariance",
+    "Bollinger additive-shift percentB invariance",
+    "Bollinger prefix invariance",
+    "Existing KD/RSI/MACD replay and strict-semantic tests",
+    "MACD F1-F12 mechanics response assertions"
+  ],
+  "limitations": [
+    "No official repository CI run is claimed for this tranche.",
+    "No TECHNICAL_CONTINUITY runtime observer exists.",
+    "No prospective market outcomes were joined.",
+    "No threshold, ranking, capital, monitor or push logic changed."
+  ],
+  "status": {
+    "adxCore": "ISOLATED_QA_PASS",
+    "bbandsCore": "ISOLATED_QA_PASS",
+    "macdResponse": "ISOLATED_QA_PASS",
+    "runtimeObserver": "NO_GO",
+    "outcomeInference": "NO_GO",
+    "formalOptimizationCandidate": "NONE"
+  }
+}
