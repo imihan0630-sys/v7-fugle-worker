@@ -117,3 +117,35 @@ export function toStrategyOrderingRow(receipt) {
     schema_version: requiredText(receipt.schemaVersion, "schemaVersion"),
   });
 }
+
+
+export function toRankingExperimentRow(receipt) {
+  if (!receipt || typeof receipt !== "object") throw new Error("receipt is required");
+
+  return Object.freeze({
+    experiment_receipt_id: requiredText(receipt.experimentReceiptId, "experimentReceiptId"),
+    experiment_id: requiredText(receipt.experimentId, "experimentId"),
+    experiment_version: requiredText(receipt.experimentVersion, "experimentVersion"),
+    hypothesis_id: requiredText(receipt.hypothesisId, "hypothesisId"),
+    market_date: requiredText(receipt.marketDate, "marketDate"),
+    decision_timestamp: requiredText(receipt.decisionTimestamp, "decisionTimestamp"),
+    purpose: requiredText(receipt.purpose, "purpose"),
+    strategy_id: requiredText(receipt.strategyId, "strategyId"),
+    strategy_version: requiredText(receipt.strategyVersion, "strategyVersion"),
+    baseline_policy_id: requiredText(receipt.baselinePolicyId, "baselinePolicyId"),
+    baseline_policy_version: requiredText(receipt.baselinePolicyVersion, "baselinePolicyVersion"),
+    baseline_ordering_hash: requiredText(receipt.baselineOrderingHash, "baselineOrderingHash"),
+    challenger_policy_id: requiredText(receipt.challengerPolicyId, "challengerPolicyId"),
+    challenger_policy_version: requiredText(receipt.challengerPolicyVersion, "challengerPolicyVersion"),
+    challenger_ordering_hash: requiredText(receipt.challengerOrderingHash, "challengerOrderingHash"),
+    same_candidate_set: receipt.sameCandidateSet ? 1 : 0,
+    common_support_symbols_json: json(receipt.commonSupportSymbols || []),
+    baseline_only_symbols_json: json(receipt.baselineOnlySymbols || []),
+    challenger_only_symbols_json: json(receipt.challengerOnlySymbols || []),
+    rank_deltas_json: json(receipt.rankDeltas || []),
+    outcome_attached: receipt.outcomeAttached ? 1 : 0,
+    experiment_hash: requiredText(receipt.experimentHash, "experimentHash"),
+    captured_at: requiredText(receipt.capturedAt, "capturedAt"),
+    schema_version: requiredText(receipt.schemaVersion, "schemaVersion"),
+  });
+}
