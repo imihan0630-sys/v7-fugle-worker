@@ -22,7 +22,9 @@
       "TECHNICAL_CONTINUITY",
       "SYMBOL_SESSION",
       "STATE_LINEAGE"
-    ]
+    ],
+    "initialization": "Seed TR/+DM/-DM from first period-1 transitions; then apply Wilder update before each of the first period DX slots; first ADX = sumDX/period.",
+    "zeroDirectionBehavior": "If TR==0 or DI sum is effectively zero, no DX update; initial sumDX gets no contribution, later ADX carries prior value."
   },
   "bbands20x2": {
     "formulaVersion": "BBANDS_CLOSE_SMA20_POPSTD20_K2_V0_1",
