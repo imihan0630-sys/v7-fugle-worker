@@ -7,10 +7,6 @@ on:
         description: "Type DEPLOY_SYSTEM2_WORKER_SMOKE"
         required: true
         type: string
-  push:
-    branches: [main]
-    paths:
-      - "system2/approvals/DEPLOY_SYSTEM2_WORKER_SMOKE_2026-09-27.md"
 
 permissions:
   contents: read
@@ -37,10 +33,6 @@ jobs:
         run: |
           set -euo pipefail
           test "$EFFECTIVE_CONFIRM" = "DEPLOY_SYSTEM2_WORKER_SMOKE"
-          if [ "$GITHUB_EVENT_NAME" = "push" ]; then
-            test -f system2/approvals/DEPLOY_SYSTEM2_WORKER_SMOKE_2026-09-27.md
-            grep -qx 'APPROVAL=DEPLOY_SYSTEM2_WORKER_SMOKE' system2/approvals/DEPLOY_SYSTEM2_WORKER_SMOKE_2026-09-27.md
-          fi
 
       - name: Resolve isolated D1 and inspect recoverable Worker state
         env:
