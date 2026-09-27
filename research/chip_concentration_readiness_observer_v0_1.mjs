@@ -96,8 +96,18 @@ export function observeChipConcentrationReadiness(rows=[],{
   const counts={
     rows:Array.isArray(rows)?rows.length:0,
     reached:0,notReached:0,parentUnknown:0,
-    coveredAtReach:0,symbolAbsentAtReach:0,valueInvalidAtReach:0,datasetUnavailableAtReach:0
+    coveredAtReach:0,symbolAbsentAtReach:0,valueInvalidAtReach:0,datasetUnavailableAtReach:0,
+    sameDayMarketCovered:0,sameDayMarketSymbolAbsent:0,sameDayMarketValueInvalid:0
   };
+  if(dataset.datasetState==="DATASET_VALIDATED_SHAPE"){
+    for(const row of Array.isArray(rows)?rows:[]){
+      const symbol=String(row?.symbol||"").trim();
+      const entry=stocks[symbol];
+      if(!entry) counts.sameDayMarketSymbolAbsent+=1;
+      else if(num(entry.chipConcentration)===null) counts.sameDayMarketValueInvalid+=1;
+      else counts.sameDayMarketCovered+=1;
+    }
+  }
   const poolCounts={GENERAL:{reached:0,covered:0,missing:0},THOUSAND:{reached:0,covered:0,missing:0}};
   const records=[];
   for(const row of Array.isArray(rows)?rows:[]){
@@ -146,6 +156,8 @@ export function observeChipConcentrationReadiness(rows=[],{
     dataset,
     counts,
     poolCounts,
+    sameDayMarketCoverageRate:counts.rows>0&&dataset.datasetState==="DATASET_VALIDATED_SHAPE"?
+      counts.sameDayMarketCovered/counts.rows:null,
     formalReachMissingRate:counts.reached>0?
       (counts.symbolAbsentAtReach+counts.valueInvalidAtReach)/counts.reached:null,
     semanticGuards:{
@@ -158,5 +170,75 @@ export function observeChipConcentrationReadiness(rows=[],{
       formalCoreChanged:false
     },
     records
+  };
+}
+
+
+function rawMarketNumber(v){
+  if(v===null||v===undefined||v==="") return null;
+  const s=String(v).replaceAll(",","").replace("%","").trim();
+  if(!s||s==="-"||s==="--") return null;
+  const n=Number(s);
+  return Number.isFinite(n)?n:null;
+}
+
+export function classifyTdccRawSymbolCoverage({
+  rows=[],
+  fields=null,
+  marketSymbols=[],
+  scanDate=null
+}={}){
+  const groups=new Map();
+  const datasetFatal=[];
+  let commonAsOfDate=null;
+  for(let index=0;index<(Array.isArray(rows)?rows:[]).length;index+=1){
+    const values=rows[index];
+    const row=Array.isArray(values)&&Array.isArray(fields)
+      ? Object.fromEntries(fields.map((field,i)=>[field,values[i]]))
+      : values;
+    const symbol=String(row?.["證券代號"]||"").trim();
+    if(!/^[1-9][0-9]{3}$/.test(symbol)) continue;
+    const rowDate=String(row?.["資料日期"]||"").trim();
+    const grade=rawMarketNumber(row?.["持股分級"]);
+    const shares=rawMarketNumber(row?.["股數"]);
+    const ratio=rawMarketNumber(row?.["占集保庫存數比例%"]);
+    if(commonAsOfDate&&rowDate&&commonAsOfDate!==rowDate){
+      datasetFatal.push({index,symbol,reason:"MIXED_AS_OF_DATE",rowDate,commonAsOfDate});
+    }
+    if(rowDate&&!commonAsOfDate) commonAsOfDate=rowDate;
+    const g=groups.get(symbol)||{symbol,grades:new Map(),duplicateGrades:[]};
+    if(Number.isInteger(grade)){
+      if(g.grades.has(grade)) g.duplicateGrades.push(grade);
+      else g.grades.set(grade,{shares,ratio,rowDate});
+    }
+    groups.set(symbol,g);
+  }
+
+  const symbolStates={};
+  const counts={VALID:0,NO_SOURCE_ROWS:0,INCOMPLETE_GRADE_SET:0,TOTAL_RATIO_NOT_100:0,TOTAL_SHARES_NONPOSITIVE:0,DUPLICATE_GRADE:0};
+  for(const rawSymbol of Array.isArray(marketSymbols)?marketSymbols:[]){
+    const symbol=String(rawSymbol||"").trim();
+    const g=groups.get(symbol);
+    let state="VALID";
+    if(!g) state="NO_SOURCE_ROWS";
+    else if(g.duplicateGrades.length) state="DUPLICATE_GRADE";
+    else if(g.grades.size!==17||![...Array(17)].every((_,i)=>g.grades.has(i+1))) state="INCOMPLETE_GRADE_SET";
+    else if(Math.abs((g.grades.get(17)?.ratio??NaN)-100)>.01) state="TOTAL_RATIO_NOT_100";
+    else if(!((g.grades.get(17)?.shares??0)>0)) state="TOTAL_SHARES_NONPOSITIVE";
+    symbolStates[symbol]={state,rawGradeCount:g?.grades.size||0,duplicateGrades:g?.duplicateGrades||[]};
+    bump(counts,state);
+  }
+  return {
+    schemaVersion:"tdcc-raw-symbol-coverage-v0.1",
+    scanDate,
+    rawAsOfDate:commonAsOfDate,
+    marketSymbolCount:Array.isArray(marketSymbols)?marketSymbols.length:0,
+    sourceSymbolGroupCount:groups.size,
+    counts,
+    symbolStates,
+    datasetFatal,
+    persistenceLossGuard:"After validateOfficialQualityData persists only validated stocks, NO_SOURCE_ROWS cannot be distinguished from silently skipped incomplete/invalid total-row groups unless raw-ingest diagnostics are separately frozen.",
+    formalCoreChanged:false,
+    outcomesUsed:false
   };
 }
