@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "ADD_TRIGGER_CONDITIONAL_ALLOCATION_INVARIANCE_V0_1",
+  "scope": "ADD eligibility/timing only, conditional on both current and comparator execution paths having validly reached positionStage=FIRST.",
+  "sourceAudit": {
+    "upstreamFunctions": [
+      "evaluatePullback",
+      "evaluateMomentum",
+      "evaluateStop",
+      "evaluateProfit",
+      "buildFinalDecision",
+      "applyPlanValidity"
+    ],
+    "addPredicate": "finalDecision.level == buy AND maxChase guard AND positionStage == FIRST",
+    "sizingFieldsNotInEligibility": [
+      "priorityScore",
+      "allocationRatio",
+      "totalAllocation",
+      "secondAmount",
+      "secondShares"
+    ],
+    "sizingFieldsAfterEligibility": [
+      "secondAmount",
+      "secondShares"
+    ]
+  },
+  "necessaryPrecondition": [
+    "current path FIRST state is confirmed by execution evidence",
+    "counterfactual path is independently executable/orderable and has a valid first-fill state; current FIRST cannot be copied into comparator",
+    "same non-sizing plan fields/code version/market data"
+  ],
+  "allowedUse": "Once both paths are independently proven FIRST, the observed ADD trigger timestamp may be shared for sizing counterfactual research.",
+  "forbiddenUse": [
+    "Do not assume counterfactual FIRST merely because current path is FIRST.",
+    "Do not reuse current ADD amount/shares under another allocator.",
+    "Do not infer ADD fill, fill price or slippage from the shared trigger."
+  ],
+  "status": "ADD_TRIGGER_CONDITIONALLY_ALLOCATION_INVARIANT / FIRST_STATE_EXECUTION_GATED",
+  "formalCoreImpact": false
+}
