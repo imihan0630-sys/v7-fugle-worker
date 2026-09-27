@@ -1,0 +1,68 @@
+{
+  "schemaVersion": "technical-indicator-class-b-impact-audit-v0.1",
+  "updated": "2026-09-28 Asia/Taipei",
+  "researchOnly": true,
+  "implementationAllowed": false,
+  "ownerApprovalRequested": false,
+  "formalCore": "LOCKED",
+  "legacyReference": {
+    "table": "trade_research_shadow_candidates",
+    "mutable": true,
+    "primaryKey": "scan_date,symbol",
+    "theoreticalMaxRowsPerDate": 54,
+    "derivation": {
+      "selected": 6,
+      "qualifiedNotSelected": 12,
+      "nearMiss": 12,
+      "rejectedAfterBase": 12,
+      "broadControl": 12
+    },
+    "promotionGradeParent": false
+  },
+  "preferredArchitecture": {
+    "parent": "SHARED_IMMUTABLE_PER_SYMBOL_DECISION_STATE_RECEIPT",
+    "child": "TECHNICAL_INDICATOR_EVIDENCE",
+    "runReceipt": "ONE_PER_SCAN_DATE_CAPTURE_GENERATION",
+    "createSecondUniverse": false
+  },
+  "storage": {
+    "preferred": "REUSE_GENERIC_IMMUTABLE_EVIDENCE_CHILD_IF_AVAILABLE",
+    "fallbackDedicatedTables": [
+      "technical_indicator_observer_snapshots",
+      "technical_indicator_observer_runs"
+    ],
+    "snapshotWritesPerDate": "EXPECTED_PARENT_ATTEMPTS",
+    "runWritesPerDate": 1,
+    "futureParentScope": "UNKNOWN_MAY_BE_MUCH_LARGER_THAN_LEGACY_54"
+  },
+  "sourceCallImpact": {
+    "formulaSteadyState": "POTENTIALLY_ZERO",
+    "bootstrap": "UNKNOWN",
+    "continuityRuntime": "DEPENDENCY_OWNED_NOT_PROVEN_ZERO",
+    "rule": "NO_PER_INDICATOR_PROVIDER_FETCH"
+  },
+  "runtime": {
+    "initialScope": "AFTER_MARKET_ONLY",
+    "failOpen": true,
+    "runAfterFormalDecisionFrozen": true,
+    "protected": [
+      "FORMAL_SELECTION",
+      "ORDER",
+      "TOP6_3PLUS3",
+      "CAPITAL",
+      "PLANS",
+      "SIGNALS",
+      "PUSH"
+    ],
+    "stateCacheAuthority": false,
+    "canonicalReplayAuthority": true
+  },
+  "blockers": [
+    "IMMUTABLE_PARENT_ARCHITECTURE_NOT_IMPLEMENTED",
+    "TECHNICAL_CONTINUITY_RUNTIME_BLOCKED",
+    "SYMBOL_SESSION_PRICE_LIMIT_RUNTIME_COMPLETENESS_NOT_CERTIFIED",
+    "REAL_PARENT_SCALE_WRITE_LATENCY_UNKNOWN"
+  ],
+  "classification": "CLASS_B_PROPOSAL_PREMATURE",
+  "formalOptimizationCandidate": false
+}
