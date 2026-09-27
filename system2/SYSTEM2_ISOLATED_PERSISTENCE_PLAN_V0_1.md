@@ -150,3 +150,26 @@ System 2 is now ready for repository-only isolated persistence preparation.
 It is NOT yet ready to claim live prospective accumulation.
 
 The remaining physical step is a genuinely separate cloud database/service, not another strategy-rule decision.
+
+
+## Cloud capability audit result
+
+Read-only audit on 2026-09-27 established:
+- current legacy Cloudflare token is valid;
+- Workers Scripts list access works;
+- D1 list access returns HTTP 401 Authentication error;
+- dedicated `SYSTEM2_CLOUDFLARE_API_TOKEN` is not configured;
+- therefore D1 resource existence is UNKNOWN, not "absent".
+
+Repository-side provisioning code is complete, but physical D1 creation/migration is now blocked by a genuine account-permission/secret boundary.
+
+Prepared guarded path:
+- `.github/workflows/system2-isolated-d1-provision.yml`
+- `system2/deploy/provision_system2_d1.mjs`
+- exact confirmation string `CREATE_SYSTEM2_ISOLATED_D1`
+- isolated target database name `system2-research`
+- schema V0.5
+- write/read sentinel verification
+- no production Worker/root Wrangler/Cron change.
+
+See `SYSTEM2_CLOUD_PERSISTENCE_READINESS_V0_1.md`.
