@@ -23,7 +23,12 @@ function bundle(marketDate, {
     evidence: {
       evidenceId: `E-${marketDate}`,
       evidenceVersion: "S2_DECISION_CLOCK_DAILY_EVIDENCE_V0_2",
+      evidenceSemanticsVersion: "S2_DECISION_CLOCK_DAILY_EVIDENCE_SEMANTICS_V0_2_1",
       marketDate,
+      sameSessionClockReady: true,
+      a5ObservedAtDecisionBoundary: `${marketDate}T05:30:00Z`,
+      a5AvailableByCandidate: requiredReady,
+      candidateTimestamp: `${marketDate}T06:00:00Z`,
       requiredReady,
       precisionEligible,
       worstObservedRequiredUpperBoundMinutes: upper,
@@ -116,6 +121,7 @@ assert.equal(result.promotionCoverageComplete, true);
 assert.equal(result.promotionReadinessStatus, "INSUFFICIENT_DATES");
 assert.equal(result.nonTradingScheduledRuns.length, 1);
 assert.equal(result.tradingDayArtifactGaps.length, 0);
+assert.deepEqual(result.a5BoundaryFailureDates, []);
 assert.equal(result.collectorContractConsistent, true);
 assert.deepEqual(result.collectorContractFingerprints, ["collector-fp-A"]);
 assert.equal(result.exactDecisionClockAuthorized, false);
@@ -176,5 +182,48 @@ assert.equal(drift.collectorContractConsistent, false);
 assert.deepEqual(drift.collectorContractFingerprints, ["collector-fp-A", "collector-fp-B"]);
 assert.equal(drift.promotionCoverageComplete, false);
 assert.equal(drift.promotionReadinessStatus, "COLLECTOR_CONTRACT_DRIFT");
+
+
+const lateA5 = aggregateDecisionClockEvidence({
+  scheduledRunCoverage: [
+    {
+      marketDate: "2026-10-03",
+      runId: "700",
+      expectedTradingDay: true,
+      artifactPresent: true,
+      runConclusion: "success",
+    },
+  ],
+  candidates: [
+    {
+      runId: "700",
+      runAttempt: 1,
+      runHeadSha: "cccccccccccccccccccccccccccccccccccccccc",
+      eventName: "schedule",
+      runCreatedAt: "2026-10-03T05:25:00Z",
+      bundle: {
+        ...bundle("2026-10-03", {
+          runId: "700",
+          workflowSha: "cccccccccccccccccccccccccccccccccccccccc",
+          requiredReady: false,
+          precisionEligible: false,
+        }),
+        evidence: {
+          ...bundle("2026-10-03", {
+            runId: "700",
+            workflowSha: "cccccccccccccccccccccccccccccccccccccccc",
+            requiredReady: false,
+            precisionEligible: false,
+          }).evidence,
+          a5ObservedAtDecisionBoundary: "2026-10-03T06:10:00Z",
+          a5AvailableByCandidate: false,
+          candidateTimestamp: "2026-10-03T06:00:00Z",
+        },
+      },
+    },
+  ],
+});
+assert.deepEqual(lateA5.a5BoundaryFailureDates, ["2026-10-03"]);
+assert.equal(lateA5.readiness.status, "INCOMPLETE_REQUIRED_EVIDENCE");
 
 console.log("System2 decision-clock evidence aggregation tests passed");
