@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "technical-indicator-shared-parent-child-feasibility-v0.1",
+  "schemaVersion": "technical-indicator-shared-parent-child-feasibility-v0.2",
   "updated": "2026-09-28 Asia/Taipei",
   "researchOnly": true,
   "runtimeImplemented": false,
@@ -21,16 +21,20 @@
       "parent_decision_receipt_id",
       "capture_generation",
       "evidence_family",
-      "evidence_version",
+      "evidence_item_key",
+      "observer_version",
       "as_of"
     ],
     "fields": [
       "parent_decision_receipt_id",
       "capture_generation",
       "evidence_family",
-      "evidence_version",
+      "evidence_item_key",
+      "observer_version",
+      "semantic_contract_version",
       "as_of",
       "status",
+      "status_reason_code",
       "semantic_fingerprint",
       "payload_hash",
       "source_receipt_refs_json",
@@ -38,7 +42,16 @@
       "created_at"
     ],
     "immutable": true,
-    "sameIdentityDifferentFingerprint": "PROVENANCE_CONFLICT"
+    "sameIdentityDifferentFingerprint": "PROVENANCE_CONFLICT",
+    "genericStatuses": [
+      "VALID",
+      "CONSTRAINED",
+      "BLOCKED",
+      "UNKNOWN",
+      "NOT_EVALUABLE",
+      "QA_FAIL"
+    ],
+    "itemKeyRule": "ROOT for single-object observers; deterministic episode/item identity for multi-object observers such as Pattern."
   },
   "genericObserverRun": {
     "proposedTable": "trade_research_observer_runs",
@@ -46,9 +59,11 @@
       "scan_date",
       "capture_generation",
       "evidence_family",
-      "observer_version"
+      "observer_version",
+      "parent_scope_id"
     ],
     "fields": [
+      "parent_scope_id",
       "parent_keyset_hash",
       "expected_parent_count",
       "attempted_parent_count",
@@ -56,9 +71,13 @@
       "constrained_count",
       "blocked_count",
       "unknown_count",
+      "not_evaluable_count",
       "missing_count",
       "provenance_conflict_count",
       "qa_failure_count",
+      "status_counts_json",
+      "reason_counts_json",
+      "qa_counts_json",
       "started_at",
       "finished_at",
       "run_status",
@@ -126,9 +145,30 @@
     "observer_wall_ms"
   ],
   "status": {
-    "sharedEvidenceChildSchema": "DESIGN_TO_BE_CROSS_LANE_RECONCILED",
+    "sharedEvidenceChildSchema": "DESIGN_COMPATIBLE_AFTER_V0_2_REPAIRS",
     "classBImplementation": "PREMATURE",
     "ownerApprovalRequested": false,
-    "formalOptimizationCandidate": false
+    "formalOptimizationCandidate": false,
+    "crossLaneContradiction": "NONE_MATERIAL_AFTER_ITEM_KEY_SCOPE_AND_NOT_EVALUABLE_REPAIRS"
+  },
+  "crossLaneCompatibility": {
+    "technicalIndicator": {
+      "evidenceItemKey": "ROOT",
+      "parentScope": "ALL_HISTORY_ADMITTED_FEATURE_ROWS_EVALUATED_BY_SAME_SCAN_FORMAL_DECISION_PATH",
+      "statusMapping": "Technical-specific attempt reason -> generic status + status_reason_code",
+      "compatible": true
+    },
+    "pattern": {
+      "evidenceItemKey": "PATTERN_EPISODE_KEY",
+      "parentScope": "VERSIONED_PARENT_SCOPE_REQUIRED",
+      "specialNeed": "Multiple structural episodes can coexist for one parent/asOf; evidence_item_key is mandatory.",
+      "compatibleAfterRepair": true
+    },
+    "targetRR": {
+      "evidenceItemKey": "ROOT",
+      "parentScope": "DECISION_STATE_PARENT_WITH_EARLY_ROWS_PRESERVED",
+      "specialNeed": "Early Formal stages can be structurally NOT_EVALUABLE rather than BLOCKED.",
+      "compatibleAfterRepair": true
+    }
   }
 }
