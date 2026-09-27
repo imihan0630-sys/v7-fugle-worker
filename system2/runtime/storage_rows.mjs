@@ -149,3 +149,32 @@ export function toRankingExperimentRow(receipt) {
     schema_version: requiredText(receipt.schemaVersion, "schemaVersion"),
   });
 }
+
+
+export function toRank05DisplacementRow(receipt) {
+  if (!receipt || typeof receipt !== "object") throw new Error("receipt is required");
+
+  return Object.freeze({
+    receipt_id: requiredText(receipt.receiptId, "receiptId"),
+    experiment_id: requiredText(receipt.experimentId, "experimentId"),
+    experiment_version: requiredText(receipt.experimentVersion, "experimentVersion"),
+    market_date: requiredText(receipt.marketDate, "marketDate"),
+    decision_timestamp: requiredText(receipt.decisionTimestamp, "decisionTimestamp"),
+    incumbent_symbol: requiredText(receipt.incumbent?.symbol, "incumbent.symbol"),
+    incumbent_episode_id: requiredText(
+      receipt.incumbent?.candidateEpisodeId,
+      "incumbent.candidateEpisodeId",
+    ),
+    incumbent_pool_sessions: Number(receipt.incumbent?.candidatePoolSessions),
+    incumbent_json: json(receipt.incumbent),
+    challenger_symbol: requiredText(receipt.challenger?.symbol, "challenger.symbol"),
+    challenger_json: json(receipt.challenger),
+    classification: requiredText(receipt.classification, "classification"),
+    shadow_displacement_eligible: receipt.shadowDisplacementEligible ? 1 : 0,
+    action: requiredText(receipt.action, "action"),
+    outcome_attached: receipt.outcomeAttached ? 1 : 0,
+    receipt_hash: requiredText(receipt.receiptHash, "receiptHash"),
+    captured_at: requiredText(receipt.capturedAt, "capturedAt"),
+    schema_version: requiredText(receipt.schemaVersion, "schemaVersion"),
+  });
+}
