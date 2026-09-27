@@ -20342,3 +20342,179 @@ ECONOMIC:
 ### Formal-review relevance
 Only evidence that is both robust and economically meaningful can become an optimization candidate.
 
+
+
+## DL-002DE — Fugle Research Data Capability Audit (2026-09-27)
+
+### Official historical-candle capability
+Fugle Historical Candles supports:
+- daily / weekly / monthly OHLC,
+- volume,
+- turnover,
+- change,
+- adjusted=true/false,
+- listed/OTC daily history back to 2010,
+- each request range < 1 year,
+- historical intraday candles from 2023-05-23.
+
+### Consequence
+DL-002 daily morphology data requirements are technically source-feasible:
+- raw O/H/L/C,
+- adjusted O/H/L/C,
+- volume,
+- turnover,
+- >=120 trading bars.
+
+The blocker is current system storage/schema, not source availability.
+
+### Point-in-time caution
+Current query of an adjusted historical series may reflect the vendor's current corporate-action adjustment state.
+For research:
+- preserve raw OHLC,
+- preserve adjusted OHLC,
+- preserve fetch timestamp and adjusted flag,
+- use explicit corporate-action tags when crossing events,
+- avoid claiming exact historical nominal pivot levels from a retrospectively adjusted series.
+
+Morphology ratios on a consistently scaled pre-event segment can remain stable, but raw executable levels must always come from raw prices.
+
+### Data provenance fields
+- source = FUGLE_HISTORICAL_CANDLES
+- fetchedAt
+- adjusted
+- fromDate
+- toDate
+- timeframe
+- fieldsRequested
+- apiVersion
+
+## DL-002DF — Prospective True Intraday Volume-at-Price Capture
+
+### Official capability
+Fugle Intraday Volumes provides current-day price-level distribution:
+- price,
+- cumulative volume at price,
+- volumeAtBid,
+- volumeAtAsk.
+
+The documentation notes bid/ask classified volume excludes the opening first transaction, so volumeAtBid + volumeAtAsk can differ from total volume.
+
+### Critical limitation
+The endpoint is intraday/current-day oriented and does not expose a historical-date parameter.
+
+Therefore:
+- TRUE historical volume-at-price before capture start remains unavailable from this endpoint,
+- prospective Pattern Shadow can capture it from now onward on selected research observations.
+
+### Prospective fields
+- snapshotDate
+- symbol
+- capturedAt
+- priceLevel
+- volumeAtPrice
+- volumeAtBid
+- volumeAtAsk
+- openingTradeExcludedFromSideClassification = true
+- sourceSemanticsVersion
+
+### Research-derived zones
+Only after capture:
+- intradayPOCPrice
+- highVolumeNodes
+- lowVolumeNodes
+- bidAskImbalanceByPrice
+- volumeConcentrationNearPivot
+- volumeAboveBelowPivot
+
+### Interpretation boundary
+These are transaction-distribution features for that captured day.
+They are NOT shareholder cost basis and NOT institutional cost.
+
+### Sampling priority
+Do not capture full-market price-level data if resource-heavy.
+Prospective research candidates can include:
+- Formal SELECTED,
+- Near-miss high Pattern Maturity,
+- matched controls,
+using a pre-registered sampling rule.
+
+No decision impact.
+
+## DL-002DG — Historical Intraday Counterfactual Replay vs Actual Live Signals
+
+### Opportunity
+Fugle historical intraday candles are available from 2023-05-23.
+This can support historical replay of:
+- 15m bars,
+- 10m bars,
+- breakout/retest paths,
+- completed-bar semantics.
+
+### Strict semantic split
+ACTUAL_LIVE_EVIDENCE:
+- recorder/monitor event genuinely observed by the production system at the time.
+
+COUNTERFACTUAL_REPLAY:
+- later reconstruction using historical market data and frozen rules.
+
+Never label replay as:
+“the system sent BUY that day”
+or
+“a historical live signal existed.”
+
+### Replay questions
+Given a frozen historical plan available at that date:
+- would the current/frozen 15m rule have triggered?
+- at what first observable completed bar?
+- what was the counterfactual entry?
+- did no-retest continuation occur?
+- did retest confirmation reduce failure or miss winners?
+
+### Anti-lookahead requirements
+- plan parameters must be truly historical/as-of-date,
+- only intraday bars up to each decision timestamp can be used,
+- current rule version must be recorded,
+- if replay uses a rule not deployed historically, label CURRENT_RULE_REPLAY or RULE_VERSION_X_REPLAY.
+
+### Missing-plan boundary
+Do not reconstruct an old Formal plan from future-selected winners merely to create replay samples.
+Eligible replay requires:
+- durable historical SELECTED/Shadow plan,
+or
+- a clearly defined independent historical research cohort.
+
+### Relation to B-128/B-129 recorder limitation
+Replay can provide counterfactual Execution research where actual recorder coverage is UNKNOWN.
+It cannot convert UNKNOWN live evidence into historical ACTUAL BUY/NO-BUY.
+
+## DL-002DH — Historical 1m-to-15m Reconstruction Integrity
+
+### Aggregation
+When replaying historical intraday data:
+- aggregate only completed 1m bars into exact exchange-aligned 10m/15m windows,
+- preserve first/last timestamps,
+- validate OHLC ordering and summed volume,
+- do not use partial final bars.
+
+### Session rules
+Respect:
+- trading session boundaries,
+- auction/opening mechanics,
+- halts where observable,
+- continuous-trading regime.
+
+### Reconciliation
+Where Fugle directly supplies historical 15m bars and 1m data exists:
+compare:
+- direct 15m endpoint,
+- reconstructed 1m->15m.
+
+Differences must be investigated before large-scale replay.
+
+### Output provenance
+- sourceTimeframe
+- targetTimeframe
+- reconstructionMethod
+- barCount
+- reconciliationStatus
+
