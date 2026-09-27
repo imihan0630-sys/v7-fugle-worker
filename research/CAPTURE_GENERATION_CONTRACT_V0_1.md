@@ -223,3 +223,42 @@ Formal Core remains LOCKED.
 2. Test same invocation reuse vs new invocation identity.
 3. Freeze parentKeysetHash and decision-set hash construction next.
 4. Do not wire generation into Worker/D1 yet.
+
+
+## Persistence model correction — TI-478
+
+The initial generation-status sketch mixed:
+- Formal freeze;
+- later research completion
+
+inside one evolving generation receipt.
+
+That is incompatible with an immutable final receipt because later research completion would require UPDATE.
+
+Frozen correction:
+
+### Immutable Formal generation receipt
+
+Insert exactly once only AFTER:
+- every parent chunk is persisted or confirmed exact duplicate;
+- parent count reconciles;
+- certified parentKeysetHash matches expected;
+- decisionSetHash matches the in-memory frozen Formal decision set.
+
+The immutable generation receipt certifies only the Formal parent generation.
+
+It never waits for Technical/Pattern/other research completion.
+
+### Append-only operational events
+
+STARTED / retry / failure / QA diagnostics belong to an append-only event stream.
+
+They are operational observability, not inference authority.
+
+### Observer final receipts
+
+Each research observer receives its own immutable final run receipt only after its exact ROOT attempt keyset is complete.
+
+Research completion therefore never mutates the Formal generation receipt.
+
+This correction occurs before any Production persistence implementation.
