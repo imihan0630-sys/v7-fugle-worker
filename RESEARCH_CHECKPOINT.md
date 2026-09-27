@@ -1209,3 +1209,25 @@ Updated: 2026-09-27 08:30 Asia/Taipei.
 - PR #116 merged at `eddd5a70e4580d3797588a5f5d0339dafe25d6f7`. Durable artifacts: `research/portfolio_risk_live_lifecycle_contract_v0_1.json`, `tests/portfolio_risk_live_lifecycle_readonly_audit.mjs`, `research/portfolio_risk_live_lifecycle_production_readonly_receipt_20260927.json`.
 - Lane state: `PORTFOLIO_RISK = FALSIFICATION_IN_PROGRESS / PLAN_TIME_TIER_A_RECONSTRUCTABLE / ACTUAL_LIVE_HISTORY_BLOCKED`. L2 retained. No allocation/ADD/REDUCE/stop/monitor/push change and no FORMAL_OPTIMIZATION_CANDIDATE.
 - Exact next: freeze a research-only append-only confirmed-fill ledger contract with position-transition invariants and reconciliation semantics. Any shared Production storage/API implementation is Class B proposal-first. Do not implement it into Production merely because the research schema exists.
+
+
+## B-196 — REJECTED_AFTER_BASE reason-selection bias / Class-A prototype validated (2026-09-27 Asia/Taipei)
+- Fresh source audit confirmed generic `REJECTED_AFTER_BASE` previously sorted all basePassed=true rejects by exclusion reason then symbol, then retained only the first 6 rows per GENERAL/THOUSAND pool. This is NOT per-reason sampling.
+- Outcome-free synthetic falsification proves deterministic reason starvation: a large alphabetically earlier reason can consume all six rows and leave another real rejection reason with zero archive representation.
+- V8.14's dedicated `SECTOR_GATE_REJECTED` already partially avoids this for sector-gate analysis; other fundamental/volatility/target/RR/signal-grade gates remain exposed to generic reason-selection bias.
+- Frozen artifact: `research/rejected_after_base_sampling_falsification_v0_1.json`. Worklist now records the evidence-infrastructure defect.
+- Class-A research-only prototype created on branch `research/reject-reason-stratified-shadow-20260927`, draft PR #117. It does NOT bump the runtime version and is NOT wired to production deployment.
+- Prototype changes research evidence only:
+  - deterministic exact reason × price-pool sampling, 2 rows per reason/pool where available;
+  - `reasonPopulationCount / reasonSampleCount / reasonSampleRank` metadata;
+  - full per-scan exact-reason population counts in the in-memory research archive/scan research summary;
+  - already-used dedicated cohort symbols are excluded from generic resampling;
+  - persisted summary exposes sampled exclusion-reason counts with explicit sample-only semantics.
+- Synthetic test reproduces old failure (REASON_B=0 under old first-six slicing) and verifies new minority-reason preservation, exact population counts and input-order-independent deterministic sampling.
+- Initial Repair CI failed because the PR workflow ran the new test without applying the prototype patch; this was diagnosed as CI wiring, not research logic. Commit `591886d2c00f89a30e0045ea5d1149799dd9a9a9` adds the missing isolated apply step.
+- Final CI on that head:
+  - V8 Regression Tests run 36282786022 = SUCCESS;
+  - V8 Repair CI run 36282786141 = SUCCESS.
+- Production remains `8.14.0-sector-gate-provenance-shadow`; no merge/deploy was performed because V8.15 is already occupied by concurrent Valuation Provenance PR #112. PR #117 intentionally remains Draft pending version-line reconciliation.
+- No Formal A/B rule, score, threshold, rank, 3+3/Top6, capital, BUY/ADD/REDUCE, monitoring, signal or push behavior changed.
+- Exact next: audit the `nearestRealResistance -> target -> RR` provenance chain. Current source reads optional `targetPrice` plus priorHigh20/priorHigh60/pivot highs, while repository-side production of `targetPrice` is not proven and the selected target-source identity is not preserved in Shadow.
