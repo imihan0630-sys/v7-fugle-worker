@@ -1,6 +1,6 @@
 {
   "schemaVersion": "PRIORITY_SCORE_STOP_DISTANCE_INTERACTION_PROTOCOL_V0_1",
-  "preregisteredAt": "2026-09-27T21:08:00+08:00",
+  "preregisteredAt": "2026-09-27T20:53:57+08:00",
   "question": "Does post-consensus PriorityScore systematically align with wider conservative planned stop distance, thereby amplifying projected stop-risk under score-proportional sizing?",
   "unit": "generation-certified selected name within scan date",
   "primaryMetrics": [
@@ -42,5 +42,6 @@
     "widestStopRiskSymbol": "3105"
   },
   "status": "INTERACTION_PROTOCOL_PREREGISTERED / INDEPENDENT_DATES_PENDING",
-  "formalCoreImpact": false
+  "formalCoreImpact": false,
+  "timestampProvenance": "Corrected to GitHub PR creation time; do not use prior manually estimated clock value as evidence ordering."
 }
