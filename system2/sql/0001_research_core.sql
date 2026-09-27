@@ -1,6 +1,6 @@
--- System 2 research-only storage schema V0.2.
+-- System 2 research-only storage schema V0.3.
 -- DESIGN/TEST ONLY. DO NOT apply to the V8 production D1 database without Class-B review.
--- V0.1 was never deployed; V0.2 replaces physical per-factor rows with daily symbol bundles.
+-- V0.1/V0.2 were never deployed; V0.3 keeps daily symbol bundles and adds explicit Shadow decision-state metadata.
 
 CREATE TABLE IF NOT EXISTS s2_strategy_versions (
   strategy_id TEXT NOT NULL,
@@ -85,6 +85,11 @@ CREATE TABLE IF NOT EXISTS s2_decisions (
   symbol TEXT NOT NULL,
   company_name TEXT,
   candidate_state TEXT NOT NULL,
+  strategy_validity TEXT,
+  entry_readiness TEXT,
+  source_readiness TEXT,
+  shadow_spec_id TEXT,
+  evaluation_mode TEXT,
   rank_value INTEGER,
   total_score REAL,
   reasons_json TEXT NOT NULL,
