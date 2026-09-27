@@ -1,0 +1,136 @@
+{
+  "schemaVersion": "technical-indicator-range-vol-fixtures-v0.1",
+  "updated": "2026-09-27 Asia/Taipei",
+  "researchOnly": true,
+  "decisionImpact": false,
+  "formalCore": "LOCKED",
+  "formulaFamily": {
+    "primary": "YANG_ZHANG_20",
+    "robustness": [
+      "PARKINSON_20",
+      "GARMAN_KLASS_20",
+      "ROGERS_SATCHELL_20"
+    ],
+    "baseline": [
+      "CLOSE_TO_CLOSE_VOL20",
+      "ATR_PERCENT",
+      "BOLLINGER_WIDTH20"
+    ]
+  },
+  "fixtures": [
+    {
+      "id": "RV1_SAME_CLOSE_DIFFERENT_INTRADAY_RANGE",
+      "historyA": "Same prevClose/open/close path as B; one session has much wider H/L.",
+      "historyB": "Narrow H/L but identical prevClose/open/close.",
+      "expected": [
+        "CLOSE_TO_CLOSE_RETURN_EQUAL",
+        "PARKINSON_A_GT_B",
+        "GARMAN_KLASS_A_GT_B",
+        "ROGERS_SATCHELL_A_GT_B",
+        "YANG_ZHANG_A_GT_B"
+      ],
+      "proves": "OHLC range estimators contain intraday excursion information absent from close-to-close returns."
+    },
+    {
+      "id": "RV2_SAME_CURRENT_OHLC_DIFFERENT_PREVIOUS_CLOSE",
+      "historyA": "Same current O/H/L/C as B but previous eligible close creates a material overnight gap.",
+      "historyB": "Previous eligible close equals current open; no overnight gap.",
+      "expected": [
+        "PARKINSON_A_EQ_B",
+        "GARMAN_KLASS_A_EQ_B",
+        "ROGERS_SATCHELL_A_EQ_B",
+        "YANG_ZHANG_OVERNIGHT_COMPONENT_A_GT_B",
+        "YANG_ZHANG_A_GT_B"
+      ],
+      "proves": "Yang-Zhang separately consumes previous-close-to-open information."
+    },
+    {
+      "id": "RV3_GAP_ONLY_FLAT_INTRADAY",
+      "history": "Previous close 100; current O=H=L=C=110 under valid non-corporate-action semantics.",
+      "expected": [
+        "ROGERS_SATCHELL_CURRENT_BAR_EQ_ZERO",
+        "PARKINSON_CURRENT_BAR_EQ_ZERO",
+        "GARMAN_KLASS_CURRENT_BAR_EQ_ZERO",
+        "YANG_ZHANG_OVERNIGHT_COMPONENT_POSITIVE"
+      ],
+      "proves": "Gap risk can exist with zero intraday range."
+    },
+    {
+      "id": "RV4_MISSING_OPEN_FALLBACK",
+      "history": "True open is missing, current normalization could substitute close.",
+      "expected": [
+        "OHLC_ORIGIN_SYNTHETIC_FALLBACK",
+        "YANG_ZHANG_DATA_BLOCKED",
+        "DO_NOT_COERCE_OPEN_TO_CLOSE_FOR_YZ"
+      ],
+      "proves": "Numerically complete fallback OHLC is not inference-valid OHLC."
+    },
+    {
+      "id": "RV5_CORPORATE_ACTION_MECHANICAL_RESET",
+      "history": "Raw previous close and ex-date open differ mainly because of a verified corporate-action reference reset.",
+      "expected": [
+        "RAW_YZ_OVERNIGHT_NOT_ADMISSIBLE_AS_MARKET_VOLATILITY",
+        "REQUIRE_TECHNICAL_CONTINUITY",
+        "PRESERVE_RESIDUAL_NON_MECHANICAL_GAP_AFTER_CONTINUITY"
+      ]
+    },
+    {
+      "id": "RV6_VERIFIED_SUSPENSION",
+      "history": "Verified suspension dates occur between two traded sessions.",
+      "expected": [
+        "NO_SYNTHETIC_FLAT_BARS",
+        "WINDOW_COUNTS_ELIGIBLE_SYMBOL_SESSIONS",
+        "OVERNIGHT_RETURN_USES_PREVIOUS_ELIGIBLE_TRADED_CLOSE"
+      ]
+    },
+    {
+      "id": "RV7_CONSECUTIVE_PRICE_LIMIT",
+      "history": "One or more sessions close at exchange price limits with constrained H/L discovery.",
+      "expected": [
+        "COMPUTE_DESCRIPTIVE_REALIZED_OHLC_IF_VALID",
+        "INTERPRETATION_STATE_PRICE_LIMIT_CONSTRAINED",
+        "DO_NOT_EQUATE_TRUNCATED_RANGE_WITH_LOW_LATENT_PRESSURE"
+      ]
+    },
+    {
+      "id": "RV8_POSITIVE_SCALE_INVARIANCE",
+      "historyA": "Valid OHLC and previous closes.",
+      "historyB": "Every price in A multiplied by the same positive constant.",
+      "expected": [
+        "PARKINSON_INVARIANT",
+        "GARMAN_KLASS_INVARIANT",
+        "ROGERS_SATCHELL_INVARIANT",
+        "YANG_ZHANG_INVARIANT"
+      ],
+      "proves": "Log-return/range volatility estimators should not depend on nominal stock price scale."
+    },
+    {
+      "id": "RV9_SAME_ATR_DIFFERENT_COMPOSITION",
+      "historyA": "Volatility dominated by overnight gaps.",
+      "historyB": "Similar aggregate True Range magnitude but volatility dominated by intraday movement.",
+      "expected": [
+        "ATR_CAN_BE_SIMILAR",
+        "OVERNIGHT_VARIANCE_SHARE_DIFFERS",
+        "YANG_ZHANG_COMPONENT_RECEIPT_DISTINGUISHES_RISK_ORIGIN"
+      ],
+      "proves": "Risk composition can differ even when aggregate range magnitude is similar."
+    }
+  ],
+  "blockedIf": [
+    "FALLBACK_OPEN_OR_HIGH_OR_LOW",
+    "TECHNICAL_CONTINUITY_UNRESOLVED",
+    "SYMBOL_SESSION_PROVENANCE_UNRESOLVED",
+    "FUTURE_OR_REVISED_HISTORY_WITHOUT_PIT_PROVENANCE"
+  ],
+  "constrainedStrata": [
+    "PRICE_LIMIT_CONSTRAINED",
+    "RESUMPTION_SESSION",
+    "EVENT_SHOCK"
+  ],
+  "forbiddenConclusions": [
+    "HIGH_YZ_IS_BEARISH",
+    "LOW_YZ_IS_BULLISH",
+    "PARKINSON_GK_RS_YZ_ARE_FOUR_INDEPENDENT_VOTES",
+    "SYNTHETIC_FALLBACK_OHLC_IS_OBSERVED"
+  ]
+}
