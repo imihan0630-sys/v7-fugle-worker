@@ -1346,3 +1346,42 @@ Updated: 2026-09-27 08:30 Asia/Taipei.
 - Optimization bridge: PRICE_POOL_QUOTA_REFORMULATION is DISCOVERY/FALSIFICATION_IN_PROGRESS, NOT_OPTIMIZATION_READY. Any quota/cross-pool Formal change is Class C and requires owner approval only after prospective/OOS falsification. No FORMAL_OPTIMIZATION_CANDIDATE now.
 - Engineering: Class A research documentation only. No Worker/runtime/Production/ranking/quota/capital/signal/push behavior changed. Formal Core LOCKED.
 - Exact next: audit whether current V8.13+ prospective candidate archive can certify complete per-pool qualified denominators/ranks for 2026-09-29 onward without new runtime mutation. If yes, freeze a quota-opportunity receipt using existing fields; if bounded archive cannot certify it, specify the minimum isolated research receipt and classify Class A vs Class B before implementation. In parallel, do not attempt setup/priority outcome inference before clean prospective dates exist.
+
+
+## B-204 — Shadow cohort semantic firewall + comparator-lineage correction (2026-09-27 Asia/Taipei)
+- Continued the after-market research evidence audit without changing Formal Core.
+- Liquidity admission Draft PR #121 is now fully validated on latest head `5c0842d197999eefa82f2a0b0069679a5f6ea070`:
+  - Regression run 36283472807 = SUCCESS;
+  - Repair run 36283472824 = SUCCESS.
+  - Branch-only prototype preserves exact liquidity-reject populations, deterministic reason×pool samples, missing-vs-bad spread/depth exception coverage, and a durable per-date denominator receipt inside persisted Shadow snapshots.
+  - PR remains Draft; no version bump, merge, deployment, threshold change or Formal behavior change.
+- First-failure attribution is now explicitly separated from gate importance:
+  - `scoreCandidate()` is fail-fast;
+  - exclusion_reason is only the FIRST observed failure under current gate order;
+  - synthetic gate-order reversal changes A/B reason counts while accepted set stays identical.
+  - Durable artifact: `research/first_failure_attribution_falsification_v0_1.json`.
+  - `REJECTION_REASON_SHADOW_REPAIR_PROPOSAL.md` now requires wording such as `firstFailureCount`; counts may not be interpreted as marginal/unique gate contribution.
+- NEAR_MISS cohort semantics were structurally falsified:
+  - A and B each have six checks, so `nearScore=max(6-failedA,6-failedB)=6-missingCount`; the second sort key is mathematically redundant.
+  - check count ignores threshold distance: B volume 1.29x and 0.10x can both be one-check misses against 1.30x.
+  - diagnostics globally truncates to 12 near misses before Shadow's per-pool 6-row cap, so pool/channel starvation is possible before archival sampling.
+  - Durable files: `research/near_miss_cohort_falsification_v0_1.json`, `NEAR_MISS_COHORT_RESEARCH.md`.
+- BROAD_CONTROL semantics were also falsified:
+  - `used` tracks rows actually serialized in prior bounded cohorts, not semantic population membership;
+  - sampled qualified/near/rejected rows are excluded from BROAD_CONTROL, while unsampled rows from the same latent populations remain eligible;
+  - therefore current BROAD_CONTROL is a **quota-conditioned mixture**: neither an independent frozen broad-market control nor a clean mutually-exclusive residual control.
+  - Two coherent future estimands are frozen: independent BROAD_MARKET_CONTROL with overlapping membership metadata, or mutually-exclusive RESIDUAL_CONTROL after full semantic classification.
+  - Durable files: `research/broad_control_cohort_contamination_falsification_v0_1.json`, `SHADOW_COHORT_SEMANTICS_RESEARCH.md`.
+- R02 Selection Alpha firewall tightened:
+  - until cohort semantics/membership QA is repaired, comparisons using BROAD_CONTROL / NEAR_MISS / REJECTED_AFTER_BASE are `COHORT_QUALITY_GUARDED / DESCRIPTIVE_ONLY`;
+  - they may not support Formal promotion.
+  - `research/EXPERIMENT_REGISTRY.md` and `research/RESEARCH_FIREWALL.md` updated.
+- QUALIFIED_NOT_SELECTED was fresh-audited but not duplicated: Price-Volume PVE-155..159 already defines it as a bounded post-cutline sample, not complete qualified-population evidence, and already freezes future ALL_QNS / CUTLINE_NEXT pool-integrity receipts.
+- Cross-version comparator inconsistency corrected:
+  - stale PVE-155 text described RR-first sorting;
+  - deployed V7.5.30+ Formal comparator is `post-consensus priorityScore -> rewardPerRisk -> marketConsensusScore -> setupQuality -> sectorFlow -> relativeStrength`;
+  - V8.13 only added prospective provenance and comparator label `PRIORITY_RR_CONSENSUS_SETUP_SECTOR_RS_7_5_30`, it did not change ranking.
+  - `PRICE_VOLUME_CHECKPOINT.md` and `PRICE_VOLUME_EVIDENCE.md` now carry an explicit versioned correction. Pre-V8.13 rows remain UNKNOWN for exact current-comparator replay.
+- Draft PR #117 and #121 received dependency comments so green CI cannot be misread as complete Shadow-framework repair: #117 solves reason-starvation, #121 solves liquidity evidence capture; neither solves first-failure causal attribution or BROAD_CONTROL control-estimand ambiguity.
+- Research conclusion: the next highest-value evidence improvement is not another trading factor. It is a **versioned Shadow semantic/membership repair** that freezes denominators and control estimands before Selection Alpha or gate-relaxation outcomes are interpreted.
+- No FORMAL_OPTIMIZATION_CANDIDATE is created from these evidence-infrastructure findings; they are prerequisites for trustworthy falsification.
