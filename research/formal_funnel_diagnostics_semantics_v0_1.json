@@ -1,0 +1,82 @@
+{
+  "schemaVersion": "formal-funnel-diagnostics-semantics-v0.1",
+  "researchDate": "2026-09-27",
+  "status": "SEMANTIC_RENAMING_REQUIRED_FOR_RESEARCH_INTERPRETATION",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "productionFieldsPreserved": true,
+  "sourceAudit": {
+    "scanned": {
+      "currentField": "diagnostics.scanned",
+      "actualMeaning": "todayRows.length after upstream Formal normalization/filtering; not raw exchange listing count",
+      "safeAlias": "FORMAL_NORMALIZED_TODAY_ROWS"
+    },
+    "with60Days": {
+      "currentField": "diagnostics.with60Days",
+      "actualMeaning": "featureRows with historyDays>=60; under V8.12 featureRows are already history-admission gated before this selector",
+      "safeAlias": "HISTORY_ADMITTED_FEATURE_ROWS_WITH_60D",
+      "caveat": "Do not infer V8.12 rejected-history count from scanned-with60Days alone; use historySourceRevalidation diagnostics."
+    },
+    "baseEligible": {
+      "currentField": "diagnostics.baseEligible",
+      "actualMeaning": "count where scoreCandidate returned basePassed=true. This means the symbol passed early gates through chip-concentration and reached the downstream precision-screen phase; it may still fail financial completeness/event/valuation/sector/A-B/fundamental/volatility/target/RR/signal-grade gates.",
+      "safeAlias": "EARLY_BASE_ADMITTED_BEFORE_DOWNSTREAM_PRECISION_GATES"
+    },
+    "rrEligible": {
+      "currentField": "diagnostics.rrEligible",
+      "actualMeaning": "count where scoreCandidate returned rrPassed=true. This requires all preceding downstream gates and a verifiable target plus RR>=MIN_REWARD_RISK; a row may still fail final B-grade setup-quality gate.",
+      "safeAlias": "PASSED_ALL_THROUGH_RR_BEFORE_FINAL_SIGNAL_GRADE"
+    },
+    "channelCounts": {
+      "currentField": "diagnostics.channelCounts",
+      "actualMeaning": "A/B counts only among result.ok=true scored candidates after all Formal scoreCandidate gates including final B-grade quality",
+      "safeAlias": "FULLY_QUALIFIED_PRE_QUOTA_CHANNEL_COUNTS"
+    },
+    "exclusions": {
+      "currentField": "diagnostics.exclusions",
+      "actualMeaning": "fail-fast first rejection reason across all featureRows processed by scoreCandidate",
+      "safeAlias": "FIRST_FAILURE_UNDER_FORMAL_ORDER_COUNTS",
+      "prohibitedInterpretation": "Not independent gate failures, not marginal contribution, not expected recovered candidates if a gate is relaxed."
+    },
+    "conditionDistribution": {
+      "currentField": "diagnostics.conditionDistribution",
+      "denominator": "basePoolDiagnostics = rows with basePassed=true",
+      "actualMeaning": "Recomputed A/B check states inside the early-base-admitted cohort, including rows that Formal may already have rejected at financial/event/valuation/sector gates before reaching setup evaluation.",
+      "safeAlias": "EARLY_BASE_COHORT_PATTERN_DIAGNOSTIC",
+      "prohibitedInterpretation": "Not a sequential Formal funnel stage and not an admission counterfactual."
+    },
+    "thousandPool": {
+      "currentFields": [
+        "diagnostics.thousandStockPool.baseEligible",
+        "diagnostics.thousandStockPool.rrEligible",
+        "diagnostics.thousandStockPool.channelCounts",
+        "diagnostics.thousandStockPool.exclusions"
+      ],
+      "actualMeaning": "Recomputed THOUSAND subset diagnostics using the same scoreCandidate gates.",
+      "overlap": "Top-level diagnostics already include THOUSAND rows because the first featureRows loop covers both pools.",
+      "prohibitedInterpretation": "Do not add top-level counts to thousandStockPool counts; that double-counts thousand symbols.",
+      "safeDerivation": "GENERAL-only stage counts may be derived as top-level minus thousand subset only when same-date deterministic scoring/completeness is proven."
+    }
+  },
+  "monotoneStageContract": [
+    "FORMAL_NORMALIZED_TODAY_ROWS",
+    "HISTORY_ADMITTED_FEATURE_ROWS",
+    "EARLY_BASE_ADMITTED_BEFORE_DOWNSTREAM_PRECISION_GATES",
+    "PASSED_ALL_THROUGH_RR_BEFORE_FINAL_SIGNAL_GRADE",
+    "FULLY_QUALIFIED_PRE_QUOTA",
+    "FORMAL_SELECTED_AFTER_3_PLUS_3"
+  ],
+  "invariants": [
+    "Within the same featureRows evaluation, fullyQualified <= rrEligible <= baseEligible <= featureRows.",
+    "Sum(firstFailure counts) + fullyQualified should equal evaluated featureRows, subject to explicit source/data-admission exclusions occurring before scoreCandidate.",
+    "Top-level stage counts include GENERAL and THOUSAND; thousand-specific stage counts are a subset, not an additional pool to sum.",
+    "ConditionDistribution denominator is basePassed cohort, not all scanned rows and not only rows that actually reached the A/B gate in fail-fast order."
+  ],
+  "researchUsage": {
+    "candidateScarcity": "Use stage transitions with exact denominators; do not compare raw counters with incompatible denominators.",
+    "gateRelaxation": "Requires gate-overlap/ablation receipts, not exclusion counts.",
+    "quotaResearch": "Use complete per-pool qualified ranks, not top-level base/rr counters.",
+    "historyDataQuality": "Use V8.12 historySourceRevalidation diagnostics for pre-feature missingness."
+  },
+  "decision": "KEEP_PRODUCTION_FIELDS_FOR_BACKWARD_COMPATIBILITY / ADD_SAFE_RESEARCH_ALIASES_IN_ANALYSIS / FIRST_FAILURE_AND_CONDITION_DISTRIBUTION_NOT_CAUSAL_GATE_EFFECTS / NO_FORMAL_CHANGE"
+}
