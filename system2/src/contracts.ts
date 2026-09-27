@@ -69,6 +69,9 @@ export interface FactorObservation<T = unknown> {
 export interface InteractionObservation {
   readonly interactionId: string;
   readonly interactionVersion: string;
+  readonly strategyId?: string;
+  readonly strategyVersion?: string;
+  readonly symbol?: string;
   readonly marketDate: string;
   readonly decisionTimestamp: string;
   readonly componentFactorRefs: readonly {
@@ -76,7 +79,15 @@ export interface InteractionObservation {
     readonly factorVersion: string;
     readonly state: ObservationState;
   }[];
+  readonly componentFamilyAssessmentIds?: readonly string[];
   readonly state: ObservationState;
+  readonly confluenceState?: "SUPPORTIVE" | "NEUTRAL" | "ADVERSE" | "INDETERMINATE";
+  readonly redundancyState?:
+    | "NOT_TESTED"
+    | "CONTROLLED_FOR_RESEARCH"
+    | "REDUNDANCY_WARNING"
+    | "REJECTED_REDUNDANT";
+  readonly rankingEligible?: boolean;
   readonly normalizedValue: number | null;
   readonly confidence: number | null;
   readonly falsificationTag?: string;
