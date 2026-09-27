@@ -1,7 +1,7 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-191.
-Updated: 2026-09-27 05:02 Asia/Taipei.
+Checkpoint sequence: B-194.
+Updated: 2026-09-27 08:30 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Detailed B-01..B-123 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
@@ -1182,3 +1182,16 @@ Updated: 2026-09-27 05:02 Asia/Taipei.
 - BROAD_CONTROL remains bounded to six rows per price pool and is not rejection-reason stratified, so incidental presence cannot establish prevalence or a clean gate-level counterfactual.
 - Correct research state: `PRIMARY_LOW_VOLUME_SYSTEMATIC_HOLE / SIZE_CONDITIONED_INCIDENTAL_BOUNDED_COVERAGE / DEDICATED_REASON_STRATIFIED_CONTROL_STILL_REQUIRED`.
 - `research/liquidity_gate_rejected_control_spec_v0_1.json`, `LIQUIDITY_ADMISSION_RESEARCH.md`, Worklist and Master Maps were corrected. No outcome conclusion or threshold proposal changed.
+
+
+## B-194 — Entire basePassed=false admission funnel mapped; reason-level denominator requirement frozen (2026-09-27 08:30 Asia/Taipei)
+- Fresh-read canonical had concurrently advanced through B-193; continuation used B-192/B-193 exact next and did not overwrite newer research.
+- Audited current scoreCandidate early exits in exact order. Ten basePassed=false states are now separated into UNIVERSE_POLICY (price<10, marketCap<1bn), DATA_READINESS (history<60, missing market/sector RS, missing market cap, missing chip concentration), MARKET_STATE_PROXY (abs daily change>=9.8), and EXECUTABILITY_POLICY_HYPOTHESIS (three liquidity/size-conditioned gates).
+- Key semantic correction: DATA_READINESS rejects are not bad stocks and should not be evaluated as alpha vetoes. Universe-policy rejects require a deliberate universe-expansion study, not ordinary factor tuning.
+- Confirmed all basePassed=false rows are absent from REJECTED_AFTER_BASE by construction. BROAD_CONTROL is not a complete reason-stratified admission ledger; B-193's exact liquidity coverage distinctions remain authoritative.
+- New evidence-design requirement: a bounded rejected sample cannot estimate total opportunity loss, missed winners, zero-pick reduction or capital-utilization effect without per-scanDate reason denominators/sampling fractions. Frozen receipt fields: eligibleBeforeReasonCount, rejectedByReasonCount, archivedRejectedCount, samplingRule, samplingFraction, unknownCount.
+- Priority evidence holes: EXTREME_MOVE_PROXY_REJECTED, primary low-volume reject, then size-conditioned liquidity rejects. Data-readiness rows are coverage diagnostics. PRICE_LT10/MARKETCAP_LT1BN remain universe-policy controls unless owner later chooses to study universe expansion.
+- Downstream A/B/RR/fundamental states may not be imputed for an early reject that Formal never evaluated. Any such counterfactual must be separately labeled and recomputed only from immutable same-scan inputs.
+- Durable artifacts: BASE_ADMISSION_FUNNEL_RESEARCH.md commit 884a8f139f99047612a16572d33a42086833b10b; research/base_admission_funnel_v0_1.json commit a69d693e660a6d9c5f4c22a35e9f2d4f028cf5dd.
+- No outcomes, threshold sweep, Formal/runtime/Production change or FORMAL_OPTIMIZATION_CANDIDATE. Status COUNTERFACTUAL_COVERAGE_GAP_CONFIRMED / FALSIFICATION_IN_PROGRESS / NOT_OPTIMIZATION_READY.
+- Exact next continuation: audit whether current full-scan in-memory diagnostics already contain enough rows/reasons to persist per-reason counts and bounded strategy-hypothesis rejects with zero extra market calls. If yes, prepare a Class-A prospective instrumentation design/branch with Formal-output invariant tests; if serialization requires shared runtime or changes scan behavior, downgrade to Class-B proposal-first. Continue independently into the next evidence-ready admission/technical-structure lane rather than tuning thresholds.
