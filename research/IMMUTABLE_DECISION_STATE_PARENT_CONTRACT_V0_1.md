@@ -320,3 +320,29 @@ Frozen correction:
 - identical ID + different fingerprint = PROVENANCE_CONFLICT.
 
 This correction occurred before any runtime persistence implementation.
+
+
+## Prototype QA update — TI-437
+
+A pure outcome-blind parent constructor now exists:
+- research/immutable_decision_state_parent_v0_1.mjs
+- research/test_immutable_decision_state_parent_v0_1.mjs
+
+Validated properties:
+- same identity + same decision payload => same parentDecisionReceiptId and same semanticFingerprint;
+- operational capturedAt/createdAt retry timestamps do not alter semanticFingerprint;
+- same parent ID + changed ranking payload => PROVENANCE_CONFLICT;
+- new captureGeneration => different parent ID;
+- new comparator version => different parent ID;
+- Selected / QNS / base-fail / downstream-fail states preserve actual decision outputs;
+- qualified rows fail closed if the ranking tuple is incomplete;
+- selectedFlag with formalOk=false is rejected;
+- nested ranking payload is deep-frozen in memory;
+- prototype contains no market fetch, no D1 write and no scoreCandidate re-run.
+
+Persistence implication:
+the first stored capturedAt/createdAt for an exact parent ID/fingerprint is immutable.
+A later exact duplicate is a no-op and must not UPDATE first-known timestamps.
+
+The prototype's injected test hash is not a production hash decision.
+Any Class-B persistence implementation must use a collision-resistant production fingerprint contract.
