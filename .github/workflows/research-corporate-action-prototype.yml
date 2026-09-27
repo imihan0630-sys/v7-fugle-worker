@@ -1,0 +1,41 @@
+name: Research Corporate Action Prototype
+
+on:
+  pull_request:
+    paths:
+      - "research/corporate_action_continuity_prototype.mjs"
+      - "research/symbol_session_calendar_prototype.mjs"
+      - "research/share_denominator_resolver_prototype.mjs"
+      - "research/corporate_action_lifecycle_state_machine_prototype.mjs"
+      - "research/tpex_s38_denominator_parser_prototype.mjs"
+      - "tests/test_corporate_action_continuity_prototype.mjs"
+      - "tests/test_symbol_session_calendar_prototype.mjs"
+      - "tests/test_corporate_action_integration_matrix.mjs"
+      - "tests/test_share_denominator_resolver_prototype.mjs"
+      - "tests/test_corporate_action_lifecycle_state_machine_prototype.mjs"
+      - "tests/test_tpex_s38_denominator_parser_prototype.mjs"
+      - ".github/workflows/research-corporate-action-prototype.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  research-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Corporate action continuity tests
+        run: node tests/test_corporate_action_continuity_prototype.mjs
+      - name: Symbol suspension calendar tests
+        run: node tests/test_symbol_session_calendar_prototype.mjs
+      - name: Corporate action integration falsification matrix
+        run: node tests/test_corporate_action_integration_matrix.mjs
+      - name: Share denominator vintage tests
+        run: node tests/test_share_denominator_resolver_prototype.mjs
+      - name: Corporate action lifecycle revision and cancellation tests
+        run: node tests/test_corporate_action_lifecycle_state_machine_prototype.mjs
+      - name: TPEx S38 denominator parser tests
+        run: node tests/test_tpex_s38_denominator_parser_prototype.mjs
