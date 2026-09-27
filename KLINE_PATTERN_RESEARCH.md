@@ -16325,3 +16325,129 @@ Possible outcomes:
 - both survive: topology + behavioral anchor are complementary.
 
 This is a high-value falsification because it can prevent adding redundant long-horizon resistance features.
+
+
+## DL-003AP — Pattern State Transitions as Time-to-Event / Competing Risks
+
+### Problem with only fixed horizons
+D1/D3/D5/D10 are valuable standardized outcomes, but pattern lifecycle questions are inherently time-dependent.
+
+After a pattern becomes MATURE, several mutually competing events can occur:
+- breakout,
+- structural invalidation,
+- staleness/no event,
+- market suspension/data censoring.
+
+Treating “no breakout by day 5” as failure can misclassify a valid slow-developing setup.
+Treating only eventual successful breakouts creates survivorship/look-ahead bias.
+
+### Research framework
+Start clock at firstObservableAt of a frozen state, e.g. MATURE_PRE_BREAKOUT.
+
+Competing events:
+E1 BREAKOUT_CONFIRMED
+E2 STRUCTURE_INVALIDATED
+E3 REGIME/CONTEXT_INVALIDATED if pre-registered
+E4 DATA_CENSOR / end of observation
+
+After breakout, start a second clock:
+F1 R01-style failure
+F2 stable acceptance / retest-confirmation
+F3 no resolution before censoring
+
+### Fields
+- maturityAt
+- breakoutAt
+- invalidatedAt
+- staleAt
+- censorAt
+- daysMatureToBreakout
+- daysMatureToInvalidation
+- daysBreakoutToFailure
+- daysBreakoutToRetest
+- eventType
+- rightCensored
+
+### Why useful
+Allows research of:
+- breakout hazard by pattern age,
+- invalidation hazard by pattern age,
+- whether old patterns truly become stale,
+- whether VCP/cup/W families differ in time-to-resolution,
+- whether high fit confidence speeds breakout or merely looks prettier.
+
+### Nonparametric first
+Start with descriptive cumulative-incidence / Kaplan-Meier-style summaries where appropriate.
+Do not jump immediately to a complex predictive survival model.
+
+### Existing fixed outcomes stay
+R01 and D1/D3/D5/D10 remain the common comparability outcomes.
+Time-to-event is supplemental, not a replacement.
+
+## DL-003AQ — Pattern Staleness Must Be Learned from Hazard, Not Chosen by Textbook Days
+
+### Current hypothesis
+Pattern age may have a nonlinear effect:
+- too early = insufficient formation;
+- mature/fresh = highest resolution probability;
+- too old = stale/crowded/changed regime.
+
+### Test
+Estimate by pre-registered age bins or continuous smoothing:
+- breakout incidence,
+- invalidation incidence,
+- no-resolution share.
+
+Control:
+- market regime,
+- liquidity,
+- pattern family,
+- volatility,
+- sector state.
+
+### Decision
+Do not create “cup older than X days = reject” until time-to-event evidence shows a stable relationship.
+
+## DL-003AR — Competing-Risk View of Repeated Resistance Tests
+
+### Question
+As touch count rises, does probability shift toward:
+- breakout,
+- rejection/invalidation,
+- continued unresolved range?
+
+A raw success rate among only resolved patterns is biased because unresolved long-lived cases disappear.
+
+### Fields
+- touchCountAtStart
+- touchProgressionState
+- zoneAge
+- breakoutEvent
+- rejectionEvent
+- censoring
+
+### Mechanism test
+ABSORPTION_LIKE progression should, if real, raise breakout incidence relative to barrier-persistent progression.
+If not, reject the absorption narrative.
+
+## DL-003AS — Outcome Magnitude and Event Probability Must Stay Separate
+
+### Important distinction
+A pattern can have:
+- high probability of small positive move,
+- low probability of very large move,
+- same average return as another pattern with different tail risk.
+
+Therefore report separately:
+- event probability,
+- conditional MFE/MAE given event,
+- unconditional Dn returns,
+- stop-first,
+- tail losses,
+- time-to-event.
+
+### Why this matters
+A high breakout rate does not automatically mean high expectancy.
+A lower breakout rate with much larger favorable excursion may still be economically relevant.
+
+No production scoring formula is implied.
