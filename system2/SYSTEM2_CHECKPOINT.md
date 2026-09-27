@@ -19,6 +19,8 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 
 ## Current design decisions
 
+- V0.5 repository verification PASS: GitHub Actions run `36305786450`, job `108582061023`; 27 System 2 test files PASS, runtime/deploy syntax PASS, SQLite creates 26 `s2_` tables, and production-isolation guard PASS.
+
 - Current genuine blocker is NEW D1 ACCOUNT PERMISSION/SECRET. Existing production Workers token must not be broadened or the production D1 reused as a shortcut. See `SYSTEM2_CLOUD_PERSISTENCE_READINESS_V0_1.md`.
 
 - Guarded manual isolated-D1 workflow prepared: `.github/workflows/system2-isolated-d1-provision.yml` requires exact confirmation `CREATE_SYSTEM2_ISOLATED_D1` and dedicated secret `SYSTEM2_CLOUDFLARE_API_TOKEN`; target is only `system2-research`. It creates/reuses the isolated D1, applies V0.5, verifies required tables, and performs write/read sentinel validation without touching production Worker/root Wrangler/Cron.
