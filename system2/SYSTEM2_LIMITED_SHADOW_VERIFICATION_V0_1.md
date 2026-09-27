@@ -41,10 +41,11 @@ No live trading, push, V8 Formal, production D1 or Cloudflare behavior was chang
 PASS for the research-only logic harness.
 
 Confirmed:
-- VALID + BUY_ELIGIBLE -> SELECTED;
+- VALID + BUY_ELIGIBLE -> QUALIFIED_NOT_SELECTED until a separate capacity/ranking layer runs;
 - REQUIRED family UNKNOWN -> INCOMPLETE + BLOCKED and is still frozen;
 - VALID + TOO_EXTENDED -> WATCH, not REJECTED;
 - rank and totalScore remain NULL;
+- qualification is not mislabeled as final selection before global max-12 / per-strategy max-3 capacity logic exists;
 - strategy validity and entry readiness remain separate in the frozen record;
 - source-blocked strategies are not permitted to create Limited Shadow decisions;
 - committed Limited Shadow test module parses successfully.
