@@ -19977,3 +19977,213 @@ test:
 - mature cup with VCP handle,
 rather than scoring cup + VCP separately.
 
+
+
+## DL-002CX — Inverse Head-and-Shoulders Confirmed-Swing Specification v0.1
+
+### Goal
+Define HS-bottom / inverse-HS using the same repaint-safe swing grammar as the rest of DL-002, without importing undocumented paper-specific thresholds.
+
+### Required chronological anchors
+LS = confirmed left-shoulder low
+N1 = confirmed swing high after LS
+H = confirmed head low
+N2 = confirmed swing high after H
+RS = confirmed right-shoulder low
+
+Chronology:
+LS < N1 < H < N2 < RS
+
+For a fully formed pre-breakout structure, all five anchors must be observable/confirmed as of the scan date.
+A provisional RS may be stored as FORMING, never as fully confirmed.
+
+### Basic topology
+- H must be structurally lower than LS and RS after tick/ATR tolerance.
+- LS and RS should occupy a shoulder-comparable zone, but exact equality is NOT required.
+- N1 and N2 define neckline geometry.
+- neckline can slope upward/downward; do not force horizontal line.
+- right shoulder must form after N2 and before a confirmed neckline breakout.
+
+### Neckline zone
+Use N1/N2 as structural inputs:
+- necklineSlopePctPerBar
+- necklineAtCurrentDate
+- necklineZoneLower/Upper
+- necklineFitError
+- necklineSourceCount
+- necklineTickWidth / ATR width
+
+Breakout state is relative to the zone, not one ideal line.
+
+### Geometry fields
+- lsPrice
+- headPrice
+- rsPrice
+- headBelowLsPct
+- headBelowRsPct
+- shoulderDifferencePct
+- shoulderDifferenceATR
+- shoulderDifferenceTicks
+- lsToHeadBars
+- headToRsBars
+- timeSymmetry
+- depthSymmetry
+- n1Price
+- n2Price
+- necklineSlope
+- headToNecklineHeightPct
+- rsToNecklineHeightPct
+- rightShoulderRecoveryStrength
+- headHistoricalPercentile252/504/all
+- scaleAgreement
+
+### Volume / RS fields
+Do not enforce textbook volume rules.
+Store:
+- volumeLS
+- volumeHead
+- volumeRS
+- downVolumeLS/head/RS
+- volumeTrendAcrossTroughs
+- residualRS_LS
+- residualRS_H
+- residualRS_RS
+- rsDivergenceHeadToRS
+
+Hypothesis examples:
+- lower price head + less selling pressure may indicate exhaustion,
+- RS higher at RS than at head may provide positive divergence.
+
+Both remain tests, not requirements.
+
+### Maturity states
+IHS_FORMING_LS
+IHS_HEAD_FORMED
+IHS_RIGHT_SIDE_FORMING
+IHS_RS_CONFIRMED
+IHS_PIVOT_READY
+IHS_BREAKOUT_CONFIRMED
+IHS_RETESTING
+IHS_FAILED
+
+### Failure states
+- HEAD_CONTINUATION_LOWER_LOW
+- RIGHT_SHOULDER_BREAKS_HEAD
+- NECKLINE_REJECTION_REPEAT
+- RS_SELLING_EXPANSION
+- BREAKOUT_FAILURE_R01
+
+### Detector agreement
+For each anchor:
+- DC confirmation
+- BB-style confirmation
+- agreement/disagreement
+- confirmation lag
+
+No BB alignment may be backdated to the pivot date.
+
+### Relationship to W/double bottom
+Both belong to H2 multi-trough reversal topology.
+
+W:
+L1 -> N -> L2.
+
+Inverse-HS:
+LS -> N1 -> H -> N2 -> RS.
+
+Compare subfamilies inside H2; do not count them as independent hypotheses.
+
+### Status
+DEFINITION_FROZEN_V0_1.
+Research/Shadow only.
+
+## DL-002CY — Research Sampling Strategy / No Pretty-Chart Selection
+
+### Principle
+Pattern research must evaluate the detector on the same point-in-time candidate universe, not on hand-picked textbook examples.
+
+### Primary cohorts
+Reuse Shadow Archive:
+- SELECTED
+- QUALIFIED_NOT_SELECTED
+- NEAR_MISS
+- REJECTED_AFTER_BASE
+- BROAD_CONTROL
+
+### Pattern-analysis eligibility
+A row can be pattern-analyzable only when:
+- sufficient history for the detector family,
+- required raw/adjusted fields exist,
+- corporate-action status is known where needed,
+- as-of-date integrity passes.
+
+Insufficient history/data = UNKNOWN / NOT_ANALYZABLE, never “pattern absent.”
+
+### Broad-control sampling
+If full BROAD_CONTROL is computationally expensive, use a pre-registered stratified sample by:
+- scan date,
+- market (TWSE/TPEx),
+- price tier,
+- liquidity tier,
+- sector,
+- maybe Formal base-pass status.
+
+Sampling seed/rule must be deterministic and stored.
+Do not preferentially sample stocks with visually interesting charts.
+
+### Weighting
+If controls are sampled unequally, retain sampling probability / stratum weight so descriptive rates are not mistaken for full-universe prevalence.
+
+### Minimum reports
+For every pattern family:
+- analyzable denominator,
+- missing/not-analyzable count,
+- pattern-positive count,
+- unique episode count,
+- cohort distribution,
+- sector/price/liquidity distribution,
+- date coverage.
+
+### Avoid case-study bias
+Individual charts are for detector debugging/explanation only.
+They are not evidence of alpha.
+
+## DL-002CZ — Pattern Prevalence vs Predictive Value
+
+### Important distinction
+A pattern can be:
+- common but useless,
+- rare but informative,
+- rare because detector is too strict,
+- common because detector is too loose.
+
+Therefore report separately:
+- prevalence,
+- outcome conditional on pattern,
+- incremental outcome vs matched controls,
+- coverage cost.
+
+### Variables
+- patternPrevalencePct
+- episodePrevalencePct
+- maturePatternPrevalencePct
+- patternPositivePerScanDate
+- zeroPatternDateRate
+- overlapWithFormalA/B
+- overlapWithNearMiss
+- incrementalCoverage
+
+### Optimization relevance
+A high-quality pattern that appears once every 6 months may have little impact on the current capital-idle problem.
+A moderate-quality pattern with broad stable coverage might be more useful.
+
+But coverage alone is never a reason to loosen quality.
+
+### Required tradeoff
+Later optimization review should show:
+- incremental quality,
+- incremental coverage,
+- turnover,
+- zero-pick impact,
+- complexity cost.
+
