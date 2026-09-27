@@ -19783,3 +19783,197 @@ Pattern RR can be stored as:
 - rrDifference
 but decisionImpact=false.
 
+
+
+## DL-002CT — Pattern Episode Identity / Duplicate-Event Control v0.1
+
+### Direct chart-pattern evidence
+Recent Financial Innovation research on mechanically detected chart patterns explicitly notes that rolling-window detection can identify the SAME completed pattern in multiple adjacent windows. The authors add a completion-timing restriction so the same pattern is not unintentionally counted multiple times.
+
+This is directly relevant to daily Pattern Shadow:
+a VCP/cup/W/triangle can remain detectable on many consecutive scan dates.
+
+### Core rule
+Repeated daily snapshots of the same underlying pattern episode are NOT independent pattern events.
+
+### Episode object
+Store:
+- patternEpisodeId
+- symbol
+- family / overlapCluster
+- episodeStartObservedAt
+- firstStructureValidAt
+- firstMatureAt
+- firstPivotReadyAt
+- firstBreakoutAt
+- firstFailureAt
+- firstReclaimAt
+- episodeEndAt
+- terminalState
+- parentEpisodeId if nested
+- detectorVersion
+
+### Episode matching across daily scans
+Two daily detections belong to the same episode when:
+- same symbol,
+- compatible pattern family / latent structure,
+- key structural anchors materially overlap,
+- pivot/zone drift remains within frozen tolerance,
+- no terminal invalidation and genuinely new base formation occurred between them.
+
+Do NOT define sameness by name alone; a cup handle can also be VCP on the same underlying episode.
+
+### Daily snapshots remain useful
+Keep daily snapshots because maturity evolves.
+But for event-level inference:
+- one pattern episode = one clustered event,
+- repeated days are longitudinal observations nested within episode.
+
+### Episode restart
+A new episode requires an objective reset such as:
+- terminal failure + later new base,
+- breakout completion followed by a new independent consolidation,
+- major structural swing reset,
+- sufficiently new set of confirmed anchors.
+
+Do not use an arbitrary “N days cooldown” as the primary reset without validation.
+
+### Statistical consequence
+Report:
+- raw snapshot count,
+- unique episode count,
+- unique symbol count,
+- unique scan-date count.
+
+Never report raw daily snapshot count as independent N.
+
+## DL-002CU — Pattern Lifecycle as Time-to-Event / Competing Risks
+
+### Problem
+A mature pattern can:
+1. break out,
+2. invalidate,
+3. remain unresolved/stale,
+4. transform into another structure.
+
+If an unresolved pattern reaches the end of observation, labeling it “failure” is wrong.
+
+### Survival-style representation
+Origin can be:
+- STRUCTURE_VALID timestamp,
+- MATURE timestamp,
+depending research question.
+
+Potential events:
+- BREAKOUT_ACCEPTED
+- STRUCTURAL_FAILURE
+- STALE_TERMINATION / STRUCTURAL_TRANSFORMATION
+
+If none occurs by study horizon:
+- RIGHT_CENSORED
+
+### Why censoring matters
+A pattern observed for 8 days without breakout is not equivalent to a pattern that explicitly broke support on day 8.
+The former is unresolved; the latter failed.
+
+### Candidate metrics
+- timeMatureToPivotReady
+- timeMatureToBreakout
+- timeMatureToFailure
+- timeBreakoutToRetest
+- timeBreakoutToR01Failure
+- censorReason
+- observationEndDate
+
+### Competing-risk caution
+Treat breakout and failure as competing lifecycle outcomes rather than naively dropping the opposite event.
+If later formal survival/competing-risk models are used, they are research diagnostics only and require adequate episode counts.
+
+### Existing outcome preservation
+Continue D1/D3/D5/D10/D20, MFE/MAE and R01.
+Time-to-event analysis complements them; it does not replace the established outcome framework.
+
+## DL-002CV — Overlapping Forward Windows / Clustered Dependence
+
+### Finance-methodology evidence
+Event-study research shows event-date clustering and cross-sectional correlation can materially overstate significance when observations are treated as independent. Longer event windows also increase exposure to contaminating information.
+
+### Pattern-specific dependence
+DL-002 has several dependence sources:
+1. same episode observed on consecutive scan dates,
+2. same stock can generate repeated episodes,
+3. D5/D10/D20 windows overlap in calendar time,
+4. many stocks in one sector react to the same event,
+5. many candidates share the same market regime/date.
+
+### Inference unit
+Primary independent evidence should emphasize:
+- unique scan dates,
+- unique pattern episodes,
+not raw stock-day rows.
+
+### Required diagnostics
+- uniqueEpisodeCount
+- uniqueScanDateCount
+- uniqueSymbolCount
+- episodesPerSymbol
+- snapshotsPerEpisode
+- sectorConcentration
+- forwardWindowOverlapRate
+
+### Robustness
+Use existing date-cluster / leave-one-date-out governance.
+For later pattern-specific inference, cluster or otherwise account for:
+- scan date,
+- symbol/episode dependence,
+when sample size permits.
+
+### Same-date matching remains valuable
+Comparing Pattern-strong vs Pattern-weak within the same scan date removes some common market shock, but does not make stock observations fully independent.
+
+### No pseudo-replication
+Five consecutive days of the same mature cup are not five confirmations of H3.
+
+## DL-002CW — Nested / Parent-Child Pattern Episodes
+
+### Problem
+Patterns can be nested across scales:
+- multi-month cup is parent,
+- daily handle is child,
+- handle itself may be a VCP/triangle,
+- 15m retest is execution child event.
+
+### Hierarchy
+PARENT_BASE:
+- long-duration cup / major base / multi-trough reversal.
+
+CHILD_COMPRESSION:
+- handle / VCP / flag / triangle within parent.
+
+TRIGGER_EVENT:
+- daily breakout / reclaim.
+
+EXECUTION_CHILD:
+- 15m breakout/retest/reacceleration.
+
+### Fields
+- episodeId
+- parentEpisodeId
+- relationType
+- scale
+- sharedAnchorRatio
+- independentGeometryFlag
+
+### Anti-double-counting
+Nested child patterns do not automatically create independent bullish evidence.
+
+Research question:
+Does a child compression add incremental information conditional on parent maturity?
+
+### Example
+Cup parent + VCP handle:
+test:
+- mature cup without VCP handle,
+- mature cup with VCP handle,
+rather than scoring cup + VCP separately.
+
