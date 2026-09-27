@@ -19,6 +19,16 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 
 ## Current design decisions
 
+- Research-only storage schema V0.3 now includes `s2_shadow_runs`; incremental SQLite syntax validation for the new run table and extended decision columns passed. Schema remains NOT DEPLOYED.
+
+- Shadow storage row serializers implemented and verified for `s2_decisions` and `s2_shadow_runs`; null rank/score and explicit strategy-validity/entry-readiness/source-readiness metadata are preserved.
+
+- PIT-safe family-assessment receipt implemented and verified: missing, stale, invalid or PIT-ineligible REQUIRED factor inputs prevent a family from being KNOWN and force thesisState to INDETERMINATE.
+
+- Full-universe Shadow run receipt implemented and verified: base universe must partition into excluded + eligible; every eligible symbol must receive an accounting state or the run is INCOMPLETE. This prevents selected-only/survivorship capture.
+
+- Pre-ranking semantic correction completed: BUY_ELIGIBLE（符合進場條件） in Limited Shadow maps to QUALIFIED_NOT_SELECTED（符合策略但尚未完成最終選擇）, not SELECTED, until a separate ranking/capacity layer enforces global max-12 and per-strategy max-3. Verification PASS.
+
 - Always-on Shadow accumulation remains NOT ACTIVE. Physical blocker remains isolated System 2 persistence + scheduled capture; do not attach to V8 production D1/runtime without Class B review.
 
 - Storage design advanced to V0.3 (still research-only / not deployed) to persist strategy_validity, entry_readiness, source_readiness, shadow_spec_id and evaluation_mode without collapsing non-selected states.
