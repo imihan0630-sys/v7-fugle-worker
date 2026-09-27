@@ -68,6 +68,23 @@ PE, forward PE, PEG, PB, EV/EBITDA, FCF yield, dividend yield when relevant, his
 ### TECHNICAL
 MA structure/slope, support/resistance, distance from MA, ATR, KD, MACD, RSI, trend persistence, breakout/pullback, consolidation, chart-pattern topology, Fibonacci confluence as auxiliary evidence.
 
+#### TECHNICAL_STRUCTURE_ENGINE（技術結構引擎） — DESIGN PENDING
+
+System 2 should consume a dedicated technical-structure module rather than scatter pattern logic across strategies.
+
+Planned scope:
+- candlestick / Sakata-style signals（K線／酒田型態）;
+- W-bottom, inverse head-and-shoulders, cup-and-handle, rounded bottom, flag, triangle, wedge（W底、反頭肩、杯柄、圓弧底、旗形、三角、楔形）;
+- volatility contraction / expansion（波動收斂／擴張）;
+- support/resistance, prior highs/lows, trapped-supply zones（支撐壓力、前高前低、套牢區）;
+- MA structure, slope, convergence/divergence and distance（均線結構、斜率、收斂發散、乖離）;
+- Fibonacci confluence（費波那契共振） as auxiliary evidence only;
+- pattern lifecycle: FORMING（形成中）, CONFIRMED（確認）, FAILED（失敗）, EXPIRED（失效／過期）;
+- multi-timeframe context（日K／週K／盤中K）;
+- false-break and ambiguity semantics（假突破與模糊型態）.
+
+Patterns are not universally bullish/bearish. Meaning must depend on location, trend, volume, market/industry regime and strategy context.
+
 ### PRICE_VOLUME
 price-up/volume-up, price-up/volume-down, price-down/volume-up, price-down/volume-down, breakout volume, pullback volume contraction, climax volume, low-base accumulation, relative volume 5/20/60, turnover, volume persistence, divergence.
 
