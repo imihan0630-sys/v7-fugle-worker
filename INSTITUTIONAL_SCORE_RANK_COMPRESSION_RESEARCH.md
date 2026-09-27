@@ -28,6 +28,8 @@ This is **institutional-component compression only**. It does not claim final Fo
 
 A complete clean same-scan parent is mandatory. Current selected-only FULL_FORMAL_SCAN persistence and bounded Shadow cannot estimate full-scan frequency.
 
+The complete streak-only state space is also frozen outcome-blind: 3 actors × {0,1,2,3} consecutive-buy days gives 64 theoretical states, but streak+interaction weighting maps them to 41 distinct point totals. The maximum is 87 before net intensity or ownership; 9 of 64 theoretical states are already >=70, spanning scores 71/73/75/77/79/83/87. These are formula-geometry counts, **not** live frequencies.
+
 The 10–30bn special-reason path uses institutionalScore >=70 together with 1.5x liquidity. That threshold is a separate eligibility effect: compression at the 100 cap does not alter whether a row already above 70 clears that condition. Report >=70 occupancy separately from score saturation.
 
 No weight, gate, threshold or formula change is proposed.
