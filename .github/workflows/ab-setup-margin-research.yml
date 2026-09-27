@@ -1,0 +1,27 @@
+name: A-B Setup Margin Research
+
+on:
+  pull_request:
+    paths:
+      - "research/ab_setup_margin_observer_v0_1.mjs"
+      - "research/ab_setup_margin_observer_spec_v0_1.json"
+      - "research/ab_setup_sequential_population_observer_v0_1.mjs"
+      - "tests/test_ab_setup_sequential_population_observer_v0_1.mjs"
+      - "tests/test_ab_setup_margin_observer_v0_1.mjs"
+      - "NEAR_MISS_COHORT_RESEARCH.md"
+      - ".github/workflows/ab-setup-margin-research.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  observer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - run: node tests/test_ab_setup_margin_observer_v0_1.mjs
+      - run: node tests/test_ab_setup_sequential_population_observer_v0_1.mjs

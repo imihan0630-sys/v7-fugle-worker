@@ -1,0 +1,201 @@
+{
+  "schemaVersion": "AB_SETUP_EVIDENCE_RECEIPT_SPEC_V0_1",
+  "researchDate": "2026-09-27",
+  "status": "DESIGN_READY_CLASS_B_PROPOSAL_FIRST_NOT_IMPLEMENTED",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "architectureOwner": "SHADOW_COHORT_SEMANTICS_CLASS_B_PROPOSAL / shadow-cohort-membership-v0.1",
+  "purpose": "Specialize the existing immutable decision-state + population-receipt + membership-overlay architecture for promotion-grade A/B setup scarcity evidence without creating a second storage model.",
+  "invariants": [
+    "Formal gate order, A/B thresholds, B-over-A precedence, ranking, quota, capital, monitor, signal and push behavior unchanged.",
+    "No new market-data calls.",
+    "Parent receipt is selection-time and outcome-free.",
+    "UNKNOWN/NOT_EVALUABLE never become PASS/FAIL or zero margins.",
+    "Semantic membership is complete before bounded sample membership.",
+    "Historical mutable Shadow rows are not rewritten.",
+    "All outcome joins reference the exact immutable parent key/generation."
+  ],
+  "parentDecisionReceipt": {
+    "identity": [
+      "scanDate",
+      "symbol",
+      "canonicalMarket",
+      "pricePool",
+      "parentDecisionReceiptId",
+      "captureGeneration"
+    ],
+    "lineage": [
+      "parentSnapshotHash",
+      "semanticFingerprint",
+      "formalWorkerVersion",
+      "selectionRuleVersion",
+      "formalGateOrderVersion",
+      "abSetupObserverVersion",
+      "samplingFrameVersion",
+      "rankComparatorVersion when applicable"
+    ],
+    "completeness": [
+      "parentGenerationComplete",
+      "currentFeaturePopulationCount",
+      "persistedParentCount",
+      "historySourceQualityState",
+      "marketSourceQualityState",
+      "readerCompletenessState"
+    ],
+    "formalState": [
+      "originalFormalResult",
+      "originalFirstFailureReason",
+      "allPreSetupGatesClear",
+      "setupReachState",
+      "formalPreferredChannel with B precedence",
+      "rawAPass",
+      "rawBPass",
+      "dualPass"
+    ]
+  },
+  "setupEvidenceChild": {
+    "identity": [
+      "parentDecisionReceiptId",
+      "captureGeneration",
+      "abSetupObserverVersion"
+    ],
+    "exactFormalProvenance": [
+      "A bitmask and exact six check booleans",
+      "B bitmask and exact six check booleans",
+      "failedACount",
+      "failedBCount",
+      "failed check names",
+      "nearestChannel from Hamming count only"
+    ],
+    "groupedRawMargins": {
+      "A": [
+        "trend conjunction sub-margins",
+        "pullback lower and upper band margins",
+        "nearSupport margin with supportSources/supportMode/supportSourceAmbiguous",
+        "volume OR-branch margins and effective Formal truthiness values",
+        "structure close/support and low/prior-low margins with conditional-redundancy flag",
+        "notLate ret20 and maDistance20Pct margins"
+      ],
+      "B": [
+        "trend conjunction and OR-branch states",
+        "breakout margin",
+        "volume margin",
+        "candle-close geometry: strongClose and upperShadow raw values/margins retained together",
+        "notLate ret20 and maDistance20Pct margins"
+      ]
+    },
+    "quality": [
+      "sourceWarnings",
+      "observerVsFormalPassAgreement",
+      "supportSourceQuality",
+      "rawFeatureCompleteness",
+      "truthinessCoercionWarnings"
+    ],
+    "interpretationGuards": [
+      "Exact masks are provenance, not six independent dimensions.",
+      "B strongClose pass structurally implies upperShadow pass under coherent OHLC; do not double-weight.",
+      "A support close-clause is structurally clear on FILTERED_CANDIDATE mode but can bind on MA20_FALLBACK.",
+      "A volume and B trend are composite OR logic; never average branch margins into one unregistered distance.",
+      "No normalized composite setup distance is authorized."
+    ]
+  },
+  "populationReceipt": {
+    "receiptType": "SETUP_FIRST_FAILURE_COUNTS",
+    "identity": [
+      "scanDate",
+      "pool",
+      "samplingFrameVersion",
+      "captureGeneration"
+    ],
+    "requiredCounts": [
+      "setupReachedCount",
+      "setupPassCount",
+      "setupFirstFailureCount",
+      "preSetupNotReachedCount",
+      "unknownCount",
+      "pool x nearestChannel x exactCheckPattern populationCount",
+      "duplicateParentKeyCount",
+      "invalidStratumCount"
+    ],
+    "cleanRule": "CLEAN only if complete same-generation parent coverage is positively proven, duplicateParentKeyCount=0, invalidStratumCount=0 and expected/persisted counts reconcile.",
+    "zeroCellRule": "A missing setup stratum is an explicit zero only for a CLEAN complete frame; otherwise UNKNOWN."
+  },
+  "membershipOverlay": {
+    "semanticMembership": [
+      "SETUP_FIRST_FAILURE",
+      "SETUP_PASS",
+      "PRE_SETUP_NOT_REACHED",
+      "UNKNOWN"
+    ],
+    "sampleMembership": "Separate deterministic bounded overlay only for SETUP_FIRST_FAILURE strata.",
+    "stratum": "scanDate x pool x nearestChannel x exactCheckPattern",
+    "fields": [
+      "samplingFrameId",
+      "populationCount",
+      "sampleCount",
+      "samplingFraction",
+      "sampleRank",
+      "deterministicSamplingHash"
+    ],
+    "rule": "Changing sample cap must not change semantic population counts or parent setup state."
+  },
+  "outcomeChild": {
+    "parentMustRemainOutcomeFree": true,
+    "joinKey": [
+      "parentDecisionReceiptId",
+      "captureGeneration",
+      "scanDate",
+      "symbol"
+    ],
+    "futureMetrics": [
+      "D1",
+      "D3",
+      "D5",
+      "D10",
+      "D20",
+      "MFE",
+      "MAE",
+      "stopHit",
+      "falseBreak",
+      "coverageState"
+    ],
+    "futureControls": [
+      "scanDate cluster",
+      "market regime",
+      "sector",
+      "price pool",
+      "liquidity",
+      "ATR/volatility",
+      "channel/check pattern"
+    ],
+    "inferenceGuards": [
+      "No outcome join before parent frame is CLEAN.",
+      "No complete-case coercion: missing outcome coverage stays UNKNOWN.",
+      "No threshold sweep or fitted distance weights before preregistered baseline evidence.",
+      "Date is the independent clustering unit for market-wide shared shocks.",
+      "Report check identity and raw margin incremental value separately before any threshold discussion."
+    ]
+  },
+  "acceptanceTests": [
+    "No-decision-diff: selected symbols/order/plans/capital/signals/push byte-equivalent with observer capture on/off.",
+    "Zero extra market calls.",
+    "All SETUP_FIRST_FAILURE rows have every earlier gate positively clear in the same parent generation.",
+    "PRE_SETUP_NOT_REACHED raw geometry never enters setup-first-failure denominator.",
+    "B dual-pass rows retain B precedence.",
+    "Exact observer pass booleans agree with Formal AB_SETUP state or quality becomes UNKNOWN.",
+    "Population counts are computed before bounded samples.",
+    "Sample-cap changes cannot alter semantic counts.",
+    "B strongClose=true and upperShadow=false is rejected as provenance inconsistency for coherent OHLC-derived fields.",
+    "Filtered support mode marks close>=0.985*support as structurally non-independent; MA20 fallback does not.",
+    "Duplicate parent identity with divergent fingerprint is PROVENANCE_CONFLICT, never overwrite.",
+    "Reader pagination/keyset proves full requested date coverage before promotion-grade inference."
+  ],
+  "governance": {
+    "pureObserverAndOfflineReceiptBuilder": "CLASS_A",
+    "sharedWorkerCaptureAndD1Persistence": "CLASS_B_OWNER_APPROVAL_REQUIRED",
+    "thresholdChannelPrecedenceOrFormalLogicChange": "CLASS_C_OWNER_APPROVAL_REQUIRED",
+    "implementationAllowed": false,
+    "deploymentAllowed": false
+  },
+  "optimizationStatus": "EVIDENCE_INFRASTRUCTURE_ONLY / NOT_FORMAL_OPTIMIZATION_CANDIDATE"
+}
