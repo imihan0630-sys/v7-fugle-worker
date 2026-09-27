@@ -138,3 +138,20 @@ Formal 低均量例外所讀取的 `spreadPercent/orderBookDepthGood/depthScore`
 Sector 已由 V8.14 的 SECTOR_GATE_REJECTED 部分解決；其他 fundamental / volatility / target / RR / signal-grade gate 仍受此 sampling bias。
 
 這是研究證據基礎設施候選，不是 Formal 選股優化。Formal gate 不因此改動。
+
+
+## 9. Gate first-failure attribution
+狀態：STRUCTURAL_ATTRIBUTION_BIAS_CONFIRMED
+
+Formal `scoreCandidate()` 為順序式 fail-fast；現有 exclusion_reason 只代表「目前 gate 順序下第一個失敗理由」。
+
+因此：
+- reason count 必須標示為 `firstFailureCount`；
+- 不可直接解讀成該 gate 的獨立淘汰貢獻；
+- 0 筆不代表該 gate 不會失敗，可能被前置 gate 遮住；
+- 大量 first-fail 也不代表移除該 gate 就會新增同樣數量候選。
+
+已凍結：
+`research/first_failure_attribution_falsification_v0_1.json`
+
+下一階段若要比較 gate 真正重疊，需做 research-only PASS/FAIL/UNKNOWN overlap observer；不可用關閉 gate 後的結果冒充 Formal。
