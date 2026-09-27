@@ -19596,3 +19596,87 @@ but high ambiguity could simply reflect that multiple labels describe the same s
 
 Therefore classification ambiguity itself must not be treated as bad until tested.
 
+
+
+## DL-002CO — Technical Morphology Has a Horizon Role, Not Total Dominance
+
+### External evidence
+Cakici & Zaremba (2025), Journal of International Financial Markets, Institutions and Money:
+- technical data predicts returns better than accounting information in their international ML setting,
+- technical edge is strongest at shorter horizons,
+- technical strategies have higher turnover,
+- accounting information performs better at longer horizons and lower implementation cost,
+- both technical and accounting information retain independent content.
+
+### Project implication
+Do NOT interpret strong DL-002 evidence as a reason to weaken/remove fundamental quality controls.
+
+Layer roles:
+FUNDAMENTAL_QUALITY:
+- business/earnings/valuation durability,
+- longer-horizon quality and risk filter.
+
+PATTERN_MORPHOLOGY:
+- timing,
+- maturity,
+- support/resistance structure,
+- short-horizon selection/execution context.
+
+INTRADAY_EXECUTION:
+- 15m entry/retest/acceptance.
+
+### Evaluation horizon
+Primary DL-002 endpoints should emphasize:
+- D1/D3/D5/D10,
+- MFE/MAE,
+- R01 failure,
+- stop-first,
+because morphology is primarily a short/intermediate timing layer.
+
+D20 remains useful, but should not be the sole criterion for whether a short-horizon pattern is informative.
+
+### Turnover / implementation cost
+Any later pattern-enhanced selector that materially increases candidate churn must report:
+- turnover change,
+- entry frequency,
+- cost/slippage sensitivity,
+- zero-pick/capital-utilization change.
+
+A small gross predictive edge that requires much higher turnover may not be useful.
+
+## DL-002CP — Information-Layer Independence Test
+
+### Question
+Does pattern information add beyond:
+- fundamentals,
+- valuation,
+- institutional flow,
+- sector context,
+- existing A/B price/volume factors?
+
+### Research hierarchy
+Baseline 0:
+existing Formal research variables.
+
+Baseline 1:
++ DL-001 gradual path.
+
+Baseline 2:
++ DL-002 primitive topology.
+
+Baseline 3:
++ named pattern labels.
+
+Baseline 4:
++ event/sector/flow interactions.
+
+### Interpretation
+If primitives improve but named labels do not:
+keep primitives, retain names only for explanation.
+
+If pattern information disappears after fundamentals/sector/RS:
+reject the pattern as non-incremental.
+
+If both fundamental and pattern layers remain informative:
+preserve layered architecture rather than forcing one to replace the other.
+
