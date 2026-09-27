@@ -89,3 +89,61 @@ It is evidence infrastructure required before comparing:
 A cleaner control can strengthen, weaken or reverse earlier apparent Selection Alpha. That is precisely why the repair must occur before using those comparisons to alter Formal.
 
 No Formal behavior changed.
+
+
+## SC-007 — two valid control estimands
+
+A row belonging to another Formal-state cohort is not automatically forbidden from a broad-market control.
+
+The deeper defect is **conditional overlap**:
+- if a qualified/rejected/near row is sampled earlier, `used` removes it from BROAD_CONTROL;
+- if an otherwise identical semantic row is not sampled earlier because the cohort cap was reached, it remains eligible for BROAD_CONTROL.
+
+Thus current BROAD_CONTROL is a **quota-conditioned mixture**.
+
+Its composition can change when only Shadow sample caps change, even though:
+- the feature universe is identical;
+- Formal decisions are identical;
+- market outcomes are identical.
+
+Two coherent designs are possible.
+
+### A. Independent BROAD_MARKET_CONTROL
+
+Purpose:
+compare selected names with a frozen broad eligible market baseline.
+
+Rules:
+- freeze the broad sampling frame independently;
+- sample by deterministic date+symbol key before focal cohort sample caps;
+- allow the same symbol to carry both Formal-state membership and broad-control membership;
+- persist membership flags/array or a separate membership table.
+
+The current `(scan_date,symbol)` single primary cohort representation cannot express this overlap cleanly.
+
+### B. Mutually exclusive RESIDUAL_CONTROL
+
+Purpose:
+compare focal cohorts with rows outside all focal semantic populations.
+
+Rules:
+- classify every PIT row first;
+- exclude complete semantic populations, not only sampled members;
+- sample the explicit residual;
+- call it RESIDUAL_CONTROL, not broad market.
+
+### Forbidden hybrid
+
+Do not:
+- remove only sampled members of a semantic group;
+- leave unsampled members of the same semantic group eligible;
+- then interpret the result as either an independent broad market baseline or a clean residual.
+
+## SC-008 — historical evidence guard
+
+Until control estimand is frozen:
+- Selected-vs-BROAD_CONTROL historical results are descriptive;
+- sensitivity to upstream cohort caps must be reported;
+- older BROAD_CONTROL rows should not be silently rewritten.
+
+A versioned membership/quality overlay is the safe correction path.
