@@ -108,3 +108,52 @@ No D1/D3/D5/D10/D20/MFE/MAE join is promotion-grade until those conditions are c
 `CHIP_GATE_IS_DATA_READINESS_GATE / GLOBAL_READY_NE_SYMBOL_COMPLETE / HISTORICAL_PIT_AVAILABILITY_UNKNOWN / PROSPECTIVE_CAPTURE_WARRANTED / FORMAL_UNCHANGED`.
 
 No `FORMAL_OPTIMIZATION_CANDIDATE` exists yet.
+
+
+## Raw-ingest omission provenance
+
+A second structural gap is now frozen.
+
+The TDCC validator can silently omit a symbol from the validated `stocks`
+map when its source group is present but:
+
+- the symbol does not have exactly 17 grades;
+- grade 17 total ratio is not 100 within tolerance;
+- grade 17 total shares is nonpositive.
+
+Other malformed conditions throw the entire TDCC dataset instead.
+
+After successful validation, only accepted `stocks` are persisted.
+Therefore a later `chipConcentration=null` cannot tell whether:
+
+- the symbol had no TDCC rows at all;
+- the symbol had an incomplete grade set;
+- the symbol had an invalid total row.
+
+`classifyTdccRawSymbolCoverage()` now freezes those states in pure
+Class-A research space before persistence loss.
+
+A synthetic falsification also proves the global count guard is not
+same-day symbol coverage: a 1,500-symbol validated snapshot can coexist
+with an 1,800-symbol market keyset and leave 300 market symbols absent
+while the dataset-level minimum still passes.
+
+No claim is made that Production currently misses 300 symbols; this is a
+legal structural counterexample showing why global readiness cannot be
+used as the per-symbol coverage denominator.
+
+## Engineering boundary
+
+The smallest promotion-grade prospective repair would retain, additively:
+
+- immutable `firstKnownAt` / collected-at evidence;
+- TDCC source asOfDate and source identity/hash;
+- raw source group count;
+- validated stock count;
+- dropped-symbol reason counts and symbol lists/hashes;
+- same-generation market-keyset reconciliation at scan time;
+- immutable parent generation/fingerprint.
+
+Pure classification is Class A.
+Shared quality-ingest / D1 persistence is Class B proposal-first.
+No runtime wiring is authorized here.
