@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "readiness-quality-gate-falsification-v0.1",
+  "researchDate": "2026-09-27",
+  "status": "COVERAGE_READINESS_CAN_OUTRUN_EVIDENCE_QUALITY",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "currentReadiness": {
+    "globalDataQualityBlockedCondition": "shadowIntegrity.status === RESEARCH_DATA_GAP",
+    "otherwise": "Per-experiment numeric/date thresholds can produce DESCRIPTIVE_READY.",
+    "topLevel": "ALL_DESCRIPTIVE_READY when all eight experiment rows are DESCRIPTIVE_READY.",
+    "existingDisclaimer": "DESCRIPTIVE_READY is not Formal promotion eligibility."
+  },
+  "confirmedUnrepresentedQualityRisks": [
+    "legacy Shadow same-date mutability / non-atomic delete-then-insert",
+    "BROAD_CONTROL quota-conditioned estimand ambiguity",
+    "NEAR_MISS global truncation and redundant closeness score",
+    "first-failure counts are order-dependent, not marginal gate effects",
+    "R02 pooled GENERAL/THOUSAND comparator confound",
+    "generic outcome reader bypasses history-source / symbol-session / corporate-action continuity",
+    "fixed 5000-row reader truncation",
+    "R04/R07 raw-row cross-date weighting",
+    "external evidence parent-generation/keyset mismatch risk"
+  ],
+  "executableContractWitness": {
+    "existingTest": "tests/test_v8_7_10_research_readiness_matrix.mjs",
+    "input": "Synthetic mature counts + shadowIntegrity.status=HEALTHY",
+    "assertedResult": "matrix.descriptiveReady=8 and matrix.status=ALL_DESCRIPTIVE_READY",
+    "interpretation": "This is consistent with the old contract, but old HEALTHY lacks the newly identified quality dimensions."
+  },
+  "distinction": {
+    "coverageReadiness": "Do we have enough rows/dates under the frozen sample-count rules?",
+    "evidenceQualityEligibility": "Are parent capture, cohort semantics, outcome provenance, reader completeness and required pairwise estimands valid?",
+    "promotionEligibility": "Separate and stricter; still requires OOS/purged holdout/cost/redundancy/governance."
+  },
+  "requiredRepair": [
+    "Preserve existing row/date thresholds as coverageReadiness; do not tune them from outcomes.",
+    "Add versioned evidenceQualityGuards with PASS/BLOCKED/UNKNOWN per experiment.",
+    "Effective interpretation status = DATA_QUALITY_BLOCKED when a required quality guard is BLOCKED or unresolved UNKNOWN for that experiment.",
+    "Do not globally block unrelated experiments for a comparator-specific defect; map guards to affected experiments.",
+    "R02 requires cohort membership, pool-matching, outcome quality and reader completeness.",
+    "R04/R07 require date-level estimand implementation plus outcome/reader quality.",
+    "R08 existing paired-date estimator survives the date-weighting audit but still requires parent/cohort/outcome/reader quality.",
+    "Expose both coverageReadiness and evidenceQualityEligibility in API/UI so high counts cannot hide quality blockers."
+  ],
+  "decision": "OLD_READINESS_IS_COUNT_CENTRIC / DESCRIPTIVE_READY_NEEDS_QUALITY_OVERLAY / NO_THRESHOLD_TUNING / NO_FORMAL_CHANGE"
+}
