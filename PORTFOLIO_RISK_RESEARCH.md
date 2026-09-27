@@ -962,3 +962,103 @@ No Formal allocation, ADD/REDUCE, stop, monitoring, push or execution behavior c
 
 ### Exact next
 Do not invent live-position history. Continue prospective evidence design for an append-only confirmed-fill/reconciliation ledger only if it can be isolated without changing Formal decisions. In parallel, continue outcome-independent plan-risk decomposition and wait for enough independent plan dates before testing whether Tier-A metrics add downside information beyond channel, volatility, PriorityScore and regime.
+
+
+## PR-030 — Confirmed Fill Ledger v0.1 research contract (2026-09-27)
+
+PR-029 proved that historical actual-live positions cannot be reconstructed from the current signal journal plus mutable position snapshot without fabricating fills.
+
+This section freezes the **minimum evidence contract** required to solve that problem prospectively.
+
+### Separation rule
+
+A signal and an execution are different objects.
+
+- `signalEventId` identifies a strategy/monitor decision event.
+- `executionEventId` identifies a confirmed fill/reconciliation event.
+- The two IDs may be linked, but must never be substituted for each other.
+
+A BUY signal that was never filled remains a signal only.
+
+### Required append-only execution evidence
+
+Each confirmed fill requires:
+- executionEventId;
+- source + sourceRecordId;
+- symbol;
+- planScanDate;
+- action BUY / ADD / REDUCE / SELL;
+- occurredAt;
+- confirmedAt;
+- fillPrice;
+- filledShares;
+- sharesBefore;
+- sharesAfter;
+- averageCostAfter;
+- reconciliationStatus.
+
+### Position-transition invariants
+
+- BUY/ADD: `sharesAfter = sharesBefore + filledShares`.
+- REDUCE/SELL: `sharesAfter = sharesBefore - filledShares`.
+- REDUCE must leave a positive position.
+- SELL must close to zero.
+- Across consecutive confirmed events for the same symbol, next `sharesBefore` must equal prior `sharesAfter`.
+
+Any chain break is a data-quality failure, not an invitation to guess.
+
+### Correction semantics
+
+Execution history is append-only.
+
+If a prior fill is later corrected:
+- append a new `CORRECTED` event;
+- point to `correctsExecutionEventId`;
+- never overwrite/delete the original receipt.
+
+This preserves the audit trail and prevents retrospective mutation of research history.
+
+### Sources
+
+Initial contract allows:
+- BROKER_IMPORT;
+- MANUAL_CONFIRMED;
+- VERIFIED_EXTERNAL.
+
+Source quality is explicit. A future broker import does not retroactively validate earlier manual/signal-only periods.
+
+### Research firewall
+
+The ledger may support future:
+- actual-live heat;
+- actual deployed capital;
+- real ADD/REDUCE risk transitions;
+- realized exposure before/after reduction;
+- re-add lifecycle analysis.
+
+It may **not**:
+- create or modify trading signals;
+- assume orders were filled;
+- infer old executions from signal_shares;
+- rewrite pre-ledger history;
+- change Formal allocation/stops/BUY/ADD/REDUCE/SELL.
+
+### Implementation classification
+
+The research schema/model/tests are Class A.
+
+Any shared Production implementation involving D1 tables, write APIs, broker import, reconciliation UI, or runtime state is **Class B proposal-first** and requires explicit owner approval before implementation/merge/deploy.
+
+Status:
+`CONFIRMED_FILL_LEDGER_V0_1 = DESIGN_READY / CLASS_B_PROPOSAL_FIRST / NOT_IMPLEMENTED`.
+
+Durable artifacts:
+- `research/confirmed_fill_ledger_v0_1.mjs`;
+- `tests/test_confirmed_fill_ledger_v0_1.mjs`;
+- `research/confirmed_fill_ledger_spec_v0_1.json`.
+
+No Formal or Production behavior changed.
+
+### Exact next
+
+Run the research CI and falsification fixtures. If they pass, record the contract as evidence-infrastructure-ready but keep actual-live Portfolio Risk blocked until a separately approved Production fill-capture implementation exists and has prospective real receipts.
