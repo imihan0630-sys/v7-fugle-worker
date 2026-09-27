@@ -51,7 +51,7 @@ assert.deepEqual(
 assert.equal(batch.operations.at(-1).table, "s2_shadow_run_fingerprints");
 assert.equal(batch.outcomeRowsAllowed, false);
 
-assert.throws(
+await assert.rejects(
   () =>
     buildSystem2PersistenceBatch({
       batchId: "BAD1",
@@ -63,7 +63,7 @@ assert.throws(
   /s2_ namespace/,
 );
 
-assert.throws(
+await assert.rejects(
   () =>
     buildSystem2PersistenceBatch({
       batchId: "BAD2",
