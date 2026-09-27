@@ -1,5 +1,5 @@
 {
-  "schemaVersion": "technical-indicator-shared-parent-child-feasibility-v0.2",
+  "schemaVersion": "technical-indicator-shared-parent-child-feasibility-v0.3",
   "updated": "2026-09-28 Asia/Taipei",
   "researchOnly": true,
   "runtimeImplemented": false,
@@ -33,6 +33,9 @@
       "observer_version",
       "semantic_contract_version",
       "as_of",
+      "available_at",
+      "captured_at",
+      "point_in_time_state",
       "status",
       "status_reason_code",
       "semantic_fingerprint",
@@ -51,7 +54,18 @@
       "NOT_EVALUABLE",
       "QA_FAIL"
     ],
-    "itemKeyRule": "ROOT for single-object observers; deterministic episode/item identity for multi-object observers such as Pattern."
+    "itemKeyRule": "ROOT for single-object observers; deterministic episode/item identity for multi-object observers such as Pattern.",
+    "timingSemantics": {
+      "as_of": "Time the evidence state describes.",
+      "available_at": "Earliest decision time at which the evidence was legitimately usable.",
+      "captured_at": "Time the collector actually observed/froze the evidence.",
+      "created_at": "Persistence write time; never substitute for available_at."
+    },
+    "pointInTimeStates": [
+      "VALID",
+      "UNKNOWN",
+      "BLOCKED"
+    ]
   },
   "genericObserverRun": {
     "proposedTable": "trade_research_observer_runs",
@@ -145,11 +159,11 @@
     "observer_wall_ms"
   ],
   "status": {
-    "sharedEvidenceChildSchema": "DESIGN_COMPATIBLE_AFTER_V0_2_REPAIRS",
+    "sharedEvidenceChildSchema": "DESIGN_COMPATIBLE_V0_3",
     "classBImplementation": "PREMATURE",
     "ownerApprovalRequested": false,
     "formalOptimizationCandidate": false,
-    "crossLaneContradiction": "NONE_MATERIAL_AFTER_ITEM_KEY_SCOPE_AND_NOT_EVALUABLE_REPAIRS"
+    "crossLaneContradiction": "NONE_MATERIAL_AFTER_ITEM_KEY_SCOPE_NOT_EVALUABLE_AND_PIT_CLOCK_REPAIRS"
   },
   "crossLaneCompatibility": {
     "technicalIndicator": {
@@ -169,6 +183,28 @@
       "parentScope": "DECISION_STATE_PARENT_WITH_EARLY_ROWS_PRESERVED",
       "specialNeed": "Early Formal stages can be structurally NOT_EVALUABLE rather than BLOCKED.",
       "compatibleAfterRepair": true
+    },
+    "externalEvidence": {
+      "evidenceItemKey": "ONE_SOURCE_FAMILY_OR_SOURCE_ITEM_PER_ROW_WHEN_CLOCKS_DIFFER",
+      "timingRequirement": "as_of + available_at + captured_at must be preserved",
+      "parentAlignment": "Must use exact immutable parent generation/keyset",
+      "compatibleAfterRepair": true
+    },
+    "formalGateOverlap": {
+      "evidenceItemKey": "ROOT",
+      "specialNeed": "Payload may hold many gate PASS/FAIL/UNKNOWN/NOT_EVALUABLE states; generic NOT_EVALUABLE is required.",
+      "compatible": true
     }
+  },
+  "sharedSourceBoundary": {
+    "rule": "Parent-linked evidence child is for per-parent evidence; market/sector/macro/shared upstream facts should live once in immutable shared source receipts and be referenced by hash/id.",
+    "doNotDuplicate": [
+      "MARKET_REGIME_PAYLOAD",
+      "SECTOR_WIDE_PAYLOAD",
+      "CORPORATE_ACTION_REGISTRY",
+      "TRADING_CALENDAR",
+      "SHARED_LIMIT_RULE_SET"
+    ],
+    "sourceRevisionRule": "Later source revisions do not overwrite decision-time child evidence; preserve revisions in source receipts or append-only quality overlays."
   }
 }
