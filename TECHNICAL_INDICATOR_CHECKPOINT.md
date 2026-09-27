@@ -631,3 +631,67 @@ DIRECTIONAL_ALPHA = NOT_ASSUMED
 - 92a522a3ae0c45d50d1c9368c5fc720f4fab8a08 — range-volatility adversarial fixtures.
 - 7e180e2b303124e0311a0ac1cd918fc87962a1a8 — redundancy registry volatility-family handoff.
 - a4878bb37f8276ffba57217f34d9752deba1b6ec — VOLATILITY_REGIME cross-lane Yang-Zhang handoff.
+
+
+## Continuation update — TI-166 through TI-180
+
+- The technical-indicator catalog is now reconciled into a V0.1 **minimal semantic information basis** rather than further expanding named indicators.
+- This is explicitly NOT PCA / statistical orthogonality and NOT a predictive factor model. It is a de-duplication/admission ontology.
+- Eight semantic dimensions are frozen:
+  - B1 RETURN_DISPLACEMENT
+  - B2 RANGE_LOCATION_EXTREME_RECENCY
+  - B3 SIGNED_RETURN_PATH_BALANCE
+  - B4 FILTERED_TREND_TRANSITION
+  - B5 PATH_EFFICIENCY_TREND_PERSISTENCE
+  - B6 VOLATILITY_MAGNITUDE_COMPOSITION
+  - B7 OHLC_GAP_CANDLE_GEOMETRY
+  - B8 PARTICIPATION_VOLUME
+- Popular indicators are now interpreted as either:
+  1. exact aliases/rescalings inside one basis dimension;
+  2. nested transforms of an existing basis variable;
+  3. within-basis composites;
+  4. cross-basis composites;
+  5. role-mismatched tools;
+  6. possible narrow residual hypotheses.
+- Examples:
+  - ROC -> B1 exact alias of retN;
+  - Williams %R -> B2 rescaling of Stochastic %K;
+  - RSI -> B3 path-balance descriptor;
+  - MACD -> B4 filtered trend/transition composite;
+  - ADX/DMI -> B5 trend-quality plus B6 normalization;
+  - Bollinger width -> B6 volatility/compression;
+  - candles/Sakata/AR-BR -> B7 OHLC/gap geometry;
+  - OBV/MFI/Klinger -> B8 participation crossed with price/path transforms.
+- Context/guards such as market regime, liquidity, corporate-action state, symbol-session validity, price-limit constraint, Pattern lifecycle and event context are outside the indicator basis. They alter interpretation/validity rather than add another indicator vote.
+- A nine-step admission firewall is frozen: formula provenance -> basis decomposition -> alias test -> nested-transform test -> interaction test -> ownership -> incremental-value hypothesis -> PIT/data feasibility -> prospective evidence budget.
+- This framework explains why apparent multi-indicator "agreement" is not automatically confluence. Five indicators can collapse to only two or three underlying basis dimensions.
+- Taiwan studies reporting improved performance from indicator combinations are interpreted as possible interaction/regime/filter effects, not proof of statistical independence. Liquidity, bear-market weakness and sample/parameter fit remain counterexplanations.
+- New durable artifacts:
+  - research/TECHNICAL_INDICATOR_MINIMAL_INFORMATION_BASIS_V0_1.md
+  - research/technical_indicator_semantic_basis_v0_1.json
+- Indicator catalog expansion remains stopped unless a genuinely distinct primitive appears.
+- No outcomes inspected, no threshold optimization, no runtime wiring, no FORMAL_OPTIMIZATION_CANDIDATE.
+- Formal Core remains LOCKED.
+
+### Updated current status
+
+MINIMAL_SEMANTIC_BASIS_V0_1 = FROZEN
+INDICATOR_CATALOG_EXPANSION = STOPPED
+NEW_FACTOR_ADMISSION = BASIS_DECOMPOSITION_REQUIRED
+FORMAL_OPTIMIZATION_CANDIDATE = NONE
+
+### Updated exact next continuation point
+
+1. Audit System 2 technical factor/library definitions against B1-B8 so aliases/nested transforms cannot be counted independently in future strategy confluence.
+2. Keep the basis itself descriptive; do not convert B1-B8 into eight scores.
+3. Preserve the existing primary empirical queue:
+   KD-vs-RSI -> MACD-vs-direct-trend -> ADX-vs-direct-trend-quality -> BBW-vs-ATR/realized-vol/VCP.
+4. Secondary residual order remains EXTREME_RECENCY_20 -> PATH_EFFICIENCY_10 -> returnVelocityShift5v20 -> one Price-Volume compact comparator.
+5. Yang-Zhang remains VOLATILITY/RISK-owned and outside directional indicator scoring.
+6. Do not implement runtime indicator expansion before source provenance / continuity / prospective coverage gates.
+7. Formal Core remains unchanged.
+
+## Latest durable research commits
+
+- 97fa943b3683afe22a17d87b9d4436807b5fd34c — minimal semantic information basis v0.1.
+- d0e11268cb3718f0f99514d93a3091bed777fce2 — machine-readable semantic basis registry v0.1.
