@@ -17649,3 +17649,233 @@ Do not average conflicting conclusions into a vague “technical analysis works.
 
 ### Goal
 Our Pattern Shadow should be designed specifically to discover WHICH definition is stable in the current system, not to confirm a preselected textbook belief.
+
+
+## DL-003CA — Pattern Research Readiness Matrix v0.1
+
+### Purpose
+Separate:
+- conceptually interesting,
+from
+- empirically testable with current point-in-time data.
+
+No Pattern feature should enter implementation merely because its definition is complete.
+
+### A. NEAR-READY with H/L/C/volume + sufficient short history, subject to adjusted/session-clean data
+1. sequence contraction / VCP primitives
+2. true W topology
+3. support/resistance zones
+4. undercut-reclaim / failed-reclaim motifs
+5. platform/flag compression primitives
+6. local-vs-major resistance conflict within available horizon
+7. failure/reentry lifecycle
+8. pattern age / time-to-event
+9. detector scale agreement
+
+Remaining prerequisites:
+- symbol-session cleaning,
+- corporate-action-safe adjusted morphology,
+- confirmedAt semantics.
+
+### B. OPEN-DATA BLOCKED
+1. historical candlestick bodies
+2. engulfing / piercing / harami
+3. morning/evening star
+4. true overnight vs intraday decomposition
+5. gap classification requiring historical open
+
+Current live/history pipeline discards historical open in the main cache.
+Do not infer it.
+
+### C. LONG-HORIZON BLOCKED
+Need >=252 valid sessions or more:
+1. 52-week high/low anchors
+2. head historical-price percentile
+3. long cup / major base
+4. multi-year extremeness
+5. long-horizon old resistance
+6. all-history percentile diagnostics
+
+### D. POINT-IN-TIME CAPITAL-STRUCTURE BLOCKED
+Need historical shares outstanding:
+1. exact turnover rate
+2. cumulative base turnover relative to shares
+3. ownership-churn proxy normalized by capitalization structure.
+
+Without point-in-time shares:
+use raw volume/value, keep exact turnover UNKNOWN.
+
+### E. PRICE-LEVEL DATA BLOCKED
+Need transaction/intraday price-volume distribution:
+1. true Volume Profile
+2. true POC/HVN/LVN
+3. actual traded-volume-at-price zones.
+
+Daily OHLCV cannot reconstruct these.
+
+### F. EXTERNAL-MAPPING DEPENDENT
+1. supply-chain propagation
+2. economically linked leaders across industry codes
+3. news/search attention
+4. point-in-time institutional ownership details.
+
+### G. LOW-PRIORITY / EXPLORATORY
+1. Elliott full wave labeling
+2. Wyckoff full phase score
+3. Fibonacci special ratios
+4. entropy/Hurst/fractal factorization
+5. unconstrained DTW/ML shape models.
+
+## DL-003CB — Minimal First Pattern Shadow Feature Set
+
+### Objective
+If/when isolated Pattern Shadow implementation begins, start with the smallest high-value set rather than the entire research catalog.
+
+### Proposed Core P0
+DATA QUALITY
+- validSymbolSession
+- adjustedMorphologyReady
+- historyBars
+- dataQualityFlags
+
+SWING
+- confirmed swing sequence
+- pivotAt/confirmedAt
+- scaleAgreement
+
+COMPRESSION
+- contractionCount
+- depthMonotonicity
+- higherLowProgression
+- range/ATR contraction
+- finalTightness
+
+REVERSAL
+- trueWState
+- undercutReclaimState
+- actualNeckline
+- IHS topology if enough confirmed swings
+
+ZONES
+- nearestSupportZone
+- nearestResistanceZone
+- localMajorConflict
+
+FAILURE
+- fastReentry
+- rejection progression
+- structureInvalidation
+
+CONTEXT
+- existing Formal cohort
+- regime
+- liquidity
+- sector breadth/amount context
+- current existing RS/research controls
+
+TIME
+- patternAge
+- firstObservableAt
+- maturityAt
+
+### Explicitly exclude from P0
+- candlestick named patterns until OPEN ready;
+- 52w anchors until long history ready;
+- true volume profile;
+- full Wyckoff/Elliott;
+- entropy/Hurst;
+- shape ML/DTW;
+- dozens of context interactions.
+
+### Why
+P0 directly tests the central hypothesis:
+“Does topology add information beyond current Formal fixed-window features?”
+
+## DL-003CC — First Three Prospective Shadow Questions
+
+### P-SHADOW-01: B Breakout + Sequence Compression
+Question:
+Among current B-quality breakouts, does confirmed sequence compression reduce R01 failure / MAE beyond generic contraction?
+
+Groups:
+- BASIC_B
+- B + generic contraction
+- B + sequence contraction
+- B + full mature compression.
+
+### P-SHADOW-02: True W vs Existing rightFootHigher Proxy
+Question:
+Does actual two-trough neckline topology add beyond the current split-window proxy?
+
+Groups:
+- rightFootHigher only
+- true W only
+- both
+- neither.
+
+### P-SHADOW-03: Reclaim Motif
+Question:
+Does support undercut + prompt reclaim distinguish successful reversal structures from lower-low continuation?
+
+Groups:
+- undercut+reclaim
+- equal/higher low
+- undercut no reclaim
+- matched controls.
+
+### Why only three first
+These questions:
+- directly connect to current system weaknesses;
+- are interpretable;
+- have high evidence/mechanism support;
+- use overlapping core data;
+- minimize Factor-Zoo growth.
+
+Do not open a large experiment family before these are data-ready.
+
+## DL-003CD — Secondary Shadow Queue After P0
+
+Priority 2:
+- IHS-bottom vs W nested test
+- local vs major resistance conflict
+- pattern staleness/time-to-event
+- contextual breakout volume / retest opportunity cost
+- phase-specific turnover.
+
+Priority 3 after data expansion:
+- 52w high/low
+- head extremeness
+- cup multi-month topology
+- historical candles
+- event/attention interactions.
+
+Priority 4:
+- shape similarity/ML
+- advanced complexity diagnostics.
+
+## DL-003CE — No Optimization Proposal Yet
+
+### Current evidence status
+Research has identified multiple plausible independent topology candidates and multiple data-quality blockers.
+
+But there is not yet sufficient prospective modern-regime evidence to recommend a Formal Core modification.
+
+### Therefore
+NO FORMAL_OPTIMIZATION_CANDIDATE is issued at this stage.
+
+This is not a negative conclusion.
+It is the correct governance conclusion:
+definitions and falsification design are mature faster than the evidence base.
+
+### What would trigger a future proposal
+At minimum:
+- prospective P0 snapshots,
+- enough independent scan dates,
+- clean point-in-time data,
+- same-date controls,
+- incremental value vs existing Formal,
+- regime/holdout stability,
+- cost/coverage impact,
+- no excessive zero-pick deterioration.
+
+Only then may a concrete optimization proposal be written for owner review.
