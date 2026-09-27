@@ -215,3 +215,44 @@ Any implementation of this proposal must also prove:
 - legacy `trade_research_shadow_candidates` rows are labeled `LEGACY_MUTABLE_ARCHIVE` unless immutable provenance can independently be proven.
 
 No migration may rewrite old rows to manufacture first-known history.
+
+
+## Decision-state provenance must precede sampling
+
+A further patch-chain audit found a decision-state mismatch in the legacy archive.
+
+Production Formal:
+`scoreCandidate -> applyMarketConsensus -> scored/ranked list`.
+
+Legacy Shadow:
+- SELECTED / QUALIFIED_NOT_SELECTED reuse post-consensus Formal items;
+- NEAR_MISS / REJECTED re-run `scoreCandidate` but remain rejects, so consensus is irrelevant;
+- BROAD_CONTROL re-runs bare `scoreCandidate`.
+
+Because current BROAD_CONTROL is quota-conditioned, an unsampled Formal-ok/QNS symbol can spill into BROAD_CONTROL. For that row the research snapshot may record:
+- pre-consensus priorityScore;
+- missing consensus score/source/bonus;
+while the same symbol's real decision-time Formal state had post-consensus values.
+
+Machine witness:
+`research/shadow_consensus_provenance_falsification_v0_1.json`.
+
+### Required architecture rule
+
+Before bounded cohort sampling, create/freeze one per-symbol **decision-state receipt** from the actual selector path.
+
+Minimum identity/provenance:
+- scan_date + symbol;
+- formal worker/rule/comparator versions;
+- Formal state;
+- first failure if rejected;
+- post-consensus ranking tuple if qualified;
+- semantic fingerprint;
+- source-quality state.
+
+All later research memberships reference that receipt/hash.
+
+Do not recompute a partial scoring path merely because the symbol is later sampled into another research cohort.
+
+Acceptance test:
+for any symbol present in the actual same-date scored list, every attached research membership must resolve to an identical post-consensus ranking tuple.
