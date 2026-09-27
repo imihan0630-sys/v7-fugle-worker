@@ -1,6 +1,6 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-236.
+Checkpoint sequence: B-237.
 Updated: 2026-09-27 23:38 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Detailed B-01..B-123 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
@@ -1877,3 +1877,16 @@ Updated: 2026-09-27 23:38 Asia/Taipei.
 - Shared quality-ingest/D1 persistence remains Class B owner-approval work and was **not implemented**. Any change making TDCC optional, changing the 14-day operational window, changing missing-data rejection or changing institutional-score weight remains Class C.
 - Status: `CHIP_GATE_IS_DATA_READINESS_GATE / GLOBAL_READY_NE_SYMBOL_COMPLETE / RAW_OMISSION_REASON_LOST_AFTER_VALIDATION / HISTORICAL_PIT_AVAILABILITY_UNKNOWN / PROSPECTIVE_CAPTURE_PROPOSAL_READY / OUTCOMES_CLOSED / FORMAL_UNCHANGED`. No `FORMAL_OPTIMIZATION_CANDIDATE`.
 - Exact next: park shared TDCC capture at the Class-B owner-approval boundary. Move immediately to `FINANCIAL_SOURCE_COMPLETENESS`, but first fresh-audit existing fundamental/source artifacts to avoid duplicating the completed fundamental-score lane. Determine which bundled subconditions are scan-global versus symbol-specific, whether successful scan-level dataset readiness can still leave per-symbol financial/valuation gaps, and which subconditions are structurally redundant under the canonical runtime path. Outcomes remain closed.
+
+
+## B-237 — Formal gate-overlap observer v0.1 semantic falsification; v0.2 corrective observer validated (2026-09-27 Asia/Taipei)
+- While entering FINANCIAL_SOURCE_COMPLETENESS from B-236, the shared Class-A `formal_gate_overlap_observer_v0_1` was itself falsified before any new scarcity counts were trusted.
+- Defect 1 — numeric null coercion: v0.1 `finite(value)` called `Number(value)` directly. In JavaScript `Number(null)=0` and `Number("")=0`, violating the observer spec that missing evidence must remain UNKNOWN. This could convert missing close/history/market-cap/ATR/fundamental-count/RR/setup-quality to false observed zeros, and could even make explicit-null `chipConcentration` PASS the presence observer or make missing RS/change fields appear as observed zero.
+- Defect 2 — financialBasis type mismatch: current Formal uses JavaScript truthiness `!f.financialBasis`, while `deriveQuarterlyFinancials()` produces a non-empty descriptive string. v0.1 used a literal-boolean parser and therefore could mark canonical valid financial rows UNKNOWN.
+- Defect 3 — announcement empty-set mismatch: after a validated announcement snapshot, current scan assigns `announcementsVerified=true` globally. Symbols with no matching announcements commonly have no per-symbol `officialAnnouncements` array; Formal uses `(f.officialAnnouncements || [])` and treats this as a verified empty set. v0.1 instead required an array and could label these rows ANNOUNCEMENT_RISK UNKNOWN.
+- Draft PR #163 freezes `research/formal_gate_overlap_observer_v0_2.mjs` without rewriting v0.1 history. V0.2: null/undefined/empty numeric evidence => UNKNOWN before numeric conversion; explicit zero stays zero; non-empty financialBasis follows Formal truthiness; verified source + missing announcement array follows Formal empty-list semantics.
+- Durable artifacts on PR #163: `research/formal_gate_overlap_observer_v0_1_falsification.json`, `research/formal_gate_overlap_observer_spec_v0_2.json`, `tests/test_formal_gate_overlap_observer_v0_2.mjs`.
+- PR #163 head `daa59e1b64ece95e700024d9c23ca6aaa99f1516`; CI green: Formal Gate Overlap Observer V0.2 Research `36327315940` SUCCESS; V8 Regression `36327316093` SUCCESS; V8 Repair `36327315990` SUCCESS. PR remains Draft; no merge/deploy.
+- Evidence consequence: methodology documents that merely define PASS/FAIL/UNKNOWN/NOT_EVALUABLE remain conceptually usable, but any empirical overlap/scarcity count derived from v0.1 on null-bearing/canonical financial-announcement rows is `OBSERVER_VERSION_GUARDED` until recomputed under v0.2 or equivalent corrected semantics. Historical raw receipts must not be mutated to fake repair.
+- Status: `V0_1_SEMANTIC_BUG_CONFIRMED / V0_2_REQUIRED_FOR_FUTURE_SCARCITY_COUNTS / RESEARCH_EVIDENCE_CORRECTION_ONLY / FORMAL_UNCHANGED`. No outcomes and no `FORMAL_OPTIMIZATION_CANDIDATE`.
+- Exact next: resume FINANCIAL_SOURCE_COMPLETENESS using v0.2 semantics. Separate scan-level dataset readiness from same-generation per-symbol financial/valuation coverage. Test the structural dependence of the four quarterly-financial checks, the two valuation checks, and the announcement verification clause under the canonical current producer/merge path before creating any outcome sample.
