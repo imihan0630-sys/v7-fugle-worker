@@ -179,3 +179,29 @@ Verified:
 - if all new candidates fit, all may be admitted without cross-strategy ranking.
 
 No production/runtime deployment occurred.
+
+
+## RANK-02 entry-readiness challenger verification (2026-09-27)
+
+Status: PASS / PREREGISTERED RESEARCH CHALLENGER / OUTCOMES NOT USED / NOT DEPLOYED.
+
+Implemented:
+- `SYSTEM2_RANK02_ENTRY_READINESS_EXPERIMENT_V0_1.md`;
+- `runtime/strategy_local_ranking_entry_readiness.mjs`;
+- RANK-01/RANK-02 ordering-receipt pipeline;
+- `runtime/ranking_experiment_receipt.mjs`;
+- research-only `s2_ranking_experiment_receipts` storage design + serializer.
+
+Challengers:
+- GLOBAL_ADMISSION: preserve Pareto tier first, then binary PROXIMATE vs NON_PROXIMATE;
+- ACTIVE_INTRADAY_MONITOR: preserve Pareto tier first, then preregister BUY_ELIGIBLE > ACTIVE_ENTRY_MONITOR > NEAR_ENTRY as a falsifiable hypothesis.
+
+Verified:
+- Pareto tier remains primary in RANK-02;
+- proximity can change order only inside the same Pareto tier;
+- non-proximate names are not smuggled into active-monitor ordering;
+- baseline and challenger ordering receipts preserve separate policy/version hashes;
+- ranking-experiment receipt freezes common support, candidate-set equality and rank deltas before outcomes are attached;
+- ranking-experiment storage serializer preserves outcomeAttached=false at preregistration time.
+
+No claim of ranking alpha is made.
