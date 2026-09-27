@@ -89,12 +89,15 @@ for(const [scanDate,datePlans] of [...byDate.entries()].sort()){
       currentAllocationNTD:currentAllocation,
       currentShareOfDeploymentPct:(currentAllocation!==null&&currentDeployment>0)?round(currentAllocation/currentDeployment*100,4):null,
       currentProjectedRiskNTD:currentRiskNTD!==null?round(currentRiskNTD,2):null,
+      currentPlannedRewardProxyNTD:(currentRiskNTD!==null&&n(plan?.rewardRisk)!==null)?round(currentRiskNTD*n(plan.rewardRisk),2):null,
       equalCapitalAllocationNTD:equalCapitalAllocation,
       equalCapitalProjectedRiskNTD:equalCapitalRiskNTD!==null?round(equalCapitalRiskNTD,2):null,
+      equalCapitalPlannedRewardProxyNTD:(equalCapitalRiskNTD!==null&&n(plan?.rewardRisk)!==null)?round(equalCapitalRiskNTD*n(plan.rewardRisk),2):null,
       equalPlannedStopRiskAllocationNTD:equalRiskAllocation,
       equalPlannedStopRiskProjectedRiskNTD:equalRiskRiskNTD!==null?round(equalRiskRiskNTD,2):null,
       cappedEqualPlannedStopRiskAllocationNTD:cappedRiskAllocation,
       cappedEqualPlannedStopRiskProjectedRiskNTD:cappedRiskRiskNTD!==null?round(cappedRiskRiskNTD,2):null,
+      cappedEqualPlannedStopRiskRewardProxyNTD:(cappedRiskRiskNTD!==null&&n(plan?.rewardRisk)!==null)?round(cappedRiskRiskNTD*n(plan.rewardRisk),2):null,
       cappedEqualPlannedStopRiskCapBinding:(cappedRiskCf?.allocations||[]).find(x=>String(x.symbol)===symbol)?.capBinding??null,
       shiftCurrentToEqualCapitalNTD:(currentAllocation!==null&&equalCapitalAllocation!==null)?round(equalCapitalAllocation-currentAllocation,2):null,
       shiftCurrentToEqualRiskNTD:(currentAllocation!==null&&equalRiskAllocation!==null)?round(equalRiskAllocation-currentAllocation,2):null,
@@ -106,6 +109,13 @@ for(const [scanDate,datePlans] of [...byDate.entries()].sort()){
   const equalCapitalRisk=planDetails.map(x=>x.equalCapitalProjectedRiskNTD).filter(Number.isFinite);
   const equalRiskRisk=planDetails.map(x=>x.equalPlannedStopRiskProjectedRiskNTD).filter(Number.isFinite);
   const cappedRiskRisk=planDetails.map(x=>x.cappedEqualPlannedStopRiskProjectedRiskNTD).filter(Number.isFinite);
+  const sumField=key=>round(planDetails.map(x=>n(x[key])).filter(Number.isFinite).reduce((a,b)=>a+b,0),2);
+  const currentRiskTotal=sumField("currentProjectedRiskNTD");
+  const equalCapitalRiskTotal=sumField("equalCapitalProjectedRiskNTD");
+  const cappedRiskTotal=sumField("cappedEqualPlannedStopRiskProjectedRiskNTD");
+  const currentRewardProxy=sumField("currentPlannedRewardProxyNTD");
+  const equalCapitalRewardProxy=sumField("equalCapitalPlannedRewardProxyNTD");
+  const cappedRewardProxy=sumField("cappedEqualPlannedStopRiskRewardProxyNTD");
   const maxMinRatio=xs=>{
     const v=xs.filter(Number.isFinite).filter(x=>x>0);
     if(v.length<2) return null;
@@ -139,6 +149,14 @@ for(const [scanDate,datePlans] of [...byDate.entries()].sort()){
       equalCapital:out?.counterfactuals?.equalCapital?.status||"UNKNOWN",
       equalPlannedStopRisk:out?.counterfactuals?.equalPlannedStopRisk?.status||"UNKNOWN",
       cappedEqualPlannedStopRisk:cappedRiskCf?.status||"UNKNOWN"
+    },
+    exAnteRewardRiskProxy:{
+      semantics:"PLAN_TIME_RR_MULTIPLIED_BY_CONSERVATIVE_BUYHIGH_PROJECTED_STOP_RISK; NOT REALIZED_RETURN OR EXPECTED_RETURN",
+      current:{projectedRiskNTD:currentRiskTotal,plannedRewardProxyNTD:currentRewardProxy,proxyRewardPerProjectedRisk:(currentRiskTotal>0)?round(currentRewardProxy/currentRiskTotal,4):null},
+      equalCapital:{projectedRiskNTD:equalCapitalRiskTotal,plannedRewardProxyNTD:equalCapitalRewardProxy,proxyRewardPerProjectedRisk:(equalCapitalRiskTotal>0)?round(equalCapitalRewardProxy/equalCapitalRiskTotal,4):null},
+      cappedEqualPlannedStopRisk:{projectedRiskNTD:cappedRiskTotal,plannedRewardProxyNTD:cappedRewardProxy,proxyRewardPerProjectedRisk:(cappedRiskTotal>0)?round(cappedRewardProxy/cappedRiskTotal,4):null},
+      currentMinusEqualCapital:{projectedRiskNTD:round(currentRiskTotal-equalCapitalRiskTotal,2),plannedRewardProxyNTD:round(currentRewardProxy-equalCapitalRewardProxy,2),marginalProxyRewardPerRisk:(currentRiskTotal-equalCapitalRiskTotal)>0?round((currentRewardProxy-equalCapitalRewardProxy)/(currentRiskTotal-equalCapitalRiskTotal),4):null},
+      currentMinusCappedEqualRisk:{projectedRiskNTD:round(currentRiskTotal-cappedRiskTotal,2),plannedRewardProxyNTD:round(currentRewardProxy-cappedRewardProxy,2),marginalProxyRewardPerRisk:(currentRiskTotal-cappedRiskTotal)>0?round((currentRewardProxy-cappedRewardProxy)/(currentRiskTotal-cappedRiskTotal),4):null}
     },
     structuralRiskDispersion:{
       currentProjectedRiskHHI:hhi(currentRisk),
@@ -181,5 +199,5 @@ console.log(JSON.stringify({
   fullyReconstructablePlanDates:fullyReconstructable.length,
   planDates:fullyReconstructable,
   zeroSelected,
-  interpretation:"Outcome-independent plan-time structural counterfactual. Compares current allocation with equal-capital, unconstrained equal-planned-stop-risk, and a 35%-cap-constrained continuous equal-risk comparator using the same planned deployment. No returns are read; no allocator is promoted."
+  interpretation:"Outcome-independent plan-time structural counterfactual. Compares current allocation with equal-capital, unconstrained equal-planned-stop-risk, and a 35%-cap-constrained continuous equal-risk comparator using the same planned deployment. No returns are read; RR-based reward proxy is plan-time geometry only and must not be interpreted as expected or realized return; no allocator is promoted."
 },null,2));
