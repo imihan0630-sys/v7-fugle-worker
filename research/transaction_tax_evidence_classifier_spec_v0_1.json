@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "TRANSACTION_TAX_EVIDENCE_CLASSIFIER_V0_1",
+  "observedAt": "2026-09-27",
+  "purpose": "Prevent Portfolio Risk / Trading Frictions research from inferring a Taiwan stock transaction-tax class from signal timing or incomplete execution evidence.",
+  "evidenceHierarchy": [
+    "ACTUAL: broker statement/import or verified external record directly reports transaction tax amount.",
+    "MODELED VERIFIED_DAY_TRADE_ELIGIBLE: actual same-account/same-symbol/same-day buy+sell fills plus independently verified day-trade eligibility; rate must still be date-valid official/broker rule.",
+    "MODELED ORDINARY_STOCK_SALE: Taiwan stock sell fill plus positively false day-trade reduced-tax eligibility; rate must be date-valid official rule.",
+    "UNKNOWN: tax class/eligibility not positively evidenced."
+  ],
+  "prohibitions": [
+    "BUY and SELL signals on the same date do not establish day-trade tax treatment.",
+    "Same-day fills without verified eligibility do not automatically establish reduced tax treatment.",
+    "Current legal rate must not be applied backward to a historical trade without date validation.",
+    "Modeled tax must not be labeled ACTUAL.",
+    "UNKNOWN tax must not be coerced to ordinary or reduced rate."
+  ],
+  "status": "TAX_CLASS_PROVENANCE_FAIL_CLOSED / RATE_LOOKUP_SEPARATE",
+  "formalCoreImpact": false
+}
