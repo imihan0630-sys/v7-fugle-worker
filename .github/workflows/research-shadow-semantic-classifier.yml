@@ -1,0 +1,20 @@
+name: Shadow Semantic Classifier Research
+
+on:
+  pull_request:
+    paths:
+      - "research/shadow_semantic_classifier_v0_1.mjs"
+      - "tests/test_shadow_semantic_classifier_v0_1.mjs"
+      - ".github/workflows/research-shadow-semantic-classifier.yml"
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Run research-only semantic classifier tests
+        run: node tests/test_shadow_semantic_classifier_v0_1.mjs
