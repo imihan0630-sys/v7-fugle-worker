@@ -35,7 +35,7 @@
       "recordedAt"
     ],
     "symbolRule": "Every plan symbol expected to be monitored must have a status for that run. result.ok=false is a coverage failure for NO-BUY inference.",
-    "idempotencyRule": "ALREADY_PRESENT_VERIFIED is acceptable only when the exact expected event key is present in the exact-date row set.",
+    "idempotencyRule": "Idempotent INSERT OR IGNORE replay is accounted only in alreadyPresentVerifiedCount, and only when the exact expected event key exists in the exact-date row set. skippedByReason is reserved for non-idempotent skips and makes NO-BUY completeness fail closed.",
     "failOpenRule": "Any failOpen/errorClass/failedCount > 0 makes the affected run non-complete."
   },
   "rowContract": {
