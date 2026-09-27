@@ -2068,3 +2068,26 @@ Updated: 2026-09-27 23:38 Asia/Taipei.
 - PR #201 CI is green: Institutional Score Coverage Research `36352954776` SUCCESS; V8 Repair `36352954766` SUCCESS; V8 Regression `36352954813` SUCCESS.
 - Status: `V0_1_INTERACTION_DECOMPOSITION_STALE / V0_2_CURRENT_NET_INTERACTIONS_READY / FORMAL_SCORE_REPLAY_SOURCE_READY / STREAK_ROW_PROVENANCE_NOT_SELF_AUTHENTICATING / PERSISTED_FULL_FORMAL_DENOMINATOR_SELECTED_CONDITIONED / FULL_SCAN_PREVALENCE_UNKNOWN / OUTCOMES_CLOSED / FORMAL_UNCHANGED`. No `FORMAL_OPTIMIZATION_CANDIDATE`.
 - Exact next: continue B-248's nonblocked institutional/crowding redundancy path. Freeze outcome-blind diagnostics that split current-day direction already embedded in streaks from persistence beyond day 1, nonlinear currentBuy/aligned bonuses, aggregate net intensity and chipConcentration ownership contribution; quantify clamp/tie rank-compression structurally on clean complete parents only. Do not inspect outcomes or change the 16% institutional PriorityScore weight, small-cap exception or Formal behavior.
+
+
+## B-250 — institutionalScore overlap / cap-compression diagnostics made executable; 64-state streak geometry frozen (2026-09-28 Asia/Taipei)
+- Continued B-249 exact-next and reused IC-013..IC-015 rather than repeating institutional/crowding theory. Outcomes remain closed; no persistence, runtime, threshold, formula, ranking, capital or deployment change.
+- Draft PR #204 adds fail-closed Class-A `research/institutional_rank_compression_observer_v0_1.mjs`.
+- The observer separates the current three-session score into:
+  - `currentDayDirectionBase`: first positive day per actor = 8/10/4 points;
+  - `persistenceBeyondDay1`: only day-2/day-3 continuation points;
+  - `nonlinearCurrentDirectionBonus`: +6 any current actor positive +15 all three positive;
+  - aggregate positive net-flow intensity;
+  - TDCC large-holder ownership concentration.
+- This makes the deterministic overlap explicit without calling it harmful: first-day streak points and +6/+15 interaction are functions of the same current-session direction state; only day-2/day-3 points are incremental persistence beyond today.
+- Exact ready-history invariant is enforced: current foreign/trust/dealer net signs must agree with whether each corresponding streak is >0. Mismatch is `ACTOR_STREAK_CURRENT_SIGN_MISMATCH`, a provenance/version/source-quality conflict rather than an economic observation.
+- Outcome-blind cap diagnostics preserve preClamp and score=clamp(preClamp,0,100), report saturation, lost headroom, distinct preClamp values/pairs flattened to the same score 100, institutional-score tie groups and the exact 16% PriorityScore contribution. Lost headroom is diagnostic only; no uncapped Formal counterfactual is proposed.
+- Complete theoretical streak state space is exhaustively frozen: foreign/trust/dealer buyDays each in {0,1,2,3} => 64 states; streak + current-direction interaction maps them to 41 distinct point totals; maximum is 87 before aggregate net intensity or ownership concentration.
+- Nine of the 64 theoretical streak states already reach >=70 before net/ownership, at distinct totals 71/73/75/77/79/83/87. These are formula-geometry counts, **not** live frequencies.
+- Small-cap semantics are kept separate: the 10-30bn special-reason path requires institutionalScore>=70 together with 1.5x liquidity. Compression at the 100 cap cannot change whether an already >=70 score clears that gate. The observer therefore reports >=70 occupancy separately from saturation.
+- Component compression is not relabeled final Formal rank compression. Overall ordering still depends on post-consensus PriorityScore plus raw RR, consensus, setupQuality, sectorFlow and RS tie-breaks.
+- Full-population prevalence remains fail-closed: the summarizer requires `completeCleanParent=true`. Selected-only FULL_FORMAL_SCAN persistence and bounded Shadow cannot supply that denominator.
+- Draft PR #204 `Research: institutional overlap / rank-compression diagnostics` head `46c10a81b88f5862dcfd9f27d749fd06c7d03ee9`.
+- PR #204 CI is green: Institutional Rank Compression Research `36353396486` SUCCESS; V8 Repair `36353396479` SUCCESS; V8 Regression `36353396490` SUCCESS.
+- Status: `CURRENT_DAY_VS_PERSISTENCE_DECOMPOSITION_READY / NONLINEAR_DIRECTION_OVERLAP_MEASURABLE / OWNERSHIP_SEMANTICS_SEPARATED / 64_STATE_GEOMETRY_FROZEN / INSTITUTIONAL_COMPONENT_CAP_COMPRESSION_MEASURABLE / LIVE_FULL_SCAN_PREVALENCE_BLOCKED / OUTCOMES_CLOSED / FORMAL_UNCHANGED`. No `FORMAL_OPTIMIZATION_CANDIDATE`.
+- Exact next: do not tune institutional weights from structural compression. Fresh-audit the remaining nonblocked institutional source/semantic risks and choose one that improves future evidence without shared-runtime changes. Prefer an outcome-blind question such as aggregate-net clipping geometry / actor-total conflict classification or source-schema fixture validation; do not repeat unit parity, score decomposition, selected-conditioned coverage or streak compression.
