@@ -1,6 +1,6 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-212.
+Checkpoint sequence: B-213.
 Updated: 2026-09-27 11:38 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Detailed B-01..B-123 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
@@ -1521,3 +1521,19 @@ Updated: 2026-09-27 11:38 Asia/Taipei.
 - Durable feasibility receipt: `research/formal_gate_evidence_persistence_feasibility_v0_1.json`. Existing `SHADOW_COHORT_SEMANTICS_CLASS_B_PROPOSAL.md` was updated to reuse these validated Class-A components rather than redesigning them.
 - No outcome lookup, no Formal optimization claim and no new FORMAL_OPTIMIZATION_CANDIDATE. These are evidence-infrastructure safeguards against false scarcity attribution.
 - Exact next continuation: continue candidate-scarcity research at the next pre-outcome structural layer. Audit whether target/resistance availability and RR scarcity can be decomposed without outcome use into TARGET_NULL vs LOW_RR vs FINAL_GRADE and whether the currently captured provenance is sufficient to distinguish source-quality failure from genuine geometry. Preserve B-199 target-null != low-RR semantics; if exact target provenance is missing, freeze capture gaps rather than inferring them.
+
+
+## B-213 — Target/RR semantic observer validated; durable persistence requires immutable parent architecture (2026-09-27 Asia/Taipei)
+- Continued B-212 candidate-scarcity work without outcome lookup, threshold tuning or Formal/runtime trading changes.
+- Target/RR scarcity is now explicitly decomposed into `TARGET_NULL_REJECTED`, `LOW_RR_REJECTED`, `FINAL_GRADE_REJECTED_AFTER_RR_PASS`, `RR_PASSED_FORMAL_OK` and `NOT_EVALUABLE_UNDER_FORMAL_ORDER`. TARGET_NULL remains RR=UNKNOWN and is never coerced to zero.
+- Isolated Class-A `TARGET_RR_AUDIT_OBSERVER_V0_1` was implemented with zero market calls, zero D1 writes and no Worker import. It reconstructs the current channel-specific A/B entry/stop geometry, enumerates current Formal resistance candidates under the existing >1% eligibility rule, preserves targetPrice provenance state, selected target, RR state and Formal-stage consistency.
+- Initial deterministic test self-falsified an invalid generic witness: a target=105 example assumed stop=95, but the actual B-channel stop for the fixture was materially tighter and RR still passed. The fixture was corrected to channel-consistent geometry rather than weakening the observer. Frozen rule: target-source materiality must be evaluated with channel-specific Formal entry/stop geometry.
+- Additional attribution guard: Formal `Math.min(...levels)` retains only the selected price. When multiple eligible resistance sources share that same minimum value, research preserves all matching `selectedTargetSources` and marks `selectedSourceAmbiguous=true`; it may not invent a unique source.
+- PR #130 `Research: target/RR audit observer v0.1` specialized run 36297985878 SUCCESS, V8 Repair 36297985820 SUCCESS, V8 Regression 36297985929 SUCCESS; merged at `9ce2e60883fbce7065f748bd700ea74bc7d35e0d`.
+- Persistence feasibility audit then found that a simple V8.15-style append into the legacy Shadow is not safe for promotion-grade evidence. Current `trade_research_shadow_candidates` has primary key `scan_date+symbol`, one cohort column and a `used` set that enforces one saved cohort per symbol; generic REJECTED_AFTER_BASE is also bounded by pool. New Target/RR memberships could displace Near-miss/Sector-gate/Rejected samples.
+- Legacy writer also remains same-date mutable (DELETE followed by row-by-row INSERT/UPSERT), generation-less and without immutable semantic-fingerprint parentage. Therefore flexible `snapshot_json` is not an acceptable shortcut.
+- Durable machine receipt: `research/target_rr_persistence_feasibility_v0_1.json`. Existing `SHADOW_COHORT_SEMANTICS_CLASS_B_PROPOSAL.md` now defines Target/RR as another child of the same immutable per-symbol decision-state parent; `research/formal_gate_evidence_persistence_feasibility_v0_1.json` registers the validated observer.
+- Minimum future child semantics include parent receipt/generation, channel/Formal stage/first failure, entry/stop/risk/stop binding, targetPrice raw+source/asOf/capturedAt/PIT state, prior highs, dated pivot candidates, eligible resistance candidates, selected target + all matching sources + ambiguity flag, target-null, reward/RR/threshold and stage consistency.
+- Engineering boundary: pure observer = validated Class A; shared Worker wiring / immutable D1 persistence = Class B proposal-first; targetPrice shared-source repair = Class B if source/enrichment contracts change; target/null/RR/formula/comparator changes = Class C owner approval.
+- No V8.15 Production implementation was made. No new FORMAL_OPTIMIZATION_CANDIDATE. Current status = `TARGET_RR_SEMANTICS_VALIDATED / PERSISTENCE_CLASS_B_BLOCKED / OUTCOME_VALUE_UNKNOWN`.
+- Exact next continuation: audit Production targetPrice injection/source coverage and provenance. If no stable source contract is proven, retain source/asOf/knownAt as UNKNOWN; do not call targetPrice absent and do not backfill it historically. Continue pre-outcome scarcity research without changing target/RR rules.
