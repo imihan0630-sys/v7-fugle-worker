@@ -777,3 +777,67 @@ Status:
 `BREAKEVEN_PROTOCOL_PREREGISTERED / OUTCOMES_PENDING / NOT_OPTIMIZATION_READY`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-044 — correction: paper path edge vs realized execution edge are different clocks (2026-09-27)
+
+PR-043's algebra is valid, but its terminology was too strong.
+
+Multiplying planned allocation tilt by `formal selection close -> D1/D3/D5` returns does **not** create realized P&L, because no fill at the formal close is implied.
+
+The sizing research is now split into two estimands.
+
+### 1. Selection-path clock
+
+Population:
+all generation-certified selected names on identifying multi-name dates.
+
+Common baseline:
+formal selection close.
+
+Output:
+`PAPER_PATH_SIZING_EDGE`.
+
+Question:
+did PriorityScore tilt more planned capital toward names that subsequently had better fixed-horizon paths?
+
+This is useful predictive/calibration evidence, but it is not executable or realized P&L.
+
+### 2. Execution clock
+
+Output:
+`REALIZED_OR_EXECUTABLE_SIZING_EDGE`.
+
+This requires:
+- implemented Confirmed Fill Ledger with planScanDate + ledgerEpoch coverage;
+- proof that BUY trigger timing/eligibility is allocator-invariant, or an explicit counterfactual trigger model;
+- comparator share sizing;
+- actual/defensible fill-price treatment;
+- fees, taxes, odd-lot/minimum-fee and slippage treatment;
+- untriggered planned capital left as cash.
+
+Current confirmed-fill ledger remains a Class-B proposal and is not implemented, so execution-edge evidence is still blocked.
+
+### Trigger-conditioning correction
+
+BUY-only rows must not replace the all-selected predictive estimand.
+
+However, for realized allocation economics, conditioning on actual BUY/fill is necessary. It therefore becomes a separate execution-clock estimand with coverage/invariance requirements rather than being mixed into the selection-path cohort.
+
+### Cost correction
+
+Trading costs belong to the execution clock.
+Do not subtract guessed trading costs from a formal-close paper-path edge and call the result realized net P&L.
+
+New executable paper-path module:
+`research/priority_score_sizing_edge_v0_2.mjs`.
+
+Two-clock protocol:
+`research/priority_score_sizing_two_clock_protocol_v0_2.json`.
+
+PR-043 v0.1 is retained as an algebra/history artifact but its realized-P&L wording is superseded.
+
+Status:
+`SEMANTIC_CORRECTION_FROZEN / PAPER_EDGE_READY / EXECUTION_EDGE_BLOCKED`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
