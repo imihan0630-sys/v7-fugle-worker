@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-09-27T19:09:06+08:00",
+  "updatedAt": "2026-09-27T19:17:30+08:00",
   "status": "BASELINE_V0_2_PARTIAL_RECONCILIATION",
   "formalCore": "LOCKED",
   "authority": {
@@ -209,7 +209,7 @@
       "domain": "PORTFOLIO_CAPITAL_READD",
       "level": "L2",
       "status": "FALSIFICATION_IN_PROGRESS",
-      "basis": "Plan-time Tier-A risk is reconstructable while historical actual-live holdings/heat remain blocked. PR-033 adds a live read-only structural falsification: on the only reconstructable multi-name date (2026-09-18), current PriorityScore-weighted capital produced higher conservative planned-stop-risk concentration than equal capital (risk HHI 0.377238 vs 0.355859; max/min risk contribution 2.4472x vs 1.9119x) because the highest-score plan also had the widest stop. Equal-risk is diagnostic only and breaches the current 35% cap for one name. One multi-name date is insufficient for outcome/OOS claims; status remains L2 FALSIFICATION_IN_PROGRESS and no allocation change is authorized."
+      "basis": "Plan-time Tier-A risk is reconstructable while historical actual-live holdings/heat remain blocked. PR-033/034 now confirm an outcome-independent structural interaction on the only reconstructable multi-name date: current PriorityScore-proportional sizing plus heterogeneous stop distance produced higher projected stop-risk concentration than equal-capital and a same-deployment 35%-cap-constrained equal-risk comparator. Deterministic replay exactly reproduces the journal allocations and shows the current 35% cap did not bind; the surviving mechanism is score weighting × stop geometry, not cap distortion. Economic value remains UNKNOWN because only one multi-name date exists and no outcomes were read. L2 FALSIFICATION_IN_PROGRESS; no allocation change authorized."
     },
     {
       "id": "CAPITAL_READD",
