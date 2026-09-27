@@ -104,6 +104,31 @@ CREATE INDEX IF NOT EXISTS idx_s2_shadow_run_strategy_date
 
 
 
+
+CREATE TABLE IF NOT EXISTS s2_rank05_displacement_receipts (
+  receipt_id TEXT PRIMARY KEY,
+  experiment_id TEXT NOT NULL,
+  experiment_version TEXT NOT NULL,
+  market_date TEXT NOT NULL,
+  decision_timestamp TEXT NOT NULL,
+  incumbent_symbol TEXT NOT NULL,
+  incumbent_episode_id TEXT NOT NULL,
+  incumbent_pool_sessions INTEGER NOT NULL,
+  incumbent_json TEXT NOT NULL,
+  challenger_symbol TEXT NOT NULL,
+  challenger_json TEXT NOT NULL,
+  classification TEXT NOT NULL,
+  shadow_displacement_eligible INTEGER NOT NULL,
+  action TEXT NOT NULL,
+  outcome_attached INTEGER NOT NULL,
+  receipt_hash TEXT NOT NULL UNIQUE,
+  captured_at TEXT NOT NULL,
+  schema_version TEXT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS idx_s2_rank05_displacement_date
+  ON s2_rank05_displacement_receipts (market_date, classification);
+
 CREATE TABLE IF NOT EXISTS s2_ranking_experiment_receipts (
   experiment_receipt_id TEXT PRIMARY KEY,
   experiment_id TEXT NOT NULL,
