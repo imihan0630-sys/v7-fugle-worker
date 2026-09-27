@@ -1,7 +1,7 @@
 # System 2 Storage Schema
 
 Updated: 2026-09-26
-Status: DESIGN V0.2 / RESEARCH-ONLY / NOT DEPLOYED
+Status: DESIGN V0.3 / RESEARCH-ONLY / NOT DEPLOYED
 
 ## Goals
 
@@ -118,6 +118,11 @@ This keeps logical factor auditability without tens of millions of physical rows
 - rank
 - total_score
 - candidate_state
+- strategy_validity
+- entry_readiness
+- source_readiness
+- shadow_spec_id
+- evaluation_mode
 - reasons_json
 - warnings_json
 - missing_required_factors_json
@@ -130,6 +135,8 @@ This keeps logical factor auditability without tens of millions of physical rows
 - schema_version
 
 Decisions are immutable. Corrections create a linked correction record.
+
+V0.3 adds explicit strategy-validity / entry-readiness / source-readiness / Shadow-spec metadata so `VALID + TOO_EXTENDED`, `INCOMPLETE + BLOCKED`, and other non-selected states remain queryable rather than being collapsed into one candidate-state label.
 
 ### s2_decision_corrections
 - correction_id
