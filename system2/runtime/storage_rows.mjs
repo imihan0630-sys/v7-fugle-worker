@@ -96,3 +96,24 @@ export function toCapacityRunRow(receipt) {
     schema_version: requiredText(receipt.schemaVersion, "schemaVersion"),
   });
 }
+
+
+export function toStrategyOrderingRow(receipt) {
+  if (!receipt || typeof receipt !== "object") throw new Error("receipt is required");
+
+  return Object.freeze({
+    ordering_receipt_id: requiredText(receipt.orderingReceiptId, "orderingReceiptId"),
+    market_date: requiredText(receipt.marketDate, "marketDate"),
+    decision_timestamp: requiredText(receipt.decisionTimestamp, "decisionTimestamp"),
+    purpose: requiredText(receipt.purpose, "purpose"),
+    strategy_id: requiredText(receipt.strategyId, "strategyId"),
+    strategy_version: requiredText(receipt.strategyVersion, "strategyVersion"),
+    ordering_policy_id: requiredText(receipt.orderingPolicyId, "orderingPolicyId"),
+    ordering_policy_version: requiredText(receipt.orderingPolicyVersion, "orderingPolicyVersion"),
+    candidate_count: Number(receipt.candidateCount),
+    ordered_candidates_json: json(receipt.orderedCandidates || []),
+    ordering_hash: requiredText(receipt.orderingHash, "orderingHash"),
+    captured_at: requiredText(receipt.capturedAt, "capturedAt"),
+    schema_version: requiredText(receipt.schemaVersion, "schemaVersion"),
+  });
+}
