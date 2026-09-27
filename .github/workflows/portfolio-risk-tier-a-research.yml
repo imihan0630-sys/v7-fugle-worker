@@ -88,6 +88,10 @@ on:
       - "research/score_cap_reserve_spec_v0_1.json"
       - "tests/test_score_cap_reserve_v0_1.mjs"
       - "tests/portfolio_risk_score_cap_reserve_readonly_audit.mjs"
+      - "research/capital_reserve_ladder_v0_1.mjs"
+      - "research/capital_reserve_ladder_spec_v0_1.json"
+      - "tests/test_capital_reserve_ladder_v0_1.mjs"
+      - "tests/portfolio_risk_capital_reserve_ladder_readonly_audit.mjs"
       - "tests/test_sizing_quantization_cascade_v0_1.mjs"
       - "tests/portfolio_risk_sizing_quantization_readonly_audit.mjs"
       - "tests/test_portfolio_risk_reconstructability_v0_1.mjs"
@@ -139,6 +143,7 @@ jobs:
           node tests/risk_concentration_bridge_audit_v0_1.mjs
           node tests/test_risk_metric_sensitivity_v0_1.mjs
           node tests/test_score_cap_reserve_v0_1.mjs
+          node tests/test_capital_reserve_ladder_v0_1.mjs
       - name: Read-only production journal coverage audit
         env:
           V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
@@ -154,3 +159,4 @@ jobs:
           node tests/portfolio_risk_entry_reference_sensitivity_readonly_audit.mjs
           node tests/portfolio_risk_metric_sensitivity_readonly_audit.mjs
           node tests/portfolio_risk_score_cap_reserve_readonly_audit.mjs
+          node tests/portfolio_risk_capital_reserve_ladder_readonly_audit.mjs
