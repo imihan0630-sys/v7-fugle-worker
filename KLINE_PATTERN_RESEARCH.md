@@ -20939,3 +20939,84 @@ Because previous volumeRatio needs its own 5 prior bars, a fully qualified A seq
 Later confirmation may be desirable.
 The issue is to measure, not loosen.
 
+
+## DL-003W — Cross-Lane Reconciliation + Source-Semantic Falsification (2026-09-27)
+
+### 1. Canonical ownership correction
+The newly noted 15m same-slot volume / early-session observability issue overlaps materially with the dedicated Price-Volume lane.
+
+Canonical ownership:
+- PRICE_VOLUME_CHECKPOINT.md / PV Shadow owns same-slot RVOL, cumulative-volume pace, response/acceptance/persistence and 15m volume-seasonality research.
+- Pattern lane may consume clean PV fields later as controls/moderators only.
+
+Therefore prior K-line notes DL-002DQ..DT are CROSS-LANE POINTERS, not separate Pattern hypotheses and not independent experiment counts.
+
+Pattern must not fork an alternative same-slot volume specification.
+
+### 2. Corporate-action endpoint has future-event visibility
+Fugle Corporate Actions dividend/capital-change endpoints allow queries containing future dates and can return announced future event rows.
+
+Point-in-time hazard:
+a present-day research pull may expose an event that had not been known at a historical decision timestamp.
+
+Rule:
+- TECHNICAL_CONTINUITY adjustment may apply only to events effective on/before the as-of date under a verified event contract.
+- An event with future effective/ex-date must never be used as a historical predictor unless a separate point-in-time announcement/availability timestamp proves it was known then.
+- eventDate <= asOfDate is safe for realized mechanical continuity processing; it does NOT prove earlier announcement knowledge.
+
+### 3. Corporate-action data is not a complete historical session calendar
+Capital-change rows expose haltDate/resumeDate for covered capital events.
+
+This can validate those event-specific non-trading intervals, but:
+- it does not enumerate all possible suspension/halt causes,
+- current intraday/tickers?isHalted is current-state metadata, not a historical symbol-session archive.
+
+Therefore historical symbol-session completeness remains a distinct dependency.
+
+### 4. Cross-source volume-unit mismatch
+Official Fugle Historical Candles docs define:
+- regular-stock daily/weekly/monthly volume in shares,
+- intraday candles in lots for regular stocks.
+
+Existing Pattern FCNT000002 real-source QA found that source's volume is lots.
+
+Consequences:
+- field name volume is not a unit contract,
+- source adapter must carry volumeUnit,
+- conversion is permitted only when security/session semantics make it valid,
+- zero lots with positive amount can represent sub-lot/odd-lot activity and must not become zero trading.
+
+Required fields:
+- volumeRaw
+- volumeUnit
+- volumeSharesComparable
+- volumeMagnitudeReady
+- volumeSubLotRemainderRisk
+- sourceId
+
+### 5. Fail-closed semantics
+Pattern context requiring exact volume magnitude is BLOCKED when:
+- source unit unknown,
+- stock unit changes across capital action without verified continuity,
+- sub-lot activity can make lot volume misleading,
+- symbol session is unverified where source pseudo-bars exist.
+
+This invalidates the Pattern volume interpretation only; it does not invalidate the Formal stock.
+
+### 6. Data-source hierarchy
+For Pattern research:
+RAW_EXECUTION:
+- verified raw traded OHLC source + exact source semantics.
+
+TECHNICAL_CONTINUITY:
+- Corporate Actions lane semantic transform/provenance.
+
+VOLUME:
+- source-specific unit contract + session membership + supply/unit-change semantics.
+
+Do not create a new Pattern-owned corporate-action engine.
+
+### Status
+OUTCOME_BLIND_SOURCE_QA_PROGRESS.
+Pattern alpha remains UNKNOWN.
+Formal Core unchanged.
