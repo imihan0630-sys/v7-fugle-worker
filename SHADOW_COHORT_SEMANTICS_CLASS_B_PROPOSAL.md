@@ -180,3 +180,38 @@ Its value is to prevent false promotion of:
 - Selection Alpha conclusions
 
 that might otherwise be artifacts of cohort sampling/semantics.
+
+
+## Persistence / first-known hardening
+
+Fresh audit of the current Candidate Shadow writer confirms an additional evidence-risk layer.
+
+Current legacy writer:
+1. `DELETE FROM trade_research_shadow_candidates WHERE scan_date=?`;
+2. insert rows one-by-one;
+3. outer caller catches research-write failure and lets Formal continue.
+
+No explicit transaction/batch was found around the delete + insert loop.
+
+Therefore:
+- same-date rerun can replace first-known evidence;
+- failure after DELETE and before the last INSERT can leave a partial date;
+- current research integrity can still report HEALTHY when SELECTED count matches and at least one BROAD_CONTROL exists, even if other expected cohort families are missing.
+
+Machine falsification:
+`research/shadow_archive_persistence_falsification_v0_1.json`.
+
+### Required Production acceptance additions
+
+Any implementation of this proposal must also prove:
+
+- immutable population/membership receipts are insert-once;
+- same identity + same semantic fingerprint is idempotent;
+- same identity + different fingerprint is `PROVENANCE_CONFLICT`, never overwrite;
+- first-known generation is retained;
+- a write failure cannot erase a prior complete generation;
+- expected population/sample denominator counts are compared with persisted counts by date/pool/family;
+- `HEALTHY` for the new framework means expected-vs-persisted completeness, not merely SELECTED/BROAD_CONTROL existence;
+- legacy `trade_research_shadow_candidates` rows are labeled `LEGACY_MUTABLE_ARCHIVE` unless immutable provenance can independently be proven.
+
+No migration may rewrite old rows to manufacture first-known history.
