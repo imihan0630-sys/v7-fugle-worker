@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "factor-redundancy-selection-conditioning-falsification-v0.1",
+  "researchDate": "2026-09-27",
+  "status": "SELECTED_ONLY_REDUNDANCY_SCOPE_CONFIRMED",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "currentImplementation": {
+    "function": "researchFactorRedundancy",
+    "sourceTable": "trade_research_snapshots",
+    "persistenceScope": "researchSnapshot is persisted while writing selected Formal plan/journal stocks.",
+    "filter": "snapshot.sourceCompleteness === FULL_FORMAL_SCAN",
+    "methodLabel": "PAIRWISE_PEARSON_FULL_FORMAL_SCAN",
+    "threshold": "n>=20 and |Pearson correlation|>=0.85 => REVIEW_REQUIRED"
+  },
+  "semanticCorrection": {
+    "FULL_FORMAL_SCAN": "Means the snapshot was captured from a full production scan context; it does NOT mean all market/candidate rows are present.",
+    "effectivePopulation": "Formal SELECTED snapshots (plus any historical reconstruction in other completeness states, which are filtered out)."
+  },
+  "selectionConditioningWitness": {
+    "fullUniverse": "Let X and Y be independent binary factors with four states equally frequent: (0,0),(1,0),(0,1),(1,1); full-universe corr=0.",
+    "selectionRule": "Keep rows where X+Y>=1.",
+    "selectedStates": "(1,0),(0,1),(1,1) equally frequent.",
+    "selectedCorrelation": -0.5,
+    "conclusion": "Conditioning on a selection rule involving the factors can create or alter correlation even when full-universe correlation differs."
+  },
+  "interpretationGuard": [
+    "High absolute correlation inside SELECTED can still flag possible redundancy worth investigation.",
+    "Low correlation inside SELECTED is not evidence that factors are nonredundant in the admitted/full candidate universe.",
+    "Selection truncation, hard gates and score/rank conditioning can attenuate, amplify or reverse factor relationships.",
+    "The current method must not be described as full-universe redundancy."
+  ],
+  "preferredRepair": [
+    "Rename/label current result as SELECTED_FULL_FORMAL_SNAPSHOT_REDUNDANCY.",
+    "For promotion-grade redundancy, use the immutable per-symbol decision-state population receipt over a frozen admitted/candidate universe, not only selected rows.",
+    "Report selected-conditioned and admitted-population correlations separately; disagreement is itself evidence.",
+    "Use within-date demeaning / date-stratified sensitivity where market-date common structure can drive correlation.",
+    "Do not retroactively reconstruct missing candidate factor rows from later information."
+  ],
+  "decision": "SELECTED_CORRELATION_IS_CONDITIONAL_DIAGNOSTIC / NO_HIGH_REDUNDANCY_DETECTED_CANNOT_CLEAR_FULL_UNIVERSE_REDUNDANCY / NO_FORMAL_CHANGE"
+}
