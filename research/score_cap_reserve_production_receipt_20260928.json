@@ -1,0 +1,59 @@
+{
+  "schemaVersion": "SCORE_CAP_RESERVE_PRODUCTION_RECEIPT_V0_1",
+  "observedAt": "2026-09-28T05:32:21+08:00",
+  "timestampProvenance": "GitHub Actions Portfolio Risk Tier-A Research run 36352049564 / job 108712476115",
+  "workflowRunId": 36352049564,
+  "jobId": 108712476115,
+  "readOnly": true,
+  "productionWrites": false,
+  "decisionImpact": false,
+  "planDates": [
+    {
+      "scanDate": "2026-09-18",
+      "selectedCount": 3,
+      "totalCapitalNTD": 200000,
+      "deployRatioPct": 85,
+      "capBindingScoreShareThresholdPct": 41.176471,
+      "nominalDeployTargetNTD": 170000,
+      "continuousAfterCapNTD": 170000,
+      "plannedAllocationNTD": 168000,
+      "capInducedReserveNTD": 0,
+      "thousandFloorReserveNTD": 2000,
+      "totalNominalToPlannedReserveNTD": 2000,
+      "designedStrategicReserveNTD": 30000,
+      "remainingCashAfterPlanNTD": 32000,
+      "capBindingSymbols": [],
+      "scoreSharesPct": {
+        "2006": 29.846285,
+        "3105": 38.172502,
+        "6133": 31.981213
+      }
+    },
+    {
+      "scanDate": "2026-09-21",
+      "selectedCount": 1,
+      "totalCapitalNTD": 200000,
+      "deployRatioPct": 35,
+      "capBindingScoreShareThresholdPct": 100,
+      "nominalDeployTargetNTD": 70000,
+      "continuousAfterCapNTD": 70000,
+      "plannedAllocationNTD": 70000,
+      "capInducedReserveNTD": 0,
+      "thousandFloorReserveNTD": 0,
+      "totalNominalToPlannedReserveNTD": 0,
+      "designedStrategicReserveNTD": 130000,
+      "remainingCashAfterPlanNTD": 130000,
+      "capBindingSymbols": [],
+      "scoreSharesPct": {
+        "3006": 100
+      }
+    }
+  ],
+  "falsification": {
+    "rejectedClaim": "Observed historical planned underdeployment on 2026-09-18 or 2026-09-21 was caused by the non-redistributed 35% cap.",
+    "result": "Rejected. The cap did not bind on either reconstructable plan date. 2026-09-18's NT$2,000 shortfall from the 85% nominal target was entirely NT$1,000 flooring; 2026-09-21 had no extra allocator shortfall.",
+    "survivingMechanism": "The cap-induced reserve mechanism is structurally real and can activate prospectively when score-share concentration exceeds 58.333333% for two selected names or 41.176471% for three or more."
+  },
+  "status": "CAP_RESERVE_MECHANISM_PROVEN / HISTORICAL_OCCURRENCE_NOT_OBSERVED / PROSPECTIVE_WATCH_ONLY / ECONOMIC_VALUE_UNKNOWN",
+  "formalCoreImpact": false
+}
