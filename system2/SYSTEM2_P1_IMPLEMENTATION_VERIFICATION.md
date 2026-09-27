@@ -606,3 +606,31 @@ Verification:
 - System2 Research CI run `36324912254`, job `108635698802`: SUCCESS.
 
 No prospective trading-date evidence has been fabricated. Earliest ordinary prospective session remains 2026-09-29.
+
+
+## Decision-clock owner-review packet verification (2026-09-27)
+
+Status: PASS / PREREGISTERED REVIEW FORMAT / NO CLOCK OR CRON AUTHORIZATION.
+
+Implemented:
+- `SYSTEM2_DECISION_CLOCK_REVIEW_PACKET_V0_1.md`;
+- `runtime/decision_clock_review_packet.mjs`;
+- integration into the read-only artifact aggregation report and GitHub Actions summary.
+
+The packet becomes `OWNER_REVIEW_ELIGIBLE` only when:
+- deterministic scheduled-artifact selection is used;
+- artifact coverage is audited and complete;
+- no official trading-day artifact gap exists;
+- V0.2 readiness is `FREEZE_ELIGIBLE`;
+- >=20 independent dates are present;
+- all included dates are precision eligible.
+
+The packet includes the full date list, worst required-source upper bound, safety buffer and preregistered candidate Taipei time. It uses no outcome/performance data for clock selection.
+
+Even OWNER_REVIEW_ELIGIBLE preserves:
+- exactDecisionClockAuthorized=false;
+- workerCronAuthorized=false;
+- captureEnabled=false.
+
+Verification:
+- System2 Research CI run `36325049835`, job `108636106573`: SUCCESS.
