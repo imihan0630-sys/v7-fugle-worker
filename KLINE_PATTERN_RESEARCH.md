@@ -19055,3 +19055,262 @@ LOWER than explicit 15m price/volume/retest geometry because entropy estimators 
 
 Status: EXPLORATORY_LOW_PRIORITY.
 
+
+
+## DL-002CD — Variable-Length Segmentation Gains Direct Support from 2026 Taiwan HS Study
+
+### New confirmation
+The 2026 Taiwan HS paper explicitly notes a weakness in prior pattern research:
+- Lo et al. used a 38-trading-day rolling window,
+- Savin et al. widened this to 63 trading days,
+- but fixed windows can miss patterns outside those durations and create computational/design constraints.
+
+### Relation to DL-002
+This independently supports DL-002AN:
+compare fixed 20/60-day features with swing-defined variable-length structures.
+
+### Research implication
+Do not replace fixed horizons.
+Use them as stable baseline controls.
+
+The test is:
+Does variable-length confirmed-swing topology add information beyond fixed 20/60-day features?
+
+### Implementation priority
+Higher than adding more named pattern labels, because segmentation quality affects:
+- W,
+- inverse HS,
+- VCP,
+- cup/handle,
+- flags,
+- support/resistance zones.
+
+## DL-002CE — Pattern Shadow Data Model v0.1 (Design Only)
+
+### Goal
+Define a durable append-only research structure that can survive chat changes and support later program optimization without contaminating Formal Core.
+
+### Table 1: pattern_shadow_snapshot
+Primary research row per scan-date/symbol/detector version.
+
+Fields:
+- scan_date
+- symbol
+- formal_cohort
+- detector_version
+- swing_spec_version
+- pattern_spec_version
+- data_through_date
+- history_start_date
+- raw_bar_count
+- adjusted_bar_count
+- market_regime
+- sector_state
+- event_context
+- data_quality_status
+- latent_primitives_json
+- pattern_states_json
+- confidence_json
+- first_observable_at
+- selection_eligible
+- execution_eligible
+- created_at
+
+Suggested uniqueness:
+(scan_date, symbol, detector_version)
+
+### Table 2: pattern_shadow_swing
+- scan_date
+- symbol
+- scale
+- sequence_no
+- swing_type
+- pivot_at
+- confirmed_at
+- pivot_price_adjusted
+- pivot_price_raw
+- threshold_at_start
+- bars_in_leg
+- amplitude_pct
+- provisional
+- detector_source
+
+### Table 3: pattern_shadow_zone
+- scan_date
+- symbol
+- zone_id
+- zone_type
+- lower_bound
+- center_price
+- upper_bound
+- created_at_market_time
+- last_updated_at_market_time
+- constituent_swings_json
+- touch_count_asof
+- strength_state
+- round_price_context
+- provisional
+
+### Table 4: pattern_shadow_event
+Append-only lifecycle transitions:
+- symbol
+- event_at
+- event_type
+- family
+- prior_state
+- new_state
+- key_level
+- evidence_json
+- first_observable_at
+
+Examples:
+MATURE
+PIVOT_READY
+BREAKOUT
+RETEST
+RECLAIM
+FAILURE
+
+### Table 5: pattern_shadow_outcome
+Outcome append/update layer separated from original feature snapshot:
+- scan_date
+- symbol
+- D1/D3/D5/D10/D20
+- MFE/MAE
+- R01
+- stop_first
+- first_breakout_date
+- first_retest_date
+- first_failure_date
+- first_reclaim_date
+- outcome_data_through
+
+### Point-in-time rules
+- original snapshot is immutable,
+- later outcomes never rewrite original pattern state,
+- later zone touches never strengthen historical zone snapshots,
+- detector-version changes create new research versions, not retroactive overwrite.
+
+### Formal isolation invariants
+Pattern Shadow must not:
+- modify candidate eligibility,
+- modify Formal score/order,
+- consume capital,
+- enter formal monitoring,
+- generate push,
+- alter entry/stop/target logic.
+
+### Engineering status
+DESIGN_READY.
+Implementation remains optional Class A only if fully isolated and regression-proven.
+No code implementation is performed merely because the schema is designed.
+
+## DL-002CF — Evidence-Tier Matrix Updated 2026-09-27
+
+### Tier A — direct Taiwan academic evidence / highest current prior
+1. Mechanically detected HS bottom / inverse-HS:
+   - 2026 Pacific-Basin Finance Journal.
+   - strong bottom/top asymmetry, historical extremeness interaction, turning-point confirmation, costs/multiple-testing checks.
+
+2. Taiwan candlestick evidence:
+   - multiple peer-reviewed studies, but specification-sensitive and older-regime.
+   - useful as context, not standalone truth.
+
+3. Market-state continuation/transition:
+   - direct Taiwan evidence; strong importance for momentum/pattern conditioning.
+
+4. Intraday vs overnight return composition:
+   - direct Taiwan evidence; path composition matters.
+
+5. Industry momentum / turnover/autocorrelation:
+   - direct Taiwan evidence; sector persistence is heterogeneous.
+
+6. Order-price clustering:
+   - direct TWSE order-level evidence; supports tick/round-price context.
+
+### Tier B — strong general pattern-method evidence + some Taiwan application
+- double-bottom / generic topology recognition,
+- bull flag / continuation template matching,
+- support/resistance zone formalization,
+- chart-image / nonlinear OHLC geometry,
+- objective turning-point algorithms.
+
+### Tier C — plausible but weaker direct academic validation
+- named VCP formulation,
+- classic cup-with-handle formulation,
+- anchored VWAP as technical support,
+- broad Sakata naming taxonomy.
+
+### Rule
+Tier determines prior research priority, not automatic Formal weight.
+A Tier C concept can outperform prospectively.
+A Tier A concept can fail in the current regime.
+
+## DL-002CG — Failure-Precursor Hierarchy Without a Composite Score
+
+### Goal
+Identify early warnings before a pattern fails without creating another opaque weighted score.
+
+### Pre-registered precursor groups
+F1 STRUCTURAL_CONFLICT
+- major resistance collision
+- loss of higher-low progression
+- expanding swing depth
+- zone rejection progression
+
+F2 PARTICIPATION_DIVERGENCE
+- stock approaches pivot while sector breadth/turnover weakens
+- Residual RS deteriorates
+- informed-flow proxy deteriorates
+
+F3 PRICE_ACCEPTANCE_WEAKNESS
+- high-volume but poor close
+- no post-breakout extension
+- fast re-entry
+- repeated pivot crossings
+
+F4 ATTENTION / EXTENSION
+- extreme historical high percentile for continuation setup
+- large pre-event runup
+- limit-hit/turnover attention spike
+- overheat context
+
+F5 PATH_INSTABILITY
+- wide-loose structure
+- rising entropy/irregularity
+- range expansion after contraction
+- repeated large rejection
+
+### Test discipline
+Do not sum F1-F5 initially.
+Test each group separately and hierarchically:
+1. existing Formal baseline
+2. +F1
+3. +F2 conditional on F1
+4. +F3
+5. +F4
+6. +F5
+
+Only retain groups with incremental evidence.
+
+### Why no score
+A weighted “failure score” would create many free parameters and make post-hoc tuning too easy.
+
+## DL-002CH — Exact Continuation Point (2026-09-27)
+
+1. Continue from the 2026 Taiwan HS paper and formalize inverse-HS topology using confirmed swings; do not create a separate primary hypothesis from the existing multi-trough reversal family.
+2. Compare Directional-Change vs Bry-Boschan turning-point confirmation; agreement is a robustness diagnostic, not an automatic score.
+3. Build point-in-time historical-price-percentile definitions and test redundancy vs drawdown/ret60/overheat.
+4. Continue Pattern Shadow design only; do not implement until data requirements and detector definitions are frozen enough for a useful Class-A snapshot.
+5. Resolve research-data requirements:
+   - retain historical OPEN,
+   - adjusted + raw OHLC,
+   - >=120 bars,
+   - corporate-action tags,
+   - no fabricated volume-at-price.
+6. For volume-at-price/cost research, do not infer holder cost from daily bars. True profile stays DATA_BLOCKED without intraday/tick price-volume data.
+7. Continue sector synchronization research using persistence/turnover/breadth slope rather than duplicate current one-day sector gate.
+8. Evaluate entropy/path complexity only as diagnostic; it remains low priority unless incremental beyond volatility/efficiency/DL-001.
+9. Pre-register failure precursor groups F1-F5 without combining them into a score.
+10. Keep primary hypothesis budget compact; every new named pattern should map into an existing latent/topology family where possible.
+11. Formal Core remains LOCKED. No ranking, thresholds, capital, execution, monitoring or push changes without mature evidence + explicit owner approval.
