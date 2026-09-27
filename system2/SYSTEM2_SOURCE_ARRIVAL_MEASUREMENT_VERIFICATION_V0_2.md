@@ -34,6 +34,7 @@ Decision-clock evidence:
 Measurement controls:
 - `runtime/twse_trading_calendar_readonly.mjs`;
 - `scripts/check_twse_trading_day_readonly.mjs`;
+- A1 daily-close validation V0.2 counts unique target-date ordinary symbols with usable positive close values; duplicate target symbols invalidate the payload and undated rows never count as target-date evidence;
 - source-arrival polling can stop after both A1 required daily gates become READY;
 - A5/B2 bounded polling series stops after same-date dependency evidence becomes eligible.
 
@@ -63,6 +64,7 @@ On trading dates:
 A date is NOT precision-eligible merely because all sources are READY.
 
 For every same-session clock constraint (A1 TWSE, A1 TPEx, B2):
+- A1 READY additionally requires `S2_A1_DAILY_CLOSE_VALIDATION_V0_2` coverage integrity;
 - prior explicit NOT_READY observation required;
 - later READY required;
 - interval <=5 minutes;
