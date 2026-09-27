@@ -21,6 +21,7 @@
     "all metrics operate on plan-time projected risk, not realized loss",
     "one reconstructable multi-name date remains a sample limitation"
   ],
-  "status": "METRIC_SENSITIVITY_PROTOCOL_READY / PRODUCTION_AUDIT_PENDING",
-  "formalCoreImpact": false
+  "status": "HHI_ARTIFACT_FALSIFIED / METRIC_DIRECTION_ROBUST / OPTIMUM_OBJECTIVE_SENSITIVE / ECONOMIC_VALUE_UNKNOWN",
+  "formalCoreImpact": false,
+  "productionReceipt": "research/risk_metric_sensitivity_production_receipt_20260928.json"
 }
