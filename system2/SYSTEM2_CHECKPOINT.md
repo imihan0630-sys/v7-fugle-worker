@@ -19,6 +19,14 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 
 ## Current design decisions
 
+- Contract/evaluator verification passed in-tool: five contract registry entries validated, immutable contracts confirmed, numeric-scoring guard passed, REQUIRED-UNKNOWN fail-closed passed, hard-invalidation precedence passed, and conflict downgrade passed.
+
+- Generic StrategyValidity（策略有效性） / EntryReadiness（進場準備度） evaluator implemented research-only. REQUIRED evidence missing => INCOMPLETE + BLOCKED; hard invalidation => INVALIDATED + BLOCKED; adverse PRIMARY evidence can yield WEAKENING; valid contradictory evidence can downgrade BUY_ELIGIBLE to CONFLICT instead of forcing a directional decision.
+
+- Strategy source-readiness map V0.1 added. SHORT_MOMENTUM is limited-Shadow eligible with explicit gaps; SWING_GROWTH is limited prospective-Shadow eligible after source freeze; INDUSTRY_TREND and full EVENT_DRIVEN are source-blocked for full Shadow; VALUE_REVERSION remains limited research-only Shadow.
+
+- Machine-readable StrategyContract（策略契約） registry V0.1 implemented for the five currently owner-approved strategy identities: SHORT_MOMENTUM, SWING_GROWTH, INDUSTRY_TREND, EVENT_DRIVEN and research-only VALUE_REVERSION. No numeric weights, floors, caps or thresholds are frozen.
+
 - StrategyContract（策略契約）machine-readable design phase started: `system2/SYSTEM2_STRATEGY_CONTRACT_V0.md` plus new research-only TypeScript interfaces separate evidence-family roles, data readiness, strategy validity and entry readiness. Only owner-approved strategy identities may be marked approved; IA/FG remain review-pending and Black Horse remains a research lane. No numeric weights/thresholds or System 1 behavior changed.
 
 - ROA（資產報酬率）review completed: retain as FUNDAMENTAL_GROWTH（基本面成長） research candidate in SUPPORTIVE（加強） / QUALITY_CHECK（品質檢查） role, not a required hard gate. Test level/trend/peer/self-history context and redundancy versus ROE/ROIC, gross-profitability-to-assets and asset turnover before any score. Industry capital intensity/accounting asset structure are mandatory controls.
