@@ -313,3 +313,158 @@ Formal Core remains LOCKED.
 - TA-Lib EMA/MACD default: SMA seed; compatibility modes may use first-value seeding.
 - Fidelity EMA: first calculations use SMA; recursive EMA thereafter.
 - StockCharts RSI: first 14-period average gain/loss is simple average, subsequent Wilder smoothing.
+
+
+## Continuation update — TI-301 through TI-307
+
+### TI-301 — ADX14 cross-platform parity axes
+
+The newly frozen internal reference is:
+WILDER_ADX14_TALIB_STYLE_NO_ROUNDING_V0_1.
+
+Same display label "ADX 14" is insufficient for numeric parity.
+
+Parity tuple must additionally match:
+- +DM/-DM dominance and tie rule;
+- True Range definition;
+- initial TR/+DM/-DM summation window;
+- Wilder smoothing arithmetic;
+- DI zero-denominator handling;
+- DX zero-denominator handling;
+- first ADX initialization;
+- integer-rounding policy;
+- unstable-period/output-start policy;
+- eligible-session / continuity semantics.
+
+TA-Lib reference:
+- no Wilder integer rounding by default;
+- lookback = 2*period - 1 plus any configured unstable period;
+- period14 baseline lookback = 27;
+- first ADX = mean of first period DX values, then Wilder smoothing.
+
+Therefore:
+ADX_INTERNAL_REFERENCE = TALIB_STYLE_MATH_CONTRACT_FROZEN.
+ADX_TALIB_P1_MATH_ALIGNMENT = MATERIAL.
+ADX_PLATFORM_P2_PARITY = UNKNOWN until exact history/zero-denominator/unstable-period semantics are matched.
+
+### TI-302 — ADX "150 bars" guidance is not a formula identity
+
+Some charting references warn that ADX computed from short history can differ materially from ADX based on deeper history because of compounded Wilder smoothing.
+
+This is useful parity guidance, not an authorization to create a universal 150-bar production threshold.
+
+Project rule remains:
+- canonical replay lineage / trusted prior state;
+- exact source history identity;
+- explicit initialization provenance.
+
+A platform showing a different ADX14 value is not a bug until the full parity tuple is checked.
+
+### TI-303 — Bollinger20x2 cross-platform parity axes
+
+The newly frozen internal reference is:
+BBANDS_CLOSE_SMA20_POPSTD20_K2_V0_1.
+
+Parity tuple must match:
+- input series;
+- center MA type;
+- lookback;
+- standard-deviation divisor;
+- upper/lower multiplier;
+- missing/session handling;
+- zero-width %B handling;
+- whether BandWidth is ratio or percent-scaled;
+- continuity space.
+
+TA-Lib reference standard deviation uses population variance:
+divide by N, not N-1.
+
+Therefore a platform using sample standard deviation can show different bands even with identical:
+"20,2" labels.
+
+### TI-304 — Fidelity / generic chart descriptions do not prove variance-divisor parity
+
+Fidelity documents the conventional construction:
+- SMA center;
+- standard-deviation envelope;
+- common 20-period / 2-standard-deviation defaults;
+- BandWidth=(Upper-Lower)/Middle.
+
+That is enough for formula-family alignment.
+
+It does not by itself certify:
+- population vs sample variance divisor;
+- floating/rounding implementation;
+- zero-width %B behavior;
+- missing/session handling.
+
+Status:
+BBANDS_FIDELITY_FAMILY_ALIGNMENT = MATERIAL.
+BBANDS_EXACT_PLATFORM_PARITY = NOT_PROVEN.
+
+### TI-305 — %B parity requires zero-width policy
+
+For normal positive-width bands:
+%B is determined by price, upper and lower bands.
+
+For a flat series:
+Upper == Lower.
+
+Platforms may:
+- return null/NaN;
+- return a fixed midpoint;
+- carry a prior value;
+- apply a hidden zero-division convention.
+
+Internal v0.1 explicitly returns NULL for zero-width %B.
+
+Therefore zero-width fixtures are mandatory before P2 platform-parity claims.
+
+### TI-306 — Formula mismatch versus implementation defect
+
+When an external chart disagrees with the research core, triage order is:
+
+1. input series;
+2. price continuity/adjustment space;
+3. session/bar inclusion;
+4. period tuple;
+5. smoothing/center;
+6. seed/initialization;
+7. output-start/warm-up;
+8. variance/zero-division/tie rules;
+9. rounding;
+10. actual implementation defect.
+
+Do not begin at step 10.
+
+### TI-307 — Updated parity status
+
+KD:
+INTERNAL_REFERENCE_FROZEN /
+XQ_FAMILY_ALIGNMENT_MATERIAL /
+EXACT_PLATFORM_PARITY_UNKNOWN.
+
+RSI:
+INTERNAL_REFERENCE_FROZEN /
+WILDER_FAMILY_ALIGNMENT_MATERIAL /
+EXACT_PLATFORM_PARITY_DEPENDS_ON_SEED_HISTORY.
+
+MACD:
+INTERNAL_REFERENCE_FROZEN /
+XQ_PARITY_NOT_PROVEN_DUE_TO_WEIGHTED_CLOSE_AND_XAVERAGE /
+TALIB_DEFAULT_PARITY_NOT_PROVEN_DUE_TO_SEED.
+
+ADX:
+INTERNAL_REFERENCE_FROZEN /
+TALIB_STYLE_MATH_ALIGNMENT_MATERIAL /
+EXACT_PLATFORM_PARITY_UNKNOWN.
+
+BOLLINGER:
+INTERNAL_REFERENCE_FROZEN /
+TALIB_POPULATION_STD_REFERENCE /
+GENERIC_PLATFORM_FAMILY_ALIGNMENT_MATERIAL /
+EXACT_PLATFORM_PARITY_UNKNOWN.
+
+Cross-platform parity remains QA/robustness work, not alpha evidence.
+
+Formal Core remains LOCKED.
