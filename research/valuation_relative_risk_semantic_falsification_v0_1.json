@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "VALUATION_RELATIVE_RISK_SEMANTIC_FALSIFICATION_V0_1",
+  "researchDate": "2026-09-27",
+  "class": "A_RESEARCH_ONLY",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "currentFormalExpression": "priceEarningsRatio>0 && sectorMedianPe>0 && priceEarningsRatio/sectorMedianPe>2.5 && !(revenueQuarterYoY>25 || epsYoY>25)",
+  "findings": [
+    "formal_gate_overlap_observer_v0_2 is not exact for valuation: when relative PE>2.5, revenueQuarterYoY<=25 and epsYoY is null, deployed JavaScript evaluates null>25 as false and rejects, while v0.2 marks the gate UNKNOWN.",
+    "Missing epsYoY is therefore an evidence-quality caveat but not a deployed decision UNKNOWN. Future research must separate exact Formal result from exception-evidence completeness.",
+    "sectorMedianPe is computed from all positive-PE featureRows in the industry and includes the candidate itself when its PE is positive.",
+    "The current minimum length>=3 therefore means positive-PE constituent count, not leave-one-out peer count.",
+    "Fixed counterexample [10,40,100]: deployed inclusive median=40, candidate PE 100 has ratio exactly 2.5 and is not rejected; leave-one-out median=25 would yield ratio 4.0 and reject. The leave-one-out value is not deployed truth and must not replace the captured sectorMedianPe.",
+    "PR #112 V8.15 valuation provenance is stale relative to current main and recomputes a sector median from an older sector object rather than freezing the deployed feature.sectorMedianPe; it must not be treated as current promotion-grade semantics."
+  ],
+  "denominatorRules": [
+    "Formal-reach population must positively clear every earlier ordered gate through ANNOUNCEMENT_RISK.",
+    "Official/observed PE<=0 or canonical PE N/A is NOT_APPLICABLE to the relative-PE veto, not cheap valuation.",
+    "Positive PE with sectorMedianPe unavailable is research UNKNOWN even though deployed Formal skips the veto.",
+    "High relative PE with revenue growth<=25 and epsYoY missing is a deployed FAIL with incomplete EPS-exception evidence, not UNKNOWN.",
+    "Do not recompute historical sectorMedianPe from current classifications or current valuation data."
+  ],
+  "exactNext": [
+    "Use a v0.3 gate-overlap observer that preserves all v0.2 strict-null fixes and corrects valuation missing-EPS semantics.",
+    "Freeze prospective receipt fields: exact deployed sectorMedianPe, positive-PE constituent count, candidate-in-constituent flag, PE/PB source date, revenueQuarterYoY, epsYoY plus EPS evidence state, exact Formal result and parent generation.",
+    "Outcomes remain closed until immutable same-generation coverage exists."
+  ],
+  "decision": "FORMAL_VETO_SEMANTICS_REPAIRED_FOR_RESEARCH / MISSING_EPS_IS_FAIL_EVIDENCE_CAVEAT_NOT_UNKNOWN / SECTOR_MEDIAN_IS_INCLUSIVE_SELF / PR112_SEMANTICALLY_STALE / FORMAL_UNCHANGED / NOT_FORMAL_OPTIMIZATION_CANDIDATE"
+}
