@@ -1,0 +1,27 @@
+name: Institutional Rank Compression Research
+
+on:
+  push:
+    paths:
+      - "research/institutional_rank_compression_observer_v0_1.mjs"
+      - "research/institutional_rank_compression_observer_v0_1.test.mjs"
+      - "research/institutional_rank_compression_diagnostic_spec_v0_1.json"
+      - "INSTITUTIONAL_SCORE_RANK_COMPRESSION_RESEARCH.md"
+      - ".github/workflows/institutional-rank-compression-research.yml"
+  pull_request:
+    paths:
+      - "research/institutional_rank_compression_observer_v0_1.mjs"
+      - "research/institutional_rank_compression_observer_v0_1.test.mjs"
+      - "research/institutional_rank_compression_diagnostic_spec_v0_1.json"
+      - "INSTITUTIONAL_SCORE_RANK_COMPRESSION_RESEARCH.md"
+      - ".github/workflows/institutional-rank-compression-research.yml"
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node research/institutional_rank_compression_observer_v0_1.test.mjs
