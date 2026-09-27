@@ -15875,3 +15875,124 @@ Current sector score is mostly contemporaneous.
 A lifecycle view may distinguish “sector getting healthier” from “sector already crowded.”
 
 No Formal use is authorized.
+
+
+## DL-003AE — Entropy / Hurst / Complexity: Useful Diagnostics, Weak First-Line Alpha Candidates
+
+### External evidence
+Entropy-based finance research finds:
+- return series can contain small nonlinear serial dependence;
+- permutation/sample entropy can describe market regularity/efficiency states;
+- lower entropy can coincide with turbulent periods or more regular dynamics;
+- Hurst/long-memory measures can identify persistent/anti-persistent regimes in some samples.
+
+But high-quality econometric evidence also warns:
+- conditional predictability/profit opportunities are fragile across samples, frequencies, conditioning sets and model choices;
+- detecting nonlinear dependence is not the same as demonstrating robust exploitable alpha.
+
+### Current-system overlap
+Likely overlap with existing/researched variables:
+- volatility20 / ATR
+- path efficiency
+- reversal count
+- DL-001 Information Discreteness
+- regime state
+- persistence
+- contraction/expansion topology.
+
+### Decision
+Do NOT include entropy/Hurst/fractal measures in the initial Pattern Shadow core feature set.
+
+Candidate status:
+- ENTROPY = DIAGNOSTIC_ONLY / LOW_PRIORITY
+- HURST = DIAGNOSTIC_ONLY / LOW_PRIORITY
+- FRACTAL_DIMENSION = EXPLORATORY_ONLY
+
+### Possible legitimate future use
+1. regime diagnostic:
+   detect unusually regular/irregular market states;
+2. falsification:
+   check whether a “clean pattern” result is simply low-complexity/path-smoothness;
+3. robustness:
+   see whether pattern performance changes in high- vs low-entropy states.
+
+### Promotion gate
+Only revisit if:
+- primitive pattern features are already validated,
+- entropy is computed point-in-time,
+- it shows incremental value after volatility/path/regime controls,
+- stable across independent dates/regimes,
+- multiplicity is explicitly charged.
+
+### Reason for deprioritization
+Complexity is not automatically useful complexity.
+A sophisticated mathematical measure that restates “smooth trend / low noise” is worse than a simpler interpretable primitive.
+
+## DL-003AF — 2026 Taiwan Momentum Evidence Reinforces Volatility Context, Not a New Pattern Factor
+
+### New Taiwan evidence
+A 2026 Taiwan study using listed and delisted firms through 2025 compares time-series and cross-sectional momentum across many lookback/holding configurations.
+Its reported conclusion emphasizes that volatility scaling materially improves risk-adjusted momentum performance.
+
+### Pattern implication
+This is evidence that volatility context matters to momentum-style continuation in Taiwan.
+But current Formal/Research already contains:
+- ATR
+- volatility20
+- overheat / range context.
+
+### Decision
+Do not create “volatility-scaled pattern score” now.
+
+Instead:
+- retain ATR-normalized geometry;
+- stratify pattern outcomes by volatility regime;
+- test whether pattern features remain incremental after volatility controls.
+
+### Important distinction
+Portfolio volatility scaling changes position weights/risk allocation.
+That is not the same as proving a volatile chart pattern is lower quality.
+
+No capital-sizing inference is made from this literature.
+
+## DL-003AG — Pattern Complexity Budget
+
+### Objective
+Control not only statistical multiple testing but detector complexity itself.
+
+For each pattern detector record:
+- featureCount
+- freeThresholdCount
+- stateCount
+- interactionCount
+- requiredHistoryLength
+- dataSourceCount
+- missingnessSensitivity
+
+### Complexity principle
+Prefer:
+simple detector + stable OOS evidence
+over
+complex detector + slightly better in-sample fit.
+
+### Nested-model comparison
+For every family:
+M0 = existing Formal baseline
+M1 = minimal topology primitive
+M2 = full named-pattern topology
+M3 = topology + context interactions
+M4 = optional shape/ML layer
+
+Require each complexity step to show stable incremental value.
+If M2 does not beat M1, keep M1.
+If M3 improvement is unstable, reject interactions.
+Do not jump directly to M4.
+
+### Pattern research stop rule
+A family should be marked REJECTED_OR_REDUNDANT when:
+- it repeatedly fails incremental tests,
+- effect disappears under same-date controls,
+- only one regime/year drives it,
+- higher complexity does not improve stable holdout outcomes.
+
+Research must be allowed to conclude “this pattern adds nothing.”
