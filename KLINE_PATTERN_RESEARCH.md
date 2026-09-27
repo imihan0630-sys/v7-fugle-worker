@@ -15996,3 +15996,178 @@ A family should be marked REJECTED_OR_REDUNDANT when:
 - higher complexity does not improve stable holdout outcomes.
 
 Research must be allowed to conclude “this pattern adds nothing.”
+
+
+## DL-003AH — Base Turnover / Ownership-Churn Proxy v0.1
+
+### Taiwan evidence
+Taiwan momentum research reports:
+- high turnover among winner/loser portfolios can attenuate standard momentum;
+- persistent winners behave differently from nonpersistent winners;
+- attention/turnover can condition momentum continuation versus reversal;
+- industry momentum/autocorrelation is also related to fund transfer / turnover.
+
+### Pattern question
+During a VCP/cup/W/flag base, does cumulative turnover describe how much trading/redistribution occurred before the trigger?
+
+### Important language boundary
+Aggregate turnover is NOT literal “percent of shareholders replaced.”
+Shares can trade repeatedly and total shares outstanding are not free float.
+
+Use:
+- turnover/churn proxy.
+Do not use:
+- actual ownership replacement.
+
+### Candidate fields
+- dailyTurnoverRate = volumeShares / pointInTimeSharesOutstanding
+- cumulativeTurnoverPattern
+- medianTurnoverPattern
+- turnoverFrontLoadedShare
+- turnoverLateStageShare
+- turnoverConcentration
+- turnoverTrendByPhase
+- finalTightAreaTurnover
+- breakoutTurnoverShock
+- retestTurnover
+
+### Phase hypotheses
+CONSTRUCTIVE_ROTATION candidate:
+- meaningful earlier turnover during base formation;
+- turnover gradually cools into final contraction/handle;
+- price support improves / lows rise.
+
+DEAD_BASE:
+- very low turnover throughout;
+- tick-dominated movement;
+- weak participation.
+
+CROWDED_LATE_ATTENTION:
+- modest early turnover;
+- sharp turnover/attention explosion only near/after pivot;
+- large extension / poorer acceptance.
+
+DISTRIBUTION_CHURN:
+- high turnover during down legs / repeated rejection without structural progress.
+
+### Point-in-time requirement
+Historical turnover rate requires sharesOutstanding valid at that historical date.
+Do not divide old volume by today’s shares outstanding if capital changes occurred.
+
+If point-in-time shares are unavailable:
+- keep raw volume/turnover-value measures;
+- turnover-rate field = UNKNOWN.
+
+### Redundancy
+Control against:
+- volumeContraction5to20
+- avgVolume20
+- tradeValue
+- Quiet/Attention classification
+- DL-001 Information Discreteness
+- pattern phase.
+
+## DL-003AI — Attention Trajectory Inside the Pattern, Not Another Attention Score
+
+### Taiwan evidence
+Taiwan studies report:
+- investor attention can condition momentum continuation/reversal;
+- elevated attention is associated with greater future crash risk in Taiwan, especially where retail participation is high;
+- attention around announcements can accompany pre-event runup and later reversal.
+
+### Existing overlap
+The research system already has Quiet Strength / Attention Strength work.
+
+Therefore:
+do NOT create a generic “attention risk” factor in Pattern.
+
+### Incremental question
+Does WHEN attention arrives relative to pattern maturity matter?
+
+### Phase states
+QUIET_FORMATION_QUIET_MATURITY
+QUIET_FORMATION_LATE_ATTENTION_SURGE
+EARLY_ATTENTION_THEN_COOLING
+HIGH_ATTENTION_THROUGHOUT
+ATTENTION_DIVERGES_FROM_RS
+
+### Candidate proxies, only if point-in-time available
+- turnover attention
+- extreme-return attention
+- news/search attention from valid historical source
+- limit-hit attention
+- abnormal volume/amount
+
+### Hypotheses
+- quiet maturation + gradual strength may align with underreaction;
+- late attention shock after extension may raise overreaction/crowding risk;
+- high attention during an event catalyst may differ from endogenous attention.
+
+### Falsification
+If phase-specific attention adds nothing after:
+- current Quiet/Attention fields,
+- overheat,
+- turnover trajectory,
+- event tags,
+reject it as redundant.
+
+## DL-003AJ — Pattern Persistence vs Nonpersistent Winner State
+
+### Taiwan evidence
+2023 Taiwan evidence distinguishes persistent versus nonpersistent winners:
+persistent winners exhibit continuation while nonpersistent winners/losers can reverse.
+
+### Pattern translation
+A bullish pattern should not be considered strong merely because cumulative return is positive.
+Ask whether positive progression is persistent across the formation.
+
+### Candidate measures
+- positiveSwingProgressionRatio
+- higherLowPersistence
+- closeProgressionPersistence
+- rsPersistence
+- phaseReturnSignConsistency
+- persistenceBreakCount
+- lastPersistenceBreakAge
+
+### Relation to existing work
+This overlaps:
+- DL-001 gradual price path
+- directional efficiency
+- positiveDayRatio20
+- Residual RS persistence.
+
+### Priority
+MEDIUM only.
+First test whether swing-based persistence adds information beyond those existing variables.
+If not, mark REDUNDANT.
+
+## DL-003AK — Base Churn × Compression Interaction
+
+### Core idea
+Compression quality may depend on how turnover evolves while price tightens.
+
+Candidate combinations:
+1. RANGE_DOWN + TURNOVER_DOWN
+   possible supply dry-up or dead liquidity.
+
+2. RANGE_DOWN + TURNOVER_STABLE
+   orderly absorption candidate.
+
+3. RANGE_DOWN + TURNOVER_UP
+   hidden churn / active two-sided disagreement.
+
+4. RANGE_UP + TURNOVER_UP
+   distribution / information shock candidate.
+
+5. RANGE_UP + TURNOVER_DOWN
+   thin-liquidity instability candidate.
+
+### Critical control
+Use executable-liquidity checks from DL-002AA.
+“Range down + turnover down” is only constructive if the stock remains sufficiently liquid and not tick-dominated.
+
+### Research value
+This 2D state may be more interpretable than a single volume-contraction threshold and directly tests why some VCPs fail despite apparent dry-up.
+
+No Formal use is approved.
