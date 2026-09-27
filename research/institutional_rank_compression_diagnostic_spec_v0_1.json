@@ -33,5 +33,10 @@
     "rank compression is claimed only for the institutional component; overall Formal ranking can still differ through other PriorityScore and lexicographic inputs.",
     "complete clean same-scan parent is mandatory; selected-only FULL_FORMAL_SCAN persistence and bounded Shadow cannot support full-scan prevalence."
   ],
-  "decision": "OUTCOME_BLIND_COMPONENT_COMPRESSION_DIAGNOSTIC_READY / ECONOMIC_INCREMENTAL_VALUE_UNKNOWN / NOT_FORMAL_OPTIMIZATION_CANDIDATE"
+  "decision": "OUTCOME_BLIND_COMPONENT_COMPRESSION_DIAGNOSTIC_READY / ECONOMIC_INCREMENTAL_VALUE_UNKNOWN / NOT_FORMAL_OPTIMIZATION_CANDIDATE",
+  "smallCapThresholdGuard": {
+    "threshold": 70,
+    "semantics": "For marketCap 10-30bn, institutionalScore>=70 participates in the special-reason gate together with 1.5x liquidity. Score compression above 100 cannot change whether 70 is passed.",
+    "implication": "Measure >=70 occupancy separately from saturation. Do not claim score-cap compression is itself a small-cap-admission defect."
+  }
 }
