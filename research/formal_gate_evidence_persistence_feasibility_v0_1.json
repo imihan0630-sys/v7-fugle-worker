@@ -1,0 +1,105 @@
+{
+  "schemaVersion": "formal-gate-evidence-persistence-feasibility-v0.1",
+  "researchDate": "2026-09-27",
+  "status": "CLASS_A_COMPUTATION_VALIDATED_CLASS_B_PERSISTENCE_STILL_REQUIRED",
+  "validatedResearchComponents": [
+    {
+      "id": "SHADOW_SEMANTIC_CLASSIFIER_V0_1",
+      "files": [
+        "research/shadow_semantic_classifier_v0_1.mjs",
+        "tests/test_shadow_semantic_classifier_v0_1.mjs"
+      ],
+      "purpose": "complete per-pool ranks, overlapping semantic memberships, denominators before sampling",
+      "marketCalls": 0,
+      "d1Writes": 0
+    },
+    {
+      "id": "FORMAL_GATE_OVERLAP_OBSERVER_V0_1",
+      "files": [
+        "research/formal_gate_overlap_observer_v0_1.mjs",
+        "tests/test_formal_gate_overlap_observer_v0_1.mjs"
+      ],
+      "purpose": "PASS/FAIL/UNKNOWN/NOT_EVALUABLE states from frozen same-scan inputs",
+      "marketCalls": 0,
+      "d1Writes": 0
+    },
+    {
+      "id": "FORMAL_SINGLE_GATE_REPLAY_V0_1",
+      "files": [
+        "research/formal_gate_replay_v0_1.mjs",
+        "tests/test_formal_gate_replay_v0_1.mjs"
+      ],
+      "purpose": "one-gate transition accounting without outcomes, threshold tuning or recovered-candidate claims",
+      "marketCalls": 0,
+      "d1Writes": 0
+    }
+  ],
+  "storageAudit": {
+    "legacyShadowTable": {
+      "table": "trade_research_shadow_candidates",
+      "primaryKey": "scan_date,symbol",
+      "flexiblePayload": "snapshot_json can technically carry additional observer JSON without adding a D1 column",
+      "whyNotPromotionGrade": [
+        "same-date DELETE plus row-by-row INSERT/UPSERT is mutable and non-atomic",
+        "single cohort column cannot represent overlapping semantic memberships cleanly",
+        "no immutable decision generation / semantic fingerprint parent",
+        "legacy reader has capacity/completeness concerns",
+        "external evidence is persisted separately without immutable parent linkage"
+      ],
+      "decision": "DO_NOT_TREAT_LEGACY_SNAPSHOT_JSON_AS_PROMOTION_GRADE_REPAIR"
+    },
+    "preferredFutureParent": {
+      "object": "immutable per-symbol decision-state receipt",
+      "minimumFields": [
+        "scanDate",
+        "symbol",
+        "canonicalMarket",
+        "pool",
+        "formalRuleVersion",
+        "comparatorVersion",
+        "captureGeneration",
+        "formalState",
+        "firstFailure",
+        "rankingTupleWhenQualified",
+        "historyAdmissionState",
+        "sourceQualityState",
+        "semanticFingerprint"
+      ],
+      "childPayloads": [
+        "semantic memberships",
+        "gate-overlap states",
+        "one-gate transition summaries",
+        "external evidence references",
+        "future outcome-quality references"
+      ]
+    }
+  },
+  "implementationBoundary": {
+    "pureObserverComputation": "Class A and already validated; can remain isolated",
+    "passingSameScanAlreadyLoadedInputs": "zero new market-data calls feasible",
+    "sharedWorkerIntegration": "Class B proposal-first even if no D1 schema column is added",
+    "immutablePersistence": "Class B proposal-first",
+    "earlierUniverseAndHistoryReceipts": "Class B proposal-first where shared ingestion/runtime is touched",
+    "gateRemovalOrThresholdChange": "Class C owner approval"
+  },
+  "minimalClassBShape": {
+    "marketCallsAdded": 0,
+    "formalLogicChanged": false,
+    "rankingChanged": false,
+    "quotaChanged": false,
+    "capitalChanged": false,
+    "signalChanged": false,
+    "pushChanged": false,
+    "note": "The safe computation layer is already proven. Remaining implementation risk is first-known capture, immutable parentage, completeness QA and shared runtime persistence."
+  },
+  "prohibitedShortcuts": [
+    "Embed observer into legacy mutable snapshot_json and call the evidence repair complete.",
+    "Rewrite historical rows to manufacture first-known overlap states.",
+    "Use single-gate uniqueObservedClear as recovered selected count.",
+    "Persist re-scored research state when an actual decision-state receipt exists.",
+    "Treat missing upstream receipts as observed PASS/FAIL."
+  ],
+  "optimizationReady": false,
+  "formalCoreImpact": false,
+  "decisionImpact": false
+}
