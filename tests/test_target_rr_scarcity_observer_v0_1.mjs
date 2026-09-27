@@ -76,7 +76,7 @@ const history=(points)=>{
 // B-style new-high geometry: priorHigh20 cannot be its own target and priorHigh60 below threshold yields target-null.
 {
   const entry=100*1.003;
-  const g=auditTargetResistanceGeometry({feature:{priorHigh20:100,priorHigh60:100.5,history:history([98,99,100.5,99,98])},entry});
+  const g=auditTargetResistanceGeometry({feature:{priorHigh20:100,priorHigh60:100.2,history:history([98,99,100.2,99,98])},entry});
   assert.equal(g.targetNull,true);
   assert.equal(g.blueSkyLikeHistoricalContext,true);
 }
