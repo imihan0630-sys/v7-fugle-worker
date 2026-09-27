@@ -1139,3 +1139,28 @@ No Worker/runtime/Formal decision behavior changed.
 ### Exact next
 
 Run deterministic CI. If v0.2 survives, freeze a Class-B implementation proposal with D1 schema/API/idempotency/rollback/read-model boundaries. Do not implement/merge/deploy that Production infrastructure without explicit owner approval.
+
+
+## PR-032 — Confirmed Fill Ledger v0.2.1 restores plan provenance (2026-09-27)
+
+Class-B proposal preparation found a self-falsification defect in v0.2: while separating POSITION_BASELINE from FILL, the model accidentally dropped the v0.1 requirement that each confirmed fill preserve a stable `planScanDate`.
+
+That omission would make an execution receipt harder to attribute to the exact after-market plan/episode and could contaminate REDUCE / RE-ADD research.
+
+v0.2.1 therefore:
+- requires `planScanDate` on every FILL;
+- allows POSITION_BASELINE to omit planScanDate because the holding may predate the monitored plan;
+- requires `ledgerEpochId` on every event;
+- materializes state by `accountKey | symbol | ledgerEpochId`;
+- preserves baseline-not-fill and effectiveAt/confirmedAt PIT correction semantics.
+
+A signal link remains optional:
+- `signalEventId` can connect execution evidence to a signal;
+- it never becomes execution identity.
+
+This is a research-contract correction only. No Worker/runtime/Formal behavior changed.
+
+Status:
+`CONFIRMED_FILL_LEDGER_V0_2_1 = DESIGN_READY / CLASS_B_PROPOSAL_FIRST / NOT_IMPLEMENTED`.
+
+Exact next: run deterministic CI, then use v0.2.1—not v0.2—as the only base for the Class-B Production implementation proposal.
