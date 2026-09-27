@@ -19,6 +19,8 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 
 ## Current design decisions
 
+- Source-arrival measurement repository verification PASS on GitHub: System2 Research CI run `36321299702`, job `108625521377`; automatically triggered V8 Regression run `36321299718` also PASS. No Worker deploy/D1 provisioning/capture-arm/Cron workflow ran.
+
 - Source Arrival Latency（資料來源到達延遲）/ Decision Clock（決策時間點）measurement contract V0.1 is implemented repository-side. Exact clock remains UNFROZEN; capture remains disabled; Cron remains 0.
 
 - The read-only measurement workflow is manual `workflow_dispatch` only. It uses official GET endpoints, stores only a GitHub Actions artifact/summary, has no Cloudflare secret, does not write D1/KV, and does not call System 1/V8.

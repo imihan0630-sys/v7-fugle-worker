@@ -1,7 +1,7 @@
 # System 2 Source Arrival Measurement Verification V0.1
 
 Updated: 2026-09-27 Asia/Taipei
-Status: REPOSITORY VERIFIED / GITHUB CI PENDING
+Status: REPOSITORY AND GITHUB CI VERIFIED
 Formal/System 1 impact: NONE
 
 ## Implemented
@@ -45,7 +45,13 @@ Formal/System 1 impact: NONE
   institutions 775, TWSE valuation 1081, TPEx valuation 889. This was a
   retrospective schema check only and is explicitly ineligible as latency evidence.
 
-GitHub Actions run/job IDs remain to be recorded after push.
+## GitHub verification
+
+- System2 Research CI run `36321299702`, job `108625521377`: PASS.
+- V8 Regression Tests run `36321299718`: PASS.
+- The pushed SHA triggered no Worker deploy, D1 provisioning, capture-arm or Cron workflow.
+- This verification did not execute the source-arrival workflow on a trading day;
+  prospective latency evidence remains uncollected and the clock remains unfrozen.
 
 ## Interpretation limit
 
