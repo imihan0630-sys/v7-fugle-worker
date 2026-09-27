@@ -1485,3 +1485,48 @@ Status:
 `CROSS_STORE_GENERATION_ALIGNMENT_UNCERTIFIED / WITHIN_SHADOW_RESEARCH_CONTINUES / SIZING_PROMOTION_GUARDED`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-038 — correction: selected-only sizing has an existing same-writer generation witness (2026-09-27)
+
+PR-037 correctly identified that the independent Shadow archive is keyed only by scan_date + symbol and lacks a shared immutable generation ID with the trade journal.
+
+A deeper writer audit narrows that blocker substantially for **selected plans**.
+
+Inside `recordTradeJournalDay`:
+- one `first-primary` D1 session is opened;
+- one invocation-level `now = new Date().toISOString()` is created;
+- each `v8_trade_journal_plans` row is written with `recorded_at = now`;
+- the selected plan's attached `researchSnapshot` is then written to `trade_research_snapshots` with `updated_at = the same now`;
+- V8.13 PriorityScore provenance is part of `buildResearchSnapshot`, so the selected research snapshot carries the prospective ranking fields.
+
+Same-day rerun semantics strengthen this witness:
+- plan rows for the date are deleted and rebuilt;
+- research snapshots are upserted;
+- a fully successful rerun gives both sides the new identical timestamp;
+- an asymmetric failure can leave a timestamp mismatch and must fail closed.
+
+### Strict positive selected-generation classifier
+
+A selected plan may be treated as same-generation only when all are true:
+1. exact scan_date;
+2. exact symbol;
+3. `plan.recorded_at === selectedSnapshot.updated_at`;
+4. snapshot `sourceCompleteness === FULL_FORMAL_SCAN`;
+5. required V8.13 ranking provenance + definition/comparator versions are present;
+6. journal day completeness is positively verified.
+
+This is stronger than a bare scanDate|symbol join and requires no fabricated historical Shadow.
+
+### Remaining limitation
+
+The convenient Portfolio Risk `/api/journal` reader currently exposes plan `recorded_at` but not the selected research snapshot's `updated_at`/raw row. Therefore the **storage contract is source-ready**, while live readback certification still needs a safe reader/classifier path.
+
+That reader work is evidence infrastructure only; it must not alter Formal selection/ranking/capital/signals.
+
+The independent non-selected Shadow archive remains under PR-037's generation firewall.
+
+Corrected status:
+`SELECTED_GENERATION_WITNESS_SOURCE_READY / READER_PATH_PENDING / NONSELECTED_SHADOW_STILL_GUARDED`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.

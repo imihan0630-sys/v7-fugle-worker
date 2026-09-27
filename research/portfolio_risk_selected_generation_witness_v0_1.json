@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "PORTFOLIO_RISK_SELECTED_GENERATION_WITNESS_V0_1",
+  "observedAt": "2026-09-27T20:36:00+08:00",
+  "writerProof": {
+    "function": "recordTradeJournalDay",
+    "session": "same D1 first-primary session",
+    "invocationTimestamp": "const now = new Date().toISOString()",
+    "planTimestamp": "v8_trade_journal_plans.recorded_at = now",
+    "selectedResearchTimestamp": "trade_research_snapshots.updated_at = same now",
+    "selectedSnapshotSource": "stock.researchSnapshot built during the same Formal scan; V8.13 ranking provenance is inside buildResearchSnapshot",
+    "rerunSemantics": "plan rows for scan_date are deleted/reinserted; research snapshots are upserted. A successful same invocation writes matching timestamps; asymmetric partial write leaves mismatch or writer verified=false."
+  },
+  "strictPositiveClassifier": [
+    "exact scan_date match",
+    "exact symbol match",
+    "plan.recorded_at === selectedResearchSnapshot.updated_at",
+    "snapshot.sourceCompleteness === FULL_FORMAL_SCAN",
+    "required V8.13 ranking fields and definition/comparator versions present",
+    "journal day verified selected_count === planCount"
+  ],
+  "scope": {
+    "selectedOnlySizing": "STRUCTURALLY_GENERATION_CERTIFIABLE_FROM_EXISTING_STORAGE",
+    "independentShadowNonSelected": "GENERATION_UNCERTIFIED_ACROSS_SHADOW_ARCHIVE_AND_JOURNAL",
+    "currentReader": "Existing convenient Portfolio Risk /api/journal reader does not expose selected research snapshot updated_at, so production readback classifier still needs a safe reader path before live certification."
+  },
+  "correctionToPR037": "PR-037 was correct for the independent Shadow archive cross-store join, but too broad if read as blocking selected-only sizing attribution. The selected research snapshot written inside recordTradeJournalDay has an existing same-invocation timestamp witness.",
+  "status": "SELECTED_GENERATION_WITNESS_SOURCE_READY / READER_PATH_PENDING / NONSELECTED_SHADOW_STILL_GUARDED",
+  "formalCoreImpact": false
+}
