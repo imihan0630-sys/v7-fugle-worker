@@ -1,0 +1,170 @@
+{
+  "schemaVersion": "late-stage-overheat-channel-overlap-v0.1",
+  "researchDate": "2026-09-27",
+  "status": "STRUCTURAL_OVERLAP_FROZEN",
+  "outcomeDataUsed": false,
+  "formalCoreChanged": false,
+  "formulas": {
+    "lateStage": "ret20>35 OR maDistance20Pct>25",
+    "A_notLate": "lateStage !== true",
+    "B_notLate": "lateStage !== true AND ret20<=30",
+    "overheatPenaltyResearch": "clamp(max(0,ret20-20)*1.6 + max(0,maDistance20Pct-12)*2.2 + max(0,atrPercent-6)*5 + max(0,abs(gapPct)-4)*4,0,100)"
+  },
+  "structuralFindings": [
+    "Formal already encodes overheat as hard channel eligibility through lateStage; B has an additional ret20<=30 condition.",
+    "The 30<ret20<=35 and maDistance20Pct<=25 region is structurally A-eligible on notLate but B-ineligible on notLateB.",
+    "Research overheat starts earlier than Formal hard rejection (ret20>20, MA20 distance>12) and adds ATR/gap dimensions not present in lateStage.",
+    "Therefore overheatPenaltyResearch is not mechanically identical to lateStage, but both share ret20 and MA20-distance information.",
+    "A new generic Extreme Absolute Strength factor based mainly on the same return/distance/volatility dimensions would have high redundancy and is not justified as an additional score.",
+    "The useful open question is the protection/opportunity cost of the existing hard boundaries and the incremental value of the continuous research gradient inside the admitted region."
+  ],
+  "fixedCases": [
+    {
+      "id": "COOL",
+      "ret20": 15,
+      "maDistance20Pct": 8,
+      "atrPercent": 4,
+      "gapPct": 1,
+      "lateStage": false,
+      "aNotLate": true,
+      "bNotLate": true,
+      "overheatPenaltyResearch": 0
+    },
+    {
+      "id": "RESEARCH_WARM_FORMAL_PASS_B",
+      "ret20": 25,
+      "maDistance20Pct": 10,
+      "atrPercent": 4,
+      "gapPct": 1,
+      "lateStage": false,
+      "aNotLate": true,
+      "bNotLate": true,
+      "overheatPenaltyResearch": 8
+    },
+    {
+      "id": "RESEARCH_WARM_MA_FORMAL_PASS_B",
+      "ret20": 15,
+      "maDistance20Pct": 18,
+      "atrPercent": 4,
+      "gapPct": 1,
+      "lateStage": false,
+      "aNotLate": true,
+      "bNotLate": true,
+      "overheatPenaltyResearch": 13.2
+    },
+    {
+      "id": "A_ONLY_RET20_ZONE",
+      "ret20": 32,
+      "maDistance20Pct": 15,
+      "atrPercent": 4,
+      "gapPct": 1,
+      "lateStage": false,
+      "aNotLate": true,
+      "bNotLate": false,
+      "overheatPenaltyResearch": 25.8
+    },
+    {
+      "id": "FORMAL_LATESTAGE_RET",
+      "ret20": 36,
+      "maDistance20Pct": 10,
+      "atrPercent": 4,
+      "gapPct": 1,
+      "lateStage": true,
+      "aNotLate": false,
+      "bNotLate": false,
+      "overheatPenaltyResearch": 25.6
+    },
+    {
+      "id": "FORMAL_LATESTAGE_MA",
+      "ret20": 20,
+      "maDistance20Pct": 26,
+      "atrPercent": 4,
+      "gapPct": 1,
+      "lateStage": true,
+      "aNotLate": false,
+      "bNotLate": false,
+      "overheatPenaltyResearch": 30.8
+    },
+    {
+      "id": "HIGH_ATR_FORMAL_SETUP_NOT_DIRECTLY_LATE",
+      "ret20": 20,
+      "maDistance20Pct": 10,
+      "atrPercent": 8,
+      "gapPct": 1,
+      "lateStage": false,
+      "aNotLate": true,
+      "bNotLate": true,
+      "overheatPenaltyResearch": 10
+    },
+    {
+      "id": "GAP_OVERHEAT_ONLY",
+      "ret20": 20,
+      "maDistance20Pct": 10,
+      "atrPercent": 4,
+      "gapPct": 7,
+      "lateStage": false,
+      "aNotLate": true,
+      "bNotLate": true,
+      "overheatPenaltyResearch": 12
+    }
+  ],
+  "channelZones": [
+    {
+      "zone": "RET20_LE_20_MA_LE_12",
+      "formal": "A/B late-stage check can pass",
+      "research": "ret/MA overheat contribution zero; ATR/gap may still add"
+    },
+    {
+      "zone": "20_RET20_LE_30",
+      "formal": "A/B can pass late-stage check if MA<=25",
+      "research": "ret20 overheat penalty positive"
+    },
+    {
+      "zone": "30_RET20_LE_35",
+      "formal": "A can pass if MA<=25; B fails notLateB",
+      "research": "ret20 overheat penalty positive"
+    },
+    {
+      "zone": "RET20_GT_35",
+      "formal": "A/B fail lateStage",
+      "research": "ret20 overheat penalty high"
+    },
+    {
+      "zone": "MA20_DISTANCE_GT_25",
+      "formal": "A/B fail lateStage regardless ret20",
+      "research": "MA-distance overheat penalty high"
+    }
+  ],
+  "observability": {
+    "existingShadowFields": [
+      "ret20",
+      "maDistance20Pct",
+      "atrPercent",
+      "gapPct",
+      "overheatPenaltyResearch",
+      "A/B check maps",
+      "strategy/channel"
+    ],
+    "selectedAndQualified": "Prospective field coverage already exists.",
+    "rejectedSetupConcern": "Opportunity-cost inference around hard notLate boundaries depends on repaired/stratified setup-first-failure cohort semantics; current NEAR_MISS is cohort-quality guarded."
+  },
+  "preregisteredQuestions": [
+    "Within currently admitted A/B candidates, does continuous overheatPenaltyResearch add D1/D3/D5/MFE/MAE/stop/no-follow-through information after setupQuality, ATR, Residual RS, sector/regime and PV controls?",
+    "For B-like setups just above ret20=30 but below lateStage ret20=35, does exclusion protect downside/path quality enough to justify opportunity cost?",
+    "For A/B setups near MA20-distance 25, is hard rejection protective after ATR/liquidity/regime controls?",
+    "Are ret20 and MA-distance contributions redundant once ATR/gap/setup lifecycle are controlled?",
+    "Does effect survive crisis-date removal and independent scan dates?"
+  ],
+  "falsification": [
+    "If overheatPenaltyResearch loses incremental value after ret20/MA-distance/ATR/gap primitives and existing setup state, reject it as a derived research score rather than adding it to Formal.",
+    "If B ret20 30-35 rejects have worse downside/no-follow-through than matched admitted B setups, retain the B-specific bound.",
+    "If excluded boundary-near setups show stable OOS upside without worse MAE/cost/false-break and current boundary materially raises zero-pick, only then surface a boundary-reformulation candidate.",
+    "Do not search alternative 28/32/33/34/36 thresholds after outcomes.",
+    "Do not create a fourth Extreme Strength factor from the same primitives."
+  ],
+  "governance": {
+    "researchAnalysis": "Existing prospective fields sufficient for admitted rows; rejected-boundary evidence depends on cohort-semantics repair.",
+    "anyLateStageOrBRet20ThresholdChange": "CLASS_C_OWNER_APPROVAL_REQUIRED"
+  },
+  "decision": "NEW_GENERIC_EXTREME_STRENGTH_FACTOR_REJECTED_OR_REDUNDANT / EXISTING_BOUNDARY_VALUE_FALSIFICATION_IN_PROGRESS / NO_FORMAL_CHANGE"
+}
