@@ -1,0 +1,29 @@
+name: Fundamental Component Count Semantics Research
+
+on:
+  push:
+    paths:
+      - "research/fundamental_component_count_observer_v0_1.mjs"
+      - "research/fundamental_component_count_semantic_falsification_v0_1.json"
+      - "tests/test_fundamental_component_count_observer_v0_1.mjs"
+      - "FUNDAMENTAL_COMPONENT_COUNT_RESEARCH.md"
+      - "FUNDAMENTAL_COMPONENT_AVAILABILITY_CAPTURE_CLASS_B_PROPOSAL.md"
+      - ".github/workflows/fundamental-component-count-research.yml"
+  pull_request:
+    paths:
+      - "research/fundamental_component_count_observer_v0_1.mjs"
+      - "research/fundamental_component_count_semantic_falsification_v0_1.json"
+      - "tests/test_fundamental_component_count_observer_v0_1.mjs"
+      - "FUNDAMENTAL_COMPONENT_COUNT_RESEARCH.md"
+      - "FUNDAMENTAL_COMPONENT_AVAILABILITY_CAPTURE_CLASS_B_PROPOSAL.md"
+      - ".github/workflows/fundamental-component-count-research.yml"
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node tests/test_fundamental_component_count_observer_v0_1.mjs

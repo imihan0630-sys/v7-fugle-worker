@@ -1,0 +1,80 @@
+{
+  "schemaVersion": "FUNDAMENTAL_COMPONENT_COUNT_SEMANTIC_FALSIFICATION_V0_1",
+  "researchDate": "2026-09-27",
+  "class": "A_RESEARCH_ONLY",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "currentFormalOrder": [
+    "AB_SETUP pass",
+    "fundamentalCount = financialDataCount(f)",
+    "if fundamentalCount<3 => reject basic-data-insufficient",
+    "if fundamentalCount>=3 and fundamentalScore<25 => reject fundamental-quality"
+  ],
+  "slotIdentity": [
+    "revenueYoY",
+    "revenueMoM ?? revenueQoQ",
+    "revenueYTDYoY",
+    "eps",
+    "grossMargin",
+    "operatingMargin",
+    "epsYoY",
+    "grossMarginYoY",
+    "operatingMarginYoY"
+  ],
+  "findings": [
+    "financialDataCount() and fundamentalScore() use the same nine availability slots; the count gate is an availability prerequisite for the score, not an independent economic factor.",
+    "Current parseMopsIncomeHtml requires positive revenue plus numeric EPS, gross and operating values before a company-period row is admitted.",
+    "Current deriveQuarterlyFinancials requires latest, previous and same-quarter-last-year quarter reconstructions, each with positive quarter revenue.",
+    "A clean canonical quarterly FINANCIAL entry therefore supplies six countable slots by itself: revenueQoQ, eps, grossMargin, operatingMargin, grossMarginYoY and operatingMarginYoY.",
+    "Therefore fundamentalCount<3 is structurally unreachable on an uncorrupted canonical quarterly-financial row under current producer semantics.",
+    "The gate is still meaningful as a data-integrity fallback for alternate/custom/legacy merged rows. The preceding FINANCIAL_SOURCE_COMPLETENESS bundle can be satisfied by quarterRevenue + financialBasis + revenueQoQ + revenueQuarterYoY without supplying three of the nine fundamental-score slots.",
+    "The nullish revenueMoM ?? revenueQoQ alias can suppress a valid QoQ fallback when revenueMoM is non-null but nonnumeric; this state is technically feasible on permissive alternate enrichment and should be labeled provenance/invariant risk rather than ordinary fundamental weakness."
+  ],
+  "fixedCounterexamples": [
+    {
+      "id": "CANONICAL_COUNT_FLOOR",
+      "canonicalQuarterlyFields": [
+        "revenueQoQ",
+        "eps",
+        "grossMargin",
+        "operatingMargin",
+        "grossMarginYoY",
+        "operatingMarginYoY"
+      ],
+      "count": 6,
+      "countGate": "PASS"
+    },
+    {
+      "id": "PARTIAL_ALTERNATE_ROW",
+      "earlierCompletenessFields": [
+        "quarterRevenue",
+        "financialBasis",
+        "revenueQoQ",
+        "revenueQuarterYoY",
+        "valuationObserved",
+        "priceBookRatio",
+        "announcementsVerified"
+      ],
+      "fundamentalCount": 1,
+      "consequence": "Earlier completeness can pass while count<3 rejects if the row is not the canonical quarterly producer shape."
+    },
+    {
+      "id": "INVALID_MOM_SHADOWS_QOQ",
+      "revenueMoM": "N/A",
+      "revenueQoQ": 50,
+      "consequence": "Nullish selection chooses the invalid non-null MoM before toNumber(), so the valid QoQ fallback is lost."
+    }
+  ],
+  "denominatorRules": [
+    "Report canonical source-membership state separately from merged component availability.",
+    "Do not call count<3 a weak-fundamentals economic signal without separating partial/alternate-data states.",
+    "Fundamental-quality fail rates must condition on count>=3 and preserve availability signature because score scale is coverage-sensitive.",
+    "Historical exact score decomposition remains UNKNOWN where the nine-slot availability signature was not captured PIT."
+  ],
+  "exactNext": [
+    "Freeze a same-generation component-availability receipt linked to the FINANCIAL source/merged dual-state work.",
+    "Measure future count-gate incidence separately for canonical-source-complete versus alternate/source-gap rows before any outcomes.",
+    "For FUNDAMENTAL_QUALITY, stratify by availability signature before asking whether score<25 protects outcomes; no weight or threshold sweep."
+  ],
+  "decision": "COUNT_AND_SCORE_SHARE_SAME_SLOTS / CANONICAL_QUARTERLY_COUNT_FLOOR_SIX / COUNT_LT3_IS_CANONICALLY_UNREACHABLE / PARTIAL_ALTERNATE_ROWS_REMAIN_PROTECTED / QUALITY_SCORE_COVERAGE_CONFOUNDED / FORMAL_UNCHANGED / NOT_FORMAL_OPTIMIZATION_CANDIDATE"
+}
