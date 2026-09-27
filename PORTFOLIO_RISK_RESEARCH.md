@@ -1638,3 +1638,34 @@ Status:
 `SECOND_EXPOSURE_CHANNEL_CONFIRMED / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-042 — PriorityScore × stop-distance interaction test pre-registered (2026-09-27)
+
+PR-041 proves PriorityScore creates a distinct post-selection sizing tilt. The next question is whether that tilt systematically aligns with stop geometry.
+
+Three competing outcomes are frozen before prospective data:
+- **amplification:** higher score tends to coincide with wider planned stop distance, so score sizing magnifies projected risk concentration;
+- **neutral:** score and stop distance have no stable within-date relationship;
+- **natural offset:** higher score tends to coincide with narrower stop distance, partially offsetting score sizing risk.
+
+Primary evidence will use generation-certified multi-selected dates only:
+- within-date Spearman(PriorityScore, conservative stop-risk %);
+- within-date covariance(score share, stop-risk %);
+- current projected-risk HHI minus same-deployment equal-capital risk HHI;
+- frequency that the highest-score name is also the widest-stop name.
+
+The analysis must remain within-date first. Pooling names across dates can create regime/selected-count composition artifacts and is forbidden as primary evidence.
+
+Required strata:
+A/B channel, selected-count 2 vs 3+, market regime, and pool/price tier where available.
+
+2026-09-18 is retained only as an amplification witness: 3105 is both highest PriorityScore and widest conservative stop fraction. It cannot set a threshold or establish population direction.
+
+Artifact:
+`research/priority_score_stop_distance_interaction_protocol_v0_1.json`.
+
+Status:
+`INTERACTION_PROTOCOL_PREREGISTERED / INDEPENDENT_DATES_PENDING`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.

@@ -688,3 +688,19 @@ Status:
 `SECOND_EXPOSURE_CHANNEL_CONFIRMED / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-042 cross-link — score × stop-distance interaction
+
+PriorityScore sizing must be evaluated jointly with stop geometry, not only capital share.
+
+Pre-registered competing directions:
+- amplification: high score aligns with wider stop;
+- neutral: no stable association;
+- natural offset: high score aligns with narrower stop.
+
+Primary analysis is within-date on generation-certified multi-selected samples. This avoids mistaking market-regime or selected-count composition for score-stop coupling.
+
+See `research/priority_score_stop_distance_interaction_protocol_v0_1.json`.
+
+No score weight, stop rule or sizing rule is changed.
