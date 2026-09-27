@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "ADD_TRANCHE_RISK_CONCENTRATION_V0_1",
+  "observedAt": "2026-09-28T05:45:00+08:00",
+  "purpose": "Test whether structural projected-risk concentration survives when isolating only the Formal 40% ADD tranche.",
+  "comparison": [
+    "current Formal ADD plan-preview risk",
+    "same-deployment equal-capital ADD plan-preview risk",
+    "exhaustive NT$1,000-grid minimum ADD plan-preview HHI under 35% per-name cap"
+  ],
+  "semantics": [
+    "FIRST amount = round(totalAllocation*0.60)",
+    "ADD amount = totalAllocation - FIRST amount",
+    "ADD shares = floor(ADD amount/buyHigh)",
+    "ADD-only preview does not assume FIRST filled, ADD trigger occurred, or ADD filled"
+  ],
+  "falsification": "If current ADD-only concentration no longer exceeds equal-capital/global minimum, downgrade the structural conclusion as tranche-stage sensitive.",
+  "status": "ADD_TRANCHE_PROTOCOL_READY / PRODUCTION_AUDIT_PENDING",
+  "formalCoreImpact": false
+}
