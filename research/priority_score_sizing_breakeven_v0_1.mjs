@@ -16,8 +16,8 @@ export function allocationTiltBreakEven(currentPlans=[],comparatorAllocations=[]
   for(const p of currentPlans||[]){
     const symbol=sym(p?.symbol??p?.code);
     const current=n(p?.totalAllocation??p?.total_allocation);
-    const comparator=comp.get(symbol);
-    const ret=out.get(symbol);
+    const comparator=n(comp.get(symbol));
+    const ret=n(out.get(symbol));
     if(!symbol||current===null||comparator===null||ret===null) {
       return {status:"UNKNOWN",reason:"INCOMPLETE_PLAN_COMPARATOR_OR_OUTCOME",symbol:symbol||null};
     }
