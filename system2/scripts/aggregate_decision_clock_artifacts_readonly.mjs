@@ -168,6 +168,7 @@ export async function aggregateFromGithubArtifacts({
         candidates.push({
           runId: String(run.id),
           runAttempt: Number(run.run_attempt || 1),
+          runHeadSha: String(run.head_sha || ""),
           eventName: run.event,
           runCreatedAt: run.created_at,
           artifactId: String(artifact.id),
@@ -223,6 +224,9 @@ export async function aggregateFromGithubArtifacts({
       coverageFailureClassCounts,
       tradingDayGapDates,
       laterScheduledRunsCannotRepairAnchor: true,
+      collectorContractConsistencyVersion: aggregation.collectorContractConsistencyVersion,
+      collectorContractFingerprints: aggregation.collectorContractFingerprints,
+      collectorContractConsistent: aggregation.collectorContractConsistent,
     });
 
     const report = {
@@ -240,6 +244,12 @@ export async function aggregateFromGithubArtifacts({
         failureClassCounts: coverageFailureClassCounts,
         tradingDayGapDates,
         laterScheduledRunsCannotRepairAnchor: true,
+      },
+      collectorIntegrity: {
+        version: aggregation.collectorContractConsistencyVersion,
+        fingerprints: aggregation.collectorContractFingerprints,
+        consistent: aggregation.collectorContractConsistent,
+        mixedCollectorContractsBlockPromotion: true,
       },
       safety: {
         githubReadOnly: true,
@@ -281,6 +291,8 @@ async function main() {
     promotionCoverageComplete: a.promotionCoverageComplete,
     tradingDayArtifactGapCount: a.tradingDayArtifactGaps.length,
     reviewState: report.reviewPacket.reviewState,
+    collectorContractConsistent: report.aggregation.collectorContractConsistent,
+    collectorContractFingerprints: report.aggregation.collectorContractFingerprints,
     exactDecisionClockAuthorized: false,
     cronAuthorized: false,
     externalMutationPerformed: false,

@@ -12,8 +12,15 @@ try {
   const jsonPath = join(temp, "bundle.json");
   const zipPath = join(temp, "bundle.zip");
   await writeFile(jsonPath, JSON.stringify({
-    bundleVersion: "S2_DECISION_CLOCK_DAILY_BUNDLE_V0_2",
+    bundleVersion: "S2_DECISION_CLOCK_DAILY_BUNDLE_V0_3",
     marketDate: date,
+    collectorProvenance: {
+      provenanceVersion: "S2_DECISION_CLOCK_COLLECTOR_PROVENANCE_V0_3",
+      workflowRunId: "101",
+      workflowRunAttempt: 1,
+      workflowSha: "cccccccccccccccccccccccccccccccccccccccc",
+      collectorContractFingerprint: "collector-fp-A",
+    },
     evidence: {
       evidenceId: "E-" + date,
       evidenceVersion: "S2_DECISION_CLOCK_DAILY_EVIDENCE_V0_2",
@@ -33,8 +40,8 @@ try {
 
     if (url.pathname.includes("/actions/workflows/") && url.pathname.endsWith("/runs")) {
       res.end(JSON.stringify({ workflow_runs: [
-        { id: 100, event: "schedule", created_at: "2026-09-29T05:25:00Z", run_attempt: 1, conclusion: "failure" },
-        { id: 101, event: "schedule", created_at: "2026-09-29T05:30:00Z", run_attempt: 1, conclusion: "success" },
+        { id: 100, event: "schedule", created_at: "2026-09-29T05:25:00Z", run_attempt: 1, head_sha: "cccccccccccccccccccccccccccccccccccccccc", conclusion: "failure" },
+        { id: 101, event: "schedule", created_at: "2026-09-29T05:30:00Z", run_attempt: 1, head_sha: "cccccccccccccccccccccccccccccccccccccccc", conclusion: "success" },
       ] }));
       return;
     }
@@ -83,6 +90,7 @@ try {
     assert.equal(row.promotionCoverageEligible, false);
     assert.deepEqual(report.coverageIntegrity.tradingDayGapDates, [date]);
     assert.equal(report.aggregation.promotionCoverageComplete, false);
+    assert.equal(report.aggregation.collectorContractConsistent, true);
     assert.equal(report.reviewPacket.reviewState, "BLOCKED");
     assert.deepEqual(report.reviewPacket.tradingDayGapDates, [date]);
     assert.equal(report.reviewPacket.coverageFailureClassCounts.SCHEDULED_RUN_NOT_SUCCESS, 1);

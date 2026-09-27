@@ -24,7 +24,8 @@ Decision-clock evidence:
 - `runtime/decision_clock_dependency_ledger.mjs`;
 - `runtime/decision_clock_daily_evidence.mjs`;
 - `runtime/decision_clock_readiness_v0_2.mjs`;
-- `scripts/build_decision_clock_daily_bundle.mjs`.
+- `scripts/build_decision_clock_daily_bundle.mjs`;
+- `runtime/decision_clock_collector_contract_v0_3.mjs` for Collector Provenance（擷取器來源證明）and stable collector-contract fingerprinting.
 
 Measurement controls:
 - `runtime/twse_trading_calendar_readonly.mjs`;
@@ -48,7 +49,10 @@ On trading dates:
 - interval = 5 minutes;
 - bounded attempts = 30 per lane;
 - immutable artifacts are retained for 90 days;
-- a V0.2 daily evidence bundle is built only when both lanes succeed.
+- the readiness evidence object remains `S2_DECISION_CLOCK_DAILY_EVIDENCE_V0_2`;
+- the immutable scheduled artifact envelope is now `S2_DECISION_CLOCK_DAILY_BUNDLE_V0_3`, built only when both lanes succeed;
+- V0.3 binds GitHub run ID/attempt/SHA plus a deterministic fingerprint of the exact collector contract files;
+- scheduled artifacts with provenance mismatch or mixed collector fingerprints are not promotion-grade.
 
 ## Precision falsification
 
@@ -93,7 +97,7 @@ A prior CI run failed because the first static guard test read a workflow that s
 
 ## Current evidence count
 
-Independent prospective trading dates with V0.2 evidence:
+Independent prospective trading dates with promotion-grade V0.2 readiness evidence inside a V0.3 provenance bundle:
 `0`
 
 Reason:
