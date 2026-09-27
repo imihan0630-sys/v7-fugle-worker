@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "CONFIRMED_FILL_LEDGER_V0_2",
+  "status": "DESIGN_READY_CLASS_B_PROPOSAL_FIRST_NOT_IMPLEMENTED",
+  "researchOnly": true,
+  "decisionImpact": false,
+  "newFinding": "v0.1 could not safely bootstrap a position that already existed when the ledger begins. v0.2 separates POSITION_BASELINE evidence from FILL evidence.",
+  "eventKinds": {
+    "POSITION_BASELINE": {
+      "meaning": "Observed account+symbol holding state at the start of a ledger epoch; not a trade and not eligible for return/cost attribution.",
+      "required": ["ledgerEventId","accountKey","symbol","source","sourceRecordId","effectiveAt","confirmedAt","sharesAfter","averageCostAfter"],
+      "forbiddenAsFillEvidence": ["action","fillPrice","filledShares","sharesBefore"]
+    },
+    "FILL": {
+      "meaning": "Confirmed execution evidence.",
+      "actions": ["BUY","ADD","REDUCE","SELL"]
+    }
+  },
+  "pointInTimeSemantics": [
+    "effectiveAt = economic state/fill time",
+    "confirmedAt = first time the system may use the receipt as known evidence",
+    "a later correction does not rewrite earlier as-known research views",
+    "pre-baseline execution history remains UNKNOWN"
+  ],
+  "bootstrapRules": [
+    "First FILL may start a ledger without baseline only when action=BUY and sharesBefore=0",
+    "ADD/REDUCE/SELL cannot be the first reconstructable event unless a valid POSITION_BASELINE exists",
+    "A baseline must never be converted into a synthetic BUY"
+  ],
+  "accountScope": "accountKey is required so the same symbol held in different accounts is not silently merged",
+  "implementationConclusion": "Do not auto-convert existing /api/positions saves into fill events. A future Production implementation should use a separate append-only execution/baseline endpoint or broker import; /api/positions may remain a current snapshot/read model.",
+  "formalImpact": "NONE"
+}
