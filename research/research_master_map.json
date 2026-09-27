@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-09-27T09:30:00+08:00",
+  "updatedAt": "2026-09-27T11:55:00+08:00",
   "status": "BASELINE_V0_2_PARTIAL_RECONCILIATION",
   "formalCore": "LOCKED",
   "authority": {
@@ -57,7 +57,7 @@
     "formalAutoPromotion": false,
     "independentInferenceUnitRequired": true
   },
-  "next": "Shadow cohort semantics Class-B proposal is frozen and awaits owner approval/version-line reconciliation; do not use guarded control cohorts for Formal promotion. Continue outcome-independent structural audits while prospective post-9/29 data accumulates.",
+  "next": "Continue B-206 evidence-chain audit into reader/keyset completeness and implementation feasibility. Do not use row-pooled R01/R04/R05/R07 or generation-uncertified external evidence for Formal promotion. Freeze any repair as research/evidence infrastructure; Formal trading logic remains unchanged.",
   "optimizationBridge": {
     "required": true,
     "autoPromoteFormal": false,
@@ -223,7 +223,7 @@
       "domain": "STATISTICAL_VALIDATION_PIT_SHADOW_OOS",
       "level": "L4",
       "status": "CONTINUOUS",
-      "basis": "Prospective Shadow, purged holdout, date clustering, redundancy, costs and multiple-testing machinery are implemented, but a 2026-09-27 cohort-semantics audit found reason-starvation, fail-fast first-failure attribution, Near-miss Hamming/truncation bias and BROAD_CONTROL quota-conditioned membership ambiguity. R02 controls are DESCRIPTIVE_ONLY until membership/denominator QA is repaired. Unified additive membership/population/quality-overlay Class-B proposal is design-ready but not implemented."
+      "basis": "Prospective Shadow, purged holdout, date clustering, redundancy, costs and multiple-testing machinery are implemented, but evidence-chain audits now confirm multiple promotion guards: cohort reason-starvation/fail-fast attribution, Near-miss truncation, BROAD_CONTROL quota-conditioned membership, R02 pool confounding, raw-history outcome provenance, reader LIMIT 5000 truncation, row-weighted cross-date estimands in R01/R04/R05/R07, and external-evidence scanDate|symbol joins without shared generation/fingerprint proof. R08 paired date weighting is acceptable; raw byEngine means remain descriptive. Promotion remains guarded until equal-date and generation-alignment repairs are prospective and QA-certified."
     },
     {
       "id": "MACRO_CROSS_MARKET_TRANSMISSION",
