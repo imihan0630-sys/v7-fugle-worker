@@ -1,0 +1,58 @@
+{
+  "id": "RR_TARGET_NULL_SEPARATION_V0_1",
+  "frozenAt": "2026-09-27T08:40:00+08:00",
+  "outcomeDataUsed": false,
+  "formalCoreChanged": false,
+  "status": "SPEC_FROZEN_PROSPECTIVE_EVIDENCE_REQUIRED",
+  "formalSequence": [
+    "channel and fundamental/ATR gates pass",
+    "entry and stop are constructed",
+    "target = nearestRealResistance(f, entry)",
+    "target === null => reject TARGET_NULL before RR exists",
+    "otherwise RR=(target-entry)/(entry-stop)",
+    "RR < 2 => reject LOW_RR",
+    "otherwise RR contributes to PriorityScore and tie-break"
+  ],
+  "semanticFirewall": {
+    "TARGET_NULL": "target geometry/provenance failure; RR is undefined and must remain UNKNOWN",
+    "LOW_RR": "target exists and risk is positive, but computed RR is below 2",
+    "rule": "Never pool TARGET_NULL with LOW_RR as an RR<2 cohort and never coerce undefined RR to 0."
+  },
+  "requiredProspectiveReceipt": [
+    "scanDate","symbol","pricePool","channel","firstRejectionReason",
+    "entry","stop","risk","target","targetNull",
+    "targetPriceRaw","targetPriceSource","targetPriceAsOf","targetPricePointInTimeEligible",
+    "priorHigh20","priorHigh60","datedPivotLevels","eligibleResistanceLevels",
+    "selectedTargetSource","reward","rewardRisk",
+    "reasonPopulationCount","reasonSampleCount","reasonSampleRank"
+  ],
+  "counterfactualCohorts": [
+    "TARGET_NULL_REJECTED",
+    "LOW_RR_REJECTED",
+    "RR_PASSED_POSITIVE_CONTROL"
+  ],
+  "falsificationQuestions": [
+    "Does TARGET_NULL rejection protect against poor path quality after controlling channel, ATR, sector/regime and liquidity?",
+    "Does LOW_RR rejection add downside/path information after target source, stop geometry and ATR controls?",
+    "Are TARGET_NULL cases concentrated in B new-high structures because priorHigh20 cannot be a target above breakout entry?",
+    "Does optional targetPrice materially flip target-null or RR status, and is its provenance PIT-safe?",
+    "Do coarse local pivots or the fixed >1% eligibility band create false-conservative or false-optimistic target geometry?"
+  ],
+  "antiBias": [
+    "No historical targetPrice backfill from later-known data",
+    "UNKNOWN stays UNKNOWN",
+    "Use scanDate as clustering unit",
+    "Preserve exact first rejection reason and per-reason denominator",
+    "Do not threshold-sweep RR or 1% target band before prospective evidence matures",
+    "Control transaction cost, liquidity, channel, ATR/stop binding state, sector/regime and date clustering",
+    "Check redundancy versus setupQuality, ATR, sector/RS and target-source state"
+  ],
+  "engineering": {
+    "classification": "CONDITIONAL_CLASS_A",
+    "classAOnlyIf": "receipt reuses already-computed same-scan objects with zero extra market calls and leaves Formal outputs invariant",
+    "downgradeToClassBIf": "shared enrichment/storage/runtime scheduling or source-fetch semantics must change",
+    "formalRuleChange": "CLASS_C_OWNER_DECISION"
+  },
+  "optimizationStatus": "NOT_FORMAL_OPTIMIZATION_CANDIDATE",
+  "exactNext": "After reason-stratified Shadow/version-line reconciliation, prospectively serialize separate TARGET_NULL and LOW_RR receipts plus RR-passed controls; then measure date-clustered incidence and outcomes without changing thresholds."
+}
