@@ -8,7 +8,15 @@ import {
 } from "./b2_industry_snapshot_observer.mjs";
 
 const DEFAULT_TIMEOUT_MS = 30_000;
-const USER_AGENT = "System2-ReadOnly-Dependency-Observer/0.1";
+const USER_AGENT = "System2-ReadOnly-Dependency-Observer/0.2";
+
+export const DEPENDENCY_OBSERVATION_STATE = Object.freeze({
+  READY: "READY",
+  NOT_READY: "NOT_READY",
+  SOURCE_ERROR: "SOURCE_ERROR",
+  INVALID_PAYLOAD: "INVALID_PAYLOAD",
+  NOT_APPLICABLE: "NOT_APPLICABLE",
+});
 
 async function fetchJsonReadOnly(url, fetchImpl, timeoutMs) {
   const response = await fetchImpl(url, {
@@ -86,6 +94,26 @@ function taipeiDate(timestamp) {
   }).format(new Date(timestamp));
 }
 
+function familyTransportOk(family) {
+  return Object.values(family || {}).every((x) => x?.ok === true);
+}
+
+function classifyDependencyState({
+  expectedTradingDay,
+  sameTaipeiDate,
+  transportOk,
+  ready,
+  notReady = false,
+} = {}) {
+  if (expectedTradingDay !== true || sameTaipeiDate !== true) {
+    return DEPENDENCY_OBSERVATION_STATE.NOT_APPLICABLE;
+  }
+  if (transportOk !== true) return DEPENDENCY_OBSERVATION_STATE.SOURCE_ERROR;
+  if (ready === true) return DEPENDENCY_OBSERVATION_STATE.READY;
+  if (notReady === true) return DEPENDENCY_OBSERVATION_STATE.NOT_READY;
+  return DEPENDENCY_OBSERVATION_STATE.INVALID_PAYLOAD;
+}
+
 export async function probeRequiredDependencyObservers({
   marketDate,
   expectedTradingDay = true,
@@ -127,9 +155,32 @@ export async function probeRequiredDependencyObservers({
     A5: transportSummary(a5Raw),
     B2: transportSummary(b2Raw),
   };
-  const allTransportOk = Object.values(transport)
-    .flatMap((family) => Object.values(family))
-    .every((x) => x.ok);
+  const a5TransportOk = familyTransportOk(a5Raw);
+  const b2TransportOk = familyTransportOk(b2Raw);
+  const allTransportOk = a5TransportOk && b2TransportOk;
+
+  const dependencyStates = {
+    A5_QUARTERLY_FINANCIALS: classifyDependencyState({
+      expectedTradingDay,
+      sameTaipeiDate,
+      transportOk: a5TransportOk,
+      ready: a5.dependencyCoverageEligible === true,
+      notReady: false,
+    }),
+    B2_INDUSTRY_THESIS_PROSPECTIVE: classifyDependencyState({
+      expectedTradingDay,
+      sameTaipeiDate,
+      transportOk: b2TransportOk,
+      ready: b2.dependencyCoverageEligible === true,
+      notReady: b2.availabilityState === "NOT_READY",
+    }),
+  };
+  const dependencyCoverage = Object.fromEntries(
+    Object.entries(dependencyStates).map(([dependency, state]) => [
+      dependency,
+      state === DEPENDENCY_OBSERVATION_STATE.READY,
+    ]),
+  );
 
   return {
     reportVersion: "S2_REQUIRED_DEPENDENCY_OBSERVER_REPORT_V0_1",
@@ -140,27 +191,18 @@ export async function probeRequiredDependencyObservers({
     sameTaipeiDate,
     expectedTradingDay,
     allTransportOk,
+    familyTransportOk: {
+      A5_QUARTERLY_FINANCIALS: a5TransportOk,
+      B2_INDUSTRY_THESIS_PROSPECTIVE: b2TransportOk,
+    },
     transport,
     a5,
     b2,
-    dependencyCoverage: {
-      A5_QUARTERLY_FINANCIALS:
-        expectedTradingDay
-        && sameTaipeiDate
-        && allTransportOk
-        && a5.dependencyCoverageEligible === true,
-      B2_INDUSTRY_THESIS_PROSPECTIVE:
-        expectedTradingDay
-        && sameTaipeiDate
-        && allTransportOk
-        && b2.dependencyCoverageEligible === true,
-    },
+    dependencyStates,
+    dependencyCoverage,
     prospectiveEvidenceEligible:
-      expectedTradingDay
-      && sameTaipeiDate
-      && allTransportOk
-      && a5.dependencyCoverageEligible === true
-      && b2.dependencyCoverageEligible === true,
+      dependencyStates.A5_QUARTERLY_FINANCIALS === DEPENDENCY_OBSERVATION_STATE.READY
+      && dependencyStates.B2_INDUSTRY_THESIS_PROSPECTIVE === DEPENDENCY_OBSERVATION_STATE.READY,
     safety: {
       httpMethods: ["GET"],
       system2D1Written: false,

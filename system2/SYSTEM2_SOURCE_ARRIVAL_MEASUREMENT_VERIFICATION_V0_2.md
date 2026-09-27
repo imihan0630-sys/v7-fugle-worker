@@ -18,6 +18,9 @@ B2_INDUSTRY_THESIS_PROSPECTIVE（前瞻產業狀態）:
 - official current industry profiles;
 - same-date official TWSE/TPEx close data;
 - deterministic descriptive industry breadth/participation;
+- B2 contract V0.2 requires 13:30 Asia/Taipei close finality before READY;
+- undated daily rows cannot be assigned to the target market date;
+- both daily coverage and classified-join coverage must meet the existing TWSE/TPEx market minimums;
 - no thesis direction and no strategy score.
 
 Decision-clock evidence:
@@ -59,9 +62,10 @@ On trading dates:
 A date is NOT precision-eligible merely because all sources are READY.
 
 For every same-session clock constraint (A1 TWSE, A1 TPEx, B2):
-- prior NOT_READY observation required;
+- prior explicit NOT_READY observation required;
 - later READY required;
-- interval <=5 minutes.
+- interval <=5 minutes;
+- SOURCE_ERROR / INVALID_PAYLOAD / NOT_APPLICABLE cannot substitute for NOT_READY.
 
 If the first observation is already READY, availability is proven only by that observation time and precision remains false.
 

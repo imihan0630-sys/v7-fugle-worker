@@ -1,7 +1,10 @@
 import { mkdir, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { probeRequiredDependencyObservers } from "../runtime/required_dependency_probes.mjs";
+import {
+  DEPENDENCY_OBSERVATION_STATE,
+  probeRequiredDependencyObservers,
+} from "../runtime/required_dependency_probes.mjs";
 
 const DEPENDENCIES = Object.freeze([
   "A5_QUARTERLY_FINANCIALS",
@@ -35,20 +38,26 @@ function parseArgs(argv) {
 }
 
 function summarizeDependency(observations, dependency) {
+  const stateOf = (report) => report.dependencyStates?.[dependency] || null;
   const firstReadyIndex = observations.findIndex(
-    (report) => report.dependencyCoverage?.[dependency] === true,
+    (report) => stateOf(report) === DEPENDENCY_OBSERVATION_STATE.READY,
   );
   const firstReady = firstReadyIndex >= 0 ? observations[firstReadyIndex] : null;
   const priorNotReady = firstReadyIndex > 0
     ? [...observations.slice(0, firstReadyIndex)]
       .reverse()
-      .find((report) => report.dependencyCoverage?.[dependency] !== true) || null
+      .find((report) => stateOf(report) === DEPENDENCY_OBSERVATION_STATE.NOT_READY) || null
     : null;
 
   const firstReadyAt = firstReady?.observedAt || null;
   const priorAt = priorNotReady?.observedAt || null;
+  const statesObserved = [...new Set(
+    observations.map((report) => stateOf(report)).filter(Boolean),
+  )];
+
   return {
     dependency,
+    statesObserved,
     firstReadyAt,
     lastObservedNotReadyAt: priorAt,
     observationIntervalMinutes:
@@ -56,6 +65,11 @@ function summarizeDependency(observations, dependency) {
         ? (Date.parse(firstReadyAt) - Date.parse(priorAt)) / 60000
         : null,
     readyObserved: Boolean(firstReady),
+    validNotReadyToReadyBracketObserved: Boolean(firstReadyAt && priorAt),
+    sourceErrorObserved: statesObserved.includes(DEPENDENCY_OBSERVATION_STATE.SOURCE_ERROR),
+    invalidPayloadObserved: statesObserved.includes(
+      DEPENDENCY_OBSERVATION_STATE.INVALID_PAYLOAD,
+    ),
     publicationTimestampProven: false,
   };
 }
