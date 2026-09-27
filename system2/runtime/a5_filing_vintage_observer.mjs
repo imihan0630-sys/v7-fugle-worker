@@ -59,8 +59,12 @@ function vintageKey(year, quarter) {
 }
 
 function compareVintage(a, b) {
-  if (a.year !== b.year) return a.year - b.year;
-  return a.quarter - b.quarter;
+  const ay = a.year ?? a.financialYear;
+  const by = b.year ?? b.financialYear;
+  const aq = a.quarter ?? a.financialQuarter;
+  const bq = b.quarter ?? b.financialQuarter;
+  if (ay !== by) return ay - by;
+  return aq - bq;
 }
 
 export function parseA5Rows(rows, market, dataset) {
