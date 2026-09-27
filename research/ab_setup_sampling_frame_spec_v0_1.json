@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "AB_SETUP_SAMPLING_FRAME_SPEC_V0_1",
+  "researchDate": "2026-09-27",
+  "class": "A_RESEARCH_ONLY",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "parentContract": {
+    "input": "Rows from ab_setup_sequential_population_observer_v0_1",
+    "eligibleState": "SETUP_FIRST_FAILURE only",
+    "excluded": [
+      "PRE_SETUP_NOT_REACHED",
+      "SETUP_PASS",
+      "UNKNOWN"
+    ],
+    "key": "scanDate x symbol x pool",
+    "parentCompleteRequiredForCleanFrame": true
+  },
+  "frame": {
+    "stratum": "scanDate x pool x nearestChannel x exact A/B checkPattern",
+    "populationCountBeforeSampling": true,
+    "deterministicBoundedSampling": true,
+    "sampleMembershipSeparateFromSemanticMembership": true,
+    "missingCellRule": "Absent cell is zero only on a CLEAN complete parent frame; otherwise UNKNOWN.",
+    "duplicateRule": "Duplicate parent keys block CLEAN quality; never silently deduplicate.",
+    "invalidStratumRule": "Missing nearest channel or incomplete bitmask blocks CLEAN quality."
+  },
+  "redundancyGuard": {
+    "note": "Exact six-bit masks are preserved for provenance even though some bits are structurally dependent.",
+    "bStrongCloseUpperShadow": "Do not interpret Hamming count as independent-dimensional distance; strongClose pass implies upperShadow pass under coherent OHLC.",
+    "noCorrectedDistanceInvented": true
+  },
+  "nonClaims": [
+    "No threshold change.",
+    "No outcome inference.",
+    "No historical Shadow reconstruction.",
+    "No shared D1 persistence.",
+    "No claim that sampled rows are the semantic population."
+  ],
+  "status": "SAMPLING_FRAME_CONTRACT_READY_CLASS_A / PERSISTENCE_CLASS_B / FORMAL_UNCHANGED"
+}
