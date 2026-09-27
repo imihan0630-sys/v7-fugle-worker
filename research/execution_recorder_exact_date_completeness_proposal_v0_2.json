@@ -15,7 +15,19 @@
       "missingScheduledTimes",
       "completeRunCoverage"
     ],
-    "rule": "A missing scheduled run receipt is a monitor/recorder gap. It remains UNKNOWN/INCOMPLETE, never NO_BUY."
+    "rule": "A missing scheduled run receipt is a monitor/recorder gap. It remains UNKNOWN/INCOMPLETE, never NO_BUY.",
+    "cronSourceProof": {
+      "utcExpressions": [
+        "* 1-4 * * MON-FRI",
+        "0-24 5 * * MON-FRI"
+      ],
+      "taipeiWindows": [
+        "09:00-12:59 every minute",
+        "13:00-13:24 every minute"
+      ],
+      "arithmetic": "240 + 25 = 265 scheduled intraday monitor runs",
+      "source": "Worker.js source contract and test_v8_7_12_after_market_2335.mjs; production schedule must still be read back before implementation promotion."
+    }
   },
   "runReceipt": {
     "requiredFields": [
@@ -57,7 +69,8 @@
     "buyPositive": "A V8 trade-journal BUY row already proves positive Formal BUY signal price/time.",
     "noBuy": "A plan-day may be classified COMPLETE_NO_BUY only when all 265 expected runs are covered for that plan, no run has result/error gaps, and no expected/persisted Formal BUY event exists.",
     "planInvalidated": "PLAN_INVALIDATED is an observed abstention episode, not a terminal day state; later recovery can still produce BUY under current state machine.",
-    "fill": "NO-BUY completeness says nothing about broker fills."
+    "fill": "NO-BUY completeness says nothing about broker fills.",
+    "executionShadowAttribution": "FORMAL_SIGNAL_OBSERVED with eventKey=SIGNAL is cross-symbol context only. BUY expectation requires a parseable symbol-matching signalId embedded in the serialized expected event key. Attribution mismatch fails closed."
   },
   "protectedInvariants": [
     "No Formal A/B/ranking/threshold change",
