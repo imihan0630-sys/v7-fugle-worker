@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "CONFIRMED_FILL_LEDGER_V0_2_1",
+  "status": "DESIGN_READY_CLASS_B_PROPOSAL_FIRST_NOT_IMPLEMENTED",
+  "researchOnly": true,
+  "decisionImpact": false,
+  "supersedes": "CONFIRMED_FILL_LEDGER_V0_2",
+  "correction": "v0.2 omitted the v0.1 stable plan linkage when splitting baseline from fill. v0.2.1 requires planScanDate for every FILL and introduces ledgerEpochId for both baseline and fills.",
+  "requirements": {
+    "ledgerEpochId": "required for every event; isolates separate coverage epochs",
+    "planScanDate": "required for FILL; optional for POSITION_BASELINE because pre-existing holdings may predate the monitored plan",
+    "accountKey": "required",
+    "signalEventId": "optional link only; never execution identity"
+  },
+  "stateKey": "accountKey|symbol|ledgerEpochId",
+  "bootstrap": "POSITION_BASELINE is non-trade opening evidence; zero-to-BUY can start without baseline; ADD/REDUCE/SELL require prior state in the same epoch",
+  "pit": "effectiveAt and confirmedAt remain distinct; later correction affects as-known state only after confirmedAt",
+  "formalImpact": "NONE"
+}
