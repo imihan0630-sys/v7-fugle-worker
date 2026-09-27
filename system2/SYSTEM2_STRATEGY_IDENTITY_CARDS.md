@@ -102,7 +102,7 @@ Therefore SHORT_MOMENTUM requires cross-checks from price-volume acceptance, mar
 
 ## S2-SG — SWING_GROWTH（波段成長）
 
-Status: DESIGN DISCUSSED / OWNER REVIEW PENDING / PREREGISTERED SHADOW HYPOTHESIS EXISTS.
+Status: CORE LOGIC OWNER-APPROVED / THRESHOLDS NOT FROZEN / PREREGISTERED SHADOW HYPOTHESIS EXISTS.
 
 ### Profit mechanism
 Capture market repricing of an improving future earnings path before or while expectations are revised upward.
