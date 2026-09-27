@@ -1,0 +1,121 @@
+{
+  "schemaVersion": "TECHNICAL_INDICATOR_SNAPSHOT_CONTRACT_V0_1",
+  "status": "RESEARCH_ONLY",
+  "decisionImpact": false,
+  "formalCoreImpact": "NONE",
+  "historicalShadowFabricationAllowed": false,
+  "parentIdentity": {
+    "reuseExistingShadowParent": true,
+    "fields": [
+      "scanDate",
+      "symbol",
+      "parentSnapshotHash"
+    ],
+    "forbiddenIdentityFields": [
+      "cohort_rank"
+    ]
+  },
+  "timing": {
+    "asOfRequired": true,
+    "availableAtRequired": true,
+    "pointInTimeOnly": true
+  },
+  "sourceContract": {
+    "primaryInferencePriceSpace": "TECHNICAL_CONTINUITY",
+    "rawExecutionAllowedForFormulaMechanicsOnly": true,
+    "adjustedHistoryMustDeclareProvenance": true,
+    "symbolSessionVerifiedRequired": true,
+    "corporateActionContinuityResolvedRequired": true,
+    "pseudoBarsForbidden": true
+  },
+  "formulaVersions": {
+    "kd": "TAI_KD_RSV9_K3_D3_INIT50_V0_1",
+    "rsi": "WILDER_RSI14_SMA_SEED_V0_1",
+    "macd": "EMA12_26_SIGNAL9_FIRST_CLOSE_SEED_V0_1"
+  },
+  "warmup": {
+    "kdMinimumBars": 9,
+    "rsiMinimumCloses": 15,
+    "macdConservativeBars": 34
+  },
+  "states": {
+    "dataQuality": [
+      "VALID",
+      "BLOCKED",
+      "UNKNOWN"
+    ],
+    "formulaReadiness": [
+      "READY",
+      "WARMUP_INCOMPLETE"
+    ],
+    "interpretation": [
+      "OBSERVABLE",
+      "CONSTRAINED",
+      "BLOCKED",
+      "UNKNOWN"
+    ],
+    "outcomeJoin": [
+      "ELIGIBLE_NORMAL",
+      "ELIGIBLE_CONSTRAINED_STRATUM_ONLY",
+      "BLOCKED",
+      "UNKNOWN"
+    ]
+  },
+  "indicatorPayload": {
+    "kd": [
+      "rsv",
+      "k",
+      "d",
+      "kMinusD",
+      "formulaVersion"
+    ],
+    "rsi": [
+      "value",
+      "slope",
+      "formulaVersion"
+    ],
+    "macd": [
+      "dif",
+      "signal",
+      "histogram",
+      "difPct",
+      "histogramPct",
+      "formulaVersion"
+    ]
+  },
+  "divergencePrimarySpec": {
+    "pricePivotSource": "CONFIRMED_PATTERN_SWINGS",
+    "requirePivotAt": true,
+    "requireConfirmedAt": true,
+    "independentIndicatorPivotsPrimary": false,
+    "directionalAuthority": false
+  },
+  "constraintFields": [
+    "priceLimitConstrained",
+    "volatilityInterruptionState",
+    "suspensionState",
+    "corporateActionBoundaryState",
+    "technicalContinuityState"
+  ],
+  "prohibitedFields": [
+    "buySignal",
+    "sellSignal",
+    "directionScore",
+    "capitalAllocation",
+    "formalRank"
+  ],
+  "outcomeJoinGates": [
+    "parentCoverageComplete",
+    "parentUnique",
+    "pointInTimeProvenanceValid",
+    "replayExact",
+    "prefixInvariant",
+    "formulaReady",
+    "dataQualityValid"
+  ],
+  "notes": [
+    "A computed indicator value is not automatically inference-ready.",
+    "CONSTRAINED observations must not be pooled into ordinary unconstrained evidence.",
+    "Missing evidence remains UNKNOWN."
+  ]
+}

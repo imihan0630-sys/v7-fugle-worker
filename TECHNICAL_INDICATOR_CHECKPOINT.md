@@ -159,3 +159,30 @@ FORMULA_CORE_EXECUTABLE / SYNTHETIC_QA_PASS_ISOLATED / ZERO_EXTRA_CALL_FEASIBLE_
 - b59edd4f573d7807f0fe9dea5d7fcde01ce5ffda — isolated technical-indicator core.
 - e01a1264d28b38e54a85b11131ed334ba01ddd73 — deterministic technical-indicator adversarial test.
 - GitHub Actions V8 Cloudflare Deploy run 36320786494 — SUCCESS; production contract/regression/deployed-version verification all passed.
+
+
+## Continuation update — TI-017 through TI-018
+
+- Repaint-safe divergence specification v0.1 is frozen.
+- Primary divergence geometry reuses confirmed Pattern price swings with pivotAt + confirmedAt; the indicator lane does not create a second primary swing detector.
+- Indicator values are sampled at confirmed price-pivot dates. Independent indicator pivots are deferred to a later robustness comparator because they add matching/tolerance degrees of freedom.
+- Divergence output is continuous descriptive geometry, not a BUY/SELL boolean.
+- RSI/KD divergences must pass mutual redundancy and direct-price controls before either can score.
+- MACD divergence must use normalized magnitude for cross-sectional inference.
+- Prospective snapshot contract v0.1 frozen in research/technical_indicator_snapshot_contract_v0_1.json.
+- Snapshot contract reuses existing Shadow parent identity (scanDate, symbol, parentSnapshotHash), forbids cohort_rank as identity, preserves as-of/provenance/formula version and separates BLOCKED / WARMUP / CONSTRAINED / OBSERVABLE.
+- No historical Shadow fabrication; no runtime wiring; no outcome join until complete prospective coverage and replay/prefix gates pass.
+- Formal Core remains LOCKED.
+
+### Current status
+
+FORMULA_CORE_EXECUTABLE / SYNTHETIC_QA_PASS_ISOLATED / SNAPSHOT_CONTRACT_FROZEN / DIVERGENCE_SPEC_FROZEN / ZERO_EXTRA_CALL_FEASIBLE_CONDITIONALLY / TECHNICAL_CONTINUITY_RUNTIME_BLOCKED / OUTCOME_INFERENCE_NOT_STARTED / FORMAL_LOCKED
+
+### Exact next continuation point
+
+1. Build v0.2 research snapshot wrapper implementing warm-up and normalized MACD fields without Worker wiring.
+2. Add exact real-source semantic fixtures only from already-verified symbol/session/corporate-action witnesses.
+3. Keep all current evidence outcome-blind.
+4. Await/accumulate prospective complete parents before TI-005/TI-006 outcome inference.
+5. In parallel, theory/falsification work may proceed on ADX versus trend-quality and Bollinger width versus ATR/VCP, but no outcome search or score promotion before the primary redundancy lane resolves.
+6. Formal Core unchanged.

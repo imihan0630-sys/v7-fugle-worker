@@ -708,3 +708,136 @@ A 2020 stochastic-oscillator study on DJ30 / FTSE100 / SSE50 found that persiste
 - Historical positive studies remain hypotheses under the post-2015 / post-2020 Taiwan market structure.
 
 No FORMAL_OPTIMIZATION_CANDIDATE is created by this evidence.
+
+
+## TI-017 — Repaint-safe indicator divergence specification v0.1
+
+Indicator divergence is a high-overfit concept because visual definitions can change the pivot pair after future bars arrive.
+
+The primary specification therefore reuses the existing Pattern lane confirmed swing chronology instead of inventing a second indicator-specific pivot engine.
+
+### Primary pivot rule
+
+For the first-pass divergence detector:
+- price pivots come from the already-frozen confirmed Pattern swing engine;
+- every pivot retains pivotAt and confirmedAt;
+- a divergence state at date t may use a pivot only when confirmedAt <= t;
+- indicator values are sampled at the price-pivot dates;
+- no future bar may change a previously confirmed as-of divergence record.
+
+This is intentionally stricter than visually picking the two prettiest indicator lows/highs.
+
+### Bullish divergence candidate
+
+Using two confirmed price lows L1 then L2:
+- price(L2) < price(L1) is the classical lower-low geometry;
+- indicator(L2) > indicator(L1) is the classical higher-low indicator geometry.
+
+The detector stores continuous quantities rather than immediately returning bullish=true:
+- priceProgressionPct;
+- indicatorProgression;
+- barsBetweenPivots;
+- indicator family/version;
+- pivot scale;
+- structural location;
+- priorTrendContext;
+- priceLimitConstraintState;
+- continuity/dataQuality state.
+
+### Bearish divergence candidate
+
+Using two confirmed price highs H1 then H2:
+- price(H2) > price(H1);
+- indicator(H2) < indicator(H1).
+
+The same continuous descriptor rules apply.
+
+### Why price pivots are primary
+
+Allowing independent price pivots and independent indicator pivots creates extra degrees of freedom:
+- pivot algorithm;
+- pivot tolerance;
+- matching window;
+- minimum separation;
+- which indicator extremum is selected;
+- confirmation timing.
+
+Those degrees of freedom create a large hidden multiple-testing problem.
+
+Independent indicator pivots may later be a robustness comparator, but not the primary specification.
+
+### Required guards
+
+Divergence is BLOCKED or CONSTRAINED when:
+- technical continuity is unresolved;
+- symbol-session provenance is unresolved;
+- either pivot is generated from a pseudo/no-trade bar;
+- indicator warm-up is incomplete;
+- price-limit-constrained price discovery makes the pivot ordinary interpretation unresolved;
+- the indicator formula version changed within the episode.
+
+### Redundancy firewall
+
+Even a repaint-safe divergence is not automatically incremental information.
+
+Required future controls:
+- raw price swing progression;
+- ret5/10/20;
+- MA slope/trend persistence;
+- structural support/resistance;
+- Pattern reversal lifecycle;
+- volatility;
+- Price-Volume rejection/acceptance.
+
+RSI divergence and KD divergence cannot be counted as two independent votes without residual evidence.
+
+MACD divergence must use normalized MACD magnitude for cross-sectional comparisons.
+
+### Status
+
+DIVERGENCE_SPEC_V0_1_FROZEN / OUTCOME_UNTESTED / NO_DIRECTIONAL_AUTHORITY
+
+## TI-018 — Prospective indicator snapshot contract v0.1
+
+A machine-readable research-only contract is frozen in research/technical_indicator_snapshot_contract_v0_1.json.
+
+Core principles:
+- reuse the existing Shadow parent identity instead of creating a new selected cohort;
+- record point-in-time asOf / availableAt provenance;
+- require formulaVersion;
+- preserve raw components rather than only a label;
+- distinguish data quality, formula warm-up, market constraints and interpretation readiness;
+- no score, rank, BUY, SELL or capital field is allowed;
+- historical Shadow fabrication is prohibited;
+- ordinary outcome joining waits for complete prospective parent coverage and exact replay.
+
+This separates four states that must never be collapsed:
+1. DATA_BLOCKED;
+2. WARMUP_INCOMPLETE;
+3. VALID_BUT_CONSTRAINED;
+4. VALID_OBSERVABLE.
+
+A valid computed number is therefore not automatically inference-ready.
+
+### Exact parent identity
+
+Primary future parent key:
+- scanDate;
+- symbol;
+- parentSnapshotHash.
+
+cohort_rank is not an identity field.
+
+### Outcome-join rule
+
+A future row may join outcomes only when:
+- its expected parent exists exactly once;
+- point-in-time source/provenance is valid;
+- replay is exact;
+- prefix invariance is satisfied;
+- required indicator components are warm;
+- blocked/constraint state is explicitly preserved.
+
+VALID_BUT_CONSTRAINED rows may be studied only as a separate preregistered stratum; they may not be pooled into ordinary unconstrained indicator evidence.
+
+No prospective runtime wiring is authorized by this contract.
