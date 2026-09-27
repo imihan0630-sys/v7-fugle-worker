@@ -88,10 +88,14 @@ function taipeiDate(timestamp) {
 
 export async function probeRequiredDependencyObservers({
   marketDate,
+  expectedTradingDay = true,
   fetchImpl = fetch,
   now = () => new Date(),
   timeoutMs = DEFAULT_TIMEOUT_MS,
 } = {}) {
+  if (typeof expectedTradingDay !== "boolean") {
+    throw new Error("expectedTradingDay must be boolean");
+  }
   const startedAt = now().toISOString();
   const [a5Raw, b2Raw] = await Promise.all([
     fetchAll(A5_OFFICIAL_ENDPOINTS_V0_1, fetchImpl, timeoutMs),
@@ -134,18 +138,26 @@ export async function probeRequiredDependencyObservers({
     startedAt,
     observedAt,
     sameTaipeiDate,
+    expectedTradingDay,
     allTransportOk,
     transport,
     a5,
     b2,
     dependencyCoverage: {
       A5_QUARTERLY_FINANCIALS:
-        sameTaipeiDate && allTransportOk && a5.dependencyCoverageEligible === true,
+        expectedTradingDay
+        && sameTaipeiDate
+        && allTransportOk
+        && a5.dependencyCoverageEligible === true,
       B2_INDUSTRY_THESIS_PROSPECTIVE:
-        sameTaipeiDate && allTransportOk && b2.dependencyCoverageEligible === true,
+        expectedTradingDay
+        && sameTaipeiDate
+        && allTransportOk
+        && b2.dependencyCoverageEligible === true,
     },
     prospectiveEvidenceEligible:
-      sameTaipeiDate
+      expectedTradingDay
+      && sameTaipeiDate
       && allTransportOk
       && a5.dependencyCoverageEligible === true
       && b2.dependencyCoverageEligible === true,
