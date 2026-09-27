@@ -1537,3 +1537,34 @@ Status:
 `FIRST_TRANCHE_CONCENTRATION_SURVIVES / LIFECYCLE_STAGE_ARTIFACT_FALSIFIED / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-065 — ADD-tranche risk concentration test (2026-09-28)
+
+PR-064 showed the structural concentration survives in FIRST-only preview exposure. PR-065 tests the complementary Formal 40% ADD tranche.
+
+For each multi-name date:
+- FIRST amount = round(totalAllocation × 0.60);
+- ADD amount = totalAllocation − FIRST amount;
+- ADD preview shares = floor(ADD amount / buyHigh);
+- ADD projected stop-risk = ADD preview notional × conservative stop-risk fraction.
+
+The audit compares:
+1. current PriorityScore sizing;
+2. same-deployment equal capital;
+3. exhaustive NT$1,000-grid minimum ADD-preview HHI under the same 35% cap.
+
+This is intentionally independent of execution state. It does **not** assume FIRST was filled or that ADD ever triggered.
+
+The counter-hypothesis is:
+`the concentration direction is specific to FIRST/full-plan and reverses or disappears in the smaller ADD tranche because share quantization differs.`
+
+Artifacts:
+`research/add_tranche_risk_concentration_v0_1.mjs`;
+`research/add_tranche_risk_concentration_spec_v0_1.json`;
+`tests/portfolio_risk_add_tranche_readonly_audit.mjs`.
+
+Status:
+`ADD_TRANCHE_PROTOCOL_READY / PRODUCTION_AUDIT_PENDING`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
