@@ -8,13 +8,24 @@ function num(v){
 }
 function margin(a,b){return Number.isFinite(a)&&Number.isFinite(b)?a-b:null;}
 
-function chooseDailySupport(f){
+function chooseDailySupportWithSource(f){
   const close=num(f?.close);
-  const candidates=[f?.ma10,f?.ma20,f?.rightLow,f?.recentLow5Prev]
-    .map(num).filter(Number.isFinite)
-    .filter(level=>level>0 && close!==null && level<=close*1.015 && level>=close*0.82);
-  return candidates.length?Math.max(...candidates):num(f?.ma20);
+  const raw=[
+    ["ma10",num(f?.ma10)],
+    ["ma20",num(f?.ma20)],
+    ["rightLow",num(f?.rightLow)],
+    ["recentLow5Prev",num(f?.recentLow5Prev)]
+  ];
+  const eligible=raw.filter(([,level])=>Number.isFinite(level)&&level>0&&close!==null&&level<=close*1.015&&level>=close*0.82);
+  if(eligible.length){
+    const support=Math.max(...eligible.map(([,level])=>level));
+    const sources=eligible.filter(([,level])=>Math.abs(level-support)<=1e-12).map(([name])=>name);
+    return {support,sources,mode:"FILTERED_CANDIDATE",sourceAmbiguous:sources.length>1};
+  }
+  const fallback=num(f?.ma20);
+  return {support:fallback,sources:["ma20"],mode:"MA20_FALLBACK",sourceAmbiguous:false};
 }
+function chooseDailySupport(f){return chooseDailySupportWithSource(f).support;}
 
 function derivedMaDistance20Pct(f){
   const close=num(f?.close),ma20=num(f?.ma20);
@@ -28,7 +39,8 @@ function derivedLateStage(f){
 }
 
 function exactState(f){
-  const support=chooseDailySupport(f);
+  const supportMeta=chooseDailySupportWithSource(f);
+  const support=supportMeta.support;
   const close=num(f?.close);
   const recentHigh=Math.max(num(f?.recentHigh10)||0,num(f?.priorHigh20)||0);
   const pullbackPct=recentHigh>0&&close!==null?(recentHigh-close)/recentHigh*100:null;
@@ -70,7 +82,7 @@ function exactState(f){
   const notLateB=f?.lateStage!==true && bRet20Effective<=30;
 
   return {
-    metrics:{support,recentHigh,pullbackPct,supportDistancePct},
+    metrics:{support,supportSources:supportMeta.sources,supportMode:supportMeta.mode,supportSourceAmbiguous:supportMeta.sourceAmbiguous,recentHigh,pullbackPct,supportDistancePct},
     A:{checks:{trend:trendA,pullback:pullbackOK,nearSupport,volume:volumeA,structure:structureA,notLate},pass:trendA&&pullbackOK&&nearSupport&&volumeA&&structureA&&notLate},
     B:{checks:{trend:trendB,breakout:breakoutB,volume:volumeB,strongClose:strongCloseB,upperShadow:upperShadowB,notLate:notLateB},pass:trendB&&breakoutB&&volumeB&&strongCloseB&&upperShadowB&&notLateB},
     effective:{aVolumeTodayEffective,aVolumeContractionEffective,bVolumeEffective,bClosePositionEffective,bUpperShadowEffective,bRet20Effective}
@@ -140,6 +152,10 @@ export function observeABSetupMargins(feature,{scanDate=null,pool="UNKNOWN",setu
         },
         structure:{
           support,
+          supportSources:state.metrics.supportSources,
+          supportMode:state.metrics.supportMode,
+          supportSourceAmbiguous:state.metrics.supportSourceAmbiguous,
+          filteredCandidateCloseClauseStructurallyClear:state.metrics.supportMode==="FILTERED_CANDIDATE",
           closeMinus0_985Support:close!==null&&support!==null?close-support*0.985:null,
           todayLowMinusPriorLow20:todayLow!==null?todayLow-(priorLow20||0):null
         },
