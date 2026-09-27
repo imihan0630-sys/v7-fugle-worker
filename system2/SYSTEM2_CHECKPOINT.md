@@ -19,6 +19,8 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 
 ## Current design decisions
 
+- SYSTEM2_PRICE_VOLUME_ENGINE.md Design Draft V0.1 created (owner review pending): keeps PRICE_VOLUME_ENGINE（價量引擎） independent from TECHNICAL_STRUCTURE_ENGINE（技術結構引擎）, defines participation/response/acceptance/persistence layers, and establishes conflict handling: no majority vote, data validity first, strategy hard invalidation outranks auxiliary indicators, technical structure and price-volume remain orthogonal, and contradictions become CONFLICT/WAIT/LOWER_READINESS instead of forced bullish/bearish scoring.
+
 - SYSTEM2_TECHNICAL_STRUCTURE_ENGINE.md design draft V0.1 created: separates trend/levels/pattern topology/lifecycle/candlesticks/technical indicators/volatility/multi-timeframe/failure states; KD（KD隨機指標）, MACD（指數平滑異同移動平均線）, RSI（相對強弱指標）, ATR（平均真實波幅）, MA/EMA（移動平均線／指數移動平均線）, DMI/ADX（趨向指標／平均趨向指數）, Bollinger Bands（布林通道）, ROC/Momentum（變動率／動能） are auxiliary signals subject to redundancy checks. Engine describes structure and does not emit BUY/SELL.
 
 - TECHNICAL_INDICATOR_AUXILIARY_LAYER（技術指標輔助層） explicitly added under the System 2 technical engine. Core support includes KD（KD隨機指標）, MACD（指數平滑異同移動平均線）, RSI（相對強弱指標）, ATR（平均真實波幅）, MA/EMA（移動平均線／指數移動平均線）, DMI/ADX（趨向指標／平均趨向指數）, Bollinger Bands（布林通道） and ROC/Momentum（變動率／動能指標）. These are auxiliary/context signals, not standalone BUY/SELL rules, and must pass redundancy/PIT/Shadow/OOS checks.
