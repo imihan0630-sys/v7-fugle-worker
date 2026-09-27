@@ -106,6 +106,31 @@ The JSON bundle preserves each factor's:
 
 This keeps logical factor auditability without tens of millions of physical rows per year.
 
+### s2_shadow_runs
+One immutable run-level completeness receipt per strategy / decision clock.
+
+- run_id
+- market_date
+- decision_timestamp
+- strategy_id
+- strategy_version
+- shadow_spec_id
+- universe_version
+- run_state: COMPLETE / INCOMPLETE
+- base_universe_count
+- excluded_count
+- eligible_count
+- accounted_count
+- completion_rate
+- state_counts_json
+- unaccounted_symbols_json
+- symbol_accounts_json
+- warnings_json
+- captured_at
+
+Purpose:
+prove that a Shadow run did not silently preserve only selected/winning symbols. Every base-universe symbol must be frozen as excluded or every eligible symbol must have an evaluation/accounting state.
+
 ### s2_decisions
 - decision_id
 - factor_snapshot_id
