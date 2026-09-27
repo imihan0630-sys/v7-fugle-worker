@@ -1,0 +1,70 @@
+{
+  "schemaVersion": "target-rr-scarcity-observer-spec-v0.1",
+  "researchDate": "2026-09-27",
+  "status": "CLASS_A_PROTOTYPE",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "objective": "Decompose post-setup candidate scarcity into TARGET_NULL, LOW_RR and FINAL_GRADE without changing Formal target/RR logic.",
+  "canonicalFormalMirror": {
+    "eligibilityBand": "price > entry*1.01 (strict)",
+    "sources": [
+      "targetPrice",
+      "priorHigh20",
+      "priorHigh60",
+      "two-left/two-right local pivot highs"
+    ],
+    "selection": "minimum eligible price",
+    "rr": "(target-entry)/(entry-stop)",
+    "rrGate": "RR >= 2",
+    "finalGrade": "setupQuality >= 65"
+  },
+  "provenanceRules": {
+    "targetPrice": "Raw value can be captured, but current repository has no canonical producer/source/asOf/knownAt/PIT contract. Presence is not trusted provenance.",
+    "sourceTie": "Formal selects only a price, not a source. If multiple source candidates share the selected minimum price, receipt MUST preserve selectedTargetSources[] and MUST NOT invent one source.",
+    "history": "Use same-scan in-memory feature.history only. Do not reconstruct rejected geometry later from mutable current history.",
+    "pivots": "Preserve pivot date+price for every detected candidate."
+  },
+  "scarcityStates": {
+    "TARGET_NULL": "No eligible resistance strictly above entry*1.01. RR undefined/UNKNOWN.",
+    "LOW_RR": "Target exists and positive risk geometry is valid, but RR<2.",
+    "FINAL_GRADE_REJECTED": "RR>=2 but setupQuality<65.",
+    "TARGET_RR_GRADE_PASS": "Target/RR/grade pass only; not Formal-qualified unless all upstream Formal gates are proven passed.",
+    "RR_PASSED_GRADE_UNKNOWN": "RR passes but setupQuality evidence missing.",
+    "GEOMETRY_UNKNOWN": "Entry/stop unavailable.",
+    "RISK_NONPOSITIVE_OR_INVALID": "Risk denominator invalid; do not invent RR."
+  },
+  "currentDurableSnapshotGap": {
+    "legacyShadowHas": [
+      "ATR",
+      "A/B check states",
+      "some score/RR provenance for Formal-ok rows"
+    ],
+    "legacyShadowMissingForRejectedRows": [
+      "entry",
+      "stop",
+      "risk",
+      "target",
+      "targetPrice raw/provenance",
+      "priorHigh20",
+      "priorHigh60",
+      "dated pivot set",
+      "eligible resistance set",
+      "selected target source(s)",
+      "rejected-row RR"
+    ],
+    "implication": "Historical legacy Shadow cannot cleanly decompose target-null vs low-RR provenance after the fact."
+  },
+  "implementationBoundary": {
+    "classA": "Compute observer from already-loaded same-scan feature/history and derived entry/stop; zero new market calls; no Formal dependency.",
+    "classB": "Persist immutable prospective receipts / targetPrice provenance / shared runtime wiring.",
+    "classC": "Any change to target formula, 1% band, source priority, RR threshold or grade threshold."
+  },
+  "falsificationBeforeOptimization": [
+    "Measure independent-date incidence with complete parent denominators.",
+    "Separate target-null source-quality/provenance failure from genuine blue-sky/no-overhead geometry.",
+    "Test B new-high concentration in TARGET_NULL.",
+    "Test source-specific target behavior and 1% band false-conservative/false-optimistic cases.",
+    "Only after mature prospective outcomes compare D1/D3/D5/D10/D20, MFE/MAE, stop/false-break, costs, zero-pick, coverage and OOS."
+  ],
+  "decision": "PROVENANCE_OBSERVER_WARRANTED / HISTORICAL_ATTRIBUTION_BLOCKED / NO_FORMAL_CHANGE"
+}
