@@ -1,3 +1,11 @@
+import {
+  RECEIPT_HASH_CONTRACT,
+  canonicalJcsJson,
+  normalizeDateOnly,
+  normalizeInstant,
+  hashCanonicalReceipt,
+} from "./canonical_receipt_hash_v0_1.mjs";
+
 // Research-only immutable decision-state parent prototype.
 // Zero market calls. Zero D1 writes. Formal Core untouched.
 
@@ -81,15 +89,13 @@ function deepFreeze(value) {
   return Object.freeze(value);
 }
 
-export function buildImmutableDecisionStateParent(input, hashFn) {
-  if (typeof hashFn !== "function") throw new Error("HASH_FUNCTION_REQUIRED");
-
+export function prepareImmutableDecisionStateParent(input) {
   const identity = {
     parentSchemaVersion: assertText(input?.parentSchemaVersion, "parentSchemaVersion"),
-    scanDate: assertText(input?.scanDate, "scanDate"),
+    scanDate: normalizeDateOnly(input?.scanDate, "scanDate"),
     symbol: assertText(input?.symbol, "symbol"),
     captureGeneration: assertText(input?.captureGeneration, "captureGeneration"),
-    decisionCutoffAt: assertText(input?.decisionCutoffAt, "decisionCutoffAt"),
+    decisionCutoffAt: normalizeInstant(input?.decisionCutoffAt, "decisionCutoffAt"),
     formalWorkerVersion: assertText(input?.formalWorkerVersion, "formalWorkerVersion"),
     selectionRuleVersion: assertText(input?.selectionRuleVersion, "selectionRuleVersion"),
     rankComparatorVersion: assertText(input?.rankComparatorVersion, "rankComparatorVersion"),
@@ -131,16 +137,26 @@ export function buildImmutableDecisionStateParent(input, hashFn) {
     formalResultHash: assertText(input?.formalResultHash, "formalResultHash"),
   };
 
-  const rankingTupleHash = ranking ? hashFn(canonicalJson({
+  const rankingTuplePayload = ranking ? {
     comparatorVersion: identity.rankComparatorVersion,
     ranking,
-  })) : null;
-
-  const semanticFingerprint = hashFn(canonicalJson(semanticPayload));
-  const parentDecisionReceiptId = hashFn(canonicalJson(identity));
+  } : null;
 
   return deepFreeze({
-    parentDecisionReceiptId,
+    identity,
+    semanticPayload,
+    rankingTuplePayload,
+    operational: {
+      capturedAt: normalizeInstant(input?.capturedAt, "capturedAt"),
+      createdAt: normalizeInstant(input?.createdAt, "createdAt"),
+    },
+  });
+}
+
+function finalizePreparedParent(prepared, hashes) {
+  const { identity, semanticPayload, rankingTuplePayload, operational } = prepared;
+  return deepFreeze({
+    parentDecisionReceiptId: hashes.parentDecisionReceiptId,
     parentSchemaVersion: identity.parentSchemaVersion,
     scanDate: identity.scanDate,
     symbol: identity.symbol,
@@ -148,8 +164,8 @@ export function buildImmutableDecisionStateParent(input, hashFn) {
     pool: semanticPayload.pool,
     captureGeneration: identity.captureGeneration,
     decisionCutoffAt: identity.decisionCutoffAt,
-    capturedAt: assertText(input?.capturedAt, "capturedAt"),
-    createdAt: assertText(input?.createdAt, "createdAt"),
+    capturedAt: operational.capturedAt,
+    createdAt: operational.createdAt,
     formalWorkerVersion: identity.formalWorkerVersion,
     selectionRuleVersion: identity.selectionRuleVersion,
     rankComparatorVersion: identity.rankComparatorVersion,
@@ -169,10 +185,39 @@ export function buildImmutableDecisionStateParent(input, hashFn) {
     ranking,
     formalInputHash: semanticPayload.formalInputHash,
     formalResultHash: semanticPayload.formalResultHash,
-    rankingTupleHash,
-    semanticFingerprint,
+    rankingTupleHash: hashes.rankingTupleHash,
+    semanticFingerprint: hashes.semanticFingerprint,
+    canonicalizationVersion: RECEIPT_HASH_CONTRACT.canonicalizationVersion,
+    hashAlgorithmVersion: hashes.hashAlgorithmVersion,
+    schemaNormalizationVersion: RECEIPT_HASH_CONTRACT.schemaNormalizationVersion,
     decisionImpact: false,
     researchOnly: true,
+  });
+}
+
+export function buildImmutableDecisionStateParent(input, hashFn) {
+  if (typeof hashFn !== "function") throw new Error("HASH_FUNCTION_REQUIRED");
+  const prepared=prepareImmutableDecisionStateParent(input);
+  return finalizePreparedParent(prepared,{
+    parentDecisionReceiptId:hashFn(canonicalJson(prepared.identity)),
+    semanticFingerprint:hashFn(canonicalJson(prepared.semanticPayload)),
+    rankingTupleHash:prepared.rankingTuplePayload ? hashFn(canonicalJson(prepared.rankingTuplePayload)) : null,
+    hashAlgorithmVersion:"INJECTED_TEST_HASH",
+  });
+}
+
+export async function buildSha256ImmutableDecisionStateParent(input, cryptoImpl=globalThis.crypto) {
+  const prepared=prepareImmutableDecisionStateParent(input);
+  const [parentDecisionReceiptId,semanticFingerprint,rankingTupleHash]=await Promise.all([
+    hashCanonicalReceipt(prepared.identity,"PARENT_ID",cryptoImpl),
+    hashCanonicalReceipt(prepared.semanticPayload,"SEMANTIC_FINGERPRINT",cryptoImpl),
+    prepared.rankingTuplePayload ? hashCanonicalReceipt(prepared.rankingTuplePayload,"RANKING_TUPLE",cryptoImpl) : Promise.resolve(null),
+  ]);
+  return finalizePreparedParent(prepared,{
+    parentDecisionReceiptId,
+    semanticFingerprint,
+    rankingTupleHash,
+    hashAlgorithmVersion:RECEIPT_HASH_CONTRACT.hashAlgorithmVersion,
   });
 }
 
