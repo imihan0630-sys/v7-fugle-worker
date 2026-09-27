@@ -19,6 +19,16 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 
 ## Current design decisions
 
+- Research-only storage design now includes `s2_strategy_ordering_receipts` and `s2_capacity_runs`; serializers and incremental SQLite syntax checks passed. No production database/runtime deployment occurred.
+
+- Ranking research plan V0.1 preregistered: strategy-local baseline -> entry-readiness increment -> confluence increment -> regime priority -> incumbent replacement -> multi-strategy overlap -> concentration. CAPACITY_OVERFLOW names are mandatory control cohorts.
+
+- Strategy-local ordering receipt implemented so upstream ordering must carry strategy/policy/version/decision provenance. Cross-strategy ranks are not assumed numerically comparable.
+
+- Candidate-capacity allocator verification PASS: overlap dedupe, per-strategy slot accounting, no-forced-fill behavior, capacity-overflow preservation and retained-pool invariant fail-closed all passed.
+
+- Candidate capacity contract V0.1 implemented from owner-approved invariants: global max 12 unique symbols, per-strategy max 3 ACTIVE_INTRADAY_MONITOR, no forced filling, overlap counts once globally and once in each actively monitored strategy. Capacity layer does not compute a universal score.
+
 - Research-only storage schema V0.3 now includes `s2_shadow_runs`; incremental SQLite syntax validation for the new run table and extended decision columns passed. Schema remains NOT DEPLOYED.
 
 - Shadow storage row serializers implemented and verified for `s2_decisions` and `s2_shadow_runs`; null rank/score and explicit strategy-validity/entry-readiness/source-readiness metadata are preserved.
