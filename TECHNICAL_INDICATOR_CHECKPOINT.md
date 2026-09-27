@@ -80,3 +80,40 @@ No parameter sweep before baseline mechanics and data semantics pass.
 ## Latest durable commit
 
 - 8e6ae4eb262d101122ff0d11fa4164a65460c718 — initialize technical indicator falsification lane.
+
+
+## Continuation update — TI-011 through TI-013
+
+- Outcome-blind synthetic mechanism fixtures materially falsify universal overbought/oversold direction rules. Monotonic-up, breakout and V-reversal paths can keep KD/RSI extreme while price continues higher.
+- Trend-with-pullback fixtures expose time-scale conflict: short-horizon return can weaken while KD/RSI remain elevated and MACD remains positive.
+- Spike/revert fixtures confirm KD and RSI are related but not identical because range-location and close-to-close gain/loss memory differ.
+- Real adjusted-history source audit used Fugle FCNT000154 on 2330, 5314, 2006 and 4977 from 2026-06-01 through 2026-09-24, 82 returned daily bars per symbol. No forward outcomes were joined.
+- Descriptive corr(K9,RSI14) ranged about 0.669 to 0.831 across these four windows.
+- Descriptive corr(MACD DIF, MA20 five-day slope) ranged about 0.875 to 0.988, materially strengthening the high-redundancy prior for raw MACD trend state.
+- Concrete disagreement states exist and are retained as QA witnesses: KD-high/RSI-neutral, RSI-high/KD-below-80, positive-MACD/negative-MA20-slope and negative-MACD/positive-MA20-slope.
+- 5314 provides a current-regime price-limit-constrained stress path. Indicator extremes in constrained price discovery must consume canonical Pattern/Microstructure session guards; they are not ordinary overbought/oversold signals.
+- No population inference, no alpha claim, no parameter tuning and no FORMAL_OPTIMIZATION_CANDIDATE.
+- Formal Core remains LOCKED.
+
+### Current status
+
+FORMULA_BASELINE_FROZEN / SYNTHETIC_MECHANISM_PRIORS_PASS / REAL_SOURCE_REDUNDANCY_PRIOR_STRENGTHENED / LIMIT_CONSTRAINT_GUARD_REQUIRED / NO_OUTCOME_INFERENCE / FORMAL_LOCKED
+
+### Updated exact next continuation point
+
+1. Build isolated executable KD9-3-3, RSI14 and MACD12-26-9 research formulas with explicit initialization/version semantics.
+2. Translate the frozen synthetic/adversarial scenarios into deterministic executable fixtures.
+3. Require prefix invariance and replay exactness.
+4. Add suspension/no-trade, corporate-action continuity and price-limit-constrained data-quality fixtures.
+5. Freeze a prospective indicator snapshot contract with formulaVersion, source/provenance, continuity space, session constraints and dataQualityState.
+6. No outcome joins until prospective coverage is complete.
+7. First inference remains KD-vs-RSI residual incremental value; second remains MACD-vs-direct-trend.
+8. Only after those gates proceed to ADX and Bollinger/ATR/VCP redundancy.
+9. Divergence remains blocked until repaint-safe pivot/confirmation rules are frozen.
+10. Formal Core unchanged.
+
+## Latest durable research commits
+
+- cdc67195c983d20804afb48daf7d31ec3fed6aab — indicator mechanism and real-source falsification.
+- d9864b48059ac926dab6675cb7d0b403e0132213 — dedicated technical-indicator checkpoint creation.
+- 8e6ae4eb262d101122ff0d11fa4164a65460c718 — technical-indicator lane initialization.
