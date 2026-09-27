@@ -1,0 +1,307 @@
+{
+  "schemaVersion": "technical-indicator-field-dependency-v0.1",
+  "updated": "2026-09-27 Asia/Taipei",
+  "researchOnly": true,
+  "decisionImpact": false,
+  "formalCore": "LOCKED",
+  "principle": "Derived states/events from one indicator series are not independent votes unless incremental evidence exists.",
+  "groups": [
+    {
+      "id": "RSI14",
+      "primitive": [
+        "rsiValue"
+      ],
+      "derived": [
+        {
+          "field": "rsiZone",
+          "dependsOn": [
+            "rsiValue",
+            "zoneThresholds"
+          ],
+          "independentVote": false
+        },
+        {
+          "field": "rsiSlope",
+          "dependsOn": [
+            "rsiValue_t",
+            "rsiValue_t-1"
+          ],
+          "independentVote": false
+        },
+        {
+          "field": "rsiCross70_30",
+          "dependsOn": [
+            "rsiValue_t",
+            "rsiValue_t-1",
+            "threshold"
+          ],
+          "independentVote": false
+        },
+        {
+          "field": "rsiPersistence",
+          "dependsOn": [
+            "rsiZone_history"
+          ],
+          "independentVote": false
+        },
+        {
+          "field": "rsiDivergence",
+          "dependsOn": [
+            "rsiValue_at_confirmed_price_pivots",
+            "pricePivotChronology"
+          ],
+          "independentVote": false,
+          "role": "interaction_descriptor"
+        }
+      ]
+    },
+    {
+      "id": "KD_STOCHASTIC",
+      "primitive": [
+        "kValue",
+        "dValue"
+      ],
+      "derived": [
+        {
+          "field": "kdZone",
+          "dependsOn": [
+            "kValue",
+            "dValue",
+            "zoneThresholds"
+          ],
+          "independentVote": false
+        },
+        {
+          "field": "kdCrossState",
+          "dependsOn": [
+            "kMinusD_t",
+            "kMinusD_t-1"
+          ],
+          "independentVote": false
+        },
+        {
+          "field": "kdPersistence",
+          "dependsOn": [
+            "kdZone_history"
+          ],
+          "independentVote": false
+        },
+        {
+          "field": "kdDivergence",
+          "dependsOn": [
+            "k_or_d_at_confirmed_price_pivots",
+            "pricePivotChronology"
+          ],
+          "independentVote": false,
+          "role": "interaction_descriptor"
+        }
+      ]
+    },
+    {
+      "id": "MACD",
+      "primitive": [
+        "dif",
+        "signal"
+      ],
+      "derived": [
+        {
+          "field": "histogram",
+          "dependsOn": [
+            "dif",
+            "signal"
+          ],
+          "independentVote": false
+        },
+        {
+          "field": "zeroLineState",
+          "dependsOn": [
+            "dif"
+          ],
+          "independentVote": false
+        },
+        {
+          "field": "macdCrossState",
+          "dependsOn": [
+            "dif_minus_signal_t",
+            "dif_minus_signal_t-1"
+          ],
+          "independentVote": false
+        },
+        {
+          "field": "difSlope",
+          "dependsOn": [
+            "dif_t",
+            "dif_t-1"
+          ],
+          "independentVote": false
+        },
+        {
+          "field": "histogramSlope",
+          "dependsOn": [
+            "histogram_t",
+            "histogram_t-1"
+          ],
+          "independentVote": false
+        },
+        {
+          "field": "histogramExpansionState",
+          "dependsOn": [
+            "abs_histogram_t",
+            "abs_histogram_t-1"
+          ],
+          "independentVote": false
+        },
+        {
+          "field": "macdDivergence",
+          "dependsOn": [
+            "normalized_macd_at_confirmed_price_pivots",
+            "pricePivotChronology"
+          ],
+          "independentVote": false,
+          "role": "interaction_descriptor"
+        }
+      ]
+    },
+    {
+      "id": "ADX_DMI",
+      "primitive": [
+        "plusDI",
+        "minusDI",
+        "adx"
+      ],
+      "derived": [
+        {
+          "field": "diSpread",
+          "dependsOn": [
+            "plusDI",
+            "minusDI"
+          ],
+          "independentVote": false
+        },
+        {
+          "field": "diCrossState",
+          "dependsOn": [
+            "plusDI_minus_minusDI_t",
+            "prior_value"
+          ],
+          "independentVote": false
+        },
+        {
+          "field": "trendDirectionLabel",
+          "dependsOn": [
+            "plusDI",
+            "minusDI"
+          ],
+          "independentVote": false
+        },
+        {
+          "field": "trendStrengthState",
+          "dependsOn": [
+            "adx",
+            "thresholds"
+          ],
+          "independentVote": false
+        },
+        {
+          "field": "adxSlope",
+          "dependsOn": [
+            "adx_t",
+            "adx_t-1"
+          ],
+          "independentVote": false
+        }
+      ]
+    },
+    {
+      "id": "BOLLINGER",
+      "primitive": [
+        "middleBand",
+        "upperBand",
+        "lowerBand"
+      ],
+      "derived": [
+        {
+          "field": "bandWidth",
+          "dependsOn": [
+            "upperBand",
+            "lowerBand",
+            "middleBand"
+          ],
+          "independentVote": false
+        },
+        {
+          "field": "percentB",
+          "dependsOn": [
+            "close",
+            "upperBand",
+            "lowerBand"
+          ],
+          "independentVote": false
+        },
+        {
+          "field": "bandTouchState",
+          "dependsOn": [
+            "close_or_high_low",
+            "upperBand",
+            "lowerBand"
+          ],
+          "independentVote": false
+        },
+        {
+          "field": "squeezeState",
+          "dependsOn": [
+            "bandWidth",
+            "historical_bandWidth_distribution"
+          ],
+          "independentVote": false
+        },
+        {
+          "field": "expansionState",
+          "dependsOn": [
+            "bandWidth_history"
+          ],
+          "independentVote": false
+        }
+      ]
+    },
+    {
+      "id": "EXTREME_RECENCY_20",
+      "primitive": [
+        "daysSinceHigh20",
+        "daysSinceLow20"
+      ],
+      "derived": [
+        {
+          "field": "highRecency20",
+          "dependsOn": [
+            "daysSinceHigh20"
+          ],
+          "independentVote": false
+        },
+        {
+          "field": "lowRecency20",
+          "dependsOn": [
+            "daysSinceLow20"
+          ],
+          "independentVote": false
+        },
+        {
+          "field": "aroonLikeLabel",
+          "dependsOn": [
+            "daysSinceHigh20",
+            "daysSinceLow20",
+            "thresholds"
+          ],
+          "independentVote": false
+        }
+      ]
+    }
+  ],
+  "aggregationRules": [
+    "Aggregate within one indicator/dependency group before cross-family confluence.",
+    "Do not count level, zone, crossing, slope, persistence and divergence as separate votes by default.",
+    "A derived event may be evaluated for timing value, but any incremental claim must control its parent level/path.",
+    "Divergence is an interaction between price-pivot geometry and indicator state, not an independent raw evidence family.",
+    "Threshold labels are quantizations of continuous fields; they cannot add information beyond the parent value unless path/event timing is explicitly tested."
+  ]
+}
