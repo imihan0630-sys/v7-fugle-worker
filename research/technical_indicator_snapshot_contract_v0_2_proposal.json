@@ -44,7 +44,11 @@
       "sourceHistoryHash",
       "continuityTransformHash",
       "seedInfluenceBound",
-      "replayCertificationState"
+      "replayCertificationState",
+      "continuityReceiptId",
+      "rawHistoryAdmissionReceiptId",
+      "symbolSessionContractVersion",
+      "continuityEngineVersion"
     ],
     "formulaReadiness": [
       "WARMUP_INCOMPLETE",
@@ -60,10 +64,15 @@
   "sourceContract": {
     "primaryInferencePriceSpace": "TECHNICAL_CONTINUITY",
     "rawExecutionAllowedForMechanicsOnly": true,
+    "rawHistoryAdmissionRequired": true,
+    "continuityReceiptRequired": true,
+    "continuityReceiptContractVersion": "technical-indicator-continuity-handoff-v0.1",
     "symbolSessionVerifiedRequired": true,
     "corporateActionContinuityResolvedRequired": true,
     "pseudoBarsForbidden": true,
-    "constrainedSessionsSeparateStratum": true
+    "constrainedSessionsSeparateStratum": true,
+    "localIndicatorCorporateActionAdjustmentAllowed": false,
+    "missingFactorDefaultOneAllowed": false
   },
   "formulaVersions": {
     "kd": "TAI_KD_RSV9_K3_D3_INIT50_V0_1",
@@ -150,6 +159,9 @@
     "parentRunComplete",
     "parentUnique",
     "pointInTimeProvenanceValid",
+    "rawHistoryAdmissionValid",
+    "continuityReceiptValid",
+    "symbolSessionCoverageComplete",
     "technicalContinuityValid",
     "formulaReady",
     "stateLineageValid",
@@ -162,6 +174,23 @@
     "FIRST_CALCULABLE is not SEED_STABLE.",
     "Exact aliases cannot receive independent score.",
     "CONSTRAINED observations must remain a separate preregistered stratum.",
-    "This proposal does not authorize runtime persistence."
-  ]
+    "This proposal does not authorize runtime persistence.",
+    "RAW_HISTORY_ADMISSION_PASS is not TECHNICAL_CONTINUITY_CERTIFIED.",
+    "Corporate-action and suspension semantics are referenced through continuityReceiptId; the indicator lane must not duplicate the shared adjustment engine."
+  ],
+  "crossLaneReceipts": {
+    "required": [
+      "rawHistoryAdmissionReceiptId",
+      "continuityReceiptId",
+      "symbolSessionContractVersion",
+      "continuityEngineVersion",
+      "continuityTransformHash"
+    ],
+    "continuityFieldsNotDuplicated": [
+      "perEventTechnicalPriceFactorDerivation",
+      "corporateActionRegistryReplay",
+      "verifiedSuspensionCalendar"
+    ],
+    "rule": "The Technical Indicator snapshot references the canonical continuity receipt and consumes its certified bars; it does not recreate event transforms."
+  }
 }
