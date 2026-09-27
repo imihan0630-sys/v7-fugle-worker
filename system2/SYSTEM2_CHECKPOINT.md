@@ -19,6 +19,16 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 
 ## Current design decisions
 
+- Ranking research infrastructure now spans RANK-01 baseline, RANK-02 EntryReadiness challenger, RANK-03 confluence gate, RANK-04 regime-readiness gate, RANK-05 retention/replacement Shadow comparison, RANK-06 strategy-overlap redundancy measurement, and RANK-07 concentration measurement. None of RANK-03 through RANK-07 currently changes actual candidate ordering or capacity policy.
+
+- RANK-07 concentration experiment preregistered as measurement-only. Industry counts/coverage/known-only HHI and strategy-membership concentration are recorded; UNKNOWN industry stays UNKNOWN; no industry/strategy hard cap, eviction or sizing effect is authorized. Verification PASS.
+
+- RANK-06 multi-strategy overlap experiment preregistered and overlap receipt implemented. Shared/distinct PRIMARY/REQUIRED family structure is measured, but strategy count creates no bonus and overlap priority effect remains unauthorized. Verification PASS.
+
+- RANK-05 verification PASS: shadow displacement eligibility is isolated to strict same-strategy Pareto-tier improvement; action remains SHADOW_COMPARE_ONLY and outcomeAttached=false. Candidate age is recorded but not penalized.
+
+- RANK-05 incumbent-retention vs replacement experiment preregistered. Current real baseline remains RETAIN_VALID_INCUMBENT; same-strategy strictly better Pareto-tier challengers are Shadow comparison only. Same-tier neutral hash, candidate age, cross-strategy and multi-strategy cases cannot evict an incumbent in V0.1.
+
 - RANK-04 missing fields produce REGIME_INCOMPLETE rather than neutral/negative evidence. This preserves the source-first rule and leaves the ranking challenger blocked until prospective coverage is adequate.
 
 - RANK-04 readiness gate implemented and verified: SHORT_MOMENTUM requires TAIEX trend+breadth+sector rotation+volatility; SWING_GROWTH requires trend+sector rotation+volatility; TPEx candidates additionally fail closed if TPEx regime state is UNKNOWN. TAIEX is never used as a TPEx proxy.
