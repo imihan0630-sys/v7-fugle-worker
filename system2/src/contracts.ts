@@ -138,6 +138,92 @@ export interface StrategyDefinition {
   readonly changeReason: string;
 }
 
+
+export type EvidenceFamily =
+  | "MARKET_REGIME"
+  | "INDUSTRY_THESIS"
+  | "FUNDAMENTAL_QUALITY"
+  | "VALUATION"
+  | "EVENT_CATALYST"
+  | "TECHNICAL_STRUCTURE"
+  | "PRICE_VOLUME"
+  | "CHIP_OWNERSHIP"
+  | "CAPITAL_FLOW"
+  | "RISK_FRICTION";
+
+export type EvidenceRole =
+  | "PRIMARY"
+  | "REQUIRED"
+  | "SUPPORTIVE"
+  | "CONTEXT_ONLY"
+  | "HARD_INVALIDATION"
+  | "WARNING";
+
+export type DataReadinessState =
+  | "READY_CURRENT"
+  | "DERIVABLE_CURRENT"
+  | "PIT_AUDIT_REQUIRED"
+  | "SOURCE_EXTENSION_REQUIRED"
+  | "SEMANTIC_GAP"
+  | "NOT_APPLICABLE";
+
+export type StrategyValidityState =
+  | "VALID"
+  | "WEAKENING"
+  | "INVALIDATED"
+  | "INCOMPLETE";
+
+export type EntryReadinessState =
+  | "WATCH"
+  | "NEAR_ENTRY"
+  | "ACTIVE_ENTRY_MONITOR"
+  | "BUY_ELIGIBLE"
+  | "WAIT"
+  | "TOO_EXTENDED"
+  | "CONFLICT"
+  | "BLOCKED";
+
+export interface StrategyEvidenceFamilyRequirement {
+  readonly family: EvidenceFamily;
+  readonly role: EvidenceRole;
+  readonly factorIds: readonly string[];
+  readonly dataReadiness: DataReadinessState;
+  readonly unknownBlocksEligibility: boolean;
+  readonly notes?: string;
+}
+
+export interface StrategySetupContract {
+  readonly setupId: string;
+  readonly setupVersion: string;
+  readonly thesisMechanism: string;
+  readonly requiredFamilies: readonly EvidenceFamily[];
+  readonly supportiveFamilies: readonly EvidenceFamily[];
+  readonly contextFamilies: readonly EvidenceFamily[];
+  readonly hardInvalidationIds: readonly string[];
+  readonly entryReadinessInputs: readonly string[];
+  readonly intradayRole: "HIGH" | "MEDIUM" | "LOW" | "NONE";
+  readonly expectedHorizonSessions: readonly number[];
+  readonly addActionFamilies: readonly string[];
+  readonly reduceActionFamilies: readonly string[];
+  readonly exitActionFamilies: readonly string[];
+}
+
+export interface StrategyContract {
+  readonly strategyId: string;
+  readonly strategyVersion: string;
+  readonly ownerApprovalState: "OWNER_APPROVED" | "RESEARCH_ONLY_APPROVED" | "OWNER_REVIEW_PENDING" | "RESEARCH_LANE";
+  readonly thesis: string;
+  readonly primaryHorizonSessions: readonly number[];
+  readonly evidenceFamilies: readonly StrategyEvidenceFamilyRequirement[];
+  readonly setups: readonly StrategySetupContract[];
+  readonly allowedRegimes: readonly RegimeLabel[];
+  readonly blockedRegimes: readonly RegimeLabel[];
+  readonly hardInvalidationIds: readonly string[];
+  readonly interactionIds: readonly string[];
+  readonly versionChangeTriggers: readonly string[];
+  readonly notes: readonly string[];
+}
+
 export type DecisionState =
   | "SELECTED"
   | "QUALIFIED_NOT_SELECTED"
