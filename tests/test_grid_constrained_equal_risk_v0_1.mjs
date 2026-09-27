@@ -2,9 +2,9 @@ import assert from "node:assert/strict";
 import {gridConstrainedEqualRisk} from "../research/grid_constrained_equal_risk_v0_1.mjs";
 
 const plans=[
- {code:"2006",buyLow:82.62,buyHigh:84.84,stop:82.62,totalAllocation:50000},
- {code:"3105",buyLow:472.06,buyHigh:496.92,stop:472.06,totalAllocation:64000},
- {code:"6133",buyLow:24.52,buyHigh:25.45,stop:24.52,totalAllocation:54000}
+ {code:"2006",buyLow:83.50,buyHigh:84.84,stop:82.62,totalAllocation:50000},
+ {code:"3105",buyLow:480.00,buyHigh:496.92,stop:472.06,totalAllocation:64000},
+ {code:"6133",buyLow:24.90,buyHigh:25.45,stop:24.52,totalAllocation:54000}
 ];
 const x=gridConstrainedEqualRisk(plans,200000);
 assert.equal(x.status,"READY");
