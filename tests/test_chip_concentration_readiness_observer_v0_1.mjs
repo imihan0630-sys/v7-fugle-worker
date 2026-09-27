@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import {observeChipConcentrationReadiness,classifyTdccSnapshot,CHIP_REACH_STATE} from "../research/chip_concentration_readiness_observer_v0_1.mjs";
+import {observeChipConcentrationReadiness,classifyTdccSnapshot,classifyTdccRawSymbolCoverage,CHIP_REACH_STATE} from "../research/chip_concentration_readiness_observer_v0_1.mjs";
 
 function snapshot({asOfDate="2026-09-18",count=1500,extra={}}={}){
   const stocks={};
@@ -88,3 +88,45 @@ function snapshot({asOfDate="2026-09-18",count=1500,extra={}}={}){
 }
 
 console.log(JSON.stringify({ok:true,globalVsSymbolCoverageSeparated:true,pitAvailabilitySeparatedFromAsOf:true,formalCoreImpact:false},null,2));
+
+
+// A globally valid 1500-symbol snapshot can still cover only 1500 of 1800 market rows.
+{
+  const s=snapshot();
+  const rows=Array.from({length:1800},(_,i)=>({symbol:String(1000+i),close:50}));
+  const reach=Object.fromEntries(rows.map(r=>[r.symbol,"UNKNOWN"]));
+  const o=observeChipConcentrationReadiness(rows,{scanDate:"2026-09-21",tdccSnapshot:s,preChipReachBySymbol:reach});
+  assert.equal(o.dataset.globalCoverageState,"GLOBAL_MINIMUM_COVERAGE_PASS");
+  assert.equal(o.counts.sameDayMarketCovered,1500);
+  assert.equal(o.counts.sameDayMarketSymbolAbsent,300);
+  assert.equal(o.sameDayMarketCoverageRate,1500/1800);
+}
+
+// Raw-ingest diagnostics distinguish silent per-symbol drop causes that persisted validated stocks cannot.
+{
+  const mk=(symbol,{grades=17,totalRatio=100,totalShares=1000}={})=>{
+    const out=[];
+    for(let g=1;g<=grades;g+=1){
+      out.push({
+        "資料日期":"2026-09-18","證券代號":symbol,"持股分級":g,
+        "股數":g===17?totalShares:1,
+        "占集保庫存數比例%":g===17?totalRatio:(g===1?100:0)
+      });
+    }
+    return out;
+  };
+  const rows=[
+    ...mk("2000"),
+    ...mk("2001",{grades:16}),
+    ...mk("2002",{totalRatio:99}),
+    ...mk("2003",{totalShares:0})
+  ];
+  const r=classifyTdccRawSymbolCoverage({
+    rows,marketSymbols:["2000","2001","2002","2003","2004"],scanDate:"2026-09-21"
+  });
+  assert.equal(r.symbolStates["2000"].state,"VALID");
+  assert.equal(r.symbolStates["2001"].state,"INCOMPLETE_GRADE_SET");
+  assert.equal(r.symbolStates["2002"].state,"TOTAL_RATIO_NOT_100");
+  assert.equal(r.symbolStates["2003"].state,"TOTAL_SHARES_NONPOSITIVE");
+  assert.equal(r.symbolStates["2004"].state,"NO_SOURCE_ROWS");
+}
