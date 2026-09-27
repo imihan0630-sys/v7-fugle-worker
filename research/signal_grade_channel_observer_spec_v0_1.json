@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "SIGNAL_GRADE_CHANNEL_OBSERVER_SPEC_V0_1",
+  "researchDate": "2026-09-27",
+  "status": "CLASS_A_STRUCTURAL_FALSIFICATION",
+  "formalCoreChanged": false,
+  "outcomesUsed": false,
+  "sourceAudit": {
+    "rootFormulaObserved": true,
+    "laterPatchOverrideFound": false,
+    "conclusion": "Current patch chain does not modify SIGNAL_GRADE_A_MIN=80, SIGNAL_GRADE_B_MIN=65, or the channel-specific setupQuality formulas."
+  },
+  "structuralClaims": [
+    "B.pass boundary constraints imply setupQuality>=69.65, so B cannot become signalGrade C at the final-grade gate.",
+    "A.pass can coexist with setupQuality<65, so final-grade rejection is an effective A-only gate under current formulas.",
+    "For A with volumeTodayVsPrev5>0.9, maximum setupQuality is 74, so signalGrade A is unreachable.",
+    "Strategy channel A/B and signal grade A/B/C are distinct semantics and must not be pooled as if the letters mean the same thing."
+  ],
+  "inferenceGuard": "This is structural reachability, not outcome quality. It does not prove the A final-grade gate is harmful or should be relaxed.",
+  "governance": {
+    "computation": "CLASS_A",
+    "gradeThresholdOrEligibilityChange": "CLASS_C_OWNER_APPROVAL",
+    "optimizationReady": false
+  },
+  "exactNext": "Audit what can be measured from full-scan diagnostics versus bounded Shadow. Use full first-failure count for same-day FINAL_GRADE incidence, but do not interpret it as causal benefit of removing the gate. Long-run promotion-grade evidence still requires immutable decision receipts."
+}
