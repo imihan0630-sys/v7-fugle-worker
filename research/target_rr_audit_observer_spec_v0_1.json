@@ -20,5 +20,7 @@
     "no target-null to RR=0 coercion",
     "no Formal decision/ranking/capital changes"
   ],
-  "exactNext": "Run deterministic CI. If semantics pass, audit zero-call runtime persistence feasibility against existing V8.14 Shadow; shared source repair remains Class B and target/RR rule changes remain Class C."
+  "exactNext": "Run deterministic CI. If semantics pass, audit zero-call runtime persistence feasibility against existing V8.14 Shadow; shared source repair remains Class B and target/RR rule changes remain Class C.",
+  "channelCouplingRule": "Target-source materiality must be evaluated with the channel-specific Formal entry/stop geometry. Generic entry/stop witnesses cannot be relabeled as A/B evidence.",
+  "falsificationLesson": "Initial B LOW_RR fixture using target=105 failed because actual Formal B stop was much tighter than a generic stop=95 witness. The test was corrected to channel-consistent geometry rather than weakening the observer."
 }
