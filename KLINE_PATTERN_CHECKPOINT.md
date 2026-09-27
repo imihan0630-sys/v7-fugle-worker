@@ -258,3 +258,24 @@ Durable research detail: main `KLINE_PATTERN_RESEARCH.md` commit `a245b486dc60f2
 4. Do not infer alpha from the 5314 witnesses; they are detector/data-quality stress cases.
 5. Prospective Pattern outcome work still waits for COMPLETE parent coverage/run receipts.
 6. Formal Core LOCKED.
+
+## Continuation update — DL-003W through DL-003X (2026-09-27)
+- Cross-lane ownership is now explicit: Price-Volume owns same-slot RVOL/cumulative-volume/acceptance/persistence; Microstructure owns auction/volatility-interruption execution mechanics; Pattern consumes those verified states as controls/guards and must not fork alternative definitions.
+- Corporate-action endpoints can expose future effective/ex-date rows, so present-day pulls are not automatically point-in-time announcement evidence. Realized continuity processing may use events effective on/before as-of under verified semantics; future event knowledge cannot be backfilled without a separate availability timestamp.
+- Volume-unit semantics are source-specific. Fugle official historical daily regular-stock candles document volume in shares, while intraday regular-stock candles are lots; Pattern FCNT000002 witness audit also found lots. Every adapter must carry volumeUnit/source and fail closed for exact magnitude when sub-lot/unit/session semantics are unresolved.
+- TWSE official historical Suspended Securities data explicitly begins 2011-10-03. Earlier strict TWSE symbol-session provenance is therefore incomplete unless another authoritative source closes the gap.
+- TPEx historical halt/resumption pages expose security-level suspension and resumption dates/times; earliest complete coverage remains UNKNOWN until independently established.
+- A market-open date is not sufficient symbol-session proof. Security-specific suspension/resumption, delayed opening, delayed closing and volatility interruption can alter intraday bar semantics.
+- TWSE resumption first collects orders and matches 30 minutes later by call auction; modern TWSE/TPEx opening can be delayed 2 minutes and closing can extend to 13:33 under stability rules. Pattern intraday interpretation must consume canonical session guards rather than assume every stock has ordinary 09:00-13:30 bars.
+- For daily Pattern morphology, verified suspension pseudo-bars must not become zero-range/zero-volume candles; duration uses eligible observed trading bars, with TECHNICAL_CONTINUITY across resumption/corporate-action boundaries.
+- Pattern runtime remains NO_GO. No Pattern outcomes inspected; alpha UNKNOWN; Formal Core LOCKED.
+
+### Updated exact next continuation point
+1. Keep latent geometry v0.1 frozen and stop adding named families.
+2. Continue outcome-blind source falsification on the remaining runtime semantic blockers: authoritative trading-unit/share-unit provenance, symbol-session coverage, corporate-action continuity and current-regime price-limit/session mechanics.
+3. Reuse Price-Volume and Microstructure canonical guards; Pattern must not duplicate same-slot volume or auction/VI specifications.
+4. Determine whether official security metadata can supply point-in-time tradingUnit/share-unit changes; never convert lots to shares with an assumed constant 1,000 across unit-change events.
+5. Treat TWSE pre-2011-10-03 strict symbol-session history as coverage-limited; do not silently call it complete.
+6. Keep Pattern observer persistence unwired. Runtime wiring remains governance-gated and requires RAW_EXECUTION + TECHNICAL_CONTINUITY + explicit symbol-session + fit-for-purpose volume semantics.
+7. Prospective outcome joins still require COMPLETE parent run receipts; no historical Pattern Shadow fabrication.
+8. Formal Core remains LOCKED; no R09 / no optimization proposal before clean prospective evidence.
