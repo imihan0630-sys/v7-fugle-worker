@@ -1,0 +1,94 @@
+{
+  "schemaVersion": "technical-indicator-observer-state-construction-v0.1",
+  "updated": "2026-09-28 Asia/Taipei",
+  "researchOnly": true,
+  "decisionImpact": false,
+  "runtimeImplemented": false,
+  "formalCore": "LOCKED",
+  "authoritativeMode": "CANONICAL_REPLAY_LINEAGE",
+  "prohibitedPrimaryModes": [
+    "ROLLING_65_BAR_RESEED"
+  ],
+  "allowedStateModes": [
+    "FULL_REPLAY_FROM_LINEAGE_ANCHOR",
+    "TRUSTED_PRIOR_STATE",
+    "LOCAL_WINDOW_BOOTSTRAP_QA_ONLY"
+  ],
+  "stateLineageFields": [
+    "symbol",
+    "formulaVersion",
+    "continuitySpaceVersion",
+    "sourceFamilyVersion",
+    "sessionCalendarVersion",
+    "initializationAnchor",
+    "stateConstructionVersion"
+  ],
+  "requiredSnapshotFields": [
+    "stateLineageId",
+    "formulaVersion",
+    "stateConstructionVersion",
+    "initializationAnchorDate",
+    "initializationMethod",
+    "cleanHistoryStartDate",
+    "eligibleBarsFromAnchorToAsOf",
+    "sourceHistoryHash",
+    "continuityTransformHash",
+    "formulaReadiness",
+    "seedStability",
+    "lastAsOfDate",
+    "replayCertificationState"
+  ],
+  "formulaReadiness": [
+    "WARMUP_INCOMPLETE",
+    "FIRST_CALCULABLE",
+    "READY"
+  ],
+  "seedStability": [
+    "UNASSESSED",
+    "SEED_SENSITIVE",
+    "WITHIN_DECLARED_BOUND"
+  ],
+  "replayCertificationState": [
+    "UNVERIFIED",
+    "REPLAY_EXACT",
+    "DIRTY",
+    "QA_FAIL"
+  ],
+  "parentIdentityPreference": [
+    "parentDecisionReceiptId",
+    "scanDate+symbol+parentSnapshotHash+captureGeneration"
+  ],
+  "runStatus": [
+    "COMPLETE",
+    "INCOMPLETE",
+    "QA_FAIL"
+  ],
+  "runReceiptFields": [
+    "expectedParentCount",
+    "attemptedParentCount",
+    "validCount",
+    "blockedCount",
+    "missingCount",
+    "provenanceConflictCount"
+  ],
+  "sourceRules": [
+    "PRIMARY_INFERENCE_PRICE_SPACE_TECHNICAL_CONTINUITY",
+    "RAW_EXECUTION_ONLY_FOR_MECHANICS_OR_EXECUTION_REFERENCE",
+    "NO_LOCAL_INDICATOR_SPECIFIC_CA_ADJUSTMENT",
+    "NO_SILENT_PROVIDER_PULL_EXPANSION",
+    "DEEP_HISTORY_CAPABILITY_IS_NOT_RUNTIME_AUTHORIZATION"
+  ],
+  "repairRules": [
+    "DIRTY_LINEAGE_ON_PAST_INPUT_CHANGE",
+    "REPLAY_FROM_TRUSTED_STATE_OR_CANONICAL_ANCHOR",
+    "NO_PATCH_CURRENT_VALUE_ONLY",
+    "NO_ARBITRARY_WAIT_N_BARS",
+    "VERSION_CHANGED_FIRST_KNOWN_EVIDENCE_DO_NOT_OVERWRITE"
+  ],
+  "currentReadiness": {
+    "productionD1CacheBars": 65,
+    "technicalContinuityRuntime": "BLOCKED",
+    "exactParentLineageRuntime": "GOVERNANCE_DEPENDENT",
+    "prospectiveTechnicalObserver": "NO_GO"
+  }
+}
