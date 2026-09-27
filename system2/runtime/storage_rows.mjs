@@ -178,3 +178,63 @@ export function toRank05DisplacementRow(receipt) {
     schema_version: requiredText(receipt.schemaVersion, "schemaVersion"),
   });
 }
+
+
+export function toStrategyOverlapRow(receipt) {
+  if (!receipt || typeof receipt !== "object") throw new Error("receipt is required");
+
+  return Object.freeze({
+    receipt_id: requiredText(receipt.receiptId, "receiptId"),
+    experiment_id: requiredText(receipt.experimentId, "experimentId"),
+    experiment_version: requiredText(receipt.experimentVersion, "experimentVersion"),
+    market_date: requiredText(receipt.marketDate, "marketDate"),
+    decision_timestamp: requiredText(receipt.decisionTimestamp, "decisionTimestamp"),
+    strategy_a_json: json(receipt.strategyA),
+    strategy_b_json: json(receipt.strategyB),
+    shared_core_families_json: json(receipt.sharedCoreFamilies || []),
+    distinct_core_a_json: json(receipt.distinctCoreFamiliesA || []),
+    distinct_core_b_json: json(receipt.distinctCoreFamiliesB || []),
+    shared_all_families_json: json(receipt.sharedAllFamilies || []),
+    diagnostics_json: json(receipt.diagnostics || {}),
+    independent_same_clock_validity: receipt.independentSameClockValidity ? 1 : 0,
+    naive_strategy_count_bonus_allowed: receipt.naiveStrategyCountBonusAllowed ? 1 : 0,
+    overlap_priority_effect_authorized: receipt.overlapPriorityEffectAuthorized ? 1 : 0,
+    research_state: requiredText(receipt.researchState, "researchState"),
+    overlap_hash: requiredText(receipt.overlapHash, "overlapHash"),
+    captured_at: requiredText(receipt.capturedAt, "capturedAt"),
+    schema_version: requiredText(receipt.schemaVersion, "schemaVersion"),
+  });
+}
+
+export function toCandidateConcentrationRow(receipt) {
+  if (!receipt || typeof receipt !== "object") throw new Error("receipt is required");
+
+  return Object.freeze({
+    receipt_id: requiredText(receipt.receiptId, "receiptId"),
+    experiment_id: requiredText(receipt.experimentId, "experimentId"),
+    experiment_version: requiredText(receipt.experimentVersion, "experimentVersion"),
+    market_date: requiredText(receipt.marketDate, "marketDate"),
+    decision_timestamp: requiredText(receipt.decisionTimestamp, "decisionTimestamp"),
+    classification_version: requiredText(receipt.classificationVersion, "classificationVersion"),
+    global_count: Number(receipt.globalCount),
+    known_industry_count: Number(receipt.knownIndustryCount),
+    unknown_industry_count: Number(receipt.unknownIndustryCount),
+    known_industry_coverage: Number(receipt.knownIndustryCoverage),
+    unknown_industry_symbols_json: json(receipt.unknownIndustrySymbols || []),
+    industry_rows_json: json(receipt.industryRows || []),
+    largest_industry_json: json(receipt.largestIndustry ?? null),
+    industry_hhi_known_only:
+      Number.isFinite(receipt.industryHhiKnownOnly) ? receipt.industryHhiKnownOnly : null,
+    strategy_membership_counts_json: json(receipt.strategyMembershipCounts || {}),
+    multi_strategy_symbol_count: Number(receipt.multiStrategySymbolCount),
+    effect_authorization_json: json({
+      admission: receipt.concentrationAdmissionEffectAuthorized === true,
+      eviction: receipt.concentrationEvictionEffectAuthorized === true,
+      sizing: receipt.concentrationSizingEffectAuthorized === true,
+    }),
+    warnings_json: json(receipt.warnings || []),
+    concentration_hash: requiredText(receipt.concentrationHash, "concentrationHash"),
+    captured_at: requiredText(receipt.capturedAt, "capturedAt"),
+    schema_version: requiredText(receipt.schemaVersion, "schemaVersion"),
+  });
+}
