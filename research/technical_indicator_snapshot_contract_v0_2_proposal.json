@@ -176,7 +176,9 @@
     "CONSTRAINED observations must remain a separate preregistered stratum.",
     "This proposal does not authorize runtime persistence.",
     "RAW_HISTORY_ADMISSION_PASS is not TECHNICAL_CONTINUITY_CERTIFIED.",
-    "Corporate-action and suspension semantics are referenced through continuityReceiptId; the indicator lane must not duplicate the shared adjustment engine."
+    "Corporate-action and suspension semantics are referenced through continuityReceiptId; the indicator lane must not duplicate the shared adjustment engine.",
+    "Indicator continuity certification is memory-class specific; a generic wait-N-bars repair is prohibited.",
+    "The MECHANICAL_RESET_2_TO_1 fixture demonstrates that raw corporate-action boundaries can pin RSI at 0 and drive ADX toward extreme values even when the economic path is flat."
   ],
   "crossLaneReceipts": {
     "required": [
@@ -192,5 +194,27 @@
       "verifiedSuspensionCalendar"
     ],
     "rule": "The Technical Indicator snapshot references the canonical continuity receipt and consumes its certified bars; it does not recreate event transforms."
+  },
+  "indicatorCertification": {
+    "kd": {
+      "memoryClass": "HYBRID_FINITE_RANGE_PLUS_RECURSIVE",
+      "requirement": "Certified continuity range window plus replay-certified K/D state."
+    },
+    "rsi": {
+      "memoryClass": "RECURSIVE_IIR_NONLINEAR_RATIO",
+      "requirement": "Canonical corrected close-return path plus replay-certified avgGain/avgLoss state."
+    },
+    "macd": {
+      "memoryClass": "CASCADED_RECURSIVE_FILTER",
+      "requirement": "Canonical corrected close path plus replay-certified EMA12/EMA26/Signal state."
+    },
+    "adx": {
+      "memoryClass": "CASCADED_RECURSIVE_DIRECTIONAL_RATIO",
+      "requirement": "Canonical corrected H/L/C path plus replay-certified TR/+DM/-DM/DX/ADX state."
+    },
+    "bbands": {
+      "memoryClass": "FINITE_WINDOW",
+      "requirement": "Exact certified 20 eligible-session continuity close window."
+    }
   }
 }
