@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { toShadowDecisionRow, toShadowRunRow, toCapacityRunRow, toStrategyOrderingRow, toRankingExperimentRow, toRank05DisplacementRow, toStrategyOverlapRow, toCandidateConcentrationRow } from "../runtime/storage_rows.mjs";
+import { toShadowDecisionRow, toShadowRunRow, toCapacityRunRow, toStrategyOrderingRow, toRankingExperimentRow, toRank05DisplacementRow, toStrategyOverlapRow, toCandidateConcentrationRow, toSourceSessionRow, toShadowRunFingerprintRow } from "../runtime/storage_rows.mjs";
 
 const decisionRow = toShadowDecisionRow(
   {
@@ -238,5 +238,49 @@ const concentrationRow = toCandidateConcentrationRow({
 
 assert.equal(concentrationRow.known_industry_coverage, 0.75);
 assert.equal(JSON.parse(concentrationRow.effect_authorization_json).admission, false);
+
+const sourceSessionRow = toSourceSessionRow({
+  receiptId: "SS1",
+  marketDate: "2026-09-27",
+  decisionTimestamp: "2026-09-27T07:30:00Z",
+  sourceSessionState: "SOURCE_SESSION_READY",
+  requiredBlockers: [],
+  optionalGaps: [{ sourceId: "TAIEX", readiness: "MISSING" }],
+  sourceRows: [],
+  extraObservedSources: [],
+  expectedSourceCount: 2,
+  observedSourceCount: 1,
+  outcomeJoinSourceEligible: true,
+  sourceSessionHash: "source-session-hash",
+  capturedAt: "2026-09-27T07:31:00Z",
+  schemaVersion: "S2_SOURCE_SESSION_V0_1",
+});
+assert.equal(sourceSessionRow.outcome_join_source_eligible, 1);
+assert.equal(sourceSessionRow.expected_source_count, 2);
+
+const fingerprintRow = toShadowRunFingerprintRow({
+  fingerprintId: "FP1",
+  marketDate: "2026-09-27",
+  decisionTimestamp: "2026-09-27T07:30:00Z",
+  strategyId: "SHORT_MOMENTUM",
+  strategyVersion: "V0.1-CONTRACT",
+  shadowSpecId: "S2-SM-LS-001",
+  universeVersion: "TW-EQUITY-V0",
+  sourceSessionHash: "source-session-hash",
+  shadowAccountingHash: "accounting-hash",
+  decisionHashes: ["d1", "d2"],
+  orderingHashes: ["o1"],
+  rankingExperimentHashes: [],
+  capacityHash: "cap1",
+  lifecycleHashes: ["l1"],
+  runFingerprintState: "RUN_FINGERPRINT_COMPLETE",
+  blockers: [],
+  outcomeJoinEligible: true,
+  runFingerprintHash: "run-fingerprint-hash",
+  capturedAt: "2026-09-27T07:31:00Z",
+  schemaVersion: "S2_SHADOW_RUN_FINGERPRINT_V0_1",
+});
+assert.equal(fingerprintRow.outcome_join_eligible, 1);
+assert.deepEqual(JSON.parse(fingerprintRow.decision_hashes_json), ["d1", "d2"]);
 
 console.log("System2 storage row serializer tests passed");
