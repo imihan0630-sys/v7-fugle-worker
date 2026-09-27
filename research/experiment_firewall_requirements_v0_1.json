@@ -1,0 +1,74 @@
+{
+  "schemaVersion": "experiment-firewall-requirements-v0.1",
+  "researchDate": "2026-09-27",
+  "formalCoreChanged": false,
+  "status": "SPEC_FROZEN",
+  "globalRequired": [
+    "PIT_GENERATION_LINEAGE",
+    "SHADOW_KEYSET_COMPLETENESS",
+    "READER_COMPLETENESS",
+    "OUTCOME_SESSION_CA_QUALITY",
+    "PURGED_FORWARD_HOLDOUT",
+    "MARKET_SOURCE_COVERAGE",
+    "UNKNOWN_FAIL_CLOSED"
+  ],
+  "experiments": {
+    "R01": [
+      "EQUAL_DATE_ESTIMATOR",
+      "BREAKOUT_LABEL_QUALITY"
+    ],
+    "R02": [
+      "POOL_MATCHED_COMPARATOR",
+      "EQUAL_DATE_ESTIMATOR",
+      "COHORT_SEMANTIC_INTEGRITY"
+    ],
+    "R03": [
+      "REGIME_SOURCE_PIT",
+      "INDEPENDENT_DATE_COVERAGE"
+    ],
+    "R04": [
+      "EQUAL_DATE_ESTIMATOR",
+      "REDUNDANCY_INCREMENTAL"
+    ],
+    "R05": [
+      "EQUAL_DATE_ESTIMATOR",
+      "NEXT_SESSION_TIMING_QUALITY"
+    ],
+    "R06": [
+      "REGIME_SOURCE_PIT",
+      "TRANSITION_DATE_CONTINUITY"
+    ],
+    "R07": [
+      "EQUAL_DATE_ESTIMATOR",
+      "ATTENTION_PROXY_COVERAGE",
+      "REDUNDANCY_INCREMENTAL"
+    ],
+    "R08": [
+      "PAIRED_EQUAL_DATE_ESTIMATOR",
+      "ATTENTION_PROXY_COVERAGE",
+      "EXTERNAL_EVIDENCE_GENERATION_ALIGNMENT"
+    ],
+    "I01_I07": [
+      "EQUAL_DATE_INCREMENTAL_ESTIMATOR",
+      "DATE_CLUSTER_ROBUSTNESS",
+      "REDUNDANCY_INCREMENTAL"
+    ]
+  },
+  "acceptedStateRule": "A required firewall must explicitly report PASS/QUALIFIED. UNKNOWN, BLOCKED, LEGACY_MUTABLE, TRUNCATED, SOURCE_DATE_MISMATCH, RESEARCH_DATA_GAP or missing state cannot be promoted to evidence-quality-ready.",
+  "maturitySeparation": {
+    "COUNT_READY": "sample/date/regime thresholds only",
+    "EVIDENCE_QUALITY_READY": "all applicable firewalls pass",
+    "PROMOTION_REVIEW_ELIGIBLE": "COUNT_READY && EVIDENCE_QUALITY_READY && cost/redundancy/OOS/materiality gates pass; still no automatic Formal change"
+  },
+  "specialCases": {
+    "R08": "paired per-date delta satisfies equal-date structure; pooled byEngine summaries do not",
+    "R02": "legacy cross-price-pool comparator cannot satisfy POOL_MATCHED_COMPARATOR",
+    "R04_R07_I01_I07": "legacy pooled stock-row estimators cannot satisfy EQUAL_DATE_ESTIMATOR merely because LODO is stable"
+  },
+  "engineering": {
+    "pureComposer": "Potential Class A if standalone research-only input/output module, no Worker/D1/Formal dependency",
+    "integration": "Class B proposal-first if wired into shared Worker/dashboard persistence"
+  },
+  "optimizationStatus": "NOT_FORMAL_OPTIMIZATION_CANDIDATE",
+  "exactNext": "Perform bounded feasibility audit for a standalone fail-closed readiness composer using only supplied status objects. If feasible, implement Class-A module + fixtures proving UNKNOWN cannot become READY and legacy R02/R04/R07 cannot pass their new firewalls; do not wire into Worker."
+}
