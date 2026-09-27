@@ -1,0 +1,110 @@
+{
+  "schemaVersion": "technical-indicator-continuity-handoff-v0.1",
+  "updated": "2026-09-28 Asia/Taipei",
+  "researchOnly": true,
+  "decisionImpact": false,
+  "runtimeImplemented": false,
+  "formalCore": "LOCKED",
+  "semanticSpace": "TECHNICAL_CONTINUITY",
+  "rawAdmissionIsContinuity": false,
+  "receiptIdentityFields": [
+    "symbol",
+    "asOf",
+    "cleanHistoryStartDate",
+    "sourceFamilyVersion",
+    "sourceHistoryHash",
+    "rawHistoryAdmissionReceiptId",
+    "symbolSessionContractVersion",
+    "sessionCalendarVersion",
+    "continuityEngineVersion",
+    "corporateActionRegistryVersion",
+    "continuitySpace",
+    "continuityTransformHash",
+    "receiptVersion"
+  ],
+  "coverageFields": [
+    "expectedMarketSessions",
+    "verifiedSymbolSuspensionSessions",
+    "expectedEligibleSymbolSessions",
+    "observedRawBars",
+    "continuityBars",
+    "transformedPriceBars",
+    "unresolvedMissingSessions",
+    "unresolvedRelevantEvents",
+    "pseudoBarsRejected",
+    "priceLimitConstrainedBars"
+  ],
+  "invariants": [
+    "EXPECTED_ELIGIBLE = MARKET_SESSIONS - VERIFIED_SYMBOL_SUSPENSIONS",
+    "VALID_REQUIRES_ZERO_UNRESOLVED_MISSING_SESSIONS",
+    "VALID_REQUIRES_ZERO_UNRESOLVED_RELEVANT_EVENTS",
+    "ELIGIBLE_RAW_AND_CONTINUITY_DATE_SETS_MUST_MATCH",
+    "FUTURE_EFFECTIVE_EVENTS_EXCLUDED",
+    "LATER_EVENT_REVISIONS_MUST_NOT_BACKFILL_EARLIER_ASOF",
+    "ONLY_MECHANICAL_RESET_IS_NEUTRALIZED",
+    "RESIDUAL_NON_MECHANICAL_GAP_IS_PRESERVED"
+  ],
+  "relevantEventFields": [
+    "eventKey",
+    "actionFamilyId",
+    "eventStage",
+    "actionType",
+    "eventVersion",
+    "firstKnownAt",
+    "knownAt",
+    "effectiveDate",
+    "technicalPriceFactor",
+    "factorSource",
+    "factorQuality",
+    "referenceSemantics",
+    "transformApplied",
+    "transformRange",
+    "conflictReasons",
+    "unknownReasons"
+  ],
+  "barFields": [
+    "date",
+    "open",
+    "high",
+    "low",
+    "close",
+    "observedRawBarIdentity",
+    "symbolSessionVerified",
+    "technicalContinuity",
+    "corporateActionContinuityResolved",
+    "priceLimitConstrained",
+    "sourceBarHash"
+  ],
+  "status": [
+    "VALID",
+    "BLOCKED",
+    "UNKNOWN",
+    "CONSTRAINED"
+  ],
+  "memoryClassRules": {
+    "FINITE_WINDOW": "Certified exact continuity window may be consumed directly.",
+    "RECURSIVE_IIR": "Requires continuity input plus canonical replay lineage or replay-certified trusted prior state.",
+    "CUMULATIVE": "Requires windowed/rebased representation or full recomputation.",
+    "PATH_STATE": "Requires state-machine replay."
+  },
+  "parentLink": [
+    "parentDecisionReceiptId",
+    "scanDate+symbol+parentSnapshotHash+captureGeneration"
+  ],
+  "prohibited": [
+    "LOCAL_INDICATOR_CORPORATE_ACTION_ENGINE",
+    "PROVIDER_ADJUSTED_SERIES_RELABEL_AS_TECHNICAL_CONTINUITY",
+    "MISSING_FACTOR_DEFAULT_ONE",
+    "UNKNOWN_AS_NO_EVENT",
+    "PSEUDO_BAR_AS_ELIGIBLE_SESSION",
+    "FUTURE_EVENT_BACKFILL",
+    "SILENT_PARENT_KEYSET_TRUNCATION"
+  ],
+  "readiness": {
+    "rawHistoryAdmission": "MATERIAL_PASS",
+    "continuityResearchSemantics": "FROZEN_SHARED",
+    "continuityRuntime": "BLOCKED",
+    "symbolSessionRuntimeCompleteness": "PARTIAL",
+    "prospectiveTechnicalObserver": "NO_GO"
+  }
+}
