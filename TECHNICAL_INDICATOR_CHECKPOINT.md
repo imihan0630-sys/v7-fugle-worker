@@ -458,3 +458,96 @@ No other newly audited indicator receives a prospective outcome-testing priority
 - 42ad727af83b0e00482c38c5a1b34a8aa991c846 — EXTREME_RECENCY_20 specification/adversarial fixtures.
 - 5de68c6772dab98299f9de605ce8f667fdebae7c — indicator field dependency graph.
 - 50171a747f3395bfd5cfee6b9f2741636215a7ed — intra-indicator anti-double-counting governance.
+
+
+## Continuation update — TI-080 through TI-101
+
+- Indicator memory/data-continuity taxonomy is frozen into four classes: FINITE_WINDOW, RECURSIVE_IIR, CUMULATIVE and PATH_STATE.
+- Finite-window contamination ends only after the bad observation exits the eligible-session window; suspension/non-session calendar days do not advance the bar count.
+- Recursive indicators retain geometrically decaying state error. Reference single-state half-lives are recorded for EMA9/12/18/20/26, Wilder14 and KD K-recursion as mathematical diagnostics only; they are NOT production clean-state thresholds.
+- Nested recursive systems such as MACD, TRIX, TSI and ADX have multi-stage memory. "Wait N bars" is rejected as a universal repair rule.
+- Raw OBV/ADL are cumulative and can retain a bad historical shock indefinitely unless recomputed/rebased/windowed. Path-state systems such as SAR can take a permanently different state path after one bad event.
+- Preferred continuity certification is full clean replay from canonical continuity-corrected history, with formulaVersion/init/source hash/replay/prefix provenance. Arbitrary warm-up waiting is insufficient for promotion-grade inference.
+- Smoothing is explicitly a lag/noise trade-off; fewer visual false signals can simply mean later reaction and must be evaluated against maxChase/execution opportunity cost.
+- Machine-readable memory artifact: research/technical_indicator_memory_kernel_v0_1.json.
+- Formula provenance audit confirms a display label such as "MACD 12/26/9" is incomplete without input series, smoothing kernel, seed, output-start, missing/session, continuity and implementation semantics.
+- Current isolated reference core:
+  KD = RSV9/K3/D3 init 50;
+  RSI = Wilder14 with SMA seed;
+  MACD = Close-based EMA12/26 + signal9 with first-value seed and internal 34-bar readiness.
+- Published XQ KD semantics materially align with current KD family, but exact early-history platform parity remains unproven.
+- Published XQ MACD uses WeightedClose + XAverage; current core uses Close. XQ XAverage first-value seed also differs from TA-Lib/Fidelity default SMA-seed EMA semantics.
+- Therefore same period labels do not prove cross-platform numeric parity. Parity tiers P0 internal replay / P1 mathematical contract / P2 platform exact / P3 economic equivalence are frozen.
+- Current core formulas remain frozen reference implementations; any future platform comparator must get a new formulaVersion rather than silently modifying V0.1.
+- New durable artifacts:
+  research/TECHNICAL_INDICATOR_MEMORY_CONTINUITY_V0_1.md
+  research/technical_indicator_memory_kernel_v0_1.json
+  research/TECHNICAL_INDICATOR_FORMULA_PROVENANCE_V0_1.md
+- No outcomes inspected, no runtime wiring and no Formal change.
+
+## Continuation update — TI-102 through TI-122
+
+- Modern/nested indicator audit rejects matched-horizon BIAS as duplicate MA-distance and PSY20 as exact positiveDayRatio20 duplicate on complete 20-return coverage.
+- MO/RC/ROC level remain return-family affine/identity transforms and cannot receive separate evidence weight.
+- IFT-RSI is smoothed RSI plus a monotonic nonlinear transform; QQE is RSI + filtering + RSI-domain volatility/trailing state; Schaff Trend Cycle is nested MACD + stochastic normalization/smoothing. These are representation/timing variants, not independent information families.
+- SuperTrend is ATR-envelope path state; Chandelier Exit is rolling extreme +/- ATR multiple. Both belong to position-management/timing research rather than new selection factors.
+- DEMA/TEMA/HMA/KAMA line are reduced-lag/adaptive filter alternatives, not new source families.
+- KAMA's Efficiency Ratio is the only residual primitive retained: net displacement divided by cumulative absolute close path. It overlaps Pattern pole-path efficiency and trend-consistency features but is not algebraically identical to one current canonical field.
+- Exactly one baseline is frozen: pathEfficiency10 using the classic ER10 horizon. No ER5/14/20/60 sweep is allowed.
+- pathEfficiency10 is directionless: monotonic up and monotonic down both equal 1. It has no universal bullish sign.
+- Adversarial fixtures P1-P10 and mandatory controls are frozen before outcomes.
+- New durable artifacts:
+  research/TECHNICAL_INDICATOR_MODERN_NESTED_AUDIT_V0_1.md
+  research/TECHNICAL_INDICATOR_PATH_EFFICIENCY_V0_1.md
+- PATH_EFFICIENCY_10 remains low-priority WORTH_FALSIFICATION only after primary gates and EXTREME_RECENCY_20.
+
+## Continuation update — TI-123 through TI-136
+
+- Taiwan/XQ legacy price-volume indicator audit assigns Force Index, EMV, VPT, VR and PVI/NVI to PRICE_VOLUME ownership rather than technical majority voting.
+- Force = price delta * volume; EMV = midpoint movement * range / volume; VPT = cumulative return-weighted volume. These overlap current response/effort/liquidity/participation research and are compact comparators only.
+- VR is an up-day-volume/down-day-volume representation of the same signed-volume-imbalance family. With no flat-day volume it is a monotonic coordinate transform of signedVolumeBalance; flat-day convention must be explicit before comparing formulas.
+- PVI/NVI are cumulative return paths conditional on volume increase/decrease. The traditional "smart money" narrative is not measured by the formula and is forbidden as causal labeling.
+- KST is a weighted smoothed multi-horizon ROC bundle and is redundancy-high versus existing ret horizons/trend filters.
+- Mass Index is directionless smoothed high-low range expansion; it belongs to volatility, not reversal authority.
+- "RVI" is frozen as a formula-provenance hazard because Relative Volatility Index and Relative Vigor Index share the acronym across platforms. The reviewed XQ variant is a volatility-weighted signed-state oscillator and redundancy-high.
+- Elder Ray is High/Low distance from EMA; STARC is SMA +/- ATR envelope. Neither creates a new evidence family.
+- Cumulative legacy lines must not be compared by raw level across stocks without rebase/window/provenance.
+- Redundancy registry is extended through these modern and legacy families.
+- New durable artifact:
+  research/TECHNICAL_INDICATOR_TAIWAN_LEGACY_PV_AUDIT_V0_1.md
+- No new primary alpha hypothesis emerged from TI-123..136.
+- No outcomes inspected, no threshold optimization, no FORMAL_OPTIMIZATION_CANDIDATE.
+- Formal Core remains LOCKED.
+
+### Current empirical priority after TI-136
+
+Primary:
+1. KD vs RSI residual value
+2. MACD vs direct trend
+3. ADX vs direct trend quality
+4. BBW vs ATR / realized-vol / VCP
+
+Secondary only after primary gates:
+5. EXTREME_RECENCY_20
+6. PATH_EFFICIENCY_10
+7. returnVelocityShift5v20
+8. one Price-Volume-owned compact signed/close-location volume comparator
+
+### Updated exact next continuation point
+
+1. Continue only when a candidate indicator exposes a genuinely unresolved primitive; do not pursue catalog completion for its own sake.
+2. Reconcile EXTREME_RECENCY_20 and PATH_EFFICIENCY_10 with Pattern/Trend ownership before any schema implementation.
+3. Keep cross-platform formula provenance and memory-class metadata mandatory for future reference implementations.
+4. Continue Factor-Zoo pruning on remaining Taiwan-common AR/BR/VR/VHF/Choppy/Q/RVI-like constructs, prioritizing algebraic/mechanistic redundancy before outcomes.
+5. Keep all primary outcome inference blocked until prospective parent coverage and the existing preregistered gates mature.
+6. Formal Core remains unchanged.
+
+## Latest durable research commits
+
+- 31fe43914c881cbb2384f735282b57682c52a7ed — indicator memory/continuity taxonomy.
+- 90db1283a017aca5c2044f3cd2c2988cdd06ebae — machine-readable memory kernel registry.
+- 8fce7c1cfa15faea089b0fd7af5d105e87022abe — formula provenance/cross-platform parity audit.
+- 87a1cf75925445d3f2a8e597f877bf5487bd7322 — modern/nested/adaptive indicator audit.
+- 54585e2ae3b94fb54e254689e4f0fcf77adc755f — pathEfficiency10 specification.
+- 4a190ee9d06ce0a130f01b69a8509f43af9b7a01 — Taiwan legacy Price-Volume indicator audit.
+- eb88938973a3d65293e60b9d32b7730f64ec9a68 — extended redundancy registry.
