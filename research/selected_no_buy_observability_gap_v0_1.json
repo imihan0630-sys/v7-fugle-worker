@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "selected_no_buy_observability_gap_v0.1",
+  "researchDate": "2026-09-27",
+  "status": "STRUCTURAL_MISSINGNESS_CONFIRMED",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "finding": "Current execution recorder is event/milestone sampled, not an exhaustive per-monitor-run lifecycle ledger. Removing read truncation alone would not certify NO_BUY.",
+  "evidence": [
+    "Recorder writes OPEN_BASELINE, FIRST_10M_COMPLETE, FIRST_15M_COMPLETE, FIRST_30M_COMPLETE, and FORMAL_SIGNAL_OBSERVED only while monitor results exist.",
+    "FORMAL_SIGNAL_OBSERVED is emitted when the notification batch is nonempty; same-symbol matching is required to interpret a row as that symbol's signal.",
+    "The protected read path is additionally newest-first LIMIT 500 and exposes newest 80, so exact-date absence is doubly unidentifiable.",
+    "INSERT OR IGNORE idempotency proves duplicate suppression, not expected monitor-run completeness."
+  ],
+  "observationalEquivalenceForMissingBuy": [
+    "Formal monitor did not run or failed for part/all of the relevant session.",
+    "Formal monitor ran but the selected plan/symbol was absent from one or more runs.",
+    "Formal monitor ran and plan was observed but no BUY condition occurred.",
+    "A BUY/signal row existed but is outside the bounded read surface.",
+    "Batch-level FORMAL_SIGNAL_OBSERVED exists but not for this symbol."
+  ],
+  "requiredProspectiveReceipt": [
+    "tradeDate + plan identity/version + symbol",
+    "expected monitor schedule/runs for that deployed version",
+    "actual monitor run ids with startedAt/completedAt/status",
+    "per-run plan membership and quote/15m freshness quality",
+    "per-run final decision/action state or a lossless lifecycle transition receipt",
+    "same-symbol signal ids/types when emitted",
+    "first/last observed timestamps and explicit session-complete flag",
+    "reader exact-date pagination/count/truncation metadata",
+    "immutable generation/worker/comparator identity"
+  ],
+  "safeClassification": [
+    "BUY_SIGNAL_OBSERVED: positive same-symbol signal evidence.",
+    "NO_BUY_COMPLETE: only when expected-vs-actual monitor coverage and plan membership are complete and no BUY signal/action exists.",
+    "NO_BUY_UNKNOWN_COVERAGE: otherwise.",
+    "ACTUAL_FILL_UNKNOWN: unless trusted broker/order lifecycle exists."
+  ],
+  "consequence": "Historical selectedPlans=4/buyTriggeredPlans=1 does not establish a 25% plan-level BUY rate for a named date/cohort and cannot quantify 75% policy-caused idle capital.",
+  "engineeringBoundary": {
+    "offlineClassifierOnCertifiedReceipts": "CLASS_A",
+    "exhaustiveMonitorRunReceiptOrSharedPersistence": "CLASS_B_PROPOSAL_FIRST",
+    "entryRuleOrMonitorBehaviorChange": "CLASS_C"
+  },
+  "optimizationBridge": "No BUY-rule relaxation candidate can use NO_BUY frequency until lifecycle completeness is certified. Continue cause-specific falsification only on positive/complete evidence."
+}
