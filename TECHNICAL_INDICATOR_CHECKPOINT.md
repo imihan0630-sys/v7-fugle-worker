@@ -365,3 +365,96 @@ FORMAL_OPTIMIZATION_CANDIDATE = NONE
 ## Latest durable research commit
 
 - 5284845710e05d756b894071da62e2ffad05cf86 — preregistered residual return-velocity and signed-volume descriptors v0.1.
+
+
+## Continuation update — TI-051 through TI-079
+
+- Second-stage Factor-Zoo audit collapses more named indicators back into a small number of information families rather than expanding the catalog.
+- PPO is a normalized MACD/MA-spread representation and is retained only as a scale-normalization robustness comparator.
+- CMO is affine-equivalent to RSI when the gain/loss smoothing kernel matches: CMO = 2*RSI - 100. Different implementations change smoothing, not source-family identity. CMO is REJECTED_OR_REDUNDANT as a new family.
+- TSI is double-smoothed signed return divided by double-smoothed absolute return; it remains a highly redundant signed-return/momentum representation.
+- TRIX is one-period ROC of a triple-smoothed EMA; it is a filtered-trend robustness comparator, not a new information family.
+- Awesome Oscillator is a fast-minus-slow SMA spread on median price and is rejected as a new family.
+- DPO is a displaced historical cycle descriptor; conventional plotting does not extend to the present bar and creates a calculationAsOf vs plotCoordinate hazard. It is CYCLE_RESEARCH_ONLY / ROLE_MISMATCH_FOR_CURRENT_SELECTION.
+- Aroon yielded the only newly promoted residual question from this tranche: time since the most recent rolling extreme. Repository audit did not find a canonical general daysSinceHigh/daysSinceLow technical field.
+- Named Aroon signals are NOT promoted. Instead EXTREME_RECENCY_20 is preregistered using the existing 20-session structural window:
+  daysSinceHigh20 / daysSinceLow20 = eligible symbol sessions since the MOST RECENT equal rolling extreme; calendar gaps/suspensions do not count as ordinary bars.
+- EXTREME_RECENCY_20 has no universal bullish/bearish sign and must be tested after distance-to-high/low, Pattern lifecycle, resistance age, returns, trend, overheat, volatility, Price-Volume and regime controls.
+- Deterministic adversarial fixtures are frozen for same-distance/different-age, equal-high tie, new high today, verified suspension, pseudo-bar, corporate-action discontinuity, consecutive-limit-up and old-high/current-breakout cases.
+- Vortex is a DMI/ATR cousin: cross-bar high/low reach normalized by True Range. It is retained only as a DMI robustness comparator.
+- Ultimate Oscillator is multi-horizon close/true-range location with fixed 7/14/28 and 4:2:1 weights; high redundancy with closeLocation, ATR, KD/range-location and direct returns.
+- CMF is assigned to PRICE_VOLUME. It preserves within-bar close location weighted by volume and is a potentially richer compact comparator than OBV, but remains subordinate to the richer Price-Volume engine.
+- Raw ADL is cumulative and has arbitrary-start/permanent-shock issues; Chaikin Oscillator is a nested MACD-like filter of ADL. Neither is an independent technical vote.
+- Chaikin Volatility is ROC of smoothed high-low range and is rejected as a new factor versus ATR/BBW/range-compression.
+- Machine-readable redundancy registry extended with PPO/CMO/TSI/TRIX/Aroon/Vortex/UO/CMF/ADL/Chaikin families.
+- Internal dependency governance is now frozen: level, zone, crossover, slope, persistence, divergence and signal-line states derived from one parent indicator cannot be counted as independent votes by default.
+- RSI zone is a quantization of RSI level; MACD crossover/histogram/zero-line/slope are path transforms of DIF/signal; ADX strength labels derive from ADX; Bollinger squeeze/touch states derive from bands; Aroon-like labels derive from extreme-recency primitives.
+- Persistence may contain path-duration information but must prove incremental value conditional on the current parent level/state.
+- Divergence is PRICE_STRUCTURE x INDICATOR_STATE interaction evidence, not a new raw family; primary pivots remain owned by Pattern.
+- Threshold search inside one indicator is recognized as hidden multiple testing and is subject to the same overfit governance as cross-indicator Factor Zoo search.
+- New durable artifacts:
+  - research/TECHNICAL_INDICATOR_FACTOR_ZOO_AUDIT_V0_2.md
+  - research/TECHNICAL_INDICATOR_EXTREME_RECENCY_V0_1.md
+  - research/TECHNICAL_INDICATOR_INTERNAL_DEPENDENCY_V0_1.md
+  - research/technical_indicator_field_dependency_graph_v0_1.json
+  - updated research/technical_indicator_redundancy_registry_v0_1.json
+- No forward outcomes inspected, no threshold tuning, no runtime wiring, no FORMAL_OPTIMIZATION_CANDIDATE.
+- Formal Core remains LOCKED.
+
+### Updated information-family taxonomy
+
+A. RETURN / SIGNED CHANGE
+- RSI / CMO / TSI / ROC / Momentum / returnVelocityShift
+
+B. FILTERED TREND
+- MACD / PPO / APO / TRIX / Awesome Oscillator / MA slope
+
+C. RANGE LOCATION / POSITION
+- KD / Williams %R / Ultimate Oscillator / CCI / Bollinger %B
+
+D. DIRECTIONAL RANGE / TREND STRENGTH
+- DMI / ADX / Vortex
+
+E. VOLATILITY / DISPERSION
+- ATR / Bollinger width / Chaikin Volatility / realized volatility / range compression
+
+F. PRICE-VOLUME
+- OBV / signedVolumeBalance / MFI / CMF / ADL / Chaikin Oscillator
+
+G. STRUCTURAL RECENCY / TIME
+- EXTREME_RECENCY_20 (Aroon-derived primitive)
+
+H. POSITION MANAGEMENT / VISUALIZATION
+- Parabolic SAR / Heikin-Ashi / related stop overlays
+
+### Updated empirical priority
+
+Primary:
+1. KD vs RSI residual value
+2. MACD vs direct trend
+3. ADX vs direct trend quality
+4. BBW vs ATR / realized-vol / VCP
+
+After primary gates:
+5. EXTREME_RECENCY_20
+6. returnVelocityShift5v20
+7. signedVolumeBalance20 or CMF-style compact Price-Volume comparator under Price-Volume governance
+
+No other newly audited indicator receives a prospective outcome-testing priority.
+
+### Updated exact next continuation point
+
+1. Reconcile EXTREME_RECENCY_20 ownership against Pattern/Target-Resistance age semantics so one concept is not persisted twice under different names.
+2. If a research-only implementation is later built, reuse already-loaded daily history with zero extra market-data calls; do not wire to Worker.js/Formal.
+3. Treat research/technical_indicator_field_dependency_graph_v0_1.json as mandatory anti-double-counting metadata for new technical fields.
+4. Before any numeric System 2 technical weighting, require within-family aggregation/residualization so derived parent/child fields cannot multiply votes.
+5. Keep all work outcome-blind until complete prospective parent coverage and the preregistered primary inference queue is ready.
+6. Formal Core remains unchanged.
+
+## Latest durable research commits
+
+- f2d72877deda8cfb9f0a0614306657d150235313 — Factor-Zoo audit v0.2 / filter-recency-price-volume derivatives.
+- 863fa3e4a5f402acfb5f50f527430e6f3351918e — extended machine-readable redundancy registry.
+- 42ad727af83b0e00482c38c5a1b34a8aa991c846 — EXTREME_RECENCY_20 specification/adversarial fixtures.
+- 5de68c6772dab98299f9de605ce8f667fdebae7c — indicator field dependency graph.
+- 50171a747f3395bfd5cfee6b9f2741636215a7ed — intra-indicator anti-double-counting governance.
