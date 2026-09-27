@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "COMMISSION_EVIDENCE_CLASSIFIER_V0_1",
+  "purpose": "Prevent net sizing research from assuming one universal commission rate or ignoring minimum-fee nonlinearity.",
+  "hierarchy": [
+    "ACTUAL: charged commission directly evidenced by broker statement/import or verified external record.",
+    "MODELED: broker-specific verified rate, minimum, calculation method, rounding policy, execution channel and executed notional are all known.",
+    "UNKNOWN: any required broker-specific schedule element is missing."
+  ],
+  "modeledFormula": "Only when verified calculationMethod=MAX_RATE_MINIMUM: apply broker-specified rounding to rate*executedNotional, then max with broker minimum. Other methods remain UNKNOWN until explicitly implemented.",
+  "prohibitions": [
+    "Do not infer the user's negotiated discount from TWSE notification/reference thresholds.",
+    "Do not assume a universal minimum commission.",
+    "Do not use signal/planned notional as executed notional for ACTUAL commission.",
+    "MODELED commission must not be labeled ACTUAL.",
+    "UNKNOWN commission must not be coerced to zero.",
+    "Rate+minimum alone is not enough when rounding/channel/schedule mechanics are not positively verified."
+  ],
+  "interactionWithSizing": "Alternative sizing can cross a broker minimum-fee kink; therefore same total deployment does not guarantee identical incremental commission.",
+  "status": "COMMISSION_PROVENANCE_FAIL_CLOSED / COMPLETE_BROKER_SCHEDULE_REQUIRED",
+  "formalCoreImpact": false
+}
