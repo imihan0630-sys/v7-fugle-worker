@@ -58,3 +58,55 @@ Until such coverage is positively observable:
 - actual fill remains a separate Confirmed Fill Ledger problem
 
 Formal Core unchanged. No FORMAL_OPTIMIZATION_CANDIDATE.
+
+
+## PR-049 — journalTradeStats is signal-path return, not realized P&L (2026-09-27)
+
+A source-level semantics audit of `journalTradeStats()` confirms:
+
+- entry = first persisted BUY signal `market_price`;
+- exit = first persisted SELL or STOP_LOSS signal `market_price` after that BUY;
+- return = signal-price percentage change;
+- OPEN episodes are excluded from completed win/loss/flat statistics;
+- ADD/REDUCE/PROFIT_CHECK remain recorded but do not alter the main return formula;
+- allocation amount/shares do not enter the return calculation;
+- broker fills, partial fills, fees and slippage do not enter.
+
+Therefore the correct name is:
+
+`SIGNAL_PATH_ROUND_TRIP_RETURN`.
+
+It must not be interpreted as:
+- realized broker return;
+- execution P&L;
+- allocation/sizing P&L;
+- unbiased all-plan win probability.
+
+### Censoring
+
+The reported winRate and averageReturnPct are conditional on episodes that already produced both:
+1. a positive durable BUY signal row; and
+2. a later qualifying SELL/STOP_LOSS signal row.
+
+OPEN episodes are right-censored and excluded. The metric can therefore change simply because open episodes later terminate.
+
+### Portfolio Risk implication
+
+This metric cannot validate PriorityScore sizing because:
+- the main return is unweighted by allocation;
+- amount/shares are absent;
+- fill evidence is absent;
+- costs are absent.
+
+It remains useful as a signal-lifecycle diagnostic and as descriptive positive-event path evidence, provided the terminology and coverage limits are explicit.
+
+Artifact:
+`research/signal_path_return_semantics_v0_1.json`.
+
+Test:
+`tests/test_signal_path_return_semantics_v0_1.mjs`.
+
+Status:
+`SIGNAL_PATH_METRIC_ONLY / REALIZED_PNL_NOT_PROVEN / SIZING_VALIDATION_FORBIDDEN`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
