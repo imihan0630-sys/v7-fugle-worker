@@ -380,3 +380,30 @@ Machine guards:
 - `research/factor_promotion_population_scope_falsification_v0_1.json`
 - `research/factor_study_date_weighting_falsification_v0_1.json`
 - `research/factor_redundancy_selection_conditioning_falsification_v0_1.json`
+
+
+## Candidate-factor materiality boundary
+
+Current `researchPromotionGate()` identifies factor candidates when train/holdout spreads are both positive and row-count/global study gates pass.
+
+That is a directional persistence screen, not economic materiality.
+
+A factor with +0.01% train and +0.01% holdout spread passes the same sign rule as a much larger effect.
+
+Therefore future APIs/UI should distinguish:
+- `DIRECTIONALLY_PERSISTENT_RESEARCH_FACTOR`;
+- `COUNTERFACTUAL_MATERIALITY_READY`;
+- `FORMAL_OPTIMIZATION_CANDIDATE`.
+
+Only the first state is reachable from the existing sign test.
+
+Before the latter states:
+- exact ranking/admission change is frozen;
+- same-parent counterfactual displacement is measured;
+- coverage/zero-pick/pool effects are reported;
+- equal-date/OOS/LODO robustness is checked;
+- redundancy is tested in the compatible population;
+- candidate-specific modeled/actual cost impact is reported.
+
+Machine guard:
+`research/factor_candidate_materiality_falsification_v0_1.json`.
