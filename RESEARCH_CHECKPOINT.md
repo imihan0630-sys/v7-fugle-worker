@@ -1,7 +1,7 @@
 # Research Checkpoint
 
-Checkpoint sequence: B-226.
-Updated: 2026-09-27 22:19 Asia/Taipei.
+Checkpoint sequence: B-227.
+Updated: 2026-09-27 22:26 Asia/Taipei.
 
 > Canonical cursor for both A/B research schedules. Detailed B-01..B-123 evidence remains durable in Git history. Do not re-run completed work; continue from Exact next continuation point.
 
@@ -1749,3 +1749,15 @@ Updated: 2026-09-27 22:19 Asia/Taipei.
 - Durable artifact: `research/formal_pool_capital_scarcity_geometry_v0_1.json`, commit `f06651f672305c23293e5fc10980ac5822933e1a`.
 - Status: `STRUCTURAL_SCARCITY_DECOMPOSITION_FROZEN / CAUSAL_GATE_VALUE_UNKNOWN / NO_BUY_STILL_DATA_BLOCKED / ACTUAL_FILL_UNKNOWN / FORMAL_UNCHANGED`. No FORMAL_OPTIMIZATION_CANDIDATE.
 - Exact next: return upstream to the first nonblocked scarcity cause and identify which admission/setup/RR/grade/quota states can be assigned on the same scan without first-failure bias. Reuse the existing formal gate-overlap observer and B-217 quota accounting. Freeze an outcome-independent `SCARCITY_LAYER_VECTOR` contract that can carry multiple simultaneous causes per symbol/pool, rather than one fail-fast exclusion reason. Do not persist or change runtime; first prove the classifier can be computed from existing Class-A decision-state helpers.
+
+## B-227 — SCARCITY_LAYER_VECTOR freezes multi-cause blocker semantics without marginal-attribution leakage (2026-09-27 Asia/Taipei)
+- Continued B-226 exact-next. No new gate evaluator was invented: the contract composes existing validated Class-A `formal_gate_overlap_observer_v0_1`, `formal_gate_replay_v0_1`, semantic classifier, B-217 quota accounting and B-226 capital geometry.
+- Candidate scarcity is now represented as a vector rather than one reason: exact Formal firstFailure is preserved, while all same-scan observable gates retain PASS/FAIL/UNKNOWN/NOT_EVALUABLE. Derived `observedFailGates` may contain multiple blockers; UNKNOWN and dependent NOT_EVALUABLE never become FAIL.
+- Critical interpretation firewall: overlap counts are not marginal gate contributions. Example X fails LIQUIDITY+AB_SETUP, Y fails LIQUIDITY, Z fails AB_SETUP. Fail-fast counts are LIQUIDITY=2, AB_SETUP=1; overlap counts are 2 and 2; neither says removing a gate adds that many Selected names.
+- Single-gate replay remains bounded: `ALL_OTHER_OBSERVED_GATES_CLEAR` means only that all other currently observed states are clear under the frozen observer. It is not a recovered Formal candidate, selected rank, BUY, fill or marginal-alpha estimate. UNKNOWN/NOT_EVALUABLE states remain unresolved.
+- Vector layers now separate: gate-observed blockers; unique-observed-clear single-removal state; post-grade quota; ring-fence capital mapping; plan construction; intraday NO-BUY coverage; actual fill. This prevents gate scarcity, quota scarcity and downstream cash from being collapsed into one explanation.
+- Exact pool denominator rules remain B-217 authoritative: quota displacement only applies after formalOk=true; selectedCount=3 is right-censored unless full qualifiedCount is retained; CROSS_POOL_STRANDING needs an underfilled pool plus >3 qualified on the opposite side.
+- Durable artifact: `research/scarcity_layer_vector_v0_1.json`, commit `14938f9eacb095b3f48a6874043ab950e789aa23`.
+- Engineering: pure offline vector computation from existing observers = Class A feasible; persistence/runtime wiring = Class B proposal-first; gate/quota/capital change = Class C. No FORMAL_OPTIMIZATION_CANDIDATE.
+- Status: `MULTI_CAUSE_SCARCITY_CONTRACT_FROZEN / FIRST_FAILURE_NOT_MARGINAL / NO_BUY_COVERAGE_BLOCKED / FORMAL_UNCHANGED`.
+- Exact next: test the vector contract against the existing observer/replay test fixtures and formal gate dependency semantics. Identify which gates are independently observable versus prerequisite-dependent, and freeze a gate-family denominator matrix so future empirical scarcity rates never divide UNKNOWN/NOT_EVALUABLE rows into the wrong denominator. Do not add runtime wiring.
