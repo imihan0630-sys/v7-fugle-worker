@@ -33,6 +33,14 @@ helper=r'''function buildLiquidityAdmissionResearchAudit(f) {
   const liquidityExceptionPass=belowPrimaryMin===true
     ? (amountPass===true && spreadPass===true && goodDepth===true)
     : false;
+  const exceptionFailureReasons=[];
+  if(belowPrimaryMin===true && liquidityExceptionPass!==true) {
+    if(amountPass===false) exceptionFailureReasons.push("AVG_AMOUNT_BELOW_50M");
+    if(spreadPercent===null) exceptionFailureReasons.push("SPREAD_MISSING");
+    else if(spreadPass===false) exceptionFailureReasons.push("SPREAD_GT_0_5");
+    if(!depthEvidenceObserved) exceptionFailureReasons.push("DEPTH_EVIDENCE_MISSING");
+    else if(goodDepth===false) exceptionFailureReasons.push("DEPTH_NOT_GOOD");
+  }
   const marketCapYi=toNumber(f?.marketCapYi);
   const inst=institutionalScore(f);
   const smallCapSpecialPass=marketCapYi!==null && marketCapYi<30
@@ -58,6 +66,10 @@ helper=r'''function buildLiquidityAdmissionResearchAudit(f) {
     },
     belowPrimaryMin,
     liquidityExceptionPass,
+    exceptionFailureReasons,
+    formalMissingnessEffect:belowPrimaryMin===true && (spreadPercent===null || !depthEvidenceObserved)
+      ? "MISSING_EXCEPTION_INPUTS_CAUSE_FORMAL_EXCEPTION_FAILURE"
+      : "NO_MISSINGNESS_CAUSAL_CLAIM",
     institutionalScore:round(inst,2),
     smallCapSpecialPass,
     midCapExtraPass,
@@ -78,10 +90,20 @@ function buildLiquidityAdmissionRejectedResearch(features,sectorFor,scanDate) {
   const populationCounts={};
   const exceptionPassCounts={GENERAL:0,THOUSAND:0};
   const coverageCounts={COMPLETE:0,PARTIAL:0,ABSENT:0};
+  const belowPrimaryMinCoverageCounts={COMPLETE:0,PARTIAL:0,ABSENT:0};
+  const belowPrimaryMinFailureReasonCounts={};
+  let belowPrimaryMinTotal=0;
 
   for(const f of (Array.isArray(features)?features:[])) {
     const audit=buildLiquidityAdmissionResearchAudit(f);
     coverageCounts[audit.exceptionInputCoverage]=(coverageCounts[audit.exceptionInputCoverage]||0)+1;
+    if(audit.belowPrimaryMin===true) {
+      belowPrimaryMinTotal+=1;
+      belowPrimaryMinCoverageCounts[audit.exceptionInputCoverage]=(belowPrimaryMinCoverageCounts[audit.exceptionInputCoverage]||0)+1;
+      for(const reason of (audit.exceptionFailureReasons||[])) {
+        belowPrimaryMinFailureReasonCounts[reason]=(belowPrimaryMinFailureReasonCounts[reason]||0)+1;
+      }
+    }
     const pool=(toNumber(f?.close)||0)>=THOUSAND_STOCK_PRICE?"THOUSAND":"GENERAL";
     if(audit.liquidityExceptionPass===true) exceptionPassCounts[pool]+=1;
     const result=scoreCandidate(f,sectorFor(f));
@@ -115,7 +137,11 @@ function buildLiquidityAdmissionRejectedResearch(features,sectorFor,scanDate) {
   return {
     schemaVersion:"liquidity-admission-rejected-shadow-v0.1",
     researchOnly:true,decisionImpact:false,outcomeSelected:false,
-    populationCounts,exceptionPassCounts,exceptionInputCoverageCounts:coverageCounts,
+    populationCounts,exceptionPassCounts,
+    exceptionInputCoverageCounts:coverageCounts,
+    belowPrimaryMinTotal,
+    belowPrimaryMinExceptionInputCoverageCounts:belowPrimaryMinCoverageCounts,
+    belowPrimaryMinFailureReasonCounts,
     samples
   };
 }'''
@@ -172,6 +198,9 @@ replace_once(
       populationCounts:liquidityRejected.populationCounts,
       exceptionPassCounts:liquidityRejected.exceptionPassCounts,
       exceptionInputCoverageCounts:liquidityRejected.exceptionInputCoverageCounts,
+      belowPrimaryMinTotal:liquidityRejected.belowPrimaryMinTotal,
+      belowPrimaryMinExceptionInputCoverageCounts:liquidityRejected.belowPrimaryMinExceptionInputCoverageCounts,
+      belowPrimaryMinFailureReasonCounts:liquidityRejected.belowPrimaryMinFailureReasonCounts,
       outcomeSelected:false,decisionImpact:false
     },
     policy:''',
