@@ -19,6 +19,12 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 
 ## Current design decisions
 
+- Research-only storage design now includes candidate lifecycle/re-entry receipts; incremental SQLite syntax validation passed. No strategy-specific invalidation threshold or live behavior was changed.
+
+- Candidate lifecycle verification PASS: a surviving strategy membership can retain a symbol; no surviving observation-value membership fails closed for pool states; SIM_FILLED -> POSITION_MONITOR separation works; terminal episodes cannot reopen; re-entry requires a new candidateEpisodeId.
+
+- Candidate lifecycle contract V0.1 implemented from owner-approved persistence rules: membership-aware daily retention, terminal episode immutability, new episode on re-entry, and POSITION_MONITOR separation from candidate capacity.
+
 - Research-only storage design now includes `s2_strategy_ordering_receipts` and `s2_capacity_runs`; serializers and incremental SQLite syntax checks passed. No production database/runtime deployment occurred.
 
 - Ranking research plan V0.1 preregistered: strategy-local baseline -> entry-readiness increment -> confluence increment -> regime priority -> incumbent replacement -> multi-strategy overlap -> concentration. CAPACITY_OVERFLOW names are mandatory control cohorts.
