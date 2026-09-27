@@ -897,3 +897,43 @@ Status:
 `INITIAL_BUY_TRIGGER_STRUCTURALLY_ALLOCATION_INVARIANT / EXECUTION_NOT_INVARIANT`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-046 — counterfactual initial-BUY orderability gate (2026-09-27)
+
+PR-045 proved the initial BUY trigger predicate is structurally independent of PriorityScore/allocation sizing. PR-046 addresses the next execution question:
+
+`If the trigger is shared, can the alternative allocator actually place at least one share at that trigger?`
+
+Current source semantics:
+- plan preview firstShares uses `sharesFor(firstAmount,buyHigh)`;
+- live BUY push recomputes suggestedShares using `sharesFor(signal.amount,currentPrice)`;
+- `sharesFor = floor(amount/price)`.
+
+Therefore counterfactual execution must **not** copy the current plan's precomputed firstShares.
+
+For a shared observed BUY trigger:
+1. take the alternative allocator's allocation;
+2. apply the frozen first-tranche ratio (60%);
+3. use the observed trigger price;
+4. recompute `floor(firstAmount / triggerPrice)`.
+
+If that result is zero, the counterfactual is non-orderable at that trigger and execution comparison fails closed for that name.
+
+This still does not certify:
+- fill probability;
+- identical fill price;
+- partial fill;
+- slippage/fees;
+- ADD execution.
+
+Executable research gate:
+`research/counterfactual_initial_buy_orderability_v0_1.mjs`.
+
+Contract:
+`research/counterfactual_initial_buy_orderability_contract_v0_1.json`.
+
+Status:
+`ORDERABILITY_GATE_READY / FILL_MODEL_STILL_BLOCKED`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
