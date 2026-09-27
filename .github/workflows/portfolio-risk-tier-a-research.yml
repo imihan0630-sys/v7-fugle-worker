@@ -72,6 +72,10 @@ on:
       - "research/exhaustive_grid_risk_optima_spec_v0_1.json"
       - "tests/test_exhaustive_grid_risk_optima_v0_1.mjs"
       - "tests/portfolio_risk_exhaustive_grid_optima_readonly_audit.mjs"
+      - "research/entry_reference_risk_sensitivity_v0_1.mjs"
+      - "research/entry_reference_risk_sensitivity_spec_v0_1.json"
+      - "tests/test_entry_reference_risk_sensitivity_v0_1.mjs"
+      - "tests/portfolio_risk_entry_reference_sensitivity_readonly_audit.mjs"
       - "tests/test_sizing_quantization_cascade_v0_1.mjs"
       - "tests/portfolio_risk_sizing_quantization_readonly_audit.mjs"
       - "tests/test_portfolio_risk_reconstructability_v0_1.mjs"
@@ -118,6 +122,7 @@ jobs:
           node tests/test_sizing_quantization_cascade_v0_1.mjs
           node tests/test_grid_constrained_equal_risk_v0_1.mjs
           node tests/test_exhaustive_grid_risk_optima_v0_1.mjs
+          node tests/test_entry_reference_risk_sensitivity_v0_1.mjs
       - name: Read-only production journal coverage audit
         env:
           V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
@@ -130,3 +135,4 @@ jobs:
           node tests/portfolio_risk_sizing_quantization_readonly_audit.mjs
           node tests/portfolio_risk_grid_equal_risk_readonly_audit.mjs
           node tests/portfolio_risk_exhaustive_grid_optima_readonly_audit.mjs
+          node tests/portfolio_risk_entry_reference_sensitivity_readonly_audit.mjs
