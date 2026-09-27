@@ -2741,3 +2741,40 @@ Status:
 `HHI_ARTIFACT_FALSIFIED / METRIC_DIRECTION_ROBUST / OPTIMUM_OBJECTIVE_SENSITIVE / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-063 — per-name cap creates a separate non-redistributed reserve channel (2026-09-28)
+
+Source audit of `allocateAndBuildPlans()` confirms the sequence:
+
+`rawRatio = deployRatio × scoreShare`
+
+then
+
+`ratio = min(35%, rawRatio)`
+
+then each name is independently floored to NT$1,000.
+
+There is no second redistribution pass for clipped score weight.
+
+Therefore the selected-count deployment ratio is an **upper target**, not a guaranteed planned deployment.
+
+Cap-binding score-share thresholds:
+- 1 selected: raw ratio is exactly 35%; no extra cap reserve;
+- 2 selected: one name binds above 58.333333% of selected score weight;
+- 3–6 selected: one name binds above 41.176471%.
+
+A deterministic hypothetical shows the mechanism:
+scores 100/50/50 with NT$200,000 capital and 3 selected names imply an 85% nominal target (NT$170,000), but the top name is clipped from 42.5% to 35%. The clipped score weight creates NT$15,000 cap-induced reserve; NT$1,000 floors add another NT$1,000 reserve, leaving NT$154,000 planned.
+
+This is not automatically a defect. It may be desirable risk control. The research question is whether this implicit extra cash materially contributes to under-deployment and whether the forgone exposure is economically justified.
+
+Artifacts:
+`research/score_cap_reserve_v0_1.mjs`;
+`research/score_cap_reserve_spec_v0_1.json`;
+`tests/portfolio_risk_score_cap_reserve_readonly_audit.mjs`.
+
+Status:
+`CAP_RESERVE_MECHANISM_PROVEN / PRODUCTION_OCCURRENCE_PENDING`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
