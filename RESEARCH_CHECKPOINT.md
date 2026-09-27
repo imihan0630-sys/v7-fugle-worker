@@ -1565,3 +1565,35 @@ Updated: 2026-09-27 11:38 Asia/Taipei.
 - Counterfactual remains open: if A grade-rejected rows show worse controlled path/MAE/stop/no-follow-through across dates/regimes, asymmetry may be economically justified. If they are comparable/better and grade materially drives scarcity/zero-pick, SIGNAL_GRADE_CHANNEL_REFORMULATION may later become a Class-C FORMAL_OPTIMIZATION_CANDIDATE. No threshold sweep is authorized.
 - No new FORMAL_OPTIMIZATION_CANDIDATE now. Status = FINAL_GRADE_ASYMMETRY_CONFIRMED / SHADOW_PREVALENCE_UNKNOWN / OUTCOME_MATERIALITY_UNKNOWN / FORMAL_UNCHANGED.
 - Exact next: continue pre-outcome scarcity accounting by auditing whether current funnel/summary counters can distinguish A_SETUP_PASS -> RR_PASS -> FINAL_GRADE_PASS from B_SETUP_PASS -> RR_PASS -> FINAL_GRADE_PASS without bounded Shadow inference. If not, freeze the minimal channel-stage denominator receipt and test whether it can be computed from already-loaded decision states as isolated Class A; shared persistence/wiring remains Class B proposal-first. Then audit whether grade labels are used downstream for monitoring/capital/push beyond eligibility/ranking, because any hidden downstream use changes the causal influence map.
+
+
+## B-216 — A/B sequential scarcity denominator and downstream signal-grade influence frozen (2026-09-27 Asia/Taipei)
+- Continued B-215 exact-next without outcome lookup, threshold tuning or Formal/runtime trading changes.
+- Current summary counters are insufficient for channel-specific scarcity accounting:
+  - `baseEligible` is an early-admission aggregate, not A/B setup-pass;
+  - `rrEligible` is aggregate across channels after all intervening gates, not A-RR/B-RR;
+  - `channelCounts` counts only final `scoreCandidate.ok=true` rows after final grade;
+  - `conditionDistribution` recomputes A/B checks on the broader basePassed population and includes rows that may have first-failed earlier financial/event/valuation/sector gates.
+- Implemented and validated pure Class-A `research/channel_stage_denominator_observer_v0_1.mjs`. It consumes already-observed same-scan gate states only, makes zero market calls, writes nothing and has no Formal decision impact.
+- Sequential receipt preserves:
+  - raw A-pass / raw B-pass / dual-pass diagnostics;
+  - Formal channel assignment only after every pre-setup gate is clear, with current B-over-A dual-pass precedence;
+  - post-setup fundamental-count / fundamental-quality / ATR pass;
+  - TARGET_PASS;
+  - RR_PASS;
+  - FINAL_GRADE_PASS;
+  - original FORMAL_QUALIFIED and external SELECTED flag.
+- Important semantic guard: `A_SETUP_PASS -> RR_PASS` is not treated as adjacent. Fundamental quality, ATR and target availability remain explicit intervening stages. UNKNOWN/dependent NOT_EVALUABLE never become PASS/FAIL.
+- Negative-control invariant frozen: a valid Formal B-assigned row that reaches RR_PASS should have structural zero FINAL_GRADE_FAIL under current B setupQuality envelope and grade>=65 threshold. Nonzero incidence is a provenance/version/observer defect signal, not evidence to tune the threshold.
+- Downstream whole-repo audit found one additional direct use of the Formal `signalLevel` label after selection: `compareResults()` sorts intraday monitor rows first by current live action state, then by plan signalLevel A>B>C, before priorityScore/RR/sector/RS. Since `runBackgroundMonitor()` processes sorted results sequentially, signalLevel can affect monitor/display and notification processing order when action state ties.
+- No direct Formal signalLevel label gate was found in `evaluatePullback`, `evaluateMomentum`, `buildFinalDecision`, `evaluateOperationSignals`, allocation ratio, STOP/SELL/REDUCE conditions or phone-push eligibility. Underlying setupQuality still has the already-audited eligibility/score/comparator/capital influence; the label itself adds monitor-order influence.
+- Formal live `monitorStatus.grade` A/B/C is a separate action-urgency object and must not be confused with selection `signalLevel`.
+- Durable artifacts:
+  - `research/channel_stage_denominator_observer_v0_1.mjs`
+  - `research/channel_stage_denominator_spec_v0_1.json`
+  - `research/signal_grade_downstream_usage_audit_v0_1.json`
+  - tests + dedicated CI.
+- PR #134 passed Channel Stage Denominator Research, V8 Repair CI and V8 Regression Tests and was squash-merged at `ce4354ba44f10b5f37f4a6ff160b88fc35aa9899`.
+- Status: `CURRENT_SUMMARY_INSUFFICIENT / CHANNEL_STAGE_DENOMINATOR_CLASS_A_VALIDATED / SIGNAL_GRADE_MONITOR_ORDER_INFLUENCE_CONFIRMED / OUTCOME_MATERIALITY_UNKNOWN / FORMAL_UNCHANGED`.
+- Persistence/runtime wiring of complete denominators remains Class B proposal-first; no such wiring was implemented.
+- Exact next: separate post-grade scarcity from gate scarcity. Audit complete-qualified population vs 3+3 selected population by price pool under the deployed comparator, quantify what existing evidence can and cannot say about quota/cutline displacement, and reuse existing Price-Volume pool-integrity/quota research rather than duplicating it. Keep outcomes closed until denominator and comparator-version provenance are clean.
