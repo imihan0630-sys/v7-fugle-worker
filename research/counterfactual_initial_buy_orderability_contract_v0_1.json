@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "COUNTERFACTUAL_INITIAL_BUY_ORDERABILITY_V0_1",
+  "observedAt": "2026-09-27T21:43:00+08:00",
+  "sourceSemantics": {
+    "planPreview": "allocateAndBuildPlans computes firstShares with sharesFor(firstAmount,buyHigh)",
+    "livePush": "buildPushPayload recomputes suggestedShares for BUY/ADD as sharesFor(signal.amount,currentPrice)",
+    "sharesFor": "floor(amount/price)"
+  },
+  "consequence": "Execution counterfactual must recompute shares at the observed shared BUY trigger price using the alternative allocator's first-tranche amount; plan firstShares cannot be reused.",
+  "firstTrancheRatio": 0.6,
+  "failClosed": [
+    "missing comparator allocation",
+    "missing/invalid observed BUY trigger price",
+    "invalid first-tranche ratio",
+    "counterfactual suggestedShares == 0 marks the allocator/name non-orderable at that trigger"
+  ],
+  "notCertified": [
+    "fill probability",
+    "fill price equality",
+    "partial fill",
+    "slippage",
+    "fees",
+    "ADD execution"
+  ],
+  "status": "ORDERABILITY_GATE_READY / FILL_MODEL_STILL_BLOCKED",
+  "formalCoreImpact": false
+}
