@@ -8,7 +8,7 @@ Formal Core: LOCKED
 - DL-003H/J Generic short-term reversal: standalone factor rejected as redundant with A setup + 15m confirmation; genuine residual question is pullback-origin context, which is cross-lane/data-gated.
 - DL-003A Market-state continuation vs transition: mechanism and current-system gap defined.
 - DL-003B Momentum Gap: Taiwan-specific negative evidence => rejected from current research priority.
-- DL-003C Extreme Absolute Strength: Taiwan evidence positive, but high redundancy with existing lateStage/overheat; incremental test required.
+- DL-003C Extreme Absolute Strength: Taiwan mechanism remains relevant, but a new generic factor is now REJECTED_OR_REDUNDANT after exact overlap audit. Existing lateStage/B-ret20 boundaries and overheatPenaltyResearch remain the falsification targets.
 - DL-003D/F Momentum Persistency construct audit: existing persistenceScoreResearch is own-path trend consistency, not Chen-Hsieh-Lee cross-sectional rank duration. Prospective ret60 rank-retention spec frozen; no historical backfill.
 
 ## Durable findings
