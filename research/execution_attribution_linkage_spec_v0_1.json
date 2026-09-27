@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "EXECUTION_ATTRIBUTION_LINKAGE_V0_1",
+  "observedAt": "2026-09-27T23:30:00+08:00",
+  "distinction": {
+    "ledgerValidity": "Can maintain append-only actual position state if the Confirmed Fill Ledger event itself is valid.",
+    "attributionEligibility": "Can be used to attribute realized execution economics to a specific durable Formal BUY/ADD/REDUCE/SELL signal."
+  },
+  "rule": {
+    "unlinkedFill": "LEDGER_USABLE / UNATTRIBUTED_EXECUTION / EXCLUDED_FROM_SIZING_ECONOMICS",
+    "linkedFillRequirements": [
+      "fill.signalEventId exactly matches durable signal event id",
+      "action compatible with signal type",
+      "symbol exact match",
+      "planScanDate exact match",
+      "fill effectiveAt >= signal occurredAt"
+    ],
+    "compatibleTypes": {
+      "BUY": [
+        "BUY"
+      ],
+      "ADD": [
+        "ADD"
+      ],
+      "REDUCE": [
+        "REDUCE"
+      ],
+      "SELL": [
+        "SELL",
+        "STOP_LOSS"
+      ]
+    }
+  },
+  "proposalCorrection": "Confirmed Fill Ledger v0.2.1 may keep signalEventId optional for general ledger validity, but downstream sizing/execution attribution must require positive signal linkage for system-signal-driven economics.",
+  "status": "ATTRIBUTION_CLASSIFIER_READY / CLASS_B_LEDGER_PROPOSAL_NEEDS_RESEARCH_ELIGIBILITY_ADDENDUM",
+  "formalCoreImpact": false
+}
