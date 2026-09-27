@@ -407,3 +407,38 @@ Before the latter states:
 
 Machine guard:
 `research/factor_candidate_materiality_falsification_v0_1.json`.
+
+
+## Validated Class-A computation building blocks (2026-09-27)
+
+The proposal no longer needs to design the semantic computation layer from scratch. Three isolated research-only components have passed dedicated CI plus the full V8 Regression/Repair chains:
+
+1. `shadow_semantic_classifier_v0_1`
+   - complete per-pool Formal-qualified rank from frozen decision-state inputs;
+   - overlapping semantic memberships;
+   - denominators frozen before sample caps;
+   - zero market calls, zero D1 writes.
+
+2. `formal_gate_overlap_observer_v0_1`
+   - PASS / FAIL / UNKNOWN / NOT_EVALUABLE states;
+   - missing provenance never becomes FAIL;
+   - original Formal first failure/result is preserved;
+   - target-null does not become RR=0;
+   - zero market calls, zero D1 writes.
+
+3. `formal_gate_replay_v0_1`
+   - one-gate-at-a-time transition accounting;
+   - reports earlier blocker / next observed blocker / unresolved state;
+   - `ALL_OTHER_OBSERVED_GATES_CLEAR` is explicitly not a recovered Formal candidate;
+   - no ranking/quota/capital/outcome replay.
+
+Engineering consequence:
+- pure computation is Class A and proven;
+- shared Worker wiring, first-known capture, immutable parent persistence, keyset completeness and cross-table lineage remain Class B proposal-first;
+- changing a gate/order/threshold remains Class C owner approval.
+
+The flexible legacy `snapshot_json` column is not an acceptable shortcut for promotion-grade evidence. It can hold JSON, but legacy date-level delete/rewrite, single-cohort identity and missing immutable generation/parent linkage remain unresolved.
+
+Canonical feasibility receipt:
+`research/formal_gate_evidence_persistence_feasibility_v0_1.json`.
+
