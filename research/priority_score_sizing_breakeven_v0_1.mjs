@@ -2,7 +2,7 @@
 // Measures whether a current sizing rule adds realized P&L versus a same-deployment comparator.
 // It does not choose an allocator, estimate expected return, or change Formal behavior.
 
-function n(v){const x=Number(v);return Number.isFinite(x)?x:null}
+function n(v){if(v===null||v===undefined||String(v).trim()==="")return null;const x=Number(v);return Number.isFinite(x)?x:null}
 function round(v,d=6){if(!Number.isFinite(v))return null;const p=10**d;return Math.round(v*p)/p}
 function sym(v){return String(v??"").trim()}
 
