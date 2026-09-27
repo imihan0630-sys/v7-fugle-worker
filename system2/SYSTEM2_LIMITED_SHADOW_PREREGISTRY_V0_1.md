@@ -21,9 +21,10 @@ No System 1/V8 behavior changes.
 5. Valid thesis + TOO_EXTENDED（過度延伸） remains WATCH（觀察）, not REJECTED.
 6. Valid contradictory evidence may become CONFLICT（證據衝突） rather than forced BUY/SELL.
 7. Rank and totalScore remain NULL in V0.1.
-8. INCOMPLETE / WATCH / REJECTED records must be frozen, not only SELECTED records.
-9. No historical backfill from current snapshots.
-10. Outcomes never rewrite the frozen decision.
+8. BUY_ELIGIBLE（符合進場條件） maps to QUALIFIED_NOT_SELECTED（符合策略但尚未完成最終選擇） until a separate capacity/ranking layer enforces global max-12 and per-strategy max-3 rules.
+9. INCOMPLETE / WATCH / REJECTED / QUALIFIED_NOT_SELECTED records must all be frozen; do not preserve only winners.
+10. No historical backfill from current snapshots.
+11. Outcomes never rewrite the frozen decision.
 
 ---
 
