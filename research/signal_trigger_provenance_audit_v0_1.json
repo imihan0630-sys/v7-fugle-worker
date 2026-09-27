@@ -38,8 +38,24 @@
     "missingBuyRow": "UNKNOWN unless independent plan-level monitor/recorder completeness is proven.",
     "barReconstruction": "context only; 15m bar time/close cannot substitute for the contemporaneous quote market_price.",
     "signalShares": "not exact live suggestedShares; counterfactual orderability must recompute shares using observed market_price.",
-    "fills": "separate ACTUAL/MODELED fill evidence required."
+    "fills": "separate ACTUAL/MODELED fill evidence required.",
+    "completeNoBuy": "BLOCKED: requires plan-level monitor completeness or an explicit terminal no-entry event with recorder coverage proof."
   },
-  "status": "POSITIVE_BUY_SIGNAL_PRICE_DURABLE / NO_BUY_DENOMINATOR_UNCERTIFIED / LIVE_SUGGESTED_SHARES_NOT_PERSISTED / FILL_EVIDENCE_SEPARATE",
-  "formalCoreImpact": false
+  "status": "POSITIVE_BUY_SIGNAL_PRICE_DURABLE / V8_EXECUTION_CONTEXT_PARTIAL / NO_BUY_DENOMINATOR_UNCERTIFIED / FILL_EVIDENCE_SEPARATE",
+  "formalCoreImpact": false,
+  "v8ExecutionShadow": {
+    "table": "trade_research_execution_snapshots",
+    "eventTypes": [
+      "OPEN_BASELINE",
+      "FIRST_10M_COMPLETE",
+      "FIRST_15M_COMPLETE",
+      "FIRST_30M_COMPLETE",
+      "FORMAL_SIGNAL_OBSERVED"
+    ],
+    "coverageSemantics": "milestone/signal snapshots only; not every monitor tick and no explicit EOD NO_BUY terminal event",
+    "rowEligibility": "only result.ok rows are recorded",
+    "failureSemantics": "RESEARCH_EXECUTION_RECORDER_FAIL_OPEN; recorder failure cannot change Formal monitoring/signals",
+    "reader": "max 120 days, ORDER BY newest first, LIMIT 500; API returns recent rows slice(0,80)",
+    "noBuyConsequence": "Cannot prove whole-session per-plan monitor completeness or NO-BUY from absence of FORMAL_SIGNAL_OBSERVED."
+  }
 }
