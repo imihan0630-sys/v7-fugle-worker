@@ -113,6 +113,9 @@ export function classifyChannelStageRow({
   const firstPostSetupBlocker=setup.status==="PASS"?firstBlocker(observer,afterSetupIds):null;
 
   const invariants=[];
+  if(raw.dualPass===true){
+    invariants.push("A_B_DUAL_PASS_SHOULD_BE_STRUCTURAL_ZERO");
+  }
   if(formalChannel==="B"&&rrPass&&stageMap[CHANNEL_STAGE_GATES.GRADE]?.status==="FAIL"){
     invariants.push("B_RR_PASS_FINAL_GRADE_FAIL_SHOULD_BE_STRUCTURAL_ZERO");
   }
@@ -139,6 +142,7 @@ export function classifyChannelStageRow({
     selected:Boolean(selectedFlag),
     firstPostSetupBlocker,
     invariantViolations:invariants,
+    denominatorEligible:invariants.length===0,
     researchOnly:true,
     decisionImpact:false,
     formalCoreImpact:false
@@ -178,6 +182,7 @@ export function summarizeChannelStageDenominators(rows=[]){
   };
   const setupNotReached={FAIL:0,UNKNOWN:0,NOT_EVALUABLE:0,OTHER:0};
   const invariantViolations={};
+  let quarantinedInvariantRows=0;
 
   for(const row of items){
     const pool=byPool[row?.pool]?row.pool:"UNKNOWN";
@@ -186,6 +191,10 @@ export function summarizeChannelStageDenominators(rows=[]){
     if(row?.rawSetup?.dualPass===true) rawSetupByPool[pool].DUAL+=1;
 
     for(const inv of row?.invariantViolations||[]) bump(invariantViolations,inv);
+    if(row?.denominatorEligible===false){
+      quarantinedInvariantRows+=1;
+      continue;
+    }
 
     const channel=row?.formalChannel;
     if(channel!=="A"&&channel!=="B"){
@@ -222,9 +231,10 @@ export function summarizeChannelStageDenominators(rows=[]){
     byPool,
     setupNotReached,
     invariantViolations,
+    quarantinedInvariantRows,
     interpretation:{
       rawSetup:"Pattern geometry observed on the row; not necessarily reached under Formal fail-fast order.",
-      formalChannelAssigned:"All earlier ordered gates clear and AB_SETUP passes; B takes precedence on dual-pass rows.",
+      formalChannelAssigned:"All earlier ordered gates clear and exactly one valid A/B setup passes. Current A/B definitions are mathematically mutually exclusive; any dual-pass row is quarantined as an invariant violation even though production code defensively checks B first.",
       postSetupPrecisionPass:"Assigned channel also clears fundamental component count, fundamental quality and ATR before target evaluation.",
       targetPass:"Sequentially reached target and observed target available.",
       rrPass:"Sequentially reached RR and observed RR>=2.",
