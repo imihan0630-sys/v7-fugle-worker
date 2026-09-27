@@ -969,3 +969,94 @@ Status:
 `POSITIVE_BUY_SIGNAL_QUANTITY_RECONSTRUCTABLE / FILL_EVIDENCE_STILL_SEPARATE`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-057 — sizing quantization cascade: score weight is discretized twice before execution (2026-09-27)
+
+Formal post-selection capital does not flow continuously from PriorityScore into shares.
+
+The current chain is:
+
+1. continuous score-proportional allocation under the 35% per-name cap;
+2. planned allocation floored to NT$1,000;
+3. planned capital split into 60% FIRST + 40% ADD budgets;
+4. plan-preview shares floored at buyHigh.
+
+This creates two distinct pre-execution residuals:
+- allocation implementation shortfall from the NT$1,000 floor;
+- share-floor residual cash from integer-share conversion.
+
+The second residual is especially important for high-price names: it is a modular floor effect, not a smooth function of price. A lower trigger price can increase suggested shares yet leave a larger residual cash amount.
+
+Production 3006 already provides a concrete signal-side counterexample:
+- first budget = NT$42,000;
+- plan preview at buyHigh 287.08 -> 146 shares -> NT$86.32 residual;
+- live BUY signal at 282.5 -> 148 shares -> NT$190 residual.
+
+So “better/lower trigger price always improves capital utilization” is false under integer-share flooring.
+
+### Evidence boundary
+
+The new metric is:
+`PLAN_PREVIEW_SUGGESTED_NOTIONAL`.
+
+It is not:
+- submitted order notional;
+- filled notional;
+- actual deployed capital.
+
+Alternative allocators must use their own pre-registered quantization rule; continuous equal-capital/equal-risk allocations cannot be compared against current discrete shares without that extra step.
+
+Artifacts:
+`research/sizing_quantization_cascade_v0_1.mjs`;
+`research/sizing_quantization_cascade_spec_v0_1.json`;
+`tests/portfolio_risk_sizing_quantization_readonly_audit.mjs`.
+
+Status:
+`QUANTIZATION_CASCADE_READY / PRODUCTION_AUDIT_PENDING`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-057 Production result — share quantization does not explain away current risk concentration
+
+Read-only Production run `36331652461` / job `108654620345` applied the frozen quantization cascade to 2026-09-18.
+
+Current PriorityScore sizing:
+- nominal deploy target = NT$170,000;
+- planned allocation after NT$1,000 flooring = NT$168,000;
+- plan-preview suggested notional after integer-share flooring = NT$167,471.13;
+- NT$1,000-floor shortfall = NT$2,000;
+- share-floor residual = NT$528.87;
+- total nominal-to-preview shortfall = NT$2,528.87.
+
+Risk concentration:
+- planned projected-stop-risk HHI = 0.37723809;
+- current plan-preview HHI = 0.37670778.
+
+So integer-share flooring slightly attenuates current HHI by only 0.00053031 (~0.14% relative).
+
+Applying the same share-floor rule to same-deployment equal capital:
+- preview HHI = 0.35538974;
+- current minus equal-capital HHI = +0.02131804 (~6.00% above the comparator);
+- current preview projected stop-risk is NT$164.45 higher.
+
+Applying the same share-floor rule to the continuous 35%-cap equal-risk diagnostic:
+- preview HHI = 0.33428138;
+- current minus comparator HHI = +0.04242640 (~12.69% above the comparator);
+- current preview projected stop-risk is NT$520.70 higher.
+
+Therefore the explanation:
+`current risk concentration is mainly a share-floor / price-quantization artifact`
+is rejected on the 2026-09-18 witness.
+
+Important caveat:
+the capped equal-risk comparator is still continuous at the **allocation** layer. PR-057 only adds share/tranche quantization to it. A true NT$1,000-grid same-deployment comparator remains the next structural falsification.
+
+Durable receipt:
+`research/sizing_quantization_production_receipt_20260928.json`.
+
+Status:
+`SHARE_QUANTIZATION_EXPLANATION_FALSIFIED_ON_WITNESS / GRID_EQUAL_RISK_NEXT / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
