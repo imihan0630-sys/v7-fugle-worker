@@ -611,6 +611,82 @@
         "CORRELATED_COMPONENT_VOTING",
         "DOUBLE_COUNTING"
       ]
+    },
+    {
+      "id": "PARKINSON_VOL20",
+      "owner": "VOLATILITY_RISK",
+      "family": "OHLC_RANGE_VOLATILITY",
+      "status": "ROBUSTNESS_COMPARATOR",
+      "derivedFrom": [
+        "HIGH",
+        "LOW"
+      ],
+      "hazards": [
+        "OVERNIGHT_GAP_BLIND"
+      ]
+    },
+    {
+      "id": "GARMAN_KLASS_VOL20",
+      "owner": "VOLATILITY_RISK",
+      "family": "OHLC_RANGE_VOLATILITY",
+      "status": "ROBUSTNESS_COMPARATOR",
+      "derivedFrom": [
+        "OPEN",
+        "HIGH",
+        "LOW",
+        "CLOSE"
+      ],
+      "hazards": [
+        "PREVIOUS_CLOSE_GAP_BLIND"
+      ]
+    },
+    {
+      "id": "ROGERS_SATCHELL_VOL20",
+      "owner": "VOLATILITY_RISK",
+      "family": "OHLC_RANGE_VOLATILITY",
+      "status": "ROBUSTNESS_COMPARATOR_YZ_COMPONENT",
+      "derivedFrom": [
+        "OPEN",
+        "HIGH",
+        "LOW",
+        "CLOSE"
+      ],
+      "hazards": [
+        "PREVIOUS_CLOSE_GAP_BLIND"
+      ]
+    },
+    {
+      "id": "YANG_ZHANG_VOL20",
+      "owner": "VOLATILITY_RISK",
+      "family": "OHLC_RANGE_VOLATILITY",
+      "status": "WORTH_VOLATILITY_FALSIFICATION",
+      "derivedFrom": [
+        "PREVIOUS_CLOSE",
+        "OPEN",
+        "HIGH",
+        "LOW",
+        "CLOSE"
+      ],
+      "dataGuards": [
+        "OBSERVED_OHLC_PROVENANCE",
+        "TECHNICAL_CONTINUITY",
+        "SYMBOL_SESSION",
+        "PRICE_LIMIT_STATE"
+      ]
+    },
+    {
+      "id": "OVERNIGHT_VARIANCE_SHARE20",
+      "owner": "VOLATILITY_RISK",
+      "family": "VOLATILITY_COMPOSITION",
+      "status": "DIAGNOSTIC_HYPOTHESIS",
+      "derivedFrom": [
+        "YANG_ZHANG_OVERNIGHT_VARIANCE",
+        "YANG_ZHANG_TOTAL_VARIANCE"
+      ],
+      "dataGuards": [
+        "OBSERVED_OPEN_PROVENANCE",
+        "TECHNICAL_CONTINUITY"
+      ]
     }
   ],
   "outcomeInferenceQueue": [
@@ -625,6 +701,8 @@
     "EXTREME_RECENCY_20",
     "PATH_EFFICIENCY_10",
     "RETURN_VELOCITY_SHIFT_5V20",
-    "SIGNED_VOLUME_BALANCE20_OR_CMF_INCREMENTAL_VALUE_AFTER_PRICE_VOLUME"
+    "SIGNED_VOLUME_BALANCE20_OR_CMF_INCREMENTAL_VALUE_AFTER_PRICE_VOLUME",
+    "YANG_ZHANG_VOL20_VS_CLOSE_VOL20_ATR_BBW",
+    "OVERNIGHT_VARIANCE_SHARE20_RISK_COMPOSITION"
   ]
 }
