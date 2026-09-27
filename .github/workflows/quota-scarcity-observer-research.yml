@@ -1,0 +1,27 @@
+name: Quota Scarcity Observer Research
+
+on:
+  push:
+    paths:
+      - "research/quota_scarcity_observer_v0_1.mjs"
+      - "research/quota_scarcity_observer_spec_v0_1.json"
+      - "tests/test_quota_scarcity_observer_v0_1.mjs"
+      - "QUOTA_SCARCITY_OBSERVER_RESEARCH.md"
+      - ".github/workflows/quota-scarcity-observer-research.yml"
+  pull_request:
+    paths:
+      - "research/quota_scarcity_observer_v0_1.mjs"
+      - "research/quota_scarcity_observer_spec_v0_1.json"
+      - "tests/test_quota_scarcity_observer_v0_1.mjs"
+      - "QUOTA_SCARCITY_OBSERVER_RESEARCH.md"
+      - ".github/workflows/quota-scarcity-observer-research.yml"
+
+jobs:
+  research:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node tests/test_quota_scarcity_observer_v0_1.mjs

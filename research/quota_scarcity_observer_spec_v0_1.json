@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "QUOTA_SCARCITY_OBSERVER_SPEC_V0_1",
+  "researchDate": "2026-09-27",
+  "status": "CLASS_A_PURE_OBSERVER",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "reuses": [
+    "research/shadow_semantic_classifier_v0_1.mjs",
+    "research/post_grade_quota_scarcity_accounting_v0_1.json",
+    "research/quota_scarcity_observer_feasibility_v0_1.json"
+  ],
+  "adds": [
+    "complete per-pool qualifiedCount / selectedCount / unusedSlots",
+    "full rank4+ qualified-not-selected population on a complete same-scan parent",
+    "CUTLINE_SELECTED rank3 and CUTLINE_NEXT rank4 comparator tuples",
+    "crossPoolStranding classification",
+    "negative-control invariant that selected flags equal deployed top-N ranks within each pool"
+  ],
+  "failClosed": "completeSameScanPopulation must be explicitly true; otherwise state=UNKNOWN_INCOMPLETE_PARENT and no quota prevalence is inferred.",
+  "comparator": "PRIORITY_RR_CONSENSUS_SETUP_SECTOR_RS_7_5_30",
+  "noScalarMargin": "Comparator is lexicographic; do not invent a scalar rank distance across heterogeneous comparator fields.",
+  "historicalBoundary": "Legacy bounded QNS/Shadow cannot set completeSameScanPopulation=true.",
+  "engineering": {
+    "pureObserver": "CLASS_A",
+    "fullPoolPersistence": "CLASS_B_PROPOSAL_FIRST via PVE-156 owner",
+    "quotaOrBackfillChange": "CLASS_C_OWNER_APPROVAL"
+  },
+  "decision": "PURE_QUOTA_SCARCITY_OBSERVER_READY / HISTORICAL_PREVALENCE_STILL_UNKNOWN / FORMAL_UNCHANGED / NOT_FORMAL_OPTIMIZATION_CANDIDATE"
+}
