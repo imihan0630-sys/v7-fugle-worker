@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "SIZING_QUANTIZATION_CASCADE_V0_1",
+  "observedAt": "2026-09-27T23:55:00+08:00",
+  "purpose": "Measure how Formal continuous score-proportional capital is discretized before any broker execution.",
+  "layers": [
+    {
+      "id": "SCORE_TO_CONTINUOUS",
+      "formula": "totalCapital * min(35%, deployRatio*PriorityScore/sumPriorityScore)"
+    },
+    {
+      "id": "THOUSAND_FLOOR",
+      "formula": "floor(continuousAllocation/1000)*1000",
+      "effect": "allocation implementation shortfall"
+    },
+    {
+      "id": "TRANCHE_SPLIT",
+      "formula": "round(plannedAllocation*0.60) + remainder",
+      "effect": "default FIRST/ADD budget split"
+    },
+    {
+      "id": "SHARE_FLOOR_PREVIEW",
+      "formula": "floor(trancheAmount/buyHigh)",
+      "effect": "plan-preview residual cash"
+    }
+  ],
+  "caveats": [
+    "plan-preview suggested notional is not a submitted order or fill",
+    "actual BUY/ADD signal recomputes shares at trigger currentPrice",
+    "actual fill can differ further through user order size, partial fill, price and slippage",
+    "comparator allocators require their own frozen quantization rule before economic comparison"
+  ],
+  "productionWitness": "3006 positive BUY already proves preview shares (146) can differ from live suggestedShares (148), and lower trigger price can still leave a larger cash remainder because integer-share residual is non-monotonic.",
+  "status": "QUANTIZATION_CASCADE_READY / PRODUCTION_AUDIT_PENDING",
+  "formalCoreImpact": false
+}
