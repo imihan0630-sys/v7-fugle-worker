@@ -301,6 +301,7 @@ jobs:
           node tests/test_v8_12_0_history_source_revalidation_contract.mjs
           node tests/test_v8_13_0_priority_score_provenance.mjs
           node tests/test_v8_14_0_sector_gate_provenance.mjs
+          node tests/test_reject_reason_stratified_shadow.mjs
           node tests/test_v8_9_0_three_pool_hybrid_shadow.mjs
           node tests/test_v8_9_1_three_pool_dashboard.mjs
           node tests/github_plan_mirror.mjs self-test
