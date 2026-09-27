@@ -35,6 +35,12 @@
 - 仍受 Shadow cohort semantic / immutable provenance guard 約束；pool matching 不代表 cohort quality 已修復。
 - Machine preregistration：`research/r02_pool_matching_falsification_v0_1.json`.
 
+
+- **R02 outcome-quality guard**：D1/D3/D5/D10/D20、MFE/MAE、breakout hold/failure 只有在 symbol-session continuity 與 corporate-action continuity 有版本化證據時才可進 promotion-grade 統計。Generic `v7_history_cache` 的 next-available-bar slicing 不足以證明這件事。
+- Current V8.12 history cache 為 `adjusted=false` raw daily candles；split / capital reduction 等不可直接用 raw close ratio 當策略報酬。Cash-dividend 則需預註冊 price-return vs total-return 口徑。
+- 來源語意直接重用 History Source Revalidation、Corporate Actions / Symbol-Session 與 PV quality-overlay；R02 不自行從缺K或價差猜停牌／除權息。
+- Machine guard：`research/r02_outcome_provenance_falsification_v0_1.json`.
+
 ## R03 產業輪動與 Persistence
 - 假說：強勢產業 Top5 的連續留榜與市場 Regime transition 可能影響個股動能延續。
 - 固定觀察：相鄰正式研究日 Top5 產業重疊率、各產業 Top5 最長連續天數、Regime transition count。
