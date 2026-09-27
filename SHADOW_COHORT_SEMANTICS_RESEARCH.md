@@ -171,3 +171,21 @@ Machine artifact:
 
 Status:
 `PROTOTYPE_SYMBOL_TIEBREAK_FALSIFIED / EXACT_TIE_LINEAGE_FAIL_CLOSED / FORMAL_UNCHANGED`.
+
+
+### SC-TIE-002 — comparator completeness is pool-level, not row-level
+
+A second falsification tightens SC-TIE-001.
+
+Absolute pool rank is a **joint** estimand. If any Formal-qualified competitor in the same price pool is missing one comparator input, that competitor's true position is unknown and can shift the ranks of otherwise complete rows.
+
+Therefore:
+- one incomplete qualified row makes exact `formalPoolRank` UNKNOWN for **all** qualified rows in that pool;
+- those rows are tagged `POOL_RANK_INPUT_INCOMPLETE`;
+- another independent price pool with complete inputs remains certifiable;
+- descriptive `observedPoolRank` may still be shown, but cannot be promoted to Formal-exact rank.
+
+This prevents a subtle false-certification where only the incomplete row was nulled while its complete peers retained exact-looking ranks.
+
+Status:
+`POOL_LEVEL_RANK_INTEGRITY_FAIL_CLOSED / FORMAL_UNCHANGED`.
