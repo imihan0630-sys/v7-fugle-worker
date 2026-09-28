@@ -49,7 +49,7 @@ Implemented and physically verified:
 - write/read sentinel verification and replay-safe persistence;
 - no System 1 / V8 production D1 reuse.
 
-Physical qualification note: isolated D1 schema V1.0 migration plus write/read verification passed in GitHub run `36434206278`. The isolated R2 bucket and credentials have not yet been provisioned/read back. V0.9 inline smoke packs remain read-compatible, but new multi-year backfill is routed only through the external cold-object path and is manual-only until isolated R2 credentials exist.
+Physical qualification note: isolated D1 schema V1.0 migration plus write/read verification passed in GitHub run `36434206278`. The isolated R2 bucket `system2-historical-research` and least-privilege object credentials are now provisioned. Bounded external R2 physical readback run `36488764511` PASS with official TWSE/TPEx data, exact object SHA-256 verification, unpack verification and create-only rerun checks. V0.9 inline smoke packs remain read-compatible, but new multi-year backfill is routed only through the external cold-object path and remains staged/manual-only by year.
 
 Existing schema already contains:
 - factor snapshots;
@@ -183,7 +183,7 @@ The production-quality research path now externalizes compressed bytes:
 - `createHistoricalColdBacktestLoadersV0_1` connects D1 survivorship-registry membership and R2 cold packs to the existing partitioned Bulk Backtest Runner;
 - historical-universe registries now have rerun-safe immutable persistence and completion receipts.
 
-The 2017 annual backfill workflow is manual-only and requires a separately isolated R2 bucket plus least-privilege object read/write credentials. No R2 resource or 2017 full-market cold backfill is claimed complete yet.
+The 2017 annual backfill workflow remains manual-only. The isolated R2 bucket plus least-privilege object read/write credentials are now physically qualified; the 2017 full-market cold backfill itself is not yet claimed complete.
 
 PR #245 qualification evidence:
 - System2 Research CI run `36434552698` PASS;
@@ -191,7 +191,7 @@ PR #245 qualification evidence:
 - isolated D1 schema V1.0 physical smoke run `36434206278` PASS;
 - bounded official-source V0.9 pack compatibility/readback run `36434541564` PASS after source-row provenance was made opt-in for the new external-cold annual path.
 
-The isolated D1 schema V1.0 migration is therefore complete. R2 provisioning/readback and the 2017 annual external-cold population remain pending and are not claimed complete.
+The isolated D1 schema V1.0 migration and bounded R2 provisioning/readback qualification are complete. The 2017 annual external-cold population remains pending and is not claimed complete.
 
 ## 2. Designed but not yet fully implemented
 
@@ -335,8 +335,8 @@ Do not block MVP on these:
 
 Engineering order:
 
-1. Provision the isolated System2 R2 history bucket and least-privilege object credentials; apply isolated D1 schema V1.0.
-2. Run staged 2017 TWSE/TPEx external cold-pack backfill, verify object hashes/manifests/receipts/universe coverage, then continue year by year.
+1. ✅ Provision and physically qualify the isolated System2 R2 history bucket + least-privilege object credentials; isolated D1 schema V1.0 is applied.
+2. Run staged 2017 TWSE first, then TPEx external cold-pack backfill; verify object hashes/manifests/receipts/universe coverage before continuing year by year.
 3. Full-market orchestrator through frozen decision / Prediction Snapshot persistence.
 4. First real full-market PIT Replay/Bulk Backtest and Historical Base Dataset generation with Selected / Near-miss / Important Rejected and outcome linkage.
 5. Automated outcome persistence + minimum execution simulator.
