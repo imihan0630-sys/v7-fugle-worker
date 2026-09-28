@@ -904,3 +904,131 @@ This strengthens D10-03 / D10-11 source readiness but does not justify another m
 SC-019: capacity evidence hierarchy — distinguish announcement, approved capex, construction, tool-in, qualification, effective capacity, yield and utilization.
 SC-020: product/material mapping — semiconductor/PCB and basic-metals/process lanes, with input-price negative controls.
 SC-021: prospective source receipt design for official XLS/ODS and standalone CSV/XML vintages.
+
+
+## SC-019 — Capacity is a lifecycle, not a headline
+
+### Core falsification
+The phrase "擴產" collapses multiple economically different states. Research must separate at least:
+
+1. `PLAN_ANNOUNCED` — management/public plan exists.
+2. `CAPEX_APPROVED` — board/budget/financing approval where evidenced.
+3. `CONSTRUCTION_STARTED`.
+4. `EQUIPMENT_ORDERED`.
+5. `TOOL_MOVE_IN / EQUIPMENT_INSTALLED`.
+6. `PROCESS_QUALIFICATION`.
+7. `CUSTOMER_QUALIFICATION` when economically required.
+8. `HIGH_VOLUME_MANUFACTURING_START`.
+9. `RAMPING`.
+10. `STEADY_STATE_AVAILABLE_CAPACITY`.
+11. `DELAYED / SUSPENDED / CANCELLED`.
+
+These states have different knownAt and effectiveAt clocks. A plan announcement cannot be backfilled as usable capacity.
+
+### Capacity vocabulary
+Freeze distinct variables:
+
+- `nameplateCapacity`: theoretical/rated maximum output.
+- `availableCapacity`: capacity technically available for production.
+- `qualifiedCapacity`: capacity qualified for the relevant process/customer/product.
+- `economicCapacity`: capacity that can produce saleable output at the required yield/mix.
+- `actualProduction`: observed output.
+- `utilization`: actual production relative to a clearly defined capacity denominator.
+- `yield`: saleable output share.
+- `productMix / nodeMix`: economically relevant composition.
+- `capex`: investment spending; never synonymous with any capacity term.
+
+### Taiwan / semiconductor evidence
+A real company example confirms why the lifecycle matters: TSMC's 2025 annual report separately describes an investment/expansion plan, construction, high-volume manufacturing entry, yield, ramp schedule and annual wafer capacity. These are reported as separate facts rather than one "capacity" field.
+
+The report states, among other distinctions:
+- first Arizona fab already entered high-volume manufacturing with good yield;
+- second fab production schedule was being pulled forward, with HVM expected later;
+- third fab construction had begun;
+- N2 entered high-volume manufacturing with good yield, while later technologies had future production schedules;
+- total annual wafer-equivalent capacity is reported separately from those project milestones.
+
+This supports a generic research rule: announcement -> construction -> qualification -> HVM -> ramp -> usable capacity are not interchangeable.
+
+Academic semiconductor-cycle research also finds inventory, fab utilization and chip sales jointly informative, and earlier industry-cycle work links overcapacity to downturn dynamics. This is mechanism evidence, not a Taiwan stock-return result.
+
+### CAPACITY_EVENT_VINTAGE schema
+For company/industry evidence preserve:
+- eventId;
+- issuer / industry / facility;
+- product / process / node / technology / geography;
+- eventState from the lifecycle above;
+- sourcePublishedAt / knownAt;
+- plannedEffectiveAt;
+- actualEffectiveAt;
+- nameplateCapacity and unit if disclosed;
+- available/qualified/economic capacity if explicitly disclosed;
+- utilization and denominator definition if disclosed;
+- yield/mix if disclosed;
+- customerQualification state if relevant;
+- capexAmount / currency / period if disclosed;
+- expansionPurpose = GROWTH / REPLACEMENT / AUTOMATION / MIGRATION / REDUNDANCY / UNKNOWN;
+- revision/supersession;
+- confidence / identityResolution;
+- PIT eligibility.
+
+Missing values stay UNKNOWN.
+
+### Demand-absorption test
+Expansion is potentially supportive only when separately evidenced demand can absorb supply.
+
+Research state:
+`CAPACITY_GAP_SUPPORTIVE` requires a conjunction such as:
+- demand/sales/order evidence strong or structurally credible;
+- inventory not signaling unresolved overhang;
+- pricing/margin not deteriorating from oversupply;
+- capacity becomes effective within the thesis horizon;
+- company/product exposure is verified.
+
+Research state:
+`CAPACITY_OVERSHOOT_RISK` is raised when:
+- peer capacity is entering simultaneously;
+- demand/sales weaken;
+- inventory ratio or unsold inventory rises;
+- lead times normalize sharply;
+- output prices/margins weaken;
+- capacity enters before qualification/demand is ready.
+
+Neither state is an automatic buy/sell rule.
+
+### Capex negative controls
+A capex increase can represent:
+- replacement / maintenance;
+- automation;
+- technology migration;
+- environmental/safety compliance;
+- geographic redundancy;
+- long-lead construction;
+- capacity growth.
+
+Therefore no `capex -> capacity growth` inference is allowed without purpose/effective-date evidence.
+
+The current MOEA `ec.csv` fixed-asset-additions lane is manufacturing-wide aggregate context only. It cannot be used as semiconductor/PCB/basic-metal sector capacity.
+
+### Utilization negative controls
+Utilization itself is not monotonic:
+- high utilization can mean strong demand, but can also mean a supply bottleneck near the top of the cycle;
+- low utilization can mean weak demand, planned maintenance, technology migration, or early ramp;
+- utilization across different process nodes/products is not directly comparable;
+- yield/mix changes can alter economic output without a proportional utilization move.
+
+### D10-04 maturity decision
+Keep `D10-04 產能／擴產／稼動率` at **L2**.
+
+Reason:
+- mechanism, lifecycle, schema and falsification are now stronger;
+- Taiwan/company PIT evidence is clearly possible on a bounded issuer basis;
+- but a canonical industry-wide Taiwan capacity/utilization source with stable cross-company semantics is not yet established;
+- promoting to L3 now would overstate coverage.
+
+Status: `MECHANISM_STRONG / BOUNDED_COMPANY_PIT_FEASIBLE / INDUSTRY_WIDE_SOURCE_GAP / NO_PROMOTION`.
+
+### Exact continuation
+SC-020: product/material transmission mapping for semiconductor/PCB and basic-metals/process manufacturing.
+SC-021: prospective vintage receipt design for official CSV/XML/XLS/ODS.
+SC-022: bounded company-capacity pilot requiring at least one positive ramp and one delay/oversupply counterexample before any outcome test.
