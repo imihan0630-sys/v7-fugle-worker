@@ -385,7 +385,7 @@ GitHub專屬checkpoint：
 | D14-13 | Broker Fee Schedule完整費率語意 | L3 台股PIT資料可行 | 60% |
 | D14-14 | 集合競價／特殊撮合成本 | L2 機制＋反證 | 40% |
 
-### D15｜投資組合／風險／資金利用／部位生命週期 — 46.7%
+### D15｜投資組合／風險／資金利用／部位生命週期 — 48.0%
 
 專責：10｜投組風控與交易執行研究室  
 證據錨點：`PORTFOLIO_RISK_CHECKPOINT.md`、`PORTFOLIO_RISK_RESEARCH.md`
