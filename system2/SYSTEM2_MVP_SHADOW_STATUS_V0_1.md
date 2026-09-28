@@ -205,6 +205,25 @@ Still required:
 
 No current code change should bypass this gate.
 
+### P0-F: full-market historical backtest / Base Dataset engine
+
+Backtest capability is now a core System 2 engineering requirement, not an optional later tool.
+
+P0 must provide:
+- Historical Data Store（歷史資料庫） for normalized reusable daily/history inputs;
+- PIT Replay（時點重播） that evaluates each historical decision date using only data available at that time;
+- Bulk Backtest Runner（大量回測執行器） using batch/partition/stream processing, not manual per-symbol execution;
+- checkpoint/resume so long multi-year full-market runs can continue after interruption;
+- reusable factor cache so parameter/strategy comparisons do not repeatedly download/recompute unchanged primitives;
+- strategy/policy/version pinned replay;
+- historical full-universe accounting with Selected / Near-miss / Important Rejected samples;
+- Base Dataset（基礎研究樣本庫） generation for later incremental-factor, falsification, OOS and Regime research;
+- outcome linkage to D1/D3/D5/D10/D20, MFE/MAE, benchmark/industry-relative performance and execution-cost scenarios.
+
+The P0 architecture must support the whole eligible Taiwan-equity universe over multi-year windows. Historical replay must explicitly preserve listing/delisting and survivorship boundaries, corporate-action state, source provenance, availableAt/firstKnownAt and UNKNOWN semantics. Historical backtests may inform research but must never be relabeled as prospective Shadow evidence.
+
+Repeated bulk historical studies should preferentially read official/history stores and cached normalized data. Fugle API usage, if any, should be contract-specific and should not be the default transport for every repeated historical replay.
+
 ## 4. P1 after Shadow Production begins
 
 P1 improves usability and breadth but should not delay the first trustworthy Shadow records:
@@ -217,7 +236,8 @@ P1 improves usability and breadth but should not delay the first trustworthy Sha
 - partial-fill modeling;
 - better industry benchmark construction;
 - operator observability / alerts for failed daily runs;
-- more detailed strategy-correlation and concentration reporting.
+- more detailed strategy-correlation and concentration reporting;
+- XQ-style interval/condition backtest surface: reusable condition API, parameter sweeps, strategy-version A/B comparison, Regime/industry/year stratification, exportable trade/sample details and optional UI/dashboard for research operators.
 
 ## 5. P2 / P3 long-term expansion
 
@@ -255,12 +275,14 @@ Do not block MVP on these:
 Engineering order:
 
 1. A1 historical-window + factor adapter.
-2. Full-market orchestrator through frozen decision / Prediction Snapshot persistence.
-3. Automated outcome persistence + minimum execution simulator.
-4. Prepare initial final-selection policy candidates and evidence packet for owner approval.
-5. Continue Decision Clock prospective evidence in parallel.
-6. After owner approvals, arm exact clock + isolated Worker scheduled Shadow capture.
-7. Add read API / UI after trustworthy daily records exist.
+2. Historical Data Store + PIT Replay + Bulk Backtest Runner, sharing normalized inputs/factors with the daily path.
+3. Full-market orchestrator through frozen decision / Prediction Snapshot persistence.
+4. Historical Base Dataset generation with Selected / Near-miss / Important Rejected and outcome linkage.
+5. Automated outcome persistence + minimum execution simulator.
+6. Prepare initial final-selection policy candidates and evidence packet for owner approval.
+7. Continue Decision Clock prospective evidence in parallel.
+8. After owner approvals, arm exact clock + isolated Worker scheduled Shadow capture.
+9. Add read API / XQ-style condition-backtest UI after trustworthy data paths exist.
 
 This path deliberately does not wait for the full 226-module research curriculum.
 
