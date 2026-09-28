@@ -2278,3 +2278,31 @@ Status:
 `PLAN_LIFECYCLE_ENVELOPE_PIT_VALIDATED / ACTUAL_STAGE_TRANSITIONS_BLOCKED / D15_10_REMAINS_L2`.
 
 Formal Core unchanged.
+
+
+### D15-13 data-readiness dependency
+
+A current System2 read-only official historical-source smoke validates that full-market TWSE/TPEx daily payloads can be fetched for both an old date (2017-01-03) and a recent date (2026-09-24), including an anti-survivorship witness.
+
+That is **source-foundation evidence only**.
+
+The smoke explicitly performs no System2 D1 write and no System1 mutation. It does not prove:
+- a continuous persisted historical panel;
+- exhaustive trading-calendar coverage;
+- PIT selected-cohort joins;
+- adequate tail sample size;
+- a frozen confidence level/horizon;
+- transaction-cost-adjusted tail losses.
+
+Therefore:
+`official historical source exists`
+does not imply
+`Expected Shortfall dataset is ready`.
+
+D15-13 remains L2.
+
+Dependency artifact:
+`research/d15_tail_distribution_data_readiness_v0_1.json`.
+
+Status:
+`HISTORICAL_SOURCE_FOUNDATION_AVAILABLE / CONTINUOUS_TAIL_DATASET_NOT_PROVEN`.
