@@ -50,7 +50,3 @@ DR-024 minimal Shadow schema + falsification.
 ## Next lane
 Portfolio & Risk Construction / Correlation Clusters.
 
-
-## D12-08 reconciliation 2026-09-28
-Existing DR-018/DR-029 evidence supports L1 only. Public TAIFEX option OI does not identify dealer long/short position, so signed dealer-GEX must remain UNKNOWN. Unsigned strike/expiry gamma concentration is a research candidate subject to expiry/OI/volatility redundancy controls. PIT replay requires dated chain inputs and versioned Greek assumptions. Formal Core unchanged.
-Exact next: define an L2 falsification protocol for unsigned gamma concentration without dealer-sign inference.
