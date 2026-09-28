@@ -1,8 +1,8 @@
 # Derivatives Information & Volatility Surface Checkpoint
 
-Updated: 2026-09-28 17:23 Asia/Taipei
-Current cursor: DR-001 through DR-034 complete.
-Next: D12-08 prospective evidence accumulation + D12-10 mechanism deepening.
+Updated: 2026-09-28 18:58 Asia/Taipei
+Current cursor: DR-001 through DR-041 complete.
+Next: D12-08 prospective Gamma evidence + D12-10 18:10 NIGHT_PRE_SCAN prospective receipts.
 
 ## Durable conclusions
 
@@ -72,3 +72,23 @@ Portfolio & Risk Construction / Correlation Clusters.
 2. Research-only unsigned-Gamma and dealer-class-bound calculator.
 3. Independent normal/expiry/event-date evidence before L3.
 4. Continue D12-10 night futures/overnight information L1 -> L2 while evidence accumulates.
+
+
+## 2026-09-28 D12-10 night-futures deepening
+
+- D12-10 advances L1 -> L2.
+- TAIFEX TX after-hours session is 15:00->05:00 and is attributed to the following regular trading session; expiring TX has no after-hours session on its last trading day.
+- For the 18:10 Taiwan after-market selector, night data are partitioned into NIGHT_PRE_SCAN 15:00->18:10 (eligible if timestamped), NIGHT_POST_SCAN 18:10->05:00 (future), and NIGHT_FULL_SESSION (future-contaminated for 18:10).
+- 2024 Taiwan evidence supports price continuity / international-information absorption but falsifies a universal night-up => day-up continuation rule.
+- Higher-value candidate is Taiwan-specific night residual after same-window U.S. broad/tech/semiconductor futures controls, not raw direction.
+- Public full-session daily night OHLC cannot reconstruct the 18:10 state. TAIFEX provides individual trades for the past 30 trading days; older transaction history requires application/purchase and no historical database API is provided.
+- Preferred evidence route is prospective 18:10 capture; recent 30-day transaction data are for parser/replay QA.
+- Machine-readable contract: `research/d12_10_night_futures_pit_spec_v0_1.json`.
+- Formal Core unchanged; no score/veto/risk-throttle/ranking change.
+
+## Updated exact next continuation
+
+1. Prospectively capture TX 15:00->18:10 plus same-window broad/tech/semiconductor controls.
+2. Validate exact contract/roll/session replay on recent transaction data.
+3. Join scheduled U.S. macro-event flags from D13 before outcome tests.
+4. Accumulate independent dates across normal, expiry/roll, event and crisis regimes before any L3 promotion.
