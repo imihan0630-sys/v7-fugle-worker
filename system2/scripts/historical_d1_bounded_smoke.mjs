@@ -31,6 +31,7 @@ const symbolsByMarket = {
     .split(",").map((x) => x.trim()).filter(Boolean),
 };
 const capturedAt = new Date().toISOString();
+const executionId = String(process.env.GITHUB_RUN_ID || "local-" + Date.now());
 
 const db = await createRemoteD1RestAdapter({
   accountId,
@@ -82,6 +83,7 @@ for (const market of ["TWSE", "TPEX"]) {
     marketDate.replaceAll("-", ""),
     market,
     normalized.payloadHash.slice(0, 12),
+    executionId,
   ].join("-");
 
   const ingest = await buildHistoricalStoreIngestBatch({
