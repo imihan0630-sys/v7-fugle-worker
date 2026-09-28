@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>System 2｜區間條件回測 V0.1</title>
+  <style>
+    body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;margin:0;background:#f6f7f9;color:#15171a}
+    main{max-width:1120px;margin:32px auto;padding:0 20px}
+    h1{margin:0 0 6px}.sub{margin:0 0 24px;color:#5b626b}
+    section{background:white;border:1px solid #dfe3e8;border-radius:12px;padding:18px;margin:14px 0}
+    .grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+    label{display:flex;flex-direction:column;gap:6px;font-size:13px;font-weight:600}
+    input,select,button,textarea{font:inherit;padding:9px;border:1px solid #c9cfd6;border-radius:8px;background:white}
+    textarea{width:100%;min-height:220px;box-sizing:border-box;font-family:ui-monospace,monospace;font-size:12px}
+    button{cursor:pointer;font-weight:700}.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+    .condition{display:grid;grid-template-columns:80px 1.7fr 110px 1fr 44px;gap:8px;margin:8px 0}
+    .notice{padding:12px;border:1px solid #c9cfd6;border-radius:8px;background:#fafbfc}
+    .small{font-size:12px;color:#626a73}
+    @media(max-width:800px){.grid{grid-template-columns:1fr 1fr}.condition{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<main>
+  <h1>System 2｜區間條件回測 V0.1</h1>
+  <p class="sub">XQ-style（類 XQ）研究介面：先建立 PIT-safe（時點安全）回測任務規格，再交由全市場 Bulk Backtest Runner（大量回測執行器）執行。</p>
+
+  <section>
+    <div class="notice">
+      <strong>執行狀態：</strong>QUERY_SPEC_READY / BULK_EXECUTION_BACKEND_NOT_CONNECTED
+      <div class="small">本頁目前會建立與驗證研究任務規格，不會假裝在瀏覽器內跑完整台股多年回測。正式大量運算由 System 2 Bulk Backtest Runner 執行。</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>1. 區間與版本</h2>
+    <div class="grid">
+      <label>起始日期<input id="dateFrom" type="date" value="2022-01-01"></label>
+      <label>結束日期<input id="dateTo" type="date" value="2026-09-24"></label>
+      <label>策略
+        <select id="strategyId">
+          <option>SHORT_MOMENTUM</option>
+          <option>SWING_GROWTH</option>
+          <option>INSTITUTIONAL_ACCUMULATION</option>
+          <option>BLACK_HORSE_ACCUMULATION</option>
+          <option>INDUSTRY_TREND</option>
+          <option>EVENT_DRIVEN</option>
+          <option>VALUE_REVERSION</option>
+        </select>
+      </label>
+      <label>策略版本<input id="strategyVersion" value="V0.1-CONTRACT"></label>
+      <label>資料版本<input id="datasetVersion" value="HIST-CORE-2017-PLUS-V0.1"></label>
+      <label>母體
+        <select id="populationMode">
+          <option value="FULL_REPLAY">全市場完整重播</option>
+          <option value="BASE_COHORT_ARCHIVE">既有 Base Cohort（僅研究對照）</option>
+        </select>
+      </label>
+      <label>條件邏輯
+        <select id="conditionMode"><option value="ALL">全部符合 AND</option><option value="ANY">任一符合 OR</option></select>
+      </label>
+      <label>保留符合明細
+        <select id="retainMatchedRows"><option value="false">否</option><option value="true">是</option></select>
+      </label>
+    </div>
+  </section>
+
+  <section>
+    <h2>2. 條件</h2>
+    <div id="conditions"></div>
+    <div class="row">
+      <button id="addCondition" type="button">＋新增條件</button>
+      <span class="small">只允許決策當時可得欄位；outcome / future 欄位禁止作為條件。</span>
+    </div>
+  </section>
+
+  <section>
+    <h2>3. 分層</h2>
+    <div class="row">
+      <label><input type="checkbox" class="stratum" value="YEAR" checked> 年度</label>
+      <label><input type="checkbox" class="stratum" value="CANDIDATE_STATE" checked> 候選狀態</label>
+      <label><input type="checkbox" class="stratum" value="REGIME_LABEL" checked> Regime（市場狀態）</label>
+      <label><input type="checkbox" class="stratum" value="INDUSTRY"> 產業</label>
+      <label><input type="checkbox" class="stratum" value="MARKET"> 市場</label>
+    </div>
+  </section>
+
+  <section>
+    <h2>4. 回測任務規格</h2>
+    <div class="row">
+      <button id="buildSpec" type="button">建立回測任務</button>
+      <button id="copySpec" type="button">複製 JSON</button>
+      <span id="status" class="small">尚未建立</span>
+    </div>
+    <textarea id="output" readonly></textarea>
+  </section>
+</main>
+
+<script>
+const fields = [
+  "coreMetrics.close","coreMetrics.ma5","coreMetrics.ma10","coreMetrics.ma20","coreMetrics.ma60",
+  "coreMetrics.ma5Slope1Pct","coreMetrics.ma20Slope1Pct","coreMetrics.ret20","coreMetrics.ret60",
+  "coreMetrics.volatility20","coreMetrics.distanceToPriorHigh20","coreMetrics.distanceToMa20",
+  "coreMetrics.gapPct","coreMetrics.closePosition","coreMetrics.atr14Pct",
+  "coreMetrics.avgVolume20PriorLots","coreMetrics.avgAmount20Prior","coreMetrics.relativeVolume20Prior",
+  "coreMetrics.volumeContraction5to20Prior","coreMetrics.maOrder5gt10gt20",
+  "candidateState","archiveCohort","strategyValidity","entryReadiness","market","regime.labels","industryId"
+];
+const ops = ["GT","GTE","LT","LTE","EQ","NE","BETWEEN","IN","CONTAINS","IS_KNOWN","IS_UNKNOWN"];
+let counter = 0;
+
+function optionHtml(values){return values.map(v => `<option value="${v}">${v}</option>`).join("");}
+function addCondition(field="coreMetrics.relativeVolume20Prior",operator="GTE",value="1.8"){
+  counter += 1;
+  const row=document.createElement("div");
+  row.className="condition";
+  row.innerHTML = `
+    <input class="cid" value="C${counter}" aria-label="condition id">
+    <select class="field">${optionHtml(fields)}</select>
+    <select class="op">${optionHtml(ops)}</select>
+    <input class="value" value="${value}" aria-label="condition value">
+    <button type="button" class="remove">×</button>`;
+  row.querySelector(".field").value=field;
+  row.querySelector(".op").value=operator;
+  row.querySelector(".remove").onclick=()=>row.remove();
+  document.querySelector("#conditions").appendChild(row);
+}
+function parseScalar(text){
+  const t=text.trim();
+  if(t==="true") return true;if(t==="false") return false;
+  const n=Number(t);return Number.isFinite(n)&&t!==""?n:t;
+}
+function buildCondition(row){
+  const operator=row.querySelector(".op").value;
+  const raw=row.querySelector(".value").value.trim();
+  const out={conditionId:row.querySelector(".cid").value.trim(),field:row.querySelector(".field").value,operator};
+  if(operator==="IS_KNOWN"||operator==="IS_UNKNOWN") return out;
+  if(operator==="BETWEEN"||operator==="IN") out.values=raw.split(",").map(x=>parseScalar(x));
+  else out.value=parseScalar(raw);
+  return out;
+}
+function buildSpec(){
+  const from=document.querySelector("#dateFrom").value,to=document.querySelector("#dateTo").value;
+  if(!from||!to||from>to) throw new Error("日期區間不正確");
+  const conditions=[...document.querySelectorAll(".condition")].map(buildCondition);
+  if(conditions.some(c=>/outcome|future/i.test(c.field))) throw new Error("禁止使用未來/outcome欄位");
+  return {
+    queryId:"UI-"+Date.now(),
+    dateFrom:from,dateTo:to,
+    datasetVersion:document.querySelector("#datasetVersion").value.trim(),
+    strategyId:document.querySelector("#strategyId").value,
+    strategyVersion:document.querySelector("#strategyVersion").value.trim(),
+    policyId:null,policyVersion:null,
+    populationMode:document.querySelector("#populationMode").value,
+    conditionMode:document.querySelector("#conditionMode").value,
+    conditions,
+    stratifyBy:[...document.querySelectorAll(".stratum:checked")].map(x=>x.value),
+    retainMatchedRows:document.querySelector("#retainMatchedRows").value==="true",
+    createdAt:new Date().toISOString(),
+    schemaVersion:"S2_BACKTEST_CONDITION_QUERY_V0_1"
+  };
+}
+document.querySelector("#addCondition").onclick=()=>addCondition();
+document.querySelector("#buildSpec").onclick=()=>{
+  try{
+    const spec=buildSpec();
+    document.querySelector("#output").value=JSON.stringify(spec,null,2);
+    document.querySelector("#status").textContent="規格已建立；等待 Bulk Execution Backend（大量執行後端）";
+  }catch(e){document.querySelector("#status").textContent="錯誤："+e.message;}
+};
+document.querySelector("#copySpec").onclick=async()=>{
+  const text=document.querySelector("#output").value;if(text) await navigator.clipboard.writeText(text);
+};
+addCondition();
+addCondition("coreMetrics.distanceToMa20","LTE","0.10");
+addCondition("coreMetrics.closePosition","GTE","0.70");
+</script>
+</body>
+</html>
