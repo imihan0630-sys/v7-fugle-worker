@@ -101,8 +101,10 @@ async function ensureColdObject({ objectStore, pack, core, bytes }) {
     return { object, state: "IDENTICAL_OBJECT" };
   }
   object = await objectStore.putIfAbsent(core.object_key, bytes, {
-    contentType: "application/json",
-    contentEncoding: "gzip",
+    // Store .json.gz as an opaque gzip object. Do not advertise HTTP
+    // Content-Encoding, otherwise remote HTTP clients may auto-decompress it
+    // before our byte-level object SHA verification.
+    contentType: "application/gzip",
     sha256: core.object_sha256,
     storageClass: "Standard",
     customMetadata: {
