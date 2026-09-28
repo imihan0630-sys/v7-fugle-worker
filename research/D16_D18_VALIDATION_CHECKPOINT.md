@@ -221,10 +221,33 @@ A regime policy that lowers drawdown only because average exposure is lower is n
 FORMAL_OPTIMIZATION_CANDIDATE: NONE.
 No System 1/System 2 Formal Core, rank, gate, weight, capital or execution rule change is justified yet.
 
-## Exact next continuation — long-form
-1. Define a research-only Regime Policy Parallel-Arm Receipt compatible with existing System 2 run fingerprint/full-universe accounting.
-2. Pre-register the first simple static-vs-regime policy experiment plus exposure-matched negative control; no outcome-derived thresholds.
-3. D18-06 stays L2 until market-cap source/vintage capture is promotion-grade.
-4. D18-07 stays L2 until global receipt contracts are frozen and prospective.
-5. D16-13 stays L3 until actual prospective full-universe Shadow dates exist; then test for L4.
-6. When enough independent dates accumulate, run purged walk-forward plus PBO/SPA/DSR diagnostics and transition/cost stress.
+
+## 2026-09-28 implementation audit continuation
+
+New research artifacts:
+- `research/D18_REGIME_POLICY_PARALLEL_ARM_RECEIPT_V0_1.md`
+- `research/D18_OBSERVABLE_REGIME_LABEL_CONTRACT_V0_1.md`
+
+### Key implementation finding
+Current-main code search shows the planned System 2 regime state names/raw fields are specification-level in `SYSTEM2_MARKET_REGIME_V0.md`; an executable regime builder for the named trend/breadth/volatility/concentration states is not yet present.
+
+Therefore:
+- D18-01 remains L2, not L3.
+- No historical System 2 regime stream may be inferred from the spec.
+- This is a clean pre-outcome preregistration window.
+- The observable proposal keeps trend, breadth, volatility, activity, concentration, institutions, size and global context as separate dimensions; it intentionally does not emit one composite RISK_ON/RISK_OFF score.
+- HMM/latent-state models are challengers, not the baseline truth; filtered/current state only is admissible for decisions, while smoothed state is retrospective only.
+- After-close regime state may affect only the next tradable session; same-session retroactive filtering is forbidden.
+- Natural zero-pick, policy-disabled exposure and data-UNKNOWN are distinct states.
+
+### Optimization decision
+FORMAL_OPTIMIZATION_CANDIDATE: NONE.
+The evidence architecture advanced, but executable regime capture and prospective policy outcomes are still absent.
+
+## Exact next continuation — implementation-aware
+1. Audit which observable-regime raw features can be produced prospectively from existing source-clock contracts with zero new source calls.
+2. Keep context capture separate from policy and collect state occupancy/UNKNOWN coverage first.
+3. Do not create a composite RISK_ON/RISK_OFF score before component-level OOS incremental tests.
+4. When executable states exist, freeze one single-dimension policy challenger + exposure-matched control and next-session action semantics.
+5. D16-13 remains L3 until actual prospective full-universe Shadow dates exist.
+6. D18 modules remain L2 until PIT implementation/OOS evidence supports further promotion.
