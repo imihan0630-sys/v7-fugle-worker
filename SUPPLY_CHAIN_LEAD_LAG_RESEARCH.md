@@ -1032,3 +1032,162 @@ Status: `MECHANISM_STRONG / BOUNDED_COMPANY_PIT_FEASIBLE / INDUSTRY_WIDE_SOURCE_
 SC-020: product/material transmission mapping for semiconductor/PCB and basic-metals/process manufacturing.
 SC-021: prospective vintage receipt design for official CSV/XML/XLS/ODS.
 SC-022: bounded company-capacity pilot requiring at least one positive ramp and one delay/oversupply counterexample before any outcome test.
+
+
+## SC-020 — Product/material transmission must preserve economic direction
+
+### Why a supply-chain map is not enough
+A graph edge such as `MATERIAL -> MANUFACTURER` does not specify whether a price move helps or hurts the target.
+
+For every material/product edge preserve:
+- `economicRole = INPUT_COST | SELLING_PRODUCT | BOTTLENECK_INPUT | SUBSTITUTABLE_INPUT | COMPLEMENT | CAPACITY_ENABLER | UNKNOWN`;
+- quantity/exposure basis when disclosed;
+- pricing basis = SPOT / CONTRACT / INDEXED / NEGOTIATED / UNKNOWN;
+- currency;
+- typical repricing lag if evidenced;
+- sourceKnownAt/effective dates;
+- substitution and inventory-buffer state;
+- company pass-through evidence;
+- confidence and source class.
+
+A material price increase has no universal sign.
+
+---
+
+### Template A — ABF / PCB / IC-substrate material chain
+
+#### Physical structure
+Academic packaging literature supports the basic physical distinction:
+- ABF build-up film is an epoxy-resin/silica composite dielectric used in IC package substrates;
+- copper plating/interconnect is formed on the ABF build-up layer;
+- other organic substrate structures can use glass-cloth/resin prepreg and copper-related layers.
+
+Therefore the research graph must distinguish at least:
+1. **build-up dielectric material** (ABF or equivalent);
+2. **core / laminate materials** such as resin/glass-reinforced CCL where the substrate design uses them;
+3. **copper / copper plating / copper foil-related conductive layers**;
+4. **process chemicals / plating / desmear / lithography-related materials** where company exposure is verified;
+5. **substrate manufacturer**;
+6. **OSAT / packaging / chip customer**;
+7. **end application** such as AI accelerator/server, networking, CPU/GPU/ASIC, etc., only when product/customer evidence exists.
+
+Do not collapse "ABF substrate" into "ABF film". The film is one material component; the substrate is a multi-layer manufactured product.
+
+#### Economic direction
+Examples of research states:
+- `ABF_FILM_TIGHTNESS`: possible bottleneck input; can constrain substrate output and raise input costs.
+- `COPPER_INPUT_UP`: cost pressure unless selling price/pass-through offsets it.
+- `GLASS/RESIN_INPUT_UP`: cost pressure on CCL/core-related nodes unless pass-through exists.
+- `SUBSTRATE_ASP_UP_WITH_MARGIN_HOLD`: stronger evidence of pricing power than material price alone.
+- `MATERIAL_TIGHTNESS_WITH_CUSTOMER_ALLOCATION`: may indicate demand strength but can cap shipment volume.
+- `INPUT_PRICE_UP_MARGIN_DOWN`: negative pass-through evidence.
+- `INPUT_PRICE_UP_OUTPUT_PRICE_UP_MARGIN_STABLE`: pass-through evidence.
+
+#### Falsification
+Reject a simplistic "material price up = substrate bullish" story when:
+- the substrate maker is the buyer of that material;
+- pass-through lags or fails;
+- customer qualification prevents material substitution;
+- higher material cost reduces yield or pushes demand to alternatives;
+- inventory buffering delays the economic impact;
+- reported substrate demand is concentrated in a product the issuer does not materially supply.
+
+A physical bottleneck can simultaneously signal strong chain demand and hurt the immediate downstream buyer's margin. Preserve both.
+
+---
+
+### Template B — Basic metals / steel process chain
+
+#### Current official Taiwan source feasibility
+The Taiwan basic-metals monitoring platform provides current quantity/price series such as:
+- Taiwan crude-steel output;
+- domestic scrap purchase prices;
+- billet prices;
+- rebar / section-steel / wire-rod prices;
+- international finished/semi-finished steel benchmarks.
+
+The MOEA industrial production/product statistics also provide:
+- code 24 basic metals;
+- detailed production industries such as 2411 iron/steel smelting and 2413 rolling/extrusion;
+- product hierarchy including billets and other steel products.
+
+This is a materially different chain from ABF/PCB because raw materials, semi-finished output and finished output can each have observable market prices.
+
+#### Economic chain
+Preserve separate nodes:
+`IRON_ORE / COKING_COAL / SCRAP / ENERGY -> MOLTEN/CRUDE_STEEL -> BILLET/SLAB -> HOT-ROLLED / BAR / WIRE / REBAR / SECTIONS -> DOWNSTREAM FABRICATION / CONSTRUCTION / AUTO / MACHINERY`.
+
+Not every producer uses the same route:
+- blast-furnace route has different raw-material exposure than electric-arc-furnace route;
+- scrap is much more directly relevant to EAF economics;
+- iron ore/coking coal exposure is more direct for BF/BOF economics.
+
+Therefore route identity is mandatory before mapping raw-material prices to a company.
+
+#### Spread logic
+For process industries, price level alone is inferior to an economically matched spread.
+
+Research descriptor:
+`PRODUCT_PRICE - WEIGHTED_INPUT_BASKET`
+only when:
+- input basket composition is evidenced;
+- units/currency are normalized;
+- contract/spot lags are respected;
+- energy and yield effects are not material UNKNOWNs.
+
+Do NOT create a synthetic "steel margin" by subtracting arbitrary commodity series.
+
+#### Current example is descriptive only
+The Taiwan basic-metals monitoring platform currently reports 2026-08 average domestic scrap purchase price, billet price and finished steel price series, and current Taiwan crude-steel output. These prove timely source availability; they do not prove stock-return direction.
+
+#### Falsification
+- scrap up can benefit scrap sellers but hurt EAF steelmakers before pass-through;
+- finished steel price up can be positive only if input cost / volume / margin confirm;
+- low production can be demand weakness or deliberate maintenance/supply discipline;
+- high production with rising inventory can signal overhang;
+- global steel price rise can be caused by temporary supply disruption rather than Taiwan end-demand;
+- anti-dumping/tariff/policy events can break ordinary input-output transmission.
+
+---
+
+### Cross-industry common schema
+`PRODUCT_MATERIAL_EDGE_VINTAGE`
+- upstreamScopeType / code / product;
+- downstreamScopeType / code / product/company;
+- economicRole;
+- productionRoute / technology;
+- exposureMagnitude / basis;
+- unit/currency;
+- priceBasis;
+- repricingLag;
+- inventoryBufferDays if disclosed;
+- substitutionState;
+- qualificationConstraint;
+- sourcePublishedAt / knownAt;
+- effectiveFrom / effectiveTo;
+- sourceId/sourceClass;
+- confidence;
+- PIT eligibility.
+
+### Negative-control requirement
+Every material-price experiment needs at least one control:
+1. same sector company with materially different input route;
+2. company with low/no verified exposure;
+3. price move with no downstream selling-price/margin response;
+4. common macro/FX price move after residualizing sector/market context.
+
+If exposed and unexposed controls move similarly, the alleged material transmission is likely common-factor/redundant rather than supply-chain alpha.
+
+### Maturity decision
+No tracker promotion from SC-020 alone.
+
+- D10-05 already L3 because Taiwan PIT price-source feasibility is established.
+- D10-12 remains L2 because concrete company/theme exposure mapping is not yet a complete PIT database.
+- D10-09 remains L2 until asymmetric upstream/downstream transmission is prospectively observed, not merely specified.
+
+Status: `TWO_INDUSTRY_TEMPLATES_DEFINED / DIRECTIONAL_EDGE_SCHEMA_FROZEN / COMPANY_PIT_MAPPING_PENDING`.
+
+### Exact continuation
+SC-021: prospective source-vintage receipt for CSV/XML/XLS/ODS.
+SC-022: bounded capacity lifecycle pilot with positive and negative counterexamples.
+SC-023: map one ABF/PCB material-price chain and one steel-route chain to actual Taiwan issuers using contemporaneous filings, preserving UNKNOWN instead of theme inference.
