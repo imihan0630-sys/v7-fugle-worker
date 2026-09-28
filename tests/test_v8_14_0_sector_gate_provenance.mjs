@@ -33,6 +33,66 @@ const selection=source.slice(source.indexOf("function selectTomorrowCandidates")
 assert.match(selection,/b\.priorityScore - a\.priorityScore \|\| b\.rewardPerRisk - a\.rewardPerRisk \|\|/);
 assert.match(selection,/\(b\.marketConsensusScore \|\| 0\) - \(a\.marketConsensusScore \|\| 0\) \|\|/);
 
+
+assert.ok(source.includes("INSTITUTIONAL_SCORE_DECOMPOSITION_OBSERVER_V0_1"));
+assert.ok(source.includes("institutionalDecomposition=buildInstitutionalScoreDecompositionObserver"));
+assert.ok(source.includes("byCohort,byDate,institutionalDecomposition"));
+
+const observerSource=await readFile(new URL("../research/institutional_score_decomposition_observer_v0_1.mjs",import.meta.url),"utf8");
+const observerMod=await import("data:text/javascript;base64,"+Buffer.from(
+  observerSource+"\nexport {buildInstitutionalScoreDecompositionObserver};"
+).toString("base64"));
+
+const observerRows=[
+  {
+    scan_date:"2026-09-21",symbol:"1101",cohort:"SELECTED",pool:"FORMAL_GENERAL",
+    snapshot_json:JSON.stringify({
+      institution:{
+        score:100,foreignBuyDays:3,trustBuyDays:3,dealerBuyDays:3,
+        foreignNet:600000,trustNet:300000,dealerNet:100000,institutionTotalNet:1000000,
+        chipConcentration:80
+      },
+      volume:{avgVolume20Lots:1000}
+    })
+  },
+  {
+    scan_date:"2026-09-22",symbol:"1102",cohort:"BROAD_CONTROL",pool:"FORMAL_GENERAL",
+    snapshot_json:JSON.stringify({
+      institution:{
+        score:22.5,foreignBuyDays:1,trustBuyDays:0,dealerBuyDays:0,
+        foreignNet:100000,trustNet:-30000,dealerNet:-20000,institutionTotalNet:50000,
+        chipConcentration:40
+      },
+      volume:{avgVolume20Lots:500}
+    })
+  },
+  {
+    scan_date:"2026-09-22",symbol:"1103",cohort:"NEAR_MISS",pool:"FORMAL_GENERAL",
+    snapshot_json:JSON.stringify({
+      institution:{
+        score:20,foreignBuyDays:1,trustBuyDays:0,dealerBuyDays:0,
+        foreignNet:null,trustNet:0,dealerNet:0,institutionTotalNet:0,
+        chipConcentration:40
+      },
+      volume:{avgVolume20Lots:500}
+    })
+  }
+];
+const observer=observerMod.buildInstitutionalScoreDecompositionObserver(observerRows);
+assert.equal(observer.researchOnly,true);
+assert.equal(observer.decisionImpact,false);
+assert.equal(observer.formalCoreImpact,false);
+assert.equal(observer.outcomesUsed,false);
+assert.equal(observer.rows,3);
+assert.equal(observer.decompositionReadyRows,2);
+assert.equal(observer.saturatedRows,1);
+assert.equal(observer.actorDivergenceRows,1);
+assert.equal(observer.allThreePositiveRows,1);
+assert.equal(observer.reconstructionMismatchRows,0);
+assert.equal(observer.missingCounts.foreignNet,1);
+assert.equal(observer.byCohort.SELECTED.saturated,1);
+assert.equal(observer.byCohort.BROAD_CONTROL.actorDivergence,1);
+
 console.log(JSON.stringify({
   ok:true,
   version:"8.14.0-sector-gate-provenance-shadow",
@@ -42,5 +102,4 @@ console.log(JSON.stringify({
   breadthUniverseExplicit:true,
   formalSectorGateFrozen:true,
   formalRankingFrozen:true,
-  decisionImpact:false
-}));
+  decisionImpact:false,\n  institutionalScoreDecompositionObserver:true,\n  institutionalOutcomesUsed:false\n}));
