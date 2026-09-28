@@ -104,4 +104,62 @@ assert.equal(
   "IMMUTABLE_CONFLICT",
 );
 
+const historicalBatch = await buildSystem2PersistenceBatch({
+  batchId: "HIST-REFETCH-COMPARE",
+  marketDate: "2017-01-03",
+  decisionTimestamp: "2017-01-03T10:10:00Z",
+  records: [{
+    table: "s2_historical_a1_bars",
+    row: {
+      bar_id: "S2H-A1-CONTENT",
+      batch_id: "INGEST-1",
+      canonical_key: "TWSE|2330|2017-01-03|RAW",
+      market_date: "2017-01-03",
+      market: "TWSE",
+      symbol: "2330",
+      company_name: "台積電",
+      price_space: "RAW",
+      open_price: 181.5,
+      high_price: 185.5,
+      low_price: 181,
+      close_price: 185,
+      volume_shares: 32000000,
+      trade_value: 5920000000,
+      transactions: 12000,
+      change_value: 4,
+      continuity_state: "UNVERIFIED",
+      source_id: "A1_TWSE_MI_INDEX_HISTORICAL_DAILY",
+      source_name: "TWSE MI_INDEX daily close historical report",
+      source_url: "https://www.twse.com.tw/exchangeReport/MI_INDEX",
+      source_row_hash: "SRC-CONTENT",
+      observed_at: "2026-09-28T12:00:00Z",
+      available_at: "2017-01-03T05:30:00Z",
+      availability_basis: "SESSION_CLOSE_FINALITY",
+      pit_availability_class: "CONSERVATIVE_SESSION_FINALITY",
+      pit_replay_eligible: 1,
+      captured_at: "2026-09-28T12:00:00Z",
+      bar_hash: "CONTENT-HASH",
+      schema_version: "S2_HISTORICAL_A1_BAR_V0_2",
+    },
+  }],
+  createdAt: "2026-09-28T12:00:00Z",
+});
+const historicalOp = historicalBatch.operations[0];
+const reobservedExisting = {
+  ...historicalOp.row,
+  batch_id: "INGEST-OLDER",
+  observed_at: "2026-09-27T12:00:00Z",
+  captured_at: "2026-09-27T12:00:00Z",
+};
+assert.equal(
+  compareExistingRow(historicalOp, reobservedExisting).state,
+  "IDENTICAL",
+  "re-fetch metadata must not create a false immutable conflict for content-addressed history",
+);
+assert.equal(
+  compareExistingRow(historicalOp, { ...reobservedExisting, close_price: 999 }).state,
+  "IMMUTABLE_CONFLICT",
+  "actual historical content drift must still fail closed",
+);
+
 console.log("System2 persistence batch tests passed");
