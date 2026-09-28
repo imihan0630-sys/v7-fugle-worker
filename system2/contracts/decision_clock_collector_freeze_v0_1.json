@@ -1,0 +1,62 @@
+{
+  "freezeVersion": "S2_DECISION_CLOCK_COLLECTOR_FREEZE_GUARD_V0_1",
+  "contractVersion": "S2_DECISION_CLOCK_COLLECTOR_CONTRACT_V0_3",
+  "baselineMainCommit": "8313c7866337399df62c9094c5615b39371024cc",
+  "frozenBeforeFirstProspectiveSample": true,
+  "firstEligibleProspectiveMarketDate": "2026-09-29",
+  "hashSemantics": "GIT_BLOB_HASH_V0_1",
+  "files": [
+    {
+      "path": ".github/workflows/system2-prospective-clock-evidence-readonly.yml",
+      "gitBlobSha": "7c6647f32f8eaa10c8d1877c5d1ae61a0cba8ee7"
+    },
+    {
+      "path": "system2/runtime/source_arrival_latency.mjs",
+      "gitBlobSha": "2dd06417f59e7a9255171b86bc6b98238c08dd89"
+    },
+    {
+      "path": "system2/runtime/official_source_probes.mjs",
+      "gitBlobSha": "4a1bb0086e55c7bd7e83b058f0f3c8a5b666dc2b"
+    },
+    {
+      "path": "system2/scripts/measure_source_arrival_readonly.mjs",
+      "gitBlobSha": "22a2259843d4469c61334bef6a9868d1964920b1"
+    },
+    {
+      "path": "system2/runtime/required_dependency_probes.mjs",
+      "gitBlobSha": "d885c7ffe04a8b821e4177140d613261b79c9c1d"
+    },
+    {
+      "path": "system2/runtime/a5_filing_vintage_observer.mjs",
+      "gitBlobSha": "b1b107609f3e6303fdc9295c3deb16a22d8a5e5a"
+    },
+    {
+      "path": "system2/runtime/b2_industry_snapshot_observer.mjs",
+      "gitBlobSha": "10c4dd0aae40882edb36d2845a002ac361c366b2"
+    },
+    {
+      "path": "system2/scripts/measure_required_dependency_series_readonly.mjs",
+      "gitBlobSha": "5ecff877208861faba90d0ba7dc0ea2a25f0be2f"
+    },
+    {
+      "path": "system2/runtime/decision_clock_daily_evidence.mjs",
+      "gitBlobSha": "af23abcba50b026936df2f380e168bf67449b5f1"
+    },
+    {
+      "path": "system2/scripts/build_decision_clock_daily_bundle.mjs",
+      "gitBlobSha": "65e6f3f2c56f803e435185acbbeca2a06a02a2b7"
+    },
+    {
+      "path": "system2/runtime/twse_trading_calendar_readonly.mjs",
+      "gitBlobSha": "c62e220986e8d09c244e373f693a5b2aa0f6e0b5"
+    },
+    {
+      "path": "system2/scripts/check_twse_trading_day_readonly.mjs",
+      "gitBlobSha": "8878b4f8eef72de4314f1bb37401012ff4803c74"
+    },
+    {
+      "path": "system2/runtime/decision_clock_collector_contract_v0_3.mjs",
+      "gitBlobSha": "6ed2a583ed96d6a55207457fd79f1da74c700f32"
+    }
+  ]
+}
