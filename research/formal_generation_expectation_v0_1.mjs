@@ -3,8 +3,9 @@ import {
   PARENT_SCOPE_CONTRACT,
 } from "./parent_generation_integrity_v0_1.mjs";
 import {
-  buildDecisionGenerationHashes,
-} from "./decision_set_hash_v0_1.mjs";
+  buildParentKeysetReceipt,
+  buildDecisionSetHash,
+} from "./parent_keyset_hash_v0_1.mjs";
 import {
   assessSelectedParentPlanLink,
 } from "./selected_plan_set_hash_v0_1.mjs";
@@ -38,19 +39,33 @@ export async function buildFormalGenerationExpectation({
 }, cryptoImpl=globalThis.crypto) {
   const coherence=assessParentGenerationCoherence(parents,{
     ...expectedLineage,
-    parentScopeId:PARENT_SCOPE_CONTRACT.parentScopeId,
+    parentScopeId,
   });
 
   const expectedParentSymbols=sortedExpectedParentSymbols(populationReceipt);
   const actualParentSymbols=sortedUniqueSymbolsFromParents(parents);
   const parentPopulationMatch=arraysEqual(expectedParentSymbols,actualParentSymbols);
 
-  const generationHashes=await buildDecisionGenerationHashes(parents,cryptoImpl);
+  const parentScopeId=PARENT_SCOPE_CONTRACT.parentScopeId;
+  const parentKeysetReceipt=await buildParentKeysetReceipt({
+    scanDate:expectedLineage?.scanDate,
+    captureGeneration:expectedLineage?.captureGeneration,
+    parentScopeId,
+    parentIds:parents.map(row=>row?.parentDecisionReceiptId),
+    expectedParentCount:Number(populationReceipt?.featureReadyParentExpectedCount),
+  },cryptoImpl);
+  const decisionSetHash=await buildDecisionSetHash({
+    scanDate:expectedLineage?.scanDate,
+    captureGeneration:expectedLineage?.captureGeneration,
+    parentScopeId,
+    parents,
+  },cryptoImpl);
   const planLink=selectedPlanReceipts
     ? assessSelectedParentPlanLink({parents,planReceipts:selectedPlanReceipts})
     : {valid:false,reasons:["SELECTED_PLAN_RECEIPTS_MISSING"]};
 
   const reasons=[...coherence.reasons];
+  if (parentKeysetReceipt.status!=="COMPLETE") reasons.push("PARENT_KEYSET_COUNT_INCOMPLETE");
   if (!selectedPlanReceipts?.selectedPlanSetHash) reasons.push("SELECTED_PLAN_SET_HASH_MISSING");
   if (!planLink.valid) reasons.push(...(planLink.reasons||["SELECTED_PARENT_PLAN_LINK_INVALID"]));
   if (!parentPopulationMatch) reasons.push("PARENT_SYMBOL_SET_DIFFERS_FROM_FEATURE_READY_KEYSET");
@@ -75,9 +90,9 @@ export async function buildFormalGenerationExpectation({
     historyBlockedKeysetHash:populationReceipt.historyBlockedKeysetHash,
     historyUnknownKeysetHash:populationReceipt.historyUnknownKeysetHash,
     featureReadyKeysetHash:populationReceipt.featureReadyKeysetHash,
-    expectedParentCount:generationHashes.parentCount,
-    parentKeysetHash:generationHashes.parentKeysetHash,
-    decisionSetHash:generationHashes.decisionSetHash,
+    expectedParentCount:parentKeysetReceipt.expectedParentCount,
+    parentKeysetHash:parentKeysetReceipt.certifiedParentKeysetHash || parentKeysetReceipt.observedParentKeysetHash,
+    decisionSetHash,
     selectedPlanSetHash:selectedPlanReceipts?.selectedPlanSetHash||null,
     planLink,
     coherence,
