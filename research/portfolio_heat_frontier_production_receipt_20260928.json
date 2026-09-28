@@ -1,0 +1,104 @@
+{
+  "schemaVersion": "PORTFOLIO_HEAT_FRONTIER_PRODUCTION_RECEIPT_V0_1",
+  "observedAt": "2026-09-28T20:48:08+08:00",
+  "timestampProvenance": "GitHub Actions Portfolio Risk Tier-A Research run 36424017307 / job 108933416195",
+  "workflowRunId": 36424017307,
+  "jobId": 108933416195,
+  "readOnly": true,
+  "productionWrites": false,
+  "decisionImpact": false,
+  "scanDate": "2026-09-18",
+  "selectedCount": 3,
+  "totalCapitalNTD": 200000,
+  "currentDeploymentNTD": 168000,
+  "current": {
+    "allocationsNTD": {
+      "2006": 50000,
+      "3105": 64000,
+      "6133": 54000
+    },
+    "totalProjectedRiskNTD": 6483.4292,
+    "heatPctOfCapital": 3.241715,
+    "hhi": 0.3772380854,
+    "gini": 0.194697172,
+    "cv": 0.3629245875,
+    "maxRiskShare": 0.493844079,
+    "maxMin": 2.4472159965
+  },
+  "metricResults": {
+    "HHI": {
+      "legalStates": 946,
+      "frontierStates": 14,
+      "paretoDominators": 624,
+      "oneGridNeighbors": 6,
+      "oneGridDominators": 3
+    },
+    "GINI": {
+      "legalStates": 946,
+      "frontierStates": 14,
+      "paretoDominators": 624,
+      "oneGridNeighbors": 6,
+      "oneGridDominators": 3
+    },
+    "CV": {
+      "legalStates": 946,
+      "frontierStates": 14,
+      "paretoDominators": 624,
+      "oneGridNeighbors": 6,
+      "oneGridDominators": 3
+    },
+    "MAX_RISK_SHARE": {
+      "legalStates": 946,
+      "frontierStates": 14,
+      "paretoDominators": 599,
+      "oneGridNeighbors": 6,
+      "oneGridDominators": 2
+    },
+    "MAX_MIN": {
+      "legalStates": 946,
+      "frontierStates": 14,
+      "paretoDominators": 664,
+      "oneGridNeighbors": 6,
+      "oneGridDominators": 3
+    }
+  },
+  "localExamples": [
+    {
+      "allocationsNTD": {
+        "2006": 51000,
+        "3105": 63000,
+        "6133": 54000
+      },
+      "heatPctOfCapital": 3.229784,
+      "hhi": 0.3740698539,
+      "interpretation": "move NT$1,000 from 3105 to 2006"
+    },
+    {
+      "allocationsNTD": {
+        "2006": 50000,
+        "3105": 63000,
+        "6133": 55000
+      },
+      "heatPctOfCapital": 3.234972,
+      "hhi": 0.3746961157,
+      "interpretation": "move NT$1,000 from 3105 to 6133"
+    },
+    {
+      "allocationsNTD": {
+        "2006": 51000,
+        "3105": 64000,
+        "6133": 53000
+      },
+      "heatPctOfCapital": 3.236527,
+      "hhi": 0.3766888267,
+      "interpretation": "move NT$1,000 from 6133 to 2006"
+    }
+  ],
+  "inference": {
+    "rejectedClaim": "Current sizing sits on a necessary plan-time tradeoff where lowering projected stop-risk heat must worsen concentration, or lowering concentration must raise heat.",
+    "result": "Rejected on the only reconstructable multi-name witness. Hundreds of legal same-deployment states and multiple one-grid neighbors simultaneously improve heat and concentration.",
+    "economicLimit": "PriorityScore alpha is omitted. Pure risk-geometry Pareto dominance is not economic sizing dominance."
+  },
+  "status": "CURRENT_PARETO_DOMINATED_ON_PLAN_RISK_GEOMETRY / LOCAL_DOMINANCE_CONFIRMED / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY",
+  "formalCoreImpact": false
+}
