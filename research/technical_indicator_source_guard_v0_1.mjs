@@ -39,9 +39,16 @@ export function validateTechnicalSource(rows, context) {
     if (!dateValid(r.date)) return fail('INVALID_TRADE_DATE',i);
     if (priorDate !== null && r.date <= priorDate) return fail('DUPLICATE_OR_OUT_OF_ORDER_DATE',i);
     priorDate=r.date;
-    const open=price(r.open), high=price(r.high), low=price(r.low), close=price(r.close);
-    if ([open,high,low,close].some(v=>v===null)) return fail('INVALID_OR_NONPOSITIVE_PRICE',i);
-    if (low>high || open<low || open>high || close<low || close>high)
+    if (!r.observedRawBarIdentity || !r.sourceBarHash
+        || !r.rawFieldProvenance
+        || ['high','low','close'].some(field=>r.rawFieldProvenance[field]!=='OBSERVED'))
+      return fail('OHLC_OBSERVATION_PROVENANCE_UNVERIFIED',i);
+    const open=r.open===null || r.open===undefined ? null : price(r.open);
+    const high=price(r.high), low=price(r.low), close=price(r.close);
+    if ([high,low,close].some(v=>v===null) ||
+        (r.open!==null && r.open!==undefined && open===null))
+      return fail('INVALID_OR_NONPOSITIVE_PRICE',i);
+    if (low>high || (open!==null && (open<low || open>high)) || close<low || close>high)
       return fail('OHLC_GEOMETRY',i);
     if (r.symbolSessionVerified !== true) return fail('SYMBOL_SESSION_UNVERIFIED',i);
     if (r.technicalContinuity !== true || r.corporateActionContinuityResolved !== true)
