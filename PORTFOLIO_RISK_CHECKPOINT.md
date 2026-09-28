@@ -49,3 +49,54 @@ PR-024 concept convergence/readiness.
 ## Exact next continuation
 
 Start durable lane: Trading Frictions, Turnover & Rebalancing.
+
+
+## D14-RR-001 — REDUCE exists; native RE-ADD lifecycle does not (2026-09-28)
+
+A current-main source audit falsified a hidden assumption in D14-11 / D15-11:
+
+`REDUCE -> RE-ADD already exists as a Formal lifecycle.`
+
+It does not.
+
+Current runtime:
+- can emit BUY;
+- can emit ADD;
+- can emit REDUCE;
+- can emit SELL / STOP_LOSS;
+- normalizes positionStage only to NONE / FIRST / FULL;
+- contains no native RE-ADD signal type;
+- contains no REDUCED / RE-ADD_ELIGIBLE runtime stage.
+
+The signal-state store manages de-duplication/delivery state. It does not prove a broker fill or mutate the actual portfolio into a REDUCED state.
+
+Therefore:
+`REDUCE signal -> realized reduction -> REDUCED state -> RE-ADD fill`
+must not be reconstructed from current signal rows.
+
+### Friction accounting boundary
+
+For a future completed same-symbol, same-quantity cycle with positively linked actual fills:
+
+`gross timing capture = q × (reduce fill price - re-add fill price)`.
+
+Explicit net timing capture can then subtract positively evidenced:
+- REDUCE sell commission;
+- REDUCE sell tax;
+- RE-ADD buy commission.
+
+If actual fill prices are used, realized slippage is already embedded in those prices. A second generic slippage subtraction would double count execution friction.
+
+If signal/reference prices are used instead, any slippage assumption must be explicit and the result remains MODELED rather than ACTUAL.
+
+Quantity mismatch is not simplified into the same identity; it requires inventory-aware accounting.
+
+Artifacts:
+`research/reduce_readd_friction_v0_1.mjs`;
+`research/reduce_readd_friction_spec_v0_1.json`;
+`tests/test_reduce_readd_friction_v0_1.mjs`.
+
+Status:
+`RUNTIME_READD_ABSENT / FRICTION_EVIDENCE_CONTRACT_READY / REALIZED_READD_ANALYSIS_BLOCKED`.
+
+No Formal change and no FORMAL_OPTIMIZATION_CANDIDATE.
