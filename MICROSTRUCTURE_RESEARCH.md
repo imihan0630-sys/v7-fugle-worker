@@ -2062,3 +2062,114 @@ MS-035: study pressure-response asymmetry for buys versus sells in Taiwan.
 MS-036: study opening/closing auction contamination and define exact exclusion windows.
 MS-037: connect microstructure states to current K-line/PV latent states without double counting.
 MS-038: freeze the smallest useful combined feature matrix before any empirical run.
+
+
+## MS-045 — horizon-transfer falsification: one-tick predictability is not 15-minute alpha
+
+The strongest external microstructure evidence is short-horizon and must not be stretched beyond its tested clock.
+
+Positive evidence:
+- Cont, Kukanov & Stoikov (2014) find short-interval price changes are strongly related to order-flow imbalance (OFI) at the best bid/ask, with price-impact slope inversely related to market depth.
+- Gould & Bonart (2015) find queue imbalance predicts the direction of the next mid-price move for 10 liquid Nasdaq stocks, with stronger improvement for large-tick names.
+- A 2025 National Taiwan University thesis using TWSE high-frequency top-five data reports that levels 2-5 provide meaningful incremental price-discovery information beyond the best quotes/trades and that book-imbalance predictability differs materially by relative tick size, volatility and trading activity.
+
+Counter-evidence / transfer boundary:
+- These findings do not establish 15m, D1 or multi-day directional alpha.
+- Queue/OFI effects can decay or reverse as liquidity replenishes and inventory/order-splitting pressure normalizes.
+- Displayed depth is cancelable and public top-five is not the full latent book.
+- Predictive strength is heterogeneous by tick regime, activity and volatility; one universal threshold would be structurally suspect.
+- Older Taiwan trader-class evidence shows order-imbalance persistence but little aggregate price pressure lasting beyond one day, further arguing against monotone long-horizon interpretation.
+
+Research consequence:
+- D05 features are first treated as execution-state / short-horizon path-quality variables.
+- Any 15m use must be empirically earned through prospective aggregation; it cannot be inferred from one-tick evidence.
+
+Sources:
+- Cont, Kukanov & Stoikov (2014), Journal of Financial Econometrics 12(1), 47-88.
+- Gould & Bonart (2015), arXiv:1512.03492 / SSRN 2702117.
+- Lin Yao (2025), NTU thesis DOI 10.6342/NTU202504709.
+- Lee, Liu, Roll & Subrahmanyam (2004), JFQA 39(2), 327-341.
+
+Status:
+`ONE_TICK_TO_15M_TRANSFER = UNPROVEN / MUST_BE_TESTED_PROSPECTIVELY`.
+
+
+## MS-046 — aggregate microstructure as Pressure × Response × Persistence, not raw OFI sum
+
+To bridge event-level evidence to the system's 10m/15m/30m clocks without inventing a magic indicator, freeze a three-part aggregation.
+
+Pressure:
+- signed trade-pressure proxy where vendor semantics are explicit;
+- true OFI only when quote/order-book event changes are actually observed and the method is frozen;
+- depth imbalance top1/top5 kept separate.
+
+Price Response:
+- mid-price displacement per unit pressure;
+- markout at +1m/+5m/+10m/+15m;
+- breakout hold/failure and MFE/MAE where coverage is complete.
+
+Persistence:
+- fraction of buckets with same-sign pressure;
+- persistence run length;
+- whether pressure survives spread widening / opposing-side replenishment;
+- whether price response keeps pace with continued pressure.
+
+Interpretation state examples:
+- positive pressure + positive response + controlled spread = demand accepted candidate;
+- positive pressure + weak/negative response = absorption/exhaustion candidate;
+- large price move + weak pressure + thin depth = liquidity-vacuum candidate;
+- widening spread + high pressure + poor response = chase/adverse-selection candidate.
+
+The state is descriptive research output only. It does not map directly to BUY/SELL.
+
+Clock discipline:
+- preserve event/seconds-scale evidence separately;
+- aggregate into 1m and 5m research buckets first;
+- evaluate whether 10m/15m/30m summaries retain incremental value;
+- never sum raw OFI across heterogeneous auction, continuous, VI/trial or odd-lot regimes as though they were one process.
+
+Status:
+`MICROSTRUCTURE_AGGREGATION_PROTOCOL = FROZEN_CONCEPT / EVIDENCE_PENDING`.
+
+
+## MS-047 — current Taiwan/Fugle feasibility revalidated in 2026 docs
+
+Current official TWSE rules confirm opening and closing call-auction regimes with continuous trading intraday, and price-dependent tick sizes. These mechanics require regime labels rather than raw cross-session pooling.
+
+Current Fugle stock WebSocket documentation (updated 2026-01-09) exposes:
+- `books`: best-five bid/ask prices and sizes plus `isContinuous` / `isTrial`;
+- `trades`: trade bid, ask, price, size, time and serial;
+- explicit odd-lot subscription mode.
+
+This is sufficient to make prospective top-five / trade-pressure / event-state research technically plausible without pretending historical OHLCV can recover those events.
+
+Still UNKNOWN:
+- actual account subscription/rate capacity available to the research collector;
+- complete capture reliability across an entire monitored session;
+- loss/reconnect behavior and missing-event detection;
+- whether observed event cadence is adequate for event-level OFI rather than coarse snapshots.
+
+Therefore L3 is not yet justified for OFI/depth evidence merely because the API fields exist. L3 requires Taiwan PIT capture feasibility to be demonstrated in our own collection path with completeness/provenance.
+
+Status:
+`PROSPECTIVE_SOURCE_FIELDS = MATERIAL_PASS / OWN_CAPTURE_COMPLETENESS = NOT_PROVEN`.
+
+
+## MS-048 — D05-05 maturity decision
+
+D05-05 Order Flow Imbalance now has:
+- mechanism definition;
+- positive evidence;
+- explicit depth dependence;
+- horizon-transfer falsification;
+- displayed-liquidity / cancellation failure modes;
+- Taiwan-specific heterogeneity evidence;
+- anti-fabrication boundary separating true OFI from vendor trade-pressure proxies.
+
+This satisfies the curriculum meaning of L2 (mechanism + falsification defined).
+
+It does NOT satisfy L3 because our own Taiwan point-in-time event capture, completeness and replay contract are not yet validated.
+
+Decision:
+`D05-05: L1 -> L2`.
+No Formal Core impact.
