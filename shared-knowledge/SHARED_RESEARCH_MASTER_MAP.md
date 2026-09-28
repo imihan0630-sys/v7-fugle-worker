@@ -37,6 +37,7 @@ Existing detailed research remains in its current files; this map indexes it rat
 - `shared-knowledge/SHARED_RESEARCH_INVENTORY.md` is the cross-system domain/tag inventory. It points to original evidence without relocating it.
 - `shared-knowledge/STOCK_MARKET_KNOWLEDGE_LEARNING_MAP.md` is the canonical 18-domain / 226-module learning curriculum and chatroom routing dashboard.
 - `research/stock_market_learning_tracker_v0_1.json` is the machine-readable maturity tracker for that curriculum.
+- `shared-knowledge/LEARNING_ROOM_ROUTER.md` is the mandatory public routing file every learning chat reads to know its assigned domains, modules, learning scope, progress and checkpoints.
 
 ## Existing canonical anchors
 
