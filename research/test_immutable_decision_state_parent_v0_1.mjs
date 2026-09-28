@@ -70,7 +70,7 @@ assert.equal(selected.formalState,"SELECTED");
 assert.equal(selected.ranking.observedPoolRank,2);
 assert.equal(Object.isFrozen(selected),true);
 assert.equal(Object.isFrozen(selected.ranking),true);
-assert.throws(()=>{ selected.ranking.postConsensusPriorityScore=999; }, /read only|Cannot assign|object is not extensible/i);
+assert.equal(Reflect.set(selected.ranking,"postConsensusPriorityScore",999),false);
 assert.equal(selected.ranking.postConsensusPriorityScore,82.5);
 
 const selectedAgain = buildImmutableDecisionStateParent({
