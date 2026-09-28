@@ -350,3 +350,15 @@ They must not be erased once later clean data arrive.
 - No hypothesis is upgraded, rejected or supported by PVE-155~159.
 - Formal Core remains LOCKED.
 
+
+
+## H001/H002 preregistered falsification overlay after PVE-160 — 2026-09-28
+- No outcome status change: H001/H002 remain evidence-gated.
+- Raw abnormal volume has no universal directional sign. Continuation, reversal, liquidity shock, speculative turnover and broad market/sector activity remain competing mechanisms.
+- Any future C/D improvement in the frozen A/B/C/D sequence must survive a separately reported contextual/residual check using PIT-valid price state, volatility, liquidity and market/sector activity controls where available.
+- Missing contextual controls remain UNKNOWN; rows are not retained by coercing missing evidence to neutral/zero.
+- High-volume/strong-price-response and high-volume/weak-or-rejected-price-response must be reported separately before directional interpretation.
+- If raw RVOL/cumulative pace loses its effect after contextual/residual adjustment, classify it CONTEXT_PROXY or REDUNDANT, not incremental alpha.
+- If the sign materially changes across regimes/events/liquidity states, classify REGIME_OR_CONTEXT_DEPENDENT and prohibit post-hoc global threshold tuning.
+- This overlay was frozen before the first potentially clean 2026-09-30 cohort and therefore does not use future outcomes to choose the controls.
+- Formal Core remains LOCKED.
