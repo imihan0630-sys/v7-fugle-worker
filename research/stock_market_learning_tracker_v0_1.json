@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-09-28T17:23:00+08:00",
+  "updatedAt": "2026-09-28T18:02:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -33,7 +33,7 @@
   "aggregate": {
     "domainCount": 18,
     "moduleCount": 226,
-    "maturityWeightedPct": 41.5
+    "maturityWeightedPct": 42.4
   },
   "domains": [
     {
@@ -474,7 +474,7 @@
         "MICROSTRUCTURE_CHECKPOINT.md",
         "MICROSTRUCTURE_RESEARCH.md"
       ],
-      "maturityPct": 44,
+      "maturityPct": 46,
       "modules": [
         {
           "id": "D05-01",
@@ -511,10 +511,10 @@
         {
           "id": "D05-05",
           "name": "Order Flow Imbalance訂單流失衡",
-          "level": "L1",
-          "maturityPct": 20,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Order Flow Imbalance訂單流失衡」。學習範圍：台股撮合制度、Tick、限價與集合競價；買賣價差、深度、委託流、流動性狀態；零股／整股差異；資料可觀測性限制；對可成交性、滑價與訊號品質的影響。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "理論已理解"
+          "levelMeaning": "機制＋反證已定義"
         },
         {
           "id": "D05-06",
