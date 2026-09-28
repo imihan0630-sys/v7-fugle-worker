@@ -1,0 +1,62 @@
+{
+  "receiptId": "NONTECH_PHYSICAL_CYCLE_SOURCE_PILOT_V0_1",
+  "executedAt": "2026-09-28T20:12:00+08:00",
+  "mode": "OUTCOME_BLIND_SOURCE_ONLY",
+  "forwardReturnDataUsed": false,
+  "formalCoreChanged": false,
+  "source": {
+    "authority": "Taiwan Ministry of Economic Affairs, Department of Statistics",
+    "surface": "Industrial Production / Sales / Inventory Value Statistics Query",
+    "url": "https://service.moea.gov.tw/EE520/investigate/InvestigateDB.aspx",
+    "sourceClass": "OFFICIAL_INTERACTIVE_QUERY",
+    "machineContract": "UNVERIFIED",
+    "supportedExportUI": [
+      "XLS",
+      "ODS"
+    ],
+    "printUI": true
+  },
+  "query": {
+    "observationPeriodROC": "11507",
+    "observationPeriodISO": "2026-07",
+    "industryCode": "24",
+    "industry": "基本金屬製造業",
+    "calculationMode": "STATISTICAL_VALUE"
+  },
+  "observations": [
+    {
+      "metric": "生產價值",
+      "value": 128744522,
+      "unit": "NTD_thousand"
+    },
+    {
+      "metric": "銷售價值",
+      "value": 79712871,
+      "unit": "NTD_thousand"
+    },
+    {
+      "metric": "存貨價值",
+      "value": 106749192,
+      "unit": "NTD_thousand"
+    },
+    {
+      "metric": "存貨率",
+      "value": 143.75,
+      "unit": "percent"
+    }
+  ],
+  "sourceConclusions": [
+    "A current non-tech aligned panel exists on one official source surface for the same month and industry scope.",
+    "The official query supports downloadable XLS/ODS reports, falsifying the assumption that the detailed/current surface is display-only.",
+    "A stable documented request/download machine contract for arbitrary query selections is still unverified; browser interaction/export UI is not yet a canonical automated collector.",
+    "This pilot does not infer cycle direction because the current query used statistical-value mode only; no YoY outcome was requested.",
+    "The exact economic definition of inventory ratio must be preserved from official metadata before deriving a substitute ratio from raw inventory/sales values."
+  ],
+  "readiness": "MANUAL_EXPORTABLE_OFFICIAL_SOURCE / MACHINE_CONTRACT_UNVERIFIED",
+  "alphaConclusionAuthorized": false,
+  "next": [
+    "Capture the official inventory-ratio definition and report semantics.",
+    "Determine whether the supported XLS/ODS export has a stable documented or reproducible request contract without hidden-endpoint reverse engineering.",
+    "Prospectively preserve downloaded report hash, query parameters, capturedAt and release-knownAt when a collector is authorized."
+  ]
+}
