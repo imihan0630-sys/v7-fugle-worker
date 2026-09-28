@@ -19,6 +19,21 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 
 ## Current design decisions
 
+- First Prospective Decision Clock Day Drill（首個前瞻交易日整合演練）V0.1 merged to main in commit `a639981d1621f61bab8a6e2a894aa0c67bf2f8c7` via PR #212. Synthetic 2026-09-29 timestamps exercise A1 TWSE/TPEx, B2, A5 candidate-boundary, daily evidence V0.2.1, V0.3 provenance bundle, coverage-qualified aggregation, owner-review packet and finalized-date acceptance as one chain. Both `COMPLETE_PRECISE` and first-observation-already-READY => `COMPLETE_IMPRECISE` paths are covered. Synthetic drill evidence never increments prospective readiness counters.
+
+- PR #212 was rebased onto the latest concurrent main with no overlapping files and reverified. Final-head System2 Research CI `36361673385` PASS and V8 Regression `36361673378` PASS. Post-merge System2 Research CI `36361735838` PASS.
+
+- Decision Clock Collector Freeze Guard（擷取器凍結防護）V0.1 merged to main in commit `ec171d94f5b05e281b9b5598dc51e21adfee369b` via PR #218 before the first prospective sample. A machine-readable baseline now freezes Git blob hashes for exactly the same 13 files in `DECISION_CLOCK_COLLECTOR_CONTRACT_FILES_V0_3`.
+
+- The freeze-guard test requires the manifest path set to equal the collector-contract path set exactly, then verifies every current collector file with `git hash-object`. Silent collector drift therefore fails System2 Research CI. The existing V0.3 SHA-256 collector fingerprint remains the artifact-level provenance mechanism; the Git-blob guard is an independent repository immutability layer.
+
+- System2 Research CI path triggers now explicitly include `.github/workflows/system2-prospective-clock-evidence-readonly.yml` on both push and pull request. A collector-workflow-only edit can no longer bypass the freeze test simply because the workflow file lives outside `system2/**`.
+
+- PR #218 pre-merge verification PASS: System2 Research CI `36379496896`; V8 Regression `36379496886`. Post-merge verification PASS: System2 Research CI `36379561026`; V8 Regression `36379561006`. No collector runtime semantics, strategy logic, D1, Worker, Worker Cron, capture, or System1/V8 Formal Core were changed.
+
+- Prospective Decision Clock promotion-grade trading-date count remains 0. The first ordinary eligible prospective trading date remains 2026-09-29. Collector contents are now mechanically frozen against accidental drift before that first sample; after evidence begins, a material collector change requires a separately preregistered evidence epoch/contract version rather than silent hash refresh.
+
+
 - Finalized-Date Acceptance（最終化日期驗收）V0.1 merged to main in commit `6221eb9fddf5f57c356925a73284eae4b8a55d30` via PR #211. The read-only readiness workflow now emits a separate acceptance receipt for the latest finalized market date and classifies it as `COMPLETE_PRECISE`, `COMPLETE_IMPRECISE`, `COVERAGE_REJECTED`, `PROMOTION_ARTIFACT_MISSING`, `COVERAGE_ANCHOR_RUN_MISMATCH`, `NON_ATTEMPT_ONE_SELECTED`, `INCOMPLETE_REQUIRED_EVIDENCE`, `A5_NOT_AVAILABLE_BY_CANDIDATE`, `NON_TRADING_DAY_SKIP`, or `NOT_IN_FINALIZED_WINDOW`.
 
 - The acceptance audit independently recomputes whether the finalized date counts toward the independent-date sample and precision-eligible sample, then cross-checks that result against `aggregation.promotionGradeMarketDates`. Any disagreement is a hard audit failure rather than a soft warning.
