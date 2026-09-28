@@ -1288,3 +1288,68 @@ Status: `LIFECYCLE_MODEL_SUPPORTED / CROSS_COMPANY_SEMANTICS_NOT_READY / KEEP_L2
 ### Next
 SC-023: actual Taiwan issuer exposure mapping for one ABF/PCB input chain and one steel-process route.
 SC-024: evaluate whether issuer capacity disclosures can be normalized into comparable status clocks without inventing utilization.
+
+
+## SC-024 — Capacity disclosure normalization: status clocks are comparable; utilization is not
+
+### Research question
+Can issuer capacity disclosures be normalized into comparable PIT status clocks without inventing utilization?
+
+### Bounded Taiwan issuer evidence
+Two Taiwan foundry issuers provide a useful positive/negative semantic pair.
+
+**TSMC / Arizona and N3 expansion**
+- 2025 annual-report and 2026 earnings-call disclosures distinguish HVM already achieved, construction complete, tool move-in/installation, future volume-production dates, construction start, technology conversion and aggregate annual wafer-equivalent capacity.
+- The same project can therefore move through multiple states over time; a previously announced production year is not immutable truth. Later disclosures may pull schedules forward/back, so revisions must append a new vintage rather than overwrite the old expectation.
+- Aggregate annual capacity and project milestone are different denominators/scopes. They must not be joined as though a project-specific utilization rate were disclosed.
+
+**UMC / Singapore Fab 12i P3**
+- UMC's April 2025 official release identifies an opened expansion fab, first-phase investment, planned 30,000 wafers/month and production beginning in 2026.
+- UMC's 2025 Form 20-F later narrows expected production commencement to 2H26 while preserving design capacity of 30,000 wafers/month.
+- This proves that `DESIGN_CAPACITY`, `FAB_OPENED`, `PRODUCTION_EXPECTED` and `HVM/ACTUAL_OUTPUT` are separate facts. An opening ceremony or design capacity is not evidence that saleable production is already online.
+
+### Normalizable clock
+Across bounded issuer disclosures, the following event states are reusable:
+`PLAN_ANNOUNCED -> CAPEX/PROJECT_COMMITTED -> CONSTRUCTION_STARTED -> CONSTRUCTION_COMPLETE -> TOOL_MOVE_IN/INSTALLATION -> PROCESS_OR_CUSTOMER_QUALIFICATION -> VOLUME_PRODUCTION/HVM -> RAMPING -> STEADY_STATE_AVAILABLE_CAPACITY`.
+
+Each observation must preserve:
+- issuer/facility/product/process/geography;
+- eventState;
+- sourcePublishedAt/knownAt and capturedAt;
+- plannedEffectiveAt versus actualEffectiveAt;
+- capacityValue/unit and capacityType = DESIGN | NAMEPLATE | AVAILABLE | QUALIFIED | ECONOMIC | ACTUAL_OUTPUT | UNKNOWN;
+- revision/supersession link;
+- source scope and confidence.
+
+### Strong negative controls
+1. `FAB_OPENED != PRODUCTION_STARTED`.
+2. `DESIGN_CAPACITY != AVAILABLE_CAPACITY != ACTUAL_OUTPUT`.
+3. `CAPEX != CAPACITY`.
+4. `HVM_START != FULL_RAMP`.
+5. Aggregate issuer capacity cannot be used as the denominator for one facility unless the source explicitly supplies that mapping.
+6. Utilization remains UNKNOWN unless both numerator and denominator are explicitly compatible in product/process/time scope.
+7. Schedule changes are information events; current schedules must not be backfilled into prior vintages.
+
+### Falsification / bias controls
+- No stock returns or post-event performance were inspected.
+- No capacity threshold or bullish/bearish sign was fitted.
+- Famous-issuer evidence is used only to test semantic normalization, not to infer universal alpha.
+- Cross-company unit comparability remains limited: wafer equivalents are not interchangeable with PCB area, substrate panels, tons, MW, units or qualified economic output.
+- Qualification/yield disclosure is uneven; missing evidence stays UNKNOWN.
+- Expansion can still be replacement, migration, geographic redundancy or demand growth, so purpose remains a separate field.
+
+### Maturity decision
+Keep `D10-04 產能／擴產／稼動率` at **L2**.
+
+SC-024 establishes a reusable **status-clock grammar** on bounded Taiwan issuer evidence, but L3 would still overstate cross-company coverage because standardized utilization denominators, qualification/yield and economic-capacity semantics are not broadly available.
+
+Status: `STATUS_CLOCK_NORMALIZATION_FEASIBLE / UTILIZATION_NOT_NORMALIZABLE_YET / REVISION_VINTAGE_REQUIRED / NO_OUTCOME_TEST / FORMAL_UNCHANGED`.
+
+### System implication
+Potential System 1/System 2 value is not a new score yet. The concrete improvement target is to prevent false positives such as treating “fab opened”, “capex up” or “design capacity announced” as immediately usable supply. A future research feature should be categorical state + time-to-effective-capacity, never a single binary expansion flag.
+
+This is **not** a `FORMAL_OPTIMIZATION_CANDIDATE`: no prospective/OOS outcome increment, redundancy test or transaction-cost evidence exists.
+
+### Exact continuation
+SC-025: define `MATERIAL_TRANSMISSION_RECEIPT` joining input price -> production route -> output/selling price -> volume -> margin with separate knownAt clocks and UNKNOWN semantics.
+SC-026: require negative controls for low/no exposure and failed pass-through before any material-transmission outcome test.
