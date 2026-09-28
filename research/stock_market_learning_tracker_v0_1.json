@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-09-28T21:07:00+08:00",
+  "updatedAt": "2026-09-28T21:13:30+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -1605,7 +1605,9 @@
           "level": "L2",
           "maturityPct": 40,
           "learningScope": "聚焦「Correlation相關性」。學習範圍：資金與風險集中、相關性、共變異、分群、有效下注數、Portfolio Heat、現金歸因、停損幾何；FIRST/ADD/FULL/REDUCE/RE-ADD生命週期；配置量化誤差與尾端風險。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "機制＋反證已定義",
+          "evidenceStatus": "HISTORICAL_INFRASTRUCTURE_AVAILABLE / RETURN_CONTINUITY_NOT_PROVEN",
+          "nextContinuationPoint": "After continuous full-market backfill exists, require adjusted/continuity-proven PIT synchronized returns, frozen return horizon, common-date/missingness rules and minimum overlap before first correlation estimate."
         },
         {
           "id": "D15-04",
@@ -1613,7 +1615,9 @@
           "level": "L2",
           "maturityPct": 40,
           "learningScope": "聚焦「Covariance Shrinkage共變異縮減」。學習範圍：資金與風險集中、相關性、共變異、分群、有效下注數、Portfolio Heat、現金歸因、停損幾何；FIRST/ADD/FULL/REDUCE/RE-ADD生命週期；配置量化誤差與尾端風險。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "機制＋反證已定義",
+          "evidenceStatus": "HISTORICAL_INFRASTRUCTURE_AVAILABLE / RETURN_CONTINUITY_NOT_PROVEN",
+          "nextContinuationPoint": "Do not fit covariance shrinkage until D15-03 panel eligibility passes; preregister covariance estimator, observation-to-dimension guard and PSD handling before first result."
         },
         {
           "id": "D15-05",
@@ -1621,7 +1625,9 @@
           "level": "L2",
           "maturityPct": 40,
           "learningScope": "聚焦「Hierarchical Clustering階層分群」。學習範圍：資金與風險集中、相關性、共變異、分群、有效下注數、Portfolio Heat、現金歸因、停損幾何；FIRST/ADD/FULL/REDUCE/RE-ADD生命週期；配置量化誤差與尾端風險。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "機制＋反證已定義",
+          "evidenceStatus": "HISTORICAL_INFRASTRUCTURE_AVAILABLE / RETURN_CONTINUITY_NOT_PROVEN",
+          "nextContinuationPoint": "Do not cluster RAW+UNVERIFIED returns. After correlation/covariance eligibility, freeze distance transform/linkage and stability resampling before inspecting portfolio outcomes."
         },
         {
           "id": "D15-06",
@@ -1629,7 +1635,9 @@
           "level": "L2",
           "maturityPct": 40,
           "learningScope": "聚焦「Effective Bets有效獨立下注數」。學習範圍：資金與風險集中、相關性、共變異、分群、有效下注數、Portfolio Heat、現金歸因、停損幾何；FIRST/ADD/FULL/REDUCE/RE-ADD生命週期；配置量化誤差與尾端風險。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "機制＋反證已定義",
+          "evidenceStatus": "HISTORICAL_INFRASTRUCTURE_AVAILABLE / RETURN_CONTINUITY_NOT_PROVEN",
+          "nextContinuationPoint": "True Effective Bets remains blocked until continuity-proven covariance/factor-risk decomposition exists; inverse HHI stays concentration-effective names only."
         },
         {
           "id": "D15-07",
