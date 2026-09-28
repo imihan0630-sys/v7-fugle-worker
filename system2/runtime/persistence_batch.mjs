@@ -10,6 +10,18 @@ const TABLE_SPECS = deepFreeze({
     order: 2,
     identity: ["bar_id"],
   },
+  s2_backtest_runs: {
+    order: 3,
+    identity: ["run_id"],
+  },
+  s2_backtest_checkpoints: {
+    order: 4,
+    identity: ["checkpoint_hash"],
+  },
+  s2_historical_base_samples: {
+    order: 5,
+    identity: ["sample_id"],
+  },
   s2_source_session_receipts: {
     order: 10,
     identity: ["receipt_id"],
