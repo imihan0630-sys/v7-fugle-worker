@@ -407,3 +407,144 @@ Cross-lane handoff:
 
 Status:
 `ATR_CONDITIONING_DECOMPOSITION = PREREGISTERED / NO_FORMAL_CHANGE`.
+
+
+## VR-022 — ATR geometry has channel-specific kinks; one global ATR optimum is structurally suspect
+
+The frozen Formal formulas imply different marginal ATR effects before any empirical outcome is observed.
+
+### B channel: explicit kink
+
+B stop:
+`breakout - max(0.65*ATR, breakout*0.012)`.
+
+The ATR branch becomes binding when:
+`0.65*ATR >= 0.012*breakout`.
+
+Using `ATR = atrPercent/100 * close`, the crossover is:
+
+`atrPercent >= 0.012*breakout/(0.65*close)*100`.
+
+If close is near breakout, this is about 1.85%.
+Examples:
+- close/breakout=0.995 -> ~1.855%;
+- 1.000 -> ~1.846%;
+- 1.003 -> ~1.841%;
+- 1.010 -> ~1.828%;
+- 1.030 -> ~1.792%.
+
+Thus a large part of the Formal 1%-10% ATR interval is in the ATR-binding regime for B. Above the crossover, higher ATR mechanically widens risk and lowers RR for fixed target geometry.
+
+### A channel: binding depends on structureLow relative to support
+
+A stop:
+`min(support*0.98, structureLow-0.12*ATR)`.
+
+The support stop remains binding while:
+`support*0.98 <= structureLow-0.12*ATR`.
+
+Approximate crossover, with close near support:
+
+`atrPercent ~= ((structureLow/support)-0.98)/0.12*100`.
+
+Illustrative structural ratios:
+- structureLow/support=0.980 -> crossover ~0%;
+- 0.985 -> ~4.17%;
+- 0.990 -> ~8.33%;
+- 0.995 -> ~12.5%;
+- 1.000 -> ~16.67%.
+
+Therefore when structureLow is close to support, the 2% support stop can remain binding throughout the whole Formal ATR range and A-channel RR can be largely ATR-insensitive. When structureLow is already below support, the structure-minus-ATR branch can bind much earlier.
+
+### Consequence
+
+A pooled empirical claim such as "ATR 3%-5% is best" can be an artifact of:
+- channel mixture;
+- different stop-binding states;
+- target-distance distribution;
+- different price tiers / tick geometry;
+- later RR selection.
+
+Any future ATR analysis must stratify A/B and stopBinding before fitting or even describing an apparent optimum.
+
+Status:
+`GLOBAL_ATR_OPTIMUM = STRUCTURALLY_MISSPECIFIED_UNLESS_CHANNEL_AND_BINDING_CONTROLLED`.
+
+Machine spec:
+`research/volatility_atr_conditioning_decomposition_v0_1.json`.
+
+
+## VR-023 — RV5/RV20 is useful context but is an overlapping-window ratio, not a pure acceleration measure
+
+Current market-volatility V0 uses:
+- RV5;
+- RV20;
+- RV5/RV20.
+
+This is intentionally simple and source-feasible, but the ratio has an important statistical interpretation limit:
+the five returns entering RV5 are also contained inside RV20.
+
+Therefore a recent volatility shock:
+- raises the numerator;
+- also raises the denominator;
+- makes the ratio a damped, overlapping-window contrast rather than a clean "recent versus old" acceleration estimate.
+
+This does NOT invalidate RV5/RV20 as a descriptive state variable. It means:
+- do not treat RV5/RV20 as independent from RV5 and RV20;
+- do not count the three as three separate positive/negative votes;
+- do not infer causal acceleration from the ratio alone.
+
+Outcome-free robustness comparator:
+- `RV5_recent` versus `RV15_prior`, where the prior 15 returns explicitly exclude the recent five;
+- both can be constructed from the same 20-return / 21-close official TAIEX window;
+- no extra historical horizon is required;
+- comparator is research-only and must not be added as a fourth permanent factor unless it proves incremental value.
+
+Preferred test:
+1. use the existing RV5/RV20 contract as the primary preregistered state;
+2. use non-overlapping RV5_recent/RV15_prior only as robustness/decomposition;
+3. if both lead to the same practical conclusion, confidence increases;
+4. if only the overlapping ratio works, investigate mechanical overlap / denominator effects before promotion.
+
+No threshold search is authorized.
+
+
+## VR-024 — volatility source clocks must separate market RV from stock continuity risk
+
+Market-level TAIEX close-to-close RV and stock-level volatility do not share the same provenance problem.
+
+TAIEX market RV:
+- the official FMTQIK path plus same-date scan-time availability contract materially supports prospective RV5/RV20 construction;
+- the current 21-session contract is sufficient for 20 close-to-close returns.
+
+Stock-level path volatility:
+- V8.12 HISTORY_SOURCE_REVALIDATION materially validates raw unadjusted session presence and detects true missing traded bars;
+- but RAW_HISTORY_ADMISSION is not the same as TECHNICAL_CONTINUITY across corporate-action resets;
+- an ex-right/ex-dividend mechanical reset can contaminate raw close-to-close stock volatility unless the PIT-valid continuity transform is certified.
+
+Therefore:
+- market TAIEX RV can proceed prospectively under its own source contract;
+- stock realized-vol / Yang-Zhang / overnight decomposition crossing relevant corporate-action boundaries must wait for the shared TECHNICAL_CONTINUITY contract or exclude unresolved windows;
+- missing continuity evidence = UNKNOWN, never high-volatility evidence.
+
+This asymmetry is important for incremental tests: a clean market-vol state must not be compared against a contaminated stock-vol control and then declared incremental.
+
+Status:
+`MARKET_RV_SOURCE_FEASIBLE / STOCK_CONTINUITY_CONDITIONAL`.
+
+
+## VR-025 — external horizon evidence supports decomposition, not a new trading signal
+
+Recent volatility-forecasting evidence in another Asian equity market finds that overnight information can improve future range-based volatility forecasts, with the benefit strongest at shorter horizons and weakening as the forecast horizon extends.
+
+Use in this lane is limited:
+- mechanism evidence that overnight and intraday volatility components can carry different information;
+- motivation to keep overnight/intraday decomposition separate when a PIT-safe Taiwan source exists;
+- NOT evidence that China-market coefficients or signs transfer to Taiwan;
+- NOT authorization to use next-session opening gap in an after-close decision, because that gap is future information at the selection clock.
+
+Source:
+- Zhang (2025), Journal of Forecasting, DOI 10.1002/for.70011.
+
+Status:
+`OVERNIGHT_COMPONENT = RESEARCH_MOTIVATION_ONLY / TAIWAN_PIT_SOURCE_REQUIRED`.
