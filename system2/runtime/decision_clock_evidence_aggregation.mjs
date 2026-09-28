@@ -126,17 +126,6 @@ export function aggregateDecisionClockEvidence({
     }
   }
 
-  const readiness = assessDecisionClockReadinessV02({
-    dailyEvidence: selected.map((x) => x.bundle.evidence),
-  });
-  const collectorContractFingerprints = [...new Set(
-    selected.map((x) => x.collectorContractFingerprint).filter(Boolean),
-  )].sort();
-  const collectorContractConsistent = collectorContractFingerprints.length <= 1;
-  const a5BoundaryFailureDates = selected
-    .filter((x) => x.bundle.evidence.a5AvailableByCandidate !== true)
-    .map((x) => x.marketDate);
-
   const coverageRows = scheduledRunCoverage.map((row, index) => {
     if (!row || typeof row !== "object") {
       throw new Error(`scheduledRunCoverage[${index}] is required`);
@@ -154,6 +143,65 @@ export function aggregateDecisionClockEvidence({
     };
   });
 
+  const coverageByDate = new Map(coverageRows.map((row) => [row.marketDate, row]));
+  const promotionSelected = [];
+  const coverageExcludedScheduledArtifacts = [];
+  for (const row of selected) {
+    const coverage = coverageByDate.get(row.marketDate) || null;
+    let reason = null;
+    if (!coverage) reason = "COVERAGE_ROW_MISSING";
+    else if (coverage.expectedTradingDay !== true) reason = "OFFICIAL_NON_TRADING_DAY";
+    else if (coverage.artifactPresent !== true || coverage.runConclusion !== "success") {
+      reason = "COVERAGE_ANCHOR_NOT_PROMOTION_ELIGIBLE";
+    } else if (coverage.runId !== row.runId) {
+      reason = "COVERAGE_ANCHOR_RUN_MISMATCH";
+    } else if (row.runAttempt !== 1) {
+      reason = "NON_ATTEMPT_ONE";
+    }
+
+    if (reason) {
+      coverageExcludedScheduledArtifacts.push({
+        marketDate: row.marketDate,
+        runId: row.runId,
+        runAttempt: row.runAttempt,
+        runCreatedAt: row.runCreatedAt,
+        artifactId: row.artifactId,
+        artifactName: row.artifactName,
+        coverageRunId: coverage?.runId || null,
+        reason,
+      });
+    } else {
+      promotionSelected.push(row);
+    }
+  }
+
+  const promotionSelectedByDate = new Map(
+    promotionSelected.map((row) => [row.marketDate, row]),
+  );
+  const coverageArtifactCandidateMismatches = coverageRows
+    .filter((row) =>
+      row.expectedTradingDay === true
+      && row.artifactPresent === true
+      && row.runConclusion === "success"
+      && (!promotionSelectedByDate.has(row.marketDate)
+        || promotionSelectedByDate.get(row.marketDate).runId !== row.runId))
+    .map((row) => ({
+      marketDate: row.marketDate,
+      coverageRunId: row.runId,
+      reason: "COVERAGE_ELIGIBLE_WITHOUT_MATCHING_SELECTED_ARTIFACT",
+    }));
+
+  const readiness = assessDecisionClockReadinessV02({
+    dailyEvidence: promotionSelected.map((x) => x.bundle.evidence),
+  });
+  const collectorContractFingerprints = [...new Set(
+    promotionSelected.map((x) => x.collectorContractFingerprint).filter(Boolean),
+  )].sort();
+  const collectorContractConsistent = collectorContractFingerprints.length <= 1;
+  const a5BoundaryFailureDates = promotionSelected
+    .filter((x) => x.bundle.evidence.a5AvailableByCandidate !== true)
+    .map((x) => x.marketDate);
+
   const tradingDayArtifactGaps = coverageRows.filter(
     (x) => x.expectedTradingDay === true && x.artifactPresent !== true,
   );
@@ -164,26 +212,30 @@ export function aggregateDecisionClockEvidence({
   const promotionCoverageComplete =
     artifactCoverageAudited
     && tradingDayArtifactGaps.length === 0
+    && coverageArtifactCandidateMismatches.length === 0
     && collectorContractConsistent;
 
   let promotionReadinessStatus = readiness.status;
   if (!artifactCoverageAudited) promotionReadinessStatus = "COVERAGE_UNAUDITED";
   else if (tradingDayArtifactGaps.length > 0) promotionReadinessStatus = "SCHEDULED_TRADING_DAY_ARTIFACT_GAPS";
+  else if (coverageArtifactCandidateMismatches.length > 0) promotionReadinessStatus = "COVERAGE_ARTIFACT_PROVENANCE_MISMATCH";
   else if (!collectorContractConsistent) promotionReadinessStatus = "COLLECTOR_CONTRACT_DRIFT";
 
   return deepFreeze({
     aggregationVersion: "S2_DECISION_CLOCK_EVIDENCE_AGGREGATION_V0_1",
     attemptOneProvenanceVersion: "S2_DECISION_CLOCK_ATTEMPT_ONE_PROVENANCE_V0_4",
+    promotionQualificationVersion: "S2_DECISION_CLOCK_PROMOTION_QUALIFICATION_V0_1",
     workflowFile: requiredText(workflowFile, "workflowFile"),
     promotionPolicy: "EARLIEST_ATTEMPT_ONE_SCHEDULED_ARTIFACT_PER_MARKET_DATE",
     candidateArtifactCount: rows.length,
     scheduledArtifactCount: scheduledAll.length,
-    promotionEligibleScheduledArtifactCount: scheduled.length,
+    attemptOneScheduledArtifactCount: scheduled.length,
+    promotionEligibleScheduledArtifactCount: promotionSelected.length,
     rerunDiagnosticArtifactCount: rerunDiagnostics.length,
     manualDiagnosticArtifactCount: manualDiagnostics.length,
-    promotionGradeDateCount: selected.length,
-    promotionGradeMarketDates: selected.map((x) => x.marketDate),
-    selectedArtifacts: selected.map((x) => ({
+    promotionGradeDateCount: promotionSelected.length,
+    promotionGradeMarketDates: promotionSelected.map((x) => x.marketDate),
+    selectedArtifacts: promotionSelected.map((x) => ({
       marketDate: x.marketDate,
       runId: x.runId,
       runAttempt: x.runAttempt,
@@ -201,6 +253,8 @@ export function aggregateDecisionClockEvidence({
       collectorContractFingerprint: x.collectorContractFingerprint,
       workflowSha: x.workflowSha,
     })),
+    coverageExcludedScheduledArtifacts,
+    coverageArtifactCandidateMismatches,
     duplicateScheduledArtifacts: duplicateScheduled,
     rerunDiagnosticArtifacts: rerunDiagnostics.map((x) => ({
       marketDate: x.marketDate,

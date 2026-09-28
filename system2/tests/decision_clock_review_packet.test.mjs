@@ -11,11 +11,14 @@ function aggregation({
   return {
     aggregationVersion: "S2_DECISION_CLOCK_EVIDENCE_AGGREGATION_V0_1",
     promotionPolicy: "EARLIEST_ATTEMPT_ONE_SCHEDULED_ARTIFACT_PER_MARKET_DATE",
+    promotionQualificationVersion: "S2_DECISION_CLOCK_PROMOTION_QUALIFICATION_V0_1",
     artifactCoverageAudited: true,
     promotionCoverageComplete: coverage,
     tradingDayArtifactGaps: Array.from({ length: gapCount }, (_, i) => ({
       marketDate: "2026-10-" + String(i + 1).padStart(2, "0"),
     })),
+    coverageExcludedScheduledArtifacts: [],
+    coverageArtifactCandidateMismatches: [],
     duplicateScheduledArtifacts: [],
     rerunDiagnosticArtifactCount: 0,
     manualDiagnosticArtifactCount: 0,
@@ -47,6 +50,9 @@ assert.equal(accumulating.reviewState, "ACCUMULATING");
 assert.ok(accumulating.blockers.includes("READINESS_NOT_FREEZE_ELIGIBLE"));
 assert.equal(accumulating.exactDecisionClockAuthorized, false);
 assert.equal(accumulating.workerCronAuthorized, false);
+assert.equal(accumulating.promotionQualificationVersion, "S2_DECISION_CLOCK_PROMOTION_QUALIFICATION_V0_1");
+assert.equal(accumulating.coverageExcludedScheduledArtifactCount, 0);
+assert.equal(accumulating.coverageArtifactCandidateMismatchCount, 0);
 assert.equal(accumulating.rerunDiagnosticArtifactCount, 0);
 assert.equal(accumulating.attemptOneAnchorInvariant, true);
 assert.equal(accumulating.laterRerunAttemptsCanRepairAttemptOne, false);
@@ -107,5 +113,38 @@ assert.equal(a5Blocked.reviewState, "ACCUMULATING");
 assert.ok(a5Blocked.blockers.includes("A5_NOT_AVAILABLE_BY_CANDIDATE"));
 assert.equal(a5Blocked.a5BoundaryFailureCount, 1);
 assert.deepEqual(a5Blocked.a5BoundaryFailureDates, ["2026-10-03"]);
+
+
+const provenanceBlocked = buildDecisionClockReviewPacket({
+  ...aggregation({
+    status: "FREEZE_ELIGIBLE",
+    dates: 20,
+    allPrecise: true,
+    coverage: false,
+    gapCount: 0,
+  }),
+  promotionCoverageComplete: false,
+  coverageExcludedScheduledArtifacts: [{
+    marketDate: "2026-10-04",
+    runId: "801",
+    coverageRunId: "800",
+    reason: "COVERAGE_ANCHOR_RUN_MISMATCH",
+  }],
+  coverageArtifactCandidateMismatches: [{
+    marketDate: "2026-10-04",
+    coverageRunId: "800",
+    reason: "COVERAGE_ELIGIBLE_WITHOUT_MATCHING_SELECTED_ARTIFACT",
+  }],
+});
+assert.equal(provenanceBlocked.reviewState, "BLOCKED");
+assert.ok(
+  provenanceBlocked.blockers.includes("COVERAGE_ARTIFACT_PROVENANCE_MISMATCH"),
+);
+assert.equal(provenanceBlocked.coverageExcludedScheduledArtifactCount, 1);
+assert.equal(provenanceBlocked.coverageArtifactCandidateMismatchCount, 1);
+assert.deepEqual(
+  provenanceBlocked.coverageArtifactCandidateMismatchDates,
+  ["2026-10-04"],
+);
 
 console.log("System2 decision-clock review packet tests passed");

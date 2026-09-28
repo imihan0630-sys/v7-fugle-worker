@@ -107,9 +107,11 @@ const result = aggregateDecisionClockEvidence({
 assert.equal(result.promotionPolicy, "EARLIEST_ATTEMPT_ONE_SCHEDULED_ARTIFACT_PER_MARKET_DATE");
 assert.equal(result.candidateArtifactCount, 4);
 assert.equal(result.scheduledArtifactCount, 3);
-assert.equal(result.promotionEligibleScheduledArtifactCount, 3);
+assert.equal(result.attemptOneScheduledArtifactCount, 3);
+assert.equal(result.promotionEligibleScheduledArtifactCount, 2);
 assert.equal(result.rerunDiagnosticArtifactCount, 0);
 assert.equal(result.manualDiagnosticArtifactCount, 1);
+assert.equal(result.promotionQualificationVersion, "S2_DECISION_CLOCK_PROMOTION_QUALIFICATION_V0_1");
 assert.equal(result.promotionGradeDateCount, 2);
 assert.deepEqual(result.promotionGradeMarketDates, ["2026-09-29", "2026-09-30"]);
 assert.equal(result.selectedArtifacts[0].runId, "200");
@@ -227,5 +229,105 @@ const lateA5 = aggregateDecisionClockEvidence({
 });
 assert.deepEqual(lateA5.a5BoundaryFailureDates, ["2026-10-03"]);
 assert.equal(lateA5.readiness.status, "INCOMPLETE_REQUIRED_EVIDENCE");
+
+
+const coverageMismatch = aggregateDecisionClockEvidence({
+  scheduledRunCoverage: [
+    {
+      marketDate: "2026-10-06",
+      runId: "800",
+      expectedTradingDay: true,
+      artifactPresent: true,
+      runConclusion: "success",
+    },
+  ],
+  candidates: [
+    {
+      runId: "801",
+      runAttempt: 1,
+      runHeadSha: "dddddddddddddddddddddddddddddddddddddddd",
+      eventName: "schedule",
+      runCreatedAt: "2026-10-06T05:30:00Z",
+      bundle: bundle("2026-10-06", {
+        runId: "801",
+        workflowSha: "dddddddddddddddddddddddddddddddddddddddd",
+      }),
+    },
+  ],
+});
+assert.equal(coverageMismatch.promotionGradeDateCount, 0);
+assert.equal(coverageMismatch.readiness.independentTradingDates, 0);
+assert.equal(coverageMismatch.coverageExcludedScheduledArtifacts.length, 1);
+assert.equal(
+  coverageMismatch.coverageExcludedScheduledArtifacts[0].reason,
+  "COVERAGE_ANCHOR_RUN_MISMATCH",
+);
+assert.equal(coverageMismatch.coverageArtifactCandidateMismatches.length, 1);
+assert.equal(coverageMismatch.promotionCoverageComplete, false);
+assert.equal(
+  coverageMismatch.promotionReadinessStatus,
+  "COVERAGE_ARTIFACT_PROVENANCE_MISMATCH",
+);
+
+
+const excludedDrift = aggregateDecisionClockEvidence({
+  scheduledRunCoverage: [
+    {
+      marketDate: "2026-10-07",
+      runId: "900",
+      expectedTradingDay: true,
+      artifactPresent: true,
+      runConclusion: "success",
+    },
+    {
+      marketDate: "2026-10-08",
+      runId: "910",
+      expectedTradingDay: true,
+      artifactPresent: false,
+      runConclusion: "failure",
+    },
+  ],
+  candidates: [
+    {
+      runId: "900",
+      runAttempt: 1,
+      runHeadSha: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      eventName: "schedule",
+      runCreatedAt: "2026-10-07T05:25:00Z",
+      bundle: bundle("2026-10-07", {
+        runId: "900",
+        workflowSha: "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        fingerprint: "collector-fp-A",
+      }),
+    },
+    {
+      runId: "911",
+      runAttempt: 1,
+      runHeadSha: "ffffffffffffffffffffffffffffffffffffffff",
+      eventName: "schedule",
+      runCreatedAt: "2026-10-08T05:30:00Z",
+      bundle: bundle("2026-10-08", {
+        runId: "911",
+        workflowSha: "ffffffffffffffffffffffffffffffffffffffff",
+        fingerprint: "collector-fp-B",
+      }),
+    },
+  ],
+});
+assert.equal(excludedDrift.promotionGradeDateCount, 1);
+assert.deepEqual(excludedDrift.promotionGradeMarketDates, ["2026-10-07"]);
+assert.equal(excludedDrift.readiness.independentTradingDates, 1);
+assert.deepEqual(excludedDrift.collectorContractFingerprints, ["collector-fp-A"]);
+assert.equal(excludedDrift.collectorContractConsistent, true);
+assert.equal(excludedDrift.coverageExcludedScheduledArtifacts.length, 1);
+assert.equal(excludedDrift.coverageExcludedScheduledArtifacts[0].runId, "911");
+assert.equal(
+  excludedDrift.coverageExcludedScheduledArtifacts[0].reason,
+  "COVERAGE_ANCHOR_NOT_PROMOTION_ELIGIBLE",
+);
+assert.equal(
+  excludedDrift.promotionReadinessStatus,
+  "SCHEDULED_TRADING_DAY_ARTIFACT_GAPS",
+);
 
 console.log("System2 decision-clock evidence aggregation tests passed");

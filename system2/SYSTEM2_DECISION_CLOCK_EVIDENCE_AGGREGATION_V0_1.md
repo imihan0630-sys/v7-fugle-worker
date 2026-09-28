@@ -105,6 +105,19 @@ Artifacts/runs whose market date is later than `coverageThroughDate` are pending
 
 The read-only readiness workflow runs at 08:30 Asia/Taipei every calendar day, auditing the previous date through the official TWSE trading-calendar gate. Prospective capture remains same-day; only aggregation is delayed.
 
+## Promotion Qualification V0.1
+
+Readiness counts are coverage-qualified, not merely artifact-qualified.
+
+A scheduled attempt-one artifact may enter the promotion-grade date set only when its market date has an official trading-day coverage row whose immutable anchor:
+- concluded successfully;
+- has exactly one valid daily artifact;
+- has the same run ID as the selected artifact.
+
+Attempt-one artifacts that fail this coverage qualification remain visible in `coverageExcludedScheduledArtifacts` but do not enter `promotionGradeDateCount`, `promotionGradeMarketDates` or `readiness.independentTradingDates`.
+
+If coverage says a date is eligible but there is no matching selected artifact from the same anchor run, aggregation fails closed as `COVERAGE_ARTIFACT_PROVENANCE_MISMATCH`.
+
 ## Readiness calculation
 
 The selected promotion-grade daily evidence rows are passed unchanged to:

@@ -43,6 +43,9 @@ The owner-facing review packet must include:
 - manual diagnostic artifact count;
 - artifact-selection policy;
 - coverage-audit state;
+- Promotion Qualification（升級資格）version;
+- coverage-excluded scheduled artifact count;
+- coverage/artifact provenance mismatch count and affected dates;
 - coverage-finalization version and one-calendar-day lag;
 - finalized coverage start/through dates;
 - pending unfinalized run/artifact counts;
@@ -57,6 +60,7 @@ The owner-facing review packet must include:
 - collector-contract consistency version;
 - complete collector-contract fingerprint list;
 - `collectorContractConsistent` state;
+- any `COVERAGE_ARTIFACT_PROVENANCE_MISMATCH` blocker;
 - any `COLLECTOR_CONTRACT_DRIFT` blocker;
 - A5 boundary-integrity version, failure count and full failure-date list;
 - any `A5_NOT_AVAILABLE_BY_CANDIDATE` blocker;
