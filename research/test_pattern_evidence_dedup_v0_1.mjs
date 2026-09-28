@@ -71,4 +71,21 @@ assert.equal(crossSource.scoringVoteCount,null);
 assert.equal(jaccardAnchors(["A","B"],["B","C"]),1/3);
 assert.equal(jaccardAnchors([],[]),null);
 
+// Sakata Three Mountains and M/triple-top sharing exact peaks are one exact-anchor group.
+const sakataMountains=auditPatternEvidenceBundle([
+  {...base,episodeId:"M_TOP",family:"M_TOP",layer:"MACRO_TOPOLOGY",anchorIds:["P1","V1","P2","V2","P3"]},
+  {...base,episodeId:"SAKATA_3M",family:"SAKATA_THREE_MOUNTAINS",layer:"MACRO_TOPOLOGY",anchorIds:["P1","V1","P2","V2","P3"]},
+]);
+assert.equal(sakataMountains.rawNamedLabelCount,2);
+assert.equal(sakataMountains.exactAnchorGroupCount,1);
+assert.equal(sakataMountains.rootProvenanceCount,1);
+
+// Sakata Three Methods and a short Flag over the same impulse/consolidation anchors are not two structural votes.
+const threeMethodsFlag=auditPatternEvidenceBundle([
+  {...base,episodeId:"FLAG",family:"FLAG",layer:"COMPRESSION_PROGRESSION",anchorIds:["POLE0","POLE1","C1","C2","TRIGGER"]},
+  {...base,episodeId:"SAKATA_3METHODS",family:"SAKATA_THREE_METHODS",layer:"COMPRESSION_PROGRESSION",anchorIds:["POLE0","POLE1","C1","C2","TRIGGER"]},
+]);
+assert.equal(threeMethodsFlag.exactAnchorGroupCount,1);
+assert.equal(threeMethodsFlag.multiLabelSameAnchorGroups.length,1);
+
 console.log(JSON.stringify({ok:true,status:"PATTERN_EVIDENCE_DEDUP_PASS"}));
