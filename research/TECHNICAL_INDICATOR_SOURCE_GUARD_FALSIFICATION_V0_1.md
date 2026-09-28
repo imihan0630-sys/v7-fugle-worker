@@ -32,11 +32,11 @@ A new additive wrapper `research/technical_indicator_source_guard_v0_1.mjs` reje
 - close or open outside same-space high/low;
 - mixed symbols, invalid/duplicate/out-of-order dates, future bar;
 - unresolved point-in-time source availability;
-- wrong continuity price space;
+- wrong continuity price space, or absent parent/raw-admission/continuity/symbol-session/version receipt identifiers;
 - unverified symbol session/technical continuity/corporate-action continuity;
 - suspension or no-trade pseudo-bar.
 
-Only finite positive decimal prices pass; numeric decimal strings are normalized. This is a deliberate input contract, not an optimized trading parameter. The wrapper stores a distinct `TECHNICAL_INDICATOR_SNAPSHOT_V0_2_RESEARCH` / guard version and delegates unchanged formula computation to the frozen v0.1 core.
+Only finite positive decimal prices pass; numeric decimal strings are normalized. The field name `date` and required receipt identifiers follow the already frozen cross-lane TECHNICAL_CONTINUITY handoff. A price-limit-constrained input is retained as `CONSTRAINED`, separate from ordinary OBSERVABLE rows. This is a deliberate input contract, not an optimized trading parameter. The wrapper stores a distinct `TECHNICAL_INDICATOR_SNAPSHOT_V0_2_RESEARCH` / guard version and delegates unchanged formula computation to the frozen v0.1 core.
 
 On valid 50-bar synthetic input, KD/RSI/MACD outputs of the guarded wrapper equal the original strict core exactly. Guard replay is deterministic. Original core regression, new adversarial suite and 19 shared-parent receipt assertions pass under Node. The original v0.1 formulas and production Worker were not modified.
 
@@ -46,7 +46,7 @@ Negative control: numeric decimal strings that represent the same valid OHLC are
 
 The guard checks row chronology but does not independently establish an official TWSE/TPEx session calendar. Synthetic test dates include weekends while asserting `symbolSessionVerified=true`; hence a malicious/incorrect upstream assertion can still pass. It cannot create trusted provenance by itself.
 
-Likewise `pointInTimeEligible=true` and sourceAvailableAt <= asOf are necessary contract checks, not proof that the provider actually published those values by that timestamp. Technical continuity booleans are upstream assertions, not a verified corporate-action transformation. No D1 full-parent completeness, recursive canonical lineage, actual price-limit regime, live provider behavior or economic incremental value is proven by this isolated module.
+Likewise `pointInTimeEligible=true` and sourceAvailableAt <= asOf and presence of receipt IDs are necessary contract checks, not proof that the provider actually published those values by that timestamp. Technical continuity booleans are upstream assertions, not a verified corporate-action transformation. No D1 full-parent completeness, recursive canonical lineage, actual price-limit regime, live provider behavior or economic incremental value is proven by this isolated module.
 
 Therefore:
 - FORMULA_INPUT_GUARD_SYNTHETIC = PASS;
@@ -83,3 +83,11 @@ The first eventual empirical tests remain KD vs RSI with direct price controls, 
 3. Require immutable parent/captureGeneration and canonical continuity lineage before prospective observation or outcome joining. No direct Worker wiring without Class-B review.
 4. Keep the current Formula v0.1 immutable and require the versioned guard for new research snapshots; do not silently redefine old rows.
 5. Continue D03's other independent hypotheses while prospective data accumulates, without tuning indicator thresholds or adding redundant votes.
+
+## TI-406 — Cross-lane contract reconciliation after initial implementation
+
+Independent review of `research/TECHNICAL_INDICATOR_CONTINUITY_HANDOFF_V0_1.md` found an initial adapter mismatch: the canonical window uses bar `date`, while the first additive guard draft expected `tradeDate`. That first draft was NOT wired into runtime. The guard and fixtures were revised to require canonical `date` and the upstream parent/raw-admission/continuity/session/engine receipt IDs before declaring synthetic VALID. A price-limit-constrained bar now yields a separate CONSTRAINED interpretation. All isolated guard, unchanged formula-core regression, and parent reconciliation tests passed again after the correction.
+
+Receipt IDs in the synthetic test are deliberately labeled synthetic; their mere presence does not authenticate a real upstream event or source. The shared continuity owner still has to certify exact eligible-session dates, PIT corporate-action versions, transforms and constrained price-discovery provenance. The guard cannot replace these authorities.
+
+Latest guarded code commit: `b0bbf9a45a1b122d8fd408a02afb0632ecb0c981`. Latest guard test commit: `570689609a934ffd7352f8bf752b4e73477905a1`. The earlier create commits remain in history as prototypes, not the final canonical adapter.
