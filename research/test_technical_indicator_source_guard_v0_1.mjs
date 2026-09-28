@@ -6,7 +6,9 @@ const days=Array.from({length:50},(_,i)=>{
   const date=new Date(Date.UTC(2026,0,1+i)).toISOString().slice(0,10);
   const close=100+i;
   return {symbol:'TEST',date,open:close,high:close+1,low:close-1,close,
-    symbolSessionVerified:true,technicalContinuity:true,corporateActionContinuityResolved:true};
+    symbolSessionVerified:true,technicalContinuity:true,corporateActionContinuityResolved:true,
+    observedRawBarIdentity:`synthetic-${i}`,sourceBarHash:`hash-${i}`,
+    rawFieldProvenance:{open:'OBSERVED',high:'OBSERVED',low:'OBSERVED',close:'OBSERVED'}};
 });
 const context={symbol:'TEST',source:'SYNTHETIC',continuitySpace:'TECHNICAL_CONTINUITY',
   pointInTimeEligible:true,asOf:'2026-03-01T12:00:00+08:00',
@@ -39,6 +41,9 @@ blocked(r=>{r[20].close=0},'INVALID_OR_NONPOSITIVE_PRICE');
 blocked(r=>{r[20].close='0x64'},'INVALID_OR_NONPOSITIVE_PRICE');
 blocked(r=>{r[20].close=110},'OHLC_GEOMETRY');
 blocked(r=>{r[20].open=110},'OHLC_GEOMETRY');
+blocked(r=>{r[20].high=r[20].close;r[20].rawFieldProvenance={...r[20].rawFieldProvenance,high:'SYNTHESIZED'}},'OHLC_OBSERVATION_PROVENANCE_UNVERIFIED');
+blocked(r=>{r[20].sourceBarHash=null},'OHLC_OBSERVATION_PROVENANCE_UNVERIFIED');
+blocked(r=>{r[20].rawFieldProvenance=null},'OHLC_OBSERVATION_PROVENANCE_UNVERIFIED');
 blocked(r=>{r[20].symbol='OTHER'},'ROW_SYMBOL_MISMATCH');
 blocked(r=>{r[20].date=r[19].date},'DUPLICATE_OR_OUT_OF_ORDER_DATE');
 blocked(r=>{r[20].date='2026-02-30'},'INVALID_TRADE_DATE');
@@ -58,5 +63,6 @@ assert.equal(validateTechnicalSource(future,context).reason,'FUTURE_BAR');
 const constrained=probe(r=>{r[20].priceLimitConstrained=true});
 assert.equal(constrained.dataQualityState,'VALID');
 assert.equal(constrained.interpretationState,'CONSTRAINED');
+assert.equal(probe(r=>{r[20].open=null;r[20].rawFieldProvenance={...r[20].rawFieldProvenance,open:'MISSING'}}).dataQualityState,'VALID');
 assert.deepEqual(probe(),valid,'same input must replay exactly');
 console.log('PASS: isolated source-guard adversarial and replay assertions; zero outcome joins');
