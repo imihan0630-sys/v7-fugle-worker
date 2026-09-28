@@ -17,6 +17,7 @@ assert.match(workflow, /Coverage finalization/);
 assert.match(workflow, /Pending unfinalized runs/);
 assert.match(workflow, /Latest finalized-date acceptance/);
 assert.match(workflow, /Counts toward independent dates/);
+assert.match(workflow, /Counts toward complete dates/);
 assert.match(workflow, /Counts toward precision dates/);
 assert.doesNotMatch(workflow, /secrets\./i);
 assert.doesNotMatch(workflow, /wrangler\s+(deploy|delete)|d1\s+(create|execute)/i);
