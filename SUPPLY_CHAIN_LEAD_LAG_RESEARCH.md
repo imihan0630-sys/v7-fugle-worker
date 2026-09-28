@@ -669,3 +669,169 @@ SC-016B: determine whether the official query offers a supported export/download
 SC-016C: if not, use only published standalone CSV datasets for prospective automation and classify detailed four-digit state as SOURCE_GAP until a supported interface exists.
 
 Status: `SCOPE_MISMATCH_IDENTIFIED / HARD_GATE_ADDED / DETAILED_AUTOMATION_PARTIAL`.
+
+
+## SC-016B — Current official source matrix: machine-readable does not mean scope-complete
+
+### Verified machine-readable lanes
+
+#### 1. MOEA `d.csv` — industrial production index
+Official government open-data metadata points to a machine-readable MOEA CSV. Direct source audit verified:
+- 124,752 data rows at audit time;
+- monthly history from ROC 07101;
+- latest period ROC 11508 (2026-08);
+- 4-digit production coverage is present, including 2611 integrated-circuit manufacturing, 2613 semiconductor packaging/testing and 2630 printed-circuit-board manufacturing;
+- code 24 basic metals and code 26 electronic components are also present.
+
+This is a strong production/output lane, not a sales/inventory/capacity lane.
+
+#### 2. Dedicated code-26 electronic-components CSV
+A separate official file contains current production value, sales value and inventory value for the electronic-components industry through ROC 11507 in the source-only pilot.
+
+#### 3. Manufacturing inventory-ratio CSV
+Official open data reaches ROC 11507 for major/mid industry codes, including code 24 basic metals and code 26 electronic components.
+
+#### 4. MOEA `ec.csv` — manufacturing investment/operations
+Direct audit verified a quarterly machine-readable file with:
+- manufacturing revenue;
+- fixed-asset additions;
+- 2026 Q1/Q2 observations.
+
+But the tested file's industry field is only **製造業** aggregate. It does not provide sector-level capex in this open file.
+
+### Capacity falsification
+`fixedAssetAdditions` is not equivalent to:
+- installed productive capacity;
+- effective capacity date;
+- utilization;
+- yield;
+- industry-specific expansion.
+
+Therefore:
+- MOEA aggregate manufacturing fixed-asset additions = MACRO_SUPPLY_RESPONSE_CONTEXT only;
+- it cannot populate `IND.CAPACITY` for semiconductor/PCB/basic metals at sector level;
+- D10-04 remains L2 until an industry/company PIT capacity/utilization source contract is established.
+
+### Interactive database boundary
+The official MOEA industrial production/sales/inventory query currently exposes dates through ROC 11508 and detailed industry selections. It explicitly says production index/value can reach 4-digit detailed industries, while sales/inventory industry measures have different granularity.
+
+The human query surface is therefore current and semantically useful. However, no documented stable public request/export contract for arbitrary detailed selections has yet been verified in this research lane.
+
+Until that is verified:
+- interactive query result = `MANUAL_OFFICIAL_SOURCE`;
+- standalone published CSV/XML = `AUTOMATABLE_OFFICIAL_SOURCE`;
+- do not reverse-engineer brittle hidden form endpoints.
+
+### D10 source-readiness conclusion
+The source family is **partially machine-ready, not uniformly machine-ready**.
+
+Status: `CURRENT_PRODUCTION_SOURCE_READY / INVENTORY_PARTIAL / SALES_PARTIAL / CAPACITY_SOURCE_GAP / NO_FORMAL_CHANGE`.
+
+---
+
+## SC-016C — Raw-material / output-price transmission gets a Taiwan PIT source contract
+
+### Official Taiwan price lanes
+The Directorate-General of Budget, Accounting and Statistics (DGBAS) publishes monthly official datasets for:
+- Producer Price Index (PPI) basic classifications;
+- Import Price Index (IPI) basic classifications in NTD;
+- corresponding USD-basis import/export price series;
+- domestic-sales price indices;
+- processing-stage price indices.
+
+Government Open Data metadata documents monthly update frequency for PPI and IPI datasets and machine-readable XML resources. July 2026 Price Statistics Monthly is already published, and the official release calendar provides the timing semantics needed for prospective PIT capture.
+
+The classification includes economically relevant groups such as basic metals, metal products, semiconductors/electronic components and other manufacturing product groups.
+
+### Transmission contract
+Do not treat one price index as "raw material price".
+
+Freeze separate layers:
+
+1. `INPUT_IMPORT_USD` — external/raw-material price pressure before NTD FX translation where category coverage is valid.
+2. `INPUT_IMPORT_NTD` — Taiwan buyer's local-currency import-cost pressure.
+3. `OUTPUT_PPI` — producer/output-price movement for the relevant category.
+4. `DOMESTIC_SALES_PRICE` — domestic selling-price proxy where available.
+5. `COMPANY_MARGIN` — company gross/operating margin, handled by fundamental PIT data rather than price-index data.
+
+### FX decomposition rule
+A rise in NTD import-price index can come from:
+- USD commodity/product price;
+- TWD depreciation;
+- both.
+
+Therefore `INPUT_IMPORT_NTD` and `INPUT_IMPORT_USD` must remain separate. The spread/change between them is an FX-transmission diagnostic, not automatically an alpha factor.
+
+### Mapping rule
+Price-index categories must connect to an issuer/theme only through an effective-dated exposure bridge:
+- input material/product category;
+- cost share or material relevance when disclosed;
+- source knownAt;
+- substitution/contract structure;
+- currency / hedging context where known.
+
+A generic PPI move is not a company ASP (Average Selling Price，平均售價).
+
+### Pricing-power test
+Potential pass-through state requires temporal ordering:
+`INPUT_COST -> OUTPUT/SELLING_PRICE -> MARGIN -> VOLUME/SHARE`.
+
+Candidate descriptors:
+- `INPUT_UP_OUTPUT_UP_MARGIN_STABLE`;
+- `INPUT_UP_OUTPUT_LAG_MARGIN_DOWN`;
+- `INPUT_DOWN_OUTPUT_STICKY_MARGIN_UP`;
+- `OUTPUT_UP_VOLUME_DOWN_DEMAND_DESTRUCTION_RISK`;
+- `FX_DRIVEN_INPUT_SHOCK`;
+- `UNKNOWN`.
+
+No state is permanently bullish/bearish.
+
+### Falsification
+Reject a claimed pricing-power signal when:
+- output-price movement only mirrors input cost with no margin protection;
+- NTD import inflation is mostly FX and the firm is hedged / naturally offset;
+- category mapping is too broad;
+- company exposure is stale or inferred from theme membership;
+- volume/share deteriorates enough to offset price;
+- price-index base/reclassification changes are ignored.
+
+### D10-05 maturity decision
+Official Taiwan monthly PPI/IPI sources plus release-time semantics establish bounded/prospective PIT feasibility for raw-material/output-price transmission.
+
+`D10-05 原物料／報價傳導: L2 -> L3`.
+
+This does **not** promote D10-06 Pricing Power above L2 because firm-level pass-through still requires company-specific margin/volume/exposure evidence.
+
+Status: `PIT_SOURCE_FEASIBLE / COMPANY_PASS_THROUGH_PENDING / FORMAL_CORE_LOCKED`.
+
+---
+
+## SC-017 — Source-readiness firewall before prospective outcome testing
+
+A sector/month can enter physical-cycle Shadow research only when every required component carries:
+- sourceId / datasetId;
+- scopeType and scopeCode;
+- taxonomyVersion;
+- observationMonth;
+- releaseTimestamp or conservative capturedAt;
+- sourceFreshnessState;
+- revision/vintage identifier or raw hash;
+- machineReadable / manualOfficial flag;
+- KNOWN / PARTIAL / UNKNOWN;
+- mapping confidence to issuer/theme.
+
+### Readiness states
+- `READY_ALIGNED`: required source clocks/scopes align.
+- `READY_PARTIAL`: useful state but at least one noncritical layer UNKNOWN.
+- `STALE_BLOCKED`: required series misses freshness rule.
+- `SCOPE_BLOCKED`: attempted join mixes incompatible industry/product scopes.
+- `VINTAGE_BLOCKED`: historical value lacks decision-time vintage provenance.
+- `SOURCE_ACCESS_BLOCKED`: official source exists but canonical machine retrieval is unavailable.
+- `MAPPING_BLOCKED`: industry/theme/company exposure bridge is not evidenced.
+
+Only READY_ALIGNED / pre-registered READY_PARTIAL can enter prospective outcome testing. Blocked states remain research evidence about data quality, never negative market signals.
+
+### Exact next continuation
+SC-018: build a current source-only non-tech panel if the official interactive result can be cleanly extracted; otherwise freeze MANUAL_SOURCE_ONLY and do not fabricate a machine panel.
+SC-019: define an industry/company capacity evidence hierarchy (official industry data -> company filing/capex -> capacity effective date -> utilization/yield), explicitly separating plan, construction, tool-in, qualification and mass production.
+SC-020: define product-level raw-material mappings for at least semiconductor/PCB and basic-metals/process manufacturing with negative controls.
