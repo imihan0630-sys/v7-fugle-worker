@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "EXPECTED_SHORTFALL_SEMANTIC_FIREWALL_V0_1",
+  "observedAt": "2026-09-28T20:59:00+08:00",
+  "authoritativePrinciple": "Expected Shortfall is the average of losses beyond VaR at a specified confidence level; formal use also requires a defined horizon.",
+  "requiredResearchInputs": [
+    "loss distribution or sufficiently specified loss-scenario distribution",
+    "confidence level",
+    "horizon",
+    "PIT eligibility",
+    "sufficient tail sample or scenario support",
+    "clear portfolio aggregation semantics"
+  ],
+  "forbiddenSubstitutions": [
+    "planned stop distance",
+    "planned projected stop-risk",
+    "MFE",
+    "MAE",
+    "stop-first rate",
+    "single worst loss",
+    "drawdown point estimate"
+  ],
+  "status": "ES_SEMANTIC_FIREWALL_FROZEN / TAIL_DISTRIBUTION_DATA_NOT_YET_PROVEN / D15_13_REMAINS_L2",
+  "formalCoreImpact": false
+}

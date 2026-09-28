@@ -2166,3 +2166,143 @@ Status:
 `PLAN_TIME_PORTFOLIO_HEAT_PIT_VALIDATED / ACTUAL_LIVE_HEAT_UNKNOWN / D15_07_L3`.
 
 Formal Core unchanged.
+
+
+## PR-069 — lifecycle heat envelope + Expected Shortfall semantic firewall (2026-09-28)
+
+### D15-10 FIRST / ADD / FULL lifecycle envelope
+
+Existing FIRST-only and ADD-only research is consolidated into one plan-time lifecycle envelope:
+
+- FIRST = current Formal 60% planned tranche preview;
+- ADD_INCREMENT = residual 40% planned tranche preview;
+- FULL = FIRST + ADD planned preview.
+
+The envelope enforces the accounting identities:
+
+`FULL notional = FIRST notional + ADD notional`
+
+and
+
+`FULL projected stop-risk = FIRST projected stop-risk + ADD projected stop-risk`
+
+within numerical tolerance.
+
+This is useful because it separates three different questions:
+1. what early planned exposure would look like;
+2. what additional risk an ADD would introduce if it became valid and executed;
+3. what the full planned risk envelope is.
+
+### Lifecycle firewall
+
+None of those plan-time states prove the actual position lifecycle.
+
+Without confirmed fill/holdings provenance, the research must not claim:
+- BUY filled;
+- portfolio reached FIRST;
+- ADD triggered;
+- ADD filled;
+- portfolio reached FULL;
+- later REDUCE changed actual exposure.
+
+Thus D15-10 can gain a stronger plan-envelope contract, but actual lifecycle transition evidence remains blocked.
+
+### D15-13 Expected Shortfall firewall
+
+Expected Shortfall (ES) is a tail-distribution concept, not a synonym for stop distance or projected stop loss.
+
+Minimum ES research inputs are frozen as:
+- a loss distribution or sufficiently specified loss-scenario distribution;
+- confidence level;
+- horizon;
+- PIT eligibility;
+- adequate tail sample/scenario support;
+- explicit portfolio aggregation semantics.
+
+The following cannot be relabeled ES:
+- planned stop distance;
+- planned projected stop-risk;
+- MFE / MAE;
+- stop-first rate;
+- one worst loss;
+- a drawdown point estimate.
+
+Those remain scenario/path risk metrics unless a valid loss-distribution model is separately established.
+
+Artifacts:
+`research/planned_lifecycle_heat_envelope_v0_1.mjs`;
+`research/planned_lifecycle_heat_envelope_spec_v0_1.json`;
+`tests/planned_lifecycle_heat_readonly_audit.mjs`;
+`research/expected_shortfall_semantic_firewall_v0_1.mjs`;
+`research/expected_shortfall_semantic_firewall_spec_v0_1.json`.
+
+Status:
+`PLAN_LIFECYCLE_ENVELOPE_SOURCE_READY / ACTUAL_STAGE_TRANSITIONS_BLOCKED / ES_SEMANTIC_FIREWALL_FROZEN / D15_10_L2 / D15_13_L2`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-069 Production result — FIRST/ADD/FULL plan envelope is PIT-reconstructable, actual lifecycle is not
+
+Production read-only run `36425890207` / job `108939621579` validates the plan-time lifecycle envelope.
+
+2026-09-18:
+- FIRST preview heat = 1.940885%;
+- ADD incremental preview heat = 1.289100%;
+- FULL preview heat = 3.229985%;
+- FULL preview notional = NT$167,471.13;
+- FIRST + ADD risk/notional conservation = exact.
+
+2026-09-21:
+- FIRST = 0.782560%;
+- ADD increment = 0.519920%;
+- FULL = 1.302480%;
+- conservation = exact.
+
+2026-09-22 / 2026-09-23:
+- zero selected plans -> all planned lifecycle envelopes are zero;
+- actual lifecycle exposure remains UNKNOWN.
+
+This supports:
+`plan lifecycle envelope is PIT-reconstructable`.
+
+It does **not** support:
+`the account actually entered FIRST/FULL or executed ADD`.
+
+Therefore D15-10 remains L2 until positive fill/holdings evidence can reconstruct actual stage transitions.
+
+Receipt:
+`research/planned_lifecycle_heat_production_receipt_20260928.json`.
+
+Status:
+`PLAN_LIFECYCLE_ENVELOPE_PIT_VALIDATED / ACTUAL_STAGE_TRANSITIONS_BLOCKED / D15_10_REMAINS_L2`.
+
+Formal Core unchanged.
+
+
+### D15-13 data-readiness dependency
+
+A current System2 read-only official historical-source smoke validates that full-market TWSE/TPEx daily payloads can be fetched for both an old date (2017-01-03) and a recent date (2026-09-24), including an anti-survivorship witness.
+
+That is **source-foundation evidence only**.
+
+The smoke explicitly performs no System2 D1 write and no System1 mutation. It does not prove:
+- a continuous persisted historical panel;
+- exhaustive trading-calendar coverage;
+- PIT selected-cohort joins;
+- adequate tail sample size;
+- a frozen confidence level/horizon;
+- transaction-cost-adjusted tail losses.
+
+Therefore:
+`official historical source exists`
+does not imply
+`Expected Shortfall dataset is ready`.
+
+D15-13 remains L2.
+
+Dependency artifact:
+`research/d15_tail_distribution_data_readiness_v0_1.json`.
+
+Status:
+`HISTORICAL_SOURCE_FOUNDATION_AVAILABLE / CONTINUOUS_TAIL_DATASET_NOT_PROVEN`.
