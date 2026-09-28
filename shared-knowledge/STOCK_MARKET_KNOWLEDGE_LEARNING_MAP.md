@@ -431,7 +431,7 @@ GitHub專屬checkpoint：
 | D16-14 | Generation Alignment跨資料表世代對齊 | L3 台股PIT資料可行 | 60% |
 | D16-15 | Maturity Gate成熟度與升級門檻 | L4 前瞻/OOS證據 | 80% |
 
-### D17｜新聞／事件半衰期／受益受害傳導 — 23.1%
+### D17｜新聞／事件半衰期／受益受害傳導 — 29.2%
 
 專責：08｜事件與新聞研究室  
 證據錨點：`EVENT_RISK_CHECKPOINT.md`、`SUPPLY_CHAIN_LEAD_LAG_RESEARCH.md`
