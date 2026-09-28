@@ -15,7 +15,7 @@ They do not by themselves prove the data belongs together.
 
 parentScopeId:
 
-FORMAL_HISTORY_ADMITTED_DECISION_PATH_V1
+FORMAL_HISTORY_ADMITTED_FEATURE_ROWS_V0_1
 
 Definition:
 all history-admitted feature rows actually evaluated by the same-scan Formal decision path.
@@ -105,10 +105,25 @@ This avoids:
 
 ## Current status
 
-PARENT_SCOPE_ID = FORMAL_HISTORY_ADMITTED_DECISION_PATH_V1
+PARENT_SCOPE_ID = FORMAL_HISTORY_ADMITTED_FEATURE_ROWS_V0_1
 PARENT_SCOPE_SEMANTICS = FROZEN
 GENERATION_COHERENCE = FROZEN
 SYMBOL_UNIQUENESS = REQUIRED
 RUNTIME_IMPLEMENTATION = NOT_IMPLEMENTED
 FORMAL_OPTIMIZATION_CANDIDATE = NONE
 Formal Core remains LOCKED.
+
+
+## Canonical scope-ID reconciliation
+
+A concurrent research lane had already frozen the same semantic parent boundary under:
+FORMAL_HISTORY_ADMITTED_FEATURE_ROWS_V0_1.
+
+The local alias FORMAL_HISTORY_ADMITTED_DECISION_PATH_V1 is therefore retired.
+
+Frozen rule:
+- one semantic parent scope => one canonical parentScopeId;
+- parent_generation_integrity_v0_1.mjs imports the canonical TECHNICAL_PARENT_SCOPE_ID from immutable_parent_scope_measurement_v0_1.mjs;
+- the retired alias must not appear in new receipts.
+
+This is a research-contract reconciliation before any runtime persistence.
