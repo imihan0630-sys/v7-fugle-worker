@@ -996,3 +996,111 @@ Formal Core remains LOCKED.
 4. Separate high-volume/strong-response from high-volume/weak-response states before directional interpretation.
 5. Classify any apparent volume effect as INCREMENTAL, CONTEXT_PROXY, REDUNDANT, REGIME_OR_CONTEXT_DEPENDENT or UNKNOWN; do not force support/rejection from inadequate controls.
 6. Do not alter Formal Core.
+
+
+## PVE-161 — Volume sign is horizon/state dependent; prohibit universal HIGH_VOLUME bullishness (2026-09-28)
+Status: LITERATURE_FALSIFICATION_FROZEN / PRE-OUTCOME / FORMAL_CORE_UNCHANGED
+
+Cross-market evidence is intentionally contradictory: unusually high volume has been associated with subsequent appreciation in some designs, while high-volume winners/speculative turnover have also been associated with faster reversal or lower future returns. A 2021 meta-analysis of 468 estimates across 44 studies reports material heterogeneity and publication-bias concerns. Therefore D02 freezes the following rule before Taiwan prospective outcomes exist:
+- no universal sign is assigned to HIGH_VOLUME, LOW_VOLUME, volume shock or turnover;
+- horizon, prior price state, information/event context and market regime are mandatory interpretation dimensions;
+- a result at one horizon (intraday/B1-B4, D1, D3/D5/D10, monthly) must not be silently generalized to another.
+
+Falsification consequence:
+D02-05 (climax/distribution volume), D02-09 (price-volume divergence) and D02-10 (volume-state x trend) cannot be validated by unconditional RVOL buckets. They require interaction/state evidence.
+
+## PVE-162 — Residual-volume observability gap confirmed
+Status: RESEARCH_GAP_CONFIRMED / NOT_IMPLEMENTED / OWNER_DECISION_NOT_REQUIRED_YET
+
+Repository audit confirms:
+- PRICE_VOLUME_SHADOW_SPEC.md declares pvMarketResidualRvol and pvSectorResidualRvol as intended daily Shadow fields;
+- current v0.1 implementation/field dictionary and Worker patch implement pvDailyRvol20, pvSlotRvol20, pvCumvolPace20 and response/persistence/guard states, but repository-wide code search finds no implemented marketResidual/sectorResidual computation outside the specification;
+- the spec itself states full-market 15m residualization is deferred.
+
+Interpretation:
+The residual-volume concept is currently a falsification requirement/design target, not an observed feature. No future analysis may claim market/sector-adjusted volume evidence until a PIT-valid implementation/receipt exists.
+
+Minimum future design constraints (proposal only):
+1. use only market/sector activity known by featureKnownAt;
+2. do not raw-divide listed-stock share/lot volume by index volume with incompatible semantics;
+3. prefer normalized peer activity (e.g. cross-sectional median/robust aggregate of comparable stock RVOL) rather than raw index volume;
+4. sector aggregate must be leave-one-out for the target stock to avoid mechanical self-inclusion;
+5. require minimum peer coverage and preserve UNKNOWN when coverage is insufficient;
+6. freeze sector membership point-in-time; today's sector map cannot rewrite historical membership;
+7. market and sector residuals are contextual diagnostics/falsification controls first, not additive alpha scores.
+
+No implementation is authorized by this finding alone.
+
+## PVE-163 — D02 factor-family consolidation: prevent fourfold counting of the same episode
+Status: REDUNDANCY_GOVERNANCE_FROZEN / PRE-OUTCOME
+
+Repository tracker currently separates D02-05 climax/distribution volume, D02-08 accumulation/distribution proxies, D02-09 price-volume divergence and D02-10 volume-state x trend. Mechanistically these can describe the same underlying episode and must not become four independent additive scores.
+
+Freeze a three-stage evidence graph:
+1. PARTICIPATION_RESIDUAL: Is activity abnormal for this stock after same-slot/history and, when available, market/sector context?
+2. EFFORT_RESULT: What price progress/range/close-location occurred for that participation? HIGH_EFFORT_LOW_PROGRESS is distinct from EFFICIENT_UP/DOWN.
+3. PERSISTENCE_ACCEPTANCE: Did the participation/price response persist, decay, retest, fail or reaccelerate on later comparable observations?
+
+OBV/CMF/MFI/volume oscillators and narrative labels such as accumulation/distribution may be descriptive views, but cannot receive independent weight unless they prove incremental information beyond this graph on common support.
+
+## PVE-164 — Response-state anti-circularity audit
+Status: DESIGN_RISK_IDENTIFIED / H003_REMAINS_HIGHER_GATED
+
+Current pvResponseState is partly constructed from price variables (signed progress, range expansion, close position, body/wick structure) plus RVOL. Therefore using pvResponseState to 'predict' an outcome label that is mechanically based on the same bar's close/progress can create circular apparent skill.
+
+Freeze anti-circularity rules:
+- same-bar response classification is explanatory/state description, not evidence of future predictive alpha;
+- primary H003 outcomes must begin strictly after featureKnownAt/barEnd;
+- report a price-only response baseline alongside price+volume response. Volume has incremental value only if price+volume improves future outcome discrimination beyond the same price geometry without volume;
+- do not count the anchor bar's already-realized price movement as MFE/return evidence attributable to volume;
+- acceptance transitions that reuse Formal geometry are not independent PV alpha evidence by themselves.
+
+This is a direct falsification test against 'volume works' claims: if price-only response explains the same future outcomes, the PV state is REDUNDANT.
+
+## PVE-165 — Persistence can add path information but not independent samples
+Status: DEPENDENCE_RULE_FROZEN / H002-H003
+
+pvPersistenceState is generated from repeated observations of the same participation episode. PERSISTENT/DECAYING/REIGNITED states may contain useful path information, but they are not independent market experiments.
+
+Freeze:
+- event-level primary unit remains the first clean participation event;
+- later persistence states are within-event trajectory features;
+- repeated 15m rows cannot inflate N_PRIMARY;
+- continuity gaps remain quarantined per prior PVE rules;
+- compare trajectory classes prospectively only after the event identity was frozen, never relabel the event from future outcomes.
+
+## PVE-166 — Low-volume/dry-up falsification refinement
+Status: PRE-OUTCOME_HYPOTHESIS_REFINEMENT / NO_THRESHOLD_TUNING
+
+LOW_VOLUME/DRY_UP has at least three competing meanings:
+A. constructive supply contraction during an intact setup;
+B. weak demand/attention with no sponsor;
+C. illiquidity/data-quality effect.
+
+Therefore D02-04 cannot be validated from low RVOL alone. A constructive dry-up claim requires pre-outcome context showing intact price structure and acceptable liquidity, then a later independently observed re-expansion/reacceleration. If no later demand reappears, low volume remains descriptive, not bullish confirmation.
+
+Do not tune a dry-up threshold from future winners. Use frozen/robust participation bands for descriptive testing first.
+
+## PVE-167 — Long-block synthesis and next executable evidence plan
+Status: LONG_BLOCK_COMPLETE / WAITING_LIVE_HINGE
+
+This long research block yields no Formal optimization candidate yet, but materially tightens the falsification design:
+- abnormal volume has no universal sign;
+- raw RVOL must survive market/sector/context explanation;
+- response states require price-only baselines to prove volume incrementality;
+- persistence is a trajectory, not extra independent N;
+- dry-up is not bullish without later demand confirmation;
+- D02 narrative modules must not be stacked as duplicate scores.
+
+The next empirical phase remains prospective. On first potentially clean cohorts:
+A. coverage/provenance first;
+B. A/B/C/D common-support comparison;
+C. price-only vs price+volume response comparison;
+D. high-volume strong-response vs weak-response split;
+E. contextual/residual check when PIT-valid market/sector controls exist;
+F. event-level persistence trajectories;
+G. separate directional alpha from risk/false-break/MFE/MAE value.
+
+No D02 module is promoted solely from this literature/design block because tracker rules require Taiwan PIT/OOS/prospective evidence for higher maturity.
+Current Price-Volume evidence cursor: PVE-001 through PVE-167.
+Formal Core remains LOCKED.
