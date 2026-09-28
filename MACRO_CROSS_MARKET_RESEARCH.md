@@ -382,3 +382,230 @@ If it needs shared production cron/scheduling, common fetch routing, or shared s
 
 Current state:
 `CONCEPT_FALSIFICATION_MATURE / USD_TWD_SOURCE_MATERIAL_PASS / US_SOURCE_PARTIAL / ASIA_DAILY_MIXED_WINDOW / PROSPECTIVE_RECEIPT_NOT_IMPLEMENTED / NOT_OPTIMIZATION_READY`.
+
+
+---
+
+## MC-026 — D13-06 reopened: a Treasury yield is not one economic factor
+
+D13-06 remained L1. The first correction is to reject the shortcut:
+
+`10Y yield up = tech down`.
+
+A nominal Treasury yield mixes multiple economic channels. Federal Reserve term-structure work decomposes longer yields into:
+- expected average future short rates; and
+- a term premium (期限溢酬), defined as the yield minus the expected average short rate over the bond's life.
+
+The Federal Reserve also publishes nominal and TIPS (通膨保值債券) yield-curve research and derived inflation-compensation concepts.
+
+### Research state must therefore separate
+
+1. **Policy-path / front-end**
+   - 2Y nominal yield / change;
+   - short-end curve changes.
+
+2. **Long nominal discount rate**
+   - 10Y / 30Y nominal yield / change.
+
+3. **Real-rate channel**
+   - 5Y/10Y real Treasury yield where PIT source/version is valid.
+
+4. **Inflation-compensation channel**
+   - nominal-minus-real proxy only with matched maturity/source semantics.
+
+5. **Curve shape**
+   - 2s10s = 10Y - 2Y;
+   - 3m10y where useful;
+   - level and slope changes separately.
+
+6. **Term-premium research layer**
+   - model estimate only;
+   - never treated as an official observed market quote.
+
+A single raw yield therefore cannot be assigned one universal risk-on/risk-off sign.
+
+Status: YIELD-DECOMPOSITION SEMANTICS FROZEN.
+
+---
+
+## MC-027 — 18:10 Taiwan decision clock creates a hard PIT boundary for U.S. official yields
+
+The U.S. Treasury states its official par yield curve uses indicative bid-side quotations obtained by the Federal Reserve Bank of New York at or near **15:30 U.S. Eastern Time** each trading day.
+
+The Federal Reserve H.15 (Selected Interest Rates) release is posted Monday-Friday at **16:15 U.S. Eastern Time**.
+
+For the Taiwan after-market selector at 18:10 Taipei:
+- 18:10 Taipei is morning in New York;
+- the same U.S. calendar day's 15:30 Treasury input snapshot has not happened yet;
+- the same U.S. calendar day's H.15 release has not happened yet.
+
+Therefore:
+
+`US_SAME_CALENDAR_DAY_OFFICIAL_CMT_AT_TAIWAN_1810 = FUTURE_INFORMATION`.
+
+The default PIT-safe official daily input is:
+- the most recent U.S. trading-day official curve that was already published before the Taiwan decision.
+
+### Important separation
+
+If a live U.S. Treasury future or intraday cash-yield quote is observed at Taiwan 18:10, it is a separate contemporaneous market-data object:
+- different source;
+- different timestamp;
+- different microstructure;
+- different historical availability/licensing.
+
+It must not be silently substituted into the official daily CMT series.
+
+Status: UST-DECISION-CLOCK BOUNDARY FROZEN.
+
+---
+
+## MC-028 — yield-curve direction needs four states, not one slope sign
+
+A curve can steepen or flatten for very different reasons.
+
+Minimum state decomposition:
+
+### Bull steepening
+- front-end yields fall more than long-end yields.
+Possible mechanisms:
+- easier policy expectations;
+- recession/risk-off policy repricing.
+Not automatically bullish equities.
+
+### Bear steepening
+- long-end yields rise more than front-end yields.
+Possible mechanisms:
+- stronger growth;
+- inflation risk;
+- fiscal/term-premium/supply pressure.
+Potentially adverse for long-duration valuation even if growth expectations improve.
+
+### Bull flattening
+- long-end falls more than front-end.
+Possible mechanisms:
+- long-run inflation/growth expectations fall;
+- duration demand rises.
+
+### Bear flattening
+- front-end rises more than long-end.
+Possible mechanisms:
+- tighter near-term policy expectations.
+
+### Research rule
+
+Store:
+- delta2Y;
+- delta10Y;
+- delta30Y;
+- delta2s10s;
+- delta3m10y where source-compatible;
+- curveMoveType = BULL_STEEPENER / BEAR_STEEPENER / BULL_FLATTENER / BEAR_FLATTENER / MIXED.
+
+Do not infer the macro story from the label alone. The label is a price-state description; causality needs event/context evidence.
+
+Status: CURVE-MOVE TAXONOMY FROZEN.
+
+---
+
+## MC-029 — term premium is useful research context but has revision risk
+
+Federal Reserve term-structure models can estimate expected short rates and term premiums, but the Board explicitly labels these yield-curve models as staff research products rather than official statistical releases and notes they may be delayed, revised or methodologically changed.
+
+Therefore:
+- current/latest term-premium history cannot automatically be assumed to equal what was known historically;
+- any backtest needs vintage or capturedAt semantics;
+- if historical vintages are unavailable, term premium remains a descriptive/research-control layer, not PIT-eligible alpha.
+
+This is especially important because real-time decompositions can materially differ from standard ex-post decompositions.
+
+Status: TERM-PREMIUM VINTAGE GUARD FROZEN.
+
+---
+
+## MC-030 — Taiwan transmission should be sector-conditioned and absorption-based
+
+Possible Taiwan channels:
+
+### Technology / long-duration growth
+Higher real discount rates may pressure long-duration valuation, but the effect can be dominated by:
+- U.S. semiconductor earnings/news;
+- Taiwan sector RS;
+- growth expectations;
+- USD/TWD;
+- existing price positioning.
+
+### Financials
+Yield-curve changes can affect margin expectations, but bank/insurer sensitivity differs and cannot be represented by one market-wide sign.
+
+### Exporters
+Rate moves can transmit through:
+- USD;
+- risk appetite;
+- global demand expectations;
+rather than directly from the yield itself.
+
+### Correct after-market question
+
+Because the prior U.S. official yield move is already known before Taiwan opens, by 18:10 the higher-value test is:
+
+**After Taiwan market/sector/FX has already reacted, does the residual U.S. rate/curve state change the next-session continuation, gap or downside risk?**
+
+This follows the same absorption logic as MC-019.
+
+Status: SECTOR-CONDITIONAL TRANSMISSION FROZEN.
+
+---
+
+## MC-031 — D13-06 falsification matrix and maturity decision
+
+### Baseline sequence
+
+Test incremental value only after:
+1. Taiwan same-day market return / Regime;
+2. Taiwan sector return / Residual RS;
+3. prior U.S. broad and technology/semiconductor move;
+4. USD/TWD context;
+5. then U.S. yield/curve candidate.
+
+### Candidate features
+- prior-US-session 2Y change;
+- prior-US-session 10Y change;
+- prior-US-session 10Y real-yield change where PIT-valid;
+- 2s10s level/change;
+- curveMoveType;
+- large rate-shock percentile using a frozen trailing window.
+
+### Falsification
+- date-shift placebo;
+- remove FOMC/CPI/NFP extreme dates and test normal dates separately;
+- event days as their own Regime;
+- gap versus open-to-close decomposition;
+- technology versus non-technology sector interaction;
+- control DXY/USD-TWD;
+- compare nominal 10Y against real-yield and curve decomposition;
+- test whether one crisis window drives the result;
+- no threshold/window tuning from realized stock outcomes.
+
+### Primary targets
+- next-open gap;
+- next-session MAE / realized range;
+- D1/D3 continuation/reversal;
+- System 1 / System 2 selection hit-rate conditional on sector and market state.
+
+### Maturity decision
+D13-06 advances **L1 -> L2**:
+- mechanism decomposed;
+- official-source decision clock established;
+- causal ambiguity and revision guards established;
+- falsification design frozen.
+
+It does **not** advance to L3 because a durable prospective receipt with knownAt / firstEligibleTaiwanDecision has not yet been implemented.
+
+Formal Core remains LOCKED. No “yield up/down” score, veto or stock-ranking bonus is approved.
+
+## Exact next continuation after MC-031
+
+1. Add prior-U.S-session official nominal/real yield receipt design to the Phase-2 macro source contract, preserving source date, capturedAt and firstEligibleTaiwanDecision.
+2. Continue D13-07 Oil from L1 -> L2, explicitly separating demand shock, supply shock and geopolitical risk rather than assigning oil one fixed equity sign.
+3. Continue D13-09 CPI/PPI/NFP/unemployment and D13-11 Macro Surprise clocks only after vintage/consensus provenance is frozen.

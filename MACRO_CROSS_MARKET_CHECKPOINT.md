@@ -1,8 +1,8 @@
 # Macro / Cross-Market Checkpoint
 
-Updated: 2026-09-26 Asia/Taipei
+Updated: 2026-09-28 17:23 Asia/Taipei
 Formal Core: LOCKED
-Current cursor: MC-001 through MC-025 complete.
+Current cursor: MC-001 through MC-031 complete.
 
 ## Durable conclusions
 
@@ -45,3 +45,25 @@ Japan/Korea daily close may be captured only with `ASIA_DAILY_MIXED_WINDOW` sema
 3. Keep U.S. broad/tech provider contract unresolved until terms/session/availability are explicit.
 4. Do not implement shared runtime capture while concurrent version lineage is active unless governance class is re-read and branch isolation is proven.
 5. Continue another independently falsifiable research lane while prospective evidence accumulates.
+
+
+## 2026-09-28 D13-06 U.S. Treasury yield-curve deepening
+
+- D13-06 advances L1 -> L2. A Treasury yield is not one causal variable: separate front-end policy-path sensitivity, long nominal discount rate, real yield, inflation compensation, curve shape and model-estimated term premium.
+- Official U.S. Treasury par-curve inputs are indicative bid-side quotes obtained near 15:30 U.S. Eastern Time. Fed H.15 is posted at 16:15 Eastern Time.
+- For Taiwan's 18:10 after-market decision, the same U.S. calendar day's official curve/H.15 is FUTURE information. Default PIT-safe official input is the most recent U.S. trading-day official observation already published before the Taiwan decision.
+- Any contemporaneous intraday U.S. Treasury/futures quote observed at 18:10 Taipei is a separate source/object and must not be silently substituted into official daily CMT history.
+- Curve states are split into BULL_STEEPENER / BEAR_STEEPENER / BULL_FLATTENER / BEAR_FLATTENER / MIXED using changes in front/back yields; the label is descriptive, not causal.
+- Federal Reserve term-premium/yield-curve models are staff research products that may be delayed/revised/methodologically changed. Without historical vintage/capturedAt semantics, term-premium history is not PIT-eligible alpha.
+- Taiwan transmission remains sector-conditioned and absorption-based. Rates must add value after Taiwan market/sector response, prior U.S. broad/tech move and USD/TWD.
+- Falsification frozen: date-shift placebo; event-day vs normal-day split; gap vs open-close; tech vs non-tech; FX control; nominal vs real/curve decomposition; crisis removal.
+- Machine-readable contract: `research/d13_06_us_yield_curve_pit_spec_v0_1.json`.
+- L3 remains blocked until prospective receipts with source date / capturedAt / knownAt / firstEligibleTaiwanDecision exist.
+- Formal Core unchanged; no yield score/veto/ranking bonus.
+
+## Updated exact next continuation
+
+1. Phase-2 prospective macro receipt: prior eligible official UST nominal/real yields with exact source/clock semantics.
+2. D13-07 Oil L1 -> L2 using demand-vs-supply-vs-geopolitical shock decomposition.
+3. D13-09 / D13-11 macro-surprise lanes only after expectation vintage and release-clock provenance are frozen.
+4. Cross-link D13 rate state with D12 event-conditioned IV only as a dependency; do not double-count maturity.

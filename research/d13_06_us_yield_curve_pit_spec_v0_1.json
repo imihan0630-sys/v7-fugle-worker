@@ -1,0 +1,80 @@
+{
+  "schemaVersion": "0.1",
+  "module": "D13-06",
+  "name": "U.S. Treasury yield curve PIT / transmission contract",
+  "status": "RESEARCH_ONLY_CONCEPT_FROZEN_EVIDENCE_PENDING",
+  "formalCoreImpact": "NONE",
+  "updatedAt": "2026-09-28T17:23:00+08:00",
+  "decisionClock": {
+    "timezone": "Asia/Taipei",
+    "time": "18:10",
+    "sameCalendarDayOfficialTreasuryCmtEligible": false,
+    "sameCalendarDayFedH15Eligible": false,
+    "defaultEligibleOfficialObservation": "Most recent U.S. trading-day official curve already published before Taiwan decision."
+  },
+  "sourceSemantics": {
+    "treasuryOfficialCurveInputTime": "near 15:30 U.S. Eastern Time each U.S. trading day",
+    "fedH15ReleaseTime": "16:15 U.S. Eastern Time Monday-Friday except holidays",
+    "intradayUSTAtTaiwan1810": "Separate source/object; never silently mix with official daily CMT."
+  },
+  "featureFamilies": {
+    "frontEnd": ["ust2y", "deltaUst2y"],
+    "longNominal": ["ust10y", "deltaUst10y", "ust30y", "deltaUst30y"],
+    "realRate": ["ust10yReal", "deltaUst10yReal"],
+    "curve": ["ust2s10s", "deltaUst2s10s", "ust3m10y", "deltaUst3m10y", "curveMoveType"],
+    "termPremium": ["researchOnlyTermPremiumWithVintage"]
+  },
+  "curveMoveTypes": [
+    "BULL_STEEPENER",
+    "BEAR_STEEPENER",
+    "BULL_FLATTENER",
+    "BEAR_FLATTENER",
+    "MIXED"
+  ],
+  "requiredReceiptFields": [
+    "sourceTradingDate",
+    "sourcePublishedAt",
+    "capturedAt",
+    "knownAtTaipei",
+    "firstEligibleTaiwanDecision",
+    "sourceId",
+    "sourceVersion",
+    "revisionStatus",
+    "staleFlag",
+    "missingReason"
+  ],
+  "guards": [
+    "No same-calendar-day official CMT at Taiwan 18:10.",
+    "Do not treat 10Y yield as a single causal factor.",
+    "Term-premium model outputs require vintage semantics because research estimates may revise.",
+    "Do not infer macro cause from steepener/flattener label alone.",
+    "UNKNOWN is not zero."
+  ],
+  "falsificationOrder": [
+    "Taiwan same-day market return / Regime",
+    "Taiwan sector return / Residual RS",
+    "prior U.S. broad + tech/semiconductor move",
+    "USD/TWD context",
+    "then U.S. yield/curve candidate"
+  ],
+  "falsificationTests": [
+    "date-shift placebo",
+    "normal vs FOMC/CPI/NFP event days",
+    "next-open gap vs open-to-close",
+    "technology vs non-technology interactions",
+    "DXY/USD-TWD control",
+    "nominal 10Y vs real-yield/curve decomposition",
+    "crisis-date removal",
+    "frozen trailing windows/thresholds"
+  ],
+  "maturityDecision": {
+    "from": "L1",
+    "to": "L2",
+    "reason": "Mechanism, source clock, revision guard and falsification are frozen; prospective PIT receipt evidence is not yet available for L3."
+  },
+  "nextContinuation": [
+    "Add UST nominal/real yields to Phase-2 prospective macro receipt contract.",
+    "Accumulate independent dates before L3.",
+    "Continue D13-07 oil shock decomposition L1 to L2."
+  ]
+}
