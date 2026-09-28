@@ -1188,3 +1188,103 @@ Any future Formal change still requires:
 Status: `WAITING_PROSPECTIVE / NOT_OPTIMIZATION_READY`.
 
 Formal Core unchanged.
+
+
+## BR-027 — Industry classification vintage is a PIT variable, not static metadata
+
+### Why this matters
+Industry / sector membership is not timeless metadata. Taiwan Stock Exchange classification rules permit periodic and special reclassification, so any historical Sector RS（產業相對強弱）, breadth, rotation or leadership study that assigns today's industry label backward creates a classification look-ahead（分類偷看未來） risk.
+
+Official Taiwan evidence establishes that the classification itself has an effective-date lifecycle:
+- TWSE currently maintains an industry-classification framework and regularly reviews classification using recent annual-report business composition, with special adjustment when business changes materially.
+- The review convention has changed historically; after IFRS-era rule changes, regular review moved to an annual cadence.
+- A concrete 2023 adjustment moved 47 listed companies into new/changed industry categories with a specified effective date, proving that historical membership can differ materially from current membership.
+
+External research also shows that industry-momentum / reversal results are classification-sensitive. A classification scheme that is too coarse or silently changes can alter measured industry returns and apparent persistence.
+
+### PIT contract
+For every sector/industry observation at decision time t, preserve:
+- classificationSchemeId / version;
+- industryCode / industryName as known at t;
+- membershipEffectiveFrom / membershipEffectiveTo;
+- sourcePublishedAt / knownAt;
+- reclassification reason when available;
+- UNKNOWN when historical membership cannot be reconstructed.
+
+Forbidden:
+- backfilling current industry labels onto older dates;
+- merging old/new taxonomies after seeing returns;
+- treating a current label as proof of historical membership.
+
+### Maturity implication
+Taiwan official effective-dated reclassification evidence is sufficient to establish D09-01 PIT feasibility prospectively and for bounded historical dates where official notices exist. It is NOT sufficient to claim complete machine-readable historical membership coverage.
+
+Status: `D09-01 -> L3 PIT_FEASIBLE_BOUNDED / COMPLETE_HISTORY_UNKNOWN`.
+
+---
+
+## BR-028 — Sector RS needs participation and physical-cycle confirmation
+
+### Core falsification
+Sector RS（產業相對強弱） is a price-relative state, not a guaranteed fundamental-cycle signal.
+
+Evidence is intentionally mixed:
+- Classic industry-momentum research finds industry-level return continuation can explain a substantial part of stock momentum.
+- Customer-supplier research documents delayed information transmission across verified economic links.
+- Taiwan-specific evidence also reports significant industry reversal at short horizons, which directly rejects a universal rule that stronger recent industry return must imply better forward return.
+- More recent work separates short-horizon residual industry momentum / lead-lag from factor momentum, reinforcing that mechanism and horizon matter.
+
+Therefore the research question is not "Is sector RS high?" but:
+1. is strength broad or leader-concentrated?
+2. is the sector rank transition persistent or one-day noise?
+3. does physical demand / sales / inventory confirm the price move?
+4. is supply response (capacity / capex) supportive or becoming oversupply?
+5. can raw-material cost be passed through without margin damage?
+6. does the individual company have a verified earnings-transmission path?
+
+### Concentration firewall
+A cap-weighted industry or index can be dominated by a few mega-cap firms. Taiwan's semiconductor sector represented more than half of listed-market capitalization in the 2025 TWSE Fact Book, a structural example of why cap-weight strength cannot be equated with broad member participation.
+
+Always preserve separately:
+- cap-weight return;
+- equal-weight / median member return when feasible;
+- advancing-member ratio / Above-MA participation;
+- leader contribution share / HHI / effective leader count;
+- stock-count denominator and UNKNOWN coverage.
+
+### Integrated state, not a new weighted score
+Do not immediately create another scalar "industry score". First preserve orthogonal state dimensions:
+- PRICE_CONFIRMATION: sector RS / residual RS / rank persistence;
+- PARTICIPATION: breadth / Above-MA / leader concentration;
+- PHYSICAL_CYCLE: production / sales / inventory state;
+- SUPPLY_RESPONSE: capacity / capex / utilization when explicitly sourced;
+- PRICING_TRANSMISSION: raw-material / selling-price / margin pass-through;
+- COMPANY_TRANSMISSION: verified exposure and earnings sensitivity.
+
+Candidate state examples for Shadow research:
+- PRICE_ONLY;
+- PRICE_PLUS_PHYSICAL_CONFIRMATION;
+- PHYSICAL_EARLY_PRICE_NOT_CONFIRMED;
+- LEADER_ONLY_CONCENTRATION;
+- CAPACITY_OVERSHOOT_RISK;
+- COST_SQUEEZE;
+- BULLWHIP_RISK;
+- UNKNOWN.
+
+No state has a permanently bullish/bearish meaning before prospective evidence.
+
+### System 1 / System 2 relationship
+System 1 already uses same-day sector breadth, average change, amount activity, a hard gate and a sector score. This research must test incremental value AFTER those fields plus stock trend / Residual RS / price-volume / regime controls; otherwise it is REDUNDANT.
+
+System 2's OWNER_APPROVED INDUSTRY_TREND contract explicitly requires `IND.CYCLE_STAGE`, `IND.SUPPLY_DEMAND`, `IND.INVENTORY`, `IND.CAPACITY`, `IND.PRICING`, and `IND.COMPANY_TRANSMISSION`, while current readiness is SOURCE_EXTENSION_REQUIRED. The integrated state above is therefore a direct research bridge to the missing Industry Thesis evidence family, without changing any formal score or threshold.
+
+Status: `HIGH_VALUE_RESEARCH_BRIDGE / NOT_OPTIMIZATION_READY / PROSPECTIVE_EVIDENCE_REQUIRED`.
+
+### External evidence anchors
+- Moskowitz & Grinblatt (1999), *Do Industries Explain Momentum?*, Journal of Finance.
+- Cohen & Frazzini (2008), *Economic Links and Predictable Returns*, Journal of Finance.
+- Liu & Fu (2011), Taiwan weekly industry momentum/reversal evidence.
+- Li (2022), *Industry classification, industry momentum and short-term reversal*, Finance Research Letters.
+- TWSE industry-classification rules and effective-dated reclassification notices.
+- TWSE Fact Book 2026 (2025 market-cap distribution by industry).
+
