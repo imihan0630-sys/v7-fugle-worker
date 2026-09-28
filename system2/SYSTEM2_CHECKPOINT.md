@@ -19,6 +19,19 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 
 ## Current design decisions
 
+- Finalized-Date Acceptance（最終化日期驗收）V0.1 received a pre-first-sample semantic correction in main commit `21a0be5f83145bb6cf8d701d5230e3f1c4d03792` via PR #219. A coverage-qualified scheduled artifact is now correctly treated as an immutable independent observed date even when required evidence is incomplete; complete-date and precision-date membership are tracked separately.
+
+- The acceptance receipt now exposes three distinct counters: `countsTowardIndependentDate`, `countsTowardCompleteTradingDate`, and `countsTowardPrecisionEligibleDate`. This matches Decision Clock readiness V0.2 semantics (`independentTradingDates`, `completeTradingDates`, `precisionEligibleDates`) and prevents the next-day acceptance audit from falsely throwing on a legitimate incomplete first sample.
+
+- `A5_NOT_AVAILABLE_BY_CANDIDATE` is now only assigned when same-session A1/B2 readiness is already satisfied and A5 specifically misses the candidate boundary. Broader A1/B2 incompleteness remains `INCOMPLETE_REQUIRED_EVIDENCE`. An incomplete or A5-blocked coverage-qualified date remains in the immutable independent observed-date set but does not count as complete or precision-eligible.
+
+- Acceptance also explicitly honors the finalized coverage window before classifying a date; dates outside the finalized window remain `NOT_IN_FINALIZED_WINDOW` even if diagnostic rows are present.
+
+- PR #219 pre-merge verification PASS: System2 Research CI `36380202348`; V8 Regression `36380202350`. Post-merge System2 Research CI `36380280224` PASS and V8 Regression `36380280225` PASS. No Decision Clock collector-contract file was changed, so Collector Freeze Guard V0.1 baseline remains intact.
+
+- Prospective promotion-grade trading-date count remains 0. The correction was completed before the first eligible 2026-09-29 prospective sample, with no historical evidence substitution and no outcome data used. Exact Decision Clock, System2 Worker Cron authorization and capture remain false.
+
+
 - First Prospective Decision Clock Day Drill（首個前瞻交易日整合演練）V0.1 merged to main in commit `a639981d1621f61bab8a6e2a894aa0c67bf2f8c7` via PR #212. Synthetic 2026-09-29 timestamps exercise A1 TWSE/TPEx, B2, A5 candidate-boundary, daily evidence V0.2.1, V0.3 provenance bundle, coverage-qualified aggregation, owner-review packet and finalized-date acceptance as one chain. Both `COMPLETE_PRECISE` and first-observation-already-READY => `COMPLETE_IMPRECISE` paths are covered. Synthetic drill evidence never increments prospective readiness counters.
 
 - PR #212 was rebased onto the latest concurrent main with no overlapping files and reverified. Final-head System2 Research CI `36361673385` PASS and V8 Regression `36361673378` PASS. Post-merge System2 Research CI `36361735838` PASS.
