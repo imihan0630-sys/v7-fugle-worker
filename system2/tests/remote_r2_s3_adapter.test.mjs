@@ -32,6 +32,7 @@ assert.equal(put.etag,"etag-1");
 const loaded=await adapter.get("a1/v0.1/test.json.gz");
 assert.deepEqual([...loaded.bytes],[...payload]);
 assert.equal(calls[1].headers.get("if-none-match"),"*");
+assert.equal(calls[1].headers.get("content-encoding"),null,"opaque object writes must not default Content-Encoding");
 for(const call of calls){
   assert.match(call.headers.get("authorization")||"",/^AWS4-HMAC-SHA256 /);
   assert.equal(call.headers.get("x-amz-date"),"20260928T143000Z");
