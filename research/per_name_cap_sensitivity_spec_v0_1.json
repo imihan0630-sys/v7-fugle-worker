@@ -32,6 +32,7 @@
     "one historical multi-name date",
     "cap-specific optima are diagnostics, not live recommendations"
   ],
-  "status": "PER_NAME_CAP_SENSITIVITY_READY / PRODUCTION_PENDING",
-  "formalCoreImpact": false
+  "status": "CAP_35_ARTIFACT_FALSIFIED / CURRENT_ABOVE_GLOBAL_MIN_19_OF_19 / RELAXED_CAP_STRENGTHENS_STRUCTURAL_GAP / ECONOMIC_VALUE_UNKNOWN",
+  "formalCoreImpact": false,
+  "productionReceipt": "research/per_name_cap_sensitivity_production_receipt_20260928.json"
 }
