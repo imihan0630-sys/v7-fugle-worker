@@ -1832,3 +1832,35 @@ Status:
 `MECHANICAL_AMPLIFICATION_WITNESS_CONFIRMED / POPULATION_DIRECTION_UNKNOWN / NOT_OPTIMIZATION_READY`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-063 — FIRST/ADD tranche-ratio sensitivity sweep (2026-09-28)
+
+FIRST-only and ADD-only audits both preserve the 2026-09-18 structural concentration. PR-063 tests a stronger counter-hypothesis:
+
+`The concentration is a special artifact of the current 60/40 split.`
+
+The FIRST ratio is swept from 40% to 90% in 5-point increments. At every ratio:
+- FIRST amount = round(allocation × ratio);
+- ADD amount = allocation - FIRST amount;
+- each tranche is integer-share floored at buyHigh;
+- the two tranche preview notionals are recombined.
+
+For each ratio the audit compares:
+1. current PriorityScore allocation;
+2. same-deployment equal capital;
+3. exhaustive NT$1,000-grid minimum HHI under the same 35% cap and the same ratio-specific share flooring.
+
+Interpretation is frozen:
+- persistent current > equal-capital > / or current > global minimum across the ratio grid rejects a 60/40-specific explanation;
+- direction reversals over a material part of the grid would downgrade the structural finding as ratio-sensitive.
+
+Artifacts:
+`research/tranche_ratio_sensitivity_v0_1.mjs`;
+`research/tranche_ratio_sensitivity_spec_v0_1.json`;
+`tests/portfolio_risk_tranche_ratio_sensitivity_readonly_audit.mjs`.
+
+Status:
+`TRANCHE_RATIO_SENSITIVITY_READY / PRODUCTION_AUDIT_PENDING`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
