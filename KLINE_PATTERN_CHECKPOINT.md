@@ -279,3 +279,95 @@ Durable research detail: main `KLINE_PATTERN_RESEARCH.md` commit `a245b486dc60f2
 6. Keep Pattern observer persistence unwired. Runtime wiring remains governance-gated and requires RAW_EXECUTION + TECHNICAL_CONTINUITY + explicit symbol-session + fit-for-purpose volume semantics.
 7. Prospective outcome joins still require COMPLETE parent run receipts; no historical Pattern Shadow fabrication.
 8. Formal Core remains LOCKED; no R09 / no optimization proposal before clean prospective evidence.
+
+## Continuation update — DL-005A through DL-005G (2026-09-28)
+
+### Core-family unification
+- Mandatory D01 themes now share one four-layer framework:
+  MACRO_TOPOLOGY -> COMPRESSION_PROGRESSION -> LOCAL_CANDLE_SAKATA -> TRIGGER_LIFECYCLE.
+- W/M, Cup, VCP, K-line/Sakata and breakout/false-break are no longer treated as independent label votes by default.
+- Frozen rule:
+  NAMED LABEL COUNT != DISTINCT STRUCTURAL OBJECT COUNT != INDEPENDENT INFORMATION COUNT.
+- Durable contracts:
+  research/PATTERN_CORE_FAMILY_UNIFICATION_V0_1.md
+  research/pattern_core_family_unification_v0_1.json
+
+### Executable evidence de-dup
+- New outcome-free helper/tests:
+  research/pattern_evidence_dedup_v0_1.mjs
+  research/test_pattern_evidence_dedup_v0_1.mjs
+- Adversarial QA PASS:
+  - same-anchor W + Cup => one exact-anchor structural group;
+  - nested W/Cup partial overlap remains continuous Jaccard, no arbitrary independence threshold;
+  - Cup Handle + VCP + Platform exact contraction overlap => one exact-anchor group;
+  - W/Cup/VCP same boundary+firstBreakAt => one trigger event;
+  - Sakata local motif inside breakout can add a structural layer but remains the same PRICE_OHLC root provenance;
+  - Sakata Three Mountains vs M/top same peaks => one macro group;
+  - Sakata Three Methods vs short Flag same anchors => one impulse/consolidation group.
+- scoringVoteCount intentionally remains null.
+
+### Causal breakout / false-break lifecycle
+- New research-only state machine:
+  research/pattern_breakout_lifecycle_v0_1.mjs
+  research/test_pattern_breakout_lifecycle_v0_1.mjs
+  research/PATTERN_BREAKOUT_FALSE_BREAK_LIFECYCLE_V0_1.md
+- Key semantic separations:
+  rejected intraday pierce != failed confirmed breakout;
+  retest != failure;
+  reentry into zone != full below/above-zone failure;
+  failure may later reclaim;
+  no-follow-through != false breakout without structural reentry/failure.
+- UP/DOWN mirror supported.
+- No fixed 3D/5D failure threshold.
+- Constrained price-limit break remains UNRESOLVED until first eligible unconstrained symbol-session.
+- Suspension/non-symbol-session pseudo-bars cannot create lifecycle events.
+- asOf prefix-invariance PASS: future failure cannot backwrite prior state.
+- boundary-version firewall PASS:
+  same ID/version/coordinates may continue;
+  new version requires reset;
+  same version with mutated coordinates is PROVENANCE_CONFLICT;
+  different boundary ID is a new lifecycle object.
+
+### Sakata decomposition
+- Durable contracts:
+  research/PATTERN_SAKATA_DECOMPOSITION_V0_1.md
+  research/pattern_sakata_decomposition_v0_1.json
+- Three Mountains -> macro resistance topology; overlaps M/triple-top/repeated resistance.
+- Three Rivers -> explicit definitionVariant required because modern descriptions are not uniform.
+- Three Gaps -> gap/session/event mechanics; count=3 has no automatic reversal/exhaustion sign.
+- Three Soldiers -> local candle sequence; high redundancy prior vs short-horizon momentum/close-location/body-range expansion.
+- Three Methods -> impulse/consolidation/continuation; high redundancy prior vs Flag/micro-Platform/VCP final leg.
+- Single Sakata score is rejected.
+
+### Evidence / maturity
+- Systematic chart-pattern literature supports objective pattern detection, not label-count voting.
+- Taiwan candlestick literature supports empirical testability of some candle morphologies, but principal evidence is pre-modern current regime.
+- No Pattern forward outcomes inspected.
+- No tracker maturity upgrade:
+  D01 remains 51.7%.
+- D01-05/D01-06/D01-08 remain L3;
+  D01-07/D01-12 remain L2.
+- No R09.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core remains LOCKED.
+
+### Updated exact next continuation point
+
+1. Freeze the four-layer hierarchy; no named-family catalog expansion.
+2. Next: multi-scale nested-structure graph for weekly/daily/local objects, with explicit parent-child scale relationships and overlap de-dup.
+3. Extend breakout lifecycle with continuous no-follow-through/time-above/extension/reclaim path descriptors without tuning fixed thresholds.
+4. Continue Sakata Three-Gaps only under valid OPEN + continuity + session semantics.
+5. Keep all named-label signs UNKNOWN pending modern prospective evidence.
+6. Pattern runtime remains NO_GO until shared TECHNICAL_CONTINUITY + explicit symbol-session + fit-for-purpose volume/trading-unit semantics are runtime-ready.
+7. Prospective outcomes still require COMPLETE immutable parent/run coverage; no historical fabrication.
+8. Formal Core remains unchanged.
+
+### Durable commits in this tranche
+- 47f94d601138b040b84707abca9acb3741f9c3b6 — core-family unification document.
+- b6b97914f70e4146258e7510260845297b9c68f6 — machine-readable core-family contract.
+- 7c25e746c93323577715fd0947d75a7aa2e9021f — evidence de-dup helper.
+- ed1ac0f94295efc6c3ae72ec886abfe02b6e2b83 — cross-family/Sakata de-dup adversarial tests.
+- 486ba694e09d13dffacf563552ca6526a18614b6 — causal breakout lifecycle with as-of/boundary guards.
+- fc0ede4065d182170da342075979ee8069b2b617 — breakout lifecycle prefix-invariance test correction/pass.
+- f48d5b3a07410ca90c35748dcae2c330d0ca8cd3 — Sakata decomposition research document.
+- 0f98f5a30ef16327c50916fd8bb434e3d9819184 — machine-readable Sakata contract.
