@@ -9,7 +9,8 @@ Task 14 requires accumulating same-day prospective Decision Clock evidence witho
 
 Coverage, provenance and readiness are already computed separately. V0.1 adds a compact read-only acceptance receipt for the latest finalized market date so each date has one explicit answer:
 
-- did the date count toward the independent-date sample?
+- did the date enter the independent observed-date sample?
+- did it also count as a complete required-evidence date?
 - did it also count toward the precision-eligible sample?
 - if not, which stage rejected it?
 
@@ -25,7 +26,7 @@ For an official trading date:
   - required evidence is complete;
   - A5 was available by candidate boundary;
   - precision gate passed;
-  - counts toward both independent-date and precision-date samples.
+  - counts toward independent-date, complete-date and precision-date samples.
 
 - `COMPLETE_IMPRECISE`
   - all required evidence is complete;
@@ -45,10 +46,13 @@ For an official trading date:
   - only attempt one is permitted.
 
 - `INCOMPLETE_REQUIRED_EVIDENCE`
-  - required A1/A5/B2 evidence is incomplete.
+  - the coverage-qualified scheduled artifact is a genuine independent observed date;
+  - required A1/A5/B2 evidence is incomplete;
+  - it counts toward the independent observed-date set but not the complete-date or precision-date sets.
 
 - `A5_NOT_AVAILABLE_BY_CANDIDATE`
-  - A5 was first observed after the computed candidate boundary.
+  - same-session A1/B2 evidence is ready but A5 was first observed after the computed candidate boundary;
+  - the date remains an independent observed date but is not complete/precision eligible.
 
 For non-trading or not-yet-finalized dates:
 
@@ -57,11 +61,15 @@ For non-trading or not-yet-finalized dates:
 
 ## Independent-date invariant
 
-The acceptance receipt recomputes whether the target date should count toward the independent-date sample and compares that result with:
+The acceptance receipt distinguishes three different counters:
 
-`aggregation.promotionGradeMarketDates`
+- `countsTowardIndependentDate`: the coverage-qualified scheduled date is part of the immutable observed-date set represented by `aggregation.promotionGradeMarketDates`;
+- `countsTowardCompleteTradingDate`: required A1/A5/B2 evidence is complete;
+- `countsTowardPrecisionEligibleDate`: the complete date also satisfies the preregistered precision rule.
 
-Any disagreement throws a hard audit error.
+Only the first field is cross-checked against `aggregation.promotionGradeMarketDates`. This matches V0.2 readiness, where `independentTradingDates`, `completeTradingDates` and `precisionEligibleDates` are intentionally distinct.
+
+Any disagreement on independent-date membership throws a hard audit error.
 
 This makes the acceptance audit a cross-check rather than another independent source of truth.
 
@@ -93,7 +101,8 @@ The readiness summary displays:
 
 - latest finalized date;
 - acceptance status;
-- whether it counts toward independent dates;
+- whether it counts toward independent observed dates;
+- whether it counts toward complete dates;
 - whether it counts toward precision dates.
 
 ## Safety
@@ -110,3 +119,14 @@ The acceptance audit:
 - does not inspect stock returns or strategy outcomes.
 
 This is Class A research observability only.
+
+
+## Pre-first-sample semantic correction
+
+Before the first eligible prospective session, V0.1 was corrected so an incomplete but coverage-qualified scheduled artifact does not make the acceptance audit contradict the aggregation layer.
+
+The immutable date still belongs to the independent observed-date set, while its complete-date and precision-date flags remain false. This preserves inconvenient/incomplete dates instead of dropping them after observation, while keeping the 10-complete / 20-complete-and-precise gates fail-closed.
+
+The correction also makes `A5_NOT_AVAILABLE_BY_CANDIDATE` reachable only when the same-session clock is ready and A5 specifically misses the candidate boundary; broader A1/B2 incompleteness remains `INCOMPLETE_REQUIRED_EVIDENCE`.
+
+No real prospective sample existed when this correction was made.
