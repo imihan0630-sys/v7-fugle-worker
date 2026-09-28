@@ -23,7 +23,7 @@ function intOrNull(value, field) {
 export function normalizeSelectedPlan(plan) {
   const p=plan||{};
   const strategyPool=reqText(p.strategyPool,"strategyPool");
-  if (!["GENERAL","THOUSAND"].includes(strategyPool)) throw new Error("INVALID_strategyPool");
+  if (!["FORMAL_GENERAL","FORMAL_THOUSAND"].includes(strategyPool)) throw new Error("INVALID_strategyPool");
 
   return Object.freeze({
     symbol:reqText(p.symbol,"symbol"),
