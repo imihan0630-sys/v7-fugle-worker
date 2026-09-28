@@ -592,6 +592,23 @@ Physical status:
 - therefore the 2017→present external cold backfill and first real full-market replay remain not started on this new path;
 - exact next action is isolated R2 provisioning/credential setup, bounded object+manifest smoke, then 2017 TWSE/TPEx annual backfill and coverage/readback verification.
 
+## 2026-09-29 R2 physical smoke qualification
+
+The external cold-object path is now physically qualified against the isolated R2 bucket `system2-historical-research`.
+
+- owner provisioned the private Standard-class bucket and least-privilege account object read/write credentials, stored only in the GitHub `system2-research` environment;
+- PR #246 merged to main as `3623241fc5c2578360bb75c96f047b4fce56ebc9`;
+- bounded R2 physical smoke run `36488764511` PASS using official 2026-09-24 data:
+  - TWSE 2330: 353-byte gzip object, source-date evidence exact, object SHA-256 readback PASS, unpack PASS, create-only rerun guard PASS;
+  - TPEx 6488: 358-byte gzip object, source-date evidence exact, object SHA-256 readback PASS, unpack PASS, create-only rerun guard PASS;
+  - D1 annual manifest writes = 0; full backfill = false; System1 runtime unchanged;
+- the first physical attempt correctly exposed an HTTP object-metadata bug: storing gzip bytes with `Content-Encoding: gzip` caused Node/undici to transparently decompress GET responses before byte-level SHA verification;
+- fixed semantics now store `.json.gz` as opaque `application/gzip` bytes without default `Content-Encoding`; both remote S3 adapter and Worker R2 binding adapter use the same exact-byte policy;
+- latest PR head `473e12ac38718a9db6122d1359a1371694539c0b` passed System2 Research CI run `36488965872` and V8 Regression run `36488965742`;
+- the two tiny smoke objects live only under `smoke/r2-physical-v0.2/` and cannot collide with annual production research keys under `a1/v0.1/`.
+
+R2 provisioning/readback is no longer a blocker. The exact next P0 action is the manual-only 2017 TWSE annual external-cold backfill, followed by coverage/hash/manifest/receipt verification; only after TWSE passes should the 2017 TPEx annual backfill run.
+
 ## Current boundary
 
 Research/design/code prototype is not blocked. Isolated D1 and inert Worker already exist, but prospective always-on Shadow accumulation remains intentionally inactive. A5/B2 observer engineering is complete; the immediate boundary is accumulation of independent same-day V0.2 evidence beginning no earlier than the 2026-09-29 official session. No exact Decision Clock is frozen; capture is false; Worker Cron is 0. The GitHub Actions research schedule is read-only evidence collection and is not the Worker Cron. No production-shared storage or System 1/V8 change is authorized or needed.
