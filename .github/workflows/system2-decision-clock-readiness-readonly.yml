@@ -37,18 +37,29 @@ jobs:
             --repo "$GITHUB_REPOSITORY" \
             --output system2/artifacts/decision-clock-readiness-latest.json
 
+      - name: Audit latest finalized market date without mutation
+        shell: bash
+        run: |
+          set -euo pipefail
+          node system2/scripts/audit_decision_clock_finalized_date_readonly.mjs             --input system2/artifacts/decision-clock-readiness-latest.json             --output system2/artifacts/decision-clock-finalized-date-audit-latest.json
+
       - name: Publish readiness summary
         shell: bash
         run: |
           node - <<'NODE'
           const fs=require("node:fs");
           const r=JSON.parse(fs.readFileSync("system2/artifacts/decision-clock-readiness-latest.json","utf8"));
+          const x=JSON.parse(fs.readFileSync("system2/artifacts/decision-clock-finalized-date-audit-latest.json","utf8"));
           const a=r.aggregation;
           const d=a.readiness;
           const lines=[
             "## System 2 Decision Clock evidence readiness",
             "",
             "- Promotion-grade dates: "+a.promotionGradeDateCount,
+            "- Latest finalized date: "+x.marketDate,
+            "- Latest finalized-date acceptance: "+x.status,
+            "- Counts toward independent dates: "+x.countsTowardIndependentDate,
+            "- Counts toward precision dates: "+x.countsTowardPrecisionEligibleDate,
             "- Attempt-one scheduled artifacts: "+(a.attemptOneScheduledArtifactCount||0),
             "- Coverage-excluded scheduled artifacts: "+(a.coverageExcludedScheduledArtifacts?.length||0),
             "- Coverage/artifact provenance mismatches: "+(a.coverageArtifactCandidateMismatches?.length||0),
@@ -85,6 +96,14 @@ jobs:
         with:
           name: system2-decision-clock-readiness-${{ github.run_id }}
           path: system2/artifacts/decision-clock-readiness-latest.json
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Upload finalized-date acceptance receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: system2-decision-clock-finalized-date-audit-${{ github.run_id }}
+          path: system2/artifacts/decision-clock-finalized-date-audit-latest.json
           if-no-files-found: error
           retention-days: 90
 
