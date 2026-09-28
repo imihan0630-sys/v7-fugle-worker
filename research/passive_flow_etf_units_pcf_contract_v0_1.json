@@ -1,0 +1,82 @@
+{
+  "schemaVersion": "PASSIVE_FLOW_ETF_UNITS_PCF_CONTRACT_V0_1",
+  "updated": "2026-09-29 Asia/Taipei",
+  "researchOnly": true,
+  "formalCoreImpact": "NONE",
+  "outcomesUsed": false,
+  "question": "What point-in-time observable best represents Taiwan ETF fund-size creation/redemption pressure without confusing market-price/NAV moves with primary-market flow?",
+  "officialEvidence": [
+    "TWSE issuer integration specification requires current outstanding beneficial units and the difference from the prior day, with data date and data time.",
+    "TWSE states ETF issuers publish a daily PCF for in-kind creation/redemption, defining the basket for one creation/redemption unit or an integer multiple.",
+    "TWSE distinguishes in-kind versus cash creation/redemption; cash products do not support the same stock-basket inference.",
+    "TWSE split/reverse-split announcements show PCF unit counts can mechanically reflect corporate actions, so unit changes need a corporate-action guard."
+  ],
+  "primaryFlowObject": {
+    "name": "netUnitsDelta",
+    "sourceField": "today outstanding units - previous-day outstanding units",
+    "interpretation": "Net ETF fund-size change in beneficial units, after corporate-action validation.",
+    "whyPreferredToAumDelta": "AUM changes with both units and NAV/market value. Units delta more directly isolates net primary-market fund-size change.",
+    "notEquivalentTo": [
+      "gross creations",
+      "gross redemptions",
+      "actual stock trades",
+      "actual passive-flow NTD"
+    ]
+  },
+  "accountingGuard": {
+    "identity": "AUM_t = Units_t * NAV_t",
+    "implication": "Delta AUM contains a units-flow term plus a NAV-change term (and interaction), so Delta AUM alone cannot identify primary-market creations/redemptions."
+  },
+  "pcfContext": {
+    "inKind": "For in-kind ETFs, daily PCF identifies the basket required per creation/redemption base unit. A modeled basket-exposure proxy may be constructed only with PIT-consistent units delta, creation-unit size, PCF composition and cash-substitution semantics.",
+    "cash": "For cash creation/redemption ETFs, units delta can measure net fund-size change but does not map mechanically to same-day constituent stock quantities.",
+    "stockLevelProxyName": "MODELED_PRIMARY_BASKET_EXPOSURE",
+    "forbiddenName": "ACTUAL_STOCK_PASSIVE_FLOW",
+    "reason": "Authorized participants may use inventory, hedges, secondary-market trades and timing choices; net ETF units do not reveal exact execution."
+  },
+  "criticalFalsification": [
+    "Net units delta of zero does not prove zero gross primary-market activity; same-day creations and redemptions may offset.",
+    "Positive units delta is not automatically bullish for every constituent and does not prove same-day market buying.",
+    "Negative units delta is not automatically bearish and does not prove same-day market selling.",
+    "ETF split/reverse-split or other unit-changing corporate actions can create a large units delta without economic inflow/outflow.",
+    "PCF may contain cash-substitution rules; basket quantities must not be treated as delivered stock when cash substitution is permitted.",
+    "The issuer/TWSE current interface proves prospective capture feasibility, not a complete historical first-known archive."
+  ],
+  "requiredProspectiveReceipt": [
+    "fundCode",
+    "fundType",
+    "benchmark",
+    "creationRedemptionMode",
+    "dataDate",
+    "dataTime",
+    "capturedAt",
+    "sourceUrl",
+    "sourceHash",
+    "outstandingUnits",
+    "unitsDelta",
+    "pcfAsOfDate",
+    "pcfUseDate",
+    "creationUnitSize",
+    "pcfVersion",
+    "basketRows/cashSubstitutionMetadata when licensed/authorized",
+    "splitReverseSplitFlag",
+    "otherUnitCorporateActionFlag",
+    "pointInTimeEligible",
+    "unknownReasons"
+  ],
+  "eventSeparation": [
+    "scheduled benchmark/index rebalance changes target weights",
+    "ETF net creation/redemption changes fund size",
+    "both can overlap but must remain separate causal channels",
+    "multiple ETFs tracking the same benchmark contribute tracker exposure, not independent benchmark events"
+  ],
+  "sourceReadiness": {
+    "currentUnitsDelta": "PROSPECTIVE_SOURCE_CONTRACT_VERIFIED",
+    "dailyPcfConcept": "PROSPECTIVE_SOURCE_CONTRACT_VERIFIED",
+    "historicalUnitsDeltaFirstKnownArchive": "NOT_YET_VERIFIED",
+    "historicalPcfFirstKnownArchive": "NOT_YET_VERIFIED",
+    "stockLevelActualExecution": "UNOBSERVED"
+  },
+  "status": "PROSPECTIVE_ETF_NET_UNITS_FLOW_CONTRACT_READY / AUM_DELTA_DECONFOUNDED / GROSS_FLOW_UNKNOWN / STOCK_EXECUTION_MODELED_ONLY / HISTORICAL_PIT_ARCHIVE_UNVERIFIED / OUTCOMES_CLOSED / FORMAL_UNCHANGED",
+  "exactNext": "Audit issuer/TWSE prospective source stability on a bounded set of domestic in-kind Taiwan-equity ETFs and verify timestamp/PCF alignment. Preserve split/corporate-action and cash-substitution states. Do not backfill historical first-known units/PCF from current pages and do not start outcome tests before clean prospective receipts exist."
+}
