@@ -609,3 +609,289 @@ Formal Core remains LOCKED. No “yield up/down” score, veto or stock-ranking 
 1. Add prior-U.S-session official nominal/real yield receipt design to the Phase-2 macro source contract, preserving source date, capturedAt and firstEligibleTaiwanDecision.
 2. Continue D13-07 Oil from L1 -> L2, explicitly separating demand shock, supply shock and geopolitical risk rather than assigning oil one fixed equity sign.
 3. Continue D13-09 CPI/PPI/NFP/unemployment and D13-11 Macro Surprise clocks only after vintage/consensus provenance is frozen.
+
+
+---
+
+## MC-032 — D13-07 reopened: an oil-price move is endogenous, not one macro signal
+
+D13-07 remained L1. The first falsification is conceptual:
+
+`oil up = risk-off` is not a valid universal rule.
+
+Kilian (2009) separates oil-market movements into economically different shocks, including:
+- crude-oil supply shocks;
+- global aggregate-demand shocks for industrial commodities;
+- oil-market-specific precautionary-demand shocks.
+
+Kilian & Park (2009) show U.S. stock-market responses differ materially depending on what drives the oil-price change. This explains why simple regressions of stock returns on raw oil-price changes can be unstable.
+
+For Taiwan, a 2024 study using demand/supply decomposition likewise finds sector effects rather than one market-wide sign and reports adverse effects of oil-price increases on semiconductors/TSMC in its sample.
+
+Therefore the first System 1 / System 2 object is not “oil bullish/bearish.” It is:
+- oil-price state;
+- oil-volatility state;
+- curve/tightness state;
+- shock-context state;
+- sector exposure state.
+
+Status: RAW-OIL-SIGN RULE REJECTED.
+
+---
+
+## MC-033 — structural oil shocks and real-time trading features are different objects
+
+Academic structural decompositions often use monthly/global datasets and model restrictions. They are valuable for mechanism research but cannot be silently relabeled as a real-time 18:10 shock classifier.
+
+At 18:10 Taipei, a production-quality feature may observe:
+- a live WTI/Brent futures price;
+- a live term spread if both contracts are available;
+- same-window global equity / FX / commodity context;
+- already-published event information.
+
+It generally cannot observe:
+- the ex-post structural VAR identification of “true aggregate demand shock”;
+- future inventory reports;
+- future event outcomes;
+- revised macro data.
+
+Naming rule:
+- `STRUCTURAL_OIL_SUPPLY_SHOCK` only when produced by a frozen research model with valid historical inputs and timing;
+- real-time combinations of prices are named `OIL_MOVE_CONTEXT`, not causal shock labels.
+
+Status: CAUSAL-LABEL FIREWALL FROZEN.
+
+---
+
+## MC-034 — 18:10 source clock: live futures can be eligible; daily closes/settlements may not be
+
+At 18:10 Taipei:
+- CME WTI futures trade nearly around the clock;
+- ICE Brent futures are also open during this window;
+- TAIFEX Brent Crude Oil Futures (BRF) trade 15:00 -> 05:00.
+
+Thus a timestamped live/near-live futures observation captured before 18:10 can be PIT-eligible.
+
+But:
+- the U.S. trading day's later official/final settlement is future information;
+- the full TAIFEX BRF night-session OHLC/close is future information;
+- EIA spot-price tables are authoritative historical references but are not a contemporaneous 18:10 market quote.
+
+### BRF special guard
+
+TAIFEX BRF is quoted in TWD and ultimately references ICE Brent plus USD/TWD for final settlement mechanics. A raw BRF move can therefore contain:
+- Brent move;
+- TWD/USD move;
+- local basis/liquidity.
+
+It must not be treated as a pure global crude-oil return without FX/basis checks.
+
+Status: OIL SOURCE-CLOCK CONTRACT FROZEN.
+
+---
+
+## MC-035 — front-month futures need roll and curve semantics
+
+Raw front-month oil futures have contract-roll contamination.
+
+Required metadata:
+- exchange;
+- contractMonth;
+- daysToExpiry;
+- rollFlag;
+- frontPrice;
+- nextPrice;
+- frontNextSpread;
+- sourceTimestamp;
+- sourceTimezone.
+
+Candidate features:
+- same-contract return;
+- front/next calendar spread;
+- spread change;
+- curveState = BACKWARDATION / CONTANGO / NEAR_FLAT;
+- oil realized/intraday volatility;
+- jump magnitude.
+
+Do not splice two different contracts and call the roll jump an oil shock.
+
+The curve itself is not a pure supply indicator:
+- storage/carry;
+- inventory tightness;
+- convenience yield;
+- event risk;
+- financing
+can all contribute.
+
+Status: ROLL/CURVE GUARD FROZEN.
+
+---
+
+## MC-036 — real-time oil context taxonomy without pretending causality
+
+A practical research-only taxonomy may describe co-movement, not causal truth.
+
+### A. GROWTH_COMPATIBLE_OIL_UP
+Observed pattern:
+- oil up;
+- broad/cyclical risk assets not deteriorating;
+- industrial-demand proxies not weakening.
+
+Interpretation hypothesis:
+- global demand/growth may be contributing.
+
+### B. ADVERSE_OIL_UP
+Observed pattern:
+- oil up sharply;
+- equities/risk appetite deteriorate and/or inflation/rates stress rises;
+- known supply/geopolitical event may exist.
+
+Interpretation hypothesis:
+- supply/geopolitical/precautionary stress may dominate.
+
+### C. DEMAND_DESTRUCTION_OIL_DOWN
+Observed pattern:
+- oil down;
+- global equities/industrial-demand proxies also weaken.
+
+Interpretation hypothesis:
+- weaker demand/growth concern.
+
+### D. BENIGN_SUPPLY_OIL_DOWN
+Observed pattern:
+- oil down while broad risk assets hold/improve.
+
+Interpretation hypothesis:
+- supply relief / disinflation may dominate.
+
+### Firewall
+These labels are **contextual observational states**, not structurally identified shocks.
+
+If the same oil return produces different equity outcomes under different contexts, that is expected and supports the taxonomy rather than invalidating it.
+
+Status: OBSERVATIONAL CONTEXT TAXONOMY FROZEN.
+
+---
+
+## MC-037 — Taiwan sector transmission must be exposure-conditional
+
+Taiwan evidence is explicitly sector-dependent.
+
+Potential channels:
+
+### Semiconductor / electronics
+- energy/input costs;
+- global-demand information embedded in oil;
+- discount-rate/inflation response;
+- USD/TWD interaction.
+Recent Taiwan research reports adverse semiconductor/TSMC responses to oil-price increases in its specification, but this remains sample/model evidence, not a timeless rule.
+
+### Transportation / airlines
+- fuel is a direct cost channel;
+- hedging, ticket pricing, demand and FX can offset/lag the effect.
+
+### Petrochemical / plastics
+- crude/naphtha is input cost;
+- product spreads and downstream demand matter;
+- crude up alone does not tell margin direction.
+
+### Shipping
+- fuel cost, freight demand and geopolitical rerouting can move simultaneously;
+- oil up during strong global trade differs from oil up during supply disruption.
+
+### Financial / domestic sectors
+- effects can arrive through inflation, rates, consumption and risk appetite rather than direct energy cost.
+
+Research rule:
+oil-state interactions must be pre-registered by economically justified sector/exposure groups. Do not apply one oil score to all stocks.
+
+Status: SECTOR-CONDITIONAL TRANSMISSION FROZEN.
+
+---
+
+## MC-038 — event clocks: EIA/OPEC/geopolitics cannot be backfilled
+
+CME notes the EIA Weekly Petroleum Status Report is normally released Wednesday 10:30 U.S. Eastern Time.
+
+For Taiwan 18:10:
+- that same U.S. day's 10:30 ET inventory release occurs later than the Taiwan decision;
+- its realized surprise is FUTURE for the 18:10 selector.
+
+Allowed before release:
+- scheduledEventWithinHours flag;
+- frozen consensus expectation only if a timestamped PIT provider exists.
+
+Allowed after release:
+- realized inventory surprise;
+- post-release WTI/Brent reaction;
+- but only for decisions whose timestamp is later than release.
+
+OPEC/producer announcements and geopolitical shocks require their own publishedAt/knownAt timestamps. Surprise events cannot be retroactively marked “known before scan.”
+
+Status: OIL-EVENT CLOCK FROZEN.
+
+---
+
+## MC-039 — falsification matrix for D13-07
+
+Baseline order:
+1. Taiwan same-day market return / Regime;
+2. Taiwan sector return / Residual RS;
+3. prior U.S. broad/technology information;
+4. USD/TWD;
+5. rates/inflation-risk context where available;
+6. oil candidate.
+
+Candidate families:
+- Brent and WTI same-contract returns;
+- oil return shock percentile;
+- oil intraday/realized volatility;
+- front/next spread and spread change;
+- contextual oil state;
+- BRF only with FX/local-basis guard.
+
+Mandatory falsification:
+- Brent vs WTI replication;
+- futures vs delayed spot reference;
+- roll-day exclusion / explicit roll state;
+- normal vs crisis/geopolitical dates;
+- demand-compatible vs adverse oil-up split;
+- sector interaction;
+- date-shift placebo;
+- leave-one-date-out;
+- remove largest oil shock dates;
+- test whether oil adds anything beyond global equities/FX/rates;
+- separate next-open gap from open-to-close and D1/D3;
+- transaction-cost relevance only if the feature changes an actionable decision.
+
+A raw oil feature that only restates global risk-off is REDUNDANT.
+
+Status: OIL FALSIFICATION MATRIX FROZEN.
+
+---
+
+## MC-040 — D13-07 maturity decision
+
+D13-07 advances **L1 -> L2**.
+
+Why:
+- endogeneity/shock-source ambiguity is explicit;
+- live-vs-daily source timing is frozen;
+- roll/curve contamination is explicit;
+- causal structural shocks are separated from real-time contextual states;
+- Taiwan sector transmission is defined;
+- event-clock and falsification rules are frozen.
+
+Why not L3:
+- no durable 18:10 prospective oil receipt exists yet;
+- no frozen live provider/session contract has been validated across independent dates;
+- no Taiwan OOS/Shadow evidence under the frozen taxonomy exists.
+
+Formal Core remains LOCKED. No oil risk veto, sector penalty, ranking bonus or position-size change is approved.
+
+## Exact next continuation after MC-040
+
+1. Build a prospective 18:10 oil receipt: WTI/Brent contract identity, timestamp, front/next prices, curve, FX and quality metadata.
+2. Prefer direct benchmark futures when licensing/source permits; BRF can be a Taiwan-local cross-check but requires FX/basis controls.
+3. Continue D13-09 and D13-11 together: BLS release clocks, initial-vintage values, revisions, consensus provenance and macro-surprise semantics.
+4. Cross-test oil context with D12-10 `NIGHT_PRE_SCAN` only after both receipt streams are PIT-safe.
