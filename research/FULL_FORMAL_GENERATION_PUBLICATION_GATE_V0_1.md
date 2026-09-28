@@ -107,3 +107,23 @@ PARENT_POPULATION_EXACT_MATCH = REQUIRED
 RUNTIME_D1_IMPLEMENTATION = NOT_IMPLEMENTED
 FORMAL_OPTIMIZATION_CANDIDATE = NONE
 Formal Core remains LOCKED.
+
+
+## Selected-plan linkage hardening — TI-519
+
+The earlier generation expectation accepted a caller-supplied selectedPlanSetHash.
+
+This is too permissive:
+a caller could supply a hash without proving that its plan symbols match the Selected parent set.
+
+Frozen correction:
+
+- buildFormalGenerationExpectation accepts selectedPlanReceipts, not an arbitrary hash string;
+- it runs assessSelectedParentPlanLink internally;
+- selectedPlanSetHash is read from the verified receipt bundle;
+- missing selected-plan receipt bundle is invalid;
+- a Selected parent / plan symbol mismatch invalidates generation expectation before publication.
+
+Even a zero-selected generation should use a valid empty selected-plan receipt bundle rather than null/unknown if future production implements this contract.
+
+This correction is research-only and occurs before runtime persistence.
