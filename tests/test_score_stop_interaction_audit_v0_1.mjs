@@ -12,5 +12,5 @@ for(const m of ["BUY_LOW","MIDPOINT","BUY_HIGH"]){
  assert.ok(x.modes[m].spearmanRho<=1&&x.modes[m].spearmanRho>=-1);
  assert.equal(x.modes[m].permutationCount,6);
 }
-assert.equal(scoreStopInteractionAudit(x.rows.slice(0,2)).status,"UNKNOWN");
+assert.equal(scoreStopInteractionAudit(x.rows.slice(0,2)).status,"INSUFFICIENT_SAMPLE");
 console.log(JSON.stringify({ok:true,purpose:"quantify pre-registered PriorityScore×stop-distance alignment; tiny-n exact permutation remains descriptive only"},null,2));
