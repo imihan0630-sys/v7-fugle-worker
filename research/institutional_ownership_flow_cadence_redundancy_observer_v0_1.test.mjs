@@ -1,0 +1,16 @@
+import assert from "node:assert/strict";
+import {classifyCadenceRow,summarizeCadence} from "./institutional_ownership_flow_cadence_redundancy_observer_v0_1.mjs";
+const base={symbol:"2330",chipAsOfDate:"2026-09-25",chipConcentration:72,foreignBuyDays:1,trustBuyDays:0,dealerBuyDays:0,foreignNet:100,trustNet:-20,dealerNet:-10,institutionTotalNet:70};
+const a={...base,scanDate:"2026-09-25"};
+const b={...base,scanDate:"2026-09-28",foreignBuyDays:2,foreignNet:130,institutionTotalNet:100};
+const c={...base,scanDate:"2026-10-02",chipAsOfDate:"2026-10-02",chipConcentration:73,foreignBuyDays:3,foreignNet:150,institutionTotalNet:120};
+assert.equal(classifyCadenceRow({...a,chipAsOfDate:null}).state,"UNKNOWN_PROVENANCE_OR_INPUT");
+assert.equal(classifyCadenceRow({...a,institutionTotalNet:71}).state,"INVARIANT_VIOLATION");
+const s=summarizeCadence([a,b,c]);
+assert.equal(s.independentOwnershipVintageUnits,2);
+assert.equal(s.independentScanDates,3);
+assert.equal(s.repeatedOwnershipExposureRows,1);
+assert.equal(s.flowChangesWithinSameVintage,1);
+assert.equal(s.ownershipUpdateTransitions,1);
+assert.equal(s.outcomesUsed,false);assert.equal(s.formalChanged,false);
+console.log("institutional ownership/flow cadence observer tests passed");
