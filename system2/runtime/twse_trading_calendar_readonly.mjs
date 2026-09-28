@@ -19,22 +19,46 @@ export function officialTwseCalendarUrl(year) {
   return `https://www.twse.com.tw/rwd/zh/holidaySchedule/holidaySchedule?response=json&queryYear=${y}`;
 }
 
+function normalizeCalendarDate(value, expectedYear) {
+  const text = String(value || "").trim();
+  let match = text.match(/^(\\d{4})[-\\/](\\d{1,2})[-\\/](\\d{1,2})$/);
+  if (match) {
+    const year = Number(match[1]);
+    if (year !== expectedYear) return null;
+    return [String(year).padStart(4, "0"), String(Number(match[2])).padStart(2, "0"), String(Number(match[3])).padStart(2, "0")].join("-");
+  }
+  match = text.match(/^(\\d{2,3})[-\\/](\\d{1,2})[-\\/](\\d{1,2})$/);
+  if (match) {
+    const year = Number(match[1]) + 1911;
+    if (year !== expectedYear) return null;
+    return [String(year).padStart(4, "0"), String(Number(match[2])).padStart(2, "0"), String(Number(match[3])).padStart(2, "0")].join("-");
+  }
+  return null;
+}
+
 export function parseTwseTradingCalendar(payload, year) {
   const y = Number(year);
-  if (Number(payload?.queryYear) !== y || !Array.isArray(payload?.data) || payload.data.length === 0) {
+  const payloadYear = Number(payload?.queryYear);
+  const yearMatches = payloadYear === y || payloadYear === y - 1911;
+  if (!yearMatches || !Array.isArray(payload?.data) || payload.data.length === 0) {
     throw new Error("official TWSE trading calendar payload invalid");
   }
 
   const holidays = payload.data
     .filter((row) => Array.isArray(row) && !String(row?.[1] || "").includes("交易日"))
-    .map((row) => String(row?.[0] || "").trim())
-    .filter((value) => /^\d{4}-\d{2}-\d{2}$/.test(value));
+    .map((row) => normalizeCalendarDate(row?.[0], y))
+    .filter(Boolean);
+
+  if (holidays.length === 0) {
+    throw new Error("official TWSE trading calendar contains no normalized holiday dates");
+  }
 
   return deepFreeze({
     year: y,
     holidays: [...new Set(holidays)].sort(),
     source: "TWSE_OFFICIAL_HOLIDAY_SCHEDULE",
     queryYearVerified: true,
+    queryYearConvention: payloadYear === y ? "GREGORIAN" : "ROC",
   });
 }
 
