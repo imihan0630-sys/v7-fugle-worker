@@ -52,7 +52,7 @@ console.log(JSON.stringify({
   gzipRatio:packSet.payloadJsonBytes?Number((packSet.gzipBytes/packSet.payloadJsonBytes).toFixed(4)):null,
   base64Ratio:packSet.payloadJsonBytes?Number((packSet.base64Bytes/packSet.payloadJsonBytes).toFixed(4)):null,
   bytesPerBar:Object.fromEntries(Object.entries(bytesPerBar).map(([k,v])=>[k,v===null?null:Number(v.toFixed(2))])),
-  projection,
+  projection:projected,
   writesPerformed:false,
   system1RuntimeChanged:false,
 },null,2));
