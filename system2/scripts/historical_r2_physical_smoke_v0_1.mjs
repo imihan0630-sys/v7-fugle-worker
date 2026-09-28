@@ -61,7 +61,7 @@ for(const market of ["TWSE","TPEX"]){
 
   const key=[
     "smoke",
-    "r2-physical-v0.1",
+    "r2-physical-v0.2",
     market.toLowerCase(),
     symbol,
     marketDate,
@@ -79,13 +79,12 @@ for(const market of ["TWSE","TPEX"]){
     }
   }else{
     const inserted=await objectStore.putIfAbsent(key,bytes,{
-      contentType:"application/json",
-      contentEncoding:"gzip",
+      contentType:"application/gzip",
       storageClass:"Standard",
       customMetadata:{
         "payload-hash":pack.payloadHash,
         "object-sha256":pack.objectSha256,
-        "smoke-version":"r2-physical-v0-1",
+        "smoke-version":"r2-physical-v0-2",
       },
     });
     assert.ok(inserted,`${market} smoke object insert failed`);
@@ -105,13 +104,12 @@ for(const market of ["TWSE","TPEX"]){
   assert.equal(unpacked.bars[0][0],marketDate);
 
   const duplicate=await objectStore.putIfAbsent(key,bytes,{
-    contentType:"application/json",
-    contentEncoding:"gzip",
+    contentType:"application/gzip",
     storageClass:"Standard",
     customMetadata:{
       "payload-hash":pack.payloadHash,
       "object-sha256":pack.objectSha256,
-      "smoke-version":"r2-physical-v0-1",
+      "smoke-version":"r2-physical-v0-2",
     },
   });
   assert.equal(duplicate,null,`${market} create-only rerun guard did not return existing-object state`);
@@ -138,7 +136,7 @@ for(const market of ["TWSE","TPEX"]){
 
 console.log(JSON.stringify({
   result:"PASS",
-  smokeVersion:"S2_R2_PHYSICAL_SMOKE_V0_1",
+  smokeVersion:"S2_R2_PHYSICAL_SMOKE_V0_2",
   bucketName,
   objectCount:receipts.length,
   receipts,
