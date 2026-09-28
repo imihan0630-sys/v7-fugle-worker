@@ -1,0 +1,77 @@
+{
+  "schemaVersion": "INSTITUTIONAL_SCORE_DECOMPOSITION_READINESS_20260928_V0_1",
+  "updated": "2026-09-28 Asia/Taipei",
+  "researchOnly": true,
+  "formalCoreImpact": "NONE",
+  "outcomesInspectedForInstitutionalHypothesis": false,
+  "sourceEvidence": {
+    "latestVerifiedDeploymentRun": 36419569306,
+    "latestVerifiedDeploymentJob": 108918854149,
+    "runtimeVersion": "8.14.0-sector-gate-provenance-shadow",
+    "dashboardReadback": "/api/research/dashboard?days=90 via existing deployment verification",
+    "codeSerializationParents": [
+      "institution.score",
+      "institution.foreignBuyDays",
+      "institution.trustBuyDays",
+      "institution.dealerBuyDays",
+      "institution.foreignNet",
+      "institution.trustNet",
+      "institution.dealerNet",
+      "institution.institutionTotalNet",
+      "institution.chipConcentration",
+      "volume.avgVolume20Lots"
+    ]
+  },
+  "archiveReadiness": {
+    "shadowRows": 62,
+    "independentArchivedScanDates": 2,
+    "byDate": {
+      "2026-09-21": 31,
+      "2026-09-22": 31
+    },
+    "expectedScanDays": 3,
+    "archivedScanDays": 2,
+    "integrity": "RESEARCH_DATA_GAP",
+    "knownMissingArchiveDate": "2026-09-23",
+    "counterfactualOutcomeCoverage": {
+      "d1": 40,
+      "d3": 18,
+      "d5": 0,
+      "d10": 0,
+      "d20": 0
+    },
+    "externalEvidenceByMarket": {
+      "TWSE": 53,
+      "TPEX": 0,
+      "UNKNOWN": 9
+    },
+    "actualSblShortAvailable": 0,
+    "evidenceReadiness": "DATA_QUALITY_BLOCKED"
+  },
+  "decompositionReadiness": {
+    "formulaParentsPresentInSerialization": "SOURCE_SCHEMA_PASS",
+    "atRestRowLevelParentCompleteness": "NOT_VERIFIED_FROM_CURRENT_READBACK",
+    "scoreSaturationFrequency": "UNKNOWN",
+    "componentCorrelation": "UNKNOWN",
+    "actorDivergenceFrequency": "UNKNOWN",
+    "ownershipVintageDeduplication": "BLOCKED_BY_MISSING_chipAsOfDate_IN_RESEARCH_ROW",
+    "passiveContaminationBroadNegativeEvidence": "INCOMPLETE",
+    "boundedMsciStandardMembershipControl": "METHOD_READY_BUT_SOURCE_LICENSE_GATE"
+  },
+  "guards": [
+    "Do not infer row-level saturation or component distributions from source-code field presence.",
+    "Do not use synthetic tests/fixtures as market evidence.",
+    "Do not start D5/D10/D20 institutional outcome interpretation while coverage is zero.",
+    "Do not count 62 symbol rows as 62 independent evidence units; primary inference is scanDate-clustered.",
+    "Do not count repeated daily chipConcentration values as independent ownership updates without chipAsOfDate.",
+    "TPEx zero rows in current external evidence is a coverage limitation, not a negative TPEx institutional result.",
+    "No passive-event row must not be interpreted as no passive contamination unless the declared event universe has complete PIT negative-evidence coverage."
+  ],
+  "decision": "OUTCOME_GATE_CLOSED / DECOMPOSITION_DISTRIBUTION_WAITING_ROW_LEVEL_VERIFIED_ACCESS",
+  "engineeringNext": [
+    "Prefer an existing authorized read-only research path that can aggregate decomposition server-side without exposing secrets or changing Formal behavior.",
+    "If no isolated read-only path exists, freeze a Class-B proposal before shared-runtime/API changes.",
+    "Preserve chipAsOfDate/chipDefinition prospectively before ownership-vintage inference; no historical fabrication."
+  ],
+  "exactNext": "Obtain a verified row-level or server-side aggregate read of prospective research snapshots, then compute outcome-blind score decomposition coverage/saturation/actor-divergence first. Do not inspect forward outcomes until the pre-registered data-quality gate passes."
+}
