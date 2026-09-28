@@ -1,0 +1,223 @@
+{
+  "schemaVersion": "0.2",
+  "generatedAt": "2026-09-28 Asia/Taipei",
+  "scope": "08｜事件與新聞研究室 / D17",
+  "status": "MECHANISM_AND_FALSIFICATION_CONTRACT_FROZEN / TAIWAN_PIT_PENDING / FORMAL_CORE_UNCHANGED",
+  "decisionImpact": false,
+  "formalCoreChanged": false,
+  "principles": {
+    "sourceReliability": "Reliability is multidimensional. Separate provenance/authority, independence, verifiability, timeliness, version integrity and entity/event specificity. A low-truth-confidence source may still have high market-impact potential.",
+    "halfLife": "No universal event half-life. Separate factual relevance expiry, attention-diffusion decay and price-response persistence; estimate by event class/horizon only after PIT-safe controls.",
+    "directExposure": "Direct beneficiary/victim requires an evidence-backed causal path from event -> economic primitive -> firm exposure -> financial transmission -> effective timing. Event sign is not trading sign.",
+    "indirectExposure": "Second-order propagation requires effective-dated economic edges and hop-by-hop mechanism. Sign can persist, attenuate, invert or disappear.",
+    "pricedIn": "Priced-in state is latent and cannot be inferred from price direction alone or from ex-post outcome. Use an ex-ante evidence vector and preserve UNKNOWN.",
+    "crossValidation": "Count independent evidence lineages, not URLs. Syndicated copies of one release are one lineage. Validate field-by-field and preserve conflicts/revisions.",
+    "sectorPropagation": "Peer/sector propagation must distinguish contagion/common-demand information from competitive/substitution effects and from pure price co-movement."
+  },
+  "sourceReliabilityVector": {
+    "dimensions": [
+      "authorityProvenance",
+      "lineageIndependence",
+      "factVerifiability",
+      "firstKnownTimeliness",
+      "revisionIntegrity",
+      "entityEventSpecificity"
+    ],
+    "sourceClasses": [
+      "PRIMARY_REGULATORY_OR_EXCHANGE",
+      "PRIMARY_ISSUER",
+      "INDEPENDENT_WIRE_OR_REPUTABLE_MEDIA",
+      "ANALYST_OR_INDUSTRY_RESEARCH",
+      "SOCIAL_OR_UNVERIFIED",
+      "UNKNOWN"
+    ],
+    "antiInference": [
+      "Source class is not a bullish/bearish weight.",
+      "Primary/official does not mean correction-proof or earliest.",
+      "Two outlets quoting one source are not two independent confirmations.",
+      "Low-veracity information can still move prices, so truthConfidence and marketImpactPotential are separate."
+    ]
+  },
+  "halfLifeContract": {
+    "clocks": [
+      "FACT_RELEVANCE_EXPIRY",
+      "ATTENTION_DIFFUSION_DECAY",
+      "PRICE_RESPONSE_PERSISTENCE"
+    ],
+    "observationHorizons": [
+      "INTRADAY_15M",
+      "CLOSE",
+      "D1",
+      "D3",
+      "D5",
+      "D10",
+      "D20"
+    ],
+    "states": [
+      "FAST_ABSORPTION",
+      "DELAYED_CONTINUATION",
+      "REVERSAL_AFTER_ATTENTION",
+      "MULTI_STAGE_UPDATE",
+      "STRUCTURAL_PERSISTENCE",
+      "UNKNOWN"
+    ],
+    "guard": "Never assign one fixed exponential decay or fixed half-life to all event classes before OOS evidence."
+  },
+  "beneficiaryVictimContract": {
+    "causalChain": [
+      "EVENT",
+      "ECONOMIC_PRIMITIVE",
+      "FIRM_EXPOSURE",
+      "FINANCIAL_TRANSMISSION",
+      "EFFECTIVE_TIMING"
+    ],
+    "requiredFields": [
+      "eventId",
+      "symbol",
+      "relationType",
+      "exposureBasis",
+      "exposureMagnitudeOrUnknown",
+      "effectiveFrom",
+      "knownAt",
+      "capacityConstraint",
+      "passThroughState",
+      "substitutionState",
+      "competitionState",
+      "confidence",
+      "sourceLineage"
+    ],
+    "antiInference": [
+      "Customer win does not guarantee earnings benefit without volume/margin/capacity timing.",
+      "Input cost inflation can help upstream and hurt downstream depending on pass-through.",
+      "Competitor bad news can create both contagion and share-shift benefit.",
+      "Second-order edges cannot be invented from thematic similarity."
+    ]
+  },
+  "pricedInContract": {
+    "state": "LATENT_EX_ANTE",
+    "evidenceVector": [
+      "consensusOrExpectedEventState",
+      "priorOfficialGuidance",
+      "preEventAbnormalPricePath",
+      "preEventVolumeAttention",
+      "peerPriorAnnouncements",
+      "analystRevisionState_if_PIT",
+      "noveltyState",
+      "eventScheduleCertainty"
+    ],
+    "prohibited": [
+      "postEventReturnAsPreEventPricedInLabel",
+      "priceUpMeansFullyPricedIn",
+      "highArticleCountMeansFullyKnown"
+    ],
+    "states": [
+      "LOW_EXPECTATION_EVIDENCE",
+      "PARTIAL_EXPECTATION_EVIDENCE",
+      "HIGH_EXPECTATION_EVIDENCE",
+      "CONFLICTED",
+      "UNKNOWN"
+    ]
+  },
+  "crossValidationContract": {
+    "units": "FIELD_LEVEL_WITH_LINEAGE",
+    "fields": [
+      "entityIdentity",
+      "eventOccurrence",
+      "magnitude",
+      "eventTime",
+      "effectiveTime",
+      "scope",
+      "directionalEconomicMechanism"
+    ],
+    "lineageStates": [
+      "INDEPENDENT_CONFIRMATION",
+      "COMMON_ORIGIN_SYNDICATION",
+      "PRIMARY_PLUS_REPORTING",
+      "CONFLICT",
+      "CORRECTION",
+      "UNKNOWN"
+    ],
+    "conflictRule": "Preserve conflicting values and their knownAt/version history until resolved; do not majority-vote URLs."
+  },
+  "sectorPropagationContract": {
+    "mechanisms": [
+      "COMMON_DEMAND_CONTAGION",
+      "COMMON_COST_CONTAGION",
+      "SUPPLY_CHAIN_TRANSMISSION",
+      "COMPETITIVE_SHARE_SHIFT",
+      "SUBSTITUTION",
+      "REGULATORY_COMMON_SHOCK",
+      "ATTENTION_ONLY",
+      "UNKNOWN"
+    ],
+    "controls": [
+      "marketResidual",
+      "sectorResidual",
+      "preRegisteredPeerSet",
+      "revenueOrEconomicOverlap",
+      "eventCluster",
+      "bellwetherSize",
+      "liquidity",
+      "attention",
+      "peerOwnEventWindow"
+    ],
+    "antiInference": [
+      "Industry membership alone does not determine sign.",
+      "Leader move is not automatically a valid proxy for peer fundamentals.",
+      "Same-sign spillover can later reverse.",
+      "Event-specific propagation must not double-count D09 sector RS or D10 supply-chain state."
+    ]
+  },
+  "systemFit": {
+    "system1": "Current official ANNOUNCEMENTS storage is date/title level and lacks intraday firstKnown, lineage, novelty, half-life and exposure semantics; use for coarse context only.",
+    "system2": "Architecture L5 already requires evidence timestamp, mechanism, beneficiary/victim map, confidence and half-life/expiry. This contract supplies missing semantics, but general-news canonical source remains SOURCE_NEEDED.",
+    "optimizationStatus": "NOT_FORMAL_OPTIMIZATION_CANDIDATE",
+    "reason": "No Taiwan point-in-time versioned general-news archive or prospective/OOS evidence yet."
+  },
+  "evidence": [
+    {
+      "source": "Chan 2003 JFE",
+      "finding": "Public-news moves can drift while no-news extreme moves can reverse; effects stronger in smaller/illiquid stocks."
+    },
+    {
+      "source": "Tetlock 2011 RFS",
+      "finding": "Stale/reprinted news receives smaller immediate response yet can trigger temporary overreaction/reversal, especially with retail trading."
+    },
+    {
+      "source": "Boudoukh et al. 2013 NBER",
+      "finding": "Correctly identifying relevant news by type/tone materially strengthens news-price relation."
+    },
+    {
+      "source": "Engelberg & Parsons 2011 JF; Peress 2014 JF",
+      "finding": "Media access/dissemination changes trading and speed of information incorporation; media is transmission, not merely content."
+    },
+    {
+      "source": "Hirshleifer, Lim & Teoh 2009 JF",
+      "finding": "Competing information load weakens immediate earnings response and strengthens later drift."
+    },
+    {
+      "source": "Pan, Sul & Wang 2026 RAS",
+      "finding": "Delayed incorporation of aggregate/macro news around earnings announcers can dissipate by about day seven in their setting, illustrating event-specific rather than universal decay."
+    },
+    {
+      "source": "Cohen & Frazzini 2008 JF; Menzly & Ozbas 2010 JF",
+      "finding": "Economically linked customer/supplier firms exhibit delayed cross-predictability consistent with limited attention/segmentation."
+    },
+    {
+      "source": "Foster 1981 JAE; Bergsma & Tayal 2020 IRFA",
+      "finding": "Peer earnings announcements can transmit information within industries; strength varies with economic similarity, volatility and bellwether size."
+    },
+    {
+      "source": "Laux, Starks & Yoon 1998 Financial Management",
+      "finding": "Contagion and competitive effects can offset or reverse peer signs."
+    },
+    {
+      "source": "Duan et al. 2025 Accounting & Finance",
+      "finding": "Leader-to-peer positive spillover can be excessive and reverse at peers' own earnings, a direct counterexample to permanent same-sign propagation."
+    },
+    {
+      "source": "Clarke et al. 2020 Information Systems Research; Arcuri et al. 2023 Journal of Economics and Business",
+      "finding": "Low-quality/fake information can still attract attention and move prices, so truth confidence and market-impact potential must be separated."
+    }
+  ]
+}
