@@ -32,6 +32,60 @@ Existing detailed research remains in its current files; this map indexes it rat
 17. News/event half-life and beneficiary/victim transmission
 18. Strategy-regime interaction research
 
+## Cross-industry analysis framework（跨產業通用分析框架）
+
+This framework is a reusable research method, **not a memory-industry-specific rule and not a new standalone domain/module**. It must be applicable to any industry/theme, including but not limited to CPO、PCB、ABF、AI Server、memory、semiconductor equipment、networking and future sectors.
+
+Primary ownership:
+- **D09** Industry / sector / breadth / rotation
+- **D10** Supply-chain / capacity / inventory / commodity transmission
+
+Required cross-domain links when relevant:
+- **D07** fundamentals / earnings / margin / growth acceleration
+- **D08** valuation / forward expectations
+- **D13** global bellwether / cross-market transmission
+- **D17** news / event half-life / beneficiary-victim propagation
+- **D18** regime-dependent interpretation / strategy interaction
+
+For every industry analysis, do not stop at naming a hot theme or describing one company. The reusable chain should examine, when data permits:
+
+1. **Global bellwether / industry leader**
+   - Identify the global or regional leader(s), their earnings calls, guidance, orders, product roadmap, pricing, utilization, inventory and market reaction.
+   - Test whether the leader is actually a leading indicator for Taiwan names instead of assuming causality.
+
+2. **Demand / supply / inventory / capacity**
+   - Demand growth, end-market mix, supply constraints, utilization, capacity expansion, inventory days, lead times, backlog and pricing power.
+   - Distinguish structural demand from short-lived shortage, restocking or speculative demand.
+
+3. **Product mix → margin / earnings sensitivity**
+   - Map product mix, ASP（平均售價）, shipment volume, gross margin, operating leverage and EPS sensitivity.
+   - Do not treat all products inside one industry as economically equivalent.
+
+4. **Upstream / downstream / asymmetric transmission**
+   - Map the supply chain and identify which layer captures value, which layer bears cost pressure, where bottlenecks sit, and where substitution is possible.
+   - Separate first-order beneficiaries from second-order or narrative-only beneficiaries.
+
+5. **Global leader → Taiwan supply-chain lead-lag**
+   - Test the timing and magnitude of transmission from global bellwethers to Taiwan sectors/stocks.
+   - Include earnings/guidance surprise, overnight market reaction, Taiwan opening gap, subsequent continuation/reversal and residual strength after controlling for the broad market/sector.
+
+6. **Fundamentals × valuation × price position**
+   - Separate “good industry/company” from “good entry point”.
+   - Evaluate whether strong fundamentals are already priced in, whether valuation has expanded, and whether price extension/RR makes the setup unattractive despite improving fundamentals.
+
+7. **Regime-dependent interpretation**
+   - The same evidence can have different implications under growth-dominant, inflation-dominant, liquidity-driven, shortage, overcapacity or recession-fear regimes.
+   - Never reduce analysis to “good data = bullish / bad data = bearish”.
+
+8. **Falsification / PIT / replay**
+   - Record the positive mechanism, competing explanation, failure conditions, first-known timestamp, PIT eligibility, replayability, missing-data UNKNOWN semantics, transaction-cost relevance and factor redundancy.
+   - A famous leader/company example is evidence only after falsification and Taiwan PIT validation; anecdotal narrative alone cannot promote maturity.
+
+System-use rule:
+- Use this framework to generate research hypotheses and cross-domain dependencies for System 1 / System 2.
+- Do not hard-code any industry example into Formal Core solely because a video, analyst or single cycle appears convincing.
+- Prefer reusable features and transmission relationships over one-off sector stories.
+
 ## Shared inventory
 
 - `shared-knowledge/SHARED_RESEARCH_INVENTORY.md` is the cross-system domain/tag inventory. It points to original evidence without relocating it.
