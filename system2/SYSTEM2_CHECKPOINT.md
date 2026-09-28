@@ -558,6 +558,40 @@ Scale decision:
 - full 2017→present ingestion must still be staged by year with durable completion receipts and coverage checks, not executed as one unbounded job;
 - first production-scale research backfill unit is calendar year 2017, executed in isolated System2 infrastructure only. This is historical research storage, not strategy/final-selection authorization.
 
+## 2026-09-28 external cold-object storage V1.0 implementation
+
+The accepted packed-history design is now implemented as an external object-store path rather than continuing to place Base64 payloads in D1.
+
+Repository implementation:
+- migration `system2/sql/0006_historical_cold_store.sql` advances the isolated System2 schema to V1.0 and adds D1-only manifests, resumable checkpoints, immutable completion receipts and historical-universe registry receipts;
+- yearly per-symbol `.json.gz` bytes use deterministic content-addressed R2 keys and separate payload SHA-256 / compressed-object SHA-256 verification;
+- object write is create-only; identical reruns reuse the object/manifest, while a differing object, manifest, checkpoint, receipt or universe membership fails closed as `IMMUTABLE_CONFLICT`;
+- object commit precedes D1 manifest commit; a failure between the two leaves at most an orphan object, and retry safely reuses it before writing the manifest;
+- final receipt is written only after all expected objects and manifests are accounted for; chunk checkpoints make partial annual runs resumable; a completed-receipt fast path recomputes its manifest rolling hash and verifies every referenced R2 object before accepting `ALREADY_COMPLETE`;
+- old V0.9 inline D1 packs remain read-compatible for bounded smoke evidence, but the annual backfill script no longer calls the inline bulk-persistence path;
+- unpack now produces deterministic `barHash`, keeps the true backfill capture time as `observedAt`, retains conservative per-session `availableAt`, and restores source provenance;
+- the cold loader is directly usable by PIT Replay and the partitioned Bulk Backtest Runner;
+- the backtest loader reads only the requested historical registry ID and exposes active membership fields without future delisting dates, preserving survivorship control;
+- historical-universe registry persistence is immutable, rerun-safe and receipt-last.
+
+Safety/operations:
+- the 2017 workflow is now `workflow_dispatch` only, not push-triggered;
+- it targets isolated `system2-research` plus an isolated R2 bucket and requires separate least-privilege R2 object credentials;
+- repository tests cover object/manifest/receipt immutability, retry with a later capture timestamp, object corruption, PIT replay, Bulk Backtest integration, registry persistence, AWS SigV4 R2 access and workflow isolation;
+- System1 `Worker.js`, root `wrangler.toml`, Formal Core, SELECTED policy, Decision Clock, Worker Cron and trading behavior are unchanged.
+- PR #245 validation evidence: System2 Research CI run `36434552698` PASS, V8 Regression run `36434552278` PASS, and bounded official-source packed readback run `36434541564` PASS against isolated `system2-research` schema V1.0.
+- An earlier PR smoke run `36434206488` correctly failed closed when default source-row enrichment changed an already frozen V0.9 payload hash. The fix makes provenance enrichment explicit only for the new external-cold annual path; the bounded legacy rerun then passed without rewriting existing packs.
+
+Superseded inline-backfill evidence:
+- GitHub runs `36429244651` and `36429895255` applied schema V0.9 successfully but both TWSE and TPEx jobs failed in the inline annual backfill step before completion;
+- no annual completion receipt from those runs is accepted as evidence, and the automatic inline-D1 workflow has been replaced by the manual-only external cold-object path rather than retried blindly.
+
+Physical status:
+- GitHub run `36434206278` applied/reverified isolated `system2-research` schema V1.0 with 39 tables, write/read verification PASS and production-database/runtime isolation PASS;
+- no isolated R2 bucket/credential readback is yet recorded;
+- therefore the 2017→present external cold backfill and first real full-market replay remain not started on this new path;
+- exact next action is isolated R2 provisioning/credential setup, bounded object+manifest smoke, then 2017 TWSE/TPEx annual backfill and coverage/readback verification.
+
 ## Current boundary
 
 Research/design/code prototype is not blocked. Isolated D1 and inert Worker already exist, but prospective always-on Shadow accumulation remains intentionally inactive. A5/B2 observer engineering is complete; the immediate boundary is accumulation of independent same-day V0.2 evidence beginning no earlier than the 2026-09-29 official session. No exact Decision Clock is frozen; capture is false; Worker Cron is 0. The GitHub Actions research schedule is read-only evidence collection and is not the Worker Cron. No production-shared storage or System 1/V8 change is authorized or needed.

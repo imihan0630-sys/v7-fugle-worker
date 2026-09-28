@@ -1,16 +1,6 @@
 name: System2 Historical Pack 2017 Backfill
 
 on:
-  push:
-    paths:
-      - ".github/workflows/system2-historical-pack-2017-backfill.yml"
-      - "system2/scripts/historical_pack_year_backfill_v0_1.mjs"
-      - "system2/runtime/historical_pack_bulk_persistence_v0_1.mjs"
-      - "system2/runtime/historical_pack_research_v0_1.mjs"
-      - "system2/runtime/historical_twse_calendar_v0_1.mjs"
-      - "system2/runtime/official_historical_backfill_source_v0_1.mjs"
-      - "system2/sql/0005_historical_packs.sql"
-      - "system2/deploy/provision_system2_d1.mjs"
   workflow_dispatch:
 
 permissions:
@@ -32,7 +22,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "22"
-      - name: Migrate isolated System2 D1 to schema 0.9
+      - name: Migrate isolated System2 D1 to schema 1.0
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
@@ -59,6 +49,9 @@ jobs:
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+          SYSTEM2_R2_ACCESS_KEY_ID: ${{ secrets.SYSTEM2_R2_ACCESS_KEY_ID }}
+          SYSTEM2_R2_SECRET_ACCESS_KEY: ${{ secrets.SYSTEM2_R2_SECRET_ACCESS_KEY }}
+          SYSTEM2_R2_BUCKET: ${{ vars.SYSTEM2_R2_BUCKET }}
           SYSTEM2_HISTORY_YEAR: "2017"
           SYSTEM2_HISTORY_YEAR_MARKET: ${{ matrix.market }}
         run: node system2/scripts/historical_pack_year_backfill_v0_1.mjs

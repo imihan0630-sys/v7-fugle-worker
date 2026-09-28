@@ -122,7 +122,9 @@ assert.equal(loaded.rowCount,3);
 assert.equal(loaded.rows[0].marketDate,"2025-12-31");
 assert.equal(loaded.rows[2].marketDate,"2026-01-05");
 assert.equal(loaded.rows[0].availableAt,"2025-12-31T10:10:00.000Z");
+assert.equal(loaded.rows[0].observedAt,"2026-09-28T13:20:00Z");
 assert.equal(loaded.rows[0].pitReplayEligible,true);
+assert.match(loaded.rows[0].barHash,/^[a-f0-9]{64}$/);
 assert.equal(loaded.rows[2].companyName,"台灣積體電路製造");
 assert.equal(loaded.sourceMode,"PACKED_D1_COLD_HISTORY");
 

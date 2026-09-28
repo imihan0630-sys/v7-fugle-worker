@@ -18,9 +18,11 @@ assert.match(provision, /0004_historical_universe\.sql/);
 assert.match(provision, /s2_historical_universe_memberships/);
 assert.match(provision, /s2_historical_universe_snapshots/);
 assert.match(provision, /0005_historical_packs\.sql/);
+assert.match(provision, /0006_historical_cold_store\.sql/);
 assert.match(provision, /s2_historical_a1_packs/);
+assert.match(provision, /s2_historical_a1_pack_manifests/);
 assert.match(provision, /s2_historical_pack_ingest_receipts/);
-assert.match(provision, /schema_value[\s\S]*"0\.9"/);
+assert.match(provision, /schema_value[\s\S]*"1\.0"/);
 assert.doesNotMatch(provision, /schema_value[\s\S]*"0\.8"/);
 
 assert.match(workflow, /workflow_dispatch:/);
@@ -33,7 +35,7 @@ assert.doesNotMatch(workflow, /^\s*schedule:/m);
 
 assert.match(smoke, /databaseName: "system2-research"/);
 assert.match(smoke, /schema_value/);
-assert.match(smoke, /"0\.9"/);
+assert.match(smoke, /"1\.0"/);
 assert.match(smoke, /fullBackfillPerformed: false/);
 assert.match(smoke, /historicalReplayRunPerformed: false/);
 assert.match(smoke, /GITHUB_RUN_ID/);
