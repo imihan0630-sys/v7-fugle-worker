@@ -1958,7 +1958,9 @@
         "system2/SYSTEM2_MARKET_REGIME_V0.md",
         "TREND_MOMENTUM_REVERSAL_CHECKPOINT.md",
         "MARKET_BREADTH_ROTATION_CHECKPOINT.md",
-        "research/D16_D18_REGIME_POLICY_VALIDATION_V0_1.md"
+        "research/D16_D18_REGIME_POLICY_VALIDATION_V0_1.md",
+        "research/D18_REGIME_POLICY_PARALLEL_ARM_RECEIPT_V0_1.md",
+        "research/D18_OBSERVABLE_REGIME_LABEL_CONTRACT_V0_1.md"
       ],
       "maturityPct": 40,
       "modules": [
@@ -1968,7 +1970,9 @@
           "level": "L2",
           "maturityPct": 40,
           "learningScope": "聚焦「Market Regime市場狀態Taxonomy」。學習範圍：Market Regime分類、趨勢／盤整、高低波動、Breadth、Rotation、大小型領導與Risk-on/off；策略啟停、權重、Ensemble、Drawdown降載、Regime績效歸因與Walk-forward驗證。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "MECHANISM_AND_FALSIFICATION_DEFINED / EXECUTABLE_REGIME_BUILDER_ABSENT",
+          "next": "Audit observable regime raw-feature implementability from existing PIT source-clock contracts; capture context before any policy or composite RISK_ON/OFF score."
         },
         {
           "id": "D18-02",
