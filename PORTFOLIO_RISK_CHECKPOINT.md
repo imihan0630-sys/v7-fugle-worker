@@ -213,3 +213,50 @@ Status:
 `RUNTIME_READD_ABSENT / FRICTION_EVIDENCE_CONTRACT_READY / REALIZED_READD_ANALYSIS_BLOCKED`.
 
 No Formal change and no FORMAL_OPTIMIZATION_CANDIDATE.
+
+
+## D15-PH-001 — projected new-plan heat is not actual portfolio heat (2026-09-28)
+
+D15-07 is split into two evidence layers.
+
+### Reconstructable layer
+
+`PROJECTED_NEW_PLAN_HEAT` is computed from:
+- immutable selected plan allocations;
+- plan buy range / stop geometry;
+- plan-day total capital.
+
+This measures the projected stop-risk burden of the **new selected plan set**.
+
+### Not yet reconstructable layer
+
+`ACTUAL_PORTFOLIO_HEAT` requires:
+- PIT-complete carryover positions;
+- confirmed shares/fills;
+- stop for every open position;
+- a frozen price reference;
+- account equity/capital denominator.
+
+The mutable current position snapshot is not an append-only historical holdings ledger.
+
+### Zero-selection firewall
+
+A complete date with 0 selected names may safely report:
+`projected new-plan heat = 0`.
+
+It may **not** report:
+`actual portfolio heat = 0`.
+
+Existing positions can survive across days.
+
+D15-07 therefore remains **L2/40%** even though one submetric is PIT-reconstructable. The module is deliberately not promoted until the actual portfolio layer is supported.
+
+Artifacts:
+`research/portfolio_heat_semantic_firewall_v0_1.mjs`;
+`research/portfolio_heat_semantic_firewall_spec_v0_1.json`;
+`tests/portfolio_risk_heat_semantic_readonly_audit.mjs`.
+
+Status:
+`NEW_PLAN_HEAT_PIT_RECONSTRUCTABLE / ACTUAL_PORTFOLIO_HEAT_BLOCKED / D15_07_REMAINS_L2`.
+
+No Formal Core change.
