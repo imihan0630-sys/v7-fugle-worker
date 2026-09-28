@@ -112,6 +112,13 @@ on:
       - "tests/portfolio_heat_frontier_readonly_audit.mjs"
       - "tests/test_portfolio_heat_semantics_v0_1.mjs"
       - "tests/portfolio_heat_semantics_readonly_audit.mjs"
+      - "research/planned_lifecycle_heat_envelope_v0_1.mjs"
+      - "research/planned_lifecycle_heat_envelope_spec_v0_1.json"
+      - "tests/test_planned_lifecycle_heat_envelope_v0_1.mjs"
+      - "tests/planned_lifecycle_heat_readonly_audit.mjs"
+      - "research/expected_shortfall_semantic_firewall_v0_1.mjs"
+      - "research/expected_shortfall_semantic_firewall_spec_v0_1.json"
+      - "tests/test_expected_shortfall_semantic_firewall_v0_1.mjs"
       - "research/first_tranche_risk_concentration_v0_1.mjs"
       - "research/first_tranche_risk_concentration_spec_v0_1.json"
       - "tests/test_first_tranche_risk_concentration_v0_1.mjs"
@@ -200,6 +207,8 @@ jobs:
           node tests/test_per_name_cap_sensitivity_v0_1.mjs
           node tests/test_portfolio_heat_frontier_v0_1.mjs
           node tests/test_portfolio_heat_semantics_v0_1.mjs
+          node tests/test_planned_lifecycle_heat_envelope_v0_1.mjs
+          node tests/test_expected_shortfall_semantic_firewall_v0_1.mjs
           node tests/risk_concentration_bridge_audit_v0_1.mjs
           node tests/test_first_tranche_risk_concentration_v0_1.mjs
           node tests/test_add_tranche_risk_concentration_v0_1.mjs
@@ -229,6 +238,7 @@ jobs:
           node tests/portfolio_risk_per_name_cap_sensitivity_readonly_audit.mjs
           node tests/portfolio_heat_frontier_readonly_audit.mjs
           node tests/portfolio_heat_semantics_readonly_audit.mjs
+          node tests/planned_lifecycle_heat_readonly_audit.mjs
           node tests/portfolio_risk_first_tranche_readonly_audit.mjs
           node tests/portfolio_risk_add_tranche_readonly_audit.mjs
           node tests/portfolio_risk_lifecycle_metric_sensitivity_readonly_audit.mjs
