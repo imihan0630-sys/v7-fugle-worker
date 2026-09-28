@@ -333,3 +333,77 @@ Fixtures freeze:
 same close/different range; same current OHLC/different previous close; gap-only flat intraday; missing-open fallback; corporate-action reset; suspension; consecutive price limit; price-scale invariance; same ATR/different risk composition.
 
 No outcome inspection and no volatility throttle is authorized.
+
+
+## VR-020 — external falsification: volatility scaling is not a universal improvement rule
+
+External evidence is deliberately treated as two-sided rather than as support for a monotone "high volatility = reduce risk" rule.
+
+Positive evidence:
+- Moreira & Muir (2017), *Volatility-Managed Portfolios*, Journal of Finance 72(4), report that portfolios which take less risk when volatility is high can improve Sharpe ratios and utility in several factor settings.
+- This supports the mechanism that conditional risk scaling can matter when volatility changes faster than expected returns.
+
+Counter-evidence:
+- Cederburg, O'Doherty, Wang & Yan (2020), *On the performance of volatility-managed portfolios*, Journal of Financial Economics 138(1), test 103 equity strategies and find no systematic direct outperformance of volatility-managed versions; reasonable real-time / out-of-sample implementations generally have lower certainty-equivalent returns and Sharpe ratios than the unmanaged strategies because the estimated spanning relations are structurally unstable.
+
+System implication:
+- The external literature does NOT justify a universal volatility throttle or a monotone stock penalty.
+- Volatility remains a conditional risk/context variable whose incremental value must be tested inside the actual A/B channel, market regime, and existing ATR/RR geometry.
+- Any future scaling rule belongs behind PIT/OOS/Walk-forward/Shadow gates and should be judged on downside/path quality as well as return.
+
+Frozen falsification design:
+1. no outcome-tuned HIGH/NORMAL/LOW thresholds;
+2. use continuous market RV5, RV20 and RV5/RV20 ratio where prospectively valid;
+3. separate A versus B;
+4. control existing stock ATR/volatility20, trend/Residual RS, liquidity, sector/regime, overheat/lateStage and R06 transition state;
+5. report D1/D3/D5 residual return, MAE, MFE and realized path volatility separately;
+6. remove top crisis dates and repeat;
+7. compare unmanaged baseline versus any research-only scaling simulation;
+8. reject any apparent benefit that disappears after existing ATR/RR controls or only survives one crisis cluster.
+
+Status:
+`VOLATILITY_SCALING = CONDITIONAL_RESEARCH_ONLY / UNIVERSAL_THROTTLE_REJECTED_AS_UNPROVEN`.
+
+Sources:
+- Moreira & Muir (2017), DOI 10.1111/jofi.12513.
+- Cederburg et al. (2020), DOI 10.1016/j.jfineco.2020.04.015.
+
+
+## VR-021 — ATR selection-conditioning must be separated before judging volatility alpha
+
+Current Formal architecture already conditions the sample through:
+- an ATR-percent admission band;
+- channel-specific ATR-based stop geometry;
+- RR rejection;
+- RR contribution to PriorityScore / later ordering.
+
+Therefore a post-selection comparison such as "selected high-ATR names underperform selected low-ATR names" is not a clean estimate of volatility effect. The selected sample has already been truncated and reshaped by ATR itself.
+
+Required decomposition for every future ATR / realized-volatility study:
+A. pre-ATR eligible universe;
+B. after explicit ATR gate;
+C. after channel-specific stop construction;
+D. after RR>=2 survival;
+E. final selected cohort.
+
+For each layer preserve:
+- sample count;
+- A/B channel;
+- ATR% distribution;
+- stop-distance distribution;
+- RR distribution;
+- rejected count and reason;
+- later return / MAE / MFE only when PIT outcome matching is valid.
+
+Primary falsification:
+- if a volatility effect is strong only after ATR/RR conditioning but weak before those gates, treat it first as selection-geometry interaction rather than independent alpha;
+- if a new volatility feature is monotone with existing ATR/volatility20 or simply predicts the same RR rejection, mark REDUNDANT;
+- if it adds downside/path information after the full decomposition, retain it as a risk-context candidate.
+
+Cross-lane handoff:
+- D04 owns volatility-state evidence;
+- D15 owns any eventual position-sizing or risk-budget implementation;
+- no D04 result alone authorizes a capital-sizing change.
+
+Status:
+`ATR_CONDITIONING_DECOMPOSITION = PREREGISTERED / NO_FORMAL_CHANGE`.
