@@ -95,6 +95,7 @@ const migrationFiles = [
   "../sql/0001_research_core.sql",
   "../sql/0002_historical_store.sql",
   "../sql/0003_backtest_base_dataset.sql",
+  "../sql/0004_historical_universe.sql",
 ];
 for (const migrationFile of migrationFiles) {
   const sqlText = await readFile(new URL(migrationFile, import.meta.url), "utf8");
@@ -130,6 +131,8 @@ const requiredTables = [
   "s2_backtest_runs",
   "s2_backtest_checkpoints",
   "s2_historical_base_samples",
+  "s2_historical_universe_memberships",
+  "s2_historical_universe_snapshots",
 ];
 const missingTables = requiredTables.filter((name) => !tables.includes(name));
 assert.deepEqual(missingTables, [], `missing System2 tables: ${missingTables.join(", ")}`);
@@ -139,7 +142,7 @@ const schemaRows = await d1Query(
   "SELECT schema_value FROM s2_schema_meta WHERE schema_key = ? LIMIT 1",
   ["schema_version"],
 );
-assert.equal(schemaRows[0]?.schema_value, "0.7", "unexpected System2 schema version");
+assert.equal(schemaRows[0]?.schema_value, "0.8", "unexpected System2 schema version");
 
 const now = new Date().toISOString();
 const baseCheckId = `infra-${runId}-${runAttempt}`;
@@ -148,7 +151,7 @@ const sentinelPayload = {
   runAttempt,
   bindingName: "SYSTEM2_DB",
   databaseName,
-  schemaVersion: "0.7",
+  schemaVersion: "0.8",
 };
 const sentinelHash = createHash("sha256")
   .update(JSON.stringify(sentinelPayload))
@@ -167,7 +170,7 @@ await d1Query(
     now,
     "ISOLATED_SYSTEM2_D1",
     "SYSTEM2_DB",
-    "0.7",
+    "0.8",
     JSON.stringify(sentinelPayload),
     null,
     "EXPECTED",
@@ -212,7 +215,7 @@ await d1Query(
     new Date().toISOString(),
     "ISOLATED_SYSTEM2_D1",
     "SYSTEM2_DB",
-    "0.7",
+    "0.8",
     JSON.stringify(sentinelPayload),
     JSON.stringify(verifiedPayload),
     "PASS",
@@ -227,7 +230,7 @@ console.log(JSON.stringify({
   databaseIdDigest: digest(databaseId),
   created,
   reusedExisting: !created,
-  schemaVersion: "0.7",
+  schemaVersion: "0.8",
   tableCount: tables.length,
   requiredTablesPresent: true,
   writeReadVerification: "PASS",
