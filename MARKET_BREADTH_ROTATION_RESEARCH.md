@@ -1335,3 +1335,107 @@ The distinction, many-to-many schema and falsification rules are now defined.
 No claim is made yet that a complete PIT exposure database exists.
 
 Status: `MECHANISM_PLUS_FALSIFICATION_DEFINED / PIT_EXPOSURE_DATA_PENDING`.
+
+
+## BR-030P — Leader-only versus broad participation preregistration before the first valid cohort
+
+### Evidence clock
+The deployed V8.14 sector-gate provenance collector states that the first expected clean post-deploy cohort is 2026-09-29, conditional on history/source admission. Today is 2026-09-28. Therefore no forward-return comparison is authorized yet.
+
+This is a preregistration step only. BR-030 outcome status remains `WAITING_PROSPECTIVE`.
+
+### Existing source audit
+Current `buildTodaySectorStats()` already has, at decision time:
+- member-level industry labels;
+- member one-day changePercent;
+- member tradeValue;
+- sector stockCount;
+- sector breadth;
+- sector average change;
+- sector amount and amountVs20DayAverage;
+- top-3 return leaders.
+
+The current sector score is:
+`amount / maxSectorAmount * 45 + breadth * 0.3 + transformed avgChange`.
+
+This means same-day sector strength already mixes activity, participation and average return, but it does NOT quantify whether activity/return leadership is concentrated in one or a few names.
+
+### Concentration descriptors to freeze prospectively
+Do not create a buy/sell threshold. Preserve continuous descriptors first:
+
+1. `top1AmountShare` = largest member tradeValue / sector tradeValue.
+2. `top3AmountShare` = three largest member tradeValues / sector tradeValue.
+3. `amountHHI` = sum of squared member tradeValue shares.
+4. `effectiveActiveNames` = 1 / amountHHI when denominator is valid.
+5. `effectiveActiveNameRatio` = effectiveActiveNames / stockCount.
+6. `returnLeaderGap1` = top-1 return minus sector median return.
+7. `returnLeaderGap3` = mean(top-3 returns) minus sector median return.
+8. `breadthExTop1` and `breadthExTop3` = participation after removing the strongest return leader(s).
+9. `avgChangeExTop1` and `avgChangeExTop3`.
+10. `leaderRemovalSignStable` = whether sector average return keeps the same sign after top-1/top-3 removal.
+11. `memberReturnDispersion` = robust dispersion, preferably median absolute deviation or preregistered standard deviation.
+12. `stockCount`, `knownMemberCount`, `unknownMemberCount` are mandatory denominators.
+
+### Small-sector normalization
+Raw HHI mechanically rises when a sector has few members. Therefore:
+- always report `1/stockCount` as the equal-share HHI baseline;
+- preserve `normalizedAmountHHI = (HHI - 1/N) / (1 - 1/N)` only when N > 1;
+- preserve `effectiveActiveNameRatio`;
+- never compare raw HHI across sectors of very different N without normalization.
+
+A one-stock sector is not "extremely concentrated evidence"; it is structurally single-member and must be labeled separately.
+
+### Price-limit / event contamination
+Taiwan price limits can create apparent leadership concentration when one or a few names are locked near the daily limit. Preserve:
+- limit-hit / near-limit status;
+- event/news state when available;
+- liquidity / trade-value coverage.
+
+Do not infer durable leadership from a one-day limit event.
+
+### Cross-room redundancy boundary
+System 2 RANK-07 already measures **candidate-pool industry concentration** (how many selected/candidate stocks come from each industry). That is a portfolio/candidate-distribution question.
+
+BR-030 measures **within-sector leadership concentration** (whether a sector's own price/activity strength is carried by a few members).
+
+They are related but not duplicates:
+- RANK-07: concentration *across candidates*;
+- BR-030: concentration *inside the industry before candidate interpretation*.
+
+No hard cap, diversification rule or industry quota is authorized by BR-030.
+
+### Prospective hypotheses
+H1 — `BROAD_PERSISTENT`: sector strength accompanied by participation that survives leader removal may be more persistent than leader-only strength.
+H2 — `LEADER_INFORMATION_DIFFUSION`: leader-only strength can be an early stage rather than a false signal; followers may catch up later.
+H3 — `LEADER_EXHAUSTION`: extreme leader concentration without follower confirmation can fail or reverse.
+H4 — `STRUCTURAL_DOMINANCE`: concentrated leadership can be economically rational when one dominant firm captures most industry profits; broadness is not universally superior.
+
+No hypothesis has a preferred winner before prospective evidence.
+
+### Outcomes after cohort becomes valid
+At the independent scan-date level:
+- sector rank persistence / percentile movement D1/D3/D5;
+- member breadth evolution;
+- selected/near-miss D1/D3/D5 and MFE/MAE where already captured;
+- false-breakout / stop-risk when valid;
+- transition from leader-only -> diffusion -> broad -> narrowing.
+
+### Mandatory controls
+- current Formal sector gate components;
+- sector RS / Residual RS;
+- Price-Volume and K-line setup;
+- market Regime;
+- sector stockCount and liquidity;
+- limit-hit/event state;
+- classification vintage;
+- date clustering and leave-one-date-out.
+
+### Falsification
+Classify leadership concentration as `REDUNDANT` if:
+- it is almost fully explained by breadth/avgChange/amountVs20D;
+- apparent effect disappears after stockCount normalization;
+- one/few dates or mega-cap sectors drive the result;
+- leader-removal descriptors add nothing beyond sector RS and existing setup;
+- negative-control sectors show the same behavior.
+
+Status: `PREREGISTERED / WAITING_PROSPECTIVE / NO_THRESHOLD / FORMAL_CORE_LOCKED`.
