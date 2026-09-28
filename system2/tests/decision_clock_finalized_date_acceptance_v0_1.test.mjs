@@ -10,10 +10,13 @@ function report({
   selectedRunId = runId,
   requiredReady = true,
   precisionEligible = true,
+  sameSessionClockReady = true,
   a5AvailableByCandidate = true,
-  promotionGrade = coverageEligible && requiredReady,
+  promotionGrade,
   includeSelected = true,
 } = {}) {
+  const effectivePromotionGrade = promotionGrade
+    ?? (coverageEligible && includeSelected && selectedRunId === runId);
   return {
     reportVersion: "S2_DECISION_CLOCK_ARTIFACT_REPORT_V0_1",
     coverageFinalization: {
@@ -37,7 +40,7 @@ function report({
     },
     aggregation: {
       promotionQualificationVersion: "S2_DECISION_CLOCK_PROMOTION_QUALIFICATION_V0_1",
-      promotionGradeMarketDates: promotionGrade ? [date] : [],
+      promotionGradeMarketDates: effectivePromotionGrade ? [date] : [],
       collectorContractConsistent: true,
       selectedArtifacts: includeSelected ? [{
         marketDate: date,
@@ -46,7 +49,7 @@ function report({
         evidenceSemanticsVersion: "S2_DECISION_CLOCK_DAILY_EVIDENCE_SEMANTICS_V0_2_1",
         requiredReady,
         precisionEligible,
-        sameSessionClockReady: true,
+        sameSessionClockReady,
         a5ObservedAtDecisionBoundary: "2026-09-29T05:35:00.000Z",
         a5AvailableByCandidate,
         candidateTimestamp: "2026-09-29T06:00:00.000Z",
@@ -61,6 +64,7 @@ function report({
 const precise = auditFinalizedDecisionClockDateV01({ report: report() });
 assert.equal(precise.status, "COMPLETE_PRECISE");
 assert.equal(precise.countsTowardIndependentDate, true);
+assert.equal(precise.countsTowardCompleteTradingDate, true);
 assert.equal(precise.countsTowardPrecisionEligibleDate, true);
 assert.equal(precise.selectedCountedByAggregation, true);
 assert.equal(precise.pitSemantics.publicationTimestampProven, false);
@@ -74,6 +78,7 @@ const imprecise = auditFinalizedDecisionClockDateV01({
 });
 assert.equal(imprecise.status, "COMPLETE_IMPRECISE");
 assert.equal(imprecise.countsTowardIndependentDate, true);
+assert.equal(imprecise.countsTowardCompleteTradingDate, true);
 assert.equal(imprecise.countsTowardPrecisionEligibleDate, false);
 
 const rejected = auditFinalizedDecisionClockDateV01({
@@ -120,21 +125,38 @@ assert.equal(runMismatch.countsTowardIndependentDate, false);
 
 const incomplete = auditFinalizedDecisionClockDateV01({
   report: report({
+    sameSessionClockReady: false,
     requiredReady: false,
-    promotionGrade: false,
+    a5AvailableByCandidate: false,
   }),
 });
 assert.equal(incomplete.status, "INCOMPLETE_REQUIRED_EVIDENCE");
-assert.equal(incomplete.countsTowardIndependentDate, false);
+assert.equal(incomplete.countsTowardIndependentDate, true);
+assert.equal(incomplete.countsTowardCompleteTradingDate, false);
+assert.equal(incomplete.countsTowardPrecisionEligibleDate, false);
 
 const a5Blocked = auditFinalizedDecisionClockDateV01({
   report: report({
+    sameSessionClockReady: true,
+    requiredReady: false,
     a5AvailableByCandidate: false,
-    promotionGrade: false,
   }),
 });
 assert.equal(a5Blocked.status, "A5_NOT_AVAILABLE_BY_CANDIDATE");
-assert.equal(a5Blocked.countsTowardIndependentDate, false);
+assert.equal(a5Blocked.countsTowardIndependentDate, true);
+assert.equal(a5Blocked.countsTowardCompleteTradingDate, false);
+assert.equal(a5Blocked.countsTowardPrecisionEligibleDate, false);
+
+const outsideWindowReport = report();
+outsideWindowReport.coverageFinalization.coverageThroughDate = "2026-09-28";
+outsideWindowReport.aggregation.promotionGradeMarketDates = [];
+const outsideWindow = auditFinalizedDecisionClockDateV01({
+  report: outsideWindowReport,
+  marketDate: "2026-09-29",
+});
+assert.equal(outsideWindow.status, "NOT_IN_FINALIZED_WINDOW");
+assert.equal(outsideWindow.finalizedWindow.included, false);
+assert.equal(outsideWindow.countsTowardIndependentDate, false);
 
 assert.throws(
   () => auditFinalizedDecisionClockDateV01({
