@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "PASSIVE_EVENT_NEGATIVE_EVIDENCE_RECEIPT_V0_1",
+  "updated": "2026-09-28 Asia/Taipei",
+  "researchOnly": true,
+  "formalCoreImpact": "NONE",
+  "outcomesUsed": false,
+  "problem": "An absent event row is not evidence of NO_INDEX_EVENT unless the provider/index/date/symbol event universe was completely and point-in-time captured.",
+  "currentReadiness": {
+    "msciReviewClock": "SMALL_MULTI_CYCLE_VALIDATED",
+    "msciConstituentRows": "PARTIAL",
+    "localIndexHistoricalConstituents": "PARTIAL",
+    "eventDateTrackerAum": "PARTIAL",
+    "closeAuctionMicrodata": "MISSING",
+    "broadNegativeEvidence": "NOT_READY"
+  },
+  "receiptRequiredForNoEventVerified": [
+    "provider",
+    "indexId",
+    "reviewCycleId",
+    "sourceArtifactId/sourceHash",
+    "publishedAt/firstKnownAt",
+    "effectiveAt",
+    "constituentUniverseScope",
+    "captureCompletenessState",
+    "expectedArtifactCount",
+    "observedArtifactCount",
+    "symbolCoverageRule",
+    "revision/version",
+    "capturedAt",
+    "pointInTimeEligible"
+  ],
+  "states": {
+    "NO_EVENT_VERIFIED": "Complete PIT constituent/event universe for the declared provider/index/review scope and symbol has no applicable event in the frozen window.",
+    "EVENT_PRESENT_VERIFIED": "Complete PIT source contains an applicable event.",
+    "EVENT_COVERAGE_INCOMPLETE": "Source/event universe is partial, missing, revised without preserved prior vintage, or symbol coverage cannot be proven.",
+    "EVENT_NOT_YET_KNOWN": "Event existed later but was not first-known at the Formal decision timestamp; historical decision context remains no-known-event only if the contemporaneous coverage receipt was complete."
+  },
+  "guards": [
+    "NO_EVENT_VERIFIED is scope-specific, never global.",
+    "Do not infer no event from a successful provider event-clock fetch alone.",
+    "Do not infer no event from missing constituent rows when parser/source coverage is partial.",
+    "Do not revise a historical Formal generation using later provider knowledge.",
+    "A later complete archive may audit history but cannot fabricate first-known contemporaneous coverage.",
+    "ETF AUM completeness is not required merely to identify membership/weight event presence; it is required for exposure magnitude claims.",
+    "Closing-auction microdata is not required for event-presence classification; it is required for auction-flow attribution."
+  ],
+  "minimumProspectivePath": "Capture immutable provider/index review artifact completeness and constituent event rows at first-known time, attach as research child/receipt to the same canonical Formal generation, and fail closed to EVENT_COVERAGE_INCOMPLETE.",
+  "status": "NEGATIVE_EVIDENCE_DENOMINATOR_NOT_READY / NO_EVENT_REQUIRES_COMPLETE_SCOPE_RECEIPT / PIT_FIRST_KNOWN_GUARD_FROZEN / FORMAL_UNCHANGED",
+  "exactNext": "Do not start outcomes. Audit one bounded provider/index universe (prefer MSCI Global Standard Taiwan) for a deterministic official constituent artifact contract. If a stable complete source cannot be proven, keep NO_EVENT unavailable and move to another nonblocked institutional semantic question rather than scraping secondary news."
+}
