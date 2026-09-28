@@ -1837,3 +1837,37 @@ Status:
 `COMPARATOR_STAGE_FEASIBILITY_CAVEAT_CLOSED / GLOBAL_MINIMA_UNCHANGED_19_OF_19 / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-066 — per-name capital-cap sensitivity (2026-09-28)
+
+Several low-concentration comparators allocate 2006 near the current Formal 35% per-name cap. PR-066 tests whether that specific cap value creates the comparator advantage.
+
+The cap is swept from 32% through 50% in 1-point steps.
+
+Why start at 32%:
+the observed 2026-09-18 current allocation has a maximum name allocation of NT$64,000 / NT$200,000 = 32%. Caps below 32% make the observed current allocation itself illegal and therefore cannot support a fair current-vs-comparator cap sensitivity claim.
+
+At each valid cap:
+- same selected names;
+- same NT$168,000 planned deployment;
+- NT$1,000 allocation grid;
+- 60/40 tranche split;
+- buyHigh integer-share flooring;
+- every comparator name must be orderable in both FIRST and ADD.
+
+The exhaustive cap-specific minimum HHI is compared with the unchanged current allocation HHI.
+
+Interpretation:
+- if current remains above the global minimum across the cap grid, the structural comparator advantage is not a 35%-specific artifact;
+- if the gap disappears/reverses at valid caps, prior evidence must be downgraded as cap-sensitive.
+
+Artifacts:
+`research/per_name_cap_sensitivity_v0_1.mjs`;
+`research/per_name_cap_sensitivity_spec_v0_1.json`;
+`tests/portfolio_risk_per_name_cap_sensitivity_readonly_audit.mjs`.
+
+Status:
+`PER_NAME_CAP_SENSITIVITY_READY / PRODUCTION_PENDING`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
