@@ -199,3 +199,26 @@ Use status:
 - LIVE_D1_COVERAGE = UNKNOWN
 
 This supersedes any wording that treats raw main-source presence as the deployment proof.
+
+
+## 2026-09-28 deep-research update — horizon transfer / D05-05 L2 gate
+
+New durable conclusions:
+- One-tick / short-interval queue imbalance and OFI evidence is real enough to motivate research, but it does not establish 15m or D1 alpha.
+- Taiwan 2025 top-five evidence supports incremental information in deeper levels and also documents material heterogeneity by relative tick size, volatility and activity. This argues against universal raw imbalance thresholds.
+- Event-to-15m translation is frozen as Pressure × Price Response × Persistence, with continuous/auction/VI/trial/odd-lot regime separation.
+- Fugle 2026 stock WebSocket fields materially support prospective research: best-five books plus continuous/trial state and trade bid/ask/price/size/time/serial.
+- Source-field existence is not capture completeness. L3 remains blocked until our own PIT event capture, missing-event detection, replay and coverage contract are demonstrated.
+- D05-05 OFI now satisfies L2 curriculum semantics (mechanism + falsification defined), but not L3.
+
+Cross-lane volatility conclusion:
+- external volatility-scaling evidence is mixed in real-time/OOS tests;
+- current Formal already conditions selection through ATR gate + ATR stop geometry + RR rejection/ranking;
+- future volatility tests must decompose those layers before claiming independent alpha or proposing any throttle.
+
+Revised exact continuation:
+1. D04: build outcome-free ATR-conditioning decomposition spec across pre-ATR -> ATR gate -> stop geometry -> RR survival -> selected cohort.
+2. D04: preserve prospective TAIEX RV5/RV20/RV5to20 raw primitives before any thresholding.
+3. D05: do not invent additional indicators; wait for complete prospective capture or a proven complete recorder artifact.
+4. D05: when capture is available, validate event/1m/5m -> 10m/15m/30m horizon retention using the frozen Pressure × Response × Persistence protocol.
+5. Keep Formal Core locked; no spread/depth/OFI/ATR throttle or sizing change.
