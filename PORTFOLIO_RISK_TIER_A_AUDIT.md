@@ -1772,3 +1772,37 @@ Status:
 `EXTREME_RATIO_DIRECTION_ROBUST / CURRENT_TWO_STAGE_ORDERABLE_1_TO_99 / COMPARATOR_STAGE_FEASIBILITY_PENDING / ECONOMIC_VALUE_UNKNOWN`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-065 — enforce two-stage orderability on global grid minima (2026-09-28)
+
+PR-064 showed the current 2026-09-18 plan remains two-stage orderable for FIRST ratios 1%-99%.
+
+A stricter caveat remained:
+the ratio-specific global minimum HHI search had not required each **comparator** name to have:
+- FIRST shares >= 1;
+- ADD shares >= 1.
+
+PR-065 recomputes the exhaustive NT$1,000-grid search for FIRST ratios 5%-95%.
+
+For every ratio it reports:
+- all legal allocation states;
+- the unconstrained global minimum HHI;
+- the count of states where every name is orderable in both stages;
+- the global minimum HHI within that two-stage-feasible subset;
+- whether the minimum changes;
+- whether every unconstrained optimum is already two-stage feasible.
+
+Interpretation:
+- if the minima are unchanged, the prior low-concentration comparator is not a mathematical artifact of allowing a zero-share tranche;
+- if the minima rise materially, prior comparator evidence must be downgraded as execution-feasibility sensitive.
+
+Artifacts:
+`research/stage_feasible_grid_sensitivity_v0_1.mjs`;
+`research/stage_feasible_grid_sensitivity_spec_v0_1.json`;
+`tests/portfolio_risk_stage_feasible_grid_readonly_audit.mjs`.
+
+Status:
+`STAGE_FEASIBLE_GRID_AUDIT_READY / PRODUCTION_PENDING`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
