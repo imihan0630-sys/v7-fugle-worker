@@ -398,3 +398,97 @@ Before implementation:
 
 Because the parser is shared Formal ingestion, implementation is Class B proposal-first.
 No runtime/parser change is authorized here.
+
+
+## IC-023 — long-block falsification synthesis: institutional flow is a state-conditioned interaction, not a monotonic rank
+
+Research cycle: 2026-09-28 Asia/Taipei
+Status: FALSIFICATION_ADVANCED / FORMAL_CORE_LOCKED
+
+### Question
+Does stronger institutional buying, persistence or ownership concentration deserve a universally higher after-market selection rank?
+
+### Positive mechanism
+Taiwan evidence supports plausible information-based institutional herding and continuation in some samples. Persistent same-side institutional demand can reveal correlated information, delayed price discovery or benchmark-related demand that has not fully cleared.
+
+### Counterevidence
+The sign is not stable enough to justify a universal monotonic rule:
+- Taiwan studies report institutional-herding effects that vary with market pressure/state and stock characteristics.
+- Foreign institutional industry behavior has changed between momentum and contrarian modes across tranquil versus crisis samples.
+- Taiwan mutual-fund evidence distinguishes buy-side continuation from sell-side reversal.
+- Current public three-institution aggregates mix economically different motives, including directional conviction, hedging, passive/index activity and inventory/liquidity management.
+
+Decision: reject the hypothesis `MORE_INSTITUTIONAL_BUYING_IS_UNCONDITIONALLY_BETTER` as a research assumption. This does NOT reject institutional information itself; it changes the required estimand to conditional incremental information.
+
+### Frozen primary estimand
+Do not search new weights. On existing prospective Shadow rows, test whether the already-stored institutional components add incremental information conditional on:
+1. scanDate and market/regime state;
+2. stock and sector momentum / Residual RS;
+3. price-volume reaction and liquidity/size;
+4. overheat and sector-gate state;
+5. passive/index contamination where known.
+
+Primary comparison cells:
+- FLOW_ALIGNED: positive institutional flow + positive price reaction;
+- BUY_ABSORBED: positive flow + flat/negative reaction;
+- SELL_RESILIENT: negative flow + positive reaction;
+- SELL_ALIGNED: negative flow + negative reaction.
+
+These names describe observables only and MUST NOT assert motive.
+
+Outcomes: D1/D3/D5/D10/D20 return, MFE, MAE, stop/no-follow-through/false-break where available.
+Inference unit: independent scanDate, not individual stock rows.
+
+### Existing-score decomposition
+For every clean prospective row, derive without changing runtime capture:
+- streakLinearContribution;
+- consensusInteractionContribution;
+- aggregateNetIntensityContribution;
+- largeHolderConcentrationContribution;
+- preClampInstitutionalScore;
+- scoreSaturated100;
+- actorSignDivergence;
+- concentrationShareOfScore.
+
+First inspect coverage, saturation and component correlation before returns. Outcome inspection is forbidden until data-quality/coverage receipt is frozen.
+
+### Critical falsification
+A candidate component is downgraded or rejected if:
+- its effect disappears after price/volume, Residual-RS and regime controls;
+- one date/sector/actor cluster dominates;
+- passive/index event removal removes the effect;
+- high institutionalScore merely identifies already-rising/high-volume stocks;
+- TDCC large-holder concentration has no incremental effect or has an opposite downside-risk sign;
+- saturation at 100 destroys meaningful cross-sectional rank;
+- TWSE/TPEx source coverage or UNKNOWN handling differs materially.
+
+### Crowding interpretation
+Crowding is explicitly two-sided. Persistent flow/ownership may support continuation before cessation, but can raise exit-risk after demand exhausts. Therefore future crowding research must estimate both continuation and downside/flow-cessation reversal. A useful crowding feature may become a risk/context flag rather than a rank booster.
+
+### Leverage/shorting semantic guard
+Do not combine:
+- margin long balance/change;
+- margin short balance/change;
+- securities borrowing;
+- actual borrowed-stock short sale;
+- borrowed-stock short-sale balance.
+
+Borrowing is not short selling. No `short pressure` variable is valid unless its underlying object is explicit. This preserves LS-001..LS-047 semantics.
+
+### Passive-flow contamination guard
+Institutional cash flow on index-review/effective dates may be benchmark mechanical. Announcement date, effective date and effective-close execution are separate clocks. If passive contamination cannot be identified, mark it UNKNOWN; do not infer informed buying/selling.
+
+### Candidate status
+No FORMAL_OPTIMIZATION_CANDIDATE yet.
+The current best research candidate is an OBSERVER-only `INSTITUTIONAL_STATE_INTERACTION` diagnostic, not a new score, veto or weight.
+Promotion gate requires prospective PIT/OOS or Shadow evidence, independent dates, regime coverage, passive-flow exclusion/stratification, redundancy controls and costs.
+
+## IC-024 — exact next continuation after long-block synthesis
+
+1. Read the newest prospective Shadow archive and determine whether clean rows already contain all IC-023 decomposition parents.
+2. Freeze a coverage/saturation receipt before looking at future outcomes.
+3. If sample gates pass, run the pre-registered decomposition and four flow×price-response cells by independent scanDate.
+4. Test leave-one-date-out, sector concentration, TWSE/TPEx strata and passive-event exclusion.
+5. Separately continue LS-048 only when the official TPEx margin artifact/stable contract exists; do not let that blocker stop the institutional-score decomposition lane.
+6. Keep PF outcome testing data-gated until constituent/AUM/effective-close contracts are adequate.
+7. Only surface a Class-C institutionalScore reformulation if incremental evidence survives the full falsification stack.
