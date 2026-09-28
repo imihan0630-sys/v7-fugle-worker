@@ -492,3 +492,70 @@ Promotion gate requires prospective PIT/OOS or Shadow evidence, independent date
 5. Separately continue LS-048 only when the official TPEx margin artifact/stable contract exists; do not let that blocker stop the institutional-score decomposition lane.
 6. Keep PF outcome testing data-gated until constituent/AUM/effective-close contracts are adequate.
 7. Only surface a Class-C institutionalScore reformulation if incremental evidence survives the full falsification stack.
+
+## IC-025 — prospective Shadow readiness re-audit closes outcome interpretation
+
+Research cycle: 2026-09-28 Asia/Taipei
+Status: DATA_QUALITY_BLOCKED / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+Latest verified Production research-dashboard readback:
+- runtime version = `8.14.0-sector-gate-provenance-shadow`;
+- Candidate Shadow Archive = 62 rows across only 2 archived scan dates (2026-09-21 and 2026-09-22);
+- expected scan dates = 3, archived dates = 2, integrity = `RESEARCH_DATA_GAP`;
+- known missing archive date = 2026-09-23;
+- outcome coverage = D1 40, D3 18, D5/D10/D20 all 0;
+- external-evidence market coverage = TWSE 53 / TPEx 0 / UNKNOWN 9;
+- actual SBL-short evidence available = 0;
+- evidence-readiness matrix remains `DATA_QUALITY_BLOCKED` and not eligible for Formal review.
+
+Source code confirms prospective research serialization contains the parents needed for exact existing-score decomposition, but the current verified runtime readback exposes aggregate readiness rather than an auditable row-level parent-completeness/saturation distribution.
+
+Therefore:
+- source-schema presence is not market-data completeness;
+- do not infer score-saturation frequency, component correlation or actor-divergence frequency from code alone;
+- do not use synthetic fixtures as empirical evidence;
+- do not inspect forward institutional outcomes while the pre-registered data-quality gate is closed.
+
+Machine receipt:
+`research/institutional_score_decomposition_readiness_20260928_v0_1.json`.
+
+## IC-026 — ownership cadence and passive contamination refine the decomposition unit
+
+Parallel PIT audits materially change how the ownership component must be tested.
+
+`chipConcentration` is a slow ownership stock measured from weekly TDCC distribution data, while foreign/trust/dealer observations are daily/3-session flows. Reusing one weekly ownership value on several scan dates does not create several independent ownership updates.
+
+Required ownership inference unit:
+`symbol × chipAsOfDate` for ownership-vintage questions, with scanDate clustering retained for market-outcome inference.
+
+Current prospective research rows preserve `chipConcentration` but not an immutable same-generation `chipAsOfDate/chipDefinition` receipt. A later mutable quality-snapshot reread cannot prove same-generation lineage. Therefore ownership-vintage deduplication is currently provenance-blocked and remains UNKNOWN rather than being approximated by scanDate.
+
+Also, TDCC 400-lot-plus concentration is holder-identity agnostic. It cannot identify active institutions, passive index funds, strategic holders or other large holders. No passive ownership share may be inferred from this bracket.
+
+Implication for current institutionalScore:
+- the ownership term must be interpreted as a slow ownership-state component, not same-day Smart Money flow;
+- its repeated presence across daily scores may create persistence in the score without new ownership information;
+- its incremental value must eventually be tested at ownership-vintage cadence, not by treating each daily repetition as independent evidence.
+
+## IC-027 — passive-flow negative evidence is now narrow but usable as a semantic control
+
+Passive-flow research has validated a deterministic four-cycle source pattern for one bounded universe:
+`MSCI | GLOBAL_STANDARD | TAIWAN | PERIODIC_REVIEW | MEMBERSHIP_ADD_DELETE`.
+
+This enables the narrow state:
+`NO_MSCI_STANDARD_MEMBERSHIP_ADD_DELETE_VERIFIED`,
+when provider artifact identity, publication/effective clocks, Taiwan-section presence and summary-vs-section count reconciliation all pass.
+
+Important falsification:
+This does NOT establish `NO_INDEX_EVENT`, `NO_WEIGHT_CHANGE`, `NO_PASSIVE_FLOW` or `ORDINARY_FLOW_CONTEXT_VERIFIED`. Weight-only changes, other MSCI families, FTSE/TWSE/TIP/custom indices, ETF creations/redemptions and other benchmark flows remain outside the bounded denominator.
+
+A further source-use gate exists: public MSCI artifacts include restrictions on database/analytics uses. Public accessibility is not authorization for persistent automated ingestion. Any future event archive/runtime join must use an authorized/licensed source or receive an appropriate permission determination.
+
+### Revised exact next continuation
+1. Keep institutional outcomes closed until the row-level decomposition readiness gate is satisfied.
+2. Obtain verified row-level or server-side aggregate research access and compute outcome-blind coverage, score saturation, actor divergence and component correlations before any returns.
+3. Preserve `chipAsOfDate/chipDefinition` prospectively before ownership-vintage inference; no historical reconstruction.
+4. Use bounded MSCI membership negative evidence only as a narrow contamination stratifier; broader passive context remains UNKNOWN.
+5. Keep LS-048 independently blocked on the official TPEx margin artifact/stable endpoint; do not coerce missing leverage history into zero.
+6. No alternative institutionalScore weights or thresholds are to be searched.
+7. No FORMAL_OPTIMIZATION_CANDIDATE exists yet.
