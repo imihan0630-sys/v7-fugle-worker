@@ -98,6 +98,30 @@ const replay = await buildHistoricalStoreIngestBatch({
 });
 assert.equal(batch.batchHash, replay.batchHash);
 
+const reobserved = await buildHistoricalStoreIngestBatch({
+  batchId: "HIST-A1-REOBSERVED-LATER",
+  datasetLane: "CORE_2017_PLUS",
+  sourceId: "TWSE_OFFICIAL_HISTORY_FIXTURE",
+  sourceName: "TWSE official historical fixture",
+  sourceUrl: "https://example.invalid/twse",
+  capturedAt: "2026-10-05T08:00:00Z",
+  rows: [
+    row({ observedAt: "2026-10-05T07:59:00Z" }),
+  ],
+});
+const original2330 = batch.rows.find((x) => x.symbol === "2330");
+assert.equal(
+  original2330.barHash,
+  reobserved.rows[0].barHash,
+  "identical historical content re-fetched in a later batch must keep the same barHash",
+);
+assert.notEqual(
+  original2330.batchId,
+  reobserved.rows[0].batchId,
+  "ingest batch provenance remains distinct from content identity",
+);
+assert.equal(original2330.schemaVersion, "S2_HISTORICAL_A1_BAR_V0_2");
+
 const records = toHistoricalPersistenceRecords(batch);
 assert.equal(records.length, 4);
 assert.equal(records[0].table, "s2_historical_ingest_batches");
