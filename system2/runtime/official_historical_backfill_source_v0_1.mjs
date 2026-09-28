@@ -83,6 +83,7 @@ export async function fetchOfficialHistoricalA1RangeV0_1({
   calendarsByYear = null,
   pauseMs = 0,
   onDateReceipt = null,
+  includeRowProvenance = false,
 } = {}) {
   const contract = officialHistoricalA1SourceContractV0_1(market);
   if (typeof fetchImpl !== "function") throw new Error("fetchImpl is required");
@@ -92,6 +93,7 @@ export async function fetchOfficialHistoricalA1RangeV0_1({
   if (onDateReceipt !== null && typeof onDateReceipt !== "function") {
     throw new Error("onDateReceipt must be a function");
   }
+  if (typeof includeRowProvenance !== "boolean") throw new Error("includeRowProvenance must be boolean");
 
   const trading = await buildOfficialTradingDatesV0_1({
     fromDate,
@@ -116,14 +118,18 @@ export async function fetchOfficialHistoricalA1RangeV0_1({
     if (receipt.sourceDateEvidence !== marketDate) {
       throw new Error(`source date mismatch escaped parser: ${market} ${marketDate}`);
     }
-    for (const row of receipt.rows) {
-      rows.push(deepFreeze({
-        ...row,
-        sourceId: receipt.sourceId,
-        sourceName: receipt.sourceName,
-        sourceUrl: receipt.sourceUrl,
-        sourceRowHash: row.sourceRowHash || await sha256Hex(row.sourceFields),
-      }));
+    if (includeRowProvenance) {
+      for (const row of receipt.rows) {
+        rows.push(deepFreeze({
+          ...row,
+          sourceId: receipt.sourceId,
+          sourceName: receipt.sourceName,
+          sourceUrl: receipt.sourceUrl,
+          sourceRowHash: row.sourceRowHash || await sha256Hex(row.sourceFields),
+        }));
+      }
+    } else {
+      rows.push(...receipt.rows);
     }
     const dateReceipt = deepFreeze({
       market,

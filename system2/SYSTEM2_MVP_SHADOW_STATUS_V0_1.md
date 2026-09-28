@@ -45,12 +45,11 @@ Implemented:
 Implemented and physically verified:
 - isolated D1 database: `system2-research`;
 - binding: `SYSTEM2_DB`;
-- schema V0.9 was physically verified before the external cold-object migration;
-- repository schema V1.0 now contains 39 `s2_` tables, including external cold-pack manifests, resumable checkpoints, completion receipts and historical-universe registry receipts;
+- schema V1.0 is physically applied and contains 39 `s2_` tables, including external cold-pack manifests, resumable checkpoints, completion receipts and historical-universe registry receipts;
 - write/read sentinel verification and replay-safe persistence;
 - no System 1 / V8 production D1 reuse.
 
-Physical qualification note: schema V1.0 and the isolated R2 bucket have not yet been applied/provisioned remotely. V0.9 inline smoke packs remain read-compatible, but new multi-year backfill is routed only through the external cold-object path and is manual-only until isolated R2 credentials exist.
+Physical qualification note: isolated D1 schema V1.0 migration plus write/read verification passed in GitHub run `36434206278`. The isolated R2 bucket and credentials have not yet been provisioned/read back. V0.9 inline smoke packs remain read-compatible, but new multi-year backfill is routed only through the external cold-object path and is manual-only until isolated R2 credentials exist.
 
 Existing schema already contains:
 - factor snapshots;
@@ -62,7 +61,7 @@ Existing schema already contains:
 - outcomes;
 - strategy daily performance;
 - experiment / provenance receipts.
-- external cold-pack manifests/checkpoints/receipts and historical-universe registry receipts (repository schema V1.0; remote application pending).
+- external cold-pack manifests/checkpoints/receipts and historical-universe registry receipts (schema V1.0 applied to isolated `system2-research`; no R2 objects populated yet).
 
 ### Worker / deployment skeleton
 

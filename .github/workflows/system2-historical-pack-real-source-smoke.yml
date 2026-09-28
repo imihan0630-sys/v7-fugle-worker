@@ -7,6 +7,7 @@ on:
       - "system2/scripts/historical_pack_real_source_smoke_v0_1.mjs"
       - "system2/runtime/historical_pack_store_v0_1.mjs"
       - "system2/runtime/historical_pack_research_v0_1.mjs"
+      - "system2/runtime/official_historical_backfill_source_v0_1.mjs"
       - "system2/sql/0005_historical_packs.sql"
       - "system2/sql/0006_historical_cold_store.sql"
       - "system2/deploy/provision_system2_d1.mjs"

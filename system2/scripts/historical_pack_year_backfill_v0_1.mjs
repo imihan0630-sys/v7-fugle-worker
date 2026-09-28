@@ -68,7 +68,7 @@ if(existingReceipt){
 }
 
 const range=await fetchOfficialHistoricalA1RangeV0_1({
-  market,fromDate,toDate,observedAt:capturedAt,pauseMs:25,
+  market,fromDate,toDate,observedAt:capturedAt,pauseMs:25,includeRowProvenance:true,
 });
 assert.ok(range.tradingDateCount>200,`${market} ${year} trading-date count unexpectedly low`);
 assert.ok(range.rowCount>100000,`${market} ${year} row count unexpectedly low`);

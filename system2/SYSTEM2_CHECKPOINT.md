@@ -585,10 +585,10 @@ Superseded inline-backfill evidence:
 - no annual completion receipt from those runs is accepted as evidence, and the automatic inline-D1 workflow has been replaced by the manual-only external cold-object path rather than retried blindly.
 
 Physical status:
-- schema V1.0 has not yet been applied to remote `system2-research`;
+- GitHub run `36434206278` applied/reverified isolated `system2-research` schema V1.0 with 39 tables, write/read verification PASS and production-database/runtime isolation PASS;
 - no isolated R2 bucket/credential readback is yet recorded;
 - therefore the 2017→present external cold backfill and first real full-market replay remain not started on this new path;
-- exact next action is isolated R2 provisioning/credential setup, remote V1.0 migration, bounded object+manifest smoke, then 2017 TWSE/TPEx annual backfill and coverage/readback verification.
+- exact next action is isolated R2 provisioning/credential setup, bounded object+manifest smoke, then 2017 TWSE/TPEx annual backfill and coverage/readback verification.
 
 ## Current boundary
 

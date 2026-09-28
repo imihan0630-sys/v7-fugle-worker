@@ -42,6 +42,7 @@ const result = await fetchOfficialHistoricalA1RangeV0_1({
   fromDate: "2017-01-01",
   toDate: "2017-01-05",
   observedAt: "2026-09-28T12:30:00Z",
+  includeRowProvenance: true,
   calendarsByYear: { 2017: calendar2017 },
   fetchImpl: async (url) => {
     const parsed = new URL(url);
@@ -64,6 +65,17 @@ assert.equal(result.rows.every((x) => x.symbol === "6488"), true);
 assert.equal(result.rows.every((x) => x.sourceId === "A1_TPEX_DAILY_QUOTES_HISTORICAL"), true);
 assert.equal(result.rows.every((x) => /^[0-9a-f]{64}$/.test(x.sourceRowHash)), true);
 assert.equal(result.dateReceipts.every((x) => x.state === "READY"), true);
+
+const legacyCompatible = await fetchOfficialHistoricalA1RangeV0_1({
+  market: "TPEX",
+  fromDate: "2017-01-03",
+  toDate: "2017-01-03",
+  observedAt: "2026-09-28T12:30:00Z",
+  calendarsByYear: { 2017: calendar2017 },
+  fetchImpl: async () => ({ ok: true, status: 200, json: async () => tpexPayload("2017-01-03") }),
+});
+assert.equal(legacyCompatible.rows[0].sourceRowHash, undefined,
+  "legacy inline-pack callers must retain their previously frozen canonical payload");
 
 const contracts = buildOfficialBackfillSourceContractsV0_1();
 assert.equal(contracts.TWSE.authenticationRequired, false);
