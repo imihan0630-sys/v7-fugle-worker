@@ -2022,3 +2022,34 @@ Status:
 `STAGE_FEASIBLE_GRID_AUDIT_READY / PRODUCTION_PENDING`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-065 Production result — global minima survive two-stage orderability constraint
+
+Read-only Production run `36378589526` / job `108789397492` evaluated 2026-09-18 across FIRST ratios 5%-95%.
+
+For every tested ratio:
+- legal NT$1,000-grid states = 946;
+- the stage-feasible minimum HHI equals the unconstrained minimum HHI;
+- every unconstrained HHI optimum is already two-stage orderable.
+
+Summary:
+- tested ratios = **19**;
+- global minimum unchanged after requiring FIRST>=1 and ADD>=1 share for every name = **19 / 19**;
+- unconstrained optima already two-stage feasible = **19 / 19**.
+
+At the tested ratio range, the same-deployment + 35% cap geometry itself keeps every legal allocation large enough to avoid zero-share tranches.
+
+Therefore the remaining PR-064 caveat is closed:
+
+`the low-concentration comparator is not a mathematical artifact of allowing an unorderable zero-share tranche.`
+
+This still does not prove fills or economic superiority.
+
+Receipt:
+`research/stage_feasible_grid_production_receipt_20260928.json`.
+
+Status:
+`COMPARATOR_STAGE_FEASIBILITY_CAVEAT_CLOSED / GLOBAL_MINIMA_UNCHANGED_19_OF_19 / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
