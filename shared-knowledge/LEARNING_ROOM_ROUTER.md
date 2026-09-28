@@ -1,7 +1,7 @@
 # 自我進化學習研究室 — 公用聊天室路由與研究範圍
 
-Updated: 2026-09-28 Asia/Taipei  
-Status: CANONICAL_LEARNING_ROOM_ROUTER_V0_1  
+Updated: 2026-09-28 13:21 Asia/Taipei  
+Status: CANONICAL_LEARNING_ROOM_ROUTER_V0_2  
 Parent Project: **自我進化學習研究室**  
 Formal Core impact: NONE
 
@@ -20,6 +20,8 @@ Formal Core impact: NONE
 ## 全域規則
 
 - 聊天室先辨識自己的名稱；只研究被分配的 Dxx 領域。
+- **00｜研究總控室** 是本專案永久 Canonical Name（正式標準名稱）。即使 ChatGPT UI 自動重新產生或改寫聊天標題，本聊天室在研究治理、路由、checkpoint 與跨線協調上的身份仍固定視為 **00｜研究總控室**；不得因 UI 標題變更而改變職責或被重新分派為專科研究室。
+
 - 名稱前有 `(x)` 或 `（x）` = **ARCHIVED_FULL**，只作歷史資料來源，不再領取新研究。
 - 新聊天室不得從頭學；必須讀 GitHub 最新 main、tracker 與專屬 checkpoint 後續接。
 - L3以上必須有台股PIT資料來源與時間語意；L4需 Prospective Shadow（前瞻影子）或 OOS（樣本外）證據；L5需成本、冗餘、不同Regime與獨立日期穩健性。
