@@ -3482,3 +3482,44 @@ Status:
 `CAP_35_ARTIFACT_FALSIFIED / CURRENT_ABOVE_GLOBAL_MIN_19_OF_19 / RELAXED_CAP_STRENGTHENS_STRUCTURAL_GAP / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## D15-EB-001 — inverse HHI is not Effective Bets (2026-09-28)
+
+A semantic falsification was completed for D15-06.
+
+Existing Portfolio Risk research exposes `effectiveCapitalNames = 1 / HHI`. That quantity is useful, but its safe meaning is only:
+
+`CONCENTRATION_EFFECTIVE_NAMES`.
+
+It answers:
+“How many equally weighted names would produce the same concentration HHI?”
+
+It does **not** answer:
+“How many statistically independent risk bets does this portfolio contain?”
+
+For the 2026-09-18 projected-stop-risk witness:
+- current projected-risk HHI = 0.377238;
+- inverse HHI ≈ 2.65 concentration-equivalent names.
+
+That number must not be called 2.65 independent bets.
+
+A true Effective Bets study requires, at minimum:
+- PIT-aligned synchronized return history;
+- a validated covariance/dependence model;
+- a frozen factor/risk decomposition;
+- factor risk contributions with provenance.
+
+Current Portfolio Risk read-only surfaces do not expose an already-authorized synchronized history series suitable for this purpose. Sector labels are not accepted as a substitute for correlation.
+
+Therefore D15-06 remains L2 rather than being falsely promoted.
+
+Artifacts:
+`research/effective_bets_semantic_firewall_v0_1.mjs`;
+`research/effective_bets_semantic_firewall_spec_v0_1.json`;
+`tests/test_effective_bets_semantic_firewall_v0_1.mjs`.
+
+Status:
+`CONCENTRATION_COUNT_SEMANTICS_FROZEN / TRUE_EFFECTIVE_BETS_DATA_BLOCKED / D15_06_REMAINS_L2`.
+
+Formal Core unchanged.
