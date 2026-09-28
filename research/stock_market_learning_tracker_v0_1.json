@@ -675,7 +675,7 @@
         "FUNDAMENTAL_INFORMATION_DYNAMICS_CHECKPOINT.md",
         "FUNDAMENTAL_INFORMATION_DYNAMICS_RESEARCH.md"
       ],
-      "maturityPct": 30.9,
+      "maturityPct": 36.4,
       "modules": [
         {
           "id": "D07-01",
@@ -704,18 +704,18 @@
         {
           "id": "D07-04",
           "name": "ROE／ROIC資本報酬",
-          "level": "L1",
-          "maturityPct": 20,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「ROE／ROIC資本報酬」。學習範圍：月營收、財報、獲利能力、現金流與資產負債表；成長品質與盈餘品質；公告first-known時間與PIT Vintage；分析師預期；基本面訊號對價格與策略的增量價值。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "理論已理解"
+          "levelMeaning": "機制＋反證已定義"
         },
         {
           "id": "D07-05",
           "name": "營業／自由現金流",
-          "level": "L1",
-          "maturityPct": 20,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「營業／自由現金流」。學習範圍：月營收、財報、獲利能力、現金流與資產負債表；成長品質與盈餘品質；公告first-known時間與PIT Vintage；分析師預期；基本面訊號對價格與策略的增量價值。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "理論已理解"
+          "levelMeaning": "機制＋反證已定義"
         },
         {
           "id": "D07-06",
@@ -728,10 +728,10 @@
         {
           "id": "D07-07",
           "name": "盈餘品質／應計項目",
-          "level": "L1",
-          "maturityPct": 20,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「盈餘品質／應計項目」。學習範圍：月營收、財報、獲利能力、現金流與資產負債表；成長品質與盈餘品質；公告first-known時間與PIT Vintage；分析師預期；基本面訊號對價格與策略的增量價值。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "理論已理解"
+          "levelMeaning": "機制＋反證已定義"
         },
         {
           "id": "D07-08",
@@ -774,7 +774,7 @@
       "anchors": [
         "VALUATION_RESEARCH.md"
       ],
-      "maturityPct": 26.7,
+      "maturityPct": 31.7,
       "modules": [
         {
           "id": "D08-01",
@@ -819,18 +819,18 @@
         {
           "id": "D08-06",
           "name": "EV/EBITDA",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「EV/EBITDA」。學習範圍：PE、PB、Forward PE、PEG、EV/EBITDA、FCF Yield等估值方法；歷史與同業正規化；負EPS與週期股例外；公司行動分母調整；成長×估值×Regime互動。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "尚未研究"
+          "levelMeaning": "機制＋反證已定義"
         },
         {
           "id": "D08-07",
           "name": "FCF Yield自由現金流殖利率",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「FCF Yield自由現金流殖利率」。學習範圍：PE、PB、Forward PE、PEG、EV/EBITDA、FCF Yield等估值方法；歷史與同業正規化；負EPS與週期股例外；公司行動分母調整；成長×估值×Regime互動。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "尚未研究"
+          "levelMeaning": "機制＋反證已定義"
         },
         {
           "id": "D08-08",
@@ -859,10 +859,10 @@
         {
           "id": "D08-11",
           "name": "估值×市場Regime互動",
-          "level": "L1",
-          "maturityPct": 20,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「估值×市場Regime互動」。學習範圍：PE、PB、Forward PE、PEG、EV/EBITDA、FCF Yield等估值方法；歷史與同業正規化；負EPS與週期股例外；公司行動分母調整；成長×估值×Regime互動。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "理論已理解"
+          "levelMeaning": "機制＋反證已定義"
         },
         {
           "id": "D08-12",
