@@ -26,6 +26,7 @@
     "ratio-specific global optimum is diagnostic, not a live recommendation",
     "one reconstructable multi-name date remains a sample limitation"
   ],
-  "status": "TRANCHE_RATIO_SENSITIVITY_READY / PRODUCTION_AUDIT_PENDING",
-  "formalCoreImpact": false
+  "status": "TRANCHE_RATIO_ARTIFACT_FALSIFIED_40_TO_90 / EXTREME_RATIO_STRESS_PENDING / ECONOMIC_VALUE_UNKNOWN",
+  "formalCoreImpact": false,
+  "productionReceipt": "research/tranche_ratio_sensitivity_production_receipt_20260928.json"
 }
