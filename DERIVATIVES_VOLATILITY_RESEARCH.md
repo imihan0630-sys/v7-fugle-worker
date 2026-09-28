@@ -1318,3 +1318,217 @@ Formal Core remains LOCKED. No score, veto, risk throttle or ranking weight is a
 2. Implement unsigned Gamma concentration plus dealer-class lower/upper bound calculator.
 3. Accumulate independent normal, expiry and scheduled-event dates before any L3 review.
 4. In parallel continue D12-10 night-futures/overnight information from L1 -> L2, because its mechanism can be researched without waiting for Gamma prospective evidence.
+
+
+---
+
+## DR-035 — D12-10 session clock must be split at the 18:10 decision boundary
+
+TAIFEX defines the TX after-hours session as 15:00 Taipei to 05:00 the following day, and attributes those trades to the following regular trading session. The expiring TX contract has no after-hours session on its last trading day.
+
+For the System 1 / System 2 after-market decision clock at 18:10 Taipei, the night session is **not one information object**.
+
+Required partition:
+
+1. `NIGHT_PRE_SCAN` = 15:00 -> 18:10
+   - observable by the 18:10 decision;
+   - PIT-eligible if captured with an immutable timestamp.
+
+2. `NIGHT_POST_SCAN` = 18:10 -> 05:00
+   - future information for the 18:10 selector;
+   - may be eligible for later monitoring / next-morning decisions only.
+
+3. `NIGHT_FULL_SESSION` = 15:00 -> 05:00
+   - future-contaminated outcome for the 18:10 decision;
+   - cannot be backfilled as a selector feature.
+
+This corrects an earlier coarse interpretation that treated “Taiwan night futures after scan” as if the whole night session occurred after the scan.
+
+Status: DECISION-CLOCK PARTITION FROZEN.
+
+---
+
+## DR-036 — Taiwan evidence supports absorption / continuity, not a universal night-up => day-up rule
+
+A 2024 PLOS ONE study of TX regular and after-hours sessions (2017-2022, 1,220 observations) finds:
+- strong price continuity between after-hours close and the following regular-session open;
+- after-hours trading efficiently absorbs European, U.S. and Taiwan post-market information;
+- prior after-hours return had a negative relation with subsequent regular-session return in the estimated mean equation;
+- after-hours volatility did not significantly transmit into the following regular-session volatility in the same specification;
+- the study interprets the night session as an information/risk absorption channel.
+
+This directly falsifies a monotonic textbook rule:
+`nightReturn > 0 => nextRegularReturn > 0`.
+
+The useful question is instead:
+**How much of the information available by 18:10 has already been absorbed by TX, and what residual remains after controlling global futures?**
+
+Status: ABSORPTION MODEL, NOT DIRECTIONAL ORACLE.
+
+---
+
+## DR-037 — researchable 18:10 features
+
+The first feature family must use only `NIGHT_PRE_SCAN`.
+
+Raw, assumption-light features:
+
+- `nightPreScanReturnFromOpen` = log(TX_18:10 / TX_15:00_open)
+- `nightPreScanReturnFromSettlement` = log(TX_18:10 / prior_regular_settlement)
+- `nightPreScanHighLowRange`
+- `nightPreScanRealizedVol` from frozen bar frequency
+- `nightPreScanVolume`
+- `nightPreScanVolumeZ` versus a trailing same-window baseline
+- `nightPreScanDistanceFromHigh`
+- `nightPreScanDistanceFromLow`
+- `nightPreScanReversalFromExtreme`
+
+No full-night last/high/low/volume may enter the 18:10 feature set.
+
+### Contract rule
+
+Use a pre-registered front-contract rule with roll/expiry flags. On the expiring contract's last trading day, there is no after-hours session for that expiring contract, so a naive continuous “front month” series can silently jump to the next contract.
+
+Required metadata:
+- contractMonth;
+- daysToExpiry;
+- rollFlag;
+- lastTradingDayFlag;
+- sourceSession;
+- capturedAt.
+
+Status: PRE-SCAN RAW FEATURE CONTRACT FROZEN.
+
+---
+
+## DR-038 — Taiwan-specific residual is higher-value than raw night direction
+
+TAIFEX after-hours trading overlaps foreign-market hours. Therefore raw TX night return is likely to contain:
+- U.S./global equity repricing;
+- Taiwan-specific interpretation of that repricing;
+- Taiwan post-close corporate/policy information;
+- local basis/liquidity noise.
+
+The incremental hypothesis should isolate the Taiwan-specific component.
+
+### Candidate global controls
+
+Same-window 15:00->18:10 returns for:
+- S&P 500 futures proxy;
+- Nasdaq-100 futures proxy;
+- semiconductor futures proxy;
+- optional USD/TWD or USD context when a PIT-compatible intraday source exists.
+
+TAIFEX itself lists U.S. S&P 500, Nasdaq-100 and PHLX Semiconductor futures as after-hours products from 15:00 to 05:00, offering a same-exchange candidate control set, subject to liquidity/tracking-quality checks.
+
+### Candidate residual
+
+A pre-registered research-only model may estimate:
+
+`txNightResidual = txPreScanReturn - betaBroad*broadFutureReturn - betaTech*techFutureReturn - betaSemi*semiFutureReturn`
+
+Rules:
+- beta window must be frozen before outcome testing;
+- beta uses only prior dates;
+- no dynamic window chosen because it predicts outcomes better;
+- if control contracts are illiquid/stale, mark UNKNOWN rather than force zero.
+
+A simpler baseline must always be tested first:
+- raw TX pre-scan return;
+- raw U.S. futures return;
+- TX minus U.S. broad return;
+before allowing a multi-beta residual.
+
+Status: TAIWAN-SPECIFIC NIGHT RESIDUAL CANDIDATE.
+
+---
+
+## DR-039 — public historical daily night data create an 18:10 look-ahead trap
+
+TAIFEX public historical daily after-hours files identify the full 15:00->05:00 session by the **following trading date**. Those files are suitable for full-session description but not for reconstructing the exact 18:10 state.
+
+TAIFEX FAQ states:
+- individual futures/options trades are publicly downloadable for the past 30 trading days;
+- older transaction-level historical data require application/purchase;
+- TAIFEX does not provide a historical database API.
+
+Therefore:
+
+`FREE_LONG_HISTORY_1810_NIGHT_SNAPSHOT = NOT_ESTABLISHED`.
+
+Research choices:
+1. **Prospective capture** at/just before 18:10 -> preferred clean PIT Shadow route.
+2. **Recent 30-trading-day replay** from transaction data -> useful for parser/replay QA, not enough for robust inference.
+3. **Purchased historical transaction data** -> possible future long-history route if approved and licensing permits.
+4. Full-session daily night OHLC -> outcome/descriptive only for the 18:10 selector.
+
+This is a data-provenance limitation, not evidence against the economic hypothesis.
+
+Status: HISTORICAL PIT GATE FROZEN.
+
+---
+
+## DR-040 — outcome decomposition and falsification
+
+Primary targets:
+
+A. **Next cash open gap**
+- likely first location where overnight information is incorporated.
+
+B. **Next regular open-to-close**
+- tests whether the night signal contains continuation/reversal information beyond opening incorporation.
+
+C. **Next D1 close-to-close / MAE / MFE**
+- secondary risk/continuation targets.
+
+D. **Selection-environment outcomes**
+- hit rate / MAE / stop incidence for System 1 / System 2 candidates selected at 18:10.
+
+Mandatory controls:
+- prior Taiwan regular return / market Regime;
+- prior U.S. cash close information already known before Taiwan day session;
+- same-window U.S. futures / tech / semiconductor futures;
+- Taiwan breadth / sector RS;
+- expiry/roll state;
+- night liquidity / stale quote state;
+- scheduled macro-event clock.
+
+Falsification:
+1. if TX pre-scan adds nothing beyond same-window U.S. futures, mark REDUNDANT;
+2. if result is only next-open gap and disappears open-to-close, classify execution/opening context rather than after-market stock alpha;
+3. if full-night data work but 18:10-cut data do not, reject for the 18:10 selector as LOOK_AHEAD_ARTIFACT;
+4. if results disappear outside crisis dates, classify CRISIS_ONLY;
+5. date-shift placebo;
+6. leave-one-date-out;
+7. separate normal, expiry/roll and macro-event days;
+8. same-window volume/liquidity quality filter fixed before outcome testing.
+
+Status: FALSIFICATION MATRIX FROZEN.
+
+---
+
+## DR-041 — D12-10 maturity decision
+
+D12-10 advances **L1 -> L2**.
+
+Why:
+- session/date semantics are frozen;
+- 18:10 PIT partition is explicit;
+- Taiwan evidence supports the absorption mechanism while falsifying simple directional continuation;
+- public historical-data limitations are identified;
+- raw/residual feature families and outcome decomposition are pre-registered;
+- explicit redundancy tests against global futures are defined.
+
+Why not L3:
+- no durable prospective 18:10 TX snapshot receipts yet;
+- no same-window replay corpus with immutable knownAt semantics has been validated;
+- no independent-date Taiwan outcome evidence has been accumulated under the frozen contract.
+
+Formal Core remains LOCKED. No 18:10 score, risk throttle, veto or ranking weight is approved.
+
+## Exact next continuation after DR-041
+
+1. Create a research-only `NIGHT_PRE_SCAN` receipt at 18:10 with TX plus same-window global control futures.
+2. Validate recent transaction-level replay against live/prospective snapshots.
+3. Accumulate independent dates before any L3 review.
+4. Cross-link D12-10 with D13 scheduled macro-event clock so 18:10 states are not compared across incompatible event regimes.
