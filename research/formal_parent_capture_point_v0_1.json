@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "formal-parent-capture-point-v0.1",
+  "updated": "2026-09-28 Asia/Taipei",
+  "researchOnly": true,
+  "runtimeImplemented": false,
+  "formalCore": "LOCKED",
+  "authoritativeEvaluation": {
+    "FORMAL_GENERAL": "PRIMARY",
+    "FORMAL_THOUSAND": "THOUSAND_DEDICATED"
+  },
+  "dualEvaluationGuard": {
+    "appliesTo": "FORMAL_THOUSAND",
+    "primaryCopyRole": "QA_WITNESS_ONLY",
+    "mismatchStatus": "QA_FAIL"
+  },
+  "phases": [
+    "EVALUATION_CAPTURE",
+    "RANKING_FINALIZATION",
+    "IMMUTABLE_PARENT_FINALIZE"
+  ],
+  "inputs": [
+    "featureRows",
+    "primaryEvaluations",
+    "thousandEvaluations",
+    "poolBySymbol",
+    "actualRankedGeneralSymbols",
+    "actualRankedThousandSymbols",
+    "actualSelectedSymbols"
+  ],
+  "prohibitions": [
+    "NO_SCORECANDIDATE_RECALL",
+    "NO_COMPARATOR_REIMPLEMENTATION",
+    "NO_DUPLICATE_PARENT_PER_POOL",
+    "NO_SILENT_DUAL_EVALUATION_DIVERGENCE"
+  ]
+}
