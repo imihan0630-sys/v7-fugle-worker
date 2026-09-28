@@ -22447,3 +22447,7 @@ Formal Core remains LOCKED.
 8. Prospective Pattern outcome inference still requires complete immutable parent/run receipts.
 9. When clean data eventually exists, use only preregistered Pattern comparisons plus frozen redundancy controls; do not create label-count voting.
 10. Formal Core remains unchanged.
+
+# DL-006A–D — Nested graph, continuous breakout paths and Three-Gaps guards (2026-09-28)
+
+Full outcome-blind specification and positive/negative cases: `research/PATTERN_NESTED_STRUCTURE_AND_GAP_V0_1.md`. Weekly/daily/local relations use causal typed edges and verified source-bar ancestry. Transitive containment/overlap does not imply evidence independence. Continuous breakout paths expose eligible symbol-session denominators, observability, break-bar-inclusive extension and null for unavailable information, without fixed failure windows. Three-Gaps requires independently valid OPEN, TECHNICAL_CONTINUITY, corporate-action and symbol-session provenance; overnight gap and non-overlap gap are different definitions. Current directional effect is UNKNOWN. No prospective outcomes, no historical Shadow, no tracker promotion, no Formal changes. Next: isolated synthetic graph/prefix tests and descriptor prototype, then source witness audit before a gap detector.
