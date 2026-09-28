@@ -91,15 +91,18 @@ const databaseId = database?.uuid || database?.id;
 assert.ok(databaseId, "System2 D1 database ID missing after create/list");
 assert.equal(database?.name, databaseName, "unexpected D1 database selected");
 
-const sqlText = await readFile(
-  new URL("../sql/0001_research_core.sql", import.meta.url),
-  "utf8",
-);
-const statements = splitSqlStatements(sqlText);
-assert.ok(statements.length > 0, "System2 schema contains no statements");
-
-for (const statement of statements) {
-  await d1Query(databaseId, statement);
+const migrationFiles = [
+  "../sql/0001_research_core.sql",
+  "../sql/0002_historical_store.sql",
+  "../sql/0003_backtest_base_dataset.sql",
+];
+for (const migrationFile of migrationFiles) {
+  const sqlText = await readFile(new URL(migrationFile, import.meta.url), "utf8");
+  const statements = splitSqlStatements(sqlText);
+  assert.ok(statements.length > 0, `System2 migration contains no statements: ${migrationFile}`);
+  for (const statement of statements) {
+    await d1Query(databaseId, statement);
+  }
 }
 
 const tableRows = await d1Query(
@@ -122,6 +125,11 @@ const requiredTables = [
   "s2_capacity_runs",
   "s2_candidate_lifecycle_receipts",
   "s2_candidate_reentry_receipts",
+  "s2_historical_ingest_batches",
+  "s2_historical_a1_bars",
+  "s2_backtest_runs",
+  "s2_backtest_checkpoints",
+  "s2_historical_base_samples",
 ];
 const missingTables = requiredTables.filter((name) => !tables.includes(name));
 assert.deepEqual(missingTables, [], `missing System2 tables: ${missingTables.join(", ")}`);
@@ -131,7 +139,7 @@ const schemaRows = await d1Query(
   "SELECT schema_value FROM s2_schema_meta WHERE schema_key = ? LIMIT 1",
   ["schema_version"],
 );
-assert.equal(schemaRows[0]?.schema_value, "0.5", "unexpected System2 schema version");
+assert.equal(schemaRows[0]?.schema_value, "0.7", "unexpected System2 schema version");
 
 const now = new Date().toISOString();
 const baseCheckId = `infra-${runId}-${runAttempt}`;
@@ -140,7 +148,7 @@ const sentinelPayload = {
   runAttempt,
   bindingName: "SYSTEM2_DB",
   databaseName,
-  schemaVersion: "0.5",
+  schemaVersion: "0.7",
 };
 const sentinelHash = createHash("sha256")
   .update(JSON.stringify(sentinelPayload))
@@ -159,7 +167,7 @@ await d1Query(
     now,
     "ISOLATED_SYSTEM2_D1",
     "SYSTEM2_DB",
-    "0.5",
+    "0.7",
     JSON.stringify(sentinelPayload),
     null,
     "EXPECTED",
@@ -204,7 +212,7 @@ await d1Query(
     new Date().toISOString(),
     "ISOLATED_SYSTEM2_D1",
     "SYSTEM2_DB",
-    "0.5",
+    "0.7",
     JSON.stringify(sentinelPayload),
     JSON.stringify(verifiedPayload),
     "PASS",
@@ -219,7 +227,7 @@ console.log(JSON.stringify({
   databaseIdDigest: digest(databaseId),
   created,
   reusedExisting: !created,
-  schemaVersion: "0.5",
+  schemaVersion: "0.7",
   tableCount: tables.length,
   requiredTablesPresent: true,
   writeReadVerification: "PASS",
