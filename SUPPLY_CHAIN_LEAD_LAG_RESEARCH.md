@@ -562,3 +562,66 @@ Pilot success criteria:
 Forward returns remain hidden until the source-readiness receipt passes. This prevents outcome-driven taxonomy/mapping choices.
 
 Status: `PILOT_PREREGISTERED / OUTCOME_BLIND / NO_FORMAL_CHANGE`.
+
+
+## SC-015A — Source-only pilot falsified the single-freshness assumption
+
+Receipt: `research/industry_physical_cycle_source_pilot_v0_1.json`
+
+### Pilot result
+Direct machine-readable MOEA CSV retrieval was verified through an alternate read-only fetch path, but freshness is not uniform across series.
+
+Observed source coverage in the pilot:
+- manufacturing production index: through ROC 11508, but only four broad groups I1-I4;
+- manufacturing inventory ratio: through ROC 11507, about 30 major/mid industry codes;
+- tested manufacturing inventory-volume-index CSV: only through ROC 11203;
+- tested manufacturing sales-value CSV: only through ROC 11203;
+- dedicated electronic-components production/sales/inventory-value CSV: through ROC 11507.
+
+Therefore the hypothesis "all official EE520 open-data files can be joined as one current monthly panel" is FALSIFIED.
+
+### Mandatory data firewall
+Every industry metric must pass independently:
+1. `SOURCE_FRESHNESS_GATE` — latest observation must be compatible with the expected release cadence;
+2. `SERIES_ALIGNMENT_GATE` — metrics from materially different observation vintages cannot be merged into one state;
+3. `SERIES_GRANULARITY_GATE` — required industry code must actually exist; parent-industry substitution after seeing outcomes is forbidden;
+4. `VINTAGE_CAPTURE_GATE` — prospective raw snapshot/hash/parser version required;
+5. `NO_FORWARD_FILL_GATE` — later/revised observations cannot be carried backward;
+6. `NO_ALPHA_BEFORE_SOURCE_READY` — return testing stays closed until the source receipt passes.
+
+Stale data are `UNKNOWN`, not the last known value.
+
+### Electronic-components current source-only example
+For ROC 11507, the dedicated code-26 electronic-components file showed:
+- production value YoY about +50.98%;
+- sales value YoY about +50.53%;
+- inventory value YoY about +78.02%;
+- inventory ratio 70.12 versus 59.25 one year earlier (+10.87 percentage points);
+- inventory-value / sales-value ratio about 0.652 versus 0.552 one year earlier.
+
+Research-only state:
+`DEMAND_STRONG_WITH_INVENTORY_BUILD`.
+
+This deliberately receives no bullish/bearish label. Strong sales and production coexist with faster inventory accumulation, so subsequent inventory absorption, pricing, margin, capacity and product mix are required before any economic direction is assigned.
+
+This concrete case supports the state-vector approach and falsifies a naive "industry growth = automatically better" score.
+
+### Broad-group cross-industry pilot
+An outcome-blind I2 information-electronics vs I3 chemicals alignment test failed for current 2026 research because the tested sales-volume file stopped at ROC 11203 while production and inventory-ratio files extended into ROC 115.
+
+Result:
+`FRESHNESS_MISMATCH_BLOCKED`.
+
+Do not solve this by silently comparing nonaligned dates.
+
+### Maturity interpretation
+- D10-11 L3 remains justified as `PIT_FEASIBLE_PARTIAL`: current machine-readable official sources exist and prospective capture is feasible, but readiness is dataset-by-dataset, not family-wide.
+- D10-03 L3 remains justified because current official inventory-ratio / dedicated industry source lanes are available, but detailed physical-cycle coverage is incomplete.
+- No L4 promotion: no prospective archived cohort / OOS evidence yet.
+
+### Exact next continuation
+SC-016A: find or rule out a supported current machine-readable detailed sales/inventory interface for 4-digit codes (2611/2613/2630) without brittle hidden-endpoint scraping.
+SC-016B: establish at least one current non-tech aligned panel; otherwise record a durable SOURCE_GAP.
+SC-017: after source readiness only, preregister prospective industry-state outcomes and negative controls.
+
+Status: `PARTIAL_PASS / FRESHNESS_FIREWALL_REQUIRED / FORMAL_CORE_LOCKED`.
