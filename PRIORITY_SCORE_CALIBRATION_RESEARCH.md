@@ -2053,3 +2053,76 @@ Status:
 `COMPARATOR_STAGE_FEASIBILITY_CAVEAT_CLOSED / GLOBAL_MINIMA_UNCHANGED_19_OF_19 / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-066 — per-name capital-cap sensitivity (2026-09-28)
+
+Several low-concentration comparators allocate 2006 near the current Formal 35% per-name cap. PR-066 tests whether that specific cap value creates the comparator advantage.
+
+The cap is swept from 32% through 50% in 1-point steps.
+
+Why start at 32%:
+the observed 2026-09-18 current allocation has a maximum name allocation of NT$64,000 / NT$200,000 = 32%. Caps below 32% make the observed current allocation itself illegal and therefore cannot support a fair current-vs-comparator cap sensitivity claim.
+
+At each valid cap:
+- same selected names;
+- same NT$168,000 planned deployment;
+- NT$1,000 allocation grid;
+- 60/40 tranche split;
+- buyHigh integer-share flooring;
+- every comparator name must be orderable in both FIRST and ADD.
+
+The exhaustive cap-specific minimum HHI is compared with the unchanged current allocation HHI.
+
+Interpretation:
+- if current remains above the global minimum across the cap grid, the structural comparator advantage is not a 35%-specific artifact;
+- if the gap disappears/reverses at valid caps, prior evidence must be downgraded as cap-sensitive.
+
+Artifacts:
+`research/per_name_cap_sensitivity_v0_1.mjs`;
+`research/per_name_cap_sensitivity_spec_v0_1.json`;
+`tests/portfolio_risk_per_name_cap_sensitivity_readonly_audit.mjs`.
+
+Status:
+`PER_NAME_CAP_SENSITIVITY_READY / PRODUCTION_PENDING`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-066 Production result — 35% cap is not the source of the comparator advantage
+
+Read-only Production run `36378983683` / job `108790584186` evaluated 2026-09-18.
+
+Fair cap range:
+`32% through 50%`.
+
+32% is the minimum fair cap because the observed current maximum allocation is:
+`NT$64,000 / NT$200,000 = 32%`.
+
+Across all 19 fair cap values:
+- current PriorityScore plan remains legal;
+- current projected-risk HHI remains above the cap-specific exhaustive global minimum;
+- directional agreement = **19 / 19**.
+
+Key points:
+- cap 32%: minimum HHI = 0.3381084948, optimum 64k / 43k / 61k;
+- cap 35%: minimum HHI = 0.3342785411, optimum 70k / 42k / 56k;
+- cap 38%: minimum HHI = 0.3333499430, optimum 75k / 39k / 54k.
+
+From roughly 38% upward, the observed minimum reaches a plateau near the theoretical equal-contribution HHI of 1/3.
+
+Therefore the counter-hypothesis
+`the low-concentration comparator only looks better because of the 35% cap`
+is rejected.
+
+In fact, relaxing the cap from 35% initially allows **more**, not less, risk equalization. The 35% cap mildly constrains the structural comparator.
+
+Caps below 32% are not used for current-vs-comparator inference because they make the observed current allocation itself illegal.
+
+Receipt:
+`research/per_name_cap_sensitivity_production_receipt_20260928.json`.
+
+Status:
+`CAP_35_ARTIFACT_FALSIFIED / CURRENT_ABOVE_GLOBAL_MIN_19_OF_19 / RELAXED_CAP_STRENGTHENS_STRUCTURAL_GAP / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.

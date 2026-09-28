@@ -1,0 +1,38 @@
+{
+  "schemaVersion": "PER_NAME_CAP_SENSITIVITY_V0_1",
+  "observedAt": "2026-09-28T12:42:00+08:00",
+  "purpose": "Falsify whether the low-concentration comparator is a special artifact of the Formal 35% per-name cap.",
+  "capGridPct": [
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    38,
+    39,
+    40,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50
+  ],
+  "comparison": "At each cap, enumerate same-deployment NT$1,000-grid, two-stage-orderable states under 60/40 buyHigh share flooring and compare the current plan HHI with the cap-specific global minimum.",
+  "validity": "Only caps where the observed current allocation is itself legal are valid current-vs-global comparisons.",
+  "guardrails": [
+    "plan-preview projected risk only",
+    "same names and same planned deployment",
+    "two-stage orderability required",
+    "one historical multi-name date",
+    "cap-specific optima are diagnostics, not live recommendations"
+  ],
+  "status": "CAP_35_ARTIFACT_FALSIFIED / CURRENT_ABOVE_GLOBAL_MIN_19_OF_19 / RELAXED_CAP_STRENGTHENS_STRUCTURAL_GAP / ECONOMIC_VALUE_UNKNOWN",
+  "formalCoreImpact": false,
+  "productionReceipt": "research/per_name_cap_sensitivity_production_receipt_20260928.json"
+}
