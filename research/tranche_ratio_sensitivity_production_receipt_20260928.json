@@ -1,0 +1,64 @@
+{
+  "schemaVersion": "TRANCHE_RATIO_SENSITIVITY_PRODUCTION_RECEIPT_V0_1",
+  "observedAt": "2026-09-28T12:27:59+08:00",
+  "timestampProvenance": "GitHub Actions Portfolio Risk Tier-A Research run 36377784618 / job 108787059102",
+  "workflowRunId": 36377784618,
+  "jobId": 108787059102,
+  "readOnly": true,
+  "productionWrites": false,
+  "decisionImpact": false,
+  "scanDate": "2026-09-18",
+  "selectedCount": 3,
+  "ratioGrid": [
+    0.4,
+    0.45,
+    0.5,
+    0.55,
+    0.6,
+    0.65,
+    0.7,
+    0.75,
+    0.8,
+    0.85,
+    0.9
+  ],
+  "directionalAgreement": {
+    "testedRatios": 11,
+    "currentMoreConcentratedThanEqualCapital": 11,
+    "currentAboveGlobalMinimum": 11
+  },
+  "examples": {
+    "0.40": {
+      "currentHHI": 0.3767077818,
+      "equalCapitalHHI": 0.3553897407,
+      "globalMinHHI": 0.3342785411,
+      "optimumAllocationNTD": {
+        "2006": 70000,
+        "3105": 42000,
+        "6133": 56000
+      }
+    },
+    "0.60": {
+      "currentHHI": 0.3767077818,
+      "equalCapitalHHI": 0.3553897407,
+      "globalMinHHI": 0.3342785411,
+      "optimumAllocationNTD": {
+        "2006": 70000,
+        "3105": 42000,
+        "6133": 56000
+      }
+    }
+  },
+  "falsification": {
+    "rejectedClaim": "The 2026-09-18 structural concentration is a special artifact of the current 60/40 FIRST/ADD split.",
+    "result": "Rejected over FIRST ratios 40%-90% in 5-point steps. Current remains more concentrated than equal-capital and the ratio-specific global minimum at every tested ratio."
+  },
+  "limits": [
+    "one reconstructable multi-name date",
+    "plan-preview share geometry only",
+    "does not prove FIRST/ADD triggers or fills",
+    "tested grid currently 40%-90%; more extreme ratios remain a separate stress test"
+  ],
+  "status": "TRANCHE_RATIO_ARTIFACT_FALSIFIED_40_TO_90 / EXTREME_RATIO_STRESS_PENDING / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY",
+  "formalCoreImpact": false
+}
