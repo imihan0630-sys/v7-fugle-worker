@@ -133,3 +133,32 @@ Status:
 `PLAN_TIME_TAXONOMY_READY / PRODUCTION_AUDIT_PENDING`.
 
 No Formal Core change.
+
+
+## D15-CA-001 Production result — plan-time cash attribution is PIT-reconstructable
+
+Production read-only run `36414452558` / job `108902108262` returned four recorded scan dates and four formal plan rows.
+
+All four dates classified READY with zero accounting mismatches.
+
+Key dates:
+- 2026-09-18: NT$32,000 planned cash = NT$30,000 designed strategic reserve + NT$2,000 NT$1,000-grid implementation shortfall; cap-induced reserve = 0.
+- 2026-09-21: NT$130,000 planned cash = designed one-name reserve; implementation shortfall = 0.
+- 2026-09-22 and 2026-09-23: zero selected names, each correctly classified as `NO_ELIGIBLE_OPPORTUNITY / DESIGNED_100_PERCENT_RESERVE`.
+
+No date has proven actual broker/execution cash. That field remains UNKNOWN on all 4/4 dates.
+
+This rejects three shortcuts:
+1. all unallocated plan capital is wasted cash;
+2. the 2026-09-18 shortfall was caused by the 35% cap;
+3. planned cash can be used as actual broker cash.
+
+D15-08 Cash Attribution is promoted from L2/40% to **L3/60%** because Taiwan Production plan/journal evidence now supports PIT-consistent reconstruction.
+
+Receipt:
+`research/cash_attribution_production_receipt_20260928.json`.
+
+Status:
+`PLAN_TIME_CASH_ATTRIBUTION_PIT_VALIDATED / EXECUTION_CASH_UNKNOWN / D15_08_L3`.
+
+Formal Core unchanged.
