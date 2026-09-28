@@ -1895,3 +1895,15 @@ Formal Core remains LOCKED.
 2. Measure permissioned, outcome-blind real OHLC field and revision coverage by provider/date/market/symbol; retain UNKNOWN where absent. Test legitimate corrections and corporate-action transforms against certified sessions to quantify false-positive guard rejection.
 3. Reconcile exact immutable parent generation and complete child status with actual same-scan counts and non-secret runtime costs before a consolidated Class-B proposal.
 4. Only after prospective valid capture and PIT/OOS gates may TI-005 and TI-006 test incremental value. No Worker wiring, outcome join or Formal change now.
+
+## TI-410 — a changed digest can still belong to a future revision (2026-09-28)
+
+- Independent synthetic witness: `research/test_technical_indicator_revision_clock_falsification_v0_1.mjs` changes the last bar's high **and** asserted raw identity/digest, with a hypothetical first-known/capture time after the original decision. The isolated guard still returns `VALID` for both windows and KD changes, because it only checks one earlier context-level availability time. Distinct from TI-409's unchanged-hash witness.
+- Durable reasoning and counterargument: `research/TECHNICAL_INDICATOR_REVISION_CLOCK_FALSIFICATION_V0_1.md`. Legitimate later corrections and corporate-action transformations require new versioned ancestry and decision-specific cutoff, not permanent rejection. An adapter's self-asserted timestamps do not authenticate source availability.
+- Three isolated tests pass (new revision-clock, source guard, TI-409). No provider sample, measured false rejection rate, outcome or cost evidence. D03 maturity unchanged; Formal Core LOCKED.
+
+### Exact next continuation point after TI-410
+
+1. Obtain upstream independently attested per-field raw payload/version receipts, canonical content digest and per-version publication/first-known/capture clock; commit exact row versions to the immutable parent generation and transformation ancestry.
+2. Audit permissioned real source OHLC field availability and corrections by provider/date/market/symbol, with certified session/corporate-action truth and explicit UNKNOWN. Measure legitimate-correction false rejection and actual same-scan parent/child counts plus non-secret runtime cost.
+3. Keep TI-005/TI-006 outcome and incremental-value tests blocked until prospective complete capture, PIT/OOS and governance gates. No Formal or runtime wiring on synthetic evidence.
