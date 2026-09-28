@@ -92,6 +92,10 @@ on:
       - "research/extreme_tranche_ratio_stress_spec_v0_1.json"
       - "tests/test_tranche_stage_orderability_v0_1.mjs"
       - "tests/portfolio_risk_extreme_tranche_ratio_readonly_audit.mjs"
+      - "research/stage_feasible_grid_sensitivity_v0_1.mjs"
+      - "research/stage_feasible_grid_sensitivity_spec_v0_1.json"
+      - "tests/test_stage_feasible_grid_sensitivity_v0_1.mjs"
+      - "tests/portfolio_risk_stage_feasible_grid_readonly_audit.mjs"
       - "research/first_tranche_risk_concentration_v0_1.mjs"
       - "research/first_tranche_risk_concentration_spec_v0_1.json"
       - "tests/test_first_tranche_risk_concentration_v0_1.mjs"
@@ -167,6 +171,7 @@ jobs:
           node tests/test_score_stop_interaction_audit_v0_1.mjs
           node tests/test_tranche_ratio_sensitivity_v0_1.mjs
           node tests/test_tranche_stage_orderability_v0_1.mjs
+          node tests/test_stage_feasible_grid_sensitivity_v0_1.mjs
           node tests/risk_concentration_bridge_audit_v0_1.mjs
           node tests/test_first_tranche_risk_concentration_v0_1.mjs
           node tests/test_add_tranche_risk_concentration_v0_1.mjs
@@ -190,6 +195,7 @@ jobs:
           node tests/portfolio_risk_score_stop_interaction_readonly_audit.mjs
           node tests/portfolio_risk_tranche_ratio_sensitivity_readonly_audit.mjs
           node tests/portfolio_risk_extreme_tranche_ratio_readonly_audit.mjs
+          node tests/portfolio_risk_stage_feasible_grid_readonly_audit.mjs
           node tests/portfolio_risk_first_tranche_readonly_audit.mjs
           node tests/portfolio_risk_add_tranche_readonly_audit.mjs
           node tests/portfolio_risk_lifecycle_metric_sensitivity_readonly_audit.mjs
