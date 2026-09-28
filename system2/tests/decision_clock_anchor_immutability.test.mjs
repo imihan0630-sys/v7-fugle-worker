@@ -94,6 +94,14 @@ try {
     assert.equal(row.failureClass, "SCHEDULED_RUN_NOT_SUCCESS");
     assert.equal(row.promotionCoverageEligible, false);
     assert.deepEqual(report.coverageIntegrity.tradingDayGapDates, [date]);
+    assert.equal(report.aggregation.promotionGradeDateCount, 0);
+    assert.equal(report.aggregation.readiness.independentTradingDates, 0);
+    assert.equal(report.aggregation.coverageExcludedScheduledArtifacts.length, 1);
+    assert.equal(report.aggregation.coverageExcludedScheduledArtifacts[0].runId, "101");
+    assert.equal(
+      report.aggregation.coverageExcludedScheduledArtifacts[0].reason,
+      "COVERAGE_ANCHOR_NOT_PROMOTION_ELIGIBLE",
+    );
     assert.equal(report.aggregation.promotionCoverageComplete, false);
     assert.equal(report.aggregation.collectorContractConsistent, true);
     assert.equal(report.reviewPacket.reviewState, "BLOCKED");

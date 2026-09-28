@@ -21,6 +21,9 @@ export function buildDecisionClockReviewPacket(aggregation) {
   if ((aggregation.tradingDayArtifactGaps || []).length > 0) {
     blockers.push("TRADING_DAY_ARTIFACT_GAPS");
   }
+  if ((aggregation.coverageArtifactCandidateMismatches || []).length > 0) {
+    blockers.push("COVERAGE_ARTIFACT_PROVENANCE_MISMATCH");
+  }
   if (aggregation.collectorContractConsistent !== true) {
     blockers.push("COLLECTOR_CONTRACT_DRIFT");
   }
@@ -51,9 +54,16 @@ export function buildDecisionClockReviewPacket(aggregation) {
     reviewState,
     artifactSelectionPolicy: aggregation.promotionPolicy,
     attemptOneProvenanceVersion: aggregation.attemptOneProvenanceVersion || null,
+    promotionQualificationVersion: aggregation.promotionQualificationVersion || null,
     artifactCoverageAudited: aggregation.artifactCoverageAudited,
     promotionCoverageComplete: aggregation.promotionCoverageComplete,
     tradingDayArtifactGapCount: (aggregation.tradingDayArtifactGaps || []).length,
+    coverageExcludedScheduledArtifactCount:
+      (aggregation.coverageExcludedScheduledArtifacts || []).length,
+    coverageArtifactCandidateMismatchCount:
+      (aggregation.coverageArtifactCandidateMismatches || []).length,
+    coverageArtifactCandidateMismatchDates:
+      (aggregation.coverageArtifactCandidateMismatches || []).map((x) => x.marketDate),
     duplicateScheduledArtifactCount: (aggregation.duplicateScheduledArtifacts || []).length,
     rerunDiagnosticArtifactCount: aggregation.rerunDiagnosticArtifactCount || 0,
     manualDiagnosticArtifactCount: aggregation.manualDiagnosticArtifactCount,
