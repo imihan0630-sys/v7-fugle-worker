@@ -1174,3 +1174,506 @@ Formal Core remains LOCKED. No macro-event veto, size reduction, score or sector
 3. Capture initial release values separately from revised series.
 4. Join pre-event flags to D12 `NIGHT_PRE_SCAN` and evaluate post-scan night / next-open downside risk before testing direction.
 5. Continue D13-05 DXY and D13-08 commodities only after avoiding duplication with USD/TWD, oil and global risk factors.
+
+
+---
+
+## MC-050 — D13-05 reopened: DXY is a fixed developed-market currency basket, not “the world dollar”
+
+D13-05 remained L1.
+
+ICE states that the U.S. Dollar Index (USDX/DXY):
+- is a geometrically averaged calculation of six currencies against the U.S. dollar;
+- uses fixed composition/weights;
+- changed composition only once, when the euro replaced legacy European currencies in 1999;
+- retains 57.6% cumulative euro exposure.
+
+Current fixed weights:
+- EUR 57.6%;
+- JPY 13.6%;
+- GBP 11.9%;
+- CAD 9.1%;
+- SEK 4.2%;
+- CHF 3.6%.
+
+Therefore DXY is **not** a broad Asia/EM dollar index.
+
+A large DXY move can be dominated by EUR/USD even when:
+- USD/TWD is stable;
+- KRW or CNY move differently;
+- Asian financial conditions are not moving proportionally.
+
+Status: DXY-COMPOSITION SEMANTICS FROZEN.
+
+---
+
+## MC-051 — DXY and the Federal Reserve Broad Dollar Index are different economic objects
+
+The Federal Reserve broad dollar index is designed around U.S. trade exposure and periodically updates weights.
+
+Fed 2026 broad-index weights include, among others:
+- Euro Area about 21.0%;
+- Mexico about 14.8%;
+- Canada about 12.8%;
+- China about 10.9%;
+- Japan about 5.2%;
+- Korea about 3.6%;
+- Taiwan about 3.0%.
+
+This differs sharply from DXY's fixed six-currency developed-market basket.
+
+Research consequence:
+
+### DXY
+Best interpreted first as:
+- liquid/tradable developed-market dollar benchmark;
+- real-time FX/risk context;
+- heavily EUR-driven composite.
+
+### Fed Broad Dollar
+Best interpreted first as:
+- broader trade-weighted macro dollar measure;
+- more representative of U.S. trade relationships including Asian/EM currencies;
+- not automatically an 18:10 real-time market quote.
+
+Do not merge them into one field named `dollarStrength`.
+
+Status: DXY_VS_BROAD_DOLLAR FIREWALL FROZEN.
+
+---
+
+## MC-052 — the global-dollar mechanism is real, but DXY is only one proxy
+
+BIS / NBER / Federal Reserve research documents a global-dollar financial channel:
+- broad dollar appreciation is associated with tighter global financial conditions;
+- dollar appreciation can reduce EME capital flows, credit and investment;
+- dollar shocks correlate with U.S. monetary tightening, dollar-funding stress and global risk appetite.
+
+This supports a **global dollar risk-state hypothesis**.
+
+It does not prove:
+- DXY itself is the optimal Taiwan proxy;
+- DXY up always means Taiwan equities down;
+- raw DXY has incremental information beyond USD/TWD, U.S. rates, VIX or global equity futures.
+
+For Taiwan, the hierarchy must test:
+1. USD/TWD direct local FX state;
+2. U.S. rate state;
+3. global equity/risk state;
+4. DXY;
+5. broad-dollar alternative when PIT/source timing is valid.
+
+Status: GLOBAL-DOLLAR MECHANISM SUPPORTED / PROXY CHOICE UNRESOLVED.
+
+---
+
+## MC-053 — DXY is potentially PIT-clean at 18:10, but provider/licensing must be explicit
+
+ICE states that:
+- the cash USDX is calculated intraday from component-currency bid/offer midpoints;
+- the index is calculated in real time every second;
+- USDX futures trade for approximately 21 hours per day.
+
+Therefore a timestamped ICE DXY/USDX observation captured at or before 18:10 Taipei is conceptually PIT-eligible.
+
+However:
+- current repository has no durable DXY receipt;
+- provider entitlement/licensing/history contract is not frozen;
+- delayed vendor data must not be mislabeled real-time;
+- a daily close or later settlement cannot be backfilled as the 18:10 value.
+
+Source state:
+`ICE_DXY_OFFICIAL_SOURCE = IDENTIFIED`
+`DXY_1810_PROVIDER_ENTITLEMENT = NOT_FROZEN`
+`DXY_HISTORICAL_1810_RECEIPT = NOT_ESTABLISHED`.
+
+Status: SOURCE_FEASIBILITY MATERIAL_PASS / DATA CONTRACT PENDING.
+
+---
+
+## MC-054 — DXY needs a euro-dominance / redundancy audit before Taiwan use
+
+Because EUR weight is 57.6%, a DXY move can largely reflect EUR/USD.
+
+Minimum decomposition:
+- DXY return;
+- EUR/USD return;
+- USD/JPY return;
+- USD/TWD return;
+- U.S. 2Y/10Y changes;
+- global equity-futures state.
+
+Candidate diagnostic:
+`dxyExEuroResidual` only as research-only residual after a pre-registered model.
+
+But do not jump directly to residualization.
+
+Validation order:
+1. raw DXY;
+2. EUR/USD alone;
+3. USD/TWD alone;
+4. DXY + USD/TWD;
+5. DXY after U.S. rates/global risk controls;
+6. only then consider a DXY residual.
+
+If EUR/USD alone explains the DXY result, classify:
+`EURO_DOMINATED_NOT_TAIWAN_INCREMENTAL`.
+
+Status: EURO-DOMINANCE REDUNDANCY GATE FROZEN.
+
+---
+
+## MC-055 — DXY candidate state architecture
+
+Do not define one binary “strong dollar = bad” state.
+
+Research-only raw states:
+- `dxyLevelPctile`;
+- `dxyReturnPreScan`;
+- `dxyShockZ`;
+- `dxyTrend20`;
+- `dxyVolatility`;
+- `dxyVsUsdTwdDivergence`;
+- `dxyVsRatesDivergence`.
+
+Potential contextual patterns:
+
+### BROAD_DOLLAR_STRESS_CANDIDATE
+- DXY up;
+- USD/TWD up (TWD weaker);
+- U.S. rates and/or global risk stress aligned.
+
+### EURO_LED_DXY_UP
+- DXY up;
+- EUR/USD explains most of move;
+- USD/TWD / Asian FX not confirming.
+
+### LOCAL_TWD_WEAKNESS_WITHOUT_DXY
+- USD/TWD up materially;
+- DXY flat/down.
+This may be more Taiwan-specific and cannot be replaced by DXY.
+
+These are descriptive states, not trading rules.
+
+Status: DOLLAR-CONTEXT TAXONOMY FROZEN.
+
+---
+
+## MC-056 — D13-05 falsification and maturity decision
+
+Primary targets:
+- next-open gap;
+- next-session MAE / realized range;
+- D1/D3 Taiwan market residual return;
+- System 1 / System 2 candidate hit-rate and stop incidence.
+
+Mandatory controls:
+1. Taiwan same-day market/Regime;
+2. USD/TWD;
+3. U.S. rates;
+4. prior U.S. broad/tech + same-window futures where available;
+5. VIX/IV;
+6. then DXY.
+
+Falsification:
+- EUR/USD substitution test;
+- USD/TWD substitution test;
+- broad-dollar comparison when PIT-valid;
+- crisis removal;
+- date-shift placebo;
+- leave-one-date-out;
+- direction vs risk-target split;
+- Asian FX confirmation interaction;
+- no threshold/window selected from outcome performance.
+
+D13-05 advances **L1 -> L2**.
+
+Why not L3:
+- official source is identified, but no durable 18:10 DXY receipt/provider entitlement is frozen;
+- no independent-date Taiwan evidence under the fixed redundancy order exists.
+
+Formal Core remains LOCKED. No DXY veto, score, risk throttle or ranking bonus is approved.
+
+---
+
+## MC-057 — D13-08 reopened: “metals / commodities / rare elements” is not one factor family
+
+D13-08 remained L1.
+
+Three economically distinct groups must be separated:
+
+### A. Industrial / base metals
+Examples:
+- copper;
+- aluminium;
+- zinc;
+- tin.
+Core drivers:
+- global industrial demand;
+- construction/infrastructure;
+- manufacturing;
+- mine/smelter disruptions;
+- inventories;
+- energy/input constraints.
+
+### B. Precious / monetary metals
+Example:
+- gold.
+Core drivers:
+- real rates;
+- USD;
+- safe-asset demand;
+- central-bank/investor demand;
+- geopolitical/financial stress;
+- mining supply.
+
+### C. Critical / strategic minerals
+Examples:
+- lithium;
+- cobalt;
+- graphite;
+- rare earths;
+- gallium;
+- germanium;
+- indium;
+- tungsten.
+Core drivers:
+- highly specific technology demand;
+- processing/refining concentration;
+- export controls;
+- small/opaque markets;
+- substitution constraints;
+- by-product supply.
+
+A single `COMMODITY_RISK_SCORE` would mix incompatible mechanisms.
+
+Status: COMMODITY-FAMILY SEPARATION FROZEN.
+
+---
+
+## MC-058 — industrial-metal prices are endogenous to both global demand and supply
+
+World Bank research finds modern commodity-price variation is materially driven by global macro demand, while metal-specific supply disruptions remain important.
+
+For copper/aluminium:
+- recession/recovery demand shocks can move prices strongly;
+- supply disruptions can also produce large moves;
+- the same +5% copper move can mean stronger industrial demand or tighter mine/smelter supply.
+
+Therefore:
+`copperUp = globalGrowthUp`
+is not a valid identity.
+
+Research-only context must preserve:
+- price return;
+- curve/spread where available;
+- inventory/tightness proxies where PIT-valid;
+- known supply-disruption event;
+- global equity/PMI/growth context.
+
+Status: INDUSTRIAL-METAL ENDOGENEITY GUARD FROZEN.
+
+---
+
+## MC-059 — copper is a clean 18:10 market-price candidate, but roll and USD redundancy matter
+
+CME HG copper futures trade nearly around the clock. A timestamped HG futures observation before 18:10 Taipei can therefore be PIT-eligible.
+
+Required contract fields:
+- exchange;
+- contractMonth;
+- daysToExpiry;
+- frontPrice;
+- nextPrice;
+- frontNextSpread;
+- rollFlag;
+- sourceTimestamp;
+- currency = USD;
+- quoteQuality.
+
+Candidate features:
+- same-contract 15:00->18:10 return;
+- 1D/5D return known at scan;
+- shock percentile;
+- front/next spread change;
+- realized/intraday volatility.
+
+Mandatory redundancy controls:
+- DXY / USD;
+- U.S. rates;
+- global equity futures;
+- oil;
+- Taiwan electronics/industrial sector RS.
+
+Because copper is USD-denominated, some price movement can be mechanical or correlated with dollar moves. Test metal returns in both raw USD terms and USD-controlled residual form only after pre-registration.
+
+Status: COPPER PRE-SCAN SOURCE FEASIBLE / PROVIDER CONTRACT PENDING.
+
+---
+
+## MC-060 — gold is not an industrial commodity proxy and safe-haven behavior is conditional
+
+Gold differs from copper.
+
+CME and empirical research identify major gold channels:
+- U.S. dollar;
+- real yields / opportunity cost;
+- investor/central-bank demand;
+- risk/geopolitical conditions;
+- supply.
+
+Recent multi-country evidence finds gold's hedge/safe-haven role varies by market and regime. It is not universally a strong safe haven for every equity market in every episode.
+
+Research consequence:
+- gold up cannot automatically mean RISK_OFF;
+- gold down cannot automatically mean RISK_ON.
+
+At 18:10, CME gold futures are actively trading and can be PIT-eligible if timestamped.
+
+Mandatory redundancy:
+- DXY;
+- 10Y real yield;
+- VIX/IV;
+- global equity futures;
+- geopolitical/event state.
+
+A gold signal that vanishes after DXY + real-yield controls is not incremental.
+
+Status: GOLD MONETARY/RISK FAMILY FROZEN.
+
+---
+
+## MC-061 — critical minerals have an opposite data problem: economic importance can be high while price transparency is low
+
+IEA 2025/2026 work emphasizes:
+- high refining/processing concentration;
+- export restrictions;
+- small and opaque markets for many strategic minerals;
+- extreme price volatility;
+- by-product dependence;
+- limited substitution;
+- limited price transparency.
+
+IEA 2026 reports that strategic minor minerals such as gallium, germanium, indium, tungsten and others can support very large downstream economic value despite small physical market size.
+
+For rare earths, the IEA explicitly calls for greater price transparency because limited transparency complicates contracting and hedging.
+
+Therefore:
+`NO_RELIABLE_DAILY_PRICE != NO_ECONOMIC_SIGNAL`.
+
+For many rare/strategic minerals, event/supply-chain evidence may be more reliable than a stale vendor price.
+
+Status: PRICE-TRANSPARENCY LIMIT FROZEN.
+
+---
+
+## MC-062 — critical-mineral architecture should be event-first, price-second
+
+For rare earths / strategic minor minerals:
+
+Primary state objects:
+1. `SUPPLY_RESTRICTION_EVENT`
+   - export control;
+   - quota;
+   - mine/refinery outage;
+   - sanction/trade restriction.
+
+2. `SUPPLY_CONCENTRATION_STATE`
+   - producer/refiner concentration;
+   - by-product dependency;
+   - substitute availability.
+
+3. `PRICE_EVIDENCE`
+   - only when source/method/currency/region/timestamp is explicit;
+   - preserve regional price divergence instead of forcing one “world price.”
+
+4. `DOWNSTREAM_EXPOSURE_DEPENDENCY`
+   - owned by D10 supply-chain research, not duplicated here.
+
+This room owns:
+- global event clock;
+- commodity/mineral market state;
+- source/provenance.
+
+D10 owns:
+- which Taiwan companies/products are exposed;
+- beneficiary/victim chain;
+- inventory/capacity/pass-through.
+
+Status: D13<->D10 OWNERSHIP BOUNDARY FROZEN.
+
+---
+
+## MC-063 — regional price divergence is information, not bad data by default
+
+IEA 2026 documents large regional price gaps after export restrictions, including much higher non-China prices for some rare earths/gallium/germanium.
+
+Therefore a “single global mineral price” can destroy useful information.
+
+Required price identity:
+- mineral/material grade;
+- purity/specification;
+- geography;
+- incoterm/market location if applicable;
+- currency;
+- unit;
+- source/method;
+- assessment timestamp;
+- capturedAt;
+- revision flag.
+
+If two sources/regions disagree:
+- preserve both;
+- do not average blindly;
+- define `REGIONAL_PRICE_DIVERGENCE`.
+
+Status: MINERAL PRICE IDENTITY CONTRACT FROZEN.
+
+---
+
+## MC-064 — D13-08 falsification and maturity decision
+
+### Industrial metals
+Test:
+- copper/metal state beyond global equity + USD + oil;
+- demand-compatible versus supply-tightness contexts;
+- sector-conditioned Taiwan effects.
+
+### Gold
+Test:
+- incremental value beyond DXY + real yields + VIX/IV;
+- crisis vs normal regimes;
+- risk prediction vs return direction.
+
+### Critical minerals
+Test:
+- event-first state vs price-only state;
+- publishedAt/knownAt integrity;
+- whether downstream Taiwan impact appears only after D10 exposure mapping;
+- regional-price divergence vs single-price simplification;
+- stale/opaque price sensitivity.
+
+Common falsification:
+- date-shift placebo;
+- leave-one-date/event-out;
+- remove extreme crises;
+- no ex-post event classification;
+- no provider switching based on better outcomes;
+- UNKNOWN for missing/opaque price evidence.
+
+D13-08 advances **L1 -> L2**.
+
+Why not L3:
+- no frozen prospective provider/receipt stream for copper/gold/critical minerals;
+- critical-mineral price sources remain heterogeneous/opaque;
+- no independent-date/event Taiwan evidence under the frozen D13-D10 boundary exists.
+
+Formal Core remains LOCKED. No commodity score, rare-earth bonus, gold risk veto or sector weight change is approved.
+
+## Exact next continuation after MC-064
+
+1. Design one unified research-only `GLOBAL_MARKET_RECEIPT_V0_1` envelope with instrument-family-specific payloads rather than separate incompatible receipts.
+2. First prospective lanes: DXY, HG copper, GC gold and scheduled critical-mineral supply events; preserve provider entitlement and observedAt/knownAt.
+3. Continue D13-03 Japan/Korea from L2 toward L3 only after clean 13:30-Taipei -> 14:30-Taipei subwindow data feasibility is proven.
+4. Continue D13-12 global shock / Taiwan residual by integrating only PIT-safe lanes; missing lanes remain UNKNOWN.
+5. No Formal optimization proposal until prospective/OOS evidence demonstrates incremental value beyond domestic Taiwan state, USD/TWD, rates, VIX and sector RS.
