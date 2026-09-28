@@ -122,12 +122,12 @@ replace_once(
 replace_once(
 '''  const rows=result?.results||[],byCohort={},byDate={};''',
 '''  const rows=result?.results||[],byCohort={},byDate={};
-  const detailResult=await env.V7_DB.withSession("first-primary").prepare(\`
+  const detailResult=await env.V7_DB.withSession("first-primary").prepare(`
     SELECT scan_date,symbol,cohort,pool,snapshot_json
     FROM trade_research_shadow_candidates
     WHERE scan_date>=?1
     ORDER BY scan_date ASC,cohort ASC,pool ASC,symbol ASC
-  \`).bind(fromDate).all();
+  `).bind(fromDate).all();
   const institutionalDecomposition=buildInstitutionalScoreDecompositionObserver(detailResult?.results||[]);''',
     "institutional score decomposition read",
 )
