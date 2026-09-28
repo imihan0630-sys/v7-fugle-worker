@@ -102,4 +102,7 @@ console.log(JSON.stringify({
   breadthUniverseExplicit:true,
   formalSectorGateFrozen:true,
   formalRankingFrozen:true,
-  decisionImpact:false,\n  institutionalScoreDecompositionObserver:true,\n  institutionalOutcomesUsed:false\n}));
+  decisionImpact:false,
+  institutionalScoreDecompositionObserver:true,
+  institutionalOutcomesUsed:false
+}));
