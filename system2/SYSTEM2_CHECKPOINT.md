@@ -534,6 +534,30 @@ Interpretation:
 - the bounded four-symbol month proves correctness but is not sufficient by itself to authorize a ten-year bulk load;
 - a read-only full-market month compression benchmark is the next scale test. Full 2017→present backfill remains intentionally not started until that benchmark bounds projected storage.
 
+## 2026-09-28 full-market pack scale benchmark
+
+Read-only full-market compression benchmark is complete and PASS.
+
+- workflow: `System2 Historical Pack Full-Market Benchmark`;
+- corrected run head `432f590e0f0df308dd9f1852609e22e98e905bfd`; benchmark job PASS;
+- period: 2026-08-03 through 2026-08-31, 21 official trading dates;
+- TWSE: 22,810 stock-day rows, average 1,086.19 ordinary equities/day;
+- TPEx: 18,646 stock-day rows, average 887.90 ordinary equities/day;
+- combined: 41,456 bars -> 1,977 market+symbol+year packs;
+- canonical JSON: 3,587,823 bytes;
+- gzip: 1,389,468 bytes (ratio 0.3873);
+- Base64 storage payload: 1,855,256 bytes (ratio 0.5171);
+- per-bar observed payload: JSON 86.55 bytes / gzip 33.52 bytes / Base64 44.75 bytes;
+- conservative 4.7M-bar projection: gzip ≈150.2 MiB, Base64 payload ≈200.6 MiB before SQLite/index/receipt overhead;
+- month-sized packs overstate fixed pack overhead relative to full-year packs, so the full-year representation is expected to compress at least as well, subject to direct yearly verification;
+- benchmark performed no D1 writes and no System1 mutation; isolation PASS.
+
+Scale decision:
+- row-wise multi-million-bar D1 storage remains rejected for the historical cold archive;
+- yearly per-symbol packed storage is promoted from bounded experiment to the preferred P0 historical cold-store representation;
+- full 2017→present ingestion must still be staged by year with durable completion receipts and coverage checks, not executed as one unbounded job;
+- first production-scale research backfill unit is calendar year 2017, executed in isolated System2 infrastructure only. This is historical research storage, not strategy/final-selection authorization.
+
 ## Current boundary
 
 Research/design/code prototype is not blocked. Isolated D1 and inert Worker already exist, but prospective always-on Shadow accumulation remains intentionally inactive. A5/B2 observer engineering is complete; the immediate boundary is accumulation of independent same-day V0.2 evidence beginning no earlier than the 2026-09-29 official session. No exact Decision Clock is frozen; capture is false; Worker Cron is 0. The GitHub Actions research schedule is read-only evidence collection and is not the Worker Cron. No production-shared storage or System 1/V8 change is authorized or needed.
