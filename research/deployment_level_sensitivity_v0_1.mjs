@@ -64,11 +64,45 @@ export function deploymentLevelSensitivity(plans=[],totalCapital,{
       out.levels[String(deployRatio)]={status:"GRID_CAPACITY_INVALID"};continue;
     }
 
-    // same-actual-deployment equal capital, reconciled to grid deterministically by score-symbol order neutral to risk:
+    // Grid-equal-capital is a family when totalUnits is not divisible by name count.
+    // Enumerate every allocation whose unit counts differ by at most one to avoid symbol-order bias.
     const baseUnits=Math.floor(totalUnits/rows.length),remainder=totalUnits-baseUnits*rows.length;
-    const equalUnits=rows.map((x,i)=>baseUnits+(i<remainder?1:0));
-    const equalPreview=rows.map((x,i)=>preview(x,equalUnits[i]*grid,firstRatio));
-    const equalRisks=equalPreview.map(x=>x.risk);
+    const equalFamilies=[];
+    function chooseExtras(start,left,chosen){
+      if(left===0){
+        const set=new Set(chosen);
+        const equalUnits=rows.map((x,i)=>baseUnits+(set.has(i)?1:0));
+        const equalPreview=rows.map((x,i)=>preview(x,equalUnits[i]*grid,firstRatio));
+        if(equalPreview.every(x=>x.bothStagesOrderable)){
+          const risks=equalPreview.map(x=>x.risk);
+          equalFamilies.push({
+            allocationsNTD:Object.fromEntries(rows.map((x,i)=>[x.symbol,equalUnits[i]*grid])),
+            projectedRiskHHI:hhi(risks),
+            projectedRiskNTD:risks.reduce((a,b)=>a+b,0)
+          });
+        }
+        return;
+      }
+      for(let i=start;i<=rows.length-left;i++) chooseExtras(i+1,left-1,[...chosen,i]);
+    }
+    chooseExtras(0,remainder,[]);
+    if(remainder===0 && equalFamilies.length===0){
+      const equalUnits=rows.map(()=>baseUnits);
+      const equalPreview=rows.map((x,i)=>preview(x,equalUnits[i]*grid,firstRatio));
+      if(equalPreview.every(x=>x.bothStagesOrderable)){
+        const risks=equalPreview.map(x=>x.risk);
+        equalFamilies.push({
+          allocationsNTD:Object.fromEntries(rows.map((x,i)=>[x.symbol,equalUnits[i]*grid])),
+          projectedRiskHHI:hhi(risks),
+          projectedRiskNTD:risks.reduce((a,b)=>a+b,0)
+        });
+      }
+    }
+    if(!equalFamilies.length){
+      out.levels[String(deployRatio)]={status:"NO_EQUAL_CAPITAL_ORDERABLE_FAMILY"};continue;
+    }
+    equalFamilies.sort((a,b)=>a.projectedRiskHHI-b.projectedRiskHHI||JSON.stringify(a.allocationsNTD).localeCompare(JSON.stringify(b.allocationsNTD)));
+    const equalMin=equalFamilies[0],equalMax=equalFamilies[equalFamilies.length-1];
 
     let stateCount=0,feasible=0,minHHI=null,optima=[];
     const units=new Array(rows.length).fill(0);
@@ -104,7 +138,6 @@ export function deploymentLevelSensitivity(plans=[],totalCapital,{
       if(String(e?.message)==="MAX_STATES_EXCEEDED"){out.levels[String(deployRatio)]={status:"STATE_SPACE_TOO_LARGE",stateCount};continue}
       throw e;
     }
-    const equalHHI=hhi(equalRisks);
     out.levels[String(deployRatio)]={
       status:minHHI===null?"NO_FEASIBLE_STATE":"READY",
       nominalDeployRatio:deployRatio,
@@ -114,22 +147,26 @@ export function deploymentLevelSensitivity(plans=[],totalCapital,{
       implementationShortfallFromNominalNTD:round(targetNominal-currentDeployment,4),
       currentAllocationsNTD:Object.fromEntries(cur.map(x=>[x.symbol,x.allocation])),
       currentProjectedRiskHHI:round(currentHHI,10),
-      equalCapitalAllocationsNTD:Object.fromEntries(rows.map((x,i)=>[x.symbol,equalUnits[i]*grid])),
-      equalCapitalProjectedRiskHHI:round(equalHHI,10),
+      equalCapitalFamilyCount:equalFamilies.length,
+      equalCapitalMinHHI:round(equalMin.projectedRiskHHI,10),
+      equalCapitalMaxHHI:round(equalMax.projectedRiskHHI,10),
+      equalCapitalMinHHIAllocationsNTD:equalMin.allocationsNTD,
+      equalCapitalMaxHHIAllocationsNTD:equalMax.allocationsNTD,
       globalMinHHI:round(minHHI,10),
       globalOptimumCount:optima.length,
       globalOptima:optima,
       legalStates:stateCount,twoStageFeasibleStates:feasible,
-      currentMinusEqualHHI:round(currentHHI-equalHHI,10),
+      currentMinusEqualWorstCaseHHI:round(currentHHI-equalMax.projectedRiskHHI,10),
+      currentMinusEqualBestCaseHHI:round(currentHHI-equalMin.projectedRiskHHI,10),
       currentMinusGlobalMinHHI:round(currentHHI-minHHI,10),
-      currentMoreConcentratedThanEqual:currentHHI>equalHHI+1e-12,
+      currentMoreConcentratedThanEveryEqualCapitalPermutation:currentHHI>equalMax.projectedRiskHHI+1e-12,
       currentAboveGlobalMin:currentHHI>minHHI+1e-12
     };
   }
   const ready=Object.values(out.levels).filter(x=>x.status==="READY");
   out.summary={
     testedLevels:ready.length,
-    currentMoreConcentratedThanEqualCount:ready.filter(x=>x.currentMoreConcentratedThanEqual).length,
+    currentMoreConcentratedThanEveryEqualCapitalPermutationCount:ready.filter(x=>x.currentMoreConcentratedThanEveryEqualCapitalPermutation).length,
     currentAboveGlobalMinCount:ready.filter(x=>x.currentAboveGlobalMin).length
   };
   out.semantics="Hypothetical nominal-deployment stress using the current score-proportional/cap/NT$1000-floor allocation rule. Comparators use each level's actual planned deployment after flooring. Structural only; Formal deploy ratio unchanged.";
