@@ -4,7 +4,11 @@ import assert from 'node:assert/strict';
 const valid = new Set(['READY','WARMUP_INCOMPLETE','DATA_BLOCKED','VALID_BUT_CONSTRAINED','UNKNOWN']);
 const key = x => `${x.parentDecisionReceiptId}|${x.captureGeneration}`;
 
-export function reconcile(parents, children, pages = []) {
+export function reconcile(parents, children, pages = [], populationReceipt = null) {
+  if (populationReceipt && populationReceipt.expectedCount !== parents.length)
+    return {state:'QA_FAIL',reason:'POPULATION_RECEIPT_MISMATCH'};
+  if (!parents.length && !populationReceipt)
+    return {state:'INCOMPLETE',reason:'MISSING_EMPTY_POPULATION_RECEIPT'};
   const parent = new Map(), child = new Map();
   for (const p of parents) {
     if (parent.has(key(p))) return {state:'QA_FAIL',reason:'DUPLICATE_PARENT'};
@@ -57,10 +61,14 @@ assert.equal(run(p,[{...c[0],parentFingerprint:'changed'},...c.slice(1)]).reason
 assert.equal(run(p,c,[{receipts:p.slice(0,1000)},{receipts:p.slice(1000,1700)}]).reason,'PARTIAL_DATE_READ');
 assert.equal(run(p,c,[{receipts:p.slice(0,1000)},{receipts:p.slice(1000),truncated:true}]).reason,'TRUNCATED_READ');
 assert.equal(run(p,c,[{receipts:p.slice(0,1000)},{receipts:p.slice(1000)}]).state,'COMPLETE');
+assert.equal(run(p,c,[{receipts:p.slice(0,1000)},{receipts:[...p.slice(1000,1799),{...p[1799],captureGeneration:'g2'}]}]).reason,'FOREIGN_PAGE_KEY');
+assert.equal(reconcile([],[]).reason,'MISSING_EMPTY_POPULATION_RECEIPT');
+assert.equal(reconcile([],[],[],{expectedCount:0}).state,'COMPLETE');
+assert.equal(reconcile(p,c,[],{expectedCount:1799}).reason,'POPULATION_RECEIPT_MISMATCH');
 assert.equal(immutableInsert(p[0],{...p[0]}).state,'IDEMPOTENT');
 assert.equal(immutableInsert(p[0],{...p[0],fingerprint:'changed'}).state,'PROVENANCE_CONFLICT');
 assert.equal(immutableInsert(p[0],{...p[0],captureGeneration:'g2'}).state,'DIFFERENT_IDENTITY');
 const memberships=[{parentDecisionReceiptId:'r0',cohort:'SELECTED'},{parentDecisionReceiptId:'r0',cohort:'INDEPENDENT_BROAD_CONTROL'}];
 assert.equal(memberships.length,2);
 assert.equal(run().expected,1800);
-console.log('PASS: 15 outcome-blind shared-parent assertions');
+console.log('PASS: 19 outcome-blind shared-parent assertions');
