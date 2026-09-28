@@ -579,6 +579,8 @@ Safety/operations:
 - it targets isolated `system2-research` plus an isolated R2 bucket and requires separate least-privilege R2 object credentials;
 - repository tests cover object/manifest/receipt immutability, retry with a later capture timestamp, object corruption, PIT replay, Bulk Backtest integration, registry persistence, AWS SigV4 R2 access and workflow isolation;
 - System1 `Worker.js`, root `wrangler.toml`, Formal Core, SELECTED policy, Decision Clock, Worker Cron and trading behavior are unchanged.
+- PR #245 validation evidence: System2 Research CI run `36434552698` PASS, V8 Regression run `36434552278` PASS, and bounded official-source packed readback run `36434541564` PASS against isolated `system2-research` schema V1.0.
+- An earlier PR smoke run `36434206488` correctly failed closed when default source-row enrichment changed an already frozen V0.9 payload hash. The fix makes provenance enrichment explicit only for the new external-cold annual path; the bounded legacy rerun then passed without rewriting existing packs.
 
 Superseded inline-backfill evidence:
 - GitHub runs `36429244651` and `36429895255` applied schema V0.9 successfully but both TWSE and TPEx jobs failed in the inline annual backfill step before completion;

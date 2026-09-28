@@ -183,7 +183,15 @@ The production-quality research path now externalizes compressed bytes:
 - `createHistoricalColdBacktestLoadersV0_1` connects D1 survivorship-registry membership and R2 cold packs to the existing partitioned Bulk Backtest Runner;
 - historical-universe registries now have rerun-safe immutable persistence and completion receipts.
 
-The 2017 annual backfill workflow is manual-only and requires a separately isolated R2 bucket plus least-privilege object read/write credentials. No R2 resource, schema V1.0 migration or 2017 full-market cold backfill is claimed complete yet.
+The 2017 annual backfill workflow is manual-only and requires a separately isolated R2 bucket plus least-privilege object read/write credentials. No R2 resource or 2017 full-market cold backfill is claimed complete yet.
+
+PR #245 qualification evidence:
+- System2 Research CI run `36434552698` PASS;
+- V8 Regression run `36434552278` PASS;
+- isolated D1 schema V1.0 physical smoke run `36434206278` PASS;
+- bounded official-source V0.9 pack compatibility/readback run `36434541564` PASS after source-row provenance was made opt-in for the new external-cold annual path.
+
+The isolated D1 schema V1.0 migration is therefore complete. R2 provisioning/readback and the 2017 annual external-cold population remain pending and are not claimed complete.
 
 ## 2. Designed but not yet fully implemented
 
