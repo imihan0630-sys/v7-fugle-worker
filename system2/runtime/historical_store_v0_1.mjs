@@ -142,9 +142,10 @@ async function normalizeHistoricalBar({
   const canonicalKey = [market, symbol, marketDate, priceSpace].join("|");
   const availabilityClass = pitAvailabilityClass(availableAt, availabilityBasis);
 
-  const base = {
-    batchId,
-    datasetLane,
+  // Content identity must be stable across repeated fetch batches.  Batch/capture
+  // metadata proves when we observed the row, but must not turn an identical
+  // official row into a false historical revision on re-ingest.
+  const contentIdentity = {
     canonicalKey,
     marketDate,
     market,
@@ -164,16 +165,24 @@ async function normalizeHistoricalBar({
     sourceName,
     sourceUrl: sourceUrl || null,
     sourceRowHash,
-    observedAt,
     availableAt,
     availabilityBasis,
     pitAvailabilityClass: availabilityClass,
     pitReplayEligible: availabilityClass !== "UNKNOWN",
-    capturedAt,
-    schemaVersion: "S2_HISTORICAL_A1_BAR_V0_1",
+    schemaVersion: "S2_HISTORICAL_A1_BAR_V0_2",
   };
-  const barHash = await sha256Hex(base);
-  const barId = "S2H-A1-" + barHash;
+  const contentHash = await sha256Hex(contentIdentity);
+  const barHash = contentHash;
+  const barId = "S2H-A1-" + contentHash;
+
+  const base = {
+    batchId,
+    datasetLane,
+    ...contentIdentity,
+    observedAt,
+    capturedAt,
+    contentHash,
+  };
   return deepFreeze({ ...base, barId, barHash });
 }
 
