@@ -78,3 +78,11 @@ FD-020: Freeze minimal prospective Fundamental Event Shadow schema.
 
 ## Next lane
 Derivatives Information & Volatility Surface.
+
+
+## 2026-09-28 D07+D08 long-block continuation
+- FD-044..FD-046 added: profitability must be decomposed from leverage/denominator effects; cash conversion/accrual quality is a missing dimension; FCF has no single IFRS-defined formula; growth×quality states are preferred over blindly extending the additive fundamentalScore.
+- VAL-009..VAL-012 added in VALUATION_RESEARCH.md: trailing PE has cycle inversion risk; EV/EBITDA needs peer/capital-intensity guards; FCF Yield needs a frozen numerator and reinvestment context; next architecture is quality-adjusted valuation rather than low-PE ranking.
+- External evidence is mechanism/counterevidence only; it does not establish Taiwan System alpha. Taiwan accrual literature motivates, but does not authorize, a hard gate.
+- No Formal change. No threshold/weight search. No historical PIT fabrication.
+- Exact next continuation: repository/MOPS PIT field audit for CFO, capex, assets, equity, debt/cash; freeze sector policies (industrial vs financial); define prospective component receipt and quality×valuation Shadow schema; only then run within-date/sector incremental tests.
