@@ -741,3 +741,98 @@ No new sample-count threshold is invented here. Reuse D16/D18 and the repository
 
 Status:
 `MARKET_RV_CAPTURE_GATE = DEFINED / EVIDENCE_COUNT_ZERO_UNTIL_REAL_PERSISTENCE`.
+
+
+## VR-031 — ATR% normalizes price scale, but not Taiwan tick-grid granularity
+
+ATR% solves one important cross-sectional problem:
+a NT$10 range means something different on a NT$100 stock versus a NT$2,000 stock.
+
+But ATR% does not remove price-grid discreteness.
+
+Current TWSE stock ticks are price-band dependent:
+- <10: 0.01
+- 10-50: 0.05
+- 50-100: 0.10
+- 100-500: 0.50
+- 500-1000: 1
+- >=1000: 5
+
+This creates discontinuous relative-tick jumps at price-band boundaries.
+
+### Structural examples
+
+Using the official tick schedule:
+
+- price 99.9, tick 0.1:
+  - relative tick ~= 10 bps;
+  - ATR 1% ~= 9.99 ticks;
+  - 1.2% price distance ~= 11.99 ticks.
+
+- price 100, tick 0.5:
+  - relative tick = 50 bps;
+  - ATR 1% = 2 ticks;
+  - 1.2% price distance = 2.4 ticks.
+
+- price 999, tick 1:
+  - relative tick ~= 10 bps;
+  - ATR 1% ~= 9.99 ticks;
+  - 1.2% price distance ~= 11.99 ticks.
+
+- price 1000, tick 5:
+  - relative tick = 50 bps;
+  - ATR 1% = 2 ticks;
+  - 1.2% price distance = 2.4 ticks.
+
+Thus two stocks with nearly identical price and identical ATR% can differ by roughly 5x in the number of legal price increments represented by that volatility.
+
+### Why this matters to the current Formal geometry
+
+The current B channel uses:
+`stop = breakout - max(0.65*ATR, breakout*0.012)`.
+
+The 1.2% floor is continuous-price geometry.
+Near NT$1,000:
+- just below the price band boundary, 1.2% spans roughly 12 ticks;
+- at NT$1,000, it spans only 2.4 ticks.
+
+This does NOT prove the stop is wrong.
+It proves the same percentage risk geometry can have materially different execution granularity.
+
+The A channel has the same general issue because support/structure/ATR-derived prices may land between legal ticks.
+
+### Research-only descriptors
+
+Freeze only descriptive fields first:
+- `relativeTickBps = tick(close)/close*10000`;
+- `atrTicksApprox = ATR_price/tick(close)`;
+- `stopDistanceTicksApprox = abs(entry-stop)/tick(entry_or_close)`.
+
+The suffix `Approx` is mandatory because a wide range can cross a TWSE tick band, and the legal tick at the actual order price may differ from the close-price tick.
+
+A future execution-precision study should use the exact legal tick at each plan/order price.
+
+### Falsification
+
+This becomes useful only if, after controlling:
+- price tier;
+- liquidity;
+- spread/depth;
+- channel A/B;
+- ATR%;
+- stop distance %;
+tick granularity still explains fill/slippage/stop behavior or path quality.
+
+If not, keep it as execution semantics only.
+
+Cross-lane handoff:
+- D04 owns volatility/tick interpretation;
+- D05 owns relative-tick microstructure state;
+- D14/D15 own any eventual executable-price / stop-order implementation.
+
+Status:
+`ATR_TICK_GRANULARITY = STRUCTURAL_CONFOUND_CONFIRMED / RESEARCH_DESCRIPTOR_ONLY`.
+
+Sources:
+- TWSE Operating Rules Article 62.
+- Tang, Peng & Zhang (2022), Trading information, price discreteness, and volatility estimation, Journal of Statistical Planning and Inference 220, 49-70.
