@@ -362,3 +362,37 @@ They must not be erased once later clean data arrive.
 - If the sign materially changes across regimes/events/liquidity states, classify REGIME_OR_CONTEXT_DEPENDENT and prohibit post-hoc global threshold tuning.
 - This overlay was frozen before the first potentially clean 2026-09-30 cohort and therefore does not use future outcomes to choose the controls.
 - Formal Core remains LOCKED.
+
+
+## Long-block hypothesis refinement after PVE-161~167 — 2026-09-28
+
+### H001 — same-slot RVOL incremental value
+Status unchanged: EVIDENCE_GATED.
+Additional falsifiers frozen before outcomes:
+- no unconditional HIGH_VOLUME sign;
+- must survive common-support comparison with Formal local volume ratio;
+- any apparent gain is provisional until market/sector/context proxy explanations are checked with PIT-valid controls;
+- if context adjustment removes the effect => CONTEXT_PROXY/REDUNDANT.
+
+### H002 — cumulative pace / persistence
+Status unchanged: EVIDENCE_GATED.
+- cumulative pace must add beyond slot RVOL/local ratio;
+- persistence states are within-event trajectories, not independent observations;
+- continuity gaps quarantine trajectory inference;
+- repeated rows cannot inflate primary N.
+
+### H003 — response / acceptance / Guard states
+Status remains HIGHER_GATED.
+New anti-circularity requirement:
+- compare PRICE_ONLY_RESPONSE vs PRICE_PLUS_VOLUME_RESPONSE on identical future-only outcomes;
+- same-bar price geometry cannot count as future alpha;
+- acceptance transitions reusing Formal geometry are not independent PV evidence;
+- if price-only performs equivalently, classify PV response layer REDUNDANT.
+
+### D02-04 dry-up interpretation
+LOW participation is not a bullish label. Constructive dry-up requires intact pre-outcome structure/liquidity plus later independently observed demand re-expansion; otherwise classify WEAK_DEMAND, ILLIQUID/UNKNOWN or merely DESCRIPTIVE.
+
+### D02 module redundancy
+D02-05/08/09/10 must be evaluated as views over PARTICIPATION_RESIDUAL -> EFFORT_RESULT -> PERSISTENCE_ACCEPTANCE before any additive scoring proposal. OBV/CMF/MFI/narrative accumulation-distribution labels require independent incremental evidence to escape REDUNDANT status.
+
+No hypothesis is upgraded to SUPPORTED/REJECTED by this design/literature block. Formal Core remains LOCKED.
