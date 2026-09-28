@@ -35,6 +35,9 @@ Only the regime policy action may differ.
 
 If candidate generation/ranking/factor definitions differ, the comparison is no longer a pure policy experiment and must receive a new experiment class.
 
+### Close-to-next-session causality
+For an after-close regime snapshot, policy action becomes effective no earlier than the next tradable session. Same-session return, price path or execution evidence cannot be retroactively filtered by the after-close state. A holiday/suspension gap is handled by the official next-tradable-session calendar; missing session continuity remains UNKNOWN.
+
 ## Receipt identity fields
 
 - receiptId
@@ -42,6 +45,7 @@ If candidate generation/ranking/factor definitions differ, the comparison is no 
 - experimentVersion
 - marketDate
 - decisionTimestamp
+- actionEffectiveSession
 - capturedAt
 - runFingerprintId
 - sourceSessionHash
@@ -230,6 +234,34 @@ At analysis time, eligible controls include:
 - cost/slippage stress.
 
 Arbitrary stock-row shuffling is prohibited.
+
+## Complexity ladder
+
+Do not begin with a fully crossed regime cube.
+
+Evidence order:
+1. one observable regime dimension × one frozen strategy;
+2. repeat across strategies;
+3. only then test a second regime dimension as incremental context;
+4. pairwise interactions only after both marginal dimensions have enough independent-date evidence;
+5. latent-state / multi-dimensional policies last.
+
+This reduces sparse cells, multiplicity and post-hoc storytelling.
+
+The existing 15 usable-date rule in the broad research registry is descriptive readiness only. It is not a promotion sample-size guarantee. Policy promotion sample size should be justified against a preregistered minimum economically meaningful effect and date-level variability, not selected after observing significance.
+
+## Zero-pick / no-exposure semantics
+
+Keep separate:
+- NATURAL_ZERO_PICK: frozen strategy produced no eligible action;
+- POLICY_DISABLED: baseline had an eligible action but challenger suppressed/reduced it;
+- DATA_UNKNOWN: evidence/source/integrity blocked the decision.
+
+Only POLICY_DISABLED carries a regime-policy counterfactual opportunity cost. DATA_UNKNOWN is never coerced to zero.
+
+## Current implementation gap
+
+Repository search on the current main finds the named `UP_TREND_CONTEXT / DOWN_TREND_CONTEXT / RANGE_OR_MIXED` and `VOL_EXPANDING / VOL_CONTRACTING / VOL_NORMAL` labels in the Market Regime V0 specification, but no executable label builder implementing those names. Therefore the first policy experiment cannot yet claim a frozen executable taxonomy. The correct next step is a research-only deterministic regime-label contract or continued raw-feature capture; do not infer the missing rules.
 
 ## Promotion boundary
 
