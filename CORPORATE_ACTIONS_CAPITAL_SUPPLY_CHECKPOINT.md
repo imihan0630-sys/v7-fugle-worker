@@ -290,3 +290,14 @@ CA-115 re-evaluate Class-A Shadow implementation readiness only after CA-113 arc
 CA-113: obtain immutable TPEx S38 bytes/hash if feasible and continue bounded completeness/revision receipts; the public historical query is already validated as an official reconciliation lane.
 CA-114: obtain BFT51U `上市股數` or equivalent exact daily TWSE listed-share artifacts around 2465 2025-11-11..2025-11-18 and determine payment-certificate representation. Preserve UNKNOWN if the exact daily source cannot express a metric-compatible combined tradable denominator.
 CA-115: do not re-evaluate Class-A Shadow implementation readiness until the remaining TWSE exact-listed-share/archive gate is resolved and CA-113 completeness is sufficient.
+
+
+## CA-113/114 event-state reconstruction contract refinement
+- New artifact: `research/corporate_action_event_state_reconstruction_contract_v0_1.json`.
+- A key distinction is now frozen: a complete official event ledger can reconstruct a bounded daily state, but only for the exact semantic space it actually governs. This is not the same as possessing a daily snapshot archive.
+- Reconstruction is admissible only with a verified pre-window baseline, complete relevant event-family coverage, effective-session dates, knownAt/vintage preservation, revision/cancellation chains, suspension-aware expected sessions and explicit instrument mapping.
+- Missing baseline, incomplete event-family coverage, unknown effective session, unresolved revision chain or instrument mapping all fail closed to UNKNOWN.
+- Applied to 2465, 2025-11-17 can be represented as separate states: listed common 58,946,031; payment-certificate tradable units 10,000,000; combined tradable sensitivity 68,946,031 only for metrics explicitly defined across both instruments; private-placement 25,000,000 remains outside public listed-common supply; registered-issued common shares remain a separate clock.
+- MI_QFIIS 93,946,031 from 2025-11-12 remains a reporting-table state and is explicitly prohibited as a substitute for any of those trading/registration semantic spaces.
+- This narrows the remaining blocker: CA-114 semantic definition is no longer the main uncertainty; the unresolved gate is exact bounded archive/completeness/knownAt evidence, especially TWSE daily listed-share reconciliation and TPEx immutable-byte provenance.
+- CA-115 remains blocked. Formal Core unchanged.
