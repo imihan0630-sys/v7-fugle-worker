@@ -132,6 +132,26 @@ Merged to main:
 
 All three PR heads passed System2 Research CI and V8 Regression before merge.
 
+## 1A. Ordered 1→6 engineering foundation now present (2026-09-28)
+
+The owner-authorized build sequence now has repository-side executable foundations for all six ordered layers:
+
+1. A1 Historical Window（歷史視窗） / factor primitives — implemented and CI-verified.
+2. Historical Store（歷史資料庫） — append-oriented normalized A1 storage contract + isolated D1 migration implemented.
+3. PIT Replay（時點重播） — availableAt-gated replay with fail-closed revision ambiguity implemented.
+4. Bulk Backtest Runner（大量回測執行器） — full-universe partitioning, no hard symbol cap, checkpoint/resume and rolling digest implemented.
+5. Historical Base Dataset（歷史基礎研究樣本庫） — Selected / Near-miss / Important Rejected archive projection and persistence records implemented. Final SELECTED remains owner-gated.
+6. Daily Shadow Orchestrator（每日影子編排器） — limited research-only orchestrator implemented; final selection and scheduled capture remain disabled.
+
+Incremental backfill support is also implemented:
+- initial Core lane default start: 2017-01-01;
+- per-market last-stored date determines the next effective start date;
+- already-caught-up ranges create zero work units instead of reloading the full history;
+- backfill work is chunked and checkpoint/resume capable;
+- tests explicitly verify 2026-09-24 → 2026-09-25 continuation.
+
+Important limitation: this is an executable engineering foundation, **not** a claim that the 2017→present official historical dataset has already been physically populated. The next P0 step is source-specific TWSE/TPEx historical ingestion and isolated-D1 readback verification, followed by the first real full-market replay.
+
 ## 2. Designed but not yet fully implemented
 
 The following are not allowed to be described as complete:
