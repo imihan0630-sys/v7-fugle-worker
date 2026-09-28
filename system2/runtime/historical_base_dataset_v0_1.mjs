@@ -233,6 +233,7 @@ export function toBacktestCheckpointRow(checkpoint) {
     completed_dates_json: JSON.stringify(checkpoint.completedDates || []),
     processed_sample_count: checkpoint.processedSampleCount,
     state_counts_json: JSON.stringify(checkpoint.stateCounts || {}),
+    date_summaries_json: JSON.stringify(checkpoint.dateSummaries || []),
     rolling_digest: checkpoint.rollingDigest,
     captured_at: checkpoint.capturedAt,
     schema_version: checkpoint.schemaVersion,
