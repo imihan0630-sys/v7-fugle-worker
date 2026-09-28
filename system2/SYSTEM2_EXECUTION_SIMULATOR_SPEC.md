@@ -1,7 +1,7 @@
 # System 2 Taiwan Execution Simulator Spec
 
 Updated: 2026-09-26 Asia/Taipei
-Status: PRE-REGISTERED EXECUTION SPEC V0.1
+Status: PRE-REGISTERED SPEC + MINIMUM RESEARCH RUNTIME IMPLEMENTED V0.1 / NOT SCHEDULED
 
 ## Objective
 
@@ -179,3 +179,34 @@ Do not label signal-price return as realized trading performance.
 ## Safety
 
 This simulator is independent from V8 live positions and signals. It does not place real orders and does not change System 1 monitoring behavior.
+
+## Minimum runtime implementation V0.1
+
+Repository modules:
+- `system2/runtime/execution_simulator_v0_1.mjs`
+- `system2/runtime/outcome_persistence_v0_1.mjs`
+
+Implemented research-only behavior:
+- explicit `BUY_STOP` and `BUY_LIMIT` entry semantics;
+- next-session decision-time firewall;
+- explicit entry-validity window, so an unexpired order remains `ENTRY_PENDING` instead of being frozen prematurely as `NO_FILL`;
+- adverse gap handling for entry and stop exits;
+- official limit-price validation and explicit limit/halt/liquidity blockers;
+- all-or-none shares only;
+- configurable entry/exit slippage, brokerage commission, minimum commission and sell-side transaction tax;
+- target / stop / max-holding exits;
+- `AMBIGUOUS_SAME_BAR` preservation with possible stop-first / target-first paths rather than favorable sequencing;
+- daily-bar fills keep exact `fillTimestamp` null because OHLC does not identify an intraday timestamp;
+- signal return remains separate from simulated gross and net-after-cost return;
+- immutable simulated order/fill persistence plus monotonic, optimistic-guarded `s2_outcomes` updates;
+- post-write readback verification against isolated `SYSTEM2_DB` only.
+
+Still not implemented / not claimed:
+- partial fills;
+- broker-specific owner commission settings;
+- calibrated market-impact or spread model;
+- intraday event sequencing beyond daily-bar ambiguity;
+- automated official future-session collection;
+- scheduled execution/outcome job;
+- corporate-action registry integration;
+- real order placement or live recommendations.

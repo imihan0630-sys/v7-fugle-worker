@@ -132,6 +132,25 @@ Merged to main:
 
 All three PR heads passed System2 Research CI and V8 Regression before merge.
 
+Additional latest-main implementation discovered during the current audit:
+
+4. PR #225 / merge commit `ba8d05444dce42d84edfc6b79bb68e2e459938aa`
+   - added the A1 historical daily-bar primitive engine;
+   - derives versioned technical, price-volume and liquidity observations from source-injected history;
+   - preserves price-space, volume-unit, corporate-action continuity and PIT fail-closed semantics;
+   - does not fetch a provider, assign a strategy score or apply a strategy threshold.
+
+5. PR #226 / merge commit `b3001d6`
+   - added the Limited Shadow full-universe run assembler;
+   - connects source-session receipt, regime, per-symbol factor snapshots, strategy assessments, frozen decisions, full-universe accounting, run fingerprint, Prediction Snapshot and immutable persistence batch;
+   - explicitly refuses to enable the final-selection layer.
+
+6. Minimum execution/outcome persistence runtime V0.1 (current P0 implementation branch)
+   - implements explicit entry expiry, gaps, official price-limit validation, halt/liquidity blocks, target/stop/max-holding exits, configurable slippage/commission/tax and same-bar ambiguity;
+   - never fabricates an exact fill timestamp from daily OHLC;
+   - persists simulated orders/fills immutably and updates `s2_outcomes` only under monotonic revision and optimistic concurrency guards;
+   - remains research-only, source-injected and unscheduled.
+
 ## 2. Designed but not yet fully implemented
 
 The following are not allowed to be described as complete:
@@ -144,7 +163,8 @@ The following are not allowed to be described as complete:
 - final `SELECTED` authorization policy for the initial strategies;
 - final strategy weights / thresholds / score floors;
 - automated post-decision outcome collection and D1 update job;
-- execution-simulator runtime implementation for gaps, limits, tradability, slippage, commissions/tax and fill sequencing;
+- scheduled orchestration around the implemented minimum execution/outcome runtime;
+- partial-fill / calibrated market-impact expansion beyond the current all-or-none simulator;
 - corporate-action-normalized outcome source integration;
 - public/read-only Shadow query API;
 - System 2 UI/dashboard;
@@ -159,7 +179,7 @@ P0 means required to operate a trustworthy automated Shadow loop, not merely to 
 
 Required:
 - fetch official A1 TWSE/TPEx daily payloads into the new per-symbol adapter;
-- add verified historical lookback needed by technical/price-volume factors;
+- connect the implemented historical primitive engine to the official daily source-fetch path;
 - turn source snapshots into versioned factor observations;
 - attach company names / market / source hashes / availableAt;
 - preserve UNKNOWN instead of imputing missing inputs.
@@ -171,7 +191,8 @@ Required:
 - guarantee every eligible symbol is accounted for;
 - run source readiness, factors, family assessments and strategy-state evaluation;
 - construct rank/capacity receipts;
-- construct and persist frozen decision + Prediction Snapshot evidence;
+- extend the implemented one-strategy Limited Shadow assembler into the authorized multi-strategy ranking/capacity/final-cohort chain;
+- construct and persist frozen decision + Prediction Snapshot evidence through that chain;
 - make run fingerprint complete before outcome joining.
 
 ### P0-C: initial final-selection policy — OWNER GATE
@@ -186,10 +207,10 @@ This affects formal System 2 strategy behavior and therefore requires explicit o
 
 Repository-side outcome math now exists. Still required:
 - collect post-decision future sessions automatically;
-- update `s2_outcomes` under monotonic revision guards;
+- invoke the implemented monotonic `s2_outcomes` persistence runtime from an automated job;
 - feed benchmark and industry references;
 - integrate corporate-action state;
-- implement the minimum execution simulator runtime;
+- connect the implemented minimum execution simulator to persisted selected/triggered decisions;
 - keep signal return, simulated gross return and net-after-cost return separate;
 - preserve AMBIGUOUS_SAME_BAR rather than selecting the favorable path.
 
@@ -254,9 +275,9 @@ Do not block MVP on these:
 
 Engineering order:
 
-1. A1 historical-window + factor adapter.
-2. Full-market orchestrator through frozen decision / Prediction Snapshot persistence.
-3. Automated outcome persistence + minimum execution simulator.
+1. Connect official A1 source retrieval to the implemented per-symbol/history adapters.
+2. Extend the Limited Shadow assembler through multi-strategy ranking/capacity while keeping final selection disabled.
+3. Connect automated future-session collection to the implemented outcome/execution persistence runtime.
 4. Prepare initial final-selection policy candidates and evidence packet for owner approval.
 5. Continue Decision Clock prospective evidence in parallel.
 6. After owner approvals, arm exact clock + isolated Worker scheduled Shadow capture.
