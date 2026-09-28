@@ -1,8 +1,8 @@
 # Derivatives Information & Volatility Surface Checkpoint
 
-Updated: 2026-09-25 Asia/Taipei
-Current cursor: DR-001 through DR-029 complete.
-Next: evidence accumulation; concept lane complete.
+Updated: 2026-09-28 17:23 Asia/Taipei
+Current cursor: DR-001 through DR-034 complete.
+Next: D12-08 prospective evidence accumulation + D12-10 mechanism deepening.
 
 ## Durable conclusions
 
@@ -49,3 +49,26 @@ DR-024 minimal Shadow schema + falsification.
 
 ## Next lane
 Portfolio & Risk Construction / Correlation Clusters.
+
+
+## 2026-09-28 D12-08 Gamma identifiability deepening
+
+- Curriculum reconciliation: D12-08 had remained L0 even though DR-018 already warned that public OI cannot identify Dealer GEX sign. DR-030..DR-034 now turn that warning into an explicit mechanism, source and falsification contract.
+- Gamma sign is position-side semantics: long Call and long Put are positive Gamma; short Call and short Put are negative Gamma. Call-positive / Put-negative public GEX is an assumption scenario, not mathematics.
+- TAIFEX option-chain data are strike/expiry-specific and support Gamma/OI concentration after model inputs are frozen.
+- TAIFEX dealer-class Call/Put long/short OI is aggregate and is not publicly cross-tabulated by strike/expiry; exact option-market-maker signed GEX therefore remains NOT_IDENTIFIED.
+- TAIFEX “long/short” for options is directional grouping: buy Call + sell Put are long; sell Call + buy Put are short. For Gamma, dealer Put-long grouping is short-option/negative-Gamma while dealer Put-short grouping is long-option/positive-Gamma.
+- New defensible layer A: unsigned Gamma concentration by strike/expiry; it must be falsified against simpler OI-only concentration.
+- New defensible layer B: partial-identification lower/upper bounds for TAIFEX reported dealer-class Gamma using aggregate dealer counts plus strike-expiry market-OI capacities. Sign is POSITIVE only if lower bound > 0, NEGATIVE only if upper bound < 0, otherwise UNKNOWN.
+- “Gamma wall”, “zero Gamma” and “Gamma flip” are prohibited as factual labels unless a signed inventory model is explicit and validated. Large Gamma/OI nodes are hypotheses for expiry-conditioned dwell/reversal, not automatic support/resistance.
+- Primary outcomes are volatility/range, reversal-vs-momentum and liquidity stress; direction is secondary.
+- Research contract frozen at `research/d12_08_gamma_exposure_identifiability_spec_v0_1.json`.
+- Maturity: D12-08 L0 -> L2. L3 remains blocked until prospective PIT same-date/session source receipts exist.
+- Formal Core unchanged; no score, veto, risk throttle or ranking change.
+
+## Exact next continuation
+
+1. Prospective same-date/session TXO chain + institutional dealer aggregate reconciliation.
+2. Research-only unsigned-Gamma and dealer-class-bound calculator.
+3. Independent normal/expiry/event-date evidence before L3.
+4. Continue D12-10 night futures/overnight information L1 -> L2 while evidence accumulates.
