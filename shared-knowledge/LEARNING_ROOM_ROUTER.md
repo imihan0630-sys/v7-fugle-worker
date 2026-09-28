@@ -22,6 +22,8 @@ Formal Core impact: NONE
 - 聊天室先辨識自己的名稱；只研究被分配的 Dxx 領域。
 - **00｜研究總控室身分鎖定**：`00｜研究總控室` 是本專案的 canonical（正式）總控聊天室名稱與治理身分。即使 ChatGPT UI 自動產生、重命名或顯示其他聊天標題，也不得改變其正式角色；只要該聊天室承擔總控職責，即一律視為 `00｜研究總控室`。總控室只負責18大領域／226模組總覽、成熟度、研究依賴、聊天室路由、排程、自動化治理、System 1／System 2 研究銜接與跨線整合，不自行取代專科研究室深挖。
 - **00｜研究總控室禁止學習執行**：若使用者在 `00｜研究總控室` 貼入 A／B／C 輪動學習指令、任何 D01～D18 專科研究指令，或要求「繼續學習／深入研究」，總控室不得直接執行專科研究、不得產生新研究證據、不得升級模組成熟度、不得寫入任何專屬 research/checkpoint。總控室只能辨識正確研究線、檢查路由與進度、修正分工，並把工作留給對應研究室或既有自動輪動任務執行。
+- **A／B／C 自動輪動任務例外**：已建立的「輪動學習 A／B／C」Scheduled Task（排程任務）屬於獨立自動研究執行環境，不等同於 `00｜研究總控室` 的一般聊天回合，因此可以依各自 Dxx 分工執行專科研究。前述「00｜研究總控室禁止學習執行」只限制總控聊天室本身，不得誤傷自動輪動任務。
+- **自動輪動 Heartbeat（心跳）**：A／B／C 每次排程被觸發，不論本輪有無成熟度升級，都必須更新各自唯一的心跳檔 `research/automation/ROTATION_A_HEARTBEAT.md`、`research/automation/ROTATION_B_HEARTBEAT.md`、`research/automation/ROTATION_C_HEARTBEAT.md`。至少記錄台北時間、run status（SUCCESS／NO_PROGRESS／BLOCKED／ERROR）、本輪候選模組、實際研究模組、是否有 research/checkpoint/tracker 寫回、commit SHA（若有）、阻塞原因（若有）與 exact next continuation point。心跳檔只供稽核排程是否真正運作，不得拿來虛增成熟度。
 - **00｜研究總控室** 是本專案永久 Canonical Name（正式標準名稱）。即使 ChatGPT UI 自動重新產生或改寫聊天標題，本聊天室在研究治理、路由、checkpoint 與跨線協調上的身份仍固定視為 **00｜研究總控室**；不得因 UI 標題變更而改變職責或被重新分派為專科研究室。
 
 - 名稱前有 `(x)` 或 `（x）` = **ARCHIVED_FULL**，只作歷史資料來源，不再領取新研究。
