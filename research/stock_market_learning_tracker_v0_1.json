@@ -466,9 +466,9 @@
         }
       ],
       "status": "FALSIFICATION_IN_PROGRESS",
-      "exactNextContinuationPoint": "D04-ATR-OBS-01: audit outcome-free observability of the frozen L0 pre-ATR -> L1 ATR gate -> L2 stop geometry -> L3 RR survival -> L4 final selection decomposition across actual Shadow/reject cohorts; identify first-failure/sampling holes before any outcomes. Then verify prospective clean TAIEX RV5/RV20/RV5to20 capture and compare overlapping ratio versus non-overlapping recent5/prior15 only as robustness.",
+      "exactNextContinuationPoint": "D04-RV-CAPTURE-01: verify prospective clean-date persistence/readback of official TAIEX RV5/RV20/RV5to20 under the decision-clock/source contract; historical pre-capture first-known states remain UNKNOWN. After independent valid dates accumulate, use recent5/prior15 non-overlap only as robustness. ATR L0-L4 computation audit is complete, but outcome/opportunity-cost inference waits for the shared immutable per-symbol decision-state parent.",
       "lastResearchUpdate": "2026-09-28T21:04:00+08:00",
-      "researchNote": "Frozen machine spec research/volatility_atr_conditioning_decomposition_v0_1.json. Global ATR optimum rejected as structurally misspecified without channel+stop-binding controls; no maturity promotion this round."
+      "researchNote": "ATR decomposition + observability audit frozen. Same-scan computation is feasible with existing Class-A observers; legacy Shadow denominator is bounded/mutable/first-failure-conditioned and prohibited for promotion-grade ATR outcome inference. D04 maturity unchanged."
     },
     {
       "id": "D05",
@@ -562,9 +562,9 @@
         }
       ],
       "status": "EVIDENCE_PENDING",
-      "exactNextContinuationPoint": "D05-HORIZON-01: no new indicators. When a complete prospective books+trades event ledger is available, validate E0 event-time -> E1 1m/5m -> E2 10m/15m -> E3 30m retention using dual clock, event-intensity matching, session/tick strata, and a nested top1 versus aggregate top5 test. Before infrastructure activation verify actual Fugle plan/quota and completeness/replay contract; missing events remain UNKNOWN.",
+      "exactNextContinuationPoint": "D05-HORIZON-01: wait for a complete prospective books+trades event ledger. Then validate E0 event-time -> E1 1m/5m -> E2 10m/15m -> E3 30m retention using dual clock, event-intensity matching, TWSE session/tick strata, and nested best-level versus aggregate top-five block. Before collector activation, verify actual Fugle plan/quota and completeness/replay semantics; missing events remain UNKNOWN.",
       "lastResearchUpdate": "2026-09-28T21:04:00+08:00",
-      "researchNote": "Frozen machine spec research/microstructure_dual_clock_horizon_protocol_v0_1.json. Source feasibility material pass; own Taiwan PIT event completeness not proven, so no L3 promotion."
+      "researchNote": "Dual-clock/horizon-retention protocol frozen. No new indicators or L3 promotion until own Taiwan PIT event completeness is proven."
     },
     {
       "id": "D06",
