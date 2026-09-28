@@ -1,0 +1,89 @@
+{
+  "schemaVersion": "0.1",
+  "updatedAt": "2026-09-28T21:36:00+08:00",
+  "domain": "D04",
+  "status": "STRUCTURAL_CONFOUND_CONFIRMED",
+  "formalCoreImpact": "NONE",
+  "purpose": "Prevent ATR-percent and continuous stop geometry from being interpreted as execution-equivalent across Taiwan price/tick bands.",
+  "twseStockTickBands": [
+    {
+      "priceCondition": "price < 10",
+      "tick": 0.01
+    },
+    {
+      "priceCondition": "10 <= price < 50",
+      "tick": 0.05
+    },
+    {
+      "priceCondition": "50 <= price < 100",
+      "tick": 0.1
+    },
+    {
+      "priceCondition": "100 <= price < 500",
+      "tick": 0.5
+    },
+    {
+      "priceCondition": "500 <= price < 1000",
+      "tick": 1
+    },
+    {
+      "priceCondition": "price >= 1000",
+      "tick": 5
+    }
+  ],
+  "structuralWitnesses": [
+    {
+      "price": 99.9,
+      "tick": 0.1,
+      "relativeTickBps": 10.01001001001001,
+      "atrPct": 1,
+      "atrTicksApprox": 9.99,
+      "distancePct": 1.2,
+      "distanceTicksApprox": 11.988
+    },
+    {
+      "price": 100,
+      "tick": 0.5,
+      "relativeTickBps": 50,
+      "atrPct": 1,
+      "atrTicksApprox": 2,
+      "distancePct": 1.2,
+      "distanceTicksApprox": 2.4
+    },
+    {
+      "price": 999,
+      "tick": 1,
+      "relativeTickBps": 10.01001001001001,
+      "atrPct": 1,
+      "atrTicksApprox": 9.99,
+      "distancePct": 1.2,
+      "distanceTicksApprox": 11.988
+    },
+    {
+      "price": 1000,
+      "tick": 5,
+      "relativeTickBps": 50,
+      "atrPct": 1,
+      "atrTicksApprox": 2,
+      "distancePct": 1.2,
+      "distanceTicksApprox": 2.4
+    }
+  ],
+  "researchDescriptors": [
+    "relativeTickBps",
+    "atrTicksApprox",
+    "stopDistanceTicksApprox"
+  ],
+  "interpretationGuards": [
+    "Approx suffix required when using close-price tick because a range/order price may cross a tick band.",
+    "Exact execution study must evaluate the legal tick at the actual plan/order price.",
+    "Do not convert this structural confound into a new threshold before prospective evidence.",
+    "Control price tier, liquidity, spread/depth, A/B channel, ATR% and stopDistancePct before claiming incremental value."
+  ],
+  "crossLaneOwnership": {
+    "D04": "volatility/tick interpretation",
+    "D05": "relative-tick microstructure state",
+    "D14/D15": "executable price / stop-order implementation"
+  },
+  "formalChangesAuthorized": false
+}
