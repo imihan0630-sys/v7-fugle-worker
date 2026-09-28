@@ -86,9 +86,85 @@ Protocol above supplies mechanism + falsification + PIT/replay contract. Concept
 FORMAL_OPTIMIZATION_CANDIDATE: NONE.
 Reason: architecture/gates improved, but no mature prospective/OOS regime-policy evidence yet. No Formal Core or System 2 strategy weight/activation change is justified.
 
-## Exact next continuation
-1. D18-06: define PIT-safe size-bucket contract or keep UNKNOWN; do not infer size leadership from price/trade-value alone.
-2. D18-07: separate domestic market risk state from global/macro risk-on/off until durable global receipts exist.
-3. D16-13: connect Shadow membership/population-receipt repair to unbiased regime-policy counterfactual sampling.
-4. Pre-register first D18 walk-forward experiment only after enough clean prospective regime dates exist; use static baseline + block-permuted regime negative control + identical costs.
-5. Recheck R06 only when new clean official-session-contiguous dates accumulate.
+
+## 2026-09-28 deep falsification continuation — size/global/shadow contracts
+
+### D18-06 PIT-safe large-cap vs small-cap leadership contract
+A size-leadership state is admissible only if membership is frozen using information available at the regime decision clock. The preferred first contract is cross-sectional, date-relative and coarse rather than an outcome-tuned NT$ cutoff:
+- universe = same frozen ordinary-share universe used for the market snapshot;
+- size basis = PIT-safe market capitalization only;
+- explicit market-cap source is preferred; sharesOutstanding × close is admissible only when sharesOutstanding has its own observedAt/availableAt/provenance and corporate-action denominator semantics;
+- UNKNOWN source/vintage => UNKNOWN size membership, never imputed from current shares;
+- freeze large/small buckets before observing subsequent strategy outcomes; preregister bucket construction and minimum eligible coverage;
+- measure leadership using same-horizon aggregate/median returns of frozen buckets and keep liquidity/activity as separate covariates.
+
+Critical falsification: existing market-cap-floor research shows size can proxy liquidity, limit-hit/limits-to-arbitrage and information quality. Therefore a raw large-minus-small return spread is not independent regime evidence. Any claimed strategy interaction must survive controls/matching for executable liquidity, price, volatility, limit state, information quality and sector composition. If the interaction disappears, D18-06 is redundant context rather than a strategy switch.
+
+Do not infer size leadership from trade value, price level, index membership, or today's reconstructed market cap. Do not threshold-sweep bucket cutoffs after seeing outcomes.
+
+Current status: CONTRACT_DEFINED / DATA_FEASIBILITY_PARTIAL. D18-06 remains below PIT-evidence promotion until a durable prospective market-cap vintage receipt exists with adequate coverage.
+
+### D18-07 domestic risk state is not global risk-on/off
+Freeze two distinct objects:
+1. TAIWAN_DOMESTIC_RISK_CONTEXT: may use PIT-safe Taiwan trend, breadth/participation, liquidity/activity, concentration, institutions and realized volatility.
+2. GLOBAL_TRANSMISSION_CONTEXT: remains UNKNOWN until durable receipts exist for each selected foreign index/FX/rate/commodity/macro input with source timestamp, observedAt, availableAt, Taiwan decision-clock alignment, holiday/session semantics and revision vintage where relevant.
+
+A domestic weak tape must not be relabeled GLOBAL_RISK_OFF. Conversely, a US/global risk-off observation does not prove a Taiwan strategy gate unless the transmission adds OOS information beyond domestic trend/volatility/breadth and stock/sector factors.
+
+Required negative controls:
+- domestic-only baseline;
+- global-only context;
+- domestic + global incremental model;
+- lagged global inputs aligned to what Taiwan knew at decision time;
+- holiday/session mismatch exclusion;
+- event-release revision/availability audit;
+- identical cost treatment.
+
+If global context adds no stable incremental OOS value, simplify/remove it rather than retaining narrative complexity.
+
+Current status: SEMANTIC_SPLIT_FROZEN / GLOBAL_RECEIPTS_UNKNOWN.
+
+### D16-13 Shadow population receipt for unbiased counterfactuals
+A bounded or reason-ordered Shadow cohort cannot estimate the effect of regime gating unless inclusion probability/population semantics are known. Future counterfactual research needs a per-date population receipt frozen before outcomes:
+- scanDate, strategyVersion, regimeVersion, universeVersion;
+- eligiblePopulationCount and stable population hash/manifest reference;
+- inclusion rule and cap;
+- ordering key before truncation;
+- sampled/included count;
+- exclusion counts by reason;
+- whether sampling is deterministic census, random sample, or top-K/reason-ordered;
+- inclusion probability when probabilistic;
+- UNKNOWN/missing-source counts;
+- outcome horizon availability tracked separately.
+
+For deterministic top-K/reason-ordered bounded cohorts, do not apply naive inverse-probability weighting: units with zero inclusion probability are unidentified. Such cohorts support descriptive audit of the captured subset, not universe-level counterfactual claims.
+
+Preferred evidence hierarchy:
+1. census of all otherwise-eligible research rows when storage/cost permits;
+2. preregistered probability sample with recorded seed/version and non-zero inclusion probability;
+3. stratified probability sample by date/regime/strategy when census is impractical;
+4. bounded top-K/reason-ordered sample only for diagnostics, not causal/counterfactual estimation.
+
+### New falsification: attribution-policy gap
+Even a statistically significant conditional return difference can fail as a policy because:
+- regime recognition is delayed;
+- transition false positives create churn;
+- strategy opportunity arrives before the regime label stabilizes;
+- the regime variable duplicates trend/volatility/sector signals already inside the strategy;
+- gating removes rare high-payoff recovery dates;
+- extra turnover/slippage consumes the gross edge.
+
+Therefore promotion requires net policy value versus the frozen static strategy, not merely conditional attribution significance.
+
+### Multiplicity / overfit rule strengthened
+The family of tested strategy × regime × horizon × transition-rule × weight-map combinations is one multiplicity family. A small p-value from one selected cell is not promotion evidence. First-line reporting should emphasize effect size, independent dates, uncertainty, stability and holdout performance; any multiplicity-adjusted significance is secondary to untouched OOS/forward evidence.
+
+### Optimization decision
+FORMAL_OPTIMIZATION_CANDIDATE: NONE.
+Reason: contracts and falsification gates improved, but D18-06 lacks durable PIT size vintages, D18-07 lacks durable global receipts, and D16-13 lacks prospective population receipts. No regime gate/weight change is justified.
+
+## Exact next continuation — updated
+1. Audit repository for any existing durable sharesOutstanding/market-cap vintage source that can satisfy D18-06 without reconstructing history from current denominators.
+2. Audit System 2 source-arrival contracts for reusable global receipt fields; if absent, keep GLOBAL_TRANSMISSION_CONTEXT UNKNOWN and specify receipt schema only.
+3. Cross-check whether System 2 prospective Shadow capture already records pre-truncation population/count/order semantics; if not, formulate research-only population-receipt proposal without altering Formal Core.
+4. Only after those evidence contracts exist, preregister the first static-vs-regime-policy walk-forward experiment with block/date negative controls and identical costs.

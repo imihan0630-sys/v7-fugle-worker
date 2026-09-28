@@ -939,3 +939,60 @@ Therefore:
 - pre-V8.13 snapshots lacking post-consensus priority/consensus provenance remain insufficient for exact deployed comparator replay and must stay UNKNOWN rather than being recomputed from today's logic.
 
 This is a research-document correction only. Formal runtime/order is unchanged.
+
+
+## PVE-160 — Pre-outcome redundancy/falsification stress test for abnormal-volume features (2026-09-28)
+
+Status: PREREGISTERED_FALSIFICATION / NO_OUTCOME_INSPECTION / FORMAL_CORE_UNCHANGED
+
+### Why this can be done before the 2026-09-29/30 live evidence hinge
+PVE-159 correctly blocks any H001-H004 outcome conclusion before prospective clean cohorts exist. That does not block a pre-outcome falsification audit of whether the candidate volume features could merely repackage already-known state variables. This section therefore freezes the competing explanations before outcome inspection.
+
+### Main falsification result
+Abnormal volume is not assigned a universal bullish/bearish sign. Prior empirical literature permits both continuation and reversal depending on information asymmetry, speculative trading, liquidity shocks and the component of volume being measured. Therefore a future positive association between raw/high RVOL and return is insufficient by itself to establish incremental price-volume alpha.
+
+### Mandatory competing explanations for H001/H002
+For every future clean comparison of formalLocalVolumeRatio, pvSlotRvol20 and pvCumvolPace20, report or condition on pre-outcome controls sufficient to distinguish at least:
+1. PRICE_STATE: contemporaneous/lagged return, breakout/pullback state and close-location/response variables already known at featureKnownAt.
+2. VOLATILITY_STATE: range/ATR or existing volatility-regime evidence available point-in-time. High volume caused by a volatility shock must not automatically be labelled participation alpha.
+3. LIQUIDITY_STATE: average volume/amount and any point-in-time spread/depth evidence actually available. A liquidity shock is a competing mechanism, not proof of informed participation.
+4. MARKET_SECTOR_ACTIVITY: market/sector-wide abnormal activity. Stock RVOL that merely mirrors a broad activity surge is not stock-specific incremental evidence.
+5. EVENT_CONTEXT when PIT-valid: material-news/corporate-action/event context. Event-driven volume must not be pooled silently with ordinary-session volume.
+
+Missing controls remain UNKNOWN; they are never imputed as neutral/zero merely to retain a row.
+
+### Residual-volume test frozen
+The earlier research idea of stock-specific residual RVOL is now elevated from a generic future idea to an explicit falsification requirement before any claim that raw pvSlotRvol20/pvCumvolPace20 has independent informational content.
+
+Primary sequence remains preregistered and unchanged:
+A = Formal context
+B = A + formalLocalVolumeRatio
+C = B + pvSlotRvol20
+D = C + pvCumvolPace20
+
+But any apparent C/D improvement must also survive a separately reported contextual/residual check against market/sector activity and the available price/volatility/liquidity controls above. This is a falsification layer, not a new optimized threshold or score.
+
+### Interpretation rules frozen before outcomes
+- HIGH_VOLUME + STRONG_PRICE_RESPONSE may be continuation, information incorporation or temporary price pressure; outcome evidence decides, not the label.
+- HIGH_VOLUME + WEAK/REJECTED_PRICE_RESPONSE is a distinct state and must not be averaged into generic high-volume evidence.
+- LOW_VOLUME is not automatically healthy dry-up; it may represent low attention, weak demand or illiquidity.
+- pvCumvolPace20 is only incremental if it improves evidence beyond same-slot RVOL/local volume ratio on common support; otherwise it is REDUNDANT.
+- If residual/context-adjusted volume loses the apparent effect, raw abnormal volume is classified CONTEXT_PROXY / REJECTED_OR_REDUNDANT rather than promoted.
+- If effect direction flips materially by regime/event/liquidity state, report REGIME_OR_CONTEXT_DEPENDENT; do not tune a global threshold post hoc.
+
+### Evidence basis / counterevidence incorporated
+External empirical evidence reviewed on 2026-09-28 includes findings consistent with both high-volume continuation and high/speculative-volume reversal, plus evidence that volume predictability can depend on components orthogonal to volatility, liquidity or order flow. These sources are methodological priors only; they are not Taiwan-stock validation and do not upgrade D02 maturity by themselves.
+
+### System implication
+This strengthens the existing observer-only design. No new Formal factor, threshold, score, ranking, entry rule or veto is justified. The prospective 9/29-9/30 gate remains unchanged; first clean evidence must still pass PVE-149 and PVE-159.
+
+Current Price-Volume evidence cursor: PVE-001 through PVE-160.
+Formal Core remains LOCKED.
+
+## Revised exact continuation after PVE-160
+1. Preserve the live hinge: 2026-09-29 intraday DATA_QA-only; 9/29 after-market bootstrap; 9/30 first potentially clean selection cohort.
+2. At first eligible clean rows, execute PVE-149 Gate 0->7 before outcome inspection.
+3. For H001/H002, preserve A/B/C/D common-support comparison, then run the PVE-160 contextual/residual falsification layer without threshold tuning.
+4. Separate high-volume/strong-response from high-volume/weak-response states before directional interpretation.
+5. Classify any apparent volume effect as INCREMENTAL, CONTEXT_PROXY, REDUNDANT, REGIME_OR_CONTEXT_DEPENDENT or UNKNOWN; do not force support/rejection from inadequate controls.
+6. Do not alter Formal Core.
