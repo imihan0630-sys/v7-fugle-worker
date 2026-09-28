@@ -9,7 +9,7 @@ import {
 const basePlan={
   planDate:"2026-09-30",
   strategy:"A_BREAKOUT",
-  strategyPool:"GENERAL",
+  strategyPool:"FORMAL_GENERAL",
   signalLevel:"A",
   formalClose:100,
   buyLow:98,
@@ -32,7 +32,7 @@ const basePlan={
 
 const plans=[
   {...basePlan,symbol:"2330"},
-  {...basePlan,symbol:"1101",strategyPool:"THOUSAND",priorityScore:79},
+  {...basePlan,symbol:"1101",strategyPool:"FORMAL_THOUSAND",priorityScore:79},
 ];
 
 const a=await buildSelectedPlanReceipts(plans,webcrypto);
@@ -69,7 +69,7 @@ assert.equal(assessSelectedParentPlanLink({parents,planReceipts:a}).valid,true);
 
 const wrongPlans=await buildSelectedPlanReceipts([
   plans[0],
-  {...basePlan,symbol:"9999",strategyPool:"GENERAL"},
+  {...basePlan,symbol:"9999",strategyPool:"FORMAL_GENERAL"},
 ],webcrypto);
 assert.equal(assessSelectedParentPlanLink({parents,planReceipts:wrongPlans}).valid,false);
 
