@@ -1,0 +1,18 @@
+{
+  "schemaVersion": "D15_PORTFOLIO_HEAT_SEMANTIC_FIREWALL_V0_1",
+  "observedAt": "2026-09-28T19:25:00+08:00",
+  "domain": "D15-07",
+  "distinction": {
+    "projectedNewPlanHeat": "PIT-reconstructable from immutable selected plans + total capital + stop/entry geometry",
+    "actualPortfolioHeat": "Requires PIT-complete carryover positions, actual shares/fills, stop for every open position, price reference and account-equity denominator"
+  },
+  "zeroSelectionFirewall": "A complete zero-selected scan proves projected NEW-plan heat is 0. It does not prove existing holdings or account-wide heat are 0.",
+  "currentEvidence": {
+    "planTime": "AVAILABLE",
+    "historicalActualLive": "BLOCKED_WITHOUT_CONFIRMED_FILL_LEDGER",
+    "currentMutablePositionSnapshot": "NOT_A_HISTORICAL_EVENT_LEDGER"
+  },
+  "maturityDecision": "Keep D15-07 at L2 despite plan-time submetric feasibility because module name Portfolio Heat must not be silently narrowed to new-plan heat.",
+  "status": "NEW_PLAN_HEAT_PIT_RECONSTRUCTABLE / ACTUAL_PORTFOLIO_HEAT_BLOCKED / D15_07_REMAINS_L2",
+  "formalCoreImpact": false
+}
