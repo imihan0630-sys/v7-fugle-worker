@@ -1106,3 +1106,215 @@ Priority questions:
 - first/add/full sizing versus portfolio-level risk;
 - whether fixed per-stock caps should remain the sole sizing framework;
 - all research-only unless owner later approves Formal changes.
+
+
+---
+
+## DR-030 — D12-08 reopened: Gamma sign is inventory-side, not Call-vs-Put
+
+D12-08 was still L0 in the learning tracker even though DR-018 had already frozen the warning that public OI cannot identify dealer GEX sign. This section reconciles the curriculum and turns that warning into an explicit research contract.
+
+Gamma measures how Delta changes when the underlying changes. For a standard long option position, both long calls and long puts carry positive Gamma; short calls and short puts carry negative Gamma. Therefore the popular shortcut:
+
+- Call OI = positive Gamma
+- Put OI = negative Gamma
+
+is **not a mathematical identity**. It is an inventory-side assumption about who owns versus wrote those options.
+
+CME option-Greeks education explicitly notes that options have positive Gamma values in the long-option convention; Cboe's market-maker discussion likewise distinguishes market impact by whether dealers are net long or short Gamma, not by Call versus Put label.
+
+### System rule
+
+Any public-data GEX implementation that assigns sign from Call/Put alone must be named an **ASSUMPTION_SCENARIO**, not `dealerGex`.
+
+Status: SIGN-SEMANTICS FROZEN.
+
+---
+
+## DR-031 — TAIFEX public data can support Gamma concentration, but not exact option-market-maker signed GEX
+
+Official TAIFEX public data provide two useful but differently granular objects.
+
+### A. Option-chain market data
+Daily option-chain reports expose, by active series:
+- contract / contract date;
+- strike;
+- Call/Put;
+- price / settlement;
+- volume;
+- open interest;
+- bid/ask.
+
+This is enough to compute a model-consistent Gamma per series after freezing underlying reference, rate/dividend/forward convention, DTE, IV inversion/filter and quote-quality rules.
+
+### B. Major institutional trader data
+TAIFEX also publishes dealer-class Call/Put long/short open-interest totals.
+
+But the public institutional table is aggregated by product and Call/Put. It does **not** publicly cross-tab dealer-class inventory by:
+- strike;
+- exact expiry;
+- position side at each strike-expiry node.
+
+TAIFEX further defines “Dealers” as Futures Proprietary Merchants and Securities Dealers. That population is broader than a clean “option market makers only” set.
+
+Therefore:
+
+`EXACT_PUBLIC_OPTION_MARKET_MAKER_GEX = NOT_IDENTIFIED`.
+
+### Correct TAIFEX direction mapping
+
+TAIFEX states:
+- buy calls + sell puts are grouped as “long”;
+- sell calls + buy puts are grouped as “short”.
+
+For Gamma sign this means:
+- CALL dealer long OI = buy Call = positive Gamma;
+- CALL dealer short OI = sell Call = negative Gamma;
+- PUT dealer long OI = sell Put = negative Gamma;
+- PUT dealer short OI = buy Put = positive Gamma.
+
+The word “long” in the TAIFEX institutional table is therefore a **directional grouping**, not always “long option Gamma”.
+
+Status: PUBLIC-IDENTIFIABILITY LIMIT FROZEN.
+
+---
+
+## DR-032 — Researchable layer 1: unsigned Gamma concentration
+
+Even without signed dealer inventory, public chain data can support an honest market-structure measure.
+
+For each strike-expiry node, after a frozen Gamma calculation:
+
+`unsignedGamma1Pct = gamma × OI × contractMultiplier × underlying² × 0.01`
+
+Interpretation:
+- approximate absolute Delta-notional sensitivity associated with a 1% underlying move;
+- not a dealer hedge-flow forecast;
+- units and underlying convention must be explicit.
+
+Candidate descriptors:
+- `totalUnsignedGamma1Pct`
+- `nearSpotGammaShare`
+- `nearExpiryGammaShare`
+- `gammaConcentrationHHI`
+- `topGammaNodeStrike`
+- `topGammaNodeDistancePct`
+
+### Critical falsification
+
+Gamma weighting must beat a simpler OI-only concentration measure. If:
+- Gamma-weighted concentration adds no information beyond OI,
+then the extra model complexity is rejected.
+
+### No “Gamma wall” language by default
+
+A high-Gamma/high-OI strike is not automatically support, resistance or a price magnet.
+
+Peer-reviewed expiration research documents strike-price clustering and finds market-maker hedge rebalancing can contribute, but the effect is specifically tied to expiration mechanics and is not proof that every large-Gamma node behaves as a universal wall.
+
+Status: UNSIGNED-GAMMA CONCENTRATION CANDIDATE.
+
+---
+
+## DR-033 — Researchable layer 2: partial-identification bounds for dealer-class Gamma
+
+There is a more rigorous middle ground between:
+- pretending exact dealer GEX is observable; and
+- giving up on signed information entirely.
+
+Use the same-date TAIFEX aggregate dealer-class Call/Put long/short OI counts and the strike-expiry market OI capacities to calculate a **partial-identification interval**.
+
+### Bound logic
+
+For each Call/Put side:
+1. compute Gamma for every eligible strike-expiry node;
+2. use each node's market OI as the maximum capacity for dealer long or dealer short contracts at that node;
+3. respect the published aggregate dealer-class contract totals;
+4. solve the minimum possible signed dealer-class Gamma by allocating positive-Gamma inventory to the lowest-Gamma capacity and negative-Gamma inventory to the highest-Gamma capacity;
+5. solve the maximum by reversing those allocations.
+
+A linear-program implementation is preferred for exact capacity handling.
+
+Outputs:
+- `dealerClassGammaLower`
+- `dealerClassGammaUpper`
+- `boundWidthNormalized`
+- `gammaSignIdentified`
+
+Sign rule:
+- lower > 0 => POSITIVE;
+- upper < 0 => NEGATIVE;
+- interval includes 0 => UNKNOWN.
+
+If source universes/date/session cannot be reconciled, result is also UNKNOWN.
+
+### Naming firewall
+
+This object must be called:
+`TAIFEX_REPORTED_DEALER_CLASS_GAMMA_BOUND`
+
+It must **not** be called:
+- exact market-maker GEX;
+- exact dealer hedge demand;
+- exact Gamma flip.
+
+This preserves the difference between “what public data constrain” and “what we wish we knew”.
+
+Status: PARTIAL-IDENTIFICATION DESIGN FROZEN.
+
+---
+
+## DR-034 — Expected market mechanism and falsification target
+
+Cboe explains the standard dynamic-hedging mechanism:
+- a long-Gamma market maker tends to hedge opposite the market move, potentially damping moves;
+- a short-Gamma market maker tends to hedge in the same direction, potentially amplifying moves.
+
+A 2024 Journal of Economic Dynamics and Control simulation study similarly finds positive net Gamma of dynamic hedgers reduces volatility/increases stability, while negative Gamma increases volatility/fragility.
+
+This supports a **conditional market-quality mechanism**, not a deterministic direction rule.
+
+### Primary research targets
+1. next-session realized range / variance;
+2. intraday reversal versus momentum after large moves;
+3. liquidity / spread stress;
+4. price dwell/crossing near Gamma concentration nodes.
+
+### Secondary targets
+- index direction only after the risk/volatility targets;
+- stock-level outcomes only after market and sector controls.
+
+### Mandatory controls
+- TAIEX VIX / realized volatility;
+- DTE / moneyness;
+- weekly/monthly expiry and settlement-window state;
+- quote quality / stale bids;
+- scheduled macro-event state;
+- global shock state;
+- liquidity regime.
+
+### Falsification
+Reject or downgrade signed-Gamma use if:
+- dealer-class bounds cross zero on most independent dates;
+- results disappear after expiry/event controls;
+- OI-only concentration performs as well as Gamma-weighted concentration;
+- results depend on one IV/filter/forward convention;
+- apparent node “pinning” exists only after choosing the winning strike/window ex post.
+
+### Maturity decision
+D12-08 advances from **L0 -> L2**:
+- mechanism defined;
+- public-data identifiability limit defined;
+- negative evidence and falsification defined;
+- machine-readable research contract frozen in `research/d12_08_gamma_exposure_identifiability_spec_v0_1.json`.
+
+It does **not** advance to L3 because no prospective PIT receipt set has yet established real same-date/session evidence.
+
+Formal Core remains LOCKED. No score, veto, risk throttle or ranking weight is approved.
+
+## Exact next continuation after DR-034
+
+1. Build a research-only prospective TAIFEX chain + dealer-aggregate receipt with exact date/session/universe reconciliation.
+2. Implement unsigned Gamma concentration plus dealer-class lower/upper bound calculator.
+3. Accumulate independent normal, expiry and scheduled-event dates before any L3 review.
+4. In parallel continue D12-10 night-futures/overnight information from L1 -> L2, because its mechanism can be researched without waiting for Gamma prospective evidence.
