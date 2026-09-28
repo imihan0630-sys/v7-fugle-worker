@@ -126,6 +126,7 @@ on:
       - "research/effective_bets_semantic_firewall_spec_v0_1.json"
       - "research/cash_attribution_v0_1.mjs"
       - "research/cash_attribution_spec_v0_1.json"
+      - "research/cash_attribution_production_receipt_20260928.json"
       - "tests/test_cash_attribution_v0_1.mjs"
       - "tests/portfolio_risk_cash_attribution_readonly_audit.mjs"
       - "tests/test_effective_bets_semantic_firewall_v0_1.mjs"
