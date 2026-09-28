@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "EFFECTIVE_BETS_SEMANTIC_FIREWALL_V0_1",
+  "observedAt": "2026-09-28T19:08:00+08:00",
+  "domain": "D15-06",
+  "finding": "Existing inverse-HHI outputs such as effectiveCapitalNames are concentration-equivalent counts, not covariance-adjusted independent bets.",
+  "productionWitness": {
+    "scanDate": "2026-09-18",
+    "currentProjectedRiskHHI": 0.377238,
+    "inverseHhiApprox": 2.65085,
+    "allowedInterpretation": "approximately 2.65 equally weighted risk-contribution slots would have the same HHI",
+    "forbiddenInterpretation": "the portfolio has 2.65 independent bets"
+  },
+  "effectiveBetsRequires": [
+    "PIT-aligned synchronized return history",
+    "validated covariance or other frozen dependence model",
+    "frozen risk-factor definition/decomposition",
+    "factor risk contribution vector with provenance"
+  ],
+  "currentBlocker": "No already-authorized read-only synchronized history source was found in the current Portfolio Risk Production audit surface; correlation/covariance evidence remains UNKNOWN rather than fabricated from sector labels.",
+  "status": "CONCENTRATION_COUNT_SEMANTICS_FROZEN / TRUE_EFFECTIVE_BETS_DATA_BLOCKED / D15_06_REMAINS_L2",
+  "formalCoreImpact": false
+}
