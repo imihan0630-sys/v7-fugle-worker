@@ -68,11 +68,13 @@ jobs:
           import sqlite3
           from pathlib import Path
 
-          path = Path("system2/sql/0001_research_core.sql")
-          sql = path.read_text(encoding="utf-8")
+          paths = sorted(Path("system2/sql").glob("*.sql"))
+          if not paths:
+              raise SystemExit("no System2 SQL migrations found")
           con = sqlite3.connect(":memory:")
           try:
-              con.executescript(sql)
+              for path in paths:
+                  con.executescript(path.read_text(encoding="utf-8"))
               tables = {
                   row[0]
                   for row in con.execute(
@@ -94,11 +96,18 @@ jobs:
                   "s2_candidate_concentration_receipts",
                   "s2_source_session_receipts",
                   "s2_shadow_run_fingerprints",
+                  "s2_historical_ingest_batches",
+                  "s2_historical_a1_bars",
               }
               missing = sorted(required - tables)
               if missing:
                   raise SystemExit(f"missing expected System2 tables: {missing}")
-              print(f"SQLite schema PASS; System2 tables={len(tables)}")
+              version = con.execute(
+                  "SELECT schema_value FROM s2_schema_meta WHERE schema_key='schema_version'"
+              ).fetchone()
+              if not version or version[0] != "0.6":
+                  raise SystemExit(f"unexpected System2 schema version: {version}")
+              print(f"SQLite schema PASS; migrations={len(paths)}; System2 tables={len(tables)}; schema=0.6")
           finally:
               con.close()
           PY
