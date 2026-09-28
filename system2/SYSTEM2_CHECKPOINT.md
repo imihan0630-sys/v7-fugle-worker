@@ -506,6 +506,34 @@ Current scale constraint:
 - Survivorship control is now explicit: historical backfill must seed from both currently listed securities and delisted/de-TPEx securities, not from today's live symbol list alone. TWSE/TPEx official delisting registries are available; TWSE current ISIN registry exposes listing dates.
 - Next implementation unit: historical universe registry/adapters (current + delisted union), then source-backed backfill smoke against a bounded date/symbol slice before large D1 population.
 
+## 2026-09-28 packed historical cold-store verification
+
+The row-wise historical D1 scale gate has been addressed with a packed cold-history research path.
+
+Implemented:
+- schema V0.9 migration `system2/sql/0005_historical_packs.sql` with yearly per-symbol A1 packs and pack-ingest receipts;
+- `system2/runtime/historical_pack_store_v0_1.mjs` for immutable pack persistence, idempotent reruns, conflict rejection and date-range unpack/query;
+- remote D1 adapter `run()` support required by the pack persistence path;
+- isolated D1 provision upgraded to schema 0.9 with 35 System2 tables and read/write sentinel verification;
+- existing bounded/physical historical smoke scripts aligned to schema 0.9 without changing System1/V8 production resources.
+
+Real-source pack smoke:
+- workflow: `System2 Historical Pack Real-Source Smoke`, run `36427386634`, PASS;
+- source period: 2026-08-03 through 2026-08-31, 21 official trading dates;
+- bounded symbols: TWSE 2330/2454; TPEx 3105/6488;
+- official full-market rows read before symbol filtering: TWSE 22,810; TPEx 18,646;
+- packed round-trip rows: 42 TWSE + 42 TPEx;
+- TWSE payload 3,909 JSON bytes -> 1,587 gzip bytes -> 2,116 Base64 bytes (gzip ratio 0.4060; Base64/storage ratio 0.5413);
+- TPEx payload 3,825 JSON bytes -> 1,606 gzip bytes -> 2,144 Base64 bytes (gzip ratio 0.4199; Base64/storage ratio 0.5605);
+- all four packs inserted and unpacked back to identical date/OHLC/volume/value/transaction/change rows with PIT eligibility preserved;
+- D1 metrics for the smoke: 18 requests, 8 rows read, 30 rows written including provisioning/sentinels/receipts, size_after 4,182,016 bytes;
+- System1 production isolation check PASS; V8 Regression run `36427386650` PASS; System2 Research CI for the smoke script `36427356631` PASS.
+
+Interpretation:
+- packed yearly-per-symbol storage is materially more space/write efficient than one D1 row per stock-day;
+- the bounded four-symbol month proves correctness but is not sufficient by itself to authorize a ten-year bulk load;
+- a read-only full-market month compression benchmark is the next scale test. Full 2017→present backfill remains intentionally not started until that benchmark bounds projected storage.
+
 ## Current boundary
 
 Research/design/code prototype is not blocked. Isolated D1 and inert Worker already exist, but prospective always-on Shadow accumulation remains intentionally inactive. A5/B2 observer engineering is complete; the immediate boundary is accumulation of independent same-day V0.2 evidence beginning no earlier than the 2026-09-29 official session. No exact Decision Clock is frozen; capture is false; Worker Cron is 0. The GitHub Actions research schedule is read-only evidence collection and is not the Worker Cron. No production-shared storage or System 1/V8 change is authorized or needed.
