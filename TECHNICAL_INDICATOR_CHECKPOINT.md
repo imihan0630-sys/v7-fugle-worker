@@ -1847,3 +1847,38 @@ Formal Core remains LOCKED.
 - Added four isolated assertions: mixed captureGeneration page is FOREIGN_PAGE_KEY; zero expected parents without a population receipt is INCOMPLETE; explicit zero-count receipt may be COMPLETE; declared denominator inconsistent with enumerated parents is QA_FAIL.
 - Local Node test PASS: total 19 assertions. This remains pure synthetic QA, not D1 transaction or production-completeness proof.
 - Formal Core LOCKED; no outcome join, no maturity promotion.
+
+
+## Continuation update — TI-402 through TI-408 (2026-09-28, source falsification)
+
+Deep evidence and precise synthetic witnesses: `research/TECHNICAL_INDICATOR_SOURCE_GUARD_FALSIFICATION_V0_1.md`. This section supersedes the older `SHARED_PARENT_SCOPE=UNFROZEN` line above only for the proposed parent-scope definition; other blockers remain.
+
+- TI-402: Frozen v0.1 core input validation converts null/blank/boolean to finite Number values, and does not reject nonpositive price or out-of-range close. On a 40-row synthetic NT$100 sequence one poisoned row could still yield `dataQualityState=VALID` and finite KD/RSI/MACD. This establishes an isolated research validation defect, not a deployed Worker incident.
+- TI-403: Added `research/technical_indicator_source_guard_v0_1.mjs`, a separate versioned wrapper. It checks positive decimal OHLC, geometry, chronology, symbol, point-in-time assertion, future dates, technical continuity/official-session assertions, pseudo-bars and upstream receipt presence. Good 50-bar synthetic input yields the unchanged v0.1 KD/RSI/MACD values exactly. Numeric decimal strings remain accepted. Price-limit constrained interpretation is separate. No Formula v0.1 edit or production wiring.
+- TI-404: Synthetic booleans, source availability and receipt strings are only assertions. The wrapper cannot independently authenticate TWSE/TPEx sessions, corporate-action transform, provider publication time, complete parent keyset, hash ancestry or price-limit regime. A forged upstream assertion remains an explicit negative counterexample.
+- TI-405: Preventing false indicator states may reduce contamination, yet rejection can select by symbol/market/event/price and produce a false appearance of advantage. Log exact rejection denominators before prospective inference. Economic alpha, OOS behavior, dates, costs and fills remain unknown; no optimization candidate.
+- TI-406: Corrected an isolated adapter mismatch from `tradeDate` to canonical `date`, required continuity/session/parent/raw-admission receipt IDs, and retested. The original draft never ran in production.
+- TI-407: Source-template `Worker.js` may fill missing open/high/low with close. A numerically valid high/low may therefore be synthetic, invalidating KD range interpretation. Guard now requires per-field observed provenance for high/low/close plus observed raw bar identity and source hash; a substituted high=close labeled `SYNTHESIZED` is blocked. Missing open is permitted for these three formulas. The per-field label is a *proposed* upstream contract, not currently attested by the canonical handoff; a falsely labeled row can still pass. Source-template behavior is not proof about deployed Production.
+- TI-408: Shared sizing contract now freezes proposed parent scope `FORMAL_HISTORY_ADMITTED_FEATURE_ROWS_V0_1` (unique same-scan history-admitted featureRows before Formal fail-fast exclusion). Actual count distribution, complete immutable capture and runtime costs remain UNKNOWN. `HISTORY_CACHE_TARGET=2000` is not a hard cap; legacy <=54 Shadow is not this denominator. Do not fabricate normalized-today non-feature rows as parents.
+
+Durable code commits: guard `c0adc8beb1de39c256dcabb9595d6736dda889d1`, tests `e5f47a055036d0e54ad8238863daea5a53307043`; report update `4397b49c35784463ee0f82a1d2d0e359fcb1ac33`. Local Node guard adversarial suite PASS; unchanged core regression PASS; parent reconciliation 19 assertions PASS. All are isolated synthetic QA without outcomes.
+
+### Current lane status
+
+PARENT_SCOPE_DEFINITION = FROZEN_PROPOSED_V0_1
+ACTUAL_PARENT_COUNT_DISTRIBUTION = UNKNOWN
+PARENT_CHILD_PRODUCTION_COMPLETENESS = NOT_IMPLEMENTED
+FORMULA_INPUT_GUARD_SYNTHETIC = PASS_ISOLATED
+OBSERVED_OHLC_FIELD_PROVENANCE_RUNTIME = UNKNOWN / DEPENDENCY_BLOCKED
+TECHNICAL_CONTINUITY_RUNTIME = BLOCKED
+PROSPECTIVE_TECHNICAL_CAPTURE = NOT_STARTED
+OUTCOME_JOIN = NO_GO
+FORMAL_OPTIMIZATION_CANDIDATE = NONE
+Formal Core remains LOCKED.
+
+### Exact next continuation point
+
+1. Ask the shared source/continuity owner to define an independently attested raw per-field provenance and immutable hash lineage before any substitution; audit actual provider/date-specific OHLC coverage without self-certifying the guard.
+2. Measure exact same-scan history-admitted featureRow parent population with duplicate/subset receipts and real non-secret D1/Worker cost/latency. Do not treat 2000 or 54 as actual parent counts.
+3. Preserve complete child status (including blocked/unknown) against the immutable generation's exact parent keyset. Test false-positive source rejection against verified market sessions and corporate actions, with denominators by date/source/symbol.
+4. Only after dependency and Class-B review consider runtime capture. First outcome-blind prospective observation precedes TI-005 KD vs RSI with direct price control and TI-006 MACD vs trend. No historical Shadow repair, no outcome join, no Formal edit.
