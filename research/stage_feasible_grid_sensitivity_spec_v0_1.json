@@ -1,0 +1,39 @@
+{
+  "schemaVersion": "STAGE_FEASIBLE_GRID_SENSITIVITY_V0_1",
+  "observedAt": "2026-09-28T12:37:00+08:00",
+  "purpose": "Verify whether ratio-specific low-concentration NT$1,000-grid optima survive the requirement that every selected name has at least one FIRST share and at least one ADD share.",
+  "ratios": [
+    0.05,
+    0.1,
+    0.15,
+    0.2,
+    0.25,
+    0.3,
+    0.35,
+    0.4,
+    0.45,
+    0.5,
+    0.55,
+    0.6,
+    0.65,
+    0.7,
+    0.75,
+    0.8,
+    0.85,
+    0.9,
+    0.95
+  ],
+  "comparison": [
+    "unconstrained ratio-specific grid minimum HHI",
+    "minimum HHI among only two-stage-orderable grid states"
+  ],
+  "falsification": "If stage-feasible minima materially rise or the previous global optima are not two-stage orderable, downgrade prior comparator evidence as execution-feasibility sensitive.",
+  "guardrails": [
+    "plan-preview buyHigh share geometry only",
+    "no BUY/ADD trigger or fill assumptions",
+    "one reconstructable multi-name date",
+    "stage-feasible optimum is diagnostic, not a live sizing recommendation"
+  ],
+  "status": "STAGE_FEASIBLE_GRID_AUDIT_READY / PRODUCTION_PENDING",
+  "formalCoreImpact": false
+}
