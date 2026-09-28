@@ -22,6 +22,9 @@ const instant = value => typeof value === 'string' && Number.isFinite(Date.parse
 
 export function validateTechnicalSource(rows, context) {
   if (!context || !context.symbol || !context.source) return fail('MISSING_SOURCE_IDENTITY');
+  if (!context.parentDecisionReceiptId || !context.rawHistoryAdmissionReceiptId
+      || !context.continuityReceiptId || !context.symbolSessionContractVersion
+      || !context.continuityEngineVersion) return fail('MISSING_UPSTREAM_RECEIPT');
   if (context.continuitySpace !== 'TECHNICAL_CONTINUITY') return fail('PRICE_SPACE_UNVERIFIED');
   if (context.pointInTimeEligible !== true || !instant(context.asOf)
       || !instant(context.sourceAvailableAt)
@@ -33,9 +36,9 @@ export function validateTechnicalSource(rows, context) {
   for (let i=0; i<rows.length; i++) {
     const r=rows[i];
     if (!r || r.symbol !== context.symbol) return fail('ROW_SYMBOL_MISMATCH',i);
-    if (!dateValid(r.tradeDate)) return fail('INVALID_TRADE_DATE',i);
-    if (priorDate !== null && r.tradeDate <= priorDate) return fail('DUPLICATE_OR_OUT_OF_ORDER_DATE',i);
-    priorDate=r.tradeDate;
+    if (!dateValid(r.date)) return fail('INVALID_TRADE_DATE',i);
+    if (priorDate !== null && r.date <= priorDate) return fail('DUPLICATE_OR_OUT_OF_ORDER_DATE',i);
+    priorDate=r.date;
     const open=price(r.open), high=price(r.high), low=price(r.low), close=price(r.close);
     if ([open,high,low,close].some(v=>v===null)) return fail('INVALID_OR_NONPOSITIVE_PRICE',i);
     if (low>high || open<low || open>high || close<low || close>high)
@@ -59,8 +62,16 @@ export function buildGuardedTechnicalSnapshot(rows, context) {
     dataQualityState:'BLOCKED',blockedReason:check.reason,blockedIndex:check.index,
     interpretationState:'BLOCKED',kd:null,rsi:null,macd:null
   };
-  const result=buildIndicatorSnapshot(check.rows,{...context,strictSemantics:true});
+  const constrained=check.rows.some(row=>row.priceLimitConstrained===true);
+  const result=buildIndicatorSnapshot(check.rows,{...context,strictSemantics:true,
+    priceLimitConstrained:constrained || context.priceLimitConstrained===true});
   return {...result,schemaVersion:'TECHNICAL_INDICATOR_SNAPSHOT_V0_2_RESEARCH',
     guardVersion:TECHNICAL_SOURCE_GUARD_VERSION,asOf:context.asOf,
-    sourceAvailableAt:context.sourceAvailableAt,tradeDate:check.rows.at(-1).tradeDate};
+    sourceAvailableAt:context.sourceAvailableAt,date:check.rows.at(-1).date,
+    parentDecisionReceiptId:context.parentDecisionReceiptId,
+    rawHistoryAdmissionReceiptId:context.rawHistoryAdmissionReceiptId,
+    continuityReceiptId:context.continuityReceiptId,
+    symbolSessionContractVersion:context.symbolSessionContractVersion,
+    continuityEngineVersion:context.continuityEngineVersion,
+    interpretationState:constrained?'CONSTRAINED':result.interpretationState};
 }
