@@ -895,3 +895,282 @@ Formal Core remains LOCKED. No oil risk veto, sector penalty, ranking bonus or p
 2. Prefer direct benchmark futures when licensing/source permits; BRF can be a Taiwan-local cross-check but requires FX/basis controls.
 3. Continue D13-09 and D13-11 together: BLS release clocks, initial-vintage values, revisions, consensus provenance and macro-surprise semantics.
 4. Cross-test oil context with D12-10 `NIGHT_PRE_SCAN` only after both receipt streams are PIT-safe.
+
+
+---
+
+## MC-041 — D13-09 / D13-11: release calendar, realized value and surprise are three different information objects
+
+D13-09 and D13-11 remained L1.
+
+For CPI / PPI / Employment Situation, separate:
+
+1. **SCHEDULED_EVENT**
+   - release date/time known in advance from BLS calendar;
+   - direction unknown.
+
+2. **INITIAL_RELEASE_VALUE**
+   - first value actually published at the release timestamp;
+   - may later be revised.
+
+3. **CONSENSUS_EXPECTATION**
+   - market expectation collected before release;
+   - not supplied by BLS;
+   - requires its own timestamped provider/vintage.
+
+4. **SURPRISE**
+   - initial release minus the pre-release consensus, with indicator-specific sign semantics.
+
+5. **MARKET_REACTION**
+   - asset-price move after release;
+   - different object from the surprise itself.
+
+Never collapse these into one “macro signal.”
+
+Status: MACRO-OBJECT SEMANTICS FROZEN.
+
+---
+
+## MC-042 — BLS release clock creates a predictable 18:10 Taiwan event-risk window
+
+BLS schedules:
+- CPI at 08:30 U.S. Eastern Time;
+- PPI at 08:30 ET;
+- Employment Situation at 08:30 ET.
+
+BLS calendars explicitly state times are Eastern Time.
+
+At Taiwan 18:10, 08:30 ET on the same U.S. calendar date has **not occurred yet**, whether the U.S. is on standard or daylight time.
+
+Therefore:
+- the realized same-U.S.-date CPI/PPI/payroll/unemployment release is FUTURE for the 18:10 Taiwan selector;
+- but the fact that a release is scheduled a few hours later is known.
+
+This creates a clean pre-event feature:
+- `eventWithin6h`;
+- `eventType`;
+- `scheduledReleaseAtTaipei`;
+- `timeToReleaseMinutes`.
+
+For major 08:30 ET releases, the release commonly lands around 20:30 or 21:30 Taipei depending daylight-saving time, meaning it occurs during the TX after-hours session and **after** the 18:10 selector.
+
+This is a direct dependency between D13 macro clocks and D12 `NIGHT_POST_SCAN`.
+
+Status: PRE-EVENT CLOCK CANDIDATE FROZEN.
+
+---
+
+## MC-043 — first print must be preserved; current historical values can contain revisions
+
+BLS explicitly documents revisions.
+
+Examples:
+- PPI can be revised monthly for up to four months after initial publication.
+- National CES payroll estimates are first published as preliminary, then revised in the next two releases, and later subject to annual benchmarking.
+- BLS seasonal-adjustment recalculation can revise historical series.
+- Household/employment series have their own concurrent seasonal-adjustment and revision procedures.
+
+Therefore:
+
+`CURRENT_BLS_HISTORY != GUARANTEED_INITIAL_RELEASE_VINTAGE`.
+
+A valid surprise backtest requires:
+- the exact first-published value known at release time;
+- the prior-period value as it stood in that same release if the headline calculation depends on it;
+- revision/version identity.
+
+Do not compute “historical surprise” using today's revised database against an old consensus.
+
+Status: FIRST-PRINT VINTAGE GUARD FROZEN.
+
+---
+
+## MC-044 — consensus is the hardest provenance object
+
+Academic/event-study evidence commonly defines macro surprise as:
+`actual release - median/consensus forecast`.
+
+Federal Reserve research using Bloomberg Economic Calendar notes that forecasts can be submitted and updated up to the official release, making the near-release median a plausible real-time expectations measure.
+
+But consensus is:
+- provider-specific;
+- timestamp-sensitive;
+- revision-sensitive as forecasters update;
+- sometimes missing;
+- not reproducible from the realized series itself.
+
+Required fields:
+- provider;
+- consensusCapturedAt;
+- forecastCount if available;
+- median/mean convention;
+- lastUpdateBeforeRelease;
+- unit;
+- referencePeriod;
+- seasonal-adjustment convention.
+
+If historical consensus vintage is unavailable:
+`MACRO_SURPRISE = UNKNOWN`.
+
+Do not substitute:
+- previous release;
+- model forecast built later;
+- current website “forecast” field
+for historical market consensus.
+
+Status: CONSENSUS-PROVENANCE GATE FROZEN.
+
+---
+
+## MC-045 — standardized surprise needs a PIT-safe scale
+
+Raw surprise units are incomparable:
+- payroll thousands;
+- CPI percentage points;
+- unemployment percentage points;
+- PPI percentage points.
+
+A common research transformation is:
+`standardizedSurprise = (actual - consensus) / historicalStdDevOfSurprise`.
+
+Federal Reserve research uses historical standard deviation to place different macro surprises on a comparable scale.
+
+PIT rule:
+- denominator uses only surprises observed before the event;
+- minimum history must be frozen;
+- no full-sample standard deviation;
+- no post-event recalibration.
+
+If the history is too short:
+- raw surprise may be stored;
+- standardized surprise = UNKNOWN.
+
+Status: SURPRISE NORMALIZATION CONTRACT FROZEN.
+
+---
+
+## MC-046 — “positive surprise” does not have one equity sign
+
+Indicator semantics differ.
+
+### Inflation
+- CPI/PPI above consensus = upside inflation surprise.
+Potential channels:
+- higher rates / discount rate;
+- lower policy-easing probability;
+- margin/cost pressure.
+But market reaction depends on the inflation/policy Regime.
+
+### Payroll employment
+- payroll above consensus = stronger employment/activity surprise.
+Potential channels:
+- stronger growth/cash-flow outlook;
+- tighter policy expectations.
+The net equity sign can change with the macro Regime.
+
+### Unemployment rate
+A higher-than-consensus unemployment rate is usually weaker labor-market news; raw numeric sign must therefore not be mixed with payroll surprise without sign mapping.
+
+### Research architecture
+Store separately:
+- `activitySurprise`;
+- `inflationSurprise`;
+- `laborTightnessSurprise`;
+- `policySensitivityRegime`.
+
+Federal Reserve research finds aggregate stock prices can respond positively to real-activity news and negatively to price news, while announcement effects vary with monetary-policy context. That supports dimensional/regime decomposition rather than one “economic surprise score.”
+
+Status: MULTI-DIMENSION SURPRISE ARCHITECTURE FROZEN.
+
+---
+
+## MC-047 — scheduled event presence may be more useful to the 18:10 selector than the realized surprise
+
+There are two distinct use cases.
+
+### A. BEFORE RELEASE at 18:10
+Known:
+- event type;
+- release time;
+- perhaps consensus if captured.
+
+Unknown:
+- actual;
+- realized surprise;
+- post-release market move.
+
+Research target:
+- does imminent scheduled macro-event risk alter overnight gap/MAE/stop risk for selections made at 18:10?
+
+This is an **event-risk** hypothesis, not direction prediction.
+
+### B. AFTER RELEASE on a later Taiwan decision
+Known:
+- initial value;
+- consensus;
+- surprise;
+- U.S./global market reaction;
+- Taiwan's same-day response may already have occurred.
+
+Research target:
+- has Taiwan already absorbed the surprise, or does a residual state remain?
+
+This mirrors the cross-market absorption framework.
+
+Status: EVENT-PRESENCE VS REALIZED-SURPRISE SPLIT FROZEN.
+
+---
+
+## MC-048 — D13-09 / D13-11 falsification matrix
+
+For pre-event presence:
+- compare scheduled major-event nights vs matched non-event nights;
+- control pre-event VIX/IV, TX `NIGHT_PRE_SCAN`, global futures and Taiwan Regime;
+- outcome = post-scan night range, next-open gap, next-session MAE, stop incidence;
+- direction is secondary.
+
+For realized surprise:
+- initial-vintage actual only;
+- timestamped consensus only;
+- separate activity/inflation/labor dimensions;
+- control market reaction if testing residual after-market value;
+- split inflation-sensitive vs growth-sensitive regimes;
+- distinguish first release from later revisions;
+- date-shift placebo;
+- leave-one-event-out;
+- prevent one CPI/NFP crisis print from dominating;
+- no event list selected by outcome performance.
+
+A finding that only says “big announcements cause volatility” without adding beyond VIX/IV/night-futures state is REDUNDANT.
+
+Status: MACRO FALSIFICATION MATRIX FROZEN.
+
+---
+
+## MC-049 — D13-09 and D13-11 maturity decisions
+
+D13-09 advances **L1 -> L2**.
+D13-11 advances **L1 -> L2**.
+
+Why:
+- official release clocks are frozen;
+- same-calendar-day 18:10 future-information boundary is explicit;
+- initial-vintage/revision semantics are explicit;
+- consensus provenance is defined;
+- surprise normalization and dimension mapping are pre-registered;
+- pre-event versus post-release use cases and falsification are defined.
+
+Why not L3:
+- no durable timestamped consensus-vintage dataset exists in the repository;
+- no prospective first-print receipt stream is implemented;
+- no independent-event OOS/Shadow evidence exists.
+
+Formal Core remains LOCKED. No macro-event veto, size reduction, score or sector penalty is approved.
+
+## Exact next continuation after MC-049
+
+1. Prospectively capture BLS schedule metadata even before consensus data is solved: event type, scheduledAt, capturedAt, sourceVersion.
+2. Freeze a provider contract for timestamped consensus before any surprise backtest.
+3. Capture initial release values separately from revised series.
+4. Join pre-event flags to D12 `NIGHT_PRE_SCAN` and evaluate post-scan night / next-open downside risk before testing direction.
+5. Continue D13-05 DXY and D13-08 commodities only after avoiding duplication with USD/TWD, oil and global risk factors.
