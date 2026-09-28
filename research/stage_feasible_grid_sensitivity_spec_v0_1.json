@@ -34,6 +34,7 @@
     "one reconstructable multi-name date",
     "stage-feasible optimum is diagnostic, not a live sizing recommendation"
   ],
-  "status": "STAGE_FEASIBLE_GRID_AUDIT_READY / PRODUCTION_PENDING",
-  "formalCoreImpact": false
+  "status": "COMPARATOR_STAGE_FEASIBILITY_CAVEAT_CLOSED / GLOBAL_MINIMA_UNCHANGED_19_OF_19 / ECONOMIC_VALUE_UNKNOWN",
+  "formalCoreImpact": false,
+  "productionReceipt": "research/stage_feasible_grid_production_receipt_20260928.json"
 }
