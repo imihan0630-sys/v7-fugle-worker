@@ -1800,3 +1800,35 @@ Status:
 `PR042_EXECUTION_READY / PRODUCTION_AUDIT_PENDING`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-062 Production result — perfect within-date score/stop rank concordance, tiny-n only
+
+Read-only Production run `36377294110` / job `108785634124` evaluated 2026-09-18.
+
+PriorityScore order:
+`3105 > 6133 > 2006`.
+
+The stop-risk order is identical under all three entry references:
+`3105 > 6133 > 2006`.
+
+Results:
+- BUY_LOW: Spearman = 1, Kendall τ = 1, Pearson = 0.98098681;
+- MIDPOINT: Spearman = 1, Kendall τ = 1, Pearson = 0.98061825;
+- BUY_HIGH: Spearman = 1, Kendall τ = 1, Pearson = 0.98025167.
+
+3105 is simultaneously the highest PriorityScore and widest-stop name under every reference.
+
+This confirms the **mechanical amplification witness** on 2026-09-18: score-proportional sizing tilted more capital toward names with wider planned stop geometry.
+
+However n=3 gives only 6 rank permutations. The exact one-sided permutation diagnostic is 1/6 = 0.16666667 and the two-sided diagnostic is 1/3 = 0.33333333.
+
+Therefore this is not population significance and not OOS evidence. The PR-042 population question remains open until independent multi-name dates accumulate.
+
+Receipt:
+`research/score_stop_interaction_production_receipt_20260928.json`.
+
+Status:
+`MECHANICAL_AMPLIFICATION_WITNESS_CONFIRMED / POPULATION_DIRECTION_UNKNOWN / NOT_OPTIMIZATION_READY`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
