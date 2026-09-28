@@ -25,7 +25,7 @@ const db = await createRemoteD1RestAdapter({
 const schema = await db.rawQuery(
   "SELECT schema_value FROM s2_schema_meta WHERE schema_key='schema_version' LIMIT 1",
 );
-assert.equal(schema[0]?.schema_value, "0.7", "isolated D1 must be migrated to schema 0.7 first");
+assert.equal(schema[0]?.schema_value, "0.9", "isolated D1 must be migrated to schema 0.9 first");
 
 const minima = marketDate === "2017-01-03"
   ? { TWSE: 800, TPEX: 650 }
