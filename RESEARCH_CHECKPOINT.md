@@ -2194,3 +2194,14 @@ Updated: 2026-09-27 23:38 Asia/Taipei.
 - Tracker and routing map updated: D17 maturity 23.1% -> 29.2%; room 08 aggregate 35.6% -> 38.5%.
 - No L3 claim: Taiwan point-in-time article/version archive and prospective/OOS evidence are still missing.
 - Formal Core and live System 2 behavior unchanged.
+
+
+## Event & News D17 long-block update — 2026-09-28 Asia/Taipei
+- Latest room/router/tracker and dedicated anchors were re-read before research.
+- Seven D17 modules advanced from L1 to L2 after mechanism plus counterevidence work: D17-01 source reliability, D17-03 news half-life, D17-04 direct beneficiary/victim, D17-05 second-order transmission, D17-07 priced-in state, D17-10 source cross-validation, D17-11 sector propagation.
+- D17 maturity: 29.2% -> 40.0%. Room 08 aggregate: 38.5% -> 43.7%.
+- Durable evidence: `NEWS_EVENT_TRANSMISSION_RESEARCH.md` and `research/news_event_transmission_contract_v0_2.json`.
+- Frozen guards: reliability is multidimensional; truth confidence differs from short-run market impact; no universal news half-life; event sign is not stock sign; second-order links require effective-dated economic edges; priced-in is latent; cross-validation counts independent lineages rather than URLs; peer propagation must separate contagion from competition/substitution/attention.
+- System 1 current announcement storage remains too coarse for these semantics. System 2 L5 architecture fits the contract, but canonical general-news sourcing and PIT/version capture remain unresolved.
+- No L3 claim and no formal optimization candidate. Formal Core and live behavior unchanged.
+- Exact next: Taiwan general-news source-readiness audit, then a research-only versioned prospective event ledger, then preregistered PIT/OOS event cohorts and negative controls.
