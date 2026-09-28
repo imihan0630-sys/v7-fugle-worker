@@ -1,0 +1,1623 @@
+{
+  "schemaVersion": "0.1",
+  "updatedAt": "2026-09-28T10:21:00+08:00",
+  "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
+  "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
+  "formalCoreImpact": "NONE",
+  "maturityScale": {
+    "L0": {
+      "weight": 0,
+      "label": "UNSTUDIED"
+    },
+    "L1": {
+      "weight": 0.2,
+      "label": "THEORY_UNDERSTOOD"
+    },
+    "L2": {
+      "weight": 0.4,
+      "label": "MECHANISM_AND_FALSIFICATION_DEFINED"
+    },
+    "L3": {
+      "weight": 0.6,
+      "label": "TAIWAN_PIT_DATA_FEASIBILITY_VALIDATED"
+    },
+    "L4": {
+      "weight": 0.8,
+      "label": "PROSPECTIVE_SHADOW_OR_OOS_EVIDENCE"
+    },
+    "L5": {
+      "weight": 1,
+      "label": "ROBUSTNESS_COST_REDUNDANCY_MULTI_REGIME_VALIDATED"
+    }
+  },
+  "aggregate": {
+    "domainCount": 18,
+    "moduleCount": 226,
+    "maturityWeightedPct": 40.9
+  },
+  "domains": [
+    {
+      "id": "D01",
+      "name": "K線／型態／價格結構",
+      "chatroom": "01｜K線與型態研究室",
+      "anchors": [
+        "KLINE_PATTERN_CHECKPOINT.md",
+        "KLINE_PATTERN_RESEARCH.md",
+        "TARGET_RESISTANCE_RR_RESEARCH.md"
+      ],
+      "maturityPct": 51.7,
+      "modules": [
+        {
+          "id": "D01-01",
+          "name": "K棒資料、交易日與Session語意",
+          "level": "L3",
+          "maturityPct": 60
+        },
+        {
+          "id": "D01-02",
+          "name": "單根K線型態",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D01-03",
+          "name": "多根K線組合",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D01-04",
+          "name": "支撐／壓力／區域拓樸",
+          "level": "L3",
+          "maturityPct": 60
+        },
+        {
+          "id": "D01-05",
+          "name": "突破／假突破生命週期",
+          "level": "L3",
+          "maturityPct": 60
+        },
+        {
+          "id": "D01-06",
+          "name": "W底／M頭／雙底雙頂",
+          "level": "L3",
+          "maturityPct": 60
+        },
+        {
+          "id": "D01-07",
+          "name": "杯柄／碗型／底部基地",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D01-08",
+          "name": "VCP波動收斂型態",
+          "level": "L3",
+          "maturityPct": 60
+        },
+        {
+          "id": "D01-09",
+          "name": "缺口與漲跌停限制型態",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D01-10",
+          "name": "多尺度／多週期型態一致性",
+          "level": "L3",
+          "maturityPct": 60
+        },
+        {
+          "id": "D01-11",
+          "name": "目標價／阻力／RR幾何",
+          "level": "L3",
+          "maturityPct": 60
+        },
+        {
+          "id": "D01-12",
+          "name": "酒田戰法與傳統K線語意反證",
+          "level": "L2",
+          "maturityPct": 40
+        }
+      ]
+    },
+    {
+      "id": "D02",
+      "name": "價量關係",
+      "chatroom": "02｜價量研究室",
+      "anchors": [
+        "PRICE_VOLUME_CHECKPOINT.md",
+        "PRICE_VOLUME_RESEARCH.md",
+        "PRICE_VOLUME_EVIDENCE.md",
+        "PRICE_VOLUME_HYPOTHESIS_LEDGER.md"
+      ],
+      "maturityPct": 48.3,
+      "modules": [
+        {
+          "id": "D02-01",
+          "name": "成交量單位與資料語意",
+          "level": "L3",
+          "maturityPct": 60
+        },
+        {
+          "id": "D02-02",
+          "name": "RVOL相對成交量與同時段正規化",
+          "level": "L3",
+          "maturityPct": 60
+        },
+        {
+          "id": "D02-03",
+          "name": "突破量能確認",
+          "level": "L3",
+          "maturityPct": 60
+        },
+        {
+          "id": "D02-04",
+          "name": "量縮整理／Volume Dry-up",
+          "level": "L3",
+          "maturityPct": 60
+        },
+        {
+          "id": "D02-05",
+          "name": "爆量／高潮量／分配量",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D02-06",
+          "name": "Effort-vs-Result量價努力與結果",
+          "level": "L3",
+          "maturityPct": 60
+        },
+        {
+          "id": "D02-07",
+          "name": "OBV能量潮",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D02-08",
+          "name": "吸籌／出貨代理變數",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D02-09",
+          "name": "價量背離",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D02-10",
+          "name": "成交量狀態×趨勢互動",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D02-11",
+          "name": "流動性量能門檻與例外",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D02-12",
+          "name": "盤中量能曲線／Volume Profile",
+          "level": "L2",
+          "maturityPct": 40
+        }
+      ]
+    },
+    {
+      "id": "D03",
+      "name": "趨勢／動能／反轉／技術指標",
+      "chatroom": "03｜技術指標與趨勢動能研究室",
+      "anchors": [
+        "TECHNICAL_INDICATOR_CHECKPOINT.md",
+        "TREND_MOMENTUM_REVERSAL_CHECKPOINT.md"
+      ],
+      "maturityPct": 44.6,
+      "modules": [
+        {
+          "id": "D03-01",
+          "name": "均線排列／斜率／趨勢狀態",
+          "level": "L3",
+          "maturityPct": 60
+        },
+        {
+          "id": "D03-02",
+          "name": "ret5／ret20／ret60直接報酬動能",
+          "level": "L3",
+          "maturityPct": 60
+        },
+        {
+          "id": "D03-03",
+          "name": "趨勢持續性與Persistence",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D03-04",
+          "name": "動能延續",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D03-05",
+          "name": "Pullback回檔與短期反轉",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D03-06",
+          "name": "KD隨機指標",
+          "level": "L3",
+          "maturityPct": 60
+        },
+        {
+          "id": "D03-07",
+          "name": "RSI相對強弱指標",
+          "level": "L3",
+          "maturityPct": 60
+        },
+        {
+          "id": "D03-08",
+          "name": "MACD指數平滑異同移動平均",
+          "level": "L3",
+          "maturityPct": 60
+        },
+        {
+          "id": "D03-09",
+          "name": "ADX平均趨向指標",
+          "level": "L1",
+          "maturityPct": 20
+        },
+        {
+          "id": "D03-10",
+          "name": "Bollinger Bands布林通道",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D03-11",
+          "name": "ROC變動率",
+          "level": "L1",
+          "maturityPct": 20
+        },
+        {
+          "id": "D03-12",
+          "name": "指標背離／repaint-safe確認",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D03-13",
+          "name": "多時間框架趨勢／動能衝突",
+          "level": "L2",
+          "maturityPct": 40
+        }
+      ]
+    },
+    {
+      "id": "D04",
+      "name": "波動率／波動狀態",
+      "chatroom": "04｜波動與市場微結構研究室",
+      "anchors": [
+        "VOLATILITY_REGIME_RESEARCH.md"
+      ],
+      "maturityPct": 42,
+      "modules": [
+        {
+          "id": "D04-01",
+          "name": "ATR平均真實波幅",
+          "level": "L3",
+          "maturityPct": 60
+        },
+        {
+          "id": "D04-02",
+          "name": "RV5／RV20已實現波動率",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D04-03",
+          "name": "波動收縮",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D04-04",
+          "name": "波動擴張／Shock",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D04-05",
+          "name": "波動Regime狀態轉換",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D04-06",
+          "name": "市場波動×個股波動互動",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D04-07",
+          "name": "波動與趨勢／突破交互作用",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D04-08",
+          "name": "波動率縮放部位概念",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D04-09",
+          "name": "尾端／跳空波動風險",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D04-10",
+          "name": "漲跌停對波動估計污染",
+          "level": "L2",
+          "maturityPct": 40
+        }
+      ]
+    },
+    {
+      "id": "D05",
+      "name": "市場微結構／撮合／流動性",
+      "chatroom": "04｜波動與市場微結構研究室",
+      "anchors": [
+        "MICROSTRUCTURE_CHECKPOINT.md",
+        "MICROSTRUCTURE_RESEARCH.md"
+      ],
+      "maturityPct": 44,
+      "modules": [
+        {
+          "id": "D05-01",
+          "name": "台股Tick跳動單位",
+          "level": "L3",
+          "maturityPct": 60
+        },
+        {
+          "id": "D05-02",
+          "name": "漲跌停與限制價格機制",
+          "level": "L3",
+          "maturityPct": 60
+        },
+        {
+          "id": "D05-03",
+          "name": "Bid-Ask Spread買賣價差",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D05-04",
+          "name": "Order-book Depth委買賣深度",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D05-05",
+          "name": "Order Flow Imbalance訂單流失衡",
+          "level": "L1",
+          "maturityPct": 20
+        },
+        {
+          "id": "D05-06",
+          "name": "開盤集合競價",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D05-07",
+          "name": "盤中撮合／VI與異常撮合狀態",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D05-08",
+          "name": "零股與整股執行差異",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D05-09",
+          "name": "流動性狀態分類",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D05-10",
+          "name": "停牌／無交易日／pseudo-bar語意",
+          "level": "L3",
+          "maturityPct": 60
+        }
+      ]
+    },
+    {
+      "id": "D06",
+      "name": "法人／籌碼／槓桿／擁擠／被動資金",
+      "chatroom": "05｜法人與籌碼研究室",
+      "anchors": [
+        "INSTITUTIONAL_CROWDING_RESEARCH.md",
+        "LEVERAGE_SHORTING_CHECKPOINT.md",
+        "PASSIVE_FLOW_INDEX_REBALANCING_CHECKPOINT.md"
+      ],
+      "maturityPct": 38.3,
+      "modules": [
+        {
+          "id": "D06-01",
+          "name": "外資現貨流",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D06-02",
+          "name": "投信流",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D06-03",
+          "name": "自營商自營／避險拆分",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D06-04",
+          "name": "法人連買／持續性",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D06-05",
+          "name": "持股集中度／Ownership",
+          "level": "L1",
+          "maturityPct": 20
+        },
+        {
+          "id": "D06-06",
+          "name": "Crowding擁擠交易",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D06-07",
+          "name": "融資餘額／融資變化",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D06-08",
+          "name": "融券餘額／Margin Short",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D06-09",
+          "name": "借券與實際借券賣出",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D06-10",
+          "name": "TDCC集保股權分散",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D06-11",
+          "name": "ETF／指數被動資金與再平衡",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D06-12",
+          "name": "法人流對流動性／價格反應正規化",
+          "level": "L2",
+          "maturityPct": 40
+        }
+      ]
+    },
+    {
+      "id": "D07",
+      "name": "基本面／財報／資訊動態",
+      "chatroom": "06｜基本面與估值研究室",
+      "anchors": [
+        "FUNDAMENTAL_INFORMATION_DYNAMICS_CHECKPOINT.md",
+        "FUNDAMENTAL_INFORMATION_DYNAMICS_RESEARCH.md"
+      ],
+      "maturityPct": 30.9,
+      "modules": [
+        {
+          "id": "D07-01",
+          "name": "月營收與YoY／MoM",
+          "level": "L3",
+          "maturityPct": 60
+        },
+        {
+          "id": "D07-02",
+          "name": "季度EPS與獲利成長",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D07-03",
+          "name": "毛利率／營益率變化",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D07-04",
+          "name": "ROE／ROIC資本報酬",
+          "level": "L1",
+          "maturityPct": 20
+        },
+        {
+          "id": "D07-05",
+          "name": "營業／自由現金流",
+          "level": "L1",
+          "maturityPct": 20
+        },
+        {
+          "id": "D07-06",
+          "name": "資產負債表與槓桿品質",
+          "level": "L1",
+          "maturityPct": 20
+        },
+        {
+          "id": "D07-07",
+          "name": "盈餘品質／應計項目",
+          "level": "L1",
+          "maturityPct": 20
+        },
+        {
+          "id": "D07-08",
+          "name": "PIT財報Vintage與first-known時間",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D07-09",
+          "name": "成長加速度／基本面Surprise",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D07-10",
+          "name": "資料可用性與fundamentalScore混淆",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D07-11",
+          "name": "分析師預估／預期修正",
+          "level": "L0",
+          "maturityPct": 0
+        }
+      ]
+    },
+    {
+      "id": "D08",
+      "name": "估值",
+      "chatroom": "06｜基本面與估值研究室",
+      "anchors": [
+        "VALUATION_RESEARCH.md"
+      ],
+      "maturityPct": 26.7,
+      "modules": [
+        {
+          "id": "D08-01",
+          "name": "官方當日PE／PB資料語意",
+          "level": "L3",
+          "maturityPct": 60
+        },
+        {
+          "id": "D08-02",
+          "name": "產業相對PE",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D08-03",
+          "name": "歷史PE／PB百分位",
+          "level": "L1",
+          "maturityPct": 20
+        },
+        {
+          "id": "D08-04",
+          "name": "Forward PE預估本益比",
+          "level": "L0",
+          "maturityPct": 0
+        },
+        {
+          "id": "D08-05",
+          "name": "PEG本益成長比",
+          "level": "L1",
+          "maturityPct": 20
+        },
+        {
+          "id": "D08-06",
+          "name": "EV/EBITDA",
+          "level": "L0",
+          "maturityPct": 0
+        },
+        {
+          "id": "D08-07",
+          "name": "FCF Yield自由現金流殖利率",
+          "level": "L0",
+          "maturityPct": 0
+        },
+        {
+          "id": "D08-08",
+          "name": "成長×估值聯合判斷",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D08-09",
+          "name": "同業／產業Peer正規化",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D08-10",
+          "name": "負EPS／週期低點／價值陷阱",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D08-11",
+          "name": "估值×市場Regime互動",
+          "level": "L1",
+          "maturityPct": 20
+        },
+        {
+          "id": "D08-12",
+          "name": "除權息／增減資對估值分母防火牆",
+          "level": "L2",
+          "maturityPct": 40
+        }
+      ]
+    },
+    {
+      "id": "D09",
+      "name": "產業／族群／市場廣度／輪動",
+      "chatroom": "07｜產業與供應鏈研究室",
+      "anchors": [
+        "MARKET_BREADTH_ROTATION_CHECKPOINT.md",
+        "MARKET_BREADTH_ROTATION_RESEARCH.md"
+      ],
+      "maturityPct": 38.3,
+      "modules": [
+        {
+          "id": "D09-01",
+          "name": "產業分類與分類Vintage",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D09-02",
+          "name": "Sector RS產業相對強弱",
+          "level": "L3",
+          "maturityPct": 60
+        },
+        {
+          "id": "D09-03",
+          "name": "Residual RS殘差相對強弱",
+          "level": "L3",
+          "maturityPct": 60
+        },
+        {
+          "id": "D09-04",
+          "name": "漲跌家數／Advance-Decline",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D09-05",
+          "name": "Above-MA廣度",
+          "level": "L1",
+          "maturityPct": 20
+        },
+        {
+          "id": "D09-06",
+          "name": "Sector Rotation族群輪動",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D09-07",
+          "name": "領導股／主流族群生命週期",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D09-08",
+          "name": "大型股vs小型股領導",
+          "level": "L1",
+          "maturityPct": 20
+        },
+        {
+          "id": "D09-09",
+          "name": "橫截面報酬離散度",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D09-10",
+          "name": "產業成交值／集中度",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D09-11",
+          "name": "題材股與正式產業分類橋接",
+          "level": "L1",
+          "maturityPct": 20
+        },
+        {
+          "id": "D09-12",
+          "name": "Breadth×Regime交互作用",
+          "level": "L2",
+          "maturityPct": 40
+        }
+      ]
+    },
+    {
+      "id": "D10",
+      "name": "供應鏈／產能／庫存／原物料傳導",
+      "chatroom": "07｜產業與供應鏈研究室",
+      "anchors": [
+        "SUPPLY_CHAIN_LEAD_LAG_RESEARCH.md"
+      ],
+      "maturityPct": 33.3,
+      "modules": [
+        {
+          "id": "D10-01",
+          "name": "上下游供應鏈圖譜",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D10-02",
+          "name": "供應鏈Lead-Lag領先落後",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D10-03",
+          "name": "庫存週期",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D10-04",
+          "name": "產能／擴產／稼動率",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D10-05",
+          "name": "原物料／報價傳導",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D10-06",
+          "name": "Pricing Power定價能力",
+          "level": "L1",
+          "maturityPct": 20
+        },
+        {
+          "id": "D10-07",
+          "name": "訂單／交期／Backlog",
+          "level": "L1",
+          "maturityPct": 20
+        },
+        {
+          "id": "D10-08",
+          "name": "缺貨／供需缺口事件",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D10-09",
+          "name": "上游與下游不對稱傳導",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D10-10",
+          "name": "供應鏈事件PIT時間戳",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D10-11",
+          "name": "官方資料自動化擷取",
+          "level": "L1",
+          "maturityPct": 20
+        },
+        {
+          "id": "D10-12",
+          "name": "產業別專用傳導模板",
+          "level": "L1",
+          "maturityPct": 20
+        }
+      ]
+    },
+    {
+      "id": "D11",
+      "name": "公司行動／重大事件／事件風險",
+      "chatroom": "08｜事件與新聞研究室",
+      "anchors": [
+        "CORPORATE_ACTIONS_CAPITAL_SUPPLY_CHECKPOINT.md",
+        "EVENT_RISK_CHECKPOINT.md"
+      ],
+      "maturityPct": 47.1,
+      "modules": [
+        {
+          "id": "D11-01",
+          "name": "除權息／Reference Price調整",
+          "level": "L3",
+          "maturityPct": 60
+        },
+        {
+          "id": "D11-02",
+          "name": "現金增資／權利發行",
+          "level": "L3",
+          "maturityPct": 60
+        },
+        {
+          "id": "D11-03",
+          "name": "減資／股票分割／面額變更",
+          "level": "L3",
+          "maturityPct": 60
+        },
+        {
+          "id": "D11-04",
+          "name": "可轉債／CB事件",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D11-05",
+          "name": "庫藏股",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D11-06",
+          "name": "併購／處分／重大交易",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D11-07",
+          "name": "停牌／復牌",
+          "level": "L3",
+          "maturityPct": 60
+        },
+        {
+          "id": "D11-08",
+          "name": "重大訊息first-known時間",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D11-09",
+          "name": "財報／月營收／法說事件窗",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D11-10",
+          "name": "Overnight Gap跳空事件風險",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D11-11",
+          "name": "漲跌停造成多日退出風險",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D11-12",
+          "name": "Corporate-action歷史連續性防火牆",
+          "level": "L3",
+          "maturityPct": 60
+        },
+        {
+          "id": "D11-13",
+          "name": "負面證據／無事件的完整性證明",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D11-14",
+          "name": "指數調整事件與被動流",
+          "level": "L2",
+          "maturityPct": 40
+        }
+      ]
+    },
+    {
+      "id": "D12",
+      "name": "期貨／選擇權／衍生品",
+      "chatroom": "09｜衍生品與國際總經研究室",
+      "anchors": [
+        "DERIVATIVES_VOLATILITY_CHECKPOINT.md",
+        "DERIVATIVES_VOLATILITY_RESEARCH.md"
+      ],
+      "maturityPct": 33.3,
+      "modules": [
+        {
+          "id": "D12-01",
+          "name": "台指期Basis基差",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D12-02",
+          "name": "期貨未平倉OI",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D12-03",
+          "name": "外資期貨部位",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D12-04",
+          "name": "PCR賣權買權比",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D12-05",
+          "name": "TAIEX VIX台灣波動率指數",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D12-06",
+          "name": "Implied Volatility隱含波動率",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D12-07",
+          "name": "Skew偏斜／Term Structure期限結構",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D12-08",
+          "name": "Gamma Exposure／Dealer Gamma",
+          "level": "L0",
+          "maturityPct": 0
+        },
+        {
+          "id": "D12-09",
+          "name": "到期／結算效應",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D12-10",
+          "name": "夜盤期貨與隔夜資訊",
+          "level": "L1",
+          "maturityPct": 20
+        },
+        {
+          "id": "D12-11",
+          "name": "選擇權流動性／微結構",
+          "level": "L1",
+          "maturityPct": 20
+        },
+        {
+          "id": "D12-12",
+          "name": "衍生品狀態對個股／大盤的增量價值",
+          "level": "L2",
+          "maturityPct": 40
+        }
+      ]
+    },
+    {
+      "id": "D13",
+      "name": "總體經濟／跨市場傳導",
+      "chatroom": "09｜衍生品與國際總經研究室",
+      "anchors": [
+        "MACRO_CROSS_MARKET_CHECKPOINT.md",
+        "MACRO_CROSS_MARKET_RESEARCH.md"
+      ],
+      "maturityPct": 32.3,
+      "modules": [
+        {
+          "id": "D13-01",
+          "name": "美股Broad Market前一交易日",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D13-02",
+          "name": "美國科技／半導體指數",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D13-03",
+          "name": "日股／韓股混合時間窗",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D13-04",
+          "name": "USD/TWD美元台幣",
+          "level": "L3",
+          "maturityPct": 60
+        },
+        {
+          "id": "D13-05",
+          "name": "DXY美元指數",
+          "level": "L1",
+          "maturityPct": 20
+        },
+        {
+          "id": "D13-06",
+          "name": "美債利率／殖利率曲線",
+          "level": "L1",
+          "maturityPct": 20
+        },
+        {
+          "id": "D13-07",
+          "name": "油價",
+          "level": "L1",
+          "maturityPct": 20
+        },
+        {
+          "id": "D13-08",
+          "name": "金屬／原物料／稀有元素",
+          "level": "L1",
+          "maturityPct": 20
+        },
+        {
+          "id": "D13-09",
+          "name": "CPI／PPI／非農／失業率",
+          "level": "L1",
+          "maturityPct": 20
+        },
+        {
+          "id": "D13-10",
+          "name": "Fed／CBC央行利率決策",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D13-11",
+          "name": "Macro Surprise與公告時鐘",
+          "level": "L1",
+          "maturityPct": 20
+        },
+        {
+          "id": "D13-12",
+          "name": "全球Shock與台股Residual反應",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D13-13",
+          "name": "時區／休市／Session對齊",
+          "level": "L2",
+          "maturityPct": 40
+        }
+      ]
+    },
+    {
+      "id": "D14",
+      "name": "交易成本／執行品質／Execution Alpha",
+      "chatroom": "10｜投組風控與交易執行研究室",
+      "anchors": [
+        "TRADING_FRICTIONS_CHECKPOINT.md",
+        "EXECUTION_ALPHA_RESEARCH.md"
+      ],
+      "maturityPct": 47.1,
+      "modules": [
+        {
+          "id": "D14-01",
+          "name": "券商手續費Provenance",
+          "level": "L3",
+          "maturityPct": 60
+        },
+        {
+          "id": "D14-02",
+          "name": "證交稅／當沖稅別Provenance",
+          "level": "L3",
+          "maturityPct": 60
+        },
+        {
+          "id": "D14-03",
+          "name": "Signal Price vs Fill Price",
+          "level": "L3",
+          "maturityPct": 60
+        },
+        {
+          "id": "D14-04",
+          "name": "Slippage滑價",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D14-05",
+          "name": "Partial Fill部分成交",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D14-06",
+          "name": "Counterfactual Orderability反事實可下單性",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D14-07",
+          "name": "訊號到成交Latency",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D14-08",
+          "name": "零股／整股成本差異",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D14-09",
+          "name": "Turnover換手成本",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D14-10",
+          "name": "Opportunity Cost機會成本",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D14-11",
+          "name": "REDUCE→RE-ADD摩擦成本",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D14-12",
+          "name": "Execution Alpha歸因",
+          "level": "L3",
+          "maturityPct": 60
+        },
+        {
+          "id": "D14-13",
+          "name": "Broker Fee Schedule完整費率語意",
+          "level": "L3",
+          "maturityPct": 60
+        },
+        {
+          "id": "D14-14",
+          "name": "集合競價／特殊撮合成本",
+          "level": "L2",
+          "maturityPct": 40
+        }
+      ]
+    },
+    {
+      "id": "D15",
+      "name": "投資組合／風險／資金利用／部位生命週期",
+      "chatroom": "10｜投組風控與交易執行研究室",
+      "anchors": [
+        "PORTFOLIO_RISK_CHECKPOINT.md",
+        "PORTFOLIO_RISK_RESEARCH.md"
+      ],
+      "maturityPct": 46.7,
+      "modules": [
+        {
+          "id": "D15-01",
+          "name": "Capital Concentration資金集中",
+          "level": "L3",
+          "maturityPct": 60
+        },
+        {
+          "id": "D15-02",
+          "name": "Risk Concentration風險集中／HHI",
+          "level": "L3",
+          "maturityPct": 60
+        },
+        {
+          "id": "D15-03",
+          "name": "Correlation相關性",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D15-04",
+          "name": "Covariance Shrinkage共變異縮減",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D15-05",
+          "name": "Hierarchical Clustering階層分群",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D15-06",
+          "name": "Effective Bets有效獨立下注數",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D15-07",
+          "name": "Portfolio Heat投組熱度",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D15-08",
+          "name": "Cash Attribution現金原因歸因",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D15-09",
+          "name": "Stop-risk Geometry停損距離風險",
+          "level": "L3",
+          "maturityPct": 60
+        },
+        {
+          "id": "D15-10",
+          "name": "FIRST／ADD／FULL生命週期",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D15-11",
+          "name": "REDUCE／RECOVERY／RE-ADD",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D15-12",
+          "name": "35% Cap／千元格／股數量化誤差",
+          "level": "L3",
+          "maturityPct": 60
+        },
+        {
+          "id": "D15-13",
+          "name": "Expected Shortfall／Tail Risk",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D15-14",
+          "name": "PriorityScore後選股資金傾斜",
+          "level": "L3",
+          "maturityPct": 60
+        },
+        {
+          "id": "D15-15",
+          "name": "3+3／多Pool跨池風險",
+          "level": "L2",
+          "maturityPct": 40
+        }
+      ]
+    },
+    {
+      "id": "D16",
+      "name": "統計驗證／PIT／Shadow／OOS／防過擬合",
+      "chatroom": "11｜統計驗證與策略市場狀態研究室",
+      "anchors": [
+        "RESEARCH_WORKLIST.md",
+        "research/EXPERIMENT_REGISTRY.md",
+        "research/research_master_map.json"
+      ],
+      "maturityPct": 72,
+      "modules": [
+        {
+          "id": "D16-01",
+          "name": "Point-in-Time資料時間一致性",
+          "level": "L4",
+          "maturityPct": 80
+        },
+        {
+          "id": "D16-02",
+          "name": "Prospective Shadow前瞻影子樣本",
+          "level": "L4",
+          "maturityPct": 80
+        },
+        {
+          "id": "D16-03",
+          "name": "OOS樣本外驗證",
+          "level": "L4",
+          "maturityPct": 80
+        },
+        {
+          "id": "D16-04",
+          "name": "Purged Holdout清洗保留集",
+          "level": "L4",
+          "maturityPct": 80
+        },
+        {
+          "id": "D16-05",
+          "name": "Multiple Testing多重測試",
+          "level": "L4",
+          "maturityPct": 80
+        },
+        {
+          "id": "D16-06",
+          "name": "Independent-Date／日期群聚推論",
+          "level": "L4",
+          "maturityPct": 80
+        },
+        {
+          "id": "D16-07",
+          "name": "Factor Redundancy因子冗餘",
+          "level": "L4",
+          "maturityPct": 80
+        },
+        {
+          "id": "D16-08",
+          "name": "交易成本敏感度",
+          "level": "L3",
+          "maturityPct": 60
+        },
+        {
+          "id": "D16-09",
+          "name": "Coverage／Zero-pick防火牆",
+          "level": "L4",
+          "maturityPct": 80
+        },
+        {
+          "id": "D16-10",
+          "name": "Negative Controls負向控制",
+          "level": "L3",
+          "maturityPct": 60
+        },
+        {
+          "id": "D16-11",
+          "name": "Data Provenance資料來源／世代證明",
+          "level": "L3",
+          "maturityPct": 60
+        },
+        {
+          "id": "D16-12",
+          "name": "Experiment Registry實驗登錄",
+          "level": "L4",
+          "maturityPct": 80
+        },
+        {
+          "id": "D16-13",
+          "name": "Shadow Cohort抽樣／Membership語意",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D16-14",
+          "name": "Generation Alignment跨資料表世代對齊",
+          "level": "L3",
+          "maturityPct": 60
+        },
+        {
+          "id": "D16-15",
+          "name": "Maturity Gate成熟度與升級門檻",
+          "level": "L4",
+          "maturityPct": 80
+        }
+      ]
+    },
+    {
+      "id": "D17",
+      "name": "新聞／事件半衰期／受益受害傳導",
+      "chatroom": "08｜事件與新聞研究室",
+      "anchors": [
+        "EVENT_RISK_CHECKPOINT.md",
+        "SUPPLY_CHAIN_LEAD_LAG_RESEARCH.md"
+      ],
+      "maturityPct": 23.1,
+      "modules": [
+        {
+          "id": "D17-01",
+          "name": "新聞來源可靠度分級",
+          "level": "L1",
+          "maturityPct": 20
+        },
+        {
+          "id": "D17-02",
+          "name": "新聞first-known／發布時間",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D17-03",
+          "name": "News Half-life資訊半衰期",
+          "level": "L1",
+          "maturityPct": 20
+        },
+        {
+          "id": "D17-04",
+          "name": "直接受益／直接受害辨識",
+          "level": "L1",
+          "maturityPct": 20
+        },
+        {
+          "id": "D17-05",
+          "name": "間接受益／供應鏈二階傳導",
+          "level": "L1",
+          "maturityPct": 20
+        },
+        {
+          "id": "D17-06",
+          "name": "Expectation vs Surprise預期差",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D17-07",
+          "name": "Priced-in已反映程度",
+          "level": "L1",
+          "maturityPct": 20
+        },
+        {
+          "id": "D17-08",
+          "name": "新聞Sentiment情緒",
+          "level": "L0",
+          "maturityPct": 0
+        },
+        {
+          "id": "D17-09",
+          "name": "重複新聞／同事件Cluster去重",
+          "level": "L0",
+          "maturityPct": 0
+        },
+        {
+          "id": "D17-10",
+          "name": "消息來源交叉驗證",
+          "level": "L1",
+          "maturityPct": 20
+        },
+        {
+          "id": "D17-11",
+          "name": "Sector Propagation族群擴散",
+          "level": "L1",
+          "maturityPct": 20
+        },
+        {
+          "id": "D17-12",
+          "name": "事件後Gap／延續／反轉",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D17-13",
+          "name": "Scheduled vs Unscheduled已知／未知事件",
+          "level": "L2",
+          "maturityPct": 40
+        }
+      ]
+    },
+    {
+      "id": "D18",
+      "name": "市場Regime×策略互動",
+      "chatroom": "11｜統計驗證與策略市場狀態研究室",
+      "anchors": [
+        "system2/SYSTEM2_MARKET_REGIME_V0.md",
+        "TREND_MOMENTUM_REVERSAL_CHECKPOINT.md",
+        "MARKET_BREADTH_ROTATION_CHECKPOINT.md"
+      ],
+      "maturityPct": 28.6,
+      "modules": [
+        {
+          "id": "D18-01",
+          "name": "Market Regime市場狀態Taxonomy",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D18-02",
+          "name": "Trend vs Range策略互動",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D18-03",
+          "name": "High/Low Volatility策略互動",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D18-04",
+          "name": "Breadth參與度×策略",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D18-05",
+          "name": "Sector Rotation×策略",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D18-06",
+          "name": "Large-cap vs Small-cap領導×策略",
+          "level": "L1",
+          "maturityPct": 20
+        },
+        {
+          "id": "D18-07",
+          "name": "Risk-on／Risk-off狀態",
+          "level": "L1",
+          "maturityPct": 20
+        },
+        {
+          "id": "D18-08",
+          "name": "策略啟用／停用規則",
+          "level": "L1",
+          "maturityPct": 20
+        },
+        {
+          "id": "D18-09",
+          "name": "策略權重動態配置",
+          "level": "L1",
+          "maturityPct": 20
+        },
+        {
+          "id": "D18-10",
+          "name": "多策略相關性／Ensemble",
+          "level": "L1",
+          "maturityPct": 20
+        },
+        {
+          "id": "D18-11",
+          "name": "Regime Transition狀態轉換",
+          "level": "L2",
+          "maturityPct": 40
+        },
+        {
+          "id": "D18-12",
+          "name": "Drawdown-aware策略降載",
+          "level": "L1",
+          "maturityPct": 20
+        },
+        {
+          "id": "D18-13",
+          "name": "策略績效Regime Attribution",
+          "level": "L1",
+          "maturityPct": 20
+        },
+        {
+          "id": "D18-14",
+          "name": "Walk-forward市場狀態驗證",
+          "level": "L1",
+          "maturityPct": 20
+        }
+      ]
+    }
+  ],
+  "rules": {
+    "evidenceRequiredForPromotion": true,
+    "l3RequiresTaiwanPIT": true,
+    "l4RequiresProspectiveOrOOS": true,
+    "l5RequiresMultiRegimeCostRedundancyIndependentDate": true,
+    "unknownIsNotZero": true,
+    "formalAutoPromotion": false
+  }
+}
