@@ -258,3 +258,24 @@ Exact next continuation:
 4. D05 — evidence gate remains prospective complete capture. Before any outcome study, verify actual collector plan/quota and event completeness if/when infrastructure is owner-authorized.
 5. D05 — once valid events exist, run E0(event) -> E1(1m/5m) -> E2(10m/15m) retention ladder with event-count matching and top1-vs-top5 nested test.
 6. Formal Core remains LOCKED; no ATR/stop/RR/spread/depth/OFI/BUY/maxChase/sizing change.
+
+
+## 2026-09-28 21:04 continuation — ATR observability audit closed
+
+The D04 L0-L4 observability audit is now complete.
+
+Key result:
+- existing Class-A observers can compute ordered gate state, ATR_QUALITY, channel, Formal stop geometry, target state, RR state and downstream grade from same-scan already-loaded inputs with zero new market-data calls;
+- the blocker is durable denominator/provenance, not formula availability;
+- legacy Shadow cohorts are bounded, single-membership, first-failure-conditioned and mutable, so ATR reject-vs-survivor outcome analysis on those convenience cohorts is prohibited;
+- future ATR evidence must reuse the shared immutable per-symbol decision-state parent rather than create a volatility-specific duplicate persistence stack.
+
+New artifact:
+- research/volatility_atr_conditioning_observability_audit_v0_1.json
+
+Revised exact continuation:
+- D04 next = prospective TAIEX RV capture/readback gate on clean dates, followed by overlapping RV5/RV20 versus non-overlapping recent5/prior15 robustness only after independent PIT-valid dates accumulate.
+- D04 stock-level volatility controls require TECHNICAL_CONTINUITY-safe windows.
+- ATR outcome/opportunity-cost analysis remains blocked until the shared immutable decision-state parent is available.
+- D05 remains EVIDENCE_PENDING: no more concept-factor invention; wait for complete prospective event capture, then execute the dual-clock E0->E1->E2 retention ladder and nested top1-vs-top5 test.
+- Formal Core remains LOCKED.
