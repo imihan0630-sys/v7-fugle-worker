@@ -835,3 +835,72 @@ Only READY_ALIGNED / pre-registered READY_PARTIAL can enter prospective outcome 
 SC-018: build a current source-only non-tech panel if the official interactive result can be cleanly extracted; otherwise freeze MANUAL_SOURCE_ONLY and do not fabricate a machine panel.
 SC-019: define an industry/company capacity evidence hierarchy (official industry data -> company filing/capex -> capacity effective date -> utilization/yield), explicitly separating plan, construction, tool-in, qualification and mass production.
 SC-020: define product-level raw-material mappings for at least semiconductor/PCB and basic-metals/process manufacturing with negative controls.
+
+
+## SC-018 — Non-tech aligned official panel exists; automation contract is still incomplete
+
+Receipt: `research/nontech_physical_cycle_source_pilot_v0_1.json`
+
+### Outcome-blind official query result
+A bounded browser query on the official MOEA industrial production/sales/inventory statistics surface successfully retrieved one aligned current non-tech panel:
+
+Observation month: ROC 11507 (2026-07)  
+Industry: `24 基本金屬製造業`
+
+- production value: 128,744,522 thousand NTD;
+- sales value: 79,712,871 thousand NTD;
+- inventory value: 106,749,192 thousand NTD;
+- inventory ratio: 143.75%.
+
+All four observations came from the same official query surface, same month and same industry code.
+
+No stock-return outcome was inspected.
+
+### Important interpretation boundary
+The query used `統計值` mode only. Therefore this pilot establishes **source alignment**, not cycle direction.
+
+Do NOT label the industry bullish/bearish from the levels alone.
+
+In particular:
+- do not infer YoY direction without explicitly querying a comparable historical/YoY mode;
+- do not substitute `inventoryValue / salesValue` for the official inventory-ratio series unless the official definition proves equivalence;
+- do not compare nominal value growth across long periods without considering price-level changes.
+
+### Export finding
+The official result page visibly supports:
+- `下載報表 -> XLS`;
+- `下載報表 -> ODS`;
+- print.
+
+This falsifies the stronger claim that the current detailed database is human-display-only.
+
+The narrower, still unresolved claim is:
+**a stable documented canonical machine request/download contract for arbitrary query selections has not yet been verified.**
+
+Therefore source state becomes:
+`MANUAL_EXPORTABLE_OFFICIAL_SOURCE / MACHINE_CONTRACT_UNVERIFIED`.
+
+### Automation rule
+A browser-created XLS/ODS export may be used for bounded manual research with provenance, but a production/research collector should not depend on fragile UI coordinates or reverse-engineered hidden endpoints.
+
+If future work verifies a stable export request contract, prospectively preserve:
+- query parameters;
+- observation period and industry scope;
+- selected statistic/calculation mode;
+- downloaded-file hash;
+- capturedAt;
+- official release/knownAt;
+- parser version;
+- revision/supersession state.
+
+### Maturity implication
+This strengthens D10-03 / D10-11 source readiness but does not justify another maturity promotion:
+- D10-03 already L3;
+- D10-11 already L3;
+- no prospective vintage archive exists yet;
+- D10-04 capacity remains L2.
+
+### Exact next continuation
+SC-019: capacity evidence hierarchy — distinguish announcement, approved capex, construction, tool-in, qualification, effective capacity, yield and utilization.
+SC-020: product/material mapping — semiconductor/PCB and basic-metals/process lanes, with input-price negative controls.
+SC-021: prospective source receipt design for official XLS/ODS and standalone CSV/XML vintages.
