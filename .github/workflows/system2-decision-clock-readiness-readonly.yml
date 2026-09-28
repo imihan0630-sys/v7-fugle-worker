@@ -59,6 +59,7 @@ jobs:
             "- Latest finalized date: "+x.marketDate,
             "- Latest finalized-date acceptance: "+x.status,
             "- Counts toward independent dates: "+x.countsTowardIndependentDate,
+            "- Counts toward complete dates: "+x.countsTowardCompleteTradingDate,
             "- Counts toward precision dates: "+x.countsTowardPrecisionEligibleDate,
             "- Attempt-one scheduled artifacts: "+(a.attemptOneScheduledArtifactCount||0),
             "- Coverage-excluded scheduled artifacts: "+(a.coverageExcludedScheduledArtifacts?.length||0),

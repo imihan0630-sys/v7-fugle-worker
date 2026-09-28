@@ -49,6 +49,7 @@ async function main() {
     marketDate: audit.marketDate,
     status: audit.status,
     countsTowardIndependentDate: audit.countsTowardIndependentDate,
+    countsTowardCompleteTradingDate: audit.countsTowardCompleteTradingDate,
     countsTowardPrecisionEligibleDate: audit.countsTowardPrecisionEligibleDate,
     exactDecisionClockAuthorized: false,
     workerCronAuthorized: false,

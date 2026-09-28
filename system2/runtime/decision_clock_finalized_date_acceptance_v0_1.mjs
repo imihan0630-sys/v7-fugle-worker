@@ -41,13 +41,19 @@ export function auditFinalizedDecisionClockDateV01({
   const coverageRow = coverageRows.find((row) => row?.marketDate === targetDate) || null;
   const selected = selectedArtifacts.find((row) => row?.marketDate === targetDate) || null;
 
+  const finalizedWindowIncluded =
+    Boolean(coverageStartDate && coverageThroughDate)
+    && targetDate >= coverageStartDate
+    && targetDate <= coverageThroughDate;
+
   let status = "NOT_IN_FINALIZED_WINDOW";
   let countsTowardIndependentDate = false;
+  let countsTowardCompleteTradingDate = false;
   let countsTowardPrecisionEligibleDate = false;
 
-  if (coverageRow?.expectedTradingDay === false) {
+  if (finalizedWindowIncluded && coverageRow?.expectedTradingDay === false) {
     status = "NON_TRADING_DAY_SKIP";
-  } else if (coverageRow?.expectedTradingDay === true) {
+  } else if (finalizedWindowIncluded && coverageRow?.expectedTradingDay === true) {
     if (coverageRow.promotionCoverageEligible !== true) {
       status = "COVERAGE_REJECTED";
     } else if (!selected) {
@@ -56,17 +62,25 @@ export function auditFinalizedDecisionClockDateV01({
       status = "NON_ATTEMPT_ONE_SELECTED";
     } else if (selected.runId !== coverageRow.runId) {
       status = "COVERAGE_ANCHOR_RUN_MISMATCH";
-    } else if (selected.requiredReady !== true) {
-      status = "INCOMPLETE_REQUIRED_EVIDENCE";
-    } else if (selected.a5AvailableByCandidate !== true) {
-      status = "A5_NOT_AVAILABLE_BY_CANDIDATE";
-    } else if (selected.precisionEligible === true) {
-      status = "COMPLETE_PRECISE";
-      countsTowardIndependentDate = true;
-      countsTowardPrecisionEligibleDate = true;
     } else {
-      status = "COMPLETE_IMPRECISE";
       countsTowardIndependentDate = true;
+
+      if (
+        selected.sameSessionClockReady === true
+        && selected.a5AvailableByCandidate !== true
+      ) {
+        status = "A5_NOT_AVAILABLE_BY_CANDIDATE";
+      } else if (selected.requiredReady !== true) {
+        status = "INCOMPLETE_REQUIRED_EVIDENCE";
+      } else {
+        countsTowardCompleteTradingDate = true;
+        if (selected.precisionEligible === true) {
+          status = "COMPLETE_PRECISE";
+          countsTowardPrecisionEligibleDate = true;
+        } else {
+          status = "COMPLETE_IMPRECISE";
+        }
+      }
     }
   }
 
@@ -89,10 +103,7 @@ export function auditFinalizedDecisionClockDateV01({
     finalizedWindow: {
       coverageStartDate,
       coverageThroughDate,
-      included:
-        Boolean(coverageStartDate && coverageThroughDate)
-        && targetDate >= coverageStartDate
-        && targetDate <= coverageThroughDate,
+      included: finalizedWindowIncluded,
     },
     status,
     expectedTradingDay: coverageRow?.expectedTradingDay ?? null,
@@ -120,6 +131,7 @@ export function auditFinalizedDecisionClockDateV01({
     collectorContractConsistent:
       report.aggregation?.collectorContractConsistent === true,
     countsTowardIndependentDate,
+    countsTowardCompleteTradingDate,
     countsTowardPrecisionEligibleDate,
     selectedCountedByAggregation,
     pitSemantics: {
