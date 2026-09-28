@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "CORRELATION_RETURN_CONTINUITY_FIREWALL_V0_1",
+  "observedAt": "2026-09-28T21:12:00+08:00",
+  "scope": [
+    "D15-03 Correlation",
+    "D15-04 Covariance Shrinkage",
+    "D15-05 Hierarchical Clustering",
+    "D15-06 Effective Bets"
+  ],
+  "currentFoundation": {
+    "isolatedHistoricalD1": true,
+    "pitReplayMetadata": true,
+    "historicalUniverseRegistry": true,
+    "packedHistoryPersistence": true,
+    "fullBackfillProven": false,
+    "officialAdapterPriceSpace": "RAW",
+    "officialAdapterContinuityState": "UNVERIFIED"
+  },
+  "requirements": [
+    "PIT replay eligible",
+    "synchronized date support and explicit missingness rules",
+    "historical universe provenance",
+    "frozen return definition and horizon",
+    "ADJUSTED continuity or positively proven CLEAR_NO_ACTION raw intervals",
+    "sufficient common observations"
+  ],
+  "forbidden": [
+    "RAW plus UNVERIFIED used as correlation-ready returns",
+    "BROKEN continuity",
+    "schema capability treated as proof adjusted data exists",
+    "bounded smoke treated as continuous full panel"
+  ],
+  "status": "HISTORICAL_INFRASTRUCTURE_AVAILABLE / RETURN_CONTINUITY_NOT_PROVEN / D15_03_04_05_06_REMAIN_L2",
+  "formalCoreImpact": false
+}
