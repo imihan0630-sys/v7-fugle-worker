@@ -84,6 +84,10 @@ on:
       - "research/score_stop_interaction_audit_spec_v0_1.json"
       - "tests/test_score_stop_interaction_audit_v0_1.mjs"
       - "tests/portfolio_risk_score_stop_interaction_readonly_audit.mjs"
+      - "research/tranche_ratio_sensitivity_v0_1.mjs"
+      - "research/tranche_ratio_sensitivity_spec_v0_1.json"
+      - "tests/test_tranche_ratio_sensitivity_v0_1.mjs"
+      - "tests/portfolio_risk_tranche_ratio_sensitivity_readonly_audit.mjs"
       - "research/first_tranche_risk_concentration_v0_1.mjs"
       - "research/first_tranche_risk_concentration_spec_v0_1.json"
       - "tests/test_first_tranche_risk_concentration_v0_1.mjs"
@@ -157,6 +161,7 @@ jobs:
           node tests/test_entry_reference_risk_sensitivity_v0_1.mjs
           node tests/test_risk_concentration_bridge_v0_1.mjs
           node tests/test_score_stop_interaction_audit_v0_1.mjs
+          node tests/test_tranche_ratio_sensitivity_v0_1.mjs
           node tests/risk_concentration_bridge_audit_v0_1.mjs
           node tests/test_first_tranche_risk_concentration_v0_1.mjs
           node tests/test_add_tranche_risk_concentration_v0_1.mjs
@@ -178,6 +183,7 @@ jobs:
           node tests/portfolio_risk_exhaustive_grid_optima_readonly_audit.mjs
           node tests/portfolio_risk_entry_reference_sensitivity_readonly_audit.mjs
           node tests/portfolio_risk_score_stop_interaction_readonly_audit.mjs
+          node tests/portfolio_risk_tranche_ratio_sensitivity_readonly_audit.mjs
           node tests/portfolio_risk_first_tranche_readonly_audit.mjs
           node tests/portfolio_risk_add_tranche_readonly_audit.mjs
           node tests/portfolio_risk_lifecycle_metric_sensitivity_readonly_audit.mjs
