@@ -2,7 +2,7 @@
 
 Updated: 2026-09-28 20:35 Asia/Taipei
 Formal Core: LOCKED
-Current cursor: MC-001 through MC-064 complete.
+Current cursor: MC-001 through MC-076 complete.
 
 ## Durable conclusions
 
@@ -145,3 +145,45 @@ Japan/Korea daily close may be captured only with `ASIA_DAILY_MIXED_WINDOW` sema
 3. Continue D13-03 Japan/Korea L2 -> L3 feasibility by testing a clean Taiwan 13:30 -> Japan/Korea 14:30 Taipei subwindow source.
 4. Integrate only PIT-safe lanes into D13-12 global-shock / Taiwan-residual research; missing lanes stay UNKNOWN.
 5. Prospectively test whether DXY survives USD/TWD/rates/VIX controls and whether copper/gold survive global-risk controls before any optimization proposal.
+
+
+## 2026-09-28 D13-03 / D13-12 continuation and evidence-source convergence
+
+### D13-03 Japan/Korea clean post-Taiwan-close window
+- Clean conceptual window frozen: Taiwan 13:30 close -> Japan/Korea regular close 14:30 Taipei.
+- Japan TSE closes 15:30 JST; Korea KRX regular market closes 15:30 KST.
+- The full same-day JP/KR close-to-close return remains ASIA_DAILY_MIXED_WINDOW because most of it overlaps Taiwan trading.
+- Free official long-history intraday replay of the exact Taiwan-13:30 anchor was NOT established in the bounded source audit. JPX public historical TOPIX is daily; public intraday display is not equivalent to a durable long-history PIT archive.
+- Korea now has extended/multi-venue trading structure after 2025; KRX regular close, after-hours and ATS extended session are separate objects and require rulesRegimeVersion.
+- D13-03 remains L2 / 40%. Clean post-close feature = WAITING_SOURCE, not backfilled.
+
+### D13-12 global-shock / Taiwan-residual deepening
+- Naming firewall frozen: OBSERVED_MOVE != STATISTICAL_SHOCK != STRUCTURAL_SHOCK.
+- Transmission estimation and 18:10 absorption prediction are separate estimands. Taiwan same-day response is an outcome for transmission studies but a legitimate known input for after-market residual-state prediction.
+- Global layer remains VECTOR-FIRST; no scalar global risk score is approved.
+- PIT residual model must estimate parameters only from prior dates. Full-sample beta/window selection is prohibited.
+- Under/over-absorption labels require expected-response model + past-only residual scale; raw Taiwan-vs-US magnitude comparisons are insufficient.
+- Falsification ladder now orders domestic Taiwan/sector baselines before global families and requires simple-vs-complex comparison, redundancy, crisis/event stratification and date placebo.
+- D13-12 remains L2 / 40%; prospective evidence, not conceptual indicator invention, is the bottleneck.
+- Machine-readable contract: `research/d13_12_global_absorption_residual_spec_v0_1.json`.
+
+### Source/provider convergence
+- Frozen unified envelope: `research/global_market_receipt_v0_1.json`.
+- Frozen provider/entitlement matrix: `research/global_market_provider_entitlement_matrix_v0_1.json`.
+- Highest readiness: public official schedule/FX/rate lanes with explicit timing.
+- Next prospective market lanes: DXY, TX NIGHT_PRE_SCAN, WTI/Brent, HG copper, GC gold.
+- Lowest source-readiness: historical macro consensus, opaque critical-mineral prices, long-history JP/KR clean intraday anchors.
+- Critical-mineral research remains event-first where price transparency is weak.
+
+### Optimization status
+- Still NO FORMAL_OPTIMIZATION_CANDIDATE.
+- Formal Core remains LOCKED.
+- The next meaningful maturity step is prospective PIT evidence, not another global indicator.
+
+## Updated exact next continuation
+
+1. Design an isolated research-only prospective capture path around `GLOBAL_MARKET_RECEIPT_V0_1`.
+2. Re-read governance before implementation and prove whether capture can stay Class A; if shared runtime/cron/schema/budgets are touched, stop at Class B proposal-first.
+3. Start with the smallest high-value clock-clean set: TX NIGHT_PRE_SCAN + DXY + HG copper + GC gold + scheduled macro-event flags, while retaining existing CBC USD/TWD and prior-published UST state.
+4. Preserve source/provider entitlement and latency for every receipt; UNKNOWN rather than synthetic zero.
+5. After enough independent dates, test D13-12 absorption residual versus domestic Taiwan/sector baselines before considering any Formal optimization.
