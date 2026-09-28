@@ -114,6 +114,37 @@ System-use rule:
 - 這是一條跨模組研究整合規則，不新增第 19 領域，也不自動增加新的獨立因子權重。
 - Formal Core 維持 LOCKED；只有通過 PIT、OOS／Prospective Shadow、成本、冗餘與多 Regime 驗證後，才可形成 FORMAL_OPTIMIZATION_CANDIDATE。
 
+### Video-derived research candidate: EMA16／EMA64 + Impulse MACD + confirmation workflow
+
+Source context: YouTube video YsYFrWVwAq4 supplied by the owner. This is **hypothesis/input material, not validation evidence**.
+
+Observed strategy architecture:
+1. Direction: use EMA16 / EMA64 direction plus price location relative to the averages.
+2. Signal wait: wait for price to return toward a support/resistance area and require Impulse MACD direction to agree.
+3. Confirmation: require a key K-bar / breakout-style confirmation before entry and define stop-loss at entry.
+4. Trend continuation: if explicit sell conditions are not met, continue holding; if the first impulse is missed, do not blindly chase.
+5. Excessive extension: when price is excessively separated from the fast average, avoid chasing the first wave; wait for mean reversion / pullback and a second qualified opportunity.
+6. Trend reversal: moving-average logic is not treated as a bottom/top picker; wait for MA structure + Impulse MACD to show a clearer reversal state.
+7. Range failure: whipsaw / choppy ranges are a known failure state. Higher-timeframe context is proposed as a filter when a lower timeframe becomes noisy.
+8. Exit concept: “condition confluence” is used for exit, but the exact exit contract must be separately frozen before testing.
+
+Research interpretation:
+- EMA16/64 are **parameter candidates**, not privileged defaults. They must be compared with simpler/common horizons (e.g. 20/60 or equivalent effective horizons) under OOS / prospective Shadow, with multiple-testing control.
+- LazyBear Impulse MACD is **not identical to standard MACD**. It uses a smoothed High/Low envelope plus a zero-lag EMA centerline and suppresses values inside the envelope; this may encode a range/noise filter in addition to ordinary trend filtering. It remains a **composite interaction candidate**, not a new primitive family, until incremental value is shown beyond direct trend, MA distance, volatility/range and standard MACD controls.
+- “Key K-bar” must be translated into an explicit, repaint-safe, PIT-safe bar-confirmation contract before it can be tested. Visual hindsight labeling is forbidden.
+- “Condition confluence” must follow the System 2 confluence rule: correlated transformations of the same price series do not count as independent evidence families.
+
+Minimum falsification plan:
+- Baselines: EMA structure alone; price-vs-MA distance alone; standard MACD alone; direct-return/trend-persistence controls; price-structure support/resistance; simple pullback confirmation.
+- Challengers: EMA16/64 + Impulse MACD; add key-bar confirmation only after its rule is frozen; add multi-timeframe filter separately.
+- Measure: entry precision, false-confirmation rate, follow-through, MFE/MAE, after-cost return, whipsaw count, missed-opportunity cost and zero-pick/coverage impact.
+- Stratify by Trend vs Range, volatility regime, liquidity, timeframe and price-extension state.
+- A useful result must survive redundancy, transaction-cost, PIT, OOS/prospective, parameter-snooping and multiple-testing controls.
+
+Routing:
+- Primary: **D03** trend / momentum / technical indicators.
+- Dependencies: **D01** price structure and confirmation K-bars; **D15** stop/exit geometry; **D16** OOS/Shadow/multiple-testing/redundancy; **D18** Trend-vs-Range and multi-timeframe regime interaction.
+
 ## Shared inventory
 
 - `shared-knowledge/SHARED_RESEARCH_INVENTORY.md` is the cross-system domain/tag inventory. It points to original evidence without relocating it.
