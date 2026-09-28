@@ -1,0 +1,87 @@
+{
+  "schemaVersion": "D15_CASH_ATTRIBUTION_PRODUCTION_RECEIPT_V0_1",
+  "observedAt": "2026-09-28T19:15:35+08:00",
+  "timestampProvenance": "GitHub Actions Portfolio Risk Tier-A Research run 36414452558 / job 108902108262",
+  "workflowRunId": 36414452558,
+  "jobId": 108902108262,
+  "sourceEndpoint": "/api/journal?days=730",
+  "readOnly": true,
+  "productionWrites": false,
+  "decisionImpact": false,
+  "recordedDays": 4,
+  "formalPlanRows": 4,
+  "readyDates": 4,
+  "nonReadyDates": [],
+  "planTimeEvidence": [
+    {
+      "scanDate": "2026-09-18",
+      "selectedCount": 3,
+      "totalCapitalNTD": 200000,
+      "nominalDeployTargetNTD": 170000,
+      "plannedDeploymentNTD": 168000,
+      "plannedCashNTD": 32000,
+      "designedStrategicReserveNTD": 30000,
+      "allocationImplementationShortfallNTD": 2000,
+      "capInducedReserveNTD": 0,
+      "thousandFloorReserveNTD": 2000,
+      "executionCash": "UNKNOWN"
+    },
+    {
+      "scanDate": "2026-09-21",
+      "selectedCount": 1,
+      "totalCapitalNTD": 200000,
+      "nominalDeployTargetNTD": 70000,
+      "plannedDeploymentNTD": 70000,
+      "plannedCashNTD": 130000,
+      "designedStrategicReserveNTD": 130000,
+      "allocationImplementationShortfallNTD": 0,
+      "capInducedReserveNTD": 0,
+      "thousandFloorReserveNTD": 0,
+      "executionCash": "UNKNOWN"
+    },
+    {
+      "scanDate": "2026-09-22",
+      "selectedCount": 0,
+      "totalCapitalNTD": 200000,
+      "plannedDeploymentNTD": 0,
+      "plannedCashNTD": 200000,
+      "designedStrategicReserveNTD": 200000,
+      "planTimeCashReason": "NO_ELIGIBLE_OPPORTUNITY / DESIGNED_100_PERCENT_RESERVE",
+      "executionCash": "UNKNOWN"
+    },
+    {
+      "scanDate": "2026-09-23",
+      "selectedCount": 0,
+      "totalCapitalNTD": 200000,
+      "plannedDeploymentNTD": 0,
+      "plannedCashNTD": 200000,
+      "designedStrategicReserveNTD": 200000,
+      "planTimeCashReason": "NO_ELIGIBLE_OPPORTUNITY / DESIGNED_100_PERCENT_RESERVE",
+      "executionCash": "UNKNOWN"
+    }
+  ],
+  "summary": {
+    "noOpportunityDates": 2,
+    "planDates": 2,
+    "totalDesignedReserveNTD": 560000,
+    "totalImplementationShortfallNTD": 2000,
+    "executionCashKnownDates": 0,
+    "crossDateTotalsArePerformanceMetrics": false
+  },
+  "falsification": {
+    "rejectedClaims": [
+      "All unallocated plan capital is wasted idle cash.",
+      "2026-09-18 planned underdeployment was caused by the 35% cap.",
+      "Plan journal cash can be treated as actual broker cash."
+    ],
+    "survivingInterpretation": "Plan-time cash reasons are PIT-reconstructable into designed reserve and allocator implementation effects. Actual execution-state cash remains a separate UNKNOWN layer without fills/holdings/broker balance."
+  },
+  "maturityDecision": {
+    "module": "D15-08",
+    "from": "L2 / 40%",
+    "to": "L3 / 60%",
+    "reason": "Taiwan Production journal supports PIT-consistent read-only reconstruction with 4/4 recorded dates READY and fail-closed day/plan accounting."
+  },
+  "status": "PLAN_TIME_CASH_ATTRIBUTION_PIT_VALIDATED / EXECUTION_CASH_UNKNOWN / D15_08_L3",
+  "formalCoreImpact": false
+}
