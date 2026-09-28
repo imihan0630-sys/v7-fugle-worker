@@ -625,3 +625,47 @@ SC-016B: establish at least one current non-tech aligned panel; otherwise record
 SC-017: after source readiness only, preregister prospective industry-state outcomes and negative controls.
 
 Status: `PARTIAL_PASS / FRESHNESS_FIREWALL_REQUIRED / FORMAL_CORE_LOCKED`.
+
+
+## SC-016A — Granularity mismatch: four-digit production is not four-digit inventory
+
+### Official scope finding
+The MOEA Industrial Production, Shipment & Inventory Statistics query explicitly distinguishes available granularity:
+- industry query supports major/mid industry generally;
+- production index / production value additionally expose four-digit detailed industries;
+- product statistics expose a separate product hierarchy with production, sales and inventory quantities/values.
+
+For example, the industry taxonomy exposes 2611 integrated-circuit manufacturing, 2613 semiconductor packaging/testing and 2630 printed-circuit-board manufacturing for production-side measures. The product-statistics taxonomy then drills further into product items such as IC design/chips and foundry wafer categories.
+
+### Falsification
+It is invalid to build a supposedly "2611 integrated-circuit cycle" by combining:
+- four-digit 2611 production;
+with
+- two-digit 26 electronic-components inventory/sales
+and treating them as identical scope.
+
+The denominator/universe differs. A strong subindustry can coexist with weak sibling industries, so parent-level inventory can materially misstate the subindustry state.
+
+### New hard gate
+`SCOPE_COMPATIBILITY_GATE`:
+- each joined metric must carry `scopeType = INDUSTRY | PRODUCT`;
+- `scopeCode`, taxonomyVersion and aggregation rule are mandatory;
+- metrics can be joined directly only when the statistical scopes are identical or when a pre-registered aggregation maps product children to the exact parent;
+- parent-to-child substitution is forbidden after seeing outcomes;
+- mixed-granularity state is `PARTIAL` / `UNKNOWN`, not a complete physical-cycle confirmation.
+
+### Detailed semiconductor / PCB path
+Two safe paths are permitted:
+1. stay at code-26 / code-27 medium-industry level using aligned current production/sales/inventory sources;
+2. build a product-level basket from the official product-statistics hierarchy, with product membership frozen before outcome testing.
+
+Do not manufacture a four-digit sales/inventory series from a two-digit parent.
+
+### Source-access boundary
+The official interactive query demonstrates the detailed taxonomy and metric availability, but a documented machine query/download contract for arbitrary four-digit/product selections has not yet been established in this research lane. Brittle hidden-endpoint scraping remains prohibited.
+
+### Next
+SC-016B: determine whether the official query offers a supported export/download action whose request contract can be recorded without reverse-engineering hidden private endpoints.
+SC-016C: if not, use only published standalone CSV datasets for prospective automation and classify detailed four-digit state as SOURCE_GAP until a supported interface exists.
+
+Status: `SCOPE_MISMATCH_IDENTIFIED / HARD_GATE_ADDED / DETAILED_AUTOMATION_PARTIAL`.
