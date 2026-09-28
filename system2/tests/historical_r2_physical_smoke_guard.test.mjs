@@ -20,7 +20,8 @@ assert.doesNotMatch(workflow,/historical_pack_year_backfill_v0_1\.mjs/,"bounded 
 
 assert.match(script,/createRemoteR2S3Adapter/);
 assert.match(script,/fetchOfficialHistoricalA1DateV0_1/);
-assert.match(script,/"smoke"/);\nassert.match(script,/"r2-physical-v0\\.2"/);
+assert.match(script,/"smoke"/);
+assert.match(script,/"r2-physical-v0\.2"/);
 assert.match(script,/putIfAbsent/);
 assert.match(script,/objectStore\.get/);
 assert.match(script,/unpackHistoricalA1PackResearchV0_1/);
