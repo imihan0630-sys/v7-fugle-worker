@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "SCORE_STOP_INTERACTION_AUDIT_V0_1",
+  "observedAt": "2026-09-28T12:23:00+08:00",
+  "purpose": "Execute the PR-042 pre-registered within-date PriorityScore × stop-distance interaction test on available Production plan rows.",
+  "metrics": [
+    "Spearman rank correlation",
+    "Kendall tau",
+    "Pearson score-vs-stop-risk correlation",
+    "highest-score == widest-stop indicator",
+    "score-share × stop-risk covariance",
+    "exact permutation descriptive p-values for the within-date selected set"
+  ],
+  "references": [
+    "BUY_LOW",
+    "MIDPOINT",
+    "BUY_HIGH"
+  ],
+  "guardrails": [
+    "n=3 exact permutation results are descriptive only",
+    "one historical multi-name date cannot establish population direction",
+    "no causal factor attribution from final PriorityScore",
+    "no optimization candidacy from rank alignment alone"
+  ],
+  "status": "PR042_EXECUTION_READY / PRODUCTION_AUDIT_PENDING",
+  "formalCoreImpact": false
+}
