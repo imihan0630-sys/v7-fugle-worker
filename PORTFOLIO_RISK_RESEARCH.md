@@ -3929,3 +3929,61 @@ Dependency artifact:
 
 Status:
 `HISTORICAL_SOURCE_FOUNDATION_AVAILABLE / CONTINUOUS_TAIL_DATASET_NOT_PROVEN`.
+
+
+## PR-070 — correlation/covariance return-continuity firewall (2026-09-28)
+
+D15-03 through D15-06 require synchronized historical return panels, but a historical price database is not automatically a valid return database.
+
+Current System2 research infrastructure now provides:
+- isolated historical D1 storage;
+- PIT replay metadata;
+- historical universe registry;
+- packed historical persistence/query path.
+
+That materially reduces the old source-access blocker.
+
+However the current official full-market daily adapter emits:
+- `priceSpace = RAW`;
+- `continuityState = UNVERIFIED`.
+
+The historical store schema can represent `ADJUSTED` price space and `ADJUSTED_CONTINUITY`, but schema capability does not prove such data have been populated.
+
+Therefore the following shortcut is rejected:
+
+`official daily close history exists -> correlation/covariance is research-ready`.
+
+### Correlation-eligible panel contract
+
+A panel may become eligible only when all applicable conditions are positively established:
+- PIT-replay-eligible rows;
+- synchronized/common trading-date support with explicit missing-data rules;
+- historical-universe provenance, not current-list survivor filtering;
+- frozen return definition and horizon;
+- adjusted continuity, or RAW intervals positively certified `CLEAR_NO_ACTION`;
+- adequate common observations.
+
+Fail closed:
+- `RAW + UNVERIFIED`;
+- `BROKEN` continuity;
+- bounded smoke coverage mistaken for a continuous panel.
+
+### Why this matters
+
+Corporate actions can create mechanical price jumps unrelated to market co-movement. Feeding unverified raw closes into correlation/covariance can contaminate:
+- D15-03 correlation;
+- D15-04 covariance/shrinkage;
+- D15-05 hierarchical clustering;
+- D15-06 Effective Bets.
+
+The four modules remain L2. Infrastructure readiness has improved, but return continuity has not yet been proven.
+
+Artifacts:
+`research/correlation_return_continuity_firewall_v0_1.mjs`;
+`research/correlation_return_continuity_firewall_spec_v0_1.json`;
+`tests/test_correlation_return_continuity_firewall_v0_1.mjs`.
+
+Status:
+`HISTORICAL_INFRASTRUCTURE_AVAILABLE / RETURN_CONTINUITY_NOT_PROVEN / D15_03_04_05_06_REMAIN_L2`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
