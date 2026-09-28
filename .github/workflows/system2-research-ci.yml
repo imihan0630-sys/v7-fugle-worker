@@ -7,11 +7,13 @@ on:
     paths:
       - "system2/**"
       - ".github/workflows/system2-research-ci.yml"
+      - ".github/workflows/system2-prospective-clock-evidence-readonly.yml"
   pull_request:
     branches: [main]
     paths:
       - "system2/**"
       - ".github/workflows/system2-research-ci.yml"
+      - ".github/workflows/system2-prospective-clock-evidence-readonly.yml"
 
 permissions:
   contents: read
