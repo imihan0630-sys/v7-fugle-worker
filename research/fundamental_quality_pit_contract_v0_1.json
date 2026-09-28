@@ -1,0 +1,107 @@
+{
+  "schemaVersion": "FUNDAMENTAL_QUALITY_PIT_CONTRACT_V0_1",
+  "status": "RESEARCH_ONLY_PREREGISTERED_NO_FORMAL_CHANGE",
+  "frozenAt": "2026-09-28 Asia/Taipei",
+  "purpose": "Freeze source/clock/industry semantics for Taiwan fundamental-quality research before outcome joins.",
+  "sourceHierarchy": {
+    "canonicalFirstKnown": "MOPS/official exchange filing receipt when exact filing/publication timestamp is captured",
+    "prospectiveFallback": "firstObservedAt from an official-source observer; treated as an upper bound, never exact publication time",
+    "secondaryCurrentAnalytics": "TWSE MOPS financial comparison/E-point service may validate formulas/current values but its database update lag must not be relabeled as first-known filing time",
+    "deadlines": "statutory filing deadlines are compliance bounds only, never knownAt"
+  },
+  "versioningRules": [
+    "append new correction/restatement versions; never overwrite earlier decision-time vintage",
+    "store report period separately from knownAt/firstObservedAt/capturedAt",
+    "do not backfill current corrected statements into earlier decision dates",
+    "UNKNOWN remains UNKNOWN when publication/vintage provenance is incomplete"
+  ],
+  "industryPolicy": {
+    "GENERAL_INDUSTRY": {
+      "genericQualityEligible": true,
+      "candidateRawFields": [
+        "revenue",
+        "operatingProfit",
+        "netIncome",
+        "operatingCashFlow",
+        "totalAssets",
+        "totalEquity",
+        "totalLiabilities",
+        "currentLiabilities",
+        "cashAndCashEquivalents",
+        "accountsReceivable",
+        "inventory"
+      ],
+      "candidateDerivedFields": [
+        "ROA_AVG_ASSETS",
+        "ROE_AVG_EQUITY",
+        "CFO_TO_NET_INCOME",
+        "CFO_MARGIN",
+        "TOTAL_ACCRUAL_PROXY_AVG_ASSETS",
+        "LIABILITIES_TO_ASSETS",
+        "ASSET_TURNOVER"
+      ]
+    },
+    "FINANCIAL_INSTITUTIONS": {
+      "includes": [
+        "BANK",
+        "FINANCIAL_HOLDING",
+        "INSURANCE",
+        "SECURITIES_FUTURES",
+        "CROSS_INDUSTRY_FINANCIAL"
+      ],
+      "genericQualityEligible": false,
+      "reason": "Official Taiwan financial comparison semantics mark generic operating-cash-flow ratios as not applicable to these groups; balance-sheet economics also differ structurally.",
+      "specializedCandidates": [
+        "capitalAdequacy",
+        "assetQuality",
+        "nonPerformingLoanRatio",
+        "loanLossCoverage",
+        "insuranceCapitalSolvency_or_regulatory_equivalent"
+      ],
+      "rule": "Do not force industrial CFO/FCF/working-capital metrics onto financial institutions."
+    }
+  },
+  "formulaPolicy": {
+    "ROA_AVG_ASSETS": "netIncome / average(totalAssets_t,totalAssets_t_minus_1)",
+    "ROE_AVG_EQUITY": "netIncome / average(totalEquity_t,totalEquity_t_minus_1)",
+    "CFO_TO_NET_INCOME": "operatingCashFlow / netIncome with sign/near-zero denominator guards",
+    "CFO_MARGIN": "operatingCashFlow / revenue for GENERAL_INDUSTRY only",
+    "TOTAL_ACCRUAL_PROXY_AVG_ASSETS": "(netIncome - operatingCashFlow) / average(totalAssets_t,totalAssets_t_minus_1)",
+    "LIABILITIES_TO_ASSETS": "totalLiabilities / totalAssets",
+    "ASSET_TURNOVER": "revenue / average(totalAssets_t,totalAssets_t_minus_1)",
+    "FCF_SIMPLE": "NOT_FROZEN_YET",
+    "ROIC": "NOT_FROZEN_YET",
+    "netDebt": "NOT_FROZEN_YET"
+  },
+  "nonFrozenReasons": {
+    "FCF_SIMPLE": "IFRS does not define one universal free-cash-flow measure; growth vs maintenance capex is not standardized and lease classification harms comparability.",
+    "ROIC": "Requires a frozen NOPAT/invested-capital definition and reliable operating vs financing liability decomposition.",
+    "netDebt": "Debt is not uniquely defined under IFRS for this analytical purpose and requires a frozen liability taxonomy."
+  },
+  "requiredReceiptFields": [
+    "symbol",
+    "market",
+    "industryPolicyClass",
+    "reportYear",
+    "reportQuarter",
+    "sourceEndpoint",
+    "sourceDataset",
+    "sourceOutputDate",
+    "knownAt",
+    "firstObservedAt",
+    "capturedAt",
+    "publicationTimestampProven",
+    "restatementVersion",
+    "sourceFingerprint",
+    "pointInTimeEligible",
+    "missingFieldSignature"
+  ],
+  "noOutcomeJoinUntil": [
+    "prospective source receipt exists",
+    "industry policy is resolved",
+    "all derived inputs are same-vintage or explicitly lagged",
+    "restatement handling is append-only",
+    "required missingness is preserved"
+  ],
+  "formalCoreChanged": false
+}
