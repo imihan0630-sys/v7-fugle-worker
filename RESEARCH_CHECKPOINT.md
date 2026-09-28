@@ -2183,3 +2183,14 @@ Updated: 2026-09-27 23:38 Asia/Taipei.
 - MI_QFIIS 93,946,031 from 2025-11-12 remains a reporting-table state and is prohibited as a substitute for listed-common, combined-tradable or registered-issued truth.
 - Remaining CA-113/114 blocker is now archive/completeness/knownAt provenance, not denominator arithmetic. CA-115 remains gated.
 - Formal Core, A/B, ranking, thresholds, capital, monitor, push and execution unchanged.
+
+
+## Event & News learning-room progress — D17-08 / D17-09 (2026-09-28 Asia/Taipei)
+- Read canonical Shared Master Map, governance, room router/tracker, Corporate Actions and Event Risk checkpoints before starting; no cross-room progress double counting.
+- Started the room's previously unstudied D17 modules rather than extending Corporate Actions only.
+- D17-08 News Sentiment advanced from L0 to L2. Durable rule: tone, fundamental direction, attention and realized return are separate variables. Finance/language-aware semantics are required; negative tone may explain volatility/attention rather than a universal negative-return direction. Taiwan-market evidence supports sentiment relevance to volatility, with regime asymmetry, but not a universal directional trading rule.
+- D17-09 duplicate-news / same-event clustering advanced from L0 to L2. Article identity is separated from event identity; stale/reprinted news typically carries less novelty but is not automatically zero-impact. Syndication, update and correction semantics must be versioned point-in-time.
+- New reusable shared research anchor: `NEWS_EVENT_TRANSMISSION_RESEARCH.md`.
+- Tracker and routing map updated: D17 maturity 23.1% -> 29.2%; room 08 aggregate 35.6% -> 38.5%.
+- No L3 claim: Taiwan point-in-time article/version archive and prospective/OOS evidence are still missing.
+- Formal Core and live System 2 behavior unchanged.
