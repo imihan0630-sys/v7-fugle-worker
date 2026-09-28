@@ -1882,3 +1882,16 @@ Formal Core remains LOCKED.
 2. Measure exact same-scan history-admitted featureRow parent population with duplicate/subset receipts and real non-secret D1/Worker cost/latency. Do not treat 2000 or 54 as actual parent counts.
 3. Preserve complete child status (including blocked/unknown) against the immutable generation's exact parent keyset. Test false-positive source rejection against verified market sessions and corporate actions, with denominators by date/source/symbol.
 4. Only after dependency and Class-B review consider runtime capture. First outcome-blind prospective observation precedes TI-005 KD vs RSI with direct price control and TI-006 MACD vs trend. No historical Shadow repair, no outcome join, no Formal edit.
+
+## TI-409 — source hash presence does not bind content (2026-09-28)
+
+- Isolated executable negative witness: `research/test_technical_indicator_hash_binding_falsification_v0_1.mjs`. A synthetic bar's high changes while its `sourceBarHash`, raw identity and provenance labels remain identical. Both snapshots pass `VALID` and KD differs. This is not a cryptographic collision; no digest verification occurs in the current research guard.
+- Durable analysis: `research/TECHNICAL_INDICATOR_HASH_BINDING_FALSIFICATION_V0_1.md`. The source/continuity owner must supply an immutable raw payload receipt and separate transformed-bar lineage with point-in-time version semantics. Self-issued hashes or observed labels from the same adapter do not authenticate the source.
+- No real-source accident or return effect is claimed. Synthetic QA does not upgrade tracker maturity. Runtime provenance, parent counts, prospective coverage and outcomes remain UNKNOWN or blocked. Formal Core LOCKED.
+
+### Exact next continuation point after TI-409
+
+1. Audit the shared upstream raw-source and continuity receipt contract for field-level content binding, first-known/capture times, revision lineage and independent attestation. Do not treat a nonempty hash string as proof.
+2. Measure permissioned, outcome-blind real OHLC field and revision coverage by provider/date/market/symbol; retain UNKNOWN where absent. Test legitimate corrections and corporate-action transforms against certified sessions to quantify false-positive guard rejection.
+3. Reconcile exact immutable parent generation and complete child status with actual same-scan counts and non-secret runtime costs before a consolidated Class-B proposal.
+4. Only after prospective valid capture and PIT/OOS gates may TI-005 and TI-006 test incremental value. No Worker wiring, outcome join or Formal change now.
