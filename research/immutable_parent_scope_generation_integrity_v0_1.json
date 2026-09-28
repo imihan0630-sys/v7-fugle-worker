@@ -5,10 +5,11 @@
   "runtimeImplemented": false,
   "formalCore": "LOCKED",
   "parentScope": {
-    "parentScopeId": "FORMAL_HISTORY_ADMITTED_DECISION_PATH_V1",
+    "parentScopeId": "FORMAL_HISTORY_ADMITTED_FEATURE_ROWS_V0_1",
     "definition": "ALL_HISTORY_ADMITTED_FEATURE_ROWS_EVALUATED_BY_SAME_SCAN_FORMAL_DECISION_PATH",
     "selectedOnly": false,
-    "upstreamHistoryBlocked": "SCAN_POPULATION_RECEIPT"
+    "upstreamHistoryBlocked": "SCAN_POPULATION_RECEIPT",
+    "canonicalSource": "research/immutable_parent_scope_measurement_v0_1.mjs::TECHNICAL_PARENT_SCOPE_ID"
   },
   "coherentFields": [
     "scanDate",
@@ -24,7 +25,8 @@
     "ALL_COHERENT_FIELDS_EQUAL_ACROSS_PARENT_SET",
     "ALL_COHERENT_FIELDS_MATCH_GENERATION_EXPECTATION",
     "PARENT_SCOPE_ID_MUST_MATCH_FROZEN_SCOPE_CONTRACT",
-    "HASH_MATCH_DOES_NOT_REPLACE_COHERENCE_QA"
+    "HASH_MATCH_DOES_NOT_REPLACE_COHERENCE_QA",
+    "ONE_SEMANTIC_SCOPE_ONE_CANONICAL_SCOPE_ID"
   ],
   "publicationRequirements": [
     "SCOPE_QA_VALID",
@@ -33,5 +35,8 @@
     "PARENT_KEYSET_HASH_MATCH",
     "DECISION_SET_HASH_MATCH",
     "ZERO_PROVENANCE_CONFLICT"
+  ],
+  "retiredAliases": [
+    "FORMAL_HISTORY_ADMITTED_DECISION_PATH_V1"
   ]
 }
