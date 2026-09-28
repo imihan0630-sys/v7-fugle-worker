@@ -1,0 +1,122 @@
+{
+  "schemaVersion": "0.1",
+  "module": "D12-08",
+  "name": "Gamma Exposure / Dealer Gamma identifiability",
+  "status": "RESEARCH_ONLY_CONCEPT_FROZEN_EVIDENCE_PENDING",
+  "formalCoreImpact": "NONE",
+  "updatedAt": "2026-09-28T17:23:00+08:00",
+  "coreConclusions": {
+    "gammaSignMath": "Long calls and long puts have positive gamma; short calls and short puts have negative gamma. Call-vs-put does not determine gamma sign.",
+    "publicExactDealerGexIdentified": false,
+    "reason": "TAIFEX public option-chain OI is strike/expiry specific but anonymous; dealer-class long/short option OI is aggregated and not cross-tabulated by strike and expiry. Dealers also include Futures Proprietary Merchants and Securities Dealers, not only option market makers.",
+    "publicCallPositivePutNegativeRule": "ASSUMPTION_SCENARIO_ONLY",
+    "zeroGammaOrGammaFlip": "NOT_ALLOWED_WITHOUT_SIGNED_INVENTORY_MODEL",
+    "primaryUse": "market-volatility/liquidity context before directional or stock-ranking use"
+  },
+  "officialSourceSemantics": {
+    "optionChain": {
+      "requiredFields": [
+        "tradingDate",
+        "session",
+        "contractCode",
+        "contractDate",
+        "expiry",
+        "callPut",
+        "strike",
+        "closeOrSettlement",
+        "bestBid",
+        "bestAsk",
+        "volume",
+        "openInterest",
+        "capturedAt",
+        "source"
+      ],
+      "note": "Use the full active-series universe needed to reconcile the same product/date/session; do not silently mix regular and after-hours rows."
+    },
+    "dealerAggregate": {
+      "requiredFields": [
+        "tradingDate",
+        "contractCode",
+        "callDealerLongOI",
+        "callDealerShortOI",
+        "putDealerLongOI",
+        "putDealerShortOI",
+        "capturedAt",
+        "source"
+      ],
+      "taifexDirectionMapping": {
+        "callDealerLongOI": "buy calls => long option => positive gamma",
+        "callDealerShortOI": "sell calls => short option => negative gamma",
+        "putDealerLongOI": "sell puts => short option => negative gamma",
+        "putDealerShortOI": "buy puts => long option => positive gamma"
+      }
+    }
+  },
+  "modelInputs": {
+    "underlyingReference": "Freeze spot-index vs futures-underlying convention; never mix silently.",
+    "rate": "PIT source required",
+    "dividendOrForwardMethod": "Frozen version required",
+    "ivMethod": "Frozen inversion/filter/interpolation version required",
+    "multiplier": "TXO contract multiplier must be sourced from TAIFEX contract specification",
+    "dte": "Exact contract-date/expiry semantics required"
+  },
+  "derivedUnsignedFields": [
+    "gammaPerContract",
+    "unsignedGamma1Pct",
+    "totalUnsignedGamma1Pct",
+    "nearSpotGammaShare",
+    "nearExpiryGammaShare",
+    "gammaConcentrationHHI",
+    "topGammaNodeStrike",
+    "topGammaNodeDistancePct"
+  ],
+  "unsignedGamma1PctDefinition": "gamma * openInterest * contractMultiplier * underlying^2 * 0.01; label units and underlying convention explicitly.",
+  "partialIdentification": {
+    "name": "TAIFEX_REPORTED_DEALER_CLASS_GAMMA_BOUND",
+    "purpose": "Bound dealer-class signed gamma without inventing strike-level dealer inventory.",
+    "method": "For each call/put side separately, allocate the published aggregate dealer-class positive-gamma and negative-gamma contract counts across strike-expiry nodes subject to each node's market OI capacity. The minimum allocates positive-gamma contracts to lowest-gamma capacity and negative-gamma contracts to highest-gamma capacity; the maximum reverses this. A linear-program implementation is preferred for exact capacity handling.",
+    "outputs": [
+      "dealerClassGammaLower",
+      "dealerClassGammaUpper",
+      "gammaSignIdentified",
+      "boundWidthNormalized"
+    ],
+    "signRule": {
+      "POSITIVE": "dealerClassGammaLower > 0",
+      "NEGATIVE": "dealerClassGammaUpper < 0",
+      "UNKNOWN": "interval includes 0 or source-universe reconciliation fails"
+    },
+    "namingGuard": "This is a dealer-class gamma bound, not exact option-market-maker GEX."
+  },
+  "falsificationPlan": [
+    "Compare gamma-weighted concentration against OI-only concentration; if gamma weighting adds no outcome information, keep OI-only.",
+    "Test normal days separately from weekly/monthly expiry and settlement-window days.",
+    "Test scheduled macro-event days separately from ordinary days.",
+    "Test model sensitivity to IV filtering, underlying convention, rate/dividend/forward assumptions and quote-quality thresholds.",
+    "Use allocation permutations / exact bounds; if the signed interval crosses zero on most dates, signed public dealer GEX is practically unidentifiable.",
+    "Test top-gamma-node proximity against price dwell/crossing/reversal only with pre-registered windows; do not label nodes as support/resistance ex ante.",
+    "Control VIX/realized volatility, DTE, moneyness, liquidity, global shocks and Taiwan market regime.",
+    "Use independent trading dates as the inference unit; no duplicate intraday rows masquerading as independent samples."
+  ],
+  "primaryOutcomes": [
+    "next-session realized range/variance",
+    "intraday reversal-vs-momentum after large moves",
+    "liquidity/spread stress",
+    "price dwell/crossing near gamma concentration nodes"
+  ],
+  "secondaryOutcomes": [
+    "index direction",
+    "stock-level outcomes only after market/sector controls"
+  ],
+  "maturityDecision": {
+    "from": "L0",
+    "to": "L2",
+    "reason": "Mechanism, identifiability limits, source semantics and falsification design are now defined; no prospective PIT evidence has yet earned L3."
+  },
+  "nextContinuation": [
+    "Build prospective same-date/session TAIFEX chain + dealer-aggregate receipt with reconciliation checks.",
+    "Implement research-only unsigned gamma concentration and dealer-class bound calculator.",
+    "Accumulate independent normal/expiry/event dates before any L3 promotion.",
+    "Do not create a Formal risk throttle, score, veto or stock-ranking weight without OOS/Shadow evidence and owner approval."
+  ]
+}
