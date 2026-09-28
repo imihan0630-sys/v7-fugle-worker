@@ -1,0 +1,171 @@
+{
+  "schemaVersion": "CROWDING_MULTIAXIS_STATE_MATRIX_V0_1",
+  "updated": "2026-09-28 Asia/Taipei",
+  "researchOnly": true,
+  "formalCoreImpact": "NONE",
+  "outcomesUsed": false,
+  "objective": "Represent crowding as interacting states across leverage, shorting, institutional flow, ownership cadence and passive-event context instead of a single monotonic bullish/bearish score.",
+  "empiricalGuards": [
+    {
+      "finding": "Nominal margin balance is not a scale-free crowding measure.",
+      "evidence": "TWSE 2026 market-structure analysis reports a record nominal margin-loan balance while margin-loan balance/market-cap ratio remained far below the April-2000 ratio, with market-wide maintenance and forced-liquidation indicators comparatively contained.",
+      "source": "https://www.twse.com.tw/market_insights/en/detail/8a8216d6a0bdcc0001a0d2d9db47007c",
+      "implication": "Normalize leverage by market/stock scale and own history before calling it crowded."
+    },
+    {
+      "finding": "Two-sided leverage can represent disagreement rather than neutralization.",
+      "evidence": "Taiwan short-sale research found informative short-interest effects and stronger overvaluation evidence when relative short interest interacted with high relative margin-trade levels; the historical sample/rules are not directly transferable to 2026.",
+      "source": "https://doi.org/10.1016/j.qref.2008.07.002",
+      "implication": "Do not net long leverage and short positioning into one signed number; preserve both axes and test volatility/downside separately."
+    },
+    {
+      "finding": "Herding/crowding effects are market-state dependent.",
+      "evidence": "Taiwan studies report stronger herding under some stress states and non-monotonic future-return effects across booms/downturns.",
+      "sources": [
+        "https://doi.org/10.1016/j.jebo.2010.06.013",
+        "https://doi.org/10.1080/23322039.2025.2571399"
+      ],
+      "implication": "Crowding cannot have one unconditional sign."
+    }
+  ],
+  "axes": {
+    "longLeverage": {
+      "objects": [
+        "marginLongBalance",
+        "marginLongDailyChange"
+      ],
+      "preferredNormalizations": [
+        "balance/marketCap when PIT denominator is valid",
+        "balance/issuedShares or eligible-float proxy only with provenance",
+        "daily change/ADV20",
+        "own-history percentile/z-score"
+      ],
+      "hardGuards": [
+        "absolute NTD/shares alone is not crowding",
+        "falling balance alone is not forced liquidation"
+      ]
+    },
+    "shortSide": {
+      "objects": [
+        "marginShortBalance",
+        "marginShortDailyChange",
+        "securitiesBorrowing",
+        "actualSblShortSale",
+        "sblShortSaleBalance"
+      ],
+      "hardGuards": [
+        "securities borrowing is not short sale",
+        "margin short and SBL short remain separate",
+        "hedging/arbitrage confounding remains possible"
+      ]
+    },
+    "institutionalFlow": {
+      "objects": [
+        "foreignFlow",
+        "trustFlow",
+        "dealerFlow",
+        "persistence",
+        "priceFlowReaction"
+      ],
+      "hardGuards": [
+        "actor semantics remain separate",
+        "dealer hedge/prop aggregation is not pure conviction",
+        "passive-event contamination may alter meaning"
+      ]
+    },
+    "ownership": {
+      "objects": [
+        "TDCC large-holder concentration",
+        "ownership vintage/change"
+      ],
+      "cadence": "weekly/slow",
+      "hardGuards": [
+        "holder identity unknown",
+        "repeated daily reuse of one chipAsOfDate is not a new ownership observation"
+      ]
+    },
+    "passiveContext": {
+      "objects": [
+        "index membership event",
+        "weight event",
+        "ETF fund-size flow",
+        "effective-close context"
+      ],
+      "hardGuards": [
+        "context is not a directional score",
+        "bounded membership no-event does not imply broad no-passive-flow"
+      ]
+    }
+  },
+  "observableStates": [
+    {
+      "state": "LONG_LEVERAGE_BUILD",
+      "definition": "long-leverage level/change elevated on normalized bases",
+      "direction": "NONE",
+      "falsification": "may reflect healthy trend participation; direction requires price/flow/regime interaction"
+    },
+    {
+      "state": "LONG_CROWDING_RISK",
+      "definition": "long leverage elevated/accelerating AND marginal price response weakens or downside sensitivity rises",
+      "direction": "RISK_CONTEXT_ONLY",
+      "falsification": "do not infer from high nominal balance or high financing alone"
+    },
+    {
+      "state": "DELEVERAGING_STATE",
+      "definition": "long-leverage balance falls materially on normalized basis",
+      "direction": "NONE",
+      "falsification": "does not prove margin calls/forced liquidation without maintenance/call/liquidation evidence or compatible price-volume stress"
+    },
+    {
+      "state": "SHORT_INFORMATION_PRESSURE",
+      "definition": "actual short-sale activity/balance elevated relative to liquidity/history",
+      "direction": "NEGATIVE_HYPOTHESIS_ONLY",
+      "falsification": "hedging and constraints can confound; borrowing alone cannot instantiate this state"
+    },
+    {
+      "state": "SQUEEZE_CANDIDATE",
+      "definition": "prior verified short crowding + adverse move against shorts + covering evidence + liquidity/price acceleration",
+      "direction": "PATH_DEPENDENT",
+      "falsification": "high short balance alone or covering alone is insufficient"
+    },
+    {
+      "state": "TWO_SIDED_DISAGREEMENT",
+      "definition": "normalized long leverage and verified short-side positioning both high",
+      "direction": "VOLATILITY/DISAGREEMENT_HYPOTHESIS",
+      "falsification": "must not be netted to neutral and must not be assumed bearish/bullish"
+    },
+    {
+      "state": "INSTITUTIONAL_OWNERSHIP_CROWDING",
+      "definition": "persistent actor flow plus slow ownership concentration under provenance-complete cadence",
+      "direction": "TWO_SIDED_CONTINUATION_AND_EXIT_RISK",
+      "falsification": "ownership identity and passive share unresolved; repeated weekly ownership not daily independent evidence"
+    },
+    {
+      "state": "MECHANICAL_FLOW_CONTEXT",
+      "definition": "PIT-verified index/passive event overlaps the institutional/price-volume observation",
+      "direction": "CONTEXT_ONLY",
+      "falsification": "mechanical does not mean non-predictive; no-event requires complete scope-specific negative evidence"
+    }
+  ],
+  "prohibitedComposites": [
+    "margin long minus margin short as a universal crowding score",
+    "securities borrowing treated as short pressure",
+    "institutionalScore plus a duplicate passive-flow score",
+    "daily flow added directly to weekly ownership level without cadence handling",
+    "nominal margin balance ranked across eras without scale normalization",
+    "same-day repeated TDCC vintage counted as independent ownership evidence"
+  ],
+  "primaryFutureTests": [
+    "state frequency and transition matrix before outcomes",
+    "within-scanDate cross-sectional normalization",
+    "independent scanDate and ownership-vintage clustering",
+    "D1/D3/D5/D10/D20 continuation and MAE/MFE by state after data gates pass",
+    "volatility/false-break/stop outcomes for TWO_SIDED_DISAGREEMENT",
+    "flow-cessation reversal for INSTITUTIONAL_OWNERSHIP_CROWDING",
+    "regime and sector interaction",
+    "passive-event exclusion/stratification",
+    "cost/liquidity controls"
+  ],
+  "status": "STATE_TAXONOMY_FROZEN / NON_MONOTONIC / MULTI_CADENCE / OUTCOMES_CLOSED / FORMAL_UNCHANGED",
+  "exactNext": "Do not invent a scalar crowding score. Build PIT-complete normalized inputs and first study state frequencies/transitions. LS finalized-history, TDCC vintage provenance and passive-event coverage remain independent data gates."
+}
