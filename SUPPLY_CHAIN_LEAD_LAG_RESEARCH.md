@@ -1191,3 +1191,58 @@ Status: `TWO_INDUSTRY_TEMPLATES_DEFINED / DIRECTIONAL_EDGE_SCHEMA_FROZEN / COMPA
 SC-021: prospective source-vintage receipt for CSV/XML/XLS/ODS.
 SC-022: bounded capacity lifecycle pilot with positive and negative counterexamples.
 SC-023: map one ABF/PCB material-price chain and one steel-route chain to actual Taiwan issuers using contemporaneous filings, preserving UNKNOWN instead of theme inference.
+
+
+## SC-021 — Source-vintage receipt separates publication time, effective time and capture time
+
+Canonical machine spec:
+`research/industry_source_vintage_receipt_spec_v0_1.json`
+
+### Three clocks must never be collapsed
+For industry/supply-chain research preserve separately:
+
+1. `sourcePublishedAt / knownAt` — when the information became available to the market/research process.
+2. `effectiveAt` — when the economic event actually starts/stops affecting production, customer/supplier relation, capacity, etc.
+3. `capturedAt` — when our research system obtained and froze the source.
+
+Observation month is not knownAt.
+
+### Supply-chain event PIT feasibility
+Taiwan official material-information semantics provide a bounded event lane with genuine time meaning.
+
+Official TWSE/TPEx rules include the major-purchaser/supplier cessation event when a purchaser/supplier accounts for at least 10% of prior-year sales/purchases. The disclosure template preserves:
+- date of occurrence;
+- counterparty name when disclosed;
+- prior-year concentration percentage;
+- reason and date of suspension;
+- company response.
+
+The official ezSearch surface classifies this as M25 and supports announcement/date filtering.
+
+This is sufficient to establish **bounded Taiwan PIT feasibility** for D10-10 even though:
+- a complete supply-chain graph is unavailable;
+- automated canonical M25 ingestion is still source-access blocked;
+- anonymous counterparties remain UNKNOWN;
+- no alpha/outcome conclusion exists.
+
+### D10-10 maturity decision
+`D10-10 供應鏈事件PIT時間戳: L2 -> L3`.
+
+Reason:
+L3 requires Taiwan point-in-time feasibility and time semantics, not full automation. The official event lane contains decision-time publication/event clocks.
+
+Automation readiness remains separately:
+`AUTOMATED_M25_SOURCE = SOURCE_ACCESS_BLOCKED`.
+
+### Revision / export rule
+For standalone CSV/XML or official XLS/ODS export:
+- store raw hash and parser version;
+- append revisions rather than overwrite;
+- use official release timestamp only when the captured vintage is proven to correspond to it;
+- otherwise use capturedAt conservatively as knownAt;
+- stale / failed retrieval = UNKNOWN.
+
+### Formal boundary
+This is provenance infrastructure only. It changes no Formal candidate, score, threshold, rank, quota, capital, signal, monitoring or push behavior.
+
+Status: `D10-10_L3_PIT_FEASIBLE / AUTOMATION_PARTIAL / NO_ALPHA_CONCLUSION`.
