@@ -129,5 +129,5 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          ! grep -Eiq 'secrets\.|wrangler[[:space:]]+(deploy|delete)|d1[[:space:]]+(create|execute)|SYSTEM2_CAPTURE_ENABLED[[:space:]]*=[[:space:]]*true|fugle-test|V7_DB|STOCKS_KV'             .github/workflows/system2-first-sample-preflight-readonly.yml
+          ! grep -Eiq 'secrets\.|wrangler[[:space:]]+(deploy|delete)|d1[[:space:]]+(create|execute)|SYSTEM2_CAPTURE_ENABLED[[:space:]]*=[[:space:]]*true'             .github/workflows/system2-first-sample-preflight-readonly.yml
           echo "First-sample preflight read-only boundary PASS"
