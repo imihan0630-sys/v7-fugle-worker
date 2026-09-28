@@ -408,7 +408,7 @@ Formal Core impact: NONE
 | D14-12 | Execution Alpha歸因 | 聚焦「Execution Alpha歸因」。學習範圍：手續費、證交稅、滑價、部分成交、延遲、零股／整股、換手與機會成本；signal-to-fill鏈；反事實可下單性；成交可重建性；Execution Alpha歸因。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L3 台股PIT資料可行 | 60% |
 | D14-13 | Broker Fee Schedule完整費率語意 | 聚焦「Broker Fee Schedule完整費率語意」。學習範圍：手續費、證交稅、滑價、部分成交、延遲、零股／整股、換手與機會成本；signal-to-fill鏈；反事實可下單性；成交可重建性；Execution Alpha歸因。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L3 台股PIT資料可行 | 60% |
 | D14-14 | 集合競價／特殊撮合成本 | 聚焦「集合競價／特殊撮合成本」。學習範圍：手續費、證交稅、滑價、部分成交、延遲、零股／整股、換手與機會成本；signal-to-fill鏈；反事實可下單性；成交可重建性；Execution Alpha歸因。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L2 機制＋反證已定義 | 40% |
-### D15｜投資組合／風險／資金利用／部位生命週期 — 48.0%
+### D15｜投資組合／風險／資金利用／部位生命週期 — 49.3%
 
 | 模組 | 研究模組 | 學習範圍 | 等級 | 完成度 |
 |---|---|---|---|---:|
@@ -418,7 +418,7 @@ Formal Core impact: NONE
 | D15-04 | Covariance Shrinkage共變異縮減 | 聚焦「Covariance Shrinkage共變異縮減」。學習範圍：資金與風險集中、相關性、共變異、分群、有效下注數、Portfolio Heat、現金歸因、停損幾何；FIRST/ADD/FULL/REDUCE/RE-ADD生命週期；配置量化誤差與尾端風險。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L2 機制＋反證已定義 | 40% |
 | D15-05 | Hierarchical Clustering階層分群 | 聚焦「Hierarchical Clustering階層分群」。學習範圍：資金與風險集中、相關性、共變異、分群、有效下注數、Portfolio Heat、現金歸因、停損幾何；FIRST/ADD/FULL/REDUCE/RE-ADD生命週期；配置量化誤差與尾端風險。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L2 機制＋反證已定義 | 40% |
 | D15-06 | Effective Bets有效獨立下注數 | 聚焦「Effective Bets有效獨立下注數」。學習範圍：資金與風險集中、相關性、共變異、分群、有效下注數、Portfolio Heat、現金歸因、停損幾何；FIRST/ADD/FULL/REDUCE/RE-ADD生命週期；配置量化誤差與尾端風險。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L2 機制＋反證已定義 | 40% |
-| D15-07 | Portfolio Heat投組熱度 | 聚焦「Portfolio Heat投組熱度」。學習範圍：資金與風險集中、相關性、共變異、分群、有效下注數、Portfolio Heat、現金歸因、停損幾何；FIRST/ADD/FULL/REDUCE/RE-ADD生命週期；配置量化誤差與尾端風險。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L2 機制＋反證已定義 | 40% |
+| D15-07 | Portfolio Heat投組熱度 | 聚焦「Portfolio Heat投組熱度」。學習範圍：資金與風險集中、相關性、共變異、分群、有效下注數、Portfolio Heat、現金歸因、停損幾何；FIRST/ADD/FULL/REDUCE/RE-ADD生命週期；配置量化誤差與尾端風險。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L3 台股PIT資料可行 | 60% |
 | D15-08 | Cash Attribution現金原因歸因 | 聚焦「Cash Attribution現金原因歸因」。學習範圍：資金與風險集中、相關性、共變異、分群、有效下注數、Portfolio Heat、現金歸因、停損幾何；FIRST/ADD/FULL/REDUCE/RE-ADD生命週期；配置量化誤差與尾端風險。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L3 台股PIT資料可行 | 60% |
 | D15-09 | Stop-risk Geometry停損距離風險 | 聚焦「Stop-risk Geometry停損距離風險」。學習範圍：資金與風險集中、相關性、共變異、分群、有效下注數、Portfolio Heat、現金歸因、停損幾何；FIRST/ADD/FULL/REDUCE/RE-ADD生命週期；配置量化誤差與尾端風險。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L3 台股PIT資料可行 | 60% |
 | D15-10 | FIRST／ADD／FULL生命週期 | 聚焦「FIRST／ADD／FULL生命週期」。學習範圍：資金與風險集中、相關性、共變異、分群、有效下注數、Portfolio Heat、現金歸因、停損幾何；FIRST/ADD/FULL/REDUCE/RE-ADD生命週期；配置量化誤差與尾端風險。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L2 機制＋反證已定義 | 40% |
