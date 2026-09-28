@@ -2173,3 +2173,187 @@ It does NOT satisfy L3 because our own Taiwan point-in-time event capture, compl
 Decision:
 `D05-05: L1 -> L2`.
 No Formal Core impact.
+
+
+## MS-049 — dual-clock horizon: wall-clock time alone can mismeasure microstructure decay
+
+A fixed "1 minute / 5 minute / 15 minute" horizon is not equivalent across stocks.
+
+External multi-horizon order-flow research finds that the effective stock-specific forecast horizon is approximately two average price changes. This is an event-time statement, not a universal number of minutes.
+
+Implication:
+- a highly active stock may experience many quote/trade/price changes inside one minute;
+- a thin stock may experience very few;
+- a signal that appears to "last 5 minutes" in one stock and "die in 1 minute" in another can simply reflect different event intensities.
+
+Therefore every prospective horizon study must preserve two clocks:
+
+Clock time:
+- 1s / 5s / 15s engineering buckets;
+- 1m / 5m / 10m / 15m / 30m evaluation checkpoints.
+
+Event time:
+- book-message count;
+- trade-message count;
+- best-quote-change count;
+- mid-price-change count;
+- cumulative trade volume.
+
+Minimum interpretation rule:
+A wall-clock effect is not called persistent until it survives control/matching for event intensity.
+
+Primary falsification:
+- if the 10m/15m effect disappears after matching on mid-price-change count or trade-event count, classify it as an activity/intensity proxy rather than durable microstructure alpha.
+
+Source:
+- Kolm, Turiel & Westray (2023), Mathematical Finance 33(4), DOI 10.1111/mafi.12413.
+
+Machine spec:
+`research/microstructure_dual_clock_horizon_protocol_v0_1.json`.
+
+Status:
+`DUAL_CLOCK_REQUIRED / FIXED_MINUTE_ONLY_INFERENCE_REJECTED`.
+
+
+## MS-050 — top-five evidence should be tested as one incremental block, not five new factors
+
+Taiwan-specific 2025 high-frequency evidence reports that quote levels 2-5 add meaningful price-discovery information beyond best quotes/trades, with the abstract estimating roughly 30% contribution from deeper book information. The same study reports systematic predictive heterogeneity by volatility, relative tick size and trading activity.
+
+This is strong motivation for a deeper-book test, but not permission to create:
+- level-2 score;
+- level-3 score;
+- level-4 score;
+- level-5 score;
+- dozens of horizon/depth interactions.
+
+First empirical design is nested:
+M0 = current price/volume + spread + best-level depth/imbalance controls.
+M1 = M0 + one frozen top-five aggregate representation.
+
+Question:
+Does the top-five block add stable incremental information over best level?
+
+Only if M1 survives:
+- independent-date robustness;
+- tick/activity/volatility strata;
+- cost/spread controls;
+- coverage controls;
+- OOS/Shadow;
+should individual deeper-level shape variables be considered later.
+
+If M1 adds nothing stable, stop. Do not search levels 2-5 separately for a winner.
+
+Source:
+- Lin Yao (2025), NTU thesis, DOI 10.6342/NTU202504709.
+
+Status:
+`DEEP_BOOK_TEST = ONE_NESTED_BLOCK_FIRST / FACTOR_ZOO_GUARD`.
+
+
+## MS-051 — Taiwan session-state separation is not optional
+
+Current TWSE mechanics confirm:
+- opening uses call auction;
+- normal intraday trading is continuous;
+- intraday volatility interruption returns the stock to a call-auction mechanism;
+- the pre-close/close period uses call auction.
+
+Current TWSE stock tick increments are price-tier dependent, including:
+- <10: NT$0.01;
+- 10-50: NT$0.05;
+- 50-100: NT$0.10;
+- 100-500: NT$0.50;
+- 500-1000: NT$1;
+- >=1000: NT$5.
+
+Therefore:
+- one-tick queue imbalance has different bps meaning by price tier;
+- spread in NT dollars is non-comparable;
+- a five-tick move in a NT$1,500 stock is not the same microstructure distance as five ticks in a NT$70 stock;
+- call-auction/trial states cannot be pooled with continuous-book dynamics.
+
+Required normalizations:
+- spreadTicks and spreadBps both retained;
+- depth in shares and notional both retained;
+- relativeTickBps = tick/mid*10000;
+- continuous/call-auction/VI/trial/UNKNOWN strata;
+- regular-lot and intraday odd-lot kept separate.
+
+Sources:
+- TWSE Trading Mechanism Introduction;
+- TWSE Operating Rules Article 62.
+
+Status:
+`TICK_AND_SESSION_NORMALIZATION = MANDATORY_CONTROL`.
+
+
+## MS-052 — Fugle source semantics improve feasibility but do not solve event completeness
+
+Current official Fugle stock WebSocket documentation exposes:
+- books: best-five bid/ask prices and sizes, provider timestamp, isContinuous and isTrial;
+- trades: provider timestamp, serial, bid, ask, price, size, cumulative volume and multiple limit/halt/delayed/open/close flags;
+- regular-lot versus intraday odd-lot subscription semantics.
+
+Current plan documentation states:
+- Basic: 5 subscriptions, 1 WebSocket connection;
+- Developer: 300 subscriptions, 2 connections;
+- Advanced: 2000 subscriptions, 2 connections;
+- one subscription = one symbol x one channel.
+
+For books+trades:
+- each stock consumes two subscriptions;
+- Basic can therefore support at most two complete books+trades symbols simultaneously with one subscription left for another channel, assuming no other subscriptions are consuming the quota;
+- actual owner account plan and concurrent subscription usage remain UNKNOWN and must not be inferred.
+
+Critical data-quality boundary:
+a provider serial number and heartbeat can help detect stream behavior, but they do not by themselves prove complete book-event reconstruction across reconnects. The collector must persist:
+- reconnect count;
+- first/last provider time;
+- message counts;
+- serial-gap diagnostics where semantics are validated;
+- connectedMs/expectedMs coverage;
+- session-state coverage.
+
+Missing events cannot be imputed as "no order flow."
+
+Sources:
+- Fugle stock WebSocket Books / Trades / Getting Started;
+- Fugle MarketData pricing documentation.
+
+Status:
+`SOURCE_FEASIBILITY = MATERIAL_PASS / COMPLETE_EVENT_LEDGER = UNPROVEN`.
+
+
+## MS-053 — horizon-retention promotion ladder
+
+Before any 15m BUY interpretation, microstructure evidence must pass a staged retention ladder.
+
+Stage E0 — event scale:
+- next 1 / 2 / 4 mid-price changes;
+- fixed event-count windows;
+- test Pressure × Response × Persistence.
+
+Stage E1 — 1m / 5m:
+- aggregate without discarding event counts;
+- verify sign/state retention versus event-scale labels.
+
+Stage E2 — 10m / 15m:
+- test whether incremental information remains after current Formal price-volume / ATR / liquidity / RS / overheat / sector / regime controls;
+- matched successful versus failed breakout study.
+
+Stage E3 — 30m:
+- execution-path / false-breakout persistence only.
+
+Stage E4 — D1+:
+- descriptive unless independently proven; do not assume a book-state signal should persist across sessions.
+
+Promotion logic:
+- dies at E0/E1 -> execution micro-timing only;
+- survives E1 but not E2 -> research execution state, not Formal BUY;
+- survives E2 robustly -> prospective Shadow candidate for 15m context;
+- any Formal BUY/maxChase use remains Class C even after evidence.
+
+No minimum effect size is tuned in this stage; first objective is horizon survival and incremental validity.
+
+Status:
+`MICROSTRUCTURE_HORIZON_LADDER = FROZEN / EVIDENCE_PENDING`.
