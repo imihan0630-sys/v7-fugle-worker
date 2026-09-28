@@ -1684,3 +1684,91 @@ Status:
 `TRANCHE_RATIO_ARTIFACT_FALSIFIED_40_TO_90 / EXTREME_RATIO_STRESS_PENDING / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-064 — extreme tranche-ratio stress and two-stage orderability (2026-09-28)
+
+PR-063 rejected a 60/40-specific concentration artifact over FIRST ratios 40%-90%.
+
+PR-064 pushes the stress further and separates two different questions:
+
+### Structural concentration
+
+FIRST ratio is swept from 5% to 95% in 5-point steps.
+
+At each ratio the same ratio-specific two-tranche share flooring is applied to:
+- current PriorityScore allocation;
+- equal-capital allocation;
+- every legal NT$1,000-grid comparator state.
+
+This asks whether the concentration direction survives much more extreme split assumptions.
+
+### Two-stage orderability
+
+FIRST ratio is swept from 1% to 99% in 1-point steps.
+
+For each selected name, both planned stages must separately satisfy:
+- FIRST shares >= 1;
+- ADD shares >= 1;
+using buyHigh as the conservative plan-preview price.
+
+A ratio can therefore be:
+- structurally valid for concentration analysis;
+- but operationally infeasible for a two-stage execution path because one tranche rounds to zero shares.
+
+This is intentionally stronger than checking combined shares only.
+
+Artifacts:
+`research/tranche_stage_orderability_v0_1.mjs`;
+`research/extreme_tranche_ratio_stress_spec_v0_1.json`;
+`tests/portfolio_risk_extreme_tranche_ratio_readonly_audit.mjs`.
+
+Status:
+`EXTREME_RATIO_STRESS_READY / PRODUCTION_AUDIT_PENDING`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-064 Production result — extreme ratio direction survives; current plan is two-stage orderable 1%-99%
+
+Read-only Production run `36378225540` / job `108788327294` evaluated 2026-09-18.
+
+### Current two-stage orderability
+
+FIRST ratios from 1% through 99% were tested in 1-point steps.
+
+Result:
+- tested ratios = 99;
+- all names have FIRST shares >= 1 and ADD shares >= 1 at every ratio;
+- feasible ratios = **99 / 99**.
+
+Even at FIRST = 1%, the high-price 3105 plan still has:
+- FIRST amount = NT$640;
+- buyHigh = 496.92;
+- FIRST shares = 1.
+
+Thus the current 50k / 64k / 54k allocation remains plan-preview two-stage orderable throughout the full 1%-99% ratio grid.
+
+### Extreme concentration sweep
+
+FIRST ratios from 5% through 95% were tested in 5-point steps.
+
+Directional agreement:
+- current > equal-capital HHI = **19 / 19**;
+- current > ratio-specific global minimum HHI = **19 / 19**.
+
+This rejects tranche-ratio reversal over a much broader range than PR-063.
+
+### Remaining comparator caveat
+
+The exhaustive global-min search currently requires positive combined preview shares, but has not yet required each comparator name to have >=1 FIRST share **and** >=1 ADD share.
+
+Therefore the next falsification must recompute the global minimum over only **two-stage-orderable comparator states**.
+
+Receipt:
+`research/extreme_tranche_ratio_production_receipt_20260928.json`.
+
+Status:
+`EXTREME_RATIO_DIRECTION_ROBUST / CURRENT_TWO_STAGE_ORDERABLE_1_TO_99 / COMPARATOR_STAGE_FEASIBILITY_PENDING / ECONOMIC_VALUE_UNKNOWN`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.

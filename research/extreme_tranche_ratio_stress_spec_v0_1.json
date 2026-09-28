@@ -1,0 +1,23 @@
+{
+  "schemaVersion": "EXTREME_TRANCHE_RATIO_STRESS_V0_1",
+  "observedAt": "2026-09-28T12:31:00+08:00",
+  "purpose": "Stress whether concentration robustness survives extreme tranche ratios while separating structural concentration from two-stage integer-share orderability.",
+  "grids": {
+    "concentration": "FIRST 5%-95% in 5-point steps",
+    "orderability": "FIRST 1%-99% in 1-point steps"
+  },
+  "rules": [
+    "concentration grid uses same-deployment current/equal-capital/exhaustive NT$1,000-grid comparison with ratio-specific share flooring",
+    "orderability requires every selected name to have at least one FIRST share and at least one ADD share at buyHigh",
+    "a ratio may preserve concentration direction yet be execution-infeasible if either tranche rounds to zero shares"
+  ],
+  "guardrails": [
+    "plan-preview only",
+    "no BUY/ADD trigger or fill assumptions",
+    "one historical multi-name date",
+    "feasible ratio range is diagnostic, not a proposed Formal split"
+  ],
+  "status": "EXTREME_RATIO_DIRECTION_ROBUST / CURRENT_TWO_STAGE_ORDERABLE_1_TO_99 / COMPARATOR_STAGE_FEASIBILITY_PENDING / ECONOMIC_VALUE_UNKNOWN",
+  "formalCoreImpact": false,
+  "productionReceipt": "research/extreme_tranche_ratio_production_receipt_20260928.json"
+}
