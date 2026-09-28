@@ -152,6 +152,24 @@ Incremental backfill support is also implemented:
 
 Important limitation: this is an executable engineering foundation, **not** a claim that the 2017→present official historical dataset has already been physically populated. The next P0 step is source-specific TWSE/TPEx historical ingestion and isolated-D1 readback verification, followed by the first real full-market replay.
 
+## 1B. Packed historical cold-store path verified (2026-09-28)
+
+To avoid scaling the 2017→present archive as one D1 row per stock-day, System 2 now has a packed cold-history path:
+- schema V0.9 adds `s2_historical_a1_packs` and `s2_historical_pack_ingest_receipts`;
+- packs are keyed by market + symbol + year + price-space;
+- payloads are canonicalized, hashed, gzip-compressed and Base64-stored;
+- reruns are idempotent; differing content at the same logical pack key fails closed as an immutable conflict;
+- query/unpack reconstructs ordinary historical bars with conservative per-date session-close `availableAt` semantics for PIT replay.
+
+Real official-source + isolated-D1 smoke run `36427386634` PASS:
+- 2026-08-03→2026-08-31 (21 trading dates);
+- TWSE 2330/2454 and TPEx 3105/6488;
+- 84 packed bars round-tripped exactly through D1;
+- observed gzip payload ratio was about 0.41 and Base64 storage ratio about 0.54–0.56 versus canonical JSON;
+- System1 production isolation PASS and V8 Regression `36427386650` PASS.
+
+A full-market one-month read-only compression benchmark is in progress before any ten-year bulk load. Until that scale benchmark is accepted, the 2017→present full backfill remains intentionally not started.
+
 ## 2. Designed but not yet fully implemented
 
 The following are not allowed to be described as complete:
