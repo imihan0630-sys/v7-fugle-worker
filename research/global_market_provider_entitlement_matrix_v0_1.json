@@ -1,0 +1,140 @@
+{
+  "schemaVersion": "0.1",
+  "name": "GLOBAL_MARKET_PROVIDER_ENTITLEMENT_MATRIX_V0_1",
+  "status": "RESEARCH_ONLY_SOURCE_MATRIX_FROZEN",
+  "formalCoreImpact": "NONE",
+  "updatedAt": "2026-09-28T20:35:00+08:00",
+  "decisionClock": "18:10 Asia/Taipei",
+  "lanes": [
+    {
+      "family": "DXY",
+      "canonicalCandidate": "ICE U.S. Dollar Index",
+      "sourceStatus": "OFFICIAL_SOURCE_IDENTIFIED",
+      "decisionTimeFeasibility": "MATERIAL_PASS_IF_TIMESTAMPED",
+      "entitlementStatus": "NOT_FROZEN",
+      "historical1810Replay": "NOT_ESTABLISHED",
+      "keyRisk": "EUR-dominant fixed basket; provider latency/licensing"
+    },
+    {
+      "family": "USD/TWD",
+      "canonicalCandidate": "CBC / Taipei Forex interbank closing rate",
+      "sourceStatus": "OFFICIAL_SOURCE_IDENTIFIED",
+      "decisionTimeFeasibility": "SAME_DAY_CLOSE_MATERIAL_PASS",
+      "entitlementStatus": "PUBLIC_OFFICIAL",
+      "historical1810Replay": "DAILY_CLOSE_FEASIBLE_WITH_VINTAGE_CAPTURE",
+      "keyRisk": "closing-rate semantics only; not intraday proxy"
+    },
+    {
+      "family": "UST_RATE",
+      "canonicalCandidate": "U.S. Treasury official curve / Fed H.15",
+      "sourceStatus": "OFFICIAL_SOURCE_IDENTIFIED",
+      "decisionTimeFeasibility": "MOST_RECENT_PUBLISHED_US_TRADING_DAY_ONLY",
+      "entitlementStatus": "PUBLIC_OFFICIAL",
+      "historical1810Replay": "FEASIBLE_WITH_PUBLICATION_CLOCK",
+      "keyRisk": "same U.S. calendar-day official curve is future at Taiwan 18:10"
+    },
+    {
+      "family": "TAIFEX_NIGHT",
+      "canonicalCandidate": "TAIFEX TX after-hours",
+      "sourceStatus": "OFFICIAL_SOURCE_IDENTIFIED",
+      "decisionTimeFeasibility": "15:00_TO_18:10_PIT_ELIGIBLE_IF_CAPTURED",
+      "entitlementStatus": "PUBLIC_RECENT / OLDER_HISTORY_APPLICATION_OR_PURCHASE",
+      "historical1810Replay": "LONG_HISTORY_NOT_ESTABLISHED",
+      "keyRisk": "full-night OHLC is look-ahead for 18:10"
+    },
+    {
+      "family": "OIL",
+      "canonicalCandidate": "CME WTI / ICE Brent",
+      "sourceStatus": "OFFICIAL_MARKETS_IDENTIFIED",
+      "decisionTimeFeasibility": "LIVE_PRE_1810_PIT_ELIGIBLE_IF_ENTITLED",
+      "entitlementStatus": "PROVIDER_CONTRACT_NOT_FROZEN",
+      "historical1810Replay": "NOT_ESTABLISHED",
+      "keyRisk": "contract roll, later settlement, source terms"
+    },
+    {
+      "family": "INDUSTRIAL_METAL",
+      "canonicalCandidate": "CME HG copper",
+      "sourceStatus": "OFFICIAL_MARKET_IDENTIFIED",
+      "decisionTimeFeasibility": "LIVE_PRE_1810_PIT_ELIGIBLE_IF_ENTITLED",
+      "entitlementStatus": "PROVIDER_CONTRACT_NOT_FROZEN",
+      "historical1810Replay": "NOT_ESTABLISHED",
+      "keyRisk": "roll, USD denomination, demand-vs-supply ambiguity"
+    },
+    {
+      "family": "PRECIOUS_METAL",
+      "canonicalCandidate": "CME GC gold",
+      "sourceStatus": "OFFICIAL_MARKET_IDENTIFIED",
+      "decisionTimeFeasibility": "LIVE_PRE_1810_PIT_ELIGIBLE_IF_ENTITLED",
+      "entitlementStatus": "PROVIDER_CONTRACT_NOT_FROZEN",
+      "historical1810Replay": "NOT_ESTABLISHED",
+      "keyRisk": "DXY/real-yield/VIX redundancy"
+    },
+    {
+      "family": "MACRO_SCHEDULE",
+      "canonicalCandidate": "BLS release calendars",
+      "sourceStatus": "OFFICIAL_SOURCE_IDENTIFIED",
+      "decisionTimeFeasibility": "SCHEDULE_KNOWN_BEFORE_1810",
+      "entitlementStatus": "PUBLIC_OFFICIAL",
+      "historical1810Replay": "FEASIBLE_FOR_SCHEDULE_METADATA",
+      "keyRisk": "calendar revisions; preserve capturedAt/sourceVersion"
+    },
+    {
+      "family": "MACRO_RELEASE",
+      "canonicalCandidate": "BLS initial release",
+      "sourceStatus": "OFFICIAL_SOURCE_IDENTIFIED",
+      "decisionTimeFeasibility": "SAME_US_DATE_0830_ET_RELEASE_IS_FUTURE_AT_TW_1810",
+      "entitlementStatus": "PUBLIC_OFFICIAL",
+      "historical1810Replay": "FIRST_PRINT_VINTAGE_REQUIRED",
+      "keyRisk": "revisions and first-print preservation"
+    },
+    {
+      "family": "MACRO_CONSENSUS",
+      "canonicalCandidate": "third-party timestamped consensus",
+      "sourceStatus": "PROVIDER_NOT_FROZEN",
+      "decisionTimeFeasibility": "ELIGIBLE_ONLY_IF_CAPTURED_BEFORE_RELEASE",
+      "entitlementStatus": "NOT_FROZEN",
+      "historical1810Replay": "NOT_ESTABLISHED",
+      "keyRisk": "provider-specific vintage/updates"
+    },
+    {
+      "family": "CRITICAL_MINERAL_EVENT",
+      "canonicalCandidate": "primary government/export-control/producer notices with IEA cross-check",
+      "sourceStatus": "SOURCE_HIERARCHY_PARTIAL",
+      "decisionTimeFeasibility": "PIT_ELIGIBLE_BY_PUBLISHED_AT",
+      "entitlementStatus": "MIXED_PUBLIC",
+      "historical1810Replay": "EVENT_BY_EVENT",
+      "keyRisk": "publication/update timestamps, translation, policy effective date"
+    },
+    {
+      "family": "CRITICAL_MINERAL_PRICE",
+      "canonicalCandidate": "regional/grade-specific assessments",
+      "sourceStatus": "HETEROGENEOUS_OPAQUE",
+      "decisionTimeFeasibility": "UNKNOWN_UNTIL_ASSESSMENT_CLOCK_FROZEN",
+      "entitlementStatus": "NOT_FROZEN",
+      "historical1810Replay": "NOT_ESTABLISHED",
+      "keyRisk": "grade/region/method opacity and regional price divergence"
+    },
+    {
+      "family": "JP_KR_POST_TW_CLOSE",
+      "canonicalCandidate": "JP/KR index value at Taiwan 13:30 plus regular close at 14:30",
+      "sourceStatus": "CONCEPT_DEFINED_SOURCE_NOT_PROVEN",
+      "decisionTimeFeasibility": "PROSPECTIVE_OR_LICENSED_INTRADAY_REQUIRED",
+      "entitlementStatus": "NOT_FROZEN",
+      "historical1810Replay": "NOT_ESTABLISHED",
+      "keyRisk": "free official long-history intraday anchor not proven; Korea multi-venue regime"
+    }
+  ],
+  "priorityOrder": [
+    "P0: public official schedule/rate/FX lanes already clock-clean",
+    "P1: prospective DXY/TX/oil/copper/gold timestamp capture",
+    "P2: licensed historical replay and macro consensus",
+    "P3: opaque critical-mineral prices; prefer event-first evidence"
+  ],
+  "implementationGuard": "Do not wire into Formal. A standalone research capture can be Class A only if isolated from Formal/shared runtime, schedules, budgets and schemas; otherwise Class B proposal-first.",
+  "nextContinuation": [
+    "design isolated prospective capture",
+    "record provider entitlement before fetching",
+    "do not backfill current values as historical first-known",
+    "run independent-date Shadow before any L3 promotion"
+  ]
+}
