@@ -1,0 +1,122 @@
+{
+  "receiptId": "INDUSTRY_PHYSICAL_CYCLE_SOURCE_PILOT_V0_1",
+  "executedAt": "2026-09-28T18:05:00+08:00",
+  "mode": "OUTCOME_BLIND_SOURCE_ONLY",
+  "formalCoreChanged": false,
+  "forwardReturnDataUsed": false,
+  "purpose": "Verify whether official Taiwan MOEA machine-readable industrial production/sales/inventory sources are fresh, aligned, and granular enough for D10 physical-cycle research before any alpha test.",
+  "sourceFamily": "MOEA_EE520_OPEN_DATA",
+  "sourceNotes": [
+    "Official Government Open Data pages expose downloadable CSV resources hosted at service.moea.gov.tw/EE520/opendata.",
+    "Current web text fetch could not parse application/octet-stream directly, but alternate read-only fetch successfully read the CSV bytes/text.",
+    "Dataset-level freshness differs materially by metric; never assume one source family shares one latest observation month."
+  ],
+  "freshnessAudit": [
+    {
+      "series": "manufacturing_production_index",
+      "file": "經濟部統計處_製造業生產量指數.csv",
+      "rowCount": 2144,
+      "minPeriodROC": "07101",
+      "maxPeriodROC": "11508",
+      "industryCodeCount": 4,
+      "granularity": "I1-I4 broad groups",
+      "status": "CURRENT_BUT_COARSE"
+    },
+    {
+      "series": "manufacturing_inventory_volume_index",
+      "file": "經濟部統計處_製造業存貨量指數.csv",
+      "rowCount": 15840,
+      "minPeriodROC": "07101",
+      "maxPeriodROC": "11203",
+      "industryCodeCount": 32,
+      "granularity": "major/mid industries",
+      "status": "STALE_FOR_2026"
+    },
+    {
+      "series": "manufacturing_sales_value",
+      "file": "經濟部統計處_製造業銷售價值.csv",
+      "rowCount": 15840,
+      "minPeriodROC": "07101",
+      "maxPeriodROC": "11203",
+      "industryCodeCount": 32,
+      "granularity": "major/mid industries",
+      "status": "STALE_FOR_2026"
+    },
+    {
+      "series": "manufacturing_inventory_ratio",
+      "file": "經濟部統計處_製造業存貨率.csv",
+      "rowCount": 16050,
+      "minPeriodROC": "07101",
+      "maxPeriodROC": "11507",
+      "industryCodeCount": 30,
+      "granularity": "major/mid industries",
+      "status": "CURRENT"
+    },
+    {
+      "series": "electronic_components_production_sales_inventory_value",
+      "file": "經濟部統計處_工業生產_電子零組件業.csv",
+      "rowCount": 1605,
+      "maxPeriodROC": "11507",
+      "granularity": "26 電子零組件製造業",
+      "status": "CURRENT"
+    }
+  ],
+  "alignedBroadGroupPilot": {
+    "targetGroups": [
+      "I2 資訊電子工業",
+      "I3 化學工業"
+    ],
+    "latestCommonPeriodROC": "11203",
+    "result": "FRESHNESS_MISMATCH_BLOCKED",
+    "reason": "Production and inventory-ratio resources are current into 2026, but the tested four-group sales-volume resource stops at 11203, so a 2026 aligned physical-cycle state would mix vintages.",
+    "rule": "Do not combine series unless latest observation months and knownAt clocks are compatible."
+  },
+  "electronicComponentsSourceOnlySnapshot": {
+    "industryCode": "26",
+    "industry": "電子零組件製造業",
+    "observationPeriodROC": "11507",
+    "values": {
+      "productionValue": {
+        "current": 922787975,
+        "priorYear": 611197194,
+        "yoyPct": 50.98040109784927
+      },
+      "salesValue": {
+        "current": 931615604,
+        "priorYear": 618877683,
+        "yoyPct": 50.53307456232834
+      },
+      "inventoryValue": {
+        "current": 607702763,
+        "priorYear": 341368178,
+        "yoyPct": 78.01974588269911
+      },
+      "inventoryRatio": {
+        "current": 70.12,
+        "priorYear": 59.25,
+        "yoyPointChange": 10.87
+      },
+      "inventoryValueToSalesValue": {
+        "current": 0.652310631542406,
+        "priorYear": 0.5515923216769153
+      }
+    },
+    "researchState": "DEMAND_STRONG_WITH_INVENTORY_BUILD",
+    "interpretation": "Production and sales values are strongly higher YoY while inventory value and inventory ratio rise even faster. This is intentionally not assigned a bullish/bearish sign. Pricing, margin, capacity, product mix and subsequent inventory absorption are required.",
+    "alphaConclusionAuthorized": false
+  },
+  "mandatoryGates": [
+    "SOURCE_FRESHNESS_GATE: latestObservationMonth must meet expected release cadence; stale series become UNKNOWN.",
+    "SERIES_ALIGNMENT_GATE: do not combine metrics from materially different observation vintages.",
+    "SERIES_GRANULARITY_GATE: the required industry code must exist in the source; do not substitute a broad parent after seeing outcomes.",
+    "VINTAGE_CAPTURE_GATE: store fetchedAt, source URL/dataset id, raw-byte hash where possible, parser version and revisions prospectively.",
+    "NO_FORWARD_FILL_GATE: later observations or revised files must never be backfilled before their knownAt.",
+    "NO_ALPHA_BEFORE_SOURCE_READY: source-only pilot cannot be used to infer future stock returns."
+  ],
+  "result": "PARTIAL_PASS",
+  "next": [
+    "Identify a current machine-readable sales/inventory lane for at least one non-tech industry or formally retain SOURCE_GAP.",
+    "Audit whether the MOEA interactive database exposes a supported downloadable/query contract for detailed 4-digit codes such as 2611/2613/2630 without brittle UI scraping.",
+    "Start prospective vintage capture only after dataset-specific freshness checks pass."
+  ]
+}
