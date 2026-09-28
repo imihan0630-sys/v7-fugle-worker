@@ -2072,3 +2072,55 @@ Status:
 `D15_07_PORTFOLIO_HEAT_FRONTIER_READY / PRODUCTION_AUDIT_PENDING`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-068 Production result — current sizing is Pareto-dominated on pure plan-time risk geometry
+
+Read-only Production run `36424017307` / job `108933416195` evaluated the only reconstructable multi-name date, 2026-09-18.
+
+Current:
+- deployment = NT$168,000;
+- projected stop-risk = NT$6,483.4292;
+- Portfolio Heat / total capital = 3.241715%;
+- HHI = 0.3772380854;
+- Gini = 0.194697172;
+- CV = 0.3629245875;
+- max risk share = 0.493844079;
+- max/min = 2.4472159965.
+
+Across the 946 legal same-deployment NT$1,000-grid states:
+
+| concentration metric | Pareto-dominating states | one-grid dominating neighbors |
+|---|---:|---:|
+| HHI | 624 | 3 |
+| Gini | 624 | 3 |
+| CV | 624 | 3 |
+| maximum risk share | 599 | 2 |
+| max/min | 664 | 3 |
+
+Dominance requires lower-or-equal total planned heat and lower-or-equal concentration, with at least one strict improvement.
+
+Examples of one-grid moves that improve heat and HHI simultaneously:
+- 3105 -> 2006: 51k / 63k / 54k; heat 3.229784%; HHI 0.3740698539;
+- 3105 -> 6133: 50k / 63k / 55k; heat 3.234972%; HHI 0.3746961157;
+- 6133 -> 2006: 51k / 64k / 53k; heat 3.236527%; HHI 0.3766888267.
+
+Therefore the counter-hypothesis
+`current sizing lies on a necessary heat-vs-concentration tradeoff`
+is rejected on this witness.
+
+This result is stronger than a distant optimum because even the smallest legal NT$1,000 moves can improve both axes.
+
+### Critical limit
+
+This remains **pure risk geometry**.
+
+PriorityScore may encode real prospective alpha. Moving capital away from a higher-score name can reduce heat and concentration while also reducing expected return. Until multiple independent dates have mature D1/D3/D5, MFE/MAE, stop-first and cost-adjusted outcomes, there is no economic sizing recommendation.
+
+Receipt:
+`research/portfolio_heat_frontier_production_receipt_20260928.json`.
+
+Status:
+`CURRENT_PARETO_DOMINATED_ON_PLAN_RISK_GEOMETRY / LOCAL_DOMINANCE_CONFIRMED / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
