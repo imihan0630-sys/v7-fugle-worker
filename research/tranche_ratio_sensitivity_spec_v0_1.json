@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "TRANCHE_RATIO_SENSITIVITY_V0_1",
+  "observedAt": "2026-09-28T12:27:00+08:00",
+  "purpose": "Falsify whether the 2026-09-18 structural concentration is a special artifact of the current 60/40 FIRST/ADD split.",
+  "ratioGrid": [
+    0.4,
+    0.45,
+    0.5,
+    0.55,
+    0.6,
+    0.65,
+    0.7,
+    0.75,
+    0.8,
+    0.85,
+    0.9
+  ],
+  "comparison": [
+    "current allocation with ratio-specific two-tranche share flooring",
+    "same-deployment equal-capital with same ratio-specific share flooring",
+    "exhaustive NT$1,000-grid global minimum HHI under the same ratio, 35% cap and share flooring"
+  ],
+  "falsification": "If concentration disappears/reverses for material parts of the ratio grid, downgrade the structural finding as tranche-ratio sensitive.",
+  "guardrails": [
+    "plan-preview only; no FIRST/ADD trigger or fill is assumed",
+    "ratio-specific global optimum is diagnostic, not a live recommendation",
+    "one reconstructable multi-name date remains a sample limitation"
+  ],
+  "status": "TRANCHE_RATIO_SENSITIVITY_READY / PRODUCTION_AUDIT_PENDING",
+  "formalCoreImpact": false
+}
