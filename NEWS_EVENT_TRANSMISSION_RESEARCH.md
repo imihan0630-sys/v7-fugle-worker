@@ -523,3 +523,101 @@ Move from concept to source readiness:
 2. test publication/update timestamp, immutable version capture, licensing, entity resolution, corrections and archive completeness;
 3. define a research-only prospective event ledger that can feed D17 without changing Formal behavior;
 4. only after source readiness, preregister PIT event cohorts and negative controls for half-life, exposure, priced-in and propagation.
+
+
+---
+
+## D17 source-readiness audit — primary event truth vs general-news discovery
+
+The next stage moved from concept to Taiwan source feasibility.
+
+### 1. MOPS / TWSE / TPEx official disclosure lane
+
+Official TWSE materials show MOPS immediate material information with company code/name, **publication time**, and subject, and MOPS supports current/day/history material-information queries.
+
+This materially improves the semantic case for a primary event lane: official company disclosures can carry an intraday publication clock at the presentation layer.
+
+However, the current repository ANNOUNCEMENTS normalization still reduces accepted rows to announcement date + title. Therefore the current stored object does not preserve the richer intraday first-known/version semantics needed by D17.
+
+Conclusion:
+`CURRENT_PRIMARY_EVENT_SOURCE_PROVEN / STORED_PIT_SEMANTICS_INCOMPLETE`.
+
+MOPS is also not a complete general-news source. It covers statutory/company-entered disclosure, not every customer, industry, foreign, media or external catalyst.
+
+### 2. CNA RSS general-news discovery lane
+
+Central News Agency publicly exposes finance and technology RSS feeds. Its RSS documentation says the service distributes headline, lead, article link and lead-image link and is intended to deliver timely updates.
+
+This proves a machine-readable Taiwan general-news **discovery** lane is feasible.
+
+Critical licensing counterevidence: the published RSS terms restrict use to personal/non-profit/non-commercial purposes, require attribution and reserve CNA's right to require cessation. Therefore public RSS access must not be treated as unrestricted production/commercial licensing.
+
+Conclusion:
+`RESEARCH_DISCOVERY_FEASIBLE / NOT_ASSUMED_PRODUCTION_LICENSED`.
+
+Also still unproven:
+- immutable item-version history;
+- complete historical archive;
+- correction/supersession chain;
+- stable canonical entity IDs;
+- full item-level timestamp semantics through our present capture path.
+
+### 3. Government agency RSS
+
+Taiwan government agencies expose category-specific RSS/news feeds. These can be high-quality primary evidence for policy/industry events but do not replace company disclosure or general-news coverage.
+
+### 4. Source architecture result
+
+The evidence supports a multi-lane architecture rather than one "news source":
+- canonical truth lane for facts governed by an official source;
+- discovery/dissemination lane for general media;
+- attention lane for stories that may move prices even when truth confidence is low;
+- licensed production general-news provider remains SOURCE_NEEDED.
+
+No lane may silently substitute for another when coverage, license, firstKnown or version semantics differ.
+
+Durable source receipt:
+`research/news_source_readiness_receipt_v0_1.json`.
+
+Status:
+`PRIMARY_EVENT_LANE_PARTIAL / GENERAL_NEWS_DISCOVERY_FEASIBLE / PRODUCTION_LICENSE_GAP / PIT_ARCHIVE_GAP`.
+
+D17 L3 is **not** reached by this audit.
+
+---
+
+## D17 prospective versioned event ledger — design frozen
+
+A research-only append-only event ledger is now specified in:
+`research/d17_prospective_event_ledger_schema_v0_1.json`.
+
+The ledger separates:
+1. raw/source capture receipt;
+2. article/disclosure version;
+3. event-cluster state at a point in time;
+4. company/event exposure edge.
+
+Key PIT rule:
+a historical replay may see only versions whose firstKnownAt/capturedAt are available by replayAsOf under the selected conservative clock. Later corrections append new versions; they never rewrite earlier decision-time truth.
+
+Coverage is explicit. "No event" is admissible only when the relevant source lane's polling/completeness receipt is proven. Otherwise absence remains UNKNOWN.
+
+Outcome joins remain CLOSED until:
+- source/version PIT passes;
+- coverage is sufficient;
+- entity/event mapping is frozen outcome-blind;
+- event class/horizons are preregistered;
+- market/sector/peer controls and corporate-action firewall are fixed.
+
+Engineering boundary:
+documentation/schema is research-only. No production collector, shared runtime dependency, Formal factor, score, ranking, entry/exit or notification behavior is changed.
+
+## Exact next continuation
+
+The conceptual and source-design stage is now complete enough to stop expanding taxonomies.
+
+Next work should be empirical source proof:
+- verify an allowed/licensed general-news provider or explicitly keep that lane blocked;
+- perform a bounded prospective capture pilot on official material disclosures plus any legally usable discovery feed;
+- measure firstKnown/capturedAt latency, correction/version incidence, duplicate-cluster behavior and coverage gaps without looking at returns;
+- only after the source receipt passes, preregister outcome studies for half-life, priced-in state, direct/indirect exposure and sector propagation.
