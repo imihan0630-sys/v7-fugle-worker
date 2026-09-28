@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { webcrypto } from "node:crypto";
 import { buildScanPopulationReceipt } from "./scan_population_receipt_v0_1.mjs";
 import { buildFormalGenerationExpectation, assessFullGenerationPublication } from "./formal_generation_expectation_v0_1.mjs";
+import { buildSelectedPlanReceipts } from "./selected_plan_set_hash_v0_1.mjs";
 
 const rows=[
   {symbol:"1101",market:"TWSE"},
@@ -39,11 +40,12 @@ const parents=[
   {...lineage,symbol:"2330",parentDecisionReceiptId:"P2330",semanticFingerprint:"F2330"},
 ];
 
+const selectedPlans=await buildSelectedPlanReceipts([],webcrypto);
 const exp=await buildFormalGenerationExpectation({
   populationReceipt:population,
   parents,
   expectedLineage:lineage,
-  selectedPlanSetHash:"PLAN_HASH",
+  selectedPlanReceipts:selectedPlans,
 },webcrypto);
 assert.equal(exp.valid,true);
 assert.equal(exp.expectedParentCount,2);
@@ -61,7 +63,7 @@ const observed={
   parentCount:exp.expectedParentCount,
   parentKeysetHash:exp.parentKeysetHash,
   decisionSetHash:exp.decisionSetHash,
-  selectedPlanSetHash:"PLAN_HASH",
+  selectedPlanSetHash:exp.selectedPlanSetHash,
 };
 assert.equal(assessFullGenerationPublication({expectation:exp,observed}).publishable,true);
 
@@ -76,6 +78,7 @@ const missingParentExp=await buildFormalGenerationExpectation({
   populationReceipt:population,
   parents:[parents[0]],
   expectedLineage:lineage,
+  selectedPlanReceipts:selectedPlans,
 },webcrypto);
 assert.equal(missingParentExp.valid,false);
 assert.ok(missingParentExp.reasons.includes("PARENT_SYMBOL_SET_DIFFERS_FROM_FEATURE_READY_KEYSET"));
@@ -85,6 +88,7 @@ const changedDecisionExp=await buildFormalGenerationExpectation({
   populationReceipt:population,
   parents:[parents[0],{...parents[1],semanticFingerprint:"F2330_CHANGED"}],
   expectedLineage:lineage,
+  selectedPlanReceipts:selectedPlans,
 },webcrypto);
 assert.equal(changedDecisionExp.valid,true);
 assert.notEqual(changedDecisionExp.parentKeysetHash,undefined);
@@ -96,6 +100,7 @@ const substitutedExp=await buildFormalGenerationExpectation({
   populationReceipt:population,
   parents:[parents[0],{...parents[1],symbol:"9999",parentDecisionReceiptId:"P9999",semanticFingerprint:"F9999"}],
   expectedLineage:lineage,
+  selectedPlanReceipts:selectedPlans,
 },webcrypto);
 assert.equal(substitutedExp.valid,false);
 
@@ -105,5 +110,27 @@ assert.equal(assessFullGenerationPublication({
   observed,
   provenanceConflictCount:1,
 }).publishable,false);
+
+// Selected parent without matching selected plan receipt invalidates expectation.
+const selectedParent={
+  ...parents[0],
+  selectedFlag:true,
+  formalState:"SELECTED",
+};
+const selectedMismatch=await buildFormalGenerationExpectation({
+  populationReceipt:{
+    ...population,
+    entries:[
+      {symbol:"1101",parentExpected:true},
+      {symbol:"2330",parentExpected:true},
+    ],
+    featureReadyParentExpectedCount:2,
+  },
+  parents:[selectedParent,parents[1]],
+  expectedLineage:lineage,
+  selectedPlanReceipts:selectedPlans,
+},webcrypto);
+assert.equal(selectedMismatch.valid,false);
+assert.ok(selectedMismatch.reasons.includes("SELECTED_PLAN_COUNT_MISMATCH"));
 
 console.log(JSON.stringify({ok:true,status:"FULL_GENERATION_EXPECTATION_PASS"}));
