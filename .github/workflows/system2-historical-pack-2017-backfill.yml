@@ -7,6 +7,8 @@ on:
       - "system2/scripts/historical_pack_year_backfill_v0_1.mjs"
       - "system2/runtime/historical_pack_bulk_persistence_v0_1.mjs"
       - "system2/runtime/historical_pack_research_v0_1.mjs"
+      - "system2/runtime/historical_twse_calendar_v0_1.mjs"
+      - "system2/runtime/official_historical_backfill_source_v0_1.mjs"
       - "system2/sql/0005_historical_packs.sql"
       - "system2/deploy/provision_system2_d1.mjs"
   workflow_dispatch:
