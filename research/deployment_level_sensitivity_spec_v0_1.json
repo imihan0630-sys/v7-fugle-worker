@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "DEPLOYMENT_LEVEL_SENSITIVITY_V0_1",
+  "observedAt": "2026-09-28T12:52:00+08:00",
+  "purpose": "Falsify whether the 2026-09-18 concentration witness is peculiar to the observed 85% nominal three-name deployment rule / NT$168,000 post-floor deployment.",
+  "nominalDeployRatios": [
+    0.6,
+    0.65,
+    0.7,
+    0.75,
+    0.8,
+    0.85,
+    0.9,
+    0.95
+  ],
+  "currentReplay": [
+    "same 2026-09-18 selected names and PriorityScores",
+    "score-proportional sizing at the hypothetical nominal deployment ratio",
+    "same 35% per-name cap",
+    "same NT$1,000 allocation floor",
+    "same 60/40 and buyHigh integer-share flooring"
+  ],
+  "comparatorFairness": [
+    "comparators use each replay's actual post-floor current planned deployment, not the nominal target",
+    "all near-equal NT$1,000-grid equal-capital remainder permutations are enumerated",
+    "current must exceed the maximum-HHI equal-capital permutation for a robust equal-capital direction claim",
+    "global minimum requires two-stage orderability"
+  ],
+  "falsification": "If current concentration disappears/reverses across material deployment levels, downgrade the 9/18 structural finding as deployment-sensitive.",
+  "guardrails": [
+    "deployment ratios are hypothetical stress levels, not proposed Formal settings",
+    "plan-preview projected risk only",
+    "one reconstructable multi-name date",
+    "economic value remains outcome-blocked"
+  ],
+  "status": "DEPLOYMENT_LEVEL_SENSITIVITY_READY / PRODUCTION_PENDING",
+  "formalCoreImpact": false
+}
