@@ -1104,3 +1104,91 @@ G. separate directional alpha from risk/false-break/MFE/MAE value.
 No D02 module is promoted solely from this literature/design block because tracker rules require Taiwan PIT/OOS/prospective evidence for higher maturity.
 Current Price-Volume evidence cursor: PVE-001 through PVE-167.
 Formal Core remains LOCKED.
+
+
+## PVE-168 — Four-quadrant price×volume labels are state descriptors, not directional rules (2026-09-28)
+Status: PRE-OUTCOME_TAXONOMY_FROZEN / FORMAL_CORE_UNCHANGED
+
+The classic four labels PRICE_UP_VOLUME_UP, PRICE_UP_VOLUME_DOWN, PRICE_DOWN_VOLUME_UP and PRICE_DOWN_VOLUME_DOWN are retained only as descriptive coordinates. They cannot carry a fixed bullish/bearish sign because identical coordinates can arise from information incorporation, liquidity demand, passive/rebalancing flow, disagreement, short covering, forced liquidation or ordinary low-attention trading.
+
+Frozen decomposition for every quadrant:
+1. PRICE_LOCATION: base / breakout boundary / post-breakout / pullback / late-stage / failed-break;
+2. PRICE_RESPONSE: signed progress, close location, range/body/wick efficiency;
+3. PARTICIPATION: daily RVOL / same-slot RVOL / cumulative pace on PIT-valid baselines;
+4. ACCEPTANCE: later hold/re-entry/failure relative to frozen Formal geometry;
+5. PERSISTENCE: fresh shock / persistent / decay / reignition with event dependence preserved;
+6. CONTEXT: liquidity, market/sector activity, event/news/corporate-action and regime when PIT-valid.
+
+Thus the four quadrants are reporting strata, never additive scores by themselves.
+
+## PVE-169 — High-volume reversal can be liquidity pressure, not distribution
+Status: COMPETING_MECHANISM_FROZEN / D02-05-D02-08
+
+External evidence on institutional liquidity needs documents predictable price pressure and subsequent reversals around month-end across multiple equity markets; related literature explicitly links large-volume episodes to reduced/negative serial correlation under liquidity-demand shocks. This creates a concrete falsifier for the practitioner label 'high-volume decline = distribution'.
+
+Required interpretation rule:
+- HIGH_VOLUME + DOWN_PRICE is not DISTRIBUTION unless later path evidence and PIT-valid context reject plausible liquidity/event-pressure explanations;
+- HIGH_VOLUME + UP_PRICE is not ACCUMULATION for the symmetric reason;
+- when flow origin is unavailable, label mechanism UNKNOWN and retain only observable state descriptors.
+
+System implication: D02-08 accumulation/distribution proxies cannot advance beyond descriptive proxy status from OHLCV alone.
+
+## PVE-170 — Horizon-separation matrix frozen for price-volume claims
+Status: MULTI_HORIZON_GOVERNANCE_FROZEN
+
+A volume shock can coexist with continuation at one horizon and reversal at another. Therefore every future H001-H004 report must keep horizons separate rather than aggregate a single success label.
+
+Frozen horizon families under current available evidence design:
+- intraday path: B1/B2/B4 completed bars after featureKnownAt;
+- short daily: D1/D3/D5 when clean daily outcomes exist;
+- medium daily: D10/D20 only if source/provenance and corporate-action continuity remain valid.
+
+No horizon may inherit the sign/status of another. A feature can be INTRADAY_RISK_USEFUL but DIRECTIONALLY_REDUNDANT, or SHORT_CONTINUATION_LONGER_REVERSAL, without contradiction.
+
+## PVE-171 — Breakout-volume claim decomposed into necessity vs quality
+Status: HYPOTHESIS_REFINEMENT / NO_FORMAL_CHANGE
+
+'Breakout must have volume' contains two different claims and they must be tested separately:
+A. NECESSITY: low-volume breakouts should fail more often.
+B. QUALITY: conditional on a breakout already satisfying Formal price geometry, abnormal participation should add incremental information about later acceptance/failure.
+
+Only B is directly relevant to H001/H002. A can be false while B is useful, or vice versa. Testing only successful breakouts creates selection bias; controls must be frozen from the pre-outcome candidate/pool evidence under PVE-155/159 constraints.
+
+For D02-03, a future optimization candidate requires volume to improve false-break/retention discrimination beyond price-only breakout quality on common support, after costs and regime checks. Until then, 'breakout with volume' remains a hypothesis, not a rule.
+
+## PVE-172 — Volume dry-up requires a paired demand-return event
+Status: EVENT_PAIR_DESIGN_FROZEN / D02-04
+
+PVE-166 is operationalized as a two-leg event rather than a single low-volume observation:
+LEG_1 DRY_UP_CANDIDATE = low normalized participation while frozen price structure remains intact and liquidity is interpretable.
+LEG_2 DEMAND_RETURN = later independent participation re-expansion with positive price-response/acceptance evidence before structure failure/expiry.
+
+Research labels:
+- DRY_UP_CONFIRMED only after LEG_2 occurs;
+- DRY_UP_UNCONFIRMED while waiting;
+- DEMAND_FAILED if structure fails before LEG_2;
+- UNKNOWN if continuity/liquidity/Guard evidence is inadequate.
+
+Critical PIT rule: a historical low-volume bar must never be relabelled 'healthy dry-up' merely because the stock later rose. The initial bar stays DRY_UP_CANDIDATE; confirmation is a later timestamped transition.
+
+## PVE-173 — D02 long-block stage II synthesis
+Status: LARGE_STAGE_COMPLETE / WAITING_PROSPECTIVE_HINGE
+
+New durable conclusions beyond PVE-167:
+- the four price×volume quadrants are descriptive coordinates, not directional signals;
+- accumulation/distribution cannot be inferred uniquely from OHLCV because liquidity/event/passive-flow mechanisms can generate the same state;
+- horizon must be explicit because continuation and reversal can coexist at different horizons;
+- breakout-volume 'necessity' and 'incremental quality' are separate hypotheses;
+- healthy dry-up is a timestamped two-leg lifecycle, preventing hindsight relabelling.
+
+No Formal optimization candidate is eligible. These findings sharpen falsification and event labelling but do not supply Taiwan prospective/OOS evidence.
+
+Exact next continuation after PVE-173:
+1. Do not expand pre-outcome methodology again unless a concrete contradiction/implementation defect is discovered.
+2. At the first post-enable ordinary-market hinge, execute PVE-149 Gate 0→7 before outcomes.
+3. Preserve 2026-09-29 intraday as DATA_QA-only inherited cohort; inspect 9/29 after-market selection/bootstrap receipts; 2026-09-30 is only first potentially clean cohort.
+4. First clean tables must separate price×volume quadrant, price-response state, breakout-quality question, dry-up lifecycle and horizon without threshold tuning.
+5. Keep accumulation/distribution mechanism UNKNOWN unless independent PIT-valid evidence identifies flow origin.
+6. Formal Core remains LOCKED.
+
+Current Price-Volume evidence cursor: PVE-001 through PVE-173.
