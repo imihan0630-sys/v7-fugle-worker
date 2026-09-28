@@ -371,3 +371,17 @@ Durable research detail: main `KLINE_PATTERN_RESEARCH.md` commit `a245b486dc60f2
 - fc0ede4065d182170da342075979ee8069b2b617 — breakout lifecycle prefix-invariance test correction/pass.
 - f48d5b3a07410ca90c35748dcae2c330d0ca8cd3 — Sakata decomposition research document.
 - 0f98f5a30ef16327c50916fd8bb434e3d9819184 — machine-readable Sakata contract.
+
+## Continuation update — DL-006A through DL-006D (2026-09-28)
+- See `research/PATTERN_NESTED_STRUCTURE_AND_GAP_V0_1.md`. Outcome-blind research specification: causal weekly/daily/local graph, explicit CONTAINS/REFINES/SHARES_ANCHORS/SHARES_TRIGGER/CONTRADICTS edges, and no transitive equivalence or label voting.
+- Weekly aggregates require verified eligible daily constituents; a weekly pivot enters only after confirmation. As-of prefix and immutable semantic-space/boundary versions govern ancestry and breakout chronology.
+- Continuous breakout path descriptors specify eligible-session denominators, break-bar inclusive vs post-break extension, constrained/unobservable state and null for unavailable future information. No arbitrary N-day cutoff or directional sign.
+- Three-Gaps separates overnight and non-overlap gaps from continuity-space gaps; OPEN, technical continuity, corporate action and security-specific sessions are prerequisites. Mechanical ex-rights reset is neutralized while any residual continuity-space gap remains assessable. Directional value UNKNOWN.
+- Positive hypotheses and countermechanisms are explicit; no returns inspected, no Shadow fabrication, no R09, no tracker upgrade (D01 51.7%), no Formal optimization candidate; Formal Core LOCKED.
+
+### Exact next continuation point after DL-006
+1. Build isolated synthetic graph fixtures for weekly/daily ancestry, confirmation timing, partial week, semantic-space conflict and non-transitive overlap; require prefix replay equality.
+2. Prototype continuous path descriptors as research-only functions with break-bar inclusion, observed-session denominators, constrained sessions and boundary version tests; do not wire runtime.
+3. Seek authoritative OPEN/continuity/session witnesses before any Three-Gaps detector; DATA_BLOCKED where unavailable.
+4. Keep prospective outcome joins blocked pending COMPLETE immutable parent/run receipts and source-semantic readiness; test incremental value only against frozen controls and preregistered interactions.
+5. Keep Formal Core LOCKED and Pattern direction UNKNOWN.
