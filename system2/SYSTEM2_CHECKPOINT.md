@@ -19,6 +19,19 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 
 ## Current design decisions
 
+- Decision Clock（決策時間點）Promotion Qualification（升級資格）V0.1 merged to main in commit `e638f4d84f446ae4b9874ac506732e4cf574449d` via PR #210. Promotion-grade readiness now counts only coverage-qualified attempt-one artifacts whose run ID exactly matches the successful immutable coverage anchor. Later valid-looking artifacts from a failed-anchor date remain diagnostics and cannot inflate `independentTradingDates` or the 10/20-date gates.
+
+- Promotion accounting now exposes `coverageExcludedScheduledArtifacts` and hard-fails an eligible coverage row without a matching selected anchor artifact as `COVERAGE_ARTIFACT_PROVENANCE_MISMATCH`. Collector-contract consistency and A5 boundary checks are computed over the same coverage-qualified sample. PR #210 final-head System2 Research CI `36360795678` PASS; V8 Regression `36360795594` PASS; post-merge System2 Research CI `36360847936` PASS and V8 Regression `36360847932` PASS.
+
+- Finalized-Date Acceptance（最終化日期驗收）V0.1 merged to main in commit `6221eb9fddf5f57c356925a73284eae4b8a55d30` via PR #211. The read-only readiness workflow now produces a separate per-finalized-date acceptance receipt with explicit states including `COMPLETE_PRECISE`, `COMPLETE_IMPRECISE`, `COVERAGE_REJECTED`, `PROMOTION_ARTIFACT_MISSING`, `COVERAGE_ANCHOR_RUN_MISMATCH`, `INCOMPLETE_REQUIRED_EVIDENCE`, `A5_NOT_AVAILABLE_BY_CANDIDATE`, `NON_TRADING_DAY_SKIP`, and `NOT_IN_FINALIZED_WINDOW`.
+
+- The acceptance audit independently recomputes whether the latest finalized date should count toward the independent-date and precision-eligible samples, then cross-checks those results against `aggregation.promotionGradeMarketDates`; any disagreement is a hard audit error. It preserves PIT（Point-in-Time，時點）semantics: first observed READY is only an observed upper bound, not proof of official publication time; capture time is not relabeled as `available_at`; same-day date-only timing does not prove a cutoff; historical substitution remains forbidden.
+
+- The readiness workflow publishes `system2-decision-clock-finalized-date-audit-<run_id>` as a separate 90-day GitHub artifact and surfaces the latest finalized date, acceptance state, independent-date eligibility and precision-date eligibility in the workflow summary. PR #211 final-head System2 Research CI `36361181708` PASS and V8 Regression `36361181622` PASS. Post-merge System2 Research CI `36361268681` PASS with 58 System2 test files, 26-table SQLite schema validation and production-isolation guard; V8 Regression `36361268667` PASS.
+
+- Prospective Decision Clock promotion-grade trading-date count remains 0. The first ordinary eligible prospective trading date remains 2026-09-29. The next genuine evidence step is same-day collection on that official session followed by next-calendar-day finalization/acceptance; no historical or manual substitute is permitted. Exact Decision Clock authorization, System2 Worker Cron authorization and capture remain false.
+
+
 - Decision Clock（決策時間點）Promotion Qualification（升級資格）V0.1 merged to main in commit `e638f4d84f446ae4b9874ac506732e4cf574449d` via PR #210 before the first prospective trading-date sample. Promotion-grade readiness counts are now coverage-qualified rather than merely artifact-qualified.
 
 - A scheduled attempt-one artifact enters `promotionGradeDateCount`, `promotionGradeMarketDates` and `readiness.independentTradingDates` only when the official trading-day coverage row is promotion-eligible, the immutable anchor concluded successfully with exactly one artifact, and the selected artifact run ID exactly matches that coverage anchor. A later valid-looking scheduled artifact can no longer inflate the 10-date / 20-date gates after an earlier immutable anchor failed.
