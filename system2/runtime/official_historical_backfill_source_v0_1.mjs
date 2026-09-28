@@ -4,10 +4,9 @@ import {
   officialHistoricalA1SourceContractV0_1,
 } from "./official_historical_a1_source_v0_1.mjs";
 import {
-  officialTwseCalendarUrl,
-  parseTwseTradingCalendar,
-  isTradingDateWithCalendar,
-} from "./twse_trading_calendar_readonly.mjs";
+  fetchHistoricalTwseCalendarV0_1,
+  isHistoricalTradingDateV0_1,
+} from "./historical_twse_calendar_v0_1.mjs";
 
 export const OFFICIAL_HISTORICAL_BACKFILL_SOURCE_VERSION = "0.1-RESEARCH";
 
@@ -37,35 +36,7 @@ function yearsInRange(fromDate, toDate) {
 }
 
 async function fetchCalendar(year, fetchImpl) {
-  const attempts = [
-    { convention: "GREGORIAN", queryYear: year, url: officialTwseCalendarUrl(year) },
-    {
-      convention: "ROC_FALLBACK",
-      queryYear: year - 1911,
-      url: "https://www.twse.com.tw/rwd/zh/holidaySchedule/holidaySchedule?response=json&queryYear=" + (year - 1911),
-    },
-  ];
-  const errors = [];
-  for (const attempt of attempts) {
-    try {
-      const response = await fetchImpl(attempt.url, {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "User-Agent": "System2-Historical-Backfill/0.1",
-        },
-      });
-      if (!response?.ok) {
-        errors.push(attempt.convention + ":HTTP_" + response?.status);
-        continue;
-      }
-      const payload = await response.json();
-      return parseTwseTradingCalendar(payload, year);
-    } catch (error) {
-      errors.push(attempt.convention + ":" + String(error?.message || error));
-    }
-  }
-  throw new Error("official TWSE calendar unavailable for " + year + ": " + errors.join(" | "));
+  return fetchHistoricalTwseCalendarV0_1({ year, fetchImpl });
 }
 
 export async function buildOfficialTradingDatesV0_1({
@@ -88,7 +59,7 @@ export async function buildOfficialTradingDatesV0_1({
   const dates = [];
   for (let date = from; date <= to; date = shiftDate(date, 1)) {
     const calendar = calendars[Number(date.slice(0, 4))];
-    if (isTradingDateWithCalendar(date, calendar)) dates.push(date);
+    if (isHistoricalTradingDateV0_1(date, calendar)) dates.push(date);
   }
 
   return deepFreeze({
