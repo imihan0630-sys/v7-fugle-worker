@@ -1,0 +1,64 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-09-28 Asia/Taipei",
+  "purpose": "CA-113/114 event-state reconstruction contract. Define when an official event ledger may reconstruct an exact daily listed-common-share state without pretending it is a daily snapshot, and keep payment certificates/private-placement instruments separate.",
+  "decisionImpact": false,
+  "formalCoreChanged": false,
+  "status": "RECONSTRUCTION_CONTRACT_FROZEN / EVIDENCE_GATES_OPEN",
+  "semanticSpaces": [
+    "REGISTERED_ISSUED_COMMON_SHARES",
+    "EXCHANGE_LISTED_COMMON_SHARES",
+    "PAYMENT_CERTIFICATE_TRADABLE_UNITS",
+    "PRIVATE_PLACEMENT_COMMON_SHARES",
+    "COMBINED_EXCHANGE_TRADABLE_UNITS"
+  ],
+  "reconstructionRule": {
+    "allowed": true,
+    "conditions": [
+      "A verified baseline state exists before the bounded window.",
+      "The official event ledger is proven complete for every listed-share-changing event family relevant to the symbol/window.",
+      "Each event carries an independently verified effectiveFromSession; announcement/filing time is retained as knownAt.",
+      "Cancellations/revisions preserve versions and cannot rewrite earlier replay states before knownAt.",
+      "Verified symbol suspensions are handled before expected-session completeness accounting.",
+      "Instrument classes are reconstructed independently; no automatic summation across common shares, payment certificates, private-placement or restricted shares."
+    ],
+    "failClosedStates": [
+      "BASELINE_UNKNOWN",
+      "EVENT_LEDGER_COVERAGE_UNKNOWN",
+      "EFFECTIVE_SESSION_UNKNOWN",
+      "REVISION_CHAIN_UNKNOWN",
+      "INSTRUMENT_MAPPING_UNKNOWN",
+      "SOURCE_CONFLICT"
+    ]
+  },
+  "evidenceApplied": {
+    "symbol": "2465",
+    "facts": [
+      "Official listing-stage disclosure supports 58,946,031 original listed common shares excluding 25,000,000 private-placement common shares before the payment-certificate stage.",
+      "10,000,000 payment certificates become tradable from 2025-11-17 as a distinct instrument stage.",
+      "MI_QFIIS reports 93,946,031 from 2025-11-12, before payment-certificate trading and before 2026-01-06 registration approval; therefore that field cannot be substituted for registered-issued or listed-common truth.",
+      "Ordinary-share conversion/listing occurs later on 2026-01-16."
+    ],
+    "boundedStates": {
+      "2025-11-17": {
+        "exchangeListedCommonShares": 58946031,
+        "paymentCertificateTradableUnits": 10000000,
+        "combinedExchangeTradableUnits": 68946031,
+        "combinedQuality": "DERIVED_ONLY_FOR_METRICS_EXPLICITLY_DEFINED_OVER_BOTH_INSTRUMENTS",
+        "registeredIssuedCommonShares": 83946031,
+        "privatePlacementCommonShares": 25000000
+      }
+    }
+  },
+  "positiveControl": "If a bounded window has a known baseline plus a complete official event ledger with effective dates and no unresolved revision/instrument conflicts, event-sourced daily state is admissible for that exact semantic space.",
+  "negativeControls": [
+    "A daily field with the same Chinese/English name is not semantic equivalence across reporting systems.",
+    "A listing announcement plus one observed daily snapshot is not enough to prove full-window completeness.",
+    "A payment certificate must not be silently folded into listed common shares merely because rights are economically similar.",
+    "Ex-post historical query availability does not prove first-known timing."
+  ],
+  "ca113Impact": "The strongest blocker is now archive/completeness provenance, not the arithmetic of denominator states.",
+  "ca114Impact": "2465 instrument-stage semantics are sufficiently frozen for replay tests; exact daily BFT51U/listed-share archive remains a reconciliation gate, not a semantic-definition gate.",
+  "ca115Gate": "DO_NOT_REEVALUATE until bounded TWSE/TPEx completeness receipts and revision/knownAt coverage are sufficient.",
+  "formalCore": "UNCHANGED"
+}
