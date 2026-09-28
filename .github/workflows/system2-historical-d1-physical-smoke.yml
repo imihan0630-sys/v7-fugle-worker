@@ -19,7 +19,7 @@ jobs:
     timeout-minutes: 30
     environment: system2-research
     env:
-      SYSTEM2_HISTORY_SMOKE_DATE: "2017-01-03"
+      SYSTEM2_HISTORY_SMOKE_DATE: "2026-09-24"
     steps:
       - name: Checkout
         uses: actions/checkout@v5
