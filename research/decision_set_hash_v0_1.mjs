@@ -1,3 +1,9 @@
+// SUPERSEDED COMPATIBILITY ARTIFACT.
+// Canonical authority for parent keyset / decision-set hashing is:
+// ./parent_keyset_hash_v0_1.mjs
+// Do not add new production or research callers to this file.
+// Retained only to preserve historical research traceability.
+
 import {
   hashCanonicalReceipt,
 } from "./canonical_receipt_hash_v0_1.mjs";
