@@ -342,4 +342,121 @@ export function toHistoricalUniverseSnapshotRows(snapshot) {
   })));
 }
 
+const MEMBERSHIP_ROW_FIELDS = [
+  "membership_id","registry_id","market","symbol","company_name","industry","member_state",
+  "dataset_start_date","listing_date","delisting_date","first_trading_date","effective_from",
+  "effective_to","start_basis","end_basis","replay_eligible","source_id","source_name",
+  "source_url","source_row_hash","quality_flags_json","observed_at","membership_hash","schema_version",
+];
+
+function equalMembershipRow(left, right) {
+  return MEMBERSHIP_ROW_FIELDS.every((field) =>
+    String(left?.[field] ?? "") === String(right?.[field] ?? ""));
+}
+
+function membershipInsertStatement(db, row) {
+  return db.prepare(`INSERT INTO s2_historical_universe_memberships (
+    membership_id,registry_id,market,symbol,company_name,industry,member_state,dataset_start_date,
+    listing_date,delisting_date,first_trading_date,effective_from,effective_to,start_basis,end_basis,
+    replay_eligible,source_id,source_name,source_url,source_row_hash,quality_flags_json,observed_at,
+    membership_hash,schema_version
+  ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`).bind(
+    ...MEMBERSHIP_ROW_FIELDS.map((field) => row[field]),
+  );
+}
+
+export async function persistHistoricalUniverseRegistryV0_1({
+  db,
+  registry,
+  persistedAt,
+  insertChunkSize = 100,
+} = {}) {
+  if (!db || typeof db.prepare !== "function" || typeof db.batch !== "function") {
+    throw new Error("isolated System2 database adapter with batch() is required");
+  }
+  if (!registry || registry.schemaVersion !== "S2_HISTORICAL_UNIVERSE_REGISTRY_V0_1") {
+    throw new Error("valid historical universe registry is required");
+  }
+  const persisted = isoTimestamp(persistedAt, "persistedAt");
+  if (!Number.isInteger(insertChunkSize) || insertChunkSize < 1 || insertChunkSize > 100) {
+    throw new Error("insertChunkSize must be 1..100");
+  }
+  const expected = toHistoricalUniverseMembershipRows(registry);
+  const priorReceipt = await db.prepare(
+    "SELECT * FROM s2_historical_universe_registry_receipts WHERE registry_id=? LIMIT 1",
+  ).bind(registry.registryId).first();
+  if (priorReceipt) {
+    const receiptExpected = {
+      registry_id:registry.registryId,registry_hash:registry.registryHash,
+      dataset_start_date:registry.datasetStartDate,membership_count:registry.membershipCount,
+      symbol_market_count:registry.symbolMarketCount,replay_eligible_count:registry.replayEligibleCount,
+      unknown_start_count:registry.unknownStartCount,current_count:registry.currentCount,
+      delisted_count:registry.delistedCount,observed_at:registry.observedAt,
+      schema_version:"S2_HISTORICAL_UNIVERSE_REGISTRY_RECEIPT_V0_1",
+    };
+    if (!Object.entries(receiptExpected).every(([field,value]) =>
+      String(priorReceipt[field] ?? "") === String(value ?? ""))) {
+      throw new Error("IMMUTABLE_CONFLICT historical universe registry: " + registry.registryId);
+    }
+    const persistedRows = await db.prepare(
+      "SELECT * FROM s2_historical_universe_memberships WHERE registry_id=? ORDER BY market,symbol,effective_from,effective_to",
+    ).bind(registry.registryId).all();
+    const rows = persistedRows?.results || [];
+    const persistedById = new Map(rows.map((row) => [row.membership_id, row]));
+    if (rows.length !== expected.length || expected.some((row) =>
+      !equalMembershipRow(persistedById.get(row.membership_id), row))) {
+      throw new Error("IMMUTABLE_CONFLICT completed historical universe membership set: " + registry.registryId);
+    }
+    return deepFreeze({
+      registryId:registry.registryId,registryHash:registry.registryHash,
+      insertedMembershipCount:0,identicalMembershipCount:registry.membershipCount,
+      state:"ALREADY_COMPLETE",schemaVersion:"S2_HISTORICAL_UNIVERSE_PERSISTENCE_RESULT_V0_1",
+    });
+  }
+
+  const priorRows = await db.prepare(
+    "SELECT * FROM s2_historical_universe_memberships WHERE registry_id=? ORDER BY market,symbol,effective_from,effective_to",
+  ).bind(registry.registryId).all();
+  const priorById = new Map((priorRows?.results || []).map((row) => [row.membership_id, row]));
+  const absent = [];
+  let identicalMembershipCount = 0;
+  for (const row of expected) {
+    const prior = priorById.get(row.membership_id);
+    if (!prior) {
+      absent.push(row);
+      continue;
+    }
+    if (!equalMembershipRow(prior, row)) {
+      throw new Error("IMMUTABLE_CONFLICT historical universe membership: " + row.membership_id);
+    }
+    identicalMembershipCount += 1;
+  }
+  let insertedMembershipCount = 0;
+  for (let index = 0; index < absent.length; index += insertChunkSize) {
+    const part = absent.slice(index, index + insertChunkSize);
+    const results = await db.batch(part.map((row) => membershipInsertStatement(db, row)));
+    if (!Array.isArray(results) || results.length !== part.length || results.some((x) => x?.success === false)) {
+      throw new Error("historical universe membership batch insert failed");
+    }
+    insertedMembershipCount += part.length;
+  }
+  if (insertedMembershipCount + identicalMembershipCount !== registry.membershipCount) {
+    throw new Error("historical universe persistence accounting mismatch");
+  }
+  await db.prepare(`INSERT INTO s2_historical_universe_registry_receipts (
+    registry_id,registry_hash,dataset_start_date,membership_count,symbol_market_count,
+    replay_eligible_count,unknown_start_count,current_count,delisted_count,observed_at,persisted_at,schema_version
+  ) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)`).bind(
+    registry.registryId,registry.registryHash,registry.datasetStartDate,registry.membershipCount,
+    registry.symbolMarketCount,registry.replayEligibleCount,registry.unknownStartCount,
+    registry.currentCount,registry.delistedCount,registry.observedAt,persisted,
+    "S2_HISTORICAL_UNIVERSE_REGISTRY_RECEIPT_V0_1",
+  ).run();
+  return deepFreeze({
+    registryId:registry.registryId,registryHash:registry.registryHash,
+    insertedMembershipCount,identicalMembershipCount,state:"COMPLETE",
+    schemaVersion:"S2_HISTORICAL_UNIVERSE_PERSISTENCE_RESULT_V0_1",
+  });
+}
+
 export { MARKETS, MEMBER_STATES, START_BASES, END_BASES };

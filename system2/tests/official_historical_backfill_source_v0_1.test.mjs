@@ -61,6 +61,8 @@ assert.equal(result.tradingDateCount, 3);
 assert.equal(result.fetchedTradingDateCount, 3);
 assert.equal(result.rowCount, 3);
 assert.equal(result.rows.every((x) => x.symbol === "6488"), true);
+assert.equal(result.rows.every((x) => x.sourceId === "A1_TPEX_DAILY_QUOTES_HISTORICAL"), true);
+assert.equal(result.rows.every((x) => /^[0-9a-f]{64}$/.test(x.sourceRowHash)), true);
 assert.equal(result.dateReceipts.every((x) => x.state === "READY"), true);
 
 const contracts = buildOfficialBackfillSourceContractsV0_1();

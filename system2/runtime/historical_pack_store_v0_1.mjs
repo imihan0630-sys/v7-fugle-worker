@@ -5,6 +5,7 @@ import {
   unpackHistoricalA1PackResearchV0_1,
 } from "./historical_pack_research_v0_1.mjs";
 import { conservativeHistoricalAvailableAt } from "./official_full_market_daily_history_adapter_v0_1.mjs";
+import { OFFICIAL_HISTORICAL_A1_SOURCES } from "./official_historical_a1_source_v0_1.mjs";
 
 export const HISTORICAL_PACK_STORE_VERSION = "0.1-RESEARCH";
 
@@ -179,11 +180,23 @@ export async function executeHistoricalPackSetV0_1({
   });
 }
 
-function tupleToHistoricalBar(payload, tuple) {
+async function tupleToHistoricalBar(payload, tuple, capturedAt) {
   const [marketDate,open,high,low,close,volumeShares,tradeValue,transactions,change,continuityState,sourceRowHash] = tuple;
   const availableAt = conservativeHistoricalAvailableAt(marketDate);
+  const canonicalKey = [payload.market,payload.symbol,marketDate,payload.priceSpace].join("|");
+  const source = OFFICIAL_HISTORICAL_A1_SOURCES[payload.market] || {};
+  const normalizedSourceRowHash = sourceRowHash || await sha256Hex({
+    canonicalKey,open,high,low,close,volumeShares,tradeValue,transactions,change,
+  });
+  const barHash = await sha256Hex({
+    canonicalKey,open,high,low,close,volumeShares,tradeValue,transactions,change,
+    continuityState:continuityState || "UNVERIFIED",
+    sourceRowHash:normalizedSourceRowHash,
+    availableAt,
+    availabilityBasis:"SESSION_CLOSE_FINALITY",
+  });
   return deepFreeze({
-    canonicalKey: [payload.market,payload.symbol,marketDate,payload.priceSpace].join("|"),
+    canonicalKey,
     marketDate,
     market: payload.market,
     symbol: payload.symbol,
@@ -192,15 +205,18 @@ function tupleToHistoricalBar(payload, tuple) {
     open, high, low, close,
     volumeShares, tradeValue, transactions, change,
     continuityState: continuityState || "UNVERIFIED",
-    sourceId: payload.sourceId || null,
-    sourceName: payload.sourceName || null,
+    sourceId: payload.sourceId || source.sourceId || null,
+    sourceName: payload.sourceName || source.sourceName || null,
     sourceUrl: null,
-    sourceRowHash: sourceRowHash || null,
-    observedAt: availableAt,
+    sourceRowHash: normalizedSourceRowHash,
+    observedAt: capturedAt,
     availableAt,
     availabilityBasis: "SESSION_CLOSE_FINALITY",
     pitAvailabilityClass: "CONSERVATIVE_SESSION_FINALITY",
     pitReplayEligible: true,
+    capturedAt,
+    contentHash: barHash,
+    barHash,
   });
 }
 
@@ -258,9 +274,8 @@ export async function loadHistoricalBarsFromPacksV0_1({
       capturedAt: dbRow.captured_at,
       schemaVersion: dbRow.schema_version,
     };
-    const payload = await unpackHistoricalA1PackResearchV0_1(pack);
-    let unpacked = payload.bars.map((tuple) => tupleToHistoricalBar(payload, tuple));
-    unpacked = restoreNames(unpacked, payload.nameTimeline);
+    const materialized = await materializeHistoricalA1PackRowsV0_1({ pack });
+    const unpacked = materialized.rows;
     for (const row of unpacked) {
       if (row.marketDate >= from && row.marketDate <= to) rows.push(row);
     }
@@ -280,6 +295,29 @@ export async function loadHistoricalBarsFromPacksV0_1({
     sourceMode: "PACKED_D1_COLD_HISTORY",
     pointInTimePolicy: "SESSION_CLOSE_FINALITY_PER_MARKET_DATE",
     schemaVersion: "S2_HISTORICAL_PACK_QUERY_RESULT_V0_1",
+  });
+}
+
+export async function materializeHistoricalA1PackRowsV0_1({ pack } = {}) {
+  if (!pack || pack.schemaVersion !== "S2_HISTORICAL_A1_PACK_RESEARCH_V0_1") {
+    throw new Error("valid historical pack is required");
+  }
+  const capturedAt = requiredText(pack.capturedAt, "pack.capturedAt");
+  const payload = await unpackHistoricalA1PackResearchV0_1(pack);
+  let rows = await Promise.all(
+    payload.bars.map((tuple) => tupleToHistoricalBar(payload, tuple, capturedAt)),
+  );
+  rows = restoreNames(rows, payload.nameTimeline);
+  return deepFreeze({
+    packId: pack.packId,
+    payloadHash: pack.payloadHash,
+    market: payload.market,
+    symbol: payload.symbol,
+    year: payload.year,
+    priceSpace: payload.priceSpace,
+    rowCount: rows.length,
+    rows: Object.freeze(rows),
+    schemaVersion: "S2_HISTORICAL_PACK_MATERIALIZED_ROWS_V0_1",
   });
 }
 

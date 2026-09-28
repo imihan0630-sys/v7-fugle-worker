@@ -1,4 +1,5 @@
 import { deepFreeze } from "./factor_snapshot.mjs";
+import { sha256Hex } from "./decision_archive.mjs";
 import {
   fetchOfficialHistoricalA1DateV0_1,
   officialHistoricalA1SourceContractV0_1,
@@ -115,7 +116,15 @@ export async function fetchOfficialHistoricalA1RangeV0_1({
     if (receipt.sourceDateEvidence !== marketDate) {
       throw new Error(`source date mismatch escaped parser: ${market} ${marketDate}`);
     }
-    rows.push(...receipt.rows);
+    for (const row of receipt.rows) {
+      rows.push(deepFreeze({
+        ...row,
+        sourceId: receipt.sourceId,
+        sourceName: receipt.sourceName,
+        sourceUrl: receipt.sourceUrl,
+        sourceRowHash: row.sourceRowHash || await sha256Hex(row.sourceFields),
+      }));
+    }
     const dateReceipt = deepFreeze({
       market,
       marketDate,

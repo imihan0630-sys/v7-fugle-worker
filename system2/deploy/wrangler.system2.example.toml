@@ -13,6 +13,12 @@ database_name = "system2-research"
 database_id = "REPLACE_WITH_SEPARATE_SYSTEM2_DATABASE_ID"
 migrations_dir = "system2/sql"
 
+# Isolated research cold-history object storage. This example does not create
+# or deploy the bucket; provisioning requires a separately authorized R2 step.
+[[r2_buckets]]
+binding = "SYSTEM2_HISTORY_BUCKET"
+bucket_name = "system2-historical-research"
+
 [vars]
 SYSTEM2_CAPTURE_ENABLED = "false"
 SYSTEM2_CAPTURE_MODE = "LIMITED_PROSPECTIVE_SHADOW"
