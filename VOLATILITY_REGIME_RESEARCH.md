@@ -548,3 +548,87 @@ Source:
 
 Status:
 `OVERNIGHT_COMPONENT = RESEARCH_MOTIVATION_ONLY / TAIWAN_PIT_SOURCE_REQUIRED`.
+
+
+## VR-026 — ATR conditioning observability audit: formulas are ready; denominator provenance is not
+
+The outcome-free audit of the frozen L0-L4 ATR-conditioning decomposition is complete.
+
+### What can already be computed from same-scan inputs
+
+Existing research-only observers can compute without any new market-data calls:
+- ordered gate state and whether ATR_QUALITY was actually reached;
+- ATR gate PASS/FAIL/UNKNOWN;
+- valid A/B channel assignment when earlier gates are clear;
+- channel-specific entry/stop geometry and stopBinding;
+- target availability and resistance candidates;
+- TARGET_NULL versus LOW_RR versus RR_PASS;
+- final signal-grade reach/pass/fail;
+- original Formal result.
+
+Reusable validated components:
+- `research/formal_gate_overlap_observer_v0_1.mjs`;
+- `research/channel_stage_denominator_observer_v0_1.mjs`;
+- `research/target_rr_audit_observer_v0_1.mjs`;
+- `research/formal_gate_replay_v0_1.mjs`.
+
+Thus the mathematical/computational decomposition is not the blocker.
+
+### Why outcome inference is still blocked
+
+The legacy Shadow archive is not a promotion-grade denominator for ATR opportunity-cost research:
+- `REJECTED_AFTER_BASE` is bounded and reason-sorted rather than prevalence-complete;
+- `BROAD_CONTROL` is bounded sampled coverage and has its own admission conditions;
+- `exclusion_reason` is first failure under fail-fast ordering, not an independent ATR contribution;
+- the legacy primary key stores one cohort per symbol/date, preventing clean overlapping semantic memberships;
+- same-date delete/rewrite semantics are mutable rather than immutable first-known decision generations;
+- some research controls can recompute a pre-consensus score that is not identical to the actual post-consensus Formal ranking state;
+- target value presence does not prove target PIT provenance;
+- bounded readers can truncate the requested keyspace.
+
+Therefore comparing outcomes of "ATR rejects" versus selected rows from the current legacy cohorts would compound selection bias, first-failure bias, sampling bias and provenance bias.
+
+### Architecture decision
+
+Do NOT create an ATR-specific persistence stack.
+
+Reuse the already-designed shared immutable per-symbol decision-state parent from:
+`SHADOW_COHORT_SEMANTICS_CLASS_B_PROPOSAL.md`.
+
+ATR/volatility evidence should attach as a child/overlay containing:
+- atrPercent / ATR gate state;
+- channel;
+- entry / stop / stopDistance / stopBinding;
+- target state + target provenance;
+- reward / risk / rewardPerRisk / RR state;
+- actual post-consensus priority/rank/selected state.
+
+This preserves one canonical parent for all research lanes and prevents cross-lane evidence drift.
+
+### Research decision
+
+`ATR_OUTCOME_ANALYSIS_ON_LEGACY_CONVENIENCE_COHORTS = BLOCKED`.
+
+This is not a failure of ATR research. It is a successful falsification of an invalid empirical path.
+
+Machine receipt:
+`research/volatility_atr_conditioning_observability_audit_v0_1.json`.
+
+Status:
+`COMPUTATION_FEASIBLE / PROMOTION_GRADE_DENOMINATOR_NOT_YET_PERSISTED / NO_FORMAL_CHANGE`.
+
+
+## VR-027 — revised exact continuation after observability audit
+
+The next D04 evidence step is no longer another ATR formula audit.
+
+Priority order:
+1. verify prospective clean-date capture/persistence of TAIEX RV5, RV20 and RV5/RV20 under the existing official index decision-clock contract;
+2. do not reconstruct historical first-known market-vol states from mutable latest snapshots;
+3. once independent prospective dates exist, compare the preregistered overlapping RV5/RV20 state with non-overlapping recent-5/prior-15 only as a robustness decomposition;
+4. attach stock-level volatility controls only when their history window is TECHNICAL_CONTINUITY-safe or explicitly excludes unresolved corporate-action windows;
+5. ATR opportunity-cost/outcome analysis waits for the shared immutable decision-state parent rather than using legacy bounded cohorts;
+6. no volatility throttle, ATR gate, stop, RR, rank or sizing change is authorized.
+
+Current promotion status remains:
+`FALSIFICATION_IN_PROGRESS / NOT_OPTIMIZATION_READY`.
