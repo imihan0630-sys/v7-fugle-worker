@@ -573,7 +573,10 @@
       "anchors": [
         "INSTITUTIONAL_CROWDING_RESEARCH.md",
         "LEVERAGE_SHORTING_CHECKPOINT.md",
-        "PASSIVE_FLOW_INDEX_REBALANCING_CHECKPOINT.md"
+        "PASSIVE_FLOW_INDEX_REBALANCING_CHECKPOINT.md",
+        "research/broker_branch_main_force_semantic_guard_v0_1.json",
+        "research/day_trading_chip_crowding_semantic_guard_v0_1.json",
+        "system2/SYSTEM2_STATE_OWNED_BANK_FLOW_RESEARCH.md"
       ],
       "maturityPct": 40,
       "modules": [
@@ -672,12 +675,36 @@
           "maturityPct": 40,
           "learningScope": "聚焦「法人流對流動性／價格反應正規化」。學習範圍：外資、投信、自營商、融資融券、借券、集保與被動資金的資料語意；Flow與Stock差異；擁擠與反向風險；流動性正規化；事件時點與因果混淆。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義"
+        },
+        {
+          "id": "D06-13",
+          "name": "券商分點／主力代理變數",
+          "level": "L2",
+          "maturityPct": 40,
+          "learningScope": "聚焦「券商分點／主力代理變數」。研究券商總分公司買賣、分點集中度、持續性與流向反應，但必須區分執行通路與受益人身分；總公司自營混入、同分點多客戶、同客戶多分點、券商代碼Vintage、熱門股樣本選擇偏誤與資料授權／成本都必須納入。不得把分點淨買直接標成主力、聰明錢或單一大戶；每個結論需正反驗證、PIT、完整母體與增量價值檢查。",
+          "levelMeaning": "機制＋反證已定義"
+        },
+        {
+          "id": "D06-14",
+          "name": "當沖率／短線換手",
+          "level": "L2",
+          "maturityPct": 40,
+          "learningScope": "聚焦「當沖率／短線換手」。研究個股與市場當沖成交股數／金額占比、短線換手與注意力／流動性／擁擠的交互作用；原始量必須按個股成交量值、橫截面與自身歷史正規化，並控制當沖資格、處置／變更交易、規則Vintage與市場Regime。高當沖不得直接解讀為多或空，買賣金額差也不得當作乾淨方向部位；需正反驗證其對波動、假突破、MAE/MFE與續航的增量價值。",
+          "levelMeaning": "機制＋反證已定義"
+        },
+        {
+          "id": "D06-15",
+          "name": "官股行庫／特定資金流",
+          "level": "L2",
+          "maturityPct": 40,
+          "learningScope": "聚焦「官股行庫／特定資金流」。研究公股行庫逆勢承接、正常化賣出、與外資／投信／市場壓力的背離及可能的穩定市場脈絡；必須區分公股行庫一般投資、政府基金、國安基金與透過公股券商路由的交易，未有獨立證據時動機與最終受益人均為UNKNOWN。初期只作Context／Warning Modifier研究，不得把公股買進直接當利多或公股賣出直接當利空。",
+          "levelMeaning": "機制＋反證已定義"
         }
       ],
       "status": "LONG_BLOCK_MULTIAXIS_CROWDING_AND_PASSIVE_FALSIFICATION_ADVANCED / OUTCOME_DATA_GATED",
       "exactNextContinuationPoint": "IC-030/PF-037/LS-048: do not invent a scalar crowding score. Obtain verified row-level/server-side aggregate prospective institutional snapshots for outcome-blind decomposition; preserve TDCC chipAsOfDate prospectively; build PIT-normalized leverage/shorting state inputs when LS source gates permit; use bounded MSCI Standard Taiwan membership negative evidence only within scope and only via authorized/licensed data paths; no institutional/crowding outcomes until data-quality gates pass.",
-      "lastResearchUpdate": "2026-09-28",
-      "researchNote": "IC-025~029 / PF-035~036: current Shadow archive remains 62 rows over 2 dates, D5=0, integrity RESEARCH_DATA_GAP. Weekly TDCC ownership cannot count as daily independent evidence and holder identity/passive share is unidentifiable. Four-cycle official MSCI Global Standard Taiwan lists validate a bounded membership-add/delete negative-evidence method, but not broad passive-flow absence and public-source use restrictions create a licensing gate. 2026 TWSE market-structure evidence falsifies nominal margin balance as a scale-free crowding alarm; long/short/borrow/actual-short/ownership/passive context are frozen as separate multi-axis states. D06 stays 40.0%; no L3 promotion without PIT empirical coverage."
+      "lastResearchUpdate": "2026-09-29",
+      "researchNote": "D06 scope audit added three user-required but previously omitted modules: broker-branch/main-force proxies, day-trading/short-horizon turnover, and state-owned-bank/specific flow. Each starts at L2 because mechanism and falsification are now defined; D06 remains 40.0% across 15 modules. This is denominator correction, not maturity inflation."
     },
     {
       "id": "D07",
