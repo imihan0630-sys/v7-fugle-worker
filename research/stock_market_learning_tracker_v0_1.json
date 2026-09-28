@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-09-28T21:36:00+08:00",
+  "updatedAt": "2026-09-29T00:13:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -33,7 +33,7 @@
   "aggregate": {
     "domainCount": 18,
     "moduleCount": 226,
-    "maturityWeightedPct": 45.3
+    "maturityWeightedPct": 45.9
   },
   "domains": [
     {
@@ -1244,7 +1244,7 @@
         "DERIVATIVES_VOLATILITY_CHECKPOINT.md",
         "DERIVATIVES_VOLATILITY_RESEARCH.md"
       ],
-      "maturityPct": 38.3,
+      "maturityPct": 40,
       "modules": [
         {
           "id": "D12-01",
@@ -1329,10 +1329,12 @@
         {
           "id": "D12-11",
           "name": "選擇權流動性／微結構",
-          "level": "L1",
-          "maturityPct": 20,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「選擇權流動性／微結構」。學習範圍：期貨、選擇權、基差、OI、外資期貨、PCR、VIX、IV、Skew、Term Structure、Gamma與結算；夜盤與到期效應；合約／DTE語意；對市場與個股的增量資訊。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "理論已理解"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "MECHANISM_AND_FALSIFICATION_DEFINED / WAITING_INTRADAY_PIT_SOURCE",
+          "next": "Use option liquidity first as an evidence-quality gate for IV/Skew/Gamma; validate daily best-bid/ask quality separately from true intraday quote/depth microstructure, and do not fabricate historical intraday states."
         },
         {
           "id": "D12-12",
