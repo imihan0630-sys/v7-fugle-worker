@@ -2357,3 +2357,181 @@ No minimum effect size is tuned in this stage; first objective is horizon surviv
 
 Status:
 `MICROSTRUCTURE_HORIZON_LADDER = FROZEN / EVIDENCE_PENDING`.
+
+
+## MS-054 — provider-message clock is not proven exchange-event clock
+
+The dual-clock protocol needs one more semantic guard.
+
+Current Fugle stock WebSocket documentation exposes:
+- `trades`: provider time plus `serial`;
+- `books`: provider time, best-five prices/sizes and session flags, but no documented sequence/serial field.
+
+Therefore:
+- `tradeMessageCount` can be audited with trade-serial diagnostics once serial semantics are validated;
+- `bookMessageCount` is only a count of received provider book messages;
+- it is NOT automatically the number of all exchange order-book events;
+- 100% socket uptime does not by itself prove that every underlying book event was delivered/reconstructable.
+
+This sharpens the D05 anti-fabrication boundary.
+
+Preferred names:
+- `bookProviderMessageCount`
+- `tradeProviderMessageCount`
+- `midPriceChangeCount`
+- `bestQuoteChangeCount`
+
+Reserved names:
+- `exchangeBookEventCount`
+- `trueOFI`
+
+The reserved names may be used only if the source contract proves the required event completeness/sequence semantics.
+
+### Fallback when completeness is unproven
+
+A difference between two received book snapshots can be studied as:
+`snapshotDeltaPressureProxy`.
+
+It must not be called true event-level OFI because unknown intermediate additions/cancellations may be netted out between snapshots.
+
+### Primary falsification
+
+If the apparent predictive effect changes materially when:
+- reconnect windows are excluded;
+- low-message-coverage buckets are excluded;
+- provider-message intensity is matched;
+then the feature is at least partly a delivery/activity proxy.
+
+Status:
+`PROVIDER_MESSAGE_TIME != PROVEN_EXCHANGE_EVENT_TIME / TRUE_OFI_L3_BLOCKER_SHARPENED`.
+
+Sources:
+- Fugle stock WebSocket Books documentation;
+- Fugle stock WebSocket Trades documentation.
+
+
+## MS-055 — horizon-retention inference must beat activity, volatility and spread baselines
+
+The E0->E1->E2 horizon ladder is now paired with a frozen falsification ladder.
+
+A microstructure state is considered to have **retained incremental information** only if it survives simpler explanations.
+
+### Nested baselines
+
+B0 — activity/risk baseline:
+- trade/provider-message intensity;
+- mid-price-change count;
+- local realized path volatility;
+- price/tick band;
+- session state.
+
+B1 — immediate liquidity baseline:
+- spreadTicks/spreadBps;
+- best-level depth / top1 imbalance.
+
+B2 — dynamic pressure-response block:
+- pressure proxy;
+- pressure-to-price response;
+- persistence / no-progress state.
+
+B3 — deeper-book block:
+- one frozen top-five aggregate representation only.
+
+Research order:
+B0 -> B1 -> B2 -> B3.
+
+Do not inspect level 2/3/4/5 separately unless B3 first proves stable incremental value over B1/B2.
+
+### Fixed negative controls
+
+1. Time-shift placebo:
+   compare pressure from an earlier non-overlapping bucket to the target horizon.
+
+2. Within-symbol/day sign shuffle:
+   preserve activity and magnitude distribution while breaking directional pressure sequence.
+
+3. Event-intensity matched control:
+   compare states with similar trade/book message counts and mid-price-change counts.
+
+4. Spread-only control:
+   test whether the apparent state is just a wide/tight spread proxy.
+
+5. Volatility/activity control:
+   test whether the feature disappears after local volatility and transaction-rate controls.
+
+6. Session-mechanism control:
+   continuous trading only in the primary test; auctions/VI/limit cohorts remain separate.
+
+### Horizon survival interpretation
+
+- survives E0 only: micro-timing evidence;
+- survives E0/E1 but dies at E2: execution-state evidence, not 15m BUY context;
+- survives E2 after B0/B1 controls and independent dates: 15m Shadow-context candidate;
+- survives only under one tick/activity/volatility stratum: conditional evidence, not universal rule;
+- disappears under event-intensity matching: classify as ACTIVITY_PROXY;
+- disappears after spread control: classify as LIQUIDITY_COST_PROXY;
+- sign unstable across independent dates: FRAGILE_DATE_DEPENDENCE.
+
+No p-value or best horizon may be selected post hoc to rescue a failing feature.
+
+Status:
+`HORIZON_RETENTION_FALSIFICATION = FROZEN / EVIDENCE_PENDING`.
+
+
+## MS-056 — first empirical matrix must separate explanation from action
+
+The first complete prospective test should not ask "should we BUY?"
+
+It should ask three narrower questions:
+
+Q1 — Price formation:
+Does Pressure × Response × Persistence explain near-term mid-price movement beyond B0/B1?
+
+Q2 — Breakout path quality:
+Does it distinguish breakout retention versus retracement after controlling existing breakout/price-volume/ATR/regime variables?
+
+Q3 — Execution quality:
+Does spread/depth/pressure state explain executable friction / markout where genuine execution evidence exists?
+
+These are different estimands.
+
+A feature may pass Q1 but fail Q2/Q3.
+That is not contradictory:
+- one-tick price prediction can exist without 15m continuation;
+- a good directional state can still have poor execution cost;
+- a favorable execution state need not create stock-selection alpha.
+
+Promotion logic must keep these tracks separate.
+
+No single combined "microstructure score" is authorized.
+
+Status:
+`THREE_ESTIMANDS_SEPARATED / NO_ACTION_MAPPING`.
+
+
+## MS-057 — collector go/no-go should be driven by identifiability, not excitement
+
+The separate collector proposal is scientifically justified only if it can answer MS-055/MS-056.
+
+Minimum P0 success criteria before scaling beyond a tiny pilot:
+- stable authenticated connection;
+- explicit reconnect segmentation;
+- provider timestamps preserved;
+- trade serial diagnostics captured;
+- book/trade message counts captured;
+- continuous/trial/limit/delayed flags preserved;
+- received top-five state sufficient to reconstruct the frozen bucket fields;
+- measured 1s/5s/15s information loss without using return outcomes;
+- no dependency from Formal runtime;
+- actual Fugle subscription quota verified before activation.
+
+Go/no-go logic:
+- if 5s preserves the frozen state classifications versus 1s, prefer 5s;
+- if only 1s works, evaluate cost/storage feasibility before scaling;
+- if provider-message completeness cannot support the intended pressure/replenishment estimand, narrow the research question instead of pretending true OFI exists;
+- if top1 + simple spread already explains the useful effect, kill deeper dynamic complexity.
+
+Current official Fugle plan documentation supports 5 / 300 / 2000 stock WebSocket subscriptions for Basic / Developer / Advanced, with one symbol x channel consuming one subscription. Actual owner plan remains UNKNOWN.
+
+Status:
+`COLLECTOR_VALUE_GATE = IDENTIFIABILITY_FIRST / NO_DEPLOYMENT`.
