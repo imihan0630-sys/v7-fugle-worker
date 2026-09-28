@@ -1,8 +1,8 @@
 # Market Breadth + Sector Rotation + Leadership Checkpoint
 
 Updated: 2026-09-28 18:05 Asia/Taipei
-Current cursor: BR-001 through BR-028 complete.
-Next: evidence accumulation plus BR-029 classification-vintage coverage audit; no threshold tuning.
+Current cursor: BR-001 through BR-029 complete.
+Next: BR-030 prospective leader-only vs broad-participation evidence; join to D10 physical-cycle state without threshold tuning.
 
 ## Durable conclusions
 
@@ -124,3 +124,18 @@ Reason: official Taiwan effective-date reclassification evidence establishes dec
 BR-029: audit effective-dated classification source coverage and define `classificationSchemeId / effectiveFrom / effectiveTo / knownAt` receipt.
 BR-030: when the first valid V8.14 prospective sector-gate cohort exists, compare leader-only versus broad participation without tuning thresholds.
 BR-031: join those observations to the D10 physical-cycle state by information date, preserving separate clocks and UNKNOWNs.
+
+
+## BR-029 — Taxonomy bridge checkpoint
+
+- TWSE/TPEx issuer industry, MOEA/DGBAS statistical industry/product codes, and investment themes/supply-chain groups are separate taxonomies with different purposes and clocks.
+- A one-to-one mapping is structurally invalid. Research now requires an effective-dated many-to-many `INDUSTRY_EXPOSURE_VINTAGE` bridge with source, knownAt/effective dates, exposure basis/magnitude when disclosed, confidence and revision semantics.
+- Formal industry membership alone cannot prove theme exposure; capability does not prove revenue/orders; current revenue mix cannot be backfilled historically.
+- D09-11 題材股與正式產業分類橋接 advanced L1 -> L2 because mechanism/schema/falsification are now defined.
+- D10 side now has a taxonomy-aware reusable industry-transmission grammar; concrete industry PIT coverage remains evidence-pending.
+- No change to sector gate, sector score, weights, Top6/3+3, capital, entry/exit or Formal Core.
+
+### Exact next continuation
+BR-030: prospective leader-only vs broad-participation evidence using frozen V8.14 sector-gate provenance.
+BR-031: combine market confirmation with D10 physical-cycle state by knownAt without collapsing to a scalar score.
+BR-032: estimate taxonomy/exposure UNKNOWN rate before any theme-level return test.
