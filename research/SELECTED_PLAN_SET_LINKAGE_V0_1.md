@@ -47,9 +47,9 @@ Display name is not required in the semantic hash.
 
 ## TI-514 — strategyPool is required
 
-Current Formal uses separate GENERAL / THOUSAND 3+3 pool logic.
+Current Formal selected plans use strategyPool values FORMAL_GENERAL / FORMAL_THOUSAND under the separate 3+3 pool logic.
 
-Current legacy v8_trade_journal_plans does not expose strategyPool as a dedicated top-level column; it may only survive inside plan_json after later versions.
+Current production plan construction explicitly writes strategyPool="FORMAL_GENERAL" or "FORMAL_THOUSAND". Legacy v8_trade_journal_plans still does not expose strategyPool as a dedicated top-level column; it may only survive inside plan_json after later versions.
 
 Therefore future immutable selected-plan evidence must preserve strategyPool explicitly.
 
@@ -123,3 +123,23 @@ CURRENT_JOURNAL_IMMUTABILITY = INSUFFICIENT
 RUNTIME_GENERATION_PLAN_LINK = NOT_IMPLEMENTED
 FORMAL_OPTIMIZATION_CANDIDATE = NONE
 Formal Core remains LOCKED.
+
+
+## Strategy-pool literal correction — TI-520
+
+Repository revalidation found the exact deployed selected-plan literals are:
+
+- FORMAL_GENERAL;
+- FORMAL_THOUSAND.
+
+The earlier research draft used shorthand GENERAL / THOUSAND.
+
+That shorthand is rejected for selected-plan semantic hashing.
+
+Reason:
+semantic hashes must preserve the exact production meaning, not a research nickname.
+
+The parent price-pool concept may still use its own separately versioned vocabulary.
+Do not silently equate a parent pool label with the selected-plan strategyPool field.
+
+This correction occurred before any runtime persistence implementation.
