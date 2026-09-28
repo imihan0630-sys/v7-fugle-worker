@@ -665,7 +665,11 @@
           "learningScope": "聚焦「法人流對流動性／價格反應正規化」。學習範圍：外資、投信、自營商、融資融券、借券、集保與被動資金的資料語意；Flow與Stock差異；擁擠與反向風險；流動性正規化；事件時點與因果混淆。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義"
         }
-      ]
+      ],
+      "status": "LONG_BLOCK_PASSIVE_AND_OWNERSHIP_FALSIFICATION_ADVANCED / OUTCOME_DATA_GATED",
+      "exactNextContinuationPoint": "IC-028/PF-037: obtain verified row-level or server-side aggregate prospective research access for outcome-blind institutionalScore decomposition; preserve TDCC chipAsOfDate prospectively; use bounded MSCI Standard Taiwan membership negative evidence only within its declared scope; seek an authorized/licensed passive-event source path; do not inspect institutional outcomes until data-quality gates pass.",
+      "lastResearchUpdate": "2026-09-28",
+      "researchNote": "IC-025~027 and PF-035~036: Shadow archive remains 62 rows/2 dates with D5=0 and RESEARCH_DATA_GAP, so outcomes stay closed. Weekly TDCC ownership cannot be counted as daily independent evidence and holder identity/passive share is unidentifiable. Four consecutive MSCI Global Standard Taiwan public-list cycles validate a bounded add/delete negative-evidence method, but not broad passive-flow absence; public-source use restrictions create a licensing gate for persistent ingestion. D06 maturity remains 40.0%; no module promotion without new PIT/OOS evidence."
     },
     {
       "id": "D07",
