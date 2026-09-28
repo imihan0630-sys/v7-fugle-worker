@@ -1032,3 +1032,14 @@ YES for research infrastructure integrity: resolving the actual archive lineage 
 - Status: WORTH_SHADOW_RESEARCH / METHODOLOGY_FROZEN_FOR_SYNTHETIC_FALSIFICATION. No FORMAL_OPTIMIZATION_CANDIDATE; no runtime/Formal change.
 - Engineering: Class A for documentation/synthetic fixtures/offline aggregation; Class B for new exact-date recorder fields, odd-lot capture or shared runtime persistence; Class C for any Formal 15m BUY/entry/sizing/action change.
 - Exact next continuation: freeze implementation-shortfall sign conventions/equations; build synthetic adversarial fixtures for 0%, 25/75%, cancel favorable/adverse, regular-only, odd-lot-only and mixed chains; audit current recorder schema for parentDecisionId/intendedQty/child fills/cancel reason/ACTUAL-vs-MODELED provenance; keep missing fields UNKNOWN; prospective inference waits for complete event/date plus mechanism coverage; Formal Core remains LOCKED.
+
+
+## Pattern continuation — DL-007A through DL-007E (2026-09-28 Asia/Taipei)
+- Continued from DL-006 without restarting. Built and passed isolated synthetic QA for causal weekly/daily/local nested graphs and continuous breakout path descriptors.
+- Prefix replay prevents later weekly confirmation, failure or reclaim from rewriting earlier snapshots. Partial weeks cannot act as completed parents; semantic-space and same-version boundary mutation fail closed; graph edges never create transitive evidence independence or votes.
+- Breakout paths now expose eligible and observable denominators, break-inclusive/post-break extension, persistence runs, reentry/failure/reclaim offsets and PIT-gated ATR units without an arbitrary N-day success/failure threshold.
+- Counterevidence: counting constrained sessions manufactures persistence, but silently excluding them can inflate observed fractions. Both denominators and PARTIALLY_OBSERVED state are required.
+- Official-source audit confirms OPEN/corporate-action fields are source-available but falsifies Three-Gaps runtime readiness: current cache drops OPEN, raw-mode response certification is unresolved on the audited connector, adjusted history is not immutable PIT evidence, future event visibility creates look-ahead risk, and security-specific session history is partial. Detector remains NO_GO.
+- Durable anchors: `research/PATTERN_NESTED_GRAPH_PATH_QA_V0_1.md` and `research/pattern_three_gaps_source_readiness_v0_1.json`.
+- No outcomes, no historical Shadow, no R09, no maturity promotion, no Formal optimization candidate. D01 remains 51.7%; Formal Core LOCKED.
+- Exact next: freeze graph/path v0.1; optionally build only a detector-free gap precondition validator; audit reuse of canonical History Source Revalidation session receipts; keep shared runtime changes Class B proposal-first; wait for COMPLETE immutable parent/run receipts before prospective outcome joins.

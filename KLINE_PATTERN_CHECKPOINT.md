@@ -385,3 +385,24 @@ Durable research detail: main `KLINE_PATTERN_RESEARCH.md` commit `a245b486dc60f2
 3. Seek authoritative OPEN/continuity/session witnesses before any Three-Gaps detector; DATA_BLOCKED where unavailable.
 4. Keep prospective outcome joins blocked pending COMPLETE immutable parent/run receipts and source-semantic readiness; test incremental value only against frozen controls and preregistered interactions.
 5. Keep Formal Core LOCKED and Pattern direction UNKNOWN.
+
+## Continuation update — DL-007A through DL-007E (2026-09-28)
+- Exact DL-006 graph/path implementation is complete in isolated research code:
+  - `research/pattern_nested_structure_graph_v0_1.mjs` and test;
+  - `research/pattern_breakout_path_descriptors_v0_1.mjs` and test;
+  - full record `research/PATTERN_NESTED_GRAPH_PATH_QA_V0_1.md`.
+- Nested graph QA PASS: as-of confirmation, verified source-bar availability, partial-week status, direct CONTAINS/REFINES/SHARES_ANCHORS/SHARES_TRIGGER/CONTRADICTS edges, no transitive closure, prefix replay equality, semantic-space conflict and boundary-mutation firewall.
+- Continuous path QA PASS: eligible vs observable denominators, constrained/unavailable session exclusions, break-inclusive vs post-break extension, UP/DOWN mirror, reentry/failure/reclaim offsets, PIT ATR gating and no tuned N-day verdict.
+- Key counterexample: excluding constrained sessions without exposing both denominators can inflate apparent persistence; counting them can manufacture acceptance. Both counts and PARTIALLY_OBSERVED status are mandatory.
+- Source audit confirms OPEN and multiple corporate-action reference fields are source-available, but Three-Gaps remains detector NO_GO. Current shared cache drops OPEN; raw response mode is not yet independently certified on the audited connector; adjusted history is not automatically immutable PIT history; corporate-action endpoints can include future events; security-specific session coverage remains partial.
+- Machine readiness: `research/pattern_three_gaps_source_readiness_v0_1.json`.
+- Tests PASS: new graph/path suites plus existing lifecycle and evidence-dedup suites.
+- No outcome inspection, no historical Shadow, no R09, no tracker promotion. D01 remains 51.7%. FORMAL_OPTIMIZATION_CANDIDATE = NONE. Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-007
+1. Freeze graph/path v0.1; do not tune thresholds or expand named families.
+2. Add only a detector-free Three-Gaps precondition validator if it can fail closed on raw response mode, OPEN, TECHNICAL_CONTINUITY version, event clocks and explicit symbol-session membership.
+3. Audit reuse of canonical History Source Revalidation receipts for per-symbol session evidence; do not fork session/no-trade logic.
+4. Shared-runtime OPEN retention or continuity/session persistence remains Class B proposal-first.
+5. Outcome joins remain blocked until COMPLETE immutable parent/run receipts exist; eventual incremental tests use frozen controls.
+6. Pattern direction remains UNKNOWN; no R09; Formal Core remains LOCKED.
