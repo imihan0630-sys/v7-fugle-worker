@@ -60,6 +60,9 @@ on:
       - "research/commission_evidence_classifier_v0_1.mjs"
       - "research/commission_evidence_classifier_spec_v0_1.json"
       - "tests/test_commission_evidence_classifier_v0_1.mjs"
+      - "research/reduce_readd_friction_v0_1.mjs"
+      - "research/reduce_readd_friction_spec_v0_1.json"
+      - "tests/test_reduce_readd_friction_v0_1.mjs"
       - "research/add_trigger_conditional_invariance_v0_1.json"
       - "tests/test_add_trigger_conditional_invariance_v0_1.mjs"
       - "research/sizing_quantization_cascade_v0_1.mjs"
@@ -166,6 +169,7 @@ jobs:
           node tests/test_net_execution_sizing_evidence_ladder_v0_1.mjs
           node tests/test_transaction_tax_evidence_classifier_v0_1.mjs
           node tests/test_commission_evidence_classifier_v0_1.mjs
+          node tests/test_reduce_readd_friction_v0_1.mjs
           node tests/test_add_trigger_conditional_invariance_v0_1.mjs
           node tests/test_sizing_quantization_cascade_v0_1.mjs
           node tests/test_grid_constrained_equal_risk_v0_1.mjs
