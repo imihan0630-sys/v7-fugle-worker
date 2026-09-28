@@ -1,0 +1,15 @@
+{
+  "schemaVersion": "PLANNED_LIFECYCLE_HEAT_ENVELOPE_V0_1",
+  "observedAt": "2026-09-28T20:59:00+08:00",
+  "purpose": "Separate PIT-reconstructable FIRST/ADD/FULL plan-time heat envelopes from actual position lifecycle transitions.",
+  "rules": [
+    "FIRST = 60% planned tranche preview at buyHigh",
+    "ADD_INCREMENT = residual 40% planned tranche preview at buyHigh",
+    "FULL = FIRST + ADD preview exposure",
+    "FULL risk/notional must conserve FIRST + ADD exactly within tolerance",
+    "ADD_INCREMENT is conditional; no ADD trigger/fill is assumed",
+    "actual FIRST/FULL stage is UNKNOWN without broker-confirmed fill/holdings provenance"
+  ],
+  "status": "PLAN_LIFECYCLE_ENVELOPE_SOURCE_READY / ACTUAL_STAGE_TRANSITIONS_BLOCKED",
+  "formalCoreImpact": false
+}
