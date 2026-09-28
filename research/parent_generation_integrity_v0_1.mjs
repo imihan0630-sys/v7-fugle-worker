@@ -1,3 +1,5 @@
+import { TECHNICAL_PARENT_SCOPE_ID } from "./immutable_parent_scope_measurement_v0_1.mjs";
+
 function assertText(value, field) {
   const text=String(value??"").trim();
   if (!text) throw new Error("MISSING_" + field);
@@ -5,7 +7,7 @@ function assertText(value, field) {
 }
 
 export const PARENT_SCOPE_CONTRACT = Object.freeze({
-  parentScopeId:"FORMAL_HISTORY_ADMITTED_DECISION_PATH_V1",
+  parentScopeId:TECHNICAL_PARENT_SCOPE_ID,
   definition:"All history-admitted feature rows evaluated by the same-scan Formal decision path.",
   upstreamBlockedLocation:"SCAN_POPULATION_RECEIPT",
   selectedOnly:false,
