@@ -22,7 +22,7 @@ const rows=[
 
 const good=assessParentGenerationCoherence(rows,{
   ...base,
-  parentScopeId:"FORMAL_HISTORY_ADMITTED_DECISION_PATH_V1",
+  parentScopeId:"FORMAL_HISTORY_ADMITTED_FEATURE_ROWS_V0_1",
 });
 assert.equal(good.valid,true);
 assert.equal(good.parentCount,3);
