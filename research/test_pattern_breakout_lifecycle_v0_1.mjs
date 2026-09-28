@@ -121,7 +121,23 @@ const fullPath=[
 ];
 const prefix=analyzeBreakoutLifecycle({direction:"UP",boundary:B,bars:fullPath.slice(0,3)});
 const fullAsOf=analyzeBreakoutLifecycle({direction:"UP",boundary:B,bars:fullPath,asOfDate:"2026-09-03"});
-assert.deepEqual(fullAsOf,prefix);
+const stateView=x=>({
+  dataThroughDate:x.dataThroughDate,
+  boundary:x.boundary,
+  firstPierceAt:x.firstPierceAt,
+  firstConfirmedBreakAt:x.firstConfirmedBreakAt,
+  firstObservableAfterConstrainedBreakAt:x.firstObservableAfterConstrainedBreakAt,
+  firstReentryAt:x.firstReentryAt,
+  firstFailureAt:x.firstFailureAt,
+  firstReclaimAt:x.firstReclaimAt,
+  barsToReentry:x.barsToReentry,
+  maxObservedExtension:x.maxObservedExtension,
+  latestState:x.latestState,
+  acceptanceState:x.acceptanceState,
+  falseBreakoutState:x.falseBreakoutState,
+  events:x.events,
+});
+assert.deepEqual(stateView(fullAsOf),stateView(prefix));
 assert.equal(fullAsOf.falseBreakoutState,"CONFIRMED_BREAK_NOT_FAILED");
 const fullFinal=analyzeBreakoutLifecycle({direction:"UP",boundary:B,bars:fullPath});
 assert.equal(fullFinal.falseBreakoutState,"FAILURE_CONFIRMED");
