@@ -2023,3 +2023,52 @@ Status:
 `PLAN_TIME_CASH_ATTRIBUTION_PIT_VALIDATED / EXECUTION_CASH_UNKNOWN / D15_08_L3`.
 
 Formal Core unchanged.
+
+
+## PR-068 — Portfolio Heat × concentration Pareto frontier (2026-09-28)
+
+D15-07 Portfolio Heat is now separated from concentration.
+
+Plan-time Portfolio Heat is defined as:
+
+`Σ(allocation × planned stop-risk fraction) / total capital`.
+
+It answers:
+`How much of total capital is exposed to the planned stop-loss geometry if every selected plan is fully deployed?`
+
+This is distinct from HHI/Gini/CV/max-share/max-min, which answer:
+`How unevenly is that projected stop-risk distributed across names?`
+
+PR-068 exhaustively enumerates all legal same-deployment NT$1,000-grid allocations under the same 35% per-name cap and tests whether current sizing is Pareto-dominated in the two-dimensional space:
+
+`total projected heat × concentration`.
+
+The audit is repeated separately for:
+- HHI;
+- Gini;
+- CV;
+- maximum risk share;
+- max/min risk ratio.
+
+A comparator Pareto-dominates current only if it has:
+- lower or equal heat;
+- lower or equal concentration;
+- at least one strict improvement.
+
+A separate local test asks whether any one-grid NT$1,000 transfer already dominates current.
+
+### Governance firewall
+
+This is **risk-geometry dominance only**.
+
+A lower-heat / lower-concentration allocation can still be economically inferior if the current PriorityScore tilt contains genuine alpha. Therefore even a strong Pareto result cannot become a sizing recommendation without prospective D1/D3/D5, MFE/MAE, stop-first and cost-adjusted evidence.
+
+Artifacts:
+`research/portfolio_heat_frontier_v0_1.mjs`;
+`research/portfolio_heat_frontier_spec_v0_1.json`;
+`tests/portfolio_heat_frontier_readonly_audit.mjs`.
+
+Status:
+`D15_07_PORTFOLIO_HEAT_FRONTIER_READY / PRODUCTION_AUDIT_PENDING`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
