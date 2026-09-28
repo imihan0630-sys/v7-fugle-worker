@@ -1,0 +1,57 @@
+name: System2 Historical Pack Real-Source Smoke
+
+on:
+  push:
+    paths:
+      - ".github/workflows/system2-historical-pack-real-source-smoke.yml"
+      - "system2/scripts/historical_pack_real_source_smoke_v0_1.mjs"
+      - "system2/runtime/historical_pack_store_v0_1.mjs"
+      - "system2/runtime/historical_pack_research_v0_1.mjs"
+      - "system2/sql/0005_historical_packs.sql"
+      - "system2/deploy/provision_system2_d1.mjs"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-historical-pack-real-source-smoke
+  cancel-in-progress: false
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment: system2-research
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Migrate isolated System2 D1 to schema 0.9
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+          SYSTEM2_CONFIRM: CREATE_SYSTEM2_ISOLATED_D1
+        run: node system2/deploy/provision_system2_d1.mjs
+
+      - name: Fetch one bounded real month, pack, persist and read back
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+          SYSTEM2_PACK_SMOKE_FROM: "2026-08-03"
+          SYSTEM2_PACK_SMOKE_TO: "2026-08-31"
+          SYSTEM2_PACK_SMOKE_TWSE: "2330,2454"
+          SYSTEM2_PACK_SMOKE_TPEX: "3105,6488"
+        run: node system2/scripts/historical_pack_real_source_smoke_v0_1.mjs
+
+      - name: Confirm System1 production files untouched
+        run: |
+          set -euo pipefail
+          test "$(sed -n '1p' wrangler.toml)" = 'name = "fugle-test"'
+          git diff --exit-code -- wrangler.toml Worker.js
+          echo "Production isolation PASS"
