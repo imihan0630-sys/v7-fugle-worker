@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "PORTFOLIO_HEAT_FRONTIER_V0_1",
+  "observedAt": "2026-09-28T20:45:00+08:00",
+  "purpose": "Separate total planned projected stop-risk heat from concentration and test whether current sizing is Pareto-dominated on pure risk geometry.",
+  "definitions": {
+    "portfolioHeat": "sum(allocation_i * plannedStopRiskFrac_i) / totalCapital",
+    "concentrationMetrics": [
+      "HHI",
+      "Gini",
+      "CV",
+      "max risk share",
+      "max/min"
+    ],
+    "paretoDominance": "another legal same-deployment allocation has <= heat and <= concentration, with at least one strict improvement"
+  },
+  "fixedGeometry": {
+    "deployment": "same as immutable plan date",
+    "gridNTD": 1000,
+    "perNameCapPct": 35,
+    "selectedNames": "same selected names",
+    "entryReference": "buyHigh conservative planned reference"
+  },
+  "guardrails": [
+    "pure plan-time risk geometry only",
+    "expected return and PriorityScore alpha are intentionally excluded",
+    "risk Pareto dominance is not economic dominance",
+    "one-date findings remain structural witness only",
+    "no Formal changes from frontier membership"
+  ],
+  "status": "D15_07_PORTFOLIO_HEAT_FRONTIER_READY / PRODUCTION_AUDIT_PENDING",
+  "formalCoreImpact": false
+}
