@@ -2173,3 +2173,13 @@ Updated: 2026-09-27 23:38 Asia/Taipei.
 - Engineering: Class A for research-only cadence/PIT classifier over already provenance-complete rows. If existing research-only quality snapshot can same-generation join `chipAsOfDate` without shared persistence changes, build that observer Class A. Adding TDCC vintage fields to shared research serialization/runtime is Class B proposal-first. Any institutionalScore ownership weight/sign/formula change is Class C.
 - Status: `OWNERSHIP_FLOW_CADENCE_MISMATCH_CONFIRMED / UPSTREAM_TDCC_VINTAGE_EXISTS / DOWNSTREAM_RESEARCH_ROW_VINTAGE_ABSENT / PASSIVE_INDEX_IDENTITY_UNKNOWN / OUTCOMES_CLOSED / FORMAL_UNCHANGED`. No `FORMAL_OPTIMIZATION_CANDIDATE`.
 - Exact next: audit existing research-only quality-snapshot/read paths for a same-generation join that can attach TDCC `asOfDate` to prospective research rows without shared-runtime persistence changes. If available, define/test a Class-A ownership-vintage deduplication observer with fail-closed UNKNOWN provenance. If unavailable, freeze the minimal Class-B provenance-preservation proposal only. Then continue passive/index contamination observability using already-preserved fields; do not infer motives or tune institutionalScore.
+
+
+## Corporate Actions continuation — CA-113/114 reconstruction contract (2026-09-28 Asia/Taipei)
+- Re-read latest main and dedicated Corporate Actions checkpoint first; no restart and no stale checkpoint overwrite.
+- New Class-A research artifact: `research/corporate_action_event_state_reconstruction_contract_v0_1.json`.
+- Event-ledger evidence and daily-snapshot evidence are now explicitly separated. A bounded daily state may be reconstructed from an official event ledger only with verified baseline, complete relevant event-family coverage, effective-session + knownAt clocks, revision/cancellation versioning, suspension-aware session accounting and explicit instrument mapping.
+- 2465 semantic replay is frozen as multiple denominator spaces, not one interchangeable share count: listed common 58,946,031; payment certificates 10,000,000 from 2025-11-17; combined tradable sensitivity 68,946,031 only for metrics explicitly defined across both instrument classes; private placement 25,000,000 separate; registered-issued common shares separate.
+- MI_QFIIS 93,946,031 from 2025-11-12 remains a reporting-table state and is prohibited as a substitute for listed-common, combined-tradable or registered-issued truth.
+- Remaining CA-113/114 blocker is now archive/completeness/knownAt provenance, not denominator arithmetic. CA-115 remains gated.
+- Formal Core, A/B, ranking, thresholds, capital, monitor, push and execution unchanged.
