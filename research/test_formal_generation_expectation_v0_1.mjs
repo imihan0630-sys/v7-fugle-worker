@@ -36,8 +36,8 @@ const lineage={
 };
 
 const parents=[
-  {...lineage,symbol:"1101",parentDecisionReceiptId:"P1101",semanticFingerprint:"F1101"},
-  {...lineage,symbol:"2330",parentDecisionReceiptId:"P2330",semanticFingerprint:"F2330"},
+  {...lineage,symbol:"1101",parentDecisionReceiptId:"1111111111111111111111111111111111111111111111111111111111111111",semanticFingerprint:"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"},
+  {...lineage,symbol:"2330",parentDecisionReceiptId:"2222222222222222222222222222222222222222222222222222222222222222",semanticFingerprint:"bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"},
 ];
 
 const selectedPlans=await buildSelectedPlanReceipts([],webcrypto);
@@ -86,7 +86,7 @@ assert.ok(missingParentExp.reasons.includes("PARENT_SYMBOL_SET_DIFFERS_FROM_FEAT
 // Same parent set, changed semantic fingerprint changes decision-set hash.
 const changedDecisionExp=await buildFormalGenerationExpectation({
   populationReceipt:population,
-  parents:[parents[0],{...parents[1],semanticFingerprint:"F2330_CHANGED"}],
+  parents:[parents[0],{...parents[1],semanticFingerprint:"cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"}],
   expectedLineage:lineage,
   selectedPlanReceipts:selectedPlans,
 },webcrypto);
@@ -98,7 +98,7 @@ assert.notEqual(changedDecisionExp.decisionSetHash,exp.decisionSetHash);
 // Same count, substituted parent fails population relation.
 const substitutedExp=await buildFormalGenerationExpectation({
   populationReceipt:population,
-  parents:[parents[0],{...parents[1],symbol:"9999",parentDecisionReceiptId:"P9999",semanticFingerprint:"F9999"}],
+  parents:[parents[0],{...parents[1],symbol:"9999",parentDecisionReceiptId:"9999999999999999999999999999999999999999999999999999999999999999",semanticFingerprint:"dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"}],
   expectedLineage:lineage,
   selectedPlanReceipts:selectedPlans,
 },webcrypto);
