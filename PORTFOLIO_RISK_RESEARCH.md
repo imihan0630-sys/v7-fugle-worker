@@ -3482,3 +3482,43 @@ Status:
 `CAP_35_ARTIFACT_FALSIFIED / CURRENT_ABOVE_GLOBAL_MIN_19_OF_19 / RELAXED_CAP_STRENGTHENS_STRUCTURAL_GAP / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-067 — deployment-level sensitivity (2026-09-28)
+
+Most earlier falsifications preserve the observed 2026-09-18 planned deployment of NT$168,000. PR-067 tests whether the concentration witness is peculiar to that overall capital level.
+
+Nominal deployment ratios are stressed from 60% through 95% in 5-point steps.
+
+For every level, the current sizing path is replayed using:
+- the same selected names;
+- the same observed PriorityScores;
+- score-proportional allocation;
+- the same 35% per-name cap;
+- the same NT$1,000 floor;
+- the same 60/40 tranche split;
+- the same buyHigh integer-share flooring.
+
+Because flooring and the cap can make actual planned deployment differ from the nominal target, all comparators use the replayed **actual post-floor planned deployment**.
+
+### Equal-capital remainder firewall
+
+When total NT$1,000 units are not divisible evenly by three names, there is no unique equal-capital grid allocation.
+
+PR-067 therefore enumerates every near-equal allocation whose unit counts differ by at most one and reports:
+- minimum equal-capital HHI;
+- maximum equal-capital HHI.
+
+A robust current-vs-equal claim requires current HHI to exceed even the **maximum-HHI equal-capital permutation**. This avoids symbol-order bias from assigning the remainder arbitrarily.
+
+The exhaustive global minimum remains restricted to two-stage-orderable states.
+
+Artifacts:
+`research/deployment_level_sensitivity_v0_1.mjs`;
+`research/deployment_level_sensitivity_spec_v0_1.json`;
+`tests/portfolio_risk_deployment_level_sensitivity_readonly_audit.mjs`.
+
+Status:
+`DEPLOYMENT_LEVEL_SENSITIVITY_READY / PRODUCTION_PENDING`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
