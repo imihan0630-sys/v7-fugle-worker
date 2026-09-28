@@ -354,7 +354,30 @@ A D18 policy may be surfaced as FORMAL_OPTIMIZATION_CANDIDATE only if all are tr
 
 Candidate status means "worthy of formal optimization review", not deployment approval.
 
-## 16. Literature / methodological basis
+## 16. Type-I vs Type-II error balance and the t-stat debate
+
+Do not turn the factor-zoo literature into a universal hard t-statistic rule for D18.
+
+Harvey/Liu/Zhu motivate materially stricter evidence under extensive search, but later work disputes the broad interpretation that most published return predictors are false and questions whether a universal raised t-hurdle is identified under publication bias.
+
+Therefore D18 governance uses:
+- complete experiment-family accounting;
+- benchmark-relative/multiple-testing diagnostics;
+- prospective/OOS evidence;
+- economic MDE;
+- error-cost asymmetry;
+
+rather than a fixed universal t > 3 rule.
+
+Error costs are asymmetric:
+- Type I / false promotion: add a non-incremental regime rule, extra turnover, missed trades, complexity and possible capital loss;
+- Type II / missed promotion: fail to adopt a genuinely useful policy and incur opportunity cost.
+
+Because Formal Core changes are costly and reversible only after owner review, early research should be conservative on Type I error without pretending Type II error is free.
+
+Harvey & Liu (2020) explicitly frame financial discovery as a joint Type-I / Type-II calibration problem. That framing is more appropriate for policy promotion than a single significance hurdle.
+
+## 17. Literature / methodological basis
 
 - White (2000), A Reality Check for Data Snooping, Econometrica 68(5), 1097-1126.
 - Hansen (2005), A Test for Superior Predictive Ability, JBES 23(4), 365-380.
@@ -366,7 +389,7 @@ Candidate status means "worthy of formal optimization review", not deployment ap
 - Blanchard et al. (2025), Bayesian regime-switching investment strategies: false state signals can escalate transaction costs.
 - Shu, Yu & Mulvey (2024), regime-switching downside-risk study with OOS, costs and trading delay; useful positive plausibility evidence, not Taiwan transfer evidence.
 
-## 17. Current decision
+## 18. Current decision
 
 FORMAL_OPTIMIZATION_CANDIDATE: NONE.
 
