@@ -578,23 +578,23 @@
         "research/day_trading_chip_crowding_semantic_guard_v0_1.json",
         "system2/SYSTEM2_STATE_OWNED_BANK_FLOW_RESEARCH.md"
       ],
-      "maturityPct": 40,
+      "maturityPct": 45.3,
       "modules": [
         {
           "id": "D06-01",
           "name": "外資現貨流",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「外資現貨流」。學習範圍：外資、投信、自營商、融資融券、借券、集保與被動資金的資料語意；Flow與Stock差異；擁擠與反向風險；流動性正規化；事件時點與因果混淆。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "台股PIT資料可行"
         },
         {
           "id": "D06-02",
           "name": "投信流",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「投信流」。學習範圍：外資、投信、自營商、融資融券、借券、集保與被動資金的資料語意；Flow與Stock差異；擁擠與反向風險；流動性正規化；事件時點與因果混淆。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "台股PIT資料可行"
         },
         {
           "id": "D06-03",
@@ -607,10 +607,10 @@
         {
           "id": "D06-04",
           "name": "法人連買／持續性",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「法人連買／持續性」。學習範圍：外資、投信、自營商、融資融券、借券、集保與被動資金的資料語意；Flow與Stock差異；擁擠與反向風險；流動性正規化；事件時點與因果混淆。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "台股PIT資料可行"
         },
         {
           "id": "D06-05",
@@ -671,10 +671,10 @@
         {
           "id": "D06-12",
           "name": "法人流對流動性／價格反應正規化",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「法人流對流動性／價格反應正規化」。學習範圍：外資、投信、自營商、融資融券、借券、集保與被動資金的資料語意；Flow與Stock差異；擁擠與反向風險；流動性正規化；事件時點與因果混淆。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "台股PIT資料可行"
         },
         {
           "id": "D06-13",
@@ -701,10 +701,10 @@
           "levelMeaning": "機制＋反證已定義"
         }
       ],
-      "status": "LONG_BLOCK_MULTIAXIS_CROWDING_AND_PASSIVE_FALSIFICATION_ADVANCED / OUTCOME_DATA_GATED",
-      "exactNextContinuationPoint": "IC-030/PF-037/LS-048: do not invent a scalar crowding score. Obtain verified row-level/server-side aggregate prospective institutional snapshots for outcome-blind decomposition; preserve TDCC chipAsOfDate prospectively; build PIT-normalized leverage/shorting state inputs when LS source gates permit; use bounded MSCI Standard Taiwan membership negative evidence only within scope and only via authorized/licensed data paths; no institutional/crowding outcomes until data-quality gates pass.",
+      "status": "IC030_STRUCTURAL_READBACK_COMPLETE / PF038_SOURCE_CONTRACT_ADVANCED / LS047A_COST_GATED / OUTCOME_MATURITY_WAITING",
+      "exactNextContinuationPoint": "IC-035/PF-039/LS-048: accumulate clean independent prospective scan dates and D5+ maturity; pre-register component-level institutional outcome tests before reading them; preserve TDCC chipAsOfDate prospectively; validate bounded domestic in-kind ETF units-delta+PCF receipts; keep TPEx leverage history cost/authorization gate closed unless a free documented endpoint or explicitly authorized artifact becomes available; begin no broker-branch/daytrade alpha test until complete-universe/PIT source contracts pass.",
       "lastResearchUpdate": "2026-09-29",
-      "researchNote": "D06 scope audit added three user-required but previously omitted modules: broker-branch/main-force proxies, day-trading/short-horizon turnover, and state-owned-bank/specific flow. Each starts at L2 because mechanism and falsification are now defined; D06 remains 40.0% across 15 modules. This is denominator correction, not maturity inflation."
+      "researchNote": "IC-030 Production outcome-blind readback: 62/62 institutionalScore rows reconstruct, 0 streak-endpoint mismatches, 0/62 score saturation, actor divergence 36/62 (58.06%). Same-session direction accounts for mean 39.1% / median 43.2% of pre-clamp score versus persistence-beyond-day1 mean 19.3% / median 22.1%; structural only, no outcomes. PF-037/038 establishes ETF units-delta+PCF as cleaner prospective fund-size-flow contract than AUM delta. LS-047A verifies paid official TPEx S23/S47 machine products but no autonomous purchase. D06 curriculum corrected to 15 modules. D06-01/02/04/12 promoted to L3 on official cross-market/PIT/prospective replay feasibility; Formal Core unchanged."
     },
     {
       "id": "D07",
