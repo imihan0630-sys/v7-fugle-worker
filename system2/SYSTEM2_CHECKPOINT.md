@@ -1,6 +1,6 @@
 # System 2 Checkpoint
 
-Updated: 2026-09-27 Asia/Taipei
+Updated: 2026-09-28 Asia/Taipei
 Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 
 ## Completed
@@ -18,6 +18,19 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 - ChatGPT Project created, instructions saved, and this design chat moved into the new Project; migration status recorded in `system2/CHATGPT_PROJECT_MIGRATION.md`.
 
 ## Current design decisions
+
+- Decision Clock（決策時間點）Promotion Qualification（升級資格）V0.1 merged to main in commit `e638f4d84f446ae4b9874ac506732e4cf574449d` via PR #210 before the first prospective trading-date sample. Promotion-grade readiness counts are now coverage-qualified rather than merely artifact-qualified.
+
+- A scheduled attempt-one artifact enters `promotionGradeDateCount`, `promotionGradeMarketDates` and `readiness.independentTradingDates` only when the official trading-day coverage row is promotion-eligible, the immutable anchor concluded successfully with exactly one artifact, and the selected artifact run ID exactly matches that coverage anchor. A later valid-looking scheduled artifact can no longer inflate the 10-date / 20-date gates after an earlier immutable anchor failed.
+
+- Attempt-one artifacts excluded by coverage remain auditable as `coverageExcludedScheduledArtifacts`. An eligible coverage row without a matching selected anchor artifact fails closed as `COVERAGE_ARTIFACT_PROVENANCE_MISMATCH`, forces `promotionCoverageComplete=false`, and appears as an explicit owner-review blocker.
+
+- Collector-contract consistency and A5 boundary-integrity checks now operate on the same coverage-qualified promotion sample, so already-excluded diagnostic artifacts cannot contaminate the active sample's collector-fingerprint set.
+
+- PR #210 was rebased onto the latest concurrent main with no overlapping files and reverified. Final-head System2 Research CI `36360795678` PASS; V8 Regression `36360795594` PASS. Post-merge System2 Research CI `36360847936` PASS and V8 Regression `36360847932` PASS. System1/V8 Formal Core remained untouched.
+
+- Prospective Decision Clock promotion-grade trading-date count remains 0. The first ordinary eligible date remains 2026-09-29; no historical artifact or later duplicate was used to increase the readiness counters. Exact Decision Clock, System2 Worker Cron and capture remain unauthorized/false.
+
 
 - Decision Clock（決策時間點）Attempt-One Provenance（第一次執行來源證明）V0.4 merged to main in commit `9d576aaabe22e33c96f6c9e9178af333009bc61b` via PR #197. GitHub Actions reruns that share a run ID can no longer replace attempt-one metadata: only `run_attempt=1` is promotion-grade; later attempts are `RERUN_ATTEMPT_DIAGNOSTIC_ONLY` and can neither repair an attempt-one failure nor invalidate a valid attempt-one artifact.
 
