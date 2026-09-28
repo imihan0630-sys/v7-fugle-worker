@@ -180,3 +180,234 @@ Decision:
 - Human-readable official M25 evidence may still be used for bounded manual research with provenance, but absence cannot establish a complete denominator/no-event universe.
 
 This closes the SC-006 interface gate without an outcome test. Supply-Chain Lead-Lag remains EVENT_LANE_SEMANTICALLY_FEASIBLE / AUTOMATED_SOURCE_BLOCKED / COMPLETE_GRAPH_BLOCKED.
+
+
+## SC-007 — Taiwan official physical-cycle source lane
+
+### Source finding
+Taiwan has an official monthly physical-cycle evidence lane through MOEA industrial production / sales / inventory statistics. The official survey framework publishes, by industry/product where applicable:
+- production index;
+- sales-volume index;
+- inventory-volume index;
+- production / sales / inventory values;
+- inventory ratio;
+- major product production / sales / inventory quantities.
+
+The official interactive taxonomy reaches detailed manufacturing groups including integrated-circuit manufacturing, semiconductor packaging/testing and printed-circuit-board manufacturing, which is materially more useful than a single economy-wide index for D10.
+
+### PIT / revision contract
+The survey is monthly and has a defined publication cadence in the following month. Research must preserve:
+- observationMonth;
+- sourceReleaseDateTime / knownAt;
+- preliminary / final / revised status;
+- industry/product code and taxonomy version;
+- source series definition;
+- capturedAt;
+- revision link where a value is later revised.
+
+A later final value must never be rewritten backward as if known at the preliminary release.
+
+### Automation boundary
+A canonical human-readable official source and release schedule are established, but a stable documented machine-readable API / download contract for every required series has not yet been verified. Therefore:
+- official-source feasibility = YES;
+- PIT semantic feasibility = YES;
+- automated canonical ingestion = PARTIAL / INTERFACE_UNVERIFIED.
+
+Status: `D10-11 -> L2 SOURCE_CONTRACT_DEFINED / MACHINE_INTERFACE_PENDING`.
+
+---
+
+## SC-008 — Inventory cycle: absolute inventory direction is not the signal
+
+### Core mechanism
+Inventory only has meaning relative to demand, sales and position in the chain. Absolute inventory falling can be healthy destocking or destructive demand collapse; absolute inventory rising can be constructive restocking or oversupply.
+
+A minimum state matrix therefore uses sales direction together with inventory direction / inventory-to-sales condition:
+
+| State | Sales / demand | Inventory / inventory ratio | Interpretation to test |
+|---|---|---|---|
+| DEMAND_ABSORPTION | rising | falling or growing slower than sales | constructive demand absorption |
+| RESTOCKING_CONFIRMATION | rising / stabilizing | rising from low base | potentially constructive only if sell-through / margin holds |
+| OVERHANG | flat / falling | rising or inventory ratio rising | oversupply / demand miss risk |
+| DESTOCKING | falling | falling | not bullish by itself; wait for demand stabilization |
+| BULLWHIP_RISK | downstream unclear | upstream orders / inventory spike | may reflect batching, shortage gaming or forecast amplification |
+| UNKNOWN | insufficient PIT data | insufficient PIT data | no forced interpretation |
+
+### Supporting evidence and counterevidence
+- Bullwhip-effect research shows order variance can amplify upstream even when final demand has not changed proportionately. Upstream order / backlog growth therefore cannot be treated as end-demand proof.
+- Operations/accounting research links abnormal inventory growth relative to sales with weaker future outcomes, consistent with operational demand-supply mismatch.
+- Semiconductor-cycle research finds inventory change, fab utilization and chip sales jointly informative for cycle-turning probabilities. This supports a multivariate cycle state, not a universal "inventory down = buy" rule.
+
+### Taiwan implementation implication
+MOEA monthly production / sales / inventory / inventory-ratio series make this concept PIT-feasible for bounded Taiwan industry groups. Exact stock-level benefit still requires a company-transmission map and must not be inferred from industry data alone.
+
+Status: `D10-03 -> L3 TAIWAN_PIT_FEASIBLE / PROSPECTIVE_VALIDATION_PENDING`.
+
+---
+
+## SC-009 — Capacity / expansion / utilization: supply response can invalidate the thesis
+
+Capacity is not a bullish noun. Expansion is useful only when demand, pricing and future utilization can absorb the supply response.
+
+### Distinguish the variables
+- CAPACITY: theoretical / rated output potential;
+- PRODUCTION: actual output;
+- UTILIZATION: actual output relative to available capacity, only when explicitly defined by a source;
+- CAPEX: investment spending, not identical to new usable capacity;
+- CAPACITY_EFFECTIVE_DATE: when new capacity can actually contribute;
+- YIELD / MIX: usable economic output may differ from nameplate capacity.
+
+### Supportive state
+`CAPACITY_GAP_SUPPORTIVE` requires evidence such as demand/sales strength, tight lead time or pricing, and constrained existing capacity before the new supply becomes effective.
+
+### Falsification state
+`CAPACITY_OVERSHOOT_RISK` is raised when expansion / capex continues while:
+- sales / demand weaken;
+- inventory ratio rises;
+- lead time normalizes sharply;
+- selling price / margin deteriorates;
+- peer capacity enters simultaneously.
+
+### Source result
+Current research verified official Taiwan fixed-asset investment / production statistics, but has not verified a clean standardized current public capacity-utilization time series with the same breadth and PIT contract. Do not infer utilization numerically from capex or production.
+
+Status: `D10-04 remains L2 / UTILIZATION_SOURCE_PARTIAL`.
+
+---
+
+## SC-010 — Raw materials and pricing power: pass-through, not price direction
+
+An input-price increase has opposite implications for different nodes of the chain. It can help an upstream producer with scarcity pricing while hurting a downstream manufacturer that cannot pass the cost through.
+
+### Required transmission chain
+`INPUT_COST_CHANGE -> SELLING_PRICE_CHANGE -> GROSS_MARGIN / OPERATING_MARGIN -> VOLUME / SHARE RESPONSE`
+
+A "price increase" headline is incomplete unless the research identifies:
+- which node sets the price;
+- contract / spot / lag structure;
+- pass-through lag;
+- buyer concentration and supplier concentration;
+- substitution / switching cost;
+- volume elasticity;
+- gross-margin outcome.
+
+Empirical pass-through research shows cost changes are often only partially passed through, and firm-to-firm bargaining structure matters. Therefore raw-material inflation is never assigned a permanently positive/negative sign at the company level.
+
+Candidate states:
+- COST_PASS_THROUGH_CONFIRMED;
+- PARTIAL_PASS_THROUGH;
+- COST_SQUEEZE;
+- UPSTREAM_PRICING_POWER;
+- DEMAND_DESTRUCTION_RISK;
+- UNKNOWN.
+
+Status: `D10-06 -> L2 MECHANISM_PLUS_FALSIFICATION_DEFINED / TAIWAN_PIT_SOURCE_CONTRACT_PENDING`.
+
+---
+
+## SC-011 — Orders / lead time / backlog require conversion evidence
+
+Backlog can contain information about future sales, but it is not booked earnings.
+
+### Confirmation chain
+A backlog thesis becomes stronger only when it survives:
+- cancellation / push-out / double-booking checks;
+- shipment or revenue conversion;
+- capacity / component availability;
+- stable or improving margin;
+- customer concentration / product relevance;
+- knownAt and delivery-window semantics.
+
+### Main false-positive patterns
+- customers place duplicate orders during shortage;
+- backlog expands because lead times lengthen, not because sustainable demand improves;
+- low-margin mix fills the backlog;
+- capacity bottleneck prevents conversion;
+- cancellations appear after supply normalizes.
+
+Thus `BACKLOG_UP` alone is a research descriptor, not a bullish factor.
+
+Status: `D10-07 -> L2 MECHANISM_PLUS_FALSIFICATION_DEFINED / STANDARDIZED_TAIWAN_SOURCE_PENDING`.
+
+---
+
+## SC-012 — Integrated Industry Cycle Confirmation Stack
+
+### Goal
+Join market-confirmation research (D09) with real-economy / supply-chain confirmation (D10) without creating an overfit super-score.
+
+### Six-layer stack
+0. **CLASSIFICATION_VINTAGE** — was the company actually in this industry at decision time?
+1. **PRICE_PARTICIPATION** — Sector RS, residual RS, rank persistence, breadth, concentration.
+2. **PHYSICAL_CYCLE** — production, sales, inventory, inventory ratio.
+3. **SUPPLY_RESPONSE** — capacity, capex, utilization where explicitly available, effective-date lag.
+4. **PRICING_TRANSMISSION** — input cost, selling price, pass-through, margin.
+5. **COMPANY_TRANSMISSION** — exposure, customer/product mix, revenue / earnings sensitivity.
+
+Every layer has `KNOWN / PARTIAL / UNKNOWN` provenance and a decision-time `knownAt`. Missing layers are never coerced to zero.
+
+### Why state vector before scalar score
+A weighted sum can hide economically opposite configurations. Example:
+- strong Sector RS + rising production + rising inventory + falling margin
+may receive a superficially high score despite an emerging oversupply / cost-squeeze state.
+
+Therefore first store a state vector and test interactions prospectively. Only after independent evidence may a compact factor be proposed.
+
+### Candidate interaction states
+- PRICE_ONLY;
+- PRICE_PLUS_PHYSICAL_CONFIRMATION;
+- PHYSICAL_EARLY_PRICE_NOT_CONFIRMED;
+- LEADER_ONLY_CONCENTRATION;
+- DEMAND_ABSORPTION;
+- RESTOCKING_CONFIRMATION;
+- OVERHANG;
+- DESTOCKING;
+- CAPACITY_GAP_SUPPORTIVE;
+- CAPACITY_OVERSHOOT_RISK;
+- COST_PASS_THROUGH_CONFIRMED;
+- COST_SQUEEZE;
+- BACKLOG_CONFIRMED;
+- BULLWHIP_RISK;
+- UNKNOWN.
+
+No state receives permanent buy/sell meaning in this phase.
+
+### System 1 redundancy firewall
+Validate after:
+1. existing sector hard-gate inputs and sector score;
+2. stock trend / ret20 / ret60 / Residual RS;
+3. Price-Volume / K-line / overheat;
+4. market Regime;
+5. fundamentals available at T0.
+
+If physical-cycle state adds no incremental information after those controls, classify it REDUNDANT.
+
+### System 2 direct mapping
+This stack maps naturally to the already owner-approved Industry Trend research contract:
+- `IND.CYCLE_STAGE` <- physical-cycle state + phase;
+- `IND.SUPPLY_DEMAND` <- sales / production / shortage / lead-time state;
+- `IND.INVENTORY` <- inventory and inventory-to-sales state;
+- `IND.CAPACITY` <- supply response / effective capacity state;
+- `IND.PRICING` <- pass-through / margin state;
+- `IND.COMPANY_TRANSMISSION` <- verified exposure / earnings path.
+
+This is a research-data bridge only. It does not authorize scoring weights, eligibility thresholds or Formal promotion.
+
+### Exact next continuation
+SC-013: outcome-blind machine-interface audit for MOEA monthly production / sales / inventory / inventory-ratio series, including pagination/download, series IDs, revisions and release timestamps.
+SC-014: build an effective-dated bridge between MOEA industry/product codes and TWSE/TPEx company classification without forcing one-to-one mappings.
+SC-015: run a source-only pilot on at least one semiconductor/PCB lane and one non-tech lane to verify state reproducibility; do not inspect forward returns until provenance/coverage passes.
+SC-016: separately identify Taiwan PIT sources for raw-material prices and company selling-price/margin transmission.
+SC-017: only after source readiness, preregister prospective interaction outcomes and negative controls.
+
+Status: `CONCEPT_COMPLETE / PIT_SOURCE_PARTIAL / PROSPECTIVE_EVIDENCE_PENDING / FORMAL_CORE_LOCKED`.
+
+### External evidence anchors
+- Lee, Padmanabhan & Whang (1997), *The Bullwhip Effect in Supply Chains*, Management Science.
+- Capkun, Hameri & Weiss / later operations-finance literature on inventory dynamics and returns; inventory must be normalized to demand/sales.
+- *Inventory change, capacity utilization and semiconductor industry cycle* (Economic Modelling, 2013).
+- Ganapati, Shapiro & Walker, NBER, *Energy Cost Pass-Through in U.S. Manufacturing*.
+- recent NBER firm-to-firm bargaining / pass-through research.
+- order-backlog disclosure research in Journal of Accounting and Public Policy (2021).
+- Taiwan MOEA Industrial Production / Sales / Inventory official statistics and release calendar.
+
