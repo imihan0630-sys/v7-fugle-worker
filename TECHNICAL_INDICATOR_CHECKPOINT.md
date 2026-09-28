@@ -1813,7 +1813,7 @@ FORMAL_OPTIMIZATION_CANDIDATE = NONE
 ## Continuation update — TI-396 through TI-400 (isolated reconciliation falsifiers)
 
 - Isolated executable research fixture added: `research/test_technical_indicator_parent_reconciliation_v0_1.mjs`; GitHub commit `d72c6ec2437f982383707e26cf16fe98778d1b51`.
-- Local independent Node execution: PASS, 15 outcome-blind assertions. The test does not import Worker, D1, market data, or outcomes.
+- Local independent Node execution: PASS, 19 outcome-blind assertions (latest test commit `e11fce38e34aea3b037d9030bb87853b683be8de`). The test does not import Worker, D1, market data, or outcomes.
 - TI-396: of 1,800 illustrative expected immutable parents, 1,799 child rows is INCOMPLETE despite every persisted child being formula-valid. Persisted completeness and formula readiness are separate.
 - TI-397: 200 explicit UNKNOWN children with all 1,800 attempts persisted gives a COMPLETE persistence receipt with 1,600 READY and 200 UNKNOWN, not 1,800 signal-ready rows. UNKNOWN cannot be changed into BAD/zero.
 - TI-398: duplicate child, orphan child and parent-fingerprint mismatch are QA_FAIL; a changed fingerprint under the same immutable identity returns PROVENANCE_CONFLICT, while an identical retry is IDEMPOTENT. New generation is a distinct identity, not a silent rewrite.
@@ -1836,8 +1836,14 @@ Formal Core remains LOCKED.
 ### Exact next continuation point
 
 1. Re-read latest shared architecture and D03 checkpoint; do not repeat TI-391..400.
-2. Extend isolated falsifiers to cross-generation mixed page reads, empty expected universe with explicit population receipt, and interrupted multi-batch/retry receipt state. Keep the model honest: do not claim this proves D1 atomicity.
+2. Cross-generation mixed page reads and empty-universe population receipts now have isolated passing falsifiers. Next test interrupted multi-batch/retry receipt state only after the shared owner's generation lifecycle is frozen. Do not claim synthetic tests prove D1 atomicity.
 3. Reconcile shared immutable decision parent scope and generic evidence-child keys with Pattern/Target-RR cohort design; no D03-specific parent.
 4. Seek real non-secret per-scan parent counts and D1/Worker baseline metrics through an authorized read-only path; no direct D1 connector is currently exposed here, so record UNKNOWN until evidence is available.
 5. Keep continuity and price-limit provenance gates distinct from completeness, and outcome inference blocked until prospective parents satisfy them.
 6. Future empirical order remains TI-005 KD-vs-RSI then TI-006 MACD-vs-direct-trend. Formal unchanged.
+
+## TI-401 — parent zero and cross-generation reader guards
+
+- Added four isolated assertions: mixed captureGeneration page is FOREIGN_PAGE_KEY; zero expected parents without a population receipt is INCOMPLETE; explicit zero-count receipt may be COMPLETE; declared denominator inconsistent with enumerated parents is QA_FAIL.
+- Local Node test PASS: total 19 assertions. This remains pure synthetic QA, not D1 transaction or production-completeness proof.
+- Formal Core LOCKED; no outcome join, no maturity promotion.
