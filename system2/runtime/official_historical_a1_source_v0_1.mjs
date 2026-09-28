@@ -307,27 +307,70 @@ export async function fetchOfficialHistoricalA1DateV0_1({
   marketDate,
   observedAt = new Date().toISOString(),
   fetchImpl = globalThis.fetch,
+  retryAttempts = 3,
+  retryDelayMs = 500,
 } = {}) {
   if (typeof fetchImpl !== "function") throw new Error("fetchImpl is required");
-  const url = buildOfficialHistoricalA1UrlV0_1(market, marketDate);
-  const response = await fetchImpl(url, {
-    method: "GET",
-    headers: {
-      Accept: "application/json,text/plain,*/*",
-      "User-Agent": "System2-Historical-Research/0.1",
-      Referer: OFFICIAL_HISTORICAL_A1_SOURCES[market]?.sourcePage || "",
-    },
-  });
-  if (!response?.ok) {
-    throw new Error(`official historical A1 source error ${market} ${marketDate}: HTTP ${response?.status}`);
+  if (!Number.isInteger(retryAttempts) || retryAttempts < 1 || retryAttempts > 8) {
+    throw new Error("retryAttempts must be an integer from 1 to 8");
   }
-  const payload = await response.json();
-  return parseOfficialHistoricalA1PayloadV0_1({
-    market,
-    marketDate,
-    payload,
-    observedAt,
-  });
+  if (!Number.isInteger(retryDelayMs) || retryDelayMs < 0 || retryDelayMs > 10000) {
+    throw new Error("retryDelayMs must be an integer from 0 to 10000");
+  }
+
+  const url = buildOfficialHistoricalA1UrlV0_1(market, marketDate);
+  let lastError = null;
+  for (let attempt = 1; attempt <= retryAttempts; attempt += 1) {
+    try {
+      const response = await fetchImpl(url, {
+        method: "GET",
+        headers: {
+          Accept: "application/json,text/plain,*/*",
+          "User-Agent": "System2-Historical-Research/0.1",
+          Referer: OFFICIAL_HISTORICAL_A1_SOURCES[market]?.sourcePage || "",
+        },
+        signal: AbortSignal.timeout(45000),
+      });
+      if (!response?.ok) {
+        const status = Number(response?.status);
+        const error = new Error(
+          `official historical A1 source error ${market} ${marketDate}: HTTP ${status}`,
+        );
+        if (status >= 400 && status < 500 && status !== 408 && status !== 429) {
+          throw Object.assign(error, { nonRetryable: true });
+        }
+        throw error;
+      }
+      const payload = await response.json();
+      // Parse/source-date failures are data-integrity failures, not transport
+      // failures.  Never retry them into a false success.
+      return parseOfficialHistoricalA1PayloadV0_1({
+        market,
+        marketDate,
+        payload,
+        observedAt,
+      });
+    } catch (error) {
+      lastError = error;
+      if (error?.nonRetryable === true) throw error;
+      if (
+        String(error?.message || "").includes("SOURCE_DATE_MISMATCH")
+        || String(error?.message || "").includes("daily table not found")
+        || String(error?.message || "").includes("OHLC inconsistency")
+      ) {
+        throw error;
+      }
+      if (attempt >= retryAttempts) break;
+      if (retryDelayMs > 0) {
+        await new Promise((resolve) =>
+          setTimeout(resolve, retryDelayMs * attempt));
+      }
+    }
+  }
+  throw new Error(
+    `official historical A1 source exhausted retries ${market} ${marketDate}: ${String(lastError?.message || lastError)}`,
+    { cause: lastError },
+  );
 }
 
 export function officialHistoricalA1SourceContractV0_1(market) {
