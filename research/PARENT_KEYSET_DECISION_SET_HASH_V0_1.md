@@ -1,3 +1,7 @@
+> SUPERSEDED（已被取代）
+>
+> 本文件保留研究歷史，但父層鍵集合／決策集合的唯一權威實作已統一為 `research/parent_keyset_hash_v0_1.mjs`。不要再新增對 `decision_set_hash_v0_1.mjs` 的呼叫。
+
 # Parent Keyset / Decision Set Hash Contract V0.1
 
 Updated: 2026-09-28 Asia/Taipei
@@ -101,3 +105,18 @@ CANONICALIZATION = RFC8785_JCS_PLAIN_JSON_SUBSET_V0_1
 RUNTIME_WIRING = NOT_IMPLEMENTED
 FORMAL_OPTIMIZATION_CANDIDATE = NONE
 Formal Core remains LOCKED.
+
+
+## Supersession note
+
+Canonical authority:
+research/parent_keyset_hash_v0_1.mjs
+
+Why it supersedes the earlier helper:
+- binds scanDate;
+- binds captureGeneration;
+- binds parentScopeId;
+- validates immutable IDs/fingerprints;
+- also supports observer ROOT attempt keyset verification.
+
+The earlier helper remains only as historical traceability.
