@@ -1,7 +1,7 @@
 # System 2 Checkpoint
 
 Updated: 2026-09-28 Asia/Taipei
-Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
+Status: MVP_AND_SHADOW_P0_IMPLEMENTATION_IN_PROGRESS
 
 ## Completed
 
@@ -413,6 +413,17 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 - Shared knowledge is reusable; system-specific decision logic remains isolated.
 - System 2 decision authority is fully independent: System 1/V8 cannot approve, reject or gate System 2 selection, entry, exit, monitoring or notifications.
 
+## MVP + Shadow implementation transition (2026-09-28)
+
+- Owner explicitly moved System 2 into MVP（最小可用版本） + Shadow（影子實盤） engineering. The project must not wait for all 226 learning modules; engineering, prospective Shadow records, performance measurement and learning-room research proceed in parallel.
+- Canonical implementation inventory is now `system2/SYSTEM2_MVP_SHADOW_STATUS_V0_1.md`. Future chats must use it together with this checkpoint and GitHub main to distinguish implemented code from design-only work.
+- PR #221 merged as `b4a433a56da29426da6c4155449490542b518b87`: Shadow run accounting now supports `SELECTED`; Prediction Snapshot（預測快照） V0.1 projection archives Selected / Near-miss / Important Rejected while preserving immutable decision/factor/regime evidence and zero-pick days. It does not invent or enable an upstream final-selection rule.
+- PR #222 merged as `4d7e8f5d0538cd0f67eb03cd1d962287e4972e18`: A1 per-symbol daily adapter now normalizes TWSE/TPEx ordinary-equity OHLC（開高低收）, volume, amount, transaction count, change, company name and source provenance with fail-closed PIT / duplicate / OHLC / coverage guards. The frozen Decision Clock collector was not modified.
+- PR #223 merged as `714f560a4ed6ae150b3ed623ea88574041730e4b`: outcome tracker V0.1 now computes D1/D3/D5/D10/D20 signal returns, MFE（最大有利幅度）, MAE（最大不利幅度）, benchmark/industry-relative returns, target-first/stop-first/AMBIGUOUS_SAME_BAR observations, explicit cost scenarios and monotonic outcome-update validation. Simulated realized return after cost remains separate and is populated only by an explicit execution-simulator result.
+- All three PR heads passed System2 Research CI and V8 Regression before merge. No System 1/V8 Formal Core, production runtime, System 2 strategy threshold/weight, D1 schema, Worker Cron or capture flag was changed.
+- Remaining nearest P0 is no longer base storage/provenance design. It is the executable daily chain: verified historical A1 lookback -> versioned factor observations -> family/strategy evaluation -> full-market accounting -> ranking/capacity -> authorized final cohort -> frozen decision/Prediction Snapshot -> isolated D1 -> post-decision outcome/execution updates.
+- Two owner gates remain explicit: (1) the initial final-selection policy that is allowed to emit `SELECTED`; (2) exact Decision Clock / Worker Cron / capture activation after the preregistered prospective evidence gates. Engineering can prepare and test everything around those gates without silently crossing them.
+
 ## Next tasks
 
 1. ✅ Inventory existing research into shared domain tags without relocating history — completed in `shared-knowledge/SHARED_RESEARCH_INVENTORY.md`.
@@ -424,12 +435,12 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 7. ✅ Complete repository-side isolated persistence/provenance preparation — source session, full-universe accounting, run fingerprint, persistence batch/executor, research CI and isolated deployment template are complete.
 8. ✅ Dedicated D1 token installed and verified with account-owned token endpoint.
 9. ✅ Isolated `system2-research` D1 created, schema V0.5 applied, 26 tables verified, write/read and replay reuse checks PASS; production unchanged.
-10. ✅ Repository-side prospective Shadow capture Worker/scheduler contract implemented and CI-verified; Worker remains undeployed and capture-disabled.
+10. ✅ Repository-side prospective Shadow capture Worker/scheduler contract implemented and CI-verified; code defaults capture-disabled and scheduled capture remains unauthorized.
 11. ✅ Isolated `system2-shadow-research` Worker smoke deployment verified against `SYSTEM2_DB`; capture remains disabled, workers.dev/Preview URLs are off, Cron count is 0, and System 1 is unchanged.
 12. ✅ Source-arrival/decision-clock measurement contract, tests and manual read-only workflow implemented repository-side; no clock/Cron activated.
 13. ✅ Implement A5 filing-vintage + B2 derived-industry-snapshot observers, independent TWSE trading-calendar gate, V0.2 daily evidence bundle/readiness contracts, and isolated read-only scheduled research collection.
 14. ⏳ Accumulate same-day V0.2 evidence on independent official trading dates. Artifact aggregation/coverage audit is now automated read-only with deterministic anti-cherry-picking selection. 10 complete dates may reach PROVISIONAL_ELIGIBLE; 20 complete precise dates may reach FREEZE_ELIGIBLE. No retrospective substitution.
-15. ⏳ After evidence gates pass, propose the first exact after-close Decision Clock（決策時間點） for explicit owner review. System2 Worker Cron activation remains a separate later explicit owner gate.
+15. ⏳ After evidence gates pass, propose the first exact after-close Decision Clock（決策時間點） for explicit owner review. System2 Worker Cron activation remains a separate later explicit owner gate.\n16. ✅ Implement SELECTED-compatible full-market accounting + Prediction Snapshot V0.1 archive projection — PR #221.\n17. ✅ Implement A1 per-symbol daily snapshot adapter and decision outcome tracker V0.1 — PR #222 / #223.\n18. ⏳ Implement verified A1 historical-window/factor adapter, then the end-to-end full-market daily orchestrator through immutable D1 persistence.\n19. ⏳ Implement automatic outcome persistence + minimum execution-simulator runtime without conflating signal returns with fills.\n20. ⏳ Prepare initial final-selection policy candidates/evidence for explicit owner approval; do not enable SELECTED generation before that gate.
 
 ## Current boundary
 
