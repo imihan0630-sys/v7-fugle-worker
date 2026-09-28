@@ -4317,3 +4317,33 @@ CA-114:
 The remaining highest-value blocker is now narrower: obtain BFT51U `上市股數` or an equivalent exact daily TWSE listed-share artifact around 2465 2025-11-11..2025-11-18, and determine how payment certificates are represented in that exact daily listed/tradable lane. If the source cannot expose a metric-compatible combined denominator, preserve UNKNOWN.
 
 No alpha inference, no Formal rule, no Worker.js wiring, no merge or production deployment.
+
+
+## CA-113/114 — Event-sourced daily-state reconstruction versus daily snapshots
+A new failure mode was isolated: treating “event ledger” and “daily snapshot” as interchangeable evidence.
+
+### Reconstruction is legal only under strict proof obligations
+For a bounded replay window, an official event ledger may reconstruct a daily denominator state only when:
+1. a pre-window baseline is verified;
+2. every event family capable of changing that semantic space is covered;
+3. each event has a verified effective session distinct from its announcement/knownAt time;
+4. revisions/cancellations are versioned and do not rewrite prior decision-time truth;
+5. symbol suspensions are resolved before expected-session completeness accounting;
+6. instrument classes remain separate.
+
+If any of those are missing, the daily state is UNKNOWN rather than “carried forward”.
+
+### 2465 implication
+The 2025-11-17 state is not one number:
+- listed common shares: 58,946,031;
+- payment-certificate tradable units: 10,000,000;
+- private-placement common shares: 25,000,000, excluded from public listed-common supply;
+- combined tradable sensitivity: 68,946,031 only when a metric contract explicitly combines both tradable instrument classes;
+- registered-issued common shares: separate registration clock.
+
+MI_QFIIS 93,946,031 is a different reporting-state object and remains rejected as a substitute for those spaces.
+
+This is positive and negative evidence: event reconstruction can be exact inside a proven bounded contract, but it is dangerous if used as a shortcut for missing daily archives.
+
+Artifact: `research/corporate_action_event_state_reconstruction_contract_v0_1.json`.
+Formal Core unchanged.
