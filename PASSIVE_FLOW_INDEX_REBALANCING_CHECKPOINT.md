@@ -1,9 +1,9 @@
 # Passive Flow & Index Rebalancing Checkpoint
 
 Updated: 2026-09-28 Asia/Taipei
-Current cursor: PF-001 through PF-036 complete.
-Status: CONCEPT_COMPLETE / SOURCE_MAP_COMPLETE / BOUNDED_MSCI_MEMBERSHIP_CONTRACT_VALIDATED / SOURCE_LICENSE_GATE / OUTCOME_DATA_GATED.
-Next: seek an authorized/licensed prospective membership-event source contract; separately improve weight-change/non-MSCI/AUM/close-auction coverage before outcome testing.
+Current cursor: PF-001 through PF-038 complete.
+Status: CONCEPT_COMPLETE / SOURCE_MAP_COMPLETE / BOUNDED_MSCI_MEMBERSHIP_CONTRACT_VALIDATED / ETF_NET_UNITS_PROSPECTIVE_CONTRACT_READY / SOURCE_LICENSE_AND_HISTORY_GATES / OUTCOME_DATA_GATED.
+Next: validate prospective ETF units-delta + PCF timestamp/corporate-action semantics on a bounded domestic in-kind sample; seek authorized/licensed membership-event sources; separately improve weight-change/non-MSCI/historical-PIT/close-auction coverage before outcome testing.
 
 ## Durable conclusions
 - Index membership/weight events are a separate causal channel from company fundamentals.
@@ -46,3 +46,22 @@ Next: seek an authorized/licensed prospective membership-event source contract; 
 4. Keep effective-close auction attribution blocked until suitable close-auction data exist.
 5. Institutional-flow lane may consume the bounded membership state as a contamination control only; it must retain UNKNOWN for broader passive context.
 6. Do not start PF outcome tests until the intended event universe and authorization/source-quality gates are satisfied.
+
+## PF-037 through PF-038 durable update
+- TWSE issuer integration contract exposes outstanding ETF units plus day-over-day unit difference with data date/time; this is a cleaner net fund-size-flow observable than AUM delta.
+- AUM delta is confounded by NAV/market-value movement because AUM = Units × NAV.
+- Daily PCF provides the in-kind creation/redemption basket context; only provenance-complete in-kind products may support a MODELED_PRIMARY_BASKET_EXPOSURE.
+- Net units delta is not gross creations/redemptions and is not actual stock execution. Zero net units can hide offsetting gross creation/redemption.
+- Cash creation/redemption, cash substitution, AP inventory/hedging and execution timing prevent exact stock-level trade inference.
+- ETF split/reverse-split can mechanically change unit counts; corporate-action guard is mandatory.
+- Current interface proves prospective PIT feasibility, not a complete historical first-known archive. Historical units/PCF backfill remains UNKNOWN until immutable provider vintages are verified.
+- Benchmark rebalance, ETF fund-size creation/redemption and secondary-market ETF trading are separate causal channels.
+- Machine receipt: `research/passive_flow_etf_units_pcf_contract_v0_1.json`.
+- No outcome test and no Formal change.
+
+## Exact next continuation after PF-038
+1. Validate a bounded prospective sample of domestic Taiwan-equity in-kind ETFs: units delta, timestamps, creation unit, PCF use-date and cash-substitution state.
+2. Freeze split/reverse-split and other unit-changing corporate-action handling.
+3. Keep historical first-known units/PCF archive status UNKNOWN until authoritative immutable vintages are proven.
+4. Keep modeled basket exposure separate from actual passive stock trading.
+5. Do not start outcomes until clean prospective receipts and passive-event universe coverage pass.
