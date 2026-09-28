@@ -1,6 +1,7 @@
 import { deepFreeze } from "./factor_snapshot.mjs";
 
 const ACCOUNT_STATES = new Set([
+  "SELECTED",
   "QUALIFIED_NOT_SELECTED",
   "WATCH",
   "REJECTED",
