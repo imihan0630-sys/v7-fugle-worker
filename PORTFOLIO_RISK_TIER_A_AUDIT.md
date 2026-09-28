@@ -2124,3 +2124,45 @@ Status:
 `CURRENT_PARETO_DOMINATED_ON_PLAN_RISK_GEOMETRY / LOCAL_DOMINANCE_CONFIRMED / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## D15-PH-001 — Planned Portfolio Heat is PIT-reconstructable; actual-live heat remains UNKNOWN
+
+Production read-only run `36424524478` / job `108935105751` validates two distinct plan-time heat measures:
+
+1. `planned projected stop-risk / total capital`
+   - includes designed strategic reserve in the denominator;
+   - useful for capital-at-risk accounting.
+
+2. `planned projected stop-risk / planned deployment`
+   - conditions on planned deployed capital;
+   - useful for risk intensity of the active plan set.
+
+Production:
+- 2026-09-18: 3.241715% total-capital heat; 3.859184% deployed-capital risk intensity;
+- 2026-09-21: 1.306953% / 3.734151%;
+- 2026-09-22 and 2026-09-23: zero selected names -> planned heat = 0, deployed-capital intensity = N/A.
+
+Zero selection must not be encoded as 0% deployed intensity because the denominator is zero.
+
+A one-name date is classified as `DEGENERATE_SINGLE_NAME` for concentration; HHI=1 in that case is not by itself evidence of poor diversification because no multi-name allocation decision exists.
+
+### Evidence boundary
+
+This validates **planned Portfolio Heat**, not actual-live holdings heat.
+
+Actual-live heat still requires:
+- broker-confirmed holdings/fills;
+- actual position quantities;
+- actual effective stops;
+- treatment of external/manual holdings.
+
+Therefore D15-07 can advance to L3 for PIT plan-time reconstruction while actual-live heat remains blocked.
+
+Receipt:
+`research/portfolio_heat_semantics_production_receipt_20260928.json`.
+
+Status:
+`PLAN_TIME_PORTFOLIO_HEAT_PIT_VALIDATED / ACTUAL_LIVE_HEAT_UNKNOWN / D15_07_L3`.
+
+Formal Core unchanged.
