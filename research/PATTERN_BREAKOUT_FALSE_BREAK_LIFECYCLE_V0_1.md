@@ -214,3 +214,43 @@ Formal Core remains LOCKED.
 3. Add boundary-version-change falsification: lifecycle cannot silently continue across changed neckline/rim/pivot definition.
 4. Connect W/M, Cup, VCP and Sakata micro context through shared episode/boundary references, not duplicate scores.
 5. No outcomes and no Formal change.
+
+
+## D01-FB13 — asOf prefix invariance
+
+The lifecycle accepts an optional asOfDate.
+
+When full future bars are supplied together with an earlier asOfDate:
+all bars after asOfDate are ignored.
+
+Frozen test:
+- 2026-09-02 close-break;
+- 2026-09-03 holding above;
+- 2026-09-04 later failure.
+
+State queried as of 2026-09-03 remains CONFIRMED_BREAK_NOT_FAILED even after the 2026-09-04 failure exists in the full data array.
+
+Future failure must never relabel the historical 2026-09-03 state.
+
+## D01-FB14 — boundary-version continuity firewall
+
+Lifecycle continuation is allowed only when:
+- boundaryId identical;
+- boundary version identical;
+- lower/upper values identical.
+
+States:
+
+CONTINUE_SAME_BOUNDARY:
+exact immutable boundary continues.
+
+RESET_REQUIRED_NEW_BOUNDARY_VERSION:
+same structural object received a newly versioned zone; old lifecycle cannot silently continue.
+
+PROVENANCE_CONFLICT_SAME_VERSION_MUTATED:
+same boundary ID/version but coordinates changed. This is an integrity failure.
+
+NEW_BOUNDARY_OBJECT:
+different boundary ID; start a new lifecycle object.
+
+This prevents a later-refined neckline/rim/pivot from rewriting an earlier breakout history.
