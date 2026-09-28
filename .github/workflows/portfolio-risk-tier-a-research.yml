@@ -119,6 +119,9 @@ on:
       - "research/expected_shortfall_semantic_firewall_v0_1.mjs"
       - "research/expected_shortfall_semantic_firewall_spec_v0_1.json"
       - "tests/test_expected_shortfall_semantic_firewall_v0_1.mjs"
+      - "research/correlation_return_continuity_firewall_v0_1.mjs"
+      - "research/correlation_return_continuity_firewall_spec_v0_1.json"
+      - "tests/test_correlation_return_continuity_firewall_v0_1.mjs"
       - "research/first_tranche_risk_concentration_v0_1.mjs"
       - "research/first_tranche_risk_concentration_spec_v0_1.json"
       - "tests/test_first_tranche_risk_concentration_v0_1.mjs"
@@ -209,6 +212,7 @@ jobs:
           node tests/test_portfolio_heat_semantics_v0_1.mjs
           node tests/test_planned_lifecycle_heat_envelope_v0_1.mjs
           node tests/test_expected_shortfall_semantic_firewall_v0_1.mjs
+          node tests/test_correlation_return_continuity_firewall_v0_1.mjs
           node tests/risk_concentration_bridge_audit_v0_1.mjs
           node tests/test_first_tranche_risk_concentration_v0_1.mjs
           node tests/test_add_tranche_risk_concentration_v0_1.mjs
