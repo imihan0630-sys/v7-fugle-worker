@@ -127,3 +127,24 @@ Frozen correction:
 Even a zero-selected generation should use a valid empty selected-plan receipt bundle rather than null/unknown if future production implements this contract.
 
 This correction is research-only and occurs before runtime persistence.
+
+
+## Canonical keyset-hash reconciliation
+
+A concurrent shared research lane had already frozen parent_keyset_hash_v0_1.mjs as the canonical helper for:
+- parent keyset receipts;
+- decision-set hashes;
+- observer ROOT-attempt keyset hashes.
+
+formal_generation_expectation_v0_1.mjs now consumes that shared helper directly.
+
+The local decision_set_hash_v0_1.mjs is retired as an independent hash authority.
+
+Reason:
+the shared helper additionally binds:
+- scanDate;
+- captureGeneration;
+- parentScopeId;
+and validates 64-hex immutable parent IDs / semantic fingerprints.
+
+One generation must have one canonical hash construction.
