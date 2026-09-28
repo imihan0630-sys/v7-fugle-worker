@@ -56,12 +56,16 @@ export function createR2BindingHistoricalObjectStoreV0_1({
       return normalizeObjectMetadata(await bucket.head(requiredText(key, "key")));
     },
     async putIfAbsent(key, bytes, options = {}) {
+      const httpMetadata = {
+        contentType: options.contentType || "application/octet-stream",
+      };
+      // Keep compressed historical bytes opaque by default. Content-Encoding
+      // causes HTTP clients to transparently decode the payload, which breaks
+      // exact stored-byte SHA-256 verification on readback.
+      if (options.contentEncoding) httpMetadata.contentEncoding = String(options.contentEncoding);
       const object = await bucket.put(requiredText(key, "key"), bytes, {
         onlyIf: { etagDoesNotMatch: "*" },
-        httpMetadata: {
-          contentType: options.contentType || "application/json",
-          contentEncoding: options.contentEncoding || "gzip",
-        },
+        httpMetadata,
         customMetadata: { ...(options.customMetadata || {}) },
         sha256: options.sha256,
         storageClass: options.storageClass || "Standard",
