@@ -16,7 +16,7 @@ A symbol can disappear before Formal decision evaluation because:
 
 Those symbols must remain visible in research coverage accounting.
 
-## TI-449 — Three-layer scan funnel
+## TI-521 — Three-layer scan funnel
 
 Layer 1:
 NORMALIZED MARKET POPULATION
@@ -34,7 +34,7 @@ FEATURE READY / PARENT EXPECTED
 
 Only Layer 3 becomes an immutable decision-state parent.
 
-## TI-450 — History admission mapping
+## TI-522 — History admission mapping
 
 Current V8.12 semantics map:
 
@@ -57,7 +57,7 @@ Exact production reason remains preserved, e.g.:
 
 Do not collapse UNKNOWN into BLOCKED or VALID.
 
-## TI-451 — Feature readiness cannot bypass history admission
+## TI-523 — Feature readiness cannot bypass history admission
 
 If a symbol is marked feature-ready while history admission is not ADMITTED:
 POPULATION_CONSISTENCY_FAIL.
@@ -67,7 +67,7 @@ V8.12 requires historyFreshness.usable===true before buildMarketFeatures reaches
 
 A future persistence path must preserve the same ordering.
 
-## TI-452 — Scan population receipt hashes
+## TI-524 — Scan population receipt hashes
 
 Frozen generation-level commitments:
 
@@ -92,7 +92,7 @@ exact symbol set expected to become decision-state parents.
 All keysets are canonical sorted symbol arrays.
 Input enumeration order is not semantic.
 
-## TI-453 — Per-symbol population entries are needed
+## TI-525 — Per-symbol population entries are needed
 
 A date-level count/hash alone proves completeness but is poor for later bias analysis.
 
@@ -106,7 +106,7 @@ Future promotion-grade persistence should preserve one compact upstream entry pe
 
 Do not copy full OHLC/history into these entries.
 
-## TI-454 — Why source-blocked symbols cannot receive fake Formal states
+## TI-526 — Why source-blocked symbols cannot receive fake Formal states
 
 A source-blocked symbol did not reach the Formal decision path.
 
@@ -119,7 +119,7 @@ Its correct state is upstream admission BLOCKED/UNKNOWN.
 
 Research can later compare coverage bias, but not pretend the selector evaluated the symbol.
 
-## TI-455 — Parent-set relationship
+## TI-527 — Parent-set relationship
 
 For one generation:
 
@@ -133,7 +133,7 @@ The final Formal generation receipt should certify both:
 - upstream scan-population commitments;
 - downstream parent keyset / decision-set commitments.
 
-## TI-456 — Denominator reporting
+## TI-528 — Denominator reporting
 
 Future research coverage must be able to report:
 
@@ -145,7 +145,7 @@ normalized market count
 
 This prevents survivorship through any pipeline stage.
 
-## TI-457 — Current runtime evidence
+## TI-529 — Current runtime evidence
 
 V8.12 already provides useful building blocks:
 - buildHistoryAdmissionMap();
@@ -158,7 +158,7 @@ But it does not persist the full immutable upstream denominator/keysets.
 Therefore:
 SCAN_POPULATION_RECEIPT_RUNTIME = NOT_IMPLEMENTED.
 
-## TI-458 — Publication rule
+## TI-530 — Publication rule
 
 Population entries may be staged in chunks.
 
@@ -177,3 +177,12 @@ UPSTREAM_SURVIVORSHIP_FIREWALL = FROZEN
 RUNTIME_PERSISTENCE = NOT_IMPLEMENTED
 FORMAL_OPTIMIZATION_CANDIDATE = NONE
 Formal Core remains LOCKED.
+
+
+## Numbering reconciliation
+
+The initial draft used TI-449 through TI-458, which overlapped an earlier shared parent-sizing lane.
+
+The section numbers in this file are renumbered to TI-521 through TI-530.
+
+No semantic rule changed from this renumbering.
