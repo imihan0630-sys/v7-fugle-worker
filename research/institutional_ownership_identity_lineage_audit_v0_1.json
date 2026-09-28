@@ -1,0 +1,31 @@
+{
+  "version": "v0.1",
+  "research_id": "B-255",
+  "date": "2026-09-28",
+  "scope": "TDCC same-generation lineage and passive/index ownership identifiability",
+  "formal_core": "UNCHANGED",
+  "outcomes": "CLOSED",
+  "findings": [
+    "trade-research rows preserve chipConcentration but not chipAsOfDate/chipDefinition or immutable TDCC parent generation receipt",
+    "marketDate-compatible quality-snapshot reread cannot prove same-generation lineage when snapshot rows are mutable/upserted",
+    "repo search found TDCC bracket aggregates including holdersOver1000LotsRatio but no holder-identity-bearing ownership source capable of partitioning passive/index ownership",
+    "existing passive-flow/index-rebalancing evidence provides event/context signals, not point-in-time holder identity or a defensible passive share of TDCC 400+ ownership"
+  ],
+  "inference_guards": [
+    "marketDate match is not immutable generation identity",
+    "absence of rebalance event does not imply absence of passive ownership",
+    "presence of rebalance event does not identify TDCC ownership change as passive",
+    "daily institutional flow must not be subtracted from weekly ownership stock",
+    "missing lineage or holder identity remains UNKNOWN"
+  ],
+  "status": [
+    "SAME_GENERATION_CLASS_A_JOIN_UNAVAILABLE",
+    "PASSIVE_OWNERSHIP_SHARE_UNIDENTIFIABLE",
+    "IDENTIFIABILITY_LIMIT_FROZEN",
+    "OUTCOMES_CLOSED",
+    "FORMAL_UNCHANGED",
+    "NOT_OPTIMIZATION_READY"
+  ],
+  "class_b_proposal": "Prospective research serialization may preserve chipAsOfDate, chipDefinition and immutable TDCC parent generation/hash receipt; proposal-first only, no historical backfill.",
+  "exact_next": "Study weekly ownership concentration versus daily/3-session institutional-flow cadence-aware redundancy using only provenance-complete prospective rows. Cluster/deduplicate by TDCC vintage and scanDate; if vintage provenance is absent classify UNKNOWN. Do not tune institutionalScore or inspect outcomes."
+}
