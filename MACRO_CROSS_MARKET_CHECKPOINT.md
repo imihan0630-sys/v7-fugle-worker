@@ -1,8 +1,8 @@
 # Macro / Cross-Market Checkpoint
 
-Updated: 2026-09-28 17:23 Asia/Taipei
+Updated: 2026-09-28 18:58 Asia/Taipei
 Formal Core: LOCKED
-Current cursor: MC-001 through MC-031 complete.
+Current cursor: MC-001 through MC-049 complete.
 
 ## Durable conclusions
 
@@ -67,3 +67,35 @@ Japan/Korea daily close may be captured only with `ASIA_DAILY_MIXED_WINDOW` sema
 2. D13-07 Oil L1 -> L2 using demand-vs-supply-vs-geopolitical shock decomposition.
 3. D13-09 / D13-11 macro-surprise lanes only after expectation vintage and release-clock provenance are frozen.
 4. Cross-link D13 rate state with D12 event-conditioned IV only as a dependency; do not double-count maturity.
+
+
+## 2026-09-28 D13-07 / D13-09 / D13-11 long-segment deepening
+
+### D13-07 Oil
+- Advances L1 -> L2.
+- Raw oil up/down is rejected as a universal equity sign because oil moves are endogenous to supply, global demand and precautionary/geopolitical demand.
+- Structural shock decomposition is separated from real-time `OIL_MOVE_CONTEXT`; live co-movement labels are descriptive, not causal.
+- At Taiwan 18:10, timestamped live WTI/Brent futures can be PIT-eligible; same-day later settlement/full-session values are future.
+- TAIFEX BRF is a useful local cross-check but TWD quotation/local basis can mix Brent and FX effects.
+- Roll/contract/term-structure semantics and sector-conditional Taiwan transmission are frozen.
+- EIA inventory realized surprise on the same U.S. date occurs after Taiwan 18:10 and is future for that selector.
+- Machine-readable contract: `research/d13_07_oil_shock_context_spec_v0_1.json`.
+
+### D13-09 CPI/PPI/NFP/unemployment + D13-11 Macro Surprise
+- Both advance L1 -> L2.
+- Scheduled event, initial release, consensus, surprise and market reaction are separate objects.
+- CPI/PPI/Employment Situation are scheduled at 08:30 U.S. Eastern Time; for Taiwan 18:10, same-U.S.-calendar-day realization is future while the event schedule is known.
+- This creates an explicit pre-event risk state during TX night trading: major release can occur after the selector but before the next Taiwan cash open.
+- BLS series are revision-sensitive; current history is not guaranteed to equal first print. PPI can revise for months, payroll first print is revised twice and later benchmarked, seasonal adjustment can revise history.
+- Historical consensus must be timestamped/provider-specific; absent consensus vintage => surprise UNKNOWN.
+- Standardized surprise denominator uses prior events only; activity/inflation/labor-tightness surprises remain separate dimensions.
+- Machine-readable contract: `research/d13_09_11_macro_release_surprise_spec_v0_1.json`.
+- Formal Core unchanged; no event veto, position-size change, score or sector penalty.
+
+## Updated exact next continuation
+
+1. Build research-only prospective receipts for: 18:10 oil snapshot, BLS scheduled-event metadata, first-print release value and (after provider selection) consensus vintage.
+2. Join D13 pre-event flags to D12 NIGHT_PRE_SCAN/NIGHT_POST_SCAN and test risk outcomes before direction.
+3. Continue D13-05 DXY from L1 -> L2 with redundancy tests versus USD/TWD and U.S. rates.
+4. Continue D13-08 metals/commodities from L1 -> L2 using demand/supply/sector transmission rather than one commodity-risk score.
+5. No L3 promotion until durable PIT receipts and independent-date evidence exist.
