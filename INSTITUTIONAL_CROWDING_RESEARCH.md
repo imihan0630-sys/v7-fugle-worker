@@ -559,3 +559,73 @@ A further source-use gate exists: public MSCI artifacts include restrictions on 
 5. Keep LS-048 independently blocked on the official TPEx margin artifact/stable endpoint; do not coerce missing leverage history into zero.
 6. No alternative institutionalScore weights or thresholds are to be searched.
 7. No FORMAL_OPTIMIZATION_CANDIDATE exists yet.
+
+## IC-028 — crowding must be multi-axis and multi-cadence, not a scalar score
+
+Research cycle: 2026-09-28 Asia/Taipei
+Status: CONCEPT_FALSIFICATION_ADVANCED / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+A new research artifact freezes the cross-family state model:
+`research/crowding_multiaxis_state_matrix_v0_1.json`.
+
+### Why a scalar crowding score is rejected at concept level
+Current evidence families represent different economic objects and clocks:
+- margin long = leveraged long stock/flow;
+- margin short = exchange margin short stock/flow;
+- securities borrowing = borrow transaction/stock, not automatically a short sale;
+- actual SBL short sale = short execution evidence, still potentially hedge/arbitrage-confounded;
+- institutional cash flow = daily/3-session actor flow;
+- TDCC concentration = slow weekly ownership stock;
+- passive/index event = mechanical-flow context with separate announcement/effective clocks.
+
+Adding or netting these raw objects into one number would destroy information and create false cancellation.
+
+### 2026 market-structure falsification of nominal-margin alarm
+TWSE's 2026 market-structure analysis provides a useful contemporary falsification: nominal market-wide margin-loan balance reached a record, yet margin-loan balance relative to listed market capitalization was much lower than the April-2000 comparison and market-wide margin-call/forced-liquidation conditions were comparatively contained.
+
+Research decision:
+`NOMINAL_MARGIN_BALANCE_HIGH => CROWDING_HIGH` is rejected.
+
+Required leverage views are scale/history normalized when PIT denominators are valid:
+- balance / market or stock scale;
+- daily change / ADV;
+- own-history percentile/z-score;
+- sector-relative leverage penetration where comparable.
+
+### Two-sided positioning is disagreement, not arithmetic neutralization
+Historical Taiwan short-sale evidence found short-interest information and an interaction between high relative short interest and high relative margin trading consistent with stronger disagreement/overvaluation effects in its historical regime.
+
+The old sample/rules cannot be transplanted to 2026, but it strongly rejects a naive construction:
+`long leverage - short positioning = net crowding`.
+
+High long and high short positioning must remain a `TWO_SIDED_DISAGREEMENT` state to be tested for volatility, drawdown and path dependence rather than assigned a directional sign.
+
+### Frozen state families
+- `LONG_LEVERAGE_BUILD`;
+- `LONG_CROWDING_RISK`;
+- `DELEVERAGING_STATE`;
+- `SHORT_INFORMATION_PRESSURE`;
+- `SQUEEZE_CANDIDATE`;
+- `TWO_SIDED_DISAGREEMENT`;
+- `INSTITUTIONAL_OWNERSHIP_CROWDING`;
+- `MECHANICAL_FLOW_CONTEXT`.
+
+None maps directly to BUY/SELL.
+
+Critical negative definitions:
+- falling financing balance alone is NOT forced liquidation;
+- high short balance alone is NOT a squeeze;
+- short covering alone is NOT a squeeze;
+- securities borrowing alone is NOT short pressure;
+- high ownership concentration alone is NOT institutional conviction;
+- mechanical/passive context alone is NOT bearish and not non-predictive.
+
+## IC-029 — revised exact next continuation
+
+1. Do not invent or tune a scalar crowding score.
+2. First obtain PIT-complete normalized inputs and estimate state frequencies/transitions without outcomes.
+3. Keep long leverage, margin short, securities borrowing, actual SBL shorting and ownership as separate evidence families.
+4. When outcome gates later pass, test continuation plus MAE/MFE and volatility/false-break outcomes by state, with independent scanDate and ownership-vintage clustering.
+5. Require regime/sector/liquidity/passive-event controls and preserve UNKNOWN.
+6. Current D06 evidence is stronger conceptually but still not sufficient for L3 promotions without PIT empirical coverage.
+7. Formal Core remains unchanged; no FORMAL_OPTIMIZATION_CANDIDATE.
