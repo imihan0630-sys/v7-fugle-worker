@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { analyzeBreakoutLifecycle } from "./pattern_breakout_lifecycle_v0_1.mjs";
+import { analyzeBreakoutLifecycle, assessBreakoutBoundaryContinuation } from "./pattern_breakout_lifecycle_v0_1.mjs";
 
 const B={boundaryId:"R1",lower:99,upper:101,version:"ZONE_V1"};
 const bar=(date,low,high,close,extra={})=>({date,low,high,close,...extra});
@@ -111,5 +111,37 @@ const ignorePseudo=analyzeBreakoutLifecycle({
  ]
 });
 assert.equal(ignorePseudo.firstConfirmedBreakAt,"2026-09-03");
+
+// asOf prefix invariance: future failure cannot rewrite the state that was observable earlier.
+const fullPath=[
+  bar("2026-09-01",98,100,99),
+  bar("2026-09-02",100,103,102),
+  bar("2026-09-03",101.2,105,104),
+  bar("2026-09-04",97,100,98),
+];
+const prefix=analyzeBreakoutLifecycle({direction:"UP",boundary:B,bars:fullPath.slice(0,3)});
+const fullAsOf=analyzeBreakoutLifecycle({direction:"UP",boundary:B,bars:fullPath,asOfDate:"2026-09-03"});
+assert.deepEqual(fullAsOf,prefix);
+assert.equal(fullAsOf.falseBreakoutState,"CONFIRMED_BREAK_NOT_FAILED");
+const fullFinal=analyzeBreakoutLifecycle({direction:"UP",boundary:B,bars:fullPath});
+assert.equal(fullFinal.falseBreakoutState,"FAILURE_CONFIRMED");
+
+// Boundary lifecycle cannot silently continue through a changed zone/version.
+assert.deepEqual(
+  assessBreakoutBoundaryContinuation({previousBoundary:B,nextBoundary:{...B}}),
+  {status:"CONTINUE_SAME_BOUNDARY",continueLifecycle:true}
+);
+assert.deepEqual(
+  assessBreakoutBoundaryContinuation({previousBoundary:B,nextBoundary:{...B,version:"ZONE_V2",upper:102}}),
+  {status:"RESET_REQUIRED_NEW_BOUNDARY_VERSION",continueLifecycle:false}
+);
+assert.deepEqual(
+  assessBreakoutBoundaryContinuation({previousBoundary:B,nextBoundary:{...B,upper:102}}),
+  {status:"PROVENANCE_CONFLICT_SAME_VERSION_MUTATED",continueLifecycle:false}
+);
+assert.deepEqual(
+  assessBreakoutBoundaryContinuation({previousBoundary:B,nextBoundary:{...B,boundaryId:"R2"}}),
+  {status:"NEW_BOUNDARY_OBJECT",continueLifecycle:false}
+);
 
 console.log(JSON.stringify({ok:true,status:"PATTERN_BREAKOUT_LIFECYCLE_PASS"}));
