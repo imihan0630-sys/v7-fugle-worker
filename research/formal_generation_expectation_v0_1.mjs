@@ -5,6 +5,9 @@ import {
 import {
   buildDecisionGenerationHashes,
 } from "./decision_set_hash_v0_1.mjs";
+import {
+  assessSelectedParentPlanLink,
+} from "./selected_plan_set_hash_v0_1.mjs";
 
 function sortedUniqueSymbolsFromParents(parents) {
   const symbols=parents.map(row=>String(row?.symbol??"").trim()).sort();
@@ -31,7 +34,7 @@ export async function buildFormalGenerationExpectation({
   populationReceipt,
   parents,
   expectedLineage,
-  selectedPlanSetHash=null,
+  selectedPlanReceipts,
 }, cryptoImpl=globalThis.crypto) {
   const coherence=assessParentGenerationCoherence(parents,{
     ...expectedLineage,
@@ -43,8 +46,13 @@ export async function buildFormalGenerationExpectation({
   const parentPopulationMatch=arraysEqual(expectedParentSymbols,actualParentSymbols);
 
   const generationHashes=await buildDecisionGenerationHashes(parents,cryptoImpl);
+  const planLink=selectedPlanReceipts
+    ? assessSelectedParentPlanLink({parents,planReceipts:selectedPlanReceipts})
+    : {valid:false,reasons:["SELECTED_PLAN_RECEIPTS_MISSING"]};
 
   const reasons=[...coherence.reasons];
+  if (!selectedPlanReceipts?.selectedPlanSetHash) reasons.push("SELECTED_PLAN_SET_HASH_MISSING");
+  if (!planLink.valid) reasons.push(...(planLink.reasons||["SELECTED_PARENT_PLAN_LINK_INVALID"]));
   if (!parentPopulationMatch) reasons.push("PARENT_SYMBOL_SET_DIFFERS_FROM_FEATURE_READY_KEYSET");
   if (generationHashes.parentCount!==populationReceipt.featureReadyParentExpectedCount) {
     reasons.push("PARENT_COUNT_DIFFERS_FROM_FEATURE_READY_COUNT");
@@ -70,7 +78,8 @@ export async function buildFormalGenerationExpectation({
     expectedParentCount:generationHashes.parentCount,
     parentKeysetHash:generationHashes.parentKeysetHash,
     decisionSetHash:generationHashes.decisionSetHash,
-    selectedPlanSetHash:selectedPlanSetHash===null?null:String(selectedPlanSetHash),
+    selectedPlanSetHash:selectedPlanReceipts?.selectedPlanSetHash||null,
+    planLink,
     coherence,
   });
 }
