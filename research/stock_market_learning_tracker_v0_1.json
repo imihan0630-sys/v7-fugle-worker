@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-09-28T19:16:00+08:00",
+  "updatedAt": "2026-09-28T19:52:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -33,7 +33,7 @@
   "aggregate": {
     "domainCount": 18,
     "moduleCount": 226,
-    "maturityWeightedPct": 44.2
+    "maturityWeightedPct": 45
   },
   "domains": [
     {
@@ -1703,9 +1703,10 @@
       "anchors": [
         "RESEARCH_WORKLIST.md",
         "research/EXPERIMENT_REGISTRY.md",
-        "research/research_master_map.json"
+        "research/research_master_map.json",
+        "research/D16_D18_REGIME_POLICY_VALIDATION_V0_1.md"
       ],
-      "maturityPct": 72,
+      "maturityPct": 73.3,
       "modules": [
         {
           "id": "D16-01",
@@ -1806,10 +1807,13 @@
         {
           "id": "D16-13",
           "name": "Shadow Cohort抽樣／Membership語意",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「Shadow Cohort抽樣／Membership語意」。學習範圍：PIT、Prospective Shadow、OOS、Purged Holdout、多重測試、日期獨立性、冗餘、成本、Coverage與Zero-pick；資料世代證明、實驗登錄、成熟度升級與防過擬合治理。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "PIT_FEASIBILITY_VALIDATED / WAITING_PROSPECTIVE_CAPTURE",
+          "evidence": "System 2 daily Shadow orchestrator + run-receipt/storage tests prove full eligible-universe accounting can fail closed; scheduled prospective capture remains disabled.",
+          "next": "Accumulate actual prospective full-universe Shadow dates before any L4 promotion; do not retroactively repair historical bounded V8 cohorts."
         },
         {
           "id": "D16-14",
@@ -1953,9 +1957,10 @@
       "anchors": [
         "system2/SYSTEM2_MARKET_REGIME_V0.md",
         "TREND_MOMENTUM_REVERSAL_CHECKPOINT.md",
-        "MARKET_BREADTH_ROTATION_CHECKPOINT.md"
+        "MARKET_BREADTH_ROTATION_CHECKPOINT.md",
+        "research/D16_D18_REGIME_POLICY_VALIDATION_V0_1.md"
       ],
-      "maturityPct": 28.6,
+      "maturityPct": 40,
       "modules": [
         {
           "id": "D18-01",
@@ -2000,42 +2005,52 @@
         {
           "id": "D18-06",
           "name": "Large-cap vs Small-cap領導×策略",
-          "level": "L1",
-          "maturityPct": 20,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Large-cap vs Small-cap領導×策略」。學習範圍：Market Regime分類、趨勢／盤整、高低波動、Breadth、Rotation、大小型領導與Risk-on/off；策略啟停、權重、Ensemble、Drawdown降載、Regime績效歸因與Walk-forward驗證。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "理論已理解"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "MECHANISM_AND_FALSIFICATION_DEFINED / WAITING_PIT_OOS",
+          "next": "Keep L2 until PIT-safe market-cap source/vintage capture is promotion-grade; control liquidity/limit-state/information-quality redundancy."
         },
         {
           "id": "D18-07",
           "name": "Risk-on／Risk-off狀態",
-          "level": "L1",
-          "maturityPct": 20,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Risk-on／Risk-off狀態」。學習範圍：Market Regime分類、趨勢／盤整、高低波動、Breadth、Rotation、大小型領導與Risk-on/off；策略啟停、權重、Ensemble、Drawdown降載、Regime績效歸因與Walk-forward驗證。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "理論已理解"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "MECHANISM_AND_FALSIFICATION_DEFINED / WAITING_PIT_OOS",
+          "next": "Keep L2 until durable prospective global receipts are frozen; test domestic-only, global-only and incremental domestic+global context."
         },
         {
           "id": "D18-08",
           "name": "策略啟用／停用規則",
-          "level": "L1",
-          "maturityPct": 20,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「策略啟用／停用規則」。學習範圍：Market Regime分類、趨勢／盤整、高低波動、Breadth、Rotation、大小型領導與Risk-on/off；策略啟停、權重、Ensemble、Drawdown降載、Regime績效歸因與Walk-forward驗證。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "理論已理解"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "MECHANISM_AND_FALSIFICATION_DEFINED / WAITING_PIT_OOS",
+          "next": "Pre-register one simple activation/deactivation challenger against the same frozen static strategy with identical costs."
         },
         {
           "id": "D18-09",
           "name": "策略權重動態配置",
-          "level": "L1",
-          "maturityPct": 20,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「策略權重動態配置」。學習範圍：Market Regime分類、趨勢／盤整、高低波動、Breadth、Rotation、大小型領導與Risk-on/off；策略啟停、權重、Ensemble、Drawdown降載、Regime績效歸因與Walk-forward驗證。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "理論已理解"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "MECHANISM_AND_FALSIFICATION_DEFINED / WAITING_PIT_OOS",
+          "next": "Use tiny discrete weight maps only; benchmark against equal/static weights and charge turnover."
         },
         {
           "id": "D18-10",
           "name": "多策略相關性／Ensemble",
-          "level": "L1",
-          "maturityPct": 20,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「多策略相關性／Ensemble」。學習範圍：Market Regime分類、趨勢／盤整、高低波動、Breadth、Rotation、大小型領導與Risk-on/off；策略啟停、權重、Ensemble、Drawdown降載、Regime績效歸因與Walk-forward驗證。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "理論已理解"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "MECHANISM_AND_FALSIFICATION_DEFINED / WAITING_PIT_OOS",
+          "next": "Measure same-date strategy-return dependence with missing-strategy days explicit; do not infer diversification from pooled stock rows."
         },
         {
           "id": "D18-11",
@@ -2048,26 +2063,32 @@
         {
           "id": "D18-12",
           "name": "Drawdown-aware策略降載",
-          "level": "L1",
-          "maturityPct": 20,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Drawdown-aware策略降載」。學習範圍：Market Regime分類、趨勢／盤整、高低波動、Breadth、Rotation、大小型領導與Risk-on/off；策略啟停、權重、Ensemble、Drawdown降載、Regime績效歸因與Walk-forward驗證。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "理論已理解"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "MECHANISM_AND_FALSIFICATION_DEFINED / WAITING_PIT_OOS",
+          "next": "Compare drawdown de-risking against fixed-risk and exposure-matched controls; include missed-rebound opportunity cost."
         },
         {
           "id": "D18-13",
           "name": "策略績效Regime Attribution",
-          "level": "L1",
-          "maturityPct": 20,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「策略績效Regime Attribution」。學習範圍：Market Regime分類、趨勢／盤整、高低波動、Breadth、Rotation、大小型領導與Risk-on/off；策略啟停、權重、Ensemble、Drawdown降載、Regime績效歸因與Walk-forward驗證。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "理論已理解"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "MECHANISM_AND_FALSIFICATION_DEFINED / WAITING_PIT_OOS",
+          "next": "Freeze strategy/regime versions before outcome and separate attribution from policy value."
         },
         {
           "id": "D18-14",
           "name": "Walk-forward市場狀態驗證",
-          "level": "L1",
-          "maturityPct": 20,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Walk-forward市場狀態驗證」。學習範圍：Market Regime分類、趨勢／盤整、高低波動、Breadth、Rotation、大小型領導與Risk-on/off；策略啟停、權重、Ensemble、Drawdown降載、Regime績效歸因與Walk-forward驗證。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "理論已理解"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "MECHANISM_AND_FALSIFICATION_DEFINED / WAITING_PIT_OOS",
+          "next": "Run purged chronological walk-forward only after clean PIT dates accumulate; filtered/current regime states only, no smoothed ex-post labels."
         }
       ]
     }
