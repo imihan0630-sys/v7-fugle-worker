@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-09-28T21:40:00+08:00",
+  "updatedAt": "2026-09-28T21:36:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -466,7 +466,7 @@
         }
       ],
       "status": "FALSIFICATION_IN_PROGRESS",
-      "exactNextContinuationPoint": "D04-RV-CAPTURE-01: verify prospective clean-date persistence/readback of official TAIEX RV5/RV20/RV5to20 under the decision-clock/source contract; historical pre-capture first-known states remain UNKNOWN. After independent valid dates accumulate, use recent5/prior15 non-overlap only as robustness. ATR L0-L4 computation audit is complete, but outcome/opportunity-cost inference waits for the shared immutable per-symbol decision-state parent.",
+      "exactNextContinuationPoint": "D04-RV-PERSIST-01: current repo can compute official TAIEX volatility but does not yet durably wire MARKET_RV5_CC_SIMPLE / MARKET_RV20_CC_SIMPLE / MARKET_RV_RATIO_5_20 into regimeFactorObservations. First valid evidence begins only when raw values are prospectively persisted with same decision-clock source receipt and immutable run linkage. Historical first-known reconstruction remains prohibited. After independent valid dates accumulate, test overlapping RV5/RV20 versus non-overlap recent5/prior15 only as robustness. ATR outcome analysis still waits for the shared immutable per-symbol decision-state parent; also retain relativeTickBps / atrTicksApprox / stopDistanceTicksApprox as execution-granularity controls, not new thresholds.",
       "lastResearchUpdate": "2026-09-28T21:04:00+08:00",
       "researchNote": "ATR decomposition + observability audit frozen. Same-scan computation is feasible with existing Class-A observers; legacy Shadow denominator is bounded/mutable/first-failure-conditioned and prohibited for promotion-grade ATR outcome inference. D04 maturity unchanged."
     },
@@ -562,7 +562,7 @@
         }
       ],
       "status": "EVIDENCE_PENDING",
-      "exactNextContinuationPoint": "D05-HORIZON-01: wait for a complete prospective books+trades event ledger. Then validate E0 event-time -> E1 1m/5m -> E2 10m/15m -> E3 30m retention using dual clock, event-intensity matching, TWSE session/tick strata, and nested best-level versus aggregate top-five block. Before collector activation, verify actual Fugle plan/quota and completeness/replay semantics; missing events remain UNKNOWN.",
+      "exactNextContinuationPoint": "D05-HORIZON-02: no new indicator invention. Before true OFI, prove prospective books+trades capture semantics. Fugle trades expose serial but books have no documented sequence, so bookProviderMessageCount is not proven exchangeBookEventCount; use snapshotDeltaPressureProxy unless completeness is established. Once a complete ledger exists, run nested B0 activity/risk -> B1 spread/top1 -> B2 pressure-response -> B3 single top5 block, with time-shift, sign-shuffle, event-intensity, spread-only, volatility/activity and session-mechanism negative controls across E0 event -> E1 1m/5m -> E2 10m/15m -> E3 30m. Separate price formation, breakout path quality and execution quality.",
       "lastResearchUpdate": "2026-09-28T21:04:00+08:00",
       "researchNote": "Dual-clock/horizon-retention protocol frozen. No new indicators or L3 promotion until own Taiwan PIT event completeness is proven."
     },
