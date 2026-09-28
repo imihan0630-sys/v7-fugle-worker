@@ -254,10 +254,10 @@
           "levelMeaning": "機制＋反證已定義"
         }
       ],
-      "exactNextContinuationPoint": "PVE-174: inspect first post-enable ordinary-market receipts only when available; run PVE-149 Gate 0→7 before outcomes. 2026-09-29 intraday remains DATA_QA-only, 2026-09-29 after-market is first new selection/bootstrap receipt, and 2026-09-30 is first potentially clean cohort. Then execute horizon-separated A/B/C/D common-support, price-only vs price+volume, quadrant/response, breakout-quality, and dry-up lifecycle analyses without threshold tuning.",
-      "status": "LONG_BLOCK_STAGE_II_COMPLETE_WAITING_PROSPECTIVE_EVIDENCE",
+      "exactNextContinuationPoint": "PVE-181: at the first post-enable ordinary-market receipts, execute PVE-149 Gate 0→7 plus PVE-174~178 field-level quality overlay before any outcome inspection. Treat 2026-09-29 intraday as DATA_QA-only; 2026-09-29 after-market as first new selection/bootstrap receipt; 2026-09-30 as first potentially clean cohort, not automatically clean. Explicitly report Guard-input PRESENT/MISSING/UNKNOWN, daily-RVOL corporate-action continuity, and exchange-consistent price-boundary/reference quality. Then run H001/H002 common-support and H003/H004 higher-gated analyses without threshold tuning.",
+      "status": "LONG_BLOCK_STAGE_III_COMPLETE_WAITING_PROSPECTIVE_EVIDENCE",
       "lastResearchUpdate": "2026-09-28",
-      "researchNote": "PVE-168~173 froze quadrant-as-descriptor semantics, liquidity-pressure alternative explanation, horizon separation, breakout volume necessity-vs-quality, and a PIT-safe two-leg dry-up lifecycle. No maturity promotion because Taiwan prospective/OOS evidence is not yet available."
+      "researchNote": "PVE-174~180 code-audited the prospective PV evidence contract. New durable findings: daily pvDailyRvol20 does not implement corporate-action reset and persists reset=null; v0.1 price-censor is not exchange-exact; audited selected-plan contract omits multiple PV Guard inputs and missing values can collapse toward false/normal; REFERENCE_PRICE_UNRESOLVED is only raised at 09:00. Field-level salvage is frozen so clean raw H001/H002 volume evidence is not discarded with defective Guard labels. Base Worker PV absence was resolved as expected patch-chain build behavior. No maturity promotion; prospective/OOS Taiwan evidence remains unavailable."
     },
     {
       "id": "D03",
