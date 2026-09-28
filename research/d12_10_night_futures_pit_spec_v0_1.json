@@ -1,0 +1,91 @@
+{
+  "schemaVersion": "0.1",
+  "module": "D12-10",
+  "name": "TAIEX night futures 18:10 PIT contract",
+  "status": "RESEARCH_ONLY_CONCEPT_FROZEN_EVIDENCE_PENDING",
+  "formalCoreImpact": "NONE",
+  "updatedAt": "2026-09-28T18:58:00+08:00",
+  "decisionClock": {
+    "timezone": "Asia/Taipei",
+    "time": "18:10",
+    "nightSession": "15:00-05:00",
+    "preScan": "15:00-18:10",
+    "postScan": "18:10-05:00"
+  },
+  "eligibility": {
+    "NIGHT_PRE_SCAN": "PIT_ELIGIBLE_IF_TIMESTAMPED",
+    "NIGHT_POST_SCAN": "FUTURE_FOR_1810_SELECTOR",
+    "NIGHT_FULL_SESSION": "OUTCOME_OR_DESCRIPTIVE_ONLY_FOR_1810"
+  },
+  "rawFeatures": [
+    "nightPreScanReturnFromOpen",
+    "nightPreScanReturnFromSettlement",
+    "nightPreScanHighLowRange",
+    "nightPreScanRealizedVol",
+    "nightPreScanVolume",
+    "nightPreScanVolumeZ",
+    "nightPreScanDistanceFromHigh",
+    "nightPreScanDistanceFromLow",
+    "nightPreScanReversalFromExtreme"
+  ],
+  "globalControls": [
+    "sameWindowBroadFutureReturn",
+    "sameWindowNasdaqFutureReturn",
+    "sameWindowSemiconductorFutureReturn"
+  ],
+  "residualDesign": {
+    "candidate": "txNightResidual",
+    "rule": "Use only prior-date frozen beta estimates; test raw/simple baselines before multi-beta residual.",
+    "unknownRule": "Illiquid/stale control contracts => UNKNOWN."
+  },
+  "requiredMetadata": [
+    "tradingDate",
+    "sourceSession",
+    "contractMonth",
+    "daysToExpiry",
+    "rollFlag",
+    "lastTradingDayFlag",
+    "capturedAt",
+    "knownAtTaipei",
+    "source",
+    "quoteQuality"
+  ],
+  "dataGate": {
+    "freeFullSessionDailyData": "NOT_VALID_FOR_1810_REPLAY",
+    "recentTransactionData": "TAIFEX_PUBLIC_PAST_30_TRADING_DAYS",
+    "olderTransactionHistory": "APPLICATION_OR_PURCHASE_REQUIRED",
+    "historicalDatabaseApi": "TAIFEX_DOES_NOT_PROVIDE",
+    "preferredRoute": "PROSPECTIVE_1810_CAPTURE"
+  },
+  "outcomes": [
+    "nextCashOpenGap",
+    "nextRegularOpenToClose",
+    "nextD1Return",
+    "nextSessionMAE",
+    "nextSessionMFE",
+    "selectionHitRate",
+    "selectionStopIncidence"
+  ],
+  "falsification": [
+    "global-futures redundancy",
+    "full-night look-ahead artifact test",
+    "gap-only effect classification",
+    "crisis-only test",
+    "date-shift placebo",
+    "leave-one-date-out",
+    "expiry/roll split",
+    "macro-event split",
+    "liquidity-quality sensitivity"
+  ],
+  "maturityDecision": {
+    "from": "L1",
+    "to": "L2",
+    "reason": "Decision-clock semantics, mechanism, data gate, redundancy and falsification frozen; no prospective PIT evidence yet for L3."
+  },
+  "nextContinuation": [
+    "prospective 18:10 receipt",
+    "recent transaction replay QA",
+    "independent-date accumulation",
+    "join scheduled macro-event clock"
+  ]
+}
