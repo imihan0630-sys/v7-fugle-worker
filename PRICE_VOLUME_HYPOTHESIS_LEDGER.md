@@ -438,3 +438,31 @@ Status: higher-gated / no directional conclusion.
 `pvDailyRvol20` is specifically quarantined across unresolved corporate-action/trading-unit continuity because the current daily builder does not implement the reset contract and the snapshot persists reset provenance as null.
 
 No H001~H006 hypothesis is upgraded to SUPPORTED or REJECTED. No Formal optimization candidate is created. Formal Core remains LOCKED.
+
+
+## H003/H004 readiness refinement after PVE-181~186 — 2026-09-29 pre-market
+
+### H003 — Acceptance / response / Guard incremental value
+Status: HIGHER_GATED / EVENT_DENOMINATOR_CORRECTED.
+
+New code-proven falsifiers:
+- PRE_EVENT -> EXPIRED_AMBIGUOUS at 13:00 can create a raw Acceptance eventKey even when no breakout/pullback trigger occurred;
+- Acceptance advances without the INVALID Guard pause used by Persistence;
+- anchorEligible is not Guard-gated.
+
+Therefore future H003 event accounting must distinguish:
+- RAW_ACCEPTANCE_KEY_COUNT;
+- ACTIVE_ACCEPTANCE_LIFECYCLE_COUNT;
+- H003_HYPOTHESIS_CLEAN_EVENT_COUNT.
+
+Only the third denominator is maturity-eligible. PRE_EVENT-only expiry is session censoring, not an Acceptance event outcome.
+
+### H004 — path/risk outcomes
+Status: HIGHER_GATED / OUTCOME_STORAGE_NOT_ELIGIBILITY.
+
+The existence of B1/B2/B4 or daily outcomes for an anchor does not validate the originating state. An INVALID-Guard anchor can store factual future paths, but such rows remain excluded from primary H004 inference until field-level Guard/input/PIT/cohort overlays pass.
+
+### 2026-09-29 first-session rule
+All 9/29 intraday rows remain DATA_QA-only for primary H001~H004 due inherited 9/24 cohort lineage. H003/H004 clean-event/anchor counts are therefore zero for primary inference regardless of observed future price paths.
+
+No hypothesis is promoted or rejected. Formal Core remains LOCKED.
