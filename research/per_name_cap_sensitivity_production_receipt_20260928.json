@@ -1,0 +1,68 @@
+{
+  "schemaVersion": "PER_NAME_CAP_SENSITIVITY_PRODUCTION_RECEIPT_V0_1",
+  "observedAt": "2026-09-28T12:45:11+08:00",
+  "timestampProvenance": "GitHub Actions Portfolio Risk Tier-A Research run 36378983683 / job 108790584186",
+  "workflowRunId": 36378983683,
+  "jobId": 108790584186,
+  "readOnly": true,
+  "productionWrites": false,
+  "decisionImpact": false,
+  "scanDate": "2026-09-18",
+  "selectedCount": 3,
+  "totalCapitalNTD": 200000,
+  "currentDeploymentNTD": 168000,
+  "currentMaxAllocationPct": 32,
+  "currentProjectedRiskHHI": 0.3767077818,
+  "capGridPct": {
+    "min": 32,
+    "max": 50,
+    "step": 1
+  },
+  "summary": {
+    "comparableCaps": 19,
+    "currentAboveGlobalMinCount": 19
+  },
+  "landmarks": {
+    "cap32": {
+      "globalMinHHI": 0.3381084948,
+      "optimumAllocationNTD": {
+        "2006": 64000,
+        "3105": 43000,
+        "6133": 61000
+      },
+      "currentMinusGlobalMinHHI": 0.038599287
+    },
+    "cap35": {
+      "globalMinHHI": 0.3342785411,
+      "optimumAllocationNTD": {
+        "2006": 70000,
+        "3105": 42000,
+        "6133": 56000
+      },
+      "currentMinusGlobalMinHHI": 0.0424292407
+    },
+    "cap38": {
+      "globalMinHHI": 0.333349943,
+      "optimumAllocationNTD": {
+        "2006": 75000,
+        "3105": 39000,
+        "6133": 54000
+      },
+      "currentMinusGlobalMinHHI": 0.0433578388
+    },
+    "plateau": "From 38% upward in the observed audit, the minimum reaches ~0.333349943 and the 75k/39k/54k optimum remains available."
+  },
+  "falsification": {
+    "rejectedClaim": "The lower-concentration comparator advantage is a special artifact of the Formal 35% per-name cap.",
+    "result": "Rejected. Current is above the cap-specific global minimum at every fair cap from 32% through 50%. Relaxing the cap initially improves the best achievable risk equalization rather than erasing the gap.",
+    "nuance": "Caps below 32% are excluded from current-vs-comparator inference because the observed current 64k allocation would itself violate them."
+  },
+  "limits": [
+    "one reconstructable multi-name date",
+    "plan-preview risk only",
+    "cap-specific optimum is diagnostic, not a live recommendation",
+    "economic value remains unknown"
+  ],
+  "status": "CAP_35_ARTIFACT_FALSIFIED / CURRENT_ABOVE_GLOBAL_MIN_19_OF_19 / RELAXED_CAP_STRENGTHENS_STRUCTURAL_GAP / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY",
+  "formalCoreImpact": false
+}
