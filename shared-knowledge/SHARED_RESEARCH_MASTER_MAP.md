@@ -1,6 +1,6 @@
 # Shared Research Master Map
 
-Updated: 2026-09-26 Asia/Taipei
+Updated: 2026-09-28 Asia/Taipei
 Status: CANONICAL_SHARED_INDEX
 Scope: Cross-system research knowledge
 Formal Core impact: NONE
@@ -35,6 +35,8 @@ Existing detailed research remains in its current files; this map indexes it rat
 ## Shared inventory
 
 - `shared-knowledge/SHARED_RESEARCH_INVENTORY.md` is the cross-system domain/tag inventory. It points to original evidence without relocating it.
+- `shared-knowledge/STOCK_MARKET_KNOWLEDGE_LEARNING_MAP.md` is the canonical 18-domain / 226-module learning curriculum and chatroom routing dashboard.
+- `research/stock_market_learning_tracker_v0_1.json` is the machine-readable maturity tracker for that curriculum.
 
 ## Existing canonical anchors
 
