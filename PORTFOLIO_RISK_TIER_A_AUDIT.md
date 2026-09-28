@@ -2240,3 +2240,41 @@ Status:
 `PLAN_LIFECYCLE_ENVELOPE_SOURCE_READY / ACTUAL_STAGE_TRANSITIONS_BLOCKED / ES_SEMANTIC_FIREWALL_FROZEN / D15_10_L2 / D15_13_L2`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-069 Production result — FIRST/ADD/FULL plan envelope is PIT-reconstructable, actual lifecycle is not
+
+Production read-only run `36425890207` / job `108939621579` validates the plan-time lifecycle envelope.
+
+2026-09-18:
+- FIRST preview heat = 1.940885%;
+- ADD incremental preview heat = 1.289100%;
+- FULL preview heat = 3.229985%;
+- FULL preview notional = NT$167,471.13;
+- FIRST + ADD risk/notional conservation = exact.
+
+2026-09-21:
+- FIRST = 0.782560%;
+- ADD increment = 0.519920%;
+- FULL = 1.302480%;
+- conservation = exact.
+
+2026-09-22 / 2026-09-23:
+- zero selected plans -> all planned lifecycle envelopes are zero;
+- actual lifecycle exposure remains UNKNOWN.
+
+This supports:
+`plan lifecycle envelope is PIT-reconstructable`.
+
+It does **not** support:
+`the account actually entered FIRST/FULL or executed ADD`.
+
+Therefore D15-10 remains L2 until positive fill/holdings evidence can reconstruct actual stage transitions.
+
+Receipt:
+`research/planned_lifecycle_heat_production_receipt_20260928.json`.
+
+Status:
+`PLAN_LIFECYCLE_ENVELOPE_PIT_VALIDATED / ACTUAL_STAGE_TRANSITIONS_BLOCKED / D15_10_REMAINS_L2`.
+
+Formal Core unchanged.
