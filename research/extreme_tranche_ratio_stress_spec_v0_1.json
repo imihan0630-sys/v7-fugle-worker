@@ -17,6 +17,7 @@
     "one historical multi-name date",
     "feasible ratio range is diagnostic, not a proposed Formal split"
   ],
-  "status": "EXTREME_RATIO_STRESS_READY / PRODUCTION_AUDIT_PENDING",
-  "formalCoreImpact": false
+  "status": "EXTREME_RATIO_DIRECTION_ROBUST / CURRENT_TWO_STAGE_ORDERABLE_1_TO_99 / COMPARATOR_STAGE_FEASIBILITY_PENDING / ECONOMIC_VALUE_UNKNOWN",
+  "formalCoreImpact": false,
+  "productionReceipt": "research/extreme_tranche_ratio_production_receipt_20260928.json"
 }
