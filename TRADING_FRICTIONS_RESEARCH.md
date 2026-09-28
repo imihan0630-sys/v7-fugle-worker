@@ -736,3 +736,14 @@ Status:
 `COMMISSION_PROVENANCE_FAIL_CLOSED / COMPLETE_BROKER_SCHEDULE_REQUIRED`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## D14-RR-001 cross-link — current runtime stops at REDUCE
+
+The current Formal execution lifecycle does not contain a native RE-ADD signal/state. Therefore REDUCE→RE-ADD friction is currently a research contract, not an observable completed Formal lifecycle.
+
+A future realized study must require linked actual REDUCE and RE-ADD fills; modeled cycles remain explicitly MODELED. Actual fill prices must not be charged a second generic slippage term.
+
+See:
+- `research/reduce_readd_friction_v0_1.mjs`;
+- `research/reduce_readd_friction_spec_v0_1.json`.
