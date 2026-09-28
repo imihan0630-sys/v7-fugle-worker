@@ -1776,3 +1776,35 @@ Formal Core remains LOCKED.
 
 - 461247f36c23fc0bd84134d3e9ba50650c60bb3c — Technical Indicator Class-B implementation impact audit.
 - 898f0d90a6696b600e090fe4211938577b4fb0e5 — machine-readable Technical Indicator impact receipt.
+
+
+## Continuation update — TI-391 through TI-395 (shared-parent completeness)
+
+- New outcome-blind audit: `research/TECHNICAL_INDICATOR_SHARED_PARENT_FEASIBILITY_V0_1.md` at commit `93d5b9acdfe208eade7fec860bde51efa521eaf3`.
+- TI-391: legacy <=54 sampled rows/date is not the future parent count. A pre-sampling immutable decision-state universe may be ~full-market scale; exact parent scope and production D1 write cost remain UNKNOWN. Illustrative 1,800 parents/date imply 36,000 child attempts over 20 sessions, not measured rows/cost. Legacy LIMIT 5000 would show only two full illustrative 1,800-row dates and a partial third; complete keyset pagination is mandatory.
+- TI-392: Technical, Pattern, Target/RR and external evidence must share one immutable decision-state parent/generation; overlapping cohort memberships must not duplicate a Technical child. The older v0.1 snapshot contract's “existing Shadow parent” cannot be used as authority to attach promotion-grade evidence to the mutable legacy Shadow archive.
+- TI-393: persistence completeness differs from formula observability. Every preregistered parent attempt needs an explicit child status; missing child, WARMUP, DATA_BLOCKED, constrained and UNKNOWN are not zeros or negative signals. A COMPLETE run requires parent keyset hash plus expected/persisted exact reconciliation, no duplicate/orphan rows and generation-consistent reads. Synthetic falsifiers include 1,799/1,800 persisted, duplicate memberships, changed-fingerprint rerun and partial-date reader.
+- TI-394: zero extra provider calls is conditional on same-scan history, runtime TECHNICAL_CONTINUITY and canonical recursive-state replay. Bootstrap/rebuild, D1 index writes, scan latency and actual account limits remain unmeasured/UNKNOWN. Cloudflare D1 documentation confirms serial query processing, batch rollback semantics, Worker resource limits and query-level read/write metrics; it does not establish actual project usage.
+- TI-395: a selected-only indicator sample cannot support admission/ranking conclusions. Future inference must match population scope to intended change and retain exact qualified/gate-evaluable denominators. No outcome join, return advantage, alpha or Formal optimization claim was made.
+- Governance: research documentation only; no Worker/D1 schema/monitor/ranking/signal/push change; no historical Shadow fabrication. Class-B implementation proposal remains PREMATURE; Formal Core LOCKED.
+
+### Current lane status
+
+TECHNICAL_INDICATOR_FORMULA_QA = R0_MATERIAL_PASS
+TECHNICAL_INDICATOR_SOURCE_RUNTIME = BELOW_R1
+SHARED_PARENT_SCOPE = UNFROZEN
+GENERIC_EVIDENCE_CHILD = DESIGN_DEPENDENCY
+CHILD_COMPLETENESS_CONTRACT = RESEARCH_SPECIFIED_NOT_IMPLEMENTED
+REAL_D1_COST_LATENCY = UNKNOWN
+PROSPECTIVE_TECHNICAL_CAPTURE = NOT_STARTED
+OUTCOME_JOIN = NO_GO
+FORMAL_OPTIMIZATION_CANDIDATE = NONE
+
+### Exact next continuation point
+
+1. Read latest shared immutable cohort/decision-state proposal and D03 checkpoint before further work; merge concurrent progress.
+2. Reconcile the shared owner's final pre-sampling parent population, captureGeneration identity, generic evidence-child interface and complete-keyset reader before writing D03 runtime code.
+3. Obtain actual parent counts and non-secret baseline D1/Worker metrics through authorized read-only evidence; do not extrapolate from legacy 54.
+4. Build outcome-blind isolated synthetic tests for parent/child keyset equality, partial write/retry, changed-fingerprint conflict, overlap deduplication and truncated date reads; keep Worker unmodified.
+5. Validate same-scan history reuse, bootstrap/rebuild and corporate-action continuity with canonical lineage; price-limit symbol-session receipt remains dependency-owned.
+6. Only after material dependency resolution prepare one consolidated Class-B infrastructure proposal for owner review. TI-005 KD-vs-RSI and TI-006 MACD-vs-trend remain the first eventual prospective inference tests. No Formal change.
