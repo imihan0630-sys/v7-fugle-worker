@@ -3220,3 +3220,39 @@ Status:
 `TRANCHE_RATIO_SENSITIVITY_READY / PRODUCTION_AUDIT_PENDING`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-063 Production result — concentration survives FIRST-ratio sweep from 40% to 90%
+
+Read-only Production run `36377784618` / job `108787059102` evaluated 2026-09-18.
+
+FIRST ratios tested:
+`40%, 45%, 50%, 55%, 60%, 65%, 70%, 75%, 80%, 85%, 90%`.
+
+At every ratio:
+- current PriorityScore sizing HHI > same-deployment equal-capital HHI;
+- current PriorityScore sizing HHI > exhaustive ratio-specific NT$1,000-grid minimum HHI.
+
+Directional agreement:
+- current > equal-capital: **11 / 11**;
+- current > global minimum: **11 / 11**.
+
+Examples:
+- 40/60: current HHI 0.3767077818, equal-capital 0.3553897407, global minimum 0.3342785411;
+- 60/40: current HHI 0.3767077818, equal-capital 0.3553897407, global minimum 0.3342785411.
+
+The exact optimum can move by one NT$1,000 grid unit as integer-share flooring changes, but the concentration direction does not reverse over the tested range.
+
+Thus the counter-hypothesis
+`the structural finding is specific to the 60/40 tranche split`
+is rejected over FIRST ratios 40%-90%.
+
+A more extreme 5%-95% stress test remains separately useful because integer-share flooring can create larger discontinuities when one tranche becomes very small.
+
+Receipt:
+`research/tranche_ratio_sensitivity_production_receipt_20260928.json`.
+
+Status:
+`TRANCHE_RATIO_ARTIFACT_FALSIFIED_40_TO_90 / EXTREME_RATIO_STRESS_PENDING / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
