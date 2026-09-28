@@ -101,6 +101,8 @@ jobs:
                   "s2_backtest_runs",
                   "s2_backtest_checkpoints",
                   "s2_historical_base_samples",
+                  "s2_historical_universe_memberships",
+                  "s2_historical_universe_snapshots",
               }
               missing = sorted(required - tables)
               if missing:
@@ -108,9 +110,9 @@ jobs:
               version = con.execute(
                   "SELECT schema_value FROM s2_schema_meta WHERE schema_key='schema_version'"
               ).fetchone()
-              if not version or version[0] != "0.7":
+              if not version or version[0] != "0.8":
                   raise SystemExit(f"unexpected System2 schema version: {version}")
-              print(f"SQLite schema PASS; migrations={len(paths)}; System2 tables={len(tables)}; schema=0.7")
+              print(f"SQLite schema PASS; migrations={len(paths)}; System2 tables={len(tables)}; schema=0.8")
           finally:
               con.close()
           PY
