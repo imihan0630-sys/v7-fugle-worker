@@ -19,6 +19,19 @@ Status: P1_DATA_AND_SHADOW_DESIGN_IN_PROGRESS
 
 ## Current design decisions
 
+- First Sample Operational Preflight（首筆樣本作業前檢查）V0.1 merged to main in commit `ef153982003d36840e2074f3ad2d7b2308de2590` via PR #220. A separate read-only GitHub Actions preflight now runs at 12:45 Asia/Taipei on weekdays, 40 minutes before the 13:25 prospective Decision Clock collector.
+
+- The preflight checks the official TWSE trading-day gate, reruns Collector Freeze Guard V0.1, reruns the prospective collector schedule-contract guard, and queries GitHub Actions metadata with built-in `github.token` / `actions: read` to require the exact collector workflow path/name with `state=active`.
+
+- The preflight produces only a 30-day operational receipt. It creates no A1/A5/B2 evidence, no daily Decision Clock bundle, and cannot increment any prospective readiness counter. Exact Decision Clock authorization, Worker Cron authorization and capture remain false.
+
+- System2 Research CI now also triggers when `.github/workflows/system2-first-sample-preflight-readonly.yml` changes, so the preflight itself cannot be silently edited without the System2 test suite.
+
+- PR #220 initially exposed a static-guard self-reference issue in the new workflow guard; it was diagnosed and corrected without weakening isolation semantics. Final-head System2 Research CI `36380708647` PASS and V8 Regression `36380708682` PASS. Post-merge System2 Research CI `36380783676` PASS and V8 Regression `36380783651` PASS.
+
+- Prospective promotion-grade trading-date count remains 0. The first ordinary eligible prospective trading date remains 2026-09-29. The collector contract and frozen baseline remain unchanged by this preflight work.
+
+
 - Finalized-Date Acceptance（最終化日期驗收）V0.1 received a pre-first-sample semantic correction in main commit `21a0be5f83145bb6cf8d701d5230e3f1c4d03792` via PR #219. A coverage-qualified scheduled artifact is now correctly treated as an immutable independent observed date even when required evidence is incomplete; complete-date and precision-date membership are tracked separately.
 
 - The acceptance receipt now exposes three distinct counters: `countsTowardIndependentDate`, `countsTowardCompleteTradingDate`, and `countsTowardPrecisionEligibleDate`. This matches Decision Clock readiness V0.2 semantics (`independentTradingDates`, `completeTradingDates`, `precisionEligibleDates`) and prevents the next-day acceptance audit from falsely throwing on a legitimate incomplete first sample.
