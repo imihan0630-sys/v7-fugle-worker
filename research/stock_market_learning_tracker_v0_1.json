@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-09-28 Asia/Taipei",
+  "updatedAt": "2026-09-28T17:23:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -33,7 +33,7 @@
   "aggregate": {
     "domainCount": 18,
     "moduleCount": 226,
-    "maturityWeightedPct": 40.9
+    "maturityWeightedPct": 41.5
   },
   "domains": [
     {
@@ -1217,7 +1217,7 @@
         "DERIVATIVES_VOLATILITY_CHECKPOINT.md",
         "DERIVATIVES_VOLATILITY_RESEARCH.md"
       ],
-      "maturityPct": 33.3,
+      "maturityPct": 36.7,
       "modules": [
         {
           "id": "D12-01",
@@ -1278,10 +1278,10 @@
         {
           "id": "D12-08",
           "name": "Gamma Exposure／Dealer Gamma",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Gamma Exposure／Dealer Gamma」。學習範圍：期貨、選擇權、基差、OI、外資期貨、PCR、VIX、IV、Skew、Term Structure、Gamma與結算；夜盤與到期效應；合約／DTE語意；對市場與個股的增量資訊。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "尚未研究"
+          "levelMeaning": "機制＋反證已定義"
         },
         {
           "id": "D12-09",
@@ -1325,7 +1325,7 @@
         "MACRO_CROSS_MARKET_CHECKPOINT.md",
         "MACRO_CROSS_MARKET_RESEARCH.md"
       ],
-      "maturityPct": 32.3,
+      "maturityPct": 33.8,
       "modules": [
         {
           "id": "D13-01",
@@ -1370,10 +1370,10 @@
         {
           "id": "D13-06",
           "name": "美債利率／殖利率曲線",
-          "level": "L1",
-          "maturityPct": 20,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「美債利率／殖利率曲線」。學習範圍：美股、日韓股、匯率、美元、利率、油價、原物料與總經數據；跨時區與休市對齊；公告時鐘與Surprise；全球Shock傳導；台股Residual反應與Regime用途。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "理論已理解"
+          "levelMeaning": "機制＋反證已定義"
         },
         {
           "id": "D13-07",
