@@ -1,0 +1,99 @@
+{
+  "schemaVersion": "MSCI_STANDARD_TAIWAN_MEMBERSHIP_NEGATIVE_EVIDENCE_CONTRACT_V0_1",
+  "updated": "2026-09-28 Asia/Taipei",
+  "researchOnly": true,
+  "formalCoreImpact": "NONE",
+  "outcomesUsed": false,
+  "purpose": "Define a bounded, outcome-blind negative-evidence contract for MSCI Global Standard Taiwan membership additions/deletions without claiming broad passive-flow absence.",
+  "validatedCycles": [
+    {
+      "cycle": "2025-11",
+      "documentDate": "2025-11-05",
+      "effectiveClose": "2025-11-24",
+      "taiwanSummary": {
+        "added": 6,
+        "deleted": 7
+      },
+      "countrySectionCountInvariant": "PASS",
+      "officialArtifact": "https://www.msci.com/eqb/gimi/stdindex/MSCI_Nov25_STPublicList.pdf"
+    },
+    {
+      "cycle": "2026-02",
+      "documentDate": "2026-02-10",
+      "effectiveClose": "2026-02-27",
+      "taiwanSummary": {
+        "added": 1,
+        "deleted": 4
+      },
+      "countrySectionCountInvariant": "PASS",
+      "officialArtifact": "https://www.msci.com/eqb/gimi/stdindex/MSCI_Feb26_STPublicList.pdf"
+    },
+    {
+      "cycle": "2026-05",
+      "documentDate": "2026-05-12",
+      "effectiveClose": "2026-05-29",
+      "taiwanSummary": {
+        "added": 1,
+        "deleted": 7
+      },
+      "countrySectionCountInvariant": "PASS",
+      "officialArtifact": "https://www.msci.com/eqb/gimi/stdindex/MSCI_May26_STPublicList.pdf"
+    },
+    {
+      "cycle": "2026-08",
+      "documentDate": "2026-08-12",
+      "effectiveClose": "2026-08-31",
+      "taiwanSummary": {
+        "added": 6,
+        "deleted": 6
+      },
+      "countrySectionCountInvariant": "PASS",
+      "officialArtifact": "https://www.msci.com/eqb/gimi/stdindex/MSCI_Aug26_STPublicList.pdf"
+    }
+  ],
+  "sourceContract": {
+    "provider": "MSCI",
+    "indexFamily": "GLOBAL_STANDARD",
+    "countrySection": "MSCI TAIWAN INDEX",
+    "artifactPatternObserved": "MSCI_<MonYY>_STPublicList.pdf",
+    "landingPage": "https://www.msci.com/eqb/gimi/stdindex/index_review.html",
+    "internalCompletenessInvariant": "For each validated cycle, Taiwan summary added/deleted counts must equal parsed Taiwan country-section counts. Any mismatch => SOURCE_INCOMPLETE_OR_SCHEMA_DRIFT.",
+    "firstKnownRule": "Use provider publication timestamp when auditable. If only a publication date is trustworthy, fail closed and do not make the event PIT-eligible until the next Taiwan trading session after the publication date.",
+    "revisionRule": "Preserve source artifact identity/version; later provider knowledge must not rewrite an earlier Formal generation."
+  },
+  "allowedState": {
+    "name": "NO_MSCI_STANDARD_MEMBERSHIP_ADD_DELETE_VERIFIED",
+    "meaning": "Within a validated MSCI Global Standard review cycle and frozen membership-event window, complete Taiwan add/delete artifact coverage contains no applicable membership add/delete for the symbol.",
+    "doesNotMean": [
+      "NO_INDEX_EVENT globally",
+      "NO_WEIGHT_CHANGE",
+      "NO_PASSIVE_FLOW",
+      "ACTIVE_FUNDAMENTAL_CONVICTION",
+      "NO_OTHER_INDEX_EVENT",
+      "NO_ETF_CREATION_REDEMPTION"
+    ]
+  },
+  "excludedCoverage": [
+    "MSCI weight-only changes not exposed by the public add/delete list",
+    "MSCI Small Cap/Micro Cap and other MSCI index families unless separately validated",
+    "FTSE/TWSE/TIP/local/custom index events",
+    "ETF creations/redemptions and portfolio-basket flows",
+    "offshore benchmarked AUM",
+    "unscheduled/special index actions unless separately captured",
+    "closing-auction attribution"
+  ],
+  "licenseAndUseGuard": {
+    "state": "SOURCE_LICENSE_REVIEW_REQUIRED_BEFORE_AUTOMATED_PERSISTENT_INGESTION",
+    "reason": "The public MSCI PDF includes use restrictions covering derivative/database/analytics uses. This receipt validates a research source contract only and does not authorize bulk extraction, database construction, production analytics ingestion, redistribution, or commercial use.",
+    "implementationRule": "Before any automated persistent constituent archive or production join, use an appropriately licensed/authorized source or obtain a permission determination. Do not infer authorization from public URL accessibility."
+  },
+  "falsification": [
+    "Four consecutive validated review cycles support a stable bounded artifact pattern, but four cycles do not prove perpetual future schema stability.",
+    "A complete add/delete list cannot rule out weight-only passive demand.",
+    "A symbol absent from the list cannot be called ordinary active flow; at most membership-add/delete contamination is excluded for this provider/index scope.",
+    "Publication-date availability must not be shifted earlier for Taiwan decisions.",
+    "If provider artifact is missing, revised without preserved vintage, count-invariant fails, or access/licensing is unresolved, state remains EVENT_COVERAGE_INCOMPLETE."
+  ],
+  "status": "BOUNDED_MEMBERSHIP_NEGATIVE_EVIDENCE_METHOD_READY / FOUR_CYCLE_SOURCE_PATTERN_VALIDATED / BROAD_ORDINARY_FLOW_NOT_VERIFIED / LICENSE_GATE_PRESENT / OUTCOMES_CLOSED / FORMAL_UNCHANGED",
+  "exactNext": "Use this only as a bounded semantic control. Audit whether an authorized/licensed source can supply the same PIT membership-event receipt prospectively. Separately continue weight-change/other-index/ETF-flow source coverage. Do not label institutional flow ORDINARY_FLOW_CONTEXT_VERIFIED until the broader passive-event universe is complete."
+}
