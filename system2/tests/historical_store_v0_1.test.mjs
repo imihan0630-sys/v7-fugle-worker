@@ -4,6 +4,7 @@ import {
   buildHistoricalStoreIngestBatch,
   toHistoricalPersistenceRecords,
 } from "../runtime/historical_store_v0_1.mjs";
+import { buildSystem2PersistenceBatch } from "../runtime/persistence_batch.mjs";
 
 function row(overrides = {}) {
   return {
@@ -103,6 +104,18 @@ assert.equal(records[0].table, "s2_historical_ingest_batches");
 assert.equal(records[1].table, "s2_historical_a1_bars");
 assert.equal(records[1].row.market_date, "2026-09-23");
 assert.equal(records[1].row.pit_replay_eligible, 0);
+
+const persistence = await buildSystem2PersistenceBatch({
+  batchId: "HIST-PERSIST-20260924",
+  marketDate: batch.lastMarketDate,
+  decisionTimestamp: batch.capturedAt,
+  records,
+  createdAt: batch.capturedAt,
+});
+assert.equal(persistence.operationCount, 4);
+assert.equal(persistence.operations[0].table, "s2_historical_ingest_batches");
+assert.equal(persistence.operations[1].table, "s2_historical_a1_bars");
+assert.equal(persistence.operations.at(-1).table, "s2_historical_a1_bars");
 
 await assert.rejects(
   () => buildHistoricalStoreIngestBatch({
