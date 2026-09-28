@@ -1684,3 +1684,46 @@ Status:
 `TRANCHE_RATIO_ARTIFACT_FALSIFIED_40_TO_90 / EXTREME_RATIO_STRESS_PENDING / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY`.
 
 No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-064 — extreme tranche-ratio stress and two-stage orderability (2026-09-28)
+
+PR-063 rejected a 60/40-specific concentration artifact over FIRST ratios 40%-90%.
+
+PR-064 pushes the stress further and separates two different questions:
+
+### Structural concentration
+
+FIRST ratio is swept from 5% to 95% in 5-point steps.
+
+At each ratio the same ratio-specific two-tranche share flooring is applied to:
+- current PriorityScore allocation;
+- equal-capital allocation;
+- every legal NT$1,000-grid comparator state.
+
+This asks whether the concentration direction survives much more extreme split assumptions.
+
+### Two-stage orderability
+
+FIRST ratio is swept from 1% to 99% in 1-point steps.
+
+For each selected name, both planned stages must separately satisfy:
+- FIRST shares >= 1;
+- ADD shares >= 1;
+using buyHigh as the conservative plan-preview price.
+
+A ratio can therefore be:
+- structurally valid for concentration analysis;
+- but operationally infeasible for a two-stage execution path because one tranche rounds to zero shares.
+
+This is intentionally stronger than checking combined shares only.
+
+Artifacts:
+`research/tranche_stage_orderability_v0_1.mjs`;
+`research/extreme_tranche_ratio_stress_spec_v0_1.json`;
+`tests/portfolio_risk_extreme_tranche_ratio_readonly_audit.mjs`.
+
+Status:
+`EXTREME_RATIO_STRESS_READY / PRODUCTION_AUDIT_PENDING`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
