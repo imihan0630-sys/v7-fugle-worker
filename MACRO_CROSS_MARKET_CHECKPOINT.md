@@ -1,8 +1,8 @@
 # Macro / Cross-Market Checkpoint
 
-Updated: 2026-09-28 18:58 Asia/Taipei
+Updated: 2026-09-28 20:35 Asia/Taipei
 Formal Core: LOCKED
-Current cursor: MC-001 through MC-049 complete.
+Current cursor: MC-001 through MC-064 complete.
 
 ## Durable conclusions
 
@@ -99,3 +99,49 @@ Japan/Korea daily close may be captured only with `ASIA_DAILY_MIXED_WINDOW` sema
 3. Continue D13-05 DXY from L1 -> L2 with redundancy tests versus USD/TWD and U.S. rates.
 4. Continue D13-08 metals/commodities from L1 -> L2 using demand/supply/sector transmission rather than one commodity-risk score.
 5. No L3 promotion until durable PIT receipts and independent-date evidence exist.
+
+
+## 2026-09-28 D13-05 / D13-08 long-segment deepening
+
+### D13-05 DXY
+- Advances L1 -> L2.
+- DXY is a fixed six-currency geometric basket, not a broad global/Asia dollar index. EUR weight is 57.6%; JPY 13.6%; GBP 11.9%; CAD 9.1%; SEK 4.2%; CHF 3.6%.
+- Federal Reserve Broad Dollar Index is a different macro object with trade-based weights. 2026 weights include meaningful China/Korea/Taiwan exposures that DXY does not contain directly.
+- Global-dollar financial-channel evidence is real, but proxy choice is unresolved: broad dollar appreciation is linked to tighter EME financial conditions, while raw DXY may be euro-dominated.
+- ICE official DXY source is identified and calculated intraday; a timestamped pre-18:10 observation is conceptually PIT-eligible. Provider entitlement/history contract remains NOT_FROZEN and no durable 18:10 receipt exists.
+- Mandatory redundancy order: Taiwan market/Regime -> USD/TWD -> U.S. rates -> global equity state -> VIX/IV -> DXY.
+- EUR/USD substitution and DXY-vs-USD/TWD divergence are mandatory falsifications.
+- Machine-readable contract: `research/d13_05_dxy_pit_redundancy_spec_v0_1.json`.
+
+### D13-08 metals / commodities / critical minerals
+- Advances L1 -> L2.
+- Commodity family split is mandatory:
+  1. industrial/base metals (demand + supply + inventory);
+  2. precious/monetary metals (USD + real rates + risk demand);
+  3. critical/strategic minerals (technology demand + concentration + export controls + opaque markets).
+- Copper price direction does not identify global-growth direction because supply shocks can generate the same move. CME HG is a clean prospective 18:10 market-price candidate if timestamped and contract/roll semantics are preserved.
+- Gold is not an industrial-demand proxy and not a universal safe haven. CME GC is PIT-feasible but must be tested after DXY, real yields and VIX/IV.
+- Critical-mineral markets can be economically important while price transparency is poor. Event/supply evidence may be more informative than stale price series.
+- D13 owns global mineral state/event clock/source provenance; D10 owns Taiwan company/industry exposure, pass-through, inventory/capacity and beneficiary/victim mapping. No double-counting maturity.
+- Regional price divergence must be retained; do not force one world price for rare/minor minerals.
+- Machine-readable contract: `research/d13_08_commodity_family_spec_v0_1.json`.
+
+### Unified receipt schema
+- Frozen `research/global_market_receipt_v0_1.json`.
+- One common PIT envelope now covers D12/D13 instrument families with explicit observedAt, capturedAt, knownAtTaipei, firstEligibleTaiwanDecision, latency class, entitlement, stale/revision and rules-version fields.
+- Instrument-specific payloads remain separate. This prevents incompatible timestamps/latency semantics from being silently merged into one global score.
+- Schema status: RESEARCH_ONLY_SCHEMA_FROZEN_NOT_IMPLEMENTED.
+- Implementation is Class A only if isolated from Formal/shared runtime; otherwise proposal-first Class B.
+
+### Optimization status
+- No FORMAL_OPTIMIZATION_CANDIDATE yet.
+- D13-05 and D13-08 remain evidence-pending; L3 requires durable PIT receipts plus independent-date/event evidence.
+- Formal Core unchanged. No DXY/commodity/gold/mineral score, veto, sector bonus or position-size change.
+
+## Updated exact next continuation
+
+1. Provider/entitlement matrix for the unified receipt: DXY, HG copper, GC gold and critical-mineral event sources.
+2. Research-only prospective 18:10 capture design; no historical first-known fabrication.
+3. Continue D13-03 Japan/Korea L2 -> L3 feasibility by testing a clean Taiwan 13:30 -> Japan/Korea 14:30 Taipei subwindow source.
+4. Integrate only PIT-safe lanes into D13-12 global-shock / Taiwan-residual research; missing lanes stay UNKNOWN.
+5. Prospectively test whether DXY survives USD/TWD/rates/VIX controls and whether copper/gold survive global-risk controls before any optimization proposal.
