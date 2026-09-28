@@ -110,5 +110,36 @@ replace_once(
     "bounded sector gate rejected cohort",
 )
 
+
+observer = Path("research/institutional_score_decomposition_observer_v0_1.mjs").read_text(encoding="utf-8").strip()
+anchor = '''async function readShadowCandidateSummary(env,days=180) {'''
+replace_once(
+    anchor,
+    observer + "\n\n" + anchor,
+    "institutional score decomposition observer helper",
+)
+
+replace_once(
+'''  const rows=result?.results||[],byCohort={},byDate={};''',
+'''  const rows=result?.results||[],byCohort={},byDate={};
+  const detailResult=await env.V7_DB.withSession("first-primary").prepare(`
+    SELECT scan_date,symbol,cohort,pool,snapshot_json
+    FROM trade_research_shadow_candidates
+    WHERE scan_date>=?1
+    ORDER BY scan_date ASC,cohort ASC,pool ASC,symbol ASC
+  `).bind(fromDate).all();
+  const institutionalDecomposition=buildInstitutionalScoreDecompositionObserver(detailResult?.results||[]);''',
+    "institutional score decomposition read",
+)
+
+replace_once(
+'''    byCohort,byDate,
+    policy:"Shadow資料只作對照與反證；不得因Shadow表現漂亮而自動改正式選股。"''',
+'''    byCohort,byDate,institutionalDecomposition,
+    policy:"Shadow資料只作對照與反證；不得因Shadow表現漂亮而自動改正式選股。"''',
+    "institutional score decomposition summary",
+)
+
+
 path.write_text(text, encoding="utf-8")
 print("Applied V8.14.0 sector-gate provenance shadow")

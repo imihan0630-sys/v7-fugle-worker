@@ -1,0 +1,100 @@
+{
+  "schemaVersion": "LEVERAGE_SHORTING_LS048_AUTHORIZED_SOURCE_PATHS_V0_1",
+  "updated": "2026-09-29 Asia/Taipei",
+  "researchOnly": true,
+  "formalCoreImpact": "NONE",
+  "outcomesUsed": false,
+  "purpose": "Separate TPEx source existence, machine-contract readiness, licensing/access and cost before any finalized-history leverage/shorting backfill.",
+  "officialPaths": [
+    {
+      "pathId": "TPEX_PUBLIC_MARGIN_PAGE",
+      "object": "margin financing + margin short",
+      "source": "https://www.tpex.org.tw/zh-tw/mainboard/trading/margin-trading/transactions.html",
+      "official": true,
+      "coverageStart": "2007-01",
+      "currentMachineReadableHtmlResult": "VERIFIED",
+      "csvButtons": "VERIFIED_BIG5_AND_UTF8",
+      "stableHistoricalProgrammaticCsvContract": "UNRESOLVED",
+      "cost": "FREE_PUBLIC_WEB",
+      "useState": "SAFE_FOR_MANUAL_OFFICIAL_ARTIFACT_INGESTION; AUTOMATED_HISTORICAL_CONTRACT_NOT_YET_FROZEN"
+    },
+    {
+      "pathId": "TPEX_EDIS_S23_STKDMARGIN",
+      "object": "daily margin financing + margin short",
+      "productFile": "STKDMARGIN.TXT",
+      "formatCode": "S23",
+      "contract": "fixed-width 165 bytes",
+      "units": "thousand shares for balance/flow/limits; percent for utilization",
+      "fields": [
+        "previousMarginLongBalance",
+        "marginLongBuy",
+        "marginLongSell",
+        "cashRepayment",
+        "todayMarginLongBalance",
+        "marginLongLimit",
+        "marginLongUtilizationPct",
+        "previousMarginShortBalance",
+        "marginShortSell",
+        "marginShortBuy",
+        "marginShortRepayment",
+        "todayMarginShortBalance",
+        "marginShortLimit",
+        "marginShortUtilizationPct",
+        "marginLongSecuritiesFinancePortion",
+        "marginShortSecuritiesFinancePortion",
+        "offsetting"
+      ],
+      "official": true,
+      "dataStart": "2010-07-19",
+      "delivery": "online download",
+      "access": "PAID_SUBSCRIPTION_REQUIRED",
+      "observedPriceNtdPerMonth": {
+        "internal": 10000,
+        "external": 10000
+      },
+      "useState": "AUTHORIZED_OFFICIAL_MACHINE_PATH_EXISTS / NOT_SUBSCRIBED / DO_NOT_PURCHASE_AUTONOMOUSLY"
+    },
+    {
+      "pathId": "TPEX_EDIS_S47_MARGIN_SBL",
+      "object": "margin-short control balance + actual SBL short-sale balance",
+      "productFile": "Margin_SBL.csv",
+      "formatCode": "S47",
+      "official": true,
+      "dataStart": "2006-01-02",
+      "productionTime": "22:00 Asia/Taipei",
+      "fields": [
+        "marginShortPrevBalance",
+        "marginShortSell",
+        "marginShortBuy",
+        "marginShortCash",
+        "marginShortTodayBalance",
+        "marginShortLimit",
+        "sblShortPrevBalance",
+        "sblShortTodaySell",
+        "sblShortTodayReturn",
+        "sblShortTodayAdjustment",
+        "sblShortTodayBalance",
+        "nextBusinessDaySblShortLimit",
+        "note"
+      ],
+      "delivery": "online download",
+      "access": "PAID_SUBSCRIPTION_REQUIRED",
+      "observedPriceNtdPerMonth": {
+        "internal": 1000,
+        "external": 1500
+      },
+      "limitation": "Does not provide the full margin-financing-long history required for long-leverage crowding.",
+      "useState": "AUTHORIZED_OFFICIAL_MACHINE_PATH_EXISTS / NOT_SUBSCRIBED / DO_NOT_PURCHASE_AUTONOMOUSLY"
+    }
+  ],
+  "decisions": [
+    "Official machine-readable TPEx leverage/shorting data products exist; previous DATA_UNAVAILABLE interpretations are rejected.",
+    "Existence of a paid official product is not authorization to access it and is not a reason to incur cost automatically.",
+    "S47 cannot substitute for S23 when the hypothesis requires long-margin leverage.",
+    "Until a free stable historical contract, user-provided official artifact, or explicitly authorized subscription exists, LS-048 automated cross-market finalized-history pilot remains blocked.",
+    "The free public page remains a valid manual-artifact path; preserve source date, downloadedAt, checksum, schema version and parser version.",
+    "No outcome testing begins merely because a source product exists."
+  ],
+  "status": "OFFICIAL_MACHINE_PATHS_VERIFIED / FREE_PROGRAMMATIC_HISTORY_UNRESOLVED / PAID_ACCESS_NOT_AUTHORIZED / COST_GUARD_ACTIVE / LS048_AUTOMATED_BACKFILL_BLOCKED / FORMAL_UNCHANGED",
+  "exactNext": "Continue searching only for documented/free official historical contract or use an official artifact supplied through an authorized path. Do not subscribe or incur charges without owner approval. If a valid artifact becomes available, run LS-048 backfill pilot with outcomes closed, then LS-049 completeness/revision audit."
+}
