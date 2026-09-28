@@ -20,6 +20,7 @@ jobs:
     environment: system2-research
     env:
       SYSTEM2_HISTORY_SMOKE_DATE: "2026-09-24"
+      SYSTEM2_HISTORY_SMOKE_RETRY_GENERATION: "2"
     steps:
       - name: Checkout
         uses: actions/checkout@v5
