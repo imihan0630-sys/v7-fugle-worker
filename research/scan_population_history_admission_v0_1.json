@@ -1,0 +1,47 @@
+{
+  "schemaVersion": "scan-population-history-admission-v0.1",
+  "updated": "2026-09-28 Asia/Taipei",
+  "researchOnly": true,
+  "runtimeImplemented": false,
+  "formalCore": "LOCKED",
+  "layers": [
+    "NORMALIZED_MARKET_POPULATION",
+    "HISTORY_ADMISSION",
+    "FEATURE_READY_PARENT_EXPECTED"
+  ],
+  "historyStates": [
+    "ADMITTED",
+    "BLOCKED",
+    "UNKNOWN"
+  ],
+  "featureStates": [
+    "READY",
+    "BLOCKED",
+    "NOT_ATTEMPTED"
+  ],
+  "perSymbolFields": [
+    "symbol",
+    "market",
+    "historyAdmissionState",
+    "historyAdmissionStatus",
+    "historyAdmissionReason",
+    "verifiedNoTradeGapCount",
+    "featureBuildState",
+    "parentExpected"
+  ],
+  "hashes": [
+    "scanPopulationReceiptId",
+    "normalizedMarketKeysetHash",
+    "historyAdmittedKeysetHash",
+    "historyBlockedKeysetHash",
+    "historyUnknownKeysetHash",
+    "featureReadyKeysetHash"
+  ],
+  "invariants": [
+    "UNIQUE_NORMALIZED_SYMBOL",
+    "FEATURE_READY_REQUIRES_HISTORY_ADMITTED",
+    "PARENT_SYMBOL_SET_EQUALS_FEATURE_READY_KEYSET",
+    "UNKNOWN_NOT_COERCED",
+    "UPSTREAM_BLOCKED_NOT_ASSIGNED_FAKE_FORMAL_STATE"
+  ]
+}
