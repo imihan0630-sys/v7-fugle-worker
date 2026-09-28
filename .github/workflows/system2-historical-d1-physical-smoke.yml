@@ -1,0 +1,44 @@
+name: System2 Historical D1 Physical Smoke
+
+on:
+  push:
+    paths:
+      - ".github/workflows/system2-historical-d1-physical-smoke.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-historical-d1-physical-smoke
+  cancel-in-progress: false
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment: system2-research
+    env:
+      SYSTEM2_HISTORY_SMOKE_DATE: "2017-01-03"
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Migrate isolated System2 D1 through schema 0.7
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+          SYSTEM2_CONFIRM: CREATE_SYSTEM2_ISOLATED_D1
+        run: node system2/deploy/provision_system2_d1.mjs
+
+      - name: Persist one real historical trading date into isolated D1
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+        run: node system2/scripts/persist_official_historical_a1_smoke_d1_v0_1.mjs
+
+      - name: Confirm System1 production files untouched
+        run: |
+          set -euo pipefail
+          test "$(sed -n '1p' wrangler.toml)" = 'name = "fugle-test"'
+          git diff --exit-code -- wrangler.toml Worker.js
