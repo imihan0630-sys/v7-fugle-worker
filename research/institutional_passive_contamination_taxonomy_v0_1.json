@@ -1,0 +1,110 @@
+{
+  "schemaVersion": "INSTITUTIONAL_PASSIVE_CONTAMINATION_TAXONOMY_V0_1",
+  "updated": "2026-09-28 Asia/Taipei",
+  "researchOnly": true,
+  "formalCoreImpact": "NONE",
+  "outcomesUsed": false,
+  "purpose": "Classify how strongly an institutional-flow observation can be interpreted as ordinary active flow when point-in-time index/passive-event context is or is not available.",
+  "evidenceFamilies": {
+    "institutionalFlow": [
+      "foreignNet",
+      "trustNet",
+      "dealerNet",
+      "institutionTotalNet",
+      "foreignBuyDays",
+      "trustBuyDays",
+      "dealerBuyDays"
+    ],
+    "passiveEventContext": [
+      "provider",
+      "indexId",
+      "eventType",
+      "announcedAt",
+      "effectiveAt",
+      "eventPhase",
+      "eventProvenance",
+      "pointInTimeEligible"
+    ],
+    "ownershipContext": [
+      "chipConcentration",
+      "chipAsOfDate"
+    ]
+  },
+  "states": [
+    {
+      "state": "ORDINARY_FLOW_CONTEXT_VERIFIED",
+      "requirements": [
+        "complete PIT passive-event coverage for the relevant event universe",
+        "no applicable index/passive event in frozen event window"
+      ],
+      "interpretation": "ordinary-flow context is supported; this does not prove active fundamental conviction"
+    },
+    {
+      "state": "INDEX_EVENT_CONTAMINATION_CONFIRMED",
+      "requirements": [
+        "PIT-verified applicable index membership/weight event",
+        "observation lies in frozen announced/effective/post-effective event phase"
+      ],
+      "interpretation": "institutional flow is event-conditioned and must not be interpreted as independent conviction without incremental evidence"
+    },
+    {
+      "state": "MULTI_INDEX_OR_EXPIRY_CONFOUNDED",
+      "requirements": [
+        "verified overlapping index events or derivatives-expiry overlap"
+      ],
+      "interpretation": "mechanical-flow attribution is multi-causal; no single motive assigned"
+    },
+    {
+      "state": "PASSIVE_CONTEXT_COVERAGE_INCOMPLETE",
+      "requirements": [
+        "event source/constituent/AUM/effective-close coverage incomplete"
+      ],
+      "interpretation": "contamination status UNKNOWN; absence of an event row is not evidence of no event"
+    },
+    {
+      "state": "OWNERSHIP_IDENTITY_UNRESOLVED",
+      "requirements": [
+        "TDCC concentration is the only ownership evidence"
+      ],
+      "interpretation": "400-lot-plus ownership cannot identify passive/active/institutional holder motive"
+    }
+  ],
+  "hardGuards": [
+    "No state maps directly to BUY/SELL or score change.",
+    "No-event classification requires complete PIT event coverage; otherwise UNKNOWN.",
+    "Foreign buying near an index event is not automatically passive, and passive/mechanical flow is not automatically non-predictive.",
+    "Announcement and effective clocks remain distinct.",
+    "Multiple ETFs tracking one benchmark are exposure, not independent events.",
+    "Current ETF AUM cannot be backfilled to historical event dates.",
+    "TDCC ownership brackets cannot identify passive/index holders.",
+    "Do not create a duplicate passive-flow score inside institutionalScore."
+  ],
+  "falsification": [
+    "PF-003/PF-019 show indexers and non-indexers can both trade around index events, so event overlap cannot identify every share as passive.",
+    "PF-012 states mechanical demand can have real and persistent price impact, so contamination is an interpretation/context flag, not a bearish veto.",
+    "PF-034 evidence build remains incomplete for deterministic constituent/AUM/effective-close coverage, so historical ordinary-flow classification cannot be broadly asserted."
+  ],
+  "integration": {
+    "ownerLane": "PASSIVE_FLOW_INDEX_REBALANCING",
+    "institutionalLaneRole": "consume PIT event context; retain institutional flow as its own evidence family",
+    "futureJoinKey": "same Formal generation plus symbol and event first-known eligibility",
+    "immutableParentRequirement": "event child must attach to the same canonical Formal generation; later event knowledge cannot revise historical decision context",
+    "currentEmpiricalStatus": "DATA_GATED"
+  },
+  "biasControls": [
+    "no look-ahead",
+    "no absence-as-zero",
+    "no motive inference",
+    "no outcome-conditioned event windows",
+    "date/event clustering",
+    "multi-index dedup",
+    "Factor-Zoo guard"
+  ],
+  "engineering": {
+    "classA": "pure taxonomy/observer and immutable research child once PIT event rows already exist",
+    "classB": "shared runtime persistence/join wiring for event children or TDCC vintage",
+    "classC": "any Formal score/weight/veto/ranking change"
+  },
+  "status": "PASSIVE_CONTAMINATION_TAXONOMY_FROZEN / ORDINARY_FLOW_REQUIRES_COMPLETE_NEGATIVE_EVIDENCE / MOTIVE_UNIDENTIFIED / OUTCOMES_CLOSED / FORMAL_UNCHANGED",
+  "exactNext": "Audit whether current Passive Flow source map can produce a complete negative-evidence denominator for any bounded provider/index/date universe. If not, define the smallest prospective PIT event receipt needed to distinguish NO_EVENT_VERIFIED from EVENT_COVERAGE_INCOMPLETE. Keep outcomes closed and do not modify institutionalScore."
+}
