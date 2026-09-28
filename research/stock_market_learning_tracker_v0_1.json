@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-09-28T21:07:00+08:00",
+  "updatedAt": "2026-09-28T21:04:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -464,7 +464,11 @@
           "learningScope": "聚焦「漲跌停對波動估計污染」。學習範圍：波動率計算、窗口與尺度；收縮、擴張、跳空與狀態轉換；個股與市場波動互動；漲跌停／停牌污染；在選股、停損、部位縮放與Regime判斷中的用途。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義"
         }
-      ]
+      ],
+      "status": "FALSIFICATION_IN_PROGRESS",
+      "exactNextContinuationPoint": "D04-ATR-OBS-01: audit outcome-free observability of the frozen L0 pre-ATR -> L1 ATR gate -> L2 stop geometry -> L3 RR survival -> L4 final selection decomposition across actual Shadow/reject cohorts; identify first-failure/sampling holes before any outcomes. Then verify prospective clean TAIEX RV5/RV20/RV5to20 capture and compare overlapping ratio versus non-overlapping recent5/prior15 only as robustness.",
+      "lastResearchUpdate": "2026-09-28T21:04:00+08:00",
+      "researchNote": "Frozen machine spec research/volatility_atr_conditioning_decomposition_v0_1.json. Global ATR optimum rejected as structurally misspecified without channel+stop-binding controls; no maturity promotion this round."
     },
     {
       "id": "D05",
@@ -556,7 +560,11 @@
           "learningScope": "聚焦「停牌／無交易日／pseudo-bar語意」。學習範圍：台股撮合制度、Tick、限價與集合競價；買賣價差、深度、委託流、流動性狀態；零股／整股差異；資料可觀測性限制；對可成交性、滑價與訊號品質的影響。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "台股PIT資料可行"
         }
-      ]
+      ],
+      "status": "EVIDENCE_PENDING",
+      "exactNextContinuationPoint": "D05-HORIZON-01: no new indicators. When a complete prospective books+trades event ledger is available, validate E0 event-time -> E1 1m/5m -> E2 10m/15m -> E3 30m retention using dual clock, event-intensity matching, session/tick strata, and a nested top1 versus aggregate top5 test. Before infrastructure activation verify actual Fugle plan/quota and completeness/replay contract; missing events remain UNKNOWN.",
+      "lastResearchUpdate": "2026-09-28T21:04:00+08:00",
+      "researchNote": "Frozen machine spec research/microstructure_dual_clock_horizon_protocol_v0_1.json. Source feasibility material pass; own Taiwan PIT event completeness not proven, so no L3 promotion."
     },
     {
       "id": "D06",
