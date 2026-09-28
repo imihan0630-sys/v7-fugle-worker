@@ -1,0 +1,133 @@
+name: System2 First Sample Preflight Read-only
+
+on:
+  schedule:
+    - cron: "45 4 * * 1-5"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: system2-first-sample-preflight-readonly
+  cancel-in-progress: false
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Resolve Taipei market date
+        id: date
+        shell: bash
+        run: |
+          set -euo pipefail
+          MARKET_DATE="$(TZ=Asia/Taipei date +%F)"
+          echo "market_date=$MARKET_DATE" >> "$GITHUB_OUTPUT"
+
+      - name: Official TWSE trading-day preflight
+        id: calendar
+        env:
+          MARKET_DATE: ${{ steps.date.outputs.market_date }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          node system2/scripts/check_twse_trading_day_readonly.mjs             --market-date "$MARKET_DATE"
+
+      - name: Reassert frozen collector baseline
+        shell: bash
+        run: |
+          set -euo pipefail
+          node system2/tests/decision_clock_collector_freeze_guard_v0_1.test.mjs
+
+      - name: Reassert prospective collector schedule contract
+        shell: bash
+        run: |
+          set -euo pipefail
+          node system2/tests/prospective_clock_schedule_guard.test.mjs
+
+      - name: Verify prospective collector workflow is active
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p system2/artifacts
+          node system2/scripts/check_prospective_collector_workflow_readonly.mjs             --repo "$GITHUB_REPOSITORY"             --output system2/artifacts/prospective-collector-workflow-preflight.json
+
+      - name: Build preflight receipt
+        env:
+          MARKET_DATE: ${{ steps.date.outputs.market_date }}
+          EXPECTED_TRADING_DAY: ${{ steps.calendar.outputs.expected_trading_day }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          node - <<'NODE'
+          const fs=require("node:fs");
+          const workflow=JSON.parse(
+            fs.readFileSync(
+              "system2/artifacts/prospective-collector-workflow-preflight.json",
+              "utf8",
+            ),
+          );
+          const receipt={
+            receiptVersion:"S2_FIRST_SAMPLE_OPERATIONAL_PREFLIGHT_V0_1",
+            marketDate:process.env.MARKET_DATE,
+            expectedTradingDay:process.env.EXPECTED_TRADING_DAY==="true",
+            collectorFreezeGuardPassed:true,
+            prospectiveScheduleGuardPassed:true,
+            collectorWorkflow:workflow,
+            collectorScheduleTaipeiTime:"13:25",
+            preflightScheduleTaipeiTime:"12:45",
+            prospectiveEvidenceCreated:false,
+            exactDecisionClockAuthorized:false,
+            workerCronAuthorized:false,
+            captureEnabled:false,
+            system1RuntimeUsed:false,
+            externalMutationPerformed:false,
+          };
+          fs.writeFileSync(
+            "system2/artifacts/first-sample-operational-preflight.json",
+            JSON.stringify(receipt,null,2)+"\n",
+          );
+          const lines=[
+            "## System 2 first-sample operational preflight",
+            "",
+            "- Market date: "+receipt.marketDate,
+            "- Official trading day: "+receipt.expectedTradingDay,
+            "- Collector freeze guard: PASS",
+            "- Collector schedule guard: PASS",
+            "- Collector workflow active: "+receipt.collectorWorkflow.workflowActive,
+            "- Collector workflow preflight eligible: "+receipt.collectorWorkflow.preflightEligible,
+            "- Prospective collector intended time: 13:25 Asia/Taipei",
+            "- This preflight creates prospective evidence: false",
+            "- Exact Decision Clock authorized: false",
+            "- Worker Cron authorized: false",
+            "- Capture enabled: false",
+          ];
+          fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY,lines.join("\n")+"\n");
+          NODE
+
+      - name: Upload operational preflight receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: system2-first-sample-preflight-${{ steps.date.outputs.market_date }}-${{ github.run_id }}
+          path: system2/artifacts/first-sample-operational-preflight.json
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Reassert read-only boundary
+        shell: bash
+        run: |
+          set -euo pipefail
+          ! grep -Eiq 'secrets\.|wrangler[[:space:]]+(deploy|delete)|d1[[:space:]]+(create|execute)|SYSTEM2_CAPTURE_ENABLED[[:space:]]*=[[:space:]]*true'             .github/workflows/system2-first-sample-preflight-readonly.yml
+          echo "First-sample preflight read-only boundary PASS"
