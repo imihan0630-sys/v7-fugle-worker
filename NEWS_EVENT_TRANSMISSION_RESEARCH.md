@@ -131,3 +131,262 @@ A Taiwan point-in-time news archive with versioned article capture is required f
 Sentiment, novelty, source reliability, expectation surprise, priced-in state, direct/indirect exposure, and event outcome must remain separate dimensions.
 
 No Formal Core, System 1 selection, System 2 live strategy, ranking, threshold, capital, monitor, push or execution behavior is changed by this research.
+
+
+---
+
+# Long-block D17 convergence — source reliability, half-life, beneficiary/victim, priced-in and propagation
+
+Updated: 2026-09-28 Asia/Taipei
+Research mode: deep / long-block / positive + falsification
+Formal Core: unchanged
+
+This block advances the seven remaining L1 D17 modules to mechanism-plus-falsification maturity. It does not claim Taiwan PIT readiness or trading alpha.
+
+## D17-01 — News source reliability is a vector, not a single ranking
+
+A simple source tier such as "official > media > social" is too crude for trading research.
+
+A usable reliability contract must separate at least:
+- authority / provenance;
+- independence of evidence lineage;
+- fact verifiability;
+- timeliness / firstKnownAt;
+- revision and correction integrity;
+- entity/event specificity.
+
+The key falsification is that **truth reliability and market-impact potential are different variables**. Empirical fake-news research shows false or low-quality information can still attract attention, volume and short-run price response. Therefore an unverified source cannot be assigned economic truth, but neither can its market-impact potential be forced to zero.
+
+Media also has a causal dissemination role. Engelberg & Parsons (2011) and Peress (2014) show media access/timing changes trading and information incorporation. Consequently:
+- an exchange/MOPS/issuer filing can be the highest-verifiability source;
+- an independent wire/media report can be the earliest attention transmitter;
+- a social/rumor source can have low truth confidence yet nonzero short-run event-risk relevance.
+
+Frozen outputs should keep separate:
+`truthConfidence`, `marketImpactPotential`, `firstKnownAt`, `sourceLineage`, `revisionState`.
+
+**Counterexample:** two reputable websites repeating one press release are not two independent confirmations.
+
+Status: D17-01 -> L2.
+
+## D17-03 — News Half-life is event-conditional and multi-clock
+
+There is no defensible universal "news expires after N days" rule.
+
+Three clocks must be separated:
+1. **FACT_RELEVANCE_EXPIRY** — when the economic fact itself stops affecting future cash flow/risk.
+2. **ATTENTION_DIFFUSION_DECAY** — how fast investors stop acquiring/redistributing the story.
+3. **PRICE_RESPONSE_PERSISTENCE** — how long abnormal continuation/reversal remains detectable after controls.
+
+Evidence is deliberately contradictory in horizon:
+- Chan (2003) finds drift after public bad news, especially in smaller/illiquid names.
+- Tetlock (2011) shows stale/reprinted news can create short-lived overreaction and next-week reversal.
+- Hirshleifer, Lim & Teoh (2009) show attention competition can delay earnings incorporation.
+- Pan, Sul & Wang (2026) find one delayed macro-information effect around earnings announcers dissipates by about day seven in that setting.
+
+These are not conflicting failures; they falsify one fixed decay constant.
+
+Frozen research horizons:
+`15m -> close -> D1 -> D3 -> D5 -> D10 -> D20`.
+Candidate states:
+`FAST_ABSORPTION`, `DELAYED_CONTINUATION`, `REVERSAL_AFTER_ATTENTION`, `MULTI_STAGE_UPDATE`, `STRUCTURAL_PERSISTENCE`, `UNKNOWN`.
+
+A future half-life may be estimated within a pre-registered event class, but never imported from one event family into another.
+
+Status: D17-03 -> L2.
+
+## D17-04 — Direct beneficiary / victim requires a causal exposure chain
+
+A company is not a direct beneficiary merely because its name appears next to a favorable theme.
+
+Required chain:
+`EVENT -> ECONOMIC_PRIMITIVE -> FIRM_EXPOSURE -> FINANCIAL_TRANSMISSION -> EFFECTIVE_TIMING`.
+
+Examples of economic primitives:
+- quantity / demand;
+- selling price;
+- input cost;
+- capacity availability;
+- contract/customer allocation;
+- regulation;
+- financing cost;
+- asset value / impairment;
+- competitive share.
+
+A direct mapping must store the exposure basis and timing. For example, a customer award is not yet earnings unless shipment capacity, margin, timing and cancellation/qualification conditions are known.
+
+Counterexamples:
+- input inflation may benefit an upstream scarce producer but hurt a downstream processor;
+- a large order can be low margin or capacity-constrained;
+- a competitor failure can help via share shift but hurt through category demand/contagion;
+- technically capable suppliers may have no verified revenue exposure.
+
+Thus event direction is never automatically a stock-trading sign.
+
+Status: D17-04 -> L2.
+
+## D17-05 — Second-order / supply-chain transmission needs hop-by-hop evidence
+
+Cohen & Frazzini (2008) and Menzly & Ozbas (2010) support gradual information diffusion across economically linked firms. This gives a legitimate mechanism for second-order transmission.
+
+But the opposite failure mode is equally important: peer/leader spillovers can be excessive and later reverse. Duan et al. (2025) documents leader-to-peer spillover in China that is subsequently corrected at peers' own earnings.
+
+Therefore:
+- each graph edge needs a named/effective-dated economic relationship;
+- each hop needs its own transformation mechanism;
+- confidence normally weakens with unsupported hops;
+- sign may continue, attenuate, invert or become UNKNOWN;
+- thematic similarity is not an economic edge.
+
+D10 supply-chain edges remain the economic graph authority. D17 adds event-specific information arrival and propagation state; it must not recreate a second supply-chain graph.
+
+Status: D17-05 -> L2.
+
+## D17-07 — "Priced-in" is latent; price direction alone cannot prove it
+
+The market's pre-event incorporation state cannot be observed directly.
+
+A valid pre-event evidence vector may include:
+- consensus / expected event state;
+- prior official guidance;
+- scheduled-event certainty;
+- pre-event abnormal price path;
+- volume / attention;
+- earlier peer announcements;
+- analyst revisions only if point-in-time;
+- novelty / stale-news state.
+
+Prohibited shortcut:
+`price already rose -> good news is fully priced in`.
+
+Why? Attention itself can move prices without equivalent new fundamentals. Chapman (2018) shows earnings-date notifications can produce returns/attention despite little performance information, and can alter later announcement response. Pre-event price movement can therefore reflect anticipation, attention, leakage, positioning, risk premium or unrelated common factors.
+
+Also prohibited:
+- using post-event return to retrospectively label the event as "not priced in";
+- labeling a heavily repeated story as fully priced in solely from article count.
+
+Frozen states:
+`LOW_EXPECTATION_EVIDENCE`, `PARTIAL_EXPECTATION_EVIDENCE`, `HIGH_EXPECTATION_EVIDENCE`, `CONFLICTED`, `UNKNOWN`.
+
+Status: D17-07 -> L2.
+
+## D17-10 — Cross-validation counts evidence lineages, not URLs
+
+Cross-validation must be field-level and lineage-aware.
+
+Validate separately:
+- entity identity;
+- event occurrence;
+- magnitude;
+- publication/first-known time;
+- effective time;
+- scope;
+- economic mechanism.
+
+Lineage examples:
+- issuer release -> five media copies = one primary lineage plus distribution, not six confirmations;
+- regulator filing + independently sourced customer filing = stronger independent confirmation;
+- later correction is a new version, not permission to rewrite earlier knownAt.
+
+If sources conflict, retain:
+`CONFLICT`, both values, timestamps, source lineage and eventual resolution.
+Do not majority-vote article counts.
+
+This is especially important because the current System 2 source matrix already flags general news as SOURCE_NEEDED and warns about entity resolution, publication/update timestamps and licensing.
+
+Status: D17-10 -> L2.
+
+## D17-11 — Sector propagation must separate contagion from competition
+
+Industry/peer information transfer is well documented, but sign is not universal.
+
+Supporting evidence:
+- Foster (1981) finds earnings information can transfer to economically similar peers.
+- Bergsma & Tayal (2020) find same-direction peer spillovers across several developed markets, stronger with large announcers and higher volatility.
+- recent work continues to find peer-announcement information transfer.
+
+Critical counterevidence:
+- Laux, Starks & Yoon show competitive effects can offset same-industry contagion.
+- Duan et al. (2025) shows leader spillover can overreact and later reverse.
+
+Therefore a sector-propagation event must classify mechanism before assigning an expected relation:
+- `COMMON_DEMAND_CONTAGION`;
+- `COMMON_COST_CONTAGION`;
+- `SUPPLY_CHAIN_TRANSMISSION`;
+- `COMPETITIVE_SHARE_SHIFT`;
+- `SUBSTITUTION`;
+- `REGULATORY_COMMON_SHOCK`;
+- `ATTENTION_ONLY`;
+- `UNKNOWN`.
+
+Peer sets must be frozen before outcomes using industry/economic exposure evidence. Market/sector residual controls are required. A leader's return cannot become the peer's fundamental score.
+
+D09 remains owner of persistent sector RS/breadth. D10 remains owner of supply-chain structure. D17 owns only **event-specific propagation** to avoid double counting.
+
+Status: D17-11 -> L2.
+
+## Integrated falsification conclusions
+
+The long block rejects seven tempting shortcuts:
+1. source reputation alone = truth;
+2. low-quality source = zero market impact;
+3. all news uses one expiry/half-life;
+4. favorable event narrative = beneficiary;
+5. one-hop positive transmission = all downstream positive;
+6. prior price rise = fully priced in;
+7. many URLs = many confirmations;
+8. sector leader move = peer fundamental direction.
+
+The correct architecture is a **state vector**, not a single news score.
+
+## System 1 / System 2 fit
+
+### System 1
+Current official ANNOUNCEMENTS normalization is date/title level. It is useful for coarse event context but cannot safely support:
+- intraday firstKnown;
+- source-lineage independence;
+- version/correction replay;
+- novelty;
+- event-specific half-life;
+- direct/indirect exposure maps.
+
+No Formal System 1 factor should be added from this block.
+
+### System 2
+System 2 L5 already requires timestamp, mechanism, beneficiary/victim map, confidence and half-life/expiry. The new D17 contract supplies exact semantics for those fields.
+
+However, the System 2 source matrix still marks **General news = SOURCE_NEEDED**. Therefore this is a strong research-data contract fit, not a production factor.
+
+### Promotion decision
+`FORMAL_OPTIMIZATION_CANDIDATE = NO`.
+
+Reason:
+- no canonical Taiwan general-news source contract;
+- no complete point-in-time article/version archive;
+- no prospective/OOS event cohort;
+- no cost/redundancy evidence showing incremental return or risk value after D09/D10/D11 controls.
+
+## External evidence anchors
+- Chan (2003), Journal of Financial Economics, `10.1016/S0304-405X(03)00146-6`.
+- Tetlock (2011), Review of Financial Studies, `10.1093/rfs/hhq141`.
+- Boudoukh, Feldman, Kogan & Richardson (2013), NBER Working Paper 18725.
+- Engelberg & Parsons (2011), Journal of Finance, `10.1111/j.1540-6261.2010.01626.x`.
+- Peress (2014), Journal of Finance, `10.1111/jofi.12179`.
+- Hirshleifer, Lim & Teoh (2009), Journal of Finance, `10.1111/j.1540-6261.2009.01501.x`.
+- Cohen & Frazzini (2008), Journal of Finance, `10.1111/j.1540-6261.2008.01379.x`.
+- Menzly & Ozbas (2010), Journal of Finance, `10.1111/j.1540-6261.2010.01578.x`.
+- Foster (1981), Journal of Accounting and Economics, `10.1016/0165-4101(81)90003-3`.
+- Bergsma & Tayal (2020), International Review of Financial Analysis, `10.1016/j.irfa.2020.101511`.
+- Duan et al. (2025), Accounting & Finance, `10.1111/acfi.70003`.
+- Clarke et al. (2020/2021), Information Systems Research, `10.1287/isre.2019.0910`.
+- Arcuri, Gandolfi & Russo (2023), Journal of Economics and Business, `10.1016/j.jeconbus.2023.106130`.
+- Chapman (2018), Journal of Accounting and Economics, `10.1016/j.jacceco.2018.05.002`.
+
+## Exact next continuation
+1. D17-01/03/04/05/07/10/11 now stop at L2 until Taiwan PIT evidence exists.
+2. Highest-value next research is source-readiness, not another conceptual score:
+   - inventory candidate Taiwan general-news / official-news feeds;
+   - test publication/update timestamp, immutable version capture, licensing, entity resolution, corrections and archive completeness;
+   - preserve article/event lineage.
+3. In parallel, design a **research-only prospective event ledger schema** that can feed D17-02/08/09 and these new contracts without changing Formal behavior.
+4. Only after source-readiness passes, preregister an outcome-blind event cohort and negative controls for D17-03/04/05/07/11.
