@@ -411,3 +411,61 @@ Status: `CONCEPT_COMPLETE / PIT_SOURCE_PARTIAL / PROSPECTIVE_EVIDENCE_PENDING / 
 - order-backlog disclosure research in Journal of Accounting and Public Policy (2021).
 - Taiwan MOEA Industrial Production / Sales / Inventory official statistics and release calendar.
 
+
+
+## SC-013 — MOEA machine-interface audit: downloadable CSV exists; PIT archive is still our responsibility
+
+### Outcome-blind source audit result
+The first source-readiness gate materially improved.
+
+Taiwan's Government Open Data platform exposes official Ministry of Economic Affairs datasets as downloadable CSV resources, including:
+- industrial / manufacturing production index;
+- manufacturing sales-volume index / sales value;
+- manufacturing inventory-volume index;
+- manufacturing inventory value;
+- manufacturing inventory ratio;
+- manufacturing investment / operations data.
+
+The resource links resolve to `service.moea.gov.tw/EE520/opendata/*.csv` style endpoints. The government platform separately publishes M2M（Machine to Machine，機器對機器） metadata standards and a documented `GET /api/v2/rest/dataset/{datasetId}` metadata contract.
+
+This falsifies the earlier conservative assumption that the MOEA physical-cycle lane may be limited to a human-only interactive query. There is a documented machine-readable file-distribution path.
+
+### What remains unproven
+The open-data dataset pages label update frequency as "irregular" even though the underlying Industrial Production / Sales / Inventory survey has a monthly publication timetable. Therefore a static endpoint alone does NOT prove historical first-known vintages.
+
+The current research environment could identify the documented CSV URLs but could not ingest the octet-stream bytes through the web text fetcher; this is a tool/content-type limitation, not evidence that the public CSV resource is unavailable.
+
+Still UNKNOWN:
+- whether each monthly CSV is immutable or overwritten in place;
+- whether historical preliminary/revised vintages are directly downloadable;
+- exact revision-history retention;
+- whether every detailed industry/product series uses identical resource semantics.
+
+### Required prospective capture protocol
+For a research-only collector:
+1. use the official release calendar as the trigger, not the open-data page's generic update-frequency label;
+2. discover/confirm resource URL from official metadata;
+3. fetch the CSV after release;
+4. preserve `fetchedAt`, HTTP metadata where available, source URL, datasetId, resource filename, byte hash and parser version;
+5. never overwrite an older captured file; append a new vintage;
+6. compare hashes / observations across vintages and record revisions explicitly;
+7. set `knownAt = fetchedAt` conservatively unless the official release timestamp is independently proven earlier;
+8. mark missing/failed capture UNKNOWN, never forward-fill a later vintage backward.
+
+### D10-11 maturity decision
+The combination of official downloadable CSV resources + official M2M metadata contract + known monthly source publication process establishes Taiwan prospective PIT capture feasibility.
+
+`D10-11 官方資料自動化擷取: L2 -> L3`.
+
+Scope of this upgrade:
+- machine-readable source feasibility: YES;
+- prospective PIT archive feasibility: YES;
+- complete historical vintage recovery: UNKNOWN;
+- production collector implementation: NOT DONE;
+- Formal Core impact: NONE.
+
+### Next
+SC-014: effective-dated crosswalk between MOEA industry/product taxonomies and TWSE/TPEx company classifications.
+SC-015: source-only multi-industry pilot with stored vintages/hashes; no forward-return outcomes until coverage and revision semantics pass.
+
+Status: `MACHINE_SOURCE_FEASIBLE / PROSPECTIVE_VINTAGE_CAPTURE_REQUIRED / HISTORICAL_VINTAGE_UNKNOWN`.
