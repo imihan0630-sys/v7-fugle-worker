@@ -1,0 +1,37 @@
+{
+  "schemaVersion": "immutable-parent-scope-generation-integrity-v0.1",
+  "updated": "2026-09-28 Asia/Taipei",
+  "researchOnly": true,
+  "runtimeImplemented": false,
+  "formalCore": "LOCKED",
+  "parentScope": {
+    "parentScopeId": "FORMAL_HISTORY_ADMITTED_DECISION_PATH_V1",
+    "definition": "ALL_HISTORY_ADMITTED_FEATURE_ROWS_EVALUATED_BY_SAME_SCAN_FORMAL_DECISION_PATH",
+    "selectedOnly": false,
+    "upstreamHistoryBlocked": "SCAN_POPULATION_RECEIPT"
+  },
+  "coherentFields": [
+    "scanDate",
+    "captureGeneration",
+    "decisionCutoffAt",
+    "formalWorkerVersion",
+    "selectionRuleVersion",
+    "rankComparatorVersion",
+    "parentSchemaVersion"
+  ],
+  "invariants": [
+    "UNIQUE_CANONICAL_SYMBOL_PER_GENERATION_SCOPE",
+    "ALL_COHERENT_FIELDS_EQUAL_ACROSS_PARENT_SET",
+    "ALL_COHERENT_FIELDS_MATCH_GENERATION_EXPECTATION",
+    "PARENT_SCOPE_ID_MUST_MATCH_FROZEN_SCOPE_CONTRACT",
+    "HASH_MATCH_DOES_NOT_REPLACE_COHERENCE_QA"
+  ],
+  "publicationRequirements": [
+    "SCOPE_QA_VALID",
+    "GENERATION_COHERENCE_VALID",
+    "PARENT_COUNT_MATCH",
+    "PARENT_KEYSET_HASH_MATCH",
+    "DECISION_SET_HASH_MATCH",
+    "ZERO_PROVENANCE_CONFLICT"
+  ]
+}
