@@ -1,0 +1,124 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-09-28 Asia/Taipei",
+  "name": "D17 prospective versioned event ledger",
+  "status": "RESEARCH_DESIGN_ONLY / NOT_IMPLEMENTED / FORMAL_CORE_UNCHANGED",
+  "appendOnly": true,
+  "records": {
+    "sourceReceipt": {
+      "fields": [
+        "receiptId",
+        "sourceId",
+        "sourceClass",
+        "sourceUrl",
+        "sourceLineage",
+        "capturedAt",
+        "httpOrProviderTimestamp",
+        "rawHash",
+        "licenseState",
+        "parserVersion",
+        "captureStatus",
+        "missingReason"
+      ]
+    },
+    "articleOrDisclosureVersion": {
+      "fields": [
+        "versionId",
+        "sourceReceiptId",
+        "providerItemId",
+        "publishedAt",
+        "firstKnownAt",
+        "capturedAt",
+        "updatedAt",
+        "title",
+        "summaryOrAllowedExcerpt",
+        "contentFingerprint",
+        "semanticFingerprint",
+        "revisionType",
+        "supersedesVersionId",
+        "language",
+        "entityCandidates"
+      ]
+    },
+    "eventClusterState": {
+      "fields": [
+        "eventClusterId",
+        "asOf",
+        "canonicalFirstKnownAt",
+        "eventCategory",
+        "entityMap",
+        "economicPrimitive",
+        "noveltyState",
+        "sentimentState",
+        "expectationState",
+        "pricedInState",
+        "truthConfidence",
+        "marketImpactPotential",
+        "clusterStatus",
+        "unknownReason"
+      ]
+    },
+    "exposureEdge": {
+      "fields": [
+        "eventClusterId",
+        "symbol",
+        "relationType",
+        "directOrIndirect",
+        "hop",
+        "exposureBasis",
+        "effectiveFrom",
+        "knownAt",
+        "magnitudeOrUnknown",
+        "passThroughState",
+        "capacityConstraint",
+        "competitionState",
+        "substitutionState",
+        "propagationMechanism",
+        "confidence",
+        "evidenceVersionIds"
+      ]
+    }
+  },
+  "timeRules": {
+    "replayEligibility": "A version is visible only if firstKnownAt<=replayAsOf and capturedAt<=replayAsOf under the selected conservative clock contract.",
+    "corrections": "Corrections and updates append new versions. Earlier records are never overwritten.",
+    "missingTimestamp": "UNKNOWN; never infer from crawl order or later timestamps.",
+    "sourceTimeVsCaptureTime": "Preserve both; capture time is a conservative upper bound when source publication time cannot be independently authenticated."
+  },
+  "dedupRules": [
+    "Exact or near-exact syndication with no incremental fact remains one event cluster.",
+    "A materially new numeric, timing, customer, regulatory, capacity, guidance or economic fact is UPDATE, not duplicate.",
+    "Similar text with different event date/object is not merged solely by embedding similarity.",
+    "Future versions may extend cluster membership but cannot alter historical replay state before their firstKnownAt."
+  ],
+  "coverageReceipt": {
+    "fields": [
+      "windowStart",
+      "windowEnd",
+      "sourcesExpected",
+      "pollsExpected",
+      "pollsObserved",
+      "itemsObserved",
+      "captureFailures",
+      "unknownIntervals",
+      "completenessState"
+    ],
+    "rule": "Absence may support NO_KNOWN_EVENT only when source poll coverage/completeness is proven for the relevant lane; otherwise absence is UNKNOWN."
+  },
+  "outcomeJoinGate": {
+    "default": "CLOSED",
+    "opensOnlyAfter": [
+      "source/version PIT contract passes",
+      "coverage receipts are sufficient",
+      "entity/event mapping is frozen without outcome inspection",
+      "event class and horizons are preregistered",
+      "market/sector/peer controls and corporate-action firewall are defined"
+    ]
+  },
+  "architecture": {
+    "preference": "isolated research storage, no Formal dependency",
+    "providerCalls": "Do not add latency-sensitive production calls under this design.",
+    "system1": "Research observer only; current Formal unchanged.",
+    "system2": "Candidate future L5 research data source only after source/license/PIT gates pass."
+  }
+}
