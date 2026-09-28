@@ -37,17 +37,35 @@ function yearsInRange(fromDate, toDate) {
 }
 
 async function fetchCalendar(year, fetchImpl) {
-  const response = await fetchImpl(officialTwseCalendarUrl(year), {
-    method: "GET",
-    headers: {
-      Accept: "application/json",
-      "User-Agent": "System2-Historical-Backfill/0.1",
+  const attempts = [
+    { convention: "GREGORIAN", queryYear: year, url: officialTwseCalendarUrl(year) },
+    {
+      convention: "ROC_FALLBACK",
+      queryYear: year - 1911,
+      url: "https://www.twse.com.tw/rwd/zh/holidaySchedule/holidaySchedule?response=json&queryYear=" + (year - 1911),
     },
-  });
-  if (!response?.ok) {
-    throw new Error("official TWSE calendar HTTP " + response?.status + " for " + year);
+  ];
+  const errors = [];
+  for (const attempt of attempts) {
+    try {
+      const response = await fetchImpl(attempt.url, {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "User-Agent": "System2-Historical-Backfill/0.1",
+        },
+      });
+      if (!response?.ok) {
+        errors.push(attempt.convention + ":HTTP_" + response?.status);
+        continue;
+      }
+      const payload = await response.json();
+      return parseTwseTradingCalendar(payload, year);
+    } catch (error) {
+      errors.push(attempt.convention + ":" + String(error?.message || error));
+    }
   }
-  return parseTwseTradingCalendar(await response.json(), year);
+  throw new Error("official TWSE calendar unavailable for " + year + ": " + errors.join(" | "));
 }
 
 export async function buildOfficialTradingDatesV0_1({
