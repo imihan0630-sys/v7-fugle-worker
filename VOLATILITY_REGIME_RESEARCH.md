@@ -632,3 +632,112 @@ Priority order:
 
 Current promotion status remains:
 `FALSIFICATION_IN_PROGRESS / NOT_OPTIMIZATION_READY`.
+
+
+## VR-028 — prospective market-RV persistence wiring audit
+
+The next D04 blocker is now localized to the persistence/wiring layer rather than source availability or formula definition.
+
+### What already exists
+
+System 2 already has all of the structural pieces needed to persist market-volatility evidence:
+- `SYSTEM2_MARKET_REGIME_V0.md` preregisters `realizedVol5`, `realizedVol20` and `volRatio5to20`;
+- `s2_market_regime_snapshots` has `factor_observations_json` and source-receipt storage;
+- `buildLimitedShadowRunBundleV0_1` accepts `regimeFactorObservations`;
+- `buildFactorObservation` supports MARKET-scope raw values with explicit PIT provenance;
+- the official A2 TAIEX/FMTQIK source-probe path exists for decision-clock availability evidence.
+
+### What is not wired
+
+Fresh repository search on 2026-09-28 found:
+- no runtime implementation containing the literal raw factors `realizedVol5`, `realizedVol20` or `volRatio5to20` outside research/design documents;
+- `regimeFactorObservations` appears only in the assembler/orchestrator definitions, with a default empty array;
+- no repository caller currently supplies populated `regimeFactorObservations`;
+- `runDailyLimitedShadowOrchestratorV0_1` itself is currently referenced only by its module/tests, not by an active production scheduling caller.
+
+Therefore:
+`SCHEMA_READY = YES`
+`OFFICIAL_SOURCE_PROBE_READY = YES`
+`RAW_MARKET_RV_FACTOR_WIRING = NOT_IMPLEMENTED_IN_CURRENT_REPO`
+`PROSPECTIVE_MARKET_RV_EVIDENCE_ACCUMULATING = NOT_PROVEN`.
+
+This is a research-evidence gap, not a volatility-theory gap.
+
+### System 1 parallel observation
+
+System 1 already loads official `V7_OFFICIAL_INDEX` history with at least 21 official sessions and same-date close validation. That source is computationally sufficient for RV5/RV20 without another external market-data request.
+
+But repository search likewise found no durable research field named `marketRealizedVol5`, `marketRealizedVol20`, `marketVolRatio5to20`, `marketVolPointInTimeEligible` or `marketVolHistoryThrough` outside this research specification.
+
+So "can compute" must not be confused with "was durably captured at the decision clock."
+
+Status:
+`COMPUTE_FEASIBLE / PERSISTENCE_WIRING_GAP / NO_FORMAL_CHANGE`.
+
+
+## VR-029 — semantic guard: volatilityState is evidence state, not volatility direction
+
+System 2's `buildMarketRegimeSnapshot()` currently constrains `volatilityState` to the generic observation-state vocabulary:
+- KNOWN
+- UNKNOWN
+- STALE
+- INVALID
+- NOT_APPLICABLE
+
+Therefore `volatilityState` in this runtime object means **whether volatility evidence is valid/available**, not:
+- VOL_EXPANDING
+- VOL_CONTRACTING
+- HIGH_VOLATILITY
+- LOW_VOLATILITY.
+
+This distinction is easy to lose because the design document also uses "volatility state" in the economic sense.
+
+Frozen semantic separation:
+1. `regime.volatilityState` = evidence-quality state only;
+2. raw RV values belong in MARKET-scope `regimeFactorObservations`;
+3. economic labels such as VOL_EXPANDING/VOL_CONTRACTING belong in the regime label layer only after their required raw factors are PIT-ready;
+4. no scalar market-risk score is created.
+
+Minimum raw observations for V0.1:
+- MARKET_RV5_CC_SIMPLE
+- MARKET_RV20_CC_SIMPLE
+- MARKET_RV_RATIO_5_20
+
+Each observation must preserve:
+- marketDate;
+- decisionTimestamp;
+- rawValue;
+- sourceId/sourceName/sourceUrl/sourceDate;
+- observedAt;
+- availableAt;
+- capturedAt;
+- pointInTimeEligible;
+- payload/source receipt reference.
+
+The ratio is a derived descriptor from RV5 and RV20, not a third independent vote.
+
+Status:
+`SEMANTIC_COLLISION_PREVENTED / FACTOR_OBSERVATION_CONTRACT_FROZEN`.
+
+
+## VR-030 — first valid market-RV evidence is prospective-only
+
+The A2/FMTQIK observer and System 1 official-index quality path establish that same-date TAIEX data can be observed prospectively. They do not create immutable first-known historical market-RV vintages.
+
+Therefore:
+- pre-capture historical dates remain UNKNOWN for promotion-grade RV evidence;
+- current/latest mutable snapshots cannot be retrospectively relabeled as exact decision-time RV observations;
+- the first valid sample date is the first date on which raw RV5/RV20/ratio are actually persisted with the decision-clock receipt.
+
+First research sequence after wiring:
+1. verify exact same-date TAIEX source receipt;
+2. persist raw RV5/RV20/ratio;
+3. verify factor observations are referenced by the same regime snapshot and immutable run fingerprint;
+4. accumulate independent clean dates;
+5. only then evaluate VOL_EXPANDING/VOL_CONTRACTING and non-overlap recent5/prior15 robustness;
+6. do not inspect strategy outcomes before the raw capture contract is frozen.
+
+No new sample-count threshold is invented here. Reuse D16/D18 and the repository-wide independent-date/OOS maturity gates.
+
+Status:
+`MARKET_RV_CAPTURE_GATE = DEFINED / EVIDENCE_COUNT_ZERO_UNTIL_REAL_PERSISTENCE`.
