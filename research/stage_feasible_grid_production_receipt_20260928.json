@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "STAGE_FEASIBLE_GRID_PRODUCTION_RECEIPT_V0_1",
+  "observedAt": "2026-09-28T12:39:20+08:00",
+  "timestampProvenance": "GitHub Actions Portfolio Risk Tier-A Research run 36378589526 / job 108789397492",
+  "workflowRunId": 36378589526,
+  "jobId": 108789397492,
+  "readOnly": true,
+  "productionWrites": false,
+  "decisionImpact": false,
+  "scanDate": "2026-09-18",
+  "selectedCount": 3,
+  "ratioGrid": "FIRST 5%-95% by 5%",
+  "summary": {
+    "testedRatios": 19,
+    "globalMinimumUnchangedByStageConstraint": 19,
+    "unconstrainedOptimaAlreadyTwoStageFeasible": 19
+  },
+  "stateGeometry": {
+    "legalStatesPerRatio": 946,
+    "note": "At the tested 5%-95% ratios, the same-deployment 35%-cap geometry forces every legal state high enough that both tranches remain orderable for all names."
+  },
+  "falsification": {
+    "rejectedClaim": "The low-concentration global comparator is an artifact of allowing a zero-share FIRST or ADD tranche.",
+    "result": "Rejected. For all 19 ratios, stage-feasible minimum HHI equals the unconstrained minimum and every unconstrained optimum is already two-stage orderable."
+  },
+  "status": "COMPARATOR_STAGE_FEASIBILITY_CAVEAT_CLOSED / GLOBAL_MINIMA_UNCHANGED_19_OF_19 / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY",
+  "formalCoreImpact": false
+}
