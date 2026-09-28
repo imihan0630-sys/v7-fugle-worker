@@ -2205,3 +2205,18 @@ Updated: 2026-09-27 23:38 Asia/Taipei.
 - System 1 current announcement storage remains too coarse for these semantics. System 2 L5 architecture fits the contract, but canonical general-news sourcing and PIT/version capture remain unresolved.
 - No L3 claim and no formal optimization candidate. Formal Core and live behavior unchanged.
 - Exact next: Taiwan general-news source-readiness audit, then a research-only versioned prospective event ledger, then preregistered PIT/OOS event cohorts and negative controls.
+
+
+## Event & News D17 source-readiness + prospective ledger stage — 2026-09-28 Asia/Taipei
+- Continued directly from the D17 long-block exact-next rather than restarting concepts.
+- Taiwan primary event truth lane: official MOPS/TWSE presentation exposes intraday publication time and historical/current material-information queries, but current repository ANNOUNCEMENTS persistence remains date/title level. Result: `PRIMARY_EVENT_SOURCE_PROVEN / STORED_PIT_SEMANTICS_INCOMPLETE`.
+- Taiwan general-news discovery: CNA exposes finance/technology RSS, proving machine-readable discovery feasibility. Published RSS terms restrict use to personal/non-profit/non-commercial purposes and require attribution; therefore public RSS is **not** assumed production-licensed. Archive/version completeness is also unproven.
+- Category-specific government RSS can provide primary policy/industry events but cannot replace company disclosure or broad general-news coverage.
+- Multi-lane source architecture frozen: official canonical-truth lane, media discovery/dissemination lane, attention-impact lane, and a still-missing licensed production general-news lane. No silent substitution across lanes.
+- New source receipt: `research/news_source_readiness_receipt_v0_1.json`.
+- New research-only design: `research/d17_prospective_event_ledger_schema_v0_1.json`, append-only with separate raw receipt, article/disclosure version, PIT event-cluster state and company/event exposure edge.
+- Replay rule: later corrections append and never rewrite prior decision-time truth. NO_KNOWN_EVENT requires proven polling/completeness; otherwise absence remains UNKNOWN.
+- Outcome join remains closed until source/version PIT, coverage, outcome-blind entity/event mapping, preregistered horizons and market/sector/peer + corporate-action controls pass.
+- No additional maturity promotion from the source audit: D17 remains 40.0%, room 08 remains 43.7%. L3 requires actual Taiwan PIT/versioned capture evidence.
+- `FORMAL_OPTIMIZATION_CANDIDATE = NO`; Formal Core and live System 2 behavior unchanged.
+- Exact next: run a bounded prospective source-only capture pilot when a legally usable feed is available; measure firstKnown/capturedAt latency, revision incidence, duplicate-cluster behavior and coverage gaps without inspecting returns. Keep production general-news lane SOURCE_NEEDED until licensing/interface is validated.
