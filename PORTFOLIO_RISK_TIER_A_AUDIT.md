@@ -1951,3 +1951,46 @@ Status:
 `CONCENTRATION_COUNT_SEMANTICS_FROZEN / TRUE_EFFECTIVE_BETS_DATA_BLOCKED / D15_06_REMAINS_L2`.
 
 Formal Core unchanged.
+
+
+## D15-CA-001 — plan-time cash attribution separated from broker cash (2026-09-28)
+
+D15-08 now has a falsifiable accounting taxonomy.
+
+For each scan date, plan-time capital is decomposed into:
+- planned deployment;
+- designed strategic reserve from the selected-count deployment rule;
+- allocation implementation shortfall;
+- when exact allocator reconstruction matches the immutable plans, cap-induced reserve and NT$1,000 floor reserve.
+
+The accounting identity is checked rather than assumed.
+
+### Critical firewall
+
+`planned cash != actual broker cash`.
+
+Plan rows cannot tell whether:
+- BUY/ADD triggered;
+- suggested quantity was submitted;
+- an order partially filled;
+- REDUCE/SELL actually executed;
+- cash was blocked by stale/unknown execution evidence.
+
+Therefore actual execution-state cash remains UNKNOWN without fill/holdings/broker-balance evidence.
+
+### Zero-selection semantics
+
+A complete scan date with zero selected names is classified as:
+`NO_ELIGIBLE_OPPORTUNITY / DESIGNED_100_PERCENT_RESERVE`.
+
+It must not be labeled poor capital utilization merely because deployment is zero.
+
+Artifacts:
+`research/cash_attribution_v0_1.mjs`;
+`research/cash_attribution_spec_v0_1.json`;
+`tests/portfolio_risk_cash_attribution_readonly_audit.mjs`.
+
+Status:
+`PLAN_TIME_TAXONOMY_READY / PRODUCTION_AUDIT_PENDING`.
+
+No Formal Core change.
