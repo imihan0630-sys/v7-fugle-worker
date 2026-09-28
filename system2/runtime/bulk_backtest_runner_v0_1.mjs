@@ -146,6 +146,7 @@ async function buildCheckpoint({
   completedDates,
   processedSampleCount,
   stateCounts,
+  dateSummaries,
   rollingDigest,
   capturedAt,
 }) {
@@ -156,6 +157,7 @@ async function buildCheckpoint({
     completedThroughDate: [...completedDates].sort().at(-1) || null,
     processedSampleCount,
     stateCounts: deepFreeze({ ...stateCounts }),
+    dateSummaries: Object.freeze([...(dateSummaries || [])]),
     rollingDigest,
     capturedAt,
     schemaVersion: "S2_BULK_BACKTEST_CHECKPOINT_V0_1",
@@ -194,7 +196,7 @@ export async function runBulkBacktestV0_1({
   const captureTime = assertTimestamp(capturedAt, "capturedAt");
   const completedDates = checkpointCompletedDates(resumeCheckpoint, plan);
   const retainedSamples = [];
-  const dateSummaries = [];
+  const dateSummaries = [...(resumeCheckpoint?.dateSummaries || [])];
   const stateCounts = { ...(resumeCheckpoint?.stateCounts || {}) };
   let processedSampleCount = Number(resumeCheckpoint?.processedSampleCount || 0);
   let rollingDigest = resumeCheckpoint?.rollingDigest || await sha256Hex({
@@ -388,6 +390,7 @@ export async function runBulkBacktestV0_1({
       completedDates,
       processedSampleCount,
       stateCounts,
+      dateSummaries,
       rollingDigest,
       capturedAt: captureTime,
     });
