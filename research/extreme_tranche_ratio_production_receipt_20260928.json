@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "EXTREME_TRANCHE_RATIO_PRODUCTION_RECEIPT_V0_1",
+  "observedAt": "2026-09-28T12:33:57+08:00",
+  "timestampProvenance": "GitHub Actions Portfolio Risk Tier-A Research run 36378225540 / job 108788327294",
+  "workflowRunId": 36378225540,
+  "jobId": 108788327294,
+  "readOnly": true,
+  "productionWrites": false,
+  "decisionImpact": false,
+  "scanDate": "2026-09-18",
+  "selectedCount": 3,
+  "currentPlanOrderability": {
+    "testedFirstRatios": "1%-99% by 1%",
+    "testedRatios": 99,
+    "allStagesFeasibleCount": 99,
+    "minFeasibleFirstRatio": 0.01,
+    "maxFeasibleFirstRatio": 0.99,
+    "infeasibleRatios": []
+  },
+  "concentrationStress": {
+    "testedFirstRatios": "5%-95% by 5%",
+    "testedRatios": 19,
+    "currentMoreConcentratedThanEqualCapital": 19,
+    "currentAboveGlobalMinimum": 19
+  },
+  "falsification": {
+    "rejectedClaim": "The structural concentration or current plan's two-stage orderability fails under moderately extreme tranche ratios.",
+    "result": "Rejected for current allocation: all 99 current-plan ratios remain two-stage orderable; concentration direction survives all 19 tested 5%-95% ratios.",
+    "remainingIssue": "Ratio-specific global-min comparator search has not yet required every comparator name to have >=1 share in both FIRST and ADD tranches; execution-feasible optimum must be verified separately."
+  },
+  "status": "EXTREME_RATIO_DIRECTION_ROBUST / CURRENT_TWO_STAGE_ORDERABLE_1_TO_99 / COMPARATOR_STAGE_FEASIBILITY_PENDING / ECONOMIC_VALUE_UNKNOWN",
+  "formalCoreImpact": false
+}
