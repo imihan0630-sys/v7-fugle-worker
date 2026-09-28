@@ -3,6 +3,7 @@ import {
   buildOfficialHistoricalA1UrlV0_1,
   parseOfficialHistoricalA1PayloadV0_1,
   officialHistoricalA1SourceContractV0_1,
+  fetchOfficialHistoricalA1DateV0_1,
 } from "../runtime/official_historical_a1_source_v0_1.mjs";
 
 const observedAt = "2026-09-28T12:00:00Z";
@@ -120,5 +121,50 @@ assert.throws(
   }),
   /daily table not found/,
 );
+
+let attempts = 0;
+const retried = await fetchOfficialHistoricalA1DateV0_1({
+  market: "TWSE",
+  marketDate: "2017-01-03",
+  observedAt,
+  retryAttempts: 3,
+  retryDelayMs: 0,
+  fetchImpl: async () => {
+    attempts += 1;
+    if (attempts === 1) throw new TypeError("terminated");
+    return {
+      ok: true,
+      status: 200,
+      json: async () => twsePayload2017,
+    };
+  },
+});
+assert.equal(attempts, 2);
+assert.equal(retried.ordinarySymbolCount, 1);
+
+let integrityAttempts = 0;
+await assert.rejects(
+  () => fetchOfficialHistoricalA1DateV0_1({
+    market: "TPEX",
+    marketDate: "2017-01-03",
+    observedAt,
+    retryAttempts: 3,
+    retryDelayMs: 0,
+    fetchImpl: async () => {
+      integrityAttempts += 1;
+      return {
+        ok: true,
+        status: 200,
+        json: async () => ({
+          ...tpexPayload2017,
+          date: "20260924",
+          tables: [{ ...tpexPayload2017.tables[0], date: "115/09/24" }],
+        }),
+      };
+    },
+  }),
+  /SOURCE_DATE_MISMATCH/,
+);
+assert.equal(integrityAttempts, 1, "data-integrity failures must not be retried");
 
 console.log("System2 official historical A1 source adapter v0.1 tests passed");
