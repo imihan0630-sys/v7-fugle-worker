@@ -396,3 +396,12 @@ LOW participation is not a bullish label. Constructive dry-up requires intact pr
 D02-05/08/09/10 must be evaluated as views over PARTICIPATION_RESIDUAL -> EFFORT_RESULT -> PERSISTENCE_ACCEPTANCE before any additive scoring proposal. OBV/CMF/MFI/narrative accumulation-distribution labels require independent incremental evidence to escape REDUNDANT status.
 
 No hypothesis is upgraded to SUPPORTED/REJECTED by this design/literature block. Formal Core remains LOCKED.
+
+
+## D02 refinement after PVE-168~173 — 2026-09-28
+- Four price-volume quadrants are descriptive strata; no fixed directional sign.
+- D02-08 accumulation/distribution remains mechanism-UNKNOWN from OHLCV alone; liquidity, rebalancing, event shocks and disagreement remain competing explanations.
+- H001-H004 results must remain horizon-specific.
+- D02-03 separates volume necessity from incremental breakout quality; future value requires improvement beyond price-only geometry on common support.
+- D02-04 dry-up is a timestamped two-leg lifecycle: candidate first, later demand-return confirmation or failure/unknown. Hindsight relabelling is prohibited.
+- No hypothesis promotion. Formal Core remains LOCKED.
