@@ -133,12 +133,16 @@ export function createRemoteR2S3Adapter({
     },
     async putIfAbsent(key, bytes, options = {}) {
       const metadata = options.customMetadata || {};
+      // Historical pack hashes are over the exact stored gzip bytes. Do not
+      // default Content-Encoding=gzip here: Node/undici transparently decodes
+      // such responses on GET, which would make byte-level SHA-256 verification
+      // compare decompressed JSON against the stored gzip hash.
       const headers = {
-        "content-type": options.contentType || "application/json",
-        "content-encoding": options.contentEncoding || "gzip",
+        "content-type": options.contentType || "application/octet-stream",
         "if-none-match": "*",
         "x-amz-storage-class": options.storageClass === "InfrequentAccess" ? "STANDARD_IA" : "STANDARD",
       };
+      if (options.contentEncoding) headers["content-encoding"] = String(options.contentEncoding);
       for (const [name, value] of Object.entries(metadata)) {
         if (!/^[a-z0-9-]+$/.test(name)) throw new Error("invalid R2 custom metadata key: " + name);
         headers["x-amz-meta-" + name] = String(value);
