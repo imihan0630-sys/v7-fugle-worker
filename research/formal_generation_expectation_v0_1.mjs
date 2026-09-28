@@ -37,6 +37,7 @@ export async function buildFormalGenerationExpectation({
   expectedLineage,
   selectedPlanReceipts,
 }, cryptoImpl=globalThis.crypto) {
+  const parentScopeId=PARENT_SCOPE_CONTRACT.parentScopeId;
   const coherence=assessParentGenerationCoherence(parents,{
     ...expectedLineage,
     parentScopeId,
@@ -46,7 +47,6 @@ export async function buildFormalGenerationExpectation({
   const actualParentSymbols=sortedUniqueSymbolsFromParents(parents);
   const parentPopulationMatch=arraysEqual(expectedParentSymbols,actualParentSymbols);
 
-  const parentScopeId=PARENT_SCOPE_CONTRACT.parentScopeId;
   const parentKeysetReceipt=await buildParentKeysetReceipt({
     scanDate:expectedLineage?.scanDate,
     captureGeneration:expectedLineage?.captureGeneration,
@@ -69,7 +69,7 @@ export async function buildFormalGenerationExpectation({
   if (!selectedPlanReceipts?.selectedPlanSetHash) reasons.push("SELECTED_PLAN_SET_HASH_MISSING");
   if (!planLink.valid) reasons.push(...(planLink.reasons||["SELECTED_PARENT_PLAN_LINK_INVALID"]));
   if (!parentPopulationMatch) reasons.push("PARENT_SYMBOL_SET_DIFFERS_FROM_FEATURE_READY_KEYSET");
-  if (generationHashes.parentCount!==populationReceipt.featureReadyParentExpectedCount) {
+  if (parentKeysetReceipt.observedParentCount!==populationReceipt.featureReadyParentExpectedCount) {
     reasons.push("PARENT_COUNT_DIFFERS_FROM_FEATURE_READY_COUNT");
   }
 
