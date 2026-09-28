@@ -1192,3 +1192,138 @@ Exact next continuation after PVE-173:
 6. Formal Core remains LOCKED.
 
 Current Price-Volume evidence cursor: PVE-001 through PVE-173.
+
+
+## Evidence progress — PVE-174 through PVE-180 (2026-09-28 long-block stage III)
+
+### PVE-174 — Daily RVOL corporate-action continuity is code-proven incomplete
+Status: CODE_PROVEN_DATA_QUALITY_DEFECT / DAILY_LAYER_QUARANTINE / FORMAL_UNCHANGED
+
+Fresh main/patch-chain audit confirms a stronger statement than the earlier generic upstream-plumbing warning:
+- `pvBuildDailyFeature(history, marketDate)` simply takes the current daily row plus the last 20 earlier positive-volume rows;
+- it receives no corporate-action/reset argument and performs no post-reset filtering;
+- `pvRecordDailySnapshot` persists `coverage.corporateActionResetAt:null` for AFTER_MARKET rows;
+- the existing T13 corporate-action fixture tests intraday `pvBaselineStats`, not daily `pvDailyRvol20` continuity.
+
+Therefore current v0.1 daily RVOL can mix pre/post structural share-volume regimes around splits, reverse splits, par-value/trading-unit changes, capital reductions or other events that alter raw volume comparability. Current-row volume and the market path may still be factual; the normalized daily ratio is not automatically hypothesis-clean across such boundaries.
+
+Rule frozen before prospective outcomes:
+- daily `pvDailyRvol20` is eligible only when corporate-action / trading-unit continuity is independently verified for the full denominator window;
+- unresolved continuity => DAILY_RVOL_CONTINUITY_UNKNOWN, not neutral RVOL=1 and not BAD;
+- do not retroactively infer reset dates from future/current registries without PIT-valid event provenance.
+
+### PVE-175 — Price-censor Guard does not implement Taiwan legal limit semantics
+Status: CODE_PROVEN_GUARD_SEMANTIC_DEFECT / GUARD_LABEL_QUARANTINE
+
+Current patch code:
+`bar.high >= previousClose*1.099 || bar.low <= previousClose*0.901`.
+
+Current TWSE Operating Rules instead define ordinary-stock daily limits relative to the auction reference price at market opening, with minimum-tick handling; newly TWSE-listed common stocks (except TPEx-to-TWSE transfers) have no fluctuation limit for the first five trading days. Tick size itself varies by price tier under Article 62.
+
+Official anchors checked on 2026-09-28:
+- Article 63: https://twse-regulation.twse.com.tw/EN/law/DOC01.aspx?FLCODE=FL007304&FLNO=63
+- Article 62: https://twse-regulation.twse.com.tw/eng/en/law/DOC01.aspx?FLCODE=FL007304&FLNO=62
+
+Consequences:
+- raw previousClose is not always the legal reference;
+- fixed 1.099/0.901 floating thresholds are not the exchange limit-price calculation;
+- tick rounding/minimum tick can change the exact boundary;
+- special no-limit sessions cannot be represented by the generic ±10% proxy.
+
+Thus `PRICE_CENSORED` remains a heuristic diagnostic, not exchange-truth. It cannot qualify H003/H004 evidence without an exchange-consistent overlay. Raw observed slot volume itself need not be discarded solely because this Guard is untrusted.
+
+### PVE-176 — Selected-plan contract omits multiple Guard inputs
+Status: CODE_PROVEN_INPUT_CONTRACT_MISMATCH / MISSING_IS_NOT_FALSE
+
+Fresh audit of `allocateAndBuildPlans()` and the V8.11 PV patch shows that the selected Formal plan carries trading-plan fields such as formalClose/channel/priority/levels, but does not emit the following fields that PV later attempts to read from `result.plan`:
+- `avgVolume20Lots`;
+- `liquidityException`;
+- `marketStructure`;
+- `corporateActionResetAt`;
+- `pvGapDominated`.
+
+Repository-wide search also finds no producer assignment for `pvGapDominated` in the current patch chain.
+
+This creates concrete missing->false/normal coercions:
+- `pvIlliquidityWarning(plan)` returns false when avgVolume20Lots is absent;
+- unsupported-market check maps absent marketStructure to empty string, hence not ESB;
+- gapDominated uses `===true`, so absence becomes false;
+- a newly created baseline cannot receive a plan corporateActionResetAt that the plan does not carry.
+
+This is stronger than saying the upstream plumbing is merely unverified. For the audited plan-builder path, the Guard input contract is incomplete. Production incidence for alternative/nonstandard plan paths remains UNKNOWN, but missing fields must not be interpreted as verified NORMAL.
+
+### PVE-177 — Reference-price UNKNOWN is only raised at 09:00
+Status: CODE_PROVEN_UNKNOWN_COERCION_RISK / INCIDENCE_UNKNOWN
+
+The intraday builder sets:
+`referencePriceUnresolved = (bar.slotKey === "09:00" && referenceClose === null)`.
+But `pvPriceCensored()` needs a reference for every slot; with a missing reference on later bars it simply returns false.
+
+Therefore a missing reference after 09:00 can become:
+- no REFERENCE_PRICE_UNRESOLVED flag;
+- no PRICE_CENSORED flag;
+while actual boundary state is unobservable.
+
+A valid current quote may make real-world incidence low, but incidence is not the semantic contract. For research evidence, missing required reference provenance at any slot where boundary interpretation is used must be UNKNOWN, not verified non-censored.
+
+### PVE-178 — Field-level quarantine matrix before the first live cohort
+Status: PREREGISTERED_DATA_QUALITY_OVERLAY / NO_OUTCOME_INSPECTION
+
+Do not collapse the defects above into an all-or-nothing row rejection.
+
+1. H001 slot RVOL:
+   - may remain eligible when current bar, same-slot denominator, source unit, completed-bar timing, baseline freshness and cohort provenance are clean;
+   - does not require a trusted price-censor or illiquidity label for the raw volume relationship itself.
+2. H002 cumulative pace:
+   - same field-level salvage principle, plus complete current-session prefix and cumulative baseline continuity.
+3. H003 response/acceptance/Guard:
+   - quarantine rows whose interpretation requires the defective Guard fields;
+   - retain raw price/volume primitives separately.
+4. H004 future market-path outcomes:
+   - may still be recorded factually, but cannot become hypothesis-clean without outcome/session/corporate-action/boundary overlays.
+5. Daily RVOL:
+   - quarantine denominator windows crossing unresolved corporate-action/trading-unit continuity.
+
+This preserves information while preventing a single broken label from falsely turning a row clean or destroying unrelated raw evidence.
+
+### PVE-179 — External evidence revalidates state/horizon separation, not a new threshold
+Status: LITERATURE_REVALIDATION / NO_MATURITY_PROMOTION
+
+Fresh literature review before prospective Taiwan outcome inspection again rejects a universal volume sign:
+- Lee & Swaminathan show past volume interacts with momentum life-cycle and high-volume winners can reverse faster over long horizons;
+- Medhat & Schmeling report short-term reversal among low-turnover stocks but short-term momentum among high-turnover stocks across U.S./international samples.
+
+These are mechanism priors, not Taiwan validation. Their value here is to reinforce the already-frozen rule that turnover/volume can change the state and horizon of return continuation/reversal; they do not justify importing a fixed RVOL threshold, sign or holding period into D02.
+
+### PVE-180 — Long-block stage III synthesis
+Status: IMPLEMENTATION_SEMANTICS_AUDITED / PROSPECTIVE_ALPHA_STILL_UNKNOWN
+
+This block resolves one false alarm and finds four material evidence-contract issues.
+
+Resolved false alarm:
+- repository `Worker.js` is intentionally a pre-patch base; deploy/regression workflows sequentially apply `scripts/apply_v8_11_0.py` and later V8.12-V8.14 patches, then assert `PV_SHADOW_V0_1` symbols/tables in the built Worker. Absence of PV code in base Worker.js is therefore not evidence that deployed PV disappeared.
+
+Durable new findings:
+- daily RVOL lacks effective corporate-action reset continuity;
+- price-censor is not exchange-exact;
+- selected-plan-to-PV Guard input contract omits several fields and coerces missing evidence toward false/normal;
+- reference-price unresolved handling is slot-asymmetric.
+
+System implication:
+- no Formal Core change is justified;
+- H001/H002 raw-volume evidence remains partially salvageable under field-scoped quality gates;
+- H003/H004 Guard/state evidence remains materially more restricted;
+- 2026-09-30 is still only the first potentially clean cohort, and cleanliness must be row/field specific rather than date-wide.
+
+Current Price-Volume evidence cursor: PVE-001 through PVE-180.
+Formal Core remains LOCKED.
+
+## Revised exact continuation after PVE-180
+1. Preserve the 2026-09-29/30 prospective hinge and do not fabricate pre-hinge Shadow outcomes.
+2. Before inspecting any return/MFE/MAE result, run PVE-149 Gate 0->7 plus the PVE-174~178 field-level overlay.
+3. Report Guard-input coverage explicitly: PRESENT / MISSING / UNKNOWN, never infer NORMAL from an absent plan field.
+4. For daily RVOL, require PIT-valid corporate-action/trading-unit continuity for the full 20-session denominator window.
+5. For H001/H002, proceed on clean raw-volume common support even if H003 Guard labels are quarantined.
+6. For H003/H004, require exchange-consistent price-boundary/reference overlays and price-only vs price+volume anti-circularity before any interpretation.
+7. After clean data accumulate, run horizon-separated A/B/C/D, quadrant/response, breakout-quality and two-leg dry-up analyses without threshold tuning.
+8. No Formal modification or FORMAL_OPTIMIZATION_CANDIDATE until prospective/OOS evidence passes the existing gates.
