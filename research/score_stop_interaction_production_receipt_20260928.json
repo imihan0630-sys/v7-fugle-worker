@@ -1,0 +1,82 @@
+{
+  "schemaVersion": "SCORE_STOP_INTERACTION_PRODUCTION_RECEIPT_V0_1",
+  "observedAt": "2026-09-28T12:21:12+08:00",
+  "timestampProvenance": "GitHub Actions Portfolio Risk Tier-A Research run 36377294110 / job 108785634124",
+  "workflowRunId": 36377294110,
+  "jobId": 108785634124,
+  "readOnly": true,
+  "productionWrites": false,
+  "decisionImpact": false,
+  "scanDate": "2026-09-18",
+  "selectedCount": 3,
+  "priorityScoreOrderDesc": [
+    "3105",
+    "6133",
+    "2006"
+  ],
+  "modes": {
+    "BUY_LOW": {
+      "stopRiskPct": {
+        "2006": 1.1486,
+        "3105": 3.570699,
+        "6133": 2.193857
+      },
+      "riskOrderDesc": [
+        "3105",
+        "6133",
+        "2006"
+      ],
+      "exactRankMatch": true,
+      "spearmanRho": 1,
+      "pearson": 0.98098681,
+      "kendallTau": 1,
+      "highestScoreIsWidestStop": true,
+      "oneSidedExactPermutationP": 0.16666667,
+      "twoSidedExactPermutationP": 0.33333333
+    },
+    "MIDPOINT": {
+      "stopRiskPct": {
+        "2006": 1.888137,
+        "3105": 4.292115,
+        "6133": 2.929533
+      },
+      "riskOrderDesc": [
+        "3105",
+        "6133",
+        "2006"
+      ],
+      "exactRankMatch": true,
+      "spearmanRho": 1,
+      "pearson": 0.98061825,
+      "kendallTau": 1,
+      "highestScoreIsWidestStop": true,
+      "oneSidedExactPermutationP": 0.16666667,
+      "twoSidedExactPermutationP": 0.33333333
+    },
+    "BUY_HIGH": {
+      "stopRiskPct": {
+        "2006": 2.61669,
+        "3105": 5.002817,
+        "6133": 3.654224
+      },
+      "riskOrderDesc": [
+        "3105",
+        "6133",
+        "2006"
+      ],
+      "exactRankMatch": true,
+      "spearmanRho": 1,
+      "pearson": 0.98025167,
+      "kendallTau": 1,
+      "highestScoreIsWidestStop": true,
+      "oneSidedExactPermutationP": 0.16666667,
+      "twoSidedExactPermutationP": 0.33333333
+    }
+  },
+  "falsification": {
+    "result": "On the only reconstructable multi-name date, PriorityScore rank and planned stop-risk rank are perfectly concordant under buyLow, midpoint and buyHigh.",
+    "limit": "n=3 within one date. Exact permutation diagnostics are not statistically significant at conventional levels and do not establish population/OOS direction."
+  },
+  "status": "MECHANICAL_AMPLIFICATION_WITNESS_CONFIRMED / POPULATION_DIRECTION_UNKNOWN / NOT_OPTIMIZATION_READY",
+  "formalCoreImpact": false
+}
