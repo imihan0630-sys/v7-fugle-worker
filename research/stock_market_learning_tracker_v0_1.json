@@ -253,7 +253,11 @@
           "learningScope": "聚焦「盤中量能曲線／Volume Profile」。學習範圍：成交量單位與基準化；量價因果與競爭解釋；趨勢／盤整／突破情境；流動性與同時段效應；異常量與反向案例；對進場、突破品質與風險監控的增量價值。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義"
         }
-      ]
+      ],
+      "exactNextContinuationPoint": "PVE-168: wait for/inspect first post-enable ordinary market receipts using PVE-149 Gate 0→7; preserve 2026-09-29 intraday as DATA_QA-only and 2026-09-30 as first potentially clean cohort. Then run A/B/C/D common-support, price-only vs price+volume anti-circularity, and PIT-valid residual/context falsification before any outcome claim.",
+      "status": "LONG_BLOCK_COMPLETE_WAITING_PROSPECTIVE_EVIDENCE",
+      "lastResearchUpdate": "2026-09-28",
+      "researchNote": "PVE-161~167 froze no-universal-volume-sign, residual-volume observability gap, factor-family anti-double-counting, response anti-circularity, persistence dependence, and dry-up falsification. No maturity promotion: Taiwan PIT/OOS/prospective outcome evidence not yet available."
     },
     {
       "id": "D03",
