@@ -567,7 +567,7 @@
         "LEVERAGE_SHORTING_CHECKPOINT.md",
         "PASSIVE_FLOW_INDEX_REBALANCING_CHECKPOINT.md"
       ],
-      "maturityPct": 38.3,
+      "maturityPct": 40,
       "modules": [
         {
           "id": "D06-01",
@@ -604,10 +604,10 @@
         {
           "id": "D06-05",
           "name": "持股集中度／Ownership",
-          "level": "L1",
-          "maturityPct": 20,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「持股集中度／Ownership」。學習範圍：外資、投信、自營商、融資融券、借券、集保與被動資金的資料語意；Flow與Stock差異；擁擠與反向風險；流動性正規化；事件時點與因果混淆。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "理論已理解"
+          "levelMeaning": "機制＋反證已定義"
         },
         {
           "id": "D06-06",
