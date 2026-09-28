@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-09-28T18:05:00+08:00",
+  "updatedAt": "2026-09-28 Asia/Taipei",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -1832,17 +1832,18 @@
       "chatroom": "08｜事件與新聞研究室",
       "anchors": [
         "EVENT_RISK_CHECKPOINT.md",
-        "SUPPLY_CHAIN_LEAD_LAG_RESEARCH.md"
+        "SUPPLY_CHAIN_LEAD_LAG_RESEARCH.md",
+        "NEWS_EVENT_TRANSMISSION_RESEARCH.md"
       ],
-      "maturityPct": 29.2,
+      "maturityPct": 40,
       "modules": [
         {
           "id": "D17-01",
           "name": "新聞來源可靠度分級",
-          "level": "L1",
-          "maturityPct": 20,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「新聞來源可靠度分級」。學習範圍：新聞來源分級、發布與first-known時間、半衰期、預期差、已反映程度、情緒、去重；直接／間接受益受害；族群與供應鏈傳導；事件後跳空、延續與反轉。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "理論已理解"
+          "levelMeaning": "機制＋反證已定義"
         },
         {
           "id": "D17-02",
@@ -1855,26 +1856,26 @@
         {
           "id": "D17-03",
           "name": "News Half-life資訊半衰期",
-          "level": "L1",
-          "maturityPct": 20,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「News Half-life資訊半衰期」。學習範圍：新聞來源分級、發布與first-known時間、半衰期、預期差、已反映程度、情緒、去重；直接／間接受益受害；族群與供應鏈傳導；事件後跳空、延續與反轉。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "理論已理解"
+          "levelMeaning": "機制＋反證已定義"
         },
         {
           "id": "D17-04",
           "name": "直接受益／直接受害辨識",
-          "level": "L1",
-          "maturityPct": 20,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「直接受益／直接受害辨識」。學習範圍：新聞來源分級、發布與first-known時間、半衰期、預期差、已反映程度、情緒、去重；直接／間接受益受害；族群與供應鏈傳導；事件後跳空、延續與反轉。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "理論已理解"
+          "levelMeaning": "機制＋反證已定義"
         },
         {
           "id": "D17-05",
           "name": "間接受益／供應鏈二階傳導",
-          "level": "L1",
-          "maturityPct": 20,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「間接受益／供應鏈二階傳導」。學習範圍：新聞來源分級、發布與first-known時間、半衰期、預期差、已反映程度、情緒、去重；直接／間接受益受害；族群與供應鏈傳導；事件後跳空、延續與反轉。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "理論已理解"
+          "levelMeaning": "機制＋反證已定義"
         },
         {
           "id": "D17-06",
@@ -1887,10 +1888,10 @@
         {
           "id": "D17-07",
           "name": "Priced-in已反映程度",
-          "level": "L1",
-          "maturityPct": 20,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Priced-in已反映程度」。學習範圍：新聞來源分級、發布與first-known時間、半衰期、預期差、已反映程度、情緒、去重；直接／間接受益受害；族群與供應鏈傳導；事件後跳空、延續與反轉。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "理論已理解"
+          "levelMeaning": "機制＋反證已定義"
         },
         {
           "id": "D17-08",
@@ -1911,18 +1912,18 @@
         {
           "id": "D17-10",
           "name": "消息來源交叉驗證",
-          "level": "L1",
-          "maturityPct": 20,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「消息來源交叉驗證」。學習範圍：新聞來源分級、發布與first-known時間、半衰期、預期差、已反映程度、情緒、去重；直接／間接受益受害；族群與供應鏈傳導；事件後跳空、延續與反轉。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "理論已理解"
+          "levelMeaning": "機制＋反證已定義"
         },
         {
           "id": "D17-11",
           "name": "Sector Propagation族群擴散",
-          "level": "L1",
-          "maturityPct": 20,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Sector Propagation族群擴散」。學習範圍：新聞來源分級、發布與first-known時間、半衰期、預期差、已反映程度、情緒、去重；直接／間接受益受害；族群與供應鏈傳導；事件後跳空、延續與反轉。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "理論已理解"
+          "levelMeaning": "機制＋反證已定義"
         },
         {
           "id": "D17-12",
