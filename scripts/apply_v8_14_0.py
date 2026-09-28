@@ -111,7 +111,7 @@ replace_once(
 )
 
 
-observer = Path("research/institutional_score_decomposition_observer_v0_1.mjs").read_text(encoding="utf-8").strip()
+observer = Path("research/institutional_score_decomposition_observer_v0_2.mjs").read_text(encoding="utf-8").strip()
 anchor = '''async function readShadowCandidateSummary(env,days=180) {'''
 replace_once(
     anchor,

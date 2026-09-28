@@ -34,11 +34,11 @@ assert.match(selection,/b\.priorityScore - a\.priorityScore \|\| b\.rewardPerRis
 assert.match(selection,/\(b\.marketConsensusScore \|\| 0\) - \(a\.marketConsensusScore \|\| 0\) \|\|/);
 
 
-assert.ok(source.includes("INSTITUTIONAL_SCORE_DECOMPOSITION_OBSERVER_V0_1"));
+assert.ok(source.includes("INSTITUTIONAL_SCORE_DECOMPOSITION_OBSERVER_V0_2"));
 assert.ok(source.includes("institutionalDecomposition=buildInstitutionalScoreDecompositionObserver"));
 assert.ok(source.includes("byCohort,byDate,institutionalDecomposition"));
 
-const observerSource=await readFile(new URL("../research/institutional_score_decomposition_observer_v0_1.mjs",import.meta.url),"utf8");
+const observerSource=await readFile(new URL("../research/institutional_score_decomposition_observer_v0_2.mjs",import.meta.url),"utf8");
 const observerMod=await import("data:text/javascript;base64,"+Buffer.from(
   observerSource+"\nexport {buildInstitutionalScoreDecompositionObserver};"
 ).toString("base64"));
@@ -92,6 +92,12 @@ assert.equal(observer.reconstructionMismatchRows,0);
 assert.equal(observer.missingCounts.foreignNet,1);
 assert.equal(observer.byCohort.SELECTED.saturated,1);
 assert.equal(observer.byCohort.BROAD_CONTROL.actorDivergence,1);
+assert.equal(observer.scoreAtOrAbove70Rows,1);
+assert.equal(observer.streakEndpointInvariant.anyMismatchRows,0);
+assert.equal(observer.contributionStats.currentDayDirectionBase.max,22);
+assert.equal(observer.contributionStats.persistenceBeyondDay1.max,44);
+assert.equal(observer.contributionStats.sameSessionDirectionPoints.max,43);
+assert.equal(observer.rankInterpretationGuard.includes("bounded Shadow"),true);
 
 console.log(JSON.stringify({
   ok:true,
