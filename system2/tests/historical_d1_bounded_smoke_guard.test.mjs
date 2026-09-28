@@ -17,8 +17,11 @@ const smoke = await readFile(
 assert.match(provision, /0004_historical_universe\.sql/);
 assert.match(provision, /s2_historical_universe_memberships/);
 assert.match(provision, /s2_historical_universe_snapshots/);
-assert.match(provision, /schema_value[\s\S]*"0\.8"/);
-assert.doesNotMatch(provision, /schema_value[\s\S]*"0\.7"/);
+assert.match(provision, /0005_historical_packs\.sql/);
+assert.match(provision, /s2_historical_a1_packs/);
+assert.match(provision, /s2_historical_pack_ingest_receipts/);
+assert.match(provision, /schema_value[\s\S]*"0\.9"/);
+assert.doesNotMatch(provision, /schema_value[\s\S]*"0\.8"/);
 
 assert.match(workflow, /workflow_dispatch:/);
 assert.match(workflow, /WRITE_SYSTEM2_HISTORICAL_SMOKE/);
@@ -30,7 +33,7 @@ assert.doesNotMatch(workflow, /^\s*schedule:/m);
 
 assert.match(smoke, /databaseName: "system2-research"/);
 assert.match(smoke, /schema_value/);
-assert.match(smoke, /"0\.8"/);
+assert.match(smoke, /"0\.9"/);
 assert.match(smoke, /fullBackfillPerformed: false/);
 assert.match(smoke, /historicalReplayRunPerformed: false/);
 assert.match(smoke, /GITHUB_RUN_ID/);
