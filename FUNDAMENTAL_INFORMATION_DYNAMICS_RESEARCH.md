@@ -1482,3 +1482,60 @@ However V8.15 is currently occupied by the concurrent Valuation Provenance lane.
 Current status:
 `STRUCTURAL_FALSIFICATION_COMPLETE / OBSERVABILITY_GAP_CONFIRMED / ALPHA_UNKNOWN / NO_FORMAL_CHANGE`.
 
+
+
+## FD-044 — Profitability is a state, not a standalone alpha oracle
+
+Research date: 2026-09-28 Asia/Taipei.
+
+Mechanism review supports profitability as a potentially useful cross-sectional quality dimension, but not as a monotonic standalone trading rule. ROE, ROA, ROIC, operating profitability and cash profitability answer different economic questions. High ROE can be mechanically amplified by leverage, buybacks or a small equity denominator; high operating profitability can coexist with aggressive reinvestment; past profitability is not identical to expected future profitability.
+
+System implication: do not add a raw ROE threshold or points to Formal. A research representation should decompose profitability into operating profitability, capital efficiency, leverage context and persistence/change. Candidate value must be tested conditional on current fundamentalScore, sector, size, price trend/RS and valuation.
+
+Countermechanisms / kill rules:
+- reject a profitability feature if its apparent effect disappears after sector/size/current fundamentalScore controls;
+- reject raw ROE if leverage/equity-denominator effects explain the signal;
+- do not treat a one-quarter margin/ROE spike as durable quality without persistence evidence;
+- do not infer Taiwan alpha from international factor evidence; Taiwan PIT/OOS evidence is required.
+
+Status: MECHANISM_PLUS_COUNTEREVIDENCE_DEFINED / ALPHA_UNKNOWN / NO_FORMAL_CHANGE.
+
+## FD-045 — Cash conversion and accrual quality must be separated from headline earnings
+
+IAS 7 separates operating, investing and financing cash flows; accounting profit and cash generation are therefore not interchangeable. Free cash flow (FCF) is not a single IFRS-defined metric, so any FCF feature must freeze an explicit formula and sector policy before outcomes are observed.
+
+Preferred research primitives, subject to source-field verification:
+- CFO / net income cash-conversion ratio, with denominator guards;
+- accrual proxy = earnings minus operating cash flow, scaled by an ex-ante frozen balance-sheet denominator;
+- CFO margin and its change;
+- capex intensity and reinvestment context;
+- FCF = CFO - explicitly classified capex only under a frozen definition.
+
+Positive mechanism: persistent earnings supported by cash may be higher quality than equal headline earnings dominated by accruals.
+
+Mandatory countermechanisms:
+- working-capital build can be rational during rapid growth;
+- inventory build can precede demand or signal deterioration;
+- customer/supplier payment timing can temporarily distort CFO;
+- capex can depress FCF precisely when a high-quality company is expanding capacity;
+- financial firms require separate cash-flow semantics and should not be pooled mechanically with industrial firms.
+
+Taiwan-specific evidence exists for quarterly accrual anomaly, but this does not authorize a low-accrual hard gate. It motivates a PIT Taiwan experiment with sector and growth controls.
+
+Status: D07-05/D07-07 MECHANISM_PLUS_COUNTEREVIDENCE_DEFINED / PIT_FIELD_AUDIT_NEXT / NO_FORMAL_CHANGE.
+
+## FD-046 — Growth × quality matrix is preferable to another additive score
+
+The existing Formal fundamentalScore already mixes realized revenue growth, EPS, margin levels and margin changes and is structurally coverage-sensitive. Adding ROE/CFO/accrual points to the same additive score would increase opacity and Factor-Zoo risk.
+
+Freeze four descriptive research states before outcome testing:
+1. GROWTH_WITH_CASH_SUPPORT — growth and profitability improve while cash conversion is not deteriorating materially;
+2. GROWTH_WITH_CASH_DIVERGENCE — accounting growth improves while cash conversion/accrual quality deteriorates;
+3. QUALITY_STABLE_LOW_GROWTH — profitability/cash quality stable but realized growth modest;
+4. DETERIORATION — growth and quality both weaken.
+
+These are research labels, not bullish/bearish ratings. UNKNOWN remains UNKNOWN whenever required fields are absent.
+
+Primary falsification: if these states add no stable information after existing fundamentalScore + price/volume + sector/RS + regime controls, mark REDUNDANT rather than promoting them.
+
+Exact next continuation: audit repository/MOPS field availability and PIT timestamps for CFO, capex, total assets/equity/debt and compute whether the four states are prospectively reproducible without historical-vintage leakage.
