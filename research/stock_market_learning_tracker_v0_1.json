@@ -254,10 +254,10 @@
           "levelMeaning": "機制＋反證已定義"
         }
       ],
-      "exactNextContinuationPoint": "PVE-181: at the first post-enable ordinary-market receipts, execute PVE-149 Gate 0→7 plus PVE-174~178 field-level quality overlay before any outcome inspection. Treat 2026-09-29 intraday as DATA_QA-only; 2026-09-29 after-market as first new selection/bootstrap receipt; 2026-09-30 as first potentially clean cohort, not automatically clean. Explicitly report Guard-input PRESENT/MISSING/UNKNOWN, daily-RVOL corporate-action continuity, and exchange-consistent price-boundary/reference quality. Then run H001/H002 common-support and H003/H004 higher-gated analyses without threshold tuning.",
-      "status": "LONG_BLOCK_STAGE_III_COMPLETE_WAITING_PROSPECTIVE_EVIDENCE",
-      "lastResearchUpdate": "2026-09-28",
-      "researchNote": "PVE-174~180 code-audited the prospective PV evidence contract. New durable findings: daily pvDailyRvol20 does not implement corporate-action reset and persists reset=null; v0.1 price-censor is not exchange-exact; audited selected-plan contract omits multiple PV Guard inputs and missing values can collapse toward false/normal; REFERENCE_PRICE_UNRESOLVED is only raised at 09:00. Field-level salvage is frozen so clean raw H001/H002 volume evidence is not discarded with defective Guard labels. Base Worker PV absence was resolved as expected patch-chain build behavior. No maturity promotion; prospective/OOS Taiwan evidence remains unavailable."
+      "exactNextContinuationPoint": "PVE-187: on the first 2026-09-29 ordinary intraday receipts, run PVE-149 Gate 0→7 plus PVE-174~185 overlays before any outcome inspection. Keep all 9/29 intraday rows DATA_QA-only because plan lineage inherits 2026-09-24. Explicitly count Guard INVALID/GUARDED/VALID, raw Acceptance transitions, ACTIVE_ACCEPTANCE_LIFECYCLES, PRE_EVENT_ONLY_EXPIRIES, raw anchorEligible and HYPOTHESIS_CLEAN_ANCHORS. After the 9/29 after-market run, inspect selection/bootstrap receipts and baseline freshness/lineage; 9/30 remains only the earliest potentially clean cohort.",
+      "status": "LONG_BLOCK_STAGE_IV_COMPLETE_WAITING_2026_09_29_RUNTIME_QA",
+      "lastResearchUpdate": "2026-09-29",
+      "researchNote": "PVE-181~186 found two additional v0.1 evidence-semantic defects before outcome inspection: 13:00 PRE_EVENT can be forced to EXPIRED_AMBIGUOUS and manufacture a PVACC event key without a genuine trigger; Acceptance/anchorEligible are not fail-closed when Guard interpretability is INVALID, unlike Persistence. H003 event denominator is now RAW_ACCEPTANCE_KEY -> ACTIVE_LIFECYCLE -> HYPOTHESIS_CLEAN_EVENT. Outcome storage remains separate from inference eligibility. No maturity promotion and no Formal change."
     },
     {
       "id": "D03",
