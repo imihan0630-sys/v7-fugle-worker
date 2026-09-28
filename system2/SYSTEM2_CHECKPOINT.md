@@ -495,6 +495,17 @@ Current scale constraint:
 - therefore **do not launch the full 2017→present row-wise D1 backfill blindly** until the historical raw-storage mode is frozen. Engineering should evaluate a packed/cold historical representation (or another isolated historical store) while keeping D1 for indexes, receipts, recent windows, Base Dataset and Shadow results as appropriate.
 - this is a storage-scale engineering gate, not a strategy/formal-selection gate. No final SELECTED policy, Decision Clock, Worker Cron or real trading behavior was changed.
 
+## 2026-09-28 official historical source adapter progress
+
+- Added `system2/runtime/official_monthly_history_adapter_v0_1.mjs` in commit `358d16e3d247d1fc96073350ecee3cfabb7dad75`.
+- Added fixture/normalization tests in commit `ed11cf3c362115c5fb7dfddfd767e8d674c365e0`; System2 Research CI run `36422600827` PASS.
+- TWSE monthly per-security source contract uses the official TWSE STOCK_DAY monthly query host and normalizes date / volume / turnover / OHLC / change / transactions.
+- TPEx monthly per-security source contract uses the official TPEx historical individual-stock monthly query host and normalizes ROC dates to Gregorian dates.
+- The adapter is source-format only; it does not itself authorize historical availability semantics beyond the configured conservative session-close basis.
+- Official-source research confirms TWSE/TPEx historical individual-stock pages cover the 2017 Core Base horizon.
+- Survivorship control is now explicit: historical backfill must seed from both currently listed securities and delisted/de-TPEx securities, not from today's live symbol list alone. TWSE/TPEx official delisting registries are available; TWSE current ISIN registry exposes listing dates.
+- Next implementation unit: historical universe registry/adapters (current + delisted union), then source-backed backfill smoke against a bounded date/symbol slice before large D1 population.
+
 ## Current boundary
 
 Research/design/code prototype is not blocked. Isolated D1 and inert Worker already exist, but prospective always-on Shadow accumulation remains intentionally inactive. A5/B2 observer engineering is complete; the immediate boundary is accumulation of independent same-day V0.2 evidence beginning no earlier than the 2026-09-29 official session. No exact Decision Clock is frozen; capture is false; Worker Cron is 0. The GitHub Actions research schedule is read-only evidence collection and is not the Worker Cron. No production-shared storage or System 1/V8 change is authorized or needed.
