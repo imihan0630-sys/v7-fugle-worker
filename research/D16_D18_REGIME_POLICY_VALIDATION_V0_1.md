@@ -300,11 +300,41 @@ FORMAL_OPTIMIZATION_CANDIDATE: NONE.
 
 The research architecture is stronger, and several D18 modules have now reached mechanism+falsification maturity, but Taiwan prospective regime-policy evidence has not yet accumulated.
 
-## Exact next continuation
 
-1. Materialize a research-only **Regime Policy Parallel-Arm Receipt** schema compatible with existing System 2 full-universe Shadow provenance; no capture arming and no Formal impact.
-2. Register the first simple policy experiment with a static baseline and exposure-matched control; do not choose thresholds from outcomes.
-3. Keep D18-06 at L2 until market-cap source/vintage capture is promotion-grade.
-4. Keep D18-07 at L2 until global receipt contracts are frozen and prospective.
-5. Promote D16-13 to L3 only; wait for actual prospective capture before L4.
-6. After enough clean independent dates exist, apply walk-forward plus PBO/SPA/DSR as diagnostics, not as substitutes for forward evidence.
+## 17. Repository implementation audit
+
+Current-main code search for the planned regime raw fields/state names found them in `system2/SYSTEM2_MARKET_REGIME_V0.md`, but not in an executable regime builder. In particular the planned trend, breadth, volatility and concentration fields/state names are still specification-level.
+
+Implication:
+- D18 taxonomy remains L2, not L3.
+- No existing historical System 2 regime stream should be assumed.
+- This creates a clean preregistration opportunity before the first prospective regime-policy outcomes.
+- The research-only proposal `research/D18_OBSERVABLE_REGIME_LABEL_CONTRACT_V0_1.md` defines a multi-dimensional observable vector without a universal risk score or policy effect.
+- Wiring that proposal is a separate System 2 research-engineering decision; this room does not silently implement it.
+
+## 18. HMM is a challenger, not the default truth
+
+Positive literature shows regime-conditioned strategies can outperform static factor models in some OOS designs, so regime switching is a plausible hypothesis rather than an inherently invalid idea.
+
+Counterevidence matters equally:
+- false state changes can increase turnover and costs;
+- state detection delay can erase apparent timing value;
+- alternative persistent-regime methods can outperform HMM in some cross-market studies;
+- state count / covariance / smoothing / refit choices create additional search degrees of freedom.
+
+Therefore:
+- observable PIT regime baselines first;
+- HMM / latent-state model second;
+- any latent model must beat the observable baseline, not merely buy-and-hold;
+- filtered/current state only for decisions;
+- smoothed state only for retrospective visualization;
+- feature scaling, state canonicalization and refit frequency are versioned experiment parameters.
+
+## Exact next continuation — revised
+
+1. Audit the observable-regime proposal against source-clock contracts and identify exactly which raw features can be produced prospectively without new source calls.
+2. Keep regime context capture separate from any policy; accumulate occupancy and UNKNOWN coverage first.
+3. Define no composite RISK_ON/RISK_OFF score until component-level incremental value is observed OOS.
+4. When executable regime states exist, freeze one single-dimension policy challenger and its exposure-matched control before outcomes.
+5. Preserve the parallel-arm receipt and actionEffectiveSession = next tradable session.
+6. Use White/SPA/PBO/DSR only as supplementary search/selection diagnostics after enough synchronized independent-date data exist.
