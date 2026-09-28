@@ -6,6 +6,12 @@ const script=await readFile(new URL("../scripts/historical_pack_year_backfill_v0
 const migration=await readFile(new URL("../sql/0006_historical_cold_store.sql",import.meta.url),"utf8");
 
 assert.match(workflow,/workflow_dispatch:/);
+assert.match(workflow,/market:/);
+assert.match(workflow,/type: choice/);
+assert.match(workflow,/- TWSE/);
+assert.match(workflow,/- TPEX/);
+assert.match(workflow,/SYSTEM2_HISTORY_YEAR_MARKET: \$\{\{ inputs\.market \}\}/);
+assert.doesNotMatch(workflow,/matrix:\s*[\s\S]*market:\s*\[TWSE, TPEX\]/,"2017 backfill must run one market at a time");
 assert.doesNotMatch(workflow,/^\s+push:/m,"cold backfill must not auto-run on repository push");
 assert.match(workflow,/environment: system2-research/);
 assert.match(workflow,/SYSTEM2_R2_ACCESS_KEY_ID/);
