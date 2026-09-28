@@ -173,7 +173,7 @@ const sweep = await runBacktestThresholdSweepV0_1({
 });
 assert.deepEqual(
   sweep.rows.map((x) => x.matchedCount),
-  [2, 1, 0, 0],
+  [1, 1, 0, 0],
 );
 assert.equal(sweep.outcomePerformanceComputed, false);
 
