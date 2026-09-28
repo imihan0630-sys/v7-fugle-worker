@@ -163,8 +163,68 @@ The family of tested strategy × regime × horizon × transition-rule × weight-
 FORMAL_OPTIMIZATION_CANDIDATE: NONE.
 Reason: contracts and falsification gates improved, but D18-06 lacks durable PIT size vintages, D18-07 lacks durable global receipts, and D16-13 lacks prospective population receipts. No regime gate/weight change is justified.
 
-## Exact next continuation — updated
-1. Audit repository for any existing durable sharesOutstanding/market-cap vintage source that can satisfy D18-06 without reconstructing history from current denominators.
-2. Audit System 2 source-arrival contracts for reusable global receipt fields; if absent, keep GLOBAL_TRANSMISSION_CONTEXT UNKNOWN and specify receipt schema only.
-3. Cross-check whether System 2 prospective Shadow capture already records pre-truncation population/count/order semantics; if not, formulate research-only population-receipt proposal without altering Formal Core.
-4. Only after those evidence contracts exist, preregister the first static-vs-regime-policy walk-forward experiment with block/date negative controls and identical costs.
+
+## 2026-09-28 long-form research continuation — regime policy validation layer
+
+Detailed research note: `research/D16_D18_REGIME_POLICY_VALIDATION_V0_1.md`.
+
+### Core research decisions
+- Regime attribution and regime policy remain separate estimands. Conditional historical superiority is not policy evidence.
+- First policy experiment must be a parallel-arm design: STATIC_BASELINE vs REGIME_POLICY_CHALLENGER on the same frozen source session, universe, strategy, candidates, execution assumptions, capital and costs.
+- Preserve the static baseline counterfactual even when the challenger disables exposure; otherwise missed upside is unidentified.
+- Add an exposure-matched non-regime negative control so risk reduction from simply investing less is not mislabeled regime timing skill.
+- HMM / Markov-switching trading decisions may use filtered/current probabilities only. Smoothed probabilities are ex-post diagnostics because they condition on future sample observations.
+- Prefer coarse observable PIT states as the first challenger. Latent-state models add extra degrees of freedom and belong later in the challenger family.
+- The multiplicity family includes taxonomy, state count, thresholds, persistence/hysteresis, strategy-regime pairing, horizon, exposure/weight maps, model families and selection-time cost assumptions. Failed variants remain counted.
+- White Reality Check / Hansen SPA / PBO-CSCV / DSR are supplementary search/selection diagnostics. They do not replace chronological untouched OOS and prospective Shadow.
+- Dynamic weighting must benchmark against simple static/equal weights; estimation error is itself a falsification channel.
+- Independent decision date / portfolio path remains the primary inference unit, not stock rows.
+
+### D16-13 evidence revision
+System 2 repository evidence now proves full-universe membership semantics are technically feasible:
+- daily Shadow orchestrator enumerates base, excluded and eligible symbols;
+- every eligible symbol is accounted;
+- incomplete eligible-universe accounting fails the run;
+- tests verify COMPLETE vs INCOMPLETE behavior;
+- storage tests preserve base/excluded/eligible/accounted counts and state counts.
+
+Therefore D16-13 may advance from L2 to L3 (Taiwan PIT data feasibility validated at the contract/runtime-test level). It does NOT advance to L4 because scheduled prospective Shadow capture is still disabled.
+
+This does not retroactively repair bounded/reason-ordered historical V8 Shadow cohorts.
+
+### D18 maturity revision
+Mechanism + falsification are now explicit for:
+- D18-06 Large-cap vs Small-cap leadership;
+- D18-07 Risk-on/Risk-off semantic split;
+- D18-08 activation/deactivation;
+- D18-09 dynamic weighting;
+- D18-10 ensemble/correlation;
+- D18-12 drawdown-aware de-risking;
+- D18-13 regime attribution;
+- D18-14 walk-forward regime validation.
+
+These may advance conceptually to L2. No D18 module advances to L3 from this round because the required full PIT data feasibility is incomplete for size/global lanes and no actual Taiwan policy experiment has matured.
+
+### External evidence synthesis
+- White (2000): data snooping requires benchmark-relative inference accounting for the searched model family.
+- Hansen (2005): SPA improves power and reduces sensitivity to irrelevant alternatives relative to the Reality Check.
+- Harvey/Liu/Zhu (2016): ordinary significance thresholds are too weak under extensive factor search.
+- Bailey/Borwein/López de Prado/Zhu: PBO/CSCV explicitly diagnoses selection-process backtest overfitting.
+- Bailey/López de Prado: DSR addresses selection bias plus non-normality in Sharpe evidence.
+- DeMiguel/Garlappi/Uppal: optimized weights can lose to simple 1/N OOS because estimation error consumes theoretical gains.
+- Recent regime-switching research continues to identify false state changes, signal delay and transaction-cost escalation as central implementation failure modes.
+
+### New hard falsification gate
+A regime policy that lowers drawdown only because average exposure is lower is not timing alpha. It must beat an exposure-matched control with comparable invested fraction and cost accounting.
+
+### Optimization decision
+FORMAL_OPTIMIZATION_CANDIDATE: NONE.
+No System 1/System 2 Formal Core, rank, gate, weight, capital or execution rule change is justified yet.
+
+## Exact next continuation — long-form
+1. Define a research-only Regime Policy Parallel-Arm Receipt compatible with existing System 2 run fingerprint/full-universe accounting.
+2. Pre-register the first simple static-vs-regime policy experiment plus exposure-matched negative control; no outcome-derived thresholds.
+3. D18-06 stays L2 until market-cap source/vintage capture is promotion-grade.
+4. D18-07 stays L2 until global receipt contracts are frozen and prospective.
+5. D16-13 stays L3 until actual prospective full-universe Shadow dates exist; then test for L4.
+6. When enough independent dates accumulate, run purged walk-forward plus PBO/SPA/DSR diagnostics and transition/cost stress.
