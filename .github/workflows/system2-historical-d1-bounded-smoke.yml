@@ -47,7 +47,7 @@ jobs:
           test "$(sed -n '1p' wrangler.toml)" = 'name = "fugle-test"'
           echo "Production configuration isolation precheck PASS"
 
-      - name: Apply/reverify isolated System2 D1 schema v0.8
+      - name: Apply/reverify isolated System2 D1 schema v0.9
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
