@@ -461,6 +461,40 @@ Repository readback confirms:
 - No real historical market data has yet been bulk-populated into isolated System2 D1 by this step; current historical/backtest tests are synthetic fixtures. Do not describe the 2017→present Base Dataset as populated until physical source ingestion/readback is verified.
 - Nearest engineering action: freeze source-specific official TWSE/TPEx historical fetch adapters, execute isolated incremental backfill, verify row/date/symbol coverage and PIT/continuity states, then run the first real full-market historical replay.
 
+## 2026-09-28 official historical A1 physical-ingest verification
+
+System 2 historical engineering has crossed from synthetic-only tests into real official-source + isolated-D1 validation.
+
+Official source validation:
+- accepted TWSE historical source: `MI_INDEX?response=json&date=YYYYMMDD&type=ALLBUT0999`;
+- accepted TPEx historical source: `afterTrading/dailyQuotes?response=json&date=YYYY/MM/DD`;
+- legacy TPEx `stk_quote_result.php?d=...` is rejected because live testing showed it can ignore the requested historical date and return the latest date;
+- read-only source smoke run `36417360621` PASS with exact source-date matching:
+  - 2017-01-03 TWSE 898 ordinary four-digit equities;
+  - 2017-01-03 TPEx 729;
+  - 2026-09-24 TWSE 1,085;
+  - 2026-09-24 TPEx 890.
+
+Physical isolated-D1 verification:
+- cloud read-only audit `36418324013` found `system2-research` at schema 0.5 with 26 tables before historical migration; no historical/backtest tables existed yet.
+- guarded physical smoke `36418811303` upgraded only isolated `system2-research` to schema 0.7 and persisted 2017-01-03 official A1 data:
+  - TWSE 898 + TPEx 729 = 1,627 historical bars;
+  - all bars accounted;
+  - completion receipts written last;
+  - ambiguous canonical revisions = 0;
+  - observed D1 usage: 8,140 rows read, 9,770 rows written, database size_after ≈ 2.02 MiB;
+  - System1 production database/runtime/Cron unchanged.
+- first 2026-09-24 attempt encountered a transient upstream TLS/socket termination after the TWSE side had completed. This was diagnosed as transport failure, not quota/schema/content failure.
+- source adapter was hardened with bounded retry/backoff for transport/retryable HTTP errors; source-date/schema/OHLC integrity failures remain non-retryable.
+- retry run resumed from durable completion state: TWSE 1,085 was `ALREADY_COMPLETE`, only TPEx 890 was added, and final 2026-09-24 coverage became TWSE 1,085 + TPEx 890 with zero ambiguous canonical revisions.
+- after the two measured dates, D1 `size_after` was ≈ 3.91 MiB. The retry segment observed 12,050 rows read / 5,344 rows written while inserting only the missing TPEx side.
+- this validates incremental/resumable physical ingestion, but also demonstrates that row-wise D1 storage/write amplification is material.
+
+Current scale constraint:
+- Cloudflare's current published Workers Free D1 limits are 500 MB per database and 100,000 rows written/day; Workers Paid allows 10 GB per database and materially higher included writes.
+- therefore **do not launch the full 2017→present row-wise D1 backfill blindly** until the historical raw-storage mode is frozen. Engineering should evaluate a packed/cold historical representation (or another isolated historical store) while keeping D1 for indexes, receipts, recent windows, Base Dataset and Shadow results as appropriate.
+- this is a storage-scale engineering gate, not a strategy/formal-selection gate. No final SELECTED policy, Decision Clock, Worker Cron or real trading behavior was changed.
+
 ## Current boundary
 
 Research/design/code prototype is not blocked. Isolated D1 and inert Worker already exist, but prospective always-on Shadow accumulation remains intentionally inactive. A5/B2 observer engineering is complete; the immediate boundary is accumulation of independent same-day V0.2 evidence beginning no earlier than the 2026-09-29 official session. No exact Decision Clock is frozen; capture is false; Worker Cron is 0. The GitHub Actions research schedule is read-only evidence collection and is not the Worker Cron. No production-shared storage or System 1/V8 change is authorized or needed.
