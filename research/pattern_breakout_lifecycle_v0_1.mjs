@@ -41,15 +41,33 @@ function normalizeBars(bars) {
 }
 function inZone(close,b){return close>=b.lower && close<=b.upper;}
 
+export function assessBreakoutBoundaryContinuation({previousBoundary,nextBoundary}) {
+  const prev=normalizeBoundary(previousBoundary);
+  const next=normalizeBoundary(nextBoundary);
+  if (prev.boundaryId!==next.boundaryId) {
+    return Object.freeze({status:"NEW_BOUNDARY_OBJECT",continueLifecycle:false});
+  }
+  if (prev.version===next.version) {
+    if (prev.lower!==next.lower || prev.upper!==next.upper) {
+      return Object.freeze({status:"PROVENANCE_CONFLICT_SAME_VERSION_MUTATED",continueLifecycle:false});
+    }
+    return Object.freeze({status:"CONTINUE_SAME_BOUNDARY",continueLifecycle:true});
+  }
+  return Object.freeze({status:"RESET_REQUIRED_NEW_BOUNDARY_VERSION",continueLifecycle:false});
+}
+
 export function analyzeBreakoutLifecycle({
   direction,
   boundary,
   bars,
+  asOfDate=null,
 }) {
   const dir=reqText(direction,"direction");
   if (!["UP","DOWN"].includes(dir)) throw new Error("INVALID_DIRECTION");
   const zone=normalizeBoundary(boundary);
-  const rows=normalizeBars(bars);
+  const normalizedRows=normalizeBars(bars);
+  const cutoff=asOfDate===null?null:reqText(asOfDate,"asOfDate");
+  const rows=cutoff===null?normalizedRows:normalizedRows.filter(row=>row.date<=cutoff);
 
   let firstPierceAt=null;
   let firstConfirmedBreakAt=null;
@@ -173,6 +191,8 @@ export function analyzeBreakoutLifecycle({
 
   return Object.freeze({
     direction:dir,
+    asOfDate:cutoff,
+    dataThroughDate:rows.length?rows.at(-1).date:null,
     boundary:zone,
     firstPierceAt,
     firstConfirmedBreakAt,
