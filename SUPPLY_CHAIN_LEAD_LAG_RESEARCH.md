@@ -1246,3 +1246,45 @@ For standalone CSV/XML or official XLS/ODS export:
 This is provenance infrastructure only. It changes no Formal candidate, score, threshold, rank, quota, capital, signal, monitoring or push behavior.
 
 Status: `D10-10_L3_PIT_FEASIBLE / AUTOMATION_PARTIAL / NO_ALPHA_CONCLUSION`.
+
+
+## SC-022 — Capacity lifecycle source-only pilot supports the model but not L3 promotion
+
+Receipt:
+`research/capacity_lifecycle_source_pilot_v0_1.json`
+
+### Positive lifecycle example
+TSMC's 2025 annual report independently distinguishes:
+- investment/expansion plan;
+- construction start;
+- HVM（High Volume Manufacturing，高量產） entry;
+- yield quality;
+- future HVM/ramp schedule;
+- aggregate annual wafer-equivalent capacity.
+
+This is direct evidence that a trustworthy capacity model needs a status timeline rather than one binary `expanding=true` flag.
+
+### Counterexample / reverse mechanism
+Taiwan MOEA industrial-production evidence provides the opposite capacity behavior:
+- when steel/basic-metals demand was weak and customer pickup conservative, producers scheduled maintenance or planned production cuts to adjust capacity/output;
+- 2026 Q1 reporting likewise notes traditional-industry production restraint/maintenance amid weak demand and overseas competition.
+
+This shows that low output/utilization can be an **endogenous response** to demand weakness rather than an independent supply shock. Conversely, deliberate supply discipline can later support price even while physical output falls.
+
+### Why no L3 yet
+These examples establish bounded PIT source feasibility, but the observations are not standardized enough across issuers/industries:
+- capacity units differ;
+- technologies/nodes/products differ;
+- yield and qualification are inconsistently disclosed;
+- utilization denominators differ or are absent;
+- company plan, industry output and aggregate capex have different scopes.
+
+Therefore D10-04 remains L2.
+
+A future L3 promotion requires a reusable Taiwan source contract with comparable semantics across a bounded multi-company/industry sample, not one famous issuer plus aggregate macro data.
+
+Status: `LIFECYCLE_MODEL_SUPPORTED / CROSS_COMPANY_SEMANTICS_NOT_READY / KEEP_L2`.
+
+### Next
+SC-023: actual Taiwan issuer exposure mapping for one ABF/PCB input chain and one steel-process route.
+SC-024: evaluate whether issuer capacity disclosures can be normalized into comparable status clocks without inventing utilization.
