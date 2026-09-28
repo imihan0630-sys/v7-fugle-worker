@@ -1288,3 +1288,50 @@ Status: `HIGH_VALUE_RESEARCH_BRIDGE / NOT_OPTIMIZATION_READY / PROSPECTIVE_EVIDE
 - TWSE industry-classification rules and effective-dated reclassification notices.
 - TWSE Fact Book 2026 (2025 market-cap distribution by industry).
 
+
+
+## BR-029 — Formal industry, statistical industry and theme are three different taxonomies
+
+### Finding
+Three classification layers must not be conflated:
+
+1. **TWSE/TPEx issuer industry** — an exchange classification used for listed-company grouping. TWSE rules reference official statistical industry concepts but classify issuers using company business / revenue composition and additional financial/business evidence. Classification is reviewed periodically and can be changed.
+2. **MOEA/DGBAS statistical industry/product code** — an economic-activity taxonomy used for production / sales / inventory statistics, with detailed manufacturing codes such as 2611 integrated-circuit manufacturing, 2613 semiconductor packaging/testing and 2630 printed-circuit-board manufacturing.
+3. **Investment theme / supply-chain group** — AI server, CPO, ABF, advanced packaging, cooling, power, robotics, etc. These themes can span multiple formal exchange and statistical industries and can change with product/customer exposure.
+
+A direct one-to-one mapping among the three is therefore structurally invalid.
+
+### Evidence-backed bridge contract
+Use an effective-dated many-to-many bridge:
+
+`INDUSTRY_EXPOSURE_VINTAGE`
+- issuerMarket / issuerSymbol;
+- twseTpexIndustryCode / label / classificationSchemeId;
+- statisticalIndustryCode(s);
+- themeId(s);
+- exposureType = REVENUE / PRODUCT / CUSTOMER / CAPACITY / MATERIAL / MANAGEMENT_DISCLOSURE / VERIFIED_SUPPLY_CHAIN_EDGE / OTHER;
+- exposureMagnitudePct and basis when actually disclosed;
+- sourcePublishedAt / knownAt;
+- effectiveFrom / effectiveTo;
+- evidenceSourceId / sourceClass;
+- confidence = HIGH / MEDIUM / LOW / UNKNOWN;
+- identityResolution;
+- revision / supersession reference.
+
+### Falsification rules
+- formal sector membership alone cannot prove theme exposure;
+- a theme list from media / market convention cannot prove economic exposure;
+- product capability does not prove current order/revenue contribution;
+- one old customer relationship cannot be carried forward indefinitely;
+- a current revenue mix cannot be backfilled before its disclosure date;
+- if multiple statistical industries map to one issuer, preserve the vector rather than force one code;
+- if no contemporaneous exposure evidence exists, theme membership = UNKNOWN.
+
+### D09-11 maturity decision
+The distinction, many-to-many schema and falsification rules are now defined.
+
+`D09-11 題材股與正式產業分類橋接: L1 -> L2`.
+
+No claim is made yet that a complete PIT exposure database exists.
+
+Status: `MECHANISM_PLUS_FALSIFICATION_DEFINED / PIT_EXPOSURE_DATA_PENDING`.
