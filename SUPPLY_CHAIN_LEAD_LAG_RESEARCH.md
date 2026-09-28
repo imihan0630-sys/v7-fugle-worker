@@ -469,3 +469,96 @@ SC-014: effective-dated crosswalk between MOEA industry/product taxonomies and T
 SC-015: source-only multi-industry pilot with stored vintages/hashes; no forward-return outcomes until coverage and revision semantics pass.
 
 Status: `MACHINE_SOURCE_FEASIBLE / PROSPECTIVE_VINTAGE_CAPTURE_REQUIRED / HISTORICAL_VINTAGE_UNKNOWN`.
+
+
+## SC-014 — Industry-specific transmission templates must be taxonomy-aware
+
+### Principle
+A reusable supply-chain template must specify the economic mechanism, source taxonomy and falsification route. It cannot be "industry is hot -> member stocks benefit".
+
+### Common template grammar
+For each industry/theme define:
+1. **END_DEMAND** — end-market quantities / orders / adoption.
+2. **UPSTREAM_INPUTS** — key materials / components / equipment and price state.
+3. **PHYSICAL_OUTPUT** — production / shipment / sales.
+4. **INVENTORY** — absolute and demand-normalized inventory.
+5. **CAPACITY_RESPONSE** — installed capacity, effective additions, utilization where sourced, yield/mix.
+6. **PRICING_POWER** — selling price, cost pass-through, margin.
+7. **CHAIN_POSITION** — supplier/customer/substitution role and bargaining power.
+8. **COMPANY_EXPOSURE** — disclosed revenue/product/customer/capacity exposure with knownAt/effective dates.
+9. **MARKET_CONFIRMATION** — sector RS / breadth / leadership concentration.
+10. **INVALIDATION** — demand miss, overhang, oversupply, substitution, margin squeeze, stale exposure, source failure.
+
+### Template A — Semiconductor / PCB family
+Statistical source nodes may include detailed MOEA manufacturing codes such as:
+- 2611 integrated-circuit manufacturing;
+- 2613 semiconductor packaging/testing;
+- 2630 printed-circuit-board manufacturing.
+
+But these statistical codes do not automatically equal an exchange issuer's formal industry or an investment theme such as ABF / AI server / advanced packaging.
+
+Required chain tests:
+- end-demand / customer adoption before declaring capacity shortage;
+- sales + inventory state before interpreting production growth;
+- capacity effective date and yield/mix before calling expansion accretive;
+- material/input cost vs selling price/margin;
+- product-specific exposure before transferring industry state to a stock;
+- peer/common-factor negative control for alleged supply-chain lead-lag.
+
+Typical falsification:
+- capacity grows faster than demand;
+- inventory accumulates despite output growth;
+- price strength is concentrated in one mega-cap;
+- upstream order spike is bullwhip / double booking;
+- company has technical capability but no verified material revenue exposure.
+
+### Template B — Commodity / process-manufacturing family
+Required chain:
+`RAW_MATERIAL / ENERGY -> PRODUCER COST -> SELLING PRICE -> INVENTORY / VOLUME -> MARGIN -> DOWNSTREAM DEMAND`.
+
+Key distinction:
+- upstream raw-material producer can benefit from scarcity;
+- downstream processor can be squeezed by the same price move;
+- final demand destruction can reverse an apparent pricing-power phase.
+
+Typical falsification:
+- selling-price increase lags cost increase;
+- inventory value rises only because unit prices rise while physical volume weakens;
+- producer price strength is caused by temporary outage or policy shock that normalizes;
+- margin / cash flow fails to confirm.
+
+### No forced one-to-one crosswalk
+TWSE issuer industries, MOEA/DGBAS statistical industries and theme/supply-chain groups remain separate namespaces connected by effective-dated evidence edges. This prevents false precision and protects PIT semantics.
+
+### D10-12 maturity decision
+The reusable grammar plus two distinct mechanism/falsification families are now defined.
+
+`D10-12 產業別專用傳導模板: L1 -> L2`.
+
+PIT source coverage for each concrete industry remains pending and must be validated separately.
+
+---
+
+## SC-015 — Source-only pilot design before any return test
+
+The next pilot will select at least:
+- one semiconductor/PCB statistical lane;
+- one non-tech / commodity-process lane.
+
+For each monthly information date, freeze only source state:
+- production / sales / inventory / inventory ratio;
+- available investment/capacity proxy;
+- classification/exposure vintage;
+- source release / capturedAt / revision hash.
+
+Pilot success criteria:
+- source retrieval is reproducible;
+- observation month and knownAt are unambiguous;
+- revisions can be detected rather than overwritten;
+- industry code remains stable or versioned;
+- mapping to issuer/theme is evidence-backed;
+- UNKNOWN rate is reported rather than imputed.
+
+Forward returns remain hidden until the source-readiness receipt passes. This prevents outcome-driven taxonomy/mapping choices.
+
+Status: `PILOT_PREREGISTERED / OUTCOME_BLIND / NO_FORMAL_CHANGE`.
