@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import {trancheStageOrderability} from "../research/tranche_stage_orderability_v0_1.mjs";
 const plans=[
  {symbol:"A",totalAllocation:50000,buyHigh:100},
- {symbol:"B",totalAllocation:64000,buyHigh:500},
+ {symbol:"B",totalAllocation:64000,buyHigh:1000},
  {symbol:"C",totalAllocation:54000,buyHigh:25}
 ];
 const x=trancheStageOrderability(plans,{ratios:[0.01,0.02,0.5,0.98,0.99]});
