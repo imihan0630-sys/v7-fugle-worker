@@ -136,7 +136,7 @@ await assert.rejects(
       throw new Error("INTENTIONAL_STOP_AFTER_FIRST_DATE");
     },
     retainSamplesInMemory: false,
-    capturedAt: "2026-09-28T09:45:00Z",
+    capturedAt: "2026-10-01T09:45:00Z",
   }),
   /INTENTIONAL_STOP_AFTER_FIRST_DATE/,
 );
@@ -154,7 +154,7 @@ const resumed = await runBulkBacktestV0_1({
   onPartition: async (partition) => archivedPartitions.push(...partition.samples),
   resumeCheckpoint: firstCheckpoint,
   retainSamplesInMemory: false,
-  capturedAt: "2026-09-28T09:45:00Z",
+  capturedAt: "2026-10-01T09:45:00Z",
 });
 
 assert.equal(resumed.allRequestedDatesComplete, true);
@@ -172,7 +172,7 @@ const baseDataset = await buildHistoricalBaseDatasetV0_1({
   baseDatasetId: "BASE-SM-TEST-V0.1",
   backtestRun: resumed,
   samples: archivedPartitions,
-  capturedAt: "2026-09-28T09:50:00Z",
+  capturedAt: "2026-10-01T09:50:00Z",
 });
 
 assert.equal(baseDataset.fullUniverseProcessedSampleCount, 6);
@@ -198,7 +198,7 @@ const persistence = await buildSystem2PersistenceBatch({
   marketDate: resumed.lastMarketDate,
   decisionTimestamp: "2026-09-29T10:10:00Z",
   records,
-  createdAt: "2026-09-28T09:50:00Z",
+  createdAt: "2026-10-01T09:50:00Z",
 });
 assert.equal(persistence.operationCount, 6);
 
@@ -219,7 +219,7 @@ await assert.rejects(
     loadUniverse: async () => [{ symbol: "2330", companyName: "台積電", market: "TWSE" }],
     loadHistoricalBars,
     evaluateSymbol: async () => ({ candidateState: "SELECTED" }),
-    capturedAt: "2026-09-28T09:55:00Z",
+    capturedAt: "2026-10-01T09:55:00Z",
   }),
   /SELECTED generation is not authorized/,
 );
