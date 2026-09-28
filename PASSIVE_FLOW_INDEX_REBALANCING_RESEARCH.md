@@ -1056,3 +1056,101 @@ This is the correct stopping point for indicator invention.
 Next work should improve data contracts, not add more passive-flow features.
 
 Status: PASSIVE FLOW = EVIDENCE BUILD PENDING.
+
+---
+
+## PF-035 — MSCI Global Standard Taiwan public-list contract: bounded membership completeness is materially validated
+
+Research cycle: 2026-09-28 Asia/Taipei
+Status: SOURCE_CONTRACT_ADVANCED / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+### Re-audit result
+The earlier PF-031 statement that the detailed constituent-file parser contract was still merely PARTIAL is now too conservative for one tightly bounded universe.
+
+Four consecutive official MSCI Global Standard public-list artifacts were re-checked:
+- November 2025;
+- February 2026;
+- May 2026;
+- August 2026.
+
+For every cycle:
+1. the official previous-review landing page exposes the Global Standard additions/deletions artifact;
+2. the PDF has a stable top-level Global Standard heading and an explicit effective-close date;
+3. the summary contains a Taiwan added/deleted count;
+4. the document contains an `MSCI TAIWAN INDEX` country section;
+5. Taiwan additions/deletions in the country section reconcile exactly to the summary counts.
+
+Observed Taiwan count invariants:
+- Nov-2025 = 6 added / 7 deleted;
+- Feb-2026 = 1 / 4;
+- May-2026 = 1 / 7;
+- Aug-2026 = 6 / 6.
+
+Research receipt:
+`research/msci_standard_taiwan_membership_negative_evidence_contract_v0_1.json`.
+
+### What this proves
+For the bounded object:
+`MSCI | GLOBAL_STANDARD | TAIWAN | PERIODIC_REVIEW | MEMBERSHIP_ADD_DELETE`,
+a deterministic official-artifact validation method is feasible.
+
+A cycle is complete only when:
+- official artifact identity is verified;
+- provider publication/effective clocks are preserved;
+- Taiwan section exists;
+- parsed Taiwan counts equal the summary counts;
+- missing/revised/schema-drift cases fail closed.
+
+This supports a narrow negative-evidence state:
+`NO_MSCI_STANDARD_MEMBERSHIP_ADD_DELETE_VERIFIED`.
+
+### What this does NOT prove
+The state must not be renamed `NO_INDEX_EVENT` or `NO_PASSIVE_FLOW`.
+
+The public add/delete artifact does not by itself rule out:
+- weight-only changes;
+- free-float/inclusion-factor changes;
+- Small/Micro Cap or other MSCI families;
+- FTSE/TWSE/TIP/custom-index changes;
+- ETF creation/redemption;
+- offshore benchmark flows;
+- unscheduled/special index actions;
+- derivatives-expiry overlap;
+- effective-close auction attribution.
+
+Therefore `ORDINARY_FLOW_CONTEXT_VERIFIED` remains unavailable from this artifact alone.
+
+### PIT rule
+Provider date/time must be respected. If an exact publication timestamp is not auditable, the conservative rule is to make the event usable no earlier than the next Taiwan trading session after the provider publication date. Do not shift later-known membership data backward.
+
+### Falsification
+Four consecutive cycles materially reduce the source-contract uncertainty but do not prove permanent future schema stability. Every future cycle still requires schema/count reconciliation; missing artifacts or count mismatch => `EVENT_COVERAGE_INCOMPLETE`.
+
+Status:
+`BOUNDED_MSCI_STANDARD_MEMBERSHIP_NEGATIVE_EVIDENCE = METHOD_READY`.
+
+---
+
+## PF-036 — public accessibility is not an ingestion license
+
+The official MSCI public-list PDFs include use restrictions that cover creating derivative/database/analytics uses from the information.
+
+Research consequence:
+- public URL accessibility proves source discoverability, not permission for automated persistent ingestion;
+- the source-contract research above may be retained as methodology/provenance;
+- do not build a bulk historical constituent database from these public PDFs or wire them into Production merely because the URLs are accessible;
+- before persistent automated ingestion, use an appropriately licensed/authorized data source or obtain a permission determination.
+
+This is a source-licensing/provenance gate, not evidence that the membership-event method is invalid.
+
+### Engineering classification
+- Research contract/taxonomy only: Class A documentation/research.
+- Persistent shared runtime ingestion: at least Class B proposal-first and also subject to source authorization/licensing.
+- Any Formal ranking/veto/score change based on passive context: Class C.
+
+### Updated continuation
+1. Do not start outcome tests from the public-list PDFs.
+2. Audit whether an authorized/licensed source can prospectively provide the same MSCI membership-event receipt.
+3. Continue separate source work for weight-only changes and non-MSCI index families.
+4. Keep exact passive-flow NTD and close-auction attribution data-gated.
+5. Institutional-flow research may use `NO_MSCI_STANDARD_MEMBERSHIP_ADD_DELETE_VERIFIED` only as a narrow contamination control; broader passive context remains UNKNOWN.
