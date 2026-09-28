@@ -2,6 +2,14 @@ name: System2 Historical Pack 2017 Backfill
 
 on:
   workflow_dispatch:
+    inputs:
+      market:
+        description: "Backfill one market only; run TWSE first, verify, then run TPEX"
+        required: true
+        type: choice
+        options:
+          - TWSE
+          - TPEX
 
 permissions:
   contents: read
@@ -34,10 +42,6 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 40
     environment: system2-research
-    strategy:
-      fail-fast: false
-      matrix:
-        market: [TWSE, TPEX]
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -53,7 +57,7 @@ jobs:
           SYSTEM2_R2_SECRET_ACCESS_KEY: ${{ secrets.SYSTEM2_R2_SECRET_ACCESS_KEY }}
           SYSTEM2_R2_BUCKET: ${{ vars.SYSTEM2_R2_BUCKET }}
           SYSTEM2_HISTORY_YEAR: "2017"
-          SYSTEM2_HISTORY_YEAR_MARKET: ${{ matrix.market }}
+          SYSTEM2_HISTORY_YEAR_MARKET: ${{ inputs.market }}
         run: node system2/scripts/historical_pack_year_backfill_v0_1.mjs
       - name: Confirm System1 production files untouched
         run: |
