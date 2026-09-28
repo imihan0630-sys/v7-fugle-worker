@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-09-28T21:04:00+08:00",
+  "updatedAt": "2026-09-28T21:36:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -1181,7 +1181,10 @@
           "level": "L2",
           "maturityPct": 40,
           "learningScope": "聚焦「重大訊息first-known時間」。學習範圍：除權息、增減資、分割、CB、庫藏股、併購、停復牌、重大訊息與指數調整；公告／生效時鐘；歷史價格連續性；負面證據完整性；事件窗與退出風險。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "OFFICIAL_SOURCE_CLOCK_OBSERVED / CAPTURE_CLOCK_AUTHORITATIVE / INTRADAY_AVAILABILITY_AND_REVISION_HISTORY_UNPROVEN",
+          "evidence": "Bounded TWSE/TPEx official-disclosure pilot preserved raw hashes, capturedAt and source publication clocks; daily catalog frequency and absent native version IDs prevent a first-known completeness claim.",
+          "next": "Accumulate fixed-cadence multi-day official captures and authenticate API availability/revision semantics before L3."
         },
         {
           "id": "D11-09",
@@ -1877,7 +1880,10 @@
           "level": "L2",
           "maturityPct": 40,
           "learningScope": "聚焦「新聞來源可靠度分級」。學習範圍：新聞來源分級、發布與first-known時間、半衰期、預期差、已反映程度、情緒、去重；直接／間接受益受害；族群與供應鏈傳導；事件後跳空、延續與反轉。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "OFFICIAL_TRUTH_LANE_BOUNDED_CAPTURED / GENERAL_NEWS_PRODUCTION_SOURCE_NEEDED / MULTIDAY_COVERAGE_PENDING",
+          "evidence": "Both official exchange datasets returned the declared nine-field schema under open-data catalog terms, but this lane covers disclosures rather than general news and has no native version chain.",
+          "next": "Continue multi-day official source capture and separately validate a licensed production general-news provider; do not substitute one lane for the other."
         },
         {
           "id": "D17-02",
@@ -1885,7 +1891,10 @@
           "level": "L2",
           "maturityPct": 40,
           "learningScope": "聚焦「新聞first-known／發布時間」。學習範圍：新聞來源分級、發布與first-known時間、半衰期、預期差、已反映程度、情緒、去重；直接／間接受益受害；族群與供應鏈傳導；事件後跳空、延續與反轉。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "SOURCE_PUBLICATION_CLOCK_PRESENT / CONSERVATIVE_CAPTURE_CLOCK_REPLAY_READY / LATENCY_DISTRIBUTION_UNKNOWN",
+          "evidence": "Observed 發言日期/發言時間 are retained, but capturedAt is the only authenticated availability upper bound in the pilot; two polls 55 seconds apart were unchanged.",
+          "next": "Measure fixed-cadence sourcePublishedAt-to-capturedAt delay over independent sessions; never backdate availability to the row publication clock."
         },
         {
           "id": "D17-03",
@@ -1941,7 +1950,10 @@
           "level": "L2",
           "maturityPct": 40,
           "learningScope": "聚焦「重複新聞／同事件Cluster去重」。學習範圍：新聞來源分級、發布與first-known時間、半衰期、預期差、已反映程度、情緒、去重；直接／間接受益受害；族群與供應鏈傳導；事件後跳空、延續與反轉。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "RECURRING_DISCLOSURE_RISK_OBSERVED / DERIVED_IDENTITY_REPLAY_TESTED / NATIVE_REVISION_CHAIN_MISSING",
+          "evidence": "The bounded official sample contains multiple 07:00:04 rows whose fact dates predate the publication date by months and whose notices span announcement periods; these are duplicate/stale candidates, not automatically new events.",
+          "next": "Use multi-day immutable captures to distinguish republication, rolling-window eviction, update and correction; keep removals UNKNOWN until source window semantics are proven."
         },
         {
           "id": "D17-10",

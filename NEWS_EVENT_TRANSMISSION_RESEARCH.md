@@ -621,3 +621,61 @@ Next work should be empirical source proof:
 - perform a bounded prospective capture pilot on official material disclosures plus any legally usable discovery feed;
 - measure firstKnown/capturedAt latency, correction/version incidence, duplicate-cluster behavior and coverage gaps without looking at returns;
 - only after the source receipt passes, preregister outcome studies for half-life, priced-in state, direct/indirect exposure and sector propagation.
+
+---
+
+## D17 bounded official-disclosure capture pilot — source clocks are not availability clocks
+
+The exact-next source-only pilot was executed against the official TWSE and TPEx daily material-disclosure datasets. No price, return, ranking, factor or outcome field was read.
+
+Durable artifacts:
+- `research/d17_official_disclosure_capture_pilot_v0_1.json`;
+- `research/d17_disclosure_snapshot_observer_v0_1.mjs`;
+- `tests/test_d17_disclosure_snapshot_observer_v0_1.mjs`.
+
+### Positive source evidence
+
+- Both endpoints returned HTTP 200 and four rows in the bounded observation.
+- Both schemas preserved nine disclosure fields, including source publication date/time, company code/name, subject, clause, fact date and full explanation.
+- Government catalog metadata declares daily updates and Open Government Data License v1 for both datasets.
+- Two polls approximately 55 seconds apart had identical raw SHA-256 payloads for each source. This proves bounded replay stability for the observed interval only.
+- Raw payload hashes, capture clocks and deterministic derived identities are sufficient to replay exactly what the pilot observed.
+
+### Counterevidence and falsification
+
+1. **Publication time is not API availability time.** The rows contain `發言日期` and `發言時間`, but this pilot did not observe the moment each row first became available from the API. `capturedAt` therefore remains the conservative first-known upper bound.
+2. **Daily frequency is not an intraday SLA.** Catalog metadata says daily, so the feed cannot yet support an authenticated claim that every announcement was available before an intraday or after-market decision timestamp.
+3. **No native version identity.** Neither observed schema exposes a provider item ID, version ID, correction flag or supersession link. A derived fingerprint supports replay and change detection, but it cannot prove the publisher's correction chain.
+4. **Recurring/stale disclosure risk is real.** Seven of eight observed rows had the same 07:00:04 source time while several fact dates were months earlier and the notice text described multi-month announcement periods. These rows cannot be counted as seven new economic events merely because they appear in the daily dataset.
+5. **Short stability is not completeness.** Identical payloads over 55 seconds do not prove no later update, full historical archive, polling completeness or immutable source history.
+6. **Official disclosures are not general news.** This lane improves canonical event truth but cannot replace media discovery, external customer/industry catalysts or attention evidence. A licensed production general-news lane remains `SOURCE_NEEDED`.
+
+### Frozen PIT and replay contract
+
+- Preserve `sourcePublishedAt`, `capturedAt`, raw payload hash and parser version separately.
+- Use `capturedAt` for replay eligibility until source availability time is independently authenticated.
+- Append changed captures; never rewrite an earlier observed version.
+- A missing row or a row disappearing from a later daily snapshot is `UNKNOWN_WINDOW_EVICTION_OR_SOURCE_REMOVAL_OR_CORRECTION` until rolling-window semantics and correction linkage are proven.
+- `NO_KNOWN_EVENT` requires expected/observed poll accounting over the relevant source window; one daily snapshot can never establish negative evidence completeness.
+
+### Bias, cost and system-value decision
+
+- Selection bias: all rows returned by both sources were counted; no symbol, tone, event class or outcome filter was applied.
+- Look-ahead: source publication time cannot backdate decision-time availability; later captures remain invisible to earlier replay.
+- Data snooping/overfit: no outcome, horizon, threshold, model or text-score search occurred.
+- Redundancy: official disclosures own primary fact evidence; D17 general news, D09 sector state and D10 supply-chain structure remain separate authorities.
+- Cost: the bounded payloads were small, but two polls are insufficient for a rate-limit, storage or production-cost conclusion.
+- System 1 value is provenance/UNKNOWN discipline only. System 2 gains a candidate canonical event-truth lane, not a live factor.
+
+Status:
+`BOUNDED_CAPTURE_EXECUTED / SOURCE_CLOCK_PRESENT / CAPTURE_CLOCK_AUTHORITATIVE / REVISION_CHAIN_UNPROVEN / GENERAL_NEWS_SOURCE_NEEDED / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED`.
+
+Maturity remains unchanged. D11-08 and D17-01/02/09 stay at L2 because intraday availability, multi-day coverage and publisher-native revision history are not yet validated.
+
+## Exact next continuation
+
+1. Run an independent fixed-cadence capture over at least three trading sessions plus one after-hours interval, with immutable raw hashes and expected/observed poll receipts.
+2. Measure source-publication-to-capture delay distributions without interpreting that delay as proven API publication latency.
+3. Classify cross-day recurring notices, additions, removals and changed content. Treat removals as UNKNOWN until the source window contract is proven.
+4. Search for a native MOPS disclosure identifier/correction link; if none exists, keep derived revision chains explicitly unverified.
+5. Keep the licensed general-news production lane `SOURCE_NEEDED`; keep all return/outcome joins closed until source/version and coverage gates pass.
