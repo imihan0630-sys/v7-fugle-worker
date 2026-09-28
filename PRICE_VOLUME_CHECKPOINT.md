@@ -1327,3 +1327,102 @@ Formal Core remains LOCKED.
 6. For H003/H004, require exchange-consistent price-boundary/reference overlays and price-only vs price+volume anti-circularity before any interpretation.
 7. After clean data accumulate, run horizon-separated A/B/C/D, quadrant/response, breakout-quality and two-leg dry-up analyses without threshold tuning.
 8. No Formal modification or FORMAL_OPTIMIZATION_CANDIDATE until prospective/OOS evidence passes the existing gates.
+
+
+## Evidence progress — PVE-181 through PVE-186 (2026-09-29 pre-market long block)
+
+### PVE-181 — 13:00 PRE_EVENT can create a phantom Acceptance event
+Status: CODE_PROVEN_EVENT_DENOMINATOR_DEFECT / H003_QUARANTINE / FORMAL_UNCHANGED
+
+Fresh audit of `pvAdvanceAcceptance()` shows the session-end clause executes for every non-terminal state:
+`if(bar.slotKey==="13:00" && ![...terminal states].includes(state)) state=*_EXPIRED_AMBIGUOUS`.
+
+If a symbol remained `B_PRE_EVENT` all day without ever reaching breakout, or `A_PRE_EVENT` without ever entering the pullback zone, the 13:00 bar still changes state to `B_EXPIRED_AMBIGUOUS` / `A_EXPIRED_AMBIGUOUS`. Immediately afterward, `eventKey` is created whenever `transitioned && state!==initial`.
+
+Therefore a pure PRE_EVENT -> EXPIRED_AMBIGUOUS transition can manufacture a `PVACC:...` event even though no underlying Acceptance lifecycle was ever activated.
+
+Evidence rule frozen before live outcome inspection:
+- raw `acceptance.eventKey` count is NOT the H003 event denominator;
+- an Acceptance event is active only after a genuine pre-outcome lifecycle entry such as B_BREAKOUT_ATTEMPT / B_INITIAL_ACCEPTANCE / A_PULLBACK_TEST / A_INITIAL_ACCEPTANCE (or a future versioned equivalent);
+- PRE_EVENT -> EXPIRED_AMBIGUOUS-only keys are `NO_TRIGGER_SESSION_CENSOR`, not failed/ambiguous Acceptance events;
+- historical/prospective v0.1 rows can be reclassified offline from nested stateHistory; snapshots are not rewritten.
+
+### PVE-182 — INVALID Guard does not pause Acceptance, unlike Persistence
+Status: CODE_PROVEN_STATE_MACHINE_ASYMMETRY / H003_H004_HIGHER_GATED
+
+Current intraday builder explicitly passes:
+`comparable = guard.pvInterpretability !== "INVALID"`
+to `pvAdvancePersistence()`, so participation persistence pauses on INVALID rows.
+
+But `pvAdvanceAcceptance()` is called unconditionally and receives no Guard/comparable input. As a result, rows flagged INVALID for reasons such as INVALID_SOURCE_DATA, DATA_INSUFFICIENT, REFERENCE_PRICE_UNRESOLVED or other invalid-precedence states can still advance Acceptance based on available bar/plan geometry.
+
+This is a semantic asymmetry:
+- Persistence: INVALID => paused;
+- Acceptance: INVALID => can transition.
+
+The asymmetry is not automatically wrong for storage, but it prevents v0.1 Acceptance state from being treated as hypothesis-clean ground truth without a quality overlay.
+
+### PVE-183 — INVALID rows can still create intraday outcome anchors
+Status: CODE_PROVEN_ANCHOR_ELIGIBILITY_LEAK / OUTCOME_STORAGE_NOT_INFERENCE
+
+After unconditional Acceptance evaluation, current code sets:
+`anchorEligible = acceptance.transitioned && (B_INITIAL_ACCEPTANCE || A_REACCELERATION)`.
+There is no additional condition requiring `guard.pvInterpretability !== "INVALID"`.
+
+Therefore a cold-start / source-invalid row can theoretically become anchorEligible and later receive B1/B2/B4 and daily outcomes. The outcome values may be factual market paths, but their existence does not make the originating PV state clean.
+
+Frozen rule:
+- outcome storage and feature/state eligibility are separate dimensions;
+- `anchorEligible=true` does not imply H003/H004 eligibility;
+- primary H003/H004 requires both genuine Acceptance lifecycle entry and a field-level quality overlay proving the fields used by that transition were interpretable at featureKnownAt.
+
+### PVE-184 — 2026-09-29 cold-start Acceptance/outcome rows require explicit DATA_QA-only labeling
+Status: FIRST_SESSION_QA_REFINEMENT / NO_OUTCOME_INSPECTION
+
+The first ordinary post-enable intraday session is still 2026-09-29 and remains DATA_QA-only due inherited stale 2026-09-24 plan lineage. In addition, before the first successful after-market bootstrap, intraday same-slot baselines are expected cold/insufficient.
+
+Because Acceptance can advance independently of the PV baseline Guard, the recorder may still persist Acceptance transitions/anchors/outcomes on 9/29 even when RVOL response fields are DATA_INSUFFICIENT/INVALID.
+
+Therefore the 9/29 receipt must separately count:
+- raw snapshots;
+- Guard INVALID / GUARDED / VALID rows;
+- raw Acceptance transitions;
+- genuine lifecycle-entry transitions;
+- PRE_EVENT-only expiries;
+- raw anchorEligible rows;
+- hypothesis-clean anchors (expected zero for primary inference on 9/29 regardless of market outcome).
+
+### PVE-185 — H003 event denominator and maturity accounting frozen
+Status: EVENT_ACCOUNTING_PREREGISTERED / NO_ALPHA_CLAIM
+
+For v0.1 H003 reporting, maintain three distinct denominators:
+1. `RAW_ACCEPTANCE_KEY_COUNT`: all nested acceptance event keys, including phantom PRE_EVENT expiries;
+2. `ACTIVE_ACCEPTANCE_LIFECYCLE_COUNT`: keys whose stateHistory proves a real pre-event trigger/lifecycle entry occurred before expiry;
+3. `H003_HYPOTHESIS_CLEAN_EVENT_COUNT`: active lifecycle keys that also pass Guard/input/PIT/cohort/continuity/anti-circularity gates.
+
+Only #3 may count toward H003 evidence maturity.
+#1 remains QA diagnostics only.
+
+No event may become active because of future return, MFE/MAE, or later success/failure; activation is determined solely from the timestamped pre-outcome state path.
+
+### PVE-186 — Long-block stage IV synthesis and live hinge
+Status: PREMARKET_FALSIFICATION_COMPLETE / WAITING_2026_09_29_RUNTIME_RECEIPTS
+
+This block found two previously unregistered v0.1 evidence-semantic defects:
+- session-end PRE_EVENT expiry can create phantom Acceptance event keys;
+- Acceptance/anchor creation is not fail-closed when the Guard is INVALID.
+
+These defects do NOT invalidate H001/H002 raw slot RVOL / cumulative-pace evidence by themselves. They materially strengthen the quarantine around H003/H004 state/outcome inference.
+
+No Formal optimization candidate is created. No runtime/Formal change is authorized from these findings alone.
+
+Current Price-Volume evidence cursor: PVE-001 through PVE-186.
+Formal Core remains LOCKED.
+
+## Exact continuation after PVE-186
+1. At 2026-09-29 intraday, execute the preregistered PVE-149 Gate 0->7 and PVE-174~185 overlays before inspecting any outcome metric.
+2. Treat all 9/29 intraday rows as DATA_QA-only for primary H001~H004 due inherited 9/24 cohort lineage, regardless of recorder quality.
+3. Explicitly classify Acceptance rows into PRE_EVENT_ONLY_EXPIRY / ACTIVE_LIFECYCLE / HYPOTHESIS_CLEAN.
+4. Count anchorEligible separately from hypothesis-clean anchors; INVALID Guard anchors cannot enter H003/H004 primary inference.
+5. After the 9/29 after-market run, inspect selection/bootstrap receipts and baseline freshness/lineage; 9/30 remains only the earliest potentially clean cohort.
+6. No return/MFE/MAE threshold tuning, no historical Shadow fabrication, no maturity promotion until clean prospective evidence exists.
