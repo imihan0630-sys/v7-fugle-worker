@@ -1677,3 +1677,306 @@ Formal Core remains LOCKED. No commodity score, rare-earth bonus, gold risk veto
 3. Continue D13-03 Japan/Korea from L2 toward L3 only after clean 13:30-Taipei -> 14:30-Taipei subwindow data feasibility is proven.
 4. Continue D13-12 global shock / Taiwan residual by integrating only PIT-safe lanes; missing lanes remain UNKNOWN.
 5. No Formal optimization proposal until prospective/OOS evidence demonstrates incremental value beyond domestic Taiwan state, USD/TWD, rates, VIX and sector RS.
+
+
+---
+
+## MC-065 — D13-03 deepening: Japan/Korea daily close contains a potentially clean post-Taiwan-close subwindow
+
+Taiwan regular cash closes 13:30 Taipei.
+
+Official exchange hours:
+- Japan TSE regular cash session: 09:00-11:30 and 12:30-15:30 JST = close 14:30 Taipei.
+- Korea KRX regular cash session: 09:00-15:30 KST = close 14:30 Taipei.
+
+Therefore a clean conceptual subwindow exists:
+
+`POST_TAIWAN_CLOSE_ASIA_WINDOW = 13:30 Taipei -> 14:30 Taipei`.
+
+This is only about one hour and is much cleaner than using the entire Japan/Korea same-day close-to-close return as if it were a post-Taiwan-close lead.
+
+Required anchors:
+- JP/KR index value at Taiwan 13:30;
+- JP/KR regular-session closing value at Taiwan 14:30.
+
+Status: CLEAN-SUBWINDOW DEFINITION FROZEN.
+
+---
+
+## MC-066 — current free official historical replay for the clean subwindow is NOT established
+
+JPX official public information provides:
+- current/intraday market information with delay on some public pages;
+- TOPIX historical daily index values/OHLC.
+
+But the bounded official-source audit did not establish a free durable historical intraday archive that can reconstruct TOPIX/Nikkei value exactly at Taiwan 13:30 for a long backtest.
+
+KRX official sources confirm regular trading hours and after-hours structure, but the bounded source audit likewise did not establish a durable freely reproducible historical KOSPI index snapshot specifically at Taiwan 13:30 across long history.
+
+Therefore:
+`JP_KR_POST_TAIWAN_CLOSE_LONG_HISTORY = SOURCE_FEASIBILITY_NOT_ESTABLISHED`.
+
+Do not:
+- interpolate from daily OHLC;
+- use full daily return;
+- use the 14:30 close and pretend the 13:30 anchor was known historically;
+- backfill current public charts into historical receipts.
+
+Status: HISTORICAL-INTRADAY SOURCE GATE FROZEN.
+
+---
+
+## MC-067 — Korea's extended trading ecosystem creates a rules-regime/version problem
+
+KRX regular-session close remains 15:30 KST, but Korea introduced an alternative trading system (Nextrade) with extended pre/after-market trading from 2025.
+
+For D13-03, define:
+- `KRX_REGULAR_CLOSE` = KRX index/regular-market close;
+- `KOREA_AFTER_MARKET` = separate market state where relevant;
+- `ATS_EXTENDED_SESSION` = separate source/venue.
+
+Do not merge venue/session prices into one “Korea close” without:
+- venue;
+- session;
+- rulesRegimeVersion;
+- timestamp.
+
+Historical pre-2025 and post-2025 Korea session structures must be segmented.
+
+Status: KOREA-MULTI-VENUE REGIME GUARD FROZEN.
+
+---
+
+## MC-068 — the D13-03 hypothesis should test information added after Taiwan already closed
+
+Research question:
+
+**Between Taiwan 13:30 and Japan/Korea 14:30, did Japan/Korea reveal new regional information that changes the next Taiwan session beyond what Taiwan already priced by its own close?**
+
+Candidate clean features:
+- `topixPostTwCloseReturn`;
+- `nikkeiPostTwCloseReturn`;
+- `kospiPostTwCloseReturn`;
+- `jpKrPostTwCloseAgreement`;
+- `jpKrPostTwCloseDispersion`.
+
+Controls:
+- Taiwan same-day market/sector state;
+- Japan/Korea return during Taiwan-overlap hours;
+- same-window global futures;
+- USD/TWD / JPY / KRW context where PIT-safe;
+- semiconductor-sector context.
+
+If full JP/KR daily return works but the post-Taiwan-close subwindow does not, classify the result as OVERLAP/COMMON-BETA rather than fresh post-close information.
+
+Status: POST-CLOSE INCREMENTAL HYPOTHESIS FROZEN.
+
+---
+
+## MC-069 — D13-03 maturity remains L2
+
+No L2 -> L3 promotion.
+
+Reason:
+- mechanism and exact subwindow are clear;
+- official session clocks are proven;
+- but long-history PIT replay/source contract for the 13:30 anchor is not established.
+
+Next evidence routes:
+1. prospective 13:30 and 14:30 capture;
+2. licensed intraday index history;
+3. exchange/vendor source with explicit historical timestamps and entitlement.
+
+Until then:
+- same-day daily JP/KR close stays `ASIA_DAILY_MIXED_WINDOW`;
+- clean post-close feature remains `WAITING_SOURCE`.
+
+Formal Core unchanged.
+
+---
+
+## MC-070 — D13-12 deepening: raw market moves are not automatically “shocks”
+
+The word shock must be reserved.
+
+Three levels:
+
+1. `OBSERVED_MOVE`
+   - raw price/index/yield/FX/commodity change.
+
+2. `STATISTICAL_SHOCK`
+   - unexpected or standardized move relative to a pre-registered, past-only baseline.
+
+3. `STRUCTURAL_SHOCK`
+   - causally identified innovation under an explicit structural model / external identification.
+
+Examples:
+- DXY +1% = OBSERVED_MOVE.
+- DXY +1% when trailing expected move was 0 with frozen scale = possible STATISTICAL_SHOCK.
+- “Dollar funding shock” requires stronger structural identification.
+
+This prevents causal over-claiming in Global Shock research.
+
+Status: SHOCK-NAMING FIREWALL FROZEN.
+
+---
+
+## MC-071 — transmission estimation and 18:10 residual-state prediction are different estimands
+
+There are two distinct research questions.
+
+### A. Global -> Taiwan transmission
+Question:
+How did Taiwan respond to a global move/shock?
+
+Here Taiwan same-day return is an outcome.
+Do NOT control it away.
+
+### B. 18:10 after-market residual state
+Question:
+Given global information was already known and Taiwan has already traded/closed, did Taiwan under-absorb, over-absorb or align with the global state, and does that residual state predict the next Taiwan session?
+
+Here Taiwan same-day return/sector response is known at 18:10 and legitimately enters the residual-state calculation.
+
+Mixing A and B creates post-treatment/control confusion.
+
+Status: ESTIMAND SEPARATION FROZEN.
+
+---
+
+## MC-072 — first Global Observation Vector, not one global risk score
+
+The global layer should remain a vector.
+
+Candidate families:
+- `GLOBAL_EQUITY` — U.S. broad/tech, Asia;
+- `GLOBAL_VOLATILITY` — VIX/TAIEX VIX/IV;
+- `GLOBAL_DOLLAR` — DXY, USD/TWD, broad-dollar context;
+- `GLOBAL_RATES` — UST front/long/real/curve;
+- `GLOBAL_ENERGY` — WTI/Brent context;
+- `GLOBAL_INDUSTRIAL_METALS` — copper/base metals;
+- `GLOBAL_MONETARY_METALS` — gold;
+- `GLOBAL_CRITICAL_MINERAL_EVENT` — rare/strategic mineral supply events;
+- `GLOBAL_MACRO_EVENT` — scheduled/released CPI/NFP/etc.;
+- `TAIWAN_DERIVATIVE_ABSORPTION` — TX NIGHT_PRE_SCAN residual.
+
+No scalar score is permitted before evidence proves:
+- stable dimension reduction;
+- no meaningful opposite-sign mechanisms are destroyed;
+- OOS incremental value exceeds the vector/baseline alternatives.
+
+Status: VECTOR-FIRST ARCHITECTURE FROZEN.
+
+---
+
+## MC-073 — absorption residual must be estimated only from information available before each date
+
+A future research residual can take the form:
+
+`expectedTaiwanResponse_t = f(globalState_t ; parameters estimated only on dates < t)`
+
+`taiwanAbsorptionResidual_t = observedTaiwanResponse_t - expectedTaiwanResponse_t`
+
+Possible response levels:
+- TAIEX market;
+- electronics/semiconductor sector;
+- stock residual after market/sector controls.
+
+Mandatory rules:
+- rolling/expanding estimation uses only prior dates;
+- minimum training count frozen;
+- no future full-sample beta;
+- no window chosen because OOS results looked better;
+- model version stored in receipt;
+- if training coverage is insufficient => UNKNOWN.
+
+A simple benchmark must precede any complex model:
+1. fixed historical beta;
+2. one-factor global broad return;
+3. broad + tech;
+4. only then multi-family model.
+
+Status: PIT RESIDUALIZATION CONTRACT FROZEN.
+
+---
+
+## MC-074 — underreaction / overreaction labels require sign-aware expected response
+
+Do not label:
+- Taiwan up less than U.S. = “underreaction”
+without an expected-response model.
+
+Because:
+- Taiwan beta may be below 1;
+- sector mix differs;
+- FX/rates can offset;
+- Taiwan may have idiosyncratic news.
+
+After a PIT model:
+- `UNDER_ABSORBED_POSITIVE` = actual response below expected positive response by threshold defined ex ante;
+- `OVER_ABSORBED_POSITIVE` = actual above expected positive response;
+- analogous negative states;
+- `ALIGNED` within pre-registered residual band;
+- `UNKNOWN` if model/data quality insufficient.
+
+Threshold must come from trailing residual scale, not future outcomes.
+
+Status: ABSORPTION LABEL SEMANTICS FROZEN.
+
+---
+
+## MC-075 — D13-12 falsification hierarchy
+
+Before claiming residual alpha:
+
+1. Taiwan domestic market/Regime baseline.
+2. Taiwan sector / Residual RS.
+3. Global broad equity only.
+4. Add tech/semiconductor.
+5. Add USD/TWD and rates.
+6. Add volatility.
+7. Add DXY.
+8. Add oil/metals only when mechanism/sector relevant.
+9. Add night-futures residual.
+10. Test whether residual state changes next-open / open-close / MAE / selection outcomes.
+
+Mandatory:
+- independent date as inference unit;
+- crisis removal;
+- event-day stratification;
+- date-shift placebo;
+- leave-one-date-out;
+- no factor family selected after outcome ranking;
+- collinearity/redundancy audit;
+- compare simple vs complex model;
+- transaction-cost/actionability test if used for decision changes.
+
+Status: GLOBAL-RESIDUAL FALSIFICATION LADDER FROZEN.
+
+---
+
+## MC-076 — D13-12 remains L2; evidence integration is now the bottleneck
+
+D13-12 remains **L2 / 40%**.
+
+Concept work is substantially deeper, but L3 requires:
+- actual PIT-safe receipts from multiple global families;
+- enough independent Taiwan dates;
+- replayable residual-model parameters;
+- evidence that global residual adds beyond Taiwan domestic/sector state.
+
+Current bottleneck:
+`PROSPECTIVE_GLOBAL_RECEIPTS`, not more indicator invention.
+
+Machine-readable next object:
+`research/d13_12_global_absorption_residual_spec_v0_1.json`.
+
+Formal Core remains LOCKED. No global score, regime gate, risk throttle or ranking modifier is approved.
+
+## Exact next continuation after MC-076
+
+1. Freeze D13-12 machine-readable residual spec.
+2. Build provider/entitlement matrix for `GLOBAL_MARKET_RECEIPT_V0_1`.
+3. Decide Class A vs Class B for prospective receipt implementation only after checking whether capture can remain isolated from Formal/shared runtime.
+4. Start prospective evidence rather than adding more conceptual global indicators.
+5. Keep D13-03 at L2 until clean JP/KR intraday historical/prospective source is proven.
