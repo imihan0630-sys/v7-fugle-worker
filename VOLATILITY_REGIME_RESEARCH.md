@@ -1012,3 +1012,58 @@ Status:
 
 Source:
 - Taiwan Stock Exchange, Trading Mechanism Introduction (current regular-trading mechanism).
+
+
+## VR-037 — terminology falsification: D04 RV5/RV20 are rolling close-to-close dispersion, not academic intraday realized variance
+
+A naming ambiguity is now explicitly resolved before the executable builder is promoted.
+
+In the high-frequency econometrics literature, realized variance is conventionally constructed as the sum of squared high-frequency intraday returns over a fixed interval and targets quadratic variation.
+
+The current System 2 daily-history primitive `volatility20`, by contrast, is:
+- daily close-to-close SIMPLE returns;
+- population standard deviation across the rolling window;
+- demeaned by the rolling-window average return;
+- not annualized.
+
+The D04 market factors `MARKET_RV5_CC_SIMPLE` and `MARKET_RV20_CC_SIMPLE` were intended to align with this existing project statistical language, not to reconstruct intraday quadratic variation from official daily closes.
+
+Therefore the existing factor IDs are retained for contract continuity, but their frozen semantic name is:
+
+`ROLLING_CLOSE_TO_CLOSE_RETURN_DISPERSION_POPSTD_SIMPLE`
+
+and NOT:
+`INTRADAY_REALIZED_VARIANCE`.
+
+### Why this matters
+
+With daily returns r:
+- rolling population variance uses mean((r - mean(r))^2);
+- quadratic-return sum uses sum(r^2);
+- they are related but are not identical;
+- the difference becomes material when the window mean is non-negligible and the scaling convention differs.
+
+Thus future documents must not compare the numerical magnitude of D04 RV5/RV20 directly with an intraday realized-variance series as if they were the same estimator.
+
+### Contract consequence
+
+Keep the existing IDs for backward compatibility:
+- MARKET_RV5_CC_SIMPLE
+- MARKET_RV20_CC_SIMPLE
+- MARKET_RV_RATIO_5_20
+
+But every persisted observation/builder must carry:
+- estimatorFamily = ROLLING_RETURN_DISPERSION;
+- returnType = SIMPLE_CLOSE_TO_CLOSE;
+- dispersionEstimator = POPULATION_STD;
+- annualized = false;
+- intradayRealizedVariance = false.
+
+If a future intraday realized-variance factor is introduced, it requires a distinct factor ID and source/cadence contract.
+
+Status:
+`FACTOR_ID_RETAINED / ESTIMATOR_SEMANTICS_DISAMBIGUATED / NO_FACTOR_EXPANSION`.
+
+Sources:
+- Andersen/Bollerslev realized-volatility convention as summarized in the modern realized-volatility literature.
+- Bollerslev et al. (2018), Review of Financial Studies, realized variation as sum of high-frequency squared log returns.
