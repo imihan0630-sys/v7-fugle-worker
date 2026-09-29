@@ -2246,3 +2246,16 @@ Updated: 2026-09-27 23:38 Asia/Taipei.
 - Bias controls: all returned rows counted; no price/return/outcome lookup; no event-class, sentiment, horizon, threshold or model search; absence remains UNKNOWN; Formal Core and live System 2 unchanged.
 - Maturity intentionally unchanged: D11-08 and D17-01/02/09 remain L2; D17 remains 40.0%, room 08 remains 43.7%. `FORMAL_OPTIMIZATION_CANDIDATE = NO`.
 - Exact next: run fixed-cadence immutable capture over at least three trading sessions plus one after-hours interval; quantify sourcePublishedAt-to-capturedAt distributions without calling them proven API latency; classify cross-day republication/add/remove/change; locate a native MOPS correction identifier or retain unverified derived chains; keep the licensed general-news lane SOURCE_NEEDED and outcome joins CLOSED.
+
+
+## Event & News long-block — D11-14 index adjustment / passive flow (2026-09-29 Asia/Taipei)
+- Continued from latest room/router/tracker after the D17 prospective-capture next step was correctly recognized as time-dependent; per total-control rules, skipped the waiting-prospective bottleneck and advanced a nonblocked D11 module instead of idling.
+- Deepened D11-14 with Taiwan official index methodology, constituent-file source contracts and international falsification literature.
+- Key semantic result: index events require at least four clocks — review-data cutoff, public announcement knownAt, effectiveFrom session, and tracker execution window. These clocks must not be merged.
+- Official Taiwan evidence establishes PIT feasibility: FTSE/TWSE rules publish review results before effective changes; TWSE Corporate Governance 100 uses a defined technical-notice-to-effective lag; TWSE e-shop exposes daily constituent/pre-open/tracking artifacts. Historical byte access may be licensed/subscription-gated, so public methodology does not fabricate missing historical states.
+- Positive mechanism: passive/benchmark-aware rebalance demand, auction concentration, inventory transfer and liquidity changes can create event-specific price/volume pressure even without new fundamentals.
+- Strong counterevidence: index effects are not stable universal alpha. Literature documents attenuation over time, methodology sensitivity and materially different demand dynamics for true adds/deletes versus transfers across related indices. Therefore ADD!=bullish and DELETE!=bearish.
+- D11-14 advanced L2 -> L3 solely on Taiwan PIT/source feasibility; no L4 claim. D11 maturity 47.1% -> 48.6%; room 08 aggregate 43.7% -> 44.4%; overall 226-module maturity 45.9% -> 46.9%.
+- Durable artifacts: `INDEX_ADJUSTMENT_PASSIVE_FLOW_RESEARCH.md`, `research/d11_index_adjustment_pit_receipt_v0_1.json`.
+- No Formal change, no live System 2 change and no FORMAL_OPTIMIZATION_CANDIDATE.
+- Exact next: preregister one Taiwan prospective/OOS index-event cohort before outcome inspection, separating announcement/effective windows, true adds/deletes/transfers, market/sector/momentum/liquidity controls, concurrent material information/corporate actions, and explicit auction/cost sensitivity. In parallel, keep D17 fixed-cadence source-only capture waiting for the required multi-session elapsed evidence.
