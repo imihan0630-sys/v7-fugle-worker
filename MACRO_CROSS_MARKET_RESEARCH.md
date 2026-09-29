@@ -1980,3 +1980,170 @@ Formal Core remains LOCKED. No global score, regime gate, risk throttle or ranki
 3. Decide Class A vs Class B for prospective receipt implementation only after checking whether capture can remain isolated from Formal/shared runtime.
 4. Start prospective evidence rather than adding more conceptual global indicators.
 5. Keep D13-03 at L2 until clean JP/KR intraday historical/prospective source is proven.
+
+
+---
+
+## MC-077 — observable on a website != admissible for automated research capture
+
+A source can be economically relevant and visually accessible but still fail the machine-research source contract.
+
+Separate gates:
+
+1. **ECONOMIC_OBSERVABILITY**
+   - the market/object exists and can be observed in principle.
+
+2. **CLOCK_OBSERVABILITY**
+   - an observation exists before the Taiwan decision clock with explicit observed/known timing.
+
+3. **ENTITLEMENT**
+   - the intended automated/non-display use is permitted by source terms or a licensed provider.
+
+4. **REPLAYABILITY**
+   - the same object can be durably stored/replayed with contract/session/version identity.
+
+5. **OUTCOME ELIGIBILITY**
+   - only after the previous four gates may the source enter OOS/Shadow outcome tests.
+
+This prevents “I can see the quote in a browser” from silently becoming “the system may legally and reliably ingest the quote.”
+
+Status: SOURCE-ADMISSIBILITY LADDER FROZEN.
+
+---
+
+## MC-078 — delayed market data can be PIT-safe, but only under honest delay semantics
+
+A delayed quote is not automatically look-ahead.
+
+If a provider publishes a market observation after a known delay:
+- `observedAt` = source market event/quote timestamp;
+- `knownAtTaipei` = when the delayed observation became available to our capture path;
+- `capturedAt` = our actual receipt time;
+- decision eligibility is based on `knownAtTaipei`, not the original market timestamp.
+
+Example:
+- market quote event 18:00 Taipei;
+- licensed/public delayed publication 18:10;
+- captured 18:10:05.
+
+That object can be PIT-safe for a later decision, but it is **not** a real-time 18:00 receipt.
+
+However, clock honesty does not solve licensing. Delayed data still requires an admissible entitlement for automated/non-display use.
+
+Status: DELAYED-DATA SEMANTICS FROZEN.
+
+---
+
+## MC-079 — CME public website is not an admissible automated HG/GC/WTI research feed
+
+CME Group's own market-data documentation states:
+- website futures/options quotes are delayed at least 10 minutes;
+- website data are for reference;
+- licensed real-time/delayed/end-of-day data are available through CME or licensed distributors;
+- non-display use includes system/process/program use for research and analysis and is subject to licensing.
+
+Consequences for D13:
+- HG copper, GC gold and CME WTI remain economically valid candidate markets;
+- the free CME website must not be converted into an automated research API by scraping;
+- a future licensed delayed feed could still be PIT-valid if delay/availability semantics are explicit;
+- provider/license choice must be frozen **before** outcomes are inspected.
+
+Current classification:
+`CME_HG_GC_WTI_AUTOMATED_CAPTURE = SOURCE_CONTRACT_BLOCKED`.
+
+Status: CME AUTOMATED NON-DISPLAY GATE FROZEN.
+
+---
+
+## MC-080 — DXY has the same entitlement problem and a stronger index-IP constraint
+
+ICE documentation identifies DXY/USDX as proprietary ICE Data Indices content.
+
+ICE Global Index Feed policy requires declaration/licensing for non-display use, including non-trading systems/processing/calculations. ICE Index Platform terms also restrict scraping/use outside an applicable agreement. ICE offers real-time, delayed, end-of-day and historical index data through licensed delivery mechanisms.
+
+Therefore:
+- DXY economic/source identity remains valid;
+- an official page visible to a human is not authorization for automated ingestion;
+- no page scraping is approved;
+- DXY remains `PROVIDER_ENTITLEMENT_NOT_FROZEN`.
+
+Current classification:
+`DXY_AUTOMATED_CAPTURE = SOURCE_CONTRACT_BLOCKED`.
+
+The broad-dollar/USD-TWD research question remains valid and can continue with admissible public-official controls while DXY is blocked.
+
+Status: DXY NON-DISPLAY ENTITLEMENT GATE FROZEN.
+
+---
+
+## MC-081 — paid-data value gate: prove value with public-official lanes first
+
+The project should not incur market-data cost merely because a factor is theoretically attractive.
+
+Research order:
+
+### Free/public-official first
+- TAIFEX TAIWAN VIX;
+- TAIFEX TX NIGHT_PRE_SCAN;
+- CBC USD/TWD;
+- U.S. Treasury already-published curve;
+- BLS/Fed scheduled macro-event clocks and first releases where timing is valid.
+
+### Paid/licensed later only if justified
+- DXY automated feed;
+- CME HG/GC/WTI automated non-display data;
+- long-history TAIFEX VIX/tick data;
+- historical macro consensus.
+
+A paid source becomes review-worthy only if:
+1. public-official lanes achieve stable prospective coverage;
+2. a preregistered residual test identifies an unresolved information gap;
+3. the paid lane has a credible mechanism to fill that gap;
+4. expected research value exceeds source cost/complexity;
+5. owner approves any paid commitment.
+
+Status: COST-BENEFIT DATA GATE FROZEN.
+
+---
+
+## MC-082 — first prospective source-only evidence exists, but it is deliberately incomplete
+
+At 2026-09-30 05:20:18 Taipei, before the 18:10 decision, the project created:
+`research/global_market_source_only_pilot_20260930.json`.
+
+It contains source-only receipts for:
+- latest already-published U.S. Treasury official curve (source date 2026-09-29);
+- BLS Employment Situation scheduled release metadata;
+- BLS CPI scheduled release metadata;
+- BLS PPI scheduled release metadata.
+
+Important negative evidence:
+- no same-day future macro realization was inserted;
+- no DXY/HG/GC was inserted because entitlement was not proven;
+- no TAIWAN VIX was invented before its regular publication session;
+- no TX NIGHT_PRE_SCAN was invented before its 15:00 window existed.
+
+This is a stronger data-quality result than filling every field: the architecture demonstrates it can remain incomplete without converting UNKNOWN into zero.
+
+Status: FIRST SOURCE-ONLY PROSPECTIVE PARTIAL PASS.
+
+---
+
+## MC-083 — source infrastructure progress is not alpha maturity
+
+The global receipt guard and first source-only pilot materially improve research integrity, but they do not prove predictive value.
+
+Therefore:
+- D13 maturity is not promoted by this implementation alone;
+- D13-12 remains evidence-pending;
+- outcome joins remain CLOSED;
+- no global risk score or position throttle is authorized.
+
+Next maturity evidence must be:
+- independent clean decision dates;
+- replay/hash verification;
+- pre-registered domestic/sector baseline comparison;
+- redundancy testing;
+- then OOS/Shadow outcomes.
+
+Status: NO MATURITY INFLATION / FORMAL CORE LOCKED.
