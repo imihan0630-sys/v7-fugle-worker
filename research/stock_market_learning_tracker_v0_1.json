@@ -1882,7 +1882,10 @@
           "level": "L3",
           "maturityPct": 60,
           "learningScope": "聚焦「Data Provenance資料來源／世代證明」。學習範圍：PIT、Prospective Shadow、OOS、Purged Holdout、多重測試、日期獨立性、冗餘、成本、Coverage與Zero-pick；資料世代證明、實驗登錄、成熟度升級與防過擬合治理。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "台股PIT資料可行"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "FIRST_SYSTEM2_PROSPECTIVE_SOURCE_CLOCK_ARTIFACT_OBSERVED / FINAL_ACCEPTANCE_PENDING",
+          "evidence": "Scheduled attempt-one run 36526809162 on 2026-09-29 produced immutable A1, A5/B2 dependency and daily Decision Clock artifacts; all collection/bundle jobs succeeded. Finalized-date acceptance had not yet run as of 2026-09-30 07:19 Taipei, so promotion-grade membership remains UNKNOWN/pending.",
+          "next": "Read the next-calendar-day finalized-date acceptance before incrementing any Decision Clock promotion-grade count; keep source-clock provenance separate from Shadow/OOS strategy evidence."
         },
         {
           "id": "D16-12",
