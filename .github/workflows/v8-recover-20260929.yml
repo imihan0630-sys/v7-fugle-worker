@@ -15,7 +15,6 @@ concurrency:
 
 jobs:
   recover:
-    if: contains(github.event.head_commit.message, '[recover-20260929]')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
