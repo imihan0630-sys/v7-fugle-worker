@@ -1,0 +1,143 @@
+{
+  "schemaVersion": "0.1",
+  "updatedAt": "2026-09-30T05:44:00+08:00",
+  "owners": [
+    "D04",
+    "D05"
+  ],
+  "status": "MEASUREMENT_AND_FALSIFICATION_PROTOCOL_FROZEN",
+  "formalCoreImpact": "NONE",
+  "purpose": "Separate session-level market regime volatility from intraday local path volatility and prevent microstructure-contaminated local RV from biasing D05 incremental tests.",
+  "estimands": {
+    "dailyMarketRegimeRV": {
+      "factorIds": [
+        "MARKET_RV5_CC_SIMPLE",
+        "MARKET_RV20_CC_SIMPLE",
+        "MARKET_RV_RATIO_5_20"
+      ],
+      "clock": "OFFICIAL_SESSION_CLOSE_TO_CLOSE",
+      "source": "A2_TAIEX_CLOSE / official TWSE index history",
+      "role": "MARKET_REGIME_CONTEXT",
+      "highFrequencyEstimator": false
+    },
+    "intradayLocalRV": {
+      "primaryPriceBasis": "TWO_SIDED_MIDQUOTE",
+      "formula": "sum((log(mid_t)-log(mid_t-1))^2) on the causal window and frozen sampling grid",
+      "role": "B0_LOCAL_PATH_VOLATILITY_CONTROL",
+      "sessionPrimary": "NORMAL_CONTINUOUS_TWO_SIDED_BOOK",
+      "tradePriceRVRole": "NOISE_DIAGNOSTIC_ONLY"
+    }
+  },
+  "cadencePilot": {
+    "candidatesSeconds": [
+      1,
+      5,
+      15
+    ],
+    "selectionCriteria": [
+      "state_reconstruction_fidelity",
+      "coverage_and_missingness",
+      "midquote_RV_stability",
+      "transaction_vs_midquote_RV_divergence",
+      "storage_and_operational_burden"
+    ],
+    "forbiddenCriterion": "strategy_return_or_alpha"
+  },
+  "bucketQualityFields": [
+    "lastBookProviderTime",
+    "lastTradeProviderTime",
+    "bookAgeMs",
+    "tradeAgeMs",
+    "connectedCoverage",
+    "reconnectSegmentId",
+    "bookProviderMessageCount",
+    "tradeProviderMessageCount",
+    "bestQuoteChangeCount",
+    "midPriceChangeCount"
+  ],
+  "sessionSegmentation": [
+    "OPEN_CALL",
+    "NORMAL_CONTINUOUS_TWO_SIDED_BOOK",
+    "VI_CALL_OR_TRIAL",
+    "CLOSE_CALL",
+    "LIMIT_CONSTRAINED",
+    "ODD_LOT",
+    "UNKNOWN_OR_INCOMPLETE"
+  ],
+  "separateJumpDescriptors": [
+    "overnightOpenAuctionGap",
+    "viCallAuctionDisplacement",
+    "closeAuctionDisplacement"
+  ],
+  "nestedD05Controls": {
+    "B0": [
+      "midquoteLocalRV",
+      "activityIntensity",
+      "midPriceChangeCount",
+      "relativeTickBps",
+      "sessionState"
+    ],
+    "B1": [
+      "spreadTicks",
+      "spreadBps",
+      "top1Depth",
+      "top1Imbalance"
+    ],
+    "B2": [
+      "pressureProxy",
+      "pressureToPriceResponse",
+      "persistenceNoProgressState"
+    ],
+    "B3": [
+      "singleFrozenTop5AggregateBlock"
+    ]
+  },
+  "diagnosticComparators": [
+    "transactionPriceRV_same_window_same_grid",
+    "tradeRV_minus_midquoteRV",
+    "tradeRV_to_midquoteRV_ratio",
+    "volatility_signature_across_1s_5s_15s"
+  ],
+  "estimatorEscalation": [
+    "simple_frozen_cadence_midquote_RV_first",
+    "signature_plot_measurement_instability_check",
+    "one_noise_robust_estimator_challenger_only_if_instability_material",
+    "keep_simpler_estimator_if_conclusion_unchanged"
+  ],
+  "noiseRobustCandidateFamilies": [
+    "two_scale_or_multi_scale_RV",
+    "realized_kernel",
+    "pre_averaging"
+  ],
+  "antiFactorZoo": [
+    "noise_robust_estimators_are_measurement_challengers_not_independent_votes",
+    "do_not_add_sampling_frequencies_after_outcome_inspection",
+    "do_not_create_combined_volatility_score_from_daily_and_intraday_RV"
+  ],
+  "unknownRules": [
+    "missing_two_sided_quote=>intraday_midquote_RV_UNKNOWN",
+    "reconnect_gap=>no_carry_forward_as_observed",
+    "auction_or_VI_state=>exclude_from_primary_continuous_RV_and_analyze_separately",
+    "historical_microstructure_not_reconstructed_from_OHLCV"
+  ],
+  "maturityDecision": {
+    "D04": "UNCHANGED_42_PERCENT",
+    "D05": "UNCHANGED_46_PERCENT",
+    "reason": "No new own prospective PIT/OOS/Shadow observations; protocol only."
+  },
+  "exactNextContinuation": [
+    "Sync the 2026-09-29 market-RV persistence contract and 2026-09-30 contraction/expansion checkpoint into the canonical tracker.",
+    "Create an outcome-blind pure research builder/test for MARKET_RV5_CC_SIMPLE / MARKET_RV20_CC_SIMPLE / MARKET_RV_RATIO_5_20 from a PIT-qualified A2 history input if governance permits isolated Class-A research code.",
+    "Do not count evidence until a real prospective persisted readback links the raw factors to the same regime snapshot/run fingerprint.",
+    "For D05, no outcome study until prospective books+trades completeness exists; when available, add signature-QA before B0->B3 inference."
+  ],
+  "sources": [
+    "Zhang, Mykland & Ait-Sahalia (2005) JASA 100(472), 1394-1411",
+    "Ait-Sahalia, Mykland & Zhang (2011) Journal of Econometrics 160(1), 160-175",
+    "Bandi & Russell (2008) Review of Economic Studies 75(2), 339-369",
+    "Barndorff-Nielsen, Hansen, Lunde & Shephard (2008) Econometrica 76(6), 1481-1536",
+    "Hansen & Lunde (2006) Journal of Business & Economic Statistics 24(2), 127-161",
+    "TWSE Trading Mechanism Introduction",
+    "Fugle Stock WebSocket Books/Trades documentation"
+  ]
+}
