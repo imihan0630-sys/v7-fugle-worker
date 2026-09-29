@@ -785,3 +785,42 @@ This is a curriculum-denominator correction, not maturity inflation.
 8. For day trading, first prove same-day PIT availability relative to the after-market decision clock, then test only conditional interactions.
 9. State-owned-bank flow remains context-only until its source contract and beneficial-owner ambiguity are handled.
 10. Formal Core remains LOCKED; current promotion status is FALSIFICATION_IN_PROGRESS.
+
+
+## IC-035 — D06 after-market source-clock matrix: activity, stock and eligibility must not share one timestamp
+
+Research cycle: 2026-09-29 Asia/Taipei
+Status: PIT_CONTRACT_ADVANCED / PROSPECTIVE_RECEIPT_STILL_REQUIRED / FORMAL_CORE_LOCKED
+
+Official exchange product contracts add an important timing falsification to D06-07/08/09/14.
+
+### Confirmed TWSE publication clocks
+- Stock-level day-trading statistics: approximately 20:00 each trading day. The file contains day-trading shares plus buy/sell value; it is an activity/turnover object, not directional overnight inventory.
+- Securities-borrowing balance (TWT72U): 20:30 each trading day. It contains prior balance, new borrowing, returns/closures, current balance and market fields. This is a stock/flow ledger for borrowing, not proof that every borrowed share was sold short.
+- Margin financing / margin short weekly balance product: approximately 20:30 on the last trading day of each week. A weekly product cannot be substituted for a daily first-known contract.
+- Three-institution weekly report product: 20:00 each trading day and explicitly separates dealer proprietary versus hedge activity. This supports actor/desk semantic separation but does not by itself prove our runtime capture time.
+
+### PIT consequence
+There is no valid single label called AFTER_MARKET_AVAILABLE for all chip data. Each field family requires its own sourceDate, sourceProduct/version, producedAtContract, capturedAt and firstKnownAt. A 20:00 decision may know one product while a 20:30 product is still future information. Historical files downloaded later may establish event-date values but cannot fabricate historical capturedAt/firstKnownAt or historical Shadow.
+
+### Cross-factor falsification
+The timing split blocks a subtle look-ahead path in crowding composites. A same-date feature such as dayTradingRatio x borrowingBalanceDelta x marginLeverage is PIT-valid only when the decision timestamp is after the latest first-known timestamp among all required inputs. Otherwise the composite is UNKNOWN, not partially zero-filled. This is especially important because day trading is turnover composition while borrowing balance is a position/ledger object; contemporaneous correlation does not establish causality.
+
+### TPEx boundary
+A TPEx market-summary product has an explicit 17:20 production clock, proving that TPEx products can expose formal production times. It does NOT prove the clock for stock-level day-trading, margin or borrowing products. Those remain product-specific UNKNOWN until their own documented contract or prospective receipt is obtained.
+
+### Research decision
+- D06-14 remains L2: TWSE contract-time feasibility improved, but prospective receipt/replay evidence and TPEx product-specific coverage are still incomplete.
+- D06-07/08/09 remain L2: official product semantics/clocks improve the source contract, but no promotion is allowed without prospective capture, market coverage and replay evidence.
+- No scalar crowding score, no threshold tuning, no outcome reading, no Formal change.
+- FORMAL_OPTIMIZATION_CANDIDATE: NONE.
+
+## IC-036 — exact next continuation
+1. Build an outcome-blind prospective receipt ledger for each D06 source family with sourceDate, market, product/version, producedAtContract, requestAt, capturedAt, firstKnownAt, parse status, coverage and deterministic content hash.
+2. Do not infer TPEx day-trading/margin/SBL clocks from unrelated TPEx products; obtain product-specific documented contracts or keep UNKNOWN.
+3. Keep IC-030 institutional decomposition outcome preregistration closed until independent D5+ outcomes/readiness gates open; do not inspect outcomes early.
+4. For D06-14 preregister conditional states only after receipt coverage exists: day-trading intensity x price acceptance x volatility x leverage/shorting, with monotonic high-day-trading shortcuts as negative controls.
+5. For D06-07/08/09 preserve financing, margin short, securities borrowing and actual SBL shorting as separate evidence families; never net them into one directional score.
+6. Continue PF with prospective ETF units-delta + PCF timestamp/corporate-action receipts; do not substitute AUM delta.
+7. Keep broker-branch beneficial-owner identity prohibited and require complete-universe/source-vintage evidence before alpha tests.
+8. Formal Core remains LOCKED; promotion status remains FALSIFICATION_IN_PROGRESS.
