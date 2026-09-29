@@ -104,6 +104,9 @@ function normalizeQuote(raw, marketDate) {
     isTrial: raw.isTrial === true,
     isHalted: raw.isHalted === true,
     isSuspended: raw.isSuspended === true,
+    isDelayedOpen: raw.isDelayedOpen === true,
+    isDelayedClose: raw.isDelayedClose === true,
+    isVolatilityInterrupted: raw.isVolatilityInterrupted === true,
     noTradeYet,
   });
 }
@@ -140,6 +143,8 @@ export function buildCurrentDailyBarFromNormalizedQuoteV0_1({
   if (q.isTrial) blockers.push("TRIAL_QUOTE_NOT_ELIGIBLE");
   if (q.isSuspended) blockers.push("SYMBOL_SUSPENDED");
   if (q.isHalted) blockers.push("SYMBOL_HALTED");
+  if (q.isDelayedClose) blockers.push("DELAYED_CLOSE_SESSION");
+  if (q.isVolatilityInterrupted) blockers.push("VOLATILITY_INTERRUPTION_ACTIVE");
   if (continuity !== "CLEAR_NO_ACTION" && continuity !== "ADJUSTED_CONTINUITY") {
     blockers.push("PRICE_CONTINUITY_NOT_VERIFIED");
   }
@@ -185,6 +190,14 @@ export function buildCurrentDailyBarFromNormalizedQuoteV0_1({
     quoteProviderTimestamp: q.providerTimestamp,
     quoteLastTradeAt: q.lastTradeAt,
     sourceFinality: q.sourceFinality,
+    sessionFlags: Object.freeze({
+      isTrial: q.isTrial,
+      isHalted: q.isHalted,
+      isSuspended: q.isSuspended,
+      isDelayedOpen: q.isDelayedOpen,
+      isDelayedClose: q.isDelayedClose,
+      isVolatilityInterrupted: q.isVolatilityInterrupted,
+    }),
     officialSessionCloseConfirmed: officialSessionCloseConfirmed === true,
     afterOfficialClose,
     continuityState: continuity,
