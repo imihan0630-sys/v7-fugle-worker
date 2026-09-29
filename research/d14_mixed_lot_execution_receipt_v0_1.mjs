@@ -9,8 +9,8 @@ function round(v,d=3){if(!Number.isFinite(v))return null;const p=10**d;return Ma
 function overlapMs(a0,a1,b0,b1){const lo=Math.max(a0,b0),hi=Math.min(a1,b1);return Math.max(0,hi-lo)}
 
 const LOT_RULES={
-  REGULAR_LOT:{mechanism:"REGULAR_CONTINUOUS"},
-  INTRADAY_ODD_LOT:{mechanism:"INTRADAY_ODD_LOT_CALL_AUCTION"}
+  REGULAR_LOT:{mechanism:"REGULAR_CONTINUOUS",eligibilityModel:"CONTINUOUS_WITH_BLOCK_INTERVALS"},
+  INTRADAY_ODD_LOT:{mechanism:"INTRADAY_ODD_LOT_CALL_AUCTION",eligibilityModel:"DISCRETE_MATCH_OPPORTUNITIES"}
 };
 
 function validateBlockedIntervals(intervals,eligibleAt,fillAt){
@@ -38,6 +38,7 @@ function legValidator(parent,leg){
   const rule=LOT_RULES[lotType];
   if(!rule) return {ok:false,reason:"UNKNOWN_LOT_TYPE"};
   if(s(leg?.mechanism)!==rule.mechanism) return {ok:false,reason:"MECHANISM_LOT_MISMATCH"};
+  if(s(leg?.eligibilityModel)!==rule.eligibilityModel) return {ok:false,reason:"ELIGIBILITY_MODEL_LOT_MISMATCH"};
 
   const intendedQty=n(leg?.intendedQty);
   if(!Number.isInteger(intendedQty)||intendedQty<=0) return {ok:false,reason:"INVALID_LEG_QUANTITY"};
@@ -62,6 +63,25 @@ function legValidator(parent,leg){
   const rawBlocks=Array.isArray(leg?.mechanismBlockedIntervals)?leg.mechanismBlockedIntervals:[];
   if(eligState==="INTERRUPTED"&&!rawBlocks.length) return {ok:false,reason:"INTERRUPTED_STATE_WITHOUT_BLOCK_INTERVAL"};
   if(eligState==="NORMAL"&&rawBlocks.length) return {ok:false,reason:"NORMAL_STATE_WITH_BLOCK_INTERVAL"};
+
+  let opportunityLedger=[];
+  if(rule.eligibilityModel==="DISCRETE_MATCH_OPPORTUNITIES"){
+    const rawOps=Array.isArray(leg?.matchingOpportunities)?leg.matchingOpportunities:[];
+    if(!rawOps.length) return {ok:false,reason:"MISSING_MATCHING_OPPORTUNITY_LEDGER"};
+    const ids=new Set(),times=new Set();
+    for(const op of rawOps){
+      const opportunityId=s(op?.opportunityId),matchAt=t(op?.matchAt),sourceRef=s(op?.sourceRef);
+      if(!opportunityId||ids.has(opportunityId)||matchAt===null||!sourceRef) return {ok:false,reason:"INVALID_MATCHING_OPPORTUNITY"};
+      if(times.has(matchAt)) return {ok:false,reason:"DUPLICATE_MATCHING_OPPORTUNITY_TIME"};
+      ids.add(opportunityId); times.add(matchAt);
+      opportunityLedger.push({opportunityId,matchAt,sourceRef});
+    }
+    opportunityLedger.sort((a,b)=>a.matchAt-b.matchAt);
+    if(opportunityLedger[0].matchAt!==eligibleAt) return {ok:false,reason:"FIRST_OPPORTUNITY_NOT_MECHANISM_ELIGIBLE_AT"};
+    for(let i=1;i<opportunityLedger.length;i++){
+      if(opportunityLedger[i].matchAt<=opportunityLedger[i-1].matchAt) return {ok:false,reason:"NON_INCREASING_MATCHING_OPPORTUNITIES"};
+    }
+  }
 
   const attemptMap=new Map();
   const fillIds=new Set();
@@ -126,30 +146,64 @@ function legValidator(parent,leg){
       const blocks=validateBlockedIntervals(rawBlocks,eligibleAt,fillAt);
       if(!blocks.ok) return blocks;
 
-      let blockedAfterEligibility=0;
+      const rawLatency=fillAt-parent.decisionKnownAt;
+      const preEligibility=Math.max(0,eligibleAt-parent.decisionKnownAt);
       const exposureStart=Math.max(parent.decisionKnownAt,eligibleAt);
+      let blockedAfterEligibility=0;
       for(const b of blocks.intervals){
         blockedAfterEligibility+=overlapMs(exposureStart,fillAt,b.startAt,b.endAt);
       }
-      const rawLatency=fillAt-parent.decisionKnownAt;
-      const preEligibility=Math.max(0,eligibleAt-parent.decisionKnownAt);
-      const scalarPostEligibility=fillAt-exposureStart;
-      const eligibleExposure=Math.max(0,scalarPostEligibility-blockedAfterEligibility);
 
-      fillDiagnostics.push({
-        lotType,
-        attemptId:a.attemptId,
-        fillId,
-        qty,
-        price,
-        rawLatencyMs:rawLatency,
-        preEligibilityWaitMs:preEligibility,
-        decisionToSubmitLatencyMs:a._submitAt-parent.decisionKnownAt,
-        scalarPostEligibilityLatencyMs:scalarPostEligibility,
-        mechanismBlockedWaitAfterEligibilityMs:blockedAfterEligibility,
-        eligibleExposureToFillMs:eligibleExposure,
-        submitToFillLatencyMs:fillAt-a._submitAt
-      });
+      if(rule.eligibilityModel==="CONTINUOUS_WITH_BLOCK_INTERVALS"){
+        const scalarPostEligibility=fillAt-exposureStart;
+        const eligibleExposure=Math.max(0,scalarPostEligibility-blockedAfterEligibility);
+        fillDiagnostics.push({
+          lotType,
+          eligibilityModel:rule.eligibilityModel,
+          attemptId:a.attemptId,
+          fillId,qty,price,
+          rawLatencyMs:rawLatency,
+          preEligibilityWaitMs:preEligibility,
+          decisionToSubmitLatencyMs:a._submitAt-parent.decisionKnownAt,
+          scalarPostEligibilityLatencyMs:scalarPostEligibility,
+          mechanismBlockedWaitAfterEligibilityMs:blockedAfterEligibility,
+          eligibleExposureToFillMs:eligibleExposure,
+          matchingOpportunityCountFromDecisionToFill:null,
+          matchingOpportunityCountAfterSubmitToFill:null,
+          matchingOpportunitiesBeforeSubmit:null,
+          priorSubmittedOpportunitiesWithoutFill:null,
+          submitToFillLatencyMs:fillAt-a._submitAt
+        });
+      }else{
+        for(const op of opportunityLedger){
+          for(const b of blocks.intervals){
+            if(b.startAt<=op.matchAt&&op.matchAt<b.endAt) return {ok:false,reason:"MATCHING_OPPORTUNITY_INSIDE_MECHANISM_BLOCK"};
+          }
+        }
+        const fillOpportunityIndex=opportunityLedger.findIndex(op=>op.matchAt===fillAt);
+        if(fillOpportunityIndex<0) return {ok:false,reason:"FILL_NOT_ALIGNED_TO_MATCHING_OPPORTUNITY"};
+        const throughFill=opportunityLedger.slice(0,fillOpportunityIndex+1);
+        const afterDecision=throughFill.filter(op=>op.matchAt>=parent.decisionKnownAt);
+        const afterSubmit=throughFill.filter(op=>op.matchAt>=a._submitAt);
+        const beforeSubmit=afterDecision.filter(op=>op.matchAt<a._submitAt);
+        fillDiagnostics.push({
+          lotType,
+          eligibilityModel:rule.eligibilityModel,
+          attemptId:a.attemptId,
+          fillId,qty,price,
+          rawLatencyMs:rawLatency,
+          preEligibilityWaitMs:preEligibility,
+          decisionToSubmitLatencyMs:a._submitAt-parent.decisionKnownAt,
+          scalarPostEligibilityLatencyMs:null,
+          mechanismBlockedWaitAfterEligibilityMs:blockedAfterEligibility,
+          eligibleExposureToFillMs:null,
+          matchingOpportunityCountFromDecisionToFill:afterDecision.length,
+          matchingOpportunityCountAfterSubmitToFill:afterSubmit.length,
+          matchingOpportunitiesBeforeSubmit:beforeSubmit.length,
+          priorSubmittedOpportunitiesWithoutFill:Math.max(0,afterSubmit.length-1),
+          submitToFillLatencyMs:fillAt-a._submitAt
+        });
+      }
       totalFilled+=qty;
     }
   }
@@ -222,6 +276,6 @@ export function validateMixedLotExecutionReceipt(receipt={}){
       eligibleExposureToFill:"scalarPostEligibility - mechanismBlockedWaitAfterEligibility",
       submitToFill:"fillAt - attempt.submitAt"
     },
-    warning:"Four scalar clocks are necessary but not sufficient when market eligibility can become blocked again after first eligibility. Use blocked intervals; do not collapse latency vectors into one score."
+    warning:"Four scalar clocks are necessary but not sufficient. Continuous mechanisms require blocked-interval accounting; periodic call-auction mechanisms require discrete matching-opportunity provenance. Do not convert odd-lot auction cadence into continuous eligible milliseconds or collapse latency vectors into one score."
   };
 }
