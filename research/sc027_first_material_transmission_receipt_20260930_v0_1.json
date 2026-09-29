@@ -1,0 +1,70 @@
+{
+  "version": "0.1",
+  "id": "SC-027",
+  "capturedAt": "2026-09-30T05:43:00+08:00",
+  "mode": "PROSPECTIVE_FROM_CAPTURE / OUTCOME_BLIND",
+  "formalCoreChanged": false,
+  "stockOutcomesOpened": false,
+  "chain": "TAIWAN_EAF_STEEL_SCRAP_TO_OUTPUT_PRICE",
+  "issuerEdge": {
+    "symbol": "2006",
+    "name": "東和鋼鐵",
+    "route": "EAF",
+    "routeEvidence": "Official issuer disclosure: 2025 main raw material 98% scrap; electric arc furnace melts scrap for structural steel.",
+    "routeSource": "https://www.tunghosteel.com/CSR/ep_green.html"
+  },
+  "sourceObservations": [
+    {
+      "metric": "北部廢鋼大盤收購價",
+      "observationMonth": "2026-08",
+      "value": 9.8,
+      "unit": "NTD_per_kg",
+      "momPct": 2.1,
+      "yoyPct": 18.1,
+      "source": "https://chart.metaltrade.tw/ste/domestic/10/",
+      "sourceClass": "TAIWAN_BASIC_METALS_MONITORING_PLATFORM_CIP"
+    },
+    {
+      "metric": "小鋼胚中級出廠價",
+      "observationMonth": "2026-08",
+      "value": 15460,
+      "unit": "NTD_per_ton",
+      "momPct": -3.5,
+      "yoyPct": 7.8,
+      "source": "https://chart.metaltrade.tw/ste/domestic/11/",
+      "sourceClass": "TAIWAN_BASIC_METALS_MONITORING_PLATFORM_CIP"
+    },
+    {
+      "metric": "東鋼H型鋼流通價",
+      "observationMonth": "2026-08",
+      "value": 37500,
+      "unit": "NTD_per_ton",
+      "momPct": 0,
+      "yoyPct": 12.9,
+      "source": "https://chart.metaltrade.tw/ste/domestic/13/",
+      "sourceClass": "TAIWAN_BASIC_METALS_MONITORING_PLATFORM_CIP"
+    }
+  ],
+  "sourceState": {
+    "inputDirection": "SCRAP_UP_MOM",
+    "intermediateDirection": "BILLET_DOWN_MOM",
+    "finishedOutputDirection": "H_BEAM_FLAT_MOM",
+    "descriptor": "INPUT_PRESSURE_WITHOUT_SAME_MONTH_OUTPUT_PRICE_CONFIRMATION",
+    "economicSign": "UNRESOLVED",
+    "realizedMargin": "UNKNOWN"
+  },
+  "forbiddenInferences": [
+    "Do not call this a realized margin squeeze.",
+    "Do not subtract spot/average scrap directly from H-beam price and label the result company gross margin.",
+    "Do not assume purchase inventory is marked at same-month benchmark price.",
+    "Do not ignore electricity/energy, yield, conversion cost, freight, product mix, contract lag and inventory buffer.",
+    "Do not infer stock-return direction."
+  ],
+  "preregisteredNextChecks": [
+    "Observe later issuer-reported realized selling price/revenue mix and margin on their native reporting clock.",
+    "Freeze lag windows before any stock-return outcome opens.",
+    "Compare against 2002 China Steel as DIFFERENT_ROUTE, not NO_EXPOSURE, control.",
+    "Retain sector/market/steel-demand state as controls."
+  ],
+  "status": "FIRST_IMMUTABLE_MATERIAL_TRANSMISSION_RECEIPT / SIGN_UNRESOLVED / OUTCOMES_CLOSED / FORMAL_UNCHANGED"
+}
