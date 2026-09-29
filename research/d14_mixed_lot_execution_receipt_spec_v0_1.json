@@ -34,6 +34,10 @@
     "allowedMechanisms": {
       "REGULAR_LOT": "REGULAR_CONTINUOUS",
       "INTRADAY_ODD_LOT": "INTRADAY_ODD_LOT_CALL_AUCTION"
+    },
+    "eligibilityModels": {
+      "REGULAR_LOT": "CONTINUOUS_WITH_BLOCK_INTERVALS",
+      "INTRADAY_ODD_LOT": "DISCRETE_MATCH_OPPORTUNITIES"
     }
   },
   "scalarClockFalsification": {
@@ -43,19 +47,20 @@
       "submitAt",
       "fillAt"
     ],
-    "finding": "Necessary but not sufficient when mechanism eligibility is intermittent after the first eligible instant.",
+    "finding": "Necessary but not sufficient. Continuous matching can become intermittently blocked; periodic call auctions are discrete opportunities rather than continuous eligibility.",
     "counterexample": "If the order becomes eligible, then a volatility interruption blocks matching, scalar post-eligibility elapsed time includes mechanism-disabled time. Moving mechanismEligibleAt to the end of the interruption would instead erase earlier eligible exposure.",
-    "requiredExtension": "mechanismBlockedIntervals[] with startAt/endAt/reason/sourceRef/observedAt",
-    "derivedExposure": "eligibleExposureToFill = scalarPostEligibilityLatency - evidenced blocked intervals overlapping the eligible-to-fill window"
+    "requiredExtension": [
+      "REGULAR_LOT uses CONTINUOUS_WITH_BLOCK_INTERVALS and records mechanismBlockedIntervals.",
+      "INTRADAY_ODD_LOT uses DISCRETE_MATCH_OPPORTUNITIES and records each actual matching opportunity through the fill."
+    ],
+    "derivedExposure": "eligibleExposureToFill = scalarPostEligibilityLatency - evidenced blocked intervals overlapping the eligible-to-fill window",
+    "oddLotCounterexample": "For periodic odd-lot call auctions, elapsed milliseconds between auctions are not continuous executable exposure. A fill after six actual auction opportunities must be represented as six opportunities, not as 145 seconds of continuously eligible time."
   },
   "derivedDiagnostics": [
-    "rawLatency = fillAt - decisionKnownAt",
-    "preEligibilityWait = max(0, mechanismEligibleAt - decisionKnownAt)",
-    "decisionToSubmitLatency = submitAt - decisionKnownAt",
-    "scalarPostEligibilityLatency = fillAt - max(decisionKnownAt, mechanismEligibleAt)",
-    "mechanismBlockedWaitAfterEligibility = evidenced blocked interval overlap",
-    "eligibleExposureToFill = scalarPostEligibilityLatency - mechanismBlockedWaitAfterEligibility",
-    "submitToFillLatency = fillAt - submitAt"
+    "Common: rawLatency, preEligibilityWait, decisionToSubmitLatency, submitToFillLatency.",
+    "Continuous regular-lot: scalarPostEligibilityLatency, mechanismBlockedWaitAfterEligibility, eligibleExposureToFill.",
+    "Periodic odd-lot: matchingOpportunityCountFromDecisionToFill, matchingOpportunityCountAfterSubmitToFill, matchingOpportunitiesBeforeSubmit, priorSubmittedOpportunitiesWithoutFill.",
+    "Odd-lot continuous eligibleExposureToFill is intentionally null."
   ],
   "failClosed": [
     "parent quantity does not equal required regular/odd split",
@@ -74,14 +79,19 @@
     "non-broker-confirmed/simulated disclosure used as fill",
     "fill before decision, before eligibility, before submit or after attempt terminal",
     "leg or parent overfill",
-    "cross-leg duplicate fill id"
+    "cross-leg duplicate fill id",
+    "odd-lot receipt missing discrete matching-opportunity ledger",
+    "odd-lot fill timestamp not aligned to an evidenced matching opportunity",
+    "matching opportunity inside an evidenced mechanism block"
   ],
   "semanticFirewalls": [
     "rawLatency is not execution-quality latency by itself",
     "simulated odd-lot disclosure is not a fill",
     "regular-lot benchmark is not an odd-lot executable benchmark",
     "latency remains a vector; no composite latency score is authorized",
-    "valid receipt is execution evidence only; it does not prove economic alpha"
+    "valid receipt is execution evidence only; it does not prove economic alpha",
+    "periodic call-auction cadence is not continuous executable time",
+    "an odd-lot order surviving prior auctions does not prove it was marketable at those auctions"
   ],
   "officialSourceAnchors": [
     "https://www.twse.com.tw/en/products/system/trading.html",
