@@ -180,3 +180,36 @@ Artifact:
 
 Test:
 `tests/test_d15_pairwise_deletion_falsification_v0_1.mjs`.
+
+
+## Build-artifact provenance falsification
+
+During CI, a source-readiness regression initially appeared to show that the current `Worker.js` no longer contained V8.12 `adjusted=false` history semantics.
+
+That interpretation was rejected after following the actual build lineage.
+
+The repository's committed `Worker.js` is an intermediate source-tree artifact. The V8 regression/deployment workflows rebuild the production Worker through the guarded patch chain:
+
+1. `rebase_v8_12_anchor.py`
+2. `apply_v8_12_0.py`
+3. `apply_v8_13_0.py`
+4. `apply_v8_14_0.py`
+5. `apply_v8_14_1.py`
+
+The generated Worker is then checked by:
+`test_v8_12_0_history_source_revalidation_contract.mjs`.
+
+The V8.12 patch still explicitly inserts `adjusted=false` and source-revalidation guards.
+
+Therefore:
+
+`COMMITTED_INTERMEDIATE_WORKER != GENERATED_PRODUCTION_WORKER`.
+
+D15 source-readiness evidence must identify which artifact layer is being inspected:
+- source tree;
+- generated build artifact;
+- deployed runtime.
+
+A missing marker in the intermediate source file is not enough to claim a production regression.
+
+This finding does **not** unblock D15 covariance. It only corrects how the existing raw-history contract is proven.
