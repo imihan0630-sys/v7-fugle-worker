@@ -14,6 +14,7 @@ function baseReceipt(){
       {
         lotType:"REGULAR_LOT",
         mechanism:"REGULAR_CONTINUOUS",
+        eligibilityModel:"CONTINUOUS_WITH_BLOCK_INTERVALS",
         intendedQty:1000,
         mechanismEligibleAt:ts("09:00:00"),
         mechanismEligibilityEvidence:{sourceRef:"TWSE:REGULAR_SESSION",observedAt:ts("08:59:59"),state:"NORMAL"},
@@ -39,10 +40,12 @@ function baseReceipt(){
       {
         lotType:"INTRADAY_ODD_LOT",
         mechanism:"INTRADAY_ODD_LOT_CALL_AUCTION",
+        eligibilityModel:"DISCRETE_MATCH_OPPORTUNITIES",
         intendedQty:148,
         mechanismEligibleAt:ts("09:10:00"),
         mechanismEligibilityEvidence:{sourceRef:"TWSE:ODD_LOT_FIRST_AUCTION",observedAt:ts("09:00:00"),state:"NORMAL"},
         mechanismBlockedIntervals:[],
+        matchingOpportunities:[{opportunityId:"odd-op-1",matchAt:ts("09:10:00"),sourceRef:"TWSE:ODD_MATCH:091000"}],
         benchmark:{lotType:"INTRADAY_ODD_LOT",sourceRef:"ODD_LOT_L1",observedAt:ts("09:03:00"),price:100.2},
         orderAttempts:[{
           attemptId:"odd-1",
@@ -78,8 +81,11 @@ assert.equal(reg.decisionToSubmitLatencyMs,5000);
 assert.equal(reg.submitToFillLatencyMs,1000);
 assert.equal(odd.rawLatencyMs,420000);
 assert.equal(odd.preEligibilityWaitMs,420000);
-assert.equal(odd.scalarPostEligibilityLatencyMs,0);
-assert.equal(odd.eligibleExposureToFillMs,0);
+assert.equal(odd.scalarPostEligibilityLatencyMs,null);
+assert.equal(odd.eligibleExposureToFillMs,null);
+assert.equal(odd.matchingOpportunityCountFromDecisionToFill,1);
+assert.equal(odd.matchingOpportunityCountAfterSubmitToFill,1);
+assert.equal(odd.priorSubmittedOpportunitiesWithoutFill,0);
 assert.equal(odd.submitToFillLatencyMs,410000);
 
 // Intermittent eligibility falsifies scalar-post-eligibility as sufficient.
@@ -93,6 +99,14 @@ oddLeg.mechanismBlockedIntervals=[{
   sourceRef:"TWSE:VI:TEST",
   observedAt:ts("09:10:19")
 }];
+oddLeg.matchingOpportunities=[
+ {opportunityId:"odd-op-1",matchAt:ts("09:10:00"),sourceRef:"TWSE:ODD_MATCH:091000"},
+ {opportunityId:"odd-op-2",matchAt:ts("09:10:05"),sourceRef:"TWSE:ODD_MATCH:091005"},
+ {opportunityId:"odd-op-3",matchAt:ts("09:10:10"),sourceRef:"TWSE:ODD_MATCH:091010"},
+ {opportunityId:"odd-op-4",matchAt:ts("09:10:15"),sourceRef:"TWSE:ODD_MATCH:091015"},
+ {opportunityId:"odd-op-5",matchAt:ts("09:12:20"),sourceRef:"TWSE:ODD_MATCH:091220"},
+ {opportunityId:"odd-op-6",matchAt:ts("09:12:25"),sourceRef:"TWSE:ODD_MATCH:091225"}
+];
 oddLeg.orderAttempts[0].terminalAt=ts("09:12:26");
 oddLeg.orderAttempts[0].fills[0].fillAt=ts("09:12:25");
 x=validateMixedLotExecutionReceipt(interrupted);
@@ -100,9 +114,12 @@ assert.equal(x.valid,true);
 const io=x.legs.INTRADAY_ODD_LOT.fillDiagnostics[0];
 assert.equal(io.rawLatencyMs,565000);
 assert.equal(io.preEligibilityWaitMs,420000);
-assert.equal(io.scalarPostEligibilityLatencyMs,145000);
+assert.equal(io.scalarPostEligibilityLatencyMs,null);
 assert.equal(io.mechanismBlockedWaitAfterEligibilityMs,120000);
-assert.equal(io.eligibleExposureToFillMs,25000);
+assert.equal(io.eligibleExposureToFillMs,null);
+assert.equal(io.matchingOpportunityCountFromDecisionToFill,6);
+assert.equal(io.matchingOpportunityCountAfterSubmitToFill,6);
+assert.equal(io.priorSubmittedOpportunitiesWithoutFill,5);
 
 // Benchmark lot mismatch must fail closed.
 const badBench=baseReceipt();
@@ -132,6 +149,10 @@ blockedFill.legs[1].mechanismBlockedIntervals=[{
   startAt:ts("09:10:20"),endAt:ts("09:12:20"),reason:"VOLATILITY_INTERRUPTION",
   sourceRef:"TWSE:VI:TEST",observedAt:ts("09:10:19")
 }];
+blockedFill.legs[1].matchingOpportunities=[
+ {opportunityId:"odd-op-1",matchAt:ts("09:10:00"),sourceRef:"TWSE:ODD_MATCH:091000"},
+ {opportunityId:"odd-op-bad",matchAt:ts("09:11:00"),sourceRef:"TWSE:ODD_MATCH:091100"}
+];
 blockedFill.legs[1].orderAttempts[0].terminalAt=ts("09:11:01");
 blockedFill.legs[1].orderAttempts[0].fills[0].fillAt=ts("09:11:00");
 x=validateMixedLotExecutionReceipt(blockedFill);
@@ -188,5 +209,5 @@ console.log(JSON.stringify({
   contract:"D14_MIXED_LOT_EXECUTION_RECEIPT_V0_1",
   keyFalsification:"four scalar clocks are insufficient under intermittent mechanism eligibility; evidenced blocked intervals are required",
   normalOddLot:{rawLatencyMs:odd.rawLatencyMs,preEligibilityWaitMs:odd.preEligibilityWaitMs,eligibleExposureToFillMs:odd.eligibleExposureToFillMs},
-  interruptedOddLot:{rawLatencyMs:io.rawLatencyMs,scalarPostEligibilityLatencyMs:io.scalarPostEligibilityLatencyMs,mechanismBlockedWaitAfterEligibilityMs:io.mechanismBlockedWaitAfterEligibilityMs,eligibleExposureToFillMs:io.eligibleExposureToFillMs}
+  interruptedOddLot:{rawLatencyMs:io.rawLatencyMs,matchingOpportunityCountFromDecisionToFill:io.matchingOpportunityCountFromDecisionToFill,mechanismBlockedWaitAfterEligibilityMs:io.mechanismBlockedWaitAfterEligibilityMs,priorSubmittedOpportunitiesWithoutFill:io.priorSubmittedOpportunitiesWithoutFill}
 },null,2));
