@@ -268,6 +268,10 @@
         "TREND_MOMENTUM_REVERSAL_CHECKPOINT.md"
       ],
       "maturityPct": 44.6,
+      "status": "SOURCE_PIT_FALSIFICATION_IN_PROGRESS",
+      "lastResearchUpdate": "2026-09-29",
+      "researchNote": "TI-409/410/411 isolate three independent source-time defects: unbound content hash, later revision at an earlier as-of, and same-date completed daily bar before session completion. Synthetic QA only; D03 module levels and maturity are unchanged, outcome joins remain closed, Formal Core LOCKED.",
+      "exactNextContinuationPoint": "Consolidate TI-409/410/411 into an upstream independently attested immutable row-version receipt with raw field content, completion/session and version availability clocks, corporate-action ancestry and exact parent-generation commitment. Obtain authorized outcome-blind real OHLC/version/session coverage and parent-child/cost counts; preserve UNKNOWN. Keep TI-005/TI-006 outcome tests and Class-B runtime capture blocked until PIT and governance gates pass.",
       "modules": [
         {
           "id": "D03-01",
