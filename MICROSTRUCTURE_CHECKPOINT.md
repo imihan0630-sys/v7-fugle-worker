@@ -327,3 +327,68 @@ New durable file:
 4. D05: wait for complete prospective event capture. Before calling anything true OFI, prove provider/reconnect/missing-event semantics.
 5. D05: then execute B0->B1->B2->B3 nested tests through E0(event)->E1(1m/5m)->E2(10m/15m)->E3(30m), with independent-date and session/tick strata.
 6. D05: no BUY/maxChase/action mapping unless E2 survives all controls and later Shadow/OOS promotion gates; any Formal use remains Class C.
+
+
+## 2026-09-30 05:44 deep-research update — RV builder + high-frequency measurement noise + limit censoring
+
+### Governance / continuation recovery
+- Re-read latest main before research.
+- Recovered and merged the previously pending 2026-09-29 D04 market-RV persistence contract and 2026-09-30 01:34 contraction/expansion checkpoint into the canonical tracker.
+- The shared immutable per-symbol decision-state parent is still design/prototype only and not production-persisted, so ATR opportunity-cost and contraction->expansion outcome inference remain blocked.
+- Formal Core remains LOCKED.
+
+### D04 market-RV engineering progress
+- A pure Class-A research builder is now merged through PR #273:
+  - `system2/runtime/market_rv_builder_v0_1.mjs`
+  - `system2/tests/market_rv_builder_v0_1.test.mjs`
+- Pre-merge final-head verification:
+  - System2 Research CI #315 PASS;
+  - V8 Regression #1135 PASS.
+- Builder has zero market calls, zero D1 writes, zero Formal scoring/selection dependency and `selectionImpact=false`.
+- It enforces future-row rejection, duplicate-date rejection, source-date equality, decision-clock availability, explicit UNKNOWN, 21-session minimum and zero-RV20 denominator semantics.
+- It computes the existing project-compatible rolling close-to-close population standard deviation over 5 and 20 simple returns, non-annualized; ratio is descriptive only.
+- Terminology correction: these D04 factors are `ROLLING_CLOSE_TO_CLOSE_RETURN_DISPERSION_POPSTD_SIMPLE`, not academic high-frequency intraday realized variance. Existing factor IDs remain for contract continuity.
+
+Critical boundary:
+`BUILDER_IMPLEMENTED_AND_TESTED != PROSPECTIVE_EVIDENCE_CAPTURED`.
+
+D04-02 therefore remains L2 / 40% until the first real factor observations are prospectively persisted with A2 source receipt + regime snapshot + immutable run linkage and survive write/readback/replay.
+
+### D04/D05 high-frequency volatility measurement
+- Daily market-regime RV and intraday local RV are now frozen as separate estimands.
+- Naive every-trade tick RV is rejected as the primary local-volatility control because bid-ask bounce, ticks and other microstructure noise can inflate highest-frequency squared-return measures.
+- First simple intraday basis is causal two-sided mid-quote RV in normal continuous sessions.
+- Transaction-price RV is a same-window noise diagnostic, not a replacement when mid-quote coverage is missing.
+- A 1s/5s/15s volatility-signature QA is frozen; cadence selection is based on state fidelity, missingness, estimator stability and storage burden, never return outcomes.
+- Noise-robust estimators (two/multi-scale RV, realized kernels, pre-averaging family) are measurement challengers only if simple mid-quote RV is unstable. They are not new factor votes.
+- Fixed buckets must preserve quote/trade age and reconnect segmentation; carry-forward across a gap cannot become observed evidence.
+- Pressure and volatility must share the same session/mechanism segmentation: OPEN_CALL / NORMAL_CONTINUOUS / VI_TRIAL / CLOSE_CALL / LIMIT / ODD_LOT / UNKNOWN.
+
+New machine contract:
+- `research/D04_D05_HIGH_FREQUENCY_VOLATILITY_MEASUREMENT_PROTOCOL_V0_1.json`
+
+### D04 price-limit censoring
+- A binding TWSE stock price limit creates observed constrained volatility, not proof of low latent volatility.
+- Historical Taiwan evidence documents delayed price discovery / spillover / magnet effects and structural market-quality changes under different price-limit widths; it does not support a universal "limits reduce volatility" rule.
+- Stock ATR/high-low range can be directly censored on the binding session.
+- Close-to-close dispersion can shift part of adjustment into later sessions.
+- A small range while pinned at a limit cannot be called clean contraction.
+- No latent unconstrained price may be imputed from future prices.
+
+New machine guard:
+- `research/D04_PRICE_LIMIT_VOLATILITY_CENSORING_GUARD_V0_1.json`
+
+### Maturity
+- D04 remains 42%.
+- D05 remains 46%.
+- No module is promoted this round because there is still no new own promotion-grade prospective RV persistence sample or complete D05 event ledger.
+- No FORMAL_OPTIMIZATION_CANDIDATE.
+
+### Exact next continuation
+1. D04-RV-PERSIST-03: wire the already-merged pure builder into the EXISTING research-only regime-factor persistence path only through the applicable governance boundary. Before any outcome inspection, first real date must pass A2 same-date source receipt -> builder -> same regime snapshot -> persistence -> readback -> deterministic replay -> run-fingerprint linkage.
+2. Do not count builder tests, synthetic fixtures or current/latest historical recomputation as independent PIT evidence.
+3. After multiple clean prospective dates exist, test VOL_EXPANDING/CONTRACTING occupancy and overlapping RV5/RV20 versus non-overlap recent5/prior15 robustness before strategy outcomes.
+4. D04-CE-01 and ATR opportunity-cost inference still wait for the immutable per-symbol parent persistence.
+5. D05-HORIZON-04 waits for complete prospective books+trades. Before any B0->B3 outcome inference, run provider completeness, reconnect/quote-age QA and 1s/5s/15s midquote volatility-signature diagnostics.
+6. Primary D05 inference remains NORMAL_CONTINUOUS_TWO_SIDED_BOOK; limit/VI/auction/odd-lot are separate cohorts.
+7. No ATR gate/stop/RR, volatility throttle, spread/depth/OFI, BUY/maxChase, sizing, monitoring or push change.
