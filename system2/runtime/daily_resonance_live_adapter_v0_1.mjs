@@ -104,6 +104,9 @@ function normalizeQuote(raw, marketDate) {
     isTrial: raw.isTrial === true,
     isHalted: raw.isHalted === true,
     isSuspended: raw.isSuspended === true,
+    isDelayedOpen: raw.isDelayedOpen === true,
+    isDelayedClose: raw.isDelayedClose === true,
+    isVolatilityInterrupted: raw.isVolatilityInterrupted === true,
     noTradeYet,
   });
 }
