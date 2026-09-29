@@ -1,0 +1,44 @@
+{
+  "id": "BR030_HISTORY_ADMISSION_DEPENDENCY_20260930_V0_1",
+  "evaluatedAt": "2026-09-30T05:43:00+08:00",
+  "formalCoreChanged": false,
+  "scope": "CROSS_ROOM_DEPENDENCY_DIAGNOSIS_ONLY",
+  "observedBlock": {
+    "scanDate": "2026-09-29",
+    "unusableSymbols": 1883,
+    "OFFICIAL_GAP_PROOF_UNAVAILABLE": 1872,
+    "INSUFFICIENT_PRIOR_BARS": 11,
+    "repeatedGapDateInSamples": "2026-07-10"
+  },
+  "independentEvidence": [
+    {
+      "sourceClass": "TWSE_OFFICIAL_INDEX_HISTORY",
+      "finding": "TWSE July 2026 TAIEX history has 2026-07-09 followed by 2026-07-13, with no 2026-07-10 index session.",
+      "url": "https://www.twse.com.tw/indicesReport/MI_5MINS_HIST?date=20260701&response=html"
+    },
+    {
+      "sourceClass": "TAIPEI_CITY_OFFICIAL_CLOSURE_HISTORY",
+      "finding": "Taipei City records BAVI typhoon closure on 2026-07-10.",
+      "url": "https://dop.gov.taipei/cp.aspx?n=EFE42F770DFD63FB"
+    },
+    {
+      "sourceClass": "TWSE_OFFICIAL_MARKET_CLOSURE_RULE",
+      "finding": "TWSE states the market closes for the entire day when Taipei City announces government-office closure before the trading day begins.",
+      "url": "https://wwwc.twse.com.tw/en/clearing/suspended.html"
+    }
+  ],
+  "diagnosis": {
+    "legitimateNoTradeDateHighlySupported": true,
+    "missingKInterpretation": "REJECTED",
+    "suspectedFailure": "OFFICIAL_NO_TRADE_GAP_PROOF_RESOLUTION_PATH",
+    "confidence": "HIGH",
+    "note": "This does not prove which internal lookup/cache/API branch failed. It proves 2026-07-10 should not be treated as an unexplained missing trading bar."
+  },
+  "routing": {
+    "room07": "Do not count 2026-09-29 for BR-030; remain DATA_QUALITY_BLOCKED.",
+    "ownerLane": "shared history/source admission / System1 engineering",
+    "productionChangeClass": "LIKELY_CLASS_B_OR_CROSS_RUNTIME_RISK_REVIEW_REQUIRED",
+    "autoFixByRoom07": false
+  },
+  "status": "LEGITIMATE_MARKET_CLOSURE_EVIDENCE_FOUND / GAP_PROOF_FALSE_BLOCK_SUSPECTED_HIGH_CONFIDENCE / ROUTE_TO_HISTORY_ADMISSION_OWNER"
+}
