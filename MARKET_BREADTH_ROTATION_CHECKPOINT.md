@@ -216,3 +216,53 @@ Formal Core unchanged.
 2. If clean, freeze the first same-day concentration receipt without inspecting forward outcomes.
 3. Accumulate the preregistered >=20 independent clean dates before first descriptive gate comparison.
 4. Meanwhile continue nonblocked D09/D10 source/exposure research.
+
+
+## BR-030B — 2026-07-10 blocker root cause closed at code-path level
+
+Evidence:
+- `research/br030_history_admission_dependency_20260930_v0_1.json`
+- `research/HISTORY_UNSCHEDULED_CLOSURE_PROOF_CLASS_C_PROPOSAL.md`
+
+### External truth
+2026-07-10 was a legitimate whole-market non-trading date associated with the BAVI typhoon closure:
+- Taipei official closure history records stop-work/stop-class on 2026-07-10;
+- TWSE closure semantics close the market when Taipei City declares government-office closure before trading;
+- TWSE July index history has 2026-07-09 followed by 2026-07-13.
+
+Therefore `2026-07-10` is not a genuine missing daily K bar.
+
+### Code-path root cause
+Current production contains a preloaded 2026 `MARKET_CALENDARS` planned-holiday set. It does not contain 2026-07-10.
+
+`loadTradingCalendar(env, year)` returns immediately when that year's map entry already exists. Therefore the preloaded 2026 calendar is not refreshed for later unscheduled emergency closures.
+
+`historyStructuralShape()` uses `isTradingDate()`, so it incorrectly treats 2026-07-10 as an expected session and emits it as a gap.
+
+The Formal admission path then calls `validateHistorySourceRevalidation(... allowNetwork=false ...)`, which can only consume a cached ordinary `HISTORY_PRESENCE_V1` market/date receipt. That receipt class is designed to enumerate listed/traded symbols on an open market date and requires minimum symbol coverage.
+
+A whole-market closure is a different fact type: there are no ordinary market trades to enumerate. Without a dedicated closure proof, the date becomes `OFFICIAL_GAP_PROOF_UNAVAILABLE` for affected symbols.
+
+### Architectural conclusion
+Current V8.12 has proof paths for:
+1. scheduled market holiday/weekend;
+2. open-market individual-symbol no-trade/suspension vs genuinely missing traded bar.
+
+It lacks:
+3. **unscheduled whole-market closure**.
+
+This is the exact missing proof family.
+
+### Repair boundary
+A generic `UNSCHEDULED_MARKET_CLOSURE_RECEIPT_V1` repair has been specified, with authoritative source/date/market scoping, fail-closed behavior and adversarial tests.
+
+No one-date hardcode is proposed.
+
+Because correcting this can change Formal feature availability and candidate eligibility, Room 07 classifies implementation conservatively as **Class C**. No implementation, merge or deployment is authorized by this research update.
+
+### BR-030 impact
+- 2026-09-29 remains invalid and must never enter the independent-date denominator.
+- First valid BR-030 prospective date remains UNKNOWN until actual post-fix/post-admission readback passes.
+- No sector-gate/leader-breadth outcome claim can be made yet.
+
+Status: `ROOT_CAUSE_CONFIRMED / CLASS_C_REPAIR_PROPOSAL_READY / OWNER_APPROVAL_REQUIRED / BR030_DATA_QUALITY_BLOCKED`.
