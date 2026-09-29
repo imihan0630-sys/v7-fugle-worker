@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-09-30T05:44:00+08:00",
+  "updatedAt": "2026-09-30T05:43:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -1040,7 +1040,7 @@
       "anchors": [
         "SUPPLY_CHAIN_LEAD_LAG_RESEARCH.md"
       ],
-      "maturityPct": 46.7,
+      "maturityPct": 48.3,
       "modules": [
         {
           "id": "D10-01",
@@ -1133,10 +1133,12 @@
         {
           "id": "D10-12",
           "name": "產業別專用傳導模板",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「產業別專用傳導模板」。學習範圍：上下游圖譜、Lead-Lag、產能、庫存、報價、原物料、訂單與交期；供需缺口與定價能力；事件PIT時鐘；跨層級不對稱傳導；可自動化資料來源。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "PIT_FEASIBLE_BOUNDED / OUTCOMES_CLOSED / WAITING_PROSPECTIVE",
+          "next": "Build prospective immutable material-transmission receipts on new information events; bind route-specific benchmarks and negative controls before any outcome test."
         }
       ]
     },
