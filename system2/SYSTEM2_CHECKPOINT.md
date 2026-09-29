@@ -788,3 +788,30 @@ Exact next continuation:
 2. apply isolated D1 V1.1 and deploy the bounded Worker/Cron through the guarded workflow;
 3. record physical health/API/UI/schedule readback and actual active-pool state;
 4. accumulate prospective resonance evidence before proposing live notification or any strategy/capital promotion.
+
+## 2026-09-30 Daily Resonance physical deployment complete
+
+The owner-authorized bounded Daily Resonance integration is now physically deployed and verified.
+
+Evidence:
+- PR #278 / main `7e51190bdf0e51d55917c091462068a90724f211`: read-only Cloudflare Cron inventory.
+- Inventory run `36646278083` PASS found exactly four pre-existing Cron triggers, all on System 1 `fugle-test`; none were changed or removed.
+- PR #279 / main `6d6b4d5aafff55179397187fa69acefed428cd6e`: consolidated System 2 Daily Resonance to one Cloudflare trigger so the Free-plan fifth slot is sufficient.
+- PR #279 System2 Research CI `36646479007` PASS.
+- PR #279 V8 Regression `36646479081` PASS.
+- Deployment run `36646552183` PASS end-to-end.
+- D1 schema V1.1: 46 System 2 tables; physical write/read verification PASS.
+- Worker: `system2-shadow-research`.
+- Active System 2 Cron: `*/5 0-5,11 * * 1-5`; runtime admits 08:55–13:40 Asia/Taipei monitoring and exactly 19:00 pool refresh.
+- `FUGLE_API_KEY` is bound as a Worker secret; live health readback reports `fugleQuoteConfigured=true`.
+- Health/read API/UI readback PASS; `system1RuntimeUsed=false`.
+- Immediate pool readback for 2026-09-30 is `NO_ACTIVE_PRESELECTED_POOL`, which is fail-closed. The runtime does not invent symbols or scan the full market.
+- System 1 `Worker.js` / root `wrangler.toml` remained unchanged.
+
+Current boundary:
+- Daily Resonance schedule + Worker + D1 + Fugle live source binding + read API/UI are ACTIVE for the bounded research/shadow lane.
+- General System 2 selection capture remains disabled.
+- Live push remains disabled.
+- Real order routing remains prohibited.
+- Formal strategy/capital authority remains gated by PIT/OOS/Prospective Shadow/Trend-vs-Range/Regime/repaint/whipsaw/cost/MFE-MAE/redundancy evidence.
+- The next runtime evidence point is the first real 19:00 pool refresh followed by an eligible next-session intraday cycle using an actual frozen upstream capacity receipt.
