@@ -439,10 +439,60 @@ FORMAL_OPTIMIZATION_CANDIDATE: NONE.
 
 No breadth threshold, market label, strategy gate, score, capital, execution or notification behavior changed.
 
-## Exact next continuation — 2026-09-30
-1. Verify whether 2026-09-29 produced genuine promotion-grade Decision Clock evidence; keep source-clock evidence separate from strategy/Regime Shadow performance.
-2. Design/accumulate prospective Direction Breadth occupancy and NOT_COMPARABLE/UNKNOWN diagnostics when an authorized capture lane exists.
-3. Test state-dependent missingness before freezing any breadth coverage threshold.
-4. Keep Market Direction Breadth and Opportunity-Set Breadth as separate estimands in every D18 receipt.
-5. Continue True Return Distribution PIT/continuity work separately.
-6. If B2 shared observer semantics must be corrected, prepare proposal/regression evidence under the appropriate governance class; do not silently patch.
+
+## 2026-09-30 continuation — first real Decision Clock artifact is not yet accepted evidence
+
+Direct GitHub Actions audit found the first ordinary prospective schedule run:
+- workflow: `System2 Prospective Clock Evidence Read-only`;
+- run: `36526809162`;
+- event: `schedule`;
+- run_attempt: `1`;
+- created: 2026-09-29 13:34 Asia/Taipei;
+- conclusion: SUCCESS;
+- head SHA: `666f8fff97da8395e427d0d892df356c237b8761`.
+
+Immutable artifacts exist:
+- `system2-a1-arrival-2026-09-29-36526809162`;
+- `system2-required-dependencies-2026-09-29-36526809162`;
+- `system2-decision-clock-daily-2026-09-29-36526809162`.
+
+Job audit:
+- calendar gate SUCCESS;
+- A1 prospective daily-arrival polling SUCCESS;
+- A5/B2 prospective dependency polling SUCCESS;
+- immutable daily-bundle build/upload SUCCESS.
+
+### Critical D16 interpretation
+Workflow success != source completeness != promotion-grade evidence.
+
+The collector is intentionally capable of recording an honest incomplete observation without converting the workflow into a failed GitHub Actions run.
+
+Therefore the 2026-09-29 state is:
+`PROSPECTIVE_ARTIFACT_OBSERVED / FINALIZED_DATE_ACCEPTANCE_PENDING`.
+
+At 2026-09-30 07:19 Asia/Taipei, the scheduled next-calendar-day Decision Clock Readiness/Finalized-Date audit (normally around 08:30 Taipei) had not yet executed. The most recent readiness schedule run was still the prior date.
+
+Do NOT:
+- increment promotion-grade independentTradingDates early;
+- call this a strategy Shadow sample;
+- call this Regime OOS evidence;
+- infer READY merely from GitHub workflow conclusion=success.
+
+This is real prospective **source-clock/provenance** evidence only.
+
+### D16 maturity effect
+No L-level change from this observation alone.
+
+The evidence strengthens D16 PIT/provenance practice but does not satisfy the L4 Shadow/OOS meaning for a new module:
+- no Regime policy was run;
+- general System2 selected Shadow capture remains separately gated;
+- no outcome was joined;
+- final acceptance is pending.
+
+## Exact next continuation — revised
+1. After the scheduled finalized-date audit exists, read the immutable acceptance state for 2026-09-29 and only then decide whether it increments Decision Clock promotion-grade date counts.
+2. Continue Direction Breadth prospective occupancy / NOT_COMPARABLE / UNKNOWN design; no policy threshold.
+3. Test state-dependent missingness before any coverage gate.
+4. Keep Market Direction Breadth separate from Opportunity-Set Breadth.
+5. Continue True Return Distribution PIT/continuity work independently.
+6. Preserve the B2 X/not-comparable issue as shared-runtime falsification evidence; prepare governance-classified correction only if required.
