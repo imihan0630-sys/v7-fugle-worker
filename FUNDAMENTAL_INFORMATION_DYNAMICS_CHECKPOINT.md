@@ -1,8 +1,8 @@
 # Fundamental Information Dynamics Checkpoint
 
-Updated: 2026-09-28 Asia/Taipei
-Current cursor: FD-001 through FD-052 complete; valuation through VAL-016.
-Next: exact official general-industry cash-flow/balance-sheet field mapping and first no-outcome prospective quality receipt; then Quality × Valuation Shadow join.
+Updated: 2026-09-30 Asia/Taipei
+Current cursor: FD-001 through FD-057 complete; valuation through VAL-020.
+Next: source-readiness inventory and outcome-blind PIT receipt for Taiwan analyst forecasts; in parallel keep prospective general-industry cash/balance-sheet receipt waiting for a new financial vintage.
 
 ## Durable conclusions
 - fundamentalScore structural audit is frozen: nine possible components sum to a theoretical 120 before clamping to 100; component availability is not normalized, so score scale is coverage-sensitive.
@@ -116,3 +116,36 @@ Derivatives Information & Volatility Surface.
   4. verify corrections/restatements append rather than overwrite;
   5. only then enable the preregistered Quality × Valuation Shadow outcome join;
   6. keep Forward PE/PEG source-gated; they must not block trailing-PE/PB quality-adjusted research.
+
+
+## 2026-09-30 D07+D08 long-block — analyst forecast revision / Forward PE PIT contract
+- Latest-main calibration used tracker as canonical maturity source: D07=40.0%, D08=38.3% at block start. Older Router/map percentages were treated as stale summary, not canonical evidence.
+- Time-dependent exact-next item (first new general-industry financial vintage receipt) is still waiting. Per total-control rules, the room advanced a nonblocked module instead of idling: D07-11 analyst forecasts/revisions + D08-04 Forward PE.
+- Durable new machine contract: research/analyst_forecast_revision_pit_contract_v0_1.json.
+- Source status:
+  - 2026 Taiwan Finance Research Letters paper (DOI 10.1016/j.frl.2025.109164) uses monthly CMoney consensus forecasts and reports predictive content in forecast-earnings-growth revisions for Taiwan 50 / Taiwan Mid-Cap 100 / TPEx 50 constituents; mechanism support only.
+  - Recent NCCU thesis on Taiwan brokerage-report characteristics reports mixed long-short effects, small-cap/outlier sensitivity, and robustness only for a subset of analyst characteristics; direct caution against universal revision/dispersion alpha.
+  - Public CMoney pages expose dated broker-report EPS forecast ranges/individual broker estimates, proving source-family existence, but repository audit still has no validated canonical licensed PIT API/history/revision contract. SOURCE_NEEDED remains.
+- D07 forecast object is now decomposed into forecast level, forecast earnings growth, individual revision, consensus revision, revision breadth, dispersion, coverage and forecast age. These are not interchangeable.
+- Consensus construction is point-in-time and detail-preserving: latest active forecast per forecaster for identical target horizon/basis; preserve mean/median, coverage, dispersion, up/down breadth, age distribution and correction/withdrawal history. No coverage => UNKNOWN, not bearish/zero.
+- Forecast staleness is not assigned an outcome-mined cutoff. Preserve forecast ages first; any stale-window/recency-weighting rule requires a separately preregistered accuracy study.
+- Event timing is part of the signal. International JFE evidence (DOI 10.1016/j.jfineco.2004.03.002) shows revision informativeness varies around earnings announcements, with revisions immediately after earnings announcements relatively less informative. Multiple revisions reacting to one public event must not masquerade as independent events.
+- FEG denominator firewall: ratio growth requires positive/comparable prior actual EPS away from zero under a later frozen numerical guard; zero/negative/turnaround states retain raw EPS delta and state while percentage FEG=UNKNOWN.
+- Forward PE decomposition is frozen:
+  - CURRENT_FY / NEXT_FY / NTM are separate series;
+  - horizon roll is not an analyst revision;
+  - lower Forward PE caused by price decline is not equivalent to denominator improvement;
+  - preserve price and forecast EPS separately;
+  - forward earnings yield may be stored separately but cannot be mislabeled PE.
+- Critical naming firewall: existing V8 marketConsensus is an independent-source ranking overlay, not sell-side earnings consensus. New analyst fields use analystEarningsConsensus prefix.
+- Maturity decisions supported by mechanism + counterevidence:
+  - D07-11 L0 -> L2 (40%);
+  - D08-04 L1 -> L2 (40%).
+- No L3 claim: authorized canonical PIT estimate source remains unproven.
+- No Formal/runtime/scoring change. No threshold import from papers. FORMAL_OPTIMIZATION_CANDIDATE = NO.
+- Exact next:
+  1. inventory authorized/licensed Taiwan analyst-estimate source options and timestamp/revision history semantics;
+  2. preregister a forecast freshness/consensus-accuracy diagnostic before choosing stale cutoff or weights;
+  3. if an authorized source becomes available, capture immutable individual forecast vintages outcome-blind;
+  4. only then open D07-11/D08-04 prospective Shadow joins;
+  5. separately continue waiting for the next legitimate financial-statement vintage to execute the frozen general-industry cash/balance-sheet receipt.
