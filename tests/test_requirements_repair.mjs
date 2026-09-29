@@ -534,7 +534,8 @@ assert.equal(qualityApi.validateOfficialQualityData(announcementFixture,'2026-09
 const tdccCsv='資料日期,證券代號,持股分級,人數,股數,占集保庫存數比例%\n20260911,6000,1,1,100,6.67\n';
 assert.equal(api.parseOfficialCsv(tdccCsv,['資料日期','證券代號','持股分級','人數','股數','占集保庫存數比例%'])[0]['證券代號'],'6000');
 assert.throws(()=>api.parseOfficialCsv(tdccCsv),'Default MOPS contract must remain strict');
-assert.equal(qualityApi.validateOfficialQualityData(tdccFixture,'2026-09-16').stocks['6000'].chipConcentration,26.68);
+// TDCC concentration is derived from exact share counts, not the sum of individually rounded percentages.
+assert.equal(qualityApi.validateOfficialQualityData(tdccFixture,'2026-09-16').stocks['6000'].chipConcentration,26.67);
 const duplicateTdcc=structuredClone(tdccFixture);duplicateTdcc.rows.push(duplicateTdcc.rows[0]);assert.throws(()=>qualityApi.validateOfficialQualityData(duplicateTdcc,'2026-09-16'));
 assert.equal(api.scoreCandidate({...qualified,marketReturn20:null},{score:90,breadth:60,avgChange:1,amountVs20DayAverage:1}).ok,false);
 assert.equal(api.scoreCandidate(qualified,{score:90,breadth:20,avgChange:1,amountVs20DayAverage:1}).ok,false);

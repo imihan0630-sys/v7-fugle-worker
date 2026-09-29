@@ -3,7 +3,7 @@ import {readFile} from "node:fs/promises";
 
 const source=await readFile(process.env.V7_TEST_WORKER_PATH || new URL("../Worker.js",import.meta.url).pathname,"utf8");
 
-assert.match(source,/const VERSION = "8\.14\.0-sector-gate-provenance-shadow";/);
+assert.match(source,/const VERSION = "8\.14\.1-tdcc-share-reconciliation";/);
 
 const market=source.slice(source.indexOf("function buildResearchMarketContext"),source.indexOf("function buildResearchSnapshot"));
 assert.ok(market.includes('schemaVersion:"research-market-v2-sector-universe-provenance"'));
@@ -101,7 +101,7 @@ assert.equal(observer.rankInterpretationGuard.includes("bounded Shadow"),true);
 
 console.log(JSON.stringify({
   ok:true,
-  version:"8.14.0-sector-gate-provenance-shadow",
+  version:"8.14.1-tdcc-share-reconciliation",
   class:"A",
   sectorGateProspectiveProvenance:true,
   boundedSectorGateRejectedCohort:true,

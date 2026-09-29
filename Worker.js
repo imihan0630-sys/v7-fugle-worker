@@ -4392,11 +4392,22 @@ function validateOfficialQualityData(body,date) {
     const stocks={};
     for(const [symbol,parts] of groups) {
       if(parts.size!==17 || Math.abs(parts.get(17).ratio-100)>.01 || !(parts.get(17).shares>0)) continue;
-      const ratio400=[12,13,14,15].reduce((sum,grade)=>sum+parts.get(grade).ratio,0);
-      const sumRatios=[...parts].filter(([grade])=>grade<=16).reduce((sum,[,part])=>sum+part.ratio,0);
-      if(Math.abs(sumRatios-100)>.2 || ratio400>100.01) throw new Error("集保級距比例加總異常");
-      stocks[symbol]={chipConcentration:round(ratio400,2),holdersOver1000LotsRatio:parts.get(15).ratio,chipAsOfDate:asOfDate,
-        chipDefinition:"集保400張以上持股占比；每週資料，不等於主力或法人身分"};
+      // TDCC 1-5：第16級為「差異數調整」，第17級為合計。
+      // 官方各級百分比已四捨五入，不能把1~16級百分比直接相加後要求精確等於100%；
+      // 應以股數做精確勾稽：1~15級股數合計 - 第16級差異數調整 = 第17級合計股數。
+      const totalShares=parts.get(17).shares;
+      const adjustmentShares=parts.get(16).shares;
+      const tierShares=Array.from({length:15},(_,i)=>i+1).reduce((sum,grade)=>sum+parts.get(grade).shares,0);
+      if(tierShares-adjustmentShares!==totalShares) throw new Error("集保級距股數與差異數調整無法勾稽");
+      for(let grade=1;grade<=16;grade++) {
+        const part=parts.get(grade),expectedRatio=totalShares>0 ? part.shares/totalShares*100 : 0;
+        if(Math.abs(expectedRatio-part.ratio)>.011) throw new Error("集保級距比例與股數不一致");
+      }
+      const ratio400Shares=[12,13,14,15].reduce((sum,grade)=>sum+parts.get(grade).shares,0);
+      const ratio400=ratio400Shares/totalShares*100;
+      if(ratio400>100.01) throw new Error("集保400張以上持股占比異常");
+      stocks[symbol]={chipConcentration:round(ratio400,2),holdersOver1000LotsRatio:round(parts.get(15).shares/totalShares*100,2),chipAsOfDate:asOfDate,
+        chipDefinition:"集保400張以上持股占比；以官方股數計算，第16級差異數調整另行勾稽；每週資料，不等於主力或法人身分"};
     }
     const count=Object.keys(stocks).length;if(count<1500) throw new Error("集保完整普通股覆蓋不足1500檔");
     return {asOfDate,count,stocks};
