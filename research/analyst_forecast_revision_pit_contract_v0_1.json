@@ -1,0 +1,146 @@
+{
+  "schemaVersion": "ANALYST_FORECAST_REVISION_PIT_CONTRACT_V0_1",
+  "status": "RESEARCH_ONLY_PREREGISTERED_SOURCE_NEEDED",
+  "frozenAt": "2026-09-30 Asia/Taipei",
+  "purpose": "Define point-in-time analyst earnings forecast, revision, consensus and forward-valuation semantics before any Taiwan outcome join.",
+  "evidenceContext": {
+    "taiwan2026Paper": "Taiwan index-constituent evidence reports return-predictive content in forecast earnings growth revisions using monthly CMoney consensus forecasts; mechanism support only, not imported alpha.",
+    "taiwanRobustnessCounterevidence": "Recent Taiwan thesis evidence finds mixed analyst-characteristic long-short performance and small-cap/outlier sensitivity; revision/dispersion effects are not assumed universal.",
+    "sourceState": "Public CMoney pages show dated broker-report EPS forecasts and ranges, but no validated canonical licensed PIT API/history contract has been proven in this repository."
+  },
+  "namingFirewall": {
+    "analystConsensusFieldPrefix": "analystEarningsConsensus",
+    "prohibitedAlias": "marketConsensus",
+    "reason": "Existing V8 marketConsensus is an independent-source ranking overlay, not sell-side analyst earnings consensus."
+  },
+  "atomicRecord": {
+    "key": [
+      "symbol",
+      "targetFiscalYear",
+      "targetFiscalPeriod",
+      "metric",
+      "broker",
+      "analystOrTeamId_if_available",
+      "publishedAt",
+      "sourceRecordId_orFingerprint"
+    ],
+    "required": [
+      "symbol",
+      "market",
+      "metric",
+      "forecastValue",
+      "unit",
+      "forecastBasis",
+      "targetFiscalYear",
+      "targetFiscalPeriod",
+      "broker",
+      "publishedAt",
+      "firstObservedAt",
+      "capturedAt",
+      "sourceProvider",
+      "sourceRecordId_orFingerprint",
+      "revisionState",
+      "pointInTimeEligible"
+    ],
+    "optionalButPreserve": [
+      "analystOrTeamId",
+      "currency",
+      "recommendation",
+      "targetPrice",
+      "reportTitle",
+      "reportUrl",
+      "supersedesRecordId",
+      "correctionOrWithdrawalState"
+    ]
+  },
+  "horizonFirewall": {
+    "allowed": [
+      "CURRENT_FY",
+      "NEXT_FY",
+      "NEXT_TWELVE_MONTHS",
+      "QUARTERLY",
+      "OTHER_EXPLICIT"
+    ],
+    "rule": "Never combine different forecast horizons into one consensus or Forward PE series.",
+    "unknownRule": "Ambiguous target horizon => UNKNOWN."
+  },
+  "basisFirewall": {
+    "examples": [
+      "IFRS_REPORTED_EPS",
+      "ADJUSTED_EPS",
+      "BROKER_DEFINED_EPS",
+      "UNKNOWN"
+    ],
+    "rule": "Do not combine reported/adjusted/broker-defined EPS without an explicit mapping contract."
+  },
+  "consensusConstruction": {
+    "primitive": "Preserve every individual forecast vintage. Consensus is derived, never a replacement for detail records.",
+    "latestPerForecaster": "At any asOf timestamp, include at most the latest active forecast from each forecaster/broker identity for the same target horizon and basis.",
+    "descriptiveOutputs": [
+      "mean",
+      "median",
+      "coverageCount",
+      "upRevisionCount",
+      "downRevisionCount",
+      "unchangedCount",
+      "dispersion",
+      "forecastAgeDistribution",
+      "oldestForecastAge",
+      "newestForecastAge"
+    ],
+    "stalenessRule": "Do not choose an outcome-optimized stale-forecast cutoff. Preserve age distributions first; cutoff/weighting requires a separately preregistered forecast-accuracy study.",
+    "coverageRule": "No analyst coverage => UNKNOWN, never bearish and never zero."
+  },
+  "revisionSemantics": {
+    "rawDelta": "newForecast - priorForecast for same forecaster, metric, basis and target horizon.",
+    "percentDelta": "Only when prior forecast is safely away from zero under a frozen numerical guard; otherwise UNKNOWN.",
+    "consensusRevision": "newConsensus - priorConsensus with identical construction/horizon/basis.",
+    "breadth": "Track how many independent forecasters revised up/down; one analyst moving the mean is not equivalent to broad revision breadth.",
+    "timing": "Preserve event time relative to earnings/revenue/guidance disclosures; post-announcement revisions are not assumed equally informative."
+  },
+  "expectedGrowthSemantics": {
+    "forecastEarningsGrowth": "forecastEPS / comparablePriorActualEPS - 1 only when prior actual EPS is positive, comparable and safely away from zero.",
+    "guard": "Negative/zero/near-zero prior EPS => ratio FEG UNKNOWN; retain raw expected EPS delta and transition state separately.",
+    "reason": "Turnaround and deep-cyclical cases can make percentage growth explode or reverse sign."
+  },
+  "forwardValuation": {
+    "forwardPE": "price / consensusForecastEPS only for strictly positive compatible forecast EPS and aligned price timestamp.",
+    "forwardEarningsYield": "consensusForecastEPS / price may be stored as a separate research primitive when finite, including negative values; it must not be mislabeled PE.",
+    "decomposition": "Forward-PE change must be decomposed into price change versus forecast-EPS revision; a lower Forward PE caused by a price collapse is not equivalent to an EPS upgrade.",
+    "priceClock": "Use decision-time eligible price, never future close.",
+    "shareDenominatorGuard": "EPS basis must remain compatible with corporate-action/share-count semantics."
+  },
+  "biasControls": [
+    "analyst coverage selection by size/liquidity/investor attention",
+    "small-cap/outlier concentration",
+    "broker/analyst clustering and duplicate reports",
+    "stale forecast dilution",
+    "forecast timing endogeneity",
+    "optimism/pessimism and strategic guidance",
+    "public-information clustering around earnings announcements",
+    "sector and market-regime dependence",
+    "price momentum and pre-revision run-up",
+    "existing fundamentalScore and realized revenue/EPS growth",
+    "existing V8 marketConsensus naming/semantic collision"
+  ],
+  "preregisteredHypotheses": [
+    "H1 consensus revision direction/magnitude may add information beyond realized growth and existing fundamentalScore.",
+    "H2 broad multi-analyst revision breadth may be more robust than a consensus move driven by one forecaster.",
+    "H3 revision information content depends on event timing; immediate post-earnings revisions may be less incremental because they largely process public news.",
+    "H4 forecast level/FEG is more regime- and sign-dependent than revision direction.",
+    "H5 analyst coverage/dispersion may proxy information environment rather than direct alpha and must be tested after size/liquidity/coverage controls.",
+    "H6 Forward PE contributes only after separating price-driven cheapening from forecast-driven denominator improvement."
+  ],
+  "outcomeGate": {
+    "open": false,
+    "requires": [
+      "validated licensed/canonical PIT source contract",
+      "immutable individual forecast vintages or provider-equivalent revision history",
+      "timestamp and correction/withdrawal semantics",
+      "coverage and forecast-age observability",
+      "pre-registered Taiwan cohort and controls"
+    ]
+  },
+  "promotionState": "NOT_FORMAL_OPTIMIZATION_CANDIDATE",
+  "formalCoreChanged": false
+}
