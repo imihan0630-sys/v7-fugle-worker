@@ -706,3 +706,48 @@ Exact next continuation for this monitor:
 4. only after prospective Shadow evidence covers repaint, whipsaw, Trend-vs-Range, Regime, costs, MFE/MAE and redundancy may live notification authority be proposed.
 
 This continuation remains independent from the separate historical cold-backfill P0 lane.
+
+
+## 2026-09-29 Fugle resonance quote source contract V0.1
+
+The first source-specific input contract for the bounded daily resonance monitor is implemented and merged through PR #259 as main commit `b5f14586847c3fa8fa724b78b2f4dbfabfb6f225`.
+
+Implemented:
+- `system2/runtime/fugle_resonance_quote_normalizer_v0_1.mjs`: pure Fugle MarketData v1 Quote + Ticker normalizer; performs no HTTP call and stores no secret.
+- only regular `EQUITY` ordinary stocks are eligible for semantic certification; Ticker must identify `securityType=01`, `securityStatus=NORMAL`, TWD and a valid board lot.
+- current daily OHLC uses Fugle `openPrice/highPrice/lowPrice/closePrice`; trial-capable `lastPrice` is not used as the OHLC close.
+- numeric provider times are treated as Unix microseconds, converted independently from local `fetchedAt`, and checked against the requested Asia/Taipei market date and capture order.
+- quote/Ticker symbol, date, exchange and market identity are cross-checked.
+- cumulative quote volume is promoted to share units only after the candidate `tradeVolume * boardLot` denominator reconciles `tradeValue / shares` with the provider `avgPrice`; otherwise the normalized semantic contract is not certified.
+- `isClose` supplies only provider finality. Downstream confirmation still requires independent official-session-close confirmation at/after 13:30 Asia/Taipei.
+- delayed close and temporary price-limit matching interruption are now explicit downstream blockers in `daily_resonance_live_adapter_v0_1.mjs`.
+
+Official documentation anchors used:
+- Fugle Intraday Quote: `https://developer.fugle.tw/docs/data/http-api/intraday/quote/`
+- Fugle Intraday Ticker: `https://developer.fugle.tw/docs/data/http-api/intraday/ticker/`
+- Fugle Intraday Candles: `https://developer.fugle.tw/docs/data/http-api/intraday/candles/`
+- Fugle Intraday Trades: `https://developer.fugle.tw/docs/data/http-api/intraday/trades/`
+
+Verification:
+- PR #259 System2 Research CI run `36577069527` PASS;
+- PR #259 V8 Regression run `36577069814` PASS;
+- post-merge System2 Research CI run `36577213150` PASS;
+- System 1 / V8 Formal Core and production runtime remain unchanged.
+
+Current safety boundary remains:
+- bounded/preselected monitor only, max 9 unique active symbols;
+- no full-market intraday scanner;
+- no live fetch loop in the new source normalizer;
+- no D1 persistence;
+- no Worker Cron;
+- no live notification;
+- no order routing;
+- 15-minute K remains execution/timing context only.
+
+Exact next continuation:
+1. add isolated research-only persistence for resonance snapshots/episodes/source receipts under additive `s2_` tables;
+2. add a read-only System 2 API/page that consumes the frozen read model;
+3. keep capture unarmed while prospective Shadow evidence is accumulated;
+4. only after repaint/whipsaw/Trend-vs-Range/Regime/cost/MFE-MAE/redundancy gates pass may notification authority be proposed.
+
+The historical cold-backfill P0 lane remains separate and unchanged.
