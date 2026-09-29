@@ -2259,3 +2259,17 @@ Updated: 2026-09-27 23:38 Asia/Taipei.
 - Durable artifacts: `INDEX_ADJUSTMENT_PASSIVE_FLOW_RESEARCH.md`, `research/d11_index_adjustment_pit_receipt_v0_1.json`.
 - No Formal change, no live System 2 change and no FORMAL_OPTIMIZATION_CANDIDATE.
 - Exact next: preregister one Taiwan prospective/OOS index-event cohort before outcome inspection, separating announcement/effective windows, true adds/deletes/transfers, market/sector/momentum/liquidity controls, concurrent material information/corporate actions, and explicit auction/cost sensitivity. In parallel, keep D17 fixed-cadence source-only capture waiting for the required multi-session elapsed evidence.
+
+
+## D03 Technical Indicator continuation — TI-418 through TI-427 public-source capability pilot (2026-09-30 Asia/Taipei)
+
+- Continued exactly from TI-417 without expanding the indicator catalog or inspecting outcomes.
+- Captured official TWSE and TPEx current endpoints twice each. Both exchange payloads were byte-identical across their short poll windows. Captured official historical full-market reports for 2026-09-24 and 2026-09-29.
+- Same-date cross-contract parity was material: TWSE 2026-09-24 shared 1,380/1,380 symbols with zero numeric OHLC conflicts after separating 31 thousands-separator differences and 16 jointly missing `""`/`"--"` rows; TPEx 2026-09-29 matched all 11,730 OHLC rows exactly.
+- Freshness counterexample: at 2026-09-30 01:17 Taipei, TWSE current OpenAPI remained on 2026-09-24 while its official historical endpoint already returned the 2026-09-29 full-market report. Retrieval clock and current-endpoint naming therefore do not prove latest trade date or historical first-known availability.
+- Whole-payload bytes/hash/ETag/Last-Modified and same-source endpoint agreement support replay/corroboration but do not supply provider row-version, per-row first-known/correction identity, independent D03-digest attestation, certified symbol session, corporate-action transform ancestry or immutable parent generation. These remain UNKNOWN; D03 cannot self-issue `SOURCE_OWNER_VERIFIED`.
+- Fugle capture was not attempted because no task-scoped credential was exposed. This is `ACCESS_NOT_PRESENT_IN_AUTOMATION_RUNTIME`, not BAD/zero/provider failure; future work must reuse the authorized shared path without D03-specific provider calls.
+- New artifacts: `research/TECHNICAL_INDICATOR_OFFICIAL_SOURCE_CAPABILITY_PILOT_V0_1.md`, `research/technical_indicator_official_source_capability_pilot_20260930.json`, `research/test_technical_indicator_official_source_capability_pilot_v0_1.mjs`.
+- Deterministic receipt test: 31 assertions PASS. No Worker/D1/runtime/schema/schedule/signal/push/selection change; no return, threshold, parameter, OOS, cost or fill inspection.
+- Status: `BOUNDED_TWSE_TPEX_CAPTURE_PASS / SAME_DATE_PARITY_MATERIAL / ROW_VERSION_PIT_ATTESTATION_UNKNOWN / REVISION_INCIDENCE_UNKNOWN / OUTCOMES_CLOSED / FORMAL_UNCHANGED`. D03 maturity remains 44.6%; no `FORMAL_OPTIMIZATION_CANDIDATE`.
+- Exact next: retain fixed-cadence repeated versions of the same trade date across at least three completed sessions plus an after-hours interval; require shared attestation/session/CA lineage; map Fugle through the authorized shared path; then reconcile exact immutable parent-child keysets and non-secret cost/latency/call deltas before Class-B review or TI-005/TI-006.
