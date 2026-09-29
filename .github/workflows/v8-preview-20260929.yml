@@ -1,0 +1,21 @@
+name: V8 Readonly Preview 2026-09-29
+on:
+  push:
+    branches: [main]
+    paths:
+      - "ops/preview_real_20260929.mjs"
+      - ".github/workflows/v8-preview-20260929.yml"
+permissions:
+  contents: read
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Read-only 2026-09-29 formal preview
+        env:
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+        run: node ops/preview_real_20260929.mjs
