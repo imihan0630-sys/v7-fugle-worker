@@ -2066,7 +2066,8 @@
         "research/D18_OBSERVABLE_REGIME_LABEL_CONTRACT_V0_1.md",
         "research/D16_D18_PROMOTION_GATE_V0_1.md",
         "research/D18_REGIME_RAW_FEATURE_READINESS_V0_1.md",
-        "research/D18_DIRECTION_BREADTH_SEMANTICS_V0_1.md"
+        "research/D18_DIRECTION_BREADTH_SEMANTICS_V0_1.md",
+        "research/D18_BREADTH_DENOMINATOR_MISSINGNESS_CONTRACT_V0_1.md"
       ],
       "maturityPct": 40,
       "modules": [
@@ -2109,7 +2110,7 @@
           "learningScope": "聚焦「Breadth參與度×策略」。學習範圍：Market Regime分類、趨勢／盤整、高低波動、Breadth、Rotation、大小型領導與Risk-on/off；策略啟停、權重、Ensemble、Drawdown降載、Regime績效歸因與Walk-forward驗證。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
           "status": "DIRECTION_BREADTH_EXECUTABLE_PIT_SEMANTICS_VALIDATED / RETURN_DISTRIBUTION_AND_PROSPECTIVE_COVERAGE_PENDING",
-          "next": "Accumulate prospective market-direction breadth occupancy plus NOT_COMPARABLE/UNKNOWN diagnostics; test state-dependent missingness; keep whole-market breadth separate from Formal-normalized opportunity-set breadth; continue true-return distribution separately.",
+          "next": "Accumulate U0->U1 prospective Direction Breadth occupancy plus NOT_COMPARABLE/UNKNOWN reason shares; test state-dependent missingness before any coverage threshold; build U2 true-return coverage separately; keep U4 Formal opportunity-set breadth a separate estimand.",
           "evidence": "PR #274 merged: isolated Class-A Direction Breadth observer/test preserves exchange X as NOT_COMPARABLE, no-usable-close as UNKNOWN, deterministic replay and PIT fail-closed; V8 Regression 36645020491 PASS and V8 Repair CI 36645020534 PASS. Whole D18-04 remains L2 pending broader participation/return-distribution and prospective coverage."
         },
         {
