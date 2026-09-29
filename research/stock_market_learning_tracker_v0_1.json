@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-09-30T05:10:00+08:00",
+  "updatedAt": "2026-09-30T05:20:18+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -1317,7 +1317,9 @@
           "level": "L2",
           "maturityPct": 40,
           "learningScope": "聚焦「TAIEX VIX台灣波動率指數」。學習範圍：期貨、選擇權、基差、OI、外資期貨、PCR、VIX、IV、Skew、Term Structure、Gamma與結算；夜盤與到期效應；合約／DTE語意；對市場與個股的增量資訊。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "CLASS_A_RECEIPT_BUILDER_IMPLEMENTED_AND_ADVERSARIAL_TESTED / ACTUAL_PIT_DATE_RECEIPT_PENDING / OUTCOMES_CLOSED",
+          "evidence": "research/d12_05_taiwan_vix_receipt_v0_1.mjs + research/test_d12_05_taiwan_vix_receipt_v0_1.mjs; unified PIT guard integrated; no same-session 2026-09-30 value fabricated before publication window."
         },
         {
           "id": "D12-06",
@@ -1357,7 +1359,9 @@
           "level": "L2",
           "maturityPct": 40,
           "learningScope": "聚焦「夜盤期貨與隔夜資訊」。學習範圍：期貨、選擇權、基差、OI、外資期貨、PCR、VIX、IV、Skew、Term Structure、Gamma與結算；夜盤與到期效應；合約／DTE語意；對市場與個股的增量資訊。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "CLASS_A_NIGHT_PRE_SCAN_RECEIPT_BUILDER_IMPLEMENTED_AND_ADVERSARIAL_TESTED / ACTUAL_1500_1810_RECEIPT_PENDING / OUTCOMES_CLOSED",
+          "evidence": "research/d12_10_night_pre_scan_receipt_v0_1.mjs + adversarial test enforce 15:00 start, <=18:10 cutoff, following-session attribution, roll/expiry and no full-night leakage."
         },
         {
           "id": "D12-11",
@@ -1427,7 +1431,9 @@
           "level": "L2",
           "maturityPct": 40,
           "learningScope": "聚焦「DXY美元指數」。學習範圍：美股、日韓股、匯率、美元、利率、油價、原物料與總經數據；跨時區與休市對齊；公告時鐘與Surprise；全球Shock傳導；台股Residual反應與Regime用途。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "DXY_OFFICIAL_IDENTITY_PROVEN / AUTOMATED_NONDISPLAY_ENTITLEMENT_BLOCKED / NO_SCRAPING_APPROVED",
+          "evidence": "ICE Global Index Feed non-display policy and index-platform terms require licensed/declared use; research/global_market_provider_entitlement_matrix_v0_1.json updated."
         },
         {
           "id": "D13-06",
@@ -1435,7 +1441,9 @@
           "level": "L2",
           "maturityPct": 40,
           "learningScope": "聚焦「美債利率／殖利率曲線」。學習範圍：美股、日韓股、匯率、美元、利率、油價、原物料與總經數據；跨時區與休市對齊；公告時鐘與Surprise；全球Shock傳導；台股Residual反應與Regime用途。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "FIRST_SOURCE_ONLY_OFFICIAL_UST_RECEIPT_CAPTURED / MULTIDATE_COVERAGE_PENDING / OUTCOMES_CLOSED",
+          "evidence": "research/global_market_source_only_pilot_20260930.json contains latest already-published 2026-09-29 official Treasury curve captured before the 2026-09-30 18:10 Taiwan decision."
         },
         {
           "id": "D13-07",
@@ -1443,7 +1451,9 @@
           "level": "L2",
           "maturityPct": 40,
           "learningScope": "聚焦「油價」。學習範圍：美股、日韓股、匯率、美元、利率、油價、原物料與總經數據；跨時區與休市對齊；公告時鐘與Surprise；全球Shock傳導；台股Residual反應與Regime用途。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "OIL_CONTEXT_DEFINED / CME_WTI_AUTOMATED_NONDISPLAY_SOURCE_BLOCKED / ICE_BRENT_CONTRACT_UNRESOLVED",
+          "evidence": "research/global_market_provider_entitlement_matrix_v0_1.json preserves source/licensing blockers; no public-web scraping substituted for licensed data."
         },
         {
           "id": "D13-08",
@@ -1451,7 +1461,9 @@
           "level": "L2",
           "maturityPct": 40,
           "learningScope": "聚焦「金屬／原物料／稀有元素」。學習範圍：美股、日韓股、匯率、美元、利率、油價、原物料與總經數據；跨時區與休市對齊；公告時鐘與Surprise；全球Shock傳導；台股Residual反應與Regime用途。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "COMMODITY_FAMILIES_DEFINED / CME_PUBLIC_WEB_DELAYED_REFERENCE_ONLY / AUTOMATED_NONDISPLAY_SOURCE_CONTRACT_BLOCKED",
+          "evidence": "CME official docs state website quotes delayed >=10 minutes/reference-only and non-display system/research use is licensed; HG/GC automation withheld pending admissible provider."
         },
         {
           "id": "D13-09",
@@ -1475,7 +1487,9 @@
           "level": "L2",
           "maturityPct": 40,
           "learningScope": "聚焦「Macro Surprise與公告時鐘」。學習範圍：美股、日韓股、匯率、美元、利率、油價、原物料與總經數據；跨時區與休市對齊；公告時鐘與Surprise；全球Shock傳導；台股Residual反應與Regime用途。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "FIRST_SOURCE_ONLY_BLS_SCHEDULE_RECEIPTS_CAPTURED / REALIZATION_AND_CONSENSUS_VINTAGE_PENDING / OUTCOMES_CLOSED",
+          "evidence": "research/global_market_source_only_pilot_20260930.json preserves Employment Situation, CPI and PPI future schedule metadata known before decision while keeping same-date realizations future/absent."
         },
         {
           "id": "D13-12",
