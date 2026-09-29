@@ -83,7 +83,8 @@
     "pseudo-bar or zero-return imputation",
     "duplicate/out-of-order/mismatched common dates",
     "missing source/continuity identity",
-    "pairwise-complete covariance assembled from different support dates"
+    "pairwise-complete covariance assembled from different support dates",
+    "source-tree artifact incorrectly relabeled as generated/deployed runtime evidence"
   ],
   "currentSourceReadiness": {
     "d03OfficialPublicOHLC": "SOURCE_CAPABILITY_PASS_ONLY",
@@ -130,5 +131,11 @@
     "Only after independent dates accumulate test shrinkage/clustering/risk-dimension stability; do not optimize allocation from the first covariance matrix.",
     "Keep D15-06 Effective Bets blocked until covariance/factor-decomposition evidence is valid and stable."
   ],
-  "formalCoreImpact": false
+  "formalCoreImpact": false,
+  "sourceArtifactLayerFirewall": {
+    "sourceTree": "Committed Worker.js may be an intermediate artifact.",
+    "generatedArtifact": "Production semantics are established by the ordered guarded patch chain and generated-worker regression contracts.",
+    "deployedRuntime": "Must be linked to the generated artifact/version when runtime evidence is used.",
+    "prohibited": "Do not infer deployed source semantics solely from marker presence/absence in intermediate committed Worker.js."
+  }
 }
