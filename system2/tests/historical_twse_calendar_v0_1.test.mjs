@@ -128,11 +128,11 @@ assert.equal(fallback.tradingDatesExact,true);
 assert.equal(fallback.tradingDates.length,12);
 assert.equal(fallback.tradingDates.every((date)=>date.startsWith("2017-")),true);
 
-await assert.rejects(
-  ()=>Promise.resolve(parseHistoricalTwseMonthlyTradingDatesV0_1({
+assert.throws(
+  ()=>parseHistoricalTwseMonthlyTradingDatesV0_1({
     ...fmtqikJanuary,
     date:"20260101",
-  },2017,1)),
+  },2017,1),
   /payload invalid/,
 );
 
