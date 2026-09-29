@@ -1532,3 +1532,111 @@ Formal Core remains LOCKED. No 18:10 score, risk throttle, veto or ranking weigh
 2. Validate recent transaction-level replay against live/prospective snapshots.
 3. Accumulate independent dates before any L3 review.
 4. Cross-link D12-10 with D13 scheduled macro-event clock so 18:10 states are not compared across incompatible event regimes.
+
+
+---
+
+## DR-042 — prospective receipt firewall is now executable, not only conceptual
+
+D12 source research now has an executable isolated receipt layer:
+- unified `global_market_receipt_guard_v0_1.mjs`;
+- TAIWAN VIX receipt builder;
+- TX NIGHT_PRE_SCAN receipt builder.
+
+The guard enforces:
+- offset-aware source clocks;
+- observed/captured/known ordering;
+- first eligible Taiwan decision;
+- latency/entitlement state;
+- stale/missing state;
+- future-information rejection;
+- deterministic receipt hashing.
+
+Receipt hash/digest protects replay integrity; it does not prove source truth by itself. Source identity/quality remain separate evidence.
+
+Status: PIT FIREWALL IMPLEMENTED / RESEARCH ONLY.
+
+---
+
+## DR-043 — TAIWAN VIX source state can be validly missing before the publication session
+
+TAIFEX publishes TAIWAN VIX during the regular session, not continuously overnight.
+
+At the 2026-09-30 05:20 source-only capture clock:
+- the day's regular VIX publication session had not started;
+- therefore a same-day VIX value did not yet exist as a clean source receipt for the later 18:10 decision.
+
+Correct action:
+- do not use prior/current webpage state as if it were same-session VIX;
+- do not fabricate a numeric value;
+- wait for an actual official same-session observation;
+- if a scheduled capture later fails, record SOURCE_MISSING/UNKNOWN.
+
+This is a concrete falsification of “every factor must have a number every run.”
+
+Status: MISSING-AS-EVIDENCE SEMANTICS CONFIRMED.
+
+---
+
+## DR-044 — TAIWAN VIX receipt contract
+
+Clean receipt requires:
+- source timestamp within 09:00-13:45 Taipei;
+- official 15-second publication grid;
+- finite positive VIX;
+- captured/known before target decision;
+- public-official source entitlement;
+- rules-regime version.
+
+Quality states remain separate:
+- VIX_VALID_OFFICIAL;
+- VIX_STALE_OR_HALTED;
+- VIX_SOURCE_MISSING;
+- VIX_RULES_REGIME_UNCERTAIN.
+
+Stale/halt/missing are preserved but never count as clean coverage.
+
+The payload explicitly prohibits directional interpretation. VIX remains expected-volatility/risk-pricing evidence first.
+
+Status: VIX RECEIPT CONTRACT EXECUTABLE.
+
+---
+
+## DR-045 — NIGHT_PRE_SCAN receipt prevents full-night leakage
+
+A clean TX NIGHT_PRE_SCAN receipt requires:
+- exact 15:00 Taipei source-window start;
+- observedAt <= 18:10;
+- mandatory TAIFEX sourceSessionDate for following-regular-session attribution;
+- contract month, DTE and roll state;
+- last-trading-day guard;
+- OHLC/volume/trade-count integrity.
+
+The same first-known receipt may never later be mutated with:
+- 18:10-05:00 prices;
+- final full-night high/low/volume;
+- next-open outcomes.
+
+Later source versions must be separate receipts with their own eligibility clock.
+
+Status: NIGHT-PRE-SCAN LEAKAGE FIREWALL EXECUTABLE.
+
+---
+
+## DR-046 — D12 evidence bottleneck moves from semantics to independent dates
+
+D12-05 and D12-10 remain L2 / 40%.
+
+Why no promotion:
+- executable data contracts show feasibility;
+- no actual multi-date source coverage yet;
+- no replay/correction incidence evidence for these lanes;
+- no outcome evidence.
+
+Next:
+1. capture real TAIWAN VIX and TX NIGHT_PRE_SCAN on eligible dates;
+2. characterize missing/stale/roll/event states outcome-blind;
+3. only then compare VIX against D04 realized-volatility/ATR and night residual against admissible global controls;
+4. use independent date as inference unit.
+
+Formal Core remains LOCKED.
