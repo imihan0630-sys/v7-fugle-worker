@@ -718,7 +718,7 @@
         "FUNDAMENTAL_INFORMATION_DYNAMICS_CHECKPOINT.md",
         "FUNDAMENTAL_INFORMATION_DYNAMICS_RESEARCH.md"
       ],
-      "maturityPct": 40,
+      "maturityPct": 43.6,
       "modules": [
         {
           "id": "D07-01",
@@ -807,10 +807,12 @@
         {
           "id": "D07-11",
           "name": "分析師預估／預期修正",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「分析師預估／預期修正」。學習範圍：月營收、財報、獲利能力、現金流與資產負債表；成長品質與盈餘品質；公告first-known時間與PIT Vintage；分析師預期；基本面訊號對價格與策略的增量價值。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "尚未研究"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "FORECAST_REVISION_MECHANISM_COUNTEREVIDENCE_AND_PIT_SEMANTICS_DEFINED / CANONICAL_AUTHORIZED_SOURCE_NEEDED / OUTCOMES_CLOSED",
+          "next": "Inventory authorized PIT analyst-estimate sources; preregister forecast-age/consensus-accuracy diagnostics before any stale cutoff or outcome join."
         }
       ]
     },
@@ -821,7 +823,7 @@
       "anchors": [
         "VALUATION_RESEARCH.md"
       ],
-      "maturityPct": 38.3,
+      "maturityPct": 40,
       "modules": [
         {
           "id": "D08-01",
@@ -850,12 +852,12 @@
         {
           "id": "D08-04",
           "name": "Forward PE預估本益比",
-          "level": "L1",
-          "maturityPct": 20,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Forward PE預估本益比」。學習範圍：PE、PB、Forward PE、PEG、EV/EBITDA、FCF Yield等估值方法；歷史與同業正規化；負EPS與週期股例外；公司行動分母調整；成長×估值×Regime互動。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "理論已理解",
-          "status": "FORECAST_VINTAGE_SEMANTICS_DEFINED / CANONICAL_PIT_ESTIMATE_SOURCE_NEEDED",
-          "next": "Select a licensed/canonical PIT consensus source before testing next-FY/NTM/current-year Forward PE; preserve revision vintages."
+          "levelMeaning": "機制＋反證已定義",
+          "status": "FORWARD_PE_ATTRIBUTION_HORIZON_ROLL_AND_FORECAST_UNCERTAINTY_DEFINED / CANONICAL_PIT_ESTIMATE_SOURCE_NEEDED",
+          "next": "Validate an authorized PIT consensus source and preserve separate CURRENT_FY/NEXT_FY/NTM vintages, coverage, dispersion, age and price-vs-EPS attribution."
         },
         {
           "id": "D08-05",
