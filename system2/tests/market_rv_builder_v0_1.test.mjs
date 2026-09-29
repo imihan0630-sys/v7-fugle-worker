@@ -60,6 +60,9 @@ const baseInput = {
   assert(Math.abs(out.metrics.ratio - expected5 / expected20) < 1e-15);
   assert.equal(out.formula.annualized, false);
   assert.equal(out.formula.returnType, "SIMPLE_CLOSE_TO_CLOSE");
+  assert.equal(out.formula.estimatorFamily, "ROLLING_RETURN_DISPERSION");
+  assert.equal(out.formula.dispersionEstimator, "POPULATION_STD");
+  assert.equal(out.formula.intradayRealizedVariance, false);
 }
 
 {
