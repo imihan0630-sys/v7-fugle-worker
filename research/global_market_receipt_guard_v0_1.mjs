@@ -1,6 +1,6 @@
 import { createHash } from "node:crypto";
 
-export const GLOBAL_MARKET_RECEIPT_GUARD_VERSION = "0.1.0";
+export const GLOBAL_MARKET_RECEIPT_GUARD_VERSION = "0.1.1";
 
 const REQUIRED_FIELDS = [
   "receiptId",
@@ -45,6 +45,7 @@ const INSTRUMENT_FAMILIES = new Set([
   "US_EQUITY",
   "ASIA_EQUITY",
   "TAIFEX_NIGHT",
+  "TAIWAN_VIX",
   "OIL",
   "INDUSTRIAL_METAL",
   "PRECIOUS_METAL",
