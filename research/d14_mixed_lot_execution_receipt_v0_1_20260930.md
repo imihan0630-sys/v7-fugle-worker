@@ -60,6 +60,38 @@ Moving mechanismEligibleAt to 09:12:20 is also wrong because it erases the 20 se
 
 Therefore the receipt must retain **mechanismBlockedIntervals** instead of attempting to repair the problem by moving one timestamp.
 
+## Second falsification: odd-lot call auctions are discrete opportunities, not continuous eligible time
+
+A deeper source check rejects another shortcut.
+
+Intraday odd-lot matching is periodic call auction. After the first 09:10 match, execution opportunities occur at discrete auction times rather than continuously between them.
+
+That means a duration such as:
+`fillAt - mechanismEligibleAt - blockedIntervals`
+still has the wrong economic meaning for odd-lot execution.
+
+Example:
+- order is already submitted before 09:10;
+- actual matching opportunities occur at 09:10:00, 09:10:05, 09:10:10 and 09:10:15;
+- a volatility interruption then delays the next match until 09:12:20;
+- the order fills at the 09:12:25 auction.
+
+The correct research facts are:
+- six actual matching opportunities from first eligibility through fill;
+- five prior submitted opportunities ended without a fill;
+- the interruption explains the missing scheduled auctions during the blocked interval.
+
+The incorrect statement is:
+- “the order had 25 seconds of continuous executable exposure.”
+
+It did not. Between call auctions there is no continuous odd-lot matching.
+
+Therefore v0.1 uses two different eligibility models:
+- REGULAR_LOT -> `CONTINUOUS_WITH_BLOCK_INTERVALS`;
+- INTRADAY_ODD_LOT -> `DISCRETE_MATCH_OPPORTUNITIES`.
+
+For odd-lot receipts, `eligibleExposureToFillMs` is intentionally null. The research layer records opportunity counts instead.
+
 ## Receipt design
 
 Parent:
@@ -104,16 +136,26 @@ This makes the receipt suitable for research attribution, not merely order-histo
 
 ## Latency vector
 
-Per confirmed fill:
+Per confirmed fill, common diagnostics are:
 - rawLatency;
 - preEligibilityWait;
 - decisionToSubmitLatency;
-- scalarPostEligibilityLatency;
-- mechanismBlockedWaitAfterEligibility;
-- eligibleExposureToFill;
 - submitToFillLatency.
 
+For continuous regular-lot matching:
+- scalarPostEligibilityLatency;
+- mechanismBlockedWaitAfterEligibility;
+- eligibleExposureToFill.
+
+For periodic odd-lot call auctions:
+- matchingOpportunityCountFromDecisionToFill;
+- matchingOpportunityCountAfterSubmitToFill;
+- matchingOpportunitiesBeforeSubmit;
+- priorSubmittedOpportunitiesWithoutFill.
+
 No weighted latency score is allowed.
+
+A prior unfilled odd-lot auction does not by itself prove the order was marketable or that execution quality was poor. Price/queue/limit-order context remains a separate requirement.
 
 A long raw latency can be almost entirely scheduled/mechanism wait. A short fill can still be expensive if the price is poor. Latency and implementation shortfall remain separate evidence families.
 
