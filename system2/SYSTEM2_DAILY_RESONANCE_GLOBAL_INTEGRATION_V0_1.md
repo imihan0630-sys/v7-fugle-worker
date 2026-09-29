@@ -43,10 +43,11 @@ Worker: `system2-shadow-research`
 Binding: `SYSTEM2_DB` only for database state; `SYSTEM2_HISTORY_BUCKET` remains the separate historical research binding.  
 Secret: `FUGLE_API_KEY`, stored only as a Worker/GitHub environment secret.
 
-Schedules in UTC:
+Schedule in UTC:
 
-- `*/5 0-5 * * 1-5`; runtime-local filter admits only 08:55–13:40 Asia/Taipei;
-- `0 11 * * 1-5`; 19:00 Asia/Taipei pool refresh.
+- `*/5 0-5,11 * * 1-5` is the single Cloudflare Cron trigger for this lane.
+- The runtime-local filter admits only 08:55–13:40 Asia/Taipei for bounded monitoring and exactly 19:00 Asia/Taipei for the next-session pool refresh; 19:05–19:55 and other envelope invocations exit without market-data calls.
+- Read-only account inventory on 2026-09-30 found four existing Cron triggers, all on System 1 `fugle-test`. None are removed or modified; the single System 2 trigger uses the fifth Free-plan slot.
 
 General System 2 prospective selection capture remains `SYSTEM2_CAPTURE_ENABLED=false`; this authorization arms only the bounded Daily Resonance schedule.
 

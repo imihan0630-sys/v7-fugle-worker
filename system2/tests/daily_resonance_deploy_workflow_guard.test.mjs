@@ -30,7 +30,7 @@ assert.match(config, /workers_dev = true/);
 assert.match(config, /preview_urls = false/);
 assert.match(config, /SYSTEM2_CAPTURE_ENABLED = "false"/);
 assert.match(config, /SYSTEM2_RESONANCE_ENABLED = "true"/);
-assert.match(config, /crons = \["\*\/5 0-5 \* \* 1-5", "0 11 \* \* 1-5"\]/);
+assert.match(config, /crons = \["\*\/5 0-5,11 \* \* 1-5"\]/);
 assert.doesNotMatch(config, /^routes\s*=/m);
 
 assert.match(workerCore, /BOUNDED_PRESELECTED_ONLY/);

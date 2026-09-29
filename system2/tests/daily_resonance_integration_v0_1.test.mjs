@@ -88,6 +88,10 @@ assert.equal(intraday.officialCloseConfirmedByClock, true);
 const afterMarket = classifyResonanceScheduleTimeV0_1("2026-09-29T11:00:00.000Z");
 assert.equal(afterMarket.afterMarketPoolRefresh, true);
 assert.equal(afterMarket.intradayMonitor, false);
+const afterMarketLater = classifyResonanceScheduleTimeV0_1("2026-09-29T11:05:00.000Z");
+assert.equal(afterMarketLater.afterMarketPoolRefresh, false);
+const beforeRefresh = classifyResonanceScheduleTimeV0_1("2026-09-29T10:55:00.000Z");
+assert.equal(beforeRefresh.afterMarketPoolRefresh, false);
 assert.deepEqual(historyQueryRangeV0_1("2026-09-29"), { from: "2025-12-02", to: "2026-09-28" });
 
 function lifecycleDb(position) {
