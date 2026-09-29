@@ -31,9 +31,15 @@ function symbolReceipt(symbol,closes,overrides={}){
   };
 }
 
-const a=dates.map((_,i)=>100*Math.exp(i*0.001));
-const b=dates.map((_,i)=>50*Math.exp(i*0.001));
-const c=dates.map((_,i)=>80*Math.exp(-i*0.001));
+const returnPath=Array.from({length:60},(_,i)=>i%4===0?0.006:i%4===1?-0.003:i%4===2?0.002:-0.001);
+function pricesFromReturns(start,returns){
+  const out=[start];
+  for(const r of returns)out.push(out.at(-1)*Math.exp(r));
+  return out;
+}
+const a=pricesFromReturns(100,returnPath);
+const b=pricesFromReturns(50,returnPath);
+const c=pricesFromReturns(80,returnPath.map(r=>-r));
 
 function base(){
   return {
