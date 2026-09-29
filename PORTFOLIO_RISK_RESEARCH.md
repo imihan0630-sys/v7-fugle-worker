@@ -3929,3 +3929,71 @@ Dependency artifact:
 
 Status:
 `HISTORICAL_SOURCE_FOUNDATION_AVAILABLE / CONTINUOUS_TAIL_DATASET_NOT_PROVEN`.
+
+
+## D15-SRP-001 — synchronized comparable-return panel contract (2026-09-30)
+
+A source-readiness falsification was completed for D15-03 / D15-04 / D15-05 / D15-06.
+
+### Shortcut rejected
+
+`D03 now has official TWSE/TPEx OHLC capability, therefore D15 correlation/covariance/Effective Bets is unblocked.`
+
+Rejected.
+
+Current positive evidence is real:
+- official OHLC public-source capture and same-date cross-contract parity are materially feasible;
+- D03 now maintains an append-only whole-payload hash observer;
+- System1 V8.12 raw history has source/freshness admission and fail-closed official-gap semantics.
+
+But none of those artifacts is yet an inference-grade synchronized D15 return panel.
+
+### Why the blocker survives
+
+- D03 fixed-cadence observer persists compact whole-payload hashes/metadata, not the per-symbol comparable rows needed later for a 60-return covariance panel.
+- System1 history is `adjusted=false` RAW history. Raw-history admission does not certify corporate-action comparable returns.
+- Shared TECHNICAL_CONTINUITY / comparable-price runtime remains blocked and symbol-session completeness remains partial.
+- There is no already-authorized D15 read surface exposing immutable per-symbol `PRICE_INDEX_COMPARABLE` rows with row-level as-of provenance.
+
+### New fail-closed contract
+
+Primary D15 panel:
+- exact parent selected set;
+- parentDecisionReceiptId and asOf;
+- one frozen return space;
+- `EXACT_LISTWISE_COMMON_SUPPORT`;
+- 61 comparable closes -> 60 synchronized log returns;
+- per-symbol source receipt, source history hash and continuity receipt;
+- verified symbol-session state;
+- corporate-action continuity resolved;
+- every row available by asOf;
+- no pseudo-bars or zero-return imputation.
+
+`RAW_EXECUTION` is prohibited for the primary covariance panel.
+`PRICE_INDEX_COMPARABLE` is primary.
+`TOTAL_RETURN_COMPARABLE` may only be studied as a separately labeled panel.
+
+### Mechanical-reset falsification
+
+A 2:1 raw price reset can create an apparent -50% move despite flat economic continuity. Raw-cross-event covariance can therefore be spurious.
+
+D15 must consume a canonical shared continuity/comparable-price receipt rather than create its own adjustment engine.
+
+### Current maturity
+
+D15-03 Correlation, D15-04 Covariance Shrinkage, D15-05 Hierarchical Clustering and D15-06 Effective Bets remain **L2 / 40%**.
+
+The source path is better understood, but a real Taiwan PIT synchronized comparable-return panel does not yet exist.
+
+Artifacts:
+- `research/d15_synchronized_return_panel_v0_1.mjs`
+- `research/d15_synchronized_return_panel_spec_v0_1.json`
+- `research/d15_synchronized_return_panel_source_readiness_20260930.json`
+- `research/D15_SYNCHRONIZED_RETURN_PANEL_V0_1.md`
+- `tests/test_d15_synchronized_return_panel_v0_1.mjs`
+- `tests/test_d15_synchronized_return_source_readiness_v0_1.mjs`
+
+Exact next continuation:
+obtain a canonical immutable per-symbol comparable-price panel receipt from the shared source/continuity owner, bind it to the exact parent selected set, then run the first 60-return read-only sample correlation/covariance audit. No optimizer and no Effective Bets promotion from the first matrix.
+
+Formal Core unchanged.
