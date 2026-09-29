@@ -28,7 +28,8 @@
       "mechanismEligibilityEvidence",
       "benchmark with matching lotType/source/observedAt/price",
       "one or more broker submission attempts",
-      "one or more BROKER_CONFIRMED_FILL rows"
+      "one or more BROKER_CONFIRMED_FILL rows",
+      "mechanismRule {ruleVersion, sourceRef, effectiveFrom, effectiveTo}"
     ],
     "independentLegs": "Regular and odd-lot legs keep separate benchmark, eligibility, submit, fill and cost provenance.",
     "allowedMechanisms": {
@@ -38,7 +39,8 @@
     "eligibilityModels": {
       "REGULAR_LOT": "CONTINUOUS_WITH_BLOCK_INTERVALS",
       "INTRADAY_ODD_LOT": "DISCRETE_MATCH_OPPORTUNITIES"
-    }
+    },
+    "oddLotOrderRule": "INTRADAY_ODD_LOT requires LIMIT orderType and positive limitPrice per active attempt."
   },
   "scalarClockFalsification": {
     "priorClockVector": [
@@ -82,7 +84,9 @@
     "cross-leg duplicate fill id",
     "odd-lot receipt missing discrete matching-opportunity ledger",
     "odd-lot fill timestamp not aligned to an evidenced matching opportunity",
-    "matching opportunity inside an evidenced mechanism block"
+    "matching opportunity inside an evidenced mechanism block",
+    "mechanism rule missing or not effective at decisionKnownAt",
+    "odd-lot attempt missing LIMIT order provenance/limitPrice"
   ],
   "semanticFirewalls": [
     "rawLatency is not execution-quality latency by itself",
@@ -91,11 +95,14 @@
     "latency remains a vector; no composite latency score is authorized",
     "valid receipt is execution evidence only; it does not prove economic alpha",
     "periodic call-auction cadence is not continuous executable time",
-    "an odd-lot order surviving prior auctions does not prove it was marketable at those auctions"
+    "an odd-lot order surviving prior auctions does not prove it was marketable at those auctions",
+    "unfilled odd-lot auction count is not an execution-failure count",
+    "future-effective trading-rule amendment must not be back-applied"
   ],
   "officialSourceAnchors": [
-    "https://www.twse.com.tw/en/products/system/trading.html",
-    "https://twse-regulation.twse.com.tw/ENG/EN/law/DAT08.aspx?FLCODE=FL007115"
+    "https://twse-regulation.twse.com.tw/m/EN/LawContent.aspx?FID=FL007115",
+    "https://twse-regulation.twse.com.tw/ENG/EN/law/DAT08.aspx?FLCODE=FL007115",
+    "https://twse-regulation.twse.com.tw/ENG/TW/law/DOC01_print.aspx?FLCODE=FL007115&FLNO=8"
   ],
   "maturityDecision": {
     "D14_07": "remain L2/40",
@@ -103,5 +110,30 @@
     "D14_14": "remain L2/40",
     "reason": "Schema/source feasibility and deterministic unit falsification are not prospective receipt completeness. Independent live/prospective capture/replay remains required before L3."
   },
-  "exactNextContinuation": "Run isolated prospective receipt capture on independent sessions containing actual mixed-lot parent actions; require deterministic replay and mechanism-state provenance. First readiness review after at least 3 independent sessions, with no automatic maturity promotion."
+  "exactNextContinuation": "Run isolated prospective receipt capture on independent sessions containing actual mixed-lot parent actions; require deterministic replay and mechanism-state provenance. First readiness review after at least 3 independent sessions, with no automatic maturity promotion.",
+  "ruleVersionFirewall": {
+    "currentDecisionDate": "2026-09-30",
+    "currentEffectiveOddLotRule": "09:10 first call auction, every 5 seconds thereafter under the currently effective rule",
+    "futureAmendment": "TWSE 2026-08-20 amendment changes Article 8 wording to 09:00 start, effective 2026-12-07",
+    "rule": "A mechanism rule is valid only if decisionKnownAt is inside its explicit effective interval. Future amendments cannot be back-applied."
+  },
+  "marketabilityLayer": {
+    "purpose": "Do not treat every unfilled call auction as execution failure.",
+    "requiredEvidenceForClassification": [
+      "active attempt limitPrice",
+      "matching opportunity computedExecutionPrice"
+    ],
+    "states": [
+      "PRICE_NOT_CROSSING",
+      "PRICE_CROSSING_QUEUE_OR_VOLUME_UNRESOLVED",
+      "UNKNOWN_MARKETABILITY"
+    ],
+    "diagnostics": [
+      "priceCrossingOpportunitiesThroughFill",
+      "nonCrossingOpportunitiesThroughFill",
+      "unknownMarketabilityOpportunitiesThroughFill",
+      "marketabilityAttributionReady"
+    ],
+    "guard": "Even PRICE_CROSSING does not prove a broker/execution defect because same-price priority, queue position and available contra volume may still govern the fill."
+  }
 }
