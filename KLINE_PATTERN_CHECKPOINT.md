@@ -385,3 +385,57 @@ Durable research detail: main `KLINE_PATTERN_RESEARCH.md` commit `a245b486dc60f2
 3. Seek authoritative OPEN/continuity/session witnesses before any Three-Gaps detector; DATA_BLOCKED where unavailable.
 4. Keep prospective outcome joins blocked pending COMPLETE immutable parent/run receipts and source-semantic readiness; test incremental value only against frozen controls and preregistered interactions.
 5. Keep Formal Core LOCKED and Pattern direction UNKNOWN.
+
+## Continuation update — DL-007A through DL-007E (2026-09-28)
+- Exact DL-006 graph/path implementation is complete in isolated research code:
+  - `research/pattern_nested_structure_graph_v0_1.mjs` and test;
+  - `research/pattern_breakout_path_descriptors_v0_1.mjs` and test;
+  - full record `research/PATTERN_NESTED_GRAPH_PATH_QA_V0_1.md`.
+- Nested graph QA PASS: as-of confirmation, verified source-bar availability, partial-week status, direct CONTAINS/REFINES/SHARES_ANCHORS/SHARES_TRIGGER/CONTRADICTS edges, no transitive closure, prefix replay equality, semantic-space conflict and boundary-mutation firewall.
+- Continuous path QA PASS: eligible vs observable denominators, constrained/unavailable session exclusions, break-inclusive vs post-break extension, UP/DOWN mirror, reentry/failure/reclaim offsets, PIT ATR gating and no tuned N-day verdict.
+- Key counterexample: excluding constrained sessions without exposing both denominators can inflate apparent persistence; counting them can manufacture acceptance. Both counts and PARTIALLY_OBSERVED status are mandatory.
+- Source audit confirms OPEN and multiple corporate-action reference fields are source-available, but Three-Gaps remains detector NO_GO. Current shared cache drops OPEN; raw response mode is not yet independently certified on the audited connector; adjusted history is not automatically immutable PIT history; corporate-action endpoints can include future events; security-specific session coverage remains partial.
+- Machine readiness: `research/pattern_three_gaps_source_readiness_v0_1.json`.
+- Tests PASS: new graph/path suites plus existing lifecycle and evidence-dedup suites.
+- No outcome inspection, no historical Shadow, no R09, no tracker promotion. D01 remains 51.7%. FORMAL_OPTIMIZATION_CANDIDATE = NONE. Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-007
+1. Freeze graph/path v0.1; do not tune thresholds or expand named families.
+2. Add only a detector-free Three-Gaps precondition validator if it can fail closed on raw response mode, OPEN, TECHNICAL_CONTINUITY version, event clocks and explicit symbol-session membership.
+3. Audit reuse of canonical History Source Revalidation receipts for per-symbol session evidence; do not fork session/no-trade logic.
+4. Shared-runtime OPEN retention or continuity/session persistence remains Class B proposal-first.
+5. Outcome joins remain blocked until COMPLETE immutable parent/run receipts exist; eventual incremental tests use frozen controls.
+6. Pattern direction remains UNKNOWN; no R09; Formal Core remains LOCKED.
+
+## Continuation update — DL-008A through DL-008E (2026-09-28)
+- Continued from DL-007 without changing the frozen nested-graph or breakout-path contracts. Implemented only the permitted detector-free precondition validator in `research/pattern_three_gaps_precondition_v0_1.mjs`; no Three Gaps detector, gap measurement, gap count, named-label signal or directional prior was added.
+- Canonical V8.12.0 `HISTORY_PRESENCE_V1` is reusable only as full-market official bar presence evidence. Symbol inclusion supports `OFFICIAL_TRADED_BAR_PRESENT`; symbol absence supports `NO_OFFICIAL_TRADED_BAR_REASON_UNKNOWN`. Absence does not prove suspension, symbol-session ineligibility or the cause of no trade.
+- Two adjacency contracts are explicit. `OBSERVED_TRADE_ADJACENCY` may pass across a date with a complete no-official-bar receipt, but returns `READY_WITH_UNKNOWN_NO_TRADE_REASON`. `ELIGIBLE_SYMBOL_SESSION_ADJACENCY` blocks on that same evidence and requires separate official symbol-session status. This falsifies the adequacy of one generic session-valid Boolean.
+- The validator fails closed on missing OPEN; request/response adjustment-mode ambiguity; raw receipt/hash mismatch; TECHNICAL_CONTINUITY semantic/version/lineage mismatch; future bars; incomplete corporate-action registry coverage; future-known events applied early; incomplete official calendar coverage; missing/incomplete history-presence receipts; missing official traded bars; and traded-bar/non-eligible contradictions. Unapplied future events are ignored, preserving prefix replay.
+- Fourteen adversarial cases pass in `research/test_pattern_three_gaps_precondition_v0_1.mjs`; frozen graph, path, lifecycle and evidence-de-dup suites also pass. Detailed anchors: `research/PATTERN_THREE_GAPS_PRECONDITION_AND_RECEIPT_AUDIT_V0_1.md` and `research/pattern_three_gaps_precondition_contract_v0_1.json`.
+- Evidence remains `FALSIFICATION_IN_PROGRESS`. No outcomes, historical Shadow, R09, maturity promotion or Formal optimization candidate. D01 remains 51.7%, D01-09 remains L2, and Formal Core remains LOCKED.
+
+### Updated exact next continuation point after DL-008
+1. Freeze the precondition contract and both adjacency modes; do not add a detector or tune thresholds.
+2. Wait for prospective immutable raw response receipts retaining OPEN, exact TECHNICAL_CONTINUITY receipts, complete corporate-action clocks, official calendars and symbol-session evidence to coexist.
+3. Reuse `HISTORY_PRESENCE_V1` only for official bar presence/absence; never translate absence into suspension without independent official status.
+4. Keep shared-runtime OPEN retention, continuity/session persistence and new receipt capture Class B proposal-first.
+5. Outcome joins remain blocked until COMPLETE immutable parent/run receipts exist prospectively.
+6. Direction remains UNKNOWN; no R09; Formal Core remains LOCKED.
+
+## Continuation update — DL-009A through DL-009F (2026-09-30)
+- Three-Gaps parent evidence remains prospective/time-gated, so the room followed total-control non-idling rules and advanced the nonblocked D01-02/D01-03/D01-12 candle-context falsification instead of adding a detector.
+- Academic synthesis remains two-sided: Taiwan candle studies show morphology can be empirically testable, but holding/exit strategy can determine profitability even after trend-definition and data-snooping controls. Core Taiwan samples predate the 2020-03-23 continuous-trading regime, so their effect sizes are not portable as 2026 priors.
+- GitHub live audit confirms Draft PR #103 remains open, dirty and stale at head `69aace54c8d7d7b5ea2f7609495e5dea5eb616c2`. Its relational encoder is not duplicated. The audit instead freezes a missing provenance layer around caller-supplied prior trend and Boolean corporate-action context.
+- New `research/pattern_candle_context_receipt_v0_1.mjs` binds an existing immutable morphology observation to separate versioned prior-trend, structural-location, TECHNICAL_CONTINUITY, corporate-action and symbol-session parents. Prior context must end before the pattern bar; future-known context and outcome-contaminated observations fail closed.
+- The same morphology commitment bound to AFTER_DECLINE versus AFTER_ADVANCE, or SUPPORT_ZONE versus RESISTANCE_ZONE, remains one shape under different contexts. It never becomes two signal votes, receives no traditional name and keeps direction UNKNOWN.
+- Post-candle confirmation is append-only. It requires a later continuity generation linked to the original parent; reusing the original receipt ID is blocked because it would imply future data was already present. The original observation remains prefix-invariant.
+- Fourteen assertion groups pass. No return, MFE/MAE, hit rate, threshold, holding horizon or cost result was inspected. D01-02, D01-03 and D01-12 remain L2; D01 stays 51.7%; no R09 or Formal optimization candidate.
+
+### Updated exact next continuation point after DL-009
+1. Freeze the candle-context receipt; do not add named labels, directional priors or threshold variants.
+2. Audit whether current official/source receipts can independently attest exact morphology bytes and all context parents without detector self-attestation.
+3. Keep stale PR #103 unmerged; any later port must reconcile selected research primitives against then-current main, not copy the branch wholesale.
+4. Shared runtime capture/persistence remains Class B proposal-first; Formal candle/holding/confirmation behavior is Class C.
+5. Prospective outcomes remain closed until complete immutable parent/run coverage, preregistered confirmation/holding rules and redundancy/cost/OOS gates exist.
+6. Formal Core remains LOCKED; direction UNKNOWN.

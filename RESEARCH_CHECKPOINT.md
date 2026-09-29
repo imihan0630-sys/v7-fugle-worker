@@ -2220,8 +2220,6 @@ Updated: 2026-09-27 23:38 Asia/Taipei.
 - No additional maturity promotion from the source audit: D17 remains 40.0%, room 08 remains 43.7%. L3 requires actual Taiwan PIT/versioned capture evidence.
 - `FORMAL_OPTIMIZATION_CANDIDATE = NO`; Formal Core and live System 2 behavior unchanged.
 - Exact next: run a bounded prospective source-only capture pilot when a legally usable feed is available; measure firstKnown/capturedAt latency, revision incidence, duplicate-cluster behavior and coverage gaps without inspecting returns. Keep production general-news lane SOURCE_NEEDED until licensing/interface is validated.
-
-
 ## D03 Technical Indicator continuation — TI-412 through TI-417 immutable row-version receipt (2026-09-29 Asia/Taipei)
 
 - Continued from TI-411 exact-next; no indicator-catalog expansion and no outcome inspection.
@@ -2286,3 +2284,18 @@ Updated: 2026-09-27 23:38 Asia/Taipei.
 - Twenty deterministic observer assertions, 31 prior capability assertions and 12 row-version assertions PASS. No Worker/D1/runtime/schema/schedule/signal/push/selection change.
 - Status: `AFTER_HOURS_REPEAT_PASS / PROSPECTIVE_SESSION_1_OF_3 / REVISION_INCIDENCE_UNKNOWN / ATTESTATION_SESSION_CA_PARENT_UNKNOWN / OUTCOMES_CLOSED / FORMAL_UNCHANGED`. D03 maturity remains 44.6%; no `FORMAL_OPTIMIZATION_CANDIDATE`.
 - Exact next: capture after the next two completed Taiwan sessions; on any hash change run complete add/remove/change reconciliation before outcomes; record successful-transport latency/call/byte/storage deltas; require shared attestation/session/CA/Fugle/parent reconciliation; keep TI-005/TI-006 and Class-B/Formal work blocked.
+## D01 Pattern DL-007 graph/path QA + Three-Gaps source audit — 2026-09-28 Asia/Taipei
+- Continued from the exact DL-006 checkpoint on latest main. New isolated Class-A graph and path descriptor suites pass along with existing breakout lifecycle/evidence-dedup regressions.
+- Causal graph now enforces as-of confirmation, verified constituent bars, partial-week status, direct-only typed edges, prefix replay, semantic-space compatibility and immutable boundary/version coordinates.
+- Breakout descriptors expose eligible/observable denominators, break-inclusive/post-break extension, constrained-state censoring, persistence runs and reentry/failure/reclaim chronology without tuned N-day thresholds.
+- Three-Gaps source audit: OPEN and event/reference fields exist, but current cache retention, raw-mode response certification, immutable PIT continuity and complete per-symbol session provenance remain incomplete. Detector intentionally not implemented.
+- No outcomes/Shadow fabrication/R09/maturity change/Formal change. D01 remains 51.7%, direction UNKNOWN, no FORMAL_OPTIMIZATION_CANDIDATE.
+- Exact next: freeze v0.1; build only a fail-closed detector-free gap precondition validator if useful; audit canonical History Source Revalidation receipt reuse; shared-runtime retention/persistence remains Class B proposal-first; outcome joins wait for COMPLETE immutable parent/run receipts.
+
+## D01 Pattern DL-008/DL-009 precondition + candle-context provenance — 2026-09-30 Asia/Taipei
+- DL-008 added a detector-free Three-Gaps precondition contract and 14 adversarial cases. Canonical `HISTORY_PRESENCE_V1` proves official bar presence/absence only; absence is not suspension/session-ineligibility proof. Observed-trade and eligible-session adjacency are separate denominators.
+- DL-009 audited live Draft PR #103 and did not duplicate its stale relational encoder. New Class-A candle-context receipts bind immutable morphology to independent prior-trend, structural-location, continuity/action and symbol-session parents.
+- Same shape under opposite trend/location context is not multiple evidence. Post-candle confirmation is a separate child on a later continuity generation and cannot rewrite the original as-of observation.
+- Fourteen DL-009 assertion groups PASS; all DL-007/DL-008 Pattern regressions remain green on current main baseline.
+- No outcomes, historical Shadow, threshold/holding-rule tuning, runtime/Formal change, R09, tracker promotion or `FORMAL_OPTIMIZATION_CANDIDATE`. D01 remains 51.7%; direction UNKNOWN.
+- Exact next: independent source-owner attestation for exact morphology/context parents; keep PR #103 unmerged and shared runtime capture Class B proposal-first; outcome joins remain closed pending COMPLETE immutable parents and preregistered redundancy/cost/OOS gates.

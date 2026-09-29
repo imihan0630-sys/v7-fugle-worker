@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "PATTERN_CANDLE_CONTEXT_RECEIPT_V0_1",
+  "status": "CONTEXT_PROVENANCE_FIREWALL_EXECUTABLE_OUTCOMES_CLOSED",
+  "formalCoreImpact": "NONE",
+  "directionalEffect": "UNKNOWN",
+  "scope": [
+    "D01-02_SINGLE_CANDLE_CONTEXT",
+    "D01-03_MULTI_CANDLE_CONTEXT",
+    "D01-12_TRADITIONAL_CANDLE_SEMANTIC_FALSIFICATION"
+  ],
+  "separatedObjects": [
+    "MORPHOLOGY_OBSERVATION",
+    "PRIOR_TREND_CONTEXT",
+    "STRUCTURAL_LOCATION",
+    "CORPORATE_ACTION_CONTINUITY",
+    "SYMBOL_SESSION_MEMBERSHIP",
+    "POST_CANDLE_CONFIRMATION"
+  ],
+  "guards": [
+    "PRIOR_CONTEXT_MUST_END_BEFORE_PATTERN_BAR",
+    "FUTURE_KNOWN_CONTEXT_BLOCKED",
+    "POST_CONFIRMATION_APPENDS_CHILD_RECEIPT",
+    "SAME_SHAPE_DIFFERENT_CONTEXT_IS_NOT_TWO_SIGNALS",
+    "UNKNOWN_CONTEXT_NOT_COERCED",
+    "NO_TRADITIONAL_DIRECTIONAL_PRIOR",
+    "NO_LABEL_VOTE_COUNT"
+  ],
+  "draftPr103Audit": {
+    "pr": 103,
+    "state": "OPEN_DRAFT_DIRTY_STALE",
+    "head": "69aace54c8d7d7b5ea2f7609495e5dea5eb616c2",
+    "finding": "Relational morphology exists, but priorTrendState and corporateActionBoundary are not independently versioned point-in-time parent receipts."
+  },
+  "runtimeReadiness": "NO_GO",
+  "formalOptimizationCandidate": null
+}

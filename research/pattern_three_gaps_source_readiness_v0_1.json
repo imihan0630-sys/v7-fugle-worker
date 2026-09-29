@@ -1,0 +1,55 @@
+{
+  "schemaVersion": "0.1",
+  "updatedAt": "2026-09-28T22:29:00+08:00",
+  "status": "DETECTOR_FREE_PRECONDITION_EXECUTABLE_SOURCE_PARTIAL_DETECTOR_NO_GO",
+  "formalCoreImpact": "NONE",
+  "directionalEffect": "UNKNOWN",
+  "requirements": {
+    "open": {
+      "status": "SOURCE_AVAILABLE_CURRENT_SHARED_CACHE_DROPS_FIELD",
+      "source": "FUGLE_HISTORICAL_CANDLES"
+    },
+    "rawExecution": {
+      "status": "RESPONSE_MODE_VERIFICATION_REQUIRED",
+      "reason": "Previously audited connector returned adjusted=true metadata for an adjusted=false request"
+    },
+    "technicalContinuity": {
+      "status": "RESEARCH_SEMANTICS_READY_RUNTIME_BLOCKED",
+      "owner": "CORPORATE_ACTIONS_LANE"
+    },
+    "corporateAction": {
+      "status": "SOURCE_AVAILABLE_KNOWN_AT_INCOMPLETE",
+      "futureEventHazard": true
+    },
+    "symbolSession": {
+      "status": "PARTIAL",
+      "twseCoverageStart": "2011-10-03",
+      "tpexCoverageStart": null
+    }
+  },
+  "detectorImplemented": false,
+  "preconditionValidator": {
+    "implemented": true,
+    "contract": "PATTERN_THREE_GAPS_PRECONDITION_V0_1",
+    "adjacencyModes": [
+      "OBSERVED_TRADE_ADJACENCY",
+      "ELIGIBLE_SYMBOL_SESSION_ADJACENCY"
+    ],
+    "historyPresenceReuseBoundary": "PRESENCE_OR_ABSENCE_ONLY_NOT_SUSPENSION_CLASSIFICATION",
+    "runtimeWired": false
+  },
+  "blockedSemantics": [
+    "IMMUTABLE_RAW_RESPONSE_MODE",
+    "PIT_TECHNICAL_CONTINUITY_RUNTIME_PATH",
+    "COMPLETE_SECURITY_SPECIFIC_SESSION_MEMBERSHIP",
+    "CORPORATE_ACTION_FIRST_KNOWN_CLOCK"
+  ],
+  "guards": [
+    "UNKNOWN_NEVER_COERCED_TO_ZERO",
+    "NO_FUTURE_EVENT_BACKFILL",
+    "NO_SUSPENSION_PSEUDOBAR_AS_CANDLE",
+    "NO_RAW_EX_RIGHT_RESET_AS_TECHNICAL_GAP",
+    "NO_GAP_COUNT_DIRECTIONAL_SIGN"
+  ],
+  "formalOptimizationCandidate": null
+}
