@@ -13,6 +13,7 @@ const out={
   quarterEpsReview:data.diagnostics?.quarterEpsReview,
   with60Days:data.diagnostics?.with60Days,
   historyCacheCount:data.diagnostics?.historyCacheCount,
+  historySourceRevalidation:data.diagnostics?.historySourceRevalidation,
   marketSources:data.diagnostics?.marketSources,
   finalPoolMerge:data.diagnostics?.finalPoolMerge,
   thousandStockPool:data.thousandStockPool?{selectedCount:data.thousandStockPool.selectedCount,shortlist:data.thousandStockPool.shortlist}:null
