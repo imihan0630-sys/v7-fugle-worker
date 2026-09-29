@@ -10,10 +10,12 @@
       "family": "DXY",
       "canonicalCandidate": "ICE U.S. Dollar Index",
       "sourceStatus": "OFFICIAL_SOURCE_IDENTIFIED",
-      "decisionTimeFeasibility": "MATERIAL_PASS_IF_TIMESTAMPED",
-      "entitlementStatus": "NOT_FROZEN",
+      "decisionTimeFeasibility": "ECONOMIC_CLOCK_PASS__AUTOMATED_SOURCE_CONTRACT_BLOCKED",
+      "entitlementStatus": "OFFICIAL_IDENTITY_PROVEN__AUTOMATED_NONDISPLAY_NOT_AUTHORIZED_BY_THIS_AUDIT",
       "historical1810Replay": "NOT_ESTABLISHED",
-      "keyRisk": "EUR-dominant fixed basket; provider latency/licensing"
+      "keyRisk": "EUR-dominant fixed basket; proprietary index IP; non-display licensing; no approved automated capture contract",
+      "publicWebEvidence": "ICE identifies DXY/USDX as proprietary ICE Data Indices content. Global Index Feed supports real-time/delayed/EOD/historical delivery, but non-display use requires declaration/licensing; ICE index-platform terms restrict scraping/use outside an applicable agreement.",
+      "automatedNonDisplayUse": "LICENSED_ICE_DATA_CONTRACT_OR_AUTHORIZED_PROVIDER_REQUIRED"
     },
     {
       "family": "USD/TWD",
