@@ -1,0 +1,91 @@
+{
+  "schemaVersion": "FUNDAMENTAL_QUALITY_VALUATION_SHADOW_SPEC_V0_1",
+  "status": "PREREGISTERED_RESEARCH_ONLY_OUTCOME_JOIN_LOCKED",
+  "frozenAt": "2026-09-28 Asia/Taipei",
+  "parentContracts": [
+    "FUNDAMENTAL_QUALITY_PIT_CONTRACT_V0_1",
+    "S2-SG-LS-001 where System 2 evidence is reused only under its original provenance"
+  ],
+  "purpose": "Test whether quality-adjusted valuation adds incremental Taiwan-stock information beyond existing fundamentals, price/volume, sector/RS and regime without threshold mining.",
+  "descriptiveQualityStates": [
+    "GROWTH_WITH_CASH_SUPPORT",
+    "GROWTH_WITH_CASH_DIVERGENCE",
+    "QUALITY_STABLE_LOW_GROWTH",
+    "DETERIORATION",
+    "UNKNOWN"
+  ],
+  "valuationStates": {
+    "initialPITReady": [
+      "official_same_day_trailing_PE",
+      "official_same_day_PB",
+      "sector_relative_PE_when_peer_set_valid"
+    ],
+    "blockedUntilSourceReady": [
+      "Forward_PE",
+      "PEG",
+      "EV_EBITDA",
+      "FCF_Yield",
+      "historical_PE_PB_percentile"
+    ]
+  },
+  "preregisteredHypotheses": [
+    "H1 expensive plus improving quality may be justified leadership rather than an automatic veto",
+    "H2 cheap plus deteriorating quality may represent a value-trap state",
+    "H3 cheap plus stable or improving quality may represent a value-quality state",
+    "H4 valuation may add more information for MAE/false-breakout/downside risk than for D1/D3 directional return",
+    "H5 cash-supported growth may outperform or carry lower downside risk than accounting-growth-with-cash-divergence after controls"
+  ],
+  "requiredControls": [
+    "existing fundamentalScore and raw growth",
+    "technical setup/channel",
+    "price-volume",
+    "stock and sector relative strength",
+    "industry/peer set",
+    "market regime",
+    "liquidity/size",
+    "overheat/lateStage",
+    "corporate-action denominator integrity"
+  ],
+  "inferenceDesign": {
+    "primaryCluster": "scanDate",
+    "comparisons": [
+      "within-date",
+      "within-sector_or_economically_coherent_peer_group"
+    ],
+    "horizons": [
+      "D1",
+      "D3",
+      "D5",
+      "D10",
+      "D20",
+      "MFE",
+      "MAE",
+      "false_breakout_or_no_follow_through_where_observable"
+    ],
+    "robustness": [
+      "independent dates",
+      "leave-one-date-out",
+      "purged holdout",
+      "OOS",
+      "walk-forward",
+      "prospective Shadow",
+      "cost sensitivity",
+      "coverage/zero-pick"
+    ],
+    "forbidden": [
+      "threshold sweep",
+      "outcome-driven formula changes",
+      "historical current-value backfill",
+      "selected-only inference",
+      "missing-as-zero"
+    ]
+  },
+  "killRules": [
+    "Mark REDUNDANT if quality/valuation states add no stable increment after required controls.",
+    "Do not promote if effect is concentrated in one industry, one date cluster, one regime or one denominator convention.",
+    "Do not promote if source completeness/missingness predicts the outcome more strongly than the economic feature.",
+    "Do not promote if coverage or zero-pick degradation dominates any apparent benefit."
+  ],
+  "promotionState": "NOT_FORMAL_OPTIMIZATION_CANDIDATE",
+  "formalCoreChanged": false
+}

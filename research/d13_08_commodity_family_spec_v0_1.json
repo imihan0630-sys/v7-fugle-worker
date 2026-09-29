@@ -1,0 +1,143 @@
+{
+  "schemaVersion": "0.1",
+  "module": "D13-08",
+  "name": "Commodity / metals / critical-mineral family contract",
+  "status": "RESEARCH_ONLY_CONCEPT_FROZEN_EVIDENCE_PENDING",
+  "formalCoreImpact": "NONE",
+  "updatedAt": "2026-09-28T20:35:00+08:00",
+  "families": {
+    "INDUSTRIAL_METALS": {
+      "examples": [
+        "HG copper",
+        "aluminium",
+        "zinc",
+        "tin"
+      ],
+      "mechanism": [
+        "global industrial demand",
+        "infrastructure/manufacturing demand",
+        "mine/smelter supply",
+        "inventory",
+        "energy/input constraints"
+      ],
+      "keyGuard": "Price direction does not identify demand-vs-supply cause.",
+      "firstProspectiveInstrument": "CME HG copper"
+    },
+    "PRECIOUS_MONETARY_METALS": {
+      "examples": [
+        "GC gold"
+      ],
+      "mechanism": [
+        "real rates",
+        "USD",
+        "safe-asset demand",
+        "central-bank/investor demand",
+        "geopolitical/financial stress",
+        "mining supply"
+      ],
+      "keyGuard": "Gold is not a universal safe haven and is not an industrial-demand proxy.",
+      "firstProspectiveInstrument": "CME GC gold"
+    },
+    "CRITICAL_STRATEGIC_MINERALS": {
+      "examples": [
+        "lithium",
+        "cobalt",
+        "graphite",
+        "rare earths",
+        "gallium",
+        "germanium",
+        "indium",
+        "tungsten"
+      ],
+      "mechanism": [
+        "technology-specific demand",
+        "processing/refining concentration",
+        "export controls",
+        "small/opaque markets",
+        "substitution constraints",
+        "by-product supply"
+      ],
+      "keyGuard": "For opaque markets event/supply evidence can dominate stale price evidence.",
+      "firstProspectiveInstrument": "scheduled supply-restriction event receipts"
+    }
+  },
+  "decisionClock": {
+    "timezone": "Asia/Taipei",
+    "time": "18:10",
+    "CME_HG_GC": "PIT_ELIGIBLE_IF_TIMESTAMPED_AND_ENTITLED",
+    "laterDailySettlement": "FUTURE_IF_AFTER_DECISION",
+    "rareMineralPrice": "ELIGIBLE_ONLY_WITH_EXPLICIT_ASSESSMENT_TIMESTAMP_SOURCE_REGION_GRADE"
+  },
+  "requiredMarketFields": [
+    "instrumentId",
+    "exchange",
+    "contractMonth",
+    "daysToExpiry",
+    "rollFlag",
+    "price",
+    "currency",
+    "unit",
+    "observedAt",
+    "capturedAt",
+    "knownAtTaipei",
+    "quoteQuality",
+    "source",
+    "providerEntitlement"
+  ],
+  "requiredCriticalMineralPriceIdentity": [
+    "material",
+    "gradeOrPurity",
+    "region",
+    "currency",
+    "unit",
+    "sourceMethod",
+    "assessmentTimestamp",
+    "capturedAt",
+    "revisionStatus"
+  ],
+  "criticalMineralEventFields": [
+    "eventType",
+    "material",
+    "affectedRegion",
+    "publishedAt",
+    "knownAtTaipei",
+    "source",
+    "restrictionStartDate",
+    "restrictionEndDateIfKnown",
+    "uncertaintyState"
+  ],
+  "ownershipBoundary": {
+    "D13": "global commodity/mineral state, event clock, market/source provenance",
+    "D10": "Taiwan company exposure, beneficiary/victim mapping, inventory/capacity/pass-through"
+  },
+  "falsification": {
+    "industrial": [
+      "USD/global-equity/oil redundancy",
+      "demand-vs-supply context",
+      "roll-day guard",
+      "sector interaction"
+    ],
+    "gold": [
+      "DXY/real-yield/VIX redundancy",
+      "crisis-vs-normal",
+      "safe-haven instability"
+    ],
+    "critical": [
+      "event-first-vs-price-only",
+      "regional-price divergence",
+      "stale/opaque price sensitivity",
+      "D10 exposure dependency"
+    ]
+  },
+  "maturityDecision": {
+    "from": "L1",
+    "to": "L2",
+    "reason": "Family separation, source clock, transparency limits, D13-D10 boundary and falsification are frozen; no durable prospective/OOS evidence yet for L3."
+  },
+  "nextContinuation": [
+    "prospective HG/GC receipts",
+    "critical-mineral event receipts",
+    "provider/source contract freeze",
+    "independent-date/event evidence"
+  ]
+}

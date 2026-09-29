@@ -407,3 +407,432 @@ Cross-lane handoff:
 
 Status:
 `ATR_CONDITIONING_DECOMPOSITION = PREREGISTERED / NO_FORMAL_CHANGE`.
+
+
+## VR-022 — ATR geometry has channel-specific kinks; one global ATR optimum is structurally suspect
+
+The frozen Formal formulas imply different marginal ATR effects before any empirical outcome is observed.
+
+### B channel: explicit kink
+
+B stop:
+`breakout - max(0.65*ATR, breakout*0.012)`.
+
+The ATR branch becomes binding when:
+`0.65*ATR >= 0.012*breakout`.
+
+Using `ATR = atrPercent/100 * close`, the crossover is:
+
+`atrPercent >= 0.012*breakout/(0.65*close)*100`.
+
+If close is near breakout, this is about 1.85%.
+Examples:
+- close/breakout=0.995 -> ~1.855%;
+- 1.000 -> ~1.846%;
+- 1.003 -> ~1.841%;
+- 1.010 -> ~1.828%;
+- 1.030 -> ~1.792%.
+
+Thus a large part of the Formal 1%-10% ATR interval is in the ATR-binding regime for B. Above the crossover, higher ATR mechanically widens risk and lowers RR for fixed target geometry.
+
+### A channel: binding depends on structureLow relative to support
+
+A stop:
+`min(support*0.98, structureLow-0.12*ATR)`.
+
+The support stop remains binding while:
+`support*0.98 <= structureLow-0.12*ATR`.
+
+Approximate crossover, with close near support:
+
+`atrPercent ~= ((structureLow/support)-0.98)/0.12*100`.
+
+Illustrative structural ratios:
+- structureLow/support=0.980 -> crossover ~0%;
+- 0.985 -> ~4.17%;
+- 0.990 -> ~8.33%;
+- 0.995 -> ~12.5%;
+- 1.000 -> ~16.67%.
+
+Therefore when structureLow is close to support, the 2% support stop can remain binding throughout the whole Formal ATR range and A-channel RR can be largely ATR-insensitive. When structureLow is already below support, the structure-minus-ATR branch can bind much earlier.
+
+### Consequence
+
+A pooled empirical claim such as "ATR 3%-5% is best" can be an artifact of:
+- channel mixture;
+- different stop-binding states;
+- target-distance distribution;
+- different price tiers / tick geometry;
+- later RR selection.
+
+Any future ATR analysis must stratify A/B and stopBinding before fitting or even describing an apparent optimum.
+
+Status:
+`GLOBAL_ATR_OPTIMUM = STRUCTURALLY_MISSPECIFIED_UNLESS_CHANNEL_AND_BINDING_CONTROLLED`.
+
+Machine spec:
+`research/volatility_atr_conditioning_decomposition_v0_1.json`.
+
+
+## VR-023 — RV5/RV20 is useful context but is an overlapping-window ratio, not a pure acceleration measure
+
+Current market-volatility V0 uses:
+- RV5;
+- RV20;
+- RV5/RV20.
+
+This is intentionally simple and source-feasible, but the ratio has an important statistical interpretation limit:
+the five returns entering RV5 are also contained inside RV20.
+
+Therefore a recent volatility shock:
+- raises the numerator;
+- also raises the denominator;
+- makes the ratio a damped, overlapping-window contrast rather than a clean "recent versus old" acceleration estimate.
+
+This does NOT invalidate RV5/RV20 as a descriptive state variable. It means:
+- do not treat RV5/RV20 as independent from RV5 and RV20;
+- do not count the three as three separate positive/negative votes;
+- do not infer causal acceleration from the ratio alone.
+
+Outcome-free robustness comparator:
+- `RV5_recent` versus `RV15_prior`, where the prior 15 returns explicitly exclude the recent five;
+- both can be constructed from the same 20-return / 21-close official TAIEX window;
+- no extra historical horizon is required;
+- comparator is research-only and must not be added as a fourth permanent factor unless it proves incremental value.
+
+Preferred test:
+1. use the existing RV5/RV20 contract as the primary preregistered state;
+2. use non-overlapping RV5_recent/RV15_prior only as robustness/decomposition;
+3. if both lead to the same practical conclusion, confidence increases;
+4. if only the overlapping ratio works, investigate mechanical overlap / denominator effects before promotion.
+
+No threshold search is authorized.
+
+
+## VR-024 — volatility source clocks must separate market RV from stock continuity risk
+
+Market-level TAIEX close-to-close RV and stock-level volatility do not share the same provenance problem.
+
+TAIEX market RV:
+- the official FMTQIK path plus same-date scan-time availability contract materially supports prospective RV5/RV20 construction;
+- the current 21-session contract is sufficient for 20 close-to-close returns.
+
+Stock-level path volatility:
+- V8.12 HISTORY_SOURCE_REVALIDATION materially validates raw unadjusted session presence and detects true missing traded bars;
+- but RAW_HISTORY_ADMISSION is not the same as TECHNICAL_CONTINUITY across corporate-action resets;
+- an ex-right/ex-dividend mechanical reset can contaminate raw close-to-close stock volatility unless the PIT-valid continuity transform is certified.
+
+Therefore:
+- market TAIEX RV can proceed prospectively under its own source contract;
+- stock realized-vol / Yang-Zhang / overnight decomposition crossing relevant corporate-action boundaries must wait for the shared TECHNICAL_CONTINUITY contract or exclude unresolved windows;
+- missing continuity evidence = UNKNOWN, never high-volatility evidence.
+
+This asymmetry is important for incremental tests: a clean market-vol state must not be compared against a contaminated stock-vol control and then declared incremental.
+
+Status:
+`MARKET_RV_SOURCE_FEASIBLE / STOCK_CONTINUITY_CONDITIONAL`.
+
+
+## VR-025 — external horizon evidence supports decomposition, not a new trading signal
+
+Recent volatility-forecasting evidence in another Asian equity market finds that overnight information can improve future range-based volatility forecasts, with the benefit strongest at shorter horizons and weakening as the forecast horizon extends.
+
+Use in this lane is limited:
+- mechanism evidence that overnight and intraday volatility components can carry different information;
+- motivation to keep overnight/intraday decomposition separate when a PIT-safe Taiwan source exists;
+- NOT evidence that China-market coefficients or signs transfer to Taiwan;
+- NOT authorization to use next-session opening gap in an after-close decision, because that gap is future information at the selection clock.
+
+Source:
+- Zhang (2025), Journal of Forecasting, DOI 10.1002/for.70011.
+
+Status:
+`OVERNIGHT_COMPONENT = RESEARCH_MOTIVATION_ONLY / TAIWAN_PIT_SOURCE_REQUIRED`.
+
+
+## VR-026 — ATR conditioning observability audit: formulas are ready; denominator provenance is not
+
+The outcome-free audit of the frozen L0-L4 ATR-conditioning decomposition is complete.
+
+### What can already be computed from same-scan inputs
+
+Existing research-only observers can compute without any new market-data calls:
+- ordered gate state and whether ATR_QUALITY was actually reached;
+- ATR gate PASS/FAIL/UNKNOWN;
+- valid A/B channel assignment when earlier gates are clear;
+- channel-specific entry/stop geometry and stopBinding;
+- target availability and resistance candidates;
+- TARGET_NULL versus LOW_RR versus RR_PASS;
+- final signal-grade reach/pass/fail;
+- original Formal result.
+
+Reusable validated components:
+- `research/formal_gate_overlap_observer_v0_1.mjs`;
+- `research/channel_stage_denominator_observer_v0_1.mjs`;
+- `research/target_rr_audit_observer_v0_1.mjs`;
+- `research/formal_gate_replay_v0_1.mjs`.
+
+Thus the mathematical/computational decomposition is not the blocker.
+
+### Why outcome inference is still blocked
+
+The legacy Shadow archive is not a promotion-grade denominator for ATR opportunity-cost research:
+- `REJECTED_AFTER_BASE` is bounded and reason-sorted rather than prevalence-complete;
+- `BROAD_CONTROL` is bounded sampled coverage and has its own admission conditions;
+- `exclusion_reason` is first failure under fail-fast ordering, not an independent ATR contribution;
+- the legacy primary key stores one cohort per symbol/date, preventing clean overlapping semantic memberships;
+- same-date delete/rewrite semantics are mutable rather than immutable first-known decision generations;
+- some research controls can recompute a pre-consensus score that is not identical to the actual post-consensus Formal ranking state;
+- target value presence does not prove target PIT provenance;
+- bounded readers can truncate the requested keyspace.
+
+Therefore comparing outcomes of "ATR rejects" versus selected rows from the current legacy cohorts would compound selection bias, first-failure bias, sampling bias and provenance bias.
+
+### Architecture decision
+
+Do NOT create an ATR-specific persistence stack.
+
+Reuse the already-designed shared immutable per-symbol decision-state parent from:
+`SHADOW_COHORT_SEMANTICS_CLASS_B_PROPOSAL.md`.
+
+ATR/volatility evidence should attach as a child/overlay containing:
+- atrPercent / ATR gate state;
+- channel;
+- entry / stop / stopDistance / stopBinding;
+- target state + target provenance;
+- reward / risk / rewardPerRisk / RR state;
+- actual post-consensus priority/rank/selected state.
+
+This preserves one canonical parent for all research lanes and prevents cross-lane evidence drift.
+
+### Research decision
+
+`ATR_OUTCOME_ANALYSIS_ON_LEGACY_CONVENIENCE_COHORTS = BLOCKED`.
+
+This is not a failure of ATR research. It is a successful falsification of an invalid empirical path.
+
+Machine receipt:
+`research/volatility_atr_conditioning_observability_audit_v0_1.json`.
+
+Status:
+`COMPUTATION_FEASIBLE / PROMOTION_GRADE_DENOMINATOR_NOT_YET_PERSISTED / NO_FORMAL_CHANGE`.
+
+
+## VR-027 — revised exact continuation after observability audit
+
+The next D04 evidence step is no longer another ATR formula audit.
+
+Priority order:
+1. verify prospective clean-date capture/persistence of TAIEX RV5, RV20 and RV5/RV20 under the existing official index decision-clock contract;
+2. do not reconstruct historical first-known market-vol states from mutable latest snapshots;
+3. once independent prospective dates exist, compare the preregistered overlapping RV5/RV20 state with non-overlapping recent-5/prior-15 only as a robustness decomposition;
+4. attach stock-level volatility controls only when their history window is TECHNICAL_CONTINUITY-safe or explicitly excludes unresolved corporate-action windows;
+5. ATR opportunity-cost/outcome analysis waits for the shared immutable decision-state parent rather than using legacy bounded cohorts;
+6. no volatility throttle, ATR gate, stop, RR, rank or sizing change is authorized.
+
+Current promotion status remains:
+`FALSIFICATION_IN_PROGRESS / NOT_OPTIMIZATION_READY`.
+
+
+## VR-028 — prospective market-RV persistence wiring audit
+
+The next D04 blocker is now localized to the persistence/wiring layer rather than source availability or formula definition.
+
+### What already exists
+
+System 2 already has all of the structural pieces needed to persist market-volatility evidence:
+- `SYSTEM2_MARKET_REGIME_V0.md` preregisters `realizedVol5`, `realizedVol20` and `volRatio5to20`;
+- `s2_market_regime_snapshots` has `factor_observations_json` and source-receipt storage;
+- `buildLimitedShadowRunBundleV0_1` accepts `regimeFactorObservations`;
+- `buildFactorObservation` supports MARKET-scope raw values with explicit PIT provenance;
+- the official A2 TAIEX/FMTQIK source-probe path exists for decision-clock availability evidence.
+
+### What is not wired
+
+Fresh repository search on 2026-09-28 found:
+- no runtime implementation containing the literal raw factors `realizedVol5`, `realizedVol20` or `volRatio5to20` outside research/design documents;
+- `regimeFactorObservations` appears only in the assembler/orchestrator definitions, with a default empty array;
+- no repository caller currently supplies populated `regimeFactorObservations`;
+- `runDailyLimitedShadowOrchestratorV0_1` itself is currently referenced only by its module/tests, not by an active production scheduling caller.
+
+Therefore:
+`SCHEMA_READY = YES`
+`OFFICIAL_SOURCE_PROBE_READY = YES`
+`RAW_MARKET_RV_FACTOR_WIRING = NOT_IMPLEMENTED_IN_CURRENT_REPO`
+`PROSPECTIVE_MARKET_RV_EVIDENCE_ACCUMULATING = NOT_PROVEN`.
+
+This is a research-evidence gap, not a volatility-theory gap.
+
+### System 1 parallel observation
+
+System 1 already loads official `V7_OFFICIAL_INDEX` history with at least 21 official sessions and same-date close validation. That source is computationally sufficient for RV5/RV20 without another external market-data request.
+
+But repository search likewise found no durable research field named `marketRealizedVol5`, `marketRealizedVol20`, `marketVolRatio5to20`, `marketVolPointInTimeEligible` or `marketVolHistoryThrough` outside this research specification.
+
+So "can compute" must not be confused with "was durably captured at the decision clock."
+
+Status:
+`COMPUTE_FEASIBLE / PERSISTENCE_WIRING_GAP / NO_FORMAL_CHANGE`.
+
+
+## VR-029 — semantic guard: volatilityState is evidence state, not volatility direction
+
+System 2's `buildMarketRegimeSnapshot()` currently constrains `volatilityState` to the generic observation-state vocabulary:
+- KNOWN
+- UNKNOWN
+- STALE
+- INVALID
+- NOT_APPLICABLE
+
+Therefore `volatilityState` in this runtime object means **whether volatility evidence is valid/available**, not:
+- VOL_EXPANDING
+- VOL_CONTRACTING
+- HIGH_VOLATILITY
+- LOW_VOLATILITY.
+
+This distinction is easy to lose because the design document also uses "volatility state" in the economic sense.
+
+Frozen semantic separation:
+1. `regime.volatilityState` = evidence-quality state only;
+2. raw RV values belong in MARKET-scope `regimeFactorObservations`;
+3. economic labels such as VOL_EXPANDING/VOL_CONTRACTING belong in the regime label layer only after their required raw factors are PIT-ready;
+4. no scalar market-risk score is created.
+
+Minimum raw observations for V0.1:
+- MARKET_RV5_CC_SIMPLE
+- MARKET_RV20_CC_SIMPLE
+- MARKET_RV_RATIO_5_20
+
+Each observation must preserve:
+- marketDate;
+- decisionTimestamp;
+- rawValue;
+- sourceId/sourceName/sourceUrl/sourceDate;
+- observedAt;
+- availableAt;
+- capturedAt;
+- pointInTimeEligible;
+- payload/source receipt reference.
+
+The ratio is a derived descriptor from RV5 and RV20, not a third independent vote.
+
+Status:
+`SEMANTIC_COLLISION_PREVENTED / FACTOR_OBSERVATION_CONTRACT_FROZEN`.
+
+
+## VR-030 — first valid market-RV evidence is prospective-only
+
+The A2/FMTQIK observer and System 1 official-index quality path establish that same-date TAIEX data can be observed prospectively. They do not create immutable first-known historical market-RV vintages.
+
+Therefore:
+- pre-capture historical dates remain UNKNOWN for promotion-grade RV evidence;
+- current/latest mutable snapshots cannot be retrospectively relabeled as exact decision-time RV observations;
+- the first valid sample date is the first date on which raw RV5/RV20/ratio are actually persisted with the decision-clock receipt.
+
+First research sequence after wiring:
+1. verify exact same-date TAIEX source receipt;
+2. persist raw RV5/RV20/ratio;
+3. verify factor observations are referenced by the same regime snapshot and immutable run fingerprint;
+4. accumulate independent clean dates;
+5. only then evaluate VOL_EXPANDING/VOL_CONTRACTING and non-overlap recent5/prior15 robustness;
+6. do not inspect strategy outcomes before the raw capture contract is frozen.
+
+No new sample-count threshold is invented here. Reuse D16/D18 and the repository-wide independent-date/OOS maturity gates.
+
+Status:
+`MARKET_RV_CAPTURE_GATE = DEFINED / EVIDENCE_COUNT_ZERO_UNTIL_REAL_PERSISTENCE`.
+
+
+## VR-031 — ATR% normalizes price scale, but not Taiwan tick-grid granularity
+
+ATR% solves one important cross-sectional problem:
+a NT$10 range means something different on a NT$100 stock versus a NT$2,000 stock.
+
+But ATR% does not remove price-grid discreteness.
+
+Current TWSE stock ticks are price-band dependent:
+- <10: 0.01
+- 10-50: 0.05
+- 50-100: 0.10
+- 100-500: 0.50
+- 500-1000: 1
+- >=1000: 5
+
+This creates discontinuous relative-tick jumps at price-band boundaries.
+
+### Structural examples
+
+Using the official tick schedule:
+
+- price 99.9, tick 0.1:
+  - relative tick ~= 10 bps;
+  - ATR 1% ~= 9.99 ticks;
+  - 1.2% price distance ~= 11.99 ticks.
+
+- price 100, tick 0.5:
+  - relative tick = 50 bps;
+  - ATR 1% = 2 ticks;
+  - 1.2% price distance = 2.4 ticks.
+
+- price 999, tick 1:
+  - relative tick ~= 10 bps;
+  - ATR 1% ~= 9.99 ticks;
+  - 1.2% price distance ~= 11.99 ticks.
+
+- price 1000, tick 5:
+  - relative tick = 50 bps;
+  - ATR 1% = 2 ticks;
+  - 1.2% price distance = 2.4 ticks.
+
+Thus two stocks with nearly identical price and identical ATR% can differ by roughly 5x in the number of legal price increments represented by that volatility.
+
+### Why this matters to the current Formal geometry
+
+The current B channel uses:
+`stop = breakout - max(0.65*ATR, breakout*0.012)`.
+
+The 1.2% floor is continuous-price geometry.
+Near NT$1,000:
+- just below the price band boundary, 1.2% spans roughly 12 ticks;
+- at NT$1,000, it spans only 2.4 ticks.
+
+This does NOT prove the stop is wrong.
+It proves the same percentage risk geometry can have materially different execution granularity.
+
+The A channel has the same general issue because support/structure/ATR-derived prices may land between legal ticks.
+
+### Research-only descriptors
+
+Freeze only descriptive fields first:
+- `relativeTickBps = tick(close)/close*10000`;
+- `atrTicksApprox = ATR_price/tick(close)`;
+- `stopDistanceTicksApprox = abs(entry-stop)/tick(entry_or_close)`.
+
+The suffix `Approx` is mandatory because a wide range can cross a TWSE tick band, and the legal tick at the actual order price may differ from the close-price tick.
+
+A future execution-precision study should use the exact legal tick at each plan/order price.
+
+### Falsification
+
+This becomes useful only if, after controlling:
+- price tier;
+- liquidity;
+- spread/depth;
+- channel A/B;
+- ATR%;
+- stop distance %;
+tick granularity still explains fill/slippage/stop behavior or path quality.
+
+If not, keep it as execution semantics only.
+
+Cross-lane handoff:
+- D04 owns volatility/tick interpretation;
+- D05 owns relative-tick microstructure state;
+- D14/D15 own any eventual executable-price / stop-order implementation.
+
+Status:
+`ATR_TICK_GRANULARITY = STRUCTURAL_CONFOUND_CONFIRMED / RESEARCH_DESCRIPTOR_ONLY`.
+
+Sources:
+- TWSE Operating Rules Article 62.
+- Tang, Peng & Zhang (2022), Trading information, price discreteness, and volatility estimation, Journal of Statistical Planning and Inference 220, 49-70.

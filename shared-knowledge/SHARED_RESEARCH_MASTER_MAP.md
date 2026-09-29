@@ -86,6 +86,173 @@ System-use rule:
 - Do not hard-code any industry example into Formal Core solely because a video, analyst or single cycle appears convincing.
 - Prefer reusable features and transmission relationships over one-off sector stories.
 
+## Moving-average strategy integration（均線策略跨模組整合）
+
+Moving-average（均線）研究不得被拆成多個高度重複的「獨立因子票數」。SMA、EMA、低延遲均線、MACD 等若主要只是不同平滑／濾波形式，必須先做 redundancy（冗餘）檢查，再判斷是否有獨立增量價值。
+
+Primary ownership:
+- **D03-01** 均線排列／斜率／趨勢狀態
+- **D03-05** Pullback（回檔）與短期反轉
+- **D03-13** 多時間框架趨勢／動能衝突
+
+Required dependencies when the均線被用作交易流程而非單純描述指標:
+- **D01-04** 支撐／壓力／區域拓樸：驗證所謂「動態支撐／壓力」是否真的優於價格結構本身。
+- **D01-11** 目標價／阻力／RR 幾何：避免「趨勢正確但買點太差」。
+- **D15-09** Stop-risk Geometry（停損距離風險）：若均線被拿來作停損／移動停利，需比較結構停損與固定風險。
+- **D16** 統計驗證：任何「最佳均線週期」或資產／時間框架自適應參數，都必須防止 parameter snooping（參數探勘）、look-ahead（偷看未來）與多重測試。
+- **D18-02** Trend vs Range（趨勢 vs 盤整）策略互動：均線策略必須驗證趨勢盤與盤整盤是否存在方向相反的效果。
+
+Mandatory research questions:
+1. 將均線用途拆成不同角色：trend direction（趨勢方向）、trend strength proxy（趨勢強弱代理）、pullback location（回檔位置）、dynamic support/resistance proxy（動態支撐／壓力代理）、trailing exit（移動出場）。不得把同一價格資訊的不同表達重複計分。
+2. 固定週期 MA 與 adaptive / asset-specific horizon（自適應／標的特定週期）必須做 OOS／Shadow 驗證；不得用事後調到最貼合走勢的均線當成有效證據。
+3. 「回踩均線買進」必須與純價格支撐區、ATR／波動度、量價確認與 RR 做對照，確認增量價值而非視覺巧合。
+4. 「跌破均線出場／讓利潤奔跑」必須與固定停損、結構停損、時間停損及 opportunity cost（機會成本）比較。
+5. SMA vs EMA vs 低延遲均線的比較，先判斷差異是否只來自 filter latency（濾波延遲）；若沒有新資訊來源，不得視為新因子家族。
+6. 所有均線結論都必須分 Regime（市場狀態）、流動性、波動度與時間框架驗證；盤整市場中的 whipsaw（來回假訊號）必須是主要反證之一。
+
+System-use rule:
+- 這是一條跨模組研究整合規則，不新增第 19 領域，也不自動增加新的獨立因子權重。
+- Formal Core 維持 LOCKED；只有通過 PIT、OOS／Prospective Shadow、成本、冗餘與多 Regime 驗證後，才可形成 FORMAL_OPTIMIZATION_CANDIDATE。
+
+### Integrated knowledge candidate: Trend → Location → Momentum → Price Confirmation → Risk/Exit
+
+Source context: owner-supplied full upper/lower recordings of YouTube video `YsYFrWVwAq4`.  
+Status: **RESEARCH_CANDIDATE / PRELIMINARY_BIDIRECTIONAL_CHECKED / NOT_FORMAL_EVIDENCE**.  
+The video is treated as hypothesis material. It does not upgrade D01/D03/D15/D16/D18 maturity by itself.
+
+#### 1. Reusable architecture distilled from the complete video
+
+The useful knowledge is not “EMA16/64 is magic”. The reusable architecture is a **sequential gate**:
+
+1. **Trend direction gate**
+   - Use fast/slow moving-average direction plus price location to identify the dominant trend.
+   - Video implementation: EMA16 and EMA64.
+   - Moving averages are a **direction filter**, not a standalone BUY trigger.
+
+2. **Location gate**
+   - Wait for price to return toward an identifiable support/resistance or pullback area.
+   - Avoid buying solely because an oscillator crosses while price location is poor.
+
+3. **Momentum gate**
+   - Require momentum to align again with the intended direction.
+   - Video implementation: LazyBear Impulse MACD.
+   - Momentum is a timing/filter layer, not an independent investment thesis.
+
+4. **Price-confirmation gate**
+   - Wait for an explicit key K-bar or breakout-style price confirmation before entry.
+   - Set stop/risk at entry.
+   - “Key K” must be translated into an explicit repaint-safe / PIT-safe rule before testing; hindsight visual labeling is forbidden.
+
+5. **Trend-continuation / hold logic**
+   - If the trend remains valid and explicit exit deterioration is absent, continue holding rather than repeatedly selling normal pullbacks.
+   - Missing the first impulse is not permission to chase.
+
+6. **Extension control**
+   - When price is excessively extended away from the fast trend reference, do not chase the first wave.
+   - Wait for distance normalization / pullback and a second qualified opportunity.
+   - This is conceptually related to maxChase / lateStage / MA-distance controls and must be tested for incremental value rather than duplicated.
+
+7. **Reversal discipline**
+   - A moving-average trend system is not a bottom/top picker.
+   - Do not infer reversal merely because price has fallen/risen a lot; require trend structure + momentum + price confirmation.
+
+8. **Range / whipsaw failure state**
+   - Sideways/choppy markets are a first-class failure mode.
+   - A higher timeframe may be used as a pre-specified context/filter, but switching timeframe only after seeing a failed lower-timeframe trade is prohibited hindsight adaptation.
+
+9. **Exit deterioration gate**
+   - Video example waits for multiple deterioration conditions, including:
+     - price breaks below EMA16 and the fast trend bends down;
+     - EMA16/64 dead cross;
+     - Impulse MACD dead cross.
+   - In our system this is **not three independent votes**. These signals share the same underlying price family and must be modeled as a within-family state machine / deterioration gate with redundancy control.
+
+#### 2. What is genuinely different from current knowledge
+
+- **EMA16/64 ratio**: worth testing as a parameter challenger, not adopting as a default.
+- **Impulse MACD**: not identical to standard MACD. Its smoothed High/Low envelope + zero-lag EMA construction suppresses movement inside the envelope and can act as a range/noise filter. It remains a composite price-derived candidate until it adds value beyond direct trend, MA distance, volatility/range and standard MACD controls.
+- **Sequential gate design**: direction → location → momentum → price confirmation is more useful than majority voting among correlated indicators.
+- **Explicit failure handling**: extension, trend reversal and range/whipsaw are part of the strategy contract, not after-the-fact excuses.
+- **Hold/exit symmetry**: entry and exit should be evaluated as a lifecycle, including MFE/MAE and opportunity cost, rather than optimizing entries only.
+
+#### 3. Preliminary positive-side checks
+
+- Rob Carver has publicly discussed 16/64 as a reasonable EWMAC pair and uses a fast/slow ratio of roughly 1:4 within a family of trend rules.
+- The factor-of-four rationale is mainly about keeping adjacent crossover rules from becoming nearly identical and improving diversification across trend speeds.
+- Taiwan-market academic evidence exists that moving-average timing can have positive conditional value; reported effects vary across firm life-cycle, information uncertainty, size/liquidity and market regimes.
+- LazyBear Impulse MACD's published construction genuinely differs from standard MACD by adding a smoothed High/Low envelope and suppressing in-envelope impulses, providing a plausible noise-filter mechanism.
+
+#### 4. Preliminary negative-side / falsification checks
+
+- Carver has also stated that his preference for 16/64 over nearby alternatives is **not statistically significant**. Therefore 16/64 cannot be promoted as a privileged or universal pair.
+- The 1:4 ratio is partly a **portfolio/diversification design choice across crossover speeds**, not proof that 16/64 is the optimal single-stock timing rule.
+- Moving-average and MACD-family signals are lagging price transforms and can be highly redundant. Reduced lag does not create new information for free; lower lag can trade off against higher noise/whipsaw.
+- Sideways markets generate repeated crossover whipsaws; this is both theoretically expected and explicitly visible in the supplied video.
+- “Switch to a larger timeframe” can become hidden parameter snooping unless the timeframe relation is frozen ex ante and validated OOS/prospectively.
+- “Key K” and “support/resistance” are vulnerable to hindsight labeling unless exact causal definitions and first-known timing are frozen.
+- Three exit conditions derived from price/MA/MACD do not constitute true cross-family confluence.
+- Any apparent improvement can disappear after transaction costs, missed-opportunity cost, multiple-testing correction and exact common-support comparison.
+
+#### 5. Research contract before any optimization
+
+Baselines:
+- direct return / trend persistence;
+- simple price-vs-MA state;
+- common MA structures already used by System 1/System 2;
+- standard MACD;
+- price-structure support/resistance;
+- pullback / breakout confirmation;
+- existing maxChase / lateStage / MA-distance controls.
+
+Challengers:
+- EMA16/64 trend state;
+- EMA16/64 + Impulse MACD;
+- + explicit price-confirmation K/bar rule;
+- + pre-specified multi-timeframe regime filter;
+- + lifecycle exit/deterioration gate.
+
+Required outcomes:
+- false-confirmation rate;
+- follow-through;
+- MFE / MAE;
+- after-cost return;
+- whipsaw count;
+- holding-period stability;
+- missed-opportunity cost;
+- zero-pick / coverage impact;
+- incremental value after redundancy controls.
+
+Required stratification:
+- Trend vs Range;
+- high/low volatility;
+- liquidity;
+- price-extension state;
+- timeframe;
+- market regime.
+
+Promotion gate:
+- PIT-safe formula and first-known timing;
+- exact common-support baseline;
+- OOS and/or Prospective Shadow;
+- multiple-testing / parameter-snooping control;
+- transaction-cost and opportunity-cost sensitivity;
+- independent dates / multiple regimes;
+- no duplicate evidence weighting.
+
+#### 6. Routing / ownership
+
+- Primary owner: **D03** trend / momentum / technical indicators.
+- Dependencies:
+  - **D01** price structure, support/resistance, key-K / breakout confirmation;
+  - **D02** price-volume confirmation as an optional challenger, not assumed necessary;
+  - **D14** execution and transaction-cost sensitivity;
+  - **D15** stop / exit / holding lifecycle geometry;
+  - **D16** PIT / OOS / Shadow / multiple testing / redundancy;
+  - **D18** Trend-vs-Range and multi-timeframe regime interaction.
+
+Formal Core remains LOCKED.  
+This candidate can become a `FORMAL_OPTIMIZATION_CANDIDATE` only after the specialist rooms produce reproducible positive **and** negative evidence and it survives the above gates.
+
 ## Shared inventory
 
 - `shared-knowledge/SHARED_RESEARCH_INVENTORY.md` is the cross-system domain/tag inventory. It points to original evidence without relocating it.

@@ -1,0 +1,166 @@
+{
+  "schemaVersion": "INSTITUTIONAL_SCORE_DECOMPOSITION_OBSERVER_READBACK_20260929_V0_2",
+  "readbackAt": "2026-09-29 Asia/Taipei",
+  "productionCommit": "27047d4b676ee522d9ee0aefb1b238adabc7e27c",
+  "deploymentRun": 36497663599,
+  "deploymentJob": 109180902212,
+  "runtimeVersion": "8.14.0-sector-gate-provenance-shadow",
+  "researchOnly": true,
+  "decisionImpact": false,
+  "formalCoreImpact": false,
+  "outcomesUsed": false,
+  "archive": {
+    "rows": 62,
+    "distinctScanDates": 2,
+    "dates": [
+      "2026-09-21",
+      "2026-09-22"
+    ],
+    "expectedScanDays": 3,
+    "archivedScanDays": 2,
+    "integrity": "RESEARCH_DATA_GAP",
+    "forwardOutcomeCoverage": {
+      "d1": 40,
+      "d3": 18,
+      "d5": 0,
+      "d10": 0,
+      "d20": 0
+    },
+    "note": "Forward outcomes were visible in the general dashboard but were not used for the institutional structural hypotheses in this readback."
+  },
+  "completeness": {
+    "parsedRows": 62,
+    "decompositionReadyRows": 62,
+    "decompositionReadyPct": 100,
+    "reconstructionMismatchRows": 0,
+    "reconstructionMatchPct": 100,
+    "missingStoredParents": 0,
+    "streakEndpointInvariant": {
+      "foreignMismatchRows": 0,
+      "trustMismatchRows": 0,
+      "dealerMismatchRows": 0,
+      "anyMismatchRows": 0
+    },
+    "guard": "Serialized buy-day zeros may still reflect upstream coercion semantics; zero mismatches validates endpoint consistency on stored rows, not complete original-source provenance."
+  },
+  "structuralFindings": {
+    "scoreSaturation": {
+      "rows": 0,
+      "pct": 0,
+      "decision": "CURRENT_SEVERE_100_CAP_SATURATION_HYPOTHESIS_FALSIFIED_ON_BOUNDED_ARCHIVE"
+    },
+    "scoreAtOrAbove70": {
+      "rows": 5,
+      "pct": 8.06,
+      "guard": "Bounded Shadow only; not full-scan prevalence and not evidence of admission defect."
+    },
+    "netIntensityCap": {
+      "rows": 1,
+      "pct": 1.61
+    },
+    "anyCurrentBuy": {
+      "rows": 53,
+      "pct": 85.48
+    },
+    "allThreePositive": {
+      "rows": 5,
+      "pct": 8.06
+    },
+    "actorDivergence": {
+      "rows": 36,
+      "pct": 58.06
+    },
+    "aggregateNetNegativeButAnyActorPositiveRows": 23,
+    "aggregateNetPositiveButAnyActorNegativeRows": 13
+  },
+  "contributionStats": {
+    "currentDayDirectionBase": {
+      "mean": 9.065,
+      "median": 10,
+      "min": 0,
+      "max": 22
+    },
+    "persistenceBeyondDay1": {
+      "mean": 8.806,
+      "median": 8,
+      "min": 0,
+      "max": 28
+    },
+    "sameSessionDirectionPoints": {
+      "mean": 15.403,
+      "median": 16,
+      "min": 0,
+      "max": 43
+    },
+    "sameSessionDirectionShareOfPreClamp": {
+      "mean": 0.391,
+      "median": 0.432,
+      "min": 0,
+      "max": 0.733
+    },
+    "persistenceShareOfPreClamp": {
+      "mean": 0.193,
+      "median": 0.221,
+      "min": 0,
+      "max": 0.469
+    },
+    "aggregateNetIntensity": {
+      "mean": 2.497,
+      "median": 0,
+      "min": 0,
+      "max": 25
+    },
+    "largeHolderConcentration": {
+      "mean": 8.898,
+      "median": 8.63,
+      "min": 3.746,
+      "max": 13.122
+    },
+    "concentrationShareOfPreClamp": {
+      "mean": 0.366,
+      "median": 0.279,
+      "min": 0.086,
+      "max": 1
+    },
+    "preClampScore": {
+      "mean": 35.605,
+      "median": 34.042,
+      "min": 5.688,
+      "max": 90.63
+    },
+    "storedScore": {
+      "mean": 35.605,
+      "median": 34.045,
+      "min": 5.69,
+      "max": 90.63
+    }
+  },
+  "structuralCorrelations": {
+    "currentDayDirectionBase_vs_consensusInteraction": 0.8155,
+    "persistenceBeyondDay1_vs_consensusInteraction": 0.503,
+    "sameSessionDirectionPoints_vs_aggregateNetIntensity": 0.45,
+    "streakLinear_vs_consensusInteraction": 0.7021,
+    "streakLinear_vs_aggregateNetIntensity": 0.4991,
+    "streakLinear_vs_largeHolderConcentration": 0.1319,
+    "consensusInteraction_vs_aggregateNetIntensity": 0.3669,
+    "consensusInteraction_vs_largeHolderConcentration": 0.2849,
+    "aggregateNetIntensity_vs_largeHolderConcentration": 0.0354
+  },
+  "interpretation": [
+    "The deployed score formula reconstructs exactly on all 62 stored Shadow rows.",
+    "The 100-point clamp does not currently compress this bounded archive: maximum pre-clamp score is 90.63.",
+    "Actor divergence is common, so aggregate institutional total frequently hides economically different actor directions.",
+    "Same-session direction information forms a larger share of pre-clamp score than persistence beyond day 1 in this bounded archive. This supports testing the nonlinear consensus bonus separately from true multi-session persistence rather than assuming all streak-related points are independent persistence information.",
+    "Large-holder concentration is also a material score component descriptively, but its weekly ownership cadence and missing immutable chipAsOfDate in research rows prevent daily-independent inference.",
+    "Structural correlation is descriptive on only two scan dates; it is not an alpha estimate or statistical significance claim."
+  ],
+  "falsificationDecisions": [
+    "FALSIFIED_ON_CURRENT_BOUNDED_ARCHIVE: severe score=100 saturation is already common.",
+    "SUPPORTED_STRUCTURALLY_NOT_ECONOMICALLY: same-session direction and consensus interaction are highly overlapping exposures.",
+    "SUPPORTED_STRUCTURALLY: actor-separated signs contain information hidden by aggregate total sign.",
+    "NOT_TESTED: whether any component predicts future return, MFE/MAE, false breaks or downside after controls.",
+    "NOT_TESTED: whether changing/removing any weight improves System 1/System 2."
+  ],
+  "promotionStatus": "FALSIFICATION_IN_PROGRESS / NOT_FORMAL_OPTIMIZATION_CANDIDATE",
+  "exactNext": "Wait for clean independent prospective dates and D5+ outcome maturity. Pre-register conditional comparisons of current-day direction, persistence-beyond-day1, actor divergence, net intensity and ownership concentration after price-volume, Residual RS, regime, sector, liquidity and passive-event controls. Preserve TDCC ownership vintage prospectively before ownership outcome inference. No weight tuning."
+}

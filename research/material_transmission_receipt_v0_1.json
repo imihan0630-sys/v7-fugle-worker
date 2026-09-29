@@ -1,0 +1,39 @@
+{
+  "version": "0.1",
+  "id": "SC-025",
+  "date": "2026-09-29 Asia/Taipei",
+  "formalCoreChanged": false,
+  "outcomesOpened": false,
+  "status": "MATERIAL_RECEIPT_SCHEMA_FROZEN / TAIWAN_PIT_FEASIBLE / SIGN_UNRESOLVED / OUTCOMES_CLOSED / FORMAL_UNCHANGED",
+  "chain": [
+    "INPUT_PRICE",
+    "PRODUCTION_ROUTE_EXPOSURE",
+    "OUTPUT_SELLING_PRICE",
+    "VOLUME",
+    "MARGIN"
+  ],
+  "rules": [
+    "Each node keeps observation period, sourcePublishedAt, capturedAt, knownAt and effectiveAt separately.",
+    "Missing intermediate evidence remains UNKNOWN.",
+    "Input-price up has no stock sign without economic-role and pass-through evidence.",
+    "Output-price up may coexist with lower volume or margin compression.",
+    "Production, shipment, order and backlog are not interchangeable.",
+    "Current production routes cannot be backfilled historically.",
+    "Future lag windows must be preregistered before outcomes open."
+  ],
+  "taiwanEvidence": [
+    "Tung Ho Steel official disclosure: scrap is EAF input; purchased electricity/energy separately disclosed.",
+    "China Steel August 2026 official result: steel sales volume is separate from consolidated revenue/operating profit.",
+    "Taiwan MOEA publishes PPI and industrial/manufacturing production on explicit release dates; macro context is not issuer realized cost/ASP."
+  ],
+  "maturityDecision": {
+    "D10-12": "PROMOTE L2_TO_L3 DATA_FEASIBILITY_ONLY",
+    "D10-09": "KEEP_L2",
+    "D10-04": "KEEP_L2"
+  },
+  "negativeControlsRequired": [
+    "LOW_OR_NO_EXPOSURE_CONTROL",
+    "FAILED_PASS_THROUGH_CONTROL"
+  ],
+  "next": "SC-026 instantiate both negative-control families, freeze outcome-blind matching variables, then prospective/OOS testing only."
+}

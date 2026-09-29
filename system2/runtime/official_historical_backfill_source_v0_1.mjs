@@ -1,13 +1,13 @@
 import { deepFreeze } from "./factor_snapshot.mjs";
+import { sha256Hex } from "./decision_archive.mjs";
 import {
   fetchOfficialHistoricalA1DateV0_1,
   officialHistoricalA1SourceContractV0_1,
 } from "./official_historical_a1_source_v0_1.mjs";
 import {
-  officialTwseCalendarUrl,
-  parseTwseTradingCalendar,
-  isTradingDateWithCalendar,
-} from "./twse_trading_calendar_readonly.mjs";
+  fetchHistoricalTwseCalendarV0_1,
+  isHistoricalTradingDateV0_1,
+} from "./historical_twse_calendar_v0_1.mjs";
 
 export const OFFICIAL_HISTORICAL_BACKFILL_SOURCE_VERSION = "0.1-RESEARCH";
 
@@ -37,17 +37,7 @@ function yearsInRange(fromDate, toDate) {
 }
 
 async function fetchCalendar(year, fetchImpl) {
-  const response = await fetchImpl(officialTwseCalendarUrl(year), {
-    method: "GET",
-    headers: {
-      Accept: "application/json",
-      "User-Agent": "System2-Historical-Backfill/0.1",
-    },
-  });
-  if (!response?.ok) {
-    throw new Error("official TWSE calendar HTTP " + response?.status + " for " + year);
-  }
-  return parseTwseTradingCalendar(await response.json(), year);
+  return fetchHistoricalTwseCalendarV0_1({ year, fetchImpl });
 }
 
 export async function buildOfficialTradingDatesV0_1({
@@ -70,7 +60,7 @@ export async function buildOfficialTradingDatesV0_1({
   const dates = [];
   for (let date = from; date <= to; date = shiftDate(date, 1)) {
     const calendar = calendars[Number(date.slice(0, 4))];
-    if (isTradingDateWithCalendar(date, calendar)) dates.push(date);
+    if (isHistoricalTradingDateV0_1(date, calendar)) dates.push(date);
   }
 
   return deepFreeze({
@@ -93,6 +83,7 @@ export async function fetchOfficialHistoricalA1RangeV0_1({
   calendarsByYear = null,
   pauseMs = 0,
   onDateReceipt = null,
+  includeRowProvenance = false,
 } = {}) {
   const contract = officialHistoricalA1SourceContractV0_1(market);
   if (typeof fetchImpl !== "function") throw new Error("fetchImpl is required");
@@ -102,6 +93,7 @@ export async function fetchOfficialHistoricalA1RangeV0_1({
   if (onDateReceipt !== null && typeof onDateReceipt !== "function") {
     throw new Error("onDateReceipt must be a function");
   }
+  if (typeof includeRowProvenance !== "boolean") throw new Error("includeRowProvenance must be boolean");
 
   const trading = await buildOfficialTradingDatesV0_1({
     fromDate,
@@ -126,7 +118,19 @@ export async function fetchOfficialHistoricalA1RangeV0_1({
     if (receipt.sourceDateEvidence !== marketDate) {
       throw new Error(`source date mismatch escaped parser: ${market} ${marketDate}`);
     }
-    rows.push(...receipt.rows);
+    if (includeRowProvenance) {
+      for (const row of receipt.rows) {
+        rows.push(deepFreeze({
+          ...row,
+          sourceId: receipt.sourceId,
+          sourceName: receipt.sourceName,
+          sourceUrl: receipt.sourceUrl,
+          sourceRowHash: row.sourceRowHash || await sha256Hex(row.sourceFields),
+        }));
+      }
+    } else {
+      rows.push(...receipt.rows);
+    }
     const dateReceipt = deepFreeze({
       market,
       marketDate,

@@ -669,3 +669,687 @@ SC-016B: determine whether the official query offers a supported export/download
 SC-016C: if not, use only published standalone CSV datasets for prospective automation and classify detailed four-digit state as SOURCE_GAP until a supported interface exists.
 
 Status: `SCOPE_MISMATCH_IDENTIFIED / HARD_GATE_ADDED / DETAILED_AUTOMATION_PARTIAL`.
+
+
+## SC-016B — Current official source matrix: machine-readable does not mean scope-complete
+
+### Verified machine-readable lanes
+
+#### 1. MOEA `d.csv` — industrial production index
+Official government open-data metadata points to a machine-readable MOEA CSV. Direct source audit verified:
+- 124,752 data rows at audit time;
+- monthly history from ROC 07101;
+- latest period ROC 11508 (2026-08);
+- 4-digit production coverage is present, including 2611 integrated-circuit manufacturing, 2613 semiconductor packaging/testing and 2630 printed-circuit-board manufacturing;
+- code 24 basic metals and code 26 electronic components are also present.
+
+This is a strong production/output lane, not a sales/inventory/capacity lane.
+
+#### 2. Dedicated code-26 electronic-components CSV
+A separate official file contains current production value, sales value and inventory value for the electronic-components industry through ROC 11507 in the source-only pilot.
+
+#### 3. Manufacturing inventory-ratio CSV
+Official open data reaches ROC 11507 for major/mid industry codes, including code 24 basic metals and code 26 electronic components.
+
+#### 4. MOEA `ec.csv` — manufacturing investment/operations
+Direct audit verified a quarterly machine-readable file with:
+- manufacturing revenue;
+- fixed-asset additions;
+- 2026 Q1/Q2 observations.
+
+But the tested file's industry field is only **製造業** aggregate. It does not provide sector-level capex in this open file.
+
+### Capacity falsification
+`fixedAssetAdditions` is not equivalent to:
+- installed productive capacity;
+- effective capacity date;
+- utilization;
+- yield;
+- industry-specific expansion.
+
+Therefore:
+- MOEA aggregate manufacturing fixed-asset additions = MACRO_SUPPLY_RESPONSE_CONTEXT only;
+- it cannot populate `IND.CAPACITY` for semiconductor/PCB/basic metals at sector level;
+- D10-04 remains L2 until an industry/company PIT capacity/utilization source contract is established.
+
+### Interactive database boundary
+The official MOEA industrial production/sales/inventory query currently exposes dates through ROC 11508 and detailed industry selections. It explicitly says production index/value can reach 4-digit detailed industries, while sales/inventory industry measures have different granularity.
+
+The human query surface is therefore current and semantically useful. However, no documented stable public request/export contract for arbitrary detailed selections has yet been verified in this research lane.
+
+Until that is verified:
+- interactive query result = `MANUAL_OFFICIAL_SOURCE`;
+- standalone published CSV/XML = `AUTOMATABLE_OFFICIAL_SOURCE`;
+- do not reverse-engineer brittle hidden form endpoints.
+
+### D10 source-readiness conclusion
+The source family is **partially machine-ready, not uniformly machine-ready**.
+
+Status: `CURRENT_PRODUCTION_SOURCE_READY / INVENTORY_PARTIAL / SALES_PARTIAL / CAPACITY_SOURCE_GAP / NO_FORMAL_CHANGE`.
+
+---
+
+## SC-016C — Raw-material / output-price transmission gets a Taiwan PIT source contract
+
+### Official Taiwan price lanes
+The Directorate-General of Budget, Accounting and Statistics (DGBAS) publishes monthly official datasets for:
+- Producer Price Index (PPI) basic classifications;
+- Import Price Index (IPI) basic classifications in NTD;
+- corresponding USD-basis import/export price series;
+- domestic-sales price indices;
+- processing-stage price indices.
+
+Government Open Data metadata documents monthly update frequency for PPI and IPI datasets and machine-readable XML resources. July 2026 Price Statistics Monthly is already published, and the official release calendar provides the timing semantics needed for prospective PIT capture.
+
+The classification includes economically relevant groups such as basic metals, metal products, semiconductors/electronic components and other manufacturing product groups.
+
+### Transmission contract
+Do not treat one price index as "raw material price".
+
+Freeze separate layers:
+
+1. `INPUT_IMPORT_USD` — external/raw-material price pressure before NTD FX translation where category coverage is valid.
+2. `INPUT_IMPORT_NTD` — Taiwan buyer's local-currency import-cost pressure.
+3. `OUTPUT_PPI` — producer/output-price movement for the relevant category.
+4. `DOMESTIC_SALES_PRICE` — domestic selling-price proxy where available.
+5. `COMPANY_MARGIN` — company gross/operating margin, handled by fundamental PIT data rather than price-index data.
+
+### FX decomposition rule
+A rise in NTD import-price index can come from:
+- USD commodity/product price;
+- TWD depreciation;
+- both.
+
+Therefore `INPUT_IMPORT_NTD` and `INPUT_IMPORT_USD` must remain separate. The spread/change between them is an FX-transmission diagnostic, not automatically an alpha factor.
+
+### Mapping rule
+Price-index categories must connect to an issuer/theme only through an effective-dated exposure bridge:
+- input material/product category;
+- cost share or material relevance when disclosed;
+- source knownAt;
+- substitution/contract structure;
+- currency / hedging context where known.
+
+A generic PPI move is not a company ASP (Average Selling Price，平均售價).
+
+### Pricing-power test
+Potential pass-through state requires temporal ordering:
+`INPUT_COST -> OUTPUT/SELLING_PRICE -> MARGIN -> VOLUME/SHARE`.
+
+Candidate descriptors:
+- `INPUT_UP_OUTPUT_UP_MARGIN_STABLE`;
+- `INPUT_UP_OUTPUT_LAG_MARGIN_DOWN`;
+- `INPUT_DOWN_OUTPUT_STICKY_MARGIN_UP`;
+- `OUTPUT_UP_VOLUME_DOWN_DEMAND_DESTRUCTION_RISK`;
+- `FX_DRIVEN_INPUT_SHOCK`;
+- `UNKNOWN`.
+
+No state is permanently bullish/bearish.
+
+### Falsification
+Reject a claimed pricing-power signal when:
+- output-price movement only mirrors input cost with no margin protection;
+- NTD import inflation is mostly FX and the firm is hedged / naturally offset;
+- category mapping is too broad;
+- company exposure is stale or inferred from theme membership;
+- volume/share deteriorates enough to offset price;
+- price-index base/reclassification changes are ignored.
+
+### D10-05 maturity decision
+Official Taiwan monthly PPI/IPI sources plus release-time semantics establish bounded/prospective PIT feasibility for raw-material/output-price transmission.
+
+`D10-05 原物料／報價傳導: L2 -> L3`.
+
+This does **not** promote D10-06 Pricing Power above L2 because firm-level pass-through still requires company-specific margin/volume/exposure evidence.
+
+Status: `PIT_SOURCE_FEASIBLE / COMPANY_PASS_THROUGH_PENDING / FORMAL_CORE_LOCKED`.
+
+---
+
+## SC-017 — Source-readiness firewall before prospective outcome testing
+
+A sector/month can enter physical-cycle Shadow research only when every required component carries:
+- sourceId / datasetId;
+- scopeType and scopeCode;
+- taxonomyVersion;
+- observationMonth;
+- releaseTimestamp or conservative capturedAt;
+- sourceFreshnessState;
+- revision/vintage identifier or raw hash;
+- machineReadable / manualOfficial flag;
+- KNOWN / PARTIAL / UNKNOWN;
+- mapping confidence to issuer/theme.
+
+### Readiness states
+- `READY_ALIGNED`: required source clocks/scopes align.
+- `READY_PARTIAL`: useful state but at least one noncritical layer UNKNOWN.
+- `STALE_BLOCKED`: required series misses freshness rule.
+- `SCOPE_BLOCKED`: attempted join mixes incompatible industry/product scopes.
+- `VINTAGE_BLOCKED`: historical value lacks decision-time vintage provenance.
+- `SOURCE_ACCESS_BLOCKED`: official source exists but canonical machine retrieval is unavailable.
+- `MAPPING_BLOCKED`: industry/theme/company exposure bridge is not evidenced.
+
+Only READY_ALIGNED / pre-registered READY_PARTIAL can enter prospective outcome testing. Blocked states remain research evidence about data quality, never negative market signals.
+
+### Exact next continuation
+SC-018: build a current source-only non-tech panel if the official interactive result can be cleanly extracted; otherwise freeze MANUAL_SOURCE_ONLY and do not fabricate a machine panel.
+SC-019: define an industry/company capacity evidence hierarchy (official industry data -> company filing/capex -> capacity effective date -> utilization/yield), explicitly separating plan, construction, tool-in, qualification and mass production.
+SC-020: define product-level raw-material mappings for at least semiconductor/PCB and basic-metals/process manufacturing with negative controls.
+
+
+## SC-018 — Non-tech aligned official panel exists; automation contract is still incomplete
+
+Receipt: `research/nontech_physical_cycle_source_pilot_v0_1.json`
+
+### Outcome-blind official query result
+A bounded browser query on the official MOEA industrial production/sales/inventory statistics surface successfully retrieved one aligned current non-tech panel:
+
+Observation month: ROC 11507 (2026-07)  
+Industry: `24 基本金屬製造業`
+
+- production value: 128,744,522 thousand NTD;
+- sales value: 79,712,871 thousand NTD;
+- inventory value: 106,749,192 thousand NTD;
+- inventory ratio: 143.75%.
+
+All four observations came from the same official query surface, same month and same industry code.
+
+No stock-return outcome was inspected.
+
+### Important interpretation boundary
+The query used `統計值` mode only. Therefore this pilot establishes **source alignment**, not cycle direction.
+
+Do NOT label the industry bullish/bearish from the levels alone.
+
+In particular:
+- do not infer YoY direction without explicitly querying a comparable historical/YoY mode;
+- do not substitute `inventoryValue / salesValue` for the official inventory-ratio series unless the official definition proves equivalence;
+- do not compare nominal value growth across long periods without considering price-level changes.
+
+### Export finding
+The official result page visibly supports:
+- `下載報表 -> XLS`;
+- `下載報表 -> ODS`;
+- print.
+
+This falsifies the stronger claim that the current detailed database is human-display-only.
+
+The narrower, still unresolved claim is:
+**a stable documented canonical machine request/download contract for arbitrary query selections has not yet been verified.**
+
+Therefore source state becomes:
+`MANUAL_EXPORTABLE_OFFICIAL_SOURCE / MACHINE_CONTRACT_UNVERIFIED`.
+
+### Automation rule
+A browser-created XLS/ODS export may be used for bounded manual research with provenance, but a production/research collector should not depend on fragile UI coordinates or reverse-engineered hidden endpoints.
+
+If future work verifies a stable export request contract, prospectively preserve:
+- query parameters;
+- observation period and industry scope;
+- selected statistic/calculation mode;
+- downloaded-file hash;
+- capturedAt;
+- official release/knownAt;
+- parser version;
+- revision/supersession state.
+
+### Maturity implication
+This strengthens D10-03 / D10-11 source readiness but does not justify another maturity promotion:
+- D10-03 already L3;
+- D10-11 already L3;
+- no prospective vintage archive exists yet;
+- D10-04 capacity remains L2.
+
+### Exact next continuation
+SC-019: capacity evidence hierarchy — distinguish announcement, approved capex, construction, tool-in, qualification, effective capacity, yield and utilization.
+SC-020: product/material mapping — semiconductor/PCB and basic-metals/process lanes, with input-price negative controls.
+SC-021: prospective source receipt design for official XLS/ODS and standalone CSV/XML vintages.
+
+
+## SC-019 — Capacity is a lifecycle, not a headline
+
+### Core falsification
+The phrase "擴產" collapses multiple economically different states. Research must separate at least:
+
+1. `PLAN_ANNOUNCED` — management/public plan exists.
+2. `CAPEX_APPROVED` — board/budget/financing approval where evidenced.
+3. `CONSTRUCTION_STARTED`.
+4. `EQUIPMENT_ORDERED`.
+5. `TOOL_MOVE_IN / EQUIPMENT_INSTALLED`.
+6. `PROCESS_QUALIFICATION`.
+7. `CUSTOMER_QUALIFICATION` when economically required.
+8. `HIGH_VOLUME_MANUFACTURING_START`.
+9. `RAMPING`.
+10. `STEADY_STATE_AVAILABLE_CAPACITY`.
+11. `DELAYED / SUSPENDED / CANCELLED`.
+
+These states have different knownAt and effectiveAt clocks. A plan announcement cannot be backfilled as usable capacity.
+
+### Capacity vocabulary
+Freeze distinct variables:
+
+- `nameplateCapacity`: theoretical/rated maximum output.
+- `availableCapacity`: capacity technically available for production.
+- `qualifiedCapacity`: capacity qualified for the relevant process/customer/product.
+- `economicCapacity`: capacity that can produce saleable output at the required yield/mix.
+- `actualProduction`: observed output.
+- `utilization`: actual production relative to a clearly defined capacity denominator.
+- `yield`: saleable output share.
+- `productMix / nodeMix`: economically relevant composition.
+- `capex`: investment spending; never synonymous with any capacity term.
+
+### Taiwan / semiconductor evidence
+A real company example confirms why the lifecycle matters: TSMC's 2025 annual report separately describes an investment/expansion plan, construction, high-volume manufacturing entry, yield, ramp schedule and annual wafer capacity. These are reported as separate facts rather than one "capacity" field.
+
+The report states, among other distinctions:
+- first Arizona fab already entered high-volume manufacturing with good yield;
+- second fab production schedule was being pulled forward, with HVM expected later;
+- third fab construction had begun;
+- N2 entered high-volume manufacturing with good yield, while later technologies had future production schedules;
+- total annual wafer-equivalent capacity is reported separately from those project milestones.
+
+This supports a generic research rule: announcement -> construction -> qualification -> HVM -> ramp -> usable capacity are not interchangeable.
+
+Academic semiconductor-cycle research also finds inventory, fab utilization and chip sales jointly informative, and earlier industry-cycle work links overcapacity to downturn dynamics. This is mechanism evidence, not a Taiwan stock-return result.
+
+### CAPACITY_EVENT_VINTAGE schema
+For company/industry evidence preserve:
+- eventId;
+- issuer / industry / facility;
+- product / process / node / technology / geography;
+- eventState from the lifecycle above;
+- sourcePublishedAt / knownAt;
+- plannedEffectiveAt;
+- actualEffectiveAt;
+- nameplateCapacity and unit if disclosed;
+- available/qualified/economic capacity if explicitly disclosed;
+- utilization and denominator definition if disclosed;
+- yield/mix if disclosed;
+- customerQualification state if relevant;
+- capexAmount / currency / period if disclosed;
+- expansionPurpose = GROWTH / REPLACEMENT / AUTOMATION / MIGRATION / REDUNDANCY / UNKNOWN;
+- revision/supersession;
+- confidence / identityResolution;
+- PIT eligibility.
+
+Missing values stay UNKNOWN.
+
+### Demand-absorption test
+Expansion is potentially supportive only when separately evidenced demand can absorb supply.
+
+Research state:
+`CAPACITY_GAP_SUPPORTIVE` requires a conjunction such as:
+- demand/sales/order evidence strong or structurally credible;
+- inventory not signaling unresolved overhang;
+- pricing/margin not deteriorating from oversupply;
+- capacity becomes effective within the thesis horizon;
+- company/product exposure is verified.
+
+Research state:
+`CAPACITY_OVERSHOOT_RISK` is raised when:
+- peer capacity is entering simultaneously;
+- demand/sales weaken;
+- inventory ratio or unsold inventory rises;
+- lead times normalize sharply;
+- output prices/margins weaken;
+- capacity enters before qualification/demand is ready.
+
+Neither state is an automatic buy/sell rule.
+
+### Capex negative controls
+A capex increase can represent:
+- replacement / maintenance;
+- automation;
+- technology migration;
+- environmental/safety compliance;
+- geographic redundancy;
+- long-lead construction;
+- capacity growth.
+
+Therefore no `capex -> capacity growth` inference is allowed without purpose/effective-date evidence.
+
+The current MOEA `ec.csv` fixed-asset-additions lane is manufacturing-wide aggregate context only. It cannot be used as semiconductor/PCB/basic-metal sector capacity.
+
+### Utilization negative controls
+Utilization itself is not monotonic:
+- high utilization can mean strong demand, but can also mean a supply bottleneck near the top of the cycle;
+- low utilization can mean weak demand, planned maintenance, technology migration, or early ramp;
+- utilization across different process nodes/products is not directly comparable;
+- yield/mix changes can alter economic output without a proportional utilization move.
+
+### D10-04 maturity decision
+Keep `D10-04 產能／擴產／稼動率` at **L2**.
+
+Reason:
+- mechanism, lifecycle, schema and falsification are now stronger;
+- Taiwan/company PIT evidence is clearly possible on a bounded issuer basis;
+- but a canonical industry-wide Taiwan capacity/utilization source with stable cross-company semantics is not yet established;
+- promoting to L3 now would overstate coverage.
+
+Status: `MECHANISM_STRONG / BOUNDED_COMPANY_PIT_FEASIBLE / INDUSTRY_WIDE_SOURCE_GAP / NO_PROMOTION`.
+
+### Exact continuation
+SC-020: product/material transmission mapping for semiconductor/PCB and basic-metals/process manufacturing.
+SC-021: prospective vintage receipt design for official CSV/XML/XLS/ODS.
+SC-022: bounded company-capacity pilot requiring at least one positive ramp and one delay/oversupply counterexample before any outcome test.
+
+
+## SC-020 — Product/material transmission must preserve economic direction
+
+### Why a supply-chain map is not enough
+A graph edge such as `MATERIAL -> MANUFACTURER` does not specify whether a price move helps or hurts the target.
+
+For every material/product edge preserve:
+- `economicRole = INPUT_COST | SELLING_PRODUCT | BOTTLENECK_INPUT | SUBSTITUTABLE_INPUT | COMPLEMENT | CAPACITY_ENABLER | UNKNOWN`;
+- quantity/exposure basis when disclosed;
+- pricing basis = SPOT / CONTRACT / INDEXED / NEGOTIATED / UNKNOWN;
+- currency;
+- typical repricing lag if evidenced;
+- sourceKnownAt/effective dates;
+- substitution and inventory-buffer state;
+- company pass-through evidence;
+- confidence and source class.
+
+A material price increase has no universal sign.
+
+---
+
+### Template A — ABF / PCB / IC-substrate material chain
+
+#### Physical structure
+Academic packaging literature supports the basic physical distinction:
+- ABF build-up film is an epoxy-resin/silica composite dielectric used in IC package substrates;
+- copper plating/interconnect is formed on the ABF build-up layer;
+- other organic substrate structures can use glass-cloth/resin prepreg and copper-related layers.
+
+Therefore the research graph must distinguish at least:
+1. **build-up dielectric material** (ABF or equivalent);
+2. **core / laminate materials** such as resin/glass-reinforced CCL where the substrate design uses them;
+3. **copper / copper plating / copper foil-related conductive layers**;
+4. **process chemicals / plating / desmear / lithography-related materials** where company exposure is verified;
+5. **substrate manufacturer**;
+6. **OSAT / packaging / chip customer**;
+7. **end application** such as AI accelerator/server, networking, CPU/GPU/ASIC, etc., only when product/customer evidence exists.
+
+Do not collapse "ABF substrate" into "ABF film". The film is one material component; the substrate is a multi-layer manufactured product.
+
+#### Economic direction
+Examples of research states:
+- `ABF_FILM_TIGHTNESS`: possible bottleneck input; can constrain substrate output and raise input costs.
+- `COPPER_INPUT_UP`: cost pressure unless selling price/pass-through offsets it.
+- `GLASS/RESIN_INPUT_UP`: cost pressure on CCL/core-related nodes unless pass-through exists.
+- `SUBSTRATE_ASP_UP_WITH_MARGIN_HOLD`: stronger evidence of pricing power than material price alone.
+- `MATERIAL_TIGHTNESS_WITH_CUSTOMER_ALLOCATION`: may indicate demand strength but can cap shipment volume.
+- `INPUT_PRICE_UP_MARGIN_DOWN`: negative pass-through evidence.
+- `INPUT_PRICE_UP_OUTPUT_PRICE_UP_MARGIN_STABLE`: pass-through evidence.
+
+#### Falsification
+Reject a simplistic "material price up = substrate bullish" story when:
+- the substrate maker is the buyer of that material;
+- pass-through lags or fails;
+- customer qualification prevents material substitution;
+- higher material cost reduces yield or pushes demand to alternatives;
+- inventory buffering delays the economic impact;
+- reported substrate demand is concentrated in a product the issuer does not materially supply.
+
+A physical bottleneck can simultaneously signal strong chain demand and hurt the immediate downstream buyer's margin. Preserve both.
+
+---
+
+### Template B — Basic metals / steel process chain
+
+#### Current official Taiwan source feasibility
+The Taiwan basic-metals monitoring platform provides current quantity/price series such as:
+- Taiwan crude-steel output;
+- domestic scrap purchase prices;
+- billet prices;
+- rebar / section-steel / wire-rod prices;
+- international finished/semi-finished steel benchmarks.
+
+The MOEA industrial production/product statistics also provide:
+- code 24 basic metals;
+- detailed production industries such as 2411 iron/steel smelting and 2413 rolling/extrusion;
+- product hierarchy including billets and other steel products.
+
+This is a materially different chain from ABF/PCB because raw materials, semi-finished output and finished output can each have observable market prices.
+
+#### Economic chain
+Preserve separate nodes:
+`IRON_ORE / COKING_COAL / SCRAP / ENERGY -> MOLTEN/CRUDE_STEEL -> BILLET/SLAB -> HOT-ROLLED / BAR / WIRE / REBAR / SECTIONS -> DOWNSTREAM FABRICATION / CONSTRUCTION / AUTO / MACHINERY`.
+
+Not every producer uses the same route:
+- blast-furnace route has different raw-material exposure than electric-arc-furnace route;
+- scrap is much more directly relevant to EAF economics;
+- iron ore/coking coal exposure is more direct for BF/BOF economics.
+
+Therefore route identity is mandatory before mapping raw-material prices to a company.
+
+#### Spread logic
+For process industries, price level alone is inferior to an economically matched spread.
+
+Research descriptor:
+`PRODUCT_PRICE - WEIGHTED_INPUT_BASKET`
+only when:
+- input basket composition is evidenced;
+- units/currency are normalized;
+- contract/spot lags are respected;
+- energy and yield effects are not material UNKNOWNs.
+
+Do NOT create a synthetic "steel margin" by subtracting arbitrary commodity series.
+
+#### Current example is descriptive only
+The Taiwan basic-metals monitoring platform currently reports 2026-08 average domestic scrap purchase price, billet price and finished steel price series, and current Taiwan crude-steel output. These prove timely source availability; they do not prove stock-return direction.
+
+#### Falsification
+- scrap up can benefit scrap sellers but hurt EAF steelmakers before pass-through;
+- finished steel price up can be positive only if input cost / volume / margin confirm;
+- low production can be demand weakness or deliberate maintenance/supply discipline;
+- high production with rising inventory can signal overhang;
+- global steel price rise can be caused by temporary supply disruption rather than Taiwan end-demand;
+- anti-dumping/tariff/policy events can break ordinary input-output transmission.
+
+---
+
+### Cross-industry common schema
+`PRODUCT_MATERIAL_EDGE_VINTAGE`
+- upstreamScopeType / code / product;
+- downstreamScopeType / code / product/company;
+- economicRole;
+- productionRoute / technology;
+- exposureMagnitude / basis;
+- unit/currency;
+- priceBasis;
+- repricingLag;
+- inventoryBufferDays if disclosed;
+- substitutionState;
+- qualificationConstraint;
+- sourcePublishedAt / knownAt;
+- effectiveFrom / effectiveTo;
+- sourceId/sourceClass;
+- confidence;
+- PIT eligibility.
+
+### Negative-control requirement
+Every material-price experiment needs at least one control:
+1. same sector company with materially different input route;
+2. company with low/no verified exposure;
+3. price move with no downstream selling-price/margin response;
+4. common macro/FX price move after residualizing sector/market context.
+
+If exposed and unexposed controls move similarly, the alleged material transmission is likely common-factor/redundant rather than supply-chain alpha.
+
+### Maturity decision
+No tracker promotion from SC-020 alone.
+
+- D10-05 already L3 because Taiwan PIT price-source feasibility is established.
+- D10-12 remains L2 because concrete company/theme exposure mapping is not yet a complete PIT database.
+- D10-09 remains L2 until asymmetric upstream/downstream transmission is prospectively observed, not merely specified.
+
+Status: `TWO_INDUSTRY_TEMPLATES_DEFINED / DIRECTIONAL_EDGE_SCHEMA_FROZEN / COMPANY_PIT_MAPPING_PENDING`.
+
+### Exact continuation
+SC-021: prospective source-vintage receipt for CSV/XML/XLS/ODS.
+SC-022: bounded capacity lifecycle pilot with positive and negative counterexamples.
+SC-023: map one ABF/PCB material-price chain and one steel-route chain to actual Taiwan issuers using contemporaneous filings, preserving UNKNOWN instead of theme inference.
+
+
+## SC-021 — Source-vintage receipt separates publication time, effective time and capture time
+
+Canonical machine spec:
+`research/industry_source_vintage_receipt_spec_v0_1.json`
+
+### Three clocks must never be collapsed
+For industry/supply-chain research preserve separately:
+
+1. `sourcePublishedAt / knownAt` — when the information became available to the market/research process.
+2. `effectiveAt` — when the economic event actually starts/stops affecting production, customer/supplier relation, capacity, etc.
+3. `capturedAt` — when our research system obtained and froze the source.
+
+Observation month is not knownAt.
+
+### Supply-chain event PIT feasibility
+Taiwan official material-information semantics provide a bounded event lane with genuine time meaning.
+
+Official TWSE/TPEx rules include the major-purchaser/supplier cessation event when a purchaser/supplier accounts for at least 10% of prior-year sales/purchases. The disclosure template preserves:
+- date of occurrence;
+- counterparty name when disclosed;
+- prior-year concentration percentage;
+- reason and date of suspension;
+- company response.
+
+The official ezSearch surface classifies this as M25 and supports announcement/date filtering.
+
+This is sufficient to establish **bounded Taiwan PIT feasibility** for D10-10 even though:
+- a complete supply-chain graph is unavailable;
+- automated canonical M25 ingestion is still source-access blocked;
+- anonymous counterparties remain UNKNOWN;
+- no alpha/outcome conclusion exists.
+
+### D10-10 maturity decision
+`D10-10 供應鏈事件PIT時間戳: L2 -> L3`.
+
+Reason:
+L3 requires Taiwan point-in-time feasibility and time semantics, not full automation. The official event lane contains decision-time publication/event clocks.
+
+Automation readiness remains separately:
+`AUTOMATED_M25_SOURCE = SOURCE_ACCESS_BLOCKED`.
+
+### Revision / export rule
+For standalone CSV/XML or official XLS/ODS export:
+- store raw hash and parser version;
+- append revisions rather than overwrite;
+- use official release timestamp only when the captured vintage is proven to correspond to it;
+- otherwise use capturedAt conservatively as knownAt;
+- stale / failed retrieval = UNKNOWN.
+
+### Formal boundary
+This is provenance infrastructure only. It changes no Formal candidate, score, threshold, rank, quota, capital, signal, monitoring or push behavior.
+
+Status: `D10-10_L3_PIT_FEASIBLE / AUTOMATION_PARTIAL / NO_ALPHA_CONCLUSION`.
+
+
+## SC-022 — Capacity lifecycle source-only pilot supports the model but not L3 promotion
+
+Receipt:
+`research/capacity_lifecycle_source_pilot_v0_1.json`
+
+### Positive lifecycle example
+TSMC's 2025 annual report independently distinguishes:
+- investment/expansion plan;
+- construction start;
+- HVM（High Volume Manufacturing，高量產） entry;
+- yield quality;
+- future HVM/ramp schedule;
+- aggregate annual wafer-equivalent capacity.
+
+This is direct evidence that a trustworthy capacity model needs a status timeline rather than one binary `expanding=true` flag.
+
+### Counterexample / reverse mechanism
+Taiwan MOEA industrial-production evidence provides the opposite capacity behavior:
+- when steel/basic-metals demand was weak and customer pickup conservative, producers scheduled maintenance or planned production cuts to adjust capacity/output;
+- 2026 Q1 reporting likewise notes traditional-industry production restraint/maintenance amid weak demand and overseas competition.
+
+This shows that low output/utilization can be an **endogenous response** to demand weakness rather than an independent supply shock. Conversely, deliberate supply discipline can later support price even while physical output falls.
+
+### Why no L3 yet
+These examples establish bounded PIT source feasibility, but the observations are not standardized enough across issuers/industries:
+- capacity units differ;
+- technologies/nodes/products differ;
+- yield and qualification are inconsistently disclosed;
+- utilization denominators differ or are absent;
+- company plan, industry output and aggregate capex have different scopes.
+
+Therefore D10-04 remains L2.
+
+A future L3 promotion requires a reusable Taiwan source contract with comparable semantics across a bounded multi-company/industry sample, not one famous issuer plus aggregate macro data.
+
+Status: `LIFECYCLE_MODEL_SUPPORTED / CROSS_COMPANY_SEMANTICS_NOT_READY / KEEP_L2`.
+
+### Next
+SC-023: actual Taiwan issuer exposure mapping for one ABF/PCB input chain and one steel-process route.
+SC-024: evaluate whether issuer capacity disclosures can be normalized into comparable status clocks without inventing utilization.
+
+
+## SC-024 — Capacity disclosure normalization: status clocks are comparable; utilization is not
+
+### Research question
+Can issuer capacity disclosures be normalized into comparable PIT status clocks without inventing utilization?
+
+### Bounded Taiwan issuer evidence
+Two Taiwan foundry issuers provide a useful positive/negative semantic pair.
+
+**TSMC / Arizona and N3 expansion**
+- 2025 annual-report and 2026 earnings-call disclosures distinguish HVM already achieved, construction complete, tool move-in/installation, future volume-production dates, construction start, technology conversion and aggregate annual wafer-equivalent capacity.
+- The same project can therefore move through multiple states over time; a previously announced production year is not immutable truth. Later disclosures may pull schedules forward/back, so revisions must append a new vintage rather than overwrite the old expectation.
+- Aggregate annual capacity and project milestone are different denominators/scopes. They must not be joined as though a project-specific utilization rate were disclosed.
+
+**UMC / Singapore Fab 12i P3**
+- UMC's April 2025 official release identifies an opened expansion fab, first-phase investment, planned 30,000 wafers/month and production beginning in 2026.
+- UMC's 2025 Form 20-F later narrows expected production commencement to 2H26 while preserving design capacity of 30,000 wafers/month.
+- This proves that `DESIGN_CAPACITY`, `FAB_OPENED`, `PRODUCTION_EXPECTED` and `HVM/ACTUAL_OUTPUT` are separate facts. An opening ceremony or design capacity is not evidence that saleable production is already online.
+
+### Normalizable clock
+Across bounded issuer disclosures, the following event states are reusable:
+`PLAN_ANNOUNCED -> CAPEX/PROJECT_COMMITTED -> CONSTRUCTION_STARTED -> CONSTRUCTION_COMPLETE -> TOOL_MOVE_IN/INSTALLATION -> PROCESS_OR_CUSTOMER_QUALIFICATION -> VOLUME_PRODUCTION/HVM -> RAMPING -> STEADY_STATE_AVAILABLE_CAPACITY`.
+
+Each observation must preserve:
+- issuer/facility/product/process/geography;
+- eventState;
+- sourcePublishedAt/knownAt and capturedAt;
+- plannedEffectiveAt versus actualEffectiveAt;
+- capacityValue/unit and capacityType = DESIGN | NAMEPLATE | AVAILABLE | QUALIFIED | ECONOMIC | ACTUAL_OUTPUT | UNKNOWN;
+- revision/supersession link;
+- source scope and confidence.
+
+### Strong negative controls
+1. `FAB_OPENED != PRODUCTION_STARTED`.
+2. `DESIGN_CAPACITY != AVAILABLE_CAPACITY != ACTUAL_OUTPUT`.
+3. `CAPEX != CAPACITY`.
+4. `HVM_START != FULL_RAMP`.
+5. Aggregate issuer capacity cannot be used as the denominator for one facility unless the source explicitly supplies that mapping.
+6. Utilization remains UNKNOWN unless both numerator and denominator are explicitly compatible in product/process/time scope.
+7. Schedule changes are information events; current schedules must not be backfilled into prior vintages.
+
+### Falsification / bias controls
+- No stock returns or post-event performance were inspected.
+- No capacity threshold or bullish/bearish sign was fitted.
+- Famous-issuer evidence is used only to test semantic normalization, not to infer universal alpha.
+- Cross-company unit comparability remains limited: wafer equivalents are not interchangeable with PCB area, substrate panels, tons, MW, units or qualified economic output.
+- Qualification/yield disclosure is uneven; missing evidence stays UNKNOWN.
+- Expansion can still be replacement, migration, geographic redundancy or demand growth, so purpose remains a separate field.
+
+### Maturity decision
+Keep `D10-04 產能／擴產／稼動率` at **L2**.
+
+SC-024 establishes a reusable **status-clock grammar** on bounded Taiwan issuer evidence, but L3 would still overstate cross-company coverage because standardized utilization denominators, qualification/yield and economic-capacity semantics are not broadly available.
+
+Status: `STATUS_CLOCK_NORMALIZATION_FEASIBLE / UTILIZATION_NOT_NORMALIZABLE_YET / REVISION_VINTAGE_REQUIRED / NO_OUTCOME_TEST / FORMAL_UNCHANGED`.
+
+### System implication
+Potential System 1/System 2 value is not a new score yet. The concrete improvement target is to prevent false positives such as treating “fab opened”, “capex up” or “design capacity announced” as immediately usable supply. A future research feature should be categorical state + time-to-effective-capacity, never a single binary expansion flag.
+
+This is **not** a `FORMAL_OPTIMIZATION_CANDIDATE`: no prospective/OOS outcome increment, redundancy test or transaction-cost evidence exists.
+
+### Exact continuation
+SC-025: define `MATERIAL_TRANSMISSION_RECEIPT` joining input price -> production route -> output/selling price -> volume -> margin with separate knownAt clocks and UNKNOWN semantics.
+SC-026: require negative controls for low/no exposure and failed pass-through before any material-transmission outcome test.

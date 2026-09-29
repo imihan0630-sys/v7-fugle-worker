@@ -1907,3 +1907,15 @@ Formal Core remains LOCKED.
 1. Obtain upstream independently attested per-field raw payload/version receipts, canonical content digest and per-version publication/first-known/capture clock; commit exact row versions to the immutable parent generation and transformation ancestry.
 2. Audit permissioned real source OHLC field availability and corrections by provider/date/market/symbol, with certified session/corporate-action truth and explicit UNKNOWN. Measure legitimate-correction false rejection and actual same-scan parent/child counts plus non-secret runtime cost.
 3. Keep TI-005/TI-006 outcome and incremental-value tests blocked until prospective complete capture, PIT/OOS and governance gates. No Formal or runtime wiring on synthetic evidence.
+
+## TI-411 — same-date daily bar may precede its own completion (2026-09-29)
+
+- Isolated synthetic witness: `research/test_technical_indicator_same_session_bar_falsification_v0_1.mjs` sets decision `asOf` to 09:00 Taipei on the final bar's own date, while the context availability timestamp belongs to the previous day. The guard admits two different full-day high values as `VALID`; KD differs. The equality case in its date-only future-bar check lacks a per-version completion/availability clock.
+- Analysis and counterargument: `research/TECHNICAL_INDICATOR_SAME_SESSION_BAR_FALSIFICATION_V0_1.md`. Legitimate after-market final bars and explicitly partial intraday bars require different clock/completeness contracts; a hardcoded close hour alone is not source publication proof.
+- Evidence scope: synthetic source QA only. Actual source coverage, rejection denominators, PIT attestation, outcome value, costs and OOS remain UNKNOWN. D03 tracker level/maturity stay unchanged; Formal Core LOCKED.
+
+### Exact next continuation point after TI-411
+
+1. Consolidate TI-409/410/411 into one upstream immutable row-version receipt: canonical raw field bytes and digest, observed field status, bar interval/completion, certified symbol session, provider version/first-known and local capture clocks, corporate-action transform ancestry, and decision-specific row-version commitment. Seek independent source-owner attestation rather than self-issued adapter strings.
+2. Obtain authorized outcome-blind real OHLC/version/session samples; count complete, partial, corrected and UNKNOWN rows by provider/date/market/symbol and test legitimate same-day after-market rows and delayed corrections. Reconcile exact parent-child keysets and non-secret runtime costs.
+3. Keep outcome joins, TI-005/TI-006 efficacy tests, Class-B runtime capture and Formal change blocked until prospective PIT and governance gates pass. No historical Shadow reconstruction.

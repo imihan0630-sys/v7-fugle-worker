@@ -222,3 +222,108 @@ Revised exact continuation:
 3. D05: do not invent additional indicators; wait for complete prospective capture or a proven complete recorder artifact.
 4. D05: when capture is available, validate event/1m/5m -> 10m/15m/30m horizon retention using the frozen Pressure × Response × Persistence protocol.
 5. Keep Formal Core locked; no spread/depth/OFI/ATR throttle or sizing change.
+
+
+## 2026-09-28 21:04 deep-research update — dual-clock + ATR decomposition frozen
+
+Durable D04 conclusions:
+- ATR must be decomposed as pre-ATR eligibility -> explicit ATR gate -> channel-specific stop geometry -> RR survival -> final selection.
+- B channel has a structural ATR-binding kink around ~1.8%-1.9% when close is near breakout; above it, ATR directly widens the stop and compresses RR for fixed target geometry.
+- A channel can remain support-stop-bound over much/all of the 1%-10% ATR gate depending on structureLow/support, so pooled global ATR optimization is structurally suspect.
+- RV5/RV20 is an overlapping-window state ratio, not an independent acceleration factor; do not count RV5, RV20 and their ratio as three separate votes.
+- A non-overlapping recent-RV5 versus prior-RV15 comparison is retained only as a robustness/decomposition comparator.
+- TAIEX official market RV provenance is materially stronger than stock-level continuity provenance. V8.12 RAW_HISTORY_ADMISSION does not certify corporate-action TECHNICAL_CONTINUITY.
+
+Durable D05 conclusions:
+- Wall-clock horizons alone are insufficient; every future microstructure study must preserve event intensity / event time.
+- Published multi-horizon OFI evidence supports an effective stock-specific horizon near a small number of average price changes, not a universal number of minutes.
+- First deeper-book test is top1 baseline versus one aggregate top-five block. Do not create separate level-2/3/4/5 factor zoo.
+- TWSE call-auction / continuous / VI regimes and price-tier tick sizes are mandatory strata.
+- Fugle source fields and plan limits make a 1-2 symbol isolated pilot technically plausible, but actual account plan, concurrent subscriptions and complete event-ledger reliability remain UNKNOWN.
+- No D05 L3 promotion until own prospective PIT capture proves coverage/replay/missing-event semantics.
+
+New machine artifacts:
+- research/volatility_atr_conditioning_decomposition_v0_1.json
+- research/microstructure_dual_clock_horizon_protocol_v0_1.json
+
+Maturity decision:
+- D04 remains 42%.
+- D05 remains 46%.
+- No module upgrade this round because no new own PIT/OOS/Shadow evidence was produced.
+
+Exact next continuation:
+1. D04 — outcome-free observability audit: determine which L0-L4 ATR decomposition fields already exist for all relevant candidate/reject cohorts and where Shadow sampling/first-failure bias blocks inference.
+2. D04 — market RV capture gate: preserve or verify prospective TAIEX RV5/RV20/RV5to20 on clean post-capture dates; no retrospective first-known reconstruction.
+3. D04 — only after independent clean dates exist, compare overlapping RV5/RV20 versus non-overlapping recent5/prior15 as robustness, not factor expansion.
+4. D05 — evidence gate remains prospective complete capture. Before any outcome study, verify actual collector plan/quota and event completeness if/when infrastructure is owner-authorized.
+5. D05 — once valid events exist, run E0(event) -> E1(1m/5m) -> E2(10m/15m) retention ladder with event-count matching and top1-vs-top5 nested test.
+6. Formal Core remains LOCKED; no ATR/stop/RR/spread/depth/OFI/BUY/maxChase/sizing change.
+
+
+## 2026-09-28 21:04 continuation — ATR observability audit closed
+
+The D04 L0-L4 observability audit is now complete.
+
+Key result:
+- existing Class-A observers can compute ordered gate state, ATR_QUALITY, channel, Formal stop geometry, target state, RR state and downstream grade from same-scan already-loaded inputs with zero new market-data calls;
+- the blocker is durable denominator/provenance, not formula availability;
+- legacy Shadow cohorts are bounded, single-membership, first-failure-conditioned and mutable, so ATR reject-vs-survivor outcome analysis on those convenience cohorts is prohibited;
+- future ATR evidence must reuse the shared immutable per-symbol decision-state parent rather than create a volatility-specific duplicate persistence stack.
+
+New artifact:
+- research/volatility_atr_conditioning_observability_audit_v0_1.json
+
+Revised exact continuation:
+- D04 next = prospective TAIEX RV capture/readback gate on clean dates, followed by overlapping RV5/RV20 versus non-overlapping recent5/prior15 robustness only after independent PIT-valid dates accumulate.
+- D04 stock-level volatility controls require TECHNICAL_CONTINUITY-safe windows.
+- ATR outcome/opportunity-cost analysis remains blocked until the shared immutable decision-state parent is available.
+- D05 remains EVIDENCE_PENDING: no more concept-factor invention; wait for complete prospective event capture, then execute the dual-clock E0->E1->E2 retention ladder and nested top1-vs-top5 test.
+- Formal Core remains LOCKED.
+
+
+## 2026-09-28 21:36 deep-research update — persistence wiring + provider-event semantics + tick granularity
+
+### D04 durable findings
+- Prospective market-RV theory/source feasibility is no longer the main blocker. The repository has:
+  - System2 market-regime design fields for RV5/RV20/RV5-to-20;
+  - `s2_market_regime_snapshots.factor_observations_json`;
+  - assembler/orchestrator support for `regimeFactorObservations`;
+  - official A2 TAIEX/FMTQIK source probing.
+- Fresh repository search found no runtime path that actually populates raw `realizedVol5`, `realizedVol20`, or `volRatio5to20` factor observations; `regimeFactorObservations` remains an optional/default-empty input and no active caller was found. Therefore compute/schema/source are ready but prospective persistence is not proven.
+- System2 runtime `regime.volatilityState` is an evidence-quality state (KNOWN/UNKNOWN/STALE/INVALID/NOT_APPLICABLE), not the economic direction label VOL_EXPANDING/VOL_CONTRACTING. Raw RV values must live in MARKET factor observations and economic labels remain downstream/context-only.
+- First promotion-grade market-RV sample begins only when raw values are actually persisted with the same decision-clock source receipt and immutable run linkage. Historical first-known states cannot be reconstructed from current/latest mutable snapshots.
+- ATR% normalizes price scale but not Taiwan price-grid discreteness. Official tick-band jumps create large discontinuities in ATR measured in legal ticks: for example ATR=1% is about 10 ticks at 99.9 or 999 but about 2 ticks at 100 or 1000.
+- Therefore future ATR/RR/execution studies retain `relativeTickBps`, `atrTicksApprox`, and `stopDistanceTicksApprox` as confound/control descriptors. No new tick threshold or Formal stop change is authorized.
+
+New durable files:
+- `research/market_rv_persistence_gap_audit_v0_1.json`
+- `research/volatility_tick_granularity_guard_v0_1.json`
+
+### D05 durable findings
+- Fugle trades expose a serial field, but current Books documentation does not expose a sequence/serial field. Received book-message count is therefore provider-message time, not proven complete exchange-event time.
+- True event-level OFI remains reserved until the capture/source contract proves the required event completeness. When only successive received book snapshots are available, use `snapshotDeltaPressureProxy`, not `trueOFI`.
+- Horizon-retention evidence must beat nested simpler explanations:
+  - B0 activity/risk: message/trade intensity, mid-price-change count, local volatility, tick/session state;
+  - B1 immediate liquidity: spread + top1 depth/imbalance;
+  - B2 pressure-response/persistence;
+  - B3 one aggregate top-five block.
+- Frozen negative controls: time-shift placebo, within-symbol/day pressure-sign shuffle, event-intensity matched control, spread-only control, volatility/activity control, and continuous-session primary analysis with auction/VI/limit cohorts separated.
+- Three estimands remain separate: price formation, breakout path quality, execution quality. Passing one does not imply the others.
+- Collector go/no-go is now identifiability-first. If provider-message semantics cannot support true OFI/replenishment identification, narrow the estimand rather than fabricating event completeness.
+
+New durable file:
+- `research/microstructure_provider_event_clock_falsification_v0_1.json`
+
+### Maturity decision
+- D04 remains 42%.
+- D05 remains 46%.
+- No L3/L4 promotion this round because no new own prospective PIT/OOS/Shadow observations were created.
+- No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core remains LOCKED.
+
+### Exact next continuation
+1. D04: verify/implement only through the authorized research engineering path a prospective raw market-RV persistence contract; first valid evidence date starts when the factors are actually stored, not when formulas were documented.
+2. D04: after independent clean dates accumulate, compare RV5/RV20 with non-overlap recent5/prior15 as robustness only; do not add a fourth vote.
+3. D04: ATR opportunity-cost outcome inference remains blocked until the shared immutable per-symbol decision-state parent is available; tick granularity is a control, not a new gate.
+4. D05: wait for complete prospective event capture. Before calling anything true OFI, prove provider/reconnect/missing-event semantics.
+5. D05: then execute B0->B1->B2->B3 nested tests through E0(event)->E1(1m/5m)->E2(10m/15m)->E3(30m), with independent-date and session/tick strata.
+6. D05: no BUY/maxChase/action mapping unless E2 survives all controls and later Shadow/OOS promotion gates; any Formal use remains Class C.

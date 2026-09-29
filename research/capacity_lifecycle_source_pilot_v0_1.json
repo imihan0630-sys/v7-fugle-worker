@@ -1,0 +1,58 @@
+{
+  "receiptId": "CAPACITY_LIFECYCLE_SOURCE_PILOT_V0_1",
+  "executedAt": "2026-09-28T20:12:00+08:00",
+  "mode": "OUTCOME_BLIND_SOURCE_ONLY",
+  "forwardReturnDataUsed": false,
+  "formalCoreChanged": false,
+  "cases": [
+    {
+      "caseId": "TSMC_RAMP_LIFECYCLE",
+      "sourceClass": "ISSUER_ANNUAL_REPORT",
+      "sourceAuthority": "TSMC",
+      "sourcePeriod": "2025 annual report published 2026",
+      "evidenceStates": [
+        "INVESTMENT_EXPANSION_PLAN",
+        "CONSTRUCTION_STARTED",
+        "HIGH_VOLUME_MANUFACTURING_START",
+        "GOOD_YIELD_DISCLOSED",
+        "FUTURE_HVM_SCHEDULE",
+        "ANNUAL_WAFER_EQUIVALENT_CAPACITY"
+      ],
+      "conclusion": "One issuer disclosure distinguishes investment plan, construction, HVM, yield, future ramp and annual capacity. These states must not be collapsed into one expansion flag.",
+      "stockReturnConclusionAuthorized": false
+    },
+    {
+      "caseId": "TAIWAN_BASIC_METALS_DEMAND_RESTRAINT",
+      "sourceClass": "MOEA_INDUSTRIAL_PRODUCTION_STATISTICS",
+      "sourceAuthority": "Taiwan MOEA Department of Statistics",
+      "sourcePeriods": [
+        "2023 historical monthly/annual evidence",
+        "2026 Q1 current industry evidence"
+      ],
+      "evidenceStates": [
+        "DEMAND_WEAK",
+        "CUSTOMER_PICKUP_CONSERVATIVE",
+        "MAINTENANCE_OR_PLANNED_PRODUCTION_REDUCTION",
+        "CAPACITY_ADJUSTMENT",
+        "OUTPUT_DECLINE"
+      ],
+      "conclusion": "Available capacity can be deliberately reduced/maintained when demand is weak. Lower production/utilization may be an endogenous response to demand, not an independent bearish capacity shock.",
+      "stockReturnConclusionAuthorized": false
+    }
+  ],
+  "falsification": [
+    "Expansion plan alone is insufficient evidence of effective economic capacity.",
+    "Capex amount alone cannot identify growth capacity, timing, yield or utilization.",
+    "High utilization is not always favorable; it can represent bottleneck/top-of-cycle pressure.",
+    "Low utilization is not always an exogenous negative shock; it may be maintenance, migration or deliberate supply discipline.",
+    "Company capacity evidence and industry aggregate capacity evidence are not interchangeable.",
+    "No capacity variable receives permanent positive/negative sign before demand, inventory, pricing and margin controls."
+  ],
+  "result": "LIFECYCLE_MODEL_SUPPORTED / STANDARDIZED_CROSS_COMPANY_SOURCE_NOT_READY",
+  "maturityDecision": "KEEP_D10_04_L2",
+  "next": [
+    "Build issuer-capacity evidence extraction for a bounded Taiwan sample across semiconductor/PCB/basic-metals.",
+    "Require event-state, knownAt/effectiveAt, capacity unit, product/node, yield/qualification and revision state.",
+    "Do not promote to L3 until comparable PIT semantics cover more than isolated issuer examples."
+  ]
+}

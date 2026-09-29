@@ -629,3 +629,159 @@ Critical negative definitions:
 5. Require regime/sector/liquidity/passive-event controls and preserve UNKNOWN.
 6. Current D06 evidence is stronger conceptually but still not sufficient for L3 promotions without PIT empirical coverage.
 7. Formal Core remains unchanged; no FORMAL_OPTIMIZATION_CANDIDATE.
+
+## IC-030 — Production outcome-blind decomposition: severe cap saturation falsified; actor divergence and same-session exposure become the primary structural questions
+
+Research cycle: 2026-09-29 Asia/Taipei
+Production evidence: `research/institutional_score_decomposition_observer_readback_20260929_v0_2.json`
+Status: STRUCTURAL_FALSIFICATION_ADVANCED / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+The Class-A server-side observer is deployed and verified on the existing 62-row prospective Shadow archive.
+
+### Data/invariant result
+- 62/62 rows are decomposition-ready;
+- stored institutionalScore reconstructs exactly on all 62 rows;
+- no stored parent field is missing;
+- foreign/trust/dealer streak endpoint versus current-net sign mismatch = 0 for all three actors;
+- archive still spans only two independent scan dates (2026-09-21 and 2026-09-22); 2026-09-23 remains missing and integrity remains RESEARCH_DATA_GAP.
+
+The zero endpoint mismatch materially supports semantic consistency of the stored 3-session streak endpoints on this bounded archive. It does NOT prove that upstream serialized zeros preserve every missing-source distinction; the observer retains that guard.
+
+### Cap-saturation hypothesis is currently falsified
+The earlier formula-geometry concern that the 100-point clamp might already be broadly flattening live institutional ranks is not supported in this bounded archive:
+- saturated at 100 = 0/62;
+- maximum pre-clamp score = 90.63;
+- net-intensity subcomponent capped at 25 = 1/62 (1.61%).
+
+Decision:
+`CURRENT_SEVERE_100_CAP_SATURATION = FALSIFIED_ON_BOUNDED_SHADOW_ARCHIVE`.
+
+This does not prove the cap can never matter on future/full-scan populations. Keep monitoring prospectively rather than reformulating the score because of theoretical geometry alone.
+
+### Same-session direction versus real persistence
+The streak-related score can now be split without outcomes:
+- currentDayDirectionBase mean = 9.065 points;
+- persistenceBeyondDay1 mean = 8.806 points;
+- nonlinear consensus interaction mean = 6.339 points;
+- sameSessionDirectionPoints (current direction base + nonlinear current-direction bonus) mean = 15.403 points.
+
+Relative to pre-clamp institutionalScore:
+- same-session direction share: mean 39.1%, median 43.2%;
+- persistence beyond day 1 share: mean 19.3%, median 22.1%.
+
+Structural correlation:
+`currentDayDirectionBase × consensusInteraction = 0.8155`.
+
+Interpretation:
+The current score has substantial exposure to the same current-session actor-direction state through both first-day streak points and the +6/+15 interaction. This is not proof that the nonlinear interaction is harmful: a consensus interaction can contain valid nonlinear information. But it falsifies any interpretation that all streak/consensus points represent independent multi-day persistence.
+
+Future outcome tests must therefore compare:
+1. current-day direction base;
+2. persistence beyond day 1;
+3. nonlinear consensus interaction;
+4. aggregate net intensity;
+5. ownership concentration;
+rather than treating the existing 0–100 score as one indivisible institutional construct.
+
+### Actor divergence is common
+On the 62 bounded rows:
+- mixed actor signs = 36/62 (58.06%);
+- at least one actor positive while aggregate institutional total is negative = 23 rows;
+- aggregate total positive while at least one actor is negative = 13 rows;
+- all three actors positive = 5/62 (8.06%).
+
+This materially supports actor separation. Aggregate three-institution sign frequently hides cross-actor disagreement and must not be treated as equivalent to consensus.
+
+### >=70 occupancy
+5/62 rows (8.06%) have institutionalScore >=70.
+
+This is only bounded-Shadow occupancy. It is NOT full-scan prevalence and does not establish a defect in the 10–30bn special-reason gate. The 100 cap and >=70 eligibility are separate questions.
+
+### Ownership remains cadence-blocked
+Large-holder concentration contributes mean 8.898 points and accounts for mean 36.6% / median 27.9% of pre-clamp score in this bounded archive.
+
+This is structurally material, but no economic sign may be inferred yet because TDCC is slow weekly ownership and immutable same-generation chipAsOfDate is not preserved in current research rows. Daily reuse of one weekly value must not multiply independent ownership evidence.
+
+### Promotion decision
+No FORMAL_OPTIMIZATION_CANDIDATE.
+
+Reason:
+- only two independent scan dates;
+- D5/D10/D20 institutional outcomes remain unavailable;
+- 9/23 archive gap persists;
+- TPEx external-evidence coverage remains incomplete;
+- passive-context denominator is incomplete;
+- ownership vintage provenance remains incomplete.
+
+---
+
+## IC-031 — broker branch flow is an execution-location proxy, not main-force identity
+
+Research artifact:
+`research/broker_branch_main_force_semantic_guard_v0_1.json`.
+
+Official exchange semantics materially falsify a common market shortcut.
+
+Broker/branch buy-sell data describe transactions executed through a broker/branch. They do not reveal a unique beneficial owner. A branch can aggregate many unrelated clients; one investor can route through several branches; and broker head-office rows can include proprietary activity.
+
+Therefore the following identity claim is prohibited:
+`BRANCH_NET_BUY => ONE_MAIN_FORCE/SMART_MONEY_BUYING`.
+
+Valid future research objects may include normalized branch-flow concentration, branch breadth and persistence, but their interpretation is order-routing/concentration evidence, not investor identity.
+
+A second falsification concerns sample construction. Official hot-stock/hot-broker subsets are conditioned on popularity/turnover. They cannot serve as an unbiased universe for testing branch alpha. A complete-universe or explicitly sampled denominator is required.
+
+The official complete all-stock branch product exists but is cost-gated. No paid source purchase is authorized or necessary for the current concept stage.
+
+Status: `MECHANISM_AND_FALSIFICATION_DEFINED / BENEFICIAL_OWNER_UNIDENTIFIABLE / OUTCOMES_CLOSED`.
+
+---
+
+## IC-032 — day trading is turnover composition, not directional inventory
+
+Research artifact:
+`research/day_trading_chip_crowding_semantic_guard_v0_1.json`.
+
+Official Taiwan stock-level day-trading data make this lane feasible, but the economic object must be kept straight.
+
+Day-trading activity measures same-session round-trip turnover under the applicable eligibility rules. It can proxy attention, liquidity demand, speculative intensity and short-horizon turnover. It is not an overnight position stock.
+
+Rejected shortcuts:
+- high day-trading ratio = bullish;
+- high day-trading ratio = bearish;
+- day-trading buy value minus sell value = clean directional inventory.
+
+Potential future state interaction:
+- high day-trading + weak price acceptance + high leverage/volatility may describe fragile speculative crowding;
+- high day-trading + strong depth/acceptance may instead describe healthy liquidity/participation.
+
+Therefore day trading enters D06 as context/interacting state, not as a standalone monotonic score.
+
+Prospective same-day source timestamp before the after-market decision clock still needs proof before L3.
+
+---
+
+## IC-033 — D06 curriculum denominator correction
+
+The learning map previously contained 12 D06 modules but omitted three subjects already required by the room scope:
+- broker branch / main-force proxies;
+- day trading / short-horizon turnover;
+- state-owned-bank / specific-fund flow.
+
+These are now explicitly restored as D06-13 through D06-15. Each starts at L2 because mechanisms and falsification conditions are defined, but PIT/OOS evidence is not mature.
+
+D06 therefore now contains 15 modules and remains 40.0%.
+
+This is a curriculum-denominator correction, not maturity inflation.
+
+## IC-034 — exact next continuation
+1. Do not change institutionalScore weights after the structural readback.
+2. Accumulate independent prospective scan dates until D5+ outcomes and readiness gates open.
+3. Pre-register component-level outcome comparisons before reading those outcomes: current-day direction, persistence-beyond-day1, nonlinear consensus, actor divergence, net intensity and ownership concentration.
+4. Preserve TDCC chipAsOfDate/chipDefinition prospectively before ownership outcome inference.
+5. Continue PF with prospective ETF units-delta + PCF timestamp/corporate-action receipts; do not substitute AUM delta.
+6. Keep LS-048 blocked unless a free documented official history contract or explicitly authorized artifact/subscription becomes available; do not incur data cost autonomously.
+7. For broker branches, require complete-universe/source-vintage evidence before alpha tests; do not use hot-stock leaderboards as a substitute.
+8. For day trading, first prove same-day PIT availability relative to the after-market decision clock, then test only conditional interactions.
+9. State-owned-bank flow remains context-only until its source contract and beneficial-owner ambiguity are handled.
+10. Formal Core remains LOCKED; current promotion status is FALSIFICATION_IN_PROGRESS.

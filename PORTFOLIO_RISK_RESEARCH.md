@@ -3646,3 +3646,286 @@ Status:
 `RUNTIME_READD_ABSENT / FRICTION_EVIDENCE_CONTRACT_READY / REALIZED_READD_ANALYSIS_BLOCKED`.
 
 No Formal change and no FORMAL_OPTIMIZATION_CANDIDATE.
+
+
+## PR-068 — Portfolio Heat × concentration Pareto frontier (2026-09-28)
+
+D15-07 Portfolio Heat is now separated from concentration.
+
+Plan-time Portfolio Heat is defined as:
+
+`Σ(allocation × planned stop-risk fraction) / total capital`.
+
+It answers:
+`How much of total capital is exposed to the planned stop-loss geometry if every selected plan is fully deployed?`
+
+This is distinct from HHI/Gini/CV/max-share/max-min, which answer:
+`How unevenly is that projected stop-risk distributed across names?`
+
+PR-068 exhaustively enumerates all legal same-deployment NT$1,000-grid allocations under the same 35% per-name cap and tests whether current sizing is Pareto-dominated in the two-dimensional space:
+
+`total projected heat × concentration`.
+
+The audit is repeated separately for:
+- HHI;
+- Gini;
+- CV;
+- maximum risk share;
+- max/min risk ratio.
+
+A comparator Pareto-dominates current only if it has:
+- lower or equal heat;
+- lower or equal concentration;
+- at least one strict improvement.
+
+A separate local test asks whether any one-grid NT$1,000 transfer already dominates current.
+
+### Governance firewall
+
+This is **risk-geometry dominance only**.
+
+A lower-heat / lower-concentration allocation can still be economically inferior if the current PriorityScore tilt contains genuine alpha. Therefore even a strong Pareto result cannot become a sizing recommendation without prospective D1/D3/D5, MFE/MAE, stop-first and cost-adjusted evidence.
+
+Artifacts:
+`research/portfolio_heat_frontier_v0_1.mjs`;
+`research/portfolio_heat_frontier_spec_v0_1.json`;
+`tests/portfolio_heat_frontier_readonly_audit.mjs`.
+
+Status:
+`D15_07_PORTFOLIO_HEAT_FRONTIER_READY / PRODUCTION_AUDIT_PENDING`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-068 Production result — current sizing is Pareto-dominated on pure plan-time risk geometry
+
+Read-only Production run `36424017307` / job `108933416195` evaluated the only reconstructable multi-name date, 2026-09-18.
+
+Current:
+- deployment = NT$168,000;
+- projected stop-risk = NT$6,483.4292;
+- Portfolio Heat / total capital = 3.241715%;
+- HHI = 0.3772380854;
+- Gini = 0.194697172;
+- CV = 0.3629245875;
+- max risk share = 0.493844079;
+- max/min = 2.4472159965.
+
+Across the 946 legal same-deployment NT$1,000-grid states:
+
+| concentration metric | Pareto-dominating states | one-grid dominating neighbors |
+|---|---:|---:|
+| HHI | 624 | 3 |
+| Gini | 624 | 3 |
+| CV | 624 | 3 |
+| maximum risk share | 599 | 2 |
+| max/min | 664 | 3 |
+
+Dominance requires lower-or-equal total planned heat and lower-or-equal concentration, with at least one strict improvement.
+
+Examples of one-grid moves that improve heat and HHI simultaneously:
+- 3105 -> 2006: 51k / 63k / 54k; heat 3.229784%; HHI 0.3740698539;
+- 3105 -> 6133: 50k / 63k / 55k; heat 3.234972%; HHI 0.3746961157;
+- 6133 -> 2006: 51k / 64k / 53k; heat 3.236527%; HHI 0.3766888267.
+
+Therefore the counter-hypothesis
+`current sizing lies on a necessary heat-vs-concentration tradeoff`
+is rejected on this witness.
+
+This result is stronger than a distant optimum because even the smallest legal NT$1,000 moves can improve both axes.
+
+### Critical limit
+
+This remains **pure risk geometry**.
+
+PriorityScore may encode real prospective alpha. Moving capital away from a higher-score name can reduce heat and concentration while also reducing expected return. Until multiple independent dates have mature D1/D3/D5, MFE/MAE, stop-first and cost-adjusted outcomes, there is no economic sizing recommendation.
+
+Receipt:
+`research/portfolio_heat_frontier_production_receipt_20260928.json`.
+
+Status:
+`CURRENT_PARETO_DOMINATED_ON_PLAN_RISK_GEOMETRY / LOCAL_DOMINANCE_CONFIRMED / ECONOMIC_VALUE_UNKNOWN / NOT_OPTIMIZATION_READY`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## D15-PH-001 — Planned Portfolio Heat is PIT-reconstructable; actual-live heat remains UNKNOWN
+
+Production read-only run `36424524478` / job `108935105751` validates two distinct plan-time heat measures:
+
+1. `planned projected stop-risk / total capital`
+   - includes designed strategic reserve in the denominator;
+   - useful for capital-at-risk accounting.
+
+2. `planned projected stop-risk / planned deployment`
+   - conditions on planned deployed capital;
+   - useful for risk intensity of the active plan set.
+
+Production:
+- 2026-09-18: 3.241715% total-capital heat; 3.859184% deployed-capital risk intensity;
+- 2026-09-21: 1.306953% / 3.734151%;
+- 2026-09-22 and 2026-09-23: zero selected names -> planned heat = 0, deployed-capital intensity = N/A.
+
+Zero selection must not be encoded as 0% deployed intensity because the denominator is zero.
+
+A one-name date is classified as `DEGENERATE_SINGLE_NAME` for concentration; HHI=1 in that case is not by itself evidence of poor diversification because no multi-name allocation decision exists.
+
+### Evidence boundary
+
+This validates **planned Portfolio Heat**, not actual-live holdings heat.
+
+Actual-live heat still requires:
+- broker-confirmed holdings/fills;
+- actual position quantities;
+- actual effective stops;
+- treatment of external/manual holdings.
+
+Therefore D15-07 can advance to L3 for PIT plan-time reconstruction while actual-live heat remains blocked.
+
+Receipt:
+`research/portfolio_heat_semantics_production_receipt_20260928.json`.
+
+Status:
+`PLAN_TIME_PORTFOLIO_HEAT_PIT_VALIDATED / ACTUAL_LIVE_HEAT_UNKNOWN / D15_07_L3`.
+
+Formal Core unchanged.
+
+
+## PR-069 — lifecycle heat envelope + Expected Shortfall semantic firewall (2026-09-28)
+
+### D15-10 FIRST / ADD / FULL lifecycle envelope
+
+Existing FIRST-only and ADD-only research is consolidated into one plan-time lifecycle envelope:
+
+- FIRST = current Formal 60% planned tranche preview;
+- ADD_INCREMENT = residual 40% planned tranche preview;
+- FULL = FIRST + ADD planned preview.
+
+The envelope enforces the accounting identities:
+
+`FULL notional = FIRST notional + ADD notional`
+
+and
+
+`FULL projected stop-risk = FIRST projected stop-risk + ADD projected stop-risk`
+
+within numerical tolerance.
+
+This is useful because it separates three different questions:
+1. what early planned exposure would look like;
+2. what additional risk an ADD would introduce if it became valid and executed;
+3. what the full planned risk envelope is.
+
+### Lifecycle firewall
+
+None of those plan-time states prove the actual position lifecycle.
+
+Without confirmed fill/holdings provenance, the research must not claim:
+- BUY filled;
+- portfolio reached FIRST;
+- ADD triggered;
+- ADD filled;
+- portfolio reached FULL;
+- later REDUCE changed actual exposure.
+
+Thus D15-10 can gain a stronger plan-envelope contract, but actual lifecycle transition evidence remains blocked.
+
+### D15-13 Expected Shortfall firewall
+
+Expected Shortfall (ES) is a tail-distribution concept, not a synonym for stop distance or projected stop loss.
+
+Minimum ES research inputs are frozen as:
+- a loss distribution or sufficiently specified loss-scenario distribution;
+- confidence level;
+- horizon;
+- PIT eligibility;
+- adequate tail sample/scenario support;
+- explicit portfolio aggregation semantics.
+
+The following cannot be relabeled ES:
+- planned stop distance;
+- planned projected stop-risk;
+- MFE / MAE;
+- stop-first rate;
+- one worst loss;
+- a drawdown point estimate.
+
+Those remain scenario/path risk metrics unless a valid loss-distribution model is separately established.
+
+Artifacts:
+`research/planned_lifecycle_heat_envelope_v0_1.mjs`;
+`research/planned_lifecycle_heat_envelope_spec_v0_1.json`;
+`tests/planned_lifecycle_heat_readonly_audit.mjs`;
+`research/expected_shortfall_semantic_firewall_v0_1.mjs`;
+`research/expected_shortfall_semantic_firewall_spec_v0_1.json`.
+
+Status:
+`PLAN_LIFECYCLE_ENVELOPE_SOURCE_READY / ACTUAL_STAGE_TRANSITIONS_BLOCKED / ES_SEMANTIC_FIREWALL_FROZEN / D15_10_L2 / D15_13_L2`.
+
+No FORMAL_OPTIMIZATION_CANDIDATE. Formal Core unchanged.
+
+
+## PR-069 Production result — FIRST/ADD/FULL plan envelope is PIT-reconstructable, actual lifecycle is not
+
+Production read-only run `36425890207` / job `108939621579` validates the plan-time lifecycle envelope.
+
+2026-09-18:
+- FIRST preview heat = 1.940885%;
+- ADD incremental preview heat = 1.289100%;
+- FULL preview heat = 3.229985%;
+- FULL preview notional = NT$167,471.13;
+- FIRST + ADD risk/notional conservation = exact.
+
+2026-09-21:
+- FIRST = 0.782560%;
+- ADD increment = 0.519920%;
+- FULL = 1.302480%;
+- conservation = exact.
+
+2026-09-22 / 2026-09-23:
+- zero selected plans -> all planned lifecycle envelopes are zero;
+- actual lifecycle exposure remains UNKNOWN.
+
+This supports:
+`plan lifecycle envelope is PIT-reconstructable`.
+
+It does **not** support:
+`the account actually entered FIRST/FULL or executed ADD`.
+
+Therefore D15-10 remains L2 until positive fill/holdings evidence can reconstruct actual stage transitions.
+
+Receipt:
+`research/planned_lifecycle_heat_production_receipt_20260928.json`.
+
+Status:
+`PLAN_LIFECYCLE_ENVELOPE_PIT_VALIDATED / ACTUAL_STAGE_TRANSITIONS_BLOCKED / D15_10_REMAINS_L2`.
+
+Formal Core unchanged.
+
+
+### D15-13 data-readiness dependency
+
+A current System2 read-only official historical-source smoke validates that full-market TWSE/TPEx daily payloads can be fetched for both an old date (2017-01-03) and a recent date (2026-09-24), including an anti-survivorship witness.
+
+That is **source-foundation evidence only**.
+
+The smoke explicitly performs no System2 D1 write and no System1 mutation. It does not prove:
+- a continuous persisted historical panel;
+- exhaustive trading-calendar coverage;
+- PIT selected-cohort joins;
+- adequate tail sample size;
+- a frozen confidence level/horizon;
+- transaction-cost-adjusted tail losses.
+
+Therefore:
+`official historical source exists`
+does not imply
+`Expected Shortfall dataset is ready`.
+
+D15-13 remains L2.
+
+Dependency artifact:
+`research/d15_tail_distribution_data_readiness_v0_1.json`.
+
+Status:
+`HISTORICAL_SOURCE_FOUNDATION_AVAILABLE / CONTINUOUS_TAIL_DATASET_NOT_PROVEN`.

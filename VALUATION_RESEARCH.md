@@ -140,3 +140,77 @@ Falsification:
 This architecture is a RESEARCH_CANDIDATE, not a FORMAL_OPTIMIZATION_CANDIDATE. Evidence is not yet sufficient for System 1/System 2 production changes.
 
 Exact next continuation: verify point-in-time component availability, freeze sector policies and formulas, then create prospective Shadow schema before any return comparison.
+
+
+## VAL-013 — Forward PE is a forecast-vintage object, not simply a better PE
+
+Forward PE must freeze both the earnings horizon and the forecast vintage. Price / next-fiscal-year EPS, Price / next-twelve-month EPS and Price / current-year consensus EPS are different variables and must never be pooled under one label.
+
+Required semantics before any Taiwan test:
+- price timestamp/date;
+- forecast provider and consensus construction rule;
+- exact forecast snapshot/vintage timestamp;
+- number/coverage of contributing analysts where available;
+- EPS horizon and fiscal-year mapping;
+- treatment of negative/near-zero expected EPS;
+- revision history rather than only the latest consensus.
+
+Taiwan evidence published in 2026 reports predictive content in analyst forecast earnings-growth revisions, but that study used a proprietary/third-party consensus dataset and a restricted index-based sample. It supports the research mechanism; it does not supply this system with a canonical licensed point-in-time source and does not justify importing its reported return magnitudes as thresholds.
+
+Current repository source matrix still classifies Forward PE/estimates as SOURCE_NEEDED. Therefore D08-04 advances only to L1 theory-understood, not L2/L3.
+
+Status: D08-04 L1 THEORY_DEFINED / CANONICAL_PIT_SOURCE_NEEDED / NO_FORMAL_CHANGE.
+
+## VAL-014 — PEG requires more guards than PE divided by growth
+
+PEG is attractive because it attempts to relate valuation to growth, but the denominator makes it fragile.
+
+Frozen counterexamples:
+- negative expected growth makes the sign economically ambiguous;
+- growth near zero explodes the ratio;
+- one-year growth and multi-year PE horizons create horizon mismatch;
+- cyclical rebound from a depressed base can produce an artificially low PEG;
+- high sustainable growth with long duration can look expensive under a short-horizon PEG;
+- different providers may use trailing PE, forward PE, historical EPS growth or forecast growth, producing non-comparable PEG values.
+
+Research rule: PEG may only be derived when the PE basis and growth basis share an explicitly compatible horizon and forecast vintage. Otherwise PEG=UNKNOWN. It is a contextual normalization candidate, not a universal cheapness threshold.
+
+Falsification: compare PEG against its two primitives (valuation and expected growth/revision). If PEG adds no stable incremental information after those primitives and sector/regime controls, mark it REDUNDANT.
+
+Status: D08-05 MECHANISM_PLUS_COUNTEREVIDENCE_DEFINED / L2 / PIT_SOURCE_DEPENDENT / NO_FORMAL_CHANGE.
+
+## VAL-015 — Quality-adjusted valuation preregistration now exists before outcomes
+
+Machine-readable spec: research/fundamental_quality_valuation_shadow_spec_v0_1.json.
+
+Initial point-in-time valuation lane:
+- official same-day trailing PE;
+- official same-day PB;
+- sector-relative PE only when the peer set is economically coherent and sufficiently observed.
+
+Blocked until separate source contracts:
+- Forward PE / analyst estimates;
+- PEG;
+- EV/EBITDA;
+- FCF Yield;
+- historical PE/PB percentile.
+
+The preregistered hypotheses remain symmetric: expensive/improving-quality may be justified; cheap/deteriorating-quality may be a value trap; cheap/stable-or-improving quality may represent value-quality; valuation may help downside/path-quality more than very-short-horizon directional return.
+
+The design explicitly prohibits outcome-driven threshold sweeps and requires comparison against existing fundamentalScore, technical/PV, RS, industry/regime, liquidity/size and overheat controls.
+
+Status: PREREGISTERED_SHADOW_ARCHITECTURE / PIT_PARTIAL / OUTCOMES_LOCKED / NOT_FORMAL_OPTIMIZATION_CANDIDATE.
+
+## VAL-016 — International profitability/value evidence strengthens the interaction hypothesis, not a low-valuation rule
+
+The Fama-French five-factor evidence shows profitability and investment can absorb part of traditional value information in their U.S. sample; Novy-Marx shows gross profitability can predict returns despite profitable firms often trading at richer valuations. But international evidence is heterogeneous: profitability/investment relations are weaker in some regions/markets.
+
+System implication:
+- valuation should be tested conditionally on quality, investment/reinvestment and regime;
+- a premium found internationally must not be imported as a Taiwan production factor;
+- if Taiwan PIT/OOS results show quality already explains the apparent valuation effect, valuation should be down-weighted/rejected as redundant rather than preserved by intuition;
+- conversely, if valuation contributes independent downside/path-quality information after quality controls, retain it as a conditional risk dimension.
+
+This directly supports the pre-registered interaction architecture while preserving a symmetric rejection path.
+
+Exact next continuation: finish the official GENERAL_INDUSTRY cash/balance-sheet field contract and accumulate prospective receipts; Forward PE/PEG remain source-gated and must not delay the source-honest trailing-valuation Shadow lane.

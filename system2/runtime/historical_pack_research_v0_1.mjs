@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { gzipSync, gunzipSync } from "node:zlib";
 import { deepFreeze } from "./factor_snapshot.mjs";
 import { sha256Hex, canonicalStringify } from "./decision_archive.mjs";
@@ -48,6 +49,26 @@ function groupKey(row) {
   ].join("|");
 }
 
+function assertPackGroupRows(group, key) {
+  const seenDates = new Set();
+  const [market, symbol, year, priceSpace] = key.split("|");
+  for (const row of group) {
+    if (row.market !== market || row.symbol !== symbol || row.priceSpace !== priceSpace) {
+      throw new Error("historical pack group identity mismatch: " + key);
+    }
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(String(row.marketDate || ""))) {
+      throw new Error("historical pack marketDate must be YYYY-MM-DD");
+    }
+    if (row.marketDate.slice(0, 4) !== year) {
+      throw new Error("historical pack row escaped year partition: " + key);
+    }
+    if (seenDates.has(row.marketDate)) {
+      throw new Error("duplicate historical pack marketDate: " + key + "|" + row.marketDate);
+    }
+    seenDates.add(row.marketDate);
+  }
+}
+
 export async function buildHistoricalA1PacksResearchV0_1({
   rows = [],
   capturedAt,
@@ -66,6 +87,7 @@ export async function buildHistoricalA1PacksResearchV0_1({
   const packs = [];
   for (const [key, group] of groups.entries()) {
     group.sort((a, b) => a.marketDate.localeCompare(b.marketDate));
+    assertPackGroupRows(group, key);
     const [market, symbol, year, priceSpace] = key.split("|");
     const canonicalPayload = {
       market,
@@ -82,6 +104,7 @@ export async function buildHistoricalA1PacksResearchV0_1({
     const payloadHash = await sha256Hex(canonicalPayload);
     const gz = gzipSync(Buffer.from(payloadText, "utf8"), { level: 9 });
     const gzipBase64 = gz.toString("base64");
+    const objectSha256 = createHash("sha256").update(gz).digest("hex");
     const packId = "S2HP-A1-" + payloadHash;
 
     packs.push(deepFreeze({
@@ -97,6 +120,9 @@ export async function buildHistoricalA1PacksResearchV0_1({
       payloadJsonBytes: Buffer.byteLength(payloadText, "utf8"),
       gzipBytes: gz.byteLength,
       base64Bytes: Buffer.byteLength(gzipBase64, "utf8"),
+      objectSha256,
+      sourceId: canonicalPayload.sourceId,
+      sourceName: canonicalPayload.sourceName,
       gzipBase64,
       capturedAt: captured,
       schemaVersion: "S2_HISTORICAL_A1_PACK_RESEARCH_V0_1",

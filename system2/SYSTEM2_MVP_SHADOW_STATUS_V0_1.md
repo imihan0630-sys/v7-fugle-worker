@@ -45,10 +45,11 @@ Implemented:
 Implemented and physically verified:
 - isolated D1 database: `system2-research`;
 - binding: `SYSTEM2_DB`;
-- schema V0.5;
-- 26 `s2_` tables;
+- schema V1.0 is physically applied and contains 39 `s2_` tables, including external cold-pack manifests, resumable checkpoints, completion receipts and historical-universe registry receipts;
 - write/read sentinel verification and replay-safe persistence;
 - no System 1 / V8 production D1 reuse.
+
+Physical qualification note: isolated D1 schema V1.0 migration plus write/read verification passed in GitHub run `36434206278`. The isolated R2 bucket `system2-historical-research` and least-privilege object credentials are now provisioned. Bounded external R2 physical readback run `36488764511` PASS with official TWSE/TPEx data, exact object SHA-256 verification, unpack verification and create-only rerun checks. V0.9 inline smoke packs remain read-compatible, but new multi-year backfill is routed only through the external cold-object path and remains staged/manual-only by year.
 
 Existing schema already contains:
 - factor snapshots;
@@ -60,6 +61,7 @@ Existing schema already contains:
 - outcomes;
 - strategy daily performance;
 - experiment / provenance receipts.
+- external cold-pack manifests/checkpoints/receipts and historical-universe registry receipts (schema V1.0 applied to isolated `system2-research`; no R2 objects populated yet).
 
 ### Worker / deployment skeleton
 
@@ -150,7 +152,46 @@ Incremental backfill support is also implemented:
 - backfill work is chunked and checkpoint/resume capable;
 - tests explicitly verify 2026-09-24 → 2026-09-25 continuation.
 
-Important limitation: this is an executable engineering foundation, **not** a claim that the 2017→present official historical dataset has already been physically populated. The next P0 step is source-specific TWSE/TPEx historical ingestion and isolated-D1 readback verification, followed by the first real full-market replay.
+Important limitation: this is an executable engineering foundation, **not** a claim that the 2017→present official historical dataset has already been physically populated. The next P0 step is isolated R2 provisioning plus D1 schema V1.0, followed by bounded object/manifest qualification, staged official TWSE/TPEx annual ingestion and the first real full-market replay.
+
+## 1B. Packed historical cold-store path verified and externalized (2026-09-28)
+
+The legacy V0.9 validation established the packed representation before externalization:
+- schema V0.9 adds `s2_historical_a1_packs` and `s2_historical_pack_ingest_receipts`;
+- packs are keyed by market + symbol + year + price-space;
+- payloads are canonicalized, hashed, gzip-compressed and Base64-stored;
+- reruns are idempotent; differing content at the same logical pack key fails closed as an immutable conflict;
+- query/unpack reconstructs ordinary historical bars with conservative per-date session-close `availableAt` semantics for PIT replay.
+
+Real official-source + isolated-D1 smoke run `36427386634` PASS:
+- 2026-08-03→2026-08-31 (21 trading dates);
+- TWSE 2330/2454 and TPEx 3105/6488;
+- 84 packed bars round-tripped exactly through D1;
+- observed gzip payload ratio was about 0.41 and Base64 storage ratio about 0.54–0.56 versus canonical JSON;
+- System1 production isolation PASS and V8 Regression `36427386650` PASS.
+
+The full-market one-month benchmark is complete: 41,456 bars became 1,977 packs; gzip was 1,389,468 bytes and Base64-in-D1 would have been 1,855,256 bytes. The conservative 4.7M-bar projection was about 150.2 MiB gzip or 200.6 MiB Base64 payload before SQLite/index/receipt overhead. This accepted yearly per-symbol packs as the preferred cold representation and rejected row-wise multi-million-bar D1 storage.
+
+The production-quality research path now externalizes compressed bytes:
+- schema V1.0 table `s2_historical_a1_pack_manifests` stores only deterministic object keys, payload/object hashes, coverage, source metadata and byte counts;
+- compressed `.json.gz` objects are written immutably to isolated Cloudflare R2; D1 does not store `gzip_base64` on the new path;
+- object SHA-256 is verified before manifest commit and again on read; same logical key with different immutable content fails closed;
+- `s2_historical_cold_backfill_checkpoints` supports chunk resume and immutable retry validation, while `s2_historical_cold_ingest_receipts` is written only after all objects and manifests are ready;
+- a completed-receipt rerun recomputes the manifest rolling hash and verifies every referenced R2 object before it can return `ALREADY_COMPLETE`;
+- legacy V0.9 inline packs remain read-only compatible for existing bounded smoke evidence;
+- unpacked rows now preserve actual backfill `observedAt`, conservative session-close `availableAt`, deterministic `barHash` and source provenance, so they can feed PIT Replay directly;
+- `createHistoricalColdBacktestLoadersV0_1` connects D1 survivorship-registry membership and R2 cold packs to the existing partitioned Bulk Backtest Runner;
+- historical-universe registries now have rerun-safe immutable persistence and completion receipts.
+
+The 2017 annual backfill workflow remains manual-only. The isolated R2 bucket plus least-privilege object read/write credentials are now physically qualified; the 2017 full-market cold backfill itself is not yet claimed complete.
+
+PR #245 qualification evidence:
+- System2 Research CI run `36434552698` PASS;
+- V8 Regression run `36434552278` PASS;
+- isolated D1 schema V1.0 physical smoke run `36434206278` PASS;
+- bounded official-source V0.9 pack compatibility/readback run `36434541564` PASS after source-row provenance was made opt-in for the new external-cold annual path.
+
+The isolated D1 schema V1.0 migration and bounded R2 provisioning/readback qualification are complete. The 2017 annual external-cold population remains pending and is not claimed complete.
 
 ## 2. Designed but not yet fully implemented
 
@@ -158,7 +199,7 @@ The following are not allowed to be described as complete:
 
 - end-to-end daily orchestrator:
   source fetch -> per-symbol history -> factor observations -> family assessments -> strategy state -> ranking/capacity -> final cohort -> Prediction Snapshot -> isolated D1 persistence;
-- production-grade A1 historical-window adapter needed for MA slopes, RVOL, breakout/range/volatility and other multi-session factors;
+- physical 2017→present external cold-object population and readback qualification;
 - full per-company fundamental metric extraction for SWING_GROWTH; current A5 observer proves filing/vintage coverage, not the complete quantitative factor set;
 - B2 directional industry thesis / strategy score; current B2 observer derives prospective industry snapshot but explicitly does not assign thesis direction or strategy score;
 - final `SELECTED` authorization policy for the initial strategies;
@@ -294,10 +335,10 @@ Do not block MVP on these:
 
 Engineering order:
 
-1. A1 historical-window + factor adapter.
-2. Historical Data Store + PIT Replay + Bulk Backtest Runner, sharing normalized inputs/factors with the daily path.
+1. ✅ Provision and physically qualify the isolated System2 R2 history bucket + least-privilege object credentials; isolated D1 schema V1.0 is applied.
+2. Run staged 2017 TWSE first, then TPEx external cold-pack backfill; verify object hashes/manifests/receipts/universe coverage before continuing year by year.
 3. Full-market orchestrator through frozen decision / Prediction Snapshot persistence.
-4. Historical Base Dataset generation with Selected / Near-miss / Important Rejected and outcome linkage.
+4. First real full-market PIT Replay/Bulk Backtest and Historical Base Dataset generation with Selected / Near-miss / Important Rejected and outcome linkage.
 5. Automated outcome persistence + minimum execution simulator.
 6. Prepare initial final-selection policy candidates and evidence packet for owner approval.
 7. Continue Decision Clock prospective evidence in parallel.

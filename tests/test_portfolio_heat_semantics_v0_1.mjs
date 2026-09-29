@@ -1,0 +1,13 @@
+import assert from "node:assert/strict";
+import {classifyPlannedPortfolioHeat} from "../research/portfolio_heat_semantics_v0_1.mjs";
+let x=classifyPlannedPortfolioHeat([],200000);
+assert.equal(x.totalCapitalHeatPct,0);
+assert.equal(x.deployedCapitalRiskIntensityPct,null);
+assert.equal(x.concentrationStatus,"NOT_APPLICABLE_NO_SELECTED_NAMES");
+x=classifyPlannedPortfolioHeat([{totalAllocation:70000,buyHigh:100,stop:95}],200000);
+assert.equal(x.selectedCount,1);
+assert.equal(x.totalCapitalHeatPct,1.75);
+assert.equal(x.deployedCapitalRiskIntensityPct,5);
+assert.equal(x.concentrationStatus,"DEGENERATE_SINGLE_NAME");
+assert.equal(classifyPlannedPortfolioHeat([{totalAllocation:70000,buyHigh:100,stop:105}],200000).status,"UNKNOWN");
+console.log(JSON.stringify({ok:true,rule:"zero-selection planned heat=0 but deployed intensity=N/A; one-name concentration is degenerate, not a diversification verdict"},null,2));

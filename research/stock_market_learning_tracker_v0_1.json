@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-09-28T19:52:00+08:00",
+  "updatedAt": "2026-09-29T00:13:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -33,7 +33,7 @@
   "aggregate": {
     "domainCount": 18,
     "moduleCount": 226,
-    "maturityWeightedPct": 45
+    "maturityWeightedPct": 45.9
   },
   "domains": [
     {
@@ -254,10 +254,10 @@
           "levelMeaning": "機制＋反證已定義"
         }
       ],
-      "exactNextContinuationPoint": "PVE-174: inspect first post-enable ordinary-market receipts only when available; run PVE-149 Gate 0→7 before outcomes. 2026-09-29 intraday remains DATA_QA-only, 2026-09-29 after-market is first new selection/bootstrap receipt, and 2026-09-30 is first potentially clean cohort. Then execute horizon-separated A/B/C/D common-support, price-only vs price+volume, quadrant/response, breakout-quality, and dry-up lifecycle analyses without threshold tuning.",
-      "status": "LONG_BLOCK_STAGE_II_COMPLETE_WAITING_PROSPECTIVE_EVIDENCE",
-      "lastResearchUpdate": "2026-09-28",
-      "researchNote": "PVE-168~173 froze quadrant-as-descriptor semantics, liquidity-pressure alternative explanation, horizon separation, breakout volume necessity-vs-quality, and a PIT-safe two-leg dry-up lifecycle. No maturity promotion because Taiwan prospective/OOS evidence is not yet available."
+      "exactNextContinuationPoint": "PVE-187: on the first 2026-09-29 ordinary intraday receipts, run PVE-149 Gate 0→7 plus PVE-174~185 overlays before any outcome inspection. Keep all 9/29 intraday rows DATA_QA-only because plan lineage inherits 2026-09-24. Explicitly count Guard INVALID/GUARDED/VALID, raw Acceptance transitions, ACTIVE_ACCEPTANCE_LIFECYCLES, PRE_EVENT_ONLY_EXPIRIES, raw anchorEligible and HYPOTHESIS_CLEAN_ANCHORS. After the 9/29 after-market run, inspect selection/bootstrap receipts and baseline freshness/lineage; 9/30 remains only the earliest potentially clean cohort.",
+      "status": "LONG_BLOCK_STAGE_IV_COMPLETE_WAITING_2026_09_29_RUNTIME_QA",
+      "lastResearchUpdate": "2026-09-29",
+      "researchNote": "PVE-181~186 found two additional v0.1 evidence-semantic defects before outcome inspection: 13:00 PRE_EVENT can be forced to EXPIRED_AMBIGUOUS and manufacture a PVACC event key without a genuine trigger; Acceptance/anchorEligible are not fail-closed when Guard interpretability is INVALID, unlike Persistence. H003 event denominator is now RAW_ACCEPTANCE_KEY -> ACTIVE_LIFECYCLE -> HYPOTHESIS_CLEAN_EVENT. Outcome storage remains separate from inference eligibility. No maturity promotion and no Formal change."
     },
     {
       "id": "D03",
@@ -268,6 +268,10 @@
         "TREND_MOMENTUM_REVERSAL_CHECKPOINT.md"
       ],
       "maturityPct": 44.6,
+      "status": "SOURCE_PIT_FALSIFICATION_IN_PROGRESS",
+      "lastResearchUpdate": "2026-09-29",
+      "researchNote": "TI-409/410/411 isolate three independent source-time defects: unbound content hash, later revision at an earlier as-of, and same-date completed daily bar before session completion. Synthetic QA only; D03 module levels and maturity are unchanged, outcome joins remain closed, Formal Core LOCKED.",
+      "exactNextContinuationPoint": "Consolidate TI-409/410/411 into an upstream independently attested immutable row-version receipt with raw field content, completion/session and version availability clocks, corporate-action ancestry and exact parent-generation commitment. Obtain authorized outcome-blind real OHLC/version/session coverage and parent-child/cost counts; preserve UNKNOWN. Keep TI-005/TI-006 outcome tests and Class-B runtime capture blocked until PIT and governance gates pass.",
       "modules": [
         {
           "id": "D03-01",
@@ -464,7 +468,11 @@
           "learningScope": "聚焦「漲跌停對波動估計污染」。學習範圍：波動率計算、窗口與尺度；收縮、擴張、跳空與狀態轉換；個股與市場波動互動；漲跌停／停牌污染；在選股、停損、部位縮放與Regime判斷中的用途。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義"
         }
-      ]
+      ],
+      "status": "FALSIFICATION_IN_PROGRESS",
+      "exactNextContinuationPoint": "D04-RV-PERSIST-01: current repo can compute official TAIEX volatility but does not yet durably wire MARKET_RV5_CC_SIMPLE / MARKET_RV20_CC_SIMPLE / MARKET_RV_RATIO_5_20 into regimeFactorObservations. First valid evidence begins only when raw values are prospectively persisted with same decision-clock source receipt and immutable run linkage. Historical first-known reconstruction remains prohibited. After independent valid dates accumulate, test overlapping RV5/RV20 versus non-overlap recent5/prior15 only as robustness. ATR outcome analysis still waits for the shared immutable per-symbol decision-state parent; also retain relativeTickBps / atrTicksApprox / stopDistanceTicksApprox as execution-granularity controls, not new thresholds.",
+      "lastResearchUpdate": "2026-09-28T21:04:00+08:00",
+      "researchNote": "ATR decomposition + observability audit frozen. Same-scan computation is feasible with existing Class-A observers; legacy Shadow denominator is bounded/mutable/first-failure-conditioned and prohibited for promotion-grade ATR outcome inference. D04 maturity unchanged."
     },
     {
       "id": "D05",
@@ -556,7 +564,11 @@
           "learningScope": "聚焦「停牌／無交易日／pseudo-bar語意」。學習範圍：台股撮合制度、Tick、限價與集合競價；買賣價差、深度、委託流、流動性狀態；零股／整股差異；資料可觀測性限制；對可成交性、滑價與訊號品質的影響。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "台股PIT資料可行"
         }
-      ]
+      ],
+      "status": "EVIDENCE_PENDING",
+      "exactNextContinuationPoint": "D05-HORIZON-02: no new indicator invention. Before true OFI, prove prospective books+trades capture semantics. Fugle trades expose serial but books have no documented sequence, so bookProviderMessageCount is not proven exchangeBookEventCount; use snapshotDeltaPressureProxy unless completeness is established. Once a complete ledger exists, run nested B0 activity/risk -> B1 spread/top1 -> B2 pressure-response -> B3 single top5 block, with time-shift, sign-shuffle, event-intensity, spread-only, volatility/activity and session-mechanism negative controls across E0 event -> E1 1m/5m -> E2 10m/15m -> E3 30m. Separate price formation, breakout path quality and execution quality.",
+      "lastResearchUpdate": "2026-09-28T21:04:00+08:00",
+      "researchNote": "Dual-clock/horizon-retention protocol frozen. No new indicators or L3 promotion until own Taiwan PIT event completeness is proven."
     },
     {
       "id": "D06",
@@ -565,25 +577,28 @@
       "anchors": [
         "INSTITUTIONAL_CROWDING_RESEARCH.md",
         "LEVERAGE_SHORTING_CHECKPOINT.md",
-        "PASSIVE_FLOW_INDEX_REBALANCING_CHECKPOINT.md"
+        "PASSIVE_FLOW_INDEX_REBALANCING_CHECKPOINT.md",
+        "research/broker_branch_main_force_semantic_guard_v0_1.json",
+        "research/day_trading_chip_crowding_semantic_guard_v0_1.json",
+        "system2/SYSTEM2_STATE_OWNED_BANK_FLOW_RESEARCH.md"
       ],
-      "maturityPct": 40,
+      "maturityPct": 45.3,
       "modules": [
         {
           "id": "D06-01",
           "name": "外資現貨流",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「外資現貨流」。學習範圍：外資、投信、自營商、融資融券、借券、集保與被動資金的資料語意；Flow與Stock差異；擁擠與反向風險；流動性正規化；事件時點與因果混淆。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "台股PIT資料可行"
         },
         {
           "id": "D06-02",
           "name": "投信流",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「投信流」。學習範圍：外資、投信、自營商、融資融券、借券、集保與被動資金的資料語意；Flow與Stock差異；擁擠與反向風險；流動性正規化；事件時點與因果混淆。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "台股PIT資料可行"
         },
         {
           "id": "D06-03",
@@ -596,10 +611,10 @@
         {
           "id": "D06-04",
           "name": "法人連買／持續性",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「法人連買／持續性」。學習範圍：外資、投信、自營商、融資融券、借券、集保與被動資金的資料語意；Flow與Stock差異；擁擠與反向風險；流動性正規化；事件時點與因果混淆。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "台股PIT資料可行"
         },
         {
           "id": "D06-05",
@@ -660,16 +675,40 @@
         {
           "id": "D06-12",
           "name": "法人流對流動性／價格反應正規化",
+          "level": "L3",
+          "maturityPct": 60,
+          "learningScope": "聚焦「法人流對流動性／價格反應正規化」。學習範圍：外資、投信、自營商、融資融券、借券、集保與被動資金的資料語意；Flow與Stock差異；擁擠與反向風險；流動性正規化；事件時點與因果混淆。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "台股PIT資料可行"
+        },
+        {
+          "id": "D06-13",
+          "name": "券商分點／主力代理變數",
           "level": "L2",
           "maturityPct": 40,
-          "learningScope": "聚焦「法人流對流動性／價格反應正規化」。學習範圍：外資、投信、自營商、融資融券、借券、集保與被動資金的資料語意；Flow與Stock差異；擁擠與反向風險；流動性正規化；事件時點與因果混淆。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "learningScope": "聚焦「券商分點／主力代理變數」。研究券商總分公司買賣、分點集中度、持續性與流向反應，但必須區分執行通路與受益人身分；總公司自營混入、同分點多客戶、同客戶多分點、券商代碼Vintage、熱門股樣本選擇偏誤與資料授權／成本都必須納入。不得把分點淨買直接標成主力、聰明錢或單一大戶；每個結論需正反驗證、PIT、完整母體與增量價值檢查。",
+          "levelMeaning": "機制＋反證已定義"
+        },
+        {
+          "id": "D06-14",
+          "name": "當沖率／短線換手",
+          "level": "L2",
+          "maturityPct": 40,
+          "learningScope": "聚焦「當沖率／短線換手」。研究個股與市場當沖成交股數／金額占比、短線換手與注意力／流動性／擁擠的交互作用；原始量必須按個股成交量值、橫截面與自身歷史正規化，並控制當沖資格、處置／變更交易、規則Vintage與市場Regime。高當沖不得直接解讀為多或空，買賣金額差也不得當作乾淨方向部位；需正反驗證其對波動、假突破、MAE/MFE與續航的增量價值。",
+          "levelMeaning": "機制＋反證已定義"
+        },
+        {
+          "id": "D06-15",
+          "name": "官股行庫／特定資金流",
+          "level": "L2",
+          "maturityPct": 40,
+          "learningScope": "聚焦「官股行庫／特定資金流」。研究公股行庫逆勢承接、正常化賣出、與外資／投信／市場壓力的背離及可能的穩定市場脈絡；必須區分公股行庫一般投資、政府基金、國安基金與透過公股券商路由的交易，未有獨立證據時動機與最終受益人均為UNKNOWN。初期只作Context／Warning Modifier研究，不得把公股買進直接當利多或公股賣出直接當利空。",
           "levelMeaning": "機制＋反證已定義"
         }
       ],
-      "status": "LONG_BLOCK_MULTIAXIS_CROWDING_AND_PASSIVE_FALSIFICATION_ADVANCED / OUTCOME_DATA_GATED",
-      "exactNextContinuationPoint": "IC-030/PF-037/LS-048: do not invent a scalar crowding score. Obtain verified row-level/server-side aggregate prospective institutional snapshots for outcome-blind decomposition; preserve TDCC chipAsOfDate prospectively; build PIT-normalized leverage/shorting state inputs when LS source gates permit; use bounded MSCI Standard Taiwan membership negative evidence only within scope and only via authorized/licensed data paths; no institutional/crowding outcomes until data-quality gates pass.",
-      "lastResearchUpdate": "2026-09-28",
-      "researchNote": "IC-025~029 / PF-035~036: current Shadow archive remains 62 rows over 2 dates, D5=0, integrity RESEARCH_DATA_GAP. Weekly TDCC ownership cannot count as daily independent evidence and holder identity/passive share is unidentifiable. Four-cycle official MSCI Global Standard Taiwan lists validate a bounded membership-add/delete negative-evidence method, but not broad passive-flow absence and public-source use restrictions create a licensing gate. 2026 TWSE market-structure evidence falsifies nominal margin balance as a scale-free crowding alarm; long/short/borrow/actual-short/ownership/passive context are frozen as separate multi-axis states. D06 stays 40.0%; no L3 promotion without PIT empirical coverage."
+      "status": "IC030_STRUCTURAL_READBACK_COMPLETE / PF038_SOURCE_CONTRACT_ADVANCED / LS047A_COST_GATED / OUTCOME_MATURITY_WAITING",
+      "exactNextContinuationPoint": "IC-035/PF-039/LS-048: accumulate clean independent prospective scan dates and D5+ maturity; pre-register component-level institutional outcome tests before reading them; preserve TDCC chipAsOfDate prospectively; validate bounded domestic in-kind ETF units-delta+PCF receipts; keep TPEx leverage history cost/authorization gate closed unless a free documented endpoint or explicitly authorized artifact becomes available; begin no broker-branch/daytrade alpha test until complete-universe/PIT source contracts pass.",
+      "lastResearchUpdate": "2026-09-29",
+      "researchNote": "IC-030 Production outcome-blind readback: 62/62 institutionalScore rows reconstruct, 0 streak-endpoint mismatches, 0/62 score saturation, actor divergence 36/62 (58.06%). Same-session direction accounts for mean 39.1% / median 43.2% of pre-clamp score versus persistence-beyond-day1 mean 19.3% / median 22.1%; structural only, no outcomes. PF-037/038 establishes ETF units-delta+PCF as cleaner prospective fund-size-flow contract than AUM delta. LS-047A verifies paid official TPEx S23/S47 machine products but no autonomous purchase. D06 curriculum corrected to 15 modules. D06-01/02/04/12 promoted to L3 on official cross-market/PIT/prospective replay feasibility; Formal Core unchanged."
     },
     {
       "id": "D07",
@@ -679,7 +718,7 @@
         "FUNDAMENTAL_INFORMATION_DYNAMICS_CHECKPOINT.md",
         "FUNDAMENTAL_INFORMATION_DYNAMICS_RESEARCH.md"
       ],
-      "maturityPct": 36.4,
+      "maturityPct": 40,
       "modules": [
         {
           "id": "D07-01",
@@ -724,10 +763,12 @@
         {
           "id": "D07-06",
           "name": "資產負債表與槓桿品質",
-          "level": "L1",
-          "maturityPct": 20,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「資產負債表與槓桿品質」。學習範圍：月營收、財報、獲利能力、現金流與資產負債表；成長品質與盈餘品質；公告first-known時間與PIT Vintage；分析師預期；基本面訊號對價格與策略的增量價值。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "理論已理解"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "INDUSTRY_APPLICABILITY_FIREWALL_DEFINED / OFFICIAL_SOURCE_FAMILY_FEASIBLE / WAITING_PIT_FIELD_RECEIPT",
+          "next": "Map official general-industry balance-sheet fields and keep financial institutions on specialized capital/asset-quality semantics."
         },
         {
           "id": "D07-07",
@@ -740,10 +781,12 @@
         {
           "id": "D07-08",
           "name": "PIT財報Vintage與first-known時間",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「PIT財報Vintage與first-known時間」。學習範圍：月營收、財報、獲利能力、現金流與資產負債表；成長品質與盈餘品質；公告first-known時間與PIT Vintage；分析師預期；基本面訊號對價格與策略的增量價值。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "PROSPECTIVE_MARKET_WIDE_VINTAGE_OBSERVER_IMPLEMENTED / EXACT_COMPANY_PUBLICATION_TIME_UNKNOWN / WAITING_TRADING_DATE_EVIDENCE",
+          "next": "Accumulate prospective A5 filing-vintage receipts; preserve firstObservedAt as an upper bound and never backfill pre-observer publication vintages."
         },
         {
           "id": "D07-09",
@@ -778,7 +821,7 @@
       "anchors": [
         "VALUATION_RESEARCH.md"
       ],
-      "maturityPct": 35,
+      "maturityPct": 38.3,
       "modules": [
         {
           "id": "D08-01",
@@ -807,18 +850,22 @@
         {
           "id": "D08-04",
           "name": "Forward PE預估本益比",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L1",
+          "maturityPct": 20,
           "learningScope": "聚焦「Forward PE預估本益比」。學習範圍：PE、PB、Forward PE、PEG、EV/EBITDA、FCF Yield等估值方法；歷史與同業正規化；負EPS與週期股例外；公司行動分母調整；成長×估值×Regime互動。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "尚未研究"
+          "levelMeaning": "理論已理解",
+          "status": "FORECAST_VINTAGE_SEMANTICS_DEFINED / CANONICAL_PIT_ESTIMATE_SOURCE_NEEDED",
+          "next": "Select a licensed/canonical PIT consensus source before testing next-FY/NTM/current-year Forward PE; preserve revision vintages."
         },
         {
           "id": "D08-05",
           "name": "PEG本益成長比",
-          "level": "L1",
-          "maturityPct": 20,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「PEG本益成長比」。學習範圍：PE、PB、Forward PE、PEG、EV/EBITDA、FCF Yield等估值方法；歷史與同業正規化；負EPS與週期股例外；公司行動分母調整；成長×估值×Regime互動。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "理論已理解"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "MECHANISM_AND_COUNTEREXAMPLES_DEFINED / PIT_SOURCE_DEPENDENT",
+          "next": "Only derive PEG from horizon-compatible PE and forecast growth; test redundancy versus its valuation and growth primitives."
         },
         {
           "id": "D08-06",
@@ -886,7 +933,7 @@
         "MARKET_BREADTH_ROTATION_CHECKPOINT.md",
         "MARKET_BREADTH_ROTATION_RESEARCH.md"
       ],
-      "maturityPct": 41.7,
+      "maturityPct": 43.3,
       "modules": [
         {
           "id": "D09-01",
@@ -963,10 +1010,10 @@
         {
           "id": "D09-10",
           "name": "產業成交值／集中度",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「產業成交值／集中度」。學習範圍：產業分類、族群、Sector RS、Residual RS、Breadth與Rotation；領導股生命週期；大小型風格切換；成交值集中與題材分類；產業狀態對策略的條件效果。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "台股PIT資料可行"
         },
         {
           "id": "D09-11",
@@ -993,7 +1040,7 @@
       "anchors": [
         "SUPPLY_CHAIN_LEAD_LAG_RESEARCH.md"
       ],
-      "maturityPct": 43.3,
+      "maturityPct": 46.7,
       "modules": [
         {
           "id": "D10-01",
@@ -1030,10 +1077,10 @@
         {
           "id": "D10-05",
           "name": "原物料／報價傳導",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「原物料／報價傳導」。學習範圍：上下游圖譜、Lead-Lag、產能、庫存、報價、原物料、訂單與交期；供需缺口與定價能力；事件PIT時鐘；跨層級不對稱傳導；可自動化資料來源。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "台股PIT資料可行"
         },
         {
           "id": "D10-06",
@@ -1070,10 +1117,10 @@
         {
           "id": "D10-10",
           "name": "供應鏈事件PIT時間戳",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「供應鏈事件PIT時間戳」。學習範圍：上下游圖譜、Lead-Lag、產能、庫存、報價、原物料、訂單與交期；供需缺口與定價能力；事件PIT時鐘；跨層級不對稱傳導；可自動化資料來源。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "台股PIT資料可行"
         },
         {
           "id": "D10-11",
@@ -1165,7 +1212,10 @@
           "level": "L2",
           "maturityPct": 40,
           "learningScope": "聚焦「重大訊息first-known時間」。學習範圍：除權息、增減資、分割、CB、庫藏股、併購、停復牌、重大訊息與指數調整；公告／生效時鐘；歷史價格連續性；負面證據完整性；事件窗與退出風險。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "OFFICIAL_SOURCE_CLOCK_OBSERVED / CAPTURE_CLOCK_AUTHORITATIVE / INTRADAY_AVAILABILITY_AND_REVISION_HISTORY_UNPROVEN",
+          "evidence": "Bounded TWSE/TPEx official-disclosure pilot preserved raw hashes, capturedAt and source publication clocks; daily catalog frequency and absent native version IDs prevent a first-known completeness claim.",
+          "next": "Accumulate fixed-cadence multi-day official captures and authenticate API availability/revision semantics before L3."
         },
         {
           "id": "D11-09",
@@ -1225,7 +1275,7 @@
         "DERIVATIVES_VOLATILITY_CHECKPOINT.md",
         "DERIVATIVES_VOLATILITY_RESEARCH.md"
       ],
-      "maturityPct": 38.3,
+      "maturityPct": 40,
       "modules": [
         {
           "id": "D12-01",
@@ -1310,10 +1360,12 @@
         {
           "id": "D12-11",
           "name": "選擇權流動性／微結構",
-          "level": "L1",
-          "maturityPct": 20,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「選擇權流動性／微結構」。學習範圍：期貨、選擇權、基差、OI、外資期貨、PCR、VIX、IV、Skew、Term Structure、Gamma與結算；夜盤與到期效應；合約／DTE語意；對市場與個股的增量資訊。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "理論已理解"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "MECHANISM_AND_FALSIFICATION_DEFINED / WAITING_INTRADAY_PIT_SOURCE",
+          "next": "Use option liquidity first as an evidence-quality gate for IV/Skew/Gamma; validate daily best-bid/ask quality separately from true intraday quote/depth microstructure, and do not fabricate historical intraday states."
         },
         {
           "id": "D12-12",
@@ -1333,7 +1385,7 @@
         "MACRO_CROSS_MARKET_CHECKPOINT.md",
         "MACRO_CROSS_MARKET_RESEARCH.md"
       ],
-      "maturityPct": 38.5,
+      "maturityPct": 41.5,
       "modules": [
         {
           "id": "D13-01",
@@ -1370,10 +1422,10 @@
         {
           "id": "D13-05",
           "name": "DXY美元指數",
-          "level": "L1",
-          "maturityPct": 20,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「DXY美元指數」。學習範圍：美股、日韓股、匯率、美元、利率、油價、原物料與總經數據；跨時區與休市對齊；公告時鐘與Surprise；全球Shock傳導；台股Residual反應與Regime用途。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "理論已理解"
+          "levelMeaning": "機制＋反證已定義"
         },
         {
           "id": "D13-06",
@@ -1394,10 +1446,10 @@
         {
           "id": "D13-08",
           "name": "金屬／原物料／稀有元素",
-          "level": "L1",
-          "maturityPct": 20,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「金屬／原物料／稀有元素」。學習範圍：美股、日韓股、匯率、美元、利率、油價、原物料與總經數據；跨時區與休市對齊；公告時鐘與Surprise；全球Shock傳導；台股Residual反應與Regime用途。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "理論已理解"
+          "levelMeaning": "機制＋反證已定義"
         },
         {
           "id": "D13-09",
@@ -1573,7 +1625,7 @@
         "PORTFOLIO_RISK_CHECKPOINT.md",
         "PORTFOLIO_RISK_RESEARCH.md"
       ],
-      "maturityPct": 48,
+      "maturityPct": 49.3,
       "modules": [
         {
           "id": "D15-01",
@@ -1626,10 +1678,12 @@
         {
           "id": "D15-07",
           "name": "Portfolio Heat投組熱度",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「Portfolio Heat投組熱度」。學習範圍：資金與風險集中、相關性、共變異、分群、有效下注數、Portfolio Heat、現金歸因、停損幾何；FIRST/ADD/FULL/REDUCE/RE-ADD生命週期；配置量化誤差與尾端風險。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "台股PIT資料可行",
+          "evidenceStatus": "PLAN_TIME_PORTFOLIO_HEAT_PIT_VALIDATED",
+          "nextContinuationPoint": "Accumulate independent multi-name dates for planned heat/frontier robustness; actual-live Portfolio Heat remains blocked until broker-confirmed holdings/fills and effective-stop provenance are available."
         },
         {
           "id": "D15-08",
@@ -1656,7 +1710,9 @@
           "level": "L2",
           "maturityPct": 40,
           "learningScope": "聚焦「FIRST／ADD／FULL生命週期」。學習範圍：資金與風險集中、相關性、共變異、分群、有效下注數、Portfolio Heat、現金歸因、停損幾何；FIRST/ADD/FULL/REDUCE/RE-ADD生命週期；配置量化誤差與尾端風險。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "機制＋反證已定義",
+          "evidenceStatus": "PLAN_LIFECYCLE_ENVELOPE_PIT_RECONSTRUCTABLE / ACTUAL_STAGE_TRANSITIONS_BLOCKED",
+          "nextContinuationPoint": "Use confirmed fill/holdings provenance to distinguish actual FIRST/FULL/REDUCE stages from plan envelopes; until then, keep lifecycle transition claims UNKNOWN."
         },
         {
           "id": "D15-11",
@@ -1680,7 +1736,9 @@
           "level": "L2",
           "maturityPct": 40,
           "learningScope": "聚焦「Expected Shortfall／Tail Risk」。學習範圍：資金與風險集中、相關性、共變異、分群、有效下注數、Portfolio Heat、現金歸因、停損幾何；FIRST/ADD/FULL/REDUCE/RE-ADD生命週期；配置量化誤差與尾端風險。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "機制＋反證已定義",
+          "evidenceStatus": "ES_SEMANTIC_FIREWALL_FROZEN / HISTORICAL_SOURCE_FOUNDATION_AVAILABLE / CONTINUOUS_TAIL_DATASET_NOT_PROVEN",
+          "nextContinuationPoint": "Wait for continuous PIT historical panel/backfill evidence. Then preregister selected-cohort loss-distribution horizon/confidence/tail-sample rules before any ES estimate; planned stop-risk/MFE/MAE remain prohibited substitutes."
         },
         {
           "id": "D15-14",
@@ -1698,7 +1756,8 @@
           "learningScope": "聚焦「3+3／多Pool跨池風險」。學習範圍：資金與風險集中、相關性、共變異、分群、有效下注數、Portfolio Heat、現金歸因、停損幾何；FIRST/ADD/FULL/REDUCE/RE-ADD生命週期；配置量化誤差與尾端風險。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義"
         }
-      ]
+      ],
+      "nextContinuationPoint": "Continue D15-03/04/05/06 correlation-covariance-clustering-effective-bets only when PIT-synchronized return data become authorized; meanwhile extend D15-07 planned heat across new dates and D15 lifecycle heat as fill/holdings evidence matures."
     },
     {
       "id": "D16",
@@ -1708,7 +1767,8 @@
         "RESEARCH_WORKLIST.md",
         "research/EXPERIMENT_REGISTRY.md",
         "research/research_master_map.json",
-        "research/D16_D18_REGIME_POLICY_VALIDATION_V0_1.md"
+        "research/D16_D18_REGIME_POLICY_VALIDATION_V0_1.md",
+        "research/D16_D18_PROMOTION_GATE_V0_1.md"
       ],
       "maturityPct": 73.3,
       "modules": [
@@ -1833,7 +1893,10 @@
           "level": "L4",
           "maturityPct": 80,
           "learningScope": "聚焦「Maturity Gate成熟度與升級門檻」。學習範圍：PIT、Prospective Shadow、OOS、Purged Holdout、多重測試、日期獨立性、冗餘、成本、Coverage與Zero-pick；資料世代證明、實驗登錄、成熟度升級與防過擬合治理。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "已有前瞻Shadow／OOS證據"
+          "levelMeaning": "已有前瞻Shadow／OOS證據",
+          "status": "PROMOTION_GATE_V0_1_FROZEN / FIXED_N_IS_DESCRIPTIVE_ONLY",
+          "evidence": "D16_D18_PROMOTION_GATE_V0_1 adds MDE, regime-episode robustness, dependence-aware inference, error-cost asymmetry and L2-L5 gates.",
+          "next": "Apply the gate to the first executable D18 policy experiment; do not treat 15/20-date descriptive thresholds as promotion proof."
         }
       ]
     },
@@ -1854,7 +1917,10 @@
           "level": "L2",
           "maturityPct": 40,
           "learningScope": "聚焦「新聞來源可靠度分級」。學習範圍：新聞來源分級、發布與first-known時間、半衰期、預期差、已反映程度、情緒、去重；直接／間接受益受害；族群與供應鏈傳導；事件後跳空、延續與反轉。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "OFFICIAL_TRUTH_LANE_BOUNDED_CAPTURED / GENERAL_NEWS_PRODUCTION_SOURCE_NEEDED / MULTIDAY_COVERAGE_PENDING",
+          "evidence": "Both official exchange datasets returned the declared nine-field schema under open-data catalog terms, but this lane covers disclosures rather than general news and has no native version chain.",
+          "next": "Continue multi-day official source capture and separately validate a licensed production general-news provider; do not substitute one lane for the other."
         },
         {
           "id": "D17-02",
@@ -1862,7 +1928,10 @@
           "level": "L2",
           "maturityPct": 40,
           "learningScope": "聚焦「新聞first-known／發布時間」。學習範圍：新聞來源分級、發布與first-known時間、半衰期、預期差、已反映程度、情緒、去重；直接／間接受益受害；族群與供應鏈傳導；事件後跳空、延續與反轉。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "SOURCE_PUBLICATION_CLOCK_PRESENT / CONSERVATIVE_CAPTURE_CLOCK_REPLAY_READY / LATENCY_DISTRIBUTION_UNKNOWN",
+          "evidence": "Observed 發言日期/發言時間 are retained, but capturedAt is the only authenticated availability upper bound in the pilot; two polls 55 seconds apart were unchanged.",
+          "next": "Measure fixed-cadence sourcePublishedAt-to-capturedAt delay over independent sessions; never backdate availability to the row publication clock."
         },
         {
           "id": "D17-03",
@@ -1918,7 +1987,10 @@
           "level": "L2",
           "maturityPct": 40,
           "learningScope": "聚焦「重複新聞／同事件Cluster去重」。學習範圍：新聞來源分級、發布與first-known時間、半衰期、預期差、已反映程度、情緒、去重；直接／間接受益受害；族群與供應鏈傳導；事件後跳空、延續與反轉。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "RECURRING_DISCLOSURE_RISK_OBSERVED / DERIVED_IDENTITY_REPLAY_TESTED / NATIVE_REVISION_CHAIN_MISSING",
+          "evidence": "The bounded official sample contains multiple 07:00:04 rows whose fact dates predate the publication date by months and whose notices span announcement periods; these are duplicate/stale candidates, not automatically new events.",
+          "next": "Use multi-day immutable captures to distinguish republication, rolling-window eviction, update and correction; keep removals UNKNOWN until source window semantics are proven."
         },
         {
           "id": "D17-10",
@@ -1964,7 +2036,9 @@
         "MARKET_BREADTH_ROTATION_CHECKPOINT.md",
         "research/D16_D18_REGIME_POLICY_VALIDATION_V0_1.md",
         "research/D18_REGIME_POLICY_PARALLEL_ARM_RECEIPT_V0_1.md",
-        "research/D18_OBSERVABLE_REGIME_LABEL_CONTRACT_V0_1.md"
+        "research/D18_OBSERVABLE_REGIME_LABEL_CONTRACT_V0_1.md",
+        "research/D16_D18_PROMOTION_GATE_V0_1.md",
+        "research/D18_REGIME_RAW_FEATURE_READINESS_V0_1.md"
       ],
       "maturityPct": 40,
       "modules": [
@@ -1975,8 +2049,9 @@
           "maturityPct": 40,
           "learningScope": "聚焦「Market Regime市場狀態Taxonomy」。學習範圍：Market Regime分類、趨勢／盤整、高低波動、Breadth、Rotation、大小型領導與Risk-on/off；策略啟停、權重、Ensemble、Drawdown降載、Regime績效歸因與Walk-forward驗證。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "MECHANISM_AND_FALSIFICATION_DEFINED / EXECUTABLE_REGIME_BUILDER_ABSENT",
-          "next": "Audit observable regime raw-feature implementability from existing PIT source-clock contracts; capture context before any policy or composite RISK_ON/OFF score."
+          "status": "MECHANISM_AND_FALSIFICATION_DEFINED / RAW_SOURCE_READINESS_AUDITED / MARKET_BUILDER_MISSING",
+          "next": "Specify isolated research-only market-level builder with PIT provenance, coverage, history/session continuity and deterministic replay; no policy impact.",
+          "evidence": "A1/A2/A3/B2 source contracts can support much of the domestic observable regime vector prospectively; exact market-level builder/replay is absent."
         },
         {
           "id": "D18-02",
@@ -1984,7 +2059,9 @@
           "level": "L2",
           "maturityPct": 40,
           "learningScope": "聚焦「Trend vs Range策略互動」。學習範圍：Market Regime分類、趨勢／盤整、高低波動、Breadth、Rotation、大小型領導與Risk-on/off；策略啟停、權重、Ensemble、Drawdown降載、Regime績效歸因與Walk-forward驗證。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "MECHANISM_AND_FALSIFICATION_DEFINED / SOURCE_FEASIBLE / MARKET_BUILDER_MISSING",
+          "next": "Build/test A2 trend context at market level; treat after-close state as next-session context and audit redundancy versus stock-level trend."
         },
         {
           "id": "D18-03",
@@ -1992,7 +2069,9 @@
           "level": "L2",
           "maturityPct": 40,
           "learningScope": "聚焦「High/Low Volatility策略互動」。學習範圍：Market Regime分類、趨勢／盤整、高低波動、Breadth、Rotation、大小型領導與Risk-on/off；策略啟停、權重、Ensemble、Drawdown降載、Regime績效歸因與Walk-forward驗證。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "MECHANISM_AND_FALSIFICATION_DEFINED / SOURCE_FEASIBLE / MARKET_BUILDER_MISSING",
+          "next": "Build/test A2 realized-volatility context from frozen history; no outcome-tuned VOL_NORMAL band."
         },
         {
           "id": "D18-04",
@@ -2000,7 +2079,9 @@
           "level": "L2",
           "maturityPct": 40,
           "learningScope": "聚焦「Breadth參與度×策略」。學習範圍：Market Regime分類、趨勢／盤整、高低波動、Breadth、Rotation、大小型領導與Risk-on/off；策略啟停、權重、Ensemble、Drawdown降載、Regime績效歸因與Walk-forward驗證。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "MECHANISM_AND_FALSIFICATION_DEFINED / SOURCE_FEASIBLE / MARKET_BUILDER_MISSING",
+          "next": "Build/test A1 full-universe breadth with explicit universe/coverage; missing history reduces coverage rather than becoming negative breadth."
         },
         {
           "id": "D18-05",
@@ -2008,7 +2089,9 @@
           "level": "L2",
           "maturityPct": 40,
           "learningScope": "聚焦「Sector Rotation×策略」。學習範圍：Market Regime分類、趨勢／盤整、高低波動、Breadth、Rotation、大小型領導與Risk-on/off；策略啟停、權重、Ensemble、Drawdown降載、Regime績效歸因與Walk-forward驗證。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "MECHANISM_AND_FALSIFICATION_DEFINED / B2_PROSPECTIVE_OBSERVER_AVAILABLE / D18_LABEL_BUILDER_MISSING",
+          "next": "Map B2 observer outputs into immutable context fields first; no historical classification backfill and no policy until prospective occupancy exists."
         },
         {
           "id": "D18-06",
@@ -2095,8 +2178,9 @@
           "maturityPct": 40,
           "learningScope": "聚焦「Walk-forward市場狀態驗證」。學習範圍：Market Regime分類、趨勢／盤整、高低波動、Breadth、Rotation、大小型領導與Risk-on/off；策略啟停、權重、Ensemble、Drawdown降載、Regime績效歸因與Walk-forward驗證。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "MECHANISM_AND_FALSIFICATION_DEFINED / WAITING_PIT_OOS",
-          "next": "Run purged chronological walk-forward only after clean PIT dates accumulate; filtered/current regime states only, no smoothed ex-post labels."
+          "status": "MECHANISM_AND_FALSIFICATION_DEFINED / PROMOTION_GATE_FROZEN / WAITING_EXECUTABLE_PIT",
+          "next": "When executable regime snapshots exist, accumulate episodes/occupancy first; then preregister one policy class+strategy+MDE and paired static/exposure-matched controls.",
+          "evidence": "Promotion Gate V0.1 adds episode counts, MDE, nested/purged walk-forward, dependence-aware bootstrap/HAC options, sparse-cell and multiple-testing guards."
         }
       ]
     }

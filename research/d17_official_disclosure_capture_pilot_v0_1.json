@@ -1,0 +1,218 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-09-28T21:36:00+08:00",
+  "scope": "D11/D17 official material-disclosure source-only bounded prospective pilot",
+  "status": "BOUNDED_CAPTURE_EXECUTED / SOURCE_CLOCK_PRESENT / CAPTURE_CLOCK_AUTHORITATIVE / REVISION_CHAIN_UNPROVEN / OUTCOMES_CLOSED / FORMAL_CORE_UNCHANGED",
+  "classification": "CLASS_A_RESEARCH_ONLY",
+  "sources": [
+    {
+      "sourceId": "TWSE",
+      "url": "https://openapi.twse.com.tw/v1/opendata/t187ap04_L",
+      "catalogUrl": "https://data.gov.tw/en/datasets/18415",
+      "catalogDeclaredFrequency": "Everyday",
+      "catalogDeclaredLicense": "Open Government Data License, version 1.0",
+      "providerItemIdPresent": false,
+      "fieldsObserved": [
+        "出表日期",
+        "發言日期",
+        "發言時間",
+        "公司代號",
+        "公司名稱",
+        "主旨 ",
+        "符合條款",
+        "事實發生日",
+        "說明"
+      ]
+    },
+    {
+      "sourceId": "TPEX",
+      "url": "https://www.tpex.org.tw/openapi/v1/mopsfin_t187ap04_O",
+      "catalogUrl": "https://data.gov.tw/dataset/18418",
+      "catalogDeclaredFrequency": "每1日",
+      "catalogDeclaredLicense": "政府資料開放授權條款-第1版",
+      "providerItemIdPresent": false,
+      "fieldsObserved": [
+        "Date",
+        "發言日期",
+        "發言時間",
+        "SecuritiesCompanyCode",
+        "CompanyName",
+        "主旨",
+        "符合條款",
+        "事實發生日",
+        "說明"
+      ]
+    }
+  ],
+  "polls": [
+    {
+      "pollId": "P1",
+      "results": [
+        {
+          "sourceId": "TWSE",
+          "capturedAt": "2026-09-28T21:34:02.2648772+08:00",
+          "httpStatus": 200,
+          "latencyMs": 971,
+          "contentLengthUtf8": 6090,
+          "rawSha256": "b2a7d2db0a23a95f36f9b834ab0c38e793397fa170f03536076219c3b565fa8a",
+          "rowCount": 4,
+          "rowPublishedDateMinRoc": "1150927",
+          "rowPublishedDateMaxRoc": "1150927",
+          "etag": "W/\"6ab9898a-17ca\"",
+          "lastModifiedHeader": "Sun, 27 Sep 2026 21:24:26 GMT"
+        },
+        {
+          "sourceId": "TPEX",
+          "capturedAt": "2026-09-28T21:34:02.6993965+08:00",
+          "httpStatus": 200,
+          "latencyMs": 288,
+          "contentLengthUtf8": 6717,
+          "rawSha256": "10921161e1b72db82240a9b9aa5a0caead83d09b02df5b787dc2223c210ed6f0",
+          "rowCount": 4,
+          "rowPublishedDateMinRoc": "1150927",
+          "rowPublishedDateMaxRoc": "1150927",
+          "etag": "\"6aba56d4-1a3d\"",
+          "lastModifiedHeader": "Mon, 28 Sep 2026 12:00:20 GMT"
+        }
+      ]
+    },
+    {
+      "pollId": "P2",
+      "results": [
+        {
+          "sourceId": "TWSE",
+          "capturedAt": "2026-09-28T21:34:57.5400794+08:00",
+          "httpStatus": 200,
+          "latencyMs": 420,
+          "contentLengthUtf8": 6090,
+          "rawSha256": "b2a7d2db0a23a95f36f9b834ab0c38e793397fa170f03536076219c3b565fa8a",
+          "rowCount": 4,
+          "derivedIdentityDistinct": 4,
+          "derivedIdentityDuplicates": 0
+        },
+        {
+          "sourceId": "TPEX",
+          "capturedAt": "2026-09-28T21:34:58.0000568+08:00",
+          "httpStatus": 200,
+          "latencyMs": 362,
+          "contentLengthUtf8": 6717,
+          "rawSha256": "10921161e1b72db82240a9b9aa5a0caead83d09b02df5b787dc2223c210ed6f0",
+          "rowCount": 4,
+          "derivedIdentityDistinct": 4,
+          "derivedIdentityDuplicates": 0
+        }
+      ]
+    }
+  ],
+  "boundedIntervalComparison": {
+    "secondsBetweenPollsApprox": 55,
+    "twseRawPayloadChanged": false,
+    "tpexRawPayloadChanged": false,
+    "interpretation": "No change was observed in this short interval. This is not evidence that the source has immutable versions, no corrections, or complete intraday coverage."
+  },
+  "rowFingerprintPass": {
+    "capturedAtTwse": "2026-09-28T21:35:16.6726092+08:00",
+    "capturedAtTpex": "2026-09-28T21:35:16.9204162+08:00",
+    "twseRows": [
+      {
+        "symbol": "6949",
+        "publishedAtSource": "2026-09-27T07:00:04+08:00",
+        "factDateRoc": "1150713",
+        "derivedIdentitySha256": "6ae4fe25cc77107eb14b370c04f1cd33c1e0c7d8339d4fbf6f4bcaa5a6522da4"
+      },
+      {
+        "symbol": "1721",
+        "publishedAtSource": "2026-09-27T07:00:04+08:00",
+        "factDateRoc": "1150629",
+        "derivedIdentitySha256": "9c614554265429df77954a595eba8b305406d84ea02f1a2d44ec20e064407ba6"
+      },
+      {
+        "symbol": "2072",
+        "publishedAtSource": "2026-09-27T07:00:04+08:00",
+        "factDateRoc": "1150824",
+        "derivedIdentitySha256": "d26b6fe7143175731682c9ce1f1196dce81762b25fdc3b07cd6294dcfb1504b9"
+      },
+      {
+        "symbol": "2509",
+        "publishedAtSource": "2026-09-27T16:52:42+08:00",
+        "factDateRoc": "1150926",
+        "derivedIdentitySha256": "c80371d15f05d05294a05dc1a206da634a7d7812dfa15357bb13f684d0ce0dcf"
+      }
+    ],
+    "tpexRows": [
+      {
+        "symbol": "4530",
+        "publishedAtSource": "2026-09-27T07:00:04+08:00",
+        "factDateRoc": "1150708",
+        "derivedIdentitySha256": "410ec0efc57980d613b0cc166109bae06440b2cead082a1d1b117cdd7021ae0b"
+      },
+      {
+        "symbol": "4747",
+        "publishedAtSource": "2026-09-27T07:00:04+08:00",
+        "factDateRoc": "1150624",
+        "derivedIdentitySha256": "f07c5e58009ce1bde912cb20279260c1f590474b3969d756772e369d210fe7c2"
+      },
+      {
+        "symbol": "5904",
+        "publishedAtSource": "2026-09-27T07:00:04+08:00",
+        "factDateRoc": "1150624",
+        "derivedIdentitySha256": "dbe711838ff36787309176d9825c96d18bec157699b7c482a3b267c1426bac3a"
+      },
+      {
+        "symbol": "8472",
+        "publishedAtSource": "2026-09-27T07:00:04+08:00",
+        "factDateRoc": "1150629",
+        "derivedIdentitySha256": "02f92bd4e11715268aa488fbd186b3b80fa98adc193d8a95e60de600408368f7"
+      }
+    ]
+  },
+  "positiveEvidence": [
+    "Both official exchange datasets returned HTTP 200 and the advertised nine-field disclosure schema.",
+    "Both datasets preserve a source publication date and time plus fact date, clause, subject and full explanation.",
+    "The government catalog declares daily update frequency and Open Government Data License v1 for these datasets.",
+    "Raw payload hashes and capture clocks make the observed snapshots replay-auditable."
+  ],
+  "counterevidence": [
+    "The catalog frequency is daily, not an authenticated low-latency publication SLA.",
+    "A row's source publication time does not prove when that row became available through this API. capturedAt remains the conservative decision-time upper bound.",
+    "Neither observed schema exposes a native provider item ID, version ID, correction flag or supersession link.",
+    "Several rows share 07:00:04 while their fact dates are months earlier and their text describes multi-month announcement periods. They are high-risk recurring-disclosure or stale-information candidates, not automatically new economic events.",
+    "Two identical payloads 55 seconds apart prove only local stability, not archive completeness or absence of later correction.",
+    "No general-news coverage is provided and the licensed production general-news lane remains SOURCE_NEEDED."
+  ],
+  "pitRules": {
+    "sourcePublishedAt": "Descriptive source clock only until availability is independently authenticated.",
+    "firstKnownAtConservative": "Use capturedAt for replay eligibility in this pilot.",
+    "revisionHandling": "Append every changed capture; never overwrite an earlier receipt.",
+    "absenceHandling": "No row is UNKNOWN unless a complete expected polling window and successful source coverage receipt are present. A single daily snapshot cannot prove NO_KNOWN_EVENT."
+  },
+  "biasControls": {
+    "selectionBias": "All rows returned by both sources were counted; no symbol, sentiment, event class or outcome filter was applied.",
+    "lookAhead": "No later row or correction may be backdated to sourcePublishedAt; capturedAt controls replay eligibility.",
+    "dataSnooping": "No return, price, ranking, threshold or horizon was inspected.",
+    "overfit": "No event-class-specific scoring or text model was fit.",
+    "duplicateNews": "Article/disclosure identity and economic event identity remain separate. Repeated-period notices are candidate syndication/republication until a version chain is proven.",
+    "dataQuality": "Native version identity, archive completeness and intraday API availability are UNKNOWN.",
+    "cost": "Observed two-source payload volume was small, but this two-poll pilot is not a production cost or rate-limit benchmark.",
+    "redundancy": "The official lane supplies primary disclosure facts. It does not replace general-news discovery, attention, sector or supply-chain evidence."
+  },
+  "systemValue": {
+    "system1": "Research-only provenance and replay guard. Current ANNOUNCEMENTS date/title normalization remains too coarse; no Formal gate or risk score changes.",
+    "system2": "Potential canonical event-truth input after prospective coverage/version proof. No news factor or L5 decision input is activated.",
+    "formalOptimizationCandidate": false
+  },
+  "maturityDecision": {
+    "D11-08": "Remain L2: a source publication clock is observed, but API availability time and complete revision history are not validated.",
+    "D17-01": "Remain L2: official lane reliability dimensions improved, general-news production source remains missing.",
+    "D17-02": "Remain L2: capturedAt-safe replay is feasible, but first-known latency distribution and intraday completeness are not established.",
+    "D17-09": "Remain L2: recurring-disclosure risk is observed, but multi-day version/cluster truth is not yet available."
+  },
+  "outcomeJoinGate": "CLOSED",
+  "exactNextContinuation": [
+    "Run an independent multi-day, fixed-cadence, source-only capture across at least three trading sessions and one after-hours interval, storing immutable raw hashes and expected/observed poll counts.",
+    "Quantify capture delay from sourcePublishedAt to capturedAt without assuming the API was unavailable before capture.",
+    "Classify cross-day recurring-period notices, additions, removals and changed content; removals remain UNKNOWN unless rolling-window semantics are proven.",
+    "Seek a native MOPS disclosure identifier/correction linkage or retain derived-identity revision chains as unverified.",
+    "Keep the licensed general-news production lane SOURCE_NEEDED and keep all outcome joins closed."
+  ]
+}

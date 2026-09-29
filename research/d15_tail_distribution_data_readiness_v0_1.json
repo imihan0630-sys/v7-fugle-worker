@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "D15_TAIL_DISTRIBUTION_DATA_READINESS_V0_1",
+  "observedAt": "2026-09-28T21:06:00+08:00",
+  "dependency": "System2 official full-market daily historical source adapter / smoke workflow",
+  "currentEvidence": [
+    "read-only official full-market daily payload retrieval exists for TWSE and TPEx",
+    "smoke workflow checks 2017-01-03 and 2026-09-24",
+    "anti-survivorship witness 2456 is required present historically and absent recently",
+    "smoke explicitly performs no System2 D1 write and no System1 mutation"
+  ],
+  "notYetProven": [
+    "continuous persisted historical panel over the intended research horizon",
+    "complete trading-calendar coverage and gap classification for every date",
+    "selected-cohort point-in-time join from historical decision timestamp to future D1/D3/D5 losses",
+    "tail-sample adequacy for any confidence level",
+    "regime-stratified loss distribution",
+    "transaction-cost-adjusted tail distribution"
+  ],
+  "consequence": "The source foundation is promising but does not yet make D15-13 Expected Shortfall estimable. D15-13 remains L2 and must wait for a continuous PIT historical panel plus a preregistered tail-distribution protocol.",
+  "status": "HISTORICAL_SOURCE_FOUNDATION_AVAILABLE / CONTINUOUS_TAIL_DATASET_NOT_PROVEN / D15_13_REMAINS_L2",
+  "formalCoreImpact": false
+}

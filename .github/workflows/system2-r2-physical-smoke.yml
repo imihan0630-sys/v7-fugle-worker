@@ -1,0 +1,50 @@
+name: System2 R2 Physical Smoke
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/system2-r2-physical-smoke.yml"
+      - "system2/scripts/historical_r2_physical_smoke_v0_1.mjs"
+      - "system2/deploy/remote_r2_s3_adapter.mjs"
+      - "system2/runtime/official_historical_a1_source_v0_1.mjs"
+      - "system2/runtime/historical_pack_research_v0_1.mjs"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-r2-physical-smoke
+  cancel-in-progress: false
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: system2-research
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Verify bounded external R2 write-read path
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_R2_ACCESS_KEY_ID: ${{ secrets.SYSTEM2_R2_ACCESS_KEY_ID }}
+          SYSTEM2_R2_SECRET_ACCESS_KEY: ${{ secrets.SYSTEM2_R2_SECRET_ACCESS_KEY }}
+          SYSTEM2_R2_BUCKET: ${{ vars.SYSTEM2_R2_BUCKET }}
+          SYSTEM2_R2_SMOKE_DATE: "2026-09-24"
+          SYSTEM2_R2_SMOKE_TWSE: "2330"
+          SYSTEM2_R2_SMOKE_TPEX: "6488"
+        run: node system2/scripts/historical_r2_physical_smoke_v0_1.mjs
+
+      - name: Confirm System1 production files untouched
+        run: |
+          set -euo pipefail
+          test "$(sed -n '1p' wrangler.toml)" = 'name = "fugle-test"'
+          git diff --exit-code -- wrangler.toml Worker.js
+          echo "Production isolation PASS"

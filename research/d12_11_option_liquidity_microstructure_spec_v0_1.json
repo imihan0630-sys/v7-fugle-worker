@@ -1,0 +1,106 @@
+{
+  "schemaVersion": "0.1",
+  "module": "D12-11",
+  "name": "TXO option liquidity and microstructure contract",
+  "status": "RESEARCH_ONLY_CONCEPT_FROZEN_EVIDENCE_PENDING",
+  "formalCoreImpact": "NONE",
+  "updatedAt": "2026-09-28T23:14:00+08:00",
+  "coreFindings": [
+    "TAIFEX option-series liquidity reference uses open interest relative to recent 5-day average volume; it is a turnover/liquidation-capacity proxy, not direct bid-ask liquidity.",
+    "TAIFEX multidimensional time-weighted best-spread/depth disclosure identified in the official liquidity page applies to Taiwan stock-index futures; it does not prove an equivalent historical TXO quote archive.",
+    "Daily option OHLC/volume/OI cannot reconstruct intraday bid-ask, depth, quote continuity, effective spread or impact.",
+    "Friday-expiry TXO introduced in 2025 creates an expiry-calendar regime break that must be versioned."
+  ],
+  "liquidityObjects": {
+    "activity": [
+      "volume",
+      "tradeCount_if_available"
+    ],
+    "position": [
+      "openInterest"
+    ],
+    "turnover": [
+      "openInterestToADV5"
+    ],
+    "quote": [
+      "spreadTicks",
+      "relativeSpreadToMid",
+      "spreadToPremium",
+      "twoSidedQuoteCoverage"
+    ],
+    "depth": [
+      "bestBidSize",
+      "bestAskSize",
+      "depthImbalance"
+    ],
+    "impact": [
+      "effectiveSpread",
+      "postTradeMidMove"
+    ]
+  },
+  "mandatoryConditioning": [
+    "moneyness_or_delta_bucket",
+    "DTE",
+    "expiryFamily",
+    "callPut",
+    "dayNightSession",
+    "expirySettlementState",
+    "eventState"
+  ],
+  "expiryCalendarRegimes": [
+    "PRE_FRIDAY_WEEKLY",
+    "WED_PLUS_FRI_WEEKLY"
+  ],
+  "evidenceTiers": {
+    "TIER_A_OFFICIAL_DAILY": [
+      "contract",
+      "expiry",
+      "strike",
+      "callPut",
+      "openInterest",
+      "volume",
+      "ADV5_or_inputs",
+      "liquidityReference",
+      "dailyPriceFields",
+      "DTE",
+      "expiryFamily"
+    ],
+    "TIER_B_TICK_QUOTE_REQUIRED": [
+      "sourceTimestamp",
+      "bid",
+      "ask",
+      "bidSize",
+      "askSize",
+      "tradePrice",
+      "tradeSize",
+      "sequence",
+      "session"
+    ]
+  },
+  "dailyDataGuard": "Never synthesize historical intraday option spread/depth/quote continuity from daily OHLC, volume or OI.",
+  "primaryResearchRole": "Evidence-quality dependency for IV, skew/term structure and gamma before directional alpha.",
+  "marketMakerGuard": "Program/presence does not prove realized executable liquidity; absent observed quote evidence => UNKNOWN.",
+  "falsification": [
+    "OI/ADV5 versus actual quote spread/depth when Tier B exists",
+    "ATM versus wings",
+    "DTE buckets",
+    "Wednesday weekly versus Friday weekly versus monthly",
+    "day versus night",
+    "expiry/settlement versus normal",
+    "scheduled macro-event versus normal",
+    "VIX/realized-volatility controls",
+    "volume/OI baseline versus quote-microstructure increment",
+    "independent trading date inference"
+  ],
+  "maturityDecision": {
+    "from": "L1",
+    "to": "L2",
+    "reason": "Mechanism, source boundary, normalization, regime break, evidence-quality role and falsification are frozen; no durable PIT TXO tick/quote evidence yet for L3."
+  },
+  "nextContinuation": [
+    "audit existing repo/provider path for TXO tick/quote without new entitlement",
+    "keep Tier B WAITING_SOURCE if absent",
+    "use Tier A only for prospective coverage/QA",
+    "test D12-06/07/08 evidence-quality dependence before directional alpha"
+  ]
+}

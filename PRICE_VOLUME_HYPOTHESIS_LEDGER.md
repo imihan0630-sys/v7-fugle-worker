@@ -405,3 +405,64 @@ No hypothesis is upgraded to SUPPORTED/REJECTED by this design/literature block.
 - D02-03 separates volume necessity from incremental breakout quality; future value requires improvement beyond price-only geometry on common support.
 - D02-04 dry-up is a timestamped two-leg lifecycle: candidate first, later demand-return confirmation or failure/unknown. Hindsight relabelling is prohibited.
 - No hypothesis promotion. Formal Core remains LOCKED.
+
+
+## Hypothesis readiness after PVE-174~180 — 2026-09-28
+
+### H001 — same-slot RVOL vs Formal local ratio
+Status: unchanged / EVIDENCE_GATED.
+- Raw slot RVOL remains field-level salvageable when source, completed-bar, same-slot denominator, baseline freshness, exact-bar common support and cohort provenance are clean.
+- Do not require trusted illiquidity/price-censor labels merely to measure the raw H001 metric relationship.
+- Guard-input absence cannot be relabeled NORMAL.
+
+### H002 — cumulative pace
+Status: unchanged / EVIDENCE_GATED.
+- Requires H001-quality source/cohort gates plus verified current-session prefix and cumulative denominator continuity.
+- Guard defects do not automatically invalidate raw cumulative pace, but boundary/event interpretations remain separately gated.
+
+### H003 — response / acceptance / Guard states
+Status: HIGHER_GATED, strengthened.
+- `PRICE_CENSORED` is not exchange-exact under v0.1.
+- several Guard inputs are absent from the audited selected-plan contract and missing values can collapse to false/normal;
+- missing reference price after 09:00 is not currently flagged unresolved;
+- price-only vs price+volume anti-circularity remains mandatory.
+
+Therefore v0.1 Guard/state labels cannot be treated as clean ground truth without independent overlays.
+
+### H004 — risk/path outcomes
+Status: higher-gated / no directional conclusion.
+- factual future price paths may be retained;
+- hypothesis-clean use requires symbol-session continuity, corporate-action comparability, boundary/reference quality and existing within-bar path-order guards.
+
+### Daily RVOL lane
+`pvDailyRvol20` is specifically quarantined across unresolved corporate-action/trading-unit continuity because the current daily builder does not implement the reset contract and the snapshot persists reset provenance as null.
+
+No H001~H006 hypothesis is upgraded to SUPPORTED or REJECTED. No Formal optimization candidate is created. Formal Core remains LOCKED.
+
+
+## H003/H004 readiness refinement after PVE-181~186 — 2026-09-29 pre-market
+
+### H003 — Acceptance / response / Guard incremental value
+Status: HIGHER_GATED / EVENT_DENOMINATOR_CORRECTED.
+
+New code-proven falsifiers:
+- PRE_EVENT -> EXPIRED_AMBIGUOUS at 13:00 can create a raw Acceptance eventKey even when no breakout/pullback trigger occurred;
+- Acceptance advances without the INVALID Guard pause used by Persistence;
+- anchorEligible is not Guard-gated.
+
+Therefore future H003 event accounting must distinguish:
+- RAW_ACCEPTANCE_KEY_COUNT;
+- ACTIVE_ACCEPTANCE_LIFECYCLE_COUNT;
+- H003_HYPOTHESIS_CLEAN_EVENT_COUNT.
+
+Only the third denominator is maturity-eligible. PRE_EVENT-only expiry is session censoring, not an Acceptance event outcome.
+
+### H004 — path/risk outcomes
+Status: HIGHER_GATED / OUTCOME_STORAGE_NOT_ELIGIBILITY.
+
+The existence of B1/B2/B4 or daily outcomes for an anchor does not validate the originating state. An INVALID-Guard anchor can store factual future paths, but such rows remain excluded from primary H004 inference until field-level Guard/input/PIT/cohort overlays pass.
+
+### 2026-09-29 first-session rule
+All 9/29 intraday rows remain DATA_QA-only for primary H001~H004 due inherited 9/24 cohort lineage. H003/H004 clean-event/anchor counts are therefore zero for primary inference regardless of observed future price paths.
+
+No hypothesis is promoted or rejected. Formal Core remains LOCKED.

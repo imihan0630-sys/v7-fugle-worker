@@ -1,0 +1,79 @@
+{
+  "schemaVersion": "0.1",
+  "module": "D12-05",
+  "name": "TAIWAN VIX source-quality and liquidity dependency contract",
+  "status": "RESEARCH_ONLY_CONCEPT_FROZEN_EVIDENCE_PENDING",
+  "formalCoreImpact": "NONE",
+  "updatedAt": "2026-09-29T05:14:00+08:00",
+  "findings": [
+    "TAIWAN VIX is calculated from TAIEX option quotes and measures 30-day expected TAIEX volatility; it is not a directional forecast.",
+    "TAIFEX publishes the index every 15 seconds during 09:00-13:45 regular trading, so same-session VIX is known before an 18:10 after-market decision if a timestamped official receipt is preserved.",
+    "TAIFEX public site exposes current-month and recent intraday/daily history, while official e-data shop offers longer historical data from 2007 under paid single-person/single-machine terms.",
+    "Because VIX is quote-derived, option quote quality/liquidity is an upstream measurement dependency, not merely a separate explanatory factor.",
+    "Friday-expiry TXO introduced in 2025 changes the option expiry ecosystem; methodology may target a 30-day horizon, but source-composition/quote-quality diagnostics must still version market-structure regimes rather than assume invariant microstructure."
+  ],
+  "sourceContract": {
+    "officialPublisher": "TAIFEX",
+    "disclosureWindow": "09:00-13:45 Asia/Taipei regular trading days",
+    "frequency": "15 seconds",
+    "currentRecentIntraday": "PUBLIC_OFFICIAL",
+    "longHistory": "PAID_OFFICIAL_E_DATA_SHOP",
+    "longHistoryEntitlement": "single-person/single-machine; redistribution restricted",
+    "pointInTimeAt1810": "ELIGIBLE_IF_OFFICIAL_RECEIPT_CAPTURED_SAME_DAY",
+    "nightSessionVix": "NOT_ESTABLISHED__DO_NOT_INFER_FROM_TXO_NIGHT_PRICES"
+  },
+  "measurementQualityStates": [
+    "VIX_VALID_OFFICIAL",
+    "VIX_STALE_OR_HALTED",
+    "VIX_SOURCE_MISSING",
+    "VIX_RULES_REGIME_UNCERTAIN"
+  ],
+  "liquidityDependency": {
+    "role": "Upstream evidence-quality dependency",
+    "dailyAuditInputs": [
+      "TXO bestBid/bestAsk",
+      "volume",
+      "OI",
+      "expiry",
+      "strike",
+      "callPut",
+      "DTE/expiryFamily"
+    ],
+    "intradayPreferred": [
+      "timestamped quote continuity",
+      "spread",
+      "depth if available"
+    ],
+    "guard": "Do not reconstruct historical intraday VIX quote quality from daily chain fields."
+  },
+  "redundancyOrder": [
+    "ATR/realized volatility",
+    "Taiwan market Regime",
+    "trend/residual RS",
+    "breadth/liquidity",
+    "TAIWAN VIX level/change",
+    "VIX minus expected future realized variance only under a frozen VRP design"
+  ],
+  "falsification": [
+    "VIX level vs VIX change/shock",
+    "realized-volatility substitution",
+    "liquidity/quote-quality conditioning",
+    "expiry-family and rules-regime segmentation",
+    "event vs non-event dates",
+    "crisis removal",
+    "independent trading-date inference",
+    "direction target vs volatility/range/MAE target",
+    "no historical receipt fabrication"
+  ],
+  "maturityDecision": {
+    "current": "L2",
+    "next": "L3 only after PIT source receipt semantics plus Taiwan-date evidence are demonstrated",
+    "reason": "Official source/timing and quality dependency are now frozen, but prospective/OOS evidence is still absent."
+  },
+  "nextContinuation": [
+    "Define a prospective VIX receipt using official intraday timestamp plus quality state.",
+    "Test whether VIX adds risk-prediction value beyond realized volatility/Regime before directional use.",
+    "Condition IV/skew/gamma evidence on D12-11 liquidity quality where observable.",
+    "Keep long-history purchase/licensing as optional; do not require user spend before prospective evidence justifies it."
+  ]
+}

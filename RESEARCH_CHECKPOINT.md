@@ -2220,3 +2220,18 @@ Updated: 2026-09-27 23:38 Asia/Taipei.
 - No additional maturity promotion from the source audit: D17 remains 40.0%, room 08 remains 43.7%. L3 requires actual Taiwan PIT/versioned capture evidence.
 - `FORMAL_OPTIMIZATION_CANDIDATE = NO`; Formal Core and live System 2 behavior unchanged.
 - Exact next: run a bounded prospective source-only capture pilot when a legally usable feed is available; measure firstKnown/capturedAt latency, revision incidence, duplicate-cluster behavior and coverage gaps without inspecting returns. Keep production general-news lane SOURCE_NEEDED until licensing/interface is validated.
+
+
+## Event & News D17 official-disclosure bounded capture pilot — 2026-09-28 Asia/Taipei
+- Continued exactly from the D17 source-readiness/ledger checkpoint; no concept restart and no Corporate Actions or Event Risk cursor overwrite.
+- Executed a source-only Class-A pilot against TWSE `t187ap04_L` and TPEx `mopsfin_t187ap04_O`. Both returned HTTP 200, four rows and the advertised nine-field schema including 發言日期/發言時間, fact date, clause, subject and explanation.
+- Government catalog metadata declares daily updates and Open Government Data License v1. This validates an allowed official disclosure research lane, not a licensed broad general-news production lane.
+- Two polls about 55 seconds apart were raw-hash identical per source. This proves only bounded local stability; correction incidence, immutable history and archive completeness remain UNKNOWN.
+- Strong PIT counterevidence: a row publication clock does not authenticate when the API exposed that row. `capturedAt` remains the conservative replay clock. The current System 1 ANNOUNCEMENTS date/title reduction still loses this distinction.
+- Strong novelty/duplicate counterevidence: seven of eight observed rows shared 07:00:04 while several fact dates were months older and notices described multi-month announcement periods. Daily rows must not be counted as new economic events without cross-day cluster/version evidence.
+- Neither observed source exposes a native provider item/version/correction/supersession ID. Derived hashes enable deterministic replay/change detection but cannot prove publisher revision lineage.
+- New artifacts: `research/d17_official_disclosure_capture_pilot_v0_1.json`, `research/d17_disclosure_snapshot_observer_v0_1.mjs`, `tests/test_d17_disclosure_snapshot_observer_v0_1.mjs`.
+- Test result: `node tests/test_d17_disclosure_snapshot_observer_v0_1.mjs` PASS. Time parsing, capture-clock precedence, TWSE/TPEx field mapping and unproven-revision semantics are covered.
+- Bias controls: all returned rows counted; no price/return/outcome lookup; no event-class, sentiment, horizon, threshold or model search; absence remains UNKNOWN; Formal Core and live System 2 unchanged.
+- Maturity intentionally unchanged: D11-08 and D17-01/02/09 remain L2; D17 remains 40.0%, room 08 remains 43.7%. `FORMAL_OPTIMIZATION_CANDIDATE = NO`.
+- Exact next: run fixed-cadence immutable capture over at least three trading sessions plus one after-hours interval; quantify sourcePublishedAt-to-capturedAt distributions without calling them proven API latency; classify cross-day republication/add/remove/change; locate a native MOPS correction identifier or retain unverified derived chains; keep the licensed general-news lane SOURCE_NEEDED and outcome joins CLOSED.

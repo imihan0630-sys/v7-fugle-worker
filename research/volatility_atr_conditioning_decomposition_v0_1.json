@@ -1,0 +1,154 @@
+{
+  "schemaVersion": "volatility-atr-conditioning-decomposition-v0.1",
+  "researchDate": "2026-09-28",
+  "status": "OUTCOME_FREE_SPEC_FROZEN",
+  "researchOnly": true,
+  "decisionImpact": false,
+  "formalCoreChanged": false,
+  "purpose": "Separate ATR admission, stop geometry, RR survival and final selection conditioning before attributing any forward effect to volatility.",
+  "currentFormal": {
+    "atrGate": {
+      "minPct": 1,
+      "maxPct": 10
+    },
+    "A": {
+      "entry": "support*1.0065",
+      "stop": "min(support*0.98, structureLow-0.12*ATR)",
+      "supportBindingThresholdPctApprox": "((structureLow/support)-0.98)/(0.12*(close/support))*100",
+      "interpretation": "When recent structureLow is near support, support*0.98 can bind across most/all of the formal ATR range; ATR then has little or no marginal effect on RR until the structure-ATR branch becomes lower."
+    },
+    "B": {
+      "entry": "breakout*1.003",
+      "stop": "breakout-max(0.65*ATR, breakout*0.012)",
+      "atrBindingCrossoverPct": "0.012*breakout/(0.65*close)*100",
+      "approxIfCloseEqualsBreakout": 1.8461538462,
+      "interpretation": "Below crossover, 1.2% breakout floor binds; above crossover, stop widens linearly with ATR and RR falls for fixed target geometry."
+    },
+    "rrGate": {
+      "min": 2
+    },
+    "downstream": [
+      "RR hard gate",
+      "RR contributes to PriorityScore",
+      "raw RR later comparator"
+    ]
+  },
+  "layerDefinitions": [
+    {
+      "id": "L0_PRE_ATR_ELIGIBLE",
+      "definition": "Candidate has reached the volatility gate under frozen Formal ordering; no ATR decision has yet been applied.",
+      "required": [
+        "scanDate",
+        "symbol",
+        "channelCandidateState",
+        "atrPercent",
+        "firstFailureBeforeAtr"
+      ],
+      "exclusions": "Rows already rejected by an earlier Formal gate cannot be interpreted as ATR-eligible."
+    },
+    {
+      "id": "L1_ATR_GATE",
+      "definition": "Apply only 1<=atrPercent<=10.",
+      "outputs": [
+        "atrGateState",
+        "atrGateDistanceToLower",
+        "atrGateDistanceToUpper"
+      ],
+      "falsification": "Do not infer opportunity cost from first-failure counts alone."
+    },
+    {
+      "id": "L2_STOP_GEOMETRY",
+      "definition": "Derive frozen channel-specific entry/stop geometry without changing target or outcome.",
+      "outputs": [
+        "channel",
+        "entry",
+        "stop",
+        "stopDistancePct",
+        "stopBinding",
+        "atrBindingCrossoverPct"
+      ],
+      "guards": [
+        "Missing support/breakout/structureLow => UNKNOWN",
+        "No mutable-history counterfactual reconstruction"
+      ]
+    },
+    {
+      "id": "L3_RR_SURVIVAL",
+      "definition": "Using the PIT-valid target state available at the original decision clock, compute RR and classify RR>=2 survival.",
+      "outputs": [
+        "targetState",
+        "targetProvenanceState",
+        "reward",
+        "risk",
+        "rewardPerRisk",
+        "rrGateState"
+      ],
+      "guards": [
+        "Missing target provenance => UNKNOWN",
+        "Target-null and low-RR must remain distinct"
+      ]
+    },
+    {
+      "id": "L4_FINAL_SELECTION",
+      "definition": "Observe whether the row survives later Formal signal-grade/ranking/quota stages.",
+      "outputs": [
+        "formalSelected",
+        "formalPool",
+        "priorityScore",
+        "rankWithinPool"
+      ],
+      "note": "Selection is downstream conditioning and cannot be used as the only sample for volatility-effect inference."
+    }
+  ],
+  "mandatoryStrata": [
+    "A versus B",
+    "B stop floor-binding versus ATR-binding",
+    "A support-stop-binding versus structureLow-minus-ATR-binding",
+    "price tier below/above NT$1000",
+    "market regime",
+    "sector state",
+    "liquidity tier"
+  ],
+  "analyticalFindings": [
+    "B has an implicit ATR sensitivity kink near ~1.85% when close is near breakout; the exact crossover varies with breakout/close ratio.",
+    "A can be almost ATR-insensitive across the full 1%-10% gate when structureLow is sufficiently near support and the 2% support stop remains the lower stop.",
+    "RR>=2 creates an additional implicit channel- and target-distance-dependent ATR ceiling that is not equal to the explicit 10% ATR gate.",
+    "Therefore one global ATR optimum/penalty is structurally misspecified unless channel and stop-binding state are controlled."
+  ],
+  "outcomeProtocol": {
+    "permittedOnlyAfterPITCoverage": true,
+    "outcomes": [
+      "D1",
+      "D3",
+      "D5",
+      "MFE",
+      "MAE",
+      "stopFirst",
+      "pathRealizedVol"
+    ],
+    "primaryComparisons": [
+      "within-channel continuous atrPercent conditional on stopDistancePct and targetDistancePct",
+      "RR-rejected versus same-date matched RR-survivors at similar setup quality where valid",
+      "B ATR-binding versus B floor-binding",
+      "A structure-ATR-binding versus A support-binding"
+    ],
+    "negativeControls": [
+      "date-shift placebo",
+      "within-date atrPercent shuffle",
+      "remove top crisis dates",
+      "leave-one-scan-date-out",
+      "ATR-only versus stopDistance/RR-controlled models"
+    ]
+  },
+  "promotionRules": [
+    "If ATR effect disappears after stopDistance and RR, classify downstream ATR effect as geometry-mediated/redundant.",
+    "If ATR retains incremental downside/path information after geometry, keep as risk-context candidate.",
+    "If an apparent optimum exists only in one channel/stop-binding state, prohibit a universal threshold.",
+    "No ATR gate, stop, RR, sizing or ranking change without Class-C owner approval."
+  ],
+  "dependencies": {
+    "rawHistoryAdmission": "V8.12 HISTORY_SOURCE_REVALIDATION material pass",
+    "technicalContinuity": "Required when stock-volatility windows cross corporate-action resets; runtime not yet certified",
+    "targetProvenance": "Must be PIT-valid at original decision clock"
+  }
+}

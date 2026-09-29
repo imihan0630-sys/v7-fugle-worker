@@ -1,0 +1,92 @@
+{
+  "specId": "INDUSTRY_SOURCE_VINTAGE_RECEIPT_V0_1",
+  "updatedAt": "2026-09-28T20:12:00+08:00",
+  "purpose": "Freeze decision-time provenance for D09/D10 industry, supply-chain, inventory, capacity and raw-material evidence before any outcome test.",
+  "formalCoreChanged": false,
+  "receiptFields": [
+    "sourceFamily",
+    "sourceAuthority",
+    "datasetId",
+    "sourceId",
+    "sourceUrl",
+    "sourceClass",
+    "scopeType",
+    "scopeCode",
+    "scopeLabel",
+    "taxonomyVersion",
+    "observationStart",
+    "observationEnd",
+    "observationPeriod",
+    "sourcePublishedAt",
+    "knownAt",
+    "capturedAt",
+    "plannedEffectiveAt",
+    "actualEffectiveAt",
+    "retrievalMode",
+    "machineReadable",
+    "manualOfficial",
+    "exportFormat",
+    "rawContentHash",
+    "etag",
+    "lastModified",
+    "parserVersion",
+    "preliminaryFinalRevisionState",
+    "revisionOf",
+    "supersededBy",
+    "freshnessExpectedBy",
+    "freshnessState",
+    "scopeCompatibilityState",
+    "mappingState",
+    "pointInTimeEligible",
+    "missingReason",
+    "notes"
+  ],
+  "retrievalModes": {
+    "STANDALONE_OFFICIAL_FILE": [
+      "CSV",
+      "XML",
+      "JSON",
+      "XLS",
+      "ODS",
+      "OTHER"
+    ],
+    "OFFICIAL_INTERACTIVE_EXPORT": [
+      "XLS",
+      "ODS",
+      "OTHER"
+    ],
+    "OFFICIAL_MANUAL_PAGE": [
+      "HTML_TABLE",
+      "PDF",
+      "OTHER"
+    ]
+  },
+  "knownAtRules": [
+    "Use official release timestamp when explicitly published and the captured content is proven to be that release vintage.",
+    "Otherwise use capturedAt conservatively; never infer an earlier knownAt from observation month.",
+    "A later revised/final file must be stored as a new vintage, never overwrite or backdate the earlier vintage.",
+    "If a source is stale, inaccessible, or its release clock is ambiguous, mark UNKNOWN/BLOCKED rather than forward-fill."
+  ],
+  "eventClockRules": [
+    "For supply-chain material events preserve announcement/publication clock separately from economic effective date.",
+    "First market-actionable session T0 is the first eligible decision session after knownAt.",
+    "If effectiveAt is later than knownAt, research information-arrival and economic-effect clocks separately.",
+    "Do not backdate a relationship or capacity event from a later termination/ramp disclosure."
+  ],
+  "readinessStates": [
+    "READY_ALIGNED",
+    "READY_PARTIAL",
+    "STALE_BLOCKED",
+    "SCOPE_BLOCKED",
+    "VINTAGE_BLOCKED",
+    "SOURCE_ACCESS_BLOCKED",
+    "MAPPING_BLOCKED",
+    "UNKNOWN"
+  ],
+  "protectedRules": [
+    "No source receipt affects Formal eligibility/ranking/score/capital/monitoring/push.",
+    "Missing remains UNKNOWN, never BAD/0.",
+    "No historical Shadow fabrication.",
+    "No outcome lookup before source/taxonomy mapping is frozen."
+  ]
+}

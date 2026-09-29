@@ -1,0 +1,45 @@
+name: System2 Historical Source Smoke Readonly
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - system2-historical-source-smoke-v0-1
+    paths:
+      - "system2/runtime/official_full_market_daily_history_adapter_v0_1.mjs"
+      - "system2/scripts/historical_source_smoke_readonly.mjs"
+      - ".github/workflows/system2-historical-source-smoke-readonly.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-historical-source-smoke-readonly
+  cancel-in-progress: true
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Fetch and validate official historical market data
+        env:
+          S2_HISTORY_SMOKE_DATES: "2017-01-03,2026-09-24"
+          S2_HISTORY_SMOKE_MIN_TWSE: "400"
+          S2_HISTORY_SMOKE_MIN_TPEX: "300"
+        run: node system2/scripts/historical_source_smoke_readonly.mjs
+
+      - name: Upload read-only smoke receipt
+        uses: actions/upload-artifact@v4
+        with:
+          name: system2-historical-source-smoke
+          path: artifacts/system2-historical-source-smoke-v0_1.json
+          retention-days: 30

@@ -4491,3 +4491,97 @@ V8.13 prospectively freezes these fields and comparatorVersion.
 Pre-V8.13 Shadow rows do not gain exact comparator replay merely because the current formula is known; missing PIT ranking provenance remains UNKNOWN.
 
 Any QNS / CUTLINE_NEXT / pool-displacement study must join the comparator version that was valid on the selection date.
+
+
+# PVE-174~180 — Pre-live implementation-semantics audit (2026-09-28)
+
+## Code-proven findings
+
+### Daily RVOL reset gap
+Current `pvBuildDailyFeature(history,marketDate)` selects the last 20 earlier positive-volume daily rows with no corporate-action/reset input. The AFTER_MARKET snapshot writes `corporateActionResetAt:null`. Existing corporate-action test coverage applies to intraday `pvBaselineStats`, not the daily denominator.
+
+Evidence classification:
+- raw daily current volume: potentially factual if source/session is valid;
+- `pvDailyRvol20`: QUARANTINED across unresolved structural volume-unit/corporate-action boundaries;
+- missing reset provenance: UNKNOWN, never neutral.
+
+### Price-censor contract gap
+Current `pvPriceCensored` uses `previousClose*1.099/0.901`. Current TWSE rules use auction reference price at market opening plus legal tick/minimum-tick semantics, with no ordinary ±10% limit for qualifying newly listed common stocks during their first five trading days.
+
+Evidence classification:
+- `PRICE_CENSORED`: heuristic only in v0.1;
+- raw slot OHLCV: not automatically invalidated by this label defect;
+- boundary-dependent response/outcome interpretation: requires exchange-consistent overlay.
+
+### Selected-plan Guard-input mismatch
+Audited `allocateAndBuildPlans()` does not emit avgVolume20Lots, liquidityException, marketStructure, corporateActionResetAt or pvGapDominated, while the PV patch attempts to consume those fields from `result.plan`. Repository search finds no current producer assignment for pvGapDominated.
+
+Observed coercion paths:
+- missing avgVolume20Lots -> pvIlliquidityWarning=false;
+- missing marketStructure -> not ESB;
+- missing pvGapDominated -> false;
+- missing plan corporateActionResetAt cannot seed a new baseline reset.
+
+Therefore ABSENT_INPUT is distinct from VERIFIED_FALSE/NORMAL.
+
+### Reference unresolved asymmetry
+REFERENCE_PRICE_UNRESOLVED is emitted only for 09:00 when referenceClose is null. Later missing reference values cause pvPriceCensored to return false without the unresolved flag. Later-slot boundary interpretation with missing reference is UNKNOWN.
+
+## Build-lineage resolution
+Base `Worker.js` intentionally does not contain all patch-produced runtime code. Deployment and regression workflows apply the ordered V7/V8 patch chain, including `apply_v8_11_0.py`, before syntax/contract checks and deployment. Workflow assertions require the PV schema constant/tables in the built Worker. Base-file absence is therefore NOT a runtime-removal finding.
+
+## Field-level eligibility overlay
+- H001 raw slot RVOL: salvageable with bar/source/baseline/cohort/common-support quality even when unrelated Guard labels are untrusted.
+- H002 cumulative pace: same plus prefix continuity and cumulative-history quality.
+- H003 response/acceptance/Guard: higher-gated; affected Guard inputs must be PRESENT/verified or the state is descriptive/quarantined.
+- H004 market path: factual paths may be stored, but hypothesis eligibility requires session/corporate-action/boundary/outcome overlays.
+- daily RVOL: denominator continuity across structural volume-regime changes is mandatory.
+
+## External mechanism prior
+Lee & Swaminathan (2000) and Medhat & Schmeling (2022) provide evidence that volume/turnover interacts with momentum/reversal differently across horizons/states. These sources do not validate Taiwan PV alpha. They reinforce horizon/state stratification and prohibit importing a universal high-volume sign.
+
+Status:
+`RAW_VOLUME_FIELD_LEVEL_SALVAGE / DAILY_RVOL_CA_QUARANTINE / GUARD_INPUT_CONTRACT_INCOMPLETE / PRICE_BOUNDARY_GUARD_HEURISTIC / PROSPECTIVE_ALPHA_UNKNOWN / FORMAL_UNCHANGED`.
+
+
+# PVE-181~186 — Acceptance event/anchor semantics audit (2026-09-29 pre-market)
+
+## Code-proven new defects
+
+### PRE_EVENT expiry can manufacture Acceptance events
+`pvAdvanceAcceptance()` applies its 13:00 expiry transition even when the state never left B_PRE_EVENT / A_PRE_EVENT. Because eventKey creation follows any transition to a non-initial state, PRE_EVENT -> EXPIRED_AMBIGUOUS can create a PVACC key without an actual breakout/pullback trigger.
+
+Research interpretation:
+- raw acceptance event-key count is inflated by no-trigger session censoring;
+- genuine active Acceptance lifecycle requires evidence in stateHistory that a pre-outcome trigger state was entered before expiry;
+- PRE_EVENT-only expiry is `NO_TRIGGER_SESSION_CENSOR`, not failure/acceptance evidence.
+
+### Acceptance is not Guard-paused
+`pvAdvancePersistence()` receives `comparable: guard.pvInterpretability !== "INVALID"`.
+`pvAdvanceAcceptance()` receives no Guard/comparable argument and executes unconditionally.
+
+Therefore INVALID source/baseline/reference states can still advance Acceptance geometry if bar/plan fields happen to be present.
+
+### Anchor eligibility is not Guard-gated
+`anchorEligible` depends on the Acceptance transition/state only. It does not require a non-INVALID Guard. Same-session and later daily outcomes may consequently be stored for an anchor whose originating PV state is not hypothesis-clean.
+
+This is permitted as factual path storage only under the frozen salvage principle:
+`OUTCOME_EXISTS != FEATURE_ELIGIBLE != HYPOTHESIS_CLEAN`.
+
+## First-session 9/29 QA overlay
+Because 2026-09-29 intraday is already primary-inference excluded by inherited 9/24 selection lineage, no alpha conclusion is allowed. The first-session report must still count separately:
+- RAW_SNAPSHOTS;
+- GUARD_INVALID / GUARDED / VALID;
+- RAW_ACCEPTANCE_TRANSITIONS;
+- ACTIVE_ACCEPTANCE_LIFECYCLES;
+- PRE_EVENT_ONLY_EXPIRIES;
+- RAW_ANCHOR_ELIGIBLE;
+- HYPOTHESIS_CLEAN_ANCHORS.
+
+For primary H003/H004 on 9/29, HYPOTHESIS_CLEAN_ANCHORS remains zero regardless of future price outcomes.
+
+## Event denominator contract
+H003 maturity uses only `H003_HYPOTHESIS_CLEAN_EVENT_COUNT`, not raw acceptance keys. Activation is determined solely by timestamped pre-outcome stateHistory and contemporaneous quality evidence; future return/MFE/MAE cannot activate or remove an event.
+
+Status:
+`PHANTOM_ACCEPTANCE_EVENT_CONFIRMED / INVALID_GUARD_ACCEPTANCE_LEAK_CONFIRMED / ANCHOR_STORAGE_SEPARATED_FROM_INFERENCE / FORMAL_UNCHANGED`.

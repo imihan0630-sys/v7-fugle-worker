@@ -1,8 +1,8 @@
 # Market Breadth + Sector Rotation + Leadership Checkpoint
 
-Updated: 2026-09-28 18:05 Asia/Taipei
+Updated: 2026-09-28 20:12 Asia/Taipei
 Current cursor: BR-001 through BR-029 complete.
-Next: BR-030 prospective leader-only vs broad-participation evidence; join to D10 physical-cycle state without threshold tuning.
+Next: BR-030 first valid prospective evidence no earlier than 2026-09-29; until then continue source/readiness work without outcome peeking.
 
 ## Durable conclusions
 
@@ -139,3 +139,30 @@ BR-031: join those observations to the D10 physical-cycle state by information d
 BR-030: prospective leader-only vs broad-participation evidence using frozen V8.14 sector-gate provenance.
 BR-031: combine market confirmation with D10 physical-cycle state by knownAt without collapsing to a scalar score.
 BR-032: estimate taxonomy/exposure UNKNOWN rate before any theme-level return test.
+
+
+## BR-030P — preregistration complete, outcomes still waiting
+
+- No BR-030 forward outcome was inspected on 2026-09-28. V8.14's first expected clean prospective cohort remains 2026-09-29, conditional on source/history admission.
+- Source audit of `buildTodaySectorStats()` confirms member-level `changePercent` and `tradeValue` exist at decision time, while sector output already contains stockCount, breadth, avgChange, amount/activity and top-3 return leaders.
+- Therefore intra-sector activity concentration is prospectively PIT-computable from same-day Taiwan market data without a new external data source.
+- Preregistered descriptors include top1/top3 amount share, amount HHI, effective active names, stock-count-normalized HHI, leader-return gaps, breadth/avgChange after top-1/top-3 removal, sign stability and return dispersion.
+- Raw HHI is forbidden for cross-sector comparison without sector-size normalization.
+- Taiwan price-limit/event contamination is an explicit control.
+- System 2 RANK-07 candidate-pool industry concentration is not duplicated: BR-030 studies concentration **within a sector's members before candidate interpretation**, while RANK-07 studies distribution **across candidates**.
+
+### D09 maturity decision
+`D09-10 產業成交值／集中度: L2 -> L3`.
+
+Reason: member-level same-day tradeValue and industry identity already exist at the decision clock and support prospective Taiwan PIT concentration descriptors. This is a data-feasibility upgrade only.
+
+### Explicit non-upgrades
+- BR-030 itself remains WAITING_PROSPECTIVE; no leader-only vs broad outcome conclusion exists yet.
+- D09-07 leadership lifecycle remains L2 until repeated PIT snapshots exist across enough independent dates.
+- D09-06 sector rotation remains L2 pending clean prospective rank-transition evidence.
+- No concentration threshold, hard cap, sector gate, score, ranking, quota, capital, monitoring or signal behavior changed.
+
+### Exact next continuation
+1. Wait for a valid post-V8.14 2026-09-29-or-later scan before any BR-030 outcome comparison.
+2. Freeze first same-day concentration receipt without threshold tuning.
+3. Join to D10 physical-cycle states only by information available as-of that scan date.

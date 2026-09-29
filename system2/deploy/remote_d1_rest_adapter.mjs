@@ -124,6 +124,15 @@ export async function createRemoteD1RestAdapter({
           results: blocks.flatMap((block) => Array.isArray(block?.results) ? block.results : []),
         };
       },
+      async run() {
+        const blocks = await queryOne(text, params);
+        const success = blocks.every((block) => block?.success !== false);
+        return {
+          success,
+          meta: blocks.at(-1)?.meta || null,
+          results: blocks.flatMap((block) => Array.isArray(block?.results) ? block.results : []),
+        };
+      },
     });
     return bound([]);
   }

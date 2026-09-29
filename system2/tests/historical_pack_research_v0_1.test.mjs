@@ -32,6 +32,7 @@ assert.equal(set.packCount, 1);
 assert.equal(set.barCount, 20);
 assert.ok(set.gzipBytes < set.payloadJsonBytes);
 assert.ok(set.base64Bytes < set.payloadJsonBytes);
+assert.match(set.packs[0].objectSha256,/^[a-f0-9]{64}$/);
 
 const payload = await unpackHistoricalA1PackResearchV0_1(set.packs[0]);
 assert.equal(payload.symbol, "2330");
@@ -48,5 +49,12 @@ const changedName = await buildHistoricalA1PacksResearchV0_1({
 const changedPayload = await unpackHistoricalA1PackResearchV0_1(changedName.packs[0]);
 assert.equal(changedPayload.nameTimeline.length, 2);
 assert.equal(changedPayload.nameTimeline[1][0], rows[10].marketDate);
+
+await assert.rejects(
+  () => buildHistoricalA1PacksResearchV0_1({
+    rows:[rows[0],{...rows[0],close:999,high:1000}],capturedAt:"2026-09-28T12:10:00Z",
+  }),
+  /duplicate historical pack marketDate/,
+);
 
 console.log("System2 packed historical A1 research v0.1 tests passed");

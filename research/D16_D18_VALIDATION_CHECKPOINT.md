@@ -244,10 +244,128 @@ Therefore:
 FORMAL_OPTIMIZATION_CANDIDATE: NONE.
 The evidence architecture advanced, but executable regime capture and prospective policy outcomes are still absent.
 
-## Exact next continuation — implementation-aware
-1. Audit which observable-regime raw features can be produced prospectively from existing source-clock contracts with zero new source calls.
-2. Keep context capture separate from policy and collect state occupancy/UNKNOWN coverage first.
-3. Do not create a composite RISK_ON/RISK_OFF score before component-level OOS incremental tests.
-4. When executable states exist, freeze one single-dimension policy challenger + exposure-matched control and next-session action semantics.
-5. D16-13 remains L3 until actual prospective full-universe Shadow dates exist.
-6. D18 modules remain L2 until PIT implementation/OOS evidence supports further promotion.
+
+## 2026-09-28 long-form continuation — promotion gate + raw-feature readiness
+
+New durable research artifacts:
+- `research/D16_D18_PROMOTION_GATE_V0_1.md`
+- `research/D18_REGIME_RAW_FEATURE_READINESS_V0_1.md`
+
+### A. Regime evidence must count episodes, not only dates
+Persistent market states create pseudo-replication. Eighty consecutive dates in one drawdown are not eighty independent regime demonstrations.
+
+New mandatory reporting:
+- official decision-date count;
+- regime-episode count;
+- episode lengths;
+- transition count;
+- state/action/exposure occupancy;
+- UNKNOWN share;
+- leave-one-episode-out contribution sensitivity.
+
+A state observed in only one contiguous episode remains descriptive-only regardless of date count. Multiple episodes are necessary but still not sufficient.
+
+### B. Fixed-N readiness is not promotion proof
+Existing 15-date / 20-paired-date gates remain descriptive-readiness floors only.
+
+Policy sample sufficiency must depend on:
+- preregistered economically meaningful effect (MDE);
+- date/episode variance;
+- serial dependence;
+- state occupancy/action frequency;
+- costs;
+- multiple-testing family size.
+
+Repeated peeking is not allowed to create an early promotion. Promotion analyses occur at preregistered evidence checkpoints unless a sequentially valid method was frozen in advance.
+
+### C. Policy classes separated
+Do not pool:
+- ENTRY_GATE_ONLY;
+- ENTRY_SIZE_SCALE;
+- ADD_READD_GATE;
+- EXISTING_POSITION_DERISK;
+- STRATEGY_WEIGHT_REALLOCATION.
+
+Each intervention has different timing, execution cost and counterfactual. Changing policy class creates a new experiment version.
+
+### D. After-close causality strengthened
+An after-close regime snapshot affects no earlier than the next official tradable session.
+
+For existing positions, de-risking must model next-session open/gap/limit feasibility. Close-price retroactive liquidation is forbidden.
+
+### E. Dependence-aware inference
+Daily policy differentials may be dependent from regime persistence, overlapping horizons, position carry and volatility clustering.
+
+Naive iid inference is not primary.
+Candidate tools:
+- stationary / block bootstrap;
+- HAC-style inference where assumptions fit.
+
+Block length/bandwidth is documented and sensitivity-tested, never outcome-tuned.
+
+### F. Multiple-testing literature retained with counterevidence
+White (2000) and Hansen (2005) support benchmark-relative correction for model search.
+Harvey/Liu/Zhu (2016) show conventional significance hurdles are problematic under extensive factor search.
+Bailey et al. PBO/CSCV and DSR provide selection-overfit diagnostics.
+
+Counterevidence is explicitly retained:
+- later Andrew Chen research disputes the broad interpretation that most return-predictability findings are false and questions a universal raised t-stat hurdle;
+- Harvey & Liu (2020) emphasize joint Type-I / Type-II error calibration.
+
+Therefore D18 does NOT adopt a universal t > 3 promotion rule.
+It uses experiment-family accounting + MDE + OOS/Shadow + dependence-aware uncertainty + error-cost asymmetry.
+
+### G. Domestic Regime raw-feature readiness audit
+Existing source contracts materially narrow the engineering gap.
+
+Potential zero-new-network-call / existing-source lanes:
+- A1 same-day breadth counts, median return, total/median trade value, top10/top20 trade-value concentration, return dispersion;
+- A3 market institution aggregates when both market receipts are valid;
+- B2 prospective industry context.
+
+History-dependent but source-feasible:
+- A2 TAIEX trend/MA/slope;
+- A2 realized volatility;
+- 20-day market activity history;
+- history-based breadth participation.
+
+Still PIT-blocked:
+- D18-06 size leadership due market-cap/share-denominator vintage lineage;
+- full D18-07 global transmission due incomplete canonical global source/decision-clock receipts.
+
+### H. Main L2 -> L3 bottleneck identified
+For domestic observable Regime, the bottleneck is now an executable **market-level feature builder**, not general source discovery.
+
+L3 requires:
+- tested builder;
+- sourceSession/universe/version hashes;
+- availableAt/PIT proof;
+- coverage numerator/denominator;
+- official-session continuity;
+- history hash;
+- UNKNOWN fail-closed behavior;
+- deterministic replay.
+
+A spec or endpoint alone is not L3.
+
+### I. Regime policy promotion levels frozen
+- L2: mechanism + falsification.
+- L3: executable Taiwan PIT/replay feasibility.
+- L4: paired prospective/OOS evidence with next-session timing, complete counterfactuals, multiple relevant episodes and identical costs.
+- L5: multi-episode/period/state robustness, cost/slippage stress, redundancy, multiple-testing/search diagnostics and no single episode/year/sector dominance.
+
+Only after L5 can a D18 result be considered for FORMAL_OPTIMIZATION_CANDIDATE review.
+
+### Optimization decision
+FORMAL_OPTIMIZATION_CANDIDATE: NONE.
+
+Reason:
+promotion governance and data-readiness understanding improved substantially, but the domestic market-level regime builder is not executable yet and there is no paired prospective Regime-policy evidence.
+
+## Exact next continuation — promotion-gate aware
+1. Specify an isolated research-only market-level Regime feature builder using existing A1/A2/A3/B2 receipts, preferably Class A and zero new market-data calls.
+2. Builder objective is context occupancy/UNKNOWN coverage only; no strategy policy impact.
+3. Freeze replay/fail-closed tests before any prospective regime outcomes.
+4. Accumulate prospective observable-state episodes; do not choose a composite Risk-on/off score.
+5. After occupancy evidence exists, preregister one single-dimension policy class, one strategy, one MDE, static baseline and exposure-matched control.
+6. D18 stays L2 until executable PIT evidence exists; D16-13 stays L3 until actual prospective full-universe capture dates exist.

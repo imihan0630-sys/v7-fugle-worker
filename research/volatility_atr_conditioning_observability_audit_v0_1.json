@@ -1,0 +1,130 @@
+{
+  "schemaVersion": "volatility-atr-conditioning-observability-audit-v0.1",
+  "researchDate": "2026-09-28",
+  "status": "COMPUTATION_FEASIBLE_PERSISTENCE_BLOCKED",
+  "outcomeDataUsed": false,
+  "formalCoreChanged": false,
+  "researchOnly": true,
+  "targetSpec": "research/volatility_atr_conditioning_decomposition_v0_1.json",
+  "conclusion": "L0-L3 conditioning states are computable from same-scan already-loaded inputs with existing research observers and zero new market-data calls, but the legacy mutable/bounded Shadow archive is not promotion-grade evidence. L4 ranking/selection parentage also needs immutable actual decision-state linkage.",
+  "layerAudit": [
+    {
+      "layer": "L0_PRE_ATR_ELIGIBLE",
+      "computation": "FORMAL_GATE_OVERLAP_OBSERVER_V0_1 + ordered gate state",
+      "status": "COMPUTABLE_SAME_SCAN",
+      "persistence": "NOT_PROMOTION_GRADE",
+      "blockers": [
+        "legacy REJECTED_AFTER_BASE is bounded max 6 per pool and sorted by first exclusion reason",
+        "first-failure count does not identify overlapping gate eligibility",
+        "legacy BROAD_CONTROL is sampled and quota-conditioned"
+      ]
+    },
+    {
+      "layer": "L1_ATR_GATE",
+      "computation": "formal_gate_overlap_observer ATR_QUALITY with frozen 1<=atrPercent<=10",
+      "status": "COMPUTABLE_SAME_SCAN",
+      "persistence": "NOT_PROMOTION_GRADE",
+      "blockers": [
+        "observer not immutably attached to complete per-symbol decision-state parent for every candidate"
+      ]
+    },
+    {
+      "layer": "L2_STOP_GEOMETRY",
+      "computation": "TARGET_RR_AUDIT_OBSERVER_V0_1 channel-specific deriveFormalEntryStop",
+      "status": "COMPUTABLE_WHEN_CHANNEL_INPUTS_KNOWN",
+      "persistence": "NOT_PROMOTION_GRADE",
+      "blockers": [
+        "channel/geometry cannot be manufactured for rows that never validly reached required setup state",
+        "legacy snapshot population is bounded/sampled",
+        "same-date mutable archive lacks immutable generation"
+      ]
+    },
+    {
+      "layer": "L3_RR_SURVIVAL",
+      "computation": "TARGET_RR_AUDIT_OBSERVER_V0_1 + formal gate observer",
+      "status": "COMPUTABLE_WITH_PROVENANCE_CAVEAT",
+      "persistence": "NOT_PROMOTION_GRADE",
+      "blockers": [
+        "targetPriceSource/asOf/capturedAt/pointInTimeEligible not guaranteed",
+        "TARGET_NULL must remain separate from LOW_RR",
+        "legacy RR-reject representation is not prevalence-complete"
+      ]
+    },
+    {
+      "layer": "L4_FINAL_SELECTION",
+      "computation": "actual formal result + post-consensus ranking tuple + selected membership",
+      "status": "PARTIALLY_OBSERVED_BUT_PARENT_LINKAGE_REQUIRED",
+      "persistence": "BLOCKED_FOR_PROMOTION_GRADE_INFERENCE",
+      "blockers": [
+        "legacy selected/QNS and control rows do not share one immutable per-symbol decision parent",
+        "BROAD_CONTROL can recompute bare scoreCandidate and diverge from post-consensus formal ranking state",
+        "single cohort primary key prevents overlapping semantic memberships",
+        "same-date DELETE/rewrite semantics are mutable",
+        "reader limits can truncate complete keyspace"
+      ]
+    }
+  ],
+  "reusableValidatedComponents": [
+    "research/formal_gate_overlap_observer_v0_1.mjs",
+    "research/formal_gate_replay_v0_1.mjs",
+    "research/channel_stage_denominator_observer_v0_1.mjs",
+    "research/target_rr_audit_observer_v0_1.mjs",
+    "research/formal_gate_evidence_persistence_feasibility_v0_1.json",
+    "research/target_rr_persistence_feasibility_v0_1.json"
+  ],
+  "requiredFutureParent": {
+    "architecture": "reuse SHADOW_COHORT_SEMANTICS_CLASS_B_PROPOSAL immutable per-symbol decision-state parent; do not create a parallel ATR-specific parent",
+    "minimumFields": [
+      "scanDate",
+      "symbol",
+      "canonicalMarket",
+      "pool",
+      "formalRuleVersion",
+      "comparatorVersion",
+      "captureGeneration",
+      "formalState",
+      "firstFailure",
+      "postConsensusRankingTuple",
+      "historyAdmissionState",
+      "sourceQualityState",
+      "semanticFingerprint"
+    ],
+    "atrChildFields": [
+      "atrPercent",
+      "atrGateState",
+      "channel",
+      "entry",
+      "stop",
+      "stopDistancePct",
+      "stopBinding",
+      "targetState",
+      "targetProvenanceState",
+      "reward",
+      "risk",
+      "rewardPerRisk",
+      "rrGateState",
+      "priorityScore",
+      "rankWithinPool",
+      "selectedFlag"
+    ],
+    "membership": "overlapping research memberships reference the same immutable parent"
+  },
+  "biasFindings": [
+    "Selection bias: studying only final selected rows conditions on ATR/RR/grade/ranking survival.",
+    "First-failure bias: exclusion_reason is ordered first failure, not independent ATR rejection contribution.",
+    "Sampling bias: REJECTED_AFTER_BASE and BROAD_CONTROL are bounded and not prevalence-complete.",
+    "Consensus provenance bias: recomputed control score can differ from actual post-consensus formal decision state.",
+    "Target provenance bias: a present target value is not automatically PIT-valid.",
+    "Reader truncation risk: bounded legacy readers can omit newest/partial-date evidence."
+  ],
+  "decision": {
+    "runOutcomesNow": false,
+    "reason": "Promotion-grade denominator and immutable parent are not yet available. Outcome lookup on legacy convenience cohorts would compound selection/sampling/provenance bias.",
+    "next": "Reuse the existing shared Class-B immutable decision-state parent proposal if owner-authorized; until then keep ATR outcome research blocked rather than fabricate counterfactuals."
+  },
+  "engineeringBoundary": {
+    "pureObserverComputation": "CLASS_A_ALREADY_VALIDATED",
+    "sharedRuntimePersistence": "CLASS_B_PROPOSAL_FIRST",
+    "atrGateStopRrFormalChange": "CLASS_C_OWNER_APPROVAL"
+  }
+}

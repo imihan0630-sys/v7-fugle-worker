@@ -495,6 +495,120 @@ Current scale constraint:
 - therefore **do not launch the full 2017→present row-wise D1 backfill blindly** until the historical raw-storage mode is frozen. Engineering should evaluate a packed/cold historical representation (or another isolated historical store) while keeping D1 for indexes, receipts, recent windows, Base Dataset and Shadow results as appropriate.
 - this is a storage-scale engineering gate, not a strategy/formal-selection gate. No final SELECTED policy, Decision Clock, Worker Cron or real trading behavior was changed.
 
+## 2026-09-28 official historical source adapter progress
+
+- Added `system2/runtime/official_monthly_history_adapter_v0_1.mjs` in commit `358d16e3d247d1fc96073350ecee3cfabb7dad75`.
+- Added fixture/normalization tests in commit `ed11cf3c362115c5fb7dfddfd767e8d674c365e0`; System2 Research CI run `36422600827` PASS.
+- TWSE monthly per-security source contract uses the official TWSE STOCK_DAY monthly query host and normalizes date / volume / turnover / OHLC / change / transactions.
+- TPEx monthly per-security source contract uses the official TPEx historical individual-stock monthly query host and normalizes ROC dates to Gregorian dates.
+- The adapter is source-format only; it does not itself authorize historical availability semantics beyond the configured conservative session-close basis.
+- Official-source research confirms TWSE/TPEx historical individual-stock pages cover the 2017 Core Base horizon.
+- Survivorship control is now explicit: historical backfill must seed from both currently listed securities and delisted/de-TPEx securities, not from today's live symbol list alone. TWSE/TPEx official delisting registries are available; TWSE current ISIN registry exposes listing dates.
+- Next implementation unit: historical universe registry/adapters (current + delisted union), then source-backed backfill smoke against a bounded date/symbol slice before large D1 population.
+
+## 2026-09-28 packed historical cold-store verification
+
+The row-wise historical D1 scale gate has been addressed with a packed cold-history research path.
+
+Implemented:
+- schema V0.9 migration `system2/sql/0005_historical_packs.sql` with yearly per-symbol A1 packs and pack-ingest receipts;
+- `system2/runtime/historical_pack_store_v0_1.mjs` for immutable pack persistence, idempotent reruns, conflict rejection and date-range unpack/query;
+- remote D1 adapter `run()` support required by the pack persistence path;
+- isolated D1 provision upgraded to schema 0.9 with 35 System2 tables and read/write sentinel verification;
+- existing bounded/physical historical smoke scripts aligned to schema 0.9 without changing System1/V8 production resources.
+
+Real-source pack smoke:
+- workflow: `System2 Historical Pack Real-Source Smoke`, run `36427386634`, PASS;
+- source period: 2026-08-03 through 2026-08-31, 21 official trading dates;
+- bounded symbols: TWSE 2330/2454; TPEx 3105/6488;
+- official full-market rows read before symbol filtering: TWSE 22,810; TPEx 18,646;
+- packed round-trip rows: 42 TWSE + 42 TPEx;
+- TWSE payload 3,909 JSON bytes -> 1,587 gzip bytes -> 2,116 Base64 bytes (gzip ratio 0.4060; Base64/storage ratio 0.5413);
+- TPEx payload 3,825 JSON bytes -> 1,606 gzip bytes -> 2,144 Base64 bytes (gzip ratio 0.4199; Base64/storage ratio 0.5605);
+- all four packs inserted and unpacked back to identical date/OHLC/volume/value/transaction/change rows with PIT eligibility preserved;
+- D1 metrics for the smoke: 18 requests, 8 rows read, 30 rows written including provisioning/sentinels/receipts, size_after 4,182,016 bytes;
+- System1 production isolation check PASS; V8 Regression run `36427386650` PASS; System2 Research CI for the smoke script `36427356631` PASS.
+
+Interpretation:
+- packed yearly-per-symbol storage is materially more space/write efficient than one D1 row per stock-day;
+- the bounded four-symbol month proves correctness but is not sufficient by itself to authorize a ten-year bulk load;
+- a read-only full-market month compression benchmark is the next scale test. Full 2017→present backfill remains intentionally not started until that benchmark bounds projected storage.
+
+## 2026-09-28 full-market pack scale benchmark
+
+Read-only full-market compression benchmark is complete and PASS.
+
+- workflow: `System2 Historical Pack Full-Market Benchmark`;
+- corrected run head `432f590e0f0df308dd9f1852609e22e98e905bfd`; benchmark job PASS;
+- period: 2026-08-03 through 2026-08-31, 21 official trading dates;
+- TWSE: 22,810 stock-day rows, average 1,086.19 ordinary equities/day;
+- TPEx: 18,646 stock-day rows, average 887.90 ordinary equities/day;
+- combined: 41,456 bars -> 1,977 market+symbol+year packs;
+- canonical JSON: 3,587,823 bytes;
+- gzip: 1,389,468 bytes (ratio 0.3873);
+- Base64 storage payload: 1,855,256 bytes (ratio 0.5171);
+- per-bar observed payload: JSON 86.55 bytes / gzip 33.52 bytes / Base64 44.75 bytes;
+- conservative 4.7M-bar projection: gzip ≈150.2 MiB, Base64 payload ≈200.6 MiB before SQLite/index/receipt overhead;
+- month-sized packs overstate fixed pack overhead relative to full-year packs, so the full-year representation is expected to compress at least as well, subject to direct yearly verification;
+- benchmark performed no D1 writes and no System1 mutation; isolation PASS.
+
+Scale decision:
+- row-wise multi-million-bar D1 storage remains rejected for the historical cold archive;
+- yearly per-symbol packed storage is promoted from bounded experiment to the preferred P0 historical cold-store representation;
+- full 2017→present ingestion must still be staged by year with durable completion receipts and coverage checks, not executed as one unbounded job;
+- first production-scale research backfill unit is calendar year 2017, executed in isolated System2 infrastructure only. This is historical research storage, not strategy/final-selection authorization.
+
+## 2026-09-28 external cold-object storage V1.0 implementation
+
+The accepted packed-history design is now implemented as an external object-store path rather than continuing to place Base64 payloads in D1.
+
+Repository implementation:
+- migration `system2/sql/0006_historical_cold_store.sql` advances the isolated System2 schema to V1.0 and adds D1-only manifests, resumable checkpoints, immutable completion receipts and historical-universe registry receipts;
+- yearly per-symbol `.json.gz` bytes use deterministic content-addressed R2 keys and separate payload SHA-256 / compressed-object SHA-256 verification;
+- object write is create-only; identical reruns reuse the object/manifest, while a differing object, manifest, checkpoint, receipt or universe membership fails closed as `IMMUTABLE_CONFLICT`;
+- object commit precedes D1 manifest commit; a failure between the two leaves at most an orphan object, and retry safely reuses it before writing the manifest;
+- final receipt is written only after all expected objects and manifests are accounted for; chunk checkpoints make partial annual runs resumable; a completed-receipt fast path recomputes its manifest rolling hash and verifies every referenced R2 object before accepting `ALREADY_COMPLETE`;
+- old V0.9 inline D1 packs remain read-compatible for bounded smoke evidence, but the annual backfill script no longer calls the inline bulk-persistence path;
+- unpack now produces deterministic `barHash`, keeps the true backfill capture time as `observedAt`, retains conservative per-session `availableAt`, and restores source provenance;
+- the cold loader is directly usable by PIT Replay and the partitioned Bulk Backtest Runner;
+- the backtest loader reads only the requested historical registry ID and exposes active membership fields without future delisting dates, preserving survivorship control;
+- historical-universe registry persistence is immutable, rerun-safe and receipt-last.
+
+Safety/operations:
+- the 2017 workflow is now `workflow_dispatch` only, not push-triggered;
+- it targets isolated `system2-research` plus an isolated R2 bucket and requires separate least-privilege R2 object credentials;
+- repository tests cover object/manifest/receipt immutability, retry with a later capture timestamp, object corruption, PIT replay, Bulk Backtest integration, registry persistence, AWS SigV4 R2 access and workflow isolation;
+- System1 `Worker.js`, root `wrangler.toml`, Formal Core, SELECTED policy, Decision Clock, Worker Cron and trading behavior are unchanged.
+- PR #245 validation evidence: System2 Research CI run `36434552698` PASS, V8 Regression run `36434552278` PASS, and bounded official-source packed readback run `36434541564` PASS against isolated `system2-research` schema V1.0.
+- An earlier PR smoke run `36434206488` correctly failed closed when default source-row enrichment changed an already frozen V0.9 payload hash. The fix makes provenance enrichment explicit only for the new external-cold annual path; the bounded legacy rerun then passed without rewriting existing packs.
+
+Superseded inline-backfill evidence:
+- GitHub runs `36429244651` and `36429895255` applied schema V0.9 successfully but both TWSE and TPEx jobs failed in the inline annual backfill step before completion;
+- no annual completion receipt from those runs is accepted as evidence, and the automatic inline-D1 workflow has been replaced by the manual-only external cold-object path rather than retried blindly.
+
+Physical status:
+- GitHub run `36434206278` applied/reverified isolated `system2-research` schema V1.0 with 39 tables, write/read verification PASS and production-database/runtime isolation PASS;
+- no isolated R2 bucket/credential readback is yet recorded;
+- therefore the 2017→present external cold backfill and first real full-market replay remain not started on this new path;
+- exact next action is isolated R2 provisioning/credential setup, bounded object+manifest smoke, then 2017 TWSE/TPEx annual backfill and coverage/readback verification.
+
+## 2026-09-29 R2 physical smoke qualification
+
+The external cold-object path is now physically qualified against the isolated R2 bucket `system2-historical-research`.
+
+- owner provisioned the private Standard-class bucket and least-privilege account object read/write credentials, stored only in the GitHub `system2-research` environment;
+- PR #246 merged to main as `3623241fc5c2578360bb75c96f047b4fce56ebc9`;
+- bounded R2 physical smoke run `36488764511` PASS using official 2026-09-24 data:
+  - TWSE 2330: 353-byte gzip object, source-date evidence exact, object SHA-256 readback PASS, unpack PASS, create-only rerun guard PASS;
+  - TPEx 6488: 358-byte gzip object, source-date evidence exact, object SHA-256 readback PASS, unpack PASS, create-only rerun guard PASS;
+  - D1 annual manifest writes = 0; full backfill = false; System1 runtime unchanged;
+- the first physical attempt correctly exposed an HTTP object-metadata bug: storing gzip bytes with `Content-Encoding: gzip` caused Node/undici to transparently decompress GET responses before byte-level SHA verification;
+- fixed semantics now store `.json.gz` as opaque `application/gzip` bytes without default `Content-Encoding`; both remote S3 adapter and Worker R2 binding adapter use the same exact-byte policy;
+- latest PR head `473e12ac38718a9db6122d1359a1371694539c0b` passed System2 Research CI run `36488965872` and V8 Regression run `36488965742`;
+- the two tiny smoke objects live only under `smoke/r2-physical-v0.2/` and cannot collide with annual production research keys under `a1/v0.1/`.
+
+R2 provisioning/readback is no longer a blocker. The exact next P0 action is the manual-only 2017 TWSE annual external-cold backfill, followed by coverage/hash/manifest/receipt verification; only after TWSE passes should the 2017 TPEx annual backfill run.
+
 ## Current boundary
 
 Research/design/code prototype is not blocked. Isolated D1 and inert Worker already exist, but prospective always-on Shadow accumulation remains intentionally inactive. A5/B2 observer engineering is complete; the immediate boundary is accumulation of independent same-day V0.2 evidence beginning no earlier than the 2026-09-29 official session. No exact Decision Clock is frozen; capture is false; Worker Cron is 0. The GitHub Actions research schedule is read-only evidence collection and is not the Worker Cron. No production-shared storage or System 1/V8 change is authorized or needed.
