@@ -1,0 +1,64 @@
+{
+  "version":"0.1",
+  "id":"BR-032",
+  "date":"2026-09-30 Asia/Taipei",
+  "domainModule":"D09-08",
+  "name":"大型股vs小型股領導",
+  "formalCoreChanged":false,
+  "outcomesOpened":false,
+  "status":"MECHANISM_PLUS_FALSIFICATION_DEFINED / TAIWAN_PIT_COHORT_PENDING / FORMAL_UNCHANGED",
+  "hypotheses":{
+    "H1_LARGE_CAP_LEADERSHIP":"Large-cap leadership can reflect concentrated institutional/passive flow, global bellwether exposure, liquidity preference or index-weight transmission.",
+    "H2_SMALL_CAP_DIFFUSION":"Small-cap leadership can reflect risk appetite, domestic liquidity, thematic diffusion or later-cycle broadening.",
+    "H3_NO_UNIVERSAL_SIZE_SIGN":"Neither large-cap nor small-cap leadership has a permanent bullish sign; size effects and leadership can reverse by regime and sample.",
+    "H4_INDEX_CONCENTRATION_CONFOUND":"Cap-weighted index strength can look like broad market leadership when only a few mega-caps drive returns.",
+    "H5_MICROSTRUCTURE_CONFOUND":"Observed size leadership can be contaminated by liquidity, tick-size, spread, price-limit and turnover differences rather than information leadership."
+  },
+  "stateVector":[
+    "largeCapResidualRS",
+    "smallCapResidualRS",
+    "largeMinusSmallResidualRS",
+    "largeCapBreadth",
+    "smallCapBreadth",
+    "largeCapTradeValueShare",
+    "smallCapTradeValueShare",
+    "largeCapLeaderContribution",
+    "smallCapLeaderContribution",
+    "crossSizeDispersion",
+    "marketRegime",
+    "liquidityRegime"
+  ],
+  "falsification":[
+    "leadership disappears after market/sector beta and industry-mix controls",
+    "result is driven by one mega-cap or one theme",
+    "size bucket definitions use current market cap retroactively",
+    "apparent small-cap premium disappears after liquidity/transaction-cost controls",
+    "apparent large-cap leadership is only passive/index flow or derivative-expiry contamination",
+    "effect changes sign across regimes or horizons without stable interaction evidence",
+    "Top-N membership changes create mechanical turnover mistaken for rotation"
+  ],
+  "pitRequirements":[
+    "market-cap bucket membership frozen as-of each decision date",
+    "listing/delisting and classification vintage preserved",
+    "free-float/index membership kept separate from raw market-cap size",
+    "same-day price/turnover/breadth clocks aligned",
+    "corporate actions and price limits controlled",
+    "UNKNOWN membership or missing denominator remains UNKNOWN"
+  ],
+  "taiwanEvidenceSummary":[
+    "Historical Taiwan size-anomaly literature is mixed rather than universally small-cap positive.",
+    "Taiwan microstructure research shows transaction-cost/liquidity behavior varies with price/trading activity and tick-size structure, so size leadership cannot be interpreted without execution/liquidity controls.",
+    "Taiwan derivative-expiry evidence shows disproportionate volume/volatility effects can concentrate in high-weight index stocks, creating a large-cap leadership confound."
+  ],
+  "redundancyBoundary":{
+    "D09_10":"Within-sector concentration; not the same as cross-size leadership.",
+    "D05":"Institutional/passive-flow ownership is a control/dependency, not D09-08 progress.",
+    "D14":"Execution cost and liquidity are controls/dependencies, not D09-08 progress.",
+    "D13":"Global bellwether transmission is a dependency when mega-caps dominate."
+  },
+  "maturityDecision":{
+    "D09-08":"PROMOTE_L1_TO_L2_MECHANISM_AND_FALSIFICATION_ONLY",
+    "L3":"BLOCKED_PENDING_TAIWAN_PIT_SIZE_BUCKET_RECEIPT"
+  },
+  "next":"BR-033 freeze a prospective Taiwan size-bucket receipt with decision-date market cap, free-float/index membership, liquidity and sector-mix controls; then accumulate independent dates before any large-vs-small leadership outcome test."
+}
