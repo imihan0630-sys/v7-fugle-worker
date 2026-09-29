@@ -14,7 +14,7 @@ This module is **not** a full-market intraday scanner. It consumes only a presel
 - a thousand-price bounded pool;
 - another owner-specified System 2 bounded candidate pool.
 
-The current System 2 global capacity invariant remains a maximum of 12 unique symbols. Weak names are never added merely to fill capacity.
+The existing System 2 global candidate/watch capacity remains a maximum of 12 unique symbols. This monitor V0.1 is deliberately narrower: it accepts at most **9 active symbols**, matching the owner-requested 3+3+3 bounded intraday set. A thousand-price-only monitor can therefore be smaller. Weak names are never added merely to fill capacity.
 
 ## Timeframe contract
 
@@ -22,7 +22,8 @@ The video strategy's EMA16, EMA64 and Impulse MACD are evaluated on **daily K ba
 
 Intraday operation updates the still-open current daily bar:
 - before the official close: PROVISIONAL_DAILY_BAR;
-- after the official close and final daily bar: CONFIRMED_DAILY_CLOSE.
+- after the official 13:30 Asia/Taipei close and a finalized current-date daily bar: CONFIRMED_DAILY_CLOSE;
+- if the current-date daily bar is missing: CURRENT_DAILY_BAR_MISSING and the monitor is BLOCKED.
 
 A provisional daily signal may disappear before the close and must never be relabeled as a confirmed historical daily signal.
 
@@ -120,7 +121,7 @@ The pure V0.1 module performs no network call. A later isolated market-data adap
 
 buildDailyResonanceMonitorBatch():
 - accepts only caller-provided symbols;
-- supports at most 12 unique symbols;
+- supports at most 9 unique symbols in V0.1 (3+3+3 monitor cap);
 - rejects duplicate symbols in a batch;
 - has mode = BOUNDED_PRESELECTED_ONLY;
 - has fullMarketScan = false;
@@ -136,14 +137,15 @@ Fail/flag conservatively:
 - fewer than 128 bars -> seed-warmup sensitivity warning;
 - live current daily bar -> repaint/finality warning;
 - inconsistent OHLC -> reject;
-- history bars on or after the current market date -> reject.
+- history bars on or after the current market date -> reject;
+- missing current-market-date daily bar -> BLOCKED, never reuse the prior day as today's confirmed state.
 
 Missing or unverified inputs are not coerced into bearish/zero evidence.
 
 ## UI / chart output contract
 
 The snapshot exposes a full daily series suitable for a dynamic chart:
-- daily OHLC input;
+- daily OHLCV rows;
 - EMA16;
 - EMA64;
 - Impulse MD;
@@ -155,7 +157,9 @@ The snapshot exposes a full daily series suitable for a dynamic chart:
 - exit condition map/count;
 - lifecycle state;
 - provisional/confirmed finality;
-- visual signal: ENTRY / EXIT / WARNING / HOLD / WATCH.
+- visual signal: ENTRY / EXIT / WARNING / HOLD / WATCH;
+- display signal: BUY_RESONANCE / EXIT_RESONANCE when 3/3 is reached;
+- confirmation state: PROVISIONAL / CONFIRMED.
 
 A future System 2 chart can render:
 - K candles;
@@ -211,7 +215,7 @@ Current safety flags:
 - fullMarketScan = false
 
 Not implemented/armed in V0.1:
-- live quote/Fugle adapter;
+- live quote/Fugle adapter and market-data refresh loop;
 - current-day OHLC aggregation from ticks;
 - persistent signal episodes;
 - push notifications;
