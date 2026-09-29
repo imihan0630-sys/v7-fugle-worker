@@ -1353,3 +1353,119 @@ This is **not** a `FORMAL_OPTIMIZATION_CANDIDATE`: no prospective/OOS outcome in
 ### Exact continuation
 SC-025: define `MATERIAL_TRANSMISSION_RECEIPT` joining input price -> production route -> output/selling price -> volume -> margin with separate knownAt clocks and UNKNOWN semantics.
 SC-026: require negative controls for low/no exposure and failed pass-through before any material-transmission outcome test.
+
+
+## SC-023 — Actual Taiwan issuer material-exposure bridge: route-specific exposure beats theme labels
+
+Machine receipt:
+`research/sc023_issuer_material_exposure_bridge_v0_1.json`
+
+### Objective
+Instantiate the earlier `PRODUCT_MATERIAL_EDGE_VINTAGE` schema on actual Taiwan issuers without using stock outcomes.
+
+The exercise deliberately uses two very different chains:
+- IC substrate / ABF / PCB;
+- steel, contrasting integrated BF/BOF with EAF.
+
+The purpose is data and semantic feasibility, not a bullish/bearish ranking.
+
+### ABF / IC-substrate bridge
+
+#### 8046 南亞電路板
+Current official company and technology pages establish:
+- ABF substrate is an active business line;
+- the ABF technology roadmap separately identifies Core/PP and Dielectric material families and material-performance requirements;
+- current ABF development is tied to high-performance computing / AI / networking applications.
+
+Safe state:
+`ABF_PRODUCT_EXPOSURE = KNOWN`.
+
+Not safe:
+- exact ABF material cost share;
+- exact ABF-film procurement share;
+- realized material pass-through;
+- customer-specific revenue;
+- current gross-margin sensitivity by material.
+
+Those stay UNKNOWN unless separately disclosed.
+
+#### 3189 景碩科技
+Current official pages establish:
+- FCBGA and other IC substrates are active products;
+- official management messaging refers to large-area, high-layer-count ABF substrates and capacity deployment/customer certification;
+- PBGA specifically uses resin-impregnated glass-fiber copper-clad laminate.
+
+Important falsification:
+`PBGA_MATERIAL_STRUCTURE != ALL_ABF/FCBGA_MATERIAL_STRUCTURE`.
+
+The PBGA material statement is product-specific and must not be generalized to all high-end substrates.
+
+### Steel route bridge
+
+#### 2002 中國鋼鐵
+Official manufacturing-process documentation establishes an integrated route:
+- imported coal, iron ore and limestone feed raw-material preparation;
+- iron ore/coke/flux feed blast-furnace ironmaking;
+- blast-furnace hot metal plus scrap enter converter steelmaking.
+
+Therefore iron ore and metallurgical coal/coke are primary direct route inputs; scrap is also a direct converter input but is not the primary upstream ironmaking feed.
+
+#### 2006 東和鋼鐵
+Current official sustainability disclosure establishes:
+- 2025 main raw material was 98% scrap;
+- EAF electric-arc furnaces melt scrap for structural-steel production;
+- domestic scrap purchasing responds to the monthly production plan.
+
+Therefore scrap is a much more direct primary route exposure than for an integrated BF/BOF producer.
+
+### High-value negative control
+For a future scrap-price transmission test:
+
+`2006 東和鋼鐵` = HIGH_DIRECT_EAF_SCRAP_EXPOSURE  
+`2002 中國鋼鐵` = DIFFERENT_ROUTE / LOWER_PRIMARY_SCRAP_EXPOSURE
+
+But 中鋼 is **not** a zero-scrap control because its converter also consumes scrap.
+
+Required controls:
+- steel selling price;
+- product mix;
+- demand / shipment volume;
+- inventory;
+- energy;
+- market/sector regime;
+- contract/spot repricing lag.
+
+This is economically stronger than a generic "same sector company" control.
+
+### Why this matters for ABF too
+The same logic applies inside IC substrates:
+- 8046 / 3189 can both be called high-end substrate beneficiaries;
+- that does not prove identical material recipes, supplier constraints, qualification rules, cost shares or repricing lags.
+
+Theme membership is therefore not an exposure magnitude.
+
+### Maturity reconciliation
+SC-025 already recorded:
+`D10-12 產業別專用傳導模板: L2 -> L3 DATA_FEASIBILITY_ONLY`.
+
+The canonical tracker had remained L2, while SC-026 already referred to D10-12 as L3. That is a synchronization inconsistency, not new predictive evidence.
+
+SC-023 supplies the missing bounded issuer-level demonstration across two different Taiwan industries and confirms the SC-025 data-feasibility decision.
+
+Decision:
+`D10-12 -> L3 PIT_FEASIBLE_BOUNDED`.
+
+Meaning:
+- actual Taiwan issuer/product/route mapping is prospectively feasible;
+- effective-dated UNKNOWN-safe edges can be constructed;
+- universe completeness = NOT proven;
+- material-price alpha = NOT proven;
+- D10-09 upstream/downstream asymmetry remains L2;
+- D10-06 Pricing Power remains L2.
+
+### Exact next continuation
+SC-027: create first prospective immutable material-transmission receipt on a new information event, outcome-blind.
+SC-028: bind one actual material benchmark to the route-specific issuer edge and preregister lag windows before opening outcomes.
+SC-029: accumulate low/different-exposure and failed-pass-through controls across independent dates.
+
+Status: `BOUNDED_ISSUER_PIT_BRIDGE_PASS / D10-12_L3_DATA_FEASIBILITY_ONLY / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED`.
