@@ -1,0 +1,97 @@
+{
+  "schemaVersion": "D14_MIXED_LOT_EXECUTION_RECEIPT_V0_1",
+  "observedAt": "2026-09-30T04:55:00+08:00",
+  "ownership": [
+    "D14-07",
+    "D14-08",
+    "D14-14"
+  ],
+  "status": "SCHEMA_AND_VALIDATOR_FROZEN / PROSPECTIVE_RECEIPTS_PENDING / FORMAL_CORE_LOCKED",
+  "purpose": "Create a fail-closed research receipt for mixed regular-lot + intraday odd-lot execution and prevent market-mechanism waiting from being mislabeled as strategy/broker latency.",
+  "parentContract": {
+    "required": [
+      "parentActionId",
+      "symbol",
+      "action",
+      "intendedQuantity",
+      "decisionKnownAt"
+    ],
+    "mixedLotSplit": "regularShares=floor(Q/1000)*1000; oddLotShares=Q mod 1000",
+    "rule": "For this v0.1 receipt both regularShares and oddLotShares must be positive."
+  },
+  "legContract": {
+    "required": [
+      "lotType",
+      "mechanism",
+      "intendedQty",
+      "mechanismEligibleAt",
+      "mechanismEligibilityEvidence",
+      "benchmark with matching lotType/source/observedAt/price",
+      "one or more broker submission attempts",
+      "one or more BROKER_CONFIRMED_FILL rows"
+    ],
+    "independentLegs": "Regular and odd-lot legs keep separate benchmark, eligibility, submit, fill and cost provenance.",
+    "allowedMechanisms": {
+      "REGULAR_LOT": "REGULAR_CONTINUOUS",
+      "INTRADAY_ODD_LOT": "INTRADAY_ODD_LOT_CALL_AUCTION"
+    }
+  },
+  "scalarClockFalsification": {
+    "priorClockVector": [
+      "decisionKnownAt",
+      "mechanismEligibleAt",
+      "submitAt",
+      "fillAt"
+    ],
+    "finding": "Necessary but not sufficient when mechanism eligibility is intermittent after the first eligible instant.",
+    "counterexample": "If the order becomes eligible, then a volatility interruption blocks matching, scalar post-eligibility elapsed time includes mechanism-disabled time. Moving mechanismEligibleAt to the end of the interruption would instead erase earlier eligible exposure.",
+    "requiredExtension": "mechanismBlockedIntervals[] with startAt/endAt/reason/sourceRef/observedAt",
+    "derivedExposure": "eligibleExposureToFill = scalarPostEligibilityLatency - evidenced blocked intervals overlapping the eligible-to-fill window"
+  },
+  "derivedDiagnostics": [
+    "rawLatency = fillAt - decisionKnownAt",
+    "preEligibilityWait = max(0, mechanismEligibleAt - decisionKnownAt)",
+    "decisionToSubmitLatency = submitAt - decisionKnownAt",
+    "scalarPostEligibilityLatency = fillAt - max(decisionKnownAt, mechanismEligibleAt)",
+    "mechanismBlockedWaitAfterEligibility = evidenced blocked interval overlap",
+    "eligibleExposureToFill = scalarPostEligibilityLatency - mechanismBlockedWaitAfterEligibility",
+    "submitToFillLatency = fillAt - submitAt"
+  ],
+  "failClosed": [
+    "parent quantity does not equal required regular/odd split",
+    "lotType/mechanism mismatch",
+    "benchmark lotType mismatch",
+    "benchmark observed after first submission",
+    "missing mechanism eligibility source/state",
+    "INTERRUPTED state without blocked interval",
+    "NORMAL state with blocked interval",
+    "blocked interval before first eligibility or after fill",
+    "fill inside a blocked interval",
+    "missing broker submission provenance",
+    "overlapping replacement attempts",
+    "replacement cycle",
+    "missing or duplicate fill id",
+    "non-broker-confirmed/simulated disclosure used as fill",
+    "fill before decision, before eligibility, before submit or after attempt terminal",
+    "leg or parent overfill",
+    "cross-leg duplicate fill id"
+  ],
+  "semanticFirewalls": [
+    "rawLatency is not execution-quality latency by itself",
+    "simulated odd-lot disclosure is not a fill",
+    "regular-lot benchmark is not an odd-lot executable benchmark",
+    "latency remains a vector; no composite latency score is authorized",
+    "valid receipt is execution evidence only; it does not prove economic alpha"
+  ],
+  "officialSourceAnchors": [
+    "https://www.twse.com.tw/en/products/system/trading.html",
+    "https://twse-regulation.twse.com.tw/ENG/EN/law/DAT08.aspx?FLCODE=FL007115"
+  ],
+  "maturityDecision": {
+    "D14_07": "remain L2/40",
+    "D14_08": "remain L2/40",
+    "D14_14": "remain L2/40",
+    "reason": "Schema/source feasibility and deterministic unit falsification are not prospective receipt completeness. Independent live/prospective capture/replay remains required before L3."
+  },
+  "exactNextContinuation": "Run isolated prospective receipt capture on independent sessions containing actual mixed-lot parent actions; require deterministic replay and mechanism-state provenance. First readiness review after at least 3 independent sessions, with no automatic maturity promotion."
+}
