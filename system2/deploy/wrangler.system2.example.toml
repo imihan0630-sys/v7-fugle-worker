@@ -9,9 +9,11 @@ workers_dev = true
 preview_urls = false
 
 [triggers]
-# 08:55-13:40 Asia/Taipei, every five minutes; runtime still checks the local window.
-# 19:00 Asia/Taipei refreshes the next-session bounded pool from s2_capacity_runs.
-crons = ["*/5 0-5 * * 1-5", "0 11 * * 1-5"]
+# One Cloudflare Cron trigger covers both authorized windows so the Free-plan
+# account limit is respected without removing any System 1 production trigger.
+# Runtime admits 08:55-13:40 Asia/Taipei for monitoring and exactly 19:00 for
+# the next-session bounded-pool refresh; all other invocations exit without market calls.
+crons = ["*/5 0-5,11 * * 1-5"]
 
 [[d1_databases]]
 binding = "SYSTEM2_DB"
