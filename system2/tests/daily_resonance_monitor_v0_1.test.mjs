@@ -107,6 +107,11 @@ assert.equal(DAILY_RESONANCE_MAX_UNIQUE_SYMBOLS, 9);
   assert.equal(provisional.signalConfirmationState, "PROVISIONAL");
   assert.equal(provisional.visualSignal, "ENTRY");
   assert.equal(provisional.latest.entryCount, 3);
+  assert.equal(Number.isFinite(provisional.latest.open), true);
+  assert.equal(Number.isFinite(provisional.latest.high), true);
+  assert.equal(Number.isFinite(provisional.latest.low), true);
+  assert.equal(Number.isFinite(provisional.latest.close), true);
+  assert.equal(Number.isFinite(provisional.latest.volume), true);
   assert.equal(provisional.intraday15mAffectsDailyResonance, false);
   assert.equal(provisional.fullMarketScan, false);
   assert.equal(provisional.decisionImpact, false);
@@ -157,6 +162,26 @@ assert.equal(DAILY_RESONANCE_MAX_UNIQUE_SYMBOLS, 9);
   assert.equal(confirmed.displaySignal, "EXIT_RESONANCE");
   assert.equal(confirmed.signalConfirmationState, "CONFIRMED");
   assert.equal(confirmed.latest.exitCount, 3);
+}
+
+
+{
+  const rows = makeBars({ count: 100, direction: "UP" });
+  const marketDate = dateAt(100);
+  const missingCurrent = buildDailyResonanceSnapshot({
+    symbol: "3443",
+    marketDate,
+    historyBars: rows,
+    currentDailyBar: null,
+    currentDailyBarState: null,
+    asOf: "2026-09-29T03:00:00.000Z",
+    continuityState: "ADJUSTED_CONTINUITY",
+    priorLifecycleState: "WATCH",
+  });
+  assert.equal(missingCurrent.finality, "CURRENT_DAILY_BAR_MISSING");
+  assert.equal(missingCurrent.lifecycleState, "BLOCKED");
+  assert.equal(missingCurrent.latest, null);
+  assert.match(missingCurrent.qualityWarnings.join("|"), /CURRENT_DAILY_BAR_MISSING/);
 }
 
 {
