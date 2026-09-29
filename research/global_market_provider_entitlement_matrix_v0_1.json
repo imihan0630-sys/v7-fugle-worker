@@ -3,7 +3,7 @@
   "name": "GLOBAL_MARKET_PROVIDER_ENTITLEMENT_MATRIX_V0_1",
   "status": "RESEARCH_ONLY_SOURCE_MATRIX_FROZEN",
   "formalCoreImpact": "NONE",
-  "updatedAt": "2026-09-28T20:35:00+08:00",
+  "updatedAt": "2026-09-30T05:20:18+08:00",
   "decisionClock": "18:10 Asia/Taipei",
   "lanes": [
     {
@@ -46,28 +46,34 @@
       "family": "OIL",
       "canonicalCandidate": "CME WTI / ICE Brent",
       "sourceStatus": "OFFICIAL_MARKETS_IDENTIFIED",
-      "decisionTimeFeasibility": "LIVE_PRE_1810_PIT_ELIGIBLE_IF_ENTITLED",
+      "decisionTimeFeasibility": "ECONOMIC_CLOCK_PASS__AUTOMATED_SOURCE_CONTRACT_BLOCKED",
       "entitlementStatus": "PROVIDER_CONTRACT_NOT_FROZEN",
       "historical1810Replay": "NOT_ESTABLISHED",
-      "keyRisk": "contract roll, later settlement, source terms"
+      "keyRisk": "contract roll, later settlement, >=10m public-web delay, non-display licensing, ICE Brent contract unresolved",
+      "publicWebEvidence": "CME public WTI web quotes are at least 10 minutes delayed; ICE Brent automated entitlement remains separately unresolved.",
+      "automatedNonDisplayUse": "LICENSE_OR_AUTHORIZED_DISTRIBUTOR_REQUIRED_FOR_CME_AUTOMATED_NONDISPLAY_CAPTURE"
     },
     {
       "family": "INDUSTRIAL_METAL",
       "canonicalCandidate": "CME HG copper",
       "sourceStatus": "OFFICIAL_MARKET_IDENTIFIED",
-      "decisionTimeFeasibility": "LIVE_PRE_1810_PIT_ELIGIBLE_IF_ENTITLED",
-      "entitlementStatus": "PROVIDER_CONTRACT_NOT_FROZEN",
+      "decisionTimeFeasibility": "ECONOMIC_CLOCK_PASS__AUTOMATED_SOURCE_CONTRACT_BLOCKED",
+      "entitlementStatus": "PUBLIC_WEB_REFERENCE_ONLY__AUTOMATED_NONDISPLAY_NOT_AUTHORIZED_BY_THIS_AUDIT",
       "historical1810Replay": "NOT_ESTABLISHED",
-      "keyRisk": "roll, USD denomination, demand-vs-supply ambiguity"
+      "keyRisk": "roll, USD denomination, demand-vs-supply ambiguity, >=10m public-web delay, non-display licensing",
+      "publicWebEvidence": "CME website quotes are delayed at least 10 minutes and designated reference-only.",
+      "automatedNonDisplayUse": "LICENSE_OR_AUTHORIZED_DISTRIBUTOR_REQUIRED_BEFORE_AUTOMATED_RESEARCH_CAPTURE"
     },
     {
       "family": "PRECIOUS_METAL",
       "canonicalCandidate": "CME GC gold",
       "sourceStatus": "OFFICIAL_MARKET_IDENTIFIED",
-      "decisionTimeFeasibility": "LIVE_PRE_1810_PIT_ELIGIBLE_IF_ENTITLED",
-      "entitlementStatus": "PROVIDER_CONTRACT_NOT_FROZEN",
+      "decisionTimeFeasibility": "ECONOMIC_CLOCK_PASS__AUTOMATED_SOURCE_CONTRACT_BLOCKED",
+      "entitlementStatus": "PUBLIC_WEB_REFERENCE_ONLY__AUTOMATED_NONDISPLAY_NOT_AUTHORIZED_BY_THIS_AUDIT",
       "historical1810Replay": "NOT_ESTABLISHED",
-      "keyRisk": "DXY/real-yield/VIX redundancy"
+      "keyRisk": "DXY/real-yield/VIX redundancy, >=10m public-web delay, non-display licensing",
+      "publicWebEvidence": "CME website quotes are delayed at least 10 minutes and designated reference-only.",
+      "automatedNonDisplayUse": "LICENSE_OR_AUTHORIZED_DISTRIBUTOR_REQUIRED_BEFORE_AUTOMATED_RESEARCH_CAPTURE"
     },
     {
       "family": "MACRO_SCHEDULE",
@@ -125,16 +131,18 @@
     }
   ],
   "priorityOrder": [
-    "P0: public official schedule/rate/FX lanes already clock-clean",
-    "P1: prospective DXY/TX/oil/copper/gold timestamp capture",
-    "P2: licensed historical replay and macro consensus",
-    "P3: opaque critical-mineral prices; prefer event-first evidence"
+    "P0: public official schedule/rate/FX/TAIFEX lanes with explicit timing and public-official entitlement",
+    "P1: prospective TAIWAN VIX + TX NIGHT_PRE_SCAN via isolated public-official research receipts",
+    "P2: DXY after ICE/provider entitlement + latency contract is frozen",
+    "P3: CME WTI/HG/GC only through an authorized automated/non-display contract or licensed distributor; public website is reference-only and delayed >=10m",
+    "P4: historical replay, macro consensus, opaque critical-mineral prices only after source rights and vintages are explicit"
   ],
   "implementationGuard": "Do not wire into Formal. A standalone research capture can be Class A only if isolated from Formal/shared runtime, schedules, budgets and schemas; otherwise Class B proposal-first.",
   "nextContinuation": [
-    "design isolated prospective capture",
-    "record provider entitlement before fetching",
-    "do not backfill current values as historical first-known",
-    "run independent-date Shadow before any L3 promotion"
+    "accumulate public-official P0/P1 receipts first; do not buy data yet",
+    "audit DXY entitlement separately",
+    "do not automate CME website quote scraping as a substitute for a licensed non-display source",
+    "revisit paid/licensed CME lanes only after cheaper public-official lanes demonstrate incremental research value",
+    "run independent-date Shadow before any L3/optimization promotion"
   ]
 }
