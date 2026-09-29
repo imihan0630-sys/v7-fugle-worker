@@ -637,3 +637,35 @@ No 2017 annual completion receipt is claimed from the failed run. The next actio
 ## Current boundary
 
 Research/design/code prototype is not blocked. Isolated D1 and inert Worker already exist, but prospective always-on Shadow accumulation remains intentionally inactive. A5/B2 observer engineering is complete; the immediate boundary is accumulation of independent same-day V0.2 evidence beginning no earlier than the 2026-09-29 official session. No exact Decision Clock is frozen; capture is false; Worker Cron is 0. The GitHub Actions research schedule is read-only evidence collection and is not the Worker Cron. No production-shared storage or System 1/V8 change is authorized or needed.
+
+
+## 2026-09-29 bounded daily resonance monitor V0.1
+
+Owner-requested System 2 intraday monitoring research module is implemented and merged through PR #252 as main commit `9b1cdfea376f322a1777bd25afe1034439a6b1f5`.
+
+Frozen V0.1 scope:
+- intraday monitoring is **bounded/preselected only**; it does not scan the full Taiwan market;
+- monitor active-cap is 9 unique symbols, matching the requested 3+3+3 set; this is narrower than the existing 12-symbol global System 2 candidate/watch capacity;
+- the monitored trend/momentum timeframe is **daily K**;
+- EMA16 / EMA64 are daily-K calculations;
+- Impulse MACD uses the internal research formula contract documented in `SYSTEM2_DAILY_RESONANCE_MONITOR_V0_1.md`;
+- the still-open current daily bar can produce a **PROVISIONAL** 3/3 resonance; it is not relabeled CONFIRMED unless the current-date daily bar is FINAL after the official close and all three conditions still hold;
+- missing current-date daily bar blocks the current-date monitor instead of silently reusing the prior day's state;
+- 15-minute K is auxiliary execution/timing context only and cannot change the daily resonance state;
+- the three EMA/price/Impulse conditions remain one correlated price-derived family state, not three independent factor-family votes;
+- chart-ready series now includes daily OHLCV, EMA16, EMA64, Impulse MD/signal/histogram, cross states, condition counts and visual/display signals;
+- current module is research/shadow only: `decisionImpact=false`, `notificationImpact=false`, `orderImpact=false`, `fullMarketScan=false`;
+- no Worker Cron, live push, live quote adapter, persistence, order routing or System 1/V8 Formal logic was enabled or modified.
+
+Verification:
+- System2 Research CI run `36573657584` PASS on final PR head;
+- V8 Regression run `36573657588` PASS;
+- PR #252 merged with System 1/V8 isolation preserved.
+
+Next integration unit for this monitor:
+1. isolated live-market adapter/current-day daily-OHLC aggregator for only the bounded selected symbols;
+2. persistent signal-episode/dedup semantics so provisional 1/3 -> 2/3 -> 3/3 transitions can be replayed without notification spam;
+3. chart/read API surface for K candles + EMA16/64 + Impulse MACD + ENTRY/EXIT markers;
+4. Prospective Shadow validation across trend/range/regime/repaint/whipsaw/cost conditions before any live notification authority is armed.
+
+This monitor does not change the separate P0 historical cold-backfill continuation point.
