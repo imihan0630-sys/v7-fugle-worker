@@ -2273,3 +2273,16 @@ Updated: 2026-09-27 23:38 Asia/Taipei.
 - Deterministic receipt test: 31 assertions PASS. No Worker/D1/runtime/schema/schedule/signal/push/selection change; no return, threshold, parameter, OOS, cost or fill inspection.
 - Status: `BOUNDED_TWSE_TPEX_CAPTURE_PASS / SAME_DATE_PARITY_MATERIAL / ROW_VERSION_PIT_ATTESTATION_UNKNOWN / REVISION_INCIDENCE_UNKNOWN / OUTCOMES_CLOSED / FORMAL_UNCHANGED`. D03 maturity remains 44.6%; no `FORMAL_OPTIMIZATION_CANDIDATE`.
 - Exact next: retain fixed-cadence repeated versions of the same trade date across at least three completed sessions plus an after-hours interval; require shared attestation/session/CA lineage; map Fugle through the authorized shared path; then reconcile exact immutable parent-child keysets and non-secret cost/latency/call deltas before Class-B review or TI-005/TI-006.
+
+
+## D03 Technical Indicator continuation — TI-428 through TI-435 fixed-cadence observer (2026-09-30 Asia/Taipei)
+
+- Continued exactly from TI-427 without inspecting returns, outcomes or new indicator parameters.
+- Added an append-only source-version observer with canonical digest chaining, ROC-date normalization, current/historical row counting, repeated endpoint/date classification, bounded retry and a pure authorized-response ingestion path.
+- Seeded four prior official observations and appended four new TWSE/TPEx current/historical observations at 02:12–02:13 Taipei. All four like-for-like hashes were unchanged across a minimum 3,281-second after-hours interval.
+- Correct denominator: one prospective completed-session capture date (1/3), despite two source-content dates. Four unchanged comparisons leave revision incidence UNKNOWN and the 3-session gate `ACCUMULATING_NOT_MET`.
+- New batch cost evidence: four public calls, 6,911,303 transient bytes, zero raw payload bytes committed. Curl succeeded after Node transport returned transient 502/proxy 403; fallback per-request latency remains explicitly UNKNOWN.
+- New artifacts: `research/TECHNICAL_INDICATOR_FIXED_CADENCE_OBSERVER_V0_1.md`, `research/technical_indicator_fixed_cadence_observations_20260930.json`, `research/technical_indicator_fixed_cadence_observer_v0_1.mjs`, `research/test_technical_indicator_fixed_cadence_observer_v0_1.mjs`.
+- Twenty deterministic observer assertions, 31 prior capability assertions and 12 row-version assertions PASS. No Worker/D1/runtime/schema/schedule/signal/push/selection change.
+- Status: `AFTER_HOURS_REPEAT_PASS / PROSPECTIVE_SESSION_1_OF_3 / REVISION_INCIDENCE_UNKNOWN / ATTESTATION_SESSION_CA_PARENT_UNKNOWN / OUTCOMES_CLOSED / FORMAL_UNCHANGED`. D03 maturity remains 44.6%; no `FORMAL_OPTIMIZATION_CANDIDATE`.
+- Exact next: capture after the next two completed Taiwan sessions; on any hash change run complete add/remove/change reconciliation before outcomes; record successful-transport latency/call/byte/storage deltas; require shared attestation/session/CA/Fugle/parent reconciliation; keep TI-005/TI-006 and Class-B/Formal work blocked.
