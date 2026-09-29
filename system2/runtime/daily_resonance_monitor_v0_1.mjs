@@ -11,9 +11,10 @@ export const DAILY_RESONANCE_FORMULA_VERSION = Object.freeze({
   impulseSignalLength: 9,
   impulseSource: "HLC3",
   contract: "SYSTEM2_DAILY_RESONANCE_MONITOR_V0_1",
+  officialCloseConfirmation: "13:30_ASIA_TAIPEI",
 });
 
-export const DAILY_RESONANCE_MAX_UNIQUE_SYMBOLS = 12;
+export const DAILY_RESONANCE_MAX_UNIQUE_SYMBOLS = 9;
 
 const ALLOWED_CONTINUITY = new Set(["CLEAR_NO_ACTION", "ADJUSTED_CONTINUITY"]);
 const ALLOWED_LIFECYCLE = new Set(["WATCH", "FLAT", "HOLD"]);
@@ -250,26 +251,70 @@ export function computeDailyResonanceSeries(bars, options = {}) {
   });
 }
 
-function resolveLifecycle({ priorLifecycleState, latest }) {
+function resolveLifecycle({ priorLifecycleState, latest, finality }) {
   if (!latest?.ready) {
-    return { state: "WARMUP", visualSignal: null, warningLevel: 0 };
+    return {
+      state: "WARMUP",
+      visualSignal: null,
+      displaySignal: null,
+      signalConfirmationState: "NONE",
+      warningLevel: 0,
+    };
   }
   if (latest.exitCount === 3) {
-    return { state: "EXIT_RESONANCE_CANDIDATE", visualSignal: "EXIT", warningLevel: 3 };
+    const confirmed = finality === "CONFIRMED_DAILY_CLOSE";
+    return {
+      state: confirmed ? "EXIT_RESONANCE_CONFIRMED" : "EXIT_RESONANCE_PROVISIONAL",
+      visualSignal: "EXIT",
+      displaySignal: "EXIT_RESONANCE",
+      signalConfirmationState: confirmed ? "CONFIRMED" : "PROVISIONAL",
+      warningLevel: 3,
+    };
   }
   if (latest.entryCount === 3) {
-    return { state: "ENTRY_RESONANCE_CANDIDATE", visualSignal: "ENTRY", warningLevel: 3 };
+    const confirmed = finality === "CONFIRMED_DAILY_CLOSE";
+    return {
+      state: confirmed ? "ENTRY_RESONANCE_CONFIRMED" : "ENTRY_RESONANCE_PROVISIONAL",
+      visualSignal: "ENTRY",
+      displaySignal: "BUY_RESONANCE",
+      signalConfirmationState: confirmed ? "CONFIRMED" : "PROVISIONAL",
+      warningLevel: 3,
+    };
   }
   if (priorLifecycleState === "HOLD") {
     if (latest.exitCount >= 1) {
-      return { state: "EXIT_WARNING_" + latest.exitCount + "_OF_3", visualSignal: "WARNING", warningLevel: latest.exitCount };
+      return {
+        state: "EXIT_WARNING_" + latest.exitCount + "_OF_3",
+        visualSignal: "WARNING",
+        displaySignal: null,
+        signalConfirmationState: "NONE",
+        warningLevel: latest.exitCount,
+      };
     }
-    return { state: "HOLD", visualSignal: "HOLD", warningLevel: 0 };
+    return {
+      state: "HOLD",
+      visualSignal: "HOLD",
+      displaySignal: null,
+      signalConfirmationState: "NONE",
+      warningLevel: 0,
+    };
   }
   if (latest.entryCount >= 1) {
-    return { state: "ENTRY_FORMING_" + latest.entryCount + "_OF_3", visualSignal: "WATCH", warningLevel: latest.entryCount };
+    return {
+      state: "ENTRY_FORMING_" + latest.entryCount + "_OF_3",
+      visualSignal: "WATCH",
+      displaySignal: null,
+      signalConfirmationState: "NONE",
+      warningLevel: latest.entryCount,
+    };
   }
-  return { state: "WATCH", visualSignal: null, warningLevel: 0 };
+  return {
+    state: "WATCH",
+    visualSignal: null,
+    displaySignal: null,
+    signalConfirmationState: "NONE",
+    warningLevel: 0,
+  };
 }
 
 export function buildDailyResonanceSnapshot({
@@ -305,13 +350,20 @@ export function buildDailyResonanceSnapshot({
   const continuityEligible = ALLOWED_CONTINUITY.has(continuity);
   const series = continuityEligible ? computeDailyResonanceSeries(bars) : [];
   const latest = continuityEligible ? (series.at(-1) ?? null) : null;
-  const resolved = continuityEligible
-    ? resolveLifecycle({ priorLifecycleState: lifecycle, latest })
-    : { state: "BLOCKED", visualSignal: null, warningLevel: 0 };
 
   const finality = currentDailyBar && barState === "LIVE"
     ? "PROVISIONAL_DAILY_BAR"
     : "CONFIRMED_DAILY_CLOSE";
+
+  const resolved = continuityEligible
+    ? resolveLifecycle({ priorLifecycleState: lifecycle, latest, finality })
+    : {
+        state: "BLOCKED",
+        visualSignal: null,
+        displaySignal: null,
+        signalConfirmationState: "NONE",
+        warningLevel: 0,
+      };
 
   const qualityWarnings = [];
   if (!continuityEligible) qualityWarnings.push("PRICE_CONTINUITY_NOT_VERIFIED");
@@ -336,6 +388,9 @@ export function buildDailyResonanceSnapshot({
     priorLifecycleState: lifecycle,
     lifecycleState: resolved.state,
     visualSignal: resolved.visualSignal,
+    displaySignal: resolved.displaySignal,
+    signalConfirmationState: resolved.signalConfirmationState,
+    officialCloseConfirmation: "13:30_ASIA_TAIPEI",
     warningLevel: resolved.warningLevel,
     latest,
     series: Object.freeze(series),
@@ -350,7 +405,8 @@ export function buildDailyResonanceSnapshot({
     qualityWarnings: Object.freeze(qualityWarnings),
     notes: Object.freeze([
       "EMA16/EMA64 and Impulse MACD are calculated from daily bars only.",
-      "LIVE daily-bar signals are provisional and may disappear before the official close.",
+      "LIVE daily-bar signals are PROVISIONAL and may disappear before the official 13:30 Asia/Taipei close.",
+      "A 3-of-3 resonance becomes CONFIRMED only when the official daily bar is FINAL and all 3 conditions still hold.",
       "The 3 conditions are correlated price-derived states, not 3 independent votes.",
       "15-minute context is auxiliary execution context and cannot alter this daily resonance state.",
       "This V0.1 output is a research/shadow candidate, not validated production trading authority.",
@@ -369,7 +425,7 @@ export function buildDailyResonanceMonitorBatch({
   if (!Number.isFinite(Date.parse(observedAt))) throw new Error("asOf must be an ISO timestamp");
   if (!Array.isArray(items)) throw new Error("items must be an array");
   if (!Number.isInteger(maxUniqueSymbols) || maxUniqueSymbols < 1 || maxUniqueSymbols > DAILY_RESONANCE_MAX_UNIQUE_SYMBOLS) {
-    throw new Error("maxUniqueSymbols must be between 1 and 12");
+    throw new Error("maxUniqueSymbols must be between 1 and 9");
   }
 
   const symbols = items.map((item) => requiredText(item?.symbol, "item.symbol"));
