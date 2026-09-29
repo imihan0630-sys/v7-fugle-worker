@@ -7,6 +7,7 @@ import {
   buildDailyResonanceSnapshot,
   buildDailyResonanceMonitorBatch,
 } from "../runtime/daily_resonance_monitor_v0_1.mjs";
+import { buildDailyResonanceChartModel } from "../runtime/daily_resonance_chart_v0_1.mjs";
 
 function dateAt(offset) {
   const d = new Date(Date.UTC(2026, 0, 1 + offset));
@@ -259,6 +260,31 @@ assert.equal(DAILY_RESONANCE_MAX_UNIQUE_SYMBOLS, 9);
     }),
     /cannot exceed 9 unique symbols/,
   );
+}
+
+{
+  const rows = makeBars({ count: 100, direction: "UP" });
+  const input = splitForLive(rows);
+  const snapshot = buildDailyResonanceSnapshot({
+    symbol: "2330",
+    ...input,
+    currentDailyBarState: "LIVE",
+    asOf: "2026-09-29T02:45:00.000Z",
+    continuityState: "ADJUSTED_CONTINUITY",
+    priorLifecycleState: "WATCH",
+    intraday15mContext: { state: "AUXILIARY_ONLY" },
+  });
+  const chart = buildDailyResonanceChartModel(snapshot, { maxBars: 80 });
+  assert.equal(chart.candles.length, 80, "chart model exposes candles");
+  assert.equal(chart.ema16.length, 80);
+  assert.equal(chart.ema64.length, 80);
+  assert.equal(chart.impulseMacd.length, 80);
+  assert.equal(chart.currentState.displaySignal, "BUY_RESONANCE");
+  assert.equal(chart.currentState.signalConfirmationState, "PROVISIONAL");
+  assert.equal(chart.intraday15mAffectsDailyResonance, false);
+  assert.equal(chart.fullMarketScan, false);
+  assert.equal(chart.notificationImpact, false);
+  assert.ok(chart.markers.some((row) => row.type === "BUY_RESONANCE"));
 }
 
 console.log("System2 daily resonance monitor V0.1 tests passed");
