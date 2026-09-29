@@ -303,7 +303,7 @@ GitHub專屬checkpoint：
 | D10-11 | 官方資料自動化擷取 | L1 理論理解 | 20% |
 | D10-12 | 產業別專用傳導模板 | L1 理論理解 | 20% |
 
-### D11｜公司行動／重大事件／事件風險 — 47.1%
+### D11｜公司行動／重大事件／事件風險 — 48.6%
 
 專責：08｜事件與新聞研究室  
 證據錨點：`CORPORATE_ACTIONS_CAPITAL_SUPPLY_CHECKPOINT.md`、`EVENT_RISK_CHECKPOINT.md`
