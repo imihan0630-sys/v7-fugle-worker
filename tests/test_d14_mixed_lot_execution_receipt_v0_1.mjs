@@ -162,12 +162,26 @@ x=validateMixedLotExecutionReceipt(overlap);
 assert.equal(x.valid,false);
 assert.deepEqual(x.reasons,["OVERLAPPING_REPLACEMENT_ATTEMPTS"]);
 
-// Duplicate fill ids fail closed.
+// Duplicate fill ids across lot legs fail closed.
 const dup=baseReceipt();
 dup.legs[1].orderAttempts[0].fills[0].fillId="reg-fill-1";
 x=validateMixedLotExecutionReceipt(dup);
-// Fill IDs are enforced per leg, so cross-leg duplicate IDs are not enough to reject in v0.1.
-assert.equal(x.valid,true);
+assert.equal(x.valid,false);
+assert.deepEqual(x.reasons,["CROSS_LEG_DUPLICATE_FILL_ID"]);
+
+// Interrupted state requires an explicit blocked interval.
+const missingBlock=baseReceipt();
+missingBlock.legs[1].mechanismEligibilityEvidence.state="INTERRUPTED";
+x=validateMixedLotExecutionReceipt(missingBlock);
+assert.equal(x.valid,false);
+assert.deepEqual(x.reasons,["INTERRUPTED_STATE_WITHOUT_BLOCK_INTERVAL"]);
+
+// Benchmark created after submission is post-hoc and fails PIT.
+const lateBench=baseReceipt();
+lateBench.legs[1].benchmark.observedAt=ts("09:03:11");
+x=validateMixedLotExecutionReceipt(lateBench);
+assert.equal(x.valid,false);
+assert.deepEqual(x.reasons,["BENCHMARK_AFTER_SUBMISSION"]);
 
 console.log(JSON.stringify({
   ok:true,
