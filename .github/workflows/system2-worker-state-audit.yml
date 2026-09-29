@@ -83,10 +83,9 @@ jobs:
             : schedulesEnvelope?.result?.schedules;
           if(!Array.isArray(schedules)) throw new Error("Cron schedule response shape is unexpected");
           const cronExpressions=schedules.map(x=>x.cron).sort();
-          for(const expected of ["*/5 0-5 * * 1-5","0 11 * * 1-5"]){
-            if(!cronExpressions.includes(expected)) throw new Error(`missing System2 resonance Cron: ${expected}`);
-          }
-          if(schedules.length!==2) throw new Error(`expected exactly two resonance Cron schedules; found ${schedules.length}`);
+          const expected="*/5 0-5,11 * * 1-5";
+          if(!cronExpressions.includes(expected)) throw new Error(`missing System2 resonance Cron: ${expected}`);
+          if(schedules.length!==1) throw new Error(`expected exactly one resonance Cron schedule; found ${schedules.length}`);
 
           const subdomain=await get(`/accounts/${accountId}/workers/scripts/${name}/subdomain`,workersToken);
           if(subdomain?.result?.enabled!==true) throw new Error("workers.dev must expose the read-only System2 UI/API");
