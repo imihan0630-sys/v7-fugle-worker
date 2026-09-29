@@ -152,15 +152,15 @@
       "id": "BREADTH_ROTATION",
       "domain": "INDUSTRY_SECTOR_RESIDUAL_RS",
       "level": "L2",
-      "status": "WAITING_PROSPECTIVE",
-      "basis": "Concept lane and falsification protocol are frozen. V8.14.0 now prospectively records the exact current sector-gate inputs/checks plus a bounded SECTOR_GATE_REJECTED Shadow cohort and explicit breadth-universe provenance. No historical gate claim is allowed; first descriptive audit requires >=20 clean independent post-deploy scan dates with mature outcomes."
+      "status": "WAITING_PROSPECTIVE / DATA_QUALITY_BLOCKED",
+      "basis": "BR-030 concentration protocol is preregistered, but the first expected 2026-09-29 cohort is invalid: production read-only history admission reported usableSymbols=0/1883 (1872 OFFICIAL_GAP_PROOF_UNAVAILABLE; 11 insufficient bars). Independent official evidence shows 2026-07-10 was a legitimate Taipei/TWSE closure date, so a gap-proof resolution false block is suspected with high confidence. No outcome comparison until an actually admitted scan exists."
     },
     {
       "id": "SUPPLY_CHAIN_EVENT_LEAD_LAG",
       "domain": "SUPPLY_CHAIN_LEAD_LAG",
       "level": "L2",
-      "status": "DATA_SOURCE_BLOCKED",
-      "basis": "Event semantics feasible; automated canonical M25 source contract unavailable; complete graph blocked."
+      "status": "PIT_FEASIBLE_PARTIAL / WAITING_PROSPECTIVE",
+      "basis": "D10 research now has bounded Taiwan PIT source contracts for inventory, raw-material/output prices, supply-chain event clocks, official source capture and industry-specific transmission templates. SC-023 freezes actual issuer/route edges across IC substrates and steel; SC-027 freezes the first outcome-blind steel material-transmission receipt and SC-028 preregisters lag windows. Predictive outcomes remain closed; automation/universe completeness is partial."
     },
     {
       "id": "CORPORATE_ACTION_DENOMINATORS",
