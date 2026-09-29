@@ -1,0 +1,66 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-09-29T23:18:00+08:00",
+  "module": "D11-14",
+  "title": "Index adjustment / passive-flow Taiwan PIT feasibility receipt",
+  "decisionImpact": false,
+  "formalCoreChanged": false,
+  "officialTaiwanEvidence": [
+    {
+      "source": "TWSE / FTSE Taiwan Index Series basic rules",
+      "url": "https://www.twse.com.tw/downloads/zh/products/indices/IndexS31.pdf",
+      "findings": [
+        "Quarterly reviews occur in March/June/September/December.",
+        "Detailed review results and execution dates are published after the first Friday close.",
+        "Constituent changes become effective after the third Friday close / effective Monday.",
+        "Corporate actions and events are explicitly part of index maintenance."
+      ]
+    },
+    {
+      "source": "TWSE Corporate Governance 100 Index rules",
+      "url": "https://www.twse.com.tw/downloads/zh/products/indices/IndexS04.pdf",
+      "findings": [
+        "Review result technical notice is published on the 7th trading day of the review month.",
+        "After five intervening trading days, changes become effective on the 13th trading day.",
+        "Unscheduled constituent changes have separate event rules."
+      ]
+    },
+    {
+      "source": "TWSE e-shop Taiwan All Market index constituent product",
+      "url": "https://eshop.twse.com.tw/zh/product/detail/000000008ba29e23018ba2d43b3d00d9",
+      "findings": [
+        "Daily constituent artifacts exist.",
+        "Files include close constituent, pre-open constituent, five-day tracking and technical notices.",
+        "Product is subscription/licensing gated; public existence does not prove free historical-byte completeness."
+      ]
+    }
+  ],
+  "externalFalsificationEvidence": [
+    {
+      "source": "S&P DJI 2021 index-effect review",
+      "finding": "Index effect appears in structural decline; liquidity improvement may help explain attenuation."
+    },
+    {
+      "source": "Greenwood et al., Journal of Finance 2024/2025",
+      "finding": "S&P 500 addition/deletion abnormal-return effect declined substantially over time despite more passive assets."
+    },
+    {
+      "source": "Kumar et al., Journal of Banking & Finance 2023",
+      "finding": "Results depend on methodology and true additions/deletions versus transfers across related indices."
+    }
+  ],
+  "frozenRules": [
+    "Announcement, effective date and passive execution window are separate clocks.",
+    "ADD is not a deterministic bullish rule; DELETE is not a deterministic bearish rule.",
+    "Historical public methodology cannot fabricate missing constituent states.",
+    "Transfers across index families must be separated from true net additions/deletions.",
+    "Corporate-action, earnings/news and market/sector controls are mandatory.",
+    "L4 requires Taiwan prospective/OOS evidence."
+  ],
+  "maturityDecision": {
+    "before": "L2",
+    "after": "L3",
+    "rationale": "Official Taiwan index methodology and constituent-product artifacts establish point-in-time data feasibility and explicit announcement/effective-session semantics. No outcome claim is made."
+  },
+  "formalOptimizationCandidate": false
+}
