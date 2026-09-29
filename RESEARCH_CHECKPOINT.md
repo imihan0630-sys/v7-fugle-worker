@@ -2222,6 +2222,17 @@ Updated: 2026-09-27 23:38 Asia/Taipei.
 - Exact next: run a bounded prospective source-only capture pilot when a legally usable feed is available; measure firstKnown/capturedAt latency, revision incidence, duplicate-cluster behavior and coverage gaps without inspecting returns. Keep production general-news lane SOURCE_NEEDED until licensing/interface is validated.
 
 
+## D03 Technical Indicator continuation — TI-412 through TI-417 immutable row-version receipt (2026-09-29 Asia/Taipei)
+
+- Continued from TI-411 exact-next; no indicator-catalog expansion and no outcome inspection.
+- Added an executable research-only OHLC row-version receipt that binds exact raw field bytes, provider/version clocks, certified bar interval/completion, two-stage raw/transform hashes, corporate-action price-space ancestry and one immutable parent generation.
+- Twelve synthetic assertions cover valid after-market completion, raw/transform tamper, earlier-decision rejection of a later correction, later-decision acceptance of that correction, pre-completion full-day rejection, PARTIAL-vs-COMPLETE separation, self-attestation/missing-first-known UNKNOWN, foreign generation, broken ancestry and changed parent commitment.
+- One bounded official TWSE OpenAPI `STOCK_DAY_ALL` capture at 2026-09-29 20:20 Taipei returned 1,380 rows all dated 2026-09-24 with whole-file ETag/Last-Modified but no visible row-level version/correction or first-known/capture identity. This is source-timing counterevidence, not all-provider coverage proof.
+- New artifacts: `research/TECHNICAL_INDICATOR_ROW_VERSION_RECEIPT_V0_1.md`, `research/technical_ohlc_row_version_receipt_contract_v0_1.json`, `research/technical_ohlc_row_version_receipt_v0_1.mjs`, `research/test_technical_ohlc_row_version_receipt_v0_1.mjs`, `research/technical_ohlc_official_source_capture_20260929.json`.
+- Status: `ROW_VERSION_RECEIPT_DESIGN_FROZEN / ISOLATED_QA_PASS / INDEPENDENT_SOURCE_ATTESTATION_BLOCKED / MULTI_DATE_COVERAGE_UNKNOWN / OUTCOMES_CLOSED / FORMAL_UNCHANGED`. D03 maturity remains 44.6%; no `FORMAL_OPTIMIZATION_CANDIDATE`.
+- Exact next: shared source/continuity owner must map real TWSE/TPEx/Fugle rows without D03 self-attestation; run outcome-blind multi-date coverage/correction/session/ancestry checks, reconcile exact parent-child keysets and measure cost/latency before TI-005/TI-006 or Class-B capture review.
+
+
 ## Event & News D17 official-disclosure bounded capture pilot — 2026-09-28 Asia/Taipei
 - Continued exactly from the D17 source-readiness/ledger checkpoint; no concept restart and no Corporate Actions or Event Risk cursor overwrite.
 - Executed a source-only Class-A pilot against TWSE `t187ap04_L` and TPEx `mopsfin_t187ap04_O`. Both returned HTTP 200, four rows and the advertised nine-field schema including 發言日期/發言時間, fact date, clause, subject and explanation.
