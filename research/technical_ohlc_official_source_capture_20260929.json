@@ -1,0 +1,65 @@
+{
+  "schemaVersion": "TECHNICAL_OHLC_OFFICIAL_SOURCE_CAPTURE_V0_1",
+  "scope": "OUTCOME_BLIND_BOUNDED_SOURCE_ONLY",
+  "capturedAt": "2026-09-29T20:20:57+08:00",
+  "request": {
+    "method": "GET",
+    "url": "https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL",
+    "provider": "TWSE_OPENAPI",
+    "endpoint": "STOCK_DAY_ALL"
+  },
+  "response": {
+    "httpStatus": 200,
+    "contentType": "application/json",
+    "contentLength": 318836,
+    "lastModified": "Mon, 28 Sep 2026 21:20:44 GMT",
+    "etag": "6abada2c-4dd74",
+    "payloadSha256": "5895bbf2882e0b3d095befea940700d812418ad3a763d2304f8cb964b79f0fdf",
+    "rowCount": 1380,
+    "distinctRowDatesRoc": [
+      "1150924"
+    ],
+    "distinctSymbolCount": 1380,
+    "visibleFields": [
+      "Change",
+      "ClosingPrice",
+      "Code",
+      "Date",
+      "HighestPrice",
+      "LowestPrice",
+      "Name",
+      "OpeningPrice",
+      "TradeValue",
+      "TradeVolume",
+      "Transaction"
+    ],
+    "boundedSample": {
+      "Date": "1150924",
+      "Code": "2330",
+      "Name": "台積電",
+      "TradeVolume": "14557662",
+      "TradeValue": "36107476243",
+      "OpeningPrice": "2480.00",
+      "HighestPrice": "2490.00",
+      "LowestPrice": "2470.00",
+      "ClosingPrice": "2475.00",
+      "Change": "-25.0000",
+      "Transaction": "75382"
+    }
+  },
+  "observations": {
+    "rowMarketDateGregorian": "2026-09-24",
+    "rowLevelVersionFieldVisible": false,
+    "rowLevelCorrectionOrSupersessionFieldVisible": false,
+    "rowLevelFirstKnownAtVisible": false,
+    "rowLevelCapturedAtVisible": false,
+    "wholeFileHttpMetadataPresent": true
+  },
+  "inferenceGuard": [
+    "The current HTTP retrieval date is not the row market date.",
+    "Last-Modified and ETag describe the delivered object and are not proven row-level revision lineage.",
+    "One endpoint capture does not establish all TWSE, TPEx or Fugle source contracts, update latency or correction behavior.",
+    "No return, price outcome, factor threshold or candidate selection was inspected."
+  ],
+  "status": "BOUNDED_SOURCE_EVIDENCE_ONLY_PROVIDER_COVERAGE_UNKNOWN"
+}
