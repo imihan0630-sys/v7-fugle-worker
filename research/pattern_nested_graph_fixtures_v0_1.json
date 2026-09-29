@@ -1,0 +1,27 @@
+{
+  "contract": "PATTERN_NESTED_GRAPH_FIXTURES_V0_1",
+  "scope": "D01 research-only synthetic fixtures; no runtime wiring; no outcomes",
+  "rules": {
+    "nodeIdentity": ["symbol","scale","semanticSpaceId","objectId","objectVersion","pivotAt","confirmedAt"],
+    "edgeTypes": ["CONTAINS","REFINES","SHARES_ANCHORS","SHARES_TRIGGER","CONTRADICTS"],
+    "noTransitiveEquivalence": true,
+    "prefixReplayEqualityRequired": true,
+    "partialHigherTimeframeCannotConfirmParent": true,
+    "futureParentMayAppendAncestryButCannotRewritePriorChild": true,
+    "semanticSpaceConflictFailsClosed": true
+  },
+  "fixtures": [
+    {"id":"NG01","case":"weekly_parent_confirmed_after_daily_child","expect":"child visible before parent; parent edge appears only at/after parent confirmedAt"},
+    {"id":"NG02","case":"partial_week_parent","expect":"no confirmed weekly parent"},
+    {"id":"NG03","case":"future_parent_full_history_asof","expect":"same visible graph as true prefix replay"},
+    {"id":"NG04","case":"semantic_space_mismatch","expect":"PROVENANCE_CONFLICT; no ancestry edge"},
+    {"id":"NG05","case":"A_overlaps_B_and_B_overlaps_C","expect":"must not infer A equivalent C"},
+    {"id":"NG06","case":"same_trigger_coordinates_but_different_boundary_version","expect":"distinct lifecycle identity"},
+    {"id":"NG07","case":"same_boundary_id_version_mutated_coordinates","expect":"PROVENANCE_CONFLICT"},
+    {"id":"NG08","case":"later_weekly_parent_added","expect":"append ancestry only; child pivotAt/confirmedAt immutable"},
+    {"id":"NG09","case":"contradictory_scale_objects","expect":"retain CONTRADICTS edge; do not vote-collapse"},
+    {"id":"NG10","case":"missing_confirmation_clock","expect":"UNKNOWN; node cannot be decision-time confirmed"}
+  ],
+  "biasGuards": ["no returns","no threshold tuning","no historical shadow fabrication","UNKNOWN != 0/BAD"],
+  "formalCoreImpact": "NONE"
+}
