@@ -1,9 +1,9 @@
 {
   "schemaVersion": "0.1",
   "name": "GLOBAL_MARKET_RECEIPT_V0_1",
-  "status": "RESEARCH_ONLY_SCHEMA_FROZEN_NOT_IMPLEMENTED",
+  "status": "RESEARCH_ONLY_SCHEMA_FROZEN__CLASS_A_GUARD_PARTIALLY_IMPLEMENTED",
   "formalCoreImpact": "NONE",
-  "updatedAt": "2026-09-28T20:35:00+08:00",
+  "updatedAt": "2026-09-30T05:20:18+08:00",
   "purpose": "One PIT-safe envelope for D12/D13 global and derivative research observations; instrument-specific payloads remain separate.",
   "requiredEnvelopeFields": [
     "receiptId",
@@ -47,6 +47,7 @@
     "US_EQUITY",
     "ASIA_EQUITY",
     "TAIFEX_NIGHT",
+    "TAIWAN_VIX",
     "OIL",
     "INDUSTRIAL_METAL",
     "PRECIOUS_METAL",
@@ -70,7 +71,8 @@
     "OIL": "research/d13_07_oil_shock_context_spec_v0_1.json",
     "UST": "research/d13_06_us_yield_curve_pit_spec_v0_1.json",
     "MACRO": "research/d13_09_11_macro_release_surprise_spec_v0_1.json",
-    "COMMODITIES": "research/d13_08_commodity_family_spec_v0_1.json"
+    "COMMODITIES": "research/d13_08_commodity_family_spec_v0_1.json",
+    "TAIWAN_VIX": "research/d12_05_taiwan_vix_source_quality_spec_v0_1.json"
   },
   "implementationClass": "Class A only if isolated research storage/fetch path does not change shared Formal runtime, scheduling, budgets or schema; otherwise Class B proposal-first.",
   "nextContinuation": [
