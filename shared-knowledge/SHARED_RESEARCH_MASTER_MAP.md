@@ -300,3 +300,5 @@ Inventory task completed in `shared-knowledge/SHARED_RESEARCH_INVENTORY.md`.
 Next task: map reusable lanes to exact machine-readable fields, missing fields, PIT availability and candidate System 2 factor IDs.
 
 - Event/news transmission anchor: `NEWS_EVENT_TRANSMISSION_RESEARCH.md` (D17 sentiment, novelty, duplicate-event clustering, PIT semantics).
+
+- Index adjustment/passive-flow anchor: `INDEX_ADJUSTMENT_PASSIVE_FLOW_RESEARCH.md` (D11-14 Taiwan PIT event clocks, passive-flow mechanism, falsification and OOS contract).
