@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-09-29T23:18:00+08:00",
+  "updatedAt": "2026-09-30T05:10:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -1559,7 +1559,9 @@
           "level": "L2",
           "maturityPct": 40,
           "learningScope": "聚焦「訊號到成交Latency」。學習範圍：手續費、證交稅、滑價、部分成交、延遲、零股／整股、換手與機會成本；signal-to-fill鏈；反事實可下單性；成交可重建性；Execution Alpha歸因。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "機制＋反證已定義",
+          "evidenceStatus": "MIXED_LOT_MECHANISM_RECEIPT_CONTRACT_READY / PROSPECTIVE_MULTI_SESSION_EVIDENCE_PENDING",
+          "nextContinuationPoint": "Accumulate isolated prospective mixed-lot receipts on at least 3 independent Taiwan sessions; require deterministic replay, mechanism-matched regular/odd-lot benchmarks, discrete odd-lot matching-opportunity provenance, interruption intervals, and broker-confirmed fills. Three sessions trigger readiness review only; no automatic L3 promotion."
         },
         {
           "id": "D14-08",
@@ -1567,7 +1569,9 @@
           "level": "L2",
           "maturityPct": 40,
           "learningScope": "聚焦「零股／整股成本差異」。學習範圍：手續費、證交稅、滑價、部分成交、延遲、零股／整股、換手與機會成本；signal-to-fill鏈；反事實可下單性；成交可重建性；Execution Alpha歸因。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "機制＋反證已定義",
+          "evidenceStatus": "MIXED_LOT_MECHANISM_RECEIPT_CONTRACT_READY / PROSPECTIVE_MULTI_SESSION_EVIDENCE_PENDING",
+          "nextContinuationPoint": "Accumulate isolated prospective mixed-lot receipts on at least 3 independent Taiwan sessions; require deterministic replay, mechanism-matched regular/odd-lot benchmarks, discrete odd-lot matching-opportunity provenance, interruption intervals, and broker-confirmed fills. Three sessions trigger readiness review only; no automatic L3 promotion."
         },
         {
           "id": "D14-09",
@@ -1615,7 +1619,9 @@
           "level": "L2",
           "maturityPct": 40,
           "learningScope": "聚焦「集合競價／特殊撮合成本」。學習範圍：手續費、證交稅、滑價、部分成交、延遲、零股／整股、換手與機會成本；signal-to-fill鏈；反事實可下單性；成交可重建性；Execution Alpha歸因。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "機制＋反證已定義",
+          "evidenceStatus": "MIXED_LOT_MECHANISM_RECEIPT_CONTRACT_READY / PROSPECTIVE_MULTI_SESSION_EVIDENCE_PENDING",
+          "nextContinuationPoint": "Accumulate isolated prospective mixed-lot receipts on at least 3 independent Taiwan sessions; require deterministic replay, mechanism-matched regular/odd-lot benchmarks, discrete odd-lot matching-opportunity provenance, interruption intervals, and broker-confirmed fills. Three sessions trigger readiness review only; no automatic L3 promotion."
         }
       ]
     },
