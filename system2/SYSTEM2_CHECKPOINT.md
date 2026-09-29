@@ -609,6 +609,31 @@ The external cold-object path is now physically qualified against the isolated R
 
 R2 provisioning/readback is no longer a blocker. The exact next P0 action is the manual-only 2017 TWSE annual external-cold backfill, followed by coverage/hash/manifest/receipt verification; only after TWSE passes should the 2017 TPEx annual backfill run.
 
+## 2026-09-29 first 2017 TWSE annual backfill attempt + calendar-source repair
+
+The first manual-only 2017 TWSE external-cold annual backfill was launched and failed closed before any annual market-data ingest.
+
+Evidence:
+- workflow run `36545375167`, event `workflow_dispatch`, market `TWSE`, year `2017`;
+- isolated D1 migration job PASS;
+- annual backfill job failed while resolving the historical trading calendar, before the daily A1 range or annual R2 pack write path began;
+- failure: both Gregorian and ROC `holidaySchedule?queryYear=...` requests returned payloads whose year did not match 2017, so the strict parser rejected them rather than relabeling current-year data as historical evidence.
+
+Root cause and official-source revalidation:
+- the live TWSE holidaySchedule endpoint currently ignores historical `queryYear` values and returns the current-year schedule;
+- the TWSE official `FMTQIK` monthly market report remains historically queryable and directly enumerates actual market-session dates for a requested historical month;
+- 2017-01 was externally revalidated against the live official endpoint: the payload reports `date=20170101`, title `106年01月市場成交資訊`, and exact January session rows beginning 2017-01-03.
+
+Repair:
+- PR #250 merged as `26764ed3c6950b96d4ab43132b57b5808423a27c`;
+- historical calendar resolution keeps strict holidaySchedule year validation, then falls back to 12 official TWSE FMTQIK monthly reports for historical years when holidaySchedule is unusable;
+- FMTQIK payload month/year must exactly match the requested month, dates cannot escape the month, duplicate session dates fail closed, and transient transport failures retry without converting integrity errors into success;
+- exact `tradingDates` are used directly when available, preserving any official exceptional sessions rather than reconstructing sessions from generic weekday assumptions;
+- backfill provenance now records the actual calendar source;
+- PR head `b0f56f077fd54f1aacb8414515531b6202384215` passed System2 Research CI run `36546387616` and V8 Regression run `36546387647`.
+
+No 2017 annual completion receipt is claimed from the failed run. The next action remains a manual TWSE-only rerun from current main. TPEx must not start until the repaired TWSE annual backfill completes and its object hashes, D1 manifests, completion receipt and coverage are verified.
+
 ## Current boundary
 
 Research/design/code prototype is not blocked. Isolated D1 and inert Worker already exist, but prospective always-on Shadow accumulation remains intentionally inactive. A5/B2 observer engineering is complete; the immediate boundary is accumulation of independent same-day V0.2 evidence beginning no earlier than the 2026-09-29 official session. No exact Decision Clock is frozen; capture is false; Worker Cron is 0. The GitHub Actions research schedule is read-only evidence collection and is not the Worker Cron. No production-shared storage or System 1/V8 change is authorized or needed.
