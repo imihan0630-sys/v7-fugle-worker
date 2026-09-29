@@ -214,3 +214,54 @@ Status:
 `RUNTIME_READD_ABSENT / FRICTION_EVIDENCE_CONTRACT_READY / REALIZED_READD_ANALYSIS_BLOCKED`.
 
 No Formal change and no FORMAL_OPTIMIZATION_CANDIDATE.
+
+
+## D14-ML-001 — mechanism-aware mixed-lot receipt contract (2026-09-30)
+
+D14-07 / D14-08 / D14-14 now have an isolated research receipt schema and deterministic validator.
+
+### Two mechanism models are required
+
+- Regular-lot intraday matching: `CONTINUOUS_WITH_BLOCK_INTERVALS`.
+- Intraday odd-lot matching: `DISCRETE_MATCH_OPPORTUNITIES`.
+
+The 2026-09-29 four-clock contract remains necessary, but two shortcuts were falsified:
+
+1. after first eligibility, continuous elapsed time is not enough when a volatility interruption temporarily disables matching;
+2. intraday odd-lot execution must not be represented as continuous eligible milliseconds between periodic call auctions.
+
+For regular-lot fills, the receipt can derive:
+`eligibleExposureToFill = scalarPostEligibilityLatency - evidenced mechanism-block overlap`.
+
+For odd-lot fills, `eligibleExposureToFillMs` is intentionally null. The receipt instead counts:
+- actual matching opportunities from decision through fill;
+- opportunities after submission through fill;
+- opportunities before submission;
+- prior submitted opportunities without fill.
+
+A prior unfilled call auction does not by itself prove the order was marketable or that execution quality was poor.
+
+### Fail-closed provenance
+
+The validator rejects:
+- regular/odd benchmark mismatch;
+- benchmark observed after submission;
+- missing mechanism-state provenance;
+- interruption without blocked interval;
+- simulated disclosure used as fill;
+- fill outside the submission lifecycle or inside a block;
+- parent/leg quantity mismatch or overfill;
+- overlapping/cyclic replacement lineage;
+- duplicate fill IDs, including cross-leg;
+- odd-lot fill not aligned to an evidenced matching opportunity.
+
+Artifacts:
+- `research/d14_mixed_lot_execution_receipt_v0_1.mjs`
+- `research/d14_mixed_lot_execution_receipt_spec_v0_1.json`
+- `research/d14_mixed_lot_execution_receipt_v0_1_20260930.md`
+- `tests/test_d14_mixed_lot_execution_receipt_v0_1.mjs`
+
+D14-07 / D14-08 / D14-14 remain **L2 / 40%**. Source and schema feasibility are not prospective multi-date evidence.
+
+Exact next continuation:
+capture at least three independent mixed-lot sessions with immutable decision, mechanism, submit and broker-fill provenance, then perform a readiness review. No automatic maturity promotion and no Formal change.

@@ -542,3 +542,8 @@ Status: CANCELLED
 保留既有文字版【學習進度】footer，仍須顯示：研究室／領域、本輪完成、當前模組、Level、成熟度、狀態、下一續接點，最後附日期與台北時間。
 
 若未來需要新的進度視覺化方式，必須另行提出方案並取得韓哥同意後才可啟用。
+
+
+### 10室 continuation update — D14 mixed-lot execution clocks (2026-09-30)
+
+D14-07／08／14 remain L2/40. A research-only mixed-lot receipt contract now distinguishes continuous regular-lot matching from discrete intraday odd-lot call-auction opportunities and fail-closes on mechanism/benchmark/fill provenance mismatches. Exact next step is prospective independent-session receipt accumulation (first readiness review after >=3 sessions), not maturity promotion.
