@@ -1,0 +1,93 @@
+{
+  "schemaVersion": "D02_20260929_RECOVERY_LINEAGE_RECEIPT_V0_1",
+  "generatedAt": "2026-09-30T07:00:00+08:00",
+  "researchOnly": true,
+  "decisionImpact": false,
+  "formalCoreImpact": false,
+  "outcomesUsed": false,
+  "authoritativeRepoHeadAtWrite": "8ceed9d48ab8c9528608ca1bd1e7c517b08a104e",
+  "naturalAfterMarket": {
+    "marketDate": "2026-09-29",
+    "scheduledAtTaipei": "2026-09-29T23:35:20+08:00",
+    "cronJobType": "AFTER_MARKET_SCAN",
+    "cronStatus": "SKIPPED",
+    "cronError": null,
+    "ordinaryCompletedScanReceipt": false,
+    "exactSkipReason": "UNKNOWN_FROM_CURRENT_RECEIPT"
+  },
+  "guardedRecoveryAttempt": {
+    "observedAtTaipei": "2026-09-30T05:12:47+08:00",
+    "runId": 36631504304,
+    "jobId": 109621869201,
+    "officialQualityRecovered": true,
+    "scanPostResult": {
+      "recovery": true,
+      "historicalRecovery": true,
+      "requestedDate": "2026-09-29",
+      "skipped": true,
+      "scanDate": "2026-09-29",
+      "selectedCount": 0,
+      "dailyDeliveryState": null
+    },
+    "selectionPersisted": false
+  },
+  "stagedRecovery": {
+    "observedAtTaipei": "2026-09-30T05:18:52+08:00",
+    "commit": "6dd795b21643717fdffe8ab97d91a2372ba8b9ac",
+    "runId": 36632353882,
+    "jobId": 109624458000,
+    "runtimeVersion": "8.14.1-tdcc-share-reconciliation",
+    "mechanism": "runAfterMarketScan(env, Date.parse('2026-09-29T10:20:00Z'), {dryRun:true}) then persist verified preview",
+    "selectionPersisted": true,
+    "formalSymbols": [
+      "2006",
+      "4977"
+    ],
+    "formalSelectedCount": 2,
+    "previousFormalSymbolsKnownFrom20260924": [
+      "2006",
+      "4977"
+    ],
+    "symbolOverlapCount": 2,
+    "symbolOverlapPct": 100,
+    "pipeline": {
+      "selectionCompleted": true,
+      "configAccepted": true,
+      "configVerified": true,
+      "externalPlanAccepted": false,
+      "externalPlanVerified": false,
+      "dailyReportAccepted": false,
+      "dailyWebhookAccepted": false,
+      "dailyDeliveryState": "PENDING",
+      "complete": false
+    },
+    "observedPlanDate": "2026-09-29",
+    "expectedFormalPlanDateRule": "nextTradingDate(scanDate)",
+    "expectedPlanDateForScanDate20260929": "2026-09-30",
+    "planDateInvariant": "VIOLATED_IN_RECOVERY_RECEIPT"
+  },
+  "priceVolumeBootstrap": {
+    "ordinaryPvAfterMarketHooksRequireNormalNonDryRunPostFormalFlow": true,
+    "stageSelectionCallsBootstrapPvShadowBaselinesSafe": false,
+    "stageSelectionCallsRecordPvDailyShadowSafe": false,
+    "ordinaryBootstrapReceiptObserved": false,
+    "classification": "ORDINARY_PV_BOOTSTRAP_NOT_EXECUTED_OR_NOT_PROVEN_ON_STAGED_RECOVERY_PATH"
+  },
+  "crossRoomHistoryAdmissionDependency": {
+    "receipt": "research/br030_history_admission_dependency_20260930_v0_1.json",
+    "scanDate": "2026-09-29",
+    "unusableSymbols": 1883,
+    "officialGapProofUnavailable": 1872,
+    "insufficientPriorBars": 11,
+    "repeatedGapDate": "2026-07-10",
+    "interpretation": "Independent provenance blocker for clean 2026-09-29 selection. Do not infer it was the exact cron SKIPPED reason without direct receipt."
+  },
+  "d02Classification": {
+    "intraday20260929": "DATA_QA_ONLY_INHERITED_20260924_PLAN",
+    "recoveredSelection20260929": "HISTORICAL_RECOVERY_RECOMPUTED_AFTER_DECISION_CUTOFF",
+    "intraday20260930": "PRIMARY_H001_H004_UNCLEAN_DATA_QA_ONLY",
+    "firstPotentialCleanDate": "UNSPECIFIED_UNTIL_ORDINARY_SELECTION_PLUS_PV_BOOTSTRAP_PLUS_PIT_PROVENANCE_PASS",
+    "gate7Outcomes": "CLOSED",
+    "maturityPromotion": false
+  }
+}
