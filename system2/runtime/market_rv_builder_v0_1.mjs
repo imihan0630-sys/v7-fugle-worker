@@ -267,7 +267,11 @@ export async function buildMarketRvBundleV0_1({
     firstHistoryDate: rows[0]?.date || null,
     lastHistoryDate: rows.at(-1)?.date || null,
     formula: deepFreeze({
+      estimatorFamily: "ROLLING_RETURN_DISPERSION",
+      semanticName: "ROLLING_CLOSE_TO_CLOSE_RETURN_DISPERSION_POPSTD_SIMPLE",
       returnType: "SIMPLE_CLOSE_TO_CLOSE",
+      dispersionEstimator: "POPULATION_STD",
+      intradayRealizedVariance: false,
       rv5: "populationStd(last 5 official close-to-close simple returns)",
       rv20: "populationStd(last 20 official close-to-close simple returns)",
       ratio: "rv5 / rv20 when rv20 > 0",
