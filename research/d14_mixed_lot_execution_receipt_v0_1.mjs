@@ -40,6 +40,17 @@ function legValidator(parent,leg){
   if(s(leg?.mechanism)!==rule.mechanism) return {ok:false,reason:"MECHANISM_LOT_MISMATCH"};
   if(s(leg?.eligibilityModel)!==rule.eligibilityModel) return {ok:false,reason:"ELIGIBILITY_MODEL_LOT_MISMATCH"};
 
+  const ruleVersion=s(leg?.mechanismRule?.ruleVersion);
+  const ruleSource=s(leg?.mechanismRule?.sourceRef);
+  const ruleFrom=t(leg?.mechanismRule?.effectiveFrom);
+  const ruleTo=leg?.mechanismRule?.effectiveTo===null||leg?.mechanismRule?.effectiveTo===undefined?null:t(leg?.mechanismRule?.effectiveTo);
+  if(!ruleVersion||!ruleSource||ruleFrom===null||(leg?.mechanismRule?.effectiveTo!==null&&leg?.mechanismRule?.effectiveTo!==undefined&&ruleTo===null)){
+    return {ok:false,reason:"MISSING_MECHANISM_RULE_VERSION"};
+  }
+  if(parent.decisionKnownAt<ruleFrom||(ruleTo!==null&&parent.decisionKnownAt>=ruleTo)){
+    return {ok:false,reason:"MECHANISM_RULE_NOT_EFFECTIVE_AT_DECISION"};
+  }
+
   const intendedQty=n(leg?.intendedQty);
   if(!Number.isInteger(intendedQty)||intendedQty<=0) return {ok:false,reason:"INVALID_LEG_QUANTITY"};
 
@@ -71,10 +82,11 @@ function legValidator(parent,leg){
     const ids=new Set(),times=new Set();
     for(const op of rawOps){
       const opportunityId=s(op?.opportunityId),matchAt=t(op?.matchAt),sourceRef=s(op?.sourceRef);
+      const computedExecutionPrice=n(op?.computedExecutionPrice);
       if(!opportunityId||ids.has(opportunityId)||matchAt===null||!sourceRef) return {ok:false,reason:"INVALID_MATCHING_OPPORTUNITY"};
       if(times.has(matchAt)) return {ok:false,reason:"DUPLICATE_MATCHING_OPPORTUNITY_TIME"};
       ids.add(opportunityId); times.add(matchAt);
-      opportunityLedger.push({opportunityId,matchAt,sourceRef});
+      opportunityLedger.push({opportunityId,matchAt,sourceRef,computedExecutionPrice});
     }
     opportunityLedger.sort((a,b)=>a.matchAt-b.matchAt);
     if(opportunityLedger[0].matchAt!==eligibleAt) return {ok:false,reason:"FIRST_OPPORTUNITY_NOT_MECHANISM_ELIGIBLE_AT"};
@@ -96,13 +108,18 @@ function legValidator(parent,leg){
     const requestedQty=n(a?.requestedQty);
     const submitSource=s(a?.submitEvidence?.sourceRef);
     const terminalState=s(a?.terminalState);
+    const orderType=s(a?.orderType).toUpperCase();
+    const limitPrice=n(a?.limitPrice);
     if(submitAt===null||terminalAt===null||terminalAt<submitAt||!Number.isInteger(requestedQty)||requestedQty<=0||!submitSource){
       return {ok:false,reason:"INVALID_ORDER_ATTEMPT"};
     }
     if(!["FILLED","PARTIAL_CANCELED","REPLACED"].includes(terminalState)){
       return {ok:false,reason:"INVALID_ATTEMPT_TERMINAL_STATE"};
     }
-    attemptMap.set(id,{...a,_submitAt:submitAt,_terminalAt:terminalAt,_requestedQty:requestedQty});
+    if(lotType==="INTRADAY_ODD_LOT"&&(orderType!=="LIMIT"||!(limitPrice>0))){
+      return {ok:false,reason:"ODD_LOT_LIMIT_ORDER_PROVENANCE_REQUIRED"};
+    }
+    attemptMap.set(id,{...a,_submitAt:submitAt,_terminalAt:terminalAt,_requestedQty:requestedQty,_orderType:orderType,_limitPrice:limitPrice});
     earliestSubmitAt=earliestSubmitAt===null?submitAt:Math.min(earliestSubmitAt,submitAt);
   }
   if(benchAt>earliestSubmitAt) return {ok:false,reason:"BENCHMARK_AFTER_SUBMISSION"};
@@ -186,6 +203,27 @@ function legValidator(parent,leg){
         const afterDecision=throughFill.filter(op=>op.matchAt>=parent.decisionKnownAt);
         const afterSubmit=throughFill.filter(op=>op.matchAt>=a._submitAt);
         const beforeSubmit=afterDecision.filter(op=>op.matchAt<a._submitAt);
+
+        let crossing=0,nonCrossing=0,unknownMarketability=0;
+        const marketability=[];
+        for(const op of afterSubmit){
+          const active=[...attemptMap.values()].filter(at=>at._submitAt<=op.matchAt&&op.matchAt<=at._terminalAt).sort((x,y)=>y._submitAt-x._submitAt)[0]||null;
+          if(!active||!(active._limitPrice>0)||!(op.computedExecutionPrice>0)){
+            unknownMarketability++;
+            marketability.push({opportunityId:op.opportunityId,state:"UNKNOWN_MARKETABILITY"});
+            continue;
+          }
+          const side=["BUY","ADD"].includes(parent.action)?"BUY":"SELL";
+          const priceCrossing=side==="BUY"?active._limitPrice>=op.computedExecutionPrice:active._limitPrice<=op.computedExecutionPrice;
+          if(priceCrossing)crossing++;else nonCrossing++;
+          marketability.push({
+            opportunityId:op.opportunityId,
+            state:priceCrossing?"PRICE_CROSSING_QUEUE_OR_VOLUME_UNRESOLVED":"PRICE_NOT_CROSSING",
+            limitPrice:active._limitPrice,
+            computedExecutionPrice:op.computedExecutionPrice
+          });
+        }
+
         fillDiagnostics.push({
           lotType,
           eligibilityModel:rule.eligibilityModel,
@@ -201,6 +239,11 @@ function legValidator(parent,leg){
           matchingOpportunityCountAfterSubmitToFill:afterSubmit.length,
           matchingOpportunitiesBeforeSubmit:beforeSubmit.length,
           priorSubmittedOpportunitiesWithoutFill:Math.max(0,afterSubmit.length-1),
+          priceCrossingOpportunitiesThroughFill:crossing,
+          nonCrossingOpportunitiesThroughFill:nonCrossing,
+          unknownMarketabilityOpportunitiesThroughFill:unknownMarketability,
+          marketabilityAttributionReady:unknownMarketability===0,
+          opportunityMarketability:marketability,
           submitToFillLatencyMs:fillAt-a._submitAt
         });
       }
@@ -214,6 +257,7 @@ function legValidator(parent,leg){
   return {
     ok:true,
     lotType,
+    mechanismRuleVersion:ruleVersion,
     intendedQty,
     filledQty:totalFilled,
     remainingQty:intendedQty-totalFilled,
@@ -245,7 +289,7 @@ export function validateMixedLotExecutionReceipt(receipt={}){
     return {status:"INVALID",valid:false,reasons:["PARENT_QUANTITY_MISMATCH"]};
   }
 
-  const parent={decisionKnownAt};
+  const parent={decisionKnownAt,action};
   const regular=legValidator(parent,byType.get("REGULAR_LOT"));
   if(!regular.ok) return {status:"INVALID",valid:false,reasons:[regular.reason]};
   const odd=legValidator(parent,byType.get("INTRADAY_ODD_LOT"));
@@ -276,6 +320,6 @@ export function validateMixedLotExecutionReceipt(receipt={}){
       eligibleExposureToFill:"scalarPostEligibility - mechanismBlockedWaitAfterEligibility",
       submitToFill:"fillAt - attempt.submitAt"
     },
-    warning:"Four scalar clocks are necessary but not sufficient. Continuous mechanisms require blocked-interval accounting; periodic call-auction mechanisms require discrete matching-opportunity provenance. Do not convert odd-lot auction cadence into continuous eligible milliseconds or collapse latency vectors into one score."
+    warning:"Four scalar clocks are necessary but not sufficient. Continuous mechanisms require blocked-interval accounting; periodic call-auction mechanisms require discrete matching-opportunity provenance. Do not convert odd-lot auction cadence into continuous eligible milliseconds or collapse latency vectors into one score. Unfilled auction counts are not execution-quality failures unless price marketability is evidenced; even price-crossing opportunities can remain queue/volume dependent. Mechanism rule versions must be effective at decision time."
   };
 }
