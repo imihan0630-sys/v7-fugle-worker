@@ -50,6 +50,8 @@ Schedules in UTC:
 
 General System 2 prospective selection capture remains `SYSTEM2_CAPTURE_ENABLED=false`; this authorization arms only the bounded Daily Resonance schedule.
 
+All GitHub workflows that write the isolated System 2 D1 share one non-cancelling concurrency group, so migration/backfill/smoke/deploy jobs cannot replay versioned migrations over each other concurrently.
+
 ## Read surfaces
 
 - `/health` — schema, capture, bounded-resonance and source-secret readiness;

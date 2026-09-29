@@ -10,7 +10,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: system2-historical-d1-physical-smoke
+  group: system2-isolated-d1-writer
   cancel-in-progress: false
 
 jobs:

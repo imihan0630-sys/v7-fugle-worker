@@ -766,6 +766,7 @@ Implemented:
 - read-only `/api/system2/resonance`, pool and per-symbol routes plus the auto-refreshing `/resonance` UI;
 - isolated Worker Cron configuration for 5-minute bounded monitoring and 19:00 pool refresh; runtime-local filters enforce 08:55–13:40 Asia/Taipei and the independent 13:30 close gate;
 - guarded main-branch deployment workflow with D1 migration, secret presence checks, schedule/API/UI readback and System 1 boundary checks.
+- all repository workflows that mutate isolated System 2 D1 share the `system2-isolated-d1-writer` concurrency group, preventing overlapping full migration replays from temporarily exposing an older schema-version marker.
 
 Safety boundary:
 - general System 2 selection capture remains false;

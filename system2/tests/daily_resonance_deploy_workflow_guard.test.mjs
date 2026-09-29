@@ -19,6 +19,7 @@ const workerCore = await readFile(
 );
 
 assert.match(workflow, /environment: system2-research/);
+assert.match(workflow, /group: system2-isolated-d1-writer/);
 assert.match(workflow, /SYSTEM2_CONFIRM: CREATE_SYSTEM2_ISOLATED_D1/);
 assert.match(workflow, /secrets\.FUGLE_API_KEY/);
 assert.match(workflow, /provision_system2_d1\.mjs/);

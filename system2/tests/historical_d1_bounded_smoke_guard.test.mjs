@@ -27,6 +27,7 @@ assert.match(provision, /schema_value[\s\S]*"1\.1"/);
 assert.doesNotMatch(provision, /schema_value[\s\S]*"0\.8"/);
 
 assert.match(workflow, /workflow_dispatch:/);
+assert.match(workflow, /group: system2-isolated-d1-writer/);
 assert.match(workflow, /WRITE_SYSTEM2_HISTORICAL_SMOKE/);
 assert.match(workflow, /environment: system2-research/);
 assert.match(workflow, /provision_system2_d1\.mjs/);

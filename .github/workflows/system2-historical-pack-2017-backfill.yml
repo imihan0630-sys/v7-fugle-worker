@@ -15,7 +15,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: system2-historical-pack-2017-backfill
+  group: system2-isolated-d1-writer
   cancel-in-progress: false
 
 jobs:
