@@ -466,3 +466,30 @@ The existence of B1/B2/B4 or daily outcomes for an anchor does not validate the 
 All 9/29 intraday rows remain DATA_QA-only for primary H001~H004 due inherited 9/24 cohort lineage. H003/H004 clean-event/anchor counts are therefore zero for primary inference regardless of observed future price paths.
 
 No hypothesis is promoted or rejected. Formal Core remains LOCKED.
+
+
+## H001~H004 readiness after PVE-187~193 — 2026-09-29 evening
+
+### H001 — same-slot RVOL incremental value
+Status: EVIDENCE_GATED / 2026-09-29 PRIMARY_INFERENCE_EXCLUDED.
+The 21:31 production read-only receipt independently confirms the intraday cohort was still sourced from the 2026-09-24 saved plan. Therefore no 9/29 H001 return/path result may enter primary inference. Row-level RVOL capture/readiness remains NOT_OBSERVED until an at-rest/receipt path exposes it.
+
+### H002 — cumulative pace
+Status: EVIDENCE_GATED / 2026-09-29 PRIMARY_INFERENCE_EXCLUDED.
+Same cohort exclusion as H001. 9/29 can still contribute recorder/data-QA observations if later verified, but not clean prospective alpha evidence.
+
+### H003 — response / Acceptance / Guard
+Status: HIGHER_GATED / QA_DENOMINATORS_NOW_OBSERVABLE.
+PR #258 adds read-only diagnostic counters for raw Acceptance transitions/keys, active lifecycles, PRE_EVENT-only expiries/phantom keys, raw anchors and INVALID anchors. These counts are QA-only; H003 maturity still requires cohort/PIT/Guard/continuity/price-only-vs-price+volume overlays.
+
+### H004 — risk/path outcomes
+Status: HIGHER_GATED / OUTCOMES_CLOSED.
+No 9/29 outcome superiority is inspected. Factual paths, if captured, remain separate from hypothesis eligibility.
+
+### Prospective coverage rule
+Manual `workflow_dispatch` QA artifacts cannot establish complete prospective date/event coverage and do not advance the clean-date maturity clock by themselves. A manual run can diagnose rows already stored; missing manual runs remain ABSENT_DIAGNOSTIC, not measured zero.
+
+### Decision-clock rule
+Before the scheduled 23:35 after-market scan, prior `scanDate=2026-09-24` is an expected prior-plan state. After the completion window, a 9/29 receipt is required to evaluate the 9/30 selection/bootstrap cohort.
+
+No hypothesis is promoted/rejected and no Formal optimization candidate is created. Formal Core remains LOCKED.
