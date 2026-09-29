@@ -1,0 +1,236 @@
+{
+  "schemaVersion": "TECHNICAL_INDICATOR_OFFICIAL_SOURCE_CAPABILITY_PILOT_V0_1",
+  "capturedAtWindow": {
+    "start": "2026-09-30T01:17:03+08:00",
+    "end": "2026-09-30T01:18:31+08:00",
+    "clockBasis": "HTTP_RESPONSE_DATE_WITH_LOCAL_CAPTURE_COMPLETION",
+    "timezone": "Asia/Taipei"
+  },
+  "scope": "OUTCOME_BLIND_PUBLIC_OFFICIAL_SOURCE_ONLY",
+  "formalCoreImpact": "NONE_LOCKED",
+  "outcomeDataInspected": false,
+  "sources": {
+    "twseCurrentOpenApi": {
+      "url": "https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL",
+      "sourceOwner": "TWSE",
+      "endpointContract": "STOCK_DAY_ALL",
+      "polls": [
+        {
+          "httpResponseDate": "2026-09-30T01:17:03+08:00",
+          "bytes": 318836,
+          "sha256": "5895bbf2882e0b3d095befea940700d812418ad3a763d2304f8cb964b79f0fdf",
+          "etag": "\"6abada2c-4dd74\"",
+          "lastModified": "2026-09-29T05:20:44+08:00",
+          "rowCount": 1380,
+          "rowDates": ["2026-09-24"]
+        },
+        {
+          "httpResponseDate": "2026-09-30T01:17:13+08:00",
+          "bytes": 318836,
+          "sha256": "5895bbf2882e0b3d095befea940700d812418ad3a763d2304f8cb964b79f0fdf",
+          "etag": "\"6abada2c-4dd74\"",
+          "lastModified": "2026-09-29T05:20:44+08:00",
+          "rowCount": 1380,
+          "rowDates": ["2026-09-24"]
+        }
+      ],
+      "visibleRowFields": [
+        "Date",
+        "Code",
+        "Name",
+        "TradeVolume",
+        "TradeValue",
+        "OpeningPrice",
+        "HighestPrice",
+        "LowestPrice",
+        "ClosingPrice",
+        "Change",
+        "Transaction"
+      ],
+      "boundedReplay": "IDENTICAL_BYTES_ACROSS_TWO_POLLS",
+      "freshnessResult": "NOT_LATEST_AVAILABLE_TWSE_TRADE_DATE_DURING_CAPTURE"
+    },
+    "twseHistoricalReport": {
+      "urlTemplate": "https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX?date=<YYYYMMDD>&type=ALLBUT0999&response=json",
+      "sourceOwner": "TWSE",
+      "captures": [
+        {
+          "requestedTradeDate": "2026-09-24",
+          "httpResponseDate": "2026-09-30T01:18:07+08:00",
+          "bytes": 245691,
+          "sha256": "35ed12468ece330f56c73f9c36ef8921891b7d2e70f41a2291453a3da72080a8",
+          "dailyCloseRowCount": 1380,
+          "status": "OK"
+        },
+        {
+          "requestedTradeDate": "2026-09-29",
+          "httpResponseDate": "2026-09-30T01:18:14+08:00",
+          "bytes": 247621,
+          "sha256": "9485a48eee083c7a2e2165902a03cf808c2228749ea38694422517db1027b1e0",
+          "dailyCloseRowCount": 1382,
+          "status": "OK"
+        }
+      ],
+      "rowVersionFieldsVisible": false,
+      "providerPublicationClockVisible": false,
+      "providerFirstKnownClockVisible": false
+    },
+    "tpexCurrentOpenApi": {
+      "url": "https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes",
+      "sourceOwner": "TPEx",
+      "endpointContract": "tpex_mainboard_daily_close_quotes",
+      "polls": [
+        {
+          "httpResponseDate": "2026-09-30T01:17:22+08:00",
+          "bytes": 4584216,
+          "sha256": "9ac267faca202ecb73c4bdc22c05eabc36c7cd45298513c904868f82bb403a5d",
+          "etag": "\"6abbd97d-45f318\"",
+          "lastModified": "2026-09-29T23:30:05+08:00",
+          "rowCount": 11730,
+          "rowDates": ["2026-09-29"]
+        },
+        {
+          "httpResponseDate": "2026-09-30T01:17:53+08:00",
+          "bytes": 4584216,
+          "sha256": "9ac267faca202ecb73c4bdc22c05eabc36c7cd45298513c904868f82bb403a5d",
+          "etag": "\"6abbd97d-45f318\"",
+          "lastModified": "2026-09-29T23:30:05+08:00",
+          "rowCount": 11730,
+          "rowDates": ["2026-09-29"]
+        }
+      ],
+      "visibleRowFields": [
+        "Date",
+        "SecuritiesCompanyCode",
+        "CompanyName",
+        "Close",
+        "Change",
+        "Open",
+        "High",
+        "Low",
+        "Average",
+        "TradingShares",
+        "TransactionAmount",
+        "TransactionNumber",
+        "LatestBidPrice",
+        "LatesAskPrice",
+        "Capitals",
+        "NextReferencePrice",
+        "NextLimitUp",
+        "NextLimitDown"
+      ],
+      "boundedReplay": "IDENTICAL_BYTES_ACROSS_TWO_POLLS"
+    },
+    "tpexHistoricalReport": {
+      "urlTemplate": "https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?date=<YYYY%2FMM%2FDD>&id=&response=json",
+      "sourceOwner": "TPEx",
+      "captures": [
+        {
+          "requestedTradeDate": "2026-09-24",
+          "httpResponseDate": "2026-09-30T01:18:21+08:00",
+          "bytes": 1748597,
+          "sha256": "45ecaffa856f023b28c509dc8c0db3c99954940393923ac7a51237ffc82b0c2f",
+          "dailyCloseRowCount": 11660,
+          "status": "ok"
+        },
+        {
+          "requestedTradeDate": "2026-09-29",
+          "httpResponseDate": "2026-09-30T01:18:31+08:00",
+          "bytes": 1760630,
+          "sha256": "41e64aef784e9e4b0672330800acecd5d2b06d7d7f95e51a5b391eb4f5998c4e",
+          "dailyCloseRowCount": 11730,
+          "status": "ok"
+        }
+      ],
+      "rowVersionFieldsVisible": false,
+      "providerPublicationClockVisible": false,
+      "providerFirstKnownClockVisible": false
+    },
+    "fugle": {
+      "captureAttempted": false,
+      "state": "ACCESS_NOT_PRESENT_IN_AUTOMATION_RUNTIME",
+      "reason": "No task-scoped credential was exposed to this run. D03 did not add provider calls or retrieve secrets. Future mapping must reuse an authorized shared source/continuity path."
+    }
+  },
+  "sameDateCrossContractComparisons": {
+    "twse20260924": {
+      "left": "STOCK_DAY_ALL",
+      "right": "MI_INDEX_ALLBUT0999",
+      "leftRows": 1380,
+      "rightRows": 1380,
+      "sharedSymbols": 1380,
+      "exactRawOhlc": 1333,
+      "formattingOnlyNumericEquivalent": 31,
+      "jointlyNoPriceDifferentMissingMarkers": 16,
+      "actualNumericOhlcConflicts": 0,
+      "missingMarkerWitness": {
+        "left": "",
+        "right": "--"
+      },
+      "formattingWitness": {
+        "symbol": "2330",
+        "leftClose": "2475.00",
+        "rightClose": "2,475.00"
+      }
+    },
+    "tpex20260929": {
+      "left": "tpex_mainboard_daily_close_quotes",
+      "right": "dailyQuotes",
+      "leftRows": 11730,
+      "rightRows": 11730,
+      "sharedSymbols": 11730,
+      "exactRawOhlc": 11730,
+      "actualNumericOhlcConflicts": 0
+    }
+  },
+  "receiptCapabilityMatrix": {
+    "rawPayloadBytesCapturedLocally": true,
+    "wholePayloadSha256ComputedLocally": true,
+    "httpObjectEtagVisibleOnCurrentEndpoints": true,
+    "httpObjectLastModifiedVisibleOnCurrentEndpoints": true,
+    "providerRowVersionVisible": false,
+    "providerPublishedAtPerRowVisible": false,
+    "providerFirstKnownAtPerRowVisible": false,
+    "providerCorrectionOrSupersessionIdVisible": false,
+    "independentAttestationOfD03RawDigestAvailable": false,
+    "certifiedSymbolSessionReceiptAvailable": false,
+    "corporateActionTransformAncestryAvailable": false,
+    "immutableParentDecisionGenerationAvailable": false,
+    "completeParentChildKeysetAvailable": false
+  },
+  "classification": {
+    "boundedPublicSourceCapture": "PASS",
+    "boundedSameObjectReplay": "PASS",
+    "sameDateCrossContractValueParity": "MATERIAL_PASS",
+    "currentEndpointFreshness": "SOURCE_DEPENDENT_NOT_GUARANTEED",
+    "rowVersionPITAttestation": "UNKNOWN",
+    "symbolSessionCertification": "UNKNOWN",
+    "corporateActionAncestry": "UNKNOWN",
+    "immutableParentChildCompleteness": "UNKNOWN",
+    "observedRevisionCountInShortPollWindow": 0,
+    "revisionIncidence": "UNKNOWN",
+    "legitimateCorrectionFalseBlockRate": "UNKNOWN",
+    "providerCoverage": "TWSE_TPEX_BOUNDED_PUBLIC_ONLY_FUGLE_UNOBSERVED",
+    "formalOptimizationCandidate": "NONE"
+  },
+  "biasControls": {
+    "selectionBias": "All returned rows and missing-price representations were retained in counts; successful numeric rows alone did not define coverage.",
+    "lookAhead": "No source object was backdated to a decision cutoff; historical query availability was not treated as historical first-known availability.",
+    "dateClustering": "Two trade dates and repeated polls are capture witnesses, not independent alpha observations.",
+    "multipleTesting": "No parameters, thresholds, indicators or outcomes were searched.",
+    "factorRedundancy": "Not evaluated because this stage only tested source capability.",
+    "costAndFills": "Not applicable to source integrity; future efficacy remains UNKNOWN."
+  },
+  "maturityDecision": {
+    "previousPct": 44.6,
+    "newPct": 44.6,
+    "reason": "Public source replay and parity improved source-contract knowledge but did not supply independent row-version clocks, corrections, session/CA lineage, immutable parents or prospective outcomes."
+  },
+  "exactNextContinuationPoint": [
+    "Continue fixed-cadence outcome-blind captures across at least three completed trading sessions and a defined after-hours interval; compare repeated versions of the same trade date before estimating correction incidence.",
+    "Have the shared source/continuity owner supply independent raw-row attestation, certified symbol-session receipts and corporate-action transform ancestry. Public endpoint parity cannot self-authorize SOURCE_OWNER_VERIFIED.",
+    "Map authorized Fugle rows through the shared path without adding D03-specific provider calls; record provider/date/market/symbol coverage and explicit UNKNOWN.",
+    "Reconcile every child status to the exact immutable parent generation and measure non-secret storage, latency and provider-call deltas before any Class-B proposal.",
+    "Keep TI-005 KD-vs-RSI, TI-006 MACD-vs-direct-trend and all outcome joins blocked until prospective PIT-complete receipts pass governance."
+  ]
+}

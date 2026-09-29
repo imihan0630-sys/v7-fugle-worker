@@ -1,6 +1,6 @@
 # Technical Indicator Research Checkpoint
 
-Updated: 2026-09-27 Asia/Taipei
+Updated: 2026-09-30 Asia/Taipei
 Status: FALSIFICATION_IN_PROGRESS / RESEARCH_ONLY
 Formal Core: LOCKED
 
@@ -1938,3 +1938,53 @@ Formal Core remains LOCKED.
 2. Run outcome-blind multi-date/source captures; count complete, partial, corrected and `UNKNOWN` versions, verify certified symbol sessions and corporate-action transform ancestry, and quantify legitimate-correction false blocks.
 3. Reconcile every status against the exact immutable parent-generation keyset and measure non-secret storage/latency/cost. Successful rows alone may not define coverage.
 4. Keep TI-005 KD-vs-RSI, TI-006 MACD-vs-direct-trend, outcome joins and Class-B runtime capture blocked until prospective PIT-complete evidence and governance review exist. No historical Shadow repair or Formal change.
+
+## TI-418 through TI-427 — official public-source capability pilot (2026-09-30)
+
+- TI-418: Two official TWSE `STOCK_DAY_ALL` polls about ten seconds apart were byte-identical: 318,836 bytes, 1,380 rows, SHA-256 `5895bbf2882e0b3d095befea940700d812418ad3a763d2304f8cb964b79f0fdf`. Two official TPEx `tpex_mainboard_daily_close_quotes` polls about 31 seconds apart were also byte-identical: 4,584,216 bytes, 11,730 rows, SHA-256 `9ac267faca202ecb73c4bdc22c05eabc36c7cd45298513c904868f82bb403a5d`. This proves bounded replay stability only; immutable history and correction incidence remain UNKNOWN.
+- TI-419: Same-date, same-exchange cross-contract parity was material. TWSE 2026-09-24 current OpenAPI versus historical `MI_INDEX` shared 1,380/1,380 symbols: 1,333 raw OHLC exact, 31 additional numeric-equivalent after display-comma normalization, 16 jointly missing with `""` versus `"--"`, and zero numeric conflicts. TPEx 2026-09-29 current OpenAPI versus historical `dailyQuotes` matched all 11,730 OHLC rows exactly. Same-owner agreement is corroboration, not independent attestation.
+- TI-420: A source-freshness counterexample was observed. At 2026-09-30 01:17 Taipei, TWSE `STOCK_DAY_ALL` still contained only 2026-09-24 while the official TWSE historical endpoint successfully returned 2026-09-29 with 1,382 rows. Retrieval time/current-endpoint naming therefore cannot substitute for explicit row date, version and first-known checks.
+- TI-421: Raw-byte identity and economic normalization must remain separate. `2475.00` versus `2,475.00` is the same number but different raw bytes; empty string versus `--` is absence in both contracts and must become `NOT_PRESENT`, never observed zero. Preserve source bytes for hashing while normalizing numeric meaning separately.
+- TI-422: Public source row counts are not the Technical Indicator parent denominator. TWSE returned 1,380/1,382 and TPEx 11,660/11,730 because source universes include different instrument sets. Complete coverage can only be reconciled against the exact immutable same-scan parent generation; filtering successes first would create selection bias.
+- TI-423: Whole-payload bytes, local SHA-256, ETag and Last-Modified support capture replay/change detection but do not supply a native provider row version, per-row published/first-known clock, correction/supersession ID or attestation over D03's canonical digest. Public rows therefore remain UNKNOWN at the independent-attestation gate; D03 may not self-issue `SOURCE_OWNER_VERIFIED`.
+- TI-424: Zero byte changes across the short poll windows is not zero revisions. No independently identified v1->v2 correction pair was observed, so revision incidence and legitimate-correction false-block rate remain UNKNOWN.
+- TI-425: Same-date OHLC parity does not certify symbol-specific sessions, suspension/no-trade state, special sessions, price-limit regime or corporate-action price-space ancestry. Those remain shared source/continuity dependencies.
+- TI-426: Fugle was not captured because no task-scoped credential was exposed to this runtime. State is `ACCESS_NOT_PRESENT_IN_AUTOMATION_RUNTIME`, not BAD/zero/provider failure. Future mapping must reuse the authorized shared history path without D03-specific calls.
+- TI-427: New compact evidence and 31-assertion deterministic consistency test:
+  - `research/TECHNICAL_INDICATOR_OFFICIAL_SOURCE_CAPABILITY_PILOT_V0_1.md`
+  - `research/technical_indicator_official_source_capability_pilot_20260930.json`
+  - `research/test_technical_indicator_official_source_capability_pilot_v0_1.mjs`
+- No outcomes, returns, thresholds, indicator parameters, fills or costs were inspected. No OOS, Walk-forward or incremental-alpha evidence exists. D03 maturity stays 44.6%; `FORMAL_OPTIMIZATION_CANDIDATE = NONE`; Formal Core remains LOCKED.
+
+### Current lane status after TI-427
+
+PUBLIC_TWSE_TPEX_SOURCE_CAPTURE = BOUNDED_PASS
+
+SAME_OBJECT_SHORT_WINDOW_REPLAY = PASS
+
+SAME_DATE_CROSS_CONTRACT_VALUE_PARITY = MATERIAL_PASS
+
+CURRENT_ENDPOINT_FRESHNESS = SOURCE_DEPENDENT_NOT_GUARANTEED
+
+ROW_VERSION_PIT_ATTESTATION = UNKNOWN
+
+SYMBOL_SESSION_CERTIFICATION = UNKNOWN
+
+CORPORATE_ACTION_ANCESTRY = UNKNOWN
+
+FUGLE_MAPPING = UNOBSERVED_ACCESS_NOT_PRESENT_IN_RUNTIME
+
+IMMUTABLE_PARENT_CHILD_COMPLETENESS = UNKNOWN
+
+OUTCOME_JOIN = NO_GO
+
+FORMAL_OPTIMIZATION_CANDIDATE = NONE
+Formal Core remains LOCKED.
+
+### Exact next continuation point after TI-427
+
+1. Continue fixed-cadence, outcome-blind captures across at least three completed trading sessions plus a defined after-hours interval. Retain repeated versions of the same trade date and classify add/remove/change before estimating revision incidence.
+2. Require the shared source/continuity owner to supply independent raw-row attestation, certified symbol-session receipts and corporate-action transform ancestry. Same-source endpoint agreement cannot self-authorize `SOURCE_OWNER_VERIFIED`.
+3. Map Fugle only through an authorized shared path with provider/date/market/symbol coverage, explicit UNKNOWN, provider-call delta and latency. Do not add D03-specific market-data calls.
+4. Reconcile every child attempt to the exact immutable parent generation and measure non-secret storage, latency and cost before a consolidated Class-B proposal.
+5. Keep TI-005 KD-vs-RSI, TI-006 MACD-vs-direct-trend, outcome joins and Formal changes blocked until prospective PIT-complete receipts pass governance.
