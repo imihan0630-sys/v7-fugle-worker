@@ -1,0 +1,24 @@
+name: V8 Stage Recover 2026-09-29
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "ops/stage_recover_20260929.mjs"
+      - ".github/workflows/v8-stage-recover-20260929.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Persist verified 2026-09-29 selection
+        env:
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+        run: node ops/stage_recover_20260929.mjs
