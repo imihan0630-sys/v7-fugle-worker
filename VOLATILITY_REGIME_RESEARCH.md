@@ -836,3 +836,179 @@ Status:
 Sources:
 - TWSE Operating Rules Article 62.
 - Tang, Peng & Zhang (2022), Trading information, price discreteness, and volatility estimation, Journal of Statistical Planning and Inference 220, 49-70.
+
+
+## VR-032 — daily market RV and intraday local RV are different estimands
+
+The project must not use one generic label "realized volatility" for two different clocks.
+
+### Daily market-regime RV
+
+`MARKET_RV5_CC_SIMPLE` / `MARKET_RV20_CC_SIMPLE` use official TAIEX close-to-close returns across sessions.
+
+They answer:
+- how variable the market has been across recent official sessions;
+- whether recent session-to-session variability is expanding or contracting relative to a longer window.
+
+They intentionally include:
+- overnight information between official closes;
+- opening/closing repricing that survives into the official close.
+
+They do NOT estimate the latent continuous intraday integrated variance of a frictionless price process.
+
+### Intraday local RV
+
+Future D05 collector research may need a short-window volatility control around:
+- a breakout;
+- a pressure episode;
+- a spread/depth shock;
+- an execution window.
+
+That object is a local intraday path-variation measure and has different measurement problems:
+- bid-ask bounce;
+- discrete ticks;
+- irregular event spacing;
+- asynchronous trade/book updates;
+- auction/VI mechanism changes;
+- missing/reconnect intervals.
+
+Therefore:
+- daily market RV and intraday local RV are separate factor families/controls;
+- they must never be averaged or summed into one volatility score;
+- passing the D04 market-RV persistence contract does not validate an intraday estimator;
+- a future intraday estimator cannot replace the official daily RV regime contract.
+
+Status:
+`DAILY_REGIME_RV != INTRADAY_LOCAL_RV / ESTIMANDS_SEPARATED`.
+
+
+## VR-033 — ultra-high-frequency naive RV is vulnerable to microstructure noise
+
+Classical high-frequency volatility research establishes a crucial measurement boundary.
+
+When observed prices contain market-microstructure noise, simply summing squared returns at ever-finer sampling frequencies can become biased/inconsistent for the latent integrated variance. The problem can persist when the noise is serially dependent.
+
+Relevant evidence:
+- Zhang, Mykland & Aït-Sahalia (2005): two-time-scale realized volatility was developed specifically because the usual highest-frequency realized-volatility estimator fails with noisy high-frequency data.
+- Aït-Sahalia, Mykland & Zhang (2005/2011): dependent microstructure noise remains material and motivates multi-scale corrections.
+- Bandi & Russell (2008): in the presence of microstructure noise, realized variance at very high frequency does not identify frictionless integrated variance; there is a bias-versus-sampling-variance tradeoff.
+- Barndorff-Nielsen, Hansen, Lunde & Shephard (2008): realized kernels provide noise-robust inference for ex-post variation in equity prices.
+
+Research consequence for this project:
+- do not define local volatility as "sum every received trade-tick squared return";
+- do not treat finer sampling as automatically superior;
+- do not choose sampling frequency by whichever horizon improves strategy returns;
+- if an intraday volatility control is needed, estimator/cadence selection is a measurement-quality problem first.
+
+Status:
+`TICK_BY_TICK_NAIVE_RV = NOT_APPROVED_AS_PRIMARY_LOCAL_VOLATILITY_CONTROL`.
+
+Sources:
+- Zhang, Mykland & Aït-Sahalia (2005), JASA 100(472), 1394-1411.
+- Aït-Sahalia, Mykland & Zhang (2011), Journal of Econometrics 160(1), 160-175.
+- Bandi & Russell (2008), Review of Economic Studies 75(2), 339-369.
+- Barndorff-Nielsen et al. (2008), Econometrica 76(6), 1481-1536.
+
+
+## VR-034 — mid-quote is the primary simple local-volatility price basis; trade RV is a noise diagnostic
+
+For the first prospective D05 pilot, the simplest defensible local-volatility hierarchy is:
+
+Primary simple basis:
+- mid-quote derived from best bid/ask, only during normal continuous-market states with valid two-sided quotes.
+
+Diagnostic comparator:
+- transaction-price RV over the same causal window/cadence.
+
+Why:
+- transaction prices mechanically alternate between bid and ask and can embed bid-ask bounce;
+- midpoint prices remove that direct trade-side bounce, although they still contain discreteness, stale-quote and other microstructure effects.
+
+Do NOT interpret:
+`tradeRV > midQuoteRV`
+as automatically "true volatility is high."
+
+It may be evidence of:
+- bid-ask bounce;
+- transaction-price noise;
+- rapid information arrival;
+- quote/trade timing mismatch;
+- different sampling support.
+
+Primary research output is the discrepancy itself as a data-quality/noise diagnostic, not a trading factor.
+
+If a valid two-sided mid-quote is unavailable:
+- local-midquote volatility = UNKNOWN;
+- do not silently substitute last trade and preserve the same factor name.
+
+Status:
+`MIDQUOTE_PRIMARY_SIMPLE_BASIS / TRADE_RV_DIAGNOSTIC_ONLY`.
+
+
+## VR-035 — volatility signature plot becomes an outcome-blind collector QA tool
+
+A volatility signature plot compares realized variance computed from the same underlying period at different sampling cadences.
+
+Empirical microstructure work uses this diagnostic to show that very fine transaction-price sampling can produce materially higher realized variance than coarser sampling because microstructure noise accumulates.
+
+Project use:
+- use the already-frozen engineering pilot cadences first: 1s / 5s / 15s;
+- compare transaction and mid-quote local RV on identical causal windows;
+- retain tick band, spread state, liquidity/activity state and session mechanism;
+- use event-time intensity alongside clock time.
+
+Interpretation:
+- strong fine-scale RV inflation relative to coarser mid-quote RV => MICROSTRUCTURE_NOISE_CANDIDATE;
+- stable estimates across 1s/5s/15s => sampling-frequency robustness candidate;
+- divergence only in one price/tick/liquidity stratum => conditional measurement issue, not universal cadence.
+
+Critical anti-overfit rule:
+the cadence choice is based on:
+1. state-reconstruction fidelity;
+2. missingness/coverage;
+3. estimator stability;
+4. storage/operational burden;
+
+NOT on which cadence predicts returns best.
+
+Do not add 30s/60s/other frequencies after observing outcomes merely to search for a better effect. Any new cadence is a new preregistered measurement experiment.
+
+Status:
+`VOLATILITY_SIGNATURE_QA = FROZEN / OUTCOME_BLIND`.
+
+Sources:
+- Hansen & Lunde (2006), Journal of Business & Economic Statistics 24(2), 127-161.
+- Bandi & Russell (2008), Review of Economic Studies 75(2), 339-369.
+
+
+## VR-036 — auction and VI jumps are not continuous-session local volatility
+
+Current TWSE regular-market mechanism is:
+- opening call auction;
+- continuous trading 09:00-13:25;
+- call-auction mechanism during volatility interruption;
+- closing call auction 13:25-13:30.
+
+Therefore a local continuous-session volatility estimator must not pool:
+- previous close -> opening auction price;
+- continuous-session returns;
+- VI/trial repricing;
+- closing-auction displacement;
+as if they came from one stationary continuous mechanism.
+
+Freeze separate descriptors:
+- overnightOpenAuctionGap;
+- continuousSessionLocalRV;
+- viCallAuctionDisplacement;
+- closeAuctionDisplacement.
+
+This is especially important for event studies:
+an opening gap can carry legitimate overnight information but is not evidence that the 09:00-09:05 continuous book itself was volatile.
+
+Similarly, a VI jump is a mechanism-state transition and must remain in a separate cohort.
+
+Status:
+`SESSION_SEGMENTED_VOLATILITY = MANDATORY_SEMANTICS`.
+
+Source:
+- Taiwan Stock Exchange, Trading Mechanism Introduction (current regular-trading mechanism).
