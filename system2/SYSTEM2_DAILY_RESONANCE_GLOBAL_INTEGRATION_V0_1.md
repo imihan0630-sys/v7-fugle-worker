@@ -1,7 +1,7 @@
 # System 2 Daily Resonance Global Integration V0.1
 
 Updated: 2026-09-29 Asia/Taipei  
-Status: REPOSITORY IMPLEMENTED / PHYSICAL DEPLOYMENT VERIFICATION PENDING  
+Status: PHYSICALLY DEPLOYED / BOUNDED RESONANCE SCHEDULE ACTIVE / RESEARCH_SHADOW_ONLY  
 Governance: owner-authorized 00.1 global-control-room integration  
 System 1 / V8 Formal Core impact: NONE
 
@@ -81,3 +81,23 @@ The V0.1 UI/API is the automatic reminder surface. Live push remains disabled.
 - Live notification requires a separate owner gate plus prospective evidence for repaint, whipsaw, Trend/Range, Regime, transaction cost, MFE/MAE and redundancy.
 - Promotion into formal selection, simulated capital decisions or any real-money path is not authorized by this integration.
 - Physical D1/Worker/Cron/API/UI status must be updated only from post-merge deployment readback evidence.
+
+## Physical deployment verification — 2026-09-30 Asia/Taipei
+
+Repository and deployment evidence:
+- PR #278 merged as `7e51190bdf0e51d55917c091462068a90724f211` and added a read-only Cloudflare Cron inventory.
+- Inventory run `36646278083` PASS: four existing Cron triggers, all on System 1 Worker `fugle-test`; no Cron mutation was performed.
+- PR #279 merged as `6d6b4d5aafff55179397187fa69acefed428cd6e`.
+- PR #279 System2 Research CI run `36646479007` PASS.
+- PR #279 V8 Regression run `36646479081` PASS.
+- Post-merge Daily Resonance deployment run `36646552183` PASS.
+- Isolated D1 schema V1.1 read/write verification PASS with 46 System 2 tables.
+- Cloudflare deployed exactly one System 2 Cron trigger: `*/5 0-5,11 * * 1-5`.
+- Worker secret `FUGLE_API_KEY` upload PASS.
+- Runtime readback PASS at `https://system2-shadow-research.imihan0630.workers.dev`.
+- `/health` reports `schemaVersion=1.1`, `resonanceState=BOUNDED_RESONANCE_SCHEDULED`, `captureState=CAPTURE_DISABLED`, `fugleQuoteConfigured=true`, `resonanceMaxUniqueSymbols=9`, `resonanceFullMarketScan=false`, and `system1RuntimeUsed=false`.
+- `/api/system2/resonance`, `/api/system2/resonance/pool`, and `/resonance` are publicly readable.
+- Immediate readback before the next 19:00 pool-refresh window returned `NO_ACTIVE_PRESELECTED_POOL` for 2026-09-30. This is the required fail-closed state and does not fabricate a watchlist.
+- Deployment verification confirms System 1 production files remained unchanged.
+
+The bounded Daily Resonance runtime is therefore physically armed for schedule-driven research/shadow monitoring. Live push, real orders, final strategy-selection authority, and general System 2 prospective selection capture remain disabled.

@@ -368,4 +368,4 @@ Repository state:
 - the UI auto-refresh is the current reminder channel; push notification remains disabled;
 - `SYSTEM2_CAPTURE_ENABLED=false`, final SELECTED authorization remains owner-gated, and an absent capacity receipt yields an empty monitor.
 
-Physical status remains pending until the post-merge deployment workflow proves D1 V1.1, two Cron triggers, Fugle secret binding, public health/read API/UI and System 1 isolation. The older Decision Clock evidence program and general Shadow capture gate remain unchanged.
+Physical status is now VERIFIED for the bounded Daily Resonance lane. Deployment run `36646552183` proved isolated D1 V1.1 (46 tables), one consolidated Cron trigger `*/5 0-5,11 * * 1-5`, Fugle Worker-secret binding, public health/read API/UI, and System 1 isolation. Read-only inventory run `36646278083` proved the four pre-existing Cron triggers all belong to System 1 `fugle-test`; none were modified. The older Decision Clock evidence program and general Shadow capture gate remain unchanged.
