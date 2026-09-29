@@ -1,0 +1,139 @@
+name: System2 Daily Resonance Deploy
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "system2/deploy/**"
+      - "system2/runtime/daily_resonance_**"
+      - "system2/runtime/fugle_resonance_quote_normalizer_v0_1.mjs"
+      - "system2/sql/0007_daily_resonance_integration.sql"
+      - ".github/workflows/system2-resonance-deploy.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-isolated-d1-writer
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    environment: system2-research
+    env:
+      WORKER_NAME: system2-shadow-research
+      DB_NAME: system2-research
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Guard isolated credentials
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          FUGLE_API_KEY: ${{ secrets.FUGLE_API_KEY }}
+        run: |
+          set -euo pipefail
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+          test -n "$SYSTEM2_CLOUDFLARE_API_TOKEN"
+          test -n "$CLOUDFLARE_API_TOKEN"
+          test -n "$FUGLE_API_KEY"
+
+      - name: Verify System2 and protected V8 boundaries
+        run: |
+          set -euo pipefail
+          for test_file in system2/tests/*.test.mjs; do node "$test_file"; done
+          test "$(sed -n '1p' wrangler.toml)" = 'name = "fugle-test"'
+
+      - name: Apply isolated D1 schema V1.1
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+          SYSTEM2_CONFIRM: CREATE_SYSTEM2_ISOLATED_D1
+        run: node system2/deploy/provision_system2_d1.mjs
+
+      - name: Resolve isolated D1
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+        run: |
+          set -euo pipefail
+          node <<'NODE'
+          import fs from "node:fs";
+          const account=process.env.CLOUDFLARE_ACCOUNT_ID,token=process.env.SYSTEM2_CLOUDFLARE_API_TOKEN;
+          const r=await fetch(`https://api.cloudflare.com/client/v4/accounts/${account}/d1/database?per_page=100`,{headers:{authorization:`Bearer ${token}`}});
+          const d=await r.json();
+          if(!r.ok||d?.success===false) throw new Error("isolated D1 lookup failed");
+          const matches=(d.result||[]).filter(x=>x.name===process.env.DB_NAME);
+          if(matches.length!==1) throw new Error(`expected one ${process.env.DB_NAME}; found ${matches.length}`);
+          const id=matches[0].uuid||matches[0].id;
+          fs.appendFileSync(process.env.GITHUB_ENV,`SYSTEM2_DB_ID=${id}\n`);
+          NODE
+
+      - name: Build isolated resonance config
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import os
+          from pathlib import Path
+          template=Path("system2/deploy/wrangler.system2.example.toml").read_text()
+          template=template.replace("REPLACE_WITH_SEPARATE_SYSTEM2_DATABASE_ID",os.environ["SYSTEM2_DB_ID"])
+          Path("wrangler.system2.resonance.toml").write_text(template)
+          PY
+          grep -F 'name = "system2-shadow-research"' wrangler.system2.resonance.toml
+          grep -F 'SYSTEM2_CAPTURE_ENABLED = "false"' wrangler.system2.resonance.toml
+          grep -F 'SYSTEM2_RESONANCE_ENABLED = "true"' wrangler.system2.resonance.toml
+          grep -F 'crons = ["*/5 0-5 * * 1-5", "0 11 * * 1-5"]' wrangler.system2.resonance.toml
+          ! grep -Eq 'V7_DB|STOCKS_KV|PUSH_WEBHOOK_URL|THREEMIN' wrangler.system2.resonance.toml
+
+      - name: Deploy isolated System2 Worker and secret
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          FUGLE_API_KEY: ${{ secrets.FUGLE_API_KEY }}
+        run: |
+          set -euo pipefail
+          npm exec --yes wrangler@4.135.0 -- deploy --config wrangler.system2.resonance.toml --message "System2 daily resonance ${GITHUB_SHA}"
+          printf '%s' "$FUGLE_API_KEY" | npm exec --yes wrangler@4.135.0 -- secret put FUGLE_API_KEY --config wrangler.system2.resonance.toml
+
+      - name: Verify public read API, UI and schedules
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          set -euo pipefail
+          node <<'NODE'
+          const account=process.env.CLOUDFLARE_ACCOUNT_ID,token=process.env.CLOUDFLARE_API_TOKEN,name=process.env.WORKER_NAME;
+          const origin="https://api.cloudflare.com/client/v4";
+          async function get(path){const r=await fetch(origin+path,{headers:{authorization:`Bearer ${token}`}});const d=await r.json();if(!r.ok||d?.success===false)throw new Error(`Cloudflare readback failed: ${path}`);return d.result}
+          const rawSchedules=await get(`/accounts/${account}/workers/scripts/${name}/schedules`);
+          const schedules=Array.isArray(rawSchedules)?rawSchedules:Array.isArray(rawSchedules?.schedules)?rawSchedules.schedules:[];
+          const expressions=schedules.map(x=>x.cron).sort();
+          for(const expected of ["*/5 0-5 * * 1-5","0 11 * * 1-5"])if(!expressions.includes(expected))throw new Error(`missing Cron ${expected}`);
+          const sub=await get(`/accounts/${account}/workers/subdomain`);
+          const url=`https://${name}.${sub.subdomain}.workers.dev`;
+          let last;
+          for(let i=0;i<12;i++){
+            try{
+              const health=await fetch(url+"/health",{signal:AbortSignal.timeout(15000)});const h=await health.json();
+              if(!health.ok||h.schemaVersion!=="1.1"||h.resonanceState!=="BOUNDED_RESONANCE_SCHEDULED"||h.captureState!=="CAPTURE_DISABLED"||h.fugleQuoteConfigured!==true)throw new Error("health contract mismatch");
+              const api=await fetch(url+"/api/system2/resonance",{signal:AbortSignal.timeout(15000)});if(!api.ok)throw new Error("read API failed");
+              const page=await fetch(url+"/resonance",{signal:AbortSignal.timeout(15000)});if(!page.ok||!(await page.text()).includes("日K 共振監控"))throw new Error("UI failed");
+              console.log(JSON.stringify({result:"PASS",url,schemaVersion:h.schemaVersion,cronExpressions:expressions,resonanceState:h.resonanceState,captureState:h.captureState,system1RuntimeUsed:h.system1RuntimeUsed}));
+              process.exit(0);
+            }catch(e){last=e;await new Promise(r=>setTimeout(r,5000))}
+          }
+          throw last||new Error("runtime verification failed");
+          NODE
+
+      - name: Confirm System1 production files unchanged
+        run: |
+          set -euo pipefail
+          git diff --exit-code -- Worker.js wrangler.toml
+          echo "System1 production files unchanged PASS"

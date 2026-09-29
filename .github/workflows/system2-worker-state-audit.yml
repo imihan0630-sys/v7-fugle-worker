@@ -74,14 +74,22 @@ jobs:
           if(vars.SYSTEM2_CAPTURE_ENABLED!=="false") throw new Error("SYSTEM2_CAPTURE_ENABLED must remain false");
           if(vars.SYSTEM2_CAPTURE_MODE!=="LIMITED_PROSPECTIVE_SHADOW") throw new Error("unexpected capture mode");
           if(vars.SYSTEM2_CAPTURE_CONTRACT_VERSION!=="0.1") throw new Error("unexpected capture contract version");
+          if(vars.SYSTEM2_RESONANCE_ENABLED!=="true") throw new Error("SYSTEM2_RESONANCE_ENABLED must be true");
+          if(vars.SYSTEM2_RESONANCE_CONTRACT_VERSION!=="0.1") throw new Error("unexpected resonance contract version");
 
           const schedulesEnvelope=await get(`/accounts/${accountId}/workers/scripts/${name}/schedules`,workersToken);
-          const schedules=schedulesEnvelope?.result?.schedules;
+          const schedules=Array.isArray(schedulesEnvelope?.result)
+            ? schedulesEnvelope.result
+            : schedulesEnvelope?.result?.schedules;
           if(!Array.isArray(schedules)) throw new Error("Cron schedule response shape is unexpected");
-          if(schedules.length!==0) throw new Error(`expected zero Cron schedules; found ${schedules.length}`);
+          const cronExpressions=schedules.map(x=>x.cron).sort();
+          for(const expected of ["*/5 0-5 * * 1-5","0 11 * * 1-5"]){
+            if(!cronExpressions.includes(expected)) throw new Error(`missing System2 resonance Cron: ${expected}`);
+          }
+          if(schedules.length!==2) throw new Error(`expected exactly two resonance Cron schedules; found ${schedules.length}`);
 
           const subdomain=await get(`/accounts/${accountId}/workers/scripts/${name}/subdomain`,workersToken);
-          if(subdomain?.result?.enabled!==false) throw new Error("workers.dev must be disabled");
+          if(subdomain?.result?.enabled!==true) throw new Error("workers.dev must expose the read-only System2 UI/API");
           if(subdomain?.result?.previews_enabled!==false) throw new Error("Preview/Version URLs must be disabled");
 
           console.log(JSON.stringify({
@@ -91,8 +99,10 @@ jobs:
             system2DbBinding:true,
             captureEnabled:false,
             captureMode:vars.SYSTEM2_CAPTURE_MODE,
+            resonanceEnabled:true,
             cronCount:schedules.length,
-            workersDevEnabled:false,
+            cronExpressions,
+            workersDevEnabled:true,
             previewUrlsEnabled:false,
             system1WorkerUsed:false,
             mutationPerformed:false

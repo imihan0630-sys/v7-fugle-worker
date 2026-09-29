@@ -751,3 +751,40 @@ Exact next continuation:
 4. only after repaint/whipsaw/Trend-vs-Range/Regime/cost/MFE-MAE/redundancy gates pass may notification authority be proposed.
 
 The historical cold-backfill P0 lane remains separate and unchanged.
+
+## 2026-09-29 Daily Resonance global integration V0.1
+
+The 00.1 global control room has implemented the owner-authorized bounded Daily Resonance integration from current main. Repository implementation is complete; physical post-merge deployment evidence is not yet claimed in this checkpoint entry.
+
+Implemented:
+- additive isolated D1 migration `0007_daily_resonance_integration.sql`, advancing expected schema to V1.1 with seven resonance tables;
+- next-session pool activation from immutable `s2_capacity_runs.active_assignments_json`, deduplicated to max 9 unique symbols and max 3 per strategy, with zero-pick/fail-closed behavior and no full-market scan;
+- live Fugle Ticker + adjusted daily-history session cache, continuity verification and per-cycle Intraday Quote refresh;
+- reuse of the frozen daily EMA16 / EMA64 / Impulse MACD monitor, live-adapter confirmation firewall, episode state machine, chart and read-model modules;
+- WATCH/HOLD lifecycle resolution from isolated System 2 simulated positions, preserving existing BUY_RESONANCE and EXIT_RESONANCE semantics without changing the resonance formula;
+- D1 run/snapshot/latest/episode/event history with episode dedup;
+- read-only `/api/system2/resonance`, pool and per-symbol routes plus the auto-refreshing `/resonance` UI;
+- isolated Worker Cron configuration for 5-minute bounded monitoring and 19:00 pool refresh; runtime-local filters enforce 08:55–13:40 Asia/Taipei and the independent 13:30 close gate;
+- guarded main-branch deployment workflow with D1 migration, secret presence checks, schedule/API/UI readback and System 1 boundary checks.
+- all repository workflows that mutate isolated System 2 D1 share the `system2-isolated-d1-writer` concurrency group, preventing overlapping full migration replays from temporarily exposing an older schema-version marker.
+
+Safety boundary:
+- general System 2 selection capture remains false;
+- notification and order impact remain false;
+- live push remains a later owner gate;
+- final selection policy is not invented or enabled;
+- an absent upstream capacity receipt produces `NO_ACTIVE_PRESELECTED_POOL` rather than a fabricated watchlist;
+- 15-minute K remains execution/timing only;
+- System 1/V8 production files and Formal Core are unchanged.
+
+Verification at this repository stage:
+- 92 System 2 tests pass locally;
+- four unrelated Decision Clock packaging tests require the Linux `zip` executable absent on the Windows host and are delegated to GitHub CI;
+- all System 2 runtime/deploy/script modules pass syntax checks;
+- System 1 `Worker.js` and root `wrangler.toml` have no working-tree diff.
+
+Exact next continuation:
+1. merge only after System2 Research CI and V8 Regression pass;
+2. apply isolated D1 V1.1 and deploy the bounded Worker/Cron through the guarded workflow;
+3. record physical health/API/UI/schedule readback and actual active-pool state;
+4. accumulate prospective resonance evidence before proposing live notification or any strategy/capital promotion.

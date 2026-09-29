@@ -10,7 +10,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: system2-historical-d1-physical-smoke
+  group: system2-isolated-d1-writer
   cancel-in-progress: false
 
 jobs:
@@ -25,7 +25,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
-      - name: Migrate isolated System2 D1 through schema 1.0
+      - name: Migrate isolated System2 D1 through schema 1.1
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}

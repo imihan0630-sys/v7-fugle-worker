@@ -1,6 +1,6 @@
 # System 2 MVP + Shadow Production Status V0.1
 
-Updated: 2026-09-28 Asia/Taipei  
+Updated: 2026-09-29 Asia/Taipei
 Status: ENGINEERING_BASELINE / P0_IMPLEMENTATION_IN_PROGRESS  
 Authority: GitHub main only. Chat memory is non-authoritative.
 
@@ -352,3 +352,20 @@ This path deliberately does not wait for the full 226-module research curriculum
 This status baseline authorizes no real trades, no System 1 / V8 Formal change, no strategy-weight freeze, no final-selection activation, no Worker Cron activation and no capital allocation.
 
 Research engineering, tests, isolated Shadow plumbing, checkpoints and evidence can continue autonomously within existing governance.
+
+## 2026-09-29 bounded Daily Resonance integration override
+
+This section supersedes the older health-only/zero-Cron statements **only for the owner-authorized bounded Daily Resonance lane**. It does not arm the general prospective Shadow-selection capture loop.
+
+Repository state:
+- isolated schema V1.1 migration is implemented, adding seven resonance tables to the existing 39-table System 2 schema;
+- `system2-shadow-research` now has read-only resonance API/UI routes and an isolated scheduled handler;
+- configured schedules are a five-minute UTC envelope with an Asia/Taipei 08:55–13:40 runtime filter, plus a 19:00 Asia/Taipei frozen-pool refresh;
+- monitoring input is only the prior frozen capacity receipt, max 9 unique symbols and max 3 per strategy; no full-market intraday discovery occurs;
+- Fugle adjusted finalized history is session-cached, current Quote refreshes today's daily bar, and confirmation requires provider finality plus an independent after-13:30 clock gate;
+- daily K/EMA16/EMA64/Impulse MACD, 0/3–3/3, BUY/EXIT markers and episode dedup are persisted/readable;
+- existing System 2 simulated open positions supply HOLD semantics for EXIT_RESONANCE; no real position or order is created;
+- the UI auto-refresh is the current reminder channel; push notification remains disabled;
+- `SYSTEM2_CAPTURE_ENABLED=false`, final SELECTED authorization remains owner-gated, and an absent capacity receipt yields an empty monitor.
+
+Physical status remains pending until the post-merge deployment workflow proves D1 V1.1, two Cron triggers, Fugle secret binding, public health/read API/UI and System 1 isolation. The older Decision Clock evidence program and general Shadow capture gate remain unchanged.

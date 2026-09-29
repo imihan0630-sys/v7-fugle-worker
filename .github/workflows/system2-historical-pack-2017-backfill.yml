@@ -15,7 +15,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: system2-historical-pack-2017-backfill
+  group: system2-isolated-d1-writer
   cancel-in-progress: false
 
 jobs:
@@ -30,7 +30,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "22"
-      - name: Migrate isolated System2 D1 to schema 1.0
+      - name: Migrate isolated System2 D1 to schema 1.1
         env:
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}

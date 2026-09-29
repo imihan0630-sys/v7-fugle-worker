@@ -25,7 +25,7 @@ const db=await createRemoteD1RestAdapter({
 const schema=await db.rawQuery(
   "SELECT schema_value FROM s2_schema_meta WHERE schema_key='schema_version' LIMIT 1"
 );
-assert.equal(schema[0]?.schema_value,"1.0","isolated D1 must be schema 1.0");
+assert.equal(schema[0]?.schema_value,"1.1","isolated D1 must be schema 1.1");
 
 const receipts=[];
 for(const market of ["TWSE","TPEX"]){
@@ -81,7 +81,7 @@ console.log(JSON.stringify({
   result:"PASS",
   smokeVersion:"S2_HISTORICAL_PACK_REAL_SOURCE_SMOKE_V0_1",
   databaseName:"system2-research",
-  schemaVersion:"1.0",
+  schemaVersion:"1.1",
   fromDate,toDate,
   boundedSymbols:symbols,
   receipts,
