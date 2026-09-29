@@ -13619,3 +13619,20 @@ That observer gap was repaired as a Class-A research-only change in PR #258, mer
 The legacy direct PV QA also contains an obsolete exact runtime assertion for V8.11 while current production is V8.14; this is now classified as QA-tool version drift rather than market/data failure.
 
 Next information gain is the 9/29 23:35 after-market selection/bootstrap receipt, followed by row-level 9/30 cohort eligibility. Outcome comparison remains closed.
+
+
+# 2026-09-30 Stage VI — Recovery lineage falsification
+
+The first post-holiday opportunity did not become the first clean price-volume cohort. The ordinary 2026-09-29 23:35 after-market cron is observed as SKIPPED. A guarded next-morning recovery first repaired official quality snapshots but still produced no persisted ordinary selection. A later staged recovery at approximately 05:18 Taipei recomputed the 9/29 scan through a historical dry-run and then persisted 2006 and 4977.
+
+This distinction is decisive. A marketDate stamped 9/29 is not enough for prospective evidence if the calculation actually occurred after the 9/29 decision cutoff and the input first-known times are not proven to have been available by that cutoff. D02 therefore rejects the tempting shortcut of treating the recovered record as if it had existed at 23:35.
+
+The staged recovery also bypasses the normal PV after-market bootstrap/daily hook. Thus the prior conditional expectation that 9/30 might be baseline-ready is no longer valid. Any 9/30 intraday PV rows are useful only for data/recorder QA and known v0.1 semantic falsifiers, not H001/H002 incremental-alpha estimation.
+
+The recovered symbols exactly match the prior 9/24 Formal names, but that 2/2 overlap is not evidence of clean stability. The same names can be reproduced from a later information set.
+
+A second contradiction strengthens the quarantine: the recovery readback reports planDate=2026-09-29 even though Formal plan construction uses nextTradingDate(scanDate), which implies 2026-09-30 for this scan. The finding is scoped to recovery provenance; no production-wide defect or repair is inferred without further evidence.
+
+Finally, a shared history-admission receipt independently shows the 9/29 population blocked by a false expected-session interpretation of the legitimate 2026-07-10 BAVI typhoon closure. This is a cross-room dependency, not a D02-owned maturity gain and not automatically the exact cause of the 23:35 cron skip.
+
+Stage VI therefore improves falsification quality without increasing D02 maturity: the clean-date clock remains at zero and outcome inspection stays closed.
