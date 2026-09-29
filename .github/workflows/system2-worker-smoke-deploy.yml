@@ -33,6 +33,8 @@ jobs:
         run: |
           set -euo pipefail
           test "$EFFECTIVE_CONFIRM" = "DEPLOY_SYSTEM2_WORKER_SMOKE"
+          echo "This legacy zero-Cron smoke path is retired after Daily Resonance activation. Use System2 Daily Resonance Deploy."
+          exit 1
 
       - name: Resolve isolated D1 and inspect recoverable Worker state
         env:

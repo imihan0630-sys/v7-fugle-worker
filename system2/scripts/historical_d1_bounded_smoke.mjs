@@ -45,8 +45,8 @@ const schemaRows = await db.rawQuery(
 );
 assert.equal(
   schemaRows[0]?.schema_value,
-  "1.0",
-  "isolated System2 D1 must be migrated to schema 1.0 before historical smoke write",
+  "1.1",
+  "isolated System2 D1 must be migrated to schema 1.1 before historical smoke write",
 );
 
 const requiredTables = [
@@ -168,7 +168,7 @@ console.log(JSON.stringify({
   result: "PASS",
   databaseName: "system2-research",
   bindingContract: "SYSTEM2_DB",
-  schemaVersion: "1.0",
+  schemaVersion: "1.1",
   marketDate,
   boundedSmokeOnly: true,
   fullBackfillPerformed: false,

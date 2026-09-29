@@ -98,6 +98,7 @@ const migrationFiles = [
   "../sql/0004_historical_universe.sql",
   "../sql/0005_historical_packs.sql",
   "../sql/0006_historical_cold_store.sql",
+  "../sql/0007_daily_resonance_integration.sql",
 ];
 for (const migrationFile of migrationFiles) {
   const sqlText = await readFile(new URL(migrationFile, import.meta.url), "utf8");
@@ -141,6 +142,13 @@ const requiredTables = [
   "s2_historical_cold_backfill_checkpoints",
   "s2_historical_cold_ingest_receipts",
   "s2_historical_universe_registry_receipts",
+  "s2_resonance_watch_pools",
+  "s2_resonance_session_cache",
+  "s2_resonance_runs",
+  "s2_resonance_snapshots",
+  "s2_resonance_latest",
+  "s2_resonance_episodes",
+  "s2_resonance_episode_events",
 ];
 const missingTables = requiredTables.filter((name) => !tables.includes(name));
 assert.deepEqual(missingTables, [], `missing System2 tables: ${missingTables.join(", ")}`);
@@ -150,7 +158,7 @@ const schemaRows = await d1Query(
   "SELECT schema_value FROM s2_schema_meta WHERE schema_key = ? LIMIT 1",
   ["schema_version"],
 );
-assert.equal(schemaRows[0]?.schema_value, "1.0", "unexpected System2 schema version");
+assert.equal(schemaRows[0]?.schema_value, "1.1", "unexpected System2 schema version");
 
 const now = new Date().toISOString();
 const baseCheckId = `infra-${runId}-${runAttempt}`;
@@ -159,7 +167,7 @@ const sentinelPayload = {
   runAttempt,
   bindingName: "SYSTEM2_DB",
   databaseName,
-  schemaVersion: "1.0",
+  schemaVersion: "1.1",
 };
 const sentinelHash = createHash("sha256")
   .update(JSON.stringify(sentinelPayload))
@@ -178,7 +186,7 @@ await d1Query(
     now,
     "ISOLATED_SYSTEM2_D1",
     "SYSTEM2_DB",
-    "1.0",
+    "1.1",
     JSON.stringify(sentinelPayload),
     null,
     "EXPECTED",
@@ -223,7 +231,7 @@ await d1Query(
     new Date().toISOString(),
     "ISOLATED_SYSTEM2_D1",
     "SYSTEM2_DB",
-    "1.0",
+    "1.1",
     JSON.stringify(sentinelPayload),
     JSON.stringify(verifiedPayload),
     "PASS",
@@ -238,7 +246,7 @@ console.log(JSON.stringify({
   databaseIdDigest: digest(databaseId),
   created,
   reusedExisting: !created,
-  schemaVersion: "1.0",
+  schemaVersion: "1.1",
   tableCount: tables.length,
   requiredTablesPresent: true,
   writeReadVerification: "PASS",

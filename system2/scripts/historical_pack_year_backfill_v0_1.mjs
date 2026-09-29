@@ -40,7 +40,7 @@ const objectStore=createRemoteR2S3Adapter({
 const schema=await db.rawQuery(
   "SELECT schema_value FROM s2_schema_meta WHERE schema_key='schema_version' LIMIT 1"
 );
-assert.equal(schema[0]?.schema_value,"1.0","isolated D1 must be schema 1.0");
+assert.equal(schema[0]?.schema_value,"1.1","isolated D1 must be schema 1.1");
 
 const existingReceipt=await readHistoricalColdReceiptV0_1({db,batchId});
 if(existingReceipt){
@@ -56,7 +56,7 @@ if(existingReceipt){
     result:"PASS",
     state:"ALREADY_COMPLETE",
     databaseName:"system2-research",
-    schemaVersion:"1.0",
+    schemaVersion:"1.1",
     market,year,batchId,
     receipt:existingReceipt,
     verification:verified,
@@ -109,7 +109,7 @@ console.log(JSON.stringify({
   state:"YEAR_BACKFILL_COMPLETE",
   version:"S2_HISTORICAL_COLD_PACK_YEAR_BACKFILL_V0_1",
   databaseName:"system2-research",
-  schemaVersion:"1.0",
+  schemaVersion:"1.1",
   objectBackend:objectStore.backend,
   objectBucket:objectStore.bucketName,
   market,year,batchId,fromDate,toDate,
