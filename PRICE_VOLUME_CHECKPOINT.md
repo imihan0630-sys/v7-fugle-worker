@@ -1581,3 +1581,193 @@ Current Price-Volume evidence cursor: PVE-001 through PVE-193.
 6. Determine 2026-09-30 row-level cohort classes: CONTINUING_FROM_PRIOR_MONITOR / NEW_AFTER_MARKET_SELECTION / REENTERED_WITH_EXISTING_CACHE / UNKNOWN, plus CLEAN/UNCLEAN/UNKNOWN eligibility.
 7. 2026-09-30 becomes the first potentially clean H001/H002 date only for rows passing all PVE-149 + PVE-174~192 gates. H003/H004 remain more restrictive.
 8. Keep Gate 7 closed until preregistered maturity/common-support requirements are met; no threshold tuning or Formal change.
+
+
+## Evidence progress — PVE-194 through PVE-202 (2026-09-30 Stage VI long block)
+
+### PVE-194 — The natural 2026-09-29 23:35 after-market path did not yield an ordinary completed scan receipt
+Status: NATURAL_AFTER_MARKET_NOT_COMPLETED / EXACT_SKIP_REASON_UNKNOWN / OUTCOMES_CLOSED
+
+A fresh read-only production diagnostic on 2026-09-30 morning shows the 2026-09-29 scheduled AFTER_MARKET_SCAN cron:
+- scheduled at 2026-09-29 23:35:20 Asia/Taipei;
+- status = SKIPPED;
+- error = null.
+
+The current receipt does not expose the exact skip reason. Therefore:
+- do NOT infer that the history-admission defect was the direct cron skip reason;
+- do NOT treat the later recovered scanDate=2026-09-29 as evidence that the ordinary 23:35 pipeline completed;
+- ordinary 9/29 selection/bootstrap provenance remains absent.
+
+### PVE-195 — The first guarded historical recovery attempt still did not create the 9/29 selection
+Status: GUARDED_RECOVERY_ATTEMPT_SKIPPED / QUALITY_RECOVERY_SEPARATED_FROM_SELECTION
+
+Recovery run 36631504304 / job 109621869201 ran on 2026-09-30 around 05:11~05:12 Taipei.
+
+Before selection retry it recovered/verified official quality snapshots for 2026-09-29. The subsequent single guarded POST to the historical recovery scan returned:
+- recovery=true;
+- historicalRecovery=true;
+- requestedDate=2026-09-29;
+- skipped=true;
+- scanDate=2026-09-29;
+- selectedCount=0;
+- dailyDeliveryState=null.
+
+Thus quality-data repair and selection persistence are separate events. The first guarded recovery attempt did not produce an ordinary persisted selection.
+
+### PVE-196 — The persisted 9/29 selection was recomputed after the decision cutoff through staged historical dry-run
+Status: HISTORICAL_RECOVERY_RECOMPUTED_AFTER_DECISION_CUTOFF / PRIMARY_PROSPECTIVE_COHORT_UNCLEAN
+
+Run 36632353882 / job 109624458000 completed at approximately 2026-09-30 05:18 Taipei.
+
+The production stage-selection route is code-proven to:
+1. accept marketDate=2026-09-29;
+2. set a historical scheduledTime;
+3. call `runAfterMarketScan(...,{dryRun:true})`;
+4. validate the preview;
+5. persist the preview into operational stock config and LAST_SCAN_KEY.
+
+The recovered output persisted:
+- 2006;
+- 4977;
+with selectedCount=2.
+
+This is not the original 2026-09-29 23:35 decision-time receipt. It is a next-morning historical recomputation. Even if every source row carries an as-of date of 9/29, first-known-before-23:35 provenance is not established for the recovered input set.
+
+Frozen D02 classification:
+`HISTORICAL_RECOVERY_RECOMPUTED_AFTER_DECISION_CUTOFF`.
+
+Such rows cannot count as clean Prospective Shadow selection provenance.
+
+### PVE-197 — 2026-09-30 is invalidated as the first clean H001/H002 prospective date
+Status: FIRST_POTENTIALLY_CLEAN_DATE_INVALIDATED / DATA_QA_ONLY
+
+PVE-150 previously allowed 2026-09-30 as the earliest *potentially* clean date if the 9/29 ordinary after-market selection and PV bootstrap succeeded.
+
+That prerequisite did not occur.
+
+Because the operational 9/29 plan was persisted by a 9/30 morning historical recomputation:
+- 9/30 intraday may still be useful for recorder mechanics and source QA;
+- it is excluded from primary H001/H002 incremental-value inference;
+- H003/H004 are likewise excluded and remain higher-gated.
+
+The first potentially clean date is now intentionally unspecified. It requires a future ordinary after-market selection, ordinary PV bootstrap, clean PIT provenance and all existing PVE-149 gates.
+
+### PVE-198 — Staged recovery does not execute the ordinary PV after-market bootstrap/daily path
+Status: ORDINARY_PV_BOOTSTRAP_ABSENT_ON_RECOVERY_PATH / BASELINE_READINESS_NOT_PROVEN
+
+The V8.11 PV hooks execute `bootstrapPvShadowBaselinesSafe()` and `recordPvDailyShadowSafe()` only in the ordinary non-dry-run after-market flow after Formal plan/bridge/daily-report completion.
+
+The staged recovery route:
+- uses `runAfterMarketScan(...,{dryRun:true})`;
+- then persists the verified preview;
+- contains no call to `bootstrapPvShadowBaselinesSafe()`;
+- contains no call to `recordPvDailyShadowSafe()`.
+
+Therefore the staged 9/29 selection cannot be treated as if the normal PV bootstrap/daily receipt occurred.
+
+A possible intraday roll of 9/29 observations for previously monitored symbols is a different mechanism and remains NOT_OBSERVED at rest here. It cannot substitute for an independently verified historical same-slot baseline/bootstrap contract.
+
+### PVE-199 — 2/2 symbol overlap does not rehabilitate the recovered cohort
+Status: FULL_SYMBOL_OVERLAP_DESCRIPTIVE_ONLY / NO_PROVENANCE_REHABILITATION
+
+The recovered 9/29 Formal symbols are:
+- 2006;
+- 4977.
+
+They are the same two Formal symbols known from the prior 9/24 plan, giving 2/2 symbol overlap.
+
+This is descriptive continuity only. Same symbols do not prove:
+- same ranking inputs;
+- same source vintages;
+- same decision-time information set;
+- same baseline freshness;
+- same clean control population.
+
+Recovery recomputation can reproduce the same names while still violating prospective timing.
+
+### PVE-200 — Recovery receipt violates the Formal planDate construction invariant
+Status: RECOVERY_RECEIPT_PLAN_DATE_INVARIANT_VIOLATION / COHORT_CLOCK_UNTRUSTED
+
+The stage-recovery readback reports:
+- scanDate=2026-09-29;
+- first Formal stock planDate=2026-09-29.
+
+Fresh code audit proves ordinary Formal construction uses:
+`planDate = nextTradingDate(scanDate)`.
+
+The 2026 preloaded holiday set does not mark 2026-09-30 as a holiday, and `nextTradingDate()` advances at least one calendar day before testing trading status. Therefore the expected planDate for scanDate 2026-09-29 is 2026-09-30.
+
+V8.14.1 only changes TDCC share reconciliation and does not alter this calendar/plan-date rule.
+
+Conclusion:
+the observed recovery receipt violates the normal plan-date invariant. The root cause is not yet proven, so do not generalize this into a production-wide planDate bug. For D02 evidence governance, however, the recovery plan's cohort clock is not trustworthy enough for PIT-clean inference.
+
+### PVE-201 — Cross-room history-admission failure independently blocks 9/29 selection provenance
+Status: CROSS_ROOM_DEPENDENCY_BLOCK / DIRECT_CRON_CAUSALITY_NOT_ASSUMED
+
+Canonical cross-room receipt:
+`research/br030_history_admission_dependency_20260930_v0_1.json`.
+
+It records for scanDate 2026-09-29:
+- unusableSymbols = 1883;
+- OFFICIAL_GAP_PROOF_UNAVAILABLE = 1872;
+- INSUFFICIENT_PRIOR_BARS = 11;
+- repeated gapDate = 2026-07-10.
+
+The repeated 2026-07-10 gap corresponds to a legitimate BAVI whole-market typhoon closure, while the preloaded 2026 planned-holiday map omits that later unscheduled closure. This is strong evidence of a shared history-admission provenance blocker.
+
+D02 uses this only as a dependency:
+- it independently prevents calling the recovered 9/29 selection clean;
+- it does NOT prove this was the exact reason the 23:35 cron returned SKIPPED unless a direct cron receipt says so;
+- the shared-runtime fix remains outside D02's autonomous scope.
+
+### PVE-202 — PVE-149 gate state after the first post-holiday recovery sequence
+Status: STAGE_VI_GATE_EVALUATION_COMPLETE / GATE_7_CLOSED / FORMAL_UNCHANGED
+
+Gate 0 — Provenance: PARTIAL / FAIL_FOR_CLEAN_COHORT
+- runtime/recovery run/job/commit receipts are identified;
+- original 23:35 decision-time selection receipt is absent;
+- recovered selection occurred after cutoff.
+
+Gate 1 — Safety/Formal isolation: PASS_FOR_D02_RESEARCH_BOUNDARY
+- this D02 block made no Formal change;
+- recovery operations existed independently and are being audited, not initiated by D02;
+- PV remains research-only for inference.
+
+Gate 2 — Market/operation context: RECOVERY_PATH
+- natural 23:35 cron = SKIPPED;
+- first guarded recovery attempt = skipped;
+- staged historical recovery later persisted selection.
+
+Gate 3 — Acquisition observability: PARTIAL
+- recovery/scan logs are directly observed;
+- row-level PV D1 baseline/snapshot truth for 9/29 remains unobserved here.
+
+Gate 4 — Baseline lineage/readiness: FAIL_FOR_CLEAN_9_30
+- ordinary after-market PV bootstrap/daily path was not executed/proven on stage-selection;
+- baseline field readiness is therefore not established.
+
+Gate 5 — Cohort provenance: FAIL
+- 9/30 operational plan derives from historical recomputation after intended 9/29 decision cutoff;
+- planDate invariant also fails in the recovery receipt.
+
+Gate 6 — Feature QA: DATA_QA_ONLY
+- any 9/30 PV fields may be inspected for recorder/data semantics, not primary alpha.
+
+Gate 7 — Outcomes: CLOSED
+- no return/MFE/MAE superiority, threshold tuning or promotion is inspected.
+
+Machine-readable receipt:
+`research/d02_20260929_recovery_lineage_receipt_v0_1.json`.
+
+Current Price-Volume evidence cursor: PVE-001 through PVE-202.
+Formal Core remains LOCKED.
+
+## Exact continuation after PVE-202
+1. Treat all 2026-09-30 intraday PV observations as DATA_QA-only for primary H001~H004.
+2. Do not assign a new calendar date as “first clean date” until an ordinary after-market selection and ordinary PV bootstrap both produce contemporaneous receipts.
+3. On the next ordinary candidate cohort, require decision-time selection provenance, correct scanDate→planDate invariant, history-admission pass, baseline field readiness, pool/cohort integrity and PVE-149 Gate 0→6 before any outcome inspection.
+4. Preserve the 9/29 natural cron skip reason as UNKNOWN_FROM_CURRENT_RECEIPT; do not post-hoc assign the history-admission defect as its cause.
+5. Route the 2026-07-10 unscheduled-closure/history-admission repair to its owning shared-runtime governance path; D02 must not silently alter Formal calendar/history behavior.
+6. If row-level 9/30 PV data become available, use them only to test recorder mechanics, UNKNOWN/null behavior, Acceptance phantom/INVALID-anchor diagnostics and baseline coverage; they cannot advance clean alpha-date counts.
+7. H001/H002 A/B/C/D performance comparison remains unopened until clean prospective common support exists.
