@@ -15,6 +15,7 @@ test('Cloudflare cron inventory workflow is bounded and read-only', async () => 
   assert.match(workflow, /permissions:\s*\n\s*contents: read/);
   assert.match(workflow, /workers\/scripts/);
   assert.match(workflow, /\/schedules/);
+  assert.match(workflow, /scheduleResult\?\.schedules/);
   assert.match(workflow, /mode: 'READ_ONLY'/);
   assert.doesNotMatch(workflow, /method:\s*['"](?:POST|PUT|PATCH|DELETE)['"]/i);
   assert.doesNotMatch(workflow, /wrangler\s+(?:deploy|delete|secret)/i);

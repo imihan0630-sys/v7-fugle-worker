@@ -46,7 +46,13 @@ jobs:
           const inventory = [];
           for (const script of scripts) {
             const scriptName = script.id;
-            const schedules = await read(`/workers/scripts/${encodeURIComponent(scriptName)}/schedules`);
+            const scheduleResult = await read(`/workers/scripts/${encodeURIComponent(scriptName)}/schedules`);
+            const schedules = Array.isArray(scheduleResult)
+              ? scheduleResult
+              : scheduleResult?.schedules;
+            if (!Array.isArray(schedules)) {
+              throw new Error(`Unexpected Cron schedule response for ${scriptName}`);
+            }
             if (schedules.length > 0) {
               inventory.push({
                 worker: scriptName,
