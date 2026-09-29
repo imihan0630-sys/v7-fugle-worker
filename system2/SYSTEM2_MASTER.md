@@ -170,3 +170,21 @@ Evaluate opportunity quality and capital utilization using:
 - version-to-version improvement.
 
 Monthly profit can be observed but is not a guaranteed or optimization-only target.
+
+## Daily Resonance physical deployment state — 2026-09-30
+
+The bounded Daily Resonance research/shadow lane is physically deployed.
+
+- Main integration lineage: PR #262 -> PR #279.
+- Current deployment commit: `6d6b4d5aafff55179397187fa69acefed428cd6e`.
+- Deployment workflow run `36646552183`: PASS.
+- System2 Research CI `36646479007`: PASS.
+- V8 Regression `36646479081`: PASS.
+- Isolated D1 schema V1.1: 46 tables, physical read/write verification PASS.
+- Worker `system2-shadow-research` has one active Cron trigger `*/5 0-5,11 * * 1-5`.
+- Runtime filtering keeps monitoring bounded to 08:55–13:40 Asia/Taipei and pool refresh to exactly 19:00.
+- Fugle live quote secret is configured; health readback reports `fugleQuoteConfigured=true`.
+- API/UI are live and read-only.
+- Current empty-pool semantics remain fail-closed; no full-market scan or forced-fill behavior exists.
+- Four System 1 production Cron triggers remain untouched.
+- Live push, real orders, general System 2 selection capture and formal capital authority remain disabled.
