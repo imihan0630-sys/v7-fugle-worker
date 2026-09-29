@@ -254,10 +254,10 @@
           "levelMeaning": "機制＋反證已定義"
         }
       ],
-      "exactNextContinuationPoint": "PVE-187: on the first 2026-09-29 ordinary intraday receipts, run PVE-149 Gate 0→7 plus PVE-174~185 overlays before any outcome inspection. Keep all 9/29 intraday rows DATA_QA-only because plan lineage inherits 2026-09-24. Explicitly count Guard INVALID/GUARDED/VALID, raw Acceptance transitions, ACTIVE_ACCEPTANCE_LIFECYCLES, PRE_EVENT_ONLY_EXPIRIES, raw anchorEligible and HYPOTHESIS_CLEAN_ANCHORS. After the 9/29 after-market run, inspect selection/bootstrap receipts and baseline freshness/lineage; 9/30 remains only the earliest potentially clean cohort.",
-      "status": "LONG_BLOCK_STAGE_IV_COMPLETE_WAITING_2026_09_29_RUNTIME_QA",
+      "exactNextContinuationPoint": "PVE-194: after the 2026-09-29 23:35 Formal after-market completion window, read latest scan/status + cron receipts outcome-blind. Require exact 9/29 scan/zero-plan/failure classification; inspect pvShadow bootstrap/daily, Formal isolation, old/new plan overlap, per-symbol validSessions/lastMarketDate and cache-skip freshness. Manual ephemeral D1 QA, if available, may add Acceptance QA diagnostics but does not prove prospective coverage. Classify 2026-09-30 rows by lineage and CLEAN/UNCLEAN/UNKNOWN before H001/H002 feature common-support; H003/H004 remain higher-gated. Keep outcomes closed.",
+      "status": "LONG_BLOCK_STAGE_V_COMPLETE_WAITING_2026_09_29_AFTER_MARKET_RECEIPT",
       "lastResearchUpdate": "2026-09-29",
-      "researchNote": "PVE-181~186 found two additional v0.1 evidence-semantic defects before outcome inspection: 13:00 PRE_EVENT can be forced to EXPIRED_AMBIGUOUS and manufacture a PVACC event key without a genuine trigger; Acceptance/anchorEligible are not fail-closed when Guard interpretability is INVALID, unlike Persistence. H003 event denominator is now RAW_ACCEPTANCE_KEY -> ACTIVE_LIFECYCLE -> HYPOTHESIS_CLEAN_EVENT. Outcome storage remains separate from inference eligibility. No maturity promotion and no Formal change."
+      "researchNote": "PVE-187~193 converted the 9/29 inherited 9/24 plan lineage from structural expectation into actual production read-only evidence: at ~21:31 Taipei runtime was V8.14 and scan/status remained 2026-09-24 before the scheduled 23:35 refresh. Manual-only PV QA was classified diagnostic-only for prospective coverage. PR #258 (ea6f891...) added isolated read-only Acceptance event/anchor QA denominators after both V8 Repair CI and V8 Regression Tests passed. Legacy direct QA exact-V8.11 assertion is stale versus verified V8.14 and must not be misread as data failure. No outcome inference, maturity promotion or Formal change."
     },
     {
       "id": "D03",
