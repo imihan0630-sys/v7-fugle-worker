@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-09-30T05:43:00+08:00",
+  "updatedAt": "2026-09-30T05:44:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -469,10 +469,10 @@
           "levelMeaning": "機制＋反證已定義"
         }
       ],
-      "status": "FALSIFICATION_IN_PROGRESS / PROSPECTIVE_RV_PERSISTENCE_CONTRACT_FROZEN",
-      "exactNextContinuationPoint": "D04-RV-PERSIST-02: canonical next evidence gate is the first REAL prospectively persisted MARKET_RV5_CC_SIMPLE / MARKET_RV20_CC_SIMPLE / MARKET_RV_RATIO_5_20 observation linked to same A2 source receipt, regime snapshot and immutable run fingerprint, followed by write/readback/replay verification before any outcome inspection. Historical first-known reconstruction remains prohibited. In parallel, D04-CE-01 waits for the immutable per-symbol decision-state parent before exact-common-support contraction->expansion outcome tests. Intraday local volatility is a separate estimand: use causal-window two-sided midquote RV, 1s/5s/15s outcome-blind signature QA, session segmentation and trade-RV diagnostic only.",
+      "status": "FALSIFICATION_IN_PROGRESS / PURE_RV_BUILDER_MERGED / LIVE_PERSISTENCE_PENDING",
+      "exactNextContinuationPoint": "D04-RV-PERSIST-03: pure PIT-safe builder is now merged, but this is not evidence capture. Next valid evidence step is research-only wiring to the existing regimeFactorObservations/persistence path under applicable governance, then FIRST REAL DATE must pass same-date A2 receipt -> MARKET_RV5_CC_SIMPLE/MARKET_RV20_CC_SIMPLE/MARKET_RV_RATIO_5_20 builder -> same regime snapshot -> immutable persistence -> readback -> deterministic replay -> run-fingerprint linkage before any outcome inspection. Builder/synthetic/history recomputation never counts as prospective evidence. After clean independent dates accumulate, test state occupancy and overlap-vs-nonoverlap robustness. ATR/CE outcome work still waits for immutable per-symbol parent persistence. Stock limit-constrained sessions remain separate observed-constrained-volatility strata.",
       "lastResearchUpdate": "2026-09-30T05:44:00+08:00",
-      "researchNote": "Latest room04 work merged: market-RV prospective persistence contract frozen; contraction->expansion protocol frozen; daily market RV separated from intraday local RV; ultra-high-frequency naive transaction RV rejected as primary local-vol control because of microstructure-noise risk; midquote RV + outcome-blind volatility-signature QA frozen. D04 remains 42% because no real persisted PIT RV sample/readback exists yet."
+      "researchNote": "Market-RV prospective persistence contract and contraction->expansion protocol are frozen. Class-A pure market RV builder merged via PR #273 after System2 Research CI #315 and V8 Regression #1135 PASS. Builder semantics are rolling close-to-close population return dispersion, not academic intraday realized variance. High-frequency local-volatility measurement protocol and Taiwan price-limit censoring guard are frozen. No real persisted PIT market-RV sample exists yet; D04 remains 42%."
     },
     {
       "id": "D05",
@@ -565,10 +565,10 @@
           "levelMeaning": "台股PIT資料可行"
         }
       ],
-      "status": "EVIDENCE_PENDING / HF_MEASUREMENT_PROTOCOL_FROZEN",
-      "exactNextContinuationPoint": "D05-HORIZON-03: no new indicator invention. Wait for prospective books+trades capture with explicit reconnect/coverage semantics. Books provider messages are not proven exchange events; use snapshotDeltaPressureProxy unless completeness is established. Before B0->B3 inference, run outcome-blind cadence/volatility QA: primary local volatility = two-sided midquote RV; trade RV = noise diagnostic; segment OPEN_CALL / NORMAL_CONTINUOUS / VI_TRIAL / CLOSE_CALL / LIMIT / ODD_LOT. Then execute E0 event -> E1 1m/5m -> E2 10m/15m -> E3 30m with activity, spread, volatility, event-intensity, sign-shuffle/time-shift and exact-session controls. Separate price formation, breakout path quality and execution quality.",
+      "status": "EVIDENCE_PENDING / HF_MEASUREMENT_AND_EVENT_SEMANTICS_FROZEN",
+      "exactNextContinuationPoint": "D05-HORIZON-04: wait for complete prospective books+trades capture. Before any outcome inference prove provider/reconnect/missing-event semantics and run 1s/5s/15s state-fidelity + midquote volatility-signature QA. Primary cohort NORMAL_CONTINUOUS_TWO_SIDED_BOOK; OPEN/CLOSE auction, VI/trial, limit-constrained and odd-lot stay separate. Then nested B0 activity/midquote-local-vol -> B1 spread/top1 -> B2 pressure-response/persistence -> B3 one top5 block across E0 event -> E1 1m/5m -> E2 10m/15m -> E3 30m with time-shift/sign-shuffle/event-intensity/spread/volatility controls. Books message count is not proven exchange-event count and true OFI remains blocked until completeness is proven.",
       "lastResearchUpdate": "2026-09-30T05:44:00+08:00",
-      "researchNote": "Provider-message/event semantics, dual-clock horizon ladder and B0->B3 nested falsification remain frozen. New measurement guard: B0 local volatility must use causal two-sided midquote RV, not every trade tick; quote age/reconnect segmentation and 1s/5s/15s volatility-signature QA are required before high-frequency inference. No new Taiwan PIT event ledger yet; D05 remains 46%."
+      "researchNote": "No new indicator invention. Provider-message/event semantics, dual-clock horizon ladder and B0->B3 falsification remain frozen. New guard: B0 local volatility uses causal two-sided midquote RV; transaction RV is a microstructure-noise diagnostic. 1s/5s/15s outcome-blind volatility-signature QA, quote-age/reconnect segmentation and session/mechanism alignment are required. D05 remains 46% because no complete prospective event ledger exists."
     },
     {
       "id": "D06",
