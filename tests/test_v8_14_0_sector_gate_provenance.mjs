@@ -112,3 +112,14 @@ console.log(JSON.stringify({
   institutionalScoreDecompositionObserver:true,
   institutionalOutcomesUsed:false
 }));
+
+
+const {spawnSync}=await import("node:child_process");
+const d18BreadthTest=spawnSync(process.execPath,["tests/test_d18_direction_breadth_semantics_v0_1.mjs"],{
+  cwd:process.cwd(),encoding:"utf8"
+});
+assert.equal(
+  d18BreadthTest.status,
+  0,
+  "D18 direction-breadth semantic observer test failed\n"+String(d18BreadthTest.stdout||"")+"\n"+String(d18BreadthTest.stderr||"")
+);
