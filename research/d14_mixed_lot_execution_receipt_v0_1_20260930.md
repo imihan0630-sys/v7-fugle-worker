@@ -185,3 +185,42 @@ For a first readiness review:
 Three sessions are a review checkpoint, not an automatic promotion rule.
 
 No Formal optimization candidate.
+
+
+## Third falsification: unfilled auction count is not execution failure count
+
+TWSE odd-lot orders are limit orders. Matching follows price priority and time priority, while the exchange discloses computed execution prices/volumes and unexecuted bid/ask levels.
+
+Therefore:
+`priorSubmittedOpportunitiesWithoutFill`
+is only a lifecycle count.
+
+It is not an execution-quality loss count.
+
+For each call-auction opportunity the receipt now tries to classify the active order as:
+
+- `PRICE_NOT_CROSSING`: the BUY limit is below the computed execution price, or the SELL limit is above it. Non-fill is consistent with the user's limit.
+- `PRICE_CROSSING_QUEUE_OR_VOLUME_UNRESOLVED`: the limit crosses the computed price. The order was price-eligible, but queue priority / available contra volume remain unresolved.
+- `UNKNOWN_MARKETABILITY`: the active limit or computed execution price is not proven.
+
+Only when opportunity marketability is fully evidenced can a later study interpret auction survival beyond raw elapsed time.
+
+Even a price-crossing opportunity must not be called a broker defect without queue/volume evidence.
+
+## Fourth falsification: mechanism rules are time-versioned data
+
+TWSE amended odd-lot Articles 3, 8 and 8-1 on 2026-08-20.
+
+The amended Article 8 text changes intraday odd-lot matching to start at 09:00, but the amendment is scheduled to take effect on 2026-12-07.
+
+For a 2026-09-30 decision, the currently effective pre-amendment rule remains the relevant mechanism clock.
+
+Therefore every leg now carries:
+- mechanismRule.ruleVersion;
+- sourceRef;
+- effectiveFrom;
+- effectiveTo.
+
+A rule whose effective interval does not contain `decisionKnownAt` fails closed.
+
+This prevents future market-structure changes from contaminating historical latency replay.
