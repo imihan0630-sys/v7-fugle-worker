@@ -1,0 +1,46 @@
+{
+  "receiptId": "BR030_FIRST_PROSPECTIVE_ADMISSION_RECEIPT_20260929_V0_1",
+  "evaluatedAt": "2026-09-30T05:43:00+08:00",
+  "targetScanDate": "2026-09-29",
+  "mode": "READ_ONLY_PROVENANCE_AUDIT",
+  "sourceEvidence": {
+    "pullRequest": 272,
+    "mergeCommit": "2126114acc6afd1888a7aaab5bdd76a912975e51",
+    "workflowRun": 36633052952,
+    "workflowJob": 109626781969,
+    "workflowName": "V8 Readonly Preview 2026-09-29"
+  },
+  "historySourceRevalidation": {
+    "marketDate": "2026-09-29",
+    "requiredPriorBars": 60,
+    "usableSymbols": 0,
+    "unusableSymbols": 1883,
+    "reasons": {
+      "OFFICIAL_GAP_PROOF_UNAVAILABLE": 1872,
+      "INSUFFICIENT_PRIOR_BARS": 11
+    },
+    "verifiedNoTradeGapSymbols": 0,
+    "observedCommonGapDateInSamples": "2026-07-10"
+  },
+  "finalPoolMerge": {
+    "generalCandidates": 0,
+    "thousandCandidates": 0,
+    "hybridCandidates": 0,
+    "finalSelected": 0,
+    "totalVisibleCandidates": 0
+  },
+  "validity": {
+    "countsAsBr030ProspectiveDate": false,
+    "countsAsIndependentScanDate": false,
+    "marketSignalInterpretationAllowed": false,
+    "leaderVsBreadthOutcomeAllowed": false,
+    "outcomeJoinAllowed": false,
+    "reason": "History/source admission failed for the entire scanned universe. Zero candidates are a data-admission result, not evidence of weak market/sector opportunity."
+  },
+  "dependency": {
+    "ownerLane": "history/source admission shared infrastructure",
+    "room07Action": "record blocker and skip to nonblocked D09/D10 work",
+    "formalRepairAuthorizedByRoom07": false
+  },
+  "status": "DATA_QUALITY_BLOCKED / FIRST_EXPECTED_DATE_INVALID / WAITING_NEXT_CLEAN_ADMISSION / FORMAL_UNCHANGED"
+}
