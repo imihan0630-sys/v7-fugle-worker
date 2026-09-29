@@ -76,7 +76,8 @@ Display-side entry readiness uses:
 States:
 - 0/3: WATCH;
 - 1/3 or 2/3: ENTRY_FORMING;
-- 3/3: ENTRY_RESONANCE_CANDIDATE.
+- 3/3 while the daily bar is still open: ENTRY_RESONANCE_PROVISIONAL / BUY_RESONANCE;
+- 3/3 after the official 13:30 close and FINAL current-date daily bar: ENTRY_RESONANCE_CONFIRMED / BUY_RESONANCE.
 
 This is a research/shadow candidate signal. It is not yet a validated production BUY authority.
 
@@ -89,7 +90,8 @@ Display-side deterioration uses:
 
 For a prior HOLD lifecycle:
 - 1/3 or 2/3: EXIT_WARNING;
-- 3/3: EXIT_RESONANCE_CANDIDATE.
+- 3/3 while the daily bar is still open: EXIT_RESONANCE_PROVISIONAL / EXIT_RESONANCE;
+- 3/3 after the official 13:30 close and FINAL current-date daily bar: EXIT_RESONANCE_CONFIRMED / EXIT_RESONANCE.
 
 The runtime also exposes exact price-vs-EMA16, EMA16-vs-EMA64, and Impulse-MACD cross events for chart annotation and later falsification. V0.1 does **not** require all three cross events to occur on the exact same daily bar.
 
@@ -206,6 +208,7 @@ The three conditions must never be counted as three independent factor-family vo
 
 Repository files:
 - system2/runtime/daily_resonance_monitor_v0_1.mjs
+- system2/runtime/daily_resonance_chart_v0_1.mjs
 - system2/tests/daily_resonance_monitor_v0_1.test.mjs
 
 Current safety flags:
@@ -219,7 +222,7 @@ Not implemented/armed in V0.1:
 - current-day OHLC aggregation from ticks;
 - persistent signal episodes;
 - push notifications;
-- chart web UI;
+- rendered chart web UI (the repository already has a UI-ready chart model, but no deployed page);
 - Worker Cron;
 - final System 2 strategy promotion;
 - real orders.
