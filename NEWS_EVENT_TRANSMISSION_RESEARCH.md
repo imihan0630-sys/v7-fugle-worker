@@ -679,3 +679,22 @@ Maturity remains unchanged. D11-08 and D17-01/02/09 stay at L2 because intraday 
 3. Classify cross-day recurring notices, additions, removals and changed content. Treat removals as UNKNOWN until the source window contract is proven.
 4. Search for a native MOPS disclosure identifier/correction link; if none exists, keep derived revision chains explicitly unverified.
 5. Keep the licensed general-news production lane `SOURCE_NEEDED`; keep all return/outcome joins closed until source/version and coverage gates pass.
+
+
+---
+
+## D11-08 / D17-02 / D17-09 source-version semantics — 2026-09-29
+
+TWSE primary materials confirm material-information presentation has separate sequence, publication date/time, subject, clause and fact-date fields. This supports preserving source sequence and source publication clock as distinct provenance fields.
+
+Counterevidence: the presentation evidence does not establish that sequence is a globally unique immutable version identifier and does not establish a native supersession pointer. Therefore sequence alone must not be used as a permanent provider version key, and same-company/same-day/title similarity must not be treated as proof that one disclosure replaces another.
+
+Frozen fields: sourceSequence, sourcePublishedAt, capturedAt, correctionSignal, correctionReferenceText, nativeSupersessionId (UNKNOWN when absent), derivedSupersessionCandidate, derivedSupersessionConfidence, rawPayloadHash and parserVersion. Derived lineage is research metadata, not publisher truth.
+
+PIT rule: eventOccurredAt, regulatoryDueAt, sourcePublishedAt and capturedAt remain separate clocks. A deadline or displayed publication time does not prove strategy observability at that instant. Until independently authenticated, capturedAt remains the conservative replay clock. Later corrections append and never rewrite earlier replay state.
+
+Negative evidence: official-source status does not prove a particular endpoint/window is complete for a decision interval. NO_KNOWN_EVENT still requires source-lane coverage receipts; otherwise absence is UNKNOWN.
+
+No prices, returns, rankings or post-event outcomes were used; no text/dedup threshold was optimized. Keep D11-08, D11-13, D17-02 and D17-09 at L2. FORMAL_OPTIMIZATION_CANDIDATE = NO.
+
+Exact next: fixed-cadence immutable snapshots across at least three independent trading sessions plus after-hours; expected/observed poll accounting; classify additions/removals/content changes; report sourcePublishedAt-to-capturedAt only as observed capture delay; continue searching for native correction linkage; keep outcome joins closed.
