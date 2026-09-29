@@ -4628,3 +4628,70 @@ The legacy direct QA script still hard-asserts runtime `8.11.0-pv-shadow-v0.1-lo
 
 Status:
 `FIRST_LIVE_LINEAGE_RECEIPT_OBSERVED / MANUAL_QA_NOT_PROSPECTIVE_COVERAGE / ACCEPTANCE_QA_OBSERVABILITY_READY / AFTER_MARKET_HINGE_PENDING / FORMAL_UNCHANGED`.
+
+
+# PVE-194~202 — 2026-09-29 after-market recovery lineage audit (2026-09-30 morning)
+
+## Natural decision-time path
+The scheduled 2026-09-29 23:35 AFTER_MARKET_SCAN is directly observed as SKIPPED with no error. The current cron receipt does not expose its exact skip reason. Therefore the later recovered scanDate=2026-09-29 must not be substituted for the missing ordinary decision-time receipt.
+
+## Recovery sequence
+At approximately 05:11~05:12 Taipei, official quality datasets were recovered/verified and a single guarded historical /api/scan attempt was made. It still returned skipped=true and selectedCount=0.
+
+At approximately 05:18 Taipei, the staged recovery route then persisted a historical selection by recomputing:
+`runAfterMarketScan(...,{dryRun:true})`
+for marketDate 2026-09-29 and writing the verified preview.
+
+Persisted Formal symbols:
+- 2006;
+- 4977.
+
+This occurred after the intended 9/29 decision cutoff. It is therefore not a clean prospective selection receipt.
+
+## PV bootstrap consequence
+The ordinary V8.11 after-market PV bootstrap/daily hooks execute only in the ordinary non-dry-run post-Formal flow. The stage-selection route contains no invocation of:
+- `bootstrapPvShadowBaselinesSafe()`;
+- `recordPvDailyShadowSafe()`.
+
+Therefore no ordinary 9/29 PV baseline bootstrap/daily receipt is established by staged recovery. A possible intraday baseline roll for continuing symbols is a separate path and remains row-level unobserved here.
+
+## Cohort consequence
+2026-09-30 is now:
+`DATA_QA_ONLY / PRIMARY_H001_H004_UNCLEAN`.
+
+The earlier “earliest potentially clean 9/30” statement was conditional on a successful ordinary 9/29 selection/bootstrap. Its prerequisite failed.
+
+## Full overlap is not rehabilitation
+Recovered 9/29 symbols are the same 2/2 names as the prior 9/24 Formal plan. Full name overlap does not prove equal ranking inputs, source vintages, decision clocks, baseline freshness or pool integrity.
+
+## planDate invariant contradiction
+Formal construction is code-proven to set:
+`planDate=nextTradingDate(scanDate)`.
+
+For scanDate 2026-09-29, the ordinary rule implies 2026-09-30. The staged-recovery production readback instead reported planDate=2026-09-29.
+
+V8.14.1 changes only TDCC share reconciliation; it does not redefine planDate or the trading calendar. The root cause of the recovery receipt discrepancy remains unknown, so the finding is scoped to the recovery lineage and is not generalized into a production-wide bug.
+
+For D02, this is sufficient to fail cohort-clock trust.
+
+## Cross-room history-admission dependency
+`research/br030_history_admission_dependency_20260930_v0_1.json` independently reports 1883/1883 unusable symbols for the 9/29 admission check:
+- 1872 OFFICIAL_GAP_PROOF_UNAVAILABLE;
+- 11 INSUFFICIENT_PRIOR_BARS;
+with repeated gapDate 2026-07-10.
+
+The repeated date is a legitimate BAVI whole-market typhoon closure not represented in the static planned-holiday map. This independently blocks clean selection provenance. It is not claimed as the exact cause of the natural 23:35 cron SKIPPED result.
+
+## Frozen evidence classification
+- 9/29 intraday: inherited 9/24 plan, DATA_QA-only.
+- 9/29 ordinary after-market: no completed ordinary receipt.
+- 9/29 staged selection: historical recovery recomputation after cutoff.
+- 9/30 intraday: DATA_QA-only / primary H001~H004 excluded.
+- first future clean cohort date: UNSPECIFIED until ordinary selection + ordinary PV bootstrap + PIT/history/cohort gates pass.
+- outcomes: CLOSED.
+
+Machine-readable receipt:
+`research/d02_20260929_recovery_lineage_receipt_v0_1.json`.
+
+Status:
+`RECOVERY_LINEAGE_AUDITED / FIRST_CLEAN_DATE_INVALIDATED / ORDINARY_PV_BOOTSTRAP_NOT_PROVEN / PLAN_DATE_RECOVERY_INVARIANT_VIOLATION / OUTCOMES_CLOSED / FORMAL_UNCHANGED`.
