@@ -21,7 +21,29 @@
       "missing/suspended session -> not zero return",
       "no pseudo-bar",
       "no forward-fill masquerading as an observed close"
-    ]
+    ],
+    "pairwiseDeletionFalsification": {
+      "counterexample": "AB=+1 on dates d1-d2; AC=+1 on d3-d4; BC=-1 on d5-d6",
+      "assembledCorrelationMatrix": [
+        [
+          1,
+          1,
+          1
+        ],
+        [
+          1,
+          1,
+          -1
+        ],
+        [
+          1,
+          -1,
+          1
+        ]
+      ],
+      "determinant": -4,
+      "conclusion": "Individually valid pairwise correlations from disjoint supports can form a non-PSD matrix that cannot represent one coherent multivariate covariance state."
+    }
   },
   "requiredPanelIdentity": [
     "parentDecisionReceiptId",
@@ -60,7 +82,8 @@
     "unverified symbol-session state",
     "pseudo-bar or zero-return imputation",
     "duplicate/out-of-order/mismatched common dates",
-    "missing source/continuity identity"
+    "missing source/continuity identity",
+    "pairwise-complete covariance assembled from different support dates"
   ],
   "currentSourceReadiness": {
     "d03OfficialPublicOHLC": "SOURCE_CAPABILITY_PASS_ONLY",
