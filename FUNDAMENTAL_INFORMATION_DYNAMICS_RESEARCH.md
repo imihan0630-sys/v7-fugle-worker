@@ -1643,3 +1643,113 @@ Exact next continuation:
 3. test a no-outcome prospective receipt on the next available reporting-vintage observation;
 4. only after receipt integrity is proven may the Quality × Valuation Shadow join begin;
 5. keep financial institutions on the specialist branch rather than forcing generic CFO/FCF semantics.
+
+
+## FD-053 — Cash-quality period-basis alignment is a mandatory PIT gate
+
+Research date: 2026-09-30 Asia/Taipei.
+
+The cash-quality contract requires more than same company/report-quarter/vintage. Cash-flow primitives can be year-to-date cumulative while revenue/net-income comparison fields may be single-quarter. A ratio can therefore be numerically valid but economically mismatched.
+
+Freeze a separate period-basis field:
+- SINGLE_QUARTER;
+- YTD_CUMULATIVE;
+- ANNUAL;
+- UNKNOWN.
+
+Also preserve derivation provenance:
+- REPORTED;
+- Q4_CUMULATIVE_MINUS_Q3_CUMULATIVE;
+- OTHER_PROVEN;
+- UNKNOWN.
+
+A Q4 delta derived from annual cumulative minus Q3 cumulative is PIT-eligible only when the two inputs are scope-compatible and vintage-compatible. A later restated Q3 must never be mixed with an earlier annual vintage to synthesize a historical Q4 value that never existed at a decision time.
+
+Rule:
+SAME_VINTAGE is necessary but not sufficient; SAME_ECONOMIC_HORIZON is also required.
+
+Status: HORIZON_ALIGNMENT_GATE_FROZEN / PROSPECTIVE_RECEIPT_STILL_PENDING / NO_FORMAL_CHANGE.
+
+## FD-054 — Analyst forecast revision is promoted from concept to explicit research object
+
+Taiwan-specific 2026 evidence reports predictive content in analyst forecast earnings-growth revisions for constituents of Taiwan 50, Taiwan Mid-Cap 100 and TPEx 50 using monthly CMoney consensus forecasts. This supports the mechanism that expectation changes can contain information beyond realized accounting growth.
+
+However, a recent Taiwan thesis examining analyst coverage, forecasts, dispersion, revisions and recommendations reports mixed long-short results, sensitivity to small-cap/outlier episodes, and more robust results only for some analyst characteristics after robustness checks.
+
+Therefore the evidence is heterogeneous, not a license for an UP_REVISION=BUY rule.
+
+The system must distinguish:
+- forecast level;
+- expected earnings growth;
+- individual analyst revision;
+- consensus revision;
+- revision breadth;
+- dispersion;
+- analyst coverage;
+- forecast freshness/age.
+
+These are not interchangeable.
+
+Status: D07-11 MECHANISM_PLUS_COUNTEREVIDENCE_DEFINED / SOURCE_NEEDED / OUTCOMES_CLOSED.
+
+## FD-055 — Consensus must be reconstructed from immutable forecast vintages, not latest-value backfill
+
+Machine contract: research/analyst_forecast_revision_pit_contract_v0_1.json.
+
+For a decision-time analyst consensus:
+1. preserve each individual broker/analyst forecast vintage;
+2. freeze target fiscal horizon and EPS basis;
+3. at asOf include no forecast published after asOf;
+4. include at most the latest active forecast per forecaster identity for that same target/basis;
+5. preserve coverage count, dispersion and forecast-age distribution;
+6. retain corrections/withdrawals append-only.
+
+No analyst coverage is UNKNOWN, not zero and not bearish.
+
+No outcome-optimized stale-forecast cutoff is allowed. Forecast age is first preserved as data because literature shows timing affects both accuracy and informativeness. Any stale-window or recency weighting requires a separate pre-registered accuracy study.
+
+Critical naming firewall:
+the existing V8 marketConsensus field is an independent-source ranking overlay and is NOT analyst earnings consensus. New research fields must use analystEarningsConsensus naming to avoid semantic collision.
+
+Status: PIT_SEMANTICS_FROZEN / CANONICAL_LICENSED_SOURCE_UNPROVEN / NO_FORMAL_CHANGE.
+
+## FD-056 — Revision timing is part of the signal definition, not a nuisance timestamp
+
+International evidence shows analyst forecast revisions are least informative immediately after earnings announcements and vary in informativeness over event time. Forecast timing is also endogenous: more recent forecasts can have a timing/precision advantage.
+
+Therefore any Taiwan revision study must preserve:
+- revisionPublishedAt;
+- prior earnings/revenue/guidance event time;
+- trading-session eligibility;
+- days since last material public fundamental event;
+- days to next scheduled earnings event where known;
+- pre-revision price path and volume/attention.
+
+A cluster of broker revisions after one public earnings release is one common-information episode plus multiple analyst reactions; it must not be counted as many independent economic events.
+
+Status: EVENT_TIME_CONFOUND_DEFINED / DEDUP_REQUIRED / NO_OUTCOME_JOIN.
+
+## FD-057 — Forecast growth has a denominator trap analogous to PE
+
+Forecast earnings growth (FEG) is not universally defined as a stable percentage signal.
+
+If comparable prior actual EPS is positive and safely away from zero, a percentage growth representation can be studied.
+If prior EPS is zero, near zero or negative:
+- percentage FEG can explode;
+- sign interpretation can reverse;
+- turnaround firms can appear arbitrarily high-growth.
+
+Therefore such cases preserve:
+- forecast EPS level;
+- raw forecast-minus-prior-actual delta;
+- prior-EPS sign/turnaround state;
+while ratio FEG remains UNKNOWN.
+
+This is directly relevant to cyclicals and turnarounds and prevents a false interaction where the same denominator pathology contaminates both growth and valuation.
+
+Status: FEG_DENOMINATOR_FIREWALL_DEFINED / NO_FORMAL_CHANGE.
+
+Exact next nonblocked continuation:
+- define a source-readiness inventory for dated Taiwan broker-report forecasts without claiming a canonical API/license;
+- preregister analyst consensus accuracy/freshness diagnostics before selecting any stale cutoff;
+- then construct an outcome-blind prospective analyst-forecast receipt only after authorized source access exists.
