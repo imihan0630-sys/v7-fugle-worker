@@ -493,3 +493,30 @@ Manual `workflow_dispatch` QA artifacts cannot establish complete prospective da
 Before the scheduled 23:35 after-market scan, prior `scanDate=2026-09-24` is an expected prior-plan state. After the completion window, a 9/29 receipt is required to evaluate the 9/30 selection/bootstrap cohort.
 
 No hypothesis is promoted/rejected and no Formal optimization candidate is created. Formal Core remains LOCKED.
+
+
+## H001~H004 readiness after PVE-194~202 — 2026-09-30 morning
+
+### H001 — same-slot RVOL incremental value
+Status: EVIDENCE_GATED / 2026-09-30 PRIMARY_INFERENCE_EXCLUDED.
+The 9/29 ordinary after-market selection/bootstrap prerequisite for a clean 9/30 cohort failed. The operational plan was persisted next morning through historical dry-run recomputation, and ordinary PV bootstrap readiness is not proven. Any 9/30 slot RVOL row is QA-only unless used strictly for recorder/data semantics.
+
+### H002 — cumulative pace / persistence
+Status: EVIDENCE_GATED / 2026-09-30 PRIMARY_INFERENCE_EXCLUDED.
+Same cohort exclusion as H001, with the additional cumulative-prefix/baseline requirements unchanged. No clean-date counter advances on 9/30.
+
+### H003 — response / Acceptance / Guard
+Status: HIGHER_GATED / 2026-09-30 DATA_QA_ONLY.
+9/30 rows may be useful for the already-frozen phantom PRE_EVENT expiry, INVALID-Guard transition and anchor diagnostics. They cannot enter the hypothesis-clean event denominator because cohort PIT provenance fails before response-state interpretation.
+
+### H004 — future path / risk outcomes
+Status: HIGHER_GATED / GATE_7_CLOSED.
+Factual future paths may be stored by the recorder, but no 9/30 path is eligible for primary inference from this recovered cohort. Outcome existence cannot repair the after-cutoff selection lineage.
+
+### Recovery and overlap rule
+A historical recovery that recomputes the same symbols as the prior plan does not become prospective evidence. Symbol overlap is descriptive only; decision-time source vintage and cohort construction must independently pass.
+
+### planDate rule
+The observed recovery planDate=scanDate violates the ordinary Formal nextTradingDate construction invariant. Until the recovery-specific cause is understood, that receipt cannot be used as authoritative cohort timing.
+
+No hypothesis is promoted or rejected. No FORMAL_OPTIMIZATION_CANDIDATE is created. Formal Core remains LOCKED.
