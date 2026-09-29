@@ -89,7 +89,7 @@ jobs:
           grep -F 'name = "system2-shadow-research"' wrangler.system2.resonance.toml
           grep -F 'SYSTEM2_CAPTURE_ENABLED = "false"' wrangler.system2.resonance.toml
           grep -F 'SYSTEM2_RESONANCE_ENABLED = "true"' wrangler.system2.resonance.toml
-          grep -F 'crons = ["*/5 0-5 * * 1-5", "0 11 * * 1-5"]' wrangler.system2.resonance.toml
+          grep -F 'crons = ["*/5 0-5,11 * * 1-5"]' wrangler.system2.resonance.toml
           ! grep -Eq 'V7_DB|STOCKS_KV|PUSH_WEBHOOK_URL|THREEMIN' wrangler.system2.resonance.toml
 
       - name: Deploy isolated System2 Worker and secret
@@ -115,7 +115,9 @@ jobs:
           const rawSchedules=await get(`/accounts/${account}/workers/scripts/${name}/schedules`);
           const schedules=Array.isArray(rawSchedules)?rawSchedules:Array.isArray(rawSchedules?.schedules)?rawSchedules.schedules:[];
           const expressions=schedules.map(x=>x.cron).sort();
-          for(const expected of ["*/5 0-5 * * 1-5","0 11 * * 1-5"])if(!expressions.includes(expected))throw new Error(`missing Cron ${expected}`);
+          const expected="*/5 0-5,11 * * 1-5";
+          if(!expressions.includes(expected))throw new Error(`missing Cron ${expected}`);
+          if(schedules.length!==1)throw new Error(`expected exactly one System2 resonance Cron; found ${schedules.length}`);
           const sub=await get(`/accounts/${account}/workers/subdomain`);
           const url=`https://${name}.${sub.subdomain}.workers.dev`;
           let last;
