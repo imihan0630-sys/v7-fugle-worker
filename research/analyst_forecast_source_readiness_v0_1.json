@@ -1,0 +1,70 @@
+{
+  "schemaVersion": "ANALYST_FORECAST_SOURCE_READINESS_V0_1",
+  "status": "SOURCE_INVENTORY_FROZEN_NO_CANONICAL_SOURCE_YET",
+  "frozenAt": "2026-09-30 Asia/Taipei",
+  "purpose": "Prevent analyst-forecast/Forward-PE research from treating source-family existence as a proven canonical PIT data contract.",
+  "sources": [
+    {
+      "provider": "CMoney",
+      "evidence": "2026 Taiwan Finance Research Letters study explicitly used monthly CMoney consensus forecasts; public CMoney pages expose dated broker EPS forecasts/ranges.",
+      "sourceFamilyFeasible": true,
+      "currentPublicSnapshotFeasible": true,
+      "canonicalApiOrLicensedDatasetProvenInRepo": false,
+      "historicalImmutableVintagesProven": false,
+      "exactPublishedAtSemanticsProven": false,
+      "correctionWithdrawalLineageProven": false,
+      "accessAuthorizationInCurrentResearchRuntime": "UNKNOWN",
+      "status": "SOURCE_FAMILY_FEASIBLE / CANONICAL_PIT_CONTRACT_UNKNOWN"
+    },
+    {
+      "provider": "TEJ",
+      "evidence": "TEJ publicly documents Taiwan listed/OTC analyst EPS forecast-change and disagreement research and separately exposes API-capable data services.",
+      "sourceFamilyFeasible": true,
+      "currentPublicSnapshotFeasible": "PARTIAL_PUBLIC_DOCUMENTATION",
+      "canonicalApiOrLicensedDatasetProvenInRepo": false,
+      "exactAnalystDatasetCodeProven": false,
+      "historicalImmutableVintagesProven": false,
+      "exactPublishedAtSemanticsProven": false,
+      "correctionWithdrawalLineageProven": false,
+      "accessAuthorizationInCurrentResearchRuntime": "UNKNOWN",
+      "status": "SOURCE_FAMILY_FEASIBLE / ANALYST_DATASET_CONTRACT_UNKNOWN"
+    },
+    {
+      "provider": "MOPS_TWSE_TPEx_official",
+      "evidence": "Official filings, management forecasts/guidance, investor-conference disclosures and financial statements are available, but these are issuer/official disclosures rather than sell-side analyst consensus.",
+      "sourceFamilyFeasible": true,
+      "analystConsensusEquivalent": false,
+      "role": "event clock / actual fundamentals / management guidance / denominator validation",
+      "status": "OFFICIAL_SUPPORTING_SOURCE / NOT_ANALYST_CONSENSUS"
+    },
+    {
+      "provider": "Public broker-report webpages/manual aggregation",
+      "evidence": "Dated report pages can prove that a forecast was publicly visible, but public-page search is not guaranteed complete population coverage and may omit revisions/withdrawals.",
+      "sourceFamilyFeasible": true,
+      "canonicalPopulation": false,
+      "historicalImmutableVintagesProven": false,
+      "correctionWithdrawalLineageProven": false,
+      "role": "source-family corroboration and spot audit only",
+      "status": "CORROBORATION_ONLY / REJECT_AS_CANONICAL_WITHOUT_LICENSED_COMPLETE_CONTRACT"
+    }
+  ],
+  "canonicalPromotionRequirements": [
+    "authorized/licensed use for intended research",
+    "individual forecast-level records or provider-equivalent immutable revision history",
+    "target fiscal period/horizon and forecast basis",
+    "broker/forecaster identity or stable deduplication key",
+    "publishedAt or provider-defined point-in-time eligibility timestamp",
+    "correction/withdrawal/supersession semantics",
+    "historical vintage retrieval or prospective immutable capture",
+    "coverage and forecast-age observability",
+    "replayable source fingerprint"
+  ],
+  "fallbackRule": "If no source meets canonical requirements, D07-11 and D08-04 stay L2; analyst consensus, revisions, Forward PE and PEG remain UNKNOWN in empirical System research.",
+  "noSubstitutionRules": [
+    "Do not substitute issuer guidance for analyst consensus.",
+    "Do not substitute V8 marketConsensus for analyst earnings consensus.",
+    "Do not reconstruct historical consensus from today's latest analyst estimates.",
+    "Do not infer zero revision from missing coverage."
+  ],
+  "formalCoreChanged": false
+}
