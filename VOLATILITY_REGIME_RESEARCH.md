@@ -1067,3 +1067,114 @@ Status:
 Sources:
 - Andersen/Bollerslev realized-volatility convention as summarized in the modern realized-volatility literature.
 - Bollerslev et al. (2018), Review of Financial Studies, realized variation as sum of high-frequency squared log returns.
+
+
+## VR-038 — price-limit hits censor observed price discovery; constrained low range is not latent low volatility
+
+Taiwan stock daily price limits create a structural identification problem for stock-level volatility measures.
+
+Current TWSE rules generally constrain stock prices to +/-10% around the opening-auction reference price. When a stock reaches a binding limit, the observed session path is mechanically prevented from moving beyond that legal boundary even if demand/supply imbalance remains unresolved.
+
+Therefore an observed limit-hit session may contain:
+- valid realized OHLC observations inside the legal grid;
+- unresolved price pressure beyond the observed boundary;
+- delayed price discovery that can appear in later sessions;
+- abnormal liquidity/depth behavior near the boundary.
+
+The correct interpretation is:
+`OBSERVED_CONSTRAINED_VOLATILITY`,
+not:
+`TRUE_LOW_LATENT_VOLATILITY`.
+
+### Taiwan evidence and counter-evidence
+
+Historical Taiwan evidence is not consistent with the simplistic claim that price limits always reduce volatility:
+- Chen (1993) reports no significant volatility reduction from tighter limits and evidence consistent with delayed adjustment / serial-correlation effects.
+- Huang, Fu & Ke (2001) report overnight continuation after limit moves and subsequent trading-time reversal, consistent with delayed overreaction resolution.
+- Cho, Russell, Tiao & Tsay (2003) document a ceiling magnet effect in TWSE high-frequency data and discuss delayed price discovery, volatility spillover and trading interference.
+- Later evidence on Taiwan's 2015 widening from 7% to 10% finds market-quality dimensions changed jointly: spreads and intraday volatility increased, depth decreased, while execution duration/fill rate improved.
+
+These findings do not establish a universal directional trading rule. They establish that the limit mechanism changes the measurement and path of price discovery.
+
+### Frozen state taxonomy for stock-volatility studies
+
+Keep separate:
+- LIMIT_NOT_NEAR;
+- NEAR_UPPER_LIMIT;
+- TOUCHED_UPPER_LIMIT_NOT_CLOSE;
+- CLOSED_AT_UPPER_LIMIT;
+- NEAR_LOWER_LIMIT;
+- TOUCHED_LOWER_LIMIT_NOT_CLOSE;
+- CLOSED_AT_LOWER_LIMIT;
+- LIMIT_RULE_EXCEPTION_OR_UNKNOWN.
+
+Do not pool these with ordinary sessions when estimating:
+- ATR behavior;
+- close-to-close volatility persistence;
+- high-low range compression;
+- contraction/expansion transitions;
+- local intraday volatility.
+
+### Censoring guard for contraction research
+
+A narrow high-low range or low realized path immediately after a binding limit must not be classified as clean volatility contraction without a limit-state guard.
+
+Likewise:
+- a session pinned at limit-up can have a small late-session range while demand remains extreme;
+- a session pinned at limit-down can show little further downside movement only because lower prices are illegal.
+
+Thus:
+`CONTRACTION + LIMIT_CONSTRAINED`
+is a separate state, not ordinary contraction.
+
+### No latent-price imputation
+
+Prohibited:
+- inventing a hypothetical unconstrained close beyond the price limit;
+- fitting a "true" hidden equilibrium price from later returns and backfilling it into the limit-hit day;
+- treating next-day continuation as information that was numerically known at the prior decision clock.
+
+Allowed robustness:
+- preserve the observed constrained day exactly;
+- separately record post-limit D1/D2 path for outcome analysis;
+- test whether apparent low/high volatility conclusions survive when limit-constrained sessions are excluded or stratified.
+
+Status:
+`PRICE_LIMIT_CENSORING = STRUCTURAL_MEASUREMENT_GUARD / NO_LATENT_PRICE_IMPUTATION`.
+
+Sources:
+- TWSE Operating Rules Article 63.
+- Chen (1993), Pacific-Basin Finance Journal 1(2), 139-153.
+- Huang, Fu & Ke (2001), International Review of Economics & Finance 10(3), 263-288.
+- Cho, Russell, Tiao & Tsay (2003), Journal of Empirical Finance 10(1-2), 133-168.
+- Lien, Hung, Zhu & Chen (2019), Pacific-Basin Finance Journal 55, 239-258.
+
+
+## VR-039 — limit-hit contamination differs by volatility clock
+
+The limit-censoring problem does not affect every D04 measure identically.
+
+Stock daily ATR / range:
+- directly constrained by legal high/low/close boundaries on a limit-hit session;
+- can under-represent unresolved within-session price pressure at the boundary.
+
+Stock close-to-close dispersion:
+- the hit-day return is bounded by the rule;
+- delayed price discovery can move variance into subsequent sessions;
+- a 5/20-day rolling statistic may therefore redistribute, rather than eliminate, measured volatility.
+
+TAIEX market close-to-close dispersion:
+- the index itself is not interpreted as a single stock subject to the same per-security bound;
+- however constituent-level constraints can alter aggregate price discovery indirectly;
+- do not relabel an index-volatility move as "uncensored truth" about every constituent.
+
+Intraday microstructure:
+- limit proximity can saturate imbalance/depth and break approximately linear pressure-to-price response;
+- D05 must use limit-constrained cohorts separately.
+
+Research consequence:
+stock-level volatility controls must carry the stock's limit-state provenance.
+Market-level TAIEX RV remains a separate regime descriptor and cannot repair a censored stock-level volatility observation.
+
+Status:
+`LIMIT_CENSORING_IS_CLOCK_SPECIFIC / CROSS_SCALE_SUBSTITUTION_PROHIBITED`.
