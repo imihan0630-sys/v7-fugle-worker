@@ -1,0 +1,65 @@
+name: System2 Cloudflare Cron Inventory Readonly
+
+on:
+  push:
+    paths:
+      - .github/workflows/system2-cloudflare-cron-inventory-readonly.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inventory:
+    name: Inventory account cron triggers
+    runs-on: ubuntu-latest
+    environment: system2-research
+    timeout-minutes: 10
+    env:
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+    steps:
+      - name: Verify read-only credentials
+        shell: bash
+        run: |
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+          test -n "$CLOUDFLARE_API_TOKEN"
+
+      - name: Read Worker cron inventory
+        shell: node {0}
+        run: |
+          const accountId = process.env.CLOUDFLARE_ACCOUNT_ID;
+          const token = process.env.CLOUDFLARE_API_TOKEN;
+          const baseUrl = `https://api.cloudflare.com/client/v4/accounts/${accountId}`;
+          const headers = { Authorization: `Bearer ${token}` };
+
+          async function read(path) {
+            const response = await fetch(`${baseUrl}${path}`, { headers });
+            const body = await response.json();
+            if (!response.ok || body.success !== true) {
+              throw new Error(`Cloudflare read failed (${response.status}): ${JSON.stringify(body.errors ?? [])}`);
+            }
+            return body.result;
+          }
+
+          const scripts = await read('/workers/scripts');
+          const inventory = [];
+          for (const script of scripts) {
+            const scriptName = script.id;
+            const schedules = await read(`/workers/scripts/${encodeURIComponent(scriptName)}/schedules`);
+            if (schedules.length > 0) {
+              inventory.push({
+                worker: scriptName,
+                schedules: schedules.map((schedule) => schedule.cron),
+              });
+            }
+          }
+
+          inventory.sort((left, right) => left.worker.localeCompare(right.worker));
+          const accountCronCount = inventory.reduce((count, row) => count + row.schedules.length, 0);
+          console.log(JSON.stringify({
+            result: 'PASS',
+            mode: 'READ_ONLY',
+            accountCronCount,
+            workers: inventory,
+          }, null, 2));
