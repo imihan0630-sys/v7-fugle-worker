@@ -1,0 +1,37 @@
+name: V8 One-Time 2026-09-29 Recovery
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/v8-recover-20260929.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: v8-one-time-recover-20260929
+  cancel-in-progress: false
+
+jobs:
+  recover:
+    if: contains(github.event.head_commit.message, '[recover-20260929]')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Recover 2026-09-29 official quality snapshots
+        env:
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+          QUALITY_MARKET_DATE: "2026-09-29"
+          QUALITY_RECOVERY_ONLY: "1"
+        run: node tests/sync_official_quality.mjs
+
+      - name: Recover 2026-09-29 after-market selection
+        env:
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+          RECOVERY_MARKET_DATE: "2026-09-29"
+        run: node tests/recover_after_market.mjs
