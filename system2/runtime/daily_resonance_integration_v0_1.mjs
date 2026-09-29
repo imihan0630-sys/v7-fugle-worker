@@ -75,7 +75,7 @@ export function classifyResonanceScheduleTimeV0_1(value = new Date()) {
   return Object.freeze({
     weekdaySession,
     intradayMonitor: weekdaySession && minutes >= 8 * 60 + 55 && minutes <= 13 * 60 + 40,
-    afterMarketPoolRefresh: weekdaySession && minutes >= 18 * 60,
+    afterMarketPoolRefresh: weekdaySession && hour === 19 && minute === 0,
     officialCloseConfirmedByClock: weekdaySession && minutes >= 13 * 60 + 30,
   });
 }
