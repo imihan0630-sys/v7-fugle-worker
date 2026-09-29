@@ -1,6 +1,6 @@
 # Derivatives Information & Volatility Surface Checkpoint
 
-Updated: 2026-09-28 18:58 Asia/Taipei
+Updated: 2026-09-29 10:13 Asia/Taipei
 Current cursor: DR-001 through DR-041 complete.
 Next: D12-08 prospective Gamma evidence + D12-10 18:10 NIGHT_PRE_SCAN prospective receipts.
 
@@ -92,3 +92,26 @@ Portfolio & Risk Construction / Correlation Clusters.
 2. Validate exact contract/roll/session replay on recent transaction data.
 3. Join scheduled U.S. macro-event flags from D13 before outcome tests.
 4. Accumulate independent dates across normal, expiry/roll, event and crisis regimes before any L3 promotion.
+
+
+## 2026-09-29 D12-05 VRP semantic deepening
+
+- D12-05 remains L2 / 40%; no maturity inflation.
+- Core correction frozen: TAIWAN VIX / implied variance is not itself the Variance Risk Premium (VRP).
+- Separate five objects: option-implied variance; trailing past-only realized variance; future realized variance; a PIT implied-realized spread proxy; and ex-post variance premium.
+- Future realized variance is an outcome/decomposition object and is forbidden as a live feature. A result that requires future realized variance at decision time is LOOK_AHEAD.
+- A contemporaneous implied-minus-trailing-realized spread may be researched prospectively, but must not be called structural VRP unless the physical expected-variance model is validated.
+- Literature supports different economic roles for expected variance versus variance premium and shows horizon/measurement sensitivity. International evidence is hypothesis support only; Taiwan transfer is not assumed.
+- Taiwan validation order remains: ATR/realized volatility -> Taiwan Regime -> trend/residual RS -> breadth/liquidity -> VIX level/change/shock -> implied-realized spread proxy -> only later directional-return tests.
+- Primary targets are risk outcomes first: next-session range, realized volatility, absolute gap, MAE and tail-loss incidence. Directional return is secondary.
+- D12-11 option-liquidity quality is an upstream measurement dependency where observable; missing quote-quality evidence stays UNKNOWN.
+- Overlapping-horizon inference, event/crisis clustering, date-shift placebo, leave-one-date/event-cluster-out and no outcome-selected window/threshold are mandatory.
+- Durable contract: `research/d12_05_vrp_semantics_validation_spec_v0_1.json`.
+- FORMAL_OPTIMIZATION_CANDIDATE = NO. Formal Core unchanged.
+
+## Updated exact next continuation
+
+1. Audit whether an isolated research-only prospective TAIWAN VIX receipt implementation already exists; if absent, freeze only the smallest Class-A capture boundary and do not touch shared/Formal runtime.
+2. Do not create a paid-history dependency before prospective source/quality coverage proves useful.
+3. Cross-link D12-05 with D04 realized-volatility states for a frozen, outcome-blind redundancy design.
+4. Resume D12-10 `NIGHT_PRE_SCAN` prospective receipt work so implied-risk state and after-hours absorption can later be tested jointly on independent dates.
