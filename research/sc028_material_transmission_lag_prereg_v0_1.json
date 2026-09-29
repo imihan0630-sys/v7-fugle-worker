@@ -1,0 +1,71 @@
+{
+  "version": "0.1",
+  "id": "SC-028",
+  "frozenAt": "2026-09-30T05:43:00+08:00",
+  "formalCoreChanged": false,
+  "outcomesOpened": false,
+  "parentReceipt": "research/sc027_first_material_transmission_receipt_20260930_v0_1.json",
+  "researchQuestion": "Does an input-cost shock transmit differently across route-specific Taiwan issuers, and is pass-through visible before or with realized margin/volume changes?",
+  "clocks": {
+    "materialObservationClock": "native monthly benchmark observation month",
+    "materialKnownAt": "conservative first research capturedAt unless official release timestamp is separately frozen",
+    "outputPriceClock": "native monthly/posted-price observation",
+    "issuerFundamentalClock": "actual issuer report publication knownAt, not fiscal quarter end",
+    "stockOutcomeClock": "first eligible Taiwan trading session after materialKnownAt; CLOSED until sample/readiness gate passes"
+  },
+  "frozenLagWindows": {
+    "outputPriceTransmissionMonths": [
+      0,
+      1,
+      2
+    ],
+    "issuerFundamentalReports": [
+      "first issuer-reported quarter whose publication knownAt occurs after materialKnownAt",
+      "second issuer-reported quarter whose publication knownAt occurs after materialKnownAt"
+    ],
+    "stockPathTradingDays": [
+      5,
+      20,
+      60
+    ]
+  },
+  "primaryRouteContrast": {
+    "exposed": "2006 東和鋼鐵 / EAF / high direct scrap exposure",
+    "differentRouteControl": "2002 中國鋼鐵 / BF-BOF / iron ore-met coal primary route plus secondary converter scrap",
+    "zeroExposureClaim": false
+  },
+  "requiredStateBeforeOpeningOutcomes": [
+    "route/exposure receipt PIT-valid",
+    "input benchmark source vintage frozen",
+    "output-price benchmark source vintage frozen",
+    "selling-price/product-mix scope compatible",
+    "energy/electricity and inventory-buffer state KNOWN or explicitly UNKNOWN",
+    "market/sector regime frozen as-of date",
+    "no post-outcome remapping of issuer route or benchmark"
+  ],
+  "primaryDescriptors": [
+    "input_mom_yoy",
+    "output_mom_yoy",
+    "input_output_direction_pair",
+    "same_month_pass_through_state",
+    "lag1_pass_through_state",
+    "lag2_pass_through_state",
+    "volume_direction",
+    "realized_margin_direction",
+    "route_specific_difference"
+  ],
+  "noSyntheticMarginRule": "Do not define company gross margin as output benchmark minus input benchmark. A benchmark spread is a process-price descriptor only unless route weights, units, yield, energy, inventory, freight and product mix are evidenced.",
+  "falsification": [
+    "If high- and lower-exposure routes react similarly after market/sector controls, route-specific material edge may be redundant.",
+    "If output prices pass input cost but realized margin still falls, pricing benchmark is not sufficient evidence of pricing power.",
+    "If margin improves without benchmark pass-through, mix/volume/energy/inventory or other factors may dominate.",
+    "If results depend on changing lag windows after outcome inspection, reject as data snooping.",
+    "If only one material episode drives the effect, keep descriptive only."
+  ],
+  "maturityDecision": {
+    "D10-09": "KEEP_L2",
+    "D10-06": "KEEP_L2",
+    "D10-12": "KEEP_L3_DATA_FEASIBILITY_ONLY"
+  },
+  "status": "LAGS_PREREGISTERED / OUTCOMES_CLOSED / WAITING_INDEPENDENT_EVENTS / FORMAL_UNCHANGED"
+}
