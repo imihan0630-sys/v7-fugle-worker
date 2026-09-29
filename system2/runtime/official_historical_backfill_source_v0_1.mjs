@@ -63,13 +63,18 @@ export async function buildOfficialTradingDatesV0_1({
     if (isHistoricalTradingDateV0_1(date, calendar)) dates.push(date);
   }
 
+  const calendarSources = [...new Set(
+    Object.values(calendars).map((calendar) => calendar?.source || "UNKNOWN"),
+  )].sort();
+
   return deepFreeze({
     fromDate: from,
     toDate: to,
     tradingDates: Object.freeze(dates),
     tradingDateCount: dates.length,
     calendarYears: Object.freeze(Object.keys(calendars).map(Number).sort((a,b)=>a-b)),
-    source: "TWSE_OFFICIAL_HOLIDAY_SCHEDULE",
+    source: calendarSources.length === 1 ? calendarSources[0] : "TWSE_OFFICIAL_TRADING_CALENDAR_MIXED",
+    calendarSources: Object.freeze(calendarSources),
     schemaVersion: "S2_OFFICIAL_TRADING_DATES_V0_1",
   });
 }
