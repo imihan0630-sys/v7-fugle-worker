@@ -1469,3 +1469,73 @@ SC-028: bind one actual material benchmark to the route-specific issuer edge and
 SC-029: accumulate low/different-exposure and failed-pass-through controls across independent dates.
 
 Status: `BOUNDED_ISSUER_PIT_BRIDGE_PASS / D10-12_L3_DATA_FEASIBILITY_ONLY / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED`.
+
+
+## SC-027 / SC-028 — First immutable material receipt and lag preregistration
+
+Artifacts:
+- `research/sc027_first_material_transmission_receipt_20260930_v0_1.json`
+- `research/sc028_material_transmission_lag_prereg_v0_1.json`
+
+### First captured steel transmission state
+A prospective-from-capture, outcome-blind EAF material receipt is now frozen for 2006 東和鋼鐵.
+
+Route evidence:
+- issuer disclosure identifies EAF production;
+- 2025 main raw material was 98% scrap.
+
+Public Taiwan material/output context for 2026-08:
+- North Taiwan scrap purchase benchmark: NT$9.8/kg, +2.1% MoM, +18.1% YoY;
+- mid-grade billet ex-factory benchmark: NT$15,460/t, -3.5% MoM, +7.8% YoY;
+- Tung Ho H-beam distribution benchmark: NT$37,500/t, flat MoM, +12.9% YoY.
+
+Frozen source descriptor:
+`INPUT_PRESSURE_WITHOUT_SAME_MONTH_OUTPUT_PRICE_CONFIRMATION`.
+
+Economic sign remains `UNRESOLVED`.
+
+This is **not** a realized margin squeeze claim because the receipt does not yet know:
+- actual purchased scrap inventory cost;
+- electricity/energy cost;
+- yield/conversion cost;
+- freight;
+- product/customer mix;
+- contract repricing;
+- realized shipment/ASP;
+- issuer margin.
+
+### Pre-registered lags before outcomes
+To prevent lag shopping:
+- output-price transmission: month 0 / +1 / +2 only;
+- issuer fundamentals: first and second issuer-reported quarters whose publication knownAt occurs after material knownAt;
+- stock-path horizons, if/when the outcome gate opens: D5 / D20 / D60 only.
+
+No lag may be added after inspecting outcomes without registering a new experiment/version.
+
+### Route contrast
+Primary contrast:
+- `2006 東和鋼鐵`: high direct EAF scrap exposure;
+- `2002 中國鋼鐵`: integrated BF/BOF route with primary iron-ore/coking-coal exposure plus secondary converter scrap.
+
+The latter is a `DIFFERENT_ROUTE` control, not a zero-exposure control.
+
+### Falsification
+Material-transmission value is rejected/reclassified if:
+- route contrast disappears after market/sector/demand/product-mix controls;
+- output price follows input but realized margin does not;
+- margin changes are explained by volume/mix/energy/inventory instead;
+- the result depends on post-outcome lag changes;
+- one episode drives the entire effect.
+
+### Maturity
+No new promotion from SC-027/028:
+- D10-12 remains L3 data-feasibility;
+- D10-09 remains L2;
+- D10-06 remains L2;
+- outcomes remain closed.
+
+Status: `FIRST_PROSPECTIVE_MATERIAL_RECEIPT_FROZEN / LAGS_PREREGISTERED / WAITING_INDEPENDENT_EVENTS / FORMAL_CORE_LOCKED`.
+
+### Exact next continuation
+SC-029: capture the next independent material/output-price vintage and instantiate a failed-pass-through or different-exposure control without outcome peeking.
+SC-030: build an ABF/PCB material receipt only after a material benchmark can be mapped to a specific issuer/product scope without assigning generic cost weights.
