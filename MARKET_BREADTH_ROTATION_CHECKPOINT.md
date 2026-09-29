@@ -1,6 +1,6 @@
 # Market Breadth + Sector Rotation + Leadership Checkpoint
 
-Updated: 2026-09-28 20:12 Asia/Taipei
+Updated: 2026-09-30 05:43 Asia/Taipei
 Current cursor: BR-001 through BR-029 complete.
 Next: BR-030 first valid prospective evidence no earlier than 2026-09-29; until then continue source/readiness work without outcome peeking.
 
@@ -166,3 +166,53 @@ Reason: member-level same-day tradeValue and industry identity already exist at 
 1. Wait for a valid post-V8.14 2026-09-29-or-later scan before any BR-030 outcome comparison.
 2. Freeze first same-day concentration receipt without threshold tuning.
 3. Join to D10 physical-cycle states only by information available as-of that scan date.
+
+
+## BR-030A — 2026-09-29 first expected cohort failed history/source admission
+
+Receipt:
+`research/br030_first_prospective_admission_receipt_20260929_v0_1.json`
+
+The first expected post-V8.14 date was audited from the production read-only 2026-09-29 diagnostic rather than inferred from calendar eligibility.
+
+Observed history/source admission:
+- required prior bars: 60;
+- usable symbols: **0**;
+- unusable symbols: **1,883**;
+- `OFFICIAL_GAP_PROOF_UNAVAILABLE`: **1,872**;
+- `INSUFFICIENT_PRIOR_BARS`: **11**;
+- verified no-trade-gap symbols: 0;
+- sampled blocked symbols repeatedly identify `2026-07-10` as the unresolved gap date.
+
+The resulting read-only preview had zero general, thousand-stock and hybrid candidates.
+
+### Research interpretation firewall
+2026-09-29 is **NOT**:
+- a valid BR-030 prospective observation date;
+- an independent scan date;
+- evidence that no sector/stock opportunity existed;
+- evidence for/against the existing sector gate;
+- evidence for leader-only versus broad participation.
+
+It is a **data-admission failure date**.
+
+`ZERO_CANDIDATES_DUE_TO_DATA_ADMISSION != ZERO_CANDIDATES_DUE_TO_MARKET_STATE`.
+
+### Cross-room dependency
+The blocker belongs to shared history/source-admission infrastructure. Room 07 records the dependency but does not alter V8.12/V8.14 Formal admission logic.
+
+The next BR-030 date is **not automatically 2026-09-30**. A date counts only if the actual scan/readback proves history admission and the preregistered PIT fields were persisted.
+
+### Maturity
+No D09 maturity promotion or demotion:
+- D09-10 remains L3 data-feasibility;
+- BR-030 remains `WAITING_PROSPECTIVE / DATA_QUALITY_BLOCKED`;
+- D09-06 and D09-07 remain L2.
+
+Formal Core unchanged.
+
+### Exact next continuation
+1. On the next completed scan, verify actual history/source admission before counting the date.
+2. If clean, freeze the first same-day concentration receipt without inspecting forward outcomes.
+3. Accumulate the preregistered >=20 independent clean dates before first descriptive gate comparison.
+4. Meanwhile continue nonblocked D09/D10 source/exposure research.
