@@ -62,3 +62,11 @@ ER-028 prepare research-only event-vintage capture proposal only if needed.
 - Full ER-024 cannot be answered faithfully with current stored fields alone. A smaller existing-data descriptive pilot must be labeled separately.
 - `EVENT_RISK_CAPTURE_PROPOSAL.md` now freezes a point-in-time event/opening capture design with expected-vs-observed coverage, corporate-action firewall, UNKNOWN semantics, research-only/fail-open architecture and governance boundaries.
 - No implementation/deploy occurred. Formal Core unchanged.
+
+
+## D11-14 / ER cross-link — index-review event clocks
+- Index review events are now modeled as scheduled-event families with separate `reviewDataCutoff`, `announcementKnownAt`, `effectiveFromSession` and execution-window clocks.
+- This reinforces ER-016/017: a methodology-defined review window is not the same as an exact publication timestamp, and an effective date is not the same as first-known time.
+- Passive rebalance pressure is an event-risk/liquidity mechanism candidate, not a directional alpha rule.
+- Future event-risk studies must separate announcement reaction, pre-effective anticipation, effective-session auction pressure and post-effective continuation/reversal.
+- D11-14 source/PIT feasibility is L3; Event Risk outcome evidence remains pending.
