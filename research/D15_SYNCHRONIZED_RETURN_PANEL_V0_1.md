@@ -145,3 +145,38 @@ It must not:
 5. Only after independent dates accumulate test shrinkage, cluster stability and independent-risk dimension.
 6. Effective Bets remains blocked until a validated covariance/factor decomposition exists.
 7. No Formal optimization candidate.
+
+
+## Pairwise-deletion counterexample
+
+The common-support rule is not merely conservative bookkeeping.
+
+A deterministic missing-data fixture can produce:
+
+- AB correlation = +1 using only d1-d2;
+- AC correlation = +1 using only d3-d4;
+- BC correlation = -1 using only d5-d6.
+
+The assembled matrix is:
+
+```
+[ 1,  1,  1]
+[ 1,  1, -1]
+[ 1, -1,  1]
+```
+
+Its determinant is -4.
+
+A valid covariance/correlation matrix must be positive semidefinite; this matrix is not.
+
+So pairwise-complete estimation can create individually plausible pair correlations that do not represent one coherent portfolio state.
+
+For the primary D15 risk panel:
+`EXACT_LISTWISE_COMMON_SUPPORT`
+remains mandatory.
+
+Artifact:
+`research/d15_pairwise_deletion_falsification_v0_1.mjs`.
+
+Test:
+`tests/test_d15_pairwise_deletion_falsification_v0_1.mjs`.
