@@ -15,6 +15,12 @@ function baseReceipt(){
         lotType:"REGULAR_LOT",
         mechanism:"REGULAR_CONTINUOUS",
         eligibilityModel:"CONTINUOUS_WITH_BLOCK_INTERVALS",
+        mechanismRule:{
+          ruleVersion:"TWSE_REGULAR_INTRADAY_20260930",
+          sourceRef:"TWSE_OPERATING_RULES",
+          effectiveFrom:"2026-01-01T00:00:00+08:00",
+          effectiveTo:null
+        },
         intendedQty:1000,
         mechanismEligibleAt:ts("09:00:00"),
         mechanismEligibilityEvidence:{sourceRef:"TWSE:REGULAR_SESSION",observedAt:ts("08:59:59"),state:"NORMAL"},
@@ -41,15 +47,23 @@ function baseReceipt(){
         lotType:"INTRADAY_ODD_LOT",
         mechanism:"INTRADAY_ODD_LOT_CALL_AUCTION",
         eligibilityModel:"DISCRETE_MATCH_OPPORTUNITIES",
+        mechanismRule:{
+          ruleVersion:"TWSE_ODD_LOT_0910_5SEC_PRE_20261207",
+          sourceRef:"TWSE_ODD_LOT_ARTICLE_8",
+          effectiveFrom:"2024-12-16T00:00:00+08:00",
+          effectiveTo:"2026-12-07T00:00:00+08:00"
+        },
         intendedQty:148,
         mechanismEligibleAt:ts("09:10:00"),
         mechanismEligibilityEvidence:{sourceRef:"TWSE:ODD_LOT_FIRST_AUCTION",observedAt:ts("09:00:00"),state:"NORMAL"},
         mechanismBlockedIntervals:[],
-        matchingOpportunities:[{opportunityId:"odd-op-1",matchAt:ts("09:10:00"),sourceRef:"TWSE:ODD_MATCH:091000"}],
+        matchingOpportunities:[{opportunityId:"odd-op-1",matchAt:ts("09:10:00"),sourceRef:"TWSE:ODD_MATCH:091000",computedExecutionPrice:100.2}],
         benchmark:{lotType:"INTRADAY_ODD_LOT",sourceRef:"ODD_LOT_L1",observedAt:ts("09:03:00"),price:100.2},
         orderAttempts:[{
           attemptId:"odd-1",
           requestedQty:148,
+          orderType:"LIMIT",
+          limitPrice:101,
           submitAt:ts("09:03:10"),
           submitEvidence:{sourceRef:"BROKER_ACK_ODD_1"},
           terminalState:"FILLED",
@@ -86,6 +100,10 @@ assert.equal(odd.eligibleExposureToFillMs,null);
 assert.equal(odd.matchingOpportunityCountFromDecisionToFill,1);
 assert.equal(odd.matchingOpportunityCountAfterSubmitToFill,1);
 assert.equal(odd.priorSubmittedOpportunitiesWithoutFill,0);
+assert.equal(odd.priceCrossingOpportunitiesThroughFill,1);
+assert.equal(odd.nonCrossingOpportunitiesThroughFill,0);
+assert.equal(odd.unknownMarketabilityOpportunitiesThroughFill,0);
+assert.equal(odd.marketabilityAttributionReady,true);
 assert.equal(odd.submitToFillLatencyMs,410000);
 
 // Intermittent eligibility falsifies scalar-post-eligibility as sufficient.
@@ -100,12 +118,12 @@ oddLeg.mechanismBlockedIntervals=[{
   observedAt:ts("09:10:19")
 }];
 oddLeg.matchingOpportunities=[
- {opportunityId:"odd-op-1",matchAt:ts("09:10:00"),sourceRef:"TWSE:ODD_MATCH:091000"},
- {opportunityId:"odd-op-2",matchAt:ts("09:10:05"),sourceRef:"TWSE:ODD_MATCH:091005"},
- {opportunityId:"odd-op-3",matchAt:ts("09:10:10"),sourceRef:"TWSE:ODD_MATCH:091010"},
- {opportunityId:"odd-op-4",matchAt:ts("09:10:15"),sourceRef:"TWSE:ODD_MATCH:091015"},
- {opportunityId:"odd-op-5",matchAt:ts("09:12:20"),sourceRef:"TWSE:ODD_MATCH:091220"},
- {opportunityId:"odd-op-6",matchAt:ts("09:12:25"),sourceRef:"TWSE:ODD_MATCH:091225"}
+ {opportunityId:"odd-op-1",matchAt:ts("09:10:00"),sourceRef:"TWSE:ODD_MATCH:091000",computedExecutionPrice:100.2},
+ {opportunityId:"odd-op-2",matchAt:ts("09:10:05"),sourceRef:"TWSE:ODD_MATCH:091005",computedExecutionPrice:100.2},
+ {opportunityId:"odd-op-3",matchAt:ts("09:10:10"),sourceRef:"TWSE:ODD_MATCH:091010",computedExecutionPrice:100.2},
+ {opportunityId:"odd-op-4",matchAt:ts("09:10:15"),sourceRef:"TWSE:ODD_MATCH:091015",computedExecutionPrice:100.2},
+ {opportunityId:"odd-op-5",matchAt:ts("09:12:20"),sourceRef:"TWSE:ODD_MATCH:091220",computedExecutionPrice:100.2},
+ {opportunityId:"odd-op-6",matchAt:ts("09:12:25"),sourceRef:"TWSE:ODD_MATCH:091225",computedExecutionPrice:100.2}
 ];
 oddLeg.orderAttempts[0].terminalAt=ts("09:12:26");
 oddLeg.orderAttempts[0].fills[0].fillAt=ts("09:12:25");
@@ -120,6 +138,40 @@ assert.equal(io.eligibleExposureToFillMs,null);
 assert.equal(io.matchingOpportunityCountFromDecisionToFill,6);
 assert.equal(io.matchingOpportunityCountAfterSubmitToFill,6);
 assert.equal(io.priorSubmittedOpportunitiesWithoutFill,5);
+assert.equal(io.priceCrossingOpportunitiesThroughFill,6);
+assert.equal(io.nonCrossingOpportunitiesThroughFill,0);
+assert.equal(io.marketabilityAttributionReady,true);
+
+
+
+// An unfilled auction can be explained by a non-crossing limit price.
+const nonCrossing=baseReceipt();
+nonCrossing.legs[1].matchingOpportunities=[
+  {opportunityId:"odd-op-1",matchAt:ts("09:10:00"),sourceRef:"TWSE:ODD_MATCH:091000",computedExecutionPrice:102},
+  {opportunityId:"odd-op-2",matchAt:ts("09:10:05"),sourceRef:"TWSE:ODD_MATCH:091005",computedExecutionPrice:100.2}
+];
+nonCrossing.legs[1].orderAttempts[0].terminalAt=ts("09:10:06");
+nonCrossing.legs[1].orderAttempts[0].fills[0].fillAt=ts("09:10:05");
+x=validateMixedLotExecutionReceipt(nonCrossing);
+assert.equal(x.valid,true);
+const nc=x.legs.INTRADAY_ODD_LOT.fillDiagnostics[0];
+assert.equal(nc.priorSubmittedOpportunitiesWithoutFill,1);
+assert.equal(nc.nonCrossingOpportunitiesThroughFill,1);
+assert.equal(nc.priceCrossingOpportunitiesThroughFill,1);
+assert.equal(nc.opportunityMarketability[0].state,"PRICE_NOT_CROSSING");
+assert.equal(nc.opportunityMarketability[1].state,"PRICE_CROSSING_QUEUE_OR_VOLUME_UNRESOLVED");
+
+// A future rule version cannot be back-applied to a September decision.
+const futureRule=baseReceipt();
+futureRule.legs[1].mechanismRule={
+  ruleVersion:"TWSE_ODD_LOT_0900_5SEC_FROM_20261207",
+  sourceRef:"TWSE_ODD_LOT_20260820_AMENDMENT",
+  effectiveFrom:"2026-12-07T00:00:00+08:00",
+  effectiveTo:null
+};
+x=validateMixedLotExecutionReceipt(futureRule);
+assert.equal(x.valid,false);
+assert.deepEqual(x.reasons,["MECHANISM_RULE_NOT_EFFECTIVE_AT_DECISION"]);
 
 // Benchmark lot mismatch must fail closed.
 const badBench=baseReceipt();
@@ -150,8 +202,8 @@ blockedFill.legs[1].mechanismBlockedIntervals=[{
   sourceRef:"TWSE:VI:TEST",observedAt:ts("09:10:19")
 }];
 blockedFill.legs[1].matchingOpportunities=[
- {opportunityId:"odd-op-1",matchAt:ts("09:10:00"),sourceRef:"TWSE:ODD_MATCH:091000"},
- {opportunityId:"odd-op-bad",matchAt:ts("09:11:00"),sourceRef:"TWSE:ODD_MATCH:091100"}
+ {opportunityId:"odd-op-1",matchAt:ts("09:10:00"),sourceRef:"TWSE:ODD_MATCH:091000",computedExecutionPrice:100.2},
+ {opportunityId:"odd-op-bad",matchAt:ts("09:11:00"),sourceRef:"TWSE:ODD_MATCH:091100",computedExecutionPrice:100.2}
 ];
 blockedFill.legs[1].orderAttempts[0].terminalAt=ts("09:11:01");
 blockedFill.legs[1].orderAttempts[0].fills[0].fillAt=ts("09:11:00");
