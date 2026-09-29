@@ -58,12 +58,16 @@ function legValidator(parent,leg){
 
   const attempts=Array.isArray(leg?.orderAttempts)?leg.orderAttempts:[];
   if(!attempts.length) return {ok:false,reason:"MISSING_SUBMISSION_PROVENANCE"};
+  const rawBlocks=Array.isArray(leg?.mechanismBlockedIntervals)?leg.mechanismBlockedIntervals:[];
+  if(eligState==="INTERRUPTED"&&!rawBlocks.length) return {ok:false,reason:"INTERRUPTED_STATE_WITHOUT_BLOCK_INTERVAL"};
+  if(eligState==="NORMAL"&&rawBlocks.length) return {ok:false,reason:"NORMAL_STATE_WITH_BLOCK_INTERVAL"};
 
   const attemptMap=new Map();
   const fillIds=new Set();
   let totalFilled=0;
   const fillDiagnostics=[];
 
+  let earliestSubmitAt=null;
   for(const a of attempts){
     const id=s(a?.attemptId);
     if(!id||attemptMap.has(id)) return {ok:false,reason:"DUPLICATE_OR_MISSING_ATTEMPT_ID"};
@@ -78,7 +82,9 @@ function legValidator(parent,leg){
       return {ok:false,reason:"INVALID_ATTEMPT_TERMINAL_STATE"};
     }
     attemptMap.set(id,{...a,_submitAt:submitAt,_terminalAt:terminalAt,_requestedQty:requestedQty});
+    earliestSubmitAt=earliestSubmitAt===null?submitAt:Math.min(earliestSubmitAt,submitAt);
   }
+  if(benchAt>earliestSubmitAt) return {ok:false,reason:"BENCHMARK_AFTER_SUBMISSION"};
 
   for(const a of attemptMap.values()){
     const replaces=s(a?.replacesAttemptId);
@@ -116,7 +122,7 @@ function legValidator(parent,leg){
       if(fillAt<parent.decisionKnownAt) return {ok:false,reason:"FILL_BEFORE_DECISION"};
       if(fillAt<eligibleAt) return {ok:false,reason:"FILL_BEFORE_MECHANISM_ELIGIBILITY"};
 
-      const blocks=validateBlockedIntervals(leg?.mechanismBlockedIntervals,eligibleAt,fillAt);
+      const blocks=validateBlockedIntervals(rawBlocks,eligibleAt,fillAt);
       if(!blocks.ok) return blocks;
 
       let blockedAfterEligibility=0;
@@ -157,6 +163,7 @@ function legValidator(parent,leg){
     filledQty:totalFilled,
     remainingQty:intendedQty-totalFilled,
     status:totalFilled===intendedQty?"FILLED":"PARTIAL",
+    fillIds:[...fillIds],
     fillDiagnostics
   };
 }
@@ -189,6 +196,10 @@ export function validateMixedLotExecutionReceipt(receipt={}){
   const odd=legValidator(parent,byType.get("INTRADAY_ODD_LOT"));
   if(!odd.ok) return {status:"INVALID",valid:false,reasons:[odd.reason]};
 
+  const crossIds=new Set(regular.fillIds);
+  for(const id of odd.fillIds){
+    if(crossIds.has(id)) return {status:"INVALID",valid:false,reasons:["CROSS_LEG_DUPLICATE_FILL_ID"]};
+  }
   const filledQty=regular.filledQty+odd.filledQty;
   if(filledQty>intendedQty) return {status:"INVALID",valid:false,reasons:["PARENT_OVERFILLED"]};
 
