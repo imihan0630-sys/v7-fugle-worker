@@ -669,3 +669,40 @@ Next integration unit for this monitor:
 4. Prospective Shadow validation across trend/range/regime/repaint/whipsaw/cost conditions before any live notification authority is armed.
 
 This monitor does not change the separate P0 historical cold-backfill continuation point.
+
+
+## 2026-09-29 resonance live pipeline V0.1
+
+The next bounded intraday integration unit is now implemented and merged through PR #256 as main commit `f1e84e28451e082b895a4cf99bcf52bb5729c09c`.
+
+Implemented repository-side:
+- `system2/runtime/daily_resonance_live_adapter_v0_1.mjs`: normalizes an already-fetched quote snapshot into the current-date daily OHLC bar for at most 9 preselected symbols; no network calls are performed inside the module.
+- confirmation firewall requires source `FINAL` + independent official-session-close confirmation + observation at/after 13:30 Asia/Taipei + no semantic/trial/halt/suspension/continuity blocker before a bar can be treated as FINAL.
+- no-trade current-date state, unverified quote semantics, trial quotes, halt/suspension and unresolved price continuity fail closed instead of borrowing prior-day state.
+- `system2/runtime/daily_resonance_episode_v0_1.mjs`: replayable PROVISIONAL_ACTIVE / CONFIRMED_ACTIVE / RETRACTED / RELEASED episode state with OPEN_PROVISIONAL / OPEN_CONFIRMED / CONFIRM / RETRACT / RELEASE events for future dedup.
+- episode state is research-only and explicitly keeps `shouldNotify=false`, `notificationImpact=false` and `orderImpact=false`.
+- `system2/runtime/daily_resonance_read_model_v0_1.mjs`: combines adapter quality, daily resonance state, episode state and the existing chart model into a read-only UI/API payload without exposing an HTTP route yet.
+- durable design contract: `system2/SYSTEM2_DAILY_RESONANCE_LIVE_PIPELINE_V0_1.md`.
+
+Verification:
+- PR #256 System2 Research CI run `36575131274` PASS;
+- PR #256 V8 Regression run `36575131256` PASS;
+- post-merge System2 Research CI run `36575253408` PASS;
+- System 1/V8 Formal Core and production runtime remain unchanged.
+
+Current safety boundary:
+- bounded/preselected only; no full-market intraday scan;
+- no live market network call inside the new modules;
+- no D1 persistence;
+- no Worker Cron;
+- no live push;
+- no order routing;
+- 15-minute K remains execution/timing context only and cannot rewrite the daily resonance state.
+
+Exact next continuation for this monitor:
+1. freeze a source-specific normalized quote contract using verified field/unit/timestamp semantics;
+2. add isolated research-only persistence for resonance episodes/snapshots without enabling capture;
+3. add a read-only System 2 API/page consuming the frozen read model;
+4. only after prospective Shadow evidence covers repaint, whipsaw, Trend-vs-Range, Regime, costs, MFE/MAE and redundancy may live notification authority be proposed.
+
+This continuation remains independent from the separate historical cold-backfill P0 lane.
