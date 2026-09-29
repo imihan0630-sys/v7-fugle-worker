@@ -101,7 +101,7 @@ assert.equal(observer.rankInterpretationGuard.includes("bounded Shadow"),true);
 
 console.log(JSON.stringify({
   ok:true,
-  version:"8.14.1-tdcc-share-reconciliation",
+  version:"8.14.2-unscheduled-closure-recovery-guard",
   class:"A",
   sectorGateProspectiveProvenance:true,
   boundedSectorGateRejectedCohort:true,
