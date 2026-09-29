@@ -1426,3 +1426,158 @@ Formal Core remains LOCKED.
 4. Count anchorEligible separately from hypothesis-clean anchors; INVALID Guard anchors cannot enter H003/H004 primary inference.
 5. After the 9/29 after-market run, inspect selection/bootstrap receipts and baseline freshness/lineage; 9/30 remains only the earliest potentially clean cohort.
 6. No return/MFE/MAE threshold tuning, no historical Shadow fabrication, no maturity promotion until clean prospective evidence exists.
+
+
+## Evidence progress — PVE-187 through PVE-193 (2026-09-29 post-close / pre-after-market long block)
+
+### PVE-187 — 2026-09-29 real production read-only receipt confirms inherited 9/24 plan lineage
+Status: LIVE_PRODUCTION_RECEIPT_OBSERVED / DATA_QA_ONLY_CONFIRMED / NO_OUTCOME_INSPECTION
+
+A read-only production diagnostic executed during PR #258 regression at approximately 2026-09-29 21:31 Asia/Taipei. It independently observed:
+- runtime version = `8.14.0-sector-gate-provenance-shadow`;
+- TEST_MODE=false;
+- production admin authorization succeeded;
+- V7_DB/STOCKS_KV bindings were present in preflight;
+- `/api/scan/status` still reported `scanDate=2026-09-24`, selectedCount=2, config saved/verified, config updatedAt=2026-09-24T23:37:33.822Z;
+- the 2026-09-29 23:35 after-market scan had not yet occurred at the receipt time.
+
+This is actual runtime evidence, not merely source-code inference. It confirms the preregistered PVE-150 lineage expectation that the 2026-09-29 intraday monitor still inherited the last successfully saved 2026-09-24 Formal plan.
+
+Research consequence:
+- all 2026-09-29 intraday PV rows remain `INHERITED_KNOWN_STALE_SELECTION / DATA_QA_ONLY` for primary H001~H004;
+- no observed 9/29 return/MFE/MAE can rehabilitate that cohort;
+- this receipt does not prove row-level PV recorder success or D1 at-rest contents because the diagnostic did not enumerate PV D1 rows.
+
+### PVE-188 — scan/status freshness is decision-clock dependent
+Status: PHASE_AWARE_RUNTIME_SEMANTICS_FROZEN
+
+At ~21:31 Taipei, `scanDate=2026-09-24` is not evidence that the 9/29 after-market scan failed, because the scheduled Formal after-market scan is 23:35 Taipei. Before that decision clock, the correct expected state is the prior successful plan/scan.
+
+Freeze runtime receipt classes:
+- `EXPECTED_PRIOR_SCAN_STATE`: current time precedes today's scheduled after-market decision clock;
+- `CURRENT_SCAN_EXPECTED_PENDING`: scheduled time reached but completion window not yet elapsed;
+- `CURRENT_SCAN_OBSERVED`: today's successful scan receipt exists;
+- `CURRENT_SCAN_MISSING_OR_FAILED`: only after the expected completion window and with cron/scan evidence supporting absence/failure;
+- `UNKNOWN_CLOCK_OR_RECEIPT`: timing/provenance insufficient.
+
+This prevents false stale-scan alarms and is reusable for the 9/29->9/30 cohort handoff.
+
+### PVE-189 — Manual-only PV QA cannot certify prospective evidence coverage
+Status: SELECTION_BIAS_GUARD_FROZEN / QA_DIAGNOSTIC_NOT_COHORT_RECEIPT
+
+Both current PV QA workflows are `workflow_dispatch`-only and have no scheduled trigger:
+- `.github/workflows/pv-shadow-readonly-qa.yml`;
+- `.github/workflows/pv-shadow-ephemeral-d1-qa.yml`.
+
+A manually chosen QA run can be valuable for debugging/at-rest inspection, but it cannot by itself prove complete prospective observation coverage. Running QA only on interesting or convenient dates creates a cherry-picking/selection-bias channel even when the query is read-only.
+
+Frozen rule:
+- manual QA artifacts = `DIAGNOSTIC_ONLY` for coverage/readiness clocks;
+- they may verify properties of rows already captured, but cannot establish that all required dates/events were observed;
+- maturity denominators require an independent expected-date/attempt receipt or a future deterministic scheduled evidence stream;
+- no historical manual rerun may be backfilled as if it were a prospective scheduled receipt.
+
+No scheduling change is authorized by this finding alone.
+
+### PVE-190 — Acceptance denominator observability added as isolated Class-A QA
+Status: CLASS_A_RESEARCH_QA_IMPLEMENTED / FORMAL_UNCHANGED
+
+PVE-181~185 froze Acceptance denominators, but the existing ephemeral D1 QA did not expose them. An isolated research branch was created from fresh main, regression-tested, and merged through PR #258.
+
+Merged commit:
+`ea6f89115825ee0fb3c04cbbedfd61cd2105d679`
+
+The manual read-only ephemeral D1 QA now reports, by market date:
+- intradayRows;
+- guardInvalidRows / guardGuardedRows / guardValidRows;
+- rawAcceptanceTransitions;
+- activeLifecycleRows;
+- preEventOnlyExpiries;
+- rawAnchorEligibleRows;
+- invalidAnchorEligibleRows;
+- nonInvalidAnchorEligibleRows;
+- rawAcceptanceEventKeys;
+- activeAcceptanceLifecycleEventKeys;
+- phantomPreEventExpiryEventKeys.
+
+The report explicitly labels this block:
+`QA_ONLY_NOT_HYPOTHESIS_CLEAN`.
+Cohort/PIT/anti-circularity overlays remain external and mandatory.
+
+Safety evidence:
+- V8 Repair CI run 36575682320: PASS;
+- V8 Regression Tests run 36575681884: PASS;
+- production build, syntax/offline regression, read-only production authorization preflight and latest after-market diagnostic all passed;
+- no Worker patch, Formal selection, ranking, capital, Cron, push or trading behavior was changed by PR #258.
+
+### PVE-191 — Legacy direct PV QA has a stale runtime-version assertion
+Status: QA_TOOL_VERSION_DRIFT_CONFIRMED / DO_NOT_MISCLASSIFY_AS_DATA_FAILURE
+
+`tests/pv_shadow_readonly_qa.mjs` still asserts the deployed runtime must match:
+`8.11.0-pv-shadow-v0.1-log-only`.
+
+Independent 2026-09-29 production readback and the current production patch chain verify runtime:
+`8.14.0-sector-gate-provenance-shadow`.
+
+Therefore the legacy direct QA can fail solely because its runtime string assertion is stale, even when PV Shadow remains present in the V8.14 build. Such a failure must be classified `QA_TOOL_VERSION_DRIFT`, not PV recorder/data failure.
+
+For current diagnostics, prefer the forward-compatible ephemeral QA/source-attestation path unless/until the legacy assertion is version-normalized. No production runtime change is implied.
+
+### PVE-192 — PVE-149 gate status at the 2026-09-29 21:31 receipt
+Status: PARTIAL_LIVE_GATE_EVALUATION / OUTCOMES_CLOSED
+
+Gate 0 — Provenance: PARTIAL_PASS
+- actual production runtime V8.14 receipt observed;
+- PR/run/job lineage known for the diagnostic;
+- no row-level PV artifact id / Worker version-id+etag tied to 9/29 PV rows yet.
+
+Gate 1 — Safety/Formal isolation: PARTIAL_PASS
+- regression production build preserves PV LOG_ONLY hooks and decisionImpact/formalCoreImpact contracts;
+- production preflight is read-only and authorized;
+- today's row-level PV runtime receipt/at-rest decisionImpact counts remain unobserved.
+
+Gate 2 — Market/operation context: PASS_FOR_CURRENT_PHASE
+- receipt was before 23:35 after-market decision clock;
+- prior scanDate 9/24 is expected at this clock phase;
+- no claim of 9/29 after-market scan success/failure is allowed yet.
+
+Gate 3 — Acquisition observability: ROW_LEVEL_UNOBSERVED
+- no actual 9/29 ephemeral D1 QA artifact was available in repository/connector evidence at this time;
+- measured zero is forbidden; state remains NOT_OBSERVED.
+
+Gate 4 — Baseline lineage/readiness: NOT_YET_EVALUABLE
+- 9/29 after-market bootstrap had not occurred.
+
+Gate 5 — Cohort provenance: 9/29_INTRADAY_UNCLEAN_CONFIRMED
+- actual scan/status still anchored to the 9/24 saved plan.
+
+Gate 6 — Feature QA: DATA_QA_ONLY / ROW_ELIGIBILITY_UNOBSERVED
+- cannot count H001/H002 clean common support without at-rest rows/baseline receipts.
+
+Gate 7 — Outcomes: CLOSED
+- no performance/threshold/promotion inspection authorized.
+
+### PVE-193 — Long-block stage V synthesis and exact post-23:35 hinge
+Status: FIRST_LIVE_LINEAGE_EVIDENCE_CAPTURED / WAITING_AFTER_MARKET_SELECTION_BOOTSTRAP
+
+This stage converts one previously structural expectation into observed production evidence: the 9/29 intraday cohort truly remained on the prior 9/24 scan/plan before the scheduled 9/29 after-market refresh.
+
+It also strengthens evidence governance:
+- scan freshness must respect the decision clock;
+- manual QA is diagnostic, not complete prospective coverage;
+- Acceptance QA denominators are now observable in an isolated read-only tool;
+- the legacy direct QA runtime assertion is stale and must not create a false data-quality alarm.
+
+No H001~H004 direction/status is promoted or rejected. No FORMAL_OPTIMIZATION_CANDIDATE exists. Formal Core remains LOCKED.
+
+Current Price-Volume evidence cursor: PVE-001 through PVE-193.
+
+## Exact continuation after PVE-193
+1. After the 2026-09-29 23:35 Formal after-market completion window, read the latest scan/status + cron receipt before any outcome inspection.
+2. Require `scanDate=2026-09-29` or classify the exact zero-plan/failed/missing reason; do not infer from time alone.
+3. Inspect `pvShadow.bootstrap` and `pvShadow.daily` runtime receipts, Formal safety, selected symbols, old/new plan overlap and per-symbol bootstrap result.
+4. For each non-skipped bootstrap row, inspect validSessions and lastMarketDate. For skipped cache rows, freshness remains UNKNOWN unless D1/baseline receipt resolves it.
+5. If a manual ephemeral D1 QA is available, use the newly merged Acceptance QA counters only as diagnostic row-quality evidence; it does not replace prospective coverage provenance.
+6. Determine 2026-09-30 row-level cohort classes: CONTINUING_FROM_PRIOR_MONITOR / NEW_AFTER_MARKET_SELECTION / REENTERED_WITH_EXISTING_CACHE / UNKNOWN, plus CLEAN/UNCLEAN/UNKNOWN eligibility.
+7. 2026-09-30 becomes the first potentially clean H001/H002 date only for rows passing all PVE-149 + PVE-174~192 gates. H003/H004 remain more restrictive.
+8. Keep Gate 7 closed until preregistered maturity/common-support requirements are met; no threshold tuning or Formal change.
