@@ -149,3 +149,13 @@ Derivatives Information & Volatility Surface.
   3. if an authorized source becomes available, capture immutable individual forecast vintages outcome-blind;
   4. only then open D07-11/D08-04 prospective Shadow joins;
   5. separately continue waiting for the next legitimate financial-statement vintage to execute the frozen general-industry cash/balance-sheet receipt.
+
+
+## 2026-09-30 analyst forecast source-readiness inventory
+- Added research/analyst_forecast_source_readiness_v0_1.json.
+- CMoney: Taiwan research and public pages prove source-family existence and dated broker forecasts; canonical licensed PIT API/history, correction/withdrawal lineage and current runtime authorization remain unproven.
+- TEJ: public documentation proves Taiwan listed/OTC analyst-EPS forecast-change/disagreement research and API-capable services generally; exact analyst dataset code, immutable historical forecast vintages, timestamp semantics and current runtime authorization remain unproven.
+- MOPS/TWSE/TPEx: official filings, actual financials, issuer guidance and event clocks are supporting sources; they are NOT sell-side analyst consensus.
+- Public broker-report/search pages: corroboration/spot-audit only unless completeness, licensing, immutable history and revision lineage are proven. They cannot serve as a canonical consensus population.
+- Fail-closed decision: if no authorized source satisfies the frozen contract, D07-11/D08-04 remain L2 and analyst consensus/revisions/Forward PE/PEG remain UNKNOWN for empirical system research.
+- No maturity change from this source inventory; it closes a source-selection ambiguity but does not prove L3 PIT data feasibility.
