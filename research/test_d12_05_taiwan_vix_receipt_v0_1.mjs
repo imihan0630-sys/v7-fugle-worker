@@ -106,7 +106,8 @@ function clean(overrides = {}) {
         clean({
           receiptId: "captured-after-decision",
           vixCapturedAt: "2026-09-30T18:11:00+08:00",
-          vixKnownAtTaipei: "2026-09-30T18:11:00+08:00"
+          vixKnownAtTaipei: "2026-09-30T18:11:00+08:00",
+          firstEligibleTaiwanDecision: "2026-10-01T18:10:00+08:00"
         }),
         { decisionTimestamp: decision }
       ),
