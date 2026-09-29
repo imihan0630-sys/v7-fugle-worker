@@ -2535,3 +2535,140 @@ Current official Fugle plan documentation supports 5 / 300 / 2000 stock WebSocke
 
 Status:
 `COLLECTOR_VALUE_GATE = IDENTIFIABILITY_FIRST / NO_DEPLOYMENT`.
+
+
+## MS-058 — the B0 local-volatility control must not be contaminated by the same spread effect we are testing
+
+The frozen B0 -> B1 -> B2 -> B3 hierarchy uses local volatility in B0 before testing spread/depth and dynamic pressure.
+
+This creates an identification risk:
+if B0 local volatility is computed from every transaction-price tick, bid-ask bounce and price discreteness can inflate the volatility control itself.
+
+Then B0 can partially absorb the same microstructure friction that B1 spread/depth is supposed to test.
+
+Research correction:
+- B0 primary local-volatility control = causal-window mid-quote RV at the frozen measurement cadence, only with valid two-sided quote coverage;
+- transaction-price RV = diagnostic comparator, not the primary control;
+- retain tradeRVMinusMidRV / ratio only as a noise diagnostic, not a directional factor;
+- if mid-quote coverage is incomplete, B0 local volatility = UNKNOWN rather than silently replacing it with trade RV.
+
+Falsification:
+- if a B2 pressure-response effect exists only when the noisy trade-RV control is used and disappears with mid-quote RV, treat the original finding as measurement-sensitive;
+- if the B1 spread effect disappears only because transaction RV mechanically embeds bid-ask bounce, do not call spread redundant.
+
+Status:
+`B0_VOLATILITY_CONTROL = MIDQUOTE_PRIMARY / MICROSTRUCTURE_CONTAMINATION_GUARD`.
+
+
+## MS-059 — quote age and reconnect gaps must be explicit in fixed-time buckets
+
+A fixed 1s/5s/15s bucket needs a price state at the boundary, but carrying forward the last observed book can become false precision.
+
+Required diagnostics for every bucket boundary:
+- lastBookProviderTime;
+- lastTradeProviderTime;
+- bookAgeMs;
+- tradeAgeMs;
+- connectedCoverage;
+- reconnectSegmentId;
+- bookProviderMessageCount;
+- tradeProviderMessageCount.
+
+No freshness cutoff is outcome-tuned in V0.1.
+
+Semantic rule:
+- a quote observed before a connection gap cannot be carried through the gap and labeled continuously observed;
+- no book message after reconnect does not prove the book was unchanged during the missing interval;
+- a stale-age bucket may remain useful for coverage diagnostics but is not automatically eligible for pressure/replenishment inference.
+
+This extends MS-054:
+provider-message time is not exchange-event time, and "last value carried forward" is not new evidence.
+
+Status:
+`QUOTE_AGE_AND_RECONNECT_SEGMENTATION = REQUIRED_FOR_BUCKET_VALIDITY`.
+
+
+## MS-060 — volatility-signature QA and state-reconstruction fidelity jointly choose pilot cadence
+
+The collector pilot already freezes 1s / 5s / 15s candidates.
+
+Cadence selection now has two independent outcome-blind axes:
+
+A. State reconstruction fidelity:
+- pressure-state agreement versus the 1s reference;
+- replenishment/depletion classification agreement;
+- spread/depth extrema retention;
+- mechanism/session flag retention.
+
+B. Volatility measurement stability:
+- mid-quote local RV stability across 1s/5s/15s;
+- transaction-vs-midquote divergence;
+- price/tick/liquidity-stratified signature behavior.
+
+Decision logic:
+- if 5s preserves state labels and mid-quote RV relative to 1s while materially lowering storage, prefer 5s;
+- if 5s loses meaningful replenishment state but 1s shows severe transaction-RV noise, retain 1s raw/near-raw only for a tiny pilot while using a noise-robust or coarser volatility control;
+- if 15s is sufficient for state reconstruction in slow symbols but not active symbols, do not outcome-tune a per-symbol cadence. First classify this as an activity-dependent measurement problem and pre-register any adaptive cadence rule separately.
+
+No strategy-return outcome is allowed in the cadence decision.
+
+Status:
+`CADENCE_SELECTION = FIDELITY_X_MEASUREMENT_STABILITY / OUTCOME_BLIND`.
+
+
+## MS-061 — simple estimator first; noise-robust estimators are challengers, not a new factor zoo
+
+The high-frequency volatility literature offers:
+- two-scale / multi-scale realized volatility;
+- realized kernels;
+- pre-averaging and related estimators.
+
+These are measurement estimators, not separate trading factors.
+
+Project order:
+1. simple sparse/frozen-cadence mid-quote RV;
+2. diagnose sampling instability with the signature plot;
+3. only if instability is material, compare one noise-robust challenger under the same causal window;
+4. do not create independent votes for TSRV, kernel RV, realized range, etc.
+
+Primary question:
+Does a robust estimator materially change B0 volatility classification or the incremental conclusion for B1/B2?
+
+If no:
+keep the simpler estimator.
+
+If yes:
+the issue is measurement robustness, not added alpha.
+
+Formal selection receives no new score from this work.
+
+Status:
+`NOISE_ROBUST_RV = MEASUREMENT_CHALLENGER_ONLY / FACTOR_ZOO_BLOCKED`.
+
+
+## MS-062 — session segmentation applies to pressure and volatility together
+
+TWSE currently uses call auction at the open/close and continuous matching during the main intraday interval, with call-auction handling during volatility interruption.
+
+Therefore the primary D05 inferential cohort is:
+`NORMAL_CONTINUOUS_TWO_SIDED_BOOK`.
+
+Separate cohorts:
+- OPEN_CALL;
+- CLOSE_CALL;
+- VI_CALL_OR_TRIAL;
+- LIMIT_CONSTRAINED;
+- ODD_LOT;
+- UNKNOWN/INCOMPLETE.
+
+For each cohort, both:
+- microstructure pressure state;
+- local volatility estimate;
+must use the same mechanism boundaries.
+
+Do not pair a continuous-book pressure feature with a volatility estimate that includes an opening-auction jump.
+
+This alignment is required before B0/B1/B2 nesting.
+
+Status:
+`PRESSURE_VOLATILITY_MECHANISM_ALIGNMENT = MANDATORY`.
