@@ -301,3 +301,15 @@ CA-115: do not re-evaluate Class-A Shadow implementation readiness until the rem
 - MI_QFIIS 93,946,031 from 2025-11-12 remains a reporting-table state and is explicitly prohibited as a substitute for any of those trading/registration semantic spaces.
 - This narrows the remaining blocker: CA-114 semantic definition is no longer the main uncertainty; the unresolved gate is exact bounded archive/completeness/knownAt evidence, especially TWSE daily listed-share reconciliation and TPEx immutable-byte provenance.
 - CA-115 remains blocked. Formal Core unchanged.
+
+
+## D11-14 cross-lane update — index adjustment / passive-flow PIT feasibility
+- New dedicated anchor: `INDEX_ADJUSTMENT_PASSIVE_FLOW_RESEARCH.md`.
+- New source receipt: `research/d11_index_adjustment_pit_receipt_v0_1.json`.
+- Taiwan index-event clocks are now separated into review-data cutoff, announcement knownAt, effectiveFrom session and tracker execution window.
+- Official TWSE/FTSE and TWSE index methodologies provide explicit announcement/effective timing; TWSE e-shop products prove daily pre-effective/effective constituent artifacts exist, though some historical bytes are subscription/licensing gated.
+- D11-14 advances from L2 to L3 because Taiwan PIT data feasibility and time semantics are source-proven. No outcome/alpha claim is made.
+- Falsification is frozen: ADD is not a universal bullish rule and DELETE is not a universal bearish rule. International evidence shows index effects vary over time and methodology, can attenuate, and differ for true adds/deletes versus transfers.
+- Required future controls: market/sector/size/liquidity/momentum, transfers vs true changes, concurrent corporate actions/news, common support, costs and auction slippage.
+- CA-113/114 cursor is unchanged; this cross-lane work does not close or overwrite the denominator archive gates.
+- Formal Core remains locked.
