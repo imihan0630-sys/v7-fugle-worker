@@ -1,0 +1,91 @@
+{
+  "version": "0.1",
+  "id": "SC-027",
+  "date": "2026-09-30 Asia/Taipei",
+  "scope": "D10 material transmission prospective cohort preregistration",
+  "formalCoreChanged": false,
+  "outcomesOpened": false,
+  "status": "PROSPECTIVE_RECEIPT_CONTRACT_FROZEN / ACCUMULATION_PENDING / OUTCOMES_CLOSED / FORMAL_UNCHANGED",
+  "unitOfObservation": "issuer x materialBenchmark x decisionKnownAt",
+  "immutableIdentity": [
+    "issuerMarket",
+    "issuerSymbol",
+    "materialBenchmarkId",
+    "productionRouteVintageId",
+    "decisionKnownAt",
+    "receiptVersion"
+  ],
+  "requiredBeforeOutcomeJoin": {
+    "material": [
+      "benchmarkId",
+      "gradeOrSpecification",
+      "unit",
+      "currency",
+      "priceBasis",
+      "sourcePublishedAt",
+      "capturedAt",
+      "knownAt"
+    ],
+    "exposure": [
+      "economicRole",
+      "productionRoute",
+      "exposureMagnitudeOrUNKNOWN",
+      "inventoryBufferOrUNKNOWN",
+      "contractSpotMixOrUNKNOWN",
+      "hedgeStateOrUNKNOWN",
+      "substitutionStateOrUNKNOWN",
+      "sourceKnownAt"
+    ],
+    "passThrough": [
+      "sellingPriceEvidenceState",
+      "sellingPriceKnownAtOrUNKNOWN",
+      "volumeEvidenceState",
+      "volumeKnownAtOrUNKNOWN",
+      "marginEvidenceState",
+      "marginKnownAtOrUNKNOWN"
+    ],
+    "controls": [
+      "lowOrNoExposureEligibility",
+      "failedPassThroughEligibility",
+      "classificationVintage",
+      "marketRegime",
+      "sectorRSState",
+      "priceTrendState",
+      "liquidityBand"
+    ]
+  },
+  "clockRules": [
+    "observationPeriod, sourcePublishedAt, capturedAt, knownAt and effectiveAt remain distinct",
+    "decisionKnownAt is the maximum of evidence clocks actually required for the decision-time state",
+    "later filings append a new receipt version and never rewrite an earlier decision-time receipt",
+    "UNKNOWN is not zero, BAD, no-exposure or failed-pass-through",
+    "native reporting clocks govern volume and margin confirmation"
+  ],
+  "preregisteredOutcomeHorizon": [
+    "D1",
+    "D3",
+    "D5"
+  ],
+  "outcomeOpenGate": [
+    "prospective receipts exist on multiple independent Taiwan trading dates",
+    "control eligibility was frozen before returns were inspected",
+    "lag windows were frozen before returns were inspected",
+    "classification and production-route vintages are PIT-valid",
+    "date clustering and leave-one-date-out are available",
+    "transaction-cost assumptions are frozen",
+    "sector RS, market regime and price trend redundancy controls are available"
+  ],
+  "falsification": [
+    "same residual effect appears in low/no-exposure controls",
+    "effect disappears after pass-through, mix or regime controls",
+    "result is driven by one date, one issuer or one mega-cap",
+    "only ex-post selected lag or benchmark works",
+    "material signal adds no information beyond sector RS, market regime or price trend",
+    "margin confirmation contradicts the proposed economic sign"
+  ],
+  "minimumInterpretation": {
+    "current": "No alpha claim. This artifact only freezes prospective collection and outcome-opening rules.",
+    "promotion": "No L4 promotion until actual prospective/OOS evidence exists."
+  },
+  "next": "Append source-only prospective receipts when qualifying material/exposure events become known; if no qualifying event exists, skip rather than fabricate a row. Keep returns closed until the outcome-open gate is satisfied."
+}
