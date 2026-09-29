@@ -22,6 +22,7 @@ function validateBlockedIntervals(intervals,eligibleAt,fillAt){
       return {ok:false,reason:"INVALID_MECHANISM_BLOCK_INTERVAL"};
     }
     if(start<eligibleAt) return {ok:false,reason:"BLOCK_INTERVAL_BEFORE_FIRST_ELIGIBILITY"};
+    if(start>=fillAt) return {ok:false,reason:"FUTURE_BLOCK_INTERVAL_AFTER_FILL"};
     if(start<fillAt&&fillAt<end) return {ok:false,reason:"FILL_INSIDE_MECHANISM_BLOCK"};
     out.push({startAt:start,endAt:end,reason,sourceRef,observedAt});
   }
