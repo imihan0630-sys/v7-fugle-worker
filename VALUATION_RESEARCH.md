@@ -214,3 +214,69 @@ System implication:
 This directly supports the pre-registered interaction architecture while preserving a symmetric rejection path.
 
 Exact next continuation: finish the official GENERAL_INDUSTRY cash/balance-sheet field contract and accumulate prospective receipts; Forward PE/PEG remain source-gated and must not delay the source-honest trailing-valuation Shadow lane.
+
+
+## VAL-017 — Forward PE needs numerator/denominator attribution
+
+Forward PE is not a single economic state. A lower Forward PE can be caused by:
+1. price falling while forecast EPS is unchanged;
+2. forecast EPS rising while price is unchanged;
+3. both moving;
+4. horizon roll or consensus-composition change.
+
+Only case 2 is cleanly consistent with denominator improvement; case 1 may instead reflect new risk.
+
+Therefore Forward PE research must persist price and forecast EPS separately and decompose every valuation change. It is prohibited to treat raw Forward-PE compression as a bullish improvement.
+
+For compatible positive values:
+Forward PE = decision-time price / point-in-time analyst consensus EPS.
+
+A separate forward earnings yield = consensus EPS / price may be retained as a research primitive, including negative values, but it must not be mislabeled PE.
+
+Status: FORWARD_PE_ATTRIBUTION_DEFINED / SOURCE_NEEDED / NO_FORMAL_CHANGE.
+
+## VAL-018 — Forward PE horizon-roll contamination
+
+Current-FY PE naturally changes its economic horizon as the calendar approaches fiscal year-end even if price and analyst beliefs do not move. Next-FY and NTM estimates have different roll mechanics.
+
+Therefore:
+- CURRENT_FY, NEXT_FY and NTM are separate series;
+- horizon roll must be tagged explicitly;
+- a change caused by roll is not an analyst revision;
+- comparing current-FY PE in January with current-FY PE in December without horizon controls is not like-for-like valuation history.
+
+This is a second reason historical Forward-PE percentiles cannot be built from unlabeled vendor snapshots.
+
+Status: HORIZON_ROLL_FIREWALL_DEFINED / D08-04 MECHANISM_PLUS_COUNTEREVIDENCE_COMPLETE.
+
+## VAL-019 — Coverage and forecast age belong inside forward-valuation uncertainty
+
+Two companies with the same consensus EPS can have very different information quality:
+- one may have ten recent, tightly clustered forecasts;
+- another may have one old forecast.
+
+Therefore point estimates alone are insufficient. Forward-valuation receipts should retain:
+- coverageCount;
+- dispersion;
+- newest/oldest forecast age;
+- revision breadth;
+- source/broker concentration.
+
+These fields are uncertainty/context variables, not automatic bonuses. High dispersion can reflect uncertainty, heterogeneous private information, delayed bad-news disclosure or simple sparse/stale coverage; literature does not support one universal directional interpretation.
+
+Status: FORECAST_UNCERTAINTY_CONTEXT_DEFINED / DIRECTIONAL_ALPHA_UNKNOWN.
+
+## VAL-020 — Taiwan evidence supports revision research, not threshold import
+
+The 2026 Taiwan study reports economically large revision-sorted returns, but its design uses monthly CMoney forecasts and a restricted index-constituent universe. A separate Taiwan thesis reports mixed analyst-characteristic long-short results and small-cap/outlier sensitivity.
+
+System implication:
+- do not import the published 2.11% / 2.81% return figures as expected system performance;
+- do not import a revision magnitude threshold;
+- do not generalize index-constituent coverage to the full listed/OTC universe;
+- require within-date/sector/size/liquidity controls and independent-date inference;
+- test revision increment after current fundamentalScore, realized growth, price-volume, RS and regime.
+
+D08-04 can advance to L2 because Forward-PE mechanism, failure modes and PIT semantics are now defined, but L3 remains blocked until a canonical authorized PIT forecast source is proven.
+
+Status: D08-04 L2_CONCEPT_AND_FALSIFICATION_COMPLETE / PIT_SOURCE_NEEDED / NOT_FORMAL_OPTIMIZATION_CANDIDATE.
