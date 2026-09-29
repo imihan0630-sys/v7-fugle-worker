@@ -393,6 +393,7 @@ export function buildDailyResonanceSnapshot({
     officialCloseConfirmation: "13:30_ASIA_TAIPEI",
     warningLevel: resolved.warningLevel,
     latest,
+    bars,
     series: Object.freeze(series),
     intraday15mContext: intraday15mContext ? Object.freeze({ ...intraday15mContext }) : null,
     intraday15mAffectsDailyResonance: false,
