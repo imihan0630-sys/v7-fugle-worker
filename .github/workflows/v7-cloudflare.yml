@@ -64,6 +64,7 @@ on:
       - "scripts/apply_v8_14_0.py"
       - "scripts/apply_v8_14_1.py"
       - "scripts/apply_v8_14_2.py"
+      - "scripts/apply_v8_14_3.py"
       - "scripts/rebase_v8_12_*.py"
       - "RESEARCH_WORKLIST.md"
       - "research/**"
@@ -273,6 +274,9 @@ jobs:
       - name: Apply V8.14.2 unscheduled closure and recovery guard
         run: python3 scripts/apply_v8_14_2.py
 
+      - name: Apply V8.14.3 closure receipt memo
+        run: python3 scripts/apply_v8_14_3.py
+
       - name: Syntax check Worker.js
         run: |
           set -euo pipefail
@@ -282,7 +286,7 @@ jobs:
       - name: Validate V8.7.12 production contract
         run: |
           set -euo pipefail
-          grep -F 'const VERSION = "8.14.2-unscheduled-closure-recovery-guard";' Worker.js
+          grep -F 'const VERSION = "8.14.3-closure-receipt-memo";' Worker.js
           grep -F 'const HISTORY_SEED_SCHEMA = "full-market-v4-history-source-revalidation";' Worker.js
           grep -F 'RAW_OFFICIAL_BAR_PRESENCE_BEFORE_FORMAL_FILTERS' Worker.js
           grep -F 'const PV_SHADOW_SCHEMA_VERSION = "PV_SHADOW_V0_1";' Worker.js
@@ -420,6 +424,7 @@ jobs:
           node tests/test_v8_14_0_sector_gate_provenance.mjs
           node tests/test_v8_14_1_tdcc_reconciliation.mjs
           node tests/test_v8_14_2_unscheduled_closure_recovery_guard.mjs
+          node tests/test_v8_14_3_closure_receipt_memo.mjs
           node tests/test_v8_9_0_three_pool_hybrid_shadow.mjs
           node tests/test_v8_9_1_three_pool_dashboard.mjs
           node tests/github_plan_mirror.mjs self-test
