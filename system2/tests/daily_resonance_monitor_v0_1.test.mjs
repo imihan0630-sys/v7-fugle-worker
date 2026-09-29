@@ -48,7 +48,7 @@ function splitForLive(rows) {
 
 assert.equal(DAILY_RESONANCE_FORMULA_VERSION.fastEma, 16);
 assert.equal(DAILY_RESONANCE_FORMULA_VERSION.slowEma, 64);
-assert.equal(DAILY_RESONANCE_MAX_UNIQUE_SYMBOLS, 12);
+assert.equal(DAILY_RESONANCE_MAX_UNIQUE_SYMBOLS, 9);
 
 {
   const flat = makeBars({ count: 80, direction: "FLAT" });
@@ -102,7 +102,9 @@ assert.equal(DAILY_RESONANCE_MAX_UNIQUE_SYMBOLS, 12);
     intraday15mContext: { lastClosedBarAt: "2026-09-29T02:15:00.000Z", state: "AUXILIARY_ONLY" },
   });
   assert.equal(provisional.finality, "PROVISIONAL_DAILY_BAR");
-  assert.equal(provisional.lifecycleState, "ENTRY_RESONANCE_CANDIDATE");
+  assert.equal(provisional.lifecycleState, "ENTRY_RESONANCE_PROVISIONAL");
+  assert.equal(provisional.displaySignal, "BUY_RESONANCE");
+  assert.equal(provisional.signalConfirmationState, "PROVISIONAL");
   assert.equal(provisional.visualSignal, "ENTRY");
   assert.equal(provisional.latest.entryCount, 3);
   assert.equal(provisional.intraday15mAffectsDailyResonance, false);
@@ -136,7 +138,9 @@ assert.equal(DAILY_RESONANCE_MAX_UNIQUE_SYMBOLS, 12);
     continuityState: "ADJUSTED_CONTINUITY",
     priorLifecycleState: "HOLD",
   });
-  assert.equal(live.lifecycleState, "EXIT_RESONANCE_CANDIDATE");
+  assert.equal(live.lifecycleState, "EXIT_RESONANCE_PROVISIONAL");
+  assert.equal(live.displaySignal, "EXIT_RESONANCE");
+  assert.equal(live.signalConfirmationState, "PROVISIONAL");
   assert.equal(live.visualSignal, "EXIT");
   assert.equal(live.latest.exitCount, 3);
 
@@ -149,7 +153,9 @@ assert.equal(DAILY_RESONANCE_MAX_UNIQUE_SYMBOLS, 12);
     priorLifecycleState: "HOLD",
   });
   assert.equal(confirmed.finality, "CONFIRMED_DAILY_CLOSE");
-  assert.equal(confirmed.lifecycleState, "EXIT_RESONANCE_CANDIDATE");
+  assert.equal(confirmed.lifecycleState, "EXIT_RESONANCE_CONFIRMED");
+  assert.equal(confirmed.displaySignal, "EXIT_RESONANCE");
+  assert.equal(confirmed.signalConfirmationState, "CONFIRMED");
   assert.equal(confirmed.latest.exitCount, 3);
 }
 
@@ -211,10 +217,10 @@ assert.equal(DAILY_RESONANCE_MAX_UNIQUE_SYMBOLS, 12);
   assert.equal(batch.mode, "BOUNDED_PRESELECTED_ONLY");
   assert.equal(batch.fullMarketScan, false);
   assert.equal(batch.symbolCount, 9);
-  assert.equal(batch.maxUniqueSymbols, 12);
+  assert.equal(batch.maxUniqueSymbols, 9);
   assert.equal(batch.snapshots.every((x) => x.latest.entryCount === 3), true);
 
-  const tooMany = Array.from({ length: 13 }, (_, index) => ({
+  const tooMany = Array.from({ length: 10 }, (_, index) => ({
     symbol: String(4000 + index),
     ...input,
     currentDailyBarState: "LIVE",
@@ -226,7 +232,7 @@ assert.equal(DAILY_RESONANCE_MAX_UNIQUE_SYMBOLS, 12);
       asOf: "2026-09-29T03:00:00.000Z",
       items: tooMany,
     }),
-    /cannot exceed 12 unique symbols/,
+    /cannot exceed 9 unique symbols/,
   );
 }
 
