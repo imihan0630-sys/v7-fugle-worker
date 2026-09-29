@@ -1,0 +1,213 @@
+{
+  "version": "0.1",
+  "id": "SC-023",
+  "date": "2026-09-30 Asia/Taipei",
+  "formalCoreChanged": false,
+  "outcomesOpened": false,
+  "status": "BOUNDED_TAIWAN_ISSUER_EXPOSURE_BRIDGE_FROZEN / PIT_FEASIBLE / MATERIAL_SIGN_UNRESOLVED / FORMAL_UNCHANGED",
+  "purpose": "Instantiate the directional product-material edge schema on actual Taiwan issuers across two economically different chains, preserving PARTIAL/UNKNOWN instead of theme inference.",
+  "rules": [
+    "Current company/product pages can establish prospective exposure from capturedAt, but cannot be backfilled before their proven publication/knownAt.",
+    "Product capability or theme membership does not prove revenue share, cost share, customer order or realized margin.",
+    "A material is INPUT_COST to a downstream buyer even if material tightness is evidence of strong chain demand; economic sign remains unresolved until pass-through/margin/volume are observed.",
+    "UNKNOWN exposure is never treated as zero/no exposure.",
+    "Route-specific negative controls are preferred to generic same-sector controls."
+  ],
+  "issuerEdges": [
+    {
+      "issuerSymbol": "8046",
+      "issuerName": "南亞電路板",
+      "chain": "ABF_PCB_IC_SUBSTRATE",
+      "asOfCapturedDate": "2026-09-30",
+      "sourceClass": "ISSUER_OFFICIAL_WEBSITE",
+      "sourceUrls": [
+        "https://www.nanyapcb.com.tw/nypcb/chinese/AboutNanYaPCB/CompanyProfile/Company",
+        "https://www.nanyapcb.com.tw/nypcb/chinese/Technology/ABFSRoadmap"
+      ],
+      "productExposure": [
+        "ABF_SUBSTRATE",
+        "PP_SUBSTRATE",
+        "CONVENTIONAL_PCB"
+      ],
+      "productionRouteEvidence": [
+        "Current official company profile lists manufacturing/sales of ABF substrate.",
+        "Current ABF roadmap separately lists Core/PP and Dielectric material families plus solder-mask/bumping material specifications."
+      ],
+      "materialEdges": [
+        {
+          "material": "CORE_PP_MATERIAL_FAMILY",
+          "economicRole": "INPUT_COST",
+          "scope": "ABF_SUBSTRATE_PRODUCT_TECHNOLOGY",
+          "exposureMagnitude": "UNKNOWN",
+          "pricingBasis": "UNKNOWN",
+          "confidence": "HIGH_PRODUCT_ROLE / UNKNOWN_COST_SHARE"
+        },
+        {
+          "material": "DIELECTRIC_MATERIAL_FAMILY",
+          "economicRole": "INPUT_COST",
+          "scope": "ABF_SUBSTRATE_PRODUCT_TECHNOLOGY",
+          "exposureMagnitude": "UNKNOWN",
+          "pricingBasis": "UNKNOWN",
+          "confidence": "HIGH_PRODUCT_ROLE / UNKNOWN_COST_SHARE"
+        }
+      ],
+      "guard": "Do not infer company-wide or ABF-specific cost percentages from product roadmap material lists."
+    },
+    {
+      "issuerSymbol": "3189",
+      "issuerName": "景碩科技",
+      "chain": "IC_SUBSTRATE",
+      "asOfCapturedDate": "2026-09-30",
+      "sourceClass": "ISSUER_OFFICIAL_WEBSITE",
+      "sourceUrls": [
+        "https://www.kinsus.com.tw/zh-tw/product/products/products_overview",
+        "https://www.kinsus.com.tw/en/html/message_from_the_chairman/index"
+      ],
+      "productExposure": [
+        "FCBGA",
+        "PBGA",
+        "SIP",
+        "OTHER_IC_SUBSTRATES"
+      ],
+      "productionRouteEvidence": [
+        "Current official product page identifies FCBGA as a high-end GPU/CPU substrate solution and PBGA as based on resin-impregnated glass-fiber copper-clad laminate.",
+        "Current chairman message explicitly refers to large-area high-layer-count ABF substrates and capacity deployment/customer certification."
+      ],
+      "materialEdges": [
+        {
+          "material": "RESIN_IMPREGNATED_GLASS_FIBER_CCL",
+          "economicRole": "INPUT_COST",
+          "scope": "PBGA_PRODUCT_SPECIFIC",
+          "exposureMagnitude": "UNKNOWN",
+          "pricingBasis": "UNKNOWN",
+          "confidence": "HIGH_FOR_PBGA / NOT_AUTHORIZED_TO_GENERALIZE_TO_ABF_FCBGA"
+        },
+        {
+          "material": "ABF_BUILDUP_MATERIAL",
+          "economicRole": "INPUT_COST_OR_BOTTLENECK_INPUT",
+          "scope": "ABF_SUBSTRATE",
+          "exposureMagnitude": "UNKNOWN",
+          "pricingBasis": "UNKNOWN",
+          "confidence": "PRODUCT_EXPOSURE_HIGH / MATERIAL_WEIGHT_UNKNOWN"
+        }
+      ],
+      "guard": "PBGA base-material structure must not be projected onto all FCBGA/ABF products."
+    },
+    {
+      "issuerSymbol": "2002",
+      "issuerName": "中國鋼鐵",
+      "chain": "INTEGRATED_STEEL_BF_BOF",
+      "asOfCapturedDate": "2026-09-30",
+      "sourceClass": "ISSUER_OFFICIAL_WEBSITE",
+      "sourceUrls": [
+        "https://www.csc.com.tw/csc/pd/pd.html"
+      ],
+      "productionRouteEvidence": [
+        "Imported coal, iron ore and limestone feed raw-material preparation.",
+        "Iron ore/coke/flux feed the blast furnace to produce hot metal.",
+        "Blast-furnace hot metal plus scrap enter the converter for steelmaking."
+      ],
+      "materialEdges": [
+        {
+          "material": "IRON_ORE",
+          "economicRole": "INPUT_COST",
+          "routeRelevance": "PRIMARY_DIRECT",
+          "exposureMagnitude": "UNKNOWN",
+          "confidence": "HIGH_ROUTE_RELEVANCE"
+        },
+        {
+          "material": "METALLURGICAL_COAL_COKE",
+          "economicRole": "INPUT_COST",
+          "routeRelevance": "PRIMARY_DIRECT",
+          "exposureMagnitude": "UNKNOWN",
+          "confidence": "HIGH_ROUTE_RELEVANCE"
+        },
+        {
+          "material": "STEEL_SCRAP",
+          "economicRole": "INPUT_COST",
+          "routeRelevance": "SECONDARY_CONVERTER_INPUT",
+          "exposureMagnitude": "UNKNOWN",
+          "confidence": "DIRECT_BUT_NOT_PRIMARY_ROUTE_FEED"
+        }
+      ],
+      "guard": "Do not use scrap-price shock as if China Steel were a no-scrap control; it is a materially different exposure route, not zero exposure."
+    },
+    {
+      "issuerSymbol": "2006",
+      "issuerName": "東和鋼鐵",
+      "chain": "EAF_STEEL",
+      "asOfCapturedDate": "2026-09-30",
+      "sourceClass": "ISSUER_OFFICIAL_WEBSITE",
+      "sourceUrls": [
+        "https://www.tunghosteel.com/CSR/ep_green.html",
+        "https://www.tunghosteel.com/CSR/ep_energy.html"
+      ],
+      "productionRouteEvidence": [
+        "Official current sustainability disclosure states 2025 main raw material was 98% scrap.",
+        "Electric arc furnaces melt scrap to produce structural steel products.",
+        "Monthly production planning is linked to domestic scrap procurement."
+      ],
+      "materialEdges": [
+        {
+          "material": "STEEL_SCRAP",
+          "economicRole": "INPUT_COST",
+          "routeRelevance": "PRIMARY_DIRECT",
+          "exposureMagnitude": "2025_MAIN_RAW_MATERIAL_98_PERCENT",
+          "basis": "issuer sustainability disclosure",
+          "confidence": "HIGH"
+        },
+        {
+          "material": "PURCHASED_ELECTRICITY_ENERGY",
+          "economicRole": "INPUT_COST",
+          "routeRelevance": "DIRECT_PROCESS_ENERGY",
+          "exposureMagnitude": "DISCLOSED_ENERGY_USAGE_NOT_PRODUCT_COST_SHARE",
+          "confidence": "HIGH_ROLE / UNKNOWN_COST_SHARE"
+        }
+      ],
+      "guard": "Scrap-price sensitivity still requires selling-price, inventory, electricity/energy, mix and margin confirmation."
+    }
+  ],
+  "negativeControlPairs": [
+    {
+      "shock": "STEEL_SCRAP_PRICE",
+      "highExposureIssuer": "2006 東和鋼鐵",
+      "lowerDifferentRouteIssuer": "2002 中國鋼鐵",
+      "interpretation": "Route-specific exposure contrast only. China Steel has converter scrap usage, so this is not a zero-exposure control.",
+      "mandatoryControls": [
+        "steel selling price",
+        "product mix",
+        "demand/volume",
+        "inventory",
+        "energy",
+        "market/sector regime"
+      ]
+    },
+    {
+      "shock": "GENERIC_IC_SUBSTRATE_MATERIAL_PRICE",
+      "exposedIssuers": [
+        "8046 南亞電路板",
+        "3189 景碩科技"
+      ],
+      "interpretation": "Do not assign a common material weight across substrate types; product-route-specific evidence is required.",
+      "mandatoryControls": [
+        "substrate type",
+        "ABF/PP/PBGA/FCBGA mix",
+        "contract repricing",
+        "qualification constraints",
+        "margin",
+        "volume"
+      ]
+    }
+  ],
+  "maturityDecision": {
+    "D10-12": "CONFIRM_SC025_PROMOTION_L2_TO_L3_DATA_FEASIBILITY_ONLY",
+    "D10-09": "KEEP_L2",
+    "D10-06": "KEEP_L2"
+  },
+  "reasonForD1012": "SC-025 already recorded a L2->L3 data-feasibility promotion, but the canonical tracker was not synchronized. SC-023 now supplies bounded actual Taiwan issuer/product/route edges across electronics and steel, with official current sources and explicit UNKNOWN guards. L3 means PIT feasibility, not predictive efficacy or universe completeness.",
+  "next": [
+    "SC-027 build first prospective immutable material-transmission receipt on a new information event without inspecting forward returns.",
+    "SC-028 bind an actual material benchmark to the route-specific issuer edge and freeze lag windows before outcomes.",
+    "SC-029 collect failed-pass-through and low/different-exposure controls on independent dates before D10-09/D10-06 can advance."
+  ]
+}
