@@ -1,11 +1,11 @@
 {
   "schemaVersion": "0.1",
   "name": "GLOBAL_MARKET_PROSPECTIVE_CAPTURE_DESIGN_V0_1",
-  "status": "RESEARCH_ONLY_DESIGN_FROZEN_NOT_IMPLEMENTED",
+  "status": "RESEARCH_ONLY_PARTIALLY_IMPLEMENTED__SOURCE_ONLY_ACCUMULATING",
   "formalCoreImpact": "NONE",
   "researchClass": "CLASS_A_IF_STANDALONE_ARTIFACT_ONLY__CLASS_B_IF_SHARED_RUNTIME_CRON_SCHEMA_BUDGET_TOUCHED",
   "decisionClock": "18:10 Asia/Taipei",
-  "updatedAt": "2026-09-28T21:18:00+08:00",
+  "updatedAt": "2026-09-30T05:20:18+08:00",
   "objective": "Accumulate immutable prospective PIT receipts before any outcome join or Formal use.",
   "phase1": [
     {
@@ -113,9 +113,19 @@
     "FormalSelectorOrRiskBehavior": "Class C owner approval"
   },
   "exactNext": [
-    "audit repository for an already-isolated research capture/store path that can accept append-only receipts without shared runtime changes",
-    "if absent, freeze minimum Class-B capture proposal; do not implement",
-    "begin source-only prospective coverage stage when legally usable provider contracts are available",
-    "only after clean-date coverage, preregister residual/OOS outcome joins"
-  ]
+    "capture actual TAIWAN VIX on an eligible regular session before the 18:10 decision",
+    "capture actual TX NIGHT_PRE_SCAN from 15:00 through/before 18:10 using only source data known at capture",
+    "repeat source-only captures across independent Taiwan dates and characterize coverage before outcomes",
+    "freeze DXY/HG/GC provider entitlement and latency before admitting those lanes",
+    "preregister D13-12 outcome joins only after the source coverage gate is met"
+  ],
+  "implementationProgress": {
+    "unifiedGuard": "IMPLEMENTED_AND_ADVERSARIAL_TESTED",
+    "firstSourceOnlyPilot": "research/global_market_source_only_pilot_20260930.json",
+    "firstPilotState": "PARTIAL_SOURCE_ONLY_DATE__OUTCOMES_CLOSED",
+    "taiwanVixBuilder": "IMPLEMENTED_AND_ADVERSARIAL_TESTED",
+    "nightPreScanBuilder": "IMPLEMENTED_AND_ADVERSARIAL_TESTED",
+    "sharedRuntimeTouched": false,
+    "formalCoreTouched": false
+  }
 }
