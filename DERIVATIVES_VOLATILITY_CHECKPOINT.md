@@ -115,3 +115,47 @@ Portfolio & Risk Construction / Correlation Clusters.
 2. Do not create a paid-history dependency before prospective source/quality coverage proves useful.
 3. Cross-link D12-05 with D04 realized-volatility states for a frozen, outcome-blind redundancy design.
 4. Resume D12-10 `NIGHT_PRE_SCAN` prospective receipt work so implied-risk state and after-hours absorption can later be tested jointly on independent dates.
+
+
+## 2026-09-30 prospective receipt implementation / PIT firewall
+
+- Re-read latest main before implementation. D12-05 and D12-10 remain L2 / 40%; no maturity inflation.
+- Implemented isolated Class-A research guard:
+  - `research/global_market_receipt_guard_v0_1.mjs`
+  - unified family list now includes `TAIWAN_VIX`
+  - rejects future-known receipts, unknown latency/entitlement marked PIT-eligible, missing-as-clean, timestamp inversions and tampered receipt hashes.
+- Guard deterministic/adversarial suite had already passed before the VIX extension; VIX integration exposed and corrected a schema-family mismatch before any live source wiring.
+- Implemented isolated TAIWAN VIX receipt builder:
+  - `research/d12_05_taiwan_vix_receipt_v0_1.mjs`
+  - `research/test_d12_05_taiwan_vix_receipt_v0_1.mjs`
+  - local Node adversarial suite PASS.
+- VIX receipt guards:
+  - official 09:00-13:45 Taipei publication window;
+  - official 15-second grid;
+  - finite positive VIX only for `VIX_VALID_OFFICIAL`;
+  - stale/halt/source-missing => NOT_CLEAN / UNKNOWN;
+  - after-decision capture cannot be used for the 18:10 decision;
+  - directional interpretation explicitly PROHIBITED.
+- Implemented isolated TX night-pre-scan receipt builder:
+  - `research/d12_10_night_pre_scan_receipt_v0_1.mjs`
+  - `research/test_d12_10_night_pre_scan_receipt_v0_1.mjs`
+  - local Node adversarial suite PASS.
+- NIGHT_PRE_SCAN guards:
+  - exact 15:00 Taipei window start;
+  - observedAt cannot exceed 18:10;
+  - sourceSessionDate is mandatory because TAIFEX attributes after-hours trades to the following regular session;
+  - expiring TX last-trading-day after-hours receipt is rejected;
+  - contract month / DTE / roll metadata mandatory for clean receipts;
+  - OHLC/volume/trade-count geometry checked;
+  - full-night use at 18:10 explicitly PROHIBITED.
+- This is source/PIT infrastructure evidence only. No return, MAE, MFE, gap, selection hit-rate or trading outcome was inspected.
+- Formal Core remains LOCKED. `FORMAL_OPTIMIZATION_CANDIDATE = NO`.
+
+## Updated exact next continuation
+
+1. On the next eligible Taiwan regular session, capture one actual official TAIWAN VIX receipt before the 18:10 decision and read it back through the guard.
+2. On the same selection date, capture TX `NIGHT_PRE_SCAN` only from source transactions available through/before 18:10; never append later full-night fields to the same first-known receipt.
+3. Accumulate independent clean dates; first evaluate source coverage/missing/stale/roll/event-regime quality with outcomes CLOSED.
+4. Cross-link D12-05 to D04 realized-volatility states only after both raw parent receipts are PIT/replay complete; VIX must beat ATR/realized-volatility/Regime before any incremental claim.
+5. Cross-link D12-10 to same-window global controls only after their provider entitlement/latency contracts are frozen.
+6. No L3 promotion until actual Taiwan-date PIT receipts exist and replay verification passes; no L4 before prospective/OOS outcome evidence.
