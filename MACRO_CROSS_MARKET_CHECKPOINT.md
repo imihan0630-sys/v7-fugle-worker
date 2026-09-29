@@ -187,3 +187,34 @@ Japan/Korea daily close may be captured only with `ASIA_DAILY_MIXED_WINDOW` sema
 3. Start with the smallest high-value clock-clean set: TX NIGHT_PRE_SCAN + DXY + HG copper + GC gold + scheduled macro-event flags, while retaining existing CBC USD/TWD and prior-published UST state.
 4. Preserve source/provider entitlement and latency for every receipt; UNKNOWN rather than synthetic zero.
 5. After enough independent dates, test D13-12 absorption residual versus domestic Taiwan/sector baselines before considering any Formal optimization.
+
+
+## 2026-09-30 global prospective source-only evidence begins
+
+- Latest main already contained `research/global_market_prospective_capture_design_v0_1.json`; this run continued it rather than creating a duplicate architecture.
+- Implemented and tested `research/global_market_receipt_guard_v0_1.mjs` as isolated Class-A research infrastructure. It does not touch Worker, Cron, D1 production schema, API budgets, Formal selection, monitoring or pushes.
+- Unified receipt schema `research/global_market_receipt_v0_1.json` is now partially implemented at the guard/schema layer and includes `TAIWAN_VIX`.
+- First bounded source-only prospective pilot written:
+  - `research/global_market_source_only_pilot_20260930.json`
+  - capture clock 2026-09-30 05:20:18 Taipei;
+  - target decision 2026-09-30 18:10 Taipei;
+  - four source-only clean receipts:
+    1. U.S. Treasury official 2026-09-29 nominal par curve;
+    2. BLS Employment Situation schedule for 2026-10-02;
+    3. BLS CPI schedule for 2026-10-14;
+    4. BLS PPI schedule for 2026-10-15.
+- The pilot explicitly inspects no Taiwan outcome and is classified `PARTIAL_SOURCE_ONLY_DATE__NOT_A_CLEAN_GLOBAL_VECTOR_DATE`.
+- Same-U.S.-date future macro realizations remain absent. Schedule-known and realization-known are separate objects.
+- DXY/HG/GC/TX were deliberately not fabricated into the 05:20 pilot because provider entitlement / decision-window capture had not been proven at that clock.
+- Source-only evidence is append-only; missing lanes remain UNKNOWN.
+- One partial pilot date does not justify D13 maturity promotion or any predictive claim.
+- Formal Core remains LOCKED. `FORMAL_OPTIMIZATION_CANDIDATE = NO`.
+
+## Updated exact next continuation
+
+1. Continue source-only prospective collection across independent Taiwan decision dates; outcome joins remain CLOSED.
+2. Add official/current TAIWAN VIX and TX NIGHT_PRE_SCAN via their tested isolated builders on eligible market dates.
+3. Do not add DXY/HG/GC until provider entitlement and latency are frozen; provider choice cannot be selected after observing outcomes.
+4. Preserve repeated versions of BLS schedule metadata so calendar revisions can be detected instead of overwritten.
+5. After sufficient clean-date coverage, preregister the D13-12 absorption-residual outcome join and compare simple domestic/sector baselines before complex global vectors.
+6. Still no scalar GLOBAL_RISK_SCORE; vector-first architecture remains authoritative.
