@@ -176,6 +176,33 @@ const incomplete=api.pvBuildSameSessionOutcome(outcomeSnapshot,bars,"B1",true);
 assert.equal(incomplete.acceptanceResult,"INCOMPLETE_SESSION_END");
 assert.equal(incomplete.directionReturn,null);
 
+// T19: frozen v0.1 semantic defect — a 13:00 PRE_EVENT-only path manufactures an Acceptance event key.
+const noTriggerEnd=api.pvAdvanceAcceptance({
+  symbol:"2330",marketDate:"2026-09-24",channel:"B",
+  bar:bBar("13:00",{high:99.8,close:99.6,localVolumeRatio:0.7}),
+  previousBar:null,plan:bPlan,previous:null,observedAt:iso("2026-09-24","13:00")
+});
+assert.equal(noTriggerEnd.state,"B_EXPIRED_AMBIGUOUS");
+assert.match(String(noTriggerEnd.eventKey||""),/^PVACC:B:2330:/);
+assert.deepEqual(noTriggerEnd.stateHistory.map(x=>x.state),["B_PRE_EVENT","B_EXPIRED_AMBIGUOUS"]);
+
+// T20: frozen v0.1 semantic defect — Acceptance/anchor eligibility is not gated by pvInterpretability.
+const snapshotBuilderStart=source.indexOf("async function pvBuildIntradaySnapshot");
+const snapshotBuilderEnd=source.indexOf("function pvBuildSameSessionOutcome",snapshotBuilderStart);
+const snapshotBuilderSource=source.slice(snapshotBuilderStart,snapshotBuilderEnd);
+assert.match(snapshotBuilderSource,/const acceptance=pvAdvanceAcceptance\(/);
+assert.match(snapshotBuilderSource,/const anchorEligible=acceptance\.transitioned/);
+assert.doesNotMatch(snapshotBuilderSource,/anchorEligible[^;]*guard\.pvInterpretability/);
+
+// T21: read-only D1 QA must expose the preregistered Acceptance denominator diagnostics without scheduling or Formal actions.
+const ephemeralQaWorkflow=await readFile(new URL("../.github/workflows/pv-shadow-ephemeral-d1-qa.yml",import.meta.url),"utf8");
+assert.match(ephemeralQaWorkflow,/workflow_dispatch:/);
+assert.doesNotMatch(ephemeralQaWorkflow,/^\s*schedule:/m);
+assert.match(ephemeralQaWorkflow,/acceptanceQa/);
+assert.match(ephemeralQaWorkflow,/preEventOnlyExpiries/);
+assert.match(ephemeralQaWorkflow,/invalidAnchorEligibleRows/);
+assert.match(ephemeralQaWorkflow,/QA_ONLY_NOT_HYPOTHESIS_CLEAN/);
+
 // Daily RVOL uses prior daily shares only, with no neutral substitution.
 const dailyHistory=[];for(let day=1;day<=21;day+=1)dailyHistory.push({date:`2026-08-${String(day).padStart(2,"0")}`,open:100,high:102,low:99,close:101,volumeShares:1000+day});
 dailyHistory.push({date:"2026-09-01",open:101,high:103,low:100,close:102,volumeShares:2021});
