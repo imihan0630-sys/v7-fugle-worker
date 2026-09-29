@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "D15_SYNCHRONIZED_RETURN_PANEL_SOURCE_READINESS_20260930",
+  "observedAt": "2026-09-30T05:08:00+08:00",
+  "repositoryBaseline": "4c72ce71e9985bdfbe6672baec92e81ff342ff00",
+  "outcomeBlind": true,
+  "sourceEvidence": {
+    "d03OfficialPilot": {
+      "sameDateCrossContractParity": "MATERIAL_PASS",
+      "publicBytesCaptured": true,
+      "providerRowVersionVisible": false,
+      "providerPublishedAtPerRowVisible": false,
+      "providerCorrectionIdentityVisible": false,
+      "certifiedSymbolSessionReceipt": false,
+      "corporateActionAncestry": false
+    },
+    "d03FixedCadenceObserver": {
+      "prospectiveCompletedTradingSessionsObserved": 1,
+      "requiredSessions": 3,
+      "rawPayloadPersistence": "TRANSIENT_ONLY_COMPACT_HASH_RECEIPT",
+      "perSymbolRowsPersistedForD15": false,
+      "revisionIncidence": "UNKNOWN"
+    },
+    "v812System1History": {
+      "source": "Fugle daily history cache",
+      "querySpace": "adjusted=false raw OHLCV",
+      "sourceFreshnessRevalidation": true,
+      "corporateActionComparableReturnCertification": false,
+      "readableCertifiedContinuityPanelEndpoint": false
+    },
+    "technicalContinuityHandoff": {
+      "contractFrozen": true,
+      "rawAdmissionEqualsContinuity": false,
+      "runtime": "BLOCKED",
+      "symbolSessionCompleteness": "PARTIAL"
+    }
+  },
+  "falsification": {
+    "rejectedShortcut": "D03 now has official OHLC capability, therefore D15 correlation/covariance/Effective Bets is unblocked.",
+    "result": "REJECTED. The observer persists whole-object hashes rather than the per-symbol comparable rows needed for covariance, raw System1 history is adjusted=false, row-version/session/corporate-action ancestry is not inference-grade, and the canonical continuity runtime is still blocked.",
+    "contaminationWitness": "A 2:1 mechanical reset in RAW_EXECUTION creates approximately -50% log/percentage movement even when the economic continuity path is flat; raw-cross-event covariance would therefore be spurious."
+  },
+  "safeProgress": "The new D15 panel contract makes the blocker explicit and testable. Source capability is materially better understood, but no correlation matrix or Effective Bets value is authorized from current evidence.",
+  "status": "OFFICIAL_OHLC_SOURCE_FEASIBLE / PIT_SYNCHRONIZED_COMPARABLE_RETURN_PANEL_NOT_READY / D15_03_04_05_06_REMAIN_L2",
+  "formalCoreImpact": false
+}

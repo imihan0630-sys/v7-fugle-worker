@@ -542,3 +542,8 @@ Status: CANCELLED
 保留既有文字版【學習進度】footer，仍須顯示：研究室／領域、本輪完成、當前模組、Level、成熟度、狀態、下一續接點，最後附日期與台北時間。
 
 若未來需要新的進度視覺化方式，必須另行提出方案並取得韓哥同意後才可啟用。
+
+
+### 10室 continuation update — D15 synchronized returns (2026-09-30)
+
+D15-03／04／05／06 remain L2/40. Official OHLC source capability is materially feasible, but D03 whole-payload hashes and System1 adjusted=false raw history are not an inference-grade synchronized comparable-return panel. D15 now has a fail-closed PRICE_INDEX_COMPARABLE + exact-listwise-common-support contract; next step is canonical shared continuity/session/corporate-action receipts and a first 60-return read-only correlation/covariance audit. No D15-local adjustment engine or pairwise deletion.

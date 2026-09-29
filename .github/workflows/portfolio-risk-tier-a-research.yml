@@ -147,6 +147,14 @@ on:
       - "research/cash_attribution_spec_v0_1.json"
       - "research/cash_attribution_production_receipt_20260928.json"
       - "tests/test_cash_attribution_v0_1.mjs"
+      - "research/d15_synchronized_return_panel_v0_1.mjs"
+      - "research/d15_synchronized_return_panel_spec_v0_1.json"
+      - "research/d15_synchronized_return_panel_source_readiness_20260930.json"
+      - "research/D15_SYNCHRONIZED_RETURN_PANEL_V0_1.md"
+      - "tests/test_d15_synchronized_return_panel_v0_1.mjs"
+      - "tests/test_d15_synchronized_return_source_readiness_v0_1.mjs"
+      - "research/d15_pairwise_deletion_falsification_v0_1.mjs"
+      - "tests/test_d15_pairwise_deletion_falsification_v0_1.mjs"
       - "tests/portfolio_risk_cash_attribution_readonly_audit.mjs"
       - "tests/test_effective_bets_semantic_firewall_v0_1.mjs"
       - "tests/test_score_cap_reserve_v0_1.mjs"
@@ -218,6 +226,9 @@ jobs:
           node tests/test_score_cap_reserve_v0_1.mjs
           node tests/test_effective_bets_semantic_firewall_v0_1.mjs
           node tests/test_cash_attribution_v0_1.mjs
+          node tests/test_d15_synchronized_return_panel_v0_1.mjs
+          node tests/test_d15_synchronized_return_source_readiness_v0_1.mjs
+          node tests/test_d15_pairwise_deletion_falsification_v0_1.mjs
       - name: Read-only production journal coverage audit
         env:
           V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
