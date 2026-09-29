@@ -1539,3 +1539,67 @@ Status: `FIRST_PROSPECTIVE_MATERIAL_RECEIPT_FROZEN / LAGS_PREREGISTERED / WAITIN
 ### Exact next continuation
 SC-029: capture the next independent material/output-price vintage and instantiate a failed-pass-through or different-exposure control without outcome peeking.
 SC-030: build an ABF/PCB material receipt only after a material benchmark can be mapped to a specific issuer/product scope without assigning generic cost weights.
+
+
+## SC-030 — Copper is physically relevant to ABF substrates but not a direct issuer cost factor
+
+Artifact:
+`research/sc030_abf_copper_benchmark_mapping_v0_1.json`
+
+### Physical role: confirmed
+Current issuer/product and packaging evidence support:
+- ABF substrate construction has distinct core/PP and dielectric material families;
+- ABF itself is an epoxy-resin/inorganic-filler insulating film;
+- fine copper interconnections/plating are formed on ABF dielectric layers.
+
+Therefore copper is physically relevant to the substrate structure.
+
+### Public benchmark: available
+Taiwan's basic-metals monitoring platform provides current copper market context:
+- LME copper spot August 2026 average: US$14,352.5/t, +6.1% MoM, +48.8% YoY;
+- Taiwan refined-copper/copper-alloy import unit value June 2026 average: NT$426.7/kg, +3.3% MoM, +47.3% YoY.
+
+### Direct-cost mapping: falsified
+The following inference is **not authorized**:
+
+`LME_COPPER_CHANGE -> ABF_SUBSTRATE_COMPANY_COST_CHANGE_X_PERCENT`.
+
+Why:
+1. LME copper is not the same economic object as realized copper-foil, plating-metal or chemical-process procurement cost.
+2. Physical use does not identify cost weight.
+3. Copper is only one material/process family inside an ABF/FCBGA substrate.
+4. Issuer procurement contract, inventory buffer, currency/hedge, product mix and yield are unknown.
+5. Issuer selling-price pass-through and realized margin are unknown.
+
+### Research semantics
+Safe state:
+`COPPER_BENCHMARK_CONTEXT = KNOWN`.
+
+Unsafe / UNKNOWN:
+- issuer copper cost share;
+- substrate material-basket weight;
+- immediate procurement-cost change;
+- ABF-film price change;
+- realized margin effect;
+- stock-return sign.
+
+Therefore the correct mapping state is:
+`BENCHMARK_PROXY_ONLY / COMPANY_COST_FACTOR_NOT_ESTABLISHED`.
+
+### Negative lesson
+A material benchmark can be economically real and still be unusable as a company factor.
+
+This is exactly the type of false precision that D10 must reject before System 1/System 2 integration.
+
+### Maturity
+No promotion:
+- D10-05 stays L3;
+- D10-06 stays L2;
+- D10-09 stays L2;
+- D10-12 stays L3.
+
+### Exact next continuation
+SC-029 remains time-dependent: capture the next independent material/output-price vintage without opening outcomes.
+SC-031: seek issuer-disclosed procurement/pass-through evidence that can convert one material benchmark from `PROXY_ONLY` to a bounded exposure state; if cost share/pricing basis remains absent, preserve UNKNOWN rather than estimate it.
+
+Status: `ABF_COPPER_MAPPING_PARTIAL / COST_WEIGHT_UNKNOWN / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED`.
