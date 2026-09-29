@@ -1,0 +1,111 @@
+{
+  "schemaVersion": "0.1",
+  "module": "D12-05",
+  "name": "TAIWAN VIX variance-risk-premium semantics and validation contract",
+  "status": "RESEARCH_ONLY_CONCEPT_FROZEN_EVIDENCE_PENDING",
+  "formalCoreImpact": "NONE",
+  "updatedAt": "2026-09-29T10:13:56+08:00",
+  "coreCorrection": {
+    "statement": "TAIWAN VIX level is not the variance risk premium.",
+    "decomposition": "option-implied variance contains both expected future physical variance and compensation for bearing variance/tail risk.",
+    "consequence": "VIX minus trailing realized volatility is a contemporaneous implied-realized spread proxy, not ex-post or structural VRP."
+  },
+  "objects": {
+    "IMPLIED_VARIANCE": {
+      "definition": "risk-neutral forward variance proxy from option prices",
+      "liveEligibility": "same-session official VIX can be PIT-eligible when timestamped/captured before the decision clock"
+    },
+    "TRAILING_REALIZED_VARIANCE": {
+      "definition": "past-only realized variance estimator using data known by decision time",
+      "role": "PIT baseline / contemporaneous spread component",
+      "guard": "window and estimator frozen before outcome testing"
+    },
+    "FUTURE_REALIZED_VARIANCE": {
+      "definition": "realized variance over the future horizon corresponding to the option-implied horizon",
+      "role": "outcome / ex-post decomposition only",
+      "guard": "NEVER a live feature"
+    },
+    "IMPLIED_REALIZED_SPREAD_PROXY": {
+      "definition": "implied variance minus a frozen past-only physical-variance forecast/proxy",
+      "role": "prospective research feature only",
+      "guard": "do not label structural VRP unless physical expectation model is validated"
+    },
+    "EX_POST_VARIANCE_PREMIUM": {
+      "definition": "implied variance at t minus subsequently realized future variance",
+      "role": "research outcome/decomposition",
+      "guard": "look-ahead if used as predictor at t"
+    }
+  },
+  "literatureAnchors": [
+    "Bekaert-Hoerova: VIX can be decomposed into conditional variance and equity variance premium; components have different economic information.",
+    "Bollerslev-Zhou/Fed: implied-minus-realized variance predictability is horizon-sensitive and measurement-sensitive; model-free implied variance and high-frequency realized variance matter.",
+    "International evidence: variance-risk-premium return predictability has appeared across several developed markets, but portability to Taiwan is an empirical question, not assumed."
+  ],
+  "firstTaiwanQuestion": "Does option-implied risk pricing add incremental risk-state information beyond Taiwan realized-volatility/Regime controls?",
+  "primaryTargets": [
+    "nextSessionRange",
+    "nextSessionRealizedVol",
+    "nextOpenGapAbs",
+    "nextSessionMAE",
+    "tailLossIndicator"
+  ],
+  "secondaryTargets": [
+    "nextOpenGapSigned",
+    "nextOpenToClose",
+    "D1D3ResidualReturn"
+  ],
+  "validationOrder": [
+    "ATR / realized-volatility state",
+    "Taiwan market Regime",
+    "trend / residual RS",
+    "breadth / liquidity",
+    "TAIWAN VIX level/change/shock",
+    "implied-realized spread proxy",
+    "only later directional-return hypotheses"
+  ],
+  "measurementControls": [
+    "D12-11 option-liquidity quality where observable",
+    "expiry-family and 2025 Friday-expiry rulesRegimeVersion",
+    "VIX source timestamp/capturedAt/knownAt",
+    "realized-variance estimator/window",
+    "overlapping-horizon inference",
+    "macro-event and crisis regimes"
+  ],
+  "falsification": [
+    "If VIX adds no value beyond realized volatility/Regime, classify REDUNDANT.",
+    "If implied-realized spread adds no value beyond VIX level/change, reject extra complexity.",
+    "If only ex-post future realized variance creates the result, classify LOOK_AHEAD.",
+    "If effect is crisis-only, classify REGIME_SPECIFIC rather than universal.",
+    "Use independent trading dates; overlapping multi-day targets require HAC/block/bootstrap or non-overlapping robustness.",
+    "Date-shift placebo and leave-one-date/event-cluster-out.",
+    "No threshold/window/model selected from outcome performance.",
+    "Missing liquidity/source evidence remains UNKNOWN."
+  ],
+  "prospectiveReceiptFields": [
+    "scanDate",
+    "vixObservedAt",
+    "vixValue",
+    "vixCapturedAt",
+    "vixKnownAtTaipei",
+    "vixQualityState",
+    "rulesRegimeVersion",
+    "trailingRvEstimatorVersion",
+    "trailingRvValue",
+    "impliedRealizedSpreadProxy",
+    "macroEventState",
+    "sourceId",
+    "sourceVersion"
+  ],
+  "maturityDecision": {
+    "current": "L2",
+    "promotionToL3": "requires validated Taiwan PIT receipt/replay feasibility for the frozen VIX + realized-vol inputs, not merely conceptual literature support",
+    "promotionToL4": "requires prospective/OOS independent-date evidence"
+  },
+  "formalOptimizationCandidate": "NO",
+  "exactNextContinuation": [
+    "Freeze the smallest prospective VIX receipt implementation boundary and check whether an isolated Class-A research capture already exists.",
+    "Do not buy long-history data before prospective source/quality coverage demonstrates usefulness.",
+    "Cross-test VIX and implied-realized spread against D04 realized-volatility states without outcome-driven threshold tuning.",
+    "Then return to D12-10 NIGHT_PRE_SCAN prospective receipt so derivative-risk and after-hours absorption can be tested jointly."
+  ]
+}
