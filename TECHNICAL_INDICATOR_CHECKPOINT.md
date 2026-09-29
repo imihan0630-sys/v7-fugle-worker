@@ -1988,3 +1988,49 @@ Formal Core remains LOCKED.
 3. Map Fugle only through an authorized shared path with provider/date/market/symbol coverage, explicit UNKNOWN, provider-call delta and latency. Do not add D03-specific market-data calls.
 4. Reconcile every child attempt to the exact immutable parent generation and measure non-secret storage, latency and cost before a consolidated Class-B proposal.
 5. Keep TI-005 KD-vs-RSI, TI-006 MACD-vs-direct-trend, outcome joins and Formal changes blocked until prospective PIT-complete receipts pass governance.
+
+## TI-428 through TI-435 — fixed-cadence source-version observer (2026-09-30)
+
+- TI-428: Frozen an append-only, outcome-blind observation protocol in `research/technical_indicator_fixed_cadence_observer_v0_1.mjs`. Each observation binds endpoint, requested/observed trade date, HTTP response clock, payload length/hash, row count and available HTTP metadata. A digest chain detects mutation and reordering.
+- TI-429: Seeded the ledger with the final current-endpoint polls and 2026-09-29 historical captures from the TI-427 receipt. Original clocks/hashes/counts and UNKNOWN latency were preserved rather than regenerated or backdated.
+- TI-430: At 2026-09-30 02:12–02:13 Taipei, recaptured TWSE current 2026-09-24, TPEx current 2026-09-29 and both 2026-09-29 historical objects. All four hashes matched the 01:17–01:18 captures; minimum like-for-like interval was 3,281 seconds.
+- TI-431: Positive evidence is limited to after-hours replay stability across a real interval. Eight chained entries validate, and deterministic tamper/reorder tests fail as required.
+- TI-432: Four unchanged comparisons do not establish zero revision incidence. All captures occurred on one calendar date after one prospective completed session; source-content dates 2026-09-24/29 are not two elapsed prospective sessions. The 3-session gate is `ACCUMULATING_NOT_MET` at 1/3.
+- TI-433: Node fetch encountered HTTP 502 then a proxy-tunnel 403 while `curl` succeeded. This is a transport-path issue, not data failure. The observer now has bounded retry plus `captureFromResponse`; fallback per-request latency remains `UNKNOWN_NOT_INSTRUMENTED_FOR_CURL_FALLBACK` rather than reconstructed from batch wall time.
+- TI-434: The new batch used four calls and 6,911,303 transient payload bytes; no raw multi-megabyte payload was committed. Fugle, independent attestation, certified session, CA ancestry and immutable parent-child reconciliation remain UNKNOWN/unobserved.
+- TI-435: New durable artifacts: `research/TECHNICAL_INDICATOR_FIXED_CADENCE_OBSERVER_V0_1.md`, `research/technical_indicator_fixed_cadence_observations_20260930.json`, observer module and 20-assertion deterministic test. No outcomes, returns, thresholds, indicator parameters, fills or alpha were inspected.
+- D03 maturity stays 44.6%; `FORMAL_OPTIMIZATION_CANDIDATE = NONE`; Formal Core remains LOCKED.
+
+### Current lane status after TI-435
+
+AFTER_HOURS_REPEAT_INTERVAL = PASS
+
+PROSPECTIVE_COMPLETED_SESSION_COVERAGE = ACCUMULATING_1_OF_3
+
+APPEND_ONLY_OBSERVATION_CHAIN = PASS
+
+OBSERVED_CHANGED_PAYLOADS = 0
+
+REVISION_INCIDENCE = UNKNOWN
+
+ROW_VERSION_PIT_ATTESTATION = UNKNOWN
+
+SYMBOL_SESSION_CERTIFICATION = UNKNOWN
+
+CORPORATE_ACTION_ANCESTRY = UNKNOWN
+
+FUGLE_MAPPING = UNOBSERVED_ACCESS_NOT_PRESENT_IN_RUNTIME
+
+OUTCOME_JOIN = NO_GO
+
+FORMAL_OPTIMIZATION_CANDIDATE = NONE
+
+Formal Core remains LOCKED.
+
+### Exact next continuation point after TI-435
+
+1. Append outcome-blind captures after each of the next two completed Taiwan trading sessions, retaining repeated versions of the same trade date. Do not estimate correction incidence before three prospective completed sessions exist.
+2. If a payload hash changes, perform complete row/symbol add-remove-change reconciliation before inspecting outcomes; provider correction identity remains UNKNOWN unless independently supplied.
+3. Record successful-transport per-request latency and non-secret call/byte/compact-storage deltas.
+4. Require shared source/continuity attestation, certified symbol-session and corporate-action ancestry; map Fugle only through the authorized shared path and reconcile each child to the exact immutable parent generation.
+5. Keep TI-005/TI-006, outcomes, Class-B runtime wiring and Formal changes blocked until the prospective PIT-complete receipt gate passes governance.
