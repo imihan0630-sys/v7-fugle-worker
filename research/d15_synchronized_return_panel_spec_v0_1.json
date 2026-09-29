@@ -1,0 +1,111 @@
+{
+  "schemaVersion": "D15_SYNCHRONIZED_RETURN_PANEL_V0_1",
+  "observedAt": "2026-09-30T05:08:00+08:00",
+  "ownership": [
+    "D15-03",
+    "D15-04",
+    "D15-05",
+    "D15-06"
+  ],
+  "status": "CONTRACT_READY / CURRENT_SHARED_SOURCE_NOT_INFERENCE_READY / MODULES_REMAIN_L2",
+  "purpose": "Freeze the PIT, common-support and comparable-price requirements that must be satisfied before Taiwan equity correlation, covariance shrinkage, hierarchical clustering or independent-risk-dimension diagnostics are permitted.",
+  "primaryReturnSpace": "PRICE_INDEX_COMPARABLE",
+  "secondaryReturnSpace": "TOTAL_RETURN_COMPARABLE_SEPARATE_PANEL_ONLY",
+  "prohibitedReturnSpace": "RAW_EXECUTION",
+  "commonSupport": {
+    "policy": "EXACT_LISTWISE_COMMON_SUPPORT",
+    "minimumCloseBars": 61,
+    "resultingPrimaryReturns": 60,
+    "rationale": "PR-016 already froze sample correlation/covariance as transparent baselines and 60d as a primary small-sample research horizon. Pairwise deletion is prohibited because each pair would otherwise use a different time denominator.",
+    "noImputation": [
+      "missing/suspended session -> not zero return",
+      "no pseudo-bar",
+      "no forward-fill masquerading as an observed close"
+    ]
+  },
+  "requiredPanelIdentity": [
+    "parentDecisionReceiptId",
+    "asOf",
+    "panelVersion",
+    "returnSpace",
+    "exact selectedSymbols matching the parent generation",
+    "commonSupportPolicy",
+    "commonSessions"
+  ],
+  "requiredPerSymbolIdentity": [
+    "sourceReceiptId",
+    "sourceHistoryHash",
+    "continuityReceiptId",
+    "symbolSessionContractVersion",
+    "corporateActionRegistryVersion",
+    "sourceAvailableAt",
+    "bars[] with sourceBarHash and availableAt"
+  ],
+  "barRequirements": [
+    "positive comparable close",
+    "bar availableAt <= panel asOf",
+    "symbolSessionVerified=true",
+    "corporateActionContinuityResolved=true",
+    "pseudoBar=false",
+    "exact date equality to the one common-support vector"
+  ],
+  "constrainedSemantics": "Price-limit-constrained rows remain observed data but classify the panel VALID_CONSTRAINED so later inference can stratify them rather than silently discard them.",
+  "failClosed": [
+    "RAW_EXECUTION used as primary covariance return space",
+    "mixed PRICE_INDEX and TOTAL_RETURN spaces in one panel",
+    "pairwise deletion or unfrozen support",
+    "parent selected-set drift",
+    "source or row known after asOf",
+    "unresolved corporate action continuity",
+    "unverified symbol-session state",
+    "pseudo-bar or zero-return imputation",
+    "duplicate/out-of-order/mismatched common dates",
+    "missing source/continuity identity"
+  ],
+  "currentSourceReadiness": {
+    "d03OfficialPublicOHLC": "SOURCE_CAPABILITY_PASS_ONLY",
+    "d03FixedCadenceObserver": "WHOLE_PAYLOAD_HASH_LEDGER_ONLY_RAW_ROWS_TRANSIENT",
+    "v812HistorySourceRevalidation": "RAW_ADJUSTED_FALSE_SOURCE_FRESHNESS_ADMISSION_PASS",
+    "sharedTechnicalContinuityRuntime": "BLOCKED_UNAPPROVED",
+    "certifiedSymbolSessionRuntime": "PARTIAL",
+    "d15ReadableComparablePanel": "NOT_FOUND",
+    "result": "PUBLIC_OHLC_BYTES_AVAILABLE / SYNCHRONIZED_RETURN_PANEL_PIT_NOT_READY"
+  },
+  "estimatorBoundary": {
+    "allowedAfterValidPanel": [
+      "sample correlation baseline",
+      "sample covariance baseline"
+    ],
+    "separatePreregistrationRequired": [
+      "Ledoit-Wolf-style covariance shrinkage",
+      "hierarchical clustering/linkage",
+      "downside/stress dependence",
+      "eigenvalue participation ratio",
+      "Meucci Effective Number of Bets"
+    ],
+    "namingFirewall": "Inverse HHI remains concentration-equivalent names and must not be relabeled Effective Bets."
+  },
+  "maturityDecision": {
+    "D15_03": "remain L2/40",
+    "D15_04": "remain L2/40",
+    "D15_05": "remain L2/40",
+    "D15_06": "remain L2/40",
+    "reason": "A validated input contract and public-source feasibility do not supply a real PIT-aligned synchronized comparable-return panel."
+  },
+  "crossLaneDependency": {
+    "owners": [
+      "shared source/continuity",
+      "Corporate Actions/symbol-session",
+      "D03 source capability"
+    ],
+    "rule": "D15 consumes canonical receipts; it must not build a second corporate-action adjustment engine or add redundant D15-specific provider calls."
+  },
+  "exactNextContinuation": [
+    "Have the shared source/continuity owner expose or persist an immutable per-symbol comparable-price panel receipt with row-level as-of provenance.",
+    "Use the exact parent selected set and one listwise common session vector; no pairwise support drift.",
+    "First real D15 correlation/covariance read-only audit uses the frozen 60-return panel, with price-limit-constrained panels reported separately.",
+    "Only after independent dates accumulate test shrinkage/clustering/risk-dimension stability; do not optimize allocation from the first covariance matrix.",
+    "Keep D15-06 Effective Bets blocked until covariance/factor-decomposition evidence is valid and stable."
+  ],
+  "formalCoreImpact": false
+}
