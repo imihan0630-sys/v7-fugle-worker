@@ -369,3 +369,32 @@ promotion governance and data-readiness understanding improved substantially, bu
 4. Accumulate prospective observable-state episodes; do not choose a composite Risk-on/off score.
 5. After occupancy evidence exists, preregister one single-dimension policy class, one strategy, one MDE, static baseline and exposure-matched control.
 6. D18 stays L2 until executable PIT evidence exists; D16-13 stays L3 until actual prospective full-universe capture dates exist.
+
+
+## 2026-09-29 continuation — Breadth prior-session PIT audit
+
+Repository evidence now narrows D18-04 further:
+
+- A1 history primitives compute percentage returns from ordered closes, not signed price-change amount.
+- PIT replay admits only replay-eligible rows available by the decision timestamp and fails closed on ambiguous eligible revisions.
+- Daily Shadow orchestration already requests prior bars per symbol and appends the current A1 snapshot before PIT replay.
+- Official full-market history preserves actual daily market presence rather than using a current-list survivorship proxy.
+- Historical full-market rows remain continuity UNVERIFIED unless separately resolved.
+
+New conclusion:
+1. Direction breadth and true-return distribution must mature separately.
+2. Direction breadth can be tested from same-day signed direction plus complete TWSE/TPEx accounting without waiting for continuity-heavy return history.
+3. True return distribution requires close_t / close_previous_official_session - 1, PIT eligibility, explicit coverage and continuity semantics.
+4. A prior close existing is not sufficient: future availability, ambiguous revision, missing/nonpositive close, ambiguous identity or unsuitable continuity make that symbol UNKNOWN for return-distribution coverage.
+5. Historical replay and prospective Shadow are separate evidence lanes. Reconstructed historical availability never becomes historical Shadow.
+6. Breadth is an unbalanced-panel problem: new listings, suspensions/no-trade cases and delistings require explicit semantics; current-list historical breadth would create survivorship bias.
+7. No fixed coverage threshold is authorized before prospective coverage is observed. Missingness must be tested for regime dependence; complete-case breadth can be biased if UNKNOWN clusters in stressed/small-cap/corporate-action-heavy states.
+8. Any learned breadth quantile/z-score/regime threshold must be fit inside each chronological training fold; full-sample normalization invalidates OOS.
+
+FORMAL_OPTIMIZATION_CANDIDATE: NONE.
+
+Exact next continuation:
+- isolate direction-breadth as the first possible Class A market-level builder;
+- freeze cross-market coverage, duplicate-symbol, signed-direction, deterministic-hash and UNKNOWN tests;
+- design return-distribution coverage diagnostics separately;
+- prospectively test state-dependent missingness before any coverage threshold or Regime x Strategy policy.
