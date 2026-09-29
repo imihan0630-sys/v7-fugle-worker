@@ -234,7 +234,11 @@ export function computeDailyResonanceSeries(bars, options = {}) {
 
     return Object.freeze({
       date: bar.date,
+      open: finite(bar.open, "bar.open"),
+      high: finite(bar.high, "bar.high"),
+      low: finite(bar.low, "bar.low"),
       close: closes[index],
+      volume: optionalFinite(bar.volumeShares ?? bar.volume, "bar.volume"),
       ema16: ema16[index],
       ema64: ema64[index],
       ema16Slope,
@@ -339,23 +343,26 @@ export function buildDailyResonanceSnapshot({
   if (!ALLOWED_LIFECYCLE.has(lifecycle)) throw new Error("unsupported priorLifecycleState");
 
   let barState = currentDailyBarState;
+  const currentBarEligible = Boolean(currentDailyBar);
   if (currentDailyBar) {
     barState = requiredText(barState, "currentDailyBarState");
     if (!ALLOWED_BAR_STATE.has(barState)) throw new Error("unsupported currentDailyBarState");
   } else {
-    barState = "FINAL";
+    barState = null;
   }
 
   const bars = normalizeBars(historyBars, currentDailyBar, date);
   const continuityEligible = ALLOWED_CONTINUITY.has(continuity);
   const series = continuityEligible ? computeDailyResonanceSeries(bars) : [];
-  const latest = continuityEligible ? (series.at(-1) ?? null) : null;
+  const latest = continuityEligible && currentBarEligible ? (series.at(-1) ?? null) : null;
 
-  const finality = currentDailyBar && barState === "LIVE"
-    ? "PROVISIONAL_DAILY_BAR"
-    : "CONFIRMED_DAILY_CLOSE";
+  const finality = !currentBarEligible
+    ? "CURRENT_DAILY_BAR_MISSING"
+    : barState === "LIVE"
+      ? "PROVISIONAL_DAILY_BAR"
+      : "CONFIRMED_DAILY_CLOSE";
 
-  const resolved = continuityEligible
+  const resolved = continuityEligible && currentBarEligible
     ? resolveLifecycle({ priorLifecycleState: lifecycle, latest, finality })
     : {
         state: "BLOCKED",
@@ -366,6 +373,7 @@ export function buildDailyResonanceSnapshot({
       };
 
   const qualityWarnings = [];
+  if (!currentBarEligible) qualityWarnings.push("CURRENT_DAILY_BAR_MISSING");
   if (!continuityEligible) qualityWarnings.push("PRICE_CONTINUITY_NOT_VERIFIED");
   if (bars.length < 64) qualityWarnings.push("INSUFFICIENT_HISTORY_LT_64");
   else if (bars.length < 128) qualityWarnings.push("EMA64_SEED_WARMUP_SENSITIVITY");
@@ -407,7 +415,7 @@ export function buildDailyResonanceSnapshot({
     notes: Object.freeze([
       "EMA16/EMA64 and Impulse MACD are calculated from daily bars only.",
       "LIVE daily-bar signals are PROVISIONAL and may disappear before the official 13:30 Asia/Taipei close.",
-      "A 3-of-3 resonance becomes CONFIRMED only when the official daily bar is FINAL and all 3 conditions still hold.",
+      "A 3-of-3 resonance becomes CONFIRMED only when the current market-date daily bar exists, is FINAL, and all 3 conditions still hold.",
       "The 3 conditions are correlated price-derived states, not 3 independent votes.",
       "15-minute context is auxiliary execution context and cannot alter this daily resonance state.",
       "This V0.1 output is a research/shadow candidate, not validated production trading authority.",
