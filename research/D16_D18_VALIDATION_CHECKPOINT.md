@@ -362,39 +362,87 @@ FORMAL_OPTIMIZATION_CANDIDATE: NONE.
 Reason:
 promotion governance and data-readiness understanding improved substantially, but the domestic market-level regime builder is not executable yet and there is no paired prospective Regime-policy evidence.
 
-## Exact next continuation — promotion-gate aware
-1. Specify an isolated research-only market-level Regime feature builder using existing A1/A2/A3/B2 receipts, preferably Class A and zero new market-data calls.
-2. Builder objective is context occupancy/UNKNOWN coverage only; no strategy policy impact.
-3. Freeze replay/fail-closed tests before any prospective regime outcomes.
-4. Accumulate prospective observable-state episodes; do not choose a composite Risk-on/off score.
-5. After occupancy evidence exists, preregister one single-dimension policy class, one strategy, one MDE, static baseline and exposure-matched control.
-6. D18 stays L2 until executable PIT evidence exists; D16-13 stays L3 until actual prospective full-universe capture dates exist.
 
+## 2026-09-30 continuation — Direction Breadth exchange semantics + universe endogeneity
 
-## 2026-09-29 continuation — Breadth prior-session PIT audit
+Durable research:
+- `research/D18_DIRECTION_BREADTH_SEMANTICS_V0_1.md`
+- executable Class-A observer `research/d18_direction_breadth_semantics_v0_1.mjs`
+- falsification test `tests/test_d18_direction_breadth_semantics_v0_1.mjs`
+- PR #274 merged as `31f7c1819b9acf807f2942b63884733889ad814d`
+- verified head `fd3d3e92dac08f6f77390b8876e621d3a600dab9`
+- V8 Regression run `36645020491` PASS
+- V8 Repair CI run `36645020534` PASS
 
-Repository evidence now narrows D18-04 further:
+### D18-04 critical semantic falsification: X is not flat
+Official TWSE/TPEx quote semantics distinguish X / not-comparable from a true flat observation.
 
-- A1 history primitives compute percentage returns from ordered closes, not signed price-change amount.
-- PIT replay admits only replay-eligible rows available by the decision timestamp and fails closed on ambiguous eligible revisions.
-- Daily Shadow orchestration already requests prior bars per symbol and appends the current A1 snapshot before PIT replay.
-- Official full-market history preserves actual daily market presence rather than using a current-list survivorship proxy.
-- Historical full-market rows remain continuity UNVERIFIED unless separately resolved.
+Repository audit found:
+- A1 symbol snapshot preserves raw `sourceFields.change` but its generic numeric parser strips leading X, so raw `X0.00` may coexist with numeric `change=0`.
+- B2 industry observer also strips leading X in its numeric helper and then classifies numeric zero as FLAT.
 
-New conclusion:
-1. Direction breadth and true-return distribution must mature separately.
-2. Direction breadth can be tested from same-day signed direction plus complete TWSE/TPEx accounting without waiting for continuity-heavy return history.
-3. True return distribution requires close_t / close_previous_official_session - 1, PIT eligibility, explicit coverage and continuity semantics.
-4. A prior close existing is not sufficient: future availability, ambiguous revision, missing/nonpositive close, ambiguous identity or unsuitable continuity make that symbol UNKNOWN for return-distribution coverage.
-5. Historical replay and prospective Shadow are separate evidence lanes. Reconstructed historical availability never becomes historical Shadow.
-6. Breadth is an unbalanced-panel problem: new listings, suspensions/no-trade cases and delistings require explicit semantics; current-list historical breadth would create survivorship bias.
-7. No fixed coverage threshold is authorized before prospective coverage is observed. Missingness must be tested for regime dependence; complete-case breadth can be biased if UNKNOWN clusters in stressed/small-cap/corporate-action-heavy states.
-8. Any learned breadth quantile/z-score/regime threshold must be fit inside each chronological training fold; full-sample normalization invalidates OOS.
+Therefore any Direction Breadth implementation that consumes only normalized numeric change can inflate flatCount and contaminate the breadth denominator.
 
+The isolated D18 observer recovers the raw marker and freezes:
+- X / explicit not-comparable => NOT_COMPARABLE;
+- no usable close => UNKNOWN;
+- missing/unparseable change => UNKNOWN;
+- comparable positive/negative => UP/DOWN;
+- true comparable zero => FLAT.
+
+NOT_COMPARABLE and UNKNOWN are excluded from the UP/DOWN/FLAT denominator but are preserved as explicit diagnostic shares/reasons. Exclusion alone is not proof of unbiasedness.
+
+### Informative-missingness extension
+NOT_COMPARABLE / UNKNOWN may be state-dependent, including corporate-action-heavy, volatility, stress, liquidity or listing-age conditions.
+
+Before any coverage threshold or Breadth policy:
+- report notComparablePct / unknownPct;
+- stratify them by observable Regime dimensions when PIT-safe;
+- test whether complete-case breadth changes materially when high-missingness dates are removed;
+- do not set an acceptable coverage percentage from outcomes.
+
+### Market Breadth != Opportunity-Set Breadth
+The repository now explicitly contains two different breadth estimands:
+
+1. MARKET_DIRECTION_BREADTH
+   - PIT-ready TWSE + TPEx ordinary-share market snapshot;
+   - admissible as an external D18 market-state context.
+
+2. OPPORTUNITY_SET_BREADTH
+   - existing V8 research context `TWSE_TPEX_COMBINED_FORMAL_NORMALIZED`;
+   - applies Formal price/instrument filters;
+   - describes the strategy/formal opportunity set, not the whole market.
+
+Using opportunity-set breadth to control the same strategy can create circular/endogenous logic:
+Formal eligibility -> opportunity breadth -> Regime policy -> Formal opportunity.
+
+D18 experiments must keep these universes separate. Opportunity-set breadth may be a control/diagnostic but cannot silently substitute for market-state breadth.
+
+### D18-04 maturity interpretation
+Direction Breadth now has executable/tested PIT semantic feasibility at the sublane level.
+
+However the whole D18-04 module remains L2 because:
+- true percentage-return distribution remains a separate continuity/coverage problem;
+- prospective Direction Breadth occupancy / NOT_COMPARABLE / UNKNOWN coverage has not accumulated;
+- no Breadth Regime threshold or policy has OOS/Shadow evidence.
+
+Recommended status:
+`DIRECTION_BREADTH_EXECUTABLE_PIT_SEMANTICS_VALIDATED / RETURN_DISTRIBUTION_AND_PROSPECTIVE_COVERAGE_PENDING`.
+
+### B2 boundary
+The B2 X->0->FLAT risk is recorded as a falsification finding. PR #274 does not modify shared B2 runtime and does not retroactively repair any B2 historical/prospective receipt.
+
+Any shared B2 semantic correction must be separately classified under engineering governance, with protected-invariant regression evidence.
+
+### Formal decision
 FORMAL_OPTIMIZATION_CANDIDATE: NONE.
 
-Exact next continuation:
-- isolate direction-breadth as the first possible Class A market-level builder;
-- freeze cross-market coverage, duplicate-symbol, signed-direction, deterministic-hash and UNKNOWN tests;
-- design return-distribution coverage diagnostics separately;
-- prospectively test state-dependent missingness before any coverage threshold or Regime x Strategy policy.
+No breadth threshold, market label, strategy gate, score, capital, execution or notification behavior changed.
+
+## Exact next continuation — 2026-09-30
+1. Verify whether 2026-09-29 produced genuine promotion-grade Decision Clock evidence; keep source-clock evidence separate from strategy/Regime Shadow performance.
+2. Design/accumulate prospective Direction Breadth occupancy and NOT_COMPARABLE/UNKNOWN diagnostics when an authorized capture lane exists.
+3. Test state-dependent missingness before freezing any breadth coverage threshold.
+4. Keep Market Direction Breadth and Opportunity-Set Breadth as separate estimands in every D18 receipt.
+5. Continue True Return Distribution PIT/continuity work separately.
+6. If B2 shared observer semantics must be corrected, prepare proposal/regression evidence under the appropriate governance class; do not silently patch.
