@@ -489,6 +489,26 @@ The evidence strengthens D16 PIT/provenance practice but does not satisfy the L4
 - no outcome was joined;
 - final acceptance is pending.
 
+
+### Breadth denominator / missingness contract added
+Durable contract:
+- `research/D18_BREADTH_DENOMINATOR_MISSINGNESS_CONTRACT_V0_1.md`
+
+The breadth population is now frozen as distinct estimands:
+- U0 MARKET_BASE_UNIVERSE;
+- U1 DIRECTION_COMPARABLE_UNIVERSE;
+- U2 RETURN_KNOWN_UNIVERSE;
+- U3 HISTORY_FEATURE_UNIVERSE;
+- U4 OPPORTUNITY_SET_UNIVERSE (separate estimand, not a silent replacement for U0-U3).
+
+Missingness reason families are preserved rather than coerced:
+STRUCTURAL_NOT_COMPARABLE, NO_USABLE_CLOSE, CHANGE_MISSING_OR_UNPARSEABLE,
+PRIOR_SESSION_PRICE_MISSING, NEW_OR_RETURN_HISTORY_UNAVAILABLE,
+CONTINUITY_UNVERIFIED, SOURCE_OR_CLOCK_INVALID,
+CLASSIFICATION_OR_UNIVERSE_UNKNOWN, HISTORY_INSUFFICIENT, UNKNOWN_OTHER.
+
+No universal coverage threshold is authorized before prospective coverage/missingness distributions are observed.
+
 ## Exact next continuation — revised
 1. After the scheduled finalized-date audit exists, read the immutable acceptance state for 2026-09-29 and only then decide whether it increments Decision Clock promotion-grade date counts.
 2. Continue Direction Breadth prospective occupancy / NOT_COMPARABLE / UNKNOWN design; no policy threshold.
