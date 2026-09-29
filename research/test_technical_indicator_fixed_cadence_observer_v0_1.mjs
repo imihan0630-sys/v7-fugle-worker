@@ -73,8 +73,16 @@ const durableLedger = JSON.parse(fs.readFileSync(
 ));
 const durableSummary = summarizeLedger(durableLedger);
 check(verifyChain(durableLedger.entries), 'durable ledger chain failed');
-check(durableSummary.repeatedVersionComparisons === 4, 'durable repeat count failed');
-check(durableSummary.unchangedByteComparisons === 4, 'durable unchanged count failed');
+check(
+  durableSummary.repeatedVersionComparisons === durableLedger.summary.repeatedVersionComparisons
+    && durableSummary.repeatedVersionComparisons >= 4,
+  'durable repeat count failed',
+);
+check(
+  durableSummary.unchangedByteComparisons === durableLedger.summary.unchangedByteComparisons
+    && durableSummary.changedByteComparisons === durableLedger.summary.changedByteComparisons,
+  'durable comparison classification failed',
+);
 check(durableLedger.summary.coverageGate === 'ACCUMULATING_NOT_MET', 'three-session gate must stay closed');
 check(durableLedger.summary.maturityPct === 44.6, 'maturity must stay unchanged');
 check(durableLedger.summary.formalOptimizationCandidate === 'NONE', 'Formal candidate must stay absent');

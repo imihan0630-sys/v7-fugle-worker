@@ -29,7 +29,9 @@
       "etag": "\"6abada2c-4dd74\"",
       "lastModified": "2026-09-29T05:20:44+08:00",
       "rowCount": 1380,
-      "observedTradeDates": ["2026-09-24"],
+      "observedTradeDates": [
+        "2026-09-24"
+      ],
       "rawPayloadPersisted": false,
       "outcomeDataInspected": false,
       "entryDigest": "099758bc4ff6fe19bf7bd665ff70be9ea85e47e7a3154903f89455676f9a6b36"
@@ -51,7 +53,9 @@
       "etag": "\"6abbd97d-45f318\"",
       "lastModified": "2026-09-29T23:30:05+08:00",
       "rowCount": 11730,
-      "observedTradeDates": ["2026-09-29"],
+      "observedTradeDates": [
+        "2026-09-29"
+      ],
       "rawPayloadPersisted": false,
       "outcomeDataInspected": false,
       "entryDigest": "6b43dfba2304f5a4da2e5fbb6fe03c557ff087e9e6da22d3c85d454c1b3da267"
@@ -73,7 +77,9 @@
       "etag": null,
       "lastModified": null,
       "rowCount": 1382,
-      "observedTradeDates": ["2026-09-29"],
+      "observedTradeDates": [
+        "2026-09-29"
+      ],
       "rawPayloadPersisted": false,
       "outcomeDataInspected": false,
       "entryDigest": "3eed0879c45ab619fe0d26cc2a704a39c1e6bd296aedecb0f2e2508d0045e44a"
@@ -95,7 +101,9 @@
       "etag": null,
       "lastModified": null,
       "rowCount": 11730,
-      "observedTradeDates": ["2026-09-29"],
+      "observedTradeDates": [
+        "2026-09-29"
+      ],
       "rawPayloadPersisted": false,
       "outcomeDataInspected": false,
       "entryDigest": "a86412a8fc8cf7f2860832b4886485b741f0247c202010392bf2ff1dda456afb"
@@ -117,7 +125,9 @@
       "etag": "\"6abada2c-4dd74\"",
       "lastModified": "Mon, 28 Sep 2026 21:20:44 GMT",
       "rowCount": 1380,
-      "observedTradeDates": ["2026-09-24"],
+      "observedTradeDates": [
+        "2026-09-24"
+      ],
       "rawPayloadPersisted": false,
       "outcomeDataInspected": false,
       "entryDigest": "27a83c50611c09b5d5fdc587e88509ad9199466676a89187811de524118bb2b3"
@@ -139,7 +149,9 @@
       "etag": "\"6abbd97d-45f318\"",
       "lastModified": "Tue, 29 Sep 2026 15:30:05 GMT",
       "rowCount": 11730,
-      "observedTradeDates": ["2026-09-29"],
+      "observedTradeDates": [
+        "2026-09-29"
+      ],
       "rawPayloadPersisted": false,
       "outcomeDataInspected": false,
       "entryDigest": "3e66f5ae7e2c7eaf6fd31675657a8903c5bca7d5a165aec96fee5bb4eaa1dfd9"
@@ -161,7 +173,9 @@
       "etag": null,
       "lastModified": null,
       "rowCount": 1382,
-      "observedTradeDates": ["2026-09-29"],
+      "observedTradeDates": [
+        "2026-09-29"
+      ],
       "rawPayloadPersisted": false,
       "outcomeDataInspected": false,
       "entryDigest": "7f086cc6c8802ca2cf977347e5cf6ed279dbbad5f588c056c3b496fc240f04cf"
@@ -183,19 +197,123 @@
       "etag": null,
       "lastModified": null,
       "rowCount": 11730,
-      "observedTradeDates": ["2026-09-29"],
+      "observedTradeDates": [
+        "2026-09-29"
+      ],
       "rawPayloadPersisted": false,
       "outcomeDataInspected": false,
       "entryDigest": "cd0be1f71a9783982ae988a9c3a4db1cc4a2a0d9c8773614d55904cc558beb75"
+    },
+    {
+      "sequence": 9,
+      "previousEntryDigest": "cd0be1f71a9783982ae988a9c3a4db1cc4a2a0d9c8773614d55904cc558beb75",
+      "captureId": "20260930-afterhours-b3-tpex-current",
+      "endpointId": "TPEX_CURRENT_DAILY_CLOSE",
+      "sourceOwner": "TPEX",
+      "endpointContract": "tpex_mainboard_daily_close_quotes",
+      "url": "https://www.tpex.org.tw/openapi/v1/tpex_mainboard_daily_close_quotes",
+      "requestedTradeDate": null,
+      "capturedAt": "2026-09-30T07:13:54+08:00",
+      "attempts": 1,
+      "elapsedMs": 12541,
+      "payloadBytes": 4584216,
+      "payloadSha256": "9ac267faca202ecb73c4bdc22c05eabc36c7cd45298513c904868f82bb403a5d",
+      "etag": "\"6abbd97d-45f318\"",
+      "lastModified": "Tue, 29 Sep 2026 15:30:05 GMT",
+      "rowCount": 11730,
+      "observedTradeDates": [
+        "2026-09-29"
+      ],
+      "rawPayloadPersisted": false,
+      "outcomeDataInspected": false,
+      "entryDigest": "e9729cdf76f93e555bd46463e3dbef020be678409474af1b7dc323880e7f0761"
+    },
+    {
+      "sequence": 10,
+      "previousEntryDigest": "e9729cdf76f93e555bd46463e3dbef020be678409474af1b7dc323880e7f0761",
+      "captureId": "20260930-afterhours-b3-twse-current",
+      "endpointId": "TWSE_CURRENT_STOCK_DAY_ALL",
+      "sourceOwner": "TWSE",
+      "endpointContract": "STOCK_DAY_ALL",
+      "url": "https://openapi.twse.com.tw/v1/exchangeReport/STOCK_DAY_ALL",
+      "requestedTradeDate": null,
+      "capturedAt": "2026-09-30T07:13:56+08:00",
+      "attempts": 1,
+      "elapsedMs": 8158,
+      "payloadBytes": 319882,
+      "payloadSha256": "81cfc85c4c6a076464b2185a7d7f2501cb6273c8e3aebf2854fc487297dca92a",
+      "etag": "\"6abc2bac-4e18a\"",
+      "lastModified": "Tue, 29 Sep 2026 21:20:44 GMT",
+      "rowCount": 1382,
+      "observedTradeDates": [
+        "2026-09-29"
+      ],
+      "rawPayloadPersisted": false,
+      "outcomeDataInspected": false,
+      "entryDigest": "85ff30ec162f66688dfa613abd2d7af285b0a4ea59248849543b99fb84aaedad"
+    },
+    {
+      "sequence": 11,
+      "previousEntryDigest": "85ff30ec162f66688dfa613abd2d7af285b0a4ea59248849543b99fb84aaedad",
+      "captureId": "20260930-afterhours-b3-twse-historical",
+      "endpointId": "TWSE_HISTORICAL_MI_INDEX",
+      "sourceOwner": "TWSE",
+      "endpointContract": "MI_INDEX_ALLBUT0999",
+      "url": "https://www.twse.com.tw/rwd/zh/afterTrading/MI_INDEX?date=20260929&type=ALLBUT0999&response=json",
+      "requestedTradeDate": "2026-09-29",
+      "capturedAt": "2026-09-30T07:13:56+08:00",
+      "attempts": 1,
+      "elapsedMs": 7528,
+      "payloadBytes": 247621,
+      "payloadSha256": "9485a48eee083c7a2e2165902a03cf808c2228749ea38694422517db1027b1e0",
+      "etag": null,
+      "lastModified": null,
+      "rowCount": 1382,
+      "observedTradeDates": [
+        "2026-09-29"
+      ],
+      "rawPayloadPersisted": false,
+      "outcomeDataInspected": false,
+      "entryDigest": "98873f1d9510de8dade457465e0cbbcce9012e040c21c8303e2f22ef408f0f88"
+    },
+    {
+      "sequence": 12,
+      "previousEntryDigest": "98873f1d9510de8dade457465e0cbbcce9012e040c21c8303e2f22ef408f0f88",
+      "captureId": "20260930-afterhours-b3-tpex-historical",
+      "endpointId": "TPEX_HISTORICAL_DAILY_QUOTES",
+      "sourceOwner": "TPEX",
+      "endpointContract": "dailyQuotes",
+      "url": "https://www.tpex.org.tw/www/zh-tw/afterTrading/dailyQuotes?date=2026%2F09%2F29&id=&response=json",
+      "requestedTradeDate": "2026-09-29",
+      "capturedAt": "2026-09-30T07:14:35+08:00",
+      "attempts": 2,
+      "elapsedMs": 10376,
+      "payloadBytes": 1760630,
+      "payloadSha256": "41e64aef784e9e4b0672330800acecd5d2b06d7d7f95e51a5b391eb4f5998c4e",
+      "etag": null,
+      "lastModified": null,
+      "rowCount": 11730,
+      "observedTradeDates": [
+        "2026-09-29"
+      ],
+      "rawPayloadPersisted": false,
+      "outcomeDataInspected": false,
+      "transportValidationNote": "First transport result was not valid JSON after persistence and was excluded; this accepted recapture parsed and matched the prior valid payload hash.",
+      "entryDigest": "576b111fd724104066d2a15bd1da50e6af37f293551a176dddf0462fe5be6c0c"
     }
   ],
   "summary": {
     "chainValid": true,
-    "entryCount": 8,
-    "captureCalendarDates": ["2026-09-30"],
-    "observedTradeDates": ["2026-09-24", "2026-09-29"],
-    "repeatedVersionComparisons": 4,
-    "unchangedByteComparisons": 4,
+    "entryCount": 12,
+    "captureCalendarDates": [
+      "2026-09-30"
+    ],
+    "observedTradeDates": [
+      "2026-09-24",
+      "2026-09-29"
+    ],
+    "repeatedVersionComparisons": 7,
+    "unchangedByteComparisons": 7,
     "changedByteComparisons": 0,
     "revisionIncidence": "UNKNOWN",
     "reasonRevisionIncidenceUnknown": "No changed payload was observed; finite unchanged comparisons do not prove zero revisions.",
@@ -204,21 +322,44 @@
     "afterHoursRepeatIntervalObserved": true,
     "minimumObservedRepeatSeconds": 3281,
     "coverageGate": "ACCUMULATING_NOT_MET",
-    "newBatchProviderCalls": 4,
-    "newBatchPayloadBytes": 6911303,
+    "newBatchProviderCalls": 5,
+    "newBatchPayloadBytes": 6912349,
     "newBatchPersistedRawPayloadBytes": 0,
-    "latencyMeasurement": "UNKNOWN_NOT_INSTRUMENTED_FOR_CURL_FALLBACK",
+    "latencyMeasurement": "MEASURED_FOR_FOUR_ACCEPTED_CURL_TRANSPORTS; ONE_INVALID_PERSISTED_CAPTURE_EXCLUDED",
     "fugle": "ACCESS_NOT_PRESENT_IN_AUTOMATION_RUNTIME",
     "independentSourceAttestation": "UNKNOWN",
     "certifiedSymbolSessionReceipt": "UNKNOWN",
     "corporateActionAncestry": "UNKNOWN",
     "immutableParentChildReconciliation": "UNKNOWN",
     "formalOptimizationCandidate": "NONE",
-    "maturityPct": 44.6
+    "maturityPct": 44.6,
+    "latestBatchTransportCalls": 5,
+    "latestBatchAcceptedCaptures": 4,
+    "latestBatchAcceptedPayloadBytes": 6912349,
+    "latestBatchRejectedCaptureCount": 1,
+    "latestBatchRejectedPersistedBytes": 1568768,
+    "latestBatchRejectedTransportReportedBytes": 1760630,
+    "latestBatchPersistedRawPayloadBytes": 0,
+    "successfulTransportLatencyMs": {
+      "TWSE_CURRENT_STOCK_DAY_ALL": 8158,
+      "TPEX_CURRENT_DAILY_CLOSE": 12541,
+      "TWSE_HISTORICAL_MI_INDEX": 7528,
+      "TPEX_HISTORICAL_DAILY_QUOTES_ACCEPTED_RECAPTURE": 10376
+    },
+    "rowDiffBaseline": {
+      "status": "PROSPECTIVE_BASELINE_MATERIAL",
+      "tradeDate": "2026-09-29",
+      "artifact": "research/technical_indicator_row_diff_baseline_20260930.json.gz",
+      "artifactBytes": 83594,
+      "uncompressedArtifactBytes": 669561,
+      "twseRows": 1382,
+      "tpexRows": 11730,
+      "retrospectivePriorVersionsRecoverable": false
+    }
   },
   "exactNextContinuationPoint": [
-    "Append outcome-blind captures after the next two completed Taiwan trading sessions while retaining repeated versions of each same trade date; do not estimate correction incidence before the 3-session gate.",
-    "If any whole-payload hash changes, compute all-row add/remove/change before inspecting outcomes and keep provider correction identity UNKNOWN unless independently supplied.",
+    "Append outcome-blind captures and compact OHLC row manifests after the next two completed Taiwan trading sessions; do not estimate correction incidence before the 3-session gate.",
+    "On any valid whole-payload or OHLC-manifest change, compute symbol add/remove/change before outcomes. Treat invalid/truncated transport as transport failure, not provider revision; keep provider correction identity UNKNOWN unless independently supplied.",
     "Require shared source/continuity attestation, certified symbol-session and corporate-action ancestry; D03 may not self-issue SOURCE_OWNER_VERIFIED.",
     "Map Fugle only through the authorized shared path and reconcile every child to the exact immutable parent generation with non-secret storage/latency/call deltas.",
     "Keep TI-005/TI-006, outcomes, Class-B runtime wiring and Formal Core changes blocked."

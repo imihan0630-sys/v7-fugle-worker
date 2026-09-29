@@ -2034,3 +2034,55 @@ Formal Core remains LOCKED.
 3. Record successful-transport per-request latency and non-secret call/byte/compact-storage deltas.
 4. Require shared source/continuity attestation, certified symbol-session and corporate-action ancestry; map Fugle only through the authorized shared path and reconcile each child to the exact immutable parent generation.
 5. Keep TI-005/TI-006, outcomes, Class-B runtime wiring and Formal changes blocked until the prospective PIT-complete receipt gate passes governance.
+
+## TI-436 through TI-444 — compact row-diff baseline and third accepted capture batch (2026-09-30)
+
+- TI-436: The run occurred before another Taiwan session completed. Multiple same-date captures do not increase independent prospective coverage; the gate remains `ACCUMULATING_1_OF_3` and revision incidence remains `UNKNOWN`.
+- TI-437: Added four accepted official observations at 07:13–07:14 Taipei. The chain now contains 12 entries and seven like-for-like byte comparisons, all unchanged. Successful accepted transport latency is now measured per endpoint at 7,528–12,541 ms rather than left UNKNOWN.
+- TI-438: TWSE current refreshed from observed trade date 2026-09-24 at 02:12 to 2026-09-29 at 07:13. The first-known refresh clock is bounded only to that interval and cannot be backdated; stale-at-one-poll is also not permanent provider failure.
+- TI-439: One locally persisted TPEx historical body failed JSON parsing despite HTTP success and was excluded. The accepted recapture parsed and matched the prior valid payload hash. HTTP success/transfer count alone cannot be treated as provider revision evidence.
+- TI-440: Falsified an executable gap in the prior observer: a whole-payload hash plus discarded raw body cannot later identify row additions/removals/changes. Added a prospective compact manifest retaining sorted normalized symbol/OHLC rows.
+- TI-441: Whole-byte change and D03-relevant OHLC change are now separate. Exact decimal strings normalize without floating point; blank/dash prices become `NOT_PRESENT`; invalid decimals, duplicate symbols, mixed dates and missing tables fail closed.
+- TI-442: The baseline preserves 1,382 TWSE plus 11,730 TPEx projected rows in 83,594 compressed bytes (669,561 uncompressed). Current-vs-historical normalized OHLC parity is 13,112/13,112, with zero adds/removes/changes. Same-owner parity remains corroboration, not independent attestation.
+- TI-443: New 23-assertion row-manifest falsification covers formatting equivalence, missing values, invalid values, add/remove/change, tamper, duplicate rejection and durable gzip receipt verification. The evolving fixed-cadence test now reconciles durable counts instead of freezing the original four comparisons.
+- TI-444: No outcomes, returns, indicator parameters, thresholds, costs or fills were opened. D03 maturity remains 44.6%; `FORMAL_OPTIMIZATION_CANDIDATE = NONE`; Formal Core remains LOCKED.
+
+### Current lane status after TI-444
+
+AFTER_HOURS_REPEAT_INTERVAL = PASS
+
+PROSPECTIVE_COMPLETED_SESSION_COVERAGE = ACCUMULATING_1_OF_3
+
+APPEND_ONLY_OBSERVATION_CHAIN = PASS_12_ENTRIES
+
+VALID_LIKE_FOR_LIKE_COMPARISONS = 7_UNCHANGED
+
+SUCCESSFUL_TRANSPORT_LATENCY = MEASURED_4_ACCEPTED_ENDPOINTS
+
+COMPACT_OHLC_ROW_DIFF_BASELINE = MATERIAL_13112_ROWS
+
+RETROSPECTIVE_UNSAVED_VERSION_ROW_DIFF = NOT_RECOVERABLE
+
+REVISION_INCIDENCE = UNKNOWN
+
+ROW_VERSION_PIT_ATTESTATION = UNKNOWN
+
+SYMBOL_SESSION_CERTIFICATION = UNKNOWN
+
+CORPORATE_ACTION_ANCESTRY = UNKNOWN
+
+FUGLE_MAPPING = UNOBSERVED_ACCESS_NOT_PRESENT_IN_RUNTIME
+
+OUTCOME_JOIN = NO_GO
+
+FORMAL_OPTIMIZATION_CANDIDATE = NONE
+
+Formal Core remains LOCKED.
+
+### Exact next continuation point after TI-444
+
+1. Append outcome-blind captures and compact OHLC manifests after each of the next two completed Taiwan trading sessions; do not estimate correction incidence before the 3-session gate.
+2. On any valid payload/manifest change, calculate complete symbol add/remove/OHLC-change before outcomes. Invalid/truncated transport is transport failure, not provider revision; provider correction identity stays UNKNOWN without independent evidence.
+3. Record accepted latency, provider-call count, transferred bytes and compact stored bytes for every batch.
+4. Require shared attestation, certified symbol sessions, corporate-action ancestry, authorized shared-path Fugle and exact immutable parent-child reconciliation.
+5. Keep TI-005/TI-006, outcomes, Class-B runtime wiring and Formal changes blocked until the prospective PIT-complete receipt gate passes governance.
