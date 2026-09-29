@@ -1,0 +1,59 @@
+{
+  "schemaVersion": "INSTITUTIONAL_RANK_COMPRESSION_DIAGNOSTIC_SPEC_V0_1",
+  "researchDate": "2026-09-28",
+  "class": "A_RESEARCH_ONLY",
+  "formalCoreChanged": false,
+  "outcomeDataUsed": false,
+  "reuses": [
+    "IC-013",
+    "IC-014",
+    "IC-015",
+    "B-248",
+    "B-249"
+  ],
+  "decomposition": {
+    "currentDayDirectionBase": "8*I(foreignBuyDays>0)+10*I(trustBuyDays>0)+4*I(dealerBuyDays>0)",
+    "persistenceBeyondDay1": "8*max(foreignBuyDays-1,0)+10*max(trustBuyDays-1,0)+4*max(dealerBuyDays-1,0)",
+    "nonlinearCurrentDirectionBonus": "15*institutionsAligned+6*currentBuy",
+    "aggregateNetIntensity": "clamp((institutionTotalNet/(avgVolume20Lots*1000))*25,0,25)",
+    "ownershipConcentration": "0.15*chipConcentration",
+    "sameSessionDirectionPoints": "currentDayDirectionBase+nonlinearCurrentDirectionBonus"
+  },
+  "rankCompressionMetrics": [
+    "saturatedRows and saturationRate by scanDate on clean complete parent",
+    "lostHeadroom=max(preClamp-100,0)",
+    "saturatedDistinctPreClampCount",
+    "flattenedDistinctPreClampPairs: pairs with different preClamp flattened to score=100",
+    "unique institutionalScore count / tied score groups / max tie size"
+  ],
+  "semanticGuards": [
+    "sameSessionDirectionPoints measures repeated use of same-session direction information, not proof that nonlinear interactions are harmful.",
+    "persistenceBeyondDay1 isolates only the additional streak days beyond the current session.",
+    "chipConcentration is ownership concentration, not institutional identity.",
+    "rank compression is claimed only for the institutional component; overall Formal ranking can still differ through other PriorityScore and lexicographic inputs.",
+    "complete clean same-scan parent is mandatory; selected-only FULL_FORMAL_SCAN persistence and bounded Shadow cannot support full-scan prevalence."
+  ],
+  "decision": "OUTCOME_BLIND_COMPONENT_COMPRESSION_DIAGNOSTIC_READY / ECONOMIC_INCREMENTAL_VALUE_UNKNOWN / NOT_FORMAL_OPTIMIZATION_CANDIDATE",
+  "smallCapThresholdGuard": {
+    "threshold": 70,
+    "semantics": "For marketCap 10-30bn, institutionalScore>=70 participates in the special-reason gate together with 1.5x liquidity. Score compression above 100 cannot change whether 70 is passed.",
+    "implication": "Measure >=70 occupancy separately from saturation. Do not claim score-cap compression is itself a small-cap-admission defect."
+  },
+  "streakStateSpace": {
+    "actorDays": "foreign/trust/dealer each in {0,1,2,3}",
+    "theoreticalStates": 64,
+    "uniqueStreakPlusInteractionScores": 41,
+    "maximumPointsBeforeNetIntensityOrOwnership": 87,
+    "statesAtOrAbove70BeforeNetIntensityOrOwnership": 9,
+    "distinctScoresAtOrAbove70": [
+      71,
+      73,
+      75,
+      77,
+      79,
+      83,
+      87
+    ],
+    "interpretation": "Different multi-actor persistence states can map to the same weighted score before any 100 clamp. This is structural state compression, not evidence that the mapping is economically inferior."
+  }
+}
