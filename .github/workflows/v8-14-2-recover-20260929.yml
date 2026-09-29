@@ -1,0 +1,28 @@
+name: V8.14.2 One-Time 2026-09-29 Recovery
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "ops/recover_v8_14_2_20260929.mjs"
+      - ".github/workflows/v8-14-2-recover-20260929.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: v8-14-2-recover-20260929
+  cancel-in-progress: false
+
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Seed closure proof, validate 9/29 preview, and recover System1 monitor
+        env:
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+        run: node ops/recover_v8_14_2_20260929.mjs
