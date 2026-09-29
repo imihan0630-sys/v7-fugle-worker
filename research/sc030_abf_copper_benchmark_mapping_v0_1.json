@@ -1,0 +1,71 @@
+{
+  "version": "0.1",
+  "id": "SC-030",
+  "capturedAt": "2026-09-30T05:43:00+08:00",
+  "mode": "SOURCE_MAPPING_FALSIFICATION / OUTCOME_BLIND",
+  "formalCoreChanged": false,
+  "stockOutcomesOpened": false,
+  "question": "Can a public copper benchmark be mapped directly into an ABF/FCBGA issuer material-cost signal?",
+  "physicalEvidence": [
+    {
+      "source": "Nan Ya PCB official ABF roadmap",
+      "finding": "ABF substrate product/process roadmap identifies core/PP, dielectric, solder mask and bumping material families, but does not disclose material cost weights."
+    },
+    {
+      "source": "Ajinomoto official ABF description",
+      "finding": "ABF is a thermosetting insulating film made from epoxy-resin chemistry, hardener and inorganic microparticle filler."
+    },
+    {
+      "source": "peer-reviewed packaging literature",
+      "finding": "Fine copper interconnections/plating are formed on ABF dielectric layers; copper/ABF interface is physically real and process-critical."
+    }
+  ],
+  "publicBenchmarkEvidence": [
+    {
+      "benchmark": "LME copper spot daily close",
+      "observationMonth": "2026-08",
+      "averageUsdPerTon": 14352.5,
+      "momPct": 6.1,
+      "yoyPct": 48.8,
+      "source": "https://chart.metaltrade.tw/cu/ndomestic/1/",
+      "sourceClass": "Taiwan basic-metals monitoring platform / Fastmarkets-derived benchmark"
+    },
+    {
+      "benchmark": "Taiwan refined copper/copper alloy import unit value",
+      "observationMonth": "2026-06",
+      "averageNtdPerKg": 426.7,
+      "momPct": 3.3,
+      "yoyPct": 47.3,
+      "source": "https://chart.metaltrade.tw/cu/domestic/9/",
+      "sourceClass": "Taiwan basic-metals monitoring platform / customs statistics"
+    }
+  ],
+  "mappingDecision": {
+    "copperPhysicalRole": "KNOWN_RELEVANT_CONDUCTIVE_MATERIAL",
+    "benchmarkToIssuerProcurementBasis": "UNKNOWN",
+    "benchmarkToCopperFoilOrPlatingChemicalCost": "PROXY_ONLY",
+    "copperCostShareInABFSubstrate": "UNKNOWN",
+    "ABFFilmPriceBenchmark": "NO_CANONICAL_PUBLIC_BENCHMARK_VERIFIED",
+    "issuerPassThrough": "UNKNOWN",
+    "status": "BENCHMARK_PROXY_ONLY / NOT_COMPANY_COST_FACTOR"
+  },
+  "coreFalsification": [
+    "LME copper price is not the same economic object as a substrate maker's realized copper-foil/electroplating procurement cost.",
+    "Physical material relevance does not establish cost weight.",
+    "ABF dielectric material and copper are separate material families; one commodity benchmark cannot proxy the whole substrate input basket.",
+    "A copper rally can coincide with demand strength, FX changes, inventory timing or cost pressure; no permanent stock sign is allowed.",
+    "Without issuer selling-price/margin response and product mix, copper movement cannot be called pricing-power evidence."
+  ],
+  "safeResearchUse": [
+    "Store copper benchmark as an external input-cost context descriptor only.",
+    "Join to issuer/product exposure only as PARTIAL until procurement basis/cost-share evidence exists.",
+    "Use future company margin/ASP/volume evidence on native knownAt clocks; never synthesize gross margin from commodity spreads."
+  ],
+  "maturityDecision": {
+    "D10-05": "KEEP_L3",
+    "D10-06": "KEEP_L2",
+    "D10-09": "KEEP_L2",
+    "D10-12": "KEEP_L3"
+  },
+  "status": "ABF_COPPER_MAPPING_PARTIAL / COST_WEIGHT_UNKNOWN / NO_ALPHA / OUTCOMES_CLOSED"
+}
