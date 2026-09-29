@@ -1353,3 +1353,19 @@ This is **not** a `FORMAL_OPTIMIZATION_CANDIDATE`: no prospective/OOS outcome in
 ### Exact continuation
 SC-025: define `MATERIAL_TRANSMISSION_RECEIPT` joining input price -> production route -> output/selling price -> volume -> margin with separate knownAt clocks and UNKNOWN semantics.
 SC-026: require negative controls for low/no exposure and failed pass-through before any material-transmission outcome test.
+
+
+## SC-025 / SC-026 — Material transmission PIT receipt and negative controls
+
+Canonical artifacts: `research/material_transmission_receipt_v0_1.json` and `research/material_transmission_negative_controls_v0_1.json`.
+
+SC-025 freezes the chain `INPUT_PRICE -> PRODUCTION_ROUTE_EXPOSURE -> OUTPUT_SELLING_PRICE -> VOLUME -> MARGIN`. Every node keeps its own observation period, sourcePublishedAt, capturedAt, knownAt and effectiveAt. Missing intermediate evidence remains UNKNOWN. Input-price increases have no universal stock sign; output-price increases are not realized margin capture; current production routes cannot be backfilled historically.
+
+Bounded Taiwan evidence establishes PIT feasibility for the grammar without opening stock-return outcomes. Therefore `D10-12 產業別專用傳導模板` advances L2 -> L3 for data feasibility only. D10-09 and D10-04 remain L2. This is not an alpha claim.
+
+SC-026 freezes two mandatory negative-control families before outcomes: `LOW_OR_NO_EXPOSURE_CONTROL` and `FAILED_PASS_THROUGH_CONTROL`. UNKNOWN exposure cannot be relabeled no exposure; announced price increase != realized ASP != margin capture. Before any outcome join, freeze benchmark/grade, economic role, clocks, lag windows, control eligibility, matching variables, horizons, costs and regime strata. Falsify the proposed transmission if the same effect appears in low/no-exposure controls, disappears after pass-through/mix controls, is dominated by one date/mega-cap, depends on ex-post lag choice, or is redundant with sector RS/market regime/price trend.
+
+Status: `SC025_PIT_FEASIBLE / SC026_NEGATIVE_CONTROLS_FROZEN / OUTCOMES_CLOSED / FORMAL_UNCHANGED`.
+
+### Exact continuation
+SC-027: accumulate prospective immutable `MATERIAL_TRANSMISSION_RECEIPT` rows on independent dates; do not fabricate historical Shadow. Keep outcome joins closed until PIT eligibility, preregistered lag/control matching and native reporting clocks pass. D09 BR-030 may open only on valid post-V8.14 prospective sector-gate receipts; otherwise continue source/readiness work without outcome peeking.
