@@ -1,0 +1,56 @@
+{
+  "schemaVersion": "0.1",
+  "updatedAt": "2026-09-30T05:44:00+08:00",
+  "domain": "D04",
+  "status": "PRICE_LIMIT_CENSORING_GUARD_FROZEN",
+  "formalCoreImpact": "NONE",
+  "purpose": "Prevent limit-constrained observed ranges/returns from being interpreted as unconstrained latent volatility or clean contraction.",
+  "states": [
+    "LIMIT_NOT_NEAR",
+    "NEAR_UPPER_LIMIT",
+    "TOUCHED_UPPER_LIMIT_NOT_CLOSE",
+    "CLOSED_AT_UPPER_LIMIT",
+    "NEAR_LOWER_LIMIT",
+    "TOUCHED_LOWER_LIMIT_NOT_CLOSE",
+    "CLOSED_AT_LOWER_LIMIT",
+    "LIMIT_RULE_EXCEPTION_OR_UNKNOWN"
+  ],
+  "semantics": {
+    "observedLimitHitSession": "OBSERVED_CONSTRAINED_VOLATILITY",
+    "latentEquilibriumVolatility": "UNOBSERVED",
+    "contractionAtBindingLimit": "SEPARATE_CONSTRAINED_STATE",
+    "futureContinuationKnownAtPriorClock": false
+  },
+  "clockSpecificEffects": {
+    "stockATRRange": "DIRECTLY_CENSORED_ON_BINDING_LIMIT_SESSION",
+    "stockCloseToCloseDispersion": "HIT_DAY_BOUNDED_AND_POSSIBLE_LATER_SPILLOVER",
+    "taiexMarketDispersion": "SEPARATE_AGGREGATE_REGIME_DESCRIPTOR",
+    "intradayMicrostructure": "LIMIT_PROXIMITY_CAN_SATURATE_DEPTH_IMBALANCE_AND_PRICE_RESPONSE"
+  },
+  "prohibited": [
+    "latent_unconstrained_price_imputation",
+    "backfilling_next_day_price_discovery_into_prior_day",
+    "classifying_limit_pinned_small_range_as_clean_low_volatility",
+    "using_TAIEX_RV_to_repair_stock_limit_censoring"
+  ],
+  "robustness": [
+    "stratify_limit_constrained_sessions",
+    "repeat_results_excluding_limit_constrained_sessions",
+    "preserve_D1_D2_post_limit_path_as_future_outcome_only",
+    "retain_exact_limit_state_provenance"
+  ],
+  "maturityDecision": {
+    "module": "D04-10",
+    "level": "L2",
+    "maturityPct": 40,
+    "promotion": false,
+    "reason": "Mechanism and falsification strengthened, but no new own PIT/OOS outcome evidence."
+  },
+  "sources": [
+    "TWSE Operating Rules Article 63",
+    "Chen 1993 Pacific-Basin Finance Journal",
+    "Huang Fu Ke 2001 International Review of Economics & Finance",
+    "Cho Russell Tiao Tsay 2003 Journal of Empirical Finance",
+    "Lien Hung Zhu Chen 2019 Pacific-Basin Finance Journal"
+  ]
+}
