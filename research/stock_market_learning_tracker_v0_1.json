@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-09-29T00:13:00+08:00",
+  "updatedAt": "2026-09-29T23:18:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -33,7 +33,7 @@
   "aggregate": {
     "domainCount": 18,
     "moduleCount": 226,
-    "maturityWeightedPct": 45.9
+    "maturityWeightedPct": 46.9
   },
   "domains": [
     {
@@ -1148,7 +1148,7 @@
         "CORPORATE_ACTIONS_CAPITAL_SUPPLY_CHECKPOINT.md",
         "EVENT_RISK_CHECKPOINT.md"
       ],
-      "maturityPct": 47.1,
+      "maturityPct": 48.6,
       "modules": [
         {
           "id": "D11-01",
@@ -1260,10 +1260,12 @@
         {
           "id": "D11-14",
           "name": "指數調整事件與被動流",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「指數調整事件與被動流」。學習範圍：除權息、增減資、分割、CB、庫藏股、併購、停復牌、重大訊息與指數調整；公告／生效時鐘；歷史價格連續性；負面證據完整性；事件窗與退出風險。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "TAIWAN_PIT_FEASIBILITY_VALIDATED / OUTCOME_EVIDENCE_PENDING / FORMAL_UNCHANGED",
+          "next": "Build a preregistered Taiwan prospective/OOS cohort separating announcement, effective session, transfers vs true adds/deletes, passive-flow proxies, corporate-action/news controls, costs and auction slippage before any L4 claim."
         }
       ]
     },
