@@ -326,3 +326,13 @@ CA-115: do not re-evaluate Class-A Shadow implementation readiness until the rem
 - D11 maturity 48.6% -> 51.4%; room 08 aggregate 44.4% -> 45.9%.
 - No outcome join, no historical Shadow fabrication, no Formal change, no FORMAL_OPTIMIZATION_CANDIDATE.
 - Exact next: prospective immutable CB lifecycle receipts and treasury plan-to-execution receipts; only then preregister D17-06 expectation-vs-realization metrics before returns.
+
+## D11 prospective receipt contract — 2026-10-01
+- Added outcome-blind receipt contract `research/d11_cb_treasury_prospective_receipt_contract_v0_1.json`.
+- Common replay rule: `knownAtUpperBound = capturedAt` unless provider availability is independently authenticated; source publication time alone cannot backdate availability.
+- CB receipts require bond identity plus issue/listing/maturity/conversion-period/conversion-price/outstanding-balance/call/delisting/share-delivery state, with explicit UNKNOWN for missing revision/effective-date evidence.
+- Treasury receipts require plan identity plus authorization/purpose/planned quantity, cumulative/final actual purchases, execution ratio and eventual transfer/conversion/cancellation disposition.
+- Negative controls are frozen before outcomes: call notice without converted-share evidence; conversion window without actual conversion; authorized buyback with low/unknown execution; completed buyback not yet cancelled; later reissue/transfer.
+- Outcome join remains CLOSED. Before any returns are inspected, D17-06 expectation/realization definitions, event time zero, horizons, control cohorts and missingness policy must be preregistered.
+- Formal Core unchanged; maturity unchanged by this contract itself.
+- Exact next: append the first independent-date source receipts for CB and treasury states, then repeat on later independent dates before considering L4/OOS.
