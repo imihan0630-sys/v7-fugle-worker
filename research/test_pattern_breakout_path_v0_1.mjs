@@ -1,0 +1,23 @@
+import assert from 'node:assert/strict';
+import {calculateBreakoutPath} from './pattern_breakout_path_v0_1.mjs';
+let pass=0;const t=(n,f)=>{f();pass++;console.log('PASS',n)};
+const boundary={semanticSpaceId:'TECH',boundaryId:'R1',boundaryVersion:1,lower:99,upper:101,direction:'UP'};
+const episode={semanticSpaceId:'TECH',boundaryId:'R1',boundaryVersion:1,lower:99,upper:101,direction:'UP',firstConfirmedBreakAt:'2026-09-01'};
+const bar=(date,o={})=>({date,open:101,high:103,low:100.5,close:102,eligibleSymbolSession:true,symbolSessionVerified:true,technicalContinuityVerified:true,priceLimitConstrained:false,...o});
+const calc=(bars,asOf='2026-09-10',b=boundary,e=episode)=>calculateBreakoutPath({episode:e,boundary:b,bars,asOf});
+
+t('BP01 break-bar inclusive differs from post-break',()=>{const r=calc([bar('2026-09-01',{high:110}),bar('2026-09-02',{high:105})]);assert(r.maxFavorableExtensionBreakBarInclusive>r.maxFavorableExtensionPostBreak);});
+t('BP02 suspended pseudo-bar excluded',()=>{const r=calc([bar('2026-09-01'),bar('2026-09-02',{eligibleSymbolSession:false,high:120}),bar('2026-09-03')]);assert.equal(r.eligibleBarsSinceBreak,2);assert(r.maxFavorableExtensionBreakBarInclusive<0.1);});
+t('BP03 constrained clock separate',()=>{const r=calc([bar('2026-09-01',{priceLimitConstrained:true}),bar('2026-09-02',{priceLimitConstrained:true}),bar('2026-09-03')]);assert.equal(r.constrainedBarsSinceBreak,2);assert.equal(r.observableBarsSinceBreak,1);});
+t('BP04 reentry failure reclaim clocks immutable',()=>{const r=calc([bar('2026-09-01'),bar('2026-09-02',{close:100}),bar('2026-09-03',{close:98}),bar('2026-09-04',{close:102}),bar('2026-09-05',{close:98})]);assert.equal(r.firstReentryAt,'2026-09-02');assert.equal(r.firstFailureAt,'2026-09-03');assert.equal(r.firstReclaimAt,'2026-09-04');});
+t('BP05 future failure cannot backwrite prior asOf',()=>{const bars=[bar('2026-09-01'),bar('2026-09-02'),bar('2026-09-03',{close:98})];const r=calc(bars,'2026-09-02');assert.equal(r.firstFailureAt,null);});
+t('BP06 new boundary version resets',()=>{const b={...boundary,boundaryVersion:2};const r=calc([bar('2026-09-01')],'2026-09-02',b);assert.equal(r.reason,'RESET_REQUIRED_NEW_BOUNDARY_VERSION');});
+t('BP07 same version mutated coords conflict',()=>{const b={...boundary,upper:102};const r=calc([bar('2026-09-01')],'2026-09-02',b);assert.equal(r.reason,'PROVENANCE_CONFLICT_SAME_VERSION_MUTATED');});
+t('BP08 full history asOf equals true prefix',()=>{const bars=[bar('2026-09-01'),bar('2026-09-02'),bar('2026-09-03',{close:98})];const a=calc(bars,'2026-09-02');const p=calc(bars.slice(0,2),'2026-09-02');assert.deepEqual(a,p);});
+t('BP09 UP/DOWN mirror invariance',()=>{const up=calc([bar('2026-09-01',{high:104,low:100,close:103}),bar('2026-09-02',{high:106,low:102,close:105})]);const bd={semanticSpaceId:'TECH',boundaryId:'S1',boundaryVersion:1,lower:99,upper:101,direction:'DOWN'};const ep={...bd,firstConfirmedBreakAt:'2026-09-01'};const dbars=[{...bar('2026-09-01'),open:99,high:100,low:96,close:97},{...bar('2026-09-02'),open:97,high:98,low:94,close:95}];const down=calc(dbars,'2026-09-10',bd,ep);assert(Math.abs(up.maxFavorableExtensionBreakBarInclusive-down.maxFavorableExtensionBreakBarInclusive)<1e-12);});
+t('BP10 weak follow-through not false breakout',()=>{const r=calc([bar('2026-09-01',{high:101.5,low:101,close:101.1}),bar('2026-09-02',{high:101.4,low:101,close:101.05})]);assert.equal(r.firstReentryAt,null);assert.equal(r.firstFailureAt,null);});
+t('BP11 continuity break blocks mechanical reset',()=>{const r=calc([bar('2026-09-01'),bar('2026-09-02',{technicalContinuityVerified:false,open:80,high:82,low:79,close:81})]);assert.equal(r.status,'DATA_BLOCKED');assert.equal(r.reason,'TECHNICAL_CONTINUITY_UNKNOWN');});
+t('BP12 missing session provenance blocks',()=>{const r=calc([bar('2026-09-01',{symbolSessionVerified:false})]);assert.equal(r.status,'DATA_BLOCKED');assert.equal(r.reason,'SYMBOL_SESSION_UNKNOWN');});
+t('future unknown is null not zero',()=>{const r=calc([bar('2026-09-01')],'2026-09-01');assert.equal(r.firstFailureAt,null);assert.equal(r.firstReentryAt,null);assert.equal(r.maxFavorableExtensionPostBreak,null);});
+t('constrained-only remains unresolved not failed',()=>{const r=calc([bar('2026-09-01',{priceLimitConstrained:true}),bar('2026-09-02',{priceLimitConstrained:true,close:98})]);assert.equal(r.observationStatus,'UNRESOLVED_CONSTRAINED');assert.equal(r.firstFailureAt,null);});
+console.log(`SUMMARY ${pass}/14 PASS`);
