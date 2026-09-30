@@ -1,0 +1,28 @@
+{
+  "contract": "PATTERN_BREAKOUT_PATH_IMPLEMENTATION_RECEIPT_V0_1",
+  "scope": "D01 Class-A research-only; outcome-blind; no Formal/runtime wiring",
+  "branch": "research/d01-breakout-descriptor-20260930",
+  "implementationStatus": "PARTIAL_PROTOTYPE",
+  "implemented": [
+    "signed UP/DOWN distance mirror",
+    "episode identity includes boundaryVersion",
+    "eligible/observable/constrained session clocks"
+  ],
+  "notYetImplemented": [
+    "break-bar-inclusive vs post-break extension",
+    "immutable first reentry/failure/reclaim clocks",
+    "same-version coordinate mutation firewall",
+    "true-prefix descriptor equality",
+    "corporate-action TECHNICAL_CONTINUITY fail-closed"
+  ],
+  "smokeAssertions": 4,
+  "executionStatus": "NOT_EXECUTED_IN_GITHUB_RUNTIME",
+  "falsification": [
+    "Clock separation alone does not establish price acceptance or alpha.",
+    "Synthetic smoke assertions do not establish Taiwan coverage/OOS/cost/regime robustness.",
+    "Partial prototype must not be merged as completed descriptor calculator."
+  ],
+  "formalCoreImpact": "NONE",
+  "formalOptimizationCandidate": "NONE",
+  "exactNext": "Complete lifecycle/extension/provenance pure functions on research branch; run BP01-BP12 implementation-level tests; only after 12/12 computed PASS consider merge of Class-A research artifact and checkpoint/tracker review."
+}
