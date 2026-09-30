@@ -1,0 +1,89 @@
+{
+  "version": "0.1",
+  "id": "SC-031",
+  "date": "2026-10-01 Asia/Taipei",
+  "module": "D10-06 Pricing Power定價能力",
+  "formalCoreChanged": false,
+  "stockOutcomesOpened": false,
+  "status": "ISSUER_PRICING_RESPONSE_PIT_FEASIBLE / SELECTIVE_PASS_THROUGH_OBSERVED / REALIZED_MARGIN_UNKNOWN / FORMAL_UNCHANGED",
+  "issuer": {
+    "symbol": "2002",
+    "name": "中國鋼鐵",
+    "route": "INTEGRATED_BF_BOF",
+    "priorRouteEvidence": "Iron ore/coke/flux -> blast furnace hot metal; hot metal plus scrap -> converter steelmaking."
+  },
+  "sourceEvent": {
+    "title": "中鋼一一五年十月盤及第四季季盤盤價",
+    "officialUrl": "https://www.csc.com.tw/csc/nc/newsMain1.asp?newsid=2796",
+    "currentCapturedAt": "2026-10-01T06:09:00+08:00",
+    "publicationDateEvidence": "2026-09-04 corroborated by contemporaneous republication; current official HTML fetch does not expose a machine-readable publication timestamp, so historical firstKnownAt is not self-authenticated by this receipt.",
+    "outcomeBlind": true
+  },
+  "sourceFacts": {
+    "rawMaterialContext": [
+      "iron ore around USD 100/t",
+      "metallurgical coal recently rose USD 50-65/t to about USD 275/t",
+      "issuer explicitly states this raised steelmaking costs"
+    ],
+    "pricingDecisionRule": "Issuer states it considers steelmaking costs, international market conditions, downstream business conditions and product-specific demand.",
+    "observedAdjustments": {
+      "octoberMonthlyProducts": {
+        "hotRolledRollingFeedNtdPerTon": 600,
+        "hotRolledGeneralNtdPerTon": 600,
+        "coldRolledGeneralNtdPerTon": 600,
+        "electroGalvanizedConstructionNtdPerTon": 500,
+        "hotDipGalvanizedConstructionPaintNtdPerTon": 500
+      },
+      "q4QuarterlyExamples": {
+        "plateSelectedNtdPerTon": 500,
+        "wireRodLowMediumHighCarbonNtdPerTon": 0,
+        "hotRolledMediumHighCarbonToolSteelNtdPerTon": 0,
+        "coldRolledMediumHighCarbonDrumNtdPerTon": 0,
+        "autoMaterialNtdPerTon": 0,
+        "selectedGalvanizedAndElectricalSteelNtdPerTon": 600
+      }
+    }
+  },
+  "interpretation": {
+    "inputCostDriverAcknowledged": true,
+    "explicitPricingResponseObserved": true,
+    "passThroughState": "SELECTIVE_PRODUCT_SPECIFIC",
+    "oneToOnePassThrough": false,
+    "procurementCostBasis": "PARTIAL / benchmark context not realized inventory cost",
+    "realizedASP": "UNKNOWN",
+    "realizedMargin": "UNKNOWN",
+    "stockSign": "UNKNOWN"
+  },
+  "positiveMechanism": [
+    "Issuer-level pricing announcements can prospectively reveal whether management explicitly recognizes input-cost pressure and responds through posted product prices.",
+    "Product-level price matrices provide a direct Taiwan PIT object for pricing-power/pass-through research rather than inferring pricing power from commodity prices alone."
+  ],
+  "counterevidence": [
+    "Some products were raised while others were unchanged under the same cost backdrop; therefore pass-through is not uniform even within one issuer.",
+    "The issuer simultaneously cites international prices, downstream conditions and product demand, so raw-material cost is not an isolated causal driver.",
+    "Posted price changes do not prove realized transaction ASP, shipment mix, contract discounts, inventory accounting or gross-margin protection.",
+    "A later margin improvement could come from demand/mix/volume/FX/inventory/energy rather than pricing power; a later margin decline does not prove failed pass-through without those controls."
+  ],
+  "requiredFutureFields": [
+    "sourcePublishedAt / capturedAt / knownAt",
+    "input benchmark observation and source vintage",
+    "product-level posted price change",
+    "realized ASP if disclosed",
+    "shipment volume/product mix",
+    "gross margin/operating margin publication knownAt",
+    "inventory and energy context",
+    "sector/market regime"
+  ],
+  "maturityDecision": {
+    "D10-06": "PROMOTE_L2_TO_L3_TAIWAN_PIT_DATA_FEASIBILITY_ONLY",
+    "D10-09": "KEEP_L2",
+    "D10-05": "KEEP_L3",
+    "D10-12": "KEEP_L3"
+  },
+  "promotionReason": "A Taiwan issuer's official product-pricing announcement directly exposes input-cost narrative, decision criteria and product-specific price adjustments. This validates a replayable prospective pricing-power/pass-through data object. It does not establish predictive efficacy, realized margin preservation or a permanent sign.",
+  "exactNext": [
+    "SC-032 define PRICING_POWER_RECEIPT_V0_1 with product-level price matrices, input-cost narrative, capturedAt/knownAt and realized-ASP/margin follow-up clocks.",
+    "SC-033 prospectively collect at least three independent issuer pricing events and classify FULL/PARTIAL/NONE/UNKNOWN pass-through without stock outcomes.",
+    "Keep D10-09 L2 until upstream/downstream paired observations exist on common event dates."
+  ]
+}
