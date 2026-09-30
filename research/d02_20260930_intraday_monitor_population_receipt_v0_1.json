@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "d02_intraday_monitor_population_receipt_v0_1",
+  "observedAt": "2026-09-30T13:22:20+08:00",
+  "source": {
+    "workflowRunId": 36673058803,
+    "workflowJobId": 109752046951,
+    "headSha": "64c728bd729dca6a160a46c486b9899c320e9d35",
+    "workflow": "V7 Scheduled Health Verification",
+    "step": "Verify actual intraday snapshots only (no pushes or trades)"
+  },
+  "configuredPlanSymbols": [
+    "2006",
+    "4977"
+  ],
+  "observedLiveMonitoringSymbols": [
+    "2006",
+    "2404",
+    "3189",
+    "4977",
+    "6213",
+    "6672"
+  ],
+  "extraObservedSymbols": [
+    "2404",
+    "3189",
+    "6213",
+    "6672"
+  ],
+  "result": "MONITOR_POPULATION_MISMATCH_OBSERVED",
+  "semantics": {
+    "d02Use": "DATA_QA_ONLY",
+    "alphaEvidenceEligible": false,
+    "rootCause": "UNKNOWN",
+    "notes": [
+      "The health assertion compares /api/live result symbols with configured plan symbols and failed on four extra live monitoring symbols.",
+      "Do not infer that extra symbols are erroneous, Formal-selected, holdings, watchlist, or PV-clean without independent provenance.",
+      "For D02, row counts and Acceptance/Guard denominators must be stratified by monitor-membership provenance before use.",
+      "This does not change the prior ruling that 2026-09-30 is DATA_QA-only for H001-H004."
+    ]
+  }
+}
