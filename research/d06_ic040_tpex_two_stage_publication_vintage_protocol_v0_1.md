@@ -39,3 +39,30 @@ No scalar crowding score, threshold tuning or Formal change is allowed.
 Exact next continuation: IC-041 accumulate prospective two-vintage receipts; separately continue PF-039 and institutional D5+ maturity. If automated public capture is unavailable, preserve UNKNOWN rather than substituting paid data.
 
 FORMAL_OPTIMIZATION_CANDIDATE: NONE.
+
+
+## IC-041 prospective receipt — 2026-09-30 early public vintage
+
+Outcome-blind capture performed after the official 20:30 update and before the scheduled 22:30 second update.
+
+- sourceDate: 2026-09-30
+- captureRuntime: 2026-09-30T21:07:50+08:00
+- source: https://www.tpex.org.tw/www/zh-tw/margin/sbl?date=2026%2F09%2F30&id=&response=html
+- title: 信用額度總量管制餘額
+- parsed security-code count: 814 unique rows
+- extracted text length: 64,527 characters
+- ETag / Last-Modified: not exposed by capture transport
+- full cryptographic content hash: unavailable in this capture transport; do not fabricate one
+- parseStatus: PASS for table date and row extraction
+- vintageStatus: EARLY_CAPTURED / LATE_CAPTURE_PENDING
+
+Sentinel rows frozen before the late capture (field order follows the public table):
+- 3105 穩懋: 1,025,000 | 415,000 | 41,000 | 0 | 1,399,000 | 105,985,096 | 26,805,000 | 278,000 | 4,660,000 | 0 | 22,423,000 | 8,876,916
+- 3324 雙鴻: 150,000 | 11,000 | 22,000 | 8,000 | 131,000 | 23,269,209 | 2,578,000 | 50,000 | 10,000 | 0 | 2,618,000 | 1,233,503
+- 3363 上詮: 297,000 | 2,000 | 17,000 | 0 | 282,000 | 27,160,141 | 9,763,292 | 100,000 | 29,000 | 0 | 9,834,292 | 1,029,764
+- 3374 精材: 770,000 | 0 | 73,000 | 0 | 697,000 | 67,841,079 | 6,141,000 | 14,000 | 270,000 | 0 | 5,885,000 | 4,054,536
+- 3260 威剛: 62,000 | 4,000 | 13,000 | 0 | 53,000 | 83,615,854 | 25,415,573 | 889,000 | 197,000 | 0 | 26,107,573 | 2,279,643
+
+Governance: this is the first prospective early-vintage receipt for IC-041, not an outcome observation and not evidence of alpha. The 22:30+ late vintage must be captured independently and compared without forward-return inspection. A single date cannot establish revision stability. FORMAL_OPTIMIZATION_CANDIDATE remains NONE.
+
+Exact next continuation: after 22:30 Asia/Taipei, capture the same 2026-09-30 public table again; compare row count and the frozen sentinel rows, record any revision evidence, and continue accumulating independent dates toward the 10-date stability gate.
