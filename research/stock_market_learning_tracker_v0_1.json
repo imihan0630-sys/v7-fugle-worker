@@ -267,11 +267,11 @@
         "TECHNICAL_INDICATOR_CHECKPOINT.md",
         "TREND_MOMENTUM_REVERSAL_CHECKPOINT.md"
       ],
-      "maturityPct": 44.6,
-      "status": "SECOND_PROSPECTIVE_SESSION_MATERIAL_THREE_SESSION_GATE_ACCUMULATING_2_OF_3",
-      "lastResearchUpdate": "2026-09-30",
-      "researchNote": "TI-445~452 add the second independent prospective completed session and two outcome-blind 2026-09-30 after-hours batches. The append-only chain now has 20 entries and 12 unchanged like-for-like byte comparisons. TWSE historical exposed 9/30 with 1,382 rows while its current endpoint remained on 9/29 through 20:20; those different dates are not compared as revisions. TPEx current/historical 9/30 manifests matched all 11,772 rows with zero OHLC changes. A repeat 498~560 seconds later reproduced all four valid hashes. One 359,134-byte truncated TPEx HTTP/2 body failed JSON validation, was excluded, and the HTTP/1.1 recapture matched the accepted 1,774,916-byte hash. Each accepted batch transferred 6,949,163 bytes; accepted latency spans 7,834~23,162 ms; no raw multi-MB body was committed. Prospective coverage is now 2/3; revision incidence and attestation/session/CA/Fugle/parent evidence remain UNKNOWN, maturity stays 44.6%, outcomes and Formal Core remain closed.",
-      "exactNextContinuationPoint": "Do not persist more hourly duplicates for the already-covered 2026-09-30 session. After the next completed Taiwan trading session, append the third prospective session plus one validated same-trade-date repeat. Keep correction incidence UNKNOWN until then. On any valid same-date payload/manifest change, calculate complete symbol add/remove/OHLC-change before outcomes; invalid/truncated transport is transport failure, not provider revision. Record latency, explicit transport-command count, provider-request uncertainty, bytes and compact storage; require shared attestation, certified sessions, CA ancestry, authorized shared-path Fugle and exact immutable parent-child reconciliation. Keep TI-005/TI-006, outcomes, Class-B wiring and Formal changes blocked.",
+      "maturityPct": 46.2,
+      "status": "ADX_MECHANISM_FALSIFICATION_L2 / THREE_SESSION_PIT_GATE_ACCUMULATING_2_OF_3",
+      "lastResearchUpdate": "2026-10-01",
+      "researchNote": "TI-453~459 establish exact SMA deduction/slope directional redundancy, reject SMA-style deduction semantics for EMA, and define executable ADX mechanism/falsification. Synthetic Wilder-14 witnesses show ADX is directionless (smooth up/down both 100), path-sensitive beyond identical endpoint return (smooth 100->120 ADX 100 vs choppy same-return ≈16.7353), and materially warm-up-sensitive at 65 bars versus a long baseline (delta ≈+0.8294; 150-bar delta ≈+0.0001). ADX and Impulse MACD remain a shared OHLC-derived family with high redundancy prior; ADX starts as a moderator, not an additive vote. D03-09 advances L1/20 to L2/40 and D03 aggregate to 46.2%. The source/version prospective gate remains 2/3; no outcomes or Formal behavior were opened.",
+      "exactNextContinuationPoint": "Do not manufacture a third source/version session. After the next completed Taiwan session, append the third prospective capture plus validated same-trade-date repeat and close/retain the preregistered source gate. If governance passes, execute TI-005 KD-vs-RSI then TI-006 MACD-vs-direct-trend with equal-date residualized controls. Before ADX outcome testing, prove a stable long-enough history/warm-up contract and freeze +DI/-DI/DX/ADX/formulaVersion/continuity fields. ADX efficacy follows TI-005/TI-006 and must be residualized against direct trend, ATR/regime and Impulse MACD; no additive vote, threshold sweep, historical Shadow repair or Formal change.",
       "modules": [
         {
           "id": "D03-01",
@@ -340,10 +340,12 @@
         {
           "id": "D03-09",
           "name": "ADX平均趨向指標",
-          "level": "L1",
-          "maturityPct": 20,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「ADX平均趨向指標」。學習範圍：公式與參數語意；趨勢、動能與反轉機制；超買超賣與背離的失效條件；多時間框架衝突；與原始價格特徵的冗餘；台股資料連續性與可重播性。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "理論已理解"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "MECHANISM_AND_FALSIFICATION_DEFINED / WARMUP_CONTRACT_REQUIRED / OUTCOME_UNKNOWN",
+          "next": "After PIT/source gate completion, freeze long-history ADX warm-up/formulaVersion and test residual value beyond direct trend, ATR/regime and Impulse MACD; no threshold sweep or additive vote."
         },
         {
           "id": "D03-10",
