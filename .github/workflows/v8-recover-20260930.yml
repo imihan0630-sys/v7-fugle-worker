@@ -1,0 +1,28 @@
+name: V8 Staged Recover 2026-09-30
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "ops/recover_v8_20260930.mjs"
+      - ".github/workflows/v8-recover-20260930.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: v8-staged-recover-20260930
+  cancel-in-progress: false
+
+jobs:
+  recover:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: System1 staged recovery for 2026-09-30
+        env:
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+        run: node ops/recover_v8_20260930.mjs
