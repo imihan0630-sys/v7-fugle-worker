@@ -1,0 +1,108 @@
+{
+  "version": "0.1",
+  "id": "BR-033",
+  "date": "2026-10-01 Asia/Taipei",
+  "module": "D09-05 Above-MA廣度",
+  "formalCoreChanged": false,
+  "outcomesOpened": false,
+  "status": "MECHANISM_AND_FALSIFICATION_FROZEN / PIT_SCHEMA_DEFINED / LIVE_POST_REPAIR_RECEIPT_PENDING / FORMAL_UNCHANGED",
+  "purpose": "Define an UNKNOWN-safe Taiwan sector/market Above-MA participation measure that can distinguish broad participation from leader-dominated price strength without inheriting folklore thresholds.",
+  "externalEvidence": [
+    {
+      "source": "StockCharts ChartSchool Percent Above Moving Average",
+      "url": "https://chartschool.stockcharts.com/table-of-contents/market-indicators/percent-above-moving-average",
+      "use": "Method definition and documented whipsaw risk; not evidence for Taiwan thresholds."
+    },
+    {
+      "source": "Yu, Webb & Lin, Journal of Investing 2025",
+      "url": "https://researchwith.montclair.edu/en/publications/the-use-of-index-specific-market-breadth-and-index-over-moving-av/",
+      "use": "Peer-reviewed evidence that index-over-moving-average percentages at multiple horizons are an empirical research family; does not authorize fixed Taiwan cutoffs."
+    }
+  ],
+  "currentSystemFacts": [
+    "Existing research patch chain already computes market-level aboveMa20Pct and aboveMa60Pct from history-backed featureRows.",
+    "Existing buildTodaySectorStats(rows, features) already has same-day industry rows plus symbol feature mapping, so sector-level computation needs no new external source in principle.",
+    "Current Formal sector breadth is one-day advance share and is semantically different from multi-day Above-MA trend participation.",
+    "Post-V8.12/V8.14 live evidence is still constrained by history admission/recovery runtime issues, so L3 is not claimed."
+  ],
+  "frozenDefinitions": {
+    "windowsTradingDays": [
+      20,
+      60
+    ],
+    "memberPass": "close_t > MA_h_t using only bars whose session/completion/source admission is PIT-valid",
+    "sectorNumerator": "count of PIT-valid sector members passing memberPass",
+    "historyReadyDenominator": "count of sector members with PIT-valid complete history and finite MA_h",
+    "membershipDenominator": "count of PIT-valid sector members in the classification vintage at decision time",
+    "pointEstimate": "passCount / historyReadyDenominator",
+    "coveragePct": "historyReadyDenominator / membershipDenominator",
+    "lowerBoundPct": "passCount / membershipDenominator",
+    "upperBoundPct": "(passCount + unknownHistoryCount) / membershipDenominator",
+    "unknownHistoryCount": "membershipDenominator - historyReadyDenominator",
+    "noKnownHistory": "If historyReadyDenominator=0, Above-MA state is UNKNOWN, not 0%.",
+    "classificationClock": "classificationSchemeId + effectiveFrom/effectiveTo + knownAt; current labels may not be backfilled historically."
+  },
+  "requiredVariants": [
+    "MARKET_ABOVE_MA20",
+    "MARKET_ABOVE_MA60",
+    "SECTOR_ABOVE_MA20",
+    "SECTOR_ABOVE_MA60",
+    "SECTOR_ABOVE_MA20_CHANGE_1D",
+    "SECTOR_ABOVE_MA60_CHANGE_1D",
+    "CANDIDATE_LEAVE_ONE_OUT_SECTOR_ABOVE_MA20",
+    "CANDIDATE_LEAVE_ONE_OUT_SECTOR_ABOVE_MA60"
+  ],
+  "denominatorGuards": [
+    "Do not compare point estimates across sectors without coveragePct and membership count.",
+    "Do not silently drop missing-history members and call the resulting ratio full-sector breadth.",
+    "Do not mix Formal-normalized universe breadth with official whole-market breadth.",
+    "For small sectors, report member count and candidate leave-one-out sensitivity; one stock may materially flip the ratio.",
+    "Suspensions/no-trade sessions remain valid only under the shared history/source admission contract."
+  ],
+  "positiveMechanism": [
+    "A rising sector/index driven by many members holding above their own trend references represents broader trend participation than the same price return driven by a few leaders.",
+    "Above-MA participation can be slower but more persistent than one-day advance/decline breadth, potentially separating trend diffusion from a single-day rebound.",
+    "20-day and 60-day horizons can describe short/intermediate participation without assuming either is superior."
+  ],
+  "falsification": [
+    "If Above-MA adds no incremental information after sector return/RS, one-day advance breadth, equal/median return, leader concentration/HHI, dispersion and market regime, classify it REDUNDANT.",
+    "If predictive direction flips across trend/range or high/low-volatility regimes, no permanent positive sign is allowed.",
+    "If results disappear after leave-one-out candidate removal in small sectors, treat them as self-inclusion artifacts.",
+    "If low history coverage explains high/low readings, treat the breadth state as DATA_QUALITY_BLOCKED rather than bullish/bearish.",
+    "If only one MA horizon/threshold looks good after a parameter sweep, reject for data snooping.",
+    "Whipsaw around moving-average crossings is expected; breadth crossing a round-number threshold is not by itself a trading signal."
+  ],
+  "redundancyControls": [
+    "sectorReturn20 / Sector RS",
+    "Residual RS",
+    "one-day advancePct",
+    "equal-weight / median sector return",
+    "leader top1/top3 amount share and HHI",
+    "return dispersion",
+    "market above-MA state",
+    "ATR / realized volatility / regime",
+    "liquidity / stock-count / coverage"
+  ],
+  "preregisteredOutcomeFamily": [
+    "D1/D3/D5 sector and candidate residual return",
+    "D5 MFE/MAE",
+    "false-breakout/no-follow-through where available"
+  ],
+  "promotionGate": {
+    "L2": "Mechanism, denominator semantics, counterexamples and redundancy controls frozen.",
+    "L3": "At least one clean post-repair Taiwan PIT receipt with exact membership/history coverage and replayable 20/60-day values.",
+    "L4": "Prospective/OOS independent-date evidence with controls and no threshold sweep.",
+    "L5": "Multi-regime incremental value, costs/coverage, redundancy and independent-date robustness."
+  },
+  "maturityDecision": {
+    "D09-05": "PROMOTE_L1_TO_L2_MECHANISM_AND_FALSIFICATION_ONLY",
+    "D09-06": "KEEP_L2",
+    "D09-07": "KEEP_L2",
+    "D09-10": "KEEP_L3"
+  },
+  "exactNext": [
+    "BR-034 implement an isolated research-only Above-MA receipt builder against existing featureRows/industry membership, with coverage bounds and leave-one-out outputs.",
+    "Do not wire Formal thresholds or System2 weights.",
+    "When the first clean post-repair scan exists, freeze one outcome-blind live receipt before any return join."
+  ]
+}
