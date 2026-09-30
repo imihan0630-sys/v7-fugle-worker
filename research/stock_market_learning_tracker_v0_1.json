@@ -1804,7 +1804,8 @@
         "research/EXPERIMENT_REGISTRY.md",
         "research/research_master_map.json",
         "research/D16_D18_REGIME_POLICY_VALIDATION_V0_1.md",
-        "research/D16_D18_PROMOTION_GATE_V0_1.md"
+        "research/D16_D18_PROMOTION_GATE_V0_1.md",
+        "research/D16_D18_SOURCE_CLOCK_REVALIDATION_V0_1.md"
       ],
       "maturityPct": 73.3,
       "modules": [
@@ -1895,9 +1896,9 @@
           "maturityPct": 60,
           "learningScope": "聚焦「Data Provenance資料來源／世代證明」。學習範圍：PIT、Prospective Shadow、OOS、Purged Holdout、多重測試、日期獨立性、冗餘、成本、Coverage與Zero-pick；資料世代證明、實驗登錄、成熟度升級與防過擬合治理。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "台股PIT資料可行",
-          "status": "FIRST_SYSTEM2_PROSPECTIVE_SOURCE_CLOCK_ARTIFACT_OBSERVED / FINAL_ACCEPTANCE_PENDING",
-          "evidence": "Scheduled attempt-one run 36526809162 on 2026-09-29 produced immutable A1, A5/B2 dependency and daily Decision Clock artifacts; all collection/bundle jobs succeeded. Finalized-date acceptance had not yet run as of 2026-09-30 07:19 Taipei, so promotion-grade membership remains UNKNOWN/pending.",
-          "next": "Read the next-calendar-day finalized-date acceptance before incrementing any Decision Clock promotion-grade count; keep source-clock provenance separate from Shadow/OOS strategy evidence."
+          "status": "FIRST_PROMOTION_GRADE_INDEPENDENT_SOURCE_CLOCK_DATE_CONFIRMED / COMPLETE_AND_PRECISE_DATES_ZERO / SOURCE_FAMILY_REVALIDATION_REQUIRED",
+          "evidence": "2026-09-29 finalized audit counts immutable attempt-one run 36526809162 toward independentTradingDates=1 and promotionGradeDateCount=1, but completeTradingDates=0, precisionEligibleDates=0, requiredReady=false. 9/29 A1 was incomplete and 9/30 raw evidence showed TWSE still prior-date while TPEx eventually reached same-day, proving cross-market asynchronous source availability. Source-clock validity is explicitly separate from feature/strategy/outcome validity.",
+          "next": "Read finalized 2026-09-30 acceptance when its scheduled next-day audit exists; measure factor-specific official source availability; preserve failed source dates; audit global-clock versus strategy-required-source dependency without changing runtime."
         },
         {
           "id": "D16-12",
@@ -2079,7 +2080,9 @@
         "research/D16_D18_PROMOTION_GATE_V0_1.md",
         "research/D18_REGIME_RAW_FEATURE_READINESS_V0_1.md",
         "research/D18_DIRECTION_BREADTH_SEMANTICS_V0_1.md",
-        "research/D18_BREADTH_DENOMINATOR_MISSINGNESS_CONTRACT_V0_1.md"
+        "research/D18_BREADTH_DENOMINATOR_MISSINGNESS_CONTRACT_V0_1.md",
+        "research/D16_D18_SOURCE_CLOCK_REVALIDATION_V0_1.md",
+        "research/D18_U2_TRUE_RETURN_DISTRIBUTION_CONTRACT_V0_1.md"
       ],
       "maturityPct": 40,
       "modules": [
@@ -2121,9 +2124,9 @@
           "maturityPct": 40,
           "learningScope": "聚焦「Breadth參與度×策略」。學習範圍：Market Regime分類、趨勢／盤整、高低波動、Breadth、Rotation、大小型領導與Risk-on/off；策略啟停、權重、Ensemble、Drawdown降載、Regime績效歸因與Walk-forward驗證。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "DIRECTION_BREADTH_EXECUTABLE_PIT_SEMANTICS_VALIDATED / RETURN_DISTRIBUTION_AND_PROSPECTIVE_COVERAGE_PENDING",
-          "next": "Accumulate U0->U1 prospective Direction Breadth occupancy plus NOT_COMPARABLE/UNKNOWN reason shares; test state-dependent missingness before any coverage threshold; build U2 true-return coverage separately; keep U4 Formal opportunity-set breadth a separate estimand.",
-          "evidence": "PR #274 merged: isolated Class-A Direction Breadth observer/test preserves exchange X as NOT_COMPARABLE, no-usable-close as UNKNOWN, deterministic replay and PIT fail-closed; V8 Regression 36645020491 PASS and V8 Repair CI 36645020534 PASS. Whole D18-04 remains L2 pending broader participation/return-distribution and prospective coverage."
+          "status": "DIRECTION_BREADTH_SEMANTICS_AND_TWSE_OFFICIAL_AGGREGATE_PARSER_VALIDATED / TPEX_CROSS_MARKET_CLOCK_AND_U2_CONTINUITY_PENDING",
+          "next": "Prospectively measure TWSE aggregate-breadth availability; verify machine-readable TPEx aggregate breadth; compare aggregate vs per-symbol breadth only on common support; build U2A/U2B receipt only through shared TECHNICAL_CONTINUITY; no coverage/policy threshold yet.",
+          "evidence": "PR #286 merged research-only (346938bc3c7409f06535bde6563fed96b0d4f4e3). TWSE TWTaZU stock-category breadth parser preserves up/down/unchanged/untraded/no-comparison, target-date/PIT/duplicate/subcount fail-closed semantics; final-head System2 Research CI 36784939010, V8 Repair 36784939033 and V8 Regression 36784939167 PASS. TPEx aggregate machine transport/clock and U2B continuity-certified returns remain unproven."
         },
         {
           "id": "D18-05",
