@@ -698,3 +698,12 @@ Negative evidence: official-source status does not prove a particular endpoint/w
 No prices, returns, rankings or post-event outcomes were used; no text/dedup threshold was optimized. Keep D11-08, D11-13, D17-02 and D17-09 at L2. FORMAL_OPTIMIZATION_CANDIDATE = NO.
 
 Exact next: fixed-cadence immutable snapshots across at least three independent trading sessions plus after-hours; expected/observed poll accounting; classify additions/removals/content changes; report sourcePublishedAt-to-capturedAt only as observed capture delay; continue searching for native correction linkage; keep outcome joins closed.
+
+
+## D17-06 cross-module falsification — expectation is not realization (2026-10-01)
+
+D11 treasury-stock and convertible-bond mechanics provide a concrete expectation/surprise contract. Buyback authorization/plan quantity is ex-ante intention, not realized purchase; actual execution disclosures are later realization. CB issue/conversion terms are an opportunity set, not actual conversion; outstanding-balance/share-delivery changes are later realization.
+
+A valid surprise feature must compare the pre-event expected state with information newly knowable at the realization timestamp. Final execution or conversion data cannot be backdated into the earlier expectation state.
+
+This deepens D17-06 but does not promote it beyond L2. Prospective/OOS outcome evidence is still required.
