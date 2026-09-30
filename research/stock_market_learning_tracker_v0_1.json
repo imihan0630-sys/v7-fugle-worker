@@ -32,8 +32,8 @@
   },
   "aggregate": {
     "domainCount": 18,
-    "moduleCount": 226,
-    "maturityWeightedPct": 46.9
+    "moduleCount": 229,
+    "maturityWeightedPct": 47
   },
   "domains": [
     {
