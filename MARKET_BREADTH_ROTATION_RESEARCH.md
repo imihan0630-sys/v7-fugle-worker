@@ -1534,3 +1534,66 @@ No Formal sector gate, sector score, threshold, ranking, quota, capital, signal 
 ### Exact next continuation
 BR-034:
 build an isolated research-only Above-MA receipt from existing feature rows + industry membership. Required outputs: MA20/MA60 point estimates, coverage/bounds, member counts and leave-one-out sensitivity. Freeze the first clean live receipt before any forward outcome join.
+
+
+## BR-034 — Above-MA executable receipt QA
+
+Artifacts:
+- `research/above_ma_breadth_receipt_v0_1.mjs`
+- `research/test_above_ma_breadth_receipt_v0_1.mjs`
+- `research/br034_above_ma_breadth_isolated_qa_v0_1.json`
+
+An isolated research-only builder now implements the BR-033 contract without Worker/runtime/Formal wiring.
+
+### Adversarial QA
+28 deterministic assertions pass.
+
+Covered failure/counterexample cases:
+1. Full 20d/60d history coverage returns exact point estimates.
+2. Partial history coverage keeps point estimate separate from membership lower/upper bounds.
+3. Candidate self-inclusion can materially change a small-sector reading; leave-one-out is therefore mandatory.
+4. Candidate-only valid history can produce a full-sample 100% point estimate while leave-one-out is UNKNOWN.
+5. Zero history-ready members returns UNKNOWN rather than 0%.
+6. MA20 may be known while MA60 remains UNKNOWN.
+7. Duplicate membership identity fails closed.
+8. Missing classificationSchemeId fails closed.
+9. Sector partitions remain independent.
+
+### Concrete denominator counterexample
+Four sector members:
+- 3 history-ready;
+- 2 of those 3 above MA20;
+- 1 member history UNKNOWN.
+
+Naive ready-only point estimate = 66.67%.
+
+But full-membership uncertainty interval is:
+- lower bound = 50%;
+- upper bound = 75%;
+- coverage = 75%.
+
+Therefore a raw 66.67% breadth without coverage is not a complete sector-participation statement.
+
+### Concrete self-inclusion counterexample
+Two-member sector:
+- candidate is above MA20;
+- peer is below MA20.
+
+Inclusive breadth = 50%.
+Candidate leave-one-out breadth = 0%.
+
+A candidate must not be allowed to strengthen the sector evidence used to validate itself without exposing this circularity.
+
+### Current maturity
+D09-05 remains L2 after executable QA.
+
+The QA proves deterministic semantics, not Taiwan live PIT completeness. L3 still requires one clean post-repair Taiwan receipt with:
+- effective-dated membership;
+- admitted history;
+- exact MA20/MA60 coverage;
+- replayable source/decision clocks.
+
+No outcomes were opened. No threshold search was performed. Formal Core unchanged.
+
+### Exact next
+BR-035: when the first clean post-repair scan is available, freeze one outcome-blind live Above-MA receipt. Only after that receipt passes coverage/replay checks may redundancy diagnostics versus Sector RS, advance breadth, leader concentration and dispersion begin.
