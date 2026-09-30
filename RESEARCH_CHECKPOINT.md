@@ -2315,3 +2315,16 @@ Updated: 2026-09-27 23:38 Asia/Taipei.
 - New 31-assertion test and prior observer/manifest/source/row-version regressions pass. No Worker/D1/runtime/schema/schedule/signal/push/selection change.
 - Status: `PROSPECTIVE_SESSION_2_OF_3 / SAME_DATE_REPLAY_PASS / REVISION_INCIDENCE_UNKNOWN / ATTESTATION_SESSION_CA_PARENT_UNKNOWN / OUTCOMES_CLOSED / FORMAL_UNCHANGED`. D03 maturity remains 44.6%; no `FORMAL_OPTIMIZATION_CANDIDATE`.
 - Exact next: do not persist more hourly duplicates for 2026-09-30. After the next completed Taiwan session, append the third prospective session plus a validated same-date repeat; on any valid change run full symbol add/remove/OHLC reconciliation before outcomes; preserve transport/provider-call uncertainty and keep TI-005/TI-006, Class-B wiring and Formal changes blocked.
+
+
+## 08 Event & News long-block — D11-04 CB + D11-05 treasury stock (2026-10-01 Asia/Taipei)
+- Started with the latest canonical Shared Map/router/tracker and dedicated checkpoints; no restart and no stale overwrite.
+- D17 fixed-cadence disclosure capture remained elapsed-time dependent, so two nonblocked D11 modules were advanced instead.
+- D11-04 and D11-05 each advance L2 -> L3 strictly on Taiwan PIT/source feasibility, not alpha.
+- New research anchor: `CAPITAL_STRUCTURE_EVENT_STATE_MACHINE_RESEARCH.md`; machine contract: `research/d11_cb_treasury_event_state_contract_v0_1.json`.
+- CB clocks are separated across filing/issue/pricing/listing/conversion/price-adjustment/share-delivery/call/delisting/registration; quarterly converted-share disclosure is not exact daily denominator truth.
+- Treasury clocks are separated across authorization/plan/two-month execution/threshold disclosures/completion/actual execution/treasury inventory/final disposition; plan quantity is not realized demand.
+- D17-06 gains a concrete anti-look-ahead expectation-vs-realization rule but remains L2 pending prospective/OOS evidence.
+- D11 maturity 48.6% -> 51.4%; room 08 aggregate 44.4% -> 45.9%; D17 remains 40.0%.
+- FORMAL_OPTIMIZATION_CANDIDATE = NO. Formal Core and live behavior unchanged.
+- Exact next: prospective immutable CB lifecycle receipts plus treasury plan-to-execution receipts; then preregister D17-06 surprise metrics before any return/outcome inspection. Continue independent D17 fixed-cadence source capture when elapsed evidence is available.
