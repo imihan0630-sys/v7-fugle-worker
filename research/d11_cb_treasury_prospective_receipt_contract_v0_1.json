@@ -1,0 +1,138 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-10-01 Asia/Taipei",
+  "purpose": "Outcome-blind prospective receipts for D11-04 convertible-bond lifecycle and D11-05 treasury-stock plan-to-execution states.",
+  "decisionImpact": false,
+  "formalCoreChanged": false,
+  "common": {
+    "required": [
+      "receiptId",
+      "capturedAt",
+      "sourceUrl",
+      "sourceClass",
+      "sourceArtifactHashOrDerivedDigest",
+      "issuerCode",
+      "eventFamily",
+      "state",
+      "sourcePublishedAt",
+      "knownAtUpperBound",
+      "effectiveFrom",
+      "revisionState",
+      "quality",
+      "missingReason"
+    ],
+    "timeRule": "knownAtUpperBound defaults to capturedAt unless provider availability is independently authenticated; sourcePublishedAt alone cannot backdate availability.",
+    "revisionRule": "retain all versions; corrections/supersessions append new receipts and never rewrite prior replay state.",
+    "outcomeGate": "price/return/fill outcomes remain CLOSED until cohort and metrics are preregistered.",
+    "unknownRule": "missing or unverified fields remain UNKNOWN, never zero/no-event."
+  },
+  "convertibleBond": {
+    "identity": [
+      "issuerCode",
+      "bondCode",
+      "issueSequence"
+    ],
+    "stateFields": [
+      "issueDate",
+      "listingDate",
+      "maturityDate",
+      "conversionPeriodStart",
+      "conversionPeriodEnd",
+      "conversionPrice",
+      "conversionPriceEffectiveFrom",
+      "outstandingBondBalance",
+      "balanceAsOf",
+      "callNoticeDate",
+      "callEffectiveDate",
+      "delistingDate",
+      "conversionRequestKnownAt",
+      "shareOrCertificateDeliveryEffectiveAt",
+      "capitalRegistrationEffectiveAt"
+    ],
+    "coverageChecks": [
+      "masterIssueStateObserved",
+      "conversionChangeStateObserved",
+      "callStateObservedIfApplicable",
+      "sameBondIdentityResolved",
+      "effectiveDatePresentForStateTransition",
+      "revisionChainKnownOrExplicitUnknown"
+    ],
+    "negativeControls": [
+      "listed bond with no new conversion change",
+      "call notice without evidence of converted shares",
+      "conversion-period open without actual conversion amount",
+      "quarterly share disclosure without exact daily denominator"
+    ]
+  },
+  "treasuryStock": {
+    "identity": [
+      "issuerCode",
+      "planIdOrDerivedIdentity"
+    ],
+    "planFields": [
+      "boardResolvedAt",
+      "planPublishedAt",
+      "purpose",
+      "plannedQuantity",
+      "plannedPeriodStart",
+      "plannedPeriodEnd",
+      "priceRangeLow",
+      "priceRangeHigh",
+      "method",
+      "existingTreasuryShares"
+    ],
+    "executionFields": [
+      "thresholdPublishedAt",
+      "actualPurchasedCumulative",
+      "actualPurchasedAsOf",
+      "completionPublishedAt",
+      "finalPurchasedQuantity",
+      "executionRatio",
+      "completionState"
+    ],
+    "dispositionFields": [
+      "treasuryHeldQuantity",
+      "employeeTransferEffectiveAt",
+      "equityConversionUseEffectiveAt",
+      "cancellationEffectiveAt",
+      "registrationChangeEffectiveAt"
+    ],
+    "coverageChecks": [
+      "planObserved",
+      "executionWindowAccounted",
+      "thresholdDisclosureChecked",
+      "completionOrOpenStateAccounted",
+      "finalDispositionKnownOrExplicitUnknown",
+      "revisionChainKnownOrExplicitUnknown"
+    ],
+    "negativeControls": [
+      "authorized plan with low execution ratio",
+      "authorized plan with zero/unknown execution",
+      "completed buyback not yet cancelled",
+      "treasury shares later transferred/reissued"
+    ]
+  },
+  "preregistrationBeforeOutcomes": {
+    "d17_06": [
+      "expectationStateDefinition",
+      "realizationStateDefinition",
+      "surpriseFormula",
+      "eventTimeZero",
+      "horizons",
+      "controlCohorts",
+      "missingnessPolicy"
+    ],
+    "d11OutcomeStudy": [
+      "marketSectorControls",
+      "liquidityControls",
+      "concurrentEventControls",
+      "costAndSlippageDefinition",
+      "independentDateUnit",
+      "multipleTestingPolicy"
+    ]
+  },
+  "promotionGate": {
+    "L4": "prospective/OOS receipts across independent dates plus preregistered outcome evaluation",
+    "L5": "multi-regime robustness, costs, redundancy and independent-date stability"
+  }
+}
