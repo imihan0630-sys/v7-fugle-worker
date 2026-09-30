@@ -841,3 +841,92 @@ A future row may join outcomes only when:
 VALID_BUT_CONSTRAINED rows may be studied only as a separate preregistered stratum; they may not be pooled into ordinary unconstrained indicator evidence.
 
 No prospective runtime wiring is authorized by this contract.
+
+
+## TI-453 through TI-459 — ADX / MA-offset algebraic redundancy and warm-up falsification (2026-10-01)
+
+Detailed durable evidence and executable fixture:
+- `research/TECHNICAL_INDICATOR_ADX_OFFSET_REDUNDANCY_V0_1.md`
+- `research/test_technical_indicator_adx_offset_redundancy_v0_1.mjs`
+
+This tranche deliberately did **not** open forward outcomes because the preregistered source/version gate is still only 2/3 completed prospective Taiwan sessions.
+
+### TI-453 — SMA deduction price is exact directional redundancy
+
+For an n-period SMA:
+
+`SMA_n(t) - SMA_n(t-1) = [C_t - C_(t-n)] / n`.
+
+Therefore the usual SMA deduction/outgoing price `C_(t-n)`, the sign of the one-step SMA slope, and the sign of the same-horizon close-to-close return are algebraically linked. They may have different magnitudes/normalizations, but they cannot be counted as independent directional votes.
+
+A future 1/3/5-day deduction sequence is useful only as a **conditional threshold/scenario**. The outgoing closes are known, while the future incoming closes are not. It cannot be labeled a forecast of future SMA slope without an explicit future-price assumption.
+
+### TI-454 — EMA cannot inherit SMA deduction semantics
+
+For EMA, `EMA_t - EMA_(t-1) = alpha * [C_t - EMA_(t-1)]`. No single historical close drops out mechanically as it does in SMA. A direct SMA-style EMA deduction-price rule is therefore invalid.
+
+The deterministic fixture verifies both the SMA and EMA identities to machine precision.
+
+### TI-455/TI-456 — ADX is directionless strength and is path-sensitive
+
+Synthetic Wilder-14 witnesses:
+- smooth 100 -> 120 path: final ADX = 100;
+- smooth 120 -> 100 path: final ADX = 100;
+- choppy 100 -> 120 path with the same start/end return: final ADX ≈ 16.7353;
+- flat oscillating range: final ADX ≈ 11.1728.
+
+Thus ADX itself has no bullish/bearish authority; direction belongs to +DI/-DI or a separate direction layer. The same endpoint return can coexist with very different ADX, which establishes a plausible **path-efficiency** mechanism distinct from simple retN. This is synthetic mechanism evidence only, not Taiwan alpha evidence.
+
+### TI-457 — ADX + Impulse MACD is not independent confluence by default
+
+ADX and LazyBear-style Impulse MACD are not algebraically identical, but both are OHLC-derived range/trend transforms. ADX uses directional movement normalized by true range and smooths the signless DX; Impulse MACD uses a smoothed high/low envelope plus low-lag centerline and suppresses in-envelope movement.
+
+The prior is therefore **partial/shared-family redundancy**, not independent voting. The frozen System 2 hypothesis architecture is:
+direction -> location -> momentum/dead-zone -> trend-quality moderator -> price confirmation -> risk/extension.
+
+ADX starts as a moderator/diagnostic, not an additive positive score. Any residual value must survive direct trend, ATR/regime and Impulse controls.
+
+### TI-458 — 65-bar readiness cannot be inherited by ADX14
+
+The earlier D03 source audit showed an ordinary ~65-bar history is sufficient for the frozen first-pass KD9 / RSI14 / MACD12-26-9 implementations. That finding is **not portable** to ADX14.
+
+A deterministic warm-up witness using the same final price path produced:
+- full-history ADX14 = 16.076280;
+- 65-bar initialization = 16.905634, delta +0.829354;
+- 150-bar initialization = 16.076396, delta +0.000117.
+
+This is not a population estimate, but it is sufficient to require an explicit ADX warm-up/formulaVersion contract before prospective capture. Threshold states near conventional 20/25 levels must not be tested before initialization equivalence is controlled.
+
+### TI-459 — frozen falsification design
+
+Primary null: after controlling direct ret5/10/20/60, MA slope/alignment, trend persistence, ATR/realized volatility, breakout/pullback structure, Impulse MACD, liquidity/price tier and market Regime/transition, ADX adds no material incremental information for D5/D10/D20 return, MFE/MAE, false-break/no-follow-through, whipsaw frequency or stop/opportunity-cost outcomes.
+
+Future comparisons are frozen as:
+1. direct trend baseline;
+2. trend + Impulse;
+3. trend + ADX;
+4. trend + Impulse + ADX;
+5. residual ADX within the same Impulse state;
+6. residual Impulse within the same ADX state.
+
+No threshold sweep is allowed. Continuous ADX is primary; 20/25 may be retained only as preregistered descriptive robustness bins.
+
+### Status
+
+SMA_OFFSET_DIRECTIONAL_REDUNDANCY = EXACT_ALGEBRAIC_PASS  
+EMA_SMA_STYLE_DEDUCTION = REJECTED_INVALID_SEMANTICS  
+FUTURE_DEDUCTION_AS_FORECAST = REJECTED / CONDITIONAL_THRESHOLD_ONLY  
+ADX_DIRECTION_AUTHORITY = NONE  
+ADX_VS_RETN_MECHANISM = DISTINCT_PATH_SENSITIVITY_PROVEN_SYNTHETIC  
+ADX_VS_IMPULSE_INDEPENDENCE = NOT_ESTABLISHED / REDUNDANCY_PRIOR_HIGH  
+ADX_65_BAR_WARMUP = NOT_GENERALIZABLE_FROM_KD_RSI_MACD  
+ADX_OUTCOME_VALUE = UNKNOWN  
+FORMAL_OPTIMIZATION_CANDIDATE = NONE  
+Formal Core remains LOCKED.
+
+### Exact next continuation point
+
+1. Preserve the existing 2/3 prospective source/version gate; do not manufacture a third date before the next Taiwan session completes.
+2. After the third completed session, finish that gate and only then unlock TI-005 KD-vs-RSI and TI-006 MACD-vs-direct-trend under the existing governance path.
+3. Before any ADX prospective snapshot, prove a stable long-enough history/warm-up contract and freeze +DI/-DI/DX/ADX/formulaVersion/continuity fields.
+4. ADX efficacy testing follows TI-005/TI-006 and must be residualized against direct trend, ATR/regime and Impulse MACD. No additive vote and no threshold tuning.
