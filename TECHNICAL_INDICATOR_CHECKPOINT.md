@@ -2086,3 +2086,57 @@ Formal Core remains LOCKED.
 3. Record accepted latency, provider-call count, transferred bytes and compact stored bytes for every batch.
 4. Require shared attestation, certified symbol sessions, corporate-action ancestry, authorized shared-path Fugle and exact immutable parent-child reconciliation.
 5. Keep TI-005/TI-006, outcomes, Class-B runtime wiring and Formal changes blocked until the prospective PIT-complete receipt gate passes governance.
+
+## TI-445 through TI-452 — second prospective completed session and same-date replay (2026-09-30)
+
+- TI-445: Added the completed 2026-09-30 Taiwan session without opening outcomes. TWSE historical preserved 1,382 normalized OHLC rows; TPEx historical preserved 11,772. The preregistered prospective denominator advances from 1/3 to 2/3.
+- TI-446: At 20:11–20:20 Taipei, TWSE current `STOCK_DAY_ALL` still exposed 2026-09-29 while TWSE historical already exposed 2026-09-30. TPEx current and historical both exposed 2026-09-30. Current-endpoint naming is not a latest-session guarantee, and different trade dates are not compared as revisions.
+- TI-447: TPEx current versus historical 2026-09-30 parity is 11,772/11,772 unchanged normalized OHLC rows, with zero additions, removals or changes. Same-owner parity remains corroboration, not independent attestation.
+- TI-448: A second same-session batch 498–560 seconds later reproduced all four valid payload hashes exactly. The append-only chain now has 20 entries and 12 unchanged like-for-like comparisons. Finite unchanged observations do not make revision incidence zero; it remains `UNKNOWN`.
+- TI-449: The first repeat TPEx historical HTTP/2 body ended after 359,134 bytes and failed JSON validation. It was excluded; an HTTP/1.1 recapture returned 1,774,916 valid bytes and matched the accepted hash. HTTP 200/partial transport is not provider revision evidence.
+- TI-450: Each accepted batch transferred 6,949,163 bytes. Accepted latency was 8,624–19,914 ms for the first batch and 7,834–23,162 ms for the repeat. The two compact receipts are 172,863 bytes each; no raw multi-megabyte body was committed. Exact provider calls for the failed curl-retry path remain `AT_LEAST_5`, not guessed.
+- TI-451: Added a reusable daily-session receipt builder and 31-assertion durable test. It validates current/historical date handling, manifest integrity, same-date parity, repeat identity, chain integrity, rejected-transport accounting and the closed 2/3 gate.
+- TI-452: No return, threshold, parameter, indicator efficacy, OOS, Walk-forward, transaction-cost or fill evidence was opened. Independent attestation, certified sessions, corporate-action ancestry, authorized shared-path Fugle and immutable parent-child reconciliation remain UNKNOWN/unobserved.
+- Durable analysis: `research/TECHNICAL_INDICATOR_SECOND_PROSPECTIVE_SESSION_V0_1.md`; compact receipts: `research/technical_indicator_daily_session_receipt_20260930.json.gz` and `research/technical_indicator_daily_session_repeat_receipt_20260930.json.gz`.
+- D03 maturity remains 44.6%; `FORMAL_OPTIMIZATION_CANDIDATE = NONE`; Formal Core remains LOCKED.
+
+### Current lane status after TI-452
+
+PROSPECTIVE_COMPLETED_SESSION_COVERAGE = ACCUMULATING_2_OF_3
+
+APPEND_ONLY_OBSERVATION_CHAIN = PASS_20_ENTRIES
+
+VALID_LIKE_FOR_LIKE_COMPARISONS = 12_UNCHANGED
+
+SECOND_SESSION_COMPACT_OHLC_STATE = MATERIAL_13154_ROWS
+
+TWSE_CURRENT_FRESHNESS_AT_20_20 = STALE_ON_2026_09_29
+
+TPEX_CURRENT_HISTORICAL_PARITY = PASS_11772_ROWS
+
+INVALID_TRANSPORT_EXCLUSION = PASS
+
+REVISION_INCIDENCE = UNKNOWN
+
+ROW_VERSION_PIT_ATTESTATION = UNKNOWN
+
+SYMBOL_SESSION_CERTIFICATION = UNKNOWN
+
+CORPORATE_ACTION_ANCESTRY = UNKNOWN
+
+FUGLE_MAPPING = UNOBSERVED_ACCESS_NOT_PRESENT_IN_RUNTIME
+
+OUTCOME_JOIN = NO_GO
+
+FORMAL_OPTIMIZATION_CANDIDATE = NONE
+
+Formal Core remains LOCKED.
+
+### Exact next continuation point after TI-452
+
+1. Do not count or persist more hourly duplicates from the already-covered 2026-09-30 session merely because the automation runs again. The next denominator-changing capture is after the next completed Taiwan trading session.
+2. Append the third prospective completed-session capture and at least one validated same-trade-date repeat. Keep correction incidence `UNKNOWN` until this is complete.
+3. If a valid same-trade-date payload/manifest changes, calculate complete symbol add/remove/OHLC-change before outcomes. Invalid/truncated transport remains transport failure; provider correction identity stays `UNKNOWN` without independent evidence.
+4. Record accepted latency, explicit transport-command count, provider-request uncertainty, bytes and compact storage.
+5. Require shared attestation, certified symbol sessions, corporate-action ancestry, authorized shared-path Fugle and exact immutable parent-child reconciliation.
+6. Keep TI-005/TI-006, outcomes, Class-B runtime wiring and Formal changes blocked until the prospective PIT-complete receipt gate passes governance.

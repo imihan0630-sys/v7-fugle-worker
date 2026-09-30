@@ -2301,3 +2301,17 @@ Updated: 2026-09-27 23:38 Asia/Taipei.
 - SC-028 preregistered transmission lags before outcomes: output-price month 0/+1/+2; first/second issuer-reported quarters after knownAt; stock paths D5/D20/D60 only if the outcome gate later opens. No synthetic benchmark-spread-as-gross-margin shortcut is allowed.
 - D10-09 upstream/downstream asymmetry and D10-06 Pricing Power remain L2; no predictive result and no `FORMAL_OPTIMIZATION_CANDIDATE`.
 - Exact next for nonblocked D10: SC-029 capture the next independent material/output-price vintage plus failed-pass-through/different-exposure controls; SC-030 only build an ABF/PCB material receipt when a benchmark can be mapped to a specific product/issuer scope without generic cost weights.
+
+
+## D03 Technical Indicator continuation — TI-445 through TI-452 second prospective session (2026-09-30 Asia/Taipei)
+
+- Continued exactly from TI-444 without inspecting returns, outcomes or indicator parameters.
+- Added two outcome-blind after-hours batches for the completed 2026-09-30 session. The prospective denominator is now 2/3 completed sessions.
+- TWSE historical exposed 2026-09-30 with 1,382 rows while TWSE current remained on 2026-09-29 through 20:20; different trade dates were not compared as revisions. TPEx current/historical 2026-09-30 matched all 11,772 normalized OHLC rows.
+- A 498–560 second repeat reproduced all four valid payload hashes. The append-only chain now has 20 entries and 12 unchanged like-for-like comparisons; revision incidence remains UNKNOWN.
+- One 359,134-byte TPEx historical HTTP/2 body failed JSON validation and was excluded. The HTTP/1.1 recapture returned 1,774,916 valid bytes and matched the accepted hash. Partial transport is not provider revision evidence.
+- Each accepted batch transferred 6,949,163 bytes; accepted latency spans 7,834–23,162 ms; two 172,863-byte compact receipts preserve the session states; no raw multi-megabyte response body was committed.
+- New artifacts: `research/TECHNICAL_INDICATOR_SECOND_PROSPECTIVE_SESSION_V0_1.md`, `research/build_technical_indicator_daily_session_receipt_v0_1.mjs`, two compact 2026-09-30 receipts and `research/test_technical_indicator_daily_session_receipt_v0_1.mjs`.
+- New 31-assertion test and prior observer/manifest/source/row-version regressions pass. No Worker/D1/runtime/schema/schedule/signal/push/selection change.
+- Status: `PROSPECTIVE_SESSION_2_OF_3 / SAME_DATE_REPLAY_PASS / REVISION_INCIDENCE_UNKNOWN / ATTESTATION_SESSION_CA_PARENT_UNKNOWN / OUTCOMES_CLOSED / FORMAL_UNCHANGED`. D03 maturity remains 44.6%; no `FORMAL_OPTIMIZATION_CANDIDATE`.
+- Exact next: do not persist more hourly duplicates for 2026-09-30. After the next completed Taiwan session, append the third prospective session plus a validated same-date repeat; on any valid change run full symbol add/remove/OHLC reconciliation before outcomes; preserve transport/provider-call uncertainty and keep TI-005/TI-006, Class-B wiring and Formal changes blocked.
