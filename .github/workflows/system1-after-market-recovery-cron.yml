@@ -1,0 +1,33 @@
+name: System1 Add 23:55 After-Market Recovery Cron
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "tests/update_cloudflare_after_market_recovery_cron.mjs"
+      - "tests/test_after_market_recovery_cron.mjs"
+      - ".github/workflows/system1-after-market-recovery-cron.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system1-after-market-recovery-cron
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate recovery Cron transformation offline
+        run: node tests/test_after_market_recovery_cron.mjs
+      - name: Add and verify System1 23:55 recovery Cron
+        env:
+          CF_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CF_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          SCRIPT_NAME: fugle-test
+        run: node tests/update_cloudflare_after_market_recovery_cron.mjs
