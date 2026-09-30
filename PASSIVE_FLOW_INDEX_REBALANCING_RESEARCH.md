@@ -1056,3 +1056,198 @@ This is the correct stopping point for indicator invention.
 Next work should improve data contracts, not add more passive-flow features.
 
 Status: PASSIVE FLOW = EVIDENCE BUILD PENDING.
+
+---
+
+## PF-035 — MSCI Global Standard Taiwan public-list contract: bounded membership completeness is materially validated
+
+Research cycle: 2026-09-28 Asia/Taipei
+Status: SOURCE_CONTRACT_ADVANCED / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+### Re-audit result
+The earlier PF-031 statement that the detailed constituent-file parser contract was still merely PARTIAL is now too conservative for one tightly bounded universe.
+
+Four consecutive official MSCI Global Standard public-list artifacts were re-checked:
+- November 2025;
+- February 2026;
+- May 2026;
+- August 2026.
+
+For every cycle:
+1. the official previous-review landing page exposes the Global Standard additions/deletions artifact;
+2. the PDF has a stable top-level Global Standard heading and an explicit effective-close date;
+3. the summary contains a Taiwan added/deleted count;
+4. the document contains an `MSCI TAIWAN INDEX` country section;
+5. Taiwan additions/deletions in the country section reconcile exactly to the summary counts.
+
+Observed Taiwan count invariants:
+- Nov-2025 = 6 added / 7 deleted;
+- Feb-2026 = 1 / 4;
+- May-2026 = 1 / 7;
+- Aug-2026 = 6 / 6.
+
+Research receipt:
+`research/msci_standard_taiwan_membership_negative_evidence_contract_v0_1.json`.
+
+### What this proves
+For the bounded object:
+`MSCI | GLOBAL_STANDARD | TAIWAN | PERIODIC_REVIEW | MEMBERSHIP_ADD_DELETE`,
+a deterministic official-artifact validation method is feasible.
+
+A cycle is complete only when:
+- official artifact identity is verified;
+- provider publication/effective clocks are preserved;
+- Taiwan section exists;
+- parsed Taiwan counts equal the summary counts;
+- missing/revised/schema-drift cases fail closed.
+
+This supports a narrow negative-evidence state:
+`NO_MSCI_STANDARD_MEMBERSHIP_ADD_DELETE_VERIFIED`.
+
+### What this does NOT prove
+The state must not be renamed `NO_INDEX_EVENT` or `NO_PASSIVE_FLOW`.
+
+The public add/delete artifact does not by itself rule out:
+- weight-only changes;
+- free-float/inclusion-factor changes;
+- Small/Micro Cap or other MSCI families;
+- FTSE/TWSE/TIP/custom-index changes;
+- ETF creation/redemption;
+- offshore benchmark flows;
+- unscheduled/special index actions;
+- derivatives-expiry overlap;
+- effective-close auction attribution.
+
+Therefore `ORDINARY_FLOW_CONTEXT_VERIFIED` remains unavailable from this artifact alone.
+
+### PIT rule
+Provider date/time must be respected. If an exact publication timestamp is not auditable, the conservative rule is to make the event usable no earlier than the next Taiwan trading session after the provider publication date. Do not shift later-known membership data backward.
+
+### Falsification
+Four consecutive cycles materially reduce the source-contract uncertainty but do not prove permanent future schema stability. Every future cycle still requires schema/count reconciliation; missing artifacts or count mismatch => `EVENT_COVERAGE_INCOMPLETE`.
+
+Status:
+`BOUNDED_MSCI_STANDARD_MEMBERSHIP_NEGATIVE_EVIDENCE = METHOD_READY`.
+
+---
+
+## PF-036 — public accessibility is not an ingestion license
+
+The official MSCI public-list PDFs include use restrictions that cover creating derivative/database/analytics uses from the information.
+
+Research consequence:
+- public URL accessibility proves source discoverability, not permission for automated persistent ingestion;
+- the source-contract research above may be retained as methodology/provenance;
+- do not build a bulk historical constituent database from these public PDFs or wire them into Production merely because the URLs are accessible;
+- before persistent automated ingestion, use an appropriately licensed/authorized data source or obtain a permission determination.
+
+This is a source-licensing/provenance gate, not evidence that the membership-event method is invalid.
+
+### Engineering classification
+- Research contract/taxonomy only: Class A documentation/research.
+- Persistent shared runtime ingestion: at least Class B proposal-first and also subject to source authorization/licensing.
+- Any Formal ranking/veto/score change based on passive context: Class C.
+
+### Updated continuation
+1. Do not start outcome tests from the public-list PDFs.
+2. Audit whether an authorized/licensed source can prospectively provide the same MSCI membership-event receipt.
+3. Continue separate source work for weight-only changes and non-MSCI index families.
+4. Keep exact passive-flow NTD and close-auction attribution data-gated.
+5. Institutional-flow research may use `NO_MSCI_STANDARD_MEMBERSHIP_ADD_DELETE_VERIFIED` only as a narrow contamination control; broader passive context remains UNKNOWN.
+
+---
+
+## PF-037 — ETF fund-size flow should anchor on units delta, not AUM delta
+
+Research cycle: 2026-09-29 Asia/Taipei
+Status: PROSPECTIVE_SOURCE_CONTRACT_ADVANCED / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED
+
+TWSE's official ETF integration specification requires issuer-provided JSON to include:
+- current outstanding beneficial units;
+- the difference from the previous day's outstanding units;
+- data date;
+- data time.
+
+This materially improves the passive-flow source model.
+
+### Primary observable
+`netUnitsDelta = today outstanding units - previous-day outstanding units`
+
+For ETF primary-market fund-size changes, this is cleaner than using AUM change alone.
+
+Accounting reason:
+`AUM_t = Units_t × NAV_t`.
+
+Therefore Delta AUM mixes:
+- unit creation/redemption;
+- NAV/market-value movement;
+- their interaction.
+
+A rising AUM can occur with zero creations if NAV rises, and falling AUM can occur with zero redemptions if NAV falls. AUM delta alone is therefore confounded as a fund-flow proxy.
+
+### PCF bridge
+TWSE states that in-kind ETFs publish a daily PCF (Portfolio Composition File, 實物申購買回清單). The PCF defines the basket for one creation/redemption base unit or an integer multiple.
+
+For a provenance-complete domestic in-kind ETF, a future research-only model may combine:
+- netUnitsDelta;
+- creation/redemption base-unit size;
+- PIT-consistent PCF basket shares;
+- cash-substitution semantics;
+to form a `MODELED_PRIMARY_BASKET_EXPOSURE`.
+
+This must NOT be called actual stock passive flow.
+
+Why:
+- authorized participants may source stock from inventory;
+- they may hedge elsewhere;
+- execution can occur at different times;
+- cash substitution may replace physical delivery;
+- observed net ETF units do not reveal exact market executions.
+
+### Critical falsification
+`netUnitsDelta = 0` does NOT prove zero primary-market activity.
+
+Gross creations and gross redemptions can offset within the same day, leaving net units unchanged.
+
+Similarly:
+- positive units delta does not prove every constituent was bought that day;
+- negative units delta does not prove every constituent was sold that day.
+
+### Corporate-action guard
+ETF splits/reverse-splits mechanically change beneficial unit counts. TWSE ETF announcements explicitly show PCF units reflecting split/reverse-split unit changes.
+
+Therefore a large units delta is not economic flow unless split/reverse-split and other unit-changing corporate actions are excluded/adjusted with PIT evidence.
+
+Machine receipt:
+`research/passive_flow_etf_units_pcf_contract_v0_1.json`.
+
+Status:
+`PROSPECTIVE_ETF_NET_UNITS_FLOW_CONTRACT_READY / AUM_DELTA_DECONFOUNDED / GROSS_FLOW_UNKNOWN / STOCK_EXECUTION_MODELED_ONLY`.
+
+## PF-038 — current-source feasibility does not create historical PIT truth
+
+The official current interface proves prospective data feasibility, but current research has NOT verified a complete immutable historical archive of:
+- issuer outstanding-units delta with first-known timestamps;
+- daily PCF versions with first-known timestamps;
+- all cash-substitution states;
+- split/corporate-action alignment.
+
+Therefore:
+- do not reconstruct historical units flow from today's page state;
+- do not substitute monthly AUM history for missing daily units delta;
+- do not treat a later-downloaded historical PCF as proof it was captured/known at the historical Formal decision time unless provider timestamps and immutable vintage are preserved.
+
+### Revised passive-flow causal separation
+Keep three channels separate:
+1. index membership/weight rebalance = target-weight shock;
+2. ETF creation/redemption = fund-size shock;
+3. secondary-market ETF trading = investor-to-investor ETF share transfer.
+
+Only the second necessarily changes outstanding ETF units. Secondary-market ETF volume can be enormous while units outstanding are unchanged.
+
+### Exact next continuation
+1. Prospectively validate units-delta/PCF timestamp alignment on a bounded sample of domestic Taiwan-equity in-kind ETFs.
+2. Capture split/reverse-split and cash-substitution state before calling units delta an economic creation/redemption flow.
+3. Search only official/authorized sources for historical immutable units/PCF vintages; absence remains UNKNOWN.
+4. Keep exact stock-level passive-flow NTD unobserved; modeled basket exposure remains contextual.
+5. Do not start PF outcome tests until clean prospective receipts and event-universe coverage exist.

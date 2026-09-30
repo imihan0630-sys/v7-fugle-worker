@@ -1188,3 +1188,254 @@ Any future Formal change still requires:
 Status: `WAITING_PROSPECTIVE / NOT_OPTIMIZATION_READY`.
 
 Formal Core unchanged.
+
+
+## BR-027 — Industry classification vintage is a PIT variable, not static metadata
+
+### Why this matters
+Industry / sector membership is not timeless metadata. Taiwan Stock Exchange classification rules permit periodic and special reclassification, so any historical Sector RS（產業相對強弱）, breadth, rotation or leadership study that assigns today's industry label backward creates a classification look-ahead（分類偷看未來） risk.
+
+Official Taiwan evidence establishes that the classification itself has an effective-date lifecycle:
+- TWSE currently maintains an industry-classification framework and regularly reviews classification using recent annual-report business composition, with special adjustment when business changes materially.
+- The review convention has changed historically; after IFRS-era rule changes, regular review moved to an annual cadence.
+- A concrete 2023 adjustment moved 47 listed companies into new/changed industry categories with a specified effective date, proving that historical membership can differ materially from current membership.
+
+External research also shows that industry-momentum / reversal results are classification-sensitive. A classification scheme that is too coarse or silently changes can alter measured industry returns and apparent persistence.
+
+### PIT contract
+For every sector/industry observation at decision time t, preserve:
+- classificationSchemeId / version;
+- industryCode / industryName as known at t;
+- membershipEffectiveFrom / membershipEffectiveTo;
+- sourcePublishedAt / knownAt;
+- reclassification reason when available;
+- UNKNOWN when historical membership cannot be reconstructed.
+
+Forbidden:
+- backfilling current industry labels onto older dates;
+- merging old/new taxonomies after seeing returns;
+- treating a current label as proof of historical membership.
+
+### Maturity implication
+Taiwan official effective-dated reclassification evidence is sufficient to establish D09-01 PIT feasibility prospectively and for bounded historical dates where official notices exist. It is NOT sufficient to claim complete machine-readable historical membership coverage.
+
+Status: `D09-01 -> L3 PIT_FEASIBLE_BOUNDED / COMPLETE_HISTORY_UNKNOWN`.
+
+---
+
+## BR-028 — Sector RS needs participation and physical-cycle confirmation
+
+### Core falsification
+Sector RS（產業相對強弱） is a price-relative state, not a guaranteed fundamental-cycle signal.
+
+Evidence is intentionally mixed:
+- Classic industry-momentum research finds industry-level return continuation can explain a substantial part of stock momentum.
+- Customer-supplier research documents delayed information transmission across verified economic links.
+- Taiwan-specific evidence also reports significant industry reversal at short horizons, which directly rejects a universal rule that stronger recent industry return must imply better forward return.
+- More recent work separates short-horizon residual industry momentum / lead-lag from factor momentum, reinforcing that mechanism and horizon matter.
+
+Therefore the research question is not "Is sector RS high?" but:
+1. is strength broad or leader-concentrated?
+2. is the sector rank transition persistent or one-day noise?
+3. does physical demand / sales / inventory confirm the price move?
+4. is supply response (capacity / capex) supportive or becoming oversupply?
+5. can raw-material cost be passed through without margin damage?
+6. does the individual company have a verified earnings-transmission path?
+
+### Concentration firewall
+A cap-weighted industry or index can be dominated by a few mega-cap firms. Taiwan's semiconductor sector represented more than half of listed-market capitalization in the 2025 TWSE Fact Book, a structural example of why cap-weight strength cannot be equated with broad member participation.
+
+Always preserve separately:
+- cap-weight return;
+- equal-weight / median member return when feasible;
+- advancing-member ratio / Above-MA participation;
+- leader contribution share / HHI / effective leader count;
+- stock-count denominator and UNKNOWN coverage.
+
+### Integrated state, not a new weighted score
+Do not immediately create another scalar "industry score". First preserve orthogonal state dimensions:
+- PRICE_CONFIRMATION: sector RS / residual RS / rank persistence;
+- PARTICIPATION: breadth / Above-MA / leader concentration;
+- PHYSICAL_CYCLE: production / sales / inventory state;
+- SUPPLY_RESPONSE: capacity / capex / utilization when explicitly sourced;
+- PRICING_TRANSMISSION: raw-material / selling-price / margin pass-through;
+- COMPANY_TRANSMISSION: verified exposure and earnings sensitivity.
+
+Candidate state examples for Shadow research:
+- PRICE_ONLY;
+- PRICE_PLUS_PHYSICAL_CONFIRMATION;
+- PHYSICAL_EARLY_PRICE_NOT_CONFIRMED;
+- LEADER_ONLY_CONCENTRATION;
+- CAPACITY_OVERSHOOT_RISK;
+- COST_SQUEEZE;
+- BULLWHIP_RISK;
+- UNKNOWN.
+
+No state has a permanently bullish/bearish meaning before prospective evidence.
+
+### System 1 / System 2 relationship
+System 1 already uses same-day sector breadth, average change, amount activity, a hard gate and a sector score. This research must test incremental value AFTER those fields plus stock trend / Residual RS / price-volume / regime controls; otherwise it is REDUNDANT.
+
+System 2's OWNER_APPROVED INDUSTRY_TREND contract explicitly requires `IND.CYCLE_STAGE`, `IND.SUPPLY_DEMAND`, `IND.INVENTORY`, `IND.CAPACITY`, `IND.PRICING`, and `IND.COMPANY_TRANSMISSION`, while current readiness is SOURCE_EXTENSION_REQUIRED. The integrated state above is therefore a direct research bridge to the missing Industry Thesis evidence family, without changing any formal score or threshold.
+
+Status: `HIGH_VALUE_RESEARCH_BRIDGE / NOT_OPTIMIZATION_READY / PROSPECTIVE_EVIDENCE_REQUIRED`.
+
+### External evidence anchors
+- Moskowitz & Grinblatt (1999), *Do Industries Explain Momentum?*, Journal of Finance.
+- Cohen & Frazzini (2008), *Economic Links and Predictable Returns*, Journal of Finance.
+- Liu & Fu (2011), Taiwan weekly industry momentum/reversal evidence.
+- Li (2022), *Industry classification, industry momentum and short-term reversal*, Finance Research Letters.
+- TWSE industry-classification rules and effective-dated reclassification notices.
+- TWSE Fact Book 2026 (2025 market-cap distribution by industry).
+
+
+
+## BR-029 — Formal industry, statistical industry and theme are three different taxonomies
+
+### Finding
+Three classification layers must not be conflated:
+
+1. **TWSE/TPEx issuer industry** — an exchange classification used for listed-company grouping. TWSE rules reference official statistical industry concepts but classify issuers using company business / revenue composition and additional financial/business evidence. Classification is reviewed periodically and can be changed.
+2. **MOEA/DGBAS statistical industry/product code** — an economic-activity taxonomy used for production / sales / inventory statistics, with detailed manufacturing codes such as 2611 integrated-circuit manufacturing, 2613 semiconductor packaging/testing and 2630 printed-circuit-board manufacturing.
+3. **Investment theme / supply-chain group** — AI server, CPO, ABF, advanced packaging, cooling, power, robotics, etc. These themes can span multiple formal exchange and statistical industries and can change with product/customer exposure.
+
+A direct one-to-one mapping among the three is therefore structurally invalid.
+
+### Evidence-backed bridge contract
+Use an effective-dated many-to-many bridge:
+
+`INDUSTRY_EXPOSURE_VINTAGE`
+- issuerMarket / issuerSymbol;
+- twseTpexIndustryCode / label / classificationSchemeId;
+- statisticalIndustryCode(s);
+- themeId(s);
+- exposureType = REVENUE / PRODUCT / CUSTOMER / CAPACITY / MATERIAL / MANAGEMENT_DISCLOSURE / VERIFIED_SUPPLY_CHAIN_EDGE / OTHER;
+- exposureMagnitudePct and basis when actually disclosed;
+- sourcePublishedAt / knownAt;
+- effectiveFrom / effectiveTo;
+- evidenceSourceId / sourceClass;
+- confidence = HIGH / MEDIUM / LOW / UNKNOWN;
+- identityResolution;
+- revision / supersession reference.
+
+### Falsification rules
+- formal sector membership alone cannot prove theme exposure;
+- a theme list from media / market convention cannot prove economic exposure;
+- product capability does not prove current order/revenue contribution;
+- one old customer relationship cannot be carried forward indefinitely;
+- a current revenue mix cannot be backfilled before its disclosure date;
+- if multiple statistical industries map to one issuer, preserve the vector rather than force one code;
+- if no contemporaneous exposure evidence exists, theme membership = UNKNOWN.
+
+### D09-11 maturity decision
+The distinction, many-to-many schema and falsification rules are now defined.
+
+`D09-11 題材股與正式產業分類橋接: L1 -> L2`.
+
+No claim is made yet that a complete PIT exposure database exists.
+
+Status: `MECHANISM_PLUS_FALSIFICATION_DEFINED / PIT_EXPOSURE_DATA_PENDING`.
+
+
+## BR-030P — Leader-only versus broad participation preregistration before the first valid cohort
+
+### Evidence clock
+The deployed V8.14 sector-gate provenance collector states that the first expected clean post-deploy cohort is 2026-09-29, conditional on history/source admission. Today is 2026-09-28. Therefore no forward-return comparison is authorized yet.
+
+This is a preregistration step only. BR-030 outcome status remains `WAITING_PROSPECTIVE`.
+
+### Existing source audit
+Current `buildTodaySectorStats()` already has, at decision time:
+- member-level industry labels;
+- member one-day changePercent;
+- member tradeValue;
+- sector stockCount;
+- sector breadth;
+- sector average change;
+- sector amount and amountVs20DayAverage;
+- top-3 return leaders.
+
+The current sector score is:
+`amount / maxSectorAmount * 45 + breadth * 0.3 + transformed avgChange`.
+
+This means same-day sector strength already mixes activity, participation and average return, but it does NOT quantify whether activity/return leadership is concentrated in one or a few names.
+
+### Concentration descriptors to freeze prospectively
+Do not create a buy/sell threshold. Preserve continuous descriptors first:
+
+1. `top1AmountShare` = largest member tradeValue / sector tradeValue.
+2. `top3AmountShare` = three largest member tradeValues / sector tradeValue.
+3. `amountHHI` = sum of squared member tradeValue shares.
+4. `effectiveActiveNames` = 1 / amountHHI when denominator is valid.
+5. `effectiveActiveNameRatio` = effectiveActiveNames / stockCount.
+6. `returnLeaderGap1` = top-1 return minus sector median return.
+7. `returnLeaderGap3` = mean(top-3 returns) minus sector median return.
+8. `breadthExTop1` and `breadthExTop3` = participation after removing the strongest return leader(s).
+9. `avgChangeExTop1` and `avgChangeExTop3`.
+10. `leaderRemovalSignStable` = whether sector average return keeps the same sign after top-1/top-3 removal.
+11. `memberReturnDispersion` = robust dispersion, preferably median absolute deviation or preregistered standard deviation.
+12. `stockCount`, `knownMemberCount`, `unknownMemberCount` are mandatory denominators.
+
+### Small-sector normalization
+Raw HHI mechanically rises when a sector has few members. Therefore:
+- always report `1/stockCount` as the equal-share HHI baseline;
+- preserve `normalizedAmountHHI = (HHI - 1/N) / (1 - 1/N)` only when N > 1;
+- preserve `effectiveActiveNameRatio`;
+- never compare raw HHI across sectors of very different N without normalization.
+
+A one-stock sector is not "extremely concentrated evidence"; it is structurally single-member and must be labeled separately.
+
+### Price-limit / event contamination
+Taiwan price limits can create apparent leadership concentration when one or a few names are locked near the daily limit. Preserve:
+- limit-hit / near-limit status;
+- event/news state when available;
+- liquidity / trade-value coverage.
+
+Do not infer durable leadership from a one-day limit event.
+
+### Cross-room redundancy boundary
+System 2 RANK-07 already measures **candidate-pool industry concentration** (how many selected/candidate stocks come from each industry). That is a portfolio/candidate-distribution question.
+
+BR-030 measures **within-sector leadership concentration** (whether a sector's own price/activity strength is carried by a few members).
+
+They are related but not duplicates:
+- RANK-07: concentration *across candidates*;
+- BR-030: concentration *inside the industry before candidate interpretation*.
+
+No hard cap, diversification rule or industry quota is authorized by BR-030.
+
+### Prospective hypotheses
+H1 — `BROAD_PERSISTENT`: sector strength accompanied by participation that survives leader removal may be more persistent than leader-only strength.
+H2 — `LEADER_INFORMATION_DIFFUSION`: leader-only strength can be an early stage rather than a false signal; followers may catch up later.
+H3 — `LEADER_EXHAUSTION`: extreme leader concentration without follower confirmation can fail or reverse.
+H4 — `STRUCTURAL_DOMINANCE`: concentrated leadership can be economically rational when one dominant firm captures most industry profits; broadness is not universally superior.
+
+No hypothesis has a preferred winner before prospective evidence.
+
+### Outcomes after cohort becomes valid
+At the independent scan-date level:
+- sector rank persistence / percentile movement D1/D3/D5;
+- member breadth evolution;
+- selected/near-miss D1/D3/D5 and MFE/MAE where already captured;
+- false-breakout / stop-risk when valid;
+- transition from leader-only -> diffusion -> broad -> narrowing.
+
+### Mandatory controls
+- current Formal sector gate components;
+- sector RS / Residual RS;
+- Price-Volume and K-line setup;
+- market Regime;
+- sector stockCount and liquidity;
+- limit-hit/event state;
+- classification vintage;
+- date clustering and leave-one-date-out.
+
+### Falsification
+Classify leadership concentration as `REDUNDANT` if:
+- it is almost fully explained by breadth/avgChange/amountVs20D;
+- apparent effect disappears after stockCount normalization;
+- one/few dates or mega-cap sectors drive the result;
+- leader-removal descriptors add nothing beyond sector RS and existing setup;
+- negative-control sectors show the same behavior.
+
+Status: `PREREGISTERED / WAITING_PROSPECTIVE / NO_THRESHOLD / FORMAL_CORE_LOCKED`.

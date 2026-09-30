@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "D15_CASH_ATTRIBUTION_V0_1",
+  "observedAt": "2026-09-28T19:21:00+08:00",
+  "domain": "D15-08",
+  "planTimeClasses": [
+    "DESIGNED_STRATEGIC_RESERVE",
+    "CAP_INDUCED_RESERVE when exact allocator reconstruction is proven",
+    "THOUSAND_GRID_FLOOR_RESERVE when exact allocator reconstruction is proven",
+    "PLANNED_DEPLOYMENT"
+  ],
+  "executionTimeClasses": [
+    "PENDING_ENTRY_OR_UNTRIGGERED_CASH",
+    "BROKER_UNFILLED_OR_PARTIAL_FILL_CASH",
+    "POST_REDUCE_CASH",
+    "DATA_OR_SIGNAL_BLOCK_CASH",
+    "OTHER_OR_UNKNOWN"
+  ],
+  "firewall": "Plan-time cash attribution never claims actual broker cash. Execution-state cash remains UNKNOWN without fill/holdings/broker-balance evidence.",
+  "zeroSelectedRule": "0 selected means no new eligible planned opportunity and 100% designed plan-time reserve; it is not automatically poor capital utilization.",
+  "promotionRule": "D15-08 may advance to L3 only if a read-only Production journal audit reconstructs dates PIT-consistently and fails closed on plan/day mismatches.",
+  "status": "PLAN_TIME_CASH_ATTRIBUTION_PIT_VALIDATED / EXECUTION_CASH_UNKNOWN / D15_08_L3",
+  "formalCoreImpact": false,
+  "productionReceipt": "research/cash_attribution_production_receipt_20260928.json",
+  "maturityDecision": {
+    "module": "D15-08",
+    "level": "L3",
+    "maturityPct": 60
+  }
+}

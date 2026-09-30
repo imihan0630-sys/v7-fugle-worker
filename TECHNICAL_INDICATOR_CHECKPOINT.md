@@ -1776,3 +1776,165 @@ Formal Core remains LOCKED.
 
 - 461247f36c23fc0bd84134d3e9ba50650c60bb3c — Technical Indicator Class-B implementation impact audit.
 - 898f0d90a6696b600e090fe4211938577b4fb0e5 — machine-readable Technical Indicator impact receipt.
+
+
+## Continuation update — TI-391 through TI-395 (shared-parent completeness)
+
+- New outcome-blind audit: `research/TECHNICAL_INDICATOR_SHARED_PARENT_FEASIBILITY_V0_1.md` at commit `93d5b9acdfe208eade7fec860bde51efa521eaf3`.
+- TI-391: legacy <=54 sampled rows/date is not the future parent count. A pre-sampling immutable decision-state universe may be ~full-market scale; exact parent scope and production D1 write cost remain UNKNOWN. Illustrative 1,800 parents/date imply 36,000 child attempts over 20 sessions, not measured rows/cost. Legacy LIMIT 5000 would show only two full illustrative 1,800-row dates and a partial third; complete keyset pagination is mandatory.
+- TI-392: Technical, Pattern, Target/RR and external evidence must share one immutable decision-state parent/generation; overlapping cohort memberships must not duplicate a Technical child. The older v0.1 snapshot contract's “existing Shadow parent” cannot be used as authority to attach promotion-grade evidence to the mutable legacy Shadow archive.
+- TI-393: persistence completeness differs from formula observability. Every preregistered parent attempt needs an explicit child status; missing child, WARMUP, DATA_BLOCKED, constrained and UNKNOWN are not zeros or negative signals. A COMPLETE run requires parent keyset hash plus expected/persisted exact reconciliation, no duplicate/orphan rows and generation-consistent reads. Synthetic falsifiers include 1,799/1,800 persisted, duplicate memberships, changed-fingerprint rerun and partial-date reader.
+- TI-394: zero extra provider calls is conditional on same-scan history, runtime TECHNICAL_CONTINUITY and canonical recursive-state replay. Bootstrap/rebuild, D1 index writes, scan latency and actual account limits remain unmeasured/UNKNOWN. Cloudflare D1 documentation confirms serial query processing, batch rollback semantics, Worker resource limits and query-level read/write metrics; it does not establish actual project usage.
+- TI-395: a selected-only indicator sample cannot support admission/ranking conclusions. Future inference must match population scope to intended change and retain exact qualified/gate-evaluable denominators. No outcome join, return advantage, alpha or Formal optimization claim was made.
+- Governance: research documentation only; no Worker/D1 schema/monitor/ranking/signal/push change; no historical Shadow fabrication. Class-B implementation proposal remains PREMATURE; Formal Core LOCKED.
+
+### Current lane status
+
+TECHNICAL_INDICATOR_FORMULA_QA = R0_MATERIAL_PASS
+TECHNICAL_INDICATOR_SOURCE_RUNTIME = BELOW_R1
+SHARED_PARENT_SCOPE = UNFROZEN
+GENERIC_EVIDENCE_CHILD = DESIGN_DEPENDENCY
+CHILD_COMPLETENESS_CONTRACT = RESEARCH_SPECIFIED_NOT_IMPLEMENTED
+REAL_D1_COST_LATENCY = UNKNOWN
+PROSPECTIVE_TECHNICAL_CAPTURE = NOT_STARTED
+OUTCOME_JOIN = NO_GO
+FORMAL_OPTIMIZATION_CANDIDATE = NONE
+
+### Exact next continuation point
+
+1. Read latest shared immutable cohort/decision-state proposal and D03 checkpoint before further work; merge concurrent progress.
+2. Reconcile the shared owner's final pre-sampling parent population, captureGeneration identity, generic evidence-child interface and complete-keyset reader before writing D03 runtime code.
+3. Obtain actual parent counts and non-secret baseline D1/Worker metrics through authorized read-only evidence; do not extrapolate from legacy 54.
+4. Build outcome-blind isolated synthetic tests for parent/child keyset equality, partial write/retry, changed-fingerprint conflict, overlap deduplication and truncated date reads; keep Worker unmodified.
+5. Validate same-scan history reuse, bootstrap/rebuild and corporate-action continuity with canonical lineage; price-limit symbol-session receipt remains dependency-owned.
+6. Only after material dependency resolution prepare one consolidated Class-B infrastructure proposal for owner review. TI-005 KD-vs-RSI and TI-006 MACD-vs-trend remain the first eventual prospective inference tests. No Formal change.
+
+
+## Continuation update — TI-396 through TI-400 (isolated reconciliation falsifiers)
+
+- Isolated executable research fixture added: `research/test_technical_indicator_parent_reconciliation_v0_1.mjs`; GitHub commit `d72c6ec2437f982383707e26cf16fe98778d1b51`.
+- Local independent Node execution: PASS, 19 outcome-blind assertions (latest test commit `e11fce38e34aea3b037d9030bb87853b683be8de`). The test does not import Worker, D1, market data, or outcomes.
+- TI-396: of 1,800 illustrative expected immutable parents, 1,799 child rows is INCOMPLETE despite every persisted child being formula-valid. Persisted completeness and formula readiness are separate.
+- TI-397: 200 explicit UNKNOWN children with all 1,800 attempts persisted gives a COMPLETE persistence receipt with 1,600 READY and 200 UNKNOWN, not 1,800 signal-ready rows. UNKNOWN cannot be changed into BAD/zero.
+- TI-398: duplicate child, orphan child and parent-fingerprint mismatch are QA_FAIL; a changed fingerprint under the same immutable identity returns PROVENANCE_CONFLICT, while an identical retry is IDEMPOTENT. New generation is a distinct identity, not a silent rewrite.
+- TI-399: missing page keys or explicit truncation makes a full-date read INCOMPLETE; exact two-page keyset returns COMPLETE. A complete-looking prefix alone cannot establish full population coverage.
+- TI-400: a parent in two research memberships still creates one Technical child/parent attempt. This guards cohort-overlap double counting.
+- Limit: these are isolated semantic assertions, not actual D1 transaction, concurrency, production performance, market source, continuity, or prospective outcome tests. No maturity level change is justified.
+- No Formal runtime, Worker, D1 schema, scan schedule, signals, push, or trading logic changed. No FORMAL_OPTIMIZATION_CANDIDATE.
+
+### Current lane status
+
+PARENT_CHILD_RECONCILIATION_SYNTHETIC_QA = PASS_ISOLATED
+PARENT_GENERATION_PERSISTENCE_PRODUCTION = NOT_IMPLEMENTED
+PROSPECTIVE_TECHNICAL_CAPTURE = NOT_STARTED
+REAL_PARENT_COUNTS_D1_COST = UNKNOWN
+TECHNICAL_CONTINUITY_RUNTIME = BLOCKED
+OUTCOME_JOIN = NO_GO
+FORMAL_OPTIMIZATION_CANDIDATE = NONE
+Formal Core remains LOCKED.
+
+### Exact next continuation point
+
+1. Re-read latest shared architecture and D03 checkpoint; do not repeat TI-391..400.
+2. Cross-generation mixed page reads and empty-universe population receipts now have isolated passing falsifiers. Next test interrupted multi-batch/retry receipt state only after the shared owner's generation lifecycle is frozen. Do not claim synthetic tests prove D1 atomicity.
+3. Reconcile shared immutable decision parent scope and generic evidence-child keys with Pattern/Target-RR cohort design; no D03-specific parent.
+4. Seek real non-secret per-scan parent counts and D1/Worker baseline metrics through an authorized read-only path; no direct D1 connector is currently exposed here, so record UNKNOWN until evidence is available.
+5. Keep continuity and price-limit provenance gates distinct from completeness, and outcome inference blocked until prospective parents satisfy them.
+6. Future empirical order remains TI-005 KD-vs-RSI then TI-006 MACD-vs-direct-trend. Formal unchanged.
+
+## TI-401 — parent zero and cross-generation reader guards
+
+- Added four isolated assertions: mixed captureGeneration page is FOREIGN_PAGE_KEY; zero expected parents without a population receipt is INCOMPLETE; explicit zero-count receipt may be COMPLETE; declared denominator inconsistent with enumerated parents is QA_FAIL.
+- Local Node test PASS: total 19 assertions. This remains pure synthetic QA, not D1 transaction or production-completeness proof.
+- Formal Core LOCKED; no outcome join, no maturity promotion.
+
+
+## Continuation update — TI-402 through TI-408 (2026-09-28, source falsification)
+
+Deep evidence and precise synthetic witnesses: `research/TECHNICAL_INDICATOR_SOURCE_GUARD_FALSIFICATION_V0_1.md`. This section supersedes the older `SHARED_PARENT_SCOPE=UNFROZEN` line above only for the proposed parent-scope definition; other blockers remain.
+
+- TI-402: Frozen v0.1 core input validation converts null/blank/boolean to finite Number values, and does not reject nonpositive price or out-of-range close. On a 40-row synthetic NT$100 sequence one poisoned row could still yield `dataQualityState=VALID` and finite KD/RSI/MACD. This establishes an isolated research validation defect, not a deployed Worker incident.
+- TI-403: Added `research/technical_indicator_source_guard_v0_1.mjs`, a separate versioned wrapper. It checks positive decimal OHLC, geometry, chronology, symbol, point-in-time assertion, future dates, technical continuity/official-session assertions, pseudo-bars and upstream receipt presence. Good 50-bar synthetic input yields the unchanged v0.1 KD/RSI/MACD values exactly. Numeric decimal strings remain accepted. Price-limit constrained interpretation is separate. No Formula v0.1 edit or production wiring.
+- TI-404: Synthetic booleans, source availability and receipt strings are only assertions. The wrapper cannot independently authenticate TWSE/TPEx sessions, corporate-action transform, provider publication time, complete parent keyset, hash ancestry or price-limit regime. A forged upstream assertion remains an explicit negative counterexample.
+- TI-405: Preventing false indicator states may reduce contamination, yet rejection can select by symbol/market/event/price and produce a false appearance of advantage. Log exact rejection denominators before prospective inference. Economic alpha, OOS behavior, dates, costs and fills remain unknown; no optimization candidate.
+- TI-406: Corrected an isolated adapter mismatch from `tradeDate` to canonical `date`, required continuity/session/parent/raw-admission receipt IDs, and retested. The original draft never ran in production.
+- TI-407: Source-template `Worker.js` may fill missing open/high/low with close. A numerically valid high/low may therefore be synthetic, invalidating KD range interpretation. Guard now requires per-field observed provenance for high/low/close plus observed raw bar identity and source hash; a substituted high=close labeled `SYNTHESIZED` is blocked. Missing open is permitted for these three formulas. The per-field label is a *proposed* upstream contract, not currently attested by the canonical handoff; a falsely labeled row can still pass. Source-template behavior is not proof about deployed Production.
+- TI-408: Shared sizing contract now freezes proposed parent scope `FORMAL_HISTORY_ADMITTED_FEATURE_ROWS_V0_1` (unique same-scan history-admitted featureRows before Formal fail-fast exclusion). Actual count distribution, complete immutable capture and runtime costs remain UNKNOWN. `HISTORY_CACHE_TARGET=2000` is not a hard cap; legacy <=54 Shadow is not this denominator. Do not fabricate normalized-today non-feature rows as parents.
+
+Durable code commits: guard `c0adc8beb1de39c256dcabb9595d6736dda889d1`, tests `e5f47a055036d0e54ad8238863daea5a53307043`; report update `4397b49c35784463ee0f82a1d2d0e359fcb1ac33`. Local Node guard adversarial suite PASS; unchanged core regression PASS; parent reconciliation 19 assertions PASS. All are isolated synthetic QA without outcomes.
+
+### Current lane status
+
+PARENT_SCOPE_DEFINITION = FROZEN_PROPOSED_V0_1
+ACTUAL_PARENT_COUNT_DISTRIBUTION = UNKNOWN
+PARENT_CHILD_PRODUCTION_COMPLETENESS = NOT_IMPLEMENTED
+FORMULA_INPUT_GUARD_SYNTHETIC = PASS_ISOLATED
+OBSERVED_OHLC_FIELD_PROVENANCE_RUNTIME = UNKNOWN / DEPENDENCY_BLOCKED
+TECHNICAL_CONTINUITY_RUNTIME = BLOCKED
+PROSPECTIVE_TECHNICAL_CAPTURE = NOT_STARTED
+OUTCOME_JOIN = NO_GO
+FORMAL_OPTIMIZATION_CANDIDATE = NONE
+Formal Core remains LOCKED.
+
+### Exact next continuation point
+
+1. Ask the shared source/continuity owner to define an independently attested raw per-field provenance and immutable hash lineage before any substitution; audit actual provider/date-specific OHLC coverage without self-certifying the guard.
+2. Measure exact same-scan history-admitted featureRow parent population with duplicate/subset receipts and real non-secret D1/Worker cost/latency. Do not treat 2000 or 54 as actual parent counts.
+3. Preserve complete child status (including blocked/unknown) against the immutable generation's exact parent keyset. Test false-positive source rejection against verified market sessions and corporate actions, with denominators by date/source/symbol.
+4. Only after dependency and Class-B review consider runtime capture. First outcome-blind prospective observation precedes TI-005 KD vs RSI with direct price control and TI-006 MACD vs trend. No historical Shadow repair, no outcome join, no Formal edit.
+
+## TI-409 — source hash presence does not bind content (2026-09-28)
+
+- Isolated executable negative witness: `research/test_technical_indicator_hash_binding_falsification_v0_1.mjs`. A synthetic bar's high changes while its `sourceBarHash`, raw identity and provenance labels remain identical. Both snapshots pass `VALID` and KD differs. This is not a cryptographic collision; no digest verification occurs in the current research guard.
+- Durable analysis: `research/TECHNICAL_INDICATOR_HASH_BINDING_FALSIFICATION_V0_1.md`. The source/continuity owner must supply an immutable raw payload receipt and separate transformed-bar lineage with point-in-time version semantics. Self-issued hashes or observed labels from the same adapter do not authenticate the source.
+- No real-source accident or return effect is claimed. Synthetic QA does not upgrade tracker maturity. Runtime provenance, parent counts, prospective coverage and outcomes remain UNKNOWN or blocked. Formal Core LOCKED.
+
+### Exact next continuation point after TI-409
+
+1. Audit the shared upstream raw-source and continuity receipt contract for field-level content binding, first-known/capture times, revision lineage and independent attestation. Do not treat a nonempty hash string as proof.
+2. Measure permissioned, outcome-blind real OHLC field and revision coverage by provider/date/market/symbol; retain UNKNOWN where absent. Test legitimate corrections and corporate-action transforms against certified sessions to quantify false-positive guard rejection.
+3. Reconcile exact immutable parent generation and complete child status with actual same-scan counts and non-secret runtime costs before a consolidated Class-B proposal.
+4. Only after prospective valid capture and PIT/OOS gates may TI-005 and TI-006 test incremental value. No Worker wiring, outcome join or Formal change now.
+
+## TI-410 — a changed digest can still belong to a future revision (2026-09-28)
+
+- Independent synthetic witness: `research/test_technical_indicator_revision_clock_falsification_v0_1.mjs` changes the last bar's high **and** asserted raw identity/digest, with a hypothetical first-known/capture time after the original decision. The isolated guard still returns `VALID` for both windows and KD changes, because it only checks one earlier context-level availability time. Distinct from TI-409's unchanged-hash witness.
+- Durable reasoning and counterargument: `research/TECHNICAL_INDICATOR_REVISION_CLOCK_FALSIFICATION_V0_1.md`. Legitimate later corrections and corporate-action transformations require new versioned ancestry and decision-specific cutoff, not permanent rejection. An adapter's self-asserted timestamps do not authenticate source availability.
+- Three isolated tests pass (new revision-clock, source guard, TI-409). No provider sample, measured false rejection rate, outcome or cost evidence. D03 maturity unchanged; Formal Core LOCKED.
+
+### Exact next continuation point after TI-410
+
+1. Obtain upstream independently attested per-field raw payload/version receipts, canonical content digest and per-version publication/first-known/capture clock; commit exact row versions to the immutable parent generation and transformation ancestry.
+2. Audit permissioned real source OHLC field availability and corrections by provider/date/market/symbol, with certified session/corporate-action truth and explicit UNKNOWN. Measure legitimate-correction false rejection and actual same-scan parent/child counts plus non-secret runtime cost.
+3. Keep TI-005/TI-006 outcome and incremental-value tests blocked until prospective complete capture, PIT/OOS and governance gates. No Formal or runtime wiring on synthetic evidence.
+
+## TI-411 — same-date daily bar may precede its own completion (2026-09-29)
+
+- Isolated synthetic witness: `research/test_technical_indicator_same_session_bar_falsification_v0_1.mjs` sets decision `asOf` to 09:00 Taipei on the final bar's own date, while the context availability timestamp belongs to the previous day. The guard admits two different full-day high values as `VALID`; KD differs. The equality case in its date-only future-bar check lacks a per-version completion/availability clock.
+- Analysis and counterargument: `research/TECHNICAL_INDICATOR_SAME_SESSION_BAR_FALSIFICATION_V0_1.md`. Legitimate after-market final bars and explicitly partial intraday bars require different clock/completeness contracts; a hardcoded close hour alone is not source publication proof.
+- Evidence scope: synthetic source QA only. Actual source coverage, rejection denominators, PIT attestation, outcome value, costs and OOS remain UNKNOWN. D03 tracker level/maturity stay unchanged; Formal Core LOCKED.
+
+### Exact next continuation point after TI-411
+
+1. Consolidate TI-409/410/411 into one upstream immutable row-version receipt: canonical raw field bytes and digest, observed field status, bar interval/completion, certified symbol session, provider version/first-known and local capture clocks, corporate-action transform ancestry, and decision-specific row-version commitment. Seek independent source-owner attestation rather than self-issued adapter strings.
+2. Obtain authorized outcome-blind real OHLC/version/session samples; count complete, partial, corrected and UNKNOWN rows by provider/date/market/symbol and test legitimate same-day after-market rows and delayed corrections. Reconcile exact parent-child keysets and non-secret runtime costs.
+3. Keep outcome joins, TI-005/TI-006 efficacy tests, Class-B runtime capture and Formal change blocked until prospective PIT and governance gates pass. No historical Shadow reconstruction.
+
+## TI-412 through TI-417 — immutable OHLC row-version receipt (2026-09-29)
+
+- TI-412: Added `research/technical_ohlc_row_version_receipt_v0_1.mjs` and the machine-readable contract `research/technical_ohlc_row_version_receipt_contract_v0_1.json`. The receipt binds exact raw OHLC string bytes to one canonical raw digest, then binds that digest to transformed OHLC, technical price-space/corporate-action lineage and a second transformed-row digest. The exact transformed row version is committed to one immutable `parentDecisionReceiptId + captureGeneration`.
+- TI-413: Changing raw high bytes under an old digest returns `BLOCKED/RAW_CONTENT_DIGEST_MISMATCH`; changing transformed OHLC under an old transformed digest is also blocked. This is the executable positive repair contract for TI-409's isolated weakness, not proof that Production already supplies trustworthy bytes.
+- TI-414: A legitimate next-day correction is blocked for the original decision cutoff but can become eligible for a later decision when separately first-known, captured, attested and committed. This preserves correction utility without rewriting earlier truth and directly addresses TI-410.
+- TI-415: A completed daily bar whose certified interval ends after a 09:00 decision is blocked. A `PARTIAL` bar is a different contract and cannot satisfy a `COMPLETE` request. A legitimate after-market completed row can pass. Symbol-specific certified intervals remain necessary because the official TWSE closing-stabilization procedure can delay an individual close from 13:30 to 13:33.
+- TI-416: `LOCAL_CAPTURE_ONLY`/self-issued adapter strings remain `UNKNOWN/INDEPENDENT_SOURCE_ATTESTATION_MISSING`; missing per-version first-known time remains `UNKNOWN`. The module validates internal integrity but cannot create source-owner authority.
+- TI-417: Foreign parent generation, broken raw-to-transform ancestry and changed parent commitment fail closed with exact reasons. Twelve synthetic assertions pass together with TI-409/410/411, source-guard and canonical-hash regressions.
+- Bounded source-only check: at 2026-09-29 20:20 Taipei, official TWSE OpenAPI `STOCK_DAY_ALL` returned 1,380 rows all dated ROC `1150924` (2026-09-24), payload SHA-256 `5895bbf2882e0b3d095befea940700d812418ad3a763d2304f8cb964b79f0fdf`, whole-file ETag and Last-Modified, but no visible row-level version/correction or first-known/capture fields. One capture does not establish all-provider coverage or latency; it is counterevidence against equating retrieval/current date or whole-file HTTP metadata with row-level PIT identity.
+- Durable analysis: `research/TECHNICAL_INDICATOR_ROW_VERSION_RECEIPT_V0_1.md`; bounded machine-readable source receipt: `research/technical_ohlc_official_source_capture_20260929.json`.
+- No return/outcome lookup, threshold search, OOS, Walk-forward, cost or fill inference occurred. D03 module levels and maturity stay 44.6%. `FORMAL_OPTIMIZATION_CANDIDATE = NONE`; Formal Core remains LOCKED.
+
+### Exact next continuation point after TI-417
+
+1. Have the shared source/continuity owner map real TWSE/TPEx/Fugle rows into `TECHNICAL_OHLC_ROW_VERSION_RECEIPT_V0_1` without D03 self-attestation. Preserve provider/date/market/symbol and explicit `UNKNOWN`.
+2. Run outcome-blind multi-date/source captures; count complete, partial, corrected and `UNKNOWN` versions, verify certified symbol sessions and corporate-action transform ancestry, and quantify legitimate-correction false blocks.
+3. Reconcile every status against the exact immutable parent-generation keyset and measure non-secret storage/latency/cost. Successful rows alone may not define coverage.
+4. Keep TI-005 KD-vs-RSI, TI-006 MACD-vs-direct-trend, outcome joins and Class-B runtime capture blocked until prospective PIT-complete evidence and governance review exist. No historical Shadow repair or Formal change.

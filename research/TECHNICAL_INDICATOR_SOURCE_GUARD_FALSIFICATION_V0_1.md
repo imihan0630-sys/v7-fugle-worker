@@ -1,0 +1,108 @@
+# D03 Technical Indicator source guard falsification v0.1
+
+Updated: 2026-09-28 Asia/Taipei
+Status: RESEARCH_ONLY / ISOLATED_CLASS_A / FORMAL_LOCKED
+Scope: D03-06/07/08 source validity for KD/RSI/MACD and future D03 formulas. No market outcome inference.
+
+## Research question
+
+Can the existing isolated formula core label a malformed stock-price sequence as VALID and compute apparently usable technical indicators? If so, can a prospective research-only boundary reject these rows without altering the frozen formulas for valid rows?
+
+Evidence examined: `research/technical_indicator_core_v0_1.mjs`, `research/test_technical_indicator_core_v0_1.mjs`, D03 checkpoint and shared governance on current main. The core has no Worker import or production wiring. Taiwan Stock Exchange official corporate-action reference price calculation confirms that raw cross-event price changes have separate event semantics; this is background for continuity checks, not proof that our source transformation is correct: https://wwwc.twse.com.tw/zh/announcement/ex-right/twt49u.html.
+
+## TI-402 — Direct negative probe of frozen v0.1 core
+
+`validateIndicatorBars()` used `Number.isFinite(Number(value))`; JavaScript coerces null, empty string and boolean to finite prices (0/1). It tested high >= low but did not require positive prices, open/close inside high/low, or a dated ascending symbol sequence.
+
+With a 40-row synthetic flat NT$100 series and one malformed bar at index 20, direct v0.1 `buildIndicatorSnapshot(..., strictSemantics:true)` returned `dataQualityState=VALID` and finite KD/RSI/MACD for:
+- close=null: KD K ~49.248, RSI ~51.852, MACD DIF ~1.073;
+- close='': same false-valid calculation;
+- close=true: falsely valid;
+- close=-1: falsely valid;
+- close=110 while high=101: falsely valid;
+- negative open/high/low/close: falsely valid.
+An undefined high was blocked, showing the defect is selective rather than all bad input passing.
+
+These are adversarial synthetic witnesses. They prove a research-core validation defect, not a production incident and not a real market observation.
+
+## TI-403 — Positive and counterfactual checks
+
+A new additive wrapper `research/technical_indicator_source_guard_v0_1.mjs` rejects:
+- null/blank/boolean/hex/nonpositive price;
+- close or open outside same-space high/low;
+- mixed symbols, invalid/duplicate/out-of-order dates, future bar;
+- unresolved point-in-time source availability;
+- wrong continuity price space, or absent parent/raw-admission/continuity/symbol-session/version receipt identifiers;
+- unverified symbol session/technical continuity/corporate-action continuity;
+- suspension or no-trade pseudo-bar.
+
+Only finite positive decimal prices pass; numeric decimal strings are normalized. The field name `date` and required receipt identifiers follow the already frozen cross-lane TECHNICAL_CONTINUITY handoff. A price-limit-constrained input is retained as `CONSTRAINED`, separate from ordinary OBSERVABLE rows. This is a deliberate input contract, not an optimized trading parameter. The wrapper stores a distinct `TECHNICAL_INDICATOR_SNAPSHOT_V0_2_RESEARCH` / guard version and delegates unchanged formula computation to the frozen v0.1 core.
+
+On valid 50-bar synthetic input, KD/RSI/MACD outputs of the guarded wrapper equal the original strict core exactly. Guard replay is deterministic. Original core regression, new adversarial suite and 19 shared-parent receipt assertions pass under Node. The original v0.1 formulas and production Worker were not modified.
+
+Negative control: numeric decimal strings that represent the same valid OHLC are allowed. This rejects the overbroad alternative of blocking every string-typed provider row, which could silently shrink sample coverage without improving validity.
+
+## TI-404 — Limits of the new guard
+
+The guard checks row chronology but does not independently establish an official TWSE/TPEx session calendar. Synthetic test dates include weekends while asserting `symbolSessionVerified=true`; hence a malicious/incorrect upstream assertion can still pass. It cannot create trusted provenance by itself.
+
+Likewise `pointInTimeEligible=true` and sourceAvailableAt <= asOf and presence of receipt IDs are necessary contract checks, not proof that the provider actually published those values by that timestamp. Technical continuity booleans are upstream assertions, not a verified corporate-action transformation. No D1 full-parent completeness, recursive canonical lineage, actual price-limit regime, live provider behavior or economic incremental value is proven by this isolated module.
+
+Therefore:
+- FORMULA_INPUT_GUARD_SYNTHETIC = PASS;
+- SOURCE_AUTHENTICITY = UPSTREAM_DEPENDENCY / UNKNOWN;
+- TECHNICAL_CONTINUITY_RUNTIME = BLOCKED;
+- PROSPECTIVE_CAPTURE = NOT_STARTED;
+- OUTCOME_JOIN = NO_GO.
+
+The wrapper is not promotion-grade until provenance receipts and parent keyset coverage are independently validated. Do not make the wrapper itself the authority for official sessions or continuity, and do not retrofit historical Shadow.
+
+## TI-405 — Selection relevance and falsification
+
+Positive mechanism: keeping malformed rows out of KD/RSI/MACD prevents artificial oversold/overbought/crossover states, which could otherwise create false factor effects or wrong descriptive regimes. It reduces evidence contamination and is reusable by System 1 and System 2 research.
+
+Counterevidence/side effects: a stricter guard may reduce observability if the legitimate provider emits numeric strings (allowed), minor OHLC rounding differences, or incomplete optional open (the current KD/RSI/MACD guard permits missing open, while rejecting malformed present open). Coverage must be reported by exact rejection reason/date/source/symbol, not summarized as “no signal.” If real valid rows are disproportionately excluded by stock price, exchange, corporate actions or regime, an apparent alpha change would be selection bias. No indicator weights or formal gate may be adjusted from these synthetic tests.
+
+PIT: asOf/availableAt and exact source family/version must be attached to the immutable future parent. Replay: original valid formula outputs must be byte/equivalence stable across repeated runs. OOS, date clustering, transaction cost, fill feasibility and incremental-value evidence are absent; they are not inferable from input QA.
+
+The first eventual empirical tests remain KD vs RSI with direct price controls, then normalized MACD vs direct trend. No `FORMAL_OPTIMIZATION_CANDIDATE`.
+
+## Durable code and verification
+
+- `research/technical_indicator_source_guard_v0_1.mjs`: additive isolated Class-A guard; commit `7e369550e9017e45899676dad3c02c5f0966f8f2`.
+- `research/test_technical_indicator_source_guard_v0_1.mjs`: valid equivalence, malicious input, PIT/source and replay fixtures; commit `b2bb984a119bcbc478b1892759afe9d2c6b39772`.
+- `node research/test_technical_indicator_source_guard_v0_1.mjs`: PASS.
+- `node research/test_technical_indicator_core_v0_1.mjs`: PASS.
+- `node research/test_technical_indicator_parent_reconciliation_v0_1.mjs`: PASS.
+- Exact GitHub readback of both new files matches locally tested contents.
+
+## Exact next continuation
+
+1. Audit the upstream real source normalization contract for whether open/high/low/close arrive as numbers or decimal strings, whether adjusted OHLC share one space, and the canonical date/session receipt.
+2. Run source-grounded non-outcome fixtures on independently verified symbol/event dates when available; preserve a complete rejection denominator and review false positives.
+3. Require immutable parent/captureGeneration and canonical continuity lineage before prospective observation or outcome joining. No direct Worker wiring without Class-B review.
+4. Keep the current Formula v0.1 immutable and require the versioned guard for new research snapshots; do not silently redefine old rows.
+5. Continue D03's other independent hypotheses while prospective data accumulates, without tuning indicator thresholds or adding redundant votes.
+
+## TI-406 — Cross-lane contract reconciliation after initial implementation
+
+Independent review of `research/TECHNICAL_INDICATOR_CONTINUITY_HANDOFF_V0_1.md` found an initial adapter mismatch: the canonical window uses bar `date`, while the first additive guard draft expected `tradeDate`. That first draft was NOT wired into runtime. The guard and fixtures were revised to require canonical `date` and the upstream parent/raw-admission/continuity/session/engine receipt IDs before declaring synthetic VALID. A price-limit-constrained bar now yields a separate CONSTRAINED interpretation. All isolated guard, unchanged formula-core regression, and parent reconciliation tests passed again after the correction.
+
+Receipt IDs in the synthetic test are deliberately labeled synthetic; their mere presence does not authenticate a real upstream event or source. The shared continuity owner still has to certify exact eligible-session dates, PIT corporate-action versions, transforms and constrained price-discovery provenance. The guard cannot replace these authorities.
+
+Latest guarded code commit: `b0bbf9a45a1b122d8fd408a02afb0632ecb0c981`. Latest guard test commit: `570689609a934ffd7352f8bf752b4e73477905a1`. The earlier create commits remain in history as prototypes, not the final canonical adapter.
+
+
+## TI-407 — Source-field substitution counterexample and scope correction
+
+Repository source-template review of `Worker.js` found `normalizeMarketRow()` may substitute close for missing open/high/low. This source-template observation is not evidence that today's deployed Worker uses that exact path. A downstream row can consequently have finite positive OHLC and geometrically plausible bounds while its high/low are not observations. KD's RSV uses the high-low range; RSI and MACD are close-based, so their dependencies differ. Conservatively the present all-family snapshot requires observed high, low and close; future close-only family admission would require separately versioned quality and coverage denominators, not a silent relaxation.
+
+The additive guard now requires `observedRawBarIdentity`, `sourceBarHash` and a per-field `rawFieldProvenance` assertion marking high/low/close `OBSERVED`; it blocks an otherwise plausible high=close substituted row labeled `SYNTHESIZED`, a missing source hash and absent provenance. A missing open is accepted when high/low/close are observed, since these three implemented formulas do not use open. A present malformed open or an open outside the range remains blocked. Guard commit `c0adc8beb1de39c256dcabb9595d6736dda889d1`; adversarial test commit `e5f47a055036d0e54ad8238863daea5a53307043`. Isolated guard suite, frozen core regression and 19 parent reconciliation assertions all PASS.
+
+Counterexample to our own guard: a caller can label synthetic high/low `OBSERVED` and provide invented IDs/hashes, and the isolated code cannot detect the lie. Neither the source-template normalization nor the current canonical continuity handoff supplies a certified `rawFieldProvenance` field. These newly required fields are a proposed upstream contract; production real-data coverage would presently be UNKNOWN and potentially entirely blocked. Observed field provenance must be derived from raw feed before substitution, bound to an immutable source hash and attested by the upstream owner. A self-issued label from the adapter is circular evidence. Do not backfill old Shadow or claim a production source defect was repaired.
+
+## TI-408 — Shared parent-scope reconciliation
+
+The more recent `research/IMMUTABLE_PARENT_SCOPE_SIZING_V0_1.md` freezes the proposed scope `FORMAL_HISTORY_ADMITTED_FEATURE_ROWS_V0_1`: unique same-scan featureRows after history admission, before Formal fail-fast exclusion. This supersedes the earlier D03 checkpoint wording `SHARED_PARENT_SCOPE=UNFROZEN` for the scope *definition* only. Actual per-scan count distribution, duplicate/subset receipt, immutable persistence, read completeness and D1/Worker costs remain UNKNOWN or unimplemented. `HISTORY_CACHE_TARGET=2000` is not a hard parent cap, and the older <=54 sampled Shadow is not the parent denominator. In particular, never turn normalized-today rows absent from featureRows into invented decision parents.
+
+Synthesis: stronger source guards protect calculation semantics but can lower coverage, and neither synthetic PASS nor a frozen parent definition establishes independent upstream truth or indicator incremental value. Prospective tests require a rejection ledger by field/source/date/symbol, exact parent and child denominators, source lineage, continuity provenance, stable formulas and economic costs. No signal weights, Formal gate or candidate status change follows.

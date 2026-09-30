@@ -1,0 +1,43 @@
+{
+  "schemaVersion": "0.1",
+  "updatedAt": "2026-09-28T21:36:00+08:00",
+  "domain": "D04",
+  "status": "PERSISTENCE_WIRING_GAP_CONFIRMED",
+  "formalCoreImpact": "NONE",
+  "findings": {
+    "system2MarketRegimeSpecDefines": [
+      "realizedVol5",
+      "realizedVol20",
+      "volRatio5to20"
+    ],
+    "storageSupports": "s2_market_regime_snapshots.factor_observations_json",
+    "assemblerSupports": "regimeFactorObservations",
+    "runtimeRawFactorSearch": "NOT_FOUND_OUTSIDE_RESEARCH_DESIGN_DOCS",
+    "populatedRegimeFactorCaller": "NOT_FOUND",
+    "system1OfficialIndexComputeFeasible": true,
+    "system1DurableMarketRvFields": "NOT_FOUND"
+  },
+  "semanticGuard": {
+    "runtimeVolatilityStateMeaning": "EVIDENCE_QUALITY_STATE",
+    "economicVolatilityDirectionLocation": "REGIME_LABEL_OR_FACTOR_OBSERVATION",
+    "independentVotes": false
+  },
+  "minimumRawFactorIds": [
+    "MARKET_RV5_CC_SIMPLE",
+    "MARKET_RV20_CC_SIMPLE",
+    "MARKET_RV_RATIO_5_20"
+  ],
+  "promotionGate": [
+    "persist_same_decision_clock_source_receipt",
+    "persist_raw_values_with_PIT_provenance",
+    "same_regime_snapshot_factor_refs",
+    "immutable_run_fingerprint_linkage",
+    "independent_clean_dates",
+    "D16_D18_OOS_and_robustness_gates"
+  ],
+  "prohibited": [
+    "historical_first_known_reconstruction_from_mutable_latest_snapshot",
+    "counting_RV5_RV20_ratio_as_three_independent_votes",
+    "formal_volatility_throttle_without_owner_approval"
+  ]
+}

@@ -33,6 +33,8 @@ jobs:
         run: |
           set -euo pipefail
           test "$EFFECTIVE_CONFIRM" = "DEPLOY_SYSTEM2_WORKER_SMOKE"
+          echo "This legacy zero-Cron smoke path is retired after Daily Resonance activation. Use System2 Daily Resonance Deploy."
+          exit 1
 
       - name: Resolve isolated D1 and inspect recoverable Worker state
         env:
@@ -164,7 +166,7 @@ jobs:
                 if(data.service!=="system2-shadow-research") throw new Error("wrong service");
                 if(data.mode!=="RESEARCH_ONLY") throw new Error("wrong runtime mode");
                 if(data.databaseBinding!=="SYSTEM2_DB") throw new Error("wrong D1 binding");
-                if(data.schemaVersion!=="0.5") throw new Error("wrong D1 schema version");
+                if(data.schemaVersion!=="0.7") throw new Error("wrong D1 schema version");
                 if(data.captureState!=="CAPTURE_DISABLED") throw new Error("capture must be disabled");
                 if(data.scheduledCaptureAllowed!==false) throw new Error("scheduled capture must remain blocked");
                 if(data.system1RuntimeUsed!==false) throw new Error("System1 runtime isolation failed");

@@ -82,14 +82,15 @@
   "falsification": [
     "PF-003/PF-019 show indexers and non-indexers can both trade around index events, so event overlap cannot identify every share as passive.",
     "PF-012 states mechanical demand can have real and persistent price impact, so contamination is an interpretation/context flag, not a bearish veto.",
-    "PF-034 evidence build remains incomplete for deterministic constituent/AUM/effective-close coverage, so historical ordinary-flow classification cannot be broadly asserted."
+    "PF-034 evidence build remains incomplete for deterministic constituent/AUM/effective-close coverage, so historical ordinary-flow classification cannot be broadly asserted.",
+    "PF-035/PF-036 narrow the earlier constituent-source blocker: a four-cycle deterministic MSCI Global Standard Taiwan add/delete contract is method-ready, but the negative evidence is membership-only and public-source accessibility does not authorize persistent database/analytics ingestion."
   ],
   "integration": {
     "ownerLane": "PASSIVE_FLOW_INDEX_REBALANCING",
     "institutionalLaneRole": "consume PIT event context; retain institutional flow as its own evidence family",
     "futureJoinKey": "same Formal generation plus symbol and event first-known eligibility",
     "immutableParentRequirement": "event child must attach to the same canonical Formal generation; later event knowledge cannot revise historical decision context",
-    "currentEmpiricalStatus": "DATA_GATED"
+    "currentEmpiricalStatus": "DATA_GATED_WITH_BOUNDED_MEMBERSHIP_NEGATIVE_EVIDENCE_METHOD_READY"
   },
   "biasControls": [
     "no look-ahead",
@@ -103,8 +104,19 @@
   "engineering": {
     "classA": "pure taxonomy/observer and immutable research child once PIT event rows already exist",
     "classB": "shared runtime persistence/join wiring for event children or TDCC vintage",
-    "classC": "any Formal score/weight/veto/ranking change"
+    "classC": "any Formal score/weight/veto/ranking change",
+    "sourceAuthorization": "Any persistent automated MSCI constituent archive/join requires an authorized/licensed source or appropriate permission determination; public URL access alone is insufficient."
   },
-  "status": "PASSIVE_CONTAMINATION_TAXONOMY_FROZEN / ORDINARY_FLOW_REQUIRES_COMPLETE_NEGATIVE_EVIDENCE / MOTIVE_UNIDENTIFIED / OUTCOMES_CLOSED / FORMAL_UNCHANGED",
-  "exactNext": "Audit whether current Passive Flow source map can produce a complete negative-evidence denominator for any bounded provider/index/date universe. If not, define the smallest prospective PIT event receipt needed to distinguish NO_EVENT_VERIFIED from EVENT_COVERAGE_INCOMPLETE. Keep outcomes closed and do not modify institutionalScore."
+  "status": "PASSIVE_CONTAMINATION_TAXONOMY_FROZEN / BOUNDED_MSCI_MEMBERSHIP_NEGATIVE_EVIDENCE_METHOD_READY / BROAD_ORDINARY_FLOW_UNVERIFIED / SOURCE_LICENSE_GATE / OUTCOMES_CLOSED / FORMAL_UNCHANGED",
+  "exactNext": "Use NO_MSCI_STANDARD_MEMBERSHIP_ADD_DELETE_VERIFIED only for the declared MSCI Standard Taiwan membership scope. Seek an authorized/licensed prospective source path and separately close weight-change, other-index, ETF-flow and ownership-vintage coverage. Keep broader passive context UNKNOWN and do not modify institutionalScore.",
+  "boundedNegativeEvidence": {
+    "state": "NO_MSCI_STANDARD_MEMBERSHIP_ADD_DELETE_VERIFIED",
+    "provider": "MSCI",
+    "indexFamily": "GLOBAL_STANDARD",
+    "country": "TAIWAN",
+    "eventScope": "PERIODIC_REVIEW_MEMBERSHIP_ADD_DELETE_ONLY",
+    "readiness": "METHOD_READY / FOUR_CYCLE_SOURCE_PATTERN_VALIDATED",
+    "guard": "This excludes only verified MSCI Global Standard Taiwan membership add/delete contamination within the declared PIT scope; it does not establish NO_INDEX_EVENT, NO_WEIGHT_CHANGE, NO_PASSIVE_FLOW, or active-fundamental conviction.",
+    "sourceUse": "SOURCE_LICENSE_REVIEW_REQUIRED_BEFORE_AUTOMATED_PERSISTENT_INGESTION"
+  }
 }

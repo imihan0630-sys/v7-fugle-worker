@@ -1,0 +1,91 @@
+{
+  "schemaVersion": "0.1",
+  "module": "D13-05",
+  "name": "DXY PIT and redundancy contract",
+  "status": "RESEARCH_ONLY_CONCEPT_FROZEN_EVIDENCE_PENDING",
+  "formalCoreImpact": "NONE",
+  "updatedAt": "2026-09-28T20:35:00+08:00",
+  "benchmarkIdentity": {
+    "source": "ICE Data Indices",
+    "compositionType": "FIXED_GEOMETRIC_SIX_CURRENCY_BASKET",
+    "weights": {
+      "EUR": 57.6,
+      "JPY": 13.6,
+      "GBP": 11.9,
+      "CAD": 9.1,
+      "SEK": 4.2,
+      "CHF": 3.6
+    },
+    "keyGuard": "DXY is not a broad Asia/EM dollar index and is heavily EUR-driven."
+  },
+  "broadDollarContrast": {
+    "source": "Federal Reserve Broad Dollar Index",
+    "purpose": "trade-weighted macro dollar comparison",
+    "updateRule": "weights revised periodically/annually",
+    "examples2026": {
+      "EuroArea": 21.007,
+      "Mexico": 14.801,
+      "Canada": 12.769,
+      "China": 10.891,
+      "Japan": 5.182,
+      "Korea": 3.621,
+      "Taiwan": 2.983
+    },
+    "guard": "Do not merge DXY and Broad Dollar into one dollarStrength field."
+  },
+  "decisionClock": {
+    "timezone": "Asia/Taipei",
+    "time": "18:10",
+    "liveDxy": "PIT_ELIGIBLE_IF_TIMESTAMPED_AND_ENTITLED",
+    "dailyCloseOrLaterSettlement": "FUTURE_IF_AFTER_DECISION"
+  },
+  "sourceState": {
+    "officialSource": "IDENTIFIED",
+    "providerEntitlement": "NOT_FROZEN",
+    "historical1810Receipt": "NOT_ESTABLISHED"
+  },
+  "rawFeatures": [
+    "dxyLevelPctile",
+    "dxyReturnPreScan",
+    "dxyShockZ",
+    "dxyTrend20",
+    "dxyVolatility",
+    "dxyVsUsdTwdDivergence",
+    "dxyVsRatesDivergence"
+  ],
+  "contextStates": [
+    "BROAD_DOLLAR_STRESS_CANDIDATE",
+    "EURO_LED_DXY_UP",
+    "LOCAL_TWD_WEAKNESS_WITHOUT_DXY",
+    "UNCLASSIFIED"
+  ],
+  "redundancyOrder": [
+    "Taiwan market/Regime",
+    "USD/TWD",
+    "US rates",
+    "US/global equity state",
+    "VIX/IV",
+    "DXY"
+  ],
+  "falsification": [
+    "EURUSD substitution",
+    "USDTWD substitution",
+    "broad-dollar comparison when PIT-valid",
+    "crisis removal",
+    "date-shift placebo",
+    "leave-one-date-out",
+    "direction-vs-risk target split",
+    "Asian-FX confirmation"
+  ],
+  "maturityDecision": {
+    "from": "L1",
+    "to": "L2",
+    "reason": "Composition, proxy ambiguity, source timing, redundancy order and falsification are frozen; no durable 18:10 receipt/OOS evidence yet for L3."
+  },
+  "nextContinuation": [
+    "prospective 18:10 DXY receipt",
+    "freeze provider entitlement/history contract",
+    "compare DXY vs USDTWD vs broad-dollar proxy",
+    "no Formal use before incremental evidence"
+  ]
+}

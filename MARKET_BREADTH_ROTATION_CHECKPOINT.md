@@ -1,8 +1,8 @@
 # Market Breadth + Sector Rotation + Leadership Checkpoint
 
-Updated: 2026-09-26 Asia/Taipei
-Current cursor: BR-001 through BR-026 complete.
-Next: prospective evidence accumulation from the first valid post-V8.14 scan; no threshold tuning.
+Updated: 2026-09-28 20:12 Asia/Taipei
+Current cursor: BR-001 through BR-029 complete.
+Next: BR-030 first valid prospective evidence no earlier than 2026-09-29; until then continue source/readiness work without outcome peeking.
 
 ## Durable conclusions
 
@@ -98,3 +98,71 @@ Open Fundamental Information Dynamics: distinguish fundamental level, change, su
 
 Status: `WAITING_PROSPECTIVE / NOT_OPTIMIZATION_READY`.
 First expected valid cohort: 2026-09-29, conditional on V8.12 history/source admission.
+
+
+## BR-027 / BR-028 — 07-room integration checkpoint
+
+### New durable conclusions
+- Industry classification is a PIT variable. Current labels must never be backfilled into historical Sector RS / breadth / rotation studies. TWSE effective-dated reclassification evidence makes bounded Taiwan PIT membership feasible, while complete historical machine-readable coverage remains UNKNOWN.
+- Taiwan-specific counterevidence means Sector RS cannot receive a permanent positive sign. Industry momentum / reversal depends on horizon, taxonomy, market and regime.
+- Sector price strength must be decomposed from participation concentration and then tested against physical-cycle evidence. A leader-dominated sector move is not equivalent to broad industry confirmation.
+- Physical-cycle confirmation must stay separate from price confirmation: production / sales / inventory / capacity / pricing / company transmission can disagree, and disagreement is itself a research state.
+- Do not create a new composite industry score yet. Preserve the state vector and test interaction states prospectively.
+- Existing System 1 same-day sector breadth / avgChange / amount activity / hard gate remain unchanged and become baseline controls for incremental tests.
+- The six-layer Industry Cycle Confirmation Stack is a direct research bridge to System 2's owner-approved `INDUSTRY_THESIS` family, whose source readiness remains incomplete.
+
+### D09 maturity decision
+`D09-01 產業分類與分類Vintage`: L2 -> L3.
+Reason: official Taiwan effective-date reclassification evidence establishes decision-time classification feasibility for prospective and bounded historical research. This is a PIT-feasibility upgrade only; it does not claim complete historical membership coverage or automation.
+
+### Explicit non-upgrades
+- D09-02 Sector RS remains L3: mechanism / Taiwan PIT feasibility already exist, but prospective/OOS evidence is not yet sufficient for L4.
+- D09-06 Sector Rotation remains L2: concept is mature, but a clean PIT rank-transition cohort is still evidence-pending.
+- No breadth / rotation threshold, sector hard gate, priority weight or Formal score changed.
+
+### Exact next continuation
+BR-029: audit effective-dated classification source coverage and define `classificationSchemeId / effectiveFrom / effectiveTo / knownAt` receipt.
+BR-030: when the first valid V8.14 prospective sector-gate cohort exists, compare leader-only versus broad participation without tuning thresholds.
+BR-031: join those observations to the D10 physical-cycle state by information date, preserving separate clocks and UNKNOWNs.
+
+
+## BR-029 — Taxonomy bridge checkpoint
+
+- TWSE/TPEx issuer industry, MOEA/DGBAS statistical industry/product codes, and investment themes/supply-chain groups are separate taxonomies with different purposes and clocks.
+- A one-to-one mapping is structurally invalid. Research now requires an effective-dated many-to-many `INDUSTRY_EXPOSURE_VINTAGE` bridge with source, knownAt/effective dates, exposure basis/magnitude when disclosed, confidence and revision semantics.
+- Formal industry membership alone cannot prove theme exposure; capability does not prove revenue/orders; current revenue mix cannot be backfilled historically.
+- D09-11 題材股與正式產業分類橋接 advanced L1 -> L2 because mechanism/schema/falsification are now defined.
+- D10 side now has a taxonomy-aware reusable industry-transmission grammar; concrete industry PIT coverage remains evidence-pending.
+- No change to sector gate, sector score, weights, Top6/3+3, capital, entry/exit or Formal Core.
+
+### Exact next continuation
+BR-030: prospective leader-only vs broad-participation evidence using frozen V8.14 sector-gate provenance.
+BR-031: combine market confirmation with D10 physical-cycle state by knownAt without collapsing to a scalar score.
+BR-032: estimate taxonomy/exposure UNKNOWN rate before any theme-level return test.
+
+
+## BR-030P — preregistration complete, outcomes still waiting
+
+- No BR-030 forward outcome was inspected on 2026-09-28. V8.14's first expected clean prospective cohort remains 2026-09-29, conditional on source/history admission.
+- Source audit of `buildTodaySectorStats()` confirms member-level `changePercent` and `tradeValue` exist at decision time, while sector output already contains stockCount, breadth, avgChange, amount/activity and top-3 return leaders.
+- Therefore intra-sector activity concentration is prospectively PIT-computable from same-day Taiwan market data without a new external data source.
+- Preregistered descriptors include top1/top3 amount share, amount HHI, effective active names, stock-count-normalized HHI, leader-return gaps, breadth/avgChange after top-1/top-3 removal, sign stability and return dispersion.
+- Raw HHI is forbidden for cross-sector comparison without sector-size normalization.
+- Taiwan price-limit/event contamination is an explicit control.
+- System 2 RANK-07 candidate-pool industry concentration is not duplicated: BR-030 studies concentration **within a sector's members before candidate interpretation**, while RANK-07 studies distribution **across candidates**.
+
+### D09 maturity decision
+`D09-10 產業成交值／集中度: L2 -> L3`.
+
+Reason: member-level same-day tradeValue and industry identity already exist at the decision clock and support prospective Taiwan PIT concentration descriptors. This is a data-feasibility upgrade only.
+
+### Explicit non-upgrades
+- BR-030 itself remains WAITING_PROSPECTIVE; no leader-only vs broad outcome conclusion exists yet.
+- D09-07 leadership lifecycle remains L2 until repeated PIT snapshots exist across enough independent dates.
+- D09-06 sector rotation remains L2 pending clean prospective rank-transition evidence.
+- No concentration threshold, hard cap, sector gate, score, ranking, quota, capital, monitoring or signal behavior changed.
+
+### Exact next continuation
+1. Wait for a valid post-V8.14 2026-09-29-or-later scan before any BR-030 outcome comparison.
+2. Freeze first same-day concentration receipt without threshold tuning.
+3. Join to D10 physical-cycle states only by information available as-of that scan date.

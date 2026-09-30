@@ -296,6 +296,7 @@ export async function buildA1HistoryPrimitiveBundle({
   marketDate,
   decisionTimestamp,
   observedAt,
+  availableAt = null,
   bars,
   sourceId,
   sourceName,
@@ -309,6 +310,12 @@ export async function buildA1HistoryPrimitiveBundle({
   const date = requiredText(marketDate, "marketDate");
   const clock = assertTimestamp(decisionTimestamp, "decisionTimestamp");
   const seenAt = assertTimestamp(observedAt, "observedAt");
+  const available = availableAt === null || availableAt === undefined || availableAt === ""
+    ? seenAt
+    : assertTimestamp(availableAt, "availableAt");
+  if (Date.parse(available) > Date.parse(seenAt)) {
+    throw new Error("availableAt cannot be later than observedAt");
+  }
   const srcId = requiredText(sourceId, "sourceId");
   const srcName = requiredText(sourceName, "sourceName");
   const space = requiredText(priceSpace, "priceSpace");
@@ -326,7 +333,7 @@ export async function buildA1HistoryPrimitiveBundle({
   if (new Set(dates).size !== dates.length) throw new Error("history contains duplicate market dates");
   if (normalized.some((bar) => !bar.ohlcConsistent)) throw new Error("history contains inconsistent OHLC");
 
-  const pitEligible = Date.parse(seenAt) <= Date.parse(clock);
+  const pitEligible = Date.parse(available) <= Date.parse(clock);
   const continuityEligible = continuity === "CLEAR_NO_ACTION" || continuity === "ADJUSTED_CONTINUITY";
   const metrics = coreMetrics(normalized);
   const sourcePayloadHash = await sha256Hex(normalized);
@@ -337,7 +344,7 @@ export async function buildA1HistoryPrimitiveBundle({
     sourceUrl: sourceUrl || undefined,
     sourceDate: date,
     observedAt: seenAt,
-    availableAt: seenAt,
+    availableAt: available,
     capturedAt: seenAt,
     pointInTimeEligible: pitEligible,
     payloadHash: sourcePayloadHash,
@@ -460,6 +467,7 @@ export async function buildA1HistoryPrimitiveBundle({
     marketDate: date,
     decisionTimestamp: clock,
     observedAt: seenAt,
+    availableAt: available,
     sourceId: srcId,
     sourceName: srcName,
     sourceUrl,

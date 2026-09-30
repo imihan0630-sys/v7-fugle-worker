@@ -1,0 +1,77 @@
+{
+  "schemaVersion": "pattern-core-family-unification-v0.1",
+  "updated": "2026-09-28 Asia/Taipei",
+  "researchOnly": true,
+  "outcomeFree": true,
+  "formalCore": "LOCKED",
+  "mandatoryThemes": [
+    "KLINE",
+    "SAKATA",
+    "W_M",
+    "CUP_HANDLE",
+    "VCP",
+    "BREAKOUT_FALSE_BREAKOUT"
+  ],
+  "layers": {
+    "MACRO_TOPOLOGY": [
+      "W",
+      "M",
+      "CUP",
+      "PLATFORM",
+      "BOUNDARY_GEOMETRY"
+    ],
+    "COMPRESSION_PROGRESSION": [
+      "VCP",
+      "HANDLE",
+      "PLATFORM_COMPRESSION",
+      "TRIANGLE_COMPRESSION"
+    ],
+    "LOCAL_CANDLE_SAKATA": [
+      "CANDLE_RELATION",
+      "SAKATA_MULTI_BAR_MOTIF"
+    ],
+    "TRIGGER_LIFECYCLE": [
+      "APPROACH",
+      "FIRST_BREAK",
+      "RETEST",
+      "REENTRY",
+      "FAILED_BREAK",
+      "RECLAIM"
+    ]
+  },
+  "counts": {
+    "rawNamedLabelCount": "EXPLAINABILITY_ONLY",
+    "structuralObjectCount": "EXACT_VERSIONED_STRUCTURE_COUNT",
+    "rootProvenanceCount": "ROOT_INFORMATION_FAMILY_COUNT_NOT_LABEL_COUNT"
+  },
+  "rootProvenanceExamples": [
+    "PRICE_OHLC",
+    "VERIFIED_VOLUME_FLOW",
+    "ORDER_BOOK_MICROSTRUCTURE",
+    "SECTOR_CONTEXT",
+    "EVENT_CONTEXT"
+  ],
+  "exactDedup": {
+    "anchorKey": [
+      "scale",
+      "semanticSpaceVersion",
+      "sortedAnchorIds"
+    ],
+    "triggerKey": [
+      "boundaryId",
+      "firstBreakAt"
+    ],
+    "partialOverlap": "JACCARD_CONTINUOUS_NO_THRESHOLD"
+  },
+  "prohibitions": [
+    "NAMED_LABEL_MAJORITY_VOTE",
+    "ONE_SCORE_PER_LABEL",
+    "BREAKOUT_COUNT_PER_LABEL_FOR_SHARED_TRIGGER",
+    "FALSE_BREAKOUT_WITHOUT_CAUSAL_FAILURE_STATE",
+    "FIXED_SAKATA_SIGN_WITHOUT_MODERN_PROSPECTIVE_EVIDENCE"
+  ],
+  "status": {
+    "formalOptimizationCandidate": false,
+    "directionalAlpha": "UNKNOWN"
+  }
+}

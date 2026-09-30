@@ -60,6 +60,9 @@ on:
       - "research/commission_evidence_classifier_v0_1.mjs"
       - "research/commission_evidence_classifier_spec_v0_1.json"
       - "tests/test_commission_evidence_classifier_v0_1.mjs"
+      - "research/reduce_readd_friction_v0_1.mjs"
+      - "research/reduce_readd_friction_spec_v0_1.json"
+      - "tests/test_reduce_readd_friction_v0_1.mjs"
       - "research/add_trigger_conditional_invariance_v0_1.json"
       - "tests/test_add_trigger_conditional_invariance_v0_1.mjs"
       - "research/sizing_quantization_cascade_v0_1.mjs"
@@ -100,6 +103,22 @@ on:
       - "research/per_name_cap_sensitivity_spec_v0_1.json"
       - "tests/test_per_name_cap_sensitivity_v0_1.mjs"
       - "tests/portfolio_risk_per_name_cap_sensitivity_readonly_audit.mjs"
+      - "research/portfolio_heat_frontier_v0_1.mjs"
+      - "research/portfolio_heat_frontier_spec_v0_1.json"
+      - "research/portfolio_heat_frontier_production_receipt_20260928.json"
+      - "research/portfolio_heat_semantics_v0_1.mjs"
+      - "research/portfolio_heat_semantics_production_receipt_20260928.json"
+      - "tests/test_portfolio_heat_frontier_v0_1.mjs"
+      - "tests/portfolio_heat_frontier_readonly_audit.mjs"
+      - "tests/test_portfolio_heat_semantics_v0_1.mjs"
+      - "tests/portfolio_heat_semantics_readonly_audit.mjs"
+      - "research/planned_lifecycle_heat_envelope_v0_1.mjs"
+      - "research/planned_lifecycle_heat_envelope_spec_v0_1.json"
+      - "tests/test_planned_lifecycle_heat_envelope_v0_1.mjs"
+      - "tests/planned_lifecycle_heat_readonly_audit.mjs"
+      - "research/expected_shortfall_semantic_firewall_v0_1.mjs"
+      - "research/expected_shortfall_semantic_firewall_spec_v0_1.json"
+      - "tests/test_expected_shortfall_semantic_firewall_v0_1.mjs"
       - "research/first_tranche_risk_concentration_v0_1.mjs"
       - "research/first_tranche_risk_concentration_spec_v0_1.json"
       - "tests/test_first_tranche_risk_concentration_v0_1.mjs"
@@ -122,6 +141,14 @@ on:
       - "tests/portfolio_risk_metric_sensitivity_readonly_audit.mjs"
       - "research/score_cap_reserve_v0_1.mjs"
       - "research/score_cap_reserve_spec_v0_1.json"
+      - "research/effective_bets_semantic_firewall_v0_1.mjs"
+      - "research/effective_bets_semantic_firewall_spec_v0_1.json"
+      - "research/cash_attribution_v0_1.mjs"
+      - "research/cash_attribution_spec_v0_1.json"
+      - "research/cash_attribution_production_receipt_20260928.json"
+      - "tests/test_cash_attribution_v0_1.mjs"
+      - "tests/portfolio_risk_cash_attribution_readonly_audit.mjs"
+      - "tests/test_effective_bets_semantic_firewall_v0_1.mjs"
       - "tests/test_score_cap_reserve_v0_1.mjs"
       - "tests/portfolio_risk_score_cap_reserve_readonly_audit.mjs"
       - "tests/test_sizing_quantization_cascade_v0_1.mjs"
@@ -166,6 +193,7 @@ jobs:
           node tests/test_net_execution_sizing_evidence_ladder_v0_1.mjs
           node tests/test_transaction_tax_evidence_classifier_v0_1.mjs
           node tests/test_commission_evidence_classifier_v0_1.mjs
+          node tests/test_reduce_readd_friction_v0_1.mjs
           node tests/test_add_trigger_conditional_invariance_v0_1.mjs
           node tests/test_sizing_quantization_cascade_v0_1.mjs
           node tests/test_grid_constrained_equal_risk_v0_1.mjs
@@ -177,6 +205,10 @@ jobs:
           node tests/test_tranche_stage_orderability_v0_1.mjs
           node tests/test_stage_feasible_grid_sensitivity_v0_1.mjs
           node tests/test_per_name_cap_sensitivity_v0_1.mjs
+          node tests/test_portfolio_heat_frontier_v0_1.mjs
+          node tests/test_portfolio_heat_semantics_v0_1.mjs
+          node tests/test_planned_lifecycle_heat_envelope_v0_1.mjs
+          node tests/test_expected_shortfall_semantic_firewall_v0_1.mjs
           node tests/risk_concentration_bridge_audit_v0_1.mjs
           node tests/test_first_tranche_risk_concentration_v0_1.mjs
           node tests/test_add_tranche_risk_concentration_v0_1.mjs
@@ -184,6 +216,8 @@ jobs:
           node tests/test_local_grid_reallocation_v0_1.mjs
           node tests/test_risk_metric_sensitivity_v0_1.mjs
           node tests/test_score_cap_reserve_v0_1.mjs
+          node tests/test_effective_bets_semantic_firewall_v0_1.mjs
+          node tests/test_cash_attribution_v0_1.mjs
       - name: Read-only production journal coverage audit
         env:
           V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
@@ -202,9 +236,13 @@ jobs:
           node tests/portfolio_risk_extreme_tranche_ratio_readonly_audit.mjs
           node tests/portfolio_risk_stage_feasible_grid_readonly_audit.mjs
           node tests/portfolio_risk_per_name_cap_sensitivity_readonly_audit.mjs
+          node tests/portfolio_heat_frontier_readonly_audit.mjs
+          node tests/portfolio_heat_semantics_readonly_audit.mjs
+          node tests/planned_lifecycle_heat_readonly_audit.mjs
           node tests/portfolio_risk_first_tranche_readonly_audit.mjs
           node tests/portfolio_risk_add_tranche_readonly_audit.mjs
           node tests/portfolio_risk_lifecycle_metric_sensitivity_readonly_audit.mjs
           node tests/portfolio_risk_local_grid_reallocation_readonly_audit.mjs
           node tests/portfolio_risk_metric_sensitivity_readonly_audit.mjs
           node tests/portfolio_risk_score_cap_reserve_readonly_audit.mjs
+          node tests/portfolio_risk_cash_attribution_readonly_audit.mjs

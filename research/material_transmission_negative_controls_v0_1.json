@@ -1,0 +1,58 @@
+{
+  "version": "0.1",
+  "id": "SC-026",
+  "date": "2026-09-29 Asia/Taipei",
+  "formalCoreChanged": false,
+  "outcomesOpened": false,
+  "status": "NEGATIVE_CONTROLS_FROZEN / OUTCOME_BLIND_MATCHING_REQUIRED / FORMAL_UNCHANGED",
+  "purpose": "Prevent material-price narratives from being treated as causal issuer signals before exposure and pass-through are proven.",
+  "controls": {
+    "LOW_OR_NO_EXPOSURE_CONTROL": {
+      "definition": "Issuer in same broad industry/theme/time regime but tested material is not a direct economically meaningful input under the contemporaneous production-route vintage, or exposure evidence is explicitly low.",
+      "forbidden": "UNKNOWN exposure cannot be relabeled no exposure.",
+      "match": [
+        "scanDate/regime",
+        "broad industry",
+        "liquidity/size band",
+        "price-extension state where used",
+        "classification vintage"
+      ]
+    },
+    "FAILED_PASS_THROUGH_CONTROL": {
+      "definition": "Direct input exposure is established and input pressure/repricing narrative exists, but realized margin capture is absent, adverse, or remains unproven after the preregistered reporting clock.",
+      "guards": [
+        "announced price increase is not realized ASP",
+        "realized ASP increase is not margin capture",
+        "volume/mix/utilization/FX/yield may explain margin",
+        "UNKNOWN margin bridge is not failure"
+      ]
+    }
+  },
+  "preregistration": {
+    "beforeOutcomes": [
+      "material benchmark and grade",
+      "economic role",
+      "clock alignment",
+      "lag windows",
+      "control eligibility",
+      "matching variables",
+      "outcome horizons",
+      "cost assumptions",
+      "regime strata"
+    ],
+    "outcomes": [
+      "D1/D3/D5 residual return only after PIT eligibility",
+      "MFE/MAE when already captured",
+      "margin/volume confirmation on their native reporting clocks"
+    ],
+    "falsifyIf": [
+      "effect also appears in low/no-exposure controls",
+      "effect disappears after pass-through/mix controls",
+      "one date or one mega-cap dominates",
+      "lag choice only works after outcome search",
+      "increment is redundant with sector RS/market regime/price trend"
+    ]
+  },
+  "maturity": "No further promotion. D10-09 stays L2; D10-12 L3 is data-feasibility only.",
+  "next": "Build prospective immutable receipts on independent dates; do not fabricate historical Shadow."
+}

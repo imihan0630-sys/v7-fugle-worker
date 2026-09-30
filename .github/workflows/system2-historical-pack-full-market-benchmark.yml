@@ -1,0 +1,41 @@
+name: System2 Historical Pack Full-Market Benchmark
+
+on:
+  push:
+    paths:
+      - ".github/workflows/system2-historical-pack-full-market-benchmark.yml"
+      - "system2/scripts/historical_pack_full_market_benchmark_v0_1.mjs"
+      - "system2/runtime/historical_pack_research_v0_1.mjs"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-historical-pack-full-market-benchmark
+  cancel-in-progress: false
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Run read-only full-market month compression benchmark
+        env:
+          SYSTEM2_PACK_BENCH_FROM: "2026-08-03"
+          SYSTEM2_PACK_BENCH_TO: "2026-08-31"
+        run: node system2/scripts/historical_pack_full_market_benchmark_v0_1.mjs
+
+      - name: Confirm no production mutation
+        run: |
+          set -euo pipefail
+          git diff --exit-code -- wrangler.toml Worker.js
+          echo "Read-only benchmark isolation PASS"

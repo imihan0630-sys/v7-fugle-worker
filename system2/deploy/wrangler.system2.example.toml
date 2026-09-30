@@ -5,7 +5,13 @@
 name = "system2-shadow-research"
 main = "system2/deploy/worker.mjs"
 compatibility_date = "2026-09-01"
-workers_dev = false
+workers_dev = true
+preview_urls = false
+
+[triggers]
+# 08:55-13:40 Asia/Taipei, every five minutes; runtime still checks the local window.
+# 19:00 Asia/Taipei refreshes the next-session bounded pool from s2_capacity_runs.
+crons = ["*/5 0-5 * * 1-5", "0 11 * * 1-5"]
 
 [[d1_databases]]
 binding = "SYSTEM2_DB"
@@ -13,16 +19,25 @@ database_name = "system2-research"
 database_id = "REPLACE_WITH_SEPARATE_SYSTEM2_DATABASE_ID"
 migrations_dir = "system2/sql"
 
+# Isolated research cold-history object storage. This example does not create
+# or deploy the bucket; provisioning requires a separately authorized R2 step.
+[[r2_buckets]]
+binding = "SYSTEM2_HISTORY_BUCKET"
+bucket_name = "system2-historical-research"
+
 [vars]
 SYSTEM2_CAPTURE_ENABLED = "false"
 SYSTEM2_CAPTURE_MODE = "LIMITED_PROSPECTIVE_SHADOW"
 SYSTEM2_CAPTURE_CONTRACT_VERSION = "0.1"
+SYSTEM2_RESONANCE_ENABLED = "true"
+SYSTEM2_RESONANCE_CONTRACT_VERSION = "0.1"
 
 # Intentionally absent in V0.1:
 # - routes
-# - cron triggers
 # - production service bindings
 # - KV bindings
 # - production database bindings
 #
-# A smoke deployment, if separately authorized, remains capture-disabled.
+# FUGLE_API_KEY is a Worker secret, never a plain-text variable in this file.
+# General System2 selection capture remains disabled; only the isolated bounded
+# resonance schedule is enabled by the resonance variables above.

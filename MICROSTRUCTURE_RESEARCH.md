@@ -2062,3 +2062,476 @@ MS-035: study pressure-response asymmetry for buys versus sells in Taiwan.
 MS-036: study opening/closing auction contamination and define exact exclusion windows.
 MS-037: connect microstructure states to current K-line/PV latent states without double counting.
 MS-038: freeze the smallest useful combined feature matrix before any empirical run.
+
+
+## MS-045 — horizon-transfer falsification: one-tick predictability is not 15-minute alpha
+
+The strongest external microstructure evidence is short-horizon and must not be stretched beyond its tested clock.
+
+Positive evidence:
+- Cont, Kukanov & Stoikov (2014) find short-interval price changes are strongly related to order-flow imbalance (OFI) at the best bid/ask, with price-impact slope inversely related to market depth.
+- Gould & Bonart (2015) find queue imbalance predicts the direction of the next mid-price move for 10 liquid Nasdaq stocks, with stronger improvement for large-tick names.
+- A 2025 National Taiwan University thesis using TWSE high-frequency top-five data reports that levels 2-5 provide meaningful incremental price-discovery information beyond the best quotes/trades and that book-imbalance predictability differs materially by relative tick size, volatility and trading activity.
+
+Counter-evidence / transfer boundary:
+- These findings do not establish 15m, D1 or multi-day directional alpha.
+- Queue/OFI effects can decay or reverse as liquidity replenishes and inventory/order-splitting pressure normalizes.
+- Displayed depth is cancelable and public top-five is not the full latent book.
+- Predictive strength is heterogeneous by tick regime, activity and volatility; one universal threshold would be structurally suspect.
+- Older Taiwan trader-class evidence shows order-imbalance persistence but little aggregate price pressure lasting beyond one day, further arguing against monotone long-horizon interpretation.
+
+Research consequence:
+- D05 features are first treated as execution-state / short-horizon path-quality variables.
+- Any 15m use must be empirically earned through prospective aggregation; it cannot be inferred from one-tick evidence.
+
+Sources:
+- Cont, Kukanov & Stoikov (2014), Journal of Financial Econometrics 12(1), 47-88.
+- Gould & Bonart (2015), arXiv:1512.03492 / SSRN 2702117.
+- Lin Yao (2025), NTU thesis DOI 10.6342/NTU202504709.
+- Lee, Liu, Roll & Subrahmanyam (2004), JFQA 39(2), 327-341.
+
+Status:
+`ONE_TICK_TO_15M_TRANSFER = UNPROVEN / MUST_BE_TESTED_PROSPECTIVELY`.
+
+
+## MS-046 — aggregate microstructure as Pressure × Response × Persistence, not raw OFI sum
+
+To bridge event-level evidence to the system's 10m/15m/30m clocks without inventing a magic indicator, freeze a three-part aggregation.
+
+Pressure:
+- signed trade-pressure proxy where vendor semantics are explicit;
+- true OFI only when quote/order-book event changes are actually observed and the method is frozen;
+- depth imbalance top1/top5 kept separate.
+
+Price Response:
+- mid-price displacement per unit pressure;
+- markout at +1m/+5m/+10m/+15m;
+- breakout hold/failure and MFE/MAE where coverage is complete.
+
+Persistence:
+- fraction of buckets with same-sign pressure;
+- persistence run length;
+- whether pressure survives spread widening / opposing-side replenishment;
+- whether price response keeps pace with continued pressure.
+
+Interpretation state examples:
+- positive pressure + positive response + controlled spread = demand accepted candidate;
+- positive pressure + weak/negative response = absorption/exhaustion candidate;
+- large price move + weak pressure + thin depth = liquidity-vacuum candidate;
+- widening spread + high pressure + poor response = chase/adverse-selection candidate.
+
+The state is descriptive research output only. It does not map directly to BUY/SELL.
+
+Clock discipline:
+- preserve event/seconds-scale evidence separately;
+- aggregate into 1m and 5m research buckets first;
+- evaluate whether 10m/15m/30m summaries retain incremental value;
+- never sum raw OFI across heterogeneous auction, continuous, VI/trial or odd-lot regimes as though they were one process.
+
+Status:
+`MICROSTRUCTURE_AGGREGATION_PROTOCOL = FROZEN_CONCEPT / EVIDENCE_PENDING`.
+
+
+## MS-047 — current Taiwan/Fugle feasibility revalidated in 2026 docs
+
+Current official TWSE rules confirm opening and closing call-auction regimes with continuous trading intraday, and price-dependent tick sizes. These mechanics require regime labels rather than raw cross-session pooling.
+
+Current Fugle stock WebSocket documentation (updated 2026-01-09) exposes:
+- `books`: best-five bid/ask prices and sizes plus `isContinuous` / `isTrial`;
+- `trades`: trade bid, ask, price, size, time and serial;
+- explicit odd-lot subscription mode.
+
+This is sufficient to make prospective top-five / trade-pressure / event-state research technically plausible without pretending historical OHLCV can recover those events.
+
+Still UNKNOWN:
+- actual account subscription/rate capacity available to the research collector;
+- complete capture reliability across an entire monitored session;
+- loss/reconnect behavior and missing-event detection;
+- whether observed event cadence is adequate for event-level OFI rather than coarse snapshots.
+
+Therefore L3 is not yet justified for OFI/depth evidence merely because the API fields exist. L3 requires Taiwan PIT capture feasibility to be demonstrated in our own collection path with completeness/provenance.
+
+Status:
+`PROSPECTIVE_SOURCE_FIELDS = MATERIAL_PASS / OWN_CAPTURE_COMPLETENESS = NOT_PROVEN`.
+
+
+## MS-048 — D05-05 maturity decision
+
+D05-05 Order Flow Imbalance now has:
+- mechanism definition;
+- positive evidence;
+- explicit depth dependence;
+- horizon-transfer falsification;
+- displayed-liquidity / cancellation failure modes;
+- Taiwan-specific heterogeneity evidence;
+- anti-fabrication boundary separating true OFI from vendor trade-pressure proxies.
+
+This satisfies the curriculum meaning of L2 (mechanism + falsification defined).
+
+It does NOT satisfy L3 because our own Taiwan point-in-time event capture, completeness and replay contract are not yet validated.
+
+Decision:
+`D05-05: L1 -> L2`.
+No Formal Core impact.
+
+
+## MS-049 — dual-clock horizon: wall-clock time alone can mismeasure microstructure decay
+
+A fixed "1 minute / 5 minute / 15 minute" horizon is not equivalent across stocks.
+
+External multi-horizon order-flow research finds that the effective stock-specific forecast horizon is approximately two average price changes. This is an event-time statement, not a universal number of minutes.
+
+Implication:
+- a highly active stock may experience many quote/trade/price changes inside one minute;
+- a thin stock may experience very few;
+- a signal that appears to "last 5 minutes" in one stock and "die in 1 minute" in another can simply reflect different event intensities.
+
+Therefore every prospective horizon study must preserve two clocks:
+
+Clock time:
+- 1s / 5s / 15s engineering buckets;
+- 1m / 5m / 10m / 15m / 30m evaluation checkpoints.
+
+Event time:
+- book-message count;
+- trade-message count;
+- best-quote-change count;
+- mid-price-change count;
+- cumulative trade volume.
+
+Minimum interpretation rule:
+A wall-clock effect is not called persistent until it survives control/matching for event intensity.
+
+Primary falsification:
+- if the 10m/15m effect disappears after matching on mid-price-change count or trade-event count, classify it as an activity/intensity proxy rather than durable microstructure alpha.
+
+Source:
+- Kolm, Turiel & Westray (2023), Mathematical Finance 33(4), DOI 10.1111/mafi.12413.
+
+Machine spec:
+`research/microstructure_dual_clock_horizon_protocol_v0_1.json`.
+
+Status:
+`DUAL_CLOCK_REQUIRED / FIXED_MINUTE_ONLY_INFERENCE_REJECTED`.
+
+
+## MS-050 — top-five evidence should be tested as one incremental block, not five new factors
+
+Taiwan-specific 2025 high-frequency evidence reports that quote levels 2-5 add meaningful price-discovery information beyond best quotes/trades, with the abstract estimating roughly 30% contribution from deeper book information. The same study reports systematic predictive heterogeneity by volatility, relative tick size and trading activity.
+
+This is strong motivation for a deeper-book test, but not permission to create:
+- level-2 score;
+- level-3 score;
+- level-4 score;
+- level-5 score;
+- dozens of horizon/depth interactions.
+
+First empirical design is nested:
+M0 = current price/volume + spread + best-level depth/imbalance controls.
+M1 = M0 + one frozen top-five aggregate representation.
+
+Question:
+Does the top-five block add stable incremental information over best level?
+
+Only if M1 survives:
+- independent-date robustness;
+- tick/activity/volatility strata;
+- cost/spread controls;
+- coverage controls;
+- OOS/Shadow;
+should individual deeper-level shape variables be considered later.
+
+If M1 adds nothing stable, stop. Do not search levels 2-5 separately for a winner.
+
+Source:
+- Lin Yao (2025), NTU thesis, DOI 10.6342/NTU202504709.
+
+Status:
+`DEEP_BOOK_TEST = ONE_NESTED_BLOCK_FIRST / FACTOR_ZOO_GUARD`.
+
+
+## MS-051 — Taiwan session-state separation is not optional
+
+Current TWSE mechanics confirm:
+- opening uses call auction;
+- normal intraday trading is continuous;
+- intraday volatility interruption returns the stock to a call-auction mechanism;
+- the pre-close/close period uses call auction.
+
+Current TWSE stock tick increments are price-tier dependent, including:
+- <10: NT$0.01;
+- 10-50: NT$0.05;
+- 50-100: NT$0.10;
+- 100-500: NT$0.50;
+- 500-1000: NT$1;
+- >=1000: NT$5.
+
+Therefore:
+- one-tick queue imbalance has different bps meaning by price tier;
+- spread in NT dollars is non-comparable;
+- a five-tick move in a NT$1,500 stock is not the same microstructure distance as five ticks in a NT$70 stock;
+- call-auction/trial states cannot be pooled with continuous-book dynamics.
+
+Required normalizations:
+- spreadTicks and spreadBps both retained;
+- depth in shares and notional both retained;
+- relativeTickBps = tick/mid*10000;
+- continuous/call-auction/VI/trial/UNKNOWN strata;
+- regular-lot and intraday odd-lot kept separate.
+
+Sources:
+- TWSE Trading Mechanism Introduction;
+- TWSE Operating Rules Article 62.
+
+Status:
+`TICK_AND_SESSION_NORMALIZATION = MANDATORY_CONTROL`.
+
+
+## MS-052 — Fugle source semantics improve feasibility but do not solve event completeness
+
+Current official Fugle stock WebSocket documentation exposes:
+- books: best-five bid/ask prices and sizes, provider timestamp, isContinuous and isTrial;
+- trades: provider timestamp, serial, bid, ask, price, size, cumulative volume and multiple limit/halt/delayed/open/close flags;
+- regular-lot versus intraday odd-lot subscription semantics.
+
+Current plan documentation states:
+- Basic: 5 subscriptions, 1 WebSocket connection;
+- Developer: 300 subscriptions, 2 connections;
+- Advanced: 2000 subscriptions, 2 connections;
+- one subscription = one symbol x one channel.
+
+For books+trades:
+- each stock consumes two subscriptions;
+- Basic can therefore support at most two complete books+trades symbols simultaneously with one subscription left for another channel, assuming no other subscriptions are consuming the quota;
+- actual owner account plan and concurrent subscription usage remain UNKNOWN and must not be inferred.
+
+Critical data-quality boundary:
+a provider serial number and heartbeat can help detect stream behavior, but they do not by themselves prove complete book-event reconstruction across reconnects. The collector must persist:
+- reconnect count;
+- first/last provider time;
+- message counts;
+- serial-gap diagnostics where semantics are validated;
+- connectedMs/expectedMs coverage;
+- session-state coverage.
+
+Missing events cannot be imputed as "no order flow."
+
+Sources:
+- Fugle stock WebSocket Books / Trades / Getting Started;
+- Fugle MarketData pricing documentation.
+
+Status:
+`SOURCE_FEASIBILITY = MATERIAL_PASS / COMPLETE_EVENT_LEDGER = UNPROVEN`.
+
+
+## MS-053 — horizon-retention promotion ladder
+
+Before any 15m BUY interpretation, microstructure evidence must pass a staged retention ladder.
+
+Stage E0 — event scale:
+- next 1 / 2 / 4 mid-price changes;
+- fixed event-count windows;
+- test Pressure × Response × Persistence.
+
+Stage E1 — 1m / 5m:
+- aggregate without discarding event counts;
+- verify sign/state retention versus event-scale labels.
+
+Stage E2 — 10m / 15m:
+- test whether incremental information remains after current Formal price-volume / ATR / liquidity / RS / overheat / sector / regime controls;
+- matched successful versus failed breakout study.
+
+Stage E3 — 30m:
+- execution-path / false-breakout persistence only.
+
+Stage E4 — D1+:
+- descriptive unless independently proven; do not assume a book-state signal should persist across sessions.
+
+Promotion logic:
+- dies at E0/E1 -> execution micro-timing only;
+- survives E1 but not E2 -> research execution state, not Formal BUY;
+- survives E2 robustly -> prospective Shadow candidate for 15m context;
+- any Formal BUY/maxChase use remains Class C even after evidence.
+
+No minimum effect size is tuned in this stage; first objective is horizon survival and incremental validity.
+
+Status:
+`MICROSTRUCTURE_HORIZON_LADDER = FROZEN / EVIDENCE_PENDING`.
+
+
+## MS-054 — provider-message clock is not proven exchange-event clock
+
+The dual-clock protocol needs one more semantic guard.
+
+Current Fugle stock WebSocket documentation exposes:
+- `trades`: provider time plus `serial`;
+- `books`: provider time, best-five prices/sizes and session flags, but no documented sequence/serial field.
+
+Therefore:
+- `tradeMessageCount` can be audited with trade-serial diagnostics once serial semantics are validated;
+- `bookMessageCount` is only a count of received provider book messages;
+- it is NOT automatically the number of all exchange order-book events;
+- 100% socket uptime does not by itself prove that every underlying book event was delivered/reconstructable.
+
+This sharpens the D05 anti-fabrication boundary.
+
+Preferred names:
+- `bookProviderMessageCount`
+- `tradeProviderMessageCount`
+- `midPriceChangeCount`
+- `bestQuoteChangeCount`
+
+Reserved names:
+- `exchangeBookEventCount`
+- `trueOFI`
+
+The reserved names may be used only if the source contract proves the required event completeness/sequence semantics.
+
+### Fallback when completeness is unproven
+
+A difference between two received book snapshots can be studied as:
+`snapshotDeltaPressureProxy`.
+
+It must not be called true event-level OFI because unknown intermediate additions/cancellations may be netted out between snapshots.
+
+### Primary falsification
+
+If the apparent predictive effect changes materially when:
+- reconnect windows are excluded;
+- low-message-coverage buckets are excluded;
+- provider-message intensity is matched;
+then the feature is at least partly a delivery/activity proxy.
+
+Status:
+`PROVIDER_MESSAGE_TIME != PROVEN_EXCHANGE_EVENT_TIME / TRUE_OFI_L3_BLOCKER_SHARPENED`.
+
+Sources:
+- Fugle stock WebSocket Books documentation;
+- Fugle stock WebSocket Trades documentation.
+
+
+## MS-055 — horizon-retention inference must beat activity, volatility and spread baselines
+
+The E0->E1->E2 horizon ladder is now paired with a frozen falsification ladder.
+
+A microstructure state is considered to have **retained incremental information** only if it survives simpler explanations.
+
+### Nested baselines
+
+B0 — activity/risk baseline:
+- trade/provider-message intensity;
+- mid-price-change count;
+- local realized path volatility;
+- price/tick band;
+- session state.
+
+B1 — immediate liquidity baseline:
+- spreadTicks/spreadBps;
+- best-level depth / top1 imbalance.
+
+B2 — dynamic pressure-response block:
+- pressure proxy;
+- pressure-to-price response;
+- persistence / no-progress state.
+
+B3 — deeper-book block:
+- one frozen top-five aggregate representation only.
+
+Research order:
+B0 -> B1 -> B2 -> B3.
+
+Do not inspect level 2/3/4/5 separately unless B3 first proves stable incremental value over B1/B2.
+
+### Fixed negative controls
+
+1. Time-shift placebo:
+   compare pressure from an earlier non-overlapping bucket to the target horizon.
+
+2. Within-symbol/day sign shuffle:
+   preserve activity and magnitude distribution while breaking directional pressure sequence.
+
+3. Event-intensity matched control:
+   compare states with similar trade/book message counts and mid-price-change counts.
+
+4. Spread-only control:
+   test whether the apparent state is just a wide/tight spread proxy.
+
+5. Volatility/activity control:
+   test whether the feature disappears after local volatility and transaction-rate controls.
+
+6. Session-mechanism control:
+   continuous trading only in the primary test; auctions/VI/limit cohorts remain separate.
+
+### Horizon survival interpretation
+
+- survives E0 only: micro-timing evidence;
+- survives E0/E1 but dies at E2: execution-state evidence, not 15m BUY context;
+- survives E2 after B0/B1 controls and independent dates: 15m Shadow-context candidate;
+- survives only under one tick/activity/volatility stratum: conditional evidence, not universal rule;
+- disappears under event-intensity matching: classify as ACTIVITY_PROXY;
+- disappears after spread control: classify as LIQUIDITY_COST_PROXY;
+- sign unstable across independent dates: FRAGILE_DATE_DEPENDENCE.
+
+No p-value or best horizon may be selected post hoc to rescue a failing feature.
+
+Status:
+`HORIZON_RETENTION_FALSIFICATION = FROZEN / EVIDENCE_PENDING`.
+
+
+## MS-056 — first empirical matrix must separate explanation from action
+
+The first complete prospective test should not ask "should we BUY?"
+
+It should ask three narrower questions:
+
+Q1 — Price formation:
+Does Pressure × Response × Persistence explain near-term mid-price movement beyond B0/B1?
+
+Q2 — Breakout path quality:
+Does it distinguish breakout retention versus retracement after controlling existing breakout/price-volume/ATR/regime variables?
+
+Q3 — Execution quality:
+Does spread/depth/pressure state explain executable friction / markout where genuine execution evidence exists?
+
+These are different estimands.
+
+A feature may pass Q1 but fail Q2/Q3.
+That is not contradictory:
+- one-tick price prediction can exist without 15m continuation;
+- a good directional state can still have poor execution cost;
+- a favorable execution state need not create stock-selection alpha.
+
+Promotion logic must keep these tracks separate.
+
+No single combined "microstructure score" is authorized.
+
+Status:
+`THREE_ESTIMANDS_SEPARATED / NO_ACTION_MAPPING`.
+
+
+## MS-057 — collector go/no-go should be driven by identifiability, not excitement
+
+The separate collector proposal is scientifically justified only if it can answer MS-055/MS-056.
+
+Minimum P0 success criteria before scaling beyond a tiny pilot:
+- stable authenticated connection;
+- explicit reconnect segmentation;
+- provider timestamps preserved;
+- trade serial diagnostics captured;
+- book/trade message counts captured;
+- continuous/trial/limit/delayed flags preserved;
+- received top-five state sufficient to reconstruct the frozen bucket fields;
+- measured 1s/5s/15s information loss without using return outcomes;
+- no dependency from Formal runtime;
+- actual Fugle subscription quota verified before activation.
+
+Go/no-go logic:
+- if 5s preserves the frozen state classifications versus 1s, prefer 5s;
+- if only 1s works, evaluate cost/storage feasibility before scaling;
+- if provider-message completeness cannot support the intended pressure/replenishment estimand, narrow the research question instead of pretending true OFI exists;
+- if top1 + simple spread already explains the useful effect, kill deeper dynamic complexity.
+
+Current official Fugle plan documentation supports 5 / 300 / 2000 stock WebSocket subscriptions for Basic / Developer / Advanced, with one symbol x channel consuming one subscription. Actual owner plan remains UNKNOWN.
+
+Status:
+`COLLECTOR_VALUE_GATE = IDENTIFIABILITY_FIRST / NO_DEPLOYMENT`.

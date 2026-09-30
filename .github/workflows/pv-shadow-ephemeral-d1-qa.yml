@@ -113,6 +113,28 @@ jobs:
                 const guardFlagCounts = {};
                 const interpretabilityCounts = {};
                 let unknownCoercionSuspects = 0;
+                const acceptanceQaByMarketDate = {};
+                const rawAcceptanceKeysByDate = {};
+                const activeAcceptanceKeysByDate = {};
+                const phantomAcceptanceKeysByDate = {};
+                const activeAcceptanceStates = new Set([
+                  "B_BREAKOUT_ATTEMPT","B_INITIAL_ACCEPTANCE","B_RETEST_HELD","B_REACCELERATION","B_FAILED_REENTRY",
+                  "A_PULLBACK_TEST","A_INITIAL_ACCEPTANCE","A_REACCELERATION","A_FAILED_REENTRY"
+                ]);
+                const expiryAcceptanceStates = new Set(["B_EXPIRED_AMBIGUOUS","A_EXPIRED_AMBIGUOUS"]);
+                function acceptanceBucket(marketDate) {
+                  if (!acceptanceQaByMarketDate[marketDate]) {
+                    acceptanceQaByMarketDate[marketDate] = {
+                      intradayRows: 0, guardInvalidRows: 0, guardGuardedRows: 0, guardValidRows: 0,
+                      rawAcceptanceTransitions: 0, activeLifecycleRows: 0, preEventOnlyExpiries: 0,
+                      rawAnchorEligibleRows: 0, invalidAnchorEligibleRows: 0, nonInvalidAnchorEligibleRows: 0
+                    };
+                    rawAcceptanceKeysByDate[marketDate] = new Set();
+                    activeAcceptanceKeysByDate[marketDate] = new Set();
+                    phantomAcceptanceKeysByDate[marketDate] = new Set();
+                  }
+                  return acceptanceQaByMarketDate[marketDate];
+                }
                 for (const row of snapshots) {
                   const features = JSON.parse(row.features_json || "{}");
                   const context = JSON.parse(row.context_json || "{}");
@@ -134,10 +156,43 @@ jobs:
                   }
                   const interpretability = String(features.pvInterpretability || "UNKNOWN");
                   interpretabilityCounts[interpretability] = (interpretabilityCounts[interpretability] || 0) + 1;
+                  if (row.observation_type === "INTRADAY_15M") {
+                    const marketDate = String(row.market_date || "UNKNOWN");
+                    const bucket = acceptanceBucket(marketDate);
+                    bucket.intradayRows += 1;
+                    if (interpretability === "INVALID") bucket.guardInvalidRows += 1;
+                    else if (interpretability === "GUARDED") bucket.guardGuardedRows += 1;
+                    else if (interpretability === "VALID") bucket.guardValidRows += 1;
+                    const detail = context && typeof context.pvAcceptanceDetail === "object" ? context.pvAcceptanceDetail : {};
+                    const state = String(detail.state || features.pvAcceptanceState || "UNKNOWN");
+                    const history = Array.isArray(detail.stateHistory) ? detail.stateHistory : [];
+                    const states = history.map(item => String(item?.state || "")).filter(Boolean);
+                    const transitioned = detail.transitioned === true;
+                    const hasActiveLifecycle = states.some(item => activeAcceptanceStates.has(item));
+                    const preEventOnlyExpiry = transitioned && expiryAcceptanceStates.has(state) && !hasActiveLifecycle;
+                    const anchorEligible = context.anchorEligible === true;
+                    const eventKey = typeof detail.eventKey === "string" && detail.eventKey ? detail.eventKey : null;
+                    if (transitioned) bucket.rawAcceptanceTransitions += 1;
+                    if (hasActiveLifecycle) bucket.activeLifecycleRows += 1;
+                    if (preEventOnlyExpiry) bucket.preEventOnlyExpiries += 1;
+                    if (anchorEligible) bucket.rawAnchorEligibleRows += 1;
+                    if (anchorEligible && interpretability === "INVALID") bucket.invalidAnchorEligibleRows += 1;
+                    if (anchorEligible && interpretability !== "INVALID") bucket.nonInvalidAnchorEligibleRows += 1;
+                    if (eventKey) rawAcceptanceKeysByDate[marketDate].add(eventKey);
+                    if (eventKey && hasActiveLifecycle) activeAcceptanceKeysByDate[marketDate].add(eventKey);
+                    if (eventKey && preEventOnlyExpiry) phantomAcceptanceKeysByDate[marketDate].add(eventKey);
+                  }
                   for (const key of ["pvResponseState", "pvAcceptanceState", "pvPersistenceState"]) {
                     if (features[key] === 0 || features[key] === 1 || features[key] === false || features[key] === true) unknownCoercionSuspects += 1;
                   }
                 }
+                const acceptanceQa = Object.entries(acceptanceQaByMarketDate).sort(([a],[b]) => a.localeCompare(b)).map(([marketDate,bucket]) => ({
+                  marketDate,
+                  ...bucket,
+                  rawAcceptanceEventKeys: rawAcceptanceKeysByDate[marketDate]?.size || 0,
+                  activeAcceptanceLifecycleEventKeys: activeAcceptanceKeysByDate[marketDate]?.size || 0,
+                  phantomPreEventExpiryEventKeys: phantomAcceptanceKeysByDate[marketDate]?.size || 0
+                }));
                 let outcomeFingerprintMismatches = 0;
                 let outcomeDecisionImpactViolations = 0;
                 for (const row of outcomes) {
@@ -207,6 +262,8 @@ jobs:
                     guardFlagCounts,
                     interpretabilityCounts,
                     unknownCoercionSuspects,
+                    acceptanceQa,
+                    acceptanceQaSemantics: "QA_ONLY_NOT_HYPOTHESIS_CLEAN; cohort/PIT/anti-circularity overlays remain external",
                     fingerprintAuditRows: snapshots.length,
                     fingerprintAuditTruncated: snapshots.length >= 1000
                   },

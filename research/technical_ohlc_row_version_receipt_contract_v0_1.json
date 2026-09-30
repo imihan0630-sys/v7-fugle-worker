@@ -1,0 +1,95 @@
+{
+  "schemaVersion": "TECHNICAL_OHLC_ROW_VERSION_RECEIPT_V0_1",
+  "status": "RESEARCH_ONLY_DESIGN_AND_ISOLATED_QA_PASS",
+  "formalCoreImpact": "NONE_LOCKED",
+  "purpose": "Consolidate TI-409, TI-410 and TI-411 into one decision-time row-version identity that binds exact raw fields, source clocks, session/completion semantics, transform ancestry and immutable parent generation.",
+  "ownershipBoundary": {
+    "D03": "Consumes and validates the receipt before technical-indicator inference.",
+    "sharedSourceContinuityOwner": "Must create the raw payload/version, session and corporate-action evidence and independently attest it.",
+    "prohibition": "The D03 adapter cannot self-issue SOURCE_OWNER_VERIFIED or PROVIDER_SIGNED authority. A syntactically valid receipt does not prove external authenticity."
+  },
+  "hashing": {
+    "canonicalization": "RFC8785_JCS_PLAIN_JSON_SUBSET_V0_1",
+    "algorithm": "SHA256_UTF8_V0_1",
+    "rawDomain": "TWSTOCK_V7|TECHNICAL_OHLC_RAW_ROW_VERSION|V1|",
+    "transformedDomain": "TWSTOCK_V7|TECHNICAL_OHLC_TRANSFORMED_ROW_VERSION|V1|",
+    "rawBinding": [
+      "provider identity and contract version",
+      "market/symbol/trade date/bar interval/completion",
+      "provider row version and publication/first-known/capture clocks",
+      "raw payload receipt/hash",
+      "exact raw open/high/low/close strings",
+      "per-field OBSERVED/NOT_PRESENT state"
+    ],
+    "transformedBinding": [
+      "rawVersionDigest",
+      "technical price-space and transform versions",
+      "corporate-action receipt",
+      "technical price factor",
+      "superseded raw version when applicable",
+      "transformed numeric OHLC"
+    ]
+  },
+  "requiredDecisionChecks": [
+    "recomputed raw digest equals stored rawVersionDigest",
+    "transform sourceRawVersionDigest equals recomputed raw digest",
+    "recomputed transformed digest equals stored transformedRowVersionDigest",
+    "immutable parent commitment equals transformedRowVersionDigest",
+    "parentDecisionReceiptId and captureGeneration exact-match",
+    "symbol session state is CERTIFIED",
+    "requested COMPLETE/PARTIAL semantics exact-match",
+    "bar interval end is not after decision cutoff",
+    "provider first-known and local capture are not after decision cutoff",
+    "independent source authority is PROVIDER_SIGNED or SOURCE_OWNER_VERIFIED",
+    "source attestation digest equals recomputed raw digest"
+  ],
+  "stateSemantics": {
+    "ELIGIBLE": "All internal integrity, PIT, session, completion, parent and independent-attestation checks pass.",
+    "BLOCKED": "Positive contradiction or integrity mismatch exists; do not compute/join indicator evidence from this row version.",
+    "UNKNOWN": "Required independent fact is absent or unauthenticated; never coerce to zero/BAD and never count as eligible."
+  },
+  "falsifiers": [
+    {
+      "id": "TI-413",
+      "case": "raw high bytes change while stored digest is retained",
+      "expected": "BLOCKED/RAW_CONTENT_DIGEST_MISMATCH"
+    },
+    {
+      "id": "TI-414",
+      "case": "legitimate v2 correction is first-known/captured after the earlier decision",
+      "expected": "BLOCKED for earlier decision; ELIGIBLE for later decision when separately committed"
+    },
+    {
+      "id": "TI-415",
+      "case": "full daily bar interval ends after an intraday decision",
+      "expected": "BLOCKED/BAR_INTERVAL_AFTER_DECISION"
+    },
+    {
+      "id": "TI-416",
+      "case": "adapter/local-capture string is the only authority",
+      "expected": "UNKNOWN/INDEPENDENT_SOURCE_ATTESTATION_MISSING"
+    },
+    {
+      "id": "TI-417",
+      "case": "transform ancestry, parent generation or committed row digest differs",
+      "expected": "BLOCKED with exact lineage reason"
+    }
+  ],
+  "counterargumentsAndLimits": [
+    "A hardcoded 13:30 completion time is insufficient because an individual security can have a delayed close to 13:33 and source publication can occur later.",
+    "A later correction is not bad data. It is a new immutable version that is ineligible for an earlier decision and may be eligible for a later one.",
+    "PARTIAL intraday bars are not prohibited, but they require a distinct formula/timeframe contract and cannot silently satisfy COMPLETE daily semantics.",
+    "Whole-file HTTP ETag/Last-Modified can help raw capture replay but does not by itself prove row-level version identity, first-known time or correction lineage.",
+    "Passing isolated synthetic QA does not establish provider coverage, false-rejection rate, alpha, OOS performance, costs or fill feasibility."
+  ],
+  "evidenceStatus": {
+    "syntheticAssertions": 12,
+    "currentOfficialSourceCapture": "ONE_BOUNDED_SOURCE_ONLY_SAMPLE",
+    "providerCoverage": "UNKNOWN",
+    "revisionIncidence": "UNKNOWN",
+    "parentChildRuntimeCost": "UNKNOWN",
+    "outcomeJoin": "CLOSED",
+    "formalOptimizationCandidate": "NONE"
+  },
+  "exactNextContinuationPoint": "Ask the shared source/continuity owner to map real TWSE/TPEx/Fugle rows into this receipt without self-attestation. Run outcome-blind multi-date captures across both markets and source contracts, recording source date, HTTP/file version evidence, complete/partial/corrected/UNKNOWN counts, symbol-session certification, legitimate correction false blocks, immutable parent-child keyset reconciliation and non-secret cost/latency. No TI-005/TI-006 outcome test or Class-B runtime wiring until those gates pass."
+}

@@ -1,6 +1,6 @@
 # System 2 — 台股多策略智慧選股平台
 
-Updated: 2026-09-27 Asia/Taipei
+Updated: 2026-09-29 Asia/Taipei
 Status: BOOTSTRAP / DESIGN_AND_RESEARCH
 System ID: SYSTEM2
 Production trading: NOT ENABLED
@@ -120,6 +120,25 @@ V8 A/B, Top6/3+3, capital rules and live-state machine are never prerequisites f
 - `system2/SYSTEM2_SOURCE_CONTRACT_AUDIT.md`
 - `shared-knowledge/SHARED_RESEARCH_MASTER_MAP.md`
 - `system2/SYSTEM2_P1_IMPLEMENTATION_VERIFICATION.md`
+- `system2/SYSTEM2_DAILY_RESONANCE_MONITOR_V0_1.md`
+- `system2/SYSTEM2_DAILY_RESONANCE_LIVE_PIPELINE_V0_1.md`
+- `system2/SYSTEM2_FUGLE_RESONANCE_QUOTE_SOURCE_CONTRACT_V0_1.md`
+- `system2/SYSTEM2_DAILY_RESONANCE_GLOBAL_INTEGRATION_V0_1.md`
+
+## Bounded Daily Resonance runtime
+
+The owner-authorized System 2 Daily Resonance lane is an isolated research/shadow runtime:
+
+- input pool comes only from frozen System 2 capacity receipts and is capped at 9 unique symbols, max 3 per strategy; zero-pick days remain zero and no weak stock is added;
+- intraday operation never discovers or scans the full market;
+- the current-date unfinished daily bar is built from verified Fugle Quote/Ticker semantics plus cached adjusted finalized daily history;
+- daily EMA16, EMA64 and Impulse MACD feed the existing 0/3 to 3/3 monitor without redefining its formula;
+- an open daily bar can emit only PROVISIONAL resonance; CONFIRMED requires provider finality plus an independent at/after-13:30 Asia/Taipei close gate;
+- simulated open System 2 positions resolve the existing HOLD lifecycle for EXIT_RESONANCE; otherwise the lifecycle is WATCH;
+- episode/event persistence deduplicates repeated observations and preserves provisional retraction / close confirmation;
+- isolated D1, read-only API and UI are the only live effects in V0.1; notification and order impact remain false;
+- 15-minute K remains execution/timing context and cannot change the daily resonance state;
+- System 1/V8 runtime, Formal Core, production monitoring/push and capital rules are outside this runtime and remain unchanged.
 
 ## Phase plan
 

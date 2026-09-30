@@ -1,0 +1,79 @@
+{
+  "schemaVersion": "sakata-five-methods-decomposition-v0.1",
+  "updated": "2026-09-28 Asia/Taipei",
+  "researchOnly": true,
+  "outcomeFree": true,
+  "formalCore": "LOCKED",
+  "families": {
+    "THREE_MOUNTAINS": {
+      "layer": [
+        "MACRO_TOPOLOGY"
+      ],
+      "overlaps": [
+        "M_TOP",
+        "TRIPLE_TOP",
+        "HEAD_SHOULDERS_LIKE",
+        "REPEATED_RESISTANCE"
+      ],
+      "directionPrior": "UNKNOWN_UNTIL_PROSPECTIVE"
+    },
+    "THREE_RIVERS": {
+      "definitionVariantRequired": true,
+      "variants": [
+        "MULTI_TROUGH_TOPOLOGY",
+        "LOCAL_MULTI_CANDLE_REVERSAL"
+      ],
+      "overlaps": [
+        "W_BOTTOM",
+        "MULTI_BOTTOM",
+        "LOCAL_CANDLE_RELATION"
+      ],
+      "directionPrior": "UNKNOWN_UNTIL_VARIANT_AND_PROSPECTIVE"
+    },
+    "THREE_GAPS": {
+      "layer": [
+        "GAP_MECHANICS",
+        "TRIGGER_LIFECYCLE"
+      ],
+      "requires": [
+        "OPEN",
+        "RAW_EXECUTION",
+        "TECHNICAL_CONTINUITY",
+        "SESSION_PROVENANCE",
+        "CORPORATE_ACTION_GUARD"
+      ],
+      "directionPrior": "UNKNOWN"
+    },
+    "THREE_SOLDIERS": {
+      "layer": [
+        "LOCAL_CANDLE_SAKATA"
+      ],
+      "overlaps": [
+        "SHORT_HORIZON_MOMENTUM",
+        "CLOSE_LOCATION",
+        "BODY_RANGE_EXPANSION",
+        "BREAKOUT_FOLLOW_THROUGH"
+      ],
+      "directionPrior": "UNKNOWN_MODERN_TAIWAN"
+    },
+    "THREE_METHODS": {
+      "layer": [
+        "COMPRESSION_PROGRESSION",
+        "TRIGGER_LIFECYCLE"
+      ],
+      "overlaps": [
+        "FLAG",
+        "MICRO_PLATFORM",
+        "IMPULSE_CONSOLIDATION",
+        "VCP_FINAL_LEG"
+      ],
+      "directionPrior": "UNKNOWN_MODERN_TAIWAN"
+    }
+  },
+  "prohibitions": [
+    "SINGLE_SAKATA_SCORE",
+    "PLUS_ONE_PER_SAKATA_LABEL",
+    "UNIVERSAL_SAKATA_DIRECTION",
+    "UNIVERSAL_SAKATA_HOLDING_PERIOD"
+  ]
+}

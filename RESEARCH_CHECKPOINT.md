@@ -2194,3 +2194,55 @@ Updated: 2026-09-27 23:38 Asia/Taipei.
 - Tracker and routing map updated: D17 maturity 23.1% -> 29.2%; room 08 aggregate 35.6% -> 38.5%.
 - No L3 claim: Taiwan point-in-time article/version archive and prospective/OOS evidence are still missing.
 - Formal Core and live System 2 behavior unchanged.
+
+
+## Event & News D17 long-block update — 2026-09-28 Asia/Taipei
+- Latest room/router/tracker and dedicated anchors were re-read before research.
+- Seven D17 modules advanced from L1 to L2 after mechanism plus counterevidence work: D17-01 source reliability, D17-03 news half-life, D17-04 direct beneficiary/victim, D17-05 second-order transmission, D17-07 priced-in state, D17-10 source cross-validation, D17-11 sector propagation.
+- D17 maturity: 29.2% -> 40.0%. Room 08 aggregate: 38.5% -> 43.7%.
+- Durable evidence: `NEWS_EVENT_TRANSMISSION_RESEARCH.md` and `research/news_event_transmission_contract_v0_2.json`.
+- Frozen guards: reliability is multidimensional; truth confidence differs from short-run market impact; no universal news half-life; event sign is not stock sign; second-order links require effective-dated economic edges; priced-in is latent; cross-validation counts independent lineages rather than URLs; peer propagation must separate contagion from competition/substitution/attention.
+- System 1 current announcement storage remains too coarse for these semantics. System 2 L5 architecture fits the contract, but canonical general-news sourcing and PIT/version capture remain unresolved.
+- No L3 claim and no formal optimization candidate. Formal Core and live behavior unchanged.
+- Exact next: Taiwan general-news source-readiness audit, then a research-only versioned prospective event ledger, then preregistered PIT/OOS event cohorts and negative controls.
+
+
+## Event & News D17 source-readiness + prospective ledger stage — 2026-09-28 Asia/Taipei
+- Continued directly from the D17 long-block exact-next rather than restarting concepts.
+- Taiwan primary event truth lane: official MOPS/TWSE presentation exposes intraday publication time and historical/current material-information queries, but current repository ANNOUNCEMENTS persistence remains date/title level. Result: `PRIMARY_EVENT_SOURCE_PROVEN / STORED_PIT_SEMANTICS_INCOMPLETE`.
+- Taiwan general-news discovery: CNA exposes finance/technology RSS, proving machine-readable discovery feasibility. Published RSS terms restrict use to personal/non-profit/non-commercial purposes and require attribution; therefore public RSS is **not** assumed production-licensed. Archive/version completeness is also unproven.
+- Category-specific government RSS can provide primary policy/industry events but cannot replace company disclosure or broad general-news coverage.
+- Multi-lane source architecture frozen: official canonical-truth lane, media discovery/dissemination lane, attention-impact lane, and a still-missing licensed production general-news lane. No silent substitution across lanes.
+- New source receipt: `research/news_source_readiness_receipt_v0_1.json`.
+- New research-only design: `research/d17_prospective_event_ledger_schema_v0_1.json`, append-only with separate raw receipt, article/disclosure version, PIT event-cluster state and company/event exposure edge.
+- Replay rule: later corrections append and never rewrite prior decision-time truth. NO_KNOWN_EVENT requires proven polling/completeness; otherwise absence remains UNKNOWN.
+- Outcome join remains closed until source/version PIT, coverage, outcome-blind entity/event mapping, preregistered horizons and market/sector/peer + corporate-action controls pass.
+- No additional maturity promotion from the source audit: D17 remains 40.0%, room 08 remains 43.7%. L3 requires actual Taiwan PIT/versioned capture evidence.
+- `FORMAL_OPTIMIZATION_CANDIDATE = NO`; Formal Core and live System 2 behavior unchanged.
+- Exact next: run a bounded prospective source-only capture pilot when a legally usable feed is available; measure firstKnown/capturedAt latency, revision incidence, duplicate-cluster behavior and coverage gaps without inspecting returns. Keep production general-news lane SOURCE_NEEDED until licensing/interface is validated.
+
+
+## D03 Technical Indicator continuation — TI-412 through TI-417 immutable row-version receipt (2026-09-29 Asia/Taipei)
+
+- Continued from TI-411 exact-next; no indicator-catalog expansion and no outcome inspection.
+- Added an executable research-only OHLC row-version receipt that binds exact raw field bytes, provider/version clocks, certified bar interval/completion, two-stage raw/transform hashes, corporate-action price-space ancestry and one immutable parent generation.
+- Twelve synthetic assertions cover valid after-market completion, raw/transform tamper, earlier-decision rejection of a later correction, later-decision acceptance of that correction, pre-completion full-day rejection, PARTIAL-vs-COMPLETE separation, self-attestation/missing-first-known UNKNOWN, foreign generation, broken ancestry and changed parent commitment.
+- One bounded official TWSE OpenAPI `STOCK_DAY_ALL` capture at 2026-09-29 20:20 Taipei returned 1,380 rows all dated 2026-09-24 with whole-file ETag/Last-Modified but no visible row-level version/correction or first-known/capture identity. This is source-timing counterevidence, not all-provider coverage proof.
+- New artifacts: `research/TECHNICAL_INDICATOR_ROW_VERSION_RECEIPT_V0_1.md`, `research/technical_ohlc_row_version_receipt_contract_v0_1.json`, `research/technical_ohlc_row_version_receipt_v0_1.mjs`, `research/test_technical_ohlc_row_version_receipt_v0_1.mjs`, `research/technical_ohlc_official_source_capture_20260929.json`.
+- Status: `ROW_VERSION_RECEIPT_DESIGN_FROZEN / ISOLATED_QA_PASS / INDEPENDENT_SOURCE_ATTESTATION_BLOCKED / MULTI_DATE_COVERAGE_UNKNOWN / OUTCOMES_CLOSED / FORMAL_UNCHANGED`. D03 maturity remains 44.6%; no `FORMAL_OPTIMIZATION_CANDIDATE`.
+- Exact next: shared source/continuity owner must map real TWSE/TPEx/Fugle rows without D03 self-attestation; run outcome-blind multi-date coverage/correction/session/ancestry checks, reconcile exact parent-child keysets and measure cost/latency before TI-005/TI-006 or Class-B capture review.
+
+
+## Event & News D17 official-disclosure bounded capture pilot — 2026-09-28 Asia/Taipei
+- Continued exactly from the D17 source-readiness/ledger checkpoint; no concept restart and no Corporate Actions or Event Risk cursor overwrite.
+- Executed a source-only Class-A pilot against TWSE `t187ap04_L` and TPEx `mopsfin_t187ap04_O`. Both returned HTTP 200, four rows and the advertised nine-field schema including 發言日期/發言時間, fact date, clause, subject and explanation.
+- Government catalog metadata declares daily updates and Open Government Data License v1. This validates an allowed official disclosure research lane, not a licensed broad general-news production lane.
+- Two polls about 55 seconds apart were raw-hash identical per source. This proves only bounded local stability; correction incidence, immutable history and archive completeness remain UNKNOWN.
+- Strong PIT counterevidence: a row publication clock does not authenticate when the API exposed that row. `capturedAt` remains the conservative replay clock. The current System 1 ANNOUNCEMENTS date/title reduction still loses this distinction.
+- Strong novelty/duplicate counterevidence: seven of eight observed rows shared 07:00:04 while several fact dates were months older and notices described multi-month announcement periods. Daily rows must not be counted as new economic events without cross-day cluster/version evidence.
+- Neither observed source exposes a native provider item/version/correction/supersession ID. Derived hashes enable deterministic replay/change detection but cannot prove publisher revision lineage.
+- New artifacts: `research/d17_official_disclosure_capture_pilot_v0_1.json`, `research/d17_disclosure_snapshot_observer_v0_1.mjs`, `tests/test_d17_disclosure_snapshot_observer_v0_1.mjs`.
+- Test result: `node tests/test_d17_disclosure_snapshot_observer_v0_1.mjs` PASS. Time parsing, capture-clock precedence, TWSE/TPEx field mapping and unproven-revision semantics are covered.
+- Bias controls: all returned rows counted; no price/return/outcome lookup; no event-class, sentiment, horizon, threshold or model search; absence remains UNKNOWN; Formal Core and live System 2 unchanged.
+- Maturity intentionally unchanged: D11-08 and D17-01/02/09 remain L2; D17 remains 40.0%, room 08 remains 43.7%. `FORMAL_OPTIMIZATION_CANDIDATE = NO`.
+- Exact next: run fixed-cadence immutable capture over at least three trading sessions plus one after-hours interval; quantify sourcePublishedAt-to-capturedAt distributions without calling them proven API latency; classify cross-day republication/add/remove/change; locate a native MOPS correction identifier or retain unverified derived chains; keep the licensed general-news lane SOURCE_NEEDED and outcome joins CLOSED.

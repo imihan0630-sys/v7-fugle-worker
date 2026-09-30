@@ -1,0 +1,93 @@
+name: System2 Historical D1 Readonly Audit
+
+on:
+  push:
+    paths:
+      - ".github/workflows/system2-historical-d1-readonly-audit.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    environment: system2-research
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Audit isolated System2 D1 only
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+        run: |
+          node <<'NODE'
+          const accountId=process.env.CLOUDFLARE_ACCOUNT_ID;
+          const token=process.env.SYSTEM2_CLOUDFLARE_API_TOKEN;
+          if(!accountId||!token) throw new Error("System2 Cloudflare credentials missing");
+          const origin="https://api.cloudflare.com/client/v4";
+          const headers={authorization:`Bearer ${token}`,accept:"application/json","content-type":"application/json"};
+
+          async function api(path,{method="GET",body}={}){
+            const r=await fetch(origin+path,{method,headers,body:body===undefined?undefined:JSON.stringify(body),signal:AbortSignal.timeout(45000)});
+            const text=await r.text(); let d=null; try{d=JSON.parse(text)}catch{}
+            if(!r.ok||d?.success===false) throw new Error(`${method} ${path.replace(accountId,"<account>")} HTTP ${r.status}: ${d?.errors?.[0]?.message||text.slice(0,300)}`);
+            return d;
+          }
+          const listed=await api(`/accounts/${accountId}/d1/database?per_page=100`);
+          const matches=(listed.result||[]).filter(x=>x?.name==="system2-research");
+          if(matches.length!==1) throw new Error(`expected exactly one system2-research D1, found ${matches.length}`);
+          const db=matches[0], dbId=db.uuid||db.id;
+
+          async function query(sql,params=[]){
+            const d=await api(`/accounts/${accountId}/d1/database/${dbId}/query`,{method:"POST",body:{sql,params}});
+            const blocks=Array.isArray(d.result)?d.result:[];
+            return {
+              rows:blocks.flatMap(x=>Array.isArray(x.results)?x.results:[]),
+              meta:blocks.map(x=>x.meta||null),
+            };
+          }
+
+          const schema=await query("SELECT schema_value FROM s2_schema_meta WHERE schema_key='schema_version' LIMIT 1");
+          const tables=await query("SELECT name FROM sqlite_schema WHERE type='table' AND name LIKE 's2_%' ORDER BY name");
+          const historicalTablePresent=tables.rows.some(x=>x.name==="s2_historical_a1_bars");
+          const backtestTablePresent=tables.rows.some(x=>x.name==="s2_backtest_runs");
+          let historical={rowCount:null,minDate:null,maxDate:null,byMarket:[]};
+          if(historicalTablePresent){
+            const count=await query("SELECT COUNT(*) AS n, MIN(market_date) AS min_date, MAX(market_date) AS max_date FROM s2_historical_a1_bars");
+            const markets=await query("SELECT market, COUNT(*) AS n, MIN(market_date) AS min_date, MAX(market_date) AS max_date FROM s2_historical_a1_bars GROUP BY market ORDER BY market");
+            historical={rowCount:count.rows[0]?.n??0,minDate:count.rows[0]?.min_date??null,maxDate:count.rows[0]?.max_date??null,byMarket:markets.rows};
+          }
+
+          let storageBytes=null;
+          try{
+            const pageCount=await query("PRAGMA page_count");
+            const pageSize=await query("PRAGMA page_size");
+            const pc=Number(pageCount.rows[0]?.page_count);
+            const ps=Number(pageSize.rows[0]?.page_size);
+            if(Number.isFinite(pc)&&Number.isFinite(ps)) storageBytes=pc*ps;
+          }catch{}
+
+          console.log(JSON.stringify({
+            result:"PASS",
+            databaseName:db.name,
+            databaseIdPresent:Boolean(dbId),
+            schemaVersion:schema.rows[0]?.schema_value||"UNKNOWN",
+            system2TableCount:tables.rows.length,
+            historicalTablePresent,
+            backtestTablePresent,
+            historical,
+            storageBytes,
+            storageMiB:storageBytes===null?null:Number((storageBytes/1024/1024).toFixed(3)),
+            productionDatabaseUsed:false,
+            externalMutationPerformed:false
+          },null,2));
+          NODE
+
+      - name: Confirm System1 production files untouched
+        run: |
+          set -euo pipefail
+          test "$(sed -n '1p' wrangler.toml)" = 'name = "fugle-test"'
+          git diff --exit-code -- wrangler.toml Worker.js

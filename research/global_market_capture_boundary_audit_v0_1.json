@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "0.1",
+  "name": "GLOBAL_MARKET_CAPTURE_BOUNDARY_AUDIT_V0_1",
+  "status": "DESIGN_COMPLETE__IMPLEMENTATION_REQUIRES_EXISTING_REVIEW_GATE",
+  "formalCoreImpact": "NONE",
+  "updatedAt": "2026-09-28T21:18:00+08:00",
+  "findings": [
+    "System2 isolated research database and inactive Worker exist; scheduled collection is currently inactive.",
+    "Existing audit workflow requires collection to remain inactive.",
+    "Existing research storage patterns can be reused; a duplicate persistence system is unnecessary.",
+    "This room can freeze schemas, parsers, fixtures and read-only evidence designs, but implementation must follow the existing governance review boundary."
+  ],
+  "allowedNow": [
+    "pure parser and normalizer design",
+    "synthetic fixtures",
+    "read-only source-arrival evidence",
+    "coverage and missingness contract",
+    "provider entitlement audit"
+  ],
+  "evidenceConsequence": "D13-12 L3 and optimization remain blocked until real prospective receipts accumulate. Missing evidence stays UNKNOWN.",
+  "exactNext": [
+    "continue source and parser readiness",
+    "reuse overlapping System2 source-arrival evidence",
+    "prepare review evidence only when implementation is the sole remaining blocker",
+    "no Formal changes"
+  ]
+}

@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "DAY_TRADING_CHIP_CROWDING_SEMANTIC_GUARD_V0_1",
+  "updated": "2026-09-29 Asia/Taipei",
+  "researchOnly": true,
+  "formalCoreImpact": "NONE",
+  "outcomesUsed": false,
+  "question": "What does Taiwan stock-level day-trading activity measure, and can it be used as a directional chip signal?",
+  "officialSemantics": [
+    "TWSE defines same-day trading as opposite buy/sell transactions in the same account and security during the same business day under eligible rules.",
+    "TWSE publishes stock-level day-trading shares and buy/sell values plus market-level day-trading shares.",
+    "TPEx also exposes day-trading market and stock-level statistics.",
+    "TWSE official data product is produced after market close; historical report pages exist."
+  ],
+  "decisions": [
+    "DAYTRADE_ACTIVITY_IS_TURNOVER_COMPOSITION_NOT_POSITION_STOCK",
+    "HIGH_DAYTRADE_RATIO_IS_NOT_UNCONDITIONALLY_BULLISH_OR_BEARISH",
+    "DAYTRADE_BUY_MINUS_SELL_VALUE_IS_NOT_A_CLEAN_DIRECTIONAL_POSITION_BECAUSE_ROUND_TRIPS_ARE_MECHANICALLY_PAIRED",
+    "RAW_DAYTRADE_VOLUME_MUST_BE_NORMALIZED_BY_STOCK_VOLUME_OR_VALUE",
+    "ELIGIBILITY_AND_SUSPENSION_STATE_MUST_BE_POINT_IN_TIME"
+  ],
+  "positiveMechanisms": [
+    "High day-trading share may proxy attention, short-horizon speculation, liquidity demand and faster inventory turnover.",
+    "When combined with weak price acceptance, leverage/crowding and high volatility it may describe fragile speculative crowding.",
+    "When combined with strong depth/liquidity and persistent price acceptance it may instead reflect healthy liquidity/participation."
+  ],
+  "falsification": [
+    "High day-trading activity can increase liquidity and price discovery rather than instability.",
+    "A high absolute day-trading share count mainly proxies liquid/high-turnover stocks unless normalized.",
+    "Buy and sell notional are close by construction for completed round trips and do not identify overnight directional inventory.",
+    "Eligibility rules, disposition/altered-trading status and rule changes create regime discontinuities.",
+    "Market-wide high day-trading regimes can make a stock-level raw threshold meaningless; use cross-sectional/own-history context."
+  ],
+  "candidateStates": [
+    "DAYTRADE_ATTENTION_HIGH",
+    "DAYTRADE_CROWDING_RISK_CONTEXT",
+    "DAYTRADE_LIQUIDITY_PARTICIPATION",
+    "DAYTRADE_UNKNOWN"
+  ],
+  "requiredFields": [
+    "tradeDate",
+    "symbol",
+    "dayTradeShares",
+    "dayTradeBuyValue",
+    "dayTradeSellValue",
+    "stockTotalShares",
+    "stockTotalValue",
+    "dayTradeEligible",
+    "suspension/disposition state",
+    "sourceDate",
+    "capturedAt",
+    "firstKnownAt",
+    "ruleVersion"
+  ],
+  "sourceReadiness": {
+    "TWSE": "OFFICIAL_STOCK_LEVEL_HISTORY_VISIBLE / SAME_DAY_FIRST_KNOWN_NEEDS_PROSPECTIVE_RECEIPT_BEFORE_L3",
+    "TPEx": "OFFICIAL_STOCK_LEVEL_HISTORY_VISIBLE / SAME_DAY_FIRST_KNOWN_NEEDS_PROSPECTIVE_RECEIPT_BEFORE_L3"
+  },
+  "status": "MECHANISM_AND_FALSIFICATION_DEFINED / OFFICIAL_DATA_FEASIBLE / PROSPECTIVE_FIRST_KNOWN_NOT_YET_CAPTURED / OUTCOMES_CLOSED / FORMAL_UNCHANGED",
+  "exactNext": "Capture prospective same-day availability before the after-market decision clock, then test day-trading share as context conditional on price-volume, volatility, leverage and regime. No standalone day-trading score."
+}

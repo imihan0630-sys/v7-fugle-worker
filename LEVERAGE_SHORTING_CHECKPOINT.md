@@ -86,3 +86,61 @@ LS-050: only after data gates pass, run pre-registered H1-H5 tests.
 - Machine receipt: `research/leverage_shorting_ls047_tpex_margin_source_contract_receipt_v0_1.json`.
 - Lane status is more precisely `DATA_SOURCE_BLOCKED / OFFICIAL_ARTIFACT_OR_ENDPOINT_REQUIRED`; this is not a claim that the underlying margin data are unavailable.
 - No Worker/runtime/Formal change. No H1-H5 outcome test.
+
+## LS-047A — official TPEx machine-data paths verified; access/cost remains a gate (2026-09-29 Asia/Taipei)
+
+A fresh official-source audit materially narrows the earlier source ambiguity without starting LS-048 outcomes or backfill.
+
+### Free public margin path
+- TPEx's public Margin Transactions page remains official and states data availability since 2007/01.
+- Current result HTML is machine-readable and includes full margin-long/margin-short columns.
+- BIG5 and UTF-8 CSV download controls are publicly exposed.
+- However a documented stable historical programmatic CSV parameter/endpoint contract is still not frozen.
+- Therefore the free path is valid for manual official-artifact ingestion, but automated historical backfill still fails closed.
+
+### Official EDIS S23 — STKDMARGIN.TXT
+TPEx's current EDIS format contract explicitly defines:
+- file code S23;
+- file STKDMARGIN.TXT;
+- daily individual-stock margin financing and margin short balances;
+- 165-byte fixed records;
+- long-margin previous balance, buy, sell, cash repayment, current balance, limit, utilization;
+- margin-short equivalent fields;
+- securities-finance-company portions and offsetting;
+- balance/flow/limit units in thousand shares and utilization in percent.
+
+The TPEx E-Data Shop lists this file inside the 上櫃股票統計資料 product group, with data start 2010-07-19 and observed price NT$10,000/month for internal or external use.
+
+Decision:
+TPEX_FULL_MARGIN_OFFICIAL_MACHINE_PATH = VERIFIED
+but
+TPEX_FULL_MARGIN_ACCESS = NOT_SUBSCRIBED / COST_GATED.
+
+No purchase/subscription may be initiated autonomously.
+
+### Official EDIS S47 — Margin_SBL.csv
+The separate TPEx credit-data product:
+- is produced daily at 22:00 Asia/Taipei;
+- starts 2006-01-02;
+- contains margin-short control balance plus actual SBL short-sale previous/current balance, sell, return, adjustment and next-business-day SBL-short limit;
+- observed price = NT$1,000/month internal / NT$1,500/month external.
+
+Important falsification:
+S47 is useful for short-side/SBL history but does NOT replace S23 for long-margin-financing history.
+
+### Governance decision
+Source existence, access authorization and cost are three different states.
+A paid official product must never be treated as automatically available merely because its schema is public.
+
+Machine receipt:
+research/leverage_shorting_ls048_authorized_source_paths_v0_1.json.
+
+Status:
+OFFICIAL_MACHINE_PATHS_VERIFIED / FREE_PROGRAMMATIC_HISTORY_UNRESOLVED / PAID_ACCESS_NOT_AUTHORIZED / COST_GUARD_ACTIVE / LS048_BACKFILL_NOT_STARTED / FORMAL_UNCHANGED.
+
+## Exact next continuation after LS-047A
+1. Keep LS-048 outcome-blind and blocked until an authorized official artifact or documented free stable endpoint is actually available.
+2. Do not subscribe to S23/S47 or incur charges without owner approval.
+3. If an official artifact becomes available through an authorized path, run the finalized-history pilot first with no return/outcome join.
+4. Then run LS-049 completeness/revision/unit audit before H1-H5.
+5. Do not let this source gate block the separate institutional-score decomposition observer lane.

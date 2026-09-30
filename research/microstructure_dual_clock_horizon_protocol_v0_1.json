@@ -1,0 +1,139 @@
+{
+  "schemaVersion": "microstructure-dual-clock-horizon-protocol-v0.1",
+  "researchDate": "2026-09-28",
+  "status": "OUTCOME_FREE_PROTOCOL_FROZEN",
+  "researchOnly": true,
+  "decisionImpact": false,
+  "formalCoreChanged": false,
+  "purpose": "Prevent fixed-minute horizon claims from conflating event intensity with predictive decay by preserving both clock-time and event-time.",
+  "motivation": [
+    "Order-flow predictability is strongest at short microstructure horizons.",
+    "Published multi-horizon evidence reports stock-specific effective forecast horizon of roughly two average price changes, not a universal wall-clock duration.",
+    "Taiwan top-five evidence shows predictive heterogeneity by relative tick size, volatility and trading activity."
+  ],
+  "sourceContract": {
+    "books": [
+      "providerTime",
+      "bestFiveBidPriceSize",
+      "bestFiveAskPriceSize",
+      "isContinuous",
+      "isTrial"
+    ],
+    "trades": [
+      "providerTime",
+      "serial",
+      "bid",
+      "ask",
+      "price",
+      "size",
+      "limit/halt/delayed flags where available"
+    ],
+    "oddLot": "V1 regular-lot only; intradayOddLot=false",
+    "antiFabrication": "OHLCV or sparse snapshots cannot reconstruct event-level OFI/cancellations/replenishment."
+  },
+  "dualClock": {
+    "clockTimeBucketsSeconds": [
+      1,
+      5,
+      15,
+      60,
+      300
+    ],
+    "eventTimeUnits": [
+      "bookMessageCount",
+      "tradeMessageCount",
+      "midPriceChangeCount",
+      "bestQuoteChangeCount",
+      "cumulativeTradeVolume"
+    ],
+    "keyRule": "Every 1m/5m/10m/15m/30m research row must retain the underlying event counts and mid-price-change count; horizon comparisons without event intensity are descriptive only."
+  },
+  "sessionSegmentation": [
+    "OPEN_CALL_AUCTION",
+    "IMMEDIATE_POST_OPEN",
+    "CONTINUOUS",
+    "VOLATILITY_INTERRUPTION_OR_TRIAL",
+    "PRE_CLOSE_CALL_AUCTION",
+    "CLOSE_CALL_AUCTION",
+    "UNKNOWN"
+  ],
+  "stateFamilies": {
+    "pressure": [
+      "true event OFI only with frozen event reconstruction",
+      "provider trade-pressure proxy kept separately",
+      "depth imbalance top1",
+      "depth imbalance top5 notional"
+    ],
+    "response": [
+      "mid displacement bps",
+      "price changes per normalized pressure",
+      "spread change",
+      "depth depletion/replenishment"
+    ],
+    "persistence": [
+      "same-sign pressure fraction",
+      "pressure run length",
+      "event-count persistence",
+      "price-response retention",
+      "spread/depth recovery"
+    ]
+  },
+  "horizonRetentionProtocol": {
+    "baseEventWindows": [
+      "1 price change",
+      "2 price changes",
+      "4 price changes",
+      "fixed 25/50/100 trade events"
+    ],
+    "wallClockCheckpoints": [
+      "1m",
+      "5m",
+      "10m",
+      "15m",
+      "30m"
+    ],
+    "test": "Measure whether standardized Pressure×Response×Persistence information survives after matching/controlling event intensity.",
+    "failureInterpretation": [
+      "If wall-clock alpha disappears after event-count normalization, classify as activity/intensity proxy.",
+      "If signal survives only first ~2 price changes and not 10m/15m, keep as execution-state feature, not BUY confirmation.",
+      "If 15m retention survives across tick/activity/volatility strata and independent dates, advance to prospective Shadow validation."
+    ]
+  },
+  "sameSlotNormalization": {
+    "baseline": "same symbol + same session-state + same clock slot using prior independent sessions only",
+    "robustStats": [
+      "median",
+      "MAD/robust percentile"
+    ],
+    "noOutcomeTuning": true
+  },
+  "coverageContract": {
+    "required": [
+      "connectedMs",
+      "expectedMs",
+      "coverageRatio",
+      "firstProviderTime",
+      "lastProviderTime",
+      "bookMessageCount",
+      "tradeMessageCount",
+      "serialGapCount",
+      "reconnectCount",
+      "sessionStateCoverage"
+    ],
+    "unknownRule": "Missing/reconnect/serial-gap evidence remains UNKNOWN; absence of message is never zero pressure.",
+    "l3Gate": "Own Taiwan PIT capture must demonstrate completeness/replay semantics before D05-03/04/05 can be treated as L3."
+  },
+  "falsification": [
+    "Visible depth may cancel; public top-five is not latent full depth.",
+    "Positive pressure may be late chase or absorption.",
+    "Opening/closing/VI/trial states are different mechanisms.",
+    "Large-tick and small-tick stocks require separate interpretation.",
+    "Deeper-book information may add little beyond best level after costs and controls.",
+    "Any predictive effect that is confined to one symbol/date/tick tier is fragile."
+  ],
+  "governance": {
+    "isolatedCollector": "Class B proposal-first infrastructure",
+    "formalUse": "Any BUY/maxChase/ranking/capital/stop/notification use is Class C",
+    "currentAction": "RESEARCH_SPEC_ONLY"
+  }
+}

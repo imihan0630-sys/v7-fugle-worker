@@ -1,0 +1,91 @@
+{
+  "schemaVersion": "0.1",
+  "module": "D12-10",
+  "name": "TAIFEX same-venue global-control design for NIGHT_PRE_SCAN",
+  "status": "RESEARCH_ONLY_DESIGN_FROZEN__LIQUIDITY_EVIDENCE_PENDING",
+  "formalCoreImpact": "NONE",
+  "updatedAt": "2026-09-29T23:06:44+08:00",
+  "coreFinding": "TAIFEX itself lists TX/MTX/TMF together with S&P 500, Nasdaq-100 and PHLX Semiconductor Sector futures in the 15:00-05:00 after-hours session. This creates a same-venue candidate control set for the 15:00-18:10 Taiwan night residual, reducing source-clock and cross-provider mismatch relative to an external-feed-first design.",
+  "candidateControls": [
+    {
+      "family": "TAIWAN",
+      "instrument": "TX",
+      "role": "target"
+    },
+    {
+      "family": "US_BROAD",
+      "instrument": "TAIFEX S&P 500 Futures",
+      "role": "same-window broad control"
+    },
+    {
+      "family": "US_TECH",
+      "instrument": "TAIFEX Nasdaq-100 Futures",
+      "role": "same-window technology control"
+    },
+    {
+      "family": "US_SEMICONDUCTOR",
+      "instrument": "TAIFEX PHLX Semiconductor Sector Futures",
+      "role": "same-window semiconductor control"
+    }
+  ],
+  "sameVenueAdvantages": [
+    "common TAIFEX trading-day/session governance",
+    "same 15:00-18:10 Taiwan decision-clock window",
+    "potentially simpler PIT capture and replay lineage",
+    "avoids assuming an external vendor timestamp is directly comparable before latency is proven"
+  ],
+  "nonEquivalenceGuards": [
+    "TAIFEX-listed U.S. index futures are not automatically identical in liquidity, price discovery, basis or contract economics to CME/other home-market contracts.",
+    "Same venue does not prove sufficient liquidity; stale/zero-volume controls remain UNKNOWN, never zero-return evidence.",
+    "The PHLX semiconductor futures control may be especially sparse; it must earn inclusion by coverage/quote-quality evidence.",
+    "Do not combine broad, tech and semiconductor controls as three independent votes; test nested incremental residualization.",
+    "No result may be called U.S.-information causality without checking common-news simultaneity and Taiwan-specific absorption."
+  ],
+  "sourceFacts": {
+    "session": "TAIFEX official trading-scheme page lists TX, Mini-TX, Micro-TX, S&P 500, Nasdaq-100 and PHLX Semiconductor Sector futures in 15:00-05:00 after-hours trading.",
+    "txExpiryGuard": "TX/MTX/TMF expiring delivery-month contract has no after-hours session on its last trading day.",
+    "historicalTrades": "TAIFEX public website provides individual trades for the past 30 trading days; older history requires application/purchase."
+  },
+  "outcomeBlindReadinessPilot": {
+    "window": "15:00:00-18:10:00 Asia/Taipei",
+    "inspectOutcomes": false,
+    "measures": [
+      "per-instrument trade count",
+      "first/last trade timestamp",
+      "maximum inter-trade gap",
+      "zero-trade window incidence",
+      "stale-at-18:10 flag",
+      "contract-month and DTE",
+      "roll/expiry flag",
+      "source capture timestamp"
+    ],
+    "acceptanceRule": "Do not freeze numeric thresholds from return outcomes. First characterize distributions across independent dates; preregister quality thresholds before any outcome join."
+  },
+  "residualLadder": [
+    "TX raw NIGHT_PRE_SCAN state",
+    "TX residual vs TAIFEX S&P 500 future",
+    "add TAIFEX Nasdaq-100 future only if incremental and sufficiently liquid",
+    "add TAIFEX PHLX Semiconductor future only if incremental and sufficiently liquid",
+    "external/home-market futures are challenger sources after latency/entitlement alignment, not assumed ground truth"
+  ],
+  "falsification": [
+    "same-venue controls too illiquid/stale to represent global state",
+    "residual disappears under external/home-market control",
+    "apparent value exists only on crisis/event dates",
+    "expiry/roll dates drive effect",
+    "date-shift placebo survives",
+    "simple broad control performs as well as multi-control model",
+    "TX raw move performs as well as residual, making complexity redundant"
+  ],
+  "maturityDecision": {
+    "current": "L2 / 40%",
+    "promotion": "No promotion. L3 requires actual PIT/replay feasibility and independent-date evidence; L4 requires prospective/OOS evidence."
+  },
+  "exactNextContinuation": [
+    "Use recent TAIFEX transaction files only for outcome-blind parser/coverage QA of TX + TAIFEX S&P500/Nasdaq100/PHLX-semiconductor controls.",
+    "Freeze stale/liquidity eligibility thresholds before any Taiwan outcome join.",
+    "Then prospectively capture the same 15:00-18:10 set under the unified receipt envelope.",
+    "Compare same-venue controls with external/home-market controls only after source latency and entitlement are proven.",
+    "Keep Formal Core locked."
+  ]
+}

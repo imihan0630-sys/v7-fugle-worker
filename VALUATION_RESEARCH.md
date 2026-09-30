@@ -65,3 +65,152 @@ Symmetric possible outcomes:
 Any Formal valuation-gate change is Class C and requires owner approval after PIT/OOS, independent-date, multi-regime, redundancy, cost, coverage/zero-pick and overfit gates.
 
 Current status: FALSIFICATION_IN_PROGRESS / PIT_COHORT_AUDIT_REQUIRED / NOT_OPTIMIZATION_READY.
+
+
+## VAL-009 — Trailing PE is a PIT observable, not a universal cheapness scale
+
+Research date: 2026-09-28 Asia/Taipei.
+
+TWSE official semantics make the denominator explicit: daily PE uses closing price divided by EPS based on the most recent four reported quarters, and PE is not calculated when EPS <= 0. PB uses the most recent reported quarterly book value. Therefore PE_UNKNOWN is a mixed state that can include non-positive earnings and must never be ranked as ultra-cheap.
+
+Critical cycle inversion: a cyclical company near peak earnings can show a deceptively low trailing PE; near trough earnings the same business can show a very high or unavailable PE. Historical or sector-relative PE without normalized earnings can therefore invert the economic interpretation.
+
+Frozen implication: D08-03 historical percentile must not be promoted until denominator-regime controls exist. For cyclical/commodity groups, test normalized earnings or cycle-state conditioning rather than raw percentile alone.
+
+Status: PIT_SEMANTICS_CONFIRMED / CYCLE_INVERSION_COUNTEREXAMPLE_CONFIRMED / NO_FORMAL_CHANGE.
+
+## VAL-010 — EV/EBITDA is useful only with capital-intensity and sector guards
+
+EV/EBITDA can remain defined when net income is negative and incorporates debt/cash through enterprise value, which can make it useful where PE fails. But EBITDA ignores capital expenditure and working-capital requirements. Cross-company comparison is especially unsafe when capital intensity differs materially. Financial institutions also require separate treatment; standard EV/EBITDA is generally not an appropriate pooled comparator.
+
+Research-only normalized object:
+- compare EV/EBITDA within economically coherent peer groups;
+- preserve debt/cash timestamp consistency with market cap and financial statement vintage;
+- pair with capex intensity and ROIC/operating profitability rather than treating low EV/EBITDA as cheap by itself;
+- maintain UNKNOWN when enterprise-value components cannot be reconstructed point-in-time.
+
+Kill rule: if EV/EBITDA adds no stable increment after sector-relative PE/PB, leverage, profitability and capital-intensity controls, reject it as redundant.
+
+Status: D08-06 MECHANISM_PLUS_COUNTEREVIDENCE_DEFINED / PIT_COMPONENT_AUDIT_NEXT / NO_FORMAL_CHANGE.
+
+## VAL-011 — FCF Yield requires a frozen FCF definition and reinvestment interpretation
+
+IFRS does not currently prescribe one universal FCF subtotal. Therefore FCF Yield cannot be safely researched until numerator semantics are frozen. A minimal industrial-company research definition may begin with CFO minus qualifying capital expenditures, but maintenance capex versus growth capex is not directly interchangeable and classification differences can materially change the result.
+
+Positive mechanism: high FCF relative to enterprise/equity value may identify cash-generative businesses whose accounting earnings understate distributable economics.
+
+Countermechanisms:
+- growth capex can make a healthy expanding firm look poor on FCF;
+- underinvestment can make a deteriorating firm look temporarily strong on FCF;
+- working-capital release can create one-off FCF spikes;
+- acquisitions and leases complicate cross-company comparability;
+- financial firms require separate semantics.
+
+Research design must use multi-period persistence and capex/reinvestment context, not one-quarter FCF Yield.
+
+Status: D08-07 MECHANISM_PLUS_COUNTEREVIDENCE_DEFINED / FORMULA_NOT_YET_FROZEN / NO_FORMAL_CHANGE.
+
+## VAL-012 — Quality-adjusted valuation is the candidate research architecture
+
+International evidence supports interactions among profitability, investment and value; it also warns that value can become redundant after profitability/investment controls in some specifications. Therefore the next Taiwan experiment should not ask whether low PE wins. It should ask whether valuation contributes conditional information after growth and quality are known.
+
+Pre-registered conceptual grid:
+- growth quality: realized growth acceleration/deceleration;
+- earnings quality: profitability persistence + cash conversion/accrual state;
+- capital efficiency: ROIC/ROE with leverage guards;
+- valuation: sector-relative trailing PE/PB first, later EV/EBITDA/FCF Yield only after PIT feasibility;
+- regime: sector cycle + broad market regime;
+- price state: RS/overheat/late-stage controls.
+
+Primary hypotheses:
+H1: expensive + improving quality may be justified leadership rather than an automatic veto;
+H2: cheap + deteriorating quality is a value-trap state;
+H3: cheap + stable/improving quality may be a genuine value-quality state;
+H4: valuation may contribute more to MAE/false-breakout risk than D1/D3 directional return.
+
+Falsification:
+- within-date and within-sector comparisons;
+- scanDate as inference cluster;
+- PIT first-known financial vintage only;
+- no threshold sweep;
+- control existing fundamentalScore and technical/price-volume/RS/regime signals;
+- independent dates, OOS/walk-forward and prospective Shadow before promotion;
+- coverage/zero-pick and transaction-cost checks.
+
+This architecture is a RESEARCH_CANDIDATE, not a FORMAL_OPTIMIZATION_CANDIDATE. Evidence is not yet sufficient for System 1/System 2 production changes.
+
+Exact next continuation: verify point-in-time component availability, freeze sector policies and formulas, then create prospective Shadow schema before any return comparison.
+
+
+## VAL-013 — Forward PE is a forecast-vintage object, not simply a better PE
+
+Forward PE must freeze both the earnings horizon and the forecast vintage. Price / next-fiscal-year EPS, Price / next-twelve-month EPS and Price / current-year consensus EPS are different variables and must never be pooled under one label.
+
+Required semantics before any Taiwan test:
+- price timestamp/date;
+- forecast provider and consensus construction rule;
+- exact forecast snapshot/vintage timestamp;
+- number/coverage of contributing analysts where available;
+- EPS horizon and fiscal-year mapping;
+- treatment of negative/near-zero expected EPS;
+- revision history rather than only the latest consensus.
+
+Taiwan evidence published in 2026 reports predictive content in analyst forecast earnings-growth revisions, but that study used a proprietary/third-party consensus dataset and a restricted index-based sample. It supports the research mechanism; it does not supply this system with a canonical licensed point-in-time source and does not justify importing its reported return magnitudes as thresholds.
+
+Current repository source matrix still classifies Forward PE/estimates as SOURCE_NEEDED. Therefore D08-04 advances only to L1 theory-understood, not L2/L3.
+
+Status: D08-04 L1 THEORY_DEFINED / CANONICAL_PIT_SOURCE_NEEDED / NO_FORMAL_CHANGE.
+
+## VAL-014 — PEG requires more guards than PE divided by growth
+
+PEG is attractive because it attempts to relate valuation to growth, but the denominator makes it fragile.
+
+Frozen counterexamples:
+- negative expected growth makes the sign economically ambiguous;
+- growth near zero explodes the ratio;
+- one-year growth and multi-year PE horizons create horizon mismatch;
+- cyclical rebound from a depressed base can produce an artificially low PEG;
+- high sustainable growth with long duration can look expensive under a short-horizon PEG;
+- different providers may use trailing PE, forward PE, historical EPS growth or forecast growth, producing non-comparable PEG values.
+
+Research rule: PEG may only be derived when the PE basis and growth basis share an explicitly compatible horizon and forecast vintage. Otherwise PEG=UNKNOWN. It is a contextual normalization candidate, not a universal cheapness threshold.
+
+Falsification: compare PEG against its two primitives (valuation and expected growth/revision). If PEG adds no stable incremental information after those primitives and sector/regime controls, mark it REDUNDANT.
+
+Status: D08-05 MECHANISM_PLUS_COUNTEREVIDENCE_DEFINED / L2 / PIT_SOURCE_DEPENDENT / NO_FORMAL_CHANGE.
+
+## VAL-015 — Quality-adjusted valuation preregistration now exists before outcomes
+
+Machine-readable spec: research/fundamental_quality_valuation_shadow_spec_v0_1.json.
+
+Initial point-in-time valuation lane:
+- official same-day trailing PE;
+- official same-day PB;
+- sector-relative PE only when the peer set is economically coherent and sufficiently observed.
+
+Blocked until separate source contracts:
+- Forward PE / analyst estimates;
+- PEG;
+- EV/EBITDA;
+- FCF Yield;
+- historical PE/PB percentile.
+
+The preregistered hypotheses remain symmetric: expensive/improving-quality may be justified; cheap/deteriorating-quality may be a value trap; cheap/stable-or-improving quality may represent value-quality; valuation may help downside/path-quality more than very-short-horizon directional return.
+
+The design explicitly prohibits outcome-driven threshold sweeps and requires comparison against existing fundamentalScore, technical/PV, RS, industry/regime, liquidity/size and overheat controls.
+
+Status: PREREGISTERED_SHADOW_ARCHITECTURE / PIT_PARTIAL / OUTCOMES_LOCKED / NOT_FORMAL_OPTIMIZATION_CANDIDATE.
+
+## VAL-016 — International profitability/value evidence strengthens the interaction hypothesis, not a low-valuation rule
+
+The Fama-French five-factor evidence shows profitability and investment can absorb part of traditional value information in their U.S. sample; Novy-Marx shows gross profitability can predict returns despite profitable firms often trading at richer valuations. But international evidence is heterogeneous: profitability/investment relations are weaker in some regions/markets.
+
+System implication:
+- valuation should be tested conditionally on quality, investment/reinvestment and regime;
+- a premium found internationally must not be imported as a Taiwan production factor;
+- if Taiwan PIT/OOS results show quality already explains the apparent valuation effect, valuation should be down-weighted/rejected as redundant rather than preserved by intuition;
+- conversely, if valuation contributes independent downside/path-quality information after quality controls, retain it as a conditional risk dimension.
+
+This directly supports the pre-registered interaction architecture while preserving a symmetric rejection path.
+
+Exact next continuation: finish the official GENERAL_INDUSTRY cash/balance-sheet field contract and accumulate prospective receipts; Forward PE/PEG remain source-gated and must not delay the source-honest trailing-valuation Shadow lane.

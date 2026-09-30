@@ -1,0 +1,106 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-09-28 Asia/Taipei",
+  "scope": "08｜事件與新聞研究室 / D17 source readiness",
+  "status": "PRIMARY_EVENT_LANE_PARTIAL / GENERAL_NEWS_DISCOVERY_FEASIBLE / PRODUCTION_LICENSE_GAP / PIT_ARCHIVE_GAP",
+  "decisionImpact": false,
+  "formalCoreChanged": false,
+  "lanes": {
+    "MOPS": {
+      "class": "PRIMARY_REGULATORY_OR_EXCHANGE",
+      "coverage": "Statutory company disclosures / material information, not general news",
+      "publicEvidence": [
+        "Immediate material-information view exposes company code/name, publication time and subject",
+        "Historical material-information query exists"
+      ],
+      "repoState": "Current ANNOUNCEMENTS normalization retains announcement date + title but not intraday firstKnown/publication time, lineage or revisions",
+      "readiness": "CURRENT_PRIMARY_EVENT_SOURCE_PROVEN / STORED_PIT_SEMANTICS_INCOMPLETE",
+      "next": "Prospectively preserve publication time, source id/url, capture time, revision/supersession and raw receipt/hash where allowed"
+    },
+    "CNA_RSS": {
+      "class": "INDEPENDENT_WIRE_OR_REPUTABLE_MEDIA_DISCOVERY",
+      "coverage": "General news discovery including finance and technology categories",
+      "machineFormat": "RSS provides headline, lead, article link and lead-image link",
+      "license": "Public RSS terms state personal/non-profit/non-commercial use and attribution requirements; provider may request cessation",
+      "readiness": "RESEARCH_DISCOVERY_FEASIBLE / NOT_ASSUMED_PRODUCTION_LICENSED",
+      "unknowns": [
+        "item-level immutable version history",
+        "complete historical archive",
+        "commercial/System2 deployment rights",
+        "stable canonical entity identifiers"
+      ]
+    },
+    "Government_RSS": {
+      "class": "PRIMARY_GOVERNMENT_EVENT_FEED",
+      "examples": [
+        "MOEA Industrial Development Administration news/activity/regulation RSS"
+      ],
+      "readiness": "CATEGORY_SPECIFIC_DISCOVERY_FEASIBLE",
+      "limitation": "Government policy/industry releases are useful primary event evidence but do not replace company or general-news coverage"
+    },
+    "GeneralNewsProduction": {
+      "class": "LICENSED_GENERAL_NEWS_PROVIDER",
+      "readiness": "SOURCE_NEEDED",
+      "required": [
+        "commercial/research usage rights",
+        "stable machine interface",
+        "publication and update timestamps",
+        "version/correction semantics",
+        "archive retention/completeness",
+        "entity resolution",
+        "source lineage"
+      ]
+    }
+  },
+  "sourceSeparation": {
+    "canonicalTruthLane": "Use MOPS/TWSE/TPEx or other first-party official sources for claims they directly govern.",
+    "discoveryLane": "Media/RSS can discover or disseminate information but does not automatically become canonical economic truth.",
+    "attentionLane": "Even low-truth-confidence or later-disproven stories may be retained as market-attention events with truthConfidence separate from marketImpactPotential.",
+    "noSubstitution": "No lane substitutes for another when coverage, license, firstKnown or version semantics differ."
+  },
+  "prospectiveLedgerMinimum": {
+    "eventFields": [
+      "eventId",
+      "eventClusterId",
+      "eventCategory",
+      "symbol/entity",
+      "relationType",
+      "economicPrimitive",
+      "effectiveFrom",
+      "expiryOrHalfLifeState"
+    ],
+    "evidenceFields": [
+      "sourceId",
+      "sourceClass",
+      "sourceLineage",
+      "sourceUrl",
+      "articleOrDisclosureId",
+      "publishedAt",
+      "firstKnownAt",
+      "capturedAt",
+      "updatedAt",
+      "revisionType",
+      "supersedesId",
+      "rawHashOrReceipt",
+      "truthConfidence",
+      "marketImpactPotential"
+    ],
+    "analysisFields": [
+      "noveltyState",
+      "sentimentState",
+      "expectationState",
+      "pricedInState",
+      "beneficiaryVictimState",
+      "propagationMechanism",
+      "confidence",
+      "unknownReason"
+    ],
+    "replayRule": "Historical replay sees only versions whose firstKnownAt/capturedAt were available by replayAsOf. Later corrections append; they never rewrite earlier decision-time truth."
+  },
+  "gates": {
+    "D17_L3": "NOT_MET",
+    "reason": "No complete Taiwan PIT/versioned general-news archive with validated licensing, completeness and revision semantics",
+    "prospectiveResearchLedger": "DESIGN_READY / IMPLEMENTATION_NOT_AUTHORIZED",
+    "formalOptimizationCandidate": "NO"
+  }
+}

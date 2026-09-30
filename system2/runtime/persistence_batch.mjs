@@ -2,6 +2,31 @@ import { deepFreeze } from "./factor_snapshot.mjs";
 import { canonicalStringify, sha256Hex } from "./decision_archive.mjs";
 
 const TABLE_SPECS = deepFreeze({
+  s2_historical_ingest_batches: {
+    order: 1,
+    identity: ["batch_id"],
+  },
+  s2_historical_a1_bars: {
+    order: 2,
+    identity: ["bar_id"],
+    // bar_id is content-addressed.  Re-observation metadata may differ when an
+    // identical official row is fetched again after an interrupted backfill.
+    // First-write observation provenance remains immutable; these fields do
+    // not create a false content conflict.
+    equivalenceIgnore: ["batch_id", "observed_at", "captured_at"],
+  },
+  s2_backtest_runs: {
+    order: 3,
+    identity: ["run_id"],
+  },
+  s2_backtest_checkpoints: {
+    order: 4,
+    identity: ["checkpoint_hash"],
+  },
+  s2_historical_base_samples: {
+    order: 5,
+    identity: ["sample_id"],
+  },
   s2_source_session_receipts: {
     order: 10,
     identity: ["receipt_id"],
@@ -170,6 +195,7 @@ export async function buildSystem2PersistenceBatch({
       rowDigest,
       verifyMode: "ABSENT_OR_IDENTICAL",
       insertMode: "INSERT_ONLY_AFTER_VERIFY",
+      equivalenceIgnore: Object.freeze([...(spec.equivalenceIgnore || [])]),
       sql: sqlPlan(table, row, identity),
     };
 
@@ -222,12 +248,17 @@ export function compareExistingRow(operation, existingRow) {
     throw new Error("existingRow must be an object, null or undefined");
   }
 
-  const normalizedExisting = Object.fromEntries(
-    Object.keys(operation.row)
-      .sort()
-      .map((key) => [key, existingRow[key] ?? null]),
+  const ignored = new Set(operation.equivalenceIgnore || []);
+  const comparisonKeys = Object.keys(operation.row)
+    .filter((key) => !ignored.has(key))
+    .sort();
+  const expectedComparable = Object.fromEntries(
+    comparisonKeys.map((key) => [key, operation.row[key] ?? null]),
   );
-  const expectedCanonical = canonicalStringify(operation.row);
+  const normalizedExisting = Object.fromEntries(
+    comparisonKeys.map((key) => [key, existingRow[key] ?? null]),
+  );
+  const expectedCanonical = canonicalStringify(expectedComparable);
   const actualCanonical = canonicalStringify(normalizedExisting);
 
   if (expectedCanonical === actualCanonical) {

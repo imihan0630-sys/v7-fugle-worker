@@ -1,8 +1,8 @@
 # Fundamental Information Dynamics Checkpoint
 
-Updated: 2026-09-25 Asia/Taipei
-Current cursor: FD-001 through FD-043 complete.
-Next: event-clock/vintage evidence accumulation; concept lane complete.
+Updated: 2026-09-28 Asia/Taipei
+Current cursor: FD-001 through FD-052 complete; valuation through VAL-016.
+Next: exact official general-industry cash-flow/balance-sheet field mapping and first no-outcome prospective quality receipt; then Quality × Valuation Shadow join.
 
 ## Durable conclusions
 - fundamentalScore structural audit is frozen: nine possible components sum to a theoretical 120 before clamping to 100; component availability is not normalized, so score scale is coverage-sensitive.
@@ -78,3 +78,41 @@ FD-020: Freeze minimal prospective Fundamental Event Shadow schema.
 
 ## Next lane
 Derivatives Information & Volatility Surface.
+
+
+## 2026-09-28 D07+D08 long-block continuation
+- FD-044..FD-046 added: profitability must be decomposed from leverage/denominator effects; cash conversion/accrual quality is a missing dimension; FCF has no single IFRS-defined formula; growth×quality states are preferred over blindly extending the additive fundamentalScore.
+- VAL-009..VAL-012 added in VALUATION_RESEARCH.md: trailing PE has cycle inversion risk; EV/EBITDA needs peer/capital-intensity guards; FCF Yield needs a frozen numerator and reinvestment context; next architecture is quality-adjusted valuation rather than low-PE ranking.
+- External evidence is mechanism/counterevidence only; it does not establish Taiwan System alpha. Taiwan accrual literature motivates, but does not authorize, a hard gate.
+- No Formal change. No threshold/weight search. No historical PIT fabrication.
+- Exact next continuation: repository/MOPS PIT field audit for CFO, capex, assets, equity, debt/cash; freeze sector policies (industrial vs financial); define prospective component receipt and quality×valuation Shadow schema; only then run within-date/sector incremental tests.
+
+
+## 2026-09-28 D07+D08 long-block — PIT quality contract / industry firewall / forward valuation
+- Fresh latest-main audit confirmed this room owns D07+D08. Current System 1/V8 financial candidate path preserves income/profitability/revenue fields but does not currently normalize CFO, assets, equity, liabilities or capex into equivalent quality fields.
+- Taiwan official data/source structure proves balance-sheet/cash-flow source families exist and that general industry vs financial/insurance/securities/financial-holding reporting semantics differ materially.
+- Official MOPS financial-comparison semantics explicitly mark generic operating-cash-flow ratios as not applicable to financial/insurance/securities-futures/financial-holding/cross-industry groups. Generic CFO/FCF quality research is therefore limited to GENERAL_INDUSTRY; financial institutions require specialist capital/asset-quality/solvency metrics.
+- Existing System 2 A5_QUARTERLY_FINANCIALS prospective observer was re-audited. It uses official TWSE/TPEx EPS/profitability datasets, preserves observedAt/source/output-date/quarterly-vintage coverage, and explicitly treats firstObservedAt as an upper bound rather than exact company filing time. This is sufficient for D07-08 L3 PIT feasibility, but not L4 prospective outcome evidence.
+- Frozen machine artifacts:
+  - research/fundamental_quality_pit_contract_v0_1.json
+  - research/fundamental_quality_valuation_shadow_spec_v0_1.json
+- Formula policy frozen before outcome:
+  - ROA and ROE use average denominators;
+  - CFO/net-income, CFO margin, broad accrual proxy, liabilities/assets, asset turnover are candidate GENERAL_INDUSTRY primitives;
+  - FCF, ROIC and net debt remain NOT_FROZEN until source taxonomy/definitions are proven.
+- Forward PE is frozen as a forecast-vintage object: next-FY, NTM and current-year consensus variants cannot be mixed. Repository still has no validated canonical PIT estimates source, so D08-04 advances only to L1.
+- PEG now has mechanism plus counterevidence: sign/near-zero growth, horizon mismatch, base effects and provider-definition drift require fail-closed UNKNOWN and redundancy testing versus valuation + expected-growth primitives. D08-05 advances to L2.
+- External profitability/value evidence supports testing quality × valuation interactions but is heterogeneous internationally; no foreign factor premium is imported as Taiwan alpha.
+- No Formal Core/runtime/production change. No threshold sweep, no return inspection, no historical PIT fabrication. FORMAL_OPTIMIZATION_CANDIDATE = NO.
+- Maturity changes authorized by evidence:
+  - D07-06 L1 -> L2;
+  - D07-08 L2 -> L3;
+  - D08-04 L0 -> L1;
+  - D08-05 L1 -> L2.
+- Exact next continuation:
+  1. identify exact official TWSE/TPEx GENERAL_INDUSTRY cash-flow and balance-sheet endpoints/field names with parity;
+  2. freeze field-level mapping and schema fingerprints for CFO/assets/equity/liabilities/receivables/inventory and capex candidates;
+  3. generate a no-outcome prospective quality receipt on a valid new financial vintage;
+  4. verify corrections/restatements append rather than overwrite;
+  5. only then enable the preregistered Quality × Valuation Shadow outcome join;
+  6. keep Forward PE/PEG source-gated; they must not block trailing-PE/PB quality-adjusted research.

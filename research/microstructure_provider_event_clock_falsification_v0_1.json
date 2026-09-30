@@ -1,0 +1,79 @@
+{
+  "schemaVersion": "0.1",
+  "updatedAt": "2026-09-28T21:36:00+08:00",
+  "domain": "D05",
+  "status": "PROVIDER_EVENT_SEMANTICS_AND_RETENTION_GATE_FROZEN",
+  "formalCoreImpact": "NONE",
+  "sourceSemantics": {
+    "fugleTradesHasSerial": true,
+    "fugleBooksHasDocumentedSerial": false,
+    "bookProviderMessageCountIsExchangeEventCount": false,
+    "trueOfiAllowedOnlyAfterEventCompletenessContract": true,
+    "fallbackName": "snapshotDeltaPressureProxy"
+  },
+  "dualClock": {
+    "clockTime": [
+      "1s",
+      "5s",
+      "15s",
+      "1m",
+      "5m",
+      "10m",
+      "15m",
+      "30m"
+    ],
+    "eventTime": [
+      "bookProviderMessageCount",
+      "tradeProviderMessageCount",
+      "bestQuoteChangeCount",
+      "midPriceChangeCount",
+      "cumulativeTradeVolume"
+    ]
+  },
+  "nestedBaselines": {
+    "B0": [
+      "activity",
+      "midPriceChangeCount",
+      "localPathVolatility",
+      "tickBand",
+      "sessionState"
+    ],
+    "B1": [
+      "spreadTicks",
+      "spreadBps",
+      "top1Depth",
+      "top1Imbalance"
+    ],
+    "B2": [
+      "pressureProxy",
+      "pressureToPriceResponse",
+      "persistenceNoProgressState"
+    ],
+    "B3": [
+      "singleFrozenTop5AggregateBlock"
+    ]
+  },
+  "negativeControls": [
+    "time_shift_placebo",
+    "within_symbol_day_pressure_sign_shuffle",
+    "event_intensity_matched_control",
+    "spread_only_control",
+    "volatility_activity_control",
+    "continuous_session_primary_with_auction_VI_limit_separate"
+  ],
+  "retentionInterpretation": {
+    "E0_only": "MICRO_TIMING_ONLY",
+    "E0_E1_not_E2": "EXECUTION_STATE_NOT_15M_CONTEXT",
+    "E2_incremental_and_robust": "PROSPECTIVE_15M_SHADOW_CONTEXT_CANDIDATE",
+    "disappears_after_event_matching": "ACTIVITY_PROXY",
+    "disappears_after_spread_control": "LIQUIDITY_COST_PROXY",
+    "unstable_across_dates": "FRAGILE_DATE_DEPENDENCE"
+  },
+  "prohibited": [
+    "OHLCV_reconstruction_of_true_OFI",
+    "calling_book_message_count_exchange_event_count",
+    "post_hoc_best_horizon_selection",
+    "separate_level2_level3_level4_level5_factor_search_before_top5_block_passes",
+    "automatic_BUY_or_SELL_mapping"
+  ]
+}

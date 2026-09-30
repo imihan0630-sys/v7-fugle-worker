@@ -1482,3 +1482,164 @@ However V8.15 is currently occupied by the concurrent Valuation Provenance lane.
 Current status:
 `STRUCTURAL_FALSIFICATION_COMPLETE / OBSERVABILITY_GAP_CONFIRMED / ALPHA_UNKNOWN / NO_FORMAL_CHANGE`.
 
+
+
+## FD-044 — Profitability is a state, not a standalone alpha oracle
+
+Research date: 2026-09-28 Asia/Taipei.
+
+Mechanism review supports profitability as a potentially useful cross-sectional quality dimension, but not as a monotonic standalone trading rule. ROE, ROA, ROIC, operating profitability and cash profitability answer different economic questions. High ROE can be mechanically amplified by leverage, buybacks or a small equity denominator; high operating profitability can coexist with aggressive reinvestment; past profitability is not identical to expected future profitability.
+
+System implication: do not add a raw ROE threshold or points to Formal. A research representation should decompose profitability into operating profitability, capital efficiency, leverage context and persistence/change. Candidate value must be tested conditional on current fundamentalScore, sector, size, price trend/RS and valuation.
+
+Countermechanisms / kill rules:
+- reject a profitability feature if its apparent effect disappears after sector/size/current fundamentalScore controls;
+- reject raw ROE if leverage/equity-denominator effects explain the signal;
+- do not treat a one-quarter margin/ROE spike as durable quality without persistence evidence;
+- do not infer Taiwan alpha from international factor evidence; Taiwan PIT/OOS evidence is required.
+
+Status: MECHANISM_PLUS_COUNTEREVIDENCE_DEFINED / ALPHA_UNKNOWN / NO_FORMAL_CHANGE.
+
+## FD-045 — Cash conversion and accrual quality must be separated from headline earnings
+
+IAS 7 separates operating, investing and financing cash flows; accounting profit and cash generation are therefore not interchangeable. Free cash flow (FCF) is not a single IFRS-defined metric, so any FCF feature must freeze an explicit formula and sector policy before outcomes are observed.
+
+Preferred research primitives, subject to source-field verification:
+- CFO / net income cash-conversion ratio, with denominator guards;
+- accrual proxy = earnings minus operating cash flow, scaled by an ex-ante frozen balance-sheet denominator;
+- CFO margin and its change;
+- capex intensity and reinvestment context;
+- FCF = CFO - explicitly classified capex only under a frozen definition.
+
+Positive mechanism: persistent earnings supported by cash may be higher quality than equal headline earnings dominated by accruals.
+
+Mandatory countermechanisms:
+- working-capital build can be rational during rapid growth;
+- inventory build can precede demand or signal deterioration;
+- customer/supplier payment timing can temporarily distort CFO;
+- capex can depress FCF precisely when a high-quality company is expanding capacity;
+- financial firms require separate cash-flow semantics and should not be pooled mechanically with industrial firms.
+
+Taiwan-specific evidence exists for quarterly accrual anomaly, but this does not authorize a low-accrual hard gate. It motivates a PIT Taiwan experiment with sector and growth controls.
+
+Status: D07-05/D07-07 MECHANISM_PLUS_COUNTEREVIDENCE_DEFINED / PIT_FIELD_AUDIT_NEXT / NO_FORMAL_CHANGE.
+
+## FD-046 — Growth × quality matrix is preferable to another additive score
+
+The existing Formal fundamentalScore already mixes realized revenue growth, EPS, margin levels and margin changes and is structurally coverage-sensitive. Adding ROE/CFO/accrual points to the same additive score would increase opacity and Factor-Zoo risk.
+
+Freeze four descriptive research states before outcome testing:
+1. GROWTH_WITH_CASH_SUPPORT — growth and profitability improve while cash conversion is not deteriorating materially;
+2. GROWTH_WITH_CASH_DIVERGENCE — accounting growth improves while cash conversion/accrual quality deteriorates;
+3. QUALITY_STABLE_LOW_GROWTH — profitability/cash quality stable but realized growth modest;
+4. DETERIORATION — growth and quality both weaken.
+
+These are research labels, not bullish/bearish ratings. UNKNOWN remains UNKNOWN whenever required fields are absent.
+
+Primary falsification: if these states add no stable information after existing fundamentalScore + price/volume + sector/RS + regime controls, mark REDUNDANT rather than promoting them.
+
+Exact next continuation: audit repository/MOPS field availability and PIT timestamps for CFO, capex, total assets/equity/debt and compute whether the four states are prospectively reproducible without historical-vintage leakage.
+
+
+## FD-047 — Taiwan balance-sheet/cash-quality source feasibility audit
+
+Research date: 2026-09-28 Asia/Taipei.
+
+Repository audit confirms the current System 1/V8 quarterly financial ingestion is primarily an income/profitability path. Current candidate/research fields preserve revenue, EPS, gross/operating margin and changes, but the active Worker does not currently normalize the balance-sheet/cash-quality primitives required for CFO/accrual/capital-efficiency research: operating cash flow, total assets, total equity, total liabilities, current liabilities and capex are not present as equivalent current candidate fields.
+
+This is a source-contract gap, not proof that the official data is unavailable. Taiwan official/MOPS surfaces expose balance-sheet and cash-flow statements, and official open datasets separate general industry from financial, insurance, securities/futures and other reporting structures.
+
+Consequence:
+- D07-05/D07-07 remain source-extension/PIT-capture gated despite concept readiness;
+- current historical Shadow must not be reverse-filled from today's statement values;
+- a new quality experiment must begin prospectively from a frozen receipt rather than reconstructing fake historical vintages.
+
+Status: OFFICIAL_SOURCE_FAMILY_FEASIBLE / CURRENT_WORKER_NORMALIZATION_GAP_CONFIRMED / HISTORICAL_PIT_UNKNOWN / NO_FORMAL_CHANGE.
+
+## FD-048 — Financial versus non-financial applicability firewall
+
+Taiwan's official financial-comparison semantics explicitly mark operating-cash/current-liability, operating-cash/total-liability and operating-cash/net-income ratios as not applicable to financial, insurance, securities/futures, financial-holding and cross-industry consolidated groups. Official statement/open-data structures also differ materially across those groups.
+
+Therefore the generic quality lane is frozen as follows:
+- GENERAL_INDUSTRY may study CFO conversion, accruals, working-capital quality, leverage, asset turnover and later a carefully defined FCF measure;
+- BANK / FINANCIAL_HOLDING / INSURANCE / SECURITIES_FUTURES / CROSS_INDUSTRY_FINANCIAL must not be forced through the industrial CFO/FCF formula;
+- financial institutions require specialist quality dimensions such as regulatory capital, asset quality, non-performing exposure/coverage and sector-appropriate solvency metrics.
+
+This is not an exclusion from investing or selection. It is a measurement-semantics firewall: incomparable accounting structures must not be converted into one false common score.
+
+Status: INDUSTRY_APPLICABILITY_FIREWALL_DEFINED / D07-06 MECHANISM_PLUS_COUNTEREVIDENCE_COMPLETE / NO_FORMAL_CHANGE.
+
+## FD-049 — Prospective financial-vintage PIT feasibility is now proven at market-wide first-observed level
+
+System 2 already contains an implemented research-only A5_QUARTERLY_FINANCIALS observer using official TWSE/TPEx EPS and profitability datasets. Its contract preserves observedAt, source endpoints, output dates, market coverage and quarterly vintage consistency. It explicitly states that first-observed is an upper bound and does NOT claim exact company filing/publication time.
+
+This distinction matters:
+- reportYear/reportQuarter is the accounting period, not knownAt;
+- sourceOutputDate is not automatically exact company filing time;
+- firstObservedAt is usable prospectively as a conservative information-availability upper bound;
+- exact announcement/event studies still require per-company filing/publication timestamps;
+- pre-observer historical publication vintages remain UNKNOWN.
+
+Because a tested Taiwan official-source prospective observer exists and preserves fail-closed first-observed semantics, D07-08 satisfies L3 PIT feasibility for prospective quarterly-vintage state. This does not imply L4 evidence: as of the latest verification, promotion-grade prospective trading-date evidence count was still zero before the first ordinary session after the 2026-09-28 holiday.
+
+Status: PROSPECTIVE_PIT_FEASIBLE_L3 / EXACT_COMPANY_PUBLICATION_TIME_UNPROVEN / HISTORICAL_VINTAGE_UNKNOWN / NO_FORMAL_CHANGE.
+
+## FD-050 — Fundamental-quality formula policy frozen before outcome inspection
+
+Machine-readable contract: research/fundamental_quality_pit_contract_v0_1.json.
+
+For GENERAL_INDUSTRY research, the first formula family is frozen conceptually before outcome joins:
+- ROA = net income / average total assets;
+- ROE = net income / average total equity;
+- CFO-to-net-income with sign and near-zero denominator guards;
+- CFO margin = operating cash flow / revenue;
+- broad accrual proxy = (net income - operating cash flow) / average total assets;
+- liabilities-to-assets;
+- asset turnover = revenue / average total assets.
+
+Not frozen yet:
+- FCF, because IFRS does not define a universal free-cash-flow measure and growth-versus-maintenance capex is not standardized;
+- ROIC, because NOPAT and invested-capital boundaries must be frozen and operating versus financing liabilities must be mapped reliably;
+- net debt, because an analytical debt taxonomy must be frozen first.
+
+Using average denominators is deliberate: a single quarter-end denominator can mechanically distort ROA/ROE/asset-turnover comparisons around capital actions, acquisitions or rapid balance-sheet changes.
+
+Counterevidence rules:
+- strong CFO is not automatically good if produced by one-off working-capital release;
+- weak CFO is not automatically bad during justified working-capital build;
+- high ROE is not automatically quality if leverage/equity shrinkage drives it;
+- low liabilities/assets is not universally optimal across business models.
+
+Status: FORMULA_POLICY_PREREGISTERED / OUTCOMES_CLOSED / NO_THRESHOLD_SEARCH.
+
+## FD-051 — Quality × Valuation prospective Shadow contract frozen
+
+Machine-readable preregistration: research/fundamental_quality_valuation_shadow_spec_v0_1.json.
+
+The experiment preserves the four descriptive quality states from FD-046 plus UNKNOWN and joins them only to valuation fields that are point-in-time valid at the decision timestamp. Initial valuation evidence is limited to official same-day trailing PE/PB and valid peer-relative PE. Forward PE, PEG, EV/EBITDA, FCF Yield and historical valuation percentile remain blocked until their own source/vintage contracts are proven.
+
+Outcomes are locked until:
+- PIT source receipts exist;
+- industry applicability is resolved;
+- same-vintage/explicit-lag joins are proven;
+- restatements are append-only;
+- missingness remains explicit.
+
+The primary inference unit is scanDate, with within-date and economically coherent within-peer comparisons. Required robustness includes independent dates, leave-one-date-out, purged holdout, OOS, walk-forward, prospective Shadow, cost sensitivity and coverage/zero-pick checks.
+
+Status: SHADOW_SPEC_FROZEN / OUTCOME_JOIN_LOCKED / NOT_FORMAL_OPTIMIZATION_CANDIDATE.
+
+## FD-052 — Current maturity decision and next falsification
+
+Promotions supported by this block:
+- D07-06 資產負債表與槓桿品質: L1 -> L2, because the economic mechanism, sector-applicability firewall, counterexamples and source family are now defined;
+- D07-08 PIT財報Vintage與first-known時間: L2 -> L3 for prospective market-wide first-observed quarterly-vintage feasibility, with exact company filing time still explicitly unproven.
+
+No promotion for D07-05/D07-07 beyond L2 because cash-flow/balance-sheet primitives are not yet normalized into a prospective quality receipt in the active research path.
+
+Exact next continuation:
+1. audit exact official cash-flow/balance-sheet endpoint fields for GENERAL_INDUSTRY and TPEx parity;
+2. map source line items to CFO/assets/equity/liabilities/receivables/inventory with schema fingerprints;
+3. test a no-outcome prospective receipt on the next available reporting-vintage observation;
+4. only after receipt integrity is proven may the Quality × Valuation Shadow join begin;
+5. keep financial institutions on the specialist branch rather than forcing generic CFO/FCF semantics.

@@ -1106,3 +1106,429 @@ Priority questions:
 - first/add/full sizing versus portfolio-level risk;
 - whether fixed per-stock caps should remain the sole sizing framework;
 - all research-only unless owner later approves Formal changes.
+
+
+---
+
+## DR-030 — D12-08 reopened: Gamma sign is inventory-side, not Call-vs-Put
+
+D12-08 was still L0 in the learning tracker even though DR-018 had already frozen the warning that public OI cannot identify dealer GEX sign. This section reconciles the curriculum and turns that warning into an explicit research contract.
+
+Gamma measures how Delta changes when the underlying changes. For a standard long option position, both long calls and long puts carry positive Gamma; short calls and short puts carry negative Gamma. Therefore the popular shortcut:
+
+- Call OI = positive Gamma
+- Put OI = negative Gamma
+
+is **not a mathematical identity**. It is an inventory-side assumption about who owns versus wrote those options.
+
+CME option-Greeks education explicitly notes that options have positive Gamma values in the long-option convention; Cboe's market-maker discussion likewise distinguishes market impact by whether dealers are net long or short Gamma, not by Call versus Put label.
+
+### System rule
+
+Any public-data GEX implementation that assigns sign from Call/Put alone must be named an **ASSUMPTION_SCENARIO**, not `dealerGex`.
+
+Status: SIGN-SEMANTICS FROZEN.
+
+---
+
+## DR-031 — TAIFEX public data can support Gamma concentration, but not exact option-market-maker signed GEX
+
+Official TAIFEX public data provide two useful but differently granular objects.
+
+### A. Option-chain market data
+Daily option-chain reports expose, by active series:
+- contract / contract date;
+- strike;
+- Call/Put;
+- price / settlement;
+- volume;
+- open interest;
+- bid/ask.
+
+This is enough to compute a model-consistent Gamma per series after freezing underlying reference, rate/dividend/forward convention, DTE, IV inversion/filter and quote-quality rules.
+
+### B. Major institutional trader data
+TAIFEX also publishes dealer-class Call/Put long/short open-interest totals.
+
+But the public institutional table is aggregated by product and Call/Put. It does **not** publicly cross-tab dealer-class inventory by:
+- strike;
+- exact expiry;
+- position side at each strike-expiry node.
+
+TAIFEX further defines “Dealers” as Futures Proprietary Merchants and Securities Dealers. That population is broader than a clean “option market makers only” set.
+
+Therefore:
+
+`EXACT_PUBLIC_OPTION_MARKET_MAKER_GEX = NOT_IDENTIFIED`.
+
+### Correct TAIFEX direction mapping
+
+TAIFEX states:
+- buy calls + sell puts are grouped as “long”;
+- sell calls + buy puts are grouped as “short”.
+
+For Gamma sign this means:
+- CALL dealer long OI = buy Call = positive Gamma;
+- CALL dealer short OI = sell Call = negative Gamma;
+- PUT dealer long OI = sell Put = negative Gamma;
+- PUT dealer short OI = buy Put = positive Gamma.
+
+The word “long” in the TAIFEX institutional table is therefore a **directional grouping**, not always “long option Gamma”.
+
+Status: PUBLIC-IDENTIFIABILITY LIMIT FROZEN.
+
+---
+
+## DR-032 — Researchable layer 1: unsigned Gamma concentration
+
+Even without signed dealer inventory, public chain data can support an honest market-structure measure.
+
+For each strike-expiry node, after a frozen Gamma calculation:
+
+`unsignedGamma1Pct = gamma × OI × contractMultiplier × underlying² × 0.01`
+
+Interpretation:
+- approximate absolute Delta-notional sensitivity associated with a 1% underlying move;
+- not a dealer hedge-flow forecast;
+- units and underlying convention must be explicit.
+
+Candidate descriptors:
+- `totalUnsignedGamma1Pct`
+- `nearSpotGammaShare`
+- `nearExpiryGammaShare`
+- `gammaConcentrationHHI`
+- `topGammaNodeStrike`
+- `topGammaNodeDistancePct`
+
+### Critical falsification
+
+Gamma weighting must beat a simpler OI-only concentration measure. If:
+- Gamma-weighted concentration adds no information beyond OI,
+then the extra model complexity is rejected.
+
+### No “Gamma wall” language by default
+
+A high-Gamma/high-OI strike is not automatically support, resistance or a price magnet.
+
+Peer-reviewed expiration research documents strike-price clustering and finds market-maker hedge rebalancing can contribute, but the effect is specifically tied to expiration mechanics and is not proof that every large-Gamma node behaves as a universal wall.
+
+Status: UNSIGNED-GAMMA CONCENTRATION CANDIDATE.
+
+---
+
+## DR-033 — Researchable layer 2: partial-identification bounds for dealer-class Gamma
+
+There is a more rigorous middle ground between:
+- pretending exact dealer GEX is observable; and
+- giving up on signed information entirely.
+
+Use the same-date TAIFEX aggregate dealer-class Call/Put long/short OI counts and the strike-expiry market OI capacities to calculate a **partial-identification interval**.
+
+### Bound logic
+
+For each Call/Put side:
+1. compute Gamma for every eligible strike-expiry node;
+2. use each node's market OI as the maximum capacity for dealer long or dealer short contracts at that node;
+3. respect the published aggregate dealer-class contract totals;
+4. solve the minimum possible signed dealer-class Gamma by allocating positive-Gamma inventory to the lowest-Gamma capacity and negative-Gamma inventory to the highest-Gamma capacity;
+5. solve the maximum by reversing those allocations.
+
+A linear-program implementation is preferred for exact capacity handling.
+
+Outputs:
+- `dealerClassGammaLower`
+- `dealerClassGammaUpper`
+- `boundWidthNormalized`
+- `gammaSignIdentified`
+
+Sign rule:
+- lower > 0 => POSITIVE;
+- upper < 0 => NEGATIVE;
+- interval includes 0 => UNKNOWN.
+
+If source universes/date/session cannot be reconciled, result is also UNKNOWN.
+
+### Naming firewall
+
+This object must be called:
+`TAIFEX_REPORTED_DEALER_CLASS_GAMMA_BOUND`
+
+It must **not** be called:
+- exact market-maker GEX;
+- exact dealer hedge demand;
+- exact Gamma flip.
+
+This preserves the difference between “what public data constrain” and “what we wish we knew”.
+
+Status: PARTIAL-IDENTIFICATION DESIGN FROZEN.
+
+---
+
+## DR-034 — Expected market mechanism and falsification target
+
+Cboe explains the standard dynamic-hedging mechanism:
+- a long-Gamma market maker tends to hedge opposite the market move, potentially damping moves;
+- a short-Gamma market maker tends to hedge in the same direction, potentially amplifying moves.
+
+A 2024 Journal of Economic Dynamics and Control simulation study similarly finds positive net Gamma of dynamic hedgers reduces volatility/increases stability, while negative Gamma increases volatility/fragility.
+
+This supports a **conditional market-quality mechanism**, not a deterministic direction rule.
+
+### Primary research targets
+1. next-session realized range / variance;
+2. intraday reversal versus momentum after large moves;
+3. liquidity / spread stress;
+4. price dwell/crossing near Gamma concentration nodes.
+
+### Secondary targets
+- index direction only after the risk/volatility targets;
+- stock-level outcomes only after market and sector controls.
+
+### Mandatory controls
+- TAIEX VIX / realized volatility;
+- DTE / moneyness;
+- weekly/monthly expiry and settlement-window state;
+- quote quality / stale bids;
+- scheduled macro-event state;
+- global shock state;
+- liquidity regime.
+
+### Falsification
+Reject or downgrade signed-Gamma use if:
+- dealer-class bounds cross zero on most independent dates;
+- results disappear after expiry/event controls;
+- OI-only concentration performs as well as Gamma-weighted concentration;
+- results depend on one IV/filter/forward convention;
+- apparent node “pinning” exists only after choosing the winning strike/window ex post.
+
+### Maturity decision
+D12-08 advances from **L0 -> L2**:
+- mechanism defined;
+- public-data identifiability limit defined;
+- negative evidence and falsification defined;
+- machine-readable research contract frozen in `research/d12_08_gamma_exposure_identifiability_spec_v0_1.json`.
+
+It does **not** advance to L3 because no prospective PIT receipt set has yet established real same-date/session evidence.
+
+Formal Core remains LOCKED. No score, veto, risk throttle or ranking weight is approved.
+
+## Exact next continuation after DR-034
+
+1. Build a research-only prospective TAIFEX chain + dealer-aggregate receipt with exact date/session/universe reconciliation.
+2. Implement unsigned Gamma concentration plus dealer-class lower/upper bound calculator.
+3. Accumulate independent normal, expiry and scheduled-event dates before any L3 review.
+4. In parallel continue D12-10 night-futures/overnight information from L1 -> L2, because its mechanism can be researched without waiting for Gamma prospective evidence.
+
+
+---
+
+## DR-035 — D12-10 session clock must be split at the 18:10 decision boundary
+
+TAIFEX defines the TX after-hours session as 15:00 Taipei to 05:00 the following day, and attributes those trades to the following regular trading session. The expiring TX contract has no after-hours session on its last trading day.
+
+For the System 1 / System 2 after-market decision clock at 18:10 Taipei, the night session is **not one information object**.
+
+Required partition:
+
+1. `NIGHT_PRE_SCAN` = 15:00 -> 18:10
+   - observable by the 18:10 decision;
+   - PIT-eligible if captured with an immutable timestamp.
+
+2. `NIGHT_POST_SCAN` = 18:10 -> 05:00
+   - future information for the 18:10 selector;
+   - may be eligible for later monitoring / next-morning decisions only.
+
+3. `NIGHT_FULL_SESSION` = 15:00 -> 05:00
+   - future-contaminated outcome for the 18:10 decision;
+   - cannot be backfilled as a selector feature.
+
+This corrects an earlier coarse interpretation that treated “Taiwan night futures after scan” as if the whole night session occurred after the scan.
+
+Status: DECISION-CLOCK PARTITION FROZEN.
+
+---
+
+## DR-036 — Taiwan evidence supports absorption / continuity, not a universal night-up => day-up rule
+
+A 2024 PLOS ONE study of TX regular and after-hours sessions (2017-2022, 1,220 observations) finds:
+- strong price continuity between after-hours close and the following regular-session open;
+- after-hours trading efficiently absorbs European, U.S. and Taiwan post-market information;
+- prior after-hours return had a negative relation with subsequent regular-session return in the estimated mean equation;
+- after-hours volatility did not significantly transmit into the following regular-session volatility in the same specification;
+- the study interprets the night session as an information/risk absorption channel.
+
+This directly falsifies a monotonic textbook rule:
+`nightReturn > 0 => nextRegularReturn > 0`.
+
+The useful question is instead:
+**How much of the information available by 18:10 has already been absorbed by TX, and what residual remains after controlling global futures?**
+
+Status: ABSORPTION MODEL, NOT DIRECTIONAL ORACLE.
+
+---
+
+## DR-037 — researchable 18:10 features
+
+The first feature family must use only `NIGHT_PRE_SCAN`.
+
+Raw, assumption-light features:
+
+- `nightPreScanReturnFromOpen` = log(TX_18:10 / TX_15:00_open)
+- `nightPreScanReturnFromSettlement` = log(TX_18:10 / prior_regular_settlement)
+- `nightPreScanHighLowRange`
+- `nightPreScanRealizedVol` from frozen bar frequency
+- `nightPreScanVolume`
+- `nightPreScanVolumeZ` versus a trailing same-window baseline
+- `nightPreScanDistanceFromHigh`
+- `nightPreScanDistanceFromLow`
+- `nightPreScanReversalFromExtreme`
+
+No full-night last/high/low/volume may enter the 18:10 feature set.
+
+### Contract rule
+
+Use a pre-registered front-contract rule with roll/expiry flags. On the expiring contract's last trading day, there is no after-hours session for that expiring contract, so a naive continuous “front month” series can silently jump to the next contract.
+
+Required metadata:
+- contractMonth;
+- daysToExpiry;
+- rollFlag;
+- lastTradingDayFlag;
+- sourceSession;
+- capturedAt.
+
+Status: PRE-SCAN RAW FEATURE CONTRACT FROZEN.
+
+---
+
+## DR-038 — Taiwan-specific residual is higher-value than raw night direction
+
+TAIFEX after-hours trading overlaps foreign-market hours. Therefore raw TX night return is likely to contain:
+- U.S./global equity repricing;
+- Taiwan-specific interpretation of that repricing;
+- Taiwan post-close corporate/policy information;
+- local basis/liquidity noise.
+
+The incremental hypothesis should isolate the Taiwan-specific component.
+
+### Candidate global controls
+
+Same-window 15:00->18:10 returns for:
+- S&P 500 futures proxy;
+- Nasdaq-100 futures proxy;
+- semiconductor futures proxy;
+- optional USD/TWD or USD context when a PIT-compatible intraday source exists.
+
+TAIFEX itself lists U.S. S&P 500, Nasdaq-100 and PHLX Semiconductor futures as after-hours products from 15:00 to 05:00, offering a same-exchange candidate control set, subject to liquidity/tracking-quality checks.
+
+### Candidate residual
+
+A pre-registered research-only model may estimate:
+
+`txNightResidual = txPreScanReturn - betaBroad*broadFutureReturn - betaTech*techFutureReturn - betaSemi*semiFutureReturn`
+
+Rules:
+- beta window must be frozen before outcome testing;
+- beta uses only prior dates;
+- no dynamic window chosen because it predicts outcomes better;
+- if control contracts are illiquid/stale, mark UNKNOWN rather than force zero.
+
+A simpler baseline must always be tested first:
+- raw TX pre-scan return;
+- raw U.S. futures return;
+- TX minus U.S. broad return;
+before allowing a multi-beta residual.
+
+Status: TAIWAN-SPECIFIC NIGHT RESIDUAL CANDIDATE.
+
+---
+
+## DR-039 — public historical daily night data create an 18:10 look-ahead trap
+
+TAIFEX public historical daily after-hours files identify the full 15:00->05:00 session by the **following trading date**. Those files are suitable for full-session description but not for reconstructing the exact 18:10 state.
+
+TAIFEX FAQ states:
+- individual futures/options trades are publicly downloadable for the past 30 trading days;
+- older transaction-level historical data require application/purchase;
+- TAIFEX does not provide a historical database API.
+
+Therefore:
+
+`FREE_LONG_HISTORY_1810_NIGHT_SNAPSHOT = NOT_ESTABLISHED`.
+
+Research choices:
+1. **Prospective capture** at/just before 18:10 -> preferred clean PIT Shadow route.
+2. **Recent 30-trading-day replay** from transaction data -> useful for parser/replay QA, not enough for robust inference.
+3. **Purchased historical transaction data** -> possible future long-history route if approved and licensing permits.
+4. Full-session daily night OHLC -> outcome/descriptive only for the 18:10 selector.
+
+This is a data-provenance limitation, not evidence against the economic hypothesis.
+
+Status: HISTORICAL PIT GATE FROZEN.
+
+---
+
+## DR-040 — outcome decomposition and falsification
+
+Primary targets:
+
+A. **Next cash open gap**
+- likely first location where overnight information is incorporated.
+
+B. **Next regular open-to-close**
+- tests whether the night signal contains continuation/reversal information beyond opening incorporation.
+
+C. **Next D1 close-to-close / MAE / MFE**
+- secondary risk/continuation targets.
+
+D. **Selection-environment outcomes**
+- hit rate / MAE / stop incidence for System 1 / System 2 candidates selected at 18:10.
+
+Mandatory controls:
+- prior Taiwan regular return / market Regime;
+- prior U.S. cash close information already known before Taiwan day session;
+- same-window U.S. futures / tech / semiconductor futures;
+- Taiwan breadth / sector RS;
+- expiry/roll state;
+- night liquidity / stale quote state;
+- scheduled macro-event clock.
+
+Falsification:
+1. if TX pre-scan adds nothing beyond same-window U.S. futures, mark REDUNDANT;
+2. if result is only next-open gap and disappears open-to-close, classify execution/opening context rather than after-market stock alpha;
+3. if full-night data work but 18:10-cut data do not, reject for the 18:10 selector as LOOK_AHEAD_ARTIFACT;
+4. if results disappear outside crisis dates, classify CRISIS_ONLY;
+5. date-shift placebo;
+6. leave-one-date-out;
+7. separate normal, expiry/roll and macro-event days;
+8. same-window volume/liquidity quality filter fixed before outcome testing.
+
+Status: FALSIFICATION MATRIX FROZEN.
+
+---
+
+## DR-041 — D12-10 maturity decision
+
+D12-10 advances **L1 -> L2**.
+
+Why:
+- session/date semantics are frozen;
+- 18:10 PIT partition is explicit;
+- Taiwan evidence supports the absorption mechanism while falsifying simple directional continuation;
+- public historical-data limitations are identified;
+- raw/residual feature families and outcome decomposition are pre-registered;
+- explicit redundancy tests against global futures are defined.
+
+Why not L3:
+- no durable prospective 18:10 TX snapshot receipts yet;
+- no same-window replay corpus with immutable knownAt semantics has been validated;
+- no independent-date Taiwan outcome evidence has been accumulated under the frozen contract.
+
+Formal Core remains LOCKED. No 18:10 score, risk throttle, veto or ranking weight is approved.
+
+## Exact next continuation after DR-041
+
+1. Create a research-only `NIGHT_PRE_SCAN` receipt at 18:10 with TX plus same-window global control futures.
+2. Validate recent transaction-level replay against live/prospective snapshots.
+3. Accumulate independent dates before any L3 review.
+4. Cross-link D12-10 with D13 scheduled macro-event clock so 18:10 states are not compared across incompatible event regimes.

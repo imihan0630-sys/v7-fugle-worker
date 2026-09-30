@@ -1,0 +1,82 @@
+{
+  "schemaVersion": "0.1",
+  "name": "GLOBAL_MARKET_RECEIPT_V0_1",
+  "status": "RESEARCH_ONLY_SCHEMA_FROZEN_NOT_IMPLEMENTED",
+  "formalCoreImpact": "NONE",
+  "updatedAt": "2026-09-28T20:35:00+08:00",
+  "purpose": "One PIT-safe envelope for D12/D13 global and derivative research observations; instrument-specific payloads remain separate.",
+  "requiredEnvelopeFields": [
+    "receiptId",
+    "domainModule",
+    "instrumentFamily",
+    "instrumentId",
+    "sourceMarket",
+    "sourceTimezone",
+    "sourceSessionDate",
+    "observedAt",
+    "capturedAt",
+    "knownAtTaipei",
+    "firstEligibleTaiwanDecision",
+    "sourceId",
+    "sourceUrlOrContract",
+    "provider",
+    "providerEntitlement",
+    "dataLatencyClass",
+    "revisionStatus",
+    "staleFlag",
+    "staleReason",
+    "pointInTimeEligible",
+    "missingReason",
+    "rulesRegimeVersion",
+    "payloadVersion"
+  ],
+  "decisionClockRule": "For System1/System2 after-market research, pointInTimeEligible requires knownAtTaipei <= 18:10 Asia/Taipei for that selection date.",
+  "latencyClasses": [
+    "REALTIME",
+    "DELAYED",
+    "END_OF_DAY",
+    "OFFICIAL_RELEASE",
+    "ASSESSMENT",
+    "EVENT_PUBLICATION",
+    "UNKNOWN"
+  ],
+  "instrumentFamilies": [
+    "DXY",
+    "FX",
+    "UST_RATE",
+    "US_EQUITY",
+    "ASIA_EQUITY",
+    "TAIFEX_NIGHT",
+    "OIL",
+    "INDUSTRIAL_METAL",
+    "PRECIOUS_METAL",
+    "CRITICAL_MINERAL_PRICE",
+    "CRITICAL_MINERAL_EVENT",
+    "MACRO_SCHEDULE",
+    "MACRO_RELEASE"
+  ],
+  "commonGuards": [
+    "Observed value and later close/settlement are different objects.",
+    "Unknown provider latency => pointInTimeEligible UNKNOWN.",
+    "Current snapshot cannot be backfilled as historical first-known receipt.",
+    "Holidays and no-new-session states are explicit, not zero returns.",
+    "Revised macro values do not overwrite initial-release receipts.",
+    "Contract rolls and product/rules changes require version metadata.",
+    "Regional commodity prices are preserved separately when markets diverge."
+  ],
+  "payloadRefs": {
+    "DXY": "research/d13_05_dxy_pit_redundancy_spec_v0_1.json",
+    "NIGHT_FUTURES": "research/d12_10_night_futures_pit_spec_v0_1.json",
+    "OIL": "research/d13_07_oil_shock_context_spec_v0_1.json",
+    "UST": "research/d13_06_us_yield_curve_pit_spec_v0_1.json",
+    "MACRO": "research/d13_09_11_macro_release_surprise_spec_v0_1.json",
+    "COMMODITIES": "research/d13_08_commodity_family_spec_v0_1.json"
+  },
+  "implementationClass": "Class A only if isolated research storage/fetch path does not change shared Formal runtime, scheduling, budgets or schema; otherwise Class B proposal-first.",
+  "nextContinuation": [
+    "prospective research-only capture design",
+    "provider/entitlement matrix",
+    "no historical fabrication",
+    "independent-date evidence before L3/optimization"
+  ]
+}

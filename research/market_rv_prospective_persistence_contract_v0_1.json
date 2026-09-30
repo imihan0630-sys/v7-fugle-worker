@@ -1,0 +1,82 @@
+{
+  "schemaVersion": "0.1",
+  "updatedAt": "2026-09-29T01:30:00+08:00",
+  "domain": "D04",
+  "status": "PROSPECTIVE_PERSISTENCE_CONTRACT_FROZEN",
+  "formalCoreImpact": "NONE",
+  "purpose": "Define the minimum immutable, PIT-safe persistence contract required before MARKET_RV5_CC_SIMPLE / MARKET_RV20_CC_SIMPLE / MARKET_RV_RATIO_5_20 can count as D04 evidence.",
+  "sourceContract": {
+    "sourceId": "A2_TAIEX_CLOSE",
+    "sourcePath": "TWSE FMTQIK official index path via existing official_source_probes",
+    "minimumHistory": "21 official TAIEX closes for 20 close-to-close returns",
+    "sameDateRequired": true,
+    "decisionClockRequired": true,
+    "mutableLatestSnapshotNotHistoricalEvidence": true
+  },
+  "factorContract": {
+    "scope": "MARKET",
+    "factorIds": [
+      "MARKET_RV5_CC_SIMPLE",
+      "MARKET_RV20_CC_SIMPLE",
+      "MARKET_RV_RATIO_5_20"
+    ],
+    "ratioSemantics": "DERIVED_DESCRIPTOR_NOT_INDEPENDENT_VOTE",
+    "formulaRule": "Reuse one frozen versioned computation definition for all prospective dates; no outcome-tuned threshold search.",
+    "requiredFields": [
+      "factorId",
+      "factorVersion",
+      "marketDate",
+      "decisionTimestamp",
+      "rawValue",
+      "state",
+      "sourceId",
+      "sourceDate",
+      "observedAt",
+      "availableAt",
+      "capturedAt",
+      "pointInTimeEligible",
+      "sourceReceiptRef"
+    ],
+    "unknownRule": "Any missing/late/stale/invalid source or insufficient 21-session history => UNKNOWN; never impute 0 or BAD."
+  },
+  "linkageContract": {
+    "persistenceTarget": "s2_market_regime_snapshots.factor_observations_json",
+    "sameSnapshotRequired": true,
+    "sameDecisionClockRequired": true,
+    "sourceReceiptRequired": true,
+    "immutableRunFingerprintLinkageRequired": true,
+    "firstValidEvidenceDate": "FIRST_DATE_ACTUALLY_PERSISTED_UNDER_THIS_CONTRACT",
+    "historicalBackfillForPromotion": "PROHIBITED"
+  },
+  "preOutcomeAcceptanceTests": [
+    "three raw factor observations are present in the same regime snapshot",
+    "marketDate and decisionTimestamp exactly match the run clock",
+    "A2 source receipt proves same-date official TAIEX availability",
+    "pointInTimeEligible is true for every required observation",
+    "RV ratio is numerically consistent with persisted RV5 and RV20 under the frozen version",
+    "snapshot hash / run fingerprint links are durable and replayable",
+    "re-read from persistence reproduces exact raw values and provenance",
+    "UNKNOWN remains explicit when any gate fails"
+  ],
+  "falsificationAndBiasGuards": [
+    "Do not inspect strategy outcomes before capture contract is frozen and first samples are stored",
+    "Do not reconstruct first-known historical states from mutable current data",
+    "Do not count RV5, RV20 and RV5/RV20 as three independent votes",
+    "Do not promote a volatility throttle from descriptive regime association alone",
+    "Independent-date, OOS, walk-forward, cost, redundancy and regime tests remain downstream D16/D18 gates"
+  ],
+  "engineeringBoundary": {
+    "researchOnly": true,
+    "formalCoreLocked": true,
+    "noStrategyWeightChange": true,
+    "noSelectionGateChange": true,
+    "noPositionSizingChange": true,
+    "implementationNote": "A future isolated research wiring may populate existing regimeFactorObservations and existing storage only after governance authorization; this contract itself changes no runtime."
+  },
+  "exactNextContinuation": [
+    "Create/authorize isolated research-only wiring that computes and supplies the three factor observations from the already-approved A2 official source path.",
+    "On first live prospective capture date, perform write/readback/replay verification before any outcome analysis.",
+    "Accumulate independent clean dates.",
+    "Then compare overlapping RV5/RV20 against non-overlapping recent5/prior15 as robustness only."
+  ]
+}

@@ -21,11 +21,28 @@ export function resolveSystem2CaptureArm(env = {}) {
   });
 }
 
+export function resolveSystem2ResonanceArm(env = {}) {
+  const enabled = String(env.SYSTEM2_RESONANCE_ENABLED || "false").toLowerCase() === "true";
+  const version = String(env.SYSTEM2_RESONANCE_CONTRACT_VERSION || "0.1");
+  if (version !== "0.1") throw new Error("unsupported SYSTEM2_RESONANCE_CONTRACT_VERSION");
+  return Object.freeze({
+    enabled,
+    version,
+    maxUniqueSymbols: 9,
+    mode: "BOUNDED_PRESELECTED_ONLY",
+    fullMarketScan: false,
+    notificationImpact: false,
+    orderImpact: false,
+    state: enabled ? "BOUNDED_RESONANCE_SCHEDULED" : "RESONANCE_DISABLED",
+  });
+}
+
 export function buildSystem2HealthPayload({
   schemaVersion,
   env = {},
 } = {}) {
   const arm = resolveSystem2CaptureArm(env);
+  const resonance = resolveSystem2ResonanceArm(env);
   return Object.freeze({
     service: "system2-shadow-research",
     mode: "RESEARCH_ONLY",
@@ -35,6 +52,11 @@ export function buildSystem2HealthPayload({
     scheduledCaptureAllowed: arm.scheduledCaptureAllowed,
     captureState: arm.state,
     captureContractVersion: arm.contractVersion,
+    resonanceState: resonance.state,
+    resonanceContractVersion: resonance.version,
+    resonanceMaxUniqueSymbols: resonance.maxUniqueSymbols,
+    resonanceFullMarketScan: resonance.fullMarketScan,
+    fugleQuoteConfigured: Boolean(env.FUGLE_API_KEY),
     system1RuntimeUsed: false,
   });
 }

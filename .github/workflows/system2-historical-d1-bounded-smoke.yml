@@ -1,0 +1,69 @@
+name: System2 Historical D1 Bounded Smoke
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: "Type WRITE_SYSTEM2_HISTORICAL_SMOKE to write a bounded official-history sample into isolated system2-research D1"
+        required: true
+        type: string
+      market_date:
+        description: "Historical market date (YYYY-MM-DD)"
+        required: false
+        default: "2026-09-24"
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-isolated-d1-writer
+  cancel-in-progress: false
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: system2-research
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Guard explicit confirmation
+        env:
+          CONFIRM: ${{ inputs.confirm }}
+        run: |
+          set -euo pipefail
+          test "$CONFIRM" = "WRITE_SYSTEM2_HISTORICAL_SMOKE"
+
+      - name: Verify production isolation before write
+        run: |
+          set -euo pipefail
+          test "$(sed -n '1p' wrangler.toml)" = 'name = "fugle-test"'
+          echo "Production configuration isolation precheck PASS"
+
+      - name: Apply/reverify isolated System2 D1 schema v1.1
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+          SYSTEM2_CONFIRM: "CREATE_SYSTEM2_ISOLATED_D1"
+        run: node system2/deploy/provision_system2_d1.mjs
+
+      - name: Write bounded official-history sample and verify readback/idempotency
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+          SYSTEM2_HISTORICAL_SMOKE_CONFIRM: ${{ inputs.confirm }}
+          SYSTEM2_HISTORICAL_SMOKE_DATE: ${{ inputs.market_date }}
+        run: node system2/scripts/historical_d1_bounded_smoke.mjs
+
+      - name: Confirm production configuration was not edited
+        run: |
+          set -euo pipefail
+          git diff --exit-code -- wrangler.toml Worker.js
+          echo "Production configuration isolation postcheck PASS"

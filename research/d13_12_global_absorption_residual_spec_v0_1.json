@@ -1,0 +1,101 @@
+{
+  "schemaVersion": "0.1",
+  "module": "D13-12",
+  "name": "Global shock / Taiwan absorption residual contract",
+  "status": "RESEARCH_ONLY_CONCEPT_FROZEN_EVIDENCE_PENDING",
+  "formalCoreImpact": "NONE",
+  "updatedAt": "2026-09-28T20:35:00+08:00",
+  "namingLevels": {
+    "OBSERVED_MOVE": "raw observed market change",
+    "STATISTICAL_SHOCK": "unexpected/standardized move relative to a frozen past-only baseline",
+    "STRUCTURAL_SHOCK": "causally identified innovation under an explicit structural identification scheme"
+  },
+  "estimands": {
+    "TRANSMISSION": {
+      "question": "How did Taiwan respond to a global move/shock?",
+      "taiwanSameDayResponseRole": "OUTCOME",
+      "guard": "Do not control away Taiwan response when estimating transmission."
+    },
+    "AFTER_MARKET_ABSORPTION": {
+      "question": "At 18:10, after Taiwan has closed, did Taiwan under/over/fully absorb already-known global state and does that residual predict the next Taiwan session?",
+      "taiwanSameDayResponseRole": "KNOWN_INPUT_AT_1810",
+      "target": "future next-session outcomes"
+    }
+  },
+  "globalVectorFamilies": [
+    "GLOBAL_EQUITY",
+    "GLOBAL_VOLATILITY",
+    "GLOBAL_DOLLAR",
+    "GLOBAL_RATES",
+    "GLOBAL_ENERGY",
+    "GLOBAL_INDUSTRIAL_METALS",
+    "GLOBAL_MONETARY_METALS",
+    "GLOBAL_CRITICAL_MINERAL_EVENT",
+    "GLOBAL_MACRO_EVENT",
+    "TAIWAN_DERIVATIVE_ABSORPTION"
+  ],
+  "scalarScorePolicy": "PROHIBITED_UNTIL_OOS_EVIDENCE_PROVES_STABLE_DIMENSION_REDUCTION",
+  "residualModel": {
+    "formula": "taiwanAbsorptionResidual_t = observedTaiwanResponse_t - expectedTaiwanResponse_t",
+    "trainingRule": "parameters estimated only on dates < t",
+    "baselineSequence": [
+      "fixed historical beta",
+      "global broad equity only",
+      "broad + technology/semiconductor",
+      "add USD/TWD + rates",
+      "add volatility",
+      "add DXY",
+      "add oil/metals when mechanism/sector relevant",
+      "add night-futures residual"
+    ],
+    "requiredMetadata": [
+      "modelVersion",
+      "trainingStart",
+      "trainingEnd",
+      "trainingCount",
+      "featureSetVersion",
+      "residualScaleVersion"
+    ],
+    "unknownRule": "insufficient training/data quality => UNKNOWN"
+  },
+  "absorptionStates": [
+    "UNDER_ABSORBED_POSITIVE",
+    "OVER_ABSORBED_POSITIVE",
+    "UNDER_ABSORBED_NEGATIVE",
+    "OVER_ABSORBED_NEGATIVE",
+    "ALIGNED",
+    "UNKNOWN"
+  ],
+  "thresholdRule": "Use pre-registered trailing residual scale; never future outcome-selected thresholds.",
+  "outcomes": [
+    "nextOpenGap",
+    "nextOpenToClose",
+    "nextD1D3ResidualReturn",
+    "nextSessionMAE",
+    "nextSessionMFE",
+    "selectionHitRate",
+    "stopIncidence"
+  ],
+  "falsification": [
+    "domestic Taiwan baseline",
+    "sector/Residual RS baseline",
+    "simple-vs-complex model comparison",
+    "crisis removal",
+    "event-day stratification",
+    "date-shift placebo",
+    "leave-one-date-out",
+    "factor redundancy/collinearity audit",
+    "no post-hoc family selection",
+    "actionability/transaction-cost test"
+  ],
+  "maturityDecision": {
+    "current": "L2",
+    "next": "L3 only after multiple PIT-safe global families, independent Taiwan dates and replayable past-only residual parameters exist"
+  },
+  "nextContinuation": [
+    "prospective GLOBAL_MARKET_RECEIPT evidence",
+    "provider/entitlement matrix",
+    "past-only rolling residual replay",
+    "no Formal promotion before OOS/Shadow evidence"
+  ]
+}

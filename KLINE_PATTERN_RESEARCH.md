@@ -22136,3 +22136,318 @@ If Pattern evidence matures, the safest first proposal may be:
 rather than rewriting A/B definitions.
 
 No production change is proposed now.
+
+
+# DL-005 — Core-Family Unification, False-Break Lifecycle, and Sakata Decomposition (2026-09-28)
+
+## DL-005A — Six mandatory D01 themes unified without label voting
+
+This tranche explicitly keeps all mandatory room themes:
+- K-line / candlestick morphology;
+- Sakata Five Methods;
+- W/M;
+- Cup / Cup-with-Handle;
+- VCP;
+- breakout / false breakout.
+
+They are now organized into four quantitative layers:
+
+1. MACRO_TOPOLOGY
+   - W/M;
+   - Cup/bowl;
+   - large repeated-support/resistance structures.
+
+2. COMPRESSION_PROGRESSION
+   - VCP;
+   - Cup handle;
+   - Platform/Flag/Triangle-like tightening.
+
+3. LOCAL_CANDLE_SAKATA
+   - one/two/multi-candle OHLC morphology;
+   - Sakata local sequences.
+
+4. TRIGGER_LIFECYCLE
+   - approach;
+   - first break;
+   - retest;
+   - reentry;
+   - failure;
+   - reclaim.
+
+Critical rule:
+NAMED LABEL COUNT != DISTINCT STRUCTURAL OBJECT COUNT != INDEPENDENT INFORMATION COUNT.
+
+Breakout is a lifecycle state of a versioned structural boundary, not another pattern vote.
+
+Durable contracts:
+- research/PATTERN_CORE_FAMILY_UNIFICATION_V0_1.md
+- research/pattern_core_family_unification_v0_1.json
+
+## DL-005B — Executable cross-family de-duplication
+
+New pure research helper:
+- research/pattern_evidence_dedup_v0_1.mjs
+- research/test_pattern_evidence_dedup_v0_1.mjs
+
+Outcome-free adversarial fixtures PASS.
+
+Verified cases:
+
+### Same-anchor multi-label
+W + Cup using the same scale / semantic space / exact anchor set:
+- rawNamedLabelCount = 2;
+- exactAnchorGroupCount = 1;
+- rootProvenanceCount = 1.
+
+The second label does not create a second independent vote.
+
+### Nested W inside broader Cup
+Partial anchor overlap is retained as continuous Jaccard overlap.
+No arbitrary overlap threshold classifies the pair as independent/dependent.
+
+### Cup Handle + VCP + Platform
+When all three labels share the same exact contraction anchors:
+- 3 names;
+- 1 exact anchor group;
+- 1 root PRICE_OHLC provenance family.
+
+### Shared breakout boundary
+W / Cup / VCP can refer to the same versioned boundary and same firstBreakAt.
+That is one observed trigger event even when three named families reference it.
+
+### Sakata motif inside breakout
+A Sakata Three-Soldiers-like local sequence and a breakout lifecycle can occupy different structural layers while still sharing PRICE_OHLC as the same root information family.
+
+### Sakata Three Mountains vs M/top
+Exact shared peak/trough anchors collapse to one exact-anchor macro structural group.
+
+### Sakata Three Methods vs short Flag
+Exact shared impulse/consolidation anchors collapse to one structural group.
+
+The helper intentionally emits:
+scoringVoteCount = null.
+
+It never manufactures an "independent confirmation count."
+
+## DL-005C — Causal breakout / false-break taxonomy
+
+New pure research lifecycle:
+- research/pattern_breakout_lifecycle_v0_1.mjs
+- research/test_pattern_breakout_lifecycle_v0_1.mjs
+- research/PATTERN_BREAKOUT_FALSE_BREAK_LIFECYCLE_V0_1.md
+
+The loose phrase "false breakout" is decomposed into causal states.
+
+UP-side examples:
+
+REJECTED_UPPER_PIERCE
+- intraday High pierces resistance;
+- Close does not confirm above;
+- no prior confirmed close break.
+- This is not a failed confirmed breakout.
+
+CLOSE_BREAK_ABOVE
+- Close confirms above a versioned boundary.
+- This is a structural event only, not acceptance/profit proof.
+
+RETESTING_FROM_ABOVE
+- Low revisits the upper zone;
+- Close remains above.
+- Retest != failure.
+
+REENTERED_ZONE
+- Close returns inside the same boundary zone.
+
+FAILED_BELOW_ZONE
+- Close traverses the whole zone and finishes below its lower edge.
+
+RECLAIMED_ABOVE
+- a previously reentered/failed structure later closes above the same immutable boundary again.
+
+DOWN-side states are the exact mirror for M/top or support-break structures.
+
+No fixed 3-day / 5-day failure window is embedded.
+barsToReentry remains continuous.
+
+"No follow-through" is explicitly not equal to false breakout if price never reenters/fails the structural boundary.
+
+## DL-005D — Price-limit, session, prefix and boundary-version firewalls
+
+### Price-limit constrained breakout
+A structural break on a constrained session preserves:
+- firstConfirmedBreakAt;
+- structuralBreakObserved.
+
+But ordinary acceptance remains:
+UNRESOLVED.
+
+The first later eligible unconstrained symbol-session becomes the first normal observability point.
+
+This is consistent with the earlier 5314 real-source stress witness.
+
+### Non-symbol-session / suspension pseudo-bar
+An ineligible pseudo-bar cannot:
+- create break;
+- create reentry/failure;
+- shorten barsToReentry.
+
+### Prefix invariance
+The lifecycle now supports asOfDate.
+
+Adversarial test:
+- 9/2 confirmed break;
+- 9/3 still above;
+- 9/4 later failure.
+
+Querying the full array as of 9/3 reproduces the exact 9/3 state from a physically truncated prefix.
+The later 9/4 failure cannot rewrite the historical 9/3 state.
+
+PASS.
+
+### Boundary versioning
+Continuation allowed only when:
+- boundaryId identical;
+- version identical;
+- lower/upper coordinates identical.
+
+States:
+- CONTINUE_SAME_BOUNDARY;
+- RESET_REQUIRED_NEW_BOUNDARY_VERSION;
+- PROVENANCE_CONFLICT_SAME_VERSION_MUTATED;
+- NEW_BOUNDARY_OBJECT.
+
+A later-refined neckline/rim/pivot cannot silently inherit the old breakout chronology.
+
+PASS.
+
+## DL-005E — Sakata Five Methods are heterogeneous, not one factor
+
+New durable contracts:
+- research/PATTERN_SAKATA_DECOMPOSITION_V0_1.md
+- research/pattern_sakata_decomposition_v0_1.json
+
+### Three Mountains
+Layer:
+MACRO_TOPOLOGY.
+
+Overlaps:
+- M/top;
+- triple top;
+- Head-and-Shoulders-like peak topology;
+- repeated resistance.
+
+Same peaks => no extra Sakata vote.
+
+### Three Rivers
+Modern descriptions are not perfectly uniform.
+
+Contract therefore requires:
+definitionVariant.
+
+Possible variants:
+- MULTI_TROUGH_TOPOLOGY;
+- LOCAL_MULTI_CANDLE_REVERSAL.
+
+Do not persist family=THREE_RIVERS without its actual quantitative definition.
+
+### Three Gaps
+Layer:
+GAP / DISCONTINUITY MECHANICS + lifecycle.
+
+Requires:
+- historical OPEN;
+- RAW_EXECUTION vs TECHNICAL_CONTINUITY separation;
+- corporate-action guard;
+- symbol-session / price-limit context.
+
+Third gap does not automatically mean exhaustion/reversal.
+
+### Three Soldiers
+Layer:
+LOCAL_CANDLE_SAKATA.
+
+Strong overlap prior with:
+- three positive/negative closes;
+- close location;
+- short-horizon momentum;
+- body/range expansion;
+- breakout follow-through.
+
+Its independent value remains UNKNOWN.
+
+### Three Methods
+Layers:
+COMPRESSION_PROGRESSION + TRIGGER_LIFECYCLE.
+
+High overlap prior with:
+- Flag;
+- micro Platform;
+- impulse/consolidation geometry;
+- VCP final leg.
+
+Rising/Falling Three Methods cannot become an extra confirmation simply because the same impulse/consolidation already received another label.
+
+### Key conclusion
+SAKATA_FIVE_METHODS is a historical taxonomy umbrella.
+It is not one homogeneous quantitative factor.
+
+Single Sakata score is rejected.
+
+## DL-005F — External-evidence interpretation
+
+Lo-Mamaysky-Wang-style systematic chart research supports objective geometric detection and shows that some chart patterns can alter conditional return distributions.
+
+It does NOT support:
+more matching names = more alpha.
+
+Taiwan candlestick research reports profitability for only a subset of tested candlestick patterns after costs/robustness checks in historical samples.
+
+That supports empirical study of OHLC morphology.
+
+But the principal Taiwan samples are pre-modern-regime relative to:
+- current 10% limit structure;
+- 2020 continuous intraday trading.
+
+Therefore:
+modern current-regime Sakata/candlestick sign remains UNKNOWN.
+
+No return outcome was inspected in this D01 tranche.
+
+## DL-005G — Maturity decision
+
+No tracker maturity upgrade is made in this tranche.
+
+Reasons:
+- D01-05 already L3; lifecycle semantics improved but no prospective alpha evidence.
+- D01-06 remains L3; W/M dedup improved but no new prospective outcome evidence.
+- D01-07 remains L2; Cup geometry improved conceptually but long-history / continuity runtime is still not promotion-ready.
+- D01-08 remains L3; VCP overlap semantics improved but alpha remains UNKNOWN.
+- D01-12 remains L2; Sakata taxonomy is better defined but modern Taiwan PIT/prospective evidence is not mature.
+
+D01 overall maturity remains 51.7%.
+
+FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+Formal Core remains LOCKED.
+
+## Exact continuation point — after DL-005
+
+1. Keep the four-layer core-family hierarchy frozen; do not expand the named-pattern catalog.
+2. Next outcome-free research priority:
+   nested multi-scale structure graph:
+   weekly Cup / daily W / daily VCP / local Sakata motif must preserve parent-child scale relationships without duplicate votes.
+3. Extend breakout lifecycle with continuous no-follow-through / time-above-boundary / extension / reclaim descriptors, still without a tuned N-bar threshold.
+4. Continue Three-Gaps / gap semantics only where OPEN + corporate-action + symbol-session provenance is valid.
+5. Keep all label signs UNKNOWN until modern prospective evidence exists.
+6. Continue source-semantic blockers:
+   TECHNICAL_CONTINUITY,
+   symbol-session completeness,
+   volume/trading-unit semantics,
+   current price-limit mechanics.
+7. No historical Pattern Shadow fabrication.
+8. Prospective Pattern outcome inference still requires complete immutable parent/run receipts.
+9. When clean data eventually exists, use only preregistered Pattern comparisons plus frozen redundancy controls; do not create label-count voting.
+10. Formal Core remains unchanged.
+
+# DL-006A–D — Nested graph, continuous breakout paths and Three-Gaps guards (2026-09-28)
+
+Full outcome-blind specification and positive/negative cases: `research/PATTERN_NESTED_STRUCTURE_AND_GAP_V0_1.md`. Weekly/daily/local relations use causal typed edges and verified source-bar ancestry. Transitive containment/overlap does not imply evidence independence. Continuous breakout paths expose eligible symbol-session denominators, observability, break-bar-inclusive extension and null for unavailable information, without fixed failure windows. Three-Gaps requires independently valid OPEN, TECHNICAL_CONTINUITY, corporate-action and symbol-session provenance; overnight gap and non-overlap gap are different definitions. Current directional effect is UNKNOWN. No prospective outcomes, no historical Shadow, no tracker promotion, no Formal changes. Next: isolated synthetic graph/prefix tests and descriptor prototype, then source witness audit before a gap detector.

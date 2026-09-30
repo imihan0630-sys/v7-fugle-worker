@@ -1,0 +1,85 @@
+{
+  "schemaVersion": "0.1",
+  "module": "D13-07",
+  "name": "Oil price / shock context PIT contract",
+  "status": "RESEARCH_ONLY_CONCEPT_FROZEN_EVIDENCE_PENDING",
+  "formalCoreImpact": "NONE",
+  "updatedAt": "2026-09-28T18:58:00+08:00",
+  "principles": {
+    "rawOilSign": "REJECTED_AS_UNIVERSAL_SIGNAL",
+    "structuralShockVsRealtime": "MUST_BE_SEPARATE",
+    "sectorConditional": true
+  },
+  "realtimeSources": {
+    "WTI": "PIT_ELIGIBLE_IF_LIVE_TIMESTAMPED_BEFORE_1810",
+    "Brent": "PIT_ELIGIBLE_IF_LIVE_TIMESTAMPED_BEFORE_1810",
+    "TAIFEX_BRF": "ELIGIBLE_AS_LOCAL_PROXY_WITH_FX_AND_BASIS_GUARD",
+    "EIA_Spot": "HISTORICAL_REFERENCE_NOT_CONTEMPORANEOUS_1810_QUOTE"
+  },
+  "requiredMetadata": [
+    "exchange",
+    "contractMonth",
+    "daysToExpiry",
+    "rollFlag",
+    "frontPrice",
+    "nextPrice",
+    "frontNextSpread",
+    "sourceTimestamp",
+    "sourceTimezone",
+    "capturedAt",
+    "knownAtTaipei",
+    "quoteQuality"
+  ],
+  "features": [
+    "sameContractReturn",
+    "oilShockPercentile",
+    "oilRealizedVol",
+    "frontNextSpread",
+    "spreadChange",
+    "curveState",
+    "oilMoveContext"
+  ],
+  "contextStates": [
+    "GROWTH_COMPATIBLE_OIL_UP",
+    "ADVERSE_OIL_UP",
+    "DEMAND_DESTRUCTION_OIL_DOWN",
+    "BENIGN_SUPPLY_OIL_DOWN",
+    "UNCLASSIFIED"
+  ],
+  "causalFirewall": "Context states are observational; do not label structural supply/demand shocks without frozen causal model and PIT inputs.",
+  "sectorLanes": [
+    "semiconductor_electronics",
+    "transport_airlines",
+    "petrochemical_plastics",
+    "shipping",
+    "financial_domestic"
+  ],
+  "eventClock": [
+    "EIA_inventory",
+    "OPEC_or_producer",
+    "geopolitical_event"
+  ],
+  "falsification": [
+    "Brent_vs_WTI",
+    "roll-day guard",
+    "normal_vs_crisis",
+    "context split",
+    "sector interaction",
+    "date-shift placebo",
+    "leave-one-date-out",
+    "largest-shock removal",
+    "global-equity_FX_rates redundancy",
+    "gap_vs_open-close"
+  ],
+  "maturityDecision": {
+    "from": "L1",
+    "to": "L2",
+    "reason": "Endogeneity, source timing, roll, sector transmission, event clocks and falsification frozen; no prospective PIT evidence yet for L3."
+  },
+  "nextContinuation": [
+    "prospective 18:10 oil receipt",
+    "provider/licensing freeze",
+    "BRF cross-check with FX",
+    "join D12 night pre-scan after both streams PIT-safe"
+  ]
+}

@@ -9,6 +9,7 @@ on:
       - ".github/workflows/system2-research-ci.yml"
       - ".github/workflows/system2-prospective-clock-evidence-readonly.yml"
       - ".github/workflows/system2-first-sample-preflight-readonly.yml"
+      - ".github/workflows/system2-resonance-deploy.yml"
   pull_request:
     branches: [main]
     paths:
@@ -16,6 +17,7 @@ on:
       - ".github/workflows/system2-research-ci.yml"
       - ".github/workflows/system2-prospective-clock-evidence-readonly.yml"
       - ".github/workflows/system2-first-sample-preflight-readonly.yml"
+      - ".github/workflows/system2-resonance-deploy.yml"
 
 permissions:
   contents: read
@@ -68,11 +70,13 @@ jobs:
           import sqlite3
           from pathlib import Path
 
-          path = Path("system2/sql/0001_research_core.sql")
-          sql = path.read_text(encoding="utf-8")
+          paths = sorted(Path("system2/sql").glob("*.sql"))
+          if not paths:
+              raise SystemExit("no System2 SQL migrations found")
           con = sqlite3.connect(":memory:")
           try:
-              con.executescript(sql)
+              for path in paths:
+                  con.executescript(path.read_text(encoding="utf-8"))
               tables = {
                   row[0]
                   for row in con.execute(
@@ -94,11 +98,36 @@ jobs:
                   "s2_candidate_concentration_receipts",
                   "s2_source_session_receipts",
                   "s2_shadow_run_fingerprints",
+                  "s2_historical_ingest_batches",
+                  "s2_historical_a1_bars",
+                  "s2_backtest_runs",
+                  "s2_backtest_checkpoints",
+                  "s2_historical_base_samples",
+                  "s2_historical_universe_memberships",
+                  "s2_historical_universe_snapshots",
+                  "s2_historical_a1_packs",
+                  "s2_historical_pack_ingest_receipts",
+                  "s2_historical_a1_pack_manifests",
+                  "s2_historical_cold_backfill_checkpoints",
+                  "s2_historical_cold_ingest_receipts",
+                  "s2_historical_universe_registry_receipts",
+                  "s2_resonance_watch_pools",
+                  "s2_resonance_session_cache",
+                  "s2_resonance_runs",
+                  "s2_resonance_snapshots",
+                  "s2_resonance_latest",
+                  "s2_resonance_episodes",
+                  "s2_resonance_episode_events",
               }
               missing = sorted(required - tables)
               if missing:
                   raise SystemExit(f"missing expected System2 tables: {missing}")
-              print(f"SQLite schema PASS; System2 tables={len(tables)}")
+              version = con.execute(
+                  "SELECT schema_value FROM s2_schema_meta WHERE schema_key='schema_version'"
+              ).fetchone()
+              if not version or version[0] != "1.1":
+                  raise SystemExit(f"unexpected System2 schema version: {version}")
+              print(f"SQLite schema PASS; migrations={len(paths)}; System2 tables={len(tables)}; schema=1.1")
           finally:
               con.close()
           PY

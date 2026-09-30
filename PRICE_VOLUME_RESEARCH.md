@@ -13602,3 +13602,20 @@ They only affect the validity of the research sidecar's claims.
 Formal remains the comparator/control system.
 
 Status: RESEARCH_DEFECTS_DO_NOT_IMPLY_FORMAL_CHANGE.
+
+
+# 2026-09-29 Stage V — First live lineage evidence and QA observability
+
+The first post-enable ordinary trading day produced a useful result before any performance analysis: a production read-only receipt around 21:31 Taipei still showed the last saved Formal scan as 2026-09-24. Because the scheduled 9/29 after-market scan is 23:35, this is the expected pre-refresh state and independently confirms that the 9/29 intraday monitor inherited the 9/24 plan lineage.
+
+This is a data-quality result, not alpha evidence. 9/29 intraday remains DATA_QA-only for H001~H004.
+
+Two evidence-infrastructure lessons were added:
+1. manual-only PV QA workflows are diagnostics, not complete prospective coverage receipts;
+2. the read-only QA needed explicit Acceptance lifecycle/phantom-expiry/INVALID-anchor counters to implement the PVE-181~185 event-accounting contract.
+
+That observer gap was repaired as a Class-A research-only change in PR #258, merged at `ea6f89115825ee0fb3c04cbbedfd61cd2105d679` after the existing V8 repair/regression suites passed. No Formal/runtime behavior changed.
+
+The legacy direct PV QA also contains an obsolete exact runtime assertion for V8.11 while current production is V8.14; this is now classified as QA-tool version drift rather than market/data failure.
+
+Next information gain is the 9/29 23:35 after-market selection/bootstrap receipt, followed by row-level 9/30 cohort eligibility. Outcome comparison remains closed.

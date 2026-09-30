@@ -939,3 +939,645 @@ Therefore:
 - pre-V8.13 snapshots lacking post-consensus priority/consensus provenance remain insufficient for exact deployed comparator replay and must stay UNKNOWN rather than being recomputed from today's logic.
 
 This is a research-document correction only. Formal runtime/order is unchanged.
+
+
+## PVE-160 — Pre-outcome redundancy/falsification stress test for abnormal-volume features (2026-09-28)
+
+Status: PREREGISTERED_FALSIFICATION / NO_OUTCOME_INSPECTION / FORMAL_CORE_UNCHANGED
+
+### Why this can be done before the 2026-09-29/30 live evidence hinge
+PVE-159 correctly blocks any H001-H004 outcome conclusion before prospective clean cohorts exist. That does not block a pre-outcome falsification audit of whether the candidate volume features could merely repackage already-known state variables. This section therefore freezes the competing explanations before outcome inspection.
+
+### Main falsification result
+Abnormal volume is not assigned a universal bullish/bearish sign. Prior empirical literature permits both continuation and reversal depending on information asymmetry, speculative trading, liquidity shocks and the component of volume being measured. Therefore a future positive association between raw/high RVOL and return is insufficient by itself to establish incremental price-volume alpha.
+
+### Mandatory competing explanations for H001/H002
+For every future clean comparison of formalLocalVolumeRatio, pvSlotRvol20 and pvCumvolPace20, report or condition on pre-outcome controls sufficient to distinguish at least:
+1. PRICE_STATE: contemporaneous/lagged return, breakout/pullback state and close-location/response variables already known at featureKnownAt.
+2. VOLATILITY_STATE: range/ATR or existing volatility-regime evidence available point-in-time. High volume caused by a volatility shock must not automatically be labelled participation alpha.
+3. LIQUIDITY_STATE: average volume/amount and any point-in-time spread/depth evidence actually available. A liquidity shock is a competing mechanism, not proof of informed participation.
+4. MARKET_SECTOR_ACTIVITY: market/sector-wide abnormal activity. Stock RVOL that merely mirrors a broad activity surge is not stock-specific incremental evidence.
+5. EVENT_CONTEXT when PIT-valid: material-news/corporate-action/event context. Event-driven volume must not be pooled silently with ordinary-session volume.
+
+Missing controls remain UNKNOWN; they are never imputed as neutral/zero merely to retain a row.
+
+### Residual-volume test frozen
+The earlier research idea of stock-specific residual RVOL is now elevated from a generic future idea to an explicit falsification requirement before any claim that raw pvSlotRvol20/pvCumvolPace20 has independent informational content.
+
+Primary sequence remains preregistered and unchanged:
+A = Formal context
+B = A + formalLocalVolumeRatio
+C = B + pvSlotRvol20
+D = C + pvCumvolPace20
+
+But any apparent C/D improvement must also survive a separately reported contextual/residual check against market/sector activity and the available price/volatility/liquidity controls above. This is a falsification layer, not a new optimized threshold or score.
+
+### Interpretation rules frozen before outcomes
+- HIGH_VOLUME + STRONG_PRICE_RESPONSE may be continuation, information incorporation or temporary price pressure; outcome evidence decides, not the label.
+- HIGH_VOLUME + WEAK/REJECTED_PRICE_RESPONSE is a distinct state and must not be averaged into generic high-volume evidence.
+- LOW_VOLUME is not automatically healthy dry-up; it may represent low attention, weak demand or illiquidity.
+- pvCumvolPace20 is only incremental if it improves evidence beyond same-slot RVOL/local volume ratio on common support; otherwise it is REDUNDANT.
+- If residual/context-adjusted volume loses the apparent effect, raw abnormal volume is classified CONTEXT_PROXY / REJECTED_OR_REDUNDANT rather than promoted.
+- If effect direction flips materially by regime/event/liquidity state, report REGIME_OR_CONTEXT_DEPENDENT; do not tune a global threshold post hoc.
+
+### Evidence basis / counterevidence incorporated
+External empirical evidence reviewed on 2026-09-28 includes findings consistent with both high-volume continuation and high/speculative-volume reversal, plus evidence that volume predictability can depend on components orthogonal to volatility, liquidity or order flow. These sources are methodological priors only; they are not Taiwan-stock validation and do not upgrade D02 maturity by themselves.
+
+### System implication
+This strengthens the existing observer-only design. No new Formal factor, threshold, score, ranking, entry rule or veto is justified. The prospective 9/29-9/30 gate remains unchanged; first clean evidence must still pass PVE-149 and PVE-159.
+
+Current Price-Volume evidence cursor: PVE-001 through PVE-160.
+Formal Core remains LOCKED.
+
+## Revised exact continuation after PVE-160
+1. Preserve the live hinge: 2026-09-29 intraday DATA_QA-only; 9/29 after-market bootstrap; 9/30 first potentially clean selection cohort.
+2. At first eligible clean rows, execute PVE-149 Gate 0->7 before outcome inspection.
+3. For H001/H002, preserve A/B/C/D common-support comparison, then run the PVE-160 contextual/residual falsification layer without threshold tuning.
+4. Separate high-volume/strong-response from high-volume/weak-response states before directional interpretation.
+5. Classify any apparent volume effect as INCREMENTAL, CONTEXT_PROXY, REDUNDANT, REGIME_OR_CONTEXT_DEPENDENT or UNKNOWN; do not force support/rejection from inadequate controls.
+6. Do not alter Formal Core.
+
+
+## PVE-161 — Volume sign is horizon/state dependent; prohibit universal HIGH_VOLUME bullishness (2026-09-28)
+Status: LITERATURE_FALSIFICATION_FROZEN / PRE-OUTCOME / FORMAL_CORE_UNCHANGED
+
+Cross-market evidence is intentionally contradictory: unusually high volume has been associated with subsequent appreciation in some designs, while high-volume winners/speculative turnover have also been associated with faster reversal or lower future returns. A 2021 meta-analysis of 468 estimates across 44 studies reports material heterogeneity and publication-bias concerns. Therefore D02 freezes the following rule before Taiwan prospective outcomes exist:
+- no universal sign is assigned to HIGH_VOLUME, LOW_VOLUME, volume shock or turnover;
+- horizon, prior price state, information/event context and market regime are mandatory interpretation dimensions;
+- a result at one horizon (intraday/B1-B4, D1, D3/D5/D10, monthly) must not be silently generalized to another.
+
+Falsification consequence:
+D02-05 (climax/distribution volume), D02-09 (price-volume divergence) and D02-10 (volume-state x trend) cannot be validated by unconditional RVOL buckets. They require interaction/state evidence.
+
+## PVE-162 — Residual-volume observability gap confirmed
+Status: RESEARCH_GAP_CONFIRMED / NOT_IMPLEMENTED / OWNER_DECISION_NOT_REQUIRED_YET
+
+Repository audit confirms:
+- PRICE_VOLUME_SHADOW_SPEC.md declares pvMarketResidualRvol and pvSectorResidualRvol as intended daily Shadow fields;
+- current v0.1 implementation/field dictionary and Worker patch implement pvDailyRvol20, pvSlotRvol20, pvCumvolPace20 and response/persistence/guard states, but repository-wide code search finds no implemented marketResidual/sectorResidual computation outside the specification;
+- the spec itself states full-market 15m residualization is deferred.
+
+Interpretation:
+The residual-volume concept is currently a falsification requirement/design target, not an observed feature. No future analysis may claim market/sector-adjusted volume evidence until a PIT-valid implementation/receipt exists.
+
+Minimum future design constraints (proposal only):
+1. use only market/sector activity known by featureKnownAt;
+2. do not raw-divide listed-stock share/lot volume by index volume with incompatible semantics;
+3. prefer normalized peer activity (e.g. cross-sectional median/robust aggregate of comparable stock RVOL) rather than raw index volume;
+4. sector aggregate must be leave-one-out for the target stock to avoid mechanical self-inclusion;
+5. require minimum peer coverage and preserve UNKNOWN when coverage is insufficient;
+6. freeze sector membership point-in-time; today's sector map cannot rewrite historical membership;
+7. market and sector residuals are contextual diagnostics/falsification controls first, not additive alpha scores.
+
+No implementation is authorized by this finding alone.
+
+## PVE-163 — D02 factor-family consolidation: prevent fourfold counting of the same episode
+Status: REDUNDANCY_GOVERNANCE_FROZEN / PRE-OUTCOME
+
+Repository tracker currently separates D02-05 climax/distribution volume, D02-08 accumulation/distribution proxies, D02-09 price-volume divergence and D02-10 volume-state x trend. Mechanistically these can describe the same underlying episode and must not become four independent additive scores.
+
+Freeze a three-stage evidence graph:
+1. PARTICIPATION_RESIDUAL: Is activity abnormal for this stock after same-slot/history and, when available, market/sector context?
+2. EFFORT_RESULT: What price progress/range/close-location occurred for that participation? HIGH_EFFORT_LOW_PROGRESS is distinct from EFFICIENT_UP/DOWN.
+3. PERSISTENCE_ACCEPTANCE: Did the participation/price response persist, decay, retest, fail or reaccelerate on later comparable observations?
+
+OBV/CMF/MFI/volume oscillators and narrative labels such as accumulation/distribution may be descriptive views, but cannot receive independent weight unless they prove incremental information beyond this graph on common support.
+
+## PVE-164 — Response-state anti-circularity audit
+Status: DESIGN_RISK_IDENTIFIED / H003_REMAINS_HIGHER_GATED
+
+Current pvResponseState is partly constructed from price variables (signed progress, range expansion, close position, body/wick structure) plus RVOL. Therefore using pvResponseState to 'predict' an outcome label that is mechanically based on the same bar's close/progress can create circular apparent skill.
+
+Freeze anti-circularity rules:
+- same-bar response classification is explanatory/state description, not evidence of future predictive alpha;
+- primary H003 outcomes must begin strictly after featureKnownAt/barEnd;
+- report a price-only response baseline alongside price+volume response. Volume has incremental value only if price+volume improves future outcome discrimination beyond the same price geometry without volume;
+- do not count the anchor bar's already-realized price movement as MFE/return evidence attributable to volume;
+- acceptance transitions that reuse Formal geometry are not independent PV alpha evidence by themselves.
+
+This is a direct falsification test against 'volume works' claims: if price-only response explains the same future outcomes, the PV state is REDUNDANT.
+
+## PVE-165 — Persistence can add path information but not independent samples
+Status: DEPENDENCE_RULE_FROZEN / H002-H003
+
+pvPersistenceState is generated from repeated observations of the same participation episode. PERSISTENT/DECAYING/REIGNITED states may contain useful path information, but they are not independent market experiments.
+
+Freeze:
+- event-level primary unit remains the first clean participation event;
+- later persistence states are within-event trajectory features;
+- repeated 15m rows cannot inflate N_PRIMARY;
+- continuity gaps remain quarantined per prior PVE rules;
+- compare trajectory classes prospectively only after the event identity was frozen, never relabel the event from future outcomes.
+
+## PVE-166 — Low-volume/dry-up falsification refinement
+Status: PRE-OUTCOME_HYPOTHESIS_REFINEMENT / NO_THRESHOLD_TUNING
+
+LOW_VOLUME/DRY_UP has at least three competing meanings:
+A. constructive supply contraction during an intact setup;
+B. weak demand/attention with no sponsor;
+C. illiquidity/data-quality effect.
+
+Therefore D02-04 cannot be validated from low RVOL alone. A constructive dry-up claim requires pre-outcome context showing intact price structure and acceptable liquidity, then a later independently observed re-expansion/reacceleration. If no later demand reappears, low volume remains descriptive, not bullish confirmation.
+
+Do not tune a dry-up threshold from future winners. Use frozen/robust participation bands for descriptive testing first.
+
+## PVE-167 — Long-block synthesis and next executable evidence plan
+Status: LONG_BLOCK_COMPLETE / WAITING_LIVE_HINGE
+
+This long research block yields no Formal optimization candidate yet, but materially tightens the falsification design:
+- abnormal volume has no universal sign;
+- raw RVOL must survive market/sector/context explanation;
+- response states require price-only baselines to prove volume incrementality;
+- persistence is a trajectory, not extra independent N;
+- dry-up is not bullish without later demand confirmation;
+- D02 narrative modules must not be stacked as duplicate scores.
+
+The next empirical phase remains prospective. On first potentially clean cohorts:
+A. coverage/provenance first;
+B. A/B/C/D common-support comparison;
+C. price-only vs price+volume response comparison;
+D. high-volume strong-response vs weak-response split;
+E. contextual/residual check when PIT-valid market/sector controls exist;
+F. event-level persistence trajectories;
+G. separate directional alpha from risk/false-break/MFE/MAE value.
+
+No D02 module is promoted solely from this literature/design block because tracker rules require Taiwan PIT/OOS/prospective evidence for higher maturity.
+Current Price-Volume evidence cursor: PVE-001 through PVE-167.
+Formal Core remains LOCKED.
+
+
+## PVE-168 — Four-quadrant price×volume labels are state descriptors, not directional rules (2026-09-28)
+Status: PRE-OUTCOME_TAXONOMY_FROZEN / FORMAL_CORE_UNCHANGED
+
+The classic four labels PRICE_UP_VOLUME_UP, PRICE_UP_VOLUME_DOWN, PRICE_DOWN_VOLUME_UP and PRICE_DOWN_VOLUME_DOWN are retained only as descriptive coordinates. They cannot carry a fixed bullish/bearish sign because identical coordinates can arise from information incorporation, liquidity demand, passive/rebalancing flow, disagreement, short covering, forced liquidation or ordinary low-attention trading.
+
+Frozen decomposition for every quadrant:
+1. PRICE_LOCATION: base / breakout boundary / post-breakout / pullback / late-stage / failed-break;
+2. PRICE_RESPONSE: signed progress, close location, range/body/wick efficiency;
+3. PARTICIPATION: daily RVOL / same-slot RVOL / cumulative pace on PIT-valid baselines;
+4. ACCEPTANCE: later hold/re-entry/failure relative to frozen Formal geometry;
+5. PERSISTENCE: fresh shock / persistent / decay / reignition with event dependence preserved;
+6. CONTEXT: liquidity, market/sector activity, event/news/corporate-action and regime when PIT-valid.
+
+Thus the four quadrants are reporting strata, never additive scores by themselves.
+
+## PVE-169 — High-volume reversal can be liquidity pressure, not distribution
+Status: COMPETING_MECHANISM_FROZEN / D02-05-D02-08
+
+External evidence on institutional liquidity needs documents predictable price pressure and subsequent reversals around month-end across multiple equity markets; related literature explicitly links large-volume episodes to reduced/negative serial correlation under liquidity-demand shocks. This creates a concrete falsifier for the practitioner label 'high-volume decline = distribution'.
+
+Required interpretation rule:
+- HIGH_VOLUME + DOWN_PRICE is not DISTRIBUTION unless later path evidence and PIT-valid context reject plausible liquidity/event-pressure explanations;
+- HIGH_VOLUME + UP_PRICE is not ACCUMULATION for the symmetric reason;
+- when flow origin is unavailable, label mechanism UNKNOWN and retain only observable state descriptors.
+
+System implication: D02-08 accumulation/distribution proxies cannot advance beyond descriptive proxy status from OHLCV alone.
+
+## PVE-170 — Horizon-separation matrix frozen for price-volume claims
+Status: MULTI_HORIZON_GOVERNANCE_FROZEN
+
+A volume shock can coexist with continuation at one horizon and reversal at another. Therefore every future H001-H004 report must keep horizons separate rather than aggregate a single success label.
+
+Frozen horizon families under current available evidence design:
+- intraday path: B1/B2/B4 completed bars after featureKnownAt;
+- short daily: D1/D3/D5 when clean daily outcomes exist;
+- medium daily: D10/D20 only if source/provenance and corporate-action continuity remain valid.
+
+No horizon may inherit the sign/status of another. A feature can be INTRADAY_RISK_USEFUL but DIRECTIONALLY_REDUNDANT, or SHORT_CONTINUATION_LONGER_REVERSAL, without contradiction.
+
+## PVE-171 — Breakout-volume claim decomposed into necessity vs quality
+Status: HYPOTHESIS_REFINEMENT / NO_FORMAL_CHANGE
+
+'Breakout must have volume' contains two different claims and they must be tested separately:
+A. NECESSITY: low-volume breakouts should fail more often.
+B. QUALITY: conditional on a breakout already satisfying Formal price geometry, abnormal participation should add incremental information about later acceptance/failure.
+
+Only B is directly relevant to H001/H002. A can be false while B is useful, or vice versa. Testing only successful breakouts creates selection bias; controls must be frozen from the pre-outcome candidate/pool evidence under PVE-155/159 constraints.
+
+For D02-03, a future optimization candidate requires volume to improve false-break/retention discrimination beyond price-only breakout quality on common support, after costs and regime checks. Until then, 'breakout with volume' remains a hypothesis, not a rule.
+
+## PVE-172 — Volume dry-up requires a paired demand-return event
+Status: EVENT_PAIR_DESIGN_FROZEN / D02-04
+
+PVE-166 is operationalized as a two-leg event rather than a single low-volume observation:
+LEG_1 DRY_UP_CANDIDATE = low normalized participation while frozen price structure remains intact and liquidity is interpretable.
+LEG_2 DEMAND_RETURN = later independent participation re-expansion with positive price-response/acceptance evidence before structure failure/expiry.
+
+Research labels:
+- DRY_UP_CONFIRMED only after LEG_2 occurs;
+- DRY_UP_UNCONFIRMED while waiting;
+- DEMAND_FAILED if structure fails before LEG_2;
+- UNKNOWN if continuity/liquidity/Guard evidence is inadequate.
+
+Critical PIT rule: a historical low-volume bar must never be relabelled 'healthy dry-up' merely because the stock later rose. The initial bar stays DRY_UP_CANDIDATE; confirmation is a later timestamped transition.
+
+## PVE-173 — D02 long-block stage II synthesis
+Status: LARGE_STAGE_COMPLETE / WAITING_PROSPECTIVE_HINGE
+
+New durable conclusions beyond PVE-167:
+- the four price×volume quadrants are descriptive coordinates, not directional signals;
+- accumulation/distribution cannot be inferred uniquely from OHLCV because liquidity/event/passive-flow mechanisms can generate the same state;
+- horizon must be explicit because continuation and reversal can coexist at different horizons;
+- breakout-volume 'necessity' and 'incremental quality' are separate hypotheses;
+- healthy dry-up is a timestamped two-leg lifecycle, preventing hindsight relabelling.
+
+No Formal optimization candidate is eligible. These findings sharpen falsification and event labelling but do not supply Taiwan prospective/OOS evidence.
+
+Exact next continuation after PVE-173:
+1. Do not expand pre-outcome methodology again unless a concrete contradiction/implementation defect is discovered.
+2. At the first post-enable ordinary-market hinge, execute PVE-149 Gate 0→7 before outcomes.
+3. Preserve 2026-09-29 intraday as DATA_QA-only inherited cohort; inspect 9/29 after-market selection/bootstrap receipts; 2026-09-30 is only first potentially clean cohort.
+4. First clean tables must separate price×volume quadrant, price-response state, breakout-quality question, dry-up lifecycle and horizon without threshold tuning.
+5. Keep accumulation/distribution mechanism UNKNOWN unless independent PIT-valid evidence identifies flow origin.
+6. Formal Core remains LOCKED.
+
+Current Price-Volume evidence cursor: PVE-001 through PVE-173.
+
+
+## Evidence progress — PVE-174 through PVE-180 (2026-09-28 long-block stage III)
+
+### PVE-174 — Daily RVOL corporate-action continuity is code-proven incomplete
+Status: CODE_PROVEN_DATA_QUALITY_DEFECT / DAILY_LAYER_QUARANTINE / FORMAL_UNCHANGED
+
+Fresh main/patch-chain audit confirms a stronger statement than the earlier generic upstream-plumbing warning:
+- `pvBuildDailyFeature(history, marketDate)` simply takes the current daily row plus the last 20 earlier positive-volume rows;
+- it receives no corporate-action/reset argument and performs no post-reset filtering;
+- `pvRecordDailySnapshot` persists `coverage.corporateActionResetAt:null` for AFTER_MARKET rows;
+- the existing T13 corporate-action fixture tests intraday `pvBaselineStats`, not daily `pvDailyRvol20` continuity.
+
+Therefore current v0.1 daily RVOL can mix pre/post structural share-volume regimes around splits, reverse splits, par-value/trading-unit changes, capital reductions or other events that alter raw volume comparability. Current-row volume and the market path may still be factual; the normalized daily ratio is not automatically hypothesis-clean across such boundaries.
+
+Rule frozen before prospective outcomes:
+- daily `pvDailyRvol20` is eligible only when corporate-action / trading-unit continuity is independently verified for the full denominator window;
+- unresolved continuity => DAILY_RVOL_CONTINUITY_UNKNOWN, not neutral RVOL=1 and not BAD;
+- do not retroactively infer reset dates from future/current registries without PIT-valid event provenance.
+
+### PVE-175 — Price-censor Guard does not implement Taiwan legal limit semantics
+Status: CODE_PROVEN_GUARD_SEMANTIC_DEFECT / GUARD_LABEL_QUARANTINE
+
+Current patch code:
+`bar.high >= previousClose*1.099 || bar.low <= previousClose*0.901`.
+
+Current TWSE Operating Rules instead define ordinary-stock daily limits relative to the auction reference price at market opening, with minimum-tick handling; newly TWSE-listed common stocks (except TPEx-to-TWSE transfers) have no fluctuation limit for the first five trading days. Tick size itself varies by price tier under Article 62.
+
+Official anchors checked on 2026-09-28:
+- Article 63: https://twse-regulation.twse.com.tw/EN/law/DOC01.aspx?FLCODE=FL007304&FLNO=63
+- Article 62: https://twse-regulation.twse.com.tw/eng/en/law/DOC01.aspx?FLCODE=FL007304&FLNO=62
+
+Consequences:
+- raw previousClose is not always the legal reference;
+- fixed 1.099/0.901 floating thresholds are not the exchange limit-price calculation;
+- tick rounding/minimum tick can change the exact boundary;
+- special no-limit sessions cannot be represented by the generic ±10% proxy.
+
+Thus `PRICE_CENSORED` remains a heuristic diagnostic, not exchange-truth. It cannot qualify H003/H004 evidence without an exchange-consistent overlay. Raw observed slot volume itself need not be discarded solely because this Guard is untrusted.
+
+### PVE-176 — Selected-plan contract omits multiple Guard inputs
+Status: CODE_PROVEN_INPUT_CONTRACT_MISMATCH / MISSING_IS_NOT_FALSE
+
+Fresh audit of `allocateAndBuildPlans()` and the V8.11 PV patch shows that the selected Formal plan carries trading-plan fields such as formalClose/channel/priority/levels, but does not emit the following fields that PV later attempts to read from `result.plan`:
+- `avgVolume20Lots`;
+- `liquidityException`;
+- `marketStructure`;
+- `corporateActionResetAt`;
+- `pvGapDominated`.
+
+Repository-wide search also finds no producer assignment for `pvGapDominated` in the current patch chain.
+
+This creates concrete missing->false/normal coercions:
+- `pvIlliquidityWarning(plan)` returns false when avgVolume20Lots is absent;
+- unsupported-market check maps absent marketStructure to empty string, hence not ESB;
+- gapDominated uses `===true`, so absence becomes false;
+- a newly created baseline cannot receive a plan corporateActionResetAt that the plan does not carry.
+
+This is stronger than saying the upstream plumbing is merely unverified. For the audited plan-builder path, the Guard input contract is incomplete. Production incidence for alternative/nonstandard plan paths remains UNKNOWN, but missing fields must not be interpreted as verified NORMAL.
+
+### PVE-177 — Reference-price UNKNOWN is only raised at 09:00
+Status: CODE_PROVEN_UNKNOWN_COERCION_RISK / INCIDENCE_UNKNOWN
+
+The intraday builder sets:
+`referencePriceUnresolved = (bar.slotKey === "09:00" && referenceClose === null)`.
+But `pvPriceCensored()` needs a reference for every slot; with a missing reference on later bars it simply returns false.
+
+Therefore a missing reference after 09:00 can become:
+- no REFERENCE_PRICE_UNRESOLVED flag;
+- no PRICE_CENSORED flag;
+while actual boundary state is unobservable.
+
+A valid current quote may make real-world incidence low, but incidence is not the semantic contract. For research evidence, missing required reference provenance at any slot where boundary interpretation is used must be UNKNOWN, not verified non-censored.
+
+### PVE-178 — Field-level quarantine matrix before the first live cohort
+Status: PREREGISTERED_DATA_QUALITY_OVERLAY / NO_OUTCOME_INSPECTION
+
+Do not collapse the defects above into an all-or-nothing row rejection.
+
+1. H001 slot RVOL:
+   - may remain eligible when current bar, same-slot denominator, source unit, completed-bar timing, baseline freshness and cohort provenance are clean;
+   - does not require a trusted price-censor or illiquidity label for the raw volume relationship itself.
+2. H002 cumulative pace:
+   - same field-level salvage principle, plus complete current-session prefix and cumulative baseline continuity.
+3. H003 response/acceptance/Guard:
+   - quarantine rows whose interpretation requires the defective Guard fields;
+   - retain raw price/volume primitives separately.
+4. H004 future market-path outcomes:
+   - may still be recorded factually, but cannot become hypothesis-clean without outcome/session/corporate-action/boundary overlays.
+5. Daily RVOL:
+   - quarantine denominator windows crossing unresolved corporate-action/trading-unit continuity.
+
+This preserves information while preventing a single broken label from falsely turning a row clean or destroying unrelated raw evidence.
+
+### PVE-179 — External evidence revalidates state/horizon separation, not a new threshold
+Status: LITERATURE_REVALIDATION / NO_MATURITY_PROMOTION
+
+Fresh literature review before prospective Taiwan outcome inspection again rejects a universal volume sign:
+- Lee & Swaminathan show past volume interacts with momentum life-cycle and high-volume winners can reverse faster over long horizons;
+- Medhat & Schmeling report short-term reversal among low-turnover stocks but short-term momentum among high-turnover stocks across U.S./international samples.
+
+These are mechanism priors, not Taiwan validation. Their value here is to reinforce the already-frozen rule that turnover/volume can change the state and horizon of return continuation/reversal; they do not justify importing a fixed RVOL threshold, sign or holding period into D02.
+
+### PVE-180 — Long-block stage III synthesis
+Status: IMPLEMENTATION_SEMANTICS_AUDITED / PROSPECTIVE_ALPHA_STILL_UNKNOWN
+
+This block resolves one false alarm and finds four material evidence-contract issues.
+
+Resolved false alarm:
+- repository `Worker.js` is intentionally a pre-patch base; deploy/regression workflows sequentially apply `scripts/apply_v8_11_0.py` and later V8.12-V8.14 patches, then assert `PV_SHADOW_V0_1` symbols/tables in the built Worker. Absence of PV code in base Worker.js is therefore not evidence that deployed PV disappeared.
+
+Durable new findings:
+- daily RVOL lacks effective corporate-action reset continuity;
+- price-censor is not exchange-exact;
+- selected-plan-to-PV Guard input contract omits several fields and coerces missing evidence toward false/normal;
+- reference-price unresolved handling is slot-asymmetric.
+
+System implication:
+- no Formal Core change is justified;
+- H001/H002 raw-volume evidence remains partially salvageable under field-scoped quality gates;
+- H003/H004 Guard/state evidence remains materially more restricted;
+- 2026-09-30 is still only the first potentially clean cohort, and cleanliness must be row/field specific rather than date-wide.
+
+Current Price-Volume evidence cursor: PVE-001 through PVE-180.
+Formal Core remains LOCKED.
+
+## Revised exact continuation after PVE-180
+1. Preserve the 2026-09-29/30 prospective hinge and do not fabricate pre-hinge Shadow outcomes.
+2. Before inspecting any return/MFE/MAE result, run PVE-149 Gate 0->7 plus the PVE-174~178 field-level overlay.
+3. Report Guard-input coverage explicitly: PRESENT / MISSING / UNKNOWN, never infer NORMAL from an absent plan field.
+4. For daily RVOL, require PIT-valid corporate-action/trading-unit continuity for the full 20-session denominator window.
+5. For H001/H002, proceed on clean raw-volume common support even if H003 Guard labels are quarantined.
+6. For H003/H004, require exchange-consistent price-boundary/reference overlays and price-only vs price+volume anti-circularity before any interpretation.
+7. After clean data accumulate, run horizon-separated A/B/C/D, quadrant/response, breakout-quality and two-leg dry-up analyses without threshold tuning.
+8. No Formal modification or FORMAL_OPTIMIZATION_CANDIDATE until prospective/OOS evidence passes the existing gates.
+
+
+## Evidence progress — PVE-181 through PVE-186 (2026-09-29 pre-market long block)
+
+### PVE-181 — 13:00 PRE_EVENT can create a phantom Acceptance event
+Status: CODE_PROVEN_EVENT_DENOMINATOR_DEFECT / H003_QUARANTINE / FORMAL_UNCHANGED
+
+Fresh audit of `pvAdvanceAcceptance()` shows the session-end clause executes for every non-terminal state:
+`if(bar.slotKey==="13:00" && ![...terminal states].includes(state)) state=*_EXPIRED_AMBIGUOUS`.
+
+If a symbol remained `B_PRE_EVENT` all day without ever reaching breakout, or `A_PRE_EVENT` without ever entering the pullback zone, the 13:00 bar still changes state to `B_EXPIRED_AMBIGUOUS` / `A_EXPIRED_AMBIGUOUS`. Immediately afterward, `eventKey` is created whenever `transitioned && state!==initial`.
+
+Therefore a pure PRE_EVENT -> EXPIRED_AMBIGUOUS transition can manufacture a `PVACC:...` event even though no underlying Acceptance lifecycle was ever activated.
+
+Evidence rule frozen before live outcome inspection:
+- raw `acceptance.eventKey` count is NOT the H003 event denominator;
+- an Acceptance event is active only after a genuine pre-outcome lifecycle entry such as B_BREAKOUT_ATTEMPT / B_INITIAL_ACCEPTANCE / A_PULLBACK_TEST / A_INITIAL_ACCEPTANCE (or a future versioned equivalent);
+- PRE_EVENT -> EXPIRED_AMBIGUOUS-only keys are `NO_TRIGGER_SESSION_CENSOR`, not failed/ambiguous Acceptance events;
+- historical/prospective v0.1 rows can be reclassified offline from nested stateHistory; snapshots are not rewritten.
+
+### PVE-182 — INVALID Guard does not pause Acceptance, unlike Persistence
+Status: CODE_PROVEN_STATE_MACHINE_ASYMMETRY / H003_H004_HIGHER_GATED
+
+Current intraday builder explicitly passes:
+`comparable = guard.pvInterpretability !== "INVALID"`
+to `pvAdvancePersistence()`, so participation persistence pauses on INVALID rows.
+
+But `pvAdvanceAcceptance()` is called unconditionally and receives no Guard/comparable input. As a result, rows flagged INVALID for reasons such as INVALID_SOURCE_DATA, DATA_INSUFFICIENT, REFERENCE_PRICE_UNRESOLVED or other invalid-precedence states can still advance Acceptance based on available bar/plan geometry.
+
+This is a semantic asymmetry:
+- Persistence: INVALID => paused;
+- Acceptance: INVALID => can transition.
+
+The asymmetry is not automatically wrong for storage, but it prevents v0.1 Acceptance state from being treated as hypothesis-clean ground truth without a quality overlay.
+
+### PVE-183 — INVALID rows can still create intraday outcome anchors
+Status: CODE_PROVEN_ANCHOR_ELIGIBILITY_LEAK / OUTCOME_STORAGE_NOT_INFERENCE
+
+After unconditional Acceptance evaluation, current code sets:
+`anchorEligible = acceptance.transitioned && (B_INITIAL_ACCEPTANCE || A_REACCELERATION)`.
+There is no additional condition requiring `guard.pvInterpretability !== "INVALID"`.
+
+Therefore a cold-start / source-invalid row can theoretically become anchorEligible and later receive B1/B2/B4 and daily outcomes. The outcome values may be factual market paths, but their existence does not make the originating PV state clean.
+
+Frozen rule:
+- outcome storage and feature/state eligibility are separate dimensions;
+- `anchorEligible=true` does not imply H003/H004 eligibility;
+- primary H003/H004 requires both genuine Acceptance lifecycle entry and a field-level quality overlay proving the fields used by that transition were interpretable at featureKnownAt.
+
+### PVE-184 — 2026-09-29 cold-start Acceptance/outcome rows require explicit DATA_QA-only labeling
+Status: FIRST_SESSION_QA_REFINEMENT / NO_OUTCOME_INSPECTION
+
+The first ordinary post-enable intraday session is still 2026-09-29 and remains DATA_QA-only due inherited stale 2026-09-24 plan lineage. In addition, before the first successful after-market bootstrap, intraday same-slot baselines are expected cold/insufficient.
+
+Because Acceptance can advance independently of the PV baseline Guard, the recorder may still persist Acceptance transitions/anchors/outcomes on 9/29 even when RVOL response fields are DATA_INSUFFICIENT/INVALID.
+
+Therefore the 9/29 receipt must separately count:
+- raw snapshots;
+- Guard INVALID / GUARDED / VALID rows;
+- raw Acceptance transitions;
+- genuine lifecycle-entry transitions;
+- PRE_EVENT-only expiries;
+- raw anchorEligible rows;
+- hypothesis-clean anchors (expected zero for primary inference on 9/29 regardless of market outcome).
+
+### PVE-185 — H003 event denominator and maturity accounting frozen
+Status: EVENT_ACCOUNTING_PREREGISTERED / NO_ALPHA_CLAIM
+
+For v0.1 H003 reporting, maintain three distinct denominators:
+1. `RAW_ACCEPTANCE_KEY_COUNT`: all nested acceptance event keys, including phantom PRE_EVENT expiries;
+2. `ACTIVE_ACCEPTANCE_LIFECYCLE_COUNT`: keys whose stateHistory proves a real pre-event trigger/lifecycle entry occurred before expiry;
+3. `H003_HYPOTHESIS_CLEAN_EVENT_COUNT`: active lifecycle keys that also pass Guard/input/PIT/cohort/continuity/anti-circularity gates.
+
+Only #3 may count toward H003 evidence maturity.
+#1 remains QA diagnostics only.
+
+No event may become active because of future return, MFE/MAE, or later success/failure; activation is determined solely from the timestamped pre-outcome state path.
+
+### PVE-186 — Long-block stage IV synthesis and live hinge
+Status: PREMARKET_FALSIFICATION_COMPLETE / WAITING_2026_09_29_RUNTIME_RECEIPTS
+
+This block found two previously unregistered v0.1 evidence-semantic defects:
+- session-end PRE_EVENT expiry can create phantom Acceptance event keys;
+- Acceptance/anchor creation is not fail-closed when the Guard is INVALID.
+
+These defects do NOT invalidate H001/H002 raw slot RVOL / cumulative-pace evidence by themselves. They materially strengthen the quarantine around H003/H004 state/outcome inference.
+
+No Formal optimization candidate is created. No runtime/Formal change is authorized from these findings alone.
+
+Current Price-Volume evidence cursor: PVE-001 through PVE-186.
+Formal Core remains LOCKED.
+
+## Exact continuation after PVE-186
+1. At 2026-09-29 intraday, execute the preregistered PVE-149 Gate 0->7 and PVE-174~185 overlays before inspecting any outcome metric.
+2. Treat all 9/29 intraday rows as DATA_QA-only for primary H001~H004 due inherited 9/24 cohort lineage, regardless of recorder quality.
+3. Explicitly classify Acceptance rows into PRE_EVENT_ONLY_EXPIRY / ACTIVE_LIFECYCLE / HYPOTHESIS_CLEAN.
+4. Count anchorEligible separately from hypothesis-clean anchors; INVALID Guard anchors cannot enter H003/H004 primary inference.
+5. After the 9/29 after-market run, inspect selection/bootstrap receipts and baseline freshness/lineage; 9/30 remains only the earliest potentially clean cohort.
+6. No return/MFE/MAE threshold tuning, no historical Shadow fabrication, no maturity promotion until clean prospective evidence exists.
+
+
+## Evidence progress — PVE-187 through PVE-193 (2026-09-29 post-close / pre-after-market long block)
+
+### PVE-187 — 2026-09-29 real production read-only receipt confirms inherited 9/24 plan lineage
+Status: LIVE_PRODUCTION_RECEIPT_OBSERVED / DATA_QA_ONLY_CONFIRMED / NO_OUTCOME_INSPECTION
+
+A read-only production diagnostic executed during PR #258 regression at approximately 2026-09-29 21:31 Asia/Taipei. It independently observed:
+- runtime version = `8.14.0-sector-gate-provenance-shadow`;
+- TEST_MODE=false;
+- production admin authorization succeeded;
+- V7_DB/STOCKS_KV bindings were present in preflight;
+- `/api/scan/status` still reported `scanDate=2026-09-24`, selectedCount=2, config saved/verified, config updatedAt=2026-09-24T23:37:33.822Z;
+- the 2026-09-29 23:35 after-market scan had not yet occurred at the receipt time.
+
+This is actual runtime evidence, not merely source-code inference. It confirms the preregistered PVE-150 lineage expectation that the 2026-09-29 intraday monitor still inherited the last successfully saved 2026-09-24 Formal plan.
+
+Research consequence:
+- all 2026-09-29 intraday PV rows remain `INHERITED_KNOWN_STALE_SELECTION / DATA_QA_ONLY` for primary H001~H004;
+- no observed 9/29 return/MFE/MAE can rehabilitate that cohort;
+- this receipt does not prove row-level PV recorder success or D1 at-rest contents because the diagnostic did not enumerate PV D1 rows.
+
+### PVE-188 — scan/status freshness is decision-clock dependent
+Status: PHASE_AWARE_RUNTIME_SEMANTICS_FROZEN
+
+At ~21:31 Taipei, `scanDate=2026-09-24` is not evidence that the 9/29 after-market scan failed, because the scheduled Formal after-market scan is 23:35 Taipei. Before that decision clock, the correct expected state is the prior successful plan/scan.
+
+Freeze runtime receipt classes:
+- `EXPECTED_PRIOR_SCAN_STATE`: current time precedes today's scheduled after-market decision clock;
+- `CURRENT_SCAN_EXPECTED_PENDING`: scheduled time reached but completion window not yet elapsed;
+- `CURRENT_SCAN_OBSERVED`: today's successful scan receipt exists;
+- `CURRENT_SCAN_MISSING_OR_FAILED`: only after the expected completion window and with cron/scan evidence supporting absence/failure;
+- `UNKNOWN_CLOCK_OR_RECEIPT`: timing/provenance insufficient.
+
+This prevents false stale-scan alarms and is reusable for the 9/29->9/30 cohort handoff.
+
+### PVE-189 — Manual-only PV QA cannot certify prospective evidence coverage
+Status: SELECTION_BIAS_GUARD_FROZEN / QA_DIAGNOSTIC_NOT_COHORT_RECEIPT
+
+Both current PV QA workflows are `workflow_dispatch`-only and have no scheduled trigger:
+- `.github/workflows/pv-shadow-readonly-qa.yml`;
+- `.github/workflows/pv-shadow-ephemeral-d1-qa.yml`.
+
+A manually chosen QA run can be valuable for debugging/at-rest inspection, but it cannot by itself prove complete prospective observation coverage. Running QA only on interesting or convenient dates creates a cherry-picking/selection-bias channel even when the query is read-only.
+
+Frozen rule:
+- manual QA artifacts = `DIAGNOSTIC_ONLY` for coverage/readiness clocks;
+- they may verify properties of rows already captured, but cannot establish that all required dates/events were observed;
+- maturity denominators require an independent expected-date/attempt receipt or a future deterministic scheduled evidence stream;
+- no historical manual rerun may be backfilled as if it were a prospective scheduled receipt.
+
+No scheduling change is authorized by this finding alone.
+
+### PVE-190 — Acceptance denominator observability added as isolated Class-A QA
+Status: CLASS_A_RESEARCH_QA_IMPLEMENTED / FORMAL_UNCHANGED
+
+PVE-181~185 froze Acceptance denominators, but the existing ephemeral D1 QA did not expose them. An isolated research branch was created from fresh main, regression-tested, and merged through PR #258.
+
+Merged commit:
+`ea6f89115825ee0fb3c04cbbedfd61cd2105d679`
+
+The manual read-only ephemeral D1 QA now reports, by market date:
+- intradayRows;
+- guardInvalidRows / guardGuardedRows / guardValidRows;
+- rawAcceptanceTransitions;
+- activeLifecycleRows;
+- preEventOnlyExpiries;
+- rawAnchorEligibleRows;
+- invalidAnchorEligibleRows;
+- nonInvalidAnchorEligibleRows;
+- rawAcceptanceEventKeys;
+- activeAcceptanceLifecycleEventKeys;
+- phantomPreEventExpiryEventKeys.
+
+The report explicitly labels this block:
+`QA_ONLY_NOT_HYPOTHESIS_CLEAN`.
+Cohort/PIT/anti-circularity overlays remain external and mandatory.
+
+Safety evidence:
+- V8 Repair CI run 36575682320: PASS;
+- V8 Regression Tests run 36575681884: PASS;
+- production build, syntax/offline regression, read-only production authorization preflight and latest after-market diagnostic all passed;
+- no Worker patch, Formal selection, ranking, capital, Cron, push or trading behavior was changed by PR #258.
+
+### PVE-191 — Legacy direct PV QA has a stale runtime-version assertion
+Status: QA_TOOL_VERSION_DRIFT_CONFIRMED / DO_NOT_MISCLASSIFY_AS_DATA_FAILURE
+
+`tests/pv_shadow_readonly_qa.mjs` still asserts the deployed runtime must match:
+`8.11.0-pv-shadow-v0.1-log-only`.
+
+Independent 2026-09-29 production readback and the current production patch chain verify runtime:
+`8.14.0-sector-gate-provenance-shadow`.
+
+Therefore the legacy direct QA can fail solely because its runtime string assertion is stale, even when PV Shadow remains present in the V8.14 build. Such a failure must be classified `QA_TOOL_VERSION_DRIFT`, not PV recorder/data failure.
+
+For current diagnostics, prefer the forward-compatible ephemeral QA/source-attestation path unless/until the legacy assertion is version-normalized. No production runtime change is implied.
+
+### PVE-192 — PVE-149 gate status at the 2026-09-29 21:31 receipt
+Status: PARTIAL_LIVE_GATE_EVALUATION / OUTCOMES_CLOSED
+
+Gate 0 — Provenance: PARTIAL_PASS
+- actual production runtime V8.14 receipt observed;
+- PR/run/job lineage known for the diagnostic;
+- no row-level PV artifact id / Worker version-id+etag tied to 9/29 PV rows yet.
+
+Gate 1 — Safety/Formal isolation: PARTIAL_PASS
+- regression production build preserves PV LOG_ONLY hooks and decisionImpact/formalCoreImpact contracts;
+- production preflight is read-only and authorized;
+- today's row-level PV runtime receipt/at-rest decisionImpact counts remain unobserved.
+
+Gate 2 — Market/operation context: PASS_FOR_CURRENT_PHASE
+- receipt was before 23:35 after-market decision clock;
+- prior scanDate 9/24 is expected at this clock phase;
+- no claim of 9/29 after-market scan success/failure is allowed yet.
+
+Gate 3 — Acquisition observability: ROW_LEVEL_UNOBSERVED
+- no actual 9/29 ephemeral D1 QA artifact was available in repository/connector evidence at this time;
+- measured zero is forbidden; state remains NOT_OBSERVED.
+
+Gate 4 — Baseline lineage/readiness: NOT_YET_EVALUABLE
+- 9/29 after-market bootstrap had not occurred.
+
+Gate 5 — Cohort provenance: 9/29_INTRADAY_UNCLEAN_CONFIRMED
+- actual scan/status still anchored to the 9/24 saved plan.
+
+Gate 6 — Feature QA: DATA_QA_ONLY / ROW_ELIGIBILITY_UNOBSERVED
+- cannot count H001/H002 clean common support without at-rest rows/baseline receipts.
+
+Gate 7 — Outcomes: CLOSED
+- no performance/threshold/promotion inspection authorized.
+
+### PVE-193 — Long-block stage V synthesis and exact post-23:35 hinge
+Status: FIRST_LIVE_LINEAGE_EVIDENCE_CAPTURED / WAITING_AFTER_MARKET_SELECTION_BOOTSTRAP
+
+This stage converts one previously structural expectation into observed production evidence: the 9/29 intraday cohort truly remained on the prior 9/24 scan/plan before the scheduled 9/29 after-market refresh.
+
+It also strengthens evidence governance:
+- scan freshness must respect the decision clock;
+- manual QA is diagnostic, not complete prospective coverage;
+- Acceptance QA denominators are now observable in an isolated read-only tool;
+- the legacy direct QA runtime assertion is stale and must not create a false data-quality alarm.
+
+No H001~H004 direction/status is promoted or rejected. No FORMAL_OPTIMIZATION_CANDIDATE exists. Formal Core remains LOCKED.
+
+Current Price-Volume evidence cursor: PVE-001 through PVE-193.
+
+## Exact continuation after PVE-193
+1. After the 2026-09-29 23:35 Formal after-market completion window, read the latest scan/status + cron receipt before any outcome inspection.
+2. Require `scanDate=2026-09-29` or classify the exact zero-plan/failed/missing reason; do not infer from time alone.
+3. Inspect `pvShadow.bootstrap` and `pvShadow.daily` runtime receipts, Formal safety, selected symbols, old/new plan overlap and per-symbol bootstrap result.
+4. For each non-skipped bootstrap row, inspect validSessions and lastMarketDate. For skipped cache rows, freshness remains UNKNOWN unless D1/baseline receipt resolves it.
+5. If a manual ephemeral D1 QA is available, use the newly merged Acceptance QA counters only as diagnostic row-quality evidence; it does not replace prospective coverage provenance.
+6. Determine 2026-09-30 row-level cohort classes: CONTINUING_FROM_PRIOR_MONITOR / NEW_AFTER_MARKET_SELECTION / REENTERED_WITH_EXISTING_CACHE / UNKNOWN, plus CLEAN/UNCLEAN/UNKNOWN eligibility.
+7. 2026-09-30 becomes the first potentially clean H001/H002 date only for rows passing all PVE-149 + PVE-174~192 gates. H003/H004 remain more restrictive.
+8. Keep Gate 7 closed until preregistered maturity/common-support requirements are met; no threshold tuning or Formal change.

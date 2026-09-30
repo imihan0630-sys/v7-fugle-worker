@@ -1,0 +1,36 @@
+{
+  "schemaVersion": "REDUCE_READD_FRICTION_V0_1",
+  "observedAt": "2026-09-28T19:14:00+08:00",
+  "domains": [
+    "D14-11",
+    "D15-11"
+  ],
+  "sourceAudit": {
+    "formalSignals": [
+      "BUY",
+      "ADD",
+      "REDUCE",
+      "SELL",
+      "STOP_LOSS"
+    ],
+    "readdSignalPresent": false,
+    "normalizedPositionStages": [
+      "NONE",
+      "FIRST",
+      "FULL"
+    ],
+    "reducedStatePresent": false,
+    "conclusion": "Current runtime does not implement a native REDUCED -> RE-ADD lifecycle."
+  },
+  "researchRules": [
+    "A REDUCE signal is not proof of a reduce fill.",
+    "A reduce fill is not proof that the system entered a REDUCED or RE-ADD-eligible Formal state.",
+    "Realized REDUCE->RE-ADD economics require positively linked actual reduce and re-add fills.",
+    "Simple pair identity requires same symbol and same re-added quantity; otherwise inventory accounting is required.",
+    "Actual fill prices already include realized execution price and generic slippage must not be subtracted again.",
+    "Signal/reference-price modeling may include explicit slippage but must remain MODELED, never ACTUAL."
+  ],
+  "completedSameQuantityIdentity": "q*(reduceFillPrice-readdFillPrice) - reduceCommission - reduceTax - readdCommission",
+  "currentStatus": "RUNTIME_READD_ABSENT / FRICTION_EVIDENCE_CONTRACT_READY / REALIZED_READD_ANALYSIS_BLOCKED",
+  "formalCoreImpact": false
+}

@@ -1,0 +1,74 @@
+{
+  "schemaVersion": "BROKER_BRANCH_MAIN_FORCE_SEMANTIC_GUARD_V0_1",
+  "updated": "2026-09-29 Asia/Taipei",
+  "researchOnly": true,
+  "formalCoreImpact": "NONE",
+  "outcomesUsed": false,
+  "question": "Can broker-branch net buying/selling be interpreted as a single main-force or beneficial-owner position?",
+  "officialSemantics": [
+    "TWSE buy/sell daily reports contain stock, broker/branch, execution price, buy shares and sell shares.",
+    "TWSE states broker stock trading data combine proprietary-dealer and brokerage-client transactions.",
+    "Where a broker has head office and branches, proprietary activity is aggregated into head office in the full daily report.",
+    "The complete all-stock ex-warrant branch report is a paid daily product; hot-stock/hot-broker subsets are separate selected products."
+  ],
+  "decisions": [
+    "BROKER_BRANCH_FLOW_IS_EXECUTION_AGGREGATION_NOT_BENEFICIAL_OWNER_IDENTITY",
+    "BRANCH_NET_BUY_DOES_NOT_PROVE_ONE_MAIN_FORCE",
+    "HEAD_OFFICE_FLOW_CAN_BE_DEALER_CONFOUNDED",
+    "HOT_STOCK_OR_TOP_RANK_SUBSETS_ARE_SELECTION_BIASED_FOR_UNIVERSE_INFERENCE",
+    "BROKER_CODE_AND_BRANCH_STRUCTURE_REQUIRE_VINTAGE_CONTROL",
+    "NO_AUTONOMOUS_DATA_PURCHASE"
+  ],
+  "positiveMechanisms": [
+    "Persistent same-branch concentration may proxy repeated order routing, coordinated demand, client clustering or dealer activity.",
+    "Cross-branch breadth/concentration may describe whether observed demand is diffuse or concentrated."
+  ],
+  "falsification": [
+    "One branch can aggregate many unrelated customers.",
+    "One investor can route through multiple brokers/branches.",
+    "Head-office rows may include proprietary trading, so customer intent is not identifiable.",
+    "A branch can switch client mix across time; branch name is not a stable beneficial-owner label.",
+    "Using only hot-stock/hot-broker tables conditions on attention/turnover and can manufacture apparent predictive strength.",
+    "Net branch buying can be inventory transfer, hedging, arbitrage or liquidity provision rather than directional conviction."
+  ],
+  "requiredResearchFields": [
+    "tradeDate",
+    "market",
+    "symbol",
+    "brokerCode",
+    "branchCode/name with vintage",
+    "buyShares",
+    "sellShares",
+    "buyValue when available",
+    "sellValue when available",
+    "headOfficeFlag",
+    "proprietaryMixKnown",
+    "sourceProduct",
+    "sourceVersion",
+    "capturedAt",
+    "firstKnownAt",
+    "coverageUniverse",
+    "selectionRule"
+  ],
+  "safeFeatures": [
+    "branchNetFlow/ADV",
+    "topKBranchConcentration",
+    "buySideBranchBreadth",
+    "sellSideBranchBreadth",
+    "branchPersistence",
+    "headOfficeVsBranchSplit",
+    "flowReactionInteraction"
+  ],
+  "forbiddenLabels": [
+    "MAIN_FORCE_IDENTITY",
+    "SMART_MONEY_IDENTITY",
+    "SINGLE_LARGE_HOLDER_POSITION"
+  ],
+  "sourceReadiness": {
+    "TWSEFullAllStockBranchReport": "OFFICIAL_MACHINE_PRODUCT_EXISTS / PAID / NOT_AUTHORIZED",
+    "TWSEHotStockHotBroker": "OFFICIAL_SELECTED_PRODUCT_EXISTS / SELECTION_BIAS_FOR_UNIVERSE_TESTS",
+    "TPExRelevantProducts": "OFFICIAL_PRODUCTS_EXIST / CONTRACT_SCOPE_NEEDS_SEPARATE_VALIDATION"
+  },
+  "status": "MECHANISM_AND_FALSIFICATION_DEFINED / BENEFICIAL_OWNER_UNIDENTIFIABLE / FULL_UNIVERSE_SOURCE_COST_GATED / OUTCOMES_CLOSED / FORMAL_UNCHANGED",
+  "exactNext": "Before any alpha test, freeze broker/branch code vintage and a complete-universe source contract. Do not substitute hot-stock subsets. If no authorized full-universe source exists, keep broker-branch signals research-only/UNKNOWN rather than scrape vendor leaderboards."
+}

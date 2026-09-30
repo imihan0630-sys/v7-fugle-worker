@@ -51,6 +51,31 @@ Restrictions:
 - stale/missing bars, suspensions and corporate actions must preserve UNKNOWN/provenance;
 - raw vs adjusted price semantics must be explicit for pattern/backtest work.
 
+### A1 historical source validation — 2026-09-28
+
+Historical daily A1 source adapters are now live-validated read-only against both the Core Base start era and a recent session.
+
+Accepted official historical endpoints:
+- TWSE: `/exchangeReport/MI_INDEX?response=json&date=YYYYMMDD&type=ALLBUT0999`.
+- TPEx: `/www/zh-tw/afterTrading/dailyQuotes?response=json&date=YYYY/MM/DD`.
+
+Live GitHub Actions smoke `36417360621` PASS:
+- 2017-01-03 TWSE ordinary four-digit equities: 898;
+- 2017-01-03 TPEx ordinary four-digit equities: 729;
+- 2026-09-24 TWSE ordinary four-digit equities: 1,085;
+- 2026-09-24 TPEx ordinary four-digit equities: 890;
+- all four payloads carried source-date evidence matching the requested date.
+
+Important negative evidence:
+- legacy TPEx `web/stock/aftertrading/DAILY_CLOSE_quotes/stk_quote_result.php?d=...` was live-tested and returned the latest market date instead of the requested 2017 date. It is therefore **REJECTED for System 2 historical backfill**.
+- the production parser fails closed on any requested-date/source-date mismatch.
+- transient transport/socket and retryable HTTP failures may be retried with bounded backoff; source-date/schema/OHLC integrity failures are non-retryable.
+
+Historical availability semantics remain deliberately conservative:
+- stored A1 historical rows use session-close finality as an after-market PIT lower-bound contract;
+- this is not claimed to be the historical HTTP endpoint's exact publication timestamp;
+- current historical raw prices remain `RAW`, and corporate-action continuity remains `UNVERIFIED` until B6 normalization is proven.
+
 ## A2 — TAIEX official index snapshot
 
 State: TIER_A_CURRENT; historical receipt timing is TIER_B_PIT_AUDIT.

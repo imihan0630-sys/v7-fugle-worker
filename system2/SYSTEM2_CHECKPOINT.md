@@ -450,8 +450,351 @@ Status: MVP_AND_SHADOW_P0_IMPLEMENTATION_IN_PROGRESS
 12. ✅ Source-arrival/decision-clock measurement contract, tests and manual read-only workflow implemented repository-side; no clock/Cron activated.
 13. ✅ Implement A5 filing-vintage + B2 derived-industry-snapshot observers, independent TWSE trading-calendar gate, V0.2 daily evidence bundle/readiness contracts, and isolated read-only scheduled research collection.
 14. ⏳ Accumulate same-day V0.2 evidence on independent official trading dates. Artifact aggregation/coverage audit is now automated read-only with deterministic anti-cherry-picking selection. 10 complete dates may reach PROVISIONAL_ELIGIBLE; 20 complete precise dates may reach FREEZE_ELIGIBLE. No retrospective substitution.
-15. ⏳ After evidence gates pass, propose the first exact after-close Decision Clock（決策時間點） for explicit owner review. System2 Worker Cron activation remains a separate later explicit owner gate.\n16. ✅ Implement SELECTED-compatible full-market accounting + Prediction Snapshot V0.1 archive projection — PR #221.\n17. ✅ Implement A1 per-symbol daily snapshot adapter and decision outcome tracker V0.1 — PR #222 / #223.\n18. ⏳ A1 historical primitive engine and one-strategy Limited Shadow assembler are implemented; connect official source retrieval and extend through multi-strategy ranking/capacity without enabling final selection.\n19. ⏳ Minimum execution simulator and monotonic outcome persistence are implemented; connect automatic future-session/benchmark/industry/corporate-action collection and scheduled invocation.\n20. ⏳ Prepare initial final-selection policy candidates/evidence for explicit owner approval; do not enable SELECTED generation before that gate.
+15. ⏳ After evidence gates pass, propose the first exact after-close Decision Clock（決策時間點） for explicit owner review. System2 Worker Cron activation remains a separate later explicit owner gate.\n16. ✅ Implement SELECTED-compatible full-market accounting + Prediction Snapshot V0.1 archive projection — PR #221.\n17. ✅ Implement A1 per-symbol daily snapshot adapter and decision outcome tracker V0.1 — PR #222 / #223.\n18. ✅ Repository-side A1 historical-window/factor adapter + limited daily Shadow orchestrator foundation implemented and CI-verified (PR #228/#230). Historical source population and physical D1 execution remain separate next steps.\n19. ⏳ Minimum execution simulator and monotonic outcome persistence are implemented in PR #227; connect automatic future-session/benchmark/industry/corporate-action collection and scheduled invocation without conflating signal returns with fills.\n20. ⏳ Prepare initial final-selection policy candidates/evidence for explicit owner approval; do not enable SELECTED generation before that gate.
+21. 🟡 CORE P0/P1 BACKTEST ENGINE（核心回測工程） foundation implemented on main: Historical Store + PIT Replay（時點重播） + partitioned Bulk Backtest Runner（大量回測執行器） + checkpoint/resume + Historical Base Dataset（歷史基礎研究樣本庫） + limited daily Shadow orchestrator are CI-verified. Remaining P0 is official historical source population, physical isolated-D1 backfill execution, first real full-market replay, outcome attachment, and later owner-authorized SELECTED policy.
+    - P0: Historical Data Store（歷史資料庫）, bulk/partitioned runner（大量分批執行器）, PIT Replay（時點重播）, checkpoint/resume（斷點續跑）, reusable factor cache（因子快取）, full-universe accounting, versioned strategy/policy replay, Base Dataset（基礎研究樣本庫） generation and D1/D3/D5/D10/D20 + MFE/MAE outcome linkage.
+    - P0 must support whole eligible Taiwan-equity universes across multi-year windows through batch/stream execution; it must not be architected around manual per-symbol runs.
+    - Historical replay is research evidence, not prospective Shadow evidence. It must preserve survivorship/delisting/listing-date boundaries, corporate-action state, source availableAt/firstKnownAt and PIT UNKNOWN semantics; no retrospective data may be relabeled as prospective Shadow.
+    - P1: reusable condition-comparison API, parameter sweeps, Regime/industry/year stratification, execution-cost comparison, strategy-version A/B comparison, research-facing query/report surfaces and optional UI comparable to an XQ-style interval/condition backtest workflow.
+    - Fugle may be used contract-by-contract for data gaps or intraday needs, but bulk historical replay should preferentially reuse official/history stores and cached normalized data so repeated research does not consume live API quota unnecessarily.
+
+## 2026-09-28 ordered 1→6 implementation verification
+
+Owner authorized the six-step build order: A1 Historical Window（歷史視窗） → Historical Store（歷史資料庫） → PIT Replay（時點重播） → Bulk Backtest Runner（大量回測執行器） → Historical Base Dataset（歷史基礎研究樣本庫） → Daily Shadow Orchestrator（每日影子編排器）.
+
+Repository readback confirms:
+- PR #228 / main `1a3f98750e811bf548a25216f24fbc16e813b70b`: Historical Store + PIT Replay foundation; System2 Research CI `36403535050` PASS; V8 Regression `36403535032` PASS.
+- PR #229 / main `446f67b4198474d93f6023c88d2f05488123c2fe`: partitioned Bulk Backtest Runner + checkpoint/resume + Historical Base Dataset; System2 Research CI `36404951784` PASS; V8 Regression `36404951801` PASS.
+- PR #230 / main `c442442edea9601fe6f959977b800beba87b04c3`: daily limited Shadow orchestrator V0.1; System2 Research CI `36405406419` PASS. Final selection remains disabled.
+- Incremental Historical Backfill Coordinator V0.1 added in `720af100115dd8aeb8450cc766d9094b99e0408a`; CI PASS. Dedicated test added in `fbbaa008c1626d4dd78b0475bb9591e190137000`; System2 Research CI `36415120193` PASS.
+- Backfill semantics now explicitly support an initial Core Base from 2017-01-01 and incremental continuation from the day after each market's last stored date. The fixture proves lastStoredDate=2026-09-24 produces effectiveStart=2026-09-25 rather than a full reload.
+- No real historical market data has yet been bulk-populated into isolated System2 D1 by this step; current historical/backtest tests are synthetic fixtures. Do not describe the 2017→present Base Dataset as populated until physical source ingestion/readback is verified.
+- Nearest engineering action: freeze source-specific official TWSE/TPEx historical fetch adapters, execute isolated incremental backfill, verify row/date/symbol coverage and PIT/continuity states, then run the first real full-market historical replay.
+
+## 2026-09-28 official historical A1 physical-ingest verification
+
+System 2 historical engineering has crossed from synthetic-only tests into real official-source + isolated-D1 validation.
+
+Official source validation:
+- accepted TWSE historical source: `MI_INDEX?response=json&date=YYYYMMDD&type=ALLBUT0999`;
+- accepted TPEx historical source: `afterTrading/dailyQuotes?response=json&date=YYYY/MM/DD`;
+- legacy TPEx `stk_quote_result.php?d=...` is rejected because live testing showed it can ignore the requested historical date and return the latest date;
+- read-only source smoke run `36417360621` PASS with exact source-date matching:
+  - 2017-01-03 TWSE 898 ordinary four-digit equities;
+  - 2017-01-03 TPEx 729;
+  - 2026-09-24 TWSE 1,085;
+  - 2026-09-24 TPEx 890.
+
+Physical isolated-D1 verification:
+- cloud read-only audit `36418324013` found `system2-research` at schema 0.5 with 26 tables before historical migration; no historical/backtest tables existed yet.
+- guarded physical smoke `36418811303` upgraded only isolated `system2-research` to schema 0.7 and persisted 2017-01-03 official A1 data:
+  - TWSE 898 + TPEx 729 = 1,627 historical bars;
+  - all bars accounted;
+  - completion receipts written last;
+  - ambiguous canonical revisions = 0;
+  - observed D1 usage: 8,140 rows read, 9,770 rows written, database size_after ≈ 2.02 MiB;
+  - System1 production database/runtime/Cron unchanged.
+- first 2026-09-24 attempt encountered a transient upstream TLS/socket termination after the TWSE side had completed. This was diagnosed as transport failure, not quota/schema/content failure.
+- source adapter was hardened with bounded retry/backoff for transport/retryable HTTP errors; source-date/schema/OHLC integrity failures remain non-retryable.
+- retry run resumed from durable completion state: TWSE 1,085 was `ALREADY_COMPLETE`, only TPEx 890 was added, and final 2026-09-24 coverage became TWSE 1,085 + TPEx 890 with zero ambiguous canonical revisions.
+- after the two measured dates, D1 `size_after` was ≈ 3.91 MiB. The retry segment observed 12,050 rows read / 5,344 rows written while inserting only the missing TPEx side.
+- this validates incremental/resumable physical ingestion, but also demonstrates that row-wise D1 storage/write amplification is material.
+
+Current scale constraint:
+- Cloudflare's current published Workers Free D1 limits are 500 MB per database and 100,000 rows written/day; Workers Paid allows 10 GB per database and materially higher included writes.
+- therefore **do not launch the full 2017→present row-wise D1 backfill blindly** until the historical raw-storage mode is frozen. Engineering should evaluate a packed/cold historical representation (or another isolated historical store) while keeping D1 for indexes, receipts, recent windows, Base Dataset and Shadow results as appropriate.
+- this is a storage-scale engineering gate, not a strategy/formal-selection gate. No final SELECTED policy, Decision Clock, Worker Cron or real trading behavior was changed.
+
+## 2026-09-28 official historical source adapter progress
+
+- Added `system2/runtime/official_monthly_history_adapter_v0_1.mjs` in commit `358d16e3d247d1fc96073350ecee3cfabb7dad75`.
+- Added fixture/normalization tests in commit `ed11cf3c362115c5fb7dfddfd767e8d674c365e0`; System2 Research CI run `36422600827` PASS.
+- TWSE monthly per-security source contract uses the official TWSE STOCK_DAY monthly query host and normalizes date / volume / turnover / OHLC / change / transactions.
+- TPEx monthly per-security source contract uses the official TPEx historical individual-stock monthly query host and normalizes ROC dates to Gregorian dates.
+- The adapter is source-format only; it does not itself authorize historical availability semantics beyond the configured conservative session-close basis.
+- Official-source research confirms TWSE/TPEx historical individual-stock pages cover the 2017 Core Base horizon.
+- Survivorship control is now explicit: historical backfill must seed from both currently listed securities and delisted/de-TPEx securities, not from today's live symbol list alone. TWSE/TPEx official delisting registries are available; TWSE current ISIN registry exposes listing dates.
+- Next implementation unit: historical universe registry/adapters (current + delisted union), then source-backed backfill smoke against a bounded date/symbol slice before large D1 population.
+
+## 2026-09-28 packed historical cold-store verification
+
+The row-wise historical D1 scale gate has been addressed with a packed cold-history research path.
+
+Implemented:
+- schema V0.9 migration `system2/sql/0005_historical_packs.sql` with yearly per-symbol A1 packs and pack-ingest receipts;
+- `system2/runtime/historical_pack_store_v0_1.mjs` for immutable pack persistence, idempotent reruns, conflict rejection and date-range unpack/query;
+- remote D1 adapter `run()` support required by the pack persistence path;
+- isolated D1 provision upgraded to schema 0.9 with 35 System2 tables and read/write sentinel verification;
+- existing bounded/physical historical smoke scripts aligned to schema 0.9 without changing System1/V8 production resources.
+
+Real-source pack smoke:
+- workflow: `System2 Historical Pack Real-Source Smoke`, run `36427386634`, PASS;
+- source period: 2026-08-03 through 2026-08-31, 21 official trading dates;
+- bounded symbols: TWSE 2330/2454; TPEx 3105/6488;
+- official full-market rows read before symbol filtering: TWSE 22,810; TPEx 18,646;
+- packed round-trip rows: 42 TWSE + 42 TPEx;
+- TWSE payload 3,909 JSON bytes -> 1,587 gzip bytes -> 2,116 Base64 bytes (gzip ratio 0.4060; Base64/storage ratio 0.5413);
+- TPEx payload 3,825 JSON bytes -> 1,606 gzip bytes -> 2,144 Base64 bytes (gzip ratio 0.4199; Base64/storage ratio 0.5605);
+- all four packs inserted and unpacked back to identical date/OHLC/volume/value/transaction/change rows with PIT eligibility preserved;
+- D1 metrics for the smoke: 18 requests, 8 rows read, 30 rows written including provisioning/sentinels/receipts, size_after 4,182,016 bytes;
+- System1 production isolation check PASS; V8 Regression run `36427386650` PASS; System2 Research CI for the smoke script `36427356631` PASS.
+
+Interpretation:
+- packed yearly-per-symbol storage is materially more space/write efficient than one D1 row per stock-day;
+- the bounded four-symbol month proves correctness but is not sufficient by itself to authorize a ten-year bulk load;
+- a read-only full-market month compression benchmark is the next scale test. Full 2017→present backfill remains intentionally not started until that benchmark bounds projected storage.
+
+## 2026-09-28 full-market pack scale benchmark
+
+Read-only full-market compression benchmark is complete and PASS.
+
+- workflow: `System2 Historical Pack Full-Market Benchmark`;
+- corrected run head `432f590e0f0df308dd9f1852609e22e98e905bfd`; benchmark job PASS;
+- period: 2026-08-03 through 2026-08-31, 21 official trading dates;
+- TWSE: 22,810 stock-day rows, average 1,086.19 ordinary equities/day;
+- TPEx: 18,646 stock-day rows, average 887.90 ordinary equities/day;
+- combined: 41,456 bars -> 1,977 market+symbol+year packs;
+- canonical JSON: 3,587,823 bytes;
+- gzip: 1,389,468 bytes (ratio 0.3873);
+- Base64 storage payload: 1,855,256 bytes (ratio 0.5171);
+- per-bar observed payload: JSON 86.55 bytes / gzip 33.52 bytes / Base64 44.75 bytes;
+- conservative 4.7M-bar projection: gzip ≈150.2 MiB, Base64 payload ≈200.6 MiB before SQLite/index/receipt overhead;
+- month-sized packs overstate fixed pack overhead relative to full-year packs, so the full-year representation is expected to compress at least as well, subject to direct yearly verification;
+- benchmark performed no D1 writes and no System1 mutation; isolation PASS.
+
+Scale decision:
+- row-wise multi-million-bar D1 storage remains rejected for the historical cold archive;
+- yearly per-symbol packed storage is promoted from bounded experiment to the preferred P0 historical cold-store representation;
+- full 2017→present ingestion must still be staged by year with durable completion receipts and coverage checks, not executed as one unbounded job;
+- first production-scale research backfill unit is calendar year 2017, executed in isolated System2 infrastructure only. This is historical research storage, not strategy/final-selection authorization.
+
+## 2026-09-28 external cold-object storage V1.0 implementation
+
+The accepted packed-history design is now implemented as an external object-store path rather than continuing to place Base64 payloads in D1.
+
+Repository implementation:
+- migration `system2/sql/0006_historical_cold_store.sql` advances the isolated System2 schema to V1.0 and adds D1-only manifests, resumable checkpoints, immutable completion receipts and historical-universe registry receipts;
+- yearly per-symbol `.json.gz` bytes use deterministic content-addressed R2 keys and separate payload SHA-256 / compressed-object SHA-256 verification;
+- object write is create-only; identical reruns reuse the object/manifest, while a differing object, manifest, checkpoint, receipt or universe membership fails closed as `IMMUTABLE_CONFLICT`;
+- object commit precedes D1 manifest commit; a failure between the two leaves at most an orphan object, and retry safely reuses it before writing the manifest;
+- final receipt is written only after all expected objects and manifests are accounted for; chunk checkpoints make partial annual runs resumable; a completed-receipt fast path recomputes its manifest rolling hash and verifies every referenced R2 object before accepting `ALREADY_COMPLETE`;
+- old V0.9 inline D1 packs remain read-compatible for bounded smoke evidence, but the annual backfill script no longer calls the inline bulk-persistence path;
+- unpack now produces deterministic `barHash`, keeps the true backfill capture time as `observedAt`, retains conservative per-session `availableAt`, and restores source provenance;
+- the cold loader is directly usable by PIT Replay and the partitioned Bulk Backtest Runner;
+- the backtest loader reads only the requested historical registry ID and exposes active membership fields without future delisting dates, preserving survivorship control;
+- historical-universe registry persistence is immutable, rerun-safe and receipt-last.
+
+Safety/operations:
+- the 2017 workflow is now `workflow_dispatch` only, not push-triggered;
+- it targets isolated `system2-research` plus an isolated R2 bucket and requires separate least-privilege R2 object credentials;
+- repository tests cover object/manifest/receipt immutability, retry with a later capture timestamp, object corruption, PIT replay, Bulk Backtest integration, registry persistence, AWS SigV4 R2 access and workflow isolation;
+- System1 `Worker.js`, root `wrangler.toml`, Formal Core, SELECTED policy, Decision Clock, Worker Cron and trading behavior are unchanged.
+- PR #245 validation evidence: System2 Research CI run `36434552698` PASS, V8 Regression run `36434552278` PASS, and bounded official-source packed readback run `36434541564` PASS against isolated `system2-research` schema V1.0.
+- An earlier PR smoke run `36434206488` correctly failed closed when default source-row enrichment changed an already frozen V0.9 payload hash. The fix makes provenance enrichment explicit only for the new external-cold annual path; the bounded legacy rerun then passed without rewriting existing packs.
+
+Superseded inline-backfill evidence:
+- GitHub runs `36429244651` and `36429895255` applied schema V0.9 successfully but both TWSE and TPEx jobs failed in the inline annual backfill step before completion;
+- no annual completion receipt from those runs is accepted as evidence, and the automatic inline-D1 workflow has been replaced by the manual-only external cold-object path rather than retried blindly.
+
+Physical status:
+- GitHub run `36434206278` applied/reverified isolated `system2-research` schema V1.0 with 39 tables, write/read verification PASS and production-database/runtime isolation PASS;
+- no isolated R2 bucket/credential readback is yet recorded;
+- therefore the 2017→present external cold backfill and first real full-market replay remain not started on this new path;
+- exact next action is isolated R2 provisioning/credential setup, bounded object+manifest smoke, then 2017 TWSE/TPEx annual backfill and coverage/readback verification.
+
+## 2026-09-29 R2 physical smoke qualification
+
+The external cold-object path is now physically qualified against the isolated R2 bucket `system2-historical-research`.
+
+- owner provisioned the private Standard-class bucket and least-privilege account object read/write credentials, stored only in the GitHub `system2-research` environment;
+- PR #246 merged to main as `3623241fc5c2578360bb75c96f047b4fce56ebc9`;
+- bounded R2 physical smoke run `36488764511` PASS using official 2026-09-24 data:
+  - TWSE 2330: 353-byte gzip object, source-date evidence exact, object SHA-256 readback PASS, unpack PASS, create-only rerun guard PASS;
+  - TPEx 6488: 358-byte gzip object, source-date evidence exact, object SHA-256 readback PASS, unpack PASS, create-only rerun guard PASS;
+  - D1 annual manifest writes = 0; full backfill = false; System1 runtime unchanged;
+- the first physical attempt correctly exposed an HTTP object-metadata bug: storing gzip bytes with `Content-Encoding: gzip` caused Node/undici to transparently decompress GET responses before byte-level SHA verification;
+- fixed semantics now store `.json.gz` as opaque `application/gzip` bytes without default `Content-Encoding`; both remote S3 adapter and Worker R2 binding adapter use the same exact-byte policy;
+- latest PR head `473e12ac38718a9db6122d1359a1371694539c0b` passed System2 Research CI run `36488965872` and V8 Regression run `36488965742`;
+- the two tiny smoke objects live only under `smoke/r2-physical-v0.2/` and cannot collide with annual production research keys under `a1/v0.1/`.
+
+R2 provisioning/readback is no longer a blocker. The exact next P0 action is the manual-only 2017 TWSE annual external-cold backfill, followed by coverage/hash/manifest/receipt verification; only after TWSE passes should the 2017 TPEx annual backfill run.
+
+## 2026-09-29 first 2017 TWSE annual backfill attempt + calendar-source repair
+
+The first manual-only 2017 TWSE external-cold annual backfill was launched and failed closed before any annual market-data ingest.
+
+Evidence:
+- workflow run `36545375167`, event `workflow_dispatch`, market `TWSE`, year `2017`;
+- isolated D1 migration job PASS;
+- annual backfill job failed while resolving the historical trading calendar, before the daily A1 range or annual R2 pack write path began;
+- failure: both Gregorian and ROC `holidaySchedule?queryYear=...` requests returned payloads whose year did not match 2017, so the strict parser rejected them rather than relabeling current-year data as historical evidence.
+
+Root cause and official-source revalidation:
+- the live TWSE holidaySchedule endpoint currently ignores historical `queryYear` values and returns the current-year schedule;
+- the TWSE official `FMTQIK` monthly market report remains historically queryable and directly enumerates actual market-session dates for a requested historical month;
+- 2017-01 was externally revalidated against the live official endpoint: the payload reports `date=20170101`, title `106年01月市場成交資訊`, and exact January session rows beginning 2017-01-03.
+
+Repair:
+- PR #250 merged as `26764ed3c6950b96d4ab43132b57b5808423a27c`;
+- historical calendar resolution keeps strict holidaySchedule year validation, then falls back to 12 official TWSE FMTQIK monthly reports for historical years when holidaySchedule is unusable;
+- FMTQIK payload month/year must exactly match the requested month, dates cannot escape the month, duplicate session dates fail closed, and transient transport failures retry without converting integrity errors into success;
+- exact `tradingDates` are used directly when available, preserving any official exceptional sessions rather than reconstructing sessions from generic weekday assumptions;
+- backfill provenance now records the actual calendar source;
+- PR head `b0f56f077fd54f1aacb8414515531b6202384215` passed System2 Research CI run `36546387616` and V8 Regression run `36546387647`.
+
+No 2017 annual completion receipt is claimed from the failed run. The next action remains a manual TWSE-only rerun from current main. TPEx must not start until the repaired TWSE annual backfill completes and its object hashes, D1 manifests, completion receipt and coverage are verified.
 
 ## Current boundary
 
 Research/design/code prototype is not blocked. Isolated D1 and inert Worker already exist, but prospective always-on Shadow accumulation remains intentionally inactive. A5/B2 observer engineering is complete; the immediate boundary is accumulation of independent same-day V0.2 evidence beginning no earlier than the 2026-09-29 official session. No exact Decision Clock is frozen; capture is false; Worker Cron is 0. The GitHub Actions research schedule is read-only evidence collection and is not the Worker Cron. No production-shared storage or System 1/V8 change is authorized or needed.
+
+
+## 2026-09-29 bounded daily resonance monitor V0.1
+
+Owner-requested System 2 intraday monitoring research module is implemented and merged through PR #252 as main commit `9b1cdfea376f322a1777bd25afe1034439a6b1f5`.
+
+Frozen V0.1 scope:
+- intraday monitoring is **bounded/preselected only**; it does not scan the full Taiwan market;
+- monitor active-cap is 9 unique symbols, matching the requested 3+3+3 set; this is narrower than the existing 12-symbol global System 2 candidate/watch capacity;
+- the monitored trend/momentum timeframe is **daily K**;
+- EMA16 / EMA64 are daily-K calculations;
+- Impulse MACD uses the internal research formula contract documented in `SYSTEM2_DAILY_RESONANCE_MONITOR_V0_1.md`;
+- the still-open current daily bar can produce a **PROVISIONAL** 3/3 resonance; it is not relabeled CONFIRMED unless the current-date daily bar is FINAL after the official close and all three conditions still hold;
+- missing current-date daily bar blocks the current-date monitor instead of silently reusing the prior day's state;
+- 15-minute K is auxiliary execution/timing context only and cannot change the daily resonance state;
+- the three EMA/price/Impulse conditions remain one correlated price-derived family state, not three independent factor-family votes;
+- chart-ready series now includes daily OHLCV, EMA16, EMA64, Impulse MD/signal/histogram, cross states, condition counts and visual/display signals;
+- current module is research/shadow only: `decisionImpact=false`, `notificationImpact=false`, `orderImpact=false`, `fullMarketScan=false`;
+- no Worker Cron, live push, live quote adapter, persistence, order routing or System 1/V8 Formal logic was enabled or modified.
+
+Verification:
+- System2 Research CI run `36573657584` PASS on final PR head;
+- V8 Regression run `36573657588` PASS;
+- PR #252 merged with System 1/V8 isolation preserved.
+
+Next integration unit for this monitor:
+1. isolated live-market adapter/current-day daily-OHLC aggregator for only the bounded selected symbols;
+2. persistent signal-episode/dedup semantics so provisional 1/3 -> 2/3 -> 3/3 transitions can be replayed without notification spam;
+3. chart/read API surface for K candles + EMA16/64 + Impulse MACD + ENTRY/EXIT markers;
+4. Prospective Shadow validation across trend/range/regime/repaint/whipsaw/cost conditions before any live notification authority is armed.
+
+This monitor does not change the separate P0 historical cold-backfill continuation point.
+
+
+## 2026-09-29 resonance live pipeline V0.1
+
+The next bounded intraday integration unit is now implemented and merged through PR #256 as main commit `f1e84e28451e082b895a4cf99bcf52bb5729c09c`.
+
+Implemented repository-side:
+- `system2/runtime/daily_resonance_live_adapter_v0_1.mjs`: normalizes an already-fetched quote snapshot into the current-date daily OHLC bar for at most 9 preselected symbols; no network calls are performed inside the module.
+- confirmation firewall requires source `FINAL` + independent official-session-close confirmation + observation at/after 13:30 Asia/Taipei + no semantic/trial/halt/suspension/continuity blocker before a bar can be treated as FINAL.
+- no-trade current-date state, unverified quote semantics, trial quotes, halt/suspension and unresolved price continuity fail closed instead of borrowing prior-day state.
+- `system2/runtime/daily_resonance_episode_v0_1.mjs`: replayable PROVISIONAL_ACTIVE / CONFIRMED_ACTIVE / RETRACTED / RELEASED episode state with OPEN_PROVISIONAL / OPEN_CONFIRMED / CONFIRM / RETRACT / RELEASE events for future dedup.
+- episode state is research-only and explicitly keeps `shouldNotify=false`, `notificationImpact=false` and `orderImpact=false`.
+- `system2/runtime/daily_resonance_read_model_v0_1.mjs`: combines adapter quality, daily resonance state, episode state and the existing chart model into a read-only UI/API payload without exposing an HTTP route yet.
+- durable design contract: `system2/SYSTEM2_DAILY_RESONANCE_LIVE_PIPELINE_V0_1.md`.
+
+Verification:
+- PR #256 System2 Research CI run `36575131274` PASS;
+- PR #256 V8 Regression run `36575131256` PASS;
+- post-merge System2 Research CI run `36575253408` PASS;
+- System 1/V8 Formal Core and production runtime remain unchanged.
+
+Current safety boundary:
+- bounded/preselected only; no full-market intraday scan;
+- no live market network call inside the new modules;
+- no D1 persistence;
+- no Worker Cron;
+- no live push;
+- no order routing;
+- 15-minute K remains execution/timing context only and cannot rewrite the daily resonance state.
+
+Exact next continuation for this monitor:
+1. freeze a source-specific normalized quote contract using verified field/unit/timestamp semantics;
+2. add isolated research-only persistence for resonance episodes/snapshots without enabling capture;
+3. add a read-only System 2 API/page consuming the frozen read model;
+4. only after prospective Shadow evidence covers repaint, whipsaw, Trend-vs-Range, Regime, costs, MFE/MAE and redundancy may live notification authority be proposed.
+
+This continuation remains independent from the separate historical cold-backfill P0 lane.
+
+
+## 2026-09-29 Fugle resonance quote source contract V0.1
+
+The first source-specific input contract for the bounded daily resonance monitor is implemented and merged through PR #259 as main commit `b5f14586847c3fa8fa724b78b2f4dbfabfb6f225`.
+
+Implemented:
+- `system2/runtime/fugle_resonance_quote_normalizer_v0_1.mjs`: pure Fugle MarketData v1 Quote + Ticker normalizer; performs no HTTP call and stores no secret.
+- only regular `EQUITY` ordinary stocks are eligible for semantic certification; Ticker must identify `securityType=01`, `securityStatus=NORMAL`, TWD and a valid board lot.
+- current daily OHLC uses Fugle `openPrice/highPrice/lowPrice/closePrice`; trial-capable `lastPrice` is not used as the OHLC close.
+- numeric provider times are treated as Unix microseconds, converted independently from local `fetchedAt`, and checked against the requested Asia/Taipei market date and capture order.
+- quote/Ticker symbol, date, exchange and market identity are cross-checked.
+- cumulative quote volume is promoted to share units only after the candidate `tradeVolume * boardLot` denominator reconciles `tradeValue / shares` with the provider `avgPrice`; otherwise the normalized semantic contract is not certified.
+- `isClose` supplies only provider finality. Downstream confirmation still requires independent official-session-close confirmation at/after 13:30 Asia/Taipei.
+- delayed close and temporary price-limit matching interruption are now explicit downstream blockers in `daily_resonance_live_adapter_v0_1.mjs`.
+
+Official documentation anchors used:
+- Fugle Intraday Quote: `https://developer.fugle.tw/docs/data/http-api/intraday/quote/`
+- Fugle Intraday Ticker: `https://developer.fugle.tw/docs/data/http-api/intraday/ticker/`
+- Fugle Intraday Candles: `https://developer.fugle.tw/docs/data/http-api/intraday/candles/`
+- Fugle Intraday Trades: `https://developer.fugle.tw/docs/data/http-api/intraday/trades/`
+
+Verification:
+- PR #259 System2 Research CI run `36577069527` PASS;
+- PR #259 V8 Regression run `36577069814` PASS;
+- post-merge System2 Research CI run `36577213150` PASS;
+- System 1 / V8 Formal Core and production runtime remain unchanged.
+
+Current safety boundary remains:
+- bounded/preselected monitor only, max 9 unique active symbols;
+- no full-market intraday scanner;
+- no live fetch loop in the new source normalizer;
+- no D1 persistence;
+- no Worker Cron;
+- no live notification;
+- no order routing;
+- 15-minute K remains execution/timing context only.
+
+Exact next continuation:
+1. add isolated research-only persistence for resonance snapshots/episodes/source receipts under additive `s2_` tables;
+2. add a read-only System 2 API/page that consumes the frozen read model;
+3. keep capture unarmed while prospective Shadow evidence is accumulated;
+4. only after repaint/whipsaw/Trend-vs-Range/Regime/cost/MFE-MAE/redundancy gates pass may notification authority be proposed.
+
+The historical cold-backfill P0 lane remains separate and unchanged.
+
+## 2026-09-29 Daily Resonance global integration V0.1
+
+The 00.1 global control room has implemented the owner-authorized bounded Daily Resonance integration from current main. Repository implementation is complete; physical post-merge deployment evidence is not yet claimed in this checkpoint entry.
+
+Implemented:
+- additive isolated D1 migration `0007_daily_resonance_integration.sql`, advancing expected schema to V1.1 with seven resonance tables;
+- next-session pool activation from immutable `s2_capacity_runs.active_assignments_json`, deduplicated to max 9 unique symbols and max 3 per strategy, with zero-pick/fail-closed behavior and no full-market scan;
+- live Fugle Ticker + adjusted daily-history session cache, continuity verification and per-cycle Intraday Quote refresh;
+- reuse of the frozen daily EMA16 / EMA64 / Impulse MACD monitor, live-adapter confirmation firewall, episode state machine, chart and read-model modules;
+- WATCH/HOLD lifecycle resolution from isolated System 2 simulated positions, preserving existing BUY_RESONANCE and EXIT_RESONANCE semantics without changing the resonance formula;
+- D1 run/snapshot/latest/episode/event history with episode dedup;
+- read-only `/api/system2/resonance`, pool and per-symbol routes plus the auto-refreshing `/resonance` UI;
+- isolated Worker Cron configuration for 5-minute bounded monitoring and 19:00 pool refresh; runtime-local filters enforce 08:55–13:40 Asia/Taipei and the independent 13:30 close gate;
+- guarded main-branch deployment workflow with D1 migration, secret presence checks, schedule/API/UI readback and System 1 boundary checks.
+- all repository workflows that mutate isolated System 2 D1 share the `system2-isolated-d1-writer` concurrency group, preventing overlapping full migration replays from temporarily exposing an older schema-version marker.
+
+Safety boundary:
+- general System 2 selection capture remains false;
+- notification and order impact remain false;
+- live push remains a later owner gate;
+- final selection policy is not invented or enabled;
+- an absent upstream capacity receipt produces `NO_ACTIVE_PRESELECTED_POOL` rather than a fabricated watchlist;
+- 15-minute K remains execution/timing only;
+- System 1/V8 production files and Formal Core are unchanged.
+
+Verification at this repository stage:
+- 92 System 2 tests pass locally;
+- four unrelated Decision Clock packaging tests require the Linux `zip` executable absent on the Windows host and are delegated to GitHub CI;
+- all System 2 runtime/deploy/script modules pass syntax checks;
+- System 1 `Worker.js` and root `wrangler.toml` have no working-tree diff.
+
+Exact next continuation:
+1. merge only after System2 Research CI and V8 Regression pass;
+2. apply isolated D1 V1.1 and deploy the bounded Worker/Cron through the guarded workflow;
+3. record physical health/API/UI/schedule readback and actual active-pool state;
+4. accumulate prospective resonance evidence before proposing live notification or any strategy/capital promotion.

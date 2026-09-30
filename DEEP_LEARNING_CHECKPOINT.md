@@ -1032,3 +1032,13 @@ YES for research infrastructure integrity: resolving the actual archive lineage 
 - Status: WORTH_SHADOW_RESEARCH / METHODOLOGY_FROZEN_FOR_SYNTHETIC_FALSIFICATION. No FORMAL_OPTIMIZATION_CANDIDATE; no runtime/Formal change.
 - Engineering: Class A for documentation/synthetic fixtures/offline aggregation; Class B for new exact-date recorder fields, odd-lot capture or shared runtime persistence; Class C for any Formal 15m BUY/entry/sizing/action change.
 - Exact next continuation: freeze implementation-shortfall sign conventions/equations; build synthetic adversarial fixtures for 0%, 25/75%, cancel favorable/adverse, regular-only, odd-lot-only and mixed chains; audit current recorder schema for parentDecisionId/intendedQty/child fills/cancel reason/ACTUAL-vs-MODELED provenance; keep missing fields UNKNOWN; prospective inference waits for complete event/date plus mechanism coverage; Formal Core remains LOCKED.
+
+
+## Event & News D17 bounded official-disclosure source proof — 2026-09-28 Asia/Taipei
+- Resumed the D17 source-only exact-next. TWSE/TPEx official daily material-disclosure feeds were captured twice with raw hashes and capture clocks; no outcomes were read.
+- Both feeds preserve source publication time and full disclosure text under catalog-declared daily/open-data terms, but neither exposes native item/version/correction lineage.
+- PIT conclusion: source publication time is descriptive; `capturedAt` is the conservative replay clock until API availability is authenticated. A daily catalog frequency cannot be relabeled an intraday SLA.
+- Duplicate/novelty counterevidence: most observed rows shared 07:00:04 and referenced much older fact dates/multi-month notice periods. A daily disclosure row is not automatically a new event.
+- Research-only observer/tests now deterministically normalize ROC clocks, map both schemas and fail revision/removal semantics closed to UNKNOWN.
+- D11-08 and D17-01/02/09 remain L2; no maturity inflation, no outcome join, no R09, no Formal/runtime/deployment change.
+- Exact next: fixed-cadence immutable multi-day capture over at least three trading sessions plus one after-hours interval; quantify capture-delay distributions, cross-day recurrence and change/removal classes; search for native correction identifiers; keep broad licensed general-news SOURCE_NEEDED.

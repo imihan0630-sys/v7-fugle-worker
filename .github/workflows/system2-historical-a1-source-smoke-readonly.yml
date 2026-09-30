@@ -1,0 +1,30 @@
+name: System2 Historical A1 Source Smoke Readonly
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "system2/runtime/official_historical_a1_source_v0_1.mjs"
+      - "system2/tests/official_historical_a1_source_v0_1.test.mjs"
+      - "system2/scripts/smoke_official_historical_a1_v0_1.mjs"
+      - ".github/workflows/system2-historical-a1-source-smoke-readonly.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  smoke:
+    name: Official historical A1 read-only smoke
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Run System2 official historical A1 smoke
+        run: node system2/scripts/smoke_official_historical_a1_v0_1.mjs

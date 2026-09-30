@@ -1,0 +1,97 @@
+{
+  "schemaVersion": "0.1",
+  "modules": [
+    "D13-09",
+    "D13-11"
+  ],
+  "name": "BLS macro release / surprise PIT contract",
+  "status": "RESEARCH_ONLY_CONCEPT_FROZEN_EVIDENCE_PENDING",
+  "formalCoreImpact": "NONE",
+  "updatedAt": "2026-09-28T18:58:00+08:00",
+  "objects": [
+    "SCHEDULED_EVENT",
+    "INITIAL_RELEASE_VALUE",
+    "CONSENSUS_EXPECTATION",
+    "SURPRISE",
+    "MARKET_REACTION"
+  ],
+  "officialReleaseClock": {
+    "CPI": "08:30 America/New_York",
+    "PPI": "08:30 America/New_York",
+    "EmploymentSituation": "08:30 America/New_York",
+    "sameUSCalendarDayAtTaiwan1810": "FUTURE_REALIZATION_BUT_SCHEDULE_KNOWN"
+  },
+  "requiredEventFields": [
+    "eventId",
+    "eventType",
+    "referencePeriod",
+    "scheduledAt",
+    "scheduledTimezone",
+    "capturedAt",
+    "source",
+    "sourceVersion",
+    "timeToReleaseMinutes"
+  ],
+  "requiredInitialReleaseFields": [
+    "initialActual",
+    "priorValueAsPublishedInSameRelease",
+    "releasePublishedAt",
+    "capturedAt",
+    "revisionStatus"
+  ],
+  "requiredConsensusFields": [
+    "provider",
+    "consensusCapturedAt",
+    "forecastCount",
+    "medianOrMean",
+    "unit",
+    "referencePeriod",
+    "lastUpdateBeforeRelease"
+  ],
+  "surprise": {
+    "raw": "initialActual-consensus",
+    "standardized": "rawSurprise / trailingHistoricalStdDevOfSurprise",
+    "scaleRule": "Trailing denominator uses only prior events; insufficient history => UNKNOWN.",
+    "dimensions": [
+      "activitySurprise",
+      "inflationSurprise",
+      "laborTightnessSurprise"
+    ]
+  },
+  "revisionGuards": [
+    "PPI revisable after initial release",
+    "CES payroll first print revised twice then benchmarked",
+    "seasonal adjustment can revise history",
+    "current history is not guaranteed first print"
+  ],
+  "preEventUse": "Event-risk context for post-scan night range / next-open gap / MAE; no direction assumption.",
+  "postReleaseUse": "Absorption/residual test after initial release, consensus, market reaction and Taiwan response are known.",
+  "falsification": [
+    "matched event_vs_nonevent nights",
+    "VIX_IV_nightstate controls",
+    "initial-vintage only",
+    "consensus vintage only",
+    "regime split",
+    "date-shift placebo",
+    "leave-one-event-out",
+    "largest-event removal",
+    "redundancy vs VIX/night futures"
+  ],
+  "maturityDecision": {
+    "D13-09": {
+      "from": "L1",
+      "to": "L2"
+    },
+    "D13-11": {
+      "from": "L1",
+      "to": "L2"
+    },
+    "reason": "Release clock, first-print/revision semantics, consensus provenance, normalization, dimension mapping and falsification frozen; no durable consensus/first-print Shadow evidence yet for L3."
+  },
+  "nextContinuation": [
+    "prospective BLS schedule receipt",
+    "consensus provider contract",
+    "initial release vintage capture",
+    "join to D12 night pre/post scan"
+  ]
+}
