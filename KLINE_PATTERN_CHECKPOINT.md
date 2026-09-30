@@ -385,3 +385,40 @@ Durable research detail: main `KLINE_PATTERN_RESEARCH.md` commit `a245b486dc60f2
 3. Seek authoritative OPEN/continuity/session witnesses before any Three-Gaps detector; DATA_BLOCKED where unavailable.
 4. Keep prospective outcome joins blocked pending COMPLETE immutable parent/run receipts and source-semantic readiness; test incremental value only against frozen controls and preregistered interactions.
 5. Keep Formal Core LOCKED and Pattern direction UNKNOWN.
+
+
+## Continuation update — DL-007A through DL-007C (2026-10-01)
+
+- Main already contained DL-006 continuation artifacts that the durable checkpoint had not indexed: nested-graph fixtures/receipt (10/10 contract cases PASS) and breakout-path fixtures/receipt (12/12 contract cases PASS). These were recovered from GitHub main; no Work-chat state was trusted as canonical.
+- New Class-A implementation-level research files on branch research/d01-pattern-dl007-impl-20261001:
+  - research/pattern_nested_graph_v0_2.mjs
+  - research/test_pattern_nested_graph_v0_2.mjs
+  - research/pattern_breakout_path_v0_1.mjs
+  - research/test_pattern_breakout_path_v0_1.mjs
+  - research/PATTERN_DL007_IMPLEMENTATION_AND_COUNTEREVIDENCE_V0_1.md
+- Isolated Node execution before PR:
+  - nested graph: 12/12 PASS;
+  - breakout path: 14/14 PASS after one deliberate falsification caught a normalization asymmetry.
+- The failed mirror test is material: using the upper edge as the UP percentage denominator and the lower edge as the DOWN denominator mechanically created directional asymmetry. The descriptor now uses the boundary midpoint as the common scale denominator; exact UP/DOWN mirror invariance then passes.
+- Nested graph v0.2 now explicitly fails closed / preserves UNKNOWN for:
+  missing confirmedAt, partial higher-timeframe parent use, semantic-space conflict, cross-symbol edges, boundary-version conflict and same-version coordinate mutation.
+- Breakout path v0.1 separates eligible / observable / constrained clocks, break-bar-inclusive vs post-break extension, first reentry/failure/reclaim clocks, continuity/session blockers and constrained-price-limit unresolved states. No fixed N-day verdict is introduced.
+- New Taiwan evidence:
+  - Chen et al. (Pacific-Basin Finance Journal, online 2026-09-21, DOI 10.1016/j.pacfin.2026.103390) finds mechanically detected HS bottoms stronger than tops and shows decision rules / Bry-Boschan confirmation matter; data end 2018-03-02, so this is not current post-2020-regime effect-size evidence.
+  - Lee & Chou (Pacific-Basin Finance Journal 93, 2025, DOI 10.1016/j.pacfin.2025.102853) finds historical-high breaks in Taiwan can enter a positive underreaction/momentum regime, arguing against a universal hard-resistance veto; effect heterogeneity by size/turnover/seasonality remains material.
+  - Older Taiwan candlestick positives remain counterbalanced by Reality-Check/SPA evidence showing technical-rule profits can disappear after data-snooping, non-synchronous-trading and cost controls.
+- D01 maturity remains 51.7%; no tracker promotion.
+- No Pattern forward outcomes inspected; no historical Shadow fabrication.
+- Pattern runtime remains NO_GO.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core remains LOCKED.
+
+### Updated exact next continuation point after DL-007
+
+1. Preserve repository-executable CI/PR evidence for the new nested-graph and breakout-path tests; local isolated PASS is not by itself a production/runtime readiness claim.
+2. Deepen D01-10 multi-scale falsification: distinguish genuinely incremental cross-scale topology from deterministic aggregation of the same PRICE_OHLC root.
+3. Pre-register local-vs-major breakout definitions before using 2025 historical-high evidence in any outcome study.
+4. Keep HS/candlestick named signs UNKNOWN for current-regime use; the new 2026 HS publication still uses pre-2020 data.
+5. Continue source-semantic blockers: PIT RAW_EXECUTION + TECHNICAL_CONTINUITY + explicit symbol-session membership + fit-for-purpose volume/trading-unit semantics.
+6. Prospective Pattern outcome joins remain blocked pending COMPLETE immutable parent/run receipts.
+7. No R09 / no Formal optimization proposal before prospective/OOS, redundancy, regime, cost and multiple-testing gates pass.
