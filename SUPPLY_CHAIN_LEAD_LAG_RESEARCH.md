@@ -1683,3 +1683,57 @@ Formal Core unchanged.
 ### Exact next
 SC-032: define `PRICING_POWER_RECEIPT_V0_1` with FULL/PARTIAL/NONE/UNKNOWN pass-through states, product-level matrices and realized-ASP/margin follow-up clocks.
 SC-033: accumulate >=3 independent issuer pricing events outcome-blind before testing any pricing-power effect.
+
+
+## SC-032 — Pricing power requires a multidimensional state vector
+
+Artifact:
+`research/sc032_pricing_power_receipt_schema_v0_1.json`
+
+### Design correction
+A single `FULL / PARTIAL / NONE` pricing-power label is too lossy before realized outcomes exist.
+
+The state is now decomposed into independent clocks:
+1. `costContext`;
+2. `postedPriceResponse`;
+3. `realizedAspResponse`;
+4. `realizedMarginResponse`;
+5. `volumeMixResponse`.
+
+Only after compatible evidence exists may the research layer classify an inference as:
+- PASS_THROUGH_CANDIDATE;
+- FAILED_PASS_THROUGH_CANDIDATE;
+- CONFOUNDED;
+- NOT_COMPARABLE.
+
+Until then, it remains DESCRIPTIVE_ONLY.
+
+### Key falsification cases
+- all posted prices rise but realized ASP is UNKNOWN -> not full pass-through;
+- some products rise and some remain 0 -> SELECTIVE, not failure;
+- posted price rises while margin compresses -> direct counterevidence against equating posted pricing with margin protection;
+- no posted increase while margin stays stable -> cannot infer no pricing power because inventory/mix/input-cost relief may dominate.
+
+### PIT clocks
+Separate:
+- sourcePublishedAt;
+- capturedAt;
+- firstEligibleTaiwanDecision;
+- input-cost observation time;
+- posted-price effective time;
+- realized ASP knownAt;
+- realized margin knownAt.
+
+No later realized margin can be backfilled into the earlier pricing decision state.
+
+### Maturity
+D10-06 remains L3.
+The schema improves causal discipline but does not add a new independent event or prospective outcome.
+
+D10-09 remains L2 until paired upstream/downstream common-event receipts exist.
+
+Formal Core unchanged.
+
+### Exact next
+SC-033: collect >=3 independent issuer pricing-event receipts outcome-blind using the frozen state vector.
+SC-034: only after native publication clocks mature, compare posted-price response with realized ASP/margin on compatible product scope.
