@@ -2,7 +2,8 @@ import assert from "node:assert/strict";
 import {pathToFileURL} from "node:url";
 
 export const OLD_AFTER_MARKET_CRON="10 10 * * mon-fri";
-export const NEW_AFTER_MARKET_CRON="35 15 * * mon-fri";\nexport const COMBINED_AFTER_MARKET_CRON="35,55 15 * * mon-fri";
+export const NEW_AFTER_MARKET_CRON="35 15 * * mon-fri";
+export const COMBINED_AFTER_MARKET_CRON="35,55 15 * * mon-fri";
 
 export function normalizeCron(value){
   return String(value||"").trim().replace(/\s+/g," ").toLowerCase();
