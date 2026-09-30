@@ -1,0 +1,180 @@
+{
+  "schemaVersion": "D06_IC039_RECEIPT_PRODUCT_MATRIX_V0_1",
+  "updatedAt": "2026-09-30 Asia/Taipei",
+  "researchOnly": true,
+  "outcomeDataUsed": false,
+  "formalCoreImpact": false,
+  "status": "OUTCOME_BLIND_PRODUCT_MATRIX_FROZEN / PROSPECTIVE_RECEIPTS_REQUIRED",
+  "governance": {
+    "missingEvidence": "UNKNOWN",
+    "historicalDownloadCannotCreateHistoricalFirstKnownAt": true,
+    "compositeFirstKnownAt": "max(firstKnownAt of all required components)",
+    "substitutionForbidden": true,
+    "paidDataAutonomousPurchaseForbidden": true
+  },
+  "exposures": {
+    "A": {
+      "name": "genericSecuritiesBorrowing",
+      "semantic": "borrowed-not-yet-returned stock/flow; not realized short sale",
+      "normalization": [
+        "ADV20",
+        "ownHistoryPercentile"
+      ],
+      "directionalPrior": "NONE"
+    },
+    "B": {
+      "name": "actualSblShortSaleFlow",
+      "semantic": "realized borrowed-stock market short-sale flow; hedge/arbitrage confounded",
+      "normalization": [
+        "dailyVolume",
+        "ADV20"
+      ],
+      "directionalPrior": "CONDITIONAL"
+    },
+    "C": {
+      "name": "actualSblShortSaleBalance",
+      "semantic": "realized SBL short-sale balance outstanding",
+      "normalization": [
+        "ADV20",
+        "ownHistoryPercentile"
+      ],
+      "directionalPrior": "CONDITIONAL"
+    },
+    "D": {
+      "name": "marginShort",
+      "semantic": "margin-short stock/flow; separate from SBL short",
+      "normalization": [
+        "ADV20",
+        "ownHistoryPercentile"
+      ],
+      "directionalPrior": "CONDITIONAL"
+    },
+    "E": {
+      "name": "twoSidedCrowding",
+      "semantic": "margin-long crowding plus actual SBL-short crowding; disagreement/fragility state",
+      "normalization": [
+        "componentwise"
+      ],
+      "directionalPrior": "VOLATILITY_RISK_FIRST"
+    }
+  },
+  "products": [
+    {
+      "market": "TWSE",
+      "productCode": "TWT72U",
+      "semantic": "genericSecuritiesBorrowing",
+      "producedAtContract": "20:30",
+      "contractClockStatus": "VERIFIED",
+      "access": "PAID_PRODUCT",
+      "useFor": [
+        "A"
+      ],
+      "notUseFor": [
+        "B",
+        "C"
+      ]
+    },
+    {
+      "market": "TWSE",
+      "productCode": "TWT93U",
+      "semantic": "marginShort+actualSblShortSaleFlow+actualSblShortSaleBalance",
+      "producedAtContract": "23:30",
+      "contractClockStatus": "VERIFIED",
+      "access": "PAID_PRODUCT",
+      "useFor": [
+        "B",
+        "C",
+        "D"
+      ],
+      "notUseFor": [
+        "A"
+      ]
+    },
+    {
+      "market": "TPEx",
+      "productCode": "Margin_SBL.csv",
+      "semantic": "marginShort+actualSblShortSaleFlow+actualSblShortSaleBalance",
+      "producedAtContract": "22:00",
+      "contractClockStatus": "VERIFIED",
+      "access": "PAID_PRODUCT_NOT_AUTHORIZED",
+      "useFor": [
+        "B",
+        "C",
+        "D"
+      ],
+      "notUseFor": [
+        "marginLong"
+      ]
+    },
+    {
+      "market": "TPEx",
+      "productCode": "public_sbl_balance_page",
+      "semantic": "marginShort+actualSblShortSaleFlow+actualSblShortSaleBalance",
+      "producedAtContract": null,
+      "contractClockStatus": "UNKNOWN",
+      "access": "PUBLIC_QUERY",
+      "useFor": [
+        "EVENTUAL_FINALIZED_TRUTH_ONLY"
+      ],
+      "notUseFor": [
+        "HISTORICAL_FIRST_KNOWN"
+      ]
+    },
+    {
+      "market": "TPEx",
+      "productCode": "public_short_sale_daily_page",
+      "semantic": "dailyMarginShortSale+dailySblShortSale",
+      "producedAtContract": null,
+      "contractClockStatus": "UNKNOWN",
+      "access": "PUBLIC_QUERY",
+      "useFor": [
+        "EVENTUAL_FINALIZED_TRUTH_ONLY"
+      ],
+      "notUseFor": [
+        "HISTORICAL_FIRST_KNOWN"
+      ]
+    }
+  ],
+  "preregistration": {
+    "primaryQuestions": [
+      "Does B or C add information beyond A after common-support controls?",
+      "Does A lose incremental value after B/C enter?",
+      "Does E predict realized range/downside MAE/stop-first risk more reliably than return direction?"
+    ],
+    "controls": [
+      "liquidity",
+      "priorTrend",
+      "volatility",
+      "sector",
+      "marketRegime",
+      "institutionalFlow",
+      "priceVolume"
+    ],
+    "primaryOutcomes": [
+      "D3_D5_downside_MAE",
+      "D3_D5_MFE",
+      "realizedRangeVolatility",
+      "falseBreakout",
+      "stopFirstRisk"
+    ],
+    "secondaryOutcomes": [
+      "D3_D5_returnDirection"
+    ],
+    "negativeControls": [
+      "A_alone_as_bearish",
+      "rawAbsoluteBalances",
+      "sameDateBeforeLatestFirstKnownAt",
+      "quotaEligibilityAsRealizedFlow"
+    ],
+    "inference": [
+      "clusterByMarketDate",
+      "commonSupport",
+      "ruleVintageStratification",
+      "TWSE_TPExStratification",
+      "factorRedundancy",
+      "noThresholdSweep",
+      "PIT_OOS_WalkForward_ProspectiveShadow"
+    ]
+  },
+  "exactNextContinuation": "IC-040: accumulate authorized/free prospective receipts with capturedAt/firstKnownAt/contentHash; do not purchase data; keep outcome joins closed until independent-date and common-support gates are satisfied; separately verify TPEx public realized-short publication clock or retain UNKNOWN."
+}
