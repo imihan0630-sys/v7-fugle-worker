@@ -46,29 +46,54 @@ D18 Trend interaction cannot move to L3 merely because the A2 endpoint exists. T
 ## 2. Breadth / participation
 
 Planned:
-- advance/decline/flat counts;
-- advanceShare;
-- medianReturn;
+- official exchange advance/decline/unchanged counts;
+- official untraded / no-comparison diagnostics where the venue exposes them;
+- common-stock direction breadth;
+- medianReturn / equal-weight return distribution;
 - aboveMa20Pct;
 - positive5dPct;
-- eligibleCoveragePct.
+- explicit U0/U1/U2/U3 coverage.
 
-Evidence:
-- A1 TWSE + TPEx full daily market contracts are current/prospectively observable;
-- System 2 full-universe accounting semantics already exist;
-- historical A1 official source adapters have been validated read-only for 2017 and recent dates;
-- B2 prospective industry observer demonstrates deterministic same-date breadth derivation at the industry level.
+New source-family split:
+1. **Official aggregate market-direction breadth**
+   - TWSE official `/opendata/twtazu_od` directly exposes stock-category up / limit-up / down / limit-down / unchanged / untraded / no-comparison counts.
+   - `system2/runtime/d18_twse_official_market_breadth_v0_1.mjs` now provides an isolated research-only parser with target-date, PIT, duplicate, impossible-subcount and denominator guards.
+   - PR #286 final-head System2 Research CI, V8 Repair CI and V8 Regression all passed before merge.
+   - TPEx official market-highlight semantics expose advancing / declining / flat / untraded counts, but an exact machine-readable prospective transport/clock has not yet been verified for this D18 lane. Do not invent one from HTML.
+2. **Per-symbol A1 common-stock / return lane**
+   - needed for common-stock breadth, median/equal-weight return and rolling-history participation;
+   - current prospective Decision Clock evidence shows same-day source availability is not yet reliable enough to call this lane decision-ready at the frozen clock.
+3. **Formal opportunity-set breadth**
+   - remains a separate estimand and must not substitute for market breadth.
+
+Prospective falsification evidence:
+- 2026-09-29 attempt-one source clock: TWSE A1 remained on the prior official session through the observation window; TPEx A1 produced transport/source errors; B2 was incomplete.
+- finalized 2026-09-29 acceptance still counts that immutable attempt-one date as an independent source-clock date, but `completeTradingDates=0` and `precisionEligibleDates=0`.
+- 2026-09-30 raw source clock: TWSE A1 remained on 2026-09-29 through roughly 16:10 Taipei while TPEx eventually reached 2026-09-30, proving cross-market asynchronous availability.
+- workflow SUCCESS is therefore not equivalent to factor READY.
 
 Readiness:
-- same-day advance/decline/flat, advanceShare, medianReturn: DERIVABLE_ZERO_NEW_CALL from A1 current rows;
-- eligibleCoveragePct: DERIVABLE_ZERO_NEW_CALL once exact universe/readiness denominator is frozen;
-- aboveMa20Pct / positive5dPct: HISTORY_DEPENDENT on symbol-level PIT history and continuity;
-- exact whole-market breadth builder: BUILDER_MISSING.
+- TWSE official aggregate direction-breadth parser/replay semantics: **EXECUTABLE_PIT_SUBLANE_VALIDATED**.
+- TWSE aggregate prospective publication-time distribution: **PENDING**.
+- TPEx aggregate machine-readable source + prospective clock: **SOURCE_TRANSPORT_PENDING**.
+- cross-market official aggregate breadth: **BLOCKED_PENDING_BOTH_VENUES**.
+- per-symbol direction breadth semantic classifier: **EXECUTABLE_PIT_SUBLANE_VALIDATED**.
+- per-symbol common-stock breadth at a frozen after-close clock: **SOURCE_FAMILY_REVALIDATION_REQUIRED**.
+- medianReturn / equal-weight return: **U2_CONTINUITY_DEPENDENT**; two raw closes alone are insufficient.
+- aboveMa20Pct / positive5dPct: **HISTORY_DEPENDENT** on symbol-level PIT history + certified technical continuity.
+- eligibleCoveragePct: derivable only after the exact requested universe/denominator contract is named; do not reuse Formal-normalized coverage as market coverage.
 
 Critical semantics:
-- TWSE/TPEx ordinary-share universe identity must be frozen;
-- missing history reduces the denominator/coverage and never means below MA;
-- official whole-market breadth and System-2-eligible-stock breadth are different objects.
+- Direction Breadth and True Return Distribution mature separately.
+- `X`/no-comparison is not FLAT; untraded/no-comparison remain explicit denominator diagnostics.
+- U2A raw-close return is diagnostic only; primary D18 return distribution requires U2B continuity-certified return.
+- current official full-market historical rows assign continuity `UNVERIFIED`, so they cannot silently become U2B.
+- missing history reduces coverage and never means below MA / negative return.
+- official exchange market breadth, common-stock research breadth and Formal opportunity-set breadth are distinct objects.
+- a source-clock-valid date can still be feature-invalid or strategy-cohort-invalid; do not promote evidence across layers.
+
+L3 implication:
+The TWSE official aggregate direction-breadth **sublane** now meets executable/parser-test feasibility. The whole D18-04 module remains L2 because TPEx/cross-market prospective availability, U2 return continuity and context-only occupancy are still incomplete.
 
 ## 3. Market activity / liquidity context
 
