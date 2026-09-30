@@ -1597,3 +1597,87 @@ No outcomes were opened. No threshold search was performed. Formal Core unchange
 
 ### Exact next
 BR-035: when the first clean post-repair scan is available, freeze one outcome-blind live Above-MA receipt. Only after that receipt passes coverage/replay checks may redundancy diagnostics versus Sector RS, advance breadth, leader concentration and dispersion begin.
+
+
+## BR-036 — Taiwan size leadership is a conditional state, not a permanent small-cap bonus
+
+Artifact:
+`research/br036_size_leadership_contract_v0_1.json`
+
+### Taiwan-native proxy set
+Use official total-return index families rather than reconstructing history with today's size ranks:
+- Large: FTSE TWSE Taiwan 50;
+- Mid: FTSE TWSE Taiwan Mid-Cap 100;
+- Small: TWSE TAIEX Small-Cap 300 Sub-Index.
+
+Initial research spreads:
+- smallTR - largeTR;
+- midTR - largeTR;
+- smallTR - midTR;
+at frozen D1/D5/D20/D60 horizons.
+
+The total-return versions are preferred for performance comparison so dividend treatment is not silently inconsistent.
+
+### Why curated mid/small indices are not interchangeable with pure size
+The newer Pristine mid/small-cap products additionally screen profitability, dividends, attention, operating stability and revenue growth. Those are useful investment products but confound a pure size-leadership study.
+
+### Positive mechanism
+Large-only leadership, small/mid diffusion and broad confirmation are different market states.
+
+Potential interpretations to test:
+- large-cap leadership: institutional/global-liquidity/mega-cap earnings concentration;
+- mid/small confirmation: broader risk appetite and participation;
+- divergence: index strength without broad size participation.
+
+These are hypotheses, not permanent signs.
+
+### Strong Taiwan-specific counterevidence
+Prior Taiwan research finds strong contemporaneous co-movement and does not establish a universal positive large-stock lead over small stocks.
+
+More recent Taiwan size-effect research also points to illiquidity and price-limit/limits-to-arbitrage mechanisms as important explanations of predictable size effects.
+
+Therefore:
+`SMALL_OUTPERFORMS != AUTOMATIC_RISK_ON`
+and
+`LARGE_LEADS != SMALL_WILL_FOLLOW`.
+
+### Required controls
+Before any strategy use, control:
+- market trend;
+- sector composition / Sector RS;
+- breadth / Above-MA;
+- volatility / regime;
+- liquidity / turnover;
+- institutional flow;
+- leader concentration;
+- index rebalance/event state;
+- price-limit/limit-hit context where available.
+
+If size spread disappears after sector or liquidity controls, classify it as `SECTOR_MIX_DOMINATED` or `LIQUIDITY_DOMINATED`, not independent size leadership.
+
+### PIT/source feasibility
+Official Taiwan index sources provide:
+- explicit large/mid/small index semantics;
+- official historical index-value surfaces;
+- official end-of-day values.
+
+This supports an outcome-blind daily size-state receipt without reconstructing historical constituents.
+
+If constituent-level attribution is later attempted, effective-dated index membership/review vintages become mandatory; current membership must not be backfilled.
+
+### Maturity
+`D09-08 大型股vs小型股領導: L1 -> L3`.
+
+This jump covers:
+- L2 mechanism/falsification;
+- L3 Taiwan PIT source feasibility.
+
+It does **not** imply predictive efficacy, OOS value or a bullish/bearish size signal.
+
+D09-06 Sector Rotation remains L2.
+D09-12 Breadth×Regime remains L2.
+
+Formal Core unchanged.
+
+### Exact next
+BR-037: build an outcome-blind `SIZE_LEADERSHIP_RECEIPT` from official total-return index values at D1/D5/D20/D60; preserve source/knownAt clocks and add sector/liquidity controls before any outcome test.
