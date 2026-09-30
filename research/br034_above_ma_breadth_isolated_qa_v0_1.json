@@ -1,0 +1,38 @@
+{
+  "version": "0.1",
+  "id": "BR-034",
+  "date": "2026-10-01 Asia/Taipei",
+  "formalCoreChanged": false,
+  "implementationScope": "ISOLATED_RESEARCH_ONLY",
+  "artifacts": [
+    "research/above_ma_breadth_receipt_v0_1.mjs",
+    "research/test_above_ma_breadth_receipt_v0_1.mjs"
+  ],
+  "localDeterministicTest": {
+    "command": "node test_above_ma_breadth_receipt_v0_1.mjs",
+    "assertions": 28,
+    "result": "PASS",
+    "note": "Isolated local deterministic execution; not production CI and not live Taiwan receipt evidence."
+  },
+  "adversarialCoverage": [
+    "full coverage exact 20d/60d ratios",
+    "partial-history denominator shrink with lower/upper bounds",
+    "candidate self-inclusion and leave-one-out flip",
+    "candidate-only ready history with leave-one-out UNKNOWN",
+    "zero history-ready members => UNKNOWN not zero",
+    "20-day ready while 60-day unavailable",
+    "duplicate member symbol fail-closed",
+    "missing classification scheme fail-closed",
+    "industry partition isolation"
+  ],
+  "status": "ISOLATED_QA_PASS / LIVE_PIT_RECEIPT_PENDING / OUTCOMES_CLOSED / FORMAL_UNCHANGED",
+  "maturityDecision": {
+    "D09-05": "KEEP_L2",
+    "reason": "Executable semantics are verified, but L3 requires one clean post-repair Taiwan PIT receipt with replayable membership/history coverage."
+  },
+  "exactNext": [
+    "Capture first clean live Taiwan receipt after history admission/runtime recovery is proven.",
+    "Freeze no-outcome MA20/MA60 sector values, coverage bounds and leave-one-out sensitivity.",
+    "Only then open redundancy diagnostics versus Sector RS, one-day breadth, concentration and dispersion."
+  ]
+}
