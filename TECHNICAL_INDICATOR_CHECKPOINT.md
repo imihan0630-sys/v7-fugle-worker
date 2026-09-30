@@ -2140,3 +2140,70 @@ Formal Core remains LOCKED.
 4. Record accepted latency, explicit transport-command count, provider-request uncertainty, bytes and compact storage.
 5. Require shared attestation, certified symbol sessions, corporate-action ancestry, authorized shared-path Fugle and exact immutable parent-child reconciliation.
 6. Keep TI-005/TI-006, outcomes, Class-B runtime wiring and Formal changes blocked until the prospective PIT-complete receipt gate passes governance.
+
+
+## TI-453 through TI-459 — ADX / MA-offset redundancy tranche (2026-10-01)
+
+Durable evidence:
+- `research/TECHNICAL_INDICATOR_ADX_OFFSET_REDUNDANCY_V0_1.md`
+- `research/test_technical_indicator_adx_offset_redundancy_v0_1.mjs`
+- detailed research summary appended to `TECHNICAL_INDICATOR_RESEARCH.md`.
+
+### Material findings
+
+- **TI-453:** SMA deduction-price logic has exact directional redundancy: `SMA_n(t)-SMA_n(t-1)=(C_t-C_(t-n))/n`. Current SMA slope sign, current price versus the outgoing/deduction close and same-horizon retN sign must not be counted as separate evidence.
+- **TI-454:** EMA has no single SMA-style deduction price. Its exact one-step identity is `EMA_t-EMA_(t-1)=alpha*(C_t-EMA_(t-1))`. Directly applying SMA deduction semantics to EMA is rejected.
+- **TI-455:** ADX is trend strength without direction. Smooth up and smooth down synthetic paths both produce ADX14=100 while +DI/-DI carry opposite direction.
+- **TI-456:** ADX is path-sensitive beyond endpoint return: smooth and choppy 100->120 paths with identical net return produced ADX14=100 versus ≈16.7353. This proves a plausible mechanism only, not alpha.
+- **TI-457:** ADX and Impulse MACD are not independent votes by default. They are different OHLC transforms but share a trend/range-information family. ADX begins as a moderator/diagnostic and needs residual incremental-value evidence.
+- **TI-458:** ADX14 cannot inherit the earlier ~65-bar KD/RSI/MACD readiness statement. A deterministic witness gave full-history ADX 16.076280, last-65 16.905634 (delta +0.829354), last-150 16.076396 (delta +0.000117). Warm-up/formulaVersion must be explicit before prospective ADX capture.
+- **TI-459:** The future test is preregistered against direct trend, trend persistence, ATR/regime, Impulse MACD, structure, liquidity and price tier; no threshold sweep.
+
+### Maturity decision
+
+D03-09 ADX is promoted from **L1 / 20%** to **L2 / 40%** because the mechanism, explicit counterexamples, data/warm-up failure conditions, redundancy prior and falsification design are now defined and executable.
+
+This promotion does **not** claim:
+- Taiwan forward-return alpha;
+- PIT/OOS/Shadow efficacy;
+- an optimal ADX threshold;
+- independent evidence from EMA/Impulse;
+- permission to change System 1 or System 2 Formal behavior.
+
+With 13 modules, the auditable D03 aggregate changes from 44.6% to **46.2%**.
+
+The existing source/version lane remains unchanged at **2/3 prospective completed sessions**. The next denominator-changing observation can occur only after the next Taiwan trading session completes.
+
+### Current lane status after TI-459
+
+D03_MATURITY = 46.2_PERCENT
+
+D03_09_ADX = L2_MECHANISM_AND_FALSIFICATION_DEFINED
+
+SMA_OFFSET_DIRECTIONAL_REDUNDANCY = EXACT_ALGEBRAIC_PASS
+
+EMA_SMA_STYLE_DEDUCTION = REJECTED_INVALID_SEMANTICS
+
+ADX_DIRECTION_AUTHORITY = NONE
+
+ADX_VS_RETN_PATH_MECHANISM = SYNTHETIC_PASS
+
+ADX_VS_IMPULSE_REDUNDANCY = HIGH_PRIOR / OUTCOME_UNKNOWN
+
+ADX_WARMUP_CONTRACT = REQUIRED
+
+PROSPECTIVE_COMPLETED_SESSION_COVERAGE = ACCUMULATING_2_OF_3
+
+OUTCOME_JOIN = NO_GO
+
+FORMAL_OPTIMIZATION_CANDIDATE = NONE
+
+Formal Core remains LOCKED.
+
+### Exact next continuation point after TI-459
+
+1. Do not manufacture the third source/version session. After the next completed Taiwan session, append the third prospective capture and a validated same-trade-date repeat, then close or retain the 3-session gate according to the preregistered receipt rules.
+2. If the source/version gate passes governance, execute TI-005 KD-vs-RSI first and TI-006 MACD-vs-direct-trend second using equal-date residualized controls; no historical Shadow reconstruction.
+3. Before ADX outcome testing, establish a stable long-enough history/warm-up contract on outcome-blind real rows and freeze +DI/-DI/DX/ADX/formulaVersion/continuity fields.
+4. ADX efficacy follows TI-005/TI-006 and must test residual value beyond direct trend, ATR/regime and Impulse MACD; ADX is not an additive third resonance vote.
+5. Formal Core, selection, ranking, capital, monitoring, signal and push behavior remain unchanged.
