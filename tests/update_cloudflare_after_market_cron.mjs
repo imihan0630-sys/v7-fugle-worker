@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import {pathToFileURL} from "node:url";
 
 export const OLD_AFTER_MARKET_CRON="10 10 * * mon-fri";
-export const NEW_AFTER_MARKET_CRON="35 15 * * mon-fri";
+export const NEW_AFTER_MARKET_CRON="35 15 * * mon-fri";\nexport const COMBINED_AFTER_MARKET_CRON="35,55 15 * * mon-fri";
 
 export function normalizeCron(value){
   return String(value||"").trim().replace(/\s+/g," ").toLowerCase();
@@ -11,9 +11,9 @@ export function normalizeCron(value){
 export function replaceAfterMarketSchedule(schedules){
   const input=(Array.isArray(schedules)?schedules:[]).map(item=>typeof item==="string"?{cron:item}:item).filter(item=>item?.cron);
   const oldMatches=input.filter(item=>normalizeCron(item.cron)===OLD_AFTER_MARKET_CRON);
-  const newMatches=input.filter(item=>normalizeCron(item.cron)===NEW_AFTER_MARKET_CRON);
-  if(oldMatches.length>1||newMatches.length>1) throw new Error("Duplicate after-market Cron detected");
-  if(oldMatches.length===0&&newMatches.length===0) throw new Error("Existing after-market Cron not found; refusing to guess");
+  const newMatches=input.filter(item=>normalizeCron(item.cron)===NEW_AFTER_MARKET_CRON);\n  const combinedMatches=input.filter(item=>normalizeCron(item.cron)===COMBINED_AFTER_MARKET_CRON);
+  if(oldMatches.length>1||newMatches.length>1||combinedMatches.length>1) throw new Error("Duplicate after-market Cron detected");
+  if(combinedMatches.length===1) return {changed:false,schedules:input.map(x=>({cron:x.cron}))};\n  if(oldMatches.length===0&&newMatches.length===0) throw new Error("Existing after-market Cron not found; refusing to guess");
   if(oldMatches.length===1&&newMatches.length===1) throw new Error("Old and new after-market Cron both exist; manual review required");
   if(newMatches.length===1) return {changed:false,schedules:input.map(x=>({cron:x.cron}))};
   return {
@@ -52,7 +52,7 @@ export async function updateCloudflareAfterMarketCron({fetchImpl=fetch,accountId
   assert.equal(afterPayload.success,true,"Cloudflare schedules verification GET returned success != true");
   const after=extractSchedules(afterPayload);
   const normalized=after.map(x=>normalizeCron(x.cron));
-  assert.equal(normalized.includes(NEW_AFTER_MARKET_CRON),true,"23:35 Taipei after-market Cron missing");
+  assert.equal(normalized.includes(NEW_AFTER_MARKET_CRON)||normalized.includes(COMBINED_AFTER_MARKET_CRON),true,"23:35 Taipei after-market Cron missing");
   assert.equal(normalized.includes(OLD_AFTER_MARKET_CRON),false,"Legacy 18:10 after-market Cron still present");
   assert.equal(after.length,before.length,"Cron count changed unexpectedly");
   return {ok:true,changed:migrated.changed,before:before.map(x=>x.cron),after:after.map(x=>x.cron),afterMarketTaipei:"23:35"};
