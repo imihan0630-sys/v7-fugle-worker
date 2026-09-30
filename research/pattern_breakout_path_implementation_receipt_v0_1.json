@@ -1,14 +1,14 @@
 {
-  "contract": "PATTERN_BREAKOUT_PATH_IMPLEMENTATION_RECEIPT_V0_1",
+  "contract": "PATTERN_BREAKOUT_PATH_IMPLEMENTATION_RECEIPT_V0_2",
   "scope": "D01 Class-A research-only; outcome-blind; no Formal/runtime wiring",
   "branch": "research/d01-breakout-descriptor-20260930",
-  "implementationStatus": "PARTIAL_PROTOTYPE",
-  "implemented": [
+  "implementationStatus": "PARTIAL_PROTOTYPE_WRITE_BLOCKED",
+  "verifiedExistingImplementation": [
     "signed UP/DOWN distance mirror",
     "episode identity includes boundaryVersion",
     "eligible/observable/constrained session clocks"
   ],
-  "notYetImplemented": [
+  "verifiedMissingImplementation": [
     "break-bar-inclusive vs post-break extension",
     "immutable first reentry/failure/reclaim clocks",
     "same-version coordinate mutation firewall",
@@ -16,13 +16,14 @@
     "corporate-action TECHNICAL_CONTINUITY fail-closed"
   ],
   "smokeAssertions": 4,
-  "executionStatus": "NOT_EXECUTED_IN_GITHUB_RUNTIME",
+  "executionStatus": "SOURCE_INSPECTED_NOT_RUNTIME_EXECUTED",
   "falsification": [
-    "Clock separation alone does not establish price acceptance or alpha.",
-    "Synthetic smoke assertions do not establish Taiwan coverage/OOS/cost/regime robustness.",
-    "Partial prototype must not be merged as completed descriptor calculator."
+    "Contract-level BP01-BP12 PASS does not imply implementation-level PASS.",
+    "Existing 4 assertions cover only primitives, not lifecycle correctness or alpha.",
+    "No future returns inspected; alpha remains UNKNOWN."
   ],
+  "writeAttempt": "A research-branch update containing the missing lifecycle functions/tests was blocked before repository mutation; no partial success claimed.",
   "formalCoreImpact": "NONE",
   "formalOptimizationCandidate": "NONE",
-  "exactNext": "Complete lifecycle/extension/provenance pure functions on research branch; run BP01-BP12 implementation-level tests; only after 12/12 computed PASS consider merge of Class-A research artifact and checkpoint/tracker review."
+  "exactNext": "Retry missing lifecycle functions/tests as smaller single-file Class-A mutations; then execute/verify BP01-BP12 computed validation before any merge or maturity review."
 }
