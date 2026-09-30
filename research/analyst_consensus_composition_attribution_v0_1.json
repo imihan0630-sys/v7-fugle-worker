@@ -1,0 +1,72 @@
+{
+  "schemaVersion": "ANALYST_CONSENSUS_COMPOSITION_ATTRIBUTION_V0_1",
+  "status": "PREREGISTERED_RESEARCH_ONLY_OUTCOMES_CLOSED",
+  "frozenAt": "2026-10-01 Asia/Taipei",
+  "purpose": "Prevent aggregate consensus changes from being mislabeled as same-forecaster analyst revisions.",
+  "prerequisites": [
+    "authorized PIT analyst-estimate source",
+    "stable forecaster identity or deduplication key",
+    "immutable forecast vintages",
+    "active/withdrawn/supersession lineage",
+    "identical fiscal horizon and forecast basis"
+  ],
+  "attributionStates": [
+    "SAME_FORECASTER_REVISION",
+    "ENTRY_EXIT_COMPOSITION",
+    "STALE_OR_PROVIDER_SUPPRESSION",
+    "CORRECTION_SUPERSESSION",
+    "HORIZON_ROLL",
+    "MIXED_CHANGE",
+    "UNATTRIBUTABLE_UNKNOWN"
+  ],
+  "requiredReceiptFields": [
+    "symbol",
+    "decisionAt",
+    "targetFiscalYear",
+    "forecastBasis",
+    "forecasterId_or_stable_source_key",
+    "forecastEPS",
+    "forecastPublishedAt",
+    "forecastFirstObservedAt",
+    "activeStatus",
+    "supersedesId_or_lineage_if_proven",
+    "coverageCount",
+    "dispersion",
+    "forecastAgeDays",
+    "providerEligibilityFlag_if_available"
+  ],
+  "frozenDiagnostics": [
+    "actual consensus delta using provider-eligible active population",
+    "fixed-membership consensus delta among continuing forecasters",
+    "continuing-forecaster revision breadth up/down/unchanged",
+    "entry/exit contribution to consensus delta",
+    "coverage and dispersion change",
+    "forecast-age distribution change",
+    "horizon-roll flag"
+  ],
+  "providerPolicyFirewall": [
+    "Provider consensus inclusion/exclusion policy is part of the data-generating process and must be versioned when known.",
+    "Do not import another provider's stale cutoff; documented provider policies vary materially.",
+    "A consensus jump caused only by provider suppression, analyst entry/exit, basis exclusion or horizon roll is not SAME_FORECASTER_REVISION.",
+    "If provider eligibility history is unavailable, suppression/composition attribution is UNATTRIBUTABLE_UNKNOWN."
+  ],
+  "counterevidence": [
+    "Published provider comparisons document materially different stale-estimate and eligibility rules, so vendor consensus levels are not definition-free substitutes.",
+    "Analyst-composition changes can alter measured consensus accuracy and level even without identical-analyst belief changes.",
+    "Forecast dispersion can reflect information diversity as well as uncertainty; it is context, not an automatic bearish score."
+  ],
+  "forwardPEFirewall": [
+    "Persist price and forecast EPS separately.",
+    "Keep CURRENT_FY, NEXT_FY and NTM separate.",
+    "Decompose changes into price, continuing-forecaster EPS revision, membership/provider-eligibility, correction/supersession and horizon roll.",
+    "Forward-PE compression alone is not a bullish improvement."
+  ],
+  "falsification": [
+    "If fixed-membership revision loses the apparent effect seen in raw consensus delta, classify raw effect as composition-sensitive.",
+    "If results depend on one provider eligibility rule or stale policy, mark provider-definition fragile.",
+    "If source lineage or membership history is incomplete, fail closed to UNKNOWN."
+  ],
+  "maturityEffect": "NONE_UNTIL_AUTHORIZED_TAIWAN_PIT_SOURCE_AND_PROSPECTIVE_OR_OOS_EVIDENCE",
+  "formalCoreChanged": false,
+  "formalOptimizationCandidate": false
+}
