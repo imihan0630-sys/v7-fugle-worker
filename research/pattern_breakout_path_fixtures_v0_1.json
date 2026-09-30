@@ -1,0 +1,49 @@
+{
+  "contract": "PATTERN_BREAKOUT_PATH_FIXTURES_V0_1",
+  "scope": "D01 research-only synthetic fixtures; outcome-blind; no runtime wiring; no Formal impact",
+  "sourceSpecifications": [
+    "research/PATTERN_NESTED_STRUCTURE_AND_GAP_V0_1.md#DL-006B",
+    "research/PATTERN_BREAKOUT_FALSE_BREAK_LIFECYCLE_V0_1.md"
+  ],
+  "rules": {
+    "episodeIdentity": ["symbol","semanticSpaceId","boundaryId","boundaryVersion","direction","firstConfirmedBreakAt"],
+    "eligibleSessionClockOnly": true,
+    "separateDenominators": ["eligibleBarsSinceBreak","observableBarsSinceBreak","constrainedBarsSinceBreak"],
+    "breakBarExtensions": ["breakBarInclusive","postBreakOnly"],
+    "firstEventClocksImmutable": ["firstReentryAt","firstFailureAt","firstReclaimAt"],
+    "futureUnknownIsNullNotZero": true,
+    "boundaryVersionChangeStartsNewEpisode": true,
+    "sameVersionCoordinateMutationIsProvenanceConflict": true,
+    "prefixReplayEqualityRequired": true,
+    "upDownSignedGeometryMirrorRequired": true,
+    "noFixedNDayVerdict": true
+  },
+  "fixtures": [
+    {"id":"BP01","case":"break_bar_has_largest_intraday_extension","expect":"breakBarInclusive extension includes break bar; postBreakOnly excludes it"},
+    {"id":"BP02","case":"market_open_but_symbol_suspended","expect":"pseudo-bar excluded; eligible/observable clocks do not advance"},
+    {"id":"BP03","case":"limit_constrained_sessions_after_break","expect":"constrained sessions tracked separately; ordinary observability does not advance until unconstrained eligible session"},
+    {"id":"BP04","case":"reentry_then_deeper_failure_then_reclaim","expect":"firstReentryAt < firstFailureAt < firstReclaimAt; later states never erase first clocks"},
+    {"id":"BP05","case":"future_failure_queried_at_prior_asof","expect":"prior state unchanged; future firstFailureAt remains null"},
+    {"id":"BP06","case":"same_boundary_new_version","expect":"old episode closes; new immutable episode starts; offsets not copied"},
+    {"id":"BP07","case":"same_boundary_id_version_mutated_coordinates","expect":"PROVENANCE_CONFLICT; no lifecycle continuation"},
+    {"id":"BP08","case":"full_history_asof_vs_true_prefix","expect":"descriptor vector and lifecycle state identical at same asOf"},
+    {"id":"BP09","case":"up_down_mirrored_price_paths","expect":"signed descriptors mirror under direction transform; no unintended directional asymmetry"},
+    {"id":"BP10","case":"no_follow_through_without_reentry","expect":"weak extension/persistence described continuously; not coerced into false-break verdict"},
+    {"id":"BP11","case":"corporate_action_mechanical_reset","expect":"raw jump cannot count as extension/failure unless TECHNICAL_CONTINUITY provenance validates residual move"},
+    {"id":"BP12","case":"missing_security_session_or_continuity_provenance","expect":"DATA_BLOCKED/UNKNOWN; missing evidence never becomes zero or ordinary session"}
+  ],
+  "requiredOutputs": [
+    "lifecycleState","observationStatus","eligibleBarsSinceBreak","observableBarsSinceBreak","constrainedBarsSinceBreak",
+    "maxFavorableExtensionBreakBarInclusive","maxFavorableExtensionPostBreak","maxAdverseExcursion",
+    "firstReentryAt","firstFailureAt","firstReclaimAt","cumulativeSignedDistanceFromBoundary"
+  ],
+  "falsificationNotes": [
+    "Persistence is descriptive and is not evidence of positive future return.",
+    "Constrained sessions preserve chronology but do not prove ordinary price acceptance.",
+    "Descriptor proliferation can create a factor zoo; future outcome work must test redundancy against existing price/momentum/volatility/execution controls.",
+    "Synthetic PASS would prove contract consistency only, not Taiwan-market coverage, OOS robustness or alpha."
+  ],
+  "biasGuards": ["no returns","no threshold tuning","no historical Shadow fabrication","UNKNOWN != 0/BAD","no fixed 3/5-day cutoff","no label voting"],
+  "formalCoreImpact": "NONE",
+  "formalOptimizationCandidate": "NONE"
+}
