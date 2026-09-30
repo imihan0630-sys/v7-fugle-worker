@@ -1,0 +1,47 @@
+{
+  "contract": "PATTERN_NESTED_GRAPH_VALIDATION_V0_1",
+  "scope": "D01 research-only validation receipt; synthetic/outcome-blind; no runtime wiring",
+  "fixtureSource": "research/pattern_nested_graph_fixtures_v0_1.json",
+  "validatedAt": "2026-09-30T12:08:44+08:00",
+  "method": "deterministic contract-level adversarial validation against explicit graph invariants",
+  "invariants": [
+    "visible node requires confirmedAt <= asOf",
+    "partial higher timeframe cannot confirm parent",
+    "true-prefix replay visible graph equals full-history asOf visible graph",
+    "semanticSpaceId mismatch fails closed",
+    "overlap is not transitive equivalence",
+    "boundary version participates in lifecycle identity",
+    "same boundary id/version with mutated coordinates is provenance conflict",
+    "future parent may append ancestry but cannot mutate prior child pivotAt/confirmedAt",
+    "cross-scale contradiction is retained rather than vote-collapsed",
+    "missing confirmation clock remains UNKNOWN"
+  ],
+  "fixtureResults": [
+    {"id":"NG01","status":"PASS","reason":"parent edge gated by parent confirmedAt"},
+    {"id":"NG02","status":"PASS","reason":"partial weekly object cannot be confirmed parent"},
+    {"id":"NG03","status":"PASS","reason":"future parent excluded from as-of graph; prefix equality preserved"},
+    {"id":"NG04","status":"PASS","reason":"semantic-space mismatch returns provenance conflict and no ancestry"},
+    {"id":"NG05","status":"PASS","reason":"pairwise overlap does not infer A=C"},
+    {"id":"NG06","status":"PASS","reason":"different boundary versions remain distinct lifecycle identities"},
+    {"id":"NG07","status":"PASS","reason":"coordinate mutation under same boundary id/version is provenance conflict"},
+    {"id":"NG08","status":"PASS","reason":"later parent only appends ancestry; child clocks remain immutable"},
+    {"id":"NG09","status":"PASS","reason":"CONTRADICTS retained; no majority-vote collapse"},
+    {"id":"NG10","status":"PASS","reason":"missing confirmedAt is UNKNOWN and not decision-time confirmed"}
+  ],
+  "summary":{"pass":10,"fail":0,"unknown":0},
+  "falsificationNotes":[
+    "PASS proves internal causal-contract consistency only; it does not prove chart-pattern alpha.",
+    "Synthetic fixtures do not establish Taiwan-market coverage, OOS robustness, transaction-cost value, or regime invariance.",
+    "A production graph builder can still fail these invariants; runtime remains NO_GO until implementation-level replay tests exist.",
+    "No named-pattern score, threshold, ranking, BUY/SELL sign, or Formal behavior is authorized by this receipt."
+  ],
+  "biasGuards":["no returns","no threshold tuning","no historical Shadow fabrication","UNKNOWN != 0/BAD","no named-label voting"],
+  "formalCoreImpact":"NONE",
+  "formalOptimizationCandidate":"NONE",
+  "exactNext":[
+    "Prototype continuous breakout-path descriptors as research-only pure functions and adversarial fixtures.",
+    "Add implementation-level true-prefix replay tests when a graph builder exists; require graph equality and immutable child clocks.",
+    "Seek authoritative OPEN/TECHNICAL_CONTINUITY/security-session witnesses before Three-Gaps detector work.",
+    "Keep prospective outcome joins blocked until immutable parent/run receipts and source-semantic readiness are COMPLETE."
+  ]
+}
