@@ -1439,3 +1439,98 @@ Classify leadership concentration as `REDUNDANT` if:
 - negative-control sectors show the same behavior.
 
 Status: `PREREGISTERED / WAITING_PROSPECTIVE / NO_THRESHOLD / FORMAL_CORE_LOCKED`.
+
+
+## BR-033 — Above-MA breadth requires coverage bounds, leave-one-out and redundancy controls
+
+Artifact:
+`research/br033_above_ma_breadth_contract_v0_1.json`
+
+### Why this is not just another moving-average signal
+Above-MA breadth measures cross-sectional participation:
+
+`count(members with close > MA_h) / count(history-ready members)`.
+
+It is not the same object as:
+- one-day advance/decline breadth;
+- sector average return;
+- Sector RS;
+- a candidate stock's own MA state.
+
+The intended information is whether a sector/index move is broadly shared across member trends or concentrated in a few leaders.
+
+### Existing system overlap
+The existing research patch chain already computes market-level `aboveMa20Pct` and `aboveMa60Pct` from history-backed feature rows. The sector-stat builder already has:
+- same-day industry identity;
+- member rows;
+- symbol feature mapping;
+- history-ready counts.
+
+Therefore sector Above-MA is structurally derivable without a new external data source.
+
+However current post-repair live receipt completeness is not yet proven because 2026-09-30 recovery preview hit a Cloudflare Worker 1102 resource-limit failure after closure-proof validation. That prevents an L3 promotion from mechanism alone.
+
+### Denominator contract
+For each sector/window:
+- `membershipN` = PIT-valid sector members under the classification vintage;
+- `historyReadyN` = members with admitted history and finite MA;
+- `passN` = history-ready members with close > MA;
+- `unknownN = membershipN - historyReadyN`;
+- point estimate = `passN / historyReadyN`;
+- coverage = `historyReadyN / membershipN`;
+- conservative lower bound = `passN / membershipN`;
+- conservative upper bound = `(passN + unknownN) / membershipN`.
+
+If `historyReadyN=0`, state = UNKNOWN, never 0%.
+
+This prevents missing history from mechanically inflating breadth by silently shrinking the denominator.
+
+### Candidate self-inclusion
+If Above-MA is later used to evaluate a stock, the sector measure must also expose a candidate leave-one-out value.
+
+For a small sector, one stock can materially change the percentage and create circular evidence:
+`candidate is above MA -> sector breadth improves -> candidate receives a stronger sector signal`.
+
+Leave-one-out sensitivity is therefore mandatory before any stock-level use.
+
+### Horizon contract
+Research windows are frozen initially to:
+- MA20;
+- MA60.
+
+No 50/100/150/200-day sweep is authorized at this stage.
+
+The existing 55/45 research regime labels are not inherited as D09-05 thresholds. Round-number threshold folklore remains a challenger, not truth.
+
+### Positive mechanism
+A sector whose average return is strong **and** whose members broadly remain above their own trend references is a different state from the same return produced by a few leaders while most members sit below trend.
+
+Above-MA breadth may also change more slowly than one-day advance share and therefore can describe trend diffusion rather than a single-session rebound.
+
+### Falsification
+D09-05 is redundant/rejected if:
+- it adds nothing after Sector RS/return, one-day advance breadth, equal/median return, leader HHI/top-share and dispersion;
+- the sign reverses across Trend/Range or volatility regimes;
+- small-sector leave-one-out removes the apparent signal;
+- readings are explained by history-coverage changes;
+- only one MA horizon or threshold survives after a parameter sweep.
+
+Whipsaw around moving averages is an expected failure mode, not an exception.
+
+### External evidence
+- StockCharts defines percent-above-MA as a breadth/participation indicator and explicitly notes that shorter horizons are more volatile and threshold crossings can whipsaw.
+- Yu, Webb & Lin (Journal of Investing, 2025) study index-over-moving-average percentages at 20/50/200-day horizons, supporting this as a legitimate empirical indicator family but not a universal Taiwan threshold.
+
+### Maturity decision
+`D09-05 Above-MA廣度: L1 -> L2`.
+
+Reason:
+mechanism, denominator semantics, data-quality failure states, self-inclusion counterexample, redundancy controls and promotion gates are now explicitly frozen.
+
+Not L3 because the first clean post-repair Taiwan live receipt with replayable membership/history coverage is still pending.
+
+No Formal sector gate, sector score, threshold, ranking, quota, capital, signal or push behavior changed.
+
+### Exact next continuation
+BR-034:
+build an isolated research-only Above-MA receipt from existing feature rows + industry membership. Required outputs: MA20/MA60 point estimates, coverage/bounds, member counts and leave-one-out sensitivity. Freeze the first clean live receipt before any forward outcome join.
