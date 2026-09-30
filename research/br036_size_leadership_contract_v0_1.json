@@ -1,0 +1,114 @@
+{
+  "version": "0.1",
+  "id": "BR-036",
+  "date": "2026-10-01 Asia/Taipei",
+  "module": "D09-08 大型股vs小型股領導",
+  "formalCoreChanged": false,
+  "outcomesOpened": false,
+  "status": "MECHANISM_FALSIFICATION_AND_TAIWAN_PIT_SOURCE_FEASIBLE / OUTCOMES_CLOSED / FORMAL_UNCHANGED",
+  "purpose": "Define Taiwan size leadership as a conditional relative-performance/participation state, not a permanent small-cap premium or assumed large-to-small lead-lag.",
+  "officialProxyFamilies": [
+    {
+      "role": "LARGE_CAP",
+      "index": "FTSE TWSE Taiwan 50 Total Return Index",
+      "universeSemantics": "50 largest eligible TWSE companies by full market value under index rules",
+      "officialSource": "Taiwan Index Plus / TWSE",
+      "historicalDataAvailable": true
+    },
+    {
+      "role": "MID_CAP",
+      "index": "FTSE TWSE Taiwan Mid-Cap 100 Total Return Index",
+      "universeSemantics": "next 100 eligible companies by full market value outside Taiwan 50",
+      "officialSource": "Taiwan Index Plus / TWSE",
+      "historicalDataAvailable": true
+    },
+    {
+      "role": "SMALL_CAP",
+      "index": "TWSE TAIEX Small-Cap 300 Total Return Sub-Index",
+      "universeSemantics": "official small-cap performance benchmark",
+      "officialSource": "TWSE / Taiwan Index Plus",
+      "historicalDataAvailable": true
+    }
+  ],
+  "excludedPrimaryProxy": [
+    "TIP Taiwan Pristine SAM-Cap Select 100 is not a pure size proxy because it also screens profitability, dividends, market attention, operating stability and revenue growth.",
+    "Do not use today's market-cap quantiles to reconstruct historical size portfolios without effective-dated market-cap/universe evidence."
+  ],
+  "initialStateVector": {
+    "horizonsTradingDays": [
+      1,
+      5,
+      20,
+      60
+    ],
+    "pairwiseSpreads": [
+      "smallTR - largeTR",
+      "midTR - largeTR",
+      "smallTR - midTR"
+    ],
+    "breadthCompanions": [
+      "large-cap advance/Above-MA participation when available",
+      "mid-cap advance/Above-MA participation when available",
+      "small-cap advance/Above-MA participation when available"
+    ],
+    "concentrationControls": [
+      "TAIEX vs Taiwan50 relative return",
+      "Taiwan50 vs Taiwan50-30%-capped difference when available",
+      "market leader concentration/top-weight contribution"
+    ]
+  },
+  "stateLabels": [
+    "LARGE_LEAD",
+    "MID_LEAD",
+    "SMALL_LEAD",
+    "BROAD_SIZE_CONFIRMATION",
+    "SIZE_DIVERGENCE",
+    "MIXED_UNKNOWN"
+  ],
+  "positiveMechanisms": [
+    "Small/mid-cap outperformance with broad participation can describe risk-appetite diffusion beyond mega-caps.",
+    "Large-cap leadership can reflect global-liquidity, institutional concentration, index-weight and mega-cap earnings sensitivity.",
+    "A transition from large-only to mid/small confirmation may be a different state from simultaneous broad weakness or a one-day small-cap bounce."
+  ],
+  "counterevidence": [
+    "Taiwan historical research does not support a universal positive large-to-small lead-lag; strong contemporaneous correlations complicate causal interpretation.",
+    "Recent Taiwan size-effect research attributes predictability partly to illiquidity and price-limit/limits-to-arbitrage effects, so size leadership can be a microstructure/liquidity state rather than pure information diffusion.",
+    "Index sector composition differs materially by size; a technology cycle can masquerade as a size effect.",
+    "Index rebalances and constituent migration mechanically alter exposure; use official index series for return state and effective-dated membership only when interpreting constituents.",
+    "Small-cap index performance can be more volatile/less liquid; after-cost stock-selection implications must not be inferred from index spread alone."
+  ],
+  "pitClocks": {
+    "returnObservation": "official end-of-day total return index value after close",
+    "firstEligibleDecision": "next decision point after official EOD value is available",
+    "membershipInterpretation": "effective-dated index constituent/review state if constituent-level attribution is attempted",
+    "noHistoricalBackfillRule": "Current constituents may not be backfilled to explain older index returns."
+  },
+  "redundancyControls": [
+    "market trend/TAIEX return",
+    "sector/industry composition and Sector RS",
+    "market breadth / Above-MA",
+    "volatility/regime",
+    "liquidity/turnover",
+    "institutional flow",
+    "leader concentration",
+    "index rebalance/event flags"
+  ],
+  "falsification": [
+    "If size spread is explained by sector composition, classify SECTOR_MIX_DOMINATED rather than size leadership.",
+    "If small-cap relative strength disappears after liquidity/limit-hit controls, do not call it broad risk-on.",
+    "If relative return improves while small-cap breadth weakens, classify concentration/divergence rather than confirmation.",
+    "If only one horizon or one hand-picked index pair works, reject for horizon/index selection snooping.",
+    "No state receives a permanent bullish/bearish sign before prospective/OOS strategy interaction tests."
+  ],
+  "maturityDecision": {
+    "D09-08": "PROMOTE_L1_TO_L3_TAIWAN_PIT_DATA_FEASIBILITY",
+    "D09-06": "KEEP_L2",
+    "D09-12": "KEEP_L2"
+  },
+  "promotionReason": "Official Taiwan large-, mid- and small-cap index families have explicit size semantics and official historical/end-of-day values, while Taiwan-specific literature supplies strong falsification against universal lead-lag and unconditional size-premium interpretations. Both mechanism/falsification and Taiwan PIT source feasibility are established; predictive value remains untested.",
+  "exactNext": [
+    "BR-037 create an outcome-blind daily SIZE_LEADERSHIP_RECEIPT using total-return index values and frozen 1/5/20/60-day spreads.",
+    "Add sector-mix/liquidity/limit-hit/volatility controls before any System1/System2 use.",
+    "Do not create a small-cap bonus or a fixed risk-on score."
+  ]
+}
