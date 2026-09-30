@@ -3,7 +3,7 @@ import {pathToFileURL} from "node:url";
 
 export const LEGACY_AFTER_MARKET_CRON="10 10 * * mon-fri";
 export const PRIMARY_AFTER_MARKET_CRON="35 15 * * mon-fri";   // 23:35 Taipei
-export const RECOVERY_AFTER_MARKET_CRON="55 15 * * mon-fri";  // 23:55 Taipei
+export const COMBINED_AFTER_MARKET_CRON="35,55 15 * * mon-fri"; // 23:35 + 23:55 Taipei, one trigger
 
 export function normalizeCron(value){
   return String(value||"").trim().replace(/\s+/g," ").toLowerCase();
@@ -18,14 +18,18 @@ export function ensureAfterMarketRecoverySchedule(schedules){
   const normalized=input.map(item=>normalizeCron(item.cron));
   const legacyCount=normalized.filter(x=>x===LEGACY_AFTER_MARKET_CRON).length;
   const primaryCount=normalized.filter(x=>x===PRIMARY_AFTER_MARKET_CRON).length;
-  const recoveryCount=normalized.filter(x=>x===RECOVERY_AFTER_MARKET_CRON).length;
+  const combinedCount=normalized.filter(x=>x===COMBINED_AFTER_MARKET_CRON).length;
 
   if(legacyCount>0) throw new Error("Legacy 18:10 after-market Cron still exists; refusing to guess");
-  if(primaryCount!==1) throw new Error("Expected exactly one 23:35 System1 after-market Cron");
-  if(recoveryCount>1) throw new Error("Duplicate 23:55 recovery Cron detected");
+  if(combinedCount>1) throw new Error("Duplicate combined 23:35/23:55 Cron detected");
+  if(primaryCount>0 && combinedCount>0) throw new Error("Separate 23:35 and combined 23:35/23:55 Cron both exist");
 
-  if(recoveryCount===1) return {changed:false,schedules:input};
-  return {changed:true,schedules:[...input,{cron:RECOVERY_AFTER_MARKET_CRON}]};
+  if(combinedCount===1) return {changed:false,schedules:input};
+  if(primaryCount!==1) throw new Error("Expected exactly one 23:35 System1 after-market Cron");
+  return {
+    changed:true,
+    schedules:input.map(item=>normalizeCron(item.cron)===PRIMARY_AFTER_MARKET_CRON?{cron:COMBINED_AFTER_MARKET_CRON}:item)
+  };
 }
 
 function extractSchedules(payload){
@@ -68,13 +72,13 @@ export async function updateCloudflareAfterMarketRecoveryCron({fetchImpl=fetch,a
   const after=extractSchedules(afterPayload);
   const normalized=after.map(x=>normalizeCron(x.cron));
 
-  assert.equal(normalized.filter(x=>x===PRIMARY_AFTER_MARKET_CRON).length,1,"23:35 primary Cron missing/duplicated");
-  assert.equal(normalized.filter(x=>x===RECOVERY_AFTER_MARKET_CRON).length,1,"23:55 recovery Cron missing/duplicated");
+  assert.equal(normalized.filter(x=>x===COMBINED_AFTER_MARKET_CRON).length,1,"combined 23:35/23:55 Cron missing/duplicated");
+  assert.equal(normalized.includes(PRIMARY_AFTER_MARKET_CRON),false,"separate 23:35 Cron should have been consolidated");
   assert.equal(normalized.includes(LEGACY_AFTER_MARKET_CRON),false,"Legacy 18:10 Cron unexpectedly present");
-  assert.equal(after.length,before.length+(next.changed?1:0),"Unexpected Cloudflare Cron count mutation");
+  assert.equal(after.length,before.length,"Cloudflare Cron count must remain unchanged");
 
-  const preservedBefore=before.map(x=>normalizeCron(x.cron)).filter(x=>x!==RECOVERY_AFTER_MARKET_CRON).sort();
-  const preservedAfter=after.map(x=>normalizeCron(x.cron)).filter(x=>x!==RECOVERY_AFTER_MARKET_CRON).sort();
+  const preservedBefore=before.map(x=>normalizeCron(x.cron)).filter(x=>x!==PRIMARY_AFTER_MARKET_CRON && x!==COMBINED_AFTER_MARKET_CRON).sort();
+  const preservedAfter=after.map(x=>normalizeCron(x.cron)).filter(x=>x!==PRIMARY_AFTER_MARKET_CRON && x!==COMBINED_AFTER_MARKET_CRON).sort();
   assert.deepEqual(preservedAfter,preservedBefore,"Existing System1 Cron schedules changed unexpectedly");
 
   return {
@@ -85,6 +89,7 @@ export async function updateCloudflareAfterMarketRecoveryCron({fetchImpl=fetch,a
     after:after.map(x=>x.cron),
     primaryTaipei:"23:35",
     recoveryTaipei:"23:55",
+    combinedCron:COMBINED_AFTER_MARKET_CRON,
     recoverySemantics:"existing runScheduledWithAudit -> runAfterMarketScan({onlyIfMissing:true})",
     system2Changed:false
   };
