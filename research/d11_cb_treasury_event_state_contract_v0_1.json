@@ -1,0 +1,81 @@
+{
+  "schemaVersion": "0.1",
+  "generatedAt": "2026-10-01 Asia/Taipei",
+  "room": "08｜事件與新聞研究室",
+  "scope": [
+    "D11-04",
+    "D11-05",
+    "D17-06 dependency"
+  ],
+  "decisionImpact": false,
+  "formalCoreChanged": false,
+  "statuses": {
+    "D11_04": "L3_TAIWAN_PIT_SOURCE_FEASIBLE_OUTCOME_PENDING",
+    "D11_05": "L3_TAIWAN_PIT_SOURCE_FEASIBLE_OUTCOME_PENDING",
+    "D17_06": "L2_MECHANISM_DEEPENED_NO_PROMOTION"
+  },
+  "cb": {
+    "states": [
+      "BOARD_OR_FILING_INTENT",
+      "REGULATORY_EFFECTIVE",
+      "ISSUE_PRICED",
+      "ISSUED",
+      "LISTED",
+      "CONVERSION_WINDOW_OPEN",
+      "CONVERSION_PRICE_ADJUSTED",
+      "CONVERSION_REQUEST",
+      "SHARE_OR_CERTIFICATE_DELIVERED",
+      "CALL_OR_EARLY_REDEMPTION_NOTICE",
+      "FINAL_CONVERSION_WINDOW",
+      "DELISTED_OR_MATURED",
+      "CAPITAL_REGISTRATION_UPDATE"
+    ],
+    "clocks": [
+      "sourcePublishedAt",
+      "capturedAt",
+      "knownAt",
+      "effectiveFrom"
+    ],
+    "antiInference": [
+      "issue announcement is not dilution date",
+      "conversion-window opening is not converted amount",
+      "call notice is not converted-share count",
+      "quarterly converted-share disclosure is not exact daily denominator",
+      "CB event type has no universal return sign"
+    ]
+  },
+  "treasuryStock": {
+    "states": [
+      "BOARD_AUTHORIZATION",
+      "PLAN_DISCLOSED",
+      "EXECUTION_WINDOW_OPEN",
+      "ACTUAL_PURCHASE_ACCUMULATING",
+      "THRESHOLD_DISCLOSURE",
+      "COMPLETED_OR_EXPIRED_OR_TERMINATED",
+      "ACTUAL_EXECUTION_SUMMARY",
+      "HELD_AS_TREASURY",
+      "TRANSFER_TO_EMPLOYEES_OR_EQUITY_CONVERSION_OR_CANCELLATION"
+    ],
+    "clocks": [
+      "boardResolvedAt",
+      "planPublishedAt",
+      "capturedAt",
+      "executionWindowStart",
+      "executionWindowEnd",
+      "thresholdPublishedAt",
+      "completionPublishedAt",
+      "dispositionEffectiveAt"
+    ],
+    "antiInference": [
+      "planned quantity is not actual purchase quantity",
+      "authorization is not realized market demand",
+      "treasury inventory is not cancelled share count",
+      "ex-post daily execution detail cannot be backdated",
+      "repurchase announcement has no universal return sign"
+    ]
+  },
+  "d17_06": {
+    "rule": "surprise = newly knowable realization relative to pre-event expected state",
+    "prohibition": "final realized execution may not rewrite prior expectation state"
+  }
+}
