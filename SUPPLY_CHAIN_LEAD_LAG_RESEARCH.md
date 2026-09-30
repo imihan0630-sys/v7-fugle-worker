@@ -1603,3 +1603,83 @@ SC-029 remains time-dependent: capture the next independent material/output-pric
 SC-031: seek issuer-disclosed procurement/pass-through evidence that can convert one material benchmark from `PROXY_ONLY` to a bounded exposure state; if cost share/pricing basis remains absent, preserve UNKNOWN rather than estimate it.
 
 Status: `ABF_COPPER_MAPPING_PARTIAL / COST_WEIGHT_UNKNOWN / OUTCOMES_CLOSED / FORMAL_CORE_LOCKED`.
+
+
+## SC-031 — Pricing power is observable as selective product-level pass-through, not a binary company trait
+
+Artifact:
+`research/sc031_pricing_power_selective_pass_through_v0_1.json`
+
+### Official Taiwan issuer evidence
+China Steel's current official October / Q4 pricing announcement explicitly links:
+- iron ore around USD100/t;
+- metallurgical coal rising USD50-65/t to about USD275/t;
+- higher steelmaking costs;
+- product pricing decisions that also consider international steel prices, downstream conditions and product-specific demand.
+
+The observed pricing matrix is deliberately non-uniform:
+- several October monthly products: +NT$500 to +NT$600/t;
+- several Q4 quarterly products: +NT$500 to +NT$600/t;
+- wire rod, selected hot/cold rolled grades, automotive material and other products: 0 adjustment.
+
+### Mechanism
+This creates a direct issuer-level PIT research object:
+`INPUT_COST_CONTEXT -> MANAGEMENT_PRICING_DECISION -> PRODUCT_LEVEL_POSTED_PRICE_RESPONSE`.
+
+It is stronger than treating a commodity quote as a company factor because the issuer itself identifies cost pressure and publishes the product-level response.
+
+### Counterevidence
+The same announcement falsifies binary pricing-power logic.
+
+Under one common cost backdrop:
+- some products increased;
+- some stayed flat.
+
+Therefore:
+`PRICING_POWER != ONE_COMPANY_ONE_NUMBER`.
+
+Pricing power/pass-through is product-, customer-, contract-, demand- and quote-cycle-specific.
+
+The issuer also cites international market conditions and downstream demand, so the cost shock cannot be isolated as the sole cause of the price changes.
+
+### What remains UNKNOWN
+Posted prices do not prove:
+- realized transaction ASP;
+- discounts/rebates;
+- shipment mix;
+- inventory-cost vintage;
+- energy cost;
+- realized gross margin;
+- stock-return direction.
+
+A +600 posted-price response can still coexist with margin compression, and a 0 adjustment can coexist with stable margin if input inventory or mix offsets the shock.
+
+### PIT semantics
+The current official HTML source is captured prospectively now. A contemporaneous republication dates the announcement to 2026-09-04, but the present official page fetch does not expose a machine-readable publication timestamp. Therefore this receipt does not backfill an authenticated historical firstKnownAt for outcome research.
+
+Future pricing receipts must preserve:
+- sourcePublishedAt if explicitly exposed;
+- capturedAt;
+- firstEligibleDecision;
+- product-price matrix;
+- input-cost context;
+- follow-up realized ASP/margin clocks.
+
+### Maturity
+`D10-06 Pricing Power定價能力: L2 -> L3`.
+
+Reason:
+a Taiwan issuer's official product-level price announcement proves that pricing/pass-through state can be captured prospectively with product granularity and explicit cost/demand context.
+
+This is **PIT data-feasibility only**:
+- no L4 prospective/OOS outcome claim;
+- no realized margin-protection claim;
+- no permanent positive/negative stock sign.
+
+D10-09 upstream/downstream asymmetry remains L2 pending paired upstream/downstream common-event receipts.
+
+Formal Core unchanged.
+
+### Exact next
+SC-032: define `PRICING_POWER_RECEIPT_V0_1` with FULL/PARTIAL/NONE/UNKNOWN pass-through states, product-level matrices and realized-ASP/margin follow-up clocks.
+SC-033: accumulate >=3 independent issuer pricing events outcome-blind before testing any pricing-power effect.
