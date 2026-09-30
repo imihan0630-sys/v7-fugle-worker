@@ -4347,3 +4347,14 @@ This is positive and negative evidence: event reconstruction can be exact inside
 
 Artifact: `research/corporate_action_event_state_reconstruction_contract_v0_1.json`.
 Formal Core unchanged.
+
+
+## D11-04 / D11-05 — Convertible-bond and treasury-stock state semantics
+
+The durable result is not a trading sign. It is a point-in-time state model.
+
+Convertible bonds: Taiwan official rules separate issue terms, conversion terms, conversion-price adjustment, conversion request, share/certificate delivery, quarterly aggregate share disclosure and later capital registration. TPEx/open-data sources separately expose issue/outstanding/conversion-period states and call notices. An issuance or call announcement therefore cannot be used as the share-denominator effective date.
+
+Treasury stock: Taiwan rules separately expose board authorization, plan filing, execution window, threshold disclosures and completion. Actual execution can be materially below planned quantity. Repurchased shares can later be transferred to employees, used for equity conversion or cancelled. A historical denominator cannot subtract planned buyback shares, and a factor cannot score realized repurchase intensity from authorization size alone.
+
+See `CAPITAL_STRUCTURE_EVENT_STATE_MACHINE_RESEARCH.md` and `research/d11_cb_treasury_event_state_contract_v0_1.json`. Formal Core unchanged.
