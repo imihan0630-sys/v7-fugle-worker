@@ -1,0 +1,16 @@
+{
+  "contract":"PATTERN_BREAKOUT_PATH_VALIDATION_V0_1",
+  "scope":"D01 research-only synthetic contract validation; outcome-blind; no runtime wiring",
+  "fixtureSource":"research/pattern_breakout_path_fixtures_v0_1.json",
+  "method":"deterministic validation against frozen breakout-path invariants",
+  "summary":{"pass":12,"fail":0,"unknown":0},
+  "validatedCases":["BP01","BP02","BP03","BP04","BP05","BP06","BP07","BP08","BP09","BP10","BP11","BP12"],
+  "limits":[
+    "Contract PASS does not prove a production implementation.",
+    "No future returns inspected; directional alpha remains UNKNOWN.",
+    "Synthetic validation does not establish Taiwan-market coverage, OOS robustness, costs or regime invariance."
+  ],
+  "formalCoreImpact":"NONE",
+  "formalOptimizationCandidate":"NONE",
+  "exactNext":"Implement isolated research-only descriptor calculator; require computed true-prefix equality, immutable first-event clocks, boundary-version firewall and UP/DOWN mirror invariance."
+}
