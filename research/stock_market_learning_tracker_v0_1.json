@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-01 Asia/Taipei",
+  "updatedAt": "2026-10-01T06:09:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -976,8 +976,8 @@
           "maturityPct": 40,
           "learningScope": "聚焦「Above-MA廣度」。學習範圍：產業分類、族群、Sector RS、Residual RS、Breadth與Rotation；領導股生命週期；大小型風格切換；成交值集中與題材分類；產業狀態對策略的條件效果。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "MECHANISM_AND_FALSIFICATION_DEFINED / PIT_SCHEMA_FROZEN / WAITING_CLEAN_POST_REPAIR_RECEIPT",
-          "next": "BR-034 build isolated research-only Above-MA20/60 sector receipt with coverage bounds and candidate leave-one-out; freeze first clean post-repair Taiwan PIT receipt before any outcome join."
+          "status": "MECHANISM_AND_FALSIFICATION_DEFINED / ISOLATED_QA_PASS / LIVE_PIT_RECEIPT_PENDING",
+          "next": "BR-035 freeze the first clean post-repair Taiwan Above-MA20/60 live receipt with effective-dated membership, admitted-history coverage bounds and candidate leave-one-out; no outcome join before receipt QA."
         },
         {
           "id": "D09-06",
@@ -1093,8 +1093,8 @@
           "maturityPct": 60,
           "learningScope": "聚焦「Pricing Power定價能力」。學習範圍：上下游圖譜、Lead-Lag、產能、庫存、報價、原物料、訂單與交期；供需缺口與定價能力；事件PIT時鐘；跨層級不對稱傳導；可自動化資料來源。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "台股PIT資料可行",
-          "status": "TAIWAN_PIT_DATA_FEASIBLE / SELECTIVE_PASS_THROUGH_SCHEMA_REQUIRED / OUTCOMES_CLOSED",
-          "next": "SC-032 define PRICING_POWER_RECEIPT_V0_1 with product-level posted-price matrices and FULL/PARTIAL/NONE/UNKNOWN states; SC-033 collect >=3 independent issuer pricing events outcome-blind before any outcome test."
+          "status": "TAIWAN_PIT_DATA_FEASIBLE / PRICING_POWER_RECEIPT_SCHEMA_FROZEN / OUTCOMES_CLOSED",
+          "next": "SC-033 collect >=3 independent issuer pricing events outcome-blind using the multidimensional state vector; SC-034 later join realized ASP/margin only on native publication clocks and compatible product scope."
         },
         {
           "id": "D10-07",
