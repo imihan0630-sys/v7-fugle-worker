@@ -64,4 +64,4 @@ for(const symbol of ['1201','1202','1203']){
 }
 assert.equal(missingReads,2,'negative memo should read closure once and ordinary presence once');
 
-console.log(JSON.stringify({ok:true,version:'8.14.3-closure-receipt-memo',closureKvReads:kvReads,negativeKvReads:missingReads,system2Touched:false}));
+console.log(JSON.stringify({ok:true,version:'8.14.4-history-memory-compaction',closureKvReads:kvReads,negativeKvReads:missingReads,system2Touched:false}));
