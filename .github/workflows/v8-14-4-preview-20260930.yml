@@ -1,0 +1,28 @@
+name: V8.14.4 Readonly 2026-09-30 Preview
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "ops/preview_v8_14_4_20260930.mjs"
+      - ".github/workflows/v8-14-4-preview-20260930.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: v8-14-4-readonly-preview-20260930
+  cancel-in-progress: false
+
+jobs:
+  preview:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Read-only System1 9/30 preview
+        env:
+          V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
+        run: node ops/preview_v8_14_4_20260930.mjs
