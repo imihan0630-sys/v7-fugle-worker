@@ -313,3 +313,16 @@ CA-115: do not re-evaluate Class-A Shadow implementation readiness until the rem
 - Required future controls: market/sector/size/liquidity/momentum, transfers vs true changes, concurrent corporate actions/news, common support, costs and auction slippage.
 - CA-113/114 cursor is unchanged; this cross-lane work does not close or overwrite the denominator archive gates.
 - Formal Core remains locked.
+
+## D11-04 / D11-05 long-block — CB and treasury-stock PIT state machines (2026-10-01 Asia/Taipei)
+- Continued from latest room tracker; D17 fixed-cadence capture remained time-dependent, so a nonblocked D11 branch was advanced instead of idling.
+- New anchor: `CAPITAL_STRUCTURE_EVENT_STATE_MACHINE_RESEARCH.md`.
+- New machine-readable contract: `research/d11_cb_treasury_event_state_contract_v0_1.json`.
+- D11-04 CB advances L2 -> L3 on Taiwan PIT/source feasibility only. Issue, listing, conversion window, conversion-price adjustment, conversion/share delivery, early-redemption/call, delisting/maturity and capital-registration clocks are now separated.
+- CB falsification: issue announcement != dilution date; conversion-window opening != converted amount; call notice != converted shares; quarterly new-share disclosure != exact daily denominator.
+- D11-05 treasury stock advances L2 -> L3 on Taiwan PIT/source feasibility only. Board authorization, filing, two-month execution, threshold disclosures, completion, actual execution and later transfer/conversion/cancellation are separate states.
+- Treasury falsification: plan != execution. Planned quantity cannot be treated as realized demand or outstanding-share reduction.
+- D17-06 dependency deepened but remains L2: expectation is pre-event planned state; surprise is newly knowable realization; final execution data cannot backdate the earlier expectation.
+- D11 maturity 48.6% -> 51.4%; room 08 aggregate 44.4% -> 45.9%.
+- No outcome join, no historical Shadow fabrication, no Formal change, no FORMAL_OPTIMIZATION_CANDIDATE.
+- Exact next: prospective immutable CB lifecycle receipts and treasury plan-to-execution receipts; only then preregister D17-06 expectation-vs-realization metrics before returns.

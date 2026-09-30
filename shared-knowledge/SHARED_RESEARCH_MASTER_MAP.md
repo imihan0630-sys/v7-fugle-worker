@@ -303,3 +303,5 @@ Next task: map reusable lanes to exact machine-readable fields, missing fields, 
 - Event/news transmission anchor: `NEWS_EVENT_TRANSMISSION_RESEARCH.md` (D17 sentiment, novelty, duplicate-event clustering, PIT semantics).
 
 - Index adjustment/passive-flow anchor: `INDEX_ADJUSTMENT_PASSIVE_FLOW_RESEARCH.md` (D11-14 Taiwan PIT event clocks, passive-flow mechanism, falsification and OOS contract).
+
+- Capital-structure event-state anchor: `CAPITAL_STRUCTURE_EVENT_STATE_MACHINE_RESEARCH.md` (D11-04 convertible-bond lifecycle, D11-05 treasury-stock authorization/execution/disposition, D17-06 expectation-vs-realization dependency).

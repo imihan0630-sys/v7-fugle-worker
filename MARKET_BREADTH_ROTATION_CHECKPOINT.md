@@ -266,3 +266,61 @@ Because correcting this can change Formal feature availability and candidate eli
 - No sector-gate/leader-breadth outcome claim can be made yet.
 
 Status: `ROOT_CAUSE_CONFIRMED / CLASS_C_REPAIR_PROPOSAL_READY / OWNER_APPROVAL_REQUIRED / BR030_DATA_QUALITY_BLOCKED`.
+
+
+## BR-033 — Above-MA breadth requires coverage bounds, leave-one-out and redundancy controls
+
+Artifact:
+`research/br033_above_ma_breadth_contract_v0_1.json`
+
+### Why this matters
+Above-MA breadth is a cross-sectional participation state, not a duplicate label for sector return or one-day advance breadth.
+
+### Denominator contract
+For each sector/window:
+- `membershipN` = PIT-valid sector members;
+- `historyReadyN` = admitted-history members with finite MA;
+- `passN` = history-ready members with close > MA;
+- `unknownN = membershipN - historyReadyN`;
+- point estimate = `passN / historyReadyN`;
+- coverage = `historyReadyN / membershipN`;
+- lower bound = `passN / membershipN`;
+- upper bound = `(passN + unknownN) / membershipN`.
+
+If `historyReadyN=0`, state = UNKNOWN, not 0%.
+
+### Required research variants
+- market MA20 / MA60;
+- sector MA20 / MA60;
+- 1-day change in each;
+- candidate leave-one-out sector MA20 / MA60.
+
+### Positive mechanism
+Above-MA participation can distinguish broad trend diffusion from leader-dominated sector/index strength.
+
+### Primary counterevidence
+- missing-history denominator shrink can falsely raise the point estimate;
+- a candidate can improve its own sector breadth in small sectors;
+- Above-MA can be redundant with Sector RS, equal/median return, one-day breadth, leader concentration and dispersion;
+- moving-average threshold crossings can whipsaw;
+- parameter sweeps across many horizons/thresholds invite overfit.
+
+### Horizon/threshold firewall
+Initial windows: MA20 and MA60 only.
+
+No 50/100/150/200-day expansion or fixed 50/55 threshold search before the first PIT receipt and redundancy test.
+
+### Current feasibility
+The research patch chain already computes market-level aboveMa20Pct/aboveMa60Pct from featureRows, and sector stats already have member/feature mapping. No new external data source is required structurally.
+
+But 2026-09-30 recovery preview hit Cloudflare Worker 1102 after closure proof succeeded, so a clean post-repair live sector receipt is still unproven.
+
+### Maturity
+`D09-05 Above-MA廣度: L1 -> L2`.
+
+This is mechanism/falsification maturity only. L3 remains blocked pending one clean replayable Taiwan PIT receipt with exact membership/history coverage.
+
+Formal Core unchanged.
+
+### Exact next
+BR-034: isolated research-only receipt builder using existing feature rows + effective-dated industry membership. Freeze the first clean live receipt before outcomes.
