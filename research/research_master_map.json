@@ -152,15 +152,15 @@
       "id": "BREADTH_ROTATION",
       "domain": "INDUSTRY_SECTOR_RESIDUAL_RS",
       "level": "L2",
-      "status": "WAITING_PROSPECTIVE / DATA_QUALITY_BLOCKED",
-      "basis": "BR-030 concentration protocol is preregistered, but the first expected 2026-09-29 cohort is invalid: production read-only history admission reported usableSymbols=0/1883 (1872 OFFICIAL_GAP_PROOF_UNAVAILABLE; 11 insufficient bars). Independent official evidence shows 2026-07-10 was a legitimate Taipei/TWSE closure date, so a gap-proof resolution false block is suspected with high confidence. No outcome comparison until an actually admitted scan exists."
+      "status": "WAITING_PROSPECTIVE / RUNTIME_RECEIPT_BLOCKED",
+      "basis": "The 2026-07-10 unscheduled market-closure proof defect was owner-approved and repaired in V8.14.2/8.14.3, but 2026-09-30 staged preview later failed Cloudflare Worker 1102 after closure-proof verification. Therefore BR-030 still has no proven clean live sector cohort. Separately, D09-05 Above-MA now has a coverage-bounded/leave-one-out contract plus isolated 28-assertion QA, and D09-08 size leadership has official Taiwan50/MidCap100/SC300 PIT source feasibility. No outcome claims or threshold changes."
     },
     {
       "id": "SUPPLY_CHAIN_EVENT_LEAD_LAG",
       "domain": "SUPPLY_CHAIN_LEAD_LAG",
       "level": "L2",
-      "status": "PIT_FEASIBLE_PARTIAL / WAITING_PROSPECTIVE",
-      "basis": "D10 research now has bounded Taiwan PIT source contracts for inventory, raw-material/output prices, supply-chain event clocks, official source capture and industry-specific transmission templates. SC-023 freezes actual issuer/route edges across IC substrates and steel; SC-027 freezes the first outcome-blind steel material-transmission receipt and SC-028 preregisters lag windows. Predictive outcomes remain closed; automation/universe completeness is partial."
+      "status": "PIT_FEASIBLE_PARTIAL / PRICING_POWER_SCHEMA_FROZEN / WAITING_PROSPECTIVE",
+      "basis": "SC-031 establishes issuer-level product-specific selective pricing response from official Taiwan pricing announcements; SC-032 separates cost context, posted price, realized ASP, realized margin and volume/mix clocks. D10-06 Pricing Power is L3 Taiwan PIT data-feasible, but realized pass-through/predictive outcomes remain closed. Material benchmark-to-company cost weights remain UNKNOWN where not disclosed."
     },
     {
       "id": "CORPORATE_ACTION_DENOMINATORS",
