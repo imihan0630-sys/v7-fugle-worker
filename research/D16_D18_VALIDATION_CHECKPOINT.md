@@ -516,3 +516,195 @@ No universal coverage threshold is authorized before prospective coverage/missin
 4. Keep Market Direction Breadth separate from Opportunity-Set Breadth.
 5. Continue True Return Distribution PIT/continuity work independently.
 6. Preserve the B2 X/not-comparable issue as shared-runtime falsification evidence; prepare governance-classified correction only if required.
+
+
+## 2026-10-01 continuation — Decision Clock source-family revalidation + U2 return firewall
+
+Durable artifacts:
+- `research/D16_D18_SOURCE_CLOCK_REVALIDATION_V0_1.md`
+- `research/D18_U2_TRUE_RETURN_DISTRIBUTION_CONTRACT_V0_1.md`
+- `system2/runtime/d18_twse_official_market_breadth_v0_1.mjs`
+- `system2/tests/d18_twse_official_market_breadth_v0_1.test.mjs`
+
+Engineering evidence:
+- PR #286 merged research-only;
+- merge commit `346938bc3c7409f06535bde6563fed96b0d4f4e3`;
+- final verified pre-merge head `0fa244ac717f213b97cbc9baebc58473f734a840`;
+- System2 Research CI `36784939010` PASS;
+- V8 Repair CI `36784939033` PASS;
+- V8 Regression `36784939167` PASS;
+- no Worker.js / Formal selection / ranking / capital / signal / push change.
+
+### D16 — 2026-09-29 finalized source-clock acceptance is now known
+
+The next-calendar-day audit is no longer pending.
+
+2026-09-29 finalized acceptance:
+- immutable selected attempt-one run: `36526809162`;
+- coverage = TRADING_DAY_COMPLETE;
+- coveragePromotionEligible = true;
+- countsTowardIndependentDate = true;
+- promotionGradeDateCount = 1;
+- independentTradingDates = 1;
+- countsTowardCompleteTradingDate = false;
+- completeTradingDates = 0;
+- countsTowardPrecisionEligibleDate = false;
+- precisionEligibleDates = 0;
+- status = INCOMPLETE_REQUIRED_EVIDENCE;
+- requiredReady = false;
+- sameSessionClockReady = false;
+- A5 was not available by a candidate decision boundary;
+- exact clock / Cron / capture authorization remain false.
+
+Important naming firewall:
+`promotionGradeDateCount=1` means the immutable attempt-one artifact is admissible to the independent evidence ledger. It does NOT mean the source set was complete, precise or ready for decision-clock freeze.
+
+Keeping the failed/incomplete attempt-one date is desirable anti-selection-bias behavior: an inconvenient date cannot be discarded and replaced by a later prettier rerun.
+
+### D16 — first two prospective source days falsify a simple latency-only model
+
+2026-09-29 raw evidence:
+- TWSE A1 did not reach the target market date during the observation window;
+- TPEx A1 remained source/transport-error;
+- B2 did not become complete.
+
+2026-09-30 raw evidence:
+- TWSE A1 still exposed 2026-09-29 through the final roughly 16:10 Taipei observation;
+- TPEx eventually reached 2026-09-30 with 888 ordinary-symbol rows and classification coverage passing;
+- cross-market same-date readiness therefore remained false;
+- source availability is asynchronous across venues.
+
+Conclusion:
+the working hypothesis "poll after 13:30 and wait long enough for the existing full-market A1 source family" is not yet validated.
+
+Accumulating more dates without source-family revalidation can accumulate source-failure dates rather than estimate a meaningful latency distribution.
+
+Official public product schedules also make the immediate-after-close assumption weak: closing products can be produced materially after the continuous-session close. The prospective artifact clock remains authoritative.
+
+### D18 — factor-specific source architecture
+
+Direction Breadth does not need to wait for the same per-symbol file used for return/history research.
+
+Freeze three different source/estimand lanes:
+
+1. OFFICIAL_AGGREGATE_MARKET_DIRECTION
+   - market up/down/unchanged/untraded/no-comparison;
+   - TWSE official TWTaZU machine-readable parser is now executable and adversarial-tested;
+   - TPEx official market-highlight semantics are known, but exact machine-readable transport + prospective availability remain unverified.
+
+2. PER_SYMBOL_COMMON_STOCK_RETURN_HISTORY
+   - common-stock breadth;
+   - median/equal-weight return;
+   - dispersion;
+   - rolling history/MA participation;
+   - stricter source-clock and continuity requirements.
+
+3. FORMAL_OPPORTUNITY_SET
+   - strategy/formal-filtered universe;
+   - diagnostic estimand only, not a substitute for external market state.
+
+The whole D18-04 module remains L2. A validated TWSE parser is a sublane feasibility result, not a two-market Regime builder.
+
+### D18 — U2 True Return Distribution split
+
+U2 is now frozen into:
+
+- U2A RAW_CLOSE_RETURN_DIAGNOSTIC:
+  raw traded close ratio across the verified previous official session;
+  useful for source diagnostics;
+  not automatically an economic/continuity return.
+
+- U2B CONTINUITY_CERTIFIED_RETURN:
+  target-date-bounded corporate-action continuity;
+  explicit price-space/version/provenance;
+  only information effective/known by target date;
+  unresolved continuity => UNKNOWN.
+
+Primary D18 median/equal-weight/dispersion/return-share Regime descriptors must use U2B.
+
+The existing official full-market historical adapter assigns `continuityState=UNVERIFIED`, so it cannot silently populate U2B.
+
+D18 must reuse the shared TECHNICAL_CONTINUITY authority rather than invent a second adjustment truth. Current shared continuity runtime remains blocked/partial.
+
+### Cross-room evidence-ladder falsification
+
+2026-09-29 demonstrates that "valid date" is estimand-specific:
+
+- D16 source-clock lane:
+  valid immutable independent prospective evidence date.
+
+- D09 BR-030 strategy/sector lane:
+  INVALID for outcome inference because 1,883 symbols failed history/source admission; zero candidates were a data-admission failure, not a market-state zero.
+
+Therefore freeze the evidence ladder:
+
+`SOURCE_CLOCK_VALID`
+does not imply
+`FEATURE_VALID`
+does not imply
+`STRATEGY_COHORT_VALID`
+does not imply
+`OUTCOME_VALID`.
+
+Every D18 Regime × Strategy receipt must carry enough lineage to prove each layer independently.
+
+Never transfer an "independent date count" from one estimand into another without proving common eligibility.
+
+### New research question — global vs strategy-specific Decision Clock
+
+System 2 already distinguishes evidence roles such as REQUIRED / SUPPORTIVE / CONTEXT in strategy contracts, but the repository audit did not find a complete machine-readable strategy -> exact source-ID -> readyAt dependency graph.
+
+Potential failure mode:
+a single global clock can inherit a slowest-source tax even for a strategy that does not require the slow source.
+
+This is research-only at present.
+
+Do NOT change to strategy-specific clocks until:
+1. exact strategy source dependencies are frozen;
+2. the global-clock delay attributable to non-required sources is measured;
+3. safety/fail-closed invariants are specified;
+4. owner/governance class is assessed.
+
+A strategy-specific clock would change admissible decision behavior and is not authorized by this Class-A research round.
+
+### Missingness / source failure is not market weakness
+
+Preserve separate states:
+- DATA_NOT_PUBLISHED_YET;
+- SOURCE_TRANSPORT_ERROR;
+- SOURCE_SCHEMA_INVALID;
+- CROSS_MARKET_ASYNCHRONOUS;
+- CONTINUITY_UNVERIFIED;
+- HISTORY_ADMISSION_FAILED;
+- TRUE_MARKET_ZERO / NATURAL_ZERO_PICK.
+
+Do not collapse them into bearish breadth, zero return, no-opportunity market, or bad strategy performance.
+
+### Maturity decision
+
+D16-11 remains L3 / 60%.
+Reason:
+real prospective provenance evidence improved substantially, but exact source-clock completeness/precision remains zero and source-family assumptions require revalidation.
+
+D18-04 remains L2 / 40%.
+Reason:
+TWSE official aggregate breadth has an executable tested sublane, but TPEx/cross-market prospective source readiness, U2B continuity and context-only occupancy are still incomplete.
+
+No D18 policy module receives L3/L4 evidence from this round.
+
+### Formal decision
+
+FORMAL_OPTIMIZATION_CANDIDATE: NONE.
+
+No Regime threshold, strategy gate, dynamic weight, Formal score, capital, execution or notification change is justified.
+
+## Exact next continuation — 2026-10-01
+
+1. Read the finalized 2026-09-30 Decision Clock acceptance only after the scheduled next-calendar-day audit exists; do not infer it from raw workflow success.
+2. Prospectively measure TWSE TWTaZU aggregate-breadth availability using the frozen parser; publication timing remains evidence, not assumed documentation.
+3. Resolve a machine-readable official TPEx aggregate breadth transport and measure its availability; HTML semantics alone are not L3.
+4. When both aggregate venues are valid on common support, compare official aggregate breadth versus per-symbol reconstructed breadth as a source/universe diagnostic, not an alpha test.
+5. Reuse shared TECHNICAL_CONTINUITY for a future U2A/U2B comparison receipt; do not create a second corporate-action transform.
+6. Test whether missing/not-comparable/source-failure shares are state-dependent before any coverage threshold.
+7. Audit global-clock vs strategy-specific required-source dependencies as a separate architecture hypothesis; no runtime change.
+8. Regime-policy alpha remains closed until source occupancy, feature validity and strategy-cohort validity all pass.
