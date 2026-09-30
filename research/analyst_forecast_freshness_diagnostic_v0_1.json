@@ -1,0 +1,66 @@
+{
+  "schemaVersion": "ANALYST_FORECAST_FRESHNESS_DIAGNOSTIC_V0_1",
+  "status": "PREREGISTERED_RESEARCH_ONLY_OUTCOMES_CLOSED",
+  "frozenAt": "2026-09-30 Asia/Taipei",
+  "purpose": "Choose no stale cutoff or recency weighting until forecast accuracy is tested prospectively/out-of-sample; preserve forecast age as data rather than hard-coding freshness.",
+  "population": "Taiwan listed/OTC symbols only when an authorized PIT analyst-estimate source satisfies ANALYST_FORECAST_REVISION_PIT_CONTRACT; otherwise UNKNOWN and no empirical join.",
+  "unitOfObservation": "individual analyst/broker forecast vintage x symbol x target fiscal horizon x decision timestamp",
+  "requiredInputs": [
+    "symbol",
+    "forecasterId_or_stable_source_key",
+    "targetFiscalYear",
+    "forecastEPS",
+    "forecastPublishedAt",
+    "forecastFirstObservedAt",
+    "active_or_withdrawn",
+    "supersedesId_or_lineage_if_proven",
+    "decisionAt",
+    "actualEPS_firstKnownVintage_when_eventually_available"
+  ],
+  "frozenAgeBucketsDays": [
+    "0-30",
+    "31-60",
+    "61-90",
+    "91-180",
+    ">180"
+  ],
+  "primaryDiagnostics": [
+    "absolute EPS forecast error by age bucket",
+    "signed EPS forecast error by age bucket",
+    "consensus absolute error under equal-weight latest-active-per-forecaster",
+    "leave-one-forecaster-out sensitivity",
+    "coverage and dispersion by age bucket"
+  ],
+  "candidateWeightingSchemes": [
+    "EQUAL_WEIGHT_LATEST_ACTIVE",
+    "RECENCY_WEIGHTED_ONLY_AS_PREDECLARED_CHALLENGER"
+  ],
+  "weightingRule": "Do not optimize decay half-life. If recency weighting is tested, use one predeclared simple monotone scheme and compare against equal-weight baseline.",
+  "stratification": [
+    "target horizon distance",
+    "coverage count",
+    "sector",
+    "firm size/liquidity",
+    "earnings-announcement proximity"
+  ],
+  "antiLeakage": [
+    "forecast must be published/observed before decisionAt",
+    "actual EPS enters only after its first-known release and only as evaluation target",
+    "no corrected latest forecast backfill",
+    "horizon roll is not a revision",
+    "withdrawn forecasts remain in lineage but are inactive for later consensus",
+    "missing forecast age or timestamp => UNKNOWN"
+  ],
+  "falsification": [
+    "If forecast age has no stable monotone relation with OOS accuracy, reject stale cutoff/recency weighting.",
+    "If gains are driven by one sector, one coverage regime, one forecaster or announcement-adjacent revisions, mark fragile.",
+    "If recency weighting improves in-sample but not purged/OOS/prospective results, retain equal-weight baseline.",
+    "If source population changes over time or correction lineage is unproven, do not attribute differences to forecast freshness."
+  ],
+  "literatureContext": [
+    "Prior research reports informed consensus weights using forecast age plus analyst/broker attributes can improve forecast accuracy versus naive consensus; this motivates a challenger, not an imported Taiwan threshold."
+  ],
+  "maturityEffect": "NONE_UNTIL_AUTHORIZED_PIT_SOURCE_AND_PROSPECTIVE_OR_OOS_EVIDENCE",
+  "formalCoreChanged": false,
+  "formalOptimizationCandidate": false
+}
