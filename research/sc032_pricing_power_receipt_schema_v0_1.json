@@ -1,0 +1,153 @@
+{
+  "version": "0.1",
+  "id": "SC-032",
+  "date": "2026-10-01 Asia/Taipei",
+  "module": "D10-06 Pricing Power定價能力",
+  "formalCoreChanged": false,
+  "outcomesOpened": false,
+  "status": "PRICING_POWER_RECEIPT_SCHEMA_FROZEN / MULTIDIMENSIONAL_STATE / OUTCOMES_CLOSED / FORMAL_UNCHANGED",
+  "designCorrection": "Do not collapse pricing power into a single FULL/PARTIAL/NONE label before realized ASP/margin evidence exists.",
+  "clocks": {
+    "sourcePublishedAt": "native issuer timestamp/date if explicitly exposed, else UNKNOWN",
+    "capturedAt": "mandatory conservative replay clock",
+    "firstEligibleTaiwanDecision": "derived only after authoritative knownAt is frozen",
+    "inputCostObservationAt": "native benchmark/report clock",
+    "postedPriceEffectiveAt": "issuer-stated effective month/date",
+    "realizedAspKnownAt": "issuer disclosure publication clock",
+    "realizedMarginKnownAt": "issuer financial-report publication clock"
+  },
+  "stateVector": {
+    "costContext": {
+      "allowed": [
+        "UNKNOWN",
+        "NO_MATERIAL_PRESSURE_EVIDENCE",
+        "PRESSURE_ACKNOWLEDGED",
+        "RELIEF_ACKNOWLEDGED",
+        "MIXED"
+      ],
+      "note": "Issuer narrative/benchmark context; not realized procurement cost."
+    },
+    "postedPriceResponse": {
+      "allowed": [
+        "UNKNOWN",
+        "NONE",
+        "SELECTIVE",
+        "BROAD"
+      ],
+      "note": "Classify across explicitly exposed relevant product rows, not company-wide by inference."
+    },
+    "realizedAspResponse": {
+      "allowed": [
+        "UNKNOWN",
+        "DOWN",
+        "FLAT",
+        "UP",
+        "MIXED"
+      ],
+      "note": "Requires disclosed realized ASP or sufficiently scoped realized selling-price evidence."
+    },
+    "realizedMarginResponse": {
+      "allowed": [
+        "UNKNOWN",
+        "COMPRESSED",
+        "STABLE",
+        "EXPANDED",
+        "MIXED"
+      ],
+      "note": "Requires issuer-reported margin at its publication knownAt."
+    },
+    "volumeMixResponse": {
+      "allowed": [
+        "UNKNOWN",
+        "WEAK",
+        "STABLE",
+        "STRONG",
+        "MIX_SHIFT"
+      ],
+      "note": "Separate volume/mix from price response."
+    },
+    "inferenceState": {
+      "allowed": [
+        "DESCRIPTIVE_ONLY",
+        "PASS_THROUGH_CANDIDATE",
+        "FAILED_PASS_THROUGH_CANDIDATE",
+        "CONFOUNDED",
+        "NOT_COMPARABLE"
+      ],
+      "note": "Never inferred from posted price alone."
+    }
+  },
+  "classificationRules": [
+    "Posted price BROAD does not equal realized full pass-through when realizedAspResponse is UNKNOWN.",
+    "Posted price SELECTIVE is not failure; product/customer demand and quoting cycles may differ.",
+    "Posted price NONE plus stable/expanded margin does not prove no pricing power because inventory/mix/input-cost relief may dominate.",
+    "Posted price UP plus compressed margin is direct counterevidence against using posted price as margin-protection proof.",
+    "A realized margin change without compatible product/volume/input-cost scope is CONFOUNDED, not pass-through success/failure.",
+    "Missing rows remain UNKNOWN and are excluded from any scope coverage ratio; absence is not zero adjustment unless issuer matrix explicitly shows 0."
+  ],
+  "productMatrixFields": [
+    "productFamily",
+    "scopeBasis",
+    "postedAdjustmentValue",
+    "postedAdjustmentUnit",
+    "postedAdjustmentDirection",
+    "effectiveAt",
+    "sourceEvidence",
+    "coverageState"
+  ],
+  "receiptFields": [
+    "issuerSymbol",
+    "issuerName",
+    "eventId",
+    "sourceUrl",
+    "sourcePublishedAt",
+    "capturedAt",
+    "inputCostContext",
+    "productPriceMatrix",
+    "postedScopeCoveragePct",
+    "realizedAspFollowup",
+    "realizedMarginFollowup",
+    "volumeMixFollowup",
+    "marketSectorRegime",
+    "confounders",
+    "stateVector",
+    "evidenceQuality"
+  ],
+  "adversarialFixtures": [
+    {
+      "case": "ALL_POSTED_UP_REALIZED_UNKNOWN",
+      "expected": "postedPriceResponse=BROAD; realizedAspResponse=UNKNOWN; inferenceState=DESCRIPTIVE_ONLY"
+    },
+    {
+      "case": "MIXED_POSTED_UP_ZERO",
+      "expected": "postedPriceResponse=SELECTIVE; not FAILED_PASS_THROUGH"
+    },
+    {
+      "case": "POSTED_UP_MARGIN_DOWN",
+      "expected": "realizedMarginResponse=COMPRESSED; posted pricing does not prove margin protection"
+    },
+    {
+      "case": "NO_POSTED_UP_MARGIN_STABLE",
+      "expected": "cannot infer NO_PRICING_POWER; inventory/mix/input relief remain competing explanations"
+    }
+  ],
+  "redundancyAndControls": [
+    "input commodity/energy state",
+    "inventory vintage",
+    "product/customer mix",
+    "shipment volume",
+    "FX/hedging where material",
+    "international competitor pricing",
+    "sector demand/regime",
+    "company fundamental trend"
+  ],
+  "maturityDecision": {
+    "D10-06": "KEEP_L3",
+    "D10-09": "KEEP_L2"
+  },
+  "exactNext": [
+    "SC-033 collect >=3 independent issuer pricing-event receipts with this state vector and no stock outcomes.",
+    "SC-034 compare posted-price response against later realized ASP/margin only after publication clocks mature; no synthetic spread margin.",
+    "Require common-scope negative controls before D10-09 asymmetric transmission promotion."
+  ]
+}
