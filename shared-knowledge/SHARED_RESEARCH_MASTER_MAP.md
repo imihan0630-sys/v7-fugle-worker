@@ -305,3 +305,22 @@ Next task: map reusable lanes to exact machine-readable fields, missing fields, 
 - Index adjustment/passive-flow anchor: `INDEX_ADJUSTMENT_PASSIVE_FLOW_RESEARCH.md` (D11-14 Taiwan PIT event clocks, passive-flow mechanism, falsification and OOS contract).
 
 - Capital-structure event-state anchor: `CAPITAL_STRUCTURE_EVENT_STATE_MACHINE_RESEARCH.md` (D11-04 convertible-bond lifecycle, D11-05 treasury-stock authorization/execution/disposition, D17-06 expectation-vs-realization dependency).
+
+
+### D03 reusable rule update — 2026-10-01
+
+Status: **MECHANISM_AND_FALSIFICATION_DEFINED / NOT_FORMAL_EVIDENCE**.
+
+Two exact/shared rules from D03 TI-453~459 are reusable by both System 1 and System 2:
+
+1. **SMA deduction-price redundancy firewall.** For an n-period SMA, `SMA_n(t)-SMA_n(t-1)=(C_t-C_(t-n))/n`. Therefore current SMA slope direction, current close versus the outgoing/deduction close and the sign of the same-horizon close return are algebraically linked. They must not be counted as independent factor votes. Future deduction sequences are conditional scenario thresholds because future incoming closes remain unknown.
+
+2. **ADX is a trend-quality candidate, not an independent directional vote.** ADX is signless trend strength; direction belongs to +DI/-DI or another direction layer. ADX and Impulse MACD are structurally different but both transform OHLC trend/range information, so an EMA16/64 + Impulse + ADX stack has a high shared-family redundancy prior. ADX begins as a moderator/diagnostic and needs residual incremental-value evidence beyond direct trend, ATR/regime, trend persistence, structure and Impulse before any optimization proposal.
+
+Additional engineering constraint: the prior ~65-bar readiness result for KD/RSI/MACD cannot be inherited by ADX14. Deterministic warm-up falsification showed a material 65-bar initialization difference while 150 bars nearly converged to the full-history value in the witness. Any ADX capture must freeze formulaVersion and warm-up semantics first.
+
+System-use rule:
+- do not add duplicate score weight for SMA slope + deduction state + same-horizon retN;
+- do not treat ADX as the third vote in a correlated trend-indicator confluence;
+- preserve Trend -> Location -> Momentum -> Price Confirmation -> Risk/Exit architecture, with ADX only as a prospective trend-quality moderator unless residual evidence survives PIT/OOS/Shadow, cost, redundancy and multi-Regime gates;
+- Formal Core remains LOCKED; `FORMAL_OPTIMIZATION_CANDIDATE = NONE`.
