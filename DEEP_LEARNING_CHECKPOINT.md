@@ -1042,3 +1042,32 @@ YES for research infrastructure integrity: resolving the actual archive lineage 
 - Research-only observer/tests now deterministically normalize ROC clocks, map both schemas and fail revision/removal semantics closed to UNKNOWN.
 - D11-08 and D17-01/02/09 remain L2; no maturity inflation, no outcome join, no R09, no Formal/runtime/deployment change.
 - Exact next: fixed-cadence immutable multi-day capture over at least three trading sessions plus one after-hours interval; quantify capture-delay distributions, cross-day recurrence and change/removal classes; search for native correction identifiers; keep broad licensed general-news SOURCE_NEEDED.
+
+
+## 2026-10-01 D03 — TI-453~459 ADX / moving-average offset redundancy
+
+- Room/domain: 03｜技術指標與趨勢動能研究室 / D03.
+- Governance: Class-A research-only. GitHub latest main and required governance/shared/router/tracker files re-read before work. No Formal selection/ranking/capital/monitoring/signal/push change.
+- Source/PIT lane remains `ACCUMULATING_2_OF_3` prospective completed Taiwan sessions. No same-day duplicate was promoted into a third independent session.
+- Evidence:
+  - exact SMA identity `ΔSMA_n=(C_t-C_(t-n))/n` proves current deduction-price state, one-step SMA slope sign and same-horizon retN sign are directionally redundant;
+  - EMA exact identity `ΔEMA=alpha*(C_t-EMA_(t-1))` rejects SMA-style single deduction-price semantics for EMA;
+  - deterministic ADX14 witnesses: smooth up = 100, smooth down = 100, choppy same-net-return up ≈16.7353, flat oscillation ≈11.1728;
+  - deterministic warm-up witness: full-history 16.076280, 65-bar 16.905634, 150-bar 16.076396.
+- Counterevidence/failure conditions:
+  - ADX has no directional authority by itself;
+  - ADX and Impulse MACD are different transforms but share OHLC trend/range information, so independence is not assumed;
+  - a 65-bar cache readiness finding for KD/RSI/MACD cannot be generalized to ADX14;
+  - synthetic mechanism evidence does not establish Taiwan alpha, optimal 20/25 thresholds or OOS value.
+- Redundancy/bias controls:
+  - do not count SMA slope + deduction state + retN separately;
+  - do not count EMA16/64 + Impulse + ADX as three independent votes;
+  - future ADX inference must residualize direct trend, ATR/regime, trend persistence, structure and Impulse, use equal-date clustering, preserve blocked/UNKNOWN parents, and avoid threshold sweeps.
+- Durable artifacts:
+  - `research/TECHNICAL_INDICATOR_ADX_OFFSET_REDUNDANCY_V0_1.md`;
+  - `research/test_technical_indicator_adx_offset_redundancy_v0_1.mjs`;
+  - `TECHNICAL_INDICATOR_RESEARCH.md`;
+  - `TECHNICAL_INDICATOR_CHECKPOINT.md`.
+- Maturity: D03-09 ADX L1/20 -> L2/40; D03 aggregate 44.6% -> 46.2%. This is a mechanism/falsification promotion only.
+- Candidate handoff: `FORMAL_OPTIMIZATION_CANDIDATE = NONE`. Formal Core remains LOCKED.
+- Exact next continuation: wait for the next completed Taiwan session to supply the preregistered third source/version observation. If that gate passes governance, execute TI-005 KD-vs-RSI then TI-006 MACD-vs-direct-trend. Before any ADX efficacy test, freeze a long-enough warm-up/formulaVersion and +DI/-DI/DX/ADX continuity contract; ADX then tests residual value only, with no additive vote or threshold tuning.
