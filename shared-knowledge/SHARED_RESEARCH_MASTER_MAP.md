@@ -305,3 +305,16 @@ Next task: map reusable lanes to exact machine-readable fields, missing fields, 
 - Index adjustment/passive-flow anchor: `INDEX_ADJUSTMENT_PASSIVE_FLOW_RESEARCH.md` (D11-14 Taiwan PIT event clocks, passive-flow mechanism, falsification and OOS contract).
 
 - Capital-structure event-state anchor: `CAPITAL_STRUCTURE_EVENT_STATE_MACHINE_RESEARCH.md` (D11-04 convertible-bond lifecycle, D11-05 treasury-stock authorization/execution/disposition, D17-06 expectation-vs-realization dependency).
+
+
+### D01 shared handoff — 2026-10-01
+
+K-line/Pattern research added an implementation-level replay/path falsification tranche in research/PATTERN_DL007_IMPLEMENTATION_AND_COUNTEREVIDENCE_V0_1.md. Reusable findings for both systems:
+- multi-timeframe agreement is a topology relation, not an independent vote when scales derive from the same PRICE_OHLC root;
+- boundary identity/version/coordinates and confirmation clocks are PIT/replay-critical;
+- UP/DOWN mirror invariance should be tested before market outcomes because normalization alone can manufacture directional asymmetry;
+- constrained price-limit sessions preserve chronology but do not prove ordinary breakout acceptance;
+- 2026 Taiwan HS research supports mechanically confirmed turning-point structure but is based on data ending in 2018, so current post-2020 regime transportability remains UNKNOWN;
+- 2025 Taiwan historical-high evidence rejects a universal hard resistance veto after a true break, but local-pattern equivalence and effect-size transportability remain unproven.
+
+Status: RESEARCH_ONLY / ALPHA_UNKNOWN / NO_FORMAL_PROMOTION.
