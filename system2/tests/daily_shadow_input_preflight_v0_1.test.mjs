@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { fetchDailyShadowA1SnapshotV0_1 } from "../runtime/daily_shadow_a1_source_v0_1.mjs";
+import { fetchDailyShadowA1SnapshotV0_2 } from "../runtime/daily_shadow_a1_source_v0_2.mjs";
 import {
   loadPitPriorA1BarsV0_1,
   probePitHistoryCoverageV0_1,
@@ -11,49 +11,79 @@ import {
 import { buildDailyShadowInputPreflightV0_1 } from "../runtime/daily_shadow_input_preflight_v0_1.mjs";
 
 const marketDate = "2026-10-02";
-const twseRows = [{
-  Code: "2330", Name: "台積電", Date: "20261002",
-  OpeningPrice: "1800", HighestPrice: "1830", LowestPrice: "1790", ClosingPrice: "1820",
-  TradeVolume: "10000000", TradeValue: "18200000000", Transaction: "10000", Change: "20",
-}];
-const tpexRows = [{
-  SecuritiesCompanyCode: "6488", CompanyName: "環球晶", Date: "20261002",
-  Open: "500", High: "510", Low: "495", Close: "508",
-  TradingShares: "1000000", TransactionAmount: "508000000", TransactionNumber: "2000", Change: "8",
-}];
+
+const twsePayload = {
+  stat: "OK",
+  date: "20261002",
+  tables: [{
+    title: "115年10月02日 每日收盤行情",
+    fields: [
+      "證券代號", "證券名稱", "成交股數", "成交筆數", "成交金額",
+      "開盤價", "最高價", "最低價", "收盤價", "漲跌(+/-)", "漲跌價差",
+    ],
+    data: [[
+      "2330", "台積電", "10,000,000", "10,000", "18,200,000,000",
+      "1800", "1830", "1790", "1820", "+", "20",
+    ]],
+  }],
+};
+
+const tpexPayload = {
+  stat: "ok",
+  date: "20261002",
+  tables: [{
+    title: "上櫃股票行情",
+    date: "115/10/02",
+    fields: [
+      "代號", "名稱", "收盤", "漲跌", "開盤", "最高", "最低", "均價",
+      "成交股數", "成交金額(元)", "成交筆數", "最後買價", "最後賣價",
+      "發行股數", "次日 參考價", "次日 漲停價", "次日 跌停價",
+    ],
+    data: [[
+      "6488", "環球晶", "508", "+8", "500", "510", "495", "505",
+      "1,000,000", "508,000,000", "2,000", "507", "508",
+      "100,000,000", "508", "558", "458",
+    ]],
+  }],
+};
 
 const fetchImpl = async (url) => ({
   ok: true,
   status: 200,
   async json() {
-    return String(url).includes("twse") ? twseRows : tpexRows;
+    return String(url).includes("twse.com.tw") ? twsePayload : tpexPayload;
   },
 });
 const fixedNow = () => new Date("2026-10-02T07:20:00.000Z");
 
-const source = await fetchDailyShadowA1SnapshotV0_1({
+const source = await fetchDailyShadowA1SnapshotV0_2({
   marketDate,
   decisionTimestamp: "2026-10-02T07:30:00.000Z",
   fetchImpl,
   now: fixedNow,
   minimumByMarket: { TWSE: 1, TPEX: 1 },
 });
+assert.equal(source.version, "0.2-RESEARCH");
+assert.equal(source.sourcePolicy, "DATE_SCOPED_AFTER_TRADING_SOURCE_DATE_VERIFIED");
+assert.equal(source.sourceDateVerified, true);
 assert.equal(source.state, "READY");
 assert.equal(source.snapshotBatch.ordinarySymbolCount, 2);
 assert.equal(source.decisionClockMode, "FIXED_CALLER_CLOCK");
+assert.equal(source.transports.TWSE.sourceDateVerified, true);
+assert.equal(source.transports.TPEX.sourceDateVerified, true);
 assert.equal(source.externalMutationPerformed, false);
 
-const diagnosticClock = await fetchDailyShadowA1SnapshotV0_1({
+const diagnosticClock = await fetchDailyShadowA1SnapshotV0_2({
   marketDate,
   fetchImpl,
   now: fixedNow,
   minimumByMarket: { TWSE: 1, TPEX: 1 },
 });
 assert.equal(diagnosticClock.state, "READY");
-assert.equal(diagnosticClock.decisionTimestamp, source.observedAt);
+assert.equal(diagnosticClock.decisionTimestamp, diagnosticClock.observedAt);
 assert.equal(diagnosticClock.decisionClockMode, "DIAGNOSTIC_OBSERVATION_TIME_NOT_CAPTURE_CLOCK");
 
-const late = await fetchDailyShadowA1SnapshotV0_1({
+const late = await fetchDailyShadowA1SnapshotV0_2({
   marketDate,
   decisionTimestamp: "2026-10-02T07:00:00.000Z",
   fetchImpl,
@@ -63,9 +93,31 @@ const late = await fetchDailyShadowA1SnapshotV0_1({
 assert.equal(late.state, "INCOMPLETE");
 assert.equal(late.snapshotBatch.blockerCodes.includes("OBSERVED_AFTER_DECISION_CLOCK"), true);
 
-const sourceError = await fetchDailyShadowA1SnapshotV0_1({
+const staleTpexFetch = async (url) => ({
+  ok: true,
+  status: 200,
+  async json() {
+    if (String(url).includes("twse.com.tw")) return twsePayload;
+    return {
+      ...tpexPayload,
+      date: "20261001",
+      tables: [{ ...tpexPayload.tables[0], date: "115/10/01" }],
+    };
+  },
+});
+const staleSource = await fetchDailyShadowA1SnapshotV0_2({
   marketDate,
-  fetchImpl: async () => ({ ok: false, status: 503 }),
+  fetchImpl: staleTpexFetch,
+  now: fixedNow,
+  minimumByMarket: { TWSE: 1, TPEX: 1 },
+});
+assert.equal(staleSource.state, "SOURCE_ERROR");
+assert.equal(staleSource.transports.TPEX.errorCode, "SOURCE_DATE_MISMATCH");
+assert.equal(staleSource.snapshotBatch, null);
+
+const sourceError = await fetchDailyShadowA1SnapshotV0_2({
+  marketDate,
+  fetchImpl: async () => ({ ok: false, status: 404, json: async () => ({}) }),
   now: fixedNow,
   minimumByMarket: { TWSE: 1, TPEX: 1 },
 });
