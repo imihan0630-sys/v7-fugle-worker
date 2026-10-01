@@ -395,3 +395,7 @@ Physical status is now VERIFIED for the bounded Daily Resonance lane. Deployment
 PR #295 / main `03b9dd824d1efa85eee86b04ee68171563e9e523` added same-date PIT freshness checks, a durable 19:00 refresh audit in existing D1, prevention of stale-pool reuse, a read-only operations API and an explicit UI status. System2 CI `36930742222`, V8 Regression `36930742371`, and physical deployment `36930843423` passed.
 
 The physical operations API returned `UPSTREAM_CAPACITY_RECEIPT_MISSING`, `upstreamCapacity=null`, and zero active symbols on 2026-10-02. The Worker, one Cron, D1 and Fugle secret are deployed; an upstream authorized capacity writer is still absent. Selection capture, notification, orders and final policy remain disabled. Do not claim a populated daily selection or actual intraday quote cycle until prospective D1 run evidence exists.
+
+## 2026-10-02 paired resonance comparison lane registered
+
+The build roadmap now explicitly includes a Baseline-vs-Challenger resonance research lane. The deployed owner-video Daily Resonance remains the Baseline; an alternate System 2 Challenger will be preregistered and captured on the same bounded pool/data/clock for immutable side-by-side evaluation. This is currently **MAP_REGISTERED / IMPLEMENTATION_PENDING**. No Challenger formula/parameters are frozen by this status entry, and it has no notification, selection, capital or order authority.
