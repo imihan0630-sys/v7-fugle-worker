@@ -3,6 +3,13 @@ import {observeFormalGateOverlap} from './formal_gate_overlap_observer_v0_1.mjs'
 
 // Offline only. No Worker import, bindings, fetch, scheduling or trading adapter.
 export const SAFETY = Object.freeze(['SOURCE_AUTHENTICITY','SESSION_CONTINUITY','CORPORATE_ACTION_CONTINUITY','EXECUTION_FEASIBILITY','ACCOUNT_RISK']);
+const C1_GATE_IDS=Object.freeze([
+  'PRICE_FLOOR','HISTORY_60D','RS_CONTEXT','MARKET_CAP_FLOOR','DAILY_ABNORMALITY','LIQUIDITY',
+  'SMALL_CAP_SPECIAL','MID_CAP_LIQUIDITY','CHIP_CONCENTRATION_PRESENT','FINANCIAL_SOURCE_COMPLETENESS',
+  'ANNOUNCEMENT_RISK','VALUATION_RELATIVE_RISK','SECTOR_GATE','AB_SETUP','FUNDAMENTAL_COMPONENT_COUNT',
+  'FUNDAMENTAL_QUALITY','ATR_QUALITY','TARGET_AVAILABLE','REWARD_RISK','FINAL_SIGNAL_GRADE',
+  'SECTOR_BREADTH','SECTOR_RETURN','SECTOR_AMOUNT','SETUP_A','SETUP_B'
+]);
 const number = x => typeof x === 'number' && Number.isFinite(x) ? x : null;
 const state = (status, reason = null) => ({status, reason});
 const hash = x => createHash('sha256').update(JSON.stringify(x)).digest('hex');
@@ -16,6 +23,46 @@ function known(e, row, decisionAt) {
   return e?.authenticated === true && e?.parentId === row.parentId &&
     e?.sessionDate === row.sessionDate && Number.isFinite(timestamp(e?.knownAt)) &&
     timestamp(e.knownAt) <= timestamp(decisionAt);
+}
+
+export function adaptC1PopulationPages(pages) {
+  if(!Array.isArray(pages)||!pages.length) throw new Error('C1_PAGES_REQUIRED');
+  const headers=pages.map(page=>page?.header);
+  const header=headers[0];
+  if(!header?.generationId||header?.readbackVerified!==true||!header?.contentDigest||!header?.universeDigest)
+    throw new Error('C1_HEADER_NOT_VERIFIED');
+  if(headers.some(x=>x?.generationId!==header.generationId||x?.contentDigest!==header.contentDigest||x?.populationN!==header.populationN))
+    throw new Error('C1_HEADER_MISMATCH');
+  const chunks=pages.flatMap(page=>Array.isArray(page?.chunks)?page.chunks:[]).sort((a,b)=>a.chunkIndex-b.chunkIndex);
+  if(chunks.length!==Number(header.chunkCount)||chunks.some((chunk,index)=>chunk.chunkIndex!==index)||
+      chunks.some(chunk=>chunk.rowCount!==chunk.rows?.length)) throw new Error('C1_CHUNK_COVERAGE_INCOMPLETE');
+  const rawRows=chunks.flatMap(chunk=>chunk.rows);
+  if(rawRows.length!==Number(header.populationN)) throw new Error('C1_POPULATION_COUNT_MISMATCH');
+  const contentDigest=hash(rawRows);
+  const universe=rawRows.map(row=>String(row.symbol));
+  const universeDigest=createHash('sha256').update([...universe].sort().join('\n')).digest('hex');
+  if(contentDigest!==header.contentDigest||universeDigest!==header.universeDigest) throw new Error('C1_DIGEST_MISMATCH');
+  if(new Set(universe).size!==universe.length) throw new Error('C1_DUPLICATE_SYMBOL');
+  const point={authenticated:true,parentId:header.generationId,sessionDate:header.sessionDate,knownAt:header.decisionAt};
+  const rows=rawRows.map(raw=>({
+    symbol:String(raw.symbol),sessionDate:header.sessionDate,parentId:header.generationId,
+    feature:raw.feature||{},sector:raw.sector||{},derived:raw.derived||{},
+    formalResult:raw.formalResult?{
+      ok:raw.formalResult.ok===true,reason:raw.formalResult.firstFailure||null,
+      basePassed:raw.formalResult.basePassed===true,rrPassed:raw.formalResult.rrPassed===true,
+      selected:raw.formalResult.selected===true,selectedRank:raw.formalResult.selectedRank??null
+    }:null,
+    historyAdmission:raw.historyAdmission||null,
+    gateEvidence:Object.fromEntries(C1_GATE_IDS.map(id=>[id,{...point}])),
+    safety:Object.fromEntries(SAFETY.map(id=>[id,{...point,...(raw.safety?.[id]||{status:'UNKNOWN',reason:'SAFETY_NOT_CAPTURED'})}])),
+    thesis:null,structuralStop:null,entryGeometry:raw.derived?.entryGeometry||null
+  }));
+  return {
+    sessionDate:header.sessionDate,decisionAt:header.decisionAt,universe,rows,
+    generationId:header.generationId,contentDigest,universeDigest,
+    sourceMainSha:header.sourceMainSha,effectiveRuntimeVersion:header.effectiveRuntimeVersion,
+    captureCompleteness:header.completeness,researchOnly:true,decisionImpact:false,formalCoreImpact:false
+  };
 }
 
 export function observeRow(row, decisionAt) {

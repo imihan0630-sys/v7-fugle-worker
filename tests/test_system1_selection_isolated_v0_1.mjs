@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict';
-import {observeRow,diagnosePopulation,challenge,SAFETY} from '../research/system1_selection_isolated_v0_1.mjs';
+import {createHash} from 'node:crypto';
+import {observeRow,diagnosePopulation,challenge,SAFETY,adaptC1PopulationPages} from '../research/system1_selection_isolated_v0_1.mjs';
 const clock='2026-10-01T10:10:00Z';
 const evidence={authenticated:true,parentId:'fixture-1',sessionDate:'2026-10-01',knownAt:'2026-10-01T10:00:00Z'};
 function fixture(symbol='2006') {
@@ -60,4 +61,23 @@ assert.throws(()=>challenge(fixture(),clock,{strategy:'UNREGISTERED'}),/UNREGIST
 for(const row of rows) {
   const out=challenge(row,clock,options);equal(out.formalSelected,false);equal(out.buyAuthorized,false);equal(out.allocation,0);equal(out.signal,null);
 }
+const exportedRows=[
+  {symbol:'2006',feature:fixture().feature,sector:fixture().sector,derived:{...fixture().derived,entryGeometry:{entry:100,stop:92,target:120}},
+    formalResult:{ok:true,firstFailure:null,basePassed:true,rrPassed:true,selected:true,selectedRank:1},
+    historyAdmission:{usable:true,status:'VALID_EXACT_SESSIONS'},safety:Object.fromEntries(SAFETY.map(id=>[id,{status:id==='CORPORATE_ACTION_CONTINUITY'?'UNKNOWN':'PASS'}]))},
+  {symbol:'9999',feature:{close:30,historyDays:null},sector:null,derived:null,
+    formalResult:{ok:false,firstFailure:'HISTORY_OR_FEATURE_ADMISSION_BLOCKED',basePassed:false,rrPassed:false,selected:false},
+    historyAdmission:{usable:false,status:'UNKNOWN',reason:'OFFICIAL_GAP_PROOF_UNAVAILABLE'},safety:{}}
+];
+const generationId='C1:2026-10-01:test';
+const pageHeader={generationId,readbackVerified:true,contentDigest:createHash('sha256').update(JSON.stringify(exportedRows)).digest('hex'),
+  universeDigest:createHash('sha256').update(['2006','9999'].join('\n')).digest('hex'),populationN:2,chunkCount:2,
+  sessionDate:'2026-10-01',decisionAt:clock,sourceMainSha:'a'.repeat(40),effectiveRuntimeVersion:'8.15.0-c1-population-receipts',completeness:'IN_MEMORY_COMPLETE_NORMALIZED_UNIVERSE'};
+const adapted=adaptC1PopulationPages([
+  {header:pageHeader,chunks:[{chunkIndex:1,rowCount:1,rows:[exportedRows[1]]}]},
+  {header:pageHeader,chunks:[{chunkIndex:0,rowCount:1,rows:[exportedRows[0]]}]}
+]);
+equal(adapted.rows.length,2);equal(adapted.rows[0].parentId,generationId);
+equal(observeRow(adapted.rows[1],clock).gates.HISTORY_60D.status,'UNKNOWN');
+assert.throws(()=>adaptC1PopulationPages([{header:{...pageHeader,contentDigest:'0'.repeat(64)},chunks:[{chunkIndex:0,rowCount:2,rows:exportedRows}]}]),/CHUNK_COVERAGE|DIGEST/);assertions++;
 console.log(JSON.stringify({ok:true,assertions,fixtureOnly:true,marketCalls:0,formalCoreImpact:false}));

@@ -117,7 +117,7 @@ Formal 低均量例外所讀取的 `spreadPercent/orderBookDepthGood/depthScore`
 
 
 ## 8. Shadow 拒絕原因分層覆蓋
-狀態：STRUCTURAL_BIAS_CONFIRMED / REPAIR_SPEC_REQUIRED
+狀態：STRUCTURAL_BIAS_CONFIRMED / CLASS_B_REPAIR_IMPLEMENTED / PROSPECTIVE_READBACK_PENDING
 
 `REJECTED_AFTER_BASE` 目前將所有 basePassed=true 的 reject：
 1. 依 exclusion reason；
@@ -136,6 +136,8 @@ Formal 低均量例外所讀取的 `spreadPercent/orderBookDepthGood/depthScore`
 - outcome 不得決定抽樣。
 
 Sector 已由 V8.14 的 SECTOR_GATE_REJECTED 部分解決；其他 fundamental / volatility / target / RR / signal-grade gate 仍受此 sampling bias。
+
+V8.15 Class-B candidate preserves the complete normalized price>=10 population before history admission, original first failure, all independent tri-state gates, exact gate/pool counts and deterministic gate/reason samples. It retains missing history rows as UNKNOWN and adds immutable paginated receipts. Local engineering validation is green; the first Production generation and all economic/outcome claims remain pending.
 
 這是研究證據基礎設施候選，不是 Formal 選股優化。Formal gate 不因此改動。
 

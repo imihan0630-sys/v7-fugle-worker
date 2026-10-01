@@ -3,7 +3,8 @@ import {readFile} from "node:fs/promises";
 
 const source=await readFile(process.env.V7_TEST_WORKER_PATH || new URL("../Worker.js",import.meta.url).pathname,"utf8");
 
-assert.match(source,/const VERSION = "8\.14\.4-history-memory-compaction";/);
+const version=source.match(/const VERSION = "(\d+)\.(\d+)\.(\d+)[^"]*";/)?.slice(1,4).map(Number);
+assert.ok(version && version[0]===8 && (version[1]>14 || (version[1]===14 && version[2]>=0)),"V8.14.0+ sector-gate provenance contract requires a non-regressed runtime");
 
 const market=source.slice(source.indexOf("function buildResearchMarketContext"),source.indexOf("function buildResearchSnapshot"));
 assert.ok(market.includes('schemaVersion:"research-market-v2-sector-universe-provenance"'));

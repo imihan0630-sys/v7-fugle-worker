@@ -135,3 +135,34 @@ and no FORMAL_OPTIMIZATION_CANDIDATE.
 
 Rollback: remove/revert only the four additive files in this branch. No
 Production rollback is necessary because nothing was deployed.
+
+## S1-C1-002 — owner-approved Class B implementation candidate
+
+Saved 2026-10-01 22:39 Asia/Taipei. Owner approval supersedes the earlier
+proposal-only boundary for the additive C1 receipt/export path only. Formal
+A/B, score thresholds, comparator, 3+3+3 quotas, capital, 15-minute signals,
+push and System2 remain locked. No Formal switch is authorized.
+
+V8.15.0 adds a complete normalized-universe receipt before history admission,
+strict PASS/FAIL/UNKNOWN offline adaptation, all-gate overlap diagnosis,
+deterministic reason/gate/pool sampling, immutable D1 generations, protected
+pagination and a read-only prospective evidence workflow. It performs zero
+additional market calls and persists after the existing Formal path with a
+fail-open research firewall. Rows blocked by history remain in the denominator
+with explicit UNKNOWN; no missing value becomes zero.
+
+Validation: clean guarded patch chain 62/62; regression commands 52/52;
+isolated assertions 71/71; Worker syntax PASS; D1 insert/read/idempotence and
+conflict test PASS. Synthetic 2,000-row resource receipt: 3,478,161 bytes,
+40 chunks, maximum 86,955 bytes/chunk, local build 18.3 ms. Cloudflare live
+CPU, D1 writes and the first complete prospective receipt are still UNKNOWN
+until deployment and a completed 23:35 scan.
+
+Formal switch design is recorded in
+`SYSTEM1_SELECTION_FORMAL_SWITCH_PROPOSAL_V0_1.md`. It is a Class-C review plan,
+not a `FORMAL_OPTIMIZATION_CANDIDATE`: C1 has no forward outcomes, costs,
+fills, drawdown or multi-date evidence. Exact continuation is deploy/read back
+V8.15 under the approved Class-B scope, collect the first immutable generation,
+verify Production configuration and evidence artifact, then accumulate frozen
+C2/C3 paired prospective evidence. Rollback is the V8.15 commit plus existing
+automatic deployment rollback; immutable research rows are preserved.

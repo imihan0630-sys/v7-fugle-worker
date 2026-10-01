@@ -1,6 +1,6 @@
 # C1 complete-population receipt export — Class B review packet
 
-Status: PROPOSAL_ONLY / NOT_IMPLEMENTED / NOT_APPROVED.
+Status: OWNER_APPROVED 2026-10-01 / IMPLEMENTED_ON_ISOLATED_BRANCH / LOCAL_VALIDATION_PASS / PRODUCTION_READBACK_PENDING.
 Base: main 7ae8df72ea178e3fc5c19828424d515ad1df42f3; Production 8.14.4.
 Prepared 2026-10-01 Asia/Taipei. Formal Core LOCKED.
 
@@ -67,3 +67,28 @@ existing approved code-only path. Do not delete actual plans or bindings.
 Safe alternative now: import an already-authorized immutable external receipt
 bundle into the offline module. That needs no Production change and should
 be preferred when such a complete bundle is available.
+
+## Approved implementation receipt — 2026-10-01
+
+The owner authorized continuation under the original governance. V8.15.0 is
+implemented as an additive Class-B candidate. It captures the normalized
+ordinary price>=10 universe already loaded by the successful Formal scan,
+before history admission removes rows. It does not make a second market call,
+rerun selection, change a score, allocate capital, emit a signal or send a
+notification. Missing history/features and three unsupported safety receipts
+remain UNKNOWN.
+
+The immutable D1 generation header and 50-row/250k-character chunks are saved
+after the Formal plan/delivery path and fail open. The protected GET endpoint
+is paginated and read-only. SHA-256 content and universe digests, exact chunk
+coverage and same-generation pagination are verified again by the isolated
+adapter. A weekday 00:10 Taipei workflow collects the latest completed receipt
+as a 90-day artifact without changing Production.
+
+Local clean-chain evidence: 62 guarded patches applied; 52/52 regression
+commands passed; the isolated observer has 71 adversarial assertions; the D1
+test proves insert/read/idempotent replay/conflict rejection using SQLite. A
+2,000-row synthetic receipt was 3,478,161 bytes in memory, 40 chunks, largest
+chunk 86,955 bytes, and built in 18.3 ms on the local runtime. These are local
+engineering measurements, not Cloudflare billing or live CPU proof. First
+Production generation and prospective economic evidence remain pending.

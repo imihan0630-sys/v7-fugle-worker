@@ -58,6 +58,7 @@ on:
       - "scripts/apply_v8_14_2.py"
       - "scripts/apply_v8_14_3.py"
       - "scripts/apply_v8_14_4.py"
+      - "scripts/apply_v8_15_0.py"
       - "RESEARCH_WORKLIST.md"
       - "research/**"
       - "data/v7_formal_scan_backfill.json"
@@ -264,6 +265,9 @@ jobs:
       - name: Apply V8.14.4 history memory compaction
         run: python3 scripts/apply_v8_14_4.py
 
+      - name: Apply V8.15.0 C1 complete-population receipts
+        run: python3 scripts/apply_v8_15_0.py
+
       - name: Syntax check Worker.js
         run: |
           cp Worker.js /tmp/Worker.mjs
@@ -321,13 +325,17 @@ jobs:
           node tests/test_v8_14_2_unscheduled_closure_recovery_guard.mjs
           node tests/test_v8_14_3_closure_receipt_memo.mjs
           node tests/test_v8_14_4_history_memory_compaction.mjs
+          node tests/test_v8_15_0_c1_population_receipts.mjs
+          node --check tests/collect_system1_c1_evidence.mjs
           node tests/test_v8_9_0_three_pool_hybrid_shadow.mjs
           node tests/test_v8_9_1_three_pool_dashboard.mjs
           node tests/github_plan_mirror.mjs self-test
 
       - name: Verify expected version
         run: |
-          grep -F 'const VERSION = "8.14.4-history-memory-compaction";' Worker.js
+          grep -F 'const VERSION = "8.15.0-c1-population-receipts";' Worker.js
+          grep -F 'CREATE TABLE IF NOT EXISTS trade_research_c1_generations' Worker.js
+          grep -F 'url.pathname === "/api/research/c1-population"' Worker.js
           grep -F 'CREATE TABLE IF NOT EXISTS trade_research_execution_snapshots' Worker.js
           grep -F 'RESEARCH_EXECUTION_RECORDER_FAIL_OPEN' Worker.js
           grep -F 'PURGED_FORWARD_HOLDOUT' Worker.js
