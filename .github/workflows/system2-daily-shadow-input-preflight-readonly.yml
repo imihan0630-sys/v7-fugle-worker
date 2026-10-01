@@ -1,0 +1,87 @@
+name: System2 Daily Shadow Input Preflight Readonly
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "system2/runtime/daily_shadow_a1_source_v0_1.mjs"
+      - "system2/runtime/daily_shadow_history_reader_v0_1.mjs"
+      - "system2/runtime/daily_shadow_assessor_readiness_v0_1.mjs"
+      - "system2/runtime/daily_shadow_input_preflight_v0_1.mjs"
+      - "system2/scripts/run_daily_shadow_input_preflight_readonly.mjs"
+      - ".github/workflows/system2-daily-shadow-input-preflight-readonly.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-daily-shadow-input-preflight-readonly
+  cancel-in-progress: true
+
+jobs:
+  preflight:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: system2-research
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Guard read-only System2 scope
+        run: |
+          set -euo pipefail
+          files=(
+            system2/runtime/daily_shadow_a1_source_v0_1.mjs
+            system2/runtime/daily_shadow_history_reader_v0_1.mjs
+            system2/runtime/daily_shadow_assessor_readiness_v0_1.mjs
+            system2/runtime/daily_shadow_input_preflight_v0_1.mjs
+            system2/scripts/run_daily_shadow_input_preflight_readonly.mjs
+          )
+          ! grep -Ein '\b(INSERT|UPDATE|DELETE|REPLACE|CREATE|DROP|ALTER)\b' "${files[@]}"
+          ! grep -Ein 'wrangler[[:space:]]+(deploy|delete)|secret[[:space:]]+put|PUSH_WEBHOOK_URL|V7_DB|STOCKS_KV' "${files[@]}"
+          test "$(sed -n '1p' wrangler.toml)" = 'name = "fugle-test"'
+          echo "Read-only/System1 isolation guard PASS"
+
+      - name: Run physical read-only input preflight
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+        run: |
+          set -euo pipefail
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+          test -n "$SYSTEM2_CLOUDFLARE_API_TOKEN"
+          node system2/scripts/run_daily_shadow_input_preflight_readonly.mjs | tee /tmp/system2-daily-shadow-preflight.json
+          node - <<'NODE'
+          const fs=require("fs");
+          const text=fs.readFileSync("/tmp/system2-daily-shadow-preflight.json","utf8");
+          const d=JSON.parse(text);
+          if(d.result!=="PASS")throw new Error("preflight result mismatch");
+          if(d.databaseName!=="system2-research")throw new Error("wrong D1");
+          if(d.d1Metrics?.rowsWritten!==0)throw new Error("read-only preflight wrote D1");
+          if(d.preflight?.capacityWriteAuthorized!==false)throw new Error("assessor firewall unexpectedly authorized capacity");
+          if(d.preflight?.zeroPickMayBeClaimed!==false)throw new Error("preflight must not relabel missing assessor authority as zero-pick");
+          if(d.preflight?.finalSelectionEnabled!==false||d.preflight?.orderImpact!==false)throw new Error("authority boundary mismatch");
+          if(d.preflight?.system1RuntimeUsed!==false)throw new Error("System1 runtime boundary mismatch");
+          console.log(JSON.stringify({
+            result:"PASS",
+            marketDate:d.marketDate,
+            decisionClockMode:d.decisionClockMode,
+            preflightState:d.preflight.state,
+            a1State:d.preflight.a1.state,
+            ordinarySymbolCount:d.preflight.a1.ordinarySymbolCount,
+            historyState:d.preflight.history.state,
+            historyReadyCount:d.preflight.history.historyReadyCount,
+            continuityReadyCount:d.preflight.history.continuityReadyCount,
+            assessorStates:d.preflight.assessors.map(x=>({strategyId:x.strategyId,state:x.state})),
+            rowsRead:d.d1Metrics.rowsRead,
+            rowsWritten:d.d1Metrics.rowsWritten,
+            externalMutationPerformed:false
+          },null,2));
+          NODE
+
+      - name: Confirm System1 production files untouched
+        run: |
+          set -euo pipefail
+          git diff --exit-code -- Worker.js wrangler.toml
+          echo "System1 production files unchanged PASS"
