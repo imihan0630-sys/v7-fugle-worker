@@ -24,6 +24,7 @@ check('clean attested source',mk(),body,null);
 check('legacy without source response',{...mk(),sourceEvidence:undefined},body,'SOURCE_RESPONSE_ATTESTATION_ABSENT');
 check('backdated capture',mk({capturedAt:'2026-10-02T04:59:00+08:00'}),body,'BACKDATED_CAPTURE');
 check('backdated knownAt',mk({knownAtTaipei:'2026-10-02T04:30:00+08:00'}),body,'BACKDATED_KNOWN_AT');
+check('unauthenticated native proof cannot backdate',mk({knownAtTaipei:'2026-10-02T04:30:00+08:00'}, {providerNativeAvailabilityProof:true}),body,'BACKDATED_KNOWN_AT');
 check('late capture',mk({capturedAt:'2026-10-02T18:11:00+08:00'}),body,'AFTER_DECISION');
 check('missing raw archive',mk({}, {rawArchiveState:'HASH_ONLY',rawArchiveRef:null}),body,'IMMUTABLE_RAW_ARCHIVE_NOT_PROVEN');
 check('different raw body',mk(),Buffer.from('altered'),'RAW_RESPONSE_HASH_OR_LENGTH_MISMATCH');
