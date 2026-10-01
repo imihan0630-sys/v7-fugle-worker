@@ -1,0 +1,98 @@
+{
+  "schemaVersion": "0.1",
+  "researchRoom": "D01",
+  "module": "D01-10",
+  "title": "Cross-scale information incrementality falsification contract",
+  "formalCoreImpact": "NONE",
+  "outcomeBlind": true,
+  "purpose": "Prevent multi-timeframe pattern agreement from being counted as independent evidence unless it adds a causal state not recoverable as a deterministic restatement of the same PRICE_OHLC path.",
+  "classes": {
+    "DETERMINISTIC_RESTATEMENT": {
+      "independentEvidenceCountIncrement": 0,
+      "rule": "Higher/lower scale labels whose pivots, boundaries, triggers and confirmation clocks are deterministically recoverable from the same causal lower-scale prefix are one evidence family."
+    },
+    "TOPOLOGY_REVEAL": {
+      "independentEvidenceCountIncrement": 0,
+      "rule": "Aggregation may reveal a stable containment, hierarchy, duration or compression state not represented by one lower-scale object. Preserve as a distinct state descriptor, but do not call it independent alpha evidence."
+    },
+    "INDEPENDENT_PROVENANCE": {
+      "independentEvidenceCountIncrement": "UNKNOWN_UNTIL_CROSS_LANE_VALIDATION",
+      "rule": "A genuinely separate PIT provenance lane may add evidence, but D01 must reference the dependency rather than double-count another domain's maturity."
+    }
+  },
+  "adversarialFixtures": [
+    {
+      "id": "CSI01",
+      "name": "weekly_label_is_exact_daily_restatement",
+      "sameRootPricePath": true,
+      "higherScaleStateRecoverableFromLowerScalePrefix": true,
+      "expectedClass": "DETERMINISTIC_RESTATEMENT",
+      "expectedIndependentVoteIncrement": 0
+    },
+    {
+      "id": "CSI02",
+      "name": "multiple_named_patterns_share_same_pivots_and_boundary",
+      "sameRootPricePath": true,
+      "sharedPivotSet": true,
+      "sharedBoundaryLifecycle": true,
+      "expectedClass": "DETERMINISTIC_RESTATEMENT",
+      "expectedIndependentVoteIncrement": 0
+    },
+    {
+      "id": "CSI03",
+      "name": "weekly_containment_reveals_hierarchy_not_single_daily_object",
+      "sameRootPricePath": true,
+      "higherScaleAddsStableHierarchyState": true,
+      "expectedClass": "TOPOLOGY_REVEAL",
+      "expectedIndependentVoteIncrement": 0
+    },
+    {
+      "id": "CSI04",
+      "name": "aggregation_changes_label_but_not_causal_state",
+      "sameRootPricePath": true,
+      "labelChangedOnly": true,
+      "expectedClass": "DETERMINISTIC_RESTATEMENT",
+      "expectedIndependentVoteIncrement": 0
+    },
+    {
+      "id": "CSI05",
+      "name": "partial_week_cannot_create_topology_reveal",
+      "partialHigherScaleBar": true,
+      "confirmedAtAvailable": false,
+      "expectedClass": "UNKNOWN",
+      "expectedAction": "DATA_BLOCKED"
+    },
+    {
+      "id": "CSI06",
+      "name": "future_weekly_confirmation_cannot_rewrite_prior_daily_state",
+      "futureParentAppearsLater": true,
+      "expectedInvariant": "PREFIX_REPLAY_EQUALITY",
+      "expectedAction": "APPEND_ANCESTRY_ONLY"
+    },
+    {
+      "id": "CSI07",
+      "name": "different_semantic_space_cannot_be_used_as_cross_scale_confirmation",
+      "semanticSpaceMismatch": true,
+      "expectedClass": "UNKNOWN",
+      "expectedAction": "DATA_BLOCKED"
+    },
+    {
+      "id": "CSI08",
+      "name": "separate_volume_or_microstructure_lane_is_dependency_not_d01_vote",
+      "sameRootPricePath": false,
+      "separatePITProvenanceLane": true,
+      "expectedClass": "INDEPENDENT_PROVENANCE",
+      "expectedD01MaturityIncrement": 0
+    }
+  ],
+  "promotionGuards": [
+    "No forward returns may be used to define or choose these classes.",
+    "TOPOLOGY_REVEAL is not an alpha claim.",
+    "Named-pattern count is not independent-evidence count.",
+    "UNKNOWN is never coerced to zero or failure.",
+    "Any later economic test must control existing momentum, volatility contraction, close location and prior-high distance before claiming incremental value.",
+    "Formal Core remains LOCKED."
+  ],
+  "formalOptimizationCandidate": "NONE",
+  "nextContinuationPoint": "Build a pure classifier and synthetic tests for CSI01-CSI08 on this research-only branch; require true-prefix equality and semantic-space guards before any outcome study."
+}
