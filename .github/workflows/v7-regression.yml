@@ -193,6 +193,7 @@ jobs:
           node tests/test_v8_14_3_closure_receipt_memo.mjs
           node tests/test_v8_14_4_history_memory_compaction.mjs
           node tests/test_v8_15_0_c1_population_receipts.mjs
+          node tests/test_system1_c2_paired_ledger_v0_1.mjs
           node --check tests/collect_system1_c1_evidence.mjs
           node tests/test_v8_9_0_three_pool_hybrid_shadow.mjs
           node tests/test_v8_9_1_three_pool_dashboard.mjs
