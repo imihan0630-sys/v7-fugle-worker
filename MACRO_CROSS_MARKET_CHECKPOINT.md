@@ -2,7 +2,7 @@
 
 Updated: 2026-09-28 20:35 Asia/Taipei
 Formal Core: LOCKED
-Current cursor: MC-001 through MC-076 complete.
+Current cursor: MC-001 through MC-089 complete.
 
 ## Durable conclusions
 
@@ -218,3 +218,25 @@ Japan/Korea daily close may be captured only with `ASIA_DAILY_MIXED_WINDOW` sema
 4. Preserve repeated versions of BLS schedule metadata so calendar revisions can be detected instead of overwritten.
 5. After sufficient clean-date coverage, preregister the D13-12 absorption-residual outcome join and compare simple domestic/sector baselines before complex global vectors.
 6. Still no scalar GLOBAL_RISK_SCORE; vector-first architecture remains authoritative.
+
+
+## 2026-10-02 D13 source-attestation and event-clock falsification (MC-084–MC-089)
+
+- Re-read latest main and reconciled the 2026-09-30 global pilot plus the independent 2026-10-01 D13-11 macro-schedule manifest. Latest canonical tracker baseline before this work: D12 40%, D13 41.5%, overall 47% over 229 modules.
+- MC-084: independently recomputed all four 2026-09-30 stored receipt SHA-256 values and the ordered ledger digest: 4/4 exact match. This proves internal manifest integrity, not provider-native first-known capture.
+- MC-085: audited original 2026-09-30 GitHub commit time (2026-09-30 05:24:29 Taipei) versus declared 05:20:18 capture; the close timing is plausible but commit/readback cannot authenticate provider-response availability. Official U.S. Treasury 2026-09-29 curve cross-check confirms recorded 2Y 4.89% and 10Y 5.26%; a current numerical match is not historical raw-response identity.
+- MC-086: 2026-10-01 D13-11 five-item schedule-vintage manifest is useful dated research evidence but likewise lacks native source HTTP/connector body bytes/hash/length/immutable archive proof. The two legacy artifacts remain untouched and are excluded from strict clean prospective date counts until independently source-attested. Strict source-attested dates currently: **0**.
+- MC-087: implemented `research/source_receipt_attestation_v0_1.mjs` and 13 locally executed adversarial tests, including attempted backdating, spoofed provider availability flag, late capture, unavailable raw bytes, tampered raw body, incorrect URL and entitlement failures. This new pure Class-A guard does not fetch, schedule, modify Worker, Formal or shared databases. Its PASS is synthetic unit evidence, not live provider proof.
+- MC-088: latest public official UST table displays 2026-10-01 2Y 4.78% and 10Y 5.24%; this October 2 webpage cross-check is **DESCRIPTIVE_WEB_VERIFIED_NO_NATIVE_RESPONSE** and must not be backfilled as 2026-10-01 Taiwan 18:10 knowledge.
+- MC-089: preregistered Oct 2 September Employment Situation schedule (2026-10-02 08:30 EDT = 20:30 Taipei) against the 18:10 selector. Keep event schedule known before decision separate from later first-print realization and subsequent TX night reaction. Friday/weekend gap, regular options expiry, concurrent global moves and post-release reactions are explicit competing explanations. Exact research contract: `research/d12_d13_20261002_nfp_event_clock_falsification_v0_1.md`.
+
+New audit: `research/global_market_source_attestation_audit_20261002.json`. Source attestation upgrade is frozen in `research/global_market_prospective_capture_design_v0_1.json`.
+
+**Maturity: unchanged. Outcome joins: CLOSED. Formal Core: LOCKED. No optimization candidate.**
+
+## Exact next continuation after MC-089
+
+1. Obtain a genuine authorized source response with raw bytes, transport-completed clock, source usage permission and immutable archive identity *during* a new prospective session; independently read back raw bytes before strict clean-date counting.
+2. On future qualified dates capture official TAIWAN VIX during 09:00–13:45 and TX NIGHT_PRE_SCAN 15:00–18:10 before the decision; do not retrofit 2026-09-30/10-01 using complete-night bars.
+3. For Oct 2 NFP event, preserve the 18:10 known schedule without inferred payroll surprise; separately timestamp future 20:30 realization and post-release TX response.
+4. Once independent source-attested dates accumulate, test D13-12 residual versus Taiwan domestic/sector baselines using past-only parameters; preserve non-event Friday controls and separate expected/observed clocks.
