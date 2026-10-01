@@ -878,3 +878,14 @@ Implemented on the current System 2 build branch:
 - returns an isolated persistence batch for `s2_strategy_ordering_receipts` and, when resolvable, `s2_capacity_runs`.
 
 Still not activated: source fetch, daily schedule, D1 execution, final selection, push, capital or order routing. Exact next dependency is real PIT-safe source + assessor wiring into this repository-complete middle layer, followed by isolated D1 execution and physical readback.
+
+## 2026-10-02 S2-07 input preflight V0.1
+
+Repository implementation added the next upstream layer without creating strategy thresholds:
+- `daily_shadow_a1_source_v0_1.mjs`: read-only official TWSE/TPEx same-day A1 adapter using the existing snapshot contract;
+- `daily_shadow_history_reader_v0_1.mjs`: isolated D1 prior-history reader + current-universe PIT-history/continuity coverage probe;
+- `daily_shadow_assessor_readiness_v0_1.mjs`: explicit fail-closed registry; SHORT_MOMENTUM and SWING_GROWTH remain `ASSESSOR_POLICY_NOT_FROZEN`;
+- `daily_shadow_input_preflight_v0_1.mjs`: separates source/history blockers from assessor-policy blockers and forbids a fake zero-pick classification when assessor authority is absent;
+- read-only physical preflight script/workflow uses only public official GET sources and isolated `system2-research` D1 reads.
+
+Current policy boundary: the system may measure whether data are ready, but it may not invent MA/volume/fundamental thresholds to emit SUPPORTIVE/ADVERSE or BUY_ELIGIBLE. Physical source/history readback is the next evidence point; any real daily `s2_capacity_runs` write remains blocked until an assessor policy is preregistered/authorized and isolated D1 write wiring is separately verified.
