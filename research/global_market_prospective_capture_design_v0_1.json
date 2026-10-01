@@ -1,11 +1,11 @@
 {
   "schemaVersion": "0.1",
   "name": "GLOBAL_MARKET_PROSPECTIVE_CAPTURE_DESIGN_V0_1",
-  "status": "RESEARCH_ONLY_PARTIALLY_IMPLEMENTED__SOURCE_ONLY_ACCUMULATING",
+  "status": "SOURCE_ATTESTATION_GATE_IMPLEMENTED__ACTUAL_STRICT_CLEAN_DATES_PENDING",
   "formalCoreImpact": "NONE",
   "researchClass": "CLASS_A_IF_STANDALONE_ARTIFACT_ONLY__CLASS_B_IF_SHARED_RUNTIME_CRON_SCHEMA_BUDGET_TOUCHED",
   "decisionClock": "18:10 Asia/Taipei",
-  "updatedAt": "2026-09-30T05:20:18+08:00",
+  "updatedAt": "2026-10-02T05:37:02+08:00",
   "objective": "Accumulate immutable prospective PIT receipts before any outcome join or Formal use.",
   "phase1": [
     {
@@ -113,11 +113,12 @@
     "FormalSelectorOrRiskBehavior": "Class C owner approval"
   },
   "exactNext": [
-    "capture actual TAIWAN VIX on an eligible regular session before the 18:10 decision",
-    "capture actual TX NIGHT_PRE_SCAN from 15:00 through/before 18:10 using only source data known at capture",
-    "repeat source-only captures across independent Taiwan dates and characterize coverage before outcomes",
-    "freeze DXY/HG/GC provider entitlement and latency before admitting those lanes",
-    "preregister D13-12 outcome joins only after the source coverage gate is met"
+    "On the next real decision date, collect authorized official source raw bytes plus response timing and archive/readback attestation; do not backdate any Sept 30/Oct 1 source snapshot.",
+    "Apply existing unified receipt guard and strict source-attestation guard; independently verify archive bytes and hash; only then count strict clean prospective dates.",
+    "For 2026-10-02, segregate 18:10-known BLS NFP schedule from 20:30 future first-print and later TX response; see research/d12_d13_20261002_nfp_event_clock_falsification_v0_1.md.",
+    "Keep real TAIWAN VIX and 15:00-18:10 TX source collection pending actual authorized data; full-night retrospective bars are QA only.",
+    "Use separate later first-print/vintage receipts for PMI/NFP outcomes; absent pre-release consensus remains UNKNOWN.",
+    "No D13-12 outcomes, maturity inflation, paid-source purchase or Formal optimization until sufficient source-attested independent dates."
   ],
   "implementationProgress": {
     "unifiedGuard": "IMPLEMENTED_AND_ADVERSARIAL_TESTED",
@@ -127,5 +128,17 @@
     "nightPreScanBuilder": "IMPLEMENTED_AND_ADVERSARIAL_TESTED",
     "sharedRuntimeTouched": false,
     "formalCoreTouched": false
+  },
+  "sourceAttestationUpgrade": {
+    "guard": "research/source_receipt_attestation_v0_1.mjs",
+    "test": "research/test_source_receipt_attestation_v0_1.mjs",
+    "deterministicTests": "13 PASS on isolated local Node runtime",
+    "boundary": "Research-only no network caller; doesn't touch Formal/shared worker, cron, schema or paid provider.",
+    "evidenceAudit": "research/global_market_source_attestation_audit_20261002.json",
+    "legacySep30": "4 internally hash/chain consistent receipts; 0 native raw provider response attestations; cannot count strict clean prospective",
+    "legacyOct01": "5 separate macro schedule-vintage items; source-response raw archive absent; do not count strict clean prospective",
+    "independentStrictCleanDates": 0,
+    "archivedSourceProofRule": "Future caller must preserve authorized native raw bytes, exact source responseCompletedAt, provider use permission and immutable archive ref, then independently read back raw bytes and check hash/length. Manifest assertions alone are insufficient.",
+    "guardLimit": "Code cannot authenticate provider truth or archive immutability without independent trusted evidence; never use synthetic test examples as real data."
   }
 }
