@@ -31,6 +31,11 @@ jobs:
         run: |
           set -euo pipefail
           node <<'NODE'
+          process.on("unhandledRejection",error=>{
+            const message=String(error?.message||error).replace(/[%\r\n]/g," ").slice(0,500);
+            console.error(`::error title=System2 read-only audit::${message}`);
+            process.exitCode=1;
+          });
           const account=process.env.CLOUDFLARE_ACCOUNT_ID;
           const token=process.env.SYSTEM2_CLOUDFLARE_API_TOKEN;
           const origin="https://api.cloudflare.com/client/v4";
@@ -60,7 +65,7 @@ jobs:
 
           const [capacityCounts,capacityRows,poolCounts,poolRows,runCounts,runRows,latestCounts]=await Promise.all([
             query("SELECT COUNT(*) AS row_count, MAX(market_date) AS latest_market_date, MAX(captured_at) AS latest_captured_at FROM s2_capacity_runs"),
-            query("SELECT capacity_run_id, market_date, decision_timestamp, active_assignments_json, global_count, vacancy_count, captured_at FROM s2_capacity_runs ORDER BY market_date DESC, decision_timestamp DESC LIMIT 3"),
+            query("SELECT capacity_run_id, market_date, decision_timestamp, active_assignments_json, counts_json, captured_at FROM s2_capacity_runs ORDER BY market_date DESC, decision_timestamp DESC LIMIT 3"),
             query("SELECT COUNT(*) AS row_count, MAX(source_market_date) AS latest_source_market_date, MAX(activated_at) AS latest_activated_at FROM s2_resonance_watch_pools"),
             query("SELECT pool_id, source_capacity_run_id, source_market_date, activated_at, state, symbol_count FROM s2_resonance_watch_pools ORDER BY activated_at DESC LIMIT 3"),
             query("SELECT COUNT(*) AS row_count, MAX(market_date) AS latest_market_date, MAX(as_of) AS latest_as_of FROM s2_resonance_runs"),
@@ -70,9 +75,15 @@ jobs:
 
           const capacity=capacityRows.map(row=>{
             let assignments={}; try{assignments=JSON.parse(row.active_assignments_json||"{}")}catch{}
+            let counts={}; try{counts=JSON.parse(row.counts_json||"{}")}catch{}
             const byStrategy=Object.fromEntries(Object.entries(assignments).map(([key,rows])=>[key,Array.isArray(rows)?rows.length:0]));
             const symbols=[...new Set(Object.values(assignments).flatMap(rows=>Array.isArray(rows)?rows.map(x=>String(x?.symbol||"")):[]).filter(Boolean))];
-            return {...row,active_assignments_json:undefined,active_count_by_strategy:byStrategy,active_unique_symbol_count:symbols.length};
+            return {
+              capacity_run_id:row.capacity_run_id,market_date:row.market_date,
+              decision_timestamp:row.decision_timestamp,captured_at:row.captured_at,
+              active_count_by_strategy:byStrategy,active_unique_symbol_count:symbols.length,
+              global_pool_count:Number(counts.globalPoolCount||0),vacancy_count:Number(counts.vacancyCount||0)
+            };
           });
           console.log(JSON.stringify({
             result:"PASS",database:process.env.DB_NAME,capacityCounts:capacityCounts[0]||null,
@@ -98,6 +109,18 @@ jobs:
       - name: Prove workflow is read-only
         run: |
           set -euo pipefail
-          ! grep -Eiq 'wrangler[[:space:]]+(deploy|delete)|d1[[:space:]]+(create|execute)|method:[[:space:]]*"(PUT|PATCH|DELETE)"|INSERT INTO|UPDATE[[:space:]]+s2_|DELETE FROM' \
-            .github/workflows/system2-resonance-runtime-audit.yml
-          echo "System2 resonance runtime audit mutation guard PASS"
+          node <<'NODE'
+          const fs=require("node:fs");
+          const source=fs.readFileSync(".github/workflows/system2-resonance-runtime-audit.yml","utf8");
+          const forbidden=[
+            /wrangler\s+(deploy|delete)/i,
+            /d1\s+(create|execute)/i,
+            new RegExp(`method:\\s*["'](?:${["PUT","PATCH","DELETE"].join("|")})["']`,"i"),
+            /INSERT\s+INTO/i,
+            /UPDATE\s+s2_/i,
+            /DELETE\s+FROM/i,
+          ];
+          const violations=forbidden.filter(pattern=>pattern.test(source));
+          if(violations.length) throw new Error(`mutation guard found ${violations.length} prohibited pattern(s)`);
+          console.log("System2 resonance runtime audit mutation guard PASS");
+          NODE
