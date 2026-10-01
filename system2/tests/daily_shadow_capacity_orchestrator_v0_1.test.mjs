@@ -110,9 +110,13 @@ assert.deepEqual(
   first.capacityReceipt.activeAssignments.SHORT_MOMENTUM.map((x) => x.symbol),
   ["2330"],
 );
+const sgActiveRank01 = first.orderingReceipts.find(
+  (x) => x.strategyId === "SWING_GROWTH" && x.purpose === "ACTIVE_INTRADAY_MONITOR",
+);
 assert.deepEqual(
   first.capacityReceipt.activeAssignments.SWING_GROWTH.map((x) => x.symbol),
-  ["2330", "2308"],
+  sgActiveRank01.orderedCandidates.map((x) => x.symbol),
+  "active-monitor order must follow the frozen strategy-local RANK-01 receipt, not fixture input order",
 );
 assert.equal(first.orderingReceipts.length, 4);
 assert.equal(first.persistenceBatch.operationCount, 5);
