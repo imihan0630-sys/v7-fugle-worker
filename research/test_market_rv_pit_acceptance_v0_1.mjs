@@ -58,7 +58,10 @@ function blocked(result,code){
   assert.equal(x.structuralState,"STRUCTURAL_PASS");
   assert.equal(x.blockerCodes.length,0);
   assert.equal(x.factorObservations.length,3);
-  assert(x.factorObservations.every(x=>x.state==="KNOWN"));
+  assert(x.factorObservations.every(x=>x.state==="UNKNOWN"&&x.rawValue===null));
+  assert(x.factorObservations.every(x=>x.unknownReason.includes("EXTERNAL_SOURCE_ATTESTATION")));
+  assert(x.diagnosticFactorObservations.every(x=>x.state==="KNOWN"));
+  assert.equal(x.diagnosticOnly,true);
   assert.equal(x.externalRawSourceAttestation,"REQUIRED_NOT_PROVEN_BY_THIS_PURE_FUNCTION");
   assert.equal(x.immutableWriteReadbackReplay,"NOT_PERFORMED");
   assert.equal(x.runFingerprintLinkage,"NOT_PERFORMED");
@@ -136,10 +139,11 @@ function blocked(result,code){
   const flat=await fixture(Array(20).fill(0));
   const result=await auditMarketRvPitCandidateV0_1({...b,history:flat.history,
     sourceReceipt:{...b.sourceReceipt,historyWindowHash:await sha256Hex(flat.history)}});
-  assert.equal(result.factorObservations[0].rawValue,0);
-  assert.equal(result.factorObservations[1].rawValue,0);
-  assert.equal(result.factorObservations[2].state,"UNKNOWN");
-  assert.equal(result.factorObservations[2].unknownReason,"RV20_ZERO_DENOMINATOR");
+  assert(result.factorObservations.every(x=>x.state==="UNKNOWN"));
+  assert.equal(result.diagnosticFactorObservations[0].rawValue,0);
+  assert.equal(result.diagnosticFactorObservations[1].rawValue,0);
+  assert.equal(result.diagnosticFactorObservations[2].state,"UNKNOWN");
+  assert.equal(result.diagnosticFactorObservations[2].unknownReason,"RV20_ZERO_DENOMINATOR");
 }
 // Structural effect of overlapping 5/20 population dispersion:
 // Var20=.25 Var5 + .75 Var15 + .1875 (mean5-mean15)^2.
@@ -161,9 +165,10 @@ function pvar(v){
   const b=await fixture([...Array(15).fill(0),...Array(5).fill(0.03)]);
   const result=await auditMarketRvPitCandidateV0_1(b);
   assert.equal(result.structuralState,"STRUCTURAL_PASS");
-  assert(Math.abs(result.factorObservations[0].rawValue)<1e-14);
-  assert(result.factorObservations[1].rawValue>0);
-  assert(result.factorObservations[2].rawValue<1e-10);
+  assert(result.factorObservations.every(x=>x.state==="UNKNOWN"));
+  assert(Math.abs(result.diagnosticFactorObservations[0].rawValue)<1e-14);
+  assert(result.diagnosticFactorObservations[1].rawValue>0);
+  assert(result.diagnosticFactorObservations[2].rawValue<1e-10);
   // This signals near-zero recent dispersion DESPITE five successive +3% returns.
 }
 {
