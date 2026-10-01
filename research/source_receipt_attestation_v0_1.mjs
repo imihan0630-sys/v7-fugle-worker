@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto';
 
 const iso = (s, field) => {
-  if (typeof s !== 'string' || !/^\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\d(?:\\.\\d+)?(?:Z|[+-]\\d\\d:\\d\\d)$/.test(s))
+  if (typeof s !== 'string' || !/^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d+)?(?:Z|[+-]\d\d:\d\d)$/.test(s))
     throw new Error(`${field}: explicit valid ISO offset is required`);
   const date = new Date(s);
   if (!Number.isFinite(+date)) throw new Error(`${field}: invalid timestamp`);
