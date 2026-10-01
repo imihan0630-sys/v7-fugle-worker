@@ -65,3 +65,9 @@ negative evidence. Formal activation remains a later Class-C human decision.
 
 Rollback: close PR #293; no production rollback is necessary because no
 main merge or Worker/runtime update was authorized.
+
+## CI closure — 2026-10-02 05:39 Taipei
+- Code PR head 66d0882abb14408fed609424037aedefcdd24bd3: Regression run 36929920257 PASS; Repair CI run 36929920372 PASS.
+- Checkpoint PR head 7d0cac1dc36c6334ccdd4a42e319cfc82a32b4f7: Regression run 36930026290 PASS; Repair CI run 36930026250 PASS. The final documentation-only append may retrigger CI.
+- Parallel rooms have advanced main since branch creation. Before any merge or new engineering write, rebase/revalidate on latest main; do not overwrite research09 or System2 work.
+- Evidence status remains fixture-only; live C1 and positive/negative market return comparisons PENDING. Formal strategy switch NOT AUTHORIZED.
