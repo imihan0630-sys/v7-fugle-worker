@@ -1,6 +1,6 @@
-import { deepFreeze } from "../../system2/runtime/factor_snapshot.mjs";
-import { sha256Hex } from "../../system2/runtime/decision_archive.mjs";
-import { buildMarketRvBundleV0_1, MARKET_RV_FACTOR_IDS } from "../../system2/runtime/market_rv_builder_v0_1.mjs";
+import { deepFreeze } from "../system2/runtime/factor_snapshot.mjs";
+import { sha256Hex } from "../system2/runtime/decision_archive.mjs";
+import { buildMarketRvBundleV0_1, MARKET_RV_FACTOR_IDS } from "../system2/runtime/market_rv_builder_v0_1.mjs";
 
 export const D04_PIT_ACCEPTANCE_VERSION = "D04_MARKET_RV_PIT_ACCEPTANCE_V0_1_RESEARCH";
 const HASH_RE = /^[a-f0-9]{64}$/;
