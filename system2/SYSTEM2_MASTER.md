@@ -126,6 +126,7 @@ V8 A/B, Top6/3+3, capital rules and live-state machine are never prerequisites f
 - `system2/SYSTEM2_DAILY_RESONANCE_GLOBAL_INTEGRATION_V0_1.md`
 - `system2/SYSTEM2_BUILD_PROGRESS_MAP.md`
 - `system2/SYSTEM2_DAILY_SHADOW_CAPACITY_ORCHESTRATION_V0_1.md`
+- `system2/SYSTEM2_DAILY_SHADOW_INPUT_PREFLIGHT_V0_1.md`
 
 ## Bounded Daily Resonance runtime
 
@@ -228,3 +229,15 @@ Key boundaries:
 - no scheduling, D1 execution, push, real capital or System 1 change is included.
 
 Physical S2-07 remains incomplete until PIT-qualified real source/assessment adapters and isolated D1 persistence execution are wired and verified.
+
+## S2-07 input readiness preflight — 2026-10-02
+
+Repository implementation now includes a read-only upstream preflight before any daily capacity write:
+- official TWSE/TPEx A1 current-day source fetch -> existing A1 snapshot contract;
+- isolated D1 PIT-history reader requiring `pit_replay_eligible=1` and `available_at <= decisionTimestamp`;
+- 60-prior-session history/continuity coverage diagnostics and revision-ambiguity fail-closed handling;
+- explicit strategy-assessor registry showing SHORT_MOMENTUM and SWING_GROWTH as `ASSESSOR_POLICY_NOT_FROZEN`;
+- zero-pick and capacity writes remain unauthorized while assessor policy is missing;
+- a read-only physical workflow can measure current source/history readiness without D1 mutation, Worker mutation, Cron changes or System 1 use.
+
+This closes another engineering gap without inventing entry thresholds. Exact assessor mapping from observations to thesis/readiness states remains a strategy-version decision, not an engineering default.
