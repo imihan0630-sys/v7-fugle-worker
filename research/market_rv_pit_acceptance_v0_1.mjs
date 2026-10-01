@@ -130,8 +130,13 @@ export async function auditMarketRvPitCandidateV0_1({
     sourceReceiptState:sourceReceipt.state,
     sourcePointInTimeEligible:true,history:rows
   }):null;
-  const factorObservations=passed?builder.factorObservations:
-    Object.freeze(MARKET_RV_FACTOR_IDS.map(x=>unknownFactor(x,input,unique)));
+  // A caller can forge consistent hashes/receipt strings. Never return any
+  // structurally passing calculation as a promotion-eligible KNOWN observation.
+  const releaseBlockers=passed?["EXTERNAL_SOURCE_ATTESTATION_AND_READBACK_PENDING"]:unique;
+  const factorObservations=Object.freeze(MARKET_RV_FACTOR_IDS.map(
+    x=>unknownFactor(x,input,releaseBlockers)
+  ));
+  const diagnosticFactorObservations=passed?builder.factorObservations:Object.freeze([]);
   const base={
     version:D04_PIT_ACCEPTANCE_VERSION,
     marketDate:marketDate||null,decisionTimestamp:decisionTimestamp||null,
@@ -140,6 +145,8 @@ export async function auditMarketRvPitCandidateV0_1({
     structuralState:passed?"STRUCTURAL_PASS":"UNKNOWN",
     blockerCodes:unique,
     factorObservations,
+    diagnosticFactorObservations,
+    diagnosticOnly: true,
     builderBundleHash:builder?.bundleHash||null,
     externalRawSourceAttestation:"REQUIRED_NOT_PROVEN_BY_THIS_PURE_FUNCTION",
     immutableWriteReadbackReplay:"NOT_PERFORMED",
