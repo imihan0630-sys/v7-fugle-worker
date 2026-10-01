@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-01T06:33:00+08:00",
+  "updatedAt": "2026-10-01T13:36:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -471,10 +471,10 @@
           "levelMeaning": "機制＋反證已定義"
         }
       ],
-      "status": "FALSIFICATION_IN_PROGRESS / PURE_RV_BUILDER_MERGED / LIVE_PERSISTENCE_PENDING",
-      "exactNextContinuationPoint": "D04-RV-PERSIST-03: pure PIT-safe builder is now merged, but this is not evidence capture. Next valid evidence step is research-only wiring to the existing regimeFactorObservations/persistence path under applicable governance, then FIRST REAL DATE must pass same-date A2 receipt -> MARKET_RV5_CC_SIMPLE/MARKET_RV20_CC_SIMPLE/MARKET_RV_RATIO_5_20 builder -> same regime snapshot -> immutable persistence -> readback -> deterministic replay -> run-fingerprint linkage before any outcome inspection. Builder/synthetic/history recomputation never counts as prospective evidence. After clean independent dates accumulate, test state occupancy and overlap-vs-nonoverlap robustness. ATR/CE outcome work still waits for immutable per-symbol parent persistence. Stock limit-constrained sessions remain separate observed-constrained-volatility strata.",
-      "lastResearchUpdate": "2026-09-30T05:44:00+08:00",
-      "researchNote": "Market-RV prospective persistence contract and contraction->expansion protocol are frozen. Class-A pure market RV builder merged via PR #273 after System2 Research CI #315 and V8 Regression #1135 PASS. Builder semantics are rolling close-to-close population return dispersion, not academic intraday realized variance. High-frequency local-volatility measurement protocol and Taiwan price-limit censoring guard are frozen. No real persisted PIT market-RV sample exists yet; D04 remains 42%."
+      "status": "FALSIFICATION_IN_PROGRESS / PURE_RV_BUILDER_MERGED / RUN_FINGERPRINT_LINKAGE_GAP_CONFIRMED / LIVE_PERSISTENCE_PENDING",
+      "exactNextContinuationPoint": "D04-RV-PERSIST-04B: current S2_SHADOW_RUN_FINGERPRINT_V0_1 is built before the regime storage row and does not commit regimeSnapshotId/regimeSnapshotHash, so persisted Market-RV cannot yet qualify as immutable run-linked prospective PIT evidence. Freeze a versioned regime-snapshot commitment without silently changing V0.1 replay semantics; require deterministic mutation tests where changing RV5, RV20, or Market-RV provenance changes both regime snapshot hash and the new run fingerprint. Only after linkage passes may the existing builder be wired into same-run regimeFactorObservations and FIRST REAL DATE attempt A2 receipt -> builder -> regime snapshot -> persistence -> readback -> replay -> versioned fingerprint linkage before outcome inspection. Historical/synthetic/backfill evidence never counts. Maturity remains 42%.",
+      "lastResearchUpdate": "2026-10-01T13:36:00+08:00",
+      "researchNote": "Run-fingerprint linkage audit confirms V0.1 does not commit the regime snapshot/Market-RV payload. Research-only versioned commitment design and negative mutation tests are frozen on branch research/d04-rv-fingerprint-linkage-audit-20261001; Formal Core unchanged; no real prospective PIT Market-RV sample yet."
     },
     {
       "id": "D05",
