@@ -1,7 +1,7 @@
 # Derivatives Information & Volatility Surface Checkpoint
 
 Updated: 2026-09-29 10:13 Asia/Taipei
-Current cursor: DR-001 through DR-041 complete.
+Current cursor: DR-001 through DR-050 complete.
 Next: D12-08 prospective Gamma evidence + D12-10 18:10 NIGHT_PRE_SCAN prospective receipts.
 
 ## Durable conclusions
@@ -159,3 +159,19 @@ Portfolio & Risk Construction / Correlation Clusters.
 4. Cross-link D12-05 to D04 realized-volatility states only after both raw parent receipts are PIT/replay complete; VIX must beat ATR/realized-volatility/Regime before any incremental claim.
 5. Cross-link D12-10 to same-window global controls only after their provider entitlement/latency contracts are frozen.
 6. No L3 promotion until actual Taiwan-date PIT receipts exist and replay verification passes; no L4 before prospective/OOS outcome evidence.
+
+
+## 2026-10-02 strict-source audit and NFP night-session design (DR-047–DR-050)
+
+- DR-047: existing VIX and TX NIGHT_PRE_SCAN Class-A builders remain **implementation artifacts**, not validated live source parents. The latest room checkpoint did not contain 2026-09-30 or 2026-10-01 authenticated live 18:10 VIX/TX receipts; neither historical official pages nor later full-night OHLC can be backdated.
+- DR-048: global source-attestation guard V0.1 now also requires authorized raw provider-response bytes, responseCompletedAt, archive readback, license, capturedAt >= completedAt and knownAt >= completedAt. The last condition is intentionally conservative; an arbitrary provider-native availability flag cannot allow backdating. Thirteen adversarial synthetic tests PASS.
+- DR-049: at Taiwan 2026-10-02 18:10, BLS September Employment Situation release scheduled 20:30 remains FUTURE realization. Separate pre-scan TX window (15:00–18:10) from event-reaction TX window (after 20:30) and eventual next Taiwan session. Do not count later US/TX response as an 18:10 predictor.
+- DR-050: Friday release studies need matched non-release Fridays, elapsed-weekend/holiday equivalence, D04 ATR/realized-vol controls, D12-05 VIX and TX expiry/roll separation before making volatility or next-gap risk claims. See `research/d12_d13_20261002_nfp_event_clock_falsification_v0_1.md`.
+
+**D12-05 and D12-10 remain L2 / 40%. Formal Core LOCKED; outcome join CLOSED.**
+
+## Exact next continuation after DR-050
+
+1. Run the pure source attestation check alongside unified receipt guard on the first *actual* authorized TAIFEX VIX and 15:00–18:10 TX source-response archives.
+2. Record failure/missing as UNKNOWN, not zero. No strict clean date before independently replayable parent evidence.
+3. Keep later 20:30 NFP event response a separate future object. Accumulate independent dates before any risk/incremental tests.
