@@ -71,6 +71,8 @@ assert.equal(source.snapshotBatch.ordinarySymbolCount, 2);
 assert.equal(source.decisionClockMode, "FIXED_CALLER_CLOCK");
 assert.equal(source.transports.TWSE.sourceDateVerified, true);
 assert.equal(source.transports.TPEX.sourceDateVerified, true);
+assert.equal(source.snapshotBatch.bySymbol["2330"].change, null, "unsigned TWSE delta must not be promoted");
+assert.equal(source.snapshotBatch.bySymbol["6488"].change, 8);
 assert.equal(source.externalMutationPerformed, false);
 
 const diagnosticClock = await fetchDailyShadowA1SnapshotV0_2({
