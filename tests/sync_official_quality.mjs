@@ -18,9 +18,11 @@ await helpers.loadTradingCalendar({},Number(marketDate.slice(0,4)));
 assert.equal(helpers.isTradingDate(marketDate),true,'QUALITY_MARKET_DATE is not a trading day');
 assert.ok(process.env.V7_ADMIN_TOKEN,'Normal V7_ADMIN_TOKEN required');
 async function publicSource(url,options={}) {
+  const hostname=new URL(url).hostname;
+  const timeoutMs=hostname==='mopsov.twse.com.tw'?120000:45000;
   for(let attempt=0;attempt<3;attempt++) {
     try {
-      const response=await fetch(url,{...options,redirect:'manual',signal:AbortSignal.timeout(45000)});
+      const response=await fetch(url,{...options,redirect:'manual',signal:AbortSignal.timeout(timeoutMs)});
       if([401,403].includes(response.status)) throw new Error('Official source disallows access; stop this synchronization without bypassing restrictions');
       if((response.status===429 || response.status>=500) && attempt<2) {await new Promise(resolve=>setTimeout(resolve,1000*(attempt+1)));continue;}
       assert.equal(response.ok,true,`Official source HTTP ${response.status}`);return response;
