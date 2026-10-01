@@ -85,12 +85,14 @@ jobs:
               global_pool_count:Number(counts.globalPoolCount||0),vacancy_count:Number(counts.vacancyCount||0)
             };
           });
-          console.log(JSON.stringify({
+          const auditResult={
             result:"PASS",database:process.env.DB_NAME,capacityCounts:capacityCounts[0]||null,
             latestCapacityRuns:capacity,poolCounts:poolCounts[0]||null,latestWatchPools:poolRows,
             resonanceRunCounts:runCounts[0]||null,latestResonanceRuns:runRows,
             resonanceLatestCounts:latestCounts[0]||null,mutationPerformed:false
-          },null,2));
+          };
+          console.log(JSON.stringify(auditResult,null,2));
+          console.log(`::notice title=System2 D1 audit::${JSON.stringify(auditResult)}`);
           NODE
 
       - name: Read public health and resonance APIs
@@ -103,6 +105,10 @@ jobs:
             const data=await response.json();
             if(!response.ok) throw new Error(`${path} HTTP ${response.status}`);
             console.log(JSON.stringify({path,data}));
+            const summary=path==="/health"
+              ? {path,schemaVersion:data.schemaVersion,resonanceState:data.resonanceState,fugleQuoteConfigured:data.fugleQuoteConfigured,system1RuntimeUsed:data.system1RuntimeUsed}
+              : {path,marketDate:data.marketDate,state:data.state,symbolCount:data.symbolCount,poolId:data.poolId||null,sourceMarketDate:data.sourceMarketDate||null};
+            console.log(`::notice title=System2 public API audit::${JSON.stringify(summary)}`);
           }
           NODE
 
