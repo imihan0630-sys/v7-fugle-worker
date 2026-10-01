@@ -26,16 +26,21 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
+      - name: Validate C1 readiness classifier (offline)
+        run: node tests/test_system1_c1_readiness_v0_1.mjs
       - name: Read and verify the immutable C1 population receipt
         env:
           V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
           C1_SCAN_DATE: ${{ inputs.scan_date }}
           C1_EVIDENCE_OUTPUT: artifacts/system1-c1-evidence.json
         run: node tests/collect_system1_c1_evidence.mjs
-      - name: Preserve the verified research artifact
+      - name: Preserve verified evidence or classified blocker (never silently succeed)
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: system1-c1-evidence-${{ github.run_id }}
-          path: artifacts/system1-c1-evidence.json
+          path: |
+            artifacts/system1-c1-evidence.json
+            artifacts/system1-c1-readiness.json
           if-no-files-found: error
           retention-days: 90
