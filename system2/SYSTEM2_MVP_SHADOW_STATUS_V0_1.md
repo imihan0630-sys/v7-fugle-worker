@@ -403,3 +403,7 @@ The build roadmap now explicitly includes a Baseline-vs-Challenger resonance res
 ## 2026-10-02 S2-07 middle-pipeline implementation
 
 Daily ranking-to-capacity assembly is now repository-implemented as research/shadow plumbing. Completed Limited Shadow strategy runs can be converted into immutable RANK-01 ordering receipts, revalidated candidate state and a safe zero/nonzero `s2_capacity_runs` receipt when capacity is resolvable. Cross-strategy scarcity remains fail-closed without an approved global priority policy. This does not mean physical daily capture is active: source/assessment adapters and isolated D1 batch execution are still pending.
+
+## 2026-10-02 S2-07 input-readiness preflight
+
+A read-only official-A1 + isolated-D1-history preflight is repository-implemented. It can distinguish current-source failure, PIT-history/continuity gaps and missing strategy-assessor authority. Both initial Limited Shadow strategies remain `ASSESSOR_POLICY_NOT_FROZEN`; therefore a missing assessor must not be reported as a legitimate zero-pick day, and no daily capacity write is authorized by this tranche. Physical readback remains pending the post-merge read-only workflow.
