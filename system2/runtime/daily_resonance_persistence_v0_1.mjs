@@ -13,14 +13,19 @@ function parseJson(value, fallback = null) {
   return JSON.parse(String(value));
 }
 
-export async function loadLatestCapacityRunForResonanceV0_1(db) {
+export async function loadLatestCapacityRunForResonanceV0_1(db, marketDate, asOf) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(String(marketDate || ""))) {
+    throw new Error("a current refresh marketDate is required");
+  }
+  if (!Number.isFinite(Date.parse(asOf))) throw new Error("refresh asOf is required");
   return assertDb(db).prepare(
     `SELECT capacity_run_id, market_date, decision_timestamp, active_assignments_json,
             capacity_hash, captured_at
        FROM s2_capacity_runs
-      ORDER BY market_date DESC, decision_timestamp DESC
+      WHERE market_date = ? AND decision_timestamp <= ? AND captured_at <= ?
+      ORDER BY decision_timestamp DESC, captured_at DESC
       LIMIT 1`,
-  ).first();
+  ).bind(marketDate, asOf, asOf).first();
 }
 
 export async function persistResonanceWatchPoolV0_1(db, pool) {
@@ -56,13 +61,21 @@ export async function persistResonanceWatchPoolV0_1(db, pool) {
 }
 
 export async function loadActiveResonanceWatchPoolV0_1(db, marketDate) {
-  const row = await assertDb(db).prepare(
-    `SELECT * FROM s2_resonance_watch_pools
-      WHERE state IN ('ACTIVE', 'ZERO_PICK_ACTIVE')
-        AND source_market_date < ?
-      ORDER BY source_market_date DESC, source_decision_timestamp DESC
-      LIMIT 1`,
+  // The most recent earlier pool refresh is authoritative. A later empty
+  // refresh invalidates an old pool; missing audit evidence fails closed.
+  const audit = await assertDb(db).prepare(
+    `SELECT market_date, pool_id, run_state FROM s2_resonance_runs
+      WHERE market_date < ?
+        AND run_state IN ('POOL_REFRESH_ACTIVE','POOL_REFRESH_ZERO_PICK_ACTIVE','POOL_REFRESH_NO_CAPACITY_RECEIPT')
+      ORDER BY market_date DESC, as_of DESC LIMIT 1`,
   ).bind(marketDate).first();
+  if (!audit || audit.run_state === "POOL_REFRESH_NO_CAPACITY_RECEIPT" || !audit.pool_id) return null;
+  const row = await db.prepare(
+    `SELECT * FROM s2_resonance_watch_pools
+      WHERE pool_id = ? AND source_market_date = ?
+        AND state IN ('ACTIVE', 'ZERO_PICK_ACTIVE')
+      LIMIT 1`,
+  ).bind(audit.pool_id, audit.market_date).first();
   if (!row) return null;
   return Object.freeze({
     schemaVersion: row.schema_version,

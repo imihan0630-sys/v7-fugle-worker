@@ -16,6 +16,10 @@ import {
   readLatestResonanceApiV0_1,
 } from "../runtime/daily_resonance_persistence_v0_1.mjs";
 import { runBoundedDailyResonanceWorkerCycleV0_1 } from "../runtime/daily_resonance_worker_cycle_v0_1.mjs";
+import {
+  persistResonancePoolRefreshAuditV0_1,
+  readResonanceOperationsV0_1,
+} from "../runtime/daily_resonance_operations_v0_1.mjs";
 
 async function readSchemaVersion(db) {
   if (!db || typeof db.prepare !== "function") return "BINDING_MISSING";
@@ -71,14 +75,20 @@ async function handleScheduledResonance(controller, env) {
   const window = classifyResonanceScheduleTimeV0_1(scheduledDate);
 
   if (window.afterMarketPoolRefresh && !window.intradayMonitor) {
-    const capacityRow = await loadLatestCapacityRunForResonanceV0_1(env.SYSTEM2_DB);
+    const capacityRow = await loadLatestCapacityRunForResonanceV0_1(env.SYSTEM2_DB, marketDate, asOf);
     if (!capacityRow) {
-      console.log(JSON.stringify({ service: "system2-shadow-research", event: "resonance-pool-refresh", state: "NO_CAPACITY_RECEIPT", marketDate }));
+      await persistResonancePoolRefreshAuditV0_1({
+        db: env.SYSTEM2_DB, marketDate, asOf,
+      });
+      console.log(JSON.stringify({ service: "system2-shadow-research", event: "resonance-pool-refresh", state: "NO_CAPACITY_RECEIPT", marketDate, auditPersisted: true }));
       return { handled: true, state: "NO_CAPACITY_RECEIPT" };
     }
     const pool = await buildResonanceWatchPoolFromCapacityRowV0_1({ capacityRow, activatedAt: asOf });
     await persistResonanceWatchPoolV0_1(env.SYSTEM2_DB, pool);
-    console.log(JSON.stringify({ service: "system2-shadow-research", event: "resonance-pool-refresh", state: pool.state, poolId: pool.poolId, symbolCount: pool.symbolCount, maxUniqueSymbols: 9, fullMarketScan: false }));
+    await persistResonancePoolRefreshAuditV0_1({
+      db: env.SYSTEM2_DB, marketDate, asOf, pool,
+    });
+    console.log(JSON.stringify({ service: "system2-shadow-research", event: "resonance-pool-refresh", state: pool.state, poolId: pool.poolId, symbolCount: pool.symbolCount, maxUniqueSymbols: 9, fullMarketScan: false, auditPersisted: true }));
     return { handled: true, state: pool.state };
   }
 
@@ -130,6 +140,10 @@ export default {
     if (url.pathname === "/api/system2/resonance/pool") {
       const marketDate = url.searchParams.get("marketDate") || taipeiMarketDateV0_1(new Date());
       return json(await readPoolPayload(env.SYSTEM2_DB, marketDate));
+    }
+    if (url.pathname === "/api/system2/resonance/operations") {
+      const marketDate = url.searchParams.get("marketDate") || taipeiMarketDateV0_1(new Date());
+      return json(await readResonanceOperationsV0_1(env.SYSTEM2_DB, { marketDate }));
     }
     const symbolMatch = url.pathname.match(/^\/api\/system2\/resonance\/([0-9A-Za-z._-]+)$/);
     if (symbolMatch) {

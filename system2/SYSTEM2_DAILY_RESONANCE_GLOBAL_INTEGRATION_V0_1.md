@@ -101,3 +101,14 @@ Repository and deployment evidence:
 - Deployment verification confirms System 1 production files remained unchanged.
 
 The bounded Daily Resonance runtime is therefore physically armed for schedule-driven research/shadow monitoring. Live push, real orders, final strategy-selection authority, and general System 2 prospective selection capture remain disabled.
+
+## V0.1.1 prospective pool-freshness and operations guard — 2026-10-02
+
+Status: repository implementation; physical deployment and latest D1 readback require CI/deploy verification.
+
+- The 19:00 refresh now accepts **only** a same-market-date `s2_capacity_runs` record whose decision and capture timestamps are not later than that scheduled 19:00 clock. A stale or future-known receipt cannot silently seed a watch pool.
+- Each scheduled 19:00 outcome is recorded idempotently in existing isolated `s2_resonance_runs`: `POOL_REFRESH_ACTIVE`, `POOL_REFRESH_ZERO_PICK_ACTIVE`, or `POOL_REFRESH_NO_CAPACITY_RECEIPT`. No extra Cron, D1 migration or external credentials are needed.
+- Intraday pool lookup is anchored to the most recent preceding **durably recorded refresh**. If that refresh had no capacity receipt, older pools are invalidated; absent audit evidence fails closed.
+- `/api/system2/resonance/operations` exposes latest upstream capacity metadata, most recent pool, last 19:00 refresh audit, last successful or blocked intraday cycle, and an explicit empty-pool readiness state. It does not expose API keys, trigger orders, send push, or scan the full market.
+- The read-only UI shows the upstream/refresh diagnostic when monitoring remains empty. The existing 9-symbol bounded cap, existing resonance mathematics, System 1 Formal Core and all four System 1 Cron triggers remain unchanged.
+- This is operational data-integrity/readability work, **not** authorization to invent a final selection policy, enable general Shadow capture, or create a populated capacity receipt without strategy evidence.
