@@ -1,0 +1,69 @@
+{
+  "schemaVersion": "SIZE_LEADERSHIP_RECEIPT_V0_1",
+  "owner": "D09-08",
+  "status": "OUTCOME_BLIND_CONTRACT_FROZEN",
+  "capturedAt": "2026-10-01T09:06:49+08:00",
+  "purpose": "Freeze Taiwan official-index size leadership receipt semantics before any predictive outcome inspection.",
+  "indexFamilies": {
+    "large": {
+      "name": "FTSE TWSE Taiwan 50 Total Return Index",
+      "source": "TWSE official",
+      "role": "large-cap proxy"
+    },
+    "mid": {
+      "name": "FTSE TWSE Taiwan Mid-Cap 100 Total Return Index",
+      "source": "TWSE official",
+      "role": "mid-cap proxy"
+    },
+    "small": {
+      "name": "TWSE TAIEX Small-Cap 300 Total Return Index",
+      "source": "TWSE official",
+      "role": "small-cap proxy"
+    }
+  },
+  "stateHorizons": [
+    "D1",
+    "D5",
+    "D20",
+    "D60"
+  ],
+  "spreads": [
+    "smallTR-largeTR",
+    "midTR-largeTR",
+    "smallTR-midTR"
+  ],
+  "requiredClocks": [
+    "sourceObservationDate",
+    "sourcePublishedAt_if_exposed",
+    "capturedAt",
+    "firstEligibleTaiwanDecision"
+  ],
+  "requiredControls": [
+    "sectorMix_or_sectorRS",
+    "liquidity_or_turnover",
+    "breadth",
+    "marketRegime",
+    "leaderConcentration",
+    "indexRebalanceEvent",
+    "priceLimitContext_if_available"
+  ],
+  "missingness": "UNKNOWN_NEVER_ZERO",
+  "antiLeakage": [
+    "Do not reconstruct historical size buckets using current constituents or current market-cap ranks.",
+    "Do not assign permanent bullish/bearish sign to large or small leadership.",
+    "Do not tune D1/D5/D20/D60 after inspecting strategy returns.",
+    "If sector/liquidity controls absorb spread, classify SECTOR_MIX_DOMINATED or LIQUIDITY_DOMINATED."
+  ],
+  "classifications": [
+    "LARGE_CONCENTRATED",
+    "MID_SMALL_DIFFUSION",
+    "BROAD_SIZE_CONFIRMATION",
+    "SECTOR_MIX_DOMINATED",
+    "LIQUIDITY_DOMINATED",
+    "UNKNOWN"
+  ],
+  "outcomeGate": "CLOSED until independent-date prospective receipts exist and D16 preregistration/redundancy/cost/regime gates are satisfied.",
+  "maturityImpact": "NONE; D09-08 remains L3 PIT feasible.",
+  "formalCoreChanged": false,
+  "formalOptimizationCandidate": false
+}
