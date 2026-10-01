@@ -389,3 +389,9 @@ Repository state:
 - `SYSTEM2_CAPTURE_ENABLED=false`, final SELECTED authorization remains owner-gated, and an absent capacity receipt yields an empty monitor.
 
 Physical status is now VERIFIED for the bounded Daily Resonance lane. Deployment run `36646552183` proved isolated D1 V1.1 (46 tables), one consolidated Cron trigger `*/5 0-5,11 * * 1-5`, Fugle Worker-secret binding, public health/read API/UI, and System 1 isolation. Read-only inventory run `36646278083` proved the four pre-existing Cron triggers all belong to System 1 `fugle-test`; none were modified. The older Decision Clock evidence program and general Shadow capture gate remain unchanged.
+
+## 2026-10-02 bounded resonance operations evidence
+
+PR #295 / main `03b9dd824d1efa85eee86b04ee68171563e9e523` added same-date PIT freshness checks, a durable 19:00 refresh audit in existing D1, prevention of stale-pool reuse, a read-only operations API and an explicit UI status. System2 CI `36930742222`, V8 Regression `36930742371`, and physical deployment `36930843423` passed.
+
+The physical operations API returned `UPSTREAM_CAPACITY_RECEIPT_MISSING`, `upstreamCapacity=null`, and zero active symbols on 2026-10-02. The Worker, one Cron, D1 and Fugle secret are deployed; an upstream authorized capacity writer is still absent. Selection capture, notification, orders and final policy remain disabled. Do not claim a populated daily selection or actual intraday quote cycle until prospective D1 run evidence exists.
