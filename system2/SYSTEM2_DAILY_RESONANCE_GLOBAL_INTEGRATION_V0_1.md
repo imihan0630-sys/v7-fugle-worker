@@ -104,7 +104,7 @@ The bounded Daily Resonance runtime is therefore physically armed for schedule-d
 
 ## V0.1.1 prospective pool-freshness and operations guard — 2026-10-02
 
-Status: repository implementation; physical deployment and latest D1 readback require CI/deploy verification.
+Status: physically deployed and readback verified; upstream daily frozen capacity is absent.
 
 - The 19:00 refresh now accepts **only** a same-market-date `s2_capacity_runs` record whose decision and capture timestamps are not later than that scheduled 19:00 clock. A stale or future-known receipt cannot silently seed a watch pool.
 - Each scheduled 19:00 outcome is recorded idempotently in existing isolated `s2_resonance_runs`: `POOL_REFRESH_ACTIVE`, `POOL_REFRESH_ZERO_PICK_ACTIVE`, or `POOL_REFRESH_NO_CAPACITY_RECEIPT`. No extra Cron, D1 migration or external credentials are needed.
@@ -112,3 +112,13 @@ Status: repository implementation; physical deployment and latest D1 readback re
 - `/api/system2/resonance/operations` exposes latest upstream capacity metadata, most recent pool, last 19:00 refresh audit, last successful or blocked intraday cycle, and an explicit empty-pool readiness state. It does not expose API keys, trigger orders, send push, or scan the full market.
 - The read-only UI shows the upstream/refresh diagnostic when monitoring remains empty. The existing 9-symbol bounded cap, existing resonance mathematics, System 1 Formal Core and all four System 1 Cron triggers remain unchanged.
 - This is operational data-integrity/readability work, **not** authorization to invent a final selection policy, enable general Shadow capture, or create a populated capacity receipt without strategy evidence.
+
+## V0.1.1 physical deployment and missing-upstream proof — 2026-10-02
+
+- PR #295 merged to main commit `03b9dd824d1efa85eee86b04ee68171563e9e523`.
+- Final-head System2 Research CI `36930742222`: PASS; V8 Regression `36930742371`: PASS.
+- Main deployment `36930843423`: PASS. D1 V1.1/46 tables, the existing one System 2 Cron and `FUGLE_API_KEY` binding verified; unchanged System 1 production files PASS.
+- Physical `/health` confirms `schemaVersion=1.1`, `fugleQuoteConfigured=true`, bounded resonance armed, general capture disabled, and no System 1 runtime usage.
+- New physical `/api/system2/resonance/operations` confirms `state=UPSTREAM_CAPACITY_RECEIPT_MISSING`, `upstreamCapacity=null`, `latestPool=null`, and `activeSymbolCount=0` at the 2026-10-02 early-morning readback. This is positive evidence of missing upstream capacity data, not a UI or Fugle secret defect.
+- A 19:00 refresh is now durably audited even when there is no capacity receipt; no such **new-format** refresh audit has yet been observed at this readback, so the first real post-deployment 19:00 outcome still requires observation.
+- Next global-control-room engineering unit: integrate a PIT-qualified, preregistered daily System 2 Shadow source/orchestration pipeline that can produce immutable strategy ordering and `s2_capacity_runs` receipts without inventing score weights or activating final selection. Existing decision-clock/capture owner gates remain intact.
