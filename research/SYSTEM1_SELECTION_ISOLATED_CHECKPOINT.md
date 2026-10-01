@@ -4,6 +4,9 @@ Date: 2026-10-01 Asia/Taipei. Cursor: S1-C1-001.
 Classification: Class A offline only. Formal Core LOCKED. No deployment authorization.
 Base main: 7ae8df72ea178e3fc5c19828424d515ad1df42f3.
 Branch: research/system1-selection-isolated-20261001.
+Engineering commit: 2914f5a0ca1742ee994cd2e4cde0da19d81d6ec6, pushed and
+remote-readback verified. This checkpoint's later commit is its Git history.
+Saved at 2026-10-01 22:04 Asia/Taipei.
 
 ## Readback and source diagnosis
 
@@ -119,7 +122,8 @@ and no FORMAL_OPTIMIZATION_CANDIDATE.
 3. Feed diagnosePopulation and challenge offline. Archive non-secret input
    hashes and output receipts; first live complete-population run remains
    PENDING. No admin token has been extracted or bypassed.
-4. If current APIs cannot export these receipts, prepare a concrete Class B
+4. Class B packet prepared in SYSTEM1_C1_RECEIPT_EXPORT_CLASS_B_REVIEW.md.
+   If current APIs cannot export these receipts, use this concrete Class B
    additive export/persistence proposal for owner review; existing cohort
    membership proposal remains unapproved. Do not silently wire this module
    into Formal Worker, D1 or workflow. research/** and tests/** changes on
@@ -129,5 +133,5 @@ and no FORMAL_OPTIMIZATION_CANDIDATE.
    outcomes. Record positive and negative cases. Until valid prospective data,
    the diagnostic engineering is source-ready but live stage one unfinished.
 
-Rollback: remove/revert only the three additive files in this branch. No
+Rollback: remove/revert only the four additive files in this branch. No
 Production rollback is necessary because nothing was deployed.
