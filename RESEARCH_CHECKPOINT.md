@@ -2353,3 +2353,21 @@ Updated: 2026-09-27 23:38 Asia/Taipei.
 - Latest canonical tracker: D09 = 48.3%, D10 = 50.0%, Room 07 aggregate = 49.2%.
 - Formal Core unchanged. No FORMAL_OPTIMIZATION_CANDIDATE is opened.
 - Exact next: BR-035 freeze the first clean post-repair Above-MA live receipt once runtime/scan receipt is proven; BR-037 build outcome-blind official size-leadership receipt at D1/D5/D20/D60 with sector/liquidity/limit-hit controls; SC-033 collect >=3 independent issuer pricing events under SC-032 without stock outcomes; SC-034 later join realized ASP/margin only on native publication clocks and compatible product scope.
+
+
+## 09 derivatives & global macro continuation — strict source-attestation + 2026-10-02 NFP pre-event protocol
+
+- Latest main re-read and concurrent research preserved. Baseline tracker at this continuation: D12 40.0%, D13 41.5%, global 47.0% / 229 modules.
+- Audited `research/global_market_source_only_pilot_20260930.json`: all 4 receipt hashes and ordered digest chain recomputed exactly. However, original provider response bytes/header clocks and immutable raw archive provenance are absent; hash-chain integrity does not certify authentic source first-known. Original GitHub artifact commit UTC 2026-09-29T21:24:29Z (Taipei 2026-09-30 05:24:29). UST official 2026-09-29 2Y 4.89% and 10Y 5.26% numerically corroborated, but 2026-09-30 native provider bytes not recovered.
+- Also audited `research/d13_11_macro_schedule_vintage_receipt_20261001_1711.json` (5 scheduled-event items): useful dated research manifest, no raw provider-response attestation. Neither legacy manifest enters strict clean prospective denominator; current independently source-attested 09-room dates: 0.
+- Created `research/source_receipt_attestation_v0_1.mjs` plus `research/test_source_receipt_attestation_v0_1.mjs`. Thirteen isolated Node adversarial assertions PASS (source time/known time/capture time backdating, spoofed native-availability flag, altered raw bytes, wrong source URL, missing raw/archive, unlicensed data and decision-after-cutoff). Class A pure research guard; no network, Worker, Cron, D1 production schema or Formal changes.
+- Created append-only audit overlay `research/global_market_source_attestation_audit_20261002.json`; did not rewrite either legacy manifest. Updated `research/global_market_prospective_capture_design_v0_1.json` with mandatory independent raw-source archive readback.
+- Current official UST table at the Oct 2 review shows 2026-10-01 2Y 4.78% / 10Y 5.24%; descriptive webpage cross-check only, not fabricated as Oct 1 Taiwan 18:10 first-known.
+- Preregistered `research/d12_d13_20261002_nfp_event_clock_falsification_v0_1.md`: BLS September Employment Situation is scheduled for 2026-10-02 08:30 EDT = 20:30 Taipei, 140 minutes after the 18:10 selector. Split known schedule, pre-scan TX, future first print, post-event TX response and next Taiwan cash session. Friday/weekend, event clustering, option-expiry/roll and domestic volatility are competing explanations; release surprise remains UNKNOWN until preserved first print plus authentic pre-release consensus.
+- Maturity unchanged and no FORMAL_OPTIMIZATION_CANDIDATE. Do not configure live captures or pay for provider data without a permitted isolated source/entitlement path.
+
+Exact next for Room 09:
+1. First authorized live source capture: store native response bytes plus HTTP/connector completed clock, permitted usage, immutable archive ref; independently read back and pass both unified receipt and strict source-attestation guard.
+2. Obtain actual TAIWAN VIX and 15:00–18:10 TX NIGHT_PRE_SCAN before the selected 18:10 cutoff on eligible dates, never retroactively reconstruct from full-session reports.
+3. Preserve post-20:30 NFP and post-release TX as separate future objects; no return/outcome join during coverage stage.
+4. Accumulate independent strict clean dates and coverage/missingness before comparing D13-12 Taiwan absorption residual with domestic/sector/ATR controls.
