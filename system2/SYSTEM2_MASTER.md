@@ -124,6 +124,7 @@ V8 A/B, Top6/3+3, capital rules and live-state machine are never prerequisites f
 - `system2/SYSTEM2_DAILY_RESONANCE_LIVE_PIPELINE_V0_1.md`
 - `system2/SYSTEM2_FUGLE_RESONANCE_QUOTE_SOURCE_CONTRACT_V0_1.md`
 - `system2/SYSTEM2_DAILY_RESONANCE_GLOBAL_INTEGRATION_V0_1.md`
+- `system2/SYSTEM2_BUILD_PROGRESS_MAP.md`
 
 ## Bounded Daily Resonance runtime
 
@@ -198,3 +199,16 @@ PR #295 (`03b9dd824d1efa85eee86b04ee68171563e9e523`) is deployed and verified: S
 - Public read-only operations API and UI expose upstream capacity, latest pool, last refresh, intraday cycle and explicit empty-pool reason.
 - Physical readback on 2026-10-02: `UPSTREAM_CAPACITY_RECEIPT_MISSING`, `upstreamCapacity=null`, `activeSymbolCount=0`. The isolated Worker and Fugle binding are healthy; the absent upstream daily frozen capacity writer is the next integration dependency.
 - The first new-format 19:00 audit is pending its actual scheduled occurrence; do not count deployment readback as a successful live stock-monitor cycle.
+
+## Resonance Baseline / Challenger build lane — 2026-10-02
+
+The canonical build map now includes a paired resonance comparison lane:
+
+- Baseline: `USER_VIDEO_RESONANCE_V0_1` = the owner-specified/deployed EMA16 + EMA64 + Impulse MACD daily monitor.
+- Challenger: `SYSTEM2_RESONANCE_CHALLENGER_V0_1` = research-only alternate Trend + Momentum + Price/Structure Confirmation architecture; exact formula/parameters are **not frozen yet**.
+- Both versions must use the same bounded pool, market-data vintage, observation clock, finality semantics, costs and outcome windows.
+- Paired observations/outcomes must be immutable and versioned; no retroactive parameter edits after outcomes are known.
+- Challenger cannot modify/veto the Baseline, add live conditions, send push, change capital, or route orders without PIT/OOS/Forward evidence plus explicit owner approval.
+- Implementation placement: P3 preregistration -> P4 paired frozen archive/outcomes -> P5 comparison dashboard/attribution -> P6 OOS/Forward promotion evidence.
+
+See `system2/SYSTEM2_BUILD_PROGRESS_MAP.md` for the canonical status and comparison contract.
