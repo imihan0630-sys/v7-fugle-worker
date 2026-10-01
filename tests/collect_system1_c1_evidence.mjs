@@ -1,6 +1,7 @@
 import {mkdir,writeFile} from "node:fs/promises";
 import {dirname,resolve} from "node:path";
 import {adaptC1PopulationPages,diagnosePopulation} from "../research/system1_selection_isolated_v0_1.mjs";
+import {previousTaipeiDate,collectC1ReadOnlyPreflight,classifyC1Readiness} from "../research/system1_c1_readiness_v0_1.mjs";
 
 const origin=String(process.env.V7_ORIGIN||"https://fugle-test.imihan0630.workers.dev").replace(/\/$/,"");
 const token=String(process.env.V7_ADMIN_TOKEN||"");
@@ -20,7 +21,20 @@ for(let requestCount=0;requestCount<100;requestCount+=1){
   else if(scanDate) url.searchParams.set("scanDate",scanDate);
   const response=await fetch(url,{headers,signal:AbortSignal.timeout(30000)});
   const body=await response.json().catch(()=>({}));
-  if(!response.ok||body?.ok!==true) throw new Error(`C1 evidence read failed: HTTP ${response.status} ${JSON.stringify(body).slice(0,500)}`);
+  if(!response.ok||body?.ok!==true) {
+    const expectedDate=scanDate||previousTaipeiDate();
+    const receiptError=typeof body?.error==="string" ? body.error : "UNKNOWN";
+    // Read-only, authenticated GET requests; never retry POST /api/scan or fabricate a missing generation.
+    const readiness=receiptError==="C1_GENERATION_NOT_FOUND"&&response.ok
+      ? await collectC1ReadOnlyPreflight({origin,token,scanDate:expectedDate,receiptError,receiptHttpStatus:response.status})
+      : classifyC1Readiness({scanDate:expectedDate,receiptError,receiptHttpStatus:response.status});
+    const statusPath=resolve("artifacts/system1-c1-readiness.json");
+    await mkdir(dirname(statusPath),{recursive:true});
+    await writeFile(statusPath,JSON.stringify({observedAt:new Date().toISOString(),...readiness},null,2)+"\n","utf8");
+    console.error(JSON.stringify({c1EvidenceBlocked:true,category:readiness.category,
+      scanDate:expectedDate,statusPath,mayCountAsZeroPick:false,noPlanChanges:true}));
+    throw new Error("C1 evidence blocked: "+readiness.category+"; "+receiptError+" (HTTP "+response.status+")");
+  }
   generationId??=body.header?.generationId;
   if(!generationId||body.header?.generationId!==generationId) throw new Error("C1 generation changed during pagination");
   pages.push(body);
