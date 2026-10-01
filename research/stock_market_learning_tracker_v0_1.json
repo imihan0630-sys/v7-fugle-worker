@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-01T06:33:00+08:00",
+  "updatedAt": "2026-10-02T05:37:02+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -1336,8 +1336,8 @@
           "maturityPct": 40,
           "learningScope": "聚焦「TAIEX VIX台灣波動率指數」。學習範圍：期貨、選擇權、基差、OI、外資期貨、PCR、VIX、IV、Skew、Term Structure、Gamma與結算；夜盤與到期效應；合約／DTE語意；對市場與個股的增量資訊。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "CLASS_A_RECEIPT_BUILDER_IMPLEMENTED_AND_ADVERSARIAL_TESTED / ACTUAL_PIT_DATE_RECEIPT_PENDING / OUTCOMES_CLOSED",
-          "evidence": "research/d12_05_taiwan_vix_receipt_v0_1.mjs + research/test_d12_05_taiwan_vix_receipt_v0_1.mjs; unified PIT guard integrated; no same-session 2026-09-30 value fabricated before publication window."
+          "status": "CLASS_A_RECEIPT_BUILDER_IMPLEMENTED_AND_ADVERSARIAL_TESTED / ACTUAL_PIT_DATE_RECEIPT_PENDING / OUTCOMES_CLOSED / STRICT_SOURCE_ATTESTATION_GATE_READY / LIVE_VERIFIED_VIX_RECEIPT_PENDING",
+          "evidence": "research/d12_05_taiwan_vix_receipt_v0_1.mjs + research/test_d12_05_taiwan_vix_receipt_v0_1.mjs; unified PIT guard integrated; no same-session 2026-09-30 value fabricated before publication window.\n2026-10-02 audit: research/source_receipt_attestation_v0_1.mjs 13 synthetic adversarial tests PASS; test success cannot substitute live VIX raw provider archive and independent first-known replay."
         },
         {
           "id": "D12-06",
@@ -1378,8 +1378,8 @@
           "maturityPct": 40,
           "learningScope": "聚焦「夜盤期貨與隔夜資訊」。學習範圍：期貨、選擇權、基差、OI、外資期貨、PCR、VIX、IV、Skew、Term Structure、Gamma與結算；夜盤與到期效應；合約／DTE語意；對市場與個股的增量資訊。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "CLASS_A_NIGHT_PRE_SCAN_RECEIPT_BUILDER_IMPLEMENTED_AND_ADVERSARIAL_TESTED / ACTUAL_1500_1810_RECEIPT_PENDING / OUTCOMES_CLOSED",
-          "evidence": "research/d12_10_night_pre_scan_receipt_v0_1.mjs + adversarial test enforce 15:00 start, <=18:10 cutoff, following-session attribution, roll/expiry and no full-night leakage."
+          "status": "CLASS_A_NIGHT_PRE_SCAN_RECEIPT_BUILDER_IMPLEMENTED_AND_ADVERSARIAL_TESTED / ACTUAL_1500_1810_RECEIPT_PENDING / OUTCOMES_CLOSED / STRICT_SOURCE_ATTESTATION_GATE_READY / LIVE_1500_1810_RECEIPT_PENDING",
+          "evidence": "research/d12_10_night_pre_scan_receipt_v0_1.mjs + adversarial test enforce 15:00 start, <=18:10 cutoff, following-session attribution, roll/expiry and no full-night leakage.\n2026-10-02 audit: Live TX 18:10 first-known source response absent in latest room checkpoint; same-day complete night market reports cannot be backdated."
         },
         {
           "id": "D12-11",
@@ -1460,8 +1460,8 @@
           "maturityPct": 40,
           "learningScope": "聚焦「美債利率／殖利率曲線」。學習範圍：美股、日韓股、匯率、美元、利率、油價、原物料與總經數據；跨時區與休市對齊；公告時鐘與Surprise；全球Shock傳導；台股Residual反應與Regime用途。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "FIRST_SOURCE_ONLY_OFFICIAL_UST_RECEIPT_CAPTURED / MULTIDATE_COVERAGE_PENDING / OUTCOMES_CLOSED",
-          "evidence": "research/global_market_source_only_pilot_20260930.json contains latest already-published 2026-09-29 official Treasury curve captured before the 2026-09-30 18:10 Taiwan decision."
+          "status": "FIRST_SOURCE_ONLY_OFFICIAL_UST_RECEIPT_CAPTURED / MULTIDATE_COVERAGE_PENDING / OUTCOMES_CLOSED / LEGACY_20260930_RECEIPT_HASH_PASS_SOURCE_ATTESTATION_MISSING / STRICT_CLEAN_DATE_0",
+          "evidence": "research/global_market_source_only_pilot_20260930.json contains latest already-published 2026-09-29 official Treasury curve captured before the 2026-09-30 18:10 Taiwan decision.\n2026-10-02 audit: research/global_market_source_attestation_audit_20261002.json: 2026-09-29 UST 2Y/10Y numerically corroborated, but native original HTTP response bytes/version first-known and immutable raw archive missing; exclude from strict clean date denominator."
         },
         {
           "id": "D13-07",
@@ -1489,7 +1489,9 @@
           "level": "L2",
           "maturityPct": 40,
           "learningScope": "聚焦「CPI／PPI／非農／失業率」。學習範圍：美股、日韓股、匯率、美元、利率、油價、原物料與總經數據；跨時區與休市對齊；公告時鐘與Surprise；全球Shock傳導；台股Residual反應與Regime用途。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "RESEARCH_ONLY / OCT02_EMPLOYMENT_SITUATION_PRE_EVENT_CLOCK_PREREGISTERED / CONSENSUS_FIRST_PRINT_UNKNOWN",
+          "evidence": "2026-10-02 audit: BLS event 2026-10-02 20:30 Taipei is FUTURE for Taiwan 18:10. Source-receipt strict gate plus weekend/Friday controls frozen; no release result inferred."
         },
         {
           "id": "D13-10",
@@ -1506,8 +1508,8 @@
           "maturityPct": 40,
           "learningScope": "聚焦「Macro Surprise與公告時鐘」。學習範圍：美股、日韓股、匯率、美元、利率、油價、原物料與總經數據；跨時區與休市對齊；公告時鐘與Surprise；全球Shock傳導；台股Residual反應與Regime用途。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "PROSPECTIVE_SCHEDULE_VINTAGE_CAPTURE_ACTIVE / FIRST_PRE_NEXT_OPEN_EVENT_STATE_CAPTURED / REALIZATION_AND_CONSENSUS_VINTAGE_PENDING / OUTCOMES_CLOSED",
-          "evidence": "research/global_market_source_only_pilot_20260930.json plus research/d13_11_macro_schedule_vintage_receipt_20261001_1711.json. The 2026-10-01 pre-18:10 receipt preserves ISM Manufacturing PMI as SCHEDULED_POST_DECISION_PRE_NEXT_OPEN while keeping its realization unknown; BLS Employment/CPI reobservations remain schedule-only.",
+          "status": "PROSPECTIVE_SCHEDULE_VINTAGE_CAPTURE_ACTIVE / FIRST_PRE_NEXT_OPEN_EVENT_STATE_CAPTURED / REALIZATION_AND_CONSENSUS_VINTAGE_PENDING / OUTCOMES_CLOSED / OCT01_SCHEDULE_VINTAGE_SOURCE_RESPONSE_ATTESTATION_MISSING / OCT02_NFP_PREREGISTERED",
+          "evidence": "research/global_market_source_only_pilot_20260930.json plus research/d13_11_macro_schedule_vintage_receipt_20261001_1711.json. The 2026-10-01 pre-18:10 receipt preserves ISM Manufacturing PMI as SCHEDULED_POST_DECISION_PRE_NEXT_OPEN while keeping its realization unknown; BLS Employment/CPI reobservations remain schedule-only.\n2026-10-02 audit: 2026-10-01 five-item schedule-vintage and 2026-09-30 four-receipt pilot remain dated research manifests; not strict source-attested. research/d12_d13_20261002_nfp_event_clock_falsification_v0_1.md freezes known schedule vs future realization; outcome join CLOSED.",
           "exactNextContinuationPoint": "Preserve the 2026-10-01 18:10 schedule receipt unchanged; capture ISM Manufacturing PMI realization separately only when actually observed after publication, repeat append-only schedule vintages on independent Taiwan decision dates, and keep Taiwan outcomes closed until the preregistered coverage gate is met."
         },
         {
@@ -1516,7 +1518,9 @@
           "level": "L2",
           "maturityPct": 40,
           "learningScope": "聚焦「全球Shock與台股Residual反應」。學習範圍：美股、日韓股、匯率、美元、利率、油價、原物料與總經數據；跨時區與休市對齊；公告時鐘與Surprise；全球Shock傳導；台股Residual反應與Regime用途。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "RESEARCH_ONLY / STRICT_GLOBAL_SOURCE_GATE_DEFINED / INDEPENDENT_CLEAN_DATES_PENDING",
+          "evidence": "2026-10-02 audit: Global source attestation audit reconciles 4 legacy hashes and 2026-10-01 five-item vintage but demonstrates 0 independently native-attested clean dates; absorption outcome study remains CLOSED."
         },
         {
           "id": "D13-13",
