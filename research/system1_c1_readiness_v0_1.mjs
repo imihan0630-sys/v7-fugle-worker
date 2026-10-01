@@ -11,7 +11,7 @@ export function previousTaipeiDate(now=new Date()) {
 
 export function classifyC1Readiness({scanDate,receiptError,receiptHttpStatus=200,
   scanStatus=null,institutionStatus=null,qualityStatus=null,readErrors={}}={}) {
-  if(!/^\\d{4}-\\d{2}-\\d{2}$/.test(String(scanDate||""))) throw new Error("SCAN_DATE_REQUIRED");
+  if(!/^\d{4}-\d{2}-\d{2}$/.test(String(scanDate||""))) throw new Error("SCAN_DATE_REQUIRED");
   const output={schemaVersion:"SYSTEM1_C1_READINESS_V0_1",scanDate,
     category:null,mayCountAsZeroPick:false,eligibleForResearch:false,
     researchOnly:true,decisionImpact:false,formalCoreImpact:false,
@@ -63,7 +63,7 @@ export async function collectC1ReadOnlyPreflight({origin,token,scanDate,receiptE
   const values={},readErrors={};
   await Promise.all(Object.entries(resources).map(async ([name,path])=>{
     try{
-      const response=await request(String(origin).replace(/\\/$/,"")+path,{
+      const response=await request(String(origin).replace(/\/$/,"")+path,{
         method:"GET",headers:{"x-admin-token":token,"accept":"application/json","cache-control":"no-cache"},
         signal:AbortSignal.timeout(timeoutMs)
       });
