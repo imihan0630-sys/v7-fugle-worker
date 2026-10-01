@@ -1,6 +1,6 @@
 # C1 complete-population receipt export — Class B review packet
 
-Status: OWNER_APPROVED 2026-10-01 / IMPLEMENTED_ON_ISOLATED_BRANCH / LOCAL_VALIDATION_PASS / PRODUCTION_READBACK_PENDING.
+Status: OWNER_APPROVED 2026-10-01 / IMPLEMENTED / PRODUCTION V8.15 ACTIVE / FIRST PROSPECTIVE RECEIPT PENDING.
 Base: main 7ae8df72ea178e3fc5c19828424d515ad1df42f3; Production 8.14.4.
 Prepared 2026-10-01 Asia/Taipei. Formal Core LOCKED.
 
@@ -92,3 +92,12 @@ test proves insert/read/idempotent replay/conflict rejection using SQLite. A
 chunk 86,955 bytes, and built in 18.3 ms on the local runtime. These are local
 engineering measurements, not Cloudflare billing or live CPU proof. First
 Production generation and prospective economic evidence remain pending.
+
+Production activation is verified at commit
+`b56b84fce765d8f7319125e6d325b5d8e7233686`. GitHub Actions V8 Regression
+run 36878372976 and V8 Cloudflare Deploy run 36878372790 both succeeded.
+Public readback is `8.15.0-c1-population-receipts`, `testMode=false`, KV/D1
+present; the protected C1 route returns HTTP 401 without authorization.
+Existing Formal plans 2006/4977 and their dates/parameters remained present.
+The scheduled 23:35 scan has not occurred yet, so no complete live generation
+or outcome evidence is claimed here.

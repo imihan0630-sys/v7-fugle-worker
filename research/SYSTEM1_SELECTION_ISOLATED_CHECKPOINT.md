@@ -166,3 +166,23 @@ V8.15 under the approved Class-B scope, collect the first immutable generation,
 verify Production configuration and evidence artifact, then accumulate frozen
 C2/C3 paired prospective evidence. Rollback is the V8.15 commit plus existing
 automatic deployment rollback; immutable research rows are preserved.
+
+## S1-C1-003 — Production activation and guarded readback
+
+Saved 2026-10-01 22:44 Asia/Taipei. Main and isolated branch both point to
+`b56b84fce765d8f7319125e6d325b5d8e7233686`. V8 Regression run 36878372976
+succeeded in 40 seconds; V8 Cloudflare Deploy run 36878372790 succeeded in
+62 seconds, including pre-deploy backup, configuration preservation and the
+existing automatic rollback gate.
+
+Production `/api/version` reads `8.15.0-c1-population-receipts`, testMode false,
+KV/D1 true. The C1 endpoint denies an unauthenticated request with HTTP 401.
+The existing Formal plans remain 2006/4977 with the pre-existing 2026-09-29
+plan date and 2026-09-24 close provenance. No re-selection, 3Min write, signal,
+push or System2 mutation was invoked for acceptance.
+
+Status: `CLASS_B_ACTIVE / FORMAL_UNCHANGED / LIVE_RECEIPT_WAITING_23_35`.
+The first scheduled generation, complete-population digest and live funnel
+counts remain pending; failures must remain DATA_QUALITY_BLOCKED rather than a
+zero-pick observation. The 00:10 Taipei read-only evidence workflow is the
+next verifier. Formal optimization remains ineligible.
