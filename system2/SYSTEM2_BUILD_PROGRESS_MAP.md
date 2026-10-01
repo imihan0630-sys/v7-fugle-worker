@@ -34,7 +34,7 @@ GitHub `main` remains authoritative. Chat summaries are context only.
 | S2-04 | Market Regime / shared 18-domain research | 🟡 | Shared research network active; not every research finding is a production factor. |
 | S2-05 | Factor Engine / family assessments / UNKNOWN semantics | 🟡 | Core contracts and research plumbing exist; richer validated factors remain incremental. |
 | S2-06 | Multi-strategy contracts | 🟡 | Strategy families and Shadow contracts exist; exact live weights/thresholds remain evidence-gated. |
-| S2-07 | Daily PIT-safe Shadow Orchestrator | ❌ | Current primary upstream gap: full-market source -> factor -> strategy -> ranking -> capacity -> frozen receipt is not yet physically producing daily `s2_capacity_runs`. |
+| S2-07 | Daily PIT-safe Shadow Orchestrator | 🟡 | Strategy-run -> RANK-01 -> prior-pool revalidation -> capacity receipt assembler is repository-implemented; real source adapters, assessment wiring, isolated D1 execution and physical daily `s2_capacity_runs` production remain pending. |
 | S2-08 | Frozen Daily Decision / immutable archive | 🟡 | Schema/runtime primitives exist; depends on S2-07 for real daily prospective cohorts. |
 | S2-09 | Ranking / capacity / overlap / concentration | 🟡 | Research engines and receipts exist; daily physical production depends on S2-07. |
 | S2-10 | 19:00 next-session bounded pool | ✅ | Physically deployed; same-date/PIT freshness guarded; stale pools fail closed; max 9 unique, no forced filling. |
@@ -149,7 +149,7 @@ The comparison should **not** combine both lanes into a stricter four/five/six-c
 
 ## Current continuation priority
 
-1. Build S2-07 Daily PIT-safe Shadow Orchestrator so real daily `s2_capacity_runs` exist.
+1. Finish S2-07 physical daily pipeline: PIT-qualified sources -> assessments -> completed Shadow runs -> the implemented capacity assembler -> isolated D1 `s2_capacity_runs`.
 2. Observe the first truthful 19:00 pool-refresh audit and next-session bounded monitor cycle.
 3. Implement S2-12 Challenger preregistration + immutable paired capture on exactly the same bounded pool.
 4. Accumulate paired prospective samples before any Challenger promotion decision.
