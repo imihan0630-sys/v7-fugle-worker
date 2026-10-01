@@ -162,6 +162,7 @@ export async function runDailyLimitedShadowOrchestratorV0_1({
   const candidates = [];
   const importantRejectedDecisionIds = [];
   const perSymbolDiagnostics = [];
+  const rankingInputs = [];
 
   for (const symbol of baseUniverseSymbols) {
     const snapshot = a1SymbolSnapshotBatch.bySymbol[symbol];
@@ -287,6 +288,22 @@ export async function runDailyLimitedShadowOrchestratorV0_1({
       importantRejectedDecisionIds.push(decisionId);
     }
 
+    rankingInputs.push(deepFreeze({
+      symbol,
+      companyName: snapshot.companyName || null,
+      decisionId,
+      strategyId: assessment.strategyId,
+      strategyVersion: assessment.strategyVersion,
+      strategyValidity: assessment.strategyValidity,
+      entryReadiness: assessment.entryReadiness,
+      familyAssessments: assessment.familyAssessments,
+      warnings: Object.freeze([
+        ...warnings,
+        ...(replayWindow.state === "READY" ? [] : replayWindow.blockerCodes),
+        ...factorBundle.qualityFlags,
+      ]),
+    }));
+
     candidates.push({
       symbol,
       companyName: snapshot.companyName,
@@ -372,6 +389,7 @@ export async function runDailyLimitedShadowOrchestratorV0_1({
     eligibleCount: candidates.length,
     accountedCount: bundle.runReceipt.accountedCount,
     decisionCount: bundle.decisionSnapshots.length,
+    rankingInputs: Object.freeze(rankingInputs),
     predictionSnapshotHash: bundle.predictionSnapshot.predictionSnapshotHash,
     persistenceBatchHash: bundle.persistenceBatch.batchHash,
     finalSelectionEnabled: false,

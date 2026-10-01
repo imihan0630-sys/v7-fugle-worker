@@ -399,3 +399,7 @@ The physical operations API returned `UPSTREAM_CAPACITY_RECEIPT_MISSING`, `upstr
 ## 2026-10-02 paired resonance comparison lane registered
 
 The build roadmap now explicitly includes a Baseline-vs-Challenger resonance research lane. The deployed owner-video Daily Resonance remains the Baseline; an alternate System 2 Challenger will be preregistered and captured on the same bounded pool/data/clock for immutable side-by-side evaluation. This is currently **MAP_REGISTERED / IMPLEMENTATION_PENDING**. No Challenger formula/parameters are frozen by this status entry, and it has no notification, selection, capital or order authority.
+
+## 2026-10-02 S2-07 middle-pipeline implementation
+
+Daily ranking-to-capacity assembly is now repository-implemented as research/shadow plumbing. Completed Limited Shadow strategy runs can be converted into immutable RANK-01 ordering receipts, revalidated candidate state and a safe zero/nonzero `s2_capacity_runs` receipt when capacity is resolvable. Cross-strategy scarcity remains fail-closed without an approved global priority policy. This does not mean physical daily capture is active: source/assessment adapters and isolated D1 batch execution are still pending.
