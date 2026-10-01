@@ -36,6 +36,9 @@ assert.doesNotMatch(config, /^routes\s*=/m);
 assert.match(workerCore, /BOUNDED_PRESELECTED_ONLY/);
 assert.match(worker, /NO_ACTIVE_PRESELECTED_POOL/);
 assert.match(worker, /officialSessionCloseConfirmed/);
+assert.match(worker, /persistResonancePoolRefreshAuditV0_1/);
+assert.match(worker, /readResonanceOperationsV0_1/);
+assert.match(workflow, /SYSTEM2_RESONANCE_OPERATIONS_API_V0_1/);
 assert.match(worker, /\/api\/system2\/resonance/);
 assert.doesNotMatch(worker, /PUSH_WEBHOOK_URL|STOCKS_KV|V7_DB|fetchAllSymbols/i);
 

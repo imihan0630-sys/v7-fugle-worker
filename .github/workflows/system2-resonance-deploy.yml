@@ -126,7 +126,9 @@ jobs:
               const health=await fetch(url+"/health",{signal:AbortSignal.timeout(15000)});const h=await health.json();
               if(!health.ok||h.schemaVersion!=="1.1"||h.resonanceState!=="BOUNDED_RESONANCE_SCHEDULED"||h.captureState!=="CAPTURE_DISABLED"||h.fugleQuoteConfigured!==true)throw new Error("health contract mismatch");
               const api=await fetch(url+"/api/system2/resonance",{signal:AbortSignal.timeout(15000)});if(!api.ok)throw new Error("read API failed");
-              const page=await fetch(url+"/resonance",{signal:AbortSignal.timeout(15000)});if(!page.ok||!(await page.text()).includes("日K 共振監控"))throw new Error("UI failed");
+              const operations=await fetch(url+"/api/system2/resonance/operations",{signal:AbortSignal.timeout(15000)});const op=await operations.json();
+              if(!operations.ok||op.schemaVersion!=="SYSTEM2_RESONANCE_OPERATIONS_API_V0_1"||op.fullMarketScan!==false||op.orderImpact!==false)throw new Error("operations API failed");
+              const page=await fetch(url+"/resonance",{signal:AbortSignal.timeout(15000)});if(!page.ok||!(await page.text()).includes("查看執行診斷"))throw new Error("UI failed");
               console.log(JSON.stringify({result:"PASS",url,schemaVersion:h.schemaVersion,cronExpressions:expressions,resonanceState:h.resonanceState,captureState:h.captureState,system1RuntimeUsed:h.system1RuntimeUsed}));
               process.exit(0);
             }catch(e){last=e;await new Promise(r=>setTimeout(r,5000))}
