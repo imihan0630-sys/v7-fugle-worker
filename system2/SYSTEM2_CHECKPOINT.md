@@ -844,3 +844,19 @@ Implemented:
 - read-only `/api/system2/resonance/operations`, showing actual upstream and schedule diagnostics directly on the UI.
 
 Do not misclassify this deployment as a live populated strategy/monitor success. The **proven next block** is the upstream PIT-qualified, pre-registered System 2 daily Shadow source -> factor/strategy -> ordering/capacity -> immutable `s2_capacity_runs` path. Preserve `SYSTEM2_CAPTURE_ENABLED=false` and existing final-selection/policy owner gates until their required evidence and approval exist. The first post-deployment new-format 19:00 audit and subsequent genuine bounded intraday cycle are next prospective observations. System 1/V8 Formal Core and its four Cron triggers remain unchanged.
+
+## 2026-10-02 System 2 build-map update — paired resonance Challenger lane
+
+Owner requested the alternate System 2 resonance logic be explicitly included in the engineering roadmap with comparable records rather than remaining an informal chat idea.
+
+Canonical map: `system2/SYSTEM2_BUILD_PROGRESS_MAP.md`.
+
+Registered lane:
+- deployed Baseline remains `USER_VIDEO_RESONANCE_V0_1` (EMA16 / EMA64 / Impulse MACD, daily 0/3–3/3, PROVISIONAL/CONFIRMED semantics);
+- research-only Challenger is registered as `SYSTEM2_RESONANCE_CHALLENGER_V0_1`, initially defined only at the architecture level as Trend + Momentum + Price/Structure Confirmation;
+- exact Challenger indicators/parameters must be preregistered before prospective capture and versioned thereafter;
+- comparison must be same pool / same timestamps / same source vintage / same bar-finality / same costs / same outcome windows;
+- minimum paired evidence includes component states, first trigger, retraction/whipsaw, forward 1/3/5/10/20-day returns, MFE/MAE, cost-adjusted outcome, Regime and relative timing/disagreement;
+- Challenger starts Shadow-only and cannot replace, veto or tighten the owner Baseline without PIT/OOS/Forward, Regime, repaint/whipsaw, cost, redundancy/incremental-value, overfit controls and explicit owner approval.
+
+Engineering order remains: first close the upstream Daily Shadow Orchestrator / `s2_capacity_runs` gap; then attach the paired Challenger capture to the exact same truthful bounded pool. No System 1/V8 Formal change, live push, order routing or capital authority is authorized by this roadmap registration.
