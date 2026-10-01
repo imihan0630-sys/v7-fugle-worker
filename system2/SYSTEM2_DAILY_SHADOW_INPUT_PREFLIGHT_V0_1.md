@@ -1,7 +1,7 @@
 # System 2 Daily Shadow Input Preflight V0.1
 
 Updated: 2026-10-02 Asia/Taipei  
-Status: REPOSITORY IMPLEMENTED / READ-ONLY PHYSICAL PREFLIGHT PENDING  
+Status: PHYSICAL PREFLIGHT ACTIVE / A1 SOURCE V0.2 CORRECTION IN PROGRESS  
 Scope: System 2 S2-07 upstream input readiness  
 System 1 / V8 impact: NONE
 
@@ -19,11 +19,17 @@ A failure at any layer must remain explicit. It must never be converted into a f
 
 ## Modules
 
-- `runtime/daily_shadow_a1_source_v0_1.mjs`
-  - read-only official TWSE / TPEx A1 fetch;
-  - feeds existing `buildA1SymbolSnapshotBatch`;
+- `runtime/daily_shadow_a1_source_v0_2.mjs`
+  - active read-only current-day A1 source;
+  - uses date-scoped TWSE / TPEx after-trading endpoints already protected by exact source-date verification;
+  - converts only a requested-date-verified payload into the existing `buildA1SymbolSnapshotBatch` contract;
+  - treats first successful observation as an availability upper bound, not a publication timestamp;
   - verifies target-date coverage, OHLC consistency and observation clock;
   - no external mutation.
+
+- `runtime/daily_shadow_a1_source_v0_1.mjs`
+  - retained as historical implementation evidence only;
+  - its rolling OpenAPI inputs are **not** accepted as the active same-day Shadow source after prospective evidence showed persistent prior-date payloads.
 
 - `runtime/daily_shadow_history_reader_v0_1.mjs`
   - reads only isolated `s2_historical_a1_bars`;
@@ -46,6 +52,19 @@ A failure at any layer must remain explicit. It must never be converted into a f
   - uses the isolated `system2-research` D1 through the existing remote read adapter;
   - performs no D1 mutation;
   - when no exact capture clock is supplied, labels the clock `DIAGNOSTIC_OBSERVATION_TIME_NOT_CAPTURE_CLOCK`.
+
+## A1 current-source correction — V0.2
+
+The first physical preflight after PR #299 proved the input firewall worked, but it also exposed a source-contract problem:
+
+- physical run `36943038364` completed successfully with D1 `rowsWritten=0`;
+- on market date 2026-10-02 the V0.1 current A1 lane produced `ordinarySymbolCount=0` and `A1_SOURCE_INCOMPLETE`;
+- this was consistent with the independent Decision Clock evidence from 2026-10-01: the rolling TWSE OpenAPI still reported payload date 2026-09-30 through the final 16:10 Asia/Taipei observation, while TPEx also intermittently returned non-JSON responses;
+- therefore accepting the latest rolling OpenAPI payload as if it were the requested trading date would create a look-ahead / stale-date semantic error.
+
+V0.2 does not relax the date rule. It switches the active daily Shadow A1 current source to the repository's already-tested **date-scoped** TWSE/TPEx after-trading endpoints, whose parser requires explicit source-date evidence to equal the requested market date.
+
+This is a source-selection correction, not a strategy change. The old rolling OpenAPI remains useful for source-arrival research but is not authoritative for same-day daily Shadow snapshots.
 
 ## Why assessor policy is deliberately blocked
 
