@@ -188,3 +188,13 @@ The bounded Daily Resonance research/shadow lane is physically deployed.
 - Current empty-pool semantics remain fail-closed; no full-market scan or forced-fill behavior exists.
 - Four System 1 production Cron triggers remain untouched.
 - Live push, real orders, general System 2 selection capture and formal capital authority remain disabled.
+
+## 2026-10-02 Daily Resonance operational integrity milestone
+
+PR #295 (`03b9dd824d1efa85eee86b04ee68171563e9e523`) is deployed and verified: System2 Research CI `36930742222` PASS; V8 Regression `36930742371` PASS; deployment `36930843423` PASS.
+
+- 19:00 pool refresh rejects stale/future-known `s2_capacity_runs` and emits an idempotent D1 audit even if the upstream capacity receipt is absent.
+- Intraday watch-pool lookup is tied to the latest earlier durable refresh; an empty later refresh invalidates old pools. No change to the 9-symbol cap, resonance formulas, System 1, trading authority or Cloudflare Cron count.
+- Public read-only operations API and UI expose upstream capacity, latest pool, last refresh, intraday cycle and explicit empty-pool reason.
+- Physical readback on 2026-10-02: `UPSTREAM_CAPACITY_RECEIPT_MISSING`, `upstreamCapacity=null`, `activeSymbolCount=0`. The isolated Worker and Fugle binding are healthy; the absent upstream daily frozen capacity writer is the next integration dependency.
+- The first new-format 19:00 audit is pending its actual scheduled occurrence; do not count deployment readback as a successful live stock-monitor cycle.

@@ -825,3 +825,22 @@ Current boundary:
 - Real order routing remains prohibited.
 - Formal strategy/capital authority remains gated by PIT/OOS/Prospective Shadow/Trend-vs-Range/Regime/repaint/whipsaw/cost/MFE-MAE/redundancy evidence.
 - The next runtime evidence point is the first real 19:00 pool refresh followed by an eligible next-session intraday cycle using an actual frozen upstream capacity receipt.
+
+## 2026-10-02 Daily Resonance V0.1.1 source-freshness / operations checkpoint
+
+The global System 2 controller completed and physically deployed the next bounded Daily Resonance integrity tranche.
+
+Formal evidence:
+- PR #295, main commit `03b9dd824d1efa85eee86b04ee68171563e9e523`;
+- final-head System2 Research CI `36930742222` PASS;
+- final-head V8 Regression `36930742371` PASS;
+- post-merge deployment `36930843423` PASS, including physical D1 V1.1/46 tables, the existing one Cron, Fugle Worker Secret, public health/API/UI and System 1 files unchanged;
+- live operations readback early on 2026-10-02: `UPSTREAM_CAPACITY_RECEIPT_MISSING`, `upstreamCapacity=null`, `latestPool=null`, `lastPoolRefresh=null`, `activeSymbolCount=0`.
+
+Implemented:
+- same-market-date and capture/decision-time freshness gate at each 19:00 capacity read;
+- idempotent D1 run receipt for active, zero-pick or absent-capacity refresh, without a new table/migration/Cron;
+- latest-prior-refresh anchoring for intraday pool lookup so an empty refresh invalidates older stock lists;
+- read-only `/api/system2/resonance/operations`, showing actual upstream and schedule diagnostics directly on the UI.
+
+Do not misclassify this deployment as a live populated strategy/monitor success. The **proven next block** is the upstream PIT-qualified, pre-registered System 2 daily Shadow source -> factor/strategy -> ordering/capacity -> immutable `s2_capacity_runs` path. Preserve `SYSTEM2_CAPTURE_ENABLED=false` and existing final-selection/policy owner gates until their required evidence and approval exist. The first post-deployment new-format 19:00 audit and subsequent genuine bounded intraday cycle are next prospective observations. System 1/V8 Formal Core and its four Cron triggers remain unchanged.
