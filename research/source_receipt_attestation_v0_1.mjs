@@ -29,7 +29,7 @@ export function auditSourceAttestation(receipt, {decisionTimestamp, rawBody} = {
   const firstEligible = iso(receipt.firstEligibleTaiwanDecision, 'firstEligibleTaiwanDecision');
   if (observedAt > responseAt) reasons.push('OBSERVATION_AFTER_RESPONSE');
   if (responseAt > capturedAt) reasons.push('BACKDATED_CAPTURE');
-  if (knownAt < responseAt && !evidence.providerNativeAvailabilityProof) reasons.push('BACKDATED_KNOWN_AT');
+  if (knownAt < responseAt) reasons.push('BACKDATED_KNOWN_AT');
   if (knownAt > capturedAt) reasons.push('KNOWN_AFTER_CAPTURE');
   if (firstEligible < knownAt) reasons.push('ELIGIBILITY_BEFORE_KNOWN');
   if (responseAt > decision || capturedAt > decision || knownAt > decision || firstEligible > decision)
@@ -52,7 +52,7 @@ export function auditSourceAttestation(receipt, {decisionTimestamp, rawBody} = {
   if (!evidence.automatedUseAuthorized) reasons.push('ENTITLEMENT_NOT_PROVEN');
   const eligible = reasons.length === 0;
   return Object.freeze({
-    status: eligible ? 'SOURCE_RESPONSE_ATTESTED' : 'SOURCE_ATTESTATION_INCOMPLETE',
+    status: eligible ? 'SOURCE_RESPONSE_ATTESTATION_VALID_IF_ARCHIVE_PROVEN' : 'SOURCE_ATTESTATION_INCOMPLETE',
     cleanProspectiveEligible: eligible, reasons: Object.freeze(reasons)
   });
 }
