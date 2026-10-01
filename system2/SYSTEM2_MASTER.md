@@ -125,6 +125,7 @@ V8 A/B, Top6/3+3, capital rules and live-state machine are never prerequisites f
 - `system2/SYSTEM2_FUGLE_RESONANCE_QUOTE_SOURCE_CONTRACT_V0_1.md`
 - `system2/SYSTEM2_DAILY_RESONANCE_GLOBAL_INTEGRATION_V0_1.md`
 - `system2/SYSTEM2_BUILD_PROGRESS_MAP.md`
+- `system2/SYSTEM2_DAILY_SHADOW_CAPACITY_ORCHESTRATION_V0_1.md`
 
 ## Bounded Daily Resonance runtime
 
@@ -212,3 +213,18 @@ The canonical build map now includes a paired resonance comparison lane:
 - Implementation placement: P3 preregistration -> P4 paired frozen archive/outcomes -> P5 comparison dashboard/attribution -> P6 OOS/Forward promotion evidence.
 
 See `system2/SYSTEM2_BUILD_PROGRESS_MAP.md` for the canonical status and comparison contract.
+
+## S2-07 daily Shadow capacity orchestration — 2026-10-02
+
+Repository implementation now covers the deterministic middle of the daily pipeline:
+completed same-clock Limited Shadow strategy runs -> strategy-local RANK-01 receipts -> prior-pool revalidation -> owner-approved max-12/max-3 capacity -> immutable capacity/persistence batch.
+
+Key boundaries:
+- no universal numeric cross-strategy score;
+- new admission V0.1 is limited to VALID + BUY_ELIGIBLE + RANK-01-rankable decisions, matching existing QUALIFIED_NOT_SELECTED semantics;
+- INCOMPLETE prior memberships are retained without active-monitor authority because UNKNOWN cannot be inferred bearish;
+- cross-strategy scarcity with no approved global priority policy fails closed and emits no capacity receipt;
+- zero-pick is a legitimate capacity receipt, distinct from missing upstream execution;
+- no scheduling, D1 execution, push, real capital or System 1 change is included.
+
+Physical S2-07 remains incomplete until PIT-qualified real source/assessment adapters and isolated D1 persistence execution are wired and verified.
