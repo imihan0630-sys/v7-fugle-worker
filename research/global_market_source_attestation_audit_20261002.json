@@ -1,0 +1,63 @@
+{
+  "schemaVersion": "0.1",
+  "title": "Global market source attestation reconciliation",
+  "auditPerformedAt": "2026-10-02T05:37:02+08:00",
+  "status": "HASH_CHAIN_REVERIFIED__LEGACY_SOURCE_ATTESTATION_MISSING",
+  "originalArtifact": "research/global_market_source_only_pilot_20260930.json",
+  "protectedPrinciple": "Never rewrite or backdate the four legacy receipts. Attach this audit overlay and exclude them from strict clean prospective denominator until independent raw-source response evidence exists.",
+  "results": {
+    "legacyReceiptCount": 4,
+    "sameArtifactContentHashMatches": 4,
+    "orderedChainFinalDigestMatches": true,
+    "ledgerDigest": "d8bc741d0711d3b35dd7957b65354f3f2129fe246bd6ef43a538f753d9056b12",
+    "sourceEvidencePresent": 0,
+    "strictRawResponseAttestedCount": 0,
+    "strictCleanProspectiveDateCount": 0,
+    "conservativeEvidenceClass": "LEGACY_REPRODUCIBLE_MANIFEST_ONLY",
+    "explanation": "Deterministic receipt hashes and a digest chain prove internal consistency of the stored manifest, not original provider response bytes, signed publication time, archival immutability or first-known clock. GitHub file commit at 2026-09-30T05:24:29+08:00 bounds when the manifest was durably written but does not prove the earlier asserted 05:20:18 capture.",
+    "originalManifestCommit": "a6de1d9ce7907ff0eb45708f49b4974eef0c3a65",
+    "originalManifestCommitTimeUtc": "2026-09-29T21:24:29Z"
+  },
+  "currentOfficialCrossCheck": {
+    "source": "U.S. Department of the Treasury",
+    "url": "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?field_tdr_date_value=2026&type=daily_treasury_yield_curve",
+    "sourceDate": "2026-09-29",
+    "storedTwoYear": 4.89,
+    "officialTwoYearVerified": 4.89,
+    "storedTenYear": 5.26,
+    "officialTenYearVerified": 5.26,
+    "status": "NUMERIC_OFFICIAL_SOURCE_MATCH__NOT_NATIVE_20260930_RESPONSE_ATTESTATION"
+  },
+  "updatedPublicObservations": {
+    "sourceDate": "2026-10-01",
+    "verifiedDuringTurn": "2026-10-02T05:37:02+08:00",
+    "usTreasuryNominal2yPct": 4.78,
+    "usTreasuryNominal10yPct": 5.24,
+    "sourceUrl": "https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?field_tdr_date_value=2026&type=daily_treasury_yield_curve",
+    "status": "DESCRIPTIVE_PUBLIC_WEB_VERIFIED__NO_RAW_RESPONSE_BYTES__DO_NOT_COUNT_STRICT_PIT",
+    "purpose": "Cross-check source continuity and timestamp semantics without fabricating a provider-response receipt."
+  },
+  "tests": {
+    "newGuard": "research/source_receipt_attestation_v0_1.mjs",
+    "adversarialTests": "research/test_source_receipt_attestation_v0_1.mjs",
+    "nodeExecution": "PASS_13_INDEPENDENT_ASSERTIONS",
+    "liveIntegratedRuntime": "NOT_INTEGRATED",
+    "strictSourceAttestationScope": "A genuinely clean observation also requires independently obtained raw archived bytes and honest transport/entitlement metadata; code alone cannot certify that provider data or storage claims are authentic."
+  },
+  "falsification": [
+    "Receipt JSON declares capturedAt but original provider response body was not preserved.",
+    "Hash-only manifests do not prove immutable first-known source availability.",
+    "Current official numeric match does not establish an historical source-response byte match.",
+    "Cross-checking October 1 yields on October 2 is not evidence the October 1 Taiwan 18:10 decision knew them.",
+    "The 2026-09-30 pilot is one partial manifest date, not four independent dates.",
+    "Neither 2026-09-30 nor 2026-10-01 real VIX/18:10 TX receipts were located in the audited room checkpoint."
+  ],
+  "next": [
+    "Collect authorized raw bytes and response metadata for next real source-only prospective date.",
+    "Write immutable parent/source evidence at capture; read it back independently for strict attestation.",
+    "Join no price outcomes until independent-date source-coverage gate has passed.",
+    "Keep older legacy manifest as non-strict descriptive evidence; no backfill and no erasure."
+  ],
+  "formalCore": "LOCKED",
+  "formalOptimizationCandidate": false
+}
