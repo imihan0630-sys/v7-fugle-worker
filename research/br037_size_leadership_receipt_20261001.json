@@ -1,0 +1,16 @@
+{
+  "schemaVersion": "BR037_SIZE_LEADERSHIP_RECEIPT_V0_1",
+  "module": "D09-08",
+  "receiptDate": "2026-10-01",
+  "outcomeBlind": true,
+  "formalCoreChanged": false,
+  "sourceState": "OFFICIAL_TWSE_SESSION_CONFIRMED_REQUIRED_TOTAL_RETURN_TRIPLE_INCOMPLETE",
+  "knownAtPolicy": "knownAt must not precede capture without authenticated availability",
+  "horizons": ["D1","D5","D20","D60"],
+  "spreads": ["smallTR-largeTR","midTR-largeTR","smallTR-midTR"],
+  "requiredControls": ["sectorMix","liquidity","breadth","marketRegime","volatility","leaderConcentration","indexRebalance","limitHitContext"],
+  "missingEvidence": "UNKNOWN",
+  "maturityDecision": "KEEP_L3",
+  "formalOptimizationCandidate": false,
+  "exactNext": "Capture the first complete same-session official Taiwan50/MidCap100/SC300 total-return triple; accumulate independent dates before outcomes."
+}
