@@ -44,7 +44,9 @@ function a1Rows(dataset) {
       TradeVolume: row.volumeShares,
       TradeValue: row.tradeValue,
       Transaction: row.transactions,
-      Change: row.change,
+      // The shared historical normalizer currently does not carry the TWSE +/- field
+      // into its normalized change value. Do not promote an unsigned delta as truth.
+      Change: null,
     }));
   }
   if (dataset.market === "TPEX") {
