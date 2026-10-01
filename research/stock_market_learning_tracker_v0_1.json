@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-02T05:37:02+08:00",
+  "updatedAt": "2026-10-02T05:43:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -471,10 +471,10 @@
           "levelMeaning": "機制＋反證已定義"
         }
       ],
-      "status": "FALSIFICATION_IN_PROGRESS / PURE_RV_BUILDER_MERGED / LIVE_PERSISTENCE_PENDING",
-      "exactNextContinuationPoint": "D04-RV-PERSIST-03: pure PIT-safe builder is now merged, but this is not evidence capture. Next valid evidence step is research-only wiring to the existing regimeFactorObservations/persistence path under applicable governance, then FIRST REAL DATE must pass same-date A2 receipt -> MARKET_RV5_CC_SIMPLE/MARKET_RV20_CC_SIMPLE/MARKET_RV_RATIO_5_20 builder -> same regime snapshot -> immutable persistence -> readback -> deterministic replay -> run-fingerprint linkage before any outcome inspection. Builder/synthetic/history recomputation never counts as prospective evidence. After clean independent dates accumulate, test state occupancy and overlap-vs-nonoverlap robustness. ATR/CE outcome work still waits for immutable per-symbol parent persistence. Stock limit-constrained sessions remain separate observed-constrained-volatility strata.",
-      "lastResearchUpdate": "2026-09-30T05:44:00+08:00",
-      "researchNote": "Market-RV prospective persistence contract and contraction->expansion protocol are frozen. Class-A pure market RV builder merged via PR #273 after System2 Research CI #315 and V8 Regression #1135 PASS. Builder semantics are rolling close-to-close population return dispersion, not academic intraday realized variance. High-frequency local-volatility measurement protocol and Taiwan price-limit censoring guard are frozen. No real persisted PIT market-RV sample exists yet; D04 remains 42%."
+      "status": "FALSIFICATION_IN_PROGRESS / PIT_ACCEPTANCE_PR294_MERGED / LIVE_RV_CAPTURE_PENDING",
+      "exactNextContinuationPoint": "D04-RV-PERSIST-05: latest main contains isolated pure RV builder and audited PIT acceptance gate. The next Class-A/B-governed evidence task is independently validated prospective A2 TAIEX and exact recent21 official-session receipts, builder-only diagnostic output, then real immutable regimeFactorObservations write/readback/replay with same source receipt/snapshot and run fingerprint. Never count synthetic structural pass or retrospective current-page reconstruction. Market RV economic labels/overlap-vs-nonoverlap tests start only after clean independent actual dates; CE/ATR outcomes still require shared immutable per-symbol parent persistence. Formal Core locked.",
+      "lastResearchUpdate": "2026-10-02T05:43:00+08:00",
+      "researchNote": "PR #294 pure Class-A PIT receipt acceptance was merged after System2 #333/V8 Repair #674/V8 Regression #1189 PASS. Falsified prior builder late observation/capture and noncontiguous 21-date acceptance. New structural audit requires matching A2 clocks/window and independently sourced 21-session calendar; external factorObservations stay UNKNOWN even on synthetic STRUCTURAL_PASS until official authentication plus live immutable write/readback/replay/fingerprint. Also derived exact overlapping 5/20 POPSTD ratio bound [0,2] and counterexample of five +3% days yielding near-zero recent dispersion. No live PIT RV sample yet; 42% unchanged."
     },
     {
       "id": "D05",
@@ -567,10 +567,10 @@
           "levelMeaning": "台股PIT資料可行"
         }
       ],
-      "status": "EVIDENCE_PENDING / HF_MEASUREMENT_AND_EVENT_SEMANTICS_FROZEN",
-      "exactNextContinuationPoint": "D05-HORIZON-04: wait for complete prospective books+trades capture. Before any outcome inference prove provider/reconnect/missing-event semantics and run 1s/5s/15s state-fidelity + midquote volatility-signature QA. Primary cohort NORMAL_CONTINUOUS_TWO_SIDED_BOOK; OPEN/CLOSE auction, VI/trial, limit-constrained and odd-lot stay separate. Then nested B0 activity/midquote-local-vol -> B1 spread/top1 -> B2 pressure-response/persistence -> B3 one top5 block across E0 event -> E1 1m/5m -> E2 10m/15m -> E3 30m with time-shift/sign-shuffle/event-intensity/spread/volatility controls. Books message count is not proven exchange-event count and true OFI remains blocked until completeness is proven.",
-      "lastResearchUpdate": "2026-09-30T05:44:00+08:00",
-      "researchNote": "No new indicator invention. Provider-message/event semantics, dual-clock horizon ladder and B0->B3 falsification remain frozen. New guard: B0 local volatility uses causal two-sided midquote RV; transaction RV is a microstructure-noise diagnostic. 1s/5s/15s outcome-blind volatility-signature QA, quote-age/reconnect segmentation and session/mechanism alignment are required. D05 remains 46% because no complete prospective event ledger exists."
+      "status": "EVIDENCE_PENDING / COMMON_SUPPORT_AND_QUOTE_AGE_QA_FROZEN",
+      "exactNextContinuationPoint": "D05-HORIZON-05: prospective authenticated Books+Trades pilot remains owner-governed, no extra subscription/plan/Cron without entitlement and authorization. Before outcome work, prove provider clock/reconnect/serial/missingness contracts and 1s/5s/15s quote-age/volatility-signature QA on exact common 15s support, report excluded stress windows, and separate auction/VI/limit/oddlot cohorts. Only then B0 activity/midquote-vol -> B1 spread/top1 -> B2 pressure-response/persistence -> B3 one top5 block across E0/E1/E2/E3. Preserve three distinct estimands; no true OFI without book-event completeness.",
+      "lastResearchUpdate": "2026-10-02T05:43:00+08:00",
+      "researchNote": "Revalidated Fugle stock Books (no documented sequence), Trades serial, TWSE 09:00-13:25 continuous session, Sep30 pricing. Existing five-minute System2 resonance Quote monitor cannot substitute for 1s/5s/15s books+trades ledger. Frozen sampling identity RVfine-RVcoarse=-2ab, quote-age/reconnect/missingness controls and matched 15s common support plus separate full-coverage reporting. Actual owner quota and event completeness remain UNKNOWN; D05 46% unchanged."
     },
     {
       "id": "D06",
