@@ -59,5 +59,15 @@
     "Keep older legacy manifest as non-strict descriptive evidence; no backfill and no erasure."
   ],
   "formalCore": "LOCKED",
-  "formalOptimizationCandidate": false
+  "formalOptimizationCandidate": false,
+  "additionalLegacyMacroScheduleArtifact": {
+    "path": "research/d13_11_macro_schedule_vintage_receipt_20261001_1711.json",
+    "declaredCapture": "2026-10-01T17:11:53+08:00",
+    "receiptCount": 5,
+    "note": "The 2026-10-01 ISM, BLS, BEA and FOMC schedule vintage was preserved before its 18:10 decision in the room research manifest. It carries no raw provider HTTP/connector source-response bytes/hash/length or immutable raw archive proof, so it is valid as a dated source-only research note but not as a source-attested clean-prospective parent.",
+    "exactObservedAtAttestation": "UNKNOWN",
+    "strictCleanProspectiveEligible": false,
+    "cause": "LEGACY_SOURCE_RESPONSE_ATTESTATION_ABSENT",
+    "noRewrite": true
+  }
 }
