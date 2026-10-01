@@ -1,0 +1,99 @@
+{
+  "schemaVersion": "D05_SAMPLING_MEASUREMENT_QA_V0_1",
+  "updatedAt": "2026-10-02T05:43:00+08:00",
+  "domain": "D05",
+  "status": "OUTCOME_BLIND_MEASUREMENT_SPEC_FROZEN",
+  "formalCoreImpact": "NONE",
+  "liveCollectorAuthorized": false,
+  "sourceReality": {
+    "booksChannel": "FUGLE_STOCK_WS_BEST_FIVE_NO_DOCUMENTED_BOOK_SEQUENCE",
+    "tradesChannel": "FUGLE_STOCK_WS_TRADES_HAS_SERIAL_SEMANTICS_REQUIRE_VALIDATION",
+    "existingResonance": "BOUNDED_5M_HTTP_QUOTE_NOT_EVENT_LEDGER",
+    "ownerPlanAndAvailableSubscriptions": "UNKNOWN"
+  },
+  "measurement": {
+    "frozenGridSeconds": [
+      1,
+      5,
+      15
+    ],
+    "commonSupportUnitSeconds": 15,
+    "primaryCohort": "NORMAL_CONTINUOUS_TWO_SIDED_BOOK",
+    "primaryPriceBasis": "CAUSAL_MIDQUOTE",
+    "tradePriceRvRole": "NOISE_DIAGNOSTIC_ONLY",
+    "comparison": "EXACT_IDENTICAL_15_SECOND_WINDOWS_ALL_THREE_CADENCES_QUALITY_ELIGIBLE",
+    "secondaryComparison": "FULL_WINDOW_COVERAGE_AND_NONRANDOM_MISSINGNESS_DIAGNOSTICS",
+    "quoteAgeThreshold": "NOT_SET_UNTIL_OUTCOME_BLIND_PILOT",
+    "allowCarryForwardAcrossReconnect": false,
+    "allowMissingMidquoteSubstituteLastTrade": false,
+    "allowZeroReturnFromMissingEvents": false
+  },
+  "requiredRawProvenance": [
+    "symbol",
+    "channel",
+    "providerTime",
+    "receivedAt",
+    "reconnectSegmentId",
+    "connectionId",
+    "isContinuous",
+    "isTrial",
+    "isLimit",
+    "isOddLot",
+    "bestBidPrice",
+    "bestBidSize",
+    "bestAskPrice",
+    "bestAskSize",
+    "tradeSerialIfTrade"
+  ],
+  "requiredBucketQA": [
+    "lastBookProviderTime",
+    "lastTradeProviderTime",
+    "bookAgeMs",
+    "tradeAgeMs",
+    "bookProviderMessageCount",
+    "tradeProviderMessageCount",
+    "bestQuoteChangeCount",
+    "midPriceChangeCount",
+    "connectedCoverageMs",
+    "expectedCoverageMs",
+    "gapBoundaryFlag",
+    "sessionMechanismState",
+    "currentBucketObservedOrHeld"
+  ],
+  "algebraicFalsification": {
+    "fineRV": "a*a+b*b",
+    "coarseRV": "(a+b)*(a+b)",
+    "difference": "-2*a*b",
+    "negativeLagProduct": "fineRV > coarseRV possible",
+    "positiveLagProduct": "coarseRV > fineRV possible",
+    "interpretation": "FINE_GT_COARSE_ALONE_DOES_NOT_PROVE_MICROSTRUCTURE_NOISE"
+  },
+  "independentNegativeControls": [
+    "MATCHED_15S_COMMON_SUPPORT",
+    "QUOTE_AGE_DISTRIBUTION",
+    "RECONNECT_EXCLUSION",
+    "LOW_COVERAGE_EXCLUSION",
+    "SPREAD_ONLY",
+    "TRADE_VS_MIDQUOTE_RV",
+    "LAGGED_RETURN_AUTOCOVARIANCE",
+    "TICK_PRICE_TIER",
+    "EVENT_INTENSITY_MATCHING",
+    "AUCTION_VI_LIMIT_ODD_LOT_SEPARATE"
+  ],
+  "horizonLadder": [
+    "E0_PROVIDER_EVENT_SCALE",
+    "E1_1M_5M",
+    "E2_10M_15M",
+    "E3_30M"
+  ],
+  "forbid": [
+    "TRUE_OFI_FROM_UNSEQUENCED_BOOK_SNAPSHOTS",
+    "ASSUME_FIVE_MINUTE_HTTP_QUOTE_CONTAINS_1S_EVENT_PATH",
+    "OUTCOME_OPTIMIZED_CADENCE",
+    "SELECT_ONLY_SURVIVING_CALM_WINDOWS",
+    "AUTOMATIC_PAID_PLAN_UPGRADE",
+    "AUTOMATIC_WEBSOCKET_SUBSCRIPTION",
+    "SILENT_NEW_CRON_OR_STORAGE"
+  ],
+  "statusForMaturity": "D05_46_PERCENT_NO_NEW_PROSPECTIVE_LEDGER"
+}
