@@ -392,3 +392,40 @@ New machine guard:
 5. D05-HORIZON-04 waits for complete prospective books+trades. Before any B0->B3 outcome inference, run provider completeness, reconnect/quote-age QA and 1s/5s/15s midquote volatility-signature diagnostics.
 6. Primary D05 inference remains NORMAL_CONTINUOUS_TWO_SIDED_BOOK; limit/VI/auction/odd-lot are separate cohorts.
 7. No ATR gate/stop/RR, volatility throttle, spread/depth/OFI, BUY/maxChase, sizing, monitoring or push change.
+
+
+## 2026-10-02 05:43 — D04 PIT acceptance and D05 sampling falsification
+
+Status: CLASS_A_RESEARCH_MERGED / REAL_PROSPECTIVE_EVIDENCE_PENDING
+Formal Core: LOCKED.
+
+### D04 — next evidence gate actually hardened
+- Re-read current main and verified D04 pure builder PR #273 remains the only caller of `buildMarketRvBundleV0_1` outside tests; no live `regimeFactorObservations` population/readback has been proved.
+- Audited and falsified two unsafe assumptions in the existing V0.1 standalone calculator:
+  - a backdated availableAt could make an observation with observedAt/capturedAt AFTER the decision clock appear KNOWN;
+  - 21 distinct date rows do not prove the latest 21 OFFICIAL trading sessions.
+- PR #294 merged as `ddcba75a4937c5203ea4de9f869bba6c2cbe8c4a` with three green gates: System2 Research CI #333, V8 Repair CI #674, V8 Regression #1189.
+- New research-only `research/market_rv_pit_acceptance_v0_1.mjs` and CI-linked synthetic tests require consistent A2 source clocks/window hash, independent official session list, calendar first-known timing, and full available/observed/captured <= decision cutoff.
+- Crucial safety correction: STRUCTURAL_PASS produces diagnostic calculator values ONLY; its externally exposed factorObservations remain UNKNOWN, even with self-consistent claimed receipts, until independent source authenticity AND actual prospective immutable write/readback/replay/run fingerprint verification. Synthetic receipts never count as genuine evidence.
+- Explicit mathematical falsification for frozen 5/20 rolling POPULATION dispersion:
+  `Var20=.75 Var(prior15)+.25 Var(recent5)+.1875(Mean5-Mean15)^2`.
+  For Var20>0, `0 <= SD5/SD20 <= 2`. Five identical +3% daily returns after 15 zero-return days produce near-zero recent SD despite a strong positive trend. Low ratio is NOT by itself proof of calm price levels or pre-breakout contraction.
+- Machine/long-form receipt: `research/D04_RV_PIT_RECEIPT_AND_OVERLAP_FALSIFICATION_20261002.md`.
+- D04-02 stays L2; D04 maturity 42%. Actual A2 authenticity/current-date receipt and persisted same-run RV trio still pending.
+
+### D05 — verified current source semantics and sampling falsification
+- TWSE continuous primary session 09:00-13:25; call auctions and VI separated.
+- Rechecked 2026-08-12 Fugle STOCK Books docs: top5 bids/asks, provider timestamp, continuous/trial fields, NO documented book-event sequence. Trades docs expose serial but its completeness semantics still require validation.
+- Fugle 2026-09-30 pricing: Basic 5 stock-WS subscriptions/1 connection; Developer 300/2; Advanced 2000/2. Actual owner plan and free quota unknown. Books+Trades = 2 subscriptions per symbol, assuming no existing allocation.
+- Repo's ACTIVE bounded daily resonance uses five-minute current Quote and a previously frozen pool. It is NOT a prospective 1s/5s/15s Books+Trades ledger; do not reuse the HTTP quote cache as true OFI, event time or high-frequency RV.
+- Added analytic falsification: `RV_fine - RV_coarse = -2ab` for adjacent returns a,b. Finer-sampled realized variance can exceed OR fall below coarse-sampled variance depending on autocorrelation; signature slope alone does not prove noise. Require trade-vs-midquote, spread, tick, quote-age, reconnect/coverage and same-window controls.
+- First 1s/5s/15s study must compare exact common 15-second windows AND report full-window/volatile-period exclusions, avoiding survivorship-by-coverage.
+- No additional live WebSocket subscriptions, storage, service plan, Cron, push or runtime changes made. Actual prospective event-ledger coverage remains unproved.
+- New files: `research/D05_QUOTE_AGE_AND_SAMPLING_FALSIFICATION_20261002.md` and `research/d05_sampling_measurement_qa_v0_1.json`.
+- D05-05 remains L2; D05 maturity 46%.
+
+### Exact continuation
+1. D04-RV-PERSIST-05: connect audited A2 source/calendar receipts to the existing research-only RV factor path ONLY under applicable governance; first valid date requires raw official authenticity, prospective clock, actual snapshot immutable write/readback/replay and same-run fingerprint. Do not infer provenance from retrospective endpoint responses.
+2. D04-CE/ATR outcome analysis still blocked until shared immutable per-symbol decision-state parent is physically present.
+3. D05-HORIZON-05: first ensure actual entitlement/quota and complete prospective Books+Trades capture design; run 1s/5s/15s common-support quote-age/vol-signature QA before B0->B3 outcome tests. TRUE_OFI remains prohibited without book-event completeness proof.
+4. No L3/L4 maturity promotion and no FORMAL_OPTIMIZATION_CANDIDATE.
