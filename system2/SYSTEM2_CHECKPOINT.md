@@ -860,3 +860,21 @@ Registered lane:
 - Challenger starts Shadow-only and cannot replace, veto or tighten the owner Baseline without PIT/OOS/Forward, Regime, repaint/whipsaw, cost, redundancy/incremental-value, overfit controls and explicit owner approval.
 
 Engineering order remains: first close the upstream Daily Shadow Orchestrator / `s2_capacity_runs` gap; then attach the paired Challenger capture to the exact same truthful bounded pool. No System 1/V8 Formal change, live push, order routing or capital authority is authorized by this roadmap registration.
+
+## 2026-10-02 S2-07 daily Shadow capacity orchestration V0.1
+
+Implemented on the current System 2 build branch:
+- daily strategy orchestrator now exposes immutable ranking handoff inputs after strategy assessment;
+- new `daily_shadow_capacity_orchestrator_v0_1.mjs` validates same-date/same-clock completed Limited Shadow runs;
+- creates strategy-local RANK-01 GLOBAL_ADMISSION and ACTIVE_INTRADAY_MONITOR receipts without numeric strategy weights;
+- revalidates prior pool memberships daily;
+- retains INCOMPLETE prior memberships without active monitoring rather than treating UNKNOWN as bearish;
+- removes INVALIDATED memberships and honors explicit universe exclusions;
+- treats a missing prior-membership revalidation as a fail-closed blocker;
+- admits only current VALID + BUY_ELIGIBLE + RANK-01-rankable new memberships in V0.1;
+- enforces owner-approved global max 12 / per-strategy active max 3 / no forced fill / overlap dedupe;
+- unresolved scarcity without a global cross-strategy priority policy produces no `s2_capacity_runs` receipt;
+- safe zero-pick runs do create an immutable capacity receipt;
+- returns an isolated persistence batch for `s2_strategy_ordering_receipts` and, when resolvable, `s2_capacity_runs`.
+
+Still not activated: source fetch, daily schedule, D1 execution, final selection, push, capital or order routing. Exact next dependency is real PIT-safe source + assessor wiring into this repository-complete middle layer, followed by isolated D1 execution and physical readback.
