@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "ANALYST_MULTI_OUTPUT_PROVIDER_INVARIANCE_V0_1",
+  "status": "PREREGISTERED_RESEARCH_ONLY_OUTCOMES_CLOSED",
+  "frozenAt": "2026-10-01 Asia/Taipei",
+  "purpose": "Prevent a single analyst output or provider-specific consensus definition from being treated as a definition-free analyst view or valuation primitive.",
+  "prerequisites": [
+    "authorized Taiwan PIT analyst source",
+    "immutable vintages and first-observed timestamps",
+    "stable forecaster identity",
+    "output-family identity",
+    "provider eligibility/version provenance"
+  ],
+  "outputFamilies": [
+    "EPS_FORECAST",
+    "REVENUE_FORECAST",
+    "TARGET_PRICE",
+    "RECOMMENDATION"
+  ],
+  "semantics": [
+    "EPS revision is earnings-expectation change, not a complete bullish/bearish analyst-view proxy.",
+    "Cross-output disagreement is preserved as MULTI_OUTPUT_DIVERGENCE rather than averaged into one directional score.",
+    "UNCHANGED_EPS does not imply NO_NEW_INFORMATION when another output changed.",
+    "Target price is an independently evaluated forecast output with bias, accuracy and freshness diagnostics."
+  ],
+  "providerInvariance": [
+    "Vendor-produced Forward PE is a derived value, not a canonical primitive.",
+    "Reconstruct valuation from PIT price, PIT forecast population, fiscal horizon, forecast basis and provider-eligibility provenance.",
+    "If an apparent effect disappears under a second valid provider definition or fixed-membership reconstruction, mark PROVIDER_DEFINITION_FRAGILE.",
+    "Do not select a provider, stale cutoff, aggregation rule or output combination by realized return."
+  ],
+  "diagnostics": [
+    "within-forecaster cross-output direction matrix at matched publication event",
+    "output-specific freshness and accuracy",
+    "incremental information of target-price/recommendation/revenue revisions after EPS revision and existing System factors",
+    "provider-population/eligibility decomposition before any return join"
+  ],
+  "falsification": [
+    "If added outputs have no stable incremental value after controls, mark REDUNDANT.",
+    "If direction flips across horizons, providers or reasonable eligibility definitions, do not collapse to one score.",
+    "If timestamps, identity, lineage or provider policy provenance are insufficient, fail closed to UNKNOWN.",
+    "Do not treat multi-output consistency as automatically higher quality; published evidence is mixed after confound controls."
+  ],
+  "taiwanContext": [
+    "Taiwan target-price studies report material optimism/overshooting and time-decaying accuracy, while also finding information content versus simple historical alternatives; therefore target price is neither discarded nor trusted directionally without prospective validation."
+  ],
+  "maturityEffect": "NONE_UNTIL_AUTHORIZED_TAIWAN_PIT_SOURCE_AND_PROSPECTIVE_OR_OOS_EVIDENCE",
+  "formalCoreChanged": false,
+  "formalOptimizationCandidate": false
+}
