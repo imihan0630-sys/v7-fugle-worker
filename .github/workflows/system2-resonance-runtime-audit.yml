@@ -1,0 +1,103 @@
+name: System2 Resonance Runtime Read-only Audit
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/system2-resonance-runtime-audit.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-resonance-runtime-readonly-audit
+  cancel-in-progress: true
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment: system2-research
+    env:
+      DB_NAME: system2-research
+      WORKER_ORIGIN: https://system2-shadow-research.imihan0630.workers.dev
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Read isolated D1 runtime state
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+        run: |
+          set -euo pipefail
+          node <<'NODE'
+          const account=process.env.CLOUDFLARE_ACCOUNT_ID;
+          const token=process.env.SYSTEM2_CLOUDFLARE_API_TOKEN;
+          const origin="https://api.cloudflare.com/client/v4";
+          const headers={authorization:`Bearer ${token}`,"content-type":"application/json"};
+
+          async function cf(path,options={}){
+            const response=await fetch(origin+path,{...options,headers:{...headers,...options.headers},signal:AbortSignal.timeout(45000)});
+            const text=await response.text(); let data=null; try{data=JSON.parse(text)}catch{}
+            if(!response.ok||data?.success===false){
+              throw new Error(`Cloudflare audit failed HTTP ${response.status}: ${data?.errors?.[0]?.message||text.slice(0,200)}`);
+            }
+            return data.result;
+          }
+
+          const databases=await cf(`/accounts/${account}/d1/database?per_page=100`);
+          const matches=(databases||[]).filter(row=>row?.name===process.env.DB_NAME);
+          if(matches.length!==1) throw new Error(`expected one ${process.env.DB_NAME}; found ${matches.length}`);
+          const databaseId=matches[0].uuid||matches[0].id;
+
+          async function query(sql){
+            const result=await cf(`/accounts/${account}/d1/database/${databaseId}/query`,{
+              method:"POST",body:JSON.stringify({sql})
+            });
+            const envelope=Array.isArray(result)?result[0]:result;
+            return Array.isArray(envelope?.results)?envelope.results:[];
+          }
+
+          const [capacityCounts,capacityRows,poolCounts,poolRows,runCounts,runRows,latestCounts]=await Promise.all([
+            query("SELECT COUNT(*) AS row_count, MAX(market_date) AS latest_market_date, MAX(captured_at) AS latest_captured_at FROM s2_capacity_runs"),
+            query("SELECT capacity_run_id, market_date, decision_timestamp, active_assignments_json, global_count, vacancy_count, captured_at FROM s2_capacity_runs ORDER BY market_date DESC, decision_timestamp DESC LIMIT 3"),
+            query("SELECT COUNT(*) AS row_count, MAX(source_market_date) AS latest_source_market_date, MAX(activated_at) AS latest_activated_at FROM s2_resonance_watch_pools"),
+            query("SELECT pool_id, source_capacity_run_id, source_market_date, activated_at, state, symbol_count FROM s2_resonance_watch_pools ORDER BY activated_at DESC LIMIT 3"),
+            query("SELECT COUNT(*) AS row_count, MAX(market_date) AS latest_market_date, MAX(as_of) AS latest_as_of FROM s2_resonance_runs"),
+            query("SELECT run_id, market_date, as_of, run_state, symbol_count, succeeded_count, blocked_count, failure_count FROM s2_resonance_runs ORDER BY as_of DESC LIMIT 3"),
+            query("SELECT COUNT(*) AS row_count, MAX(market_date) AS latest_market_date, MAX(updated_at) AS latest_updated_at FROM s2_resonance_latest"),
+          ]);
+
+          const capacity=capacityRows.map(row=>{
+            let assignments={}; try{assignments=JSON.parse(row.active_assignments_json||"{}")}catch{}
+            const byStrategy=Object.fromEntries(Object.entries(assignments).map(([key,rows])=>[key,Array.isArray(rows)?rows.length:0]));
+            const symbols=[...new Set(Object.values(assignments).flatMap(rows=>Array.isArray(rows)?rows.map(x=>String(x?.symbol||"")):[]).filter(Boolean))];
+            return {...row,active_assignments_json:undefined,active_count_by_strategy:byStrategy,active_unique_symbol_count:symbols.length};
+          });
+          console.log(JSON.stringify({
+            result:"PASS",database:process.env.DB_NAME,capacityCounts:capacityCounts[0]||null,
+            latestCapacityRuns:capacity,poolCounts:poolCounts[0]||null,latestWatchPools:poolRows,
+            resonanceRunCounts:runCounts[0]||null,latestResonanceRuns:runRows,
+            resonanceLatestCounts:latestCounts[0]||null,mutationPerformed:false
+          },null,2));
+          NODE
+
+      - name: Read public health and resonance APIs
+        run: |
+          set -euo pipefail
+          node <<'NODE'
+          const paths=["/health","/api/system2/resonance/pool?marketDate=2026-09-30","/api/system2/resonance"];
+          for(const path of paths){
+            const response=await fetch(process.env.WORKER_ORIGIN+path,{signal:AbortSignal.timeout(20000)});
+            const data=await response.json();
+            if(!response.ok) throw new Error(`${path} HTTP ${response.status}`);
+            console.log(JSON.stringify({path,data}));
+          }
+          NODE
+
+      - name: Prove workflow is read-only
+        run: |
+          set -euo pipefail
+          ! grep -Eiq 'wrangler[[:space:]]+(deploy|delete)|d1[[:space:]]+(create|execute)|method:[[:space:]]*"(PUT|PATCH|DELETE)"|INSERT INTO|UPDATE[[:space:]]+s2_|DELETE FROM' \
+            .github/workflows/system2-resonance-runtime-audit.yml
+          echo "System2 resonance runtime audit mutation guard PASS"
