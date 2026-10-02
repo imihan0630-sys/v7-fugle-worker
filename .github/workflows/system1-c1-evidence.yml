@@ -37,6 +37,8 @@ jobs:
           C1_EVIDENCE_OUTPUT: artifacts/system1-c1-evidence.json
           C2_EVIDENCE_OUTPUT: artifacts/system1-c2-paired.json
           C1_READINESS_OUTPUT: artifacts/system1-c1-readiness.json
+          C3_REGISTRATION_OUTPUT: artifacts/system1-c3-registration.json
+          C3_REGISTER: ${{ github.event_name == 'schedule' && 'true' || 'false' }}
         run: node tests/collect_system1_c1_c2_evidence.mjs
       - name: Preserve approved research evidence or explicit readiness blocker
         if: always()
@@ -47,5 +49,6 @@ jobs:
             artifacts/system1-c1-evidence.json
             artifacts/system1-c2-paired.json
             artifacts/system1-c1-readiness.json
+            artifacts/system1-c3-registration.json
           if-no-files-found: error
           retention-days: 90
