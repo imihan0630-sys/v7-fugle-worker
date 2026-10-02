@@ -1,0 +1,17 @@
+{
+  "schemaVersion": "STAGED_RECOVERY_JOURNAL_COVERAGE_GAP_V0_1",
+  "observedAt": "2026-10-02T12:35:00+08:00",
+  "finding": "The V8.9 staged historical recovery route persists Formal monitor config, strategy-pool archives and LAST_SCAN, but does not call recordTradeJournalDay. Therefore D1 trade-journal-only plan samples systematically omit staged-recovery generations.",
+  "consequence": [
+    "D15 independent-date counting must distinguish ordinary D1-journal-certified dates from recovery KV generations.",
+    "D14 signal-to-plan attribution can remain blocked when a later signal references a plan generation not represented in D1 journal.",
+    "Absence from D1 journal is not proof that no monitoring plan existed."
+  ],
+  "governance": [
+    "Do not silently backfill old D1 plan rows from mutable current code.",
+    "Recovery KV plans may be used only as explicitly labeled lower-tier structural corroboration when their observed payload is frozen.",
+    "Maturity promotion requires ordinary prospective/immutable generation evidence or an owner-approved unified immutable parent receipt."
+  ],
+  "formalCoreImpact": false,
+  "status": "OBSERVABILITY_GAP_CONFIRMED / FORMAL_BEHAVIOR_UNCHANGED"
+}
