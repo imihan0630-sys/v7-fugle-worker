@@ -85,6 +85,7 @@ jobs:
           python3 scripts/apply_v8_14_4.py
           python3 scripts/apply_v8_15_0.py
           python3 scripts/apply_v8_15_1.py
+          python3 scripts/apply_v8_15_2.py
           # V8.9.3 Hybrid WATCH regression contract
       - name: Syntax and offline behavior regression
         env:
@@ -93,9 +94,12 @@ jobs:
           set -euo pipefail
           cp Worker.js /tmp/v7-worker.mjs
           node --check /tmp/v7-worker.mjs
-          grep -F 'const VERSION = "8.15.1-c1-capture-integrity";' Worker.js
+          grep -F 'const VERSION = "8.15.2-c3-research-capture";' Worker.js
           grep -F 'CREATE TABLE IF NOT EXISTS trade_research_c1_generations' Worker.js
           grep -F 'url.pathname === "/api/research/c1-population"' Worker.js
+          grep -F 'CREATE TABLE IF NOT EXISTS trade_research_c3_cohorts' Worker.js
+          grep -F 'CREATE TABLE IF NOT EXISTS trade_research_c3_bars' Worker.js
+          grep -F 'url.pathname === "/api/research/c3-capture-cohort"' Worker.js
           grep -F 'const HISTORY_SEED_SCHEMA = "full-market-v4-history-source-revalidation";' Worker.js
           grep -F 'const PV_SHADOW_SCHEMA_VERSION = "PV_SHADOW_V0_1";' Worker.js
           grep -F 'CREATE TABLE IF NOT EXISTS v7_pv_shadow_snapshots' Worker.js
@@ -196,7 +200,11 @@ jobs:
           node tests/test_v8_15_0_c1_population_receipts.mjs
           node tests/test_system1_cross_midnight_recovery_v0_1.mjs
           node tests/test_v8_15_1_c1_capture_integrity.mjs
+          node tests/test_v8_15_2_c3_research_capture.mjs
+          node tests/test_system1_c3_registration_v0_1.mjs
           node tests/test_system1_c1_c2_collection_v0_1.mjs
+          node tests/test_system1_c3_c4_c5_shadow_v0_1.mjs
+          node tests/test_system1_c3_capture_contract_v0_1.mjs
           node --check tests/collect_system1_c1_evidence.mjs
           node tests/test_v8_9_0_three_pool_hybrid_shadow.mjs
           node tests/test_v8_9_1_three_pool_dashboard.mjs

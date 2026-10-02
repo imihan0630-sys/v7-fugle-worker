@@ -2,7 +2,10 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {DatabaseSync} from 'node:sqlite';
 const source=fs.readFileSync(process.env.V7_TEST_WORKER_PATH||'Worker.js','utf8');
-assert.match(source,/8\.15\.1-c1-capture-integrity/);
+{
+  const version=source.match(/const VERSION = "(\d+)\.(\d+)\.(\d+)[^"]*";/)?.slice(1,4).map(Number);
+  assert.ok(version && (version[0]>8 || (version[0]===8 && (version[1]>15 || (version[1]===15 && version[2]>=1)))),"V8.15.1+ runtime required");
+}
 const api=await import('data:text/javascript;base64,'+Buffer.from(source+`
 export {buildC1PopulationReceipt,c1ChunkRows,persistC1PopulationReceipt,readC1PopulationReceipt,persistCompletedC1Safe};`).toString('base64'));
 class Statement {
