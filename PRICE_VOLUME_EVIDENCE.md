@@ -4844,3 +4844,16 @@ Only the last stage can directly study dynamic absorption mechanics; even then c
 
 Status:
 `D02_05_08_09_IDENTIFIABILITY_FROZEN / NO_MATURITY_UPLIFT / OUTCOMES_UNUSED / FORMAL_UNCHANGED`.
+
+
+# 2026-10-02 pre-PVE-228 addendum — H003 representation incrementality control
+
+Source audit proves pvResponseState and pvAcceptanceState are deterministic transforms of already-observed OHLCV, Formal geometry, localVolumeRatio, guard inputs and prior state/path. They may encode useful nonlinear/path representations, but they are not independent raw-source votes.
+
+Future H003 must separate SOURCE NOVELTY, REPRESENTATION NOVELTY and PREDICTIVE INCREMENTALITY. Model D vs E alone is insufficient if E bundles deterministic transforms. On identical common support, test decomposed primitives before adding Response state, then decomposed Acceptance transition inputs/prior state before adding Acceptance state/path. Guard is an eligibility/stratification control first.
+
+A state that loses value after its components/path controls are included is REPRESENTATION_REDUNDANT, not a new factor. A surviving state is at most REPRESENTATION_INCREMENTAL until source novelty is independently established.
+
+Durable research note: `research/d02_h003_representation_incrementality_control_20261002.md`.
+
+No outcomes inspected; no maturity uplift; PVE cursor remains 227; Formal unchanged.
