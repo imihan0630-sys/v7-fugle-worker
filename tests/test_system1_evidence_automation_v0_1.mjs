@@ -5,12 +5,22 @@ import {C3_CAPTURE_SLOTS} from "../research/system1_c3_capture_contract_v0_1.mjs
 
 let n=0;const eq=(a,b)=>{assert.deepEqual(a,b);n++};const ok=x=>{assert.ok(x);n++};
 const decisionAt="2026-10-02T23:35:00+08:00",sessionDate="2026-10-02",generationId="gen-live-1";
-const mkPair=(symbol,{formalOk=false,shortStatus="PASS",missingSafety=[],withoutSafety="PASS"}={})=>({
-  symbol,pool:"GENERAL",formal:{qualified:formalOk,selected:formalOk,firstFailure:formalOk?null:"AB_SETUP"},
+const mkPair=(symbol,{formalOk=false,shortStatus="PASS",missingSafety=[],withoutSafety="PASS",channel="A",lateStage=false,depthScore=70,geometry=null}={})=>({
+  symbol,pool:"GENERAL",
+  selectionContext:{
+    close:99,depthScore,spreadPercent:.2,orderBookDepthGood:true,lateStage,ret20:10,maDistance20Pct:5,channel,
+    entryGeometry:geometry||{entry:101,stop:95,target:118,support:channel==="A"?100:null,breakout:channel==="B"?100:null},
+    provenance:{authenticated:true,parentId:generationId,sessionDate,knownAt:decisionAt}
+  },
+  formal:{qualified:formalOk,selected:formalOk,firstFailure:formalOk?null:"AB_SETUP"},
   short:{gateStatus:shortStatus,missingSafety,withoutSafetyGateStatus:withoutSafety},
   swing:{gateStatus:"UNKNOWN",missingSafety:["FUNDAMENTAL_QUALITY"]}
 });
-const pairs=[mkPair("AAA"),mkPair("BBB"),mkPair("CCC",{shortStatus:"UNKNOWN",missingSafety:["ACCOUNT_RISK"]})];
+const pairs=[
+  mkPair("AAA",{channel:"A",geometry:{entry:101,stop:95,target:118,support:100,breakout:null}}),
+  mkPair("BBB",{channel:"B",geometry:{entry:101,stop:94,target:118,support:null,breakout:100}}),
+  mkPair("CCC",{shortStatus:"UNKNOWN",missingSafety:["ACCOUNT_RISK"],channel:"A"})
+];
 const c2={schemaVersion:"SYSTEM1_C2_PAIRED_LEDGER_V0_1",generationId,sessionDate,decisionAt,
   fingerprint:"f".repeat(64),completeMatchedCohort:true,researchOnly:true,formalCoreLocked:true,
   pairs,tally:{populationN:pairs.length,formalRejectedButConditionalShortGatesPassN:1}};
@@ -30,29 +40,23 @@ const captureRows=[
   ...C3_CAPTURE_SLOTS.map((slot,i)=>capture("AAA",slot,i)),
   ...C3_CAPTURE_SLOTS.map((slot,i)=>capture("BBB",slot,i))
 ];
-const geometryReceipts=[
-  {symbol:"AAA",baseSetup:"A",geometry:{authenticated:true,parentId:generationId,sessionDate,knownAt:decisionAt,support:100,breakout:null,stop:95,target:118}},
-  {symbol:"BBB",baseSetup:"B",geometry:{authenticated:true,parentId:generationId,sessionDate,knownAt:decisionAt,support:null,breakout:100,stop:94,target:118}}
-];
-const priorCloseReceipts=[
-  {symbol:"AAA",verified:true,parentId:generationId,sessionDate,knownAt:decisionAt,close:99},
-  {symbol:"BBB",verified:true,parentId:generationId,sessionDate,knownAt:decisionAt,close:99}
-];
+const geometryReceipts=[];
+const priorCloseReceipts=[];
 const formalBaselineReceipts=[
   {symbol:"AAA",verified:true,parentId:generationId,sessionDate,knownAt:"2026-10-05T13:31:00+08:00",status:"NO_TRIGGER"},
   {symbol:"BBB",verified:true,parentId:generationId,sessionDate,knownAt:"2026-10-05T13:31:00+08:00",status:"NO_TRIGGER"}
 ];
 const statesAAA=C3_CAPTURE_SLOTS.map(slot=>{
   const barStart=isoForSlot(slot);
-  return {symbol:"AAA",barStart,verified:true,depthScore:70,limitUp:false,lateStage:slot==="13:00"};
+  return {symbol:"AAA",barStart,verified:true,limitUp:false,marketState:"CONTINUOUS"};
 });
 const statesBBB=C3_CAPTURE_SLOTS.slice(0,-1).map(slot=>{
   const barStart=isoForSlot(slot);
-  return {symbol:"BBB",barStart,verified:true,depthScore:70,limitUp:false,lateStage:false};
+  return {symbol:"BBB",barStart,verified:true,limitUp:false,marketState:"CONTINUOUS"};
 });
 
 const audit=auditC3LiveInputs(c2,{captureRows,geometryReceipts,formalBaselineReceipts,priorCloseReceipts,barStateReceipts:[...statesAAA,...statesBBB]});
-eq(audit.schemaVersion,"SYSTEM1_C3_LIVE_INPUT_AUDIT_V0_1");
+eq(audit.schemaVersion,"SYSTEM1_C3_LIVE_INPUT_AUDIT_V0_2");
 eq(audit.eligibleN,2);
 eq(audit.readyN,1);
 eq(audit.blockedN,1);
@@ -61,11 +65,11 @@ eq(audit.rows.find(x=>x.symbol==="BBB").status,"INPUT_BLOCKED");
 ok(audit.rows.find(x=>x.symbol==="BBB").blockers.includes("BAR_MICROSTRUCTURE_UNVERIFIED"));
 eq(audit.rows.find(x=>x.symbol==="AAA").barCount,17);
 eq(audit.rows.find(x=>x.symbol==="AAA").missingSlots,[]);
-eq(audit.depthScoreNeverImputed,true);
+eq(audit.selectionDepthNeverImputed,true);\neq(audit.selectionLateStageNeverImputed,true);
 eq(audit.limitStateNeverImputed,true);
 eq(audit.readyReceipts.length,1);
 eq(audit.readyReceipts[0].bars.length,17);
-ok(audit.readyReceipts[0].bars.every(x=>typeof x.limitUp==="boolean"&&typeof x.lateStage==="boolean"));
+ok(audit.readyReceipts[0].bars.every(x=>typeof x.limitUp==="boolean"&&typeof x.lateStage==="boolean"));\neq(audit.rows.find(x=>x.symbol==="AAA").selectionDepthVerified,true);\neq(audit.rows.find(x=>x.symbol==="AAA").selectionLateStageVerified,true);
 ok(audit.readyReceipts[0].bars.every(x=>Number.isFinite(x.gapPct)));
 
 const c3=buildC3EntryExperiment(c2,audit.readyReceipts,{costs:{brokerFeeBpsPerSide:14.25,sellTaxBps:30,slippageBpsPerSide:5}});
@@ -135,4 +139,4 @@ eq(FORMAL_SWITCH_MATURITY_V0_1.matureD5Rows,60);
 eq(FORMAL_SWITCH_MATURITY_V0_1.independentScanDates,15);
 
 console.log(JSON.stringify({ok:true,assertions:n,c3LiveAudit:true,c4Daily:true,c5Daily:true,maturityGate:true,
-  missingDepthNeverImputed:true,missingLimitStateNeverImputed:true,autoFormalSwitch:false,formalCoreImpact:false,system2Touched:false}));
+  selectionDepthNeverImputed:true,selectionLateStageNeverImputed:true,missingLimitStateNeverImputed:true,autoFormalSwitch:false,formalCoreImpact:false,system2Touched:false}));
