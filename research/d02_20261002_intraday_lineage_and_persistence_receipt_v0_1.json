@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "D02_INTRADAY_LINEAGE_QA_V0_1",
+  "researchOnly": true,
+  "formalImpact": "NONE",
+  "observedAtTaipei": "2026-10-02T13:37:00+08:00",
+  "sourceMainSha": "823ade4543955be35e2e916dd330269e325013ba",
+  "workflowEvidence": [
+    {
+      "runId": 36951177113,
+      "createdAtUtc": "2026-10-02T01:29:30Z",
+      "headSha": "1c9f1d6eeb2e40f72d5fcee10955d7ac2eaea0e2",
+      "result": "FAIL",
+      "reason": "MONITORING_TARGETS_DIFFER_FROM_CONFIGURED_PLANS",
+      "expectedConfiguredSymbols": [
+        "2454"
+      ],
+      "actualMonitoringSymbols": [
+        "2404",
+        "2454",
+        "3189",
+        "6213",
+        "6672"
+      ]
+    },
+    {
+      "runId": 36968526449,
+      "createdAtUtc": "2026-10-02T05:20:54Z",
+      "headSha": "abf6c0ec706ac780486dc3ad7d7b8cb76387ef33",
+      "result": "FAIL",
+      "reason": "MONITORING_TARGETS_DIFFER_FROM_CONFIGURED_PLANS",
+      "expectedConfiguredSymbols": [
+        "2454"
+      ],
+      "actualMonitoringSymbols": [
+        "2404",
+        "2454",
+        "3189",
+        "6213",
+        "6672"
+      ]
+    }
+  ],
+  "interpretation": {
+    "configuredPlanChangedSincePriorEvidence": true,
+    "newerOrdinarySelectionReceiptProven": false,
+    "ordinaryPvBootstrapReceiptProven": false,
+    "scanDatePlanDateProven": false,
+    "monitorMembershipProvenanceForExtraSymbols": false,
+    "cleanProspectiveAdmission": "BLOCKED",
+    "allowedUse": "DATA_QA_ONLY",
+    "missingSemantics": "UNKNOWN_NOT_ZERO"
+  },
+  "structuralFinding": {
+    "persistenceInput": "pvSlotRvol20",
+    "persistenceThreshold": 1.3,
+    "cumulativePaceInput": "current cumulativeVolume / historical cumulativeVolumeMedian20",
+    "conclusion": "pvPersistenceState is a coarse thresholded path summary of slot RVOL, while pvCumvolPace20 preserves cumulative participation magnitude. Non-identity is proven; incremental economic value remains UNKNOWN.",
+    "preregistration": "H002 must compare cumulative pace against both same-slot RVOL and persistence state on identical >=10:15 common support."
+  }
+}
