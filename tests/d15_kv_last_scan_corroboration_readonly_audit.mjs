@@ -19,7 +19,13 @@ const [version,scan,health]=await Promise.all([
 
 const scanDate=String(scan?.scanDate||"");
 const stocks=Array.isArray(scan?.stocks)?scan.stocks:[];
-const totalCapital=Number(scan?.totalCapital);
+const recoveryStatus=String(scan?.status||"").includes("歷史恢復已完成選股寫入");
+const explicitScanCapital=Number(scan?.totalCapital ?? scan?.capitalPlan?.totalCapital ?? scan?.capitalPlan?.poolCapital);
+const sourceContractCapital=recoveryStatus ? 200000 : null;
+const totalCapital=Number.isFinite(explicitScanCapital) ? explicitScanCapital : sourceContractCapital;
+const capitalProvenance=Number.isFinite(explicitScanCapital)
+  ? "SCAN_PAYLOAD_EXPLICIT"
+  : (recoveryStatus ? "V8_9_STAGED_RECOVERY_STRATEGY_POOL_CAPITAL_SOURCE_CONTRACT" : "UNKNOWN");
 const frozen=stocks.map(x=>({
   symbol:String(x?.symbol||x?.code||""),
   name:String(x?.name||""),
@@ -67,6 +73,8 @@ console.log(JSON.stringify({
     generatedAt:scan?.generatedAt||null,
     selectedCount:Number(scan?.selectedCount??frozen.length),
     totalCapital,
+    capitalProvenance,
+    capitalPlan:scan?.capitalPlan||null,
     status:scan?.status||null,
     config:scan?.config||null,
     stocks:frozen
@@ -74,5 +82,5 @@ console.log(JSON.stringify({
   d1JournalHealth:health,
   geometryReady,
   metrics,
-  interpretation:"KV LAST_SCAN is mutable lower-tier provenance. Same-direction Portfolio Heat evidence is corroborative only; it cannot replace D1 generation certification or justify maturity promotion."
+  interpretation:"KV LAST_SCAN is lower-tier recovery provenance. For the explicit staged-recovery status only, total capital may fall back to the frozen V8.9 source contract STRATEGY_POOL_CAPITAL=NT$200,000 because the route persists Formal config with that exact constant. Same-direction Portfolio Heat evidence remains corroborative only and cannot replace ordinary decision-time/D1 generation certification or justify maturity promotion."
 },null,2));
