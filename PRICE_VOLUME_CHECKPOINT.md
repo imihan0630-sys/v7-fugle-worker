@@ -2026,3 +2026,85 @@ Current Price-Volume evidence cursor: PVE-001 through PVE-227.
 
 ## Exact continuation after PVE-227
 PVE-228: re-read latest main after the genuine 2026-10-02 ordinary after-market window. Inspect the normal 23:35 scan, 23:55 fallback and 2026-10-03 00:10 C1/C2 collector without reconstructing missing receipts. Require same-session scanDate->planDate, verified selection persistence, C1 save/readback generation, config/live generation linkage when available, ordinary PV bootstrap/daily readiness and pool/cohort integrity. If clean, open Gate 0->6 only; Gate 7 performance remains closed until all prerequisites pass. If blocked, preserve UNKNOWN/null and diagnose the first failed prerequisite.
+
+
+## Pre-PVE-228 identifiability addendum — D02-05 / D02-08 / D02-09 (2026-10-02 21:28 Asia/Taipei)
+
+Status: IDENTIFIABILITY_BOUNDARY_FROZEN / OUTCOME_BLIND / PVE_CURSOR_REMAINS_227 / FORMAL_UNCHANGED.
+
+This addendum does not consume PVE-228. PVE-228 remains reserved for the genuine 2026-10-02 ordinary after-market generation audit.
+
+### Latent-mechanism falsification
+A high-volume / low-price-progress OHLCV path does not uniquely identify:
+- accumulation;
+- distribution;
+- absorption;
+- exhaustion;
+- informed participation;
+- two-sided disagreement.
+
+Opposite underlying order-flow paths can produce the same OHLCV sequence.
+
+Therefore `HIGH_EFFORT_LOW_PROGRESS` remains a result-state descriptor, not a directional mechanism label.
+
+### Deterministic-indicator boundary
+OBV / A-D / CMF / MFI / Volume Oscillator and related OHLCV-derived indicators cannot recover aggressor-side or replenishment information absent from the underlying OHLCV input.
+
+They remain:
+- descriptive comparators;
+- possible predictive transforms subject to incremental-value testing;
+- NOT independent proof of hidden smart-money accumulation/distribution.
+
+### Current recorder gap
+Current `execution-shadow-v2` preserves coarse spread/depth/market-state context but does not preserve:
+- tradeVolumeAtBid;
+- tradeVolumeAtAsk;
+- transaction count;
+- actual lastTrade event;
+- dynamic book events;
+- replenishment;
+- event-level OFI.
+
+The prior execution-shadow-v3 design remains not implemented on current main.
+
+### Official-source feasibility
+Fugle's documented stock APIs expose richer prospective fields:
+- Quote cumulative AtBid/AtAsk and transaction totals;
+- per-trade bid/ask/price/size/time/serial;
+- price-level volumeAtBid/volumeAtAsk;
+- WebSocket books/trades.
+
+This establishes source feasibility, not recorder availability or outcome validity.
+
+### Future coarse-pressure contract
+If the existing Microstructure lane later implements a compatible research recorder:
+
+`classifiedVolumeCoverage = (deltaAtBid + deltaAtAsk) / deltaTradeVolume`
+
+`tradePressureProxy = (deltaAtAsk - deltaAtBid) / (deltaAtAsk + deltaAtBid)`
+
+Required guards:
+- interval deltas only;
+- same-session monotonic counters;
+- counter reset/nonpositive denominator => UNKNOWN;
+- unclassified volume retained explicitly;
+- opening auction separated.
+
+Fugle documents that opening first-trade volume is excluded from inside/outside-volume calculation, so classified-volume coverage is an explicit data-quality dimension rather than assumed 100%.
+
+### Module maturity decision
+- D02-05 remains L2 / 40%.
+- D02-08 remains L2 / 40%.
+- D02-09 remains L2 / 40%.
+
+No promotion because:
+- side-pressure/event data are not prospectively preserved by the current recorder;
+- replenishment/resiliency remain unavailable;
+- same-slot normalization, auction/VI guards, prospective coverage and incremental outcomes are unvalidated.
+
+Durable artifacts:
+- `research/d02_latent_volume_mechanism_identifiability_20261002_v0_1.md`
+- `research/d02_latent_volume_mechanism_identifiability_v0_1.json`
+
+Exact continuation remains:
+PVE-228 after the genuine 2026-10-02 23:35/23:55 ordinary after-market window, followed by the 2026-10-03 00:10 collector. Gate 7 remains CLOSED.
