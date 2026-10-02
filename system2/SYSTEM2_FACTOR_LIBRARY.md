@@ -90,7 +90,7 @@ MA structure/slope, support/resistance, distance from MA, ATR, KD, MACD, RSI, tr
 System 2 should consume a dedicated technical-structure module rather than scatter pattern logic across strategies.
 
 Planned scope:
-- candlestick / Sakata-style signals（K線／酒田型態） — RESEARCH_ONLY / MERGE_CANDIDATE; preserve taxonomy/falsification, but do not create a universal Sakata score or independent named-pattern vote;
+- candlestick / Sakata-style signals（K線／酒田型態） — taxonomy/falsification knowledge is now merged into D01 single-bar, multi-bar, lifecycle and gap/limit-price structure modules; preserve explanatory recognition, but do not create a universal Sakata score or independent named-pattern vote;
 - W-bottom, inverse head-and-shoulders, cup-and-handle, rounded bottom, flag, triangle, wedge（W底、反頭肩、杯柄、圓弧底、旗形、三角、楔形）;
 - volatility contraction / expansion（波動收斂／擴張）;
 - support/resistance, prior highs/lows, trapped-supply zones（支撐壓力、前高前低、套牢區）;
