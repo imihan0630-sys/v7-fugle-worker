@@ -520,3 +520,57 @@ A historical recovery that recomputes the same symbols as the prior plan does no
 The observed recovery planDate=scanDate violates the ordinary Formal nextTradingDate construction invariant. Until the recovery-specific cause is understood, that receipt cannot be used as authoritative cohort timing.
 
 No hypothesis is promoted or rejected. No FORMAL_OPTIMIZATION_CANDIDATE is created. Formal Core remains LOCKED.
+
+
+## H001~H004 readiness after PVE-203~216 — 2026-10-02
+
+### H001 — same-slot RVOL incremental value
+Status: EVIDENCE_GATED / CLEAN_DATE_COUNT_ZERO.
+
+Formal/PV source audit now proves the existing local previous-five ratio is the same primitive in both paths before rounding. This clarifies the comparator:
+H001 asks whether historical same-slot RVOL adds information beyond a local five-bar relative-volume measure, not whether two implementations of the same local ratio differ.
+
+For the frozen A/B/C/D comparison, full B/C/D common support cannot begin before 10:15 because B needs five prior completed 15m bars.
+
+### H002 — cumulative pace / persistent participation
+Status: STRUCTURAL_FALSIFICATION_ADVANCED / EVIDENCE_GATED.
+
+New preregistered facts:
+1. 09:00 cumulative pace equals same-slot RVOL exactly on common valid support. Incremental D-vs-C information at that slot is zero by construction.
+2. 09:00 is also OPEN_AUCTION_MIXED.
+3. Full A/B/C/D common support begins no earlier than 10:15.
+4. Later-slot cumulative pace is not algebraically determined by current slot RVOL.
+5. Missing an earlier slot invalidates later cumulative pace even if same-slot RVOL remains available.
+6. H002 must demonstrate incremental value beyond the existing persistence state, not only beyond current-slot RVOL.
+
+Primary H002 outcome testing is therefore frozen to:
+- slot >=10:15;
+- cumulativeValid=true;
+- >=20 cumulative-history sessions;
+- matched symbol/date/slot common support;
+- D compared with C and persistence-state controls;
+- no threshold tuning.
+
+### H003 — response / Acceptance / Guard
+Status: HIGHER_GATED / DATA_QA_ONLY UNTIL NEW CLEAN PLAN.
+
+No 9/30 or 10/1 clean selection generation has been established.
+Any 10/2 rows produced from the stale/recovered plan lineage remain suitable only for recorder/guard/Acceptance QA.
+
+### H004 — future path / risk outcomes
+Status: HIGHER_GATED / GATE_7_CLOSED.
+
+No return, MFE, MAE, false-break or opportunity-retention comparison is opened.
+Production pipeline failure must never be encoded as a zero-return or zero-pick outcome.
+
+### Pipeline provenance overlay
+- 9/30 recovery: failed at scan-preview with Cloudflare 1102 before persistence.
+- 10/1 first recovery: quality ready, single POST unconfirmed 503, no blind retry.
+- 10/1 second sync: timeout.
+- 10/2 00:00 mirror: success but scanDate still 9/29.
+- 10/2 00:01 health: job success but business check skipped.
+- 10/2 00:23 C1 collector: C1_GENERATION_NOT_FOUND.
+
+No hypothesis is promoted/rejected on economic outcomes.
+No FORMAL_OPTIMIZATION_CANDIDATE is created.
+Formal Core remains LOCKED.
