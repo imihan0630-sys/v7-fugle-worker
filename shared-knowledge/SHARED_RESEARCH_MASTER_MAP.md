@@ -352,3 +352,17 @@ Reusable cross-system rule:
 - Pattern nested-resistance inference remains under existing PATTERN-RG2; no R09.
 
 Status: EXECUTABLE_SPEC_WRITTEN / TEST_EXECUTION_PENDING / OUTCOME_CLOSED / FORMAL_CORE_LOCKED.
+
+### D01 shared handoff — DL-009 PATTERN-RG2 nested resistance (2026-10-02)
+
+Reusable rules:
+- keep local Pattern trigger boundary distinct from priorHigh20 comparator;
+- inherit BASE k=2/120 and MAJOR k=3/260 eligible-session scales; never retune them from outcomes;
+- simple 260-session high is a mandatory redundancy comparator for structural-zone claims;
+- availableAir is continuous context, never a hard veto by itself;
+- separate local-break-below-parent / entered-parent / parent-first-break / hold / reentry / failure states;
+- future parent zones cannot be backfilled into historical decisions;
+- round-price proximity is a confound control, not an added score;
+- one structural relation episode may have many daily snapshots but one independent relation identity.
+
+PATTERN-RG2 remains OUTCOME_CLOSED / ALPHA_UNKNOWN / FORMAL_CORE_LOCKED.
