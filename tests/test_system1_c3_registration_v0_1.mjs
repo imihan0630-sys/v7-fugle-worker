@@ -62,7 +62,8 @@ assert.match(collector,/C3_REGISTER/);n++;
 assert.match(collector,/buildC3Registration/);n++;
 assert.match(collector,/\/api\/research\/c3-capture-cohort/);n++;
 assert.match(collector,/maxShadowSymbols:6,providerBudgetCallsPerSession:102/);n++;
-assert.doesNotMatch(collector,/targetTradeDate:/);n++;
+assert.match(collector,/body:JSON\.stringify\(registration\.payload\)/);n++;
+eq(a.payload.targetTradeDate,undefined);
 
 const workflow=await import("node:fs/promises").then(fs=>fs.readFile(new URL("../.github/workflows/system1-c1-evidence.yml",import.meta.url),"utf8"));
 assert.match(workflow,/C3_REGISTER: \$\{\{ github\.event_name == 'schedule' && 'true' \|\| 'false' \}\}/);n++;
