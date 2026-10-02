@@ -707,9 +707,9 @@
           "levelMeaning": "機制＋反證已定義"
         }
       ],
-      "status": "IC030_STRUCTURAL_READBACK_COMPLETE / PF038_SOURCE_CONTRACT_ADVANCED / LS047A_COST_GATED / OUTCOME_MATURITY_WAITING",
-      "exactNextContinuationPoint": "IC-035/PF-039/LS-048: accumulate clean independent prospective scan dates and D5+ maturity; pre-register component-level institutional outcome tests before reading them; preserve TDCC chipAsOfDate prospectively; validate bounded domestic in-kind ETF units-delta+PCF receipts; keep TPEx leverage history cost/authorization gate closed unless a free documented endpoint or explicitly authorized artifact becomes available; begin no broker-branch/daytrade alpha test until complete-universe/PIT source contracts pass.",
-      "lastResearchUpdate": "2026-09-29",
+      "status": "IC042_TPEX_PAIRED_VINTAGE_FIREWALL_HARDENED / PF038_SOURCE_CONTRACT_ADVANCED / LS047A_COST_GATED / OUTCOME_MATURITY_WAITING",
+      "exactNextContinuationPoint": "IC-043/PF-039/INSTITUTIONAL-D5+: capture the next valid TPEx 20:30 EARLY and 22:30 LATE public SBL/margin vintages with identical parser/schema, complete keyset and shared canonical hashes; 2026-10-01 EARLY is missed/UNKNOWN and must not be backfilled; continue bounded domestic in-kind ETF units-delta+PCF prospective receipts and independent institutional D5+ maturity; keep leverage/crowding outcomes closed until receipt gates pass.",
+      "lastResearchUpdate": "2026-10-02",
       "researchNote": "IC-030 Production outcome-blind readback: 62/62 institutionalScore rows reconstruct, 0 streak-endpoint mismatches, 0/62 score saturation, actor divergence 36/62 (58.06%). Same-session direction accounts for mean 39.1% / median 43.2% of pre-clamp score versus persistence-beyond-day1 mean 19.3% / median 22.1%; structural only, no outcomes. PF-037/038 establishes ETF units-delta+PCF as cleaner prospective fund-size-flow contract than AUM delta. LS-047A verifies paid official TPEx S23/S47 machine products but no autonomous purchase. D06 curriculum corrected to 15 modules. D06-01/02/04/12 promoted to L3 on official cross-market/PIT/prospective replay feasibility; Formal Core unchanged."
     },
     {
