@@ -1,0 +1,109 @@
+{
+  "version": "0.1",
+  "id": "SC-033",
+  "capturedAt": "2026-10-02T15:48:00+08:00",
+  "module": "D10-06 Pricing Power定價能力",
+  "mode": "SOURCE_ONLY_MULTI_EVENT_CALIBRATION / STOCK_OUTCOMES_CLOSED",
+  "formalCoreChanged": false,
+  "issuer": {
+    "symbol": "2002",
+    "name": "中國鋼鐵",
+    "issuerIndependence": false,
+    "eventIndependence": true
+  },
+  "events": [
+    {
+      "eventKey": "CSC_2026_08_MONTHLY_PRICING",
+      "officialUrl": "https://www.csc.com.tw/csc/nc/newsMain1.asp?newsid=2775",
+      "sourcePublishedAt": "UNKNOWN_FROM_CURRENT_PAGE",
+      "capturedAt": "2026-10-02T15:48:00+08:00",
+      "effectivePeriod": "2026-08",
+      "costContext": "HIGH_STEELMAKING_COST / IRON_ORE_98_100 / MET_COAL_AROUND_240",
+      "demandContext": "ASIA_SEASONAL_WEAKNESS / END_DEMAND_WEAK / BUYER_WAIT_AND_SEE",
+      "postedPriceResponse": "BROAD_DOWN",
+      "productAdjustmentsNtdPerTon": {
+        "hotRolledGeneral": -800,
+        "hotRolledRollingFeed": -800,
+        "coldRolledGeneral": -800,
+        "electroGalvanized": -800,
+        "hotDipGalvanized": -800,
+        "electricalSteel": -800
+      },
+      "interpretation": "High cost did not force an upward posted-price response when demand/market conditions weakened.",
+      "outcomeEligibility": "NOT_HISTORICALLY_BACKDATABLE_FROM_THIS_CAPTURE"
+    },
+    {
+      "eventKey": "CSC_2026_09_MONTHLY_PRICING",
+      "officialUrl": "https://www.csc.com.tw/csc/nc/newsMain1.asp?newsid=2788",
+      "sourcePublishedAt": "UNKNOWN_FROM_CURRENT_PAGE",
+      "capturedAt": "2026-10-02T15:48:00+08:00",
+      "effectivePeriod": "2026-09",
+      "costContext": "HIGH_STEELMAKING_COST / IRON_ORE_90_100 / MET_COAL_210_220",
+      "demandContext": "DOWNSTREAM_INVENTORY_HEALTHIER / EXPECTED_RESTOCKING / TRADITIONAL_DEMAND_STILL_SOFT",
+      "postedPriceResponse": "NONE_FLAT",
+      "productAdjustmentsNtdPerTon": {
+        "hotRolledGeneral": 0,
+        "hotRolledRollingFeed": 0,
+        "coldRolledGeneral": 0,
+        "electroGalvanized": 0,
+        "hotDipGalvanized": 0,
+        "electricalSteel": 0
+      },
+      "interpretation": "Cost remained high but management kept prices flat to support downstream ordering, rejecting cost-only pass-through logic.",
+      "outcomeEligibility": "NOT_HISTORICALLY_BACKDATABLE_FROM_THIS_CAPTURE"
+    },
+    {
+      "eventKey": "CSC_2026_10_Q4_PRICING",
+      "officialUrl": "https://www.csc.com.tw/csc/nc/newsMain1.asp?newsid=2796",
+      "sourcePublishedAt": "UNKNOWN_FROM_CURRENT_PAGE",
+      "capturedAt": "2026-10-02T15:48:00+08:00",
+      "effectivePeriod": "2026-10_AND_2026Q4",
+      "costContext": "MET_COAL_UP_50_65_TO_AROUND_275 / STEELMAKING_COST_UP",
+      "demandContext": "INTERNATIONAL_STEEL_PRICES_RECOVER / SUPPLY_TIGHTENING / PRODUCT_DEMAND_DIFFERS",
+      "postedPriceResponse": "MONTHLY_BROAD_UP / QUARTERLY_SELECTIVE_UP",
+      "monthlyAdjustmentsNtdPerTon": {
+        "hotRolledRollingFeed": 600,
+        "hotRolledGeneral": 600,
+        "coldRolledGeneral": 600,
+        "electroGalvanizedConstruction": 500,
+        "hotDipGalvanizedConstructionPaint": 500
+      },
+      "quarterlyExamplesNtdPerTon": {
+        "plateSelected": 500,
+        "wireRod": 0,
+        "hotRolledSpecialty": 0,
+        "coldRolledSpecialtyAndDrum": 0,
+        "electroGalvanizedAntiFingerprint": 600,
+        "hotDipGalvanizedApplianceComputerOther": 600,
+        "electricalSteelMidLowGrade": 500,
+        "electricalSteelHighGrade": 0,
+        "autoMaterial": 0
+      },
+      "interpretation": "Rising cost plus firmer global market produced upward pricing, but quarterly product responses remained selective rather than one-to-one.",
+      "outcomeEligibility": "CURRENT_CAPTURE_ONLY / FIRST_ELIGIBLE_DECISION_NOT_BACKDATED"
+    }
+  ],
+  "crossEventFalsification": [
+    "Same issuer + high cost can coexist with BROAD_DOWN, NONE_FLAT or UP pricing depending on demand/market state.",
+    "Therefore raw-material cost direction is not sufficient to infer posted-price direction.",
+    "Posted-price direction is not sufficient to infer realized ASP or margin protection.",
+    "Event independence does not equal issuer independence; this three-event set calibrates state semantics but cannot establish cross-company generality.",
+    "No stock return, future margin or future ASP was inspected for event classification."
+  ],
+  "stateSequence": [
+    "2026-08: HIGH_COST + WEAK_DEMAND -> BROAD_DOWN",
+    "2026-09: HIGH_COST + RESTOCKING_EXPECTATION_BUT_SOFT_DEMAND -> FLAT",
+    "2026-10/Q4: COST_UP + GLOBAL_PRICE_RECOVERY -> BROAD_MONTHLY_UP + SELECTIVE_QUARTERLY_UP"
+  ],
+  "maturityDecision": {
+    "D10-06": "KEEP_L3",
+    "D10-09": "KEEP_L2"
+  },
+  "reasonNoL4": "Three event states are source-only and same-issuer; historical first-known timestamps are not authenticated by current page capture and no prospective/OOS realized ASP/margin or stock outcomes are opened.",
+  "exactNext": [
+    "SC-034 add at least one different Taiwan issuer/industry pricing event under the same schema.",
+    "SC-035 collect native sourcePublishedAt/capturedAt prospectively for future pricing events.",
+    "Only later join realized ASP/margin after native publication clocks mature; do not backdate current captures."
+  ],
+  "status": "THREE_EVENT_STATE_CALIBRATION_COMPLETE / SINGLE_ISSUER_ONLY / OUTCOMES_CLOSED / FORMAL_UNCHANGED"
+}
