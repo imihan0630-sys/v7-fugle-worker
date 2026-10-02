@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-03T04:34:00+08:00",
+  "updatedAt": "2026-10-03T05:02:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -32,8 +32,8 @@
   },
   "aggregate": {
     "domainCount": 22,
-    "moduleCount": 362,
-    "maturityWeightedPct": 31.9
+    "moduleCount": 354,
+    "maturityWeightedPct": 32.5
   },
   "domains": [
     {
@@ -45,7 +45,7 @@
         "KLINE_PATTERN_RESEARCH.md",
         "TARGET_RESISTANCE_RR_RESEARCH.md"
       ],
-      "maturityPct": 51.7,
+      "maturityPct": 52.7,
       "modules": [
         {
           "id": "D01-01",
@@ -60,7 +60,7 @@
           "name": "單根K線型態",
           "level": "L2",
           "maturityPct": 40,
-          "learningScope": "聚焦「單根K線型態」。學習範圍：結構定義、形成條件、確認點與失敗型態；支撐壓力與目標幾何；多時間尺度差異；除權息、漲跌停、停牌等價格連續性污染；可程式化辨識與對選股／風控的增量價值。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "learningScope": "聚焦「單根K線型態」。學習範圍：結構定義、形成條件、確認點與失敗型態；支撐壓力與目標幾何；多時間尺度差異；除權息、漲跌停、停牌等價格連續性污染；可程式化辨識與對選股／風控的增量價值。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 原 D01-12（酒田／傳統K線）合併後，本模組承接其單根傳統K線 taxonomy（分類）、形成條件與反證；命名型態不得自行形成獨立 Alpha 或額外投票。",
           "levelMeaning": "機制＋反證已定義"
         },
         {
@@ -68,7 +68,7 @@
           "name": "多根K線組合",
           "level": "L2",
           "maturityPct": 40,
-          "learningScope": "聚焦「多根K線組合」。學習範圍：結構定義、形成條件、確認點與失敗型態；支撐壓力與目標幾何；多時間尺度差異；除權息、漲跌停、停牌等價格連續性污染；可程式化辨識與對選股／風控的增量價值。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "learningScope": "聚焦「多根K線組合」。學習範圍：結構定義、形成條件、確認點與失敗型態；支撐壓力與目標幾何；多時間尺度差異；除權息、漲跌停、停牌等價格連續性污染；可程式化辨識與對選股／風控的增量價值。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 原 D01-12 合併後，本模組承接其多根K線序列／組合語意與反證；必須與原始OHLC、價量、趨勢及其他型態做冗餘控制。",
           "levelMeaning": "機制＋反證已定義"
         },
         {
@@ -84,7 +84,7 @@
           "name": "突破／假突破生命週期",
           "level": "L3",
           "maturityPct": 60,
-          "learningScope": "聚焦「突破／假突破生命週期」。學習範圍：結構定義、形成條件、確認點與失敗型態；支撐壓力與目標幾何；多時間尺度差異；除權息、漲跌停、停牌等價格連續性污染；可程式化辨識與對選股／風控的增量價值。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "learningScope": "聚焦「突破／假突破生命週期」。學習範圍：結構定義、形成條件、確認點與失敗型態；支撐壓力與目標幾何；多時間尺度差異；除權息、漲跌停、停牌等價格連續性污染；可程式化辨識與對選股／風控的增量價值。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 原 D01-12 合併後，本模組承接傳統K線／酒田在突破、反轉確認與失敗生命週期中的可觀測結構，不保留獨立 Sakata Score（酒田分數）。",
           "levelMeaning": "台股PIT資料可行"
         },
         {
@@ -116,7 +116,7 @@
           "name": "缺口與漲跌停限制型態",
           "level": "L2",
           "maturityPct": 40,
-          "learningScope": "聚焦「缺口與漲跌停限制型態」。學習範圍：結構定義、形成條件、確認點與失敗型態；支撐壓力與目標幾何；多時間尺度差異；除權息、漲跌停、停牌等價格連續性污染；可程式化辨識與對選股／風控的增量價值。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "learningScope": "聚焦「缺口與漲跌停限制型態」。學習範圍：結構定義、形成條件、確認點與失敗型態；支撐壓力與目標幾何；多時間尺度差異；除權息、漲跌停、停牌等價格連續性污染；可程式化辨識與對選股／風控的增量價值。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 原 D01-12 合併後，本模組承接傳統缺口／跳空與漲跌停限制下的相關K線語意；既有 Sakata/candlestick 研究檔與 System 2 解釋能力永久保留。",
           "levelMeaning": "機制＋反證已定義"
         },
         {
@@ -134,16 +134,6 @@
           "maturityPct": 60,
           "learningScope": "聚焦「目標價／阻力／RR幾何」。學習範圍：結構定義、形成條件、確認點與失敗型態；支撐壓力與目標幾何；多時間尺度差異；除權息、漲跌停、停牌等價格連續性污染；可程式化辨識與對選股／風控的增量價值。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "台股PIT資料可行"
-        },
-        {
-          "id": "D01-12",
-          "name": "酒田戰法與傳統K線語意反證",
-          "level": "L2",
-          "maturityPct": 40,
-          "learningScope": "聚焦「酒田戰法與傳統K線語意反證」。保留傳統K線／酒田 taxonomy（分類）與反證價值，但不得建立單一 Sakata Score（酒田分數）或把命名型態當獨立 Alpha（超額報酬）投票。優先拆解為單根K線、多根K線、缺口、趨勢／型態生命週期等既有結構，持續驗證是否具有超越 D01-02／D01-03／D01-05／D01-09 的增量資訊；若無增量，未來合併回母模組。每個結論仍須記錄正向機制、反證／失效條件、PIT（時點一致性）、可重播性、冗餘與 System 1／System 2 增量價值。",
-          "levelMeaning": "機制＋反證已定義",
-          "status": "OBSERVATION / MERGE_CANDIDATE / RESEARCH_ONLY",
-          "next": "保持 RESEARCH_ONLY；完成與 D01-02／03／05／09 的增量與冗餘驗證後，再決定是否合併模組。"
         }
       ]
     },
@@ -620,7 +610,7 @@
         "research/day_trading_chip_crowding_semantic_guard_v0_1.json",
         "system2/SYSTEM2_STATE_OWNED_BANK_FLOW_RESEARCH.md"
       ],
-      "maturityPct": 37.8,
+      "maturityPct": 40,
       "modules": [
         {
           "id": "D06-01",
@@ -744,23 +734,13 @@
         },
         {
           "id": "D06-16",
-          "name": "ETF Creation／Redemption／Authorized Participant申購贖回與參與券商",
+          "name": "ETF Mechanics：Creation／Redemption／AP／Premium-Discount／Tracking／Liquidity ETF申贖、參與券商、溢折價、追蹤與流動性",
           "level": "L0",
           "maturityPct": 0,
-          "learningScope": "聚焦「ETF Creation／Redemption／Authorized Participant申購贖回與參與券商」。研究ETF申贖套利、溢折價、追蹤差異、成分股流動性與證券借貸經濟；需區分資金流、機械式申贖、借券需求、對沖與方向性放空，避免把借券量或ETF流量直接當方向性訊號。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "learningScope": "聚焦 ETF Mechanics（ETF運作機制）：Creation／Redemption（申購贖回）、Authorized Participant／AP（參與券商）、NAV Premium-Discount（淨值溢折價）、Tracking Difference（追蹤差異）與 Underlying Liquidity（成分資產流動性）。研究申贖套利、機械式資金流、成分股供需與流動性傳導；需區分真正方向性資金、機械式申贖、對沖與再平衡，並與 D06-11 被動資金／指數再平衡分工。原 D06-17 完整範圍由本模組承接。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）、可重播性、資料品質、冗餘、成本與對 System 1／System 2 的增量價值；不得直接進 Formal。",
           "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論、定義、機制與反證開始，建立 D06-16 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
-        },
-        {
-          "id": "D06-17",
-          "name": "ETF NAV Premium-Discount／Tracking Difference／Underlying Liquidity ETF溢折價追蹤差異與成分流動性",
-          "level": "L0",
-          "maturityPct": 0,
-          "learningScope": "聚焦「ETF NAV Premium-Discount／Tracking Difference／Underlying Liquidity ETF溢折價追蹤差異與成分流動性」。研究ETF申贖套利、溢折價、追蹤差異、成分股流動性與證券借貸經濟；需區分資金流、機械式申贖、借券需求、對沖與方向性放空，避免把借券量或ETF流量直接當方向性訊號。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論、定義、機制與反證開始，建立 D06-17 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
+          "status": "UNSTUDIED / CURRICULUM_APPROVED / MERGED_SCOPE_OWNER",
+          "next": "建立整合後 ETF mechanics 的資料需求與驗證契約；優先釐清申贖、溢折價、追蹤差異、成分股流動性與被動資金傳導的因果／機械關係。"
         },
         {
           "id": "D06-18",
@@ -1755,7 +1735,7 @@
         "DERIVATIVES_VOLATILITY_CHECKPOINT.md",
         "DERIVATIVES_VOLATILITY_RESEARCH.md"
       ],
-      "maturityPct": 35.6,
+      "maturityPct": 37.6,
       "modules": [
         {
           "id": "D12-01",
@@ -1905,23 +1885,13 @@
         },
         {
           "id": "D12-17",
-          "name": "Put-Call Parity／Synthetic Positions買賣權平價與合成部位",
+          "name": "Option Payoff Structures／Put-Call Parity／Synthetic Positions／Strategies選擇權損益結構、買賣權平價、合成部位與策略",
           "level": "L0",
           "maturityPct": 0,
-          "learningScope": "聚焦「Put-Call Parity／Synthetic Positions買賣權平價與合成部位」。研究衍生品損益結構、合成部位與策略用途；必須凍結履約價、到期、IV、Greeks、流動性、交易成本與保證金語意，區分方向、波動、尾端與避險曝險。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "learningScope": "聚焦選擇權 payoff（損益結構）與價格一致性：Put-Call Parity（買賣權平價）、Synthetic Positions（合成部位）、Covered Call、Protective Put、Vertical／Calendar 等 spreads（價差策略）及其他基本策略結構。必須凍結履約價、到期、IV、Greeks、流動性、交易成本與保證金語意，區分方向、波動、時間價值與尾端曝險。原 D12-18 策略損益結構完整併入本模組；Portfolio overlay／hedging（投組避險）應用仍由 D15-23 負責。不得因策略名稱直接形成股票選股 Gate。",
           "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論、定義、機制與反證開始，建立 D12-17 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
-        },
-        {
-          "id": "D12-18",
-          "name": "Options Strategy Payoffs／Covered Call／Protective Put／Spreads選擇權策略與損益結構",
-          "level": "L0",
-          "maturityPct": 0,
-          "learningScope": "聚焦「Options Strategy Payoffs／Covered Call／Protective Put／Spreads選擇權策略與損益結構」。研究衍生品損益結構、合成部位與策略用途；必須凍結履約價、到期、IV、Greeks、流動性、交易成本與保證金語意，區分方向、波動、尾端與避險曝險。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論、定義、機制與反證開始，建立 D12-18 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
+          "status": "UNSTUDIED / CURRICULUM_APPROVED / MERGED_SCOPE_OWNER",
+          "next": "建立整合後 option payoff／parity／synthetic／strategy 的研究契約，並與 D15-23 投組避險用途建立 dependency，不重複計算。"
         }
       ]
     },
@@ -2296,7 +2266,7 @@
         "PORTFOLIO_RISK_CHECKPOINT.md",
         "PORTFOLIO_RISK_RESEARCH.md"
       ],
-      "maturityPct": 31.7,
+      "maturityPct": 36.2,
       "modules": [
         {
           "id": "D15-01",
@@ -2432,33 +2402,13 @@
         },
         {
           "id": "D15-16",
-          "name": "Mean-Variance／Efficient Frontier均值變異與效率前緣",
+          "name": "Portfolio Optimization：Mean-Variance／Efficient Frontier／Risk Budgeting／Risk Parity／Black-Litterman投組最佳化方法",
           "level": "L0",
           "maturityPct": 0,
-          "learningScope": "聚焦「Mean-Variance／Efficient Frontier均值變異與效率前緣」。研究投組最佳化、風險預算、配置約束與績效／風險歸因。任何最佳化都必須控制估計誤差、集中度、流動性、成本、約束敏感度與基準選擇，且不得用未來報酬倒推最佳權重。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "learningScope": "聚焦 Portfolio Optimization（投組最佳化）方法族：Mean-Variance／Efficient Frontier（均值變異／效率前緣）、Risk Budgeting／Risk Parity（風險預算／風險平價）與 Black-Litterman（均衡＋主觀觀點）。比較各方法在估計誤差、集中度、流動性、成本、約束敏感度、基準選擇與 Regime 下的優缺點；禁止以未來報酬倒推最佳權重。原 D15-17、D15-18 完整知識範圍由本模組承接；不同方法是同一投組配置家族的替代／比較方法，不各自變成股票硬門檻。",
           "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論、定義、機制與反證開始，建立 D15-16 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
-        },
-        {
-          "id": "D15-17",
-          "name": "Risk Budgeting／Risk Parity風險預算與風險平價",
-          "level": "L0",
-          "maturityPct": 0,
-          "learningScope": "聚焦「Risk Budgeting／Risk Parity風險預算與風險平價」。研究投組最佳化、風險預算、配置約束與績效／風險歸因。任何最佳化都必須控制估計誤差、集中度、流動性、成本、約束敏感度與基準選擇，且不得用未來報酬倒推最佳權重。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論、定義、機制與反證開始，建立 D15-17 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
-        },
-        {
-          "id": "D15-18",
-          "name": "Black-Litterman主觀觀點與均衡配置",
-          "level": "L0",
-          "maturityPct": 0,
-          "learningScope": "聚焦「Black-Litterman主觀觀點與均衡配置」。研究投組最佳化、風險預算、配置約束與績效／風險歸因。任何最佳化都必須控制估計誤差、集中度、流動性、成本、約束敏感度與基準選擇，且不得用未來報酬倒推最佳權重。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論、定義、機制與反證開始，建立 D15-18 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
+          "status": "UNSTUDIED / CURRICULUM_APPROVED / MERGED_SCOPE_OWNER",
+          "next": "建立統一的投組最佳化比較框架，以簡單等權／風險上限為基準，逐一反證 Mean-Variance、Risk Parity、Black-Litterman 是否具有 after-cost 增量價值。"
         },
         {
           "id": "D15-19",
@@ -2471,24 +2421,14 @@
           "next": "從理論、定義、機制與反證開始，建立 D15-19 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
         },
         {
-          "id": "D15-20",
-          "name": "Tracking Error／Active Share追蹤誤差與主動持股比率",
-          "level": "L0",
-          "maturityPct": 0,
-          "learningScope": "聚焦「Tracking Error／Active Share追蹤誤差與主動持股比率」。研究投組最佳化、風險預算、配置約束與績效／風險歸因。任何最佳化都必須控制估計誤差、集中度、流動性、成本、約束敏感度與基準選擇，且不得用未來報酬倒推最佳權重。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論、定義、機制與反證開始，建立 D15-20 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
-        },
-        {
           "id": "D15-21",
-          "name": "Performance Attribution：Allocation／Selection／Timing績效歸因：配置選股與擇時",
+          "name": "Active Portfolio Diagnostics／Tracking Error／Active Share／Performance Attribution主動投組診斷與績效歸因",
           "level": "L0",
           "maturityPct": 0,
-          "learningScope": "聚焦「Performance Attribution：Allocation／Selection／Timing績效歸因：配置選股與擇時」。研究投組最佳化、風險預算、配置約束與績效／風險歸因。任何最佳化都必須控制估計誤差、集中度、流動性、成本、約束敏感度與基準選擇，且不得用未來報酬倒推最佳權重。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "learningScope": "聚焦主動投組 Diagnostics（診斷）與 Attribution（歸因）：Tracking Error（追蹤誤差）、Active Share（主動持股比率），以及 Allocation／Selection／Timing（配置／選股／擇時）績效歸因。其角色是解釋投組相對基準與策略來源，不是股票是否可買的硬門檻。原 D15-20 完整範圍由本模組承接；需控制 benchmark 選擇、現金、交易成本、產業／因子曝險與時間聚合。",
           "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論、定義、機制與反證開始，建立 D15-21 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
+          "status": "UNSTUDIED / CURRICULUM_APPROVED / MERGED_SCOPE_OWNER",
+          "next": "建立統一投組診斷／歸因契約，先確認基準與現金語意，再檢驗選股、配置、擇時與主動曝險對實際績效的貢獻。"
         },
         {
           "id": "D15-22",
@@ -3094,7 +3034,7 @@
         "ASSET_PRICING_FACTOR_CHECKPOINT.md",
         "ASSET_PRICING_FACTOR_RESEARCH.md"
       ],
-      "maturityPct": 15,
+      "maturityPct": 16,
       "modules": [
         {
           "id": "D19-01",
@@ -3218,23 +3158,13 @@
         },
         {
           "id": "D19-13",
-          "name": "Pairs Trading／Cointegration配對交易與共整合",
+          "name": "Relative Value／Pairs Trading／Cointegration／Residual Mean Reversion相對價值、配對交易、共整合與殘差均值回歸",
           "level": "L0",
           "maturityPct": 0,
-          "learningScope": "聚焦「Pairs Trading／Cointegration配對交易與共整合」。研究相對價值、共整合、殘差均值回歸與指數／基準建構。需控制因子曝險、Beta（市場敏感度）、產業曝險、交易成本、容量、結構斷裂與多重測試，避免把共同市場風險誤認為獨立 Alpha（超額報酬）。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "learningScope": "聚焦 Relative Value（相對價值）策略族：Pairs Trading（配對交易）、Cointegration（共整合）、Residual Mean Reversion（殘差均值回歸）與 Cross-sectional Relative Value（橫截面相對價值）。需控制 Beta、產業／風格因子曝險、結構斷裂、交易成本、容量與多重測試，避免把共同市場風險誤認為獨立 Alpha。原 D19-14 完整範圍由本模組承接；它是一個策略家族，不應拆成多個高度重疊的獨立投票因子。",
           "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論、定義、機制與反證開始，建立 D19-13 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
-        },
-        {
-          "id": "D19-14",
-          "name": "Residual Mean Reversion／Cross-sectional Relative Value殘差均值回歸與橫截面相對價值",
-          "level": "L0",
-          "maturityPct": 0,
-          "learningScope": "聚焦「Residual Mean Reversion／Cross-sectional Relative Value殘差均值回歸與橫截面相對價值」。研究相對價值、共整合、殘差均值回歸與指數／基準建構。需控制因子曝險、Beta（市場敏感度）、產業曝險、交易成本、容量、結構斷裂與多重測試，避免把共同市場風險誤認為獨立 Alpha（超額報酬）。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論、定義、機制與反證開始，建立 D19-14 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
+          "status": "UNSTUDIED / CURRICULUM_APPROVED / MERGED_SCOPE_OWNER",
+          "next": "建立統一 Relative Value 研究契約，分別測試 pair／cointegration 與 cross-sectional residual 方法，但共用風險、成本、結構斷裂與中性化驗證。"
         },
         {
           "id": "D19-15",
@@ -3416,7 +3346,7 @@
         "CORPORATE_GOVERNANCE_INSIDER_CHECKPOINT.md",
         "CORPORATE_GOVERNANCE_INSIDER_RESEARCH.md"
       ],
-      "maturityPct": 3.3,
+      "maturityPct": 3.6,
       "modules": [
         {
           "id": "D21-01",
@@ -3469,24 +3399,14 @@
           "next": "從理論與定義開始，建立 D21-05 的機制、反證與資料需求；不得直接進 Formal。"
         },
         {
-          "id": "D21-06",
-          "name": "Compensation／Incentive Alignment薪酬與誘因一致性",
-          "level": "L0",
-          "maturityPct": 0,
-          "learningScope": "聚焦「Compensation／Incentive Alignment薪酬與誘因一致性」。學習範圍：研究公司控制權、董事會、內部人、質押、關係人交易、誘因、資本配置、審計／內控與管理層可信度。所有治理資料必須使用歷史 first-known/vintage，並與 D06持股、D07財報、D11事件分工去重。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論與定義開始，建立 D21-06 的機制、反證與資料需求；不得直接進 Formal。"
-        },
-        {
           "id": "D21-07",
-          "name": "Capital Allocation Quality資本配置品質",
+          "name": "Management Incentives／Capital Allocation Quality管理層誘因與資本配置品質",
           "level": "L0",
           "maturityPct": 0,
-          "learningScope": "聚焦「Capital Allocation Quality資本配置品質」。學習範圍：研究公司控制權、董事會、內部人、質押、關係人交易、誘因、資本配置、審計／內控與管理層可信度。所有治理資料必須使用歷史 first-known/vintage，並與 D06持股、D07財報、D11事件分工去重。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "learningScope": "聚焦 Management Incentives（管理層誘因）如何影響 Capital Allocation（資本配置）品質：薪酬結構、股權／選擇權誘因、短期／長期績效目標、回購、投資、併購、股利、負債與資本支出決策。原 D21-06 Compensation／Incentive Alignment 完整範圍由本模組承接；需區分『制度看似一致』與實際資本配置結果，並以 first-known／vintage、財務結果及反例驗證，不得把高薪酬或股權獎酬機械視為好／壞公司。D21-12 仍獨立負責 Management Guidance Credibility（管理層展望可信度）。",
           "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論與定義開始，建立 D21-07 的機制、反證與資料需求；不得直接進 Formal。"
+          "status": "UNSTUDIED / CURRICULUM_APPROVED / MERGED_SCOPE_OWNER",
+          "next": "建立誘因→決策→資本配置結果的可驗證鏈條，避免只看薪酬制度名稱；與 D07 財務結果、D11 公司事件及 D21-12 展望可信度交叉驗證。"
         },
         {
           "id": "D21-09",
