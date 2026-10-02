@@ -1,6 +1,6 @@
 # Shared Research Master Map
 
-Updated: 2026-10-02 16:40 Asia/Taipei
+Updated: 2026-10-03 00:58 Asia/Taipei
 Status: CANONICAL_SHARED_INDEX
 Scope: Cross-system research knowledge
 Formal Core impact: NONE
@@ -13,24 +13,28 @@ Existing detailed research remains in its current files; this map indexes it rat
 
 ## Domain map
 
-1. Price / K-line / chart-pattern topology
-2. Price-volume relationships
-3. Trend / momentum / reversal
-4. Volatility / volatility regime
-5. Market microstructure / execution
-6. Institutions / ownership / margin / SBL / crowding
-7. Fundamentals / financial statements / monthly revenue
-8. Valuation
-9. Industry / sector / residual RS / breadth
-10. Supply-chain / capacity / inventory / commodity transmission
-11. Corporate actions / event risk / material information
-12. Derivatives / futures / options / Taiwan VIX
-13. Macro / cross-market / global regime transmission
-14. Trading frictions / slippage / opportunity cost
-15. Portfolio/capital-utilization research methodology
-16. Statistical validation / PIT / Shadow / OOS / Factor Zoo / overfit
-17. News/event half-life and beneficiary/victim transmission
-18. Strategy-regime interaction research
+1. K線／型態／價格結構
+2. 價量關係
+3. 趨勢／動能／反轉／技術指標
+4. 波動率／波動狀態
+5. 市場微結構／撮合／流動性
+6. 法人／籌碼／槓桿／擁擠／被動資金
+7. 基本面／財報／資訊動態
+8. 估值
+9. 產業／族群／市場廣度／輪動
+10. 供應鏈／產能／庫存／原物料傳導
+11. 公司行動／重大事件／事件風險
+12. 期貨／選擇權／衍生品
+13. 總體經濟／跨市場傳導
+14. 交易成本／執行品質／Execution Alpha
+15. 投資組合／風險／資金利用／部位生命週期
+16. 統計驗證／PIT／Shadow／OOS／防過擬合
+17. 新聞／事件半衰期／受益受害傳導
+18. 市場Regime×策略互動
+19. 資產定價／因子投資／市場異象
+20. 行為金融／投資人注意力／市場心理
+21. 公司治理／經營者／內部人／控制權品質
+22. 信用市場／資本結構／融資壓力／股債傳導
 
 ## Cross-industry analysis framework（跨產業通用分析框架）
 
@@ -315,10 +319,34 @@ Explicitly NOT promoted to a standalone module:
 
 Formal Core remains LOCKED. No System 1/System 2 signal, ranking, allocation, execution or notification behavior is changed by this curriculum update.
 
+## Probabilistic decision and expectations curriculum approval (2026-10-03)
+
+Owner approved three additional L0 modules, expanding the canonical curriculum from 363 to **366 modules** without adding a new domain:
+
+- **D07-33** Intangible Capital／R&D／Innovation Accounting — calibrates interpretation of earnings, book value, ROIC and valuation for R&D/intangible-intensive businesses; not a mandatory stock filter.
+- **D08-19** Reverse DCF／Market-Implied Expectations／Expectations Gap — estimates what growth/margin/cash-flow assumptions are already embedded in price; must use ranges/sensitivity and must not become a single-threshold valuation gate.
+- **D16-25** Probabilistic Decision／Bayesian Updating／Uncertainty-aware Selection — studies calibrated probability, expected value, uncertainty and abstention to prevent the knowledge curriculum from becoming a serial AND-gate funnel.
+
+Cross-system governance authority:
+`shared-knowledge/PROBABILISTIC_SELECTION_GOVERNANCE_V0_1.md`
+
+Five required decision roles:
+1. HARD_INVALIDATION
+2. PRIMARY_ALPHA
+3. SUPPORTIVE
+4. CONTEXT_ONLY
+5. CONFIDENCE／UNCERTAINTY
+
+Default for newly learned evidence remains RESEARCH_ONLY. New knowledge does not create a new selection gate by default. UNKNOWN != FAIL and UNKNOWN != 0.
+
+System 1 remains the conservative Formal benchmark; any probabilistic redesign is Shadow challenger first.
+System 2 should be designed strategy-by-strategy with a small set of primary evidence families rather than requiring all 22 domains to pass.
+Formal Core remains LOCKED.
+
 ## Shared inventory
 
 - `shared-knowledge/SHARED_RESEARCH_INVENTORY.md` is the cross-system domain/tag inventory. It points to original evidence without relocating it.
-- `shared-knowledge/STOCK_MARKET_KNOWLEDGE_LEARNING_MAP.md` is the canonical 22-domain / 363-module learning curriculum and chatroom routing dashboard.
+- `shared-knowledge/STOCK_MARKET_KNOWLEDGE_LEARNING_MAP.md` is the canonical 22-domain / 366-module learning curriculum and chatroom routing dashboard.
 - `research/stock_market_learning_tracker_v0_1.json` is the machine-readable maturity tracker for that curriculum.
 - `shared-knowledge/LEARNING_ROOM_ROUTER.md` is the mandatory public routing file every learning chat reads to know its assigned domains, modules, learning scope, progress and checkpoints.
 
