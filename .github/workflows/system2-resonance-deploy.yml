@@ -128,6 +128,9 @@ jobs:
               const api=await fetch(url+"/api/system2/resonance",{signal:AbortSignal.timeout(15000)});if(!api.ok)throw new Error("read API failed");
               const operations=await fetch(url+"/api/system2/resonance/operations",{signal:AbortSignal.timeout(15000)});const op=await operations.json();
               if(!operations.ok||op.schemaVersion!=="SYSTEM2_RESONANCE_OPERATIONS_API_V0_1"||op.fullMarketScan!==false||op.orderImpact!==false)throw new Error("operations API failed");
+              const diagnostic=await fetch(url+"/api/system2/shadow/diagnostic",{signal:AbortSignal.timeout(15000)});const dg=await diagnostic.json();
+              if(!diagnostic.ok||dg.schemaVersion!=="S2_DAILY_SHADOW_DIAGNOSTIC_V0_1")throw new Error("daily diagnostic API failed");
+              if(dg.receipt&&(dg.receipt.capacityRunId!==null||dg.receipt.zeroPickDay!==null||dg.receipt.finalSelectionEnabled!==false))throw new Error("diagnostic authority mismatch");
               const page=await fetch(url+"/resonance",{signal:AbortSignal.timeout(15000)});if(!page.ok||!(await page.text()).includes("查看執行診斷"))throw new Error("UI failed");
               console.log(JSON.stringify({result:"PASS",url,schemaVersion:h.schemaVersion,cronExpressions:expressions,resonanceState:h.resonanceState,captureState:h.captureState,system1RuntimeUsed:h.system1RuntimeUsed}));
               process.exit(0);

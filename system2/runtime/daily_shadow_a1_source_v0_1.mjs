@@ -1,4 +1,5 @@
 import { deepFreeze } from "./factor_snapshot.mjs";
+import { sha256Hex } from "./decision_archive.mjs";
 import {
   A1_SYMBOL_SNAPSHOT_SOURCES,
   buildA1SymbolSnapshotBatch,
@@ -93,14 +94,25 @@ export async function fetchDailyShadowA1SnapshotV0_1({
     ? "FIXED_CALLER_CLOCK"
     : "DIAGNOSTIC_OBSERVATION_TIME_NOT_CAPTURE_CLOCK";
 
+  const audit = async (result) => ({
+    payloadHash: result.ok ? await sha256Hex(result.payload) : null,
+    rawRowCount: Array.isArray(result.payload) ? result.payload.length : null,
+    reportedDates: Array.isArray(result.payload)
+      ? [...new Set(result.payload.map(row => String(row?.Date || "UNDATED")))].sort()
+      : [],
+  });
+  const [twseAudit, tpexAudit] = await Promise.all([audit(twse), audit(tpex)]);
+
   const transports = deepFreeze({
     TWSE: {
+      ...twseAudit,
       ok: twse.ok,
       httpStatus: twse.httpStatus,
       errorCode: twse.errorCode,
       sourceId: A1_SYMBOL_SNAPSHOT_SOURCES.TWSE.sourceId,
     },
     TPEX: {
+      ...tpexAudit,
       ok: tpex.ok,
       httpStatus: tpex.httpStatus,
       errorCode: tpex.errorCode,

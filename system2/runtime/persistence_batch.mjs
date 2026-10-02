@@ -2,6 +2,10 @@ import { deepFreeze } from "./factor_snapshot.mjs";
 import { canonicalStringify, sha256Hex } from "./decision_archive.mjs";
 
 const TABLE_SPECS = deepFreeze({
+  s2_infrastructure_checks: {
+    order: 1100,
+    identity: ["check_id"],
+  },
   s2_historical_ingest_batches: {
     order: 1,
     identity: ["batch_id"],

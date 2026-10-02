@@ -1,0 +1,67 @@
+name: System2 Daily Shadow Diagnostic
+
+on:
+  schedule:
+    - cron: "35 10 * * 1-5" # 18:35 Asia/Taipei; diagnostic observation clock only
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - "system2/runtime/daily_shadow_diagnostic_orchestrator_v0_1.mjs"
+      - "system2/scripts/run_daily_shadow_diagnostic.mjs"
+      - ".github/workflows/system2-daily-shadow-diagnostic.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: system2-isolated-d1-writer
+  cancel-in-progress: false
+
+jobs:
+  diagnostic:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    environment: system2-research
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Verify diagnostic authority and persistence boundaries
+        run: |
+          set -euo pipefail
+          node system2/tests/daily_shadow_diagnostic_v0_1.test.mjs
+          node system2/tests/daily_shadow_diagnostic_workflow_guard.test.mjs
+          node system2/tests/persistence_executor.test.mjs
+          node system2/tests/daily_shadow_capacity_orchestrator_v0_1.test.mjs
+          git diff --exit-code -- Worker.js wrangler.toml
+      - name: Persist and read back isolated daily diagnostics
+        env:
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SYSTEM2_CLOUDFLARE_API_TOKEN: ${{ secrets.SYSTEM2_CLOUDFLARE_API_TOKEN }}
+          SYSTEM2_CONFIRM: WRITE_SYSTEM2_DAILY_DIAGNOSTIC_ONLY
+        run: |
+          set -euo pipefail
+          test -n "$CLOUDFLARE_ACCOUNT_ID"
+          test -n "$SYSTEM2_CLOUDFLARE_API_TOKEN"
+          node system2/scripts/run_daily_shadow_diagnostic.mjs | tee /tmp/system2-daily-diagnostic.json
+          node --input-type=module <<'NODE'
+          import fs from "node:fs";
+          const d=JSON.parse(fs.readFileSync("/tmp/system2-daily-diagnostic.json","utf8"));
+          const r=d.receipt;
+          if(d.result!=="PASS"||d.databaseName!=="system2-research")throw new Error("wrong diagnostic/database");
+          if(r.capacityRunId!==null||r.zeroPickDay!==null||r.selectedCount!==null)throw new Error("fabricated capacity or zero-pick");
+          if(r.finalSelectionEnabled!==false||r.generalCaptureEnabled!==false||r.livePushEnabled!==false||r.orderImpact!==false||r.system1RuntimeUsed!==false)throw new Error("authority boundary");
+          if(!["IMMUTABLE_D1_READBACK_VERIFIED","SKIPPED_IDENTICAL_COMPLETED_RUN"].includes(r.persistenceState))throw new Error("missing readback");
+          fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY,`Daily diagnostic: ${r.state}\n\nDate: ${r.marketDate}; symbols observed: ${r.symbolCount}; UNKNOWN factors: ${r.unknownFactorCount}. No capacity/zero-pick/SELECTED claim.\n`);
+          NODE
+      - name: Preserve execution receipt
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: system2-daily-shadow-diagnostic-${{ github.run_id }}-${{ github.run_attempt }}
+          path: /tmp/system2-daily-diagnostic.json
+          if-no-files-found: warn
+          retention-days: 90
