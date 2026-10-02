@@ -1,0 +1,125 @@
+{
+  "schemaVersion": "D02_LATENT_VOLUME_MECHANISM_IDENTIFIABILITY_V0_1",
+  "generatedAt": "2026-10-02T21:28:00+08:00",
+  "researchOnly": true,
+  "decisionImpact": false,
+  "formalCoreImpact": false,
+  "outcomesUsed": false,
+  "sourceMainSha": "8101ea81b3fc8abe2c3514628ac52e5b7e311cf6",
+  "pveCursorUnchanged": true,
+  "pve228ReservedForAfterMarketAudit": true,
+  "modules": {
+    "D02-05": {
+      "maturityPct": 40,
+      "level": "L2",
+      "decision": "UNCHANGED"
+    },
+    "D02-08": {
+      "maturityPct": 40,
+      "level": "L2",
+      "decision": "UNCHANGED"
+    },
+    "D02-09": {
+      "maturityPct": 40,
+      "level": "L2",
+      "decision": "UNCHANGED"
+    }
+  },
+  "currentRecorder": {
+    "schema": "execution-shadow-v2",
+    "preserves": [
+      "previousClose",
+      "openPrice",
+      "avgPrice",
+      "bestBid",
+      "bestAsk",
+      "spreadPct",
+      "bidDepth5",
+      "askDepth5",
+      "depthImbalance",
+      "executionMarketState"
+    ],
+    "missing": [
+      "tradeVolumeAtBid",
+      "tradeVolumeAtAsk",
+      "transaction",
+      "actualLastTrade",
+      "dynamicBookEvents",
+      "replenishment",
+      "eventLevelOFI"
+    ]
+  },
+  "officialSourceCapability": {
+    "quote": [
+      "total.tradeVolume",
+      "total.tradeVolumeAtBid",
+      "total.tradeVolumeAtAsk",
+      "total.transaction",
+      "lastTrade",
+      "bids",
+      "asks"
+    ],
+    "trades": [
+      "bid",
+      "ask",
+      "price",
+      "size",
+      "time",
+      "serial"
+    ],
+    "volumes": [
+      "price",
+      "volume",
+      "volumeAtBid",
+      "volumeAtAsk"
+    ],
+    "websocket": [
+      "books",
+      "trades"
+    ],
+    "openingInsideOutsideExclusion": true
+  },
+  "structuralFalsification": {
+    "sameOHLCVCanRepresentOppositeLatentMechanisms": true,
+    "deterministicOHLCVTransformCannotRecoverMissingOrderFlow": true,
+    "highEffortLowProgressIsMechanismNeutral": true,
+    "classicDivergenceIsComparatorNotMechanismProof": true
+  },
+  "futurePressureContract": {
+    "intervalOnly": true,
+    "classifiedVolumeCoverage": "(deltaAtBid + deltaAtAsk) / deltaTradeVolume",
+    "pressureProxy": "(deltaAtAsk - deltaAtBid) / (deltaAtAsk + deltaAtBid)",
+    "name": "tradePressureProxy",
+    "neverCall": "true OFI / ground-truth aggressor side",
+    "monotonicSameSessionRequired": true,
+    "counterReset": "UNKNOWN",
+    "openingAuctionSeparate": true
+  },
+  "identifiabilityLadder": [
+    {
+      "stage": "A",
+      "data": "OHLCV",
+      "can": "participation,response,persistence,acceptance",
+      "cannot": "side,replenishment"
+    },
+    {
+      "stage": "B",
+      "data": "AtBid/AtAsk + transaction",
+      "can": "coarse pressure/activity",
+      "cannot": "replenishment,true OFI"
+    },
+    {
+      "stage": "C",
+      "data": "sparse book snapshots",
+      "can": "spread/depth/static imbalance",
+      "cannot": "between-snapshot resiliency"
+    },
+    {
+      "stage": "D",
+      "data": "dense trades + book events",
+      "can": "event-level pressure/replenishment candidates",
+      "cannot": "guaranteed causal motive"
+    }
+  ],
+  "status": "IDENTIFIABILITY_BOUNDARY_FROZEN / NO_MATURITY_UPLIFT / FORMAL_UNCHANGED"
+}
