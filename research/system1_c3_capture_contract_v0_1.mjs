@@ -63,10 +63,10 @@ export function buildC3ResearchCaptureContract(c2Ledger,{
   })).sort((a,b)=>a.captureSource.localeCompare(b.captureSource)||a.symbol.localeCompare(b.symbol));
 
   const extraCalls=sampledShadow.length*C3_CAPTURE_SLOTS.length;
-  const budget=Number(providerBudgetCallsPerSession);
-  const budgetStatus=Number.isFinite(budget)&&budget>=0
-    ? (extraCalls<=budget?"PASS":"FAIL")
-    : "UNKNOWN";
+  const budget=typeof providerBudgetCallsPerSession==="number"&&Number.isFinite(providerBudgetCallsPerSession)&&providerBudgetCallsPerSession>=0
+    ? providerBudgetCallsPerSession
+    : null;
+  const budgetStatus=budget===null?"UNKNOWN":(extraCalls<=budget?"PASS":"FAIL");
 
   return {
     schemaVersion:"SYSTEM1_C3_RESEARCH_CAPTURE_CONTRACT_V0_1",
@@ -78,7 +78,7 @@ export function buildC3ResearchCaptureContract(c2Ledger,{
     eligibleShadowOnlyN:shadowOnly.length,capturedShadowOnlyN:sampledShadow.length,
     shadowSamplingFraction:shadowOnly.length?sampledShadow.length/shadowOnly.length:null,
     extraCandleCallsPerSession:extraCalls,
-    providerBudgetCallsPerSession:Number.isFinite(budget)&&budget>=0?budget:null,
+    providerBudgetCallsPerSession:budget,
     providerBudgetStatus:budgetStatus,
     cohort,
     excludedShadowSymbols:shadowOnly.filter(x=>!shadowSet.has(x.symbol)).map(x=>x.symbol).sort(),
