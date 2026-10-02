@@ -2486,7 +2486,7 @@
         "ASSET_PRICING_FACTOR_CHECKPOINT.md",
         "ASSET_PRICING_FACTOR_RESEARCH.md"
       ],
-      "maturityPct": 6.7,
+      "maturityPct": 13.3,
       "modules": [
         {
           "id": "D19-01",
@@ -2511,22 +2511,22 @@
         {
           "id": "D19-03",
           "name": "Value價值因子",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Value價值因子」。學習範圍：研究資產定價、風格因子與市場異象。任何因子都必須與 D03/D07/D08/D09 等既有原始訊號做中性化／冗餘比較，控制 data snooping、多重測試、存活者偏誤、PIT、成本、容量與 Regime；只有殘差增量才可視為獨立 Alpha 候選。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論與定義開始，建立 D19-03 的機制、反證與資料需求；不得直接進 Formal。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "L2 / MECHANISM_AND_FALSIFICATION_DEFINED",
+          "next": "建立台股PIT財報first-known、原始/重編值、市值分母與公司行動資料契約；完成value對size/profitability/investment/liquidity/industry中性化後再考慮L3。"
         },
         {
           "id": "D19-04",
           "name": "Cross-sectional Momentum橫截面動能因子",
-          "level": "L0",
-          "maturityPct": 0,
+          "level": "L2",
+          "maturityPct": 40,
           "learningScope": "聚焦「Cross-sectional Momentum橫截面動能因子」。學習範圍：研究資產定價、風格因子與市場異象。任何因子都必須與 D03/D07/D08/D09 等既有原始訊號做中性化／冗餘比較，控制 data snooping、多重測試、存活者偏誤、PIT、成本、容量與 Regime；只有殘差增量才可視為獨立 Alpha 候選。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論與定義開始，建立 D19-04 的機制、反證與資料需求；不得直接進 Formal。"
+          "levelMeaning": "機制＋反證已定義",
+          "status": "L2 / MECHANISM_AND_FALSIFICATION_DEFINED",
+          "next": "建立台股PIT報酬、停牌/漲跌停、下市、借券可得性、交易成本與regime資料契約；完成與D03/D09重複性測試後再考慮L3。"
         },
         {
           "id": "D19-05",
@@ -2609,10 +2609,10 @@
           "next": "從理論與定義開始，建立 D19-12 的機制、反證與資料需求；不得直接進 Formal。"
         }
       ],
-      "status": "RESEARCH_ACTIVE / D19-01_L2 / D19-02_L2 / FORMAL_CORE_UNCHANGED",
-      "exactNextContinuationPoint": "D19-03：Value價值因子由理論→機制→反證；並建立D19-01/D19-02升L3所需台股PIT來源圖與可重播資料契約。",
+      "status": "RESEARCH_ACTIVE / D19-01_TO_D19-04_L2 / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "D19-05與D19-06：品質/獲利能力、投資/資產成長由理論→機制→反證；同時建立D19-01至D19-04升L3所需台股PIT來源圖與可重播資料契約。",
       "lastResearchUpdate": "2026-10-02T22:05:00+08:00",
-      "researchNote": "Stage 1 completed: D19-01 and D19-02 reached L2 after theory, mechanism, counterevidence, Taiwan-conflict review, PIT/replay/data-quality/redundancy/cost requirements. No Formal promotion."
+      "researchNote": "Stage 2 completed: D19-03 and D19-04 reached L2 after competing mechanisms, Taiwan counterevidence, PIT/replay/data-quality/redundancy/cost requirements. D19-01 through D19-04 are L2; no Formal promotion."
     },
     {
       "id": "D20",
