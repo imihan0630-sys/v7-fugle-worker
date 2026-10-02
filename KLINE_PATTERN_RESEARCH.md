@@ -22515,3 +22515,19 @@ The falsification ladder is explicit. A structural-zone effect must survive prio
 Taiwan historical-high evidence is retained as a direct anti-veto counterexample: after a true historical-high break, the sign can switch toward underreaction/momentum. Therefore approach, first break, holding above, reentry and failed break remain separate lifecycle states.
 
 No outcome data were inspected. RG2 predictive incrementality remains UNKNOWN. D01 remains 51.7%. Formal Core LOCKED.
+
+# DL-010 — RG2 executable relation specification and cross-lane ownership (2026-10-02)
+
+New research-only artifacts:
+- research/pattern_rg2_relation_v0_1.mjs
+- research/test_pattern_rg2_relation_v0_1.mjs
+- research/pattern_rg2_nested_resistance_fixtures_v0_1.json
+- research/PATTERN_RG2_CROSS_LANE_OWNERSHIP_V0_1.md
+
+The RG2 relation calculator is intentionally descriptive and threshold-free. It calculates geometry/lifecycle relations but emits no BUY/SELL state, no resistance score and no hard veto. Negative available-air is preserved, not clipped or assigned a direction.
+
+Twelve adversarial cases are defined, but execution evidence is not claimed in this chat. Status remains DEFINED_NOT_YET_EXECUTED.
+
+Cross-lane ownership is now explicit to prevent research drift: Pattern owns structural geometry; Corporate Actions owns continuity spaces; D02 owns price-volume acceptance; Target-RR owns target/RR semantics; round-price research owns tick proximity; Microstructure owns auction/order-book mechanics; Technical Indicator research owns the shared multi-timeframe overlap taxonomy.
+
+No outcome join. Alpha UNKNOWN. D01 51.7%. Formal Core LOCKED.
