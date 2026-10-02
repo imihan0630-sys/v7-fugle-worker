@@ -1,0 +1,224 @@
+{
+  "schemaVersion": "0.1",
+  "modules": [
+    "D12-13",
+    "D12-14",
+    "D12-15",
+    "D12-16"
+  ],
+  "name": "Greeks / IV-RV / VRP / volatility-surface integrated semantics and falsification contract",
+  "status": "CONCEPT_AND_FALSIFICATION_FROZEN__TAIWAN_PIT_EVIDENCE_PENDING",
+  "formalCoreImpact": "NONE",
+  "updatedAt": "2026-10-02T20:04:00+08:00",
+  "sharedConventions": {
+    "underlyingReference": "Freeze spot-index versus futures-underlying convention by experiment; never mix silently.",
+    "optionIdentity": [
+      "contractCode",
+      "expiry",
+      "strike",
+      "callPut",
+      "session",
+      "observedAt"
+    ],
+    "dte": "Exact expiry/date/time convention required; calendar-day versus trading-day DTE is versioned.",
+    "rateDividendForward": "Risk-free rate, dividend/forward method and source clock are versioned inputs.",
+    "quoteQuality": [
+      "bid",
+      "ask",
+      "last",
+      "volume",
+      "openInterest",
+      "zeroBidFlag",
+      "spreadQuality",
+      "staleFlag"
+    ],
+    "ivMethod": "IV inversion model, bounds, filters, interpolation/extrapolation and solver tolerances are part of feature identity.",
+    "units": "Freeze whether volatility is decimal or percentage-point, variance or volatility, per-point or per-1%-move, annualized or horizon-specific.",
+    "unknownRule": "Missing/illiquid/unidentified inputs => UNKNOWN, never synthetic zero."
+  },
+  "D12_13": {
+    "name": "Greeks: Delta / Gamma / Vega / Theta",
+    "coreSemantics": {
+      "delta": "Local first-order option-price sensitivity to underlying movement; also a local hedge-ratio object under a frozen model. It is not a probability oracle or market-direction vote.",
+      "gamma": "Local change in Delta per unit underlying move. Long standard calls/puts are positive Gamma; short positions are negative. Gamma magnitude is typically largest near ATM and can change rapidly near expiry.",
+      "vega": "Local option-price sensitivity to an implied-volatility change. Unit convention must state whether one 'vol point' means 1 percentage point.",
+      "theta": "Local option-price sensitivity to passage of time under frozen clock/model assumptions. Long-option Theta is generally negative in standard cases, but portfolio position, rates/dividends and nonstandard structures prevent a universal sign rule."
+    },
+    "jointRiskRule": "Greeks interact and are state-dependent. A Delta-only or Vega-only narrative must not ignore simultaneous Gamma/Theta/IV changes.",
+    "publicPositionGuard": "Contract Greeks are computable conditional on model inputs; market-wide signed dealer exposure additionally requires position-side ownership. Reuse D12-08 identifiability firewall.",
+    "candidateResearchObjects": [
+      "deltaEquivalentMagnitude",
+      "gammaMagnitude",
+      "vegaMagnitude",
+      "thetaMagnitude",
+      "gammaToThetaRatio",
+      "vegaToThetaRatio"
+    ],
+    "prohibitedInterpretations": [
+      "Delta = probability of profit",
+      "positive Gamma = bullish",
+      "negative Theta = bearish",
+      "high Vega = volatility will rise",
+      "Call/Put label alone determines market-maker Gamma sign"
+    ],
+    "falsification": [
+      "Compare Greek-derived features against simpler moneyness/DTE/OI/liquidity baselines.",
+      "Sensitivity to model, underlying convention, IV inversion and quote filters.",
+      "Expiry versus non-expiry regimes.",
+      "Leave-one-strike/expiry robustness.",
+      "No stock-level use unless index/sector controls and incremental value are demonstrated."
+    ],
+    "maturityDecision": {
+      "from": "L0",
+      "to": "L2",
+      "reason": "Mechanism, sign/unit/model guards, identifiability limits and falsification are now explicit; no Taiwan prospective PIT/OOS evidence for L3."
+    }
+  },
+  "D12_14": {
+    "name": "IV-RV Spread",
+    "coreSemantics": {
+      "contemporaneousProxy": "impliedVariance_t minus a frozen past-only forecast/proxy of physical future variance. This is a research proxy, not automatically the structural variance risk premium.",
+      "trailingProxy": "IV minus trailing realized-volatility/variance may describe richness versus recent realized conditions but mixes backward-looking realized state with forward option pricing.",
+      "futureRealized": "Future realized variance over the matched horizon is an outcome and is unavailable at t."
+    },
+    "requiredHorizonMatch": "Implied horizon and physical-variance forecast/outcome must match as closely as possible; do not compare 30-day implied risk with arbitrary 5-day realized dispersion without an explicit mapping.",
+    "estimatorGuard": "D04 rolling close-to-close RV5/RV20 is not the same estimator as academic intraday realized variance. Preserve estimator identity.",
+    "unitsGuard": "Variance-minus-variance preferred for VRP semantics; volatility-minus-volatility must be named IV-RV volatility spread and not silently squared/unsquared.",
+    "candidates": [
+      "impliedMinusTrailingVariance",
+      "impliedMinusForecastVariance",
+      "impliedToTrailingVolRatio",
+      "spreadZScorePastOnly"
+    ],
+    "falsification": [
+      "Must add information beyond raw VIX/IV level/change and D04 ATR/realized-volatility Regime.",
+      "If only future realized variance produces the result, classify LOOK_AHEAD.",
+      "Test multiple frozen physical-variance forecasts without outcome-selected winner switching.",
+      "Stratify expiry, event, liquidity and surface-quality states."
+    ],
+    "maturityDecision": {
+      "from": "L0",
+      "to": "L2",
+      "reason": "Existing D12-05 VRP semantics plus D04 realized-volatility estimator guard are reconciled into a dedicated IV-RV contract; Taiwan PIT evidence remains pending."
+    }
+  },
+  "D12_15": {
+    "name": "Volatility Risk Premium",
+    "signConvention": "VRP = risk-neutral expected variance minus physical expected variance. Literature using the opposite sign must be transformed explicitly, never mixed.",
+    "structuralDefinition": "Difference between risk-neutral expected future variance embedded in option prices and physical expected future variance over a matched horizon.",
+    "exPostMeasure": "Option-implied variance at t minus subsequently realized future variance is an ex-post realized premium/payoff estimator, not a live feature at t.",
+    "modelFreeGuard": "Evidence from classic aggregate-return research depends materially on model-free option-implied variance and high-frequency realized-variation measurement; Black-Scholes IV minus daily historical volatility is not the same object.",
+    "horizonGuard": "Published U.S./international return-predictability evidence is strongest at intermediate horizons in some samples; it does not authorize a Taiwan next-day directional rule.",
+    "economicInterpretation": [
+      "compensation for variance/tail-risk bearing",
+      "risk aversion/state price effects",
+      "expected physical variance"
+    ],
+    "candidates": [
+      "modelFreeVRPResearch",
+      "forecastBasedVrpProxy",
+      "vrpTermStructure"
+    ],
+    "falsification": [
+      "Compare against VIX/IV level, IV-RV proxy, skew, rates/global risk and Taiwan Regime.",
+      "Test whether predictability survives alternative surface construction and realized-variance estimators.",
+      "Horizon pre-registration: next-open/next-session risk first; D5/D20 separately; no horizon shopping.",
+      "International/U.S. literature is mechanism evidence, not Taiwan Formal evidence."
+    ],
+    "maturityDecision": {
+      "from": "L0",
+      "to": "L2",
+      "reason": "Structural versus proxy versus ex-post semantics, horizon/model dependence and falsification are frozen; no source-attested Taiwan VRP series or OOS outcome evidence exists."
+    }
+  },
+  "D12_16": {
+    "name": "Volatility Surface / Smile",
+    "surfaceIdentity": {
+      "axes": [
+        "expiry/time-to-maturity",
+        "log-moneyness or frozen Delta convention"
+      ],
+      "output": "implied volatility or total implied variance",
+      "lowDimensionalFactors": [
+        "level",
+        "slope/skew",
+        "curvature/smile",
+        "term slopes/interactions"
+      ]
+    },
+    "constructionRisk": "Sparse/noisy option quotes require interpolation/extrapolation. Surface method, quote filters and arbitrage constraints can materially change downstream variance/skew/VRP estimates.",
+    "arbitrageChecks": [
+      "calendar consistency",
+      "butterfly/strike convexity or equivalent no-static-arbitrage test",
+      "positive/valid option-price bounds"
+    ],
+    "quoteCoverage": [
+      "strikeCoverage",
+      "expiryCoverage",
+      "bidAskQuality",
+      "zeroBidShare",
+      "surfaceFitError",
+      "extrapolationShare"
+    ],
+    "methodVersions": [
+      "direct slice interpolation",
+      "SVI/eSSVI or other parametric fit",
+      "arbitrage-constrained nonparametric fit"
+    ],
+    "taiwanEvidenceUse": "Recent TAIFEX thesis evidence that slope/curvature were more OOS-predictable than level is hypothesis-generating only because it is a master's thesis and addresses surface-factor forecasting/economic strategies, not this project's 18:10 stock-selection objective.",
+    "candidates": [
+      "surfaceLevel",
+      "downsideSlope",
+      "upsideSlope",
+      "curvature",
+      "nearFarSlopeDifference",
+      "surfaceShock",
+      "surfaceCoverage",
+      "surfaceFitQuality"
+    ],
+    "falsification": [
+      "Re-estimate results across at least two pre-specified reasonable construction methods.",
+      "Reject features whose sign/magnitude depends mainly on one interpolation/extrapolation choice.",
+      "Require quote-quality/coverage floors before surface factor is non-UNKNOWN.",
+      "Compare slope/curvature against simpler skew and term-structure features from D12-07.",
+      "Transaction-cost/Theta decay must be included before claiming tradable economic value."
+    ],
+    "maturityDecision": {
+      "from": "L0",
+      "to": "L2",
+      "reason": "Surface identity, quote/model/arbitrage risks, redundancy hierarchy and Taiwan-specific secondary evidence are defined; no validated Taiwan PIT surface receipt/builder for L3."
+    }
+  },
+  "jointValidationOrder": [
+    "D04 ATR / realized-volatility Regime",
+    "D12-05 TAIWAN VIX level/change",
+    "D12-07 simple skew / term structure",
+    "D12-11 liquidity / quote-quality state",
+    "then D12-13..16 complex Greek/VRP/surface candidates"
+  ],
+  "evidenceHierarchy": {
+    "primaryMechanism": [
+      "CME Greek definitions",
+      "peer-reviewed variance-risk-premium literature",
+      "peer-reviewed volatility-surface construction literature"
+    ],
+    "secondaryTaiwan": [
+      "TAIFEX option-market literature",
+      "2026 NCCU master's thesis on TAIFEX IV-surface factor predictability"
+    ],
+    "promotionRule": "Secondary thesis evidence may generate hypotheses but cannot alone support L3/L4 or Formal promotion."
+  },
+  "noFormalUse": [
+    "No Greek score or directional vote.",
+    "No IV-RV/VRP risk veto.",
+    "No volatility-surface factor ranking weight.",
+    "No position-size or entry timing change."
+  ],
+  "exactNext": [
+    "Freeze admissible TAIFEX historical/statistical option-chain source and automated-use terms separately from MIS live-page restrictions.",
+    "Build research-only option-chain parser/quality receipt from permitted historical/statistical source for replay QA.",
+    "Freeze surface method V0.1 plus quote/admissibility/arbitrage tests and compare simple skew baselines before complex surface factors.",
+    "Acquire source-attested independent Taiwan dates before L3.",
+    "Only after PIT/replay coverage gates pass, preregister OOS risk outcomes and incremental tests; Formal remains locked."
+  ]
+}
