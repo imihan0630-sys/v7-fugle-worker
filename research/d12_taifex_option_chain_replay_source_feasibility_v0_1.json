@@ -1,0 +1,143 @@
+{
+  "schemaVersion": "0.1",
+  "name": "D12 TAIFEX option-chain replay source feasibility",
+  "modules": [
+    "D12-06",
+    "D12-07",
+    "D12-08",
+    "D12-11",
+    "D12-13",
+    "D12-14",
+    "D12-15",
+    "D12-16"
+  ],
+  "status": "OFFICIAL_EOD_REPLAY_SOURCE_FEASIBLE__1810_FIRST_KNOWN_NOT_PROVEN",
+  "formalCoreImpact": "NONE",
+  "updatedAt": "2026-10-02T20:12:00+08:00",
+  "officialSources": {
+    "dailyReport": {
+      "url": "https://www.taifex.com.tw/enl/eng3/optDailyMarketReport",
+      "availabilityNote": "Table available from 2001-12-24 according to TAIFEX.",
+      "fieldsObserved": [
+        "Contract",
+        "Contract Month(Week)",
+        "Contract Date",
+        "Strike Price",
+        "Call/Put",
+        "Open",
+        "High",
+        "Low",
+        "Last Traded Price",
+        "Settlement Price",
+        "Change",
+        "Change%",
+        "Volume",
+        "Open Interest",
+        "Best Bid",
+        "Best Ask",
+        "Historical High",
+        "Historical Low"
+      ],
+      "useClass": "EOD_OR_SESSION_REPORT_REPLAY_QA",
+      "decisionClockGuard": "Do not assume displayed historical rows were known at 18:10 without preserved publication/capture evidence."
+    },
+    "historicalDownload": {
+      "url": "https://www.taifex.com.tw/enl/eng3/optDailyMarketView",
+      "dailyWindowLimit": "30 days per query according to TAIFEX English page",
+      "annualZip": true,
+      "productLaunchBackHistory": true,
+      "contractDateFieldFrom": "2025-12-08 regular session",
+      "useClass": "LONG_HISTORY_METHOD_QA"
+    },
+    "recentTrades": {
+      "url": "https://www.taifex.com.tw/cht/3/optPrevious30DaysSalesData",
+      "recentTradingDays": 30,
+      "formats": [
+        "csv",
+        "rpt"
+      ],
+      "excludes": "block trades per TAIFEX page note",
+      "useClass": "RECENT_TRANSACTION_REPLAY_QA",
+      "decisionClockGuard": "File-page timestamp/download availability is not equivalent to historical 18:10 first-known unless prospectively attested."
+    },
+    "vixStatistics": {
+      "url": "https://www.taifex.com.tw/cht/7/vixMinNew",
+      "currentDateRowsObserved": [
+        "2026/10/02",
+        "2026/10/01"
+      ],
+      "numericExtractionState": "NOT_ESTABLISHED_THROUGH_CURRENT_AUDITED_TEXT_JSON_PATH",
+      "useClass": "OFFICIAL_STATISTICAL_REFERENCE"
+    },
+    "liveMis": {
+      "url": "https://mis.taifex.com.tw/futures/VolatilityQuotes/",
+      "auditState": "REDIRECTS_TO_DISCLAIMER_UNDER_AUDITED_FETCH_PATH",
+      "automatedUse": "NOT_AUTHORIZED_BY_THIS_AUDIT",
+      "useClass": "DO_NOT_AUTOMATE"
+    }
+  },
+  "sessionSemantics": {
+    "afterHoursAttribution": "TAIFEX attributes after-hours data to the following regular trading date.",
+    "contractDateChange": "From regular session 2025-12-08, daily option data include Contract Date field per TAIFEX note.",
+    "rulesVersionRequired": true
+  },
+  "surfaceReplayMinimum": {
+    "optionFields": [
+      "expiry/contractDate",
+      "strike",
+      "callPut",
+      "price candidate",
+      "bestBid",
+      "bestAsk",
+      "volume",
+      "openInterest"
+    ],
+    "additionalInputs": [
+      "underlying/forward reference",
+      "risk-free rate",
+      "dividend/forward convention",
+      "exact DTE clock"
+    ],
+    "qualityDerived": [
+      "mid",
+      "spread",
+      "zeroBidFlag",
+      "quoteCoverage",
+      "strikeCoverage",
+      "expiryCoverage",
+      "staleOrMissing"
+    ],
+    "sourceLimit": "Daily reports are not intraday quote snapshots; settlement/last/best quotes may represent different timing/semantics and must not be mixed without method label."
+  },
+  "classification": {
+    "canSupportNow": [
+      "historical contract identity/schema QA",
+      "EOD IV inversion/parser testing",
+      "surface interpolation/arbitrage sensitivity studies",
+      "simple skew versus complex surface comparison on same EOD parent rows",
+      "recent transaction parser/session/date-attribution QA"
+    ],
+    "cannotSupportWithoutMoreEvidence": [
+      "strict 18:10 first-known option surface",
+      "prospective 18:10 TAIWAN VIX",
+      "live automated MIS capture",
+      "historical dealer inventory by strike/expiry",
+      "Formal System1/System2 feature promotion"
+    ]
+  },
+  "falsification": [
+    "Run at least two frozen surface constructions on identical parent rows and quantify factor disagreement.",
+    "Treat no-bid/wide-spread/low-coverage nodes as missing or low-quality rather than smooth them into certainty.",
+    "Compare Greek/surface features against raw moneyness/DTE/OI/simple skew baselines.",
+    "Separate regular and after-hours data and preserve following-session attribution.",
+    "Do not infer first-known historical clock from the current completeness of an annual ZIP."
+  ],
+  "maturityImpact": "NO_ADDITIONAL_L3_PROMOTION; SOURCE_FEASIBILITY_FOR_METHOD_QA_ONLY",
+  "exactNext": [
+    "Obtain one permitted TAIFEX option daily/annual file as a raw QA parent without asserting historical first-known.",
+    "Freeze exact header/schema mapping and build pure research-only parser with adversarial row tests.",
+    "Implement surface-method V0.1 only after quote-price semantics are frozen.",
+    "Use recent transaction files to test session/date attribution and aggregation, not to fabricate prior 18:10 snapshots.",
+    "Pursue authorized prospective source only after entitlement/clock contract is explicit."
+  ]
+}
