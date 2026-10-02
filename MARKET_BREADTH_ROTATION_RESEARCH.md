@@ -1681,3 +1681,93 @@ Formal Core unchanged.
 
 ### Exact next
 BR-037: build an outcome-blind `SIZE_LEADERSHIP_RECEIPT` from official total-return index values at D1/D5/D20/D60; preserve source/knownAt clocks and add sector/liquidity controls before any outcome test.
+
+
+## BR-037 / BR-039 — First official size-state receipt and official TWSE stock breadth PIT receipt
+
+Artifacts:
+- `research/br037_size_leadership_receipt_20261001_v0_1.json`
+- `research/br039_twse_advance_decline_receipt_20261002_v0_1.json`
+
+### BR-037 — first official Taiwan size-state receipt
+
+The first common-complete total-return-index receipt is frozen at 2026-10-01 because the 2026-10-02 official page had:
+- Taiwan 50 price index available but TRI = `--`;
+- Mid-Cap 100 price index available but TRI = `--`;
+- Small-Cap 300 TRI already available.
+
+Therefore 2026-10-02 was **not** mixed across price/TR bases.
+
+Official total-return returns as of 2026-10-01:
+
+| Horizon | Taiwan 50 | Mid-Cap 100 | Small-Cap 300 |
+| --- | ---: | ---: | ---: |
+| D1 | +1.0808% | +0.1704% | +0.4410% |
+| D5 | +1.0472% | +1.4561% | +1.7980% |
+| D20 | +3.7414% | +1.1876% | +0.8257% |
+| D60 | +5.4433% | -0.4964% | -4.4239% |
+
+This produces a cross-horizon conflict:
+- D5: small > mid > large;
+- D20/D60: large > mid > small.
+
+Hence `SMALL_LEAD = RISK_ON` is not an admissible one-line interpretation.
+A short-horizon small-cap diffusion state can coexist inside a medium-horizon large-cap leadership regime.
+
+D09-08 remains L3: first official state receipt is now frozen, but no outcome/OOS promotion is justified.
+
+### BR-039 — official TWSE stock breadth
+
+Official TWSE 2026-10-02 stock-only counts:
+- up 483, of which 24 limit-up;
+- down 506, of which 1 limit-down;
+- unchanged 91;
+- unmatched 0;
+- N/A / not-comparable 2.
+
+Comparable denominator:
+`483 + 506 + 91 = 1,080`.
+
+Derived:
+- advance share = 44.72%;
+- decline share = 46.85%;
+- unchanged = 8.43%;
+- net advance-minus-decline = -2.13 percentage points.
+
+Contemporaneously the TAIEX closed +0.25%.
+
+This is a direct Taiwan witness that:
+`CAP_WEIGHTED_INDEX_UP != POSITIVE_STOCK_COUNT_BREADTH`.
+
+### Universe firewall
+
+TWSE publishes both `Overall Market` and `Stocks` counts.
+The overall-market column includes non-stock instruments and must not be substituted for stock breadth.
+
+Research must preserve separately:
+1. official TWSE stock breadth;
+2. official TPEx stock breadth when available;
+3. System1 `TWSE_TPEX_COMBINED_FORMAL_NORMALIZED` strategy-universe breadth.
+
+No cross-universe denominator substitution is allowed.
+
+TWSE `N/A` includes cases such as ex-right/ex-dividend, new listing, resume trading or missing prior close; these are NOT_COMPARABLE for ordinary close-to-close A/D and are not coded as flat/up/down.
+
+### D09 maturity decisions
+
+`D09-04 漲跌家數／Advance-Decline: L2 -> L3`.
+
+Reason:
+official Taiwan stock-only daily up/down/unchanged counts expose decision-date PIT values with explicit comparison and N/A semantics. This is bounded Taiwan PIT data feasibility only.
+
+No promotion:
+- D09-12 remains L2;
+- D09-08 remains L3;
+- D09-05 remains L2 pending clean post-repair System1 history/selection lineage.
+
+Formal Core unchanged.
+
+### Exact next
+- BR-038: accumulate independent common-complete total-return size receipts.
+- BR-040: repeat TWSE stock breadth across dates, add TPEx and strategy-universe lanes without denominator mixing.
+- Only after multiple independent dates may index/breadth divergence states enter D09-12 interaction testing.
