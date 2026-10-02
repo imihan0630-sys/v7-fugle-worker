@@ -2016,3 +2016,24 @@ SC-042: define a dedicated shortage/supply-gap event contract requiring independ
 Prospectively append the next PMI release with native publication/capture clocks. Keep issuer order/backlog and stock outcomes closed until issuer-native disclosures are available.
 
 Formal Core unchanged.
+
+
+## SC-042 — Shortage / supply-gap events require an explicit multi-dimensional PIT contract
+
+Artifact:
+`research/sc042_shortage_supply_gap_event_contract_v0_1.json`
+
+A dedicated Taiwan shortage/supply-gap contract is now frozen. Supplier-delivery time alone is insufficient. A confirmed source-state requires explicit shortage/allocation/capacity-constraint evidence plus at least one operational consequence such as lead-time stress, production-schedule impact, inventory response or input-price pressure. Demand is stored separately and may be strong, weak or mixed.
+
+Official Taiwan evidence makes the contract executable:
+- 2026-07: capacity-limited key-material suppliers used selective order acceptance / quota allocation, while electronics/optical new orders and production were both 47.7. This is a direct warning against equating supply stress with uniformly strong end demand.
+- 2026-08: official release explicitly records material shortage, allocation, long lead times and rising key-material prices affecting production scheduling.
+- 2026-H1 outlook survey: raw-material/key-component shortage and defensive buffering actions are directly observable.
+- 2026-09 negative control: delivery time and input prices stayed high while new-order momentum slowed and inventory/customer inventory rose.
+
+This establishes `D10-08 L2 -> L3` for Taiwan PIT/source feasibility only. It does not establish issuer backlog, realized margin or predictive stock alpha.
+
+### Exact next
+Accumulate independent future supply-gap events under the same contract; add issuer-native allocation/capacity/order evidence before any company mapping; only then consider prospective/OOS effect tests.
+
+Formal Core unchanged.
