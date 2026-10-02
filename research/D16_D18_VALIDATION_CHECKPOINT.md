@@ -708,3 +708,202 @@ No Regime threshold, strategy gate, dynamic weight, Formal score, capital, execu
 6. Test whether missing/not-comparable/source-failure shares are state-dependent before any coverage threshold.
 7. Audit global-clock vs strategy-specific required-source dependencies as a separate architecture hypothesis; no runtime change.
 8. Regime-policy alpha remains closed until source occupancy, feature validity and strategy-cohort validity all pass.
+
+
+## 2026-10-02 continuation — three-day finalized evidence, A5 attribution repair, strategy-stage clock audit
+
+Durable artifacts:
+- `research/D16_DECISION_CLOCK_DIAGNOSTIC_ATTRIBUTION_V0_1.md`
+- `research/D16_STRATEGY_STAGE_CLOCK_DEPENDENCY_AUDIT_V0_1.md`
+
+Engineering correction:
+- PR #312 merged as `332cdd844583cf5a4f2bc070d0e3d821f4c2a4fd`;
+- final verified head `a177ca68690d7e59a602ee315ae7a4a280716229`;
+- System2 Research CI `36984225991` PASS;
+- V8 Repair CI `36984226112` PASS;
+- V8 Regression `36984225981` PASS;
+- correction affects diagnostic attribution only; no Decision Clock authorization or trading behavior changed.
+
+### D16 finalized prospective evidence through 2026-10-01
+
+Promotion-grade finalized trading dates:
+- 2026-09-29;
+- 2026-09-30;
+- 2026-10-01.
+
+Aggregate:
+- independentTradingDates = 3;
+- completeTradingDates = 0;
+- precisionEligibleDates = 0;
+- collectorContractConsistent = true;
+- candidateTaipeiTime = null;
+- exactDecisionClockAuthorized = false.
+
+All three dates:
+- selected immutable attempt-one scheduled artifacts;
+- coveragePromotionEligible = true;
+- sameSessionClockReady = false;
+- requiredReady = false;
+- candidateTimestamp = null;
+- do not count toward complete or precision-eligible dates.
+
+Therefore repeated incomplete dates are now structural evidence, not a one-day anomaly.
+
+### 2026-10-02 raw / not-yet-finalized evidence
+
+Do not increment finalized independent-date counts yet.
+
+TWSE A1:
+- 30/30 TARGET_DATE_NOT_PRESENT;
+- payload remained 2026-10-01 through the final observation;
+- no same-date READY inside the observation window.
+
+TPEx A1:
+- 13 TARGET_DATE_NOT_PRESENT;
+- 16 HTTP-200 NON_JSON_RESPONSE;
+- final observation READY;
+- firstReadyAt = 16:08:27.888 Asia/Taipei;
+- last observed NOT_READY = 15:58:11.726;
+- arrival lower bound = 148.195 minutes after 13:30 close;
+- arrival upper bound = 158.465 minutes;
+- bracket width = 10.269 minutes;
+- recordCount = 868.
+
+This is the first concrete TPEx prospective arrival bracket in this sequence, but it is not yet an exchange publication-time estimate because transport instability is mixed into the source path.
+
+### Publication latency != transport reliability
+
+TPEx has now shown three distinguishable states:
+- valid prior-date JSON;
+- HTTP 200 but non-JSON response;
+- valid same-date JSON / READY.
+
+Do not merge these into one NOT_READY bucket.
+
+A latency model built on an unstable transport path can measure collector/provider instability instead of publication timing.
+
+### D16 diagnostic attribution repair
+
+The daily evidence and finalized-date acceptance semantics already define A5 boundary failure correctly:
+A5 can miss a candidate boundary only after sameSessionClockReady is true and a candidate exists.
+
+Aggregation previously used:
+`a5AvailableByCandidate !== true`
+without requiring sameSessionClockReady.
+
+This incorrectly labeled dates with:
+- sameSessionClockReady = false;
+- candidateTimestamp = null;
+
+as A5 boundary failures in owner-review aggregation.
+
+PR #312 corrected:
+`sameSessionClockReady === true && a5AvailableByCandidate !== true`.
+
+Required interpretation:
+- A1/B2 incomplete + no candidate -> INCOMPLETE_REQUIRED_EVIDENCE, not A5 boundary miss;
+- A1/B2 ready + candidate exists + A5 late -> genuine A5_NOT_AVAILABLE_BY_CANDIDATE.
+
+This prevents root-cause frequency inflation and optimization effort being directed at the wrong source.
+
+### D16 contract inconsistency: global clock vs strategy requirements
+
+Current global daily `requiredReady` effectively depends on:
+- A1 TWSE;
+- A1 TPEx;
+- B2 prospective industry dependency;
+- A5 available by the computed candidate boundary.
+
+But frozen Limited Shadow `SHORT_MOMENTUM V0.1-CONTRACT` requires for non-INCOMPLETE evaluation:
+- TECHNICAL_STRUCTURE;
+- PRICE_VOLUME;
+- RISK_FRICTION.
+
+Its preregistry explicitly allows prospective breadth/sector gaps and global/macro context to remain UNKNOWN, and A5 is not a required family.
+
+Therefore:
+`GLOBAL_REQUIRED_SET != SHORT_MOMENTUM_NON_INCOMPLETE_REQUIRED_SET`.
+
+This confirms a contract inconsistency and makes a slowest-source tax plausible.
+
+It does NOT prove an earlier actionable strategy clock is safe because downstream shared ranking/capacity/execution may add legitimate dependencies.
+
+### Strategy-specific clock is still too coarse
+
+System 2 already separates:
+- Strategy Validity;
+- Entry Readiness.
+
+Research must extend this into a stage graph:
+
+1. SOURCE_READY;
+2. STRATEGY_VALIDITY_READY;
+3. ENTRY_READINESS_READY;
+4. SHARED_SELECTION_READY;
+5. EXECUTION_READY.
+
+The correct dependency object is:
+`strategyId × stageId -> required evidence/source contracts -> readiness state/time`.
+
+A thesis can be valid while entry timing or shared selection remains blocked.
+
+### SWING_GROWTH boundary
+
+SWING_GROWTH Limited Shadow requires:
+- FUNDAMENTAL_QUALITY;
+- INDUSTRY_THESIS.
+
+A5 can support the fundamental family.
+
+However the current B2 prospective observer is descriptive industry breadth/participation and explicitly does not itself assign an industry-thesis direction/strategy score.
+
+Therefore:
+`B2 SOURCE READY`
+does not automatically imply
+`INDUSTRY_THESIS READY`.
+
+Source readiness and strategy-semantic readiness remain separate evidence layers.
+
+### D18 implication
+
+Regime evidence must enter each strategy according to its declared role:
+- REQUIRED;
+- SUPPORTIVE;
+- CONTEXT_ONLY;
+- HARD_INVALIDATION;
+- WARNING.
+
+D18 must not silently turn Market Regime into a universal REQUIRED dependency for every strategy merely because a Regime layer exists.
+
+If Regime is CONTEXT_ONLY for a strategy stage, late Regime arrival cannot retroactively invalidate an earlier PIT-valid stage.
+
+No policy behavior is changed by this conclusion.
+
+### Maturity decision
+
+D16 overall remains 73.3%.
+
+D16-11 Data Provenance remains L3 / 60%:
+- prospective evidence count improved from 1 to 3 finalized independent dates;
+- diagnostic attribution is now more accurate;
+- but complete/precision dates remain 0.
+
+D16-14 Generation Alignment remains L3 / 60%:
+- strategy-stage dependency mismatch is now identified;
+- executable machine-readable stage dependency graph is still missing.
+
+D18 remains 40%; no D18 policy module gains OOS/Shadow evidence.
+
+FORMAL_OPTIMIZATION_CANDIDATE: NONE.
+
+## Exact next continuation — 2026-10-02
+
+1. Finalize 2026-10-02 only through the next-calendar-day acceptance artifact; do not count the raw run early.
+2. Read the next readiness aggregation after PR #312 and verify 9/29-10/01 are no longer falsely listed as A5 boundary failures.
+3. Build a research-only machine-readable strategy-stage dependency matrix for SHORT_MOMENTUM and SWING_GROWTH.
+4. Resolve exact A1-derived RISK_FRICTION and entry-readiness dependencies; do not assume all A1 fields share identical finality.
+5. Resolve whether any current B2 output is sufficient for SWING_GROWTH INDUSTRY_THESIS; default is NO until semantic mapping is explicit.
+6. Record hypothetical stage-ready timestamps prospectively without changing actual runtime.
+7. Only after stage graph + timestamps exist may global-vs-stage timing deltas be measured.
+8. Keep TPEx transport instability separate from publication latency.
+9. Continue TWSE source-family revalidation; no same-date A1 READY has yet been observed in the current four-day raw sequence.
