@@ -1,6 +1,6 @@
 # Shared Research Master Map
 
-Updated: 2026-10-01 06:33 Asia/Taipei
+Updated: 2026-10-02 16:40 Asia/Taipei
 Status: CANONICAL_SHARED_INDEX
 Scope: Cross-system research knowledge
 Formal Core impact: NONE
@@ -412,3 +412,39 @@ Status: CONTROL_SPEC_FROZEN / OUTCOME_CLOSED / FORMAL_LOCKED.
 - ROOT commits to the episode-item keyset; episode count never replaces parent coverage.
 - Outcome/later revisions never enter decision-time fingerprints.
 Status: FINGERPRINT_SPEC_FROZEN / RUNTIME_NO_GO / OUTCOME_CLOSED / FORMAL_LOCKED.
+
+
+### D03 reusable rule update — 2026-10-02
+
+Status: **MECHANISM_AND_FALSIFICATION_DEFINED / NOT_FORMAL_EVIDENCE**.
+
+Reusable cross-system rules from TI-460~473:
+
+1. **ROC duplication firewall.**
+   - For identical horizon and price space, standard percent ROC = `100 * retN`.
+   - Common Momentum index = `ROC + 100`.
+   - Same-horizon log return = `ln(1 + ROC/100)`, preserving rank order for positive prices.
+   - Therefore these representations must not receive separate votes/weights. Smoothed/delta ROC remains a same-price-family residual candidate only.
+
+2. **Raw price-difference scale firewall.**
+   - `C_t-C_(t-n)` is nominal-price-scale confounded; it can rank a high-priced +10% stock above a low-priced +15% stock.
+   - Normalizing by lagged price collapses back to ROC/retN.
+
+3. **EMA64 state-lineage firewall.**
+   - Standard EMA64 has mean sample age 31.5 bars, half-life ≈22.179 bars and ~73.677 bars to reduce old-state influence to 10%.
+   - A 65-bar local SMA-seeded EMA64 is not assumed replay-equivalent to a canonical long-history EMA64.
+   - Future System 2 EMA16/64 resonance evidence must preserve formulaVersion, stateConstructionMode, initializationAnchor, continuity/source/session versions and stateLineageId.
+
+4. **EMA16/64 + Impulse MACD confluence rule.**
+   - These are not exact aliases, but both are PRICE_OHLC-derived filters.
+   - Agreement begins as within-family confirmation / partial redundancy, not independent cross-family confluence.
+   - Residual value must survive direct returns, trend persistence, structure, volatility/Regime, cost and OOS/Shadow checks.
+
+5. **Prospective receipt discipline.**
+   - 2026-10-02 TWSE/TPEx session content is publicly present, but extracted chat fetch output is not treated as origin raw-byte observer evidence.
+   - The preregistered source/version gate remains 2/3 until receipt-equivalent raw capture exists.
+
+System-use rule:
+- System 1 / System 2 must not double-count retN/ROC/Momentum-index/log-return aliases;
+- System 2 must not reconstruct EMA64 from an arbitrary short rolling window for promotion-grade evidence without parity proof;
+- Formal Core remains LOCKED; `FORMAL_OPTIMIZATION_CANDIDATE = NONE`.
