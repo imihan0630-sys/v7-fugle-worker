@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-02T13:45:00+08:00",
+  "updatedAt": "2026-10-02 Asia/Taipei",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -1162,7 +1162,7 @@
         "CORPORATE_ACTIONS_CAPITAL_SUPPLY_CHECKPOINT.md",
         "EVENT_RISK_CHECKPOINT.md"
       ],
-      "maturityPct": 51.4,
+      "maturityPct": 54.3,
       "modules": [
         {
           "id": "D11-01",
@@ -1213,10 +1213,13 @@
         {
           "id": "D11-06",
           "name": "併購／處分／重大交易",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「併購／處分／重大交易」。學習範圍：除權息、增減資、分割、CB、庫藏股、併購、停復牌、重大訊息與指數調整；公告／生效時鐘；歷史價格連續性；負面證據完整性；事件窗與退出風險。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "TAIWAN_PIT_SOURCE_FEASIBLE / MULTI_STAGE_MA_STATE_MACHINE_FROZEN / OUTCOME_EVIDENCE_PENDING",
+          "evidence": "FSC acquisition/disposal rules define fact-occurrence, merger/acquisition lifecycle records, two-day disclosure, and revision/delay/termination clocks; Taiwan official source/data timing is research-replay feasible.",
+          "next": "Build immutable prospective M&A/asset-event state-transition receipts across independent dates; preregister outcome cohorts before inspecting returns."
         },
         {
           "id": "D11-07",
@@ -1240,10 +1243,13 @@
         {
           "id": "D11-09",
           "name": "財報／月營收／法說事件窗",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「財報／月營收／法說事件窗」。學習範圍：除權息、增減資、分割、CB、庫藏股、併購、停復牌、重大訊息與指數調整；公告／生效時鐘；歷史價格連續性；負面證據完整性；事件窗與退出風險。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "TAIWAN_PIT_SOURCE_FEASIBLE / DEADLINE_VS_PUBLICATION_CLOCK_SEPARATED / OUTCOME_EVIDENCE_PENDING",
+          "evidence": "TWSE reporting rules define financial-report, monthly-revenue and investor-conference clocks; monthly revenue is due by the 10th but actual publication time remains a separate PIT object.",
+          "next": "Prospectively capture actual publication versions for monthly revenue, financial reports and investor conferences with deadline/published/captured clocks."
         },
         {
           "id": "D11-10",
@@ -1963,7 +1969,7 @@
         "SUPPLY_CHAIN_LEAD_LAG_RESEARCH.md",
         "NEWS_EVENT_TRANSMISSION_RESEARCH.md"
       ],
-      "maturityPct": 40,
+      "maturityPct": 41.5,
       "modules": [
         {
           "id": "D17-01",
@@ -2073,10 +2079,13 @@
         {
           "id": "D17-13",
           "name": "Scheduled vs Unscheduled已知／未知事件",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「Scheduled vs Unscheduled已知／未知事件」。學習範圍：新聞來源分級、發布與first-known時間、半衰期、預期差、已反映程度、情緒、去重；直接／間接受益受害；族群與供應鏈傳導；事件後跳空、延續與反轉。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "TAIWAN_PIT_SOURCE_FEASIBLE / SCHEDULED_EXACT_WINDOW_DEADLINE_UNSCHEDULED_TAXONOMY_FROZEN / OUTCOME_EVIDENCE_PENDING",
+          "evidence": "TWSE recurring disclosure deadlines and investor-conference pre-event filing rules support reproducible scheduled/deadline states, while official material-disclosure capture supports conservative unscheduled first-known semantics.",
+          "next": "Accumulate independent prospective scheduled-exact, deadline-only, unscheduled and UNKNOWN cohorts with expected/observed source coverage before any outcome join."
         }
       ]
     },
