@@ -62,20 +62,17 @@ const C3_RESEARCH_CAPTURE_SLOTS=[
 ];
 const C3_RESEARCH_CLASSIFICATIONS=new Set(["FULL_SHORT_PASS","CONDITIONAL_SAFETY_UNKNOWN"]);
 
+const C3_RESEARCH_OPERATOR_LIMITS=Object.freeze({
+  providerLimitPerMinute:60,
+  maxSymbols:6,
+  maxCallsPerSlot:6,
+  callsPerSession:102
+});
+
 function c3ResearchLimits(env) {
-  const maxSymbols=Number(env?.C3_RESEARCH_MAX_SYMBOLS);
-  const maxCallsPerSlot=Number(env?.C3_RESEARCH_MAX_CALLS_PER_SLOT);
-  const callsPerSession=Number(env?.C3_RESEARCH_CALL_BUDGET_PER_SESSION);
-  const ready=Number.isInteger(maxSymbols)&&maxSymbols>0&&
-    Number.isInteger(maxCallsPerSlot)&&maxCallsPerSlot>0&&
-    Number.isInteger(callsPerSession)&&callsPerSession>=C3_RESEARCH_CAPTURE_SLOTS.length;
-  return {
-    ready,
-    maxSymbols:ready?maxSymbols:null,
-    maxCallsPerSlot:ready?maxCallsPerSlot:null,
-    callsPerSession:ready?callsPerSession:null,
-    reason:ready?null:"C3_CAPTURE_OPERATOR_LIMITS_UNSET"
-  };
+  const disabled=String(env?.C3_RESEARCH_CAPTURE_DISABLED||"").trim().toLowerCase()==="true";
+  if(disabled) return {ready:false,...C3_RESEARCH_OPERATOR_LIMITS,reason:"C3_CAPTURE_OPERATOR_DISABLED"};
+  return {ready:true,...C3_RESEARCH_OPERATOR_LIMITS,reason:null};
 }
 
 function c3ResearchDate(value) {
