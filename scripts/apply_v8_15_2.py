@@ -135,7 +135,8 @@ async function saveC3ResearchCohort(env,body) {
 
   const generationId=String(body?.generationId||"").trim();
   const sourceSessionDate=c3ResearchDate(body?.sessionDate);
-  const targetTradeDate=c3ResearchDate(body?.targetTradeDate);
+  const requestedTargetTradeDate=body?.targetTradeDate==null||String(body.targetTradeDate).trim()===""
+    ? null : c3ResearchDate(body.targetTradeDate);
   const sourceC1ContentDigest=String(body?.sourceC1ContentDigest||"").trim();
   const sourceC1UniverseDigest=String(body?.sourceC1UniverseDigest||"").trim();
   const sourceC2Fingerprint=String(body?.sourceC2Fingerprint||"").trim();
@@ -143,18 +144,23 @@ async function saveC3ResearchCohort(env,body) {
   const declaredMax=Number(body?.maxShadowSymbols);
   const declaredBudget=Number(body?.providerBudgetCallsPerSession);
 
-  if(!generationId||!sourceSessionDate||!targetTradeDate||
+  if(!generationId||!sourceSessionDate||
      !/^[0-9a-f]{64}$/i.test(sourceC1ContentDigest)||!/^[0-9a-f]{64}$/i.test(sourceC1UniverseDigest)||
      !/^[0-9a-f]{64}$/i.test(sourceC2Fingerprint)) throw new Error("C3_CAPTURE_SOURCE_PROVENANCE_INVALID");
+  if(body?.targetTradeDate!=null&&String(body.targetTradeDate).trim()!==""&&!requestedTargetTradeDate)
+    throw new Error("C3_CAPTURE_TARGET_DATE_INVALID");
   if(!Number.isInteger(declaredMax)||declaredMax<rows.length||declaredMax>limits.maxSymbols)
     throw new Error("C3_CAPTURE_MAX_SYMBOLS_EXCEEDS_OPERATOR_LIMIT");
   const requiredCalls=rows.length*C3_RESEARCH_CAPTURE_SLOTS.length;
   if(!Number.isInteger(declaredBudget)||declaredBudget<requiredCalls||declaredBudget>limits.callsPerSession||
      rows.length>limits.maxCallsPerSlot) throw new Error("C3_CAPTURE_PROVIDER_BUDGET_REJECTED");
 
-  await loadTradingCalendar(env,Number(sourceSessionDate.slice(0,4)));
-  if(targetTradeDate.slice(0,4)!==sourceSessionDate.slice(0,4)) await loadTradingCalendar(env,Number(targetTradeDate.slice(0,4)));
-  if(!isTradingDate(sourceSessionDate)||!isTradingDate(targetTradeDate)||nextTradingDate(sourceSessionDate)!==targetTradeDate)
+  const sourceYear=Number(sourceSessionDate.slice(0,4));
+  await loadTradingCalendar(env,sourceYear);
+  if(sourceSessionDate.slice(5,7)==="12") await loadTradingCalendar(env,sourceYear+1);
+  if(!isTradingDate(sourceSessionDate)) throw new Error("C3_CAPTURE_SOURCE_NOT_TRADING_SESSION");
+  const targetTradeDate=nextTradingDate(sourceSessionDate);
+  if(requestedTargetTradeDate&&requestedTargetTradeDate!==targetTradeDate)
     throw new Error("C3_CAPTURE_TARGET_NOT_NEXT_TRADING_SESSION");
 
   await ensureD1Schema(env);
