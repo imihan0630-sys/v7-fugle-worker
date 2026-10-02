@@ -67,10 +67,28 @@ function verifiedFormalBaseline(row,c2){
   return row;
 }
 function verifiedBarState(row,barStart){
-  if(row?.verified!==true||row?.barStart!==barStart) return null;
-  const depth=finite(row.depthScore);
-  if(depth===null||depth<0||typeof row.limitUp!=="boolean"||typeof row.lateStage!=="boolean") return null;
-  return {depthScore:depth,limitUp:row.limitUp,lateStage:row.lateStage};
+  if(row?.verified!==true||row?.barStart!==barStart||typeof row.limitUp!=="boolean") return null;
+  return {limitUp:row.limitUp,marketState:typeof row.marketState==="string"?row.marketState:null};
+}
+function verifiedSelectionContext(pair,c2){
+  const x=pair?.selectionContext,p=x?.provenance;
+  if(p?.authenticated!==true||p?.parentId!==c2.generationId||p?.sessionDate!==c2.sessionDate||
+     !Number.isFinite(ts(p?.knownAt))||ts(p.knownAt)>ts(c2.decisionAt)) return null;
+  return {
+    close:finite(x.close),depthScore:finite(x.depthScore),
+    lateStage:typeof x.lateStage==="boolean"?x.lateStage:null,
+    channel:["A","B"].includes(x.channel)?x.channel:null,
+    entryGeometry:x.entryGeometry&&typeof x.entryGeometry==="object"?x.entryGeometry:null
+  };
+}
+function geometryFromSelectionContext(ctx,c2){
+  const g=ctx?.entryGeometry;
+  if(!g||!(finite(g.stop)>0)||!(finite(g.target)>0)) return null;
+  const support=g.support==null?null:finite(g.support),breakout=g.breakout==null?null:finite(g.breakout);
+  if(g.support!=null&&!(support>0)) return null;
+  if(g.breakout!=null&&!(breakout>0)) return null;
+  return {authenticated:true,parentId:c2.generationId,sessionDate:c2.sessionDate,knownAt:c2.decisionAt,
+    entry:finite(g.entry),stop:g.stop,target:g.target,support,breakout};
 }
 function eligibleShortSymbols(c2){
   return c2.pairs.filter(p=>p?.short?.gateStatus==="PASS"&&Array.isArray(p?.short?.missingSafety)&&p.short.missingSafety.length===0)
@@ -109,10 +127,18 @@ export function auditC3LiveInputs(c2Ledger,{
     const blockers=[];
     if(duplicateSlots.length) blockers.push("DUPLICATE_15M_SLOT");
     if(missingSlots.length) blockers.push("INCOMPLETE_15M_SESSION");
-    const g=verifiedGeometry(geometry.get(symbol),c2);
+    const pair=c2.pairs.find(x=>String(x.symbol)===symbol);
+    const ctx=verifiedSelectionContext(pair,c2);
+    const explicitGeometry=verifiedGeometry(geometry.get(symbol),c2);
+    const g=explicitGeometry||geometryFromSelectionContext(ctx,c2);
     if(!g) blockers.push("GEOMETRY_UNVERIFIED");
-    const pc=verifiedPriorClose(prior.get(symbol),c2);
+    const explicitPrior=verifiedPriorClose(prior.get(symbol),c2);
+    const pc=explicitPrior>0?explicitPrior:ctx?.close;
     if(!(pc>0)) blockers.push("PRIOR_CLOSE_UNVERIFIED");
+    const selectionDepth=ctx?.depthScore;
+    if(!(selectionDepth>=0)) blockers.push("SELECTION_DEPTH_UNVERIFIED");
+    const selectionLateStage=ctx?.lateStage;
+    if(typeof selectionLateStage!=="boolean") blockers.push("SELECTION_LATE_STAGE_UNVERIFIED");
     const fb=verifiedFormalBaseline(formal.get(symbol),c2);
     if(!fb) blockers.push("FORMAL_BASELINE_RECEIPT_UNVERIFIED");
 
@@ -121,21 +147,19 @@ export function auditC3LiveInputs(c2Ledger,{
       const st=verifiedBarState(stateByKey.get(symbol+"|"+bar.start),bar.start);
       const missing=[];
       if(bar.volumeRatio===null) missing.push("VOLUME_RATIO");
-      if(!st) missing.push("DEPTH_LIMIT_LATE_STATE");
+      if(!st) missing.push("LIVE_LIMIT_STATE");
       if(missing.length) blockers.push("BAR_MICROSTRUCTURE_UNVERIFIED");
       adapted.push({
         endAt:bar.end,open:bar.open,high:bar.high,low:bar.low,close:bar.close,
-        volumeRatio:bar.volumeRatio,depthScore:st?.depthScore??null,
+        volumeRatio:bar.volumeRatio,depthScore:selectionDepth??null,
         gapPct:pc>0?round((bars[0].open/pc-1)*100,6):null,
-        completed:true,limitUp:st?.limitUp??null,lateStage:st?.lateStage??null,
-        missingMicrostructure:missing
+        completed:true,limitUp:st?.limitUp??null,lateStage:selectionLateStage??null,
+        selectionContextSemantics:true,liveMarketState:st?.marketState??null,missingMicrostructure:missing
       });
     }
     const uniqueBlockers=[...new Set(blockers)];
     const status=uniqueBlockers.length?"INPUT_BLOCKED":"READY";
-    const pair=c2.pairs.find(x=>String(x.symbol)===symbol);
-    const baseSetup=pair?.formal?.setupA===true?"A":pair?.formal?.setupB===true?"B":
-      (["A","B"].includes(geometry.get(symbol)?.baseSetup)?geometry.get(symbol).baseSetup:null);
+    const baseSetup=ctx?.channel||(["A","B"].includes(geometry.get(symbol)?.baseSetup)?geometry.get(symbol).baseSetup:null);
     if(status==="READY"&&!baseSetup) uniqueBlockers.push("BASE_SETUP_UNVERIFIED");
     const finalStatus=uniqueBlockers.length?"INPUT_BLOCKED":"READY";
     if(finalStatus==="READY"){
@@ -143,15 +167,17 @@ export function auditC3LiveInputs(c2Ledger,{
         geometry:g,formalBaseline:fb,bars:adapted});
     }
     rows.push({symbol,status:finalStatus,barCount:bars.length,missingSlots,duplicateSlots,
-      blockers:uniqueBlockers,depthStateAvailableBars:adapted.filter(x=>x.depthScore!==null).length,
+      blockers:uniqueBlockers,selectionDepthVerified:selectionDepth!==null&&selectionDepth!==undefined,
+      selectionLateStageVerified:typeof selectionLateStage==="boolean",
+      liveLimitStateAvailableBars:adapted.filter(x=>typeof x.limitUp==="boolean").length,
       volumeRatioAvailableBars:adapted.filter(x=>x.volumeRatio!==null).length,
       gapPctVerified:pc>0,geometryVerified:!!g,formalBaselineVerified:!!fb,
       researchOnly:true,decisionImpact:false});
   }
   const readyN=rows.filter(x=>x.status==="READY").length;
-  return {schemaVersion:"SYSTEM1_C3_LIVE_INPUT_AUDIT_V0_1",generationId:c2.generationId,sessionDate:c2.sessionDate,
+  return {schemaVersion:"SYSTEM1_C3_LIVE_INPUT_AUDIT_V0_2",generationId:c2.generationId,sessionDate:c2.sessionDate,
     eligibleN:rows.length,readyN,blockedN:rows.length-readyN,coveragePct:rows.length?round(readyN/rows.length*100):null,
-    rows,readyReceipts,missingMeansUnknown:true,depthScoreNeverImputed:true,limitStateNeverImputed:true,
+    rows,readyReceipts,missingMeansUnknown:true,selectionDepthNeverImputed:true,selectionLateStageNeverImputed:true,limitStateNeverImputed:true,
     economicSuperiority:"UNKNOWN",researchOnly:true,decisionImpact:false,formalCoreImpact:false,noTrade:true,noPush:true};
 }
 
