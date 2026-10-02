@@ -2269,3 +2269,36 @@ Formal Core remains LOCKED.
 2. Until that gate closes, continue outcome-blind mechanism/falsification on D03-13 multi-timeframe conflict and overlap among direct returns, EMA16/64 and Impulse MACD.
 3. Once genuinely closed, execute TI-005 KD-vs-RSI first and TI-006 MACD-vs-direct-trend second with equal-date residualized controls.
 4. Formal Core and all production selection/ranking/capital/monitoring/signal/push behavior remain unchanged.
+
+
+## TI-468 through TI-473 — EMA16/64 horizon / state-lineage guard (2026-10-02)
+
+Durable artifacts:
+- `research/TECHNICAL_INDICATOR_EMA16_64_HORIZON_WARMUP_V0_1.md`
+- `research/test_technical_indicator_ema16_64_horizon_warmup_v0_1.mjs`
+
+Key findings:
+- standard EMA16 mean age = 7.5 bars, half-life ≈5.538, 10%-residual age ≈18.397;
+- standard EMA64 mean age = 31.5 bars, half-life ≈22.179, 10%-residual age ≈73.677;
+- a 65-bar local SMA-seeded EMA64 is not universally replay-equivalent to long-history state;
+- synthetic witness: EMA64 last-65 delta ≈+0.333575 versus full history, while last-150 delta ≈-0.000482 on the same path;
+- EMA16/64 crossover is a difference of two filtered Close transforms, not a new raw-source family;
+- EMA16/64 + Impulse MACD remains partial/shared price-family confluence until residual value is proven;
+- future System 2 evidence requires canonical state-lineage and completed/provisional bar provenance;
+- D03-01 remains L3/60 and D03-13 remains L2/40; D03 stays 47.7%.
+
+Current status:
+`EMA64_65_BAR_LOCAL_RESEED_EQUIVALENCE = REJECTED_AS_ASSUMPTION`
+`EMA16_64_PLUS_IMPULSE = PARTIAL_REDUNDANCY_HIGH / RESIDUAL_VALUE_UNKNOWN`
+`SYSTEM2_EMA_STATE_LINEAGE = REQUIRED_BEFORE_INFERENCE`
+`MULTITIMEFRAME_AGREEMENT = HIERARCHICAL_CONTEXT_NOT_VOTE_COUNT`
+`D03_MATURITY = 47.7_PERCENT`
+`FORMAL_OPTIMIZATION_CANDIDATE = NONE`
+
+### Exact next continuation point after TI-473
+
+1. Preserve 47.7%; no theory-only maturity inflation.
+2. Raw-byte third-session gate remains 2/3; do not backfill extracted 10/2 content.
+3. Before System 2 resonance outcome testing, prove EMA64 canonical replay/state-lineage equivalence and keep EMA16/64 + Impulse as within-family evidence.
+4. When the raw receipt gate closes, TI-005 KD-vs-RSI remains first efficacy inference; TI-006 MACD-vs-direct-trend remains second.
+5. Formal Core and production behavior remain unchanged.
