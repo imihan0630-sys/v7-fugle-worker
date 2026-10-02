@@ -33,7 +33,7 @@
   "aggregate": {
     "domainCount": 22,
     "moduleCount": 297,
-    "maturityWeightedPct": 37.8
+    "maturityWeightedPct": 38.2
   },
   "domains": [
     {
@@ -1170,7 +1170,7 @@
       "anchors": [
         "SUPPLY_CHAIN_LEAD_LAG_RESEARCH.md"
       ],
-      "maturityPct": 53.3,
+      "maturityPct": 55,
       "modules": [
         {
           "id": "D10-01",
@@ -1235,10 +1235,12 @@
         {
           "id": "D10-08",
           "name": "缺貨／供需缺口事件",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「缺貨／供需缺口事件」。學習範圍：上下游圖譜、Lead-Lag、產能、庫存、報價、原物料、訂單與交期；供需缺口與定價能力；事件PIT時鐘；跨層級不對稱傳導；可自動化資料來源。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "DEDICATED_SHORTAGE_EVENT_CONTRACT / TAIWAN_PIT_SOURCE_FEASIBLE / NEGATIVE_CONTROL_INCLUDED / OUTCOMES_CLOSED",
+          "next": "Accumulate independent future shortage/supply-gap events under SC-042; add issuer-native allocation/capacity/order evidence before company mapping; no fixed bullish sign and no L4 before prospective/OOS evidence."
         },
         {
           "id": "D10-09",
