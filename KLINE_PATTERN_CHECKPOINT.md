@@ -497,3 +497,44 @@ Durable research detail: main `KLINE_PATTERN_RESEARCH.md` commit `a245b486dc60f2
 4. Preserve the simple260-high comparator and the full redundancy ladder in any future PATTERN-RG2 outcome design.
 5. Keep outcome joins closed until prospective Pattern parent/run coverage is COMPLETE and semantic runtime blockers clear.
 6. No hard resistance veto / no R09 / no Formal change.
+
+## Continuation update — DL-010A through DL-010D (2026-10-02)
+
+- RG2 now has an isolated research-only relation calculator:
+  - research/pattern_rg2_relation_v0_1.mjs
+- 12 adversarial RG2 cases are defined:
+  - research/test_pattern_rg2_relation_v0_1.mjs
+  - research/pattern_rg2_nested_resistance_fixtures_v0_1.json
+- IMPORTANT evidence boundary: the 12 RG2 cases are DEFINED_NOT_YET_EXECUTED in this chat. Do not claim 12/12 PASS without a reproducible Node run receipt.
+- The calculator is deliberately threshold-free:
+  - local below parent;
+  - boundary overlap;
+  - local above parent;
+  - first parent break;
+  - parent holding above;
+  - reentry;
+  - failure;
+  - no local break;
+  - future confirmation / semantic conflict / coordinate mutation blockers.
+- Negative availableAir is retained as a signed geometric value; it is not clipped and has no automatic bullish/bearish meaning.
+- Cross-lane definition ownership is frozen in:
+  research/PATTERN_RG2_CROSS_LANE_OWNERSHIP_V0_1.md
+- Canonical ownership:
+  Corporate Actions = continuity semantics;
+  Pattern = structural boundaries/zones/lifecycle;
+  Technical Indicator shared contract = multi-timeframe overlap taxonomy;
+  D02 = price-volume acceptance/persistence;
+  Round-price control = tick-aware proximity confound;
+  Microstructure = auction/VI/order-book mechanics;
+  Target-RR = target construction/RR semantics.
+- Pattern must not fork any of those definitions.
+- D01 remains 51.7%. Outcome joins remain closed. Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-010
+
+1. Obtain reproducible execution receipts for DL-008 16-case and RG2 12-case research tests; until then both remain TEST_EXECUTION_PENDING.
+2. Audit RG2 local/parent fields against existing Pattern observer persistence schema to identify missing prospective fields without wiring runtime.
+3. Freeze equal-horizon / calendar-boundary placebo objects for future PATTERN-RG2 inference.
+4. Preserve cross-lane canonical ownership; do not duplicate D02 acceptance, Target-RR target selection, Microstructure execution or Corporate Actions continuity logic.
+5. Prospective outcome join remains blocked until COMPLETE Pattern parent/run coverage and runtime semantic readiness.
+6. No R09 / no hard resistance veto / no Formal change.
