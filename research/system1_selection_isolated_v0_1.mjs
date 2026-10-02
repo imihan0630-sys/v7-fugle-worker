@@ -31,13 +31,20 @@ export function adaptC1PopulationPages(pages) {
   const header=headers[0];
   if(!header?.generationId||header?.readbackVerified!==true||!header?.contentDigest||!header?.universeDigest)
     throw new Error('C1_HEADER_NOT_VERIFIED');
-  if(headers.some(x=>x?.generationId!==header.generationId||x?.contentDigest!==header.contentDigest||x?.populationN!==header.populationN))
+  const headerKeys=['generationId','contentDigest','universeDigest','populationN','capturedN','chunkCount',
+    'sessionDate','decisionAt','capturedAt','sourceMainSha','effectiveRuntimeVersion','completeness',
+    'universeScope','researchOnly','decisionImpact','formalCoreImpact','readbackVerified'];
+  if(headers.some(x=>headerKeys.some(key=>x?.[key]!==header[key])))
     throw new Error('C1_HEADER_MISMATCH');
+  if(!Number.isFinite(timestamp(header.decisionAt))||
+    new Intl.DateTimeFormat('en-CA',{timeZone:'Asia/Taipei',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date(header.decisionAt))!==header.sessionDate)
+    throw new Error('C1_INVALID_SESSION_CLOCK');
   const chunks=pages.flatMap(page=>Array.isArray(page?.chunks)?page.chunks:[]).sort((a,b)=>a.chunkIndex-b.chunkIndex);
   if(chunks.length!==Number(header.chunkCount)||chunks.some((chunk,index)=>chunk.chunkIndex!==index)||
       chunks.some(chunk=>chunk.rowCount!==chunk.rows?.length)) throw new Error('C1_CHUNK_COVERAGE_INCOMPLETE');
   const rawRows=chunks.flatMap(chunk=>chunk.rows);
-  if(rawRows.length!==Number(header.populationN)) throw new Error('C1_POPULATION_COUNT_MISMATCH');
+  if(!Number.isInteger(header.populationN)||header.populationN<1||rawRows.length!==header.populationN||
+    (header.capturedN!==undefined&&header.capturedN!==rawRows.length)) throw new Error('C1_POPULATION_COUNT_MISMATCH');
   const contentDigest=hash(rawRows);
   const universe=rawRows.map(row=>String(row.symbol));
   const universeDigest=createHash('sha256').update([...universe].sort().join('\n')).digest('hex');
@@ -48,9 +55,9 @@ export function adaptC1PopulationPages(pages) {
     symbol:String(raw.symbol),sessionDate:header.sessionDate,parentId:header.generationId,
     feature:raw.feature||{},sector:raw.sector||{},derived:raw.derived||{},
     formalResult:raw.formalResult?{
-      ok:raw.formalResult.ok===true,reason:raw.formalResult.firstFailure||null,
+      ok:typeof raw.formalResult.ok==='boolean'?raw.formalResult.ok:null,reason:raw.formalResult.firstFailure||null,
       basePassed:raw.formalResult.basePassed===true,rrPassed:raw.formalResult.rrPassed===true,
-      selected:raw.formalResult.selected===true,selectedRank:raw.formalResult.selectedRank??null
+      selected:typeof raw.formalResult.selected==='boolean'?raw.formalResult.selected:null,selectedRank:raw.formalResult.selectedRank??null
     }:null,
     historyAdmission:raw.historyAdmission||null,
     gateEvidence:Object.fromEntries(C1_GATE_IDS.map(id=>[id,{...point}])),

@@ -1,0 +1,29 @@
+name: System1 C1 C2 isolated offline repair review
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - scripts/apply_v8_15_1.py
+      - research/system1_*.mjs
+      - tests/*system1*.mjs
+      - tests/test_v8_15_1_c1_capture_integrity.mjs
+      - tests/run_system1_c1_c2_repair_review.py
+      - .github/workflows/system1-c1-c2-repair-review.yml
+permissions:
+  contents: read
+jobs:
+  offline-review:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Build isolated candidate and verify protected functions and regressions
+        run: python3 tests/run_system1_c1_c2_repair_review.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: system1-c1-c2-offline-review-${{ github.run_id }}
+          path: artifacts/system1-c1-c2-repair-review.json
+          if-no-files-found: error
