@@ -13636,3 +13636,28 @@ A second contradiction strengthens the quarantine: the recovery readback reports
 Finally, a shared history-admission receipt independently shows the 9/29 population blocked by a false expected-session interpretation of the legitimate 2026-07-10 BAVI typhoon closure. This is a cross-room dependency, not a D02-owned maturity gain and not automatically the exact cause of the 23:35 cron skip.
 
 Stage VI therefore improves falsification quality without increasing D02 maturity: the clean-date clock remains at zero and outcome inspection stays closed.
+
+
+# 2026-10-02 Stage VII — acquisition failure separation and cumulative-pace redundancy
+
+The next two trading-date opportunities still did not create a clean price-volume evidence cohort.
+
+The 9/30 recovery path reached verified quality and closure provenance but died at the full-market scan-preview with Cloudflare Error 1102. It never reached staged selection persistence. On 10/1, official quality could be made ready, yet the first guarded recovery POST was unconfirmed with 503 and correctly was not retried blindly; the later sync timed out. The midnight encrypted mirror then proved that the current mirrored plan was still scanDate 9/29. A green health job one minute later actually skipped its business check because the scheduler crossed midnight. Finally, the V8.15 C1 population observer found no live generation.
+
+This creates an important research-governance distinction:
+operational acquisition failure is neither a zero-pick day nor price-volume counterevidence. It is missing evidence and stays UNKNOWN.
+
+While live outcome inference remained blocked, source-level falsification continued.
+
+The existing Formal intraday volumeRatio and PV localVolumeRatio are the same previous-five-bar volume primitive before rounding. This removes any temptation to count implementation duplication as feature diversity.
+
+The cumulative-pace hypothesis was then decomposed mathematically. At 09:00, cumulative volume is just first-slot volume for both current and historical sessions, so cumulative pace and same-slot RVOL are exactly identical. This is zero incremental information by construction, independent of outcomes. The first slot is also auction-mixed.
+
+At later slots the equality disappears. Cumulative pace can distinguish a one-bar burst from all-morning participation or a fading early surge, even when current-slot RVOL is identical. But the existing persistence state already summarizes sequential RVOL directionally, so H002 only survives as a candidate if cumulative magnitude/path adds information beyond that state.
+
+There is also a common-support constraint that had been easy to overlook: the existing local previous-five ratio is undefined until 10:15. Therefore the frozen A/B/C/D ladder cannot be compared fairly before that slot. In addition, cumulative pace requires an uninterrupted prefix; a missing early slot can leave current-slot RVOL valid while cumulative pace is UNKNOWN.
+
+The research protocol is now narrower but cleaner:
+H002 primary inference begins no earlier than 10:15, only on complete prefixes and common support, with the 09:00 D-vs-C effect fixed to structural redundancy rather than estimated from data.
+
+No Formal logic, threshold, ranking or capital behavior was changed.
