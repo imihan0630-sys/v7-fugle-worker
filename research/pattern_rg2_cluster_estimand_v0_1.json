@@ -1,0 +1,63 @@
+{
+  "contractId": "PATTERN_RG2_CLUSTER_ESTIMAND_V0_1",
+  "status": "OUTCOME_BLIND_PREREGISTRATION",
+  "domain": "D01",
+  "hypothesisFamily": "PATTERN-RG2",
+  "purpose": "Freeze cross-parent episode clustering and future B0-vs-B1 estimands before any outcome join.",
+  "unitOfObservation": {
+    "primary": "immutable_parent_decision_x_symbol",
+    "episodeRowsAreIndependentSamples": false,
+    "scaleVariantsAreIndependentSamples": false,
+    "clusterKeys": ["scanDate", "parentDecisionReceiptId", "structuralEpisodeKey"]
+  },
+  "supportRules": {
+    "commonSupportRequired": true,
+    "equalDecisionCutoffRequired": true,
+    "equalOutcomeHorizonRequired": true,
+    "incompleteRootKeyset": "DATA_BLOCKED",
+    "futureParentConfirmation": "DATA_BLOCKED",
+    "semanticSpaceConflict": "DATA_BLOCKED",
+    "unknownContinuity": "UNKNOWN"
+  },
+  "estimands": [
+    {
+      "id": "RG2-E1",
+      "name": "B0_VS_B1_COMMON_SUPPORT",
+      "baseline": "B0_DAILY_LONG_HORIZON_CONTROLS",
+      "candidate": "B1_B0_PLUS_CANONICAL_COMPLETED_WEEKLY_PATTERN_RELATION",
+      "primaryQuestion": "Does the preregistered weekly-parent relation add conditional information beyond the frozen daily baseline on identical eligible dates?",
+      "timeframeSearchAllowed": false,
+      "hardResistanceVeto": false
+    },
+    {
+      "id": "RG2-E2",
+      "name": "STRUCTURAL_MAJOR_ZONE_VS_SIMPLE260",
+      "baseline": "SIMPLE_260_SESSION_HIGH_GEOMETRY",
+      "candidate": "MAJOR_STRUCTURAL_ZONE_PLUS_LIFECYCLE",
+      "primaryQuestion": "Does structural MAJOR topology retain residual information after the simple long-horizon price-geometry comparator?",
+      "ifNoResidualValue": "CLASSIFY_REDUNDANT"
+    }
+  ],
+  "episodeDependence": {
+    "sameParentMultipleEpisodes": "CLUSTER_NOT_MULTIPLY_N",
+    "sameEpisodeMultipleAsOfRows": "LONGITUDINAL_STATE_NOT_NEW_SAMPLE",
+    "sameRawPriceRootMultipleScaleLabels": "NO_INDEPENDENT_VOTE",
+    "effectiveNUsesScaleCount": false
+  },
+  "futureInferenceGuardrails": {
+    "outcomesInspectedAtFreeze": false,
+    "prospectiveOrOOSRequired": true,
+    "scanDateClusterRequired": true,
+    "parentEpisodeClusterRequired": true,
+    "multipleTestingFamilyIncludesTimeframeAndBoundaryVariants": true,
+    "transactionCostCheckRequired": true,
+    "regimeCheckRequired": true,
+    "redundancyCheckRequired": true
+  },
+  "promotion": {
+    "formalOptimizationCandidate": "NONE",
+    "formalCore": "LOCKED",
+    "runtimeWiringAuthorized": false,
+    "R09Authorized": false
+  }
+}
