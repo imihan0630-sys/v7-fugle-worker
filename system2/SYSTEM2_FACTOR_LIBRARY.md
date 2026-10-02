@@ -90,7 +90,7 @@ MA structure/slope, support/resistance, distance from MA, ATR, KD, MACD, RSI, tr
 System 2 should consume a dedicated technical-structure module rather than scatter pattern logic across strategies.
 
 Planned scope:
-- candlestick / Sakata-style signals（K線／酒田型態）;
+- candlestick / Sakata-style signals（K線／酒田型態） — RESEARCH_ONLY / MERGE_CANDIDATE; preserve taxonomy/falsification, but do not create a universal Sakata score or independent named-pattern vote;
 - W-bottom, inverse head-and-shoulders, cup-and-handle, rounded bottom, flag, triangle, wedge（W底、反頭肩、杯柄、圓弧底、旗形、三角、楔形）;
 - volatility contraction / expansion（波動收斂／擴張）;
 - support/resistance, prior highs/lows, trapped-supply zones（支撐壓力、前高前低、套牢區）;
@@ -115,8 +115,8 @@ Core indicator families to support:
 - MA / EMA（移動平均線／指數移動平均線）: structure, slope, convergence/divergence, support/resistance interaction and distance/extension.
 - DMI / ADX（趨向指標／平均趨向指數）: trend-direction and trend-strength context; do not infer direction from ADX alone.
 - Bollinger Bands（布林通道）: band width, squeeze/expansion, location within bands and breakout context; band touch is not an automatic reversal signal.
-- ROC / Momentum（變動率／動能指標）: rate-of-change context and acceleration/deceleration; must control redundancy with ret20/ret60 and relative-strength features.
-- OBV（能量潮） or similar cumulative price-volume indicators may be researched only as PRICE_VOLUME（價量） context and must be tested for incremental value versus direct volume/turnover features.
+- ROC / Momentum（變動率／動能指標）: standard same-horizon percent ROC is an alias of direct retN and must NOT be persisted or counted as independent evidence; only slope/delta/acceleration may remain residual hypotheses after redundancy control against direct returns, trend and regime.
+- OBV（能量潮） or similar cumulative price-volume indicators are OBSERVATION / MERGE_CANDIDATE and may be researched only as PRICE_VOLUME（價量） comparator/context; they must not double-count direct volume/turnover/RVOL/price-volume evidence and require residual incremental-value tests.
 
 Required semantics:
 - raw indicator values are descriptive;
