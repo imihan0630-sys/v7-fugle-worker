@@ -627,3 +627,26 @@ Durable research detail: main `KLINE_PATTERN_RESEARCH.md` commit `a245b486dc60f2
 3. Re-read latest main before any merge because parallel research rooms may advance it.
 4. Keep runtime/Class-B proposal closed until parent/continuity/session/storage gates clear.
 5. No R09 / no Formal change.
+
+## Continuation update — DL-014A through DL-014D (2026-10-02)
+
+- Pattern fingerprint semantics are now split into immutable structural identity vs evolving as-of observation:
+  - research/PATTERN_FINGERPRINT_CONTRACT_V0_1.md
+  - research/pattern_fingerprint_contract_v0_1.json
+- structuralIdentityFingerprint binds immutable anchors/boundaries/versions and excludes lifecycle/outcomes.
+- observationPayloadHash binds one exact parent/as-of Pattern observation, including current lifecycle, multi-scale provenance, RG2 geometry and consumed cross-lane receipt references.
+- Same item key + changed structuralIdentityFingerprint = PROVENANCE_CONFLICT.
+- Same generic child identity + changed observationPayloadHash = PROVENANCE_CONFLICT.
+- Same structural episode key across a later immutable parent/as-of may legitimately carry a different observationPayloadHash; that is longitudinal evolution, not mutation.
+- ROOT must commit to the sorted episode-item keyset for that parent so missing/duplicate/foreign episode rows can be audited independently from parent coverage.
+- Pattern shared-child contract v0.3 incorporates these fingerprint rules.
+- Outcomes and later source revisions are prohibited from decision-time fingerprints.
+- No runtime wiring. D01 remains 51.7%; Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-014
+
+1. Recheck latest PR CI and current main divergence.
+2. If production regression/repair CI passes, treat it only as Formal-isolation evidence; DL-008/RG2/child tests remain TEST_EXECUTION_PENDING without a dedicated Node receipt.
+3. Preserve all new contracts on a clean latest-main lineage before any merge.
+4. Next scientific research after engineering closure: preregister RG2 cross-parent episode clustering and future B0-vs-B1 estimands; do not inspect outcomes yet.
+5. No R09 / no Formal change.
