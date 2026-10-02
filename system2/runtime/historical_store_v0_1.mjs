@@ -17,6 +17,7 @@ const CONTINUITY_STATES = new Set([
 const AVAILABILITY_BASES = new Set([
   "SOURCE_TIMESTAMP",
   "SESSION_CLOSE_FINALITY",
+  "PROSPECTIVE_OBSERVATION",
   "UNKNOWN",
 ]);
 
@@ -58,6 +59,7 @@ function minDateForLane(lane) {
 function pitAvailabilityClass(availableAt, availabilityBasis) {
   if (!availableAt || availabilityBasis === "UNKNOWN") return "UNKNOWN";
   if (availabilityBasis === "SOURCE_TIMESTAMP") return "PROVEN_SOURCE_TIMESTAMP";
+  if (availabilityBasis === "PROSPECTIVE_OBSERVATION") return "OBSERVED_AVAILABLE_UPPER_BOUND";
   return "CONSERVATIVE_SESSION_FINALITY";
 }
 
@@ -99,6 +101,10 @@ async function normalizeHistoricalBar({
 
   const observedAt = assertTimestamp(row.observedAt || capturedAt, "row.observedAt");
   const availableAt = assertTimestamp(row.availableAt, "row.availableAt", { optional: true });
+  if (availabilityBasis === "PROSPECTIVE_OBSERVATION" &&
+      (!availableAt || Date.parse(availableAt) !== Date.parse(observedAt))) {
+    throw new Error("PROSPECTIVE_OBSERVATION requires availableAt equal to first observedAt");
+  }
   if (availabilityBasis === "SOURCE_TIMESTAMP" && !availableAt) {
     throw new Error("SOURCE_TIMESTAMP requires availableAt");
   }

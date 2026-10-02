@@ -1,9 +1,10 @@
 import assert from "node:assert/strict";
 import { runDailyShadowDiagnosticV0_1, readDailyShadowDiagnosticV0_1, DAILY_SHADOW_DIAGNOSTIC_CHECK_TYPE } from "../runtime/daily_shadow_diagnostic_orchestrator_v0_1.mjs";
 import { fetchDailyShadowA1SnapshotV0_1 } from "../runtime/daily_shadow_a1_source_v0_1.mjs";
+import { persistDailyProspectiveHistoryV0_1 } from "../runtime/daily_shadow_prospective_history_v0_1.mjs";
 
 class Db {
-  rows = new Map(); writes = []; failShard = false;
+  rows = new Map(); writes = []; failShard = false; dropHistory = false;
   prepare(sql) {
     const db = this;
     return { sql, params: [], bind(...params) { this.params = params; return this; },
@@ -14,6 +15,10 @@ class Db {
         }
         const table = sql.match(/FROM (s2_\w+)/)[1];
         return db.rows.get(`${table}:${this.params[0]}`) || null;
+      }, async all() {
+        const rows = [...db.rows.entries()].filter(([key]) => key.startsWith("s2_historical_a1_bars:")).map(([, row]) => row);
+        return { results: /bar_id IN/.test(sql) ? rows.filter(row => this.params.includes(row.bar_id)) :
+          rows.filter(row => row.market_date === this.params[0] && row.market === this.params[1] && row.availability_basis === this.params[2]) };
       } };
   }
   async batch(statements) {
@@ -21,7 +26,9 @@ class Db {
     return statements.map(s => {
       const [, table, names] = s.sql.match(/INSERT INTO (s2_\w+) \(([^)]+)\)/);
       const row = Object.fromEntries(names.split(", ").map((k, i) => [k, s.params[i]]));
-      this.rows.set(`${table}:${row.check_id || row.receipt_id}`, row);
+      if (!(this.dropHistory && table === "s2_historical_a1_bars")) {
+        this.rows.set(`${table}:${row.check_id || row.receipt_id || row.bar_id || row.batch_id}`, row);
+      }
       this.writes.push({ table, row });
       return { success: true };
     });
@@ -51,7 +58,9 @@ assert.equal(run.selectedCount, null);
 assert.equal(run.finalSelectionEnabled, false);
 assert.equal(run.countsTowardDecisionClockReadiness, false);
 assert.equal(db.writes.at(-1).row.check_type, DAILY_SHADOW_DIAGNOSTIC_CHECK_TYPE);
-assert(db.writes.every(x => ["s2_infrastructure_checks", "s2_source_session_receipts"].includes(x.table)));
+assert(db.writes.every(x => ["s2_infrastructure_checks", "s2_source_session_receipts", "s2_historical_a1_bars", "s2_historical_ingest_batches"].includes(x.table)));
+assert.equal(run.prospectiveHistory.state, "PROSPECTIVE_HISTORY_READBACK_VERIFIED");
+assert.equal(run.prospectiveHistory.rowCount, 2);
 const factors = db.writes.filter(x => x.row.observed_payload_json).map(x => JSON.parse(x.row.observed_payload_json))
   .find(x => x.kind === "FACTOR_OBSERVATIONS");
 assert.equal(factors.rows[0].factors.coreMetrics.close, 105);
@@ -88,6 +97,33 @@ assert.equal(missingPolicy.zeroPickDay, null);
 await assert.rejects(() => runDailyShadowDiagnosticV0_1({ db: new Db(), ...base, historyProbe: async () => ({ ...(await historyProbe()), decisionTimestamp: "2099-01-01T00:00:00Z" }) }), /HISTORY_CLOCK_MISMATCH/);
 await assert.rejects(() => runDailyShadowDiagnosticV0_1({ db: new Db(), ...base, sourceFetch: async () => ({ ...(await sourceFetch({ marketDate: date, now })), decisionTimestamp: "2099-01-01T00:00:00Z" }) }), /SOURCE_CLOCK_MISMATCH/);
 await assert.rejects(() => readDailyShadowDiagnosticV0_1(db, { marketDate: "invalid" }), /marketDate/);
-db.writes.at(-1).row.observed_payload_json = "{}";
+const historyRows = () => [...db.rows.values()].filter(x => x.bar_id);
+assert.equal(historyRows().length, 2);
+assert(historyRows().every(x => x.available_at === clock && x.observed_at === clock &&
+  x.availability_basis === "PROSPECTIVE_OBSERVATION" && x.pit_availability_class === "OBSERVED_AVAILABLE_UPPER_BOUND" &&
+  x.continuity_state === "UNVERIFIED"));
+const later = () => new Date("2026-10-02T10:45:00.000Z");
+const laterSource = await sourceFetch({ marketDate: date, now: later });
+const repeat = await persistDailyProspectiveHistoryV0_1({ db, source: laterSource, runId: "repeat" });
+assert.equal(historyRows().length, 2);
+assert.equal(repeat.receipts.reduce((n, x) => n + x.identicalBarCount, 0), 2);
+assert(historyRows().every(x => x.available_at === clock));
+const correction = await fetchDailyShadowA1SnapshotV0_1({ marketDate: date, now: later,
+  minimumByMarket: { TWSE: 1, TPEX: 1 }, fetchImpl: async url => ({ ok: true, status: 200,
+    json: async () => String(url).includes("twse") ? [{ ...twse[0], ClosingPrice: "106" }] : tpex }) });
+await persistDailyProspectiveHistoryV0_1({ db, source: correction, runId: "correction" });
+assert.equal(historyRows().length, 3);
+const corrected = historyRows().filter(x => x.symbol === "2330");
+assert.equal(new Set(corrected.map(x => x.bar_hash)).size, 2);
+assert.equal(corrected.find(x => x.close_price === 106).available_at, later().toISOString());
+assert.equal((await persistDailyProspectiveHistoryV0_1({ db, source: { state: "INCOMPLETE" }, runId: "bad" })).rowCount, 0);
+await assert.rejects(() => persistDailyProspectiveHistoryV0_1({ db, source: { ...correction, marketDate: "2026-10-01" }, runId: "stale" }), /CLOCK_MISMATCH/);
+const lost = new Db(); lost.dropHistory = true;
+await assert.rejects(() => runDailyShadowDiagnosticV0_1({ db: lost, ...base }), /READBACK_MISMATCH/);
+assert.equal((await readDailyShadowDiagnosticV0_1(lost)).receipt, null);
+const future = historyRows().find(x => x.symbol === "6488");
+future.available_at = future.observed_at = "2099-01-01T00:00:00Z";
+await assert.rejects(() => persistDailyProspectiveHistoryV0_1({ db, source: correction, runId: "future" }), /INVALID_FIRST_KNOWN/);
+db.rows.get(`s2_infrastructure_checks:${run.runId}`).observed_payload_json = "{}";
 await assert.rejects(() => readDailyShadowDiagnosticV0_1(db), /HASH_MISMATCH/);
 console.log("Daily diagnostic orchestration: PIT/policy/UNKNOWN/immutable completion/readback tests PASS");

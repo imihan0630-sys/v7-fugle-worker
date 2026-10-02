@@ -8,6 +8,8 @@ on:
     branches: [main]
     paths:
       - "system2/runtime/daily_shadow_diagnostic_orchestrator_v0_1.mjs"
+      - "system2/runtime/daily_shadow_prospective_history_v0_1.mjs"
+      - "system2/runtime/historical_store_v0_1.mjs"
       - "system2/scripts/run_daily_shadow_diagnostic.mjs"
       - ".github/workflows/system2-daily-shadow-diagnostic.yml"
 

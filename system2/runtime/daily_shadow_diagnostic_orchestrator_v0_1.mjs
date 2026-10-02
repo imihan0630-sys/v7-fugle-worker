@@ -9,6 +9,7 @@ import { buildShadowSourceSessionReceipt } from "./shadow_source_session_receipt
 import { toSourceSessionRow } from "./storage_rows.mjs";
 import { buildSystem2PersistenceBatch } from "./persistence_batch.mjs";
 import { executeSystem2PersistenceBatch } from "./persistence_executor.mjs";
+import { persistDailyProspectiveHistoryV0_1 } from "./daily_shadow_prospective_history_v0_1.mjs";
 
 export const DAILY_SHADOW_DIAGNOSTIC_VERSION = "S2_DAILY_SHADOW_DIAGNOSTIC_V0_1";
 export const DAILY_SHADOW_DIAGNOSTIC_CHECK_TYPE = "DAILY_SHADOW_DIAGNOSTIC_COMPLETE_V0_1";
@@ -70,6 +71,7 @@ export async function runDailyShadowDiagnosticV0_1({
   let history = null;
   let preflight = null;
   let sourceSession = null;
+  let prospectiveHistory = { state: "NOT_OBSERVED", rowCount: 0 };
   let state;
   const shards = [];
   let symbolCount = 0;
@@ -173,11 +175,12 @@ export async function runDailyShadowDiagnosticV0_1({
   }
   const completedAt = now().toISOString();
   if (clockParts(new Date(completedAt)).marketDate !== marketDate) throw new Error("DIAGNOSTIC_CROSSED_MARKET_DATE");
+  if (source) prospectiveHistory = await persistDailyProspectiveHistoryV0_1({ db, source, runId: markerId });
   const receipt = deepFreeze({
     schemaVersion: DAILY_SHADOW_DIAGNOSTIC_VERSION, runId: markerId, revision, marketDate,
     startedAt, completedAt, decisionTimestamp: source?.decisionTimestamp || null,
     decisionClockMode: "DIAGNOSTIC_OBSERVATION_TIME_NOT_CAPTURE_CLOCK", state,
-    calendar: calendar || null, preflight, symbolCount, knownFactorCount, unknownFactorCount, factorFailureCount,
+    calendar: calendar || null, preflight, prospectiveHistory, symbolCount, knownFactorCount, unknownFactorCount, factorFailureCount,
     sourceSessionHash: sourceSession?.sourceSessionHash || null,
     regime: { state: "UNKNOWN", reason: "VALIDATED_REGIME_SOURCES_NOT_WIRED", labels: [] },
     strategyEvaluation: "BLOCKED_ASSESSOR_POLICY_NOT_FROZEN", ranking: "NOT_EXECUTED",
