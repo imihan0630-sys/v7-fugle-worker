@@ -1,0 +1,16 @@
+{
+  "version": "0.2",
+  "scope": "D01-10 cross-scale information incrementality",
+  "outcomeBlind": true,
+  "cases": [
+    {"id":"CSI09","rule":"recoverability unknown must remain UNKNOWN"},
+    {"id":"CSI10","rule":"explicitly recoverable same-root state must deduplicate"},
+    {"id":"CSI11","rule":"explicitly non-recoverable stable hierarchy may preserve topology state with zero independent votes"},
+    {"id":"CSI12","rule":"partial unconfirmed higher-scale parent must be data-blocked"},
+    {"id":"CSI13","rule":"semantic-space mismatch must be data-blocked"},
+    {"id":"CSI14","rule":"separate PIT provenance is a cross-lane dependency, not D01 maturity credit"},
+    {"id":"CSI15","rule":"label-only change must deduplicate even when hierarchy is asserted"}
+  ],
+  "economicAlpha":"UNKNOWN",
+  "formalOptimizationCandidate":"NONE"
+}
