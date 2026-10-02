@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-02T20:12:00+08:00",
+  "updatedAt": "2026-10-02T22:06:48+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -1229,8 +1229,8 @@
           "maturityPct": 60,
           "learningScope": "聚焦「訂單／交期／Backlog」。學習範圍：上下游圖譜、Lead-Lag、產能、庫存、報價、原物料、訂單與交期；供需缺口與定價能力；事件PIT時鐘；跨層級不對稱傳導；可自動化資料來源。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "台股PIT資料可行",
-          "status": "TAIWAN_ORDER_LEADTIME_PIT_FEASIBLE / MULTIVARIATE_STATE_REQUIRED / OUTCOMES_CLOSED",
-          "next": "SC-040 append independent monthly ORDER_LEADTIME receipts; SC-041 map industry state to issuers only with product/revenue exposure evidence; no company score from supplier-delivery time alone."
+          "status": "THREE_RELEASE_APPEND_ONLY_ORDER_LEADTIME_RECEIPT / BOUNDED_ISSUER_EXPOSURE_BRIDGE / OUTCOMES_CLOSED",
+          "next": "SC-042 define a dedicated shortage/supply-gap event contract; prospectively append the next PMI release with native publication/capture clocks; do not infer issuer backlog or company score without issuer-native exposure/order evidence."
         },
         {
           "id": "D10-08",
