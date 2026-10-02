@@ -123,6 +123,6 @@ const drift = structuredClone(payload);
 drift.tables[2].fields = ["種類", "整體市場", "股票"];
 const drifted = normalizeTwseMiIndexMarketBreadthV0_1({ ...args, payload: drift });
 assert.equal(drifted.state, "UNKNOWN");
-assert.equal(drifted.reason, "BREADTH_TABLE_NOT_FOUND");
+assert.equal(drifted.reason, "BREADTH_FIELDS_UNEXPECTED");
 
 console.log("D18 TWSE MI_INDEX market breadth v0.1 tests passed");
