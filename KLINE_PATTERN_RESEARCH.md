@@ -22531,3 +22531,15 @@ Twelve adversarial cases are defined, but execution evidence is not claimed in t
 Cross-lane ownership is now explicit to prevent research drift: Pattern owns structural geometry; Corporate Actions owns continuity spaces; D02 owns price-volume acceptance; Target-RR owns target/RR semantics; round-price research owns tick proximity; Microstructure owns auction/order-book mechanics; Technical Indicator research owns the shared multi-timeframe overlap taxonomy.
 
 No outcome join. Alpha UNKNOWN. D01 51.7%. Formal Core LOCKED.
+
+# DL-011 — Pattern Observer shared-parent schema gap audit (2026-10-02)
+
+The older Pattern observer persistence contract is retained for legacy isolated QA but is no longer sufficient as promotion-grade parent authority. It binds to the bounded/mutable legacy Shadow archive using scan_date/symbol/parent_snapshot_hash.
+
+The current shared architecture instead requires immutable decision-state parent identity through parentDecisionReceiptId, captureGeneration, parentScopeId, semanticFingerprint and decisionCutoffAt, plus certified parent-keyset and decision-set integrity at run level.
+
+Pattern is now explicitly modeled as a multi-object observer: exactly one ROOT attempt row per expected parent, plus zero/many deterministic episode children. Episode count never defines coverage.
+
+DL-008 multi-scale provenance and DL-009/010 RG2 relation fields are now enumerated as prospective schema requirements. Generic timing separates as_of, available_at, captured_at and created_at. Later weekly confirmation or next-session 15m evidence cannot backfill a prior after-market decision.
+
+This is a schema reconciliation only. D1/Worker/runtime wiring remains Class-B NO_GO. Outcome inference remains CLOSED. D01 remains 51.7%; Formal Core LOCKED.
