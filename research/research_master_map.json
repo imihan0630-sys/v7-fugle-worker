@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.2",
-  "updatedAt": "2026-10-02T13:22:00+08:00",
+  "updatedAt": "2026-10-02T22:06:48+08:00",
   "status": "BASELINE_V0_2_PARTIAL_RECONCILIATION",
   "formalCore": "LOCKED",
   "authority": {
@@ -159,8 +159,8 @@
       "id": "SUPPLY_CHAIN_EVENT_LEAD_LAG",
       "domain": "SUPPLY_CHAIN_LEAD_LAG",
       "level": "L2",
-      "status": "PIT_FEASIBLE_PARTIAL / ASYMMETRIC_CHAIN_AND_ORDER_LEADTIME_ADVANCED / OUTCOMES_CLOSED",
-      "basis": "SC-036 freezes two monthly EAF steel-chain vintages showing input/intermediate/downstream asymmetric transmission and advances D10-09 to L3 PIT feasibility. SC-039 freezes Taiwan NDC/CIER PMI multivariate new-orders/unfinished-orders/supplier-delivery/inventory state and advances D10-07 to L3. D10-01 and D10-04 remain L2 because effective-dated graph completeness and compatible utilization denominators are not yet broad enough. No realized-margin or predictive outcome claim."
+      "status": "PIT_FEASIBLE_PARTIAL / THREE_RELEASE_ORDER_LEADTIME_SERIES / BOUNDED_ISSUER_EXPOSURE_BRIDGE / OUTCOMES_CLOSED",
+      "basis": "SC-036 preserves two Taiwan EAF steel-chain vintages and D10-09 L3 PIT feasibility. SC-039/SC-040 now freeze three independent NDC/CIER PMI release vintages showing orders, delivery time, backlog and inventory must be treated jointly. SC-041 adds a bounded 8046/3189 product-scope bridge while keeping revenue exposure, survey membership and issuer-native backlog UNKNOWN. D10-07 remains L3; D10-01 and D10-04 remain L2. No realized-margin, stock-outcome or Formal trading claim."
     },
     {
       "id": "CORPORATE_ACTION_DENOMINATORS",
