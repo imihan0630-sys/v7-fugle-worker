@@ -1,0 +1,21 @@
+{
+  "schemaVersion": "D02_MONITOR_CONFIG_LINEAGE_V0_1",
+  "researchOnly": true,
+  "formalImpact": "NONE",
+  "observedAtTaipei": "2026-10-02T21:10:00+08:00",
+  "findings": {
+    "staleSnapshotSimpleExplanation": "FALSIFIED_BY_HEALTH_FRESHNESS_GATES",
+    "monitorConfigLinkage": "NON_ATOMIC_NO_SHARED_IMMUTABLE_GENERATION",
+    "actualWriter": "UNKNOWN",
+    "deploymentCreatedMismatch": "NOT_SUPPORTED",
+    "membershipRule": "UNKNOWN_UNLESS_LINKED_TO_EXACT_MONITOR_CONSUMED_CONFIG_GENERATION"
+  },
+  "currentState": {
+    "maturityPct": 48.3,
+    "cleanProspectiveSelectionDates": 0,
+    "gate7": "CLOSED",
+    "formalOptimizationCandidate": "NONE",
+    "formalCore": "LOCKED"
+  },
+  "exactNext": "PVE-228: inspect genuine 2026-10-02 23:35/23:55 ordinary scan and 2026-10-03 00:10 collector; preserve PIT/UNKNOWN and do not reconstruct."
+}
