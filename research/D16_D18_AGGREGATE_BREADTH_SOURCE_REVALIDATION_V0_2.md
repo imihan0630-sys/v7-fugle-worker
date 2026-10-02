@@ -258,3 +258,53 @@ No:
 5. Compare official aggregate breadth with per-symbol reconstructed breadth only as universe/source diagnostics.
 6. Continue U2B only through shared TECHNICAL_CONTINUITY.
 7. Do not test Breadth policy alpha until source occupancy/missingness is stable across multiple independent episodes/dates.
+
+
+## 12. A5 boundary failure taxonomy correction
+
+The three finalized 2026-09-29 through 2026-10-01 dates exposed a diagnostic ambiguity.
+
+V0.2 intended semantics:
+- same-session candidate time is determined by A1 TWSE + A1 TPEx + B2;
+- A5 is periodic;
+- A5 is required to have been prospectively observed no later than an already-computed candidate timestamp.
+
+Observed implementation issue:
+- aggregation previously placed every date with `a5AvailableByCandidate !== true` into `a5BoundaryFailureDates`;
+- when `sameSessionClockReady=false` and `candidateTimestamp=null`, A5 availability relative to a candidate is not actually evaluable;
+- owner-review then surfaced `A5_NOT_AVAILABLE_BY_CANDIDATE`, which can be misread as an A5 lateness root cause.
+
+This is diagnostic over-attribution, not a fail-open safety bug.
+
+Research-only correction in this patch:
+- `a5BoundaryEvaluableDates`;
+- `a5BoundaryPassDates`;
+- `a5BoundaryFailureDates`;
+- `a5BoundaryNotEvaluableDates`.
+
+Only a date with:
+- `sameSessionClockReady=true`;
+- non-null `candidateTimestamp`;
+- `a5AvailableByCandidate=false`
+
+is now a true A5 boundary failure.
+
+A date without a candidate remains blocked by readiness but is classified:
+`A5_BOUNDARY_NOT_EVALUABLE_NO_CANDIDATE`.
+
+No readiness, exact-clock, Cron, capture or strategy gate is relaxed.
+
+## 13. Root-cause interpretation through 2026-10-01
+
+For the observed 2026-10-01 daily evidence:
+- A5 coverage was READY;
+- B2 coverage was false;
+- same-session candidate never formed;
+- A5 boundary relative to candidate was therefore NOT_EVALUABLE, not a proven A5 lateness event.
+
+Until a same-session candidate exists, optimize:
+1. A1 / B2 source-family readiness;
+2. cross-market same-date availability;
+3. transport stability.
+
+Do not optimize A5 merely because the old aggregate review packet listed an A5 boundary failure.
