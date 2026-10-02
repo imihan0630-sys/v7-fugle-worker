@@ -22497,3 +22497,21 @@ Multi-timeframe alignment is therefore represented as hierarchy/context/relation
 External evidence supports both sides. Multi-timescale and wavelet studies show transformed scale representations can sometimes improve forecasts; 2026 evidence also finds predictor heterogeneity, unstable technical indicators and strong short-term components. Overlapping-return research shows mechanical dependence can inflate measured momentum. Large technical-rule universes under data-snooping controls show that timeframe, lookback and alignment choices must be included in the multiple-testing family.
 
 D01 remains 51.7%. D01-10 remains L3. Pattern alpha UNKNOWN. Runtime NO_GO. FORMAL_OPTIMIZATION_CANDIDATE = NONE. Formal Core LOCKED.
+
+# DL-009 — PATTERN-RG2 巢狀壓力語意凍結 (2026-10-02)
+
+Detailed contract:
+- research/PATTERN_RG2_NESTED_RESISTANCE_V0_1.md
+- research/pattern_rg2_nested_resistance_v0_1.json
+
+PATTERN-RG2 remains one of the four already preregistered Pattern interaction families. This tranche adds no R09.
+
+The primary local object is the actual immutable confirmed Pattern trigger boundary; priorHigh20 is a comparator, not a substitute label for a neckline/rim. The primary parent object is the already-frozen MAJOR k=3 / 260 eligible-session structural zone. BASE k=2 / 120 and simple 260-session high remain mandatory comparators.
+
+RG2 stores continuous available-air geometry and parent/local lifecycle relations. It does not produce a resistance score and does not reject a setup merely because overhead structure exists.
+
+The falsification ladder is explicit. A structural-zone effect must survive priorHigh20, priorHigh60, MA60, ret20/ret60, overheat and especially the simple260-high comparator. It must also be tested against round-price clustering, D02 acceptance, regime and liquidity. If the richer topology does not survive, it is REDUNDANT.
+
+Taiwan historical-high evidence is retained as a direct anti-veto counterexample: after a true historical-high break, the sign can switch toward underreaction/momentum. Therefore approach, first break, holding above, reentry and failed break remain separate lifecycle states.
+
+No outcome data were inspected. RG2 predictive incrementality remains UNKNOWN. D01 remains 51.7%. Formal Core LOCKED.
