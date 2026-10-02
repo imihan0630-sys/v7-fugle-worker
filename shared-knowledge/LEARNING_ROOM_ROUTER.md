@@ -893,7 +893,7 @@ maturityPct（成熟度百分比）、Level（等級）、status（狀態）必�
    - 【本輪執行指令】＋固定指令全文
 
 2. 研究內容與末尾區塊中的英文術語、英文縮寫、英文專有名詞，是否都已立即補中文解釋。
-   - 例如：PIT（時點一致性）、OOS（樣本外驗證）、Shadow（影子驗證）、Tracker（進度追蹤器）、Volume Profile（成交量分布）、alpha（超額報酬）、recovery（恢復／補回）、generation（世代／生成批次）、common（共同） support（支撐區間）、Persistence（持續性） state（狀態）。
+   - 例如：PIT（時點一致性）、OOS（樣本外驗證）、Shadow（影子驗證）、Tracker（進度追蹤器）、Volume（成交量） Profile（分布）、alpha（超額報酬）、recovery（恢復／補回）、generation（世代／生成批次）、common（共同） support（支撐區間）、Persistence（持續性） state（狀態）。
    - GitHub 路徑、檔名、URL、commit SHA、程式碼、JSON key、正式欄位名、模組 ID 等 machine literal（機器原樣字串）可保留原文，但若其語意對使用者有必要理解，後方仍應另加中文解釋。
 
 3. 結尾是否完整包含：
