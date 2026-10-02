@@ -1,6 +1,6 @@
-# 股市知識學習大地圖 — 18領域 / 229模組
+# 股市知識學習大地圖 — 22領域 / 297模組
 
-Updated: 2026-09-30 05:43 Asia/Taipei
+Updated: 2026-10-02 16:31 Asia/Taipei
 Status: CANONICAL_LEARNING_CURRICULUM_V0_1 / CROSS_SYSTEM  
 Formal Core impact: NONE  
 Authority boundary: 本檔負責「學習課綱與成熟度追蹤」；System 1 正式研究成熟度仍由 `RESEARCH_MASTER_MAP.md` 與 `research/research_master_map.json` 管理。
@@ -21,9 +21,9 @@ Authority boundary: 本檔負責「學習課綱與成熟度追蹤」；System 1 
 
 ## 目前總覽
 
-- 大領域：18
-- 二級研究模組：229
-- 新完整課綱成熟度：**47.5%**
+- 大領域：22
+- 二級研究模組：297
+- 新完整課綱成熟度：**37.3%**
 - 注意：這個百分比與 System 1 現行21模組的46.7%不是同一分母；本表分母更大、更細。
 - 100%不是「世界上再也沒有新知識」，而是本版課綱全部達L5；新增新知識時可版本化擴充分母。
 
@@ -35,22 +35,26 @@ Authority boundary: 本檔負責「學習課綱與成熟度追蹤」；System 1 
 | D04 | 波動率／波動狀態 | 10 | 42% | 04｜波動與市場微結構研究室 |
 | D05 | 市場微結構／撮合／流動性 | 10 | 46% | 04｜波動與市場微結構研究室 |
 | D06 | 法人／籌碼／槓桿／擁擠／被動資金 | 15 | 45.3% | 05｜法人與籌碼研究室 |
-| D07 | 基本面／財報／資訊動態 | 11 | 43.6% | 06｜基本面與估值研究室 |
-| D08 | 估值 | 12 | 43.3% | 06｜基本面與估值研究室 |
-| D09 | 產業／族群／市場廣度／輪動 | 12 | 55.0% | 07｜產業與供應鏈研究室 |
+| D07 | 基本面／財報／資訊動態 | 17 | 28.2% | 06｜基本面與估值研究室 |
+| D08 | 估值 | 17 | 30.6% | 06｜基本面與估值研究室 |
+| D09 | 產業／族群／市場廣度／輪動 | 12 | 55% | 07｜產業與供應鏈研究室 |
 | D10 | 供應鏈／產能／庫存／原物料傳導 | 12 | 53.3% | 07｜產業與供應鏈研究室 |
 | D11 | 公司行動／重大事件／事件風險 | 14 | 54.3% | 08｜事件與新聞研究室 |
-| D12 | 期貨／選擇權／衍生品 | 12 | 40% | 09｜衍生品與國際總經研究室 |
+| D12 | 期貨／選擇權／衍生品 | 16 | 30% | 09｜衍生品與國際總經研究室 |
 | D13 | 總體經濟／跨市場傳導 | 13 | 41.5% | 09｜衍生品與國際總經研究室 |
 | D14 | 交易成本／執行品質／Execution Alpha | 14 | 47.1% | 10｜投組風控與交易執行研究室 |
 | D15 | 投資組合／風險／資金利用／部位生命週期 | 15 | 50.7% | 10｜投組風控與交易執行研究室 |
-| D16 | 統計驗證／PIT／Shadow／OOS／防過擬合 | 15 | 73.3% | 11｜統計驗證與策略市場狀態研究室 |
+| D16 | 統計驗證／PIT／Shadow／OOS／防過擬合 | 20 | 55% | 11｜統計驗證與策略市場狀態研究室 |
 | D17 | 新聞／事件半衰期／受益受害傳導 | 13 | 41.5% | 08｜事件與新聞研究室 |
 | D18 | 市場Regime×策略互動 | 14 | 40% | 11｜統計驗證與策略市場狀態研究室 |
+| D19 | 資產定價／因子投資／市場異象 | 12 | 0% | 12｜資產定價與因子研究室 |
+| D20 | 行為金融／投資人注意力／市場心理 | 12 | 0% | 13｜行為金融與市場心理研究室 |
+| D21 | 公司治理／經營者／內部人／控制權品質 | 12 | 0% | 14｜公司治理與內部人研究室 |
+| D22 | 信用市場／資本結構／融資壓力／股債傳導 | 12 | 0% | 15｜信用市場與資本結構研究室 |
 
 ## 母專案歸屬：自我進化學習研究室
 
-- 所有 00～11 學習／研究專線統一歸入 ChatGPT Project（專案）**「自我進化學習研究室」**。
+- 所有 00～15 學習／研究專線統一歸入 ChatGPT Project（專案）**「自我進化學習研究室」**。
 - 此母專案只負責「學習、研究、反證、驗證、知識累積與研究治理」。
 - System 1 / System 2 的工程實作、部署、監控、正式策略與 Formal Core（正式核心）維持原系統專案，不移入本母專案。
 - 已達對話上限的 `(x)` / `（x）` 聊天若 ChatGPT 顯示「移至專案」，可移入本母專案作為唯讀歷史研究來源；若介面不提供移動選項，保留原位置並以 GitHub checkpoint（續接點）作為正式承接。
@@ -61,7 +65,7 @@ Authority boundary: 本檔負責「學習課綱與成熟度追蹤」；System 1 
 
 - 聊天室名稱前綴為 `(x)` 或 `（x）`：代表已達對話上限，狀態固定為 **ARCHIVED_FULL**。只能作為歷史證據／舊checkpoint來源，不得再安排任何新研究工作。
 - 未帶 `(x)` / `（x）` 的聊天室不代表一定適合承接新主題；仍需符合本地圖的專線範圍。
-- 舊聊天室若題目過寬或混合多領域，可標為 **LEGACY_ACTIVE**：允許完成既有工作，但新研究必須轉入00-11專責研究室。
+- 舊聊天室若題目過寬或混合多領域，可標為 **LEGACY_ACTIVE**：允許完成既有工作，但新研究必須轉入00-15專責研究室。
 - 新研究室若達對話上限，將原聊天室改標 `(x)`，並以同一專線編號建立續接聊天室；GitHub checkpoint 不變，避免重頭研究。
 - 任何新聊天室開始研究前，必須先讀本地圖、該專線checkpoint與最新main，不得從聊天記憶猜進度。
 
@@ -86,6 +90,10 @@ Authority boundary: 本檔負責「學習課綱與成熟度追蹤」；System 1 
 - 09｜衍生品與國際總經研究室：D12-D13。
 - 10｜投組風控與交易執行研究室：D14-D15。
 - 11｜統計驗證與策略市場狀態研究室：D16、D18。
+- 12｜資產定價與因子研究室：D19。
+- 13｜行為金融與市場心理研究室：D20。
+- 14｜公司治理與內部人研究室：D21。
+- 15｜信用市場與資本結構研究室：D22。
 - System 1 / System 2 工程聊天室：只能消費已研究成果、做系統專屬實作與驗證，不重複「從頭學」共享市場知識。
 
 ## 每個研究聊天室固定頁首
@@ -144,7 +152,7 @@ GitHub專屬checkpoint：
 | D02-11 | 流動性量能門檻與例外 | L2 機制＋反證 | 40% |
 | D02-12 | 盤中量能曲線／Volume Profile | L2 機制＋反證 | 40% |
 
-### D03｜趨勢／動能／反轉／技術指標 — 44.6%
+### D03｜趨勢／動能／反轉／技術指標 — 47.7%
 
 專責：03｜技術指標與趨勢動能研究室  
 證據錨點：`TECHNICAL_INDICATOR_CHECKPOINT.md`、`TREND_MOMENTUM_REVERSAL_CHECKPOINT.md`
@@ -186,7 +194,7 @@ GitHub專屬checkpoint：
 | D04-09 | 尾端／跳空波動風險 | L2 機制＋反證 | 40% |
 | D04-10 | 漲跌停對波動估計污染 | L2 機制＋反證 | 40% |
 
-### D05｜市場微結構／撮合／流動性 — 44%
+### D05｜市場微結構／撮合／流動性 — 46%
 
 專責：04｜波動與市場微結構研究室  
 證據錨點：`MICROSTRUCTURE_CHECKPOINT.md`、`MICROSTRUCTURE_RESEARCH.md`
@@ -204,7 +212,7 @@ GitHub專屬checkpoint：
 | D05-09 | 流動性狀態分類 | L2 機制＋反證 | 40% |
 | D05-10 | 停牌／無交易日／pseudo-bar語意 | L3 台股PIT資料可行 | 60% |
 
-### D06｜法人／籌碼／槓桿／擁擠／被動資金 — 40.0%
+### D06｜法人／籌碼／槓桿／擁擠／被動資金 — 45.3%
 
 專責：05｜法人與籌碼研究室  
 證據錨點：`INSTITUTIONAL_CROWDING_RESEARCH.md`、`LEVERAGE_SHORTING_CHECKPOINT.md`、`PASSIVE_FLOW_INDEX_REBALANCING_CHECKPOINT.md`
@@ -227,7 +235,7 @@ GitHub專屬checkpoint：
 | D06-14 | 當沖率／短線換手 | L2 機制＋反證 | 40% |
 | D06-15 | 官股行庫／特定資金流 | L2 機制＋反證 | 40% |
 
-### D07｜基本面／財報／資訊動態 — 30.9%
+### D07｜基本面／財報／資訊動態 — 28.2%
 
 專責：06｜基本面與估值研究室  
 證據錨點：`FUNDAMENTAL_INFORMATION_DYNAMICS_CHECKPOINT.md`、`FUNDAMENTAL_INFORMATION_DYNAMICS_RESEARCH.md`
@@ -245,8 +253,14 @@ GitHub專屬checkpoint：
 | D07-09 | 成長加速度／基本面Surprise | L2 機制＋反證 | 40% |
 | D07-10 | 資料可用性與fundamentalScore混淆 | L2 機制＋反證 | 40% |
 | D07-11 | 分析師預估／預期修正 | L0 未研究 | 0% |
+| D07-12 | Business Model／Revenue Engine商業模式與收入引擎 | L0 未研究 | 0% |
+| D07-13 | Competitive Advantage／Moat競爭優勢與護城河 | L0 未研究 | 0% |
+| D07-14 | Unit Economics／Operating Leverage單位經濟與營業槓桿 | L0 未研究 | 0% |
+| D07-15 | Customer／Product／Geography Concentration客戶產品地區集中 | L0 未研究 | 0% |
+| D07-16 | Product Lifecycle／TAM／Penetration產品生命週期與滲透率 | L0 未研究 | 0% |
+| D07-17 | Management Guidance Quality管理層展望品質 | L0 未研究 | 0% |
 
-### D08｜估值 — 26.7%
+### D08｜估值 — 30.6%
 
 專責：06｜基本面與估值研究室  
 證據錨點：`VALUATION_RESEARCH.md`
@@ -265,8 +279,13 @@ GitHub專屬checkpoint：
 | D08-10 | 負EPS／週期低點／價值陷阱 | L2 機制＋反證 | 40% |
 | D08-11 | 估值×市場Regime互動 | L1 理論理解 | 20% |
 | D08-12 | 除權息／增減資對估值分母防火牆 | L2 機制＋反證 | 40% |
+| D08-13 | DCF／FCFF／FCFE現金流折現估值 | L0 未研究 | 0% |
+| D08-14 | DDM股利折現模型 | L0 未研究 | 0% |
+| D08-15 | Residual Income剩餘利益估值 | L0 未研究 | 0% |
+| D08-16 | SOTP分部加總估值 | L0 未研究 | 0% |
+| D08-17 | Liquidation／Asset-based Value清算與資產價值 | L0 未研究 | 0% |
 
-### D09｜產業／族群／市場廣度／輪動 — 55.0%
+### D09｜產業／族群／市場廣度／輪動 — 55%
 
 專責：07｜產業與供應鏈研究室  
 證據錨點：`MARKET_BREADTH_ROTATION_CHECKPOINT.md`、`MARKET_BREADTH_ROTATION_RESEARCH.md`
@@ -328,7 +347,7 @@ GitHub專屬checkpoint：
 | D11-13 | 負面證據／無事件的完整性證明 | L2 機制＋反證 | 40% |
 | D11-14 | 指數調整事件與被動流 | L2 機制＋反證 | 40% |
 
-### D12｜期貨／選擇權／衍生品 — 38.3%
+### D12｜期貨／選擇權／衍生品 — 30%
 
 專責：09｜衍生品與國際總經研究室  
 證據錨點：`DERIVATIVES_VOLATILITY_CHECKPOINT.md`、`DERIVATIVES_VOLATILITY_RESEARCH.md`
@@ -347,6 +366,10 @@ GitHub專屬checkpoint：
 | D12-10 | 夜盤期貨與隔夜資訊 | L2 機制＋反證 | 40% |
 | D12-11 | 選擇權流動性／微結構 | L1 理論理解 | 20% |
 | D12-12 | 衍生品狀態對個股／大盤的增量價值 | L2 機制＋反證 | 40% |
+| D12-13 | Greeks：Delta／Gamma／Vega／Theta | L0 未研究 | 0% |
+| D12-14 | IV-RV Spread隱含與實現波動差 | L0 未研究 | 0% |
+| D12-15 | Volatility Risk Premium波動率風險溢酬 | L0 未研究 | 0% |
+| D12-16 | Volatility Surface／Smile波動率曲面與微笑 | L0 未研究 | 0% |
 
 ### D13｜總體經濟／跨市場傳導 — 41.5%
 
@@ -391,7 +414,7 @@ GitHub專屬checkpoint：
 | D14-13 | Broker Fee Schedule完整費率語意 | L3 台股PIT資料可行 | 60% |
 | D14-14 | 集合競價／特殊撮合成本 | L2 機制＋反證 | 40% |
 
-### D15｜投資組合／風險／資金利用／部位生命週期 — 48.0%
+### D15｜投資組合／風險／資金利用／部位生命週期 — 50.7%
 
 專責：10｜投組風控與交易執行研究室  
 證據錨點：`PORTFOLIO_RISK_CHECKPOINT.md`、`PORTFOLIO_RISK_RESEARCH.md`
@@ -414,7 +437,7 @@ GitHub專屬checkpoint：
 | D15-14 | PriorityScore後選股資金傾斜 | L3 台股PIT資料可行 | 60% |
 | D15-15 | 3+3／多Pool跨池風險 | L2 機制＋反證 | 40% |
 
-### D16｜統計驗證／PIT／Shadow／OOS／防過擬合 — 72%
+### D16｜統計驗證／PIT／Shadow／OOS／防過擬合 — 55%
 
 專責：11｜統計驗證與策略市場狀態研究室  
 證據錨點：`RESEARCH_WORKLIST.md`、`research/EXPERIMENT_REGISTRY.md`、`research/research_master_map.json`
@@ -436,6 +459,11 @@ GitHub專屬checkpoint：
 | D16-13 | Shadow Cohort抽樣／Membership語意 | L2 機制＋反證 | 40% |
 | D16-14 | Generation Alignment跨資料表世代對齊 | L3 台股PIT資料可行 | 60% |
 | D16-15 | Maturity Gate成熟度與升級門檻 | L4 前瞻/OOS證據 | 80% |
+| D16-16 | Time-series Models時間序列模型 | L0 未研究 | 0% |
+| D16-17 | Panel／Cross-sectional Models面板與橫截面模型 | L0 未研究 | 0% |
+| D16-18 | Regularization／Feature Selection正則化與特徵選擇 | L0 未研究 | 0% |
+| D16-19 | Machine Learning／Calibration機器學習與校準 | L0 未研究 | 0% |
+| D16-20 | Causal Inference因果推論 | L0 未研究 | 0% |
 
 ### D17｜新聞／事件半衰期／受益受害傳導 — 41.5%
 
@@ -458,7 +486,7 @@ GitHub專屬checkpoint：
 | D17-12 | 事件後Gap／延續／反轉 | L2 機制＋反證 | 40% |
 | D17-13 | Scheduled vs Unscheduled已知／未知事件 | L3 台股PIT資料可行 | 60% |
 
-### D18｜市場Regime×策略互動 — 28.6%
+### D18｜市場Regime×策略互動 — 40%
 
 專責：11｜統計驗證與策略市場狀態研究室  
 證據錨點：`system2/SYSTEM2_MARKET_REGIME_V0.md`、`TREND_MOMENTUM_REVERSAL_CHECKPOINT.md`、`MARKET_BREADTH_ROTATION_CHECKPOINT.md`
@@ -480,6 +508,90 @@ GitHub專屬checkpoint：
 | D18-13 | 策略績效Regime Attribution | L1 理論理解 | 20% |
 | D18-14 | Walk-forward市場狀態驗證 | L1 理論理解 | 20% |
 
+### D19｜資產定價／因子投資／市場異象 — 0%
+
+專責：12｜資產定價與因子研究室  
+證據錨點：`ASSET_PRICING_FACTOR_CHECKPOINT.md`、`ASSET_PRICING_FACTOR_RESEARCH.md`
+
+| 模組 | 課題 | 成熟度 | 百分比 |
+|---|---|---|---:|
+| D19-01 | CAPM／Beta／Alpha與Benchmark Residual | L0 未研究 | 0% |
+| D19-02 | Size規模因子 | L0 未研究 | 0% |
+| D19-03 | Value價值因子 | L0 未研究 | 0% |
+| D19-04 | Cross-sectional Momentum橫截面動能因子 | L0 未研究 | 0% |
+| D19-05 | Quality／Profitability品質與獲利能力因子 | L0 未研究 | 0% |
+| D19-06 | Investment／Asset Growth投資與資產成長因子 | L0 未研究 | 0% |
+| D19-07 | Low Volatility／Low Beta低波動低Beta因子 | L0 未研究 | 0% |
+| D19-08 | Idiosyncratic Volatility特質波動異象 | L0 未研究 | 0% |
+| D19-09 | Residual Momentum／Factor Neutralization殘差動能與因子中性化 | L0 未研究 | 0% |
+| D19-10 | Factor Exposure／Multicollinearity因子曝險與共線性 | L0 未研究 | 0% |
+| D19-11 | Factor Crowding／Capacity／Turnover因子擁擠容量與換手 | L0 未研究 | 0% |
+| D19-12 | Seasonality／Calendar Anomalies季節性與日曆異象 | L0 未研究 | 0% |
+
+
+### D20｜行為金融／投資人注意力／市場心理 — 0%
+
+專責：13｜行為金融與市場心理研究室  
+證據錨點：`BEHAVIORAL_FINANCE_CHECKPOINT.md`、`BEHAVIORAL_FINANCE_RESEARCH.md`
+
+| 模組 | 課題 | 成熟度 | 百分比 |
+|---|---|---|---:|
+| D20-01 | Prospect Theory／Loss Aversion展望理論與損失趨避 | L0 未研究 | 0% |
+| D20-02 | Disposition Effect處分效果 | L0 未研究 | 0% |
+| D20-03 | Overconfidence過度自信 | L0 未研究 | 0% |
+| D20-04 | Anchoring／Reference Dependence錨定與參考點依賴 | L0 未研究 | 0% |
+| D20-05 | Representativeness／Recency代表性與近因偏誤 | L0 未研究 | 0% |
+| D20-06 | Herding／Social Proof從眾與社會證明 | L0 未研究 | 0% |
+| D20-07 | Investor Attention／Salience投資人注意力與顯著性 | L0 未研究 | 0% |
+| D20-08 | Underreaction／Post-event Drift反應不足與事件後漂移 | L0 未研究 | 0% |
+| D20-09 | Overreaction／Reversal過度反應與反轉 | L0 未研究 | 0% |
+| D20-10 | Investor Sentiment情緒測量與代理變數 | L0 未研究 | 0% |
+| D20-11 | Narrative／Theme Diffusion敘事與題材擴散 | L0 未研究 | 0% |
+| D20-12 | Behavioral-vs-Structural Falsification行為解釋與結構性反證 | L0 未研究 | 0% |
+
+
+### D21｜公司治理／經營者／內部人／控制權品質 — 0%
+
+專責：14｜公司治理與內部人研究室  
+證據錨點：`CORPORATE_GOVERNANCE_INSIDER_CHECKPOINT.md`、`CORPORATE_GOVERNANCE_INSIDER_RESEARCH.md`
+
+| 模組 | 課題 | 成熟度 | 百分比 |
+|---|---|---|---:|
+| D21-01 | Ownership／Control Structure所有權與控制權結構 | L0 未研究 | 0% |
+| D21-02 | Board／Independent Directors董事會與獨立董事 | L0 未研究 | 0% |
+| D21-03 | Insider Ownership／Trading內部人持股與交易 | L0 未研究 | 0% |
+| D21-04 | Share Pledging大股東與董監質押 | L0 未研究 | 0% |
+| D21-05 | Related-party Transactions關係人交易 | L0 未研究 | 0% |
+| D21-06 | Compensation／Incentive Alignment薪酬與誘因一致性 | L0 未研究 | 0% |
+| D21-07 | Capital Allocation Quality資本配置品質 | L0 未研究 | 0% |
+| D21-08 | Governance／ESG Score Provenance治理評鑑與來源語意 | L0 未研究 | 0% |
+| D21-09 | Succession／Key-person Risk接班與關鍵人風險 | L0 未研究 | 0% |
+| D21-10 | Audit／Restatement／Internal Control審計重編與內控制度 | L0 未研究 | 0% |
+| D21-11 | Tunneling／Minority Shareholder Risk利益輸送與小股東風險 | L0 未研究 | 0% |
+| D21-12 | Management Guidance Credibility管理層展望可信度 | L0 未研究 | 0% |
+
+
+### D22｜信用市場／資本結構／融資壓力／股債傳導 — 0%
+
+專責：15｜信用市場與資本結構研究室  
+證據錨點：`CREDIT_CAPITAL_STRUCTURE_CHECKPOINT.md`、`CREDIT_CAPITAL_STRUCTURE_RESEARCH.md`
+
+| 模組 | 課題 | 成熟度 | 百分比 |
+|---|---|---|---:|
+| D22-01 | Debt Maturity Wall／Refinancing Schedule債務到期與再融資時程 | L0 未研究 | 0% |
+| D22-02 | Interest Coverage／Debt Service利息保障與償債能力 | L0 未研究 | 0% |
+| D22-03 | Net Debt／Leverage Structure淨負債與槓桿結構 | L0 未研究 | 0% |
+| D22-04 | Cost of Debt／Refinancing Risk債務成本與再融資風險 | L0 未研究 | 0% |
+| D22-05 | Credit Rating／Rating Migration信用評等與遷移 | L0 未研究 | 0% |
+| D22-06 | Credit Spread／Bond Yield信用利差與債券殖利率 | L0 未研究 | 0% |
+| D22-07 | Liquidity／Covenant／Default Risk流動性契約與違約風險 | L0 未研究 | 0% |
+| D22-08 | Fixed／Floating Rate Exposure固定浮動利率曝險 | L0 未研究 | 0% |
+| D22-09 | Equity-Credit Divergence股債背離 | L0 未研究 | 0% |
+| D22-10 | Capital Structure／Funding Mix資本結構與融資組合 | L0 未研究 | 0% |
+| D22-11 | Credit Cycle／Bank Lending Conditions信用週期與銀行放款條件 | L0 未研究 | 0% |
+| D22-12 | Distress／Recovery／Equity Tail Risk財務困境回收與股權尾端風險 | L0 未研究 | 0% |
+
+
 ## 進度治理
 
 1. 每次研究只能升級「有新證據」的模組；閱讀更多相同理論不等於升級。
@@ -496,11 +608,11 @@ GitHub專屬checkpoint：
 - L2→L3主要受台股資料來源、PIT語意與可重播性影響。
 - L3→L4受前瞻樣本與OOS累積速度影響，不能靠多開聊天室縮短市場日曆時間。
 - L4→L5受獨立日期、多Regime、成本、冗餘與必要時跨年度證據影響。
-- 因此「全226模組達L5」不能承諾一個短固定日期；未來應同時報告（A）可主動研究剩餘量與（B）等待市場資料累積量。
+- 因此「全297模組達L5」不能承諾一個短固定日期；未來應同時報告（A）可主動研究剩餘量與（B）等待市場資料累積量。
 
 ## 下一步
 
 1. 對現有研究聊天室逐一掛上專線編號。
 2. 各專線只領取自己尚未達L3的模組，先把可主動完成的知識補齊。
 3. 對已到L3但等待前瞻資料的模組，切換成「等待證據」，不要浪費聊天室反覆讀同一主題。
-4. 研究總控室每次匯總 GitHub 最新main後重新計算18領域與226模組進度。
+4. 研究總控室每次匯總 GitHub 最新main後重新計算22領域與297模組進度。
