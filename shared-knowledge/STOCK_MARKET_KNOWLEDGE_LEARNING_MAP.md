@@ -1,6 +1,6 @@
-# 股市知識學習大地圖 — 22領域 / 363模組
+# 股市知識學習大地圖 — 22領域 / 366模組
 
-Updated: 2026-10-02 23:17 Asia/Taipei
+Updated: 2026-10-03 00:58 Asia/Taipei
 Status: CANONICAL_LEARNING_CURRICULUM_V0_1 / CROSS_SYSTEM  
 Formal Core impact: NONE  
 Authority boundary: 本檔負責「學習課綱與成熟度追蹤」；System 1 正式研究成熟度仍由 `RESEARCH_MASTER_MAP.md` 與 `research/research_master_map.json` 管理。
@@ -22,8 +22,8 @@ Authority boundary: 本檔負責「學習課綱與成熟度追蹤」；System 1 
 ## 目前總覽
 
 - 大領域：22
-- 二級研究模組：363
-- 新完整課綱成熟度：**32.2%**
+- 二級研究模組：366
+- 新完整課綱成熟度：**32%**
 - 注意：這個百分比與 System 1 現行21模組的46.7%不是同一分母；本表分母更大、更細。
 - 100%不是「世界上再也沒有新知識」，而是本版課綱全部達L5；新增新知識時可版本化擴充分母。
 
@@ -35,8 +35,8 @@ Authority boundary: 本檔負責「學習課綱與成熟度追蹤」；System 1 
 | D04 | 波動率／波動狀態 | 10 | 42% | 04｜波動與市場微結構研究室 |
 | D05 | 市場微結構／撮合／流動性 | 14 | 32.9% | 04｜波動與市場微結構研究室 |
 | D06 | 法人／籌碼／槓桿／擁擠／被動資金 | 18 | 37.8% | 05｜法人與籌碼研究室 |
-| D07 | 基本面／財報／資訊動態 | 32 | 15% | 06｜基本面與估值研究室 |
-| D08 | 估值 | 18 | 28.9% | 06｜基本面與估值研究室 |
+| D07 | 基本面／財報／資訊動態 | 33 | 14.5% | 06｜基本面與估值研究室 |
+| D08 | 估值 | 19 | 27.4% | 06｜基本面與估值研究室 |
 | D09 | 產業／族群／市場廣度／輪動 | 14 | 47.1% | 07｜產業與供應鏈研究室 |
 | D10 | 供應鏈／產能／庫存／原物料傳導 | 14 | 47.1% | 07｜產業與供應鏈研究室 |
 | D11 | 公司行動／重大事件／事件風險 | 19 | 40% | 08｜事件與新聞研究室 |
@@ -44,7 +44,7 @@ Authority boundary: 本檔負責「學習課綱與成熟度追蹤」；System 1 
 | D13 | 總體經濟／跨市場傳導 | 19 | 28.4% | 09｜衍生品與國際總經研究室 |
 | D14 | 交易成本／執行品質／Execution Alpha | 19 | 34.7% | 10｜投組風控與交易執行研究室 |
 | D15 | 投資組合／風險／資金利用／部位生命週期 | 24 | 31.7% | 10｜投組風控與交易執行研究室 |
-| D16 | 統計驗證／PIT／Shadow／OOS／防過擬合 | 24 | 45.8% | 11｜統計驗證與策略市場狀態研究室 |
+| D16 | 統計驗證／PIT／Shadow／OOS／防過擬合 | 25 | 44% | 11｜統計驗證與策略市場狀態研究室 |
 | D17 | 新聞／事件半衰期／受益受害傳導 | 14 | 38.6% | 08｜事件與新聞研究室 |
 | D18 | 市場Regime×策略互動 | 15 | 37.3% | 11｜統計驗證與策略市場狀態研究室 |
 | D19 | 資產定價／因子投資／市場異象 | 16 | 15% | 12｜資產定價與因子研究室 |
@@ -244,7 +244,7 @@ GitHub專屬checkpoint：
 | D06-18 | Securities Lending Economics／Borrow Fee／Availability／Utilization借券經濟、費率、可借量與使用率 | L0 未研究 | 0% |
 
 
-### D07｜基本面／財報／資訊動態 — 15%
+### D07｜基本面／財報／資訊動態 — 14.5%
 
 專責：06｜基本面與估值研究室  
 證據錨點：`FUNDAMENTAL_INFORMATION_DYNAMICS_CHECKPOINT.md`、`FUNDAMENTAL_INFORMATION_DYNAMICS_RESEARCH.md`
@@ -283,9 +283,10 @@ GitHub專屬checkpoint：
 | D07-30 | Multinational Operations／FX Translation跨國營運與外幣換算 | L0 未研究 | 0% |
 | D07-31 | Business Combination／Goodwill／Impairment企業合併商譽與減損 | L0 未研究 | 0% |
 | D07-32 | Financial Institutions Operating Metrics銀行保險等金融機構營運與資產負債指標 | L0 未研究 | 0% |
+| D07-33 | Intangible Capital／R&D／Innovation Accounting無形資本、研發與創新會計 | L0 未研究 | 0% |
 
 
-### D08｜估值 — 28.9%
+### D08｜估值 — 27.4%
 
 專責：06｜基本面與估值研究室  
 證據錨點：`VALUATION_RESEARCH.md`
@@ -310,6 +311,7 @@ GitHub專屬checkpoint：
 | D08-16 | SOTP分部加總估值 | L0 未研究 | 0% |
 | D08-17 | Liquidation／Asset-based Value清算與資產價值 | L0 未研究 | 0% |
 | D08-18 | Financial Institution Valuation／P-TBV／Embedded Value金融機構專屬估值 | L0 未研究 | 0% |
+| D08-19 | Reverse DCF／Market-Implied Expectations／Expectations Gap反向DCF、市場隱含預期與預期差 | L0 未研究 | 0% |
 
 
 ### D09｜產業／族群／市場廣度／輪動 — 47.1%
@@ -504,7 +506,7 @@ GitHub專屬checkpoint：
 | D15-24 | Value at Risk／Parametric-Historical VaR風險值與參數歷史法VaR | L0 未研究 | 0% |
 
 
-### D16｜統計驗證／PIT／Shadow／OOS／防過擬合 — 45.8%
+### D16｜統計驗證／PIT／Shadow／OOS／防過擬合 — 44%
 
 專責：11｜統計驗證與策略市場狀態研究室  
 證據錨點：`RESEARCH_WORKLIST.md`、`research/EXPERIMENT_REGISTRY.md`、`research/research_master_map.json`
@@ -535,6 +537,7 @@ GitHub專屬checkpoint：
 | D16-22 | NLP／LLM Financial-text Feature Validation自然語言與大型語言模型財經文本特徵驗證 | L0 未研究 | 0% |
 | D16-23 | Stress Test／Scenario／Reverse Stress Test壓力測試、情境與反向壓力測試 | L0 未研究 | 0% |
 | D16-24 | Monte Carlo Simulation／Distributional Validation蒙地卡羅模擬與分布驗證 | L0 未研究 | 0% |
+| D16-25 | Probabilistic Decision／Bayesian Updating／Uncertainty-aware Selection機率式決策、貝氏更新與不確定性選股 | L0 未研究 | 0% |
 
 
 ### D17｜新聞／事件半衰期／受益受害傳導 — 38.6%
@@ -690,11 +693,11 @@ GitHub專屬checkpoint：
 - L2→L3主要受台股資料來源、PIT語意與可重播性影響。
 - L3→L4受前瞻樣本與OOS累積速度影響，不能靠多開聊天室縮短市場日曆時間。
 - L4→L5受獨立日期、多Regime、成本、冗餘與必要時跨年度證據影響。
-- 因此「全363模組達L5」不能承諾一個短固定日期；未來應同時報告（A）可主動研究剩餘量與（B）等待市場資料累積量。
+- 因此「全366模組達L5」不能承諾一個短固定日期；未來應同時報告（A）可主動研究剩餘量與（B）等待市場資料累積量。
 
 ## 下一步
 
 1. 對現有研究聊天室逐一掛上專線編號。
 2. 各專線只領取自己尚未達L3的模組，先把可主動完成的知識補齊。
 3. 對已到L3但等待前瞻資料的模組，切換成「等待證據」，不要浪費聊天室反覆讀同一主題。
-4. 研究總控室每次匯總 GitHub 最新main後重新計算22領域與363模組進度。
+4. 研究總控室每次匯總 GitHub 最新main後重新計算22領域與366模組進度。
