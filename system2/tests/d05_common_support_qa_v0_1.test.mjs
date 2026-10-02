@@ -89,4 +89,32 @@ const good = {
   assert.equal(x.commonSupportWindowCount, 0);
   assert.equal(x.exclusionReasonCounts["WINDOW_NON_PRIMARY_MECHANISM"], 1);
 }
+{
+  const bad = structuredClone(good);
+  bad.cadences["5s"].localMidquoteRv = null;
+  const x = await auditD05CommonSupportV0_1({ symbol: "2330", marketDate: date, windows: [bad] });
+  assert.equal(x.commonSupportWindowCount, 0);
+  assert.equal(x.exclusionReasonCounts["5s:LOCAL_MIDQUOTE_RV_MISSING"], 1);
+}
+{
+  const x = await auditD05CommonSupportV0_1({ symbol: "2330", marketDate: date, windows: [good, structuredClone(good)] });
+  assert.equal(x.commonSupportWindowCount, 0);
+  assert.equal(x.excludedWindowCount, 2);
+  assert.equal(x.exclusionReasonCounts["DUPLICATE_WINDOW_START"], 2);
+}
+{
+  const earlyStart = "2026-10-02T00:59:45.000Z";
+  const early = {
+    windowStart: earlyStart,
+    sessionMechanismState: "NORMAL_CONTINUOUS_TWO_SIDED_BOOK",
+    cadences: {
+      "1s": cadence(earlyStart, 1),
+      "5s": cadence(earlyStart, 5),
+      "15s": cadence(earlyStart, 15),
+    },
+  };
+  const x = await auditD05CommonSupportV0_1({ symbol: "2330", marketDate: date, windows: [early] });
+  assert.equal(x.commonSupportWindowCount, 0);
+  assert.equal(x.exclusionReasonCounts["WINDOW_OUTSIDE_NORMAL_CONTINUOUS_CLOCK"], 1);
+}
 console.log("D05 common-support QA V0.1 tests: PASS");
