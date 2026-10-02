@@ -1,6 +1,6 @@
 # 自我進化學習研究室 — 公用聊天室路由與研究範圍
 
-Updated: 2026-10-02 23:17 Asia/Taipei
+Updated: 2026-10-03 00:58 Asia/Taipei
 Status: CANONICAL_LEARNING_ROOM_ROUTER_V0_2  
 Parent Project: **自我進化學習研究室**  
 Formal Core impact: NONE
@@ -13,9 +13,10 @@ Formal Core impact: NONE
 
 1. `shared-knowledge/SHARED_RESEARCH_MASTER_MAP.md`
 2. **本檔 `shared-knowledge/LEARNING_ROOM_ROUTER.md`**
-3. `research/stock_market_learning_tracker_v0_1.json`（363模組、learningScope、L0-L5與完成度的機器權威）
-4. 自己專線的 dedicated checkpoint / research files
-5. `RESEARCH_ENGINEERING_GOVERNANCE.md`、`RESEARCH_CHECKPOINT.md` 與需要的 System 1 / System 2 bridge
+3. `shared-knowledge/PROBABILISTIC_SELECTION_GOVERNANCE_V0_1.md`（跨系統選股決策角色與防過度過濾治理）
+4. `research/stock_market_learning_tracker_v0_1.json`（366模組、learningScope、L0-L5與完成度的機器權威）
+5. 自己專線的 dedicated checkpoint / research files
+6. `RESEARCH_ENGINEERING_GOVERNANCE.md`、`RESEARCH_CHECKPOINT.md` 與需要的 System 1 / System 2 bridge
 
 ## 全域學習聊天室強制運作規則
 
@@ -257,7 +258,7 @@ ChatGPT UI 顯示「思考中」、轉圈、手機／電腦版狀態不同步、
 ## 全域規則
 
 - 聊天室先辨識自己的名稱；只研究被分配的 Dxx 領域。
-- **00｜研究總控室身分鎖定**：`00｜研究總控室` 是本專案的 canonical（正式）總控聊天室名稱與治理身分。即使 ChatGPT UI 自動產生、重命名或顯示其他聊天標題，也不得改變其正式角色；只要該聊天室承擔總控職責，即一律視為 `00｜研究總控室`。總控室只負責22大領域／363模組總覽、成熟度、研究依賴、聊天室路由、排程、自動化治理、System 1／System 2 研究銜接與跨線整合，不自行取代專科研究室深挖。
+- **00｜研究總控室身分鎖定**：`00｜研究總控室` 是本專案的 canonical（正式）總控聊天室名稱與治理身分。即使 ChatGPT UI 自動產生、重命名或顯示其他聊天標題，也不得改變其正式角色；只要該聊天室承擔總控職責，即一律視為 `00｜研究總控室`。總控室只負責22大領域／366模組總覽、成熟度、研究依賴、聊天室路由、排程、自動化治理、System 1／System 2 研究銜接與跨線整合，不自行取代專科研究室深挖。
 - **00｜研究總控室禁止學習執行**：若使用者在 `00｜研究總控室` 貼入 A／B／C 輪動學習指令、任何 D01～D22 專科研究指令，或要求「繼續學習／深入研究」，總控室不得直接執行專科研究、不得產生新研究證據、不得升級模組成熟度、不得寫入任何專屬 research/checkpoint。總控室只能辨識正確研究線、檢查路由與進度、修正分工，並把工作留給對應研究室或既有自動輪動任務執行。
 - **A／B／C 自動輪動任務例外**：已建立的「輪動學習 A／B／C」Scheduled Task（排程任務）屬於獨立自動研究執行環境，不等同於 `00｜研究總控室` 的一般聊天回合，因此可以依各自 Dxx 分工執行專科研究。前述「00｜研究總控室禁止學習執行」只限制總控聊天室本身，不得誤傷自動輪動任務。
 - **自動輪動 Heartbeat（心跳）**：A／B／C 每次排程被觸發，不論本輪有無成熟度升級，都必須更新各自唯一的心跳檔 `research/automation/ROTATION_A_HEARTBEAT.md`、`research/automation/ROTATION_B_HEARTBEAT.md`、`research/automation/ROTATION_C_HEARTBEAT.md`。至少記錄台北時間、run status（SUCCESS／NO_PROGRESS／BLOCKED／ERROR）、本輪候選模組、實際研究模組、是否有 research/checkpoint/tracker 寫回、commit SHA（若有）、阻塞原因（若有）與 exact next continuation point。心跳檔只供稽核排程是否真正運作，不得拿來虛增成熟度。
@@ -289,18 +290,18 @@ ChatGPT UI 顯示「思考中」、轉圈、手機／電腦版狀態不同步、
 
 | 專線 | 負責領域 | 模組數 | 目前完成度 | 專責定位 |
 |---|---|---:|---:|---|
-| 00｜研究總控室 | 全域治理 | 0 | — | 只管理22大領域、363模組、成熟度、研究依賴、聊天室路由、重複研究與跨線整合；不自行深挖專科。 |
+| 00｜研究總控室 | 全域治理 | 0 | — | 只管理22大領域、366模組、成熟度、研究依賴、聊天室路由、重複研究與跨線整合；不自行深挖專科。 |
 | 01｜K線與型態研究室 | D01 | 12 | 51.7% | K線／型態／價格結構 |
 | 02｜價量研究室 | D02 | 12 | 48.3% | 價量關係 |
 | 03｜技術指標與趨勢動能研究室 | D03 | 13 | 47.7% | 趨勢／動能／反轉／技術指標 |
 | 04｜波動與市場微結構研究室 | D04＋D05 | 24 | 36.7% | 波動率／市場微結構／市場完整性 |
 | 05｜法人與籌碼研究室 | D06 | 18 | 37.8% | 法人／籌碼／ETF／借券／擁擠 |
-| 06｜基本面與估值研究室 | D07＋D08 | 50 | 20% | 基本面／進階會計／金融業分析／估值 |
+| 06｜基本面與估值研究室 | D07＋D08 | 52 | 19.2% | 基本面／無形資本／進階會計／反向DCF／估值 |
 | 07｜產業與供應鏈研究室 | D09＋D10 | 28 | 47.1% | 產業結構／競爭／供應鏈／政策傳導 |
 | 08｜事件與新聞研究室 | D11＋D17 | 33 | 39.4% | 公司事件／初級市場／新聞與政策事件 |
 | 09｜衍生品與國際總經研究室 | D12＋D13 | 37 | 31.9% | 衍生品策略／景氣循環／資本市場預期 |
 | 10｜投組風控與交易執行研究室 | D14＋D15 | 43 | 33% | 交易執行／放空可行性／避險／VaR／投組 |
-| 11｜統計驗證與策略市場狀態研究室 | D16＋D18 | 39 | 42.6% | 壓力測試／模擬驗證／Regime |
+| 11｜統計驗證與策略市場狀態研究室 | D16＋D18 | 40 | 41.5% | 機率式決策／PIT／OOS／壓力測試／Regime |
 | 12｜資產定價與因子研究室 | D19 | 16 | 15% | 資產定價／流動性因子／相對價值 |
 | 13｜行為金融與市場心理研究室 | D20 | 13 | 12.3% | 行為金融／套利限制／市場心理 |
 | 14｜公司治理與內部人研究室 | D21 | 13 | 3.1% | 治理／內部人／ESG重大性 |
@@ -308,10 +309,10 @@ ChatGPT UI 顯示「思考中」、轉圈、手機／電腦版狀態不同步、
 
 ## 00｜研究總控室
 
-只管理22大領域、363模組、成熟度、研究依賴、聊天室路由、重複研究與跨線整合；不自行深挖專科。
+只管理22大領域、366模組、成熟度、研究依賴、聊天室路由、重複研究與跨線整合；不自行深挖專科。
 
 ### 必做
-- 每次讀取最新22領域／363模組總進度。
+- 每次讀取最新22領域／366模組總進度。
 - 分派跨領域依賴與避免重複研究。
 - 維護聊天室生命週期、tracker與Excel輸出規則。
 - 不自行將任何模組升級；成熟度升級必須由證據所屬專線完成。
@@ -466,7 +467,7 @@ ChatGPT UI 顯示「思考中」、轉圈、手機／電腦版狀態不同步、
 必讀 checkpoint：`FUNDAMENTAL_INFORMATION_DYNAMICS_CHECKPOINT.md`、`FUNDAMENTAL_INFORMATION_DYNAMICS_RESEARCH.md`、`VALUATION_RESEARCH.md`  
 禁止：不得把其他 Dxx 領域當成本聊天室主線；跨領域發現只能建立 dependency（依賴）或引用證據，不能雙重計算進度。
 
-### D07｜基本面／財報／資訊動態 — 15%
+### D07｜基本面／財報／資訊動態 — 14.5%
 
 | 模組 | 研究模組 | 學習範圍 | 等級 | 完成度 |
 |---|---|---|---|---:|
@@ -502,9 +503,10 @@ ChatGPT UI 顯示「思考中」、轉圈、手機／電腦版狀態不同步、
 | D07-30 | Multinational Operations／FX Translation跨國營運與外幣換算 | 聚焦「Multinational Operations／FX Translation跨國營運與外幣換算」。研究進階財報會計及金融機構營運語意；需凍結會計準則、揭露版本、first-known時間與調整前後口徑，並驗證對EPS、FCF、ROIC、槓桿與估值的實質影響，禁止事後回填。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L0 未研究 | 0% |
 | D07-31 | Business Combination／Goodwill／Impairment企業合併商譽與減損 | 聚焦「Business Combination／Goodwill／Impairment企業合併商譽與減損」。研究進階財報會計及金融機構營運語意；需凍結會計準則、揭露版本、first-known時間與調整前後口徑，並驗證對EPS、FCF、ROIC、槓桿與估值的實質影響，禁止事後回填。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L0 未研究 | 0% |
 | D07-32 | Financial Institutions Operating Metrics銀行保險等金融機構營運與資產負債指標 | 聚焦「Financial Institutions Operating Metrics銀行保險等金融機構營運與資產負債指標」。研究進階財報會計及金融機構營運語意；需凍結會計準則、揭露版本、first-known時間與調整前後口徑，並驗證對EPS、FCF、ROIC、槓桿與估值的實質影響，禁止事後回填。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L0 未研究 | 0% |
+| D07-33 | Intangible Capital／R&D／Innovation Accounting無形資本、研發與創新會計 | 聚焦「Intangible Capital／R&D／Innovation Accounting無形資本、研發與創新會計」。研究研發、軟體、專利、品牌、資料、人才等未完整資本化的經濟性無形資產，辨識會計費用化造成的獲利、資產、ROIC與估值偏差。不得把所有R&D自動資本化或視為品質加分；需對攤銷期、失敗率、產業差異與實際商業化結果做敏感度及反證。主要用途是校正基本面與估值解讀，不作單一硬門檻。 每個結論都必須記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、交易成本，以及對 System 1／System 2 的可驗證增量價值；未取得證據不得升級成熟度或進入 Formal（正式核心）。 | L0 未研究 | 0% |
 
 
-### D08｜估值 — 28.9%
+### D08｜估值 — 27.4%
 
 | 模組 | 研究模組 | 學習範圍 | 等級 | 完成度 |
 |---|---|---|---|---:|
@@ -526,6 +528,7 @@ ChatGPT UI 顯示「思考中」、轉圈、手機／電腦版狀態不同步、
 | D08-16 | SOTP分部加總估值 | 聚焦「SOTP分部加總估值」。學習範圍：估值研究必須同時涵蓋相對與絕對估值；明確凍結現金流／股利／資本成本／終值／分部與資產假設，測試假設敏感度、週期與會計污染、PIT first-known、可重播性、冗餘與對 System 1／System 2 的增量價值，禁止以事後最有利假設回推合理價。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L0 未研究 | 0% |
 | D08-17 | Liquidation／Asset-based Value清算與資產價值 | 聚焦「Liquidation／Asset-based Value清算與資產價值」。學習範圍：估值研究必須同時涵蓋相對與絕對估值；明確凍結現金流／股利／資本成本／終值／分部與資產假設，測試假設敏感度、週期與會計污染、PIT first-known、可重播性、冗餘與對 System 1／System 2 的增量價值，禁止以事後最有利假設回推合理價。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L0 未研究 | 0% |
 | D08-18 | Financial Institution Valuation／P-TBV／Embedded Value金融機構專屬估值 | 聚焦「Financial Institution Valuation／P-TBV／Embedded Value金融機構專屬估值」。研究銀行、保險等金融機構的專屬估值；需說明一般企業EV/EBITDA或FCF框架何時不適用，並檢驗P/B、P/TBV、ROE、Embedded Value等估值基礎的週期與會計限制。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L0 未研究 | 0% |
+| D08-19 | Reverse DCF／Market-Implied Expectations／Expectations Gap反向DCF、市場隱含預期與預期差 | 聚焦「Reverse DCF／Market-Implied Expectations／Expectations Gap反向DCF、市場隱含預期與預期差」。從市場價格反推隱含營收成長、利潤率、自由現金流、資本成本或終值假設，再與公司指引、分析師共識、產業容量及歷史執行力比較。必須輸出區間與敏感度，不得以單一WACC或終值假設形成機械式PASS／FAIL；主要用途是量化priced-in（已反映）程度與預期差。 每個結論都必須記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、交易成本，以及對 System 1／System 2 的可驗證增量價值；未取得證據不得升級成熟度或進入 Formal（正式核心）。 | L0 未研究 | 0% |
 
 
 ## 07｜產業與供應鏈研究室
@@ -749,7 +752,7 @@ ChatGPT UI 顯示「思考中」、轉圈、手機／電腦版狀態不同步、
 必讀 checkpoint：`RESEARCH_WORKLIST.md`、`research/EXPERIMENT_REGISTRY.md`、`research/research_master_map.json`、`system2/SYSTEM2_MARKET_REGIME_V0.md`、`TREND_MOMENTUM_REVERSAL_CHECKPOINT.md`、`MARKET_BREADTH_ROTATION_CHECKPOINT.md`  
 禁止：不得把其他 Dxx 領域當成本聊天室主線；跨領域發現只能建立 dependency（依賴）或引用證據，不能雙重計算進度。
 
-### D16｜統計驗證／PIT／Shadow／OOS／防過擬合 — 45.8%
+### D16｜統計驗證／PIT／Shadow／OOS／防過擬合 — 44%
 
 | 模組 | 研究模組 | 學習範圍 | 等級 | 完成度 |
 |---|---|---|---|---:|
@@ -777,6 +780,7 @@ ChatGPT UI 顯示「思考中」、轉圈、手機／電腦版狀態不同步、
 | D16-22 | NLP／LLM Financial-text Feature Validation自然語言與大型語言模型財經文本特徵驗證 | 聚焦「NLP／LLM Financial-text Feature Validation自然語言與大型語言模型財經文本特徵驗證」。研究替代資料與文字模型的資料來源、時間戳、選樣／洩漏、模型漂移與可重播驗證；大型語言模型或機器學習模型只屬驗證／特徵工具，不因複雜度自動構成 Alpha（超額報酬）。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L0 未研究 | 0% |
 | D16-23 | Stress Test／Scenario／Reverse Stress Test壓力測試、情境與反向壓力測試 | 聚焦「Stress Test／Scenario／Reverse Stress Test壓力測試、情境與反向壓力測試」。研究壓力測試、反向壓力測試與蒙地卡羅方法的可重播驗證；需控制分布假設、相關性崩解、厚尾、參數漂移、情境選擇偏誤及模型風險，與歷史實證及簡單基準比較。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L0 未研究 | 0% |
 | D16-24 | Monte Carlo Simulation／Distributional Validation蒙地卡羅模擬與分布驗證 | 聚焦「Monte Carlo Simulation／Distributional Validation蒙地卡羅模擬與分布驗證」。研究壓力測試、反向壓力測試與蒙地卡羅方法的可重播驗證；需控制分布假設、相關性崩解、厚尾、參數漂移、情境選擇偏誤及模型風險，與歷史實證及簡單基準比較。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L0 未研究 | 0% |
+| D16-25 | Probabilistic Decision／Bayesian Updating／Uncertainty-aware Selection機率式決策、貝氏更新與不確定性選股 | 聚焦「Probabilistic Decision／Bayesian Updating／Uncertainty-aware Selection機率式決策、貝氏更新與不確定性選股」。研究如何把證據轉成可校準的機率、期望值與不確定性，而不是把更多研究模組堆成串聯硬門檻。必須明確區分HARD_INVALIDATION、PRIMARY_ALPHA、SUPPORTIVE、CONTEXT_ONLY、CONFIDENCE／UNCERTAINTY五種決策角色；UNKNOWN不得等同FAIL或0。研究Bayesian updating（貝氏更新）、base rate（基準率）、probability calibration（機率校準）、expected value／utility（期望值／效用）、abstention（不交易）與uncertainty penalty（不確定性折扣）。任何System 1／System 2應用都先走Prospective Shadow／OOS，並同時驗證機會捕捉率、zero-pick、false acceptance、成本、回撤與校準誤差，禁止因提高選股數量而直接宣稱改善。 每個結論都必須記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、交易成本，以及對 System 1／System 2 的可驗證增量價值；未取得證據不得升級成熟度或進入 Formal（正式核心）。 | L0 未研究 | 0% |
 
 
 ### D18｜市場Regime×策略互動 — 37.3%
