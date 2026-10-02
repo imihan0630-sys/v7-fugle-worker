@@ -156,6 +156,24 @@ on:
       - "tests/test_portfolio_risk_reconstructability_v0_1.mjs"
       - "tests/portfolio_risk_journal_readonly_audit.mjs"
       - "research/portfolio_risk_reconstructability_v0_1.json"
+      - "research/d15_independent_date_extension_v0_1.mjs"
+      - "research/d15_independent_date_extension_spec_v0_1.json"
+      - "tests/test_d15_independent_date_extension_v0_1.mjs"
+      - "tests/portfolio_risk_d15_independent_date_extension_readonly_audit.mjs"
+      - "research/positive_signal_plan_linkage_v0_1.mjs"
+      - "research/positive_signal_plan_linkage_spec_v0_1.json"
+      - "tests/test_positive_signal_plan_linkage_v0_1.mjs"
+      - "tests/test_cross_store_write_asymmetry_v0_1.mjs"
+      - "tests/positive_signal_cross_store_readonly_audit.mjs"
+      - "research/d15_kv_last_scan_corroboration_spec_v0_1.json"
+      - "tests/d15_kv_last_scan_corroboration_readonly_audit.mjs"
+      - "research/d15_plan_generation_provenance_v0_1.mjs"
+      - "research/d15_20261001_ambiguous_partial_scan_side_effect_receipt_v0_1.json"
+      - "research/d15_20260929_recovery_plan_heat_corroboration_receipt_v0_1.json"
+      - "research/d15_independent_date_extension_production_receipt_20261002_v0_1.json"
+      - "research/staged_recovery_journal_coverage_gap_v0_1.json"
+      - "tests/test_d15_plan_generation_provenance_v0_1.mjs"
+      - "tests/test_staged_recovery_journal_coverage_gap_v0_1.mjs"
       - "PORTFOLIO_RISK_TIER_A_AUDIT.md"
       - ".github/workflows/portfolio-risk-tier-a-research.yml"
   workflow_dispatch:
@@ -219,6 +237,11 @@ jobs:
           node tests/test_score_cap_reserve_v0_1.mjs
           node tests/test_effective_bets_semantic_firewall_v0_1.mjs
           node tests/test_cash_attribution_v0_1.mjs
+          node tests/test_d15_independent_date_extension_v0_1.mjs
+          node tests/test_positive_signal_plan_linkage_v0_1.mjs
+          node tests/test_cross_store_write_asymmetry_v0_1.mjs
+          node tests/test_d15_plan_generation_provenance_v0_1.mjs
+          node tests/test_staged_recovery_journal_coverage_gap_v0_1.mjs
       - name: Read-only production journal coverage audit
         env:
           V7_ADMIN_TOKEN: ${{ secrets.V7_ADMIN_TOKEN }}
@@ -247,3 +270,6 @@ jobs:
           node tests/portfolio_risk_metric_sensitivity_readonly_audit.mjs
           node tests/portfolio_risk_score_cap_reserve_readonly_audit.mjs
           node tests/portfolio_risk_cash_attribution_readonly_audit.mjs
+          node tests/portfolio_risk_d15_independent_date_extension_readonly_audit.mjs
+          node tests/positive_signal_cross_store_readonly_audit.mjs
+          node tests/d15_kv_last_scan_corroboration_readonly_audit.mjs

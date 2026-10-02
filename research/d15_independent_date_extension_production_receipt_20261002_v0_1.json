@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "D15_INDEPENDENT_DATE_EXTENSION_PRODUCTION_RECEIPT_20261002_V0_1",
+  "observedAt": "2026-10-02T12:17:00+08:00",
+  "timestampProvenance": "GitHub Actions Portfolio Risk Tier-A Research run 36963817806 / job 110703080534",
+  "researchOnly": true,
+  "decisionImpact": false,
+  "formalCoreImpact": false,
+  "baselineCleanMultiNameDate": "2026-09-18",
+  "d1JournalSummary": {
+    "recordedDates": 4,
+    "zeroSelectedDates": 2,
+    "singleNameDates": 1,
+    "multiNameDates": 1,
+    "multiNameDateList": [
+      "2026-09-18"
+    ],
+    "newMultiNameDatesAfterBaseline": 0,
+    "countMismatchDates": []
+  },
+  "correctedCrossStoreInterpretation": {
+    "statement": "No new D1-journal-certified multi-name date exists after 2026-09-18.",
+    "notEquivalentTo": "No later Formal/recovery plan exists anywhere.",
+    "lowerTierPlanEvidence": "2026-09-29 staged historical recovery persists a two-name plan in KV LAST_SCAN but bypasses D1 trade-journal day/plan persistence by design.",
+    "ambiguousConfigEvidence": "2026-10-01 current config contains 2454 after an unconfirmed single /api/scan POST; full generation is not certified."
+  },
+  "maturityDecision": {
+    "d15MaturityPctBefore": 49.3,
+    "d15MaturityPctAfter": 49.3,
+    "promoted": false,
+    "reason": "No additional ordinary decision-time/D1-certified multi-name date; recovery/config evidence is useful for falsification and observability but not equivalent to clean prospective PIT evidence."
+  },
+  "status": "NO_NEW_D1_JOURNAL_CERTIFIED_MULTI_NAME_DATE / CROSS_STORE_COVERAGE_GAP_IDENTIFIED / D15_MATURITY_UNCHANGED"
+}

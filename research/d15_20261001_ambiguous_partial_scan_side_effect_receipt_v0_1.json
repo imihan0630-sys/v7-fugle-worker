@@ -1,0 +1,49 @@
+{
+  "schemaVersion": "D15_20261001_AMBIGUOUS_PARTIAL_SCAN_SIDE_EFFECT_V0_1",
+  "observedAt": "2026-10-02T12:30:00+08:00",
+  "researchOnly": true,
+  "decisionImpact": false,
+  "formalCoreImpact": false,
+  "marketDate": "2026-10-01",
+  "workflow": {
+    "runId": 36886021172,
+    "jobId": 110449404383,
+    "postStartedAtUtc": "2026-10-01T15:44:25.124Z",
+    "postFailedAtUtc": "2026-10-01T15:45:35.494Z",
+    "request": "single POST /api/scan with onlyIfMissing=true and marketDate=2026-10-01",
+    "result": "UNCONFIRMED_503_NO_RETRY"
+  },
+  "observedConfig": {
+    "sourceSurface": "/api/config",
+    "updatedAtUtc": "2026-10-01T15:45:29.639Z",
+    "symbol": "2454",
+    "closeDate": "2026-10-01",
+    "planDate": "2026-10-02"
+  },
+  "journal": {
+    "scanDate": "2026-10-01",
+    "selectedCount": 0,
+    "planCount": 0,
+    "signalCount": 1,
+    "updatedAt": null
+  },
+  "laterPositiveSignal": {
+    "eventId": "2026-10-02:2454:NONE:BUY:episode-1",
+    "symbol": "2454",
+    "planScanDate": "2026-10-01",
+    "attributionEligible": false,
+    "reason": "D1 journal day/plan absent; current config alone is mutable provenance."
+  },
+  "sourceMechanism": [
+    "recover_after_market.mjs performs exactly one POST /api/scan and on ambiguous failure performs only a read-only scan/status check, never a blind repeated POST.",
+    "runAfterMarketScan saves monitor config before later delivery/journal/LAST_SCAN completion.",
+    "The config updatedAt occurs inside the single POST interval, ~5.855 seconds before the job reports the unconfirmed 503."
+  ],
+  "conclusion": "AMBIGUOUS_PARTIAL_SCAN_SIDE_EFFECT_STRONGLY_SUPPORTED / FULL_SELECTION_GENERATION_NOT_CONFIRMED",
+  "forbiddenInferences": [
+    "Do not call the 2026-10-01 ordinary scan successful.",
+    "Do not call the 2454 plan D1-generation-certified.",
+    "Do not call the 2454 BUY invalid merely because LAST_SCAN/D1 journal are missing.",
+    "Do not use this date to promote D15 maturity or Portfolio Heat population claims."
+  ]
+}

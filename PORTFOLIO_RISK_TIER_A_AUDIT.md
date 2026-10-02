@@ -2306,3 +2306,35 @@ Dependency artifact:
 
 Status:
 `HISTORICAL_SOURCE_FOUNDATION_AVAILABLE / CONTINUOUS_TAIL_DATASET_NOT_PROVEN`.
+
+
+## D15-ID-001 — independent-date extension protocol (2026-10-02)
+
+D15 planned Portfolio Heat currently has one historical multi-name witness (2026-09-18). The tracker requires accumulation of independent multi-name dates before any robustness claim.
+
+A read-only extension protocol is now frozen before reading current Production outcomes.
+
+Date eligibility:
+- journal day selected_count must equal immutable plan-row count;
+- selected_count >= 2;
+- required buyHigh/stop geometry must be available for frozen heat/frontier metrics.
+
+Zero-selected and single-name dates remain in the denominator but are explicitly non-identifying for cross-name allocation geometry.
+
+If no new multi-name date exists after 2026-09-18:
+- record NO_NEW_MULTI_NAME_DATE;
+- do not raise D15 maturity;
+- do not generalize the 2026-09-18 witness.
+
+If an additional multi-name date exists:
+- apply the already-frozen HHI/Gini/CV/max-risk-share/max-min heat-concentration frontier without retuning;
+- compare date-level direction only;
+- one extra date still does not establish population significance, OOS or economic sizing superiority.
+
+Artifacts:
+`research/d15_independent_date_extension_v0_1.mjs`;
+`research/d15_independent_date_extension_spec_v0_1.json`;
+`tests/portfolio_risk_d15_independent_date_extension_readonly_audit.mjs`.
+
+Status:
+`PREREGISTERED / PRODUCTION_READ_PENDING / FORMAL_CORE_LOCKED`.

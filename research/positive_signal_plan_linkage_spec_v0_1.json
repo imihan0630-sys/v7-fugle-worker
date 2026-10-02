@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "POSITIVE_SIGNAL_PLAN_LINKAGE_V0_1",
+  "preregisteredAt": "2026-10-02T12:18:00+08:00",
+  "purpose": "Classify whether a durable positive BUY signal is attributable to an exact plan generation, and distinguish D1 journal absence from total plan absence.",
+  "evidenceHierarchy": [
+    "D1 journal day + exact journal plan row",
+    "exact latest scan status matching planScanDate + symbol",
+    "current config matching closeDate + symbol",
+    "signal row alone"
+  ],
+  "states": {
+    "D1_JOURNAL_PLAN_LINKED": "Attribution eligible at the plan-linkage layer.",
+    "CROSS_STORE_PLAN_PRESENT_D1_JOURNAL_MISSING": "Exact KV latest-scan plan exists, but D1 journal day/plan evidence is absent; attribution remains blocked until provenance reconciliation.",
+    "CURRENT_CONFIG_MATCH_ONLY_D1_JOURNAL_MISSING": "Mutable config supports plausibility but is not immutable generation proof.",
+    "POSITIVE_SIGNAL_UNATTRIBUTED_TO_PLAN": "Signal is positive evidence only; no plan attribution."
+  },
+  "sourceMechanismFinding": "V8.5 journal patch writes/updates monitor config before recordTradeJournalDay. recordTradeJournalDay catches errors and returns stored:false rather than failing the whole scan. Therefore config/scan success with missing D1 journal is structurally possible and must be classified, not guessed away.",
+  "guardrails": [
+    "read-only Production verification",
+    "positive signal does not imply fill",
+    "config match does not equal immutable generation identity",
+    "missing D1 plan does not imply the signal is invalid",
+    "no Formal Core change"
+  ],
+  "status": "PREREGISTERED / CROSS_STORE_READ_PENDING",
+  "formalCoreImpact": false
+}
