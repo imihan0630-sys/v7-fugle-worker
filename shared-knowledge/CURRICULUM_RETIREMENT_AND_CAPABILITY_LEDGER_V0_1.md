@@ -1,6 +1,6 @@
 # Curriculum Retirement and Capability Ledger V0.1
 
-Updated: 2026-10-03 04:34 Asia/Taipei
+Updated: 2026-10-03 05:02 Asia/Taipei
 Status: OWNER_APPROVED / EXECUTED / CAPABILITY_PRESERVATION_REQUIRED
 Scope: Seven-item curriculum audit from the 366-module map
 Formal Core impact: NONE
@@ -75,7 +75,7 @@ Decision: **CURRICULUM_RETIRED / SPLIT_OWNERSHIP**
 ## Current curriculum after execution
 
 - Domains: 22
-- Modules: 362
+- Modules: 354
 - Formal Core: unchanged
 - Retired standalone module IDs: D03-11, D10-11, D14-13, D21-08
 - Observation/merge candidates retained: D01-12, D02-07
@@ -85,3 +85,55 @@ Decision: **CURRICULUM_RETIRED / SPLIT_OWNERSHIP**
 
 A retired module may not leave behind an orphaned capability or responsibility.
 If a future audit finds that a retired module's required capability no longer has a clear owner, the owner mapping must be repaired before any related code/data/workflow can be removed or disabled.
+
+
+## Observation-module merge execution — 2026-10-03
+
+Owner instructed that safely mergeable observation items be merged first. Each merge below passed a dependency audit: the knowledge/function survives under an explicit owner, historical research files remain preserved, and no Formal Core behavior is changed.
+
+### D01-12 → D01-02 / D01-03 / D01-05 / D01-09
+Decision: **MERGED / STANDALONE MODULE RETIRED**
+- Traditional candlestick / Sakata taxonomy is split into single-bar, multi-bar, lifecycle and gap/limit-price owners.
+- System 2 candlestick/Sakata explanatory capability remains intact.
+- No independent Sakata score or duplicate vote is allowed.
+
+### D06-17 → D06-16
+Decision: **MERGED / STANDALONE MODULE RETIRED**
+- D06-16 is renamed to an integrated ETF mechanics module covering creation/redemption, AP, NAV premium-discount, tracking difference and underlying liquidity.
+- D06-11 remains owner of passive-flow / index-rebalance effects.
+- No ETF mechanics capability is removed.
+
+### D12-18 → D12-17
+Decision: **MERGED / STANDALONE MODULE RETIRED**
+- D12-17 now owns option payoff structures, put-call parity, synthetic positions and common option strategies.
+- D15-23 remains owner of portfolio-level derivative hedging / overlay application.
+- Strategy names do not become stock-selection gates.
+
+### D15-17 + D15-18 → D15-16
+Decision: **MERGED / STANDALONE MODULES RETIRED**
+- Mean-Variance, Efficient Frontier, Risk Budgeting / Risk Parity and Black-Litterman are retained as one Portfolio Optimization method family.
+- Methods are compared under one estimation-error, cost and constraint framework rather than counted as separate selection evidence.
+
+### D15-20 → D15-21
+Decision: **MERGED / STANDALONE MODULE RETIRED**
+- Tracking Error and Active Share are merged with Allocation / Selection / Timing performance attribution as one Active Portfolio Diagnostics family.
+- These diagnostics explain portfolio behavior; they do not independently reject stocks.
+
+### D19-14 → D19-13
+Decision: **MERGED / STANDALONE MODULE RETIRED**
+- Pairs Trading, Cointegration, Residual Mean Reversion and Cross-sectional Relative Value are retained as one Relative Value strategy family.
+- Common risk neutralization, structural-break, cost and multiple-testing controls are shared.
+
+### D21-06 → D21-07
+Decision: **MERGED / STANDALONE MODULE RETIRED**
+- Compensation / Incentive Alignment is merged into Management Incentives / Capital Allocation Quality.
+- Incentives are studied through observable decision and capital-allocation outcomes.
+- D21-12 remains independent owner of management-guidance credibility.
+
+### Not merged yet: D02-07 OBV
+Decision: **OBSERVATION / MERGE_CANDIDATE remains**
+- Existing research says redundancy is high but independent residual information is not yet fully falsified.
+- Keep as Price-Volume comparator until incremental-value testing is completed.
+- It must not double-count RVOL, turnover, direct volume or price-volume evidence.
+
+After this execution the canonical curriculum is **22 domains / 354 modules**.
