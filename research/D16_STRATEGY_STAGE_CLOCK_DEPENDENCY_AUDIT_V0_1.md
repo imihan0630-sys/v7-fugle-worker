@@ -268,3 +268,37 @@ FORMAL_OPTIMIZATION_CANDIDATE: NONE.
 4. On prospective dates, record first-ready time for each stage without changing actual behavior.
 5. Compare global ready time versus stage-ready time only after the graph is frozen.
 6. Treat any measured delta as operational evidence, not alpha.
+
+
+## 12. 2026-10-03 continuation — readiness estimand firewall
+
+Latest main/tracker readback confirms the machine-readable dependency matrix is frozen, while exact stage roles, shared-selection dependencies and execution dependencies remain unresolved.
+
+New statistical conclusion:
+- A measured difference between GLOBAL_REVIEW_READY and an earlier strategy-stage readiness timestamp is an **operational latency estimand**, not strategy alpha.
+- It must not be tested by choosing the stage/dependency subset that maximizes later returns. Dependency composition must be frozen from strategy semantics before outcome inspection.
+- The primary prospective comparison should be paired within the same immutable date/source epoch: global-ready timestamp minus stage-ready timestamp, with UNKNOWN retained whenever any required stage dependency lacks PIT/continuity proof.
+- Report availability/coverage and latency distribution separately. A faster stage with materially lower valid-date coverage is not automatically superior.
+- Any later policy experiment must use a separate preregistered OOS/Shadow layer with identical strategy logic/cost assumptions; timing evidence alone cannot authorize activation, ranking, capital, execution or notification changes.
+
+Falsification strengthened:
+1. If A1/technical continuity remains the slowest required dependency, the apparent global over-constraint has no practical timing benefit.
+2. If shared selection or execution legally requires B2/A5, an earlier Strategy Validity timestamp does not imply earlier actionable readiness.
+3. If missing stage-ready timestamps cluster by market regime, complete-case timing estimates are selected and must not be promoted.
+4. If dependency definitions change, begin a new evidence epoch rather than recomputing prior prospective dates.
+
+This creates a clean separation among three questions:
+- semantic dependency correctness;
+- operational readiness latency;
+- economic strategy value.
+
+Only the first two are currently researchable from the frozen evidence. Economic value remains untested.
+
+FORMAL_OPTIMIZATION_CANDIDATE: NONE.
+
+### Exact next continuation
+1. Resolve exact stageRole for SHORT_MOMENTUM TECHNICAL_STRUCTURE / PRICE_VOLUME / RISK_FRICTION and SWING_GROWTH entry timing from frozen strategy contracts.
+2. Freeze shared-selection and execution dependencies; unresolved dependencies remain UNKNOWN.
+3. Add prospective paired stage-ready/global-ready timestamps only after dependencyVersion is frozen; stratify by source/evidence epoch and preserve failed dates.
+4. Audit missing stage-ready timestamps for regime dependence before any latency summary is treated as representative.
+5. Keep policy/OOS/Shadow outcome testing separate and later.
