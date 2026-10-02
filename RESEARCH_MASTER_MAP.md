@@ -146,3 +146,9 @@ Cross-system reusable research is now indexed first by `shared-knowledge/SHARED_
 This System 1 Master Map remains the canonical inventory/maturity dashboard for V8 research. Existing evidence files are not relocated. Reusable findings may be referenced by System 2 through the Shared Master Map; System 2-specific strategy/performance state lives under `system2/`.
 
 Read order for future research chats: Shared Master Map -> RESEARCH_ENGINEERING_GOVERNANCE.md -> this System 1 Master Map / RESEARCH_CHECKPOINT.md -> dedicated lane checkpoint.
+
+
+### Room 07 durable update — 2026-10-02
+- Supply-chain: SC-040 freezes three independent 2026-07..09 NDC/CIER order/lead-time release vintages; SC-041 adds bounded 8046/3189 industry-to-issuer product-scope bridges while revenue exposure and issuer backlog remain UNKNOWN.
+- SC-042 defines a dedicated shortage/supply-gap PIT event contract with explicit shortage/allocation plus operational-consequence requirements and a September mismatch/inventory negative control. D10-08 advances L2 -> L3 for Taiwan PIT/source feasibility only.
+- No issuer backlog, realized margin, stock outcome, scoring weight or Formal Core behavior changed.
