@@ -1,6 +1,6 @@
 # Behavioral Finance / Investor Attention Checkpoint
 
-Updated: 2026-10-02 23:24 Asia/Taipei
+Updated: 2026-10-02 23:19 Asia/Taipei
 Scope: D20｜行為金融／投資人注意力／市場心理
 Status: FOUNDATION_CLUSTER_L2 / D20-01_02_04_07 / FORMAL_CORE_UNCHANGED
 
