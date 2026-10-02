@@ -1753,3 +1753,56 @@ Exact next nonblocked continuation:
 - define a source-readiness inventory for dated Taiwan broker-report forecasts without claiming a canonical API/license;
 - preregister analyst consensus accuracy/freshness diagnostics before selecting any stale cutoff;
 - then construct an outcome-blind prospective analyst-forecast receipt only after authorized source access exists.
+
+
+## FD-058 — Forecast freshness must be validated on forecast error before stock returns
+
+Research date: 2026-10-02 Asia/Taipei.
+
+Machine preregistration:
+research/analyst_forecast_freshness_accuracy_prereg_v0_1.json.
+
+The next question is not whether a 30-day-old forecast predicts stocks better. It is first whether forecast age improves the forecast itself.
+
+The accuracy lane is frozen before any return join:
+- primary unit = symbol × target fiscal period × forecast basis × asOf;
+- actual EPS must match the same fiscal target and compatible basis;
+- later accounting restatements remain separate actual vintages;
+- primary metrics are absolute and signed EPS forecast errors;
+- percentage errors require positive actual EPS safely away from zero.
+
+Preregistered consensus variants are all-active latest-per-forecaster mean/median, most-recent single forecast, three-most-recent mean when coverage permits, and a 30-calendar-day mean used only as a literature benchmark.
+
+The 30-day construction is not a production cutoff. Prior literature supports a recency-versus-aggregation trade-off, while newer methodological evidence warns that relative analyst-accuracy rankings can become noisy under sparse or heterogeneous coverage.
+
+Rules:
+- preserve forecastAgeDays continuously;
+- preserve coverage, dispersion and broker concentration;
+- hold target horizon and basis fixed;
+- do not rank analyst ability from sparse relative-accuracy scores without robustness checks;
+- do not choose stale cutoffs using stock returns.
+
+Status: ACCURACY_PREREGISTERED / CANONICAL_ANALYST_SOURCE_STILL_BLOCKED / RETURN_OUTCOMES_CLOSED / D07-11_REMAINS_L2.
+
+## FD-059 — Forecast recency partly reflects timing advantage, not pure analyst skill
+
+More recent forecasts can observe more public information. Forecast age, analyst skill and information arrival are therefore jointly endogenous.
+
+Future Taiwan analyst-ability or revision-strength tests must separate forecast age, event proximity, forecaster identity, prior accuracy, coverage breadth and company information environment.
+
+A late forecast is not automatically independent private information. A burst of revisions following one earnings announcement can mainly represent common public-information processing.
+
+Status: TIMING_ADVANTAGE_CONFOUND_FROZEN / ANALYST_SKILL_ALPHA_UNKNOWN / NO_FORMAL_CHANGE.
+
+## FD-060 — Parallel analyst horizon-alignment artifact reconciled
+
+Latest main contains research/analyst_output_horizon_alignment_v0_1.json from a parallel 06-room continuation. It is consistent with the earlier analyst PIT contract and is adopted as a complementary guard:
+- exact fiscal horizon and forecast basis are part of identity;
+- CURRENT_FY, NEXT_FY and NTM are distinct series;
+- horizon roll is not revision;
+- provider roll convention must be proven;
+- missing provenance remains UNKNOWN.
+
+This block did not duplicate or overwrite that artifact.
+
+Status: PARALLEL_RESEARCH_RECONCILED / NO_CONFLICT / NO_MATURITY_CHANGE.
