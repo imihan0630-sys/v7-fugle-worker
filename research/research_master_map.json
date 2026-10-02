@@ -152,15 +152,15 @@
       "id": "BREADTH_ROTATION",
       "domain": "INDUSTRY_SECTOR_RESIDUAL_RS",
       "level": "L2",
-      "status": "WAITING_PROSPECTIVE / RUNTIME_RECEIPT_BLOCKED",
-      "basis": "The 2026-07-10 unscheduled market-closure proof defect was owner-approved and repaired in V8.14.2/8.14.3, but 2026-09-30 staged preview later failed Cloudflare Worker 1102 after closure-proof verification. Therefore BR-030 still has no proven clean live sector cohort. Separately, D09-05 Above-MA now has a coverage-bounded/leave-one-out contract plus isolated 28-assertion QA, and D09-08 size leadership has official Taiwan50/MidCap100/SC300 PIT source feasibility. No outcome claims or threshold changes."
+      "status": "PIT_FEASIBLE_PARTIAL / LIVE_SELECTION_COHORT_BLOCKED / SOURCE_ONLY_EVIDENCE_ADVANCING",
+      "basis": "BR-035 remains blocked because 2026-10-01/02 do not establish clean System1 selection lineage. Independent non-selection evidence advanced: BR-037 freezes the first common-complete Taiwan50/MidCap100/SmallCap300 TRI size-state receipt with D5 small-cap leadership coexisting with D20/D60 large-cap leadership; BR-039 freezes official TWSE stock-only advance/decline breadth and a TAIEX-up/breadth-negative witness; BR-041 establishes same-day sector return-dispersion PIT feasibility from existing member changePercent/industry/tradeValue fields; BR-042 synthetic QA proves dispersion is directionless and outlier-sensitive. No strategy outcome claim."
     },
     {
       "id": "SUPPLY_CHAIN_EVENT_LEAD_LAG",
       "domain": "SUPPLY_CHAIN_LEAD_LAG",
       "level": "L2",
-      "status": "PIT_FEASIBLE_PARTIAL / PRICING_POWER_SCHEMA_FROZEN / WAITING_PROSPECTIVE",
-      "basis": "SC-031 establishes issuer-level product-specific selective pricing response from official Taiwan pricing announcements; SC-032 separates cost context, posted price, realized ASP, realized margin and volume/mix clocks. D10-06 Pricing Power is L3 Taiwan PIT data-feasible, but realized pass-through/predictive outcomes remain closed. Material benchmark-to-company cost weights remain UNKNOWN where not disclosed."
+      "status": "PIT_FEASIBLE_PARTIAL / THREE_EVENT_PRICING_CALIBRATION / CROSS_INDUSTRY_SOURCE_BLOCKED",
+      "basis": "SC-033 freezes three China Steel pricing states: broad down, flat, and broad/selective up under different cost-demand combinations, falsifying cost-only pass-through and fixed-company Pricing Power. Events are independent but issuer is not. SC-034 discovered a Formosa Petrochemical cross-industry pricing candidate but official full-text capture is blocked/partial; it is excluded from the calibration denominator. Realized ASP/margin and stock outcomes remain closed."
     },
     {
       "id": "CORPORATE_ACTION_DENOMINATORS",
