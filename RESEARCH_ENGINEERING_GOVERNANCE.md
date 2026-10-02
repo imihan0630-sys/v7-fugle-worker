@@ -1,6 +1,6 @@
 # Research Engineering Governance
 
-Updated: 2026-09-21
+Updated: 2026-10-03
 
 ## Purpose
 
@@ -131,6 +131,27 @@ Candidate status vocabulary:
 Every `FORMAL_OPTIMIZATION_CANDIDATE` must state exactly what Formal behavior would change, expected benefit, observed downside/failure modes, evidence sample/period/regimes, protected invariants, rollback plan, and whether the implementation is Class B or Class C. The agent MUST proactively notify the owner when such a candidate becomes eligible; it must not wait for the owner to ask.
 
 This bridge does NOT weaken Formal Core LOCKED. Class B/C changes still require explicit owner approval before merge/deploy/promotion. Research findings that have not passed falsification must never be presented as optimization-ready.
+
+## Official-source automation capability preservation
+
+The former curriculum module `D10-11`（官方資料自動化擷取）is retired from the stock-knowledge curriculum because automated ingestion is an engineering capability rather than an independent stock-selection knowledge module.
+
+**Capability preservation is mandatory.** Curriculum retirement does not authorize deletion, disabling or degradation of approved official-data automation.
+
+The engineering layer must preserve, where applicable:
+- TWSE / TPEx / MOPS / MOEA / TAIFEX and other approved official-source adapters and source contracts;
+- automated scheduled / incremental acquisition when an authorized collector exists;
+- source health / readiness checks, retries, bounded fallback behavior and explicit source failures;
+- sourceDate / capturedAt / availableAt / verifiedAt / firstKnownAt / PIT eligibility semantics;
+- data-generation/version provenance and immutable/replayable receipts;
+- storage, APIs, workflows and tests that support those capabilities;
+- UNKNOWN semantics: missing/unavailable source data must never silently become 0, BAD or PASS.
+
+Any runtime, Cron, binding, shared fetch-path, cache, schema or deployment change that could affect production remains Class B or Class C as already defined above. Removing a curriculum module is never sufficient authority to alter such engineering behavior.
+
+Canonical ownership/retirement record:
+`shared-knowledge/CURRICULUM_RETIREMENT_AND_CAPABILITY_LEDGER_V0_1.md`.
+
 
 ## Human-intervention boundary
 
