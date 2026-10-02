@@ -1,6 +1,6 @@
 # Shared Research Master Map
 
-Updated: 2026-10-03 04:34 Asia/Taipei
+Updated: 2026-10-03 05:02 Asia/Taipei
 Status: CANONICAL_SHARED_INDEX
 Scope: Cross-system research knowledge
 Formal Core impact: NONE
@@ -356,11 +356,11 @@ Execution tracks:
 Owner-approved forward philosophy:
 minimal HARD_INVALIDATION + strategy-specific PRIMARY_ALPHA + SUPPORTIVE + CONTEXT_ONLY + separate CONFIDENCE／UNCERTAINTY + ABSTAIN when expected value is inadequate or uncertainty excessive.
 
-The learning curriculum (22 domains / 362 modules) is a knowledge universe, not an all-domain AND-gate checklist.
+The learning curriculum (22 domains / 354 modules) is a knowledge universe, not an all-domain AND-gate checklist.
 
 ## Seven-item curriculum audit and capability-preservation execution (2026-10-03)
 
-Owner approved the re-audit of seven previously proposed deletions. The current canonical curriculum is **22 domains / 362 modules**.
+Owner approved the re-audit of seven previously proposed deletions. The current canonical curriculum is **22 domains / 354 modules**.
 
 Executed:
 - D03-11 ROC: standalone module retired because standard ROC is exactly redundant with same-horizon retN; alias/anti-double-count ownership transferred to D03-02.
@@ -376,10 +376,27 @@ Canonical dependency/ownership record:
 
 Historical research files and existing runtime capabilities remain preserved. Formal Core remains unchanged.
 
+## Observation-module consolidation — owner approved 2026-10-03
+
+Owner instructed that safely mergeable observation modules be consolidated after Dependency Audit（依賴稽核）. The canonical curriculum is now **22 domains / 354 modules**.
+
+Merged standalone IDs:
+- D01-12 -> D01-02 / D01-03 / D01-05 / D01-09 (traditional candlestick / Sakata knowledge preserved; no independent Sakata score).
+- D06-17 -> D06-16 (integrated ETF mechanics: creation/redemption/AP/premium-discount/tracking/liquidity).
+- D12-18 -> D12-17 (option payoff structures / parity / synthetic positions / common strategies).
+- D15-17 + D15-18 -> D15-16 (portfolio optimization method family).
+- D15-20 -> D15-21 (active portfolio diagnostics + performance attribution).
+- D19-14 -> D19-13 (relative-value strategy family).
+- D21-06 -> D21-07 (management incentives + capital allocation quality).
+
+D02-07 OBV remains OBSERVATION / MERGE_CANDIDATE because high redundancy is known but residual incremental information has not yet been fully falsified.
+
+All historical research evidence and required runtime/explanatory capabilities remain preserved. Formal Core remains LOCKED.
+
 ## Shared inventory
 
 - `shared-knowledge/SHARED_RESEARCH_INVENTORY.md` is the cross-system domain/tag inventory. It points to original evidence without relocating it.
-- `shared-knowledge/STOCK_MARKET_KNOWLEDGE_LEARNING_MAP.md` is the canonical 22-domain / 362-module learning curriculum and chatroom routing dashboard.
+- `shared-knowledge/STOCK_MARKET_KNOWLEDGE_LEARNING_MAP.md` is the canonical 22-domain / 354-module learning curriculum and chatroom routing dashboard.
 - `research/stock_market_learning_tracker_v0_1.json` is the machine-readable maturity tracker for that curriculum.
 - `shared-knowledge/LEARNING_ROOM_ROUTER.md` is the mandatory public routing file every learning chat reads to know its assigned domains, modules, learning scope, progress and checkpoints.
 
