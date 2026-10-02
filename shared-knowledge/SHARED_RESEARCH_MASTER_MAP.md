@@ -294,10 +294,31 @@ Governance interpretation:
 - No System 1/System 2 Formal Core, ranking, signal, allocation, execution or notification behavior is changed by this approval.
 - Specialist rooms own evidence generation; room 00 owns only curriculum/routing synchronization.
 
+## Third-pass curriculum refinement — 26 approved modules (2026-10-02)
+
+Owner approved the third residual-gap audit after explicit positive/negative review. The canonical curriculum remains **22 domains** and expands from **337 to 363 modules**. All 26 additions start at L0 and do not imply evidence, maturity promotion or production use.
+
+Approved additions:
+- D05: market integrity / abnormal-trading-pattern risk. It may lower market-data/signal confidence but must never infer manipulative intent from price/order data alone.
+- D06: ETF creation/redemption/AP mechanics, ETF premium-discount/tracking/liquidity, securities-lending economics.
+- D07/D08: advanced accounting (tax, leases, pension/share compensation, diluted EPS, FX translation, goodwill/impairment) plus financial-institution operating metrics and valuation.
+- D09: industry structure / Porter Five Forces and competition/share/barrier/substitution analysis.
+- D12/D15: put-call parity, synthetic positions, option payoff strategies and derivative hedging/overlay.
+- D13/D18: business-cycle indicators, capital-market expectations / long-run growth drivers and cycle-by-strategy Regime interaction.
+- D14: short-sale execution, recall, forced buy-in and squeeze risk.
+- D15/D16: VaR, stress/reverse-stress testing and Monte Carlo distributional validation.
+- D19: liquidity premium / illiquidity factor.
+- D20: limits to arbitrage / noise-trader risk.
+
+Explicitly NOT promoted to a standalone module:
+- Clearing / settlement mechanics. Relevant T+2, borrow/return and orderability details remain subordinate knowledge under D06/D14 unless future strategy scope expands to cross-market arbitrage, institutional clearing or leveraged derivatives.
+
+Formal Core remains LOCKED. No System 1/System 2 signal, ranking, allocation, execution or notification behavior is changed by this curriculum update.
+
 ## Shared inventory
 
 - `shared-knowledge/SHARED_RESEARCH_INVENTORY.md` is the cross-system domain/tag inventory. It points to original evidence without relocating it.
-- `shared-knowledge/STOCK_MARKET_KNOWLEDGE_LEARNING_MAP.md` is the canonical 22-domain / 337-module learning curriculum and chatroom routing dashboard.
+- `shared-knowledge/STOCK_MARKET_KNOWLEDGE_LEARNING_MAP.md` is the canonical 22-domain / 363-module learning curriculum and chatroom routing dashboard.
 - `research/stock_market_learning_tracker_v0_1.json` is the machine-readable maturity tracker for that curriculum.
 - `shared-knowledge/LEARNING_ROOM_ROUTER.md` is the mandatory public routing file every learning chat reads to know its assigned domains, modules, learning scope, progress and checkpoints.
 
