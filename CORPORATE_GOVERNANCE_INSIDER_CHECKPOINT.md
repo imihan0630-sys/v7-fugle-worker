@@ -1,6 +1,6 @@
 # Corporate Governance / Insider Checkpoint
 
-Updated: 2026-10-02 23:23 Asia/Taipei
+Updated: 2026-10-02 23:21 Asia/Taipei
 Scope: D21｜公司治理／經營者／內部人／控制權品質
 Status: D21-01 L2 / MECHANISM_FALSIFICATION_FROZEN / PIT_REPLAY_PENDING / FORMAL_CORE_UNCHANGED
 
