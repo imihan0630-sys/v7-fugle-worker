@@ -2207,3 +2207,65 @@ Formal Core remains LOCKED.
 3. Before ADX outcome testing, establish a stable long-enough history/warm-up contract on outcome-blind real rows and freeze +DI/-DI/DX/ADX/formulaVersion/continuity fields.
 4. ADX efficacy follows TI-005/TI-006 and must test residual value beyond direct trend, ATR/regime and Impulse MACD; ADX is not an additive third resonance vote.
 5. Formal Core, selection, ranking, capital, monitoring, signal and push behavior remain unchanged.
+
+
+## TI-460 through TI-467 — ROC exact redundancy / third-session transport audit (2026-10-02)
+
+Durable artifacts:
+- `research/TECHNICAL_INDICATOR_ROC_REDUNDANCY_V0_1.md`
+- `research/test_technical_indicator_roc_redundancy_v0_1.mjs`
+- detailed findings appended to `TECHNICAL_INDICATOR_RESEARCH.md`.
+
+### Material findings
+
+- TI-460: 2026-10-02 TWSE/TPEx official session content is publicly available, but the current chat fetch path returns extracted/normalized content rather than frozen observer origin raw bytes. Source presence passes; raw-receipt equivalence does not. The preregistered session gate stays 2/3.
+- TI-461: standard percentage ROC is exactly `100 * retN` at the same lookback and price space.
+- TI-462: common Momentum index is exactly `ROC + 100`.
+- TI-463: raw price difference is nominal-price-scale confounded; normalization collapses back to ROC/retN.
+- TI-464: log return is an exact monotonic transform `ln(1+ROC/100)`, preserving same-date ordering.
+- TI-465: smoothed/delta ROC are same-family candidates requiring residual tests against direct returns, acceleration, MA slope, persistence, volatility and Regime.
+- TI-466: corporate-action discontinuities, suspensions/no-trade and price-limit-constrained price discovery remain mandatory continuity gates.
+- TI-467: D03-11 ROC advances L1/20 -> L2/40 for mechanism/falsification maturity only; D03 aggregate advances 46.2% -> 47.7%.
+
+### System-use firewall
+
+Do not separately weight/vote:
+- ret20 + ROC20;
+- ret60 + ROC60;
+- same-horizon ROC + Momentum index;
+- percentile ROC + percentile same-horizon simple/log return.
+
+These are exact or monotonic re-expressions of the same information.
+
+### Current lane status after TI-467
+
+D03_MATURITY = 47.7_PERCENT
+
+D03_11_ROC = L2_MECHANISM_AND_FALSIFICATION_DEFINED
+
+STANDARD_PERCENT_ROC_VS_RETN = EXACT_REDUNDANCY
+
+MOMENTUM_INDEX_VS_ROC = EXACT_AFFINE_REDUNDANCY
+
+LOG_RETURN_VS_ROC_RANK = EXACT_MONOTONIC_REDUNDANCY
+
+RAW_PRICE_DIFFERENCE = PRICE_SCALE_CONFOUNDED
+
+THIRD_SESSION_SOURCE_PRESENT = PASS
+
+THIRD_SESSION_RAW_RECEIPT_EQUIVALENCE = NO
+
+PROSPECTIVE_COMPLETED_SESSION_COVERAGE = ACCUMULATING_2_OF_3
+
+OUTCOME_JOIN = NO_GO
+
+FORMAL_OPTIMIZATION_CANDIDATE = NONE
+
+Formal Core remains LOCKED.
+
+### Exact next continuation point after TI-467
+
+1. Close the third-session raw-receipt gate only with the frozen observer or receipt-equivalent authorized transport; do not backfill extracted 2026-10-02 content.
+2. Until that gate closes, continue outcome-blind mechanism/falsification on D03-13 multi-timeframe conflict and overlap among direct returns, EMA16/64 and Impulse MACD.
+3. Once genuinely closed, execute TI-005 KD-vs-RSI first and TI-006 MACD-vs-direct-trend second with equal-date residualized controls.
+4. Formal Core and all production selection/ranking/capital/monitoring/signal/push behavior remain unchanged.
