@@ -1,0 +1,25 @@
+# S2-12 immutable common-input comparison core V0.1
+
+Classification: Class A / System2 research only. Repository implementation, not a live comparison deployment.
+
+## Implemented portion
+
+`resonance_comparison_frame_v0_1.mjs` seals one symbol/clock from an existing active bounded pool (maximum 9). Pool membership and capacity identities, provider receipt/history/quote hashes, adjustment/price-space semantics, observation availability, normalized daily OHLCV and lifecycle/finality inputs form one immutable frame. It computes the unchanged user-video Baseline through the existing monitor; it does not introduce another formula or combine signal conditions.
+
+Frame identity is pool + symbol + market date + observation clock. Identical repeated capture is idempotent; changed input/source content at the same identity conflicts. Caller outcome fields are excluded from monitor inputs. No network request or discovery of additional symbols occurs.
+
+Absent Challenger registration produces `CHALLENGER_NOT_PREREGISTERED`, with no Challenger observation or outcome. A supplied preregistration must bind a formula version, parameter hash, governance reference and registration/availability timestamps before the frame. These are input validation fields, not an owner-approval mechanism or independent authentication of the supplied governance reference. No real Challenger registry entry, formula, indicator, lookback, threshold or weight is authored by this increment. Test registry entries are explicitly synthetic transport fixtures.
+
+Future supplied Challenger observations must reference the identical frame hash, registration hash, formula version and parameter hash. A CONFIRMED claim cannot precede the common source finality. The result `SHARED_INPUT_BINDING_VERIFIED` verifies transport binding only; it does not verify that a Challenger implementation actually used those inputs. `challengerFormulaExecutionVerified`, `countsTowardPromotionEvidence` and `outcomeEvaluationReady` remain false. Unknown cost/regime remains explicit UNKNOWN; supplied cost/regime is labeled SUPPLIED_UNVALIDATED. No cost assumptions, regime labels, returns, MFE/MAE or comparative performance are invented.
+
+## Immutable storage
+
+Optional isolated persistence uses existing `s2_infrastructure_checks` and the existing immutable executor, then exact readback. No schema migration is introduced. Registration records are immutable by formula version, so changing parameters/registration within an existing version conflicts even across observation dates. Frames and pair records use independent content hashes. Payloads over the established 750 KB diagnostic limit are rejected.
+
+This core is not imported by the live Worker or daily source writer. It does not alter Baseline, pool membership, System1, Cron, push, capital, orders or selection authority. Physical paired capture and a public comparison API remain NOT DEPLOYED. No actual paired sample is claimed.
+
+## Validation and continuation
+
+Targeted tests cover exact Baseline constants, equivalent clocks, outcome exclusion, pool membership/count, future-known inputs, pre-close finality, after-observation registration, hash/version mismatches, changed immutable frames, version reuse, identical reruns and lost readback. System2 Research CI and V8 Regression remain required before merge.
+
+Next units: reviewed real Challenger preregistration and implementation; adapter from the same verified bounded source/session cache; hash-bound execution receipt; isolated paired capture/read API; separate outcome maturity/cost/regime evidence. These are still pending. This technical contract never grants Challenger selection, Baseline veto or promotion authority.
