@@ -421,3 +421,44 @@ Durable research detail: main `KLINE_PATTERN_RESEARCH.md` commit `a245b486dc60f2
 5. Continue source-semantic blockers: PIT RAW_EXECUTION + TECHNICAL_CONTINUITY + explicit symbol-session membership + fit-for-purpose volume/trading-unit semantics.
 6. Prospective Pattern outcome joins remain blocked pending COMPLETE immutable parent/run receipts.
 7. No R09 / no Formal optimization proposal before prospective/OOS, redundancy, regime, cost and multiple-testing gates pass.
+
+## Continuation update — DL-008A through DL-008F (2026-10-02)
+
+- D01 multi-timeframe research now explicitly inherits the shared Technical-Indicator multi-timeframe contract instead of creating a second incompatible framework.
+- Three novelty layers are frozen:
+  1. Source Novelty（來源新穎性）;
+  2. Representation Novelty（表示新穎性）;
+  3. Predictive Incrementality（預測增量）.
+- Weekly OHLC built from verified daily constituents is deterministic aggregation and therefore not new raw PRICE_OHLC information.
+- A many-to-one aggregation witness is frozen: two different daily paths can share the same weekly Open/High/Low/Close. Higher-timeframe aggregation can compress/lose path information; it cannot manufacture new raw observations.
+- Same raw source does NOT imply zero possible research value. A weekly parent topology can still be a nonlinear representation candidate relative to the current finite daily baseline controls, but it remains one PRICE_OHLC root family and never receives an independent vote.
+- New Class-A research-only artifacts:
+  - research/PATTERN_MULTISCALE_INCREMENTALITY_V0_1.md
+  - research/pattern_multiscale_incrementality_v0_1.mjs
+  - research/test_pattern_multiscale_incrementality_v0_1.mjs
+  - research/pattern_multiscale_incrementality_contract_v0_1.json
+- The executable test file defines 16 adversarial cases covering deterministic aggregation, many-to-one information loss, same-event de-dup, equal-horizon nesting, cross-scale representation, partial higher-timeframe blocking, future confirmation, semantic-space conflicts, missing provenance, episode de-dup, multiple-testing identity and after-market vs next-session intraday clocks.
+- IMPORTANT evidence boundary: these 16 cases are authored but not yet executed in a reproducible Node environment in this tranche. Do NOT record 16/16 PASS until an actual run receipt exists.
+- Outcome testing remains closed. Predictive Incrementality is frozen as UNKNOWN_REQUIRES_PREREGISTERED_OUTCOME_TEST.
+- No multiTimeframeScore and no scale-alignment vote count.
+- No new R09. Future nested-resistance outcome work remains inside existing PATTERN-RG2.
+- External evidence remains two-sided:
+  - 2026 Pacific-Basin Finance Journal multi-timescale/shrinkage evidence supports horizon decomposition but finds technical predictors unstable and short-term components dominant;
+  - wavelet/de-noising and aligned-index literature supports the possibility that transformed representations can add forecast value without creating a new raw source family;
+  - 2026 overlapping-return evidence strengthens the effective-N / overlapping-window firewall;
+  - large technical-rule universes under data-snooping / false-discovery controls reinforce the need to count timeframe/alignment choices in the multiple-testing family.
+- D01 maturity remains 51.7%; D01-10 remains L3.
+- Pattern alpha remains UNKNOWN.
+- Pattern runtime remains NO_GO.
+- FORMAL_OPTIMIZATION_CANDIDATE = NONE.
+- Formal Core remains LOCKED.
+
+### Updated exact next continuation point after DL-008
+
+1. Obtain a reproducible Node run receipt for the 16 DL-008 adversarial cases; until then status is EXECUTABLE_SPEC_WRITTEN / TEST_EXECUTION_PENDING.
+2. Deepen PATTERN-RG2 nested resistance: freeze local boundary vs major parent boundary identity, normalized distance and lifecycle semantics.
+3. Freeze equal-horizon and bar-boundary placebo definitions before any outcome join; do not search for the best timeframe after outcomes.
+4. Build an outcome-blind redundancy map from weekly-parent descriptors to existing priorHigh60 / MA60 / major-zone / ret60 / ATR / daily-Pattern controls.
+5. Keep scale count out of effective N; cluster later inference by scan date and parent/child episode.
+6. Keep prospective Pattern outcomes blocked until COMPLETE immutable parent/run receipts and runtime semantic readiness exist.
+7. No R09 / no Formal optimization proposal before PIT, prospective/OOS, redundancy, regime, cost and multiple-testing gates pass.
