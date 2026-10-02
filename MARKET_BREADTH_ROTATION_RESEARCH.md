@@ -1937,3 +1937,70 @@ BR-045: create an append-only prospective daily official-industry-index receipt 
 Accumulate independent dates before testing persistence, reversal, breadth confirmation or stock-selection interaction.
 
 Formal Core unchanged.
+
+
+## BR-046 — ABF proves theme exposure and formal industry are many-to-many
+
+Artifact:
+`research/br046_abf_industry_exposure_bridge_v0_1.json`
+
+### Bounded Taiwan counterexample
+Current official Taiwan sources establish:
+
+- 8046 南亞電路板:
+  - TWSE formal industry = `電子零組件業`;
+  - issuer official business profile explicitly lists ABF substrate, PP substrate and PCB products.
+
+- 3189 景碩:
+  - TWSE/MOPS formal industry = `半導體業`;
+  - issuer official product/management sources establish FCBGA/IC-substrate and large-area high-layer-count ABF substrate exposure.
+
+Therefore two verified ABF/IC-substrate exposures occupy different formal TWSE industries.
+
+`FORMAL_INDUSTRY != THEME_EXPOSURE`
+and
+`THEME_EXPOSURE != ONE_FORMAL_INDUSTRY`.
+
+### Bridge semantics
+The bridge must be effective-dated and many-to-many:
+`issuer <-> formal industry <-> product/theme/supply-chain node`.
+
+Required clocks/fields include:
+- formal classification scheme / knownAt / effectiveFrom / effectiveTo;
+- theme/product exposure basis / knownAt / effective dates;
+- exposure magnitude and basis when disclosed;
+- revision/supersession lineage;
+- source class and confidence.
+
+### PIT firewall
+Current official pages support a **prospective** bridge from the conservative capture clock.
+
+They do not authorize:
+- backfilling today's industry label to earlier dates;
+- backfilling today's ABF capability to earlier dates;
+- inventing revenue/order share;
+- treating all members of one formal industry as theme members;
+- treating a media theme label as verified company exposure.
+
+Missing exposure magnitude remains UNKNOWN.
+
+### Maturity
+`D09-11 題材股與正式產業分類橋接: L2 -> L3`.
+
+Reason:
+a bounded Taiwan prospective many-to-many bridge can now be replayed from official TWSE industry identity and issuer-official product exposure, and the ABF pair provides an explicit taxonomy counterexample.
+
+This is bounded Taiwan PIT feasibility only:
+- historical full theme membership remains incomplete;
+- exposure magnitude is mostly UNKNOWN;
+- no theme-return outcome was opened;
+- no theme score/weight is authorized.
+
+D10-01 supply-chain graph remains L2 because complete effective-dated historical graph coverage is still not established.
+D10-12 remains L3.
+
+### Exact next
+BR-047: append additional cross-industry theme bridges under the same prospective clock.
+BR-048: seek effective-dated historical exposure vintages before any historical theme-return study.
+
+Formal Core unchanged.
