@@ -1,0 +1,74 @@
+{
+  "version": "0.1",
+  "id": "BR-039",
+  "capturedAt": "2026-10-02T15:48:00+08:00",
+  "tradeDate": "2026-10-02",
+  "module": "D09-04 漲跌家數／Advance-Decline",
+  "mode": "OFFICIAL_TWSE_SOURCE_ONLY / OUTCOME_BLIND",
+  "formalCoreChanged": false,
+  "source": {
+    "authority": "Taiwan Stock Exchange",
+    "url": "https://www.twse.com.tw/exchangeReport/MI_INDEX?response=html",
+    "marketScope": "TWSE_STOCKS_COLUMN",
+    "comparisonDefinition": "today closing price versus previous closing price"
+  },
+  "counts": {
+    "up": 483,
+    "limitUp": 24,
+    "down": 506,
+    "limitDown": 1,
+    "unchanged": 91,
+    "unmatched": 0,
+    "notComparable": 2
+  },
+  "denominatorSemantics": {
+    "comparableN": 1080,
+    "totalStockRowsIncludingNotComparable": 1082,
+    "comparableFormula": "up + down + unchanged",
+    "notComparableExcludedReason": "TWSE N/A includes prior-day no close, ex-right/ex-dividend, new listing or resumed trading; these are not ordinary return comparisons.",
+    "unmatchedRule": "Unmatched remains separate from comparable denominator unless a future schema explicitly defines otherwise."
+  },
+  "derivedPct": {
+    "advancePctComparable": 44.72,
+    "declinePctComparable": 46.85,
+    "unchangedPctComparable": 8.43,
+    "netAdvanceMinusDeclinePctPoints": -2.13
+  },
+  "contemporaneousIndexContext": {
+    "taiexClose": 48475.74,
+    "taiexChangePct": 0.25,
+    "sourceUrl": "https://www.twse.com.tw/exchangeReport/MI_INDEX?date=20261002&response=html&type=ALLBUT0999"
+  },
+  "keyCounterexample": "TAIEX was +0.25% while comparable listed-stock decliners (506) exceeded advancers (483). Positive cap-weighted index return therefore does not imply positive stock-count breadth.",
+  "universeFirewall": [
+    "Do not use TWSE Overall Market counts for stock breadth because they include non-stock security types such as warrants and ETFs.",
+    "Do not label this TWSE-only stock breadth as TWSE+TPEx combined breadth.",
+    "Do not compare this official stock denominator directly with System1 Formal-normalized todayRows without preserving both universe identifiers.",
+    "N/A is UNKNOWN/NOT_COMPARABLE for ordinary close-to-close breadth, not advance, decline or flat."
+  ],
+  "researchStates": {
+    "officialTwseStockBreadth": "PRICE_UP_WITH_NEGATIVE_NET_BREADTH",
+    "system1CombinedBreadth": "SEPARATE_SOURCE_UNIVERSE / NOT_INFERRED_FROM_THIS_RECEIPT"
+  },
+  "positiveMechanism": [
+    "Advance/decline counts measure cross-sectional participation and can expose divergence hidden by capitalization-weighted index returns.",
+    "Official TWSE daily counts provide a direct Taiwan PIT source with explicit comparison semantics and stock-only column."
+  ],
+  "falsification": [
+    "One-day advance/decline can reverse quickly and cannot by itself establish trend persistence.",
+    "Price-limit, ex-right/ex-dividend, listings/resumptions and unmatched states require explicit handling.",
+    "TWSE-only breadth may diverge from combined TWSE+TPEx or a strategy-specific eligible universe.",
+    "If Above-MA, equal-weight return and concentration controls explain the same state, one-day A/D may add little incremental value."
+  ],
+  "maturityDecision": {
+    "D09-04": "PROMOTE_L2_TO_L3_TAIWAN_PIT_DATA_FEASIBILITY",
+    "D09-12": "KEEP_L2"
+  },
+  "promotionReason": "Official TWSE daily stock-only up/down/unchanged counts with explicit comparison and N/A semantics establish bounded Taiwan PIT feasibility. This is not evidence of predictive alpha.",
+  "exactNext": [
+    "BR-040 repeat official TWSE stock breadth on independent dates and add TPEx/strategy-universe lanes without denominator mixing.",
+    "Join D09-04 with D09-05 Above-MA and D09-10 concentration only after each universe/source clock is explicit.",
+    "Test index-up/breadth-down and index-down/breadth-up states prospectively before any D09-12 regime promotion."
+  ],
+  "status": "OFFICIAL_TWSE_STOCK_BREADTH_PIT_PASS / INDEX_BREADTH_DIVERGENCE_WITNESS / OUTCOMES_CLOSED / FORMAL_UNCHANGED"
+}
