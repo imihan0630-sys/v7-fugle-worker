@@ -1,0 +1,27 @@
+{
+  "schemaVersion": "D14_SIGNAL_QUANTITY_MECHANISM_V0_1",
+  "preregisteredAt": "2026-10-02T12:38:00+08:00",
+  "purpose": "Separate signal-side integer-share quantization reserve from execution friction and determine what quote mechanism would be required if the suggested quantity were submitted unchanged.",
+  "identities": [
+    "suggestedShares = floor(signalAmount / signalPrice)",
+    "suggestedNotional = suggestedShares × signalPrice",
+    "quantizationResidualCash = signalAmount − suggestedNotional",
+    "0 <= quantizationResidualCash < signalPrice"
+  ],
+  "quantityClasses": {
+    "1-999": "ODD_LOT_QUANTITY_IF_SUBMITTED_UNCHANGED",
+    "positive multiple of 1000": "REGULAR_LOT_QUANTITY_IF_SUBMITTED_UNCHANGED",
+    "1000+ non-multiple": "MIXED_LOT_QUANTITY_IF_SUBMITTED_UNCHANGED"
+  },
+  "benchmarkRule": "A sub-1000 or mixed suggested quantity cannot use the default regular-lot quote as a certified executable benchmark for the odd-lot leg. Actual mechanism still requires order-submission evidence.",
+  "costFirewall": [
+    "quantization residual cash is not commission",
+    "quantization residual cash is not tax",
+    "quantization residual cash is not slippage",
+    "signal market price is not a broker fill",
+    "suggested quantity is not proof an order was submitted"
+  ],
+  "maturityRule": "Positive signal examples can validate the geometry and reveal benchmark-mechanism demand, but cannot advance D14-07/08/14 prospective fill maturity without mechanism-matched quote/order/fill receipts.",
+  "status": "PREREGISTERED / PRODUCTION_SIGNAL_AUDIT_PENDING",
+  "formalCoreImpact": false
+}
