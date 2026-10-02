@@ -230,6 +230,51 @@ const lateA5 = aggregateDecisionClockEvidence({
 assert.deepEqual(lateA5.a5BoundaryFailureDates, ["2026-10-03"]);
 assert.equal(lateA5.readiness.status, "INCOMPLETE_REQUIRED_EVIDENCE");
 
+// A1/B2 incompleteness produces no candidate boundary, so it must not be
+// misattributed as an A5 boundary miss.
+const noSameSessionCandidate = aggregateDecisionClockEvidence({
+  scheduledRunCoverage: [
+    {
+      marketDate: "2026-10-05",
+      runId: "750",
+      expectedTradingDay: true,
+      artifactPresent: true,
+      runConclusion: "success",
+    },
+  ],
+  candidates: [
+    {
+      runId: "750",
+      runAttempt: 1,
+      runHeadSha: "abababababababababababababababababababab",
+      eventName: "schedule",
+      runCreatedAt: "2026-10-05T05:25:00Z",
+      bundle: {
+        ...bundle("2026-10-05", {
+          runId: "750",
+          workflowSha: "abababababababababababababababababababab",
+          requiredReady: false,
+          precisionEligible: false,
+        }),
+        evidence: {
+          ...bundle("2026-10-05", {
+            runId: "750",
+            workflowSha: "abababababababababababababababababababab",
+            requiredReady: false,
+            precisionEligible: false,
+          }).evidence,
+          sameSessionClockReady: false,
+          a5ObservedAtDecisionBoundary: "2026-10-05T05:35:00Z",
+          a5AvailableByCandidate: false,
+          candidateTimestamp: null,
+        },
+      },
+    },
+  ],
+});
+assert.deepEqual(noSameSessionCandidate.a5BoundaryFailureDates, []);
+assert.equal(noSameSessionCandidate.readiness.status, "INCOMPLETE_REQUIRED_EVIDENCE");
+
 
 const coverageMismatch = aggregateDecisionClockEvidence({
   scheduledRunCoverage: [
