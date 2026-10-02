@@ -280,3 +280,62 @@ System implication:
 D08-04 can advance to L2 because Forward-PE mechanism, failure modes and PIT semantics are now defined, but L3 remains blocked until a canonical authorized PIT forecast source is proven.
 
 Status: D08-04 L2_CONCEPT_AND_FALSIFICATION_COMPLETE / PIT_SOURCE_NEEDED / NOT_FORMAL_OPTIMIZATION_CANDIDATE.
+
+
+## VAL-021 — Official Taiwan history makes trailing PE/PB self-history PIT-feasible
+
+Research date: 2026-10-02 Asia/Taipei.
+
+Machine contract:
+research/historical_valuation_percentile_pit_contract_v0_1.json.
+
+TWSE official daily valuation history provides stock-level PE/PB observations from 2005-09-01 onward. Official semantics state that PE uses closing price divided by EPS from the most recent four reported quarters, PE is not calculated when EPS <= 0, PB uses the most recent reported quarterly book value per share, and the historical service does not provide back-calculations.
+
+TPEx also provides official historical PE/PB inquiry by date and by stock code, with an explicit warning that ex-rights timing and financial-data update timing can differ and that capital changes affect PE interpretation.
+
+This establishes Taiwan historical-source feasibility for self-history trailing PE/PB without reconstructing past valuation using today's financial statements.
+
+It does not establish predictive alpha.
+
+Status: D08-03 TAIWAN_PIT_SOURCE_FEASIBLE / L3_SOURCE_GATE_MET / OUTCOMES_CLOSED.
+
+## VAL-022 — Historical percentile is conditional context, not an absolute cheapness oracle
+
+Historical PE percentile has structural censoring:
+- PE is undefined when trailing EPS <= 0;
+- loss and turnaround periods disappear from the numeric PE distribution;
+- a later return to positive EPS can look artificially extreme because important loss states are outside the numeric sample.
+
+PE N/A must therefore retain an explicit state such as NONPOSITIVE_EPS, SOURCE_NA_OTHER or UNKNOWN. It must never be coerced to zero, infinity, the cheapest bucket or the most expensive bucket.
+
+Cycle inversion remains mandatory counterevidence. A cyclical company near peak earnings may show a historically low PE just before profits normalize downward. Self-history cheapness does not solve denominator-cycle risk.
+
+PB can remain numeric when earnings are negative, but business-model and balance-sheet comparability remain sector dependent.
+
+Status: CENSORING_AND_CYCLE_COUNTEREVIDENCE_FROZEN / NO_LOW_PERCENTILE_BUY_RULE.
+
+## VAL-023 — Percentile windows are preregistered as parallel descriptive variants
+
+To prevent window mining, the first contract freezes four descriptive histories before outcomes:
+- trailing 252 valid sessions;
+- trailing 756 valid sessions;
+- trailing 1260 valid sessions;
+- expanding history since official data availability.
+
+No window is called optimal.
+
+For every asOf timestamp:
+- only observations at or before asOf are eligible;
+- validObservationCount and elapsed session/calendar span are preserved;
+- insufficient history => UNKNOWN;
+- ties require one explicit empirical-CDF convention before implementation because rounded ratios can create many ties;
+- structural breaks such as capital actions, denominator fiscal updates, major M&A/accounting-scope changes and loss-to-profit transitions remain context fields.
+
+Falsification:
+- if percentile adds no stable information beyond raw PE/PB plus quality, sector/peer, RS/trend and regime, mark REDUNDANT;
+- if an effect exists in one window only, mark WINDOW_FRAGILE;
+- if low percentile is concentrated in cyclical peak-earnings states, reject a universal value interpretation.
+
+D08-03 may advance from L1 to L3 because both mechanism/counterevidence and Taiwan official PIT history feasibility are now established. L4 still requires prospective Shadow or OOS evidence.
+
+Status: D08-03 L3_PIT_FEASIBLE / SHADOW_OUTCOME_JOIN_NOT_OPEN / NOT_FORMAL_OPTIMIZATION_CANDIDATE.
