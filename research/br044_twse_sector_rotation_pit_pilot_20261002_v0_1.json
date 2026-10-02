@@ -1,0 +1,183 @@
+{
+  "version": "0.1",
+  "id": "BR-044",
+  "capturedAt": "2026-10-02T16:23:00+08:00",
+  "module": "D09-06 Sector Rotation族群輪動",
+  "mode": "SOURCE_ONLY_OFFICIAL_TWSE_ROTATION_PIT_PILOT",
+  "formalCoreChanged": false,
+  "stockOutcomesOpened": false,
+  "source": {
+    "authority": "Taiwan Stock Exchange",
+    "report": "MI_INDEX daily index report",
+    "currentDateUrl": "https://www.twse.com.tw/exchangeReport/MI_INDEX?date=20261002&response=html&type=ALLBUT0999",
+    "historicalDateUrl": "https://www.twse.com.tw/exchangeReport/MI_INDEX?date=20260923&response=html&type=ALLBUT0999",
+    "indexType": "industry total-return indices",
+    "whyTotalReturn": "Avoid dividend-treatment inconsistency for multi-day relative performance."
+  },
+  "pitSemantics": {
+    "historicalRowsUsedFor": "source feasibility / replay semantics only",
+    "historicalFirstKnownAuthenticated": false,
+    "prospectiveRule": "Future live receipts use capturedAt conservatively unless native source availability time is independently authenticated.",
+    "firstEligibleDecision": "next decision point after the same-day official close report is captured",
+    "membershipRule": "Index-level rotation can use the official index series directly; constituent attribution requires effective-dated membership vintages and cannot backfill current members."
+  },
+  "boundedUniverse": [
+    "電子零組件類報酬指數",
+    "半導體類報酬指數",
+    "航運類報酬指數",
+    "金融保險類報酬指數",
+    "油電燃氣類報酬指數",
+    "數位雲端類報酬指數",
+    "綠能環保類報酬指數"
+  ],
+  "sourceValues": {
+    "2026-09-23": {
+      "電子零組件": {
+        "tri": 1937.74,
+        "dailyPct": 1.49,
+        "dailyRankWithinPilot": 1
+      },
+      "半導體": {
+        "tri": 3149.38,
+        "dailyPct": 1.25,
+        "dailyRankWithinPilot": 2
+      },
+      "數位雲端": {
+        "tri": 43.99,
+        "dailyPct": 0.73,
+        "dailyRankWithinPilot": 3
+      },
+      "油電燃氣": {
+        "tri": 202.45,
+        "dailyPct": 0.06,
+        "dailyRankWithinPilot": 4
+      },
+      "航運": {
+        "tri": 481.82,
+        "dailyPct": -0.49,
+        "dailyRankWithinPilot": 5
+      },
+      "金融保險": {
+        "tri": 7139.31,
+        "dailyPct": -0.78,
+        "dailyRankWithinPilot": 6
+      },
+      "綠能環保": {
+        "tri": 147.22,
+        "dailyPct": -1.1,
+        "dailyRankWithinPilot": 7
+      }
+    },
+    "2026-10-02": {
+      "油電燃氣": {
+        "tri": 228.78,
+        "dailyPct": 5.51,
+        "dailyRankWithinPilot": 1
+      },
+      "電子零組件": {
+        "tri": 2031.18,
+        "dailyPct": 2.21,
+        "dailyRankWithinPilot": 2
+      },
+      "航運": {
+        "tri": 478.78,
+        "dailyPct": 0.81,
+        "dailyRankWithinPilot": 3
+      },
+      "金融保險": {
+        "tri": 6974.85,
+        "dailyPct": -0.11,
+        "dailyRankWithinPilot": 4
+      },
+      "半導體": {
+        "tri": 3145.25,
+        "dailyPct": -0.18,
+        "dailyRankWithinPilot": 5
+      },
+      "數位雲端": {
+        "tri": 43.15,
+        "dailyPct": -0.21,
+        "dailyRankWithinPilot": 6
+      },
+      "綠能環保": {
+        "tri": 148.03,
+        "dailyPct": -0.85,
+        "dailyRankWithinPilot": 7
+      }
+    }
+  },
+  "intervalReturnPct_20260923_to_20261002": {
+    "油電燃氣": 13.01,
+    "電子零組件": 4.82,
+    "綠能環保": 0.55,
+    "半導體": -0.13,
+    "航運": -0.63,
+    "數位雲端": -1.91,
+    "金融保險": -2.3
+  },
+  "rankTransitionDailyPct": {
+    "油電燃氣": {
+      "from": 4,
+      "to": 1,
+      "deltaRank": 3,
+      "state": "RISING_LEADERSHIP"
+    },
+    "航運": {
+      "from": 5,
+      "to": 3,
+      "deltaRank": 2,
+      "state": "IMPROVING"
+    },
+    "金融保險": {
+      "from": 6,
+      "to": 4,
+      "deltaRank": 2,
+      "state": "IMPROVING_BUT_NEGATIVE_DAILY_RETURN"
+    },
+    "電子零組件": {
+      "from": 1,
+      "to": 2,
+      "deltaRank": -1,
+      "state": "STILL_LEADER"
+    },
+    "半導體": {
+      "from": 2,
+      "to": 5,
+      "deltaRank": -3,
+      "state": "FALLING_LEADERSHIP"
+    },
+    "數位雲端": {
+      "from": 3,
+      "to": 6,
+      "deltaRank": -3,
+      "state": "FALLING_LEADERSHIP"
+    },
+    "綠能環保": {
+      "from": 7,
+      "to": 7,
+      "deltaRank": 0,
+      "state": "STABLE_LAGGARD"
+    }
+  },
+  "falsification": [
+    "This is a 7-sector bounded witness, not a full-universe rotation result.",
+    "The two dates are not consecutive sessions, so deltaRank is not a one-day rotation velocity measure.",
+    "Daily-rank improvement can occur while daily return is still negative (金融保險), proving rank change and absolute strength are different dimensions.",
+    "Industry index rotation can be driven by cap-weight concentration; member breadth/concentration must be joined separately.",
+    "Sector composition and reclassification matter for constituent-level explanations; current members may not be backfilled.",
+    "No permanent bullish/bearish sign is assigned to RISING/FALLING labels.",
+    "No Top-N threshold is optimized; percentile/rank transitions remain continuous research variables."
+  ],
+  "maturityDecision": {
+    "D09-06": "PROMOTE_L2_TO_L3_TAIWAN_PIT_DATA_FEASIBILITY_ONLY",
+    "D09-07": "KEEP_L2",
+    "D09-12": "KEEP_L2"
+  },
+  "promotionReason": "TWSE official daily industry total-return index reports are date-addressable and expose replayable sector levels/returns. The bounded pilot demonstrates deterministic rank-transition semantics and a real rank-vs-absolute-return counterexample. This establishes Taiwan PIT/source feasibility, not predictive efficacy.",
+  "exactNext": [
+    "BR-045 build an append-only prospective daily official-industry-index rank receipt with all eligible TWSE industry total-return indices and percentile ranks.",
+    "Accumulate independent dates before testing rank persistence/reversal or any stock-selection interaction.",
+    "Join breadth/concentration only after universe and clocks are explicit; keep System1 custom sector score as a separate baseline."
+  ],
+  "status": "OFFICIAL_TWSE_ROTATION_PIT_FEASIBLE / BOUNDED_RANK_TRANSITION_WITNESS / OUTCOMES_CLOSED / FORMAL_UNCHANGED"
+}
