@@ -100,3 +100,11 @@ No retrospective cohort may be built from the invalid 2026-10-02 C1 session.
 The first honest Shadow-only C3 capture can occur only after a future complete
 C1/C2 session has been registered prospectively for its next official trading
 session.
+
+
+## Latest-main validation cursor
+
+Integrated exact-head CI is requested against the then-current main only after
+the scheduled-registration, server-derived trading-date and frozen provider
+ceiling changes above. A green result is required before owner approval; prior
+green heads do not substitute for this validation.
