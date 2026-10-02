@@ -159,8 +159,8 @@
       "id": "SUPPLY_CHAIN_EVENT_LEAD_LAG",
       "domain": "SUPPLY_CHAIN_LEAD_LAG",
       "level": "L2",
-      "status": "PIT_FEASIBLE_PARTIAL / THREE_RELEASE_ORDER_LEADTIME_SERIES / BOUNDED_ISSUER_EXPOSURE_BRIDGE / OUTCOMES_CLOSED",
-      "basis": "SC-036 preserves two Taiwan EAF steel-chain vintages and D10-09 L3 PIT feasibility. SC-039/SC-040 now freeze three independent NDC/CIER PMI release vintages showing orders, delivery time, backlog and inventory must be treated jointly. SC-041 adds a bounded 8046/3189 product-scope bridge while keeping revenue exposure, survey membership and issuer-native backlog UNKNOWN. D10-07 remains L3; D10-01 and D10-04 remain L2. No realized-margin, stock-outcome or Formal trading claim."
+      "status": "PIT_FEASIBLE_PARTIAL / THREE_RELEASE_ORDER_LEADTIME_SERIES / BOUNDED_ISSUER_BRIDGE / SHORTAGE_EVENT_CONTRACT_FEASIBLE / OUTCOMES_CLOSED",
+      "basis": "SC-036 preserves two Taiwan EAF chain vintages. SC-039/040 freeze three NDC/CIER PMI order/lead-time vintages; SC-041 adds bounded 8046/3189 product-scope mapping with company magnitude UNKNOWN. SC-042 defines a dedicated shortage/supply-gap event contract and validates Taiwan PIT/source feasibility with explicit allocation/shortage evidence plus a September negative control, moving D10-08 to L3. No issuer backlog, margin, stock outcome or Formal trading claim."
     },
     {
       "id": "CORPORATE_ACTION_DENOMINATORS",
