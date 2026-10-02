@@ -394,3 +394,12 @@ Status: DESIGN_RECONCILED / RUNTIME_NOT_IMPLEMENTED / OUTCOME_CLOSED / FORMAL_LO
 - Outcome fields never enter decision-time child identity.
 - Tests are authored but execution receipt is still pending.
 Status: CHILD_IDENTITY_DESIGN_FROZEN / TEST_EXECUTION_PENDING / RUNTIME_NO_GO / FORMAL_LOCKED.
+
+### D01 shared handoff — DL-013 equal-horizon / boundary sensitivity (2026-10-02)
+
+- Higher-timeframe value must first beat equivalent daily clock-horizon and simple long-horizon geometry controls.
+- Shifted bar boundaries are robustness controls, not guaranteed-null placebos.
+- featureAgeEligibleSessions and aggregationBoundaryVersion are mandatory provenance for future cross-scale evidence.
+- Non-comparable feature-age/session cases remain explicit, never force-paired.
+- No post-outcome timeframe/boundary search.
+Status: CONTROL_SPEC_FROZEN / OUTCOME_CLOSED / FORMAL_LOCKED.
