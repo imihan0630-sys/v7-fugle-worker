@@ -159,3 +159,22 @@ Derivatives Information & Volatility Surface.
 - Public broker-report/search pages: corroboration/spot-audit only unless completeness, licensing, immutable history and revision lineage are proven. They cannot serve as a canonical consensus population.
 - Fail-closed decision: if no authorized source satisfies the frozen contract, D07-11/D08-04 remain L2 and analyst consensus/revisions/Forward PE/PEG remain UNKNOWN for empirical system research.
 - No maturity change from this source inventory; it closes a source-selection ambiguity but does not prove L3 PIT data feasibility.
+
+
+## 2026-10-02 D07+D08 continuation — freshness accuracy and historical valuation PIT
+
+- Forecast freshness accuracy preregistration is frozen in research/analyst_forecast_freshness_accuracy_prereg_v0_1.json. Forecast age is first evaluated against forecast error, not stock returns. No outcome-tuned stale cutoff.
+- Parallel research/analyst_output_horizon_alignment_v0_1.json was reconciled and not duplicated.
+- D07-11 remains L2 because authorized canonical Taiwan PIT analyst-estimate access is still unproven.
+- Historical valuation contract is frozen in research/historical_valuation_percentile_pit_contract_v0_1.json with source-only receipt research/historical_valuation_source_feasibility_receipt_20261002.json.
+- TWSE official historical PE/PB archive and TPEx official historical PE/PB pages establish Taiwan historical source feasibility. N/A PE remains stateful; no current-statement backfill.
+- Percentile windows are preregistered as 252/756/1260 valid sessions plus expanding history. No window is selected by returns.
+- D08-03 may advance L1 -> L3 for PIT/source feasibility only. L4 still requires prospective Shadow or OOS.
+- No Formal Core/runtime/scoring change. Outcome joins remain closed. FORMAL_OPTIMIZATION_CANDIDATE = NO.
+- Exact next:
+  1. build isolated TWSE/TPEx historical PE/PB replay fixture;
+  2. freeze empirical-CDF tie rule, N/A mapping, minimum-history and structural-break tags;
+  3. validate representative ordinary, loss-making, capital-action and newly listed cases;
+  4. then preregister Shadow join versus raw valuation + quality + peer/sector + RS/trend + regime;
+  5. analyst freshness remains SOURCE_BLOCKED until authorized PIT estimates access exists;
+  6. general-industry CFO/balance-sheet receipt remains WAITING_PROSPECTIVE for the next valid financial vintage.
