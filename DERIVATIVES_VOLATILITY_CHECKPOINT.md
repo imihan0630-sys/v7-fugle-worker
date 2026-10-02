@@ -1,7 +1,7 @@
 # Derivatives Information & Volatility Surface Checkpoint
 
 Updated: 2026-09-29 10:13 Asia/Taipei
-Current cursor: DR-001 through DR-050 complete.
+Current cursor: DR-001 through DR-059 complete.
 Next: D12-08 prospective Gamma evidence + D12-10 18:10 NIGHT_PRE_SCAN prospective receipts.
 
 ## Durable conclusions
@@ -175,3 +175,54 @@ Portfolio & Risk Construction / Correlation Clusters.
 1. Run the pure source attestation check alongside unified receipt guard on the first *actual* authorized TAIFEX VIX and 15:00–18:10 TX source-response archives.
 2. Record failure/missing as UNKNOWN, not zero. No strict clean date before independently replayable parent evidence.
 3. Keep later 20:30 NFP event response a separate future object. Accumulate independent dates before any risk/incremental tests.
+
+
+## 2026-10-02 evening continuation — D12 curriculum reconciliation + TAIFEX source lanes
+
+- Current time window was post-18:10 and pre-20:30 Employment Situation release. No retrospective 18:10 VIX/TX parent was fabricated.
+- BLS official CPS page was still in pre-release state at ~19:55 Taipei: September 2026 Employment Situation remained the next release, scheduled 2026-10-02 08:30 ET. This is post-decision event-clock QA only.
+- TAIFEX public VIX statistical page exposed date rows for 2026/10/02 and 2026/10/01, but the audited text/JSON extraction did not expose numeric VIX cells. Numeric current-session VIX therefore remains NOT_EXTRACTED under this path.
+- TAIFEX live Market Information System redirected to its disclaimer under the audited fetch path. The disclaimer reserves rights in market-price/site content and describes prior written-consent requirements for specified uses. Result: live MIS automated/non-display capture is NOT_AUTHORIZED_BY_THIS_AUDIT. Do not scrape it.
+- Post-decision/pre-release QA artifact: `research/d12_d13_20261002_postdecision_prerelease_source_qa_v0_1.json`.
+
+### Expanded D12 curriculum reconciliation
+New D12-13..16 modules were created as L0 during the curriculum expansion, but existing D12 research already contained material mechanism/counterevidence. DR-051..DR-059 reconcile rather than invent history:
+- D12-13 Greeks: L0 -> L2.
+- D12-14 IV-RV Spread: L0 -> L2.
+- D12-15 VRP: L0 -> L2.
+- D12-16 Volatility Surface/Smile: L0 -> L2.
+
+Dedicated machine contract:
+`research/d12_13_16_greeks_vrp_surface_semantics_spec_v0_1.json`.
+
+Key frozen guards:
+- Delta is sensitivity/hedge ratio, not probability/direction.
+- Gamma sign is position-side; positive Gamma is not bullish.
+- Vega/Theta units and DTE/model clock are part of feature identity.
+- IV-minus-trailing-RV, forecast-based implied-realized spread and ex-post implied-minus-future-RV are different objects.
+- Structural VRP is risk-neutral expected variance minus physical expected variance under the project sign convention; ex-post future RV is outcome.
+- Surface method/quote filters/interpolation/arbitrage constraints are part of feature identity.
+- Complex Greek/VRP/surface factors must beat simpler VIX, realized-vol, skew, moneyness/DTE/OI/liquidity baselines.
+
+### TAIFEX official replay source feasibility
+- TAIFEX official option daily report exposes contract/month/date, strike, Call/Put, OHLC/last/settlement, volume, OI, best bid/ask and historical high/low.
+- Daily historical download supports bounded date queries and annual ZIP history; after-hours rows retain following-session attribution semantics.
+- TAIFEX also publishes recent individual option trades for the previous 30 trading days in CSV/RPT (excluding block trades per page note).
+- These sources are materially useful for EOD parser/surface/replay QA, but current historical completeness does NOT prove historical 18:10 first-known availability.
+- Frozen source contract: `research/d12_taifex_option_chain_replay_source_feasibility_v0_1.json`.
+
+### Maturity / governance
+- Expanded D12 is now 40.0% across 16 modules after curriculum reconciliation.
+- No D12-13..16 module advances to L3.
+- Live source entitlement and strict source-attested Taiwan option-chain dates remain missing.
+- No outcome join was opened.
+- Formal Core remains LOCKED; no FORMAL_OPTIMIZATION_CANDIDATE.
+
+## Exact next continuation after DR-059
+
+1. Acquire one permitted TAIFEX historical/statistical option-chain raw file for **replay QA only**; preserve raw source identity and do not claim first-known.
+2. Freeze exact file-header/schema mapping and implement a pure Class-A row parser/quality validator with adversarial fixtures.
+3. Freeze Surface Method V0.1 with quote filters, no-static-arbitrage checks and method-version receipts.
+4. Compare simple D12-07 skew/term structure against D12-16 level/slope/curvature on the same parent rows before any outcomes.
+5. Keep live TAIWAN VIX/TX automation blocked until an explicit authorized data path exists.
+6. Continue accumulating true source-attested decision dates; no L3/OOS/optimization before coverage/replay gates pass.
