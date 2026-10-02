@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-02T23:23:00+08:00",
+  "updatedAt": "2026-10-02T23:21:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -3283,7 +3283,7 @@
       ],
       "status": "D21_01_L2_MECHANISM_FALSIFICATION_FROZEN / PIT_REPLAY_PENDING / FORMAL_CORE_UNCHANGED",
       "exactNextContinuationPoint": "建立至少兩個上市公司年度樣本的歷史 MOPS PIT replay：鎖定實際 known_at、文件 vintage、前十大股東／法人穿透鏈；重建現金流權與 weakest-link 控制權，保留 UNKNOWN，並比較 10%／20% 控制門檻及直接持股 baseline。通過後才評估 L3。",
-      "lastResearchUpdate": "2026-10-02T23:23:00+08:00",
+      "lastResearchUpdate": "2026-10-02T23:21:00+08:00",
       "researchNote": "D21-01 completed theory/mechanism/falsification and Taiwan source-clock design. Ownership/control is decomposed into direct ownership, ultimate cash-flow rights, classic weakest-link control rights and separate board/management control. Current official source availability is established, but historical first-known/replay is not yet validated, so L3 remains closed. Formal Core unchanged."
     },
     {
