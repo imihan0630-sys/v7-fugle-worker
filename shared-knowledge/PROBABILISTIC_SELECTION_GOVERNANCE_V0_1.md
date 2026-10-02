@@ -1,6 +1,6 @@
 # Probabilistic Selection Governance V0.1
 
-Updated: 2026-10-03 04:34 Asia/Taipei
+Updated: 2026-10-03 05:02 Asia/Taipei
 Status: OWNER_APPROVED_EXECUTION_GOVERNANCE / SHADOW_IMPLEMENTATION_AUTHORIZED / FORMAL_CORE_LOCKED
 Scope: Cross-system decision architecture for System 1 and System 2
 Formal Core impact: NONE
@@ -108,7 +108,7 @@ For each strategy:
 - maintain CONFIDENCE/UNCERTAINTY separately,
 - permit **ABSTAIN（不交易）** when expected value is insufficient or uncertainty is excessive.
 
-The 22 domains / 362 modules are a knowledge universe, not 362 required conditions and not 362 independent votes.
+The 22 domains / 354 modules are a knowledge universe, not 354 required conditions and not 354 independent votes.
 
 ## Promotion gate
 
