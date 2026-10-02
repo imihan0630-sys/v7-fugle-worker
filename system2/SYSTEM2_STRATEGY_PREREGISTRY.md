@@ -1,6 +1,6 @@
 # System 2 Initial Strategy Preregistry
 
-Updated: 2026-10-03 03:16 Asia/Taipei
+Updated: 2026-10-03 04:34 Asia/Taipei
 Status: PRE-REGISTERED HYPOTHESES / NOT LIVE
 
 Purpose: freeze initial hypotheses before outcome data is used to tune weights.
@@ -20,7 +20,7 @@ For every strategy contract, each input must be assigned exactly one primary rol
 - **CONFIDENCE／UNCERTAINTY（可信度／不確定性）** — freshness, missingness, disagreement and model uncertainty; UNKNOWN != FAIL and UNKNOWN != 0.
 
 Additional rules:
-1. The 22-domain / 366-module curriculum is a knowledge universe, not an all-domain voting checklist.
+1. The 22-domain / 362-module curriculum is a knowledge universe, not an all-domain voting checklist.
 2. Correlated indicators must be grouped into evidence families to avoid double counting.
 3. Each strategy defines its own PRIMARY_ALPHA families; SHORT_MOMENTUM and SWING_GROWTH must not be forced through identical universal evidence gates.
 4. ABSTAIN（不交易） is a valid outcome when expected value is inadequate or uncertainty excessive.
