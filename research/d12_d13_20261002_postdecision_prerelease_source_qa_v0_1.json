@@ -1,0 +1,54 @@
+{
+  "schemaVersion": "0.1",
+  "name": "D12_D13_20261002_POSTDECISION_PRERELEASE_SOURCE_QA",
+  "status": "POST_DECISION_PRE_RELEASE_QA__NOT_1810_INPUT__STRICT_SOURCE_ATTESTATION_FALSE",
+  "formalCoreImpact": "NONE",
+  "createdAt": "2026-10-02T20:04:29+08:00",
+  "decisionClock": "2026-10-02T18:10:00+08:00",
+  "scheduledEmploymentRelease": "2026-10-02T20:30:00+08:00",
+  "outcomeInspection": false,
+  "evidence": [
+    {
+      "source": "U.S. Bureau of Labor Statistics CPS official page",
+      "url": "https://www.bls.gov/cps/",
+      "observedVia": "TinyFish parsed public-web fetch",
+      "fetchWindow": "approximately 2026-10-02T19:55 Asia/Taipei",
+      "finding": "Page still displayed Next Release: Employment Situation for September 2026 scheduled October 2, 2026 at 8:30 a.m. Eastern Time.",
+      "releaseValuePresentInExtract": false,
+      "researchInterpretation": "Confirms post-18:10/pre-20:30 event-clock separation. It does not authenticate the 18:10 schedule vintage and is not the first-print release.",
+      "strictSourceAttestation": false,
+      "reason": "Parsed connector output; native raw BLS response bytes/headers were not archived by this research path."
+    },
+    {
+      "source": "TAIFEX public VIX statistical page",
+      "url": "https://www.taifex.com.tw/cht/7/vixMinNew",
+      "observedVia": "TinyFish parsed public-web fetch",
+      "fetchWindow": "2026-10-02 evening after regular session",
+      "finding": "Current-month table exposes rows for 2026/10/02 and 2026/10/01 and states use of CBOE VIX methodology; the currently available extraction rendered the numeric cells as input elements without extracting the VIX numbers.",
+      "numericVixExtracted": false,
+      "researchInterpretation": "Official statistical source existence/date coverage is material, but numeric machine-readability via the audited path is not established.",
+      "strictSourceAttestation": false
+    },
+    {
+      "source": "TAIFEX Market Information System disclaimer",
+      "url": "https://mis.taifex.com.tw/futures/disclaimer",
+      "observedVia": "TinyFish fetch after redirect from VIX real-time page",
+      "finding": "Disclaimer reserves rights in website content and market-price information and describes written-consent requirements for specified use/reproduction/distribution. This audit does not establish permission for automated non-display scraping.",
+      "researchInterpretation": "Live MIS visibility cannot be treated as an authorized free research API. Historical/statistical download endpoints must be audited separately.",
+      "automatedUseAuthorized": false,
+      "strictSourceAttestation": false
+    }
+  ],
+  "guards": [
+    "No item in this file is an 18:10 PIT parent.",
+    "No missing TAIFEX VIX value is imputed from another date/source.",
+    "No complete-night TX data is reconstructed as 15:00-18:10.",
+    "No BLS consensus, payroll number, unemployment rate or surprise is inferred before the official first print.",
+    "No live MIS scraper or recurring task is authorized."
+  ],
+  "exactNext": [
+    "At/after 20:30, if research is continued in a later turn/time, preserve BLS first-print as a separate post-decision object; never edit this pre-release QA.",
+    "Audit permitted TAIFEX historical/statistical option-chain endpoint fields/terms for replay QA; keep live MIS automation blocked unless terms are explicit.",
+    "Build D12 surface/Greeks parser only on an admissible source and mark historical/statistical data non-prospective unless first-known evidence exists."
+  ]
+}
