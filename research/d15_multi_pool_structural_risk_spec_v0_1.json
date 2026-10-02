@@ -29,5 +29,7 @@
     "L4BlockedUntil": "Independent prospective/OOS both-pools dates plus validated dependence evidence."
   },
   "formalCoreImpact": false,
-  "status": "POOL_IDENTITY_SOURCE_CONTRACT_READY / PRODUCTION_AUDIT_PENDING / DIVERSIFICATION_UNPROVEN"
+  "status": "POOL_IDENTITY_PIT_VALIDATED / BOTH_POOLS_SAMPLE_ZERO / CROSS_POOL_DIVERSIFICATION_UNKNOWN / D15_15_L3",
+  "productionReceipt": "research/d15_multi_pool_production_receipt_20261002.json",
+  "exactNext": "Accumulate the first independent scan dates with GENERAL and THOUSAND both represented. On those dates report price-tier capital/risk shares only; defer true diversification/correlation/effective-bets inference until D15-03/04/05/06 PIT-synchronized return history is authorized."
 }
