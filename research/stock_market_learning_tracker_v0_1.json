@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-02T16:24:00+08:00",
+  "updatedAt": "2026-10-02 Asia/Taipei",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -1835,7 +1835,10 @@
         "research/research_master_map.json",
         "research/D16_D18_REGIME_POLICY_VALIDATION_V0_1.md",
         "research/D16_D18_PROMOTION_GATE_V0_1.md",
-        "research/D16_D18_SOURCE_CLOCK_REVALIDATION_V0_1.md"
+        "research/D16_D18_SOURCE_CLOCK_REVALIDATION_V0_1.md",
+        "research/D16_DECISION_CLOCK_DIAGNOSTIC_ATTRIBUTION_V0_1.md",
+        "research/D16_STRATEGY_STAGE_CLOCK_DEPENDENCY_AUDIT_V0_1.md",
+        "research/d16_strategy_stage_dependency_matrix_v0_1.json"
       ],
       "maturityPct": 73.3,
       "modules": [
@@ -1926,9 +1929,9 @@
           "maturityPct": 60,
           "learningScope": "聚焦「Data Provenance資料來源／世代證明」。學習範圍：PIT、Prospective Shadow、OOS、Purged Holdout、多重測試、日期獨立性、冗餘、成本、Coverage與Zero-pick；資料世代證明、實驗登錄、成熟度升級與防過擬合治理。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "台股PIT資料可行",
-          "status": "FIRST_PROMOTION_GRADE_INDEPENDENT_SOURCE_CLOCK_DATE_CONFIRMED / COMPLETE_AND_PRECISE_DATES_ZERO / SOURCE_FAMILY_REVALIDATION_REQUIRED",
-          "evidence": "2026-09-29 finalized audit counts immutable attempt-one run 36526809162 toward independentTradingDates=1 and promotionGradeDateCount=1, but completeTradingDates=0, precisionEligibleDates=0, requiredReady=false. 9/29 A1 was incomplete and 9/30 raw evidence showed TWSE still prior-date while TPEx eventually reached same-day, proving cross-market asynchronous source availability. Source-clock validity is explicitly separate from feature/strategy/outcome validity.",
-          "next": "Read finalized 2026-09-30 acceptance when its scheduled next-day audit exists; measure factor-specific official source availability; preserve failed source dates; audit global-clock versus strategy-required-source dependency without changing runtime."
+          "status": "THREE_FINALIZED_PROMOTION_GRADE_DATES / COMPLETE_ZERO / PRECISION_ZERO / A5_DIAGNOSTIC_ATTRIBUTION_REPAIRED / SOURCE_FAMILY_REVALIDATION_ACTIVE",
+          "evidence": "Finalized 2026-09-29/09-30/10-01 all count as immutable independent source-clock dates, but completeTradingDates=0 and precisionEligibleDates=0. PR #312 corrected aggregation so A5 boundary failure is counted only when sameSessionClockReady=true and A5 actually misses a candidate boundary; System2 Research CI 36984225991, V8 Repair 36984226112 and V8 Regression 36984225981 PASS. 2026-10-02 raw evidence: TWSE A1 remained prior-date through 30 probes; TPEx finally READY at 16:08:27 with 148.195-158.465 minute arrival bracket but mixed NON_JSON transport instability; date not finalized yet.",
+          "next": "Wait for next-calendar-day finalized acceptance of 2026-10-02; read next aggregation after PR #312 to confirm false A5 boundary dates disappear; continue TWSE/TPEx source-family and transport-vs-publication revalidation."
         },
         {
           "id": "D16-12",
@@ -1955,7 +1958,10 @@
           "level": "L3",
           "maturityPct": 60,
           "learningScope": "聚焦「Generation Alignment跨資料表世代對齊」。學習範圍：PIT、Prospective Shadow、OOS、Purged Holdout、多重測試、日期獨立性、冗餘、成本、Coverage與Zero-pick；資料世代證明、實驗登錄、成熟度升級與防過擬合治理。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "台股PIT資料可行"
+          "levelMeaning": "台股PIT資料可行",
+          "status": "GLOBAL_CLOCK_VS_STRATEGY_STAGE_CONTRACT_MISMATCH_CONFIRMED / MACHINE_READABLE_RESEARCH_MATRIX_FROZEN / RUNTIME_VALUE_UNPROVEN",
+          "evidence": "SHORT_MOMENTUM Limited Shadow requires TECHNICAL_STRUCTURE, PRICE_VOLUME and RISK_FRICTION for non-INCOMPLETE evaluation while explicitly allowing breadth/sector gaps UNKNOWN and not requiring A5; current global requiredReady uses A1 TWSE + A1 TPEx + B2 plus A5-by-candidate. research/d16_strategy_stage_dependency_matrix_v0_1.json freezes known mappings and UNKNOWN stage roles. SWING_GROWTH B2 mapping remains SEMANTIC_GAP because descriptive B2 readiness does not equal INDUSTRY_THESIS readiness.",
+          "next": "Resolve exact strategyId×stageId dependencies for Strategy Validity, Entry Readiness, Shared Selection and Execution; then prospectively measure stage-ready timestamps without changing runtime and compare against global-clock timing."
         },
         {
           "id": "D16-15",
