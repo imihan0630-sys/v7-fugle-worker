@@ -1,0 +1,117 @@
+{
+  "version": "0.1",
+  "id": "SC-040",
+  "capturedAt": "2026-10-02T22:06:48+08:00",
+  "module": "D10-07 訂單／交期／Backlog",
+  "mode": "APPEND_ONLY_MULTI_RELEASE_ORDER_LEADTIME_RECEIPT / SOURCE_ONLY / OUTCOMES_CLOSED",
+  "formalCoreChanged": false,
+  "stockOutcomesOpened": false,
+  "purpose": "Accumulate independent Taiwan PMI release vintages while preserving UNKNOWN for fields not explicitly available in the captured official release text.",
+  "sourceAuthorities": [
+    "National Development Council",
+    "Chung-Hua Institution for Economic Research"
+  ],
+  "releaseVintages": [
+    {
+      "observationMonth": "2026-07",
+      "sourcePublishedAt": "2026-08-03T16:00:00+08:00",
+      "ndcUrl": "https://www.ndc.gov.tw/nc_333_40349",
+      "cierUrl": "https://www.cier.edu.tw/eco/2026%E5%B9%B47%E6%9C%88%E5%8F%B0%E7%81%A3%E8%A3%BD%E9%80%A0%E6%A5%AD%E6%8E%A1%E8%B3%BC%E7%B6%93%E7%90%86%E4%BA%BA%E6%8C%87%E6%95%B8/",
+      "overallManufacturing": {
+        "pmi": 61.5,
+        "newOrders": 63.3,
+        "production": 62.7,
+        "supplierDeliveryContext": "ABOVE_50 / MAY_PEAK_71.2_NOT_REACCELERATING"
+      },
+      "electronicsOptical": {
+        "pmi": 65.5,
+        "newOrders": 47.7,
+        "production": 47.7,
+        "supplierDeliveryTime": "UNKNOWN",
+        "unfinishedOrders": "UNKNOWN",
+        "inventory": 53.4,
+        "customerInventory": "UNKNOWN",
+        "inputPrices": "UNKNOWN",
+        "futureSixMonthOutlook": 51.1,
+        "state": "HIGH_COMPOSITE_PMI / NEW_ORDERS_AND_PRODUCTION_CONTRACTING / INVENTORY_EXPANDING"
+      }
+    },
+    {
+      "observationMonth": "2026-08",
+      "sourcePublishedAt": "2026-09-01T16:00:00+08:00",
+      "ndcUrl": "https://www.ndc.gov.tw/News_Content.aspx?Create=1&n=831DB5067D671449&s=96505C2A85F034FD",
+      "cierUrl": "https://www.cier.edu.tw/eco/2026%E5%B9%B48%E6%9C%88%E5%8F%B0%E7%81%A3%E8%A3%BD%E9%80%A0%E6%A5%AD%E6%8E%A1%E8%B3%BC%E7%B6%93%E7%90%86%E4%BA%BA%E6%8C%87%E6%95%B8/",
+      "overallManufacturing": {
+        "pmi": 62.5,
+        "newOrders": 66.5,
+        "production": 65.2,
+        "inventory": 58.2,
+        "futureSixMonthOutlook": 65.2
+      },
+      "electronicsOptical": {
+        "pmi": 65.2,
+        "newOrders": "EXPANDING_HIGH_BUT_EXACT_VALUE_UNKNOWN_IN_CAPTURED_RELEASE",
+        "production": "EXPANDING_HIGH_BUT_EXACT_VALUE_UNKNOWN_IN_CAPTURED_RELEASE",
+        "supplierDeliveryTime": "UNKNOWN",
+        "unfinishedOrders": "UNKNOWN",
+        "inventory": "UNKNOWN",
+        "customerInventory": "BELOW_50_FOR_THIRD_MONTH / EXACT_VALUE_UNKNOWN",
+        "inputPrices": "RISING_CONTEXT / EXACT_VALUE_UNKNOWN",
+        "futureSixMonthOutlook": 69.3,
+        "state": "HIGH_EXPANSION / SUPPLY_BOTTLENECKS_AND_COST_PRESSURE_LIMITING_ACCELERATION"
+      }
+    },
+    {
+      "observationMonth": "2026-09",
+      "sourcePublishedAt": "2026-10-01",
+      "ndcUrl": "https://www.ndc.gov.tw/News_Content.aspx?n=831DB5067D671449&s=B783781F407588E6&sms=0A35F578D2BCF855",
+      "cierUrl": "https://www.cier.edu.tw/eco/2026%E5%B9%B49%E6%9C%88%E5%8F%B0%E7%81%A3%E8%A3%BD%E9%80%A0%E6%A5%AD%E6%8E%A1%E8%B3%BC%E7%B6%93%E7%90%86%E4%BA%BA%E6%8C%87%E6%95%B8/",
+      "overallManufacturing": {
+        "pmi": 63.4,
+        "newOrders": "EXPANDING_BUT_DECELERATING",
+        "inventory": "EXPANDING",
+        "customerInventory": "ABOVE_50_AFTER_THREE_MONTHS_BELOW_50"
+      },
+      "electronicsOptical": {
+        "pmi": 62.6,
+        "newOrders": 56.7,
+        "unfinishedOrders": 54.3,
+        "inventory": 64.8,
+        "customerInventory": 51,
+        "supplierDeliveryTime": 73.8,
+        "inputPrices": 83.3,
+        "futureSixMonthOutlook": 62.4,
+        "state": "LONG_DELIVERY / ORDER_MOMENTUM_SLOWING / BACKLOG_EXPANDING_BUT_DECELERATING / INVENTORY_HIGH"
+      }
+    }
+  ],
+  "positiveMechanism": [
+    "New orders, unfinished orders, supplier delivery, inventories, input prices and outlook jointly separate demand acceleration from bottleneck accumulation.",
+    "Independent monthly release clocks make state transitions prospectively replayable without backdating to observation month-end.",
+    "The July-August-September sequence demonstrates that a high composite PMI can coexist with contracting or decelerating sector new orders."
+  ],
+  "falsification": [
+    "Supplier-delivery time above 50 is not a monotonic bullish demand signal.",
+    "Backlog expansion may reflect delivery friction or old work rather than fresh demand.",
+    "Inventory accumulation may be deliberate buffering, forced accumulation or demand mismatch.",
+    "Industry subindices are survey diffusion measures, not issuer-level order quantities.",
+    "Sector-level fields are unadjusted and can contain working-day/seasonal effects; do not mix them with seasonally adjusted overall series as if directly comparable.",
+    "Missing fields remain UNKNOWN; no interpolation or forward fill is permitted."
+  ],
+  "pitSemantics": {
+    "firstEligibleDecision": "No earlier than authenticated publication/capture time for each release.",
+    "revisionRule": "Append a new vintage on revision; never overwrite the prior captured state.",
+    "missingRule": "UNKNOWN != 0 != BAD",
+    "seasonalityRule": "Industry-level PMI fields are unadjusted unless the source explicitly states otherwise."
+  },
+  "maturityDecision": {
+    "D10-07": "KEEP_L3_TAIWAN_PIT_DATA_FEASIBILITY"
+  },
+  "reasonNoL4": "Three release vintages improve replayability and falsification, but there is no prospective issuer-level outcome join, no complete common-support sector vector for every month and no OOS/incremental-value test.",
+  "exactNext": [
+    "SC-041 map one industry state to listed issuers only with independently evidenced product/revenue exposure and preserve exposure magnitude UNKNOWN when not disclosed.",
+    "SC-042 define a dedicated shortage/supply-gap event contract rather than using high supplier-delivery time as a shortcut.",
+    "Prospectively append the next monthly release with native publication/capture clocks; do not backfill missing sector fields."
+  ],
+  "status": "THREE_INDEPENDENT_RELEASE_VINTAGES_FROZEN / PARTIAL_COMMON_SUPPORT / OUTCOMES_CLOSED / FORMAL_UNCHANGED"
+}
