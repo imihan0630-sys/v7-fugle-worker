@@ -152,15 +152,15 @@
       "id": "BREADTH_ROTATION",
       "domain": "INDUSTRY_SECTOR_RESIDUAL_RS",
       "level": "L2",
-      "status": "PIT_FEASIBLE_PARTIAL / LIVE_SELECTION_COHORT_BLOCKED / SOURCE_ONLY_EVIDENCE_ADVANCING",
-      "basis": "BR-035 remains blocked because 2026-10-01/02 do not establish clean System1 selection lineage. Independent non-selection evidence advanced: BR-037 freezes the first common-complete Taiwan50/MidCap100/SmallCap300 TRI size-state receipt with D5 small-cap leadership coexisting with D20/D60 large-cap leadership; BR-039 freezes official TWSE stock-only advance/decline breadth and a TAIEX-up/breadth-negative witness; BR-041 establishes same-day sector return-dispersion PIT feasibility from existing member changePercent/industry/tradeValue fields; BR-042 synthetic QA proves dispersion is directionless and outlier-sensitive. No strategy outcome claim."
+      "status": "PIT_FEASIBLE_PARTIAL / LIVE_SELECTION_COHORT_BLOCKED / OFFICIAL_ROTATION_AND_THEME_BRIDGES_ADVANCING",
+      "basis": "BR-035 remains blocked on clean System1 live selection lineage. Independent source-only lanes now include BR-044 official TWSE industry total-return rank-transition PIT feasibility (D09-06 L3) and BR-046 bounded prospective many-to-many formal-industry/theme bridge using 8046/3189 ABF exposure (D09-11 L3). Existing BR-037/039/041/042 source-only evidence remains intact. No strategy outcome claim or Formal sector behavior change."
     },
     {
       "id": "SUPPLY_CHAIN_EVENT_LEAD_LAG",
       "domain": "SUPPLY_CHAIN_LEAD_LAG",
       "level": "L2",
-      "status": "PIT_FEASIBLE_PARTIAL / THREE_EVENT_PRICING_CALIBRATION / CROSS_INDUSTRY_SOURCE_BLOCKED",
-      "basis": "SC-033 freezes three China Steel pricing states: broad down, flat, and broad/selective up under different cost-demand combinations, falsifying cost-only pass-through and fixed-company Pricing Power. Events are independent but issuer is not. SC-034 discovered a Formosa Petrochemical cross-industry pricing candidate but official full-text capture is blocked/partial; it is excluded from the calibration denominator. Realized ASP/margin and stock outcomes remain closed."
+      "status": "PIT_FEASIBLE_PARTIAL / ASYMMETRIC_CHAIN_AND_ORDER_LEADTIME_ADVANCED / OUTCOMES_CLOSED",
+      "basis": "SC-036 freezes two monthly EAF steel-chain vintages showing input/intermediate/downstream asymmetric transmission and advances D10-09 to L3 PIT feasibility. SC-039 freezes Taiwan NDC/CIER PMI multivariate new-orders/unfinished-orders/supplier-delivery/inventory state and advances D10-07 to L3. D10-01 and D10-04 remain L2 because effective-dated graph completeness and compatible utilization denominators are not yet broad enough. No realized-margin or predictive outcome claim."
     },
     {
       "id": "CORPORATE_ACTION_DENOMINATORS",
