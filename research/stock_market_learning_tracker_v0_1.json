@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-02T05:43:00+08:00",
+  "updatedAt": "2026-10-02T13:21:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -1670,7 +1670,7 @@
         "PORTFOLIO_RISK_CHECKPOINT.md",
         "PORTFOLIO_RISK_RESEARCH.md"
       ],
-      "maturityPct": 49.3,
+      "maturityPct": 50.7,
       "modules": [
         {
           "id": "D15-01",
@@ -1796,13 +1796,16 @@
         {
           "id": "D15-15",
           "name": "3+3／多Pool跨池風險",
-          "level": "L2",
-          "maturityPct": 40,
+          "level": "L3",
+          "maturityPct": 60,
           "learningScope": "聚焦「3+3／多Pool跨池風險」。學習範圍：資金與風險集中、相關性、共變異、分群、有效下注數、Portfolio Heat、現金歸因、停損幾何；FIRST/ADD/FULL/REDUCE/RE-ADD生命週期；配置量化誤差與尾端風險。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "levelMeaning": "台股PIT資料可行",
+          "evidence": "research/d15_multi_pool_production_receipt_20261002.json",
+          "evidenceStatus": "POOL_IDENTITY_PIT_VALIDATED / BOTH_POOLS_SAMPLE_ZERO / CROSS_POOL_DIVERSIFICATION_UNKNOWN",
+          "nextContinuationPoint": "Accumulate the first independent scan dates with GENERAL and THOUSAND both represented. On those dates report price-tier capital/risk shares only; defer true diversification/correlation/effective-bets inference until D15-03/04/05/06 PIT-synchronized return history is authorized."
         }
       ],
-      "nextContinuationPoint": "Continue D15-03/04/05/06 correlation-covariance-clustering-effective-bets only when PIT-synchronized return data become authorized; meanwhile extend D15-07 planned heat across new dates and D15 lifecycle heat as fill/holdings evidence matures."
+      "nextContinuationPoint": "Accumulate the first independent both-pools scan dates for D15-15 structural pool shares; true cross-pool diversification/effective-bets remains blocked on D15-03/04/05/06 PIT-synchronized return/covariance data. Continue D15-07 planned heat on new dates and D15 lifecycle only as fill/holdings provenance matures."
     },
     {
       "id": "D16",

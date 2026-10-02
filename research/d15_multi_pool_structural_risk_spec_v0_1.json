@@ -1,0 +1,35 @@
+{
+  "schemaVersion": "D15_MULTI_POOL_STRUCTURAL_RISK_V0_1",
+  "observedAt": "2026-10-02T13:18:00+08:00",
+  "owner": "10｜投組風控與交易執行研究室 / D15-15",
+  "question": "Does the Formal 3+3 GENERAL/THOUSAND pool split itself constitute portfolio diversification?",
+  "sourceSemantics": {
+    "formalSelector": "GENERAL if scan-date close < NT$1,000; THOUSAND if scan-date close >= NT$1,000",
+    "journalRecovery": "v8_trade_journal_plans.formal_close stores the same plan formalClose sourced from item.close at selection time",
+    "implication": "Historical selected-plan pool identity is PIT-reconstructable without later-price backfill."
+  },
+  "frozenMetrics": [
+    "selected-name count by pool",
+    "planned capital by pool",
+    "projected stop-risk by pool",
+    "aggregate name-level risk HHI",
+    "pool capital HHI",
+    "pool risk HHI",
+    "within-pool projected-risk HHI when >=2 names exist"
+  ],
+  "falsification": [
+    "Two price-tier pools do not prove statistically independent bets.",
+    "A date with only one represented pool is non-identifying for cross-pool diversification.",
+    "Even a date with both pools represented cannot establish correlation/covariance diversification without PIT-synchronized return history.",
+    "Sector labels, price tier, market cap or nominal share price are forbidden substitutes for D15-03/04 covariance evidence."
+  ],
+  "maturityRule": {
+    "L3AllowedIf": "Production journal proves PIT-safe pool reconstruction and at least the source/data contract is replayable.",
+    "crossPoolEffectClaim": "Requires at least one both-pools date for structural cross-pool shares; true diversification/effective-bets still requires D15-03/04/05/06 synchronized history.",
+    "L4BlockedUntil": "Independent prospective/OOS both-pools dates plus validated dependence evidence."
+  },
+  "formalCoreImpact": false,
+  "status": "POOL_IDENTITY_PIT_VALIDATED / BOTH_POOLS_SAMPLE_ZERO / CROSS_POOL_DIVERSIFICATION_UNKNOWN / D15_15_L3",
+  "productionReceipt": "research/d15_multi_pool_production_receipt_20261002.json",
+  "exactNext": "Accumulate the first independent scan dates with GENERAL and THOUSAND both represented. On those dates report price-tier capital/risk shares only; defer true diversification/correlation/effective-bets inference until D15-03/04/05/06 PIT-synchronized return history is authorized."
+}

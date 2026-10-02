@@ -3929,3 +3929,126 @@ Dependency artifact:
 
 Status:
 `HISTORICAL_SOURCE_FOUNDATION_AVAILABLE / CONTINUOUS_TAIL_DATASET_NOT_PROVEN`.
+
+
+## D15-MP-001 — 3+3 pool separation is price-tier capacity, not proven diversification (2026-10-02)
+
+D15-15 starts by falsifying a common semantic shortcut:
+
+`GENERAL pool + THOUSAND pool = two independent portfolio risk bets`.
+
+Current Formal source does **not** support that statement.
+
+### Exact pool mechanism
+
+The selector splits on the same scan-date close used in the final plan:
+
+- GENERAL = formal close < NT$1,000;
+- THOUSAND = formal close >= NT$1,000;
+- each pool keeps at most 3 names;
+- unused slots do not cross-fill.
+
+The split is therefore a **price-tier capacity rule**. It is not defined from:
+- sector;
+- covariance;
+- correlation;
+- factor exposure;
+- volatility cluster;
+- effective independent bets.
+
+### PIT reconstruction
+
+The immutable trade-journal plan stores `formal_close`.
+
+Current plan construction sets:
+`formalClose = item.close`
+on the same scan date, while the pool split also uses `item.close`.
+
+Therefore historical selected-plan pool identity is PIT-safe to reconstruct from `formal_close` without using any later price.
+
+### Research metrics
+
+For each selected date the audit freezes:
+- name count by pool;
+- capital by pool;
+- projected stop-risk by pool;
+- aggregate name-level risk HHI;
+- pool capital HHI;
+- pool projected-risk HHI;
+- within-pool HHI where at least two names exist.
+
+### Anti-overclaim firewall
+
+A date with only one represented pool is:
+`CROSS_POOL_NON_IDENTIFYING`.
+
+A date with both pools represented can describe capital/risk split across price tiers, but still cannot prove genuine diversification.
+
+True cross-pool diversification requires PIT-synchronized return/covariance evidence under D15-03/04/05/06. Price tier, industry labels or number of pools are not substitutes.
+
+Artifacts:
+- `research/d15_multi_pool_structural_risk_v0_1.mjs`
+- `research/d15_multi_pool_structural_risk_spec_v0_1.json`
+- `tests/test_d15_multi_pool_structural_risk_v0_1.mjs`
+- `tests/d15_multi_pool_production_readonly_audit.mjs`
+
+Status:
+`POOL_IDENTITY_SOURCE_CONTRACT_READY / PRODUCTION_AUDIT_PENDING / DIVERSIFICATION_UNPROVEN`.
+
+Formal Core unchanged.
+
+
+## D15-MP-001 Production result — pool identity is PIT-valid; cross-pool diversification has zero identifying dates
+
+Read-only Production run `36968309192` / job `110716767898` returned four recorded scan dates.
+
+Results:
+- recorded dates = 4;
+- selected dates with complete pool reconstruction = 2;
+- dates with GENERAL and THOUSAND both represented = **0**;
+- selected single-pool dates = 2.
+
+2026-09-18:
+- selected = 2006 / 3105 / 6133;
+- GENERAL = 3;
+- THOUSAND = 0;
+- all NT$168,000 planned capital and NT$6,483.4292 projected stop-risk belong to GENERAL.
+
+2026-09-21:
+- selected = 3006;
+- GENERAL = 1;
+- THOUSAND = 0.
+
+2026-09-22 / 2026-09-23:
+- zero selected names.
+
+### Falsification result
+
+The evidence supports:
+`selected-plan pool identity is PIT-reconstructable`.
+
+It does **not** support:
+`3+3 has demonstrated cross-pool diversification`.
+
+The zero count of both-pools dates means:
+`ABSENCE_OF_IDENTIFYING_SAMPLE`,
+not:
+`cross-pool diversification effect = 0`.
+
+True diversification/effective-bets claims remain dependent on D15-03/04/05/06 PIT-synchronized return/covariance evidence.
+
+### Maturity
+
+D15-15 advances:
+`L2 / 40% -> L3 / 60%`
+for **Taiwan Production source/data feasibility only**.
+
+No L4, OOS, alpha or diversification-effect claim.
+
+Receipt:
+`research/d15_multi_pool_production_receipt_20261002.json`.
+
+Status:
+`POOL_IDENTITY_PIT_VALIDATED / BOTH_POOLS_SAMPLE_ZERO / CROSS_POOL_DIVERSIFICATION_UNKNOWN / D15_15_L3`.
+
+Formal Core unchanged. No `FORMAL_OPTIMIZATION_CANDIDATE`.

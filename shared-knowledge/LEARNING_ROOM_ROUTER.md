@@ -205,7 +205,7 @@ ChatGPT UI 顯示「思考中」、轉圈、手機／電腦版狀態不同步、
 | 07｜產業與供應鏈研究室 | D09＋D10 | 24 | 49.2% | 產業／族群／市場廣度／輪動＋供應鏈／產能／庫存／原物料傳導 |
 | 08｜事件與新聞研究室 | D11＋D17 | 27 | 45.9% | 公司行動／重大事件／事件風險＋新聞／事件半衰期／受益受害傳導 |
 | 09｜衍生品與國際總經研究室 | D12＋D13 | 25 | 40.0% | 期貨／選擇權／衍生品＋總體經濟／跨市場傳導 |
-| 10｜投組風控與交易執行研究室 | D14＋D15 | 29 | 47.6% | 交易成本／執行品質／Execution Alpha＋投資組合／風險／資金利用／部位生命週期 |
+| 10｜投組風控與交易執行研究室 | D14＋D15 | 29 | 49.0% | 交易成本／執行品質／Execution Alpha＋投資組合／風險／資金利用／部位生命週期 |
 | 11｜統計驗證與策略市場狀態研究室 | D16＋D18 | 29 | 51.0% | 統計驗證／PIT／Shadow／OOS／防過擬合＋市場Regime×策略互動 |
 
 ## 00｜研究總控室
@@ -534,7 +534,7 @@ ChatGPT UI 顯示「思考中」、轉圈、手機／電腦版狀態不同步、
 | D14-12 | Execution Alpha歸因 | 聚焦「Execution Alpha歸因」。學習範圍：手續費、證交稅、滑價、部分成交、延遲、零股／整股、換手與機會成本；signal-to-fill鏈；反事實可下單性；成交可重建性；Execution Alpha歸因。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L3 台股PIT資料可行 | 60% |
 | D14-13 | Broker Fee Schedule完整費率語意 | 聚焦「Broker Fee Schedule完整費率語意」。學習範圍：手續費、證交稅、滑價、部分成交、延遲、零股／整股、換手與機會成本；signal-to-fill鏈；反事實可下單性；成交可重建性；Execution Alpha歸因。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L3 台股PIT資料可行 | 60% |
 | D14-14 | 集合競價／特殊撮合成本 | 聚焦「集合競價／特殊撮合成本」。學習範圍：手續費、證交稅、滑價、部分成交、延遲、零股／整股、換手與機會成本；signal-to-fill鏈；反事實可下單性；成交可重建性；Execution Alpha歸因。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L2 機制＋反證已定義 | 40% |
-### D15｜投資組合／風險／資金利用／部位生命週期 — 49.3%
+### D15｜投資組合／風險／資金利用／部位生命週期 — 50.7%
 
 | 模組 | 研究模組 | 學習範圍 | 等級 | 完成度 |
 |---|---|---|---|---:|
@@ -552,7 +552,7 @@ ChatGPT UI 顯示「思考中」、轉圈、手機／電腦版狀態不同步、
 | D15-12 | 35% Cap／千元格／股數量化誤差 | 聚焦「35% Cap／千元格／股數量化誤差」。學習範圍：資金與風險集中、相關性、共變異、分群、有效下注數、Portfolio Heat、現金歸因、停損幾何；FIRST/ADD/FULL/REDUCE/RE-ADD生命週期；配置量化誤差與尾端風險。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L3 台股PIT資料可行 | 60% |
 | D15-13 | Expected Shortfall／Tail Risk | 聚焦「Expected Shortfall／Tail Risk」。學習範圍：資金與風險集中、相關性、共變異、分群、有效下注數、Portfolio Heat、現金歸因、停損幾何；FIRST/ADD/FULL/REDUCE/RE-ADD生命週期；配置量化誤差與尾端風險。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L2 機制＋反證已定義 | 40% |
 | D15-14 | PriorityScore後選股資金傾斜 | 聚焦「PriorityScore後選股資金傾斜」。學習範圍：資金與風險集中、相關性、共變異、分群、有效下注數、Portfolio Heat、現金歸因、停損幾何；FIRST/ADD/FULL/REDUCE/RE-ADD生命週期；配置量化誤差與尾端風險。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L3 台股PIT資料可行 | 60% |
-| D15-15 | 3+3／多Pool跨池風險 | 聚焦「3+3／多Pool跨池風險」。學習範圍：資金與風險集中、相關性、共變異、分群、有效下注數、Portfolio Heat、現金歸因、停損幾何；FIRST/ADD/FULL/REDUCE/RE-ADD生命週期；配置量化誤差與尾端風險。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L2 機制＋反證已定義 | 40% |
+| D15-15 | 3+3／多Pool跨池風險 | 聚焦「3+3／多Pool跨池風險」。學習範圍：資金與風險集中、相關性、共變異、分群、有效下注數、Portfolio Heat、現金歸因、停損幾何；FIRST/ADD/FULL/REDUCE/RE-ADD生命週期；配置量化誤差與尾端風險。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 | L3 台股PIT資料可行 | 60% |
 
 ## 11｜統計驗證與策略市場狀態研究室
 
@@ -857,3 +857,14 @@ Status: CANCELLED
 ### 10室 continuation update — D14 mixed-lot execution clocks (2026-09-30)
 
 D14-07／08／14 remain L2/40. A research-only mixed-lot receipt contract now distinguishes continuous regular-lot matching from discrete intraday odd-lot call-auction opportunities and fail-closes on mechanism/benchmark/fill provenance mismatches. Exact next step is prospective independent-session receipt accumulation (first readiness review after >=3 sessions), not maturity promotion.
+
+
+### 10室 continuation update — D15-15 multi-pool risk semantics (2026-10-02)
+
+D15-15 advances to L3/60 for Taiwan PIT source/data feasibility only.
+
+- Formal GENERAL / THOUSAND membership is a price-tier split on the same scan-date close later persisted as plan `formal_close`, so selected-plan pool identity is PIT-reconstructable.
+- Production read-only audit has 4 recorded scan dates, 2 selected dates, and **0 dates with both pools represented**.
+- Therefore current evidence proves pool identity and plan-time pool capital/risk aggregation, but does not prove cross-pool diversification, low correlation, sector/factor diversification, or effective independent bets.
+- Zero both-pools dates means `ABSENCE_OF_IDENTIFYING_SAMPLE`, not a zero or failed diversification effect.
+- Exact next: accumulate the first independent scan dates with both GENERAL and THOUSAND represented; true diversification remains dependent on D15-03/04/05/06 PIT-synchronized return/covariance evidence.

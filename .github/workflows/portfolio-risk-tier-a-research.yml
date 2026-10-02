@@ -99,6 +99,10 @@ on:
       - "research/stage_feasible_grid_sensitivity_spec_v0_1.json"
       - "tests/test_stage_feasible_grid_sensitivity_v0_1.mjs"
       - "tests/portfolio_risk_stage_feasible_grid_readonly_audit.mjs"
+      - "research/d15_multi_pool_structural_risk_v0_1.mjs"
+      - "research/d15_multi_pool_structural_risk_spec_v0_1.json"
+      - "tests/test_d15_multi_pool_structural_risk_v0_1.mjs"
+      - "tests/d15_multi_pool_production_readonly_audit.mjs"
       - "research/per_name_cap_sensitivity_v0_1.mjs"
       - "research/per_name_cap_sensitivity_spec_v0_1.json"
       - "tests/test_per_name_cap_sensitivity_v0_1.mjs"
@@ -236,6 +240,8 @@ jobs:
           node tests/portfolio_risk_tranche_ratio_sensitivity_readonly_audit.mjs
           node tests/portfolio_risk_extreme_tranche_ratio_readonly_audit.mjs
           node tests/portfolio_risk_stage_feasible_grid_readonly_audit.mjs
+          node tests/test_d15_multi_pool_structural_risk_v0_1.mjs
+          node tests/d15_multi_pool_production_readonly_audit.mjs
           node tests/portfolio_risk_per_name_cap_sensitivity_readonly_audit.mjs
           node tests/portfolio_heat_frontier_readonly_audit.mjs
           node tests/portfolio_heat_semantics_readonly_audit.mjs
