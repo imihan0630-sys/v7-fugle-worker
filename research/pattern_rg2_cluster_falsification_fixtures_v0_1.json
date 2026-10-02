@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "0.1",
+  "researchId": "PATTERN-RG2-CLUSTER-FALSIFICATION",
+  "status": "OUTCOME_BLIND",
+  "formalCore": "LOCKED",
+  "effectiveSampleRule": "ROWS_DO_NOT_MULTIPLY_INDEPENDENT_N",
+  "fixtures": [
+    {"id":"RG2C01","case":"same_parent_multiple_child_events","expected":"CLUSTER_NOT_MULTIPLY_N"},
+    {"id":"RG2C02","case":"same_episode_multiple_asof_snapshots","expected":"LONGITUDINAL_NOT_INDEPENDENT"},
+    {"id":"RG2C03","case":"same_raw_price_root_multiple_timeframe_labels","expected":"ZERO_INDEPENDENT_VOTE_INCREMENT"},
+    {"id":"RG2C04","case":"same_scan_date_multiple_symbols","expected":"RETAIN_SCAN_DATE_DEPENDENCE"},
+    {"id":"RG2C05","case":"different_parents_overlapping_outcome_windows","expected":"RETAIN_OVERLAPPING_WINDOW_DEPENDENCE"},
+    {"id":"RG2C06","case":"incomplete_root_keyset","expected":"DATA_BLOCKED"},
+    {"id":"RG2C07","case":"future_confirmed_parent","expected":"DATA_BLOCKED"},
+    {"id":"RG2C08","case":"semantic_space_conflict","expected":"DATA_BLOCKED"},
+    {"id":"RG2C09","case":"technical_continuity_unknown","expected":"UNKNOWN"},
+    {"id":"RG2C10","case":"baseline_candidate_eligible_dates_differ","expected":"COMMON_SUPPORT_FAIL"},
+    {"id":"RG2C11","case":"baseline_candidate_decision_cutoff_differ","expected":"DECISION_CUTOFF_FAIL"},
+    {"id":"RG2C12","case":"baseline_candidate_outcome_horizon_differ","expected":"EQUAL_HORIZON_FAIL"}
+  ],
+  "inferenceGuards": {
+    "clusterDimensions":["scanDate","immutableParentDecisionReceipt","structuralEpisode"],
+    "overlappingOutcomeWindows":"DEPENDENCE_NOT_INDEPENDENCE",
+    "multipleTestingFamilies":["timeframe","boundary","estimand"],
+    "unknownNeverZero":true,
+    "outcomeJoin":"CLOSED"
+  }
+}
