@@ -1,6 +1,6 @@
 # Shared Research Master Map
 
-Updated: 2026-10-03 00:58 Asia/Taipei
+Updated: 2026-10-03 03:16 Asia/Taipei
 Status: CANONICAL_SHARED_INDEX
 Scope: Cross-system research knowledge
 Formal Core impact: NONE
@@ -342,6 +342,21 @@ Default for newly learned evidence remains RESEARCH_ONLY. New knowledge does not
 System 1 remains the conservative Formal benchmark; any probabilistic redesign is Shadow challenger first.
 System 2 should be designed strategy-by-strategy with a small set of primary evidence families rather than requiring all 22 domains to pass.
 Formal Core remains LOCKED.
+
+## Hybrid selection execution — owner approved 2026-10-03
+
+Canonical execution authority:
+- `shared-knowledge/PROBABILISTIC_SELECTION_GOVERNANCE_V0_1.md`
+- `shared-knowledge/HYBRID_SELECTION_EXECUTION_DIRECTIVE_V0_1.md`
+
+Execution tracks:
+- **System 1:** GitHub issue #319 — Hybrid Shadow Challenger gate-role audit / anti-overfiltering. Class A Shadow implementation authorized; Production Formal remains unchanged.
+- **System 2:** GitHub issue #320 — Hybrid strategy-selection contract / uncertainty channel. Research/design implementation authorized; general final-selection and live authority remain disabled.
+
+Owner-approved forward philosophy:
+minimal HARD_INVALIDATION + strategy-specific PRIMARY_ALPHA + SUPPORTIVE + CONTEXT_ONLY + separate CONFIDENCE／UNCERTAINTY + ABSTAIN when expected value is inadequate or uncertainty excessive.
+
+The learning curriculum (22 domains / 366 modules) is a knowledge universe, not an all-domain AND-gate checklist.
 
 ## Shared inventory
 
