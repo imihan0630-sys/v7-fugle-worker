@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-02T16:23:00+08:00",
+  "updatedAt": "2026-10-02T16:31:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -31,9 +31,9 @@
     }
   },
   "aggregate": {
-    "domainCount": 18,
-    "moduleCount": 229,
-    "maturityWeightedPct": 47.5
+    "domainCount": 22,
+    "moduleCount": 297,
+    "maturityWeightedPct": 37.3
   },
   "domains": [
     {
@@ -722,7 +722,7 @@
         "FUNDAMENTAL_INFORMATION_DYNAMICS_CHECKPOINT.md",
         "FUNDAMENTAL_INFORMATION_DYNAMICS_RESEARCH.md"
       ],
-      "maturityPct": 43.6,
+      "maturityPct": 28.2,
       "modules": [
         {
           "id": "D07-01",
@@ -817,6 +817,66 @@
           "levelMeaning": "機制＋反證已定義",
           "status": "FORECAST_REVISION_MECHANISM_COUNTEREVIDENCE_AND_PIT_SEMANTICS_DEFINED / CANONICAL_AUTHORIZED_SOURCE_NEEDED / OUTCOMES_CLOSED",
           "next": "Inventory authorized PIT analyst-estimate sources; preregister forecast-age/consensus-accuracy diagnostics before any stale cutoff or outcome join."
+        },
+        {
+          "id": "D07-12",
+          "name": "Business Model／Revenue Engine商業模式與收入引擎",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Business Model／Revenue Engine商業模式與收入引擎」。學習範圍：基本面不只讀財報比率，還要研究商業模式、競爭優勢、單位經濟、集中度、產品生命週期與管理層展望；每個結論必須區分可觀測資料與主觀敘事，記錄正向機制、反證／失效條件、PIT first-known、可重播性、資料品質、與既有財報因子的冗餘、成本及對 System 1／System 2 的增量價值。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D07-12 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D07-13",
+          "name": "Competitive Advantage／Moat競爭優勢與護城河",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Competitive Advantage／Moat競爭優勢與護城河」。學習範圍：基本面不只讀財報比率，還要研究商業模式、競爭優勢、單位經濟、集中度、產品生命週期與管理層展望；每個結論必須區分可觀測資料與主觀敘事，記錄正向機制、反證／失效條件、PIT first-known、可重播性、資料品質、與既有財報因子的冗餘、成本及對 System 1／System 2 的增量價值。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D07-13 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D07-14",
+          "name": "Unit Economics／Operating Leverage單位經濟與營業槓桿",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Unit Economics／Operating Leverage單位經濟與營業槓桿」。學習範圍：基本面不只讀財報比率，還要研究商業模式、競爭優勢、單位經濟、集中度、產品生命週期與管理層展望；每個結論必須區分可觀測資料與主觀敘事，記錄正向機制、反證／失效條件、PIT first-known、可重播性、資料品質、與既有財報因子的冗餘、成本及對 System 1／System 2 的增量價值。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D07-14 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D07-15",
+          "name": "Customer／Product／Geography Concentration客戶產品地區集中",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Customer／Product／Geography Concentration客戶產品地區集中」。學習範圍：基本面不只讀財報比率，還要研究商業模式、競爭優勢、單位經濟、集中度、產品生命週期與管理層展望；每個結論必須區分可觀測資料與主觀敘事，記錄正向機制、反證／失效條件、PIT first-known、可重播性、資料品質、與既有財報因子的冗餘、成本及對 System 1／System 2 的增量價值。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D07-15 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D07-16",
+          "name": "Product Lifecycle／TAM／Penetration產品生命週期與滲透率",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Product Lifecycle／TAM／Penetration產品生命週期與滲透率」。學習範圍：基本面不只讀財報比率，還要研究商業模式、競爭優勢、單位經濟、集中度、產品生命週期與管理層展望；每個結論必須區分可觀測資料與主觀敘事，記錄正向機制、反證／失效條件、PIT first-known、可重播性、資料品質、與既有財報因子的冗餘、成本及對 System 1／System 2 的增量價值。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D07-16 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D07-17",
+          "name": "Management Guidance Quality管理層展望品質",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Management Guidance Quality管理層展望品質」。學習範圍：基本面不只讀財報比率，還要研究商業模式、競爭優勢、單位經濟、集中度、產品生命週期與管理層展望；每個結論必須區分可觀測資料與主觀敘事，記錄正向機制、反證／失效條件、PIT first-known、可重播性、資料品質、與既有財報因子的冗餘、成本及對 System 1／System 2 的增量價值。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D07-17 的機制、反證與資料需求；不得直接進 Formal。"
         }
       ]
     },
@@ -827,7 +887,7 @@
       "anchors": [
         "VALUATION_RESEARCH.md"
       ],
-      "maturityPct": 43.3,
+      "maturityPct": 30.6,
       "modules": [
         {
           "id": "D08-01",
@@ -930,6 +990,56 @@
           "maturityPct": 40,
           "learningScope": "聚焦「除權息／增減資對估值分母防火牆」。學習範圍：PE、PB、Forward PE、PEG、EV/EBITDA、FCF Yield等估值方法；歷史與同業正規化；負EPS與週期股例外；公司行動分母調整；成長×估值×Regime互動。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義"
+        },
+        {
+          "id": "D08-13",
+          "name": "DCF／FCFF／FCFE現金流折現估值",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「DCF／FCFF／FCFE現金流折現估值」。學習範圍：估值研究必須同時涵蓋相對與絕對估值；明確凍結現金流／股利／資本成本／終值／分部與資產假設，測試假設敏感度、週期與會計污染、PIT first-known、可重播性、冗餘與對 System 1／System 2 的增量價值，禁止以事後最有利假設回推合理價。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D08-13 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D08-14",
+          "name": "DDM股利折現模型",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「DDM股利折現模型」。學習範圍：估值研究必須同時涵蓋相對與絕對估值；明確凍結現金流／股利／資本成本／終值／分部與資產假設，測試假設敏感度、週期與會計污染、PIT first-known、可重播性、冗餘與對 System 1／System 2 的增量價值，禁止以事後最有利假設回推合理價。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D08-14 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D08-15",
+          "name": "Residual Income剩餘利益估值",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Residual Income剩餘利益估值」。學習範圍：估值研究必須同時涵蓋相對與絕對估值；明確凍結現金流／股利／資本成本／終值／分部與資產假設，測試假設敏感度、週期與會計污染、PIT first-known、可重播性、冗餘與對 System 1／System 2 的增量價值，禁止以事後最有利假設回推合理價。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D08-15 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D08-16",
+          "name": "SOTP分部加總估值",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「SOTP分部加總估值」。學習範圍：估值研究必須同時涵蓋相對與絕對估值；明確凍結現金流／股利／資本成本／終值／分部與資產假設，測試假設敏感度、週期與會計污染、PIT first-known、可重播性、冗餘與對 System 1／System 2 的增量價值，禁止以事後最有利假設回推合理價。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D08-16 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D08-17",
+          "name": "Liquidation／Asset-based Value清算與資產價值",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Liquidation／Asset-based Value清算與資產價值」。學習範圍：估值研究必須同時涵蓋相對與絕對估值；明確凍結現金流／股利／資本成本／終值／分部與資產假設，測試假設敏感度、週期與會計污染、PIT first-known、可重播性、冗餘與對 System 1／System 2 的增量價值，禁止以事後最有利假設回推合理價。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D08-17 的機制、反證與資料需求；不得直接進 Formal。"
         }
       ]
     },
@@ -1317,7 +1427,7 @@
         "DERIVATIVES_VOLATILITY_CHECKPOINT.md",
         "DERIVATIVES_VOLATILITY_RESEARCH.md"
       ],
-      "maturityPct": 40,
+      "maturityPct": 30,
       "modules": [
         {
           "id": "D12-01",
@@ -1420,6 +1530,46 @@
           "maturityPct": 40,
           "learningScope": "聚焦「衍生品狀態對個股／大盤的增量價值」。學習範圍：期貨、選擇權、基差、OI、外資期貨、PCR、VIX、IV、Skew、Term Structure、Gamma與結算；夜盤與到期效應；合約／DTE語意；對市場與個股的增量資訊。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義"
+        },
+        {
+          "id": "D12-13",
+          "name": "Greeks：Delta／Gamma／Vega／Theta",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Greeks：Delta／Gamma／Vega／Theta」。學習範圍：衍生品研究必須凍結合約、到期、履約價、DTE、價格／IV時計與流動性語意；研究 Greeks、IV-RV、VRP與波動率曲面時必須包含正向機制、反證、PIT、可重播、交易成本、稀疏報價／插值風險、與既有VIX／Skew／Gamma資訊的冗餘及增量價值。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D12-13 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D12-14",
+          "name": "IV-RV Spread隱含與實現波動差",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「IV-RV Spread隱含與實現波動差」。學習範圍：衍生品研究必須凍結合約、到期、履約價、DTE、價格／IV時計與流動性語意；研究 Greeks、IV-RV、VRP與波動率曲面時必須包含正向機制、反證、PIT、可重播、交易成本、稀疏報價／插值風險、與既有VIX／Skew／Gamma資訊的冗餘及增量價值。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D12-14 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D12-15",
+          "name": "Volatility Risk Premium波動率風險溢酬",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Volatility Risk Premium波動率風險溢酬」。學習範圍：衍生品研究必須凍結合約、到期、履約價、DTE、價格／IV時計與流動性語意；研究 Greeks、IV-RV、VRP與波動率曲面時必須包含正向機制、反證、PIT、可重播、交易成本、稀疏報價／插值風險、與既有VIX／Skew／Gamma資訊的冗餘及增量價值。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D12-15 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D12-16",
+          "name": "Volatility Surface／Smile波動率曲面與微笑",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Volatility Surface／Smile波動率曲面與微笑」。學習範圍：衍生品研究必須凍結合約、到期、履約價、DTE、價格／IV時計與流動性語意；研究 Greeks、IV-RV、VRP與波動率曲面時必須包含正向機制、反證、PIT、可重播、交易成本、稀疏報價／插值風險、與既有VIX／Skew／Gamma資訊的冗餘及增量價值。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D12-16 的機制、反證與資料需求；不得直接進 Formal。"
         }
       ]
     },
@@ -1844,7 +1994,7 @@
         "research/D16_STRATEGY_STAGE_CLOCK_DEPENDENCY_AUDIT_V0_1.md",
         "research/d16_strategy_stage_dependency_matrix_v0_1.json"
       ],
-      "maturityPct": 73.3,
+      "maturityPct": 55,
       "modules": [
         {
           "id": "D16-01",
@@ -1977,6 +2127,56 @@
           "status": "PROMOTION_GATE_V0_1_FROZEN / FIXED_N_IS_DESCRIPTIVE_ONLY",
           "evidence": "D16_D18_PROMOTION_GATE_V0_1 adds MDE, regime-episode robustness, dependence-aware inference, error-cost asymmetry and L2-L5 gates.",
           "next": "Apply the gate to the first executable D18 policy experiment; do not treat 15/20-date descriptive thresholds as promotion proof."
+        },
+        {
+          "id": "D16-16",
+          "name": "Time-series Models時間序列模型",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Time-series Models時間序列模型」。學習範圍：統計／模型工具只負責驗證與估計，不因模型複雜而自動產生 Alpha；必須控制 look-ahead、leakage、multiple testing、非平穩、日期群聚、校準、可解釋性、PIT／replay、成本、資料漂移與簡單 baseline，並驗證對 System 1／System 2 是否有真正增量價值。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D16-16 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D16-17",
+          "name": "Panel／Cross-sectional Models面板與橫截面模型",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Panel／Cross-sectional Models面板與橫截面模型」。學習範圍：統計／模型工具只負責驗證與估計，不因模型複雜而自動產生 Alpha；必須控制 look-ahead、leakage、multiple testing、非平穩、日期群聚、校準、可解釋性、PIT／replay、成本、資料漂移與簡單 baseline，並驗證對 System 1／System 2 是否有真正增量價值。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D16-17 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D16-18",
+          "name": "Regularization／Feature Selection正則化與特徵選擇",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Regularization／Feature Selection正則化與特徵選擇」。學習範圍：統計／模型工具只負責驗證與估計，不因模型複雜而自動產生 Alpha；必須控制 look-ahead、leakage、multiple testing、非平穩、日期群聚、校準、可解釋性、PIT／replay、成本、資料漂移與簡單 baseline，並驗證對 System 1／System 2 是否有真正增量價值。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D16-18 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D16-19",
+          "name": "Machine Learning／Calibration機器學習與校準",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Machine Learning／Calibration機器學習與校準」。學習範圍：統計／模型工具只負責驗證與估計，不因模型複雜而自動產生 Alpha；必須控制 look-ahead、leakage、multiple testing、非平穩、日期群聚、校準、可解釋性、PIT／replay、成本、資料漂移與簡單 baseline，並驗證對 System 1／System 2 是否有真正增量價值。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D16-19 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D16-20",
+          "name": "Causal Inference因果推論",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Causal Inference因果推論」。學習範圍：統計／模型工具只負責驗證與估計，不因模型複雜而自動產生 Alpha；必須控制 look-ahead、leakage、multiple testing、非平穩、日期群聚、校準、可解釋性、PIT／replay、成本、資料漂移與簡單 baseline，並驗證對 System 1／System 2 是否有真正增量價值。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D16-20 的機制、反證與資料需求；不得直接進 Formal。"
         }
       ]
     },
@@ -2271,6 +2471,550 @@
           "evidence": "Promotion Gate V0.1 adds episode counts, MDE, nested/purged walk-forward, dependence-aware bootstrap/HAC options, sparse-cell and multiple-testing guards."
         }
       ]
+    },
+    {
+      "id": "D19",
+      "name": "資產定價／因子投資／市場異象",
+      "chatroom": "12｜資產定價與因子研究室",
+      "anchors": [
+        "ASSET_PRICING_FACTOR_CHECKPOINT.md",
+        "ASSET_PRICING_FACTOR_RESEARCH.md"
+      ],
+      "maturityPct": 0,
+      "modules": [
+        {
+          "id": "D19-01",
+          "name": "CAPM／Beta／Alpha與Benchmark Residual",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「CAPM／Beta／Alpha與Benchmark Residual」。學習範圍：研究資產定價、風格因子與市場異象。任何因子都必須與 D03/D07/D08/D09 等既有原始訊號做中性化／冗餘比較，控制 data snooping、多重測試、存活者偏誤、PIT、成本、容量與 Regime；只有殘差增量才可視為獨立 Alpha 候選。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D19-01 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D19-02",
+          "name": "Size規模因子",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Size規模因子」。學習範圍：研究資產定價、風格因子與市場異象。任何因子都必須與 D03/D07/D08/D09 等既有原始訊號做中性化／冗餘比較，控制 data snooping、多重測試、存活者偏誤、PIT、成本、容量與 Regime；只有殘差增量才可視為獨立 Alpha 候選。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D19-02 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D19-03",
+          "name": "Value價值因子",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Value價值因子」。學習範圍：研究資產定價、風格因子與市場異象。任何因子都必須與 D03/D07/D08/D09 等既有原始訊號做中性化／冗餘比較，控制 data snooping、多重測試、存活者偏誤、PIT、成本、容量與 Regime；只有殘差增量才可視為獨立 Alpha 候選。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D19-03 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D19-04",
+          "name": "Cross-sectional Momentum橫截面動能因子",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Cross-sectional Momentum橫截面動能因子」。學習範圍：研究資產定價、風格因子與市場異象。任何因子都必須與 D03/D07/D08/D09 等既有原始訊號做中性化／冗餘比較，控制 data snooping、多重測試、存活者偏誤、PIT、成本、容量與 Regime；只有殘差增量才可視為獨立 Alpha 候選。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D19-04 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D19-05",
+          "name": "Quality／Profitability品質與獲利能力因子",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Quality／Profitability品質與獲利能力因子」。學習範圍：研究資產定價、風格因子與市場異象。任何因子都必須與 D03/D07/D08/D09 等既有原始訊號做中性化／冗餘比較，控制 data snooping、多重測試、存活者偏誤、PIT、成本、容量與 Regime；只有殘差增量才可視為獨立 Alpha 候選。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D19-05 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D19-06",
+          "name": "Investment／Asset Growth投資與資產成長因子",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Investment／Asset Growth投資與資產成長因子」。學習範圍：研究資產定價、風格因子與市場異象。任何因子都必須與 D03/D07/D08/D09 等既有原始訊號做中性化／冗餘比較，控制 data snooping、多重測試、存活者偏誤、PIT、成本、容量與 Regime；只有殘差增量才可視為獨立 Alpha 候選。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D19-06 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D19-07",
+          "name": "Low Volatility／Low Beta低波動低Beta因子",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Low Volatility／Low Beta低波動低Beta因子」。學習範圍：研究資產定價、風格因子與市場異象。任何因子都必須與 D03/D07/D08/D09 等既有原始訊號做中性化／冗餘比較，控制 data snooping、多重測試、存活者偏誤、PIT、成本、容量與 Regime；只有殘差增量才可視為獨立 Alpha 候選。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D19-07 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D19-08",
+          "name": "Idiosyncratic Volatility特質波動異象",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Idiosyncratic Volatility特質波動異象」。學習範圍：研究資產定價、風格因子與市場異象。任何因子都必須與 D03/D07/D08/D09 等既有原始訊號做中性化／冗餘比較，控制 data snooping、多重測試、存活者偏誤、PIT、成本、容量與 Regime；只有殘差增量才可視為獨立 Alpha 候選。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D19-08 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D19-09",
+          "name": "Residual Momentum／Factor Neutralization殘差動能與因子中性化",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Residual Momentum／Factor Neutralization殘差動能與因子中性化」。學習範圍：研究資產定價、風格因子與市場異象。任何因子都必須與 D03/D07/D08/D09 等既有原始訊號做中性化／冗餘比較，控制 data snooping、多重測試、存活者偏誤、PIT、成本、容量與 Regime；只有殘差增量才可視為獨立 Alpha 候選。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D19-09 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D19-10",
+          "name": "Factor Exposure／Multicollinearity因子曝險與共線性",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Factor Exposure／Multicollinearity因子曝險與共線性」。學習範圍：研究資產定價、風格因子與市場異象。任何因子都必須與 D03/D07/D08/D09 等既有原始訊號做中性化／冗餘比較，控制 data snooping、多重測試、存活者偏誤、PIT、成本、容量與 Regime；只有殘差增量才可視為獨立 Alpha 候選。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D19-10 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D19-11",
+          "name": "Factor Crowding／Capacity／Turnover因子擁擠容量與換手",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Factor Crowding／Capacity／Turnover因子擁擠容量與換手」。學習範圍：研究資產定價、風格因子與市場異象。任何因子都必須與 D03/D07/D08/D09 等既有原始訊號做中性化／冗餘比較，控制 data snooping、多重測試、存活者偏誤、PIT、成本、容量與 Regime；只有殘差增量才可視為獨立 Alpha 候選。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D19-11 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D19-12",
+          "name": "Seasonality／Calendar Anomalies季節性與日曆異象",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Seasonality／Calendar Anomalies季節性與日曆異象」。學習範圍：研究資產定價、風格因子與市場異象。任何因子都必須與 D03/D07/D08/D09 等既有原始訊號做中性化／冗餘比較，控制 data snooping、多重測試、存活者偏誤、PIT、成本、容量與 Regime；只有殘差增量才可視為獨立 Alpha 候選。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D19-12 的機制、反證與資料需求；不得直接進 Formal。"
+        }
+      ],
+      "status": "UNSTUDIED / CURRICULUM_APPROVED / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "D19-01：從理論、機制與反證開始；建立資料來源/PIT/replay需求後再考慮 L1→L2。",
+      "lastResearchUpdate": "2026-10-02T16:31:00+08:00",
+      "researchNote": "Owner approved expansion from 18 to 22 domains on 2026-10-02. Curriculum initialized at L0; no evidence or maturity promotion is implied."
+    },
+    {
+      "id": "D20",
+      "name": "行為金融／投資人注意力／市場心理",
+      "chatroom": "13｜行為金融與市場心理研究室",
+      "anchors": [
+        "BEHAVIORAL_FINANCE_CHECKPOINT.md",
+        "BEHAVIORAL_FINANCE_RESEARCH.md"
+      ],
+      "maturityPct": 0,
+      "modules": [
+        {
+          "id": "D20-01",
+          "name": "Prospect Theory／Loss Aversion展望理論與損失趨避",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Prospect Theory／Loss Aversion展望理論與損失趨避」。學習範圍：研究可觀測的行為金融機制與市場代理變數；不得從K線或成交量直接推定投資人心理或主力意圖。每個假說必須有替代的結構／微結構／資訊解釋、PIT/replay、可量化代理、成本、冗餘與跨Regime反證。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D20-01 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D20-02",
+          "name": "Disposition Effect處分效果",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Disposition Effect處分效果」。學習範圍：研究可觀測的行為金融機制與市場代理變數；不得從K線或成交量直接推定投資人心理或主力意圖。每個假說必須有替代的結構／微結構／資訊解釋、PIT/replay、可量化代理、成本、冗餘與跨Regime反證。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D20-02 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D20-03",
+          "name": "Overconfidence過度自信",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Overconfidence過度自信」。學習範圍：研究可觀測的行為金融機制與市場代理變數；不得從K線或成交量直接推定投資人心理或主力意圖。每個假說必須有替代的結構／微結構／資訊解釋、PIT/replay、可量化代理、成本、冗餘與跨Regime反證。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D20-03 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D20-04",
+          "name": "Anchoring／Reference Dependence錨定與參考點依賴",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Anchoring／Reference Dependence錨定與參考點依賴」。學習範圍：研究可觀測的行為金融機制與市場代理變數；不得從K線或成交量直接推定投資人心理或主力意圖。每個假說必須有替代的結構／微結構／資訊解釋、PIT/replay、可量化代理、成本、冗餘與跨Regime反證。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D20-04 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D20-05",
+          "name": "Representativeness／Recency代表性與近因偏誤",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Representativeness／Recency代表性與近因偏誤」。學習範圍：研究可觀測的行為金融機制與市場代理變數；不得從K線或成交量直接推定投資人心理或主力意圖。每個假說必須有替代的結構／微結構／資訊解釋、PIT/replay、可量化代理、成本、冗餘與跨Regime反證。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D20-05 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D20-06",
+          "name": "Herding／Social Proof從眾與社會證明",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Herding／Social Proof從眾與社會證明」。學習範圍：研究可觀測的行為金融機制與市場代理變數；不得從K線或成交量直接推定投資人心理或主力意圖。每個假說必須有替代的結構／微結構／資訊解釋、PIT/replay、可量化代理、成本、冗餘與跨Regime反證。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D20-06 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D20-07",
+          "name": "Investor Attention／Salience投資人注意力與顯著性",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Investor Attention／Salience投資人注意力與顯著性」。學習範圍：研究可觀測的行為金融機制與市場代理變數；不得從K線或成交量直接推定投資人心理或主力意圖。每個假說必須有替代的結構／微結構／資訊解釋、PIT/replay、可量化代理、成本、冗餘與跨Regime反證。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D20-07 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D20-08",
+          "name": "Underreaction／Post-event Drift反應不足與事件後漂移",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Underreaction／Post-event Drift反應不足與事件後漂移」。學習範圍：研究可觀測的行為金融機制與市場代理變數；不得從K線或成交量直接推定投資人心理或主力意圖。每個假說必須有替代的結構／微結構／資訊解釋、PIT/replay、可量化代理、成本、冗餘與跨Regime反證。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D20-08 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D20-09",
+          "name": "Overreaction／Reversal過度反應與反轉",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Overreaction／Reversal過度反應與反轉」。學習範圍：研究可觀測的行為金融機制與市場代理變數；不得從K線或成交量直接推定投資人心理或主力意圖。每個假說必須有替代的結構／微結構／資訊解釋、PIT/replay、可量化代理、成本、冗餘與跨Regime反證。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D20-09 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D20-10",
+          "name": "Investor Sentiment情緒測量與代理變數",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Investor Sentiment情緒測量與代理變數」。學習範圍：研究可觀測的行為金融機制與市場代理變數；不得從K線或成交量直接推定投資人心理或主力意圖。每個假說必須有替代的結構／微結構／資訊解釋、PIT/replay、可量化代理、成本、冗餘與跨Regime反證。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D20-10 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D20-11",
+          "name": "Narrative／Theme Diffusion敘事與題材擴散",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Narrative／Theme Diffusion敘事與題材擴散」。學習範圍：研究可觀測的行為金融機制與市場代理變數；不得從K線或成交量直接推定投資人心理或主力意圖。每個假說必須有替代的結構／微結構／資訊解釋、PIT/replay、可量化代理、成本、冗餘與跨Regime反證。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D20-11 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D20-12",
+          "name": "Behavioral-vs-Structural Falsification行為解釋與結構性反證",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Behavioral-vs-Structural Falsification行為解釋與結構性反證」。學習範圍：研究可觀測的行為金融機制與市場代理變數；不得從K線或成交量直接推定投資人心理或主力意圖。每個假說必須有替代的結構／微結構／資訊解釋、PIT/replay、可量化代理、成本、冗餘與跨Regime反證。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D20-12 的機制、反證與資料需求；不得直接進 Formal。"
+        }
+      ],
+      "status": "UNSTUDIED / CURRICULUM_APPROVED / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "D20-01：從理論、機制與反證開始；建立資料來源/PIT/replay需求後再考慮 L1→L2。",
+      "lastResearchUpdate": "2026-10-02T16:31:00+08:00",
+      "researchNote": "Owner approved expansion from 18 to 22 domains on 2026-10-02. Curriculum initialized at L0; no evidence or maturity promotion is implied."
+    },
+    {
+      "id": "D21",
+      "name": "公司治理／經營者／內部人／控制權品質",
+      "chatroom": "14｜公司治理與內部人研究室",
+      "anchors": [
+        "CORPORATE_GOVERNANCE_INSIDER_CHECKPOINT.md",
+        "CORPORATE_GOVERNANCE_INSIDER_RESEARCH.md"
+      ],
+      "maturityPct": 0,
+      "modules": [
+        {
+          "id": "D21-01",
+          "name": "Ownership／Control Structure所有權與控制權結構",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Ownership／Control Structure所有權與控制權結構」。學習範圍：研究公司控制權、董事會、內部人、質押、關係人交易、誘因、資本配置、審計／內控與管理層可信度。所有治理資料必須使用歷史 first-known/vintage，並與 D06持股、D07財報、D11事件分工去重。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D21-01 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D21-02",
+          "name": "Board／Independent Directors董事會與獨立董事",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Board／Independent Directors董事會與獨立董事」。學習範圍：研究公司控制權、董事會、內部人、質押、關係人交易、誘因、資本配置、審計／內控與管理層可信度。所有治理資料必須使用歷史 first-known/vintage，並與 D06持股、D07財報、D11事件分工去重。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D21-02 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D21-03",
+          "name": "Insider Ownership／Trading內部人持股與交易",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Insider Ownership／Trading內部人持股與交易」。學習範圍：研究公司控制權、董事會、內部人、質押、關係人交易、誘因、資本配置、審計／內控與管理層可信度。所有治理資料必須使用歷史 first-known/vintage，並與 D06持股、D07財報、D11事件分工去重。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D21-03 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D21-04",
+          "name": "Share Pledging大股東與董監質押",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Share Pledging大股東與董監質押」。學習範圍：研究公司控制權、董事會、內部人、質押、關係人交易、誘因、資本配置、審計／內控與管理層可信度。所有治理資料必須使用歷史 first-known/vintage，並與 D06持股、D07財報、D11事件分工去重。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D21-04 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D21-05",
+          "name": "Related-party Transactions關係人交易",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Related-party Transactions關係人交易」。學習範圍：研究公司控制權、董事會、內部人、質押、關係人交易、誘因、資本配置、審計／內控與管理層可信度。所有治理資料必須使用歷史 first-known/vintage，並與 D06持股、D07財報、D11事件分工去重。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D21-05 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D21-06",
+          "name": "Compensation／Incentive Alignment薪酬與誘因一致性",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Compensation／Incentive Alignment薪酬與誘因一致性」。學習範圍：研究公司控制權、董事會、內部人、質押、關係人交易、誘因、資本配置、審計／內控與管理層可信度。所有治理資料必須使用歷史 first-known/vintage，並與 D06持股、D07財報、D11事件分工去重。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D21-06 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D21-07",
+          "name": "Capital Allocation Quality資本配置品質",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Capital Allocation Quality資本配置品質」。學習範圍：研究公司控制權、董事會、內部人、質押、關係人交易、誘因、資本配置、審計／內控與管理層可信度。所有治理資料必須使用歷史 first-known/vintage，並與 D06持股、D07財報、D11事件分工去重。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D21-07 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D21-08",
+          "name": "Governance／ESG Score Provenance治理評鑑與來源語意",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Governance／ESG Score Provenance治理評鑑與來源語意」。學習範圍：研究公司控制權、董事會、內部人、質押、關係人交易、誘因、資本配置、審計／內控與管理層可信度。所有治理資料必須使用歷史 first-known/vintage，並與 D06持股、D07財報、D11事件分工去重。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D21-08 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D21-09",
+          "name": "Succession／Key-person Risk接班與關鍵人風險",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Succession／Key-person Risk接班與關鍵人風險」。學習範圍：研究公司控制權、董事會、內部人、質押、關係人交易、誘因、資本配置、審計／內控與管理層可信度。所有治理資料必須使用歷史 first-known/vintage，並與 D06持股、D07財報、D11事件分工去重。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D21-09 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D21-10",
+          "name": "Audit／Restatement／Internal Control審計重編與內控制度",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Audit／Restatement／Internal Control審計重編與內控制度」。學習範圍：研究公司控制權、董事會、內部人、質押、關係人交易、誘因、資本配置、審計／內控與管理層可信度。所有治理資料必須使用歷史 first-known/vintage，並與 D06持股、D07財報、D11事件分工去重。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D21-10 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D21-11",
+          "name": "Tunneling／Minority Shareholder Risk利益輸送與小股東風險",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Tunneling／Minority Shareholder Risk利益輸送與小股東風險」。學習範圍：研究公司控制權、董事會、內部人、質押、關係人交易、誘因、資本配置、審計／內控與管理層可信度。所有治理資料必須使用歷史 first-known/vintage，並與 D06持股、D07財報、D11事件分工去重。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D21-11 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D21-12",
+          "name": "Management Guidance Credibility管理層展望可信度",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Management Guidance Credibility管理層展望可信度」。學習範圍：研究公司控制權、董事會、內部人、質押、關係人交易、誘因、資本配置、審計／內控與管理層可信度。所有治理資料必須使用歷史 first-known/vintage，並與 D06持股、D07財報、D11事件分工去重。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D21-12 的機制、反證與資料需求；不得直接進 Formal。"
+        }
+      ],
+      "status": "UNSTUDIED / CURRICULUM_APPROVED / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "D21-01：從理論、機制與反證開始；建立資料來源/PIT/replay需求後再考慮 L1→L2。",
+      "lastResearchUpdate": "2026-10-02T16:31:00+08:00",
+      "researchNote": "Owner approved expansion from 18 to 22 domains on 2026-10-02. Curriculum initialized at L0; no evidence or maturity promotion is implied."
+    },
+    {
+      "id": "D22",
+      "name": "信用市場／資本結構／融資壓力／股債傳導",
+      "chatroom": "15｜信用市場與資本結構研究室",
+      "anchors": [
+        "CREDIT_CAPITAL_STRUCTURE_CHECKPOINT.md",
+        "CREDIT_CAPITAL_STRUCTURE_RESEARCH.md"
+      ],
+      "maturityPct": 0,
+      "modules": [
+        {
+          "id": "D22-01",
+          "name": "Debt Maturity Wall／Refinancing Schedule債務到期與再融資時程",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Debt Maturity Wall／Refinancing Schedule債務到期與再融資時程」。學習範圍：研究市場與契約型信用風險、債務到期／再融資、評等、信用利差、契約、利率曝險與股債傳導。必須驗證其是否超越 D07會計槓桿與 D13無風險利率資訊，缺少債券／評等資料時維持 UNKNOWN。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D22-01 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D22-02",
+          "name": "Interest Coverage／Debt Service利息保障與償債能力",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Interest Coverage／Debt Service利息保障與償債能力」。學習範圍：研究市場與契約型信用風險、債務到期／再融資、評等、信用利差、契約、利率曝險與股債傳導。必須驗證其是否超越 D07會計槓桿與 D13無風險利率資訊，缺少債券／評等資料時維持 UNKNOWN。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D22-02 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D22-03",
+          "name": "Net Debt／Leverage Structure淨負債與槓桿結構",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Net Debt／Leverage Structure淨負債與槓桿結構」。學習範圍：研究市場與契約型信用風險、債務到期／再融資、評等、信用利差、契約、利率曝險與股債傳導。必須驗證其是否超越 D07會計槓桿與 D13無風險利率資訊，缺少債券／評等資料時維持 UNKNOWN。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D22-03 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D22-04",
+          "name": "Cost of Debt／Refinancing Risk債務成本與再融資風險",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Cost of Debt／Refinancing Risk債務成本與再融資風險」。學習範圍：研究市場與契約型信用風險、債務到期／再融資、評等、信用利差、契約、利率曝險與股債傳導。必須驗證其是否超越 D07會計槓桿與 D13無風險利率資訊，缺少債券／評等資料時維持 UNKNOWN。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D22-04 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D22-05",
+          "name": "Credit Rating／Rating Migration信用評等與遷移",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Credit Rating／Rating Migration信用評等與遷移」。學習範圍：研究市場與契約型信用風險、債務到期／再融資、評等、信用利差、契約、利率曝險與股債傳導。必須驗證其是否超越 D07會計槓桿與 D13無風險利率資訊，缺少債券／評等資料時維持 UNKNOWN。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D22-05 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D22-06",
+          "name": "Credit Spread／Bond Yield信用利差與債券殖利率",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Credit Spread／Bond Yield信用利差與債券殖利率」。學習範圍：研究市場與契約型信用風險、債務到期／再融資、評等、信用利差、契約、利率曝險與股債傳導。必須驗證其是否超越 D07會計槓桿與 D13無風險利率資訊，缺少債券／評等資料時維持 UNKNOWN。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D22-06 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D22-07",
+          "name": "Liquidity／Covenant／Default Risk流動性契約與違約風險",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Liquidity／Covenant／Default Risk流動性契約與違約風險」。學習範圍：研究市場與契約型信用風險、債務到期／再融資、評等、信用利差、契約、利率曝險與股債傳導。必須驗證其是否超越 D07會計槓桿與 D13無風險利率資訊，缺少債券／評等資料時維持 UNKNOWN。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D22-07 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D22-08",
+          "name": "Fixed／Floating Rate Exposure固定浮動利率曝險",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Fixed／Floating Rate Exposure固定浮動利率曝險」。學習範圍：研究市場與契約型信用風險、債務到期／再融資、評等、信用利差、契約、利率曝險與股債傳導。必須驗證其是否超越 D07會計槓桿與 D13無風險利率資訊，缺少債券／評等資料時維持 UNKNOWN。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D22-08 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D22-09",
+          "name": "Equity-Credit Divergence股債背離",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Equity-Credit Divergence股債背離」。學習範圍：研究市場與契約型信用風險、債務到期／再融資、評等、信用利差、契約、利率曝險與股債傳導。必須驗證其是否超越 D07會計槓桿與 D13無風險利率資訊，缺少債券／評等資料時維持 UNKNOWN。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D22-09 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D22-10",
+          "name": "Capital Structure／Funding Mix資本結構與融資組合",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Capital Structure／Funding Mix資本結構與融資組合」。學習範圍：研究市場與契約型信用風險、債務到期／再融資、評等、信用利差、契約、利率曝險與股債傳導。必須驗證其是否超越 D07會計槓桿與 D13無風險利率資訊，缺少債券／評等資料時維持 UNKNOWN。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D22-10 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D22-11",
+          "name": "Credit Cycle／Bank Lending Conditions信用週期與銀行放款條件",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Credit Cycle／Bank Lending Conditions信用週期與銀行放款條件」。學習範圍：研究市場與契約型信用風險、債務到期／再融資、評等、信用利差、契約、利率曝險與股債傳導。必須驗證其是否超越 D07會計槓桿與 D13無風險利率資訊，缺少債券／評等資料時維持 UNKNOWN。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D22-11 的機制、反證與資料需求；不得直接進 Formal。"
+        },
+        {
+          "id": "D22-12",
+          "name": "Distress／Recovery／Equity Tail Risk財務困境回收與股權尾端風險",
+          "level": "L0",
+          "maturityPct": 0,
+          "learningScope": "聚焦「Distress／Recovery／Equity Tail Risk財務困境回收與股權尾端風險」。學習範圍：研究市場與契約型信用風險、債務到期／再融資、評等、信用利差、契約、利率曝險與股債傳導。必須驗證其是否超越 D07會計槓桿與 D13無風險利率資訊，缺少債券／評等資料時維持 UNKNOWN。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "levelMeaning": "未研究",
+          "status": "UNSTUDIED / CURRICULUM_APPROVED",
+          "next": "從理論與定義開始，建立 D22-12 的機制、反證與資料需求；不得直接進 Formal。"
+        }
+      ],
+      "status": "UNSTUDIED / CURRICULUM_APPROVED / FORMAL_CORE_UNCHANGED",
+      "exactNextContinuationPoint": "D22-01：從理論、機制與反證開始；建立資料來源/PIT/replay需求後再考慮 L1→L2。",
+      "lastResearchUpdate": "2026-10-02T16:31:00+08:00",
+      "researchNote": "Owner approved expansion from 18 to 22 domains on 2026-10-02. Curriculum initialized at L0; no evidence or maturity promotion is implied."
     }
   ],
   "rules": {
