@@ -1,0 +1,88 @@
+{
+  "schemaVersion": "D02_CUMULATIVE_PACE_REDUNDANCY_V0_1",
+  "generatedAt": "2026-10-02T08:10:00+08:00",
+  "researchOnly": true,
+  "decisionImpact": false,
+  "formalCoreImpact": false,
+  "outcomesUsed": false,
+  "authoritativeRepoHeadAtWrite": "98a142747a5845adb46040077a6ffafd1afe4e77",
+  "sourceSemantics": {
+    "observableSlots": [
+      "09:00",
+      "09:15",
+      "09:30",
+      "09:45",
+      "10:00",
+      "10:15",
+      "10:30",
+      "10:45",
+      "11:00",
+      "11:15",
+      "11:30",
+      "11:45",
+      "12:00",
+      "12:15",
+      "12:30",
+      "12:45",
+      "13:00"
+    ],
+    "slotRvol": "v_k / median20(v_h,k)",
+    "cumulativePace": "sum(v_1..v_k) / median20(sum(v_h,1..v_h,k))",
+    "localPrevious5Ratio": "v_k / mean(v_{k-5}..v_{k-1})",
+    "formalLocalRatioRoundingDigits": 2,
+    "pvLocalRatioRounding": "unrounded",
+    "cumulativeRequiresUnbrokenPrefix": true
+  },
+  "structuralProofs": {
+    "firstSlotIdentity": {
+      "slot": "09:00",
+      "proof": "cumulativeVolume=v_1 for current and every cumulative-valid historical session, so cumulativeVolumeMedian20=slotVolumeMedian20; therefore pvCumvolPace20=pvSlotRvol20 exactly on common valid support",
+      "incrementalInformation": "ZERO_BY_CONSTRUCTION"
+    },
+    "localRatioAvailability": {
+      "firstAvailableSlot": "10:15",
+      "reason": "five prior completed 15m bars required",
+      "implication": "A/B/C/D comparison that includes local previous-5 ratio cannot have full common support before 10:15"
+    },
+    "missingPrefix": {
+      "implication": "missing any earlier observable slot sets cumulativeValid=false for later bars while slot RVOL may remain computable",
+      "policy": "missing cumulative pace remains UNKNOWN; never coerce to neutral/zero"
+    },
+    "laterSlotNonIdentity": {
+      "statement": "median of cumulative sums is not generally sum of slot medians, and current cumulative path includes prior-slot participation",
+      "incrementalPotential": "POSSIBLE_NOT_PROVEN"
+    }
+  },
+  "syntheticCommonSupportAt1015": [
+    {
+      "scenario": "uniform_2x",
+      "slotRvol": 2,
+      "cumulativePace": 2,
+      "localPrevious5Ratio": 1
+    },
+    {
+      "scenario": "isolated_late_burst",
+      "slotRvol": 3,
+      "cumulativePace": 1.3333333333,
+      "localPrevious5Ratio": 3
+    },
+    {
+      "scenario": "fading_after_early_burst",
+      "slotRvol": 1,
+      "cumulativePace": 2,
+      "localPrevious5Ratio": 0.4545454545
+    },
+    {
+      "scenario": "late_reacceleration",
+      "slotRvol": 3,
+      "cumulativePace": 1.6666666667,
+      "localPrevious5Ratio": 2.1428571429
+    }
+  ],
+  "hypothesisImplications": {
+    "H001": "same-slot RVOL remains distinct from local previous-5 ratio by construction; test on common support only",
+    "H002": "exclude 09:00 as structurally redundant; primary incremental test begins only where B/C/D all observed, no earlier than 10:15, and must additionally beat same-slot RVOL plus persistence state",
+    "persistenceRedundancy": "cumulative pace may encode magnitude/path information not contained in thresholded persistence state, but incremental value is unproven",
+    "outcomeGate": "CLOSED"
+  }
+}
