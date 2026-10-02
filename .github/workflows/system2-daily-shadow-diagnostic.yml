@@ -59,11 +59,33 @@ jobs:
           if(!["IMMUTABLE_D1_READBACK_VERIFIED","SKIPPED_IDENTICAL_COMPLETED_RUN"].includes(r.persistenceState))throw new Error("missing readback");
           fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY,`Daily diagnostic: ${r.state}\n\nDate: ${r.marketDate}; symbols observed: ${r.symbolCount}; UNKNOWN factors: ${r.unknownFactorCount}. No capacity/zero-pick/SELECTED claim.\n`);
           NODE
+      - name: Read public diagnostic and authority state
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from "node:fs";
+          const d=JSON.parse(fs.readFileSync("/tmp/system2-daily-diagnostic.json","utf8"));
+          const base="https://system2-shadow-research.imihan0630.workers.dev";
+          const {default:assert}=await import("node:assert/strict");
+          const reads=[];
+          for(const path of [`/api/system2/shadow/diagnostic?marketDate=${d.receipt.marketDate}`,"/health","/api/system2/resonance/operations"]){
+            const response=await fetch(base+path,{signal:AbortSignal.timeout(30000)});
+            if(!response.ok)throw new Error("public diagnostic read failed");
+            reads.push({path,status:response.status,payload:await response.json()});
+          }
+          const saved=reads[0].payload.receipt;
+          if(saved.runId!==d.receipt.runId||saved.revision!==d.receipt.revision)throw new Error("public receipt mismatch");
+          assert.deepEqual(saved.prospectiveHistory,d.receipt.prospectiveHistory);
+          if(saved.capacityRunId!==null||saved.zeroPickDay!==null||saved.finalSelectionEnabled!==false)throw new Error("authority mismatch");
+          console.log(JSON.stringify({result:"PASS",reads},null,2));
+          fs.writeFileSync("/tmp/system2-daily-diagnostic-readback.json",JSON.stringify({result:"PASS",reads},null,2));
+          NODE
       - name: Preserve execution receipt
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: system2-daily-shadow-diagnostic-${{ github.run_id }}-${{ github.run_attempt }}
-          path: /tmp/system2-daily-diagnostic.json
+          path: |
+            /tmp/system2-daily-diagnostic.json
+            /tmp/system2-daily-diagnostic-readback.json
           if-no-files-found: warn
           retention-days: 90

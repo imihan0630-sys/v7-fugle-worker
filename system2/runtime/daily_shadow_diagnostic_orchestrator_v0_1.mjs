@@ -182,6 +182,7 @@ export async function runDailyShadowDiagnosticV0_1({
     decisionClockMode: "DIAGNOSTIC_OBSERVATION_TIME_NOT_CAPTURE_CLOCK", state,
     calendar: calendar || null, preflight, prospectiveHistory, symbolCount, knownFactorCount, unknownFactorCount, factorFailureCount,
     sourceSessionHash: sourceSession?.sourceSessionHash || null,
+    sourceTransports: source?.transports || null,
     regime: { state: "UNKNOWN", reason: "VALIDATED_REGIME_SOURCES_NOT_WIRED", labels: [] },
     strategyEvaluation: "BLOCKED_ASSESSOR_POLICY_NOT_FROZEN", ranking: "NOT_EXECUTED",
     capacity: "NOT_PRODUCED", predictionSnapshot: "NOT_PRODUCED", zeroPickDay: null,
