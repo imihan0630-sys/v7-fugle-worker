@@ -336,3 +336,5 @@ K-line/Pattern research added an implementation-level replay/path falsification 
 - 2025 Taiwan historical-high evidence rejects a universal hard resistance veto after a true break, but local-pattern equivalence and effect-size transportability remain unproven.
 
 Status: RESEARCH_ONLY / ALPHA_UNKNOWN / NO_FORMAL_PROMOTION.
+
+- Event transaction/disclosure clock anchor: `EVENT_TRANSACTION_AND_DISCLOSURE_CLOCK_RESEARCH.md` (D11-06 M&A/asset-event lifecycle, D11-09 recurring disclosure windows, D17-13 scheduled/unscheduled taxonomy and PIT replay clocks).
