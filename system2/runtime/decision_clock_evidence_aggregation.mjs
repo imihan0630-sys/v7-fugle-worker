@@ -199,7 +199,9 @@ export function aggregateDecisionClockEvidence({
   )].sort();
   const collectorContractConsistent = collectorContractFingerprints.length <= 1;
   const a5BoundaryFailureDates = promotionSelected
-    .filter((x) => x.bundle.evidence.a5AvailableByCandidate !== true)
+    .filter((x) =>
+      x.bundle.evidence.sameSessionClockReady === true
+      && x.bundle.evidence.a5AvailableByCandidate !== true)
     .map((x) => x.marketDate);
 
   const tradingDayArtifactGaps = coverageRows.filter(
