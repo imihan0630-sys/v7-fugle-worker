@@ -1071,3 +1071,41 @@ YES for research infrastructure integrity: resolving the actual archive lineage 
 - Maturity: D03-09 ADX L1/20 -> L2/40; D03 aggregate 44.6% -> 46.2%. This is a mechanism/falsification promotion only.
 - Candidate handoff: `FORMAL_OPTIMIZATION_CANDIDATE = NONE`. Formal Core remains LOCKED.
 - Exact next continuation: wait for the next completed Taiwan session to supply the preregistered third source/version observation. If that gate passes governance, execute TI-005 KD-vs-RSI then TI-006 MACD-vs-direct-trend. Before any ADX efficacy test, freeze a long-enough warm-up/formulaVersion and +DI/-DI/DX/ADX continuity contract; ADX then tests residual value only, with no additive vote or threshold tuning.
+
+
+## 2026-10-02 D03 — TI-460~473 ROC exact redundancy / EMA64 state-lineage
+
+- Room/domain: 03｜技術指標與趨勢動能研究室 / D03.
+- Governance: Class-A research-only; no Formal selection/ranking/capital/monitoring/signal/push change.
+- Source/PIT:
+  - official TWSE and TPEx 2026-10-02 completed-session content is source-visible;
+  - current chat fetch transport exposes extracted/normalized content, not the frozen observer's origin raw bytes;
+  - therefore no backfilled raw receipt is fabricated and `PROSPECTIVE_COMPLETED_SESSION_COVERAGE` remains 2/3.
+- ROC findings:
+  - standard percent ROC = exactly `100 * retN`;
+  - common Momentum index = exactly `ROC+100`;
+  - same-horizon log return is a one-to-one monotonic transform and preserves ordering;
+  - raw price difference is nominal-price-scale confounded;
+  - smoothed/delta ROC remains same-family and must be residualized.
+- EMA16/64 findings:
+  - EMA16 mean age 7.5 bars, half-life ≈5.538, 10%-residual horizon ≈18.397;
+  - EMA64 mean age 31.5 bars, half-life ≈22.179, 10%-residual horizon ≈73.677;
+  - synthetic local-reseed witness rejects assuming a 65-bar SMA-seeded EMA64 equals canonical long-history state;
+  - System 2 EMA evidence therefore requires state-lineage/replay semantics;
+  - EMA16/64 + Impulse remains partial/shared price-family evidence, not independent vote counting.
+- Maturity:
+  - D03-11 ROC L1/20 -> L2/40;
+  - D03 aggregate 46.2% -> 47.7%;
+  - D03-01 remains L3/60 and D03-13 remains L2/40; no theory-only inflation.
+- Durable artifacts:
+  - `research/TECHNICAL_INDICATOR_ROC_REDUNDANCY_V0_1.md`;
+  - `research/test_technical_indicator_roc_redundancy_v0_1.mjs`;
+  - `research/TECHNICAL_INDICATOR_EMA16_64_HORIZON_WARMUP_V0_1.md`;
+  - `research/test_technical_indicator_ema16_64_horizon_warmup_v0_1.mjs`;
+  - updated `TECHNICAL_INDICATOR_RESEARCH.md`, `TECHNICAL_INDICATOR_CHECKPOINT.md`, tracker/router/shared map.
+- Candidate handoff: `FORMAL_OPTIMIZATION_CANDIDATE = NONE`; Formal Core remains LOCKED.
+- Exact next continuation:
+  1. close raw-byte third-session gate only through frozen observer or receipt-equivalent authorized transport;
+  2. do not backfill 2026-10-02 extracted content;
+  3. before System 2 resonance outcome testing, prove EMA64 canonical replay/state-lineage equivalence and retain EMA16/64 + Impulse as within-family evidence;
+  4. after raw receipt gate passes, TI-005 KD-vs-RSI remains first efficacy inference, TI-006 MACD-vs-direct-trend second.
