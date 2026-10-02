@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "D15_KV_LAST_SCAN_CORROBORATION_V0_1",
+  "preregisteredAt": "2026-10-02T12:25:00+08:00",
+  "purpose": "Use the still-live KV LAST_SCAN payload as lower-tier corroborative plan-geometry evidence when D1 journal generation evidence is missing.",
+  "targetScanDate": "2026-09-29",
+  "evidenceClass": "KV_LAST_SCAN_OBSERVED_HISTORICAL_PAYLOAD / NOT_D1_GENERATION_CERTIFIED",
+  "frozenMetrics": [
+    "hhi",
+    "gini",
+    "cv",
+    "maxRiskShare",
+    "maxMin"
+  ],
+  "decisionRules": {
+    "oppositeDirection": "Downgrade the 2026-09-18 structural concentration claim and flag source/regime sensitivity.",
+    "sameDirection": "Record cross-store corroboration only. Do not promote maturity, population significance, OOS status, or optimization candidacy.",
+    "incompleteGeometry": "UNKNOWN; do not reconstruct missing plan fields from current code."
+  },
+  "provenanceRules": [
+    "Use only fields currently returned by /api/scan/status.",
+    "Persist the observed payload fields to a durable GitHub receipt after the read.",
+    "Do not call mutable KV equivalent to immutable D1 journal provenance.",
+    "Do not read or use future outcomes for allocator tuning.",
+    "Formal Core remains locked."
+  ],
+  "status": "PREREGISTERED / KV_READ_PENDING",
+  "formalCoreImpact": false
+}
