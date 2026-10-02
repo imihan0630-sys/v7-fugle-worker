@@ -44,3 +44,18 @@ General selection capture stays false. No Baseline/Challenger change, live push,
 Targeted tests cover missing inputs/policy, UNKNOWN factors, source/history clock mismatch, before-close and holiday skips, calendar/source failures, interrupted shard writes, final-marker ordering, immutable reruns/conflicts, aggregate hash checks and read-only dated lookup. Existing capacity/persistence/preflight tests remain required. GitHub System2 Research CI and V8 Regression plus post-merge physical writer/Worker API readback are required before claiming deployment.
 
 2026-10-02 13:53 Taipei local source read: TWSE and TPEx HTTP 200, both latest reported date `1151001` (2026-10-01). Target 2026-10-02 normalized ordinary count = 0. This is truthful incomplete input, not a zero-pick result. The 2026-10-02 19:00 new-format resonance audit had not occurred at this observation.
+
+## 2026-10-02 S2-07 daily diagnostic physical acceptance
+
+PR #303 merged as `632f1f47a189c7c5f6d51b21b847bb1abf7935c6`.
+
+- Final PR head `800458338e01d22d579fea7c224b6f8c8db5dcf8`: System2 Research CI `36971394695` PASS; V8 Regression `36971394765` PASS.
+- Main System2 Research CI `36971466568` PASS; main V8 Regression `36971466579` PASS.
+- Isolated daily diagnostic writer `36971466598` PASS. Actual receipt: `S2-DAILY-DIAGNOSTIC:2026-10-02:36971466598:1`, observed clock `2026-10-02T06:00:28.662Z` (14:00:28 Taipei), state `INPUTS_NOT_READY`, exact immutable D1 readback verified. Source-session hash `3192c5bd2203c77610aae6f7fd0348dc762441a1e9b38eb7a26baf2c3c46eb86`; completion manifest contains one verified source/history metadata shard. Cloudflare reports 11 requests / 23,727 rows read / 12 rows written (includes index accounting; not 12 logical diagnostic records).
+- Existing read-only preflight `36971466557` PASS; no source/history readiness promotion is claimed.
+- Isolated Worker deployment `36971466584` PASS, including V1.1/46 tables, unchanged single System2 Cron, configured Fugle secret, public API/UI/schedule checks and unchanged System1 production files.
+- Physical GET `/api/system2/shadow/diagnostic?marketDate=2026-10-02` returned HTTP 200, the exact writer run/revision above, `INPUTS_NOT_READY`, `capacityRunId=null`, `zeroPickDay=null`, and both assessors `ASSESSOR_POLICY_NOT_FROZEN`.
+- Physical dated read for 2026-10-01 returned `DIAGNOSTIC_NOT_YET_OBSERVED`, not a fabricated historical run.
+- Physical `/health`: `schemaVersion=1.1`, `captureState=CAPTURE_DISABLED`. Resonance operations remain `UPSTREAM_CAPACITY_RECEIPT_MISSING`, `upstreamCapacity=null`, `activeSymbolCount=0`, `lastPoolRefresh=null`.
+
+Physical daily diagnostic persistence/read API are now VERIFIED. The 18:35 scheduled invocation is configured but has not yet occurred at this acceptance. The 2026-10-02 19:00 new-format audit also has not occurred; neither is counted as observed evidence. S2-07 selection-to-capacity remains INCOMPLETE pending authorized assessor mappings, validated regime/fundamental/industry/current-continuity sources and genuine daily evaluations. No diagnostic receipt is relabeled as zero-pick, frozen decision/prediction, or `s2_capacity_runs`.

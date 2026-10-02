@@ -1,0 +1,231 @@
+{
+  "schemaVersion": "S2_DAILY_DIAGNOSTIC_PHYSICAL_ACCEPTANCE_V0_1",
+  "deploymentCommit": "632f1f47a189c7c5f6d51b21b847bb1abf7935c6",
+  "pr": 303,
+  "workflowRuns": {
+    "prSystem2": 36971394695,
+    "prV8": 36971394765,
+    "mainSystem2": 36971466568,
+    "mainV8": 36971466579,
+    "writer": 36971466598,
+    "deploy": 36971466584,
+    "readonlyPreflight": 36971466557
+  },
+  "workflowConclusions": "success",
+  "reads": [
+    {
+      "path": "/health",
+      "status": 200,
+      "payload": {
+        "service": "system2-shadow-research",
+        "mode": "RESEARCH_ONLY",
+        "databaseBinding": "SYSTEM2_DB",
+        "schemaVersion": "1.1",
+        "captureEnabledRequested": false,
+        "scheduledCaptureAllowed": false,
+        "captureState": "CAPTURE_DISABLED",
+        "captureContractVersion": "0.1",
+        "resonanceState": "BOUNDED_RESONANCE_SCHEDULED",
+        "resonanceContractVersion": "0.1",
+        "resonanceMaxUniqueSymbols": 9,
+        "resonanceFullMarketScan": false,
+        "fugleQuoteConfigured": true,
+        "system1RuntimeUsed": false
+      },
+      "readAt": "2026-10-02T06:03:29.192Z"
+    },
+    {
+      "path": "/api/system2/shadow/diagnostic?marketDate=2026-10-02",
+      "status": 200,
+      "payload": {
+        "schemaVersion": "S2_DAILY_SHADOW_DIAGNOSTIC_V0_1",
+        "state": "INPUTS_NOT_READY",
+        "receipt": {
+          "calendar": {
+            "calendarYear": 2026,
+            "expectedTradingDay": true,
+            "externalMutationPerformed": false,
+            "holidayCount": 24,
+            "httpStatus": 200,
+            "marketDate": "2026-10-02",
+            "source": "TWSE_OFFICIAL_HOLIDAY_SCHEDULE",
+            "state": "READY"
+          },
+          "capacity": "NOT_PRODUCED",
+          "capacityRunId": null,
+          "capitalImpact": false,
+          "completedAt": "2026-10-02T06:00:28.937Z",
+          "countsTowardDecisionClockReadiness": false,
+          "decisionClockMode": "DIAGNOSTIC_OBSERVATION_TIME_NOT_CAPTURE_CLOCK",
+          "decisionTimestamp": "2026-10-02T06:00:28.662Z",
+          "factorFailureCount": 0,
+          "finalSelectionEnabled": false,
+          "generalCaptureEnabled": false,
+          "knownFactorCount": 0,
+          "livePushEnabled": false,
+          "marketDate": "2026-10-02",
+          "orderImpact": false,
+          "predictionSnapshot": "NOT_PRODUCED",
+          "preflight": {
+            "a1": {
+              "blockerCodes": [
+                "TWSE:INSUFFICIENT_ORDINARY_SYMBOL_COVERAGE",
+                "TPEX:INSUFFICIENT_ORDINARY_SYMBOL_COVERAGE"
+              ],
+              "decisionClockMode": "DIAGNOSTIC_OBSERVATION_TIME_NOT_CAPTURE_CLOCK",
+              "ordinarySymbolCount": 0,
+              "state": "INCOMPLETE"
+            },
+            "assessorReady": false,
+            "assessors": [
+              {
+                "permittedAction": "OBSERVE_INPUT_READINESS_ONLY",
+                "reasonCodes": [
+                  "NO_PREREGISTERED_SETUP_LEVEL_THRESHOLDS",
+                  "NO_OWNER_APPROVED_ENTRY_READINESS_MAPPING"
+                ],
+                "requiredFamilies": [
+                  "TECHNICAL_STRUCTURE",
+                  "PRICE_VOLUME",
+                  "RISK_FRICTION"
+                ],
+                "state": "ASSESSOR_POLICY_NOT_FROZEN",
+                "strategyId": "SHORT_MOMENTUM",
+                "strategyVersion": "V0.1-CONTRACT"
+              },
+              {
+                "permittedAction": "OBSERVE_INPUT_READINESS_ONLY",
+                "reasonCodes": [
+                  "NO_PREREGISTERED_SETUP_LEVEL_THRESHOLDS",
+                  "NO_OWNER_APPROVED_ENTRY_READINESS_MAPPING",
+                  "REQUIRED_FUNDAMENTAL_INDUSTRY_ASSESSOR_NOT_WIRED"
+                ],
+                "requiredFamilies": [
+                  "INDUSTRY_THESIS",
+                  "FUNDAMENTAL_QUALITY"
+                ],
+                "state": "ASSESSOR_POLICY_NOT_FROZEN",
+                "strategyId": "SWING_GROWTH",
+                "strategyVersion": "V0.1-CONTRACT"
+              }
+            ],
+            "blockers": [
+              {
+                "code": "A1_SOURCE_INCOMPLETE",
+                "layer": "CURRENT_A1_SOURCE"
+              },
+              {
+                "code": "PIT_HISTORY_NO_CURRENT_UNIVERSE",
+                "continuityCoverage": 0,
+                "historyCoverage": 0,
+                "layer": "PIT_HISTORY"
+              },
+              {
+                "code": "ASSESSOR_POLICY_NOT_FROZEN",
+                "layer": "STRATEGY_ASSESSOR",
+                "reasonCodes": [
+                  "NO_PREREGISTERED_SETUP_LEVEL_THRESHOLDS",
+                  "NO_OWNER_APPROVED_ENTRY_READINESS_MAPPING"
+                ],
+                "strategyId": "SHORT_MOMENTUM"
+              },
+              {
+                "code": "ASSESSOR_POLICY_NOT_FROZEN",
+                "layer": "STRATEGY_ASSESSOR",
+                "reasonCodes": [
+                  "NO_PREREGISTERED_SETUP_LEVEL_THRESHOLDS",
+                  "NO_OWNER_APPROVED_ENTRY_READINESS_MAPPING",
+                  "REQUIRED_FUNDAMENTAL_INDUSTRY_ASSESSOR_NOT_WIRED"
+                ],
+                "strategyId": "SWING_GROWTH"
+              }
+            ],
+            "capacityWriteAuthorized": false,
+            "capitalImpact": false,
+            "captureArmRequested": false,
+            "decisionTimestamp": "2026-10-02T06:00:28.662Z",
+            "externalMutationPerformed": false,
+            "finalSelectionEnabled": false,
+            "history": {
+              "ambiguousSymbolCount": 0,
+              "continuityCoverage": 0,
+              "continuityReadyCount": 0,
+              "currentUniverseCount": 0,
+              "historyCoverage": 0,
+              "historyReadyCount": 0,
+              "state": "NO_CURRENT_UNIVERSE"
+            },
+            "livePushEnabled": false,
+            "marketDate": "2026-10-02",
+            "orderImpact": false,
+            "scheduledCaptureAuthorized": false,
+            "sourceAndHistoryReady": false,
+            "state": "INPUTS_NOT_READY",
+            "system1RuntimeUsed": false,
+            "version": "0.1-RESEARCH",
+            "zeroPickMayBeClaimed": false
+          },
+          "ranking": "NOT_EXECUTED",
+          "regime": {
+            "labels": [],
+            "reason": "VALIDATED_REGIME_SOURCES_NOT_WIRED",
+            "state": "UNKNOWN"
+          },
+          "revision": "632f1f47a189c7c5f6d51b21b847bb1abf7935c6",
+          "runId": "S2-DAILY-DIAGNOSTIC:2026-10-02:36971466598:1",
+          "schemaVersion": "S2_DAILY_SHADOW_DIAGNOSTIC_V0_1",
+          "selectedCount": null,
+          "shardManifest": [
+            {
+              "checkId": "S2-DAILY-DIAGNOSTIC:2026-10-02:36971466598:1:SHARD:0",
+              "hash": "028ea8a03c3fa79c3b7dfd5cec5f3403c44ca6c91cb7a53386749f10f25e9595"
+            }
+          ],
+          "sourceSessionHash": "3192c5bd2203c77610aae6f7fd0348dc762441a1e9b38eb7a26baf2c3c46eb86",
+          "startedAt": "2026-10-02T06:00:18.127Z",
+          "state": "INPUTS_NOT_READY",
+          "strategyEvaluation": "BLOCKED_ASSESSOR_POLICY_NOT_FROZEN",
+          "symbolCount": 0,
+          "system1RuntimeUsed": false,
+          "unknownFactorCount": 0,
+          "zeroPickDay": null
+        }
+      },
+      "readAt": "2026-10-02T06:03:29.354Z"
+    },
+    {
+      "path": "/api/system2/shadow/diagnostic?marketDate=2026-10-01",
+      "status": 200,
+      "payload": {
+        "schemaVersion": "S2_DAILY_SHADOW_DIAGNOSTIC_V0_1",
+        "state": "DIAGNOSTIC_NOT_YET_OBSERVED",
+        "receipt": null
+      },
+      "readAt": "2026-10-02T06:03:29.519Z"
+    },
+    {
+      "path": "/api/system2/resonance/operations",
+      "status": 200,
+      "payload": {
+        "schemaVersion": "SYSTEM2_RESONANCE_OPERATIONS_API_V0_1",
+        "marketDate": "2026-10-02",
+        "state": "UPSTREAM_CAPACITY_RECEIPT_MISSING",
+        "upstreamCapacity": null,
+        "latestPool": null,
+        "lastPoolRefresh": null,
+        "lastIntradayCycle": null,
+        "activePoolId": null,
+        "activeSymbolCount": 0,
+        "fullMarketScan": false,
+        "captureEnabled": false,
+        "livePushEnabled": false,
+        "orderImpact": false
+      },
+      "readAt": "2026-10-02T06:03:29.709Z"
+    }
+  ],
+  "audit1900Observed": false,
+  "scheduled1835Observed": false,
+  "selectionAuthority": false,
+  "system1FormalImpact": false
+}

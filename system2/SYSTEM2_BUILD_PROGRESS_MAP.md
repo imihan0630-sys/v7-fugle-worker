@@ -34,7 +34,7 @@ GitHub `main` remains authoritative. Chat summaries are context only.
 | S2-04 | Market Regime / shared 18-domain research | 🟡 | Shared research network active; not every research finding is a production factor. |
 | S2-05 | Factor Engine / family assessments / UNKNOWN semantics | 🟡 | Core contracts and research plumbing exist; richer validated factors remain incremental. |
 | S2-06 | Multi-strategy contracts | 🟡 | Strategy families and Shadow contracts exist; exact live weights/thresholds remain evidence-gated. |
-| S2-07 | Daily PIT-safe Shadow Orchestrator | 🟡 | Strategy-run -> RANK-01 -> revalidation -> capacity assembler is built; official A1 current-source + isolated D1 PIT-history read-only preflight is now repository-implemented. Exact strategy assessor policies, D1 write execution and scheduled physical daily `s2_capacity_runs` remain pending. |
+| S2-07 | Daily PIT-safe Shadow Orchestrator | 🟡 | Strategy-run -> RANK-01 -> revalidation -> capacity assembler is built; official A1 current-source + isolated D1 PIT-history read-only preflight is now repository-implemented. Daily source/history/factor diagnostic D1 writes and read API are physically verified via PR #303. Exact strategy assessor policies and scheduled physical daily `s2_capacity_runs` remain pending; diagnostic receipts cannot seed the pool. |
 | S2-08 | Frozen Daily Decision / immutable archive | 🟡 | Schema/runtime primitives exist; depends on S2-07 for real daily prospective cohorts. |
 | S2-09 | Ranking / capacity / overlap / concentration | 🟡 | Research engines and receipts exist; daily physical production depends on S2-07. |
 | S2-10 | 19:00 next-session bounded pool | ✅ | Physically deployed; same-date/PIT freshness guarded; stale pools fail closed; max 9 unique, no forced filling. |
@@ -170,3 +170,18 @@ The authorized source/history/factor-observation portion is now wired to an isol
 Repository targeted tests PASS. Physical post-merge writer/deployment readback is pending and must be recorded from actual Actions/API evidence. Local 13:53 Taipei official source observation returned HTTP 200 with 2026-10-01 data, zero target-date rows: INPUTS_NOT_READY, not zero-pick. Today's 19:00 new-format audit has not occurred.
 
 Exact continuation: physically verify the daily diagnostic writer/read API; preregister/authorize assessor policies and validated regime/fundamental/industry/current-continuity inputs before connecting authorized strategy evaluations/ranking/immutable capacity persistence. Do not invent policy to fill the pool.
+
+## 2026-10-02 S2-07 daily diagnostic physical acceptance
+
+PR #303 merged as `632f1f47a189c7c5f6d51b21b847bb1abf7935c6`.
+
+- Final PR head `800458338e01d22d579fea7c224b6f8c8db5dcf8`: System2 Research CI `36971394695` PASS; V8 Regression `36971394765` PASS.
+- Main System2 Research CI `36971466568` PASS; main V8 Regression `36971466579` PASS.
+- Isolated daily diagnostic writer `36971466598` PASS. Actual receipt: `S2-DAILY-DIAGNOSTIC:2026-10-02:36971466598:1`, observed clock `2026-10-02T06:00:28.662Z` (14:00:28 Taipei), state `INPUTS_NOT_READY`, exact immutable D1 readback verified. Source-session hash `3192c5bd2203c77610aae6f7fd0348dc762441a1e9b38eb7a26baf2c3c46eb86`; completion manifest contains one verified source/history metadata shard. Cloudflare reports 11 requests / 23,727 rows read / 12 rows written (includes index accounting; not 12 logical diagnostic records).
+- Existing read-only preflight `36971466557` PASS; no source/history readiness promotion is claimed.
+- Isolated Worker deployment `36971466584` PASS, including V1.1/46 tables, unchanged single System2 Cron, configured Fugle secret, public API/UI/schedule checks and unchanged System1 production files.
+- Physical GET `/api/system2/shadow/diagnostic?marketDate=2026-10-02` returned HTTP 200, the exact writer run/revision above, `INPUTS_NOT_READY`, `capacityRunId=null`, `zeroPickDay=null`, and both assessors `ASSESSOR_POLICY_NOT_FROZEN`.
+- Physical dated read for 2026-10-01 returned `DIAGNOSTIC_NOT_YET_OBSERVED`, not a fabricated historical run.
+- Physical `/health`: `schemaVersion=1.1`, `captureState=CAPTURE_DISABLED`. Resonance operations remain `UPSTREAM_CAPACITY_RECEIPT_MISSING`, `upstreamCapacity=null`, `activeSymbolCount=0`, `lastPoolRefresh=null`.
+
+Physical daily diagnostic persistence/read API are now VERIFIED. The 18:35 scheduled invocation is configured but has not yet occurred at this acceptance. The 2026-10-02 19:00 new-format audit also has not occurred; neither is counted as observed evidence. S2-07 selection-to-capacity remains INCOMPLETE pending authorized assessor mappings, validated regime/fundamental/industry/current-continuity sources and genuine daily evaluations. No diagnostic receipt is relabeled as zero-pick, frozen decision/prediction, or `s2_capacity_runs`.
