@@ -930,3 +930,123 @@ Formal Core remains LOCKED.
 2. After the third completed session, finish that gate and only then unlock TI-005 KD-vs-RSI and TI-006 MACD-vs-direct-trend under the existing governance path.
 3. Before any ADX prospective snapshot, prove a stable long-enough history/warm-up contract and freeze +DI/-DI/DX/ADX/formulaVersion/continuity fields.
 4. ADX efficacy testing follows TI-005/TI-006 and must be residualized against direct trend, ATR/regime and Impulse MACD. No additive vote and no threshold tuning.
+
+
+## TI-460 through TI-467 — third-session transport audit and ROC exact redundancy (2026-10-02)
+
+Detailed durable evidence:
+- `research/TECHNICAL_INDICATOR_ROC_REDUNDANCY_V0_1.md`
+- `research/test_technical_indicator_roc_redundancy_v0_1.mjs`
+
+### TI-460 — third session is publicly present, but the frozen raw-receipt transport is not reproduced
+
+After the completed 2026-10-02 Taiwan session, official TWSE MI_INDEX content returned `stat=OK` / `date=20261002`; official TPEx dailyQuotes returned `date=20261002` and table `totalCount=11928`. A repeated TWSE fetch again returned the same trade-date content.
+
+The available chat fetch path exposes extracted/normalized document content rather than the origin raw response bytes required by the frozen observer. Therefore the third session is source-visible but **does not close the preregistered raw-byte receipt gate**.
+
+Status:
+- `THIRD_SESSION_SOURCE_PRESENT = PASS`
+- `ORIGIN_RAW_BYTES_RECEIPT_EQUIVALENCE = NO`
+- `PROSPECTIVE_COMPLETED_SESSION_COVERAGE = ACCUMULATING_2_OF_3`
+
+No extracted-content response is backfilled as if it were the original observer receipt.
+
+### TI-461 — standard percent ROC equals 100 × simple return exactly
+
+For the same lookback n and price space:
+
+`ROC_n(t) = 100 * [C_t / C_(t-n) - 1] = 100 * retN(t)`.
+
+Consequences:
+- identical sign;
+- identical zero-cross timing;
+- identical cross-sectional ordering;
+- identical percentile ordering;
+- no independent directional information.
+
+Standard same-horizon ROC and retN must not receive separate factor votes or score weights.
+
+### TI-462 — common Momentum index is only a shifted ROC
+
+For `MOM_n = 100 * C_t / C_(t-n)`:
+
+`MOM_n = ROC_n + 100`.
+
+This is exact affine redundancy. The 100 baseline changes display semantics only.
+
+### TI-463 — raw price difference is nominal-price-scale confounded
+
+`C_t - C_(t-n)` has the same sign as simple return for positive prices but magnitude depends on nominal share price.
+
+Synthetic witness:
+- 100 -> 110: +10%, raw difference +10;
+- 1000 -> 1100: +10%, raw difference +100;
+- 20 -> 23: +15%, raw difference +3.
+
+Ranking raw price difference can therefore reward high nominal prices rather than stronger percentage momentum. Normalizing by lagged price collapses the measure back to ROC/retN.
+
+### TI-464 — log return is a monotonic transformation of ROC
+
+For positive prices:
+
+`logReturn_n = ln(C_t / C_(t-n)) = ln(1 + ROC_n/100)`.
+
+Same-date same-horizon rankings are preserved exactly. Log returns may improve statistical aggregation, but they are not an independent directional factor from ROC/simple return.
+
+### TI-465 — smoothed ROC / delta-ROC remain same-family candidates
+
+ROC moving averages, ROC slope, `ROC_t - ROC_(t-k)`, and multi-horizon stacks can differ mechanically from a single retN, but they remain transformations of overlapping price returns.
+
+Any candidate must first residualize against:
+- ret5/10/20/60;
+- changes in retN / return acceleration;
+- MA slope/alignment;
+- trend persistence;
+- ATR/volatility;
+- Regime and transition state.
+
+No smoothed/delta ROC becomes a new factor family by default.
+
+### TI-466 — continuity and market-constraint firewall
+
+A raw 2-for-1 split can create a false -50% ROC even when economic value is unchanged. ROC therefore requires the same raw/adjusted price-space, corporate-action ancestry, official-session continuity, suspension/no-trade and price-limit constraint semantics as other price-derived indicators.
+
+Missing continuity evidence remains UNKNOWN.
+
+### TI-467 — maturity and system-use decision
+
+Taiwan momentum literature supports state dependence rather than a duplicate ROC factor:
+- Lin, Ko, Feng & Yang (2016): momentum can be positive during market-state continuations and reverse during transitions.
+- Chen, Hsieh & Lee (2023): persistence of winner/loser membership materially changes momentum behavior.
+
+The research question is therefore how the existing return/momentum state behaves across Regime/persistence/structure contexts—not whether a same-horizon ROC duplicate deserves another vote.
+
+D03-11 ROC advances from **L1 / 20%** to **L2 / 40%** because formula semantics, exact redundancy, scale artifact, continuity failure modes and future residual-test boundaries are now frozen and reproducible.
+
+D03 aggregate advances from 46.2% to **47.7%**.
+
+This is a redundancy/falsification maturity promotion, not alpha evidence.
+
+### Current status
+
+`D03_MATURITY = 47.7_PERCENT`  
+`D03_11_ROC = L2_MECHANISM_AND_FALSIFICATION_DEFINED`  
+`STANDARD_PERCENT_ROC_VS_RETN = EXACT_REDUNDANCY`  
+`MOMENTUM_INDEX_VS_ROC = EXACT_AFFINE_REDUNDANCY`  
+`LOG_RETURN_VS_ROC_RANK = EXACT_MONOTONIC_REDUNDANCY`  
+`RAW_PRICE_DIFFERENCE = PRICE_SCALE_CONFOUNDED`  
+`SMOOTHED_OR_DELTA_ROC = RESIDUAL_VALUE_UNKNOWN`  
+`THIRD_SESSION_SOURCE_PRESENT = PASS`  
+`THIRD_SESSION_RAW_RECEIPT_EQUIVALENCE = NO`  
+`PROSPECTIVE_COMPLETED_SESSION_COVERAGE = ACCUMULATING_2_OF_3`  
+`FORMAL_OPTIMIZATION_CANDIDATE = NONE`
+
+Formal Core remains LOCKED.
+
+### Exact next continuation point
+
+1. Keep the raw-byte three-session gate formally open at 2/3 until the frozen observer, or a receipt-equivalent authorized transport, captures a new completed Taiwan session plus same-trade-date repeat.
+2. Do not backfill 2026-10-02 raw receipts from extracted content.
+3. While the gate remains open, continue mechanism/falsification on D03-13 multi-timeframe conflict and exact information overlap among multi-horizon returns, EMA16/64 and Impulse MACD.
+4. Once the raw-receipt gate is genuinely closed, TI-005 KD-vs-RSI remains first efficacy inference; TI-006 MACD-vs-direct-trend remains second.
+5. Formal selection/ranking/capital/monitoring/signal/push behavior remains unchanged.
