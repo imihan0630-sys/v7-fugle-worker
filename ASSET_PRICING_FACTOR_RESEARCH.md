@@ -221,3 +221,142 @@ Momentum can be called an independent D19 alpha candidate only if residualized r
 - D19 domain maturity -> 13.3% (four modules at 40%, eight modules at 0%, simple module average).
 - D19-01 through D19-04 remain below L3 pending a shared Taiwan point-in-time source map and executable replay receipts.
 - Formal Core remains unchanged.
+
+
+## 2026-10-02 Long-block Stage 3 — D19-05 / D19-06 + Taiwan PIT source-map design
+
+### D19-05 Quality / Profitability factor
+
+#### Core separation
+1. "Quality" is not a single primitive factor. It can mix profitability, accrual quality, leverage, earnings stability, growth quality and balance-sheet strength.
+2. D19-05 therefore starts from narrowly defined profitability characteristics before testing broader quality composites.
+3. D07 fundamental research can use profitability as a company-quality input; D19-05 asks whether a diversified, cross-sectional profitability exposure earns an independent premium after controlling for value, size, investment, industry and liquidity.
+4. Different profitability numerators are not interchangeable: gross profits/assets, operating profitability/book equity, ROE and cash-based operating profitability can have materially different accounting content and anomaly overlap.
+
+#### Positive mechanisms
+- Novy-Marx (2013) finds gross profitability has cross-sectional predictive power comparable to book-to-market and that profitable firms can earn higher average returns despite higher valuations.
+- Fama-French (2015) include profitability and investment factors in a five-factor model that improves on the three-factor model in their sample.
+- Hou-Xue-Zhang (2015) independently motivate a profitability factor together with investment in an investment-based q-factor framework, and show broad anomaly coverage.
+
+#### Falsification / counterevidence
+- Strong profitability does not automatically imply an independent alpha. Fama-French and q-factor evidence explicitly shows that profitability and investment can absorb returns previously attributed to value or other anomalies, creating substantial factor redundancy.
+- Profitability measurement is definition-sensitive. Later research shows cash-based operating profitability can outperform accrual-containing measures, so a backtest that tests many numerators and keeps the winner is vulnerable to multiple testing.
+- Emerging-market evidence is weaker and less uniform than U.S. evidence. A 2018 emerging-markets study finds little evidence of profitability effects overall even though richer factor models can improve pricing.
+- Taiwan-specific five-factor thesis evidence using listed and delisted firms from 1990-2020 finds profitability and investment add explanatory power, but some previously better-performing portfolios obtain worse unexplained intercepts; therefore "more factors" is not automatically "better model."
+- Taiwan evidence is not yet strong enough here to choose one profitability definition as a production ranking rule.
+
+#### PIT / replay contract before L3
+- First-public timestamp of annual/quarterly financial statements.
+- Original first-known values retained separately from later restatements.
+- Frozen accounting formula and denominator for each tested profitability definition.
+- Fiscal-year/quarter alignment and reporting lag handled explicitly.
+- Financial-sector accounting treated separately or excluded under a predeclared rule.
+- Negative equity, extraordinary items and merger/reorganization discontinuities flagged.
+- Market-cap, industry, size, investment and value controls sampled using only contemporaneously known data.
+- Any composite "quality" score must be decomposable into component contributions and must not be tuned after seeing OOS results.
+
+#### Redundancy tests
+- D07 profitability / business quality.
+- D08 valuation.
+- D19-02 size.
+- D19-03 value.
+- D19-06 investment.
+- D05 liquidity and D09 industry.
+Only residual incremental information can qualify as independent D19 alpha.
+
+#### System 1 / System 2 incremental-value assessment
+- System 1: no direct profitability bonus yet. More useful initially as a veto/context layer preventing value or momentum signals from being misread when accounting quality is weak.
+- System 2: candidate for a neutralized profitability sleeve or conditioning variable, especially when testing whether value/momentum residuals survive profitability control.
+- Formal optimization candidate: NO; Taiwan PIT replay, definition robustness and prospective evidence remain missing.
+
+#### Evidence anchors
+- Novy-Marx (2013), Journal of Financial Economics, DOI 10.1016/j.jfineco.2013.01.003
+- Fama & French (2015), Journal of Financial Economics, DOI 10.1016/j.jfineco.2014.10.010
+- Hou, Xue & Zhang (2015), Review of Financial Studies, DOI 10.1093/rfs/hhu068
+- Emerging Markets Review (2018), size/value/profitability/investment evidence in emerging markets
+- Taiwan five-factor thesis using 1990-2020 listed and delisted firms, National Central University
+
+### D19-06 Investment / Asset Growth factor
+
+#### Core separation
+1. "Investment" can mean capital expenditure, total-asset growth, asset growth scaled by lagged assets, inventory growth, working-capital expansion or other balance-sheet changes.
+2. D19-06 uses total-asset growth / investment characteristics as the broad cross-sectional family, not as a single immutable formula.
+3. D07 supply/business expansion and D19-06 factor exposure are different objects: the first studies company economics; the second tests whether investment intensity produces an independent return spread.
+4. In the Fama-French framework, conservative investment tends to associate with higher average returns; investment-based q-theory links expected returns jointly to profitability and investment.
+
+#### Positive mechanisms
+- Titman-Wei-Xie document lower subsequent benchmark-adjusted returns after unusually high capital investment, especially where managerial discretion is higher.
+- Cooper-Gulen-Schill find annual asset growth strongly predicts future abnormal returns and survives controls for several known characteristics.
+- Hou-Xue-Zhang show investment and profitability factors jointly summarize a broad set of return anomalies.
+- Fama-French (2015) similarly find investment adds explanatory power in their five-factor model.
+
+#### Falsification / counterevidence
+- The return-investment relation is not universally stable. Titman-Wei-Xie themselves show the effect varies with governance/takeover conditions, which is evidence of regime/institution dependence rather than a timeless law.
+- Asset growth may proxy financing, acquisitions, distress recovery, industry expansion, lifecycle or managerial behavior. Without decomposition, a "low investment wins" rule can misclassify healthy growth firms.
+- Taiwan-specific five-factor evidence is especially important: one 1990-2020 thesis reports the Taiwan investment factor can have the opposite sign from the conventional Fama-French intuition, with more-investing firms earning higher returns in its sample. This directly blocks importing the U.S. conservative-investment rule into Taiwan without local PIT validation.
+- Asset-growth signals are accounting-data intensive and vulnerable to restatement/look-ahead bias, mergers, spin-offs, capital reductions and denominator changes.
+
+#### PIT / replay contract before L3
+- First-public balance-sheet timestamp for total assets and all investment inputs.
+- Preserve pre-restatement values available at the formation date.
+- Corporate actions, mergers, spin-offs, asset transfers and accounting-standard changes explicitly flagged.
+- Freeze asset-growth formula and lag convention ex ante.
+- Separate organic investment from acquisition-driven balance-sheet expansion where data permits.
+- Control contemporaneously for profitability, value, size, industry, leverage, financing issuance and liquidity.
+- Transaction costs and capacity must be measured because high-investment/low-investment portfolios can have strong size/industry skews.
+
+#### Redundancy tests
+- D07 growth/capital expenditure/fundamentals.
+- D08 valuation.
+- D19-03 value and D19-05 profitability.
+- D14 governance/management incentives where available.
+- D15 capital structure/financing pressure where available.
+- D09 industry cycle.
+Only the residual investment spread after these controls can qualify as independent D19 evidence.
+
+#### System 1 / System 2 incremental-value assessment
+- System 1: do not penalize high investment mechanically. Taiwan sign uncertainty makes that unsafe.
+- System 2: strong research use as an interaction/control variable with profitability and value; the key experiment is whether a joint profitability-investment state improves ranking stability rather than whether either raw factor wins alone.
+- Formal optimization candidate: NO; Taiwan sign uncertainty and PIT accounting requirements are unresolved.
+
+#### Evidence anchors
+- Titman, Wei & Xie (2004), Journal of Financial and Quantitative Analysis
+- Cooper, Gulen & Schill (2008), Journal of Finance, DOI 10.1111/j.1540-6261.2008.01370.x
+- Fama & French (2015), Journal of Financial Economics, DOI 10.1016/j.jfineco.2014.10.010
+- Hou, Xue & Zhang (2015), Review of Financial Studies, DOI 10.1093/rfs/hhu068
+- Taiwan five-factor thesis using 1990-2020 listed and delisted firms, National Central University
+
+### Shared Taiwan PIT source-map design for D19-01 through D19-06
+
+#### Market / return layer
+- TWSE official historical trading pages provide security-level daily trading data, but public web coverage differs by dataset/start date. Source availability must be stored as metadata rather than assumed complete.
+- TWSE trading-halt history is available from October 2011; earlier halt/suspension semantics therefore require another archival source or remain UNKNOWN.
+- TPEx must be included separately for OTC/Mainboard history so the research universe is not TWSE-only.
+- Delisted securities must remain in the universe history; any source incapable of reconstructing them is unsuitable as the sole L3 source.
+
+#### Shares / market-cap layer
+- TWSE Data E-Shop "Basic Information of All Stocks" contains daily shares outstanding and related security fields from 2004-03-01, but it is a paid historical product. This is a viable authoritative source candidate, not evidence that the historical data have already been ingested.
+- For earlier periods or TPEx, source coverage must be mapped separately before a 2017-present or longer replay is certified.
+
+#### Fundamental / first-known layer
+- MOPS filings are the preferred official publication anchor for financial-statement availability. Research storage must capture filing/publication timestamp and first-known values; period-end date alone is insufficient.
+- Official TWSE valuation pages explicitly state that earnings data come from the most recent four quarters filed in MOPS, which supports the linkage but does not replace a historical first-known filing archive.
+
+#### Risk-free-rate layer
+- Taiwan Central Bank publishes historical interest-rate files and current/historical five-leading-bank deposit rates. The exact research proxy (for example one-year deposit or an overnight money-market rate) must be fixed per experiment and its public release timestamp retained.
+- A proxy choice is a model assumption, not a fact; sensitivity to alternative risk-free proxies should be reported for beta/alpha work.
+
+#### Cost / tradability layer
+- Trading halt, day-trading eligibility, margin/short-sale restrictions, liquidity and turnover must be date-vintaged.
+- Short-leg research must not assume borrowability from today's rules.
+- When a historical field is unavailable, mark UNKNOWN rather than zero/eligible.
+
+#### L3 gate implication
+This source map establishes feasibility and known coverage gaps only. No D19-01..06 module is promoted to L3 until an executable Taiwan PIT dataset slice is built, replayed, and checked for first-known timestamps, delisted/suspended names and no-look-ahead behavior.
+
+### Stage 3 maturity decision
+- D19-05 -> L2: factor definition, mechanisms, counterevidence, accounting/PIT and redundancy requirements defined.
+- D19-06 -> L2: factor definition, mechanisms, Taiwan sign counterevidence, accounting/PIT and redundancy requirements defined.
+- D19 domain maturity -> 20.0% (six modules at 40%, six modules at 0%, simple module average).
+- Shared Taiwan PIT source map designed; no L3 promotion yet because no executable ingestion/replay receipt exists.
+- Formal Core remains unchanged.
