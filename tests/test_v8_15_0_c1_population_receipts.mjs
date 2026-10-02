@@ -4,7 +4,10 @@ import {DatabaseSync} from "node:sqlite";
 
 const workerPath=process.env.V7_TEST_WORKER_PATH||"Worker.js";
 const source=fs.readFileSync(workerPath,"utf8");
-assert.match(source,/const VERSION = "8\.15\.[01]-c1-(?:population-receipts|capture-integrity)";/);
+{
+  const version=source.match(/const VERSION = "(\d+)\.(\d+)\.(\d+)[^"]*";/)?.slice(1,4).map(Number);
+  assert.ok(version && (version[0]>8 || (version[0]===8 && (version[1]>15 || (version[1]===15 && version[2]>=0)))),"V8.15.0+ runtime required");
+}
 assert.match(source,/url\.pathname === "\/api\/research\/c1-population"/);
 assert.match(source,/trade_research_c1_generations/);
 assert.match(source,/trade_research_c1_chunks/);
