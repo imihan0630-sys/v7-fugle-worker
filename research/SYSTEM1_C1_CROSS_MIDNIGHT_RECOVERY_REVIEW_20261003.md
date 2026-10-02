@@ -81,3 +81,38 @@ If approved:
 
 Rollback: revert PR #318. Existing plans, receipts and research rows are not
 deleted. Formal Core remains locked.
+
+
+## Approved activation closure — 2026-10-03 03:50 Asia/Taipei
+
+- Owner explicitly replied 「批准」 for this Class-B repair.
+- PR #318 was marked ready and merged with exact approved head
+  `22c9d5028555c4a4011704d74fe2a17ae7542acf`; merge commit
+  `eebabbe1c71fd1694f59fefb68bd589a7c92eac1`.
+- Before merge, latest main had advanced only in research/governance documents;
+  no repair workflow/test file overlapped. PR remained clean and mergeable.
+- Exact PR-head checks PASS: Regression 37038829582, Repair CI 37038829625,
+  isolated System1 review 37038829923. The dedicated cross-midnight test
+  retained 27/27 assertions.
+- Post-merge Regression run 37056732229 PASS.
+- Post-merge V8 Cloudflare Deploy run 37056732231 PASS. Deployment readback:
+  runtime/build both `8.15.1-c1-capture-integrity`; bindings, TEST mode,
+  watchlist routes and existing monitoring configuration preserved. Worker
+  version did not change because this Class-B repair changes GitHub scheduling
+  helpers/workflow behavior, not Formal Worker selection code.
+- Deployment backup/readback reported four existing Worker Cron triggers and
+  the existing 23:35 after-market Worker Cron contract remained intact.
+  Research dashboard readback reached the expected deployment and passed all
+  research-only/formal-firewall checks.
+- No retrospective 2026-10-02 C1/WATCH generation was created. The 10/02 date
+  remains research-ineligible for C1/C2 because the genuine immutable C1
+  generation was never produced at decision time.
+- Next acceptance cursor: first genuine completed market session after this
+  deployment. Verify frozen market_date through any delayed 23:45 fallback,
+  same-session Formal pipeline completion, C1 saveOk/readbackVerified, exact
+  generation/date/source SHA and complete pagination/hash coverage, then the
+  scheduled paired C1/C2 collector. Only then begin real prospective
+  Formal-vs-Shadow economic comparison.
+
+Formal A/B, ranking, thresholds, 3+3+3, capital, 15-minute signal semantics,
+push behavior and System2 remain unchanged by this repair.
