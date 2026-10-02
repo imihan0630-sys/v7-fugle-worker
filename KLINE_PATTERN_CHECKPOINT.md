@@ -570,3 +570,31 @@ Durable research detail: main `KLINE_PATTERN_RESEARCH.md` commit `a245b486dc60f2
 3. Freeze equal-horizon / bar-boundary placebo identity before outcomes.
 4. Keep Pattern outcome joins closed until immutable parent runtime + COMPLETE ROOT keysets + semantic runtime readiness exist.
 5. No Class-B runtime approval request yet; no R09 / no Formal change.
+
+## Continuation update — DL-012A through DL-012D (2026-10-02)
+
+- Pattern shared-child identity is now frozen at design level:
+  - research/pattern_shared_child_contract_v0_1.json
+  - research/pattern_shared_child_identity_v0_1.mjs
+  - research/test_pattern_shared_child_identity_v0_1.mjs
+- Generic Pattern child identity inherits:
+  parentDecisionReceiptId + captureGeneration + parentScopeId + evidence_family=PATTERN + evidence_item_key + observer_version + as_of.
+- ROOT is a fixed parent-attempt item key and remains the coverage authority.
+- Structural episode identity is separated from lifecycle state:
+  symbol + semantic space + detector family version + latent family + scale + ordered confirmed anchors + initial confirmedAt.
+- Named-label changes or lifecycle progress under the same structural anchors do not create a new episode.
+- RG2 relation identity is separated from relation state:
+  symbol + semantic space + RG2 relation-definition version + local boundary id/version + parent zone id/version.
+- availableAir, geometry relation and lifecycle state do not create a new RG2 relation identity.
+- Same identity with changed immutable anchor/boundary coordinates must become PROVENANCE_CONFLICT rather than silently generating a new ID.
+- Outcome fields are prohibited from decision-time child identity/payload validation.
+- 12 shared-child identity adversarial tests are authored but NOT executed in a reproducible Node environment in this chat. Status remains TEST_EXECUTION_PENDING.
+- No persistence/runtime change. D01 remains 51.7%. Formal Core LOCKED.
+
+### Updated exact next continuation point after DL-012
+
+1. Freeze equal-horizon / bar-boundary placebo identity and causal timing before any multi-scale outcome work.
+2. Audit whether Pattern child payload fingerprint must bind all DL-008 multi-scale and RG2 immutable geometry fields; keep mutable lifecycle state append-only/snapshot-versioned without mutating prior rows.
+3. Obtain reproducible execution receipts for DL-008 (16 cases), RG2 relation (12 cases) and shared-child identity (12 cases).
+4. Keep outcome joins and Class-B runtime approval closed.
+5. No R09 / no Formal change.
