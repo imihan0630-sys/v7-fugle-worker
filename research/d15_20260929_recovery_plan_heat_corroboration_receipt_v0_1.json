@@ -1,0 +1,99 @@
+{
+  "schemaVersion": "D15_20260929_RECOVERY_PLAN_HEAT_CORROBORATION_V0_1",
+  "observedAt": "2026-10-02T12:34:36+08:00",
+  "timestampProvenance": "GitHub Actions Portfolio Risk Tier-A Research run 36965098616 / job 110707011725",
+  "researchOnly": true,
+  "decisionImpact": false,
+  "formalCoreImpact": false,
+  "productionVersion": "8.15.0-c1-population-receipts",
+  "planProvenance": {
+    "scanDate": "2026-09-29",
+    "generatedAtTaipei": "2026-09-30 05:18:52",
+    "mechanism": "STAGED_HISTORICAL_RECOVERY",
+    "sourceLineageReceipt": "research/d02_20260929_recovery_lineage_receipt_v0_1.json",
+    "decisionTimeClean": false,
+    "ordinaryCronCompleted": false,
+    "planDateInvariant": "VIOLATED_IN_RECOVERY_RECEIPT",
+    "d1JournalCertified": false,
+    "d1Health": {
+      "selectedCount": 0,
+      "planCount": 0,
+      "signalCount": 0
+    },
+    "capitalNTD": 200000,
+    "capitalProvenance": "V8.9 staged-recovery route uses frozen STRATEGY_POOL_CAPITAL=200000"
+  },
+  "plans": [
+    {
+      "symbol": "2006",
+      "name": "東和鋼鐵",
+      "priorityScore": 69.2,
+      "totalAllocation": 69000,
+      "buyHigh": 84.84,
+      "stop": 82.65,
+      "closeDate": "2026-09-24",
+      "planDate": "2026-09-29"
+    },
+    {
+      "symbol": "4977",
+      "name": "眾達-KY",
+      "priorityScore": 49.9,
+      "totalAllocation": 50000,
+      "buyHigh": 172.04,
+      "stop": 165.62,
+      "closeDate": "2026-09-24",
+      "planDate": "2026-09-29"
+    }
+  ],
+  "current": {
+    "deploymentNTD": 119000,
+    "totalProjectedRiskNTD": 3646.9625,
+    "heatPctOfCapital": 1.823481,
+    "hhi": 0.5002698726,
+    "gini": 0.0116162085,
+    "cv": 0.023232417,
+    "maxRiskShare": 0.5116162085,
+    "maxMin": 1.0475700001
+  },
+  "localParetoDominator": {
+    "allocationsNTD": {
+      "2006": 70000,
+      "4977": 49000
+    },
+    "totalProjectedRiskNTD": 3635.4589,
+    "heatPctOfCapital": 1.817729,
+    "hhi": 0.5000176466,
+    "gini": 0.002970403,
+    "cv": 0.005940806,
+    "maxRiskShare": 0.502970403,
+    "maxMin": 1.0119526201
+  },
+  "metricDirection": {
+    "hhi": {
+      "currentParetoDominated": true,
+      "currentLocallyParetoDominated": true
+    },
+    "gini": {
+      "currentParetoDominated": true,
+      "currentLocallyParetoDominated": true
+    },
+    "cv": {
+      "currentParetoDominated": true,
+      "currentLocallyParetoDominated": true
+    },
+    "maxRiskShare": {
+      "currentParetoDominated": true,
+      "currentLocallyParetoDominated": true
+    },
+    "maxMin": {
+      "currentParetoDominated": true,
+      "currentLocallyParetoDominated": true
+    }
+  },
+  "interpretation": [
+    "Same-direction structural corroboration: a one-grid capital transfer lowers both projected stop-risk heat and all five concentration metrics on a different two-name plan set.",
+    "This is lower-tier recovery-path evidence, not an independent clean PIT date.",
+    "It does not prove economic superiority, because PriorityScore alpha and realized outcomes are not modeled."
+  ],
+  "status": "RECOVERY_PATH_STRUCTURAL_CORROBORATION_SAME_DIRECTION / NOT_CLEAN_INDEPENDENT_DATE / MATURITY_UNCHANGED"
+}
