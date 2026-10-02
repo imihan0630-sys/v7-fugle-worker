@@ -4783,3 +4783,64 @@ H002 must therefore beat both:
 
 Status:
 `PIPELINE_CLEAN_DATE_ZERO / FIRST_SLOT_H002_EXACT_REDUNDANCY / LATER_SLOT_NON_IDENTITY / COMMON_SUPPORT_FROM_10_15 / OUTCOMES_CLOSED / FORMAL_UNCHANGED`.
+
+
+# 2026-10-02 pre-PVE-228 addendum — latent mechanism identifiability
+
+## Why “爆量不漲” cannot be labeled distribution from OHLCV alone
+The same final OHLCV can arise from different event paths:
+- aggressive buyers repeatedly consume asks while passive sellers replenish;
+- aggressive sellers repeatedly consume bids while passive buyers replenish;
+- both sides trade aggressively with little net progress;
+- event/rebalance flow raises activity without one stable directional mechanism.
+
+Therefore volume + price response identify observed effort/result, not the hidden side-specific cause.
+
+## Why classic volume indicators do not solve this
+OBV, A/D, CMF, MFI and Volume Oscillator are deterministic transformations of price/volume variables.
+
+If two latent event paths generate identical OHLCV, those indicators also generate identical values.
+
+Thus:
+- indicator divergence can be tested as a predictive transform;
+- it cannot by itself prove accumulation/distribution motive;
+- stacking several such transforms must pass redundancy tests against the underlying primitives.
+
+## Current source/recorder split
+Current execution-shadow-v2 records:
+- spread;
+- best bid/ask;
+- top-five aggregate depth;
+- static depth imbalance;
+- provider average-price proxy;
+- coarse market-state flags.
+
+It does not persist the official Quote cumulative AtBid/AtAsk/transaction totals or actual lastTrade event.
+
+Official Fugle documentation shows those fields exist upstream, and also provides per-trade and price-level inside/outside data.
+
+Therefore the current limitation is a recorder/evidence-availability boundary, not source impossibility.
+
+## Classified-volume coverage
+Future interval pressure must not assume all volume has a side classification.
+
+Freeze:
+`classifiedVolumeCoverage = (deltaAtBid + deltaAtAsk) / deltaTradeVolume`.
+
+Fugle explicitly documents that the opening first trade is excluded from inside/outside-volume classification because the opening call auction has different supply-demand semantics.
+
+Consequently:
+- opening pressure belongs to a separate auction regime;
+- classified coverage may be <1 by design;
+- missing/unclassified volume cannot be forced into buy/sell pressure.
+
+## Identifiability ladder
+OHLCV -> participation/response only.
+OHLCV + cumulative AtBid/AtAsk -> coarse provider pressure.
++ sparse books -> static liquidity context.
++ dense trade/book events -> candidate replenishment/resiliency/OFI research.
+
+Only the last stage can directly study dynamic absorption mechanics; even then causal motive is not guaranteed.
+
+Status:
+`D02_05_08_09_IDENTIFIABILITY_FROZEN / NO_MATURITY_UPLIFT / OUTCOMES_UNUSED / FORMAL_UNCHANGED`.
