@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-02T20:04:00+08:00",
+  "updatedAt": "2026-10-02T20:12:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -1468,8 +1468,8 @@
           "maturityPct": 40,
           "learningScope": "聚焦「TAIEX VIX台灣波動率指數」。學習範圍：期貨、選擇權、基差、OI、外資期貨、PCR、VIX、IV、Skew、Term Structure、Gamma與結算；夜盤與到期效應；合約／DTE語意；對市場與個股的增量資訊。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "CLASS_A_RECEIPT_BUILDER_IMPLEMENTED_AND_ADVERSARIAL_TESTED / ACTUAL_PIT_DATE_RECEIPT_PENDING / OUTCOMES_CLOSED / STRICT_SOURCE_ATTESTATION_GATE_READY / LIVE_VERIFIED_VIX_RECEIPT_PENDING",
-          "evidence": "research/d12_05_taiwan_vix_receipt_v0_1.mjs + research/test_d12_05_taiwan_vix_receipt_v0_1.mjs; unified PIT guard integrated; no same-session 2026-09-30 value fabricated before publication window.\n2026-10-02 audit: research/source_receipt_attestation_v0_1.mjs 13 synthetic adversarial tests PASS; test success cannot substitute live VIX raw provider archive and independent first-known replay."
+          "status": "CLASS_A_RECEIPT_BUILDER_IMPLEMENTED_AND_ADVERSARIAL_TESTED / ACTUAL_PIT_DATE_RECEIPT_PENDING / OUTCOMES_CLOSED / STRICT_SOURCE_ATTESTATION_GATE_READY / LIVE_VERIFIED_VIX_RECEIPT_PENDING / LIVE_MIS_AUTOMATION_ENTITLEMENT_UNRESOLVED",
+          "evidence": "research/d12_05_taiwan_vix_receipt_v0_1.mjs + research/test_d12_05_taiwan_vix_receipt_v0_1.mjs; unified PIT guard integrated; no same-session 2026-09-30 value fabricated before publication window.\n2026-10-02 audit: research/source_receipt_attestation_v0_1.mjs 13 synthetic adversarial tests PASS; test success cannot substitute live VIX raw provider archive and independent first-known replay.\n2026-10-02 evening audit: TAIFEX official statistical VIX page exposes 2026/10/02 date row but audited extraction did not expose numeric cell; live MIS redirected to rights disclaimer, so automated live-page capture is not authorized by this audit. Historical/statistical QA and live first-known capture remain separate."
         },
         {
           "id": "D12-06",
@@ -1510,8 +1510,8 @@
           "maturityPct": 40,
           "learningScope": "聚焦「夜盤期貨與隔夜資訊」。學習範圍：期貨、選擇權、基差、OI、外資期貨、PCR、VIX、IV、Skew、Term Structure、Gamma與結算；夜盤與到期效應；合約／DTE語意；對市場與個股的增量資訊。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義",
-          "status": "CLASS_A_NIGHT_PRE_SCAN_RECEIPT_BUILDER_IMPLEMENTED_AND_ADVERSARIAL_TESTED / ACTUAL_1500_1810_RECEIPT_PENDING / OUTCOMES_CLOSED / STRICT_SOURCE_ATTESTATION_GATE_READY / LIVE_1500_1810_RECEIPT_PENDING",
-          "evidence": "research/d12_10_night_pre_scan_receipt_v0_1.mjs + adversarial test enforce 15:00 start, <=18:10 cutoff, following-session attribution, roll/expiry and no full-night leakage.\n2026-10-02 audit: Live TX 18:10 first-known source response absent in latest room checkpoint; same-day complete night market reports cannot be backdated."
+          "status": "CLASS_A_NIGHT_PRE_SCAN_RECEIPT_BUILDER_IMPLEMENTED_AND_ADVERSARIAL_TESTED / ACTUAL_1500_1810_RECEIPT_PENDING / OUTCOMES_CLOSED / STRICT_SOURCE_ATTESTATION_GATE_READY / LIVE_1500_1810_RECEIPT_PENDING / LIVE_MIS_AUTOMATION_ENTITLEMENT_UNRESOLVED / HISTORICAL_REPLAY_QA_SEPARATE",
+          "evidence": "research/d12_10_night_pre_scan_receipt_v0_1.mjs + adversarial test enforce 15:00 start, <=18:10 cutoff, following-session attribution, roll/expiry and no full-night leakage.\n2026-10-02 audit: Live TX 18:10 first-known source response absent in latest room checkpoint; same-day complete night market reports cannot be backdated.\n2026-10-02 evening audit: official daily/recent TAIFEX data support replay/session QA, but live MIS webpage permission and actual 15:00-18:10 first-known source response remain unproven. No retrospective reconstruction."
         },
         {
           "id": "D12-11",
