@@ -1771,3 +1771,235 @@ Formal Core remains LOCKED.
 5. Route the 2026-07-10 unscheduled-closure/history-admission repair to its owning shared-runtime governance path; D02 must not silently alter Formal calendar/history behavior.
 6. If row-level 9/30 PV data become available, use them only to test recorder mechanics, UNKNOWN/null behavior, Acceptance phantom/INVALID-anchor diagnostics and baseline coverage; they cannot advance clean alpha-date counts.
 7. H001/H002 A/B/C/D performance comparison remains unopened until clean prospective common support exists.
+
+
+## Evidence progress — PVE-203 through PVE-216 (2026-10-02 Stage VII long block)
+
+### PVE-203 — The 2026-09-30 staged recovery never reached selection persistence
+Status: RECOVERY_FAILED_BEFORE_SELECTION / CLOUDFLARE_1102 / OUTCOMES_CLOSED
+
+Fresh workflow-log audit of commit `973ac6e07797c494ac7673dc2389a13fc9cf98ee` shows:
+- recovery run `36777755759`, job `110099864451`;
+- official quality for 2026-09-30 was ready;
+- the 2026-07-10 market-closure proof readback was verified;
+- `/api/scan-preview` then returned HTTP 503 / Cloudflare Error 1102;
+- the Worker exceeded CPU or memory resource limits;
+- the provider explicitly classified the request as non-retryable without owner-side optimization;
+- stage-selection was never reached.
+
+Therefore no 2026-09-30 recovered selection was persisted. A recovery script existing in Git history is not evidence that recovery succeeded.
+
+### PVE-204 — 2026-10-01 had quality readiness but no confirmed after-market selection
+Status: QUALITY_READY_SELECTION_UNCONFIRMED / SAFE_NO_BLIND_RETRY
+
+At approximately 23:44 Taipei, the first 10/1 recovery workflow showed:
+- INDEX ready, asOfDate=2026-10-01;
+- TDCC ready, asOfDate=2026-09-24;
+- FINANCIAL ready, asOfDate=2026-10-01;
+- VALUATION ready, asOfDate=2026-10-01;
+- ANNOUNCEMENTS ready, asOfDate=2026-10-01;
+- QUARTER_EPS ready, asOfDate=2026-10-01.
+
+The guarded recovery then failed with:
+`Single recovery attempt not confirmed; no repeated POST. 503`.
+
+This is positive safety evidence:
+the workflow did not blindly repeat an ambiguous business write.
+
+It is negative cohort evidence:
+quality readiness alone did not produce a confirmed 10/1 selection.
+
+### PVE-205 — The second 10/1 recovery path also failed before a clean cohort could exist
+Status: QUALITY_SYNC_TIMEOUT / NO_NEW_SELECTION_PROOF
+
+A later sync/recovery run around 23:58 Taipei failed with:
+`Quality synchronization failed: The operation was aborted due to timeout`.
+
+Thus neither the first nor the second recovery path establishes a 2026-10-01 selection generation.
+
+### PVE-206 — A successful plan mirror is continuity evidence, not current-scan evidence
+Status: OLD_PLAN_CONTINUITY_ONLY / SUCCESS_STATUS_NOT_EQUIVALENT_TO_NEW_SCAN
+
+The 00:00 Taipei encrypted plan mirror workflow succeeded, but its own readback says:
+- prepared=false;
+- alreadyVerified=true;
+- scanDate=2026-09-29.
+
+Therefore mirror success means the existing old plan still had a valid mirror.
+It does NOT mean a 2026-10-01 scan completed.
+
+This distinction is now frozen for D02:
+workflow conclusion=success is insufficient unless the business receipt proves the intended marketDate/generation.
+
+### PVE-207 — After-midnight health workflow can succeed while performing no after-market verification
+Status: HEALTH_JOB_SKIPPED / MIDNIGHT_WINDOW_FALSE_REASSURANCE_GUARD
+
+The 00:01 Taipei after-market health job concluded SUCCESS, but its payload was:
+`skipped=true, date=2026-10-02, time=00:01, reason=Outside verified trading-day/window; no business action`.
+
+Therefore a green GitHub check is not evidence that the prior trading day's 23:35 scan was healthy.
+
+For D02 cohort admission:
+- require the health receipt to identify the intended scanDate;
+- require business verification actually executed;
+- a scheduling delay across midnight cannot be counted as a clean after-market health pass.
+
+### PVE-208 — V8.15 complete-population observer had no live generation after the 10/1 session
+Status: C1_GENERATION_NOT_FOUND / COMPLETE_POPULATION_PARENT_ABSENT
+
+The scheduled System1 C1 prospective evidence collector eventually started around 00:23 Taipei.
+It failed on a read-only request with:
+`HTTP 200 {"ok":false,"error":"C1_GENERATION_NOT_FOUND","researchOnly":true}`.
+
+This does not by itself prove the Formal scan failed because C1 is fail-open research infrastructure.
+Combined with:
+- failed 10/1 recovery;
+- mirror still anchored to scanDate 2026-09-29;
+it confirms there is no complete C1 population parent available for D02's first clean whole-cohort analysis.
+
+### PVE-209 — 2026-10-02 remains DATA_QA-only until a new ordinary plan/bootstrap lineage is proven
+Status: CLEAN_DATE_COUNT_ZERO / 20261002_NOT_PREAUTHORIZED_AS_CLEAN
+
+As of the pre-open 2026-10-02 audit:
+- 9/30 selection was not persisted;
+- 10/1 selection is not established;
+- latest explicitly verified mirrored plan remains scanDate=2026-09-29.
+
+Therefore no 10/2 intraday observation is pre-authorized as primary H001~H004 evidence.
+If 10/2 intraday PV rows are produced, they are DATA_QA-only unless a newer independently verified ordinary plan/bootstrap lineage is first proven.
+
+Verified clean prospective selection dates for primary H001~H004 remain 0.
+
+### PVE-210 — Full-market runtime capacity is a shared acquisition blocker, not price-volume alpha evidence
+Status: SHARED_RUNTIME_DEPENDENCY / NO_D02_MATURITY_UPLIFT
+
+The 9/30 Error 1102 and 10/1 recovery/quality timeouts show a current operational bottleneck around full-market after-market evidence production.
+
+D02 must not convert this into:
+- a price-volume factor conclusion;
+- a zero-pick observation;
+- a negative return observation;
+- an excuse to reconstruct historical PIT evidence later.
+
+The runtime repair belongs to System1/shared engineering governance.
+D02 consumes only future verified receipts.
+
+### PVE-211 — PV localVolumeRatio and Formal intraday volumeRatio are the same primitive before rounding
+Status: LOCAL_RATIO_DUPLICATION_PROVEN / NOT_A_NEW_FACTOR
+
+Fresh source audit proves both paths compute:
+`current 15m volume / mean(previous five completed 15m volumes)`.
+
+PV `pvEnrichSessionBars()` stores `localVolumeRatio` unrounded.
+Formal `buildBar()` stores `volumeRatio` through `round(value)`, whose default precision is 2 decimals.
+
+Therefore:
+- PV localVolumeRatio is not an independent new feature;
+- exact numeric mismatches near a threshold may come from rounding, not different economic information;
+- H001 remains correctly framed as testing same-slot historical RVOL beyond the existing local previous-five ratio.
+
+### PVE-212 — Full A/B/C/D common support cannot begin before the sixth 15m slot
+Status: COMMON_SUPPORT_FLOOR_FROZEN / EARLIEST_SLOT_10_15
+
+Observable slots begin:
+09:00, 09:15, 09:30, 09:45, 10:00, 10:15, ...
+
+The local previous-five ratio requires exactly five prior completed bars.
+Therefore it is null for the first five observable slots and first becomes available at 10:15.
+
+Since the frozen A/B/C/D sequence is:
+A = Formal context;
+B = A + local previous-five ratio;
+C = B + same-slot RVOL;
+D = C + cumulative pace;
+
+a matched A/B/C/D incremental comparison cannot use observations earlier than 10:15.
+Earlier observations may remain recorder/feature QA but are not common-support H001/H002 comparisons.
+
+### PVE-213 — At 09:00 cumulative pace is exactly identical to same-slot RVOL by construction
+Status: FIRST_SLOT_EXACT_REDUNDANCY / H002_INCREMENT_ZERO_BY_CONSTRUCTION
+
+`PV_SHADOW_OBSERVABLE_SLOTS` begins at 09:00.
+
+For the first valid slot:
+- current cumulativeVolume = current 09:00 volume;
+- every historical cumulative-valid session has cumulativeVolume = its 09:00 volume;
+- therefore historical cumulativeVolumeMedian20 = historical slotVolumeMedian20.
+
+Hence on common valid support:
+`pvCumvolPace20 == pvSlotRvol20`
+exactly at 09:00.
+
+This is structural, not empirical.
+No outcome sample is needed to discover it.
+
+The 09:00 slot is also marked `OPEN_AUCTION_MIXED`, providing an independent reason not to claim first-slot cumulative alpha.
+
+### PVE-214 — After the first slot, cumulative pace is not mathematically determined by current-slot RVOL
+Status: LATER_SLOT_NON_IDENTITY_PROVEN / INCREMENTAL_VALUE_STILL_UNKNOWN
+
+With twenty identical historical six-slot baselines of 100 units per slot, the 10:15 current observation gives the following outcome-blind constructions:
+
+- uniform 2x participation:
+  slot RVOL=2.00, cumulative pace=2.00, local ratio=1.00;
+- isolated late burst:
+  slot RVOL=3.00, cumulative pace=1.33, local ratio=3.00;
+- fading after early burst:
+  slot RVOL=1.00, cumulative pace=2.00, local ratio≈0.45;
+- late reacceleration:
+  slot RVOL=3.00, cumulative pace≈1.67, local ratio≈2.14.
+
+Therefore later-slot cumulative pace can distinguish:
+- isolated shock;
+- persistent session participation;
+- fading participation;
+- reacceleration.
+
+This proves non-identity only.
+It does not prove predictive value.
+
+### PVE-215 — Cumulative pace must beat the existing persistence state, not merely same-slot RVOL
+Status: H002_REDUNDANCY_TEST_STRENGTHENED / OUTCOME_BLIND
+
+Current PV persistence state already tracks sequential slot-RVOL abnormality through:
+FRESH_SHOCK -> PERSISTENT -> DECAYING -> REIGNITED -> NORMALIZED.
+
+Cumulative pace therefore has a higher burden than “different formula”:
+it must add information beyond:
+1. Formal context;
+2. local previous-five ratio;
+3. current same-slot RVOL;
+4. existing thresholded persistence state.
+
+The state machine is coarse and does not preserve the full cumulative magnitude/path, so mathematical redundancy is not proven.
+Economic/incremental redundancy remains an empirical question.
+
+### PVE-216 — H002 test protocol tightened before outcomes
+Status: PREREGISTERED_COMMON_SUPPORT_TIGHTENING / NO_THRESHOLD_TUNING / FORMAL_UNCHANGED
+
+For primary H002 inference:
+- exclude 09:00 from incremental cumulative claims because D=C there by construction;
+- require slot >=10:15 for full A/B/C/D matched comparison;
+- require uninterrupted session prefix for cumulativeValid=true;
+- require >=20 valid cumulative historical sessions;
+- missing cumulative pace = UNKNOWN, never zero/neutral;
+- preserve current thresholds; no post-outcome tuning;
+- compare D against C and against the existing persistence state;
+- use the same symbol/date/slot common support for all compared specifications;
+- cluster interpretation by scanDate/session, not raw row count.
+
+Machine-readable receipts:
+- `research/d02_20261001_pipeline_readiness_receipt_v0_1.json`;
+- `research/d02_cumulative_pace_redundancy_v0_1.json`.
+
+Current Price-Volume evidence cursor: PVE-001 through PVE-216.
+Formal Core remains LOCKED.
+
+## Exact continuation after PVE-216
+1. Before market-open/early-session inference, do not assume 2026-10-02 is clean; re-check whether a newer ordinary selection/bootstrap receipt exists.
+2. If only the 9/29 historical-recovery plan remains, use any 10/2 PV rows strictly for DATA_QA.
+3. When the next ordinary after-market selection succeeds, require contemporaneous plan receipt, correct scanDate->planDate, complete C1/population parent when available, history admission, pool integrity, and ordinary PV bootstrap before clean-date admission.
+4. On the first clean H001/H002 sample, enforce common support >=10:15 for A/B/C/D, with cumulativeValid=true and >=20 cumulative-history sessions.
+5. Keep 09:00 H002 incremental effect structurally fixed at zero relative to C; do not spend statistical degrees of freedom retesting an identity.
+6. Test cumulative pace against persistence-state redundancy as well as same-slot RVOL.
+7. Gate 7 outcomes remain closed until Gate 0->6 all pass.
