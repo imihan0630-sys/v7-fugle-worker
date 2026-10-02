@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "S2_RESONANCE_COMPARISON_CORE_ACCEPTANCE_V0_1",
+  "pr": 313,
+  "prHead": "3181c43652de9c060866db7e7311c6f31ef195ae",
+  "mergeCommit": "22baa1dbe0ad45da99072c784e524994f45f693c",
+  "workflowRuns": {
+    "prSystem2": 36985165883,
+    "prV8": 36985165926,
+    "mainSystem2": 36985338857
+  },
+  "conclusions": "success",
+  "acceptanceType": "REPOSITORY_KERNEL_AND_MOCK_PERSISTENCE_ONLY",
+  "targetedTests": [
+    "resonance_comparison_frame_v0_1.test.mjs",
+    "daily_resonance_monitor_v0_1.test.mjs",
+    "daily_resonance_live_adapter_v0_1.test.mjs",
+    "persistence_executor.test.mjs"
+  ],
+  "verified": [
+    "same-input hash and observation identity binding",
+    "unchanged user-video EMA16/EMA64/Impulse MACD Baseline",
+    "UNKNOWN cost/regime and missing Challenger",
+    "PIT/pool/finality/preregistration/version rejection",
+    "outcome exclusion from monitor and Challenger transport",
+    "immutable rerun/conflict and exact mock readback"
+  ],
+  "challengerParametersFrozen": false,
+  "realChallengerFormulaAuthored": false,
+  "challengerFormulaExecutionVerified": false,
+  "livePairedCaptureDeployed": false,
+  "physicalComparisonPersistenceVerified": false,
+  "realPairedSampleCount": 0,
+  "countsTowardPromotionEvidence": false,
+  "baselineChanged": false,
+  "system1Changed": false,
+  "authority": {
+    "selection": false,
+    "push": false,
+    "capital": false,
+    "orders": false
+  },
+  "audit1900Observed": false,
+  "observedAtTaipei": "2026-10-02T16:40:00+08:00"
+}
