@@ -623,3 +623,31 @@ Formal Core unchanged.
 
 ### Exact next
 BR-042: build an isolated research-only CSSD/CSAD/IQR/MAD receipt with coverage and trade-value leader-removal diagnostics; freeze one source-only Taiwan date before forward outcomes.
+
+
+## BR-042 — Synthetic falsification proves dispersion is directionless
+
+Artifact:
+`research/br042_dispersion_synthetic_falsification_qa_v0_1.json`
+
+Synthetic QA deliberately separates return direction from dispersion.
+
+Examples:
+- `[+2,+2,+2,+2]`: CSSD/CSAD/IQR/MAD all 0;
+- `[-2,-2,-2,-2]`: the same zero-dispersion values;
+- `[+10,0,0,0]`: CSSD 5, CSAD 3.75, IQR 2.5, but MAD 0;
+- `[-10,0,0,+10]`: mean 0 while CSSD ≈8.165, CSAD/IQR/MAD all 5.
+
+These fixtures prove:
+- low dispersion has no bullish/bearish direction by itself;
+- high CSSD can be one-outlier-driven rather than broad differentiation;
+- average return and dispersion encode different dimensions;
+- robust and non-robust measures must be retained separately.
+
+D09-09 stays L3; synthetic QA is not additional PIT evidence and does not justify L4.
+D09-12 stays L2.
+
+Exact next:
+BR-043 freezes the first source-only/live Taiwan sector dispersion receipt on a clean member-universe lineage, with one fixed quantile convention and no forward outcomes.
+
+Formal Core unchanged.
