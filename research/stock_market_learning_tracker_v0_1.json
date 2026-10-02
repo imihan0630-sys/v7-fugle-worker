@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0.1",
-  "updatedAt": "2026-10-03T00:58:00+08:00",
+  "updatedAt": "2026-10-03T04:34:00+08:00",
   "status": "CANONICAL_LEARNING_CURRICULUM_V0_1",
   "scope": "CROSS_SYSTEM_STOCK_MARKET_KNOWLEDGE",
   "formalCoreImpact": "NONE",
@@ -32,8 +32,8 @@
   },
   "aggregate": {
     "domainCount": 22,
-    "moduleCount": 366,
-    "maturityWeightedPct": 32
+    "moduleCount": 362,
+    "maturityWeightedPct": 31.9
   },
   "domains": [
     {
@@ -140,8 +140,10 @@
           "name": "酒田戰法與傳統K線語意反證",
           "level": "L2",
           "maturityPct": 40,
-          "learningScope": "聚焦「酒田戰法與傳統K線語意反證」。學習範圍：結構定義、形成條件、確認點與失敗型態；支撐壓力與目標幾何；多時間尺度差異；除權息、漲跌停、停牌等價格連續性污染；可程式化辨識與對選股／風控的增量價值。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "learningScope": "聚焦「酒田戰法與傳統K線語意反證」。保留傳統K線／酒田 taxonomy（分類）與反證價值，但不得建立單一 Sakata Score（酒田分數）或把命名型態當獨立 Alpha（超額報酬）投票。優先拆解為單根K線、多根K線、缺口、趨勢／型態生命週期等既有結構，持續驗證是否具有超越 D01-02／D01-03／D01-05／D01-09 的增量資訊；若無增量，未來合併回母模組。每個結論仍須記錄正向機制、反證／失效條件、PIT（時點一致性）、可重播性、冗餘與 System 1／System 2 增量價值。",
+          "levelMeaning": "機制＋反證已定義",
+          "status": "OBSERVATION / MERGE_CANDIDATE / RESEARCH_ONLY",
+          "next": "保持 RESEARCH_ONLY；完成與 D01-02／03／05／09 的增量與冗餘驗證後，再決定是否合併模組。"
         }
       ]
     },
@@ -210,8 +212,10 @@
           "name": "OBV能量潮",
           "level": "L2",
           "maturityPct": 40,
-          "learningScope": "聚焦「OBV能量潮」。學習範圍：成交量單位與基準化；量價因果與競爭解釋；趨勢／盤整／突破情境；流動性與同時段效應；異常量與反向案例；對進場、突破品質與風險監控的增量價值。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義"
+          "learningScope": "聚焦「OBV能量潮」。保留 OBV（能量潮）作為 Price-Volume（價量）比較器，允許研究 obvSlope、divergence 與 lead-lag，但不得把 OBV 與 RVOL、直接成交量、價量狀態重複計票。必須先控制直接價格報酬、成交量／換手、價量反應與資料單位語意；若無獨立增量資訊，降為 UI／解釋用途或合併回價量母模組。不得單獨形成 Hard Gate（硬門檻）或 PRIMARY_ALPHA（主要Alpha）。",
+          "levelMeaning": "機制＋反證已定義",
+          "status": "OBSERVATION / MERGE_CANDIDATE / PRICE_VOLUME_COMPARATOR_ONLY",
+          "next": "保持 RESEARCH_ONLY；以直接價量基準做 residual／incremental-value 驗證後，再決定合併或僅保留解釋用途。"
         },
         {
           "id": "D02-08",
@@ -267,7 +271,7 @@
         "TECHNICAL_INDICATOR_CHECKPOINT.md",
         "TREND_MOMENTUM_REVERSAL_CHECKPOINT.md"
       ],
-      "maturityPct": 47.7,
+      "maturityPct": 48.3,
       "status": "ROC_EXACT_REDUNDANCY_L2 / EMA64_STATE_LINEAGE_GUARD / RAW_RECEIPT_GATE_ACCUMULATING_2_OF_3",
       "lastResearchUpdate": "2026-10-02",
       "researchNote": "TI-460~473: completed-session TWSE/TPEx 2026-10-02 content is source-visible, but the chat transport returns extracted/normalized content rather than the frozen observer's origin raw bytes, so the raw-receipt gate remains 2/3 and no backfill is permitted. Standard percent ROC is exactly 100*retN; common Momentum index is ROC+100; same-horizon log return is a monotonic rank-equivalent transform; raw price difference is nominal-price-scale confounded. D03-11 advances L1/20 to L2/40 and D03 aggregate to 47.7%. EMA16/64 horizon analysis shows EMA64 mean age 31.5 bars, half-life ≈22.179 and 10%-residual age ≈73.677; a synthetic 65-bar local SMA-seeded EMA64 differs materially from full-history state, so System2 resonance requires canonical state-lineage/replay equivalence. EMA16/64 + Impulse remains partial/shared price-family confluence. Outcomes and Formal Core remain closed.",
@@ -286,7 +290,7 @@
           "name": "ret5／ret20／ret60直接報酬動能",
           "level": "L3",
           "maturityPct": 60,
-          "learningScope": "聚焦「ret5／ret20／ret60直接報酬動能」。學習範圍：公式與參數語意；趨勢、動能與反轉機制；超買超賣與背離的失效條件；多時間框架衝突；與原始價格特徵的冗餘；台股資料連續性與可重播性。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "learningScope": "聚焦「ret5／ret20／ret60直接報酬動能」。學習範圍：公式與參數語意；趨勢、動能與反轉機制；超買超賣與背離的失效條件；多時間框架衝突；與原始價格特徵的冗餘；台股資料連續性與可重播性。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 標準百分比 ROC（變動率）已證明與同期間 retN（直接報酬）完全等價；原 D03-11 退休後，由本模組承接 ROC 名稱／公式 alias（別名）與 anti-double-count（防重複計分）責任。ROC slope／deltaROC／acceleration 僅可作同一動能家族的殘餘假說，需先對直接報酬、趨勢與 Regime 做冗餘控制。",
           "levelMeaning": "台股PIT資料可行"
         },
         {
@@ -354,16 +358,6 @@
           "maturityPct": 40,
           "learningScope": "聚焦「Bollinger Bands布林通道」。學習範圍：公式與參數語意；趨勢、動能與反轉機制；超買超賣與背離的失效條件；多時間框架衝突；與原始價格特徵的冗餘；台股資料連續性與可重播性。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "機制＋反證已定義"
-        },
-        {
-          "id": "D03-11",
-          "name": "ROC變動率",
-          "level": "L2",
-          "maturityPct": 40,
-          "learningScope": "聚焦「ROC變動率」。學習範圍：公式與參數語意；趨勢、動能與反轉機制；超買超賣與背離的失效條件；多時間框架衝突；與原始價格特徵的冗餘；台股資料連續性與可重播性。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "機制＋反證已定義",
-          "status": "EXACT_REDUNDANCY_DEFINED / SAME_FAMILY_RESIDUAL_ONLY / OUTCOME_UNKNOWN",
-          "next": "Do not score standard same-horizon ROC separately from retN. Smoothed/delta ROC requires residualization against direct returns, return acceleration, MA slope/persistence, volatility and Regime before any outcome claim."
         },
         {
           "id": "D03-12",
@@ -1440,7 +1434,7 @@
       "anchors": [
         "SUPPLY_CHAIN_LEAD_LAG_RESEARCH.md"
       ],
-      "maturityPct": 47.1,
+      "maturityPct": 46.2,
       "modules": [
         {
           "id": "D10-01",
@@ -1531,21 +1525,13 @@
           "levelMeaning": "台股PIT資料可行"
         },
         {
-          "id": "D10-11",
-          "name": "官方資料自動化擷取",
-          "level": "L3",
-          "maturityPct": 60,
-          "learningScope": "聚焦「官方資料自動化擷取」。學習範圍：上下游圖譜、Lead-Lag、產能、庫存、報價、原物料、訂單與交期；供需缺口與定價能力；事件PIT時鐘；跨層級不對稱傳導；可自動化資料來源。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "台股PIT資料可行"
-        },
-        {
           "id": "D10-12",
-          "name": "產業別專用傳導模板",
+          "name": "Industry-specific Transmission Model／Issuer Exposure Mapping產業專屬傳導模型與公司曝險映射",
           "level": "L3",
           "maturityPct": 60,
-          "learningScope": "聚焦「產業別專用傳導模板」。學習範圍：上下游圖譜、Lead-Lag、產能、庫存、報價、原物料、訂單與交期；供需缺口與定價能力；事件PIT時鐘；跨層級不對稱傳導；可自動化資料來源。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "learningScope": "聚焦「產業專屬傳導模型與公司曝險映射」。把產業／產品狀態連到上市公司時，必須經過 taxonomy（分類版本）、產品／營收曝險、上下游位置、定價能力、庫存、產能、訂單與公司原生揭露等橋接；禁止由「產業熱門」直接推論所有成分股受益。保留跨產業共用 schema（結構）與可反證模板，並持續驗證不同產業、公司與 Regime（市場狀態）下的可移植性、PIT（時點一致性）與增量選股價值。",
           "levelMeaning": "台股PIT資料可行",
-          "status": "PIT_FEASIBLE_BOUNDED / FIRST_PROSPECTIVE_RECEIPT_FROZEN / WAITING_INDEPENDENT_EVENTS",
+          "status": "KEEP / PIT_FEASIBLE_BOUNDED / FIRST_PROSPECTIVE_RECEIPT_FROZEN / WAITING_INDEPENDENT_EVENTS",
           "next": "SC-029 capture the next independent material/output-price vintage outcome-blind; SC-031 seek issuer-disclosed procurement/pass-through evidence before converting any material benchmark from PROXY_ONLY to bounded company exposure."
         },
         {
@@ -2138,14 +2124,14 @@
         "TRADING_FRICTIONS_CHECKPOINT.md",
         "EXECUTION_ALPHA_RESEARCH.md"
       ],
-      "maturityPct": 34.7,
+      "maturityPct": 33.3,
       "modules": [
         {
           "id": "D14-01",
           "name": "券商手續費Provenance",
           "level": "L3",
           "maturityPct": 60,
-          "learningScope": "聚焦「券商手續費Provenance」。學習範圍：手續費、證交稅、滑價、部分成交、延遲、零股／整股、換手與機會成本；signal-to-fill鏈；反事實可下單性；成交可重建性；Execution Alpha歸因。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "learningScope": "聚焦「券商手續費Provenance」。學習範圍：手續費、證交稅、滑價、部分成交、延遲、零股／整股、換手與機會成本；signal-to-fill鏈；反事實可下單性；成交可重建性；Execution Alpha歸因。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 原 D14-13「Broker Fee Schedule完整費率語意」退休後，其完整責任由本模組永久承接：券商實際／模型費率、折扣、最低手續費、零股／整股或通路差異、促銷／例外、四捨五入與費率版本皆須保留 provenance（來源證明）；UNKNOWN commission（未知手續費）不得當成 0。既有 commission classifier（手續費證據分類器）與成本後報酬能力不得刪除或降級。",
           "levelMeaning": "台股PIT資料可行"
         },
         {
@@ -2238,14 +2224,6 @@
           "level": "L3",
           "maturityPct": 60,
           "learningScope": "聚焦「Execution Alpha歸因」。學習範圍：手續費、證交稅、滑價、部分成交、延遲、零股／整股、換手與機會成本；signal-to-fill鏈；反事實可下單性；成交可重建性；Execution Alpha歸因。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "台股PIT資料可行"
-        },
-        {
-          "id": "D14-13",
-          "name": "Broker Fee Schedule完整費率語意",
-          "level": "L3",
-          "maturityPct": 60,
-          "learningScope": "聚焦「Broker Fee Schedule完整費率語意」。學習範圍：手續費、證交稅、滑價、部分成交、延遲、零股／整股、換手與機會成本；signal-to-fill鏈；反事實可下單性；成交可重建性；Execution Alpha歸因。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
           "levelMeaning": "台股PIT資料可行"
         },
         {
@@ -2647,7 +2625,7 @@
           "name": "Data Provenance資料來源／世代證明",
           "level": "L3",
           "maturityPct": 60,
-          "learningScope": "聚焦「Data Provenance資料來源／世代證明」。學習範圍：PIT、Prospective Shadow、OOS、Purged Holdout、多重測試、日期獨立性、冗餘、成本、Coverage與Zero-pick；資料世代證明、實驗登錄、成熟度升級與防過擬合治理。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "learningScope": "聚焦「Data Provenance資料來源／世代證明」。學習範圍：PIT、Prospective Shadow、OOS、Purged Holdout、多重測試、日期獨立性、冗餘、成本、Coverage與Zero-pick；資料世代證明、實驗登錄、成熟度升級與防過擬合治理。每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 原 D21-08 的 Governance／ESG score provenance（治理／ESG評分來源語意）責任由本模組承接其資料治理部分：供應商、方法版本、first-known／vintage（首次可知／版本）、coverage（覆蓋）、缺失與方法差異必須可追溯；泛用治理／ESG分數不得因來源存在就視為 Alpha。",
           "levelMeaning": "台股PIT資料可行",
           "status": "THREE_FINALIZED_PROMOTION_GRADE_DATES / COMPLETE_ZERO / PRECISION_ZERO / A5_DIAGNOSTIC_ATTRIBUTION_REPAIRED / SOURCE_FAMILY_REVALIDATION_ACTIVE",
           "evidence": "Finalized 2026-09-29/09-30/10-01 all count as immutable independent source-clock dates, but completeTradingDates=0 and precisionEligibleDates=0. PR #312 corrected aggregation so A5 boundary failure is counted only when sameSessionClockReady=true and A5 actually misses a candidate boundary; System2 Research CI 36984225991, V8 Repair 36984226112 and V8 Regression 36984225981 PASS. 2026-10-02 raw evidence: TWSE A1 remained prior-date through 30 probes; TPEx finally READY at 16:08:27 with 148.195-158.465 minute arrival bracket but mixed NON_JSON transport instability; date not finalized yet.",
@@ -3438,7 +3416,7 @@
         "CORPORATE_GOVERNANCE_INSIDER_CHECKPOINT.md",
         "CORPORATE_GOVERNANCE_INSIDER_RESEARCH.md"
       ],
-      "maturityPct": 3.1,
+      "maturityPct": 3.3,
       "modules": [
         {
           "id": "D21-01",
@@ -3511,16 +3489,6 @@
           "next": "從理論與定義開始，建立 D21-07 的機制、反證與資料需求；不得直接進 Formal。"
         },
         {
-          "id": "D21-08",
-          "name": "Governance／ESG Score Provenance治理評鑑與來源語意",
-          "level": "L0",
-          "maturityPct": 0,
-          "learningScope": "聚焦「Governance／ESG Score Provenance治理評鑑與來源語意」。學習範圍：研究公司控制權、董事會、內部人、質押、關係人交易、誘因、資本配置、審計／內控與管理層可信度。所有治理資料必須使用歷史 first-known/vintage，並與 D06持股、D07財報、D11事件分工去重。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
-          "levelMeaning": "未研究",
-          "status": "UNSTUDIED / CURRICULUM_APPROVED",
-          "next": "從理論與定義開始，建立 D21-08 的機制、反證與資料需求；不得直接進 Formal。"
-        },
-        {
           "id": "D21-09",
           "name": "Succession／Key-person Risk接班與關鍵人風險",
           "level": "L0",
@@ -3565,7 +3533,7 @@
           "name": "ESG／Climate／Social Materiality環境氣候社會重大性風險",
           "level": "L0",
           "maturityPct": 0,
-          "learningScope": "聚焦「ESG／Climate／Social Materiality環境氣候社會重大性風險」。研究環境、氣候與社會議題在具財務重大性時對公司現金流、成本、資產負債、供應鏈與治理風險的影響；不得把泛用 ESG（環境社會治理）分數直接當買賣訊號。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。",
+          "learningScope": "聚焦「ESG／Climate／Social Materiality環境氣候社會重大性風險」。研究環境、氣候與社會議題在具財務重大性時對公司現金流、成本、資產負債、供應鏈與治理風險的影響；不得把泛用 ESG（環境社會治理）分數直接當買賣訊號。 每個結論都必須同時記錄正向機制、反證／失效條件、PIT（時點一致性）資料需求、可重播性、資料品質、冗餘、成本，以及對 System 1／System 2 是否具有可驗證的增量價值；未取得證據不得自行升級成熟度。 原 D21-08 退休後，本模組承接 Governance／ESG（治理／環境社會治理）分數中真正具財務重大性的內容；只研究可連結現金流、成本、資產負債、供應鏈、監管或治理風險的 materiality（重大性），不得把泛用 ESG score（ESG分數）直接當買賣訊號。資料來源／版本治理由 D16-11 承接。",
           "levelMeaning": "未研究",
           "status": "UNSTUDIED / CURRICULUM_APPROVED",
           "next": "從理論、定義、機制與反證開始，建立 D21-13 的資料需求與驗證契約；不得直接進 Formal（正式核心）。"
