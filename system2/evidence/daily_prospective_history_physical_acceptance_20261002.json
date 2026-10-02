@@ -1,0 +1,443 @@
+{
+  "schemaVersion": "S2_PROSPECTIVE_DAILY_HISTORY_PHYSICAL_ACCEPTANCE_V0_1",
+  "implementationPR": 307,
+  "readbackPR": 308,
+  "implementationCommit": "011cc6b300ac99b350c187e7d7f3a2ca447780e2",
+  "readbackCommit": "b5148bd121a1db1f9061e354afbd5513434be047",
+  "workflowRuns": {
+    "pr307System2": 36978923523,
+    "pr307V8": 36978923517,
+    "main307System2": 36980736245,
+    "main307V8": 36980736227,
+    "main307Writer": 36980736267,
+    "pr308System2": 36981377643,
+    "pr308V8": 36981377677,
+    "main308System2": 36981526267,
+    "main308V8": 36981526271,
+    "main308Writer": 36981526309
+  },
+  "workflowConclusions": "success",
+  "writer": {
+    "result": "PASS",
+    "mode": "IMMUTABLE_DIAGNOSTIC_ONLY",
+    "databaseName": "system2-research",
+    "receipt": {
+      "schemaVersion": "S2_DAILY_SHADOW_DIAGNOSTIC_V0_1",
+      "runId": "S2-DAILY-DIAGNOSTIC:2026-10-02:36981526309:1",
+      "revision": "b5148bd121a1db1f9061e354afbd5513434be047",
+      "marketDate": "2026-10-02",
+      "startedAt": "2026-10-02T07:59:49.947Z",
+      "completedAt": "2026-10-02T08:00:03.012Z",
+      "decisionTimestamp": "2026-10-02T08:00:02.600Z",
+      "decisionClockMode": "DIAGNOSTIC_OBSERVATION_TIME_NOT_CAPTURE_CLOCK",
+      "state": "INPUTS_NOT_READY",
+      "calendar": {
+        "marketDate": "2026-10-02",
+        "state": "READY",
+        "httpStatus": 200,
+        "expectedTradingDay": true,
+        "calendarYear": 2026,
+        "holidayCount": 24,
+        "source": "TWSE_OFFICIAL_HOLIDAY_SCHEDULE",
+        "externalMutationPerformed": false
+      },
+      "preflight": {
+        "version": "0.1-RESEARCH",
+        "marketDate": "2026-10-02",
+        "decisionTimestamp": "2026-10-02T08:00:02.600Z",
+        "state": "INPUTS_NOT_READY",
+        "sourceAndHistoryReady": false,
+        "assessorReady": false,
+        "blockers": [
+          {
+            "layer": "CURRENT_A1_SOURCE",
+            "code": "A1_SOURCE_INCOMPLETE"
+          },
+          {
+            "layer": "PIT_HISTORY",
+            "code": "PIT_HISTORY_NO_CURRENT_UNIVERSE",
+            "historyCoverage": 0,
+            "continuityCoverage": 0
+          },
+          {
+            "layer": "STRATEGY_ASSESSOR",
+            "strategyId": "SHORT_MOMENTUM",
+            "code": "ASSESSOR_POLICY_NOT_FROZEN",
+            "reasonCodes": [
+              "NO_PREREGISTERED_SETUP_LEVEL_THRESHOLDS",
+              "NO_OWNER_APPROVED_ENTRY_READINESS_MAPPING"
+            ]
+          },
+          {
+            "layer": "STRATEGY_ASSESSOR",
+            "strategyId": "SWING_GROWTH",
+            "code": "ASSESSOR_POLICY_NOT_FROZEN",
+            "reasonCodes": [
+              "NO_PREREGISTERED_SETUP_LEVEL_THRESHOLDS",
+              "NO_OWNER_APPROVED_ENTRY_READINESS_MAPPING",
+              "REQUIRED_FUNDAMENTAL_INDUSTRY_ASSESSOR_NOT_WIRED"
+            ]
+          }
+        ],
+        "a1": {
+          "state": "INCOMPLETE",
+          "ordinarySymbolCount": 0,
+          "blockerCodes": [
+            "TWSE:INSUFFICIENT_ORDINARY_SYMBOL_COVERAGE",
+            "TPEX:INSUFFICIENT_ORDINARY_SYMBOL_COVERAGE"
+          ],
+          "decisionClockMode": "DIAGNOSTIC_OBSERVATION_TIME_NOT_CAPTURE_CLOCK"
+        },
+        "history": {
+          "state": "NO_CURRENT_UNIVERSE",
+          "currentUniverseCount": 0,
+          "historyReadyCount": 0,
+          "continuityReadyCount": 0,
+          "ambiguousSymbolCount": 0,
+          "historyCoverage": 0,
+          "continuityCoverage": 0
+        },
+        "assessors": [
+          {
+            "strategyId": "SHORT_MOMENTUM",
+            "strategyVersion": "V0.1-CONTRACT",
+            "state": "ASSESSOR_POLICY_NOT_FROZEN",
+            "requiredFamilies": [
+              "TECHNICAL_STRUCTURE",
+              "PRICE_VOLUME",
+              "RISK_FRICTION"
+            ],
+            "reasonCodes": [
+              "NO_PREREGISTERED_SETUP_LEVEL_THRESHOLDS",
+              "NO_OWNER_APPROVED_ENTRY_READINESS_MAPPING"
+            ],
+            "permittedAction": "OBSERVE_INPUT_READINESS_ONLY"
+          },
+          {
+            "strategyId": "SWING_GROWTH",
+            "strategyVersion": "V0.1-CONTRACT",
+            "state": "ASSESSOR_POLICY_NOT_FROZEN",
+            "requiredFamilies": [
+              "INDUSTRY_THESIS",
+              "FUNDAMENTAL_QUALITY"
+            ],
+            "reasonCodes": [
+              "NO_PREREGISTERED_SETUP_LEVEL_THRESHOLDS",
+              "NO_OWNER_APPROVED_ENTRY_READINESS_MAPPING",
+              "REQUIRED_FUNDAMENTAL_INDUSTRY_ASSESSOR_NOT_WIRED"
+            ],
+            "permittedAction": "OBSERVE_INPUT_READINESS_ONLY"
+          }
+        ],
+        "capacityWriteAuthorized": false,
+        "zeroPickMayBeClaimed": false,
+        "captureArmRequested": false,
+        "scheduledCaptureAuthorized": false,
+        "finalSelectionEnabled": false,
+        "livePushEnabled": false,
+        "capitalImpact": false,
+        "orderImpact": false,
+        "system1RuntimeUsed": false,
+        "externalMutationPerformed": false
+      },
+      "prospectiveHistory": {
+        "state": "SKIPPED_SOURCE_NOT_READY",
+        "rowCount": 0
+      },
+      "symbolCount": 0,
+      "knownFactorCount": 0,
+      "unknownFactorCount": 0,
+      "factorFailureCount": 0,
+      "sourceSessionHash": "53a0030d87873058d53a4b32b10191fe3d727dd1f301df14a6d3a2bddd2f14b4",
+      "sourceTransports": {
+        "TWSE": {
+          "payloadHash": "b21b2cd248f4ce0fd48c9c2cb7fe354c926719d55fa0ef1bc48354fe7eb24d86",
+          "rawRowCount": 1380,
+          "reportedDates": [
+            "1151001"
+          ],
+          "ok": true,
+          "httpStatus": 200,
+          "errorCode": null,
+          "sourceId": "A1_TWSE_DAILY_CLOSE"
+        },
+        "TPEX": {
+          "payloadHash": "2cc204b4f70df69b65c98e8db49634639fc1d74c0d736bda673e67f384469a8d",
+          "rawRowCount": 11871,
+          "reportedDates": [
+            "1151001"
+          ],
+          "ok": true,
+          "httpStatus": 200,
+          "errorCode": null,
+          "sourceId": "A1_TPEX_DAILY_CLOSE"
+        }
+      },
+      "regime": {
+        "state": "UNKNOWN",
+        "reason": "VALIDATED_REGIME_SOURCES_NOT_WIRED",
+        "labels": []
+      },
+      "strategyEvaluation": "BLOCKED_ASSESSOR_POLICY_NOT_FROZEN",
+      "ranking": "NOT_EXECUTED",
+      "capacity": "NOT_PRODUCED",
+      "predictionSnapshot": "NOT_PRODUCED",
+      "zeroPickDay": null,
+      "capacityRunId": null,
+      "selectedCount": null,
+      "finalSelectionEnabled": false,
+      "generalCaptureEnabled": false,
+      "livePushEnabled": false,
+      "capitalImpact": false,
+      "orderImpact": false,
+      "system1RuntimeUsed": false,
+      "countsTowardDecisionClockReadiness": false,
+      "shardManifest": [
+        {
+          "checkId": "S2-DAILY-DIAGNOSTIC:2026-10-02:36981526309:1:SHARD:0",
+          "hash": "2a7d5d5392e87b7b4de81f43bc7d9c8c22c7de64e8076d5991b1039e3d107866"
+        }
+      ],
+      "persistenceState": "IMMUTABLE_D1_READBACK_VERIFIED"
+    },
+    "d1Metrics": {
+      "requestCount": 11,
+      "rowsRead": 23727,
+      "rowsWritten": 12
+    }
+  },
+  "publicReadback": {
+    "result": "PASS",
+    "reads": [
+      {
+        "path": "/api/system2/shadow/diagnostic?marketDate=2026-10-02",
+        "status": 200,
+        "payload": {
+          "schemaVersion": "S2_DAILY_SHADOW_DIAGNOSTIC_V0_1",
+          "state": "INPUTS_NOT_READY",
+          "receipt": {
+            "calendar": {
+              "calendarYear": 2026,
+              "expectedTradingDay": true,
+              "externalMutationPerformed": false,
+              "holidayCount": 24,
+              "httpStatus": 200,
+              "marketDate": "2026-10-02",
+              "source": "TWSE_OFFICIAL_HOLIDAY_SCHEDULE",
+              "state": "READY"
+            },
+            "capacity": "NOT_PRODUCED",
+            "capacityRunId": null,
+            "capitalImpact": false,
+            "completedAt": "2026-10-02T08:00:03.012Z",
+            "countsTowardDecisionClockReadiness": false,
+            "decisionClockMode": "DIAGNOSTIC_OBSERVATION_TIME_NOT_CAPTURE_CLOCK",
+            "decisionTimestamp": "2026-10-02T08:00:02.600Z",
+            "factorFailureCount": 0,
+            "finalSelectionEnabled": false,
+            "generalCaptureEnabled": false,
+            "knownFactorCount": 0,
+            "livePushEnabled": false,
+            "marketDate": "2026-10-02",
+            "orderImpact": false,
+            "predictionSnapshot": "NOT_PRODUCED",
+            "preflight": {
+              "a1": {
+                "blockerCodes": [
+                  "TWSE:INSUFFICIENT_ORDINARY_SYMBOL_COVERAGE",
+                  "TPEX:INSUFFICIENT_ORDINARY_SYMBOL_COVERAGE"
+                ],
+                "decisionClockMode": "DIAGNOSTIC_OBSERVATION_TIME_NOT_CAPTURE_CLOCK",
+                "ordinarySymbolCount": 0,
+                "state": "INCOMPLETE"
+              },
+              "assessorReady": false,
+              "assessors": [
+                {
+                  "permittedAction": "OBSERVE_INPUT_READINESS_ONLY",
+                  "reasonCodes": [
+                    "NO_PREREGISTERED_SETUP_LEVEL_THRESHOLDS",
+                    "NO_OWNER_APPROVED_ENTRY_READINESS_MAPPING"
+                  ],
+                  "requiredFamilies": [
+                    "TECHNICAL_STRUCTURE",
+                    "PRICE_VOLUME",
+                    "RISK_FRICTION"
+                  ],
+                  "state": "ASSESSOR_POLICY_NOT_FROZEN",
+                  "strategyId": "SHORT_MOMENTUM",
+                  "strategyVersion": "V0.1-CONTRACT"
+                },
+                {
+                  "permittedAction": "OBSERVE_INPUT_READINESS_ONLY",
+                  "reasonCodes": [
+                    "NO_PREREGISTERED_SETUP_LEVEL_THRESHOLDS",
+                    "NO_OWNER_APPROVED_ENTRY_READINESS_MAPPING",
+                    "REQUIRED_FUNDAMENTAL_INDUSTRY_ASSESSOR_NOT_WIRED"
+                  ],
+                  "requiredFamilies": [
+                    "INDUSTRY_THESIS",
+                    "FUNDAMENTAL_QUALITY"
+                  ],
+                  "state": "ASSESSOR_POLICY_NOT_FROZEN",
+                  "strategyId": "SWING_GROWTH",
+                  "strategyVersion": "V0.1-CONTRACT"
+                }
+              ],
+              "blockers": [
+                {
+                  "code": "A1_SOURCE_INCOMPLETE",
+                  "layer": "CURRENT_A1_SOURCE"
+                },
+                {
+                  "code": "PIT_HISTORY_NO_CURRENT_UNIVERSE",
+                  "continuityCoverage": 0,
+                  "historyCoverage": 0,
+                  "layer": "PIT_HISTORY"
+                },
+                {
+                  "code": "ASSESSOR_POLICY_NOT_FROZEN",
+                  "layer": "STRATEGY_ASSESSOR",
+                  "reasonCodes": [
+                    "NO_PREREGISTERED_SETUP_LEVEL_THRESHOLDS",
+                    "NO_OWNER_APPROVED_ENTRY_READINESS_MAPPING"
+                  ],
+                  "strategyId": "SHORT_MOMENTUM"
+                },
+                {
+                  "code": "ASSESSOR_POLICY_NOT_FROZEN",
+                  "layer": "STRATEGY_ASSESSOR",
+                  "reasonCodes": [
+                    "NO_PREREGISTERED_SETUP_LEVEL_THRESHOLDS",
+                    "NO_OWNER_APPROVED_ENTRY_READINESS_MAPPING",
+                    "REQUIRED_FUNDAMENTAL_INDUSTRY_ASSESSOR_NOT_WIRED"
+                  ],
+                  "strategyId": "SWING_GROWTH"
+                }
+              ],
+              "capacityWriteAuthorized": false,
+              "capitalImpact": false,
+              "captureArmRequested": false,
+              "decisionTimestamp": "2026-10-02T08:00:02.600Z",
+              "externalMutationPerformed": false,
+              "finalSelectionEnabled": false,
+              "history": {
+                "ambiguousSymbolCount": 0,
+                "continuityCoverage": 0,
+                "continuityReadyCount": 0,
+                "currentUniverseCount": 0,
+                "historyCoverage": 0,
+                "historyReadyCount": 0,
+                "state": "NO_CURRENT_UNIVERSE"
+              },
+              "livePushEnabled": false,
+              "marketDate": "2026-10-02",
+              "orderImpact": false,
+              "scheduledCaptureAuthorized": false,
+              "sourceAndHistoryReady": false,
+              "state": "INPUTS_NOT_READY",
+              "system1RuntimeUsed": false,
+              "version": "0.1-RESEARCH",
+              "zeroPickMayBeClaimed": false
+            },
+            "prospectiveHistory": {
+              "rowCount": 0,
+              "state": "SKIPPED_SOURCE_NOT_READY"
+            },
+            "ranking": "NOT_EXECUTED",
+            "regime": {
+              "labels": [],
+              "reason": "VALIDATED_REGIME_SOURCES_NOT_WIRED",
+              "state": "UNKNOWN"
+            },
+            "revision": "b5148bd121a1db1f9061e354afbd5513434be047",
+            "runId": "S2-DAILY-DIAGNOSTIC:2026-10-02:36981526309:1",
+            "schemaVersion": "S2_DAILY_SHADOW_DIAGNOSTIC_V0_1",
+            "selectedCount": null,
+            "shardManifest": [
+              {
+                "checkId": "S2-DAILY-DIAGNOSTIC:2026-10-02:36981526309:1:SHARD:0",
+                "hash": "2a7d5d5392e87b7b4de81f43bc7d9c8c22c7de64e8076d5991b1039e3d107866"
+              }
+            ],
+            "sourceSessionHash": "53a0030d87873058d53a4b32b10191fe3d727dd1f301df14a6d3a2bddd2f14b4",
+            "sourceTransports": {
+              "TPEX": {
+                "errorCode": null,
+                "httpStatus": 200,
+                "ok": true,
+                "payloadHash": "2cc204b4f70df69b65c98e8db49634639fc1d74c0d736bda673e67f384469a8d",
+                "rawRowCount": 11871,
+                "reportedDates": [
+                  "1151001"
+                ],
+                "sourceId": "A1_TPEX_DAILY_CLOSE"
+              },
+              "TWSE": {
+                "errorCode": null,
+                "httpStatus": 200,
+                "ok": true,
+                "payloadHash": "b21b2cd248f4ce0fd48c9c2cb7fe354c926719d55fa0ef1bc48354fe7eb24d86",
+                "rawRowCount": 1380,
+                "reportedDates": [
+                  "1151001"
+                ],
+                "sourceId": "A1_TWSE_DAILY_CLOSE"
+              }
+            },
+            "startedAt": "2026-10-02T07:59:49.947Z",
+            "state": "INPUTS_NOT_READY",
+            "strategyEvaluation": "BLOCKED_ASSESSOR_POLICY_NOT_FROZEN",
+            "symbolCount": 0,
+            "system1RuntimeUsed": false,
+            "unknownFactorCount": 0,
+            "zeroPickDay": null
+          }
+        }
+      },
+      {
+        "path": "/health",
+        "status": 200,
+        "payload": {
+          "service": "system2-shadow-research",
+          "mode": "RESEARCH_ONLY",
+          "databaseBinding": "SYSTEM2_DB",
+          "schemaVersion": "1.1",
+          "captureEnabledRequested": false,
+          "scheduledCaptureAllowed": false,
+          "captureState": "CAPTURE_DISABLED",
+          "captureContractVersion": "0.1",
+          "resonanceState": "BOUNDED_RESONANCE_SCHEDULED",
+          "resonanceContractVersion": "0.1",
+          "resonanceMaxUniqueSymbols": 9,
+          "resonanceFullMarketScan": false,
+          "fugleQuoteConfigured": true,
+          "system1RuntimeUsed": false
+        }
+      },
+      {
+        "path": "/api/system2/resonance/operations",
+        "status": 200,
+        "payload": {
+          "schemaVersion": "SYSTEM2_RESONANCE_OPERATIONS_API_V0_1",
+          "marketDate": "2026-10-02",
+          "state": "UPSTREAM_CAPACITY_RECEIPT_MISSING",
+          "upstreamCapacity": null,
+          "latestPool": null,
+          "lastPoolRefresh": null,
+          "lastIntradayCycle": null,
+          "activePoolId": null,
+          "activeSymbolCount": 0,
+          "fullMarketScan": false,
+          "captureEnabled": false,
+          "livePushEnabled": false,
+          "orderImpact": false
+        }
+      }
+    ]
+  },
+  "positiveLiveHistoricalIngestVerified": false,
+  "s2_07SelectionToCapacityComplete": false,
+  "audit1900Observed": false,
+  "observedAtTaipei": "2026-10-02T16:00:37+08:00"
+}
